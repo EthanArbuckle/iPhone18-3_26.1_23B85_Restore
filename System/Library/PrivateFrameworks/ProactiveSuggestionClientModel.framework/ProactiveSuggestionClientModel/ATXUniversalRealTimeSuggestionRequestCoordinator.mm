@@ -1,53 +1,53 @@
 @interface ATXUniversalRealTimeSuggestionRequestCoordinator
-- (ATXUniversalRealTimeSuggestionRequestCoordinator)initWithBlendingLayer:(id)a3 hyperParameters:(id)a4 pendingRefreshTracker:(id)a5 server:(id)a6;
-- (id)cacheUpdateDictionaryFromCacheUpdatesArray:(id)a3;
-- (id)clientModelUpdatesForSuggestionRequest:(id)a3;
-- (id)generatedRankedSuggestionsForSuggestionRequest:(id)a3 limit:(id)a4;
-- (id)selectedLayoutForSuggestionRequest:(id)a3;
-- (void)delegateUpdatedSuggestionsForClientModelId:(id)a3 suggestionRequest:(id)a4 response:(id)a5 clientModelsPendingUpdate:(id)a6;
-- (void)realTimeProviderDelegateForClientModelId:(id)a3 completion:(id)a4;
-- (void)registerRealTimeSuggestionProviderDelegate:(id)a3 clientModelId:(id)a4;
-- (void)remoteAsyncDelegateForClientModel:(id)a3 completion:(id)a4;
-- (void)respondToRequestWithPreviouslyCachedPredictionsForClientModelId:(id)a3 suggestionRequest:(id)a4;
-- (void)updateSuggestionsFromDelegate:(id)a3 connection:(id)a4 clientModelId:(id)a5 clientModelsPendingUpdate:(id)a6 dispatchGroup:(id)a7 suggestionRequest:(id)a8;
+- (ATXUniversalRealTimeSuggestionRequestCoordinator)initWithBlendingLayer:(id)layer hyperParameters:(id)parameters pendingRefreshTracker:(id)tracker server:(id)server;
+- (id)cacheUpdateDictionaryFromCacheUpdatesArray:(id)array;
+- (id)clientModelUpdatesForSuggestionRequest:(id)request;
+- (id)generatedRankedSuggestionsForSuggestionRequest:(id)request limit:(id)limit;
+- (id)selectedLayoutForSuggestionRequest:(id)request;
+- (void)delegateUpdatedSuggestionsForClientModelId:(id)id suggestionRequest:(id)request response:(id)response clientModelsPendingUpdate:(id)update;
+- (void)realTimeProviderDelegateForClientModelId:(id)id completion:(id)completion;
+- (void)registerRealTimeSuggestionProviderDelegate:(id)delegate clientModelId:(id)id;
+- (void)remoteAsyncDelegateForClientModel:(id)model completion:(id)completion;
+- (void)respondToRequestWithPreviouslyCachedPredictionsForClientModelId:(id)id suggestionRequest:(id)request;
+- (void)updateSuggestionsFromDelegate:(id)delegate connection:(id)connection clientModelId:(id)id clientModelsPendingUpdate:(id)update dispatchGroup:(id)group suggestionRequest:(id)request;
 @end
 
 @implementation ATXUniversalRealTimeSuggestionRequestCoordinator
 
-- (ATXUniversalRealTimeSuggestionRequestCoordinator)initWithBlendingLayer:(id)a3 hyperParameters:(id)a4 pendingRefreshTracker:(id)a5 server:(id)a6
+- (ATXUniversalRealTimeSuggestionRequestCoordinator)initWithBlendingLayer:(id)layer hyperParameters:(id)parameters pendingRefreshTracker:(id)tracker server:(id)server
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  layerCopy = layer;
+  parametersCopy = parameters;
+  trackerCopy = tracker;
+  serverCopy = server;
   v20.receiver = self;
   v20.super_class = ATXUniversalRealTimeSuggestionRequestCoordinator;
   v15 = [(ATXUniversalRealTimeSuggestionRequestCoordinator *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_blendingLayer, a3);
-    objc_storeStrong(&v16->_hyperParameters, a4);
-    objc_storeStrong(&v16->_pendingRefreshTrackerLock, a5);
-    objc_storeWeak(&v16->_server, v14);
-    v17 = [v11 feedbackWriter];
+    objc_storeStrong(&v15->_blendingLayer, layer);
+    objc_storeStrong(&v16->_hyperParameters, parameters);
+    objc_storeStrong(&v16->_pendingRefreshTrackerLock, tracker);
+    objc_storeWeak(&v16->_server, serverCopy);
+    feedbackWriter = [layerCopy feedbackWriter];
     feedbackWriter = v16->_feedbackWriter;
-    v16->_feedbackWriter = v17;
+    v16->_feedbackWriter = feedbackWriter;
   }
 
   return v16;
 }
 
-- (void)registerRealTimeSuggestionProviderDelegate:(id)a3 clientModelId:(id)a4
+- (void)registerRealTimeSuggestionProviderDelegate:(id)delegate clientModelId:(id)id
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  idCopy = id;
   v8 = __atxlog_handle_blending();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v7;
+    v17 = idCopy;
     _os_log_impl(&dword_1DEFC4000, v8, OS_LOG_TYPE_DEFAULT, "RealTimeRequestCoordinator registering a delegate for clientModelId: %{public}@...", buf, 0xCu);
   }
 
@@ -56,10 +56,10 @@
   v13[1] = 3221225472;
   v13[2] = __109__ATXUniversalRealTimeSuggestionRequestCoordinator_registerRealTimeSuggestionProviderDelegate_clientModelId___block_invoke;
   v13[3] = &unk_1E86A4B00;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = delegateCopy;
+  v15 = idCopy;
+  v10 = idCopy;
+  v11 = delegateCopy;
   [(_PASLock *)pendingRefreshTrackerLock runWithLockAcquired:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -83,10 +83,10 @@ void __109__ATXUniversalRealTimeSuggestionRequestCoordinator_registerRealTimeSug
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)clientModelUpdatesForSuggestionRequest:(id)a3
+- (id)clientModelUpdatesForSuggestionRequest:(id)request
 {
   v61 = *MEMORY[0x1E69E9840];
-  v35 = a3;
+  requestCopy = request;
   sel_getName(a2);
   v32 = os_transaction_create();
   v4 = __atxlog_handle_blending();
@@ -97,9 +97,9 @@ void __109__ATXUniversalRealTimeSuggestionRequestCoordinator_registerRealTimeSug
   v33 = spid - 1;
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    v7 = [v35 originatorId];
+    originatorId = [requestCopy originatorId];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = originatorId;
     _os_signpost_emit_with_name_impl(&dword_1DEFC4000, v6, OS_SIGNPOST_INTERVAL_BEGIN, spid, "RealTimeSuggestionRequest", "originatorId=%{signpost.telemetry:string1, public}@ enableTelemetry=YES ", &buf, 0xCu);
   }
 
@@ -107,7 +107,7 @@ void __109__ATXUniversalRealTimeSuggestionRequestCoordinator_registerRealTimeSug
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v35;
+    *(&buf + 4) = requestCopy;
     _os_log_impl(&dword_1DEFC4000, v8, OS_LOG_TYPE_DEFAULT, "Blending: Received suggestion request: %{public}@", &buf, 0xCu);
   }
 
@@ -119,7 +119,7 @@ void __109__ATXUniversalRealTimeSuggestionRequestCoordinator_registerRealTimeSug
     v53[1] = 3221225472;
     v53[2] = __91__ATXUniversalRealTimeSuggestionRequestCoordinator_clientModelUpdatesForSuggestionRequest___block_invoke;
     v53[3] = &unk_1E86A4178;
-    v37 = v35;
+    v37 = requestCopy;
     v54 = v37;
     [(_PASLock *)pendingRefreshTrackerLock runWithLockAcquired:v53];
     v10 = [(ATXUniversalBlendingLayerHyperParametersProtocol *)self->_hyperParameters clientModelsToConsiderForConsumerSubType:[v37 consumerSubType]];
@@ -282,24 +282,24 @@ void __91__ATXUniversalRealTimeSuggestionRequestCoordinator_clientModelUpdatesFo
   [v12 removeObjectForKey:v11];
 }
 
-- (id)generatedRankedSuggestionsForSuggestionRequest:(id)a3 limit:(id)a4
+- (id)generatedRankedSuggestionsForSuggestionRequest:(id)request limit:(id)limit
 {
-  v6 = a4;
-  v7 = [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self clientModelUpdatesForSuggestionRequest:a3];
+  limitCopy = limit;
+  v7 = [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self clientModelUpdatesForSuggestionRequest:request];
   v8 = [(ATXUniversalBlendingLayer *)self->_blendingLayer rerankedValidSuggestionsFromClientModelSuggestions:v7];
   v9 = v8;
-  if (v6)
+  if (limitCopy)
   {
-    v10 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [limitCopy unsignedIntegerValue];
     v11 = [v9 count];
-    if (v10 >= v11)
+    if (unsignedIntegerValue >= v11)
     {
       v12 = v11;
     }
 
     else
     {
-      v12 = v10;
+      v12 = unsignedIntegerValue;
     }
 
     v13 = [v9 subarrayWithRange:{0, v12}];
@@ -315,33 +315,33 @@ void __91__ATXUniversalRealTimeSuggestionRequestCoordinator_clientModelUpdatesFo
   return v14;
 }
 
-- (id)selectedLayoutForSuggestionRequest:(id)a3
+- (id)selectedLayoutForSuggestionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self clientModelUpdatesForSuggestionRequest:v4];
+  requestCopy = request;
+  v5 = [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self clientModelUpdatesForSuggestionRequest:requestCopy];
   v6 = [(ATXUniversalBlendingLayer *)self->_blendingLayer rerankedValidSuggestionsFromClientModelSuggestions:v5];
-  v7 = -[ATXUniversalBlendingLayer selectedLayoutForUIConsumer:rankedSuggestions:](self->_blendingLayer, "selectedLayoutForUIConsumer:rankedSuggestions:", [v4 consumerSubType], v6);
-  v8 = -[ATXBlendingModelUICacheUpdate initWithUICache:consumerSubType:clientModelCacheUpdates:]([ATXBlendingModelUICacheUpdate alloc], "initWithUICache:consumerSubType:clientModelCacheUpdates:", v7, [v4 consumerSubType], v5);
+  v7 = -[ATXUniversalBlendingLayer selectedLayoutForUIConsumer:rankedSuggestions:](self->_blendingLayer, "selectedLayoutForUIConsumer:rankedSuggestions:", [requestCopy consumerSubType], v6);
+  v8 = -[ATXBlendingModelUICacheUpdate initWithUICache:consumerSubType:clientModelCacheUpdates:]([ATXBlendingModelUICacheUpdate alloc], "initWithUICache:consumerSubType:clientModelCacheUpdates:", v7, [requestCopy consumerSubType], v5);
   feedbackWriter = self->_feedbackWriter;
-  v10 = [v4 consumerSubType];
+  consumerSubType = [requestCopy consumerSubType];
 
-  [(ATXUniversalBlendingFeedbackWriter *)feedbackWriter donateBlendingModelUICacheUpdate:v8 uiConsumer:v10];
+  [(ATXUniversalBlendingFeedbackWriter *)feedbackWriter donateBlendingModelUICacheUpdate:v8 uiConsumer:consumerSubType];
 
   return v7;
 }
 
-- (void)updateSuggestionsFromDelegate:(id)a3 connection:(id)a4 clientModelId:(id)a5 clientModelsPendingUpdate:(id)a6 dispatchGroup:(id)a7 suggestionRequest:(id)a8
+- (void)updateSuggestionsFromDelegate:(id)delegate connection:(id)connection clientModelId:(id)id clientModelsPendingUpdate:(id)update dispatchGroup:(id)group suggestionRequest:(id)request
 {
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  delegateCopy = delegate;
+  connectionCopy = connection;
+  idCopy = id;
+  updateCopy = update;
+  groupCopy = group;
+  requestCopy = request;
+  if (!delegateCopy)
   {
-    dispatch_group_leave(v18);
+    dispatch_group_leave(groupCopy);
     goto LABEL_30;
   }
 
@@ -353,7 +353,7 @@ void __91__ATXUniversalRealTimeSuggestionRequestCoordinator_clientModelUpdatesFo
   if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 138543362;
-    v44 = v16;
+    v44 = idCopy;
     _os_signpost_emit_with_name_impl(&dword_1DEFC4000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v21, "RequestSuggestionsFromRealTimeProviderDelegate", "clientModelId=%{signpost.telemetry:string1, public}@ enableTelemetry=YES ", buf, 0xCu);
   }
 
@@ -398,14 +398,14 @@ void __91__ATXUniversalRealTimeSuggestionRequestCoordinator_clientModelUpdatesFo
       v30 = objc_opt_class();
       v31 = NSStringFromClass(v30);
       *buf = 138543618;
-      v44 = v16;
+      v44 = idCopy;
       v45 = 2114;
       v46 = v31;
       _os_log_impl(&dword_1DEFC4000, v29, OS_LOG_TYPE_DEFAULT, "Blending: %{public}@ may not have a real-time request delegate that supports %{public}@ requests. Falling back to cache.", buf, 0x16u);
     }
 
-    [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self respondToRequestWithPreviouslyCachedPredictionsForClientModelId:v16 suggestionRequest:v19];
-    [v17 removeObject:v16];
+    [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self respondToRequestWithPreviouslyCachedPredictionsForClientModelId:idCopy suggestionRequest:requestCopy];
+    [updateCopy removeObject:idCopy];
     v32 = __atxlog_handle_blending();
     v33 = v32;
     if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
@@ -415,7 +415,7 @@ void __91__ATXUniversalRealTimeSuggestionRequestCoordinator_clientModelUpdatesFo
     }
 
 LABEL_26:
-    dispatch_group_leave(v18);
+    dispatch_group_leave(groupCopy);
     goto LABEL_30;
   }
 
@@ -424,19 +424,19 @@ LABEL_26:
   v36[2] = __165__ATXUniversalRealTimeSuggestionRequestCoordinator_updateSuggestionsFromDelegate_connection_clientModelId_clientModelsPendingUpdate_dispatchGroup_suggestionRequest___block_invoke;
   v36[3] = &unk_1E86A4BA0;
   v36[4] = self;
-  v26 = v16;
+  v26 = idCopy;
   v37 = v26;
-  v27 = v19;
+  v27 = requestCopy;
   v38 = v27;
-  v39 = v17;
+  v39 = updateCopy;
   v42 = v21;
-  v40 = v15;
-  v41 = v18;
+  v40 = connectionCopy;
+  v41 = groupCopy;
   v28 = MEMORY[0x1E12CD4B0](v36);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v14 suggestionsForInteractionSuggestionRequest:v27 clientModelId:v26 reply:v28];
+    [delegateCopy suggestionsForInteractionSuggestionRequest:v27 clientModelId:v26 reply:v28];
   }
 
   else
@@ -444,7 +444,7 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v14 suggestionsForContextualActionSuggestionRequest:v27 clientModelId:v26 reply:v28];
+      [delegateCopy suggestionsForContextualActionSuggestionRequest:v27 clientModelId:v26 reply:v28];
     }
 
     else
@@ -452,7 +452,7 @@ LABEL_26:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v14 suggestionsForIntentSuggestionRequest:v27 clientModelId:v26 reply:v28];
+        [delegateCopy suggestionsForIntentSuggestionRequest:v27 clientModelId:v26 reply:v28];
       }
     }
   }
@@ -476,55 +476,55 @@ void __165__ATXUniversalRealTimeSuggestionRequestCoordinator_updateSuggestionsFr
   dispatch_group_leave(*(a1 + 72));
 }
 
-- (void)delegateUpdatedSuggestionsForClientModelId:(id)a3 suggestionRequest:(id)a4 response:(id)a5 clientModelsPendingUpdate:(id)a6
+- (void)delegateUpdatedSuggestionsForClientModelId:(id)id suggestionRequest:(id)request response:(id)response clientModelsPendingUpdate:(id)update
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  requestCopy = request;
+  responseCopy = response;
+  updateCopy = update;
   v14 = __atxlog_handle_blending();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     *buf = 138543874;
-    v35 = v10;
+    v35 = idCopy;
     v36 = 2114;
     v37 = v16;
     v38 = 1024;
-    v39 = [v12 responseCode];
+    responseCode = [responseCopy responseCode];
     _os_log_impl(&dword_1DEFC4000, v14, OS_LOG_TYPE_DEFAULT, "Blending: %{public}@ real-time delegate provided response to %{public}@. Response code: %d", buf, 0x1Cu);
   }
 
-  if ([v12 responseCode] == 1)
+  if ([responseCopy responseCode] == 1)
   {
-    [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self respondToRequestWithPreviouslyCachedPredictionsForClientModelId:v10 suggestionRequest:v11];
+    [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self respondToRequestWithPreviouslyCachedPredictionsForClientModelId:idCopy suggestionRequest:requestCopy];
   }
 
-  else if ([v12 responseCode] == 3 || !objc_msgSend(v12, "responseCode") || objc_msgSend(v12, "responseCode") == 5)
+  else if ([responseCopy responseCode] == 3 || !objc_msgSend(responseCopy, "responseCode") || objc_msgSend(responseCopy, "responseCode") == 5)
   {
     v17 = __atxlog_handle_blending();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      [ATXUniversalRealTimeSuggestionRequestCoordinator delegateUpdatedSuggestionsForClientModelId:v10 suggestionRequest:v12 response:? clientModelsPendingUpdate:?];
+      [ATXUniversalRealTimeSuggestionRequestCoordinator delegateUpdatedSuggestionsForClientModelId:idCopy suggestionRequest:responseCopy response:? clientModelsPendingUpdate:?];
     }
   }
 
-  else if ([v12 responseCode] == 2 || objc_msgSend(v12, "responseCode") == 4)
+  else if ([responseCopy responseCode] == 2 || objc_msgSend(responseCopy, "responseCode") == 4)
   {
     v19 = [ATXClientModelCacheUpdate alloc];
-    v20 = [v12 suggestions];
-    v21 = [v12 feedbackMetadata];
-    v22 = [(ATXClientModelCacheUpdate *)v19 initWithClientModelId:v10 suggestions:v20 feedbackMetadata:v21 responseForRealTimeRequest:v12];
+    suggestions = [responseCopy suggestions];
+    feedbackMetadata = [responseCopy feedbackMetadata];
+    v22 = [(ATXClientModelCacheUpdate *)v19 initWithClientModelId:idCopy suggestions:suggestions feedbackMetadata:feedbackMetadata responseForRealTimeRequest:responseCopy];
 
     [(ATXUniversalBlendingFeedbackWriter *)self->_feedbackWriter sendEventToBiomeIfNeededForClientModelCacheUpdate:v22 previousUpdate:0];
-    if ([v12 responseCode] == 4)
+    if ([responseCopy responseCode] == 4)
     {
       WeakRetained = objc_loadWeakRetained(&self->_server);
-      v24 = [v12 suggestions];
-      v25 = [v12 feedbackMetadata];
-      [WeakRetained clientModelUpdatedSuggestions:v24 feedbackMetadata:v25 clientModelId:v10 completion:&__block_literal_global_32_0];
+      suggestions2 = [responseCopy suggestions];
+      feedbackMetadata2 = [responseCopy feedbackMetadata];
+      [WeakRetained clientModelUpdatedSuggestions:suggestions2 feedbackMetadata:feedbackMetadata2 clientModelId:idCopy completion:&__block_literal_global_32_0];
     }
 
     pendingRefreshTrackerLock = self->_pendingRefreshTrackerLock;
@@ -532,13 +532,13 @@ void __165__ATXUniversalRealTimeSuggestionRequestCoordinator_updateSuggestionsFr
     v29 = 3221225472;
     v30 = __148__ATXUniversalRealTimeSuggestionRequestCoordinator_delegateUpdatedSuggestionsForClientModelId_suggestionRequest_response_clientModelsPendingUpdate___block_invoke_33;
     v31 = &unk_1E86A4B00;
-    v32 = v11;
+    v32 = requestCopy;
     v33 = v22;
     v27 = v22;
     [(_PASLock *)pendingRefreshTrackerLock runWithLockAcquired:&v28];
   }
 
-  [v13 removeObject:{v10, v28, v29, v30, v31}];
+  [updateCopy removeObject:{idCopy, v28, v29, v30, v31}];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -563,23 +563,23 @@ void __148__ATXUniversalRealTimeSuggestionRequestCoordinator_delegateUpdatedSugg
   [v6 addObject:*(a1 + 40)];
 }
 
-- (void)respondToRequestWithPreviouslyCachedPredictionsForClientModelId:(id)a3 suggestionRequest:(id)a4
+- (void)respondToRequestWithPreviouslyCachedPredictionsForClientModelId:(id)id suggestionRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  idCopy = id;
   WeakRetained = objc_loadWeakRetained(&self->_server);
-  v9 = [WeakRetained clientModelCacheManager];
-  v10 = [v9 cachedSuggestionsForClientModel:v7];
+  clientModelCacheManager = [WeakRetained clientModelCacheManager];
+  v10 = [clientModelCacheManager cachedSuggestionsForClientModel:idCopy];
 
   pendingRefreshTrackerLock = self->_pendingRefreshTrackerLock;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWithPreviouslyCachedPredictionsForClientModelId_suggestionRequest___block_invoke;
   v14[3] = &unk_1E86A4B00;
-  v15 = v6;
+  v15 = requestCopy;
   v16 = v10;
   v12 = v10;
-  v13 = v6;
+  v13 = requestCopy;
   [(_PASLock *)pendingRefreshTrackerLock runWithLockAcquired:v14];
 }
 
@@ -596,16 +596,16 @@ void __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWit
   }
 }
 
-- (id)cacheUpdateDictionaryFromCacheUpdatesArray:(id)a3
+- (id)cacheUpdateDictionaryFromCacheUpdatesArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -621,8 +621,8 @@ void __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWit
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 clientModelId];
-        [v4 setObject:v10 forKey:v11];
+        clientModelId = [v10 clientModelId];
+        [v4 setObject:v10 forKey:clientModelId];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -636,11 +636,11 @@ void __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWit
   return v4;
 }
 
-- (void)realTimeProviderDelegateForClientModelId:(id)a3 completion:(id)a4
+- (void)realTimeProviderDelegateForClientModelId:(id)id completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -653,7 +653,7 @@ void __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWit
   v15 = __104__ATXUniversalRealTimeSuggestionRequestCoordinator_realTimeProviderDelegateForClientModelId_completion___block_invoke;
   v16 = &unk_1E86A4B78;
   v18 = &v19;
-  v9 = v6;
+  v9 = idCopy;
   v17 = v9;
   [(_PASLock *)pendingRefreshTrackerLock runWithLockAcquired:&v13];
   if (v20[5])
@@ -666,7 +666,7 @@ void __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWit
       _os_log_impl(&dword_1DEFC4000, v10, OS_LOG_TYPE_DEFAULT, "Found a cached delegate for clientModelId: %{public}@", buf, 0xCu);
     }
 
-    v7[2](v7, v20[5], 0);
+    completionCopy[2](completionCopy, v20[5], 0);
   }
 
   else
@@ -679,7 +679,7 @@ void __134__ATXUniversalRealTimeSuggestionRequestCoordinator_respondToRequestWit
       _os_log_impl(&dword_1DEFC4000, v11, OS_LOG_TYPE_DEFAULT, "Blending: Fetching delegate for client model %{public}@", buf, 0xCu);
     }
 
-    [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self remoteAsyncDelegateForClientModel:v9 completion:v7, v13, v14, v15, v16];
+    [(ATXUniversalRealTimeSuggestionRequestCoordinator *)self remoteAsyncDelegateForClientModel:v9 completion:completionCopy, v13, v14, v15, v16];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -695,21 +695,21 @@ void __104__ATXUniversalRealTimeSuggestionRequestCoordinator_realTimeProviderDel
   *(v4 + 40) = v3;
 }
 
-- (void)remoteAsyncDelegateForClientModel:(id)a3 completion:(id)a4
+- (void)remoteAsyncDelegateForClientModel:(id)model completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v7 = __atxlog_handle_blending();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v27 = v5;
+    v27 = modelCopy;
     _os_log_impl(&dword_1DEFC4000, v7, OS_LOG_TYPE_DEFAULT, "Establishing XPC connection to clientModelId: %{public}@", buf, 0xCu);
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.proactive.SuggestionRequest.%@", v5];
-  v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v8 options:0];
+  modelCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.proactive.SuggestionRequest.%@", modelCopy];
+  v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:modelCopy options:0];
   v10 = ATXProactiveSuggestionRealTimeProviderXPCInterface();
   [v9 setRemoteObjectInterface:v10];
 
@@ -717,11 +717,11 @@ void __104__ATXUniversalRealTimeSuggestionRequestCoordinator_realTimeProviderDel
   v24[1] = 3221225472;
   v24[2] = __97__ATXUniversalRealTimeSuggestionRequestCoordinator_remoteAsyncDelegateForClientModel_completion___block_invoke;
   v24[3] = &unk_1E86A45B0;
-  v11 = v5;
+  v11 = modelCopy;
   v25 = v11;
   [v9 setInterruptionHandler:v24];
-  v12 = [v9 interruptionHandler];
-  [v9 setInvalidationHandler:v12];
+  interruptionHandler = [v9 interruptionHandler];
+  [v9 setInvalidationHandler:interruptionHandler];
 
   [v9 resume];
   if (v9)
@@ -731,7 +731,7 @@ void __104__ATXUniversalRealTimeSuggestionRequestCoordinator_realTimeProviderDel
     v21[2] = __97__ATXUniversalRealTimeSuggestionRequestCoordinator_remoteAsyncDelegateForClientModel_completion___block_invoke_40;
     v21[3] = &unk_1E86A43B0;
     v22 = v11;
-    v13 = v6;
+    v13 = completionCopy;
     v23 = v13;
     v14 = [v9 remoteObjectProxyWithErrorHandler:v21];
     v17[0] = MEMORY[0x1E69E9820];
@@ -747,7 +747,7 @@ void __104__ATXUniversalRealTimeSuggestionRequestCoordinator_realTimeProviderDel
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v16 = *MEMORY[0x1E69E9840];

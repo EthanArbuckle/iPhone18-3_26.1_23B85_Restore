@@ -1,10 +1,10 @@
 @interface CKTranscriptPhotoStackCell
 - (CKTranscriptPhotoStackCellDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)handlePinchGesture:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)handlePinchGesture:(id)gesture;
 - (void)layoutSubviews;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)setWantsContactImageLayout:(BOOL)a3;
+- (void)setWantsContactImageLayout:(BOOL)layout;
 @end
 
 @implementation CKTranscriptPhotoStackCell
@@ -14,18 +14,18 @@
   v7.receiver = self;
   v7.super_class = CKTranscriptPhotoStackCell;
   [(CKTranscriptCell *)&v7 layoutSubviews];
-  v3 = [(CKTranscriptPhotoStackCell *)self photoStackBalloonView];
-  [v3 setWantsContactImageLayout:{-[CKTranscriptMessageCell wantsContactImageLayout](self, "wantsContactImageLayout")}];
+  photoStackBalloonView = [(CKTranscriptPhotoStackCell *)self photoStackBalloonView];
+  [photoStackBalloonView setWantsContactImageLayout:{-[CKTranscriptMessageCell wantsContactImageLayout](self, "wantsContactImageLayout")}];
 
-  v4 = [(CKTranscriptPhotoStackCell *)self pinchGestureRecognizer];
+  pinchGestureRecognizer = [(CKTranscriptPhotoStackCell *)self pinchGestureRecognizer];
 
-  if (!v4)
+  if (!pinchGestureRecognizer)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel_handlePinchGesture_];
     [(CKTranscriptPhotoStackCell *)self setPinchGestureRecognizer:v5];
 
-    v6 = [(CKTranscriptPhotoStackCell *)self pinchGestureRecognizer];
-    [(CKTranscriptPhotoStackCell *)self addGestureRecognizer:v6];
+    pinchGestureRecognizer2 = [(CKTranscriptPhotoStackCell *)self pinchGestureRecognizer];
+    [(CKTranscriptPhotoStackCell *)self addGestureRecognizer:pinchGestureRecognizer2];
   }
 }
 
@@ -34,17 +34,17 @@
   *&recta.origin.y = self;
   *&recta.size.width = CKTranscriptPhotoStackCell;
   [(CGFloat *)&recta.origin.y layoutSubviewsForAlignmentContents];
-  v3 = [(CKTranscriptPhotoStackCell *)self photoStackBalloonView];
-  v4 = [(CKEditableCollectionViewCell *)self orientation];
-  v5 = [(CKTranscriptMessageCell *)self wantsContactImageLayout];
-  [v3 frame];
+  photoStackBalloonView = [(CKTranscriptPhotoStackCell *)self photoStackBalloonView];
+  orientation = [(CKEditableCollectionViewCell *)self orientation];
+  wantsContactImageLayout = [(CKTranscriptMessageCell *)self wantsContactImageLayout];
+  [photoStackBalloonView frame];
   recta.origin.x = v6;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v3 horizontalContentMarginForSize:{v9, v11}];
+  [photoStackBalloonView horizontalContentMarginForSize:{v9, v11}];
   v14 = v13;
-  if (v5)
+  if (wantsContactImageLayout)
   {
     v15 = 7.0;
   }
@@ -60,7 +60,7 @@
   MaxX = CGRectGetMaxX(v48);
   [(CKEditableCollectionViewCell *)self contentAlignmentRect];
   v18 = MaxX - CGRectGetMaxX(v49);
-  if (v4)
+  if (orientation)
   {
     [(CKTranscriptPhotoStackCell *)self bounds];
     Width = CGRectGetWidth(v50);
@@ -76,12 +76,12 @@
     v20 = v15 + MinX - v14;
   }
 
-  [v3 setFrame:{v20, v8, v10, v12}];
-  if (!v5)
+  [photoStackBalloonView setFrame:{v20, v8, v10, v12}];
+  if (!wantsContactImageLayout)
   {
-    if (v4)
+    if (orientation)
     {
-      if (v4 != 2)
+      if (orientation != 2)
       {
         goto LABEL_13;
       }
@@ -95,7 +95,7 @@
       v23 = CGRectGetMaxX(v52) - v14;
       [(CKTranscriptPhotoStackCell *)self frame];
       v24 = CGRectGetWidth(v53) - v23 - v22;
-      v25 = v3;
+      v25 = photoStackBalloonView;
       v26 = 1;
     }
 
@@ -103,7 +103,7 @@
     {
       [(CKEditableCollectionViewCell *)self contentInsets];
       v24 = v14 + v20 - (MinX - v27);
-      v25 = v3;
+      v25 = photoStackBalloonView;
       v26 = 0;
     }
 
@@ -111,13 +111,13 @@
   }
 
 LABEL_13:
-  v28 = [(CKTranscriptBalloonCell *)self quickActionButton];
+  quickActionButton = [(CKTranscriptBalloonCell *)self quickActionButton];
 
-  if (v28)
+  if (quickActionButton)
   {
     v29 = v8;
-    v30 = [(CKTranscriptBalloonCell *)self quickActionButton];
-    [v30 frame];
+    quickActionButton2 = [(CKTranscriptBalloonCell *)self quickActionButton];
+    [quickActionButton2 frame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -128,8 +128,8 @@ LABEL_13:
       if ([(CKEditableCollectionViewCell *)self orientation]!= 2)
       {
 LABEL_19:
-        v45 = [(CKTranscriptBalloonCell *)self quickActionButton];
-        [v45 setFrame:{v32, v34, v36, v38}];
+        quickActionButton3 = [(CKTranscriptBalloonCell *)self quickActionButton];
+        [quickActionButton3 setFrame:{v32, v34, v36, v38}];
 
         goto LABEL_20;
       }
@@ -161,49 +161,49 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)setWantsContactImageLayout:(BOOL)a3
+- (void)setWantsContactImageLayout:(BOOL)layout
 {
-  v3 = a3;
-  if ([(CKTranscriptMessageCell *)self wantsContactImageLayout]!= a3)
+  layoutCopy = layout;
+  if ([(CKTranscriptMessageCell *)self wantsContactImageLayout]!= layout)
   {
     v6.receiver = self;
     v6.super_class = CKTranscriptPhotoStackCell;
-    [(CKTranscriptMessageCell *)&v6 setWantsContactImageLayout:v3];
-    v5 = [(CKTranscriptPhotoStackCell *)self photoStackBalloonView];
-    [v5 setWantsContactImageLayout:v3];
+    [(CKTranscriptMessageCell *)&v6 setWantsContactImageLayout:layoutCopy];
+    photoStackBalloonView = [(CKTranscriptPhotoStackCell *)self photoStackBalloonView];
+    [photoStackBalloonView setWantsContactImageLayout:layoutCopy];
   }
 }
 
-- (void)handlePinchGesture:(id)a3
+- (void)handlePinchGesture:(id)gesture
 {
-  v6 = a3;
-  if ([v6 state] == 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 2)
   {
-    [v6 scale];
+    [gestureCopy scale];
     if (v4 > 1.5)
     {
-      v5 = [(CKTranscriptPhotoStackCell *)self delegate];
-      [v5 didPinchPhotoStackCell:self];
+      delegate = [(CKTranscriptPhotoStackCell *)self delegate];
+      [delegate didPinchPhotoStackCell:self];
     }
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CKTranscriptMessageCell *)self failureButton];
-  if (v8 && (-[CKTranscriptPhotoStackCell convertPoint:toView:](self, "convertPoint:toView:", v8, x, y), v10 = v9, v12 = v11, [v8 bounds], v18.x = v10, v18.y = v12, CGRectContainsPoint(v19, v18)))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  failureButton = [(CKTranscriptMessageCell *)self failureButton];
+  if (failureButton && (-[CKTranscriptPhotoStackCell convertPoint:toView:](self, "convertPoint:toView:", failureButton, x, y), v10 = v9, v12 = v11, [failureButton bounds], v18.x = v10, v18.y = v12, CGRectContainsPoint(v19, v18)))
   {
-    v13 = v8;
+    v13 = failureButton;
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = CKTranscriptPhotoStackCell;
-    v13 = [(CKTranscriptPhotoStackCell *)&v16 hitTest:v7 withEvent:x, y];
+    v13 = [(CKTranscriptPhotoStackCell *)&v16 hitTest:eventCopy withEvent:x, y];
   }
 
   v14 = v13;

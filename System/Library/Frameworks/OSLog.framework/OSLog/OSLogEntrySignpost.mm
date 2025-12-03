@@ -1,36 +1,36 @@
 @interface OSLogEntrySignpost
-- (OSLogEntrySignpost)initWithCoder:(id)a3;
-- (OSLogEntrySignpost)initWithEventProxy:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OSLogEntrySignpost)initWithCoder:(id)coder;
+- (OSLogEntrySignpost)initWithEventProxy:(id)proxy;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OSLogEntrySignpost
 
-- (OSLogEntrySignpost)initWithCoder:(id)a3
+- (OSLogEntrySignpost)initWithCoder:(id)coder
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = OSLogEntrySignpost;
-  v5 = [(OSLogEntry *)&v29 initWithCoder:v4];
+  v5 = [(OSLogEntry *)&v29 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
     v5->_activityIdentifier = [v6 unsignedLongLongValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"process"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"process"];
     process = v5->_process;
     v5->_process = v7;
 
-    v5->_processIdentifier = [v4 decodeInt32ForKey:@"processIdentifier"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
+    v5->_processIdentifier = [coderCopy decodeInt32ForKey:@"processIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
     sender = v5->_sender;
     v5->_sender = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
     v5->_threadIdentifier = [v11 unsignedLongLongValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     category = v5->_category;
     v5->_category = v12;
 
@@ -39,26 +39,26 @@
     v30[1] = objc_opt_class();
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
     v16 = [v14 setWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"components"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"components"];
     components = v5->_components;
     v5->_components = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatString"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatString"];
     formatString = v5->_formatString;
     v5->_formatString = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subsystem"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subsystem"];
     subsystem = v5->_subsystem;
     v5->_subsystem = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signpostIdentifier"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signpostIdentifier"];
     v5->_signpostIdentifier = [v23 unsignedLongLongValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signpostName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signpostName"];
     signpostName = v5->_signpostName;
     v5->_signpostName = v24;
 
-    v5->_signpostType = [v4 decodeIntegerForKey:@"level"];
+    v5->_signpostType = [coderCopy decodeIntegerForKey:@"level"];
     v26 = v5;
   }
 
@@ -66,95 +66,95 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = OSLogEntrySignpost;
-  v4 = a3;
-  [(OSLogEntry *)&v15 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(OSLogEntry *)&v15 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[OSLogEntrySignpost activityIdentifier](self, "activityIdentifier", v15.receiver, v15.super_class)}];
-  [v4 encodeObject:v5 forKey:@"activityIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"activityIdentifier"];
 
-  v6 = [(OSLogEntrySignpost *)self process];
-  [v4 encodeObject:v6 forKey:@"process"];
+  process = [(OSLogEntrySignpost *)self process];
+  [coderCopy encodeObject:process forKey:@"process"];
 
-  [v4 encodeInt32:-[OSLogEntrySignpost processIdentifier](self forKey:{"processIdentifier"), @"processIdentifier"}];
-  v7 = [(OSLogEntrySignpost *)self sender];
-  [v4 encodeObject:v7 forKey:@"sender"];
+  [coderCopy encodeInt32:-[OSLogEntrySignpost processIdentifier](self forKey:{"processIdentifier"), @"processIdentifier"}];
+  sender = [(OSLogEntrySignpost *)self sender];
+  [coderCopy encodeObject:sender forKey:@"sender"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[OSLogEntrySignpost threadIdentifier](self, "threadIdentifier")}];
-  [v4 encodeObject:v8 forKey:@"threadIdentifier"];
+  [coderCopy encodeObject:v8 forKey:@"threadIdentifier"];
 
-  v9 = [(OSLogEntrySignpost *)self category];
-  [v4 encodeObject:v9 forKey:@"category"];
+  category = [(OSLogEntrySignpost *)self category];
+  [coderCopy encodeObject:category forKey:@"category"];
 
-  v10 = [(OSLogEntrySignpost *)self components];
-  [v4 encodeObject:v10 forKey:@"components"];
+  components = [(OSLogEntrySignpost *)self components];
+  [coderCopy encodeObject:components forKey:@"components"];
 
-  v11 = [(OSLogEntrySignpost *)self formatString];
-  [v4 encodeObject:v11 forKey:@"formatString"];
+  formatString = [(OSLogEntrySignpost *)self formatString];
+  [coderCopy encodeObject:formatString forKey:@"formatString"];
 
-  v12 = [(OSLogEntrySignpost *)self subsystem];
-  [v4 encodeObject:v12 forKey:@"subsystem"];
+  subsystem = [(OSLogEntrySignpost *)self subsystem];
+  [coderCopy encodeObject:subsystem forKey:@"subsystem"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[OSLogEntrySignpost signpostIdentifier](self, "signpostIdentifier")}];
-  [v4 encodeObject:v13 forKey:@"signpostIdentifier"];
+  [coderCopy encodeObject:v13 forKey:@"signpostIdentifier"];
 
-  v14 = [(OSLogEntrySignpost *)self signpostName];
-  [v4 encodeObject:v14 forKey:@"signpostName"];
+  signpostName = [(OSLogEntrySignpost *)self signpostName];
+  [coderCopy encodeObject:signpostName forKey:@"signpostName"];
 
-  [v4 encodeInteger:-[OSLogEntrySignpost signpostType](self forKey:{"signpostType"), @"signpostType"}];
+  [coderCopy encodeInteger:-[OSLogEntrySignpost signpostType](self forKey:{"signpostType"), @"signpostType"}];
 }
 
-- (OSLogEntrySignpost)initWithEventProxy:(id)a3
+- (OSLogEntrySignpost)initWithEventProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v24.receiver = self;
   v24.super_class = OSLogEntrySignpost;
-  v5 = [(OSLogEntry *)&v24 initWithEventProxy:v4];
+  v5 = [(OSLogEntry *)&v24 initWithEventProxy:proxyCopy];
   if (v5)
   {
-    v5->_activityIdentifier = [v4 activityIdentifier];
-    v6 = [v4 process];
+    v5->_activityIdentifier = [proxyCopy activityIdentifier];
+    process = [proxyCopy process];
     process = v5->_process;
-    v5->_process = v6;
+    v5->_process = process;
 
-    v5->_processIdentifier = [v4 processIdentifier];
-    v8 = [v4 sender];
+    v5->_processIdentifier = [proxyCopy processIdentifier];
+    sender = [proxyCopy sender];
     sender = v5->_sender;
-    v5->_sender = v8;
+    v5->_sender = sender;
 
-    v5->_threadIdentifier = [v4 threadIdentifier];
-    v10 = [v4 category];
+    v5->_threadIdentifier = [proxyCopy threadIdentifier];
+    category = [proxyCopy category];
     category = v5->_category;
-    v5->_category = v10;
+    v5->_category = category;
 
-    v12 = makeComponents(v4);
+    v12 = makeComponents(proxyCopy);
     components = v5->_components;
     v5->_components = v12;
 
-    v14 = [v4 formatString];
+    formatString = [proxyCopy formatString];
     formatString = v5->_formatString;
-    v5->_formatString = v14;
+    v5->_formatString = formatString;
 
-    v16 = [v4 subsystem];
+    subsystem = [proxyCopy subsystem];
     subsystem = v5->_subsystem;
-    v5->_subsystem = v16;
+    v5->_subsystem = subsystem;
 
-    v5->_signpostIdentifier = [v4 signpostIdentifier];
-    v18 = [v4 signpostName];
+    v5->_signpostIdentifier = [proxyCopy signpostIdentifier];
+    signpostName = [proxyCopy signpostName];
     signpostName = v5->_signpostName;
-    v5->_signpostName = v18;
+    v5->_signpostName = signpostName;
 
-    v20 = [v4 signpostType];
-    if (v20 > 2)
+    signpostType = [proxyCopy signpostType];
+    if (signpostType > 2)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = qword_23A00EB78[v20];
+      v21 = qword_23A00EB78[signpostType];
     }
 
     v5->_signpostType = v21;

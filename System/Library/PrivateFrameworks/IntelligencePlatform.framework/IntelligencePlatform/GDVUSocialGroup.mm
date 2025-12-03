@@ -1,21 +1,21 @@
 @interface GDVUSocialGroup
-- (GDVUSocialGroup)initWithNumberOfMomentNodes:(id)a3 tags:(id)a4;
+- (GDVUSocialGroup)initWithNumberOfMomentNodes:(id)nodes tags:(id)tags;
 - (NSNumber)numberOfMomentNodes;
 @end
 
 @implementation GDVUSocialGroup
 
-- (GDVUSocialGroup)initWithNumberOfMomentNodes:(id)a3 tags:(id)a4
+- (GDVUSocialGroup)initWithNumberOfMomentNodes:(id)nodes tags:(id)tags
 {
   sub_1ABF21F04();
   sub_1ABF240D4();
-  v5 = a3;
+  nodesCopy = nodes;
   return GDVUSocialGroup.init(numberOfMomentNodes:tags:)();
 }
 
 - (NSNumber)numberOfMomentNodes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1ABECE2BC();
 
   return v3;

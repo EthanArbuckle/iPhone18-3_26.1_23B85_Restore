@@ -1,21 +1,21 @@
 @interface BCMutableAssetReview
-- (BCMutableAssetReview)initWithAssetReviewID:(id)a3;
-- (BCMutableAssetReview)initWithCloudData:(id)a3;
-- (BCMutableAssetReview)initWithCoder:(id)a3;
-- (BCMutableAssetReview)initWithRecord:(id)a3;
+- (BCMutableAssetReview)initWithAssetReviewID:(id)d;
+- (BCMutableAssetReview)initWithCloudData:(id)data;
+- (BCMutableAssetReview)initWithCoder:(id)coder;
+- (BCMutableAssetReview)initWithRecord:(id)record;
 - (NSString)description;
 - (double)normalizedStarRating;
 - (id)configuredRecordFromAttributes;
-- (void)encodeWithCoder:(id)a3;
-- (void)setNormalizedStarRating:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setNormalizedStarRating:(double)rating;
 @end
 
 @implementation BCMutableAssetReview
 
-- (BCMutableAssetReview)initWithAssetReviewID:(id)a3
+- (BCMutableAssetReview)initWithAssetReviewID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = BDSCloudKitLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
   v5 = [(BCMutableCloudData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     self = *(v5 + 9);
     *(v5 + 9) = v6;
 LABEL_7:
@@ -41,31 +41,31 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableAssetReview)initWithCloudData:(id)a3
+- (BCMutableAssetReview)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = BCMutableAssetReview;
-  v5 = [(BCMutableCloudData *)&v18 initWithCloudData:v4];
+  v5 = [(BCMutableCloudData *)&v18 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 assetReviewID];
-      v9 = [v8 copy];
+      assetReviewID = [v6 assetReviewID];
+      v9 = [assetReviewID copy];
       assetReviewID = v5->_assetReviewID;
       v5->_assetReviewID = v9;
 
       v5->_starRating = [v7 starRating];
-      v11 = [v7 reviewTitle];
-      v12 = [v11 copy];
+      reviewTitle = [v7 reviewTitle];
+      v12 = [reviewTitle copy];
       reviewTitle = v5->_reviewTitle;
       v5->_reviewTitle = v12;
 
-      v14 = [v7 reviewBody];
-      v15 = [v14 copy];
+      reviewBody = [v7 reviewBody];
+      v15 = [reviewBody copy];
       reviewBody = v5->_reviewBody;
       v5->_reviewBody = v15;
     }
@@ -78,7 +78,7 @@ LABEL_7:
         sub_1E4705274();
       }
 
-      v14 = v5;
+      reviewBody = v5;
       v5 = 0;
     }
   }
@@ -86,10 +86,10 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableAssetReview)initWithRecord:(id)a3
+- (BCMutableAssetReview)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     reviewBody = BDSCloudKitLog();
     if (os_log_type_enabled(reviewBody, OS_LOG_TYPE_ERROR))
@@ -103,20 +103,20 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = BCMutableAssetReview;
-  v5 = [(BCMutableCloudData *)&v13 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v13 initWithRecord:recordCopy];
   if (v5)
   {
-    v6 = [BCCloudData localIdentifierFromRecord:v4];
+    v6 = [BCCloudData localIdentifierFromRecord:recordCopy];
     assetReviewID = v5->_assetReviewID;
     v5->_assetReviewID = v6;
 
-    self = [v4 objectForKey:@"starRating"];
+    self = [recordCopy objectForKey:@"starRating"];
     v5->_starRating = [(BCMutableAssetReview *)self intValue];
-    v8 = [v4 objectForKey:@"reviewTitle"];
+    v8 = [recordCopy objectForKey:@"reviewTitle"];
     reviewTitle = v5->_reviewTitle;
     v5->_reviewTitle = v8;
 
-    v10 = [v4 objectForKey:@"reviewBody"];
+    v10 = [recordCopy objectForKey:@"reviewBody"];
     reviewBody = v5->_reviewBody;
     v5->_reviewBody = v10;
 LABEL_7:
@@ -128,11 +128,11 @@ LABEL_7:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BCMutableAssetReview *)self assetReviewID];
-  v5 = [(BCMutableAssetReview *)self starRating];
-  v6 = [(BCMutableAssetReview *)self reviewTitle];
-  v7 = [(BCMutableAssetReview *)self reviewBody];
-  v8 = [v3 stringWithFormat:@"assetReviewID: %@, starRating: %hd, reviewTitle: %@, reviewBody: %@", v4, v5, v6, v7];
+  assetReviewID = [(BCMutableAssetReview *)self assetReviewID];
+  starRating = [(BCMutableAssetReview *)self starRating];
+  reviewTitle = [(BCMutableAssetReview *)self reviewTitle];
+  reviewBody = [(BCMutableAssetReview *)self reviewBody];
+  v8 = [v3 stringWithFormat:@"assetReviewID: %@, starRating: %hd, reviewTitle: %@, reviewBody: %@", assetReviewID, starRating, reviewTitle, reviewBody];
 
   return v8;
 }
@@ -146,9 +146,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)setNormalizedStarRating:(double)a3
+- (void)setNormalizedStarRating:(double)rating
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:floor(a3 * 5.0)];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:floor(rating * 5.0)];
   -[BCMutableAssetReview setStarRating:](self, "setStarRating:", [v4 integerValue]);
 }
 
@@ -156,52 +156,52 @@ LABEL_7:
 {
   v8.receiver = self;
   v8.super_class = BCMutableAssetReview;
-  v3 = [(BCMutableCloudData *)&v8 configuredRecordFromAttributes];
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v8 configuredRecordFromAttributes];
   v4 = [MEMORY[0x1E696AD98] numberWithShort:{-[BCMutableAssetReview starRating](self, "starRating")}];
-  [v3 setObject:v4 forKey:@"starRating"];
+  [configuredRecordFromAttributes setObject:v4 forKey:@"starRating"];
 
-  v5 = [(BCMutableAssetReview *)self reviewTitle];
-  [v3 setObject:v5 forKey:@"reviewTitle"];
+  reviewTitle = [(BCMutableAssetReview *)self reviewTitle];
+  [configuredRecordFromAttributes setObject:reviewTitle forKey:@"reviewTitle"];
 
-  v6 = [(BCMutableAssetReview *)self reviewBody];
-  [v3 setObject:v6 forKey:@"reviewBody"];
+  reviewBody = [(BCMutableAssetReview *)self reviewBody];
+  [configuredRecordFromAttributes setObject:reviewBody forKey:@"reviewBody"];
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = BCMutableAssetReview;
-  v4 = a3;
-  [(BCMutableCloudData *)&v7 encodeWithCoder:v4];
-  [v4 encodeInt:-[BCMutableAssetReview starRating](self forKey:{"starRating", v7.receiver, v7.super_class), @"starRating"}];
-  v5 = [(BCMutableAssetReview *)self reviewTitle];
-  [v4 encodeObject:v5 forKey:@"reviewTitle"];
+  coderCopy = coder;
+  [(BCMutableCloudData *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:-[BCMutableAssetReview starRating](self forKey:{"starRating", v7.receiver, v7.super_class), @"starRating"}];
+  reviewTitle = [(BCMutableAssetReview *)self reviewTitle];
+  [coderCopy encodeObject:reviewTitle forKey:@"reviewTitle"];
 
-  v6 = [(BCMutableAssetReview *)self reviewBody];
-  [v4 encodeObject:v6 forKey:@"reviewBody"];
+  reviewBody = [(BCMutableAssetReview *)self reviewBody];
+  [coderCopy encodeObject:reviewBody forKey:@"reviewBody"];
 }
 
-- (BCMutableAssetReview)initWithCoder:(id)a3
+- (BCMutableAssetReview)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = BCMutableAssetReview;
-  v5 = [(BCMutableCloudData *)&v14 initWithCoder:v4];
+  v5 = [(BCMutableCloudData *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(BCMutableCloudData *)v5 localRecordID];
+    localRecordID = [(BCMutableCloudData *)v5 localRecordID];
     assetReviewID = v6->_assetReviewID;
-    v6->_assetReviewID = v7;
+    v6->_assetReviewID = localRecordID;
 
-    v6->_starRating = [v4 decodeIntForKey:@"starRating"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reviewTitle"];
+    v6->_starRating = [coderCopy decodeIntForKey:@"starRating"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reviewTitle"];
     reviewTitle = v6->_reviewTitle;
     v6->_reviewTitle = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reviewBody"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reviewBody"];
     reviewBody = v6->_reviewBody;
     v6->_reviewBody = v11;
   }

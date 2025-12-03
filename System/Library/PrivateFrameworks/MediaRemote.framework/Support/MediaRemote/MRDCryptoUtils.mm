@@ -1,20 +1,20 @@
 @interface MRDCryptoUtils
-+ (id)signature:(id)a3 isValidFor:(id)a4 withPublicKey:(id)a5 error:(id *)a6;
-+ (id)signatureForData:(id)a3 withPrivateKey:(id)a4 error:(id *)a5;
++ (id)signature:(id)signature isValidFor:(id)for withPublicKey:(id)key error:(id *)error;
++ (id)signatureForData:(id)data withPrivateKey:(id)key error:(id *)error;
 - (MRDCryptoUtils)init;
 @end
 
 @implementation MRDCryptoUtils
 
-+ (id)signatureForData:(id)a3 withPrivateKey:(id)a4 error:(id *)a5
++ (id)signatureForData:(id)data withPrivateKey:(id)key error:(id *)error
 {
   v7 = type metadata accessor for Curve25519.Signing.PrivateKey();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   __chkstk_darwin(v7);
   v11 = &v25 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
@@ -39,11 +39,11 @@
   return v23.super.isa;
 }
 
-+ (id)signature:(id)a3 isValidFor:(id)a4 withPublicKey:(id)a5 error:(id *)a6
++ (id)signature:(id)signature isValidFor:(id)for withPublicKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  signatureCopy = signature;
+  forCopy = for;
+  keyCopy = key;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 

@@ -1,98 +1,98 @@
 @interface CPSBannerItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBannerItem:(id)a3;
-- (CPSBannerItem)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 textVariants:(id)a5 detailTextVariants:(id)a6 attributedDetailTextVariants:(id)a7 imageSet:(id)a8 isManeuverItem:(BOOL)a9;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBannerItem:(id)item;
+- (CPSBannerItem)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier textVariants:(id)variants detailTextVariants:(id)textVariants attributedDetailTextVariants:(id)detailTextVariants imageSet:(id)set isManeuverItem:(BOOL)item;
 - (id)description;
 @end
 
 @implementation CPSBannerItem
 
-- (CPSBannerItem)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 textVariants:(id)a5 detailTextVariants:(id)a6 attributedDetailTextVariants:(id)a7 imageSet:(id)a8 isManeuverItem:(BOOL)a9
+- (CPSBannerItem)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier textVariants:(id)variants detailTextVariants:(id)textVariants attributedDetailTextVariants:(id)detailTextVariants imageSet:(id)set isManeuverItem:(BOOL)item
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, bundleIdentifier);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, variants);
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, textVariants);
   v31 = 0;
-  objc_storeStrong(&v31, a7);
+  objc_storeStrong(&v31, detailTextVariants);
   v30 = 0;
-  objc_storeStrong(&v30, a8);
-  v29 = a9;
-  v9 = v36;
-  v36 = 0;
+  objc_storeStrong(&v30, set);
+  itemCopy = item;
+  v9 = selfCopy;
+  selfCopy = 0;
   v28.receiver = v9;
   v28.super_class = CPSBannerItem;
-  v36 = [(CPSBannerItem *)&v28 init];
-  objc_storeStrong(&v36, v36);
-  if (v36)
+  selfCopy = [(CPSBannerItem *)&v28 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v36->_identifier, location[0]);
+    objc_storeStrong(&selfCopy->_identifier, location[0]);
     v10 = [v34 copy];
-    bundleIdentifier = v36->_bundleIdentifier;
-    v36->_bundleIdentifier = v10;
+    bundleIdentifier = selfCopy->_bundleIdentifier;
+    selfCopy->_bundleIdentifier = v10;
     *&v12 = MEMORY[0x277D82BD8](bundleIdentifier).n128_u64[0];
     v13 = [v33 copy];
-    textVariants = v36->_textVariants;
-    v36->_textVariants = v13;
+    textVariants = selfCopy->_textVariants;
+    selfCopy->_textVariants = v13;
     *&v15 = MEMORY[0x277D82BD8](textVariants).n128_u64[0];
     v16 = [v32 copy];
-    detailTextVariants = v36->_detailTextVariants;
-    v36->_detailTextVariants = v16;
+    detailTextVariants = selfCopy->_detailTextVariants;
+    selfCopy->_detailTextVariants = v16;
     *&v18 = MEMORY[0x277D82BD8](detailTextVariants).n128_u64[0];
     v19 = [v31 copy];
-    attributedDetailTextVariants = v36->_attributedDetailTextVariants;
-    v36->_attributedDetailTextVariants = v19;
+    attributedDetailTextVariants = selfCopy->_attributedDetailTextVariants;
+    selfCopy->_attributedDetailTextVariants = v19;
     MEMORY[0x277D82BD8](attributedDetailTextVariants);
-    objc_storeStrong(&v36->_imageSet, v30);
-    v36->_isManeuverItem = v29;
+    objc_storeStrong(&selfCopy->_imageSet, v30);
+    selfCopy->_isManeuverItem = itemCopy;
   }
 
-  v22 = MEMORY[0x277D82BE0](v36);
+  v22 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v22;
 }
 
-- (BOOL)isEqualToBannerItem:(id)a3
+- (BOOL)isEqualToBannerItem:(id)item
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [(CPSBannerItem *)v52 textVariants];
+  objc_storeStrong(location, item);
+  textVariants = [(CPSBannerItem *)selfCopy textVariants];
   v49 = 0;
   v47 = 0;
   v45 = 0;
   v43 = 0;
   v41 = 0;
-  if (v16 || (v50 = [location[0] textVariants], v49 = 1, v15 = 1, v50))
+  if (textVariants || (v50 = [location[0] textVariants], v49 = 1, v15 = 1, v50))
   {
-    v48 = [(CPSBannerItem *)v52 textVariants];
+    textVariants2 = [(CPSBannerItem *)selfCopy textVariants];
     v47 = 1;
     v14 = 0;
-    if (v48)
+    if (textVariants2)
     {
-      v46 = [location[0] textVariants];
+      textVariants3 = [location[0] textVariants];
       v45 = 1;
       v14 = 0;
-      if (v46)
+      if (textVariants3)
       {
-        v44 = [(CPSBannerItem *)v52 textVariants];
+        textVariants4 = [(CPSBannerItem *)selfCopy textVariants];
         v43 = 1;
-        v42 = [location[0] textVariants];
+        textVariants5 = [location[0] textVariants];
         v41 = 1;
-        v14 = [(NSArray *)v44 isEqualToArray:?];
+        v14 = [(NSArray *)textVariants4 isEqualToArray:?];
       }
     }
 
@@ -101,22 +101,22 @@
 
   if (v41)
   {
-    MEMORY[0x277D82BD8](v42);
+    MEMORY[0x277D82BD8](textVariants5);
   }
 
   if (v43)
   {
-    MEMORY[0x277D82BD8](v44);
+    MEMORY[0x277D82BD8](textVariants4);
   }
 
   if (v45)
   {
-    MEMORY[0x277D82BD8](v46);
+    MEMORY[0x277D82BD8](textVariants3);
   }
 
   if (v47)
   {
-    MEMORY[0x277D82BD8](v48);
+    MEMORY[0x277D82BD8](textVariants2);
   }
 
   if (v49)
@@ -124,30 +124,30 @@
     MEMORY[0x277D82BD8](v50);
   }
 
-  *&v3 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  v13 = [(CPSBannerItem *)v52 detailTextVariants];
+  *&v3 = MEMORY[0x277D82BD8](textVariants).n128_u64[0];
+  detailTextVariants = [(CPSBannerItem *)selfCopy detailTextVariants];
   v39 = 0;
   v37 = 0;
   v35 = 0;
   v33 = 0;
   v31 = 0;
-  if (v13 || (v40 = [location[0] detailTextVariants], v39 = 1, v12 = 1, v40))
+  if (detailTextVariants || (v40 = [location[0] detailTextVariants], v39 = 1, v12 = 1, v40))
   {
-    v38 = [(CPSBannerItem *)v52 detailTextVariants];
+    detailTextVariants2 = [(CPSBannerItem *)selfCopy detailTextVariants];
     v37 = 1;
     v11 = 0;
-    if (v38)
+    if (detailTextVariants2)
     {
-      v36 = [location[0] detailTextVariants];
+      detailTextVariants3 = [location[0] detailTextVariants];
       v35 = 1;
       v11 = 0;
-      if (v36)
+      if (detailTextVariants3)
       {
-        v34 = [(CPSBannerItem *)v52 detailTextVariants];
+        detailTextVariants4 = [(CPSBannerItem *)selfCopy detailTextVariants];
         v33 = 1;
-        v32 = [location[0] detailTextVariants];
+        detailTextVariants5 = [location[0] detailTextVariants];
         v31 = 1;
-        v11 = [(NSArray *)v34 isEqualToArray:?];
+        v11 = [(NSArray *)detailTextVariants4 isEqualToArray:?];
       }
     }
 
@@ -156,22 +156,22 @@
 
   if (v31)
   {
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](detailTextVariants5);
   }
 
   if (v33)
   {
-    MEMORY[0x277D82BD8](v34);
+    MEMORY[0x277D82BD8](detailTextVariants4);
   }
 
   if (v35)
   {
-    MEMORY[0x277D82BD8](v36);
+    MEMORY[0x277D82BD8](detailTextVariants3);
   }
 
   if (v37)
   {
-    MEMORY[0x277D82BD8](v38);
+    MEMORY[0x277D82BD8](detailTextVariants2);
   }
 
   if (v39)
@@ -179,30 +179,30 @@
     MEMORY[0x277D82BD8](v40);
   }
 
-  *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-  v10 = [(CPSBannerItem *)v52 attributedDetailTextVariants];
+  *&v4 = MEMORY[0x277D82BD8](detailTextVariants).n128_u64[0];
+  attributedDetailTextVariants = [(CPSBannerItem *)selfCopy attributedDetailTextVariants];
   v29 = 0;
   v27 = 0;
   v25 = 0;
   v23 = 0;
   v21 = 0;
-  if (v10 || (v30 = [location[0] attributedDetailTextVariants], v29 = 1, v9 = 1, v30))
+  if (attributedDetailTextVariants || (v30 = [location[0] attributedDetailTextVariants], v29 = 1, v9 = 1, v30))
   {
-    v28 = [(CPSBannerItem *)v52 attributedDetailTextVariants];
+    attributedDetailTextVariants2 = [(CPSBannerItem *)selfCopy attributedDetailTextVariants];
     v27 = 1;
     v8 = 0;
-    if (v28)
+    if (attributedDetailTextVariants2)
     {
-      v26 = [location[0] attributedDetailTextVariants];
+      attributedDetailTextVariants3 = [location[0] attributedDetailTextVariants];
       v25 = 1;
       v8 = 0;
-      if (v26)
+      if (attributedDetailTextVariants3)
       {
-        v24 = [(CPSBannerItem *)v52 attributedDetailTextVariants];
+        attributedDetailTextVariants4 = [(CPSBannerItem *)selfCopy attributedDetailTextVariants];
         v23 = 1;
-        v22 = [location[0] attributedDetailTextVariants];
+        attributedDetailTextVariants5 = [location[0] attributedDetailTextVariants];
         v21 = 1;
-        v8 = [(NSArray *)v24 isEqualToArray:?];
+        v8 = [(NSArray *)attributedDetailTextVariants4 isEqualToArray:?];
       }
     }
 
@@ -211,22 +211,22 @@
 
   if (v21)
   {
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](attributedDetailTextVariants5);
   }
 
   if (v23)
   {
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](attributedDetailTextVariants4);
   }
 
   if (v25)
   {
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](attributedDetailTextVariants3);
   }
 
   if (v27)
   {
-    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](attributedDetailTextVariants2);
   }
 
   if (v29)
@@ -234,7 +234,7 @@
     MEMORY[0x277D82BD8](v30);
   }
 
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](attributedDetailTextVariants).n128_u64[0];
   v19 = 0;
   v17 = 0;
   v7 = 0;
@@ -246,11 +246,11 @@
       v7 = 0;
       if (v9)
       {
-        v20 = [(CPSBannerItem *)v52 identifier];
+        identifier = [(CPSBannerItem *)selfCopy identifier];
         v19 = 1;
-        v18 = [location[0] identifier];
+        identifier2 = [location[0] identifier];
         v17 = 1;
-        v7 = [(NSUUID *)v20 isEqual:?];
+        v7 = [(NSUUID *)identifier isEqual:?];
       }
     }
   }
@@ -258,26 +258,26 @@
   v53 = v7 & 1;
   if (v17)
   {
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](identifier2);
   }
 
   if (v19)
   {
-    MEMORY[0x277D82BD8](v20);
+    MEMORY[0x277D82BD8](identifier);
   }
 
   objc_storeStrong(location, 0);
   return v53 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   v4 = 0;
-  if (v6 == location[0])
+  if (selfCopy == location[0])
   {
     v4 = 1;
   }
@@ -287,7 +287,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(CPSBannerItem *)v6 isEqualToBannerItem:location[0]];
+      v4 = [(CPSBannerItem *)selfCopy isEqualToBannerItem:location[0]];
     }
   }
 
@@ -297,23 +297,23 @@
 
 - (id)description
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v3 = MEMORY[0x277CCACA8];
   v11.receiver = self;
   v11.super_class = CPSBannerItem;
   v9 = [(CPSBannerItem *)&v11 description];
-  v8 = [(CPSBannerItem *)v13 textVariants];
-  v7 = [(CPSBannerItem *)v13 detailTextVariants];
-  v6 = [(CPSBannerItem *)v13 imageSet];
-  v5 = [(CPSBannerItem *)v13 identifier];
-  v4 = [(CPSBannerItem *)v13 bundleIdentifier];
-  v10 = [v3 stringWithFormat:@"%@<textVariants: %@, detailTextVariants: %@, imageSet: %@, identifier: %@, bundleID: %@>", v9, v8, v7, v6, v5, v4];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  textVariants = [(CPSBannerItem *)selfCopy textVariants];
+  detailTextVariants = [(CPSBannerItem *)selfCopy detailTextVariants];
+  imageSet = [(CPSBannerItem *)selfCopy imageSet];
+  identifier = [(CPSBannerItem *)selfCopy identifier];
+  bundleIdentifier = [(CPSBannerItem *)selfCopy bundleIdentifier];
+  v10 = [v3 stringWithFormat:@"%@<textVariants: %@, detailTextVariants: %@, imageSet: %@, identifier: %@, bundleID: %@>", v9, textVariants, detailTextVariants, imageSet, identifier, bundleIdentifier];
+  MEMORY[0x277D82BD8](bundleIdentifier);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](imageSet);
+  MEMORY[0x277D82BD8](detailTextVariants);
+  MEMORY[0x277D82BD8](textVariants);
   MEMORY[0x277D82BD8](v9);
 
   return v10;

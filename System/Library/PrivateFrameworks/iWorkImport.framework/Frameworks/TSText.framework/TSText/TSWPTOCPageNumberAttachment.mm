@@ -1,46 +1,46 @@
 @interface TSWPTOCPageNumberAttachment
-- (id)stringWithPageNumber:(unint64_t)a3 pageCount:(unint64_t)a4 charIndex:(unint64_t)a5;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setBookmarkName:(id)a3;
-- (void)setPageNumber:(id)a3;
+- (id)stringWithPageNumber:(unint64_t)number pageCount:(unint64_t)count charIndex:(unint64_t)index;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBookmarkName:(id)name;
+- (void)setPageNumber:(id)number;
 @end
 
 @implementation TSWPTOCPageNumberAttachment
 
-- (void)setPageNumber:(id)a3
+- (void)setPageNumber:(id)number
 {
-  v4 = a3;
-  if (self->_pageNumber != v4)
+  numberCopy = number;
+  if (self->_pageNumber != numberCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = numberCopy;
+    objc_msgSend_willModify(self, numberCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_pageNumber, v8);
-    v4 = v8;
+    numberCopy = v8;
   }
 }
 
-- (void)setBookmarkName:(id)a3
+- (void)setBookmarkName:(id)name
 {
-  v4 = a3;
-  if (self->_bookmarkName != v4)
+  nameCopy = name;
+  if (self->_bookmarkName != nameCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = nameCopy;
+    objc_msgSend_willModify(self, nameCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_bookmarkName, v8);
-    v4 = v8;
+    nameCopy = v8;
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[124]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[124]);
 
   if (*(v6 + 40))
   {
@@ -54,7 +54,7 @@
 
   v17.receiver = self;
   v17.super_class = TSWPTOCPageNumberAttachment;
-  [(TSWPTextualAttachment *)&v17 loadFromArchive:v7 unarchiver:v4];
+  [(TSWPTextualAttachment *)&v17 loadFromArchive:v7 unarchiver:unarchiverCopy];
   v8 = *(v6 + 16);
   if (v8)
   {
@@ -75,11 +75,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DFA4C0, off_2812DC408[124]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DFA4C0, off_2812DC408[124]);
 
   *(v6 + 16) |= 4u;
   v7 = *(v6 + 40);
@@ -97,7 +97,7 @@
 
   v15.receiver = self;
   v15.super_class = TSWPTOCPageNumberAttachment;
-  [(TSWPTextualAttachment *)&v15 saveToArchive:v7 archiver:v4];
+  [(TSWPTextualAttachment *)&v15 saveToArchive:v7 archiver:archiverCopy];
   pageNumber = self->_pageNumber;
   if (pageNumber)
   {
@@ -125,7 +125,7 @@
   }
 }
 
-- (id)stringWithPageNumber:(unint64_t)a3 pageCount:(unint64_t)a4 charIndex:(unint64_t)a5
+- (id)stringWithPageNumber:(unint64_t)number pageCount:(unint64_t)count charIndex:(unint64_t)index
 {
   if (self->_pageNumber)
   {

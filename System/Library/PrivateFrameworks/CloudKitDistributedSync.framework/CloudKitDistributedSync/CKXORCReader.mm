@@ -1,33 +1,33 @@
 @interface CKXORCReader
-- ($3CC19D079FD0B010EE84973AA846B91B)referencedListForReference:(SEL)a3 inStruct:(unint64_t)a4;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructAtIndex:(SEL)a3 inList:(int64_t)a4;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructForReference:(SEL)a3 inStruct:(unint64_t)a4;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)rootStructWithType:(SEL)a3;
-- (BOOL)_setInputWithError:(id *)a3;
-- (BOOL)createReaderIfNecessaryWithError:(id *)a3;
-- (BOOL)loadBatchWithRow:(unint64_t)a3 forStruct:(unint64_t)a4;
-- (BOOL)referenceIsNull:(unint64_t)a3 inStruct:(id *)a4;
-- (BOOL)setReadableStorage:(id)a3 error:(id *)a4;
-- (CKXORCReader)initWithSchema:(id)a3;
-- (CKXORCReader)initWithSchema:(id)a3 helpers:(id)a4 options:(id)a5;
+- ($3CC19D079FD0B010EE84973AA846B91B)referencedListForReference:(SEL)reference inStruct:(unint64_t)struct;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructAtIndex:(SEL)index inList:(int64_t)list;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructForReference:(SEL)reference inStruct:(unint64_t)struct;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)rootStructWithType:(SEL)type;
+- (BOOL)_setInputWithError:(id *)error;
+- (BOOL)createReaderIfNecessaryWithError:(id *)error;
+- (BOOL)loadBatchWithRow:(unint64_t)row forStruct:(unint64_t)struct;
+- (BOOL)referenceIsNull:(unint64_t)null inStruct:(id *)struct;
+- (BOOL)setReadableStorage:(id)storage error:(id *)error;
+- (CKXORCReader)initWithSchema:(id)schema;
+- (CKXORCReader)initWithSchema:(id)schema helpers:(id)helpers options:(id)options;
 - (id).cxx_construct;
-- (id)rowsForStructColumn:(unint64_t)a3;
-- (int64_t)lengthForList:(id *)a3;
-- (unint64_t)offsetInCurrentBatchForRow:(unint64_t)a3 forStruct:(unint64_t)a4;
-- (unint64_t)valueSizeForField:(unint64_t)a3;
-- (void)copyData:(void *)a3 forField:(unint64_t)a4 inStruct:(id *)a5;
-- (void)copyData:(void *)a3 forList:(id *)a4;
-- (void)createRowReaderForStruct:(unint64_t)a3;
-- (void)listColumnForReference:(unint64_t)a3;
-- (void)rootColumnForStruct:(unint64_t)a3;
-- (void)structColumnForStruct:(unint64_t)a3;
-- (void)structReferenceColumnForReference:(unint64_t)a3;
-- (void)valueColumnForField:(unint64_t)a3;
+- (id)rowsForStructColumn:(unint64_t)column;
+- (int64_t)lengthForList:(id *)list;
+- (unint64_t)offsetInCurrentBatchForRow:(unint64_t)row forStruct:(unint64_t)struct;
+- (unint64_t)valueSizeForField:(unint64_t)field;
+- (void)copyData:(void *)data forField:(unint64_t)field inStruct:(id *)struct;
+- (void)copyData:(void *)data forList:(id *)list;
+- (void)createRowReaderForStruct:(unint64_t)struct;
+- (void)listColumnForReference:(unint64_t)reference;
+- (void)rootColumnForStruct:(unint64_t)struct;
+- (void)structColumnForStruct:(unint64_t)struct;
+- (void)structReferenceColumnForReference:(unint64_t)reference;
+- (void)valueColumnForField:(unint64_t)field;
 @end
 
 @implementation CKXORCReader
 
-- (CKXORCReader)initWithSchema:(id)a3
+- (CKXORCReader)initWithSchema:(id)schema
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = NSStringFromSelector(a2);
@@ -36,12 +36,12 @@
   return 0;
 }
 
-- (CKXORCReader)initWithSchema:(id)a3 helpers:(id)a4 options:(id)a5
+- (CKXORCReader)initWithSchema:(id)schema helpers:(id)helpers options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v17 = a5;
-  if (!v10)
+  schemaCopy = schema;
+  helpersCopy = helpers;
+  optionsCopy = options;
+  if (!helpersCopy)
   {
     v22 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v11, v12, v13, v14, v15, v16);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, self, @"CKXORCReaderWriter.mm", 144, @"The ORC reader requires a helper object conforming to CKXORCHelpers");
@@ -49,19 +49,19 @@
 
   v24.receiver = self;
   v24.super_class = CKXORCReader;
-  v18 = [(CKXReaderBase *)&v24 initWithSchema:v9];
+  v18 = [(CKXReaderBase *)&v24 initWithSchema:schemaCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_helpers, a4);
-    v20 = v17;
-    if (!v17)
+    objc_storeStrong(&v18->_helpers, helpers);
+    v20 = optionsCopy;
+    if (!optionsCopy)
     {
       v20 = objc_opt_new();
     }
 
     objc_storeStrong(&v19->_options, v20);
-    if (!v17)
+    if (!optionsCopy)
     {
     }
   }
@@ -69,12 +69,12 @@
   return v19;
 }
 
-- (BOOL)createReaderIfNecessaryWithError:(id *)a3
+- (BOOL)createReaderIfNecessaryWithError:(id *)error
 {
   v24[7] = *MEMORY[0x277D85DE8];
   if (!self->_reader.__ptr_)
   {
-    v8 = objc_msgSend_storage(self, a2, a3, v3, v4, v5, v6);
+    v8 = objc_msgSend_storage(self, a2, error, v3, v4, v5, v6);
 
     if (!v8)
     {
@@ -96,26 +96,26 @@
   return 1;
 }
 
-- (void)createRowReaderForStruct:(unint64_t)a3
+- (void)createRowReaderForStruct:(unint64_t)struct
 {
   v23[10] = *MEMORY[0x277D85DE8];
-  v10 = self;
-  if (!v10->_reader.__ptr_)
+  selfCopy = self;
+  if (!selfCopy->_reader.__ptr_)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v4, v5, v6, v7, v8, v9);
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "void CKXReaderCheck(CKXORCReader *__strong)", v16, v17, v18, v19);
     objc_msgSend_handleFailureInFunction_file_lineNumber_description_(v14, v21, v20, @"CKXORCReaderWriter.mm", 135, @"Reader not present: make sure that [CKXORCReader setData:error:] has been called", v22);
   }
 
-  begin = v10->_structToReaderBatchPair.__begin_;
-  if (a3 >= (v10->_structToReaderBatchPair.__end_ - begin) >> 4 || !begin[2 * a3])
+  begin = selfCopy->_structToReaderBatchPair.__begin_;
+  if (struct >= (selfCopy->_structToReaderBatchPair.__end_ - begin) >> 4 || !begin[2 * struct])
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_243979234;
     v23[3] = &unk_278DDB318;
-    v23[4] = v10;
-    v23[5] = a3;
+    v23[4] = selfCopy;
+    v23[5] = struct;
     v12 = v23;
     sub_243979234(v12);
   }
@@ -123,18 +123,18 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)loadBatchWithRow:(unint64_t)a3 forStruct:(unint64_t)a4
+- (BOOL)loadBatchWithRow:(unint64_t)row forStruct:(unint64_t)struct
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = self;
-  if (!v13->_reader.__ptr_)
+  selfCopy = self;
+  if (!selfCopy->_reader.__ptr_)
   {
     v22 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8, v9, v10, v11, v12);
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "void CKXReaderCheck(CKXORCReader *__strong)", v24, v25, v26, v27);
     objc_msgSend_handleFailureInFunction_file_lineNumber_description_(v22, v29, v28, @"CKXORCReaderWriter.mm", 135, @"Reader not present: make sure that [CKXORCReader setData:error:] has been called", v30);
   }
 
-  objc_msgSend_createRowReaderForStruct_(v13, v14, a4, v15, v16, v17, v18);
+  objc_msgSend_createRowReaderForStruct_(selfCopy, v14, struct, v15, v16, v17, v18);
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -143,11 +143,11 @@
   v31[1] = 3221225472;
   v31[2] = sub_243979B3C;
   v31[3] = &unk_278DDB340;
-  v31[4] = v13;
+  v31[4] = selfCopy;
   v31[5] = &v32;
-  v31[6] = a3;
+  v31[6] = row;
   v31[7] = a2;
-  v31[8] = a4;
+  v31[8] = struct;
   v19 = v31;
   sub_243979B3C(v19);
 
@@ -157,10 +157,10 @@
   return v19;
 }
 
-- (unint64_t)offsetInCurrentBatchForRow:(unint64_t)a3 forStruct:(unint64_t)a4
+- (unint64_t)offsetInCurrentBatchForRow:(unint64_t)row forStruct:(unint64_t)struct
 {
   v34 = *MEMORY[0x277D85DE8];
-  objc_msgSend_loadBatchWithRow_forStruct_(self, a2, a3, a4, v4, v5, v6);
+  objc_msgSend_loadBatchWithRow_forStruct_(self, a2, row, struct, v4, v5, v6);
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -171,21 +171,21 @@
   v27[3] = &unk_278DDB368;
   v27[4] = self;
   v28 = &v30;
-  v29 = a4;
+  structCopy = struct;
   v11 = v27;
-  v12 = *(self->_structToReaderBatchPair.__begin_ + 2 * a4);
+  v12 = *(self->_structToReaderBatchPair.__begin_ + 2 * struct);
   v13 = (*(*v12 + 48))(v12);
   *(v28[1] + 24) = v13;
 
-  v20 = *(*(self->_structToReaderBatchPair.__begin_ + 2 * a4 + 1) + 16);
+  v20 = *(*(self->_structToReaderBatchPair.__begin_ + 2 * struct + 1) + 16);
   v21 = v31[3];
-  v22 = a3 - v21;
-  if (a3 < v21 || v22 >= v20)
+  v22 = row - v21;
+  if (row < v21 || v22 >= v20)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKXORCReaderWriter.mm", 281, @"Incorrect rows loaded: row %llu does not fit in range %llu->llu", a3, v31[3], v31[3] + v20);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKXORCReaderWriter.mm", 281, @"Incorrect rows loaded: row %llu does not fit in range %llu->llu", row, v31[3], v31[3] + v20);
 
-    v22 = a3 - v31[3];
+    v22 = row - v31[3];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -193,11 +193,11 @@
   return v22;
 }
 
-- (id)rowsForStructColumn:(unint64_t)a3
+- (id)rowsForStructColumn:(unint64_t)column
 {
   v30[11] = *MEMORY[0x277D85DE8];
-  v11 = self;
-  if (!v11->_reader.__ptr_)
+  selfCopy = self;
+  if (!selfCopy->_reader.__ptr_)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6, v7, v8, v9, v10);
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "void CKXReaderCheck(CKXORCReader *__strong)", v23, v24, v25, v26);
@@ -208,21 +208,21 @@
   v30[1] = 3221225472;
   v30[2] = sub_24397A778;
   v30[3] = &unk_278DDB390;
-  v30[4] = v11;
-  v30[5] = a3;
+  v30[4] = selfCopy;
+  v30[5] = column;
   v30[6] = a2;
   v12 = v30;
   sub_24397A778(v12, v13, v14, v15, v16, v17, v18);
 
-  result = v11->_rowsForTopLevelContainerStructs.__begin_[a3];
+  result = selfCopy->_rowsForTopLevelContainerStructs.__begin_[column];
   v20 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)rootColumnForStruct:(unint64_t)a3
+- (void)rootColumnForStruct:(unint64_t)struct
 {
-  objc_msgSend_createRowReaderForStruct_(self, a2, a3, v3, v4, v5, v6);
-  v16 = *(self->_structToReaderBatchPair.__begin_ + 2 * a3 + 1);
+  objc_msgSend_createRowReaderForStruct_(self, a2, struct, v3, v4, v5, v6);
+  v16 = *(self->_structToReaderBatchPair.__begin_ + 2 * struct + 1);
   if (!v16 || (v17 = **v16, (result = __dynamic_cast(v16, &unk_2856A2580, &unk_2856A25F0, 0)) == 0))
   {
     v19 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11, v12, v13, v14, v15);
@@ -234,24 +234,24 @@
   return result;
 }
 
-- (BOOL)setReadableStorage:(id)a3 error:(id *)a4
+- (BOOL)setReadableStorage:(id)storage error:(id *)error
 {
-  v7 = a3;
-  if (self->_storage == v7)
+  storageCopy = storage;
+  if (self->_storage == storageCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    objc_storeStrong(&self->_storage, a3);
-    v13 = objc_msgSend__setInputWithError_(self, v8, a4, v9, v10, v11, v12);
+    objc_storeStrong(&self->_storage, storage);
+    v13 = objc_msgSend__setInputWithError_(self, v8, error, v9, v10, v11, v12);
   }
 
   return v13;
 }
 
-- (BOOL)_setInputWithError:(id *)a3
+- (BOOL)_setInputWithError:(id *)error
 {
   ptr = self->_reader.__ptr_;
   self->_reader.__ptr_ = 0;
@@ -278,16 +278,16 @@
   v18 = 0;
   ReaderIfNecessaryWithError = objc_msgSend_createReaderIfNecessaryWithError_(self, a2, &v18, v3, v4, v5, v6);
   v16 = v18;
-  if (a3 && (ReaderIfNecessaryWithError & 1) == 0)
+  if (error && (ReaderIfNecessaryWithError & 1) == 0)
   {
     v16 = v16;
-    *a3 = v16;
+    *error = v16;
   }
 
   return ReaderIfNecessaryWithError;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)rootStructWithType:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)rootStructWithType:(SEL)type
 {
   v31 = *MEMORY[0x277D85DE8];
   v27 = 0;
@@ -335,12 +335,12 @@
   return result;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructForReference:(SEL)a3 inStruct:(unint64_t)a4
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructForReference:(SEL)reference inStruct:(unint64_t)struct
 {
-  v12 = objc_msgSend_schema(self, a3, a4, a5, v5, v6, v7);
-  v18 = sub_243987478(v12, a4, v13, v14, v15, v16, v17);
+  v12 = objc_msgSend_schema(self, reference, struct, a5, v5, v6, v7);
+  v18 = sub_243987478(v12, struct, v13, v14, v15, v16, v17);
 
-  result = objc_msgSend_structReferenceColumnForReference_(self, v19, a4, v20, v21, v22, v23);
+  result = objc_msgSend_structReferenceColumnForReference_(self, v19, struct, v20, v21, v22, v23);
   if (result && (v29 = result, result = objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v25, a5->var2, a5->var0, v26, v27, v28), *(&result->var0 + v29[1].var2)))
   {
     result = objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v30, a5->var2, a5->var0, v31, v32, v33);
@@ -360,14 +360,14 @@
   return result;
 }
 
-- (BOOL)referenceIsNull:(unint64_t)a3 inStruct:(id *)a4
+- (BOOL)referenceIsNull:(unint64_t)null inStruct:(id *)struct
 {
-  v11 = objc_msgSend_schema(self, a2, a3, a4, v4, v5, v6);
-  v17 = sub_243987104(v11, a3, v12, v13, v14, v15, v16);
+  v11 = objc_msgSend_schema(self, a2, null, struct, v4, v5, v6);
+  v17 = sub_243987104(v11, null, v12, v13, v14, v15, v16);
 
   if (v17 == 1)
   {
-    v31 = objc_msgSend_structReferenceColumnForReference_(self, v18, a3, v20, v21, v22, v23);
+    v31 = objc_msgSend_structReferenceColumnForReference_(self, v18, null, v20, v21, v22, v23);
     if (!v31)
     {
       return 1;
@@ -382,19 +382,19 @@
     }
 
     v24 = objc_msgSend_schema(self, v18, v19, v20, v21, v22, v23);
-    v30 = sub_2439871D0(v24, a3, v25, v26, v27, v28, v29);
+    v30 = sub_2439871D0(v24, null, v25, v26, v27, v28, v29);
 
     if ((v30 - 1) >= 2)
     {
       if (!v30 || v30 == 3)
       {
-        v31 = objc_msgSend_listColumnForReference_(self, v18, a3, v20, v21, v22, v23);
+        v31 = objc_msgSend_listColumnForReference_(self, v18, null, v20, v21, v22, v23);
         if (!v31)
         {
           return 1;
         }
 
-        return *(*(v31 + 40) + objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v32, a4->var2, a4->var0, v33, v34, v35)) == 0;
+        return *(*(v31 + 40) + objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v32, struct->var2, struct->var0, v33, v34, v35)) == 0;
       }
 
 LABEL_8:
@@ -404,20 +404,20 @@ LABEL_8:
       return 0;
     }
 
-    v31 = objc_msgSend_valueColumnForField_(self, v18, a3, v20, v21, v22, v23);
+    v31 = objc_msgSend_valueColumnForField_(self, v18, null, v20, v21, v22, v23);
     if (!v31)
     {
       return 1;
     }
   }
 
-  return *(*(v31 + 40) + objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v32, a4->var2, a4->var0, v33, v34, v35)) == 0;
+  return *(*(v31 + 40) + objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v32, struct->var2, struct->var0, v33, v34, v35)) == 0;
 }
 
-- ($3CC19D079FD0B010EE84973AA846B91B)referencedListForReference:(SEL)a3 inStruct:(unint64_t)a4
+- ($3CC19D079FD0B010EE84973AA846B91B)referencedListForReference:(SEL)reference inStruct:(unint64_t)struct
 {
-  v12 = objc_msgSend_schema(self, a3, a4, a5, v5, v6, v7);
-  v18 = sub_2439871D0(v12, a4, v13, v14, v15, v16, v17);
+  v12 = objc_msgSend_schema(self, reference, struct, a5, v5, v6, v7);
+  v18 = sub_2439871D0(v12, struct, v13, v14, v15, v16, v17);
 
   if (v18)
   {
@@ -427,14 +427,14 @@ LABEL_8:
   else
   {
     v27 = objc_msgSend_schema(self, v20, v21, v22, v23, v24, v25);
-    v26 = sub_243987518(v27, a4, v28, v29, v30, v31, v32);
+    v26 = sub_243987518(v27, struct, v28, v29, v30, v31, v32);
   }
 
   if (a5->var1 == 1)
   {
     result = objc_msgSend_rowsForStructColumn_(self, v20, v26, v22, v23, v24, v25);
     v33 = 1;
-    var2 = a4;
+    var2 = struct;
   }
 
   else
@@ -444,19 +444,19 @@ LABEL_8:
   }
 
   retstr->var0 = v26;
-  retstr->var1 = a4;
+  retstr->var1 = struct;
   retstr->var2 = v33;
   retstr->var3 = var2;
   return result;
 }
 
-- (int64_t)lengthForList:(id *)a3
+- (int64_t)lengthForList:(id *)list
 {
   v8 = a2;
-  v10 = objc_msgSend_schema(self, a2, a3, v3, v4, v5, v6);
+  v10 = objc_msgSend_schema(self, a2, list, v3, v4, v5, v6);
   if (v10)
   {
-    v11 = *(v10[10] + 56 * a3->var1 + 16);
+    v11 = *(v10[10] + 56 * list->var1 + 16);
   }
 
   else
@@ -465,18 +465,18 @@ LABEL_8:
   }
 
   v18 = objc_msgSend_schema(self, v12, v13, v14, v15, v16, v17);
-  v24 = sub_2439871D0(v18, a3->var1, v19, v20, v21, v22, v23);
+  v24 = sub_2439871D0(v18, list->var1, v19, v20, v21, v22, v23);
 
-  var3 = a3->var3;
+  var3 = list->var3;
   if ((v24 - 1) < 2)
   {
-    if (a3->var2 == 1)
+    if (list->var2 == 1)
     {
       v54 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v25, v26, v27, v28, v29, v30);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v54, v55, v8, self, @"CKXORCReaderWriter.mm", 472, @"Invalid list");
     }
 
-    v32 = objc_msgSend_valueColumnForField_(self, v25, a3->var1, v27, v28, v29, v30);
+    v32 = objc_msgSend_valueColumnForField_(self, v25, list->var1, v27, v28, v29, v30);
     if (!v32)
     {
       return 0;
@@ -502,7 +502,7 @@ LABEL_8:
       }
 
 LABEL_14:
-      v46 = objc_msgSend_listColumnForReference_(self, v25, a3->var1, v27, v28, v29, v30);
+      v46 = objc_msgSend_listColumnForReference_(self, v25, list->var1, v27, v28, v29, v30);
       if (v46)
       {
         v51 = v46;
@@ -513,33 +513,33 @@ LABEL_14:
       return 0;
     }
 
-    if (a3->var2 != 1)
+    if (list->var2 != 1)
     {
       goto LABEL_14;
     }
 
-    v39 = objc_msgSend_rowsForStructColumn_(self, v25, a3->var0, v27, v28, v29, v30);
+    v39 = objc_msgSend_rowsForStructColumn_(self, v25, list->var0, v27, v28, v29, v30);
     v8 = objc_msgSend_count(v39, v40, v41, v42, v43, v44, v45);
   }
 
   return v8;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructAtIndex:(SEL)a3 inList:(int64_t)a4
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)referencedStructAtIndex:(SEL)index inList:(int64_t)list
 {
   if (a5->var0 == -1)
   {
-    v49 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a3, a4, a5, v5, v6, v7);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v49, v50, a3, self, @"CKXORCReaderWriter.mm", 488, @"Invalid struct");
+    v49 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], index, list, a5, v5, v6, v7);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v49, v50, index, self, @"CKXORCReaderWriter.mm", 488, @"Invalid struct");
   }
 
   v13 = *&a5->var2;
   v55 = *&a5->var0;
   v56 = v13;
-  if (objc_msgSend_lengthForList_(self, a3, &v55, a5, v5, v6, v7) <= a4)
+  if (objc_msgSend_lengthForList_(self, index, &v55, a5, v5, v6, v7) <= list)
   {
     v51 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v51, v52, a3, self, @"CKXORCReaderWriter.mm", 491, @"Index out of range");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v51, v52, index, self, @"CKXORCReaderWriter.mm", 491, @"Index out of range");
   }
 
   if (a5->var2 == 1)
@@ -558,13 +558,13 @@ LABEL_14:
     *&v56 = sub_243980794;
     *(&v56 + 1) = &unk_278DDB458;
     v58 = &v61;
-    v59 = a4;
+    listCopy = list;
     v57 = v60;
     objc_msgSend_enumerateRangesUsingBlock_(v20, v21, &v55, v22, v23, v24, v25);
     v30 = v62[3];
     if (v30 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v26, *MEMORY[0x277CBE730], @"Index %lu out of range", v27, v28, v29, a4);
+      objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v26, *MEMORY[0x277CBE730], @"Index %lu out of range", v27, v28, v29, list);
       v30 = v62[3];
     }
 
@@ -589,14 +589,14 @@ LABEL_14:
     if (!v45)
     {
       v53 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v39, v40, v41, v42, v43, v44);
-      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v53, v54, a3, self, @"CKXORCReaderWriter.mm", 501, @"Unexpected null struct list column in reader");
+      objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v53, v54, index, self, @"CKXORCReaderWriter.mm", 501, @"Unexpected null struct list column in reader");
     }
 
     v46 = *(*(v45 + 96) + 8 * objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v39, a5->var3, v33, v42, v43, v44));
     v47 = *(v45 + 120);
     v48 = **v47;
     result = __dynamic_cast(v47, &unk_2856A2580, &unk_2856A2590, 0);
-    v30 = a5->var3 + *(result[4].var0 + 8 * v46 + 8 * a4);
+    v30 = a5->var3 + *(result[4].var0 + 8 * v46 + 8 * list);
   }
 
   retstr->var0 = a5->var0;
@@ -605,23 +605,23 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)valueSizeForField:(unint64_t)a3
+- (unint64_t)valueSizeForField:(unint64_t)field
 {
-  v8 = objc_msgSend_schema(self, a2, a3, v3, v4, v5, v6);
-  v14 = sub_243987270(v8, a3, v9, v10, v11, v12, v13);
+  v8 = objc_msgSend_schema(self, a2, field, v3, v4, v5, v6);
+  v14 = sub_243987270(v8, field, v9, v10, v11, v12, v13);
 
   return v14;
 }
 
-- (void)copyData:(void *)a3 forField:(unint64_t)a4 inStruct:(id *)a5
+- (void)copyData:(void *)data forField:(unint64_t)field inStruct:(id *)struct
 {
-  if (a5->var1 == 1)
+  if (struct->var1 == 1)
   {
-    v33 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4, a5, v5, v6);
+    v33 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, data, field, struct, v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v34, a2, self, @"CKXORCReaderWriter.mm", 522, @"Invalid struct");
   }
 
-  v11 = objc_msgSend_valueColumnForField_(self, a2, a4, a4, a5, v5, v6);
+  v11 = objc_msgSend_valueColumnForField_(self, a2, field, field, struct, v5, v6);
   if (v11)
   {
     v12 = **v11;
@@ -629,46 +629,46 @@ LABEL_14:
     if (v13)
     {
       v18 = v13;
-      var2 = a5->var2;
-      v20 = objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v14, var2, a5->var0, v15, v16, v17);
-      if (a3)
+      var2 = struct->var2;
+      v20 = objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v14, var2, struct->var0, v15, v16, v17);
+      if (data)
       {
         if (*(v18[5] + v20))
         {
-          v26 = objc_msgSend_valueSizeForField_(self, v21, a4, v22, v23, v24, v25);
-          v31 = (v18[12] + 8 * objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v27, var2, a5->var0, v28, v29, v30));
+          v26 = objc_msgSend_valueSizeForField_(self, v21, field, v22, v23, v24, v25);
+          v31 = (v18[12] + 8 * objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v27, var2, struct->var0, v28, v29, v30));
 
-          memcpy(a3, v31, v26);
+          memcpy(data, v31, v26);
         }
       }
     }
   }
 }
 
-- (void)copyData:(void *)a3 forList:(id *)a4
+- (void)copyData:(void *)data forList:(id *)list
 {
-  v8 = a3;
-  if (a4->var0 != -1)
+  dataCopy = data;
+  if (list->var0 != -1)
   {
-    v98 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4, v4, v5, v6);
+    v98 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, data, list, v4, v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v98, v99, a2, self, @"CKXORCReaderWriter.mm", 535, @"Invalid struct");
   }
 
-  if (a4->var2 == 1)
+  if (list->var2 == 1)
   {
-    v100 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4, v4, v5, v6);
+    v100 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, data, list, v4, v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v100, v101, a2, self, @"CKXORCReaderWriter.mm", 536, @"Invalid list");
   }
 
-  v11 = objc_msgSend_schema(self, a2, a3, a4, v4, v5, v6);
-  v17 = sub_2439871D0(v11, a4->var1, v12, v13, v14, v15, v16);
+  v11 = objc_msgSend_schema(self, a2, data, list, v4, v5, v6);
+  v17 = sub_2439871D0(v11, list->var1, v12, v13, v14, v15, v16);
 
   if ((v17 - 1) < 2)
   {
     v47 = objc_msgSend_schema(self, v18, v19, v20, v21, v22, v23);
     if (v47)
     {
-      v48 = *(v47[10] + 56 * a4->var1 + 16);
+      v48 = *(v47[10] + 56 * list->var1 + 16);
     }
 
     else
@@ -676,7 +676,7 @@ LABEL_14:
       v48 = 0;
     }
 
-    v54 = objc_msgSend_valueColumnForField_(self, v49, a4->var1, v50, v51, v52, v53);
+    v54 = objc_msgSend_valueColumnForField_(self, v49, list->var1, v50, v51, v52, v53);
     if (v54)
     {
       v55 = **v54;
@@ -684,16 +684,16 @@ LABEL_14:
       if (v56)
       {
         v61 = v56;
-        var3 = a4->var3;
+        var3 = list->var3;
         v63 = objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v57, var3, v48, v58, v59, v60);
-        if (v8)
+        if (dataCopy)
         {
           if (*(v61[5] + v63))
           {
             v68 = *(v61[12] + 8 * objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v64, var3, v48, v65, v66, v67));
             v73 = *(v61[17] + 8 * objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v69, var3, v48, v70, v71, v72));
 
-            memcpy(v8, v68, v73);
+            memcpy(dataCopy, v68, v73);
           }
         }
       }
@@ -705,15 +705,15 @@ LABEL_14:
     if (v17 == 3)
     {
       v24 = objc_msgSend_schema(self, v18, v19, v20, v21, v22, v23);
-      v25 = v24 ? *(v24[10] + 56 * a4->var1 + 16) : 0;
+      v25 = v24 ? *(v24[10] + 56 * list->var1 + 16) : 0;
 
-      v31 = objc_msgSend_listColumnForReference_(self, v26, a4->var1, v27, v28, v29, v30);
+      v31 = objc_msgSend_listColumnForReference_(self, v26, list->var1, v27, v28, v29, v30);
       if (v31)
       {
         v36 = v31;
-        v37 = a4->var3;
+        v37 = list->var3;
         v38 = objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v32, v37, v25, v33, v34, v35);
-        if (v8)
+        if (dataCopy)
         {
           if (*(v36[5] + v38))
           {
@@ -729,12 +729,12 @@ LABEL_14:
               v46 = 0;
             }
 
-            v75 = *&a4->var2;
-            v103[0] = *&a4->var0;
+            v75 = *&list->var2;
+            v103[0] = *&list->var0;
             v103[1] = v75;
             v76 = objc_msgSend_lengthForList_(self, v39, v103, v40, v41, v42, v43);
             v81 = *(v36[12] + 8 * objc_msgSend_offsetInCurrentBatchForRow_forStruct_(self, v77, v37, v25, v78, v79, v80));
-            v87 = objc_msgSend_valueSizeForField_(self, v82, a4->var1, v83, v84, v85, v86);
+            v87 = objc_msgSend_valueSizeForField_(self, v82, list->var1, v83, v84, v85, v86);
             if (v76 >= 1)
             {
               v94 = v87;
@@ -743,7 +743,7 @@ LABEL_14:
               {
                 if (v94 == 8)
                 {
-                  *v8 = *(v46[12] + v95);
+                  *dataCopy = *(v46[12] + v95);
                 }
 
                 else
@@ -752,7 +752,7 @@ LABEL_14:
                   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v96, v97, a2, self, @"CKXORCReaderWriter.mm", 580, @"Array integer size %lu not supported", v94);
                 }
 
-                ++v8;
+                ++dataCopy;
                 v95 += 8;
                 --v76;
               }
@@ -772,9 +772,9 @@ LABEL_14:
   }
 }
 
-- (void)structColumnForStruct:(unint64_t)a3
+- (void)structColumnForStruct:(unint64_t)struct
 {
-  result = **(objc_msgSend_rootColumnForStruct_(self, a2, a3, v3, v4, v5, v6) + 80);
+  result = **(objc_msgSend_rootColumnForStruct_(self, a2, struct, v3, v4, v5, v6) + 80);
   if (result)
   {
     v8 = **result;
@@ -785,12 +785,12 @@ LABEL_14:
   return result;
 }
 
-- (void)structReferenceColumnForReference:(unint64_t)a3
+- (void)structReferenceColumnForReference:(unint64_t)reference
 {
-  v9 = objc_msgSend_schema(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_schema(self, a2, reference, v3, v4, v5, v6);
   if (v9)
   {
-    v10 = *(v9[10] + 56 * a3 + 16);
+    v10 = *(v9[10] + 56 * reference + 16);
   }
 
   else
@@ -800,7 +800,7 @@ LABEL_14:
 
   v16 = objc_msgSend_structColumnForStruct_(self, v11, v10, v12, v13, v14, v15);
   v23 = objc_msgSend_helpers(self, v17, v18, v19, v20, v21, v22);
-  v29 = objc_msgSend_structReferenceIndexForReference_(v23, v24, a3, v25, v26, v27, v28);
+  v29 = objc_msgSend_structReferenceIndexForReference_(v23, v24, reference, v25, v26, v27, v28);
 
   v30 = *(v16 + 80);
   if (v29 >= (*(v16 + 88) - v30) >> 3)
@@ -819,12 +819,12 @@ LABEL_14:
   return __dynamic_cast(v31, &unk_2856A2580, &unk_2856A2590, 0);
 }
 
-- (void)listColumnForReference:(unint64_t)a3
+- (void)listColumnForReference:(unint64_t)reference
 {
-  v9 = objc_msgSend_schema(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_schema(self, a2, reference, v3, v4, v5, v6);
   if (v9)
   {
-    v10 = *(v9[10] + 56 * a3 + 16);
+    v10 = *(v9[10] + 56 * reference + 16);
   }
 
   else
@@ -834,7 +834,7 @@ LABEL_14:
 
   v16 = objc_msgSend_structColumnForStruct_(self, v11, v10, v12, v13, v14, v15);
   v23 = objc_msgSend_helpers(self, v17, v18, v19, v20, v21, v22);
-  v29 = objc_msgSend_listColumnIndexForReference_(v23, v24, a3, v25, v26, v27, v28);
+  v29 = objc_msgSend_listColumnIndexForReference_(v23, v24, reference, v25, v26, v27, v28);
 
   v30 = *(v16 + 80);
   if (v29 >= (*(v16 + 88) - v30) >> 3)
@@ -853,12 +853,12 @@ LABEL_14:
   return __dynamic_cast(v31, &unk_2856A2580, &unk_2856A2608, 0);
 }
 
-- (void)valueColumnForField:(unint64_t)a3
+- (void)valueColumnForField:(unint64_t)field
 {
-  v9 = objc_msgSend_schema(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_schema(self, a2, field, v3, v4, v5, v6);
   if (v9)
   {
-    v10 = *(v9[10] + 56 * a3 + 16);
+    v10 = *(v9[10] + 56 * field + 16);
   }
 
   else
@@ -868,7 +868,7 @@ LABEL_14:
 
   v16 = objc_msgSend_structColumnForStruct_(self, v11, v10, v12, v13, v14, v15);
   v23 = objc_msgSend_helpers(self, v17, v18, v19, v20, v21, v22);
-  v29 = objc_msgSend_valueColumnIndexForField_(v23, v24, a3, v25, v26, v27, v28);
+  v29 = objc_msgSend_valueColumnIndexForField_(v23, v24, field, v25, v26, v27, v28);
 
   v30 = *(v16 + 80);
   if (v29 >= (*(v16 + 88) - v30) >> 3)

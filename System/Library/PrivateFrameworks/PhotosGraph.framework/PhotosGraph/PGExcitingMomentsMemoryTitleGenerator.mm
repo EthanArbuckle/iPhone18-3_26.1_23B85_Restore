@@ -1,16 +1,16 @@
 @interface PGExcitingMomentsMemoryTitleGenerator
-- (PGExcitingMomentsMemoryTitleGenerator)initWithMomentNodes:(id)a3 type:(int64_t)a4 titleGenerationContext:(id)a5;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (PGExcitingMomentsMemoryTitleGenerator)initWithMomentNodes:(id)nodes type:(int64_t)type titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGExcitingMomentsMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
   personNodeAsCollection = self->_personNodeAsCollection;
-  v5 = a3;
-  v6 = [(MANodeCollection *)personNodeAsCollection anyNode];
-  v7 = [PGPeopleTitleUtility nameFromPersonNode:v6 serviceManager:self->_serviceManager];
+  resultCopy = result;
+  anyNode = [(MANodeCollection *)personNodeAsCollection anyNode];
+  v7 = [PGPeopleTitleUtility nameFromPersonNode:anyNode serviceManager:self->_serviceManager];
 
   if ([v7 length])
   {
@@ -29,29 +29,29 @@
   v17 = [PGTitle titleWithString:v11 category:0];
 
   v12 = objc_alloc_init(PGTimeTitleOptions);
-  v13 = [(PGTitleGenerator *)self momentNodes];
-  [(PGTimeTitleOptions *)v12 setMomentNodes:v13];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  [(PGTimeTitleOptions *)v12 setMomentNodes:momentNodes];
 
   [(PGTimeTitleOptions *)v12 setAllowedFormats:20];
-  v14 = [(PGTitleGenerator *)self featuredYearNodes];
-  [(PGTimeTitleOptions *)v12 setFeaturedYearNodes:v14];
+  featuredYearNodes = [(PGTitleGenerator *)self featuredYearNodes];
+  [(PGTimeTitleOptions *)v12 setFeaturedYearNodes:featuredYearNodes];
 
   v15 = [PGTimeTitleUtility timeTitleWithOptions:v12];
   v16 = [PGTitle titleWithString:v15 category:5];
-  v5[2](v5, v17, v16);
+  resultCopy[2](resultCopy, v17, v16);
 }
 
-- (PGExcitingMomentsMemoryTitleGenerator)initWithMomentNodes:(id)a3 type:(int64_t)a4 titleGenerationContext:(id)a5
+- (PGExcitingMomentsMemoryTitleGenerator)initWithMomentNodes:(id)nodes type:(int64_t)type titleGenerationContext:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = PGExcitingMomentsMemoryTitleGenerator;
-  v9 = [(PGTitleGenerator *)&v13 initWithMomentNodes:a3 type:a4 titleGenerationContext:v8];
+  v9 = [(PGTitleGenerator *)&v13 initWithMomentNodes:nodes type:type titleGenerationContext:contextCopy];
   if (v9)
   {
-    v10 = [v8 serviceManager];
+    serviceManager = [contextCopy serviceManager];
     serviceManager = v9->_serviceManager;
-    v9->_serviceManager = v10;
+    v9->_serviceManager = serviceManager;
   }
 
   return v9;

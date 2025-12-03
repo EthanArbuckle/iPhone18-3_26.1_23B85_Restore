@@ -1,32 +1,32 @@
 @interface SBDeviceApplicationCounterRotatableSceneOverlayView
-- (SBDeviceApplicationCounterRotatableSceneOverlayView)initWithFrame:(CGRect)a3 contentNeedsCounterRotation:(BOOL)a4 delegate:(id)a5;
+- (SBDeviceApplicationCounterRotatableSceneOverlayView)initWithFrame:(CGRect)frame contentNeedsCounterRotation:(BOOL)rotation delegate:(id)delegate;
 - (SBDeviceApplicationCounterRotatableSceneOverlayViewDelegate)delegate;
 - (void)_createCounterRotationView;
-- (void)containingSceneWillRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 animationSettings:(id)a5;
+- (void)containingSceneWillRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation animationSettings:(id)settings;
 - (void)layoutSubviews;
-- (void)setContentNeedsCounterRotation:(BOOL)a3;
-- (void)setContentView:(id)a3;
+- (void)setContentNeedsCounterRotation:(BOOL)rotation;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SBDeviceApplicationCounterRotatableSceneOverlayView
 
-- (SBDeviceApplicationCounterRotatableSceneOverlayView)initWithFrame:(CGRect)a3 contentNeedsCounterRotation:(BOOL)a4 delegate:(id)a5
+- (SBDeviceApplicationCounterRotatableSceneOverlayView)initWithFrame:(CGRect)frame contentNeedsCounterRotation:(BOOL)rotation delegate:(id)delegate
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  rotationCopy = rotation;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SBDeviceApplicationCounterRotatableSceneOverlayView;
-  v12 = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)&v15 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)&v15 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    v13->_contentNeedsCounterRotation = v5;
-    if (v5)
+    objc_storeWeak(&height->_delegate, delegateCopy);
+    v13->_contentNeedsCounterRotation = rotationCopy;
+    if (rotationCopy)
     {
       [(SBDeviceApplicationCounterRotatableSceneOverlayView *)v13 _createCounterRotationView];
     }
@@ -35,10 +35,10 @@
   return v13;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v7 = a3;
-  objc_storeStrong(&self->_contentView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_contentView, view);
   if (self->_contentNeedsCounterRotation)
   {
     counterRotationView = self->_counterRotationView;
@@ -54,11 +54,11 @@
   [counterRotationView addSubview:contentView];
 }
 
-- (void)setContentNeedsCounterRotation:(BOOL)a3
+- (void)setContentNeedsCounterRotation:(BOOL)rotation
 {
-  if (self->_contentNeedsCounterRotation != a3)
+  if (self->_contentNeedsCounterRotation != rotation)
   {
-    self->_contentNeedsCounterRotation = a3;
+    self->_contentNeedsCounterRotation = rotation;
     [(UIView *)self->_contentView removeFromSuperview];
     if (self->_contentNeedsCounterRotation)
     {
@@ -93,13 +93,13 @@
   v6 = v5;
   if (self->_contentNeedsCounterRotation)
   {
-    v7 = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self delegate];
-    v8 = [v7 containerOrientation];
+    delegate = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self delegate];
+    containerOrientation = [delegate containerOrientation];
 
     [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self bounds];
     v12 = v11;
     v14 = v13;
-    if ((v8 - 3) <= 1)
+    if ((containerOrientation - 3) <= 1)
     {
       BSSizeSwap();
       v9 = v15;
@@ -113,9 +113,9 @@
     [(_UIDirectionalRotationView *)counterRotationView setTransform:&v21];
   }
 
-  v18 = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self contentViewHasFixedSize];
+  contentViewHasFixedSize = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self contentViewHasFixedSize];
   contentView = self->_contentView;
-  if (v18)
+  if (contentViewHasFixedSize)
   {
     [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self convertPoint:self->_counterRotationView toView:v4, v6];
     [(UIView *)contentView setCenter:?];
@@ -123,27 +123,27 @@
 
   else
   {
-    v20 = [(UIView *)self->_contentView superview];
-    [v20 bounds];
+    superview = [(UIView *)self->_contentView superview];
+    [superview bounds];
     [(UIView *)contentView setFrame:?];
   }
 }
 
-- (void)containingSceneWillRotateFromInterfaceOrientation:(int64_t)a3 toInterfaceOrientation:(int64_t)a4 animationSettings:(id)a5
+- (void)containingSceneWillRotateFromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation animationSettings:(id)settings
 {
-  v8 = a5;
-  v9 = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self delegate];
-  v10 = [v9 containerOrientation];
+  settingsCopy = settings;
+  delegate = [(SBDeviceApplicationCounterRotatableSceneOverlayView *)self delegate];
+  containerOrientation = [delegate containerOrientation];
 
-  if (a3 != a4 && self->_contentNeedsCounterRotation && v10 == a4)
+  if (orientation != interfaceOrientation && self->_contentNeedsCounterRotation && containerOrientation == interfaceOrientation)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __146__SBDeviceApplicationCounterRotatableSceneOverlayView_containingSceneWillRotateFromInterfaceOrientation_toInterfaceOrientation_animationSettings___block_invoke;
     v11[3] = &unk_2783A8BC8;
     v11[4] = self;
-    v11[5] = a4;
-    [MEMORY[0x277D75D18] _animateWithAnimationSettings:v8 animations:v11 completion:0];
+    v11[5] = interfaceOrientation;
+    [MEMORY[0x277D75D18] _animateWithAnimationSettings:settingsCopy animations:v11 completion:0];
   }
 }
 

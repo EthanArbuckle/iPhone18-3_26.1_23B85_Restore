@@ -1,7 +1,7 @@
 @interface SUSUIBaseAlertItem
 - (SUSUIBaseAlertItem)init;
 - (id)buildAlertItemDefinition;
-- (void)_setPresentationManager:(id)a3;
+- (void)_setPresentationManager:(id)manager;
 - (void)alertWasCanceled;
 - (void)dismissAlert;
 - (void)willPresentAlert;
@@ -35,15 +35,15 @@
 - (id)buildAlertItemDefinition
 {
   alertItemDefinition = self->_alertItemDefinition;
-  v5 = [(SUSUIBaseAlertItem *)self title];
+  title = [(SUSUIBaseAlertItem *)self title];
   [(SUSUIAlertItemDefinition *)alertItemDefinition setTitle:?];
 
   v6 = self->_alertItemDefinition;
-  v7 = [(SUSUIBaseAlertItem *)self message];
+  message = [(SUSUIBaseAlertItem *)self message];
   [(SUSUIAlertItemDefinition *)v6 setMessage:?];
 
   v8 = self->_alertItemDefinition;
-  v9 = [(SUSUIBaseAlertItem *)self buttons];
+  buttons = [(SUSUIBaseAlertItem *)self buttons];
   [(SUSUIAlertItemDefinition *)v8 setButtons:?];
 
   v2 = self->_alertItemDefinition;
@@ -97,7 +97,7 @@
 
 - (void)dismissAlert
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = SUSUILog();
   v7 = OS_LOG_TYPE_DEFAULT;
@@ -115,16 +115,16 @@
   }
 
   objc_storeStrong(v8, 0);
-  [(SUSUIAlertPresentationManager *)v9->_presentationManager _noteAlertDeactivated:v9];
+  [(SUSUIAlertPresentationManager *)selfCopy->_presentationManager _noteAlertDeactivated:selfCopy];
 }
 
-- (void)_setPresentationManager:(id)a3
+- (void)_setPresentationManager:(id)manager
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_presentationManager, location[0]);
+  objc_storeStrong(location, manager);
+  objc_storeStrong(&selfCopy->_presentationManager, location[0]);
   objc_storeStrong(location, 0);
 }
 

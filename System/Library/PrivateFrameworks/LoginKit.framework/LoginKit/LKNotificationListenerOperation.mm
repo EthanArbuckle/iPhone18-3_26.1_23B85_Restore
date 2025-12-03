@@ -1,30 +1,30 @@
 @interface LKNotificationListenerOperation
-- (LKNotificationListenerOperation)initWithNotificationType:(unint64_t)a3 timeOutPeriod:(double)a4 completionBlock:(id)a5;
-- (id)_errorForNotificationType:(unint64_t)a3;
-- (id)_notificationForNotificationType:(unint64_t)a3;
+- (LKNotificationListenerOperation)initWithNotificationType:(unint64_t)type timeOutPeriod:(double)period completionBlock:(id)block;
+- (id)_errorForNotificationType:(unint64_t)type;
+- (id)_notificationForNotificationType:(unint64_t)type;
 - (void)_endOperation;
 - (void)cancel;
-- (void)setOperationCancelled:(BOOL)a3;
-- (void)setOperationExecuting:(BOOL)a3;
-- (void)setOperationFinished:(BOOL)a3;
-- (void)setOperationReady:(BOOL)a3;
+- (void)setOperationCancelled:(BOOL)cancelled;
+- (void)setOperationExecuting:(BOOL)executing;
+- (void)setOperationFinished:(BOOL)finished;
+- (void)setOperationReady:(BOOL)ready;
 - (void)start;
 @end
 
 @implementation LKNotificationListenerOperation
 
-- (LKNotificationListenerOperation)initWithNotificationType:(unint64_t)a3 timeOutPeriod:(double)a4 completionBlock:(id)a5
+- (LKNotificationListenerOperation)initWithNotificationType:(unint64_t)type timeOutPeriod:(double)period completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = LKNotificationListenerOperation;
   v9 = [(LKNotificationListenerOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_notificationType = a3;
-    v9->_timeOutPeriod = a4;
-    v11 = MEMORY[0x259C5D090](v8);
+    v9->_notificationType = type;
+    v9->_timeOutPeriod = period;
+    v11 = MEMORY[0x259C5D090](blockCopy);
     notificationListenerCompletionBlock = v10->_notificationListenerCompletionBlock;
     v10->_notificationListenerCompletionBlock = v11;
 
@@ -34,45 +34,45 @@
   return v10;
 }
 
-- (void)setOperationReady:(BOOL)a3
+- (void)setOperationReady:(BOOL)ready
 {
-  if (self->_operationReady != a3)
+  if (self->_operationReady != ready)
   {
     [(LKNotificationListenerOperation *)self willChangeValueForKey:@"ready"];
-    self->_operationReady = a3;
+    self->_operationReady = ready;
 
     [(LKNotificationListenerOperation *)self didChangeValueForKey:@"ready"];
   }
 }
 
-- (void)setOperationExecuting:(BOOL)a3
+- (void)setOperationExecuting:(BOOL)executing
 {
-  if (self->_operationExecuting != a3)
+  if (self->_operationExecuting != executing)
   {
     [(LKNotificationListenerOperation *)self willChangeValueForKey:@"executing"];
-    self->_operationExecuting = a3;
+    self->_operationExecuting = executing;
 
     [(LKNotificationListenerOperation *)self didChangeValueForKey:@"executing"];
   }
 }
 
-- (void)setOperationFinished:(BOOL)a3
+- (void)setOperationFinished:(BOOL)finished
 {
-  if (self->_operationFinished != a3)
+  if (self->_operationFinished != finished)
   {
     [(LKNotificationListenerOperation *)self willChangeValueForKey:@"finished"];
-    self->_operationFinished = a3;
+    self->_operationFinished = finished;
 
     [(LKNotificationListenerOperation *)self didChangeValueForKey:@"finished"];
   }
 }
 
-- (void)setOperationCancelled:(BOOL)a3
+- (void)setOperationCancelled:(BOOL)cancelled
 {
-  if (self->_operationCancelled != a3)
+  if (self->_operationCancelled != cancelled)
   {
     [(LKNotificationListenerOperation *)self willChangeValueForKey:@"cancelled"];
-    self->_operationCancelled = a3;
+    self->_operationCancelled = cancelled;
 
     [(LKNotificationListenerOperation *)self didChangeValueForKey:@"cancelled"];
   }
@@ -85,7 +85,7 @@
   if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25618F000, v3, OS_LOG_TYPE_DEFAULT, "%@ starting...", buf, 0xCu);
   }
 
@@ -109,7 +109,7 @@
     v24 = v7;
     dispatch_after(v6, MEMORY[0x277D85CD0], block);
     v8 = [(LKNotificationListenerOperation *)self _notificationForNotificationType:[(LKNotificationListenerOperation *)self notificationType]];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_get_global_queue(0, 0);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -119,14 +119,14 @@
     v21 = v11;
     v12 = v7;
     v22 = v12;
-    v13 = notify_register_dispatch(v9, &self->_notifyToken, v10, handler);
+    v13 = notify_register_dispatch(uTF8String, &self->_notifyToken, v10, handler);
 
-    v14 = [(LKNotificationListenerOperation *)self listenerStartedBlock];
+    listenerStartedBlock = [(LKNotificationListenerOperation *)self listenerStartedBlock];
 
-    if (v14)
+    if (listenerStartedBlock)
     {
-      v15 = [(LKNotificationListenerOperation *)self listenerStartedBlock];
-      v15[2]();
+      listenerStartedBlock2 = [(LKNotificationListenerOperation *)self listenerStartedBlock];
+      listenerStartedBlock2[2]();
 
       [(LKNotificationListenerOperation *)self setListenerStartedBlock:0];
       if (!v13)
@@ -159,7 +159,7 @@ LABEL_13:
     if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v27 = v11;
+      selfCopy = v11;
       v28 = 1026;
       v29 = v13;
       _os_log_impl(&dword_25618F000, v17, OS_LOG_TYPE_DEFAULT, "Could not register for %@ notification error %{public}d", buf, 0x12u);
@@ -268,11 +268,11 @@ uint64_t __40__LKNotificationListenerOperation_start__block_invoke_12(uint64_t a
   [(LKNotificationListenerOperation *)self setListenerStartedBlock:0];
 }
 
-- (id)_errorForNotificationType:(unint64_t)a3
+- (id)_errorForNotificationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -291,11 +291,11 @@ LABEL_6:
   return self;
 }
 
-- (id)_notificationForNotificationType:(unint64_t)a3
+- (id)_notificationForNotificationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }

@@ -1,7 +1,7 @@
 @interface RecentsUnreadCountManager
 - (_TtC16CallsAppServices25RecentsUnreadCountManager)init;
 - (void)handleRequestsHandlerHasFinishedFirstCacheUpdateNotification;
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4;
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count;
 @end
 
 @implementation RecentsUnreadCountManager
@@ -11,7 +11,7 @@
   if (*(&self->super.isa + OBJC_IVAR____TtC16CallsAppServices25RecentsUnreadCountManager_shouldMarkKnownCallsAsReadWhenReady) == 1)
   {
     *(&self->super.isa + OBJC_IVAR____TtC16CallsAppServices25RecentsUnreadCountManager_shouldMarkKnownCallsAsReadWhenReady) = 0;
-    v3 = self;
+    selfCopy = self;
     sub_1D337E180();
   }
 }
@@ -23,17 +23,17 @@
   return result;
 }
 
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count
 {
-  if ((a4 & 0x8000000000000000) != 0)
+  if ((count & 0x8000000000000000) != 0)
   {
     __break(1u);
   }
 
   else
   {
-    *(&self->super.isa + OBJC_IVAR____TtC16CallsAppServices25RecentsUnreadCountManager_totalUnreadCallCount) = a4;
-    v4 = self;
+    *(&self->super.isa + OBJC_IVAR____TtC16CallsAppServices25RecentsUnreadCountManager_totalUnreadCallCount) = count;
+    selfCopy = self;
     sub_1D337DB9C();
   }
 }

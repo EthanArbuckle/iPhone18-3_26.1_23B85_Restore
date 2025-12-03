@@ -1,30 +1,30 @@
 @interface SXAutoSizedCanvasController
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4;
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling;
 - (CGSize)sizeThatFits;
-- (SXAutoSizedCanvasController)initWithDocumentRoot:(id)a3 actionHandler:(id)a4 dragItemProvider:(id)a5;
+- (SXAutoSizedCanvasController)initWithDocumentRoot:(id)root actionHandler:(id)handler dragItemProvider:(id)provider;
 - (SXAutoSizedCanvasControllerDelegate)delegate;
-- (id)interactiveCanvasController:(id)a3 dragItemForSmartField:(id)a4 interaction:(id)a5 session:(id)a6;
-- (void)interactiveCanvasController:(id)a3 interactedWithHyperlink:(id)a4 info:(id)a5 range:(_NSRange)a6 touchPoint:(CGPoint)a7 touchAndHold:(BOOL)a8;
+- (id)interactiveCanvasController:(id)controller dragItemForSmartField:(id)field interaction:(id)interaction session:(id)session;
+- (void)interactiveCanvasController:(id)controller interactedWithHyperlink:(id)hyperlink info:(id)info range:(_NSRange)range touchPoint:(CGPoint)point touchAndHold:(BOOL)hold;
 - (void)invalidateLayoutsAndFrames;
 - (void)teardown;
 @end
 
 @implementation SXAutoSizedCanvasController
 
-- (SXAutoSizedCanvasController)initWithDocumentRoot:(id)a3 actionHandler:(id)a4 dragItemProvider:(id)a5
+- (SXAutoSizedCanvasController)initWithDocumentRoot:(id)root actionHandler:(id)handler dragItemProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  rootCopy = root;
+  handlerCopy = handler;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = SXAutoSizedCanvasController;
   v12 = [(SXAutoSizedCanvasController *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_documentRoot, a3);
-    objc_storeStrong(&v13->_actionHandler, a4);
-    objc_storeStrong(&v13->_dragItemProvider, a5);
+    objc_storeStrong(&v12->_documentRoot, root);
+    objc_storeStrong(&v13->_actionHandler, handler);
+    objc_storeStrong(&v13->_dragItemProvider, provider);
     v22 = 0;
     v23 = 0;
     v14 = objc_opt_class();
@@ -64,10 +64,10 @@
   v7 = [(SXAutoSizedCanvasController *)self icc];
   [v7 layoutIfNeeded];
 
-  v26 = [(TSDInteractiveCanvasController *)self->_icc layoutController];
-  v8 = [v26 rootLayout];
+  layoutController = [(TSDInteractiveCanvasController *)self->_icc layoutController];
+  rootLayout = [layoutController rootLayout];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v8 addLayoutsToArray:v9];
+  [rootLayout addLayoutsToArray:v9];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -106,11 +106,11 @@
           y = v35.origin.y;
           width = v35.size.width;
           height = v35.size.height;
-          v20 = [v15 columns];
-          v21 = [v20 firstObject];
+          columns = [v15 columns];
+          firstObject = [columns firstObject];
 
-          [v21 range];
-          [v21 columnRectForRange:{v22 - 1, 1}];
+          [firstObject range];
+          [firstObject columnRectForRange:{v22 - 1, 1}];
           self->_lineHeight = v23;
         }
 
@@ -139,10 +139,10 @@
 - (void)invalidateLayoutsAndFrames
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(TSDInteractiveCanvasController *)self->_icc layoutController];
-  v3 = [v2 rootLayout];
+  layoutController = [(TSDInteractiveCanvasController *)self->_icc layoutController];
+  rootLayout = [layoutController rootLayout];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v3 addLayoutsToArray:v4];
+  [rootLayout addLayoutsToArray:v4];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -182,41 +182,41 @@
   }
 }
 
-- (void)interactiveCanvasController:(id)a3 interactedWithHyperlink:(id)a4 info:(id)a5 range:(_NSRange)a6 touchPoint:(CGPoint)a7 touchAndHold:(BOOL)a8
+- (void)interactiveCanvasController:(id)controller interactedWithHyperlink:(id)hyperlink info:(id)info range:(_NSRange)range touchPoint:(CGPoint)point touchAndHold:(BOOL)hold
 {
-  v8 = a8;
-  length = a6.length;
-  location = a6.location;
-  v39 = a3;
-  v14 = a4;
-  v15 = a5;
+  holdCopy = hold;
+  length = range.length;
+  location = range.location;
+  controllerCopy = controller;
+  hyperlinkCopy = hyperlink;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v14;
+    v16 = hyperlinkCopy;
     v17 = [(SXAutoSizedCanvasController *)self icc];
-    v18 = [v17 repForInfo:v15];
+    v18 = [v17 repForInfo:infoCopy];
 
     [v18 glyphRectForRange:location includingLabel:{length, 0}];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [v39 canvasView];
-    [v27 convertRect:0 toView:{v20, v22, v24, v26}];
+    canvasView = [controllerCopy canvasView];
+    [canvasView convertRect:0 toView:{v20, v22, v24, v26}];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
 
-    v36 = [(SXAutoSizedCanvasController *)self actionHandler];
-    v37 = [v16 action];
-    v38 = [v39 canvasView];
-    [v36 handleAction:v37 sourceView:v38 sourceRect:v8 invocationType:{v29, v31, v33, v35}];
+    actionHandler = [(SXAutoSizedCanvasController *)self actionHandler];
+    action = [v16 action];
+    canvasView2 = [controllerCopy canvasView];
+    [actionHandler handleAction:action sourceView:canvasView2 sourceRect:holdCopy invocationType:{v29, v31, v33, v35}];
   }
 }
 
-- (CGRect)interactiveCanvasController:(id)a3 expandVisibleBoundsForTiling:(CGRect)a4
+- (CGRect)interactiveCanvasController:(id)controller expandVisibleBoundsForTiling:(CGRect)tiling
 {
   x = self->_frame.origin.x;
   y = self->_frame.origin.y;
@@ -229,18 +229,18 @@
   return result;
 }
 
-- (id)interactiveCanvasController:(id)a3 dragItemForSmartField:(id)a4 interaction:(id)a5 session:(id)a6
+- (id)interactiveCanvasController:(id)controller dragItemForSmartField:(id)field interaction:(id)interaction session:(id)session
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(SXAutoSizedCanvasController *)self dragItemProvider];
-  v15 = [v14 dragItemForSmartField:v13 interaction:v12 session:v11];
+  controllerCopy = controller;
+  sessionCopy = session;
+  interactionCopy = interaction;
+  fieldCopy = field;
+  dragItemProvider = [(SXAutoSizedCanvasController *)self dragItemProvider];
+  v15 = [dragItemProvider dragItemForSmartField:fieldCopy interaction:interactionCopy session:sessionCopy];
 
   if (v15)
   {
-    [v10 endUISession];
+    [controllerCopy endUISession];
   }
 
   return v15;

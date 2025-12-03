@@ -9,8 +9,8 @@
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5 = @"urlMetrics";
-  v1 = [a1 urlMetrics];
-  v2 = [v1 msv_map:&__block_literal_global_340];
+  urlMetrics = [self urlMetrics];
+  v2 = [urlMetrics msv_map:&__block_literal_global_340];
   v6[0] = v2;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 

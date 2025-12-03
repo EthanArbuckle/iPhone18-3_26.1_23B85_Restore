@@ -1,32 +1,32 @@
 @interface CKChatControllerDummyAnimator
 - (CKSendAnimationManager)animationDelegate;
-- (double)_throwAnimationDurationScaleFactorForThrownBalloonAttributes:(id)a3 finalBalloonFrames:(id)a4 sendAnimationType:(unint64_t)a5;
-- (id)_animationCompletionBlockWithSendAnimationContext:(id)a3;
-- (id)balloonViewFadeAnimationForConvertedCurrentMediaTime:(double)a3 direction:(unint64_t)a4 sendAnimationType:(unint64_t)a5;
-- (void)__beginThrowAnimationWithThrowBalloonViewAttributesCollection:(id)a3 framesOfAddedChatItems:(id)a4 sendAnimationType:(unint64_t)a5 entryViewSize:(CGSize)a6;
-- (void)_beginFocusAnimationWithContext:(id)a3;
-- (void)_beginGentleAnimationWithContext:(id)a3;
-- (void)_beginImpactAnimationWithContext:(id)a3;
-- (void)_beginLoudAnimationsWithContext:(id)a3;
-- (void)_beginPopAnimationWithContext:(id)a3;
-- (void)_beginThrowAnimationWithContext:(id)a3;
-- (void)_configureQuickReplySendAnimationGroup:(id)a3 withSendAnimationContext:(id)a4;
-- (void)_prepareToAnimateForSendAnimationContext:(id)a3;
-- (void)addAnimationsForColoredBalloonView:(id)a3 sendAnimationType:(unint64_t)a4 sendAnimationConfiguration:(id)a5;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)beginAnimationWithSendAnimationContext:(id)a3;
-- (void)beginQuickReplyAnimationWithSendAnimationContext:(id)a3;
-- (void)performPopAnimationCleanUpForPopRendererView:(id)a3;
-- (void)popRendererViewDidBegin:(id)a3;
-- (void)popRendererViewPlaySound:(id)a3;
-- (void)stopAnimationWithSendAnimationContext:(id)a3;
+- (double)_throwAnimationDurationScaleFactorForThrownBalloonAttributes:(id)attributes finalBalloonFrames:(id)frames sendAnimationType:(unint64_t)type;
+- (id)_animationCompletionBlockWithSendAnimationContext:(id)context;
+- (id)balloonViewFadeAnimationForConvertedCurrentMediaTime:(double)time direction:(unint64_t)direction sendAnimationType:(unint64_t)type;
+- (void)__beginThrowAnimationWithThrowBalloonViewAttributesCollection:(id)collection framesOfAddedChatItems:(id)items sendAnimationType:(unint64_t)type entryViewSize:(CGSize)size;
+- (void)_beginFocusAnimationWithContext:(id)context;
+- (void)_beginGentleAnimationWithContext:(id)context;
+- (void)_beginImpactAnimationWithContext:(id)context;
+- (void)_beginLoudAnimationsWithContext:(id)context;
+- (void)_beginPopAnimationWithContext:(id)context;
+- (void)_beginThrowAnimationWithContext:(id)context;
+- (void)_configureQuickReplySendAnimationGroup:(id)group withSendAnimationContext:(id)context;
+- (void)_prepareToAnimateForSendAnimationContext:(id)context;
+- (void)addAnimationsForColoredBalloonView:(id)view sendAnimationType:(unint64_t)type sendAnimationConfiguration:(id)configuration;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)beginAnimationWithSendAnimationContext:(id)context;
+- (void)beginQuickReplyAnimationWithSendAnimationContext:(id)context;
+- (void)performPopAnimationCleanUpForPopRendererView:(id)view;
+- (void)popRendererViewDidBegin:(id)begin;
+- (void)popRendererViewPlaySound:(id)sound;
+- (void)stopAnimationWithSendAnimationContext:(id)context;
 @end
 
 @implementation CKChatControllerDummyAnimator
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = [(CKChatControllerDummyAnimator *)self throwAnimationGroup:a3];
+  v4 = [(CKChatControllerDummyAnimator *)self throwAnimationGroup:stop];
   if (v4)
   {
     v5 = v4;
@@ -35,21 +35,21 @@
   }
 }
 
-- (void)stopAnimationWithSendAnimationContext:(id)a3
+- (void)stopAnimationWithSendAnimationContext:(id)context
 {
   v119 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 impactIdentifier];
+  contextCopy = context;
+  impactIdentifier = [contextCopy impactIdentifier];
 
-  if (v5)
+  if (impactIdentifier)
   {
-    v62 = self;
-    v63 = v4;
+    selfCopy = self;
+    v63 = contextCopy;
     v112 = 0u;
     v113 = 0u;
     v110 = 0u;
     v111 = 0u;
-    obj = [v4 animatableViews];
+    obj = [contextCopy animatableViews];
     v6 = [obj countByEnumeratingWithState:&v110 objects:v118 count:16];
     if (v6)
     {
@@ -75,9 +75,9 @@
 
           v9 = *(*(&v110 + 1) + 8 * i);
           v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
-          v11 = [v9 layer];
-          v12 = [v11 presentationLayer];
-          v13 = [v12 valueForKey:@"transform"];
+          layer = [v9 layer];
+          presentationLayer = [layer presentationLayer];
+          v13 = [presentationLayer valueForKey:@"transform"];
           [v10 setFromValue:v13];
 
           v106 = v80;
@@ -96,8 +96,8 @@
           v15 = [MEMORY[0x1E69793D0] functionWithName:v82];
           [v10 setTimingFunction:v15];
 
-          v16 = [v9 layer];
-          [v16 setAllowsEdgeAntialiasing:0];
+          layer2 = [v9 layer];
+          [layer2 setAllowsEdgeAntialiasing:0];
 
           v100 = 0u;
           v101 = 0u;
@@ -118,8 +118,8 @@
                 }
 
                 v21 = *(*(&v98 + 1) + 8 * j);
-                v22 = [v9 layer];
-                [v22 removeAnimationForKey:v21];
+                layer3 = [v9 layer];
+                [layer3 removeAnimationForKey:v21];
               }
 
               v18 = [&unk_1F04E70E0 countByEnumeratingWithState:&v98 objects:v117 count:16];
@@ -167,9 +167,9 @@
 
           v26 = *(*(&v94 + 1) + 8 * k);
           v27 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
-          v28 = [v26 layer];
-          v29 = [v28 presentationLayer];
-          v30 = [v29 valueForKey:@"transform"];
+          layer4 = [v26 layer];
+          presentationLayer2 = [layer4 presentationLayer];
+          v30 = [presentationLayer2 valueForKey:@"transform"];
           [v27 setFromValue:v30];
 
           v106 = v83;
@@ -188,8 +188,8 @@
           v32 = [MEMORY[0x1E69793D0] functionWithName:v67];
           [v27 setTimingFunction:v32];
 
-          v33 = [v26 layer];
-          [v33 setAllowsEdgeAntialiasing:0];
+          layer5 = [v26 layer];
+          [layer5 setAllowsEdgeAntialiasing:0];
 
           v92 = 0u;
           v93 = 0u;
@@ -210,8 +210,8 @@
                 }
 
                 v38 = *(*(&v90 + 1) + 8 * m);
-                v39 = [v26 layer];
-                [v39 removeAnimationForKey:v38];
+                layer6 = [v26 layer];
+                [layer6 removeAnimationForKey:v38];
               }
 
               v35 = [&unk_1F04E70F8 countByEnumeratingWithState:&v90 objects:v115 count:16];
@@ -233,8 +233,8 @@
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v40 = [v63 animatableTextViews];
-    v41 = [v40 countByEnumeratingWithState:&v86 objects:v114 count:16];
+    animatableTextViews = [v63 animatableTextViews];
+    v41 = [animatableTextViews countByEnumeratingWithState:&v86 objects:v114 count:16];
     if (v41)
     {
       v42 = v41;
@@ -246,98 +246,98 @@
         {
           if (*v87 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(animatableTextViews);
           }
 
           v46 = *(*(&v86 + 1) + 8 * n);
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v47 = [v46 subviews];
-            v48 = [v47 count];
+            subviews = [v46 subviews];
+            v48 = [subviews count];
 
             if (v48)
             {
-              v49 = [v46 subviews];
-              v50 = [v49 firstObject];
+              subviews2 = [v46 subviews];
+              firstObject = [subviews2 firstObject];
 
-              v51 = [v46 subviews];
-              v52 = [v51 firstObject];
-              [v52 setContentScaleFactor:0.0];
+              subviews3 = [v46 subviews];
+              firstObject2 = [subviews3 firstObject];
+              [firstObject2 setContentScaleFactor:0.0];
 
-              v53 = [v50 layer];
-              [v53 setMinificationFilter:v44];
+              layer7 = [firstObject layer];
+              [layer7 setMinificationFilter:v44];
 
-              v54 = [v50 layer];
-              [v54 removeAnimationForKey:@"darken"];
+              layer8 = [firstObject layer];
+              [layer8 removeAnimationForKey:@"darken"];
             }
 
-            v55 = [v46 layer];
-            [v55 removeAnimationForKey:@"position.y"];
+            layer9 = [v46 layer];
+            [layer9 removeAnimationForKey:@"position.y"];
 
-            v56 = [v46 layer];
-            [v56 removeAnimationForKey:@"position.x"];
+            layer10 = [v46 layer];
+            [layer10 removeAnimationForKey:@"position.x"];
 
-            v57 = [v46 layer];
-            [v57 removeAnimationForKey:@"transform.scale"];
+            layer11 = [v46 layer];
+            [layer11 removeAnimationForKey:@"transform.scale"];
 
-            v58 = [v46 layer];
-            [v58 removeAnimationForKey:@"transform.rotation.z"];
+            layer12 = [v46 layer];
+            [layer12 removeAnimationForKey:@"transform.rotation.z"];
 
-            v59 = [v46 layer];
-            [v59 removeAnimationForKey:@"opacity"];
+            layer13 = [v46 layer];
+            [layer13 removeAnimationForKey:@"opacity"];
           }
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v86 objects:v114 count:16];
+        v42 = [animatableTextViews countByEnumeratingWithState:&v86 objects:v114 count:16];
       }
 
       while (v42);
     }
 
-    v60 = [(CKChatControllerDummyAnimator *)v62 dustEmitter];
+    dustEmitter = [(CKChatControllerDummyAnimator *)selfCopy dustEmitter];
 
-    v4 = v63;
-    if (v60)
+    contextCopy = v63;
+    if (dustEmitter)
     {
-      v61 = [(CKChatControllerDummyAnimator *)v62 dustEmitter];
-      [v61 removeFromSuperlayer];
+      dustEmitter2 = [(CKChatControllerDummyAnimator *)selfCopy dustEmitter];
+      [dustEmitter2 removeFromSuperlayer];
 
-      [(CKChatControllerDummyAnimator *)v62 setDustEmitter:0];
+      [(CKChatControllerDummyAnimator *)selfCopy setDustEmitter:0];
     }
   }
 }
 
-- (void)_prepareToAnimateForSendAnimationContext:(id)a3
+- (void)_prepareToAnimateForSendAnimationContext:(id)context
 {
-  v5 = a3;
-  v4 = [(CKChatControllerDummyAnimator *)self animationDelegate];
-  [(CKChatControllerDummyAnimator *)self stopAnimationWithSendAnimationContext:v5];
+  contextCopy = context;
+  animationDelegate = [(CKChatControllerDummyAnimator *)self animationDelegate];
+  [(CKChatControllerDummyAnimator *)self stopAnimationWithSendAnimationContext:contextCopy];
   [MEMORY[0x1E6979518] setFrameStallSkipRequest:1];
   [MEMORY[0x1E6979518] begin];
   if (objc_opt_respondsToSelector())
   {
-    [v4 animationWillBeginWithContext:v5];
+    [animationDelegate animationWillBeginWithContext:contextCopy];
   }
 }
 
-- (id)_animationCompletionBlockWithSendAnimationContext:(id)a3
+- (id)_animationCompletionBlockWithSendAnimationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 impactIdentifier];
-  v6 = [(CKChatControllerDummyAnimator *)self animationDelegate];
+  contextCopy = context;
+  impactIdentifier = [contextCopy impactIdentifier];
+  animationDelegate = [(CKChatControllerDummyAnimator *)self animationDelegate];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__CKChatControllerDummyAnimator__animationCompletionBlockWithSendAnimationContext___block_invoke;
   aBlock[3] = &unk_1E72EB880;
-  v7 = v4;
+  v7 = contextCopy;
   v14 = v7;
-  v15 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = animationDelegate;
   v16 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"];
-  if (([v7 shouldRepeat] & 1) == 0 && v5 && (v10 & 1) == 0)
+  v10 = [impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"];
+  if (([v7 shouldRepeat] & 1) == 0 && impactIdentifier && (v10 & 1) == 0)
   {
     [MEMORY[0x1E6979518] setCompletionBlock:v9];
   }
@@ -358,68 +358,68 @@ void __83__CKChatControllerDummyAnimator__animationCompletionBlockWithSendAnimat
   [a1[6] animationDidFinishWithContext:a1[4]];
 }
 
-- (void)beginAnimationWithSendAnimationContext:(id)a3
+- (void)beginAnimationWithSendAnimationContext:(id)context
 {
-  v7 = a3;
-  [(CKChatControllerDummyAnimator *)self _prepareToAnimateForSendAnimationContext:v7];
-  v4 = [(CKChatControllerDummyAnimator *)self _animationCompletionBlockWithSendAnimationContext:v7];
-  v5 = [v7 impactIdentifier];
-  if ([v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
+  contextCopy = context;
+  [(CKChatControllerDummyAnimator *)self _prepareToAnimateForSendAnimationContext:contextCopy];
+  v4 = [(CKChatControllerDummyAnimator *)self _animationCompletionBlockWithSendAnimationContext:contextCopy];
+  impactIdentifier = [contextCopy impactIdentifier];
+  if ([impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
   {
-    [(CKChatControllerDummyAnimator *)self _beginImpactAnimationWithContext:v7];
+    [(CKChatControllerDummyAnimator *)self _beginImpactAnimationWithContext:contextCopy];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
+  else if ([impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
   {
-    [(CKChatControllerDummyAnimator *)self _beginGentleAnimationWithContext:v7];
+    [(CKChatControllerDummyAnimator *)self _beginGentleAnimationWithContext:contextCopy];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
+  else if ([impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
   {
-    [(CKChatControllerDummyAnimator *)self _beginLoudAnimationsWithContext:v7];
+    [(CKChatControllerDummyAnimator *)self _beginLoudAnimationsWithContext:contextCopy];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
+  else if ([impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
   {
-    [(CKChatControllerDummyAnimator *)self _beginFocusAnimationWithContext:v7];
+    [(CKChatControllerDummyAnimator *)self _beginFocusAnimationWithContext:contextCopy];
   }
 
-  else if ([v5 isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"])
+  else if ([impactIdentifier isEqualToString:@"com.apple.MobileSMS.expressivesend.pop"])
   {
     [(CKChatControllerDummyAnimator *)self setPopAnimationCompletionBlock:v4];
-    [(CKChatControllerDummyAnimator *)self _beginPopAnimationWithContext:v7];
+    [(CKChatControllerDummyAnimator *)self _beginPopAnimationWithContext:contextCopy];
   }
 
-  else if (!v5)
+  else if (!impactIdentifier)
   {
     v6 = dispatch_group_create();
     [(CKChatControllerDummyAnimator *)self setThrowAnimationGroup:v6];
-    [(CKChatControllerDummyAnimator *)self _beginThrowAnimationWithContext:v7];
+    [(CKChatControllerDummyAnimator *)self _beginThrowAnimationWithContext:contextCopy];
     dispatch_group_notify(v6, MEMORY[0x1E69E96A0], v4);
   }
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)beginQuickReplyAnimationWithSendAnimationContext:(id)a3
+- (void)beginQuickReplyAnimationWithSendAnimationContext:(id)context
 {
-  v4 = a3;
-  [(CKChatControllerDummyAnimator *)self _prepareToAnimateForSendAnimationContext:v4];
+  contextCopy = context;
+  [(CKChatControllerDummyAnimator *)self _prepareToAnimateForSendAnimationContext:contextCopy];
   group = dispatch_group_create();
-  [(CKChatControllerDummyAnimator *)self _configureQuickReplySendAnimationGroup:group withSendAnimationContext:v4];
-  v5 = [(CKChatControllerDummyAnimator *)self _animationCompletionBlockWithSendAnimationContext:v4];
+  [(CKChatControllerDummyAnimator *)self _configureQuickReplySendAnimationGroup:group withSendAnimationContext:contextCopy];
+  v5 = [(CKChatControllerDummyAnimator *)self _animationCompletionBlockWithSendAnimationContext:contextCopy];
 
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], v5);
   [MEMORY[0x1E6979518] commit];
 }
 
-- (double)_throwAnimationDurationScaleFactorForThrownBalloonAttributes:(id)a3 finalBalloonFrames:(id)a4 sendAnimationType:(unint64_t)a5
+- (double)_throwAnimationDurationScaleFactorForThrownBalloonAttributes:(id)attributes finalBalloonFrames:(id)frames sendAnimationType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  attributesCopy = attributes;
+  framesCopy = frames;
+  v9 = framesCopy;
   v10 = 1.0;
-  if (!a5)
+  if (!type)
   {
     v15 = 0;
     v16 = &v15;
@@ -429,9 +429,9 @@ void __83__CKChatControllerDummyAnimator__animationCompletionBlockWithSendAnimat
     v12[1] = 3221225472;
     v12[2] = __131__CKChatControllerDummyAnimator__throwAnimationDurationScaleFactorForThrownBalloonAttributes_finalBalloonFrames_sendAnimationType___block_invoke;
     v12[3] = &unk_1E72F3860;
-    v13 = v8;
+    v13 = framesCopy;
     v14 = &v15;
-    [v7 enumerateObjectsUsingBlock:v12];
+    [attributesCopy enumerateObjectsUsingBlock:v12];
     v10 = v16[3];
 
     _Block_object_dispose(&v15, 8);
@@ -487,28 +487,28 @@ void __131__CKChatControllerDummyAnimator__throwAnimationDurationScaleFactorForT
   }
 }
 
-- (void)__beginThrowAnimationWithThrowBalloonViewAttributesCollection:(id)a3 framesOfAddedChatItems:(id)a4 sendAnimationType:(unint64_t)a5 entryViewSize:(CGSize)a6
+- (void)__beginThrowAnimationWithThrowBalloonViewAttributesCollection:(id)collection framesOfAddedChatItems:(id)items sendAnimationType:(unint64_t)type entryViewSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CKChatControllerDummyAnimator *)self throwAnimationGroup];
-  [(CKChatControllerDummyAnimator *)self _throwAnimationDurationScaleFactorForThrownBalloonAttributes:v12 finalBalloonFrames:v11 sendAnimationType:a5];
+  height = size.height;
+  width = size.width;
+  itemsCopy = items;
+  collectionCopy = collection;
+  throwAnimationGroup = [(CKChatControllerDummyAnimator *)self throwAnimationGroup];
+  [(CKChatControllerDummyAnimator *)self _throwAnimationDurationScaleFactorForThrownBalloonAttributes:collectionCopy finalBalloonFrames:itemsCopy sendAnimationType:type];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __150__CKChatControllerDummyAnimator___beginThrowAnimationWithThrowBalloonViewAttributesCollection_framesOfAddedChatItems_sendAnimationType_entryViewSize___block_invoke;
   v17[3] = &unk_1E72F7130;
-  v18 = v11;
-  v19 = self;
-  v20 = v13;
-  v21 = a5;
+  v18 = itemsCopy;
+  selfCopy = self;
+  v20 = throwAnimationGroup;
+  typeCopy = type;
   v22 = v14;
   v23 = width;
   v24 = height;
-  v15 = v13;
-  v16 = v11;
-  [v12 enumerateObjectsUsingBlock:v17];
+  v15 = throwAnimationGroup;
+  v16 = itemsCopy;
+  [collectionCopy enumerateObjectsUsingBlock:v17];
 }
 
 void __150__CKChatControllerDummyAnimator___beginThrowAnimationWithThrowBalloonViewAttributesCollection_framesOfAddedChatItems_sendAnimationType_entryViewSize___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1138,40 +1138,40 @@ uint64_t __150__CKChatControllerDummyAnimator___beginThrowAnimationWithThrowBall
   return [v2 layoutIfNeeded];
 }
 
-- (void)_beginThrowAnimationWithContext:(id)a3
+- (void)_beginThrowAnimationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 sendAnimationType];
-  [v4 entryViewSize];
+  contextCopy = context;
+  sendAnimationType = [contextCopy sendAnimationType];
+  [contextCopy entryViewSize];
   v7 = v6;
   v9 = v8;
-  v11 = [v4 throwBalloonViewAttributesCollection];
-  v10 = [v4 framesOfAddedChatItems];
+  throwBalloonViewAttributesCollection = [contextCopy throwBalloonViewAttributesCollection];
+  framesOfAddedChatItems = [contextCopy framesOfAddedChatItems];
 
-  [(CKChatControllerDummyAnimator *)self __beginThrowAnimationWithThrowBalloonViewAttributesCollection:v11 framesOfAddedChatItems:v10 sendAnimationType:v5 entryViewSize:v7, v9];
+  [(CKChatControllerDummyAnimator *)self __beginThrowAnimationWithThrowBalloonViewAttributesCollection:throwBalloonViewAttributesCollection framesOfAddedChatItems:framesOfAddedChatItems sendAnimationType:sendAnimationType entryViewSize:v7, v9];
 }
 
-- (void)_configureQuickReplySendAnimationGroup:(id)a3 withSendAnimationContext:(id)a4
+- (void)_configureQuickReplySendAnimationGroup:(id)group withSendAnimationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  [(CKChatControllerDummyAnimator *)self setThrowAnimationGroup:v6];
-  v8 = [v7 framesOfAddedChatItems];
-  v9 = [v7 throwBalloonViewAttributesCollection];
-  -[CKChatControllerDummyAnimator _throwAnimationDurationScaleFactorForThrownBalloonAttributes:finalBalloonFrames:sendAnimationType:](self, "_throwAnimationDurationScaleFactorForThrownBalloonAttributes:finalBalloonFrames:sendAnimationType:", v9, v8, [v7 sendAnimationType]);
+  groupCopy = group;
+  contextCopy = context;
+  [(CKChatControllerDummyAnimator *)self setThrowAnimationGroup:groupCopy];
+  framesOfAddedChatItems = [contextCopy framesOfAddedChatItems];
+  throwBalloonViewAttributesCollection = [contextCopy throwBalloonViewAttributesCollection];
+  -[CKChatControllerDummyAnimator _throwAnimationDurationScaleFactorForThrownBalloonAttributes:finalBalloonFrames:sendAnimationType:](self, "_throwAnimationDurationScaleFactorForThrownBalloonAttributes:finalBalloonFrames:sendAnimationType:", throwBalloonViewAttributesCollection, framesOfAddedChatItems, [contextCopy sendAnimationType]);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_withSendAnimationContext___block_invoke;
   v14[3] = &unk_1E72F7158;
   v18 = v10;
   v14[4] = self;
-  v15 = v6;
-  v16 = v8;
-  v17 = v7;
-  v11 = v7;
-  v12 = v8;
-  v13 = v6;
-  [v9 enumerateObjectsUsingBlock:v14];
+  v15 = groupCopy;
+  v16 = framesOfAddedChatItems;
+  v17 = contextCopy;
+  v11 = contextCopy;
+  v12 = framesOfAddedChatItems;
+  v13 = groupCopy;
+  [throwBalloonViewAttributesCollection enumerateObjectsUsingBlock:v14];
 }
 
 void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_withSendAnimationContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1422,17 +1422,17 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   }
 }
 
-- (id)balloonViewFadeAnimationForConvertedCurrentMediaTime:(double)a3 direction:(unint64_t)a4 sendAnimationType:(unint64_t)a5
+- (id)balloonViewFadeAnimationForConvertedCurrentMediaTime:(double)time direction:(unint64_t)direction sendAnimationType:(unint64_t)type
 {
   v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v9 ck_requestHighFrameRate];
-  [v9 setBeginTime:a3];
+  [v9 setBeginTime:time];
   v10 = +[CKUIBehavior sharedBehaviors];
   [v10 sendAnimationDuration];
   [v9 setDuration:v11 / 3.0];
 
   v12 = 1.0;
-  if (a5 == 1)
+  if (type == 1)
   {
     v13 = 1.0;
   }
@@ -1442,7 +1442,7 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
     v13 = 0.0;
   }
 
-  if (a4)
+  if (direction)
   {
     v13 = 0.0;
     v14 = 0.0;
@@ -1453,7 +1453,7 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
     v14 = 1.0;
   }
 
-  if (a4 == 1)
+  if (direction == 1)
   {
     v15 = 0.0;
   }
@@ -1477,42 +1477,42 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   return v9;
 }
 
-- (void)_beginImpactAnimationWithContext:(id)a3
+- (void)_beginImpactAnimationWithContext:(id)context
 {
   v174[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v154 = [v3 animatableViews];
-  v153 = [v3 animatableTextViews];
-  v4 = [v3 throwBalloonViews];
-  v5 = [v3 isSender];
-  v155 = [v3 shouldRepeat];
+  contextCopy = context;
+  animatableViews = [contextCopy animatableViews];
+  animatableTextViews = [contextCopy animatableTextViews];
+  throwBalloonViews = [contextCopy throwBalloonViews];
+  isSender = [contextCopy isSender];
+  shouldRepeat = [contextCopy shouldRepeat];
 
-  v152 = v4;
-  v159 = [v4 firstObject];
-  v6 = [v159 layer];
-  [v6 setAllowsEdgeAntialiasing:1];
+  v152 = throwBalloonViews;
+  firstObject = [throwBalloonViews firstObject];
+  layer = [firstObject layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v9 = v8 * 5.0;
-  v10 = [v159 layer];
-  [v10 setRasterizationScale:v9];
+  layer2 = [firstObject layer];
+  [layer2 setRasterizationScale:v9];
 
-  [v159 bounds];
+  [firstObject bounds];
   v12 = -2.0;
-  if (v5)
+  if (isSender)
   {
     v12 = 2.0;
   }
 
   v13 = v11 / v12;
   v14 = [MEMORY[0x1E6979318] animationWithKeyPath:@"contentsMultiplyColor"];
-  v15 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v158 = v14;
-  [v14 setFromValue:{objc_msgSend(v15, "CGColor")}];
+  [v14 setFromValue:{objc_msgSend(blackColor, "CGColor")}];
 
-  v16 = [MEMORY[0x1E69DC888] whiteColor];
-  [v14 setToValue:{objc_msgSend(v16, "CGColor")}];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v14 setToValue:{objc_msgSend(whiteColor, "CGColor")}];
 
   [v14 setDuration:0.25];
   v17 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.rotation"];
@@ -1547,8 +1547,8 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   v31 = [v30 valueWithCATransform3D:&v164];
   [v156 setFromValue:v31];
 
-  v32 = [v156 fromValue];
-  [v156 setToValue:v32];
+  fromValue = [v156 fromValue];
+  [v156 setToValue:fromValue];
 
   [v156 setAdditive:1];
   v33 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
@@ -1631,8 +1631,8 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   v82 = [v81 valueWithCATransform3D:&v164];
   [v80 setFromValue:v82];
 
-  v83 = [v80 fromValue];
-  [v80 setToValue:v83];
+  fromValue2 = [v80 fromValue];
+  [v80 setToValue:fromValue2];
 
   [v80 setAdditive:1];
   v84 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
@@ -1670,9 +1670,9 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   [v84 setCalculationMode:*MEMORY[0x1E6979590]];
   [v84 setDuration:0.333333333];
   v99 = CACurrentMediaTime();
-  v100 = [MEMORY[0x1E6979308] animation];
-  [v100 setBeginTime:v99];
-  [v100 setDuration:1.5];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setBeginTime:v99];
+  [animation setDuration:1.5];
   v168[0] = v156;
   v168[1] = v157;
   v149 = v80;
@@ -1682,9 +1682,9 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   v168[4] = v84;
   v168[5] = v158;
   v101 = [MEMORY[0x1E695DEC8] arrayWithObjects:v168 count:6];
-  [v100 setAnimations:v101];
+  [animation setAnimations:v101];
 
-  if (v155)
+  if (shouldRepeat)
   {
     *&v102 = INFINITY;
   }
@@ -1694,28 +1694,28 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
     *&v102 = 0.0;
   }
 
-  [v100 setRepeatCount:v102];
-  v103 = [v159 layer];
-  [v103 addAnimation:v100 forKey:@"group"];
+  [animation setRepeatCount:v102];
+  layer3 = [firstObject layer];
+  [layer3 addAnimation:animation forKey:@"group"];
 
-  v104 = [MEMORY[0x1E6979360] emitterCell];
-  [v104 setContentsScale:0.08];
+  emitterCell = [MEMORY[0x1E6979360] emitterCell];
+  [emitterCell setContentsScale:0.08];
   LODWORD(v105) = *"";
-  [v104 setBirthRate:v105];
+  [emitterCell setBirthRate:v105];
   LODWORD(v106) = 0.5;
-  [v104 setLifetime:v106];
-  [v104 setParticleType:*MEMORY[0x1E6979778]];
-  [v104 setScale:1.1];
-  [v104 setVelocity:220.0];
-  [v104 setVelocityRange:180.0];
-  [v104 setName:@"dustCell"];
+  [emitterCell setLifetime:v106];
+  [emitterCell setParticleType:*MEMORY[0x1E6979778]];
+  [emitterCell setScale:1.1];
+  [emitterCell setVelocity:220.0];
+  [emitterCell setVelocityRange:180.0];
+  [emitterCell setName:@"dustCell"];
   v107 = [MEMORY[0x1E69DC888] colorWithWhite:0.3 alpha:0.0156862745];
-  [v104 setColor:{objc_msgSend(v107, "CGColor")}];
+  [emitterCell setColor:{objc_msgSend(v107, "CGColor")}];
 
   v108 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"impact-effect-dust"];
-  [v104 setContents:{objc_msgSend(v108, "CGImage")}];
+  [emitterCell setContents:{objc_msgSend(v108, "CGImage")}];
 
-  [v104 setEmissionRange:1.57079633];
+  [emitterCell setEmissionRange:1.57079633];
   v109 = [MEMORY[0x1E6979358] behaviorWithType:*MEMORY[0x1E6979750]];
   v110 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
   v167[0] = [v110 CGColor];
@@ -1729,101 +1729,101 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   [v113 setValue:@"scale" forKey:@"keyPath"];
   [v113 setValue:&unk_1F04E7188 forKey:@"values"];
   [v113 setValue:&unk_1F04E71A0 forKey:@"locations"];
-  v114 = [MEMORY[0x1E6979368] layer];
-  [v114 setEmitterShape:*MEMORY[0x1E69797B0]];
-  v115 = [v159 layer];
-  [v115 bounds];
+  layer4 = [MEMORY[0x1E6979368] layer];
+  [layer4 setEmitterShape:*MEMORY[0x1E69797B0]];
+  layer5 = [firstObject layer];
+  [layer5 bounds];
   v117 = v116 + -20.0;
 
-  v118 = [v159 layer];
-  [v118 bounds];
+  layer6 = [firstObject layer];
+  [layer6 bounds];
   v120 = v119 + -20.0;
 
-  [v114 setEmitterSize:{fmax(v117, 1.0), fmax(v120, 1.0)}];
-  [v114 setEmitterMode:*MEMORY[0x1E6979798]];
+  [layer4 setEmitterSize:{fmax(v117, 1.0), fmax(v120, 1.0)}];
+  [layer4 setEmitterMode:*MEMORY[0x1E6979798]];
   LODWORD(v121) = 4.0;
-  [v114 setScale:v121];
-  v166 = v104;
+  [layer4 setScale:v121];
+  v166 = emitterCell;
   v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v166 count:1];
-  [v114 setEmitterCells:v122];
+  [layer4 setEmitterCells:v122];
 
-  v123 = [v159 layer];
-  [v123 position];
-  [v114 setPosition:?];
+  layer7 = [firstObject layer];
+  [layer7 position];
+  [layer4 setPosition:?];
 
   v165[0] = v109;
   v165[1] = v113;
   v124 = [MEMORY[0x1E695DEC8] arrayWithObjects:v165 count:2];
-  [v114 setEmitterBehaviors:v124];
+  [layer4 setEmitterBehaviors:v124];
 
-  [v100 duration];
-  [v114 setDuration:?];
+  [animation duration];
+  [layer4 setDuration:?];
   LODWORD(v125) = 2139095040;
-  [v114 setRepeatCount:v125];
-  [v100 duration];
-  [v114 setBeginTime:v99 + v126 * 0.21];
+  [layer4 setRepeatCount:v125];
+  [animation duration];
+  [layer4 setBeginTime:v99 + v126 * 0.21];
   v127 = [MEMORY[0x1E6979390] animationWithKeyPath:@"birthRate"];
   [v127 setValues:&unk_1F04E71B8];
   [v127 setKeyTimes:&unk_1F04E71D0];
-  [v100 duration];
+  [animation duration];
   [v127 setDuration:?];
   [v127 setFillMode:*MEMORY[0x1E69797E0]];
-  [v100 duration];
+  [animation duration];
   [v127 setBeginTime:v128 * -0.21];
   [v127 setBeginTimeMode:*MEMORY[0x1E6979588]];
   [v127 setRemovedOnCompletion:0];
-  [v114 addAnimation:v127 forKey:0];
-  v129 = [v159 superview];
-  v130 = [v129 layer];
-  v131 = [v159 layer];
-  [v130 insertSublayer:v114 below:v131];
+  [layer4 addAnimation:v127 forKey:0];
+  superview = [firstObject superview];
+  layer8 = [superview layer];
+  layer9 = [firstObject layer];
+  [layer8 insertSublayer:layer4 below:layer9];
 
-  if ((v155 & 1) == 0)
+  if ((shouldRepeat & 1) == 0)
   {
-    [v100 duration];
+    [animation duration];
     v133 = v132;
-    [v104 lifetime];
+    [emitterCell lifetime];
     v135 = dispatch_time(0, ((v134 + v133 * 0.25) * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__CKChatControllerDummyAnimator__beginImpactAnimationWithContext___block_invoke_374;
     block[3] = &unk_1E72EBA18;
-    v163 = v114;
+    v163 = layer4;
     dispatch_after(v135, MEMORY[0x1E69E96A0], block);
   }
 
-  [(CKChatControllerDummyAnimator *)self setDustEmitter:v114];
+  [(CKChatControllerDummyAnimator *)self setDustEmitter:layer4];
 
-  v136 = [v153 firstObject];
+  firstObject2 = [animatableTextViews firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v137 = [v136 subviews];
-    v138 = [v137 count];
+    subviews = [firstObject2 subviews];
+    v138 = [subviews count];
 
     if (v138)
     {
-      v139 = [v136 subviews];
-      v140 = [v139 firstObject];
+      subviews2 = [firstObject2 subviews];
+      firstObject3 = [subviews2 firstObject];
 
-      v141 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v141 scale];
-      [v140 setContentScaleFactor:v142 * 5.0];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen2 scale];
+      [firstObject3 setContentScaleFactor:v142 * 5.0];
 
       v143 = *MEMORY[0x1E6979D68];
-      v144 = [v140 layer];
-      [v144 setMinificationFilter:v143];
+      layer10 = [firstObject3 layer];
+      [layer10 setMinificationFilter:v143];
 
       v145 = [MEMORY[0x1E6979318] animationWithKeyPath:@"contentsMultiplyColor"];
-      v146 = [MEMORY[0x1E69DC888] blackColor];
-      [v145 setFromValue:{objc_msgSend(v146, "CGColor")}];
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+      [v145 setFromValue:{objc_msgSend(blackColor2, "CGColor")}];
 
-      v147 = [MEMORY[0x1E69DC888] whiteColor];
-      [v145 setToValue:{objc_msgSend(v147, "CGColor")}];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [v145 setToValue:{objc_msgSend(whiteColor2, "CGColor")}];
 
       [v145 setDuration:0.25];
-      v148 = [v140 layer];
-      [v148 addAnimation:v145 forKey:@"darken"];
+      layer11 = [firstObject3 layer];
+      [layer11 addAnimation:v145 forKey:@"darken"];
     }
   }
 
@@ -1832,8 +1832,8 @@ void __97__CKChatControllerDummyAnimator__configureQuickReplySendAnimationGroup_
   v160[2] = __66__CKChatControllerDummyAnimator__beginImpactAnimationWithContext___block_invoke_2;
   v160[3] = &__block_descriptor_41_e23_v32__0__UIView_8Q16_B24l;
   *&v160[4] = v99;
-  v161 = v155;
-  [v154 enumerateObjectsUsingBlock:v160];
+  v161 = shouldRepeat;
+  [animatableViews enumerateObjectsUsingBlock:v160];
 }
 
 void __66__CKChatControllerDummyAnimator__beginImpactAnimationWithContext___block_invoke_2(uint64_t a1, void *a2, unint64_t a3)
@@ -1975,11 +1975,11 @@ void __66__CKChatControllerDummyAnimator__beginImpactAnimationWithContext___bloc
   [v57 addAnimation:v42 forKey:@"jump"];
 }
 
-- (void)_beginPopAnimationWithContext:(id)a3
+- (void)_beginPopAnimationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 throwBalloonViews];
-  v6 = [v5 firstObject];
+  contextCopy = context;
+  throwBalloonViews = [contextCopy throwBalloonViews];
+  firstObject = [throwBalloonViews firstObject];
   v7 = [CKPopRendererView alloc];
   v8 = [(CKPopRendererView *)v7 initWithFrame:0 device:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if ([(CKPopRendererView *)v8 _shouldReverseLayoutDirection])
@@ -1989,14 +1989,14 @@ void __66__CKChatControllerDummyAnimator__beginImpactAnimationWithContext___bloc
     [(CKPopRendererView *)v8 setTransform:&v28];
   }
 
-  v9 = [v6 superview];
-  [v6 frame];
+  superview = [firstObject superview];
+  [firstObject frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v4 containerView];
-  [v9 convertRect:v18 toView:{v11, v13, v15, v17}];
+  containerView = [contextCopy containerView];
+  [superview convertRect:containerView toView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -2005,31 +2005,31 @@ void __66__CKChatControllerDummyAnimator__beginImpactAnimationWithContext___bloc
   [(CKPopRendererView *)v8 frameForSourceFrame:v20, v22, v24, v26];
   [(CKPopRendererView *)v8 setFrame:?];
   [(CKPopRendererView *)v8 setDelegate:self];
-  v27 = [v4 containerView];
+  containerView2 = [contextCopy containerView];
 
-  [v27 addSubview:v8];
-  if (![(CKPopRendererView *)v8 playWithSourceView:v6])
+  [containerView2 addSubview:v8];
+  if (![(CKPopRendererView *)v8 playWithSourceView:firstObject])
   {
     [(CKPopRendererView *)v8 removeFromSuperview];
   }
 }
 
-- (void)popRendererViewDidBegin:(id)a3
+- (void)popRendererViewDidBegin:(id)begin
 {
-  v3 = [(CKChatControllerDummyAnimator *)self animationDelegate];
-  [v3 popAnimationDidBegin];
+  animationDelegate = [(CKChatControllerDummyAnimator *)self animationDelegate];
+  [animationDelegate popAnimationDidBegin];
 }
 
-- (void)performPopAnimationCleanUpForPopRendererView:(id)a3
+- (void)performPopAnimationCleanUpForPopRendererView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendererView___block_invoke;
   block[3] = &unk_1E72EE0D0;
-  v7 = v4;
-  v5 = v4;
+  v7 = viewCopy;
+  v5 = viewCopy;
   objc_copyWeak(&v8, &location);
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(&v8);
@@ -2052,36 +2052,36 @@ void __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendere
   [v3 setPopAnimationCompletionBlock:0];
 }
 
-- (void)popRendererViewPlaySound:(id)a3
+- (void)popRendererViewPlaySound:(id)sound
 {
-  v3 = [(CKChatControllerDummyAnimator *)self animationDelegate];
-  [v3 playSoundForPopAnimation];
+  animationDelegate = [(CKChatControllerDummyAnimator *)self animationDelegate];
+  [animationDelegate playSoundForPopAnimation];
 }
 
-- (void)_beginLoudAnimationsWithContext:(id)a3
+- (void)_beginLoudAnimationsWithContext:(id)context
 {
   v110[11] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 throwBalloonViews];
-  v102 = [v3 animatableViews];
-  v101 = [v3 animatableTextViews];
-  v96 = [v3 shouldRepeat];
-  v5 = [v3 isSender];
-  v99 = v4;
-  v6 = [v4 firstObject];
-  v7 = [v6 layer];
-  [v7 setAllowsEdgeAntialiasing:1];
+  contextCopy = context;
+  throwBalloonViews = [contextCopy throwBalloonViews];
+  animatableViews = [contextCopy animatableViews];
+  animatableTextViews = [contextCopy animatableTextViews];
+  shouldRepeat = [contextCopy shouldRepeat];
+  isSender = [contextCopy isSender];
+  v99 = throwBalloonViews;
+  firstObject = [throwBalloonViews firstObject];
+  layer = [firstObject layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
-  v100 = v6;
-  [v6 bounds];
+  v100 = firstObject;
+  [firstObject bounds];
   v9 = -2.0;
-  if (v5)
+  if (isSender)
   {
     v9 = 2.0;
   }
 
   v10 = v8 / v9;
-  [v6 bounds];
+  [firstObject bounds];
   v12 = v11;
   v13 = v11 * 0.5;
   v14 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.rotation"];
@@ -2119,13 +2119,13 @@ void __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendere
   v26 = [v25 valueWithCATransform3D:&v104];
   [v24 setFromValue:v26];
 
-  v27 = [v24 fromValue];
-  [v24 setToValue:v27];
+  fromValue = [v24 fromValue];
+  [v24 setToValue:fromValue];
 
   [v24 setAdditive:1];
-  LODWORD(v27) = [v3 beginAnimationFromTranscriptPresentedState];
+  LODWORD(fromValue) = [contextCopy beginAnimationFromTranscriptPresentedState];
 
-  if (v27)
+  if (fromValue)
   {
     v28 = 1.0;
   }
@@ -2178,24 +2178,24 @@ void __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendere
   v51 = [v50 valueWithCATransform3D:&v104];
   [v49 setFromValue:v51];
 
-  v52 = [v49 fromValue];
-  [v49 setToValue:v52];
+  fromValue2 = [v49 fromValue];
+  [v49 setToValue:fromValue2];
 
   [v49 setAdditive:1];
-  v53 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v54 = *MEMORY[0x1E69795C0];
-  [v53 setBeginTimeMode:*MEMORY[0x1E69795C0]];
-  [v53 setDelegate:self];
-  [v53 setDuration:1.51666667];
+  [animation setBeginTimeMode:*MEMORY[0x1E69795C0]];
+  [animation setDelegate:self];
+  [animation setDuration:1.51666667];
   v98 = v23;
   v107[0] = v23;
   v107[1] = v24;
   v107[2] = v29;
   v107[3] = v49;
   v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v107 count:4];
-  [v53 setAnimations:v55];
+  [animation setAnimations:v55];
 
-  if (v96)
+  if (shouldRepeat)
   {
     v57 = INFINITY;
   }
@@ -2206,9 +2206,9 @@ void __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendere
   }
 
   *&v56 = v57;
-  [v53 setRepeatCount:v56];
-  v58 = [v100 layer];
-  [v58 addAnimation:v53 forKey:@"group"];
+  [animation setRepeatCount:v56];
+  layer2 = [v100 layer];
+  [layer2 addAnimation:animation forKey:@"group"];
 
   [v100 bounds];
   v103[0] = MEMORY[0x1E69E9820];
@@ -2216,18 +2216,18 @@ void __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendere
   v103[2] = __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block_invoke_440;
   v103[3] = &__block_descriptor_40_e23_v32__0__UIView_8Q16_B24l;
   *&v103[4] = v59 * -1.25;
-  [v102 enumerateObjectsUsingBlock:v103];
-  v60 = [v101 firstObject];
+  [animatableViews enumerateObjectsUsingBlock:v103];
+  firstObject2 = [animatableTextViews firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v60 bounds];
+    [firstObject2 bounds];
     v62 = v61 + 10.0;
-    [v60 bounds];
+    [firstObject2 bounds];
     v64 = v62 / v63;
-    [v60 bounds];
+    [firstObject2 bounds];
     v66 = v65 + 10.0;
-    [v60 bounds];
+    [firstObject2 bounds];
     v68 = v66 / v67;
     if (v64 < v66 / v67)
     {
@@ -2270,24 +2270,24 @@ void __78__CKChatControllerDummyAnimator_performPopAnimationCleanUpForPopRendere
     [v70 setRepeatCount:v82];
     [v70 setDuration:1.51666667];
     [v70 setBeginTimeMode:v54];
-    v83 = [v60 layer];
-    [v83 addAnimation:v70 forKey:@"transform.scale"];
+    layer3 = [firstObject2 layer];
+    [layer3 addAnimation:v70 forKey:@"transform.scale"];
 
-    v84 = [v60 subviews];
-    v85 = [v84 count];
+    subviews = [firstObject2 subviews];
+    v85 = [subviews count];
 
     if (v85)
     {
-      v86 = [v60 subviews];
-      v87 = [v86 firstObject];
+      subviews2 = [firstObject2 subviews];
+      firstObject3 = [subviews2 firstObject];
 
-      v88 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v88 scale];
-      [v87 setContentScaleFactor:v89 * 5.0];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
+      [firstObject3 setContentScaleFactor:v89 * 5.0];
 
       v90 = *MEMORY[0x1E6979D68];
-      v91 = [v87 layer];
-      [v91 setMinificationFilter:v90];
+      layer4 = [firstObject3 layer];
+      [layer4 setMinificationFilter:v90];
     }
   }
 }
@@ -2328,28 +2328,28 @@ void __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block
   [v19 addAnimation:v5 forKey:@"jump"];
 }
 
-- (void)_beginFocusAnimationWithContext:(id)a3
+- (void)_beginFocusAnimationWithContext:(id)context
 {
   v83[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v76 = [v3 throwBalloonViews];
-  v75 = [v3 animatableTextViews];
-  v72 = [v3 shouldRepeat];
-  v74 = v3;
-  v4 = [v3 isSender];
-  v5 = [v76 firstObject];
-  v6 = [v5 layer];
-  [v6 setAllowsEdgeAntialiasing:1];
+  contextCopy = context;
+  throwBalloonViews = [contextCopy throwBalloonViews];
+  animatableTextViews = [contextCopy animatableTextViews];
+  shouldRepeat = [contextCopy shouldRepeat];
+  v74 = contextCopy;
+  isSender = [contextCopy isSender];
+  firstObject = [throwBalloonViews firstObject];
+  layer = [firstObject layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
-  [v5 bounds];
+  [firstObject bounds];
   v8 = -2.0;
-  if (v4)
+  if (isSender)
   {
     v8 = 2.0;
   }
 
   v9 = v7 / v8;
-  [v5 bounds];
+  [firstObject bounds];
   v11 = v10;
   v12 = v10 * 0.5;
   v13 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
@@ -2358,8 +2358,8 @@ void __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block
   v15 = [v14 valueWithCATransform3D:&v78];
   [v13 setFromValue:v15];
 
-  v16 = [v13 fromValue];
-  [v13 setToValue:v16];
+  fromValue = [v13 fromValue];
+  [v13 setToValue:fromValue];
 
   [v13 setAdditive:1];
   v17 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
@@ -2406,23 +2406,23 @@ void __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block
   v39 = [v38 valueWithCATransform3D:&v78];
   [v37 setFromValue:v39];
 
-  v40 = [v37 fromValue];
-  [v37 setToValue:v40];
+  fromValue2 = [v37 fromValue];
+  [v37 setToValue:fromValue2];
 
   [v37 setAdditive:1];
-  v41 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v42 = *MEMORY[0x1E69795C0];
-  [v41 setBeginTimeMode:*MEMORY[0x1E69795C0]];
-  [v41 setDelegate:self];
-  [v41 setDuration:4.01666667];
+  [animation setBeginTimeMode:*MEMORY[0x1E69795C0]];
+  [animation setDelegate:self];
+  [animation setDuration:4.01666667];
   v71 = v13;
   v81[0] = v13;
   v81[1] = v17;
   v81[2] = v37;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:3];
-  [v41 setAnimations:v43];
+  [animation setAnimations:v43];
 
-  if (v72)
+  if (shouldRepeat)
   {
     v45 = INFINITY;
   }
@@ -2433,19 +2433,19 @@ void __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block
   }
 
   *&v44 = v45;
-  [v41 setRepeatCount:v44];
-  v46 = [v5 layer];
-  [v46 addAnimation:v41 forKey:@"group"];
+  [animation setRepeatCount:v44];
+  layer2 = [firstObject layer];
+  [layer2 addAnimation:animation forKey:@"group"];
 
-  v73 = v5;
-  [v5 bounds];
+  v73 = firstObject;
+  [firstObject bounds];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block_invoke;
   v77[3] = &__block_descriptor_40_e30_v32__0__CKBalloonView_8Q16_B24l;
   *&v77[4] = v47 * -0.25;
-  [v76 enumerateObjectsUsingBlock:v77];
-  v48 = [v75 firstObject];
+  [throwBalloonViews enumerateObjectsUsingBlock:v77];
+  firstObject2 = [animatableTextViews firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2464,8 +2464,8 @@ void __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block
     [v49 setRepeatCount:v55];
     [v49 setDuration:4.01666667];
     [v49 setBeginTimeMode:v42];
-    v56 = [v48 layer];
-    [v56 addAnimation:v49 forKey:@"transform.scale"];
+    layer3 = [firstObject2 layer];
+    [layer3 addAnimation:v49 forKey:@"transform.scale"];
   }
 
   v57 = [MEMORY[0x1E6979390] animationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
@@ -2487,8 +2487,8 @@ void __65__CKChatControllerDummyAnimator__beginLoudAnimationsWithContext___block
   v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:3];
   [v57 setTimingFunctions:v67];
 
-  v68 = [v74 backdropLayer];
-  [v68 addAnimation:v57 forKey:@"filters.gaussianBlur.inputRadius"];
+  backdropLayer = [v74 backdropLayer];
+  [backdropLayer addAnimation:v57 forKey:@"filters.gaussianBlur.inputRadius"];
 }
 
 void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block_invoke(uint64_t a1, void *a2)
@@ -2527,30 +2527,30 @@ void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block
   [v19 addAnimation:v5 forKey:@"jump"];
 }
 
-- (void)_beginGentleAnimationWithContext:(id)a3
+- (void)_beginGentleAnimationWithContext:(id)context
 {
   v71[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v63 = [v3 animatableViews];
-  v60 = [v3 animatableTextViews];
-  v4 = [v3 throwBalloonViews];
-  v5 = [v3 isSender];
-  v59 = [v3 shouldRepeat];
+  contextCopy = context;
+  animatableViews = [contextCopy animatableViews];
+  animatableTextViews = [contextCopy animatableTextViews];
+  throwBalloonViews = [contextCopy throwBalloonViews];
+  isSender = [contextCopy isSender];
+  shouldRepeat = [contextCopy shouldRepeat];
 
-  v62 = v4;
-  v6 = [v4 firstObject];
-  v7 = [v6 layer];
-  [v7 setAllowsEdgeAntialiasing:1];
+  v62 = throwBalloonViews;
+  firstObject = [throwBalloonViews firstObject];
+  layer = [firstObject layer];
+  [layer setAllowsEdgeAntialiasing:1];
 
-  [v6 bounds];
+  [firstObject bounds];
   v9 = -2.0;
-  if (v5)
+  if (isSender)
   {
     v9 = 2.0;
   }
 
   v10 = v8 / v9;
-  [v6 bounds];
+  [firstObject bounds];
   v12 = v11;
   v13 = v11 * 0.5;
   v14 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
@@ -2559,8 +2559,8 @@ void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block
   v16 = [v15 valueWithCATransform3D:&v67];
   [v14 setFromValue:v16];
 
-  v17 = [v14 fromValue];
-  [v14 setToValue:v17];
+  fromValue = [v14 fromValue];
+  [v14 setToValue:fromValue];
 
   [v14 setAdditive:1];
   v18 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
@@ -2606,22 +2606,22 @@ void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block
   v40 = [v39 valueWithCATransform3D:&v67];
   [v38 setFromValue:v40];
 
-  v41 = [v38 fromValue];
-  [v38 setToValue:v41];
+  fromValue2 = [v38 fromValue];
+  [v38 setToValue:fromValue2];
 
   [v38 setAdditive:1];
-  v42 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v43 = *MEMORY[0x1E69795C0];
-  [v42 setBeginTimeMode:*MEMORY[0x1E69795C0]];
-  [v42 setDelegate:self];
-  [v42 setDuration:4.01666667];
+  [animation setBeginTimeMode:*MEMORY[0x1E69795C0]];
+  [animation setDelegate:self];
+  [animation setDuration:4.01666667];
   v69[0] = v14;
   v69[1] = v18;
   v69[2] = v38;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:3];
-  [v42 setAnimations:v44];
+  [animation setAnimations:v44];
 
-  if (v59)
+  if (shouldRepeat)
   {
     v46 = INFINITY;
   }
@@ -2632,11 +2632,11 @@ void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block
   }
 
   *&v45 = v46;
-  [v42 setRepeatCount:v45];
-  v47 = [v6 layer];
-  [v47 addAnimation:v42 forKey:@"group"];
+  [animation setRepeatCount:v45];
+  layer2 = [firstObject layer];
+  [layer2 addAnimation:animation forKey:@"group"];
 
-  [v6 bounds];
+  [firstObject bounds];
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v64[2] = __66__CKChatControllerDummyAnimator__beginGentleAnimationWithContext___block_invoke;
@@ -2644,8 +2644,8 @@ void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block
   v66 = v48 * -0.25;
   v49 = v18;
   v65 = v49;
-  [v63 enumerateObjectsUsingBlock:v64];
-  v50 = [v60 firstObject];
+  [animatableViews enumerateObjectsUsingBlock:v64];
+  firstObject2 = [animatableTextViews firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2664,8 +2664,8 @@ void __65__CKChatControllerDummyAnimator__beginFocusAnimationWithContext___block
     [v51 setRepeatCount:v57];
     [v51 setDuration:4.01666667];
     [v51 setBeginTimeMode:v43];
-    v58 = [v50 layer];
-    [v58 addAnimation:v51 forKey:@"transform.scale"];
+    layer3 = [firstObject2 layer];
+    [layer3 addAnimation:v51 forKey:@"transform.scale"];
   }
 }
 
@@ -2702,23 +2702,23 @@ void __66__CKChatControllerDummyAnimator__beginGentleAnimationWithContext___bloc
   return WeakRetained;
 }
 
-- (void)addAnimationsForColoredBalloonView:(id)a3 sendAnimationType:(unint64_t)a4 sendAnimationConfiguration:(id)a5
+- (void)addAnimationsForColoredBalloonView:(id)view sendAnimationType:(unint64_t)type sendAnimationConfiguration:(id)configuration
 {
-  v7 = a3;
-  v10 = a5;
-  v8 = [v7 layer];
+  viewCopy = view;
+  configurationCopy = configuration;
+  layer = [viewCopy layer];
   type metadata accessor for CKBalloonLayer(0);
   if (swift_dynamicCastClass())
   {
-    sub_190935D04(v10, a4);
-    v9 = v8;
+    sub_190935D04(configurationCopy, type);
+    v9 = layer;
   }
 
   else
   {
-    v9 = v7;
-    v7 = v10;
-    v10 = v8;
+    v9 = viewCopy;
+    viewCopy = configurationCopy;
+    configurationCopy = layer;
   }
 }
 

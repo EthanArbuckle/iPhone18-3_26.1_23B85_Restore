@@ -1,14 +1,14 @@
 @interface _UINavigationItemRenameHandler
-+ (id)handlerWithDidEndRenamingHandler:(id)a3;
++ (id)handlerWithDidEndRenamingHandler:(id)handler;
 - (BOOL)_canRename;
-- (BOOL)_shouldEndRenamingWithTitle:(id)a3;
+- (BOOL)_shouldEndRenamingWithTitle:(id)title;
 - (UINavigationItem)associatedItem;
 - (_UINavigationItemRenameHandler)init;
-- (_UINavigationItemRenameHandler)initWithDidEndRenamingHandler:(id)a3;
+- (_UINavigationItemRenameHandler)initWithDidEndRenamingHandler:(id)handler;
 - (id)_fileURLForRenaming;
-- (id)_willBeginRenamingWithTitle:(id)a3 selectedRange:(_NSRange *)a4;
-- (void)_fileRenameDidEndWithFinalURL:(id)a3;
-- (void)_fileRenameDidFailWithError:(id)a3;
+- (id)_willBeginRenamingWithTitle:(id)title selectedRange:(_NSRange *)range;
+- (void)_fileRenameDidEndWithFinalURL:(id)l;
+- (void)_fileRenameDidFailWithError:(id)error;
 @end
 
 @implementation _UINavigationItemRenameHandler
@@ -20,13 +20,13 @@
   return 0;
 }
 
-- (_UINavigationItemRenameHandler)initWithDidEndRenamingHandler:(id)a3
+- (_UINavigationItemRenameHandler)initWithDidEndRenamingHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UINavigationItemRenameHandler.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"didEndRenamingHandler != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationItemRenameHandler.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"didEndRenamingHandler != NULL"}];
   }
 
   v10.receiver = self;
@@ -35,16 +35,16 @@
   v7 = v6;
   if (v6)
   {
-    [(_UINavigationItemRenameHandler *)v6 setDidEndRenamingHandler:v5];
+    [(_UINavigationItemRenameHandler *)v6 setDidEndRenamingHandler:handlerCopy];
   }
 
   return v7;
 }
 
-+ (id)handlerWithDidEndRenamingHandler:(id)a3
++ (id)handlerWithDidEndRenamingHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDidEndRenamingHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithDidEndRenamingHandler:handlerCopy];
 
   return v5;
 }
@@ -58,8 +58,8 @@
 
 - (BOOL)_canRename
 {
-  v3 = [(_UINavigationItemRenameHandler *)self _fileURLForRenaming];
-  if (v3 && (v4 = objc_opt_new(), [v3 path], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isWritableFileAtPath:", v5), v5, v4, !v6))
+  _fileURLForRenaming = [(_UINavigationItemRenameHandler *)self _fileURLForRenaming];
+  if (_fileURLForRenaming && (v4 = objc_opt_new(), [_fileURLForRenaming path], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isWritableFileAtPath:", v5), v5, v4, !v6))
   {
     v9 = 0;
   }
@@ -83,17 +83,17 @@
   return v9;
 }
 
-- (id)_willBeginRenamingWithTitle:(id)a3 selectedRange:(_NSRange *)a4
+- (id)_willBeginRenamingWithTitle:(id)title selectedRange:(_NSRange *)range
 {
-  v6 = a3;
+  titleCopy = title;
   willBeginRenamingHandler = self->_willBeginRenamingHandler;
   if (willBeginRenamingHandler)
   {
-    v8 = willBeginRenamingHandler[2](willBeginRenamingHandler, v6);
+    v8 = willBeginRenamingHandler[2](willBeginRenamingHandler, titleCopy);
 
     v9 = [v8 length];
-    a4->location = 0;
-    a4->length = v9;
+    range->location = 0;
+    range->length = v9;
   }
 
   else
@@ -101,12 +101,12 @@
     willBeginRenamingWithRangeHandler = self->_willBeginRenamingWithRangeHandler;
     if (willBeginRenamingWithRangeHandler)
     {
-      willBeginRenamingWithRangeHandler[2](willBeginRenamingWithRangeHandler, v6, a4);
+      willBeginRenamingWithRangeHandler[2](willBeginRenamingWithRangeHandler, titleCopy, range);
     }
 
     else
     {
-      [_UINavigationItemRenameHandler defaultNavigationItem:0 willBeginRenamingWithSuggestedTitle:v6 selectedRange:a4];
+      [_UINavigationItemRenameHandler defaultNavigationItem:0 willBeginRenamingWithSuggestedTitle:titleCopy selectedRange:range];
     }
     v8 = ;
   }
@@ -114,17 +114,17 @@
   return v8;
 }
 
-- (BOOL)_shouldEndRenamingWithTitle:(id)a3
+- (BOOL)_shouldEndRenamingWithTitle:(id)title
 {
   shouldEndRenamingHandler = self->_shouldEndRenamingHandler;
   if (shouldEndRenamingHandler)
   {
-    return shouldEndRenamingHandler[2](shouldEndRenamingHandler, a3);
+    return shouldEndRenamingHandler[2](shouldEndRenamingHandler, title);
   }
 
   else
   {
-    return [_UINavigationItemRenameHandler defaultNavigationItem:0 shouldEndRenamingWithTitle:a3];
+    return [_UINavigationItemRenameHandler defaultNavigationItem:0 shouldEndRenamingWithTitle:title];
   }
 }
 
@@ -140,21 +140,21 @@
   return fileURLForRenaming;
 }
 
-- (void)_fileRenameDidFailWithError:(id)a3
+- (void)_fileRenameDidFailWithError:(id)error
 {
   fileRenameDidFail = self->_fileRenameDidFail;
   if (fileRenameDidFail)
   {
-    fileRenameDidFail[2](fileRenameDidFail, a3);
+    fileRenameDidFail[2](fileRenameDidFail, error);
   }
 }
 
-- (void)_fileRenameDidEndWithFinalURL:(id)a3
+- (void)_fileRenameDidEndWithFinalURL:(id)l
 {
   fileRenameDidEnd = self->_fileRenameDidEnd;
   if (fileRenameDidEnd)
   {
-    fileRenameDidEnd[2](fileRenameDidEnd, a3);
+    fileRenameDidEnd[2](fileRenameDidEnd, l);
   }
 }
 

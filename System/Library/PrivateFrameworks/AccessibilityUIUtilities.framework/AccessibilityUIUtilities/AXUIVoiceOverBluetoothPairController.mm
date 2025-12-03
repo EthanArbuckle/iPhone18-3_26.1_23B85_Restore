@@ -1,17 +1,17 @@
 @interface AXUIVoiceOverBluetoothPairController
 - (AXUIVoiceOverBluetoothPairController)init;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)cancelButtonClicked:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)cancelButtonClicked:(id)clicked;
 - (void)dealloc;
-- (void)deviceUpdated:(id)a3;
-- (void)doneButtonClicked:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)textDidChange:(id)a3;
-- (void)updatePrompt:(id)a3;
+- (void)deviceUpdated:(id)updated;
+- (void)doneButtonClicked:(id)clicked;
+- (void)keyboardWillShow:(id)show;
+- (void)textDidChange:(id)change;
+- (void)updatePrompt:(id)prompt;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXUIVoiceOverBluetoothPairController
@@ -23,11 +23,11 @@
   v2 = [(AXUISettingsSetupCapableListController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_deviceUpdated_ name:*MEMORY[0x1E69898D0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_deviceUpdated_ name:*MEMORY[0x1E69898D0] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
   }
 
   return v2;
@@ -44,79 +44,79 @@
   v5 = AXUILocalizedStringForKey(@"PAIR");
   v6 = [v4 initWithTitle:v5 style:2 target:self action:sel_doneButtonClicked_];
 
-  v7 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
+  navigationItem = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
   v14[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v7 setRightBarButtonItems:v8];
+  [navigationItem setRightBarButtonItems:v8];
 
-  v9 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
+  navigationItem2 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
   v13 = v3;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
-  [v9 setLeftBarButtonItems:v10];
+  [navigationItem2 setLeftBarButtonItems:v10];
 
   v11 = AXUILocalizedStringForKey(@"PAIRING_PROMPT");
   [(AXUIVoiceOverBluetoothPairController *)self updatePrompt:v11];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = AXUIVoiceOverBluetoothPairController;
-  [(AXUIVoiceOverBluetoothPairController *)&v9 viewWillAppear:a3];
-  v4 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setEnabled:0];
+  [(AXUIVoiceOverBluetoothPairController *)&v9 viewWillAppear:appear];
+  navigationItem = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
-  v6 = [(AXUIVoiceOverBluetoothPairController *)self internalTableView];
+  internalTableView = [(AXUIVoiceOverBluetoothPairController *)self internalTableView];
   v7 = [(AXUIVoiceOverBluetoothPairController *)self indexPathForIndex:1];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  v8 = [internalTableView cellForRowAtIndexPath:v7];
   [v8 becomeFirstResponder];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXUIVoiceOverBluetoothPairController;
   [(AXUISettingsSetupCapableListController *)&v4 dealloc];
 }
 
-- (void)updatePrompt:(id)a3
+- (void)updatePrompt:(id)prompt
 {
-  objc_storeStrong(&self->_promptFormat, a3);
-  v5 = a3;
-  v10 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
+  objc_storeStrong(&self->_promptFormat, prompt);
+  promptCopy = prompt;
+  navigationItem = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
   v6 = MEMORY[0x1E696AEC0];
   promptFormat = self->_promptFormat;
-  v8 = [(AXUIBluetoothDevice *)self->_device name];
-  v9 = [v6 stringWithFormat:promptFormat, v8];
+  name = [(AXUIBluetoothDevice *)self->_device name];
+  v9 = [v6 stringWithFormat:promptFormat, name];
 
-  [v10 setPrompt:v9];
+  [navigationItem setPrompt:v9];
 }
 
-- (void)cancelButtonClicked:(id)a3
+- (void)cancelButtonClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   self->_dismissed = 1;
   objc_opt_class();
-  v5 = [(AXUIVoiceOverBluetoothPairController *)self specifier];
-  v6 = [v5 userInfo];
+  specifier = [(AXUIVoiceOverBluetoothPairController *)self specifier];
+  userInfo = [specifier userInfo];
   v7 = __UIAccessibilityCastAsClass();
 
   [v7 setObject:@"cancelled" forKey:@"PIN-ended"];
   [(AXUIBluetoothDevice *)self->_device setPIN:0];
-  v8 = [(AXUIVoiceOverBluetoothPairController *)self parentController];
-  [v8 dismiss];
+  parentController = [(AXUIVoiceOverBluetoothPairController *)self parentController];
+  [parentController dismiss];
 }
 
-- (void)doneButtonClicked:(id)a3
+- (void)doneButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(AXUIVoiceOverBluetoothPairController *)self internalTableView];
+  clickedCopy = clicked;
+  internalTableView = [(AXUIVoiceOverBluetoothPairController *)self internalTableView];
   v6 = [(AXUIVoiceOverBluetoothPairController *)self indexPathForIndex:1];
-  v7 = [(AXUIVoiceOverBluetoothPairController *)self tableView:v5 cellForRowAtIndexPath:v6];
+  v7 = [(AXUIVoiceOverBluetoothPairController *)self tableView:internalTableView cellForRowAtIndexPath:v6];
 
   v8 = [(AXUIVoiceOverBluetoothPairController *)self pin];
   v9 = [v8 length];
@@ -125,8 +125,8 @@
   {
     self->_dismissed = 1;
     objc_opt_class();
-    v10 = [(AXUIVoiceOverBluetoothPairController *)self specifier];
-    v11 = [v10 userInfo];
+    specifier = [(AXUIVoiceOverBluetoothPairController *)self specifier];
+    userInfo = [specifier userInfo];
     v12 = __UIAccessibilityCastAsClass();
 
     [v12 setObject:@"entered" forKey:@"PIN-ended"];
@@ -134,18 +134,18 @@
     v14 = [(AXUIVoiceOverBluetoothPairController *)self pin];
     [(AXUIBluetoothDevice *)device setPIN:v14];
 
-    v15 = [(AXUIVoiceOverBluetoothPairController *)self parentController];
-    [v15 dismiss];
+    parentController = [(AXUIVoiceOverBluetoothPairController *)self parentController];
+    [parentController dismiss];
   }
 }
 
-- (void)deviceUpdated:(id)a3
+- (void)deviceUpdated:(id)updated
 {
-  v11 = [a3 object];
-  v4 = [v11 address];
-  v5 = [(AXUIBluetoothDevice *)self->_device address];
-  v6 = v5;
-  if (v4 == v5)
+  object = [updated object];
+  address = [object address];
+  address2 = [(AXUIBluetoothDevice *)self->_device address];
+  name = address2;
+  if (address == address2)
   {
     dismissed = self->_dismissed;
 
@@ -154,60 +154,60 @@
       goto LABEL_5;
     }
 
-    v4 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
+    address = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
     v8 = MEMORY[0x1E696AEC0];
     promptFormat = self->_promptFormat;
-    v6 = [v11 name];
-    v10 = [v8 stringWithFormat:promptFormat, v6];
-    [v4 setTitle:v10];
+    name = [object name];
+    v10 = [v8 stringWithFormat:promptFormat, name];
+    [address setTitle:v10];
   }
 
 LABEL_5:
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [(AXUIVoiceOverBluetoothPairController *)self internalTableView];
+  internalTableView = [(AXUIVoiceOverBluetoothPairController *)self internalTableView];
   v5 = [(AXUIVoiceOverBluetoothPairController *)self indexPathForIndex:1];
-  v6 = [v4 cellForRowAtIndexPath:v5];
-  v7 = [v6 isFirstResponder];
+  v6 = [internalTableView cellForRowAtIndexPath:v5];
+  isFirstResponder = [v6 isFirstResponder];
 
-  if (v7)
+  if (isFirstResponder)
   {
-    v8 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    [v8 setReturnKeyEnabled:0];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    [activeKeyboard setReturnKeyEnabled:0];
   }
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v5 length] > 3;
+  changeCopy = change;
+  text = [changeCopy text];
+  v6 = [text length] > 3;
 
-  v7 = [v4 text];
+  text2 = [changeCopy text];
 
-  [(AXUIVoiceOverBluetoothPairController *)self setPin:v7];
-  v8 = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
-  v9 = [v8 rightBarButtonItem];
-  [v9 setEnabled:v6];
+  [(AXUIVoiceOverBluetoothPairController *)self setPin:text2];
+  navigationItem = [(AXUIVoiceOverBluetoothPairController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 
-  v10 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v10 setReturnKeyEnabled:v6];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard setReturnKeyEnabled:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AXUIVoiceOverBluetoothPairController;
-  v5 = [(AXUIVoiceOverBluetoothPairController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(AXUIVoiceOverBluetoothPairController *)&v9 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == 12)
   {
-    v6 = [v5 editableTextField];
-    v7 = v6;
-    if (v6)
+    editableTextField = [v5 editableTextField];
+    v7 = editableTextField;
+    if (editableTextField)
     {
-      [v6 setKeyboardType:4];
+      [editableTextField setKeyboardType:4];
       [v7 setReturnKeyType:9];
       [v7 setAutocapitalizationType:0];
       [v7 addTarget:self action:sel_textDidChange_ forControlEvents:0x20000];
@@ -218,11 +218,11 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = a3;
-  v4 = [v3 delegate];
-  [v4 doneButtonClicked:v3];
+  returnCopy = return;
+  delegate = [returnCopy delegate];
+  [delegate doneButtonClicked:returnCopy];
 
   return 1;
 }
@@ -230,8 +230,8 @@ LABEL_5:
 - (id)specifiers
 {
   objc_opt_class();
-  v3 = [(AXUIVoiceOverBluetoothPairController *)self specifier];
-  v4 = [v3 userInfo];
+  specifier = [(AXUIVoiceOverBluetoothPairController *)self specifier];
+  userInfo = [specifier userInfo];
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = [v5 objectForKey:@"bt-device"];

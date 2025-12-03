@@ -1,22 +1,22 @@
 @interface MPCReportingDeviceIdentityPropertiesLoader
 + (MPCReportingDeviceIdentityPropertiesLoader)sharedLoader;
 - (MPCReportingDeviceIdentityPropertiesLoader)init;
-- (void)loadReportingIdentityPropertiesWithCompletionHandler:(id)a3;
+- (void)loadReportingIdentityPropertiesWithCompletionHandler:(id)handler;
 @end
 
 @implementation MPCReportingDeviceIdentityPropertiesLoader
 
-- (void)loadReportingIdentityPropertiesWithCompletionHandler:(id)a3
+- (void)loadReportingIdentityPropertiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serialWorkQueue = self->_serialWorkQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __99__MPCReportingDeviceIdentityPropertiesLoader_loadReportingIdentityPropertiesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8239170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serialWorkQueue, v7);
 }
 

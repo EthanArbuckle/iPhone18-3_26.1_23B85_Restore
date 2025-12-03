@@ -1,59 +1,59 @@
 @interface HDHRHypertensionNotificationDeliveryEvent
-- (HDHRHypertensionNotificationDeliveryEvent)initWithProfile:(id)a3 type:(int64_t)a4;
-- (id)_payloadForEventType:(int64_t)a3;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (HDHRHypertensionNotificationDeliveryEvent)initWithProfile:(id)profile type:(int64_t)type;
+- (id)_payloadForEventType:(int64_t)type;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HDHRHypertensionNotificationDeliveryEvent
 
-- (HDHRHypertensionNotificationDeliveryEvent)initWithProfile:(id)a3 type:(int64_t)a4
+- (HDHRHypertensionNotificationDeliveryEvent)initWithProfile:(id)profile type:(int64_t)type
 {
-  v6 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDHRHypertensionNotificationDeliveryEvent;
   v7 = [(HDHRHypertensionNotificationDeliveryEvent *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v9 = objc_storeWeak(&v7->_profile, v6);
-    v10 = [v6 notificationManager];
-    v8->_areHealthNotificationsAuthorized = [v10 areHealthNotificationsAuthorized];
+    v9 = objc_storeWeak(&v7->_profile, profileCopy);
+    notificationManager = [profileCopy notificationManager];
+    v8->_areHealthNotificationsAuthorized = [notificationManager areHealthNotificationsAuthorized];
 
-    v8->_type = a4;
+    v8->_type = type;
   }
 
   return v8;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  sourceCopy = source;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_areHealthNotificationsAuthorized];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277CCB7C8]];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277CCB7C8]];
 
-  [v6 setObject:@"delivered" forKeyedSubscript:@"action"];
+  [dictionary setObject:@"delivered" forKeyedSubscript:@"action"];
   v8 = [(HDHRHypertensionNotificationDeliveryEvent *)self _payloadForEventType:self->_type];
-  [v6 setObject:v8 forKeyedSubscript:@"type"];
+  [dictionary setObject:v8 forKeyedSubscript:@"type"];
 
-  v9 = [v5 healthDataSource];
-  v10 = [v9 biologicalSexWithError:0];
+  healthDataSource = [sourceCopy healthDataSource];
+  v10 = [healthDataSource biologicalSexWithError:0];
 
   if (v10)
   {
     v11 = HKAnalyticsPropertyValueForBiologicalSex();
-    [v6 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCB7D0]];
+    [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x277CCB7D0]];
   }
 
   else
   {
-    [v6 setObject:*MEMORY[0x277CCB800] forKeyedSubscript:*MEMORY[0x277CCB7D0]];
+    [dictionary setObject:*MEMORY[0x277CCB800] forKeyedSubscript:*MEMORY[0x277CCB7D0]];
   }
 
-  v12 = [v5 healthDataSource];
-  v13 = [v5 environmentDataSource];
-  v14 = [v13 currentDate];
-  v15 = [v12 ageWithCurrentDate:v14 error:0];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
+  v15 = [healthDataSource2 ageWithCurrentDate:currentDate error:0];
 
   if (v15)
   {
@@ -65,24 +65,24 @@
     v16 = &unk_283CD3208;
   }
 
-  [v6 setObject:v16 forKeyedSubscript:*MEMORY[0x277CCB7C0]];
-  v17 = [v5 environmentDataSource];
-  v18 = [v17 activePairedDeviceProductType];
-  [v6 setObject:v18 forKeyedSubscript:*MEMORY[0x277CCB7B8]];
+  [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277CCB7C0]];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
+  activePairedDeviceProductType = [environmentDataSource2 activePairedDeviceProductType];
+  [dictionary setObject:activePairedDeviceProductType forKeyedSubscript:*MEMORY[0x277CCB7B8]];
 
-  return v6;
+  return dictionary;
 }
 
-- (id)_payloadForEventType:(int64_t)a3
+- (id)_payloadForEventType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"possibleHypertension";
   }
 
   else
   {
-    return off_278660C20[a3 - 1];
+    return off_278660C20[type - 1];
   }
 }
 

@@ -1,21 +1,21 @@
 @interface PGKeyCuratorSubcluster
-- (PGKeyCuratorSubcluster)initWithItems:(id)a3 keyItem:(id)a4 score:(double)a5 iconicScoreBucket:(unint64_t)a6;
+- (PGKeyCuratorSubcluster)initWithItems:(id)items keyItem:(id)item score:(double)score iconicScoreBucket:(unint64_t)bucket;
 @end
 
 @implementation PGKeyCuratorSubcluster
 
-- (PGKeyCuratorSubcluster)initWithItems:(id)a3 keyItem:(id)a4 score:(double)a5 iconicScoreBucket:(unint64_t)a6
+- (PGKeyCuratorSubcluster)initWithItems:(id)items keyItem:(id)item score:(double)score iconicScoreBucket:(unint64_t)bucket
 {
-  v10 = a4;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = PGKeyCuratorSubcluster;
   v11 = [(PGKeyCuratorSubcluster *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_keyItem, a4);
-    v12->_score = a5;
-    v12->_iconicScoreBucket = a6;
+    objc_storeStrong(&v11->_keyItem, item);
+    v12->_score = score;
+    v12->_iconicScoreBucket = bucket;
   }
 
   return v12;

@@ -1,22 +1,22 @@
 @interface TKPickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)_appendDescriptionOfAttributeNamed:(id)a3 withBoolValue:(BOOL)a4 toString:(id)a5;
-- (void)_appendDescriptionOfAttributesToString:(id)a3;
+- (void)_appendDescriptionOfAttributeNamed:(id)named withBoolValue:(BOOL)value toString:(id)string;
+- (void)_appendDescriptionOfAttributesToString:(id)string;
 @end
 
 @implementation TKPickerItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v6 = [v5 supportsReflectionRemixes];
+  equalCopy = equal;
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v6)
+  if (supportsReflectionRemixes)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -24,7 +24,7 @@
     else
     {
       objc_opt_class();
-      v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_section == v4->_section;
+      v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_section == equalCopy->_section;
     }
   }
 
@@ -32,7 +32,7 @@
   {
     v9.receiver = self;
     v9.super_class = TKPickerItem;
-    v7 = [(TKPickerItem *)&v9 isEqual:v4];
+    v7 = [(TKPickerItem *)&v9 isEqual:equalCopy];
   }
 
   return v7;
@@ -40,10 +40,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
     return self->_section;
   }
@@ -66,29 +66,29 @@
   return v6;
 }
 
-- (void)_appendDescriptionOfAttributesToString:(id)a3
+- (void)_appendDescriptionOfAttributesToString:(id)string
 {
-  v5 = a3;
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"section" withIntegerValue:[(TKPickerItem *)self section] toString:v5];
+  stringCopy = string;
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"section" withIntegerValue:[(TKPickerItem *)self section] toString:stringCopy];
   if ([(TKPickerItem *)self conformsToProtocol:&unk_282E619B8])
   {
-    v4 = [(TKPickerItem *)self numberOfChildren];
-    if (v4 >= 1)
+    numberOfChildren = [(TKPickerItem *)self numberOfChildren];
+    if (numberOfChildren >= 1)
     {
-      [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"numberOfChildren" withIntegerValue:v4 toString:v5];
+      [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"numberOfChildren" withIntegerValue:numberOfChildren toString:stringCopy];
     }
   }
 }
 
-- (void)_appendDescriptionOfAttributeNamed:(id)a3 withBoolValue:(BOOL)a4 toString:(id)a5
+- (void)_appendDescriptionOfAttributeNamed:(id)named withBoolValue:(BOOL)value toString:(id)string
 {
   v5 = @"NO";
-  if (a4)
+  if (value)
   {
     v5 = @"YES";
   }
 
-  [a5 appendFormat:@"; %@ = %@", a3, v5];
+  [string appendFormat:@"; %@ = %@", named, v5];
 }
 
 @end

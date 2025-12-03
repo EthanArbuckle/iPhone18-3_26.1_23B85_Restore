@@ -1,9 +1,9 @@
 @interface OrgApacheLuceneSearchPhraseQuery_PhraseWeight
-- (BOOL)termNotInReaderWithOrgApacheLuceneIndexLeafReader:(id)a3 withOrgApacheLuceneIndexTerm:(id)a4;
+- (BOOL)termNotInReaderWithOrgApacheLuceneIndexLeafReader:(id)reader withOrgApacheLuceneIndexTerm:(id)term;
 - (float)getValueForNormalization;
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation OrgApacheLuceneSearchPhraseQuery_PhraseWeight
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
   stats = self->stats_;
   if (!stats)
@@ -31,14 +31,14 @@
   [OrgApacheLuceneSearchSimilaritiesSimilarity_SimWeight normalizeWithFloat:"normalizeWithFloat:withFloat:" withFloat:?];
 }
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  if (!a3)
+  if (!context)
   {
     goto LABEL_29;
   }
 
-  v5 = [a3 reader];
+  reader = [context reader];
   v6 = &OBJC_IVAR___IOSArray_size_;
   size = self->terms_->super.size_;
   if (qword_100554370 != -1)
@@ -47,12 +47,12 @@
   }
 
   v41 = [IOSObjectArray arrayWithLength:size type:qword_100554368];
-  if (!v5)
+  if (!reader)
   {
     goto LABEL_29;
   }
 
-  result = [v5 termsWithNSString:*&self->this$0_->slop_];
+  result = [reader termsWithNSString:*&self->this$0_->slop_];
   if (result)
   {
     v9 = result;
@@ -65,12 +65,12 @@
       objc_exception_throw(v40);
     }
 
-    v10 = [v9 iterator];
+    iterator = [v9 iterator];
     terms = self->terms_;
     LODWORD(v12) = 8;
     if (terms->super.size_ >= 1)
     {
-      v13 = v10;
+      v13 = iterator;
       v14 = 0;
       while (1)
       {
@@ -93,7 +93,7 @@
           break;
         }
 
-        result = [(IOSClass *)v18 getWithInt:*(a3 + 7)];
+        result = [(IOSClass *)v18 getWithInt:*(context + 7)];
         if (!result)
         {
           return result;
@@ -154,7 +154,7 @@ LABEL_21:
         goto LABEL_29;
       }
 
-      PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean = new_OrgApacheLuceneSearchSloppyPhraseScorer_initWithOrgApacheLuceneSearchWeight_withOrgApacheLuceneSearchPhraseQuery_PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean_(self, v41, v27, [(OrgApacheLuceneSearchSimilaritiesSimilarity *)similarity simScorerWithOrgApacheLuceneSearchSimilaritiesSimilarity_SimWeight:self->stats_ withOrgApacheLuceneIndexLeafReaderContext:a3], self->needsScores_);
+      PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean = new_OrgApacheLuceneSearchSloppyPhraseScorer_initWithOrgApacheLuceneSearchWeight_withOrgApacheLuceneSearchPhraseQuery_PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean_(self, v41, v27, [(OrgApacheLuceneSearchSimilaritiesSimilarity *)similarity simScorerWithOrgApacheLuceneSearchSimilaritiesSimilarity_SimWeight:self->stats_ withOrgApacheLuceneIndexLeafReaderContext:context], self->needsScores_);
     }
 
     else
@@ -165,7 +165,7 @@ LABEL_21:
         goto LABEL_29;
       }
 
-      PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean = new_OrgApacheLuceneSearchExactPhraseScorer_initWithOrgApacheLuceneSearchWeight_withOrgApacheLuceneSearchPhraseQuery_PostingsAndFreqArray_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean_(self, v41, [(OrgApacheLuceneSearchSimilaritiesSimilarity *)v30 simScorerWithOrgApacheLuceneSearchSimilaritiesSimilarity_SimWeight:self->stats_ withOrgApacheLuceneIndexLeafReaderContext:a3], self->needsScores_);
+      PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean = new_OrgApacheLuceneSearchExactPhraseScorer_initWithOrgApacheLuceneSearchWeight_withOrgApacheLuceneSearchPhraseQuery_PostingsAndFreqArray_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean_(self, v41, [(OrgApacheLuceneSearchSimilaritiesSimilarity *)v30 simScorerWithOrgApacheLuceneSearchSimilaritiesSimilarity_SimWeight:self->stats_ withOrgApacheLuceneIndexLeafReaderContext:context], self->needsScores_);
     }
 
     return PostingsAndFreqArray_withInt_withOrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer_withBoolean;
@@ -174,14 +174,14 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)termNotInReaderWithOrgApacheLuceneIndexLeafReader:(id)a3 withOrgApacheLuceneIndexTerm:(id)a4
+- (BOOL)termNotInReaderWithOrgApacheLuceneIndexLeafReader:(id)reader withOrgApacheLuceneIndexTerm:(id)term
 {
-  if (!a3)
+  if (!reader)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 docFreqWithOrgApacheLuceneIndexTerm:a4] == 0;
+  return [reader docFreqWithOrgApacheLuceneIndexTerm:term] == 0;
 }
 
 - (void)dealloc

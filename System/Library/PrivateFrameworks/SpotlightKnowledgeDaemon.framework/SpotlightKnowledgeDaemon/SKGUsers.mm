@@ -1,8 +1,8 @@
 @interface SKGUsers
 + (id)labels;
-+ (id)usersInGraph:(id)a3;
-- (SKGUsers)initWithUserNode:(id)a3 inGraph:(id)a4;
-- (void)enumerateUsersInGraph:(id)a3 usingBlock:(id)a4;
++ (id)usersInGraph:(id)graph;
+- (SKGUsers)initWithUserNode:(id)node inGraph:(id)graph;
+- (void)enumerateUsersInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation SKGUsers
@@ -26,43 +26,43 @@
   return v3;
 }
 
-+ (id)usersInGraph:(id)a3
++ (id)usersInGraph:(id)graph
 {
-  v3 = a3;
+  graphCopy = graph;
   v4 = [SKGUsers alloc];
   v5 = +[SKGUserNode user];
-  v6 = [(SKGUsers *)v4 initWithUserNode:v5 inGraph:v3];
+  v6 = [(SKGUsers *)v4 initWithUserNode:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-- (SKGUsers)initWithUserNode:(id)a3 inGraph:(id)a4
+- (SKGUsers)initWithUserNode:(id)node inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 graph];
-  v9 = [v7 graph];
-  v10 = [v6 filter];
-  v11 = [v9 nodeIdentifiersMatchingFilter:v10];
+  nodeCopy = node;
+  graphCopy = graph;
+  graph = [graphCopy graph];
+  graph2 = [graphCopy graph];
+  filter = [nodeCopy filter];
+  v11 = [graph2 nodeIdentifiersMatchingFilter:filter];
   v14.receiver = self;
   v14.super_class = SKGUsers;
-  v12 = [(MAElementCollection *)&v14 initWithGraph:v8 elementIdentifiers:v11];
+  v12 = [(MAElementCollection *)&v14 initWithGraph:graph elementIdentifiers:v11];
 
   return v12;
 }
 
-- (void)enumerateUsersInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateUsersInGraph:(id)graph usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  blockCopy = block;
   v8 = objc_autoreleasePoolPush();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__SKGUsers_enumerateUsersInGraph_usingBlock___block_invoke;
   v11[3] = &unk_27893DB98;
-  v9 = v6;
+  v9 = graphCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = blockCopy;
   v13 = v10;
   [(MANodeCollection *)self enumerateNodesUsingBlock:v11];
 

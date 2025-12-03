@@ -1,17 +1,17 @@
 @interface TITraceLogRecordParser
-+ (void)parseRecord:(id)a3;
++ (void)parseRecord:(id)record;
 @end
 
 @implementation TITraceLogRecordParser
 
-+ (void)parseRecord:(id)a3
++ (void)parseRecord:(id)record
 {
-  v3 = a3;
-  if (![v3 parsingStatus])
+  recordCopy = record;
+  if (![recordCopy parsingStatus])
   {
-    v4 = v3;
-    v5 = [v4 logText];
-    if (([v5 hasPrefix:@"Typed String:"] & 1) == 0)
+    v4 = recordCopy;
+    logText = [v4 logText];
+    if (([logText hasPrefix:@"Typed String:"] & 1) == 0)
     {
 
       v14 = 1;
@@ -20,7 +20,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v5];
+    v6 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:logText];
     v63 = 0;
     [v6 scanUpToString:@"\n" intoString:&v63];
     v7 = v63;
@@ -28,22 +28,22 @@ LABEL_17:
     v8 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"Typed String: (.+)  Lookup Type: (.+)" options:0 error:v71];
     v55 = v71[0];
     v9 = [v8 matchesInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
-    v10 = [v9 firstObject];
-    v11 = v10;
-    if (v10 && [v10 numberOfRanges] != 2)
+    firstObject = [v9 firstObject];
+    v11 = firstObject;
+    if (firstObject && [firstObject numberOfRanges] != 2)
     {
       v12 = 1;
       v15 = [v11 rangeAtIndex:1];
       [v7 substringWithRange:{v15, v16}];
       v53 = v4;
-      v17 = v5;
+      v17 = logText;
       v19 = v18 = v6;
       v20 = [v11 rangeAtIndex:2];
       v22 = [v7 substringWithRange:{v20, v21}];
       LOBYTE(v64[0]) = 1;
       v23 = v19;
       v6 = v18;
-      v5 = v17;
+      logText = v17;
       v4 = v53;
       v58 = v23;
       v64[1] = v23;
@@ -75,7 +75,7 @@ LABEL_17:
         v56 = v7;
         v41 = MEMORY[0x1E696AE88];
         v42 = v4;
-        v43 = v5;
+        v43 = logText;
         v44 = [[v41 alloc] initWithString:v43];
 
         [v44 scanUpToString:@"[" intoString:0];
@@ -111,7 +111,7 @@ LABEL_17:
         v56 = v7;
         v26 = MEMORY[0x1E696AE88];
         v27 = v4;
-        v28 = v5;
+        v28 = logText;
         v29 = [[v26 alloc] initWithString:v28];
 
         [v29 scanUpToString:@"[" intoString:0];

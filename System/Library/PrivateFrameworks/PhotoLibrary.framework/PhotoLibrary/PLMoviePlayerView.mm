@@ -1,28 +1,28 @@
 @interface PLMoviePlayerView
-- (PLMoviePlayerView)initWithFrame:(CGRect)a3;
-- (void)_installBackgroundView:(id)a3;
+- (PLMoviePlayerView)initWithFrame:(CGRect)frame;
+- (void)_installBackgroundView:(id)view;
 - (void)dealloc;
 - (void)reattachVideoView;
-- (void)setDestinationPlaceholderHidden:(BOOL)a3;
+- (void)setDestinationPlaceholderHidden:(BOOL)hidden;
 @end
 
 @implementation PLMoviePlayerView
 
-- (void)_installBackgroundView:(id)a3
+- (void)_installBackgroundView:(id)view
 {
   [(PLMoviePlayerView *)self bounds];
-  [a3 setFrame:?];
-  [a3 setAutoresizingMask:18];
-  [a3 setHidden:self->_destinationPlaceholderHidden];
+  [view setFrame:?];
+  [view setAutoresizingMask:18];
+  [view setHidden:self->_destinationPlaceholderHidden];
 
-  [(PLMoviePlayerView *)self addSubview:a3];
+  [(PLMoviePlayerView *)self addSubview:view];
 }
 
-- (void)setDestinationPlaceholderHidden:(BOOL)a3
+- (void)setDestinationPlaceholderHidden:(BOOL)hidden
 {
-  if (self->_destinationPlaceholderHidden != a3)
+  if (self->_destinationPlaceholderHidden != hidden)
   {
-    self->_destinationPlaceholderHidden = a3;
+    self->_destinationPlaceholderHidden = hidden;
   }
 }
 
@@ -49,11 +49,11 @@
   [(PLMoviePlayerView *)&v3 dealloc];
 }
 
-- (PLMoviePlayerView)initWithFrame:(CGRect)a3
+- (PLMoviePlayerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PLMoviePlayerView;
-  v3 = [(PLMoviePlayerView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLMoviePlayerView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [PLAVPlayerView alloc];

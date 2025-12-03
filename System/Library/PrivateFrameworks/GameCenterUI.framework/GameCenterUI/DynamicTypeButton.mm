@@ -1,15 +1,15 @@
 @interface DynamicTypeButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DynamicTypeButton
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
   v3 = sub_24E28DE48(self, a2, sub_24E28D800);
   result.size.height = v6;
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
   v3 = sub_24E28DE48(self, a2, sub_24E28DBB8);
   result.size.height = v6;
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_24E28DEBC(width, height);
   v7 = v6;
   v9 = v8;
@@ -47,23 +47,23 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E28DF8C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E28E078(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E28E078(change);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  selfCopy = self;
   LOBYTE(self) = sub_24E28E360(x, y);
 
   return self & 1;

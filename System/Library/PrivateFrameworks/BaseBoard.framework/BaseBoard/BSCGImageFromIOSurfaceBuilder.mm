@@ -1,6 +1,6 @@
 @interface BSCGImageFromIOSurfaceBuilder
 - (CGImage)buildCGImage;
-- (id)setOpaque:(BOOL)a3;
+- (id)setOpaque:(BOOL)opaque;
 - (void)dealloc;
 @end
 
@@ -20,11 +20,11 @@
   [(BSCGImageFromIOSurfaceBuilder *)&v4 dealloc];
 }
 
-- (id)setOpaque:(BOOL)a3
+- (id)setOpaque:(BOOL)opaque
 {
-  if (*(self + 25) != a3)
+  if (*(self + 25) != opaque)
   {
-    *(self + 25) = a3;
+    *(self + 25) = opaque;
     *(self + 24) = 1;
   }
 
@@ -56,8 +56,8 @@
   {
     v6 = surface;
     [(IOSurface *)v6 lockWithOptions:1 seed:0];
-    v7 = [(IOSurface *)v6 pixelFormat];
-    if (v7 == 1999843442 || v7 == 1647534392)
+    pixelFormat = [(IOSurface *)v6 pixelFormat];
+    if (pixelFormat == 1999843442 || pixelFormat == 1647534392)
     {
       v32[0] = *MEMORY[0x1E696D2B8];
       *&v30[0] = &unk_1F03B75D8;
@@ -68,13 +68,13 @@
 
     else
     {
-      v10 = [(IOSurface *)v6 baseAddress];
-      v11 = [(IOSurface *)v6 bytesPerRow];
-      v12 = [(IOSurface *)v6 width];
-      v13 = [(IOSurface *)v6 height];
-      v14 = [(IOSurface *)v6 allocationSize];
+      baseAddress = [(IOSurface *)v6 baseAddress];
+      bytesPerRow = [(IOSurface *)v6 bytesPerRow];
+      width = [(IOSurface *)v6 width];
+      height = [(IOSurface *)v6 height];
+      allocationSize = [(IOSurface *)v6 allocationSize];
       CFRetain(v6);
-      v15 = CGDataProviderCreateWithData(v6, v10, v14, unlockIOSurface);
+      v15 = CGDataProviderCreateWithData(v6, baseAddress, allocationSize, unlockIOSurface);
       [(IOSurface *)v6 incrementUseCount];
       isOpaque = self->_isOpaque;
       v17 = v6;
@@ -112,9 +112,9 @@
           _Block_object_dispose(&v26, 8);
           if (!v21)
           {
-            v24 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CGColorSpaceRef softlinkCVCreateColorSpaceFromIOSurfaceBulkAttachments(const IOSurfaceColorAndSpatialKeys *)"];
-            [v24 handleFailureInFunction:v25 file:@"IOSurface+BaseBoard.m" lineNumber:26 description:{@"%s", dlerror()}];
+            [currentHandler handleFailureInFunction:v25 file:@"IOSurface+BaseBoard.m" lineNumber:26 description:{@"%s", dlerror()}];
 
             __break(1u);
           }
@@ -138,7 +138,7 @@
         v22 = 8194;
       }
 
-      v9 = CGImageCreate(v12, v13, 8uLL, 0x20uLL, v11, DeviceRGB, v22, v15, 0, 1, kCGRenderingIntentDefault);
+      v9 = CGImageCreate(width, height, 8uLL, 0x20uLL, bytesPerRow, DeviceRGB, v22, v15, 0, 1, kCGRenderingIntentDefault);
       CGImageSetProperty();
       if (DeviceRGB)
       {

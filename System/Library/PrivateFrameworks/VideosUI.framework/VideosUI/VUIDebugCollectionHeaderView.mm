@@ -1,15 +1,15 @@
 @interface VUIDebugCollectionHeaderView
-- (VUIDebugCollectionHeaderView)initWithFrame:(CGRect)a3;
+- (VUIDebugCollectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation VUIDebugCollectionHeaderView
 
-- (VUIDebugCollectionHeaderView)initWithFrame:(CGRect)a3
+- (VUIDebugCollectionHeaderView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = VUIDebugCollectionHeaderView;
-  v3 = [(VUIDebugCollectionHeaderView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIDebugCollectionHeaderView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUITextLayout);
@@ -19,8 +19,8 @@
     [(VUITextLayout *)v4 setNumberOfLinesAXSmall:1];
     [(VUITextLayout *)v4 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v4 setMaximumContentSizeCategory:3];
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v4 setColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v4 setColor:blackColor];
 
     titleLayout = v3->_titleLayout;
     v3->_titleLayout = v4;
@@ -36,9 +36,9 @@
     v3->_separatorView = v10;
 
     [(VUIDebugCollectionHeaderView *)v3 addSubview:v3->_separatorView];
-    v12 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 
-    [(VUIDebugCollectionHeaderView *)v3 setBackgroundColor:v12];
+    [(VUIDebugCollectionHeaderView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;

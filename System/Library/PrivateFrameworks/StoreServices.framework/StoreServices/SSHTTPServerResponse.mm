@@ -1,40 +1,40 @@
 @interface SSHTTPServerResponse
-- (SSHTTPServerResponse)initWithStatusCode:(signed __int16)a3;
+- (SSHTTPServerResponse)initWithStatusCode:(signed __int16)code;
 - (__CFHTTPMessage)copyHTTPMessage;
 - (id)bagFromBody;
-- (void)setBodyWithBag:(id)a3;
+- (void)setBodyWithBag:(id)bag;
 @end
 
 @implementation SSHTTPServerResponse
 
-- (SSHTTPServerResponse)initWithStatusCode:(signed __int16)a3
+- (SSHTTPServerResponse)initWithStatusCode:(signed __int16)code
 {
   v5.receiver = self;
   v5.super_class = SSHTTPServerResponse;
   result = [(SSHTTPServerResponse *)&v5 init];
   if (result)
   {
-    result->_statusCode = a3;
+    result->_statusCode = code;
   }
 
   return result;
 }
 
-- (void)setBodyWithBag:(id)a3
+- (void)setBodyWithBag:(id)bag
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bagCopy = bag;
   body = self->_body;
   self->_body = 0;
 
-  if (v4)
+  if (bagCopy)
   {
-    if ([MEMORY[0x1E696AE40] propertyList:v4 isValidForFormat:100])
+    if ([MEMORY[0x1E696AE40] propertyList:bagCopy isValidForFormat:100])
     {
       v6 = SSViTunesStoreFramework();
       v7 = SSVWeakLinkedSymbolForString("ISCopyGzippedDataForData", v6);
       v26 = 0;
-      v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:100 options:0 error:&v26];
+      v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:bagCopy format:100 options:0 error:&v26];
       v9 = v26;
       v10 = v7(v8);
       v11 = self->_body;
@@ -49,19 +49,19 @@ LABEL_6:
           v12 = +[SSLogConfig sharedConfig];
         }
 
-        v13 = [v12 shouldLog];
+        shouldLog = [v12 shouldLog];
         if ([v12 shouldLogToDisk])
         {
-          v14 = v13 | 2;
+          v14 = shouldLog | 2;
         }
 
         else
         {
-          v14 = v13;
+          v14 = shouldLog;
         }
 
-        v15 = [v12 OSLogObject];
-        if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v12 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v14 &= 2u;
         }
@@ -84,9 +84,9 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          v15 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v27, v25}];
+          oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v27, v25}];
           free(v18);
-          SSFileLog(v12, @"%@", v19, v20, v21, v22, v23, v24, v15);
+          SSFileLog(v12, @"%@", v19, v20, v21, v22, v23, v24, oSLogObject);
         }
 
         goto LABEL_17;
@@ -135,19 +135,19 @@ LABEL_17:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -170,9 +170,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v25, v23}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v25, v23}];
       free(v15);
-      SSFileLog(v9, @"%@", v16, v17, v18, v19, v20, v21, v12);
+      SSFileLog(v9, @"%@", v16, v17, v18, v19, v20, v21, oSLogObject);
     }
 
     goto LABEL_16;
@@ -186,8 +186,8 @@ LABEL_18:
 
 - (__CFHTTPMessage)copyHTTPMessage
 {
-  v3 = [(SSHTTPServerResponse *)self headers];
-  v4 = [v3 mutableCopy];
+  headers = [(SSHTTPServerResponse *)self headers];
+  v4 = [headers mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -209,13 +209,13 @@ LABEL_18:
     [v7 setObject:@"text/html" forKeyedSubscript:@"Content-Type"];
   }
 
-  v9 = [(SSHTTPServerResponse *)self body];
+  body = [(SSHTTPServerResponse *)self body];
 
-  if (v9)
+  if (body)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(SSHTTPServerResponse *)self body];
-    v12 = [v10 stringWithFormat:@"%lu", objc_msgSend(v11, "length")];
+    body2 = [(SSHTTPServerResponse *)self body];
+    v12 = [v10 stringWithFormat:@"%lu", objc_msgSend(body2, "length")];
     [v7 setObject:v12 forKeyedSubscript:@"Content-Length"];
   }
 
@@ -225,8 +225,8 @@ LABEL_18:
   }
 
   v13 = *MEMORY[0x1E695E480];
-  v14 = [(SSHTTPServerResponse *)self statusCode];
-  Response = CFHTTPMessageCreateResponse(v13, v14, 0, *MEMORY[0x1E695ADB8]);
+  statusCode = [(SSHTTPServerResponse *)self statusCode];
+  Response = CFHTTPMessageCreateResponse(v13, statusCode, 0, *MEMORY[0x1E695ADB8]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __39__SSHTTPServerResponse_copyHTTPMessage__block_invoke;

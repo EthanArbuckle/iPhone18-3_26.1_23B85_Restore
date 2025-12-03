@@ -1,12 +1,12 @@
 @interface BuddyCloudConfigurationRetrievalController
 - (BOOL)controllerNeedsToRun;
-- (BOOL)presentErrorIfDesired:(id)a3;
+- (BOOL)presentErrorIfDesired:(id)desired;
 - (BuddyCloudConfigurationRetrievalController)init;
 - (void)_fetchCloudConfig;
 - (void)_presentTryAgainAlert;
-- (void)_presentTryAgainAlertWithMessage:(id)a3;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_presentTryAgainAlertWithMessage:(id)message;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -35,53 +35,53 @@
 
 - (void)viewDidLoad
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyCloudConfigurationRetrievalController;
   [(BuddyCloudConfigurationRetrievalController *)&v3 viewDidLoad];
-  v2 = [(BuddyCloudConfigurationRetrievalController *)v5 navigationItem];
-  [v2 setHidesBackButton:1];
+  navigationItem = [(BuddyCloudConfigurationRetrievalController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   if ([(BuddyCloudConfigurationRetrievalController *)self shouldFetchCloudConfiguration])
   {
-    [(BuddyCloudConfigurationRetrievalController *)v8 setShouldFetchCloudConfiguration:0];
-    v3 = [(BuddyCloudConfigurationRetrievalController *)v8 featureFlags];
-    v4 = [(BuddyFeatureFlags *)v3 isMDMEnrollmentFlowControllerAdoptionEnabled]^ 1;
+    [(BuddyCloudConfigurationRetrievalController *)selfCopy setShouldFetchCloudConfiguration:0];
+    featureFlags = [(BuddyCloudConfigurationRetrievalController *)selfCopy featureFlags];
+    v4 = [(BuddyFeatureFlags *)featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled]^ 1;
 
     if (v4)
     {
-      [(BuddyCloudConfigurationRetrievalController *)v8 _fetchCloudConfig];
+      [(BuddyCloudConfigurationRetrievalController *)selfCopy _fetchCloudConfig];
     }
   }
 
-  v5.receiver = v8;
+  v5.receiver = selfCopy;
   v5.super_class = BuddyCloudConfigurationRetrievalController;
-  [(BuddyCloudConfigurationRetrievalController *)&v5 viewDidAppear:v6];
+  [(BuddyCloudConfigurationRetrievalController *)&v5 viewDidAppear:appearCopy];
 }
 
 - (BOOL)controllerNeedsToRun
 {
   v14 = 0;
-  v2 = [(BuddyCloudConfigurationRetrievalController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 activationRecordIndicatesCloudConfigurationIsAvailable];
+  managedConfiguration = [(BuddyCloudConfigurationRetrievalController *)self managedConfiguration];
+  activationRecordIndicatesCloudConfigurationIsAvailable = [(MCProfileConnection *)managedConfiguration activationRecordIndicatesCloudConfigurationIsAvailable];
 
-  if (v3)
+  if (activationRecordIndicatesCloudConfigurationIsAvailable)
   {
-    v4 = [(BuddyCloudConfigurationRetrievalController *)self managedConfiguration];
-    [(MCProfileConnection *)v4 flush];
+    managedConfiguration2 = [(BuddyCloudConfigurationRetrievalController *)self managedConfiguration];
+    [(MCProfileConnection *)managedConfiguration2 flush];
 
-    v5 = [(BuddyCloudConfigurationRetrievalController *)self managedConfiguration];
-    v6 = [(MCProfileConnection *)v5 cloudConfigurationDetails];
+    managedConfiguration3 = [(BuddyCloudConfigurationRetrievalController *)self managedConfiguration];
+    cloudConfigurationDetails = [(MCProfileConnection *)managedConfiguration3 cloudConfigurationDetails];
     v12 = 0;
     v7 = 0;
-    if (!v6)
+    if (!cloudConfigurationDetails)
     {
       v13 = +[BuddyCloudConfigManager sharedManager];
       v12 = 1;
@@ -98,10 +98,10 @@
     }
   }
 
-  v8 = [(BuddyCloudConfigurationRetrievalController *)self enrollmentCoordinator];
-  v9 = [(BuddyEnrollmentCoordinator *)v8 shouldDoReturnToService];
+  enrollmentCoordinator = [(BuddyCloudConfigurationRetrievalController *)self enrollmentCoordinator];
+  shouldDoReturnToService = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator shouldDoReturnToService];
 
-  if (v9)
+  if (shouldDoReturnToService)
   {
     v14 = 1;
   }
@@ -115,16 +115,16 @@
   return v14;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCloudConfigurationRetrievalController *)v14 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isMDMEnrollmentFlowControllerAdoptionEnabled];
+  objc_storeStrong(location, completion);
+  featureFlags = [(BuddyCloudConfigurationRetrievalController *)selfCopy featureFlags];
+  isMDMEnrollmentFlowControllerAdoptionEnabled = [(BuddyFeatureFlags *)featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled];
 
-  if (v4)
+  if (isMDMEnrollmentFlowControllerAdoptionEnabled)
   {
     (*(location[0] + 2))(location[0], 0);
     v12 = 1;
@@ -132,14 +132,14 @@
 
   else
   {
-    v5 = [(BuddyCloudConfigurationRetrievalController *)v14 managedConfiguration];
+    managedConfiguration = [(BuddyCloudConfigurationRetrievalController *)selfCopy managedConfiguration];
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_1001101F8;
     v10 = &unk_10032B460;
     v11 = location[0];
-    [(MCProfileConnection *)v5 restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:&v6];
+    [(MCProfileConnection *)managedConfiguration restoreCloudConfigAndMDMProfileFromSetAsideDataWithCompletion:&v6];
 
     objc_storeStrong(&v11, 0);
     v12 = 0;
@@ -150,38 +150,38 @@
 
 - (void)_fetchCloudConfig
 {
-  v30 = self;
+  selfCopy = self;
   v29[1] = a2;
-  v2 = [(BuddyCloudConfigurationRetrievalController *)self enrollmentCoordinator];
-  v3 = [(BuddyEnrollmentCoordinator *)v2 shouldDoReturnToService];
+  enrollmentCoordinator = [(BuddyCloudConfigurationRetrievalController *)self enrollmentCoordinator];
+  shouldDoReturnToService = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator shouldDoReturnToService];
 
-  if (v3)
+  if (shouldDoReturnToService)
   {
-    v4 = [(BuddyCloudConfigurationRetrievalController *)v30 enrollmentCoordinator];
+    enrollmentCoordinator2 = [(BuddyCloudConfigurationRetrievalController *)selfCopy enrollmentCoordinator];
     v24 = _NSConcreteStackBlock;
     v25 = -1073741824;
     v26 = 0;
     v27 = sub_100110528;
     v28 = &unk_10032B6F0;
-    v29[0] = v30;
-    [(BuddyEnrollmentCoordinator *)v4 configureMDMWithCompletionHandler:&v24];
+    v29[0] = selfCopy;
+    [(BuddyEnrollmentCoordinator *)enrollmentCoordinator2 configureMDMWithCompletionHandler:&v24];
 
     objc_storeStrong(v29, 0);
   }
 
   else
   {
-    v5 = [(BuddyCloudConfigurationRetrievalController *)v30 managedConfiguration];
+    managedConfiguration = [(BuddyCloudConfigurationRetrievalController *)selfCopy managedConfiguration];
     v22 = 0;
     v20 = 0;
     v6 = 1;
-    if (([(MCProfileConnection *)v5 activationRecordIndicatesCloudConfigurationIsAvailable]& 1) != 0)
+    if (([(MCProfileConnection *)managedConfiguration activationRecordIndicatesCloudConfigurationIsAvailable]& 1) != 0)
     {
-      v23 = [(BuddyCloudConfigurationRetrievalController *)v30 managedConfiguration];
+      managedConfiguration2 = [(BuddyCloudConfigurationRetrievalController *)selfCopy managedConfiguration];
       v22 = 1;
-      v21 = [(MCProfileConnection *)v23 cloudConfigurationDetails];
+      cloudConfigurationDetails = [(MCProfileConnection *)managedConfiguration2 cloudConfigurationDetails];
       v20 = 1;
-      v6 = v21 != 0;
+      v6 = cloudConfigurationDetails != 0;
     }
 
     if (v20)
@@ -194,8 +194,8 @@
 
     if (v6)
     {
-      v7 = [(BuddyCloudConfigurationRetrievalController *)v30 delegate];
-      [v7 flowItemDone:v30];
+      delegate = [(BuddyCloudConfigurationRetrievalController *)selfCopy delegate];
+      [delegate flowItemDone:selfCopy];
     }
 
     else
@@ -211,14 +211,14 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      v10 = [(BuddyCloudConfigurationRetrievalController *)v30 managedConfiguration];
+      managedConfiguration3 = [(BuddyCloudConfigurationRetrievalController *)selfCopy managedConfiguration];
       v11 = _NSConcreteStackBlock;
       v12 = -1073741824;
       v13 = 0;
       v14 = sub_100110908;
       v15 = &unk_10032D030;
-      v16 = v30;
-      [(MCProfileConnection *)v10 retrieveCloudConfigurationDetailsCompletionBlock:&v11];
+      v16 = selfCopy;
+      [(MCProfileConnection *)managedConfiguration3 retrieveCloudConfigurationDetailsCompletionBlock:&v11];
 
       objc_storeStrong(&v16, 0);
     }
@@ -233,12 +233,12 @@
   [(BuddyCloudConfigurationRetrievalController *)self _presentTryAgainAlertWithMessage:v5];
 }
 
-- (void)_presentTryAgainAlertWithMessage:(id)a3
+- (void)_presentTryAgainAlertWithMessage:(id)message
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"CLOUD_CONFIG_RETRIEVAL_FAILED_TITLE" value:&stru_10032F900 table:@"Localizable"];
   v25 = [UIAlertController alertControllerWithTitle:v4 message:location[0] preferredStyle:1];
@@ -251,7 +251,7 @@
   v21 = 0;
   v22 = sub_1001111AC;
   v23 = &unk_10032B598;
-  v24 = v27;
+  v24 = selfCopy;
   v8 = [UIAlertAction actionWithTitle:v7 style:0 handler:&v19];
   [v5 addAction:v8];
 
@@ -263,27 +263,27 @@
   v15 = 3221225472;
   v16 = sub_100111258;
   v17 = &unk_10032B598;
-  v18 = v27;
+  v18 = selfCopy;
   v13 = [UIAlertAction actionWithTitle:v12 style:0 handler:&v14];
   [v9 addAction:{v13, v14, v15, v16, v17}];
 
-  [(BuddyCloudConfigurationRetrievalController *)v27 presentViewController:v25 animated:1 completion:0];
+  [(BuddyCloudConfigurationRetrievalController *)selfCopy presentViewController:v25 animated:1 completion:0];
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)presentErrorIfDesired:(id)a3
+- (BOOL)presentErrorIfDesired:(id)desired
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyCloudConfigurationRetrievalController *)v14 enrollmentCoordinator];
-  v4 = [(BuddyEnrollmentCoordinator *)v3 isMDMMigrationMode];
+  objc_storeStrong(location, desired);
+  enrollmentCoordinator = [(BuddyCloudConfigurationRetrievalController *)selfCopy enrollmentCoordinator];
+  isMDMMigrationMode = [(BuddyEnrollmentCoordinator *)enrollmentCoordinator isMDMMigrationMode];
 
-  if (v4)
+  if (isMDMMigrationMode)
   {
     v15 = 0;
     v12 = 1;
@@ -291,19 +291,19 @@
 
   else
   {
-    v5 = [location[0] underlyingErrors];
-    v11 = [v5 firstObject];
+    underlyingErrors = [location[0] underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
     v9 = 0;
     v6 = 0;
-    if (v11)
+    if (firstObject)
     {
-      v10 = [v11 domain];
+      domain = [firstObject domain];
       v9 = 1;
       v6 = 0;
-      if ([v10 isEqualToString:DMCHTTPTransactionErrorDomain])
+      if ([domain isEqualToString:DMCHTTPTransactionErrorDomain])
       {
-        v6 = [v11 code] == 23004;
+        v6 = [firstObject code] == 23004;
       }
     }
 
@@ -313,19 +313,19 @@
 
     if (v6)
     {
-      v8 = [v11 localizedDescription];
-      [(BuddyCloudConfigurationRetrievalController *)v14 _presentTryAgainAlertWithMessage:v8];
-      objc_storeStrong(&v8, 0);
+      localizedDescription = [firstObject localizedDescription];
+      [(BuddyCloudConfigurationRetrievalController *)selfCopy _presentTryAgainAlertWithMessage:localizedDescription];
+      objc_storeStrong(&localizedDescription, 0);
     }
 
     else
     {
-      [(BuddyCloudConfigurationRetrievalController *)v14 _presentTryAgainAlert];
+      [(BuddyCloudConfigurationRetrievalController *)selfCopy _presentTryAgainAlert];
     }
 
     v15 = 1;
     v12 = 1;
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   objc_storeStrong(location, 0);

@@ -1,31 +1,31 @@
 @interface SGM2PerfXPCLatency
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)method;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2PerfXPCLatency
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(SGM2PerfXPCLatency *)self setKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_method = v4[4];
+    self->_method = fromCopy[4];
     *&self->_has |= 1u;
   }
 }
@@ -46,16 +46,16 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   key = self->_key;
-  if (key | *(v4 + 1))
+  if (key | *(equalCopy + 1))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -63,10 +63,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_method == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_method == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -81,10 +81,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -97,49 +97,49 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v5 = v4;
-    [v4 setKey:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_method;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_method;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     method = self->_method;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   if (*&self->_has)
@@ -166,8 +166,8 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = SGM2PerfXPCLatency;
   v4 = [(SGM2PerfXPCLatency *)&v8 description];
-  v5 = [(SGM2PerfXPCLatency *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2PerfXPCLatency *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

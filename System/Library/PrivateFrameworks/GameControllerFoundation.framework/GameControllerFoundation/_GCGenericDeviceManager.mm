@@ -1,16 +1,16 @@
 @interface _GCGenericDeviceManager
-- (BOOL)acceptDriverConnection:(id)a3 forHIDService:(id)a4;
-- (BOOL)acceptFilterConnection:(id)a3 forHIDService:(id)a4;
+- (BOOL)acceptDriverConnection:(id)connection forHIDService:(id)service;
+- (BOOL)acceptFilterConnection:(id)connection forHIDService:(id)service;
 - (_GCGenericDeviceManager)init;
 - (_GCPhysicalDeviceRegistry)deviceRegistry;
-- (id)matchHIDService:(id)a3;
+- (id)matchHIDService:(id)service;
 - (void)_onioqueue_setupHIDMatching;
-- (void)_onqueue_registerDefaultConfigurationForDevice:(id)a3;
-- (void)_onqueue_relinquishHIDService:(uint64_t)a1;
-- (void)claimHIDService:(id)a3;
+- (void)_onqueue_registerDefaultConfigurationForDevice:(id)device;
+- (void)_onqueue_relinquishHIDService:(uint64_t)service;
+- (void)claimHIDService:(id)service;
 - (void)dealloc;
-- (void)relinquishHIDService:(id)a3;
-- (void)setDeviceRegistry:(id)a3;
+- (void)relinquishHIDService:(id)service;
+- (void)setDeviceRegistry:(id)registry;
 @end
 
 @implementation _GCGenericDeviceManager
@@ -81,9 +81,9 @@
   [(_GCGenericDeviceManager *)&v5 dealloc];
 }
 
-- (void)setDeviceRegistry:(id)a3
+- (void)setDeviceRegistry:(id)registry
 {
-  objc_storeWeak(&self->_deviceRegistry, a3);
+  objc_storeWeak(&self->_deviceRegistry, registry);
   ioNotificationQueue = self->_ioNotificationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -93,12 +93,12 @@
   dispatch_async(ioNotificationQueue, block);
 }
 
-- (id)matchHIDService:(id)a3
+- (id)matchHIDService:(id)service
 {
-  v3 = IOHIDServiceClientCopyProperty([a3 service], @"GameControllerSupportedHIDDevice");
-  v4 = [v3 BOOLValue];
+  v3 = IOHIDServiceClientCopyProperty([service service], @"GameControllerSupportedHIDDevice");
+  bOOLValue = [v3 BOOLValue];
   v5 = &GCPhysicalDeviceProbeScoreLowPriority;
-  if (!v4)
+  if (!bOOLValue)
   {
     v5 = &GCPhysicalDeviceProbeScoreNoMatch;
   }
@@ -109,41 +109,41 @@
   return v6;
 }
 
-- (void)_onqueue_registerDefaultConfigurationForDevice:(id)a3
+- (void)_onqueue_registerDefaultConfigurationForDevice:(id)device
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 alloc];
-  v7 = [v5 identifier];
-  v8 = [v6 initWithFormat:@"LOGICAL_DEVICE(%@)", v7];
+  identifier = [deviceCopy identifier];
+  v8 = [v6 initWithFormat:@"LOGICAL_DEVICE(%@)", identifier];
 
-  v9 = [v5 identifier];
-  v17[0] = v9;
+  identifier2 = [deviceCopy identifier];
+  v17[0] = identifier2;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v11 = [(_GCGenericDeviceManager *)self identifier];
-  v12 = [(_GCDeviceConfiguration *)_GCMutableDeviceConfiguration configurationWithIdentifier:v8 priority:10 deviceIdentifier:v8 deviceDependencies:v10 deviceBuilder:v11];
+  identifier3 = [(_GCGenericDeviceManager *)self identifier];
+  v12 = [(_GCDeviceConfiguration *)_GCMutableDeviceConfiguration configurationWithIdentifier:v8 priority:10 deviceIdentifier:v8 deviceDependencies:v10 deviceBuilder:identifier3];
 
-  v13 = [v5 identifier];
+  identifier4 = [deviceCopy identifier];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(deviceCopy) = objc_opt_isKindOfClass();
 
-  if (v5)
+  if (deviceCopy)
   {
     [v12 setTransient:1];
   }
 
-  v14 = [(_GCGenericDeviceManager *)self deviceRegistry];
-  v15 = [v14 deviceConfigurationRegistry];
-  [v15 addConfiguration:v12 replaceExisting:1];
+  deviceRegistry = [(_GCGenericDeviceManager *)self deviceRegistry];
+  deviceConfigurationRegistry = [deviceRegistry deviceConfigurationRegistry];
+  [deviceConfigurationRegistry addConfiguration:v12 replaceExisting:1];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)claimHIDService:(id)a3
+- (void)claimHIDService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = _os_activity_create(&dword_1D2C3B000, "[Generic Device Manager] Claim HID Service", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -154,30 +154,30 @@
     [_GCGenericDeviceManager claimHIDService:?];
   }
 
-  if ([(NSMutableSet *)self->_claimedServices containsObject:v5])
+  if ([(NSMutableSet *)self->_claimedServices containsObject:serviceCopy])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:157 description:{@"%@ has already claimed %@", self, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:157 description:{@"%@ has already claimed %@", self, serviceCopy}];
   }
 
-  [(NSMutableSet *)self->_claimedServices addObject:v5];
+  [(NSMutableSet *)self->_claimedServices addObject:serviceCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43___GCGenericDeviceManager_claimHIDService___block_invoke;
   block[3] = &unk_1E8413E18;
-  v12 = v5;
-  v13 = self;
+  v12 = serviceCopy;
+  selfCopy = self;
   v14 = a2;
-  v9 = v5;
+  v9 = serviceCopy;
   dispatch_async(queue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)relinquishHIDService:(id)a3
+- (void)relinquishHIDService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = _os_activity_create(&dword_1D2C3B000, "[Generic Device Manager] Relinquish HID Service", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -188,35 +188,35 @@
     [_GCGenericDeviceManager relinquishHIDService:?];
   }
 
-  if (([(NSMutableSet *)self->_claimedServices containsObject:v5]& 1) == 0)
+  if (([(NSMutableSet *)self->_claimedServices containsObject:serviceCopy]& 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:245 description:{@"%@ has not claimed %@", self, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:245 description:{@"%@ has not claimed %@", self, serviceCopy}];
   }
 
-  [(NSMutableSet *)self->_claimedServices removeObject:v5];
+  [(NSMutableSet *)self->_claimedServices removeObject:serviceCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48___GCGenericDeviceManager_relinquishHIDService___block_invoke;
   block[3] = &unk_1E8413E40;
   block[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = serviceCopy;
+  v9 = serviceCopy;
   dispatch_async(queue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)acceptDriverConnection:(id)a3 forHIDService:(id)a4
+- (BOOL)acceptDriverConnection:(id)connection forHIDService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  serviceCopy = service;
   v9 = _os_activity_create(&dword_1D2C3B000, "[Generic Device Manager] Accept HID Driver Connection", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
-  v10 = [(NSMutableSet *)self->_claimedServices containsObject:v8];
+  v10 = [(NSMutableSet *)self->_claimedServices containsObject:serviceCopy];
   if (v10)
   {
     queue = self->_queue;
@@ -225,15 +225,15 @@
     block[2] = __64___GCGenericDeviceManager_acceptDriverConnection_forHIDService___block_invoke;
     block[3] = &unk_1E8413E68;
     block[4] = self;
-    v15 = v8;
-    v16 = v7;
+    v15 = serviceCopy;
+    v16 = connectionCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:257 description:{@"Unclaimed service: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:257 description:{@"Unclaimed service: %@", serviceCopy}];
   }
 
   os_activity_scope_leave(&state);
@@ -241,15 +241,15 @@
   return v10;
 }
 
-- (BOOL)acceptFilterConnection:(id)a3 forHIDService:(id)a4
+- (BOOL)acceptFilterConnection:(id)connection forHIDService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  serviceCopy = service;
   v9 = _os_activity_create(&dword_1D2C3B000, "[Generic Device Manager] Accept HID Filter Connection", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
-  v10 = [(NSMutableSet *)self->_claimedServices containsObject:v8];
+  v10 = [(NSMutableSet *)self->_claimedServices containsObject:serviceCopy];
   if (v10)
   {
     queue = self->_queue;
@@ -258,16 +258,16 @@
     block[2] = __64___GCGenericDeviceManager_acceptFilterConnection_forHIDService___block_invoke;
     block[3] = &unk_1E8413E90;
     block[4] = self;
-    v15 = v8;
-    v16 = v7;
+    v15 = serviceCopy;
+    v16 = connectionCopy;
     v17 = a2;
     dispatch_async(queue, block);
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:281 description:{@"Unclaimed service: %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGenericDeviceManager.m" lineNumber:281 description:{@"Unclaimed service: %@", serviceCopy}];
   }
 
   os_activity_scope_leave(&state);
@@ -279,7 +279,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_fault_impl(&dword_1D2C3B000, a2, OS_LOG_TYPE_FAULT, "Failed to setup IOHIDDevice service matching: %{mach.errno}d.  Game controller discovery may be impacted.", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -291,51 +291,51 @@
   return WeakRetained;
 }
 
-- (void)_onqueue_relinquishHIDService:(uint64_t)a1
+- (void)_onqueue_relinquishHIDService:(uint64_t)service
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (service)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [*(a1 + 56) objectForKey:v3];
+    dispatch_assert_queue_V2(*(service + 8));
+    v4 = [*(service + 56) objectForKey:v3];
     if (v4)
     {
       v5 = _gc_log_generic_device();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         *v11 = 138412546;
-        *&v11[4] = a1;
+        *&v11[4] = service;
         OUTLINED_FUNCTION_2_1();
         *&v11[14] = v4;
         _os_log_debug_impl(&dword_1D2C3B000, v5, OS_LOG_TYPE_DEBUG, "%@: Removing %@", v11, 0x16u);
       }
 
-      v6 = [a1 deviceRegistry];
-      [v6 deviceManager:a1 deviceDidDisconnect:v4];
+      deviceRegistry = [service deviceRegistry];
+      [deviceRegistry deviceManager:service deviceDidDisconnect:v4];
 
-      [*(a1 + 56) removeObjectForKey:v3];
+      [*(service + 56) removeObjectForKey:v3];
     }
 
-    v7 = [*(a1 + 48) objectForKey:{v3, *v11}];
+    v7 = [*(service + 48) objectForKey:{v3, *v11}];
     if (v7)
     {
       v8 = _gc_log_generic_device();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *v11 = 138412546;
-        *&v11[4] = a1;
+        *&v11[4] = service;
         OUTLINED_FUNCTION_2_1();
         *&v11[14] = v7;
         _os_log_debug_impl(&dword_1D2C3B000, v8, OS_LOG_TYPE_DEBUG, "%@: Removing %@", v11, 0x16u);
       }
 
-      v9 = [v7 device];
-      [v9 cancel];
+      device = [v7 device];
+      [device cancel];
 
       [v7 setFilterConnection:0 invalidatingPrevious:1];
       [v7 setDriverConnection:0 invalidatingPrevious:1];
-      [*(a1 + 48) removeObjectForKey:v3];
+      [*(service + 48) removeObjectForKey:v3];
     }
   }
 

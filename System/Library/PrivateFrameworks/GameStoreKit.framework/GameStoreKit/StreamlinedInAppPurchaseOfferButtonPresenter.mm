@@ -1,6 +1,6 @@
 @interface StreamlinedInAppPurchaseOfferButtonPresenter
 - (void)offerButtonTapped;
-- (void)restrictionsDidChange:(id)a3;
+- (void)restrictionsDidChange:(id)change;
 @end
 
 @implementation StreamlinedInAppPurchaseOfferButtonPresenter
@@ -11,9 +11,9 @@
   sub_24ED2F010();
 }
 
-- (void)restrictionsDidChange:(id)a3
+- (void)restrictionsDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_24ED30B08();
 }

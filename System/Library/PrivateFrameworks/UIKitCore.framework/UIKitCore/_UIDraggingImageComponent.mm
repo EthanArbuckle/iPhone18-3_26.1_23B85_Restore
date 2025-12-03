@@ -1,22 +1,22 @@
 @interface _UIDraggingImageComponent
 - (CGRect)frame;
-- (_UIDraggingImageComponent)initWithImage:(id)a3 frame:(CGRect)a4 ignoreAccessibilityFilters:(BOOL)a5;
-- (_UIDraggingImageComponent)initWithView:(id)a3;
-- (id)_initWithNoImageAndFrame:(CGRect)a3;
+- (_UIDraggingImageComponent)initWithImage:(id)image frame:(CGRect)frame ignoreAccessibilityFilters:(BOOL)filters;
+- (_UIDraggingImageComponent)initWithView:(id)view;
+- (id)_initWithNoImageAndFrame:(CGRect)frame;
 - (id)description;
 - (id)initHidingDragImage;
 @end
 
 @implementation _UIDraggingImageComponent
 
-- (_UIDraggingImageComponent)initWithImage:(id)a3 frame:(CGRect)a4 ignoreAccessibilityFilters:(BOOL)a5
+- (_UIDraggingImageComponent)initWithImage:(id)image frame:(CGRect)frame ignoreAccessibilityFilters:(BOOL)filters
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  if (!v12)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
+  if (!imageCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"image must be non-nil"];
   }
@@ -27,8 +27,8 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_image, a3);
-    v14->_ignoresAccessibilityFilters = a5;
+    objc_storeStrong(&v13->_image, image);
+    v14->_ignoresAccessibilityFilters = filters;
     v14->_frame.origin.x = x;
     v14->_frame.origin.y = y;
     v14->_frame.size.width = width;
@@ -38,21 +38,21 @@
   return v14;
 }
 
-- (_UIDraggingImageComponent)initWithView:(id)a3
+- (_UIDraggingImageComponent)initWithView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"view must be non-nil"];
   }
 
-  [v5 bounds];
+  [viewCopy bounds];
   v6 = [(_UIDraggingImageComponent *)self _initWithNoImageAndFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 2, a3);
-    v7->_ignoresAccessibilityFilters = [v5 accessibilityIgnoresInvertColors];
+    objc_storeStrong(v6 + 2, view);
+    v7->_ignoresAccessibilityFilters = [viewCopy accessibilityIgnoresInvertColors];
   }
 
   return v7;
@@ -69,12 +69,12 @@
   return result;
 }
 
-- (id)_initWithNoImageAndFrame:(CGRect)a3
+- (id)_initWithNoImageAndFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = _UIDraggingImageComponent;
   result = [(_UIDraggingImageComponent *)&v8 init];

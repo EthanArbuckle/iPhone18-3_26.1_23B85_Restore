@@ -1,32 +1,32 @@
 @interface AXCaptionFontCell
-+ (double)heightForFontName:(id)a3;
-- (AXCaptionFontCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)heightForFontName:(id)name;
+- (AXCaptionFontCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateLabel;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXCaptionFontCell
 
-+ (double)heightForFontName:(id)a3
++ (double)heightForFontName:(id)name
 {
-  v3 = a3;
-  v4 = [UIFont fontWithName:v3 size:17.0];
-  [v3 _legacy_sizeWithFont:v4];
+  nameCopy = name;
+  v4 = [UIFont fontWithName:nameCopy size:17.0];
+  [nameCopy _legacy_sizeWithFont:v4];
   v6 = v5;
 
   return v6;
 }
 
-- (AXCaptionFontCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXCaptionFontCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = AXCaptionFontCell;
-  v4 = [(AXCaptionFontCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXCaptionFontCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AXCaptionFontCell *)v4 textLabel];
-    [v6 setNumberOfLines:0];
+    textLabel = [(AXCaptionFontCell *)v4 textLabel];
+    [textLabel setNumberOfLines:0];
 
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v5 selector:"_fontSizeChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -35,47 +35,47 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = AXCaptionFontCell;
-  [(AXCaptionFontCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(AXCaptionFontCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(AXCaptionFontCell *)self _updateLabel];
 }
 
 - (void)_updateLabel
 {
-  v2 = self;
-  v3 = [(AXCaptionFontCell *)self specifier];
-  v4 = [v3 propertyForKey:PSIDKey];
+  selfCopy = self;
+  specifier = [(AXCaptionFontCell *)self specifier];
+  v4 = [specifier propertyForKey:PSIDKey];
 
-  v5 = [(AXCaptionFontCell *)v2 textLabel];
-  v6 = [(AXCaptionFontCell *)v2 specifier];
-  v7 = [v6 propertyForKey:PSTitleKey];
+  textLabel = [(AXCaptionFontCell *)selfCopy textLabel];
+  specifier2 = [(AXCaptionFontCell *)selfCopy specifier];
+  v7 = [specifier2 propertyForKey:PSTitleKey];
   if (v7)
   {
-    [v5 setText:v7];
+    [textLabel setText:v7];
   }
 
   else
   {
-    v8 = [(AXCaptionFontCell *)v2 specifier];
-    v9 = [v8 name];
-    [v5 setText:v9];
+    specifier3 = [(AXCaptionFontCell *)selfCopy specifier];
+    name = [specifier3 name];
+    [textLabel setText:name];
   }
 
   if ([v4 isEqualToString:@"Helvetica-Bold"])
   {
     v10 = settingsLocString(@"default.choice", @"CaptioningStyle");
-    v11 = [(AXCaptionFontCell *)v2 specifier];
-    v12 = [v11 name];
-    v13 = [NSString stringWithFormat:v10, v12];
-    [v5 setText:v13];
+    specifier4 = [(AXCaptionFontCell *)selfCopy specifier];
+    name2 = [specifier4 name];
+    v13 = [NSString stringWithFormat:v10, name2];
+    [textLabel setText:v13];
   }
 
-  v14 = [v5 text];
+  text = [textLabel text];
 
-  if (v14)
+  if (text)
   {
     v15 = AXCaptionFonts();
     v46 = 0u;
@@ -86,8 +86,8 @@
     if (v16)
     {
       v17 = v16;
-      v44 = v2;
-      v45 = v5;
+      v44 = selfCopy;
+      v45 = textLabel;
       v18 = *v47;
       v19 = 17.0;
       do
@@ -116,8 +116,8 @@
 
       while (v17);
       v26 = v19;
-      v2 = v44;
-      v5 = v45;
+      selfCopy = v44;
+      textLabel = v45;
     }
 
     else
@@ -125,11 +125,11 @@
       v26 = 17.0;
     }
 
-    v27 = [(AXCaptionFontCell *)v2 specifier];
-    v28 = [v27 propertyForKey:@"isBold"];
-    v29 = [v28 BOOLValue];
+    specifier5 = [(AXCaptionFontCell *)selfCopy specifier];
+    v28 = [specifier5 propertyForKey:@"isBold"];
+    bOOLValue = [v28 BOOLValue];
 
-    if (v29)
+    if (bOOLValue)
     {
       v30 = 2;
     }
@@ -141,8 +141,8 @@
 
     v31 = _CTFontCreateWithNameAndSymbolicTraits();
     v32 = CTFontCopyCharacterSet(v31);
-    v33 = [v5 text];
-    v34 = CFCharacterSetCreateWithCharactersInString(kCFAllocatorDefault, v33);
+    text2 = [textLabel text];
+    v34 = CFCharacterSetCreateWithCharactersInString(kCFAllocatorDefault, text2);
 
     if (v32 && v34)
     {
@@ -181,7 +181,7 @@
         }
 
         v43 = v42;
-        [v5 setFont:v42];
+        [textLabel setFont:v42];
       }
     }
 
@@ -195,7 +195,7 @@ LABEL_29:
           CFRelease(v31);
         }
 
-        [v5 sizeToFit];
+        [textLabel sizeToFit];
 
         goto LABEL_32;
       }

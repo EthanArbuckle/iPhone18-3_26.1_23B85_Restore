@@ -109,8 +109,8 @@
 
   else if (v10)
   {
-    v12 = [v10 localizedDescription];
-    NSLog(@"%@", v12);
+    localizedDescription = [v10 localizedDescription];
+    NSLog(@"%@", localizedDescription);
   }
 
   else

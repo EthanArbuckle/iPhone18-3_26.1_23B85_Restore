@@ -1,28 +1,28 @@
 @interface WADetailedSnippetViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (WADetailedSnippetViewController)initWithAnswerSnippet:(id)a3;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)_blendedImageFromImage:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (WADetailedSnippetViewController)initWithAnswerSnippet:(id)snippet;
+- (double)desiredHeightForWidth:(double)width;
+- (id)_blendedImageFromImage:(id)image;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)sashItem;
-- (void)attributionViewTapped:(id)a3;
+- (void)attributionViewTapped:(id)tapped;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)wasAddedToTranscript;
 @end
 
 @implementation WADetailedSnippetViewController
 
-- (WADetailedSnippetViewController)initWithAnswerSnippet:(id)a3
+- (WADetailedSnippetViewController)initWithAnswerSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v10.receiver = self;
   v10.super_class = WADetailedSnippetViewController;
   v5 = [(WADetailedSnippetViewController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(WADetailedSnippetViewController *)v5 setSnippet:v4];
+    [(WADetailedSnippetViewController *)v5 setSnippet:snippetCopy];
     [(WADetailedSnippetViewController *)v6 setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     v7 = +[NSMutableArray array];
     answerViews = v6->_answerViews;
@@ -39,19 +39,19 @@
   v56.receiver = self;
   v56.super_class = WADetailedSnippetViewController;
   [(WADetailedSnippetViewController *)&v56 wasAddedToTranscript];
-  v3 = [(WADetailedSnippetViewController *)self delegate];
-  v4 = [v3 persistentDataStoreForSiriViewController:self];
+  delegate = [(WADetailedSnippetViewController *)self delegate];
+  v4 = [delegate persistentDataStoreForSiriViewController:self];
 
   group = dispatch_group_create();
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v5 = [(WADetailedSnippetViewController *)self snippet];
-  v6 = [v5 answers];
+  snippet = [(WADetailedSnippetViewController *)self snippet];
+  answers = [snippet answers];
 
-  obj = v6;
-  v32 = [v6 countByEnumeratingWithState:&v52 objects:v58 count:16];
+  obj = answers;
+  v32 = [answers countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v32)
   {
     v31 = *v53;
@@ -70,8 +70,8 @@
         v34 = v8;
         v9 = *(*(&v52 + 1) + 8 * v8);
         v10 = objc_alloc_init(WATextHeaderView);
-        v11 = [v9 title];
-        [(WATextHeaderView *)v10 setText:v11];
+        title = [v9 title];
+        [(WATextHeaderView *)v10 setText:title];
 
         v33 = v10;
         [(NSMutableArray *)self->_answerViews addObject:v10];
@@ -79,8 +79,8 @@
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v37 = [v9 lines];
-        v39 = [v37 countByEnumeratingWithState:&v48 objects:v57 count:16];
+        lines = [v9 lines];
+        v39 = [lines countByEnumeratingWithState:&v48 objects:v57 count:16];
         if (v39)
         {
           v38 = *v49;
@@ -90,17 +90,17 @@
             {
               if (*v49 != v38)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(lines);
               }
 
               v13 = *(*(&v48 + 1) + 8 * i);
               v14 = objc_alloc_init((v7 + 141));
               [(NSMutableArray *)self->_answerViews addObject:v14];
-              v15 = [v13 imageInverted];
-              if (v15)
+              imageInverted = [v13 imageInverted];
+              if (imageInverted)
               {
-                v16 = [v13 imageInverted];
-                [v14 setShouldInvert:{objc_msgSend(v16, "BOOLValue") ^ 1}];
+                imageInverted2 = [v13 imageInverted];
+                [v14 setShouldInvert:{objc_msgSend(imageInverted2, "BOOLValue") ^ 1}];
               }
 
               else
@@ -108,23 +108,23 @@
                 [v14 setShouldInvert:0];
               }
 
-              v17 = [v13 imageResource];
-              v18 = [v17 imageData];
-              v19 = [NSData dataWithData:v18];
+              imageResource = [v13 imageResource];
+              imageData = [imageResource imageData];
+              v19 = [NSData dataWithData:imageData];
               v20 = [UIImage imageWithData:v19];
 
-              v21 = [v13 imageResource];
-              v22 = [v21 resourceUrl];
+              imageResource2 = [v13 imageResource];
+              resourceUrl = [imageResource2 resourceUrl];
 
               if (v20)
               {
                 [v14 setImage:v20];
-                v23 = [(WADetailedSnippetViewController *)self traitCollection];
-                if ([v23 userInterfaceStyle] == &dword_0 + 2)
+                traitCollection = [(WADetailedSnippetViewController *)self traitCollection];
+                if ([traitCollection userInterfaceStyle] == &dword_0 + 2)
                 {
-                  v24 = [v14 shouldInvert];
+                  shouldInvert = [v14 shouldInvert];
 
-                  if (v24)
+                  if (shouldInvert)
                   {
                     [v14 invertImage];
                   }
@@ -135,10 +135,10 @@
                 }
               }
 
-              else if (v22)
+              else if (resourceUrl)
               {
-                v25 = [v22 absoluteString];
-                v26 = [v40 imageForKey:v25];
+                absoluteString = [resourceUrl absoluteString];
+                v26 = [v40 imageForKey:absoluteString];
                 if (v26)
                 {
                   [v14 setImage:v26];
@@ -154,10 +154,10 @@
                   v42[3] = &unk_82E0;
                   v42[4] = v13;
                   v42[5] = self;
-                  v27 = v22;
+                  v27 = resourceUrl;
                   v43 = v27;
                   v44 = v40;
-                  v45 = v25;
+                  v45 = absoluteString;
                   v46 = v14;
                   v47 = group;
                   v28 = [v36 imageTaskWithHTTPGetRequest:v27 client:self completionHandler:v42];
@@ -169,7 +169,7 @@
               v4 = v40;
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v48 objects:v57 count:16];
+            v39 = [lines countByEnumeratingWithState:&v48 objects:v57 count:16];
           }
 
           while (v39);
@@ -200,30 +200,30 @@
   v10.receiver = self;
   v10.super_class = WADetailedSnippetViewController;
   [(WADetailedSnippetViewController *)&v10 loadView];
-  v3 = [(WADetailedSnippetViewController *)self collectionView];
+  collectionView = [(WADetailedSnippetViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = +[WATextHeaderView reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
   v6 = objc_opt_class();
   v7 = +[WAImageView reuseIdentifier];
-  [v3 registerClass:v6 forCellWithReuseIdentifier:v7];
+  [collectionView registerClass:v6 forCellWithReuseIdentifier:v7];
 
   v8 = objc_opt_class();
   v9 = +[WAAttributionView reuseIdentifier];
-  [v3 registerClass:v8 forCellWithReuseIdentifier:v9];
+  [collectionView registerClass:v8 forCellWithReuseIdentifier:v9];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if (([(WADetailedSnippetViewController *)self isViewLoaded]& 1) == 0)
   {
     [(WADetailedSnippetViewController *)self loadView];
   }
 
-  v4 = [(WADetailedSnippetViewController *)self collectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 collectionViewContentSize];
+  collectionView = [(WADetailedSnippetViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v7 = v6;
 
   return v7;
@@ -250,27 +250,27 @@
   return v5;
 }
 
-- (void)attributionViewTapped:(id)a3
+- (void)attributionViewTapped:(id)tapped
 {
-  v4 = [(WADetailedSnippetViewController *)self delegate];
-  v5 = [(WADetailedSnippetViewController *)self snippet];
-  v6 = [v5 answerPunchOut];
-  v8 = v6;
+  delegate = [(WADetailedSnippetViewController *)self delegate];
+  snippet = [(WADetailedSnippetViewController *)self snippet];
+  answerPunchOut = [snippet answerPunchOut];
+  v8 = answerPunchOut;
   v7 = [NSArray arrayWithObjects:&v8 count:1];
-  [v4 siriViewController:self performAceCommands:v7];
+  [delegate siriViewController:self performAceCommands:v7];
 }
 
-- (id)_blendedImageFromImage:(id)a3
+- (id)_blendedImageFromImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = v4;
-  [v3 size];
+  [imageCopy size];
   v7 = v6;
-  [v3 size];
+  [imageCopy size];
   UIGraphicsBeginImageContextWithOptions(v20, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  [v3 size];
+  [imageCopy size];
   CGContextTranslateCTM(CurrentContext, 0.0, v9);
   v10 = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(v10, 1.0, -1.0);
@@ -287,33 +287,33 @@
   v14 = UIGraphicsGetCurrentContext();
   CGContextSetBlendMode(v14, kCGBlendModeScreen);
   v15 = UIGraphicsGetCurrentContext();
-  v16 = [v3 CGImage];
+  cGImage = [imageCopy CGImage];
 
   v22.origin.x = 0.0;
   v22.origin.y = 0.0;
   v22.size.width = v5;
   v22.size.height = v7;
-  CGContextDrawImage(v15, v22, v16);
+  CGContextDrawImage(v15, v22, cGImage);
   v17 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v17;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   answerViews = self->_answerViews;
-  v6 = a4;
-  v7 = -[NSMutableArray objectAtIndex:](answerViews, "objectAtIndex:", [v6 item]);
-  v8 = [(WADetailedSnippetViewController *)self collectionView];
-  v9 = [objc_opt_class() reuseIdentifier];
-  v10 = [v8 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](answerViews, "objectAtIndex:", [pathCopy item]);
+  collectionView = [(WADetailedSnippetViewController *)self collectionView];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v10 = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v7 text];
-    [v10 setText:v11];
+    text = [v7 text];
+    [v10 setText:text];
 LABEL_5:
 
     goto LABEL_6;
@@ -322,8 +322,8 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v7 image];
-    [v10 setImage:v11];
+    text = [v7 image];
+    [v10 setImage:text];
     goto LABEL_5;
   }
 
@@ -338,11 +338,11 @@ LABEL_6:
   return v10;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   v7 = [(NSMutableArray *)self->_answerViews count];
-  if (v7 <= [v6 item])
+  if (v7 <= [pathCopy item])
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -350,9 +350,9 @@ LABEL_6:
 
   else
   {
-    v8 = -[NSMutableArray objectAtIndex:](self->_answerViews, "objectAtIndex:", [v6 item]);
-    v9 = [(WADetailedSnippetViewController *)self delegate];
-    [v9 siriViewControllerExpectedWidth:self];
+    v8 = -[NSMutableArray objectAtIndex:](self->_answerViews, "objectAtIndex:", [pathCopy item]);
+    delegate = [(WADetailedSnippetViewController *)self delegate];
+    [delegate siriViewControllerExpectedWidth:self];
     v11 = v10;
 
     [v8 sizeThatFits:{v11, 1.79769313e308}];
@@ -367,16 +367,16 @@ LABEL_6:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v19.receiver = self;
   v19.super_class = WADetailedSnippetViewController;
-  [(WADetailedSnippetViewController *)&v19 traitCollectionDidChange:v4];
-  v5 = [(WADetailedSnippetViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  [(WADetailedSnippetViewController *)&v19 traitCollectionDidChange:changeCopy];
+  traitCollection = [(WADetailedSnippetViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 != [v4 userInterfaceStyle])
+  if (userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     v17 = 0u;
     v18 = 0u;
@@ -419,8 +419,8 @@ LABEL_6:
       while (v9);
     }
 
-    v14 = [(WADetailedSnippetViewController *)self view];
-    [v14 reloadData];
+    view = [(WADetailedSnippetViewController *)self view];
+    [view reloadData];
   }
 }
 

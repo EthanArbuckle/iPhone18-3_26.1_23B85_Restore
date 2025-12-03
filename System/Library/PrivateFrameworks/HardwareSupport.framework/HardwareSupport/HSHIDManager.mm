@@ -1,22 +1,22 @@
 @interface HSHIDManager
-- (BOOL)close:(id *)a3;
-- (BOOL)open:(id *)a3;
+- (BOOL)close:(id *)close;
+- (BOOL)open:(id *)open;
 - (HSHIDManager)init;
-- (HSHIDManager)initWithManagerRef:(__IOHIDManager *)a3;
+- (HSHIDManager)initWithManagerRef:(__IOHIDManager *)ref;
 - (id)devices;
 - (void)dealloc;
-- (void)enumerateDevicesMatching:(id)a3;
-- (void)scheduleWithRunLoop:(__CFRunLoop *)a3 mode:(__CFString *)a4;
+- (void)enumerateDevicesMatching:(id)matching;
+- (void)scheduleWithRunLoop:(__CFRunLoop *)loop mode:(__CFString *)mode;
 @end
 
 @implementation HSHIDManager
 
-- (HSHIDManager)initWithManagerRef:(__IOHIDManager *)a3
+- (HSHIDManager)initWithManagerRef:(__IOHIDManager *)ref
 {
   v5.receiver = self;
   v5.super_class = HSHIDManager;
   result = [(HSHIDManager *)&v5 init];
-  result->_managerRef = a3;
+  result->_managerRef = ref;
   *&result->_active = 0;
   return result;
 }
@@ -41,25 +41,25 @@
   [(HSHIDManager *)&v4 dealloc];
 }
 
-- (void)enumerateDevicesMatching:(id)a3
+- (void)enumerateDevicesMatching:(id)matching
 {
-  v4 = a3;
-  multiple = v4;
-  if (!v4)
+  matchingCopy = matching;
+  multiple = matchingCopy;
+  if (!matchingCopy)
   {
     managerRef = self->_managerRef;
-    v7 = 0;
+    firstObject = 0;
     goto LABEL_5;
   }
 
-  v5 = [(__CFArray *)v4 count];
+  v5 = [(__CFArray *)matchingCopy count];
   v6 = self->_managerRef;
   if (v5 == 1)
   {
-    v7 = [(__CFArray *)multiple firstObject];
+    firstObject = [(__CFArray *)multiple firstObject];
     managerRef = v6;
 LABEL_5:
-    IOHIDManagerSetDeviceMatching(managerRef, v7);
+    IOHIDManagerSetDeviceMatching(managerRef, firstObject);
     goto LABEL_7;
   }
 
@@ -67,12 +67,12 @@ LABEL_5:
 LABEL_7:
 }
 
-- (BOOL)open:(id *)a3
+- (BOOL)open:(id *)open
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v4 = IOHIDManagerOpen(self->_managerRef, 0);
   v5 = v4;
-  if (a3 && v4)
+  if (open && v4)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to open the IOHIDManager!"];
     v7 = MEMORY[0x277CCA9B8];
@@ -83,7 +83,7 @@ LABEL_7:
     v10 = [v7 errorWithDomain:v8 code:v5 userInfo:v9];
 
     v11 = v10;
-    *a3 = v10;
+    *open = v10;
   }
 
   result = v5 == 0;
@@ -91,12 +91,12 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v4 = IOHIDManagerClose(self->_managerRef, 0);
   v5 = v4;
-  if (a3 && v4)
+  if (close && v4)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to close the IOHIDManager!"];
     v7 = MEMORY[0x277CCA9B8];
@@ -107,7 +107,7 @@ LABEL_7:
     v10 = [v7 errorWithDomain:v8 code:v5 userInfo:v9];
 
     v11 = v10;
-    *a3 = v10;
+    *close = v10;
   }
 
   result = v5 == 0;
@@ -164,7 +164,7 @@ LABEL_7:
   return v12;
 }
 
-- (void)scheduleWithRunLoop:(__CFRunLoop *)a3 mode:(__CFString *)a4
+- (void)scheduleWithRunLoop:(__CFRunLoop *)loop mode:(__CFString *)mode
 {
   if (!self->_cancelled)
   {
@@ -174,7 +174,7 @@ LABEL_7:
 
   managerRef = self->_managerRef;
 
-  IOHIDManagerScheduleWithRunLoop(managerRef, a3, a4);
+  IOHIDManagerScheduleWithRunLoop(managerRef, loop, mode);
 }
 
 @end

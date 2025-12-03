@@ -2,7 +2,7 @@
 + (id)defaultStyle;
 - (id)description;
 - (id)shallowCopy;
-- (void)applyOverridesFrom:(id)a3;
+- (void)applyOverridesFrom:(id)from;
 @end
 
 @implementation OADTablePartStyle
@@ -33,29 +33,29 @@
 - (id)shallowCopy
 {
   v3 = objc_alloc_init(OADTablePartStyle);
-  v4 = [(OADTablePartStyle *)self cellStyle];
-  v5 = [v4 shallowCopy];
+  cellStyle = [(OADTablePartStyle *)self cellStyle];
+  shallowCopy = [cellStyle shallowCopy];
 
-  [(OADTablePartStyle *)v3 setCellStyle:v5];
-  v6 = [(OADTablePartStyle *)self textStyle];
-  v7 = [v6 shallowCopy];
+  [(OADTablePartStyle *)v3 setCellStyle:shallowCopy];
+  textStyle = [(OADTablePartStyle *)self textStyle];
+  shallowCopy2 = [textStyle shallowCopy];
 
-  [(OADTablePartStyle *)v3 setTextStyle:v7];
+  [(OADTablePartStyle *)v3 setTextStyle:shallowCopy2];
   return v3;
 }
 
-- (void)applyOverridesFrom:(id)a3
+- (void)applyOverridesFrom:(id)from
 {
-  v8 = a3;
-  if (v8)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v4 = [(OADTablePartStyle *)self cellStyle];
-    v5 = [v8 cellStyle];
-    [v4 applyOverridesFrom:v5];
+    cellStyle = [(OADTablePartStyle *)self cellStyle];
+    cellStyle2 = [fromCopy cellStyle];
+    [cellStyle applyOverridesFrom:cellStyle2];
 
-    v6 = [(OADTablePartStyle *)self textStyle];
-    v7 = [v8 textStyle];
-    [v6 applyOverridesFrom:v7];
+    textStyle = [(OADTablePartStyle *)self textStyle];
+    textStyle2 = [fromCopy textStyle];
+    [textStyle applyOverridesFrom:textStyle2];
   }
 }
 

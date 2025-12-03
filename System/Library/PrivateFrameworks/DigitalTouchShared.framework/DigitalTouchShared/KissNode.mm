@@ -1,15 +1,15 @@
 @interface KissNode
-+ (id)kissNodeWithColor:(id)a3 size:(CGSize)a4;
++ (id)kissNodeWithColor:(id)color size:(CGSize)size;
 - (CGPoint)position;
-- (void)setColor:(id)a3;
-- (void)setShader:(id)a3;
+- (void)setColor:(id)color;
+- (void)setShader:(id)shader;
 @end
 
 @implementation KissNode
 
-+ (id)kissNodeWithColor:(id)a3 size:(CGSize)a4
++ (id)kissNodeWithColor:(id)color size:(CGSize)size
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = objc_alloc_init(KissNode);
   v13 = 0;
   v14 = &v13;
@@ -29,26 +29,26 @@
 
   v7 = v6;
   _Block_object_dispose(&v13, 8);
-  v8 = [MEMORY[0x277D75348] clearColor];
-  v9 = [v8 colorSpaceConvertedColor];
-  v10 = [v6 spriteNodeWithColor:v9 size:{256.0, 256.0}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  colorSpaceConvertedColor = [clearColor colorSpaceConvertedColor];
+  v10 = [v6 spriteNodeWithColor:colorSpaceConvertedColor size:{256.0, 256.0}];
   [(KissNode *)v5 setNode:v10];
 
   return v5;
 }
 
-- (void)setShader:(id)a3
+- (void)setShader:(id)shader
 {
-  objc_storeStrong(&self->_shader, a3);
-  v5 = a3;
-  [(SKSpriteNode *)self->_node setShader:v5];
+  objc_storeStrong(&self->_shader, shader);
+  shaderCopy = shader;
+  [(SKSpriteNode *)self->_node setShader:shaderCopy];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v5 = a3;
-  [(SKSpriteNode *)self->_node setColor:v5];
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
+  [(SKSpriteNode *)self->_node setColor:colorCopy];
 }
 
 - (CGPoint)position

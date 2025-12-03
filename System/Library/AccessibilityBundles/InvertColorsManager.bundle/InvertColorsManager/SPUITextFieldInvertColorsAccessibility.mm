@@ -23,9 +23,9 @@
 
   else
   {
-    v6 = [(SPUITextFieldInvertColorsAccessibility *)self subviews];
+    subviews = [(SPUITextFieldInvertColorsAccessibility *)self subviews];
     v7 = [(SPUITextFieldInvertColorsAccessibility *)self safeUIViewForKey:@"blurView"];
-    v8 = [v6 containsObject:v7];
+    v8 = [subviews containsObject:v7];
 
     if (v8)
     {

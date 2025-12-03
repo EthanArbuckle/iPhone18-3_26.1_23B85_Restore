@@ -1,27 +1,27 @@
 @interface SGMailIntelligenceStringHasher
-+ (id)rotatingSaltForDate:(id)a3;
-+ (int64_t)hashedString:(id)a3 salts:(id)a4;
-+ (int64_t)truncatedSHA256:(id)a3 salts:(id)a4;
++ (id)rotatingSaltForDate:(id)date;
++ (int64_t)hashedString:(id)string salts:(id)salts;
++ (int64_t)truncatedSHA256:(id)a256 salts:(id)salts;
 - (NSData)rotatingSalt;
 - (SGMailIntelligenceStringHasher)init;
-- (SGMailIntelligenceStringHasher)initWithSaltValue:(id)a3;
-- (id)unrotatedHashedStrings:(id)a3 withHashSize:(unint64_t)a4;
-- (int64_t)hashedString:(id)a3;
-- (int64_t)truncatedSHA256:(id)a3;
-- (int64_t)unrotatedHashedString:(id)a3 withHashSize:(unint64_t)a4;
+- (SGMailIntelligenceStringHasher)initWithSaltValue:(id)value;
+- (id)unrotatedHashedStrings:(id)strings withHashSize:(unint64_t)size;
+- (int64_t)hashedString:(id)string;
+- (int64_t)truncatedSHA256:(id)a256;
+- (int64_t)unrotatedHashedString:(id)string withHashSize:(unint64_t)size;
 @end
 
 @implementation SGMailIntelligenceStringHasher
 
-- (id)unrotatedHashedStrings:(id)a3 withHashSize:(unint64_t)a4
+- (id)unrotatedHashedStrings:(id)strings withHashSize:(unint64_t)size
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSize___block_invoke;
   v6[3] = &unk_1E7EFC950;
   v6[4] = self;
-  v6[5] = a4;
-  v4 = [a3 _pas_mappedArrayWithTransform:v6];
+  v6[5] = size;
+  v4 = [strings _pas_mappedArrayWithTransform:v6];
 
   return v4;
 }
@@ -34,18 +34,18 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
   return [v2 numberWithLongLong:v3];
 }
 
-- (int64_t)unrotatedHashedString:(id)a3 withHashSize:(unint64_t)a4
+- (int64_t)unrotatedHashedString:(id)string withHashSize:(unint64_t)size
 {
   v13 = *MEMORY[0x1E69E9840];
   if (self->_salt)
   {
     salt = self->_salt;
     v5 = MEMORY[0x1E695DEC8];
-    v6 = a3;
+    stringCopy = string;
     v7 = [v5 arrayWithObjects:&salt count:1];
-    v8 = [SGMailIntelligenceStringHasher hashedString:v6 salts:v7, salt, v13];
+    v8 = [SGMailIntelligenceStringHasher hashedString:stringCopy salts:v7, salt, v13];
 
-    v9 = v8 % a4;
+    v9 = v8 % size;
   }
 
   else
@@ -57,17 +57,17 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
   return v9;
 }
 
-- (int64_t)hashedString:(id)a3
+- (int64_t)hashedString:(id)string
 {
   v10[2] = *MEMORY[0x1E69E9840];
   if (self->_salt)
   {
     v10[0] = self->_salt;
-    v4 = a3;
-    v5 = [(SGMailIntelligenceStringHasher *)self rotatingSalt];
-    v10[1] = v5;
+    stringCopy = string;
+    rotatingSalt = [(SGMailIntelligenceStringHasher *)self rotatingSalt];
+    v10[1] = rotatingSalt;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
-    v7 = [SGMailIntelligenceStringHasher hashedString:v4 salts:v6];
+    v7 = [SGMailIntelligenceStringHasher hashedString:stringCopy salts:v6];
   }
 
   else
@@ -79,17 +79,17 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
   return v7;
 }
 
-- (int64_t)truncatedSHA256:(id)a3
+- (int64_t)truncatedSHA256:(id)a256
 {
   v10[2] = *MEMORY[0x1E69E9840];
   if (self->_salt)
   {
     v10[0] = self->_salt;
-    v4 = a3;
-    v5 = [(SGMailIntelligenceStringHasher *)self rotatingSalt];
-    v10[1] = v5;
+    a256Copy = a256;
+    rotatingSalt = [(SGMailIntelligenceStringHasher *)self rotatingSalt];
+    v10[1] = rotatingSalt;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
-    v7 = [SGMailIntelligenceStringHasher truncatedSHA256:v4 salts:v6];
+    v7 = [SGMailIntelligenceStringHasher truncatedSHA256:a256Copy salts:v6];
   }
 
   else
@@ -106,8 +106,8 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
   rotatingSalt = self->_rotatingSalt;
   if (!rotatingSalt)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    v5 = [SGMailIntelligenceStringHasher rotatingSaltForDate:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    v5 = [SGMailIntelligenceStringHasher rotatingSaltForDate:date];
     v6 = self->_rotatingSalt;
     self->_rotatingSalt = v5;
 
@@ -120,41 +120,41 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
 - (SGMailIntelligenceStringHasher)init
 {
   v3 = [SGPersistentSaltProvider saltProviderFromKeyChainWithServiceIdentifier:@"com.apple.suggestions.mail-interaction-log.salt" accessGroup:@"com.apple.suggestions.mail-intelligence"];
-  v4 = [v3 salt];
-  v5 = [(SGMailIntelligenceStringHasher *)self initWithSaltValue:v4];
+  salt = [v3 salt];
+  v5 = [(SGMailIntelligenceStringHasher *)self initWithSaltValue:salt];
 
   return v5;
 }
 
-- (SGMailIntelligenceStringHasher)initWithSaltValue:(id)a3
+- (SGMailIntelligenceStringHasher)initWithSaltValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = SGMailIntelligenceStringHasher;
   v6 = [(SGMailIntelligenceStringHasher *)&v9 init];
   v7 = v6;
-  if (v5 && v6)
+  if (valueCopy && v6)
   {
-    objc_storeStrong(&v6->_salt, a3);
+    objc_storeStrong(&v6->_salt, value);
   }
 
   return v7;
 }
 
-+ (int64_t)hashedString:(id)a3 salts:(id)a4
++ (int64_t)hashedString:(id)string salts:(id)salts
 {
-  v5 = a4;
-  v6 = [a3 dataUsingEncoding:4];
-  v7 = [SGMailIntelligenceStringHasher truncatedSHA256:v6 salts:v5];
+  saltsCopy = salts;
+  v6 = [string dataUsingEncoding:4];
+  v7 = [SGMailIntelligenceStringHasher truncatedSHA256:v6 salts:saltsCopy];
 
   return v7;
 }
 
-+ (int64_t)truncatedSHA256:(id)a3 salts:(id)a4
++ (int64_t)truncatedSHA256:(id)a256 salts:(id)salts
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  a256Copy = a256;
+  saltsCopy = salts;
   memset(md, 0, sizeof(md));
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
@@ -162,7 +162,7 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v6;
+  v7 = saltsCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
@@ -190,7 +190,7 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
     while (v9);
   }
 
-  CC_SHA256_Update(&c, [v5 bytes], objc_msgSend(v5, "length"));
+  CC_SHA256_Update(&c, [a256Copy bytes], objc_msgSend(a256Copy, "length"));
   CC_SHA256_Final(md, &c);
   v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:32];
   v17 = 0;
@@ -201,15 +201,15 @@ uint64_t __70__SGMailIntelligenceStringHasher_unrotatedHashedStrings_withHashSiz
   return v14;
 }
 
-+ (id)rotatingSaltForDate:(id)a3
++ (id)rotatingSaltForDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 component:8 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar component:8 fromDate:dateCopy];
 
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 component:4 fromDate:v4];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar2 component:4 fromDate:dateCopy];
 
   v9 = (v6 - 1) & 1;
   if (v6 < 1)

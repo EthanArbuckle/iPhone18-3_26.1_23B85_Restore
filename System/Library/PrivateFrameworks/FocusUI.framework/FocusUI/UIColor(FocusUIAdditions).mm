@@ -6,8 +6,8 @@
 
 + (id)fcui_colorForActivity:()FocusUIAdditions
 {
-  v3 = [a3 activityColorName];
-  v4 = NSSelectorFromString(v3);
+  activityColorName = [a3 activityColorName];
+  v4 = NSSelectorFromString(activityColorName);
 
   if (objc_opt_respondsToSelector())
   {

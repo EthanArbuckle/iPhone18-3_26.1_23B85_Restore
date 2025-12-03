@@ -1,23 +1,23 @@
 @interface ICDPlaybackPositionRequestOperationBase
-- (id)canonicalTimestampFromTimeInterval:(id)a3;
-- (id)keyValueStorePayloadWithEntity:(id)a3;
+- (id)canonicalTimestampFromTimeInterval:(id)interval;
+- (id)keyValueStorePayloadWithEntity:(id)entity;
 @end
 
 @implementation ICDPlaybackPositionRequestOperationBase
 
-- (id)canonicalTimestampFromTimeInterval:(id)a3
+- (id)canonicalTimestampFromTimeInterval:(id)interval
 {
-  v4 = a3;
-  [v4 doubleValue];
-  if (v5 == 0.0 || ([v4 doubleValue], v6 <= -kCFAbsoluteTimeIntervalSince1904))
+  intervalCopy = interval;
+  [intervalCopy doubleValue];
+  if (v5 == 0.0 || ([intervalCopy doubleValue], v6 <= -kCFAbsoluteTimeIntervalSince1904))
   {
     v8 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = intervalCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{puvlic}@ WARNING!!!! Encountered bogus timeInterval %{public}@", &v11, 0x16u);
     }
 
@@ -26,7 +26,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = intervalCopy;
   }
 
   v9 = v7;
@@ -34,14 +34,14 @@
   return v9;
 }
 
-- (id)keyValueStorePayloadWithEntity:(id)a3
+- (id)keyValueStorePayloadWithEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 bookmarkTime];
-  v6 = v5;
-  if (v5)
+  entityCopy = entity;
+  bookmarkTime = [entityCopy bookmarkTime];
+  v6 = bookmarkTime;
+  if (bookmarkTime)
   {
-    v7 = v5;
+    v7 = bookmarkTime;
   }
 
   else
@@ -51,11 +51,11 @@
 
   v8 = v7;
 
-  v9 = [v4 hasBeenPlayed];
-  v10 = v9;
-  if (v9)
+  hasBeenPlayed = [entityCopy hasBeenPlayed];
+  v10 = hasBeenPlayed;
+  if (hasBeenPlayed)
   {
-    v11 = v9;
+    v11 = hasBeenPlayed;
   }
 
   else
@@ -65,11 +65,11 @@
 
   v12 = v11;
 
-  v13 = [v4 userPlayCount];
-  v14 = v13;
-  if (v13)
+  userPlayCount = [entityCopy userPlayCount];
+  v14 = userPlayCount;
+  if (userPlayCount)
   {
-    v15 = v13;
+    v15 = userPlayCount;
   }
 
   else
@@ -79,11 +79,11 @@
 
   v16 = v15;
 
-  v17 = [v4 bookmarkTimestamp];
+  bookmarkTimestamp = [entityCopy bookmarkTimestamp];
 
-  if (v17)
+  if (bookmarkTimestamp)
   {
-    v18 = v17;
+    v18 = bookmarkTimestamp;
   }
 
   else
@@ -109,7 +109,7 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
       v30 = v23;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%{public}@ Error serializing data. error=%{public}@,", buf, 0x16u);

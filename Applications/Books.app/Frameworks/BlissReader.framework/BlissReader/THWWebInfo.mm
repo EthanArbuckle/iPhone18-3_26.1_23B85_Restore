@@ -2,32 +2,32 @@
 - (CGSize)idealWebSize;
 - (NSString)bookID;
 - (NSURL)bookBundleURL;
-- (THWWebInfo)initWithContext:(id)a3 geometry:(id)a4 stageGeometry:(id)a5 sourceURL:(id)a6 drmContext:(id)a7 exposurePolicy:(int)a8 ignoreInfoPlist:(BOOL)a9 allowNetworkAccess:(BOOL)a10 autoplayConfig:(id)a11;
+- (THWWebInfo)initWithContext:(id)context geometry:(id)geometry stageGeometry:(id)stageGeometry sourceURL:(id)l drmContext:(id)drmContext exposurePolicy:(int)policy ignoreInfoPlist:(BOOL)plist allowNetworkAccess:(BOOL)self0 autoplayConfig:(id)self1;
 - (TSUImage)defaultImage;
 - (TSUImage)placeholderImage;
 - (id)p_defaultImage;
-- (id)p_loadImageWithFilename:(id)a3;
+- (id)p_loadImageWithFilename:(id)filename;
 - (id)p_placeholderImage;
 - (void)dealloc;
-- (void)setPlaceholderInfo:(id)a3;
+- (void)setPlaceholderInfo:(id)info;
 @end
 
 @implementation THWWebInfo
 
-- (THWWebInfo)initWithContext:(id)a3 geometry:(id)a4 stageGeometry:(id)a5 sourceURL:(id)a6 drmContext:(id)a7 exposurePolicy:(int)a8 ignoreInfoPlist:(BOOL)a9 allowNetworkAccess:(BOOL)a10 autoplayConfig:(id)a11
+- (THWWebInfo)initWithContext:(id)context geometry:(id)geometry stageGeometry:(id)stageGeometry sourceURL:(id)l drmContext:(id)drmContext exposurePolicy:(int)policy ignoreInfoPlist:(BOOL)plist allowNetworkAccess:(BOOL)self0 autoplayConfig:(id)self1
 {
   v17.receiver = self;
   v17.super_class = THWWebInfo;
-  v15 = [(THWWebInfo *)&v17 initWithContext:a3 geometry:a4];
+  v15 = [(THWWebInfo *)&v17 initWithContext:context geometry:geometry];
   if (v15)
   {
-    v15->_stageGeometry = a5;
-    v15->_sourceURL = a6;
-    v15->_drmContext = a7;
-    v15->_exposurePolicy = a8;
-    v15->_ignoreInfoPlist = a9;
-    v15->_allowNetworkAccess = a10;
-    v15->_autoplayConfig = a11;
+    v15->_stageGeometry = stageGeometry;
+    v15->_sourceURL = l;
+    v15->_drmContext = drmContext;
+    v15->_exposurePolicy = policy;
+    v15->_ignoreInfoPlist = plist;
+    v15->_allowNetworkAccess = access;
+    v15->_autoplayConfig = config;
   }
 
   return v15;
@@ -65,39 +65,39 @@
       objc_opt_class();
       [(NSDictionary *)v9 objectForKey:@"Width"];
       [TSUDynamicCast() floatValue];
-      v11 = v10;
+      intValue = v10;
       if (v10 == 0.0)
       {
         objc_opt_class();
         [(NSDictionary *)v9 objectForKey:@"Width"];
-        v11 = [TSUDynamicCast() intValue];
+        intValue = [TSUDynamicCast() intValue];
       }
 
       objc_opt_class();
       [(NSDictionary *)v9 objectForKey:@"Height"];
       [TSUDynamicCast() floatValue];
-      if (v12 == 0.0)
+      if (intValue2 == 0.0)
       {
         objc_opt_class();
         [(NSDictionary *)v9 objectForKey:@"Height"];
-        v12 = [TSUDynamicCast() intValue];
+        intValue2 = [TSUDynamicCast() intValue];
       }
 
-      v13 = v12 > 0.0;
-      v14 = v12;
-      if (v11 > 0.0 && v13)
+      v13 = intValue2 > 0.0;
+      v14 = intValue2;
+      if (intValue > 0.0 && v13)
       {
         height = v14;
-        width = v11;
+        width = intValue;
       }
     }
 
     if (width == CGSizeZero.width && height == v5)
     {
-      v16 = [(THWWebInfo *)self p_defaultImage];
-      if (v16)
+      p_defaultImage = [(THWWebInfo *)self p_defaultImage];
+      if (p_defaultImage)
       {
-        [v16 size];
+        [p_defaultImage size];
         width = v17;
         height = v18;
       }
@@ -149,39 +149,39 @@
 {
   objc_opt_class();
   [(THWWebInfo *)self documentRoot];
-  v3 = [TSUDynamicCast() bookDescription];
+  bookDescription = [TSUDynamicCast() bookDescription];
 
-  return [v3 annotationID];
+  return [bookDescription annotationID];
 }
 
 - (NSURL)bookBundleURL
 {
   objc_opt_class();
   [(THWWebInfo *)self documentRoot];
-  v3 = [TSUDynamicCast() bookDescription];
+  bookDescription = [TSUDynamicCast() bookDescription];
 
-  return [v3 bookBundleUrl];
+  return [bookDescription bookBundleUrl];
 }
 
-- (void)setPlaceholderInfo:(id)a3
+- (void)setPlaceholderInfo:(id)info
 {
   placeholderInfo = self->_placeholderInfo;
-  if (placeholderInfo != a3)
+  if (placeholderInfo != info)
   {
 
-    self->_placeholderInfo = a3;
+    self->_placeholderInfo = info;
   }
 }
 
-- (id)p_loadImageWithFilename:(id)a3
+- (id)p_loadImageWithFilename:(id)filename
 {
-  result = [[(NSURL *)[(THWWebInfo *)self sourceURL] URLByDeletingLastPathComponent] URLByAppendingPathComponent:a3];
+  result = [[(NSURL *)[(THWWebInfo *)self sourceURL] URLByDeletingLastPathComponent] URLByAppendingPathComponent:filename];
   if (result)
   {
     v6 = [NSData dataWithContentsOfURL:result drmContext:[(THWWebInfo *)self drmContext] error:0];
     if (!v6)
     {
-      v6 = +[NSData dataWithContentsOfURL:drmContext:error:](NSData, "dataWithContentsOfURL:drmContext:error:", -[NSURL URLByAppendingPathComponent:](-[NSURL URLByDeletingLastPathComponent](-[THWWebInfo sourceURL](self, "sourceURL"), "URLByDeletingLastPathComponent"), "URLByAppendingPathComponent:", [a3 lowercaseString]), -[THWWebInfo drmContext](self, "drmContext"), 0);
+      v6 = +[NSData dataWithContentsOfURL:drmContext:error:](NSData, "dataWithContentsOfURL:drmContext:error:", -[NSURL URLByAppendingPathComponent:](-[NSURL URLByDeletingLastPathComponent](-[THWWebInfo sourceURL](self, "sourceURL"), "URLByDeletingLastPathComponent"), "URLByAppendingPathComponent:", [filename lowercaseString]), -[THWWebInfo drmContext](self, "drmContext"), 0);
     }
 
     return [TSUImage imageWithData:v6];

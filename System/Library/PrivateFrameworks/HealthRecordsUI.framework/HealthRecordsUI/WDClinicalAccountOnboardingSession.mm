@@ -1,42 +1,42 @@
 @interface WDClinicalAccountOnboardingSession
 - (WDClinicalAccountOnboardingSession)init;
-- (WDClinicalAccountOnboardingSession)initWithContext:(int64_t)a3 options:(unint64_t)a4 sourceIdentifier:(id)a5 profile:(id)a6 analyticsManager:(id)a7;
-- (id)makeDataTypeSelectionViewControllerForAccount:(id)a3;
-- (id)makeNecessaryScopesNotPresentViewControllerForAccount:(id)a3;
-- (void)didAddStaticSampleAccount:(id)a3;
+- (WDClinicalAccountOnboardingSession)initWithContext:(int64_t)context options:(unint64_t)options sourceIdentifier:(id)identifier profile:(id)profile analyticsManager:(id)manager;
+- (id)makeDataTypeSelectionViewControllerForAccount:(id)account;
+- (id)makeNecessaryScopesNotPresentViewControllerForAccount:(id)account;
+- (void)didAddStaticSampleAccount:(id)account;
 - (void)markShouldDismissOnboardingTileViewController;
-- (void)onboardingWillDisappearWith:(id)a3 animated:(BOOL)a4;
-- (void)persistEphemeralAccount:(id)a3 fromSharing:(BOOL)a4 completion:(id)a5;
-- (void)submitClinicalSharingOnboardingStepAnalytic:(int64_t)a3;
+- (void)onboardingWillDisappearWith:(id)with animated:(BOOL)animated;
+- (void)persistEphemeralAccount:(id)account fromSharing:(BOOL)sharing completion:(id)completion;
+- (void)submitClinicalSharingOnboardingStepAnalytic:(int64_t)analytic;
 @end
 
 @implementation WDClinicalAccountOnboardingSession
 
-- (id)makeDataTypeSelectionViewControllerForAccount:(id)a3
+- (id)makeDataTypeSelectionViewControllerForAccount:(id)account
 {
   sub_1D13905AC();
   v9[2] = self;
-  v9[3] = a3;
-  v5 = a3;
-  v6 = self;
+  v9[3] = account;
+  accountCopy = account;
+  selfCopy = self;
   v7 = sub_1D1327FA4(sub_1D13286E0, v9, "HealthRecordsUI/AccountOnboardingSession+ViewControllers.swift", 62);
 
   return v7;
 }
 
-- (id)makeNecessaryScopesNotPresentViewControllerForAccount:(id)a3
+- (id)makeNecessaryScopesNotPresentViewControllerForAccount:(id)account
 {
   sub_1D13905AC();
-  v7[2] = a3;
-  v4 = a3;
+  v7[2] = account;
+  accountCopy = account;
   v5 = sub_1D132815C(sub_1D13286F8, v7, "HealthRecordsUI/AccountOnboardingSession+ViewControllers.swift", 62);
 
   return v5;
 }
 
-- (WDClinicalAccountOnboardingSession)initWithContext:(int64_t)a3 options:(unint64_t)a4 sourceIdentifier:(id)a5 profile:(id)a6 analyticsManager:(id)a7
+- (WDClinicalAccountOnboardingSession)initWithContext:(int64_t)context options:(unint64_t)options sourceIdentifier:(id)identifier profile:(id)profile analyticsManager:(id)manager
 {
-  if (a5)
+  if (identifier)
   {
     v11 = sub_1D139016C();
     v13 = v12;
@@ -48,25 +48,25 @@
     v13 = 0;
   }
 
-  v14 = a6;
-  v15 = a7;
-  v16 = sub_1D1369698(a3, a4, v11, v13, v14, v15);
+  profileCopy = profile;
+  managerCopy = manager;
+  v16 = sub_1D1369698(context, options, v11, v13, profileCopy, managerCopy);
 
   return v16;
 }
 
-- (void)submitClinicalSharingOnboardingStepAnalytic:(int64_t)a3
+- (void)submitClinicalSharingOnboardingStepAnalytic:(int64_t)analytic
 {
-  v4 = self;
-  sub_1D1366EA8(a3);
+  selfCopy = self;
+  sub_1D1366EA8(analytic);
 }
 
-- (void)persistEphemeralAccount:(id)a3 fromSharing:(BOOL)a4 completion:(id)a5
+- (void)persistEphemeralAccount:(id)account fromSharing:(BOOL)sharing completion:(id)completion
 {
   sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   v14 = sub_1D13905DC();
@@ -75,16 +75,16 @@
   *(v15 + 16) = 0;
   *(v15 + 24) = 0;
   *(v15 + 32) = self;
-  *(v15 + 40) = a3;
-  *(v15 + 48) = a4;
+  *(v15 + 40) = account;
+  *(v15 + 48) = sharing;
   *(v15 + 56) = sub_1D136A14C;
   *(v15 + 64) = v13;
-  v16 = a3;
-  v17 = self;
+  accountCopy = account;
+  selfCopy = self;
   sub_1D107877C(0, 0, v11, &unk_1D13B38D0, v15);
 }
 
-- (void)didAddStaticSampleAccount:(id)a3
+- (void)didAddStaticSampleAccount:(id)account
 {
   sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -106,7 +106,7 @@
   *(v16 + 3) = 0;
   *(v16 + 4) = self;
   (*(v8 + 32))(&v16[v15], v10, v7);
-  v17 = self;
+  selfCopy = self;
   sub_1D107877C(0, 0, v6, &unk_1D13B38C8, v16);
 
   (*(v8 + 8))(v13, v7);
@@ -123,11 +123,11 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_1D107877C(0, 0, v5, &unk_1D13AEC50, v7);
 }
 
-- (void)onboardingWillDisappearWith:(id)a3 animated:(BOOL)a4
+- (void)onboardingWillDisappearWith:(id)with animated:(BOOL)animated
 {
   sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -138,10 +138,10 @@
   *(v11 + 16) = 0;
   *(v11 + 24) = 0;
   *(v11 + 32) = self;
-  *(v11 + 40) = a4;
-  *(v11 + 48) = a3;
-  v12 = a3;
-  v13 = self;
+  *(v11 + 40) = animated;
+  *(v11 + 48) = with;
+  withCopy = with;
+  selfCopy = self;
   sub_1D107877C(0, 0, v9, &unk_1D13B38B8, v11);
 }
 

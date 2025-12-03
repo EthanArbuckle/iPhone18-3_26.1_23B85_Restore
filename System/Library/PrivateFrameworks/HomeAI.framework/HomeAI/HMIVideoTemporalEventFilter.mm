@@ -1,10 +1,10 @@
 @interface HMIVideoTemporalEventFilter
-- (BOOL)_resetPreviousFrameResult:(id)a3 expirationPTS:(id *)a4 regionOfInterest:(CGRect)a5;
+- (BOOL)_resetPreviousFrameResult:(id)result expirationPTS:(id *)s regionOfInterest:(CGRect)interest;
 - (HMIVideoTemporalEventFilter)init;
-- (id)_filterEvents:(id)a3 stationaryEvents:(id)a4 motionDetection:(id)a5;
-- (id)_filterEvents:(id)a3 stationaryEvents:(id)a4 motionDetection:(id)a5 prevFrameResult:(id)a6 regionOfInterest:(CGRect)a7;
-- (id)_filterEvents:(id)a3 stationaryEvents:(id)a4 stationaryObjects:(id)a5 expirationPTS:(id *)a6 imageSize:(CGSize)a7;
-- (id)applyFilterWithFrameResult:(id)a3 motionDetection:(id)a4;
+- (id)_filterEvents:(id)events stationaryEvents:(id)stationaryEvents motionDetection:(id)detection;
+- (id)_filterEvents:(id)events stationaryEvents:(id)stationaryEvents motionDetection:(id)detection prevFrameResult:(id)result regionOfInterest:(CGRect)interest;
+- (id)_filterEvents:(id)events stationaryEvents:(id)stationaryEvents stationaryObjects:(id)objects expirationPTS:(id *)s imageSize:(CGSize)size;
+- (id)applyFilterWithFrameResult:(id)result motionDetection:(id)detection;
 @end
 
 @implementation HMIVideoTemporalEventFilter
@@ -17,9 +17,9 @@
   v2 = [(HMIVideoTemporalEventFilter *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     stationaryObjects = v2->_stationaryObjects;
-    v2->_stationaryObjects = v3;
+    v2->_stationaryObjects = array;
 
     CMTimeMakeWithSeconds(&v9, 10.0, 1000);
     v5 = *&v9.value;
@@ -39,26 +39,26 @@
   return v2;
 }
 
-- (id)applyFilterWithFrameResult:(id)a3 motionDetection:(id)a4
+- (id)applyFilterWithFrameResult:(id)result motionDetection:(id)detection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 events];
+  resultCopy = result;
+  detectionCopy = detection;
+  events = [resultCopy events];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __74__HMIVideoTemporalEventFilter_applyFilterWithFrameResult_motionDetection___block_invoke;
   v41[3] = &unk_278755120;
   v41[4] = self;
-  v9 = [v8 na_filter:v41];
+  v9 = [events na_filter:v41];
 
-  v10 = [v6 events];
-  v11 = [v10 allObjects];
+  events2 = [resultCopy events];
+  allObjects = [events2 allObjects];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __74__HMIVideoTemporalEventFilter_applyFilterWithFrameResult_motionDetection___block_invoke_2;
   v40[3] = &unk_278755120;
   v40[4] = self;
-  v12 = [v11 na_filter:v40];
+  v12 = [allObjects na_filter:v40];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __74__HMIVideoTemporalEventFilter_applyFilterWithFrameResult_motionDetection___block_invoke_3;
@@ -67,11 +67,11 @@
   v13 = [v12 sortedArrayUsingComparator:v39];
 
   memset(&v38, 0, sizeof(v38));
-  v14 = [v6 frame];
-  v15 = v14;
-  if (v14)
+  frame = [resultCopy frame];
+  v15 = frame;
+  if (frame)
   {
-    [v14 presentationTimeStamp];
+    [frame presentationTimeStamp];
   }
 
   else
@@ -83,23 +83,23 @@
   [(HMIVideoTemporalEventFilter *)self timeInterval];
   lhs = v38;
   CMTimeSubtract(&v37, &lhs, &rhs);
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [(HMIVideoTemporalEventFilter *)self _filterEvents:v13 stationaryEvents:v16 motionDetection:v7];
+  array = [MEMORY[0x277CBEB18] array];
+  v17 = [(HMIVideoTemporalEventFilter *)self _filterEvents:v13 stationaryEvents:array motionDetection:detectionCopy];
 
-  v18 = [(HMIVideoTemporalEventFilter *)self stationaryObjects];
-  v19 = [v6 frame];
-  [v19 size];
+  stationaryObjects = [(HMIVideoTemporalEventFilter *)self stationaryObjects];
+  frame2 = [resultCopy frame];
+  [frame2 size];
   rhs = v37;
-  v20 = [(HMIVideoTemporalEventFilter *)self _filterEvents:v17 stationaryEvents:v16 stationaryObjects:v18 expirationPTS:&rhs imageSize:?];
+  v20 = [(HMIVideoTemporalEventFilter *)self _filterEvents:v17 stationaryEvents:array stationaryObjects:stationaryObjects expirationPTS:&rhs imageSize:?];
 
-  v21 = [(HMIVideoTemporalEventFilter *)self prevFrameResult];
-  if (v21)
+  prevFrameResult = [(HMIVideoTemporalEventFilter *)self prevFrameResult];
+  if (prevFrameResult)
   {
-    v22 = v21;
-    v23 = [(HMIVideoTemporalEventFilter *)self prevFrameResult];
-    [v6 regionOfInterest];
+    v22 = prevFrameResult;
+    prevFrameResult2 = [(HMIVideoTemporalEventFilter *)self prevFrameResult];
+    [resultCopy regionOfInterest];
     rhs = v37;
-    v24 = [(HMIVideoTemporalEventFilter *)self _resetPreviousFrameResult:v23 expirationPTS:&rhs regionOfInterest:?];
+    v24 = [(HMIVideoTemporalEventFilter *)self _resetPreviousFrameResult:prevFrameResult2 expirationPTS:&rhs regionOfInterest:?];
 
     if (v24)
     {
@@ -107,12 +107,12 @@
     }
   }
 
-  v25 = [(HMIVideoTemporalEventFilter *)self prevFrameResult];
-  [v6 regionOfInterest];
-  v26 = [(HMIVideoTemporalEventFilter *)self _filterEvents:v20 stationaryEvents:v16 motionDetection:v7 prevFrameResult:v25 regionOfInterest:?];
+  prevFrameResult3 = [(HMIVideoTemporalEventFilter *)self prevFrameResult];
+  [resultCopy regionOfInterest];
+  v26 = [(HMIVideoTemporalEventFilter *)self _filterEvents:v20 stationaryEvents:array motionDetection:detectionCopy prevFrameResult:prevFrameResult3 regionOfInterest:?];
 
-  v27 = [v6 redactedCopy];
-  [(HMIVideoTemporalEventFilter *)self setPrevFrameResult:v27];
+  redactedCopy = [resultCopy redactedCopy];
+  [(HMIVideoTemporalEventFilter *)self setPrevFrameResult:redactedCopy];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -120,12 +120,12 @@
   v33[3] = &unk_278755170;
   v33[4] = self;
   v34 = v38;
-  [v16 na_each:v33];
+  [array na_each:v33];
   v28 = [HMIVideoAnalyzerFrameResult alloc];
-  v29 = [v6 frame];
+  frame3 = [resultCopy frame];
   v30 = [v9 setByAddingObjectsFromArray:v26];
-  [v6 regionOfInterest];
-  v31 = [(HMIVideoAnalyzerFrameResult *)v28 initWithFrame:v29 events:v30 regionOfInterest:?];
+  [resultCopy regionOfInterest];
+  v31 = [(HMIVideoAnalyzerFrameResult *)v28 initWithFrame:frame3 events:v30 regionOfInterest:?];
 
   return v31;
 }
@@ -188,21 +188,21 @@ void __74__HMIVideoTemporalEventFilter_applyFilterWithFrameResult_motionDetectio
   [v5 addObject:v7];
 }
 
-- (id)_filterEvents:(id)a3 stationaryEvents:(id)a4 motionDetection:(id)a5
+- (id)_filterEvents:(id)events stationaryEvents:(id)stationaryEvents motionDetection:(id)detection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  stationaryEventsCopy = stationaryEvents;
+  detectionCopy = detection;
+  v10 = detectionCopy;
+  if (detectionCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __78__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motionDetection___block_invoke;
     v13[3] = &unk_278755198;
-    v14 = v9;
-    v15 = self;
-    v16 = v8;
-    v11 = [a3 na_filter:v13];
+    v14 = detectionCopy;
+    selfCopy = self;
+    v16 = stationaryEventsCopy;
+    v11 = [events na_filter:v13];
   }
 
   else
@@ -256,22 +256,22 @@ uint64_t __78__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motion
   return v17 ^ 1u;
 }
 
-- (id)_filterEvents:(id)a3 stationaryEvents:(id)a4 stationaryObjects:(id)a5 expirationPTS:(id *)a6 imageSize:(CGSize)a7
+- (id)_filterEvents:(id)events stationaryEvents:(id)stationaryEvents stationaryObjects:(id)objects expirationPTS:(id *)s imageSize:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (([v15 hmf_isEmpty] & 1) == 0)
+  height = size.height;
+  width = size.width;
+  eventsCopy = events;
+  stationaryEventsCopy = stationaryEvents;
+  objectsCopy = objects;
+  if (([objectsCopy hmf_isEmpty] & 1) == 0)
   {
     do
     {
-      v16 = [v15 firstObject];
-      v17 = v16;
-      if (v16)
+      firstObject = [objectsCopy firstObject];
+      v17 = firstObject;
+      if (firstObject)
       {
-        [v16 time];
+        [firstObject time];
       }
 
       else
@@ -279,7 +279,7 @@ uint64_t __78__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motion
         memset(&time1, 0, sizeof(time1));
       }
 
-      time2 = *a6;
+      time2 = *s;
       v18 = CMTimeCompare(&time1, &time2);
 
       if ((v18 & 0x80000000) == 0)
@@ -287,10 +287,10 @@ uint64_t __78__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motion
         break;
       }
 
-      [v15 hmf_removeFirstObject];
+      [objectsCopy hmf_removeFirstObject];
     }
 
-    while (![v15 hmf_isEmpty]);
+    while (![objectsCopy hmf_isEmpty]);
   }
 
   v23[0] = MEMORY[0x277D85DD0];
@@ -299,12 +299,12 @@ uint64_t __78__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motion
   v23[3] = &unk_2787551E8;
   v27 = width;
   v28 = height;
-  v24 = v15;
-  v25 = self;
-  v26 = v14;
-  v19 = v14;
-  v20 = v15;
-  v21 = [v13 na_filter:v23];
+  v24 = objectsCopy;
+  selfCopy = self;
+  v26 = stationaryEventsCopy;
+  v19 = stationaryEventsCopy;
+  v20 = objectsCopy;
+  v21 = [eventsCopy na_filter:v23];
 
   return v21;
 }
@@ -375,35 +375,35 @@ BOOL __104__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_stationar
   return v6;
 }
 
-- (id)_filterEvents:(id)a3 stationaryEvents:(id)a4 motionDetection:(id)a5 prevFrameResult:(id)a6 regionOfInterest:(CGRect)a7
+- (id)_filterEvents:(id)events stationaryEvents:(id)stationaryEvents motionDetection:(id)detection prevFrameResult:(id)result regionOfInterest:(CGRect)interest
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (v17)
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  stationaryEventsCopy = stationaryEvents;
+  detectionCopy = detection;
+  resultCopy = result;
+  if (resultCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __111__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motionDetection_prevFrameResult_regionOfInterest___block_invoke_2;
     v20[3] = &unk_278755238;
-    v21 = v16;
+    v21 = detectionCopy;
     v25 = x;
     v26 = y;
     v27 = width;
     v28 = height;
-    v22 = v17;
-    v23 = self;
-    v24 = v15;
-    v18 = [a3 na_filter:v20];
+    v22 = resultCopy;
+    selfCopy = self;
+    v24 = stationaryEventsCopy;
+    v18 = [events na_filter:v20];
   }
 
   else
   {
-    v18 = [a3 na_filter:&__block_literal_global_30];
+    v18 = [events na_filter:&__block_literal_global_30];
   }
 
   return v18;
@@ -523,14 +523,14 @@ void __111__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motionDet
   }
 }
 
-- (BOOL)_resetPreviousFrameResult:(id)a3 expirationPTS:(id *)a4 regionOfInterest:(CGRect)a5
+- (BOOL)_resetPreviousFrameResult:(id)result expirationPTS:(id *)s regionOfInterest:(CGRect)interest
 {
-  v6 = a3;
-  v7 = [v6 frame];
-  v8 = v7;
-  if (v7)
+  resultCopy = result;
+  frame = [resultCopy frame];
+  v8 = frame;
+  if (frame)
   {
-    [v7 presentationTimeStamp];
+    [frame presentationTimeStamp];
   }
 
   else
@@ -538,7 +538,7 @@ void __111__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motionDet
     memset(&time1, 0, sizeof(time1));
   }
 
-  v14 = *a4;
+  v14 = *s;
   v9 = CMTimeCompare(&time1, &v14);
 
   if (v9 < 0)
@@ -548,8 +548,8 @@ void __111__HMIVideoTemporalEventFilter__filterEvents_stationaryEvents_motionDet
 
   else
   {
-    v10 = [v6 events];
-    v11 = [v10 na_any:&__block_literal_global_32];
+    events = [resultCopy events];
+    v11 = [events na_any:&__block_literal_global_32];
 
     v12 = v11 ^ 1;
   }

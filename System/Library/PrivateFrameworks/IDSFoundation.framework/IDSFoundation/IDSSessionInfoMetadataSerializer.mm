@@ -1,19 +1,19 @@
 @interface IDSSessionInfoMetadataSerializer
-+ (id)_readArrayFromByteArray:(char *)a3 fieldByteSize:(unsigned __int16)a4 byteBuffer:(id *)a5;
-+ (id)_readDictionaryFromByteArray:(char *)a3 fieldByteSize:(unsigned __int16)a4 byteBuffer:(id *)a5;
-+ (id)deserializeSessionInfoMetadata:(id)a3;
-+ (id)serializeSessionInfoMetadata:(id)a3;
-+ (void)_writeArrayToByteBuffer:(id)a3 buffer:(id *)a4;
-+ (void)_writeDictionaryToByteBuffer:(id)a3 buffer:(id *)a4;
-+ (void)_writeNumberToByteBuffer:(id)a3 buffer:(id *)a4;
-+ (void)_writeStringToByteBuffer:(id)a3 buffer:(id *)a4;
++ (id)_readArrayFromByteArray:(char *)array fieldByteSize:(unsigned __int16)size byteBuffer:(id *)buffer;
++ (id)_readDictionaryFromByteArray:(char *)array fieldByteSize:(unsigned __int16)size byteBuffer:(id *)buffer;
++ (id)deserializeSessionInfoMetadata:(id)metadata;
++ (id)serializeSessionInfoMetadata:(id)metadata;
++ (void)_writeArrayToByteBuffer:(id)buffer buffer:(id *)a4;
++ (void)_writeDictionaryToByteBuffer:(id)buffer buffer:(id *)a4;
++ (void)_writeNumberToByteBuffer:(id)buffer buffer:(id *)a4;
++ (void)_writeStringToByteBuffer:(id)buffer buffer:(id *)a4;
 @end
 
 @implementation IDSSessionInfoMetadataSerializer
 
-+ (id)serializeSessionInfoMetadata:(id)a3
++ (id)serializeSessionInfoMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v9 = 0;
   v10 = &v9;
   v11 = 0x4810000000;
@@ -29,20 +29,20 @@
   v8[2] = sub_1A7C9EEC0;
   v8[3] = &unk_1E77E29F8;
   v8[4] = &v9;
-  [v3 enumerateKeysAndObjectsUsingBlock:v8];
+  [metadataCopy enumerateKeysAndObjectsUsingBlock:v8];
   v5 = [MEMORY[0x1E695DEF0] dataWithBytes:? length:?];
-  v6 = [v5 _CUTCopyGzippedData];
+  _CUTCopyGzippedData = [v5 _CUTCopyGzippedData];
 
   _Block_object_dispose(&v9, 8);
 
-  return v6;
+  return _CUTCopyGzippedData;
 }
 
-+ (void)_writeStringToByteBuffer:(id)a3 buffer:(id *)a4
++ (void)_writeStringToByteBuffer:(id)buffer buffer:(id *)a4
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 length];
+  bufferCopy = buffer;
+  v6 = [bufferCopy length];
   v7 = v6 + 2;
   v8 = (v6 + 17) & 0xFFFFFFFFFFFFFFF0;
   v9 = (v13 - v8);
@@ -51,7 +51,7 @@
     memset(v13 - v8, 170, v7);
   }
 
-  if (v5 && (v10 = [v5 UTF8String]) != 0)
+  if (bufferCopy && (v10 = [bufferCopy UTF8String]) != 0)
   {
     v11 = v10;
     v12 = strlen(v10);
@@ -70,38 +70,38 @@
   IDSByteBufferWriteField(a4, 1, v9, v7);
 }
 
-+ (void)_writeNumberToByteBuffer:(id)a3 buffer:(id *)a4
++ (void)_writeNumberToByteBuffer:(id)buffer buffer:(id *)a4
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v5[0] = bswap64([a3 unsignedLongLongValue]);
+  v5[0] = bswap64([buffer unsignedLongLongValue]);
   IDSByteBufferWriteField(a4, 2, v5, 8uLL);
 }
 
-+ (void)_writeDictionaryToByteBuffer:(id)a3 buffer:(id *)a4
++ (void)_writeDictionaryToByteBuffer:(id)buffer buffer:(id *)a4
 {
-  v6 = a3;
-  __src = bswap32([v6 count]) >> 16;
+  bufferCopy = buffer;
+  __src = bswap32([bufferCopy count]) >> 16;
   IDSByteBufferWriteField(a4, 4, &__src, 2uLL);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A7C9F238;
   v7[3] = &unk_1E77E2A18;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = a4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  [bufferCopy enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-+ (void)_writeArrayToByteBuffer:(id)a3 buffer:(id *)a4
++ (void)_writeArrayToByteBuffer:(id)buffer buffer:(id *)a4
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  __src = bswap32([v6 count]) >> 16;
+  bufferCopy = buffer;
+  __src = bswap32([bufferCopy count]) >> 16;
   IDSByteBufferWriteField(a4, 3, &__src, 2uLL);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = bufferCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {
@@ -117,7 +117,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [a1 _writeNumberToByteBuffer:*(*(&v12 + 1) + 8 * v11++) buffer:{a4, v12}];
+        [self _writeNumberToByteBuffer:*(*(&v12 + 1) + 8 * v11++) buffer:{a4, v12}];
       }
 
       while (v9 != v11);
@@ -128,9 +128,9 @@
   }
 }
 
-+ (id)deserializeSessionInfoMetadata:(id)a3
++ (id)deserializeSessionInfoMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v32 = -86;
   v31 = 0xAAAAAAAAAAAAAAAALL;
   v30 = -21846;
@@ -140,8 +140,8 @@
   v28[0] = v4;
   v28[1] = v4;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [v3 _CUTDecompressData];
-  IDSByteBufferInitForRead(v28, [v6 bytes], objc_msgSend(v6, "length"));
+  _CUTDecompressData = [metadataCopy _CUTDecompressData];
+  IDSByteBufferInitForRead(v28, [_CUTDecompressData bytes], objc_msgSend(_CUTDecompressData, "length"));
   if (!IDSByteBufferReadField(v28, &v32, &v31, &v30))
   {
     v8 = &stru_1F1AC8480;
@@ -338,32 +338,32 @@ LABEL_40:
   return v23;
 }
 
-+ (id)_readArrayFromByteArray:(char *)a3 fieldByteSize:(unsigned __int16)a4 byteBuffer:(id *)a5
++ (id)_readArrayFromByteArray:(char *)array fieldByteSize:(unsigned __int16)size byteBuffer:(id *)buffer
 {
-  v6 = a4;
-  v16 = a3;
-  v15 = a4;
+  sizeCopy = size;
+  arrayCopy = array;
+  sizeCopy2 = size;
   v14 = -86;
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (v6 >= 2)
+  array = [MEMORY[0x1E695DF70] array];
+  if (sizeCopy >= 2)
   {
-    v15 = v6 - 2;
-    v10 = __rev16(*a3);
-    v16 = a3 + 2;
+    sizeCopy2 = sizeCopy - 2;
+    v10 = __rev16(*array);
+    arrayCopy = array + 2;
     if (v10)
     {
       while (1)
       {
         v9 = 0;
-        if (!IDSByteBufferReadField(a5, &v14, &v16, &v15) || v15 < 8u)
+        if (!IDSByteBufferReadField(buffer, &v14, &arrayCopy, &sizeCopy2) || sizeCopy2 < 8u)
         {
           break;
         }
 
-        v11 = bswap64(*v16);
-        v16 += 8;
+        v11 = bswap64(*arrayCopy);
+        arrayCopy += 8;
         v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v11];
-        [v8 addObject:v12];
+        [array addObject:v12];
 
         if (!--v10)
         {
@@ -375,7 +375,7 @@ LABEL_40:
     else
     {
 LABEL_7:
-      v9 = v8;
+      v9 = array;
     }
   }
 
@@ -387,32 +387,32 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_readDictionaryFromByteArray:(char *)a3 fieldByteSize:(unsigned __int16)a4 byteBuffer:(id *)a5
++ (id)_readDictionaryFromByteArray:(char *)array fieldByteSize:(unsigned __int16)size byteBuffer:(id *)buffer
 {
-  v6 = a4;
-  v37 = a3;
-  v36 = a4;
+  sizeCopy = size;
+  arrayCopy = array;
+  sizeCopy2 = size;
   v35 = -86;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  if (v6 < 2)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (sizeCopy < 2)
   {
     goto LABEL_40;
   }
 
-  v36 = v6 - 2;
-  v9 = __rev16(*a3);
-  v37 = a3 + 2;
+  sizeCopy2 = sizeCopy - 2;
+  v9 = __rev16(*array);
+  arrayCopy = array + 2;
   if (!v9)
   {
 LABEL_37:
-    v29 = v8;
+    v29 = dictionary;
     goto LABEL_41;
   }
 
   v10 = 0;
   while (1)
   {
-    if (!IDSByteBufferReadField(a5, &v35, &v37, &v36))
+    if (!IDSByteBufferReadField(buffer, &v35, &arrayCopy, &sizeCopy2))
     {
       goto LABEL_40;
     }
@@ -427,43 +427,43 @@ LABEL_37:
       goto LABEL_14;
     }
 
-    if (v36 < 8u)
+    if (sizeCopy2 < 8u)
     {
       v12 = 0;
       goto LABEL_39;
     }
 
-    v36 -= 8;
-    v11 = bswap64(*v37);
-    v37 += 8;
+    sizeCopy2 -= 8;
+    v11 = bswap64(*arrayCopy);
+    arrayCopy += 8;
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v11];
 LABEL_15:
-    if (!IDSByteBufferReadField(a5, &v35, &v37, &v36))
+    if (!IDSByteBufferReadField(buffer, &v35, &arrayCopy, &sizeCopy2))
     {
       goto LABEL_39;
     }
 
     if (v35 == 3)
     {
-      if (v36 < 2u)
+      if (sizeCopy2 < 2u)
       {
         goto LABEL_39;
       }
 
-      v36 -= 2;
-      v23 = *v37;
-      v24 = v37[1];
-      v37 += 2;
-      v18 = [MEMORY[0x1E695DF70] array];
+      sizeCopy2 -= 2;
+      v23 = *arrayCopy;
+      v24 = arrayCopy[1];
+      arrayCopy += 2;
+      array = [MEMORY[0x1E695DF70] array];
       if (v24 | (v23 << 8))
       {
         v25 = (v23 << 8) + v24;
-        while (IDSByteBufferReadField(a5, &v35, &v37, &v36) && v36 > 7u)
+        while (IDSByteBufferReadField(buffer, &v35, &arrayCopy, &sizeCopy2) && sizeCopy2 > 7u)
         {
-          v26 = bswap64(*v37);
-          v37 += 8;
+          v26 = bswap64(*arrayCopy);
+          arrayCopy += 8;
           v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v26];
-          [v18 addObject:v27];
+          [array addObject:v27];
 
           if (!--v25)
           {
@@ -477,11 +477,11 @@ LABEL_15:
       goto LABEL_30;
     }
 
-    if (v35 == 1 && (v17 = v36 - 2, v36 >= 2u))
+    if (v35 == 1 && (v17 = sizeCopy2 - 2, sizeCopy2 >= 2u))
     {
-      v18 = 0;
-      v19 = v37 + 2;
-      v20 = __rev16(*v37);
+      array = 0;
+      v19 = arrayCopy + 2;
+      v20 = __rev16(*arrayCopy);
       if (v20)
       {
         v21 = v17 - v20;
@@ -490,13 +490,13 @@ LABEL_15:
           v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v19 length:v20 encoding:4];
           if (v22)
           {
-            v18 = v22;
-            v37 = &v19[v20];
-            v36 = v21;
+            array = v22;
+            arrayCopy = &v19[v20];
+            sizeCopy2 = v21;
 LABEL_30:
-            if (v12 && v18)
+            if (v12 && array)
             {
-              [v8 setObject:v18 forKeyedSubscript:v12];
+              [dictionary setObject:array forKeyedSubscript:v12];
             }
 
             goto LABEL_33;
@@ -530,7 +530,7 @@ LABEL_39:
 
     else
     {
-      v18 = 0;
+      array = 0;
     }
 
 LABEL_33:
@@ -541,8 +541,8 @@ LABEL_33:
     }
   }
 
-  v13 = v36 - 2;
-  if (v36 < 2u || ((v14 = v37 + 2, v15 = __rev16(*v37), v15) ? (v16 = v13 >= v15) : (v16 = 0), !v16))
+  v13 = sizeCopy2 - 2;
+  if (sizeCopy2 < 2u || ((v14 = arrayCopy + 2, v15 = __rev16(*arrayCopy), v15) ? (v16 = v13 >= v15) : (v16 = 0), !v16))
   {
 LABEL_14:
     v12 = 0;
@@ -553,8 +553,8 @@ LABEL_14:
   if (v28)
   {
     v12 = v28;
-    v37 = &v14[v15];
-    v36 = v13 - v15;
+    arrayCopy = &v14[v15];
+    sizeCopy2 = v13 - v15;
     goto LABEL_15;
   }
 

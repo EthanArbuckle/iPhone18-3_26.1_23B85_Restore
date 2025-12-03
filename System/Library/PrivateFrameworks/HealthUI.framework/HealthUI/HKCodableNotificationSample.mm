@@ -1,24 +1,24 @@
 @interface HKCodableNotificationSample
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataType:(BOOL)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasLatestSupportedVersion:(BOOL)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataType:(BOOL)type;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasLatestSupportedVersion:(BOOL)version;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableNotificationSample
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 32;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDataType:(BOOL)a3
+- (void)setHasDataType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLatestSupportedVersion:(BOOL)a3
+- (void)setHasLatestSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableNotificationSample;
   v4 = [(HKCodableNotificationSample *)&v8 description];
-  v5 = [(HKCodableNotificationSample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableNotificationSample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-    [v3 setObject:v5 forKey:@"startDate"];
+    [dictionary setObject:v5 forKey:@"startDate"];
 
     has = self->_has;
   }
@@ -118,21 +118,21 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-    [v3 setObject:v6 forKey:@"endDate"];
+    [dictionary setObject:v6 forKey:@"endDate"];
   }
 
   metadataDictionary = self->_metadataDictionary;
   if (metadataDictionary)
   {
-    v8 = [(HKCodableMetadataDictionary *)metadataDictionary dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"metadataDictionary"];
+    dictionaryRepresentation = [(HKCodableMetadataDictionary *)metadataDictionary dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"metadataDictionary"];
   }
 
   v9 = self->_has;
   if (v9)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_categoryValue];
-    [v3 setObject:v13 forKey:@"categoryValue"];
+    [dictionary setObject:v13 forKey:@"categoryValue"];
 
     v9 = self->_has;
     if ((v9 & 2) == 0)
@@ -153,7 +153,7 @@ LABEL_9:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dataType];
-  [v3 setObject:v14 forKey:@"dataType"];
+  [dictionary setObject:v14 forKey:@"dataType"];
 
   v9 = self->_has;
   if ((v9 & 8) == 0)
@@ -169,54 +169,54 @@ LABEL_10:
 
 LABEL_19:
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_latestSupportedVersion];
-  [v3 setObject:v15 forKey:@"latestSupportedVersion"];
+  [dictionary setObject:v15 forKey:@"latestSupportedVersion"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_11:
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v10 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v10 forKey:@"minimumSupportedVersion"];
   }
 
 LABEL_12:
   sampleUUID = self->_sampleUUID;
   if (sampleUUID)
   {
-    [v3 setObject:sampleUUID forKey:@"sampleUUID"];
+    [dictionary setObject:sampleUUID forKey:@"sampleUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v7 = v4;
+  v7 = toCopy;
   if ((has & 0x20) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_metadataDictionary)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -236,7 +236,7 @@ LABEL_9:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v7;
+  toCopy = v7;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -251,51 +251,51 @@ LABEL_10:
 
 LABEL_19:
   PBDataWriterWriteInt64Field();
-  v4 = v7;
+  toCopy = v7;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_11:
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
 LABEL_12:
   if (self->_sampleUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[6] = *&self->_startDate;
-    *(v4 + 72) |= 0x20u;
+    toCopy[6] = *&self->_startDate;
+    *(toCopy + 72) |= 0x20u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[3] = *&self->_endDate;
-    *(v4 + 72) |= 4u;
+    toCopy[3] = *&self->_endDate;
+    *(toCopy + 72) |= 4u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_metadataDictionary)
   {
-    [v4 setMetadataDictionary:?];
-    v4 = v7;
+    [toCopy setMetadataDictionary:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[1] = self->_categoryValue;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = self->_categoryValue;
+    *(toCopy + 72) |= 1u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -314,8 +314,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[2] = self->_dataType;
-  *(v4 + 72) |= 2u;
+  toCopy[2] = self->_dataType;
+  *(toCopy + 72) |= 2u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -329,26 +329,26 @@ LABEL_10:
   }
 
 LABEL_19:
-  v4[4] = self->_latestSupportedVersion;
-  *(v4 + 72) |= 8u;
+  toCopy[4] = self->_latestSupportedVersion;
+  *(toCopy + 72) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_11:
-    v4[5] = self->_minimumSupportedVersion;
-    *(v4 + 72) |= 0x10u;
+    toCopy[5] = self->_minimumSupportedVersion;
+    *(toCopy + 72) |= 0x10u;
   }
 
 LABEL_12:
   if (self->_sampleUUID)
   {
     [v7 setSampleUUID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -364,7 +364,7 @@ LABEL_12:
     *(v5 + 72) |= 4u;
   }
 
-  v8 = [(HKCodableMetadataDictionary *)self->_metadataDictionary copyWithZone:a3];
+  v8 = [(HKCodableMetadataDictionary *)self->_metadataDictionary copyWithZone:zone];
   v9 = *(v6 + 56);
   *(v6 + 56) = v8;
 
@@ -416,17 +416,17 @@ LABEL_9:
   }
 
 LABEL_10:
-  v11 = [(NSString *)self->_sampleUUID copyWithZone:a3];
+  v11 = [(NSString *)self->_sampleUUID copyWithZone:zone];
   v12 = *(v6 + 64);
   *(v6 + 64) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
@@ -434,32 +434,32 @@ LABEL_10:
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 72) & 0x20) == 0 || self->_startDate != *(v4 + 6))
+    if ((*(equalCopy + 72) & 0x20) == 0 || self->_startDate != *(equalCopy + 6))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 72) & 0x20) != 0)
+  else if ((*(equalCopy + 72) & 0x20) != 0)
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_endDate != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_endDate != *(equalCopy + 3))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_37;
   }
 
   metadataDictionary = self->_metadataDictionary;
-  if (metadataDictionary | *(v4 + 7))
+  if (metadataDictionary | *(equalCopy + 7))
   {
     if (![(HKCodableMetadataDictionary *)metadataDictionary isEqual:?])
     {
@@ -473,58 +473,58 @@ LABEL_37:
 
   if (has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_categoryValue != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_categoryValue != *(equalCopy + 1))
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_37;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_dataType != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_dataType != *(equalCopy + 2))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_37;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_latestSupportedVersion != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_latestSupportedVersion != *(equalCopy + 4))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_37;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_minimumSupportedVersion != *(v4 + 5))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_minimumSupportedVersion != *(equalCopy + 5))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_37;
   }
 
   sampleUUID = self->_sampleUUID;
-  if (sampleUUID | *(v4 + 8))
+  if (sampleUUID | *(equalCopy + 8))
   {
     v8 = [(NSString *)sampleUUID isEqual:?];
   }
@@ -661,21 +661,21 @@ LABEL_21:
   return v9 ^ v5 ^ v14 ^ v15 ^ v16 ^ v17 ^ v13 ^ [(NSString *)self->_sampleUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 72);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 72);
   if ((v6 & 0x20) != 0)
   {
-    self->_startDate = v4[6];
+    self->_startDate = fromCopy[6];
     *&self->_has |= 0x20u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_endDate = v4[3];
+    self->_endDate = fromCopy[3];
     *&self->_has |= 4u;
   }
 

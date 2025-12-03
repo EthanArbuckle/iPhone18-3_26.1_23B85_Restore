@@ -1,18 +1,18 @@
 @interface SBMenuBarViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_createWindowControlsPlaceholderViewForViewController:(id)a3;
+- (void)_createWindowControlsPlaceholderViewForViewController:(id)controller;
 @end
 
 @implementation SBMenuBarViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMenuBarViewController" hasInstanceVariable:@"_windowControlsPlaceholderView" withType:"UIView"];
-  [v3 validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMenuBarManager" hasInstanceMethod:@"windowControlsViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"_createWindowControlsPlaceholderViewForViewController:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMenuBarViewController" hasInstanceVariable:@"_windowControlsPlaceholderView" withType:"UIView"];
+  [validationsCopy validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMenuBarManager" hasInstanceMethod:@"windowControlsViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMenuBarViewController" hasInstanceMethod:@"_createWindowControlsPlaceholderViewForViewController:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -77,11 +77,11 @@ id __82__SBMenuBarViewControllerAccessibility__accessibilityLoadAccessibilityInf
   return v4;
 }
 
-- (void)_createWindowControlsPlaceholderViewForViewController:(id)a3
+- (void)_createWindowControlsPlaceholderViewForViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = SBMenuBarViewControllerAccessibility;
-  [(SBMenuBarViewControllerAccessibility *)&v4 _createWindowControlsPlaceholderViewForViewController:a3];
+  [(SBMenuBarViewControllerAccessibility *)&v4 _createWindowControlsPlaceholderViewForViewController:controller];
   [(SBMenuBarViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

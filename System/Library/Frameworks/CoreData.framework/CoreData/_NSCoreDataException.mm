@@ -1,65 +1,65 @@
 @interface _NSCoreDataException
-+ (id)exceptionWithName:(uint64_t)a3 code:(uint64_t)a4 reason:(void *)a5 userInfo:;
-- (id)errorObjectWithUserInfo:(id)a3;
-- (id)initWithName:(uint64_t)a3 code:(uint64_t)a4 reason:(void *)a5 userInfo:;
++ (id)exceptionWithName:(uint64_t)name code:(uint64_t)code reason:(void *)reason userInfo:;
+- (id)errorObjectWithUserInfo:(id)info;
+- (id)initWithName:(uint64_t)name code:(uint64_t)code reason:(void *)reason userInfo:;
 - (uint64_t)_setDomain:(uint64_t)result;
 - (void)dealloc;
 @end
 
 @implementation _NSCoreDataException
 
-+ (id)exceptionWithName:(uint64_t)a3 code:(uint64_t)a4 reason:(void *)a5 userInfo:
++ (id)exceptionWithName:(uint64_t)name code:(uint64_t)code reason:(void *)reason userInfo:
 {
   v9 = objc_alloc(objc_opt_self());
-  v10 = [(_NSCoreDataException *)v9 initWithName:a2 code:a3 reason:a4 userInfo:a5];
+  v10 = [(_NSCoreDataException *)v9 initWithName:a2 code:name reason:code userInfo:reason];
 
   return v10;
 }
 
-- (id)initWithName:(uint64_t)a3 code:(uint64_t)a4 reason:(void *)a5 userInfo:
+- (id)initWithName:(uint64_t)name code:(uint64_t)code reason:(void *)reason userInfo:
 {
   if (result)
   {
-    v5 = a5;
+    reasonCopy = reason;
     v9 = result;
     v10 = *MEMORY[0x1E696AA08];
-    v11 = [a5 objectForKey:*MEMORY[0x1E696AA08]];
-    if (!a3)
+    v11 = [reason objectForKey:*MEMORY[0x1E696AA08]];
+    if (!name)
     {
       v12 = v11;
       if (v11)
       {
-        a3 = [v11 code];
-        if (v5)
+        name = [v11 code];
+        if (reasonCopy)
         {
-          v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v5];
+          v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:reasonCopy];
           if ([v12 userInfo])
           {
             [v13 addEntriesFromDictionary:{objc_msgSend(v12, "userInfo")}];
           }
 
           [v13 removeObjectForKey:v10];
-          v5 = [v13 copy];
+          reasonCopy = [v13 copy];
         }
 
         else
         {
-          v5 = [v12 userInfo];
+          reasonCopy = [v12 userInfo];
         }
       }
 
       else
       {
-        a3 = 134060;
+        name = 134060;
       }
     }
 
     v14.receiver = v9;
     v14.super_class = _NSCoreDataException;
-    result = objc_msgSendSuper2(&v14, sel_initWithName_reason_userInfo_, a2, a4, v5);
+    result = objc_msgSendSuper2(&v14, sel_initWithName_reason_userInfo_, a2, code, reasonCopy);
     if (result)
     {
-      *(result + 5) = a3;
+      *(result + 5) = name;
     }
   }
 
@@ -90,19 +90,19 @@
   return result;
 }
 
-- (id)errorObjectWithUserInfo:(id)a3
+- (id)errorObjectWithUserInfo:(id)info
 {
-  v5 = [(_NSCoreDataException *)self userInfo];
-  if (a3)
+  userInfo = [(_NSCoreDataException *)self userInfo];
+  if (info)
   {
-    v6 = [v5 mutableCopy];
-    [v6 addEntriesFromDictionary:a3];
+    v6 = [userInfo mutableCopy];
+    [v6 addEntriesFromDictionary:info];
     v7 = [v6 copy];
   }
 
   else
   {
-    v7 = v5;
+    v7 = userInfo;
   }
 
   if (self)

@@ -23,9 +23,9 @@
   v12 = MEMORY[0x1E69BC7A0];
   v13 = a7;
   v14 = a6;
-  v15 = [v12 createDefaultFactory];
-  [v15 setVelocity:a3];
-  [a1 pkui_animateUsingFactory:v15 withDelay:a5 options:v14 animations:v13 completion:a2];
+  createDefaultFactory = [v12 createDefaultFactory];
+  [createDefaultFactory setVelocity:a3];
+  [self pkui_animateUsingFactory:createDefaultFactory withDelay:a5 options:v14 animations:v13 completion:a2];
 }
 
 + (void)pkui_animateUsingFactory:()PKUIUtilities withDelay:options:animations:completion:
@@ -33,61 +33,61 @@
   v13 = a3;
   v9 = a5;
   v10 = a6;
-  v11 = v13;
+  createDefaultFactory = v13;
   if (!v13)
   {
-    v11 = [MEMORY[0x1E69BC7A0] createDefaultFactory];
+    createDefaultFactory = [MEMORY[0x1E69BC7A0] createDefaultFactory];
   }
 
   v12 = MEMORY[0x1E69DD250];
-  v14 = v11;
-  [v11 duration];
+  v14 = createDefaultFactory;
+  [createDefaultFactory duration];
   [v12 _animateWithDuration:a4 delay:v14 options:v9 factory:v10 animations:? completion:?];
 }
 
 - (void)pkui_shakeWithCompletion:()PKUIUtilities
 {
   v7 = a3;
-  v4 = [MEMORY[0x1E6979300] pkui_shakeAnimation];
+  pkui_shakeAnimation = [MEMORY[0x1E6979300] pkui_shakeAnimation];
   if (v7)
   {
-    [v4 pkui_setCompletionHandler:v7];
+    [pkui_shakeAnimation pkui_setCompletionHandler:v7];
   }
 
-  v5 = [a1 layer];
-  v6 = [v5 pkui_addAdditiveAnimation:v4];
+  layer = [self layer];
+  v6 = [layer pkui_addAdditiveAnimation:pkui_shakeAnimation];
 }
 
 - (void)pkui_smallShakeWithCompletion:()PKUIUtilities
 {
   v7 = a3;
-  v4 = [MEMORY[0x1E6979300] pkui_smallShakeAnimation];
+  pkui_smallShakeAnimation = [MEMORY[0x1E6979300] pkui_smallShakeAnimation];
   if (v7)
   {
-    [v4 pkui_setCompletionHandler:v7];
+    [pkui_smallShakeAnimation pkui_setCompletionHandler:v7];
   }
 
-  v5 = [a1 layer];
-  v6 = [v5 pkui_addAdditiveAnimation:v4];
+  layer = [self layer];
+  v6 = [layer pkui_addAdditiveAnimation:pkui_smallShakeAnimation];
 }
 
 - (void)pkui_miniShakeWithCompletion:()PKUIUtilities
 {
   v7 = a3;
-  v4 = [MEMORY[0x1E6979300] pkui_miniShakeAnimation];
+  pkui_miniShakeAnimation = [MEMORY[0x1E6979300] pkui_miniShakeAnimation];
   if (v7)
   {
-    [v4 pkui_setCompletionHandler:v7];
+    [pkui_miniShakeAnimation pkui_setCompletionHandler:v7];
   }
 
-  v5 = [a1 layer];
-  v6 = [v5 pkui_addAdditiveAnimation:v4];
+  layer = [self layer];
+  v6 = [layer pkui_addAdditiveAnimation:pkui_miniShakeAnimation];
 }
 
 - (void)addDefaultTranslationSpringWithVelocity:()PKUIUtilities startTime:
 {
   v6 = PKMagicCurve();
-  [a1 addTranslationSpringWithMass:v6 stiffness:2.0 damping:300.0 startTime:400.0 velocity:a3 timing:a2];
+  [self addTranslationSpringWithMass:v6 stiffness:2.0 damping:300.0 startTime:400.0 velocity:a3 timing:a2];
 }
 
 - (void)addTranslationSpringWithMass:()PKUIUtilities stiffness:damping:startTime:velocity:timing:
@@ -100,8 +100,8 @@
   [v19 setMass:a2];
   [v19 setStiffness:a3];
   [v19 setDamping:a4];
-  v16 = [a1 layer];
-  v17 = [v16 valueForKey:@"position"];
+  layer = [self layer];
+  v17 = [layer valueForKey:@"position"];
   [v19 setFromValue:v17];
 
   [v19 setFillMode:*MEMORY[0x1E69797D8]];
@@ -110,14 +110,14 @@
   [v19 setBeginTime:a5];
   [v19 durationForEpsilon:0.00100000005];
   [v19 setDuration:?];
-  v18 = [a1 layer];
-  [v18 addAnimation:v19 forKey:@"position"];
+  layer2 = [self layer];
+  [layer2 addAnimation:v19 forKey:@"position"];
 }
 
 - (void)addDefaultTransformSpringWithStartTime:()PKUIUtilities
 {
   v4 = PKMagicCurve();
-  [a1 addTransformSpringWithMass:v4 stiffness:2.0 damping:300.0 startTime:400.0 timing:a2];
+  [self addTransformSpringWithMass:v4 stiffness:2.0 damping:300.0 startTime:400.0 timing:a2];
 }
 
 - (void)addTransformSpringWithMass:()PKUIUtilities stiffness:damping:startTime:timing:
@@ -129,8 +129,8 @@
   [v17 setMass:a2];
   [v17 setStiffness:a3];
   [v17 setDamping:a4];
-  v14 = [a1 layer];
-  v15 = [v14 valueForKey:@"transform"];
+  layer = [self layer];
+  v15 = [layer valueForKey:@"transform"];
   [v17 setFromValue:v15];
 
   [v17 setFillMode:*MEMORY[0x1E69797D8]];
@@ -139,14 +139,14 @@
   [v17 setBeginTime:a5];
   [v17 durationForEpsilon:0.00100000005];
   [v17 setDuration:?];
-  v16 = [a1 layer];
-  [v16 addAnimation:v17 forKey:@"transform"];
+  layer2 = [self layer];
+  [layer2 addAnimation:v17 forKey:@"transform"];
 }
 
 - (id)pkui_translationAnimation
 {
-  v1 = [a1 layer];
-  v2 = [v1 animationForKey:@"position"];
+  layer = [self layer];
+  v2 = [layer animationForKey:@"position"];
 
   return v2;
 }
@@ -154,13 +154,13 @@
 - (id)pkui_viewControllerFromResponderChain
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = a1;
+  selfCopy = self;
   while (1)
   {
-    v4 = v3;
-    v3 = [v3 nextResponder];
+    v4 = selfCopy;
+    selfCopy = [selfCopy nextResponder];
 
-    if (!v3)
+    if (!selfCopy)
     {
       break;
     }
@@ -168,26 +168,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = selfCopy;
       break;
     }
   }
 
   objc_autoreleasePoolPop(v2);
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)pkui_readableContentBoundsWithMargins:()PKUIUtilities
 {
-  [a1 bounds];
+  [self bounds];
   v9 = v8;
   v11 = v10;
   v13 = a3 + v12;
   v14 = v8 + 0.0;
   v16 = v15 - (a3 + a5);
-  v17 = [a1 readableContentGuide];
-  [v17 layoutFrame];
+  readableContentGuide = [self readableContentGuide];
+  [readableContentGuide layoutFrame];
   v19 = v18;
   v21 = v20;
 
@@ -205,8 +205,8 @@
 
 - (void)pkui_setExcludedFromScreenCapture:()PKUIUtilities andBroadcasting:
 {
-  v10 = [a1 layer];
-  v6 = [v10 disableUpdateMask];
+  layer = [self layer];
+  disableUpdateMask = [layer disableUpdateMask];
   v7 = PKSensitiveFieldBroadcastingEnabled() ^ 1;
   if ((v7 & a4) != 0)
   {
@@ -228,12 +228,12 @@
     v9 = 0;
   }
 
-  [v10 setDisableUpdateMask:v8 | v6 & 0xFFFFFFED | v9];
+  [layer setDisableUpdateMask:v8 | disableUpdateMask & 0xFFFFFFED | v9];
 }
 
 - (uint64_t)pkui_setBoundsAndPositionFromFrame:()PKUIUtilities
 {
-  [a1 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  [self setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   v14.origin.x = a2;
   v14.origin.y = a3;
   v14.size.width = a4;
@@ -245,15 +245,15 @@
   v15.size.height = a5;
   MidY = CGRectGetMidY(v15);
 
-  return [a1 setCenter:{MidX, MidY}];
+  return [self setCenter:{MidX, MidY}];
 }
 
 - (uint64_t)pkui_userInterfaceIdiomSupportsLargeLayouts
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 userInterfaceIdiom];
-  v3 = v2 < 7;
-  v4 = 0x62u >> v2;
+  traitCollection = [self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  v3 = userInterfaceIdiom < 7;
+  v4 = 0x62u >> userInterfaceIdiom;
 
   return v3 & v4;
 }

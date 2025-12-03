@@ -1,8 +1,8 @@
 @interface SUNowPlayingCell
 - (void)layoutSubviews;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setHighlightsOnlyContentView:(BOOL)a3;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setAccessoryView:(id)view;
+- (void)setHighlightsOnlyContentView:(BOOL)view;
 @end
 
 @implementation SUNowPlayingCell
@@ -23,23 +23,23 @@
   }
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v3.receiver = self;
   v3.super_class = SUNowPlayingCell;
   [(SUNowPlayingCell *)&v3 setAccessoryType:1];
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
   itemOfferButton = self->super._itemOfferButton;
-  if (itemOfferButton == a3)
+  if (itemOfferButton == view)
   {
     [(SUItemOfferButton *)itemOfferButton setAnimationHorizontalAlignment:1];
     v6.receiver = self;
     v6.super_class = SUNowPlayingCell;
     [(SUNowPlayingCell *)&v6 setAccessoryView:0];
-    [(SUNowPlayingCell *)self addSubview:a3];
+    [(SUNowPlayingCell *)self addSubview:view];
   }
 
   else
@@ -47,11 +47,11 @@
     [(SUItemOfferButton *)itemOfferButton removeFromSuperview];
     v7.receiver = self;
     v7.super_class = SUNowPlayingCell;
-    [(SUNowPlayingCell *)&v7 setAccessoryView:a3];
+    [(SUNowPlayingCell *)&v7 setAccessoryView:view];
   }
 }
 
-- (void)setHighlightsOnlyContentView:(BOOL)a3
+- (void)setHighlightsOnlyContentView:(BOOL)view
 {
   v3.receiver = self;
   v3.super_class = SUNowPlayingCell;

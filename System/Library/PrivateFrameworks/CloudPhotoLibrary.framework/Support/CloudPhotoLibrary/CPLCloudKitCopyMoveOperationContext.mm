@@ -1,33 +1,33 @@
 @interface CPLCloudKitCopyMoveOperationContext
 - (id)extendedStatusDescriptionStrings;
-- (id)initFromZoneID:(id)a3 toZoneID:(id)a4;
+- (id)initFromZoneID:(id)d toZoneID:(id)iD;
 - (id)operationDescription;
-- (void)addCopyMoveFromRecordID:(id)a3 toRecordID:(id)a4;
+- (void)addCopyMoveFromRecordID:(id)d toRecordID:(id)iD;
 @end
 
 @implementation CPLCloudKitCopyMoveOperationContext
 
-- (id)initFromZoneID:(id)a3 toZoneID:(id)a4
+- (id)initFromZoneID:(id)d toZoneID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = CPLCloudKitCopyMoveOperationContext;
   v9 = [(CPLCloudKitCopyMoveOperationContext *)&v12 init];
   p_isa = &v9->super.super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceZoneID, a3);
-    objc_storeStrong(p_isa + 12, a4);
+    objc_storeStrong(&v9->_sourceZoneID, d);
+    objc_storeStrong(p_isa + 12, iD);
   }
 
   return p_isa;
 }
 
-- (void)addCopyMoveFromRecordID:(id)a3 toRecordID:(id)a4
+- (void)addCopyMoveFromRecordID:(id)d toRecordID:(id)iD
 {
-  v12 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   sourceRecordIDs = self->_sourceRecordIDs;
   if (!sourceRecordIDs)
   {
@@ -42,16 +42,16 @@
     sourceRecordIDs = self->_sourceRecordIDs;
   }
 
-  [(NSMutableArray *)sourceRecordIDs addObject:v12];
-  [(NSMutableDictionary *)self->_destinationRecordIDs setObject:v6 forKeyedSubscript:v12];
+  [(NSMutableArray *)sourceRecordIDs addObject:dCopy];
+  [(NSMutableDictionary *)self->_destinationRecordIDs setObject:iDCopy forKeyedSubscript:dCopy];
 }
 
 - (id)operationDescription
 {
   v3 = [NSString alloc];
-  v4 = [(CKRecordZoneID *)self->_sourceZoneID cpl_zoneName];
-  v5 = [(CKRecordZoneID *)self->_destinationZoneID cpl_zoneName];
-  v6 = [v3 initWithFormat:@"%@ -> %@", v4, v5];
+  cpl_zoneName = [(CKRecordZoneID *)self->_sourceZoneID cpl_zoneName];
+  cpl_zoneName2 = [(CKRecordZoneID *)self->_destinationZoneID cpl_zoneName];
+  v6 = [v3 initWithFormat:@"%@ -> %@", cpl_zoneName, cpl_zoneName2];
 
   return v6;
 }
@@ -81,9 +81,9 @@
         v8 = *(*(&v16 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_destinationRecordIDs objectForKeyedSubscript:v8];
         v10 = [NSString alloc];
-        v11 = [v8 recordName];
-        v12 = [v9 recordName];
-        v13 = [v10 initWithFormat:@"%@ -> %@", v11, v12];
+        recordName = [v8 recordName];
+        recordName2 = [v9 recordName];
+        v13 = [v10 initWithFormat:@"%@ -> %@", recordName, recordName2];
         [v3 addObject:v13];
       }
 

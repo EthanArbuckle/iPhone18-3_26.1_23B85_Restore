@@ -3,37 +3,37 @@
 - (MKLocalSearchCompleter)init;
 - (MKSearchCompletionFilterType)filterType;
 - (double)timeToNextRequest;
-- (id)_completionTicketForFilterTypeWithTraits:(id)a3;
-- (id)_completionTicketForPrivateFilterType:(int64_t)a3 traits:(id)a4;
+- (id)_completionTicketForFilterTypeWithTraits:(id)traits;
+- (id)_completionTicketForPrivateFilterType:(int64_t)type traits:(id)traits;
 - (id)context;
 - (id)delegate;
 - (int64_t)entriesType;
 - (void)_cancelTimer;
 - (void)_fireRequest;
-- (void)_handleCompletion:(id)a3 shouldDisplayNoResults:(BOOL)a4 shouldEnableRAPForNoResults:(BOOL)a5 forTicket:(id)a6;
-- (void)_handleError:(id)a3 forTicket:(id)a4;
+- (void)_handleCompletion:(id)completion shouldDisplayNoResults:(BOOL)results shouldEnableRAPForNoResults:(BOOL)noResults forTicket:(id)ticket;
+- (void)_handleError:(id)error forTicket:(id)ticket;
 - (void)_markDirty;
-- (void)_markDirtyAndScheduleRequestWithTimeToNextRequest:(double)a3;
-- (void)_notifyDelegatesWithResults:(id)a3 sections:(id)a4 shouldDisplayNoResults:(BOOL)a5 shouldEnableRAPForNoResults:(BOOL)a6 ticket:(id)a7;
+- (void)_markDirtyAndScheduleRequestWithTimeToNextRequest:(double)request;
+- (void)_notifyDelegatesWithResults:(id)results sections:(id)sections shouldDisplayNoResults:(BOOL)noResults shouldEnableRAPForNoResults:(BOOL)forNoResults ticket:(id)ticket;
 - (void)_schedulePendingRequest;
-- (void)_scheduleRequestWithTimeToNextRequest:(double)a3;
+- (void)_scheduleRequestWithTimeToNextRequest:(double)request;
 - (void)_updateFilters;
 - (void)cancel;
 - (void)clearQueryState;
 - (void)dealloc;
 - (void)retry;
-- (void)setAddressFilter:(id)a3;
-- (void)setCategoryFilter:(id)a3;
-- (void)setEntriesType:(int64_t)a3;
+- (void)setAddressFilter:(id)filter;
+- (void)setCategoryFilter:(id)filter;
+- (void)setEntriesType:(int64_t)type;
 - (void)setFilterType:(MKSearchCompletionFilterType)filterType;
 - (void)setPointOfInterestFilter:(MKPointOfInterestFilter *)pointOfInterestFilter;
 - (void)setQueryFragment:(NSString *)queryFragment;
 - (void)setRegion:(MKCoordinateRegion)region;
-- (void)setRegionPriority:(int64_t)a3;
+- (void)setRegionPriority:(int64_t)priority;
 - (void)setResultTypes:(MKLocalSearchCompleterResultType)resultTypes;
-- (void)setRetainedSearchMetadata:(id)a3;
-- (void)setSource:(int)a3;
-- (void)setStatefulQueriesEnabled:(BOOL)a3;
+- (void)setRetainedSearchMetadata:(id)metadata;
+- (void)setSource:(int)source;
+- (void)setStatefulQueriesEnabled:(BOOL)enabled;
 @end
 
 @implementation MKLocalSearchCompleter
@@ -65,12 +65,12 @@
   return result;
 }
 
-- (void)setEntriesType:(int64_t)a3
+- (void)setEntriesType:(int64_t)type
 {
-  if (a3 <= 5 && ((0x33u >> a3) & 1) != 0)
+  if (type <= 5 && ((0x33u >> type) & 1) != 0)
   {
-    v5 = qword_1A30F78F8[a3];
-    [(MKLocalSearchCompleter *)self setResultTypes:qword_1A30F78C8[a3]];
+    v5 = qword_1A30F78F8[type];
+    [(MKLocalSearchCompleter *)self setResultTypes:qword_1A30F78C8[type]];
 
     [(MKLocalSearchCompleter *)self _setPrivateFilterType:v5];
   }
@@ -90,12 +90,12 @@
   return ![(MKLocalSearchCompleter *)self resultTypes]|| ([(MKLocalSearchCompleter *)self resultTypes]& 4) != 0;
 }
 
-- (void)setStatefulQueriesEnabled:(BOOL)a3
+- (void)setStatefulQueriesEnabled:(BOOL)enabled
 {
-  if (self->_statefulQueriesEnabled != a3)
+  if (self->_statefulQueriesEnabled != enabled)
   {
-    self->_statefulQueriesEnabled = a3;
-    if (a3)
+    self->_statefulQueriesEnabled = enabled;
+    if (enabled)
     {
       v5 = objc_alloc_init(MEMORY[0x1E69A1B88]);
     }
@@ -178,11 +178,11 @@
   }
 }
 
-- (void)setRegionPriority:(int64_t)a3
+- (void)setRegionPriority:(int64_t)priority
 {
-  if (self->_regionPriority != a3)
+  if (self->_regionPriority != priority)
   {
-    self->_regionPriority = a3;
+    self->_regionPriority = priority;
     [(MKLocalSearchCompleter *)self _markDirty];
   }
 }
@@ -190,8 +190,8 @@
 - (void)setRegion:(MKCoordinateRegion)region
 {
   self->_region = region;
-  v4 = [(MKLocalSearchCompleter *)self queryFragment];
-  v5 = [v4 length];
+  queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+  v5 = [queryFragment length];
 
   if (v5)
   {
@@ -200,11 +200,11 @@
   }
 }
 
-- (void)setSource:(int)a3
+- (void)setSource:(int)source
 {
-  if (self->_source != a3)
+  if (self->_source != source)
   {
-    self->_source = a3;
+    self->_source = source;
     if ([(NSString *)self->_queryFragment length])
     {
 
@@ -213,12 +213,12 @@
   }
 }
 
-- (void)setRetainedSearchMetadata:(id)a3
+- (void)setRetainedSearchMetadata:(id)metadata
 {
-  v5 = a3;
-  if (self->_retainedSearchMetadata != v5)
+  metadataCopy = metadata;
+  if (self->_retainedSearchMetadata != metadataCopy)
   {
-    objc_storeStrong(&self->_retainedSearchMetadata, a3);
+    objc_storeStrong(&self->_retainedSearchMetadata, metadata);
     if ([(NSString *)self->_queryFragment length])
     {
       [(MKLocalSearchCompleter *)self _markDirty];
@@ -228,33 +228,33 @@
 
 - (void)_updateFilters
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_categoryFilter)
   {
     v4 = [objc_alloc(MEMORY[0x1E69A1BA0]) initWithCategory:self->_categoryFilter];
     if (v4)
     {
-      [(NSArray *)v3 addObject:v4];
+      [(NSArray *)array addObject:v4];
     }
   }
 
   pointOfInterestFilter = self->_pointOfInterestFilter;
   if (pointOfInterestFilter)
   {
-    v6 = [(MKPointOfInterestFilter *)pointOfInterestFilter _geoPOICategoryFilter];
-    if (v6)
+    _geoPOICategoryFilter = [(MKPointOfInterestFilter *)pointOfInterestFilter _geoPOICategoryFilter];
+    if (_geoPOICategoryFilter)
     {
-      [(NSArray *)v3 addObject:v6];
+      [(NSArray *)array addObject:_geoPOICategoryFilter];
     }
   }
 
   addressFilter = self->_addressFilter;
   if (addressFilter)
   {
-    v8 = [(MKAddressFilter *)addressFilter _geoAddressFilter];
-    if (v8)
+    _geoAddressFilter = [(MKAddressFilter *)addressFilter _geoAddressFilter];
+    if (_geoAddressFilter)
     {
-      [(NSArray *)v3 addObject:v8];
+      [(NSArray *)array addObject:_geoAddressFilter];
     }
   }
 
@@ -268,18 +268,18 @@
     }
 
     v12 = [objc_alloc(MEMORY[0x1E69A2490]) initWithResultTypes:resultTypes];
-    [(NSArray *)v3 addObject:v12];
+    [(NSArray *)array addObject:v12];
   }
 
   if (self->_regionPriority == 1)
   {
     v13 = objc_alloc_init(MEMORY[0x1E69A25C8]);
-    [(NSArray *)v3 addObject:v13];
+    [(NSArray *)array addObject:v13];
   }
 
   filters = self->_filters;
-  self->_filters = v3;
-  v15 = v3;
+  self->_filters = array;
+  v15 = array;
 
   v16 = [(NSString *)self->_queryFragment length];
   if (v16)
@@ -289,12 +289,12 @@
   }
 }
 
-- (void)setAddressFilter:(id)a3
+- (void)setAddressFilter:(id)filter
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_addressFilter] & 1) == 0)
+  filterCopy = filter;
+  if (([filterCopy isEqual:self->_addressFilter] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [filterCopy copy];
     addressFilter = self->_addressFilter;
     self->_addressFilter = v4;
 
@@ -302,15 +302,15 @@
   }
 }
 
-- (void)setCategoryFilter:(id)a3
+- (void)setCategoryFilter:(id)filter
 {
-  v5 = a3;
-  if (self->_categoryFilter != v5)
+  filterCopy = filter;
+  if (self->_categoryFilter != filterCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_categoryFilter, a3);
+    v6 = filterCopy;
+    objc_storeStrong(&self->_categoryFilter, filter);
     [(MKLocalSearchCompleter *)self _updateFilters];
-    v5 = v6;
+    filterCopy = v6;
   }
 }
 
@@ -403,33 +403,33 @@
           }
 
           v12 = *(*(&v26 + 1) + 8 * i);
-          v13 = [v12 _searchQuery];
-          if (v13)
+          _searchQuery = [v12 _searchQuery];
+          if (_searchQuery)
           {
-            v14 = v13;
+            v14 = _searchQuery;
             v15 = self->_queryFragment;
-            v16 = [v12 _searchQuery];
-            if ([(NSString *)v15 hasPrefix:v16])
+            _searchQuery2 = [v12 _searchQuery];
+            if ([(NSString *)v15 hasPrefix:_searchQuery2])
             {
             }
 
             else
             {
               v17 = self->_queryFragment;
-              v18 = [v12 _searchQuery];
-              LOBYTE(v17) = [(NSString *)v17 isEqualToString:v18];
+              _searchQuery3 = [v12 _searchQuery];
+              LOBYTE(v17) = [(NSString *)v17 isEqualToString:_searchQuery3];
 
               if ((v17 & 1) == 0)
               {
                 [v12 cancel];
-                v19 = v25;
+                array = v25;
                 if (!v25)
                 {
-                  v19 = [MEMORY[0x1E695DF70] array];
+                  array = [MEMORY[0x1E695DF70] array];
                 }
 
-                v25 = v19;
-                [v19 addObject:v12];
+                v25 = array;
+                [array addObject:v12];
               }
             }
           }
@@ -457,10 +457,10 @@
     v4 = v24;
     if (v20 > 0.0)
     {
-      v22 = [(MKLocalSearchCompleter *)self analyticsProvider];
-      v23 = [v22 captureNewMetrics];
+      analyticsProvider = [(MKLocalSearchCompleter *)self analyticsProvider];
+      captureNewMetrics = [analyticsProvider captureNewMetrics];
 
-      [v23 submitWithStatus:3];
+      [captureNewMetrics submitWithStatus:3];
     }
 
     [(MKLocalSearchCompleter *)self _markDirtyAndScheduleRequestWithTimeToNextRequest:v21];
@@ -498,30 +498,30 @@
   return result;
 }
 
-- (void)_scheduleRequestWithTimeToNextRequest:(double)a3
+- (void)_scheduleRequestWithTimeToNextRequest:(double)request
 {
   if (!self->_timer)
   {
-    v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__fireRequest selector:0 userInfo:0 repeats:a3];
+    v5 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__fireRequest selector:0 userInfo:0 repeats:request];
     timer = self->_timer;
     self->_timer = v5;
   }
 }
 
-- (void)_markDirtyAndScheduleRequestWithTimeToNextRequest:(double)a3
+- (void)_markDirtyAndScheduleRequestWithTimeToNextRequest:(double)request
 {
-  v5 = [(MKLocalSearchCompleter *)self delegate];
+  delegate = [(MKLocalSearchCompleter *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MKLocalSearchCompleter *)self delegate];
-    [v7 completerWillUpdateResults:self];
+    delegate2 = [(MKLocalSearchCompleter *)self delegate];
+    [delegate2 completerWillUpdateResults:self];
   }
 
   *&self->_dirty = 1;
 
-  [(MKLocalSearchCompleter *)self _scheduleRequestWithTimeToNextRequest:a3];
+  [(MKLocalSearchCompleter *)self _scheduleRequestWithTimeToNextRequest:request];
 }
 
 - (void)_markDirty
@@ -542,9 +542,9 @@
   }
 }
 
-- (id)_completionTicketForPrivateFilterType:(int64_t)a3 traits:(id)a4
+- (id)_completionTicketForPrivateFilterType:(int64_t)type traits:(id)traits
 {
-  v6 = a4;
+  traitsCopy = traits;
   if (self->_statefulQueriesEnabled)
   {
     autocompleteSessionData = self->_autocompleteSessionData;
@@ -557,61 +557,61 @@
 
   v8 = autocompleteSessionData;
   v9 = 0;
-  if (a3 > 1001)
+  if (type > 1001)
   {
-    if (a3 == 1002)
+    if (type == 1002)
     {
-      v10 = [MEMORY[0x1E69A2208] sharedService];
-      v11 = [(MKLocalSearchCompleter *)self queryFragment];
-      v15 = [v10 ticketForInterleavedAutoCompletePoiAddressOnly:v11 sessionData:v8 traits:v6];
+      mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+      queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+      v15 = [mEMORY[0x1E69A2208] ticketForInterleavedAutoCompletePoiAddressOnly:queryFragment sessionData:v8 traits:traitsCopy];
     }
 
     else
     {
-      if (a3 != 1003)
+      if (type != 1003)
       {
         goto LABEL_18;
       }
 
-      v10 = [MEMORY[0x1E69A2208] sharedService];
-      v11 = [(MKLocalSearchCompleter *)self queryFragment];
-      v15 = [v10 ticketForOfflineRegionSearchFragment:v11 sessionData:v8 traits:v6];
+      mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+      queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+      v15 = [mEMORY[0x1E69A2208] ticketForOfflineRegionSearchFragment:queryFragment sessionData:v8 traits:traitsCopy];
     }
 
     goto LABEL_16;
   }
 
-  if (a3 != 1000)
+  if (type != 1000)
   {
-    if (a3 != 1001)
+    if (type != 1001)
     {
       goto LABEL_18;
     }
 
-    v10 = [MEMORY[0x1E69A2208] sharedService];
-    v11 = [(MKLocalSearchCompleter *)self queryFragment];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
     filters = self->_filters;
-    v13 = [(MKLocalSearchCompleter *)self retainedSearchMetadata];
-    v14 = [(MKLocalSearchCompletion *)self->_tappedQuerySuggestionCompletion _geoCompletionItem];
-    v9 = [v10 ticketForInterleavedAutoCompleteWithBrowseSearchFragment:v11 filters:filters retainedSearch:v13 tappedQuerySuggestion:v14 sessionData:v8 traits:v6];
+    retainedSearchMetadata = [(MKLocalSearchCompleter *)self retainedSearchMetadata];
+    _geoCompletionItem = [(MKLocalSearchCompletion *)self->_tappedQuerySuggestionCompletion _geoCompletionItem];
+    v9 = [mEMORY[0x1E69A2208] ticketForInterleavedAutoCompleteWithBrowseSearchFragment:queryFragment filters:filters retainedSearch:retainedSearchMetadata tappedQuerySuggestion:_geoCompletionItem sessionData:v8 traits:traitsCopy];
 
     goto LABEL_17;
   }
 
-  v16 = [(MKLocalSearchCompleter *)self listType];
-  if (v16 == 1)
+  listType = [(MKLocalSearchCompleter *)self listType];
+  if (listType == 1)
   {
-    v10 = [MEMORY[0x1E69A2208] sharedService];
-    v11 = [(MKLocalSearchCompleter *)self queryFragment];
-    v15 = [v10 ticketForSectionedLocalitiesAndLandmarksSearchFragment:v11 sessionData:v8 traits:v6];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+    v15 = [mEMORY[0x1E69A2208] ticketForSectionedLocalitiesAndLandmarksSearchFragment:queryFragment sessionData:v8 traits:traitsCopy];
     goto LABEL_16;
   }
 
-  if (!v16)
+  if (!listType)
   {
-    v10 = [MEMORY[0x1E69A2208] sharedService];
-    v11 = [(MKLocalSearchCompleter *)self queryFragment];
-    v15 = [v10 ticketForInterleavedLocalitiesAndLandmarksSearchFragment:v11 sessionData:v8 traits:v6];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+    v15 = [mEMORY[0x1E69A2208] ticketForInterleavedLocalitiesAndLandmarksSearchFragment:queryFragment sessionData:v8 traits:traitsCopy];
 LABEL_16:
     v9 = v15;
 LABEL_17:
@@ -625,9 +625,9 @@ LABEL_18:
   return v9;
 }
 
-- (id)_completionTicketForFilterTypeWithTraits:(id)a3
+- (id)_completionTicketForFilterTypeWithTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   if (self->_statefulQueriesEnabled)
   {
     autocompleteSessionData = self->_autocompleteSessionData;
@@ -641,20 +641,20 @@ LABEL_18:
   v6 = autocompleteSessionData;
   if (![(MKLocalSearchCompleter *)self resultTypes]|| ([(MKLocalSearchCompleter *)self resultTypes]& 4) != 0)
   {
-    v11 = [(MKLocalSearchCompleter *)self listType];
-    if (v11 == 1)
+    listType = [(MKLocalSearchCompleter *)self listType];
+    if (listType == 1)
     {
-      v8 = [MEMORY[0x1E69A2208] sharedService];
-      v9 = [(MKLocalSearchCompleter *)self queryFragment];
-      v10 = [v8 ticketForSectionedAutoCompleteSearchFragment:v9 filters:self->_filters sessionData:v6 traits:v4];
+      mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+      queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+      v10 = [mEMORY[0x1E69A2208] ticketForSectionedAutoCompleteSearchFragment:queryFragment filters:self->_filters sessionData:v6 traits:traitsCopy];
       goto LABEL_15;
     }
 
-    if (!v11)
+    if (!listType)
     {
-      v8 = [MEMORY[0x1E69A2208] sharedService];
-      v9 = [(MKLocalSearchCompleter *)self queryFragment];
-      v10 = [v8 ticketForInterleavedAutoCompleteSearchFragment:v9 filters:self->_filters sessionData:v6 traits:v4];
+      mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+      queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+      v10 = [mEMORY[0x1E69A2208] ticketForInterleavedAutoCompleteSearchFragment:queryFragment filters:self->_filters sessionData:v6 traits:traitsCopy];
       goto LABEL_15;
     }
 
@@ -663,23 +663,23 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v7 = [(MKLocalSearchCompleter *)self listType];
-  if (v7 == 1)
+  listType2 = [(MKLocalSearchCompleter *)self listType];
+  if (listType2 == 1)
   {
-    v8 = [MEMORY[0x1E69A2208] sharedService];
-    v9 = [(MKLocalSearchCompleter *)self queryFragment];
-    v10 = [v8 ticketForSectionedInstantSearchFragment:v9 filters:self->_filters sessionData:v6 traits:v4];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+    v10 = [mEMORY[0x1E69A2208] ticketForSectionedInstantSearchFragment:queryFragment filters:self->_filters sessionData:v6 traits:traitsCopy];
     goto LABEL_15;
   }
 
-  if (v7)
+  if (listType2)
   {
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x1E69A2208] sharedService];
-  v9 = [(MKLocalSearchCompleter *)self queryFragment];
-  v10 = [v8 ticketForInterleavedInstantSearchFragment:v9 filters:self->_filters sessionData:v6 traits:v4];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+  v10 = [mEMORY[0x1E69A2208] ticketForInterleavedInstantSearchFragment:queryFragment filters:self->_filters sessionData:v6 traits:traitsCopy];
 LABEL_15:
   v12 = v10;
 
@@ -693,49 +693,49 @@ LABEL_16:
   [(MKLocalSearchCompleter *)self _cancelTimer];
   while ([(NSMutableArray *)self->_inFlightTickets count]>= self->_maxNumberOfConcurrentRequests)
   {
-    v3 = [(NSMutableArray *)self->_inFlightTickets firstObject];
+    firstObject = [(NSMutableArray *)self->_inFlightTickets firstObject];
     [(NSMutableArray *)self->_inFlightTickets removeObjectAtIndex:0];
-    [(NSMutableArray *)self->_pendingTickets removeObject:v3];
-    [v3 cancel];
+    [(NSMutableArray *)self->_pendingTickets removeObject:firstObject];
+    [firstObject cancel];
   }
 
   traits = self->_traits;
   if (traits)
   {
-    v5 = traits;
+    defaultTraits = traits;
   }
 
   else
   {
     v6 = +[MKMapService sharedService];
-    v5 = [v6 defaultTraits];
+    defaultTraits = [v6 defaultTraits];
   }
 
   [(MKLocalSearchCompleter *)self region];
   if (fabs(v8) >= 0.00000000999999994 || fabs(v7) >= 0.00000000999999994)
   {
     v9 = [MEMORY[0x1E69A2200] _mapkit_mapRegionForCoordinateRegion:?];
-    [(GEOMapServiceTraits *)v5 setMapRegion:v9];
+    [(GEOMapServiceTraits *)defaultTraits setMapRegion:v9];
   }
 
-  [(GEOMapServiceTraits *)v5 setSource:[(MKLocalSearchCompleter *)self source]];
+  [(GEOMapServiceTraits *)defaultTraits setSource:[(MKLocalSearchCompleter *)self source]];
   [(MKLocalSearchCompleter *)self timeSinceLastInBoundingRegion];
   LODWORD(v11) = vcvtmd_u64_f64(v10);
-  [(GEOMapServiceTraits *)v5 setTimeSinceMapViewportChanged:v11];
-  v12 = [(MKLocalSearchCompleter *)self mapType];
+  [(GEOMapServiceTraits *)defaultTraits setTimeSinceMapViewportChanged:v11];
+  mapType = [(MKLocalSearchCompleter *)self mapType];
   v13 = 1;
-  if (v12 <= 2)
+  if (mapType <= 2)
   {
-    if (!v12)
+    if (!mapType)
     {
 LABEL_23:
-      [(GEOMapServiceTraits *)v5 setMode:v13];
+      [(GEOMapServiceTraits *)defaultTraits setMode:v13];
       goto LABEL_24;
     }
 
-    if (v12 != 1)
+    if (mapType != 1)
     {
-      if (v12 != 2)
+      if (mapType != 2)
       {
         goto LABEL_24;
       }
@@ -748,11 +748,11 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v12 > 101)
+  if (mapType > 101)
   {
-    if (v12 != 102)
+    if (mapType != 102)
     {
-      if (v12 != 104)
+      if (mapType != 104)
       {
         goto LABEL_24;
       }
@@ -763,12 +763,12 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v12 == 3)
+  if (mapType == 3)
   {
     goto LABEL_22;
   }
 
-  if (v12 == 4)
+  if (mapType == 4)
   {
 LABEL_18:
     v13 = 3;
@@ -776,29 +776,29 @@ LABEL_18:
   }
 
 LABEL_24:
-  v14 = [(MKLocalSearchCompleter *)self deviceLocation];
+  deviceLocation = [(MKLocalSearchCompleter *)self deviceLocation];
 
-  if (v14)
+  if (deviceLocation)
   {
     v15 = objc_alloc(MEMORY[0x1E69A1E70]);
-    v16 = [(MKLocalSearchCompleter *)self deviceLocation];
-    v17 = [v15 initWithCLLocation:v16];
-    [(GEOMapServiceTraits *)v5 setDeviceLocation:v17];
+    deviceLocation2 = [(MKLocalSearchCompleter *)self deviceLocation];
+    v17 = [v15 initWithCLLocation:deviceLocation2];
+    [(GEOMapServiceTraits *)defaultTraits setDeviceLocation:v17];
   }
 
   if (!traits)
   {
-    v18 = [(GEOMapServiceTraits *)v5 deviceLocation];
-    if (v18 || self->_singleLocationUpdate)
+    deviceLocation3 = [(GEOMapServiceTraits *)defaultTraits deviceLocation];
+    if (deviceLocation3 || self->_singleLocationUpdate)
     {
     }
 
     else
     {
       v27 = +[MKLocationManager sharedLocationManager];
-      v28 = [v27 isLocationServicesAvailable];
+      isLocationServicesAvailable = [v27 isLocationServicesAvailable];
 
-      if (v28)
+      if (isLocationServicesAvailable)
       {
         v29 = +[MKLocationManager sharedLocationManager];
         v38[0] = MEMORY[0x1E69E9820];
@@ -815,16 +815,16 @@ LABEL_24:
     }
   }
 
-  [(GEOMapServiceTraits *)v5 setPhotosCount:0];
+  [(GEOMapServiceTraits *)defaultTraits setPhotosCount:0];
   privateFilterType = self->_privateFilterType;
   if (privateFilterType)
   {
-    [(MKLocalSearchCompleter *)self _completionTicketForPrivateFilterType:privateFilterType traits:v5];
+    [(MKLocalSearchCompleter *)self _completionTicketForPrivateFilterType:privateFilterType traits:defaultTraits];
   }
 
   else
   {
-    [(MKLocalSearchCompleter *)self _completionTicketForFilterTypeWithTraits:v5];
+    [(MKLocalSearchCompleter *)self _completionTicketForFilterTypeWithTraits:defaultTraits];
   }
   v20 = ;
   [(NSMutableArray *)self->_pendingTickets addObject:v20];
@@ -836,8 +836,8 @@ LABEL_24:
   v37[3] = &unk_1E76CA670;
   v37[4] = self;
   v21 = MEMORY[0x1A58E9F30](v37);
-  v22 = [(MKLocalSearchCompleter *)self analyticsProvider];
-  v23 = [v22 captureNewMetrics];
+  analyticsProvider = [(MKLocalSearchCompleter *)self analyticsProvider];
+  captureNewMetrics = [analyticsProvider captureNewMetrics];
 
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -845,14 +845,14 @@ LABEL_24:
   v34[3] = &unk_1E76C9D88;
   v34[4] = self;
   v35 = v20;
-  v36 = v23;
+  v36 = captureNewMetrics;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __38__MKLocalSearchCompleter__fireRequest__block_invoke_6;
   v32[3] = &unk_1E76C9DD8;
   v33 = v21;
   v24 = v21;
-  v25 = v23;
+  v25 = captureNewMetrics;
   v26 = v20;
   [v26 submitWithAutoCompletionHandler:v34 networkActivity:v32];
 }
@@ -1015,93 +1015,93 @@ LABEL_9:
   return [result _schedulePendingRequest];
 }
 
-- (void)_handleError:(id)a3 forTicket:(id)a4
+- (void)_handleError:(id)error forTicket:(id)ticket
 {
-  v28 = a3;
-  v6 = a4;
-  v7 = [v28 domain];
+  errorCopy = error;
+  ticketCopy = ticket;
+  domain = [errorCopy domain];
   v8 = GEOErrorDomain();
-  v9 = [v7 isEqualToString:v8];
+  v9 = [domain isEqualToString:v8];
 
   if (v9)
   {
-    if ([v28 code] == -2)
+    if ([errorCopy code] == -2)
     {
-      [(NSMutableArray *)self->_pendingTickets removeObject:v6];
+      [(NSMutableArray *)self->_pendingTickets removeObject:ticketCopy];
       goto LABEL_21;
     }
 
-    if ([v28 code] == -8)
+    if ([errorCopy code] == -8)
     {
-      v10 = [v28 userInfo];
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69A1630]];
+      userInfo = [errorCopy userInfo];
+      delegate6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A1630]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v11 BOOLValue];
+        bOOLValue = [delegate6 BOOLValue];
       }
 
       else
       {
-        v12 = 0;
+        bOOLValue = 0;
       }
 
-      v25 = [v28 userInfo];
-      v26 = [v25 objectForKeyedSubscript:*MEMORY[0x1E69A1638]];
+      userInfo2 = [errorCopy userInfo];
+      v26 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69A1638]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v26 BOOLValue];
+        bOOLValue2 = [v26 BOOLValue];
       }
 
       else
       {
-        v27 = 0;
+        bOOLValue2 = 0;
       }
 
-      [(MKLocalSearchCompleter *)self _handleCompletion:0 shouldDisplayNoResults:v12 shouldEnableRAPForNoResults:v27 forTicket:v6];
+      [(MKLocalSearchCompleter *)self _handleCompletion:0 shouldDisplayNoResults:bOOLValue shouldEnableRAPForNoResults:bOOLValue2 forTicket:ticketCopy];
 
       goto LABEL_20;
     }
   }
 
-  v13 = [(NSMutableArray *)self->_pendingTickets indexOfObject:v6];
+  v13 = [(NSMutableArray *)self->_pendingTickets indexOfObject:ticketCopy];
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_pendingTickets removeObjectAtIndex:v13];
     *&self->_shouldDisplayNoResults = 0;
     if (![(NSMutableArray *)self->_pendingTickets count])
     {
-      v14 = [(MKLocalSearchCompleter *)self delegate];
+      delegate = [(MKLocalSearchCompleter *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [(MKLocalSearchCompleter *)self delegate];
-        [v16 completerDidFail:self error:v28];
+        delegate2 = [(MKLocalSearchCompleter *)self delegate];
+        [delegate2 completerDidFail:self error:errorCopy];
       }
 
-      v17 = [(MKLocalSearchCompleter *)self delegate];
+      delegate3 = [(MKLocalSearchCompleter *)self delegate];
       v18 = objc_opt_respondsToSelector();
 
       if (v18)
       {
-        v19 = [(MKLocalSearchCompleter *)self delegate];
-        v20 = [v28 _mapkit_error];
-        [v19 completer:self didFailWithError:v20];
+        delegate4 = [(MKLocalSearchCompleter *)self delegate];
+        _mapkit_error = [errorCopy _mapkit_error];
+        [delegate4 completer:self didFailWithError:_mapkit_error];
       }
 
-      v21 = [(MKLocalSearchCompleter *)self delegate];
+      delegate5 = [(MKLocalSearchCompleter *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       if (v22)
       {
-        v11 = [(MKLocalSearchCompleter *)self delegate];
-        v23 = [v28 _mapkit_error];
-        v24 = [v6 _searchQuery];
-        [v11 completer:self didFailWithError:v23 forQueryFragment:v24];
+        delegate6 = [(MKLocalSearchCompleter *)self delegate];
+        _mapkit_error2 = [errorCopy _mapkit_error];
+        _searchQuery = [ticketCopy _searchQuery];
+        [delegate6 completer:self didFailWithError:_mapkit_error2 forQueryFragment:_searchQuery];
 
 LABEL_20:
       }
@@ -1111,12 +1111,12 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_notifyDelegatesWithResults:(id)a3 sections:(id)a4 shouldDisplayNoResults:(BOOL)a5 shouldEnableRAPForNoResults:(BOOL)a6 ticket:(id)a7
+- (void)_notifyDelegatesWithResults:(id)results sections:(id)sections shouldDisplayNoResults:(BOOL)noResults shouldEnableRAPForNoResults:(BOOL)forNoResults ticket:(id)ticket
 {
-  v46 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(NSMutableArray *)self->_pendingTickets indexOfObject:v14];
+  resultsCopy = results;
+  sectionsCopy = sections;
+  ticketCopy = ticket;
+  v15 = [(NSMutableArray *)self->_pendingTickets indexOfObject:ticketCopy];
   v16 = v15;
   if (v15)
   {
@@ -1125,19 +1125,19 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v44 = a6;
-    v45 = v13;
-    v17 = 0;
+    forNoResultsCopy2 = forNoResults;
+    v45 = sectionsCopy;
+    array = 0;
     v18 = 0;
     do
     {
       v19 = [(NSMutableArray *)self->_pendingTickets objectAtIndexedSubscript:v18];
-      if (!v17)
+      if (!array)
       {
-        v17 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
       }
 
-      [v17 addObject:v19];
+      [array addObject:v19];
       [v19 cancel];
 
       ++v18;
@@ -1148,113 +1148,113 @@ LABEL_21:
 
   else
   {
-    v44 = a6;
-    v45 = v13;
-    v17 = 0;
+    forNoResultsCopy2 = forNoResults;
+    v45 = sectionsCopy;
+    array = 0;
   }
 
   [(NSMutableArray *)self->_pendingTickets removeObjectsInRange:0, v16 + 1];
-  if ([v17 count])
+  if ([array count])
   {
-    [(NSMutableArray *)self->_inFlightTickets removeObjectsInArray:v17];
+    [(NSMutableArray *)self->_inFlightTickets removeObjectsInArray:array];
   }
 
-  objc_storeStrong(&self->_results, a3);
-  objc_storeStrong(&self->_sections, a4);
-  self->_shouldDisplayNoResults = a5;
-  self->_shouldEnableRAPForNoResults = v44;
+  objc_storeStrong(&self->_results, results);
+  objc_storeStrong(&self->_sections, sections);
+  self->_shouldDisplayNoResults = noResults;
+  self->_shouldEnableRAPForNoResults = forNoResultsCopy2;
   self->_resultsAreCurrent = !self->_dirty;
-  v20 = [v14 clientRankingModel];
+  clientRankingModel = [ticketCopy clientRankingModel];
   clientRankingModel = self->_clientRankingModel;
-  self->_clientRankingModel = v20;
+  self->_clientRankingModel = clientRankingModel;
 
-  v22 = [v14 sortPriorityMapping];
+  sortPriorityMapping = [ticketCopy sortPriorityMapping];
   sortPriorityMapping = self->_sortPriorityMapping;
-  self->_sortPriorityMapping = v22;
+  self->_sortPriorityMapping = sortPriorityMapping;
 
-  self->_autocompleteTopSectionIsQuerySuggestions = [v14 autocompleteTopSectionIsQuerySuggestions];
-  self->_showAutocompleteClientSource = [v14 showAutocompleteClientSource];
-  self->_shouldEnableGrayscaleHighlighting = [v14 shouldEnableGrayscaleHighlighting];
-  v24 = [v14 placeSummaryLayoutMetadata];
+  self->_autocompleteTopSectionIsQuerySuggestions = [ticketCopy autocompleteTopSectionIsQuerySuggestions];
+  self->_showAutocompleteClientSource = [ticketCopy showAutocompleteClientSource];
+  self->_shouldEnableGrayscaleHighlighting = [ticketCopy shouldEnableGrayscaleHighlighting];
+  placeSummaryLayoutMetadata = [ticketCopy placeSummaryLayoutMetadata];
   placeSummaryLayoutMetadata = self->_placeSummaryLayoutMetadata;
-  self->_placeSummaryLayoutMetadata = v24;
+  self->_placeSummaryLayoutMetadata = placeSummaryLayoutMetadata;
 
-  self->_shouldUseDistanceFeatureServerResults = [v14 shouldUseDistanceFeatureServerResults];
-  v26 = [v14 highlightType];
-  v27 = v26 == 1;
-  if (v26 == 2)
+  self->_shouldUseDistanceFeatureServerResults = [ticketCopy shouldUseDistanceFeatureServerResults];
+  highlightType = [ticketCopy highlightType];
+  v27 = highlightType == 1;
+  if (highlightType == 2)
   {
     v27 = 2;
   }
 
   self->_highlightType = v27;
-  self->_enableStructuredRAPAffordance = [v14 enableStructuredRAPAffordance];
-  v28 = [v14 autocompleteRequest];
+  self->_enableStructuredRAPAffordance = [ticketCopy enableStructuredRAPAffordance];
+  autocompleteRequest = [ticketCopy autocompleteRequest];
   geoMIFAutocompleteRequest = self->_geoMIFAutocompleteRequest;
-  self->_geoMIFAutocompleteRequest = v28;
+  self->_geoMIFAutocompleteRequest = autocompleteRequest;
 
-  v30 = [(MKLocalSearchCompleter *)self delegate];
+  delegate = [(MKLocalSearchCompleter *)self delegate];
   v31 = objc_opt_respondsToSelector();
 
   if (v31)
   {
-    v32 = [(MKLocalSearchCompleter *)self delegate];
-    [v32 setLastTicket:v14];
+    delegate2 = [(MKLocalSearchCompleter *)self delegate];
+    [delegate2 setLastTicket:ticketCopy];
   }
 
-  v33 = [(MKLocalSearchCompleter *)self delegate];
+  delegate3 = [(MKLocalSearchCompleter *)self delegate];
   v34 = objc_opt_respondsToSelector();
 
   if (v34)
   {
-    v35 = [(MKLocalSearchCompleter *)self delegate];
-    [v35 completerDidUpdateResults:self finished:1];
+    delegate4 = [(MKLocalSearchCompleter *)self delegate];
+    [delegate4 completerDidUpdateResults:self finished:1];
   }
 
-  v36 = [(MKLocalSearchCompleter *)self delegate];
+  delegate5 = [(MKLocalSearchCompleter *)self delegate];
   v37 = objc_opt_respondsToSelector();
 
   if (v37)
   {
-    v38 = [(MKLocalSearchCompleter *)self delegate];
+    delegate6 = [(MKLocalSearchCompleter *)self delegate];
     sections = self->_sections;
-    v40 = [v14 _searchQuery];
-    [v38 completer:self didUpdateResultsWithSections:sections forQueryFragment:v40];
+    _searchQuery = [ticketCopy _searchQuery];
+    [delegate6 completer:self didUpdateResultsWithSections:sections forQueryFragment:_searchQuery];
   }
 
-  v41 = [(MKLocalSearchCompleter *)self delegate];
+  delegate7 = [(MKLocalSearchCompleter *)self delegate];
   v42 = objc_opt_respondsToSelector();
 
   if (v42)
   {
-    v43 = [(MKLocalSearchCompleter *)self delegate];
-    [v43 completerDidUpdateResults:self];
+    delegate8 = [(MKLocalSearchCompleter *)self delegate];
+    [delegate8 completerDidUpdateResults:self];
   }
 
-  v13 = v45;
+  sectionsCopy = v45;
 LABEL_22:
 }
 
-- (void)_handleCompletion:(id)a3 shouldDisplayNoResults:(BOOL)a4 shouldEnableRAPForNoResults:(BOOL)a5 forTicket:(id)a6
+- (void)_handleCompletion:(id)completion shouldDisplayNoResults:(BOOL)results shouldEnableRAPForNoResults:(BOOL)noResults forTicket:(id)ticket
 {
   v106 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
-  v10 = [v8 sessionData];
+  completionCopy = completion;
+  ticketCopy = ticket;
+  sessionData = [completionCopy sessionData];
   autocompleteSessionData = self->_autocompleteSessionData;
-  self->_autocompleteSessionData = v10;
+  self->_autocompleteSessionData = sessionData;
 
   group = dispatch_group_create();
-  v79 = [MEMORY[0x1E695DF70] array];
-  v77 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v68 = v8;
-  obj = [v8 groups];
+  v68 = completionCopy;
+  obj = [completionCopy groups];
   v71 = [obj countByEnumeratingWithState:&v99 objects:v105 count:16];
-  v65 = v9;
+  v65 = ticketCopy;
   if (v71)
   {
     v80 = 0;
@@ -1266,7 +1266,7 @@ LABEL_22:
       do
       {
         v74 = v12;
-        v14 = self;
+        selfCopy3 = self;
         if (*v100 != v70)
         {
           objc_enumerationMutation(obj);
@@ -1274,18 +1274,18 @@ LABEL_22:
 
         v73 = v13;
         v15 = *(*(&v99 + 1) + 8 * v13);
-        v16 = [v15 localizedSectionHeader];
+        localizedSectionHeader = [v15 localizedSectionHeader];
         v17 = MEMORY[0x1E695DF70];
-        v18 = [v15 items];
-        v19 = [v17 arrayWithCapacity:{objc_msgSend(v18, "count")}];
+        items = [v15 items];
+        v19 = [v17 arrayWithCapacity:{objc_msgSend(items, "count")}];
 
         v97 = 0u;
         v98 = 0u;
         v95 = 0u;
         v96 = 0u;
         v72 = v15;
-        v76 = [v15 items];
-        v20 = [v76 countByEnumeratingWithState:&v95 objects:v104 count:16];
+        items2 = [v15 items];
+        v20 = [items2 countByEnumeratingWithState:&v95 objects:v104 count:16];
         if (v20)
         {
           v21 = v20;
@@ -1297,52 +1297,52 @@ LABEL_22:
             {
               if (*v96 != v23)
               {
-                objc_enumerationMutation(v76);
+                objc_enumerationMutation(items2);
               }
 
               v25 = *(*(&v95 + 1) + 8 * i);
               v26 = [[MKLocalSearchCompletion alloc] initWithGeoCompletionItem:v25 serverSectionIndex:v80 serverItemIndexInSection:v22];
-              if ([(MKLocalSearchCompleter *)v14 _shouldPreloadTransitInfo])
+              if ([(MKLocalSearchCompleter *)selfCopy3 _shouldPreloadTransitInfo])
               {
-                v27 = [(MKLocalSearchCompletion *)v26 mapItem];
-                v28 = [v27 _hasTransitLabels];
+                mapItem = [(MKLocalSearchCompletion *)v26 mapItem];
+                _hasTransitLabels = [mapItem _hasTransitLabels];
 
-                v14 = self;
-                if (v28)
+                selfCopy3 = self;
+                if (_hasTransitLabels)
                 {
                   dispatch_group_enter(group);
-                  v29 = [(MKLocalSearchCompletion *)v26 mapItem];
+                  mapItem2 = [(MKLocalSearchCompletion *)v26 mapItem];
                   v93[0] = MEMORY[0x1E69E9820];
                   v93[1] = 3221225472;
                   v93[2] = __105__MKLocalSearchCompleter__handleCompletion_shouldDisplayNoResults_shouldEnableRAPForNoResults_forTicket___block_invoke;
                   v93[3] = &unk_1E76CDB38;
-                  v14 = self;
+                  selfCopy3 = self;
                   v94 = group;
-                  [v29 preloadTransitInfoWithCompletion:v93];
+                  [mapItem2 preloadTransitInfoWithCompletion:v93];
                 }
               }
 
-              if ([v16 length])
+              if ([localizedSectionHeader length])
               {
-                [(MKLocalSearchCompletion *)v26 setLocalizedSectionHeader:v16];
+                [(MKLocalSearchCompletion *)v26 setLocalizedSectionHeader:localizedSectionHeader];
               }
 
-              v30 = [(MKLocalSearchCompleter *)v14 identifier];
-              [(MKLocalSearchCompletion *)v26 setSourceID:v30];
+              identifier = [(MKLocalSearchCompleter *)selfCopy3 identifier];
+              [(MKLocalSearchCompletion *)v26 setSourceID:identifier];
 
-              [v79 addObject:v26];
+              [array addObject:v26];
               [v19 addObject:v26];
-              v31 = [v25 directionIntent];
+              directionIntent = [v25 directionIntent];
 
-              if (v31)
+              if (directionIntent)
               {
-                [v77 addObject:v26];
+                [array2 addObject:v26];
               }
 
               ++v22;
             }
 
-            v21 = [v76 countByEnumeratingWithState:&v95 objects:v104 count:16];
+            v21 = [items2 countByEnumeratingWithState:&v95 objects:v104 count:16];
           }
 
           while (v21);
@@ -1352,18 +1352,18 @@ LABEL_22:
         if (!v74)
         {
           v32 = MEMORY[0x1E695DF70];
-          v33 = [v68 groups];
-          v12 = [v32 arrayWithCapacity:{objc_msgSend(v33, "count")}];
+          groups = [v68 groups];
+          v12 = [v32 arrayWithCapacity:{objc_msgSend(groups, "count")}];
         }
 
         v34 = [MKLocalSearchSection alloc];
-        v35 = [v72 shouldInterleaveClientResults];
-        v36 = [v72 enforceServerResultsOrder];
-        v37 = [v72 enableMapsSuggestServerReranking];
-        v38 = [v72 isSectionForClientOnlyResults];
-        v39 = [v72 includedClientResultTypes];
-        v40 = [v72 excludedClientResultTypes];
-        v41 = [(MKLocalSearchSection *)v34 initWithResults:v19 title:v16 shouldInterleaveClientResults:v35 enforceServerResultsOrder:v36 enableMapsSuggestServerReranking:v37 isSectionForClientOnlyResults:v38 includedClientResultTypes:v39 excludedClientResultTypes:v40];
+        shouldInterleaveClientResults = [v72 shouldInterleaveClientResults];
+        enforceServerResultsOrder = [v72 enforceServerResultsOrder];
+        enableMapsSuggestServerReranking = [v72 enableMapsSuggestServerReranking];
+        isSectionForClientOnlyResults = [v72 isSectionForClientOnlyResults];
+        includedClientResultTypes = [v72 includedClientResultTypes];
+        excludedClientResultTypes = [v72 excludedClientResultTypes];
+        v41 = [(MKLocalSearchSection *)v34 initWithResults:v19 title:localizedSectionHeader shouldInterleaveClientResults:shouldInterleaveClientResults enforceServerResultsOrder:enforceServerResultsOrder enableMapsSuggestServerReranking:enableMapsSuggestServerReranking isSectionForClientOnlyResults:isSectionForClientOnlyResults includedClientResultTypes:includedClientResultTypes excludedClientResultTypes:excludedClientResultTypes];
         [v12 addObject:v41];
 
         ++v80;
@@ -1386,7 +1386,7 @@ LABEL_22:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v42 = v77;
+  v42 = array2;
   v43 = [v42 countByEnumeratingWithState:&v89 objects:v103 count:16];
   if (v43)
   {
@@ -1402,23 +1402,23 @@ LABEL_22:
         }
 
         v47 = *(*(&v89 + 1) + 8 * j);
-        v48 = [v47 directionIntent];
-        v49 = [v48 origin];
-        v50 = [v49 resultIndex];
+        directionIntent2 = [v47 directionIntent];
+        origin = [directionIntent2 origin];
+        resultIndex = [origin resultIndex];
 
-        v51 = [v47 directionIntent];
-        v52 = [v51 origin];
-        if ([v52 hasResultIndex])
+        directionIntent3 = [v47 directionIntent];
+        origin2 = [directionIntent3 origin];
+        if ([origin2 hasResultIndex])
         {
-          v53 = [v79 count];
+          v53 = [array count];
 
-          if (v50 >= v53)
+          if (resultIndex >= v53)
           {
             goto LABEL_36;
           }
 
-          v51 = [v79 objectAtIndex:v50];
-          [v47 setDirectionIntentOrigin:v51];
+          directionIntent3 = [array objectAtIndex:resultIndex];
+          [v47 setDirectionIntentOrigin:directionIntent3];
         }
 
         else
@@ -1426,23 +1426,23 @@ LABEL_22:
         }
 
 LABEL_36:
-        v54 = [v47 directionIntent];
-        v55 = [v54 destination];
-        v56 = [v55 resultIndex];
+        directionIntent4 = [v47 directionIntent];
+        destination = [directionIntent4 destination];
+        resultIndex2 = [destination resultIndex];
 
-        v57 = [v47 directionIntent];
-        v58 = [v57 destination];
-        if ([v58 hasResultIndex])
+        directionIntent5 = [v47 directionIntent];
+        destination2 = [directionIntent5 destination];
+        if ([destination2 hasResultIndex])
         {
-          v59 = [v79 count];
+          v59 = [array count];
 
-          if (v56 >= v59)
+          if (resultIndex2 >= v59)
           {
             continue;
           }
 
-          v57 = [v79 objectAtIndex:v56];
-          [v47 setDirectionIntentDestination:v57];
+          directionIntent5 = [array objectAtIndex:resultIndex2];
+          [v47 setDirectionIntentDestination:directionIntent5];
         }
 
         else
@@ -1456,12 +1456,12 @@ LABEL_36:
     while (v44);
   }
 
-  v60 = [(NSMutableArray *)self->_pendingTickets lastObject];
+  lastObject = [(NSMutableArray *)self->_pendingTickets lastObject];
 
-  if (v60 == v65)
+  if (lastObject == v65)
   {
-    v61 = [(MKLocalSearchCompleter *)self queryFragment];
-    self->_dirty = [v65 matchesFragment:v61] ^ 1;
+    queryFragment = [(MKLocalSearchCompleter *)self queryFragment];
+    self->_dirty = [v65 matchesFragment:queryFragment] ^ 1;
   }
 
   else
@@ -1475,14 +1475,14 @@ LABEL_36:
   block[2] = __105__MKLocalSearchCompleter__handleCompletion_shouldDisplayNoResults_shouldEnableRAPForNoResults_forTicket___block_invoke_2;
   block[3] = &unk_1E76C9D10;
   objc_copyWeak(&v85, &location);
-  v82 = v79;
+  v82 = array;
   v83 = v12;
-  v86 = a4;
-  v87 = a5;
+  resultsCopy = results;
+  noResultsCopy = noResults;
   v84 = v65;
   v62 = v65;
   v63 = v12;
-  v64 = v79;
+  v64 = array;
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v85);

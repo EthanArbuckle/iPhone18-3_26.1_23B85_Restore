@@ -1,15 +1,15 @@
 @interface _CNLazyArrayOperatorDistinct
-- (_CNLazyArrayOperatorDistinct)initWithInput:(id)a3;
+- (_CNLazyArrayOperatorDistinct)initWithInput:(id)input;
 - (id)nextObject;
 @end
 
 @implementation _CNLazyArrayOperatorDistinct
 
-- (_CNLazyArrayOperatorDistinct)initWithInput:(id)a3
+- (_CNLazyArrayOperatorDistinct)initWithInput:(id)input
 {
   v8.receiver = self;
   v8.super_class = _CNLazyArrayOperatorDistinct;
-  v3 = [(_CNLazyArrayOperator *)&v8 initWithInput:a3];
+  v3 = [(_CNLazyArrayOperator *)&v8 initWithInput:input];
   if (v3)
   {
     v4 = [MEMORY[0x1E695DFA8] set];
@@ -24,29 +24,29 @@
 
 - (id)nextObject
 {
-  v3 = [(_CNLazyArrayOperator *)self input];
-  v4 = [v3 nextObject];
+  input = [(_CNLazyArrayOperator *)self input];
+  nextObject = [input nextObject];
 
-  if (v4)
+  if (nextObject)
   {
-    while ([(NSMutableSet *)self->_seenValues containsObject:v4])
+    while ([(NSMutableSet *)self->_seenValues containsObject:nextObject])
     {
-      v5 = [(_CNLazyArrayOperator *)self input];
-      v6 = [v5 nextObject];
+      input2 = [(_CNLazyArrayOperator *)self input];
+      nextObject2 = [input2 nextObject];
 
-      v4 = v6;
-      if (!v6)
+      nextObject = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_6;
       }
     }
 
-    [(NSMutableSet *)self->_seenValues addObject:v4];
+    [(NSMutableSet *)self->_seenValues addObject:nextObject];
   }
 
 LABEL_6:
 
-  return v4;
+  return nextObject;
 }
 
 @end

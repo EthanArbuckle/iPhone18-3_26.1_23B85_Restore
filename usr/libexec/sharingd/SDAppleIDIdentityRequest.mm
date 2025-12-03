@@ -1,22 +1,22 @@
 @interface SDAppleIDIdentityRequest
-- (SDAppleIDIdentityRequest)initWithAppleID:(id)a3;
-- (SDAppleIDIdentityRequest)initWithAppleID:(id)a3 certificateToken:(id)a4 privateKeyPersistentReference:(id)a5;
+- (SDAppleIDIdentityRequest)initWithAppleID:(id)d;
+- (SDAppleIDIdentityRequest)initWithAppleID:(id)d certificateToken:(id)token privateKeyPersistentReference:(id)reference;
 - (void)_activate;
-- (void)_handleCertificate:(__SecCertificate *)a3 intermediateCertificate:(__SecCertificate *)a4 withTrustResult:(BOOL)a5 error:(int)a6;
-- (void)_handleCertificateCreateResponseError:(id)a3;
-- (void)_handleCertificateCreateResponseWithInfo:(id)a3 error:(id)a4;
-- (void)_handleCertificateFetchResponseError:(id)a3;
-- (void)_handleCertificateFetchResponseWithInfo:(id)a3 error:(id)a4;
+- (void)_handleCertificate:(__SecCertificate *)certificate intermediateCertificate:(__SecCertificate *)intermediateCertificate withTrustResult:(BOOL)result error:(int)error;
+- (void)_handleCertificateCreateResponseError:(id)error;
+- (void)_handleCertificateCreateResponseWithInfo:(id)info error:(id)error;
+- (void)_handleCertificateFetchResponseError:(id)error;
+- (void)_handleCertificateFetchResponseWithInfo:(id)info error:(id)error;
 - (void)_handleCreateTimerFired;
 - (void)_handleFetchTimerFired;
 - (void)_handleKeyPairAvailable;
 - (void)_handleReceivedCertificate;
 - (void)_invalidate;
-- (void)_responseHandlerWithIdentity:(id)a3 error:(id)a4;
-- (void)_scheduleCreateCertificateTaskWithDelay:(unint64_t)a3;
-- (void)_scheduleCreateRetryWithDelay:(unint64_t)a3;
-- (void)_scheduleFetchCertificateTaskWithDelay:(unint64_t)a3;
-- (void)_scheduleFetchRetryWithDelay:(unint64_t)a3;
+- (void)_responseHandlerWithIdentity:(id)identity error:(id)error;
+- (void)_scheduleCreateCertificateTaskWithDelay:(unint64_t)delay;
+- (void)_scheduleCreateRetryWithDelay:(unint64_t)delay;
+- (void)_scheduleFetchCertificateTaskWithDelay:(unint64_t)delay;
+- (void)_scheduleFetchRetryWithDelay:(unint64_t)delay;
 - (void)_sendCreateCertificateRequest;
 - (void)_sendFetchCertificateRequest;
 - (void)activate;
@@ -148,35 +148,35 @@
   [(SDAppleIDIdentityRequest *)&v5 dealloc];
 }
 
-- (void)_handleCertificateCreateResponseError:(id)a3
+- (void)_handleCertificateCreateResponseError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_100971998 <= 90 && (dword_100971998 != -1 || _LogCategory_Initialize()))
   {
-    sub_100173E98(v4);
+    sub_100173E98(errorCopy);
   }
 
-  [(SDAppleIDIdentityRequest *)self _responseHandlerWithIdentity:0 error:v4];
+  [(SDAppleIDIdentityRequest *)self _responseHandlerWithIdentity:0 error:errorCopy];
 }
 
-- (void)_handleCertificateCreateResponseWithInfo:(id)a3 error:(id)a4
+- (void)_handleCertificateCreateResponseWithInfo:(id)info error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   [(SDAppleIDServerTask *)self->_certificateCreateTask invalidate];
   certificateCreateTask = self->_certificateCreateTask;
   self->_certificateCreateTask = 0;
 
-  if (v7)
+  if (errorCopy)
   {
-    v11 = v7;
+    v11 = errorCopy;
     v9 = 0;
     goto LABEL_20;
   }
 
-  if (!v6)
+  if (!infoCopy)
   {
     v9 = 0;
     v15 = -6705;
@@ -230,9 +230,9 @@ LABEL_20:
 LABEL_14:
 }
 
-- (void)_handleCertificateFetchResponseError:(id)a3
+- (void)_handleCertificateFetchResponseError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_100971998 <= 90 && (dword_100971998 != -1 || _LogCategory_Initialize()))
   {
@@ -241,7 +241,7 @@ LABEL_14:
 
   if (NSErrorToOSStatus() == -6712 && self->_fetchRetryCount <= 2)
   {
-    v4 = [v8 userInfo];
+    userInfo = [errorCopy userInfo];
     Int64 = CFDictionaryGetInt64();
 
     v6 = 7200;
@@ -265,28 +265,28 @@ LABEL_14:
 
   else
   {
-    [(SDAppleIDIdentityRequest *)self _responseHandlerWithIdentity:0 error:v8];
+    [(SDAppleIDIdentityRequest *)self _responseHandlerWithIdentity:0 error:errorCopy];
   }
 }
 
-- (void)_handleCertificateFetchResponseWithInfo:(id)a3 error:(id)a4
+- (void)_handleCertificateFetchResponseWithInfo:(id)info error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   [(SDAppleIDServerTask *)self->_certificateFetchTask invalidate];
   certificateFetchTask = self->_certificateFetchTask;
   self->_certificateFetchTask = 0;
 
-  if (v7)
+  if (errorCopy)
   {
-    v30 = v7;
+    v30 = errorCopy;
     v12 = 0;
     v9 = 0;
     goto LABEL_57;
   }
 
-  if (!v6)
+  if (!infoCopy)
   {
     sub_100174068();
     v9 = 0;
@@ -513,12 +513,12 @@ LABEL_22:
 LABEL_37:
 }
 
-- (void)_handleCertificate:(__SecCertificate *)a3 intermediateCertificate:(__SecCertificate *)a4 withTrustResult:(BOOL)a5 error:(int)a6
+- (void)_handleCertificate:(__SecCertificate *)certificate intermediateCertificate:(__SecCertificate *)intermediateCertificate withTrustResult:(BOOL)result error:(int)error
 {
-  v7 = a5;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v9 = &NSURLAuthenticationMethodServerTrust_ptr;
-  if (a6)
+  if (error)
   {
     v10 = 0;
     v38 = 0;
@@ -529,8 +529,8 @@ LABEL_37:
     goto LABEL_43;
   }
 
-  a6 = 201209;
-  if (!v7)
+  error = 201209;
+  if (!resultCopy)
   {
     v10 = 0;
     v38 = 0;
@@ -538,7 +538,7 @@ LABEL_37:
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    a6 = 201219;
+    error = 201219;
     goto LABEL_43;
   }
 
@@ -555,7 +555,7 @@ LABEL_37:
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    a6 = -6709;
+    error = -6709;
     goto LABEL_43;
   }
 
@@ -609,7 +609,7 @@ LABEL_37:
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    a6 = v22;
+    error = v22;
     goto LABEL_43;
   }
 
@@ -629,10 +629,10 @@ LABEL_37:
   }
 
   v25 = [NSString stringWithFormat:@"Apple ID authorization certificate for %@", *p_appleID];
-  a6 = SFAppleIDAddCertificateToKeychain();
+  error = SFAppleIDAddCertificateToKeychain();
   v12 = 0;
 
-  if (a6)
+  if (error)
   {
     v13 = v16;
     v10 = 0;
@@ -647,7 +647,7 @@ LABEL_42:
     v10 = 0;
 LABEL_66:
     v11 = 0;
-    a6 = -6762;
+    error = -6762;
     goto LABEL_43;
   }
 
@@ -657,10 +657,10 @@ LABEL_66:
   }
 
   v26 = *p_appleID;
-  a6 = SFAppleIDAddCertificateToKeychain();
+  error = SFAppleIDAddCertificateToKeychain();
   v27 = 0;
   v10 = v27;
-  if (a6)
+  if (error)
   {
     v13 = v16;
     goto LABEL_42;
@@ -698,9 +698,9 @@ LABEL_66:
   }
 
   v13 = v16;
-  a6 = -6728;
+  error = -6728;
 LABEL_43:
-  v28 = a6;
+  errorCopy = error;
   v40 = NSLocalizedDescriptionKey;
   v29 = [v9[266] stringWithUTF8String:DebugGetErrorString()];
   v30 = v29;
@@ -711,8 +711,8 @@ LABEL_43:
   }
 
   v41 = v31;
-  v32 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1, v36, certificateExpirationDate];
-  v33 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v28 userInfo:v32];
+  certificateExpirationDate = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1, v36, certificateExpirationDate];
+  v33 = [NSError errorWithDomain:NSOSStatusErrorDomain code:errorCopy userInfo:certificateExpirationDate];
   [(SDAppleIDIdentityRequest *)self _responseHandlerWithIdentity:0 error:v33];
 
   v16 = v13;
@@ -858,23 +858,23 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_responseHandlerWithIdentity:(id)a3 error:(id)a4
+- (void)_responseHandlerWithIdentity:(id)identity error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v7 = [(SDAppleIDIdentityRequest *)self responseHandler];
+  responseHandler = [(SDAppleIDIdentityRequest *)self responseHandler];
 
-  if (v7)
+  if (responseHandler)
   {
-    v8 = [(SDAppleIDIdentityRequest *)self responseHandler];
-    (v8)[2](v8, v9, v6);
+    responseHandler2 = [(SDAppleIDIdentityRequest *)self responseHandler];
+    (responseHandler2)[2](responseHandler2, identityCopy, errorCopy);
 
     [(SDAppleIDIdentityRequest *)self setResponseHandler:0];
   }
 }
 
-- (void)_scheduleCreateCertificateTaskWithDelay:(unint64_t)a3
+- (void)_scheduleCreateCertificateTaskWithDelay:(unint64_t)delay
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_createDelayTimer)
@@ -906,7 +906,7 @@ LABEL_10:
   }
 }
 
-- (void)_scheduleFetchCertificateTaskWithDelay:(unint64_t)a3
+- (void)_scheduleFetchCertificateTaskWithDelay:(unint64_t)delay
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_fetchDelayTimer)
@@ -938,7 +938,7 @@ LABEL_10:
   }
 }
 
-- (void)_scheduleCreateRetryWithDelay:(unint64_t)a3
+- (void)_scheduleCreateRetryWithDelay:(unint64_t)delay
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   ++self->_createRetryCount;
@@ -960,10 +960,10 @@ LABEL_3:
 
 LABEL_5:
 
-  [(SDAppleIDIdentityRequest *)self _scheduleCreateCertificateTaskWithDelay:a3];
+  [(SDAppleIDIdentityRequest *)self _scheduleCreateCertificateTaskWithDelay:delay];
 }
 
-- (void)_scheduleFetchRetryWithDelay:(unint64_t)a3
+- (void)_scheduleFetchRetryWithDelay:(unint64_t)delay
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   ++self->_fetchRetryCount;
@@ -985,7 +985,7 @@ LABEL_3:
 
 LABEL_5:
 
-  [(SDAppleIDIdentityRequest *)self _scheduleFetchCertificateTaskWithDelay:a3];
+  [(SDAppleIDIdentityRequest *)self _scheduleFetchCertificateTaskWithDelay:delay];
 }
 
 - (void)_sendCreateCertificateRequest
@@ -1006,9 +1006,9 @@ LABEL_5:
   if (!self->_privateKey || !self->_publicKey)
   {
     v3 = +[SDStatusMonitor sharedMonitor];
-    v4 = [v3 deviceWasUnlockedOnce];
+    deviceWasUnlockedOnce = [v3 deviceWasUnlockedOnce];
 
-    if (v4)
+    if (deviceWasUnlockedOnce)
     {
       appleID = self->_appleID;
       v6 = dispatch_get_global_queue(0, 0);
@@ -1082,16 +1082,16 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (SDAppleIDIdentityRequest)initWithAppleID:(id)a3
+- (SDAppleIDIdentityRequest)initWithAppleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = SDAppleIDIdentityRequest;
   v6 = [(SDAppleIDIdentityRequest *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appleID, a3);
+    objc_storeStrong(&v6->_appleID, d);
     v8 = SFMainQueue();
     dispatchQueue = v7->_dispatchQueue;
     v7->_dispatchQueue = v8;
@@ -1100,20 +1100,20 @@ LABEL_6:
   return v7;
 }
 
-- (SDAppleIDIdentityRequest)initWithAppleID:(id)a3 certificateToken:(id)a4 privateKeyPersistentReference:(id)a5
+- (SDAppleIDIdentityRequest)initWithAppleID:(id)d certificateToken:(id)token privateKeyPersistentReference:(id)reference
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  tokenCopy = token;
+  referenceCopy = reference;
   v17.receiver = self;
   v17.super_class = SDAppleIDIdentityRequest;
   v12 = [(SDAppleIDIdentityRequest *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appleID, a3);
-    objc_storeStrong(&v13->_certificateToken, a4);
-    objc_storeStrong(&v13->_privateKeyPersistentReference, a5);
+    objc_storeStrong(&v12->_appleID, d);
+    objc_storeStrong(&v13->_certificateToken, token);
+    objc_storeStrong(&v13->_privateKeyPersistentReference, reference);
     v14 = SFMainQueue();
     dispatchQueue = v13->_dispatchQueue;
     v13->_dispatchQueue = v14;

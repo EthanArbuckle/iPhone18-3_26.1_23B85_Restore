@@ -45,19 +45,19 @@ void __31__NSDate__DKDeduping__dk_dedup__block_invoke_2(uint64_t a1, void *a2)
 
 - (id)dk_localtimeString
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     if (_MergedGlobals_3 != -1)
     {
       dispatch_once(&_MergedGlobals_3, &__block_literal_global_52);
     }
 
-    a1 = [qword_1EADBD608 stringFromDate:v2];
+    self = [qword_1EADBD608 stringFromDate:selfCopy];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

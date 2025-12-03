@@ -1,26 +1,26 @@
 @interface WBSPasswordBreachChecker
-- (WBSPasswordBreachChecker)initWithContext:(id)a3 bagManager:(id)a4;
-- (void)_checkHighFrequencyBucketForPasswords:(id)a3 withCompletionHandler:(id)a4;
-- (void)_checkLowFrequencyBatchesWithBagManager:(id)a3 completionHandler:(id)a4;
-- (void)_mergeResultsByUUID:(id)a3 intoResultsByPersistentIdentifier:(id)a4 usingQueuedPasswordsbyUUID:(id)a5;
-- (void)checkPasswordBatchesWithCompletionHandler:(id)a3;
+- (WBSPasswordBreachChecker)initWithContext:(id)context bagManager:(id)manager;
+- (void)_checkHighFrequencyBucketForPasswords:(id)passwords withCompletionHandler:(id)handler;
+- (void)_checkLowFrequencyBatchesWithBagManager:(id)manager completionHandler:(id)handler;
+- (void)_mergeResultsByUUID:(id)d intoResultsByPersistentIdentifier:(id)identifier usingQueuedPasswordsbyUUID:(id)iD;
+- (void)checkPasswordBatchesWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachChecker
 
-- (WBSPasswordBreachChecker)initWithContext:(id)a3 bagManager:(id)a4
+- (WBSPasswordBreachChecker)initWithContext:(id)context bagManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = WBSPasswordBreachChecker;
   v9 = [(WBSPasswordBreachChecker *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_bagManager, a4);
-    v11 = [[WBSPasswordBreachRequestManager alloc] initWithContext:v7];
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_bagManager, manager);
+    v11 = [[WBSPasswordBreachRequestManager alloc] initWithContext:contextCopy];
     requestManager = v10->_requestManager;
     v10->_requestManager = v11;
 
@@ -30,10 +30,10 @@
   return v10;
 }
 
-- (void)_checkHighFrequencyBucketForPasswords:(id)a3 withCompletionHandler:(id)a4
+- (void)_checkHighFrequencyBucketForPasswords:(id)passwords withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  passwordsCopy = passwords;
+  handlerCopy = handler;
   v8 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -46,10 +46,10 @@
   v12[1] = 3221225472;
   v12[2] = __88__WBSPasswordBreachChecker__checkHighFrequencyBucketForPasswords_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CF3048;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = passwordsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = passwordsCopy;
   [(WBSPasswordBreachRequestManager *)requestManager fetchHighFrequencyBucketWithCompletionHandler:v12];
 }
 
@@ -150,10 +150,10 @@ void __88__WBSPasswordBreachChecker__checkHighFrequencyBucketForPasswords_withCo
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkLowFrequencyBatchesWithBagManager:(id)a3 completionHandler:(id)a4
+- (void)_checkLowFrequencyBatchesWithBagManager:(id)manager completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  managerCopy = manager;
   v8 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -161,18 +161,18 @@ void __88__WBSPasswordBreachChecker__checkHighFrequencyBucketForPasswords_withCo
     _os_log_impl(&dword_1B8447000, v8, OS_LOG_TYPE_INFO, "Performing low frequency batch lookup.", buf, 2u);
   }
 
-  v9 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v10 = [v9 verboseSensitiveLoggingEnabled];
+  configuration = [(WBSPasswordBreachContext *)self->_context configuration];
+  verboseSensitiveLoggingEnabled = [configuration verboseSensitiveLoggingEnabled];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__WBSPasswordBreachChecker__checkLowFrequencyBatchesWithBagManager_completionHandler___block_invoke;
   v12[3] = &unk_1E7CF3098;
   v12[4] = self;
-  v13 = v6;
-  v14 = v10;
-  v11 = v6;
-  [v7 getPasswordsForNextBatchWithCompletionHandler:v12];
+  v13 = handlerCopy;
+  v14 = verboseSensitiveLoggingEnabled;
+  v11 = handlerCopy;
+  [managerCopy getPasswordsForNextBatchWithCompletionHandler:v12];
 }
 
 void __86__WBSPasswordBreachChecker__checkLowFrequencyBatchesWithBagManager_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -332,19 +332,19 @@ void __86__WBSPasswordBreachChecker__checkLowFrequencyBatchesWithBagManager_comp
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeResultsByUUID:(id)a3 intoResultsByPersistentIdentifier:(id)a4 usingQueuedPasswordsbyUUID:(id)a5
+- (void)_mergeResultsByUUID:(id)d intoResultsByPersistentIdentifier:(id)identifier usingQueuedPasswordsbyUUID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  iDCopy = iD;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __109__WBSPasswordBreachChecker__mergeResultsByUUID_intoResultsByPersistentIdentifier_usingQueuedPasswordsbyUUID___block_invoke;
   v11[3] = &unk_1E7CF30C0;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = iDCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = iDCopy;
+  [d enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __109__WBSPasswordBreachChecker__mergeResultsByUUID_intoResultsByPersistentIdentifier_usingQueuedPasswordsbyUUID___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -387,9 +387,9 @@ void __109__WBSPasswordBreachChecker__mergeResultsByUUID_intoResultsByPersistent
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkPasswordBatchesWithCompletionHandler:(id)a3
+- (void)checkPasswordBatchesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -397,26 +397,26 @@ void __109__WBSPasswordBreachChecker__mergeResultsByUUID_intoResultsByPersistent
     _os_log_impl(&dword_1B8447000, v5, OS_LOG_TYPE_INFO, "Beginning breached password lookup session.", buf, 2u);
   }
 
-  v6 = [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager allNonbreachedPasswords];
-  v7 = [v6 count];
+  allNonbreachedPasswords = [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager allNonbreachedPasswords];
+  v7 = [allNonbreachedPasswords count];
   v8 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
   v9 = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(WBSPasswordBreachChecker *)v9 checkPasswordBatchesWithCompletionHandler:v6];
+      [(WBSPasswordBreachChecker *)v9 checkPasswordBatchesWithCompletionHandler:allNonbreachedPasswords];
     }
 
-    v10 = [v6 allValues];
+    allValues = [allNonbreachedPasswords allValues];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__WBSPasswordBreachChecker_checkPasswordBatchesWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E7CF3130;
     v11[4] = self;
-    v12 = v6;
-    v13 = v4;
-    [(WBSPasswordBreachChecker *)self _checkHighFrequencyBucketForPasswords:v10 withCompletionHandler:v11];
+    v12 = allNonbreachedPasswords;
+    v13 = handlerCopy;
+    [(WBSPasswordBreachChecker *)self _checkHighFrequencyBucketForPasswords:allValues withCompletionHandler:v11];
   }
 
   else
@@ -427,7 +427,7 @@ void __109__WBSPasswordBreachChecker__mergeResultsByUUID_intoResultsByPersistent
       _os_log_impl(&dword_1B8447000, v9, OS_LOG_TYPE_DEFAULT, "Found no passwords to check. Stopping session.", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

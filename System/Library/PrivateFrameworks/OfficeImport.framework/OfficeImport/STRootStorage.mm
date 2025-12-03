@@ -1,28 +1,28 @@
 @interface STRootStorage
-- (STRootStorage)initWithMutableData:(id)a3 andMode:(int)a4;
-- (STRootStorage)initWithName:(id)a3 andMode:(int)a4;
-- (id)getDocumentProperty:(int)a3 withId:(int)a4 PropType:(int *)a5 throwOnError:(BOOL)a6;
-- (id)getStringDocumentPropertyWithId:(int)a3 givenPropStream:(int)a4;
-- (int)getLongDocumentPropertyWithId:(int)a3 givenPropStream:(int)a4;
-- (signed)getShortDocumentPropertyWithId:(int)a3 givenPropStream:(int)a4;
+- (STRootStorage)initWithMutableData:(id)data andMode:(int)mode;
+- (STRootStorage)initWithName:(id)name andMode:(int)mode;
+- (id)getDocumentProperty:(int)property withId:(int)id PropType:(int *)type throwOnError:(BOOL)error;
+- (id)getStringDocumentPropertyWithId:(int)id givenPropStream:(int)stream;
+- (int)getLongDocumentPropertyWithId:(int)id givenPropStream:(int)stream;
+- (signed)getShortDocumentPropertyWithId:(int)id givenPropStream:(int)stream;
 - (void)dealloc;
-- (void)resizeStorageBuffer:(unint64_t)a3;
+- (void)resizeStorageBuffer:(unint64_t)buffer;
 - (void)setDefaultDocumentProperties;
-- (void)setDocumentProperty:(int)a3 withId:(int)a4 AndType:(int)a5 AndValue:(void *)a6;
-- (void)setStringDocumentPropertyWithId:(int)a3 to:(id)a4 givenPropStream:(int)a5;
+- (void)setDocumentProperty:(int)property withId:(int)id AndType:(int)type AndValue:(void *)value;
+- (void)setStringDocumentPropertyWithId:(int)id to:(id)to givenPropStream:(int)stream;
 @end
 
 @implementation STRootStorage
 
-- (STRootStorage)initWithName:(id)a3 andMode:(int)a4
+- (STRootStorage)initWithName:(id)name andMode:(int)mode
 {
   v12 = 0;
   self->m_pvBuf = 0;
   self->m_StorageData = 0;
-  v6 = StgModeFromSTStgMode(*&a4);
+  v6 = StgModeFromSTStgMode(*&mode);
   if (v6 == 1)
   {
-    StructuredStorage = createStructuredStorage([a3 fileSystemRepresentation], 1, &self->m_pCRoot);
+    StructuredStorage = createStructuredStorage([name fileSystemRepresentation], 1, &self->m_pCRoot);
   }
 
   else
@@ -33,7 +33,7 @@
       goto LABEL_8;
     }
 
-    StructuredStorage = openStructuredStorage([a3 fileSystemRepresentation], v6, &self->m_pCRoot);
+    StructuredStorage = openStructuredStorage([name fileSystemRepresentation], v6, &self->m_pCRoot);
   }
 
   v8 = StructuredStorage;
@@ -54,14 +54,14 @@ LABEL_8:
   return [(STStorage *)&v11 initWithCStorage:v12];
 }
 
-- (STRootStorage)initWithMutableData:(id)a3 andMode:(int)a4
+- (STRootStorage)initWithMutableData:(id)data andMode:(int)mode
 {
   v12 = 0;
   self->m_StorageData = 0;
-  if (StgModeFromSTStgMode(*&a4) == 1)
+  if (StgModeFromSTStgMode(*&mode) == 1)
   {
-    self->m_StorageData = a3;
-    v6 = a3;
+    self->m_StorageData = data;
+    dataCopy = data;
     if ([(NSMutableData *)self->m_StorageData length]<= 7)
     {
       [(NSMutableData *)self->m_StorageData setLength:8];
@@ -75,8 +75,8 @@ LABEL_8:
 
   else
   {
-    self->m_pvBuf = [a3 mutableBytes];
-    StructuredStorageInBuf = openStructuredStorageInBuf(&self->m_pvBuf, [a3 length], 0, &self->m_pCRoot);
+    self->m_pvBuf = [data mutableBytes];
+    StructuredStorageInBuf = openStructuredStorageInBuf(&self->m_pvBuf, [data length], 0, &self->m_pCRoot);
   }
 
   [STSStgObject throwIfError:StructuredStorageInBuf];
@@ -108,21 +108,21 @@ LABEL_8:
   [(STStorage *)&v4 dealloc];
 }
 
-- (void)resizeStorageBuffer:(unint64_t)a3
+- (void)resizeStorageBuffer:(unint64_t)buffer
 {
-  [(NSMutableData *)self->m_StorageData setLength:a3 + 8];
+  [(NSMutableData *)self->m_StorageData setLength:buffer + 8];
   result = [(NSMutableData *)self->m_StorageData mutableBytes]+ 8;
   self->m_pvBuf = result;
   return result;
 }
 
-- (id)getDocumentProperty:(int)a3 withId:(int)a4 PropType:(int *)a5 throwOnError:(BOOL)a6
+- (id)getDocumentProperty:(int)property withId:(int)id PropType:(int *)type throwOnError:(BOOL)error
 {
-  v6 = a6;
+  errorCopy = error;
   __s = 0;
-  *a5 = -1;
+  *type = -1;
   v19 = 1;
-  DocumentProperty = getDocumentProperty(self->m_pCRoot, a3, *&a4, &v19, &__s);
+  DocumentProperty = getDocumentProperty(self->m_pCRoot, property, *&id, &v19, &__s);
   v9 = __s;
   if (DocumentProperty)
   {
@@ -215,7 +215,7 @@ LABEL_28:
 LABEL_29:
   if (DocumentProperty)
   {
-    if (v6)
+    if (errorCopy)
     {
 LABEL_31:
       [STSStgObject throwIfError:DocumentProperty];
@@ -237,8 +237,8 @@ LABEL_31:
       v17 = -1;
     }
 
-    *a5 = v17;
-    if (v6)
+    *type = v17;
+    if (errorCopy)
     {
       goto LABEL_31;
     }
@@ -247,10 +247,10 @@ LABEL_31:
   return v11;
 }
 
-- (id)getStringDocumentPropertyWithId:(int)a3 givenPropStream:(int)a4
+- (id)getStringDocumentPropertyWithId:(int)id givenPropStream:(int)stream
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&stream;
+  v5 = *&id;
   v14 = 0;
   v7 = [(STRootStorage *)self getShortDocumentPropertyWithId:1 givenPropStream:?];
   if (v7 <= 0x4E4u)
@@ -371,11 +371,11 @@ LABEL_32:
   return v14;
 }
 
-- (int)getLongDocumentPropertyWithId:(int)a3 givenPropStream:(int)a4
+- (int)getLongDocumentPropertyWithId:(int)id givenPropStream:(int)stream
 {
   v7 = -1;
   v6 = -1;
-  v4 = [(STRootStorage *)self getDocumentProperty:*&a4 withId:*&a3 PropType:&v6 throwOnError:0];
+  v4 = [(STRootStorage *)self getDocumentProperty:*&stream withId:*&id PropType:&v6 throwOnError:0];
   if (v6 == 1)
   {
     return *[v4 bytes];
@@ -384,11 +384,11 @@ LABEL_32:
   return v7;
 }
 
-- (signed)getShortDocumentPropertyWithId:(int)a3 givenPropStream:(int)a4
+- (signed)getShortDocumentPropertyWithId:(int)id givenPropStream:(int)stream
 {
   v7 = -1;
   v6 = -1;
-  v4 = [(STRootStorage *)self getDocumentProperty:*&a4 withId:*&a3 PropType:&v6 throwOnError:0];
+  v4 = [(STRootStorage *)self getDocumentProperty:*&stream withId:*&id PropType:&v6 throwOnError:0];
   if (!v6)
   {
     return *[v4 bytes];
@@ -397,10 +397,10 @@ LABEL_32:
   return v7;
 }
 
-- (void)setDocumentProperty:(int)a3 withId:(int)a4 AndType:(int)a5 AndValue:(void *)a6
+- (void)setDocumentProperty:(int)property withId:(int)id AndType:(int)type AndValue:(void *)value
 {
-  v7 = *&a4;
-  if (a5 >= 6)
+  v7 = *&id;
+  if (type >= 6)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"TypeTag TypeTagFromSTTypeTag(STTypeTag)"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeCommon/StructuredStorage/ObjcInterface/STRootStorage.m"], 37, 0, "Unsupported type tag encountered in structured storage library.");
@@ -410,23 +410,23 @@ LABEL_32:
 
   else
   {
-    v10 = dword_25D6FDBFC[a5];
+    v10 = dword_25D6FDBFC[type];
   }
 
-  v12 = setDocumentProperty(self->m_pCRoot, a3, v7, v10, a6);
+  v12 = setDocumentProperty(self->m_pCRoot, property, v7, v10, value);
 
   [STSStgObject throwIfError:v12];
 }
 
-- (void)setStringDocumentPropertyWithId:(int)a3 to:(id)a4 givenPropStream:(int)a5
+- (void)setStringDocumentPropertyWithId:(int)id to:(id)to givenPropStream:(int)stream
 {
-  v5 = *&a5;
-  v7 = *&a3;
-  if ([(STRootStorage *)self getShortDocumentPropertyWithId:1 givenPropStream:*&a5]== -535)
+  v5 = *&stream;
+  v7 = *&id;
+  if ([(STRootStorage *)self getShortDocumentPropertyWithId:1 givenPropStream:*&stream]== -535)
   {
-    v9 = [a4 UTF8String];
+    uTF8String = [to UTF8String];
 
-    [(STRootStorage *)self setDocumentProperty:v5 withId:v7 AndType:2 AndValue:v9];
+    [(STRootStorage *)self setDocumentProperty:v5 withId:v7 AndType:2 AndValue:uTF8String];
   }
 }
 

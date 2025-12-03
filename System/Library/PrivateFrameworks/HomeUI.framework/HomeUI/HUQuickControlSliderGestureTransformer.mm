@@ -1,37 +1,37 @@
 @interface HUQuickControlSliderGestureTransformer
 - (CGPoint)lastTouchLocation;
 - (CGPoint)referenceTouchLocation;
-- (HUQuickControlSliderGestureTransformer)initWithGestureRecognizer:(id)a3 context:(id)a4;
+- (HUQuickControlSliderGestureTransformer)initWithGestureRecognizer:(id)recognizer context:(id)context;
 - (HUQuickControlSliderGestureTransformerDelegate)delegate;
-- (double)_rawSliderValueForLocation:(CGPoint)a3;
-- (void)_handleGesturePan:(id)a3;
-- (void)_handleSliderValuePan:(CGPoint)a3;
+- (double)_rawSliderValueForLocation:(CGPoint)location;
+- (void)_handleGesturePan:(id)pan;
+- (void)_handleSliderValuePan:(CGPoint)pan;
 - (void)dealloc;
 @end
 
 @implementation HUQuickControlSliderGestureTransformer
 
-- (HUQuickControlSliderGestureTransformer)initWithGestureRecognizer:(id)a3 context:(id)a4
+- (HUQuickControlSliderGestureTransformer)initWithGestureRecognizer:(id)recognizer context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  recognizerCopy = recognizer;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = HUQuickControlSliderGestureTransformer;
   v9 = [(HUQuickControlSliderGestureTransformer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_gestureRecognizer, a3);
-    [v8 assertConfigurationIsValid];
-    objc_storeStrong(&v10->_context, a4);
-    [v7 hu_locationInGlobalCoordinateSpace];
+    objc_storeStrong(&v9->_gestureRecognizer, recognizer);
+    [contextCopy assertConfigurationIsValid];
+    objc_storeStrong(&v10->_context, context);
+    [recognizerCopy hu_locationInGlobalCoordinateSpace];
     [(HUQuickControlSliderGestureTransformer *)v10 setReferenceTouchLocation:?];
-    [v8 initialSliderValue];
+    [contextCopy initialSliderValue];
     [(HUQuickControlSliderGestureTransformer *)v10 setReferenceSliderValue:?];
-    [v8 initialSliderValue];
+    [contextCopy initialSliderValue];
     [(HUQuickControlSliderGestureTransformer *)v10 setCurrentSliderValue:?];
-    [(HUQuickControlSliderGestureTransformer *)v10 setGestureRecognizer:v7];
-    [v7 addTarget:v10 action:sel__handleGesturePan_];
+    [(HUQuickControlSliderGestureTransformer *)v10 setGestureRecognizer:recognizerCopy];
+    [recognizerCopy addTarget:v10 action:sel__handleGesturePan_];
   }
 
   return v10;
@@ -39,23 +39,23 @@
 
 - (void)dealloc
 {
-  v3 = [(HUQuickControlSliderGestureTransformer *)self gestureRecognizer];
-  [v3 removeTarget:self action:0];
+  gestureRecognizer = [(HUQuickControlSliderGestureTransformer *)self gestureRecognizer];
+  [gestureRecognizer removeTarget:self action:0];
 
   v4.receiver = self;
   v4.super_class = HUQuickControlSliderGestureTransformer;
   [(HUQuickControlSliderGestureTransformer *)&v4 dealloc];
 }
 
-- (void)_handleGesturePan:(id)a3
+- (void)_handleGesturePan:(id)pan
 {
-  v10 = a3;
-  v4 = [v10 state];
-  if ((v4 - 3) >= 3)
+  panCopy = pan;
+  state = [panCopy state];
+  if ((state - 3) >= 3)
   {
-    if ((v4 - 1) < 2)
+    if ((state - 1) < 2)
     {
-      [v10 hu_locationInGlobalCoordinateSpace];
+      [panCopy hu_locationInGlobalCoordinateSpace];
       v7 = v6;
       v9 = v8;
       if ([(HUQuickControlSliderGestureTransformer *)self _shouldIgnoreAllGestures])
@@ -73,15 +73,15 @@
 
   else
   {
-    v5 = [(HUQuickControlSliderGestureTransformer *)self delegate];
-    [v5 gestureDidEndForGestureTransformer:self];
+    delegate = [(HUQuickControlSliderGestureTransformer *)self delegate];
+    [delegate gestureDidEndForGestureTransformer:self];
   }
 }
 
-- (void)_handleSliderValuePan:(CGPoint)a3
+- (void)_handleSliderValuePan:(CGPoint)pan
 {
-  y = a3.y;
-  x = a3.x;
+  y = pan.y;
+  x = pan.x;
   [(HUQuickControlSliderGestureTransformer *)self lastTouchLocation];
   if (v7 != *MEMORY[0x277CBF348] || v6 != *(MEMORY[0x277CBF348] + 8))
   {
@@ -93,8 +93,8 @@
   }
 
   [(HUQuickControlSliderGestureTransformer *)self setLastTouchLocation:x, y];
-  v12 = [(HUQuickControlSliderGestureTransformer *)self context];
-  if ([v12 requiresSomeMovementBeforeActivation])
+  context = [(HUQuickControlSliderGestureTransformer *)self context];
+  if ([context requiresSomeMovementBeforeActivation])
   {
     [(HUQuickControlSliderGestureTransformer *)self accumulatedDragDistance];
     v14 = v13;
@@ -135,20 +135,20 @@
 
   [(HUQuickControlSliderGestureTransformer *)self setReferenceTouchLocation:x, v21];
   [(HUQuickControlSliderGestureTransformer *)self setCurrentSliderValue:v16];
-  v22 = [(HUQuickControlSliderGestureTransformer *)self delegate];
-  [v22 gestureTransformer:self sliderValueDidChange:v16];
+  delegate = [(HUQuickControlSliderGestureTransformer *)self delegate];
+  [delegate gestureTransformer:self sliderValueDidChange:v16];
 }
 
-- (double)_rawSliderValueForLocation:(CGPoint)a3
+- (double)_rawSliderValueForLocation:(CGPoint)location
 {
-  y = a3.y;
+  y = location.y;
   [(HUQuickControlSliderGestureTransformer *)self referenceTouchLocation];
   v6 = v5;
-  v7 = [(HUQuickControlSliderGestureTransformer *)self context];
-  [v7 controlFrame];
+  context = [(HUQuickControlSliderGestureTransformer *)self context];
+  [context controlFrame];
   Height = CGRectGetHeight(v14);
-  v9 = [(HUQuickControlSliderGestureTransformer *)self context];
-  [v9 verticalDragCoefficient];
+  context2 = [(HUQuickControlSliderGestureTransformer *)self context];
+  [context2 verticalDragCoefficient];
   v11 = Height * v10;
 
   [(HUQuickControlSliderGestureTransformer *)self referenceSliderValue];

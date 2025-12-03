@@ -1,12 +1,12 @@
 @interface HUDashboardPresentationManager
 + (HUDashboardPresentationManager)sharedManager;
 - (HUDashboardPresentationManager)init;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (void)navigationController:(id)a3 didPushItem:(id)a4;
-- (void)navigationController:(id)a3 didUpdatePreferredPaletteHeight:(double)a4;
-- (void)navigationController:(id)a3 willPresent:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willPushItem:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (void)navigationController:(id)controller didPushItem:(id)item;
+- (void)navigationController:(id)controller didUpdatePreferredPaletteHeight:(double)height;
+- (void)navigationController:(id)controller willPresent:(id)present animated:(BOOL)animated;
+- (void)navigationController:(id)controller willPushItem:(id)item;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation HUDashboardPresentationManager
@@ -35,55 +35,55 @@
   return [(HUDashboardPresentationManager *)&v6 init];
 }
 
-- (void)navigationController:(id)a3 willPushItem:(id)a4
+- (void)navigationController:(id)controller willPushItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20D0F4A54(v6, v7);
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D0F4A54(controllerCopy, itemCopy);
 }
 
-- (void)navigationController:(id)a3 didPushItem:(id)a4
+- (void)navigationController:(id)controller didPushItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20D0F4D84(v6, v7);
+  controllerCopy = controller;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D0F4D84(controllerCopy, itemCopy);
 }
 
-- (void)navigationController:(id)a3 didUpdatePreferredPaletteHeight:(double)a4
+- (void)navigationController:(id)controller didUpdatePreferredPaletteHeight:(double)height
 {
-  v6 = a3;
-  v7 = self;
-  sub_20D0F5004(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_20D0F5004(controllerCopy, height);
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = _s6HomeUI28DashboardPresentationManagerC20navigationController_09animationG3For4from2toSo06UIViewG21AnimatedTransitioning_pSgSo012UINavigationG0C_So0oG9OperationVSo0lG0CAOtF_0(v10, a4, v11, v12);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  selfCopy = self;
+  v14 = _s6HomeUI28DashboardPresentationManagerC20navigationController_09animationG3For4from2toSo06UIViewG21AnimatedTransitioning_pSgSo012UINavigationG0C_So0oG9OperationVSo0lG0CAOtF_0(controllerCopy, operation, viewControllerCopy, toViewControllerCopy);
 
   return v14;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  DashboardPresentationManager.navigationController(_:willShow:animated:)(v8, v9, a5);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  DashboardPresentationManager.navigationController(_:willShow:animated:)(controllerCopy, viewControllerCopy, animated);
 }
 
-- (void)navigationController:(id)a3 willPresent:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willPresent:(id)present animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_20D0F465C(v8, v9, v5);
+  animatedCopy = animated;
+  controllerCopy = controller;
+  presentCopy = present;
+  selfCopy = self;
+  sub_20D0F465C(controllerCopy, presentCopy, animatedCopy);
 }
 
 @end

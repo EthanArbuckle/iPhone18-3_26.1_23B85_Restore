@@ -1,40 +1,40 @@
 @interface NEAppProxyProviderContainer
-- (NEAppProxyProviderContainer)initWithDelegate:(id)a3 providerClass:(Class)a4;
-- (void)handleAppMessage:(id)a3 completionHandler:(id)a4;
-- (void)setDelegateInterface:(unsigned int)a3;
-- (void)setInitialFlowDivertControlSocket:(id)a3;
-- (void)sleepWithCompletionHandler:(id)a3;
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4;
+- (NEAppProxyProviderContainer)initWithDelegate:(id)delegate providerClass:(Class)class;
+- (void)handleAppMessage:(id)message completionHandler:(id)handler;
+- (void)setDelegateInterface:(unsigned int)interface;
+- (void)setInitialFlowDivertControlSocket:(id)socket;
+- (void)sleepWithCompletionHandler:(id)handler;
+- (void)startWithOptions:(id)options completionHandler:(id)handler;
 - (void)stop;
 - (void)wake;
 @end
 
 @implementation NEAppProxyProviderContainer
 
-- (void)handleAppMessage:(id)a3 completionHandler:(id)a4
+- (void)handleAppMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEAppProxyProviderContainer *)self provider];
-  [v8 handleAppMessage:v7 completionHandler:v6];
+  handlerCopy = handler;
+  messageCopy = message;
+  provider = [(NEAppProxyProviderContainer *)self provider];
+  [provider handleAppMessage:messageCopy completionHandler:handlerCopy];
 }
 
-- (void)setInitialFlowDivertControlSocket:(id)a3
+- (void)setInitialFlowDivertControlSocket:(id)socket
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  socketCopy = socket;
   objc_initWeak(&location, self);
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = v4;
+    v25 = socketCopy;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: Setting initial flow divert control socket to %p", buf, 0x16u);
   }
 
-  dup([v4 fileDescriptor]);
+  dup([socketCopy fileDescriptor]);
   v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
   v7 = dispatch_queue_create("NEFlow queue", v6);
   v9 = v7;
@@ -227,22 +227,22 @@ void __58__NEAppProxyProviderContainer_flowDivertOpenControlSocket__block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegateInterface:(unsigned int)a3
+- (void)setDelegateInterface:(unsigned int)interface
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = a3;
+    interfaceCopy = interface;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: Setting flow divert delegate interface to %u", &v7, 0x12u);
   }
 
   if (self)
   {
-    self->_delegateInterfaceIndex = a3;
+    self->_delegateInterfaceIndex = interface;
     if (self->_director)
     {
       NEFlowDirectorSetDelegateInterface();
@@ -259,17 +259,17 @@ void __58__NEAppProxyProviderContainer_flowDivertOpenControlSocket__block_invoke
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "%@: Calling stopProxyWithReason", buf, 0xCu);
   }
 
-  v4 = [(NEAppProxyProviderContainer *)self provider];
+  provider = [(NEAppProxyProviderContainer *)self provider];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__NEAppProxyProviderContainer_stop__block_invoke;
   v6[3] = &unk_1E7F0B0E8;
   v6[4] = self;
-  [v4 stopProxyWithReason:0 completionHandler:v6];
+  [provider stopProxyWithReason:0 completionHandler:v6];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -354,33 +354,33 @@ void __35__NEAppProxyProviderContainer_stop__block_invoke_2(uint64_t a1, const c
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startWithOptions:(id)options completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
-    v16 = v6;
+    v16 = optionsCopy;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@: Calling startProxyWithOptions with options %p", buf, 0x16u);
   }
 
   if (self)
   {
-    objc_setProperty_atomic_copy(self, v9, v7, 48);
+    objc_setProperty_atomic_copy(self, v9, handlerCopy, 48);
   }
 
-  v10 = [(NEAppProxyProviderContainer *)self provider];
+  provider = [(NEAppProxyProviderContainer *)self provider];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__NEAppProxyProviderContainer_startWithOptions_completionHandler___block_invoke;
   v12[3] = &unk_1E7F0B4A8;
   v12[4] = self;
-  [v10 startProxyWithOptions:v6 completionHandler:v12];
+  [provider startProxyWithOptions:optionsCopy completionHandler:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -416,21 +416,21 @@ void __66__NEAppProxyProviderContainer_startWithOptions_completionHandler___bloc
 
 - (void)wake
 {
-  v2 = [(NEAppProxyProviderContainer *)self provider];
-  [v2 wake];
+  provider = [(NEAppProxyProviderContainer *)self provider];
+  [provider wake];
 }
 
-- (void)sleepWithCompletionHandler:(id)a3
+- (void)sleepWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NEAppProxyProviderContainer *)self provider];
-  [v5 sleepWithCompletionHandler:v4];
+  handlerCopy = handler;
+  provider = [(NEAppProxyProviderContainer *)self provider];
+  [provider sleepWithCompletionHandler:handlerCopy];
 }
 
-- (NEAppProxyProviderContainer)initWithDelegate:(id)a3 providerClass:(Class)a4
+- (NEAppProxyProviderContainer)initWithDelegate:(id)delegate providerClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = NEAppProxyProviderContainer;
   v8 = [(NEAppProxyProviderContainer *)&v16 init];
@@ -439,11 +439,11 @@ void __66__NEAppProxyProviderContainer_startWithOptions_completionHandler___bloc
     goto LABEL_7;
   }
 
-  Superclass = class_getSuperclass(a4);
+  Superclass = class_getSuperclass(class);
   if (Superclass == objc_opt_class())
   {
-    objc_storeStrong(&v8->_delegate, a3);
-    v12 = objc_alloc_init(a4);
+    objc_storeStrong(&v8->_delegate, delegate);
+    v12 = objc_alloc_init(class);
     provider = v8->_provider;
     v8->_provider = v12;
 

@@ -1,87 +1,87 @@
 @interface AKActionController
-- (AKActionController)initWithController:(id)a3;
+- (AKActionController)initWithController:(id)controller;
 - (AKController)controller;
-- (BOOL)_isSenderEnabled:(id)a3 segment:(int64_t)a4;
-- (BOOL)validateSender:(id)a3 segment:(int64_t)a4;
-- (void)performActionForSender:(id)a3 segment:(int64_t)a4;
+- (BOOL)_isSenderEnabled:(id)enabled segment:(int64_t)segment;
+- (BOOL)validateSender:(id)sender segment:(int64_t)segment;
+- (void)performActionForSender:(id)sender segment:(int64_t)segment;
 @end
 
 @implementation AKActionController
 
-- (AKActionController)initWithController:(id)a3
+- (AKActionController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKActionController;
   v5 = [(AKActionController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKActionController *)v5 setController:v4];
+    [(AKActionController *)v5 setController:controllerCopy];
   }
 
   return v6;
 }
 
-- (void)performActionForSender:(id)a3 segment:(int64_t)a4
+- (void)performActionForSender:(id)sender segment:(int64_t)segment
 {
-  v13 = a3;
-  if ([(AKActionController *)self _isSenderEnabled:v13 segment:a4])
+  senderCopy = sender;
+  if ([(AKActionController *)self _isSenderEnabled:senderCopy segment:segment])
   {
-    v6 = [v13 tag];
+    v6 = [senderCopy tag];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v13 tagForSegment:a4];
+      v6 = [senderCopy tagForSegment:segment];
     }
 
-    v7 = [(AKActionController *)self controller];
-    v8 = [v7 toolController];
-    v9 = [v7 attributeController];
-    v10 = [v7 toolbarViewController];
-    [v10 updateColorWellActivation:v13];
+    controller = [(AKActionController *)self controller];
+    toolController = [controller toolController];
+    attributeController = [controller attributeController];
+    toolbarViewController = [controller toolbarViewController];
+    [toolbarViewController updateColorWellActivation:senderCopy];
 
     if ((v6 - 764000) > 0x42)
     {
       if ((v6 - 765000) <= 0x12C)
       {
-        v12 = [v13 tag];
+        v12 = [senderCopy tag];
         AKLog(@"performing ATTRIBUTE action for sender %@ with tag %ld ");
-        [v9 performAttributeActionForSender:v13 segment:{a4, v13, v12}];
+        [attributeController performAttributeActionForSender:senderCopy segment:{segment, senderCopy, v12}];
       }
     }
 
     else
     {
-      v11 = [v13 tag];
+      v11 = [senderCopy tag];
       AKLog(@"performing TOOL action for sender %@ with tag %ld ");
-      [v8 performToolActionForSender:{v13, v13, v11}];
+      [toolController performToolActionForSender:{senderCopy, senderCopy, v11}];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_isSenderEnabled:(id)a3 segment:(int64_t)a4
+- (BOOL)_isSenderEnabled:(id)enabled segment:(int64_t)segment
 {
-  v6 = a3;
-  v7 = [(AKActionController *)self controller];
-  if ([v7 currentPageIndex] == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
+  enabledCopy = enabled;
+  controller = [(AKActionController *)self controller];
+  if ([controller currentPageIndex] == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v8 = [v6 tag];
+  v8 = [enabledCopy tag];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 tagForSegment:a4];
+    v8 = [enabledCopy tagForSegment:segment];
   }
 
   if ((v8 - 764000) > 0x42)
   {
     if ((v8 - 765000) <= 0x12C)
     {
-      v9 = [v7 attributeController];
-      v10 = [v9 isAttributeSenderEnabled:v6 segment:a4];
+      attributeController = [controller attributeController];
+      v10 = [attributeController isAttributeSenderEnabled:enabledCopy segment:segment];
       goto LABEL_9;
     }
 
@@ -90,8 +90,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [v7 toolController];
-  v10 = [v9 isToolSenderEnabled:v6];
+  attributeController = [controller toolController];
+  v10 = [attributeController isToolSenderEnabled:enabledCopy];
 LABEL_9:
   v11 = v10;
 
@@ -99,20 +99,20 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)validateSender:(id)a3 segment:(int64_t)a4
+- (BOOL)validateSender:(id)sender segment:(int64_t)segment
 {
-  v6 = a3;
-  v7 = [(AKActionController *)self _isSenderEnabled:v6 segment:a4];
+  senderCopy = sender;
+  v7 = [(AKActionController *)self _isSenderEnabled:senderCopy segment:segment];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 tag];
+    v8 = [senderCopy tag];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 tagForSegment:a4];
+      v8 = [senderCopy tagForSegment:segment];
     }
 
-    v9 = [(AKActionController *)self controller];
-    v10 = v9;
+    controller = [(AKActionController *)self controller];
+    v10 = controller;
     if ((v8 - 764000) > 0x42)
     {
       if ((v8 - 765000) > 0x12C)
@@ -122,14 +122,14 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v11 = [v9 attributeController];
-      [v11 updateAttributeSenderState:v6 segment:a4 enabled:v7];
+      attributeController = [controller attributeController];
+      [attributeController updateAttributeSenderState:senderCopy segment:segment enabled:v7];
     }
 
     else
     {
-      v11 = [v9 toolController];
-      [v11 updateToolSenderState:v6 enabled:v7];
+      attributeController = [controller toolController];
+      [attributeController updateToolSenderState:senderCopy enabled:v7];
     }
 
     goto LABEL_9;

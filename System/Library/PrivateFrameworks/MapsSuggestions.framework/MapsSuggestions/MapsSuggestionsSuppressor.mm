@@ -1,12 +1,12 @@
 @interface MapsSuggestionsSuppressor
-- (BOOL)isSuppressedEntry:(id)a3;
+- (BOOL)isSuppressedEntry:(id)entry;
 - (BOOL)loadSuppressedEntries;
 - (BOOL)saveSuppressedEntries;
-- (BOOL)suppressEntry:(id)a3 forTime:(double)a4;
+- (BOOL)suppressEntry:(id)entry forTime:(double)time;
 - (MapsSuggestionsSuppressor)init;
-- (MapsSuggestionsSuppressor)initWithFilePath:(id)a3;
+- (MapsSuggestionsSuppressor)initWithFilePath:(id)path;
 - (NSString)uniqueName;
-- (id)test_dateUntilSuppressedEntry:(id)a3;
+- (id)test_dateUntilSuppressedEntry:(id)entry;
 - (uint64_t)_loadSuppressedEntries;
 - (uint64_t)_saveSuppressedEntries;
 - (void)_loadSuppressedEntries;
@@ -38,7 +38,7 @@
     _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "Suppressed entries file '%{public}@' does not exist. Nothing to load", &v7, 0xCu);
   }
 
-  return [*(a1 + 8) removeAllObjects];
+  return [*(self + 8) removeAllObjects];
 }
 
 - (void)_loadSuppressedEntries
@@ -64,31 +64,31 @@
 
 - (uint64_t)_saveSuppressedEntries
 {
-  v1 = a1;
+  selfCopy = self;
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16) == 0;
+    v2 = *(self + 16) == 0;
     v3 = GEOFindOrCreateLog();
     v4 = v3;
     if (v2)
     {
       [(MapsSuggestionsSuppressor *)v3 _saveSuppressedEntries];
       v9 = *buf;
-      v1 = v14;
+      selfCopy = v14;
     }
 
     else
     {
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
       {
-        v5 = *(v1 + 8);
+        v5 = *(selfCopy + 8);
         *buf = 138412290;
         *&buf[4] = v5;
         _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_INFO, "Suppressed Entries writing to file are %@", buf, 0xCu);
       }
 
-      v6 = v1;
+      v6 = selfCopy;
       objc_sync_enter(v6);
       v7 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -102,18 +102,18 @@
       v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6[1] requiringSecureCoding:1 error:0];
       objc_sync_exit(v6);
 
-      v10 = *(v1 + 16);
+      v10 = *(selfCopy + 16);
       v13 = 0;
-      v1 = [v9 writeToFile:v10 options:0 error:&v13];
+      selfCopy = [v9 writeToFile:v10 options:0 error:&v13];
       v11 = v13;
-      if ((v1 & 1) == 0)
+      if ((selfCopy & 1) == 0)
       {
         [MapsSuggestionsSuppressor _saveSuppressedEntries];
       }
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)purge
@@ -181,9 +181,9 @@ void __34__MapsSuggestionsSuppressor_purge__block_invoke(uint64_t a1)
   return [(MapsSuggestionsQueue *)queue syncBOOLReturningBlock:v4];
 }
 
-- (MapsSuggestionsSuppressor)initWithFilePath:(id)a3
+- (MapsSuggestionsSuppressor)initWithFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = MapsSuggestionsSuppressor;
   v5 = [(MapsSuggestionsSuppressor *)&v13 init];
@@ -193,7 +193,7 @@ void __34__MapsSuggestionsSuppressor_purge__block_invoke(uint64_t a1)
     suppressionEntries = v5->_suppressionEntries;
     v5->_suppressionEntries = v6;
 
-    v8 = [v4 copy];
+    v8 = [pathCopy copy];
     suppressionEntriesFilePath = v5->_suppressionEntriesFilePath;
     v5->_suppressionEntriesFilePath = v8;
 
@@ -214,17 +214,17 @@ void __34__MapsSuggestionsSuppressor_purge__block_invoke(uint64_t a1)
   return [v2 description];
 }
 
-- (BOOL)isSuppressedEntry:(id)a3
+- (BOOL)isSuppressedEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__MapsSuggestionsSuppressor_isSuppressedEntry___block_invoke;
   v8[3] = &unk_1E81F8250;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = entryCopy;
+  v6 = entryCopy;
   LOBYTE(queue) = [(MapsSuggestionsQueue *)queue syncBOOLReturningBlock:v8];
 
   return queue;
@@ -249,10 +249,10 @@ BOOL __47__MapsSuggestionsSuppressor_isSuppressedEntry___block_invoke(uint64_t a
   return v4;
 }
 
-- (BOOL)suppressEntry:(id)a3 forTime:(double)a4
+- (BOOL)suppressEntry:(id)entry forTime:(double)time
 {
-  v6 = a3;
-  v7 = MapsSuggestionsNowWithOffset(a4);
+  entryCopy = entry;
+  v7 = MapsSuggestionsNowWithOffset(time);
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -261,7 +261,7 @@ BOOL __47__MapsSuggestionsSuppressor_isSuppressedEntry___block_invoke(uint64_t a
   v16[4] = self;
   v9 = v7;
   v17 = v9;
-  v10 = v6;
+  v10 = entryCopy;
   v18 = v10;
   [(MapsSuggestionsQueue *)queue syncBlock:v16];
   objc_initWeak(&location, self);
@@ -357,12 +357,12 @@ void __61__MapsSuggestionsSuppressor_test_deleteSuppressedEntriesFile__block_inv
   }
 }
 
-- (id)test_dateUntilSuppressedEntry:(id)a3
+- (id)test_dateUntilSuppressedEntry:(id)entry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
     queue = self->_queue;
     v10[0] = MEMORY[0x1E69E9820];
@@ -370,7 +370,7 @@ void __61__MapsSuggestionsSuppressor_test_deleteSuppressedEntriesFile__block_inv
     v10[2] = __59__MapsSuggestionsSuppressor_test_dateUntilSuppressedEntry___block_invoke;
     v10[3] = &unk_1E81F82C8;
     v10[4] = self;
-    v11 = v4;
+    v11 = entryCopy;
     v7 = [(MapsSuggestionsQueue *)queue syncReturningBlock:v10];
   }
 
@@ -407,14 +407,14 @@ id __59__MapsSuggestionsSuppressor_test_dateUntilSuppressedEntry___block_invoke(
 
 - (void)awaitQueue
 {
-  v2 = [(MapsSuggestionsQueue *)self->_queue innerQueue];
-  dispatch_barrier_sync(v2, &__block_literal_global_37);
+  innerQueue = [(MapsSuggestionsQueue *)self->_queue innerQueue];
+  dispatch_barrier_sync(innerQueue, &__block_literal_global_37);
 }
 
 - (void)_saveSuppressedEntries
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
   {
     v6 = 136446978;
     v7 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsSuppressor.m";
@@ -424,11 +424,11 @@ id __59__MapsSuggestionsSuppressor_test_dateUntilSuppressedEntry___block_invoke(
     v11 = "[MapsSuggestionsSuppressor _saveSuppressedEntries]";
     v12 = 2082;
     v13 = "nil == (_suppressionEntriesFilePath)";
-    _os_log_impl(&dword_1C5126000, a1, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires file path to be set", &v6, 0x26u);
+    _os_log_impl(&dword_1C5126000, self, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires file path to be set", &v6, 0x26u);
   }
 
   *a3 = 0;
-  *a2 = a1;
+  *a2 = self;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface UpdateItemMetrics
 - (UpdateItemMetrics)init;
-- (UpdateItemMetrics)initWithData:(id)a3;
+- (UpdateItemMetrics)initWithData:(id)data;
 - (id)description;
 @end
 
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (UpdateItemMetrics)initWithData:(id)a3
+- (UpdateItemMetrics)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = UpdateItemMetrics;
   v5 = [(UpdateItemMetrics *)&v13 init];
@@ -32,9 +32,9 @@
     goto LABEL_4;
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dataCopy mutableCopy];
     metricsData = v5->_metricsData;
     v5->_metricsData = v6;
 
@@ -61,13 +61,13 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [(NSMutableDictionary *)self->_metricsData keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)self->_metricsData keyEnumerator];
   v4 = [[NSMutableString alloc] initWithString:@"{"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v3;
+  obj = keyEnumerator;
   v5 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {

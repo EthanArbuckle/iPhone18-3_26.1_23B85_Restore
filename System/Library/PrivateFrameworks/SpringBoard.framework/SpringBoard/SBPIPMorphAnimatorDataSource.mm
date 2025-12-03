@@ -1,56 +1,56 @@
 @interface SBPIPMorphAnimatorDataSource
-- (BOOL)_isChamoisOrFlexibleWindowingEnabledUIEnabledForAnimator:(id)a3;
-- (CGRect)_appLayoutBoundingBoxForAnimator:(id)a3;
-- (CGRect)sourceContentContainerFrameForAnimator:(id)a3;
-- (CGRect)sourceContentFrameForAnimator:(id)a3;
-- (CGRect)sourceSubviewFrame:(CGRect)a3 inScreenSpaceForAnimator:(id)a4;
-- (CGRect)targetFinalFrameForAnimator:(id)a3;
+- (BOOL)_isChamoisOrFlexibleWindowingEnabledUIEnabledForAnimator:(id)animator;
+- (CGRect)_appLayoutBoundingBoxForAnimator:(id)animator;
+- (CGRect)sourceContentContainerFrameForAnimator:(id)animator;
+- (CGRect)sourceContentFrameForAnimator:(id)animator;
+- (CGRect)sourceSubviewFrame:(CGRect)frame inScreenSpaceForAnimator:(id)animator;
+- (CGRect)targetFinalFrameForAnimator:(id)animator;
 - (SBPIPMorphAnimatorController)morphAnimatorController;
-- (SBPIPMorphAnimatorDataSource)initWithMorphAnimatorController:(id)a3 pipController:(id)a4 pegasusController:(id)a5 contentViewLayoutSettings:(id)a6;
-- (double)sourceBlackCurtainCornerRadiusForAnimator:(id)a3;
-- (double)sourceCornerRadiusForAnimator:(id)a3;
-- (double)targetFinalCornerRadiusForAnimator:(id)a3;
+- (SBPIPMorphAnimatorDataSource)initWithMorphAnimatorController:(id)controller pipController:(id)pipController pegasusController:(id)pegasusController contentViewLayoutSettings:(id)settings;
+- (double)sourceBlackCurtainCornerRadiusForAnimator:(id)animator;
+- (double)sourceCornerRadiusForAnimator:(id)animator;
+- (double)targetFinalCornerRadiusForAnimator:(id)animator;
 @end
 
 @implementation SBPIPMorphAnimatorDataSource
 
-- (SBPIPMorphAnimatorDataSource)initWithMorphAnimatorController:(id)a3 pipController:(id)a4 pegasusController:(id)a5 contentViewLayoutSettings:(id)a6
+- (SBPIPMorphAnimatorDataSource)initWithMorphAnimatorController:(id)controller pipController:(id)pipController pegasusController:(id)pegasusController contentViewLayoutSettings:(id)settings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  pipControllerCopy = pipController;
+  pegasusControllerCopy = pegasusController;
+  settingsCopy = settings;
   v19.receiver = self;
   v19.super_class = SBPIPMorphAnimatorDataSource;
   v14 = [(SBPIPMorphAnimatorDataSource *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pipController, a4);
-    objc_storeStrong(&v15->_pegasusController, a5);
-    objc_storeWeak(&v15->_morphAnimatorController, v10);
-    objc_storeStrong(&v15->_contentViewLayoutSettings, a6);
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v14->_pipController, pipController);
+    objc_storeStrong(&v15->_pegasusController, pegasusController);
+    objc_storeWeak(&v15->_morphAnimatorController, controllerCopy);
+    objc_storeStrong(&v15->_contentViewLayoutSettings, settings);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     morphAnimatorToPegasusInitialFrame = v15->_morphAnimatorToPegasusInitialFrame;
-    v15->_morphAnimatorToPegasusInitialFrame = v16;
+    v15->_morphAnimatorToPegasusInitialFrame = dictionary;
   }
 
   return v15;
 }
 
-- (BOOL)_isChamoisOrFlexibleWindowingEnabledUIEnabledForAnimator:(id)a3
+- (BOOL)_isChamoisOrFlexibleWindowingEnabledUIEnabledForAnimator:(id)animator
 {
-  v3 = [a3 windowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 windowManagementContext];
-  v6 = [v5 isChamoisOrFlexibleWindowing];
+  windowScene = [animator windowScene];
+  switcherController = [windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  return v6;
+  return isChamoisOrFlexibleWindowing;
 }
 
-- (CGRect)_appLayoutBoundingBoxForAnimator:(id)a3
+- (CGRect)_appLayoutBoundingBoxForAnimator:(id)animator
 {
-  if ([(SBPIPMorphAnimatorDataSource *)self _isChamoisOrFlexibleWindowingEnabledUIEnabledForAnimator:a3])
+  if ([(SBPIPMorphAnimatorDataSource *)self _isChamoisOrFlexibleWindowingEnabledUIEnabledForAnimator:animator])
   {
     WeakRetained = objc_loadWeakRetained(&self->_morphAnimatorController);
     [WeakRetained appLayoutBoundingBox];
@@ -79,35 +79,35 @@
   return result;
 }
 
-- (CGRect)sourceContentFrameForAnimator:(id)a3
+- (CGRect)sourceContentFrameForAnimator:(id)animator
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  animatorCopy = animator;
   WeakRetained = objc_loadWeakRetained(&self->_morphAnimatorController);
-  v6 = [WeakRetained targetProcessIdentifier];
-  v7 = [WeakRetained scenePersistenceIdentifier];
-  [(SBPIPMorphAnimatorDataSource *)self sourceContentContainerFrameForAnimator:v4];
+  targetProcessIdentifier = [WeakRetained targetProcessIdentifier];
+  scenePersistenceIdentifier = [WeakRetained scenePersistenceIdentifier];
+  [(SBPIPMorphAnimatorDataSource *)self sourceContentContainerFrameForAnimator:animatorCopy];
   v9 = v8;
   v11 = v10;
-  v12 = [v4 direction];
+  direction = [animatorCopy direction];
   pegasusController = self->_pegasusController;
-  v14 = SBPIPApplicationForProcessIdentifier(pegasusController, v6);
-  if (v12)
+  v14 = SBPIPApplicationForProcessIdentifier(pegasusController, targetProcessIdentifier);
+  if (direction)
   {
-    [(PGPictureInPictureController *)pegasusController preferredContentSizeForActivePictureInPictureWithApplication:v14 sceneSessionPersistentIdentifier:v7];
+    [(PGPictureInPictureController *)pegasusController preferredContentSizeForActivePictureInPictureWithApplication:v14 sceneSessionPersistentIdentifier:scenePersistenceIdentifier];
     v16 = v15;
     v18 = v17;
 
     if (v16 == 0.0 || v18 == 0.0)
     {
-      v19 = [v4 windowScene];
-      v20 = [(SBPIPController *)self->_pipController anyContentViewPresentedOnWindowScene:v19];
+      windowScene = [animatorCopy windowScene];
+      v20 = [(SBPIPController *)self->_pipController anyContentViewPresentedOnWindowScene:windowScene];
       [v20 frame];
 
       v21 = SBLogPIP();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [(SBPIPMorphAnimatorDataSource *)v7 sourceContentFrameForAnimator:v6, v21];
+        [(SBPIPMorphAnimatorDataSource *)scenePersistenceIdentifier sourceContentFrameForAnimator:targetProcessIdentifier, v21];
       }
     }
 
@@ -121,28 +121,28 @@
 
   else
   {
-    [(PGPictureInPictureController *)pegasusController initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:v14 sceneSessionPersistentIdentifier:v7];
+    [(PGPictureInPictureController *)pegasusController initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:v14 sceneSessionPersistentIdentifier:scenePersistenceIdentifier];
     v31 = v30;
     v33 = v32;
     v35 = v34;
     v37 = v36;
 
     v38 = [MEMORY[0x277CCAE60] valueWithRect:{v31, v33, v35, v37}];
-    v39 = [v4 uuid];
+    uuid = [animatorCopy uuid];
 
-    if (v39)
+    if (uuid)
     {
       morphAnimatorToPegasusInitialFrame = self->_morphAnimatorToPegasusInitialFrame;
-      v41 = [v4 uuid];
-      v42 = [(NSMutableDictionary *)morphAnimatorToPegasusInitialFrame objectForKey:v41];
+      uuid2 = [animatorCopy uuid];
+      v42 = [(NSMutableDictionary *)morphAnimatorToPegasusInitialFrame objectForKey:uuid2];
 
       v38 = v42;
       if (!v42)
       {
         v38 = [MEMORY[0x277CCAE60] valueWithRect:{v31, v33, v35, v37}];
         v43 = self->_morphAnimatorToPegasusInitialFrame;
-        v44 = [v4 uuid];
-        [(NSMutableDictionary *)v43 setObject:v38 forKey:v44];
+        uuid3 = [animatorCopy uuid];
+        [(NSMutableDictionary *)v43 setObject:v38 forKey:uuid3];
       }
     }
 
@@ -175,19 +175,19 @@
     v49 = SBLogPIP();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
     {
-      v54 = [v4 uuid];
+      uuid4 = [animatorCopy uuid];
       v72.origin.y = v60;
       v72.origin.x = v61;
       v72.size.width = v35;
       v72.size.height = v37;
       v55 = NSStringFromCGRect(v72);
       v56 = self->_morphAnimatorToPegasusInitialFrame;
-      v57 = [v4 uuid];
-      v58 = [(NSMutableDictionary *)v56 objectForKey:v57];
+      uuid5 = [animatorCopy uuid];
+      v58 = [(NSMutableDictionary *)v56 objectForKey:uuid5];
       [v58 rectValue];
       v59 = NSStringFromCGRect(v73);
       *buf = 138543874;
-      v63 = v54;
+      v63 = uuid4;
       v64 = 2114;
       v65 = v55;
       v66 = 2114;
@@ -207,20 +207,20 @@
   return result;
 }
 
-- (CGRect)sourceContentContainerFrameForAnimator:(id)a3
+- (CGRect)sourceContentContainerFrameForAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   WeakRetained = objc_loadWeakRetained(&self->_morphAnimatorController);
-  [(SBPIPMorphAnimatorDataSource *)self _appLayoutBoundingBoxForAnimator:v4];
+  [(SBPIPMorphAnimatorDataSource *)self _appLayoutBoundingBoxForAnimator:animatorCopy];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 windowScene];
-  v11 = [v10 switcherController];
-  v12 = [WeakRetained layoutRole];
-  v13 = [WeakRetained appLayout];
-  v14 = [v4 toOrientation];
+  windowScene = [animatorCopy windowScene];
+  switcherController = [windowScene switcherController];
+  layoutRole = [WeakRetained layoutRole];
+  appLayout = [WeakRetained appLayout];
+  toOrientation = [animatorCopy toOrientation];
 
-  [v11 frameForItemWithRole:v12 inMainAppLayout:v13 interfaceOrientation:v14];
+  [switcherController frameForItemWithRole:layoutRole inMainAppLayout:appLayout interfaceOrientation:toOrientation];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -247,13 +247,13 @@
   return result;
 }
 
-- (CGRect)sourceSubviewFrame:(CGRect)a3 inScreenSpaceForAnimator:(id)a4
+- (CGRect)sourceSubviewFrame:(CGRect)frame inScreenSpaceForAnimator:(id)animator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(SBPIPMorphAnimatorDataSource *)self _appLayoutBoundingBoxForAnimator:a4];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(SBPIPMorphAnimatorDataSource *)self _appLayoutBoundingBoxForAnimator:animator];
   v9 = v8;
   v11 = v10;
   v12 = x;
@@ -264,18 +264,18 @@
   return CGRectOffset(*&v12, v9, v11);
 }
 
-- (CGRect)targetFinalFrameForAnimator:(id)a3
+- (CGRect)targetFinalFrameForAnimator:(id)animator
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  animatorCopy = animator;
   WeakRetained = objc_loadWeakRetained(&self->_morphAnimatorController);
-  v6 = [WeakRetained targetProcessIdentifier];
-  v7 = [WeakRetained scenePersistenceIdentifier];
-  v8 = [WeakRetained isGestureInitiated];
-  if ([v4 direction])
+  targetProcessIdentifier = [WeakRetained targetProcessIdentifier];
+  scenePersistenceIdentifier = [WeakRetained scenePersistenceIdentifier];
+  isGestureInitiated = [WeakRetained isGestureInitiated];
+  if ([animatorCopy direction])
   {
-    v9 = [v4 targetView];
-    [v9 frame];
+    targetView = [animatorCopy targetView];
+    [targetView frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -289,36 +289,36 @@
     v15 = *(MEMORY[0x277CBF398] + 16);
     v17 = *(MEMORY[0x277CBF398] + 24);
     pegasusController = self->_pegasusController;
-    v19 = SBPIPApplicationForProcessIdentifier(pegasusController, v6);
-    [(PGPictureInPictureController *)pegasusController preferredContentSizeForInteractivelyEnteringBackgroundForApplication:v19 sceneSessionPersistentIdentifier:v7];
+    v19 = SBPIPApplicationForProcessIdentifier(pegasusController, targetProcessIdentifier);
+    [(PGPictureInPictureController *)pegasusController preferredContentSizeForInteractivelyEnteringBackgroundForApplication:v19 sceneSessionPersistentIdentifier:scenePersistenceIdentifier];
     v21 = v20;
     v23 = v22;
 
     if (v21 > 0.0 && v23 > 0.0)
     {
       pipController = self->_pipController;
-      v25 = [v4 windowScene];
+      windowScene = [animatorCopy windowScene];
       [(SBPIPContentViewLayoutSettings *)self->_contentViewLayoutSettings defaultContentViewSizeForAspectRatio:v21, v23];
       v27 = v26;
       v29 = v28;
-      v30 = [(SBPIPContentViewLayoutSettings *)self->_contentViewLayoutSettings currentContentViewPosition];
+      currentContentViewPosition = [(SBPIPContentViewLayoutSettings *)self->_contentViewLayoutSettings currentContentViewPosition];
       [(SBPIPContentViewLayoutSettings *)self->_contentViewLayoutSettings contentViewPadding];
-      -[SBPIPController homeScreenInitialPIPFrameForWindowScene:withContentViewSize:position:padding:fromOrientation:toOrientation:shouldUpdate:gestureInitiated:](pipController, "homeScreenInitialPIPFrameForWindowScene:withContentViewSize:position:padding:fromOrientation:toOrientation:shouldUpdate:gestureInitiated:", v25, v30, [v4 fromOrientation], objc_msgSend(v4, "toOrientation"), 1, v8, v27, v29, v31);
+      -[SBPIPController homeScreenInitialPIPFrameForWindowScene:withContentViewSize:position:padding:fromOrientation:toOrientation:shouldUpdate:gestureInitiated:](pipController, "homeScreenInitialPIPFrameForWindowScene:withContentViewSize:position:padding:fromOrientation:toOrientation:shouldUpdate:gestureInitiated:", windowScene, currentContentViewPosition, [animatorCopy fromOrientation], objc_msgSend(animatorCopy, "toOrientation"), 1, isGestureInitiated, v27, v29, v31);
       v11 = v32;
       v13 = v33;
       v15 = v34;
       v17 = v35;
     }
 
-    v9 = SBLogPIP();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    targetView = SBLogPIP();
+    if (os_log_type_enabled(targetView, OS_LOG_TYPE_DEFAULT))
     {
       v52.width = v21;
       v52.height = v23;
       v36 = NSStringFromCGSize(v52);
-      [v4 fromOrientation];
+      [animatorCopy fromOrientation];
       v37 = SBFStringForBSInterfaceOrientation();
-      [v4 toOrientation];
+      [animatorCopy toOrientation];
       v38 = SBFStringForBSInterfaceOrientation();
       v45 = 138543874;
       v46 = v36;
@@ -326,7 +326,7 @@
       v48 = v37;
       v49 = 2114;
       v50 = v38;
-      _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "-targetFinalFrameForAnimator: preferredContentSize[%{public}@] fromOrientation[%{public}@] toOrientation[%{public}@]", &v45, 0x20u);
+      _os_log_impl(&dword_21ED4E000, targetView, OS_LOG_TYPE_DEFAULT, "-targetFinalFrameForAnimator: preferredContentSize[%{public}@] fromOrientation[%{public}@] toOrientation[%{public}@]", &v45, 0x20u);
     }
   }
 
@@ -354,16 +354,16 @@
   return result;
 }
 
-- (double)targetFinalCornerRadiusForAnimator:(id)a3
+- (double)targetFinalCornerRadiusForAnimator:(id)animator
 {
-  [(SBPIPMorphAnimatorDataSource *)self targetFinalFrameForAnimator:a3];
+  [(SBPIPMorphAnimatorDataSource *)self targetFinalFrameForAnimator:animator];
   v5 = MEMORY[0x277D38BF0];
 
   [v5 contentCornerRadiusForViewSize:{v3, v4}];
   return result;
 }
 
-- (double)sourceCornerRadiusForAnimator:(id)a3
+- (double)sourceCornerRadiusForAnimator:(id)animator
 {
   SBScreenDisplayCornerRadius();
 
@@ -371,30 +371,30 @@
   return result;
 }
 
-- (double)sourceBlackCurtainCornerRadiusForAnimator:(id)a3
+- (double)sourceBlackCurtainCornerRadiusForAnimator:(id)animator
 {
-  v3 = a3;
+  animatorCopy = animator;
   SBScreenDisplayCornerRadius();
   v4 = 0.0;
   if ((BSFloatIsZero() & 1) == 0)
   {
-    v5 = [v3 windowScene];
-    v6 = [v5 switcherController];
-    v7 = [v6 windowManagementContext];
-    v8 = [v7 isChamoisOrFlexibleWindowing];
+    windowScene = [animatorCopy windowScene];
+    switcherController = [windowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v8)
+    if (isChamoisOrFlexibleWindowing)
     {
-      v9 = [v5 screen];
-      v10 = [v9 traitCollection];
-      [v10 displayCornerRadius];
+      screen = [windowScene screen];
+      traitCollection = [screen traitCollection];
+      [traitCollection displayCornerRadius];
       v4 = v11;
     }
 
     else
     {
-      v9 = +[SBMedusaDomain rootSettings];
-      [v9 cornerRadiusForInnerCorners];
+      screen = +[SBMedusaDomain rootSettings];
+      [screen cornerRadiusForInnerCorners];
       v4 = v12;
     }
   }

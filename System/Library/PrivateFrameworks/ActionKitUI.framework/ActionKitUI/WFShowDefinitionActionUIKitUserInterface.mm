@@ -1,30 +1,30 @@
 @interface WFShowDefinitionActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showWithString:(id)a3 completionHandler:(id)a4;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showWithString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation WFShowDefinitionActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFShowDefinitionActionUIKitUserInterface *)self finishWithError:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFShowDefinitionActionUIKitUserInterface *)self finishWithError:userCancelledError];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__WFShowDefinitionActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFShowDefinitionActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -39,29 +39,29 @@ uint64_t __84__WFShowDefinitionActionUIKitUserInterface_cancelPresentationWithCo
   return v4();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFShowDefinitionActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFShowDefinitionActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFShowDefinitionActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFShowDefinitionActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFShowDefinitionActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithString:(id)a3 completionHandler:(id)a4
+- (void)showWithString:(id)string completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  stringCopy = string;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!stringCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFShowDefinitionActionUIKitUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShowDefinitionActionUIKitUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"string"}];
 
     if (v9)
     {
@@ -69,13 +69,13 @@ uint64_t __84__WFShowDefinitionActionUIKitUserInterface_cancelPresentationWithCo
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFShowDefinitionActionUIKitUserInterface.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFShowDefinitionActionUIKitUserInterface.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -86,9 +86,9 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __77__WFShowDefinitionActionUIKitUserInterface_showWithString_completionHandler___block_invoke;
   block[3] = &unk_278C375A0;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
+  v14 = stringCopy;
+  selfCopy = self;
+  v10 = stringCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

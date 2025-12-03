@@ -1,26 +1,26 @@
 @interface WKInterfaceLabel
-- (void)setAttributedText:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation WKInterfaceLabel
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   [(WKInterfaceObject *)self _sendValueChanged:v4];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = [SPColorWrapper wrapperForColor:a3];
+  v4 = [SPColorWrapper wrapperForColor:color];
   [(WKInterfaceObject *)self _sendValueChanged:v4 forProperty:@"color"];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = _WKValidatedAttributedString(a3);
+  v4 = _WKValidatedAttributedString(text);
   [(WKInterfaceObject *)self _sendValueChanged:v4];
 }
 

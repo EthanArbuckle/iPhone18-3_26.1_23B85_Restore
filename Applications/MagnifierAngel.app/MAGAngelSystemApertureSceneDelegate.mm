@@ -1,17 +1,17 @@
 @interface MAGAngelSystemApertureSceneDelegate
 - (_TtC14MagnifierAngel35MAGAngelSystemApertureSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation MAGAngelSystemApertureSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100030694(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100030694(sceneCopy);
 }
 
 - (_TtC14MagnifierAngel35MAGAngelSystemApertureSceneDelegate)init

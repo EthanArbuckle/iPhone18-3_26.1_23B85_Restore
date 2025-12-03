@@ -1,7 +1,7 @@
 @interface NEIKEv2CompanionDatapath
 - (BOOL)connected;
 - (id)description;
-- (uint64_t)getStopReasonFromConnectionError:(uint64_t)a1;
+- (uint64_t)getStopReasonFromConnectionError:(uint64_t)error;
 - (void)cancelLocked;
 - (void)dealloc;
 - (void)resetConnectionLocked;
@@ -20,7 +20,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEFAULT, "%@: dealloc", buf, 0xCu);
     }
   }
@@ -31,7 +31,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v7 = self;
+      selfCopy2 = self;
       _os_log_fault_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_FAULT, "%@: dealloc without cancellation", buf, 0xCu);
     }
   }
@@ -51,7 +51,7 @@
     identifier = self->_identifier;
     v7 = self->_remoteEndpoint;
     v8 = self->_connectedEndpointString;
-    v9 = "";
+    uTF8String = "";
     if (v8)
     {
       v10 = " vpn-server ";
@@ -66,7 +66,7 @@
     if (v11)
     {
       v2 = self->_connectedEndpointString;
-      v9 = [(NSString *)v2 UTF8String];
+      uTF8String = [(NSString *)v2 UTF8String];
       v12 = v11;
     }
 
@@ -86,7 +86,7 @@
       v14 = off_1E7F088E8[state];
     }
 
-    v15 = [v5 initWithFormat:@"Cmpn[%llu %@%s%s %@]", identifier, v7, v10, v9, v14];
+    v15 = [v5 initWithFormat:@"Cmpn[%llu %@%s%s %@]", identifier, v7, v10, uTF8String, v14];
 
     if (!v11)
     {
@@ -110,13 +110,13 @@ LABEL_13:
 
 - (void)cancelLocked
 {
-  os_unfair_lock_assert_owner((a1 + 12));
-  *(a1 + 9) = 3;
-  [(NEIKEv2CompanionDatapath *)a1 resetConnectionLocked];
-  WeakRetained = objc_loadWeakRetained((a1 + 88));
+  os_unfair_lock_assert_owner((self + 12));
+  *(self + 9) = 3;
+  [(NEIKEv2CompanionDatapath *)self resetConnectionLocked];
+  WeakRetained = objc_loadWeakRetained((self + 88));
   if (WeakRetained)
   {
-    v3 = [(NEIKEv2CompanionDatapath *)a1 getStopReasonFromConnectionError:?];
+    v3 = [(NEIKEv2CompanionDatapath *)self getStopReasonFromConnectionError:?];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __40__NEIKEv2CompanionDatapath_cancelLocked__block_invoke;
@@ -124,38 +124,38 @@ LABEL_13:
     v5 = WeakRetained;
     v6 = v3;
     [v5 stopTunnelWithReason:14 completionHandler:v4];
-    [(NEIKEv2CompanionDatapath *)a1 signalCompletionSemaphoreLocked];
+    [(NEIKEv2CompanionDatapath *)self signalCompletionSemaphoreLocked];
   }
 }
 
 - (void)resetConnectionLocked
 {
   v8 = *MEMORY[0x1E69E9840];
-  os_unfair_lock_assert_owner((a1 + 12));
+  os_unfair_lock_assert_owner((self + 12));
   v2 = ne_log_obj();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v2, OS_LOG_TYPE_DEFAULT, "%@: reset-connection", &v6, 0xCu);
   }
 
-  v3 = *(a1 + 32);
+  v3 = *(self + 32);
   if (v3)
   {
     nw_connection_cancel(v3);
-    v4 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v4 = *(self + 32);
+    *(self + 32) = 0;
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)getStopReasonFromConnectionError:(uint64_t)a1
+- (uint64_t)getStopReasonFromConnectionError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
     if (!v3)
     {
@@ -164,72 +164,72 @@ LABEL_13:
 
     if (nw_error_get_error_domain(v3) == nw_error_domain_dns)
     {
-      a1 = 17;
+      error = 17;
       goto LABEL_10;
     }
 
     if (nw_error_get_error_domain(v4) != nw_error_domain_posix)
     {
 LABEL_9:
-      a1 = 7;
+      error = 7;
       goto LABEL_10;
     }
 
-    a1 = 7;
+    error = 7;
     v5 = (nw_error_get_error_code(v4) - 32);
     if (v5 <= 0x21)
     {
       if (((1 << v5) & 0x2026C0001) != 0)
       {
-        a1 = 4;
+        error = 4;
       }
 
       else if (v5 == 28)
       {
-        a1 = 12;
+        error = 12;
       }
     }
   }
 
 LABEL_10:
 
-  return a1;
+  return error;
 }
 
 - (void)signalCompletionSemaphoreLocked
 {
-  os_unfair_lock_assert_owner((a1 + 12));
-  v2 = *(a1 + 80);
+  os_unfair_lock_assert_owner((self + 12));
+  v2 = *(self + 80);
   if (v2)
   {
     dispatch_semaphore_signal(v2);
-    v3 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    v3 = *(self + 80);
+    *(self + 80) = 0;
   }
 }
 
 - (BOOL)connected
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 12));
-  v2 = *(a1 + 9) == 2;
-  os_unfair_lock_unlock((a1 + 12));
+  os_unfair_lock_lock((self + 12));
+  v2 = *(self + 9) == 2;
+  os_unfair_lock_unlock((self + 12));
   return v2;
 }
 
 - (void)setupConnectionLocked
 {
   v22 = *MEMORY[0x1E69E9840];
-  os_unfair_lock_assert_owner((a1 + 12));
+  os_unfair_lock_assert_owner((self + 12));
   v2 = ne_log_obj();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v2, OS_LOG_TYPE_DEFAULT, "%@: starting", buf, 0xCu);
   }
 
@@ -241,15 +241,15 @@ LABEL_10:
 
   nw_parameters_set_required_interface_subtype();
   nw_parameters_set_effective_bundle_id();
-  v7 = [*(a1 + 64) copyCEndpoint];
-  nw_parameters_set_local_endpoint(legacy_tcp_socket, v7);
+  copyCEndpoint = [*(self + 64) copyCEndpoint];
+  nw_parameters_set_local_endpoint(legacy_tcp_socket, copyCEndpoint);
 
   nw_parameters_set_reuse_local_address(legacy_tcp_socket, 1);
-  v8 = [*(a1 + 56) copyCEndpoint];
-  v9 = nw_connection_create(v8, legacy_tcp_socket);
+  copyCEndpoint2 = [*(self + 56) copyCEndpoint];
+  v9 = nw_connection_create(copyCEndpoint2, legacy_tcp_socket);
 
-  nw_connection_set_queue(v9, *(a1 + 72));
-  objc_initWeak(buf, a1);
+  nw_connection_set_queue(v9, *(self + 72));
+  objc_initWeak(buf, self);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __49__NEIKEv2CompanionDatapath_setupConnectionLocked__block_invoke;
@@ -259,13 +259,13 @@ LABEL_10:
   v18 = v10;
   MEMORY[0x1BFAFAEA0](v10, v17, v11, v12);
   nw_connection_start(v10);
-  v13 = *(a1 + 32);
-  *(a1 + 32) = v10;
+  v13 = *(self + 32);
+  *(self + 32) = v10;
   v14 = v10;
 
-  ++*(a1 + 10);
-  v15 = *(a1 + 96);
-  *(a1 + 96) = 0;
+  ++*(self + 10);
+  v15 = *(self + 96);
+  *(self + 96) = 0;
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);

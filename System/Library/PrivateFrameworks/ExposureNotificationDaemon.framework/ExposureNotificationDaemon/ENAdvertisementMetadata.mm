@@ -1,21 +1,21 @@
 @interface ENAdvertisementMetadata
-- (ENAdvertisementMetadata)initWithVersion:(int64_t)a3 txPower:(char)a4 calibrationConfidence:(unsigned __int8)a5;
+- (ENAdvertisementMetadata)initWithVersion:(int64_t)version txPower:(char)power calibrationConfidence:(unsigned __int8)confidence;
 - (NSString)versionString;
-- (unsigned)attenuationForRSSI:(char)a3 saturated:(BOOL)a4;
+- (unsigned)attenuationForRSSI:(char)i saturated:(BOOL)saturated;
 @end
 
 @implementation ENAdvertisementMetadata
 
-- (ENAdvertisementMetadata)initWithVersion:(int64_t)a3 txPower:(char)a4 calibrationConfidence:(unsigned __int8)a5
+- (ENAdvertisementMetadata)initWithVersion:(int64_t)version txPower:(char)power calibrationConfidence:(unsigned __int8)confidence
 {
   v9.receiver = self;
   v9.super_class = ENAdvertisementMetadata;
   result = [(ENAdvertisementMetadata *)&v9 init];
   if (result)
   {
-    result->_version = a3;
-    result->_txPower = a4;
-    result->_calibrationConfidence = a5;
+    result->_version = version;
+    result->_txPower = power;
+    result->_calibrationConfidence = confidence;
   }
 
   return result;
@@ -41,16 +41,16 @@
   }
 }
 
-- (unsigned)attenuationForRSSI:(char)a3 saturated:(BOOL)a4
+- (unsigned)attenuationForRSSI:(char)i saturated:(BOOL)saturated
 {
-  if (a3 == 127 && a4)
+  if (i == 127 && saturated)
   {
     return 0;
   }
 
   else
   {
-    return (self->_txPower - a3) & ~((self->_txPower - a3) >> 31);
+    return (self->_txPower - i) & ~((self->_txPower - i) >> 31);
   }
 }
 

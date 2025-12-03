@@ -1,22 +1,22 @@
 @interface AAFKeychainManager
-- (id)keychainItemFor:(id)a3;
-- (id)keychainItemsForDescriptor:(id)a3 withGroup:(id)a4 error:(id *)a5;
+- (id)keychainItemFor:(id)for;
+- (id)keychainItemsForDescriptor:(id)descriptor withGroup:(id)group error:(id *)error;
 @end
 
 @implementation AAFKeychainManager
 
-- (id)keychainItemFor:(id)a3
+- (id)keychainItemFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1001B7914(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_1001B7914(forCopy);
 
   return v6;
 }
 
-- (id)keychainItemsForDescriptor:(id)a3 withGroup:(id)a4 error:(id *)a5
+- (id)keychainItemsForDescriptor:(id)descriptor withGroup:(id)group error:(id *)error
 {
-  if (a4)
+  if (group)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
@@ -28,9 +28,9 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_1001B7A18(v10, v7, v9);
+  descriptorCopy = descriptor;
+  selfCopy = self;
+  sub_1001B7A18(descriptorCopy, v7, v9);
 
   sub_1001B81FC();
   v12.super.isa = Array._bridgeToObjectiveC()().super.isa;

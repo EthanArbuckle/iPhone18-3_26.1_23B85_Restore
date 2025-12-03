@@ -2,8 +2,8 @@
 - (MLModel)engageOnPluginModel;
 - (MLModel)longDurationModel;
 - (MLModel)shortDurationModel;
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7;
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
 @end
 
 @implementation OSChargingPhoneOnPluginPredictor
@@ -53,23 +53,23 @@
   return longDurationModel;
 }
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
-  v102 = a8;
-  v10 = a7;
-  v11 = a4;
-  v12 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:1];
-  v13 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:2];
-  v14 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:4];
-  v15 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:8];
-  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:16];
-  v17 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:24];
+  logCopy = log;
+  dateCopy = date;
+  eventsCopy = events;
+  v12 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:1];
+  v13 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:2];
+  v14 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:4];
+  v15 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:8];
+  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:16];
+  v17 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:24];
 
-  v18 = [OSIntelligenceUtilities filterEvents:v12 startOnSameWeekdayAs:v10];
-  v19 = [OSIntelligenceUtilities filterEvents:v13 startOnSameWeekdayAs:v10];
-  v128 = [OSIntelligenceUtilities filterEvents:v14 startOnSameWeekdayAs:v10];
-  v127 = [OSIntelligenceUtilities filterEvents:v15 startOnSameWeekdayAs:v10];
-  v126 = [OSIntelligenceUtilities filterEvents:v17 startOnSameWeekdayAs:v10];
+  v18 = [OSIntelligenceUtilities filterEvents:v12 startOnSameWeekdayAs:dateCopy];
+  v19 = [OSIntelligenceUtilities filterEvents:v13 startOnSameWeekdayAs:dateCopy];
+  v128 = [OSIntelligenceUtilities filterEvents:v14 startOnSameWeekdayAs:dateCopy];
+  v127 = [OSIntelligenceUtilities filterEvents:v15 startOnSameWeekdayAs:dateCopy];
+  v126 = [OSIntelligenceUtilities filterEvents:v17 startOnSameWeekdayAs:dateCopy];
 
   v129 = v12;
   v20 = [OSIntelligenceUtilities getDurationsFromEvents:v12 withUnit:3600.0 cappedAt:0.0];
@@ -129,12 +129,12 @@
   v103 = v28;
   [OSIntelligenceUtilities medianOf:v28];
   v54 = v53;
-  v55 = v102;
+  v55 = logCopy;
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
-    v56 = [NSNumber numberWithUnsignedInteger:a5];
-    v57 = [NSNumber numberWithDouble:a3];
-    v58 = [NSNumber numberWithDouble:a6];
+    v56 = [NSNumber numberWithUnsignedInteger:level];
+    v57 = [NSNumber numberWithDouble:features];
+    v58 = [NSNumber numberWithDouble:plugin];
     *buf = 138412802;
     v131 = *&v56;
     v132 = 2112;
@@ -315,10 +315,10 @@
   }
 
   v71 = +[NSMutableDictionary dictionary];
-  v72 = [NSNumber numberWithUnsignedInteger:a5];
+  v72 = [NSNumber numberWithUnsignedInteger:level];
   [v71 setObject:v72 forKeyedSubscript:@"plugin_battery_level"];
 
-  v73 = [NSNumber numberWithDouble:a6];
+  v73 = [NSNumber numberWithDouble:plugin];
   [v71 setObject:v73 forKeyedSubscript:@"time_from_plugin"];
 
   v74 = [NSNumber numberWithDouble:v41];
@@ -398,11 +398,11 @@
   return v98;
 }
 
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log
 {
   v13 = a8;
-  v14 = a7;
-  v15 = a5;
+  logCopy = log;
+  levelCopy = level;
   v16 = os_transaction_create();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -410,27 +410,27 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Getting predictions with on plugin model", &v35, 2u);
   }
 
-  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:v15 withPluginBatteryLevel:v14 forDate:v13 withLog:a6];
+  v17 = [(OSChargingTwoStagePredictor *)self getInputFeaturesWithPluginDate:levelCopy withPluginBatteryLevel:logCopy forDate:v13 withLog:forDate];
 
   *&retstr->var0 = 0;
   retstr->var1 = -99999.0;
   retstr->var2 = 0.0;
-  v18 = [(OSChargingPhoneOnPluginPredictor *)self engageOnPluginModel];
-  v19 = [v18 predictionFromFeatures:v17 error:0];
+  engageOnPluginModel = [(OSChargingPhoneOnPluginPredictor *)self engageOnPluginModel];
+  v19 = [engageOnPluginModel predictionFromFeatures:v17 error:0];
 
   v20 = [v19 featureValueForName:@"classProbability"];
-  v21 = [v20 dictionaryValue];
+  dictionaryValue = [v20 dictionaryValue];
 
   v22 = v13;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v21 description];
+    v23 = [dictionaryValue description];
     v35 = 138412290;
     v36 = *&v23;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "On plugin engagement model raw output %@", &v35, 0xCu);
   }
 
-  v24 = [v21 objectForKeyedSubscript:&off_10009B5E0];
+  v24 = [dictionaryValue objectForKeyedSubscript:&off_10009B5E0];
   [v24 doubleValue];
   v26 = v25;
 
@@ -444,7 +444,7 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Querying on plugin short duration model", &v35, 2u);
     }
 
-    v28 = [(OSChargingPhoneOnPluginPredictor *)self shortDurationModel];
+    shortDurationModel = [(OSChargingPhoneOnPluginPredictor *)self shortDurationModel];
     v29 = 0;
   }
 
@@ -456,11 +456,11 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Querying on plugin long duration model", &v35, 2u);
     }
 
-    v28 = [(OSChargingPhoneOnPluginPredictor *)self longDurationModel];
+    shortDurationModel = [(OSChargingPhoneOnPluginPredictor *)self longDurationModel];
     v29 = 1;
   }
 
-  v30 = [v28 predictionFromFeatures:v17 error:0];
+  v30 = [shortDurationModel predictionFromFeatures:v17 error:0];
 
   retstr->var0 = v29;
   v31 = [v30 featureValueForName:@"duration_pred"];

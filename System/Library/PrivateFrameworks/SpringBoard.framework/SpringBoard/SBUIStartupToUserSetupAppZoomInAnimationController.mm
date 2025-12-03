@@ -1,49 +1,49 @@
 @interface SBUIStartupToUserSetupAppZoomInAnimationController
-- (SBUIStartupToUserSetupAppZoomInAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4;
+- (SBUIStartupToUserSetupAppZoomInAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay;
 - (id)_getTransitionWindow;
 - (void)_cleanupAnimation;
 - (void)_prepareAnimation;
-- (void)_setHidden:(BOOL)a3;
+- (void)_setHidden:(BOOL)hidden;
 - (void)_startAnimation;
 @end
 
 @implementation SBUIStartupToUserSetupAppZoomInAnimationController
 
-- (SBUIStartupToUserSetupAppZoomInAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4
+- (SBUIStartupToUserSetupAppZoomInAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  providerCopy = provider;
+  overlayCopy = overlay;
+  if (!providerCopy)
   {
     [SBUIStartupToUserSetupAppZoomInAnimationController initWithTransitionContextProvider:a2 overlay:self];
   }
 
   v26.receiver = self;
   v26.super_class = SBUIStartupToUserSetupAppZoomInAnimationController;
-  v9 = [(SBUIMainScreenAnimationController *)&v26 initWithTransitionContextProvider:v7];
+  v9 = [(SBUIMainScreenAnimationController *)&v26 initWithTransitionContextProvider:providerCopy];
   if (v9)
   {
-    v24 = v8;
-    obj = a4;
-    v10 = [v7 applicationContext];
-    v11 = [v10 applicationSceneEntityForLayoutRole:1];
-    v12 = [v11 application];
-    v13 = [v12 isSetup];
+    v24 = overlayCopy;
+    obj = overlay;
+    applicationContext = [providerCopy applicationContext];
+    v11 = [applicationContext applicationSceneEntityForLayoutRole:1];
+    application = [v11 application];
+    isSetup = [application isSetup];
 
-    if ((v13 & 1) == 0)
+    if ((isSetup & 1) == 0)
     {
       [SBUIStartupToUserSetupAppZoomInAnimationController initWithTransitionContextProvider:a2 overlay:v9];
     }
 
     v23 = a2;
-    v14 = [v7 applicationContext];
-    v15 = [v14 layoutState];
-    v16 = [v15 elementWithRole:1];
-    v17 = [v16 workspaceEntity];
-    v18 = [v17 applicationSceneEntity];
-    v19 = [v18 application];
-    v20 = [v19 bundleIdentifier];
-    v21 = [v20 isEqualToString:@"com.apple.purplebuddy"];
+    applicationContext2 = [providerCopy applicationContext];
+    layoutState = [applicationContext2 layoutState];
+    v16 = [layoutState elementWithRole:1];
+    workspaceEntity = [v16 workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    application2 = [applicationSceneEntity application];
+    bundleIdentifier = [application2 bundleIdentifier];
+    v21 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
     if ((v21 & 1) == 0)
     {
@@ -51,7 +51,7 @@
     }
 
     objc_storeStrong(&v9->_persistentSnapshotOverlay, obj);
-    v8 = v24;
+    overlayCopy = v24;
   }
 
   return v9;
@@ -91,71 +91,71 @@ uint64_t __74__SBUIStartupToUserSetupAppZoomInAnimationController__getTransition
   return [v7 setWindowLevel:v8];
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(SBUIStartupToUserSetupAppZoomInAnimationController *)self _getTransitionWindow];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  _getTransitionWindow = [(SBUIStartupToUserSetupAppZoomInAnimationController *)self _getTransitionWindow];
+  [_getTransitionWindow setHidden:hiddenCopy];
 
   v6.receiver = self;
   v6.super_class = SBUIStartupToUserSetupAppZoomInAnimationController;
-  [(SBUIAnimationController *)&v6 _setHidden:v3];
+  [(SBUIAnimationController *)&v6 _setHidden:hiddenCopy];
 }
 
 - (void)_prepareAnimation
 {
-  v28 = [(SBUIAnimationController *)self containerView];
-  v3 = [(SBUIMainScreenAnimationController *)self transitionRequest];
-  v4 = [v3 applicationContext];
-  v5 = [v4 layoutState];
+  containerView = [(SBUIAnimationController *)self containerView];
+  transitionRequest = [(SBUIMainScreenAnimationController *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
+  layoutState = [applicationContext layoutState];
 
-  v6 = [v5 elementWithRole:1];
-  v7 = [v6 workspaceEntity];
+  v6 = [layoutState elementWithRole:1];
+  workspaceEntity = [v6 workspaceEntity];
 
-  v8 = [v7 deviceApplicationSceneEntity];
+  deviceApplicationSceneEntity = [workspaceEntity deviceApplicationSceneEntity];
   v9 = objc_opt_class();
-  v10 = [v8 sceneHandle];
-  v11 = SBSafeCast(v9, v10);
+  sceneHandle = [deviceApplicationSceneEntity sceneHandle];
+  v11 = SBSafeCast(v9, sceneHandle);
 
   if (v11)
   {
-    v12 = [(SBUIStartupToUserSetupAppZoomInAnimationController *)self _getTransitionWindow];
-    v27 = v5;
-    v13 = [v12 _windowInterfaceOrientation];
+    _getTransitionWindow = [(SBUIStartupToUserSetupAppZoomInAnimationController *)self _getTransitionWindow];
+    v27 = layoutState;
+    _windowInterfaceOrientation = [_getTransitionWindow _windowInterfaceOrientation];
 
-    v14 = [v11 currentInterfaceOrientation];
-    v15 = [(SBUIAnimationController *)self containerView];
+    currentInterfaceOrientation = [v11 currentInterfaceOrientation];
+    containerView2 = [(SBUIAnimationController *)self containerView];
     v16 = [SBDeviceApplicationSceneView alloc];
-    v17 = [v3 displayConfiguration];
-    [v17 bounds];
-    v20 = [(SBDeviceApplicationSceneView *)v16 initWithSceneHandle:v11 referenceSize:v14 contentOrientation:v13 containerOrientation:self hostRequester:v18, v19];
+    displayConfiguration = [transitionRequest displayConfiguration];
+    [displayConfiguration bounds];
+    v20 = [(SBDeviceApplicationSceneView *)v16 initWithSceneHandle:v11 referenceSize:currentInterfaceOrientation contentOrientation:_windowInterfaceOrientation containerOrientation:self hostRequester:v18, v19];
     sceneView = self->_sceneView;
     self->_sceneView = v20;
 
     v22 = objc_alloc(MEMORY[0x277CF0D78]);
-    [v15 bounds];
+    [containerView2 bounds];
     v23 = [v22 initWithFrame:?];
     orientationWrapperView = self->_orientationWrapperView;
     self->_orientationWrapperView = v23;
 
-    v25 = v13;
-    v5 = v27;
+    v25 = _windowInterfaceOrientation;
+    layoutState = v27;
     [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContainerOrientation:v25];
-    [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContentOrientation:v14];
+    [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContentOrientation:currentInterfaceOrientation];
     [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView addContentView:self->_sceneView];
     [(SBSceneView *)self->_sceneView setDisplayMode:4 animationFactory:0 completion:0];
-    [v15 addSubview:self->_orientationWrapperView];
+    [containerView2 addSubview:self->_orientationWrapperView];
   }
 
-  v26 = [MEMORY[0x277D75348] whiteColor];
-  [v28 setBackgroundColor:v26];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [containerView setBackgroundColor:whiteColor];
 }
 
 - (void)_startAnimation
 {
-  v3 = [(SBUIStartupToUserSetupAppZoomInAnimationController *)self animationSettings];
-  [(BKSDisplayRenderOverlay *)self->_persistentSnapshotOverlay dismissWithAnimation:v3];
-  [v3 duration];
+  animationSettings = [(SBUIStartupToUserSetupAppZoomInAnimationController *)self animationSettings];
+  [(BKSDisplayRenderOverlay *)self->_persistentSnapshotOverlay dismissWithAnimation:animationSettings];
+  [animationSettings duration];
   v5 = dispatch_time(0, ((v4 + 0.1) * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

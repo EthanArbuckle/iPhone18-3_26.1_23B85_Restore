@@ -1,8 +1,8 @@
 @interface KNGaussianBlurTexture
 - (CGRect)bounds;
 - (CGRect)frame;
-- (KNGaussianBlurTexture)initWithMetalTexture:(id)a3 frame:(CGRect)a4 blurAmount:(double)a5;
-- (KNGaussianBlurTexture)initWithTextureName:(unsigned int)a3 frame:(CGRect)a4 blurAmount:(double)a5;
+- (KNGaussianBlurTexture)initWithMetalTexture:(id)texture frame:(CGRect)frame blurAmount:(double)amount;
+- (KNGaussianBlurTexture)initWithTextureName:(unsigned int)name frame:(CGRect)frame blurAmount:(double)amount;
 - (id)description;
 - (void)dealloc;
 - (void)teardown;
@@ -10,22 +10,22 @@
 
 @implementation KNGaussianBlurTexture
 
-- (KNGaussianBlurTexture)initWithTextureName:(unsigned int)a3 frame:(CGRect)a4 blurAmount:(double)a5
+- (KNGaussianBlurTexture)initWithTextureName:(unsigned int)name frame:(CGRect)frame blurAmount:(double)amount
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = KNGaussianBlurTexture;
   result = [(KNGaussianBlurTexture *)&v12 init];
   if (result)
   {
-    result->_textureName = a3;
+    result->_textureName = name;
     result->_frame.origin.y = y;
     result->_frame.size.width = width;
     result->_frame.size.height = height;
-    result->_blurAmount = a5;
+    result->_blurAmount = amount;
     result->_frame.origin.x = x;
     result->_isMetalTexture = 0;
   }
@@ -33,24 +33,24 @@
   return result;
 }
 
-- (KNGaussianBlurTexture)initWithMetalTexture:(id)a3 frame:(CGRect)a4 blurAmount:(double)a5
+- (KNGaussianBlurTexture)initWithMetalTexture:(id)texture frame:(CGRect)frame blurAmount:(double)amount
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  textureCopy = texture;
   v16.receiver = self;
   v16.super_class = KNGaussianBlurTexture;
   v13 = [(KNGaussianBlurTexture *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_texture, a3);
+    objc_storeStrong(&v13->_texture, texture);
     v14->_frame.origin.y = y;
     v14->_frame.size.width = width;
     v14->_frame.size.height = height;
-    v14->_blurAmount = a5;
+    v14->_blurAmount = amount;
     v14->_frame.origin.x = x;
     v14->_isMetalTexture = 1;
   }
@@ -89,14 +89,14 @@
   v11.receiver = self;
   v11.super_class = KNGaussianBlurTexture;
   v3 = [(KNGaussianBlurTexture *)&v11 description];
-  v4 = [(KNGaussianBlurTexture *)self textureName];
+  textureName = [(KNGaussianBlurTexture *)self textureName];
   [(KNGaussianBlurTexture *)self blurAmount];
   v6 = v5;
   [(KNGaussianBlurTexture *)self frame];
   v7 = NSStringFromCGRect(v13);
   [(KNGaussianBlurTexture *)self bounds];
   v8 = NSStringFromCGRect(v14);
-  v9 = [NSString stringWithFormat:@"%@: name:%d, blur:%0.1f, frame:%@, bounds:%@", v3, v4, v6, v7, v8];
+  v9 = [NSString stringWithFormat:@"%@: name:%d, blur:%0.1f, frame:%@, bounds:%@", v3, textureName, v6, v7, v8];
 
   return v9;
 }

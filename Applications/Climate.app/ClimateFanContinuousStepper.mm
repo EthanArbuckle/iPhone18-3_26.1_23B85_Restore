@@ -1,31 +1,31 @@
 @interface ClimateFanContinuousStepper
-- (void)fanService:(id)a3 didUpdateAutoMode:(BOOL)a4;
-- (void)fanService:(id)a3 didUpdateFanLevel:(unsigned __int8)a4;
-- (void)fanService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)fanService:(id)service didUpdateAutoMode:(BOOL)mode;
+- (void)fanService:(id)service didUpdateFanLevel:(unsigned __int8)level;
+- (void)fanService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateFanContinuousStepper
 
-- (void)fanService:(id)a3 didUpdateFanLevel:(unsigned __int8)a4
+- (void)fanService:(id)service didUpdateFanLevel:(unsigned __int8)level
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_1000C3300(v6, v4);
+  levelCopy = level;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1000C3300(serviceCopy, levelCopy);
 }
 
-- (void)fanService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)fanService:(id)service didUpdateOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_1000C3AF0(v6, v4);
+  onCopy = on;
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1000C3AF0(serviceCopy, onCopy);
 }
 
-- (void)fanService:(id)a3 didUpdateAutoMode:(BOOL)a4
+- (void)fanService:(id)service didUpdateAutoMode:(BOOL)mode
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_1000C539C();
 }
 

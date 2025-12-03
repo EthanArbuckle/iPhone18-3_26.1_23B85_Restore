@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationshipAchievement
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationshipAchievement)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationshipAchievement)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __66__GKPlayerActivityRelationshipAchievement_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_499 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_499, block);
@@ -46,27 +46,27 @@ void __66__GKPlayerActivityRelationshipAchievement_secureCodedPropertyKeys__bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationshipAchievement)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationshipAchievement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = GKPlayerActivityRelationshipAchievement;
-  v5 = [(GKPlayerActivityRelationshipBase *)&v14 initWithDictionary:v4];
+  v5 = [(GKPlayerActivityRelationshipBase *)&v14 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"description"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"description"];
     [(GKPlayerActivityRelationshipAchievement *)v5 setAchDescription:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     v8 = objc_alloc(MEMORY[0x277CBEAA8]);
     [v7 doubleValue];
     v10 = [v8 initWithTimeIntervalSince1970:v9 / 1000.0];
     [(GKPlayerActivityRelationshipAchievement *)v5 setTimeStamp:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"progress"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"progress"];
     if (v11)
     {
-      v12 = [v4 objectForKeyedSubscript:@"progress"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"progress"];
       -[GKPlayerActivityRelationshipAchievement setProgress:](v5, "setProgress:", [v12 integerValue]);
     }
 
@@ -85,10 +85,10 @@ void __66__GKPlayerActivityRelationshipAchievement_secureCodedPropertyKeys__bloc
   v10.receiver = self;
   v10.super_class = GKPlayerActivityRelationshipAchievement;
   v4 = [(GKPlayerActivityRelationshipBase *)&v10 description];
-  v5 = [(GKPlayerActivityRelationshipAchievement *)self achDescription];
-  v6 = [(GKPlayerActivityRelationshipAchievement *)self timeStamp];
+  achDescription = [(GKPlayerActivityRelationshipAchievement *)self achDescription];
+  timeStamp = [(GKPlayerActivityRelationshipAchievement *)self timeStamp];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKPlayerActivityRelationshipAchievement progress](self, "progress")}];
-  v8 = [v3 stringWithFormat:@"%@ \ndescription: %@, \ntimeStamp: %@, \nprogress: %@", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@ \ndescription: %@, \ntimeStamp: %@, \nprogress: %@", v4, achDescription, timeStamp, v7];
 
   return v8;
 }

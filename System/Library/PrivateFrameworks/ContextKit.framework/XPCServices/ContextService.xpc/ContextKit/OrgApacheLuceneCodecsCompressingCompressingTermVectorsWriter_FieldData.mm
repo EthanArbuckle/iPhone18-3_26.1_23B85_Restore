@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_FieldData
-- (void)addTermWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)addTermWithInt:(int)int withInt:(int)withInt withInt:(int)a5;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingTermVectorsWriter_FieldData
 
-- (void)addTermWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5
+- (void)addTermWithInt:(int)int withInt:(int)withInt withInt:(int)a5
 {
   freqs = self->freqs_;
   if (!freqs)
@@ -20,7 +20,7 @@
     IOSArray_throwOutOfBoundsWithMsg(size, ord);
   }
 
-  *(&freqs->super.size_ + ord + 1) = a3;
+  *(&freqs->super.size_ + ord + 1) = int;
   prefixLengths = self->prefixLengths_;
   if (!prefixLengths)
   {
@@ -34,7 +34,7 @@
     IOSArray_throwOutOfBoundsWithMsg(v11, v10);
   }
 
-  *(&prefixLengths->super.size_ + v10 + 1) = a4;
+  *(&prefixLengths->super.size_ + v10 + 1) = withInt;
   suffixLengths = self->suffixLengths_;
   if (!suffixLengths)
   {

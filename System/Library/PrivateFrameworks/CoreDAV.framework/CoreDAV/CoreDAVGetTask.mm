@@ -1,6 +1,6 @@
 @interface CoreDAVGetTask
 - (id)description;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVGetTask
@@ -13,15 +13,15 @@
   v4 = [(CoreDAVTask *)&v10 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVTask *)self responseBodyParser];
+  responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(CoreDAVTask *)self responseBodyParser];
-    v8 = [v7 octetStreamData];
-    [v3 appendFormat:@"| Data length in bytes: [%lu]", objc_msgSend(v8, "length")];
+    responseBodyParser2 = [(CoreDAVTask *)self responseBodyParser];
+    octetStreamData = [responseBodyParser2 octetStreamData];
+    [v3 appendFormat:@"| Data length in bytes: [%lu]", objc_msgSend(octetStreamData, "length")];
   }
 
   else
@@ -34,19 +34,19 @@
   return v3;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -91,28 +91,28 @@ LABEL_10:
     }
   }
 
-  v17 = [(CoreDAVTask *)self delegate];
+  delegate = [(CoreDAVTask *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(CoreDAVTask *)self responseBodyParser];
+    responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v21 = [(CoreDAVTask *)self responseBodyParser];
-      v22 = [v21 octetStreamData];
+      responseBodyParser2 = [(CoreDAVTask *)self responseBodyParser];
+      octetStreamData = [responseBodyParser2 octetStreamData];
     }
 
     else
     {
-      v22 = 0;
+      octetStreamData = 0;
     }
 
-    v23 = [(CoreDAVTask *)self delegate];
-    [v23 getTask:self data:v22 error:v5];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 getTask:self data:octetStreamData error:v5];
 
     [(CoreDAVTask *)self setDelegate:0];
   }

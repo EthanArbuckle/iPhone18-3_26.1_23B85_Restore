@@ -7,9 +7,9 @@
 
 - (ATXLocationVisitDuetEvent)atx_convertToLocationVisitEvent
 {
-  v2 = [a1 metadata];
-  v3 = [MEMORY[0x277CFE218] identifier];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  metadata = [self metadata];
+  identifier = [MEMORY[0x277CFE218] identifier];
+  v4 = [metadata objectForKeyedSubscript:identifier];
 
   if (v4)
   {
@@ -20,9 +20,9 @@
       if (v5)
       {
         v6 = [ATXLocationVisitDuetEvent alloc];
-        v7 = [a1 startDate];
-        v8 = [a1 endDate];
-        v9 = [(ATXLocationVisitDuetEvent *)v6 initWithLocationOfInterestIdentifier:v5 startDate:v7 endDate:v8];
+        startDate = [self startDate];
+        endDate = [self endDate];
+        v9 = [(ATXLocationVisitDuetEvent *)v6 initWithLocationOfInterestIdentifier:v5 startDate:startDate endDate:endDate];
 
         goto LABEL_13;
       }
@@ -63,7 +63,7 @@ LABEL_13:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "Failed to convert %@ to an NSUUID", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

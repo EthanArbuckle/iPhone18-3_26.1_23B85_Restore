@@ -1,19 +1,19 @@
 @interface CKDetailsChildViewControllerCellAccessibility
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3;
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child;
 @end
 
 @implementation CKDetailsChildViewControllerCellAccessibility
 
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child
 {
-  v4 = [a3 _accessibilityParentView];
+  _accessibilityParentView = [child _accessibilityParentView];
   NSClassFromString(&cfstr_Ckattachmentce_0.isa);
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = [(CKDetailsChildViewControllerCellAccessibility *)self _accessibilityScrollParent];
-    [v4 accessibilityFrameForScrolling];
-    [v6 _accessibilityScrollToFrame:v4 forView:?];
+    _accessibilityScrollParent = [(CKDetailsChildViewControllerCellAccessibility *)self _accessibilityScrollParent];
+    [_accessibilityParentView accessibilityFrameForScrolling];
+    [_accessibilityScrollParent _accessibilityScrollToFrame:_accessibilityParentView forView:?];
   }
 
   return isKindOfClass & 1;

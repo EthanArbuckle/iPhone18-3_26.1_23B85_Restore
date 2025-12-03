@@ -1,10 +1,10 @@
 @interface SSImageSurface
 - (SSImageSurface)init;
-- (SSImageSurface)initWithBSXPCCoder:(id)a3;
+- (SSImageSurface)initWithBSXPCCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)setBackingSurface:(__IOSurface *)a3;
-- (void)setHdrBackingSurface:(__IOSurface *)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)setBackingSurface:(__IOSurface *)surface;
+- (void)setHdrBackingSurface:(__IOSurface *)surface;
 @end
 
 @implementation SSImageSurface
@@ -14,73 +14,73 @@
   v5.receiver = self;
   v5.super_class = SSImageSurface;
   v2 = [(SSImageSurface *)&v5 init];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   [(SSImageSurface *)v2 setScale:?];
 
   [(SSImageSurface *)v2 setOrientation:0];
   return v2;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  SSEncodeIOSurface(v4, [(SSImageSurface *)self backingSurface], @"SSImageSurfaceBackingSurfaceKey");
-  SSEncodeIOSurface(v4, [(SSImageSurface *)self hdrBackingSurface], @"SSImageSurfaceHDRBackingSurfaceKey");
+  coderCopy = coder;
+  SSEncodeIOSurface(coderCopy, [(SSImageSurface *)self backingSurface], @"SSImageSurfaceBackingSurfaceKey");
+  SSEncodeIOSurface(coderCopy, [(SSImageSurface *)self hdrBackingSurface], @"SSImageSurfaceHDRBackingSurfaceKey");
   [(SSImageSurface *)self scale];
-  [v4 encodeDouble:@"SSImageSurfaceImageScaleKey" forKey:?];
-  [v4 encodeInt64:-[SSImageSurface orientation](self forKey:{"orientation"), @"SSImageSurfaceImageOrientationKey"}];
+  [coderCopy encodeDouble:@"SSImageSurfaceImageScaleKey" forKey:?];
+  [coderCopy encodeInt64:-[SSImageSurface orientation](self forKey:{"orientation"), @"SSImageSurfaceImageOrientationKey"}];
 }
 
-- (SSImageSurface)initWithBSXPCCoder:(id)a3
+- (SSImageSurface)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSImageSurface *)self init];
-  v5->_backingSurface = SSDecodingCreateIOSurface(v4, @"SSImageSurfaceBackingSurfaceKey");
-  v5->_hdrBackingSurface = SSDecodingCreateIOSurface(v4, @"SSImageSurfaceHDRBackingSurfaceKey");
-  [v4 decodeDoubleForKey:@"SSImageSurfaceImageScaleKey"];
+  v5->_backingSurface = SSDecodingCreateIOSurface(coderCopy, @"SSImageSurfaceBackingSurfaceKey");
+  v5->_hdrBackingSurface = SSDecodingCreateIOSurface(coderCopy, @"SSImageSurfaceHDRBackingSurfaceKey");
+  [coderCopy decodeDoubleForKey:@"SSImageSurfaceImageScaleKey"];
   v5->_scale = v6;
-  v7 = [v4 decodeInt64ForKey:@"SSImageSurfaceImageOrientationKey"];
+  v7 = [coderCopy decodeInt64ForKey:@"SSImageSurfaceImageOrientationKey"];
 
   v5->_orientation = v7;
   return v5;
 }
 
-- (void)setBackingSurface:(__IOSurface *)a3
+- (void)setBackingSurface:(__IOSurface *)surface
 {
   backingSurface = self->_backingSurface;
-  if (backingSurface != a3)
+  if (backingSurface != surface)
   {
     if (backingSurface)
     {
       CFRelease(backingSurface);
     }
 
-    if (a3)
+    if (surface)
     {
-      CFRetain(a3);
+      CFRetain(surface);
     }
 
-    self->_backingSurface = a3;
+    self->_backingSurface = surface;
   }
 }
 
-- (void)setHdrBackingSurface:(__IOSurface *)a3
+- (void)setHdrBackingSurface:(__IOSurface *)surface
 {
   hdrBackingSurface = self->_hdrBackingSurface;
-  if (hdrBackingSurface != a3)
+  if (hdrBackingSurface != surface)
   {
     if (hdrBackingSurface)
     {
       CFRelease(hdrBackingSurface);
     }
 
-    if (a3)
+    if (surface)
     {
-      CFRetain(a3);
+      CFRetain(surface);
     }
 
-    self->_hdrBackingSurface = a3;
+    self->_hdrBackingSurface = surface;
   }
 }
 

@@ -1,5 +1,5 @@
 @interface CPDistributedMessagingAsyncOperation
-- (CPDistributedMessagingAsyncOperation)initWithCenter:(id)a3 messageName:(id)a4 userInfoData:(id)a5 oolKey:(id)a6 oolData:(id)a7 target:(id)a8 selector:(SEL)a9 context:(void *)a10 makeServer:(BOOL)a11;
+- (CPDistributedMessagingAsyncOperation)initWithCenter:(id)center messageName:(id)name userInfoData:(id)data oolKey:(id)key oolData:(id)oolData target:(id)target selector:(SEL)selector context:(void *)self0 makeServer:(BOOL)self1;
 - (void)_performCallout;
 - (void)_releaseSendingData;
 - (void)dealloc;
@@ -8,33 +8,33 @@
 
 @implementation CPDistributedMessagingAsyncOperation
 
-- (CPDistributedMessagingAsyncOperation)initWithCenter:(id)a3 messageName:(id)a4 userInfoData:(id)a5 oolKey:(id)a6 oolData:(id)a7 target:(id)a8 selector:(SEL)a9 context:(void *)a10 makeServer:(BOOL)a11
+- (CPDistributedMessagingAsyncOperation)initWithCenter:(id)center messageName:(id)name userInfoData:(id)data oolKey:(id)key oolData:(id)oolData target:(id)target selector:(SEL)selector context:(void *)self0 makeServer:(BOOL)self1
 {
   v20.receiver = self;
   v20.super_class = CPDistributedMessagingAsyncOperation;
   v17 = [(CPDistributedMessagingAsyncOperation *)&v20 init];
   if (v17)
   {
-    v17->_center = a3;
-    v17->_name = [a4 copy];
-    v17->_userInfoData = [a5 copy];
-    v17->_oolKey = [a6 copy];
-    v17->_oolData = a7;
-    v17->_target = a8;
-    if (a9)
+    v17->_center = center;
+    v17->_name = [name copy];
+    v17->_userInfoData = [data copy];
+    v17->_oolKey = [key copy];
+    v17->_oolData = oolData;
+    v17->_target = target;
+    if (selector)
     {
-      v18 = a9;
+      selectorCopy = selector;
     }
 
     else
     {
-      v18 = 0;
+      selectorCopy = 0;
     }
 
-    v17->_selector = v18;
-    v17->_context = a10;
+    v17->_selector = selectorCopy;
+    v17->_context = context;
     v17->_calloutThread = [MEMORY[0x1E696AF00] currentThread];
-    v17->_makeServer = a11;
+    v17->_makeServer = server;
   }
 
   return v17;

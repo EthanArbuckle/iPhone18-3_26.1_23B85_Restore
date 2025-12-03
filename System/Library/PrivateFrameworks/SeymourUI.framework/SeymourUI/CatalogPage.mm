@@ -1,18 +1,18 @@
 @interface CatalogPage
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (_TtC9SeymourUI11CatalogPage)init;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)rebuildLocations;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation CatalogPage
@@ -26,25 +26,25 @@
 
 - (void)rebuildLocations
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C0C264C();
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20C133244();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v10 = a3;
-  v11 = self;
-  CatalogPage.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  CatalogPage.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
   v7 = sub_20C133244();
   v8 = *(v7 - 8);
@@ -59,7 +59,7 @@
   sub_20C1331E4();
   sub_20C1331E4();
   sub_20C1331E4();
-  v20 = a3;
+  viewCopy = view;
   if (sub_20C133234() || sub_20C133224())
   {
 
@@ -71,7 +71,7 @@
 
   else
   {
-    result = [v20 numberOfSections];
+    result = [viewCopy numberOfSections];
     if (__OFSUB__(result, 1))
     {
       __break(1u);
@@ -92,61 +92,61 @@
   return v22;
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v8 = sub_20C133244();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v12 = a3;
-  v13 = a4;
-  sub_20BDF3A00(a4);
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  sub_20BDF3A00(supplementaryView);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
-  v4 = a3;
-  v5 = self;
-  CatalogPage.scrollViewDidChangeAdjustedContentInset(_:)(v4);
+  insetCopy = inset;
+  selfCopy = self;
+  CatalogPage.scrollViewDidChangeAdjustedContentInset(_:)(insetCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  CatalogPage.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  CatalogPage.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   v8 = self + OBJC_IVAR____TtC9SeymourUI11CatalogPage_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v9 = *(v8 + 1);
     swift_getObjectType();
     v10 = *(v9 + 144);
-    v11 = self;
+    selfCopy = self;
     v10(x, y);
     swift_unknownObjectRelease();
   }
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v7 = self + OBJC_IVAR____TtC9SeymourUI11CatalogPage_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v8 = *(v7 + 1);
     swift_getObjectType();
     v9 = *(v8 + 152);
-    v10 = self;
+    selfCopy = self;
     x = v9(x, y);
     y = v11;
     swift_unknownObjectRelease();
@@ -159,35 +159,35 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = self;
-  sub_20BDF2864(v9, v10);
-  v11 = v14 + OBJC_IVAR____TtC9SeymourUI11CatalogPage_delegate;
+  viewCopy = view;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20BDF2864(contextCopy, coordinatorCopy);
+  v11 = selfCopy + OBJC_IVAR____TtC9SeymourUI11CatalogPage_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v12 = *(v11 + 1);
     ObjectType = swift_getObjectType();
-    (*(v12 + 208))(v14, v9, v10, ObjectType, v12);
+    (*(v12 + 208))(selfCopy, contextCopy, coordinatorCopy, ObjectType, v12);
     swift_unknownObjectRelease();
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   sub_20C133244();
   v7 = sub_20C13CC74();
-  v8 = a3;
-  v9 = self;
-  v10 = _s9SeymourUI11CatalogPageC14collectionView_34contextMenuConfigurationForItemsAt5pointSo09UIContexthI0CSgSo012UICollectionF0C_Say10Foundation9IndexPathVGSo7CGPointVtF_0(v8, v7);
+  viewCopy = view;
+  selfCopy = self;
+  v10 = _s9SeymourUI11CatalogPageC14collectionView_34contextMenuConfigurationForItemsAt5pointSo09UIContexthI0CSgSo012UICollectionF0C_Say10Foundation9IndexPathVGSo7CGPointVtF_0(viewCopy, v7);
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
   v7 = self + OBJC_IVAR____TtC9SeymourUI11CatalogPage_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -195,14 +195,14 @@
     v8 = *(v7 + 1);
     swift_getObjectType();
     v9 = *(v8 + 328);
-    v10 = a4;
-    v11 = self;
+    configurationCopy = configuration;
+    selfCopy = self;
     v9();
     swift_unknownObjectRelease();
   }
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C7629C0);
   MEMORY[0x28223BE20](v4 - 8);
@@ -213,7 +213,7 @@
     v8 = *(v7 + 1);
     swift_getObjectType();
     v9 = *(v8 + 200);
-    v10 = self;
+    selfCopy = self;
     v9();
     swift_unknownObjectRelease();
 
@@ -239,12 +239,12 @@
   return v14;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   sub_20C133244();
   v6 = sub_20C13CC74();
-  v7 = a3;
-  v8 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_20C0CC1C0(v6);
 }
 

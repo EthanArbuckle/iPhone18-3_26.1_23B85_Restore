@@ -1,41 +1,41 @@
 @interface LACAgentProxyXPCWrapper
-- (LACAgentProxyXPCWrapper)initWithConnection:(id)a3;
+- (LACAgentProxyXPCWrapper)initWithConnection:(id)connection;
 - (LACAgentProxyXPCWrapperDelegate)delegate;
-- (void)_agentProxy:(id)a3;
-- (void)dumpStatusWithCompletion:(id)a3;
-- (void)queryUuid:(id)a3 completionHandler:(id)a4;
-- (void)registerAcmExternalizedFormHash:(unint64_t)a3 uuid:(id)a4 completionHandler:(id)a5;
-- (void)registerContextWithUuid:(id)a3 ownership:(id)a4 description:(id)a5 originalUuid:(id)a6 originalAcmHash:(unint64_t)a7 completionHandler:(id)a8;
-- (void)remoteAuthenticationInProgressWithPriority:(int64_t)a3 reply:(id)a4;
-- (void)setFUSDisabled:(BOOL)a3 completionHandler:(id)a4;
+- (void)_agentProxy:(id)proxy;
+- (void)dumpStatusWithCompletion:(id)completion;
+- (void)queryUuid:(id)uuid completionHandler:(id)handler;
+- (void)registerAcmExternalizedFormHash:(unint64_t)hash uuid:(id)uuid completionHandler:(id)handler;
+- (void)registerContextWithUuid:(id)uuid ownership:(id)ownership description:(id)description originalUuid:(id)originalUuid originalAcmHash:(unint64_t)hash completionHandler:(id)handler;
+- (void)remoteAuthenticationInProgressWithPriority:(int64_t)priority reply:(id)reply;
+- (void)setFUSDisabled:(BOOL)disabled completionHandler:(id)handler;
 @end
 
 @implementation LACAgentProxyXPCWrapper
 
-- (LACAgentProxyXPCWrapper)initWithConnection:(id)a3
+- (LACAgentProxyXPCWrapper)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = LACAgentProxyXPCWrapper;
   v6 = [(LACAgentProxyXPCWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)dumpStatusWithCompletion:(id)a3
+- (void)dumpStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__LACAgentProxyXPCWrapper_dumpStatusWithCompletion___block_invoke;
   v6[3] = &unk_1E7A96980;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(LACAgentProxyXPCWrapper *)self _agentProxy:v6];
 }
 
@@ -53,18 +53,18 @@ uint64_t __52__LACAgentProxyXPCWrapper_dumpStatusWithCompletion___block_invoke(u
   }
 }
 
-- (void)queryUuid:(id)a3 completionHandler:(id)a4
+- (void)queryUuid:(id)uuid completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__LACAgentProxyXPCWrapper_queryUuid_completionHandler___block_invoke;
   v10[3] = &unk_1E7A969A8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = uuidCopy;
+  v12 = handlerCopy;
+  v8 = uuidCopy;
+  v9 = handlerCopy;
   [(LACAgentProxyXPCWrapper *)self _agentProxy:v10];
 }
 
@@ -81,19 +81,19 @@ uint64_t __55__LACAgentProxyXPCWrapper_queryUuid_completionHandler___block_invok
   }
 }
 
-- (void)registerAcmExternalizedFormHash:(unint64_t)a3 uuid:(id)a4 completionHandler:(id)a5
+- (void)registerAcmExternalizedFormHash:(unint64_t)hash uuid:(id)uuid completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  uuidCopy = uuid;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__LACAgentProxyXPCWrapper_registerAcmExternalizedFormHash_uuid_completionHandler___block_invoke;
   v12[3] = &unk_1E7A969D0;
-  v14 = v9;
-  v15 = a3;
-  v13 = v8;
-  v10 = v8;
-  v11 = v9;
+  v14 = handlerCopy;
+  hashCopy = hash;
+  v13 = uuidCopy;
+  v10 = uuidCopy;
+  v11 = handlerCopy;
   [(LACAgentProxyXPCWrapper *)self _agentProxy:v12];
 }
 
@@ -110,28 +110,28 @@ uint64_t __82__LACAgentProxyXPCWrapper_registerAcmExternalizedFormHash_uuid_comp
   }
 }
 
-- (void)registerContextWithUuid:(id)a3 ownership:(id)a4 description:(id)a5 originalUuid:(id)a6 originalAcmHash:(unint64_t)a7 completionHandler:(id)a8
+- (void)registerContextWithUuid:(id)uuid ownership:(id)ownership description:(id)description originalUuid:(id)originalUuid originalAcmHash:(unint64_t)hash completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  uuidCopy = uuid;
+  ownershipCopy = ownership;
+  descriptionCopy = description;
+  originalUuidCopy = originalUuid;
+  handlerCopy = handler;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __120__LACAgentProxyXPCWrapper_registerContextWithUuid_ownership_description_originalUuid_originalAcmHash_completionHandler___block_invoke;
   v24[3] = &unk_1E7A969F8;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v30 = a7;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v18;
+  v25 = uuidCopy;
+  v26 = ownershipCopy;
+  v27 = descriptionCopy;
+  v28 = originalUuidCopy;
+  v29 = handlerCopy;
+  hashCopy = hash;
+  v19 = originalUuidCopy;
+  v20 = descriptionCopy;
+  v21 = ownershipCopy;
+  v22 = uuidCopy;
+  v23 = handlerCopy;
   [(LACAgentProxyXPCWrapper *)self _agentProxy:v24];
 }
 
@@ -148,16 +148,16 @@ uint64_t __120__LACAgentProxyXPCWrapper_registerContextWithUuid_ownership_descri
   }
 }
 
-- (void)remoteAuthenticationInProgressWithPriority:(int64_t)a3 reply:(id)a4
+- (void)remoteAuthenticationInProgressWithPriority:(int64_t)priority reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__LACAgentProxyXPCWrapper_remoteAuthenticationInProgressWithPriority_reply___block_invoke;
   v8[3] = &unk_1E7A96A20;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = replyCopy;
+  priorityCopy = priority;
+  v7 = replyCopy;
   [(LACAgentProxyXPCWrapper *)self _agentProxy:v8];
 }
 
@@ -174,16 +174,16 @@ uint64_t __76__LACAgentProxyXPCWrapper_remoteAuthenticationInProgressWithPriorit
   }
 }
 
-- (void)setFUSDisabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setFUSDisabled:(BOOL)disabled completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__LACAgentProxyXPCWrapper_setFUSDisabled_completionHandler___block_invoke;
   v8[3] = &unk_1E7A96A48;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = handlerCopy;
+  disabledCopy = disabled;
+  v7 = handlerCopy;
   [(LACAgentProxyXPCWrapper *)self _agentProxy:v8];
 }
 
@@ -200,14 +200,14 @@ uint64_t __60__LACAgentProxyXPCWrapper_setFUSDisabled_completionHandler___block_
   }
 }
 
-- (void)_agentProxy:(id)a3
+- (void)_agentProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = v4;
+  proxyCopy = proxy;
+  v5 = proxyCopy;
   agentProxy = self->_agentProxy;
   if (agentProxy)
   {
-    (*(v4 + 2))(v4, agentProxy, 0);
+    (*(proxyCopy + 2))(proxyCopy, agentProxy, 0);
   }
 
   else

@@ -1,6 +1,6 @@
 @interface FigCaptureSystemPressureMonitor
-- (FigCaptureSystemPressureMonitor)initWithPearlModuleType:(int)a3 sensorThermalLevelsByTemperatureByPortType:(id)a4 fineGrainThermalMonitoringEnabled:(BOOL)a5;
-- (int)systemPressureLevelFromImageSensorWithPortType:(id)a3;
+- (FigCaptureSystemPressureMonitor)initWithPearlModuleType:(int)type sensorThermalLevelsByTemperatureByPortType:(id)portType fineGrainThermalMonitoringEnabled:(BOOL)enabled;
+- (int)systemPressureLevelFromImageSensorWithPortType:(id)type;
 - (uint64_t)_callChangeHandler;
 - (uint64_t)_registerForPeakPowerNotifications;
 - (uint64_t)_registerForThermalLevelNotifications;
@@ -12,11 +12,11 @@
 - (void)_releasePearlProjectorPollingResources;
 - (void)callSystemPressureLevelChangedHandler;
 - (void)dealloc;
-- (void)setSystemPressureLevelChangedHandler:(id)a3;
-- (void)startMonitoringImageSensorTemperatureUntilNominalWithPortType:(id)a3;
+- (void)setSystemPressureLevelChangedHandler:(id)handler;
+- (void)startMonitoringImageSensorTemperatureUntilNominalWithPortType:(id)type;
 - (void)startMonitoringPearlProjectorTemperatureUntilNominal;
-- (void)updateWithPearlProjectorTemperature:(float)a3;
-- (void)updateWithPortType:(id)a3 imageSensorTemperature:(float)a4;
+- (void)updateWithPearlProjectorTemperature:(float)temperature;
+- (void)updateWithPortType:(id)type imageSensorTemperature:(float)temperature;
 @end
 
 @implementation FigCaptureSystemPressureMonitor
@@ -48,9 +48,9 @@
 
     if (*(v1 + 8))
     {
-      v2 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v3 = *(v1 + 192);
-      v11 = OUTLINED_FUNCTION_17_0(v2, v4, v5, v6, v7, v8, v9, v10, v23, v25, v27, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, 0);
+      v11 = OUTLINED_FUNCTION_17_0(dictionary, v4, v5, v6, v7, v8, v9, v10, v23, v25, v27, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, 0);
       if (v11)
       {
         v12 = v11;
@@ -64,7 +64,7 @@
               objc_enumerationMutation(v3);
             }
 
-            v15 = [v2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(*(v1 + 192), "objectForKeyedSubscript:", *(8 * i)), "systemPressureLevelFromImageSensorTemperature")), *(8 * i)}];
+            v15 = [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(objc_msgSend(*(v1 + 192), "objectForKeyedSubscript:", *(8 * i)), "systemPressureLevelFromImageSensorTemperature")), *(8 * i)}];
           }
 
           v12 = OUTLINED_FUNCTION_17_0(v15, v16, v17, v18, v19, v20, v21, v22, v24, v26, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v59);
@@ -80,24 +80,24 @@
   return result;
 }
 
-- (FigCaptureSystemPressureMonitor)initWithPearlModuleType:(int)a3 sensorThermalLevelsByTemperatureByPortType:(id)a4 fineGrainThermalMonitoringEnabled:(BOOL)a5
+- (FigCaptureSystemPressureMonitor)initWithPearlModuleType:(int)type sensorThermalLevelsByTemperatureByPortType:(id)portType fineGrainThermalMonitoringEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v33.receiver = self;
   v33.super_class = FigCaptureSystemPressureMonitor;
   v8 = [(FigCaptureSystemPressureMonitor *)&v33 init];
   if (v8)
   {
     *(v8 + 2) = FigDispatchQueueCreateWithPriority();
-    v8[52] = v5;
+    v8[52] = enabledCopy;
     v10 = 28;
-    if (v5)
+    if (enabledCopy)
     {
       v10 = 60;
     }
 
     v11 = 32;
-    if (v5)
+    if (enabledCopy)
     {
       v11 = 64;
       v12 = 2;
@@ -109,7 +109,7 @@
     }
 
     v13 = 36;
-    if (v5)
+    if (enabledCopy)
     {
       v13 = 68;
       v14 = 5;
@@ -121,7 +121,7 @@
     }
 
     v15 = 72;
-    if (!v5)
+    if (!enabledCopy)
     {
       v15 = 40;
     }
@@ -130,7 +130,7 @@
     *(v8 + 26) = 40;
     *(v8 + 7) = xmmword_1AD056BE0;
     *(v8 + 16) = 0x426C000042480000;
-    if (v5)
+    if (enabledCopy)
     {
       v16 = 10;
     }
@@ -141,7 +141,7 @@
     }
 
     v17 = 44;
-    if (v5)
+    if (enabledCopy)
     {
       v17 = 76;
       v18 = 12;
@@ -153,7 +153,7 @@
     }
 
     v19 = 61.0;
-    if (a3 == 2)
+    if (type == 2)
     {
       v19 = 70.0;
     }
@@ -170,14 +170,14 @@
     *&v8[v17] = v18;
     *(v8 + 168) = v21;
     *(v8 + 23) = *(v20 + 16);
-    if ([a4 count])
+    if ([portType count])
     {
       *(v8 + 24) = objc_alloc_init(MEMORY[0x1E695DF90]);
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v22 = [a4 countByEnumeratingWithState:&v29 objects:v28 count:16];
+      v22 = [portType countByEnumeratingWithState:&v29 objects:v28 count:16];
       if (v22)
       {
         v23 = v22;
@@ -188,15 +188,15 @@
           {
             if (*v30 != v24)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(portType);
             }
 
             v26 = *(*(&v29 + 1) + 8 * i);
-            v27 = -[FigCaptureImageSensorTemperatureMonitor initWithPortType:sensorThermalLevelsByTemperature:]([FigCaptureImageSensorTemperatureMonitor alloc], "initWithPortType:sensorThermalLevelsByTemperature:", v26, [a4 objectForKeyedSubscript:v26]);
+            v27 = -[FigCaptureImageSensorTemperatureMonitor initWithPortType:sensorThermalLevelsByTemperature:]([FigCaptureImageSensorTemperatureMonitor alloc], "initWithPortType:sensorThermalLevelsByTemperature:", v26, [portType objectForKeyedSubscript:v26]);
             [*(v8 + 24) setObject:v27 forKeyedSubscript:v26];
           }
 
-          v23 = [a4 countByEnumeratingWithState:&v29 objects:v28 count:16];
+          v23 = [portType countByEnumeratingWithState:&v29 objects:v28 count:16];
         }
 
         while (v23);
@@ -261,7 +261,7 @@ void __42__FigCaptureSystemPressureMonitor_dealloc__block_invoke(uint64_t a1)
   v2 = *(*(a1 + 32) + 192);
 }
 
-- (void)setSystemPressureLevelChangedHandler:(id)a3
+- (void)setSystemPressureLevelChangedHandler:(id)handler
 {
   systemPressureLevelChangedHandlerQueue = self->_systemPressureLevelChangedHandlerQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -269,7 +269,7 @@ void __42__FigCaptureSystemPressureMonitor_dealloc__block_invoke(uint64_t a1)
   v4[2] = __72__FigCaptureSystemPressureMonitor_setSystemPressureLevelChangedHandler___block_invoke;
   v4[3] = &unk_1E7990390;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_sync(systemPressureLevelChangedHandlerQueue, v4);
 }
 
@@ -291,7 +291,7 @@ uint64_t __72__FigCaptureSystemPressureMonitor_setSystemPressureLevelChangedHand
   }
 }
 
-- (void)updateWithPearlProjectorTemperature:(float)a3
+- (void)updateWithPearlProjectorTemperature:(float)temperature
 {
   systemPressureLevelChangedHandlerQueue = self->_systemPressureLevelChangedHandlerQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -299,7 +299,7 @@ uint64_t __72__FigCaptureSystemPressureMonitor_setSystemPressureLevelChangedHand
   v4[2] = __71__FigCaptureSystemPressureMonitor_updateWithPearlProjectorTemperature___block_invoke;
   v4[3] = &unk_1E7991CF0;
   v4[4] = self;
-  v5 = a3;
+  temperatureCopy = temperature;
   dispatch_async(systemPressureLevelChangedHandlerQueue, v4);
 }
 
@@ -363,14 +363,14 @@ void __87__FigCaptureSystemPressureMonitor_startMonitoringPearlProjectorTemperat
   }
 }
 
-- (int)systemPressureLevelFromImageSensorWithPortType:(id)a3
+- (int)systemPressureLevelFromImageSensorWithPortType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_imageSensorTemperatureMonitorByPortType objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_imageSensorTemperatureMonitorByPortType objectForKeyedSubscript:type];
 
   return [v3 systemPressureLevelFromImageSensorTemperature];
 }
 
-- (void)updateWithPortType:(id)a3 imageSensorTemperature:(float)a4
+- (void)updateWithPortType:(id)type imageSensorTemperature:(float)temperature
 {
   systemPressureLevelChangedHandlerQueue = self->_systemPressureLevelChangedHandlerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -378,14 +378,14 @@ void __87__FigCaptureSystemPressureMonitor_startMonitoringPearlProjectorTemperat
   block[2] = __77__FigCaptureSystemPressureMonitor_updateWithPortType_imageSensorTemperature___block_invoke;
   block[3] = &unk_1E7997358;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = type;
+  temperatureCopy = temperature;
   dispatch_async(systemPressureLevelChangedHandlerQueue, block);
 }
 
-- (void)startMonitoringImageSensorTemperatureUntilNominalWithPortType:(id)a3
+- (void)startMonitoringImageSensorTemperatureUntilNominalWithPortType:(id)type
 {
-  v4 = [(NSMutableDictionary *)self->_imageSensorTemperatureMonitorByPortType objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_imageSensorTemperatureMonitorByPortType objectForKeyedSubscript:type];
   systemPressureLevelChangedHandlerQueue = self->_systemPressureLevelChangedHandlerQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -443,7 +443,7 @@ void __87__FigCaptureSystemPressureMonitor_startMonitoringPearlProjectorTemperat
 
 - (void)_releasePearlProjectorPollingResources
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -453,7 +453,7 @@ void __87__FigCaptureSystemPressureMonitor_startMonitoringPearlProjectorTemperat
       FigDebugAssert3();
     }
 
-    v2 = *(a1 + 160);
+    v2 = *(self + 160);
     if (v2)
     {
 

@@ -1,7 +1,7 @@
 @interface CLSClassKitDeveloperSettingsController
 - (id)specifiers;
-- (void)resetDevelopmentData:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)resetDevelopmentData:(id)data;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateCheckedSpecifierFromPreferences;
 @end
 
@@ -19,36 +19,36 @@
     v7 = [PSSpecifier groupSpecifierWithID:@"CLSSettingsActAsGroupID" name:v6];
     [(CLSClassKitDeveloperSettingsController *)self setActAsGroupSpecifier:v7];
 
-    v8 = [(CLSClassKitDeveloperSettingsController *)self actAsGroupSpecifier];
+    actAsGroupSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsGroupSpecifier];
     v41 = PSIsRadioGroupKey;
-    [v8 setProperty:&__kCFBooleanTrue forKey:?];
+    [actAsGroupSpecifier setProperty:&__kCFBooleanTrue forKey:?];
 
-    v9 = [(CLSClassKitDeveloperSettingsController *)self actAsGroupSpecifier];
-    [v4 addObject:v9];
+    actAsGroupSpecifier2 = [(CLSClassKitDeveloperSettingsController *)self actAsGroupSpecifier];
+    [v4 addObject:actAsGroupSpecifier2];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"ACT_AS_OFF" value:&stru_42E8 table:@"ClassKitDeveloperSettings"];
     v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:3 edit:0];
     [(CLSClassKitDeveloperSettingsController *)self setActAsOffSpecifier:v12];
 
-    v13 = [(CLSClassKitDeveloperSettingsController *)self actAsOffSpecifier];
-    [v4 addObject:v13];
+    actAsOffSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsOffSpecifier];
+    [v4 addObject:actAsOffSpecifier];
 
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"ACT_AS_TEACHER" value:&stru_42E8 table:@"ClassKitDeveloperSettings"];
     v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:0 get:0 detail:0 cell:3 edit:0];
     [(CLSClassKitDeveloperSettingsController *)self setActAsTeacherSpecifier:v16];
 
-    v17 = [(CLSClassKitDeveloperSettingsController *)self actAsTeacherSpecifier];
-    [v4 addObject:v17];
+    actAsTeacherSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsTeacherSpecifier];
+    [v4 addObject:actAsTeacherSpecifier];
 
     v18 = [NSBundle bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"ACT_AS_STUDENT" value:&stru_42E8 table:@"ClassKitDeveloperSettings"];
     v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:0 cell:3 edit:0];
     [(CLSClassKitDeveloperSettingsController *)self setActAsStudentSpecifier:v20];
 
-    v21 = [(CLSClassKitDeveloperSettingsController *)self actAsStudentSpecifier];
-    [v4 addObject:v21];
+    actAsStudentSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsStudentSpecifier];
+    [v4 addObject:actAsStudentSpecifier];
 
     v40 = [PSSpecifier groupSpecifierWithID:@"CLSSettingsResetDataGroupID"];
     [v4 addObject:v40];
@@ -63,27 +63,27 @@
     v27 = [PSSpecifier groupSpecifierWithID:@"CLSSettingsCatalogEnvGroupID" name:v26];
     [(CLSClassKitDeveloperSettingsController *)self setCatalogEnvGroupSpecifier:v27];
 
-    v28 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvGroupSpecifier];
-    [v28 setProperty:&__kCFBooleanTrue forKey:v41];
+    catalogEnvGroupSpecifier = [(CLSClassKitDeveloperSettingsController *)self catalogEnvGroupSpecifier];
+    [catalogEnvGroupSpecifier setProperty:&__kCFBooleanTrue forKey:v41];
 
-    v29 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvGroupSpecifier];
-    [v4 addObject:v29];
+    catalogEnvGroupSpecifier2 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvGroupSpecifier];
+    [v4 addObject:catalogEnvGroupSpecifier2];
 
     v30 = [NSBundle bundleForClass:objc_opt_class()];
     v31 = [v30 localizedStringForKey:@"CLASSKIT_CATALOG_ENVIRONMENT_PROD" value:&stru_42E8 table:@"ClassKitDeveloperSettings"];
     v32 = [PSSpecifier preferenceSpecifierNamed:v31 target:self set:0 get:0 detail:0 cell:3 edit:0];
     [(CLSClassKitDeveloperSettingsController *)self setCatalogEnvProdSpecifier:v32];
 
-    v33 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvProdSpecifier];
-    [v4 addObject:v33];
+    catalogEnvProdSpecifier = [(CLSClassKitDeveloperSettingsController *)self catalogEnvProdSpecifier];
+    [v4 addObject:catalogEnvProdSpecifier];
 
     v34 = [NSBundle bundleForClass:objc_opt_class()];
     v35 = [v34 localizedStringForKey:@"CLASSKIT_CATALOG_ENVIRONMENT_DEV" value:&stru_42E8 table:@"ClassKitDeveloperSettings"];
     v36 = [PSSpecifier preferenceSpecifierNamed:v35 target:self set:0 get:0 detail:0 cell:3 edit:0];
     [(CLSClassKitDeveloperSettingsController *)self setCatalogEnvDevSpecifier:v36];
 
-    v37 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvDevSpecifier];
-    [v4 addObject:v37];
+    catalogEnvDevSpecifier = [(CLSClassKitDeveloperSettingsController *)self catalogEnvDevSpecifier];
+    [v4 addObject:catalogEnvDevSpecifier];
 
     v38 = *&self->PSListController_opaque[v42];
     *&self->PSListController_opaque[v42] = v4;
@@ -95,17 +95,17 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = CLSClassKitDeveloperSettingsController;
-  [(CLSClassKitDeveloperSettingsController *)&v31 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(CLSClassKitDeveloperSettingsController *)self specifierAtIndex:[(CLSClassKitDeveloperSettingsController *)self indexForIndexPath:v7]];
-  v9 = [(CLSClassKitDeveloperSettingsController *)self actAsOffSpecifier];
+  [(CLSClassKitDeveloperSettingsController *)&v31 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(CLSClassKitDeveloperSettingsController *)self specifierAtIndex:[(CLSClassKitDeveloperSettingsController *)self indexForIndexPath:pathCopy]];
+  actAsOffSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsOffSpecifier];
 
-  if (v8 == v9)
+  if (v8 == actAsOffSpecifier)
   {
     v16 = 0;
     v15 = 0;
@@ -115,9 +115,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [(CLSClassKitDeveloperSettingsController *)self actAsTeacherSpecifier];
+  actAsTeacherSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsTeacherSpecifier];
 
-  if (v8 == v10)
+  if (v8 == actAsTeacherSpecifier)
   {
     v16 = 0;
     v17 = 0;
@@ -125,9 +125,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [(CLSClassKitDeveloperSettingsController *)self actAsStudentSpecifier];
+  actAsStudentSpecifier = [(CLSClassKitDeveloperSettingsController *)self actAsStudentSpecifier];
 
-  if (v8 == v11)
+  if (v8 == actAsStudentSpecifier)
   {
     v16 = 0;
     v17 = 0;
@@ -137,9 +137,9 @@ LABEL_9:
 
   else
   {
-    v12 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvProdSpecifier];
+    catalogEnvProdSpecifier = [(CLSClassKitDeveloperSettingsController *)self catalogEnvProdSpecifier];
 
-    if (v8 == v12)
+    if (v8 == catalogEnvProdSpecifier)
     {
       v14 = 0;
       v15 = 0;
@@ -149,9 +149,9 @@ LABEL_9:
 
     else
     {
-      v13 = [(CLSClassKitDeveloperSettingsController *)self catalogEnvDevSpecifier];
+      catalogEnvDevSpecifier = [(CLSClassKitDeveloperSettingsController *)self catalogEnvDevSpecifier];
 
-      if (v8 != v13)
+      if (v8 != catalogEnvDevSpecifier)
       {
         goto LABEL_15;
       }
@@ -229,7 +229,7 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)resetDevelopmentData:(id)a3
+- (void)resetDevelopmentData:(id)data
 {
   v3 = +[CLSUtilityService sharedInstance];
   [v3 recreateDevelopmentDatabaseWithCompletion:&stru_4248];

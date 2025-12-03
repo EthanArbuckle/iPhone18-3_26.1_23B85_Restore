@@ -1,26 +1,26 @@
 @interface VOTDropCustomAction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performWithContext:(id)a3;
-- (VOTDropCustomAction)initWithName:(id)a3 wireDictionary:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performWithContext:(id)context;
+- (VOTDropCustomAction)initWithName:(id)name wireDictionary:(id)dictionary;
 - (unint64_t)hash;
 @end
 
 @implementation VOTDropCustomAction
 
-- (VOTDropCustomAction)initWithName:(id)a3 wireDictionary:(id)a4
+- (VOTDropCustomAction)initWithName:(id)name wireDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = VOTDropCustomAction;
   v8 = [(VOTDropCustomAction *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 objectForKeyedSubscript:AXInteractionLocationDescriptorPointValueKey];
+    v11 = [dictionaryCopy objectForKeyedSubscript:AXInteractionLocationDescriptorPointValueKey];
 
     if (AXValueGetType(v11) != kAXValueTypeCGPoint)
     {
@@ -29,12 +29,12 @@
     }
 
     AXValueGetValue(v11, kAXValueTypeCGPoint, &v8->_point);
-    v12 = [v7 objectForKeyedSubscript:AXInteractionLocationDescriptorViewPointerNumberKey];
+    v12 = [dictionaryCopy objectForKeyedSubscript:AXInteractionLocationDescriptorViewPointerNumberKey];
     v13 = [v12 copy];
     viewPointerNumber = v8->_viewPointerNumber;
     v8->_viewPointerNumber = v13;
 
-    v15 = [v7 objectForKeyedSubscript:AXInteractionLocationDescriptorContextSpacePointKey];
+    v15 = [dictionaryCopy objectForKeyedSubscript:AXInteractionLocationDescriptorContextSpacePointKey];
 
     if (AXValueGetType(v15) != kAXValueTypeCGPoint)
     {
@@ -43,10 +43,10 @@
     }
 
     AXValueGetValue(v15, kAXValueTypeCGPoint, &v8->_contextSpacePoint);
-    v16 = [v7 objectForKeyedSubscript:AXInteractionLocationDescriptorContextIDKey];
+    v16 = [dictionaryCopy objectForKeyedSubscript:AXInteractionLocationDescriptorContextIDKey];
     v8->_contextID = [v16 unsignedIntValue];
 
-    v17 = [v7 objectForKeyedSubscript:AXInteractionLocationDescriptorFixedScreenSpacePointKey];
+    v17 = [dictionaryCopy objectForKeyedSubscript:AXInteractionLocationDescriptorFixedScreenSpacePointKey];
 
     if (AXValueGetType(v17) != kAXValueTypeCGPoint)
     {
@@ -60,10 +60,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v7 = [v4 isMemberOfClass:objc_opt_class()] && -[NSString isEqual:](self->_name, "isEqual:", *(v4 + 13)) && (self->_point.x == *(v4 + 14) ? (v5 = self->_point.y == *(v4 + 15)) : (v5 = 0), v5 && -[NSNumber isEqual:](self->_viewPointerNumber, "isEqual:", *(v4 + 16)) && (self->_contextSpacePoint.x == *(v4 + 17) ? (v6 = self->_contextSpacePoint.y == *(v4 + 18)) : (v6 = 0), v6)) && self->_contextID == *(v4 + 38);
+  equalCopy = equal;
+  v7 = [equalCopy isMemberOfClass:objc_opt_class()] && -[NSString isEqual:](self->_name, "isEqual:", *(equalCopy + 13)) && (self->_point.x == *(equalCopy + 14) ? (v5 = self->_point.y == *(equalCopy + 15)) : (v5 = 0), v5 && -[NSNumber isEqual:](self->_viewPointerNumber, "isEqual:", *(equalCopy + 16)) && (self->_contextSpacePoint.x == *(equalCopy + 17) ? (v6 = self->_contextSpacePoint.y == *(equalCopy + 18)) : (v6 = 0), v6)) && self->_contextID == *(equalCopy + 38);
 
   return v7;
 }
@@ -75,16 +75,16 @@
   return v3 ^ y ^ [(NSNumber *)self->_viewPointerNumber hash];
 }
 
-- (BOOL)performWithContext:(id)a3
+- (BOOL)performWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 dragSessionActive];
-  if (v4)
+  contextCopy = context;
+  dragSessionActive = [contextCopy dragSessionActive];
+  if (dragSessionActive)
   {
-    [v3 dropDrag];
+    [contextCopy dropDrag];
   }
 
-  return v4;
+  return dragSessionActive;
 }
 
 @end

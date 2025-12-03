@@ -7,19 +7,19 @@
 - (id)disabledOnPlatforms;
 - (id)dndApplicationIdentifier;
 - (id)localizedAppName;
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)parameterDefinitions;
 - (id)parameterSummary;
 - (id)selectedFocusIdentifier;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (void)clearFocusConfiguration;
 - (void)createAndCommitFocusConfigurationToDND;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)toggleFocusConfiguration;
 - (void)updateParameterStatesFromCurrentDNDConfiguration;
-- (void)wasAddedToWorkflowByUser:(id)a3;
+- (void)wasAddedToWorkflowByUser:(id)user;
 @end
 
 @implementation WFFocusConfigurationLinkAction
@@ -31,23 +31,23 @@
   return [(WFAction *)&v3 requiresRemoteExecution];
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a5;
-  v7 = [(WFAppIntentExecutionAction *)self appDescriptor];
-  v8 = [v7 localizedName];
+  nameCopy = name;
+  appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
+  localizedName = [appDescriptor localizedName];
 
   v9 = MEMORY[0x1E696AEC0];
-  if (v8)
+  if (localizedName)
   {
     v10 = WFLocalizedString(@"Allow “%1$@” to change your Focus Filter settings for “%2$@”?");
-    [v9 localizedStringWithFormat:v10, v6, v8];
+    [v9 localizedStringWithFormat:v10, nameCopy, localizedName];
   }
 
   else
   {
     v10 = WFLocalizedString(@"Allow “%1$@” to change your Focus Filter settings?");
-    [v9 localizedStringWithFormat:v10, v6, v13];
+    [v9 localizedStringWithFormat:v10, nameCopy, v13];
   }
   v11 = ;
 
@@ -56,28 +56,28 @@
 
 - (BOOL)isRunningInsideFocusConfigurationExtension
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69E0F20]])
+  if ([bundleIdentifier isEqualToString:*MEMORY[0x1E69E0F20]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E69E0F28]];
+    v4 = [bundleIdentifier isEqualToString:*MEMORY[0x1E69E0F28]];
   }
 
   return v4;
 }
 
-- (void)wasAddedToWorkflowByUser:(id)a3
+- (void)wasAddedToWorkflowByUser:(id)user
 {
   v5.receiver = self;
   v5.super_class = WFFocusConfigurationLinkAction;
   [(WFAction *)&v5 wasAddedToWorkflowByUser:?];
-  if (a3)
+  if (user)
   {
     [(WFFocusConfigurationLinkAction *)self updateParameterStatesFromCurrentDNDConfiguration];
   }
@@ -86,12 +86,12 @@
 - (void)updateParameterStatesFromCurrentDNDConfiguration
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(WFFocusConfigurationLinkAction *)self currentFocusConfiguration];
-  v4 = [v3 action];
+  currentFocusConfiguration = [(WFFocusConfigurationLinkAction *)self currentFocusConfiguration];
+  action = [currentFocusConfiguration action];
 
-  v37 = v4;
-  v5 = [v4 parameters];
-  v6 = [v5 count];
+  v37 = action;
+  parameters = [action parameters];
+  v6 = [parameters count];
 
   if (v6)
   {
@@ -99,10 +99,10 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v7 = [(WFAppIntentExecutionAction *)self metadata];
-    v8 = [v7 parameters];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    parameters2 = [metadata parameters];
 
-    v9 = [v8 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    v9 = [parameters2 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v9)
     {
       v11 = v9;
@@ -115,40 +115,40 @@
         {
           if (*v39 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(parameters2);
           }
 
           v14 = *(*(&v38 + 1) + 8 * i);
-          v15 = [v14 valueType];
-          v16 = [v15 wf_parameterDefinitionWithParameterMetadata:v14];
+          valueType = [v14 valueType];
+          v16 = [valueType wf_parameterDefinitionWithParameterMetadata:v14];
 
           if (v16)
           {
-            v17 = [v37 parameters];
-            v18 = [v14 name];
-            v19 = [v17 if_firstObjectWithValue:v18 forKey:@"identifier"];
+            parameters3 = [v37 parameters];
+            name = [v14 name];
+            v19 = [parameters3 if_firstObjectWithValue:name forKey:@"identifier"];
 
             if (v19)
             {
-              v20 = [v19 value];
-              v21 = [v16 parameterStateFromLinkValue:v20];
+              value = [v19 value];
+              v21 = [v16 parameterStateFromLinkValue:value];
 
               if (v21)
               {
-                v22 = [v14 name];
-                [(WFLinkAction *)self setParameterState:v21 forKey:v22];
+                name2 = [v14 name];
+                [(WFLinkAction *)self setParameterState:v21 forKey:name2];
               }
 
               else
               {
-                v22 = getWFAppIntentsLogObject();
-                if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+                name2 = getWFAppIntentsLogObject();
+                if (os_log_type_enabled(name2, OS_LOG_TYPE_ERROR))
                 {
                   *buf = v36;
                   v48 = "[WFFocusConfigurationLinkAction updateParameterStatesFromCurrentDNDConfiguration]";
                   v49 = 2112;
                   v50 = v16;
-                  _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_ERROR, "%s Could not create parameter state from parameter definition %@.", buf, 0x16u);
+                  _os_log_impl(&dword_1CA256000, name2, OS_LOG_TYPE_ERROR, "%s Could not create parameter state from parameter definition %@.", buf, 0x16u);
                 }
               }
             }
@@ -158,11 +158,11 @@
               v21 = getWFAppIntentsLogObject();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
               {
-                v24 = [v14 name];
+                name3 = [v14 name];
                 *buf = v36;
                 v48 = "[WFFocusConfigurationLinkAction updateParameterStatesFromCurrentDNDConfiguration]";
                 v49 = 2112;
-                v50 = v24;
+                v50 = name3;
                 _os_log_impl(&dword_1CA256000, v21, OS_LOG_TYPE_ERROR, "%s Could not find a property with identifier %@ in the DND LNAction, it will be ignored.", buf, 0x16u);
               }
             }
@@ -173,17 +173,17 @@
             v19 = getWFAppIntentsLogObject();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v14 name];
+              name4 = [v14 name];
               *buf = v36;
               v48 = "[WFFocusConfigurationLinkAction updateParameterStatesFromCurrentDNDConfiguration]";
               v49 = 2112;
-              v50 = v23;
+              v50 = name4;
               _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_ERROR, "%s Failed to create parameter definition for %@, it will be ignored.", buf, 0x16u);
             }
           }
         }
 
-        v11 = [v8 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v11 = [parameters2 countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v11);
@@ -204,10 +204,10 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v26 = [(WFAppIntentExecutionAction *)self metadata];
-    v8 = [v26 parameters];
+    metadata2 = [(WFAppIntentExecutionAction *)self metadata];
+    parameters2 = [metadata2 parameters];
 
-    v27 = [v8 countByEnumeratingWithState:&v42 objects:v51 count:16];
+    v27 = [parameters2 countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (v27)
     {
       v28 = v27;
@@ -218,26 +218,26 @@
         {
           if (*v43 != v29)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(parameters2);
           }
 
           v31 = *(*(&v42 + 1) + 8 * j);
           v32 = getWFAppIntentsLogObject();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v33 = [v31 name];
+            name5 = [v31 name];
             *buf = 136315394;
             v48 = "[WFFocusConfigurationLinkAction updateParameterStatesFromCurrentDNDConfiguration]";
             v49 = 2112;
-            v50 = v33;
+            v50 = name5;
             _os_log_impl(&dword_1CA256000, v32, OS_LOG_TYPE_DEBUG, "%s Clearing parameter state for %@", buf, 0x16u);
           }
 
-          v34 = [v31 name];
-          [(WFLinkAction *)self setParameterState:0 forKey:v34];
+          name6 = [v31 name];
+          [(WFLinkAction *)self setParameterState:0 forKey:name6];
         }
 
-        v28 = [v8 countByEnumeratingWithState:&v42 objects:v51 count:16];
+        v28 = [parameters2 countByEnumeratingWithState:&v42 objects:v51 count:16];
       }
 
       while (v28);
@@ -253,21 +253,21 @@
   v3 = getWFAppIntentsLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(WFFocusConfigurationLinkAction *)self selectedFocusIdentifier];
+    selectedFocusIdentifier = [(WFFocusConfigurationLinkAction *)self selectedFocusIdentifier];
     *buf = 136315394;
     v16 = "[WFFocusConfigurationLinkAction clearFocusConfiguration]";
     v17 = 2112;
-    v18 = v4;
+    v18 = selectedFocusIdentifier;
     _os_log_impl(&dword_1CA256000, v3, OS_LOG_TYPE_DEBUG, "%s Clearing Focus Filter configuration from focus with identifier %@", buf, 0x16u);
   }
 
-  v5 = [(WFFocusConfigurationLinkAction *)self configurationService];
-  v6 = [(WFAppIntentExecutionAction *)self metadata];
-  v7 = [v6 identifier];
-  v8 = [(WFFocusConfigurationLinkAction *)self dndApplicationIdentifier];
-  v9 = [(WFFocusConfigurationLinkAction *)self selectedFocusIdentifier];
+  configurationService = [(WFFocusConfigurationLinkAction *)self configurationService];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  identifier = [metadata identifier];
+  dndApplicationIdentifier = [(WFFocusConfigurationLinkAction *)self dndApplicationIdentifier];
+  selectedFocusIdentifier2 = [(WFFocusConfigurationLinkAction *)self selectedFocusIdentifier];
   v14 = 0;
-  [v5 clearAppActionWithIdentifier:v7 forApplicationIdentifier:v8 modeIdentifier:v9 error:&v14];
+  [configurationService clearAppActionWithIdentifier:identifier forApplicationIdentifier:dndApplicationIdentifier modeIdentifier:selectedFocusIdentifier2 error:&v14];
   v10 = v14;
 
   [(WFFocusConfigurationLinkAction *)self updateParameterStatesFromCurrentDNDConfiguration];
@@ -283,8 +283,8 @@
       _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_ERROR, "%s Error clearing DNDAppAction: %@", buf, 0x16u);
     }
 
-    v12 = [objc_opt_class() genericRuntimeError];
-    [(WFAppIntentExecutionAction *)self finishRunningWithError:v12];
+    genericRuntimeError = [objc_opt_class() genericRuntimeError];
+    [(WFAppIntentExecutionAction *)self finishRunningWithError:genericRuntimeError];
   }
 
   else
@@ -297,20 +297,20 @@
 
 - (void)toggleFocusConfiguration
 {
-  v3 = [(WFFocusConfigurationLinkAction *)self currentFocusConfiguration];
-  -[WFFocusConfigurationLinkAction setFocusConfigurationEnablementStatus:](self, "setFocusConfigurationEnablementStatus:", [v3 isEnabled] ^ 1);
+  currentFocusConfiguration = [(WFFocusConfigurationLinkAction *)self currentFocusConfiguration];
+  -[WFFocusConfigurationLinkAction setFocusConfigurationEnablementStatus:](self, "setFocusConfigurationEnablementStatus:", [currentFocusConfiguration isEnabled] ^ 1);
 }
 
 - (id)currentFocusConfiguration
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(WFFocusConfigurationLinkAction *)self configurationService];
-  v4 = [(WFFocusConfigurationLinkAction *)self selectedFocusIdentifier];
+  configurationService = [(WFFocusConfigurationLinkAction *)self configurationService];
+  selectedFocusIdentifier = [(WFFocusConfigurationLinkAction *)self selectedFocusIdentifier];
   v18 = 0;
-  v5 = [v3 getAppActionsForModeIdentifier:v4 error:&v18];
+  v5 = [configurationService getAppActionsForModeIdentifier:selectedFocusIdentifier error:&v18];
   v6 = v18;
-  v7 = [(WFFocusConfigurationLinkAction *)self dndApplicationIdentifier];
-  v8 = [v5 objectForKey:v7];
+  dndApplicationIdentifier = [(WFFocusConfigurationLinkAction *)self dndApplicationIdentifier];
+  v8 = [v5 objectForKey:dndApplicationIdentifier];
 
   if (v6)
   {
@@ -333,7 +333,7 @@
     v17[3] = &unk_1E837B450;
     v17[4] = self;
     v10 = [v8 objectsPassingTest:v17];
-    v11 = [v10 anyObject];
+    anyObject = [v10 anyObject];
   }
 
   else
@@ -341,21 +341,21 @@
     v12 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(WFAppIntentExecutionAction *)self appDescriptor];
-      v14 = [v13 bundleIdentifier];
+      appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
+      bundleIdentifier = [appDescriptor bundleIdentifier];
       *buf = 136315394;
       v20 = "[WFFocusConfigurationLinkAction currentFocusConfiguration]";
       v21 = 2112;
-      v22 = v14;
+      v22 = bundleIdentifier;
       _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_INFO, "%s No Focus configurations were found for %@", buf, 0x16u);
     }
 
-    v11 = 0;
+    anyObject = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return anyObject;
 }
 
 uint64_t __59__WFFocusConfigurationLinkAction_currentFocusConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -371,19 +371,19 @@ uint64_t __59__WFFocusConfigurationLinkAction_currentFocusConfiguration__block_i
 - (void)createAndCommitFocusConfigurationToDND
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(WFAction *)self processedParameters];
-  v4 = v3;
-  if (v3)
+  processedParameters = [(WFAction *)self processedParameters];
+  v4 = processedParameters;
+  if (processedParameters)
   {
-    v5 = [v3 mutableCopy];
-    [v5 removeObjectForKey:@"Mode"];
-    [v5 removeObjectForKey:@"FocusMode"];
+    genericRuntimeError = [processedParameters mutableCopy];
+    [genericRuntimeError removeObjectForKey:@"Mode"];
+    [genericRuntimeError removeObjectForKey:@"FocusMode"];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND__block_invoke;
     v8[3] = &unk_1E837B428;
     v8[4] = self;
-    [(WFAppIntentExecutionAction *)self getLinkActionWithProcessedParameters:v5 completionHandler:v8];
+    [(WFAppIntentExecutionAction *)self getLinkActionWithProcessedParameters:genericRuntimeError completionHandler:v8];
   }
 
   else
@@ -396,8 +396,8 @@ uint64_t __59__WFFocusConfigurationLinkAction_currentFocusConfiguration__block_i
       _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_FAULT, "%s Could not get processedParameters.", buf, 0xCu);
     }
 
-    v5 = [objc_opt_class() genericRuntimeError];
-    [(WFAppIntentExecutionAction *)self finishRunningWithError:v5];
+    genericRuntimeError = [objc_opt_class() genericRuntimeError];
+    [(WFAppIntentExecutionAction *)self finishRunningWithError:genericRuntimeError];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -514,7 +514,7 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = [(WFAction *)self parameterValueForKey:@"Mode" ofClass:objc_opt_class()];
@@ -553,8 +553,8 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
       _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_FAULT, "%s Programming error: Unexpected action mode.", &v8, 0xCu);
     }
 
-    v6 = [objc_opt_class() genericRuntimeError];
-    [(WFAppIntentExecutionAction *)self finishRunningWithError:v6];
+    genericRuntimeError = [objc_opt_class() genericRuntimeError];
+    [(WFAppIntentExecutionAction *)self finishRunningWithError:genericRuntimeError];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -611,10 +611,10 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
 - (id)dndApplicationIdentifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(WFAppIntentExecutionAction *)self appDescriptor];
-  v3 = [v2 bundleIdentifier];
+  appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
+  bundleIdentifier = [appDescriptor bundleIdentifier];
 
-  if (!v3)
+  if (!bundleIdentifier)
   {
     v4 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -644,7 +644,7 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
   v6 = v5;
   _Block_object_dispose(&v11, 8);
   v7 = [v5 alloc];
-  v8 = [v7 initWithBundleID:{v3, v11}];
+  v8 = [v7 initWithBundleID:{bundleIdentifier, v11}];
 
   v9 = *MEMORY[0x1E69E9840];
 
@@ -654,9 +654,9 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
 - (id)selectedFocusIdentifier
 {
   v2 = [(WFAction *)self parameterValueForKey:@"FocusMode" ofClass:objc_opt_class()];
-  v3 = [v2 identifier];
-  v4 = v3;
-  if (!v3)
+  identifier = [v2 identifier];
+  v4 = identifier;
+  if (!identifier)
   {
     v11 = 0;
     v12 = &v11;
@@ -674,9 +674,9 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
     _Block_object_dispose(&v11, 8);
     if (!v5)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getDNDDefaultModeIdentifier(void)"];
-      [v9 handleFailureInFunction:v10 file:@"WFFocusConfigurationLinkAction.m" lineNumber:29 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v10 file:@"WFFocusConfigurationLinkAction.m" lineNumber:29 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
@@ -697,15 +697,15 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
   {
     v27.receiver = self;
     v27.super_class = WFFocusConfigurationLinkAction;
-    v3 = [(WFLinkAction *)&v27 parameterDefinitions];
+    parameterDefinitions = [(WFLinkAction *)&v27 parameterDefinitions];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = WFFocusConfigurationLinkAction;
-    v4 = [(WFLinkAction *)&v26 parameterDefinitions];
-    v25 = [v4 if_compactMap:&__block_literal_global_49802];
+    parameterDefinitions2 = [(WFLinkAction *)&v26 parameterDefinitions];
+    v25 = [parameterDefinitions2 if_compactMap:&__block_literal_global_49802];
 
     v5 = [WFParameterDefinition alloc];
     v33[0] = @"Class";
@@ -757,12 +757,12 @@ void __72__WFFocusConfigurationLinkAction_createAndCommitFocusConfigurationToDND
     v28[0] = v16;
     v28[1] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
-    v3 = [v21 arrayByAddingObjectsFromArray:v25];
+    parameterDefinitions = [v21 arrayByAddingObjectsFromArray:v25];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return parameterDefinitions;
 }
 
 id __54__WFFocusConfigurationLinkAction_parameterDefinitions__block_invoke(uint64_t a1, void *a2)
@@ -839,63 +839,63 @@ id __54__WFFocusConfigurationLinkAction_parameterDefinitions__block_invoke(uint6
   v3 = [WFActionParameterSummary alloc];
   v4 = MEMORY[0x1E696AEC0];
   v5 = WFLocalizedString(@"${Mode} %@ Focus Filter while in ${FocusMode}");
-  v6 = [(WFFocusConfigurationLinkAction *)self localizedAppName];
-  v7 = [v4 localizedStringWithFormat:v5, v6];
+  localizedAppName = [(WFFocusConfigurationLinkAction *)self localizedAppName];
+  v7 = [v4 localizedStringWithFormat:v5, localizedAppName];
   v8 = [(WFActionParameterSummary *)v3 initWithLocalizedString:v7];
 
   return v8;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Focus (action category)", @"Focus");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  contextCopy = context;
   v6 = WFLocalizedStringResourceWithKey(@"Sets the behavior of the %@ app when the given Focus is enabled.", @"Sets the behavior of the %@ app when the given Focus is enabled.");
-  v7 = [v5 localize:v6];
+  v7 = [contextCopy localize:v6];
 
-  v8 = [(WFFocusConfigurationLinkAction *)self localizedAppName];
-  v9 = [v4 localizedStringWithFormat:v7, v8];
+  localizedAppName = [(WFFocusConfigurationLinkAction *)self localizedAppName];
+  v9 = [v4 localizedStringWithFormat:v7, localizedAppName];
 
   return v9;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  contextCopy = context;
   v6 = WFLocalizedStringResourceWithKey(@"Set %@ Focus Filter", @"Set %@ Focus Filter");
-  v7 = [v5 localize:v6];
+  v7 = [contextCopy localize:v6];
 
-  v8 = [(WFFocusConfigurationLinkAction *)self localizedAppName];
-  v9 = [v4 localizedStringWithFormat:v7, v8];
+  localizedAppName = [(WFFocusConfigurationLinkAction *)self localizedAppName];
+  v9 = [v4 localizedStringWithFormat:v7, localizedAppName];
 
   return v9;
 }
 
 - (id)localizedAppName
 {
-  v2 = [(WFAppIntentExecutionAction *)self appDescriptor];
-  v3 = [v2 localizedName];
+  appDescriptor = [(WFAppIntentExecutionAction *)self appDescriptor];
+  localizedName = [appDescriptor localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)disabledOnPlatforms
 {
   v4.receiver = self;
   v4.super_class = WFFocusConfigurationLinkAction;
-  v2 = [(WFAction *)&v4 disabledOnPlatforms];
+  disabledOnPlatforms = [(WFAction *)&v4 disabledOnPlatforms];
 
-  return v2;
+  return disabledOnPlatforms;
 }
 
 + (id)genericRuntimeError

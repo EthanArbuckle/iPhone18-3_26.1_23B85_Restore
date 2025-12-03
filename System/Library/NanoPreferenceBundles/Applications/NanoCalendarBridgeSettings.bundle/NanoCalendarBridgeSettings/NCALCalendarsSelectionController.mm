@@ -1,19 +1,19 @@
 @interface NCALCalendarsSelectionController
-- (NCALCalendarsSelectionController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NCALCalendarsSelectionController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_saveFilterAndNotify;
 - (void)_updateSelectedCalendars;
-- (void)calendarChooserDidFinish:(id)a3;
-- (void)calendarChooserSelectionDidChange:(id)a3;
+- (void)calendarChooserDidFinish:(id)finish;
+- (void)calendarChooserSelectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation NCALCalendarsSelectionController
 
-- (NCALCalendarsSelectionController)initWithNibName:(id)a3 bundle:(id)a4
+- (NCALCalendarsSelectionController)initWithNibName:(id)name bundle:(id)bundle
 {
   v19.receiver = self;
   v19.super_class = NCALCalendarsSelectionController;
-  v4 = [(NCALCalendarsSelectionController *)&v19 initWithNibName:a3 bundle:a4];
+  v4 = [(NCALCalendarsSelectionController *)&v19 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -21,29 +21,29 @@
     v4->_model = v5;
 
     [(NCALCalendarsSelectionController *)v4 _updateSelectedCalendars];
-    v7 = [(NCALCalendarsSelectionController *)v4 navigationBar];
+    navigationBar = [(NCALCalendarsSelectionController *)v4 navigationBar];
     v21 = NSForegroundColorAttributeName;
     v8 = BPSTextColor();
     v22 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    [v7 setTitleTextAttributes:v9];
+    [navigationBar setTitleTextAttributes:v9];
 
-    v10 = [(NCALCalendarsSelectionController *)v4 navigationBar];
-    [v10 setTranslucent:0];
+    navigationBar2 = [(NCALCalendarsSelectionController *)v4 navigationBar];
+    [navigationBar2 setTranslucent:0];
 
-    v11 = [(NCALCalendarsSelectionController *)v4 toolbar];
-    [v11 setTranslucent:0];
+    toolbar = [(NCALCalendarsSelectionController *)v4 toolbar];
+    [toolbar setTranslucent:0];
 
     v12 = [EKCalendarChooser alloc];
-    v13 = [(CalendarModel *)v4->_model eventStore];
+    eventStore = [(CalendarModel *)v4->_model eventStore];
     BYTE2(v18) = 0;
     LOWORD(v18) = 0;
-    v14 = [v12 initWithRemoteUI:0 selectionStyle:1 displayStyle:0 entityType:0 forEvent:0 eventStore:v13 limitedToSource:0 showIdentityChooser:v18 showDelegateSetupCell:? showAccountStatus:?];
+    v14 = [v12 initWithRemoteUI:0 selectionStyle:1 displayStyle:0 entityType:0 forEvent:0 eventStore:eventStore limitedToSource:0 showIdentityChooser:v18 showDelegateSetupCell:? showAccountStatus:?];
 
     if (v14)
     {
-      v15 = [(CalendarModel *)v4->_model selectedCalendars];
-      [v14 setSelectedCalendars:v15];
+      selectedCalendars = [(CalendarModel *)v4->_model selectedCalendars];
+      [v14 setSelectedCalendars:selectedCalendars];
 
       [v14 setDelegate:v4];
       [v14 setShowsDoneButton:1];
@@ -64,26 +64,26 @@
   v7.super_class = NCALCalendarsSelectionController;
   [(NCALCalendarsSelectionController *)&v7 viewDidLoad];
   v3 = BPSBridgeTintColor();
-  v4 = [(NCALCalendarsSelectionController *)self view];
-  [v4 setTintColor:v3];
+  view = [(NCALCalendarsSelectionController *)self view];
+  [view setTintColor:v3];
 
   v5 = BPSBackgroundColor();
-  v6 = [(NCALCalendarsSelectionController *)self view];
-  [v6 setBackgroundColor:v5];
+  view2 = [(NCALCalendarsSelectionController *)self view];
+  [view2 setBackgroundColor:v5];
 }
 
-- (void)calendarChooserSelectionDidChange:(id)a3
+- (void)calendarChooserSelectionDidChange:(id)change
 {
-  v5 = [a3 selectedCalendars];
-  v4 = [(NCALCalendarsSelectionController *)self model];
-  [v4 setSelectedCalendars:v5];
+  selectedCalendars = [change selectedCalendars];
+  model = [(NCALCalendarsSelectionController *)self model];
+  [model setSelectedCalendars:selectedCalendars];
 }
 
 - (void)_saveFilterAndNotify
 {
-  v3 = [(CalendarModel *)self->_model selectedCalendars];
-  v4 = [(CalendarModel *)self->_model eventStore];
-  v5 = [v4 calendarsForEntityType:0];
+  selectedCalendars = [(CalendarModel *)self->_model selectedCalendars];
+  eventStore = [(CalendarModel *)self->_model eventStore];
+  v5 = [eventStore calendarsForEntityType:0];
 
   v6 = +[NSMutableArray array];
   v7 = +[NSMutableArray array];
@@ -107,12 +107,12 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if (([v3 containsObject:{v13, v18}] & 1) == 0)
+        if (([selectedCalendars containsObject:{v13, v18}] & 1) == 0)
         {
-          v14 = [v13 syncHash];
-          [v6 addObject:v14];
-          v15 = [v13 selectionSyncIdentifier];
-          [v7 addObject:v15];
+          syncHash = [v13 syncHash];
+          [v6 addObject:syncHash];
+          selectionSyncIdentifier = [v13 selectionSyncIdentifier];
+          [v7 addObject:selectionSyncIdentifier];
         }
       }
 
@@ -129,7 +129,7 @@
   [v17 setCustomDeselectedCalendarIdentifiers:v7];
 }
 
-- (void)calendarChooserDidFinish:(id)a3
+- (void)calendarChooserDidFinish:(id)finish
 {
   v4 = ncs_log_selected_calendars();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -144,8 +144,8 @@
 
 - (void)_updateSelectedCalendars
 {
-  v3 = [(CalendarModel *)self->_model eventStore];
-  v4 = [NanoCalendarPreferences currentSelectedCalendarsForEventStore:v3];
+  eventStore = [(CalendarModel *)self->_model eventStore];
+  v4 = [NanoCalendarPreferences currentSelectedCalendarsForEventStore:eventStore];
 
   [(CalendarModel *)self->_model setSelectedCalendars:v4];
   v5 = ncs_log_selected_calendars();

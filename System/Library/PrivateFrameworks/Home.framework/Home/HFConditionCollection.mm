@@ -1,23 +1,23 @@
 @interface HFConditionCollection
-+ (id)_findBestConditionMatchForPredicates:(id)a3;
-+ (id)_findBestMatchingConditionsForPredicates:(id)a3;
-+ (id)_flattenedSubpredicatesForAndPredicate:(id)a3;
-+ (id)_singleConditionForPredicate:(id)a3 knownConditionsOnly:(BOOL)a4;
-+ (id)conditionCollectionForPredicate:(id)a3;
++ (id)_findBestConditionMatchForPredicates:(id)predicates;
++ (id)_findBestMatchingConditionsForPredicates:(id)predicates;
++ (id)_flattenedSubpredicatesForAndPredicate:(id)predicate;
++ (id)_singleConditionForPredicate:(id)predicate knownConditionsOnly:(BOOL)only;
++ (id)conditionCollectionForPredicate:(id)predicate;
 - (HFConditionCollection)init;
-- (HFConditionCollection)initWithConditions:(id)a3;
+- (HFConditionCollection)initWithConditions:(id)conditions;
 - (NSPredicate)predicate;
-- (void)addCondition:(id)a3;
-- (void)removeCondition:(id)a3;
+- (void)addCondition:(id)condition;
+- (void)removeCondition:(id)condition;
 @end
 
 @implementation HFConditionCollection
 
-+ (id)conditionCollectionForPredicate:(id)a3
++ (id)conditionCollectionForPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = [MEMORY[0x277CBEB98] set];
-  v6 = [a1 _singleConditionForPredicate:v4 knownConditionsOnly:0];
+  v6 = [self _singleConditionForPredicate:predicateCopy knownConditionsOnly:0];
   if (v6)
   {
     v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
@@ -29,11 +29,11 @@
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 compoundPredicateType] == 1)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [predicateCopy compoundPredicateType] == 1)
     {
-      v8 = [a1 _flattenedSubpredicatesForAndPredicate:v4];
+      v8 = [self _flattenedSubpredicatesForAndPredicate:predicateCopy];
       v9 = MEMORY[0x277CBEB98];
-      v10 = [a1 _findBestMatchingConditionsForPredicates:v8];
+      v10 = [self _findBestMatchingConditionsForPredicates:v8];
       v11 = [v9 setWithArray:v10];
 
       v5 = v11;
@@ -41,21 +41,21 @@
   }
 
   v12 = objc_alloc(objc_opt_class());
-  v13 = [v5 allObjects];
-  v14 = [v12 initWithConditions:v13];
+  allObjects = [v5 allObjects];
+  v14 = [v12 initWithConditions:allObjects];
 
   return v14;
 }
 
-+ (id)_flattenedSubpredicatesForAndPredicate:(id)a3
++ (id)_flattenedSubpredicatesForAndPredicate:(id)predicate
 {
-  v4 = [a3 subpredicates];
+  subpredicates = [predicate subpredicates];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HFConditionCollection__flattenedSubpredicatesForAndPredicate___block_invoke;
   v7[3] = &__block_descriptor_40_e30___NSArray_16__0__NSPredicate_8l;
-  v7[4] = a1;
-  v5 = [v4 na_flatMap:v7];
+  v7[4] = self;
+  v5 = [subpredicates na_flatMap:v7];
 
   return v5;
 }
@@ -96,33 +96,33 @@ id __64__HFConditionCollection__flattenedSubpredicatesForAndPredicate___block_in
   return v8;
 }
 
-+ (id)_findBestMatchingConditionsForPredicates:(id)a3
++ (id)_findBestMatchingConditionsForPredicates:(id)predicates
 {
-  v4 = [a3 mutableCopy];
+  v4 = [predicates mutableCopy];
   v5 = objc_opt_new();
   while ([v4 count])
   {
-    v6 = [a1 _findBestConditionMatchForPredicates:v4];
-    v7 = [v6 matchedCondition];
-    [v5 addObject:v7];
+    v6 = [self _findBestConditionMatchForPredicates:v4];
+    matchedCondition = [v6 matchedCondition];
+    [v5 addObject:matchedCondition];
 
-    v8 = [v6 matchedPredicates];
-    [v4 removeObjectsInArray:v8];
+    matchedPredicates = [v6 matchedPredicates];
+    [v4 removeObjectsInArray:matchedPredicates];
   }
 
   return v5;
 }
 
-+ (id)_findBestConditionMatchForPredicates:(id)a3
++ (id)_findBestConditionMatchForPredicates:(id)predicates
 {
-  v4 = a3;
+  predicatesCopy = predicates;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__HFConditionCollection__findBestConditionMatchForPredicates___block_invoke;
   v19[3] = &unk_277DF39A8;
-  v5 = v4;
+  v5 = predicatesCopy;
   v20 = v5;
-  v21 = a1;
+  selfCopy = self;
   v6 = __62__HFConditionCollection__findBestConditionMatchForPredicates___block_invoke(v19);
   if (v6)
   {
@@ -142,7 +142,7 @@ id __64__HFConditionCollection__flattenedSubpredicatesForAndPredicate___block_in
     v9[2] = __62__HFConditionCollection__findBestConditionMatchForPredicates___block_invoke_25;
     v9[3] = &unk_277DF39D0;
     v11 = &v13;
-    v12 = a1;
+    selfCopy2 = self;
     v10 = v5;
     [v10 enumerateObjectsWithOptions:2 usingBlock:v9];
     v7 = v14[5];
@@ -206,10 +206,10 @@ void __62__HFConditionCollection__findBestConditionMatchForPredicates___block_in
 LABEL_5:
 }
 
-+ (id)_singleConditionForPredicate:(id)a3 knownConditionsOnly:(BOOL)a4
++ (id)_singleConditionForPredicate:(id)predicate knownConditionsOnly:(BOOL)only
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  predicateCopy = predicate;
   if (_MergedGlobals_214 != -1)
   {
     dispatch_once(&_MergedGlobals_214, &__block_literal_global_30_0);
@@ -235,7 +235,7 @@ LABEL_5:
         }
 
         v11 = objc_alloc(*(*(&v16 + 1) + 8 * i));
-        v12 = [v11 initWithPredicate:{v5, v16}];
+        v12 = [v11 initWithPredicate:{predicateCopy, v16}];
         if (v12)
         {
           v13 = v12;
@@ -254,14 +254,14 @@ LABEL_5:
     }
   }
 
-  if (a4)
+  if (only)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [(HFCondition *)[HFUnknownCondition alloc] initWithPredicate:v5];
+    v13 = [(HFCondition *)[HFUnknownCondition alloc] initWithPredicate:predicateCopy];
   }
 
 LABEL_15:
@@ -290,52 +290,52 @@ void __74__HFConditionCollection__singleConditionForPredicate_knownConditionsOnl
 
 - (HFConditionCollection)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithConditions_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFConditionCollection.m" lineNumber:184 description:{@"%s is unavailable; use %@ instead", "-[HFConditionCollection init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFConditionCollection.m" lineNumber:184 description:{@"%s is unavailable; use %@ instead", "-[HFConditionCollection init]", v5}];
 
   return 0;
 }
 
-- (HFConditionCollection)initWithConditions:(id)a3
+- (HFConditionCollection)initWithConditions:(id)conditions
 {
-  v5 = a3;
+  conditionsCopy = conditions;
   v9.receiver = self;
   v9.super_class = HFConditionCollection;
   v6 = [(HFConditionCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conditions, a3);
+    objc_storeStrong(&v6->_conditions, conditions);
   }
 
   return v7;
 }
 
-- (void)addCondition:(id)a3
+- (void)addCondition:(id)condition
 {
-  v4 = a3;
-  v6 = [(HFConditionCollection *)self conditions];
-  v5 = [v6 arrayByAddingObject:v4];
+  conditionCopy = condition;
+  conditions = [(HFConditionCollection *)self conditions];
+  v5 = [conditions arrayByAddingObject:conditionCopy];
 
   [(HFConditionCollection *)self setConditions:v5];
 }
 
-- (void)removeCondition:(id)a3
+- (void)removeCondition:(id)condition
 {
-  v4 = a3;
-  v5 = [(HFConditionCollection *)self conditions];
-  v7 = [v5 mutableCopy];
+  conditionCopy = condition;
+  conditions = [(HFConditionCollection *)self conditions];
+  v7 = [conditions mutableCopy];
 
-  [v7 removeObject:v4];
+  [v7 removeObject:conditionCopy];
   v6 = [v7 copy];
   [(HFConditionCollection *)self setConditions:v6];
 }
 
 - (NSPredicate)predicate
 {
-  v2 = [(HFConditionCollection *)self conditions];
-  v3 = [v2 na_map:&__block_literal_global_48];
+  conditions = [(HFConditionCollection *)self conditions];
+  v3 = [conditions na_map:&__block_literal_global_48];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

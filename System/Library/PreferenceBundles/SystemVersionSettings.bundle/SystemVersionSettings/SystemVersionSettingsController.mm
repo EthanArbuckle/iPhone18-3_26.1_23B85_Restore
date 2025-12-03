@@ -1,5 +1,5 @@
 @interface SystemVersionSettingsController
-- (SystemVersionSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SystemVersionSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -11,11 +11,11 @@
   SystemVersionSettingsController.viewDidLoad()();
 }
 
-- (SystemVersionSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (SystemVersionSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  a3;
-  a4;
-  if (a3)
+  name;
+  bundle;
+  if (name)
   {
     v6 = sub_25B90();
     v7 = v4;
@@ -30,7 +30,7 @@
     v9 = 0;
   }
 
-  return SystemVersionSettingsController.init(nibName:bundle:)(v8, v9, a4);
+  return SystemVersionSettingsController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 @end

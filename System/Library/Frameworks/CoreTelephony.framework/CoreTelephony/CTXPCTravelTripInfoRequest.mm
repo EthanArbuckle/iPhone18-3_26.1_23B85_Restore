@@ -1,22 +1,22 @@
 @interface CTXPCTravelTripInfoRequest
 + (id)allowedClassesForArguments;
-- (CTXPCTravelTripInfoRequest)initWithCountryCode:(id)a3 date:(id)a4;
+- (CTXPCTravelTripInfoRequest)initWithCountryCode:(id)code date:(id)date;
 - (id)arrivalCountryCode;
 - (id)arrivalDate;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCTravelTripInfoRequest
 
-- (CTXPCTravelTripInfoRequest)initWithCountryCode:(id)a3 date:(id)a4
+- (CTXPCTravelTripInfoRequest)initWithCountryCode:(id)code date:(id)date
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  dateCopy = date;
   v13[0] = @"arrivalCountryCode";
   v13[1] = @"arrivalDate";
-  v14[0] = v6;
-  v14[1] = v7;
+  v14[0] = codeCopy;
+  v14[1] = dateCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v12.receiver = self;
   v12.super_class = CTXPCTravelTripInfoRequest;
@@ -26,24 +26,24 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCTravelTripInfoRequest *)self arrivalCountryCode];
-  v9 = [(CTXPCTravelTripInfoRequest *)self arrivalDate];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  arrivalCountryCode = [(CTXPCTravelTripInfoRequest *)self arrivalCountryCode];
+  arrivalDate = [(CTXPCTravelTripInfoRequest *)self arrivalDate];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__CTXPCTravelTripInfoRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A43CC8;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 setTripInfo:v8 date:v9 completion:v11];
+  [handlerCopy setTripInfo:arrivalCountryCode date:arrivalDate completion:v11];
 }
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCTravelTripInfoRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -53,8 +53,8 @@
 
 - (id)arrivalCountryCode
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"arrivalCountryCode"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"arrivalCountryCode"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
@@ -62,8 +62,8 @@
 
 - (id)arrivalDate
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"arrivalDate"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"arrivalDate"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

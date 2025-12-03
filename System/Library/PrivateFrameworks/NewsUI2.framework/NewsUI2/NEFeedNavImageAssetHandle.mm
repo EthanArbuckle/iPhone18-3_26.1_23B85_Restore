@@ -1,30 +1,30 @@
 @interface NEFeedNavImageAssetHandle
 - (NEFeedNavImageAssetHandle)init;
-- (NEFeedNavImageAssetHandle)initWithIdentifier:(id)a3 feedNavImage:(id)a4 feedNavImageSize:(CGSize)a5 feedNavImageStyler:(id)a6 scale:(double)a7;
-- (NEFeedNavImageAssetHandle)initWithTag:(id)a3 feedNavImageSize:(CGSize)a4 feedNavImageStyler:(id)a5 scale:(double)a6 overrideFallbackColor:(id)a7;
+- (NEFeedNavImageAssetHandle)initWithIdentifier:(id)identifier feedNavImage:(id)image feedNavImageSize:(CGSize)size feedNavImageStyler:(id)styler scale:(double)scale;
+- (NEFeedNavImageAssetHandle)initWithTag:(id)tag feedNavImageSize:(CGSize)size feedNavImageStyler:(id)styler scale:(double)scale overrideFallbackColor:(id)color;
 @end
 
 @implementation NEFeedNavImageAssetHandle
 
-- (NEFeedNavImageAssetHandle)initWithIdentifier:(id)a3 feedNavImage:(id)a4 feedNavImageSize:(CGSize)a5 feedNavImageStyler:(id)a6 scale:(double)a7
+- (NEFeedNavImageAssetHandle)initWithIdentifier:(id)identifier feedNavImage:(id)image feedNavImageSize:(CGSize)size feedNavImageStyler:(id)styler scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v12 = sub_219BF5414();
   v14 = v13;
-  v15 = a4;
+  imageCopy = image;
   swift_unknownObjectRetain();
-  return FeedNavImageAssetHandle.init(identifier:feedNavImage:feedNavImageSize:feedNavImageStyler:scale:)(v12, v14, v15, a6, width, height, a7);
+  return FeedNavImageAssetHandle.init(identifier:feedNavImage:feedNavImageSize:feedNavImageStyler:scale:)(v12, v14, imageCopy, styler, width, height, scale);
 }
 
-- (NEFeedNavImageAssetHandle)initWithTag:(id)a3 feedNavImageSize:(CGSize)a4 feedNavImageStyler:(id)a5 scale:(double)a6 overrideFallbackColor:(id)a7
+- (NEFeedNavImageAssetHandle)initWithTag:(id)tag feedNavImageSize:(CGSize)size feedNavImageStyler:(id)styler scale:(double)scale overrideFallbackColor:(id)color
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v13 = a7;
-  v14 = sub_219352F04(a3, a5, a7, width, height, a6);
+  colorCopy = color;
+  v14 = sub_219352F04(tag, styler, color, width, height, scale);
   swift_unknownObjectRelease();
   return v14;
 }

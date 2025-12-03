@@ -7,30 +7,30 @@
 - (TSCEValue)productValue;
 - (TSCEValue)rangeValue;
 - (TSCEValue)totalValue;
-- (TSTAccumulator)initWithArchive:(const void *)a3;
-- (TSTAccumulator)initWithLocale:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSTAccumulator)initWithArchive:(const void *)archive;
+- (TSTAccumulator)initWithLocale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)countBlankValue;
-- (id)p_averageValueWithA:(BOOL)a3;
-- (id)valueForType:(unsigned __int8)a3;
-- (void)accumulate:(id)a3;
-- (void)accumulateValue:(id)a3;
+- (id)p_averageValueWithA:(BOOL)a;
+- (id)valueForType:(unsigned __int8)type;
+- (void)accumulate:(id)accumulate;
+- (void)accumulateValue:(id)value;
 - (void)clear;
-- (void)saveToArchive:(void *)a3;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSTAccumulator
 
-- (TSTAccumulator)initWithLocale:(id)a3
+- (TSTAccumulator)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = TSTAccumulator;
   v6 = [(TSTAccumulator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
     objc_msgSend_clear(v7, v8, v9, v10, v11);
   }
 
@@ -66,7 +66,7 @@
   self->_isCircularReference = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSTAccumulator alloc];
   v8 = objc_msgSend_initWithLocale_(v4, v5, self->_locale, v6, v7);
@@ -95,7 +95,7 @@
   return v8;
 }
 
-- (TSTAccumulator)initWithArchive:(const void *)a3
+- (TSTAccumulator)initWithArchive:(const void *)archive
 {
   v92.receiver = self;
   v92.super_class = TSTAccumulator;
@@ -104,22 +104,22 @@
   if (v4)
   {
     objc_msgSend_clear(v4, v5, v6, v7, v8);
-    v14 = *(a3 + 4);
+    v14 = *(archive + 4);
     if ((v14 & 0x20) != 0)
     {
-      v9->_BOOLCount = *(a3 + 16);
-      v14 = *(a3 + 4);
+      v9->_BOOLCount = *(archive + 16);
+      v14 = *(archive + 4);
       if ((v14 & 0x400) != 0)
       {
-        v9->_BOOLTrueCount = *(a3 + 21);
-        v14 = *(a3 + 4);
+        v9->_BOOLTrueCount = *(archive + 21);
+        v14 = *(archive + 4);
       }
     }
 
     if ((v14 & 0x40) != 0)
     {
-      v9->_numberCount = *(a3 + 17);
-      v14 = *(a3 + 4);
+      v9->_numberCount = *(archive + 17);
+      v14 = *(archive + 4);
       if ((v14 & 0x80) == 0)
       {
 LABEL_7:
@@ -137,8 +137,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v9->_dateCount = *(a3 + 18);
-    v14 = *(a3 + 4);
+    v9->_dateCount = *(archive + 18);
+    v14 = *(archive + 4);
     if ((v14 & 0x100) == 0)
     {
 LABEL_8:
@@ -151,8 +151,8 @@ LABEL_8:
     }
 
 LABEL_17:
-    v9->_durationCount = *(a3 + 19);
-    v14 = *(a3 + 4);
+    v9->_durationCount = *(archive + 19);
+    v14 = *(archive + 4);
     if ((v14 & 0x200) == 0)
     {
 LABEL_9:
@@ -165,8 +165,8 @@ LABEL_9:
     }
 
 LABEL_18:
-    v9->_stringCount = *(a3 + 20);
-    v14 = *(a3 + 4);
+    v9->_stringCount = *(archive + 20);
+    v14 = *(archive + 4);
     if ((v14 & 0x2000) == 0)
     {
 LABEL_10:
@@ -179,8 +179,8 @@ LABEL_10:
     }
 
 LABEL_19:
-    v9->_errorCount = *(a3 + 26);
-    v14 = *(a3 + 4);
+    v9->_errorCount = *(archive + 26);
+    v14 = *(archive + 4);
     if ((v14 & 0x8000) == 0)
     {
 LABEL_11:
@@ -193,8 +193,8 @@ LABEL_11:
     }
 
 LABEL_20:
-    v9->_noContentCount = *(a3 + 28);
-    if ((*(a3 + 4) & 0x4000) == 0)
+    v9->_noContentCount = *(archive + 28);
+    if ((*(archive + 4) & 0x4000) == 0)
     {
 LABEL_13:
       locale = v9->_locale;
@@ -209,9 +209,9 @@ LABEL_13:
       }
 
       v19 = v16;
-      if (*(a3 + 3))
+      if (*(archive + 3))
       {
-        objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v17, *(a3 + 3), v16, v18);
+        objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v17, *(archive + 3), v16, v18);
       }
 
       else
@@ -219,9 +219,9 @@ LABEL_13:
         objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v17, &TSCE::_CellValueArchive_default_instance_, v16, v18);
       }
       v22 = ;
-      if (*(a3 + 4))
+      if (*(archive + 4))
       {
-        objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v20, *(a3 + 4), v19, v21);
+        objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v20, *(archive + 4), v19, v21);
       }
 
       else
@@ -238,9 +238,9 @@ LABEL_13:
       maxValue = v9->_maxValue;
       v9->_maxValue = v34;
 
-      if (*(a3 + 5))
+      if (*(archive + 5))
       {
-        objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v36, *(a3 + 5), v19, v37);
+        objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v36, *(archive + 5), v19, v37);
       }
 
       else
@@ -253,11 +253,11 @@ LABEL_13:
       numberTotalValue = v9->_numberTotalValue;
       v9->_numberTotalValue = v48;
 
-      v52 = *(a3 + 4);
+      v52 = *(archive + 4);
       if ((v52 & 8) != 0)
       {
         v89 = v22;
-        v53 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v50, *(a3 + 6), v19, v51);
+        v53 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v50, *(archive + 6), v19, v51);
         v58 = objc_msgSend_tsceValue(v53, v54, v55, v56, v57);
         v63 = objc_msgSend_date(v58, v59, v60, v61, v62);
         v68 = objc_msgSend_tsceValue(v53, v64, v65, v66, v67);
@@ -276,14 +276,14 @@ LABEL_13:
         firstDateSeen = v9->_firstDateSeen;
         v9->_firstDateSeen = v74;
 
-        v52 = *(a3 + 4);
+        v52 = *(archive + 4);
         v22 = v89;
         v23 = v90;
       }
 
       if ((v52 & 0x800) != 0)
       {
-        v9->_totalSecsSinceReferenceDate = *(a3 + 11);
+        v9->_totalSecsSinceReferenceDate = *(archive + 11);
         if ((v52 & 0x1000) == 0)
         {
 LABEL_39:
@@ -301,7 +301,7 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      v9->_secondsToAdd = *(a3 + 12);
+      v9->_secondsToAdd = *(archive + 12);
       if ((v52 & 0x10) == 0)
       {
 LABEL_44:
@@ -310,7 +310,7 @@ LABEL_44:
       }
 
 LABEL_43:
-      v76 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v50, *(a3 + 7), v19, v51);
+      v76 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v50, *(archive + 7), v19, v51);
       v81 = objc_msgSend_tsceValue(v76, v77, v78, v79, v80);
       v86 = objc_msgSend_number(v81, v82, v83, v84, v85);
       productValue = v9->_productValue;
@@ -321,120 +321,120 @@ LABEL_43:
     }
 
 LABEL_12:
-    v9->_isCircularReference = *(a3 + 108);
+    v9->_isCircularReference = *(archive + 108);
     goto LABEL_13;
   }
 
   return v9;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   BOOLCount = self->_BOOLCount;
   if (BOOLCount)
   {
-    v6 = *(a3 + 4);
-    *(a3 + 4) = v6 | 0x20;
-    *(a3 + 16) = BOOLCount;
+    v6 = *(archive + 4);
+    *(archive + 4) = v6 | 0x20;
+    *(archive + 16) = BOOLCount;
     BOOLTrueCount = self->_BOOLTrueCount;
-    *(a3 + 4) = v6 | 0x420;
-    *(a3 + 21) = BOOLTrueCount;
+    *(archive + 4) = v6 | 0x420;
+    *(archive + 21) = BOOLTrueCount;
   }
 
   numberCount = self->_numberCount;
   if (numberCount)
   {
-    *(a3 + 4) |= 0x40u;
-    *(a3 + 17) = numberCount;
+    *(archive + 4) |= 0x40u;
+    *(archive + 17) = numberCount;
   }
 
   dateCount = self->_dateCount;
   if (dateCount)
   {
-    *(a3 + 4) |= 0x80u;
-    *(a3 + 18) = dateCount;
+    *(archive + 4) |= 0x80u;
+    *(archive + 18) = dateCount;
   }
 
   durationCount = self->_durationCount;
   if (durationCount)
   {
-    *(a3 + 4) |= 0x100u;
-    *(a3 + 19) = durationCount;
+    *(archive + 4) |= 0x100u;
+    *(archive + 19) = durationCount;
   }
 
   stringCount = self->_stringCount;
   if (stringCount)
   {
-    *(a3 + 4) |= 0x200u;
-    *(a3 + 20) = stringCount;
+    *(archive + 4) |= 0x200u;
+    *(archive + 20) = stringCount;
   }
 
   errorCount = self->_errorCount;
   if (errorCount)
   {
-    *(a3 + 4) |= 0x2000u;
-    *(a3 + 26) = errorCount;
+    *(archive + 4) |= 0x2000u;
+    *(archive + 26) = errorCount;
   }
 
   noContentCount = self->_noContentCount;
   if (noContentCount)
   {
-    *(a3 + 4) |= 0x8000u;
-    *(a3 + 28) = noContentCount;
+    *(archive + 4) |= 0x8000u;
+    *(archive + 28) = noContentCount;
   }
 
   if (self->_isCircularReference)
   {
-    *(a3 + 4) |= 0x4000u;
-    *(a3 + 108) = 1;
+    *(archive + 4) |= 0x4000u;
+    *(archive + 108) = 1;
   }
 
   v14 = objc_autoreleasePoolPush();
   v20 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v15, self->_minValue, self->_locale, v16);
-  *(a3 + 4) |= 1u;
-  v21 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v21 = *(archive + 3);
   if (!v21)
   {
-    v22 = *(a3 + 1);
+    v22 = *(archive + 1);
     if (v22)
     {
       v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v21 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v22);
-    *(a3 + 3) = v21;
+    *(archive + 3) = v21;
   }
 
   objc_msgSend_encodeCellValueToArchive_(v20, v17, v21, v18, v19);
   v28 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v23, self->_maxValue, self->_locale, v24);
-  *(a3 + 4) |= 2u;
-  v29 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v29 = *(archive + 4);
   if (!v29)
   {
-    v30 = *(a3 + 1);
+    v30 = *(archive + 1);
     if (v30)
     {
       v30 = *(v30 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v29 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v30);
-    *(a3 + 4) = v29;
+    *(archive + 4) = v29;
   }
 
   objc_msgSend_encodeCellValueToArchive_(v28, v25, v29, v26, v27);
   v36 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v31, self->_numberTotalValue, self->_locale, v32);
-  *(a3 + 4) |= 4u;
-  v37 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v37 = *(archive + 5);
   if (!v37)
   {
-    v38 = *(a3 + 1);
+    v38 = *(archive + 1);
     if (v38)
     {
       v38 = *(v38 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v37 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v38);
-    *(a3 + 5) = v37;
+    *(archive + 5) = v37;
   }
 
   objc_msgSend_encodeCellValueToArchive_(v36, v33, v37, v34, v35);
@@ -443,18 +443,18 @@ LABEL_12:
   if (v43)
   {
     v49 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v44, self->_firstDateSeen, self->_locale, v45);
-    *(a3 + 4) |= 8u;
-    v50 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v50 = *(archive + 6);
     if (!v50)
     {
-      v51 = *(a3 + 1);
+      v51 = *(archive + 1);
       if (v51)
       {
         v51 = *(v51 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v50 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v51);
-      *(a3 + 6) = v50;
+      *(archive + 6) = v50;
     }
 
     objc_msgSend_encodeCellValueToArchive_(v49, v46, v50, v47, v48);
@@ -463,30 +463,30 @@ LABEL_12:
   totalSecsSinceReferenceDate = self->_totalSecsSinceReferenceDate;
   if (totalSecsSinceReferenceDate != 0.0)
   {
-    *(a3 + 4) |= 0x800u;
-    *(a3 + 11) = totalSecsSinceReferenceDate;
+    *(archive + 4) |= 0x800u;
+    *(archive + 11) = totalSecsSinceReferenceDate;
   }
 
   secondsToAdd = self->_secondsToAdd;
   if (secondsToAdd != 0.0)
   {
-    *(a3 + 4) |= 0x1000u;
-    *(a3 + 12) = secondsToAdd;
+    *(archive + 4) |= 0x1000u;
+    *(archive + 12) = secondsToAdd;
   }
 
   v57 = objc_msgSend_newCellValueFromTSCEValue_withLocale_(TSCECellValue, v44, self->_productValue, self->_locale, v45);
-  *(a3 + 4) |= 0x10u;
-  v58 = *(a3 + 7);
+  *(archive + 4) |= 0x10u;
+  v58 = *(archive + 7);
   if (!v58)
   {
-    v59 = *(a3 + 1);
+    v59 = *(archive + 1);
     if (v59)
     {
       v59 = *(v59 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v58 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v59);
-    *(a3 + 7) = v58;
+    *(archive + 7) = v58;
   }
 
   objc_msgSend_encodeCellValueToArchive_(v57, v54, v58, v55, v56);
@@ -494,35 +494,35 @@ LABEL_12:
   objc_autoreleasePoolPop(v14);
 }
 
-- (void)accumulateValue:(id)a3
+- (void)accumulateValue:(id)value
 {
-  v5 = a3;
-  if (objc_msgSend_isNil(v5, v6, v7, v8, v9))
+  valueCopy = value;
+  if (objc_msgSend_isNil(valueCopy, v6, v7, v8, v9))
   {
     goto LABEL_6;
   }
 
   v14 = objc_msgSend_countA(self, v10, v11, v12, v13);
-  v21 = objc_msgSend_nativeType(v5, v15, v16, v17, v18);
+  v21 = objc_msgSend_nativeType(valueCopy, v15, v16, v17, v18);
   if (v14)
   {
-    v22 = objc_msgSend_minValue_locale_(self->_minValue, v19, v5, self->_locale, v20);
+    v22 = objc_msgSend_minValue_locale_(self->_minValue, v19, valueCopy, self->_locale, v20);
     minValue = self->_minValue;
     self->_minValue = v22;
 
-    v26 = objc_msgSend_maxValue_locale_(self->_maxValue, v24, v5, self->_locale, v25);
+    v26 = objc_msgSend_maxValue_locale_(self->_maxValue, v24, valueCopy, self->_locale, v25);
   }
 
   else
   {
-    objc_storeStrong(&self->_minValue, a3);
-    v26 = v5;
+    objc_storeStrong(&self->_minValue, value);
+    v26 = valueCopy;
   }
 
   maxValue = self->_maxValue;
   self->_maxValue = v26;
 
-  if (objc_msgSend_isNil(v5, v28, v29, v30, v31))
+  if (objc_msgSend_isNil(valueCopy, v28, v29, v30, v31))
   {
     goto LABEL_6;
   }
@@ -532,7 +532,7 @@ LABEL_12:
     switch(v21)
     {
       case 5u:
-        v41 = objc_msgSend_number(v5, v32, v33, v34, v35);
+        v41 = objc_msgSend_number(valueCopy, v32, v33, v34, v35);
         p_durationCount = &self->_durationCount;
         if (self->_numberCount + self->_durationCount)
         {
@@ -571,7 +571,7 @@ LABEL_12:
         goto LABEL_7;
       case 9u:
         ++self->_errorCount;
-        v36 = objc_msgSend_asErrorValue(v5, v32, v33, v34, v35);
+        v36 = objc_msgSend_asErrorValue(valueCopy, v32, v33, v34, v35);
         v41 = v36;
         if (v36)
         {
@@ -593,7 +593,7 @@ LABEL_12:
   if (v21 == 2)
   {
     ++self->_BOOLCount;
-    if (objc_msgSend_asBoolean(v5, v32, v33, v34, v35))
+    if (objc_msgSend_asBoolean(valueCopy, v32, v33, v34, v35))
     {
       ++self->_BOOLTrueCount;
     }
@@ -612,7 +612,7 @@ LABEL_6:
 
     if (v47)
     {
-      v52 = objc_msgSend_date(v5, v48, v49, v50, v51);
+      v52 = objc_msgSend_date(valueCopy, v48, v49, v50, v51);
       objc_msgSend_timeIntervalSinceReferenceDate(v52, v53, v54, v55, v56);
       self->_totalSecsSinceReferenceDate = v57 + self->_totalSecsSinceReferenceDate;
       v66 = objc_msgSend_date(self->_firstDateSeen, v58, v59, v60, v61);
@@ -627,9 +627,9 @@ LABEL_6:
         memset(&v108, 0, sizeof(v108));
       }
 
-      if (v5)
+      if (valueCopy)
       {
-        objc_msgSend_format(v5, v62, v63, v64, v65);
+        objc_msgSend_format(valueCopy, v62, v63, v64, v65);
       }
 
       else
@@ -645,10 +645,10 @@ LABEL_6:
 
     else
     {
-      v91 = objc_msgSend_date(v5, v48, v49, v50, v51);
-      if (v5)
+      v91 = objc_msgSend_date(valueCopy, v48, v49, v50, v51);
+      if (valueCopy)
       {
-        objc_msgSend_format(v5, v87, v88, v89, v90);
+        objc_msgSend_format(valueCopy, v87, v88, v89, v90);
       }
 
       else
@@ -671,18 +671,18 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
-  v4 = a3;
-  v9 = v4;
+  accumulateCopy = accumulate;
+  v9 = accumulateCopy;
   if (self->_isCircularReference)
   {
     v10 = 1;
   }
 
-  else if (v4)
+  else if (accumulateCopy)
   {
-    v10 = v4[104];
+    v10 = accumulateCopy[104];
   }
 
   else
@@ -691,7 +691,7 @@ LABEL_7:
   }
 
   self->_isCircularReference = v10 & 1;
-  if (objc_msgSend_countA(v4, v5, v6, v7, v8))
+  if (objc_msgSend_countA(accumulateCopy, v5, v6, v7, v8))
   {
     v15 = objc_msgSend_countA(self, v11, v12, v13, v14);
     self->_BOOLCount += objc_msgSend_BOOLCount(v9, v16, v17, v18, v19);
@@ -892,17 +892,17 @@ LABEL_16:
   return v8;
 }
 
-- (id)p_averageValueWithA:(BOOL)a3
+- (id)p_averageValueWithA:(BOOL)a
 {
-  v5 = a3;
-  if (a3)
+  aCopy = a;
+  if (a)
   {
-    v7 = objc_msgSend_countA(self, a2, a3, v3, v4);
+    v7 = objc_msgSend_countA(self, a2, a, v3, v4);
   }
 
   else
   {
-    v7 = objc_msgSend_countOfNumberDateDurationOrBool(self, a2, a3, v3, v4);
+    v7 = objc_msgSend_countOfNumberDateDurationOrBool(self, a2, a, v3, v4);
   }
 
   v12 = v7;
@@ -950,7 +950,7 @@ LABEL_21:
   {
     if (numberCount)
     {
-      if (v5)
+      if (aCopy)
       {
         objc_msgSend_functionSpecForFunctionIndex_(TSCEFunctionSpec, v8, 16, v10, v11);
       }
@@ -1141,10 +1141,10 @@ LABEL_7:
   return v5;
 }
 
-- (id)valueForType:(unsigned __int8)a3
+- (id)valueForType:(unsigned __int8)type
 {
-  v5 = a3;
-  if (objc_msgSend_isCircularReference(self, a2, a3, v3, v4))
+  typeCopy = type;
+  if (objc_msgSend_isCircularReference(self, a2, type, v3, v4))
   {
     v11 = objc_msgSend_circularReferenceError(TSCEError, v7, v8, v9, v10);
     v15 = objc_msgSend_errorValue_(TSCEErrorValue, v12, v11, v13, v14);
@@ -1162,7 +1162,7 @@ LABEL_13:
   {
     if (objc_msgSend_countRows(self, v7, v8, v9, v10))
     {
-      switch(v5)
+      switch(typeCopy)
       {
         case 0:
           goto LABEL_11;
@@ -1232,7 +1232,7 @@ LABEL_13:
           v45 = objc_msgSend_rangeValue(self, v16, v17, v18, v19);
           goto LABEL_12;
         default:
-          if (v5 != 240 && v5 != 255)
+          if (typeCopy != 240 && typeCopy != 255)
           {
             goto LABEL_13;
           }

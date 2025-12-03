@@ -1,10 +1,10 @@
 @interface VCPMetaSegment
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRange;
 - (VCPMetaSegment)init;
-- (void)finalizeAtTime:(id *)a3;
-- (void)mergeSegment:(id)a3;
-- (void)resetSegment:(id *)a3;
-- (void)updateSegment:(id *)a3;
+- (void)finalizeAtTime:(id *)time;
+- (void)mergeSegment:(id)segment;
+- (void)resetSegment:(id *)segment;
+- (void)updateSegment:(id *)segment;
 @end
 
 @implementation VCPMetaSegment
@@ -29,18 +29,18 @@
   return v3;
 }
 
-- (void)updateSegment:(id *)a3
+- (void)updateSegment:(id *)segment
 {
-  lhs = *a3;
+  lhs = *segment;
   rhs = self->_timeRange.start;
   CMTimeSubtract(&v4, &lhs, &rhs);
   self->_timeRange.duration = v4;
   ++self->_numOfFrames;
 }
 
-- (void)resetSegment:(id *)a3
+- (void)resetSegment:(id *)segment
 {
-  start = *a3;
+  start = *segment;
   v5 = **&MEMORY[0x1E6960CC0];
   CMTimeRangeMake(&v7, &start, &v5);
   v4 = *&v7.start.epoch;
@@ -50,17 +50,17 @@
   self->_numOfFrames = 1;
 }
 
-- (void)mergeSegment:(id)a3
+- (void)mergeSegment:(id)segment
 {
-  v4 = a3;
-  self->_numOfFrames += [v4 numOfFrames];
+  segmentCopy = segment;
+  self->_numOfFrames += [segmentCopy numOfFrames];
   v5 = *&self->_timeRange.start.epoch;
   *&range.start.value = *&self->_timeRange.start.value;
   *&range.start.epoch = v5;
   *&range.duration.timescale = *&self->_timeRange.duration.timescale;
-  if (v4)
+  if (segmentCopy)
   {
-    [v4 timeRange];
+    [segmentCopy timeRange];
   }
 
   else
@@ -75,9 +75,9 @@
   *&self->_timeRange.duration.timescale = *&v9.duration.timescale;
 }
 
-- (void)finalizeAtTime:(id *)a3
+- (void)finalizeAtTime:(id *)time
 {
-  lhs = *a3;
+  lhs = *time;
   rhs = self->_timeRange.start;
   CMTimeSubtract(&v4, &lhs, &rhs);
   self->_timeRange.duration = v4;

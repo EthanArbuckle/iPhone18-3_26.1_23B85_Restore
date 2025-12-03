@@ -1,21 +1,21 @@
 @interface FinHealthFeatureHelper
-+ (id)reconstructAggregateFeaturesWithProcessingWindow:(id)a3;
-+ (id)reconstructCompoundFeatures:(id)a3;
-+ (unint64_t)transactionProcessingDateForFeature:(id)a3;
++ (id)reconstructAggregateFeaturesWithProcessingWindow:(id)window;
++ (id)reconstructCompoundFeatures:(id)features;
++ (unint64_t)transactionProcessingDateForFeature:(id)feature;
 @end
 
 @implementation FinHealthFeatureHelper
 
-+ (id)reconstructAggregateFeaturesWithProcessingWindow:(id)a3
++ (id)reconstructAggregateFeaturesWithProcessingWindow:(id)window
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  windowCopy = window;
   v4 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = windowCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
@@ -77,15 +77,15 @@ LABEL_10:
   return v22;
 }
 
-+ (id)reconstructCompoundFeatures:(id)a3
++ (id)reconstructCompoundFeatures:(id)features
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  featuresCopy = features;
   v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (v3)
+  if (featuresCopy)
   {
     v4 = MEMORY[0x277CCAAA0];
-    v5 = [v3 dataUsingEncoding:4];
+    v5 = [featuresCopy dataUsingEncoding:4];
     v55 = 0;
     v6 = [v4 JSONObjectWithData:v5 options:0 error:&v55];
     v7 = v55;
@@ -96,14 +96,14 @@ LABEL_10:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v8 = [v6 allKeys];
-      v41 = [v8 countByEnumeratingWithState:&v51 objects:v61 count:16];
+      allKeys = [v6 allKeys];
+      v41 = [allKeys countByEnumeratingWithState:&v51 objects:v61 count:16];
       if (v41)
       {
         v35 = v7;
-        v36 = v3;
+        v36 = featuresCopy;
         v37 = *v52;
-        v38 = v8;
+        v38 = allKeys;
         v39 = v6;
         do
         {
@@ -112,7 +112,7 @@ LABEL_10:
           {
             if (*v52 != v37)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allKeys);
             }
 
             v43 = v9;
@@ -179,7 +179,7 @@ LABEL_10:
             [v40 setValue:v30 forKey:v42];
 
             v9 = v43 + 1;
-            v8 = v38;
+            allKeys = v38;
             v6 = v39;
           }
 
@@ -189,21 +189,21 @@ LABEL_10:
 
         while (v41);
         v7 = v35;
-        v3 = v36;
+        featuresCopy = v36;
       }
     }
 
     else
     {
-      v8 = FinHealthLogObject(@"FinHealthCore");
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      allKeys = FinHealthLogObject(@"FinHealthCore");
+      if (os_log_type_enabled(allKeys, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138412546;
-        v57 = v3;
+        v57 = featuresCopy;
         v58 = 2112;
-        v59 = v31;
-        _os_log_impl(&dword_226DD4000, v8, OS_LOG_TYPE_DEBUG, "Failed to parse {%@} with error: %@", buf, 0x16u);
+        v59 = localizedDescription;
+        _os_log_impl(&dword_226DD4000, allKeys, OS_LOG_TYPE_DEBUG, "Failed to parse {%@} with error: %@", buf, 0x16u);
       }
     }
   }
@@ -215,9 +215,9 @@ LABEL_10:
   return v32;
 }
 
-+ (unint64_t)transactionProcessingDateForFeature:(id)a3
++ (unint64_t)transactionProcessingDateForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = [[FHDatabaseEntity alloc] initWithEntity:@"fh_processing_history"];
   v5 = [FHDatabaseClauseFromBuilder initWithBuilder:&__block_literal_global_515];
   v9 = 0;

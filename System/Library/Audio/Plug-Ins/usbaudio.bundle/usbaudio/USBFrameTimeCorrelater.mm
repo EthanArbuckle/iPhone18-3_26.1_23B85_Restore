@@ -1,21 +1,21 @@
 @interface USBFrameTimeCorrelater
-- (BOOL)start:(unsigned __int8)a3;
-- (USBFrameTimeCorrelater)initWithIOUSBHostObject:(id)a3;
+- (BOOL)start:(unsigned __int8)start;
+- (USBFrameTimeCorrelater)initWithIOUSBHostObject:(id)object;
 - (USBFrameTimeCorrelaterStatistics)getStatistics;
 - (id).cxx_construct;
-- (unint64_t)timeforUSBFrame:(unint64_t)a3;
+- (unint64_t)timeforUSBFrame:(unint64_t)frame;
 - (unint64_t)updateCurrentMicroframeTimestamp;
 - (unint64_t)updateReferenceMicroframeTimestamp;
-- (unint64_t)updateTimestampsWithRetries:(int)a3;
+- (unint64_t)updateTimestampsWithRetries:(int)retries;
 - (void)dealloc;
 - (void)stop;
 @end
 
 @implementation USBFrameTimeCorrelater
 
-- (USBFrameTimeCorrelater)initWithIOUSBHostObject:(id)a3
+- (USBFrameTimeCorrelater)initWithIOUSBHostObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   self->_correlationStatus = 0;
   if ((atomic_load_explicit(&qword_1001796A0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1001796A0))
   {
@@ -31,7 +31,7 @@
   }
 
   self->_kPreemptionLimitMach = v6;
-  objc_storeStrong(&self->_usbHostObject, a3);
+  objc_storeStrong(&self->_usbHostObject, object);
   v7 = objc_alloc_init(AUAPeriodicEventRT);
   timer = self->_timer;
   self->_timer = v7;
@@ -150,15 +150,15 @@
   return result;
 }
 
-- (BOOL)start:(unsigned __int8)a3
+- (BOOL)start:(unsigned __int8)start
 {
-  v3 = a3;
+  startCopy = start;
   os_unfair_lock_lock(&self->_startLock);
   ++self->_startCount;
   started = self->_started;
   if (!started)
   {
-    if (v3)
+    if (startCopy)
     {
       v6 = self->_hasHardwareTimestamping == 0;
     }
@@ -311,16 +311,16 @@ LABEL_5:
   os_unfair_lock_unlock(p_startLock);
 }
 
-- (unint64_t)timeforUSBFrame:(unint64_t)a3
+- (unint64_t)timeforUSBFrame:(unint64_t)frame
 {
-  v3 = 8 * a3;
+  v3 = 8 * frame;
   sub_100004348(&self->_tc.timePairs.mSlots.__elems_[1].mValue.machPerMicroframe, &v5);
   return v5.n128_u64[1] + (v6 * (v3 - v5.n128_u64[0]));
 }
 
-- (unint64_t)updateTimestampsWithRetries:(int)a3
+- (unint64_t)updateTimestampsWithRetries:(int)retries
 {
-  v4 = (a3 & ~(a3 >> 31)) + 1;
+  v4 = (retries & ~(retries >> 31)) + 1;
   while (--v4)
   {
     if (self->_useHardwareTimestamping)
@@ -451,11 +451,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v6 = [v4 code];
-  v7 = v6;
+  code = [v4 code];
+  v7 = code;
   if (v3)
   {
-    v8 = v6 == 0;
+    v8 = code == 0;
   }
 
   else

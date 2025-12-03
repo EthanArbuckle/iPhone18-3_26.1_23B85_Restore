@@ -1,7 +1,7 @@
 @interface FigRoutePredictionFetchOneShotCompletion
-- (FigRoutePredictionFetchOneShotCompletion)initWithCompletionHandler:(id)a3;
+- (FigRoutePredictionFetchOneShotCompletion)initWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)invokeWithRoutePredictions:(id)a3 predictionContext:(id)a4;
+- (void)invokeWithRoutePredictions:(id)predictions predictionContext:(id)context;
 @end
 
 @implementation FigRoutePredictionFetchOneShotCompletion
@@ -13,23 +13,23 @@
   [(FigRoutePredictionFetchOneShotCompletion *)&v3 dealloc];
 }
 
-- (void)invokeWithRoutePredictions:(id)a3 predictionContext:(id)a4
+- (void)invokeWithRoutePredictions:(id)predictions predictionContext:(id)context
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, a3, a4);
+    completionHandler[2](completionHandler, predictions, context);
 
     self->_completionHandler = 0;
   }
 }
 
-- (FigRoutePredictionFetchOneShotCompletion)initWithCompletionHandler:(id)a3
+- (FigRoutePredictionFetchOneShotCompletion)initWithCompletionHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = FigRoutePredictionFetchOneShotCompletion;
   v4 = [(FigRoutePredictionFetchOneShotCompletion *)&v8 init];
-  if (v4 && (v5 = [a3 copy], (v4->_completionHandler = v5) != 0))
+  if (v4 && (v5 = [handler copy], (v4->_completionHandler = v5) != 0))
   {
     v6 = v4;
   }

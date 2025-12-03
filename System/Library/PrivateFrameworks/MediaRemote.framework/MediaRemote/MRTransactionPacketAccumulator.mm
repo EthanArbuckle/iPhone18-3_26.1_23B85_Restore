@@ -1,6 +1,6 @@
 @interface MRTransactionPacketAccumulator
 - (MRTransactionPacketAccumulator)init;
-- (id)mergePacket:(id)a3;
+- (id)mergePacket:(id)packet;
 @end
 
 @implementation MRTransactionPacketAccumulator
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (id)mergePacket:(id)a3
+- (id)mergePacket:(id)packet
 {
-  v5 = a3;
-  v6 = [v5 actualLength];
+  packetCopy = packet;
+  actualLength = [packetCopy actualLength];
   packets = self->_packets;
-  self->_currentLength += v6;
-  [(NSMutableOrderedSet *)packets addObject:v5];
+  self->_currentLength += actualLength;
+  [(NSMutableOrderedSet *)packets addObject:packetCopy];
   currentLength = self->_currentLength;
-  if (currentLength > [v5 totalLength])
+  if (currentLength > [packetCopy totalLength])
   {
     [MRTransactionPacketAccumulator mergePacket:];
   }
 
-  if ([v5 totalLength] == self->_currentLength)
+  if ([packetCopy totalLength] == self->_currentLength)
   {
     v9 = self->_packets;
     v12[0] = MEMORY[0x1E69E9820];

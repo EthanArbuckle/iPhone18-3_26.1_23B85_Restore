@@ -1,8 +1,8 @@
 @interface PlayButton
 - (CGSize)intrinsicContentSize;
 - (NSString)accessibilityLabel;
-- (_TtC23ShelfKitCollectionViews10PlayButton)initWithFrame:(CGRect)a3;
-- (void)setAccessibilityLabel:(id)a3;
+- (_TtC23ShelfKitCollectionViews10PlayButton)initWithFrame:(CGRect)frame;
+- (void)setAccessibilityLabel:(id)label;
 - (void)tintColorDidChange;
 - (void)trigger;
 @end
@@ -11,7 +11,7 @@
 
 - (void)trigger
 {
-  v2 = self;
+  selfCopy = self;
   sub_2A450C();
 }
 
@@ -26,7 +26,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   PlayButton.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -54,27 +54,27 @@
   return v8;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (label)
   {
     sub_30C0D8();
-    v6 = self;
-    a3 = sub_30C098();
+    selfCopy = self;
+    label = sub_30C098();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(PlayButton *)&v8 setAccessibilityLabel:a3];
+  [(PlayButton *)&v8 setAccessibilityLabel:label];
 }
 
-- (_TtC23ShelfKitCollectionViews10PlayButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews10PlayButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

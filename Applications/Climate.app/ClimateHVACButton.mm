@@ -1,20 +1,20 @@
 @interface ClimateHVACButton
-- (void)cabinService:(id)a3 didUpdateHvacOn:(BOOL)a4;
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3;
+- (void)cabinService:(id)service didUpdateHvacOn:(BOOL)on;
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter;
 @end
 
 @implementation ClimateHVACButton
 
-- (void)cabinService:(id)a3 didUpdateHvacOn:(BOOL)a4
+- (void)cabinService:(id)service didUpdateHvacOn:(BOOL)on
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_10005771C();
 }
 
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter
 {
-  v3 = self;
+  selfCopy = self;
   sub_100057284();
 }
 

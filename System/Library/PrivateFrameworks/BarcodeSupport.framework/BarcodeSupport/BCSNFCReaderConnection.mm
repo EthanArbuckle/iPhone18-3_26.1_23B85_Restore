@@ -6,11 +6,11 @@
 - (int64_t)_hardwareSupportState;
 - (void)_enableNFC;
 - (void)_isNFCEnabled;
-- (void)checkHardwareSupportStateWithCompletionHandler:(id)a3;
-- (void)checkNFCEnabledWithCompletionHandler:(id)a3;
+- (void)checkHardwareSupportStateWithCompletionHandler:(id)handler;
+- (void)checkNFCEnabledWithCompletionHandler:(id)handler;
 - (void)disconnect;
-- (void)enableNFCWithCompletionHandler:(id)a3;
-- (void)startReaderWithDelegate:(id)a3 errorHandler:(id)a4 interruptionHandler:(id)a5;
+- (void)enableNFCWithCompletionHandler:(id)handler;
+- (void)startReaderWithDelegate:(id)delegate errorHandler:(id)handler interruptionHandler:(id)interruptionHandler;
 @end
 
 @implementation BCSNFCReaderConnection
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (void)checkNFCEnabledWithCompletionHandler:(id)a3
+- (void)checkNFCEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__BCSNFCReaderConnection_checkNFCEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_278CFE7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -67,8 +67,8 @@ void __63__BCSNFCReaderConnection_checkNFCEnabledWithCompletionHandler___block_i
   }
 
   v7 = 0;
-  v2 = [getNFHardwareManagerClass_0() sharedHardwareManager];
-  v3 = [v2 getRadioEnabledSetting:&v7];
+  sharedHardwareManager = [getNFHardwareManagerClass_0() sharedHardwareManager];
+  v3 = [sharedHardwareManager getRadioEnabledSetting:&v7];
 
   if (v3)
   {
@@ -111,17 +111,17 @@ void __49__BCSNFCReaderConnection__needsRadioEnabledCheck__block_invoke()
   }
 }
 
-- (void)enableNFCWithCompletionHandler:(id)a3
+- (void)enableNFCWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__BCSNFCReaderConnection_enableNFCWithCompletionHandler___block_invoke;
   v7[3] = &unk_278CFE7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -139,8 +139,8 @@ void __57__BCSNFCReaderConnection_enableNFCWithCompletionHandler___block_invoke(
 
 - (BOOL)_enableNFC
 {
-  v2 = [getNFHardwareManagerClass_0() sharedHardwareManager];
-  v3 = [v2 setRadioEnabledSetting:1];
+  sharedHardwareManager = [getNFHardwareManagerClass_0() sharedHardwareManager];
+  v3 = [sharedHardwareManager setRadioEnabledSetting:1];
 
   if (v3)
   {
@@ -159,17 +159,17 @@ void __57__BCSNFCReaderConnection_enableNFCWithCompletionHandler___block_invoke(
   return v3 == 0;
 }
 
-- (void)checkHardwareSupportStateWithCompletionHandler:(id)a3
+- (void)checkHardwareSupportStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__BCSNFCReaderConnection_checkHardwareSupportStateWithCompletionHandler___block_invoke;
   v7[3] = &unk_278CFE7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -187,9 +187,9 @@ void __73__BCSNFCReaderConnection_checkHardwareSupportStateWithCompletionHandler
 
 - (int64_t)_hardwareSupportState
 {
-  v2 = [getNFHardwareManagerClass_0() sharedHardwareManager];
+  sharedHardwareManager = [getNFHardwareManagerClass_0() sharedHardwareManager];
   v8 = 0;
-  v3 = [v2 queryHardwareSupport:&v8];
+  v3 = [sharedHardwareManager queryHardwareSupport:&v8];
   v4 = v8;
 
   v5 = 1;
@@ -209,11 +209,11 @@ void __73__BCSNFCReaderConnection_checkHardwareSupportStateWithCompletionHandler
   }
 }
 
-- (void)startReaderWithDelegate:(id)a3 errorHandler:(id)a4 interruptionHandler:(id)a5
+- (void)startReaderWithDelegate:(id)delegate errorHandler:(id)handler interruptionHandler:(id)interruptionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  interruptionHandlerCopy = interruptionHandler;
   if (self->_notificationServiceConnection)
   {
     if (readerConnectionLog_onceToken != -1)
@@ -232,8 +232,8 @@ void __73__BCSNFCReaderConnection_checkHardwareSupportStateWithCompletionHandler
   notificationServiceConnection = self->_notificationServiceConnection;
   self->_notificationServiceConnection = v12;
 
-  [(BCSNotificationServiceConnection *)self->_notificationServiceConnection setInterruptionHandler:v10];
-  [(BCSNotificationServiceConnection *)self->_notificationServiceConnection startNFCReaderWithDelegate:v8 errorHandler:v9];
+  [(BCSNotificationServiceConnection *)self->_notificationServiceConnection setInterruptionHandler:interruptionHandlerCopy];
+  [(BCSNotificationServiceConnection *)self->_notificationServiceConnection startNFCReaderWithDelegate:delegateCopy errorHandler:handlerCopy];
 }
 
 - (void)disconnect
@@ -246,8 +246,8 @@ void __73__BCSNFCReaderConnection_checkHardwareSupportStateWithCompletionHandler
 - (void)_isNFCEnabled
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 _bcs_privacyPreservingDescription];
+  selfCopy = self;
+  _bcs_privacyPreservingDescription = [a2 _bcs_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_1(&dword_241993000, v5, v6, "Get radio enabled error: %@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -256,8 +256,8 @@ void __73__BCSNFCReaderConnection_checkHardwareSupportStateWithCompletionHandler
 - (void)_enableNFC
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 _bcs_privacyPreservingDescription];
+  selfCopy = self;
+  _bcs_privacyPreservingDescription = [a2 _bcs_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_1(&dword_241993000, v5, v6, "Failed to enable radio: %@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];

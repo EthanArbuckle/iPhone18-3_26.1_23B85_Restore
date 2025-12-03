@@ -1,46 +1,46 @@
 @interface WOHealthBridgeProtoPersistenceArray
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPersistences:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPersistences:(id)persistences;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WOHealthBridgeProtoPersistenceArray
 
-- (void)addPersistences:(id)a3
+- (void)addPersistences:(id)persistences
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v6->_persistences)
+  objc_storeStrong(location, persistences);
+  if (!selfCopy->_persistences)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    persistences = v6->_persistences;
-    v6->_persistences = v3;
+    persistences = selfCopy->_persistences;
+    selfCopy->_persistences = v3;
     MEMORY[0x277D82BD8](persistences);
   }
 
-  [(NSMutableArray *)v6->_persistences addObject:location[0]];
+  [(NSMutableArray *)selfCopy->_persistences addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (id)description
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = WOHealthBridgeProtoPersistenceArray;
   v5 = [(WOHealthBridgeProtoPersistenceArray *)&v7 description];
-  v4 = [(WOHealthBridgeProtoPersistenceArray *)v9 dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v5, v4];
-  MEMORY[0x277D82BD8](v4);
+  dictionaryRepresentation = [(WOHealthBridgeProtoPersistenceArray *)selfCopy dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v5, dictionaryRepresentation];
+  MEMORY[0x277D82BD8](dictionaryRepresentation);
   MEMORY[0x277D82BD8](v5);
 
   return v6;
@@ -49,14 +49,14 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = [MEMORY[0x277CBEB38] dictionary];
-  if ([(NSMutableArray *)v16->_persistences count])
+  if ([(NSMutableArray *)selfCopy->_persistences count])
   {
-    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](v16->_persistences, "count")}];
+    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](selfCopy->_persistences, "count")}];
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x277D82BE0](v16->_persistences);
+    obj = MEMORY[0x277D82BE0](selfCopy->_persistences);
     v11 = [obj countByEnumeratingWithState:__b objects:v17 count:16];
     if (v11)
     {
@@ -73,9 +73,9 @@
 
         v13 = *(__b[1] + 8 * v8);
         v4 = v14;
-        v5 = [v13 dictionaryRepresentation];
+        dictionaryRepresentation = [v13 dictionaryRepresentation];
         [v4 addObject:?];
-        MEMORY[0x277D82BD8](v5);
+        MEMORY[0x277D82BD8](dictionaryRepresentation);
         ++v8;
         if (v6 + 1 >= v9)
         {
@@ -101,26 +101,26 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = WOHealthBridgeProtoPersistenceArrayReadFrom(v6, location[0]);
+  objc_storeStrong(location, from);
+  v4 = WOHealthBridgeProtoPersistenceArrayReadFrom(selfCopy, location[0]);
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, to);
   memset(__b, 0, 0x40uLL);
-  obj = MEMORY[0x277D82BE0](v11->_persistences);
+  obj = MEMORY[0x277D82BE0](selfCopy->_persistences);
   v8 = [obj countByEnumeratingWithState:__b objects:v12 count:16];
   if (v8)
   {
@@ -155,20 +155,20 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(WOHealthBridgeProtoPersistenceArray *)v8 persistencesCount])
+  objc_storeStrong(location, to);
+  if ([(WOHealthBridgeProtoPersistenceArray *)selfCopy persistencesCount])
   {
     [location[0] clearPersistences];
-    v6 = [(WOHealthBridgeProtoPersistenceArray *)v8 persistencesCount];
-    for (i = 0; i < v6; ++i)
+    persistencesCount = [(WOHealthBridgeProtoPersistenceArray *)selfCopy persistencesCount];
+    for (i = 0; i < persistencesCount; ++i)
     {
       v3 = location[0];
-      v4 = [(WOHealthBridgeProtoPersistenceArray *)v8 persistencesAtIndex:i];
+      v4 = [(WOHealthBridgeProtoPersistenceArray *)selfCopy persistencesAtIndex:i];
       [v3 addPersistences:?];
       MEMORY[0x277D82BD8](v4);
     }
@@ -177,15 +177,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  zoneCopy = zone;
+  v14 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v17->_persistences);
+  obj = MEMORY[0x277D82BE0](selfCopy->_persistences);
   v10 = [obj countByEnumeratingWithState:__b objects:v18 count:16];
   if (v10)
   {
@@ -201,7 +201,7 @@
       }
 
       v13 = *(__b[1] + 8 * v7);
-      v11 = [v13 copyWithZone:v15];
+      v11 = [v13 copyWithZone:zoneCopy];
       [v14 addPersistences:v11];
       objc_storeStrong(&v11, 0);
       ++v7;
@@ -224,19 +224,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   v6 = MEMORY[0x277D82BE0](location[0]);
   v5 = 0;
   if ([v6 isMemberOfClass:objc_opt_class()])
   {
-    if (v8->_persistences || (v4 = 1, *(v6 + 1)))
+    if (selfCopy->_persistences || (v4 = 1, *(v6 + 1)))
     {
-      v4 = [(NSMutableArray *)v8->_persistences isEqual:*(v6 + 1)];
+      v4 = [(NSMutableArray *)selfCopy->_persistences isEqual:*(v6 + 1)];
     }
 
     v5 = v4;
@@ -247,13 +247,13 @@
   return v5 & 1;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, from);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](*(location[0] + 1));
   v9 = [obj countByEnumeratingWithState:__b objects:v14 count:16];
@@ -271,7 +271,7 @@
       }
 
       v11 = *(__b[1] + 8 * v6);
-      [(WOHealthBridgeProtoPersistenceArray *)v13 addPersistences:v11, v7];
+      [(WOHealthBridgeProtoPersistenceArray *)selfCopy addPersistences:v11, v7];
       ++v6;
       v7 = v3;
       if (v4 + 1 >= v3)

@@ -1,8 +1,8 @@
 @interface ICQAppsSyncingToDriveCache
 + (id)sharedInstance;
 - (ICQAppsSyncingToDriveCache)init;
-- (id)appsSyncingToDriveforAltDSID:(id)a3;
-- (void)setAppsSyncingToDrive:(id)a3 forAltDSID:(id)a4;
+- (id)appsSyncingToDriveforAltDSID:(id)d;
+- (void)setAppsSyncingToDrive:(id)drive forAltDSID:(id)d;
 @end
 
 @implementation ICQAppsSyncingToDriveCache
@@ -45,21 +45,21 @@ uint64_t __44__ICQAppsSyncingToDriveCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)setAppsSyncingToDrive:(id)a3 forAltDSID:(id)a4
+- (void)setAppsSyncingToDrive:(id)drive forAltDSID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  driveCopy = drive;
   os_unfair_lock_lock(&self->_cacheLock);
-  [(NSMutableDictionary *)self->_hashMap setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_hashMap setObject:driveCopy forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (id)appsSyncingToDriveforAltDSID:(id)a3
+- (id)appsSyncingToDriveforAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_cacheLock);
-  v5 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_hashMap objectForKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 

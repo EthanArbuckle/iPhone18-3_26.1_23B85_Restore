@@ -1,19 +1,19 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC22TodayFeedConfigDecoder15ServiceDelegate)init;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = NDTodayFeedConfigDecodingServiceXPCInterface();
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = [objc_allocWithZone(type metadata accessor for TodayFeedConfigDecodingService()) init];
-  [v4 setExportedObject:v6];
-  [v4 resume];
+  [connectionCopy setExportedObject:v6];
+  [connectionCopy resume];
 
   return 1;
 }

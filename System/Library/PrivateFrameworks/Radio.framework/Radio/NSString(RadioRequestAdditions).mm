@@ -13,8 +13,8 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [v5 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,7 +26,7 @@
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
@@ -34,7 +34,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = v12;
+          stringValue = v12;
           goto LABEL_13;
         }
 
@@ -46,10 +46,10 @@
             goto LABEL_17;
           }
 
-          v13 = [v12 stringValue];
+          stringValue = [v12 stringValue];
 LABEL_13:
-          v15 = v13;
-          if (!v13)
+          v15 = stringValue;
+          if (!stringValue)
           {
             goto LABEL_17;
           }
@@ -81,7 +81,7 @@ LABEL_17:
       }
 
       while (v8 != v10);
-      v17 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
       v8 = v17;
     }
 

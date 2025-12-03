@@ -1,14 +1,14 @@
 @interface WFEventSignificantFigureValueTransformer
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation WFEventSignificantFigureValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    [a3 floatValue];
+    [value floatValue];
     v5 = v4;
     v6 = log10(fabsf(v4));
     v7 = __exp10((vcvtpd_s64_f64(v6) - 2));

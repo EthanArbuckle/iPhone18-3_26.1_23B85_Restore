@@ -1,47 +1,47 @@
 @interface PassthroughWindow
-- (_TtC17SequoiaTranslator17PassthroughWindow)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator17PassthroughWindow)initWithFrame:(CGRect)a3;
-- (_TtC17SequoiaTranslator17PassthroughWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC17SequoiaTranslator17PassthroughWindow)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator17PassthroughWindow)initWithFrame:(CGRect)frame;
+- (_TtC17SequoiaTranslator17PassthroughWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PassthroughWindow
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1001A0B0C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1001A0B0C(event, x, y);
 
   return v10;
 }
 
-- (_TtC17SequoiaTranslator17PassthroughWindow)initWithWindowScene:(id)a3
+- (_TtC17SequoiaTranslator17PassthroughWindow)initWithWindowScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for PassthroughWindow();
-  return [(PassthroughWindow *)&v5 initWithWindowScene:a3];
+  return [(PassthroughWindow *)&v5 initWithWindowScene:scene];
 }
 
-- (_TtC17SequoiaTranslator17PassthroughWindow)initWithFrame:(CGRect)a3
+- (_TtC17SequoiaTranslator17PassthroughWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PassthroughWindow();
   return [(PassthroughWindow *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC17SequoiaTranslator17PassthroughWindow)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator17PassthroughWindow)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PassthroughWindow();
-  v4 = a3;
-  v5 = [(PassthroughWindow *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PassthroughWindow *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

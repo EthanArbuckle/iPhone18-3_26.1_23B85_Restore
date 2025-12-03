@@ -1,19 +1,19 @@
 @interface _TVListTemplateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setBannerView:(id)a3;
-- (void)setListView:(id)a3;
-- (void)setPreviewView:(id)a3;
+- (void)setBannerView:(id)view;
+- (void)setListView:(id)view;
+- (void)setPreviewView:(id)view;
 @end
 
 @implementation _TVListTemplateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVListTemplateView" hasInstanceMethod:@"setBannerView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_TVListTemplateView" hasInstanceMethod:@"setListView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_TVListTemplateView" hasInstanceMethod:@"setPreviewView:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVListTemplateView" hasInstanceMethod:@"setBannerView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_TVListTemplateView" hasInstanceMethod:@"setListView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_TVListTemplateView" hasInstanceMethod:@"setPreviewView:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,7 +25,7 @@
   v3 = NSClassFromString(&cfstr_Tvlabel_0.isa);
   NSClassFromString(&cfstr_Tvcollectionwr_0.isa);
   NSClassFromString(&cfstr_Tvlistview.isa);
-  v31 = self;
+  selfCopy = self;
   v4 = [(_TVListTemplateViewAccessibility *)self safeValueForKey:@"bannerView"];
   v37 = 0u;
   v38 = 0u;
@@ -65,8 +65,8 @@
     while (v7);
   }
 
-  v11 = v31;
-  v12 = [(_TVListTemplateViewAccessibility *)v31 safeValueForKey:@"listView"];
+  v11 = selfCopy;
+  v12 = [(_TVListTemplateViewAccessibility *)selfCopy safeValueForKey:@"listView"];
   if (objc_opt_isKindOfClass())
   {
     v34 = 0u;
@@ -74,8 +74,8 @@
     v32 = 0u;
     v33 = 0u;
     v29 = v12;
-    v13 = [v12 subviews];
-    v14 = [v13 countByEnumeratingWithState:&v32 objects:v42 count:16];
+    subviews = [v12 subviews];
+    v14 = [subviews countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v14)
     {
       v15 = v14;
@@ -87,7 +87,7 @@
         {
           if (*v33 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subviews);
           }
 
           v18 = *(*(&v32 + 1) + 8 * v17);
@@ -95,11 +95,11 @@
           {
             [v18 setAccessibilityContainerType:4];
             v19 = UIKitAccessibilityLocalizedString();
-            v20 = [v18 accessibilityLabel];
-            if (([v20 containsString:v19] & 1) == 0)
+            accessibilityLabel = [v18 accessibilityLabel];
+            if (([accessibilityLabel containsString:v19] & 1) == 0)
             {
               v21 = __UIAXStringForVariables();
-              [v18 setAccessibilityLabel:{v21, v20, @"__AXStringForVariablesSentinel"}];
+              [v18 setAccessibilityLabel:{v21, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
             }
           }
 
@@ -107,58 +107,58 @@
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v32 objects:v42 count:16];
+        v15 = [subviews countByEnumeratingWithState:&v32 objects:v42 count:16];
       }
 
       while (v15);
     }
 
-    v11 = v31;
+    v11 = selfCopy;
     v12 = v29;
   }
 
   v22 = [(_TVListTemplateViewAccessibility *)v11 safeValueForKey:@"previewView"];
   if (v22)
   {
-    v23 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-    [v23 setLeafNodePredicate:&__block_literal_global_5];
-    v24 = [v22 _accessibilityLeafDescendantsWithCount:1 options:v23];
-    v25 = [v24 firstObject];
+    defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+    [defaultVoiceOverOptions setLeafNodePredicate:&__block_literal_global_5];
+    v24 = [v22 _accessibilityLeafDescendantsWithCount:1 options:defaultVoiceOverOptions];
+    firstObject = [v24 firstObject];
 
-    if (!v25)
+    if (!firstObject)
     {
-      [v23 setLeafNodePredicate:&__block_literal_global_327];
-      v26 = [v22 _accessibilityLeafDescendantsWithCount:1 options:v23];
-      v27 = [v26 firstObject];
+      [defaultVoiceOverOptions setLeafNodePredicate:&__block_literal_global_327];
+      v26 = [v22 _accessibilityLeafDescendantsWithCount:1 options:defaultVoiceOverOptions];
+      firstObject2 = [v26 firstObject];
 
-      [v27 _accessibilitySetUserDefinedIsGuideElement:1];
+      [firstObject2 _accessibilitySetUserDefinedIsGuideElement:1];
     }
   }
 
   v28 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setBannerView:(id)a3
+- (void)setBannerView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _TVListTemplateViewAccessibility;
-  [(_TVListTemplateViewAccessibility *)&v4 setBannerView:a3];
+  [(_TVListTemplateViewAccessibility *)&v4 setBannerView:view];
   [(_TVListTemplateViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setListView:(id)a3
+- (void)setListView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _TVListTemplateViewAccessibility;
-  [(_TVListTemplateViewAccessibility *)&v4 setListView:a3];
+  [(_TVListTemplateViewAccessibility *)&v4 setListView:view];
   [(_TVListTemplateViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setPreviewView:(id)a3
+- (void)setPreviewView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _TVListTemplateViewAccessibility;
-  [(_TVListTemplateViewAccessibility *)&v4 setPreviewView:a3];
+  [(_TVListTemplateViewAccessibility *)&v4 setPreviewView:view];
   [(_TVListTemplateViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }

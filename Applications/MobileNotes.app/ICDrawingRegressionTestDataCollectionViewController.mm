@@ -1,48 +1,48 @@
 @interface ICDrawingRegressionTestDataCollectionViewController
-- (ICDrawingRegressionTestDataCollectionViewController)initWithDrawingAttachments:(id)a3 description:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)saveDataForDrawingsBaseURL:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (ICDrawingRegressionTestDataCollectionViewController)initWithDrawingAttachments:(id)attachments description:(id)description;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)saveDataForDrawingsBaseURL:(id)l;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)adjustCollectionViewHeight;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)openTapToRadarWithTempDirectoryURL:(id)a3;
-- (void)openURL:(id)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)openTapToRadarWithTempDirectoryURL:(id)l;
+- (void)openURL:(id)l;
 - (void)selectAll;
-- (void)sendRadarButtonTapped:(id)a3;
+- (void)sendRadarButtonTapped:(id)tapped;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation ICDrawingRegressionTestDataCollectionViewController
 
-- (ICDrawingRegressionTestDataCollectionViewController)initWithDrawingAttachments:(id)a3 description:(id)a4
+- (ICDrawingRegressionTestDataCollectionViewController)initWithDrawingAttachments:(id)attachments description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentsCopy = attachments;
+  descriptionCopy = description;
   v32.receiver = self;
   v32.super_class = ICDrawingRegressionTestDataCollectionViewController;
   v8 = [(ICDrawingRegressionTestDataCollectionViewController *)&v32 init];
-  if (v8 && [v6 count])
+  if (v8 && [attachmentsCopy count])
   {
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
-    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
-    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
-    v12 = [v6 firstObject];
-    v13 = [v12 managedObjectContext];
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [attachmentsCopy count]);
+    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [attachmentsCopy count]);
+    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [attachmentsCopy count]);
+    firstObject = [attachmentsCopy firstObject];
+    managedObjectContext = [firstObject managedObjectContext];
 
     v24 = _NSConcreteStackBlock;
     v25 = 3221225472;
     v26 = sub_10014EDB8;
     v27 = &unk_100645DB8;
-    v28 = v6;
+    v28 = attachmentsCopy;
     v29 = v9;
     v30 = v10;
     v31 = v11;
     v14 = v11;
     v15 = v10;
     v16 = v9;
-    [v13 performBlockAndWait:&v24];
+    [managedObjectContext performBlockAndWait:&v24];
     v17 = [v16 copy];
     drawingAttachments = v8->_drawingAttachments;
     v8->_drawingAttachments = v17;
@@ -55,7 +55,7 @@
     cellImages = v8->_cellImages;
     v8->_cellImages = v21;
 
-    objc_storeStrong(&v8->_customDescription, a4);
+    objc_storeStrong(&v8->_customDescription, description);
   }
 
   return v8;
@@ -71,19 +71,19 @@
   [(ICDrawingRegressionTestDataCollectionViewController *)self setTitle:v4];
 
   v5 = +[UIColor whiteColor];
-  v6 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
+  [view setBackgroundColor:v5];
 
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelButtonTapped:"];
-  v8 = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem];
-  [v8 setLeftBarButtonItem:v7];
+  navigationItem = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 
   v9 = [UIBarButtonItem alloc];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"Submit" value:&stru_100661CF0 table:0];
   v12 = [v9 initWithTitle:v11 style:2 target:self action:"sendRadarButtonTapped:"];
-  v13 = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem];
-  [v13 setRightBarButtonItem:v12];
+  navigationItem2 = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v12];
 
   v14 = [UIScrollView alloc];
   y = CGRectZero.origin.y;
@@ -92,69 +92,69 @@
   v18 = [v14 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(ICDrawingRegressionTestDataCollectionViewController *)self setScrollView:v18];
 
-  v19 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  [v19 setAlwaysBounceVertical:1];
+  scrollView = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  [scrollView setAlwaysBounceVertical:1];
 
-  v20 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView2 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  [scrollView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
-  v22 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  [v21 addSubview:v22];
+  view2 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
+  scrollView3 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  [view2 addSubview:scrollView3];
 
-  v23 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v24 = [v23 topAnchor];
-  v25 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
-  v26 = [v25 safeAreaLayoutGuide];
-  v27 = [v26 topAnchor];
-  v28 = [v24 constraintEqualToAnchor:v27];
+  scrollView4 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  topAnchor = [scrollView4 topAnchor];
+  view3 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v28 setActive:1];
 
-  v29 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v30 = [v29 leadingAnchor];
-  v31 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
-  v32 = [v31 safeAreaLayoutGuide];
-  v33 = [v32 leadingAnchor];
-  v34 = [v30 constraintEqualToAnchor:v33];
+  scrollView5 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  leadingAnchor = [scrollView5 leadingAnchor];
+  view4 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v34 setActive:1];
 
-  v35 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v36 = [v35 trailingAnchor];
-  v37 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
-  v38 = [v37 safeAreaLayoutGuide];
-  v39 = [v38 trailingAnchor];
-  v40 = [v36 constraintEqualToAnchor:v39];
+  scrollView6 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  trailingAnchor = [scrollView6 trailingAnchor];
+  view5 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v40 setActive:1];
 
-  v41 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v42 = [v41 bottomAnchor];
-  v43 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
-  v44 = [v43 safeAreaLayoutGuide];
-  v45 = [v44 bottomAnchor];
-  v46 = [v42 constraintEqualToAnchor:v45];
+  scrollView7 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  bottomAnchor = [scrollView7 bottomAnchor];
+  view6 = [(ICDrawingRegressionTestDataCollectionViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v46 setActive:1];
 
   v47 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(ICDrawingRegressionTestDataCollectionViewController *)self setDescriptionLabel:v47];
 
-  v48 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  [v48 setNumberOfLines:0];
+  descriptionLabel = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  [descriptionLabel setNumberOfLines:0];
 
-  v49 = [(ICDrawingRegressionTestDataCollectionViewController *)self customDescription];
-  v50 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  [v50 setText:v49];
+  customDescription = [(ICDrawingRegressionTestDataCollectionViewController *)self customDescription];
+  descriptionLabel2 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  [descriptionLabel2 setText:customDescription];
 
   v51 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v52 = [v51 ic_fontWithSingleLineA];
-  v53 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  [v53 setFont:v52];
+  ic_fontWithSingleLineA = [v51 ic_fontWithSingleLineA];
+  descriptionLabel3 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  [descriptionLabel3 setFont:ic_fontWithSingleLineA];
 
-  v54 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  [v54 setTranslatesAutoresizingMaskIntoConstraints:0];
+  descriptionLabel4 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  [descriptionLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v55 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v56 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  [v55 addSubview:v56];
+  scrollView8 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  descriptionLabel5 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  [scrollView8 addSubview:descriptionLabel5];
 
   v57 = objc_alloc_init(UICollectionViewFlowLayout);
   [v57 setMinimumLineSpacing:20.0];
@@ -164,129 +164,129 @@
   v58 = [[UICollectionView alloc] initWithFrame:v57 collectionViewLayout:{CGRectZero.origin.x, y, width, height}];
   [(ICDrawingRegressionTestDataCollectionViewController *)self setCollectionView:v58];
 
-  v59 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v59 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v60 = +[UIColor whiteColor];
-  v61 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v61 setBackgroundColor:v60];
+  collectionView2 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:v60];
 
-  v62 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v62 setDataSource:self];
+  collectionView3 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView3 setDataSource:self];
 
-  v63 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v63 setDelegate:self];
+  collectionView4 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView4 setDelegate:self];
 
-  v64 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v64 setAllowsSelection:1];
+  collectionView5 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView5 setAllowsSelection:1];
 
-  v65 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v65 setAllowsMultipleSelection:1];
+  collectionView6 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView6 setAllowsMultipleSelection:1];
 
-  v66 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  collectionView7 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
   v67 = objc_opt_class();
   v68 = objc_opt_class();
   v69 = NSStringFromClass(v68);
-  [v66 registerClass:v67 forCellWithReuseIdentifier:v69];
+  [collectionView7 registerClass:v67 forCellWithReuseIdentifier:v69];
 
-  v70 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v71 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v70 addSubview:v71];
+  scrollView9 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  collectionView8 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [scrollView9 addSubview:collectionView8];
 
-  v72 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v73 = [v72 contentLayoutGuide];
-  v74 = [v73 topAnchor];
-  v75 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  v76 = [v75 topAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76 constant:-20.0];
+  scrollView10 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  contentLayoutGuide = [scrollView10 contentLayoutGuide];
+  topAnchor3 = [contentLayoutGuide topAnchor];
+  descriptionLabel6 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  topAnchor4 = [descriptionLabel6 topAnchor];
+  v77 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:-20.0];
   [v77 setActive:1];
 
-  v78 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v79 = [v78 contentLayoutGuide];
-  v80 = [v79 leadingAnchor];
-  v81 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  v82 = [v81 leadingAnchor];
-  v83 = [v80 constraintEqualToAnchor:v82 constant:-20.0];
+  scrollView11 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  contentLayoutGuide2 = [scrollView11 contentLayoutGuide];
+  leadingAnchor3 = [contentLayoutGuide2 leadingAnchor];
+  descriptionLabel7 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  leadingAnchor4 = [descriptionLabel7 leadingAnchor];
+  v83 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:-20.0];
   [v83 setActive:1];
 
-  v84 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v85 = [v84 contentLayoutGuide];
-  v86 = [v85 trailingAnchor];
-  v87 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  v88 = [v87 trailingAnchor];
-  v89 = [v86 constraintEqualToAnchor:v88 constant:20.0];
+  scrollView12 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  contentLayoutGuide3 = [scrollView12 contentLayoutGuide];
+  trailingAnchor3 = [contentLayoutGuide3 trailingAnchor];
+  descriptionLabel8 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  trailingAnchor4 = [descriptionLabel8 trailingAnchor];
+  v89 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:20.0];
   [v89 setActive:1];
 
-  v90 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
-  v91 = [v90 bottomAnchor];
-  v92 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v93 = [v92 topAnchor];
-  v94 = [v91 constraintEqualToAnchor:v93 constant:-20.0];
+  descriptionLabel9 = [(ICDrawingRegressionTestDataCollectionViewController *)self descriptionLabel];
+  bottomAnchor3 = [descriptionLabel9 bottomAnchor];
+  collectionView9 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  topAnchor5 = [collectionView9 topAnchor];
+  v94 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:-20.0];
   [v94 setActive:1];
 
-  v95 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v96 = [v95 contentLayoutGuide];
-  v97 = [v96 leadingAnchor];
-  v98 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v99 = [v98 leadingAnchor];
-  v100 = [v97 constraintEqualToAnchor:v99 constant:-20.0];
+  scrollView13 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  contentLayoutGuide4 = [scrollView13 contentLayoutGuide];
+  leadingAnchor5 = [contentLayoutGuide4 leadingAnchor];
+  collectionView10 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  leadingAnchor6 = [collectionView10 leadingAnchor];
+  v100 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:-20.0];
   [v100 setActive:1];
 
-  v101 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v102 = [v101 contentLayoutGuide];
-  v103 = [v102 trailingAnchor];
-  v104 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v105 = [v104 trailingAnchor];
-  v106 = [v103 constraintEqualToAnchor:v105 constant:20.0];
+  scrollView14 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  contentLayoutGuide5 = [scrollView14 contentLayoutGuide];
+  trailingAnchor5 = [contentLayoutGuide5 trailingAnchor];
+  collectionView11 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  trailingAnchor6 = [collectionView11 trailingAnchor];
+  v106 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:20.0];
   [v106 setActive:1];
 
-  v107 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v108 = [v107 contentLayoutGuide];
-  v109 = [v108 bottomAnchor];
-  v110 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v111 = [v110 bottomAnchor];
-  v112 = [v109 constraintEqualToAnchor:v111 constant:20.0];
+  scrollView15 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  contentLayoutGuide6 = [scrollView15 contentLayoutGuide];
+  bottomAnchor4 = [contentLayoutGuide6 bottomAnchor];
+  collectionView12 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  bottomAnchor5 = [collectionView12 bottomAnchor];
+  v112 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:20.0];
   [v112 setActive:1];
 
-  v113 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v114 = [v113 frameLayoutGuide];
-  v115 = [v114 widthAnchor];
-  v116 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v117 = [v116 widthAnchor];
-  v118 = [v115 constraintEqualToAnchor:v117 constant:-40.0];
+  collectionView13 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  frameLayoutGuide = [collectionView13 frameLayoutGuide];
+  widthAnchor = [frameLayoutGuide widthAnchor];
+  scrollView16 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  widthAnchor2 = [scrollView16 widthAnchor];
+  v118 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-40.0];
   [v118 setActive:1];
 
-  v119 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v120 = [v119 contentLayoutGuide];
-  v121 = [v120 widthAnchor];
-  v122 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  v123 = [v122 frameLayoutGuide];
-  v124 = [v123 widthAnchor];
-  v125 = [v121 constraintEqualToAnchor:v124 constant:-40.0];
+  collectionView14 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  contentLayoutGuide7 = [collectionView14 contentLayoutGuide];
+  widthAnchor3 = [contentLayoutGuide7 widthAnchor];
+  scrollView17 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  frameLayoutGuide2 = [scrollView17 frameLayoutGuide];
+  widthAnchor4 = [frameLayoutGuide2 widthAnchor];
+  v125 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 constant:-40.0];
   [v125 setActive:1];
 
-  v126 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v127 = [v126 frameLayoutGuide];
-  v128 = [v127 centerXAnchor];
-  v129 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v130 = [v129 contentLayoutGuide];
-  v131 = [v130 centerXAnchor];
-  v132 = [v128 constraintEqualToAnchor:v131];
+  collectionView15 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  frameLayoutGuide3 = [collectionView15 frameLayoutGuide];
+  centerXAnchor = [frameLayoutGuide3 centerXAnchor];
+  collectionView16 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  contentLayoutGuide8 = [collectionView16 contentLayoutGuide];
+  centerXAnchor2 = [contentLayoutGuide8 centerXAnchor];
+  v132 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v132 setActive:1];
 
-  v133 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v134 = [v133 heightAnchor];
-  v135 = [v134 constraintEqualToConstant:0.0];
+  collectionView17 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  heightAnchor = [collectionView17 heightAnchor];
+  v135 = [heightAnchor constraintEqualToConstant:0.0];
   [(ICDrawingRegressionTestDataCollectionViewController *)self setCollectionViewHeightConstraint:v135];
 
-  v136 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionViewHeightConstraint];
-  [v136 setActive:0];
+  collectionViewHeightConstraint = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionViewHeightConstraint];
+  [collectionViewHeightConstraint setActive:0];
 
-  v137 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v137 setScrollEnabled:0];
+  collectionView18 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView18 setScrollEnabled:0];
 
-  v138 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v138 reloadData];
+  collectionView19 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView19 reloadData];
 
   [(ICDrawingRegressionTestDataCollectionViewController *)self selectAll];
   [(ICDrawingRegressionTestDataCollectionViewController *)self adjustCollectionViewHeight];
@@ -299,9 +299,9 @@
     v3 = 0;
     do
     {
-      v4 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+      collectionView = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
       v5 = [NSIndexPath indexPathForRow:v3 inSection:0];
-      [v4 selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
+      [collectionView selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
 
       ++v3;
     }
@@ -312,27 +312,27 @@
 
 - (void)adjustCollectionViewHeight
 {
-  v3 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  [v3 setNeedsLayout];
+  scrollView = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  [scrollView setNeedsLayout];
 
-  v4 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
-  [v4 layoutIfNeeded];
+  scrollView2 = [(ICDrawingRegressionTestDataCollectionViewController *)self scrollView];
+  [scrollView2 layoutIfNeeded];
 
-  v5 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v5 setNeedsLayout];
+  collectionView = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView setNeedsLayout];
 
-  v6 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v6 layoutIfNeeded];
+  collectionView2 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView2 layoutIfNeeded];
 
-  v7 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  [v7 contentSize];
+  collectionView3 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  [collectionView3 contentSize];
   v9 = v8;
 
-  v10 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionViewHeightConstraint];
-  [v10 setConstant:v9];
+  collectionViewHeightConstraint = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionViewHeightConstraint];
+  [collectionViewHeightConstraint setConstant:v9];
 
-  v11 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionViewHeightConstraint];
-  [v11 setActive:1];
+  collectionViewHeightConstraint2 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionViewHeightConstraint];
+  [collectionViewHeightConstraint2 setActive:1];
 }
 
 - (void)viewDidLayoutSubviews
@@ -343,21 +343,21 @@
   [(ICDrawingRegressionTestDataCollectionViewController *)self adjustCollectionViewHeight];
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[UIApplication sharedApplication];
-  [v4 openURL:v3 options:&__NSDictionary0__struct completionHandler:0];
+  [v4 openURL:lCopy options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)sendRadarButtonTapped:(id)a3
+- (void)sendRadarButtonTapped:(id)tapped
 {
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
   v6 = NSTemporaryDirectory();
   v7 = [NSURL fileURLWithPath:v6];
-  v8 = [v7 URLByAppendingPathComponent:v5 isDirectory:1];
+  v8 = [v7 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
   v9 = objc_alloc_init(NSFileManager);
   v10 = 0;
@@ -368,9 +368,9 @@
   }
 }
 
-- (void)openTapToRadarWithTempDirectoryURL:(id)a3
+- (void)openTapToRadarWithTempDirectoryURL:(id)l
 {
-  v31 = [(ICDrawingRegressionTestDataCollectionViewController *)self saveDataForDrawingsBaseURL:a3];
+  v31 = [(ICDrawingRegressionTestDataCollectionViewController *)self saveDataForDrawingsBaseURL:l];
   v3 = objc_alloc_init(NSURLComponents);
   [v3 setScheme:@"tap-to-radar"];
   [v3 setHost:@"new"];
@@ -388,10 +388,10 @@
   [v4 addObject:v8];
 
   v9 = +[NSProcessInfo processInfo];
-  v10 = [v9 operatingSystemVersionString];
+  operatingSystemVersionString = [v9 operatingSystemVersionString];
 
-  v29 = v10;
-  v11 = [NSString stringWithFormat:@"Regression Test Data: %@", v10];
+  v29 = operatingSystemVersionString;
+  v11 = [NSString stringWithFormat:@"Regression Test Data: %@", operatingSystemVersionString];
   v12 = [[NSURLQueryItem alloc] initWithName:@"Title" value:v11];
   [v4 addObject:v12];
 
@@ -412,10 +412,10 @@
     do
     {
       v19 = [v31 objectAtIndexedSubscript:v18];
-      v20 = [v19 path];
+      path = [v19 path];
 
-      v21 = [v20 pathExtension];
-      v22 = [v21 compare:@"png" options:1];
+      pathExtension = [path pathExtension];
+      v22 = [pathExtension compare:@"png" options:1];
 
       if (v22)
       {
@@ -427,7 +427,7 @@
         v23 = v17;
       }
 
-      [v23 addObject:v20];
+      [v23 addObject:path];
 
       ++v18;
     }
@@ -454,19 +454,19 @@
   [(ICDrawingRegressionTestDataCollectionViewController *)self openURL:v28];
 }
 
-- (id)saveDataForDrawingsBaseURL:(id)a3
+- (id)saveDataForDrawingsBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSMutableArray array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
+  collectionView = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  obj = v7;
-  v23 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  obj = indexPathsForSelectedItems;
+  v23 = [indexPathsForSelectedItems countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v23)
   {
     v22 = *v30;
@@ -479,30 +479,30 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v29 + 1) + 8 * i) item];
-        v10 = [(ICDrawingRegressionTestDataCollectionViewController *)self drawings];
-        v11 = [v10 objectAtIndexedSubscript:v9];
+        item = [*(*(&v29 + 1) + 8 * i) item];
+        drawings = [(ICDrawingRegressionTestDataCollectionViewController *)self drawings];
+        v11 = [drawings objectAtIndexedSubscript:item];
 
         v12 = [v11 serializeWithPathData:1];
-        v13 = [NSString stringWithFormat:@"/drawing_%d.data", v9];
-        v14 = [v4 URLByAppendingPathComponent:v13 isDirectory:0];
+        v13 = [NSString stringWithFormat:@"/drawing_%d.data", item];
+        v14 = [lCopy URLByAppendingPathComponent:v13 isDirectory:0];
 
         [v12 writeToURL:v14 atomically:1];
         [v5 addObject:v14];
-        v15 = [(ICDrawingRegressionTestDataCollectionViewController *)self drawingAttachments];
-        v16 = [v15 objectAtIndexedSubscript:v9];
+        drawingAttachments = [(ICDrawingRegressionTestDataCollectionViewController *)self drawingAttachments];
+        v16 = [drawingAttachments objectAtIndexedSubscript:item];
 
-        v17 = [v16 managedObjectContext];
+        managedObjectContext = [v16 managedObjectContext];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_1001506C4;
         v24[3] = &unk_100649858;
         v25 = v16;
-        v26 = v4;
-        v28 = v9;
+        v26 = lCopy;
+        v28 = item;
         v27 = v5;
         v18 = v16;
-        [v17 performBlockAndWait:v24];
+        [managedObjectContext performBlockAndWait:v24];
       }
 
       v23 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -516,34 +516,34 @@
   return v19;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem:a3];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:1];
+  v5 = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem:view];
+  rightBarButtonItem = [v5 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v9 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView:a3];
-  v5 = [v9 indexPathsForSelectedItems];
-  v6 = [v5 count] != 0;
-  v7 = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  v9 = [(ICDrawingRegressionTestDataCollectionViewController *)self collectionView:view];
+  indexPathsForSelectedItems = [v9 indexPathsForSelectedItems];
+  v6 = [indexPathsForSelectedItems count] != 0;
+  navigationItem = [(ICDrawingRegressionTestDataCollectionViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v6 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = [v10 contentView];
-  v12 = [v11 subviews];
-  v13 = [v12 copy];
+  contentView = [v10 contentView];
+  subviews = [contentView subviews];
+  v13 = [subviews copy];
 
   v33 = 0u;
   v34 = 0u;
@@ -573,38 +573,38 @@
     while (v16);
   }
 
-  v19 = [(ICDrawingRegressionTestDataCollectionViewController *)self cellImages];
-  v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  cellImages = [(ICDrawingRegressionTestDataCollectionViewController *)self cellImages];
+  v20 = [cellImages objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v21 = [[UIImageView alloc] initWithImage:v20];
-  v22 = [v21 layer];
-  [v22 setMinificationFilter:kCAFilterTrilinear];
+  layer = [v21 layer];
+  [layer setMinificationFilter:kCAFilterTrilinear];
 
   [v21 setContentMode:1];
-  v23 = [v10 contentView];
-  [v23 addSubview:v21];
+  contentView2 = [v10 contentView];
+  [contentView2 addSubview:v21];
 
-  v24 = [v10 contentView];
-  [v24 bounds];
+  contentView3 = [v10 contentView];
+  [contentView3 bounds];
   [v21 setFrame:?];
 
   v25 = +[UIColor lightGrayColor];
-  v26 = [v25 CGColor];
-  v27 = [v10 layer];
-  [v27 setBorderColor:v26];
+  cGColor = [v25 CGColor];
+  layer2 = [v10 layer];
+  [layer2 setBorderColor:cGColor];
 
-  v28 = [v10 layer];
-  [v28 setBorderWidth:0.5];
+  layer3 = [v10 layer];
+  [layer3 setBorderWidth:0.5];
 
-  v29 = [v10 layer];
-  [v29 setCornerRadius:8.0];
+  layer4 = [v10 layer];
+  [layer4 setCornerRadius:8.0];
 
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(ICDrawingRegressionTestDataCollectionViewController *)self cellImages:a3];
+  v4 = [(ICDrawingRegressionTestDataCollectionViewController *)self cellImages:view];
   v5 = [v4 count];
 
   return v5;

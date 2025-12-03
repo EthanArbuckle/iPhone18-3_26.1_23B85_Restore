@@ -1,30 +1,30 @@
 @interface AWDManagementFrames
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAction:(BOOL)a3;
-- (void)setHasAssocRequest:(BOOL)a3;
-- (void)setHasAssocResponse:(BOOL)a3;
-- (void)setHasAuth:(BOOL)a3;
-- (void)setHasBeacon:(BOOL)a3;
-- (void)setHasDeauth:(BOOL)a3;
-- (void)setHasDisassoc:(BOOL)a3;
-- (void)setHasProbeRequest:(BOOL)a3;
-- (void)setHasProbeResponse:(BOOL)a3;
-- (void)setHasReassocRequest:(BOOL)a3;
-- (void)setHasReassocResponse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAction:(BOOL)action;
+- (void)setHasAssocRequest:(BOOL)request;
+- (void)setHasAssocResponse:(BOOL)response;
+- (void)setHasAuth:(BOOL)auth;
+- (void)setHasBeacon:(BOOL)beacon;
+- (void)setHasDeauth:(BOOL)deauth;
+- (void)setHasDisassoc:(BOOL)disassoc;
+- (void)setHasProbeRequest:(BOOL)request;
+- (void)setHasProbeResponse:(BOOL)response;
+- (void)setHasReassocRequest:(BOOL)request;
+- (void)setHasReassocResponse:(BOOL)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDManagementFrames
 
-- (void)setHasAssocRequest:(BOOL)a3
+- (void)setHasAssocRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAssocResponse:(BOOL)a3
+- (void)setHasAssocResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 8;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasReassocRequest:(BOOL)a3
+- (void)setHasReassocRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 1024;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasReassocResponse:(BOOL)a3
+- (void)setHasReassocResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 2048;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasProbeRequest:(BOOL)a3
+- (void)setHasProbeRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 256;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasProbeResponse:(BOOL)a3
+- (void)setHasProbeResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 512;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasBeacon:(BOOL)a3
+- (void)setHasBeacon:(BOOL)beacon
 {
-  if (a3)
+  if (beacon)
   {
     v3 = 32;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDisassoc:(BOOL)a3
+- (void)setHasDisassoc:(BOOL)disassoc
 {
-  if (a3)
+  if (disassoc)
   {
     v3 = 128;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasAuth:(BOOL)a3
+- (void)setHasAuth:(BOOL)auth
 {
-  if (a3)
+  if (auth)
   {
     v3 = 16;
   }
@@ -157,9 +157,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDeauth:(BOOL)a3
+- (void)setHasDeauth:(BOOL)deauth
 {
-  if (a3)
+  if (deauth)
   {
     v3 = 64;
   }
@@ -172,9 +172,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAction:(BOOL)a3
+- (void)setHasAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -196,11 +196,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_assocRequest), @"assocRequest"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_assocRequest), @"assocRequest"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -219,7 +219,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_assocResponse), @"assocResponse"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_assocResponse), @"assocResponse"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -233,7 +233,7 @@ LABEL_4:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_reassocRequest), @"reassocRequest"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_reassocRequest), @"reassocRequest"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -247,7 +247,7 @@ LABEL_5:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_reassocResponse), @"reassocResponse"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_reassocResponse), @"reassocResponse"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -261,7 +261,7 @@ LABEL_6:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_probeRequest), @"probeRequest"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_probeRequest), @"probeRequest"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -275,7 +275,7 @@ LABEL_7:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_probeResponse), @"probeResponse"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_probeResponse), @"probeResponse"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -289,7 +289,7 @@ LABEL_8:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beacon), @"beacon"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_beacon), @"beacon"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -303,7 +303,7 @@ LABEL_9:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_aTIM), @"ATIM"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_aTIM), @"ATIM"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -317,7 +317,7 @@ LABEL_10:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_disassoc), @"disassoc"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_disassoc), @"disassoc"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -328,17 +328,17 @@ LABEL_11:
     }
 
 LABEL_25:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deauth), @"deauth"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deauth), @"deauth"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_13;
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_auth), @"auth"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_auth), @"auth"}];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -349,13 +349,13 @@ LABEL_12:
   if ((has & 2) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_action), @"action"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_action), @"action"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -528,13 +528,13 @@ LABEL_25:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_assocRequest;
-    *(a3 + 52) |= 4u;
+    *(to + 3) = self->_assocRequest;
+    *(to + 52) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -553,8 +553,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_assocResponse;
-  *(a3 + 52) |= 8u;
+  *(to + 4) = self->_assocResponse;
+  *(to + 52) |= 8u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -568,8 +568,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  *(a3 + 11) = self->_reassocRequest;
-  *(a3 + 52) |= 0x400u;
+  *(to + 11) = self->_reassocRequest;
+  *(to + 52) |= 0x400u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -583,8 +583,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  *(a3 + 12) = self->_reassocResponse;
-  *(a3 + 52) |= 0x800u;
+  *(to + 12) = self->_reassocResponse;
+  *(to + 52) |= 0x800u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -598,8 +598,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(a3 + 9) = self->_probeRequest;
-  *(a3 + 52) |= 0x100u;
+  *(to + 9) = self->_probeRequest;
+  *(to + 52) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(a3 + 10) = self->_probeResponse;
-  *(a3 + 52) |= 0x200u;
+  *(to + 10) = self->_probeResponse;
+  *(to + 52) |= 0x200u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -628,8 +628,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(a3 + 6) = self->_beacon;
-  *(a3 + 52) |= 0x20u;
+  *(to + 6) = self->_beacon;
+  *(to + 52) |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -643,8 +643,8 @@ LABEL_9:
   }
 
 LABEL_21:
-  *(a3 + 1) = self->_aTIM;
-  *(a3 + 52) |= 1u;
+  *(to + 1) = self->_aTIM;
+  *(to + 52) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -658,8 +658,8 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(a3 + 8) = self->_disassoc;
-  *(a3 + 52) |= 0x80u;
+  *(to + 8) = self->_disassoc;
+  *(to + 52) |= 0x80u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -673,8 +673,8 @@ LABEL_11:
   }
 
 LABEL_23:
-  *(a3 + 5) = self->_auth;
-  *(a3 + 52) |= 0x10u;
+  *(to + 5) = self->_auth;
+  *(to + 52) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -685,23 +685,23 @@ LABEL_12:
     }
 
 LABEL_25:
-    *(a3 + 2) = self->_action;
-    *(a3 + 52) |= 2u;
+    *(to + 2) = self->_action;
+    *(to + 52) |= 2u;
     return;
   }
 
 LABEL_24:
-  *(a3 + 7) = self->_deauth;
-  *(a3 + 52) |= 0x40u;
+  *(to + 7) = self->_deauth;
+  *(to + 52) |= 0x40u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_25;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -873,16 +873,16 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 52);
+    v7 = *(equal + 52);
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_assocRequest != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_assocRequest != *(equal + 3))
       {
         goto LABEL_61;
       }
@@ -897,7 +897,7 @@ LABEL_61:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_assocResponse != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_assocResponse != *(equal + 4))
       {
         goto LABEL_61;
       }
@@ -910,59 +910,59 @@ LABEL_61:
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 52) & 0x400) == 0 || self->_reassocRequest != *(a3 + 11))
+      if ((*(equal + 52) & 0x400) == 0 || self->_reassocRequest != *(equal + 11))
       {
         goto LABEL_61;
       }
     }
 
-    else if ((*(a3 + 52) & 0x400) != 0)
+    else if ((*(equal + 52) & 0x400) != 0)
     {
       goto LABEL_61;
     }
 
     if ((*&self->_has & 0x800) != 0)
     {
-      if ((*(a3 + 52) & 0x800) == 0 || self->_reassocResponse != *(a3 + 12))
+      if ((*(equal + 52) & 0x800) == 0 || self->_reassocResponse != *(equal + 12))
       {
         goto LABEL_61;
       }
     }
 
-    else if ((*(a3 + 52) & 0x800) != 0)
+    else if ((*(equal + 52) & 0x800) != 0)
     {
       goto LABEL_61;
     }
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 52) & 0x100) == 0 || self->_probeRequest != *(a3 + 9))
+      if ((*(equal + 52) & 0x100) == 0 || self->_probeRequest != *(equal + 9))
       {
         goto LABEL_61;
       }
     }
 
-    else if ((*(a3 + 52) & 0x100) != 0)
+    else if ((*(equal + 52) & 0x100) != 0)
     {
       goto LABEL_61;
     }
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 52) & 0x200) == 0 || self->_probeResponse != *(a3 + 10))
+      if ((*(equal + 52) & 0x200) == 0 || self->_probeResponse != *(equal + 10))
       {
         goto LABEL_61;
       }
     }
 
-    else if ((*(a3 + 52) & 0x200) != 0)
+    else if ((*(equal + 52) & 0x200) != 0)
     {
       goto LABEL_61;
     }
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_beacon != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_beacon != *(equal + 6))
       {
         goto LABEL_61;
       }
@@ -975,7 +975,7 @@ LABEL_61:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_aTIM != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_aTIM != *(equal + 1))
       {
         goto LABEL_61;
       }
@@ -988,7 +988,7 @@ LABEL_61:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_disassoc != *(a3 + 8))
+      if ((v7 & 0x80) == 0 || self->_disassoc != *(equal + 8))
       {
         goto LABEL_61;
       }
@@ -1001,7 +1001,7 @@ LABEL_61:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_auth != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_auth != *(equal + 5))
       {
         goto LABEL_61;
       }
@@ -1014,7 +1014,7 @@ LABEL_61:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_deauth != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_deauth != *(equal + 7))
       {
         goto LABEL_61;
       }
@@ -1028,7 +1028,7 @@ LABEL_61:
     LOBYTE(v5) = (v7 & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_action != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_action != *(equal + 2))
       {
         goto LABEL_61;
       }
@@ -1207,14 +1207,14 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 4) != 0)
   {
-    self->_assocRequest = *(a3 + 3);
+    self->_assocRequest = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 52);
+    v3 = *(from + 52);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -1232,9 +1232,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_assocResponse = *(a3 + 4);
+  self->_assocResponse = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x400) == 0)
   {
 LABEL_4:
@@ -1247,9 +1247,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_reassocRequest = *(a3 + 11);
+  self->_reassocRequest = *(from + 11);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x800) == 0)
   {
 LABEL_5:
@@ -1262,9 +1262,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_reassocResponse = *(a3 + 12);
+  self->_reassocResponse = *(from + 12);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x100) == 0)
   {
 LABEL_6:
@@ -1277,9 +1277,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_probeRequest = *(a3 + 9);
+  self->_probeRequest = *(from + 9);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x200) == 0)
   {
 LABEL_7:
@@ -1292,9 +1292,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_probeResponse = *(a3 + 10);
+  self->_probeResponse = *(from + 10);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -1307,9 +1307,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_beacon = *(a3 + 6);
+  self->_beacon = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 1) == 0)
   {
 LABEL_9:
@@ -1322,9 +1322,9 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_aTIM = *(a3 + 1);
+  self->_aTIM = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x80) == 0)
   {
 LABEL_10:
@@ -1337,9 +1337,9 @@ LABEL_10:
   }
 
 LABEL_22:
-  self->_disassoc = *(a3 + 8);
+  self->_disassoc = *(from + 8);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x10) == 0)
   {
 LABEL_11:
@@ -1352,9 +1352,9 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_auth = *(a3 + 5);
+  self->_auth = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x40) == 0)
   {
 LABEL_12:
@@ -1364,15 +1364,15 @@ LABEL_12:
     }
 
 LABEL_25:
-    self->_action = *(a3 + 2);
+    self->_action = *(from + 2);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_24:
-  self->_deauth = *(a3 + 7);
+  self->_deauth = *(from + 7);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 52) & 2) != 0)
+  if ((*(from + 52) & 2) != 0)
   {
     goto LABEL_25;
   }

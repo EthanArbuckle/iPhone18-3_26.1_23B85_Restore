@@ -1,9 +1,9 @@
 @interface CSAttSiriAudioSessionStateClient
-- (CSAttSiriAudioSessionStateClient)initWithDelegate:(id)a3;
+- (CSAttSiriAudioSessionStateClient)initWithDelegate:(id)delegate;
 - (CSAttSiriSessionStateDelegate)delegate;
-- (void)dispatchStateChangedFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
+- (void)dispatchStateChangedFrom:(unint64_t)from to:(unint64_t)to;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
 @end
 
 @implementation CSAttSiriAudioSessionStateClient
@@ -15,9 +15,9 @@
   return WeakRetained;
 }
 
-- (void)dispatchStateChangedFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)dispatchStateChangedFrom:(unint64_t)from to:(unint64_t)to
 {
-  v5 = a3;
+  fromCopy = from;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,9 +26,9 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", &v34, 0xCu);
   }
 
-  if (((a4 ^ v5) & 2) != 0)
+  if (((to ^ fromCopy) & 2) != 0)
   {
-    v8 = (v5 & 2) == 0 && (a4 >> 1) & 1;
+    v8 = (fromCopy & 2) == 0 && (to >> 1) & 1;
     self->_isActiveSession = v8;
     v9 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -41,9 +41,9 @@
     }
   }
 
-  if ((a4 ^ v5))
+  if ((to ^ fromCopy))
   {
-    v10 = v5 | ((a4 & 1) == 0);
+    v10 = fromCopy | ((to & 1) == 0);
     self->_isActiveRequest = (v10 ^ 1) & 1;
     v11 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -61,9 +61,9 @@
     v10 = 0;
   }
 
-  if (((a4 ^ v5) & 4) != 0)
+  if (((to ^ fromCopy) & 4) != 0)
   {
-    v12 = (v5 & 4) == 0 && (a4 >> 2) & 1;
+    v12 = (fromCopy & 4) == 0 && (to >> 2) & 1;
     self->_isListening = v12;
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -76,20 +76,20 @@
     }
   }
 
-  if (((a4 ^ v5) & 8) == 0)
+  if (((to ^ fromCopy) & 8) == 0)
   {
     v14 = 0;
     goto LABEL_31;
   }
 
-  if ((v5 & 8) != 0)
+  if ((fromCopy & 8) != 0)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = (a4 >> 3) & 1;
+    v15 = (to >> 3) & 1;
   }
 
   if (v15 != 1)
@@ -180,30 +180,30 @@ LABEL_31:
   }
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  v8 = a3;
+  observerCopy = observer;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[CSAttSiriAudioSessionStateClient notifyObserver:didChangeStateFrom:to:]";
     v12 = 2048;
-    v13 = a4;
+    fromCopy = from;
     v14 = 2048;
-    v15 = a5;
+    toCopy = to;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s fromState:%llu, toState:%llu", &v10, 0x20u);
   }
 
-  if (self->_siriStateObserver == v8)
+  if (self->_siriStateObserver == observerCopy)
   {
-    [(CSAttSiriAudioSessionStateClient *)self dispatchStateChangedFrom:a4 to:a5];
+    [(CSAttSiriAudioSessionStateClient *)self dispatchStateChangedFrom:from to:to];
   }
 }
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v6 = a3;
+  observerCopy = observer;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -212,7 +212,7 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", &v9, 0xCu);
   }
 
-  if (self->_siriStateObserver == v6)
+  if (self->_siriStateObserver == observerCopy)
   {
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -220,15 +220,15 @@ LABEL_31:
       v9 = 136315394;
       v10 = "[CSAttSiriAudioSessionStateClient notifyObserver:didReceiveNotificationWithToken:]";
       v11 = 1024;
-      v12 = a4;
+      tokenCopy = token;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s token:%d", &v9, 0x12u);
     }
   }
 }
 
-- (CSAttSiriAudioSessionStateClient)initWithDelegate:(id)a3
+- (CSAttSiriAudioSessionStateClient)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -243,7 +243,7 @@ LABEL_31:
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v4);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     *&v7->_isSpeaking = 0;
     v8 = dispatch_queue_create("SiriStateNotificationListener", 0);
     stateNotificationQueue = v7->_stateNotificationQueue;

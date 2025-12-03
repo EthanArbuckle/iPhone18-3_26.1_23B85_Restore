@@ -1,8 +1,8 @@
 @interface CHSystemConfiguration
 - (BOOL)isCloudKitEnabled;
 - (CHSystemConfiguration)init;
-- (id)numberForKey:(id)a3;
-- (void)handleIDSServerBagFinishedLoadingNotification:(id)a3;
+- (id)numberForKey:(id)key;
+- (void)handleIDSServerBagFinishedLoadingNotification:(id)notification;
 @end
 
 @implementation CHSystemConfiguration
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CHSystemConfiguration *)self dataSource];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  dataSource = [(CHSystemConfiguration *)self dataSource];
+  v6 = [dataSource objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -45,20 +45,20 @@
 - (BOOL)isCloudKitEnabled
 {
   v2 = [(CHSystemConfiguration *)self numberForKey:@"callhistory-cloudkit-enabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)handleIDSServerBagFinishedLoadingNotification:(id)a3
+- (void)handleIDSServerBagFinishedLoadingNotification:(id)notification
 {
-  v4 = [(CHSystemConfiguration *)self delegateController];
+  delegateController = [(CHSystemConfiguration *)self delegateController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000234C;
   v5[3] = &unk_100050EB8;
   v5[4] = self;
-  [v4 enumerateDelegatesUsingBlock:v5];
+  [delegateController enumerateDelegatesUsingBlock:v5];
 }
 
 @end

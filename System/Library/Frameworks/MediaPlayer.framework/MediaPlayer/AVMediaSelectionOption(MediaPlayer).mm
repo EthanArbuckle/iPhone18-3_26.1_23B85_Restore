@@ -12,8 +12,8 @@
   v18[0] = *MEMORY[0x1E6987588];
   v18[1] = v2;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v4 = [a1 mediaType];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69875E8]];
+  mediaType = [self mediaType];
+  v5 = [mediaType isEqualToString:*MEMORY[0x1E69875E8]];
 
   if (v5)
   {
@@ -37,7 +37,7 @@
             objc_enumerationMutation(v6);
           }
 
-          if (![a1 hasMediaCharacteristic:{*(*(&v13 + 1) + 8 * v10), v13}])
+          if (![self hasMediaCharacteristic:{*(*(&v13 + 1) + 8 * v10), v13}])
           {
             v11 = 0;
             goto LABEL_13;
@@ -72,8 +72,8 @@ LABEL_13:
 - (uint64_t)mpIsOnlyAC3
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [a1 mediaSubTypes];
-  v3 = [v2 count];
+  mediaSubTypes = [self mediaSubTypes];
+  v3 = [mediaSubTypes count];
 
   if (!v3)
   {
@@ -84,8 +84,8 @@ LABEL_13:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 mediaSubTypes];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  mediaSubTypes2 = [self mediaSubTypes];
+  v5 = [mediaSubTypes2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -97,13 +97,13 @@ LABEL_13:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mediaSubTypes2);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) unsignedIntValue];
-        if (v9 > 1902207794)
+        unsignedIntValue = [*(*(&v14 + 1) + 8 * v8) unsignedIntValue];
+        if (unsignedIntValue > 1902207794)
         {
-          if (v9 != 2053202739 && v9 != 1902207795)
+          if (unsignedIntValue != 2053202739 && unsignedIntValue != 1902207795)
           {
 LABEL_22:
             v12 = 0;
@@ -111,7 +111,7 @@ LABEL_22:
           }
         }
 
-        else if (v9 != 1633889587 && v9 != 1885430579)
+        else if (unsignedIntValue != 1633889587 && unsignedIntValue != 1885430579)
         {
           goto LABEL_22;
         }
@@ -120,7 +120,7 @@ LABEL_22:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [mediaSubTypes2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

@@ -1,13 +1,13 @@
 @interface CSDConversation
-- (BOOL)_addActiveParticipantIsDisallowedByGreenTea:(id)a3;
+- (BOOL)_addActiveParticipantIsDisallowedByGreenTea:(id)tea;
 - (BOOL)_endScreenCallIfNecessary;
 - (BOOL)_expanseEnabled;
-- (BOOL)_joinIsDisallowedByGreenTeaWithContext:(id)a3;
-- (BOOL)_shouldSendSetParticipantType:(unint64_t)a3;
-- (BOOL)activitySessionManager:(id)a3 activitySessionIsJoinable:(id)a4;
-- (BOOL)activitySessionManagerShouldSupportEndOnlyForMe:(id)a3;
+- (BOOL)_joinIsDisallowedByGreenTeaWithContext:(id)context;
+- (BOOL)_shouldSendSetParticipantType:(unint64_t)type;
+- (BOOL)activitySessionManager:(id)manager activitySessionIsJoinable:(id)joinable;
+- (BOOL)activitySessionManagerShouldSupportEndOnlyForMe:(id)me;
 - (BOOL)allowsScreenSharing;
-- (BOOL)containsMemberWithHandle:(id)a3;
+- (BOOL)containsMemberWithHandle:(id)handle;
 - (BOOL)isAnyOtherAccountDeviceActive;
 - (BOOL)isAudioEnabled;
 - (BOOL)isAudioPaused;
@@ -18,7 +18,7 @@
 - (BOOL)isOneToOneModeEnabled;
 - (BOOL)isRedirectingAudio;
 - (BOOL)isRelaying;
-- (BOOL)isRepresentedByRemoteMembers:(id)a3 andLink:(id)a4;
+- (BOOL)isRepresentedByRemoteMembers:(id)members andLink:(id)link;
 - (BOOL)isScreenEnabled;
 - (BOOL)isScreenSharingInitiationAvailable;
 - (BOOL)isScreening;
@@ -26,15 +26,15 @@
 - (BOOL)isVideo;
 - (BOOL)isVideoEnabled;
 - (BOOL)isVideoPaused;
-- (BOOL)remoteJoinedActivity:(id)a3;
-- (BOOL)setConversationLink:(id)a3 allowUpdate:(BOOL)a4;
-- (BOOL)setStagedActivitySessionForActivitySession:(id)a3;
-- (BOOL)shouldRespondToLetMeInRequestForMember:(id)a3;
+- (BOOL)remoteJoinedActivity:(id)activity;
+- (BOOL)setConversationLink:(id)link allowUpdate:(BOOL)update;
+- (BOOL)setStagedActivitySessionForActivitySession:(id)session;
+- (BOOL)shouldRespondToLetMeInRequestForMember:(id)member;
 - (BOOL)supportsLeaveContext;
 - (CGRect)presentationRect;
 - (CGSize)localPortraitAspectRatio;
-- (CSDConversation)initWithQueue:(id)a3 UUID:(id)a4 groupUUID:(id)a5 groupSession:(id)a6 messagesGroupUUID:(id)a7 locallyCreated:(BOOL)a8 localMember:(id)a9 initiator:(id)a10 remoteMembers:(id)a11 pendingMembers:(id)a12 otherInvitedHandles:(id)a13 lightweightMembers:(id)a14 activity:(id)a15 link:(id)a16 report:(id)a17 fromStorage:(BOOL)a18 avMode:(unint64_t)a19 presentationMode:(unint64_t)a20 applicationController:(id)a21;
-- (CSDConversation)initWithQueue:(id)a3 UUID:(id)a4 groupUUID:(id)a5 groupSession:(id)a6 messagesGroupUUID:(id)a7 locallyCreated:(BOOL)a8 localMember:(id)a9 initiator:(id)a10 remoteMembers:(id)a11 pendingMembers:(id)a12 otherInvitedHandles:(id)a13 lightweightMembers:(id)a14 remotePushTokens:(id)a15 activity:(id)a16 link:(id)a17 report:(id)a18 fromStorage:(BOOL)a19 avMode:(unint64_t)a20 presentationMode:(unint64_t)a21 applicationController:(id)a22 featureFlags:(id)a23 systemStateObserver:(id)a24 applicationPolicyManager:(id)a25 screenSharingRequest:(id)a26 testConfiguration:(id)a27 isOldMessage:(BOOL)a28;
+- (CSDConversation)initWithQueue:(id)queue UUID:(id)d groupUUID:(id)iD groupSession:(id)session messagesGroupUUID:(id)uID locallyCreated:(BOOL)created localMember:(id)member initiator:(id)self0 remoteMembers:(id)self1 pendingMembers:(id)self2 otherInvitedHandles:(id)self3 lightweightMembers:(id)self4 activity:(id)self5 link:(id)self6 report:(id)self7 fromStorage:(BOOL)self8 avMode:(unint64_t)self9 presentationMode:(unint64_t)presentationMode applicationController:(id)controller;
+- (CSDConversation)initWithQueue:(id)queue UUID:(id)d groupUUID:(id)iD groupSession:(id)session messagesGroupUUID:(id)uID locallyCreated:(BOOL)created localMember:(id)member initiator:(id)self0 remoteMembers:(id)self1 pendingMembers:(id)self2 otherInvitedHandles:(id)self3 lightweightMembers:(id)self4 remotePushTokens:(id)self5 activity:(id)self6 link:(id)self7 report:(id)self8 fromStorage:(BOOL)self9 avMode:(unint64_t)mode presentationMode:(unint64_t)presentationMode applicationController:(id)controller featureFlags:(id)flags systemStateObserver:(id)observer applicationPolicyManager:(id)manager screenSharingRequest:(id)request testConfiguration:(id)configuration isOldMessage:(BOOL)message;
 - (CSDConversationDelegate)delegate;
 - (CSDConversationParticipant)localCSDParticipant;
 - (FTDeviceSupport)deviceSupport;
@@ -54,250 +54,250 @@
 - (id)_allMembers;
 - (id)_stableExpanseIdentifier;
 - (id)activeParticipants;
-- (id)activitySessionManagerRequestedCallTypeStringForLogging:(id)a3;
+- (id)activitySessionManagerRequestedCallTypeStringForLogging:(id)logging;
 - (id)avcSessionIdentifier;
-- (id)createActivitySession:(id)a3 isAutoStartedStagedActivity:(BOOL)a4;
-- (id)createStagedActivitySessionForActivity:(id)a3;
+- (id)createActivitySession:(id)session isAutoStartedStagedActivity:(BOOL)activity;
+- (id)createStagedActivitySessionForActivity:(id)activity;
 - (id)localCSDConversationParticipant;
 - (id)localConversationParticipantWithData;
-- (id)localConversationParticipantWithDataToSendToDestinationIDs:(id)a3;
+- (id)localConversationParticipantWithDataToSendToDestinationIDs:(id)ds;
 - (id)localParticipantCapabilities;
 - (id)localParticipantData;
-- (id)localParticipantDataToSendToDestinationIDs:(id)a3;
-- (id)memberWithHandle:(id)a3;
-- (id)onlyAvailableSessionConversationParticipant:(id)a3;
-- (id)reducedInfoMembers:(id)a3;
-- (id)remoteMemberForHandle:(id)a3;
-- (id)remoteParticipantForHandle:(id)a3;
-- (id)remoteParticipantForIdentifier:(unint64_t)a3;
-- (id)session:(id)a3 conversationParticipantWithParticipantIdentifier:(unint64_t)a4;
+- (id)localParticipantDataToSendToDestinationIDs:(id)ds;
+- (id)memberWithHandle:(id)handle;
+- (id)onlyAvailableSessionConversationParticipant:(id)participant;
+- (id)reducedInfoMembers:(id)members;
+- (id)remoteMemberForHandle:(id)handle;
+- (id)remoteParticipantForHandle:(id)handle;
+- (id)remoteParticipantForIdentifier:(unint64_t)identifier;
+- (id)session:(id)session conversationParticipantWithParticipantIdentifier:(unint64_t)identifier;
 - (id)tuSystemActivitySessions;
-- (int)_errorToAVCProviderEndedReason:(id)a3 defaultProviderReason:(int)a4;
+- (int)_errorToAVCProviderEndedReason:(id)reason defaultProviderReason:(int)providerReason;
 - (int)presentationState;
 - (int64_t)activeRemoteParticipantCountMinusEligibleAVLess;
 - (int64_t)avcLocalCaptionsToken;
 - (int64_t)avcSessionToken;
 - (int64_t)maxVideoDecodesAllowed;
 - (unint64_t)_resolvedNearbyTimeOut;
-- (unint64_t)activitySessionManager:(id)a3 localParticipantAliasForBundleIdentifier:(id)a4;
+- (unint64_t)activitySessionManager:(id)manager localParticipantAliasForBundleIdentifier:(id)identifier;
 - (unint64_t)localParticipantIdentifier;
 - (void)_addParticipantsWaitingToBeAddedToAVCSession;
-- (void)_addRemoteParticipantToAVCSessionIfPossible:(id)a3;
-- (void)_allowMember:(id)a3;
-- (void)_applyUpdateFromDataBlobForRemoteParticipant:(id)a3 participantIdentifier:(unint64_t)a4;
-- (void)_beginTimeoutForLeavingConversationWithReason:(id)a3;
+- (void)_addRemoteParticipantToAVCSessionIfPossible:(id)possible;
+- (void)_allowMember:(id)member;
+- (void)_applyUpdateFromDataBlobForRemoteParticipant:(id)participant participantIdentifier:(unint64_t)identifier;
+- (void)_beginTimeoutForLeavingConversationWithReason:(id)reason;
 - (void)_cancelInFlightAVCBlobRecoveryIfNecessary;
 - (void)_cancelTimeoutForLeavingConversation;
 - (void)_cleanUpConversation;
 - (void)_cleanUpFromAVCSessionFailure;
 - (void)_cleanUpHandoffMetricsIfNecessary;
-- (void)_emitRTCConnectionSetupEvent:(int64_t)a3 participantIdentifier:(unint64_t)a4;
-- (void)_emitRTCConnectionSetupEventForAddActiveParticipant:(id)a3;
+- (void)_emitRTCConnectionSetupEvent:(int64_t)event participantIdentifier:(unint64_t)identifier;
+- (void)_emitRTCConnectionSetupEventForAddActiveParticipant:(id)participant;
 - (void)_endCallIfNecessary;
-- (void)_generateHandoffReportIfNecessaryForUpdatedParticipantID:(unint64_t)a3 isAddParticipant:(BOOL)a4;
-- (void)_handleStateChanged:(int64_t)a3 oldState:(int64_t)a4;
-- (void)_launchApplicationDueToActivityCreation:(id)a3;
-- (void)_launchApplicationForActivityIfNecessary:(id)a3;
-- (void)_launchApplicationForActivityIfNecessary:(id)a3 shouldForeground:(BOOL)a4;
+- (void)_generateHandoffReportIfNecessaryForUpdatedParticipantID:(unint64_t)d isAddParticipant:(BOOL)participant;
+- (void)_handleStateChanged:(int64_t)changed oldState:(int64_t)state;
+- (void)_launchApplicationDueToActivityCreation:(id)creation;
+- (void)_launchApplicationForActivityIfNecessary:(id)necessary;
+- (void)_launchApplicationForActivityIfNecessary:(id)necessary shouldForeground:(BOOL)foreground;
 - (void)_launchApplicationsForActivitiesIfNecessary;
-- (void)_launchApplicationsForActivitiesIfNecessary:(BOOL)a3;
+- (void)_launchApplicationsForActivitiesIfNecessary:(BOOL)necessary;
 - (void)_pruneRemoteParticipantsIfNecessary;
 - (void)_recomputeAudioStates;
 - (void)_registerPluginsIfNecessary;
-- (void)_removeMemberFromPendingMemberListForParticipant:(id)a3;
-- (void)_reportConversationFailedWithFailureReason:(int64_t)a3 providerEndedReason:(unint64_t)a4;
-- (void)_reportConversationFailedWithProviderEndedReason:(unint64_t)a3;
+- (void)_removeMemberFromPendingMemberListForParticipant:(id)participant;
+- (void)_reportConversationFailedWithFailureReason:(int64_t)reason providerEndedReason:(unint64_t)endedReason;
+- (void)_reportConversationFailedWithProviderEndedReason:(unint64_t)reason;
 - (void)_requestAVCBlobsIfNecessary;
 - (void)_restartIDSSessionIfNecessary;
 - (void)_showLetMeInUIIfNecessary;
 - (void)_startAVCSessionIfNecessary;
-- (void)_startIDSSessionWithContext:(id)a3;
+- (void)_startIDSSessionWithContext:(id)context;
 - (void)_stopAVCSession;
-- (void)_updateParticipantTypesForAddedParticipant:(id)a3;
-- (void)activitySessionManager:(id)a3 activityChangedOnSession:(id)a4;
-- (void)activitySessionManager:(id)a3 activitySessionAssociatedSceneChanged:(id)a4;
-- (void)activitySessionManager:(id)a3 activitySessionChanged:(id)a4;
-- (void)activitySessionManager:(id)a3 activitySessionStateChanged:(id)a4 oldState:(unint64_t)a5;
-- (void)activitySessionManager:(id)a3 fetchDataCryptorForTopic:(id)a4 completionHandler:(id)a5;
-- (void)activitySessionManager:(id)a3 participantWithIdentifier:(unint64_t)a4 bundleIdentifier:(id)a5 includeLocalParticipant:(BOOL)a6 completionHandler:(id)a7;
-- (void)activitySessionManager:(id)a3 receivedActivitySessionEvent:(id)a4;
-- (void)activitySessionManager:(id)a3 requestEncryptionKeysForParticipants:(id)a4 topicName:(id)a5;
-- (void)activitySessionManager:(id)a3 requestForegroundPresentationForActivity:(id)a4;
-- (void)activitySessionManager:(id)a3 requestedEndpointWithIdentifier:(id)a4 activitySession:(id)a5 completion:(id)a6;
-- (void)activitySessionManager:(id)a3 sendResourceAtURL:(id)a4 toParticipants:(id)a5 metadata:(id)a6 activitySessionUUID:(id)a7 completion:(id)a8;
-- (void)activitySessionManager:(id)a3 sessionUnjoined:(id)a4 startDate:(id)a5 endDate:(id)a6;
-- (void)activitySessionManager:(id)a3 shouldRegisterPlugin:(id)a4;
-- (void)activitySessionManager:(id)a3 tuActivitySessionsDidChange:(id)a4;
-- (void)addActiveParticipant:(id)a3;
-- (void)addAliasesToConversationContainer:(id)a3 forBundleIdentifier:(id)a4;
-- (void)addHighlightIdentifier:(id)a3;
-- (void)addPendingMembers:(id)a3 triggeredLocally:(BOOL)a4;
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 invitationPreferences:(id)a5 addingFromLetMeIn:(BOOL)a6 triggeredLocally:(BOOL)a7;
-- (void)addRequiredCapabilities:(id)a3 requiredLackOfCapabilities:(id)a4;
-- (void)addScreenSharingRequest:(id)a3;
-- (void)addScreenSharingType:(unint64_t)a3;
-- (void)addVirtualParticipant:(id)a3;
-- (void)audioPolicyManager:(id)a3 sharePlayAllowedStateChanged:(BOOL)a4;
+- (void)_updateParticipantTypesForAddedParticipant:(id)participant;
+- (void)activitySessionManager:(id)manager activityChangedOnSession:(id)session;
+- (void)activitySessionManager:(id)manager activitySessionAssociatedSceneChanged:(id)changed;
+- (void)activitySessionManager:(id)manager activitySessionChanged:(id)changed;
+- (void)activitySessionManager:(id)manager activitySessionStateChanged:(id)changed oldState:(unint64_t)state;
+- (void)activitySessionManager:(id)manager fetchDataCryptorForTopic:(id)topic completionHandler:(id)handler;
+- (void)activitySessionManager:(id)manager participantWithIdentifier:(unint64_t)identifier bundleIdentifier:(id)bundleIdentifier includeLocalParticipant:(BOOL)participant completionHandler:(id)handler;
+- (void)activitySessionManager:(id)manager receivedActivitySessionEvent:(id)event;
+- (void)activitySessionManager:(id)manager requestEncryptionKeysForParticipants:(id)participants topicName:(id)name;
+- (void)activitySessionManager:(id)manager requestForegroundPresentationForActivity:(id)activity;
+- (void)activitySessionManager:(id)manager requestedEndpointWithIdentifier:(id)identifier activitySession:(id)session completion:(id)completion;
+- (void)activitySessionManager:(id)manager sendResourceAtURL:(id)l toParticipants:(id)participants metadata:(id)metadata activitySessionUUID:(id)d completion:(id)completion;
+- (void)activitySessionManager:(id)manager sessionUnjoined:(id)unjoined startDate:(id)date endDate:(id)endDate;
+- (void)activitySessionManager:(id)manager shouldRegisterPlugin:(id)plugin;
+- (void)activitySessionManager:(id)manager tuActivitySessionsDidChange:(id)change;
+- (void)addActiveParticipant:(id)participant;
+- (void)addAliasesToConversationContainer:(id)container forBundleIdentifier:(id)identifier;
+- (void)addHighlightIdentifier:(id)identifier;
+- (void)addPendingMembers:(id)members triggeredLocally:(BOOL)locally;
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles invitationPreferences:(id)preferences addingFromLetMeIn:(BOOL)in triggeredLocally:(BOOL)locally;
+- (void)addRequiredCapabilities:(id)capabilities requiredLackOfCapabilities:(id)ofCapabilities;
+- (void)addScreenSharingRequest:(id)request;
+- (void)addScreenSharingType:(unint64_t)type;
+- (void)addVirtualParticipant:(id)participant;
+- (void)audioPolicyManager:(id)manager sharePlayAllowedStateChanged:(BOOL)changed;
 - (void)broadcastLocalParticipantData;
 - (void)cleanUpIDSSessionState;
-- (void)continueHandoffAudioRouteForIdentifier:(unint64_t)a3 participantLeft:(BOOL)a4;
+- (void)continueHandoffAudioRouteForIdentifier:(unint64_t)identifier participantLeft:(BOOL)left;
 - (void)executeSessionDidStart;
 - (void)fulfillLocalScreenShareRequests;
-- (void)fulfillPendingScreenSharingRequestsForRemoteParticipant:(id)a3;
-- (void)handleRemoteControlStatusChanged:(int64_t)a3;
-- (void)joinUsingContext:(id)a3;
-- (void)kickMember:(id)a3;
-- (void)leaveActivitySessionWithUUID:(id)a3;
-- (void)leaveUsingContext:(id)a3;
-- (void)leaveWithReason:(unint64_t)a3;
-- (void)postSharePlayActivityDidChangeNotificationIfNecessary:(id)a3;
-- (void)postUserNotificationForUnsupportedScreenSharingActivity:(id)a3 alternateReponseHandler:(id)a4;
-- (void)presentDismissalAlertForActivitySessionWithUUID:(id)a3;
+- (void)fulfillPendingScreenSharingRequestsForRemoteParticipant:(id)participant;
+- (void)handleRemoteControlStatusChanged:(int64_t)changed;
+- (void)joinUsingContext:(id)context;
+- (void)kickMember:(id)member;
+- (void)leaveActivitySessionWithUUID:(id)d;
+- (void)leaveUsingContext:(id)context;
+- (void)leaveWithReason:(unint64_t)reason;
+- (void)postSharePlayActivityDidChangeNotificationIfNecessary:(id)necessary;
+- (void)postUserNotificationForUnsupportedScreenSharingActivity:(id)activity alternateReponseHandler:(id)handler;
+- (void)presentDismissalAlertForActivitySessionWithUUID:(id)d;
 - (void)refreshActiveParticipantsList;
 - (void)registerMessagesGroupAssociation;
-- (void)remoteParticipantWithIdentifier:(unint64_t)a3 didChangeAudioPriority:(int64_t)a4 videoPriority:(int64_t)a5;
-- (void)remoteParticipantWithIdentifier:(unint64_t)a3 didReact:(id)a4;
+- (void)remoteParticipantWithIdentifier:(unint64_t)identifier didChangeAudioPriority:(int64_t)priority videoPriority:(int64_t)videoPriority;
+- (void)remoteParticipantWithIdentifier:(unint64_t)identifier didReact:(id)react;
 - (void)removeActivitySessionIfNecessary;
-- (void)removeActivitySessionWithUUID:(id)a3 usingTerminatingHandle:(id)a4;
-- (void)removeHighlightIdentifier:(id)a3;
-- (void)removeNearbyMemberWithHandleIfNecessary:(id)a3;
-- (void)removeParticipantWithIdentifier:(unint64_t)a3 fromHandle:(id)a4 withReason:(unint64_t)a5;
-- (void)removeParticipantsForMember:(id)a3;
-- (void)removePendingMembers:(id)a3 triggeredLocally:(BOOL)a4;
-- (void)removeRemoteMembers:(id)a3 triggeredLocally:(BOOL)a4;
-- (void)removeRequiredCapabilities:(id)a3 requiredLackOfCapabilities:(id)a4;
-- (void)removeScreenSharingRequest:(id)a3;
-- (void)removeVirtualParticipant:(id)a3;
-- (void)removedRemoteParticipantWithIdentifier:(unint64_t)a3 didSucceed:(BOOL)a4;
+- (void)removeActivitySessionWithUUID:(id)d usingTerminatingHandle:(id)handle;
+- (void)removeHighlightIdentifier:(id)identifier;
+- (void)removeNearbyMemberWithHandleIfNecessary:(id)necessary;
+- (void)removeParticipantWithIdentifier:(unint64_t)identifier fromHandle:(id)handle withReason:(unint64_t)reason;
+- (void)removeParticipantsForMember:(id)member;
+- (void)removePendingMembers:(id)members triggeredLocally:(BOOL)locally;
+- (void)removeRemoteMembers:(id)members triggeredLocally:(BOOL)locally;
+- (void)removeRequiredCapabilities:(id)capabilities requiredLackOfCapabilities:(id)ofCapabilities;
+- (void)removeScreenSharingRequest:(id)request;
+- (void)removeVirtualParticipant:(id)participant;
+- (void)removedRemoteParticipantWithIdentifier:(unint64_t)identifier didSucceed:(BOOL)succeed;
 - (void)resetAVCSession;
-- (void)resetActivitySessionSceneAssociationsForBundleID:(id)a3;
+- (void)resetActivitySessionSceneAssociationsForBundleID:(id)d;
 - (void)resetConversation;
 - (void)reviveOrInvalidateCachedConversationIfNecessary;
-- (void)serverDisconnectedForSession:(id)a3;
-- (void)session:(id)a3 changedBytesOfDataUsed:(int64_t)a4;
-- (void)session:(id)a3 changedLocalAudioEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)session:(id)a3 changedLocalAudioPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)session:(id)a3 changedLocalVideoEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)session:(id)a3 changedLocalVideoPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)session:(id)a3 changedScreenEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)session:(id)a3 didDetectError:(id)a4;
-- (void)session:(id)a3 didJoinGroup:(BOOL)a4 participantIdentifiers:(id)a5 error:(id)a6;
-- (void)session:(id)a3 didLeaveGroupWithError:(id)a4;
-- (void)session:(id)a3 didReceiveData:(id)a4 dataType:(unsigned __int16)a5 forParticipant:(id)a6;
-- (void)session:(id)a3 didReceiveDataBlob:(id)a4 forParticipant:(id)a5;
-- (void)session:(id)a3 didReceiveJoinedParticipantID:(unint64_t)a4 withContext:(id)a5;
-- (void)session:(id)a3 didReceiveKickedParticipantIDs:(id)a4 withCode:(unsigned int)a5 withType:(unsigned __int16)a6 isTruncated:(BOOL)a7;
-- (void)session:(id)a3 didReceiveLeftParticipantID:(unint64_t)a4 withContext:(id)a5;
-- (void)session:(id)a3 didReceiveLocalParticipantType:(unsigned __int16)a4 requestIdentifier:(unint64_t)a5 error:(id)a6;
-- (void)session:(id)a3 didReceiveParticipantUpdateParticipantID:(unint64_t)a4 withContext:(id)a5;
-- (void)session:(id)a3 didReceiveReport:(id)a4;
-- (void)session:(id)a3 didReceiveUnderlyingLinksStatus:(BOOL)a4;
-- (void)session:(id)a3 didRegisterPluginAllocationInfo:(id)a4;
-- (void)session:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)session:(id)a3 didStopWithError:(id)a4;
-- (void)session:(id)a3 didUnregisterPluginAllocationInfo:(id)a4;
-- (void)session:(id)a3 endedWithError:(id)a4 reason:(unsigned int)a5;
-- (void)session:(id)a3 localParticipantDidReact:(id)a4;
-- (void)session:(id)a3 receivedActiveLightweightParticipantDestinationsByIdentifier:(id)a4;
-- (void)session:(id)a3 receivedActiveParticipantDestinationsByIdentifier:(id)a4;
-- (void)session:(id)a3 screenCaptureDidStart:(BOOL)a4 withError:(id)a5;
-- (void)session:(id)a3 screenCaptureDidStop:(BOOL)a4 withError:(id)a5;
-- (void)session:(id)a3 screenShareAttributesUpdated:(id)a4;
-- (void)sessionDidReceiveKeyUpdate:(id)a3;
-- (void)sessionDidTerminate:(id)a3;
-- (void)sessionLocalParticipantDidStopReacting:(id)a3;
-- (void)sessionShouldReconnect:(id)a3;
-- (void)setActiveLightweightParticipantDestinationsByIdentifier:(id)a3;
-- (void)setActiveParticipantDestinationsByIdentifier:(id)a3;
-- (void)setAudioInjectionAllowed:(BOOL)a3;
-- (void)setConversationGridDisplayMode:(unint64_t)a3;
-- (void)setForceExpanseEnabled:(BOOL)a3;
-- (void)setFromStorage:(BOOL)a3;
-- (void)setIDSAliasingSalt:(id)a3 onContainer:(id)a4;
-- (void)setIsHeld:(BOOL)a3;
-- (void)setIsNearbySharePlay:(BOOL)a3;
-- (void)setLocalParticipantAudioVideoMode:(unint64_t)a3 presentationMode:(unint64_t)a4;
-- (void)setMemberIdentifiers:(id)a3;
-- (void)setParticipantAudioVideoMode:(unint64_t)a3 presentationMode:(unint64_t)a4 forParticipant:(id)a5;
-- (void)setPresentationMode:(unint64_t)a3;
-- (void)setPresentationRect:(CGRect)a3;
-- (void)setProvider:(id)a3;
-- (void)setRemoteMembers:(id)a3;
-- (void)setScreenShareAttributes:(id)a3;
-- (void)setSplitSessionSecondary:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)serverDisconnectedForSession:(id)session;
+- (void)session:(id)session changedBytesOfDataUsed:(int64_t)used;
+- (void)session:(id)session changedLocalAudioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)session:(id)session changedLocalAudioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)session:(id)session changedLocalVideoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)session:(id)session changedLocalVideoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)session:(id)session changedScreenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)session:(id)session didDetectError:(id)error;
+- (void)session:(id)session didJoinGroup:(BOOL)group participantIdentifiers:(id)identifiers error:(id)error;
+- (void)session:(id)session didLeaveGroupWithError:(id)error;
+- (void)session:(id)session didReceiveData:(id)data dataType:(unsigned __int16)type forParticipant:(id)participant;
+- (void)session:(id)session didReceiveDataBlob:(id)blob forParticipant:(id)participant;
+- (void)session:(id)session didReceiveJoinedParticipantID:(unint64_t)d withContext:(id)context;
+- (void)session:(id)session didReceiveKickedParticipantIDs:(id)ds withCode:(unsigned int)code withType:(unsigned __int16)type isTruncated:(BOOL)truncated;
+- (void)session:(id)session didReceiveLeftParticipantID:(unint64_t)d withContext:(id)context;
+- (void)session:(id)session didReceiveLocalParticipantType:(unsigned __int16)type requestIdentifier:(unint64_t)identifier error:(id)error;
+- (void)session:(id)session didReceiveParticipantUpdateParticipantID:(unint64_t)d withContext:(id)context;
+- (void)session:(id)session didReceiveReport:(id)report;
+- (void)session:(id)session didReceiveUnderlyingLinksStatus:(BOOL)status;
+- (void)session:(id)session didRegisterPluginAllocationInfo:(id)info;
+- (void)session:(id)session didStart:(BOOL)start error:(id)error;
+- (void)session:(id)session didStopWithError:(id)error;
+- (void)session:(id)session didUnregisterPluginAllocationInfo:(id)info;
+- (void)session:(id)session endedWithError:(id)error reason:(unsigned int)reason;
+- (void)session:(id)session localParticipantDidReact:(id)react;
+- (void)session:(id)session receivedActiveLightweightParticipantDestinationsByIdentifier:(id)identifier;
+- (void)session:(id)session receivedActiveParticipantDestinationsByIdentifier:(id)identifier;
+- (void)session:(id)session screenCaptureDidStart:(BOOL)start withError:(id)error;
+- (void)session:(id)session screenCaptureDidStop:(BOOL)stop withError:(id)error;
+- (void)session:(id)session screenShareAttributesUpdated:(id)updated;
+- (void)sessionDidReceiveKeyUpdate:(id)update;
+- (void)sessionDidTerminate:(id)terminate;
+- (void)sessionLocalParticipantDidStopReacting:(id)reacting;
+- (void)sessionShouldReconnect:(id)reconnect;
+- (void)setActiveLightweightParticipantDestinationsByIdentifier:(id)identifier;
+- (void)setActiveParticipantDestinationsByIdentifier:(id)identifier;
+- (void)setAudioInjectionAllowed:(BOOL)allowed;
+- (void)setConversationGridDisplayMode:(unint64_t)mode;
+- (void)setForceExpanseEnabled:(BOOL)enabled;
+- (void)setFromStorage:(BOOL)storage;
+- (void)setIDSAliasingSalt:(id)salt onContainer:(id)container;
+- (void)setIsHeld:(BOOL)held;
+- (void)setIsNearbySharePlay:(BOOL)play;
+- (void)setLocalParticipantAudioVideoMode:(unint64_t)mode presentationMode:(unint64_t)presentationMode;
+- (void)setMemberIdentifiers:(id)identifiers;
+- (void)setParticipantAudioVideoMode:(unint64_t)mode presentationMode:(unint64_t)presentationMode forParticipant:(id)participant;
+- (void)setPresentationMode:(unint64_t)mode;
+- (void)setPresentationRect:(CGRect)rect;
+- (void)setProvider:(id)provider;
+- (void)setRemoteMembers:(id)members;
+- (void)setScreenShareAttributes:(id)attributes;
+- (void)setSplitSessionSecondary:(id)secondary;
+- (void)setState:(int64_t)state;
 - (void)startAudio;
-- (void)startTimeOutForNearbyMembers:(id)a3;
+- (void)startTimeOutForNearbyMembers:(id)members;
 - (void)startTimeOutForNearbySession;
 - (void)stopContentSharingSession;
-- (void)switchBackToOneToOneIfPossibleUsingDelay:(BOOL)a3;
-- (void)systemStateObserver:(id)a3 screenSharingInitiationAllowedStateChanged:(BOOL)a4;
-- (void)updateConversationParticipantToHaveMatchingSiriDisplayName:(id)a3;
-- (void)updateLightweightMember:(id)a3;
+- (void)switchBackToOneToOneIfPossibleUsingDelay:(BOOL)delay;
+- (void)systemStateObserver:(id)observer screenSharingInitiationAllowedStateChanged:(BOOL)changed;
+- (void)updateConversationParticipantToHaveMatchingSiriDisplayName:(id)name;
+- (void)updateLightweightMember:(id)member;
 - (void)updateLocalAspectRatios;
-- (void)updateLocalParticipantCluster:(id)a3;
+- (void)updateLocalParticipantCluster:(id)cluster;
 - (void)updateLocalParticipantInfo;
-- (void)updateMemberValidationSource:(id)a3 source:(int64_t)a4;
-- (void)updateMessagesGroupName:(id)a3;
-- (void)updateOneToOneModeForParticipantUpdateType:(unsigned __int16)a3 participant:(id)a4;
-- (void)updateParticipantPresentationContexts:(id)a3;
-- (void)updateParticipantsWithDestinationIdentifiers:(id)a3;
-- (void)updateRemoteMember:(id)a3;
-- (void)updateReportInfoForHandoffParticipant:(id)a3;
+- (void)updateMemberValidationSource:(id)source source:(int64_t)a4;
+- (void)updateMessagesGroupName:(id)name;
+- (void)updateOneToOneModeForParticipantUpdateType:(unsigned __int16)type participant:(id)participant;
+- (void)updateParticipantPresentationContexts:(id)contexts;
+- (void)updateParticipantsWithDestinationIdentifiers:(id)identifiers;
+- (void)updateRemoteMember:(id)member;
+- (void)updateReportInfoForHandoffParticipant:(id)participant;
 @end
 
 @implementation CSDConversation
 
-- (CSDConversation)initWithQueue:(id)a3 UUID:(id)a4 groupUUID:(id)a5 groupSession:(id)a6 messagesGroupUUID:(id)a7 locallyCreated:(BOOL)a8 localMember:(id)a9 initiator:(id)a10 remoteMembers:(id)a11 pendingMembers:(id)a12 otherInvitedHandles:(id)a13 lightweightMembers:(id)a14 activity:(id)a15 link:(id)a16 report:(id)a17 fromStorage:(BOOL)a18 avMode:(unint64_t)a19 presentationMode:(unint64_t)a20 applicationController:(id)a21
+- (CSDConversation)initWithQueue:(id)queue UUID:(id)d groupUUID:(id)iD groupSession:(id)session messagesGroupUUID:(id)uID locallyCreated:(BOOL)created localMember:(id)member initiator:(id)self0 remoteMembers:(id)self1 pendingMembers:(id)self2 otherInvitedHandles:(id)self3 lightweightMembers:(id)self4 activity:(id)self5 link:(id)self6 report:(id)self7 fromStorage:(BOOL)self8 avMode:(unint64_t)self9 presentationMode:(unint64_t)presentationMode applicationController:(id)controller
 {
-  v41 = a8;
-  v36 = a21;
-  v34 = a17;
-  v32 = a16;
-  v31 = a15;
-  v30 = a14;
-  v46 = a13;
-  v45 = a12;
-  v44 = a11;
-  v43 = a10;
-  v28 = a9;
-  v29 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  createdCopy = created;
+  controllerCopy = controller;
+  reportCopy = report;
+  linkCopy = link;
+  activityCopy = activity;
+  lightweightMembersCopy = lightweightMembers;
+  handlesCopy = handles;
+  pendingMembersCopy = pendingMembers;
+  membersCopy = members;
+  initiatorCopy = initiator;
+  memberCopy = member;
+  uIDCopy = uID;
+  sessionCopy = session;
+  iDCopy = iD;
+  dCopy = d;
+  queueCopy = queue;
   v39 = objc_alloc_init(TUFeatureFlags);
-  LOBYTE(v27) = a18;
-  v42 = [(CSDConversation *)self initWithQueue:v25 UUID:v24 groupUUID:v23 groupSession:v22 messagesGroupUUID:v29 locallyCreated:v41 localMember:v28 initiator:v43 remoteMembers:v44 pendingMembers:v45 otherInvitedHandles:v46 lightweightMembers:v30 remotePushTokens:0 activity:v31 link:v32 report:v34 fromStorage:v27 avMode:a19 presentationMode:a20 applicationController:v36 featureFlags:v39 systemStateObserver:0 applicationPolicyManager:0 screenSharingRequest:0 testConfiguration:0];
+  LOBYTE(v27) = storage;
+  v42 = [(CSDConversation *)self initWithQueue:queueCopy UUID:dCopy groupUUID:iDCopy groupSession:sessionCopy messagesGroupUUID:uIDCopy locallyCreated:createdCopy localMember:memberCopy initiator:initiatorCopy remoteMembers:membersCopy pendingMembers:pendingMembersCopy otherInvitedHandles:handlesCopy lightweightMembers:lightweightMembersCopy remotePushTokens:0 activity:activityCopy link:linkCopy report:reportCopy fromStorage:v27 avMode:mode presentationMode:presentationMode applicationController:controllerCopy featureFlags:v39 systemStateObserver:0 applicationPolicyManager:0 screenSharingRequest:0 testConfiguration:0];
 
   return v42;
 }
 
-- (CSDConversation)initWithQueue:(id)a3 UUID:(id)a4 groupUUID:(id)a5 groupSession:(id)a6 messagesGroupUUID:(id)a7 locallyCreated:(BOOL)a8 localMember:(id)a9 initiator:(id)a10 remoteMembers:(id)a11 pendingMembers:(id)a12 otherInvitedHandles:(id)a13 lightweightMembers:(id)a14 remotePushTokens:(id)a15 activity:(id)a16 link:(id)a17 report:(id)a18 fromStorage:(BOOL)a19 avMode:(unint64_t)a20 presentationMode:(unint64_t)a21 applicationController:(id)a22 featureFlags:(id)a23 systemStateObserver:(id)a24 applicationPolicyManager:(id)a25 screenSharingRequest:(id)a26 testConfiguration:(id)a27 isOldMessage:(BOOL)a28
+- (CSDConversation)initWithQueue:(id)queue UUID:(id)d groupUUID:(id)iD groupSession:(id)session messagesGroupUUID:(id)uID locallyCreated:(BOOL)created localMember:(id)member initiator:(id)self0 remoteMembers:(id)self1 pendingMembers:(id)self2 otherInvitedHandles:(id)self3 lightweightMembers:(id)self4 remotePushTokens:(id)self5 activity:(id)self6 link:(id)self7 report:(id)self8 fromStorage:(BOOL)self9 avMode:(unint64_t)mode presentationMode:(unint64_t)presentationMode applicationController:(id)controller featureFlags:(id)flags systemStateObserver:(id)observer applicationPolicyManager:(id)manager screenSharingRequest:(id)request testConfiguration:(id)configuration isOldMessage:(BOOL)message
 {
-  v143 = a8;
-  v157 = a3;
-  v161 = a4;
-  v162 = a5;
-  v141 = a6;
-  v152 = a6;
-  v144 = a7;
-  v150 = a9;
-  v151 = a10;
-  v160 = a11;
-  v155 = a12;
-  v154 = a13;
-  v156 = a14;
-  v145 = a15;
-  v163 = a16;
-  v146 = a17;
-  v147 = a18;
-  v159 = a22;
-  v158 = a23;
-  v165 = a24;
-  v153 = a25;
-  v164 = a26;
-  v148 = a27;
+  createdCopy = created;
+  queueCopy = queue;
+  dCopy = d;
+  iDCopy = iD;
+  sessionCopy = session;
+  sessionCopy2 = session;
+  uIDCopy = uID;
+  memberCopy = member;
+  initiatorCopy = initiator;
+  membersCopy = members;
+  pendingMembersCopy = pendingMembers;
+  handlesCopy = handles;
+  lightweightMembersCopy = lightweightMembers;
+  tokensCopy = tokens;
+  activityCopy = activity;
+  linkCopy = link;
+  reportCopy = report;
+  controllerCopy = controller;
+  flagsCopy = flags;
+  observerCopy = observer;
+  managerCopy = manager;
+  requestCopy = request;
+  configurationCopy = configuration;
   v175.receiver = self;
   v175.super_class = CSDConversation;
   v32 = [(CSDConversation *)&v175 init];
@@ -308,8 +308,8 @@
     {
       v34 = @"NO";
       *buf = 138413826;
-      v178 = v161;
-      if (v143)
+      v178 = dCopy;
+      if (createdCopy)
       {
         v35 = @"YES";
       }
@@ -319,36 +319,36 @@
         v35 = @"NO";
       }
 
-      if (a28)
+      if (message)
       {
         v34 = @"YES";
       }
 
       v179 = 2112;
-      v180 = v162;
+      v180 = iDCopy;
       v181 = 2112;
       v182 = v35;
       v183 = 2112;
-      v184 = v151;
+      v184 = initiatorCopy;
       v185 = 2112;
-      v186 = v160;
+      v186 = membersCopy;
       v187 = 2112;
       v188 = v34;
       v189 = 2112;
-      v190 = v150;
+      v190 = memberCopy;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "init CSDConversation: %@, %@, %@, initiator: %@, remoteMembers: %@, isOldMessage: %@, localMember: %@", buf, 0x48u);
     }
 
-    objc_storeStrong(&v32->_queue, a3);
-    objc_storeStrong(&v32->_featureFlags, a23);
-    objc_storeStrong(&v32->_UUID, a4);
-    objc_storeStrong(&v32->_groupUUID, a5);
-    objc_storeStrong(&v32->_messagesGroupUUID, a7);
+    objc_storeStrong(&v32->_queue, queue);
+    objc_storeStrong(&v32->_featureFlags, flags);
+    objc_storeStrong(&v32->_UUID, d);
+    objc_storeStrong(&v32->_groupUUID, iD);
+    objc_storeStrong(&v32->_messagesGroupUUID, uID);
     v32->_state = 0;
     v32->_letMeInRequestState = 0;
-    v32->_locallyCreated = v143;
-    objc_storeStrong(&v32->_initiator, a10);
-    objc_storeStrong(&v32->_localMember, a9);
+    v32->_locallyCreated = createdCopy;
+    objc_storeStrong(&v32->_initiator, initiator);
+    objc_storeStrong(&v32->_localMember, member);
     v36 = +[NSDictionary dictionary];
     activeParticipantDestinationsByIdentifier = v32->_activeParticipantDestinationsByIdentifier;
     v32->_activeParticipantDestinationsByIdentifier = v36;
@@ -408,19 +408,19 @@
     serverBag = v32->_serverBag;
     v32->_serverBag = v63;
 
-    v32->_fromStorage = a19;
+    v32->_fromStorage = storage;
     v65 = +[NSDate distantPast];
     lastRebroadcastTime = v32->_lastRebroadcastTime;
     v32->_lastRebroadcastTime = v65;
 
     v32->_rebroadcastTimeThreshold = 0;
-    objc_storeStrong(&v32->_report, a18);
-    v32->_avMode = a20;
-    v32->_presentationMode = a21;
-    v32->_video = a20 == 2;
-    objc_storeStrong(&v32->_link, a17);
-    objc_storeStrong(&v32->_sharePlaySystemStateObserver, a24);
-    if (v165)
+    objc_storeStrong(&v32->_report, report);
+    v32->_avMode = mode;
+    v32->_presentationMode = presentationMode;
+    v32->_video = mode == 2;
+    objc_storeStrong(&v32->_link, link);
+    objc_storeStrong(&v32->_sharePlaySystemStateObserver, observer);
+    if (observerCopy)
     {
       [(CPSystemStateObserver *)v32->_sharePlaySystemStateObserver addObserver:v32 withQueue:v32->_queue];
     }
@@ -437,27 +437,27 @@
     v68 = [CPActivitySessionManager alloc];
     v69 = +[NSSet set];
     v70 = +[CSDSceneObservationManager shared];
-    v71 = [v68 initWithIdentifier:v161 groupUUID:v162 activities:v69 applicationController:v159 delegate:v32 queue:v157 systemStateObserver:v165 sceneObservationManager:v70];
+    v71 = [v68 initWithIdentifier:dCopy groupUUID:iDCopy activities:v69 applicationController:controllerCopy delegate:v32 queue:queueCopy systemStateObserver:observerCopy sceneObservationManager:v70];
     activitySessionManager = v32->_activitySessionManager;
     v32->_activitySessionManager = v71;
 
-    if ([v158 sharePlayCanEndWhenInitiatorLeaves])
+    if ([flagsCopy sharePlayCanEndWhenInitiatorLeaves])
     {
       v73 = [[_TtC13callservicesd36CSDActivitySessionParticipantMonitor alloc] initWithActivitySessionManager:v32->_activitySessionManager];
       activitySessionParticipantMonitor = v32->_activitySessionParticipantMonitor;
       v32->_activitySessionParticipantMonitor = v73;
     }
 
-    if (v163)
+    if (activityCopy)
     {
-      v75 = [(CSDConversation *)v32 createStagedActivitySessionForActivity:v163];
+      v75 = [(CSDConversation *)v32 createStagedActivitySessionForActivity:activityCopy];
     }
 
-    v76 = [(CSDConversation *)v32 featureFlags];
-    v77 = [v76 usesModernScreenSharingFromMessages];
-    if (v164)
+    featureFlags = [(CSDConversation *)v32 featureFlags];
+    usesModernScreenSharingFromMessages = [featureFlags usesModernScreenSharingFromMessages];
+    if (requestCopy)
     {
-      v78 = v77;
+      v78 = usesModernScreenSharingFromMessages;
     }
 
     else
@@ -467,24 +467,24 @@
 
     if (v78)
     {
-      v79 = [(CSDConversation *)v32 screenSharingRequestsByUUID];
-      v80 = [v164 UUID];
-      [v79 setObject:v164 forKeyedSubscript:v80];
+      screenSharingRequestsByUUID = [(CSDConversation *)v32 screenSharingRequestsByUUID];
+      uUID = [requestCopy UUID];
+      [screenSharingRequestsByUUID setObject:requestCopy forKeyedSubscript:uUID];
     }
 
     v81 = +[NSMutableDictionary dictionary];
     inflightAVCBlobRecoveryBlocksByIdentifier = v32->_inflightAVCBlobRecoveryBlocksByIdentifier;
     v32->_inflightAVCBlobRecoveryBlocksByIdentifier = v81;
 
-    objc_storeStrong(&v32->_ABTestConfiguration, a27);
-    [(CSDConversation *)v32 setRemoteMembers:v160];
-    v83 = [v156 mutableCopy];
+    objc_storeStrong(&v32->_ABTestConfiguration, configuration);
+    [(CSDConversation *)v32 setRemoteMembers:membersCopy];
+    v83 = [lightweightMembersCopy mutableCopy];
     lightweightMembers = v32->_lightweightMembers;
     v32->_lightweightMembers = v83;
 
-    if (v155)
+    if (pendingMembersCopy)
     {
-      v85 = [v155 copy];
+      v85 = [pendingMembersCopy copy];
     }
 
     else
@@ -500,8 +500,8 @@
     v172 = 0u;
     v173 = 0u;
     v171 = 0u;
-    v88 = [(CSDConversation *)v32 pendingMembers];
-    v89 = [v88 countByEnumeratingWithState:&v171 objects:v176 count:16];
+    pendingMembers = [(CSDConversation *)v32 pendingMembers];
+    v89 = [pendingMembers countByEnumeratingWithState:&v171 objects:v176 count:16];
     if (v89)
     {
       v90 = *v172;
@@ -511,14 +511,14 @@
         {
           if (*v172 != v90)
           {
-            objc_enumerationMutation(v88);
+            objc_enumerationMutation(pendingMembers);
           }
 
-          v92 = [*(*(&v171 + 1) + 8 * i) handle];
-          [v87 addObject:v92];
+          handle = [*(*(&v171 + 1) + 8 * i) handle];
+          [v87 addObject:handle];
         }
 
-        v89 = [v88 countByEnumeratingWithState:&v171 objects:v176 count:16];
+        v89 = [pendingMembers countByEnumeratingWithState:&v171 objects:v176 count:16];
       }
 
       while (v89);
@@ -532,7 +532,7 @@
     kickedMembers = v32->_kickedMembers;
     v32->_kickedMembers = v95;
 
-    objc_storeStrong(&v32->_remotePushTokens, a15);
+    objc_storeStrong(&v32->_remotePushTokens, tokens);
     v97 = +[NSMutableDictionary dictionary];
     pendingKickedMembersByIdentifier = v32->_pendingKickedMembersByIdentifier;
     v32->_pendingKickedMembersByIdentifier = v97;
@@ -549,7 +549,7 @@
     rejectedMembers = v32->_rejectedMembers;
     v32->_rejectedMembers = v103;
 
-    [(CSDConversation *)v32 setOtherInvitedHandles:v154];
+    [(CSDConversation *)v32 setOtherInvitedHandles:handlesCopy];
     v105 = +[NSMutableSet set];
     highlightIdentifiers = v32->_highlightIdentifiers;
     v32->_highlightIdentifiers = v105;
@@ -558,7 +558,7 @@
     memberHandlesAwaitingInvitesToLink = v32->_memberHandlesAwaitingInvitesToLink;
     v32->_memberHandlesAwaitingInvitesToLink = v107;
 
-    objc_storeStrong(&v32->_idsSession, v141);
+    objc_storeStrong(&v32->_idsSession, sessionCopy);
     [(CSDIDSGroupSession *)v32->_idsSession setDelegate:v32];
     v109 = objc_alloc_init(CSDFaceTimeInviteDemuxer);
     faceTimeInviteDemuxer = v32->_faceTimeInviteDemuxer;
@@ -587,7 +587,7 @@
     videoDeviceControllerCreationBlock = v32->_videoDeviceControllerCreationBlock;
     v32->_videoDeviceControllerCreationBlock = v115;
 
-    if (v32->_fromStorage || a28)
+    if (v32->_fromStorage || message)
     {
       v117 = sub_100004778();
       if (os_log_type_enabled(v117, OS_LOG_TYPE_DEFAULT))
@@ -609,9 +609,9 @@
     provider = v32->_provider;
     v32->_provider = v121;
 
-    if (v153)
+    if (managerCopy)
     {
-      v123 = v153;
+      v123 = managerCopy;
     }
 
     else
@@ -638,10 +638,10 @@
     personaHandshakeBlobCreationBlock = v32->_personaHandshakeBlobCreationBlock;
     v32->_personaHandshakeBlobCreationBlock = &stru_10061A5B0;
 
-    v132 = [(CSDConversation *)v32 localMember];
-    v133 = [v132 isLightweightMember];
+    localMember = [(CSDConversation *)v32 localMember];
+    isLightweightMember = [localMember isLightweightMember];
 
-    if (v133)
+    if (isLightweightMember)
     {
       v134 = [NSSet setWithObject:IDSRegistrationPropertySupportsCo];
       [(CSDConversation *)v32 addRequiredCapabilities:v134 requiredLackOfCapabilities:0];
@@ -654,7 +654,7 @@
     }
 
     v32->_sessionSwitchTimeout = 3.0;
-    v136 = [[CSDConversationLocalParticipantBlobTracker alloc] initWithConversation:v32 idsGroupSession:v152 queue:v32->_queue];
+    v136 = [[CSDConversationLocalParticipantBlobTracker alloc] initWithConversation:v32 idsGroupSession:sessionCopy2 queue:v32->_queue];
     localParticipantBlobTracker = v32->_localParticipantBlobTracker;
     v32->_localParticipantBlobTracker = v136;
 
@@ -673,14 +673,14 @@
 
 - (TUVideoDeviceController)videoDeviceController
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   videoDeviceController = self->_videoDeviceController;
   if (!videoDeviceController)
   {
-    v5 = [(CSDConversation *)self videoDeviceControllerCreationBlock];
-    v6 = v5[2]();
+    videoDeviceControllerCreationBlock = [(CSDConversation *)self videoDeviceControllerCreationBlock];
+    v6 = videoDeviceControllerCreationBlock[2]();
     v7 = self->_videoDeviceController;
     self->_videoDeviceController = v6;
 
@@ -694,26 +694,26 @@
 - (NSString)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CSDConversation *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(CSDConversation *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
-  v5 = [(CSDConversation *)self groupUUID];
-  [v3 appendFormat:@" groupUUID=%@", v5];
+  groupUUID = [(CSDConversation *)self groupUUID];
+  [v3 appendFormat:@" groupUUID=%@", groupUUID];
 
-  v6 = [(CSDConversation *)self link];
+  link = [(CSDConversation *)self link];
 
-  if (v6)
+  if (link)
   {
-    v7 = [(CSDConversation *)self link];
-    [v3 appendFormat:@" link=%@", v7];
+    link2 = [(CSDConversation *)self link];
+    [v3 appendFormat:@" link=%@", link2];
   }
 
-  v8 = [(CSDConversation *)self messagesGroupUUID];
+  messagesGroupUUID = [(CSDConversation *)self messagesGroupUUID];
 
-  if (v8)
+  if (messagesGroupUUID)
   {
-    v9 = [(CSDConversation *)self messagesGroupUUID];
-    [v3 appendFormat:@" messagesGroupUUID=%@", v9];
+    messagesGroupUUID2 = [(CSDConversation *)self messagesGroupUUID];
+    [v3 appendFormat:@" messagesGroupUUID=%@", messagesGroupUUID2];
   }
 
   [v3 appendFormat:@" state=%ld", -[CSDConversation state](self, "state")];
@@ -721,8 +721,8 @@
   [v3 appendFormat:@" letMeInRequestState=%ld", -[CSDConversation letMeInRequestState](self, "letMeInRequestState")];
   [v3 appendFormat:@" ignoreLMIRequests=%d", -[CSDConversation ignoreLMIRequests](self, "ignoreLMIRequests")];
   [v3 appendFormat:@" avcSessionToken=%ld", -[CSDConversation avcSessionToken](self, "avcSessionToken")];
-  v10 = [(CSDConversation *)self avcSessionIdentifier];
-  [v3 appendFormat:@" avcSessionIdentifier=%@", v10];
+  avcSessionIdentifier = [(CSDConversation *)self avcSessionIdentifier];
+  [v3 appendFormat:@" avcSessionIdentifier=%@", avcSessionIdentifier];
 
   [v3 appendFormat:@" isLocallyCreated=%d", -[CSDConversation isLocallyCreated](self, "isLocallyCreated")];
   [v3 appendFormat:@" hasJoined=%d", -[CSDConversation hasJoined](self, "hasJoined")];
@@ -736,182 +736,182 @@
   [v3 appendFormat:@" isVideoEnabled=%d", -[CSDConversation isVideoEnabled](self, "isVideoEnabled")];
   [v3 appendFormat:@" isScreenEnabled=%d", -[CSDConversation isScreenEnabled](self, "isScreenEnabled")];
   [v3 appendFormat:@" oneToOneModeEnabled=%d", -[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled")];
-  v11 = [(CSDConversation *)self localMember];
-  [v3 appendFormat:@" localMember=%@", v11];
+  localMember = [(CSDConversation *)self localMember];
+  [v3 appendFormat:@" localMember=%@", localMember];
 
-  v12 = [(CSDConversation *)self remoteMembers];
-  [v3 appendFormat:@" remoteMembers=%@", v12];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  [v3 appendFormat:@" remoteMembers=%@", remoteMembers];
 
-  v13 = [(CSDConversation *)self localMember];
-  v14 = [v13 handle];
-  [v3 appendFormat:@" localMemberHandle=%@", v14];
+  localMember2 = [(CSDConversation *)self localMember];
+  handle = [localMember2 handle];
+  [v3 appendFormat:@" localMemberHandle=%@", handle];
 
-  v15 = [(CSDConversation *)self pendingMembers];
-  v16 = [v15 count];
+  pendingMembers = [(CSDConversation *)self pendingMembers];
+  v16 = [pendingMembers count];
 
   if (v16)
   {
-    v17 = [(CSDConversation *)self pendingMembers];
-    [v3 appendFormat:@" pendingMembers=%@", v17];
+    pendingMembers2 = [(CSDConversation *)self pendingMembers];
+    [v3 appendFormat:@" pendingMembers=%@", pendingMembers2];
   }
 
-  v18 = [(CSDConversation *)self kickedMembers];
-  v19 = [v18 count];
+  kickedMembers = [(CSDConversation *)self kickedMembers];
+  v19 = [kickedMembers count];
 
   if (v19)
   {
-    v20 = [(CSDConversation *)self kickedMembers];
-    [v3 appendFormat:@" kickedMembers=%@", v20];
+    kickedMembers2 = [(CSDConversation *)self kickedMembers];
+    [v3 appendFormat:@" kickedMembers=%@", kickedMembers2];
   }
 
-  v21 = [(CSDConversation *)self rejectedMembers];
-  v22 = [v21 count];
+  rejectedMembers = [(CSDConversation *)self rejectedMembers];
+  v22 = [rejectedMembers count];
 
   if (v22)
   {
-    v23 = [(CSDConversation *)self rejectedMembers];
-    [v3 appendFormat:@" rejectedMembers=%@", v23];
+    rejectedMembers2 = [(CSDConversation *)self rejectedMembers];
+    [v3 appendFormat:@" rejectedMembers=%@", rejectedMembers2];
   }
 
-  v24 = [(CSDConversation *)self otherInvitedHandles];
-  v25 = [v24 count];
+  otherInvitedHandles = [(CSDConversation *)self otherInvitedHandles];
+  v25 = [otherInvitedHandles count];
 
   if (v25)
   {
-    v26 = [(CSDConversation *)self otherInvitedHandles];
-    v27 = [v26 allObjects];
-    v28 = [v27 componentsJoinedByString:{@", "}];
+    otherInvitedHandles2 = [(CSDConversation *)self otherInvitedHandles];
+    allObjects = [otherInvitedHandles2 allObjects];
+    v28 = [allObjects componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" otherInvitedHandles=%@", v28];
   }
 
-  v29 = [(CSDConversation *)self lightweightMembers];
-  v30 = [v29 count];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  v30 = [lightweightMembers count];
 
   if (v30)
   {
-    v31 = [(CSDConversation *)self lightweightMembers];
-    [v3 appendFormat:@" lightweightMembers=%@", v31];
+    lightweightMembers2 = [(CSDConversation *)self lightweightMembers];
+    [v3 appendFormat:@" lightweightMembers=%@", lightweightMembers2];
   }
 
-  v32 = [(CSDConversation *)self memberIdentifiers];
-  v33 = [v32 count];
+  memberIdentifiers = [(CSDConversation *)self memberIdentifiers];
+  v33 = [memberIdentifiers count];
 
   if (v33)
   {
-    v34 = [(CSDConversation *)self memberIdentifiers];
-    v35 = [v34 allObjects];
-    v36 = [v35 componentsJoinedByString:{@", "}];
+    memberIdentifiers2 = [(CSDConversation *)self memberIdentifiers];
+    allObjects2 = [memberIdentifiers2 allObjects];
+    v36 = [allObjects2 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" memberIdentifiers=%@", v36];
   }
 
-  v37 = [(CSDConversation *)self screenSharingRequests];
-  v38 = [v37 count];
+  screenSharingRequests = [(CSDConversation *)self screenSharingRequests];
+  v38 = [screenSharingRequests count];
 
   if (v38)
   {
-    v39 = [(CSDConversation *)self screenSharingRequests];
-    v40 = [v39 allObjects];
-    v41 = [v40 componentsJoinedByString:{@", "}];
+    screenSharingRequests2 = [(CSDConversation *)self screenSharingRequests];
+    allObjects3 = [screenSharingRequests2 allObjects];
+    v41 = [allObjects3 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" screenSharingRequests=%@", v41];
   }
 
-  v42 = [(CSDConversation *)self activeRemoteParticipants];
-  [v3 appendFormat:@" activeRemoteParticipants=%@", v42];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  [v3 appendFormat:@" activeRemoteParticipants=%@", activeRemoteParticipants];
 
-  v43 = [(CSDConversation *)self activeLightweightParticipants];
-  v44 = [v43 count];
+  activeLightweightParticipants = [(CSDConversation *)self activeLightweightParticipants];
+  v44 = [activeLightweightParticipants count];
 
   if (v44)
   {
-    v45 = [(CSDConversation *)self activeLightweightParticipants];
-    v46 = [v45 allObjects];
-    v47 = [v46 componentsJoinedByString:{@", "}];
+    activeLightweightParticipants2 = [(CSDConversation *)self activeLightweightParticipants];
+    allObjects4 = [activeLightweightParticipants2 allObjects];
+    v47 = [allObjects4 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" activeLightweightParticipants=%@", v47];
   }
 
-  v48 = [(CSDConversation *)self report];
-  [v3 appendFormat:@" report=%@", v48];
+  report = [(CSDConversation *)self report];
+  [v3 appendFormat:@" report=%@", report];
 
-  v49 = [(CSDConversation *)self virtualParticipants];
-  v50 = [v49 count];
+  virtualParticipants = [(CSDConversation *)self virtualParticipants];
+  v50 = [virtualParticipants count];
 
   if (v50)
   {
-    v51 = [(CSDConversation *)self virtualParticipants];
-    [v3 appendFormat:@" virtualParticipants=%@", v51];
+    virtualParticipants2 = [(CSDConversation *)self virtualParticipants];
+    [v3 appendFormat:@" virtualParticipants=%@", virtualParticipants2];
   }
 
-  v52 = [(CSDConversation *)self provider];
-  [v3 appendFormat:@" provider=%@", v52];
+  provider = [(CSDConversation *)self provider];
+  [v3 appendFormat:@" provider=%@", provider];
 
-  v53 = [(CSDConversation *)self tuActivitySessions];
-  v54 = [v53 count];
+  tuActivitySessions = [(CSDConversation *)self tuActivitySessions];
+  v54 = [tuActivitySessions count];
 
   if (v54)
   {
-    v55 = [(CSDConversation *)self tuActivitySessions];
-    [v3 appendFormat:@" tuActivitySessions=%@", v55];
+    tuActivitySessions2 = [(CSDConversation *)self tuActivitySessions];
+    [v3 appendFormat:@" tuActivitySessions=%@", tuActivitySessions2];
   }
 
-  v56 = [(CSDConversation *)self tuSystemActivitySessions];
-  v57 = [v56 count];
+  tuSystemActivitySessions = [(CSDConversation *)self tuSystemActivitySessions];
+  v57 = [tuSystemActivitySessions count];
 
   if (v57)
   {
-    v58 = [(CSDConversation *)self tuSystemActivitySessions];
-    [v3 appendFormat:@" tuSystemActivitySessions=%@", v58];
+    tuSystemActivitySessions2 = [(CSDConversation *)self tuSystemActivitySessions];
+    [v3 appendFormat:@" tuSystemActivitySessions=%@", tuSystemActivitySessions2];
   }
 
-  v59 = [(CSDConversation *)self handoffEligibility];
+  handoffEligibility = [(CSDConversation *)self handoffEligibility];
 
-  if (v59)
+  if (handoffEligibility)
   {
-    v60 = [(CSDConversation *)self handoffEligibility];
-    [v3 appendFormat:@" handoffEligibility=%@", v60];
+    handoffEligibility2 = [(CSDConversation *)self handoffEligibility];
+    [v3 appendFormat:@" handoffEligibility=%@", handoffEligibility2];
   }
 
-  v61 = [(CSDConversation *)self highlightIdentifiers];
-  v62 = [v61 count];
+  highlightIdentifiers = [(CSDConversation *)self highlightIdentifiers];
+  v62 = [highlightIdentifiers count];
 
   if (v62)
   {
-    v63 = [(CSDConversation *)self highlightIdentifiers];
-    v64 = [v63 allObjects];
-    v65 = [v64 componentsJoinedByString:{@", "}];
+    highlightIdentifiers2 = [(CSDConversation *)self highlightIdentifiers];
+    allObjects5 = [highlightIdentifiers2 allObjects];
+    v65 = [allObjects5 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" highlightIdentifiers=%@", v65];
   }
 
-  v66 = [(CSDConversation *)self splitSessionSecondary];
+  splitSessionSecondary = [(CSDConversation *)self splitSessionSecondary];
 
-  if (v66)
+  if (splitSessionSecondary)
   {
-    v67 = [(CSDConversation *)self splitSessionSecondary];
-    [v3 appendFormat:@" splitSessionSecondary=%@", v67];
+    splitSessionSecondary2 = [(CSDConversation *)self splitSessionSecondary];
+    [v3 appendFormat:@" splitSessionSecondary=%@", splitSessionSecondary2];
   }
 
-  v68 = [(CSDConversation *)self localLightweightSecondaryMember];
+  localLightweightSecondaryMember = [(CSDConversation *)self localLightweightSecondaryMember];
 
-  if (v68)
+  if (localLightweightSecondaryMember)
   {
-    v69 = [(CSDConversation *)self localLightweightSecondaryMember];
-    [v3 appendFormat:@" localLightweightSecondaryMember=%@", v69];
+    localLightweightSecondaryMember2 = [(CSDConversation *)self localLightweightSecondaryMember];
+    [v3 appendFormat:@" localLightweightSecondaryMember=%@", localLightweightSecondaryMember2];
   }
 
-  v70 = [(CSDConversation *)self invitationPreferences];
+  invitationPreferences = [(CSDConversation *)self invitationPreferences];
 
-  if (v70)
+  if (invitationPreferences)
   {
-    v71 = [(CSDConversation *)self invitationPreferences];
-    [v3 appendFormat:@" invitationPreferences=%@", v71];
+    invitationPreferences2 = [(CSDConversation *)self invitationPreferences];
+    [v3 appendFormat:@" invitationPreferences=%@", invitationPreferences2];
   }
 
   [v3 appendFormat:@" avMode=%ld", -[CSDConversation avMode](self, "avMode")];
   [v3 appendFormat:@" presentationMode=%ld", -[CSDConversation presentationMode](self, "presentationMode")];
   [v3 appendFormat:@" screening=%d", -[CSDConversation isScreening](self, "isScreening")];
   v72 = objc_opt_self();
-  v73 = [v72 isFromStorage];
+  isFromStorage = [v72 isFromStorage];
 
-  if (v73)
+  if (isFromStorage)
   {
     v74 = objc_opt_self();
     [v3 appendFormat:@" self.isFromStorage=%d", objc_msgSend(v74, "isFromStorage")];
@@ -922,31 +922,31 @@
     [v3 appendFormat:@" isCameraMixedWithScreen=%d", -[CSDConversation isCameraMixedWithScreen](self, "isCameraMixedWithScreen")];
   }
 
-  v75 = [(CSDConversation *)self handoffContext];
+  handoffContext = [(CSDConversation *)self handoffContext];
 
-  if (v75)
+  if (handoffContext)
   {
-    v76 = [(CSDConversation *)self handoffContext];
-    [v3 appendFormat:@" handoffContext=%@", v76];
+    handoffContext2 = [(CSDConversation *)self handoffContext];
+    [v3 appendFormat:@" handoffContext=%@", handoffContext2];
   }
 
   v77 = objc_opt_self();
-  v78 = [v77 ABTestConfiguration];
+  aBTestConfiguration = [v77 ABTestConfiguration];
 
-  if (v78)
+  if (aBTestConfiguration)
   {
     v79 = objc_opt_self();
-    v80 = [v79 ABTestConfiguration];
-    [v3 appendFormat:@" self.ABTestConfiguration=%@", v80];
+    aBTestConfiguration2 = [v79 ABTestConfiguration];
+    [v3 appendFormat:@" self.ABTestConfiguration=%@", aBTestConfiguration2];
   }
 
   [v3 appendFormat:@" screenSharingType=%ld", -[CSDConversation screenSharingType](self, "screenSharingType")];
-  v81 = [(CSDConversation *)self localParticipantCluster];
+  localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
 
-  if (v81)
+  if (localParticipantCluster)
   {
-    v82 = [(CSDConversation *)self localParticipantCluster];
-    [v3 appendFormat:@" localParticipantCluster=%@", v82];
+    localParticipantCluster2 = [(CSDConversation *)self localParticipantCluster];
+    [v3 appendFormat:@" localParticipantCluster=%@", localParticipantCluster2];
   }
 
   [v3 appendString:@">"];
@@ -955,38 +955,38 @@
   return v83;
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   p_provider = &self->_provider;
   provider = self->_provider;
   if (!provider || (+[TUConversationProvider unknownProvider], v8 = objc_claimAutoreleasedReturnValue(), v9 = [(TUConversationProvider *)provider isEqual:v8], v8, v9))
   {
-    objc_storeStrong(&self->_provider, a3);
+    objc_storeStrong(&self->_provider, provider);
   }
 
-  v10 = [(CSDConversation *)self featureFlags];
-  if ([v10 sharePlayInCallsEnabled] && -[TUConversationProvider isTelephonyWithSharePlayProvider](*p_provider, "isTelephonyWithSharePlayProvider"))
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags sharePlayInCallsEnabled] && -[TUConversationProvider isTelephonyWithSharePlayProvider](*p_provider, "isTelephonyWithSharePlayProvider"))
   {
-    v11 = [v5 isDefaultProvider];
+    isDefaultProvider = [providerCopy isDefaultProvider];
 
-    if (v11)
+    if (isDefaultProvider)
     {
       v12 = sub_100004778();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = self->_provider;
-        v14 = [(CSDConversation *)self UUID];
+        uUID = [(CSDConversation *)self UUID];
         v15 = 138412802;
         v16 = v13;
         v17 = 2112;
-        v18 = v5;
+        v18 = providerCopy;
         v19 = 2112;
-        v20 = v14;
+        v20 = uUID;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[CSDConversation] Overriding conversation provider from %@ to %@, conversation: %@", &v15, 0x20u);
       }
 
-      objc_storeStrong(p_provider, a3);
+      objc_storeStrong(p_provider, provider);
     }
   }
 
@@ -995,64 +995,64 @@
   }
 }
 
-- (void)setActiveParticipantDestinationsByIdentifier:(id)a3
+- (void)setActiveParticipantDestinationsByIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   activeParticipantDestinationsByIdentifier = self->_activeParticipantDestinationsByIdentifier;
-  self->_activeParticipantDestinationsByIdentifier = v4;
-  v7 = v4;
+  self->_activeParticipantDestinationsByIdentifier = identifierCopy;
+  v7 = identifierCopy;
 
   [(CSDConversation *)self updateParticipantsWithDestinationIdentifiers:v7];
 }
 
-- (void)setActiveLightweightParticipantDestinationsByIdentifier:(id)a3
+- (void)setActiveLightweightParticipantDestinationsByIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   activeLightweightParticipantDestinationsByIdentifier = self->_activeLightweightParticipantDestinationsByIdentifier;
-  self->_activeLightweightParticipantDestinationsByIdentifier = v4;
-  v7 = v4;
+  self->_activeLightweightParticipantDestinationsByIdentifier = identifierCopy;
+  v7 = identifierCopy;
 
   [(CSDConversation *)self updateParticipantsWithDestinationIdentifiers:v7];
 }
 
 - (id)activeParticipants
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self activeRemoteParticipants];
-  v5 = [(CSDConversation *)self activeLightweightParticipants];
-  v6 = [v4 setByAddingObjectsFromSet:v5];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  activeLightweightParticipants = [(CSDConversation *)self activeLightweightParticipants];
+  v6 = [activeRemoteParticipants setByAddingObjectsFromSet:activeLightweightParticipants];
 
   return v6;
 }
 
 - (NSSet)activeRemoteParticipants
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v5 = [v4 allValues];
-  v6 = [NSSet setWithArray:v5];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  allValues = [activeRemoteParticipantsByIdentifier allValues];
+  v6 = [NSSet setWithArray:allValues];
 
   return v6;
 }
 
 - (NSSet)activeLightweightParticipants
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-  v5 = [v4 allValues];
-  v6 = [NSSet setWithArray:v5];
+  activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+  allValues = [activeLightweightParticipantsByIdentifier allValues];
+  v6 = [NSSet setWithArray:allValues];
 
   return v6;
 }
@@ -1063,8 +1063,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CSDConversation *)self activeRemoteParticipants];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v3 = [activeRemoteParticipants countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1074,7 +1074,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isLocalAccountHandle])
@@ -1084,7 +1084,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [activeRemoteParticipants countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1101,40 +1101,40 @@ LABEL_11:
 
 - (NSSet)screenSharingRequests
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self screenSharingRequestsByUUID];
-  v5 = [v4 allValues];
-  v6 = [NSSet setWithArray:v5];
+  screenSharingRequestsByUUID = [(CSDConversation *)self screenSharingRequestsByUUID];
+  allValues = [screenSharingRequestsByUUID allValues];
+  v6 = [NSSet setWithArray:allValues];
 
   return v6;
 }
 
 - (TUConversation)tuConversation
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [TUMutableConversation alloc];
-  v5 = [(CSDConversation *)self UUID];
-  v6 = [(CSDConversation *)self groupUUID];
-  v7 = [(CSDConversation *)self provider];
-  v8 = [v4 initWithUUID:v5 groupUUID:v6 provider:v7];
+  uUID = [(CSDConversation *)self UUID];
+  groupUUID = [(CSDConversation *)self groupUUID];
+  provider = [(CSDConversation *)self provider];
+  v8 = [v4 initWithUUID:uUID groupUUID:groupUUID provider:provider];
 
   [v8 setState:{-[CSDConversation state](self, "state")}];
   [v8 setHasReceivedLetMeInRequest:{-[CSDConversation hasReceivedLetMeInRequest](self, "hasReceivedLetMeInRequest")}];
   [v8 setLetMeInRequestState:{-[CSDConversation letMeInRequestState](self, "letMeInRequestState")}];
-  v9 = [(CSDConversation *)self link];
-  [v8 setLink:v9];
+  link = [(CSDConversation *)self link];
+  [v8 setLink:link];
 
-  v10 = [(CSDConversation *)self messagesGroupUUID];
-  [v8 setMessagesGroupUUID:v10];
+  messagesGroupUUID = [(CSDConversation *)self messagesGroupUUID];
+  [v8 setMessagesGroupUUID:messagesGroupUUID];
 
   [v8 setAvcSessionToken:{-[CSDConversation avcSessionToken](self, "avcSessionToken")}];
   [v8 setLocalCaptionToken:{-[CSDConversation avcLocalCaptionsToken](self, "avcLocalCaptionsToken")}];
-  v11 = [(CSDConversation *)self avcSessionIdentifier];
-  [v8 setAvcSessionIdentifier:v11];
+  avcSessionIdentifier = [(CSDConversation *)self avcSessionIdentifier];
+  [v8 setAvcSessionIdentifier:avcSessionIdentifier];
 
   [v8 setAudioEnabled:{-[CSDConversation isAudioEnabled](self, "isAudioEnabled")}];
   [v8 setVideoEnabled:{-[CSDConversation isVideoEnabled](self, "isVideoEnabled")}];
@@ -1142,82 +1142,82 @@ LABEL_11:
   [v8 setScreenEnabled:{-[CSDConversation isScreenEnabled](self, "isScreenEnabled")}];
   [v8 setLocallyCreated:{-[CSDConversation isLocallyCreated](self, "isLocallyCreated")}];
   [v8 setHasJoined:{-[CSDConversation hasJoined](self, "hasJoined")}];
-  v12 = [(CSDConversation *)self initiator];
-  [v8 setInitiator:v12];
+  initiator = [(CSDConversation *)self initiator];
+  [v8 setInitiator:initiator];
 
-  v13 = [(CSDConversation *)self remoteMembers];
-  [v8 setRemoteMembers:v13];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  [v8 setRemoteMembers:remoteMembers];
 
-  v14 = [(CSDConversation *)self pendingMembers];
-  [v8 setPendingMembers:v14];
+  pendingMembers = [(CSDConversation *)self pendingMembers];
+  [v8 setPendingMembers:pendingMembers];
 
-  v15 = [(CSDConversation *)self kickedMembers];
-  [v8 setKickedMembers:v15];
+  kickedMembers = [(CSDConversation *)self kickedMembers];
+  [v8 setKickedMembers:kickedMembers];
 
-  v16 = [(CSDConversation *)self rejectedMembers];
-  [v8 setRejectedMembers:v16];
+  rejectedMembers = [(CSDConversation *)self rejectedMembers];
+  [v8 setRejectedMembers:rejectedMembers];
 
-  v17 = [(CSDConversation *)self otherInvitedHandles];
-  [v8 setOtherInvitedHandles:v17];
+  otherInvitedHandles = [(CSDConversation *)self otherInvitedHandles];
+  [v8 setOtherInvitedHandles:otherInvitedHandles];
 
   [v8 setIgnoreLMIRequests:{-[CSDConversation ignoreLMIRequests](self, "ignoreLMIRequests")}];
-  v18 = [(CSDConversation *)self messagesGroupName];
-  [v8 setMessagesGroupName:v18];
+  messagesGroupName = [(CSDConversation *)self messagesGroupName];
+  [v8 setMessagesGroupName:messagesGroupName];
 
   [v8 setMaxVideoDecodesAllowed:{-[CSDConversation maxVideoDecodesAllowed](self, "maxVideoDecodesAllowed")}];
-  v19 = [(CSDConversation *)self report];
-  [v8 setReport:v19];
+  report = [(CSDConversation *)self report];
+  [v8 setReport:report];
 
-  v20 = [(CSDConversation *)self reportingHierarchyToken];
-  [v8 setReportingHierarchyToken:v20];
+  reportingHierarchyToken = [(CSDConversation *)self reportingHierarchyToken];
+  [v8 setReportingHierarchyToken:reportingHierarchyToken];
 
-  v21 = [(CSDConversation *)self reportingHierarchySubToken];
-  [v8 setReportingHierarchySubToken:v21];
+  reportingHierarchySubToken = [(CSDConversation *)self reportingHierarchySubToken];
+  [v8 setReportingHierarchySubToken:reportingHierarchySubToken];
 
-  v22 = [(CSDConversation *)self localMember];
-  [v8 setLocalMember:v22];
+  localMember = [(CSDConversation *)self localMember];
+  [v8 setLocalMember:localMember];
 
   [v8 setLocalParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}];
-  v23 = [(CSDConversation *)self featureFlags];
-  LODWORD(v6) = [v23 conversationHandoffEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  LODWORD(groupUUID) = [featureFlags conversationHandoffEnabled];
 
-  if (v6)
+  if (groupUUID)
   {
-    v24 = [(CSDConversation *)self localParticipantAssociation];
-    [v8 setLocalParticipantAssociation:v24];
+    localParticipantAssociation = [(CSDConversation *)self localParticipantAssociation];
+    [v8 setLocalParticipantAssociation:localParticipantAssociation];
 
     [v8 setOneToOneHandoffOngoing:{-[CSDConversation isOneToOneHandoffOngoing](self, "isOneToOneHandoffOngoing")}];
-    v25 = [(CSDConversation *)self handoffEligibility];
-    [v8 setHandoffEligibility:v25];
+    handoffEligibility = [(CSDConversation *)self handoffEligibility];
+    [v8 setHandoffEligibility:handoffEligibility];
   }
 
   [v8 setOneToOneModeEnabled:{-[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled")}];
-  v26 = [(CSDConversation *)self tuActivitySessions];
-  [v8 setActivitySessions:v26];
+  tuActivitySessions = [(CSDConversation *)self tuActivitySessions];
+  [v8 setActivitySessions:tuActivitySessions];
 
-  v27 = [(CSDConversation *)self tuSystemActivitySessions];
-  [v8 setSystemActivitySessions:v27];
+  tuSystemActivitySessions = [(CSDConversation *)self tuSystemActivitySessions];
+  [v8 setSystemActivitySessions:tuSystemActivitySessions];
 
-  v28 = [(CSDConversation *)self stagedActivitySession];
-  [v8 setStagedActivitySession:v28];
+  stagedActivitySession = [(CSDConversation *)self stagedActivitySession];
+  [v8 setStagedActivitySession:stagedActivitySession];
 
   [v8 setVideo:{-[CSDConversation isVideo](self, "isVideo")}];
   [v8 setIsUpgradeToVideo:{-[CSDConversation isUpgradeToVideo](self, "isUpgradeToVideo")}];
-  v29 = [(CSDConversation *)self virtualParticipants];
-  [v8 setVirtualParticipants:v29];
+  virtualParticipants = [(CSDConversation *)self virtualParticipants];
+  [v8 setVirtualParticipants:virtualParticipants];
 
-  v30 = [(CSDConversation *)self invitationPreferences];
-  [v8 setInvitationPreferences:v30];
+  invitationPreferences = [(CSDConversation *)self invitationPreferences];
+  [v8 setInvitationPreferences:invitationPreferences];
 
-  v31 = [(CSDConversation *)self lightweightMembers];
-  [v8 setLightweightMembers:v31];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  [v8 setLightweightMembers:lightweightMembers];
 
   [v8 setFromStorage:{-[CSDConversation isFromStorage](self, "isFromStorage")}];
-  v32 = [(CSDConversation *)self invitationDate];
-  [v8 setInvitationDate:v32];
+  invitationDate = [(CSDConversation *)self invitationDate];
+  [v8 setInvitationDate:invitationDate];
 
-  v33 = [(CSDConversation *)self failureContext];
-  [v8 setConversationFailureContext:v33];
+  failureContext = [(CSDConversation *)self failureContext];
+  [v8 setConversationFailureContext:failureContext];
 
   [v8 setIsAnyOtherAccountDeviceActive:{-[CSDConversation isAnyOtherAccountDeviceActive](self, "isAnyOtherAccountDeviceActive")}];
   [v8 setAvMode:{-[CSDConversation avMode](self, "avMode")}];
@@ -1229,15 +1229,15 @@ LABEL_11:
   [v8 setCameraMixedWithScreen:{-[CSDConversation isCameraMixedWithScreen](self, "isCameraMixedWithScreen")}];
   [v8 setIsNearbySharePlay:{-[CSDConversation isNearbySharePlay](self, "isNearbySharePlay")}];
   [v8 setIsUnderlyingLinksConnected:{-[CSDConversation isUnderlyingLinksConnected](self, "isUnderlyingLinksConnected")}];
-  v34 = [(CSDConversation *)self activeRemoteParticipants];
-  v35 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v34 count]);
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v35 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [activeRemoteParticipants count]);
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v36 = [(CSDConversation *)self activeRemoteParticipants];
-  v37 = [v36 countByEnumeratingWithState:&v64 objects:v69 count:16];
+  activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
+  v37 = [activeRemoteParticipants2 countByEnumeratingWithState:&v64 objects:v69 count:16];
   if (v37)
   {
     v38 = v37;
@@ -1248,28 +1248,28 @@ LABEL_11:
       {
         if (*v65 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(activeRemoteParticipants2);
         }
 
-        v41 = [*(*(&v64 + 1) + 8 * i) tuConversationParticipant];
-        [v35 addObject:v41];
+        tuConversationParticipant = [*(*(&v64 + 1) + 8 * i) tuConversationParticipant];
+        [v35 addObject:tuConversationParticipant];
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v64 objects:v69 count:16];
+      v38 = [activeRemoteParticipants2 countByEnumeratingWithState:&v64 objects:v69 count:16];
     }
 
     while (v38);
   }
 
-  v42 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-  v43 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v42 count]);
+  activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+  v43 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [activeLightweightParticipantsByIdentifier count]);
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v44 = [(CSDConversation *)self activeLightweightParticipants];
-  v45 = [v44 countByEnumeratingWithState:&v60 objects:v68 count:16];
+  activeLightweightParticipants = [(CSDConversation *)self activeLightweightParticipants];
+  v45 = [activeLightweightParticipants countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (v45)
   {
     v46 = v45;
@@ -1280,47 +1280,47 @@ LABEL_11:
       {
         if (*v61 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(activeLightweightParticipants);
         }
 
-        v49 = [*(*(&v60 + 1) + 8 * j) tuConversationParticipant];
-        [v43 addObject:v49];
+        tuConversationParticipant2 = [*(*(&v60 + 1) + 8 * j) tuConversationParticipant];
+        [v43 addObject:tuConversationParticipant2];
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v60 objects:v68 count:16];
+      v46 = [activeLightweightParticipants countByEnumeratingWithState:&v60 objects:v68 count:16];
     }
 
     while (v46);
   }
 
-  v50 = [(CSDConversation *)self featureFlags];
-  v51 = [v50 aTVHandoff];
+  featureFlags2 = [(CSDConversation *)self featureFlags];
+  aTVHandoff = [featureFlags2 aTVHandoff];
 
-  if ((v51 & 1) == 0)
+  if ((aTVHandoff & 1) == 0)
   {
     [v35 unionSet:v43];
   }
 
   [v8 setActiveRemoteParticipants:v35];
   [v8 setActiveLightweightParticipants:v43];
-  v52 = [(CSDConversation *)self highlightIdentifiers];
-  [v8 setHighlightIdentifiers:v52];
+  highlightIdentifiers = [(CSDConversation *)self highlightIdentifiers];
+  [v8 setHighlightIdentifiers:highlightIdentifiers];
 
-  v53 = [(CSDConversation *)self screenSharingRequests];
-  [v8 setScreenSharingRequests:v53];
+  screenSharingRequests = [(CSDConversation *)self screenSharingRequests];
+  [v8 setScreenSharingRequests:screenSharingRequests];
 
-  v54 = [(CSDConversation *)self supportedMediaTypes];
-  [v8 setSupportedMediaTypes:v54];
+  supportedMediaTypes = [(CSDConversation *)self supportedMediaTypes];
+  [v8 setSupportedMediaTypes:supportedMediaTypes];
 
-  v55 = [(CSDConversation *)self handoffContext];
-  [v8 setHandoffContext:v55];
+  handoffContext = [(CSDConversation *)self handoffContext];
+  [v8 setHandoffContext:handoffContext];
 
-  v56 = [(CSDConversation *)self screenSharingRequests];
-  [v8 setScreenSharingRequests:v56];
+  screenSharingRequests2 = [(CSDConversation *)self screenSharingRequests];
+  [v8 setScreenSharingRequests:screenSharingRequests2];
 
   [v8 setScreenSharingType:{-[CSDConversation screenSharingType](self, "screenSharingType")}];
-  v57 = [(CSDConversation *)self localParticipantCluster];
-  [v8 setLocalParticipantCluster:v57];
+  localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+  [v8 setLocalParticipantCluster:localParticipantCluster];
 
   [v8 setNearbySession:{-[CSDConversation isNearbySession](self, "isNearbySession")}];
   v58 = [v8 copy];
@@ -1330,75 +1330,75 @@ LABEL_11:
 
 - (id)avcSessionIdentifier
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  v5 = [v4 sessionIdentifier];
+  avcSession = [(CSDConversation *)self avcSession];
+  sessionIdentifier = [avcSession sessionIdentifier];
 
-  return v5;
+  return sessionIdentifier;
 }
 
 - (int64_t)avcSessionToken
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  v5 = [v4 sessionToken];
+  avcSession = [(CSDConversation *)self avcSession];
+  sessionToken = [avcSession sessionToken];
 
-  return v5;
+  return sessionToken;
 }
 
 - (int64_t)avcLocalCaptionsToken
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  v5 = [v4 localCaptionsToken];
+  avcSession = [(CSDConversation *)self avcSession];
+  localCaptionsToken = [avcSession localCaptionsToken];
 
-  return v5;
+  return localCaptionsToken;
 }
 
 - (unint64_t)localParticipantIdentifier
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self idsSession];
-  v5 = [v4 localParticipantIdentifier];
+  idsSession = [(CSDConversation *)self idsSession];
+  localParticipantIdentifier = [idsSession localParticipantIdentifier];
 
-  return v5;
+  return localParticipantIdentifier;
 }
 
 - (int64_t)maxVideoDecodesAllowed
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  v5 = [v4 maxVideoDecodesAllowed];
+  avcSession = [(CSDConversation *)self avcSession];
+  maxVideoDecodesAllowed = [avcSession maxVideoDecodesAllowed];
 
-  return v5;
+  return maxVideoDecodesAllowed;
 }
 
 - (BOOL)isAudioReady
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  LOBYTE(v3) = [v4 isAudioReady];
+  avcSession = [(CSDConversation *)self avcSession];
+  LOBYTE(queue) = [avcSession isAudioReady];
 
-  return v3;
+  return queue;
 }
 
-- (void)setRemoteMembers:(id)a3
+- (void)setRemoteMembers:(id)members
 {
-  if (self->_remoteMembers != a3)
+  if (self->_remoteMembers != members)
   {
-    v4 = [a3 copy];
+    v4 = [members copy];
     remoteMembers = self->_remoteMembers;
     self->_remoteMembers = v4;
 
@@ -1407,8 +1407,8 @@ LABEL_11:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(CSDConversation *)self remoteMembers];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    v8 = [remoteMembers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1420,25 +1420,25 @@ LABEL_11:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(remoteMembers);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * v11) handle];
-          [v6 addObject:v12];
+          handle = [*(*(&v14 + 1) + 8 * v11) handle];
+          [v6 addObject:handle];
 
           v11 = v11 + 1;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [remoteMembers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
 
     [(CSDConversation *)self setRemoteMemberHandles:v6];
-    v13 = [(CSDConversation *)self delegate];
-    [v13 conversation:self remoteMembersChanged:self->_remoteMembers];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self remoteMembersChanged:self->_remoteMembers];
   }
 }
 
@@ -1448,14 +1448,14 @@ LABEL_11:
   [v3 setScreenSharingAvailable:1];
   [v3 setGondolaCallingAvailable:1];
   [v3 setSupportsLeaveContext:1];
-  v4 = [(CSDConversation *)self featureFlags];
-  [v3 setGftDowngradeToOneToOneAvailable:{objc_msgSend(v4, "gftDowngradeToOneToOne")}];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  [v3 setGftDowngradeToOneToOneAvailable:{objc_msgSend(featureFlags, "gftDowngradeToOneToOne")}];
 
-  v5 = [(CSDConversation *)self featureFlags];
-  [v3 setUPlusOneScreenShareAvailable:{objc_msgSend(v5, "uPlusOneScreenSharing")}];
+  featureFlags2 = [(CSDConversation *)self featureFlags];
+  [v3 setUPlusOneScreenShareAvailable:{objc_msgSend(featureFlags2, "uPlusOneScreenSharing")}];
 
-  v6 = [(CSDConversation *)self featureFlags];
-  [v3 setUPlusNDowngradeAvailable:{objc_msgSend(v6, "uPlusNDowngrade")}];
+  featureFlags3 = [(CSDConversation *)self featureFlags];
+  [v3 setUPlusNDowngradeAvailable:{objc_msgSend(featureFlags3, "uPlusNDowngrade")}];
 
   [v3 setSharePlayProtocolVersion:TUSharePlayProtocolVersion()];
   [v3 setPersonaAvailable:TUIsPersonaAvailable()];
@@ -1463,10 +1463,10 @@ LABEL_11:
   [v3 setVisionFeatureVersion:TUVisionFeatureVersion()];
   [v3 setNearbyFeatureVersion:TUNearbyFeatureVersion()];
   [v3 setUPlusOneAVLessAvailable:1];
-  v7 = [(CSDConversation *)self featureFlags];
-  [v3 setTranslationAvailable:{objc_msgSend(v7, "audioCallTranslationEnabled")}];
+  featureFlags4 = [(CSDConversation *)self featureFlags];
+  [v3 setTranslationAvailable:{objc_msgSend(featureFlags4, "audioCallTranslationEnabled")}];
 
-  v8 = [(CSDConversation *)self featureFlags];
+  featureFlags5 = [(CSDConversation *)self featureFlags];
   [(CSDConversation *)self isRelaying];
   [(CSDConversation *)self isScreenSharingInitiationAvailable];
   [v3 setSupportsRequestToScreenShare:TUIsRequestToScreenShareAvailable()];
@@ -1482,15 +1482,15 @@ LABEL_11:
 - (id)localConversationParticipantWithData
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(CSDConversation *)self remoteMembers];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v5 = [v3 initWithCapacity:{objc_msgSend(remoteMembers, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(CSDConversation *)self remoteMembers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  remoteMembers2 = [(CSDConversation *)self remoteMembers];
+  v7 = [remoteMembers2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1501,15 +1501,15 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteMembers2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) handle];
-        v12 = [v11 value];
-        [v5 addObject:v12];
+        handle = [*(*(&v15 + 1) + 8 * i) handle];
+        value = [handle value];
+        [v5 addObject:value];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [remoteMembers2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1520,25 +1520,25 @@ LABEL_11:
   return v13;
 }
 
-- (id)localConversationParticipantWithDataToSendToDestinationIDs:(id)a3
+- (id)localConversationParticipantWithDataToSendToDestinationIDs:(id)ds
 {
-  v4 = [(CSDConversation *)self localParticipantDataToSendToDestinationIDs:a3];
+  v4 = [(CSDConversation *)self localParticipantDataToSendToDestinationIDs:ds];
   v5 = 0;
   if ([(CSDConversation *)self localParticipantIdentifier]&& v4)
   {
     v6 = [CSDConversationParticipant alloc];
-    v7 = [(CSDConversation *)self localParticipantIdentifier];
-    v8 = [(CSDConversation *)self localMember];
-    v9 = [v8 handle];
-    v5 = [(CSDConversationParticipant *)v6 initWithIdentifier:v7 handle:v9 avcData:v4];
+    localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
+    localMember = [(CSDConversation *)self localMember];
+    handle = [localMember handle];
+    v5 = [(CSDConversationParticipant *)v6 initWithIdentifier:localParticipantIdentifier handle:handle avcData:v4];
 
     [(CSDConversationParticipant *)v5 setAudioVideoMode:[(CSDConversation *)self avMode]];
     [(CSDConversationParticipant *)v5 setSpatialPersonaEnabled:[(CSDConversation *)self isSpatialPersonaEnabled]];
-    v10 = [(CSDConversation *)self localParticipantCapabilities];
-    [(CSDConversationParticipant *)v5 setCapabilities:v10];
+    localParticipantCapabilities = [(CSDConversation *)self localParticipantCapabilities];
+    [(CSDConversationParticipant *)v5 setCapabilities:localParticipantCapabilities];
 
-    v11 = [(CSDConversation *)self localParticipantCluster];
-    [(CSDConversationParticipant *)v5 setCluster:v11];
+    localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+    [(CSDConversationParticipant *)v5 setCluster:localParticipantCluster];
 
     [(CSDConversationParticipant *)v5 setIsNearbySharePlay:[(CSDConversation *)self isNearbySharePlay]];
   }
@@ -1549,15 +1549,15 @@ LABEL_11:
 - (id)localParticipantData
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(CSDConversation *)self remoteMembers];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v5 = [v3 initWithCapacity:{objc_msgSend(remoteMembers, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(CSDConversation *)self remoteMembers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  remoteMembers2 = [(CSDConversation *)self remoteMembers];
+  v7 = [remoteMembers2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1568,15 +1568,15 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteMembers2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) handle];
-        v12 = [v11 value];
-        [v5 addObject:v12];
+        handle = [*(*(&v15 + 1) + 8 * i) handle];
+        value = [handle value];
+        [v5 addObject:value];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [remoteMembers2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1587,18 +1587,18 @@ LABEL_11:
   return v13;
 }
 
-- (id)localParticipantDataToSendToDestinationIDs:(id)a3
+- (id)localParticipantDataToSendToDestinationIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if ([(CSDConversation *)self isOneToOneModeEnabled])
   {
     v5 = 2;
   }
 
-  else if ([v4 count])
+  else if ([dsCopy count])
   {
-    v6 = [(CSDConversation *)self faceTimeInviteDemuxer];
-    if ([v6 destinationIDsCanUseV2Blobs:v4])
+    faceTimeInviteDemuxer = [(CSDConversation *)self faceTimeInviteDemuxer];
+    if ([faceTimeInviteDemuxer destinationIDsCanUseV2Blobs:dsCopy])
     {
       v5 = 2;
     }
@@ -1614,82 +1614,82 @@ LABEL_11:
     v5 = 1;
   }
 
-  v7 = [(CSDConversation *)self avcSession];
-  v8 = [v7 localParticipantDataWithVersion:v5];
+  avcSession = [(CSDConversation *)self avcSession];
+  v8 = [avcSession localParticipantDataWithVersion:v5];
 
   return v8;
 }
 
 - (BOOL)_expanseEnabled
 {
-  v3 = [(CSDConversation *)self featureFlags];
-  if ([v3 expanseEnabled])
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags expanseEnabled])
   {
-    v4 = 1;
+    forceExpanseEnabled = 1;
   }
 
   else
   {
-    v4 = [(CSDConversation *)self forceExpanseEnabled];
+    forceExpanseEnabled = [(CSDConversation *)self forceExpanseEnabled];
   }
 
-  return v4;
+  return forceExpanseEnabled;
 }
 
-- (void)setForceExpanseEnabled:(BOOL)a3
+- (void)setForceExpanseEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CSDConversation *)self _expanseEnabled];
-  if (v3)
+  enabledCopy = enabled;
+  _expanseEnabled = [(CSDConversation *)self _expanseEnabled];
+  if (enabledCopy)
   {
-    if ((v5 & 1) == 0)
+    if ((_expanseEnabled & 1) == 0)
     {
       v6 = [CPActivitySessionManager alloc];
-      v7 = [(CSDConversation *)self UUID];
-      v8 = [(CSDConversation *)self groupUUID];
+      uUID = [(CSDConversation *)self UUID];
+      groupUUID = [(CSDConversation *)self groupUUID];
       v9 = +[NSSet set];
       v10 = objc_alloc_init(CPApplicationController);
-      v11 = [(CSDConversation *)self queue];
-      v12 = [(CSDConversation *)self sharePlaySystemStateObserver];
+      queue = [(CSDConversation *)self queue];
+      sharePlaySystemStateObserver = [(CSDConversation *)self sharePlaySystemStateObserver];
       v13 = +[CSDSceneObservationManager shared];
-      v14 = [v6 initWithIdentifier:v7 groupUUID:v8 activities:v9 applicationController:v10 delegate:self queue:v11 systemStateObserver:v12 sceneObservationManager:v13];
+      v14 = [v6 initWithIdentifier:uUID groupUUID:groupUUID activities:v9 applicationController:v10 delegate:self queue:queue systemStateObserver:sharePlaySystemStateObserver sceneObservationManager:v13];
       [(CSDConversation *)self setActivitySessionManager:v14];
     }
   }
 
-  else if (v5)
+  else if (_expanseEnabled)
   {
     [(CSDConversation *)self setActivitySessionManager:0];
   }
 
-  self->_forceExpanseEnabled = v3;
+  self->_forceExpanseEnabled = enabledCopy;
 }
 
 - (NSSet)virtualParticipants
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self virtualParticipantsByPluginName];
-  v5 = [v4 allValues];
-  v6 = [NSSet setWithArray:v5];
+  virtualParticipantsByPluginName = [(CSDConversation *)self virtualParticipantsByPluginName];
+  allValues = [virtualParticipantsByPluginName allValues];
+  v6 = [NSSet setWithArray:allValues];
 
   return v6;
 }
 
 - (NSSet)memberHandlesEligibleForLinkApproval
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSMutableSet set];
-  v5 = [(CSDConversation *)self link];
+  link = [(CSDConversation *)self link];
 
-  if (v5)
+  if (link)
   {
-    v6 = [(CSDConversation *)self link];
-    v7 = [v6 invitedMemberHandles];
-    v8 = [v7 mutableCopy];
+    link2 = [(CSDConversation *)self link];
+    invitedMemberHandles = [link2 invitedMemberHandles];
+    v8 = [invitedMemberHandles mutableCopy];
 
     v4 = v8;
     goto LABEL_15;
@@ -1699,8 +1699,8 @@ LABEL_11:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(CSDConversation *)self remoteMemberHandles];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  remoteMemberHandles = [(CSDConversation *)self remoteMemberHandles];
+  v10 = [remoteMemberHandles countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v10)
   {
     goto LABEL_14;
@@ -1714,21 +1714,21 @@ LABEL_11:
     {
       if (*v21 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(remoteMemberHandles);
       }
 
       v14 = *(*(&v20 + 1) + 8 * i);
-      v15 = [v14 value];
-      if ([v15 destinationIdIsPhoneNumber])
+      value = [v14 value];
+      if ([value destinationIdIsPhoneNumber])
       {
       }
 
       else
       {
-        v16 = [v14 value];
-        v17 = [v16 destinationIdIsEmailAddress];
+        value2 = [v14 value];
+        destinationIdIsEmailAddress = [value2 destinationIdIsEmailAddress];
 
-        if (!v17)
+        if (!destinationIdIsEmailAddress)
         {
           continue;
         }
@@ -1737,7 +1737,7 @@ LABEL_11:
       [v4 addObject:v14];
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v11 = [remoteMemberHandles countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v11);
@@ -1751,45 +1751,45 @@ LABEL_15:
 
 - (BOOL)isUplinkMuted
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  LOBYTE(v3) = [v4 isUplinkMuted];
+  avcSession = [(CSDConversation *)self avcSession];
+  LOBYTE(queue) = [avcSession isUplinkMuted];
 
-  return v3;
+  return queue;
 }
 
-- (void)setAudioInjectionAllowed:(BOOL)a3
+- (void)setAudioInjectionAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  allowedCopy = allowed;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self featureFlags];
-  if ([v6 callRecordingEnabled])
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags callRecordingEnabled])
   {
   }
 
   else
   {
-    v7 = [(CSDConversation *)self featureFlags];
-    v8 = [v7 audioCallTranslationEnabled];
+    featureFlags2 = [(CSDConversation *)self featureFlags];
+    audioCallTranslationEnabled = [featureFlags2 audioCallTranslationEnabled];
 
-    if (!v8)
+    if (!audioCallTranslationEnabled)
     {
       return;
     }
   }
 
-  if ([(CSDConversation *)self isAudioInjectionAllowed]!= v3)
+  if ([(CSDConversation *)self isAudioInjectionAllowed]!= allowedCopy)
   {
-    v9 = [(CSDConversation *)self isUplinkMuted];
+    isUplinkMuted = [(CSDConversation *)self isUplinkMuted];
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
-      if (v3)
+      if (allowedCopy)
       {
         v12 = @"YES";
       }
@@ -1799,7 +1799,7 @@ LABEL_15:
         v12 = @"NO";
       }
 
-      if (v9)
+      if (isUplinkMuted)
       {
         v11 = @"YES";
       }
@@ -1811,11 +1811,11 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting audio injection allowed to %@, isUplinkMuted: %@", &v15, 0x16u);
     }
 
-    if (v3)
+    if (allowedCopy)
     {
-      [(CSDConversation *)self setExpectedUplinkMuted:v9];
+      [(CSDConversation *)self setExpectedUplinkMuted:isUplinkMuted];
       [(CSDConversation *)self setUplinkMuted:0];
-      self->_audioInjectionAllowed = v3;
+      self->_audioInjectionAllowed = allowedCopy;
     }
 
     else
@@ -1823,9 +1823,9 @@ LABEL_15:
       v13 = sub_100004778();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(CSDConversation *)self expectedUplinkMuted];
+        expectedUplinkMuted = [(CSDConversation *)self expectedUplinkMuted];
         v15 = 67109120;
-        LODWORD(v16) = v14;
+        LODWORD(v16) = expectedUplinkMuted;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Resetting uplink mute to exected uplink muted %d", &v15, 8u);
       }
 
@@ -1835,121 +1835,121 @@ LABEL_15:
   }
 }
 
-- (void)setIsHeld:(BOOL)a3
+- (void)setIsHeld:(BOOL)held
 {
-  v3 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  heldCopy = held;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_isHeld != v3)
+  if (self->_isHeld != heldCopy)
   {
-    self->_isHeld = v3;
-    v6 = [(CSDConversation *)self delegate];
-    [v6 conversationChanged:self];
+    self->_isHeld = heldCopy;
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
   }
 }
 
 - (BOOL)isAudioEnabled
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self expectedAudioEnabled];
-  if (v4)
+  expectedAudioEnabled = [(CSDConversation *)self expectedAudioEnabled];
+  if (expectedAudioEnabled)
   {
-    v5 = [(CSDConversation *)self expectedAudioEnabled];
-    v6 = [v5 BOOLValue];
+    expectedAudioEnabled2 = [(CSDConversation *)self expectedAudioEnabled];
+    bOOLValue = [expectedAudioEnabled2 BOOLValue];
   }
 
   else
   {
-    v5 = [(CSDConversation *)self avcSession];
-    v6 = [v5 isAudioEnabled];
+    expectedAudioEnabled2 = [(CSDConversation *)self avcSession];
+    bOOLValue = [expectedAudioEnabled2 isAudioEnabled];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (BOOL)isVideoEnabled
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self expectedVideoEnabled];
-  if (v4)
+  expectedVideoEnabled = [(CSDConversation *)self expectedVideoEnabled];
+  if (expectedVideoEnabled)
   {
-    v5 = [(CSDConversation *)self expectedVideoEnabled];
-    v6 = [v5 BOOLValue];
+    expectedVideoEnabled2 = [(CSDConversation *)self expectedVideoEnabled];
+    bOOLValue = [expectedVideoEnabled2 BOOLValue];
   }
 
   else
   {
-    v5 = [(CSDConversation *)self avcSession];
-    v6 = [v5 isVideoEnabled];
+    expectedVideoEnabled2 = [(CSDConversation *)self avcSession];
+    bOOLValue = [expectedVideoEnabled2 isVideoEnabled];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (BOOL)isScreenEnabled
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self expectedScreenEnabled];
-  if (v4)
+  expectedScreenEnabled = [(CSDConversation *)self expectedScreenEnabled];
+  if (expectedScreenEnabled)
   {
-    v5 = [(CSDConversation *)self expectedScreenEnabled];
-    v6 = [v5 BOOLValue];
+    expectedScreenEnabled2 = [(CSDConversation *)self expectedScreenEnabled];
+    bOOLValue = [expectedScreenEnabled2 BOOLValue];
   }
 
   else
   {
-    v5 = [(CSDConversation *)self avcSession];
-    v6 = [v5 isScreenEnabled];
+    expectedScreenEnabled2 = [(CSDConversation *)self avcSession];
+    bOOLValue = [expectedScreenEnabled2 isScreenEnabled];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
-- (void)addScreenSharingType:(unint64_t)a3
+- (void)addScreenSharingType:(unint64_t)type
 {
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     screenSharingType = self->_screenSharingType;
     v9 = 134218240;
-    v10 = a3;
+    typeCopy = type;
     v11 = 2048;
     v12 = screenSharingType;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Adding %lu to screenSharingType %lu", &v9, 0x16u);
   }
 
-  self->_screenSharingType |= a3;
-  v8 = [(CSDConversation *)self delegate];
-  [v8 conversationChanged:self];
+  self->_screenSharingType |= type;
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)setIsNearbySharePlay:(BOOL)a3
+- (void)setIsNearbySharePlay:(BOOL)play
 {
-  v3 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  playCopy = play;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v3)
+    if (playCopy)
     {
       v7 = @"YES";
     }
@@ -1959,34 +1959,34 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting isNearbySharePlay = %@", &v9, 0xCu);
   }
 
-  self->_isNearbySharePlay = v3;
-  v8 = [(CSDConversation *)self delegate];
-  [v8 conversationChanged:self];
+  self->_isNearbySharePlay = playCopy;
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)handleRemoteControlStatusChanged:(int64_t)a3
+- (void)handleRemoteControlStatusChanged:(int64_t)changed
 {
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    changedCopy = changed;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling changed remote control status: %lu", &v7, 0xCu);
   }
 
-  switch(a3)
+  switch(changed)
   {
     case 3:
-      v6 = [(CSDConversation *)self avcSession];
-      [v6 handleUpdatedControllingRemoteScreen:1];
+      avcSession = [(CSDConversation *)self avcSession];
+      [avcSession handleUpdatedControllingRemoteScreen:1];
       break;
     case 2:
-      v6 = [(CSDConversation *)self avcSession];
-      [v6 enableRemoteControlWithCursorCapture:0];
+      avcSession = [(CSDConversation *)self avcSession];
+      [avcSession enableRemoteControlWithCursorCapture:0];
       break;
     case 1:
-      v6 = [(CSDConversation *)self avcSession];
-      [v6 disableRemoteControl];
+      avcSession = [(CSDConversation *)self avcSession];
+      [avcSession disableRemoteControl];
       break;
     default:
       return;
@@ -1995,51 +1995,51 @@ LABEL_15:
 
 - (BOOL)isVideoPaused
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self expectedVideoPaused];
-  if (v4)
+  expectedVideoPaused = [(CSDConversation *)self expectedVideoPaused];
+  if (expectedVideoPaused)
   {
-    v5 = [(CSDConversation *)self expectedVideoPaused];
-    v6 = [v5 BOOLValue];
+    expectedVideoPaused2 = [(CSDConversation *)self expectedVideoPaused];
+    bOOLValue = [expectedVideoPaused2 BOOLValue];
   }
 
   else
   {
-    v5 = [(CSDConversation *)self avcSession];
-    v6 = [v5 isVideoPaused];
+    expectedVideoPaused2 = [(CSDConversation *)self avcSession];
+    bOOLValue = [expectedVideoPaused2 isVideoPaused];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
-- (void)setScreenShareAttributes:(id)a3
+- (void)setScreenShareAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  attributesCopy = attributes;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = attributesCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting screenShareAttributes to %@", &v8, 0xCu);
   }
 
   if ([(CSDConversation *)self isScreenEnabled])
   {
-    v7 = [(CSDConversation *)self avcSession];
-    [v7 setScreenShareAttributes:v4];
+    avcSession = [(CSDConversation *)self avcSession];
+    [avcSession setScreenShareAttributes:attributesCopy];
   }
 
   else
   {
-    v7 = sub_100004778();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    avcSession = sub_100004778();
+    if (os_log_type_enabled(avcSession, OS_LOG_TYPE_ERROR))
     {
       sub_100471ED4();
     }
@@ -2048,31 +2048,31 @@ LABEL_15:
 
 - (BOOL)isAudioPaused
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self expectedAudioPaused];
-  if (v4)
+  expectedAudioPaused = [(CSDConversation *)self expectedAudioPaused];
+  if (expectedAudioPaused)
   {
-    v5 = [(CSDConversation *)self expectedAudioPaused];
-    v6 = [v5 BOOLValue];
+    expectedAudioPaused2 = [(CSDConversation *)self expectedAudioPaused];
+    bOOLValue = [expectedAudioPaused2 BOOLValue];
   }
 
   else
   {
-    v5 = [(CSDConversation *)self avcSession];
-    v6 = [v5 isAudioPaused];
+    expectedAudioPaused2 = [(CSDConversation *)self avcSession];
+    bOOLValue = [expectedAudioPaused2 isAudioPaused];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (BOOL)isRedirectingAudio
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CSDConversation *)self isRelaying])
   {
@@ -2084,37 +2084,37 @@ LABEL_15:
 
 - (BOOL)isRelaying
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_relaying;
 }
 
 - (BOOL)isScreening
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_screening;
 }
 
-- (BOOL)_shouldSendSetParticipantType:(unint64_t)a3
+- (BOOL)_shouldSendSetParticipantType:(unint64_t)type
 {
-  if (a3 - 1 > 1)
+  if (type - 1 > 1)
   {
     return 1;
   }
 
-  v3 = [(CSDConversation *)self idsSession];
-  v4 = [v3 localParticipantType] != 1;
+  idsSession = [(CSDConversation *)self idsSession];
+  v4 = [idsSession localParticipantType] != 1;
 
   return v4;
 }
 
-- (void)setLocalParticipantAudioVideoMode:(unint64_t)a3 presentationMode:(unint64_t)a4
+- (void)setLocalParticipantAudioVideoMode:(unint64_t)mode presentationMode:(unint64_t)presentationMode
 {
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2122,42 +2122,42 @@ LABEL_15:
     avMode = self->_avMode;
     presentationMode = self->_presentationMode;
     *buf = 134218752;
-    v45 = a3;
+    modeCopy2 = mode;
     v46 = 2048;
     v47 = avMode;
     v48 = 2048;
-    v49 = a4;
+    presentationModeCopy = presentationMode;
     v50 = 2048;
-    v51 = presentationMode;
+    presentationModeCopy2 = presentationMode;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setLocalParticipantAudioVideoMode: %lu, _avMode: %lu, presentationMode: %lu, _presentationMode: %lu", buf, 0x2Au);
   }
 
-  self->_avMode = a3;
-  self->_presentationMode = a4;
-  v11 = [(CSDConversation *)self _allMembers];
-  v12 = [(CSDConversation *)self localCSDConversationParticipant];
+  self->_avMode = mode;
+  self->_presentationMode = presentationMode;
+  _allMembers = [(CSDConversation *)self _allMembers];
+  localCSDConversationParticipant = [(CSDConversation *)self localCSDConversationParticipant];
   v13 = &_s10Foundation3URLVMa_ptr_0;
   v14 = [NSNumber numberWithInt:0];
-  v15 = [(CSDConversation *)self featureFlags];
-  if (![v15 controlMessageOverQREnabled])
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if (![featureFlags controlMessageOverQREnabled])
   {
     goto LABEL_10;
   }
 
-  v16 = [(CSDConversation *)self serverBag];
-  v17 = [v16 isControlMessageOverQREnabled];
+  serverBag = [(CSDConversation *)self serverBag];
+  isControlMessageOverQREnabled = [serverBag isControlMessageOverQREnabled];
 
-  if (v17 && [(CSDConversation *)self _shouldSendSetParticipantType:a3])
+  if (isControlMessageOverQREnabled && [(CSDConversation *)self _shouldSendSetParticipantType:mode])
   {
-    v18 = [(CSDConversation *)self localParticipant];
-    v15 = sub_1000C01A0(v18);
+    localParticipant = [(CSDConversation *)self localParticipant];
+    featureFlags = sub_1000C01A0(localParticipant);
 
-    if (v15)
+    if (featureFlags)
     {
-      v19 = [(CSDConversation *)self groupUUID];
-      v20 = [(CSDConversation *)self UUID];
-      v21 = [(CSDConversation *)self invitationPreferences];
-      v22 = sub_1000C026C(v15, v19, v20, v21);
+      groupUUID = [(CSDConversation *)self groupUUID];
+      uUID = [(CSDConversation *)self UUID];
+      invitationPreferences = [(CSDConversation *)self invitationPreferences];
+      v22 = sub_1000C026C(featureFlags, groupUUID, uUID, invitationPreferences);
 
       v23 = +[NSDate date];
       [v23 timeIntervalSinceReferenceDate];
@@ -2165,25 +2165,25 @@ LABEL_15:
 
       [v24 doubleValue];
       v26 = v25;
-      v27 = [(CSDConversation *)self sequenceNumberToTime];
-      v28 = [(CSDConversation *)self participantUpdateSequenceNumber];
-      [(CSDConversation *)self setParticipantUpdateSequenceNumber:v28 + 1];
-      v29 = [NSNumber numberWithUnsignedLongLong:v28 + 1];
-      [v27 setObject:v24 forKeyedSubscript:v29];
+      sequenceNumberToTime = [(CSDConversation *)self sequenceNumberToTime];
+      participantUpdateSequenceNumber = [(CSDConversation *)self participantUpdateSequenceNumber];
+      [(CSDConversation *)self setParticipantUpdateSequenceNumber:participantUpdateSequenceNumber + 1];
+      v29 = [NSNumber numberWithUnsignedLongLong:participantUpdateSequenceNumber + 1];
+      [sequenceNumberToTime setObject:v24 forKeyedSubscript:v29];
 
-      v30 = [(CSDConversation *)self participantUpdateSequenceNumber];
+      participantUpdateSequenceNumber2 = [(CSDConversation *)self participantUpdateSequenceNumber];
       v31 = sub_100004778();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [(CSDConversation *)self participantUpdateSequenceNumber];
+        participantUpdateSequenceNumber3 = [(CSDConversation *)self participantUpdateSequenceNumber];
         *buf = 134219010;
-        v45 = a3;
+        modeCopy2 = mode;
         v46 = 2112;
         v47 = v24;
         v48 = 2048;
-        v49 = v26;
+        presentationModeCopy = v26;
         v50 = 2048;
-        v51 = v32;
+        presentationModeCopy2 = participantUpdateSequenceNumber3;
         v52 = 2112;
         v53 = v22;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "setLocalParticipantAudioVideoMode: %lu, time: %@, timestampValue: %f, participantUpdateSequenceNumber: %lu, message: %@", buf, 0x34u);
@@ -2194,7 +2194,7 @@ LABEL_15:
     }
 
 LABEL_10:
-    v30 = 0;
+    participantUpdateSequenceNumber2 = 0;
     v22 = 0;
     v24 = v14;
 LABEL_11:
@@ -2203,16 +2203,16 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v30 = 0;
+  participantUpdateSequenceNumber2 = 0;
   v22 = 0;
 LABEL_13:
-  if (a3 - 1 >= 2)
+  if (mode - 1 >= 2)
   {
-    if (!a3)
+    if (!mode)
     {
-      v35 = [(CSDConversation *)self idsSession];
-      v36 = [v22 data];
-      [v35 setParticipantType:0 forParticipant:v12 members:v11 isLocalParticipant:1 withContext:v36 timestamp:v14 identifier:v30];
+      idsSession = [(CSDConversation *)self idsSession];
+      data = [v22 data];
+      [idsSession setParticipantType:0 forParticipant:localCSDConversationParticipant members:_allMembers isLocalParticipant:1 withContext:data timestamp:v14 identifier:participantUpdateSequenceNumber2];
 
       v37 = sub_100004778();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -2227,18 +2227,18 @@ LABEL_13:
 
   else
   {
-    v33 = [(CSDConversation *)self idsSession];
-    v34 = [v33 localParticipantType];
+    idsSession2 = [(CSDConversation *)self idsSession];
+    localParticipantType = [idsSession2 localParticipantType];
 
-    if (v34 == 1)
+    if (localParticipantType == 1)
     {
-      [(CSDConversation *)self setVideo:a3 == 2];
+      [(CSDConversation *)self setVideo:mode == 2];
     }
 
     else
     {
       v38 = v13[59];
-      v39 = a3 == 2 && [(CSDConversation *)self isVideoEnabled];
+      v39 = mode == 2 && [(CSDConversation *)self isVideoEnabled];
       v40 = [v38 numberWithInt:v39];
       [(CSDConversation *)self setExpectedVideoEnabled:v40];
 
@@ -2250,43 +2250,43 @@ LABEL_13:
       }
 
       [(CSDConversation *)self broadcastLocalParticipantData];
-      v42 = [(CSDConversation *)self idsSession];
-      v43 = [v22 data];
-      [v42 setParticipantType:1 forParticipant:v12 members:v11 isLocalParticipant:1 withContext:v43 timestamp:v14 identifier:v30];
+      idsSession3 = [(CSDConversation *)self idsSession];
+      data2 = [v22 data];
+      [idsSession3 setParticipantType:1 forParticipant:localCSDConversationParticipant members:_allMembers isLocalParticipant:1 withContext:data2 timestamp:v14 identifier:participantUpdateSequenceNumber2];
     }
   }
 }
 
 - (void)registerMessagesGroupAssociation
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     v8 = 138412290;
-    v9 = v5;
+    v9 = uUID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Conversation UUID: %@ asked to register messages group association", &v8, 0xCu);
   }
 
-  v6 = [(CSDConversation *)self groupUUID];
-  [(CSDConversation *)self setMessagesGroupUUID:v6];
+  groupUUID = [(CSDConversation *)self groupUUID];
+  [(CSDConversation *)self setMessagesGroupUUID:groupUUID];
 
-  v7 = [(CSDConversation *)self delegate];
-  [v7 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
 - (BOOL)isVideo
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self featureFlags];
-  v5 = [v4 avLessSharePlayEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  avLessSharePlayEnabled = [featureFlags avLessSharePlayEnabled];
 
-  if (v5)
+  if (avLessSharePlayEnabled)
   {
     return [(CSDConversation *)self avMode]== 2;
   }
@@ -2303,8 +2303,8 @@ LABEL_13:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(CSDConversation *)self activeRemoteParticipants];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v4 = [activeRemoteParticipants countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2317,14 +2317,14 @@ LABEL_13:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 capabilities];
-        v12 = [v11 isUPlusOneAVLessAvailable];
+        capabilities = [v10 capabilities];
+        isUPlusOneAVLessAvailable = [capabilities isUPlusOneAVLessAvailable];
 
-        if (v12)
+        if (isUPlusOneAVLessAvailable)
         {
           if (![v10 audioVideoMode])
           {
@@ -2338,7 +2338,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [activeRemoteParticipants countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
@@ -2350,8 +2350,8 @@ LABEL_13:
     v8 = 1;
   }
 
-  v13 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v14 = [v13 count];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v14 = [activeRemoteParticipantsByIdentifier count];
 
   if (((v6 > 0) & v8) != 0)
   {
@@ -2368,29 +2368,29 @@ LABEL_13:
 
 - (BOOL)isOneToOneModeEnabled
 {
-  v2 = self;
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)v2 avcSession];
+  avcSession = [(CSDConversation *)selfCopy avcSession];
 
-  if (v4)
+  if (avcSession)
   {
-    v5 = [(CSDConversation *)v2 avcSession];
-    LOBYTE(v2) = [v5 isOneToOneModeEnabled];
+    avcSession2 = [(CSDConversation *)selfCopy avcSession];
+    LOBYTE(selfCopy) = [avcSession2 isOneToOneModeEnabled];
     goto LABEL_68;
   }
 
-  v6 = [(CSDConversation *)v2 featureFlags];
-  v7 = [v6 conversationHandoffEnabled];
+  featureFlags = [(CSDConversation *)selfCopy featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (v7)
+  if (conversationHandoffEnabled)
   {
-    v8 = [(CSDConversation *)v2 localParticipantAssociation];
-    if (v8)
+    localParticipantAssociation = [(CSDConversation *)selfCopy localParticipantAssociation];
+    if (localParticipantAssociation)
     {
-      v9 = [(CSDConversation *)v2 activeRemoteParticipants];
-      v10 = [v9 count] < 2;
+      activeRemoteParticipants = [(CSDConversation *)selfCopy activeRemoteParticipants];
+      v10 = [activeRemoteParticipants count] < 2;
     }
 
     else
@@ -2404,79 +2404,79 @@ LABEL_13:
     v10 = 1;
   }
 
-  v11 = [(CSDConversation *)v2 localMember];
-  v12 = [v11 isLightweightMember];
+  localMember = [(CSDConversation *)selfCopy localMember];
+  isLightweightMember = [localMember isLightweightMember];
 
-  v13 = [(CSDConversation *)v2 remoteMembers];
-  v14 = [v13 count];
+  remoteMembers = [(CSDConversation *)selfCopy remoteMembers];
+  v14 = [remoteMembers count];
 
   if (v14 == 1)
   {
-    v15 = v12 ^ 1;
+    isFaceTimeMyselfEnabled = isLightweightMember ^ 1;
     goto LABEL_49;
   }
 
-  if ([(CSDConversation *)v2 state]> 1)
+  if ([(CSDConversation *)selfCopy state]> 1)
   {
-    v15 = [(CSDConversation *)v2 activeRemoteParticipantCountMinusEligibleAVLess]== 1;
+    isFaceTimeMyselfEnabled = [(CSDConversation *)selfCopy activeRemoteParticipantCountMinusEligibleAVLess]== 1;
     goto LABEL_49;
   }
 
-  v16 = [(CSDConversation *)v2 remoteMembers];
-  v17 = [v16 count];
+  remoteMembers2 = [(CSDConversation *)selfCopy remoteMembers];
+  v17 = [remoteMembers2 count];
 
   if (v17)
   {
-    v18 = [(CSDConversation *)v2 remoteMembers];
-    v19 = [(CSDConversation *)v2 localMember];
-    v20 = [v19 association];
-    v21 = [TUConversation mergedRemoteMembers:v18 withLocalMemberAssociation:v20 removingLocallyAssociatedMember:0];
+    remoteMembers3 = [(CSDConversation *)selfCopy remoteMembers];
+    localMember2 = [(CSDConversation *)selfCopy localMember];
+    association = [localMember2 association];
+    v21 = [TUConversation mergedRemoteMembers:remoteMembers3 withLocalMemberAssociation:association removingLocallyAssociatedMember:0];
 
-    if ((v12 & 1) != 0 || [v21 count] != 1)
+    if ((isLightweightMember & 1) != 0 || [v21 count] != 1)
     {
-      v15 = 0;
+      isFaceTimeMyselfEnabled = 0;
     }
 
     else
     {
-      v22 = [(CSDConversation *)v2 lightweightMembers];
-      v15 = [v22 count] == 0;
+      lightweightMembers = [(CSDConversation *)selfCopy lightweightMembers];
+      isFaceTimeMyselfEnabled = [lightweightMembers count] == 0;
     }
 
     goto LABEL_49;
   }
 
-  v23 = [(CSDConversation *)v2 featureFlags];
-  if (([v23 oneToOneFaceTimeMyselfEnabled] & 1) == 0)
+  featureFlags2 = [(CSDConversation *)selfCopy featureFlags];
+  if (([featureFlags2 oneToOneFaceTimeMyselfEnabled] & 1) == 0)
   {
 
 LABEL_39:
-    v15 = 0;
+    isFaceTimeMyselfEnabled = 0;
     goto LABEL_49;
   }
 
-  v24 = [(CSDConversation *)v2 serverBag];
-  v15 = [v24 isFaceTimeMyselfEnabled];
+  serverBag = [(CSDConversation *)selfCopy serverBag];
+  isFaceTimeMyselfEnabled = [serverBag isFaceTimeMyselfEnabled];
 
-  if (!v15)
+  if (!isFaceTimeMyselfEnabled)
   {
     goto LABEL_49;
   }
 
-  v25 = [(CSDConversation *)v2 remotePushTokens];
-  v26 = [v25 count];
+  remotePushTokens = [(CSDConversation *)selfCopy remotePushTokens];
+  v26 = [remotePushTokens count];
 
   if (!v26)
   {
     goto LABEL_39;
   }
 
-  v15 = v12 ^ 1;
+  isFaceTimeMyselfEnabled = isLightweightMember ^ 1;
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = [(CSDConversation *)v2 remotePushTokens];
+  obj = [(CSDConversation *)selfCopy remotePushTokens];
   v27 = [obj countByEnumeratingWithState:&v61 objects:v69 count:16];
   if (!v27)
   {
@@ -2502,33 +2502,33 @@ LABEL_39:
         v33 = TUCopyIDSFromIDForHandle();
         v34 = TUHandleForIDSCanonicalAddress();
 
-        v35 = [(CSDConversation *)v2 localMember];
-        v36 = [v35 handle];
-        v37 = [v34 isEqualToHandle:v36];
+        localMember3 = [(CSDConversation *)selfCopy localMember];
+        handle = [localMember3 handle];
+        v37 = [v34 isEqualToHandle:handle];
 
         if ((v37 & 1) == 0)
         {
           v42 = sub_100004778();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v43 = [v34 value];
-            v44 = [(CSDConversation *)v2 localMember];
-            v45 = [v44 handle];
-            v46 = [v45 value];
+            value = [v34 value];
+            localMember4 = [(CSDConversation *)selfCopy localMember];
+            handle2 = [localMember4 handle];
+            value2 = [handle2 value];
             *buf = 138412546;
-            v66 = v43;
+            v66 = value;
             v67 = 2112;
-            v68 = v46;
+            v68 = value2;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "not local handle: %@, %@", buf, 0x16u);
           }
 
           goto LABEL_47;
         }
 
-        v38 = [v34 value];
-        v39 = [v38 destinationIdIsPseudonym];
+        value3 = [v34 value];
+        destinationIdIsPseudonym = [value3 destinationIdIsPseudonym];
 
-        if (v39)
+        if (destinationIdIsPseudonym)
         {
           v42 = sub_100004778();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -2543,10 +2543,10 @@ LABEL_46:
 
         else
         {
-          v40 = [v34 value];
-          v41 = [v40 destinationIdIsTemporary];
+          value4 = [v34 value];
+          destinationIdIsTemporary = [value4 destinationIdIsTemporary];
 
-          if (!v41)
+          if (!destinationIdIsTemporary)
           {
 
             goto LABEL_35;
@@ -2564,7 +2564,7 @@ LABEL_46:
 
 LABEL_47:
 
-        v15 = 0;
+        isFaceTimeMyselfEnabled = 0;
         goto LABEL_48;
       }
 
@@ -2576,7 +2576,7 @@ LABEL_47:
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "[WARN] null handle for %@", buf, 0xCu);
       }
 
-      v15 = 0;
+      isFaceTimeMyselfEnabled = 0;
 LABEL_35:
     }
 
@@ -2596,7 +2596,7 @@ LABEL_49:
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
     v49 = @"NO";
-    if (v15)
+    if (isFaceTimeMyselfEnabled)
     {
       v50 = @"YES";
     }
@@ -2618,38 +2618,38 @@ LABEL_49:
     _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "meetsRemoteCountCriteria: %@, meetsParticipantCriteria: %@", buf, 0x16u);
   }
 
-  v5 = [(CSDConversation *)v2 featureFlags];
-  if (([v5 conversationOneToOneModeEnabled] & v15 & v10) == 1)
+  avcSession2 = [(CSDConversation *)selfCopy featureFlags];
+  if (([avcSession2 conversationOneToOneModeEnabled] & isFaceTimeMyselfEnabled & v10) == 1)
   {
-    v51 = [(CSDConversation *)v2 remoteMembers];
-    v52 = [v51 allObjects];
-    v53 = [v52 firstObject];
-    v54 = [v53 handle];
-    v55 = [v54 value];
-    if ([v55 destinationIdIsTemporary])
+    remoteMembers4 = [(CSDConversation *)selfCopy remoteMembers];
+    allObjects = [remoteMembers4 allObjects];
+    firstObject = [allObjects firstObject];
+    handle3 = [firstObject handle];
+    value5 = [handle3 value];
+    if ([value5 destinationIdIsTemporary])
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
 
     else
     {
-      v56 = [(CSDConversation *)v2 link];
-      if (v56)
+      link = [(CSDConversation *)selfCopy link];
+      if (link)
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(selfCopy) = 0;
       }
 
       else
       {
-        v57 = [(CSDConversation *)v2 provider];
-        if ([v57 isTelephonyWithSharePlayProvider])
+        provider = [(CSDConversation *)selfCopy provider];
+        if ([provider isTelephonyWithSharePlayProvider])
         {
-          LOBYTE(v2) = 0;
+          LOBYTE(selfCopy) = 0;
         }
 
         else
         {
-          LODWORD(v2) = ![(CSDConversation *)v2 isNearbySession];
+          LODWORD(selfCopy) = ![(CSDConversation *)selfCopy isNearbySession];
         }
       }
     }
@@ -2657,51 +2657,51 @@ LABEL_49:
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_68:
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isOneToOneHandoffOngoing
 {
-  v3 = [(CSDConversation *)self featureFlags];
-  v4 = [v3 conversationHandoffEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (!v4)
+  if (!conversationHandoffEnabled)
   {
     return 0;
   }
 
-  v5 = [(CSDConversation *)self remoteMembers];
-  if ([v5 count] != 1)
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  if ([remoteMembers count] != 1)
   {
 
     return 0;
   }
 
-  v6 = [(CSDConversation *)self activeRemoteParticipants];
-  v7 = [v6 count];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v7 = [activeRemoteParticipants count];
 
   if (v7 != 2)
   {
     return 0;
   }
 
-  v8 = [(CSDConversation *)self localParticipantAssociation];
+  localParticipantAssociation = [(CSDConversation *)self localParticipantAssociation];
 
-  if (v8)
+  if (localParticipantAssociation)
   {
-    v9 = [(CSDConversation *)self localParticipantAssociation];
-    v10 = [v9 identifier];
+    localParticipantAssociation2 = [(CSDConversation *)self localParticipantAssociation];
+    identifier = [localParticipantAssociation2 identifier];
 
-    if (v10 != [(CSDConversation *)self localParticipantIdentifier])
+    if (identifier != [(CSDConversation *)self localParticipantIdentifier])
     {
-      v11 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-      v12 = [NSNumber numberWithUnsignedLongLong:v10];
-      v13 = [v11 objectForKeyedSubscript:v12];
+      activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+      v12 = [NSNumber numberWithUnsignedLongLong:identifier];
+      v13 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v12];
       v14 = v13 != 0;
 
       return v14;
@@ -2714,8 +2714,8 @@ LABEL_68:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = [(CSDConversation *)self activeRemoteParticipants];
-  v17 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
+  v17 = [activeRemoteParticipants2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v17)
   {
     v18 = v17;
@@ -2726,20 +2726,20 @@ LABEL_12:
     {
       if (*v29 != v19)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(activeRemoteParticipants2);
       }
 
       v21 = *(*(&v28 + 1) + 8 * v20);
-      v22 = [v21 association];
+      association = [v21 association];
 
-      if (v22)
+      if (association)
       {
         break;
       }
 
       if (v18 == ++v20)
       {
-        v18 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v18 = [activeRemoteParticipants2 countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v18)
         {
           goto LABEL_12;
@@ -2749,24 +2749,24 @@ LABEL_12:
       }
     }
 
-    v23 = [v21 association];
-    v24 = [v23 identifier];
+    association2 = [v21 association];
+    identifier2 = [association2 identifier];
 
-    if (v24 == [v21 identifier])
+    if (identifier2 == [v21 identifier])
     {
       goto LABEL_20;
     }
 
-    if (v24 == [(CSDConversation *)self localParticipantIdentifier])
+    if (identifier2 == [(CSDConversation *)self localParticipantIdentifier])
     {
       v14 = 1;
     }
 
     else
     {
-      v25 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-      v26 = [NSNumber numberWithUnsignedLongLong:v24];
-      v27 = [v25 objectForKeyedSubscript:v26];
+      activeRemoteParticipantsByIdentifier2 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+      v26 = [NSNumber numberWithUnsignedLongLong:identifier2];
+      v27 = [activeRemoteParticipantsByIdentifier2 objectForKeyedSubscript:v26];
       v14 = v27 != 0;
     }
   }
@@ -2780,57 +2780,57 @@ LABEL_20:
   return v14;
 }
 
-- (void)addHighlightIdentifier:(id)a3
+- (void)addHighlightIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [NSMutableSet setWithObject:v4];
+  v6 = [NSMutableSet setWithObject:identifierCopy];
 
   [(CSDConversation *)self setHighlightIdentifiers:v6];
-  v7 = [(CSDConversation *)self delegate];
-  [v7 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)removeHighlightIdentifier:(id)a3
+- (void)removeHighlightIdentifier:(id)identifier
 {
-  v9 = a3;
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDConversation *)self highlightIdentifiers];
-  v6 = [v5 containsObject:v9];
+  highlightIdentifiers = [(CSDConversation *)self highlightIdentifiers];
+  v6 = [highlightIdentifiers containsObject:identifierCopy];
 
   if (v6)
   {
-    v7 = [(CSDConversation *)self highlightIdentifiers];
-    [v7 removeObject:v9];
+    highlightIdentifiers2 = [(CSDConversation *)self highlightIdentifiers];
+    [highlightIdentifiers2 removeObject:identifierCopy];
 
-    v8 = [(CSDConversation *)self delegate];
-    [v8 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
   }
 }
 
-- (void)setSplitSessionSecondary:(id)a3
+- (void)setSplitSessionSecondary:(id)secondary
 {
-  v5 = a3;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  secondaryCopy = secondary;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = self->_splitSessionSecondary;
   if ((TUObjectsAreEqualOrNil() & 1) == 0)
   {
-    objc_storeStrong(&self->_splitSessionSecondary, a3);
+    objc_storeStrong(&self->_splitSessionSecondary, secondary);
     if (v7)
     {
-      v19 = v5;
+      v19 = secondaryCopy;
       v8 = sub_100004778();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(CSDConversation *)self UUID];
+        uUID = [(CSDConversation *)self UUID];
         *buf = 138412546;
-        v26 = v9;
+        v26 = uUID;
         v27 = 2112;
         v28 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Kicking previous participant on conversation UUID: %@ participant: %@", buf, 0x16u);
@@ -2840,8 +2840,8 @@ LABEL_20:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [(CSDConversation *)self lightweightMembers];
-      v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      lightweightMembers = [(CSDConversation *)self lightweightMembers];
+      v11 = [lightweightMembers countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v11)
       {
         v12 = v11;
@@ -2852,13 +2852,13 @@ LABEL_20:
           {
             if (*v21 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(lightweightMembers);
             }
 
             v15 = *(*(&v20 + 1) + 8 * i);
-            v16 = [v15 handle];
-            v17 = [(CSDConversationParticipant *)v7 handle];
-            v18 = [v16 isEquivalentToHandle:v17];
+            handle = [v15 handle];
+            handle2 = [(CSDConversationParticipant *)v7 handle];
+            v18 = [handle isEquivalentToHandle:handle2];
 
             if (v18)
             {
@@ -2866,59 +2866,59 @@ LABEL_20:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v12 = [lightweightMembers countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v12);
       }
 
-      v5 = v19;
+      secondaryCopy = v19;
     }
 
-    [(CSDConversation *)self setSharePlayHandedOff:v5 != 0];
+    [(CSDConversation *)self setSharePlayHandedOff:secondaryCopy != 0];
   }
 }
 
 - (int)presentationState
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  LODWORD(v3) = [v4 presentationState];
+  avcSession = [(CSDConversation *)self avcSession];
+  LODWORD(queue) = [avcSession presentationState];
 
-  return v3;
+  return queue;
 }
 
-- (void)setPresentationMode:(unint64_t)a3
+- (void)setPresentationMode:(unint64_t)mode
 {
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_presentationMode != a3)
+  if (self->_presentationMode != mode)
   {
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       presentationMode = self->_presentationMode;
       v8 = 134218240;
-      v9 = a3;
+      modeCopy = mode;
       v10 = 2048;
       v11 = presentationMode;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "setPresentationMode: %lu from _presentationMode: %lu", &v8, 0x16u);
     }
 
-    self->_presentationMode = a3;
+    self->_presentationMode = mode;
   }
 }
 
 - (CGRect)presentationRect
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  [v4 presentationRect];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession presentationRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2935,81 +2935,81 @@ LABEL_20:
   return result;
 }
 
-- (void)setPresentationRect:(CGRect)a3
+- (void)setPresentationRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self avcSession];
-  [v9 setPresentationRect:{x, y, width, height}];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession setPresentationRect:{x, y, width, height}];
 }
 
-- (void)setConversationGridDisplayMode:(unint64_t)a3
+- (void)setConversationGridDisplayMode:(unint64_t)mode
 {
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self avcSession];
-  [v6 setGridDisplayMode:a3];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession setGridDisplayMode:mode];
 }
 
 - (void)updateLocalAspectRatios
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversation *)self localPortraitAspectRatio];
   v5 = v4;
   v7 = v6;
-  v8 = [(CSDConversation *)self videoDeviceController];
-  [v8 setLocalPortraitAspectRatio:v5 localLandscapeAspectRatio:{v7, v7, v5}];
+  videoDeviceController = [(CSDConversation *)self videoDeviceController];
+  [videoDeviceController setLocalPortraitAspectRatio:v5 localLandscapeAspectRatio:{v7, v7, v5}];
 }
 
 - (BOOL)isFromStorage
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_fromStorage;
 }
 
-- (void)setFromStorage:(BOOL)a3
+- (void)setFromStorage:(BOOL)storage
 {
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  self->_fromStorage = a3;
+  self->_fromStorage = storage;
 }
 
 - (NSSet)memberIdentifiers
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   memberIdentifiers = self->_memberIdentifiers;
 
   return memberIdentifiers;
 }
 
-- (void)setMemberIdentifiers:(id)a3
+- (void)setMemberIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifiersCopy = identifiers;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 copy];
+  v6 = [identifiersCopy copy];
   memberIdentifiers = self->_memberIdentifiers;
   self->_memberIdentifiers = v6;
 }
 
-- (BOOL)_addActiveParticipantIsDisallowedByGreenTea:(id)a3
+- (BOOL)_addActiveParticipantIsDisallowedByGreenTea:(id)tea
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self featureFlags];
+  teaCopy = tea;
+  featureFlags = [(CSDConversation *)self featureFlags];
   if (TUGreenTeaLagunaEnabled())
   {
     presentationMode = self->_presentationMode;
@@ -3020,15 +3020,15 @@ LABEL_20:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = teaCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "addActiveParticipantIsDisallowedByGreenTea for continuity session: %@", &v12, 0xCu);
       }
 
-      v8 = [(CSDConversation *)self tuConversation];
-      v9 = [v8 mergedActiveRemoteParticipants];
-      if ([v9 count])
+      tuConversation = [(CSDConversation *)self tuConversation];
+      mergedActiveRemoteParticipants = [tuConversation mergedActiveRemoteParticipants];
+      if ([mergedActiveRemoteParticipants count])
       {
-        LODWORD(v10) = [v4 isPseudonym] ^ 1;
+        LODWORD(v10) = [teaCopy isPseudonym] ^ 1;
       }
 
       else
@@ -3048,50 +3048,50 @@ LABEL_20:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = teaCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "addActiveParticipantIsDisallowedByGreenTea: %@", &v12, 0xCu);
   }
 
-  v8 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  LOBYTE(v10) = [v8 count] != 0;
+  tuConversation = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  LOBYTE(v10) = [tuConversation count] != 0;
 LABEL_13:
 
   return v10;
 }
 
-- (void)addActiveParticipant:(id)a3
+- (void)addActiveParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   val = self;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v86 = v4;
+    v86 = participantCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Adding active participant: %@", buf, 0xCu);
   }
 
   if (!_TUIsInternalInstall())
   {
 LABEL_11:
-    v17 = [(CSDConversation *)val activeRemoteParticipantsByIdentifier];
-    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 identifier]);
-    v19 = [v17 objectForKeyedSubscript:v18];
+    activeRemoteParticipantsByIdentifier = [(CSDConversation *)val activeRemoteParticipantsByIdentifier];
+    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+    v19 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v18];
 
-    if ([v4 isLightweight])
+    if ([participantCopy isLightweight])
     {
-      if ([v4 audioVideoMode])
+      if ([participantCopy audioVideoMode])
       {
         [CSDCrashReporter simulateCrashReportWithFormat:@"Attempting to add lightweight participant with invalid AVMode. Please file a bug to [FaceTime | (New Bugs)]"];
       }
 
-      [v4 setAudioVideoMode:0];
-      v20 = [(CSDConversation *)val activeLightweightParticipantsByIdentifier];
-      v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 identifier]);
-      v22 = [v20 objectForKeyedSubscript:v21];
+      [participantCopy setAudioVideoMode:0];
+      activeLightweightParticipantsByIdentifier = [(CSDConversation *)val activeLightweightParticipantsByIdentifier];
+      v21 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+      v22 = [activeLightweightParticipantsByIdentifier objectForKeyedSubscript:v21];
 
       v23 = v22;
     }
@@ -3109,14 +3109,14 @@ LABEL_11:
 
     else
     {
-      v24 = [v4 audioVideoMode] != 0;
+      v24 = [participantCopy audioVideoMode] != 0;
     }
 
     if (v77)
     {
-      v25 = [v77 avcData];
-      v26 = [v4 avcData];
-      if ([v25 isEqual:v26] & 1) != 0 || (objc_msgSend(v4, "isLightweight"))
+      avcData = [v77 avcData];
+      avcData2 = [participantCopy avcData];
+      if ([avcData isEqual:avcData2] & 1) != 0 || (objc_msgSend(participantCopy, "isLightweight"))
       {
 
         if (!v24)
@@ -3124,19 +3124,19 @@ LABEL_11:
           v27 = sub_100004778();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [(CSDConversation *)val UUID];
+            uUID = [(CSDConversation *)val UUID];
             *buf = 138412802;
-            v86 = v4;
+            v86 = participantCopy;
             v87 = 2112;
             v88 = v77;
             v89 = 2112;
-            v90 = v28;
+            v90 = uUID;
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[WARN] Conversation already contains participant %@, existing active participant: %@ with no change in AVC data or av mode: %@", buf, 0x20u);
           }
 
           [(CSDConversation *)val _recomputeAudioStates];
 LABEL_75:
-          [(CSDConversation *)val _removeMemberFromPendingMemberListForParticipant:v4];
+          [(CSDConversation *)val _removeMemberFromPendingMemberListForParticipant:participantCopy];
           [(CSDConversation *)val _cancelInFlightAVCBlobRecoveryIfNecessary];
           [(CSDConversation *)val _endScreenCallIfNecessary];
           goto LABEL_76;
@@ -3150,17 +3150,17 @@ LABEL_75:
 
     if ([(CSDConversation *)val state]== 2 || [(CSDConversation *)val state]== 3)
     {
-      [(CSDConversation *)val _emitRTCConnectionSetupEventForAddActiveParticipant:v4];
+      [(CSDConversation *)val _emitRTCConnectionSetupEventForAddActiveParticipant:participantCopy];
     }
 
-    if ([v4 isLightweight])
+    if ([participantCopy isLightweight])
     {
       v83 = 0u;
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v29 = [(CSDConversation *)val lightweightMembers];
-      v30 = [v29 countByEnumeratingWithState:&v81 objects:v91 count:16];
+      lightweightMembers = [(CSDConversation *)val lightweightMembers];
+      v30 = [lightweightMembers countByEnumeratingWithState:&v81 objects:v91 count:16];
       if (v30)
       {
         v31 = *v82;
@@ -3170,13 +3170,13 @@ LABEL_75:
           {
             if (*v82 != v31)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(lightweightMembers);
             }
 
             v33 = *(*(&v81 + 1) + 8 * i);
-            v34 = [v33 handle];
-            v35 = [v4 handle];
-            v36 = [v34 isEquivalentToHandle:v35];
+            handle = [v33 handle];
+            handle2 = [participantCopy handle];
+            v36 = [handle isEquivalentToHandle:handle2];
 
             if (v36)
             {
@@ -3186,33 +3186,33 @@ LABEL_75:
                 *buf = 138412546;
                 v86 = v33;
                 v87 = 2112;
-                v88 = v4;
+                v88 = participantCopy;
                 _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Found member: %@ representing participant: %@", buf, 0x16u);
               }
 
               if ([v33 isLightweightMember])
               {
-                v38 = [v33 lightweightPrimary];
-                v39 = [(CSDConversation *)val localMember];
-                v40 = [v39 handle];
-                if ([v38 isEquivalentToHandle:v40])
+                lightweightPrimary = [v33 lightweightPrimary];
+                localMember = [(CSDConversation *)val localMember];
+                handle3 = [localMember handle];
+                if ([lightweightPrimary isEquivalentToHandle:handle3])
                 {
-                  v41 = [v33 lightweightPrimaryParticipantIdentifier];
-                  LODWORD(v41) = v41 == [(CSDConversation *)val localParticipantIdentifier];
+                  lightweightPrimaryParticipantIdentifier = [v33 lightweightPrimaryParticipantIdentifier];
+                  LODWORD(lightweightPrimaryParticipantIdentifier) = lightweightPrimaryParticipantIdentifier == [(CSDConversation *)val localParticipantIdentifier];
 
-                  if (v41)
+                  if (lightweightPrimaryParticipantIdentifier)
                   {
                     v42 = sub_100004778();
                     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412546;
-                      v86 = v4;
+                      v86 = participantCopy;
                       v87 = 2112;
                       v88 = v33;
                       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "AddedParticipant %@ for member: %@ is representing our localMember", buf, 0x16u);
                     }
 
-                    [(CSDConversation *)val setSplitSessionSecondary:v4];
+                    [(CSDConversation *)val setSplitSessionSecondary:participantCopy];
                   }
                 }
 
@@ -3223,57 +3223,57 @@ LABEL_75:
             }
           }
 
-          v30 = [v29 countByEnumeratingWithState:&v81 objects:v91 count:16];
+          v30 = [lightweightMembers countByEnumeratingWithState:&v81 objects:v91 count:16];
         }
 
         while (v30);
       }
 
-      v43 = [(CSDConversation *)val activeLightweightParticipantsByIdentifier];
-      v44 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 identifier]);
-      [v43 setObject:v4 forKeyedSubscript:v44];
+      activeLightweightParticipantsByIdentifier2 = [(CSDConversation *)val activeLightweightParticipantsByIdentifier];
+      v44 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+      [activeLightweightParticipantsByIdentifier2 setObject:participantCopy forKeyedSubscript:v44];
 
 LABEL_68:
-      [(CSDConversation *)val _updateParticipantTypesForAddedParticipant:v4];
+      [(CSDConversation *)val _updateParticipantTypesForAddedParticipant:participantCopy];
       if ([(CSDConversation *)val activeRemoteParticipantCountMinusEligibleAVLess]>= 2)
       {
         [(CSDConversation *)val setOneToOneModeEnabled:0];
       }
 
-      v57 = [(CSDConversation *)val featureFlags];
-      v58 = [v57 nearbyFaceTimeEnabled];
+      featureFlags = [(CSDConversation *)val featureFlags];
+      nearbyFaceTimeEnabled = [featureFlags nearbyFaceTimeEnabled];
 
-      if (v58)
+      if (nearbyFaceTimeEnabled)
       {
-        v59 = [v4 handle];
-        v60 = [(CSDConversation *)val memberWithHandle:v59];
+        handle4 = [participantCopy handle];
+        v60 = [(CSDConversation *)val memberWithHandle:handle4];
 
         [v60 setProposedParticipantCluster:0];
       }
 
       [(CSDConversation *)val _recomputeAudioStates];
-      v61 = [(CSDConversation *)val activitySessionManager];
-      [v61 refreshActivitySessionActiveParticipants];
+      activitySessionManager = [(CSDConversation *)val activitySessionManager];
+      [activitySessionManager refreshActivitySessionActiveParticipants];
 
-      v62 = [v4 cluster];
-      v63 = v62 == 0;
+      cluster = [participantCopy cluster];
+      v63 = cluster == 0;
 
       if (!v63)
       {
         v64 = +[CSDReportingController sharedInstance];
-        v65 = [(CSDConversation *)val tuConversation];
-        [v64 participantClusterChangedForConversation:v65];
+        tuConversation = [(CSDConversation *)val tuConversation];
+        [v64 participantClusterChangedForConversation:tuConversation];
       }
 
       [(CSDConversation *)val setServerProvidedParticipantIdentifiers:0];
       [(CSDConversation *)val setServerProvidedLightweightParticipantIdentifiers:0];
       [(CSDConversation *)val refreshActiveParticipantsList];
-      v66 = [(CSDConversation *)val serverBag];
-      -[CSDConversation setRebroadcastTimeThreshold:](val, "setRebroadcastTimeThreshold:", [v66 rebroadcastTimeThreshold]);
+      serverBag = [(CSDConversation *)val serverBag];
+      -[CSDConversation setRebroadcastTimeThreshold:](val, "setRebroadcastTimeThreshold:", [serverBag rebroadcastTimeThreshold]);
 
-      v67 = [(CSDConversation *)val delegate];
-      [v67 conversation:val addedActiveParticipant:v4];
-      [v67 conversationChanged:val];
+      delegate = [(CSDConversation *)val delegate];
+      [delegate conversation:val addedActiveParticipant:participantCopy];
+      [delegate conversationChanged:val];
 
       goto LABEL_75;
     }
@@ -3288,8 +3288,8 @@ LABEL_68:
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Removing active participant %@ and replacing it with one with the same identifier but a newer AVC data blob.", buf, 0xCu);
       }
 
-      v46 = [v4 audioVideoMode];
-      if (v46 != [v77 audioVideoMode])
+      audioVideoMode = [participantCopy audioVideoMode];
+      if (audioVideoMode != [v77 audioVideoMode])
       {
         v47 = sub_100004778();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -3298,17 +3298,17 @@ LABEL_68:
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "New participant blob's audioVideoMode is different than our current audioVideoMode. AVModeUpdates need to happen with the explicit ParticipantUpdate message. Resetting to known audioVideoMode", buf, 2u);
         }
 
-        [v4 setAudioVideoMode:{objc_msgSend(v77, "audioVideoMode")}];
+        [participantCopy setAudioVideoMode:{objc_msgSend(v77, "audioVideoMode")}];
       }
 
-      v48 = [(CSDConversation *)val avcSession];
-      [v48 removeParticipant:v77];
+      avcSession = [(CSDConversation *)val avcSession];
+      [avcSession removeParticipant:v77];
 
       goto LABEL_63;
     }
 
-    v49 = [(CSDConversation *)val deviceSupport];
-    if ([v49 isGreenTea] && -[CSDConversation _addActiveParticipantIsDisallowedByGreenTea:](val, "_addActiveParticipantIsDisallowedByGreenTea:", v4))
+    deviceSupport = [(CSDConversation *)val deviceSupport];
+    if ([deviceSupport isGreenTea] && -[CSDConversation _addActiveParticipantIsDisallowedByGreenTea:](val, "_addActiveParticipantIsDisallowedByGreenTea:", participantCopy))
     {
       if ([(CSDConversation *)val state]== 2)
       {
@@ -3321,8 +3321,8 @@ LABEL_68:
       if (v68)
       {
 LABEL_81:
-        v69 = [v4 association];
-        v70 = v69 == 0;
+        association = [participantCopy association];
+        v70 = association == 0;
 
         v71 = sub_100004778();
         v72 = os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT);
@@ -3347,16 +3347,16 @@ LABEL_81:
           }
 
           objc_initWeak(buf, val);
-          v73 = [(CSDConversation *)val serverBag];
-          v74 = dispatch_time(0, 1000000000 * [v73 greenTeaHandoffTimeout]);
-          v75 = [(CSDConversation *)val queue];
+          serverBag2 = [(CSDConversation *)val serverBag];
+          v74 = dispatch_time(0, 1000000000 * [serverBag2 greenTeaHandoffTimeout]);
+          queue2 = [(CSDConversation *)val queue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10008D458;
           block[3] = &unk_10061A600;
           objc_copyWeak(&v80, buf);
           block[4] = val;
-          dispatch_after(v74, v75, block);
+          dispatch_after(v74, queue2, block);
 
           objc_destroyWeak(&v80);
           objc_destroyWeak(buf);
@@ -3374,25 +3374,25 @@ LABEL_63:
       v50 = sub_100004778();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 identifier]);
-        v52 = [(CSDConversation *)val participantIDsChangedFromAVLessToAV];
+        v51 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+        participantIDsChangedFromAVLessToAV = [(CSDConversation *)val participantIDsChangedFromAVLessToAV];
         *buf = 138412546;
         v86 = v51;
         v87 = 2112;
-        v88 = v52;
+        v88 = participantIDsChangedFromAVLessToAV;
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "adding %@ to participantIDsChangedFromAVLessToAV: %@", buf, 0x16u);
       }
 
-      v53 = [(CSDConversation *)val participantIDsChangedFromAVLessToAV];
-      v54 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 identifier]);
-      [v53 addObject:v54];
+      participantIDsChangedFromAVLessToAV2 = [(CSDConversation *)val participantIDsChangedFromAVLessToAV];
+      v54 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+      [participantIDsChangedFromAVLessToAV2 addObject:v54];
     }
 
-    v55 = [(CSDConversation *)val activeRemoteParticipantsByIdentifier];
-    v56 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 identifier]);
-    [v55 setObject:v4 forKeyedSubscript:v56];
+    activeRemoteParticipantsByIdentifier2 = [(CSDConversation *)val activeRemoteParticipantsByIdentifier];
+    v56 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+    [activeRemoteParticipantsByIdentifier2 setObject:participantCopy forKeyedSubscript:v56];
 
-    [(CSDConversation *)val _addRemoteParticipantToAVCSessionIfPossible:v4];
+    [(CSDConversation *)val _addRemoteParticipantToAVCSessionIfPossible:participantCopy];
     goto LABEL_68;
   }
 
@@ -3405,9 +3405,9 @@ LABEL_63:
     goto LABEL_10;
   }
 
-  v9 = [v4 handle];
-  v10 = [v9 value];
-  v11 = [v10 isEqualToString:v77];
+  handle5 = [participantCopy handle];
+  value = [handle5 value];
+  v11 = [value isEqualToString:v77];
 
   v8 = v77;
   if (!v11)
@@ -3417,9 +3417,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [(CSDConversation *)val remoteMemberHandles];
-  v13 = [v4 handle];
-  v14 = [v12 containsObject:v13];
+  remoteMemberHandles = [(CSDConversation *)val remoteMemberHandles];
+  handle6 = [participantCopy handle];
+  v14 = [remoteMemberHandles containsObject:handle6];
 
   v15 = sub_100004778();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -3446,23 +3446,23 @@ LABEL_10:
 LABEL_76:
 }
 
-- (void)removeParticipantsForMember:(id)a3
+- (void)removeParticipantsForMember:(id)member
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  memberCopy = member;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self activeParticipants];
+  activeParticipants = [(CSDConversation *)self activeParticipants];
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     *buf = 138412802;
-    v26 = v4;
+    v26 = memberCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = uUID;
     v29 = 2112;
-    v30 = v6;
+    v30 = activeParticipants;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Removing participants for member: %@ on conversation UUID: %@ participants: %@", buf, 0x20u);
   }
 
@@ -3470,7 +3470,7 @@ LABEL_76:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = activeParticipants;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -3486,15 +3486,15 @@ LABEL_76:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 handle];
-        v16 = [v4 handle];
-        v17 = [v15 isEquivalentToHandle:v16];
+        handle = [v14 handle];
+        handle2 = [memberCopy handle];
+        v17 = [handle isEquivalentToHandle:handle2];
 
         if (v17)
         {
-          v18 = [v14 identifier];
-          v19 = [v14 handle];
-          [(CSDConversation *)self removeParticipantWithIdentifier:v18 fromHandle:v19 withReason:0];
+          identifier = [v14 identifier];
+          handle3 = [v14 handle];
+          [(CSDConversation *)self removeParticipantWithIdentifier:identifier fromHandle:handle3 withReason:0];
         }
       }
 
@@ -3505,15 +3505,15 @@ LABEL_76:
   }
 }
 
-- (void)setParticipantAudioVideoMode:(unint64_t)a3 presentationMode:(unint64_t)a4 forParticipant:(id)a5
+- (void)setParticipantAudioVideoMode:(unint64_t)mode presentationMode:(unint64_t)presentationMode forParticipant:(id)participant
 {
-  v8 = a5;
+  participantCopy = participant;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(CSDConversation *)self activeRemoteParticipants];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v35 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v10 = [activeRemoteParticipants countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3524,19 +3524,19 @@ LABEL_3:
     {
       if (*v26 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(activeRemoteParticipants);
       }
 
       v14 = *(*(&v25 + 1) + 8 * v13);
-      v15 = [v14 identifier];
-      if (v15 == [v8 identifier])
+      identifier = [v14 identifier];
+      if (identifier == [participantCopy identifier])
       {
         break;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v35 count:16];
+        v11 = [activeRemoteParticipants countByEnumeratingWithState:&v25 objects:v35 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -3557,41 +3557,41 @@ LABEL_3:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v30 = a3;
+      modeCopy = mode;
       v31 = 2048;
-      v32 = a4;
+      presentationModeCopy = presentationMode;
       v33 = 2112;
       v34 = v16;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "setParticipantAudioVideoMode: audioVideoMode: %lu, presentationMode: %lu for %@", buf, 0x20u);
     }
 
-    if (!a3)
+    if (!mode)
     {
-      v18 = [(CSDConversation *)self participantIDsChangedFromAVLessToAV];
+      participantIDsChangedFromAVLessToAV = [(CSDConversation *)self participantIDsChangedFromAVLessToAV];
       v19 = [NSNumber numberWithUnsignedLongLong:[v16 identifier]];
-      v20 = [v18 containsObject:v19];
+      v20 = [participantIDsChangedFromAVLessToAV containsObject:v19];
 
       if (v20)
       {
         v21 = sub_100004778();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [(CSDConversation *)self participantIDsChangedFromAVLessToAV];
+          participantIDsChangedFromAVLessToAV2 = [(CSDConversation *)self participantIDsChangedFromAVLessToAV];
           *buf = 138412546;
-          v30 = v8;
+          modeCopy = participantCopy;
           v31 = 2112;
-          v32 = v22;
+          presentationModeCopy = participantIDsChangedFromAVLessToAV2;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "remove participant %@ from participantIDsChangedFromAVLessToAV: %@", buf, 0x16u);
         }
 
-        v23 = [(CSDConversation *)self participantIDsChangedFromAVLessToAV];
-        v24 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 identifier]);
-        [v23 removeObject:v24];
+        participantIDsChangedFromAVLessToAV3 = [(CSDConversation *)self participantIDsChangedFromAVLessToAV];
+        v24 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+        [participantIDsChangedFromAVLessToAV3 removeObject:v24];
       }
     }
 
-    [v16 setAudioVideoMode:a3];
-    [v16 setPresentationMode:a4];
+    [v16 setAudioVideoMode:mode];
+    [v16 setPresentationMode:presentationMode];
   }
 
   else
@@ -3607,69 +3607,69 @@ LABEL_19:
   }
 }
 
-- (void)updateReportInfoForHandoffParticipant:(id)a3
+- (void)updateReportInfoForHandoffParticipant:(id)participant
 {
-  v8 = a3;
+  participantCopy = participant;
   if ([(CSDConversation *)self state]== 3)
   {
-    v4 = [(CSDConversation *)self addedHandoffParticipants];
-    [v4 addObject:v8];
+    addedHandoffParticipants = [(CSDConversation *)self addedHandoffParticipants];
+    [addedHandoffParticipants addObject:participantCopy];
 
-    v5 = [(CSDConversation *)self startAddingHandoffParticipantToTime];
+    startAddingHandoffParticipantToTime = [(CSDConversation *)self startAddingHandoffParticipantToTime];
     v6 = +[NSDate now];
-    v7 = [v8 handle];
-    [v5 setObject:v6 forKey:v7];
+    handle = [participantCopy handle];
+    [startAddingHandoffParticipantToTime setObject:v6 forKey:handle];
   }
 }
 
 - (BOOL)allowsScreenSharing
 {
-  v3 = [(CSDConversation *)self featureFlags];
-  if ([v3 supportsScreenSharing] && (TUSharePlayForceDisabled() & 1) == 0)
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags supportsScreenSharing] && (TUSharePlayForceDisabled() & 1) == 0)
   {
-    v5 = [(CSDConversation *)self audioRoutePolicyManager];
-    if ([v5 sharePlaySupported])
+    audioRoutePolicyManager = [(CSDConversation *)self audioRoutePolicyManager];
+    if ([audioRoutePolicyManager sharePlaySupported])
     {
-      v6 = [(CSDConversation *)self sharePlaySystemStateObserver];
-      v4 = [v6 allowScreenSharing];
+      sharePlaySystemStateObserver = [(CSDConversation *)self sharePlaySystemStateObserver];
+      allowScreenSharing = [sharePlaySystemStateObserver allowScreenSharing];
     }
 
     else
     {
-      v4 = 0;
+      allowScreenSharing = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    allowScreenSharing = 0;
   }
 
-  return v4;
+  return allowScreenSharing;
 }
 
-- (void)removeParticipantWithIdentifier:(unint64_t)a3 fromHandle:(id)a4 withReason:(unint64_t)a5
+- (void)removeParticipantWithIdentifier:(unint64_t)identifier fromHandle:(id)handle withReason:(unint64_t)reason
 {
-  v8 = a4;
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  handleCopy = handle;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [NSNumber numberWithUnsignedInteger:a5];
+    v11 = [NSNumber numberWithUnsignedInteger:reason];
     *buf = 134218498;
-    v134 = a3;
+    identifierCopy5 = identifier;
     v135 = 2112;
-    v136 = v8;
+    identifierCopy4 = handleCopy;
     v137 = 2112;
-    v138 = v11;
+    selfCopy3 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing participant with identifier: %lu handle: %@ withReason: %@", buf, 0x20u);
   }
 
-  v12 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v13 = [NSNumber numberWithUnsignedLongLong:a3];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v13 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v14 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v13];
 
   v116 = v14;
   if (v14)
@@ -3677,50 +3677,50 @@ LABEL_19:
     goto LABEL_5;
   }
 
-  v15 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-  v16 = [NSNumber numberWithUnsignedLongLong:a3];
-  v17 = [v15 objectForKeyedSubscript:v16];
+  activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+  v16 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v17 = [activeLightweightParticipantsByIdentifier objectForKeyedSubscript:v16];
 
   v116 = v17;
   if (v17)
   {
 LABEL_5:
-    v18 = [v116 handle];
-    v19 = [v18 isEqualToHandle:v8];
+    handle = [v116 handle];
+    v19 = [handle isEqualToHandle:handleCopy];
 
     v20 = sub_100004778();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
     if (v19)
     {
-      v113 = a5;
+      reasonCopy = reason;
       if (v21)
       {
-        v22 = [v116 handle];
+        handle2 = [v116 handle];
         *buf = 134218242;
-        v134 = a3;
+        identifierCopy5 = identifier;
         v135 = 2112;
-        v136 = v22;
+        identifierCopy4 = handle2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Found matching handle %lu: %@", buf, 0x16u);
       }
 
-      v23 = [(CSDConversation *)self delegate];
-      v24 = [(CSDConversation *)self recentlyLeftParticipantIdentifiers];
-      v25 = [NSNumber numberWithUnsignedLongLong:a3];
-      [v24 addObject:v25];
+      delegate = [(CSDConversation *)self delegate];
+      recentlyLeftParticipantIdentifiers = [(CSDConversation *)self recentlyLeftParticipantIdentifiers];
+      v25 = [NSNumber numberWithUnsignedLongLong:identifier];
+      [recentlyLeftParticipantIdentifiers addObject:v25];
 
-      v112 = a3;
+      identifierCopy3 = identifier;
       if ([v116 isLightweight])
       {
-        v26 = [(CSDConversation *)self splitSessionSecondary];
+        splitSessionSecondary = [(CSDConversation *)self splitSessionSecondary];
 
-        if (v26 == v116)
+        if (splitSessionSecondary == v116)
         {
           v40 = sub_100004778();
           v29 = v116;
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v134 = v116;
+            identifierCopy5 = v116;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Removing splitSessionSecondary: %@", buf, 0xCu);
           }
 
@@ -3729,9 +3729,9 @@ LABEL_5:
 
         else
         {
-          v27 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-          v28 = [NSNumber numberWithUnsignedLongLong:a3];
-          [v27 setObject:0 forKeyedSubscript:v28];
+          activeLightweightParticipantsByIdentifier2 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+          v28 = [NSNumber numberWithUnsignedLongLong:identifier];
+          [activeLightweightParticipantsByIdentifier2 setObject:0 forKeyedSubscript:v28];
 
           v29 = v116;
         }
@@ -3739,31 +3739,31 @@ LABEL_5:
 
       else
       {
-        v31 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-        v32 = [NSNumber numberWithUnsignedLongLong:a3];
-        [v31 setObject:0 forKeyedSubscript:v32];
+        activeRemoteParticipantsByIdentifier2 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+        v32 = [NSNumber numberWithUnsignedLongLong:identifier];
+        [activeRemoteParticipantsByIdentifier2 setObject:0 forKeyedSubscript:v32];
 
-        v33 = [(CSDConversation *)self avcSession];
-        [v33 removeParticipant:v116];
+        avcSession = [(CSDConversation *)self avcSession];
+        [avcSession removeParticipant:v116];
 
         [(CSDConversation *)self _recomputeAudioStates];
-        v34 = [(CSDConversation *)self localMember];
-        v35 = [v34 lightweightPrimaryParticipantIdentifier];
+        localMember = [(CSDConversation *)self localMember];
+        lightweightPrimaryParticipantIdentifier = [localMember lightweightPrimaryParticipantIdentifier];
 
         v29 = v116;
-        if (v35 == a3)
+        if (lightweightPrimaryParticipantIdentifier == identifier)
         {
           v36 = sub_100004778();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
-            v37 = [(CSDConversation *)self UUID];
-            v38 = [(CSDConversation *)self localMember];
+            uUID = [(CSDConversation *)self UUID];
+            localMember2 = [(CSDConversation *)self localMember];
             *buf = 138412802;
-            v134 = v37;
+            identifierCopy5 = uUID;
             v135 = 2112;
-            v136 = v116;
+            identifierCopy4 = v116;
             v137 = 2112;
-            v138 = v38;
+            selfCopy3 = localMember2;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Leaving conversation because lightweightPrimary left on conversation UUID: %@ participant: %@ localMember: %@", buf, 0x20u);
           }
 
@@ -3777,8 +3777,8 @@ LABEL_5:
         v129 = 0u;
         v126 = 0u;
         v127 = 0u;
-        v41 = [(CSDConversation *)self activeRemoteParticipants];
-        v42 = [v41 countByEnumeratingWithState:&v126 objects:v132 count:16];
+        activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+        v42 = [activeRemoteParticipants countByEnumeratingWithState:&v126 objects:v132 count:16];
         if (v42)
         {
           v43 = v42;
@@ -3790,13 +3790,13 @@ LABEL_5:
             {
               if (*v127 != v44)
               {
-                objc_enumerationMutation(v41);
+                objc_enumerationMutation(activeRemoteParticipants);
               }
 
               v45 &= [*(*(&v126 + 1) + 8 * i) isScreenEnabled] ^ 1;
             }
 
-            v43 = [v41 countByEnumeratingWithState:&v126 objects:v132 count:16];
+            v43 = [activeRemoteParticipants countByEnumeratingWithState:&v126 objects:v132 count:16];
           }
 
           while (v43);
@@ -3819,46 +3819,46 @@ LABEL_5:
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Removing screen sharing activity sessions since screen sharing participant was removed and no other screen sharing participant is active.", buf, 2u);
         }
 
-        v48 = [(CSDConversation *)self activitySessionManager];
-        [v48 removeScreenSharingSessions];
+        activitySessionManager = [(CSDConversation *)self activitySessionManager];
+        [activitySessionManager removeScreenSharingSessions];
       }
 
 LABEL_37:
-      v49 = [(CSDConversation *)self tuActivitySessions];
-      [(CSDConversation *)self checkAndSetTUActivityActive:v49];
+      tuActivitySessions = [(CSDConversation *)self tuActivitySessions];
+      [(CSDConversation *)self checkAndSetTUActivityActive:tuActivitySessions];
 
-      v50 = [(CSDConversation *)self featureFlags];
-      v51 = [v50 sharePlayCanEndWhenInitiatorLeaves];
+      featureFlags = [(CSDConversation *)self featureFlags];
+      sharePlayCanEndWhenInitiatorLeaves = [featureFlags sharePlayCanEndWhenInitiatorLeaves];
 
-      if (v51)
+      if (sharePlayCanEndWhenInitiatorLeaves)
       {
-        v52 = [(CSDConversation *)self activitySessionParticipantMonitor];
-        [v52 evaluateConversation:self];
+        activitySessionParticipantMonitor = [(CSDConversation *)self activitySessionParticipantMonitor];
+        [activitySessionParticipantMonitor evaluateConversation:self];
       }
 
-      v53 = [(CSDConversation *)self featureFlags];
-      v54 = [v53 conversationHandoffEnabled];
+      featureFlags2 = [(CSDConversation *)self featureFlags];
+      conversationHandoffEnabled = [featureFlags2 conversationHandoffEnabled];
 
-      if (v54)
+      if (conversationHandoffEnabled)
       {
-        v55 = [(CSDConversation *)self localParticipantAssociation];
-        if (v55)
+        localParticipantAssociation = [(CSDConversation *)self localParticipantAssociation];
+        if (localParticipantAssociation)
         {
-          v56 = v55;
-          v57 = [(CSDConversation *)self localParticipantAssociation];
-          v58 = [v57 identifier];
-          v59 = [v29 identifier];
+          v56 = localParticipantAssociation;
+          localParticipantAssociation2 = [(CSDConversation *)self localParticipantAssociation];
+          identifier = [localParticipantAssociation2 identifier];
+          identifier2 = [v29 identifier];
 
-          if (v58 == v59)
+          if (identifier == identifier2)
           {
             v60 = sub_100004778();
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
             {
-              v61 = [(CSDConversation *)self localParticipantIdentifier];
+              localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
               *buf = 134218242;
-              v134 = v61;
+              identifierCopy5 = localParticipantIdentifier;
               v135 = 2112;
-              v136 = v29;
+              identifierCopy4 = v29;
               _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Local participant %llu was associated with participant %@ who is now being removed. Clearing local participant association.", buf, 0x16u);
             }
 
@@ -3866,20 +3866,20 @@ LABEL_37:
           }
         }
 
-        v109 = v23;
-        v110 = self;
-        v111 = v8;
+        v109 = delegate;
+        selfCopy = self;
+        v111 = handleCopy;
         v124 = 0u;
         v125 = 0u;
         v122 = 0u;
         v123 = 0u;
-        v62 = [(CSDConversation *)self activeRemoteParticipants];
-        v63 = [v62 countByEnumeratingWithState:&v122 objects:v131 count:16];
+        activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
+        v63 = [activeRemoteParticipants2 countByEnumeratingWithState:&v122 objects:v131 count:16];
         if (v63)
         {
           v64 = v63;
           v65 = *v123;
-          v114 = v62;
+          v114 = activeRemoteParticipants2;
           v115 = *v123;
           do
           {
@@ -3887,36 +3887,36 @@ LABEL_37:
             {
               if (*v123 != v65)
               {
-                objc_enumerationMutation(v62);
+                objc_enumerationMutation(activeRemoteParticipants2);
               }
 
               v67 = *(*(&v122 + 1) + 8 * j);
-              v68 = [v67 association];
-              if (v68)
+              association = [v67 association];
+              if (association)
               {
-                v69 = v68;
-                v70 = [v67 association];
-                v71 = [v70 identifier];
-                if (v71 != [v29 identifier])
+                v69 = association;
+                association2 = [v67 association];
+                identifier3 = [association2 identifier];
+                if (identifier3 != [v29 identifier])
                 {
 
                   continue;
                 }
 
-                v72 = [v67 association];
-                v73 = [v72 avcIdentifier];
-                if (v73)
+                association3 = [v67 association];
+                avcIdentifier = [association3 avcIdentifier];
+                if (avcIdentifier)
                 {
-                  v74 = [v67 association];
-                  [v74 avcIdentifier];
+                  association4 = [v67 association];
+                  [association4 avcIdentifier];
                   v76 = v75 = v64;
-                  v77 = [v29 avcIdentifier];
-                  v117 = [v76 isEqualToString:v77];
+                  avcIdentifier2 = [v29 avcIdentifier];
+                  v117 = [v76 isEqualToString:avcIdentifier2];
 
                   v29 = v116;
                   v64 = v75;
 
-                  v62 = v114;
+                  activeRemoteParticipants2 = v114;
                   v65 = v115;
 
                   if ((v117 & 1) == 0)
@@ -3932,14 +3932,14 @@ LABEL_37:
                 v78 = sub_100004778();
                 if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
                 {
-                  v79 = [v67 identifier];
-                  v80 = [v67 identifier];
+                  identifier4 = [v67 identifier];
+                  identifier5 = [v67 identifier];
                   *buf = 134218498;
-                  v134 = v79;
+                  identifierCopy5 = identifier4;
                   v135 = 2112;
-                  v136 = v29;
+                  identifierCopy4 = v29;
                   v137 = 2048;
-                  v138 = v80;
+                  selfCopy3 = identifier5;
                   _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "Remote participant %llu was associated with participant %@ who is now being removed. Clearing participant association for %llu.", buf, 0x20u);
                 }
 
@@ -3947,47 +3947,47 @@ LABEL_37:
               }
             }
 
-            v64 = [v62 countByEnumeratingWithState:&v122 objects:v131 count:16];
+            v64 = [activeRemoteParticipants2 countByEnumeratingWithState:&v122 objects:v131 count:16];
           }
 
           while (v64);
         }
 
-        self = v110;
-        v8 = v111;
-        v23 = v109;
+        self = selfCopy;
+        handleCopy = v111;
+        delegate = v109;
       }
 
       if ([(CSDConversation *)self state]== 3)
       {
-        [(CSDConversation *)self continueHandoffAudioRouteForIdentifier:v112 participantLeft:1];
-        if (v113 == 1)
+        [(CSDConversation *)self continueHandoffAudioRouteForIdentifier:identifierCopy3 participantLeft:1];
+        if (reasonCopy == 1)
         {
-          v81 = [(CSDConversation *)self removedHandoffParticipants];
-          [v81 addObject:v29];
+          removedHandoffParticipants = [(CSDConversation *)self removedHandoffParticipants];
+          [removedHandoffParticipants addObject:v29];
         }
       }
 
-      [v23 conversation:self removedActiveParticipant:v29 withLeaveReason:v113];
-      [v23 conversationChanged:self];
-      v82 = [(CSDConversation *)self featureFlags];
-      v83 = [v82 uPlusNDowngrade];
+      [delegate conversation:self removedActiveParticipant:v29 withLeaveReason:reasonCopy];
+      [delegate conversationChanged:self];
+      featureFlags3 = [(CSDConversation *)self featureFlags];
+      uPlusNDowngrade = [featureFlags3 uPlusNDowngrade];
 
-      if (!v83)
+      if (!uPlusNDowngrade)
       {
 LABEL_89:
-        v95 = [(CSDConversation *)self featureFlags];
-        if ([v95 nearbyFaceTimeEnabled])
+        featureFlags4 = [(CSDConversation *)self featureFlags];
+        if ([featureFlags4 nearbyFaceTimeEnabled])
         {
-          v96 = [(CSDConversation *)self isNearbySession];
+          isNearbySession = [(CSDConversation *)self isNearbySession];
 
-          if (!v96)
+          if (!isNearbySession)
           {
             goto LABEL_104;
           }
 
-          v97 = [(CSDConversation *)self remoteMembers];
-          v98 = [v97 count];
+          remoteMembers = [(CSDConversation *)self remoteMembers];
+          v98 = [remoteMembers count];
 
           if (v98 < 2)
           {
@@ -3998,13 +3998,13 @@ LABEL_89:
           v121 = 0u;
           v118 = 0u;
           v119 = 0u;
-          v95 = [(CSDConversation *)self remoteMembers];
-          v99 = [v95 countByEnumeratingWithState:&v118 objects:v130 count:16];
+          featureFlags4 = [(CSDConversation *)self remoteMembers];
+          v99 = [featureFlags4 countByEnumeratingWithState:&v118 objects:v130 count:16];
           if (v99)
           {
             v100 = v99;
-            v101 = v23;
-            v102 = self;
+            v101 = delegate;
+            selfCopy2 = self;
             v103 = *v119;
 LABEL_94:
             v104 = 0;
@@ -4012,12 +4012,12 @@ LABEL_94:
             {
               if (*v119 != v103)
               {
-                objc_enumerationMutation(v95);
+                objc_enumerationMutation(featureFlags4);
               }
 
               v105 = *(*(&v118 + 1) + 8 * v104);
-              v106 = [v105 handle];
-              v107 = [v106 isEqualToHandle:v8];
+              handle3 = [v105 handle];
+              v107 = [handle3 isEqualToHandle:handleCopy];
 
               if (v107)
               {
@@ -4026,14 +4026,14 @@ LABEL_94:
 
               if (v100 == ++v104)
               {
-                v100 = [v95 countByEnumeratingWithState:&v118 objects:v130 count:16];
+                v100 = [featureFlags4 countByEnumeratingWithState:&v118 objects:v130 count:16];
                 if (v100)
                 {
                   goto LABEL_94;
                 }
 
                 v29 = v116;
-                v23 = v101;
+                delegate = v101;
                 goto LABEL_103;
               }
             }
@@ -4041,14 +4041,14 @@ LABEL_94:
             v108 = v105;
 
             v29 = v116;
-            v23 = v101;
+            delegate = v101;
             if (!v108)
             {
               goto LABEL_104;
             }
 
-            [(CSDConversation *)v102 kickMember:v108];
-            v95 = v108;
+            [(CSDConversation *)selfCopy2 kickMember:v108];
+            featureFlags4 = v108;
           }
         }
 
@@ -4058,43 +4058,43 @@ LABEL_104:
         goto LABEL_105;
       }
 
-      v84 = [(CSDConversation *)self activeRemoteParticipants];
-      if ([v84 count])
+      activeRemoteParticipants3 = [(CSDConversation *)self activeRemoteParticipants];
+      if ([activeRemoteParticipants3 count])
       {
-        v85 = 0;
+        isOneToOneModeEnabled = 0;
       }
 
       else
       {
-        v86 = [(CSDConversation *)self remoteMembers];
-        if ([v86 count] == 1)
+        remoteMembers2 = [(CSDConversation *)self remoteMembers];
+        if ([remoteMembers2 count] == 1)
         {
-          v85 = 0;
+          isOneToOneModeEnabled = 0;
         }
 
         else
         {
-          v85 = [(CSDConversation *)self isOneToOneModeEnabled];
+          isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
         }
       }
 
-      v87 = [(CSDConversation *)self featureFlags];
-      if ([v87 oneToOneFaceTimeMyselfEnabled])
+      featureFlags5 = [(CSDConversation *)self featureFlags];
+      if ([featureFlags5 oneToOneFaceTimeMyselfEnabled])
       {
-        v88 = [(CSDConversation *)self serverBag];
-        v89 = [v88 isFaceTimeMyselfEnabled];
+        serverBag = [(CSDConversation *)self serverBag];
+        isFaceTimeMyselfEnabled = [serverBag isFaceTimeMyselfEnabled];
 
-        if (v89)
+        if (isFaceTimeMyselfEnabled)
         {
-          v90 = [(CSDConversation *)self activeRemoteParticipants];
-          if (![v90 count])
+          activeRemoteParticipants4 = [(CSDConversation *)self activeRemoteParticipants];
+          if (![activeRemoteParticipants4 count])
           {
-            v91 = [(CSDConversation *)self remoteMembers];
-            if ([v91 count] > 1)
+            remoteMembers3 = [(CSDConversation *)self remoteMembers];
+            if ([remoteMembers3 count] > 1)
             {
-              v92 = [(CSDConversation *)self isOneToOneModeEnabled];
+              isOneToOneModeEnabled2 = [(CSDConversation *)self isOneToOneModeEnabled];
 
-              if ((v92 & 1) == 0)
+              if ((isOneToOneModeEnabled2 & 1) == 0)
               {
                 goto LABEL_87;
               }
@@ -4103,9 +4103,9 @@ LABEL_82:
               v93 = sub_100004778();
               if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
               {
-                v94 = [(CSDConversation *)self remoteMembers];
+                remoteMembers4 = [(CSDConversation *)self remoteMembers];
                 *buf = 138412290;
-                v134 = v94;
+                identifierCopy5 = remoteMembers4;
                 _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "No active remote participants left, remoteMembers: %@, requesting to move back to oneToOne=0", buf, 0xCu);
               }
 
@@ -4115,7 +4115,7 @@ LABEL_82:
           }
         }
 
-        else if (v85)
+        else if (isOneToOneModeEnabled)
         {
           goto LABEL_82;
         }
@@ -4127,7 +4127,7 @@ LABEL_88:
         goto LABEL_89;
       }
 
-      if ((v85 & 1) == 0)
+      if ((isOneToOneModeEnabled & 1) == 0)
       {
         goto LABEL_87;
       }
@@ -4138,13 +4138,13 @@ LABEL_88:
     v29 = v116;
     if (v21)
     {
-      v30 = [v116 handle];
+      handle4 = [v116 handle];
       *buf = 138412802;
-      v134 = v30;
+      identifierCopy5 = handle4;
       v135 = 2048;
-      v136 = a3;
+      identifierCopy4 = identifier;
       v137 = 2112;
-      v138 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[WARN] removeParticipantWithIdentifier:fromHandle: Not removing participant handle (%@) didn't match, with identifier %lu: %@", buf, 0x20u);
     }
   }
@@ -4154,11 +4154,11 @@ LABEL_88:
     v29 = sub_100004778();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(CSDConversation *)self UUID];
+      uUID2 = [(CSDConversation *)self UUID];
       *buf = 134218242;
-      v134 = a3;
+      identifierCopy5 = identifier;
       v135 = 2112;
-      v136 = v39;
+      identifierCopy4 = uUID2;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[WARN] removeParticipantWithIdentifier:fromHandle: Could not find participant with identifier %lu: %@", buf, 0x16u);
     }
   }
@@ -4166,20 +4166,20 @@ LABEL_88:
 LABEL_105:
 }
 
-- (void)updateParticipantPresentationContexts:(id)a3
+- (void)updateParticipantPresentationContexts:(id)contexts
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  contextsCopy = contexts;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self avcSession];
-  [v6 beginParticipantUpdates];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession beginParticipantUpdates];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = contextsCopy;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -4196,12 +4196,12 @@ LABEL_105:
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
-        v12 = [(CSDConversation *)self avcSession];
-        v13 = [v11 videoQuality];
-        v14 = [v11 visibility];
-        v15 = [v11 prominence];
+        avcSession2 = [(CSDConversation *)self avcSession];
+        videoQuality = [v11 videoQuality];
+        visibility = [v11 visibility];
+        prominence = [v11 prominence];
         [v11 spatialPosition];
-        [v12 setVideoQuality:v13 visibility:v14 prominence:v15 spatialPosition:objc_msgSend(v11 isInCanvas:"isInCanvas") forParticipantWithIdentifier:{objc_msgSend(v11, "participantIdentifier"), v16, v17, v18, v19}];
+        [avcSession2 setVideoQuality:videoQuality visibility:visibility prominence:prominence spatialPosition:objc_msgSend(v11 isInCanvas:"isInCanvas") forParticipantWithIdentifier:{objc_msgSend(v11, "participantIdentifier"), v16, v17, v18, v19}];
 
         v10 = v10 + 1;
       }
@@ -4213,38 +4213,38 @@ LABEL_105:
     while (v8);
   }
 
-  v20 = [(CSDConversation *)self avcSession];
-  [v20 commitParticipantUpdates];
+  avcSession3 = [(CSDConversation *)self avcSession];
+  [avcSession3 commitParticipantUpdates];
 
   [(CSDConversation *)self setCurrentParticipantPresentationContexts:obj];
 }
 
-- (void)addVirtualParticipant:(id)a3
+- (void)addVirtualParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  participantCopy = participant;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = participantCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Adding virtual participant: %@", &v15, 0xCu);
   }
 
-  v7 = [(CSDConversation *)self virtualParticipantsByPluginName];
-  v8 = [v4 pluginName];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  virtualParticipantsByPluginName = [(CSDConversation *)self virtualParticipantsByPluginName];
+  pluginName = [participantCopy pluginName];
+  v9 = [virtualParticipantsByPluginName objectForKeyedSubscript:pluginName];
 
   if (v9)
   {
-    if (([v9 isEqual:v4] & 1) == 0)
+    if (([v9 isEqual:participantCopy] & 1) == 0)
     {
-      v10 = sub_100004778();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      activitySessionManager = sub_100004778();
+      if (os_log_type_enabled(activitySessionManager, OS_LOG_TYPE_FAULT))
       {
-        sub_100471FF0(v4, self, v10);
+        sub_100471FF0(participantCopy, self, activitySessionManager);
       }
 
       goto LABEL_9;
@@ -4253,53 +4253,53 @@ LABEL_105:
 
   else
   {
-    v11 = [(CSDConversation *)self virtualParticipantsByPluginName];
-    v12 = [v4 pluginName];
-    [v11 setObject:v4 forKeyedSubscript:v12];
+    virtualParticipantsByPluginName2 = [(CSDConversation *)self virtualParticipantsByPluginName];
+    pluginName2 = [participantCopy pluginName];
+    [virtualParticipantsByPluginName2 setObject:participantCopy forKeyedSubscript:pluginName2];
 
-    v13 = [(CSDConversation *)self delegate];
-    [v13 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
-    v14 = [v4 pluginName];
-    LODWORD(v12) = [v14 isEqualToString:@"PubSub"];
+    pluginName3 = [participantCopy pluginName];
+    LODWORD(pluginName2) = [pluginName3 isEqualToString:@"PubSub"];
 
-    if (v12)
+    if (pluginName2)
     {
-      v10 = [(CSDConversation *)self activitySessionManager];
-      -[NSObject updateVirtualParticipantIdentifier:](v10, "updateVirtualParticipantIdentifier:", [v4 identifier]);
+      activitySessionManager = [(CSDConversation *)self activitySessionManager];
+      -[NSObject updateVirtualParticipantIdentifier:](activitySessionManager, "updateVirtualParticipantIdentifier:", [participantCopy identifier]);
 LABEL_9:
     }
   }
 }
 
-- (void)removeVirtualParticipant:(id)a3
+- (void)removeVirtualParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  participantCopy = participant;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    v23 = v4;
+    v23 = participantCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removing virtual participant: %@", &v22, 0xCu);
   }
 
-  v7 = [(CSDConversation *)self virtualParticipantsByPluginName];
-  v8 = [v4 pluginName];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  virtualParticipantsByPluginName = [(CSDConversation *)self virtualParticipantsByPluginName];
+  pluginName = [participantCopy pluginName];
+  v9 = [virtualParticipantsByPluginName objectForKeyedSubscript:pluginName];
 
   if (!v9)
   {
     v16 = sub_100004778();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 pluginName];
+      pluginName2 = [participantCopy pluginName];
       v22 = 138412546;
-      v23 = v17;
+      v23 = pluginName2;
       v24 = 2112;
-      v25 = self;
+      selfCopy = self;
       v18 = "[WARN] Could not find virtual participant for plugin %@: %@";
       v19 = v16;
       v20 = 22;
@@ -4312,20 +4312,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = [v9 identifier];
-  if (v10 != [v4 identifier])
+  identifier = [v9 identifier];
+  if (identifier != [participantCopy identifier])
   {
     v16 = sub_100004778();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 pluginName];
-      v21 = [v4 identifier];
+      pluginName2 = [participantCopy pluginName];
+      identifier2 = [participantCopy identifier];
       v22 = 138412802;
-      v23 = v17;
+      v23 = pluginName2;
       v24 = 2048;
-      v25 = v21;
+      selfCopy = identifier2;
       v26 = 2112;
-      v27 = self;
+      selfCopy2 = self;
       v18 = "[WARN] Trying to remove virtual participant for plugin %@ with different identifier %llu: %@";
       v19 = v16;
       v20 = 32;
@@ -4335,82 +4335,82 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [(CSDConversation *)self virtualParticipantsByPluginName];
-  v12 = [v4 pluginName];
-  [v11 setObject:0 forKeyedSubscript:v12];
+  virtualParticipantsByPluginName2 = [(CSDConversation *)self virtualParticipantsByPluginName];
+  pluginName3 = [participantCopy pluginName];
+  [virtualParticipantsByPluginName2 setObject:0 forKeyedSubscript:pluginName3];
 
-  v13 = [(CSDConversation *)self delegate];
-  [v13 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 
-  v14 = [v4 pluginName];
-  LODWORD(v12) = [v14 isEqualToString:@"PubSub"];
+  pluginName4 = [participantCopy pluginName];
+  LODWORD(pluginName3) = [pluginName4 isEqualToString:@"PubSub"];
 
-  if (v12)
+  if (pluginName3)
   {
-    v15 = [(CSDConversation *)self activitySessionManager];
-    [v15 updateVirtualParticipantIdentifier:0];
+    activitySessionManager = [(CSDConversation *)self activitySessionManager];
+    [activitySessionManager updateVirtualParticipantIdentifier:0];
   }
 
   [(CSDConversation *)self _registerPluginsIfNecessary];
 LABEL_14:
 }
 
-- (void)removeRemoteMembers:(id)a3 triggeredLocally:(BOOL)a4
+- (void)removeRemoteMembers:(id)members triggeredLocally:(BOOL)locally
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  locallyCopy = locally;
+  membersCopy = members;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v92 = self;
+    selfCopy2 = self;
     v93 = 1024;
-    LODWORD(v94) = v4;
+    LODWORD(v94) = locallyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "conversation: %@ remove remoteMembers triggeredLocally: %d", buf, 0x12u);
   }
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     *buf = 138412546;
-    v92 = v10;
+    selfCopy2 = uUID;
     v93 = 2112;
-    v94 = v6;
+    v94 = membersCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UUID: %@ remove remoteMembers: %@", buf, 0x16u);
   }
 
-  v11 = [(CSDConversation *)self remoteMembers];
-  v12 = [v11 mutableCopy];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v12 = [remoteMembers mutableCopy];
 
-  v13 = [(CSDConversation *)self lightweightMembers];
-  v14 = [v13 mutableCopy];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  v14 = [lightweightMembers mutableCopy];
 
-  v15 = [(CSDConversation *)self remoteMembers];
-  v16 = [v15 mutableCopy];
+  remoteMembers2 = [(CSDConversation *)self remoteMembers];
+  v16 = [remoteMembers2 mutableCopy];
 
-  v17 = [(CSDConversation *)self localMember];
-  [v16 addObject:v17];
+  localMember = [(CSDConversation *)self localMember];
+  [v16 addObject:localMember];
 
-  v18 = [(CSDConversation *)self lightweightMembers];
-  [v16 unionSet:v18];
+  lightweightMembers2 = [(CSDConversation *)self lightweightMembers];
+  [v16 unionSet:lightweightMembers2];
 
-  if ([v6 count])
+  if ([membersCopy count])
   {
     v67 = v16;
-    v65 = v4;
-    v19 = [(CSDConversation *)self kickedMembers];
-    [v19 setByAddingObjectsFromSet:v6];
+    v65 = locallyCopy;
+    kickedMembers = [(CSDConversation *)self kickedMembers];
+    [kickedMembers setByAddingObjectsFromSet:membersCopy];
     v21 = v20 = v12;
     [(CSDConversation *)self setKickedMembers:v21];
 
-    [v20 minusSet:v6];
+    [v20 minusSet:membersCopy];
     v64 = v20;
     [(CSDConversation *)self setRemoteMembers:v20];
-    [v14 minusSet:v6];
+    [v14 minusSet:membersCopy];
     v63 = v14;
     v22 = [v14 copy];
     [(CSDConversation *)self setLightweightMembers:v22];
@@ -4419,8 +4419,8 @@ LABEL_14:
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v66 = v6;
-    v23 = v6;
+    v66 = membersCopy;
+    v23 = membersCopy;
     v24 = [v23 countByEnumeratingWithState:&v83 objects:v90 count:16];
     if (v24)
     {
@@ -4436,10 +4436,10 @@ LABEL_14:
           }
 
           v28 = *(*(&v83 + 1) + 8 * i);
-          v29 = [(CSDConversation *)self localLightweightSecondaryMember];
-          v30 = [v29 handle];
-          v31 = [v28 handle];
-          v32 = [v30 isEqual:v31];
+          localLightweightSecondaryMember = [(CSDConversation *)self localLightweightSecondaryMember];
+          handle = [localLightweightSecondaryMember handle];
+          handle2 = [v28 handle];
+          v32 = [handle isEqual:handle2];
 
           if (v32)
           {
@@ -4475,8 +4475,8 @@ LABEL_14:
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v79 + 1) + 8 * j) handle];
-          [v33 addObject:v39];
+          handle3 = [*(*(&v79 + 1) + 8 * j) handle];
+          [v33 addObject:handle3];
         }
 
         v36 = [v34 countByEnumeratingWithState:&v79 objects:v89 count:16];
@@ -4505,13 +4505,13 @@ LABEL_14:
           }
 
           v44 = *(*(&v75 + 1) + 8 * k);
-          v45 = [v44 association];
+          association = [v44 association];
 
-          if (v45)
+          if (association)
           {
-            v46 = [v44 association];
-            v47 = [v46 handle];
-            v48 = [v33 containsObject:v47];
+            association2 = [v44 association];
+            handle4 = [association2 handle];
+            v48 = [v33 containsObject:handle4];
 
             if (v48)
             {
@@ -4535,8 +4535,8 @@ LABEL_14:
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v69 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-    v49 = [v69 countByEnumeratingWithState:&v71 objects:v87 count:16];
+    pendingConversationParticipantsByIdentifier = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+    v49 = [pendingConversationParticipantsByIdentifier countByEnumeratingWithState:&v71 objects:v87 count:16];
     if (v49)
     {
       v50 = v49;
@@ -4547,24 +4547,24 @@ LABEL_14:
         {
           if (*v72 != v51)
           {
-            objc_enumerationMutation(v69);
+            objc_enumerationMutation(pendingConversationParticipantsByIdentifier);
           }
 
           v53 = *(*(&v71 + 1) + 8 * m);
-          v54 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-          v55 = [v54 objectForKeyedSubscript:v53];
-          v56 = [v55 handle];
-          v57 = [v33 containsObject:v56];
+          pendingConversationParticipantsByIdentifier2 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+          v55 = [pendingConversationParticipantsByIdentifier2 objectForKeyedSubscript:v53];
+          handle5 = [v55 handle];
+          v57 = [v33 containsObject:handle5];
 
           if ((v57 & 1) == 0)
           {
-            v58 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-            v59 = [v58 objectForKeyedSubscript:v53];
+            pendingConversationParticipantsByIdentifier3 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+            v59 = [pendingConversationParticipantsByIdentifier3 objectForKeyedSubscript:v53];
             [v68 setObject:v59 forKeyedSubscript:v53];
           }
         }
 
-        v50 = [v69 countByEnumeratingWithState:&v71 objects:v87 count:16];
+        v50 = [pendingConversationParticipantsByIdentifier countByEnumeratingWithState:&v71 objects:v87 count:16];
       }
 
       while (v50);
@@ -4572,13 +4572,13 @@ LABEL_14:
 
     [(CSDConversation *)self setPendingConversationParticipantsByIdentifier:v68];
     [(CSDConversation *)self removeActivitySessionIfNecessary];
-    v60 = [(CSDConversation *)self idsSession];
-    [v60 removeMembers:v62 fromExistingMembers:obj activeParticipants:0 triggeredLocally:v65];
+    idsSession = [(CSDConversation *)self idsSession];
+    [idsSession removeMembers:v62 fromExistingMembers:obj activeParticipants:0 triggeredLocally:v65];
 
-    v61 = [(CSDConversation *)self delegate];
-    [v61 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
-    v6 = v66;
+    membersCopy = v66;
     v16 = v67;
     v14 = v63;
     v12 = v64;
@@ -4590,81 +4590,81 @@ LABEL_14:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v92 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "[WARN] No members were removed to conversation: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 invitationPreferences:(id)a5 addingFromLetMeIn:(BOOL)a6 triggeredLocally:(BOOL)a7
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles invitationPreferences:(id)preferences addingFromLetMeIn:(BOOL)in triggeredLocally:(BOOL)locally
 {
-  v7 = a7;
-  v188 = a6;
-  v11 = a3;
-  v12 = a4;
-  v183 = a5;
-  v13 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v13);
+  locallyCopy = locally;
+  inCopy = in;
+  membersCopy = members;
+  handlesCopy = handles;
+  preferencesCopy = preferences;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v14 = sub_100004778();
-  v192 = v7;
+  v192 = locallyCopy;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(CSDConversation *)self UUID];
-    v16 = [(CSDConversation *)self groupUUID];
+    uUID = [(CSDConversation *)self UUID];
+    groupUUID = [(CSDConversation *)self groupUUID];
     *buf = 138413058;
-    v216 = v15;
+    v216 = uUID;
     v217 = 2112;
-    v218 = v16;
+    v218 = groupUUID;
     v219 = 2112;
-    v220 = v11;
+    v220 = membersCopy;
     v221 = 1024;
     v222 = v192;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "addRemoteMembers - UUID: %@ groupUUID: %@ remoteMembers: %@ triggeredLocally: %d", buf, 0x26u);
 
-    v7 = v192;
+    locallyCopy = v192;
   }
 
   v17 = sub_100004778();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(CSDConversation *)self UUID];
+    uUID2 = [(CSDConversation *)self UUID];
     *buf = 138412546;
-    v216 = v18;
+    v216 = uUID2;
     v217 = 2112;
-    v218 = v12;
+    v218 = handlesCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "addRemoteMembers - UUID: %@ otherInvitedHandles: %@", buf, 0x16u);
   }
 
-  v182 = v12;
+  v182 = handlesCopy;
 
   v19 = sub_100004778();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(CSDConversation *)self UUID];
+    uUID3 = [(CSDConversation *)self UUID];
     *buf = 138412546;
-    v216 = v20;
+    v216 = uUID3;
     v217 = 2112;
-    v218 = v183;
+    v218 = preferencesCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "addRemoteMembers - UUID: %@ invitationPreferences: %@", buf, 0x16u);
   }
 
-  v21 = [(CSDConversation *)self remoteMembers];
-  v181 = [v21 mutableCopy];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v181 = [remoteMembers mutableCopy];
 
-  v22 = [(CSDConversation *)self remoteMembers];
-  v23 = [v22 mutableCopy];
+  remoteMembers2 = [(CSDConversation *)self remoteMembers];
+  v23 = [remoteMembers2 mutableCopy];
 
-  v24 = [(CSDConversation *)self lightweightMembers];
-  v25 = [v24 mutableCopy];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  v25 = [lightweightMembers mutableCopy];
 
-  v26 = [(CSDConversation *)self localMember];
-  v27 = [v26 isLightweightMember];
+  localMember = [(CSDConversation *)self localMember];
+  isLightweightMember = [localMember isLightweightMember];
 
-  v28 = [(CSDConversation *)self localMember];
+  localMember2 = [(CSDConversation *)self localMember];
   v179 = v25;
   v180 = v23;
-  if (v27)
+  if (isLightweightMember)
   {
     v29 = v25;
   }
@@ -4674,14 +4674,14 @@ LABEL_14:
     v29 = v23;
   }
 
-  [v29 addObject:v28];
+  [v29 addObject:localMember2];
 
   v185 = +[NSMutableSet set];
   v207 = 0u;
   v208 = 0u;
   v209 = 0u;
   v210 = 0u;
-  obj = v11;
+  obj = membersCopy;
   v30 = [obj countByEnumeratingWithState:&v207 objects:v214 count:16];
   if (v30)
   {
@@ -4699,10 +4699,10 @@ LABEL_14:
         v34 = *(*(&v207 + 1) + 8 * i);
         if (([v34 isLightweightMember] & 1) == 0)
         {
-          if (v7)
+          if (locallyCopy)
           {
-            v35 = [(CSDConversation *)self kickedMembers];
-            v36 = [v35 containsObject:v34];
+            kickedMembers = [(CSDConversation *)self kickedMembers];
+            v36 = [kickedMembers containsObject:v34];
 
             if (v36)
             {
@@ -4711,13 +4711,13 @@ LABEL_14:
             }
           }
 
-          v37 = [(CSDConversation *)self remoteMemberHandles];
-          v38 = [v34 handle];
-          v39 = [v37 containsObject:v38];
+          remoteMemberHandles = [(CSDConversation *)self remoteMemberHandles];
+          handle = [v34 handle];
+          v39 = [remoteMemberHandles containsObject:handle];
 
           if (v39)
           {
-            v40 = !v188;
+            v40 = !inCopy;
           }
 
           else
@@ -4738,17 +4738,17 @@ LABEL_14:
             v41 = sub_100004778();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
-              v43 = [v34 handle];
+              handle2 = [v34 handle];
               *buf = 138412290;
-              v216 = v43;
+              v216 = handle2;
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Handle is part of remoteMembers list, but trying to add them as part of LMI. Allowing this handle to be added: %@", buf, 0xCu);
             }
           }
 
-          v44 = [(CSDConversation *)self localMember];
-          v45 = [v44 handle];
-          v46 = [v34 handle];
-          v47 = [v45 isEquivalentToHandle:v46];
+          localMember3 = [(CSDConversation *)self localMember];
+          handle3 = [localMember3 handle];
+          handle4 = [v34 handle];
+          v47 = [handle3 isEquivalentToHandle:handle4];
 
           if (v47)
           {
@@ -4756,34 +4756,34 @@ LABEL_30:
             v48 = sub_100004778();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
             {
-              v49 = [(CSDConversation *)self UUID];
-              v50 = [v34 handle];
+              uUID4 = [(CSDConversation *)self UUID];
+              handle5 = [v34 handle];
               *buf = 138412546;
-              v216 = v49;
+              v216 = uUID4;
               v217 = 2112;
-              v218 = v50;
+              v218 = handle5;
               _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "Conversation UUID %@ already contains member with handle %@, filtering out.", buf, 0x16u);
 
-              v7 = v192;
+              locallyCopy = v192;
             }
 
             continue;
           }
 
           v51 = [v34 copy];
-          if (v7)
+          if (locallyCopy)
           {
-            v52 = [(CSDConversation *)self featureFlags];
-            if ([v52 nearbyFaceTimeEnabled] && (-[CSDConversation localParticipantCluster](self, "localParticipantCluster"), (v53 = objc_claimAutoreleasedReturnValue()) != 0))
+            featureFlags = [(CSDConversation *)self featureFlags];
+            if ([featureFlags nearbyFaceTimeEnabled] && (-[CSDConversation localParticipantCluster](self, "localParticipantCluster"), (v53 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               v54 = v53;
               v55 = +[TUConversationInvitationPreference nearbyInvitationPreferences];
-              v56 = [v183 isEqualToSet:v55];
+              v56 = [preferencesCopy isEqualToSet:v55];
 
               if (v56)
               {
-                v52 = [(CSDConversation *)self localParticipantCluster];
-                [v51 setProposedParticipantCluster:v52];
+                featureFlags = [(CSDConversation *)self localParticipantCluster];
+                [v51 setProposedParticipantCluster:featureFlags];
                 goto LABEL_38;
               }
             }
@@ -4797,33 +4797,33 @@ LABEL_38:
           [v185 addObject:v51];
           if ([v34 joinedFromLetMeIn])
           {
-            v57 = [v34 handle];
-            v58 = [v57 value];
-            v59 = [v58 destinationIdIsTemporary];
+            handle6 = [v34 handle];
+            value = [handle6 value];
+            destinationIdIsTemporary = [value destinationIdIsTemporary];
 
-            if ((v59 & 1) == 0)
+            if ((destinationIdIsTemporary & 1) == 0)
             {
               v60 = sub_100004778();
               if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
               {
-                v61 = [v34 handle];
+                handle7 = [v34 handle];
                 *buf = 138412290;
-                v216 = v61;
+                v216 = handle7;
                 _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Handle %@ should be considered for addition as an invited member handle if not kicked", buf, 0xCu);
               }
 
-              v62 = [(CSDConversation *)self memberHandlesAwaitingInvitesToLink];
-              v63 = [v34 handle];
-              [v62 addObject:v63];
+              memberHandlesAwaitingInvitesToLink = [(CSDConversation *)self memberHandlesAwaitingInvitesToLink];
+              handle8 = [v34 handle];
+              [memberHandlesAwaitingInvitesToLink addObject:handle8];
             }
           }
 
-          v64 = [(CSDConversation *)self link];
-          if (v64)
+          link = [(CSDConversation *)self link];
+          if (link)
           {
-            v65 = v64;
-            v66 = [(CSDConversation *)self pendingMembers];
-            v67 = [v66 containsObject:v34];
+            v65 = link;
+            pendingMembers = [(CSDConversation *)self pendingMembers];
+            v67 = [pendingMembers containsObject:v34];
 
             if (v67)
             {
@@ -4840,32 +4840,32 @@ LABEL_38:
             }
           }
 
-          v70 = [(CSDConversation *)self link];
-          if (v70)
+          link2 = [(CSDConversation *)self link];
+          if (link2)
           {
-            v71 = v70;
-            v72 = [(CSDConversation *)self pendingRemoteMembers];
-            v73 = [v72 containsObject:v34];
+            v71 = link2;
+            pendingRemoteMembers = [(CSDConversation *)self pendingRemoteMembers];
+            v73 = [pendingRemoteMembers containsObject:v34];
 
             if (v73)
             {
               v74 = sub_100004778();
               if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
               {
-                v75 = [(CSDConversation *)self pendingRemoteMembers];
+                pendingRemoteMembers2 = [(CSDConversation *)self pendingRemoteMembers];
                 *buf = 138412546;
                 v216 = v34;
                 v217 = 2112;
-                v218 = v75;
+                v218 = pendingRemoteMembers2;
                 _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "addRemoteMembers, remove pending remote member: %@ from: %@", buf, 0x16u);
               }
 
-              v76 = [(CSDConversation *)self pendingRemoteMembers];
-              [v76 removeObject:v34];
+              pendingRemoteMembers3 = [(CSDConversation *)self pendingRemoteMembers];
+              [pendingRemoteMembers3 removeObject:v34];
             }
           }
 
-          v7 = v192;
+          locallyCopy = v192;
           continue;
         }
       }
@@ -4881,8 +4881,8 @@ LABEL_38:
   v204 = 0u;
   v205 = 0u;
   v206 = 0u;
-  v78 = [(CSDConversation *)self lightweightMembers];
-  v79 = [v78 countByEnumeratingWithState:&v203 objects:v213 count:16];
+  lightweightMembers2 = [(CSDConversation *)self lightweightMembers];
+  v79 = [lightweightMembers2 countByEnumeratingWithState:&v203 objects:v213 count:16];
   if (v79)
   {
     v80 = v79;
@@ -4893,13 +4893,13 @@ LABEL_38:
       {
         if (*v204 != v81)
         {
-          objc_enumerationMutation(v78);
+          objc_enumerationMutation(lightweightMembers2);
         }
 
         [v77 addObject:*(*(&v203 + 1) + 8 * j)];
       }
 
-      v80 = [v78 countByEnumeratingWithState:&v203 objects:v213 count:16];
+      v80 = [lightweightMembers2 countByEnumeratingWithState:&v203 objects:v213 count:16];
     }
 
     while (v80);
@@ -4931,20 +4931,20 @@ LABEL_38:
         v88 = *(*(&v199 + 1) + 8 * v87);
         if ([v88 isLightweightMember])
         {
-          v89 = [v88 handle];
-          if ([v77 containsObject:v89])
+          handle9 = [v88 handle];
+          if ([v77 containsObject:handle9])
           {
 
 LABEL_73:
             v97 = sub_100004778();
             if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
             {
-              v98 = [(CSDConversation *)self UUID];
-              v99 = [v88 handle];
+              uUID5 = [(CSDConversation *)self UUID];
+              handle10 = [v88 handle];
               *buf = 138412546;
-              v216 = v98;
+              v216 = uUID5;
               v217 = 2112;
-              v218 = v99;
+              v218 = handle10;
               _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "Conversation UUID %@ already contains member with handle %@, filtering out.", buf, 0x16u);
             }
           }
@@ -4953,14 +4953,14 @@ LABEL_73:
           {
             [(CSDConversation *)self localMember];
             v91 = v90 = v86;
-            v92 = [v91 handle];
+            handle11 = [v91 handle];
             [v88 handle];
-            v93 = self;
+            selfCopy = self;
             v95 = v94 = v77;
-            v96 = [v92 isEquivalentToHandle:v95];
+            v96 = [handle11 isEquivalentToHandle:v95];
 
             v77 = v94;
-            self = v93;
+            self = selfCopy;
             v83 = v187;
 
             v86 = v90;
@@ -4976,9 +4976,9 @@ LABEL_73:
             if (v192)
             {
               [v100 setValidationSource:1];
-              v101 = [(CSDConversation *)self localMember];
-              v102 = [v101 handle];
-              [v97 setLightweightPrimary:v102];
+              localMember4 = [(CSDConversation *)self localMember];
+              handle12 = [localMember4 handle];
+              [v97 setLightweightPrimary:handle12];
 
               [v97 setLightweightPrimaryParticipantIdentifier:[(CSDConversation *)self localParticipantIdentifier]];
               [(CSDConversation *)self setLocalLightweightSecondaryMember:v97];
@@ -5001,13 +5001,13 @@ LABEL_73:
   if ([v185 count] || objc_msgSend(v182, "count") || objc_msgSend(v184, "count"))
   {
     v170 = v77;
-    v103 = [(CSDConversation *)self activitySessions];
-    v104 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v103, "count")}];
+    activitySessions = [(CSDConversation *)self activitySessions];
+    v104 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(activitySessions, "count")}];
     v195 = 0u;
     v196 = 0u;
     v197 = 0u;
     v198 = 0u;
-    v105 = v103;
+    v105 = activitySessions;
     v106 = [v105 countByEnumeratingWithState:&v195 objects:v211 count:16];
     if (v106)
     {
@@ -5023,10 +5023,10 @@ LABEL_73:
           }
 
           v110 = *(*(&v195 + 1) + 8 * k);
-          v111 = [v110 activity];
-          v112 = [v111 isStaticActivity];
+          activity = [v110 activity];
+          isStaticActivity = [activity isStaticActivity];
 
-          if ((v112 & 1) == 0)
+          if ((isStaticActivity & 1) == 0)
           {
             v113 = [CSDMessagingConversationActivitySession activitySessionWithCSDConversationActivitySession:v110 fromConversation:self forStorage:0];
             [v104 addObject:v113];
@@ -5039,11 +5039,11 @@ LABEL_73:
       while (v107);
     }
 
-    v114 = [(CSDConversation *)self stagedActivitySession];
-    if (v114)
+    stagedActivitySession = [(CSDConversation *)self stagedActivitySession];
+    if (stagedActivitySession)
     {
-      v115 = [(CSDConversation *)self stagedActivitySession];
-      v116 = [CSDMessagingConversationActivitySession activitySessionWithTUConversationActivitySession:v115 fromConversation:self forStorage:0];
+      stagedActivitySession2 = [(CSDConversation *)self stagedActivitySession];
+      v116 = [CSDMessagingConversationActivitySession activitySessionWithTUConversationActivitySession:stagedActivitySession2 fromConversation:self forStorage:0];
     }
 
     else
@@ -5053,33 +5053,33 @@ LABEL_73:
 
     [v181 unionSet:v185];
     [(CSDConversation *)self setRemoteMembers:v181];
-    v117 = [(CSDConversation *)self otherInvitedHandles];
-    v118 = [NSMutableSet setWithSet:v117];
+    otherInvitedHandles = [(CSDConversation *)self otherInvitedHandles];
+    v118 = [NSMutableSet setWithSet:otherInvitedHandles];
 
     [v118 unionSet:v182];
     v169 = v118;
     [(CSDConversation *)self setOtherInvitedHandles:v118];
-    v119 = [(CSDConversation *)self lightweightMembers];
-    v120 = [NSMutableSet setWithSet:v119];
+    lightweightMembers3 = [(CSDConversation *)self lightweightMembers];
+    v120 = [NSMutableSet setWithSet:lightweightMembers3];
 
     [v120 unionSet:v184];
     v168 = v120;
     [(CSDConversation *)self setLightweightMembers:v120];
     if (v192)
     {
-      v121 = [(CSDConversation *)self activeRemoteParticipants];
-      v122 = [v121 mutableCopy];
+      activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+      v122 = [activeRemoteParticipants mutableCopy];
 
-      v123 = [(CSDConversation *)self activeLightweightParticipants];
-      [v122 unionSet:v123];
+      activeLightweightParticipants = [(CSDConversation *)self activeLightweightParticipants];
+      [v122 unionSet:activeLightweightParticipants];
 
-      v124 = [(CSDConversation *)self idsSession];
-      v125 = [v124 isJoined];
+      idsSession = [(CSDConversation *)self idsSession];
+      isJoined = [idsSession isJoined];
 
-      if (v125)
+      if (isJoined)
       {
-        v126 = [(CSDConversation *)self localCSDConversationParticipant];
-        [v122 addObject:v126];
+        localCSDConversationParticipant = [(CSDConversation *)self localCSDConversationParticipant];
+        [v122 addObject:localCSDConversationParticipant];
       }
     }
 
@@ -5094,18 +5094,18 @@ LABEL_73:
     [objb unionSet:v179];
     v128 = +[NSMutableArray array];
     v129 = v128;
-    if (v188)
+    if (inCopy)
     {
       [v128 addObject:IDSRegistrationPropertySupportsModernGFT];
     }
 
-    v130 = [(CSDConversation *)self featureFlags];
+    featureFlags2 = [(CSDConversation *)self featureFlags];
     v186 = v122;
     v167 = v127;
-    if ([v130 uPlusNDowngrade])
+    if ([featureFlags2 uPlusNDowngrade])
     {
 
-      v131 = v183;
+      v131 = preferencesCopy;
     }
 
     else
@@ -5116,58 +5116,58 @@ LABEL_73:
       v129 = v132;
 
       v135 = v134 >= 2;
-      v131 = v183;
+      v131 = preferencesCopy;
       if (v135)
       {
         [(CSDConversation *)self setOneToOneModeEnabled:0];
       }
     }
 
-    v136 = [(CSDConversation *)self highlightIdentifiers];
-    v178 = [v136 anyObject];
+    highlightIdentifiers = [(CSDConversation *)self highlightIdentifiers];
+    anyObject = [highlightIdentifiers anyObject];
 
-    v171 = [(CSDConversation *)self avMode];
-    v137 = [(CSDConversation *)self localMember];
+    avMode = [(CSDConversation *)self avMode];
+    localMember5 = [(CSDConversation *)self localMember];
     v172 = v129;
     v173 = v116;
-    if (([v137 isLightweightMember] & 1) == 0)
+    if (([localMember5 isLightweightMember] & 1) == 0)
     {
-      v138 = [(CSDConversation *)self localMember];
-      v139 = [v138 association];
-      if (v139)
+      localMember6 = [(CSDConversation *)self localMember];
+      association = [localMember6 association];
+      if (association)
       {
-        v140 = v139;
-        v141 = [(CSDConversation *)self localMember];
-        v142 = [v141 association];
-        if ([v142 isPrimary])
+        v140 = association;
+        localMember7 = [(CSDConversation *)self localMember];
+        association2 = [localMember7 association];
+        if ([association2 isPrimary])
         {
-          v143 = [(CSDConversation *)self localMember];
-          [v143 association];
-          v145 = v144 = v138;
-          v176 = [v145 type];
+          localMember8 = [(CSDConversation *)self localMember];
+          [localMember8 association];
+          v145 = v144 = localMember6;
+          type = [v145 type];
 
-          if (v176 != 2)
+          if (type != 2)
           {
-            v131 = v183;
+            v131 = preferencesCopy;
             v129 = v172;
             v116 = v173;
             goto LABEL_119;
           }
 
-          v146 = [(CSDConversation *)self localMember];
-          v147 = [v146 association];
-          v148 = [v147 handle];
+          localMember9 = [(CSDConversation *)self localMember];
+          association3 = [localMember9 association];
+          handle13 = [association3 handle];
 
-          v149 = [(CSDConversation *)self activeRemoteParticipants];
+          activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
           v193[0] = _NSConcreteStackBlock;
           v193[1] = 3221225472;
           v193[2] = sub_100090BF4;
           v193[3] = &unk_10061A628;
-          v137 = v148;
-          v194 = v137;
-          v150 = [v149 tu_anyObjectPassingTest:v193];
+          localMember5 = handle13;
+          v194 = localMember5;
+          v150 = [activeRemoteParticipants2 tu_anyObjectPassingTest:v193];
 
-          v131 = v183;
+          v131 = preferencesCopy;
           v116 = v173;
           if (v150)
           {
@@ -5178,10 +5178,10 @@ LABEL_73:
               _os_log_impl(&_mh_execute_header, v151, OS_LOG_TYPE_DEFAULT, "Updating avMode and invitationPreferences for member addition to match the associated participant", buf, 2u);
             }
 
-            v171 = [v150 audioVideoMode];
+            avMode = [v150 audioVideoMode];
           }
 
-          v138 = v194;
+          localMember6 = v194;
           v129 = v172;
         }
 
@@ -5194,43 +5194,43 @@ LABEL_73:
     }
 
 LABEL_119:
-    v177 = [(CSDConversation *)self idsSession];
-    v175 = [(CSDConversation *)self link];
-    v174 = [(CSDConversation *)self otherInvitedHandles];
-    v152 = [(CSDConversation *)self report];
-    v153 = v131;
+    idsSession2 = [(CSDConversation *)self idsSession];
+    link3 = [(CSDConversation *)self link];
+    otherInvitedHandles2 = [(CSDConversation *)self otherInvitedHandles];
+    report = [(CSDConversation *)self report];
+    invitationPreferences = v131;
     if (!v131)
     {
-      v153 = [(CSDConversation *)self invitationPreferences];
+      invitationPreferences = [(CSDConversation *)self invitationPreferences];
     }
 
     v154 = [v129 copy];
-    v155 = [(CSDConversation *)self messagesGroupUUID];
-    v156 = [(CSDConversation *)self messagesGroupName];
+    messagesGroupUUID = [(CSDConversation *)self messagesGroupUUID];
+    messagesGroupName = [(CSDConversation *)self messagesGroupName];
     BYTE1(v166) = v192;
-    LOBYTE(v166) = v188;
-    [v177 addMembers:v167 toExistingMembers:objb activeParticipants:v186 activitySessions:v104 link:v175 otherInvitedHandles:v174 report:v152 invitationPreferences:v153 requiredCapabilities:v154 messagesGroupUUID:v155 messagesGroupName:v156 addingFromLetMeIn:v166 triggeredLocally:v178 highlightIdentifier:v116 stagedActivitySession:v171 avMode:?];
+    LOBYTE(v166) = inCopy;
+    [idsSession2 addMembers:v167 toExistingMembers:objb activeParticipants:v186 activitySessions:v104 link:link3 otherInvitedHandles:otherInvitedHandles2 report:report invitationPreferences:invitationPreferences requiredCapabilities:v154 messagesGroupUUID:messagesGroupUUID messagesGroupName:messagesGroupName addingFromLetMeIn:v166 triggeredLocally:anyObject highlightIdentifier:v116 stagedActivitySession:avMode avMode:?];
 
     v157 = v131;
     if (!v131)
     {
     }
 
-    v158 = [(CSDConversation *)self applicationLaunchPolicyManager];
-    v159 = [(CSDConversation *)self tuConversation];
-    [v158 updateAllowedHandlesForConversation:v159];
+    applicationLaunchPolicyManager = [(CSDConversation *)self applicationLaunchPolicyManager];
+    tuConversation = [(CSDConversation *)self tuConversation];
+    [applicationLaunchPolicyManager updateAllowedHandlesForConversation:tuConversation];
 
-    v160 = [(CSDConversation *)self delegate];
-    [v160 conversation:self addedMembers:v167 triggeredLocally:v192];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self addedMembers:v167 triggeredLocally:v192];
 
-    v161 = [(CSDConversation *)self featureFlags];
-    if ([v161 nearbyFaceTimeEnabled])
+    featureFlags3 = [(CSDConversation *)self featureFlags];
+    if ([featureFlags3 nearbyFaceTimeEnabled])
     {
-      v162 = [(CSDConversation *)self isNearbySession];
+      isNearbySession = [(CSDConversation *)self isNearbySession];
 
       v163 = v182;
       v164 = v173;
-      if (v162)
+      if (isNearbySession)
       {
         [(CSDConversation *)self startTimeOutForNearbyMembers:v167];
       }
@@ -5252,28 +5252,28 @@ LABEL_119:
   v105 = sub_100004778();
   if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
   {
-    v165 = [(CSDConversation *)self UUID];
+    uUID6 = [(CSDConversation *)self UUID];
     *buf = 138412290;
-    v216 = v165;
+    v216 = uUID6;
     _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_DEFAULT, "[WARN] No new members were added to conversation UUID: %@", buf, 0xCu);
   }
 
   v163 = v182;
-  v157 = v183;
+  v157 = preferencesCopy;
 LABEL_128:
 }
 
-- (void)updateMemberValidationSource:(id)a3 source:(int64_t)a4
+- (void)updateMemberValidationSource:(id)source source:(int64_t)a4
 {
-  v34 = a3;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  sourceCopy = source;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v49 = v34;
+    v49 = sourceCopy;
     v50 = 2048;
     v51 = a4;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updating member validation source for: %@ to source: %ld", buf, 0x16u);
@@ -5283,9 +5283,9 @@ LABEL_128:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v33 = self;
-  v8 = [(CSDConversation *)self lightweightMembers];
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  selfCopy = self;
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  v9 = [lightweightMembers countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (!v9)
   {
 LABEL_11:
@@ -5301,13 +5301,13 @@ LABEL_5:
   {
     if (*v43 != v11)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(lightweightMembers);
     }
 
     v13 = *(*(&v42 + 1) + 8 * v12);
-    v14 = [v13 handle];
-    v15 = [v34 handle];
-    v16 = [v14 isEquivalentToHandle:v15];
+    handle = [v13 handle];
+    handle2 = [sourceCopy handle];
+    v16 = [handle isEquivalentToHandle:handle2];
 
     if (v16)
     {
@@ -5316,7 +5316,7 @@ LABEL_5:
 
     if (v10 == ++v12)
     {
-      v10 = [v8 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v10 = [lightweightMembers countByEnumeratingWithState:&v42 objects:v47 count:16];
       if (!v10)
       {
         goto LABEL_11;
@@ -5348,8 +5348,8 @@ LABEL_31:
   }
 
   [v18 setValidationSource:a4];
-  v35 = [v18 lightweightPrimary];
-  if (!v35)
+  lightweightPrimary = [v18 lightweightPrimary];
+  if (!lightweightPrimary)
   {
     goto LABEL_30;
   }
@@ -5358,7 +5358,7 @@ LABEL_31:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = [(CSDConversation *)v33 activitySessions];
+  obj = [(CSDConversation *)selfCopy activitySessions];
   v19 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (!v19)
   {
@@ -5377,16 +5377,16 @@ LABEL_31:
       }
 
       v22 = *(*(&v38 + 1) + 8 * i);
-      v23 = [v22 activity];
-      v24 = [v23 trustedFromHandle];
-      if (v24)
+      activity = [v22 activity];
+      trustedFromHandle = [activity trustedFromHandle];
+      if (trustedFromHandle)
       {
-        v25 = v24;
-        v26 = [v22 activity];
-        v27 = [v26 trustedFromHandle];
+        v25 = trustedFromHandle;
+        activity2 = [v22 activity];
+        trustedFromHandle2 = [activity2 trustedFromHandle];
         [v18 handle];
         v29 = v28 = v18;
-        v30 = [v27 isEquivalentToHandle:v29];
+        v30 = [trustedFromHandle2 isEquivalentToHandle:v29];
 
         v18 = v28;
         if (!v30)
@@ -5402,8 +5402,8 @@ LABEL_31:
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "We found an activity originated from now validated member %@ updating activity", buf, 0xCu);
         }
 
-        v23 = [v22 activity];
-        [v23 setTrustedFromHandle:v35];
+        activity = [v22 activity];
+        [activity setTrustedFromHandle:lightweightPrimary];
       }
     }
 
@@ -5414,48 +5414,48 @@ LABEL_31:
 LABEL_29:
 
 LABEL_30:
-  v32 = [(CSDConversation *)v33 delegate];
-  [v32 conversationChanged:v33];
+  delegate = [(CSDConversation *)selfCopy delegate];
+  [delegate conversationChanged:selfCopy];
 
 LABEL_33:
 }
 
-- (void)updateMessagesGroupName:(id)a3
+- (void)updateMessagesGroupName:(id)name
 {
-  [(CSDConversation *)self setMessagesGroupName:a3];
-  v4 = [(CSDConversation *)self delegate];
-  [v4 conversationChanged:self];
+  [(CSDConversation *)self setMessagesGroupName:name];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)addPendingMembers:(id)a3 triggeredLocally:(BOOL)a4
+- (void)addPendingMembers:(id)members triggeredLocally:(BOOL)locally
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  locallyCopy = locally;
+  membersCopy = members;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v43 = v6;
+    v43 = membersCopy;
     v44 = 1024;
-    LODWORD(v45) = v4;
+    LODWORD(v45) = locallyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "add pendingMembers: %@ triggeredLocally: %d", buf, 0x12u);
   }
 
-  v9 = [(CSDConversation *)self pendingMembers];
-  v34 = [v9 mutableCopy];
+  pendingMembers = [(CSDConversation *)self pendingMembers];
+  v34 = [pendingMembers mutableCopy];
 
-  v10 = [(CSDConversation *)self pendingMemberHandles];
-  v36 = [v10 mutableCopy];
+  pendingMemberHandles = [(CSDConversation *)self pendingMemberHandles];
+  v36 = [pendingMemberHandles mutableCopy];
 
   v35 = +[NSMutableSet set];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = v6;
+  v11 = membersCopy;
   v12 = [v11 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v12)
   {
@@ -5471,42 +5471,42 @@ LABEL_33:
         }
 
         v16 = *(*(&v38 + 1) + 8 * i);
-        v17 = [v16 handle];
-        if (!v17)
+        handle = [v16 handle];
+        if (!handle)
         {
           goto LABEL_10;
         }
 
-        v18 = v17;
-        v19 = [(CSDConversation *)self pendingMemberHandles];
-        v20 = [v16 handle];
-        v21 = [v19 containsObject:v20];
+        v18 = handle;
+        pendingMemberHandles2 = [(CSDConversation *)self pendingMemberHandles];
+        handle2 = [v16 handle];
+        v21 = [pendingMemberHandles2 containsObject:handle2];
 
         if ((v21 & 1) == 0)
         {
           v25 = [TUConversationMember alloc];
-          v26 = [v16 handle];
-          v27 = [v16 nickname];
-          v28 = [v25 initWithHandle:v26 nickname:v27];
+          handle3 = [v16 handle];
+          nickname = [v16 nickname];
+          v28 = [v25 initWithHandle:handle3 nickname:nickname];
           [v35 addObject:v28];
 
-          v22 = [v16 handle];
-          [v36 addObject:v22];
+          handle4 = [v16 handle];
+          [v36 addObject:handle4];
         }
 
         else
         {
 LABEL_10:
-          v22 = sub_100004778();
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          handle4 = sub_100004778();
+          if (os_log_type_enabled(handle4, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [(CSDConversation *)self UUID];
-            v24 = [v16 handle];
+            uUID = [(CSDConversation *)self UUID];
+            handle5 = [v16 handle];
             *buf = 138412546;
-            v43 = v23;
+            v43 = uUID;
             v44 = 2112;
-            v45 = v24;
-            _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Conversation UUID %@ already contains pending member with handle %@, filtering out from addition list.", buf, 0x16u);
+            v45 = handle5;
+            _os_log_impl(&_mh_execute_header, handle4, OS_LOG_TYPE_DEFAULT, "Conversation UUID %@ already contains pending member with handle %@, filtering out from addition list.", buf, 0x16u);
           }
         }
       }
@@ -5527,23 +5527,23 @@ LABEL_10:
   if ([v35 count])
   {
     v31 = +[TUCallCenter sharedInstance];
-    v32 = [v31 queue];
+    queue2 = [v31 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000914E8;
     block[3] = &unk_100619D38;
     block[4] = self;
-    dispatch_async(v32, block);
+    dispatch_async(queue2, block);
   }
 
-  v33 = [(CSDConversation *)self delegate];
-  [v33 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (BOOL)shouldRespondToLetMeInRequestForMember:(id)a3
+- (BOOL)shouldRespondToLetMeInRequestForMember:(id)member
 {
-  v4 = a3;
-  if ([v4 isLightweightMember])
+  memberCopy = member;
+  if ([memberCopy isLightweightMember])
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -5560,9 +5560,9 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v9 = [(CSDConversation *)self pendingMemberHandles];
-  v10 = [v4 handle];
-  v11 = [v9 containsObject:v10];
+  pendingMemberHandles = [(CSDConversation *)self pendingMemberHandles];
+  handle = [memberCopy handle];
+  v11 = [pendingMemberHandles containsObject:handle];
 
   if ((v11 & 1) == 0)
   {
@@ -5572,11 +5572,11 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v14 = [(CSDConversation *)self pendingMemberHandles];
+    pendingMemberHandles2 = [(CSDConversation *)self pendingMemberHandles];
     v22 = 138412546;
-    v23 = v4;
+    v23 = memberCopy;
     v24 = 2112;
-    v25 = v14;
+    v25 = pendingMemberHandles2;
     v15 = "member: %@ is not in pendingMemberHandles: %@";
 LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v15, &v22, 0x16u);
@@ -5584,8 +5584,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v12 = [v4 handle];
-  v13 = [(CSDConversation *)self remoteMemberForHandle:v12];
+  handle2 = [memberCopy handle];
+  v13 = [(CSDConversation *)self remoteMemberForHandle:handle2];
 
   if (v13)
   {
@@ -5593,7 +5593,7 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v4;
+      v23 = memberCopy;
       v6 = "member: %@ is in remoteMemberForHandle";
       v7 = v5;
       v8 = 12;
@@ -5605,8 +5605,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v18 = [(CSDConversation *)self pendingRemoteMembers];
-  v19 = [v18 containsObject:v4];
+  pendingRemoteMembers = [(CSDConversation *)self pendingRemoteMembers];
+  v19 = [pendingRemoteMembers containsObject:memberCopy];
 
   if ((v19 & 1) == 0)
   {
@@ -5616,26 +5616,26 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v14 = [(CSDConversation *)self pendingRemoteMembers];
+    pendingMemberHandles2 = [(CSDConversation *)self pendingRemoteMembers];
     v22 = 138412546;
-    v23 = v4;
+    v23 = memberCopy;
     v24 = 2112;
-    v25 = v14;
+    v25 = pendingMemberHandles2;
     v15 = "member: %@ is not in pendingRemoteMembers: %@";
     goto LABEL_11;
   }
 
-  v20 = [(CSDConversation *)self pendingRemoteMembers];
-  [v20 removeObject:v4];
+  pendingRemoteMembers2 = [(CSDConversation *)self pendingRemoteMembers];
+  [pendingRemoteMembers2 removeObject:memberCopy];
 
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(CSDConversation *)self pendingRemoteMembers];
+    pendingRemoteMembers3 = [(CSDConversation *)self pendingRemoteMembers];
     v22 = 138412546;
-    v23 = v4;
+    v23 = memberCopy;
     v24 = 2112;
-    v25 = v21;
+    v25 = pendingRemoteMembers3;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Get matching memeber: %@ current pendingRemoteMembers: %@", &v22, 0x16u);
   }
 
@@ -5645,32 +5645,32 @@ LABEL_13:
   return v16;
 }
 
-- (void)removePendingMembers:(id)a3 triggeredLocally:(BOOL)a4
+- (void)removePendingMembers:(id)members triggeredLocally:(BOOL)locally
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  locallyCopy = locally;
+  membersCopy = members;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v39 = v6;
+    v39 = membersCopy;
     v40 = 1024;
-    LODWORD(v41) = v4;
+    LODWORD(v41) = locallyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "removePendingMembers: %@ triggeredLocally: %d", buf, 0x12u);
   }
 
-  v9 = [(CSDConversation *)self pendingMemberHandles];
-  v33 = [v9 mutableCopy];
+  pendingMemberHandles = [(CSDConversation *)self pendingMemberHandles];
+  v33 = [pendingMemberHandles mutableCopy];
 
   v10 = +[NSMutableSet set];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = v6;
+  v11 = membersCopy;
   v12 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v12)
   {
@@ -5689,34 +5689,34 @@ LABEL_13:
         }
 
         v17 = *(*(&v34 + 1) + 8 * v16);
-        v18 = [(CSDConversation *)self pendingMemberHandles];
-        v19 = [v17 handle];
-        v20 = [v18 containsObject:v19];
+        pendingMemberHandles2 = [(CSDConversation *)self pendingMemberHandles];
+        handle = [v17 handle];
+        v20 = [pendingMemberHandles2 containsObject:handle];
 
         if (v20)
         {
           v21 = [TUConversationMember alloc];
-          v22 = [v17 handle];
-          v23 = [v17 nickname];
-          v24 = [v21 initWithHandle:v22 nickname:v23];
+          handle2 = [v17 handle];
+          nickname = [v17 nickname];
+          v24 = [v21 initWithHandle:handle2 nickname:nickname];
           [v10 addObject:v24];
 
-          v25 = [v17 handle];
-          [v33 removeObject:v25];
+          handle3 = [v17 handle];
+          [v33 removeObject:handle3];
         }
 
         else
         {
-          v25 = sub_100004778();
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+          handle3 = sub_100004778();
+          if (os_log_type_enabled(handle3, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [(CSDConversation *)self UUID];
-            v27 = [v17 handle];
+            uUID = [(CSDConversation *)self UUID];
+            handle4 = [v17 handle];
             *buf = v32;
-            v39 = v26;
+            v39 = uUID;
             v40 = 2112;
-            v41 = v27;
-            _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Conversation with UUID %@ does not have pending member with handle %@, filtering out from removal list.", buf, 0x16u);
+            v41 = handle4;
+            _os_log_impl(&_mh_execute_header, handle3, OS_LOG_TYPE_DEFAULT, "Conversation with UUID %@ does not have pending member with handle %@, filtering out from removal list.", buf, 0x16u);
           }
         }
 
@@ -5730,8 +5730,8 @@ LABEL_13:
     while (v14);
   }
 
-  v28 = [(CSDConversation *)self pendingMembers];
-  v29 = [v28 mutableCopy];
+  pendingMembers = [(CSDConversation *)self pendingMembers];
+  v29 = [pendingMembers mutableCopy];
 
   [v29 minusSet:v10];
   v30 = [v29 copy];
@@ -5741,14 +5741,14 @@ LABEL_13:
   [(CSDConversation *)self setPendingMemberHandles:v31];
 }
 
-- (BOOL)setConversationLink:(id)a3 allowUpdate:(BOOL)a4
+- (BOOL)setConversationLink:(id)link allowUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CSDConversation *)self link];
-  if (v7)
+  updateCopy = update;
+  linkCopy = link;
+  link = [(CSDConversation *)self link];
+  if (link)
   {
-    v8 = v4;
+    v8 = updateCopy;
   }
 
   else
@@ -5758,60 +5758,60 @@ LABEL_13:
 
   if (v8)
   {
-    v9 = [(CSDConversation *)self link];
+    link2 = [(CSDConversation *)self link];
 
-    if (!v9 || !v4)
+    if (!link2 || !updateCopy)
     {
-      v21 = [v6 copy];
-      [(CSDConversation *)self setLink:v21];
+      invitedMemberHandles2 = [linkCopy copy];
+      [(CSDConversation *)self setLink:invitedMemberHandles2];
       goto LABEL_14;
     }
 
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CSDConversation *)self UUID];
-      v12 = [(CSDConversation *)self link];
-      v13 = [v6 linkName];
-      v14 = [v6 expirationDate];
-      v15 = [v6 invitedMemberHandles];
+      uUID = [(CSDConversation *)self UUID];
+      link3 = [(CSDConversation *)self link];
+      linkName = [linkCopy linkName];
+      expirationDate = [linkCopy expirationDate];
+      invitedMemberHandles = [linkCopy invitedMemberHandles];
       v24 = 138413314;
-      v25 = v11;
+      v25 = uUID;
       v26 = 2112;
-      v27 = v12;
+      v27 = link3;
       v28 = 2112;
-      v29 = v13;
+      v29 = linkName;
       v30 = 2112;
-      v31 = v14;
+      v31 = expirationDate;
       v32 = 2112;
-      v33 = v15;
+      v33 = invitedMemberHandles;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Link on conversation UUID %@ was already set to %@, but this setting allows for updates, setting the link name to %@, the expiration date to %@, and the invited handles to %@", &v24, 0x34u);
     }
 
-    v16 = [v6 linkName];
-    v17 = [(CSDConversation *)self link];
-    [v17 setLinkName:v16];
+    linkName2 = [linkCopy linkName];
+    link4 = [(CSDConversation *)self link];
+    [link4 setLinkName:linkName2];
 
-    v18 = [v6 expirationDate];
-    v19 = [v18 copy];
-    v20 = [(CSDConversation *)self link];
-    [v20 setExpirationDate:v19];
+    expirationDate2 = [linkCopy expirationDate];
+    v19 = [expirationDate2 copy];
+    link5 = [(CSDConversation *)self link];
+    [link5 setExpirationDate:v19];
 
-    v21 = [v6 invitedMemberHandles];
-    v22 = [(CSDConversation *)self link];
-    [v22 setInvitedMemberHandles:v21];
+    invitedMemberHandles2 = [linkCopy invitedMemberHandles];
+    link6 = [(CSDConversation *)self link];
+    [link6 setInvitedMemberHandles:invitedMemberHandles2];
     goto LABEL_12;
   }
 
-  v21 = sub_100004778();
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  invitedMemberHandles2 = sub_100004778();
+  if (os_log_type_enabled(invitedMemberHandles2, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(CSDConversation *)self link];
+    link6 = [(CSDConversation *)self link];
     v24 = 138412546;
-    v25 = v6;
+    v25 = linkCopy;
     v26 = 2112;
-    v27 = v22;
-    _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring new link %@ as conversation link already set to %@", &v24, 0x16u);
+    v27 = link6;
+    _os_log_impl(&_mh_execute_header, invitedMemberHandles2, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring new link %@ as conversation link already set to %@", &v24, 0x16u);
 LABEL_12:
   }
 
@@ -5820,57 +5820,57 @@ LABEL_14:
   return v8;
 }
 
-- (void)addScreenSharingRequest:(id)a3
+- (void)addScreenSharingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self screenSharingRequestsByUUID];
-  v7 = [v4 UUID];
-  [v6 setObject:v4 forKeyedSubscript:v7];
+  screenSharingRequestsByUUID = [(CSDConversation *)self screenSharingRequestsByUUID];
+  uUID = [requestCopy UUID];
+  [screenSharingRequestsByUUID setObject:requestCopy forKeyedSubscript:uUID];
 
-  v8 = [(CSDConversation *)self delegate];
-  [v8 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)removeScreenSharingRequest:(id)a3
+- (void)removeScreenSharingRequest:(id)request
 {
-  v11 = a3;
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  requestCopy = request;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDConversation *)self screenSharingRequests];
-  v6 = [v5 containsObject:v11];
+  screenSharingRequests = [(CSDConversation *)self screenSharingRequests];
+  v6 = [screenSharingRequests containsObject:requestCopy];
 
   if (v6)
   {
-    v7 = [(CSDConversation *)self screenSharingRequestsByUUID];
-    v8 = [v11 UUID];
-    [v7 setObject:0 forKeyedSubscript:v8];
+    screenSharingRequestsByUUID = [(CSDConversation *)self screenSharingRequestsByUUID];
+    uUID = [requestCopy UUID];
+    [screenSharingRequestsByUUID setObject:0 forKeyedSubscript:uUID];
 
-    v9 = [(CSDConversation *)self delegate];
-    [v9 conversation:self removedScreenShareRequest:v11];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self removedScreenShareRequest:requestCopy];
 
-    v10 = [(CSDConversation *)self delegate];
-    [v10 conversationChanged:self];
+    delegate2 = [(CSDConversation *)self delegate];
+    [delegate2 conversationChanged:self];
   }
 }
 
 - (void)fulfillLocalScreenShareRequests
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[NSMutableSet set];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(CSDConversation *)self screenSharingRequestsByUUID];
-  v6 = [v5 allKeys];
+  screenSharingRequestsByUUID = [(CSDConversation *)self screenSharingRequestsByUUID];
+  allKeys = [screenSharingRequestsByUUID allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5882,12 +5882,12 @@ LABEL_14:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v28 + 1) + 8 * v10);
-        v12 = [(CSDConversation *)self screenSharingRequestsByUUID];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        screenSharingRequestsByUUID2 = [(CSDConversation *)self screenSharingRequestsByUUID];
+        v13 = [screenSharingRequestsByUUID2 objectForKeyedSubscript:v11];
 
         if ([v13 type] == 4)
         {
@@ -5898,7 +5898,7 @@ LABEL_14:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v8);
@@ -5925,9 +5925,9 @@ LABEL_14:
         }
 
         v19 = *(*(&v24 + 1) + 8 * v18);
-        v20 = [(CSDConversation *)self screenSharingRequestsByUUID];
-        v21 = [v19 UUID];
-        [v20 setObject:0 forKeyedSubscript:v21];
+        screenSharingRequestsByUUID3 = [(CSDConversation *)self screenSharingRequestsByUUID];
+        uUID = [v19 UUID];
+        [screenSharingRequestsByUUID3 setObject:0 forKeyedSubscript:uUID];
 
         v18 = v18 + 1;
       }
@@ -5949,26 +5949,26 @@ LABEL_14:
 
   if ([v14 count])
   {
-    v23 = [(CSDConversation *)self delegate];
-    [v23 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
   }
 }
 
-- (void)fulfillPendingScreenSharingRequestsForRemoteParticipant:(id)a3
+- (void)fulfillPendingScreenSharingRequestsForRemoteParticipant:(id)participant
 {
-  v28 = a3;
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  participantCopy = participant;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = +[NSMutableSet set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [(CSDConversation *)self screenSharingRequestsByUUID];
-  v7 = [v6 allKeys];
+  screenSharingRequestsByUUID = [(CSDConversation *)self screenSharingRequestsByUUID];
+  allKeys = [screenSharingRequestsByUUID allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v33 objects:v40 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5980,18 +5980,18 @@ LABEL_14:
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v33 + 1) + 8 * v11);
-        v13 = [(CSDConversation *)self screenSharingRequestsByUUID];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        screenSharingRequestsByUUID2 = [(CSDConversation *)self screenSharingRequestsByUUID];
+        v14 = [screenSharingRequestsByUUID2 objectForKeyedSubscript:v12];
 
         if ([v14 type] == 1)
         {
-          v15 = [v14 handle];
-          v16 = [v28 handle];
-          v17 = [v15 isEqualToHandle:v16];
+          handle = [v14 handle];
+          handle2 = [participantCopy handle];
+          v17 = [handle isEqualToHandle:handle2];
 
           if (v17)
           {
@@ -6003,7 +6003,7 @@ LABEL_14:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v33 objects:v40 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v33 objects:v40 count:16];
     }
 
     while (v9);
@@ -6030,9 +6030,9 @@ LABEL_14:
         }
 
         v23 = *(*(&v29 + 1) + 8 * v22);
-        v24 = [(CSDConversation *)self screenSharingRequestsByUUID];
-        v25 = [v23 UUID];
-        [v24 setObject:0 forKeyedSubscript:v25];
+        screenSharingRequestsByUUID3 = [(CSDConversation *)self screenSharingRequestsByUUID];
+        uUID = [v23 UUID];
+        [screenSharingRequestsByUUID3 setObject:0 forKeyedSubscript:uUID];
 
         v22 = v22 + 1;
       }
@@ -6054,105 +6054,105 @@ LABEL_14:
 
   if ([v18 count])
   {
-    v27 = [(CSDConversation *)self delegate];
-    [v27 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
   }
 }
 
-- (void)leaveActivitySessionWithUUID:(id)a3
+- (void)leaveActivitySessionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "leaveActivitySessionWithUUID: %@", &v8, 0xCu);
   }
 
   if ([(CSDConversation *)self _expanseEnabled])
   {
-    v7 = [(CSDConversation *)self activitySessionManager];
-    [v7 leaveActivitySessionWithUUID:v4];
+    activitySessionManager = [(CSDConversation *)self activitySessionManager];
+    [activitySessionManager leaveActivitySessionWithUUID:dCopy];
   }
 
   else
   {
-    v7 = sub_100004778();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    activitySessionManager = sub_100004778();
+    if (os_log_type_enabled(activitySessionManager, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v8) = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WARN] Dropping request to remove activitySession because Expanse features are disabled. Please enable the expanseEnabled feature flag in TelephonyUtilities.", &v8, 2u);
+      _os_log_impl(&_mh_execute_header, activitySessionManager, OS_LOG_TYPE_DEFAULT, "[WARN] Dropping request to remove activitySession because Expanse features are disabled. Please enable the expanseEnabled feature flag in TelephonyUtilities.", &v8, 2u);
     }
   }
 }
 
-- (void)presentDismissalAlertForActivitySessionWithUUID:(id)a3
+- (void)presentDismissalAlertForActivitySessionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Finding activitySession with UUID: %@ to present dismissal alert", buf, 0xCu);
   }
 
-  v7 = [(CSDConversation *)self activitySessionManager];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000928AC;
   v9[3] = &unk_10061A650;
-  v10 = v4;
-  v8 = v4;
-  [v7 presentSessionDismissalAlertForActivitySessionUUID:v8 allowingCancellation:1 completionHandler:v9];
+  v10 = dCopy;
+  v8 = dCopy;
+  [activitySessionManager presentSessionDismissalAlertForActivitySessionUUID:v8 allowingCancellation:1 completionHandler:v9];
 }
 
-- (void)removeActivitySessionWithUUID:(id)a3 usingTerminatingHandle:(id)a4
+- (void)removeActivitySessionWithUUID:(id)d usingTerminatingHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  handleCopy = handle;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "removeActivitySessionWithUUID: %@", &v11, 0xCu);
   }
 
   if ([(CSDConversation *)self _expanseEnabled])
   {
-    v10 = [(CSDConversation *)self activitySessionManager];
-    [v10 removeActivitySessionWithUUID:v6 usingHandle:v7];
+    activitySessionManager = [(CSDConversation *)self activitySessionManager];
+    [activitySessionManager removeActivitySessionWithUUID:dCopy usingHandle:handleCopy];
   }
 
   else
   {
-    v10 = sub_100004778();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    activitySessionManager = sub_100004778();
+    if (os_log_type_enabled(activitySessionManager, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v11) = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[WARN] Dropping request to remove activitySession because Expanse features are disabled. Please enable the expanseEnabled feature flag in TelephonyUtilities.", &v11, 2u);
+      _os_log_impl(&_mh_execute_header, activitySessionManager, OS_LOG_TYPE_DEFAULT, "[WARN] Dropping request to remove activitySession because Expanse features are disabled. Please enable the expanseEnabled feature flag in TelephonyUtilities.", &v11, 2u);
     }
   }
 }
 
-- (void)_launchApplicationDueToActivityCreation:(id)a3
+- (void)_launchApplicationDueToActivityCreation:(id)creation
 {
-  v4 = a3;
-  v5 = [v4 activity];
-  v6 = [v5 isScreenSharingActivity];
+  creationCopy = creation;
+  activity = [creationCopy activity];
+  isScreenSharingActivity = [activity isScreenSharingActivity];
 
-  if (v6)
+  if (isScreenSharingActivity)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -6161,50 +6161,50 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Not launching screen sharing app", buf, 2u);
     }
 
-    v8 = [(CSDConversation *)self audioRoutePolicyManager];
-    v9 = [v8 sharePlaySupported];
+    audioRoutePolicyManager = [(CSDConversation *)self audioRoutePolicyManager];
+    sharePlaySupported = [audioRoutePolicyManager sharePlaySupported];
 
-    if ((v9 & 1) == 0)
+    if ((sharePlaySupported & 1) == 0)
     {
-      v10 = [v4 activity];
+      activity2 = [creationCopy activity];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_100092C0C;
       v11[3] = &unk_100619D38;
       v11[4] = self;
-      [(CSDConversation *)self postUserNotificationForUnsupportedScreenSharingActivity:v10 alternateReponseHandler:v11];
+      [(CSDConversation *)self postUserNotificationForUnsupportedScreenSharingActivity:activity2 alternateReponseHandler:v11];
     }
   }
 
   else
   {
-    [(CSDConversation *)self _launchApplicationForActivityIfNecessary:v4];
+    [(CSDConversation *)self _launchApplicationForActivityIfNecessary:creationCopy];
   }
 }
 
-- (id)createActivitySession:(id)a3 isAutoStartedStagedActivity:(BOOL)a4
+- (id)createActivitySession:(id)session isAutoStartedStagedActivity:(BOOL)activity
 {
-  v5 = a3;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  sessionCopy = session;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v43 = 138412290;
-    v44 = v5;
+    v44 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "activitySession: %@", &v43, 0xCu);
   }
 
   if (TUSharePlayForceDisabled())
   {
-    v8 = sub_100004778();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    activity = sub_100004778();
+    if (os_log_type_enabled(activity, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v43) = 0;
       v9 = "[WARN] Dropping new activitySession because Expanse features are disabled. Please upgrade to a later release to re-enable Expanse features.";
 LABEL_17:
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v43, 2u);
+      _os_log_impl(&_mh_execute_header, activity, OS_LOG_TYPE_DEFAULT, v9, &v43, 2u);
       goto LABEL_18;
     }
 
@@ -6213,8 +6213,8 @@ LABEL_17:
 
   if (![(CSDConversation *)self _expanseEnabled])
   {
-    v8 = sub_100004778();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    activity = sub_100004778();
+    if (os_log_type_enabled(activity, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v43) = 0;
       v9 = "[WARN] Dropping new activitySession because Expanse features are disabled. Please enable the expanseEnabled feature flag in TelephonyUtilities.";
@@ -6226,10 +6226,10 @@ LABEL_18:
     goto LABEL_51;
   }
 
-  v8 = [v5 activity];
-  v10 = [(CSDConversation *)self serverBag];
-  v11 = [v8 activityIdentifier];
-  v12 = [v10 localBundleIDForActivityIdentifier:v11];
+  activity = [sessionCopy activity];
+  serverBag = [(CSDConversation *)self serverBag];
+  activityIdentifier = [activity activityIdentifier];
+  v12 = [serverBag localBundleIDForActivityIdentifier:activityIdentifier];
 
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -6241,21 +6241,21 @@ LABEL_18:
 
   if (v12)
   {
-    [v8 setBundleIdentifier:v12];
+    [activity setBundleIdentifier:v12];
   }
 
-  if ([v8 isScreenSharingActivity])
+  if ([activity isScreenSharingActivity])
   {
-    v14 = [v8 applicationContext];
-    v15 = [CSDScreenSharingActivityManager screenShareAttributesFromApplicationContext:v14];
-    [v8 setScreenShareAttributes:v15];
+    applicationContext = [activity applicationContext];
+    v15 = [CSDScreenSharingActivityManager screenShareAttributesFromApplicationContext:applicationContext];
+    [activity setScreenShareAttributes:v15];
   }
 
-  v16 = [v8 trustedFromHandle];
-  if (v16)
+  trustedFromHandle = [activity trustedFromHandle];
+  if (trustedFromHandle)
   {
-    v17 = [v8 trustedFromHandle];
-    v18 = [(CSDConversation *)self memberWithHandle:v17];
+    trustedFromHandle2 = [activity trustedFromHandle];
+    v18 = [(CSDConversation *)self memberWithHandle:trustedFromHandle2];
   }
 
   else
@@ -6263,7 +6263,7 @@ LABEL_18:
     v18 = 0;
   }
 
-  v20 = [v18 association];
+  association = [v18 association];
   if (v18)
   {
     if ([v18 isLightweightMember] && objc_msgSend(v18, "isValidated") && (objc_msgSend(v18, "lightweightPrimary"), v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
@@ -6271,97 +6271,97 @@ LABEL_18:
       v22 = sub_100004778();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v8 trustedFromHandle];
-        v24 = [v18 lightweightPrimary];
+        trustedFromHandle3 = [activity trustedFromHandle];
+        lightweightPrimary = [v18 lightweightPrimary];
         v43 = 138412802;
-        v44 = v23;
+        v44 = trustedFromHandle3;
         v45 = 2112;
         v46 = v18;
         v47 = 2112;
-        v48 = v24;
+        v48 = lightweightPrimary;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Attempting to create Activity with trustedFromHandle: %@ on trusted lightweight member: %@. Overriding to lightweightPrimary. %@", &v43, 0x20u);
       }
 
-      v25 = [v18 lightweightPrimary];
-      v26 = [v25 copy];
-      [v8 setTrustedFromHandle:v26];
+      lightweightPrimary2 = [v18 lightweightPrimary];
+      handle3 = [lightweightPrimary2 copy];
+      [activity setTrustedFromHandle:handle3];
     }
 
     else
     {
-      if (!v20 || ([v20 isPrimary] & 1) != 0 || objc_msgSend(v20, "type") != 2)
+      if (!association || ([association isPrimary] & 1) != 0 || objc_msgSend(association, "type") != 2)
       {
         goto LABEL_34;
       }
 
-      v27 = [v20 handle];
-      v25 = [(CSDConversation *)self memberWithHandle:v27];
+      handle = [association handle];
+      lightweightPrimary2 = [(CSDConversation *)self memberWithHandle:handle];
 
       v28 = sub_100004778();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v8 trustedFromHandle];
-        v30 = [v25 handle];
+        trustedFromHandle4 = [activity trustedFromHandle];
+        handle2 = [lightweightPrimary2 handle];
         v43 = 138412802;
-        v44 = v29;
+        v44 = trustedFromHandle4;
         v45 = 2112;
-        v46 = v25;
+        v46 = lightweightPrimary2;
         v47 = 2112;
-        v48 = v30;
+        v48 = handle2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Attempting to create Activity with trustedFromHandle: %@ on trusted associated member: %@. Overriding to associated member. %@", &v43, 0x20u);
       }
 
-      v26 = [v25 handle];
-      v31 = [v26 copy];
-      [v8 setTrustedFromHandle:v31];
+      handle3 = [lightweightPrimary2 handle];
+      v31 = [handle3 copy];
+      [activity setTrustedFromHandle:v31];
     }
   }
 
 LABEL_34:
-  v32 = [(CSDConversation *)self localMember];
-  if ([v32 isLightweightMember])
+  localMember = [(CSDConversation *)self localMember];
+  if ([localMember isLightweightMember])
   {
-    v33 = [v32 lightweightPrimary];
-    if (v33)
+    lightweightPrimary3 = [localMember lightweightPrimary];
+    if (lightweightPrimary3)
     {
-      v34 = [v8 originator];
-      [v5 setIsLightweightPrimaryInitiated:{objc_msgSend(v34, "isEquivalentToHandle:", v33)}];
+      originator = [activity originator];
+      [sessionCopy setIsLightweightPrimaryInitiated:{objc_msgSend(originator, "isEquivalentToHandle:", lightweightPrimary3)}];
     }
 
     else
     {
-      [v5 setIsLightweightPrimaryInitiated:0];
+      [sessionCopy setIsLightweightPrimaryInitiated:0];
     }
   }
 
   v35 = sub_100004778();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [v5 isLightweightPrimaryInitiated];
+    isLightweightPrimaryInitiated = [sessionCopy isLightweightPrimaryInitiated];
     v43 = 67109120;
-    LODWORD(v44) = v36;
+    LODWORD(v44) = isLightweightPrimaryInitiated;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "isLightweightPrimaryInitiated: %d", &v43, 8u);
   }
 
-  v37 = [(CSDConversation *)self activitySessionManager];
-  v19 = [v37 createActivitySessionWithTuActivitySession:v5];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  v19 = [activitySessionManager createActivitySessionWithTuActivitySession:sessionCopy];
 
   if (v19)
   {
-    if (([v8 isSystemActivity]& 1) == 0)
+    if (([activity isSystemActivity]& 1) == 0)
     {
       [(CSDConversation *)self setStagedActivitySession:0];
     }
 
     [(CSDConversation *)self _registerPluginsIfNecessary];
-    if ([v5 isLocallyInitiated])
+    if ([sessionCopy isLocallyInitiated])
     {
       v38 = sub_100004778();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [v19 tuConversationActivitySession];
+        tuConversationActivitySession = [v19 tuConversationActivitySession];
         v43 = 138412290;
-        v44 = v39;
+        v44 = tuConversationActivitySession;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Not launching app for locally started activity %@", &v43, 0xCu);
       }
     }
@@ -6371,11 +6371,11 @@ LABEL_34:
       [(CSDConversation *)self _launchApplicationDueToActivityCreation:v19];
     }
 
-    v40 = [(CSDConversation *)self activitySessionManager];
-    v41 = [v19 tuConversationActivitySession];
-    [(CSDConversation *)self activitySessionManager:v40 activitySessionChanged:v41];
+    activitySessionManager2 = [(CSDConversation *)self activitySessionManager];
+    tuConversationActivitySession2 = [v19 tuConversationActivitySession];
+    [(CSDConversation *)self activitySessionManager:activitySessionManager2 activitySessionChanged:tuConversationActivitySession2];
 
-    [(CSDConversation *)self postSharePlayActivityDidChangeNotificationIfNecessary:v5];
+    [(CSDConversation *)self postSharePlayActivityDidChangeNotificationIfNecessary:sessionCopy];
   }
 
 LABEL_51:
@@ -6383,29 +6383,29 @@ LABEL_51:
   return v19;
 }
 
-- (void)resetActivitySessionSceneAssociationsForBundleID:(id)a3
+- (void)resetActivitySessionSceneAssociationsForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self activitySessionManager];
-  [v5 resetSceneAssociationsForBundleID:v4];
+  dCopy = d;
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  [activitySessionManager resetSceneAssociationsForBundleID:dCopy];
 }
 
-- (id)createStagedActivitySessionForActivity:(id)a3
+- (id)createStagedActivitySessionForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  activityCopy = activity;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v4;
+    v21 = activityCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Asked to create staged activitySession for activity: %@", &v20, 0xCu);
   }
 
-  v7 = [(CSDConversation *)self activitySessions];
-  v8 = [v7 count];
+  activitySessions = [(CSDConversation *)self activitySessions];
+  v8 = [activitySessions count];
 
   if (v8)
   {
@@ -6422,20 +6422,20 @@ LABEL_51:
   else
   {
     v11 = +[IDSCurrentServerTime sharedInstance];
-    v12 = [v11 currentServerTimeDate];
+    currentServerTimeDate = [v11 currentServerTimeDate];
 
-    [v4 setTimestamp:v12];
-    v13 = [v4 metadata];
-    [v13 saveImageToDisk];
+    [activityCopy setTimestamp:currentServerTimeDate];
+    metadata = [activityCopy metadata];
+    [metadata saveImageToDisk];
 
-    v14 = [[TUConversationActivitySession alloc] initWithActivity:v4 locallyInitiated:1 timestamp:v12 isFirstJoin:1];
-    if ([v4 startWhenStaged])
+    v14 = [[TUConversationActivitySession alloc] initWithActivity:activityCopy locallyInitiated:1 timestamp:currentServerTimeDate isFirstJoin:1];
+    if ([activityCopy startWhenStaged])
     {
       v15 = sub_100004778();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v4;
+        v21 = activityCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Skipping staging activity %@", &v20, 0xCu);
       }
 
@@ -6452,8 +6452,8 @@ LABEL_51:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Successfully created staged activitySession: %@", &v20, 0xCu);
       }
 
-      v18 = [(CSDConversation *)self delegate];
-      [v18 conversationChanged:self];
+      delegate = [(CSDConversation *)self delegate];
+      [delegate conversationChanged:self];
     }
 
     v9 = v14;
@@ -6464,22 +6464,22 @@ LABEL_51:
   return v10;
 }
 
-- (BOOL)setStagedActivitySessionForActivitySession:(id)a3
+- (BOOL)setStagedActivitySessionForActivitySession:(id)session
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Attempting to set staged activitySession: %@", &v16, 0xCu);
   }
 
-  v7 = [(CSDConversation *)self activitySessions];
-  v8 = [v7 count];
+  activitySessions = [(CSDConversation *)self activitySessions];
+  v8 = [activitySessions count];
 
   if (v8)
   {
@@ -6493,10 +6493,10 @@ LABEL_51:
 
   else
   {
-    v10 = [(CSDConversation *)self serverBag];
-    v11 = [v4 activity];
-    v12 = [v11 activityIdentifier];
-    v9 = [v10 localBundleIDForActivityIdentifier:v12];
+    serverBag = [(CSDConversation *)self serverBag];
+    activity = [sessionCopy activity];
+    activityIdentifier = [activity activityIdentifier];
+    v9 = [serverBag localBundleIDForActivityIdentifier:activityIdentifier];
 
     v13 = sub_100004778();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -6508,11 +6508,11 @@ LABEL_51:
 
     if (v9)
     {
-      v14 = [v4 activity];
-      [v14 setBundleIdentifier:v9];
+      activity2 = [sessionCopy activity];
+      [activity2 setBundleIdentifier:v9];
     }
 
-    [(CSDConversation *)self setStagedActivitySession:v4];
+    [(CSDConversation *)self setStagedActivitySession:sessionCopy];
   }
 
   return v8 == 0;
@@ -6533,8 +6533,8 @@ LABEL_51:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v3 = [(CSDConversation *)self activitySessions];
-    v4 = [v3 countByEnumeratingWithState:&v16 objects:v26 count:16];
+    activitySessions = [(CSDConversation *)self activitySessions];
+    v4 = [activitySessions countByEnumeratingWithState:&v16 objects:v26 count:16];
     if (v4)
     {
       v6 = v4;
@@ -6547,34 +6547,34 @@ LABEL_51:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(activitySessions);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [v9 activity];
-          v11 = [v10 trustedFromHandle];
+          activity = [v9 activity];
+          trustedFromHandle = [activity trustedFromHandle];
 
-          if (v11 && ![(CSDConversation *)self containsMemberWithHandle:v11])
+          if (trustedFromHandle && ![(CSDConversation *)self containsMemberWithHandle:trustedFromHandle])
           {
             v12 = sub_100004778();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
-              v14 = [v9 identifier];
+              identifier = [v9 identifier];
               *buf = v15;
-              v21 = v11;
+              v21 = trustedFromHandle;
               v22 = 2112;
-              v23 = v14;
+              v23 = identifier;
               v24 = 2112;
-              v25 = self;
+              selfCopy = self;
               _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Trusted from handle %@ not found in membership list for activitySession ID: %@ on conversation %@", buf, 0x20u);
             }
 
-            v13 = [v9 identifier];
-            [(CSDConversation *)self removeActivitySessionWithUUID:v13 usingTerminatingHandle:v11];
+            identifier2 = [v9 identifier];
+            [(CSDConversation *)self removeActivitySessionWithUUID:identifier2 usingTerminatingHandle:trustedFromHandle];
           }
         }
 
-        v6 = [v3 countByEnumeratingWithState:&v16 objects:v26 count:16];
+        v6 = [activitySessions countByEnumeratingWithState:&v16 objects:v26 count:16];
       }
 
       while (v6);
@@ -6582,15 +6582,15 @@ LABEL_51:
   }
 }
 
-- (void)_launchApplicationsForActivitiesIfNecessary:(BOOL)a3
+- (void)_launchApplicationsForActivitiesIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   obj = [(CSDConversation *)self activitySessions];
   if ([obj count])
   {
-    v5 = [(CSDConversation *)self isScreening];
+    isScreening = [(CSDConversation *)self isScreening];
 
-    if (v5)
+    if (isScreening)
     {
       return;
     }
@@ -6599,20 +6599,20 @@ LABEL_51:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(CSDConversation *)self activitySessions];
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    activitySessions = [(CSDConversation *)self activitySessions];
+    v7 = [activitySessions countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (!v7)
     {
-      v9 = v6;
+      v9 = activitySessions;
       goto LABEL_19;
     }
 
     v8 = v7;
-    v19 = self;
-    v20 = v3;
+    selfCopy = self;
+    v20 = necessaryCopy;
     v9 = 0;
     v10 = *v24;
-    obja = v6;
+    obja = activitySessions;
     do
     {
       for (i = 0; i != v8; i = i + 1)
@@ -6628,11 +6628,11 @@ LABEL_51:
           goto LABEL_10;
         }
 
-        v13 = [*(*(&v23 + 1) + 8 * i) tuConversationActivitySession];
-        v14 = [v13 timestamp];
-        v15 = [v9 tuConversationActivitySession];
-        v16 = [v15 timestamp];
-        v17 = [v14 compare:v16];
+        tuConversationActivitySession = [*(*(&v23 + 1) + 8 * i) tuConversationActivitySession];
+        timestamp = [tuConversationActivitySession timestamp];
+        tuConversationActivitySession2 = [v9 tuConversationActivitySession];
+        timestamp2 = [tuConversationActivitySession2 timestamp];
+        v17 = [timestamp compare:timestamp2];
 
         if (v17 == 1)
         {
@@ -6650,7 +6650,7 @@ LABEL_10:
 
     if (v9)
     {
-      [(CSDConversation *)v19 _launchApplicationForActivityIfNecessary:v9 shouldForeground:v20];
+      [(CSDConversation *)selfCopy _launchApplicationForActivityIfNecessary:v9 shouldForeground:v20];
 LABEL_19:
     }
   }
@@ -6660,104 +6660,104 @@ LABEL_19:
   }
 }
 
-- (void)_launchApplicationForActivityIfNecessary:(id)a3
+- (void)_launchApplicationForActivityIfNecessary:(id)necessary
 {
-  v4 = a3;
-  [(CSDConversation *)self _launchApplicationForActivityIfNecessary:v4 shouldForeground:TUShouldForegroundLaunchForActivity()];
+  necessaryCopy = necessary;
+  [(CSDConversation *)self _launchApplicationForActivityIfNecessary:necessaryCopy shouldForeground:TUShouldForegroundLaunchForActivity()];
 }
 
-- (void)_launchApplicationForActivityIfNecessary:(id)a3 shouldForeground:(BOOL)a4
+- (void)_launchApplicationForActivityIfNecessary:(id)necessary shouldForeground:(BOOL)foreground
 {
-  v5 = a3;
+  necessaryCopy = necessary;
   if ([(CSDConversation *)self state]== 3)
   {
-    v6 = [(CSDConversation *)self sharePlaySystemStateObserver];
-    v7 = [v6 allowSharePlay];
+    sharePlaySystemStateObserver = [(CSDConversation *)self sharePlaySystemStateObserver];
+    allowSharePlay = [sharePlaySystemStateObserver allowSharePlay];
 
-    if (v7)
+    if (allowSharePlay)
     {
-      v8 = [v5 tuConversationActivitySession];
-      v9 = [v8 activity];
-      v10 = [v9 applicationContext];
+      tuConversationActivitySession = [necessaryCopy tuConversationActivitySession];
+      activity = [tuConversationActivitySession activity];
+      applicationContext = [activity applicationContext];
 
-      if (!v10)
+      if (!applicationContext)
       {
         v11 = sub_100004778();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v9 UUID];
+          uUID = [activity UUID];
           *buf = 138412290;
-          v39 = v14;
+          v39 = uUID;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[WARN] Activity with identifier %@ is missing application context.", buf, 0xCu);
         }
 
         goto LABEL_21;
       }
 
-      if ([v9 isStaticActivity])
+      if ([activity isStaticActivity])
       {
         v11 = sub_100004778();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v39 = v8;
+          v39 = tuConversationActivitySession;
           v12 = "Not launching app for static activity: %@";
 LABEL_20:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, buf, 0xCu);
         }
       }
 
-      else if ([v9 isSupported])
+      else if ([activity isSupported])
       {
-        v15 = [v8 state];
-        if ((v15 - 2) >= 3)
+        state = [tuConversationActivitySession state];
+        if ((state - 2) >= 3)
         {
-          if (v15 != 1)
+          if (state != 1)
           {
-            v16 = [(CSDConversation *)self applicationLaunchPolicyManager];
-            v17 = [(CSDConversation *)self tuConversation];
-            if ([v16 shouldAutoLaunchAppForActivity:v9 onConversation:v17])
+            applicationLaunchPolicyManager = [(CSDConversation *)self applicationLaunchPolicyManager];
+            tuConversation = [(CSDConversation *)self tuConversation];
+            if ([applicationLaunchPolicyManager shouldAutoLaunchAppForActivity:activity onConversation:tuConversation])
             {
-              v18 = [(CSDConversation *)self audioRoutePolicyManager];
-              v19 = [v18 sharePlaySupported];
+              audioRoutePolicyManager = [(CSDConversation *)self audioRoutePolicyManager];
+              sharePlaySupported = [audioRoutePolicyManager sharePlaySupported];
             }
 
             else
             {
-              v19 = 0;
+              sharePlaySupported = 0;
             }
 
             v20 = sub_100004778();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v9 bundleIdentifier];
-              v22 = [(CSDConversation *)self UUID];
-              v23 = v22;
+              bundleIdentifier = [activity bundleIdentifier];
+              uUID2 = [(CSDConversation *)self UUID];
+              v23 = uUID2;
               v24 = @"NO";
               *buf = 138412802;
-              v39 = v21;
+              v39 = bundleIdentifier;
               v40 = 2112;
-              if (v19)
+              if (sharePlaySupported)
               {
                 v24 = @"YES";
               }
 
-              v41 = v22;
+              v41 = uUID2;
               v42 = 2112;
               v43 = v24;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Request to launch %@ for conversation with UUID: %@ allowing auto-launch: %@", buf, 0x20u);
             }
 
-            if (v19)
+            if (sharePlaySupported)
             {
               v35[0] = _NSConcreteStackBlock;
               v35[1] = 3221225472;
               v35[2] = sub_10009435C;
               v35[3] = &unk_10061A6A0;
               v35[4] = self;
-              v25 = v5;
+              v25 = necessaryCopy;
               v36 = v25;
-              v37 = v8;
+              v37 = tuConversationActivitySession;
               v26 = objc_retainBlock(v35);
               v27 = sub_100004778();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -6767,8 +6767,8 @@ LABEL_20:
               }
 
               [v25 permitJoin];
-              v28 = [(CSDConversation *)self activitySessionManager];
-              v29 = [v28 applicationLauncher];
+              activitySessionManager = [(CSDConversation *)self activitySessionManager];
+              applicationLauncher = [activitySessionManager applicationLauncher];
               v32[0] = _NSConcreteStackBlock;
               v32[1] = 3221225472;
               v32[2] = sub_1000944B4;
@@ -6776,14 +6776,14 @@ LABEL_20:
               v33 = v25;
               v34 = v26;
               v30 = v26;
-              [v29 launchAppForActivitySession:v33 options:1 completion:v32];
+              [applicationLauncher launchAppForActivitySession:v33 options:1 completion:v32];
             }
 
             else
             {
-              [CSDAnalyticsReporter sendManualLaunchNeededEventWithActivitySession:v8];
-              v31 = [(CSDConversation *)self delegate];
-              [v31 conversation:self appLaunchState:1 forActivitySession:v8];
+              [CSDAnalyticsReporter sendManualLaunchNeededEventWithActivitySession:tuConversationActivitySession];
+              delegate = [(CSDConversation *)self delegate];
+              [delegate conversation:self appLaunchState:1 forActivitySession:tuConversationActivitySession];
             }
 
             goto LABEL_22;
@@ -6793,7 +6793,7 @@ LABEL_20:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v39 = v8;
+            v39 = tuConversationActivitySession;
             v12 = "Not launching app as the activitySession has already been joined: %@";
             goto LABEL_20;
           }
@@ -6805,7 +6805,7 @@ LABEL_20:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v39 = v8;
+            v39 = tuConversationActivitySession;
             v12 = "Not launching app as we are not in an eligible activitySession state: %@";
             goto LABEL_20;
           }
@@ -6818,7 +6818,7 @@ LABEL_20:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v39 = v8;
+          v39 = tuConversationActivitySession;
           v12 = "Not launching app for unsupported activity: %@";
           goto LABEL_20;
         }
@@ -6830,8 +6830,8 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v8 = sub_100004778();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    tuConversationActivitySession = sub_100004778();
+    if (os_log_type_enabled(tuConversationActivitySession, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v13 = "Not launching app as SharePlay is not allowed";
@@ -6841,13 +6841,13 @@ LABEL_22:
 
   else
   {
-    v8 = sub_100004778();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    tuConversationActivitySession = sub_100004778();
+    if (os_log_type_enabled(tuConversationActivitySession, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v13 = "Not launching app as we are not joined into this conversation";
 LABEL_11:
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
+      _os_log_impl(&_mh_execute_header, tuConversationActivitySession, OS_LOG_TYPE_DEFAULT, v13, buf, 2u);
     }
   }
 
@@ -6856,33 +6856,33 @@ LABEL_23:
 
 - (NSSet)activitySessions
 {
-  v2 = [(CSDConversation *)self activitySessionManager];
-  v3 = [v2 activitySessions];
-  v4 = [v3 copy];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  activitySessions = [activitySessionManager activitySessions];
+  v4 = [activitySessions copy];
 
   return v4;
 }
 
 - (NSSet)tuActivitySessions
 {
-  v2 = [(CSDConversation *)self activitySessionManager];
-  v3 = [v2 tuActivitySessions];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  tuActivitySessions = [activitySessionManager tuActivitySessions];
 
-  return v3;
+  return tuActivitySessions;
 }
 
 - (id)tuSystemActivitySessions
 {
-  v2 = [(CSDConversation *)self activitySessionManager];
-  v3 = [v2 tuSystemActivitySessions];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  tuSystemActivitySessions = [activitySessionManager tuSystemActivitySessions];
 
-  return v3;
+  return tuSystemActivitySessions;
 }
 
 - (CGSize)localPortraitAspectRatio
 {
-  v2 = [CUTWeakLinkClass() mainDisplay];
-  [v2 bounds];
+  mainDisplay = [CUTWeakLinkClass() mainDisplay];
+  [mainDisplay bounds];
   if (v3 <= v4)
   {
     v5 = v3;
@@ -6920,8 +6920,8 @@ LABEL_23:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(CSDConversation *)self activitySessions];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  activitySessions = [(CSDConversation *)self activitySessions];
+  v4 = [activitySessions countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v6 = v4;
@@ -6934,17 +6934,17 @@ LABEL_23:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activitySessions);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 activity];
-        if ([v10 isScreenSharingActivity])
+        activity = [v9 activity];
+        if ([activity isScreenSharingActivity])
         {
-          v11 = [v9 tuConversationActivitySession];
-          v12 = [v11 isLocallyInitiated];
+          tuConversationActivitySession = [v9 tuConversationActivitySession];
+          isLocallyInitiated = [tuConversationActivitySession isLocallyInitiated];
 
-          if (!v12)
+          if (!isLocallyInitiated)
           {
             continue;
           }
@@ -6957,34 +6957,34 @@ LABEL_23:
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Found locally initiated screen sharing activity session %@, ending session", buf, 0xCu);
           }
 
-          v10 = [v9 identifier];
-          [(CSDConversation *)self removeActivitySessionWithUUID:v10 usingTerminatingHandle:0];
+          activity = [v9 identifier];
+          [(CSDConversation *)self removeActivitySessionWithUUID:activity usingTerminatingHandle:0];
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [activitySessions countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)_joinIsDisallowedByGreenTeaWithContext:(id)a3
+- (BOOL)_joinIsDisallowedByGreenTeaWithContext:(id)context
 {
-  v5 = a3;
-  v6 = [(CSDConversation *)self featureFlags];
-  if (TUGreenTeaLagunaEnabled() && ![v5 avMode])
+  contextCopy = context;
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if (TUGreenTeaLagunaEnabled() && ![contextCopy avMode])
   {
-    v3 = [v5 presentationMode];
+    presentationMode = [contextCopy presentationMode];
 
-    if (v3 == 2)
+    if (presentationMode == 2)
     {
       v16 = sub_100004778();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(CSDConversation *)self tuConversation];
-        v18 = [v17 mergedRemoteMembers];
-        v19 = [v18 count];
+        tuConversation = [(CSDConversation *)self tuConversation];
+        mergedRemoteMembers = [tuConversation mergedRemoteMembers];
+        v19 = [mergedRemoteMembers count];
         v20 = @"NO";
         if (v19 > 1)
         {
@@ -6996,9 +6996,9 @@ LABEL_23:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Returning Join Disallowed for Green Tea Laguna Conversation: %@", &v23, 0xCu);
       }
 
-      v7 = [(CSDConversation *)self tuConversation];
-      v21 = [v7 mergedRemoteMembers];
-      v14 = [v21 count] > 1;
+      tuConversation2 = [(CSDConversation *)self tuConversation];
+      mergedRemoteMembers2 = [tuConversation2 mergedRemoteMembers];
+      v14 = [mergedRemoteMembers2 count] > 1;
 
       goto LABEL_26;
     }
@@ -7008,15 +7008,15 @@ LABEL_23:
   {
   }
 
-  v7 = sub_100004778();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  tuConversation2 = sub_100004778();
+  if (os_log_type_enabled(tuConversation2, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CSDConversation *)self isVideo];
-    if ((v8 & 1) != 0 || ([v5 provider], v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "isDefaultProvider") & 1) == 0))
+    isVideo = [(CSDConversation *)self isVideo];
+    if ((isVideo & 1) != 0 || ([contextCopy provider], presentationMode = objc_claimAutoreleasedReturnValue(), (objc_msgSend(presentationMode, "isDefaultProvider") & 1) == 0))
     {
-      v11 = v8 ^ 1;
-      v8 = [(CSDConversation *)self remoteMembers];
-      v12 = [v8 count];
+      v11 = isVideo ^ 1;
+      isVideo = [(CSDConversation *)self remoteMembers];
+      v12 = [isVideo count];
       v10 = @"NO";
       if (v12 > 1)
       {
@@ -7035,7 +7035,7 @@ LABEL_23:
 
     v23 = 138412290;
     v24 = v10;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Returning Join Disallowed for Green Tea Conversation: %@", &v23, 0xCu);
+    _os_log_impl(&_mh_execute_header, tuConversation2, OS_LOG_TYPE_DEFAULT, "Returning Join Disallowed for Green Tea Conversation: %@", &v23, 0xCu);
     if (v9)
     {
     }
@@ -7045,13 +7045,13 @@ LABEL_23:
     }
   }
 
-  v13 = [(CSDConversation *)self isVideo];
-  if ((v13 & 1) != 0 || ([v5 provider], v7 = objc_claimAutoreleasedReturnValue(), (-[NSObject isDefaultProvider](v7, "isDefaultProvider") & 1) == 0))
+  isVideo2 = [(CSDConversation *)self isVideo];
+  if ((isVideo2 & 1) != 0 || ([contextCopy provider], tuConversation2 = objc_claimAutoreleasedReturnValue(), (-[NSObject isDefaultProvider](tuConversation2, "isDefaultProvider") & 1) == 0))
   {
-    v15 = [(CSDConversation *)self remoteMembers];
-    v14 = [v15 count] > 1;
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    v14 = [remoteMembers count] > 1;
 
-    if (v13)
+    if (isVideo2)
     {
       goto LABEL_27;
     }
@@ -7068,51 +7068,51 @@ LABEL_27:
   return v14;
 }
 
-- (void)joinUsingContext:(id)a3
+- (void)joinUsingContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  contextCopy = context;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v109 = self;
+    selfCopy = self;
     v110 = 2112;
-    v111 = v4;
+    v111 = contextCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Joining CSDConversation self: %@ context: %@", buf, 0x16u);
   }
 
-  v7 = [v4 participantCluster];
+  participantCluster = [contextCopy participantCluster];
   localParticipantCluster = self->_localParticipantCluster;
-  self->_localParticipantCluster = v7;
+  self->_localParticipantCluster = participantCluster;
 
-  v9 = [(CSDConversation *)self serverBag];
-  -[CSDConversation setRebroadcastTimeThreshold:](self, "setRebroadcastTimeThreshold:", [v9 rebroadcastTimeThreshold]);
+  serverBag = [(CSDConversation *)self serverBag];
+  -[CSDConversation setRebroadcastTimeThreshold:](self, "setRebroadcastTimeThreshold:", [serverBag rebroadcastTimeThreshold]);
 
   [(CSDConversation *)self setFailureContext:0];
-  v10 = [(CSDConversation *)self delegate];
-  v11 = [(CSDConversation *)self messagesGroupUUID];
-  [v4 setMessagesGroupUUID:v11];
+  delegate = [(CSDConversation *)self delegate];
+  messagesGroupUUID = [(CSDConversation *)self messagesGroupUUID];
+  [contextCopy setMessagesGroupUUID:messagesGroupUUID];
 
-  v12 = [(CSDConversation *)self messagesGroupName];
-  [v4 setMessagesGroupName:v12];
+  messagesGroupName = [(CSDConversation *)self messagesGroupName];
+  [contextCopy setMessagesGroupName:messagesGroupName];
 
   if (!+[TUConversationManager allowsVideo])
   {
 LABEL_6:
-    [v4 setVideoEnabled:0];
+    [contextCopy setVideoEnabled:0];
     goto LABEL_8;
   }
 
-  v13 = [(CSDConversation *)self featureFlags];
-  if ([v13 groupFacetimeAsAServiceEnabled])
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags groupFacetimeAsAServiceEnabled])
   {
-    v14 = [v4 provider];
-    v15 = [v14 supportsVideo];
+    provider = [contextCopy provider];
+    supportsVideo = [provider supportsVideo];
 
-    if (v15)
+    if (supportsVideo)
     {
       goto LABEL_8;
     }
@@ -7122,25 +7122,25 @@ LABEL_6:
 
 LABEL_8:
   v16 = +[CSDMomentsController localCapabilities];
-  [v4 setMomentsAvailable:{objc_msgSend(v16, "isEnabled")}];
+  [contextCopy setMomentsAvailable:{objc_msgSend(v16, "isEnabled")}];
 
-  [v4 setPersonaAvailable:TUIsPersonaAvailable()];
-  v17 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  [v4 setInitiator:{objc_msgSend(v17, "count") == 0}];
+  [contextCopy setPersonaAvailable:TUIsPersonaAvailable()];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  [contextCopy setInitiator:{objc_msgSend(activeRemoteParticipantsByIdentifier, "count") == 0}];
 
-  v18 = [(CSDConversation *)self featureFlags];
-  v19 = [v18 avLessSharePlayEnabled];
+  featureFlags2 = [(CSDConversation *)self featureFlags];
+  avLessSharePlayEnabled = [featureFlags2 avLessSharePlayEnabled];
 
-  if (v19)
+  if (avLessSharePlayEnabled)
   {
-    -[CSDConversation setAvMode:](self, "setAvMode:", [v4 avMode]);
+    -[CSDConversation setAvMode:](self, "setAvMode:", [contextCopy avMode]);
     if ([(CSDConversation *)self avMode])
     {
-      -[CSDConversation setVideo:](self, "setVideo:", [v4 avMode] == 2);
+      -[CSDConversation setVideo:](self, "setVideo:", [contextCopy avMode] == 2);
     }
 
-    -[CSDConversation setPresentationMode:](self, "setPresentationMode:", [v4 presentationMode]);
-    if (![v4 avMode] && objc_msgSend(v4, "isVideo"))
+    -[CSDConversation setPresentationMode:](self, "setPresentationMode:", [contextCopy presentationMode]);
+    if (![contextCopy avMode] && objc_msgSend(contextCopy, "isVideo"))
     {
       v20 = sub_100004778();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -7149,7 +7149,7 @@ LABEL_8:
       }
     }
 
-    if ([v4 avMode] && objc_msgSend(v4, "presentationMode"))
+    if ([contextCopy avMode] && objc_msgSend(contextCopy, "presentationMode"))
     {
       v21 = sub_100004778();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -7158,7 +7158,7 @@ LABEL_8:
       }
     }
 
-    if (![v4 avMode] && !objc_msgSend(v4, "presentationMode"))
+    if (![contextCopy avMode] && !objc_msgSend(contextCopy, "presentationMode"))
     {
       v22 = sub_100004778();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -7170,35 +7170,35 @@ LABEL_8:
 
   else
   {
-    -[CSDConversation setVideo:](self, "setVideo:", [v4 isVideo]);
+    -[CSDConversation setVideo:](self, "setVideo:", [contextCopy isVideo]);
   }
 
-  v23 = [(CSDConversation *)self featureFlags];
-  if ([v23 usesModernScreenSharingFromMessages])
+  featureFlags3 = [(CSDConversation *)self featureFlags];
+  if ([featureFlags3 usesModernScreenSharingFromMessages])
   {
-    v24 = [v4 screenSharingRequest];
+    screenSharingRequest = [contextCopy screenSharingRequest];
 
-    if (!v24)
+    if (!screenSharingRequest)
     {
       goto LABEL_31;
     }
 
-    v23 = [v4 screenSharingRequest];
-    v25 = [(CSDConversation *)self screenSharingRequestsByUUID];
-    v26 = [v4 screenSharingRequest];
-    v27 = [v26 UUID];
-    [v25 setObject:v23 forKeyedSubscript:v27];
+    featureFlags3 = [contextCopy screenSharingRequest];
+    screenSharingRequestsByUUID = [(CSDConversation *)self screenSharingRequestsByUUID];
+    screenSharingRequest2 = [contextCopy screenSharingRequest];
+    uUID = [screenSharingRequest2 UUID];
+    [screenSharingRequestsByUUID setObject:featureFlags3 forKeyedSubscript:uUID];
   }
 
 LABEL_31:
-  self->_spatialPersonaEnabled = [v4 isSpatialPersonaEnabled];
-  v28 = [(CSDConversation *)self localMember];
-  [v4 setLightweight:{objc_msgSend(v28, "isLightweightMember")}];
+  self->_spatialPersonaEnabled = [contextCopy isSpatialPersonaEnabled];
+  localMember = [(CSDConversation *)self localMember];
+  [contextCopy setLightweight:{objc_msgSend(localMember, "isLightweightMember")}];
 
-  v29 = [(CSDConversation *)self deviceSupport];
-  if ([v29 isGreenTea])
+  deviceSupport = [(CSDConversation *)self deviceSupport];
+  if ([deviceSupport isGreenTea])
   {
-    v30 = [(CSDConversation *)self _joinIsDisallowedByGreenTeaWithContext:v4];
+    v30 = [(CSDConversation *)self _joinIsDisallowedByGreenTeaWithContext:contextCopy];
 
     if (v30)
     {
@@ -7217,62 +7217,62 @@ LABEL_31:
   {
   }
 
-  v32 = [(CSDConversation *)self invitationPreferences];
-  if ([(NSSet *)v32 count])
+  invitationPreferences = [(CSDConversation *)self invitationPreferences];
+  if ([(NSSet *)invitationPreferences count])
   {
     goto LABEL_41;
   }
 
-  v33 = [v4 invitationPreferences];
-  if (![v33 count] || -[CSDConversation hasJoined](self, "hasJoined"))
+  invitationPreferences2 = [contextCopy invitationPreferences];
+  if (![invitationPreferences2 count] || -[CSDConversation hasJoined](self, "hasJoined"))
   {
 
 LABEL_41:
     goto LABEL_42;
   }
 
-  v60 = [(CSDConversation *)self isLocallyCreated];
+  isLocallyCreated = [(CSDConversation *)self isLocallyCreated];
 
-  if (v60)
+  if (isLocallyCreated)
   {
     v61 = sub_100004778();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
     {
-      v62 = [v4 invitationPreferences];
+      invitationPreferences3 = [contextCopy invitationPreferences];
       *buf = 138412290;
-      v109 = v62;
+      selfCopy = invitationPreferences3;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "Copying invitation preferences to locally-created conversation from join context: %@", buf, 0xCu);
     }
 
-    v63 = [v4 invitationPreferences];
-    v64 = [v63 copy];
+    invitationPreferences4 = [contextCopy invitationPreferences];
+    v64 = [invitationPreferences4 copy];
     [(CSDConversation *)self setInvitationPreferences:v64];
 
-    v32 = [(CSDConversation *)self featureFlags];
-    if (![(NSSet *)v32 nearbyFaceTimeEnabled])
+    invitationPreferences = [(CSDConversation *)self featureFlags];
+    if (![(NSSet *)invitationPreferences nearbyFaceTimeEnabled])
     {
       goto LABEL_41;
     }
 
-    v65 = [(CSDConversation *)self invitationPreferences];
+    invitationPreferences5 = [(CSDConversation *)self invitationPreferences];
     v66 = +[TUConversationInvitationPreference nearbyInvitationPreferences];
-    v67 = [v65 isEqualToSet:v66];
+    v67 = [invitationPreferences5 isEqualToSet:v66];
 
     if (v67)
     {
       v68 = [NSSet setWithObject:IDSRegistrationPropertySupportsNearbyFaceTime];
       [(CSDConversation *)self addRequiredCapabilities:v68 requiredLackOfCapabilities:0];
 
-      v69 = [v4 participantCluster];
+      participantCluster2 = [contextCopy participantCluster];
 
-      if (v69)
+      if (participantCluster2)
       {
         v104 = 0u;
         v105 = 0u;
         v102 = 0u;
         v103 = 0u;
-        v32 = self->_remoteMembers;
-        v70 = [(NSSet *)v32 countByEnumeratingWithState:&v102 objects:v107 count:16];
+        invitationPreferences = self->_remoteMembers;
+        v70 = [(NSSet *)invitationPreferences countByEnumeratingWithState:&v102 objects:v107 count:16];
         if (v70)
         {
           v71 = v70;
@@ -7283,15 +7283,15 @@ LABEL_41:
             {
               if (*v103 != v72)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(invitationPreferences);
               }
 
               v74 = *(*(&v102 + 1) + 8 * i);
-              v75 = [v4 participantCluster];
-              [v74 setProposedParticipantCluster:v75];
+              participantCluster3 = [contextCopy participantCluster];
+              [v74 setProposedParticipantCluster:participantCluster3];
             }
 
-            v71 = [(NSSet *)v32 countByEnumeratingWithState:&v102 objects:v107 count:16];
+            v71 = [(NSSet *)invitationPreferences countByEnumeratingWithState:&v102 objects:v107 count:16];
           }
 
           while (v71);
@@ -7303,20 +7303,20 @@ LABEL_41:
   }
 
 LABEL_42:
-  self->_isNearbySharePlay = [v4 isNearbySharePlay];
-  if ([v4 isLightweight])
+  self->_isNearbySharePlay = [contextCopy isNearbySharePlay];
+  if ([contextCopy isLightweight])
   {
     v34 = sub_100004778();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [(CSDConversation *)self localMember];
+      localMember2 = [(CSDConversation *)self localMember];
       *buf = 138412290;
-      v109 = v35;
+      selfCopy = localMember2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Bypassing AVCSession creation because localMember is lightweight %@", buf, 0xCu);
     }
 
     [(CSDConversation *)self setState:2];
-    [(CSDConversation *)self _startIDSSessionWithContext:v4];
+    [(CSDConversation *)self _startIDSSessionWithContext:contextCopy];
     goto LABEL_112;
   }
 
@@ -7325,24 +7325,24 @@ LABEL_42:
     v38 = sub_100004778();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(CSDConversation *)self idsSession];
-      v40 = [v39 idsDestination];
+      idsSession = [(CSDConversation *)self idsSession];
+      idsDestination = [idsSession idsDestination];
       *buf = 138412290;
-      v109 = v40;
+      selfCopy = idsDestination;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Creating CSDAVCSession with transport token %@", buf, 0xCu);
     }
 
-    v41 = [(CSDConversation *)self isOneToOneModeEnabled];
-    v42 = [(CSDConversation *)self featureFlags];
-    if (([v42 conversationHandoffEnabled] & 1) == 0)
+    isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
+    featureFlags4 = [(CSDConversation *)self featureFlags];
+    if (([featureFlags4 conversationHandoffEnabled] & 1) == 0)
     {
 
       goto LABEL_89;
     }
 
-    v43 = [v4 participantAssociation];
+    participantAssociation = [contextCopy participantAssociation];
 
-    if (!v43)
+    if (!participantAssociation)
     {
       goto LABEL_89;
     }
@@ -7351,16 +7351,16 @@ LABEL_42:
     v101 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v44 = [(CSDConversation *)self activeRemoteParticipants];
-    v45 = [v44 countByEnumeratingWithState:&v98 objects:v106 count:16];
+    activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+    v45 = [activeRemoteParticipants countByEnumeratingWithState:&v98 objects:v106 count:16];
     v46 = v45 != 0;
     if (v45)
     {
       v47 = v45;
       v94 = v45 != 0;
-      v95 = v41;
-      v96 = v10;
-      v97 = self;
+      v95 = isOneToOneModeEnabled;
+      v96 = delegate;
+      selfCopy2 = self;
       v48 = 0;
       v49 = *v99;
       do
@@ -7369,26 +7369,26 @@ LABEL_42:
         {
           if (*v99 != v49)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(activeRemoteParticipants);
           }
 
           v51 = *(*(&v98 + 1) + 8 * j);
-          v52 = [v51 identifier];
-          v53 = [v4 participantAssociation];
-          v54 = [v53 identifier];
+          identifier = [v51 identifier];
+          participantAssociation2 = [contextCopy participantAssociation];
+          identifier2 = [participantAssociation2 identifier];
 
-          if (v52 == v54)
+          if (identifier == identifier2)
           {
-            v55 = [v51 avcIdentifier];
-            v56 = [v55 copy];
-            v57 = [v4 participantAssociation];
-            [v57 setAvcIdentifier:v56];
+            avcIdentifier = [v51 avcIdentifier];
+            v56 = [avcIdentifier copy];
+            participantAssociation3 = [contextCopy participantAssociation];
+            [participantAssociation3 setAvcIdentifier:v56];
 
             v48 = 1;
           }
         }
 
-        v47 = [v44 countByEnumeratingWithState:&v98 objects:v106 count:16];
+        v47 = [activeRemoteParticipants countByEnumeratingWithState:&v98 objects:v106 count:16];
       }
 
       while (v47);
@@ -7396,9 +7396,9 @@ LABEL_42:
       if ((v48 & 1) == 0)
       {
         v46 = 0;
-        v10 = v96;
-        self = v97;
-        v41 = v95;
+        delegate = v96;
+        self = selfCopy2;
+        isOneToOneModeEnabled = v95;
         if (!v95)
         {
           goto LABEL_89;
@@ -7407,22 +7407,22 @@ LABEL_42:
         goto LABEL_115;
       }
 
-      v44 = [v4 participantAssociation];
-      self = v97;
-      [(CSDConversation *)v97 setLocalParticipantAssociation:v44];
-      v10 = v96;
+      activeRemoteParticipants = [contextCopy participantAssociation];
+      self = selfCopy2;
+      [(CSDConversation *)selfCopy2 setLocalParticipantAssociation:activeRemoteParticipants];
+      delegate = v96;
       v46 = v94;
-      v41 = v95;
+      isOneToOneModeEnabled = v95;
     }
 
-    if (!v41)
+    if (!isOneToOneModeEnabled)
     {
       goto LABEL_89;
     }
 
 LABEL_115:
-    v90 = [(CSDConversation *)self activeRemoteParticipants];
-    v91 = [v90 count];
+    activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
+    v91 = [activeRemoteParticipants2 count];
 
     v92 = !v46;
     if (v91 < 2)
@@ -7432,7 +7432,7 @@ LABEL_115:
 
     if (v92)
     {
-      v41 = 1;
+      isOneToOneModeEnabled = 1;
     }
 
     else
@@ -7444,38 +7444,38 @@ LABEL_115:
         _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "This device is joining a U+1 FaceTime call to complete a handoff from a different participant, setting oneToOneModeEnabled to NO.", buf, 2u);
       }
 
-      [v4 setOneToOneModeEnabled:0];
-      v41 = 0;
+      [contextCopy setOneToOneModeEnabled:0];
+      isOneToOneModeEnabled = 0;
     }
 
 LABEL_89:
-    v76 = [(CSDConversation *)self featureFlags];
-    v77 = [v76 conversationOneToOneModeEnabled];
+    featureFlags5 = [(CSDConversation *)self featureFlags];
+    conversationOneToOneModeEnabled = [featureFlags5 conversationOneToOneModeEnabled];
 
-    if (v77)
+    if (conversationOneToOneModeEnabled)
     {
       [(CSDConversation *)self updateLocalAspectRatios];
     }
 
-    v78 = [(CSDConversation *)self featureFlags];
-    v79 = [v78 uplevelFTAEnabled];
+    featureFlags6 = [(CSDConversation *)self featureFlags];
+    uplevelFTAEnabled = [featureFlags6 uplevelFTAEnabled];
 
-    if (v79)
+    if (uplevelFTAEnabled)
     {
-      -[CSDConversation setIsUpgradeToVideo:](self, "setIsUpgradeToVideo:", [v4 isUpgradeToVideo]);
+      -[CSDConversation setIsUpgradeToVideo:](self, "setIsUpgradeToVideo:", [contextCopy isUpgradeToVideo]);
     }
 
     if ([(CSDConversation *)self avMode])
     {
-      -[CSDConversation setVideoEnabled:](self, "setVideoEnabled:", [v4 isVideoEnabled]);
+      -[CSDConversation setVideoEnabled:](self, "setVideoEnabled:", [contextCopy isVideoEnabled]);
     }
 
-    v80 = [(CSDConversation *)self setupNewAVCSession:v41];
+    v80 = [(CSDConversation *)self setupNewAVCSession:isOneToOneModeEnabled];
     [(CSDConversation *)self setAvcSession:v80];
 
-    v81 = [(CSDConversation *)self avcSession];
-    v82 = [(CSDConversation *)self localParticipantCluster];
-    [v81 setLocalParticipantCluster:v82];
+    avcSession = [(CSDConversation *)self avcSession];
+    localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+    [avcSession setLocalParticipantCluster:localParticipantCluster];
 
     [(CSDConversation *)self _recomputeAudioStates];
     [(CSDConversation *)self setAvcSessionInProgress:0];
@@ -7483,11 +7483,11 @@ LABEL_89:
     [(CSDConversation *)self setExpectedVideoEnabled:0];
     [(CSDConversation *)self setExpectedVideoPaused:0];
     [(CSDConversation *)self setExpectedScreenEnabled:0];
-    v83 = [(CSDConversation *)self avcSession];
+    avcSession2 = [(CSDConversation *)self avcSession];
 
     v84 = sub_100004778();
     v85 = v84;
-    if (!v83)
+    if (!avcSession2)
     {
       if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
       {
@@ -7500,25 +7500,25 @@ LABEL_89:
 
     if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
     {
-      v86 = [(CSDConversation *)self avcSession];
+      avcSession3 = [(CSDConversation *)self avcSession];
       *buf = 138412290;
-      v109 = v86;
+      selfCopy = avcSession3;
       _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "Created CSDAVCSession %@", buf, 0xCu);
     }
 
-    if ([v4 wantsStagingArea])
+    if ([contextCopy wantsStagingArea])
     {
       [(CSDConversation *)self setState:1];
-      if ([v4 representsTransitionFromPending])
+      if ([contextCopy representsTransitionFromPending])
       {
-        -[CSDConversation setVideoEnabled:](self, "setVideoEnabled:", [v4 isVideoEnabled]);
+        -[CSDConversation setVideoEnabled:](self, "setVideoEnabled:", [contextCopy isVideoEnabled]);
       }
 
-      v87 = sub_100004778();
-      if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
+      participantAssociation4 = sub_100004778();
+      if (os_log_type_enabled(participantAssociation4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "Not joining IDS group session because wantsStagingArea is true, instead moving to preparing state", buf, 2u);
+        _os_log_impl(&_mh_execute_header, participantAssociation4, OS_LOG_TYPE_DEFAULT, "Not joining IDS group session because wantsStagingArea is true, instead moving to preparing state", buf, 2u);
       }
 
       goto LABEL_111;
@@ -7536,22 +7536,22 @@ LABEL_89:
   {
     if ([(CSDConversation *)self avMode])
     {
-      v36 = [(CSDConversation *)self featureFlags];
-      if ([v36 conversationHandoffEnabled])
+      featureFlags7 = [(CSDConversation *)self featureFlags];
+      if ([featureFlags7 conversationHandoffEnabled])
       {
-        v37 = [(CSDConversation *)self localParticipantAssociation];
+        localParticipantAssociation = [(CSDConversation *)self localParticipantAssociation];
 
-        if (!v37)
+        if (!localParticipantAssociation)
         {
 LABEL_53:
-          -[CSDConversation setVideoEnabled:](self, "setVideoEnabled:", [v4 isVideoEnabled]);
+          -[CSDConversation setVideoEnabled:](self, "setVideoEnabled:", [contextCopy isVideoEnabled]);
 LABEL_107:
-          -[CSDConversation setVideoPaused:](self, "setVideoPaused:", [v4 isVideoPaused]);
+          -[CSDConversation setVideoPaused:](self, "setVideoPaused:", [contextCopy isVideoPaused]);
           goto LABEL_108;
         }
 
-        v36 = [(CSDConversation *)self localParticipantAssociation];
-        [v4 setParticipantAssociation:v36];
+        featureFlags7 = [(CSDConversation *)self localParticipantAssociation];
+        [contextCopy setParticipantAssociation:featureFlags7];
       }
 
       goto LABEL_53;
@@ -7559,30 +7559,30 @@ LABEL_107:
 
 LABEL_108:
     [(CSDConversation *)self setState:2];
-    [(CSDConversation *)self _startIDSSessionWithContext:v4];
-    v88 = [(CSDConversation *)self featureFlags];
-    v89 = [v88 avLessSharePlayEnabled];
+    [(CSDConversation *)self _startIDSSessionWithContext:contextCopy];
+    featureFlags8 = [(CSDConversation *)self featureFlags];
+    avLessSharePlayEnabled2 = [featureFlags8 avLessSharePlayEnabled];
 
-    if (v89)
+    if (avLessSharePlayEnabled2)
     {
-      -[CSDConversation setAvMode:](self, "setAvMode:", [v4 avMode]);
+      -[CSDConversation setAvMode:](self, "setAvMode:", [contextCopy avMode]);
     }
 
-    v87 = [v4 participantAssociation];
-    [(CSDConversation *)self continueHandoffAudioRouteForIdentifier:[v87 identifier] participantLeft:0];
+    participantAssociation4 = [contextCopy participantAssociation];
+    [(CSDConversation *)self continueHandoffAudioRouteForIdentifier:[participantAssociation4 identifier] participantLeft:0];
 LABEL_111:
 
 LABEL_112:
-    [v10 conversationChanged:self];
+    [delegate conversationChanged:self];
     goto LABEL_113;
   }
 
   v58 = sub_100004778();
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [(CSDConversation *)self UUID];
+    uUID2 = [(CSDConversation *)self UUID];
     *buf = 138412290;
-    v109 = v59;
+    selfCopy = uUID2;
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "[WARN] Not joining conversation because it isn't waiting or preparing: %@", buf, 0xCu);
   }
 
@@ -7591,24 +7591,24 @@ LABEL_113:
 
 - (void)updateLocalParticipantInfo
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self localParticipantBlobTracker];
-  [v4 invalidateLocalParticipantBlobWantsDeliveryOverPush:0];
+  localParticipantBlobTracker = [(CSDConversation *)self localParticipantBlobTracker];
+  [localParticipantBlobTracker invalidateLocalParticipantBlobWantsDeliveryOverPush:0];
 }
 
 - (void)broadcastLocalParticipantData
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
+  avcSession = [(CSDConversation *)self avcSession];
 
-  if (v4)
+  if (avcSession)
   {
-    v7 = [(CSDConversation *)self localParticipantBlobTracker];
-    [v7 invalidateLocalParticipantBlobWantsDeliveryOverPush:1];
+    localParticipantBlobTracker = [(CSDConversation *)self localParticipantBlobTracker];
+    [localParticipantBlobTracker invalidateLocalParticipantBlobWantsDeliveryOverPush:1];
   }
 
   else
@@ -7616,9 +7616,9 @@ LABEL_113:
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CSDConversation *)self UUID];
+      uUID = [(CSDConversation *)self UUID];
       *buf = 138412290;
-      v9 = v6;
+      v9 = uUID;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[WARN] Not sending local participant data, no AVCSession: %@", buf, 0xCu);
     }
   }
@@ -7626,21 +7626,21 @@ LABEL_113:
 
 - (void)startAudio
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     v10 = 138413058;
-    v11 = v5;
+    v11 = uUID;
     v12 = 1024;
-    v13 = [(CSDConversation *)self isAudioReady];
+    isAudioReady = [(CSDConversation *)self isAudioReady];
     v14 = 1024;
-    v15 = [(CSDConversation *)self isAudioPaused];
+    isAudioPaused = [(CSDConversation *)self isAudioPaused];
     v16 = 1024;
-    v17 = [(CSDConversation *)self isAudioEnabled];
+    isAudioEnabled = [(CSDConversation *)self isAudioEnabled];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Requested to mark conversation as audioReady UUID: %@ audioReady: %d audioPaused: %d audioEnabled: %d", &v10, 0x1Eu);
   }
 
@@ -7649,8 +7649,8 @@ LABEL_113:
   {
     if ([(CSDConversation *)self state]== 2 || [(CSDConversation *)self state]== 3)
     {
-      v6 = [(CSDConversation *)self avcSession];
-      [v6 setAudioReady:1];
+      avcSession = [(CSDConversation *)self avcSession];
+      [avcSession setAudioReady:1];
 
       [(CSDConversation *)self _startAVCSessionIfNecessary];
       return;
@@ -7659,9 +7659,9 @@ LABEL_113:
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CSDConversation *)self UUID];
+      uUID2 = [(CSDConversation *)self UUID];
       v10 = 138412290;
-      v11 = v8;
+      v11 = uUID2;
       v9 = "[WARN] Not starting audio for conversation because it isn't joining/joined: %@";
       goto LABEL_11;
     }
@@ -7672,9 +7672,9 @@ LABEL_113:
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CSDConversation *)self UUID];
+      uUID2 = [(CSDConversation *)self UUID];
       v10 = 138412290;
-      v11 = v8;
+      v11 = uUID2;
       v9 = "[WARN] Not starting audio for conversation because avmode is .none %@";
 LABEL_11:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v9, &v10, 0xCu);
@@ -7688,35 +7688,35 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CSDConversation *)self activeRemoteParticipants];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v3 = [activeRemoteParticipants countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
     v5 = *v11;
-    v6 = 1;
+    supportsLeaveContext = 1;
     do
     {
       for (i = 0; i != v4; i = i + 1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
-        if (v6)
+        if (supportsLeaveContext)
         {
-          v8 = [*(*(&v10 + 1) + 8 * i) capabilities];
-          v6 = [v8 supportsLeaveContext];
+          capabilities = [*(*(&v10 + 1) + 8 * i) capabilities];
+          supportsLeaveContext = [capabilities supportsLeaveContext];
         }
 
         else
         {
-          v6 = 0;
+          supportsLeaveContext = 0;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [activeRemoteParticipants countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -7724,50 +7724,50 @@ LABEL_11:
 
   else
   {
-    v6 = 1;
+    supportsLeaveContext = 1;
   }
 
-  return v6;
+  return supportsLeaveContext;
 }
 
-- (void)leaveWithReason:(unint64_t)a3
+- (void)leaveWithReason:(unint64_t)reason
 {
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [[CSDConversationLeaveContext alloc] initWithLeaveReason:a3];
+  v6 = [[CSDConversationLeaveContext alloc] initWithLeaveReason:reason];
   [(CSDConversation *)self leaveUsingContext:v6];
 }
 
-- (void)leaveUsingContext:(id)a3
+- (void)leaveUsingContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  contextCopy = context;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     *buf = 138412290;
-    v62 = v7;
+    v62 = uUID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "leaveUsingContext: self UUID: %@", buf, 0xCu);
   }
 
   [(CSDConversation *)self setUplinkMuted:1];
   [(CSDConversation *)self setAudioEnabled:0];
   [(CSDConversation *)self setVideoEnabled:0];
-  v8 = [(CSDConversation *)self delegate];
-  v9 = [(CSDConversation *)self tuConversation];
-  v10 = [v9 mergedActiveRemoteParticipants];
+  delegate = [(CSDConversation *)self delegate];
+  tuConversation = [(CSDConversation *)self tuConversation];
+  mergedActiveRemoteParticipants = [tuConversation mergedActiveRemoteParticipants];
 
-  v11 = [(CSDConversation *)self tuConversation];
-  v12 = [v11 mergedRemoteMembers];
+  tuConversation2 = [(CSDConversation *)self tuConversation];
+  mergedRemoteMembers = [tuConversation2 mergedRemoteMembers];
 
   if ([(CSDConversation *)self state]== 2 || [(CSDConversation *)self state]== 3)
   {
-    v48 = v4;
-    v13 = v10;
+    v48 = contextCopy;
+    v13 = mergedActiveRemoteParticipants;
     [(CSDConversation *)self setState:4];
     [(CSDConversation *)self _beginTimeoutForLeavingConversationWithReason:@"Calling [CSDConversation leave]"];
     [(CSDConversation *)self setUplinkMuted:1];
@@ -7775,8 +7775,8 @@ LABEL_11:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v14 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-    v15 = [v14 countByEnumeratingWithState:&v55 objects:v60 count:16];
+    activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+    v15 = [activeRemoteParticipantsByIdentifier countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v15)
     {
       v16 = v15;
@@ -7787,15 +7787,15 @@ LABEL_11:
         {
           if (*v56 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(activeRemoteParticipantsByIdentifier);
           }
 
           v19 = *(*(&v55 + 1) + 8 * i);
-          v20 = [(CSDConversation *)self avcSession];
-          [v20 setDownlinkMuted:1 forParticipantWithIdentifier:{objc_msgSend(v19, "unsignedLongLongValue")}];
+          avcSession = [(CSDConversation *)self avcSession];
+          [avcSession setDownlinkMuted:1 forParticipantWithIdentifier:{objc_msgSend(v19, "unsignedLongLongValue")}];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v16 = [activeRemoteParticipantsByIdentifier countByEnumeratingWithState:&v55 objects:v60 count:16];
       }
 
       while (v16);
@@ -7805,19 +7805,19 @@ LABEL_11:
     v21 = sub_100004778();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CSDConversation *)self idsSession];
+      idsSession = [(CSDConversation *)self idsSession];
       *buf = 138412290;
-      v62 = v22;
+      v62 = idsSession;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Leaving CSDIDSGroupSession: %@", buf, 0xCu);
     }
 
     v23 = sub_100004778();
-    v10 = v13;
+    mergedActiveRemoteParticipants = v13;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(CSDConversation *)self supportsLeaveContext];
+      supportsLeaveContext = [(CSDConversation *)self supportsLeaveContext];
       v25 = @"NO";
-      if (v24)
+      if (supportsLeaveContext)
       {
         v25 = @"YES";
       }
@@ -7830,8 +7830,8 @@ LABEL_11:
     v26 = +[TUCallScreenShareAttributes defaultAttributes];
     [(CSDConversation *)self setScreenEnabled:0 attributes:v26];
 
-    v27 = [(CSDConversation *)self idsSession];
-    v4 = v48;
+    idsSession2 = [(CSDConversation *)self idsSession];
+    contextCopy = v48;
     if ([(CSDConversation *)self supportsLeaveContext])
     {
       v28 = v48;
@@ -7842,7 +7842,7 @@ LABEL_11:
       v28 = 0;
     }
 
-    [v27 leaveGroupSessionWithContext:v28];
+    [idsSession2 leaveGroupSessionWithContext:v28];
 
     [(CSDConversation *)self stopContentSharingSession];
     [(CSDConversation *)self destroyScreenCapturePickerIfNecessary];
@@ -7859,30 +7859,30 @@ LABEL_11:
     [(CSDConversation *)self setScreenEnabled:0 attributes:v29];
 
 LABEL_22:
-    [v8 conversationChanged:self];
+    [delegate conversationChanged:self];
     goto LABEL_23;
   }
 
   if (![(CSDConversation *)self state])
   {
-    v30 = [(CSDConversation *)self link];
-    if (v30)
+    link = [(CSDConversation *)self link];
+    if (link)
     {
 
       goto LABEL_29;
     }
 
-    if (([v12 count] != 1 || objc_msgSend(v10, "count") != 1) && !-[CSDConversation isNearbySession](self, "isNearbySession"))
+    if (([mergedRemoteMembers count] != 1 || objc_msgSend(mergedActiveRemoteParticipants, "count") != 1) && !-[CSDConversation isNearbySession](self, "isNearbySession"))
     {
       goto LABEL_29;
     }
 
-    v49 = v4;
+    v49 = contextCopy;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v33 = [(CSDConversation *)self activeRemoteParticipants:v12];
+    v33 = [(CSDConversation *)self activeRemoteParticipants:mergedRemoteMembers];
     v34 = [v33 countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (!v34)
     {
@@ -7901,40 +7901,40 @@ LABEL_37:
       }
 
       v38 = *(*(&v51 + 1) + 8 * v37);
-      v39 = [v38 activeIDSDestination];
-      if (v39)
+      activeIDSDestination = [v38 activeIDSDestination];
+      if (activeIDSDestination)
       {
-        v40 = v39;
+        idsDestination = activeIDSDestination;
       }
 
       else
       {
-        v41 = [(CSDConversation *)self remoteMembers];
+        remoteMembers = [(CSDConversation *)self remoteMembers];
         v50[0] = _NSConcreteStackBlock;
         v50[1] = 3221225472;
         v50[2] = sub_100096938;
         v50[3] = &unk_10061A6F0;
         v50[4] = v38;
-        v42 = [v41 tu_anyObjectPassingTest:v50];
+        v42 = [remoteMembers tu_anyObjectPassingTest:v50];
 
-        v40 = [v42 idsDestination];
+        idsDestination = [v42 idsDestination];
 
-        if (!v40)
+        if (!idsDestination)
         {
-          v40 = sub_100004778();
-          if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+          idsDestination = sub_100004778();
+          if (os_log_type_enabled(idsDestination, OS_LOG_TYPE_DEFAULT))
           {
-            v43 = [(CSDConversation *)self UUID];
+            uUID2 = [(CSDConversation *)self UUID];
             *buf = 138412290;
-            v62 = v43;
-            _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "[WARN] No IDS destination to send decline message: %@", buf, 0xCu);
+            v62 = uUID2;
+            _os_log_impl(&_mh_execute_header, idsDestination, OS_LOG_TYPE_DEFAULT, "[WARN] No IDS destination to send decline message: %@", buf, 0xCu);
           }
 
           goto LABEL_44;
         }
       }
 
-      [v8 conversation:self sendDeclineMessageToParticipantDestination:v40];
+      [delegate conversation:self sendDeclineMessageToParticipantDestination:idsDestination];
 LABEL_44:
 
       if (v35 == ++v37)
@@ -7948,9 +7948,9 @@ LABEL_49:
           v45 = +[TUCallScreenShareAttributes defaultAttributes];
           [(CSDConversation *)self setScreenEnabled:0 attributes:v45];
 
-          v4 = v49;
-          v12 = v46;
-          v10 = v47;
+          contextCopy = v49;
+          mergedRemoteMembers = v46;
+          mergedActiveRemoteParticipants = v47;
           goto LABEL_23;
         }
 
@@ -7963,79 +7963,79 @@ LABEL_29:
   v31 = sub_100004778();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(CSDConversation *)self UUID];
+    uUID3 = [(CSDConversation *)self UUID];
     *buf = 138412290;
-    v62 = v32;
+    v62 = uUID3;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[WARN] Not leaving conversation because it isn't joining/joined: %@", buf, 0xCu);
   }
 
 LABEL_23:
 }
 
-- (void)kickMember:(id)a3
+- (void)kickMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     *buf = 138412546;
-    v18 = v6;
+    v18 = uUID;
     v19 = 2112;
-    v20 = v4;
+    v20 = memberCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Kicking member on conversation UUID: %@ member: %@", buf, 0x16u);
   }
 
-  v7 = [(CSDConversation *)self activeParticipants];
-  v8 = [v7 allObjects];
+  activeParticipants = [(CSDConversation *)self activeParticipants];
+  allObjects = [activeParticipants allObjects];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100096BA8;
   v15[3] = &unk_10061A718;
-  v9 = v4;
+  v9 = memberCopy;
   v16 = v9;
-  v10 = [v8 tu_firstObjectPassingTest:v15];
+  v10 = [allObjects tu_firstObjectPassingTest:v15];
 
   if (v10)
   {
-    v11 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
+    pendingKickedMembersByIdentifier = [(CSDConversation *)self pendingKickedMembersByIdentifier];
     v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 identifier]);
-    [v11 setObject:v9 forKeyedSubscript:v12];
+    [pendingKickedMembersByIdentifier setObject:v9 forKeyedSubscript:v12];
   }
 
-  v13 = [(CSDConversation *)self idsSession];
-  [v13 kickMember:v9];
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession kickMember:v9];
 
   v14 = [NSSet setWithObject:v9];
   [(CSDConversation *)self removeRemoteMembers:v14 triggeredLocally:1];
 }
 
-- (void)_allowMember:(id)a3
+- (void)_allowMember:(id)member
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self pendingAllowedMembers];
-  [v5 addObject:v4];
+  memberCopy = member;
+  pendingAllowedMembers = [(CSDConversation *)self pendingAllowedMembers];
+  [pendingAllowedMembers addObject:memberCopy];
 
-  v6 = [(CSDConversation *)self idsSession];
-  [v6 allowMember:v4];
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession allowMember:memberCopy];
 }
 
 - (void)_recomputeAudioStates
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self featureFlags];
-  v5 = [v4 nearbyFaceTimeEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  nearbyFaceTimeEnabled = [featureFlags nearbyFaceTimeEnabled];
 
-  v6 = sub_100004778();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if ((v5 & 1) == 0)
+  activeRemoteParticipants2 = sub_100004778();
+  v7 = os_log_type_enabled(activeRemoteParticipants2, OS_LOG_TYPE_DEFAULT);
+  if ((nearbyFaceTimeEnabled & 1) == 0)
   {
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Nearby FaceTime not enabled, skipping recomputing audio states", buf, 2u);
+      _os_log_impl(&_mh_execute_header, activeRemoteParticipants2, OS_LOG_TYPE_DEFAULT, "Nearby FaceTime not enabled, skipping recomputing audio states", buf, 2u);
     }
 
     goto LABEL_28;
@@ -8044,7 +8044,7 @@ LABEL_23:
   if (v7)
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Recomputing audio states for participants", buf, 2u);
+    _os_log_impl(&_mh_execute_header, activeRemoteParticipants2, OS_LOG_TYPE_DEFAULT, "Recomputing audio states for participants", buf, 2u);
   }
 
   v39 = 0u;
@@ -8070,18 +8070,18 @@ LABEL_23:
         }
 
         v13 = *(*(&v37 + 1) + 8 * v12);
-        v14 = [v13 cluster];
-        if (v14)
+        cluster = [v13 cluster];
+        if (cluster)
         {
-          v15 = v14;
-          v16 = [v13 cluster];
-          if ([v16 type] == 1)
+          v15 = cluster;
+          cluster2 = [v13 cluster];
+          if ([cluster2 type] == 1)
           {
             [v13 cluster];
             v17 = v11;
             v10 = v18 = v10;
-            v19 = [(CSDConversation *)self localParticipantCluster];
-            v20 = [v10 isEqual:v19];
+            localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+            v20 = [v10 isEqual:localParticipantCluster];
 
             LODWORD(v10) = v18;
             v11 = v17;
@@ -8094,11 +8094,11 @@ LABEL_23:
 
         v20 = 0;
 LABEL_14:
-        v21 = [(CSDConversation *)self avcSession];
-        [v21 setPlaybackSynchronizationGroupMember:v20 & 1 forParticipantWithIdentifier:{objc_msgSend(v13, "identifier")}];
+        avcSession = [(CSDConversation *)self avcSession];
+        [avcSession setPlaybackSynchronizationGroupMember:v20 & 1 forParticipantWithIdentifier:{objc_msgSend(v13, "identifier")}];
 
-        v22 = [(CSDConversation *)self avcSession];
-        [v22 setDownlinkMuted:v20 & 1 forParticipantWithIdentifier:{objc_msgSend(v13, "identifier")}];
+        avcSession2 = [(CSDConversation *)self avcSession];
+        [avcSession2 setDownlinkMuted:v20 & 1 forParticipantWithIdentifier:{objc_msgSend(v13, "identifier")}];
 
         v12 = v12 + 1;
       }
@@ -8118,15 +8118,15 @@ LABEL_20:
 
   if (![(CSDConversation *)self isOneToOneModeEnabled])
   {
-    v23 = [(CSDConversation *)self activeRemoteParticipants];
-    v24 = [v23 count];
+    activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+    v24 = [activeRemoteParticipants count];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = [(CSDConversation *)self activeRemoteParticipants];
-    v25 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
+    v25 = [activeRemoteParticipants2 countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v25)
     {
       v26 = v25;
@@ -8137,15 +8137,15 @@ LABEL_20:
         {
           if (*v34 != v27)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(activeRemoteParticipants2);
           }
 
           v29 = *(*(&v33 + 1) + 8 * i);
-          v30 = [(CSDConversation *)self avcSession];
-          [v30 setAudioEnabled:v24 != v10 forParticipantWithIdentifier:{objc_msgSend(v29, "identifier")}];
+          avcSession3 = [(CSDConversation *)self avcSession];
+          [avcSession3 setAudioEnabled:v24 != v10 forParticipantWithIdentifier:{objc_msgSend(v29, "identifier")}];
         }
 
-        v26 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v26 = [activeRemoteParticipants2 countByEnumeratingWithState:&v33 objects:v42 count:16];
       }
 
       while (v26);
@@ -8155,15 +8155,15 @@ LABEL_28:
   }
 }
 
-- (id)reducedInfoMembers:(id)a3
+- (id)reducedInfoMembers:(id)members
 {
-  v3 = a3;
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  membersCopy = members;
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [membersCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = membersCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -8178,12 +8178,12 @@ LABEL_28:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) handle];
-        v11 = [CXHandle handleWithTUHandle:v10];
+        handle = [*(*(&v16 + 1) + 8 * i) handle];
+        v11 = [CXHandle handleWithTUHandle:handle];
 
         v12 = [TUConversationMember alloc];
-        v13 = [v11 tuHandle];
-        v14 = [v12 initWithHandle:v13];
+        tuHandle = [v11 tuHandle];
+        v14 = [v12 initWithHandle:tuHandle];
 
         [v4 addObject:v14];
       }
@@ -8197,33 +8197,33 @@ LABEL_28:
   return v4;
 }
 
-- (BOOL)isRepresentedByRemoteMembers:(id)a3 andLink:(id)a4
+- (BOOL)isRepresentedByRemoteMembers:(id)members andLink:(id)link
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  linkCopy = link;
+  membersCopy = members;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self remoteMembers];
-  v10 = [(CSDConversation *)self reducedInfoMembers:v9];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v10 = [(CSDConversation *)self reducedInfoMembers:remoteMembers];
 
-  v11 = [(CSDConversation *)self reducedInfoMembers:v7];
+  v11 = [(CSDConversation *)self reducedInfoMembers:membersCopy];
 
-  if ([v10 isEqualToSet:v11] && ((-[CSDConversation link](self, "link"), v12 = objc_claimAutoreleasedReturnValue(), v12, v6) || !v12))
+  if ([v10 isEqualToSet:v11] && ((-[CSDConversation link](self, "link"), v12 = objc_claimAutoreleasedReturnValue(), v12, linkCopy) || !v12))
   {
-    v15 = [(CSDConversation *)self link];
+    link = [(CSDConversation *)self link];
 
-    if (!v6 || v15)
+    if (!linkCopy || link)
     {
-      v16 = [(CSDConversation *)self link];
+      link2 = [(CSDConversation *)self link];
 
       v13 = 1;
-      if (v6 && v16)
+      if (linkCopy && link2)
       {
-        v17 = [(CSDConversation *)self link];
-        v18 = [v17 pseudonym];
-        v19 = [v6 pseudonym];
-        v13 = [v18 isEqualToString:v19];
+        link3 = [(CSDConversation *)self link];
+        pseudonym = [link3 pseudonym];
+        pseudonym2 = [linkCopy pseudonym];
+        v13 = [pseudonym isEqualToString:pseudonym2];
       }
     }
 
@@ -8241,15 +8241,15 @@ LABEL_28:
   return v13;
 }
 
-- (void)updateRemoteMember:(id)a3
+- (void)updateRemoteMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(CSDConversation *)self remoteMembers];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v6 = [remoteMembers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8260,21 +8260,21 @@ LABEL_28:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(remoteMembers);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v4 handle];
-        v12 = [v10 handle];
+        handle = [memberCopy handle];
+        handle2 = [v10 handle];
         v13 = TUHandlesAreCanonicallyEqual();
 
         if (v13)
         {
-          v14 = [(CSDConversation *)self remoteMembers];
-          v15 = [v14 mutableCopy];
+          remoteMembers2 = [(CSDConversation *)self remoteMembers];
+          v15 = [remoteMembers2 mutableCopy];
 
           [v15 removeObject:v10];
-          [v15 addObject:v4];
+          [v15 addObject:memberCopy];
           v16 = [v15 copy];
           [(CSDConversation *)self setRemoteMembers:v16];
 
@@ -8282,7 +8282,7 @@ LABEL_28:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [remoteMembers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -8295,15 +8295,15 @@ LABEL_28:
 LABEL_11:
 }
 
-- (void)updateLightweightMember:(id)a3
+- (void)updateLightweightMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(CSDConversation *)self lightweightMembers];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  v6 = [lightweightMembers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8314,21 +8314,21 @@ LABEL_11:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(lightweightMembers);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v4 handle];
-        v12 = [v10 handle];
+        handle = [memberCopy handle];
+        handle2 = [v10 handle];
         v13 = TUHandlesAreCanonicallyEqual();
 
         if (v13)
         {
-          v14 = [(CSDConversation *)self lightweightMembers];
-          v15 = [v14 mutableCopy];
+          lightweightMembers2 = [(CSDConversation *)self lightweightMembers];
+          v15 = [lightweightMembers2 mutableCopy];
 
           [v15 removeObject:v10];
-          [v15 addObject:v4];
+          [v15 addObject:memberCopy];
           v16 = [v15 copy];
           [(CSDConversation *)self setLightweightMembers:v16];
 
@@ -8336,7 +8336,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [lightweightMembers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -8349,16 +8349,16 @@ LABEL_11:
 LABEL_11:
 }
 
-- (id)memberWithHandle:(id)a3
+- (id)memberWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self localMember];
-  v6 = [v5 handle];
+  handleCopy = handle;
+  localMember = [(CSDConversation *)self localMember];
+  handle = [localMember handle];
   v7 = TUHandlesAreCanonicallyEqual();
 
   if (v7)
   {
-    v8 = [(CSDConversation *)self localMember];
+    localMember2 = [(CSDConversation *)self localMember];
   }
 
   else
@@ -8367,8 +8367,8 @@ LABEL_11:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(CSDConversation *)self remoteMembers];
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    v10 = [remoteMembers countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -8379,11 +8379,11 @@ LABEL_5:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(remoteMembers);
         }
 
         v14 = *(*(&v30 + 1) + 8 * v13);
-        v15 = [v14 handle];
+        handle2 = [v14 handle];
         v16 = TUHandlesAreCanonicallyEqual();
 
         if (v16)
@@ -8393,7 +8393,7 @@ LABEL_5:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v11 = [remoteMembers countByEnumeratingWithState:&v30 objects:v35 count:16];
           if (v11)
           {
             goto LABEL_5;
@@ -8403,9 +8403,9 @@ LABEL_5:
         }
       }
 
-      v8 = v14;
+      localMember2 = v14;
 
-      if (v8)
+      if (localMember2)
       {
         goto LABEL_24;
       }
@@ -8420,8 +8420,8 @@ LABEL_11:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [(CSDConversation *)self lightweightMembers];
-    v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    lightweightMembers = [(CSDConversation *)self lightweightMembers];
+    v18 = [lightweightMembers countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v18)
     {
       v19 = v18;
@@ -8432,21 +8432,21 @@ LABEL_11:
         {
           if (*v27 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(lightweightMembers);
           }
 
           v22 = *(*(&v26 + 1) + 8 * i);
-          v23 = [v22 handle];
+          handle3 = [v22 handle];
           v24 = TUHandlesAreCanonicallyEqual();
 
           if (v24)
           {
-            v8 = v22;
+            localMember2 = v22;
             goto LABEL_23;
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v19 = [lightweightMembers countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v19)
         {
           continue;
@@ -8456,18 +8456,18 @@ LABEL_11:
       }
     }
 
-    v8 = 0;
+    localMember2 = 0;
 LABEL_23:
   }
 
 LABEL_24:
 
-  return v8;
+  return localMember2;
 }
 
-- (BOOL)containsMemberWithHandle:(id)a3
+- (BOOL)containsMemberWithHandle:(id)handle
 {
-  v3 = [(CSDConversation *)self memberWithHandle:a3];
+  v3 = [(CSDConversation *)self memberWithHandle:handle];
   v4 = v3 != 0;
 
   return v4;
@@ -8475,23 +8475,23 @@ LABEL_24:
 
 - (NSDictionary)capabilitySendMessageOptions
 {
-  v3 = [(CSDConversation *)self idsSession];
-  v4 = [v3 requiredCapabilities];
+  idsSession = [(CSDConversation *)self idsSession];
+  requiredCapabilities = [idsSession requiredCapabilities];
 
-  v5 = [(CSDConversation *)self idsSession];
-  v6 = [v5 requiredLackOfCapabilities];
+  idsSession2 = [(CSDConversation *)self idsSession];
+  requiredLackOfCapabilities = [idsSession2 requiredLackOfCapabilities];
 
-  if ([v4 count] || objc_msgSend(v6, "count"))
+  if ([requiredCapabilities count] || objc_msgSend(requiredLackOfCapabilities, "count"))
   {
     v7 = objc_alloc_init(NSMutableDictionary);
-    if ([v4 count])
+    if ([requiredCapabilities count])
     {
-      [v7 setObject:v4 forKeyedSubscript:IDSSendMessageOptionRequireAllRegistrationPropertiesKey];
+      [v7 setObject:requiredCapabilities forKeyedSubscript:IDSSendMessageOptionRequireAllRegistrationPropertiesKey];
     }
 
-    if ([v6 count])
+    if ([requiredLackOfCapabilities count])
     {
-      [v7 setObject:v6 forKeyedSubscript:IDSSendMessageOptionRequireLackOfRegistrationPropertiesKey];
+      [v7 setObject:requiredLackOfCapabilities forKeyedSubscript:IDSSendMessageOptionRequireLackOfRegistrationPropertiesKey];
     }
 
     v8 = [v7 copy];
@@ -8505,31 +8505,31 @@ LABEL_24:
   return v8;
 }
 
-- (void)addRequiredCapabilities:(id)a3 requiredLackOfCapabilities:(id)a4
+- (void)addRequiredCapabilities:(id)capabilities requiredLackOfCapabilities:(id)ofCapabilities
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversation *)self idsSession];
-  [v8 addRequiredCapabilities:v7 requiredLackOfCapabilities:v6];
+  ofCapabilitiesCopy = ofCapabilities;
+  capabilitiesCopy = capabilities;
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession addRequiredCapabilities:capabilitiesCopy requiredLackOfCapabilities:ofCapabilitiesCopy];
 }
 
-- (void)removeRequiredCapabilities:(id)a3 requiredLackOfCapabilities:(id)a4
+- (void)removeRequiredCapabilities:(id)capabilities requiredLackOfCapabilities:(id)ofCapabilities
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversation *)self idsSession];
-  [v8 removeRequiredCapabilities:v7 requiredLackOfCapabilities:v6];
+  ofCapabilitiesCopy = ofCapabilities;
+  capabilitiesCopy = capabilities;
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession removeRequiredCapabilities:capabilitiesCopy requiredLackOfCapabilities:ofCapabilitiesCopy];
 }
 
-- (id)remoteParticipantForHandle:(id)a3
+- (id)remoteParticipantForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(CSDConversation *)self activeRemoteParticipants];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v6 = [activeRemoteParticipants countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8540,12 +8540,12 @@ LABEL_3:
     {
       if (*v29 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(activeRemoteParticipants);
       }
 
       v10 = *(*(&v28 + 1) + 8 * v9);
-      v11 = [v10 handle];
-      v12 = [v11 isEquivalentToHandle:v4];
+      handle = [v10 handle];
+      v12 = [handle isEquivalentToHandle:handleCopy];
 
       if (v12)
       {
@@ -8554,7 +8554,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v7 = [activeRemoteParticipants countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -8581,8 +8581,8 @@ LABEL_9:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [(CSDConversation *)self activeLightweightParticipants];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  activeLightweightParticipants = [(CSDConversation *)self activeLightweightParticipants];
+  v15 = [activeLightweightParticipants countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -8593,12 +8593,12 @@ LABEL_9:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(activeLightweightParticipants);
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        v20 = [v19 handle];
-        v21 = [v20 isEquivalentToHandle:v4];
+        handle2 = [v19 handle];
+        v21 = [handle2 isEquivalentToHandle:handleCopy];
 
         if (v21)
         {
@@ -8607,7 +8607,7 @@ LABEL_9:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v16 = [activeLightweightParticipants countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v16)
       {
         continue;
@@ -8621,43 +8621,43 @@ LABEL_9:
 LABEL_21:
 
 LABEL_22:
-  v22 = [v13 tuConversationParticipant];
+  tuConversationParticipant = [v13 tuConversationParticipant];
 
-  return v22;
+  return tuConversationParticipant;
 }
 
-- (id)remoteParticipantForIdentifier:(unint64_t)a3
+- (id)remoteParticipantForIdentifier:(unint64_t)identifier
 {
-  v5 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 tuConversationParticipant];
-  v9 = v8;
-  if (v8)
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v6 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v7 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v6];
+  tuConversationParticipant = [v7 tuConversationParticipant];
+  v9 = tuConversationParticipant;
+  if (tuConversationParticipant)
   {
-    v10 = v8;
+    tuConversationParticipant2 = tuConversationParticipant;
   }
 
   else
   {
-    v11 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-    v12 = [NSNumber numberWithUnsignedLongLong:a3];
-    v13 = [v11 objectForKeyedSubscript:v12];
-    v10 = [v13 tuConversationParticipant];
+    activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+    v12 = [NSNumber numberWithUnsignedLongLong:identifier];
+    v13 = [activeLightweightParticipantsByIdentifier objectForKeyedSubscript:v12];
+    tuConversationParticipant2 = [v13 tuConversationParticipant];
   }
 
-  return v10;
+  return tuConversationParticipant2;
 }
 
-- (id)remoteMemberForHandle:(id)a3
+- (id)remoteMemberForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CSDConversation *)self remoteMembers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v6 = [remoteMembers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -8667,12 +8667,12 @@ LABEL_22:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(remoteMembers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 handle];
-        v11 = [v10 isEquivalentToHandle:v4];
+        handle = [v9 handle];
+        v11 = [handle isEquivalentToHandle:handleCopy];
 
         if (v11)
         {
@@ -8681,7 +8681,7 @@ LABEL_22:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [remoteMembers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -8699,18 +8699,18 @@ LABEL_11:
 - (TUConversationParticipant)localParticipant
 {
   v3 = [TUConversationParticipant alloc];
-  v4 = [(CSDConversation *)self localParticipantIdentifier];
-  v5 = [(CSDConversation *)self localMember];
-  v6 = [v5 handle];
-  v7 = [v3 initWithIdentifier:v4 handle:v6];
+  localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
+  localMember = [(CSDConversation *)self localMember];
+  handle = [localMember handle];
+  v7 = [v3 initWithIdentifier:localParticipantIdentifier handle:handle];
 
   [v7 setAudioVideoMode:{-[CSDConversation avMode](self, "avMode")}];
   [v7 setPresentationMode:{-[CSDConversation presentationMode](self, "presentationMode")}];
   [v7 setLocalAccountHandle:1];
   [v7 setSpatialPersonaEnabled:{-[CSDConversation isSpatialPersonaEnabled](self, "isSpatialPersonaEnabled")}];
   [v7 setCameraMixedWithScreen:{-[CSDConversation isCameraMixedWithScreen](self, "isCameraMixedWithScreen")}];
-  v8 = [(CSDConversation *)self localParticipantCluster];
-  [v7 setCluster:v8];
+  localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+  [v7 setCluster:localParticipantCluster];
 
   [v7 setIsNearbySharePlay:{-[CSDConversation isNearbySharePlay](self, "isNearbySharePlay")}];
 
@@ -8720,15 +8720,15 @@ LABEL_11:
 - (id)localCSDConversationParticipant
 {
   v3 = [CSDConversationParticipant alloc];
-  v4 = [(CSDConversation *)self idsSession];
-  v5 = [v4 localParticipantIdentifier];
-  v6 = [(CSDConversation *)self localMember];
-  v7 = [v6 handle];
-  v8 = [(CSDConversation *)self localParticipantData];
-  v9 = [(CSDConversationParticipant *)v3 initWithIdentifier:v5 handle:v7 avcData:v8];
+  idsSession = [(CSDConversation *)self idsSession];
+  localParticipantIdentifier = [idsSession localParticipantIdentifier];
+  localMember = [(CSDConversation *)self localMember];
+  handle = [localMember handle];
+  localParticipantData = [(CSDConversation *)self localParticipantData];
+  v9 = [(CSDConversationParticipant *)v3 initWithIdentifier:localParticipantIdentifier handle:handle avcData:localParticipantData];
 
-  v10 = [(CSDConversation *)self localParticipantCapabilities];
-  [(CSDConversationParticipant *)v9 setCapabilities:v10];
+  localParticipantCapabilities = [(CSDConversation *)self localParticipantCapabilities];
+  [(CSDConversationParticipant *)v9 setCapabilities:localParticipantCapabilities];
 
   [(CSDConversationParticipant *)v9 setVideoEnabled:[(CSDConversation *)self isVideoEnabled]];
   [(CSDConversationParticipant *)v9 setAudioVideoMode:[(CSDConversation *)self avMode]];
@@ -8736,59 +8736,59 @@ LABEL_11:
   [(CSDConversationParticipant *)v9 setSpatialPersonaEnabled:[(CSDConversation *)self isSpatialPersonaEnabled]];
   [(CSDConversationParticipant *)v9 setCameraMixedWithScreen:[(CSDConversation *)self isCameraMixedWithScreen]];
   [(CSDConversationParticipant *)v9 setCaptionsToken:[(CSDConversation *)self avcLocalCaptionsToken]];
-  v11 = [(CSDConversation *)self localParticipantCluster];
-  [(CSDConversationParticipant *)v9 setCluster:v11];
+  localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+  [(CSDConversationParticipant *)v9 setCluster:localParticipantCluster];
 
   [(CSDConversationParticipant *)v9 setIsNearbySharePlay:[(CSDConversation *)self isNearbySharePlay]];
 
   return v9;
 }
 
-- (void)addAliasesToConversationContainer:(id)a3 forBundleIdentifier:(id)a4
+- (void)addAliasesToConversationContainer:(id)container forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversation *)self serverBag];
-  v9 = [v8 stableBundleIdentifierForLocalBundleIdentifier:v7];
+  containerCopy = container;
+  identifierCopy = identifier;
+  serverBag = [(CSDConversation *)self serverBag];
+  v9 = [serverBag stableBundleIdentifierForLocalBundleIdentifier:identifierCopy];
 
   if (v9)
   {
     v10 = v9;
 
-    v7 = v10;
+    identifierCopy = v10;
   }
 
-  v11 = [v7 dataUsingEncoding:4];
-  [(CSDConversation *)self setIDSAliasingSalt:v11 onContainer:v6];
-  v12 = [(CSDConversation *)self idsSession];
-  [v12 addAliasesToConversationContainer:v6 withSalt:v11];
+  v11 = [identifierCopy dataUsingEncoding:4];
+  [(CSDConversation *)self setIDSAliasingSalt:v11 onContainer:containerCopy];
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession addAliasesToConversationContainer:containerCopy withSalt:v11];
 
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CSDConversation *)self groupUUID];
-    v15 = [v6 groupUUID];
+    groupUUID = [(CSDConversation *)self groupUUID];
+    groupUUID2 = [containerCopy groupUUID];
     v16 = 138412802;
-    v17 = v14;
+    v17 = groupUUID;
     v18 = 2112;
-    v19 = v15;
+    v19 = groupUUID2;
     v20 = 2112;
-    v21 = v7;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Aliased session %@ to %@ for bundle identifier %@", &v16, 0x20u);
   }
 }
 
-- (void)setIDSAliasingSalt:(id)a3 onContainer:(id)a4
+- (void)setIDSAliasingSalt:(id)salt onContainer:(id)container
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [v5 virtualParticipantConfig];
-  [v8 setIdsAliasingSalt:v6];
-  [v5 setVirtualParticipantConfig:v8];
-  v7 = [v5 unreliableMessengerConfig];
-  [v7 setIdsAliasingSalt:v6];
+  containerCopy = container;
+  saltCopy = salt;
+  virtualParticipantConfig = [containerCopy virtualParticipantConfig];
+  [virtualParticipantConfig setIdsAliasingSalt:saltCopy];
+  [containerCopy setVirtualParticipantConfig:virtualParticipantConfig];
+  unreliableMessengerConfig = [containerCopy unreliableMessengerConfig];
+  [unreliableMessengerConfig setIdsAliasingSalt:saltCopy];
 
-  [v5 setUnreliableMessengerConfig:v7];
+  [containerCopy setUnreliableMessengerConfig:unreliableMessengerConfig];
 }
 
 - (unint64_t)_resolvedNearbyTimeOut
@@ -8812,17 +8812,17 @@ LABEL_11:
   return v5;
 }
 
-- (void)startTimeOutForNearbyMembers:(id)a3
+- (void)startTimeOutForNearbyMembers:(id)members
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  membersCopy = members;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = membersCopy;
   v6 = [obj countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v6)
   {
@@ -8839,15 +8839,15 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v28 + 1) + 8 * v9) handle];
-        v11 = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        handle = [*(*(&v28 + 1) + 8 * v9) handle];
+        nearbyMemberRemovalBlockByHandle = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
+        v12 = [nearbyMemberRemovalBlockByHandle objectForKeyedSubscript:handle];
 
         if (v12)
         {
           dispatch_block_cancel(v12);
-          v13 = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
-          [v13 setObject:0 forKeyedSubscript:v10];
+          nearbyMemberRemovalBlockByHandle2 = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
+          [nearbyMemberRemovalBlockByHandle2 setObject:0 forKeyedSubscript:handle];
         }
 
         objc_initWeak(&location, self);
@@ -8856,27 +8856,27 @@ LABEL_11:
         block[2] = sub_100098B88;
         block[3] = &unk_10061A600;
         objc_copyWeak(&v26, &location);
-        v14 = v10;
+        v14 = handle;
         v25 = v14;
         v15 = dispatch_block_create(0, block);
         v16 = objc_retainBlock(v15);
-        v17 = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
-        [v17 setObject:v16 forKeyedSubscript:v14];
+        nearbyMemberRemovalBlockByHandle3 = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
+        [nearbyMemberRemovalBlockByHandle3 setObject:v16 forKeyedSubscript:v14];
 
         v18 = sub_100004778();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(CSDConversation *)self UUID];
+          uUID = [(CSDConversation *)self UUID];
           *buf = v22;
           v33 = v14;
           v34 = 2112;
-          v35 = v19;
+          v35 = uUID;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Starting time out to remove nearby member %@ in conversation %@", buf, 0x16u);
         }
 
         v20 = dispatch_time(0, 1000000000 * [(CSDConversation *)self _resolvedNearbyTimeOut]);
-        v21 = [(CSDConversation *)self queue];
-        dispatch_after(v20, v21, v15);
+        queue2 = [(CSDConversation *)self queue];
+        dispatch_after(v20, queue2, v15);
 
         objc_destroyWeak(&v26);
         objc_destroyWeak(&location);
@@ -8894,52 +8894,52 @@ LABEL_11:
 
 - (void)startTimeOutForNearbySession
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     *buf = 138412290;
-    v11 = v5;
+    v11 = uUID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Starting time out to clean up nearby conversation: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
   v6 = dispatch_time(0, 1000000000 * [(CSDConversation *)self _resolvedNearbyTimeOut]);
-  v7 = [(CSDConversation *)self queue];
+  queue2 = [(CSDConversation *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098D78;
   block[3] = &unk_10061A740;
   objc_copyWeak(&v9, buf);
-  dispatch_after(v6, v7, block);
+  dispatch_after(v6, queue2, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
 }
 
-- (void)removeNearbyMemberWithHandleIfNecessary:(id)a3
+- (void)removeNearbyMemberWithHandleIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  necessaryCopy = necessary;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
-  [v6 setObject:0 forKeyedSubscript:v4];
+  nearbyMemberRemovalBlockByHandle = [(CSDConversation *)self nearbyMemberRemovalBlockByHandle];
+  [nearbyMemberRemovalBlockByHandle setObject:0 forKeyedSubscript:necessaryCopy];
 
-  v7 = [(CSDConversation *)self featureFlags];
-  v8 = [v7 nearbyFaceTimeEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  nearbyFaceTimeEnabled = [featureFlags nearbyFaceTimeEnabled];
 
-  if (v8 && [(CSDConversation *)self isNearbySession])
+  if (nearbyFaceTimeEnabled && [(CSDConversation *)self isNearbySession])
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v9 = [(CSDConversation *)self remoteMembers];
-    v10 = [v9 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    v10 = [remoteMembers countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v10)
     {
       v11 = v10;
@@ -8950,11 +8950,11 @@ LABEL_5:
       {
         if (*v43 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(remoteMembers);
         }
 
-        v14 = [*(*(&v42 + 1) + 8 * v13) handle];
-        v15 = [v14 isEqualToHandle:v4];
+        handle = [*(*(&v42 + 1) + 8 * v13) handle];
+        v15 = [handle isEqualToHandle:necessaryCopy];
 
         if (v15)
         {
@@ -8963,7 +8963,7 @@ LABEL_5:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          v11 = [remoteMembers countByEnumeratingWithState:&v42 objects:v50 count:16];
           if (v11)
           {
             goto LABEL_5;
@@ -8977,8 +8977,8 @@ LABEL_5:
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v9 = [(CSDConversation *)self activeRemoteParticipants];
-      v16 = [v9 countByEnumeratingWithState:&v38 objects:v49 count:16];
+      remoteMembers = [(CSDConversation *)self activeRemoteParticipants];
+      v16 = [remoteMembers countByEnumeratingWithState:&v38 objects:v49 count:16];
       if (v16)
       {
         v17 = v16;
@@ -8989,11 +8989,11 @@ LABEL_14:
         {
           if (*v39 != v18)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(remoteMembers);
           }
 
-          v20 = [*(*(&v38 + 1) + 8 * v19) handle];
-          v21 = [v20 isEqualToHandle:v4];
+          handle2 = [*(*(&v38 + 1) + 8 * v19) handle];
+          v21 = [handle2 isEqualToHandle:necessaryCopy];
 
           if (v21)
           {
@@ -9002,7 +9002,7 @@ LABEL_14:
 
           if (v17 == ++v19)
           {
-            v17 = [v9 countByEnumeratingWithState:&v38 objects:v49 count:16];
+            v17 = [remoteMembers countByEnumeratingWithState:&v38 objects:v49 count:16];
             if (v17)
             {
               goto LABEL_14;
@@ -9021,12 +9021,12 @@ LABEL_20:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v48 = v4;
+          v48 = necessaryCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Removing nearby member with handle %@", buf, 0xCu);
         }
 
-        v23 = [(CSDConversation *)self remoteMembers];
-        v24 = [v23 count];
+        remoteMembers2 = [(CSDConversation *)self remoteMembers];
+        v24 = [remoteMembers2 count];
 
         if (v24 == 1)
         {
@@ -9045,8 +9045,8 @@ LABEL_20:
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v9 = [(CSDConversation *)self remoteMembers];
-        v26 = [v9 countByEnumeratingWithState:&v34 objects:v46 count:16];
+        remoteMembers = [(CSDConversation *)self remoteMembers];
+        v26 = [remoteMembers countByEnumeratingWithState:&v34 objects:v46 count:16];
         if (v26)
         {
           v27 = v26;
@@ -9057,12 +9057,12 @@ LABEL_28:
           {
             if (*v35 != v28)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(remoteMembers);
             }
 
             v30 = *(*(&v34 + 1) + 8 * v29);
-            v31 = [v30 handle];
-            v32 = [v31 isEqualToHandle:v4];
+            handle3 = [v30 handle];
+            v32 = [handle3 isEqualToHandle:necessaryCopy];
 
             if (v32)
             {
@@ -9071,7 +9071,7 @@ LABEL_28:
 
             if (v27 == ++v29)
             {
-              v27 = [v9 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              v27 = [remoteMembers countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v27)
               {
                 goto LABEL_28;
@@ -9089,7 +9089,7 @@ LABEL_28:
           }
 
           [(CSDConversation *)self kickMember:v33];
-          v9 = v33;
+          remoteMembers = v33;
         }
       }
     }
@@ -9102,14 +9102,14 @@ LABEL_38:
 
 - (BOOL)_endScreenCallIfNecessary
 {
-  v3 = [(CSDConversation *)self isScreening];
-  if (!v3)
+  isScreening = [(CSDConversation *)self isScreening];
+  if (!isScreening)
   {
-    return v3;
+    return isScreening;
   }
 
-  v4 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-  v5 = [v4 count];
+  activeParticipantDestinationsByIdentifier = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+  v5 = [activeParticipantDestinationsByIdentifier count];
 
   if (v5 >= 3)
   {
@@ -9119,9 +9119,9 @@ LABEL_38:
       goto LABEL_13;
     }
 
-    v7 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+    activeParticipantDestinationsByIdentifier2 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
     *buf = 134217984;
-    v35 = [v7 count];
+    v35 = [activeParticipantDestinationsByIdentifier2 count];
     v8 = "Ending the screening call because a new participant joins, count: %ld";
 LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v8, buf, 0xCu);
@@ -9130,8 +9130,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(CSDConversation *)self activeLightweightParticipants];
-  v10 = [v9 count];
+  activeLightweightParticipants = [(CSDConversation *)self activeLightweightParticipants];
+  v10 = [activeLightweightParticipants count];
 
   if (v10)
   {
@@ -9141,15 +9141,15 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = [(CSDConversation *)self activeLightweightParticipants];
+    activeParticipantDestinationsByIdentifier2 = [(CSDConversation *)self activeLightweightParticipants];
     *buf = 134217984;
-    v35 = [v7 count];
+    v35 = [activeParticipantDestinationsByIdentifier2 count];
     v8 = "Ending the screening call because a lightweight participant joins, count: %ld";
     goto LABEL_11;
   }
 
-  v11 = [(CSDConversation *)self activeRemoteParticipants];
-  v12 = [v11 count];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v12 = [activeRemoteParticipants count];
 
   if (v12 >= 2)
   {
@@ -9159,28 +9159,28 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = [(CSDConversation *)self activeRemoteParticipants];
+    activeParticipantDestinationsByIdentifier2 = [(CSDConversation *)self activeRemoteParticipants];
     *buf = 134217984;
-    v35 = [v7 count];
+    v35 = [activeParticipantDestinationsByIdentifier2 count];
     v8 = "Ending the screening call because active remote participants, count: %ld";
     goto LABEL_11;
   }
 
-  v13 = [(CSDConversation *)self remoteMembers];
-  if ([v13 count] >= 2)
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  if ([remoteMembers count] >= 2)
   {
 
 LABEL_22:
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CSDConversation *)self remoteMembers];
-      v16 = [v7 count];
-      v17 = [(CSDConversation *)self lightweightMembers];
+      activeParticipantDestinationsByIdentifier2 = [(CSDConversation *)self remoteMembers];
+      v16 = [activeParticipantDestinationsByIdentifier2 count];
+      lightweightMembers = [(CSDConversation *)self lightweightMembers];
       *buf = 134218240;
       v35 = v16;
       v36 = 2048;
-      v37 = [v17 count];
+      v37 = [lightweightMembers count];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Ending the screening call because a new member is added, remoteMembers: %ld, lightweightMembers: %ld", buf, 0x16u);
 
       goto LABEL_12;
@@ -9190,12 +9190,12 @@ LABEL_13:
 
     [(CSDConversation *)self leaveWithReason:3];
 LABEL_14:
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(isScreening) = 1;
+    return isScreening;
   }
 
-  v14 = [(CSDConversation *)self lightweightMembers];
-  v15 = [v14 count];
+  lightweightMembers2 = [(CSDConversation *)self lightweightMembers];
+  v15 = [lightweightMembers2 count];
 
   if (v15)
   {
@@ -9218,8 +9218,8 @@ LABEL_14:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-  v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  activeParticipantDestinationsByIdentifier3 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+  v19 = [activeParticipantDestinationsByIdentifier3 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -9230,21 +9230,21 @@ LABEL_14:
       {
         if (*v30 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(activeParticipantDestinationsByIdentifier3);
         }
 
         v23 = *(*(&v29 + 1) + 8 * i);
-        v24 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-        v25 = [v24 objectForKeyedSubscript:v23];
+        activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+        v25 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v23];
 
         if ([v25 isVideoEnabled])
         {
           v26 = sub_100004778();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [(CSDConversation *)self state];
+            state = [(CSDConversation *)self state];
             *buf = 134218242;
-            v35 = v27;
+            v35 = state;
             v36 = 2112;
             v37 = v25;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Ending the screening call because participant upgrades to video call, state: %ld, %@", buf, 0x16u);
@@ -9255,7 +9255,7 @@ LABEL_14:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v20 = [activeParticipantDestinationsByIdentifier3 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v20)
       {
         continue;
@@ -9265,20 +9265,20 @@ LABEL_14:
     }
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(isScreening) = 0;
+  return isScreening;
 }
 
 - (id)_allMembers
 {
-  v3 = [(CSDConversation *)self remoteMembers];
-  v4 = [v3 mutableCopy];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v4 = [remoteMembers mutableCopy];
 
-  v5 = [(CSDConversation *)self lightweightMembers];
-  v6 = [v5 mutableCopy];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  v6 = [lightweightMembers mutableCopy];
 
-  v7 = [(CSDConversation *)self localMember];
-  [v4 addObject:v7];
+  localMember = [(CSDConversation *)self localMember];
+  [v4 addObject:localMember];
 
   [v4 unionSet:v6];
   v8 = [v4 copy];
@@ -9290,12 +9290,12 @@ LABEL_14:
 {
   if ([(CSDConversation *)self isOneToOneModeEnabled])
   {
-    v3 = [(CSDConversation *)self remoteMembers];
-    if ([v3 count] == 1)
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    if ([remoteMembers count] == 1)
     {
-      v4 = [(CSDConversation *)self link];
+      link = [(CSDConversation *)self link];
 
-      if (!v4)
+      if (!link)
       {
         [(CSDConversation *)self _cleanUpConversation];
         v5 = sub_100004778();
@@ -9311,11 +9311,11 @@ LABEL_14:
             v6 = @"NO";
           }
 
-          v7 = [(CSDConversation *)self remoteMembers];
+          remoteMembers2 = [(CSDConversation *)self remoteMembers];
           *buf = 138412546;
           v13 = v6;
           v14 = 2048;
-          v15 = [v7 count];
+          v15 = [remoteMembers2 count];
           _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "restartIDSSessionIfNecessary: No need to restart IDS Session since it's U + 1, %@, %lu", buf, 0x16u);
         }
 
@@ -9328,12 +9328,12 @@ LABEL_14:
     }
   }
 
-  v8 = [(CSDConversation *)self featureFlags];
-  if ([v8 nearbyFaceTimeEnabled])
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags nearbyFaceTimeEnabled])
   {
-    v9 = [(CSDConversation *)self isNearbySession];
+    isNearbySession = [(CSDConversation *)self isNearbySession];
 
-    if (v9)
+    if (isNearbySession)
     {
       [(CSDConversation *)self _cleanUpConversation];
       v10 = sub_100004778();
@@ -9351,8 +9351,8 @@ LABEL_14:
   {
   }
 
-  v11 = [(CSDConversation *)self idsSession];
-  [v11 restart];
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession restart];
 }
 
 - (void)_stopAVCSession
@@ -9360,22 +9360,22 @@ LABEL_14:
   if ([(CSDConversation *)self avcSessionInProgress])
   {
     [(CSDConversation *)self setAvcSessionInProgress:0];
-    v3 = [(CSDConversation *)self failureContext];
-    v4 = [v3 providerEndedReason];
+    failureContext = [(CSDConversation *)self failureContext];
+    providerEndedReason = [failureContext providerEndedReason];
 
-    if (v4)
+    if (providerEndedReason)
     {
-      v5 = [(CSDConversation *)self failureContext];
-      v8 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"callservicesd.ConversationErrorType", [v5 providerEndedReason], 0);
+      failureContext2 = [(CSDConversation *)self failureContext];
+      avcSession2 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"callservicesd.ConversationErrorType", [failureContext2 providerEndedReason], 0);
 
-      v6 = [(CSDConversation *)self avcSession];
-      [v6 stopWithError:v8];
+      avcSession = [(CSDConversation *)self avcSession];
+      [avcSession stopWithError:avcSession2];
     }
 
     else
     {
-      v8 = [(CSDConversation *)self avcSession];
-      [v8 stopWithError:0];
+      avcSession2 = [(CSDConversation *)self avcSession];
+      [avcSession2 stopWithError:0];
     }
   }
 
@@ -9419,9 +9419,9 @@ LABEL_14:
   v13 = objc_alloc_init(NSSet);
   [(CSDConversation *)self setRemoteMembers:v13];
 
-  v14 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+  letMeInRequestUINotificationBlock = [(CSDConversation *)self letMeInRequestUINotificationBlock];
 
-  if (v14)
+  if (letMeInRequestUINotificationBlock)
   {
     v15 = sub_100004778();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -9430,8 +9430,8 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "cleanUpConversation: cancel letMeInRequestUINotificationBlock", v17, 2u);
     }
 
-    v16 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
-    dispatch_block_cancel(v16);
+    letMeInRequestUINotificationBlock2 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+    dispatch_block_cancel(letMeInRequestUINotificationBlock2);
 
     [(CSDConversation *)self setLetMeInRequestUINotificationBlock:0];
   }
@@ -9439,90 +9439,90 @@ LABEL_14:
   [(CSDConversation *)self setABTestConfiguration:0];
 }
 
-- (void)_emitRTCConnectionSetupEventForAddActiveParticipant:(id)a3
+- (void)_emitRTCConnectionSetupEventForAddActiveParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self report];
-  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 5, [v5 hashForParticipantIdentifier:{objc_msgSend(v4, "identifier")}]);
+  participantCopy = participant;
+  report = [(CSDConversation *)self report];
+  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 5, [report hashForParticipantIdentifier:{objc_msgSend(participantCopy, "identifier")}]);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = participantCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[Metrics] Adding active participant: %@", &v7, 0xCu);
   }
 }
 
-- (void)_emitRTCConnectionSetupEvent:(int64_t)a3 participantIdentifier:(unint64_t)a4
+- (void)_emitRTCConnectionSetupEvent:(int64_t)event participantIdentifier:(unint64_t)identifier
 {
   v7 = [CSDRTCConnectionSetup rtcKey:1];
   v18[0] = v7;
-  v8 = [NSNumber numberWithUnsignedInteger:a4];
+  v8 = [NSNumber numberWithUnsignedInteger:identifier];
   v19[0] = v8;
   v9 = [CSDRTCConnectionSetup rtcKey:2];
   v18[1] = v9;
   v10 = +[NSDate date];
-  v11 = [(CSDConversation *)self report];
-  v12 = [v11 timebase];
-  [v10 timeIntervalSinceDate:v12];
+  report = [(CSDConversation *)self report];
+  timebase = [report timebase];
+  [v10 timeIntervalSinceDate:timebase];
   v14 = [NSNumber numberWithUnsignedInteger:(v13 * 1000.0)];
   v19[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
 
   v16 = +[CSDReportingController sharedInstance];
-  v17 = [(CSDConversation *)self tuConversation];
-  [v16 connectionSetupReportReceived:v15 eventType:a3 forConversation:v17];
+  tuConversation = [(CSDConversation *)self tuConversation];
+  [v16 connectionSetupReportReceived:v15 eventType:event forConversation:tuConversation];
 }
 
-- (void)_startIDSSessionWithContext:(id)a3
+- (void)_startIDSSessionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  contextCopy = context;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CSDConversation *)self state]!= 2)
   {
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CSDConversation *)self state];
-      v14 = [(CSDConversation *)self UUID];
+      state = [(CSDConversation *)self state];
+      uUID = [(CSDConversation *)self UUID];
       *buf = 134218242;
-      v80 = v13;
+      v80 = state;
       v81 = 2112;
-      v82 = v14;
+      v82 = uUID;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[WARN] Not joining IDS session as state (%tu) is not joining on conversation: %@", buf, 0x16u);
     }
 
     goto LABEL_42;
   }
 
-  v6 = [(CSDConversation *)self remoteMembers];
-  v7 = [NSMutableSet setWithSet:v6];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v7 = [NSMutableSet setWithSet:remoteMembers];
 
-  v8 = [(CSDConversation *)self lightweightMembers];
-  [v7 unionSet:v8];
+  lightweightMembers = [(CSDConversation *)self lightweightMembers];
+  [v7 unionSet:lightweightMembers];
 
-  v9 = [(CSDConversation *)self localMember];
-  [v7 addObject:v9];
+  localMember = [(CSDConversation *)self localMember];
+  [v7 addObject:localMember];
 
   v10 = +[NSMutableSet set];
-  v68 = v4;
+  v68 = contextCopy;
   v64 = v7;
-  if (-[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled") && ([v4 isInitiator] & 1) == 0)
+  if (-[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled") && ([contextCopy isInitiator] & 1) == 0)
   {
-    v15 = [(CSDConversation *)self idsSession];
-    v16 = [v15 participantDestinationIDs];
-    v11 = [NSMutableSet setWithArray:v16];
+    idsSession = [(CSDConversation *)self idsSession];
+    participantDestinationIDs = [idsSession participantDestinationIDs];
+    v11 = [NSMutableSet setWithArray:participantDestinationIDs];
 
-    v17 = [(CSDConversation *)self localMember];
-    v18 = [IDSDestination destinationWithTUConversationMember:v17];
+    localMember2 = [(CSDConversation *)self localMember];
+    v18 = [IDSDestination destinationWithTUConversationMember:localMember2];
     [v11 removeObject:v18];
 
-    v19 = [(CSDConversation *)self localMember];
-    v20 = [v19 idsDestination];
-    [v11 removeObject:v20];
+    localMember3 = [(CSDConversation *)self localMember];
+    idsDestination = [localMember3 idsDestination];
+    [v11 removeObject:idsDestination];
 
     v21 = sub_100004778();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -9540,19 +9540,19 @@ LABEL_14:
 
   if ([(CSDConversation *)self isOneToOneModeEnabled])
   {
-    v22 = [(CSDConversation *)self featureFlags];
-    if ([v22 uPlusOneSessionWithCapabilitiesEnabled])
+    featureFlags = [(CSDConversation *)self featureFlags];
+    if ([featureFlags uPlusOneSessionWithCapabilitiesEnabled])
     {
-      v23 = [(CSDConversation *)self serverBag];
-      v24 = [v23 isUPlusOneSessionCapabilitiesEnabled];
+      serverBag = [(CSDConversation *)self serverBag];
+      isUPlusOneSessionCapabilitiesEnabled = [serverBag isUPlusOneSessionCapabilitiesEnabled];
 
-      if (!v24)
+      if (!isUPlusOneSessionCapabilitiesEnabled)
       {
         goto LABEL_17;
       }
 
-      v25 = [(CSDConversation *)self screenSharingRequests];
-      v26 = [v25 count];
+      screenSharingRequests = [(CSDConversation *)self screenSharingRequests];
+      v26 = [screenSharingRequests count];
 
       if (v26)
       {
@@ -9560,16 +9560,16 @@ LABEL_14:
         [(CSDConversation *)self addRequiredCapabilities:v27 requiredLackOfCapabilities:0];
       }
 
-      v22 = [NSSet setWithObject:IDSRegistrationPropertySupportsModernGFT];
-      [(CSDConversation *)self addRequiredCapabilities:v22 requiredLackOfCapabilities:0];
+      featureFlags = [NSSet setWithObject:IDSRegistrationPropertySupportsModernGFT];
+      [(CSDConversation *)self addRequiredCapabilities:featureFlags requiredLackOfCapabilities:0];
     }
   }
 
 LABEL_17:
   v63 = v11;
   v28 = sub_100004778();
-  v29 = [(CSDConversation *)self idsSession];
-  v30 = os_signpost_id_make_with_pointer(v28, v29);
+  idsSession2 = [(CSDConversation *)self idsSession];
+  v30 = os_signpost_id_make_with_pointer(v28, idsSession2);
 
   v31 = sub_100004778();
   v32 = v31;
@@ -9579,17 +9579,17 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v32, OS_SIGNPOST_INTERVAL_BEGIN, v30, "idsSessionJoin", "", buf, 2u);
   }
 
-  v33 = [(CSDConversation *)self report];
-  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 1, [v33 hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
+  report = [(CSDConversation *)self report];
+  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 1, [report hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
 
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v34 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v35 = [v34 allValues];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  allValues = [activeRemoteParticipantsByIdentifier allValues];
 
-  v36 = [v35 countByEnumeratingWithState:&v73 objects:v78 count:16];
+  v36 = [allValues countByEnumeratingWithState:&v73 objects:v78 count:16];
   if (v36)
   {
     v37 = v36;
@@ -9600,23 +9600,23 @@ LABEL_17:
       {
         if (*v74 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allValues);
         }
 
         [(CSDConversation *)self _emitRTCConnectionSetupEventForAddActiveParticipant:*(*(&v73 + 1) + 8 * i)];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v73 objects:v78 count:16];
+      v37 = [allValues countByEnumeratingWithState:&v73 objects:v78 count:16];
     }
 
     while (v37);
   }
 
-  v40 = [(CSDConversation *)self stagedActivitySession];
-  if (v40 && (v41 = v40, -[CSDConversation stagedActivitySession](self, "stagedActivitySession"), v42 = objc_claimAutoreleasedReturnValue(), v43 = [v42 isLocallyInitiated], v42, v41, v43))
+  stagedActivitySession = [(CSDConversation *)self stagedActivitySession];
+  if (stagedActivitySession && (v41 = stagedActivitySession, -[CSDConversation stagedActivitySession](self, "stagedActivitySession"), v42 = objc_claimAutoreleasedReturnValue(), v43 = [v42 isLocallyInitiated], v42, v41, v43))
   {
-    v44 = [(CSDConversation *)self stagedActivitySession];
-    v65 = [CSDMessagingConversationActivitySession activitySessionWithTUConversationActivitySession:v44 fromConversation:self forStorage:0];
+    stagedActivitySession2 = [(CSDConversation *)self stagedActivitySession];
+    v65 = [CSDMessagingConversationActivitySession activitySessionWithTUConversationActivitySession:stagedActivitySession2 fromConversation:self forStorage:0];
   }
 
   else
@@ -9644,11 +9644,11 @@ LABEL_17:
         }
 
         v49 = *(*(&v69 + 1) + 8 * j);
-        v50 = [v49 activity];
-        v51 = [v50 UUID];
-        v52 = [v68 activity];
-        v53 = [v52 UUID];
-        v54 = [v51 isEqual:v53];
+        activity = [v49 activity];
+        uUID2 = [activity UUID];
+        activity2 = [v68 activity];
+        uUID3 = [activity2 UUID];
+        v54 = [uUID2 isEqual:uUID3];
 
         if (v54)
         {
@@ -9671,45 +9671,45 @@ LABEL_17:
 LABEL_41:
 
   obja = [(CSDConversation *)self idsSession];
-  v56 = [(CSDConversation *)self localParticipantData];
-  v57 = [(CSDConversation *)self otherInvitedHandles];
-  v58 = [(CSDConversation *)self link];
-  v59 = [(CSDConversation *)self report];
-  v60 = [(CSDConversation *)self personaHandshakeBlobCreationBlock];
-  v61 = v60[2]();
-  [obja joinUsingContext:v68 localParticipantAVCData:v56 members:v64 otherInvitedHandles:v57 participantDestinationIDs:v63 link:v58 report:v59 stagedActivitySession:v65 personaHandshakeBlob:v61 activitySession:v55];
+  localParticipantData = [(CSDConversation *)self localParticipantData];
+  otherInvitedHandles = [(CSDConversation *)self otherInvitedHandles];
+  link = [(CSDConversation *)self link];
+  report2 = [(CSDConversation *)self report];
+  personaHandshakeBlobCreationBlock = [(CSDConversation *)self personaHandshakeBlobCreationBlock];
+  v61 = personaHandshakeBlobCreationBlock[2]();
+  [obja joinUsingContext:v68 localParticipantAVCData:localParticipantData members:v64 otherInvitedHandles:otherInvitedHandles participantDestinationIDs:v63 link:link report:report2 stagedActivitySession:v65 personaHandshakeBlob:v61 activitySession:v55];
 
-  v62 = [(CSDConversation *)self delegate];
-  [v62 conversationDidTriggerJoin:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationDidTriggerJoin:self];
 
   v12 = v64;
-  v4 = v68;
+  contextCopy = v68;
 
 LABEL_42:
 }
 
-- (void)_addRemoteParticipantToAVCSessionIfPossible:(id)a3
+- (void)_addRemoteParticipantToAVCSessionIfPossible:(id)possible
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  possibleCopy = possible;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self avcSession];
-  v7 = [v6 isAudioReady];
+  avcSession = [(CSDConversation *)self avcSession];
+  isAudioReady = [avcSession isAudioReady];
 
-  v8 = [(CSDConversation *)self isRedirectingAudio];
-  if (v8)
+  isRedirectingAudio = [(CSDConversation *)self isRedirectingAudio];
+  if (isRedirectingAudio)
   {
-    v8 = [(CSDConversation *)self isOneToOneModeEnabled];
+    isRedirectingAudio = [(CSDConversation *)self isOneToOneModeEnabled];
   }
 
-  if (((v7 | v8) & 1) == 0)
+  if (((isAudioReady | isRedirectingAudio) & 1) == 0)
   {
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = [v4 identifier];
+      identifier = [possibleCopy identifier];
       v11 = "AVAudioClient not set up yet, delaying adding participant to AVCSession: %llu";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v11, &v12, 0xCu);
@@ -9720,13 +9720,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v4 audioVideoMode])
+  if (![possibleCopy audioVideoMode])
   {
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = [v4 identifier];
+      identifier = [possibleCopy identifier];
       v11 = "Participant has no AV configured, ignoring to add the participant to the session: %llu";
       goto LABEL_10;
     }
@@ -9734,23 +9734,23 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [(CSDConversation *)self avcSession];
-  [v9 addParticipant:v4 withVideoEnabled:+[TUConversationManager allowsVideo](TUConversationManager audioPaused:"allowsVideo") screenEnabled:{-[CSDConversation isAudioPaused](self, "isAudioPaused"), -[CSDConversation allowsScreenSharing](self, "allowsScreenSharing")}];
+  avcSession2 = [(CSDConversation *)self avcSession];
+  [avcSession2 addParticipant:possibleCopy withVideoEnabled:+[TUConversationManager allowsVideo](TUConversationManager audioPaused:"allowsVideo") screenEnabled:{-[CSDConversation isAudioPaused](self, "isAudioPaused"), -[CSDConversation allowsScreenSharing](self, "allowsScreenSharing")}];
 
 LABEL_12:
 }
 
 - (void)_addParticipantsWaitingToBeAddedToAVCSession
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(CSDConversation *)self activeRemoteParticipants];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v5 = [activeRemoteParticipants countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v5)
   {
     v7 = v5;
@@ -9763,15 +9763,15 @@ LABEL_12:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [(CSDConversation *)self avcSession];
-        v12 = [v11 containsRemoteParticipantWithIdentifier:{objc_msgSend(v10, "identifier")}];
+        avcSession = [(CSDConversation *)self avcSession];
+        v12 = [avcSession containsRemoteParticipantWithIdentifier:{objc_msgSend(v10, "identifier")}];
 
-        v13 = sub_100004778();
-        v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+        avcSession2 = sub_100004778();
+        v14 = os_log_type_enabled(avcSession2, OS_LOG_TYPE_DEFAULT);
         if (v12)
         {
           if (!v14)
@@ -9779,37 +9779,37 @@ LABEL_12:
             goto LABEL_16;
           }
 
-          v15 = [v10 identifier];
+          identifier = [v10 identifier];
           *buf = v21;
-          v27 = v15;
-          v16 = v13;
+          v27 = identifier;
+          v16 = avcSession2;
           v17 = "Not adding participant %llu to AVCSession now that AVAudioClient is set up because they're already in the AVCSession";
           goto LABEL_15;
         }
 
         if (v14)
         {
-          v18 = [v10 identifier];
+          identifier2 = [v10 identifier];
           *buf = v21;
-          v27 = v18;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Adding participant to AVCSession now that AVAudioClient is set up: %llu", buf, 0xCu);
+          v27 = identifier2;
+          _os_log_impl(&_mh_execute_header, avcSession2, OS_LOG_TYPE_DEFAULT, "Adding participant to AVCSession now that AVAudioClient is set up: %llu", buf, 0xCu);
         }
 
         if ([v10 audioVideoMode])
         {
           v19 = +[TUConversationManager allowsVideo];
-          v13 = [(CSDConversation *)self avcSession];
-          [v13 addParticipant:v10 withVideoEnabled:v19 audioPaused:[(CSDConversation *)self isAudioPaused] screenEnabled:[(CSDConversation *)self allowsScreenSharing]];
+          avcSession2 = [(CSDConversation *)self avcSession];
+          [avcSession2 addParticipant:v10 withVideoEnabled:v19 audioPaused:[(CSDConversation *)self isAudioPaused] screenEnabled:[(CSDConversation *)self allowsScreenSharing]];
           goto LABEL_16;
         }
 
-        v13 = sub_100004778();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        avcSession2 = sub_100004778();
+        if (os_log_type_enabled(avcSession2, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v10 identifier];
+          identifier3 = [v10 identifier];
           *buf = v21;
-          v27 = v20;
-          v16 = v13;
+          v27 = identifier3;
+          v16 = avcSession2;
           v17 = "Participant has no AV configured, ignoring to add the participant to the session: %llu";
 LABEL_15:
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, v17, buf, 0xCu);
@@ -9818,7 +9818,7 @@ LABEL_15:
 LABEL_16:
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v7 = [activeRemoteParticipants countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v7);
@@ -9827,25 +9827,25 @@ LABEL_16:
 
 - (void)_startAVCSessionIfNecessary
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self avcSession];
-  v5 = [v4 isAudioReady];
+  avcSession = [(CSDConversation *)self avcSession];
+  isAudioReady = [avcSession isAudioReady];
 
-  v6 = [(CSDConversation *)self isRelaying];
-  if (v6)
+  isRelaying = [(CSDConversation *)self isRelaying];
+  if (isRelaying)
   {
-    v7 = v6;
-    v8 = [(CSDConversation *)self featureFlags];
-    if (([v8 gftOnWatch] & 1) != 0 || -[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled"))
+    v7 = isRelaying;
+    featureFlags = [(CSDConversation *)self featureFlags];
+    if (([featureFlags gftOnWatch] & 1) != 0 || -[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled"))
     {
-      v9 = 1;
+      isOneToOneModeEnabled = 1;
     }
 
     else if ([(CSDConversation *)self isScreening])
     {
-      v9 = [(CSDConversation *)self isOneToOneModeEnabled];
+      isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
       if ((v7 & 1) == 0)
       {
         goto LABEL_9;
@@ -9854,42 +9854,42 @@ LABEL_16:
 
     else
     {
-      v9 = 0;
+      isOneToOneModeEnabled = 0;
     }
   }
 
   else if ([(CSDConversation *)self isScreening])
   {
-    v9 = [(CSDConversation *)self isOneToOneModeEnabled];
+    isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
   }
 
   else
   {
-    v9 = 0;
+    isOneToOneModeEnabled = 0;
   }
 
 LABEL_9:
-  v10 = [(CSDConversation *)self avMode];
-  v11 = [(CSDConversation *)self idsSession];
-  v12 = [v11 localParticipantType];
+  avMode = [(CSDConversation *)self avMode];
+  idsSession = [(CSDConversation *)self idsSession];
+  localParticipantType = [idsSession localParticipantType];
 
-  v13 = [(CSDConversation *)self idsSession];
-  v14 = [v13 isJoined];
+  idsSession2 = [(CSDConversation *)self idsSession];
+  isJoined = [idsSession2 isJoined];
 
-  if (v14 && ((v5 | v9) & 1) != 0 && v10 && v12 == 1)
+  if (isJoined && ((isAudioReady | isOneToOneModeEnabled) & 1) != 0 && avMode && localParticipantType == 1)
   {
-    v15 = [(CSDConversation *)self avcSessionInProgress];
-    v16 = sub_100004778();
-    v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v15)
+    avcSessionInProgress = [(CSDConversation *)self avcSessionInProgress];
+    avcSession5 = sub_100004778();
+    v17 = os_log_type_enabled(avcSession5, OS_LOG_TYPE_DEFAULT);
+    if (avcSessionInProgress)
     {
       if (v17)
       {
-        v18 = [(CSDConversation *)self avcSession];
+        avcSession2 = [(CSDConversation *)self avcSession];
         v35 = 138412290;
-        v36 = v18;
+        v36 = avcSession2;
         v19 = "Skipped starting session since session start is already in progress %@";
-        v20 = v16;
+        v20 = avcSession5;
         v21 = 12;
 LABEL_32:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, v19, &v35, v21);
@@ -9900,16 +9900,16 @@ LABEL_32:
     {
       if (v17)
       {
-        v28 = [(CSDConversation *)self avcSession];
+        avcSession3 = [(CSDConversation *)self avcSession];
         v35 = 138412290;
-        v36 = v28;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Starting %@", &v35, 0xCu);
+        v36 = avcSession3;
+        _os_log_impl(&_mh_execute_header, avcSession5, OS_LOG_TYPE_DEFAULT, "Starting %@", &v35, 0xCu);
       }
 
       [(CSDConversation *)self setAvcSessionInProgress:1];
       v29 = sub_100004778();
-      v30 = [(CSDConversation *)self avcSession];
-      v31 = os_signpost_id_make_with_pointer(v29, v30);
+      avcSession4 = [(CSDConversation *)self avcSession];
+      v31 = os_signpost_id_make_with_pointer(v29, avcSession4);
 
       v32 = sub_100004778();
       v33 = v32;
@@ -9919,23 +9919,23 @@ LABEL_32:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_INTERVAL_BEGIN, v31, "avcSessionStart", "", &v35, 2u);
       }
 
-      v34 = [(CSDConversation *)self report];
-      -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 3, [v34 hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
+      report = [(CSDConversation *)self report];
+      -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 3, [report hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
 
-      v16 = [(CSDConversation *)self avcSession];
-      [v16 start];
+      avcSession5 = [(CSDConversation *)self avcSession];
+      [avcSession5 start];
     }
   }
 
   else
   {
-    v16 = sub_100004778();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    avcSession5 = sub_100004778();
+    if (os_log_type_enabled(avcSession5, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(CSDConversation *)self idsSession];
-      v22 = [(__CFString *)v18 isJoined];
+      avcSession2 = [(CSDConversation *)self idsSession];
+      isJoined2 = [(__CFString *)avcSession2 isJoined];
       v23 = @"NO";
-      if (v22)
+      if (isJoined2)
       {
         v24 = @"YES";
       }
@@ -9945,7 +9945,7 @@ LABEL_32:
         v24 = @"NO";
       }
 
-      if (v5)
+      if (isAudioReady)
       {
         v25 = @"YES";
       }
@@ -9957,7 +9957,7 @@ LABEL_32:
 
       v35 = 138413314;
       v36 = v24;
-      if (v9)
+      if (isOneToOneModeEnabled)
       {
         v26 = @"YES";
       }
@@ -9969,7 +9969,7 @@ LABEL_32:
 
       v37 = 2112;
       v38 = v25;
-      if (v10)
+      if (avMode)
       {
         v27 = @"NO";
       }
@@ -9982,7 +9982,7 @@ LABEL_32:
       v39 = 2112;
       v40 = v26;
       v41 = 2112;
-      if (v12 == 1)
+      if (localParticipantType == 1)
       {
         v23 = @"YES";
       }
@@ -9991,7 +9991,7 @@ LABEL_32:
       v43 = 2112;
       v44 = v23;
       v19 = "Skipped starting session since isJoined:%@ audioReady:%@ isRedirectingAudio :%@ isAVLess:%@ isLocalParticipantNormal: %@";
-      v20 = v16;
+      v20 = avcSession5;
       v21 = 52;
       goto LABEL_32;
     }
@@ -10000,8 +10000,8 @@ LABEL_32:
 
 - (void)_cleanUpFromAVCSessionFailure
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversation *)self resetConversation];
   [(CSDConversation *)self refreshActiveParticipantsList];
@@ -10010,40 +10010,40 @@ LABEL_32:
   [(CSDConversation *)self _cleanUpHandoffMetricsIfNecessary];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     state = self->_state;
     v8 = 134218240;
-    v9 = a3;
+    stateCopy = state;
     v10 = 2048;
-    v11 = state;
+    stateCopy2 = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setting state to: %ld, from: %ld", &v8, 0x16u);
   }
 
   v7 = self->_state;
-  self->_state = a3;
-  [(CSDConversation *)self _handleStateChanged:a3 oldState:v7];
+  self->_state = state;
+  [(CSDConversation *)self _handleStateChanged:state oldState:v7];
 }
 
-- (void)_handleStateChanged:(int64_t)a3 oldState:(int64_t)a4
+- (void)_handleStateChanged:(int64_t)changed oldState:(int64_t)state
 {
-  if (a3 != a4)
+  if (changed != state)
   {
-    v5 = [(CSDConversation *)self localParticipantBlobTracker];
-    [v5 handleConversationStateUpdated];
+    localParticipantBlobTracker = [(CSDConversation *)self localParticipantBlobTracker];
+    [localParticipantBlobTracker handleConversationStateUpdated];
   }
 }
 
 - (void)_cleanUpHandoffMetricsIfNecessary
 {
-  v3 = [(CSDConversation *)self addedHandoffParticipantToTime];
-  v4 = [v3 count];
+  addedHandoffParticipantToTime = [(CSDConversation *)self addedHandoffParticipantToTime];
+  v4 = [addedHandoffParticipantToTime count];
 
-  v5 = [(CSDConversation *)self removedHandoffParticipantToTime];
-  v6 = [v5 count];
+  removedHandoffParticipantToTime = [(CSDConversation *)self removedHandoffParticipantToTime];
+  v6 = [removedHandoffParticipantToTime count];
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -10071,8 +10071,8 @@ LABEL_32:
   if ([v8 count])
   {
     v11 = +[CSDReportingController sharedInstance];
-    v12 = [(CSDConversation *)self tuConversation];
-    [v11 handoffReportReceived:v8 forConversation:v12];
+    tuConversation = [(CSDConversation *)self tuConversation];
+    [v11 handoffReportReceived:v8 forConversation:tuConversation];
   }
 
   v13 = objc_alloc_init(NSMutableArray);
@@ -10110,23 +10110,23 @@ LABEL_32:
   {
     [(CSDConversation *)self setState:4];
     [(CSDConversation *)self _beginTimeoutForLeavingConversationWithReason:@"Cleaning up from AVCSession failure."];
-    v3 = [(CSDConversation *)self idsSession];
-    [v3 leaveGroupSessionWithContext:0];
+    idsSession = [(CSDConversation *)self idsSession];
+    [idsSession leaveGroupSessionWithContext:0];
   }
 }
 
-- (void)_beginTimeoutForLeavingConversationWithReason:(id)a3
+- (void)_beginTimeoutForLeavingConversationWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self timeoutBlock];
+  timeoutBlock = [(CSDConversation *)self timeoutBlock];
 
-  if (v6)
+  if (timeoutBlock)
   {
-    v7 = [(CSDConversation *)self timeoutBlock];
-    dispatch_block_cancel(v7);
+    timeoutBlock2 = [(CSDConversation *)self timeoutBlock];
+    dispatch_block_cancel(timeoutBlock2);
   }
 
   objc_initWeak(&location, self);
@@ -10135,16 +10135,16 @@ LABEL_32:
   block[2] = sub_10009B4FC;
   block[3] = &unk_10061A600;
   objc_copyWeak(&v16, &location);
-  v8 = v4;
+  v8 = reasonCopy;
   v15 = v8;
   v9 = dispatch_block_create(0, block);
   [(CSDConversation *)self setTimeoutBlock:v9];
 
-  v10 = [(CSDConversation *)self serverBag];
-  v11 = dispatch_time(0, 1000000000 * [v10 sessionCleanupTimeout]);
-  v12 = [(CSDConversation *)self queue];
-  v13 = [(CSDConversation *)self timeoutBlock];
-  dispatch_after(v11, v12, v13);
+  serverBag = [(CSDConversation *)self serverBag];
+  v11 = dispatch_time(0, 1000000000 * [serverBag sessionCleanupTimeout]);
+  queue2 = [(CSDConversation *)self queue];
+  timeoutBlock3 = [(CSDConversation *)self timeoutBlock];
+  dispatch_after(v11, queue2, timeoutBlock3);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -10152,15 +10152,15 @@ LABEL_32:
 
 - (void)_cancelTimeoutForLeavingConversation
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self timeoutBlock];
+  timeoutBlock = [(CSDConversation *)self timeoutBlock];
 
-  if (v4)
+  if (timeoutBlock)
   {
-    v5 = [(CSDConversation *)self timeoutBlock];
-    dispatch_block_cancel(v5);
+    timeoutBlock2 = [(CSDConversation *)self timeoutBlock];
+    dispatch_block_cancel(timeoutBlock2);
 
     [(CSDConversation *)self setTimeoutBlock:0];
   }
@@ -10168,33 +10168,33 @@ LABEL_32:
 
 - (void)_endCallIfNecessary
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self serverBag];
-  v5 = [v4 isNoConversationParticipantEndCallEnabled];
+  serverBag = [(CSDConversation *)self serverBag];
+  isNoConversationParticipantEndCallEnabled = [serverBag isNoConversationParticipantEndCallEnabled];
 
-  if (v5)
+  if (isNoConversationParticipantEndCallEnabled)
   {
     if ([(CSDConversation *)self state]!= 3)
     {
       return;
     }
 
-    v6 = [(CSDConversation *)self activeRemoteParticipants];
-    if ([v6 count])
+    activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+    if ([activeRemoteParticipants count])
     {
 
 LABEL_9:
-      v10 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
+      noConversationParticipantTimeoutBlock = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
 
-      if (!v10)
+      if (!noConversationParticipantTimeoutBlock)
       {
         return;
       }
 
-      v11 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
-      dispatch_block_cancel(v11);
+      noConversationParticipantTimeoutBlock2 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
+      dispatch_block_cancel(noConversationParticipantTimeoutBlock2);
 
       [(CSDConversation *)self setNoConversationParticipantTimeoutBlock:0];
       v12 = sub_100004778();
@@ -10207,17 +10207,17 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v8 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-    v9 = [v8 count];
+    activeParticipantDestinationsByIdentifier = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+    v9 = [activeParticipantDestinationsByIdentifier count];
 
     if (v9 <= 1)
     {
       goto LABEL_9;
     }
 
-    v13 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
+    noConversationParticipantTimeoutBlock3 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
 
-    if (v13)
+    if (noConversationParticipantTimeoutBlock3)
     {
       v12 = sub_100004778();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -10243,18 +10243,18 @@ LABEL_12:
     v15 = sub_100004778();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(CSDConversation *)self serverBag];
-      v17 = [v16 noConversationParticipantTimeout];
+      serverBag2 = [(CSDConversation *)self serverBag];
+      noConversationParticipantTimeout = [serverBag2 noConversationParticipantTimeout];
       *v25 = 67109120;
-      v26 = v17;
+      v26 = noConversationParticipantTimeout;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "_endCallIfNecessary: started noConversationParticipantTimeout: %d", v25, 8u);
     }
 
-    v18 = [(CSDConversation *)self serverBag];
-    v19 = dispatch_time(0, 1000000000 * [v18 noConversationParticipantTimeout]);
-    v20 = [(CSDConversation *)self queue];
-    v21 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
-    dispatch_after(v19, v20, v21);
+    serverBag3 = [(CSDConversation *)self serverBag];
+    v19 = dispatch_time(0, 1000000000 * [serverBag3 noConversationParticipantTimeout]);
+    queue2 = [(CSDConversation *)self queue];
+    noConversationParticipantTimeoutBlock4 = [(CSDConversation *)self noConversationParticipantTimeoutBlock];
+    dispatch_after(v19, queue2, noConversationParticipantTimeoutBlock4);
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -10273,13 +10273,13 @@ LABEL_12:
 
 - (void)_showLetMeInUIIfNecessary
 {
-  v2 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v3 = [(CSDConversation *)self serverBag];
-  v4 = [v3 isLetMeInRequestUIForUnknownParticipantEnabled];
+  serverBag = [(CSDConversation *)self serverBag];
+  isLetMeInRequestUIForUnknownParticipantEnabled = [serverBag isLetMeInRequestUIForUnknownParticipantEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isLetMeInRequestUIForUnknownParticipantEnabled & 1) == 0)
   {
     v36 = sub_100004778();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -10293,9 +10293,9 @@ LABEL_12:
 
   if ([(CSDConversation *)self state]== 3)
   {
-    v5 = [(CSDConversation *)self link];
+    link = [(CSDConversation *)self link];
 
-    if (v5)
+    if (link)
     {
       v44 = objc_alloc_init(NSMutableSet);
       v51 = 0u;
@@ -10317,14 +10317,14 @@ LABEL_12:
             }
 
             v7 = *(*(&v51 + 1) + 8 * i);
-            v8 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-            v9 = [v8 objectForKeyedSubscript:v7];
+            activeParticipantDestinationsByIdentifier = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+            v9 = [activeParticipantDestinationsByIdentifier objectForKeyedSubscript:v7];
 
-            v10 = [(CSDConversation *)self localParticipantIdentifier];
-            if (v10 != [v7 unsignedLongLongValue])
+            localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
+            if (localParticipantIdentifier != [v7 unsignedLongLongValue])
             {
-              v11 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-              v12 = [v11 objectForKeyedSubscript:v7];
+              activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+              v12 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v7];
               v13 = v12 || v9 == 0;
               v14 = !v13;
 
@@ -10333,19 +10333,19 @@ LABEL_12:
                 v50[1] = 0;
                 v15 = IDSCopyTokenAndIDForTokenWithID();
                 v16 = 0;
-                v17 = [v15 _stripFZIDPrefix];
-                v18 = [TUHandle normalizedHandleWithDestinationID:v17];
+                _stripFZIDPrefix = [v15 _stripFZIDPrefix];
+                v18 = [TUHandle normalizedHandleWithDestinationID:_stripFZIDPrefix];
 
                 v19 = [[TUConversationMember alloc] initWithHandle:v18];
-                v20 = [(CSDConversation *)self localMember];
-                v21 = [v20 handle];
+                localMember = [(CSDConversation *)self localMember];
+                handle = [localMember handle];
                 v22 = [TUHandle normalizedHandleWithDestinationID:v9];
-                v23 = [v21 isEquivalentToHandle:v22];
+                v23 = [handle isEquivalentToHandle:v22];
 
                 if ((v23 & 1) == 0)
                 {
-                  v24 = [(CSDConversation *)self remoteMemberHandles];
-                  v25 = [v24 containsObject:v18];
+                  remoteMemberHandles = [(CSDConversation *)self remoteMemberHandles];
+                  v25 = [remoteMemberHandles containsObject:v18];
 
                   if ((v25 & 1) == 0)
                   {
@@ -10367,31 +10367,31 @@ LABEL_12:
         v26 = sub_100004778();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [(CSDConversation *)self pendingRemoteMembers];
-          v28 = [(CSDConversation *)self localMember];
-          v29 = [v28 handle];
+          pendingRemoteMembers = [(CSDConversation *)self pendingRemoteMembers];
+          localMember2 = [(CSDConversation *)self localMember];
+          handle2 = [localMember2 handle];
           *buf = 138412802;
           v56 = v44;
           v57 = 2112;
-          v58 = v27;
+          v58 = pendingRemoteMembers;
           v59 = 2112;
-          v60 = v29;
+          v60 = handle2;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "add pending remote members: %@ to %@, localMember: %@", buf, 0x20u);
         }
 
-        v30 = [(CSDConversation *)self pendingRemoteMembers];
+        pendingRemoteMembers2 = [(CSDConversation *)self pendingRemoteMembers];
         v31 = [v44 copy];
-        [v30 unionSet:v31];
+        [pendingRemoteMembers2 unionSet:v31];
       }
 
-      v32 = [(CSDConversation *)self pendingRemoteMembers];
-      v33 = [v32 count] == 0;
+      pendingRemoteMembers3 = [(CSDConversation *)self pendingRemoteMembers];
+      v33 = [pendingRemoteMembers3 count] == 0;
 
-      v34 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+      letMeInRequestUINotificationBlock = [(CSDConversation *)self letMeInRequestUINotificationBlock];
 
       if (v33)
       {
-        if (v34)
+        if (letMeInRequestUINotificationBlock)
         {
           v37 = sub_100004778();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -10400,14 +10400,14 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "No pendingRemoteMembers, cancel letMeInRequestUINotificationBlock", buf, 2u);
           }
 
-          v38 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
-          dispatch_block_cancel(v38);
+          letMeInRequestUINotificationBlock2 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+          dispatch_block_cancel(letMeInRequestUINotificationBlock2);
 
           [(CSDConversation *)self setLetMeInRequestUINotificationBlock:0];
         }
       }
 
-      else if (v34)
+      else if (letMeInRequestUINotificationBlock)
       {
         v35 = sub_100004778();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -10428,11 +10428,11 @@ LABEL_12:
         v39 = dispatch_block_create(0, block);
         [(CSDConversation *)self setLetMeInRequestUINotificationBlock:v39];
 
-        v40 = [(CSDConversation *)self serverBag];
-        v41 = dispatch_time(0, 1000000000 * [v40 letMeInRequestUINotificationGracePeriod]);
-        v42 = [(CSDConversation *)self queue];
-        v43 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
-        dispatch_after(v41, v42, v43);
+        serverBag2 = [(CSDConversation *)self serverBag];
+        v41 = dispatch_time(0, 1000000000 * [serverBag2 letMeInRequestUINotificationGracePeriod]);
+        queue2 = [(CSDConversation *)self queue];
+        letMeInRequestUINotificationBlock3 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+        dispatch_after(v41, queue2, letMeInRequestUINotificationBlock3);
 
         objc_destroyWeak(v50);
         objc_destroyWeak(buf);
@@ -10446,8 +10446,8 @@ LABEL_40:
 
 - (void)_requestAVCBlobsIfNecessary
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CSDConversation *)self state]== 3)
   {
@@ -10455,8 +10455,8 @@ LABEL_40:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-    v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    activeParticipantDestinationsByIdentifier = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+    v5 = [activeParticipantDestinationsByIdentifier countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v5)
     {
       v6 = *v25;
@@ -10468,35 +10468,35 @@ LABEL_40:
         {
           if (*v25 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeParticipantDestinationsByIdentifier);
           }
 
           v8 = *(*(&v24 + 1) + 8 * v7);
-          v9 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-          v10 = [v9 objectForKeyedSubscript:v8];
+          activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+          v10 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v8];
           if (v10 || (v11 = -[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier"), v11 == [v8 unsignedLongLongValue]))
           {
           }
 
           else
           {
-            v12 = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
-            v13 = [v12 objectForKeyedSubscript:v8];
+            inflightAVCBlobRecoveryBlocksByIdentifier = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
+            v13 = [inflightAVCBlobRecoveryBlocksByIdentifier objectForKeyedSubscript:v8];
             v14 = v13 == 0;
 
             if (v14)
             {
               objc_initWeak(&location, self);
-              v15 = [(CSDConversation *)self serverBag];
-              v16 = dispatch_time(0, 1000000000 * [v15 AVCBlobRecoveryGracePeriod]);
-              v17 = [(CSDConversation *)self queue];
+              serverBag = [(CSDConversation *)self serverBag];
+              v16 = dispatch_time(0, 1000000000 * [serverBag AVCBlobRecoveryGracePeriod]);
+              queue2 = [(CSDConversation *)self queue];
               block[0] = _NSConcreteStackBlock;
               block[1] = 3221225472;
               v21[0] = sub_10009C900;
               v21[1] = &unk_10061A600;
               objc_copyWeak(&v22, &location);
               v21[2] = v8;
-              dispatch_after(v16, v17, block);
+              dispatch_after(v16, queue2, block);
 
               objc_destroyWeak(&v22);
               objc_destroyWeak(&location);
@@ -10507,7 +10507,7 @@ LABEL_40:
         }
 
         while (v5 != v7);
-        v18 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [activeParticipantDestinationsByIdentifier countByEnumeratingWithState:&v24 objects:v28 count:16];
         v5 = v18;
       }
 
@@ -10516,39 +10516,39 @@ LABEL_40:
   }
 }
 
-- (void)_removeMemberFromPendingMemberListForParticipant:(id)a3
+- (void)_removeMemberFromPendingMemberListForParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  participantCopy = participant;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversation *)self link];
+  link = [(CSDConversation *)self link];
 
-  if (v6)
+  if (link)
   {
-    v7 = [v4 handle];
-    v8 = [(CSDConversation *)self memberWithHandle:v7];
+    handle = [participantCopy handle];
+    v8 = [(CSDConversation *)self memberWithHandle:handle];
 
     if (v8)
     {
-      v9 = [(CSDConversation *)self pendingRemoteMembers];
-      v10 = [v9 containsObject:v8];
+      pendingRemoteMembers = [(CSDConversation *)self pendingRemoteMembers];
+      v10 = [pendingRemoteMembers containsObject:v8];
 
       if (v10)
       {
         v11 = sub_100004778();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(CSDConversation *)self pendingRemoteMembers];
+          pendingRemoteMembers2 = [(CSDConversation *)self pendingRemoteMembers];
           v14 = 138412546;
           v15 = v8;
           v16 = 2112;
-          v17 = v12;
+          v17 = pendingRemoteMembers2;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "remove %@ from pendingRemoteMembers: %@", &v14, 0x16u);
         }
 
-        v13 = [(CSDConversation *)self pendingRemoteMembers];
-        [v13 removeObject:v8];
+        pendingRemoteMembers3 = [(CSDConversation *)self pendingRemoteMembers];
+        [pendingRemoteMembers3 removeObject:v8];
       }
     }
   }
@@ -10556,17 +10556,17 @@ LABEL_40:
 
 - (void)_cancelInFlightAVCBlobRecoveryIfNecessary
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
-  v5 = [v4 allKeys];
+  inflightAVCBlobRecoveryBlocksByIdentifier = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
+  allKeys = [inflightAVCBlobRecoveryBlocksByIdentifier allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v8 = v6;
@@ -10580,15 +10580,15 @@ LABEL_40:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v20 + 1) + 8 * v10);
-        v12 = [(CSDConversation *)self serverProvidedParticipantIdentifiers];
-        if ([v12 containsObject:v11])
+        serverProvidedParticipantIdentifiers = [(CSDConversation *)self serverProvidedParticipantIdentifiers];
+        if ([serverProvidedParticipantIdentifiers containsObject:v11])
         {
-          v13 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-          v14 = [v13 objectForKeyedSubscript:v11];
+          activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+          v14 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v11];
 
           if (!v14)
           {
@@ -10608,19 +10608,19 @@ LABEL_40:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Cancelling in flight AVC blob recovery for participant with identifier %@", buf, 0xCu);
         }
 
-        v16 = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
-        v17 = [v16 objectForKeyedSubscript:v11];
+        inflightAVCBlobRecoveryBlocksByIdentifier2 = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
+        v17 = [inflightAVCBlobRecoveryBlocksByIdentifier2 objectForKeyedSubscript:v11];
         dispatch_block_cancel(v17);
 
-        v18 = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
-        [v18 setObject:0 forKeyedSubscript:v11];
+        inflightAVCBlobRecoveryBlocksByIdentifier3 = [(CSDConversation *)self inflightAVCBlobRecoveryBlocksByIdentifier];
+        [inflightAVCBlobRecoveryBlocksByIdentifier3 setObject:0 forKeyedSubscript:v11];
 
 LABEL_13:
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v8);
@@ -10629,22 +10629,22 @@ LABEL_13:
 
 - (void)_pruneRemoteParticipantsIfNecessary
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(CSDConversation *)self isWaitingToPruneParticipants])
   {
     [(CSDConversation *)self setWaitingToPruneParticipants:1];
     objc_initWeak(&location, self);
-    v4 = [(CSDConversation *)self serverBag];
-    v5 = dispatch_time(0, 1000000000 * [v4 activeParticipantPruningTimeout]);
-    v6 = [(CSDConversation *)self queue];
+    serverBag = [(CSDConversation *)self serverBag];
+    v5 = dispatch_time(0, 1000000000 * [serverBag activeParticipantPruningTimeout]);
+    queue2 = [(CSDConversation *)self queue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10009D30C;
     v7[3] = &unk_10061A740;
     objc_copyWeak(&v8, &location);
-    dispatch_after(v5, v6, v7);
+    dispatch_after(v5, queue2, v7);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -10653,15 +10653,15 @@ LABEL_13:
 
 - (void)refreshActiveParticipantsList
 {
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversation *)self participantRefreshBlock];
+  participantRefreshBlock = [(CSDConversation *)self participantRefreshBlock];
 
-  if (v4)
+  if (participantRefreshBlock)
   {
-    v5 = [(CSDConversation *)self participantRefreshBlock];
-    dispatch_block_cancel(v5);
+    participantRefreshBlock2 = [(CSDConversation *)self participantRefreshBlock];
+    dispatch_block_cancel(participantRefreshBlock2);
   }
 
   objc_initWeak(&location, self);
@@ -10673,56 +10673,56 @@ LABEL_13:
   v6 = dispatch_block_create(0, &v11);
   [(CSDConversation *)self setParticipantRefreshBlock:v6, v11, v12, v13, v14];
 
-  v7 = [(CSDConversation *)self serverBag];
-  v8 = dispatch_time(0, [v7 activeParticipantRefreshDelay]);
-  v9 = [(CSDConversation *)self queue];
-  v10 = [(CSDConversation *)self participantRefreshBlock];
-  dispatch_after(v8, v9, v10);
+  serverBag = [(CSDConversation *)self serverBag];
+  v8 = dispatch_time(0, [serverBag activeParticipantRefreshDelay]);
+  queue2 = [(CSDConversation *)self queue];
+  participantRefreshBlock3 = [(CSDConversation *)self participantRefreshBlock];
+  dispatch_after(v8, queue2, participantRefreshBlock3);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_reportConversationFailedWithFailureReason:(int64_t)a3 providerEndedReason:(unint64_t)a4
+- (void)_reportConversationFailedWithFailureReason:(int64_t)reason providerEndedReason:(unint64_t)endedReason
 {
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = objc_alloc_init(CXCallFailureContext);
-  [v9 setFailureReason:a3];
-  [v9 setProviderEndedReason:a4];
+  [v9 setFailureReason:reason];
+  [v9 setProviderEndedReason:endedReason];
   [(CSDConversation *)self setFailureContext:v9];
-  v8 = [(CSDConversation *)self delegate];
-  [v8 conversation:self failedWithContext:v9];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self failedWithContext:v9];
 }
 
-- (void)_reportConversationFailedWithProviderEndedReason:(unint64_t)a3
+- (void)_reportConversationFailedWithProviderEndedReason:(unint64_t)reason
 {
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = objc_alloc_init(CXCallFailureContext);
-  [v7 setProviderEndedReason:a3];
-  [v7 setFailureReason:a3];
+  [v7 setProviderEndedReason:reason];
+  [v7 setFailureReason:reason];
   [(CSDConversation *)self setFailureContext:v7];
-  v6 = [(CSDConversation *)self delegate];
-  [v6 conversation:self failedWithContext:v7];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self failedWithContext:v7];
 }
 
 - (id)_stableExpanseIdentifier
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CSDConversation *)self messagesGroupUUID];
-  v5 = [v4 UUIDString];
-  if ([v5 length])
+  messagesGroupUUID = [(CSDConversation *)self messagesGroupUUID];
+  uUIDString = [messagesGroupUUID UUIDString];
+  if ([uUIDString length])
   {
-    v6 = [(CSDConversation *)self isOneToOneModeEnabled];
+    isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
 
-    if ((v6 & 1) == 0)
+    if ((isOneToOneModeEnabled & 1) == 0)
     {
-      v7 = [(CSDConversation *)self messagesGroupUUID];
-      v8 = [v7 UUIDString];
-      [v3 addObject:v8];
+      messagesGroupUUID2 = [(CSDConversation *)self messagesGroupUUID];
+      uUIDString2 = [messagesGroupUUID2 UUIDString];
+      [v3 addObject:uUIDString2];
 
       goto LABEL_12;
     }
@@ -10736,8 +10736,8 @@ LABEL_13:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(CSDConversation *)self remoteMemberHandles];
-  v9 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  messagesGroupUUID2 = [(CSDConversation *)self remoteMemberHandles];
+  v9 = [messagesGroupUUID2 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -10748,14 +10748,14 @@ LABEL_13:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(messagesGroupUUID2);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * i) normalizedValue];
-        [v3 addObject:v13];
+        normalizedValue = [*(*(&v20 + 1) + 8 * i) normalizedValue];
+        [v3 addObject:normalizedValue];
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v10 = [messagesGroupUUID2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v10);
@@ -10766,100 +10766,100 @@ LABEL_12:
   [v3 sortUsingSelector:"caseInsensitiveCompare:"];
   v14 = [v3 componentsJoinedByString:@"-"];
   v15 = [v14 dataUsingEncoding:4];
-  v16 = [v15 SHA1HexString];
+  sHA1HexString = [v15 SHA1HexString];
 
   v17 = sub_100004778();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(CSDConversation *)self UUID];
+    uUID = [(CSDConversation *)self UUID];
     *buf = 138412546;
-    v25 = v16;
+    v25 = sHA1HexString;
     v26 = 2112;
-    v27 = v18;
+    v27 = uUID;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "_stableExpanseIdentifier %@ for %@ ", buf, 0x16u);
   }
 
-  return v16;
+  return sHA1HexString;
 }
 
 - (void)_registerPluginsIfNecessary
 {
-  v3 = [(CSDConversation *)self idsSession];
-  v4 = [v3 isJoined];
+  idsSession = [(CSDConversation *)self idsSession];
+  isJoined = [idsSession isJoined];
 
-  if (v4)
+  if (isJoined)
   {
-    v10 = [(CSDConversation *)self virtualParticipantsByPluginName];
-    v5 = [v10 objectForKeyedSubscript:@"PubSub"];
+    virtualParticipantsByPluginName = [(CSDConversation *)self virtualParticipantsByPluginName];
+    v5 = [virtualParticipantsByPluginName objectForKeyedSubscript:@"PubSub"];
     if (v5)
     {
     }
 
     else
     {
-      v6 = [(CSDConversation *)self activitySessions];
-      v7 = [v6 count];
+      activitySessions = [(CSDConversation *)self activitySessions];
+      v7 = [activitySessions count];
 
       if (v7)
       {
         v11 = IDSGroupSessionPluginNameKey;
         v12 = @"PubSub";
         v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-        v9 = [(CSDConversation *)self idsSession];
-        [v9 registerPluginWithOptions:v8];
+        idsSession2 = [(CSDConversation *)self idsSession];
+        [idsSession2 registerPluginWithOptions:v8];
       }
     }
   }
 }
 
-- (void)switchBackToOneToOneIfPossibleUsingDelay:(BOOL)a3
+- (void)switchBackToOneToOneIfPossibleUsingDelay:(BOOL)delay
 {
-  v64 = a3;
-  v3 = [(CSDConversation *)self downgradeToOneToOneAfterDelayBlock];
+  delayCopy = delay;
+  downgradeToOneToOneAfterDelayBlock = [(CSDConversation *)self downgradeToOneToOneAfterDelayBlock];
 
-  v4 = self;
-  if (v3)
+  selfCopy2 = self;
+  if (downgradeToOneToOneAfterDelayBlock)
   {
-    v5 = [(CSDConversation *)self downgradeToOneToOneAfterDelayBlock];
-    dispatch_block_cancel(v5);
+    downgradeToOneToOneAfterDelayBlock2 = [(CSDConversation *)self downgradeToOneToOneAfterDelayBlock];
+    dispatch_block_cancel(downgradeToOneToOneAfterDelayBlock2);
 
-    v4 = self;
+    selfCopy2 = self;
     [(CSDConversation *)self setDowngradeToOneToOneAfterDelayBlock:0];
   }
 
-  v6 = [(CSDConversation *)v4 remoteMembers];
-  v65 = [v6 count];
+  remoteMembers = [(CSDConversation *)selfCopy2 remoteMembers];
+  v65 = [remoteMembers count];
 
-  v7 = [(CSDConversation *)self activeRemoteParticipants];
-  v8 = [v7 count];
-  v9 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-  v10 = [v9 count];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v8 = [activeRemoteParticipants count];
+  activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+  v10 = [activeLightweightParticipantsByIdentifier count];
 
-  v66 = [(CSDConversation *)self activeRemoteParticipantCountMinusEligibleAVLess];
+  activeRemoteParticipantCountMinusEligibleAVLess = [(CSDConversation *)self activeRemoteParticipantCountMinusEligibleAVLess];
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134219264;
     *v81 = [(CSDConversation *)self state];
     *&v81[8] = 1024;
-    v82 = [(CSDConversation *)self isOneToOneModeEnabled];
+    isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
     v83 = 2048;
     v84 = v65;
     v85 = 2048;
     v86 = &v8[v10];
     v87 = 2048;
-    v88 = v66;
+    v88 = activeRemoteParticipantCountMinusEligibleAVLess;
     v89 = 1024;
-    v90 = v64;
+    v90 = delayCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Checking if oneToOne->1 downgrade available with state: %tu oneToOneMode: %d remoteMemberCount: %lu activeRemoteParticipantCount: %lu activeRemoteParticipantCountMinusEligibleAVLess: %lu useDelay: %d", buf, 0x36u);
   }
 
   v12 = sub_100004778();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(CSDConversation *)self activeRemoteParticipants];
+    activeRemoteParticipants2 = [(CSDConversation *)self activeRemoteParticipants];
     *buf = 138412290;
-    *v81 = v13;
+    *v81 = activeRemoteParticipants2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "activeRemoteParticipantsByIdentifier: %@", buf, 0xCu);
   }
 
@@ -10893,9 +10893,9 @@ LABEL_10:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v15 = [(CSDConversation *)self activeRemoteParticipants];
+  activeRemoteParticipants3 = [(CSDConversation *)self activeRemoteParticipants];
   v16 = 0;
-  v17 = [v15 countByEnumeratingWithState:&v74 objects:v79 count:16];
+  v17 = [activeRemoteParticipants3 countByEnumeratingWithState:&v74 objects:v79 count:16];
   if (v17)
   {
     v18 = *v75;
@@ -10905,12 +10905,12 @@ LABEL_10:
       {
         if (*v75 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(activeRemoteParticipants3);
         }
 
         v20 = *(*(&v74 + 1) + 8 * i);
-        v21 = [v20 capabilities];
-        if ([v21 isUPlusOneAVLessAvailable])
+        capabilities = [v20 capabilities];
+        if ([capabilities isUPlusOneAVLessAvailable])
         {
           v22 = [v20 audioVideoMode] == 0;
 
@@ -10933,21 +10933,21 @@ LABEL_10:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v74 objects:v79 count:16];
+      v17 = [activeRemoteParticipants3 countByEnumeratingWithState:&v74 objects:v79 count:16];
     }
 
     while (v17);
   }
 
-  if (v66 == 1)
+  if (activeRemoteParticipantCountMinusEligibleAVLess == 1)
   {
-    v24 = [(CSDConversation *)self featureFlags];
-    if ([v24 uPlusNDowngrade])
+    featureFlags = [(CSDConversation *)self featureFlags];
+    if ([featureFlags uPlusNDowngrade])
     {
-      v25 = [(CSDConversation *)self serverBag];
-      v26 = [v25 isUPlusNDowngradeAvailable];
+      serverBag = [(CSDConversation *)self serverBag];
+      isUPlusNDowngradeAvailable = [serverBag isUPlusNDowngradeAvailable];
 
-      v27 = v26 ^ 1;
+      v27 = isUPlusNDowngradeAvailable ^ 1;
     }
 
     else
@@ -10955,10 +10955,10 @@ LABEL_10:
       v27 = 1;
     }
 
-    v29 = [(CSDConversation *)self activeRemoteParticipants];
-    v30 = [v29 anyObject];
-    v31 = [v30 capabilities];
-    v32 = [v31 isUPlusNDowngradeAvailable];
+    activeRemoteParticipants4 = [(CSDConversation *)self activeRemoteParticipants];
+    anyObject = [activeRemoteParticipants4 anyObject];
+    capabilities2 = [anyObject capabilities];
+    isUPlusNDowngradeAvailable2 = [capabilities2 isUPlusNDowngradeAvailable];
 
     v33 = sub_100004778();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -10970,18 +10970,18 @@ LABEL_10:
 
     if (v65 == 1 || v16)
     {
-      v34 = [(CSDConversation *)self link];
-      if (v34)
+      link = [(CSDConversation *)self link];
+      if (link)
       {
 
-        if ((v27 | v32 ^ 1))
+        if ((v27 | isUPlusNDowngradeAvailable2 ^ 1))
         {
           return;
         }
       }
     }
 
-    else if (v27 & 1 | ((v32 & 1) == 0))
+    else if (v27 & 1 | ((isUPlusNDowngradeAvailable2 & 1) == 0))
     {
       return;
     }
@@ -10997,8 +10997,8 @@ LABEL_10:
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v39 = [(CSDConversation *)self activitySessions];
-      v40 = [v39 countByEnumeratingWithState:&v70 objects:v78 count:16];
+      activitySessions = [(CSDConversation *)self activitySessions];
+      v40 = [activitySessions countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (v40)
       {
         v38 = v37 ^ 1;
@@ -11009,20 +11009,20 @@ LABEL_10:
           {
             if (*v71 != v41)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(activitySessions);
             }
 
-            v43 = [*(*(&v70 + 1) + 8 * j) activity];
-            v44 = [v43 isScreenSharingActivity];
+            activity = [*(*(&v70 + 1) + 8 * j) activity];
+            isScreenSharingActivity = [activity isScreenSharingActivity];
 
-            if (v44)
+            if (isScreenSharingActivity)
             {
               v38 = 0;
               goto LABEL_58;
             }
           }
 
-          v40 = [v39 countByEnumeratingWithState:&v70 objects:v78 count:16];
+          v40 = [activitySessions countByEnumeratingWithState:&v70 objects:v78 count:16];
           if (v40)
           {
             continue;
@@ -11040,15 +11040,15 @@ LABEL_10:
 LABEL_58:
     }
 
-    v45 = [(CSDConversation *)self featureFlags];
-    if ([v45 uPlusOneScreenSharing])
+    featureFlags2 = [(CSDConversation *)self featureFlags];
+    if ([featureFlags2 uPlusOneScreenSharing])
     {
-      v46 = [(CSDConversation *)self activeRemoteParticipants];
-      v47 = [v46 anyObject];
-      v48 = [v47 capabilities];
-      v49 = [v48 isUPlusOneScreenShareAvailable];
+      activeRemoteParticipants5 = [(CSDConversation *)self activeRemoteParticipants];
+      anyObject2 = [activeRemoteParticipants5 anyObject];
+      capabilities3 = [anyObject2 capabilities];
+      isUPlusOneScreenShareAvailable = [capabilities3 isUPlusOneScreenShareAvailable];
 
-      if (((v49 | v38) & 1) == 0)
+      if (((isUPlusOneScreenShareAvailable | v38) & 1) == 0)
       {
         return;
       }
@@ -11063,26 +11063,26 @@ LABEL_58:
       }
     }
 
-    v50 = [(CSDConversation *)self featureFlags];
-    if ([v50 gftDowngradeToOneToOne])
+    featureFlags3 = [(CSDConversation *)self featureFlags];
+    if ([featureFlags3 gftDowngradeToOneToOne])
     {
-      v51 = [(CSDConversation *)self serverBag];
-      v52 = [v51 isGFTDowngradeToOneToOneAvailable];
+      serverBag2 = [(CSDConversation *)self serverBag];
+      isGFTDowngradeToOneToOneAvailable = [serverBag2 isGFTDowngradeToOneToOneAvailable];
     }
 
     else
     {
-      v52 = 0;
+      isGFTDowngradeToOneToOneAvailable = 0;
     }
 
-    v53 = [(CSDConversation *)self activeRemoteParticipants];
-    v54 = [v53 anyObject];
-    v55 = [v54 capabilities];
-    v56 = [v55 isGFTDowngradeToOneToOneAvailable];
+    activeRemoteParticipants6 = [(CSDConversation *)self activeRemoteParticipants];
+    anyObject3 = [activeRemoteParticipants6 anyObject];
+    capabilities4 = [anyObject3 capabilities];
+    isGFTDowngradeToOneToOneAvailable2 = [capabilities4 isGFTDowngradeToOneToOneAvailable];
 
-    if (v52 & v56)
+    if (isGFTDowngradeToOneToOneAvailable & isGFTDowngradeToOneToOneAvailable2)
     {
-      if (v64)
+      if (delayCopy)
       {
         objc_initWeak(buf, self);
         block[0] = _NSConcreteStackBlock;
@@ -11095,9 +11095,9 @@ LABEL_58:
 
         [(CSDConversation *)self sessionSwitchTimeout];
         v59 = dispatch_time(0, (v58 * 1000000000.0));
-        v60 = [(CSDConversation *)self queue];
-        v61 = [(CSDConversation *)self downgradeToOneToOneAfterDelayBlock];
-        dispatch_after(v59, v60, v61);
+        queue = [(CSDConversation *)self queue];
+        downgradeToOneToOneAfterDelayBlock3 = [(CSDConversation *)self downgradeToOneToOneAfterDelayBlock];
+        dispatch_after(v59, queue, downgradeToOneToOneAfterDelayBlock3);
 
         objc_destroyWeak(&v69);
         objc_destroyWeak(buf);
@@ -11122,9 +11122,9 @@ LABEL_58:
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
-        *v81 = v52;
+        *v81 = isGFTDowngradeToOneToOneAvailable;
         *&v81[4] = 1024;
-        *&v81[6] = v56;
+        *&v81[6] = isGFTDowngradeToOneToOneAvailable2;
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Screen sharing has ended but not requesting to move back to U+1 mode since localDowngradeAvailable:%d remoteDowngradeAvailable:%d", buf, 0xEu);
       }
     }
@@ -11141,25 +11141,25 @@ LABEL_58:
   }
 }
 
-- (void)continueHandoffAudioRouteForIdentifier:(unint64_t)a3 participantLeft:(BOOL)a4
+- (void)continueHandoffAudioRouteForIdentifier:(unint64_t)identifier participantLeft:(BOOL)left
 {
-  v4 = a4;
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  leftCopy = left;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(CSDConversation *)self audioRoutesByParticipantIdentifier];
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  audioRoutesByParticipantIdentifier = [(CSDConversation *)self audioRoutesByParticipantIdentifier];
+  v9 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v10 = [audioRoutesByParticipantIdentifier objectForKeyedSubscript:v9];
 
-  v11 = sub_100004778();
-  v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
+  audioRoutesByParticipantIdentifier2 = sub_100004778();
+  v12 = os_log_type_enabled(audioRoutesByParticipantIdentifier2, OS_LOG_TYPE_DEFAULT);
   if (!v10)
   {
     if (v12)
     {
       v16 = 134217984;
-      v17 = a3;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Did not retrieve a route identifier for participant identifier %llu", &v16, 0xCu);
+      identifierCopy = identifier;
+      _os_log_impl(&_mh_execute_header, audioRoutesByParticipantIdentifier2, OS_LOG_TYPE_DEFAULT, "Did not retrieve a route identifier for participant identifier %llu", &v16, 0xCu);
     }
 
     goto LABEL_8;
@@ -11168,21 +11168,21 @@ LABEL_58:
   if (v12)
   {
     v16 = 138412546;
-    v17 = v10;
+    identifierCopy = v10;
     v18 = 2048;
-    v19 = a3;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Retrieved route identifier %@ for participant identifier %llu", &v16, 0x16u);
+    identifierCopy2 = identifier;
+    _os_log_impl(&_mh_execute_header, audioRoutesByParticipantIdentifier2, OS_LOG_TYPE_DEFAULT, "Retrieved route identifier %@ for participant identifier %llu", &v16, 0x16u);
   }
 
   v13 = +[NSNotificationCenter defaultCenter];
   v14 = +[CSDHandoffAudioController continueHandoffAudioRouteNotification];
   [v13 postNotificationName:v14 object:v10];
 
-  if (v4)
+  if (leftCopy)
   {
-    v11 = [(CSDConversation *)self audioRoutesByParticipantIdentifier];
-    v15 = [NSNumber numberWithUnsignedLongLong:a3];
-    [v11 setObject:0 forKeyedSubscript:v15];
+    audioRoutesByParticipantIdentifier2 = [(CSDConversation *)self audioRoutesByParticipantIdentifier];
+    v15 = [NSNumber numberWithUnsignedLongLong:identifier];
+    [audioRoutesByParticipantIdentifier2 setObject:0 forKeyedSubscript:v15];
 
 LABEL_8:
   }
@@ -11204,9 +11204,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)updateConversationParticipantToHaveMatchingSiriDisplayName:(id)a3
+- (void)updateConversationParticipantToHaveMatchingSiriDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -11227,20 +11227,20 @@ LABEL_8:
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 handle];
-        v11 = [v4 handle];
-        if ([v10 isEquivalentToHandle:v11])
+        handle = [v9 handle];
+        handle2 = [nameCopy handle];
+        if ([handle isEquivalentToHandle:handle2])
         {
-          v12 = [v9 handle];
-          v13 = [v12 siriDisplayName];
-          v14 = [v13 length];
+          handle3 = [v9 handle];
+          siriDisplayName = [handle3 siriDisplayName];
+          v14 = [siriDisplayName length];
 
           if (v14)
           {
-            v15 = [v9 handle];
-            v16 = [v15 siriDisplayName];
-            v17 = [v4 handle];
-            [v17 setSiriDisplayName:v16];
+            handle4 = [v9 handle];
+            siriDisplayName2 = [handle4 siriDisplayName];
+            handle5 = [nameCopy handle];
+            [handle5 setSiriDisplayName:siriDisplayName2];
 
             goto LABEL_12;
           }
@@ -11260,17 +11260,17 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)_generateHandoffReportIfNecessaryForUpdatedParticipantID:(unint64_t)a3 isAddParticipant:(BOOL)a4
+- (void)_generateHandoffReportIfNecessaryForUpdatedParticipantID:(unint64_t)d isAddParticipant:(BOOL)participant
 {
-  v4 = a4;
-  if (a4)
+  participantCopy = participant;
+  if (participant)
   {
     v51 = 0uLL;
     v52 = 0uLL;
     v49 = 0uLL;
     v50 = 0uLL;
-    v7 = [(CSDConversation *)self addedHandoffParticipants];
-    v8 = [v7 countByEnumeratingWithState:&v49 objects:v62 count:16];
+    addedHandoffParticipants = [(CSDConversation *)self addedHandoffParticipants];
+    v8 = [addedHandoffParticipants countByEnumeratingWithState:&v49 objects:v62 count:16];
     if (v8)
     {
       v9 = v8;
@@ -11281,18 +11281,18 @@ LABEL_12:
         {
           if (*v50 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(addedHandoffParticipants);
           }
 
           v12 = *(*(&v49 + 1) + 8 * i);
-          if ([v12 identifier] == a3)
+          if ([v12 identifier] == d)
           {
-            v18 = [(CSDConversation *)self addedHandoffParticipantToTime];
+            addedHandoffParticipantToTime = [(CSDConversation *)self addedHandoffParticipantToTime];
             goto LABEL_22;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v49 objects:v62 count:16];
+        v9 = [addedHandoffParticipants countByEnumeratingWithState:&v49 objects:v62 count:16];
         if (v9)
         {
           continue;
@@ -11309,8 +11309,8 @@ LABEL_12:
     v48 = 0uLL;
     *(&v45 + 1) = 0;
     v46 = 0uLL;
-    v7 = [(CSDConversation *)self removedHandoffParticipants];
-    v13 = [v7 countByEnumeratingWithState:&v45 objects:v61 count:16];
+    addedHandoffParticipants = [(CSDConversation *)self removedHandoffParticipants];
+    v13 = [addedHandoffParticipants countByEnumeratingWithState:&v45 objects:v61 count:16];
     if (v13)
     {
       v14 = v13;
@@ -11321,25 +11321,25 @@ LABEL_12:
         {
           if (*v46 != v15)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(addedHandoffParticipants);
           }
 
           v12 = *(*(&v45 + 1) + 8 * j);
-          if ([v12 identifier] == a3)
+          if ([v12 identifier] == d)
           {
-            v18 = [(CSDConversation *)self removedHandoffParticipantToTime];
+            addedHandoffParticipantToTime = [(CSDConversation *)self removedHandoffParticipantToTime];
 LABEL_22:
-            v19 = v18;
+            v19 = addedHandoffParticipantToTime;
             v20 = +[NSDate now];
-            v21 = [v12 handle];
-            [v19 setObject:v20 forKey:v21];
+            handle = [v12 handle];
+            [v19 setObject:v20 forKey:handle];
 
             v17 = v12;
             goto LABEL_23;
           }
         }
 
-        v14 = [v7 countByEnumeratingWithState:&v45 objects:v61 count:16];
+        v14 = [addedHandoffParticipants countByEnumeratingWithState:&v45 objects:v61 count:16];
         if (v14)
         {
           continue;
@@ -11355,36 +11355,36 @@ LABEL_23:
 
   if (v17)
   {
-    v22 = [v17 handle];
+    handle2 = [v17 handle];
     v23 = sub_100004778();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = @"NO";
       *buf = 134218498;
-      v56 = a3;
+      dCopy = d;
       v57 = 2112;
-      if (v4)
+      if (participantCopy)
       {
         v24 = @"YES";
       }
 
       v58 = v24;
       v59 = 2112;
-      v60 = v22;
+      v60 = handle2;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "updatedParticipantID: %llu, isAddParticipant: %@, handle: %@", buf, 0x20u);
     }
 
-    v25 = [(CSDConversation *)self addedHandoffParticipantToTime];
-    v26 = [v25 allKeys];
-    if ([v26 containsObject:v22])
+    addedHandoffParticipantToTime2 = [(CSDConversation *)self addedHandoffParticipantToTime];
+    allKeys = [addedHandoffParticipantToTime2 allKeys];
+    if ([allKeys containsObject:handle2])
     {
-      v27 = [(CSDConversation *)self removedHandoffParticipantToTime];
-      v28 = [v27 allKeys];
-      if ([v28 containsObject:v22])
+      removedHandoffParticipantToTime = [(CSDConversation *)self removedHandoffParticipantToTime];
+      allKeys2 = [removedHandoffParticipantToTime allKeys];
+      if ([allKeys2 containsObject:handle2])
       {
-        v29 = [(CSDConversation *)self startAddingHandoffParticipantToTime];
-        v30 = [v29 allKeys];
-        v31 = [v30 containsObject:v22];
+        startAddingHandoffParticipantToTime = [(CSDConversation *)self startAddingHandoffParticipantToTime];
+        allKeys3 = [startAddingHandoffParticipantToTime allKeys];
+        v31 = [allKeys3 containsObject:handle2];
 
         if (!v31)
         {
@@ -11393,46 +11393,46 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v32 = [(CSDConversation *)self addedHandoffParticipants];
-        [v32 removeObject:v17];
+        addedHandoffParticipants2 = [(CSDConversation *)self addedHandoffParticipants];
+        [addedHandoffParticipants2 removeObject:v17];
 
-        v33 = [(CSDConversation *)self removedHandoffParticipants];
-        [v33 removeObject:v17];
+        removedHandoffParticipants = [(CSDConversation *)self removedHandoffParticipants];
+        [removedHandoffParticipants removeObject:v17];
 
         v53[0] = @"kCSDConversationStartAddingParticipant";
-        v34 = [(CSDConversation *)self startAddingHandoffParticipantToTime];
-        v35 = [v34 objectForKeyedSubscript:v22];
+        startAddingHandoffParticipantToTime2 = [(CSDConversation *)self startAddingHandoffParticipantToTime];
+        v35 = [startAddingHandoffParticipantToTime2 objectForKeyedSubscript:handle2];
         v54[0] = v35;
         v53[1] = @"kCSDConversationAddedParticipant";
-        v36 = [(CSDConversation *)self addedHandoffParticipantToTime];
-        v37 = [v36 objectForKeyedSubscript:v22];
+        addedHandoffParticipantToTime3 = [(CSDConversation *)self addedHandoffParticipantToTime];
+        v37 = [addedHandoffParticipantToTime3 objectForKeyedSubscript:handle2];
         v54[1] = v37;
         v53[2] = @"kCSDConversationRemovedParticipant";
-        v38 = [(CSDConversation *)self removedHandoffParticipantToTime];
-        v39 = [v38 objectForKeyedSubscript:v22];
+        removedHandoffParticipantToTime2 = [(CSDConversation *)self removedHandoffParticipantToTime];
+        v39 = [removedHandoffParticipantToTime2 objectForKeyedSubscript:handle2];
         v54[2] = v39;
-        v25 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:3];
+        addedHandoffParticipantToTime2 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:3];
 
         v40 = sub_100004778();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v56 = v25;
+          dCopy = addedHandoffParticipantToTime2;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "handoff report: %@", buf, 0xCu);
         }
 
         v41 = +[CSDReportingController sharedInstance];
-        v42 = [(CSDConversation *)self tuConversation];
-        [v41 handoffReportReceived:v25 forConversation:v42];
+        tuConversation = [(CSDConversation *)self tuConversation];
+        [v41 handoffReportReceived:addedHandoffParticipantToTime2 forConversation:tuConversation];
 
-        v43 = [(CSDConversation *)self startAddingHandoffParticipantToTime];
-        [v43 removeObjectForKey:v22];
+        startAddingHandoffParticipantToTime3 = [(CSDConversation *)self startAddingHandoffParticipantToTime];
+        [startAddingHandoffParticipantToTime3 removeObjectForKey:handle2];
 
-        v44 = [(CSDConversation *)self addedHandoffParticipantToTime];
-        [v44 removeObjectForKey:v22];
+        addedHandoffParticipantToTime4 = [(CSDConversation *)self addedHandoffParticipantToTime];
+        [addedHandoffParticipantToTime4 removeObjectForKey:handle2];
 
-        v26 = [(CSDConversation *)self removedHandoffParticipantToTime];
-        [v26 removeObjectForKey:v22];
+        allKeys = [(CSDConversation *)self removedHandoffParticipantToTime];
+        [allKeys removeObjectForKey:handle2];
       }
 
       else
@@ -11446,41 +11446,41 @@ LABEL_36:
 LABEL_37:
 }
 
-- (void)updateLocalParticipantCluster:(id)a3
+- (void)updateLocalParticipantCluster:(id)cluster
 {
-  v5 = a3;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  clusterCopy = cluster;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversation *)self featureFlags];
-  v8 = [v7 nearbyFaceTimeEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  nearbyFaceTimeEnabled = [featureFlags nearbyFaceTimeEnabled];
 
-  if (v8)
+  if (nearbyFaceTimeEnabled)
   {
-    v9 = [(CSDConversation *)self idsSession];
-    v10 = [v9 isJoined];
+    idsSession = [(CSDConversation *)self idsSession];
+    isJoined = [idsSession isJoined];
 
-    if (v10)
+    if (isJoined)
     {
-      v11 = [(CSDConversation *)self localParticipantCluster];
-      v12 = [v11 isEqual:v5];
+      localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+      v12 = [localParticipantCluster isEqual:clusterCopy];
 
       if ((v12 & 1) == 0)
       {
-        objc_storeStrong(&self->_localParticipantCluster, a3);
+        objc_storeStrong(&self->_localParticipantCluster, cluster);
         [(CSDConversation *)self _recomputeAudioStates];
-        v13 = [(CSDConversation *)self avcSession];
-        [v13 setLocalParticipantCluster:v5];
+        avcSession = [(CSDConversation *)self avcSession];
+        [avcSession setLocalParticipantCluster:clusterCopy];
 
-        v14 = [(CSDConversation *)self activitySessionManager];
-        v15 = [(CSDConversation *)self activeRemoteParticipants];
+        activitySessionManager = [(CSDConversation *)self activitySessionManager];
+        activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
         v16 = NSStringFromSelector("tuConversationParticipant");
-        v17 = [v15 valueForKey:v16];
-        [v14 updateNearbyClustersWithLocalParticipantCluster:v5 remoteParticipants:v17];
+        v17 = [activeRemoteParticipants valueForKey:v16];
+        [activitySessionManager updateNearbyClustersWithLocalParticipantCluster:clusterCopy remoteParticipants:v17];
 
         v18 = +[CSDReportingController sharedInstance];
-        v19 = [(CSDConversation *)self tuConversation];
-        [v18 participantClusterChangedForConversation:v19];
+        tuConversation = [(CSDConversation *)self tuConversation];
+        [v18 participantClusterChangedForConversation:tuConversation];
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained conversationChanged:self];
@@ -11500,19 +11500,19 @@ LABEL_37:
   }
 }
 
-- (void)postSharePlayActivityDidChangeNotificationIfNecessary:(id)a3
+- (void)postSharePlayActivityDidChangeNotificationIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if ([(CSDConversation *)self state]== 3)
   {
-    v5 = [v4 activity];
-    v6 = [v5 isSystemActivity];
+    activity = [necessaryCopy activity];
+    isSystemActivity = [activity isSystemActivity];
 
-    if ((v6 & 1) == 0)
+    if ((isSystemActivity & 1) == 0)
     {
-      if (![v4 isLocallyInitiated] || (objc_msgSend(v4, "activity"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isScreenSharingActivity"), v7, (v8 & 1) == 0))
+      if (![necessaryCopy isLocallyInitiated] || (objc_msgSend(necessaryCopy, "activity"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isScreenSharingActivity"), v7, (v8 & 1) == 0))
       {
-        if (([v4 isLocallyInitiated] & 1) == 0)
+        if (([necessaryCopy isLocallyInitiated] & 1) == 0)
         {
           v9 = +[NSNotificationCenter defaultCenter];
           [v9 postNotificationName:@"CSDSharePlayRemoteActivityDidChangeNotification" object:self];
@@ -11532,26 +11532,26 @@ LABEL_37:
   }
 }
 
-- (void)_applyUpdateFromDataBlobForRemoteParticipant:(id)a3 participantIdentifier:(unint64_t)a4
+- (void)_applyUpdateFromDataBlobForRemoteParticipant:(id)participant participantIdentifier:(unint64_t)identifier
 {
-  v28 = a3;
-  v6 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v7 = [NSNumber numberWithUnsignedLongLong:a4];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  participantCopy = participant;
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v7 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v8 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v7];
 
-  v9 = [(CSDConversation *)self delegate];
+  delegate = [(CSDConversation *)self delegate];
   if (v8)
   {
-    v10 = [v8 cluster];
-    v11 = [v28 cluster];
+    cluster = [v8 cluster];
+    cluster2 = [participantCopy cluster];
     v12 = TUObjectsAreEqualOrNil();
 
-    v13 = [v8 capabilities];
-    v14 = [v28 capabilities];
-    if ([v13 isEqualToCapabilities:v14])
+    capabilities = [v8 capabilities];
+    capabilities2 = [participantCopy capabilities];
+    if ([capabilities isEqualToCapabilities:capabilities2])
     {
-      v15 = [v8 isSpatialPersonaEnabled];
-      v16 = v15 ^ [v28 isSpatialPersonaEnabled] | v12 ^ 1;
+      isSpatialPersonaEnabled = [v8 isSpatialPersonaEnabled];
+      v16 = isSpatialPersonaEnabled ^ [participantCopy isSpatialPersonaEnabled] | v12 ^ 1;
     }
 
     else
@@ -11559,46 +11559,46 @@ LABEL_37:
       v16 = 1;
     }
 
-    v17 = [v28 capabilities];
-    [v8 setCapabilities:v17];
+    capabilities3 = [participantCopy capabilities];
+    [v8 setCapabilities:capabilities3];
 
-    [v8 setSpatialPersonaEnabled:{objc_msgSend(v28, "isSpatialPersonaEnabled")}];
-    [v8 setSpatialPersonaGenerationCounter:{objc_msgSend(v28, "spatialPersonaGenerationCounter")}];
-    v18 = [v28 cluster];
-    [v8 setCluster:v18];
+    [v8 setSpatialPersonaEnabled:{objc_msgSend(participantCopy, "isSpatialPersonaEnabled")}];
+    [v8 setSpatialPersonaGenerationCounter:{objc_msgSend(participantCopy, "spatialPersonaGenerationCounter")}];
+    cluster3 = [participantCopy cluster];
+    [v8 setCluster:cluster3];
 
     if ((v12 & 1) == 0)
     {
       [(CSDConversation *)self _recomputeAudioStates];
-      v19 = [(CSDConversation *)self avcSession];
-      v20 = [v28 cluster];
-      [v19 setParticipantCluster:v20 forParticipantWithIdentifier:a4];
+      avcSession = [(CSDConversation *)self avcSession];
+      cluster4 = [participantCopy cluster];
+      [avcSession setParticipantCluster:cluster4 forParticipantWithIdentifier:identifier];
 
-      v21 = [(CSDConversation *)self activitySessionManager];
-      v22 = [(CSDConversation *)self localParticipantCluster];
-      v23 = [(CSDConversation *)self activeRemoteParticipants];
+      activitySessionManager = [(CSDConversation *)self activitySessionManager];
+      localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+      activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
       v24 = NSStringFromSelector("tuConversationParticipant");
-      v25 = [v23 valueForKey:v24];
-      [v21 updateNearbyClustersWithLocalParticipantCluster:v22 remoteParticipants:v25];
+      v25 = [activeRemoteParticipants valueForKey:v24];
+      [activitySessionManager updateNearbyClustersWithLocalParticipantCluster:localParticipantCluster remoteParticipants:v25];
 
       v26 = +[CSDReportingController sharedInstance];
-      v27 = [(CSDConversation *)self tuConversation];
-      [v26 participantClusterChangedForConversation:v27];
+      tuConversation = [(CSDConversation *)self tuConversation];
+      [v26 participantClusterChangedForConversation:tuConversation];
     }
 
     if (v16)
     {
-      [v9 conversation:self updatedActiveParticipant:v8];
+      [delegate conversation:self updatedActiveParticipant:v8];
     }
   }
 }
 
 - (BOOL)isScreenSharingInitiationAvailable
 {
-  v2 = [(CSDConversation *)self sharePlaySystemStateObserver];
-  v3 = [v2 allowScreenSharingInitiation];
+  sharePlaySystemStateObserver = [(CSDConversation *)self sharePlaySystemStateObserver];
+  allowScreenSharingInitiation = [sharePlaySystemStateObserver allowScreenSharingInitiation];
 
-  return v3;
+  return allowScreenSharingInitiation;
 }
 
 - (void)resetAVCSession
@@ -11628,8 +11628,8 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "resetConversation", v6, 2u);
   }
 
-  v4 = [(CSDConversation *)self activitySessionManager];
-  [v4 resetSessions];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  [activitySessionManager resetSessions];
 
   self->_spatialPersonaEnabled = 0;
   localParticipantCluster = self->_localParticipantCluster;
@@ -11638,32 +11638,32 @@ LABEL_37:
 
 - (BOOL)isNearbySession
 {
-  v3 = [(CSDConversation *)self featureFlags];
-  v4 = [v3 nearbyFaceTimeEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  nearbyFaceTimeEnabled = [featureFlags nearbyFaceTimeEnabled];
 
-  if (!v4)
+  if (!nearbyFaceTimeEnabled)
   {
     return 0;
   }
 
-  v5 = [(CSDConversation *)self idsSession];
-  v6 = [v5 requiredCapabilities];
-  v7 = [v6 containsObject:IDSRegistrationPropertySupportsNearbyFaceTime];
+  idsSession = [(CSDConversation *)self idsSession];
+  requiredCapabilities = [idsSession requiredCapabilities];
+  v7 = [requiredCapabilities containsObject:IDSRegistrationPropertySupportsNearbyFaceTime];
 
   return v7;
 }
 
-- (void)session:(id)a3 didJoinGroup:(BOOL)a4 participantIdentifiers:(id)a5 error:(id)a6
+- (void)session:(id)session didJoinGroup:(BOOL)group participantIdentifiers:(id)identifiers error:(id)error
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v11);
+  groupCopy = group;
+  identifiersCopy = identifiers;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = sub_100004778();
-  v13 = [(CSDConversation *)self idsSession];
-  v14 = os_signpost_id_make_with_pointer(v12, v13);
+  idsSession = [(CSDConversation *)self idsSession];
+  v14 = os_signpost_id_make_with_pointer(v12, idsSession);
 
   v15 = sub_100004778();
   v16 = v15;
@@ -11673,21 +11673,21 @@ LABEL_37:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_END, v14, "idsSessionJoin", "", v27, 2u);
   }
 
-  v17 = [(CSDConversation *)self report];
-  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 2, [v17 hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
+  report = [(CSDConversation *)self report];
+  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 2, [report hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
 
   v18 = sub_100004778();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v27[0] = 67109378;
-    v27[1] = v7;
+    v27[1] = groupCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = errorCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "didJoinGroup: %d error: %@", v27, 0x12u);
   }
 
-  v19 = [(CSDConversation *)self delegate];
-  if (!v7)
+  delegate = [(CSDConversation *)self delegate];
+  if (!groupCopy)
   {
     v21 = sub_100004778();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -11696,18 +11696,18 @@ LABEL_37:
     }
 
     [(CSDConversation *)self setState:0];
-    -[CSDConversation _reportConversationFailedWithProviderEndedReason:](self, "_reportConversationFailedWithProviderEndedReason:", [v10 code] + 2000);
+    -[CSDConversation _reportConversationFailedWithProviderEndedReason:](self, "_reportConversationFailedWithProviderEndedReason:", [errorCopy code] + 2000);
     goto LABEL_22;
   }
 
-  [(CSDConversation *)self setMemberIdentifiers:v9];
+  [(CSDConversation *)self setMemberIdentifiers:identifiersCopy];
   [(CSDConversation *)self _startAVCSessionIfNecessary];
   [(CSDConversation *)self setLocalParticipantAudioVideoMode:[(CSDConversation *)self avMode] presentationMode:[(CSDConversation *)self presentationMode]];
   [(CSDConversation *)self createScreenCapturePickerIfNecessary];
   if ([(CSDConversation *)self state]== 2)
   {
-    v20 = [(CSDConversation *)self localMember];
-    if ([v20 isLightweightMember])
+    localMember = [(CSDConversation *)self localMember];
+    if ([localMember isLightweightMember])
     {
 
 LABEL_14:
@@ -11728,9 +11728,9 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v22 = [(CSDConversation *)self avMode];
+    avMode = [(CSDConversation *)self avMode];
 
-    if (!v22)
+    if (!avMode)
     {
       goto LABEL_14;
     }
@@ -11738,65 +11738,65 @@ LABEL_14:
 
 LABEL_17:
   [(CSDConversation *)self _registerPluginsIfNecessary];
-  [v19 conversationConnectionDidStart:self];
-  v25 = [(CSDConversation *)self featureFlags];
-  if (![v25 nearbyFaceTimeEnabled] || !-[CSDConversation isNearbySession](self, "isNearbySession"))
+  [delegate conversationConnectionDidStart:self];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if (![featureFlags nearbyFaceTimeEnabled] || !-[CSDConversation isNearbySession](self, "isNearbySession"))
   {
     goto LABEL_21;
   }
 
-  v26 = [(CSDConversation *)self isLocallyCreated];
+  isLocallyCreated = [(CSDConversation *)self isLocallyCreated];
 
-  if (v26)
+  if (isLocallyCreated)
   {
-    v25 = [(CSDConversation *)self remoteMembers];
-    [(CSDConversation *)self startTimeOutForNearbyMembers:v25];
+    featureFlags = [(CSDConversation *)self remoteMembers];
+    [(CSDConversation *)self startTimeOutForNearbyMembers:featureFlags];
 LABEL_21:
   }
 
 LABEL_22:
-  [v19 conversationChanged:self];
+  [delegate conversationChanged:self];
 }
 
-- (void)session:(id)a3 didLeaveGroupWithError:(id)a4
+- (void)session:(id)session didLeaveGroupWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self delegate];
+  delegate = [(CSDConversation *)self delegate];
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v7;
+    v36 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didLeaveGroupWithError: %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v29 = [(CSDConversation *)self UUID];
+      uUID = [(CSDConversation *)self UUID];
       *buf = 138412802;
-      v36 = v6;
+      v36 = sessionCopy;
       v37 = 2112;
-      v38 = v29;
+      v38 = uUID;
       v39 = 2112;
-      v40 = v7;
+      v40 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "CSDIDSGroupSession %@ failed to leave group for conversation UUID %@: %@", buf, 0x20u);
     }
   }
 
-  [v9 conversationDidLeave:self];
+  [delegate conversationDidLeave:self];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [(CSDConversation *)self activeRemoteParticipants];
-  v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v13 = [activeRemoteParticipants countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v13)
   {
     v14 = v13;
@@ -11807,7 +11807,7 @@ LABEL_22:
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
@@ -11816,7 +11816,7 @@ LABEL_22:
         [v17 setCaptionsToken:0];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v14 = [activeRemoteParticipants countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v14);
@@ -11831,9 +11831,9 @@ LABEL_22:
   v20 = objc_alloc_init(NSMutableSet);
   [(CSDConversation *)self setPendingRemoteMembers:v20];
 
-  v21 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+  letMeInRequestUINotificationBlock = [(CSDConversation *)self letMeInRequestUINotificationBlock];
 
-  if (v21)
+  if (letMeInRequestUINotificationBlock)
   {
     v22 = sub_100004778();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -11842,8 +11842,8 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Cancel letMeInRequestUINotificationBlock", buf, 2u);
     }
 
-    v23 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
-    dispatch_block_cancel(v23);
+    letMeInRequestUINotificationBlock2 = [(CSDConversation *)self letMeInRequestUINotificationBlock];
+    dispatch_block_cancel(letMeInRequestUINotificationBlock2);
 
     [(CSDConversation *)self setLetMeInRequestUINotificationBlock:0];
   }
@@ -11852,20 +11852,20 @@ LABEL_22:
   v24 = +[NSMutableDictionary dictionary];
   [(CSDConversation *)self setSequenceNumberToTime:v24];
 
-  v25 = [(CSDConversation *)self localMember];
-  v26 = [v25 isLightweightMember];
+  localMember = [(CSDConversation *)self localMember];
+  isLightweightMember = [localMember isLightweightMember];
 
-  if (v26)
+  if (isLightweightMember)
   {
-    [v9 conversationInvalidated:self];
+    [delegate conversationInvalidated:self];
   }
 
-  v27 = [(CSDConversation *)self avcSession];
-  if (v27 && [(CSDConversation *)self isAudioReady])
+  avcSession = [(CSDConversation *)self avcSession];
+  if (avcSession && [(CSDConversation *)self isAudioReady])
   {
-    v28 = [(CSDConversation *)self isNotNeededToStopAVCSession];
+    isNotNeededToStopAVCSession = [(CSDConversation *)self isNotNeededToStopAVCSession];
 
-    if ((v28 & 1) == 0)
+    if ((isNotNeededToStopAVCSession & 1) == 0)
     {
       goto LABEL_28;
     }
@@ -11879,7 +11879,7 @@ LABEL_22:
   [(CSDConversation *)self setNotNeededToStopAVCSession:0];
   [(CSDConversation *)self setState:0];
   [(CSDConversation *)self _cancelTimeoutForLeavingConversation];
-  if (!v7)
+  if (!errorCopy)
   {
     [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:528];
   }
@@ -11887,29 +11887,29 @@ LABEL_22:
   [(CSDConversation *)self _cleanUpHandoffMetricsIfNecessary];
   [(CSDConversation *)self _restartIDSSessionIfNecessary];
 LABEL_28:
-  [v9 conversationChanged:self];
+  [delegate conversationChanged:self];
 }
 
-- (void)session:(id)a3 endedWithError:(id)a4 reason:(unsigned int)a5
+- (void)session:(id)session endedWithError:(id)error reason:(unsigned int)reason
 {
-  v7 = a4;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self delegate];
+  delegate = [(CSDConversation *)self delegate];
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v24 = [(CSDConversation *)self isOneToOneModeEnabled];
-    v25 = [(CSDConversation *)self remoteMembers];
+    isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
+    remoteMembers = [(CSDConversation *)self remoteMembers];
     v26 = 138413058;
-    v27 = v7;
+    v27 = errorCopy;
     v28 = 1024;
-    v29 = a5;
+    reasonCopy = reason;
     v30 = 1024;
-    v31 = v24;
+    v31 = isOneToOneModeEnabled;
     v32 = 2048;
-    v33 = [v25 count];
+    v33 = [remoteMembers count];
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "endedWithError: %@ reason: %d, isOneToOneModeEnabled: %d, remoteMembers count: %lu", &v26, 0x22u);
   }
 
@@ -11923,15 +11923,15 @@ LABEL_28:
   [(CSDConversation *)self _cleanUpHandoffMetricsIfNecessary];
   [(CSDConversation *)self setSplitSessionSecondary:0];
   [(CSDConversation *)self resetConversation];
-  v13 = [(CSDConversation *)self localMember];
-  v14 = [v13 isLightweightMember];
+  localMember = [(CSDConversation *)self localMember];
+  isLightweightMember = [localMember isLightweightMember];
 
-  if (v14)
+  if (isLightweightMember)
   {
-    [v9 conversationInvalidated:self];
+    [delegate conversationInvalidated:self];
   }
 
-  if (a5 == 48)
+  if (reason == 48)
   {
     v19 = sub_100004778();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -11941,13 +11941,13 @@ LABEL_28:
     }
 
     [(CSDConversation *)self _cleanUpConversation];
-    v16 = self;
+    selfCopy2 = self;
     v17 = 14;
     v18 = 2048;
     goto LABEL_13;
   }
 
-  if (a5 == 44)
+  if (reason == 44)
   {
     v15 = sub_100004778();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -11957,11 +11957,11 @@ LABEL_28:
     }
 
     [(CSDConversation *)self _cleanUpConversation];
-    v16 = self;
+    selfCopy2 = self;
     v17 = 7;
     v18 = 2044;
 LABEL_13:
-    [(CSDConversation *)v16 _reportConversationFailedWithFailureReason:v17 providerEndedReason:v18];
+    [(CSDConversation *)selfCopy2 _reportConversationFailedWithFailureReason:v17 providerEndedReason:v18];
     goto LABEL_14;
   }
 
@@ -11979,31 +11979,31 @@ LABEL_13:
 
   else
   {
-    [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:a5 + 2000];
-    if (v7)
+    [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:reason + 2000];
+    if (errorCopy)
     {
-      v23 = [(CSDConversation *)self idsSession];
-      [v23 restart];
+      idsSession = [(CSDConversation *)self idsSession];
+      [idsSession restart];
     }
   }
 
 LABEL_14:
   [(CSDConversation *)self setState:0];
-  [v9 conversationChanged:self];
+  [delegate conversationChanged:self];
 }
 
-- (void)updateParticipantsWithDestinationIdentifiers:(id)a3
+- (void)updateParticipantsWithDestinationIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifiersCopy = identifiers;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CSDConversation *)self activeParticipants];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeParticipants = [(CSDConversation *)self activeParticipants];
+  v7 = [activeParticipants countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -12014,12 +12014,12 @@ LABEL_14:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeParticipants);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 identifier]);
-        v13 = [v4 objectForKeyedSubscript:v12];
+        v13 = [identifiersCopy objectForKeyedSubscript:v12];
 
         if (v13)
         {
@@ -12027,7 +12027,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [activeParticipants countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -12036,32 +12036,32 @@ LABEL_14:
 
 - (void)reviveOrInvalidateCachedConversationIfNecessary
 {
-  v2 = self;
-  v3 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(CSDConversation *)v2 isFromStorage])
+  if ([(CSDConversation *)selfCopy isFromStorage])
   {
-    v4 = [(CSDConversation *)v2 serverProvidedParticipantIdentifiers];
-    if (v4)
+    serverProvidedParticipantIdentifiers = [(CSDConversation *)selfCopy serverProvidedParticipantIdentifiers];
+    if (serverProvidedParticipantIdentifiers)
     {
-      v5 = v4;
-      v6 = [(CSDConversation *)v2 serverProvidedLightweightParticipantIdentifiers];
+      v5 = serverProvidedParticipantIdentifiers;
+      serverProvidedLightweightParticipantIdentifiers = [(CSDConversation *)selfCopy serverProvidedLightweightParticipantIdentifiers];
 
-      if (v6)
+      if (serverProvidedLightweightParticipantIdentifiers)
       {
-        v32 = [(CSDConversation *)v2 delegate];
+        delegate = [(CSDConversation *)selfCopy delegate];
         v35 = +[NSMutableSet set];
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        obj = [(CSDConversation *)v2 serverProvidedLightweightParticipantIdentifiers];
+        obj = [(CSDConversation *)selfCopy serverProvidedLightweightParticipantIdentifiers];
         v37 = [obj countByEnumeratingWithState:&v43 objects:v52 count:16];
         if (v37)
         {
           v36 = *v44;
-          v34 = v2;
+          v34 = selfCopy;
           do
           {
             for (i = 0; i != v37; i = i + 1)
@@ -12072,8 +12072,8 @@ LABEL_14:
               }
 
               v8 = *(*(&v43 + 1) + 8 * i);
-              v9 = [(CSDConversation *)v2 activeLightweightParticipantDestinationsByIdentifier];
-              v10 = [v9 objectForKeyedSubscript:v8];
+              activeLightweightParticipantDestinationsByIdentifier = [(CSDConversation *)selfCopy activeLightweightParticipantDestinationsByIdentifier];
+              v10 = [activeLightweightParticipantDestinationsByIdentifier objectForKeyedSubscript:v8];
 
               if (v10)
               {
@@ -12082,8 +12082,8 @@ LABEL_14:
                 v42 = 0u;
                 v39 = 0u;
                 v40 = 0u;
-                v11 = [(CSDConversation *)v2 lightweightMembers];
-                v12 = [v11 countByEnumeratingWithState:&v39 objects:v51 count:16];
+                lightweightMembers = [(CSDConversation *)selfCopy lightweightMembers];
+                v12 = [lightweightMembers countByEnumeratingWithState:&v39 objects:v51 count:16];
                 if (v12)
                 {
                   v13 = v12;
@@ -12094,13 +12094,13 @@ LABEL_12:
                   {
                     if (*v40 != v14)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(lightweightMembers);
                     }
 
                     v16 = *(*(&v39 + 1) + 8 * v15);
-                    v17 = [v16 handle];
+                    handle = [v16 handle];
                     v18 = [TUHandle normalizedHandleWithDestinationID:v10];
-                    v19 = [v17 isEquivalentToHandle:v18];
+                    v19 = [handle isEquivalentToHandle:v18];
 
                     if (v19)
                     {
@@ -12109,7 +12109,7 @@ LABEL_12:
 
                     if (v13 == ++v15)
                     {
-                      v13 = [v11 countByEnumeratingWithState:&v39 objects:v51 count:16];
+                      v13 = [lightweightMembers countByEnumeratingWithState:&v39 objects:v51 count:16];
                       if (v13)
                       {
                         goto LABEL_12;
@@ -12121,7 +12121,7 @@ LABEL_12:
 
                   v20 = v16;
 
-                  v2 = v34;
+                  selfCopy = v34;
                   v8 = v38;
                   if (v20)
                   {
@@ -12133,7 +12133,7 @@ LABEL_12:
                 {
 LABEL_18:
 
-                  v2 = v34;
+                  selfCopy = v34;
                   v8 = v38;
                 }
               }
@@ -12149,8 +12149,8 @@ LABEL_21:
           while (v37);
         }
 
-        v21 = [(CSDConversation *)v2 serverProvidedParticipantIdentifiers];
-        if ([v21 count])
+        serverProvidedParticipantIdentifiers2 = [(CSDConversation *)selfCopy serverProvidedParticipantIdentifiers];
+        if ([serverProvidedParticipantIdentifiers2 count])
         {
         }
 
@@ -12161,16 +12161,16 @@ LABEL_21:
           if (!v22)
           {
             v30 = sub_100004778();
-            v29 = v32;
+            v29 = delegate;
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
             {
-              v31 = [(CSDConversation *)v2 UUID];
+              uUID = [(CSDConversation *)selfCopy UUID];
               *buf = 138412290;
-              v48 = v31;
+              v48 = uUID;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Invalidating cached conversation: %@, no remote active participants were found.", buf, 0xCu);
             }
 
-            [v32 conversationInvalidated:v2];
+            [delegate conversationInvalidated:selfCopy];
             goto LABEL_29;
           }
         }
@@ -12178,41 +12178,41 @@ LABEL_21:
         v23 = sub_100004778();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(CSDConversation *)v2 UUID];
-          v25 = [(CSDConversation *)v2 activeParticipantDestinationsByIdentifier];
-          v26 = [v25 count];
-          v27 = [(CSDConversation *)v2 serverProvidedLightweightParticipantIdentifiers];
-          v28 = [v27 count];
+          uUID2 = [(CSDConversation *)selfCopy UUID];
+          activeParticipantDestinationsByIdentifier = [(CSDConversation *)selfCopy activeParticipantDestinationsByIdentifier];
+          v26 = [activeParticipantDestinationsByIdentifier count];
+          serverProvidedLightweightParticipantIdentifiers2 = [(CSDConversation *)selfCopy serverProvidedLightweightParticipantIdentifiers];
+          v28 = [serverProvidedLightweightParticipantIdentifiers2 count];
           *buf = 138412546;
-          v48 = v24;
+          v48 = uUID2;
           v49 = 2048;
           v50 = &v26[v28];
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Activating cached conversation with UUID: %@ since %lu remote participants were still found to be active.", buf, 0x16u);
         }
 
-        [(CSDConversation *)v2 setFromStorage:0];
-        v29 = v32;
-        [v32 conversationChanged:v2];
+        [(CSDConversation *)selfCopy setFromStorage:0];
+        v29 = delegate;
+        [delegate conversationChanged:selfCopy];
 LABEL_29:
       }
     }
   }
 }
 
-- (void)session:(id)a3 receivedActiveParticipantDestinationsByIdentifier:(id)a4
+- (void)session:(id)session receivedActiveParticipantDestinationsByIdentifier:(id)identifier
 {
-  v32 = a3;
-  v33 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  sessionCopy = session;
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v33 allKeys];
-  v8 = [NSSet setWithArray:v7];
+  allKeys = [identifierCopy allKeys];
+  v8 = [NSSet setWithArray:allKeys];
   [(CSDConversation *)self setServerProvidedParticipantIdentifiers:v8];
 
-  [(CSDConversation *)self setActiveParticipantDestinationsByIdentifier:v33];
-  v9 = [(CSDConversation *)self recentlyLeftParticipantIdentifiers];
-  [v9 removeAllObjects];
+  [(CSDConversation *)self setActiveParticipantDestinationsByIdentifier:identifierCopy];
+  recentlyLeftParticipantIdentifiers = [(CSDConversation *)self recentlyLeftParticipantIdentifiers];
+  [recentlyLeftParticipantIdentifiers removeAllObjects];
 
   if (![(CSDConversation *)self _endScreenCallIfNecessary])
   {
@@ -12220,7 +12220,7 @@ LABEL_29:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v10 = v33;
+    v10 = identifierCopy;
     v11 = [v10 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (!v11)
     {
@@ -12238,16 +12238,16 @@ LABEL_29:
         }
 
         v13 = *(*(&v38 + 1) + 8 * i);
-        v14 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        pendingConversationParticipantsByIdentifier = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+        v15 = [pendingConversationParticipantsByIdentifier objectForKeyedSubscript:v13];
 
         if (v15)
         {
           v16 = [v10 objectForKeyedSubscript:v13];
           [v15 setActiveIDSDestination:v16];
 
-          v17 = [(CSDConversation *)self localParticipantIdentifier];
-          if (v17 == [v15 identifier])
+          localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
+          if (localParticipantIdentifier == [v15 identifier])
           {
             v18 = sub_100004778();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -12257,24 +12257,24 @@ LABEL_29:
               _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Found cached pending-participant, do not add local participant: %@", buf, 0xCu);
             }
 
-            v19 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-            [v19 removeObjectForKey:v13];
+            pendingConversationParticipantsByIdentifier2 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+            [pendingConversationParticipantsByIdentifier2 removeObjectForKey:v13];
           }
 
           else
           {
-            v20 = [(CSDConversation *)self featureFlags];
-            if ([v20 controlMessageOverQREnabled])
+            featureFlags = [(CSDConversation *)self featureFlags];
+            if ([featureFlags controlMessageOverQREnabled])
             {
-              v21 = [(CSDConversation *)self serverBag];
-              v22 = [v21 isControlMessageOverQREnabled];
+              serverBag = [(CSDConversation *)self serverBag];
+              isControlMessageOverQREnabled = [serverBag isControlMessageOverQREnabled];
 
-              if (v22)
+              if (isControlMessageOverQREnabled)
               {
                 objc_initWeak(buf, self);
-                v23 = [(CSDConversation *)self serverBag];
-                v24 = dispatch_time(0, 1000000 * [v23 addParticipantFromQRTime]);
-                v25 = [(CSDConversation *)self queue];
+                serverBag2 = [(CSDConversation *)self serverBag];
+                v24 = dispatch_time(0, 1000000 * [serverBag2 addParticipantFromQRTime]);
+                queue2 = [(CSDConversation *)self queue];
                 block[0] = _NSConcreteStackBlock;
                 block[1] = 3221225472;
                 block[2] = sub_1000A0E08;
@@ -12283,7 +12283,7 @@ LABEL_29:
                 block[4] = self;
                 block[5] = v13;
                 v36 = v15;
-                dispatch_after(v24, v25, block);
+                dispatch_after(v24, queue2, block);
 
                 objc_destroyWeak(&v37);
                 objc_destroyWeak(buf);
@@ -12304,8 +12304,8 @@ LABEL_29:
             }
 
             [(CSDConversation *)self addActiveParticipant:v15];
-            v27 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-            [v27 removeObjectForKey:v13];
+            pendingConversationParticipantsByIdentifier3 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+            [pendingConversationParticipantsByIdentifier3 removeObjectForKey:v13];
           }
         }
 
@@ -12317,13 +12317,13 @@ LABEL_19:
       {
 LABEL_21:
 
-        v28 = [(CSDConversation *)self featureFlags];
-        if ([v28 controlMessageOverQREnabled])
+        featureFlags2 = [(CSDConversation *)self featureFlags];
+        if ([featureFlags2 controlMessageOverQREnabled])
         {
-          v29 = [(CSDConversation *)self serverBag];
-          v30 = [v29 isControlMessageOverQREnabled];
+          serverBag3 = [(CSDConversation *)self serverBag];
+          isControlMessageOverQREnabled2 = [serverBag3 isControlMessageOverQREnabled];
 
-          if (v30)
+          if (isControlMessageOverQREnabled2)
           {
 LABEL_26:
             [(CSDConversation *)self reviveOrInvalidateCachedConversationIfNecessary];
@@ -12349,17 +12349,17 @@ LABEL_26:
   }
 }
 
-- (void)session:(id)a3 receivedActiveLightweightParticipantDestinationsByIdentifier:(id)a4
+- (void)session:(id)session receivedActiveLightweightParticipantDestinationsByIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v5 allKeys];
-  v8 = [NSSet setWithArray:v7];
+  allKeys = [identifierCopy allKeys];
+  v8 = [NSSet setWithArray:allKeys];
   [(CSDConversation *)self setServerProvidedLightweightParticipantIdentifiers:v8];
 
-  [(CSDConversation *)self setActiveLightweightParticipantDestinationsByIdentifier:v5];
+  [(CSDConversation *)self setActiveLightweightParticipantDestinationsByIdentifier:identifierCopy];
   if (![(CSDConversation *)self _endScreenCallIfNecessary])
   {
     [(CSDConversation *)self reviveOrInvalidateCachedConversationIfNecessary];
@@ -12368,66 +12368,66 @@ LABEL_26:
   }
 }
 
-- (void)sessionDidTerminate:(id)a3
+- (void)sessionDidTerminate:(id)terminate
 {
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversation *)self setState:0];
   [(CSDConversation *)self _cancelTimeoutForLeavingConversation];
   [(CSDConversation *)self _cleanUpHandoffMetricsIfNecessary];
   [(CSDConversation *)self _restartIDSSessionIfNecessary];
-  v5 = [(CSDConversation *)self delegate];
-  [v5 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)session:(id)a3 didReceiveLocalParticipantType:(unsigned __int16)a4 requestIdentifier:(unint64_t)a5 error:(id)a6
+- (void)session:(id)session didReceiveLocalParticipantType:(unsigned __int16)type requestIdentifier:(unint64_t)identifier error:(id)error
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  typeCopy = type;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v9)
+  if (errorCopy)
   {
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CSDConversation *)self UUID];
+      uUID = [(CSDConversation *)self UUID];
       v48 = 138412546;
-      *v49 = v12;
+      *v49 = uUID;
       *&v49[8] = 2112;
-      *&v49[10] = v9;
+      *&v49[10] = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Requested audio/video mode changed for conversation %@ failed with error %@", &v48, 0x16u);
     }
 
-    v13 = [(CSDConversation *)self featureFlags];
-    if ([v13 controlMessageOverQREnabled])
+    featureFlags = [(CSDConversation *)self featureFlags];
+    if ([featureFlags controlMessageOverQREnabled])
     {
-      v14 = [(CSDConversation *)self serverBag];
-      v15 = [v14 isControlMessageOverQREnabled];
+      serverBag = [(CSDConversation *)self serverBag];
+      isControlMessageOverQREnabled = [serverBag isControlMessageOverQREnabled];
 
-      if (v15)
+      if (isControlMessageOverQREnabled)
       {
-        v16 = [(CSDConversation *)self sequenceNumberToTime];
-        v17 = [NSNumber numberWithUnsignedLongLong:a5];
-        v18 = [v16 objectForKey:v17];
+        sequenceNumberToTime = [(CSDConversation *)self sequenceNumberToTime];
+        v17 = [NSNumber numberWithUnsignedLongLong:identifier];
+        v18 = [sequenceNumberToTime objectForKey:v17];
 
         if (v18)
         {
-          v19 = [(CSDConversation *)self sequenceNumberToTime];
-          v20 = [NSNumber numberWithUnsignedLongLong:a5];
-          [v19 removeObjectForKey:v20];
+          sequenceNumberToTime2 = [(CSDConversation *)self sequenceNumberToTime];
+          v20 = [NSNumber numberWithUnsignedLongLong:identifier];
+          [sequenceNumberToTime2 removeObjectForKey:v20];
         }
 
         else
         {
-          v19 = sub_100004778();
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          sequenceNumberToTime2 = sub_100004778();
+          if (os_log_type_enabled(sequenceNumberToTime2, OS_LOG_TYPE_DEFAULT))
           {
             v48 = 134217984;
-            *v49 = a5;
-            _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[WARN] Couldn't find requestIdentifier: %llu", &v48, 0xCu);
+            *v49 = identifier;
+            _os_log_impl(&_mh_execute_header, sequenceNumberToTime2, OS_LOG_TYPE_DEFAULT, "[WARN] Couldn't find requestIdentifier: %llu", &v48, 0xCu);
           }
         }
       }
@@ -12442,7 +12442,7 @@ LABEL_61:
 
   if ([(CSDConversation *)self state]== 2 || [(CSDConversation *)self state]== 3)
   {
-    if (v7 == 1)
+    if (typeCopy == 1)
     {
       if ([(CSDConversation *)self avMode]== 1 || [(CSDConversation *)self avMode]== 2)
       {
@@ -12453,16 +12453,16 @@ LABEL_61:
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Configuring session since local participant type is Normal", &v48, 2u);
         }
 
-        v25 = [(CSDConversation *)self avMode];
-        v26 = [(CSDConversation *)self avcSession];
-        [v26 setAudioEnabled:1];
-        [v26 setVideo:v25 == 2];
-        v27 = [(CSDConversation *)self expectedVideoEnabled];
+        avMode = [(CSDConversation *)self avMode];
+        avcSession = [(CSDConversation *)self avcSession];
+        [avcSession setAudioEnabled:1];
+        [avcSession setVideo:avMode == 2];
+        expectedVideoEnabled = [(CSDConversation *)self expectedVideoEnabled];
 
-        if (v27)
+        if (expectedVideoEnabled)
         {
-          v28 = [(CSDConversation *)self expectedVideoEnabled];
-          [v26 setVideoEnabled:{objc_msgSend(v28, "BOOLValue")}];
+          expectedVideoEnabled2 = [(CSDConversation *)self expectedVideoEnabled];
+          [avcSession setVideoEnabled:{objc_msgSend(expectedVideoEnabled2, "BOOLValue")}];
         }
 
         if (-[CSDConversation usesAudioSession](self, "usesAudioSession") && (-[CSDConversation avcSession](self, "avcSession"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 isAudioReady], v29, !v30))
@@ -12480,8 +12480,8 @@ LABEL_61:
               v39 = @"NO";
             }
 
-            v40 = [(CSDConversation *)self avcSession];
-            if ([v40 isAudioReady])
+            avcSession2 = [(CSDConversation *)self avcSession];
+            if ([avcSession2 isAudioReady])
             {
               v41 = @"YES";
             }
@@ -12514,8 +12514,8 @@ LABEL_61:
               v32 = @"NO";
             }
 
-            v33 = [(CSDConversation *)self avcSession];
-            if ([v33 isAudioReady])
+            avcSession3 = [(CSDConversation *)self avcSession];
+            if ([avcSession3 isAudioReady])
             {
               v34 = @"YES";
             }
@@ -12539,7 +12539,7 @@ LABEL_61:
       }
     }
 
-    else if (!v7 && ![(CSDConversation *)self avMode])
+    else if (!typeCopy && ![(CSDConversation *)self avMode])
     {
       v21 = sub_100004778();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -12554,11 +12554,11 @@ LABEL_61:
           v22 = @"NO";
         }
 
-        v23 = [(CSDConversation *)self avcSession];
+        avcSession4 = [(CSDConversation *)self avcSession];
         v48 = 138412546;
         *v49 = v22;
         *&v49[8] = 2112;
-        *&v49[10] = v23;
+        *&v49[10] = avcSession4;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Stopping session since local participant type is Lightweight avcSessionInProgress %@ avcSession: %@", &v48, 0x16u);
       }
 
@@ -12570,17 +12570,17 @@ LABEL_61:
 
       else
       {
-        v37 = [(CSDConversation *)self avcSession];
-        if (v37)
+        avcSession5 = [(CSDConversation *)self avcSession];
+        if (avcSession5)
         {
         }
 
         else
         {
-          v45 = [(CSDConversation *)self localMember];
-          v46 = [v45 isLightweightMember];
+          localMember = [(CSDConversation *)self localMember];
+          isLightweightMember = [localMember isLightweightMember];
 
-          if ((v46 & 1) == 0)
+          if ((isLightweightMember & 1) == 0)
           {
             v47 = sub_100004778();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -12598,17 +12598,17 @@ LABEL_58:
       v42 = sub_100004778();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [(CSDConversation *)self localParticipant];
+        localParticipant = [(CSDConversation *)self localParticipant];
         v48 = 67109378;
-        *v49 = v7;
+        *v49 = typeCopy;
         *&v49[4] = 2112;
-        *&v49[6] = v43;
+        *&v49[6] = localParticipant;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "didReceiveLocalParticipantType: %hu, localParticipant: %@", &v48, 0x12u);
       }
 
-      v13 = [(CSDConversation *)self delegate];
-      v44 = [(CSDConversation *)self localParticipant];
-      [v13 conversation:self didChangeLocalParticipant:v44 broadcastActivitySession:1 currentSequenceNumber:a5 fromResponse:1];
+      featureFlags = [(CSDConversation *)self delegate];
+      localParticipant2 = [(CSDConversation *)self localParticipant];
+      [featureFlags conversation:self didChangeLocalParticipant:localParticipant2 broadcastActivitySession:1 currentSequenceNumber:identifier fromResponse:1];
 
       goto LABEL_61;
     }
@@ -12634,78 +12634,78 @@ LABEL_58:
 LABEL_62:
 }
 
-- (void)_updateParticipantTypesForAddedParticipant:(id)a3
+- (void)_updateParticipantTypesForAddedParticipant:(id)participant
 {
-  v4 = a3;
-  -[CSDConversation setRemoteParticipantType:participant:](self, "setRemoteParticipantType:participant:", [v4 audioVideoMode] != 0, v4);
+  participantCopy = participant;
+  -[CSDConversation setRemoteParticipantType:participant:](self, "setRemoteParticipantType:participant:", [participantCopy audioVideoMode] != 0, participantCopy);
 }
 
-- (void)updateOneToOneModeForParticipantUpdateType:(unsigned __int16)a3 participant:(id)a4
+- (void)updateOneToOneModeForParticipantUpdateType:(unsigned __int16)type participant:(id)participant
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 identifier]);
-  v9 = [v7 objectForKeyedSubscript:v8];
+  typeCopy = type;
+  participantCopy = participant;
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+  v9 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-    v11 = [v10 count];
-    v12 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-    v13 = [v12 count];
+    activeRemoteParticipantsByIdentifier2 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+    v11 = [activeRemoteParticipantsByIdentifier2 count];
+    activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+    v13 = [activeLightweightParticipantsByIdentifier count];
 
     if (&v13[v11])
     {
-      v14 = [(CSDConversation *)self activeRemoteParticipantCountMinusEligibleAVLess]== 1;
+      isOneToOneModeEnabled = [(CSDConversation *)self activeRemoteParticipantCountMinusEligibleAVLess]== 1;
     }
 
     else
     {
-      v14 = [(CSDConversation *)self isOneToOneModeEnabled];
+      isOneToOneModeEnabled = [(CSDConversation *)self isOneToOneModeEnabled];
     }
 
     v16 = sub_100004778();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 67109634;
-      *v29 = v4;
+      *v29 = typeCopy;
       *&v29[4] = 2112;
-      *&v29[6] = v6;
+      *&v29[6] = participantCopy;
       v30 = 1024;
-      v31 = v14;
+      v31 = isOneToOneModeEnabled;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "type: %d participant: %@, shouldSetOneToOneModeEnabled: %d", &v28, 0x18u);
     }
 
-    v17 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 identifier]);
-    v15 = [v17 objectForKeyedSubscript:v18];
+    activeRemoteParticipantsByIdentifier3 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [participantCopy identifier]);
+    v15 = [activeRemoteParticipantsByIdentifier3 objectForKeyedSubscript:v18];
 
-    if (v4 == 1)
+    if (typeCopy == 1)
     {
       v27 = sub_100004778();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v28 = 138412290;
-        *v29 = v6;
+        *v29 = participantCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Adding participant: %@", &v28, 0xCu);
       }
 
-      [(CSDConversation *)self _addRemoteParticipantToAVCSessionIfPossible:v6];
-      -[NSObject setAudioVideoMode:](v15, "setAudioVideoMode:", [v6 audioVideoMode]);
-      if (!(v14 | ![(CSDConversation *)self isOneToOneModeEnabled]))
+      [(CSDConversation *)self _addRemoteParticipantToAVCSessionIfPossible:participantCopy];
+      -[NSObject setAudioVideoMode:](v15, "setAudioVideoMode:", [participantCopy audioVideoMode]);
+      if (!(isOneToOneModeEnabled | ![(CSDConversation *)self isOneToOneModeEnabled]))
       {
         [(CSDConversation *)self setOneToOneModeEnabled:0];
       }
     }
 
-    else if (!v4)
+    else if (!typeCopy)
     {
-      v19 = [(CSDConversation *)self avcSession];
-      v20 = [v19 pendingRemovedRemoteParticipantByIdentififer:{objc_msgSend(v6, "identifier")}];
+      avcSession = [(CSDConversation *)self avcSession];
+      v20 = [avcSession pendingRemovedRemoteParticipantByIdentififer:{objc_msgSend(participantCopy, "identifier")}];
 
-      v21 = [(CSDConversation *)self avcSession];
-      v22 = [v21 containsRemoteParticipantWithIdentifier:{objc_msgSend(v6, "identifier")}];
+      avcSession2 = [(CSDConversation *)self avcSession];
+      v22 = [avcSession2 containsRemoteParticipantWithIdentifier:{objc_msgSend(participantCopy, "identifier")}];
 
       v23 = sub_100004778();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -12724,7 +12724,7 @@ LABEL_62:
         if (v25)
         {
           v28 = 138412290;
-          *v29 = v6;
+          *v29 = participantCopy;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Ignoring to remove participant %@ since its in pending list", &v28, 0xCu);
         }
       }
@@ -12734,15 +12734,15 @@ LABEL_62:
         if (v25)
         {
           v28 = 138412290;
-          *v29 = v6;
+          *v29 = participantCopy;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Removing participant %@", &v28, 0xCu);
         }
 
-        v26 = [(CSDConversation *)self avcSession];
-        [v26 removeParticipant:v6];
+        avcSession3 = [(CSDConversation *)self avcSession];
+        [avcSession3 removeParticipant:participantCopy];
 
         [v15 setAudioVideoMode:0];
-        if (![(CSDConversation *)self isOneToOneModeEnabled]&& v14)
+        if (![(CSDConversation *)self isOneToOneModeEnabled]&& isOneToOneModeEnabled)
         {
           [(CSDConversation *)self switchBackToOneToOneIfPossibleUsingDelay:1];
         }
@@ -12761,89 +12761,89 @@ LABEL_62:
   }
 }
 
-- (void)session:(id)a3 didReceiveJoinedParticipantID:(unint64_t)a4 withContext:(id)a5
+- (void)session:(id)session didReceiveJoinedParticipantID:(unint64_t)d withContext:(id)context
 {
-  v7 = a5;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  contextCopy = context;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self featureFlags];
-  if ([v9 controlMessageOverQREnabled])
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags controlMessageOverQREnabled])
   {
-    v10 = [(CSDConversation *)self serverBag];
-    v11 = [v10 isControlMessageOverQREnabled];
+    serverBag = [(CSDConversation *)self serverBag];
+    isControlMessageOverQREnabled = [serverBag isControlMessageOverQREnabled];
 
-    if (v11)
+    if (isControlMessageOverQREnabled)
     {
-      if ([(CSDConversation *)self localParticipantIdentifier]== a4)
+      if ([(CSDConversation *)self localParticipantIdentifier]== d)
       {
         v12 = sub_100004778();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v38 = a4;
+          dCopy3 = d;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Do not add local participant: %llu", buf, 0xCu);
         }
 
-        v13 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-        v14 = [NSNumber numberWithUnsignedLongLong:a4];
-        [(CSDMessagingConversationParticipant *)v13 removeObjectForKey:v14];
+        pendingConversationParticipantsByIdentifier = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+        featureFlags2 = [NSNumber numberWithUnsignedLongLong:d];
+        [(CSDMessagingConversationParticipant *)pendingConversationParticipantsByIdentifier removeObjectForKey:featureFlags2];
         goto LABEL_16;
       }
 
-      if (v7)
+      if (contextCopy)
       {
-        v13 = [[CSDMessagingConversationParticipant alloc] initWithData:v7];
-        [(CSDMessagingConversationParticipant *)v13 setIdentifier:a4];
-        v18 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-        v19 = [NSNumber numberWithUnsignedLongLong:a4];
-        v20 = [v18 objectForKeyedSubscript:v19];
+        pendingConversationParticipantsByIdentifier = [[CSDMessagingConversationParticipant alloc] initWithData:contextCopy];
+        [(CSDMessagingConversationParticipant *)pendingConversationParticipantsByIdentifier setIdentifier:d];
+        activeParticipantDestinationsByIdentifier = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+        v19 = [NSNumber numberWithUnsignedLongLong:d];
+        v20 = [activeParticipantDestinationsByIdentifier objectForKeyedSubscript:v19];
 
         v21 = IDSCopyTokenAndIDForTokenWithID();
         v22 = 0;
-        v23 = [v21 _stripFZIDPrefix];
-        v24 = [TUHandle normalizedHandleWithDestinationID:v23];
+        _stripFZIDPrefix = [v21 _stripFZIDPrefix];
+        v24 = [TUHandle normalizedHandleWithDestinationID:_stripFZIDPrefix];
 
         if (v24)
         {
           v36 = v22;
           v25 = [CSDMessagingHandle handleWithTUHandle:v24];
-          [(CSDMessagingConversationParticipant *)v13 setHandle:v25];
+          [(CSDMessagingConversationParticipant *)pendingConversationParticipantsByIdentifier setHandle:v25];
 
-          v26 = [(CSDMessagingConversationParticipant *)v13 csdConversationParticipant];
+          csdConversationParticipant = [(CSDMessagingConversationParticipant *)pendingConversationParticipantsByIdentifier csdConversationParticipant];
           v27 = sub_100004778();
           v28 = v27;
-          if (v26)
+          if (csdConversationParticipant)
           {
             v35 = v20;
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v38 = v26;
+              dCopy3 = csdConversationParticipant;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "didReceiveJoinedParticipantID: add csdParticipant: %@ to active participant", buf, 0xCu);
             }
 
-            [(CSDConversation *)self addActiveParticipant:v26];
-            v29 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-            v30 = [NSNumber numberWithUnsignedLongLong:a4];
-            v28 = [v29 objectForKeyedSubscript:v30];
+            [(CSDConversation *)self addActiveParticipant:csdConversationParticipant];
+            pendingConversationParticipantsByIdentifier2 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+            v30 = [NSNumber numberWithUnsignedLongLong:d];
+            v28 = [pendingConversationParticipantsByIdentifier2 objectForKeyedSubscript:v30];
 
             if (v28)
             {
               v31 = sub_100004778();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
-                v32 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+                pendingConversationParticipantsByIdentifier3 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
                 *buf = 134218242;
-                v38 = a4;
+                dCopy3 = d;
                 v39 = 2112;
-                v40 = v32;
+                v40 = pendingConversationParticipantsByIdentifier3;
                 _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "remove participantID: %llu from pendingConversationParticipantsByIdentifier %@", buf, 0x16u);
               }
 
-              v33 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-              v34 = [NSNumber numberWithUnsignedLongLong:a4];
-              [v33 removeObjectForKey:v34];
+              pendingConversationParticipantsByIdentifier4 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+              v34 = [NSNumber numberWithUnsignedLongLong:d];
+              [pendingConversationParticipantsByIdentifier4 removeObjectForKey:v34];
             }
 
             v20 = v35;
@@ -12851,7 +12851,7 @@ LABEL_62:
 
           else if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            sub_100472610(v13, a4);
+            sub_100472610(pendingConversationParticipantsByIdentifier, d);
           }
 
           v22 = v36;
@@ -12859,29 +12859,29 @@ LABEL_62:
 
         else
         {
-          v26 = sub_100004778();
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+          csdConversationParticipant = sub_100004778();
+          if (os_log_type_enabled(csdConversationParticipant, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218754;
-            v38 = a4;
+            dCopy3 = d;
             v39 = 2112;
             v40 = v20;
             v41 = 2112;
             v42 = v22;
             v43 = 2112;
             v44 = v21;
-            _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Couldn't find handle for participantID: %llu, participantDestination: %@, participantToken: %@, participantURI: %@", buf, 0x2Au);
+            _os_log_impl(&_mh_execute_header, csdConversationParticipant, OS_LOG_TYPE_DEFAULT, "Couldn't find handle for participantID: %llu, participantDestination: %@, participantToken: %@, participantURI: %@", buf, 0x2Au);
           }
         }
       }
 
       else
       {
-        v13 = sub_100004778();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        pendingConversationParticipantsByIdentifier = sub_100004778();
+        if (os_log_type_enabled(pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "no valid clientContext, return", buf, 2u);
+          _os_log_impl(&_mh_execute_header, pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_DEFAULT, "no valid clientContext, return", buf, 2u);
         }
       }
 
@@ -12893,11 +12893,11 @@ LABEL_62:
   {
   }
 
-  v13 = sub_100004778();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  pendingConversationParticipantsByIdentifier = sub_100004778();
+  if (os_log_type_enabled(pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CSDConversation *)self featureFlags];
-    if ([v14 controlMessageOverQREnabled])
+    featureFlags2 = [(CSDConversation *)self featureFlags];
+    if ([featureFlags2 controlMessageOverQREnabled])
     {
       v15 = @"YES";
     }
@@ -12907,8 +12907,8 @@ LABEL_62:
       v15 = @"NO";
     }
 
-    v16 = [(CSDConversation *)self serverBag];
-    if ([v16 isControlMessageOverQREnabled])
+    serverBag2 = [(CSDConversation *)self serverBag];
+    if ([serverBag2 isControlMessageOverQREnabled])
     {
       v17 = @"YES";
     }
@@ -12919,10 +12919,10 @@ LABEL_62:
     }
 
     *buf = 138412546;
-    v38 = v15;
+    dCopy3 = v15;
     v39 = 2112;
     v40 = v17;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "didReceiveJoinedParticipantID: feature flag of controlMessageOverQREnabled: %@, server bag of isControlMessageOverQREnabled: %@, return", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_DEFAULT, "didReceiveJoinedParticipantID: feature flag of controlMessageOverQREnabled: %@, server bag of isControlMessageOverQREnabled: %@, return", buf, 0x16u);
 
 LABEL_16:
   }
@@ -12930,24 +12930,24 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)session:(id)a3 didReceiveParticipantUpdateParticipantID:(unint64_t)a4 withContext:(id)a5
+- (void)session:(id)session didReceiveParticipantUpdateParticipantID:(unint64_t)d withContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  sessionCopy = session;
+  contextCopy = context;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(CSDConversation *)self featureFlags];
-  if (([v11 controlMessageOverQREnabled] & 1) == 0)
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if (([featureFlags controlMessageOverQREnabled] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [(CSDConversation *)self serverBag];
-  v13 = [v12 isControlMessageOverQREnabled];
+  serverBag = [(CSDConversation *)self serverBag];
+  isControlMessageOverQREnabled = [serverBag isControlMessageOverQREnabled];
 
-  if ((v13 & 1) == 0)
+  if ((isControlMessageOverQREnabled & 1) == 0)
   {
 LABEL_7:
     v14 = sub_100004778();
@@ -12956,8 +12956,8 @@ LABEL_7:
       goto LABEL_16;
     }
 
-    v18 = [(CSDConversation *)self featureFlags];
-    if ([v18 controlMessageOverQREnabled])
+    featureFlags2 = [(CSDConversation *)self featureFlags];
+    if ([featureFlags2 controlMessageOverQREnabled])
     {
       v19 = @"YES";
     }
@@ -12967,8 +12967,8 @@ LABEL_7:
       v19 = @"NO";
     }
 
-    v20 = [(CSDConversation *)self serverBag];
-    if ([v20 isControlMessageOverQREnabled])
+    serverBag2 = [(CSDConversation *)self serverBag];
+    if ([serverBag2 isControlMessageOverQREnabled])
     {
       v21 = @"YES";
     }
@@ -12979,7 +12979,7 @@ LABEL_7:
     }
 
     *buf = 138412546;
-    v43 = v19;
+    dCopy = v19;
     v44 = 2112;
     v45 = v21;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "didReceiveParticipantUpdateParticipantID: feature flag of controlMessageOverQREnabled: %@, server bag of isControlMessageOverQREnabled: %@, return", buf, 0x16u);
@@ -12988,13 +12988,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([(CSDConversation *)self localParticipantIdentifier]== a4)
+  if ([(CSDConversation *)self localParticipantIdentifier]== d)
   {
     v14 = sub_100004778();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v43 = a4;
+      dCopy = d;
       v15 = "didReceiveParticipantUpdateParticipantID: Do not process local participant: %llu";
       v16 = v14;
       v17 = 12;
@@ -13006,17 +13006,17 @@ LABEL_35:
     goto LABEL_16;
   }
 
-  if (v9)
+  if (contextCopy)
   {
-    v22 = [[CSDMessagingConversationMessage alloc] initWithData:v9];
+    v22 = [[CSDMessagingConversationMessage alloc] initWithData:contextCopy];
     v14 = v22;
     if (!v22)
     {
-      v18 = sub_100004778();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      featureFlags2 = sub_100004778();
+      if (os_log_type_enabled(featureFlags2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "didReceiveParticipantUpdateParticipantID: no valid message, return", buf, 2u);
+        _os_log_impl(&_mh_execute_header, featureFlags2, OS_LOG_TYPE_DEFAULT, "didReceiveParticipantUpdateParticipantID: no valid message, return", buf, 2u);
       }
 
       goto LABEL_15;
@@ -13027,20 +13027,20 @@ LABEL_35:
       goto LABEL_16;
     }
 
-    v36 = v8;
-    v23 = [v14 activeParticipants];
-    v18 = [v23 firstObject];
+    v36 = sessionCopy;
+    activeParticipants = [v14 activeParticipants];
+    featureFlags2 = [activeParticipants firstObject];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = [(CSDConversation *)self activeRemoteParticipants];
-    v25 = [v24 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+    v25 = [activeRemoteParticipants countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v25)
     {
       v26 = v25;
-      v35 = v9;
+      v35 = contextCopy;
       v27 = 0;
       v28 = *v38;
       do
@@ -13049,38 +13049,38 @@ LABEL_35:
         {
           if (*v38 != v28)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(activeRemoteParticipants);
           }
 
           v30 = *(*(&v37 + 1) + 8 * i);
-          v31 = [v30 identifier];
-          if (v31 == [v18 identifier])
+          identifier = [v30 identifier];
+          if (identifier == [featureFlags2 identifier])
           {
-            v32 = [v30 handle];
+            handle = [v30 handle];
 
-            v27 = v32;
+            v27 = handle;
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v26 = [activeRemoteParticipants countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v26);
 
-      v9 = v35;
+      contextCopy = v35;
       if (v27)
       {
         v33 = sub_100004778();
-        v8 = v36;
+        sessionCopy = v36;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v43 = v27;
+          dCopy = v27;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Found remoteParticipant: %@ for didReceiveParticipantUpdateParticipantID", buf, 0xCu);
         }
 
-        v34 = [(CSDConversation *)self delegate];
-        [v34 conversation:self didReceiveParticipantUpdateMessage:v14 fromNormalizedHandle:v27];
+        delegate = [(CSDConversation *)self delegate];
+        [delegate conversation:self didReceiveParticipantUpdateMessage:v14 fromNormalizedHandle:v27];
 
 LABEL_41:
         goto LABEL_15;
@@ -13092,7 +13092,7 @@ LABEL_41:
     }
 
     v27 = sub_100004778();
-    v8 = v36;
+    sessionCopy = v36;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       sub_100472684();
@@ -13114,22 +13114,22 @@ LABEL_41:
 LABEL_16:
 }
 
-- (void)session:(id)a3 didReceiveLeftParticipantID:(unint64_t)a4 withContext:(id)a5
+- (void)session:(id)session didReceiveLeftParticipantID:(unint64_t)d withContext:(id)context
 {
-  v7 = a5;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  contextCopy = context;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self featureFlags];
-  if (([v9 controlMessageOverQREnabled] & 1) == 0)
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if (([featureFlags controlMessageOverQREnabled] & 1) == 0)
   {
 
 LABEL_7:
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(CSDConversation *)self featureFlags];
-      if ([v14 controlMessageOverQREnabled])
+      featureFlags2 = [(CSDConversation *)self featureFlags];
+      if ([featureFlags2 controlMessageOverQREnabled])
       {
         v15 = @"YES";
       }
@@ -13139,8 +13139,8 @@ LABEL_7:
         v15 = @"NO";
       }
 
-      v16 = [(CSDConversation *)self serverBag];
-      if ([v16 isControlMessageOverQREnabled])
+      serverBag = [(CSDConversation *)self serverBag];
+      if ([serverBag isControlMessageOverQREnabled])
       {
         v17 = @"YES";
       }
@@ -13151,7 +13151,7 @@ LABEL_7:
       }
 
       *buf = 138412546;
-      v35 = v15;
+      dCopy3 = v15;
       v36 = 2112;
       v37 = v17;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "feature flag of controlMessageOverQREnabled: %@, server bag of isControlMessageOverQREnabled: %@, return", buf, 0x16u);
@@ -13160,23 +13160,23 @@ LABEL_7:
     goto LABEL_30;
   }
 
-  v10 = [(CSDConversation *)self serverBag];
-  v11 = [v10 isControlMessageOverQREnabled];
+  serverBag2 = [(CSDConversation *)self serverBag];
+  isControlMessageOverQREnabled = [serverBag2 isControlMessageOverQREnabled];
 
-  if ((v11 & 1) == 0)
+  if ((isControlMessageOverQREnabled & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  if (v7)
+  if (contextCopy)
   {
-    v12 = [[CSDMessagingConversationParticipantDidLeaveContext alloc] initWithData:v7];
-    v28 = [v12 leaveReason];
+    v12 = [[CSDMessagingConversationParticipantDidLeaveContext alloc] initWithData:contextCopy];
+    leaveReason = [v12 leaveReason];
     v13 = sub_100004778();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v35 = a4;
+      dCopy3 = d;
       v36 = 2112;
       v37 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ParticipantId %llu left with leave context %@", buf, 0x16u);
@@ -13189,11 +13189,11 @@ LABEL_7:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v35 = a4;
+      dCopy3 = d;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ParticipantID %llu left without providing leave context", buf, 0xCu);
     }
 
-    v28 = 0;
+    leaveReason = 0;
     v12 = 0;
   }
 
@@ -13217,14 +13217,14 @@ LABEL_7:
         }
 
         v23 = *(*(&v29 + 1) + 8 * i);
-        if ([v23 identifier] == a4)
+        if ([v23 identifier] == d)
         {
-          v25 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-          v26 = [NSNumber numberWithUnsignedLongLong:a4];
-          [v25 removeObjectForKey:v26];
+          pendingConversationParticipantsByIdentifier = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+          v26 = [NSNumber numberWithUnsignedLongLong:d];
+          [pendingConversationParticipantsByIdentifier removeObjectForKey:v26];
 
-          v27 = [v23 handle];
-          [(CSDConversation *)self removeParticipantWithIdentifier:a4 fromHandle:v27 withReason:v28];
+          handle = [v23 handle];
+          [(CSDConversation *)self removeParticipantWithIdentifier:d fromHandle:handle withReason:leaveReason];
 
           v24 = v18;
           goto LABEL_29;
@@ -13245,7 +13245,7 @@ LABEL_7:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v35 = a4;
+    dCopy3 = d;
     v36 = 2112;
     v37 = v18;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Couldn't find participantID %llu from active participant list: %@", buf, 0x16u);
@@ -13256,80 +13256,80 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)session:(id)a3 didReceiveReport:(id)a4
+- (void)session:(id)session didReceiveReport:(id)report
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  reportCopy = report;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = +[CSDReportingController sharedInstance];
-  v7 = [(CSDConversation *)self tuConversation];
-  [v8 idsReportsReceived:v5 forConversation:v7];
+  tuConversation = [(CSDConversation *)self tuConversation];
+  [v8 idsReportsReceived:reportCopy forConversation:tuConversation];
 }
 
-- (void)session:(id)a3 didReceiveKickedParticipantIDs:(id)a4 withCode:(unsigned int)a5 withType:(unsigned __int16)a6 isTruncated:(BOOL)a7
+- (void)session:(id)session didReceiveKickedParticipantIDs:(id)ds withCode:(unsigned int)code withType:(unsigned __int16)type isTruncated:(BOOL)truncated
 {
-  v7 = a6;
-  v93 = a4;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  typeCopy = type;
+  dsCopy = ds;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v121 = v93;
+    v121 = dsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didReceiveKickedParticipantIDs: %@", buf, 0xCu);
   }
 
-  if (a5 - 4 < 2)
+  if (code - 4 < 2)
   {
     v33 = sub_100004778();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v121) = a5;
+      LODWORD(v121) = code;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "[WARN] resetting state, IDSGroupSessionMemberManagementCode: %d", buf, 8u);
     }
 
     [(CSDConversation *)self setKickMemberRetryCount:0];
-    v34 = +[NSMutableDictionary dictionary];
-    [(CSDConversation *)self setPendingKickedMembersByIdentifier:v34];
+    delegate = +[NSMutableDictionary dictionary];
+    [(CSDConversation *)self setPendingKickedMembersByIdentifier:delegate];
     goto LABEL_69;
   }
 
-  if (a5 == 2)
+  if (code == 2)
   {
-    v35 = [(CSDConversation *)self kickMemberRetryCount];
-    v36 = [(CSDConversation *)self serverBag];
-    v37 = [v36 maxKickMemberRetries];
+    kickMemberRetryCount = [(CSDConversation *)self kickMemberRetryCount];
+    serverBag = [(CSDConversation *)self serverBag];
+    maxKickMemberRetries = [serverBag maxKickMemberRetries];
 
-    if (v35 >= v37)
+    if (kickMemberRetryCount >= maxKickMemberRetries)
     {
       v50 = sub_100004778();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [(CSDConversation *)self serverBag];
-        v52 = [v51 maxActiveParticipantFetchRetries];
+        serverBag2 = [(CSDConversation *)self serverBag];
+        maxActiveParticipantFetchRetries = [serverBag2 maxActiveParticipantFetchRetries];
         *buf = 134217984;
-        v121 = v52;
+        v121 = maxActiveParticipantFetchRetries;
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "[WARN] Not retrying to kickMembers, max retry count (%lu) reached", buf, 0xCu);
       }
 
       goto LABEL_70;
     }
 
-    if (v7 == 2)
+    if (typeCopy == 2)
     {
       v79 = sub_100004778();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [(CSDConversation *)self kickMemberRetryCount];
-        v81 = [(CSDConversation *)self pendingAllowedMembers];
+        kickMemberRetryCount2 = [(CSDConversation *)self kickMemberRetryCount];
+        pendingAllowedMembers = [(CSDConversation *)self pendingAllowedMembers];
         *buf = 134218242;
-        v121 = v80;
+        v121 = kickMemberRetryCount2;
         v122 = 2112;
-        v123 = v81;
+        v123 = pendingAllowedMembers;
         _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "Retrying allowed members: retries: %lu pendingAllowedMembers: %@", buf, 0x16u);
       }
 
@@ -13337,10 +13337,10 @@ LABEL_30:
       v97 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v82 = [(CSDConversation *)self pendingAllowedMembers];
-      v41 = [v82 copy];
+      pendingAllowedMembers2 = [(CSDConversation *)self pendingAllowedMembers];
+      pendingKickedMembersByIdentifier2 = [pendingAllowedMembers2 copy];
 
-      v83 = [v41 countByEnumeratingWithState:&v94 objects:v116 count:16];
+      v83 = [pendingKickedMembersByIdentifier2 countByEnumeratingWithState:&v94 objects:v116 count:16];
       if (v83)
       {
         v84 = v83;
@@ -13351,13 +13351,13 @@ LABEL_30:
           {
             if (*v95 != v85)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(pendingKickedMembersByIdentifier2);
             }
 
             [(CSDConversation *)self _allowMember:*(*(&v94 + 1) + 8 * i)];
           }
 
-          v84 = [v41 countByEnumeratingWithState:&v94 objects:v116 count:16];
+          v84 = [pendingKickedMembersByIdentifier2 countByEnumeratingWithState:&v94 objects:v116 count:16];
         }
 
         while (v84);
@@ -13366,7 +13366,7 @@ LABEL_30:
 
     else
     {
-      if (v7 != 1)
+      if (typeCopy != 1)
       {
 LABEL_81:
         [(CSDConversation *)self setKickMemberRetryCount:[(CSDConversation *)self kickMemberRetryCount]+ 1];
@@ -13376,12 +13376,12 @@ LABEL_81:
       v38 = sub_100004778();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(CSDConversation *)self kickMemberRetryCount];
-        v40 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
+        kickMemberRetryCount3 = [(CSDConversation *)self kickMemberRetryCount];
+        pendingKickedMembersByIdentifier = [(CSDConversation *)self pendingKickedMembersByIdentifier];
         *buf = 134218242;
-        v121 = v39;
+        v121 = kickMemberRetryCount3;
         v122 = 2112;
-        v123 = v40;
+        v123 = pendingKickedMembersByIdentifier;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Retrying kicked members: retries: %lu pendingKickedMembers: %@", buf, 0x16u);
       }
 
@@ -13389,8 +13389,8 @@ LABEL_81:
       v101 = 0u;
       v98 = 0u;
       v99 = 0u;
-      v41 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
-      v42 = [v41 countByEnumeratingWithState:&v98 objects:v117 count:16];
+      pendingKickedMembersByIdentifier2 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
+      v42 = [pendingKickedMembersByIdentifier2 countByEnumeratingWithState:&v98 objects:v117 count:16];
       if (v42)
       {
         v43 = v42;
@@ -13401,18 +13401,18 @@ LABEL_81:
           {
             if (*v99 != v44)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(pendingKickedMembersByIdentifier2);
             }
 
             v46 = *(*(&v98 + 1) + 8 * j);
-            v47 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
-            v48 = [v47 objectForKeyedSubscript:v46];
+            pendingKickedMembersByIdentifier3 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
+            v48 = [pendingKickedMembersByIdentifier3 objectForKeyedSubscript:v46];
 
-            v49 = [(CSDConversation *)self idsSession];
-            [v49 kickMember:v48];
+            idsSession = [(CSDConversation *)self idsSession];
+            [idsSession kickMember:v48];
           }
 
-          v43 = [v41 countByEnumeratingWithState:&v98 objects:v117 count:16];
+          v43 = [pendingKickedMembersByIdentifier2 countByEnumeratingWithState:&v98 objects:v117 count:16];
         }
 
         while (v43);
@@ -13422,23 +13422,23 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if (!a5)
+  if (!code)
   {
     [(CSDConversation *)self setKickMemberRetryCount:0];
-    if (v7 == 2)
+    if (typeCopy == 2)
     {
       v53 = [NSMutableSet alloc];
-      v54 = [(CSDConversation *)self pendingAllowedMembers];
-      v55 = [v53 initWithSet:v54];
+      pendingAllowedMembers3 = [(CSDConversation *)self pendingAllowedMembers];
+      v55 = [v53 initWithSet:pendingAllowedMembers3];
 
-      v92 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v93, "count")}];
-      v90 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v93, "count")}];
+      v92 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
+      v90 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
       v106 = 0u;
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
-      v56 = [(CSDConversation *)self kickedParticipants];
-      v57 = [v56 countByEnumeratingWithState:&v106 objects:v119 count:16];
+      kickedParticipants = [(CSDConversation *)self kickedParticipants];
+      v57 = [kickedParticipants countByEnumeratingWithState:&v106 objects:v119 count:16];
       if (v57)
       {
         v58 = v57;
@@ -13449,18 +13449,18 @@ LABEL_81:
           {
             if (*v107 != v59)
             {
-              objc_enumerationMutation(v56);
+              objc_enumerationMutation(kickedParticipants);
             }
 
             v61 = *(*(&v106 + 1) + 8 * k);
             v62 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v61 identifier]);
-            v63 = [v93 containsObject:v62];
+            v63 = [dsCopy containsObject:v62];
 
             if (v63)
             {
               v64 = [TUConversationMember alloc];
-              v65 = [v61 handle];
-              v66 = [v64 initWithHandle:v65];
+              handle = [v61 handle];
+              v66 = [v64 initWithHandle:handle];
 
               [v90 addObject:v61];
               [v92 addObject:v66];
@@ -13468,32 +13468,32 @@ LABEL_81:
             }
           }
 
-          v58 = [v56 countByEnumeratingWithState:&v106 objects:v119 count:16];
+          v58 = [kickedParticipants countByEnumeratingWithState:&v106 objects:v119 count:16];
         }
 
         while (v58);
       }
 
       [(CSDConversation *)self setKickedMembers:v92];
-      v67 = [(CSDConversation *)self pendingAllowedMembers];
+      pendingAllowedMembers4 = [(CSDConversation *)self pendingAllowedMembers];
       v32 = v55;
-      [v67 minusSet:v55];
+      [pendingAllowedMembers4 minusSet:v55];
 
       v68 = sub_100004778();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
       {
-        v69 = [(CSDConversation *)self kickedMembers];
+        kickedMembers = [(CSDConversation *)self kickedMembers];
         *buf = 138412290;
-        v121 = v69;
+        v121 = kickedMembers;
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "updating kickedMembers to %@", buf, 0xCu);
       }
 
       v70 = sub_100004778();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
       {
-        v71 = [(CSDConversation *)self pendingAllowedMembers];
+        pendingAllowedMembers5 = [(CSDConversation *)self pendingAllowedMembers];
         *buf = 138412290;
-        v121 = v71;
+        v121 = pendingAllowedMembers5;
         _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "updating pendingAllowedMembers to %@", buf, 0xCu);
       }
 
@@ -13504,8 +13504,8 @@ LABEL_81:
       v105 = 0u;
       v102 = 0u;
       v103 = 0u;
-      v73 = [(CSDConversation *)self pendingAllowedMembers];
-      v74 = [v73 copy];
+      pendingAllowedMembers6 = [(CSDConversation *)self pendingAllowedMembers];
+      v74 = [pendingAllowedMembers6 copy];
 
       v75 = [v74 countByEnumeratingWithState:&v102 objects:v118 count:16];
       if (v75)
@@ -13531,22 +13531,22 @@ LABEL_81:
       }
     }
 
-    else if (v7 == 1)
+    else if (typeCopy == 1)
     {
-      v12 = [(CSDConversation *)self remoteMembers];
-      v13 = [(CSDConversation *)self lightweightMembers];
-      v14 = [v12 setByAddingObjectsFromSet:v13];
-      v91 = [v14 allObjects];
+      remoteMembers = [(CSDConversation *)self remoteMembers];
+      lightweightMembers = [(CSDConversation *)self lightweightMembers];
+      v14 = [remoteMembers setByAddingObjectsFromSet:lightweightMembers];
+      allObjects = [v14 allObjects];
 
-      v88 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v93 count]);
-      v15 = [(CSDConversation *)self memberIdentifiers];
-      v16 = [NSMutableSet setWithSet:v15];
+      v88 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [dsCopy count]);
+      memberIdentifiers = [(CSDConversation *)self memberIdentifiers];
+      v16 = [NSMutableSet setWithSet:memberIdentifiers];
 
       v114 = 0u;
       v115 = 0u;
       v112 = 0u;
       v113 = 0u;
-      obj = v93;
+      obj = dsCopy;
       v17 = [obj countByEnumeratingWithState:&v112 objects:v126 count:16];
       if (v17)
       {
@@ -13564,8 +13564,8 @@ LABEL_81:
             }
 
             v22 = *(*(&v112 + 1) + 8 * n);
-            v23 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-            v24 = [v23 objectForKeyedSubscript:v22];
+            activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+            v24 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v22];
             v25 = v24;
             if (v24)
             {
@@ -13574,13 +13574,13 @@ LABEL_81:
 
             else
             {
-              v27 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-              v26 = [v27 objectForKeyedSubscript:v22];
+              activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+              v26 = [activeLightweightParticipantsByIdentifier objectForKeyedSubscript:v22];
             }
 
             [v16 removeObject:v22];
-            v28 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
-            [v28 removeObjectForKey:v22];
+            pendingKickedMembersByIdentifier4 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
+            [pendingKickedMembersByIdentifier4 removeObjectForKey:v22];
 
             if (v26)
             {
@@ -13590,7 +13590,7 @@ LABEL_81:
               v110[3] = &unk_10061A7B8;
               v29 = v26;
               v111 = v29;
-              v30 = [v91 tu_firstObjectPassingTest:v110];
+              v30 = [allObjects tu_firstObjectPassingTest:v110];
               if (v30)
               {
                 [v88 addObject:v30];
@@ -13606,7 +13606,7 @@ LABEL_81:
                   v122 = 2112;
                   v123 = v29;
                   v124 = 2112;
-                  v125 = v91;
+                  v125 = allObjects;
                   _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "When kicking participantID %@ we found participant %@ with no member in %@", buf, 0x20u);
                 }
               }
@@ -13622,7 +13622,7 @@ LABEL_81:
       [(CSDConversation *)self setMemberIdentifiers:v16];
       [(CSDConversation *)self removeRemoteMembers:v88 triggeredLocally:0];
 
-      v32 = v91;
+      v32 = allObjects;
     }
 
     else
@@ -13631,29 +13631,29 @@ LABEL_81:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v121) = v7;
+        LODWORD(v121) = typeCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[WARN] didReceiveKickedParticipantIDstype: %hu unexpected", buf, 8u);
       }
     }
 
-    v34 = [(CSDConversation *)self delegate];
-    [v34 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 LABEL_69:
   }
 
 LABEL_70:
 }
 
-- (void)session:(id)a3 didRegisterPluginAllocationInfo:(id)a4
+- (void)session:(id)session didRegisterPluginAllocationInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  infoCopy = info;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v5 objectForKeyedSubscript:IDSGroupSessionParticipantIdentifierKey];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [infoCopy objectForKeyedSubscript:IDSGroupSessionParticipantIdentifierKey];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  v10 = [v5 objectForKeyedSubscript:IDSGroupSessionPluginNameKey];
+  v10 = [infoCopy objectForKeyedSubscript:IDSGroupSessionPluginNameKey];
 
   if (![(__CFString *)v10 length])
   {
@@ -13661,20 +13661,20 @@ LABEL_70:
     v10 = @"PubSub";
   }
 
-  v9 = [[TUConversationVirtualParticipant alloc] initWithIdentifier:v8 pluginName:v10];
+  v9 = [[TUConversationVirtualParticipant alloc] initWithIdentifier:unsignedLongLongValue pluginName:v10];
   [(CSDConversation *)self addVirtualParticipant:v9];
 }
 
-- (void)session:(id)a3 didUnregisterPluginAllocationInfo:(id)a4
+- (void)session:(id)session didUnregisterPluginAllocationInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  infoCopy = info;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v5 objectForKeyedSubscript:IDSGroupSessionParticipantIdentifierKey];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [infoCopy objectForKeyedSubscript:IDSGroupSessionParticipantIdentifierKey];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  v13 = [v5 objectForKeyedSubscript:IDSGroupSessionPluginNameKey];
+  v13 = [infoCopy objectForKeyedSubscript:IDSGroupSessionPluginNameKey];
 
   if (![(__CFString *)v13 length])
   {
@@ -13682,87 +13682,87 @@ LABEL_70:
     v13 = @"PubSub";
   }
 
-  v9 = [(CSDConversation *)self virtualParticipantsByPluginName];
-  v10 = [v9 objectForKeyedSubscript:v13];
-  v11 = [v10 identifier];
+  virtualParticipantsByPluginName = [(CSDConversation *)self virtualParticipantsByPluginName];
+  v10 = [virtualParticipantsByPluginName objectForKeyedSubscript:v13];
+  identifier = [v10 identifier];
 
-  if (v11 == v8)
+  if (identifier == unsignedLongLongValue)
   {
-    v12 = [[TUConversationVirtualParticipant alloc] initWithIdentifier:v8 pluginName:v13];
+    v12 = [[TUConversationVirtualParticipant alloc] initWithIdentifier:unsignedLongLongValue pluginName:v13];
     [(CSDConversation *)self removeVirtualParticipant:v12];
   }
 }
 
-- (void)sessionDidReceiveKeyUpdate:(id)a3
+- (void)sessionDidReceiveKeyUpdate:(id)update
 {
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDConversation *)self activitySessionManager];
-  [v5 refreshDataCryptors];
+  activitySessionManager = [(CSDConversation *)self activitySessionManager];
+  [activitySessionManager refreshDataCryptors];
 }
 
-- (void)session:(id)a3 didReceiveDataBlob:(id)a4 forParticipant:(id)a5
+- (void)session:(id)session didReceiveDataBlob:(id)blob forParticipant:(id)participant
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  blobCopy = blob;
+  participantCopy = participant;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v51 = v8;
+    v51 = participantCopy;
     v52 = 2112;
-    v53 = v7;
+    v53 = blobCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didReceiveDataBlob for participant: %@, blob %@", buf, 0x16u);
   }
 
-  v11 = [[CSDMessagingConversationParticipant alloc] initWithData:v7];
-  [(CSDMessagingConversationParticipant *)v11 setIdentifier:[v8 participantIdentifier]];
-  v12 = [v8 participantURI];
-  v13 = [v12 _stripFZIDPrefix];
-  v14 = [TUHandle normalizedHandleWithDestinationID:v13];
+  v11 = [[CSDMessagingConversationParticipant alloc] initWithData:blobCopy];
+  [(CSDMessagingConversationParticipant *)v11 setIdentifier:[participantCopy participantIdentifier]];
+  participantURI = [participantCopy participantURI];
+  _stripFZIDPrefix = [participantURI _stripFZIDPrefix];
+  v14 = [TUHandle normalizedHandleWithDestinationID:_stripFZIDPrefix];
 
   if (v14)
   {
-    v15 = [(CSDConversation *)self pendingKickedMembersByIdentifier];
-    v16 = [NSNumber numberWithUnsignedLongLong:[v8 participantIdentifier]];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    pendingKickedMembersByIdentifier = [(CSDConversation *)self pendingKickedMembersByIdentifier];
+    v16 = [NSNumber numberWithUnsignedLongLong:[participantCopy participantIdentifier]];
+    v17 = [pendingKickedMembersByIdentifier objectForKeyedSubscript:v16];
 
     if (v17)
     {
       v18 = sub_100004778();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v8 participantIdentifier];
+        participantIdentifier = [participantCopy participantIdentifier];
         *buf = 134217984;
-        v51 = v19;
+        v51 = participantIdentifier;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] didReceiveDataBlob not processing because we have a pendingKickedMember with the same identifier: %llu", buf, 0xCu);
       }
 
       goto LABEL_34;
     }
 
-    v22 = [(CSDConversation *)self kickedMembers];
-    v23 = [v22 allObjects];
+    kickedMembers = [(CSDConversation *)self kickedMembers];
+    allObjects = [kickedMembers allObjects];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_1000A41A0;
     v48[3] = &unk_10061A7B8;
     v24 = v14;
     v49 = v24;
-    v25 = [v23 tu_containsObjectPassingTest:v48];
+    v25 = [allObjects tu_containsObjectPassingTest:v48];
 
     if (v25)
     {
-      v26 = sub_100004778();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      csdConversationParticipant = sub_100004778();
+      if (os_log_type_enabled(csdConversationParticipant, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v51 = v24;
-        _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[WARN] didReceiveDataBlob not processing because we have a kickedMember with the same handle: %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, csdConversationParticipant, OS_LOG_TYPE_DEFAULT, "[WARN] didReceiveDataBlob not processing because we have a kickedMember with the same handle: %@", buf, 0xCu);
       }
 
       goto LABEL_33;
@@ -13771,11 +13771,11 @@ LABEL_70:
     v27 = [CSDMessagingHandle handleWithTUHandle:v24];
     [(CSDMessagingConversationParticipant *)v11 setHandle:v27];
 
-    v26 = [(CSDMessagingConversationParticipant *)v11 csdConversationParticipant];
-    if (!v26)
+    csdConversationParticipant = [(CSDMessagingConversationParticipant *)v11 csdConversationParticipant];
+    if (!csdConversationParticipant)
     {
-      v29 = sub_100004778();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      pendingConversationParticipantsByIdentifier = sub_100004778();
+      if (os_log_type_enabled(pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_ERROR))
       {
         sub_1004726F4();
       }
@@ -13783,17 +13783,17 @@ LABEL_70:
       goto LABEL_32;
     }
 
-    [(CSDConversation *)self _applyUpdateFromDataBlobForRemoteParticipant:v26 participantIdentifier:[v8 participantIdentifier]];
-    [(CSDConversation *)self updateConversationParticipantToHaveMatchingSiriDisplayName:v26];
-    v28 = [(CSDConversation *)self localParticipantIdentifier];
-    if (v28 == [v26 identifier])
+    [(CSDConversation *)self _applyUpdateFromDataBlobForRemoteParticipant:csdConversationParticipant participantIdentifier:[participantCopy participantIdentifier]];
+    [(CSDConversation *)self updateConversationParticipantToHaveMatchingSiriDisplayName:csdConversationParticipant];
+    localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
+    if (localParticipantIdentifier == [csdConversationParticipant identifier])
     {
-      v29 = sub_100004778();
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      pendingConversationParticipantsByIdentifier = sub_100004778();
+      if (os_log_type_enabled(pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v51 = v26;
-        _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "didReceiveDataBlob skipped adding local-participant's datablob to the cache, csdConversationParticipant: %@", buf, 0xCu);
+        v51 = csdConversationParticipant;
+        _os_log_impl(&_mh_execute_header, pendingConversationParticipantsByIdentifier, OS_LOG_TYPE_DEFAULT, "didReceiveDataBlob skipped adding local-participant's datablob to the cache, csdConversationParticipant: %@", buf, 0xCu);
       }
 
 LABEL_32:
@@ -13803,14 +13803,14 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v30 = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
-    v31 = [NSNumber numberWithUnsignedLongLong:[v26 identifier]];
-    v32 = [v30 objectForKeyedSubscript:v31];
+    activeParticipantDestinationsByIdentifier = [(CSDConversation *)self activeParticipantDestinationsByIdentifier];
+    v31 = [NSNumber numberWithUnsignedLongLong:[csdConversationParticipant identifier]];
+    v32 = [activeParticipantDestinationsByIdentifier objectForKeyedSubscript:v31];
     if (!v32)
     {
-      v33 = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
-      v34 = [NSNumber numberWithUnsignedLongLong:[v26 identifier]];
-      v35 = [v33 objectForKeyedSubscript:v34];
+      activeLightweightParticipantsByIdentifier = [(CSDConversation *)self activeLightweightParticipantsByIdentifier];
+      v34 = [NSNumber numberWithUnsignedLongLong:[csdConversationParticipant identifier]];
+      v35 = [activeLightweightParticipantsByIdentifier objectForKeyedSubscript:v34];
       if (!v35)
       {
 
@@ -13819,28 +13819,28 @@ LABEL_29:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v26;
+          v51 = csdConversationParticipant;
           _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "didReceiveDataBlob caching as pending-participant, csdConversationParticipant: %@", buf, 0xCu);
         }
 
-        v29 = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
-        v41 = [NSNumber numberWithUnsignedLongLong:[v8 participantIdentifier]];
-        [v29 setObject:v26 forKeyedSubscript:v41];
+        pendingConversationParticipantsByIdentifier = [(CSDConversation *)self pendingConversationParticipantsByIdentifier];
+        v41 = [NSNumber numberWithUnsignedLongLong:[participantCopy participantIdentifier]];
+        [pendingConversationParticipantsByIdentifier setObject:csdConversationParticipant forKeyedSubscript:v41];
 
         goto LABEL_32;
       }
 
       v42 = v35;
       v44 = v34;
-      v45 = v33;
+      v45 = activeLightweightParticipantsByIdentifier;
       v32 = 0;
     }
 
     v46 = v31;
-    v47 = v30;
-    v36 = [(CSDConversation *)self recentlyLeftParticipantIdentifiers];
-    v37 = [NSNumber numberWithUnsignedLongLong:[v26 identifier]];
-    v38 = [v36 containsObject:v37];
+    v47 = activeParticipantDestinationsByIdentifier;
+    recentlyLeftParticipantIdentifiers = [(CSDConversation *)self recentlyLeftParticipantIdentifiers];
+    v37 = [NSNumber numberWithUnsignedLongLong:[csdConversationParticipant identifier]];
+    v38 = [recentlyLeftParticipantIdentifiers containsObject:v37];
 
     if (v32)
     {
@@ -13856,11 +13856,11 @@ LABEL_29:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v51 = v26;
+        v51 = csdConversationParticipant;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "didReceiveDataBlob adding as active-participant, csdConversationParticipant: %@", buf, 0xCu);
       }
 
-      [(CSDConversation *)self addActiveParticipant:v26];
+      [(CSDConversation *)self addActiveParticipant:csdConversationParticipant];
       goto LABEL_33;
     }
 
@@ -13870,7 +13870,7 @@ LABEL_29:
   v18 = sub_100004778();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v8 participantURI];
+    participantURI2 = [participantCopy participantURI];
     v21 = TULoggableStringForHandle();
     *buf = 138412290;
     v51 = v21;
@@ -13880,24 +13880,24 @@ LABEL_29:
 LABEL_34:
 }
 
-- (void)session:(id)a3 didReceiveData:(id)a4 dataType:(unsigned __int16)a5 forParticipant:(id)a6
+- (void)session:(id)session didReceiveData:(id)data dataType:(unsigned __int16)type forParticipant:(id)participant
 {
-  v6 = a5;
-  v8 = a6;
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  typeCopy = type;
+  participantCopy = participant;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109378;
-    v12[1] = v6;
+    v12[1] = typeCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = participantCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didReceiveData dataType: %u for participant: %@", v12, 0x12u);
   }
 
-  if (v6 != 1)
+  if (typeCopy != 1)
   {
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -13907,41 +13907,41 @@ LABEL_34:
   }
 }
 
-- (id)session:(id)a3 conversationParticipantWithParticipantIdentifier:(unint64_t)a4
+- (id)session:(id)session conversationParticipantWithParticipantIdentifier:(unint64_t)identifier
 {
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v8 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v9 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v8];
 
   return v9;
 }
 
-- (id)onlyAvailableSessionConversationParticipant:(id)a3
+- (id)onlyAvailableSessionConversationParticipant:(id)participant
 {
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v6 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v7 = [v6 allValues];
-  v8 = [v7 firstObject];
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 identifier]);
-  v10 = [v5 objectForKeyedSubscript:v9];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  activeRemoteParticipantsByIdentifier2 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  allValues = [activeRemoteParticipantsByIdentifier2 allValues];
+  firstObject = [allValues firstObject];
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [firstObject identifier]);
+  v10 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v9];
 
   return v10;
 }
 
-- (void)session:(id)a3 didReceiveUnderlyingLinksStatus:(BOOL)a4
+- (void)session:(id)session didReceiveUnderlyingLinksStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (statusCopy)
     {
       v7 = @"YES";
     }
@@ -13951,103 +13951,103 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[CSDConversation] didReceiveUnderlyingLinksStatus: %@", &v10, 0xCu);
   }
 
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self delegate];
-  [v9 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (int)_errorToAVCProviderEndedReason:(id)a3 defaultProviderReason:(int)a4
+- (int)_errorToAVCProviderEndedReason:(id)reason defaultProviderReason:(int)providerReason
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  reasonCopy = reason;
+  v6 = reasonCopy;
+  if (!reasonCopy)
   {
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 67109120;
-      v15 = a4;
+      providerReasonCopy2 = providerReason;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No error with a failed start from AVC using %d", &v14, 8u);
     }
 
     goto LABEL_12;
   }
 
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"NSErrorUserInfoDetailedError"];
+  userInfo = [reasonCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"NSErrorUserInfoDetailedError"];
 
   if (v8)
   {
-    v9 = [v6 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"NSErrorUserInfoDetailedError"];
+    userInfo2 = [v6 userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:@"NSErrorUserInfoDetailedError"];
     LODWORD(v8) = [v10 intValue];
   }
 
-  a4 = v8 + 100 * [v6 code];
+  providerReason = v8 + 100 * [v6 code];
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109632;
-    v15 = a4;
+    providerReasonCopy2 = providerReason;
     v16 = 1024;
-    v17 = [v6 code];
+    code = [v6 code];
     v18 = 1024;
     v19 = v8;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "AVCProviderEndReason=%d error.code=%d detailedError=%d", &v14, 0x14u);
   }
 
-  if (!a4)
+  if (!providerReason)
   {
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 67109120;
-      v15 = 0;
+      providerReasonCopy2 = 0;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "AVCProviderEndReason=%d, this should not happen", &v14, 8u);
     }
 
-    a4 = 518;
+    providerReason = 518;
 LABEL_12:
   }
 
-  return a4;
+  return providerReason;
 }
 
 - (void)executeSessionDidStart
 {
-  v3 = [(CSDConversation *)self avcSession];
-  if (!v3)
+  avcSession = [(CSDConversation *)self avcSession];
+  if (!avcSession)
   {
     sub_100472814();
   }
 
-  v4 = [(CSDConversation *)self expectedVideoEnabled];
+  expectedVideoEnabled = [(CSDConversation *)self expectedVideoEnabled];
 
-  if (v4)
+  if (expectedVideoEnabled)
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CSDConversation *)self expectedVideoEnabled];
+      expectedVideoEnabled2 = [(CSDConversation *)self expectedVideoEnabled];
       v16 = 138412290;
-      v17 = v6;
+      v17 = expectedVideoEnabled2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Found expectedVideoEnabled: %@, updating value to match state", &v16, 0xCu);
     }
 
-    v7 = [(CSDConversation *)self expectedVideoEnabled];
-    v8 = [v7 BOOLValue];
+    expectedVideoEnabled3 = [(CSDConversation *)self expectedVideoEnabled];
+    bOOLValue = [expectedVideoEnabled3 BOOLValue];
 
     [(CSDConversation *)self setExpectedVideoEnabled:0];
-    [(CSDConversation *)self setVideoEnabled:v8];
+    [(CSDConversation *)self setVideoEnabled:bOOLValue];
   }
 
-  v9 = [(CSDConversation *)self featureFlags];
-  if ([v9 nearbyFaceTimeEnabled] && -[CSDConversation isNearbySession](self, "isNearbySession"))
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags nearbyFaceTimeEnabled] && -[CSDConversation isNearbySession](self, "isNearbySession"))
   {
-    v10 = [(CSDConversation *)self remoteMembers];
-    v11 = [v10 count] != 1;
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    v11 = [remoteMembers count] != 1;
   }
 
   else
@@ -14055,22 +14055,22 @@ LABEL_12:
     v11 = 1;
   }
 
-  v12 = [(CSDConversation *)self featureFlags];
-  if (([v12 sharePlayInCallsEnabled] & 1) == 0)
+  featureFlags2 = [(CSDConversation *)self featureFlags];
+  if (([featureFlags2 sharePlayInCallsEnabled] & 1) == 0)
   {
     goto LABEL_16;
   }
 
-  v13 = [(CSDConversation *)self provider];
-  if (([v13 isTelephonyWithSharePlayProvider] & 1) == 0)
+  provider = [(CSDConversation *)self provider];
+  if (([provider isTelephonyWithSharePlayProvider] & 1) == 0)
   {
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v14 = [(CSDConversation *)self remoteMembers];
-  v15 = [v14 count];
+  remoteMembers2 = [(CSDConversation *)self remoteMembers];
+  v15 = [remoteMembers2 count];
 
   if (v15 == 1)
   {
@@ -14088,26 +14088,26 @@ LABEL_17:
   [(CSDConversation *)self _launchApplicationsForActivitiesIfNecessary:0];
 }
 
-- (void)session:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)session:(id)session didStart:(BOOL)start error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  startCopy = start;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v28[0] = 67109378;
-    v28[1] = v5;
+    v28[1] = startCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didStart: %d error: %@", v28, 0x12u);
   }
 
   v10 = sub_100004778();
-  v11 = [(CSDConversation *)self avcSession];
-  v12 = os_signpost_id_make_with_pointer(v10, v11);
+  avcSession = [(CSDConversation *)self avcSession];
+  v12 = os_signpost_id_make_with_pointer(v10, avcSession);
 
   v13 = sub_100004778();
   v14 = v13;
@@ -14117,11 +14117,11 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_END, v12, "avcSessionStart", "", v28, 2u);
   }
 
-  v15 = [(CSDConversation *)self report];
-  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 4, [v15 hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
+  report = [(CSDConversation *)self report];
+  -[CSDConversation _emitRTCConnectionSetupEvent:participantIdentifier:](self, "_emitRTCConnectionSetupEvent:participantIdentifier:", 4, [report hashForParticipantIdentifier:{-[CSDConversation localParticipantIdentifier](self, "localParticipantIdentifier")}]);
 
-  v16 = [(CSDConversation *)self delegate];
-  if (v5)
+  delegate = [(CSDConversation *)self delegate];
+  if (startCopy)
   {
     if ([(CSDConversation *)self state]== 2 || [(CSDConversation *)self state]== 3)
     {
@@ -14140,7 +14140,7 @@ LABEL_17:
 
       [(CSDConversation *)self setState:4];
       [(CSDConversation *)self _beginTimeoutForLeavingConversationWithReason:@"AVCSession started but we weren't trying to join the conversation."];
-      [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:[(CSDConversation *)self _errorToAVCProviderEndedReason:v7 defaultProviderReason:515]];
+      [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:[(CSDConversation *)self _errorToAVCProviderEndedReason:errorCopy defaultProviderReason:515]];
       [(CSDConversation *)self _stopAVCSession];
     }
 
@@ -14155,12 +14155,12 @@ LABEL_17:
 
   [(CSDConversation *)self setAvcSessionInProgress:0];
   [(CSDConversation *)self setAvcSession:0];
-  v18 = [(CSDConversation *)self featureFlags];
-  if ([v18 conversationOneToOneModeEnabled] && -[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled"))
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags conversationOneToOneModeEnabled] && -[CSDConversation isOneToOneModeEnabled](self, "isOneToOneModeEnabled"))
   {
-    v19 = [(CSDConversation *)self state];
+    state = [(CSDConversation *)self state];
 
-    if (v19 == 4)
+    if (state == 4)
     {
       v20 = sub_100004778();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -14177,16 +14177,16 @@ LABEL_17:
   {
   }
 
-  v21 = [(CSDConversation *)self featureFlags];
-  v22 = [v21 avLessSharePlayEnabled];
-  if (v7 || !v22 || [(CSDConversation *)self state]!= 3 || [(CSDConversation *)self avMode])
+  featureFlags2 = [(CSDConversation *)self featureFlags];
+  avLessSharePlayEnabled = [featureFlags2 avLessSharePlayEnabled];
+  if (errorCopy || !avLessSharePlayEnabled || [(CSDConversation *)self state]!= 3 || [(CSDConversation *)self avMode])
   {
 
     goto LABEL_24;
   }
 
-  v25 = [(CSDConversation *)self remoteMembers];
-  v26 = [v25 count];
+  remoteMembers = [(CSDConversation *)self remoteMembers];
+  v26 = [remoteMembers count];
 
   if (v26 != 1)
   {
@@ -14195,10 +14195,10 @@ LABEL_24:
     {
       [(CSDConversation *)self setState:4];
       [(CSDConversation *)self _beginTimeoutForLeavingConversationWithReason:@"AVCSession failed to start."];
-      v23 = [(CSDConversation *)self idsSession];
-      [v23 leaveGroupSessionWithContext:0];
+      idsSession = [(CSDConversation *)self idsSession];
+      [idsSession leaveGroupSessionWithContext:0];
 
-      [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:[(CSDConversation *)self _errorToAVCProviderEndedReason:v7 defaultProviderReason:516]];
+      [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:[(CSDConversation *)self _errorToAVCProviderEndedReason:errorCopy defaultProviderReason:516]];
     }
 
     goto LABEL_29;
@@ -14212,14 +14212,14 @@ LABEL_24:
   }
 
 LABEL_29:
-  [v16 conversationChanged:self];
+  [delegate conversationChanged:self];
 }
 
-- (void)session:(id)a3 didDetectError:(id)a4
+- (void)session:(id)session didDetectError:(id)error
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -14230,8 +14230,8 @@ LABEL_29:
   if ([(CSDConversation *)self state]== 3)
   {
     v8 = +[NSDate date];
-    v9 = [(CSDConversation *)self lastRebroadcastTime];
-    [v8 timeIntervalSinceDate:v9];
+    lastRebroadcastTime = [(CSDConversation *)self lastRebroadcastTime];
+    [v8 timeIntervalSinceDate:lastRebroadcastTime];
     v11 = v10;
 
     if (v11 > [(CSDConversation *)self rebroadcastTimeThreshold])
@@ -14246,8 +14246,8 @@ LABEL_29:
       }
 
       [(CSDConversation *)self setLastRebroadcastTime:v8];
-      v14 = [(CSDConversation *)self serverBag];
-      -[CSDConversation setRebroadcastTimeThreshold:](self, "setRebroadcastTimeThreshold:", -[CSDConversation rebroadcastTimeThreshold](self, "rebroadcastTimeThreshold") * [v14 rebroadcastTimeThreshold]);
+      serverBag = [(CSDConversation *)self serverBag];
+      -[CSDConversation setRebroadcastTimeThreshold:](self, "setRebroadcastTimeThreshold:", -[CSDConversation rebroadcastTimeThreshold](self, "rebroadcastTimeThreshold") * [serverBag rebroadcastTimeThreshold]);
 
       [(CSDConversation *)self broadcastLocalParticipantData];
     }
@@ -14265,32 +14265,32 @@ LABEL_29:
   }
 }
 
-- (void)session:(id)a3 didStopWithError:(id)a4
+- (void)session:(id)session didStopWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CSDAVCSession didStopWithError: %@", &v21, 0xCu);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v10 = [v7 code];
+    code = [errorCopy code];
     v11 = sub_100004778();
     v12 = v11;
-    if (v10 == 32003)
+    if (code == 32003)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = v6;
+        v22 = sessionCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "AVCSession %@ stopped for remote hangup. Ignoring this signal.", &v21, 0xCu);
       }
     }
@@ -14299,18 +14299,18 @@ LABEL_29:
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(CSDConversation *)self UUID];
+        uUID = [(CSDConversation *)self UUID];
         v21 = 138412802;
-        v22 = v6;
+        v22 = sessionCopy;
         v23 = 2112;
-        v24 = v20;
+        v24 = uUID;
         v25 = 2112;
-        v26 = v7;
+        v26 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "AVCSession %@ stopped in failure for conversation UUID %@: %@", &v21, 0x20u);
       }
 
       [(CSDConversation *)self _cleanUpFromAVCSessionFailure];
-      [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:[(CSDConversation *)self _errorToAVCProviderEndedReason:v7 defaultProviderReason:518]];
+      [(CSDConversation *)self _reportConversationFailedWithProviderEndedReason:[(CSDConversation *)self _errorToAVCProviderEndedReason:errorCopy defaultProviderReason:518]];
     }
   }
 
@@ -14320,7 +14320,7 @@ LABEL_29:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v6;
+      v22 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "AVCSession %@ stopped, cleaning up IDSSession state", &v21, 0xCu);
     }
 
@@ -14352,12 +14352,12 @@ LABEL_29:
 
   if (![(CSDConversation *)self isOneToOneModeEnabled]&& ![(CSDConversation *)self isVideo])
   {
-    v16 = [(CSDConversation *)self featureFlags];
-    if ([v16 avLessSharePlayEnabled])
+    featureFlags = [(CSDConversation *)self featureFlags];
+    if ([featureFlags avLessSharePlayEnabled])
     {
-      v17 = [(CSDConversation *)self avMode];
+      avMode = [(CSDConversation *)self avMode];
 
-      if (!v17)
+      if (!avMode)
       {
         goto LABEL_31;
       }
@@ -14378,20 +14378,20 @@ LABEL_29:
   }
 
 LABEL_31:
-  v19 = [(CSDConversation *)self delegate];
-  [v19 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)serverDisconnectedForSession:(id)a3
+- (void)serverDisconnectedForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_100472998(v4, self);
+    sub_100472998(sessionCopy, self);
   }
 
   [(CSDConversation *)self setAvcSession:0];
@@ -14422,48 +14422,48 @@ LABEL_31:
     [(CSDConversation *)self broadcastLocalParticipantData];
   }
 
-  v9 = [(CSDConversation *)self delegate];
-  [v9 conversationChanged:self];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversationChanged:self];
 }
 
-- (void)session:(id)a3 changedLocalAudioEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)session:(id)session changedLocalAudioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a6;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  succeedCopy = succeed;
+  enabledCopy = enabled;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 67109120;
-    v24 = v7;
+    v24 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "changedLocalAudioEnabled=%d", &v23, 8u);
   }
 
-  if (v9 || !v6)
+  if (errorCopy || !succeedCopy)
   {
     v21 = sub_100004778();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v23 = 67109634;
-      v24 = v7;
+      v24 = enabledCopy;
       v25 = 1024;
-      *v26 = v6;
+      *v26 = succeedCopy;
       *&v26[4] = 2112;
-      *&v26[6] = v9;
+      *&v26[6] = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to set localAudioEnabled (%d): didSucceed (%d): error: %@", &v23, 0x18u);
     }
 
     goto LABEL_14;
   }
 
-  v12 = [(CSDConversation *)self expectedAudioEnabled];
-  if (!v12 || (v13 = v12, -[CSDConversation expectedAudioEnabled](self, "expectedAudioEnabled"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 BOOLValue], v14, v13, v15 == v7))
+  expectedAudioEnabled = [(CSDConversation *)self expectedAudioEnabled];
+  if (!expectedAudioEnabled || (v13 = expectedAudioEnabled, -[CSDConversation expectedAudioEnabled](self, "expectedAudioEnabled"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 BOOLValue], v14, v13, v15 == enabledCopy))
   {
-    v22 = [(CSDConversation *)self delegate];
-    [v22 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
 LABEL_14:
     [(CSDConversation *)self setExpectedAudioEnabled:0];
@@ -14473,60 +14473,60 @@ LABEL_14:
   v16 = sub_100004778();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CSDConversation *)self expectedAudioEnabled];
+    expectedAudioEnabled2 = [(CSDConversation *)self expectedAudioEnabled];
     v23 = 67109378;
-    v24 = v7;
+    v24 = enabledCopy;
     v25 = 2112;
-    *v26 = v17;
+    *v26 = expectedAudioEnabled2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Audio was set to audioEnabled: %d self.expectedAudioEnabled.BOOLValue: %@. Setting audioEnabled to self.expectedAudioEnabled.BOOLValue", &v23, 0x12u);
   }
 
-  v18 = [(CSDConversation *)self expectedAudioEnabled];
-  v19 = [v18 BOOLValue];
-  v20 = [(CSDConversation *)self avcSession];
-  [v20 setAudioEnabled:v19];
+  expectedAudioEnabled3 = [(CSDConversation *)self expectedAudioEnabled];
+  bOOLValue = [expectedAudioEnabled3 BOOLValue];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession setAudioEnabled:bOOLValue];
 
 LABEL_15:
 }
 
-- (void)session:(id)a3 changedLocalVideoEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)session:(id)session changedLocalVideoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a6;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  succeedCopy = succeed;
+  enabledCopy = enabled;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v29 = 67109120;
-    v30 = v7;
+    v30 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "changedLocalVideoEnabled=%d", &v29, 8u);
   }
 
-  if (v9 || !v6)
+  if (errorCopy || !succeedCopy)
   {
     v17 = sub_100004778();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v29 = 67109634;
-      v30 = v7;
+      v30 = enabledCopy;
       v31 = 1024;
-      *v32 = v6;
+      *v32 = succeedCopy;
       *&v32[4] = 2112;
-      *&v32[6] = v9;
+      *&v32[6] = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to set localVideoEnabled (%d): didSucceed (%d): error: %@", &v29, 0x18u);
     }
 
     if ([(CSDConversation *)self state]== 3)
     {
-      v18 = [(CSDConversation *)self expectedVideoEnabled];
-      if (v18)
+      expectedVideoEnabled = [(CSDConversation *)self expectedVideoEnabled];
+      if (expectedVideoEnabled)
       {
-        v19 = v18;
-        v20 = [(CSDConversation *)self expectedVideoEnabled];
-        if ([v20 BOOLValue])
+        v19 = expectedVideoEnabled;
+        expectedVideoEnabled2 = [(CSDConversation *)self expectedVideoEnabled];
+        if ([expectedVideoEnabled2 BOOLValue])
         {
           v21 = +[TUConversationManager allowsVideo];
 
@@ -14550,9 +14550,9 @@ LABEL_15:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v29 = 67109378;
-        v30 = v7;
+        v30 = enabledCopy;
         v31 = 2112;
-        *v32 = v9;
+        *v32 = errorCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[WARN] Skipping to set localVideoEnabled (%d) error: %@", &v29, 0x12u);
       }
     }
@@ -14560,38 +14560,38 @@ LABEL_15:
 
   else
   {
-    v12 = [(CSDConversation *)self expectedVideoEnabled];
-    if (v12)
+    expectedVideoEnabled3 = [(CSDConversation *)self expectedVideoEnabled];
+    if (expectedVideoEnabled3)
     {
-      v13 = v12;
-      v14 = [(CSDConversation *)self expectedVideoEnabled];
-      if ([v14 BOOLValue] == v7)
+      v13 = expectedVideoEnabled3;
+      expectedVideoEnabled4 = [(CSDConversation *)self expectedVideoEnabled];
+      if ([expectedVideoEnabled4 BOOLValue] == enabledCopy)
       {
       }
 
       else
       {
-        v15 = [(CSDConversation *)self expectedVideoEnabled];
-        if (([v15 BOOLValue] & 1) == 0)
+        expectedVideoEnabled5 = [(CSDConversation *)self expectedVideoEnabled];
+        if (([expectedVideoEnabled5 BOOLValue] & 1) == 0)
         {
 
 LABEL_24:
           v24 = sub_100004778();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [(CSDConversation *)self expectedVideoEnabled];
+            expectedVideoEnabled6 = [(CSDConversation *)self expectedVideoEnabled];
             v29 = 67109378;
-            v30 = v7;
+            v30 = enabledCopy;
             v31 = 2112;
-            *v32 = v25;
+            *v32 = expectedVideoEnabled6;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Video was set to videoEnabled: %d self.expectedVideoEnabled.BOOLValue: %@. Setting videoEnabled to self.expectedVideoEnabled.BOOLValue", &v29, 0x12u);
           }
 
 LABEL_27:
-          v26 = [(CSDConversation *)self expectedVideoEnabled];
-          v27 = [v26 BOOLValue];
-          v28 = [(CSDConversation *)self avcSession];
-          [v28 setVideoEnabled:v27];
+          expectedVideoEnabled7 = [(CSDConversation *)self expectedVideoEnabled];
+          bOOLValue = [expectedVideoEnabled7 BOOLValue];
+          avcSession = [(CSDConversation *)self avcSession];
+          [avcSession setVideoEnabled:bOOLValue];
 
           goto LABEL_28;
         }
@@ -14605,8 +14605,8 @@ LABEL_27:
       }
     }
 
-    v23 = [(CSDConversation *)self delegate];
-    [v23 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
     [(CSDConversation *)self setExpectedVideoEnabled:0];
   }
@@ -14614,45 +14614,45 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)session:(id)a3 changedScreenEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)session:(id)session changedScreenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a6;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  succeedCopy = succeed;
+  enabledCopy = enabled;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 67109634;
-    v33 = v7;
+    v33 = enabledCopy;
     v34 = 1024;
-    *v35 = v6;
+    *v35 = succeedCopy;
     *&v35[4] = 2112;
-    *&v35[6] = v9;
+    *&v35[6] = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "changedScreenEnabled=%d didSucceed=%d error %@", &v32, 0x18u);
   }
 
-  if (!v9 && v6)
+  if (!errorCopy && succeedCopy)
   {
     [(CSDConversation *)self setSetScreenSharingRetryCount:0];
-    if (!v7)
+    if (!enabledCopy)
     {
       goto LABEL_18;
     }
 
-    v12 = [(CSDConversation *)self featureFlags];
-    if ([v12 requestToScreenShareEnabled])
+    featureFlags = [(CSDConversation *)self featureFlags];
+    if ([featureFlags requestToScreenShareEnabled])
     {
     }
 
     else
     {
-      v16 = [(CSDConversation *)self featureFlags];
-      v17 = [v16 usesModernScreenSharingFromMessages];
+      featureFlags2 = [(CSDConversation *)self featureFlags];
+      usesModernScreenSharingFromMessages = [featureFlags2 usesModernScreenSharingFromMessages];
 
-      if (!v17)
+      if (!usesModernScreenSharingFromMessages)
       {
         goto LABEL_18;
       }
@@ -14661,23 +14661,23 @@ LABEL_28:
     [(CSDConversation *)self fulfillLocalScreenShareRequests];
     [(CSDConversation *)self addScreenSharingType:1];
 LABEL_18:
-    v18 = [(CSDConversation *)self expectedScreenEnabled];
-    if (v18)
+    expectedScreenEnabled = [(CSDConversation *)self expectedScreenEnabled];
+    if (expectedScreenEnabled)
     {
-      v19 = v18;
-      v20 = [(CSDConversation *)self expectedScreenEnabled];
-      v21 = [v20 BOOLValue];
+      v19 = expectedScreenEnabled;
+      expectedScreenEnabled2 = [(CSDConversation *)self expectedScreenEnabled];
+      bOOLValue = [expectedScreenEnabled2 BOOLValue];
 
-      if (v21 != v7)
+      if (bOOLValue != enabledCopy)
       {
         v22 = sub_100004778();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(CSDConversation *)self expectedScreenEnabled];
+          expectedScreenEnabled3 = [(CSDConversation *)self expectedScreenEnabled];
           v32 = 67109378;
-          v33 = v7;
+          v33 = enabledCopy;
           v34 = 2112;
-          *v35 = v23;
+          *v35 = expectedScreenEnabled3;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Screen was set to screenEnabled: %d self.expectedScreenEnabled.BOOLValue: %@. Setting screenEnabled to self.expectedScreenEnabled.BOOLValue", &v32, 0x12u);
         }
 
@@ -14685,14 +14685,14 @@ LABEL_18:
       }
     }
 
-    if ((v7 & 1) == 0)
+    if ((enabledCopy & 1) == 0)
     {
       [(CSDConversation *)self resetContentSharingSessionContent];
       [(CSDConversation *)self switchBackToOneToOneIfPossible];
     }
 
-    v29 = [(CSDConversation *)self delegate];
-    [v29 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
     goto LABEL_28;
   }
@@ -14700,33 +14700,33 @@ LABEL_18:
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v31 = [(CSDConversation *)self setScreenSharingRetryCount];
+    setScreenSharingRetryCount = [(CSDConversation *)self setScreenSharingRetryCount];
     v32 = 67109890;
-    v33 = v7;
+    v33 = enabledCopy;
     v34 = 1024;
-    *v35 = v6;
+    *v35 = succeedCopy;
     *&v35[4] = 2112;
-    *&v35[6] = v9;
+    *&v35[6] = errorCopy;
     v36 = 2048;
-    v37 = v31;
+    v37 = setScreenSharingRetryCount;
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to set screenEnabled (%d): didSucceed (%d): error: %@ retry:%lu", &v32, 0x22u);
   }
 
-  v14 = [(CSDConversation *)self expectedScreenEnabled];
+  expectedScreenEnabled4 = [(CSDConversation *)self expectedScreenEnabled];
 
-  if (v14)
+  if (expectedScreenEnabled4)
   {
     if ([(CSDConversation *)self setScreenSharingRetryCount]<= 2)
     {
       [(CSDConversation *)self setSetScreenSharingRetryCount:[(CSDConversation *)self setScreenSharingRetryCount]+ 1];
 LABEL_23:
-      v24 = [(CSDConversation *)self expectedScreenEnabled];
-      v25 = [v24 BOOLValue];
+      expectedScreenEnabled5 = [(CSDConversation *)self expectedScreenEnabled];
+      bOOLValue2 = [expectedScreenEnabled5 BOOLValue];
 
-      v26 = [(CSDConversation *)self avcSession];
-      v27 = [(CSDConversation *)self expectedScreenEnabled];
-      v28 = [v27 BOOLValue];
-      if (v25)
+      avcSession = [(CSDConversation *)self avcSession];
+      expectedScreenEnabled6 = [(CSDConversation *)self expectedScreenEnabled];
+      bOOLValue3 = [expectedScreenEnabled6 BOOLValue];
+      if (bOOLValue2)
       {
         [(CSDConversation *)self screenShareAttributes];
       }
@@ -14736,7 +14736,7 @@ LABEL_23:
         +[TUCallScreenShareAttributes defaultAttributes];
       }
       v30 = ;
-      [v26 setScreenEnabled:v28 attributes:v30];
+      [avcSession setScreenEnabled:bOOLValue3 attributes:v30];
 
       goto LABEL_31;
     }
@@ -14755,44 +14755,44 @@ LABEL_28:
 LABEL_31:
 }
 
-- (void)session:(id)a3 changedLocalAudioPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)session:(id)session changedLocalAudioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a6;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  succeedCopy = succeed;
+  pausedCopy = paused;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 67109120;
-    v24 = v7;
+    v24 = pausedCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "changedLocalAudioPaused=%d", &v23, 8u);
   }
 
-  if (v9 || !v6)
+  if (errorCopy || !succeedCopy)
   {
     v21 = sub_100004778();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v23 = 67109634;
-      v24 = v7;
+      v24 = pausedCopy;
       v25 = 1024;
-      *v26 = v6;
+      *v26 = succeedCopy;
       *&v26[4] = 2112;
-      *&v26[6] = v9;
+      *&v26[6] = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to set localAudioPaused (%d): didSucceed (%d): error: %@", &v23, 0x18u);
     }
 
     goto LABEL_14;
   }
 
-  v12 = [(CSDConversation *)self expectedAudioPaused];
-  if (!v12 || (v13 = v12, -[CSDConversation expectedAudioPaused](self, "expectedAudioPaused"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 BOOLValue], v14, v13, v15 == v7))
+  expectedAudioPaused = [(CSDConversation *)self expectedAudioPaused];
+  if (!expectedAudioPaused || (v13 = expectedAudioPaused, -[CSDConversation expectedAudioPaused](self, "expectedAudioPaused"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 BOOLValue], v14, v13, v15 == pausedCopy))
   {
-    v22 = [(CSDConversation *)self delegate];
-    [v22 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
 LABEL_14:
     [(CSDConversation *)self setExpectedAudioPaused:0];
@@ -14802,60 +14802,60 @@ LABEL_14:
   v16 = sub_100004778();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CSDConversation *)self expectedAudioPaused];
+    expectedAudioPaused2 = [(CSDConversation *)self expectedAudioPaused];
     v23 = 67109378;
-    v24 = v7;
+    v24 = pausedCopy;
     v25 = 2112;
-    *v26 = v17;
+    *v26 = expectedAudioPaused2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Audio paused was set to audioPaused: %d self.expectedAudioPaused.BOOLValue: %@. Setting audioPaused to self.expectedAudioPaused.BOOLValue", &v23, 0x12u);
   }
 
-  v18 = [(CSDConversation *)self expectedAudioPaused];
-  v19 = [v18 BOOLValue];
-  v20 = [(CSDConversation *)self avcSession];
-  [v20 setAudioPaused:v19];
+  expectedAudioPaused3 = [(CSDConversation *)self expectedAudioPaused];
+  bOOLValue = [expectedAudioPaused3 BOOLValue];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession setAudioPaused:bOOLValue];
 
 LABEL_15:
 }
 
-- (void)session:(id)a3 changedLocalVideoPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)session:(id)session changedLocalVideoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a6;
-  v10 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v10);
+  succeedCopy = succeed;
+  pausedCopy = paused;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 67109120;
-    v24 = v7;
+    v24 = pausedCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "changedLocalVideoPaused=%d", &v23, 8u);
   }
 
-  if (v9 || !v6)
+  if (errorCopy || !succeedCopy)
   {
     v21 = sub_100004778();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v23 = 67109634;
-      v24 = v7;
+      v24 = pausedCopy;
       v25 = 1024;
-      *v26 = v6;
+      *v26 = succeedCopy;
       *&v26[4] = 2112;
-      *&v26[6] = v9;
+      *&v26[6] = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to set localVideoPaused (%d): didSucceed (%d): error: %@", &v23, 0x18u);
     }
 
     goto LABEL_14;
   }
 
-  v12 = [(CSDConversation *)self expectedVideoPaused];
-  if (!v12 || (v13 = v12, -[CSDConversation expectedVideoPaused](self, "expectedVideoPaused"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 BOOLValue], v14, v13, v15 == v7))
+  expectedVideoPaused = [(CSDConversation *)self expectedVideoPaused];
+  if (!expectedVideoPaused || (v13 = expectedVideoPaused, -[CSDConversation expectedVideoPaused](self, "expectedVideoPaused"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 BOOLValue], v14, v13, v15 == pausedCopy))
   {
-    v22 = [(CSDConversation *)self delegate];
-    [v22 conversationChanged:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationChanged:self];
 
 LABEL_14:
     [(CSDConversation *)self setExpectedVideoPaused:0];
@@ -14865,81 +14865,81 @@ LABEL_14:
   v16 = sub_100004778();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CSDConversation *)self expectedVideoPaused];
+    expectedVideoPaused2 = [(CSDConversation *)self expectedVideoPaused];
     v23 = 67109378;
-    v24 = v7;
+    v24 = pausedCopy;
     v25 = 2112;
-    *v26 = v17;
+    *v26 = expectedVideoPaused2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Video paused was set to videoPaused: %d self.expectedVideoPaused.BOOLValue: %@. Setting videoPaused to self.expectedVideoPaused.BOOLValue", &v23, 0x12u);
   }
 
-  v18 = [(CSDConversation *)self expectedVideoPaused];
-  v19 = [v18 BOOLValue];
-  v20 = [(CSDConversation *)self avcSession];
-  [v20 setVideoPaused:v19];
+  expectedVideoPaused3 = [(CSDConversation *)self expectedVideoPaused];
+  bOOLValue = [expectedVideoPaused3 BOOLValue];
+  avcSession = [(CSDConversation *)self avcSession];
+  [avcSession setVideoPaused:bOOLValue];
 
 LABEL_15:
 }
 
-- (void)session:(id)a3 changedBytesOfDataUsed:(int64_t)a4
+- (void)session:(id)session changedBytesOfDataUsed:(int64_t)used
 {
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a4;
+    usedCopy = used;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "changedBytesOfDataUsed=%ld", &v9, 0xCu);
   }
 
-  v8 = [(CSDConversation *)self delegate];
-  [v8 conversation:self changedBytesOfDataUsed:a4];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self changedBytesOfDataUsed:used];
 }
 
-- (void)sessionShouldReconnect:(id)a3
+- (void)sessionShouldReconnect:(id)reconnect
 {
-  v4 = a3;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reconnectCopy = reconnect;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = reconnectCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "sessionShouldReconnect=%@", &v13, 0xCu);
   }
 
   if (![(CSDConversation *)self isOneToOneModeEnabled])
   {
-    v12 = sub_100004778();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    idsSession = sub_100004778();
+    if (os_log_type_enabled(idsSession, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Skipping reconnect since one to one mode is disabled", &v13, 2u);
+      _os_log_impl(&_mh_execute_header, idsSession, OS_LOG_TYPE_DEFAULT, "Skipping reconnect since one to one mode is disabled", &v13, 2u);
     }
 
     goto LABEL_13;
   }
 
-  v7 = [(CSDConversation *)self serverProvidedParticipantIdentifiers];
-  if ([v7 count] != 1)
+  serverProvidedParticipantIdentifiers = [(CSDConversation *)self serverProvidedParticipantIdentifiers];
+  if ([serverProvidedParticipantIdentifiers count] != 1)
   {
 
     goto LABEL_12;
   }
 
-  v8 = [(CSDConversation *)self serverProvidedParticipantIdentifiers];
+  serverProvidedParticipantIdentifiers2 = [(CSDConversation *)self serverProvidedParticipantIdentifiers];
   v9 = [NSNumber numberWithUnsignedLongLong:[(CSDConversation *)self localParticipantIdentifier]];
-  v10 = [v8 containsObject:v9];
+  v10 = [serverProvidedParticipantIdentifiers2 containsObject:v9];
 
   if (!v10)
   {
 LABEL_12:
-    v12 = [(CSDConversation *)self idsSession];
-    [v12 reconnect];
+    idsSession = [(CSDConversation *)self idsSession];
+    [idsSession reconnect];
 LABEL_13:
 
     goto LABEL_14;
@@ -14956,16 +14956,16 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)session:(id)a3 screenShareAttributesUpdated:(id)a4
+- (void)session:(id)session screenShareAttributesUpdated:(id)updated
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  updatedCopy = updated;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CSDConversation *)self isScreenEnabled])
   {
-    v7 = [(CSDConversation *)self delegate];
-    [v7 conversation:self screenShareAttributesUpdated:v5];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self screenShareAttributesUpdated:updatedCopy];
   }
 
   else
@@ -14978,21 +14978,21 @@ LABEL_14:
   }
 }
 
-- (void)remoteParticipantWithIdentifier:(unint64_t)a3 didChangeAudioPriority:(int64_t)a4 videoPriority:(int64_t)a5
+- (void)remoteParticipantWithIdentifier:(unint64_t)identifier didChangeAudioPriority:(int64_t)priority videoPriority:(int64_t)videoPriority
 {
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v11 = [NSNumber numberWithUnsignedLongLong:a3];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v11 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v12 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v11];
 
   if (v12)
   {
-    [v12 setAudioPriority:a4];
-    [v12 setVideoPriority:a5];
-    v13 = [(CSDConversation *)self delegate];
-    [v13 conversation:self mediaPrioritiesChangedForParticipant:v12];
+    [v12 setAudioPriority:priority];
+    [v12 setVideoPriority:videoPriority];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self mediaPrioritiesChangedForParticipant:v12];
   }
 
   else
@@ -15001,26 +15001,26 @@ LABEL_14:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134217984;
-      v16 = a3;
+      identifierCopy = identifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[WARN] Unknown participant with identifier: %llu", &v15, 0xCu);
     }
   }
 }
 
-- (void)remoteParticipantWithIdentifier:(unint64_t)a3 didReact:(id)a4
+- (void)remoteParticipantWithIdentifier:(unint64_t)identifier didReact:(id)react
 {
-  v6 = a4;
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  reactCopy = react;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v9 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v10 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v9];
 
   if (v10)
   {
-    v11 = [(CSDConversation *)self delegate];
-    [v11 conversation:self participant:v10 didReact:v6];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self participant:v10 didReact:reactCopy];
   }
 
   else
@@ -15029,60 +15029,60 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = a3;
+      identifierCopy = identifier;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[WARN] Unknown participant with identifier: %llu", &v13, 0xCu);
     }
   }
 }
 
-- (void)session:(id)a3 localParticipantDidReact:(id)a4
+- (void)session:(id)session localParticipantDidReact:(id)react
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  reactCopy = react;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = [CSDConversationParticipant alloc];
-  v8 = [(CSDConversation *)self idsSession];
-  v9 = [v8 localParticipantIdentifier];
-  v10 = [(CSDConversation *)self localMember];
-  v11 = [v10 handle];
-  v12 = [(CSDConversation *)self localParticipantData];
-  v14 = [(CSDConversationParticipant *)v7 initWithIdentifier:v9 handle:v11 avcData:v12];
+  idsSession = [(CSDConversation *)self idsSession];
+  localParticipantIdentifier = [idsSession localParticipantIdentifier];
+  localMember = [(CSDConversation *)self localMember];
+  handle = [localMember handle];
+  localParticipantData = [(CSDConversation *)self localParticipantData];
+  v14 = [(CSDConversationParticipant *)v7 initWithIdentifier:localParticipantIdentifier handle:handle avcData:localParticipantData];
 
-  v13 = [(CSDConversation *)self delegate];
-  [v13 conversation:self participant:v14 didReact:v5];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self participant:v14 didReact:reactCopy];
 }
 
-- (void)sessionLocalParticipantDidStopReacting:(id)a3
+- (void)sessionLocalParticipantDidStopReacting:(id)reacting
 {
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = [CSDConversationParticipant alloc];
-  v6 = [(CSDConversation *)self idsSession];
-  v7 = [v6 localParticipantIdentifier];
-  v8 = [(CSDConversation *)self localMember];
-  v9 = [v8 handle];
-  v10 = [(CSDConversation *)self localParticipantData];
-  v12 = [(CSDConversationParticipant *)v5 initWithIdentifier:v7 handle:v9 avcData:v10];
+  idsSession = [(CSDConversation *)self idsSession];
+  localParticipantIdentifier = [idsSession localParticipantIdentifier];
+  localMember = [(CSDConversation *)self localMember];
+  handle = [localMember handle];
+  localParticipantData = [(CSDConversation *)self localParticipantData];
+  v12 = [(CSDConversationParticipant *)v5 initWithIdentifier:localParticipantIdentifier handle:handle avcData:localParticipantData];
 
-  v11 = [(CSDConversation *)self delegate];
-  [v11 conversation:self participantDidStopReacting:v12];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self participantDidStopReacting:v12];
 }
 
-- (void)session:(id)a3 screenCaptureDidStart:(BOOL)a4 withError:(id)a5
+- (void)session:(id)session screenCaptureDidStart:(BOOL)start withError:(id)error
 {
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a5 || !a4)
+  if (error || !start)
   {
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CSDConversation *)self UUID];
+      uUID = [(CSDConversation *)self UUID];
       v12 = 138412290;
-      v13 = v10;
+      v13 = uUID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Stopping screen on local device capture failed to start for conversation UUID: %@", &v12, 0xCu);
     }
 
@@ -15091,52 +15091,52 @@ LABEL_14:
   }
 }
 
-- (void)session:(id)a3 screenCaptureDidStop:(BOOL)a4 withError:(id)a5
+- (void)session:(id)session screenCaptureDidStop:(BOOL)stop withError:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  stopCopy = stop;
+  errorCopy = error;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self featureFlags];
-  v10 = [v9 sckSystemPickerEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  sckSystemPickerEnabled = [featureFlags sckSystemPickerEnabled];
 
-  if (v7 && v5 && v10)
+  if (errorCopy && stopCopy && sckSystemPickerEnabled)
   {
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CSDConversation *)self UUID];
+      uUID = [(CSDConversation *)self UUID];
       v15 = 138412546;
-      v16 = v12;
+      v16 = uUID;
       v17 = 2112;
-      v18 = v7;
+      v18 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[WARN] Stopping screen on local device capture, capture stopped without calling stop for conversation UUID: %@ error: %@", &v15, 0x16u);
     }
 
     v13 = +[TUCallScreenShareAttributes defaultAttributes];
     [(CSDConversation *)self setScreenEnabled:0 attributes:v13];
 
-    v14 = [(CSDConversation *)self delegate];
-    [v14 conversationDidStopScreenCapture:self];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversationDidStopScreenCapture:self];
   }
 }
 
-- (void)removedRemoteParticipantWithIdentifier:(unint64_t)a3 didSucceed:(BOOL)a4
+- (void)removedRemoteParticipantWithIdentifier:(unint64_t)identifier didSucceed:(BOOL)succeed
 {
-  v4 = a4;
-  v7 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v7);
+  succeedCopy = succeed;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v4)
+  if (succeedCopy)
   {
     [(CSDConversation *)self switchBackToOneToOneIfPossible];
-    [(CSDConversation *)self _generateHandoffReportIfNecessaryForUpdatedParticipantID:a3 isAddParticipant:0];
+    [(CSDConversation *)self _generateHandoffReportIfNecessaryForUpdatedParticipantID:identifier isAddParticipant:0];
   }
 
-  v8 = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
-  v9 = [NSNumber numberWithUnsignedLongLong:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  activeRemoteParticipantsByIdentifier = [(CSDConversation *)self activeRemoteParticipantsByIdentifier];
+  v9 = [NSNumber numberWithUnsignedLongLong:identifier];
+  v10 = [activeRemoteParticipantsByIdentifier objectForKeyedSubscript:v9];
 
   if (v10)
   {
@@ -15164,29 +15164,29 @@ LABEL_14:
   }
 }
 
-- (void)audioPolicyManager:(id)a3 sharePlayAllowedStateChanged:(BOOL)a4
+- (void)audioPolicyManager:(id)manager sharePlayAllowedStateChanged:(BOOL)changed
 {
-  v6 = [(CSDConversation *)self queue];
+  queue = [(CSDConversation *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A8298;
   v7[3] = &unk_100619EA8;
-  v8 = a4;
+  changedCopy = changed;
   v7[4] = self;
-  dispatch_async(v6, v7);
+  dispatch_async(queue, v7);
 }
 
-- (void)postUserNotificationForUnsupportedScreenSharingActivity:(id)a3 alternateReponseHandler:(id)a4
+- (void)postUserNotificationForUnsupportedScreenSharingActivity:(id)activity alternateReponseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversation *)self tuConversation];
-  v9 = [v8 groupUUID];
-  v10 = [v7 bundleIdentifier];
-  v11 = [NSString stringWithFormat:@"%@.%@", v9, v10];
+  handlerCopy = handler;
+  activityCopy = activity;
+  tuConversation = [(CSDConversation *)self tuConversation];
+  groupUUID = [tuConversation groupUUID];
+  bundleIdentifier = [activityCopy bundleIdentifier];
+  v11 = [NSString stringWithFormat:@"%@.%@", groupUUID, bundleIdentifier];
 
-  v12 = [(CSDConversation *)self audioRoutePolicyManager];
-  v13 = [CPActivityAuthorizationManager notificationDisplayInformationForAudioPolicyManager:v12 activity:v7 conversation:v8];
+  audioRoutePolicyManager = [(CSDConversation *)self audioRoutePolicyManager];
+  v13 = [CPActivityAuthorizationManager notificationDisplayInformationForAudioPolicyManager:audioRoutePolicyManager activity:activityCopy conversation:tuConversation];
 
   v14 = [IMUserNotification userNotificationWithIdentifier:v11 timeout:3 alertLevel:0 displayFlags:v13 displayInformation:0.0];
 
@@ -15198,20 +15198,20 @@ LABEL_14:
   v17[2] = sub_1000A87D8;
   v17[3] = &unk_10061A808;
   v17[4] = self;
-  v18 = v6;
-  v16 = v6;
+  v18 = handlerCopy;
+  v16 = handlerCopy;
   [v15 addUserNotification:v14 listener:0 completionHandler:v17];
 }
 
-- (BOOL)remoteJoinedActivity:(id)a3
+- (BOOL)remoteJoinedActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CSDConversation *)self activeRemoteParticipants];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v6 = [activeRemoteParticipants countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -15221,13 +15221,13 @@ LABEL_14:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v4 activeRemoteParticipants];
-        v11 = [v9 tuConversationParticipant];
-        v12 = [v10 containsObject:v11];
+        activeRemoteParticipants2 = [activityCopy activeRemoteParticipants];
+        tuConversationParticipant = [v9 tuConversationParticipant];
+        v12 = [activeRemoteParticipants2 containsObject:tuConversationParticipant];
 
         if (v12)
         {
@@ -15236,7 +15236,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activeRemoteParticipants countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -15251,83 +15251,83 @@ LABEL_11:
   return v6;
 }
 
-- (void)activitySessionManager:(id)a3 tuActivitySessionsDidChange:(id)a4
+- (void)activitySessionManager:(id)manager tuActivitySessionsDidChange:(id)change
 {
-  v6 = a4;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changeCopy = change;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDConversation *)self checkAndSetTUActivityActive:v6];
+  [(CSDConversation *)self checkAndSetTUActivityActive:changeCopy];
 }
 
-- (void)activitySessionManager:(id)a3 activitySessionChanged:(id)a4
+- (void)activitySessionManager:(id)manager activitySessionChanged:(id)changed
 {
-  v11 = a4;
-  v5 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v11 activity];
-  v7 = [v6 isSystemActivity];
+  activity = [changedCopy activity];
+  isSystemActivity = [activity isSystemActivity];
 
-  if ((v7 & 1) == 0)
+  if ((isSystemActivity & 1) == 0)
   {
-    v8 = [(CSDConversation *)self applicationLaunchPolicyManager];
-    v9 = [(CSDConversation *)self tuConversation];
-    [v8 updateAllowedHandlesForConversation:v9];
+    applicationLaunchPolicyManager = [(CSDConversation *)self applicationLaunchPolicyManager];
+    tuConversation = [(CSDConversation *)self tuConversation];
+    [applicationLaunchPolicyManager updateAllowedHandlesForConversation:tuConversation];
   }
 
-  v10 = [(CSDConversation *)self delegate];
-  [v10 conversation:self activitySessionChanged:v11];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self activitySessionChanged:changedCopy];
 }
 
-- (BOOL)activitySessionManager:(id)a3 activitySessionIsJoinable:(id)a4
+- (BOOL)activitySessionManager:(id)manager activitySessionIsJoinable:(id)joinable
 {
-  v5 = [(CSDConversation *)self queue:a3];
+  v5 = [(CSDConversation *)self queue:manager];
   dispatch_assert_queue_V2(v5);
 
   return [(CSDConversation *)self state]== 3;
 }
 
-- (void)activitySessionManager:(id)a3 receivedActivitySessionEvent:(id)a4
+- (void)activitySessionManager:(id)manager receivedActivitySessionEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  eventCopy = event;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversation *)self delegate];
-  [v7 conversation:self receivedActivitySessionEvent:v5];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self receivedActivitySessionEvent:eventCopy];
 }
 
-- (void)activitySessionManager:(id)a3 fetchDataCryptorForTopic:(id)a4 completionHandler:(id)a5
+- (void)activitySessionManager:(id)manager fetchDataCryptorForTopic:(id)topic completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  handlerCopy = handler;
+  topicCopy = topic;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CSDConversation *)self idsSession];
-  [v10 requestDataCryptorForTopic:v8 completionHandler:v7];
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession requestDataCryptorForTopic:topicCopy completionHandler:handlerCopy];
 }
 
-- (void)activitySessionManager:(id)a3 requestEncryptionKeysForParticipants:(id)a4 topicName:(id)a5
+- (void)activitySessionManager:(id)manager requestEncryptionKeysForParticipants:(id)participants topicName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  nameCopy = name;
+  participantsCopy = participants;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CSDConversation *)self idsSession];
-  [v10 requestEncryptionKeyForParticipants:v8 topic:v7];
+  idsSession = [(CSDConversation *)self idsSession];
+  [idsSession requestEncryptionKeyForParticipants:participantsCopy topic:nameCopy];
 }
 
-- (unint64_t)activitySessionManager:(id)a3 localParticipantAliasForBundleIdentifier:(id)a4
+- (unint64_t)activitySessionManager:(id)manager localParticipantAliasForBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = v5;
-    v7 = [(CSDConversation *)self serverBag];
-    v8 = [v7 stableBundleIdentifierForLocalBundleIdentifier:v6];
+    v6 = identifierCopy;
+    serverBag = [(CSDConversation *)self serverBag];
+    v8 = [serverBag stableBundleIdentifierForLocalBundleIdentifier:v6];
 
     if (v8)
     {
@@ -15336,10 +15336,10 @@ LABEL_11:
       v6 = v9;
     }
 
-    v10 = [(CSDConversation *)self idsSession];
-    v11 = [(CSDConversation *)self localParticipantIdentifier];
+    idsSession = [(CSDConversation *)self idsSession];
+    localParticipantIdentifier = [(CSDConversation *)self localParticipantIdentifier];
     v12 = [v6 dataUsingEncoding:4];
-    v13 = [v10 aliasForParticipantID:v11 salt:v12];
+    v13 = [idsSession aliasForParticipantID:localParticipantIdentifier salt:v12];
 
     return v13;
   }
@@ -15351,28 +15351,28 @@ LABEL_11:
   }
 }
 
-- (void)activitySessionManager:(id)a3 participantWithIdentifier:(unint64_t)a4 bundleIdentifier:(id)a5 includeLocalParticipant:(BOOL)a6 completionHandler:(id)a7
+- (void)activitySessionManager:(id)manager participantWithIdentifier:(unint64_t)identifier bundleIdentifier:(id)bundleIdentifier includeLocalParticipant:(BOOL)participant completionHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v15);
+  participantCopy = participant;
+  managerCopy = manager;
+  bundleIdentifierCopy = bundleIdentifier;
+  handlerCopy = handler;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v8 && [(CSDConversation *)self activitySessionManager:v12 localParticipantAliasForBundleIdentifier:v13]== a4)
+  if (participantCopy && [(CSDConversation *)self activitySessionManager:managerCopy localParticipantAliasForBundleIdentifier:bundleIdentifierCopy]== identifier)
   {
-    v16 = [(CSDConversation *)self localParticipant];
-    v14[2](v14, v16);
+    localParticipant = [(CSDConversation *)self localParticipant];
+    handlerCopy[2](handlerCopy, localParticipant);
   }
 
   else
   {
-    v17 = [(CSDConversation *)self remoteParticipantForIdentifier:a4];
-    if (v13)
+    v17 = [(CSDConversation *)self remoteParticipantForIdentifier:identifier];
+    if (bundleIdentifierCopy)
     {
-      v18 = [(CSDConversation *)self serverBag];
-      v19 = [v18 stableBundleIdentifierForLocalBundleIdentifier:v13];
+      serverBag = [(CSDConversation *)self serverBag];
+      v19 = [serverBag stableBundleIdentifierForLocalBundleIdentifier:bundleIdentifierCopy];
       v20 = v19;
       if (v19)
       {
@@ -15381,69 +15381,69 @@ LABEL_11:
 
       else
       {
-        v21 = v13;
+        v21 = bundleIdentifierCopy;
       }
 
       v22 = v21;
 
       v23 = [v22 dataUsingEncoding:4];
 
-      v24 = [(CSDConversation *)self idsSession];
+      idsSession = [(CSDConversation *)self idsSession];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_1000A9080;
       v25[3] = &unk_10061A830;
       v25[4] = self;
-      v27 = v14;
+      v27 = handlerCopy;
       v26 = v17;
-      [v24 participantIDForAlias:a4 salt:v23 completion:v25];
+      [idsSession participantIDForAlias:identifier salt:v23 completion:v25];
     }
 
     else
     {
-      v14[2](v14, v17);
+      handlerCopy[2](handlerCopy, v17);
     }
   }
 }
 
-- (void)activitySessionManager:(id)a3 activityChangedOnSession:(id)a4
+- (void)activitySessionManager:(id)manager activityChangedOnSession:(id)session
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  sessionCopy = session;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversation *)self delegate];
-  [v7 conversation:self activityChangedOnSession:v5];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self activityChangedOnSession:sessionCopy];
 }
 
-- (id)activitySessionManagerRequestedCallTypeStringForLogging:(id)a3
+- (id)activitySessionManagerRequestedCallTypeStringForLogging:(id)logging
 {
-  v4 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDConversation *)self provider];
-  v6 = [v5 isTelephonyWithSharePlayProvider];
+  provider = [(CSDConversation *)self provider];
+  isTelephonyWithSharePlayProvider = [provider isTelephonyWithSharePlayProvider];
 
-  if (v6)
+  if (isTelephonyWithSharePlayProvider)
   {
     return @"telephony";
   }
 
-  v8 = [(CSDConversation *)self localParticipantCluster];
-  if (v8)
+  localParticipantCluster = [(CSDConversation *)self localParticipantCluster];
+  if (localParticipantCluster)
   {
-    v9 = v8;
-    v10 = [(CSDConversation *)self localParticipantCluster];
-    v11 = [v10 type];
+    v9 = localParticipantCluster;
+    localParticipantCluster2 = [(CSDConversation *)self localParticipantCluster];
+    type = [localParticipantCluster2 type];
 
-    if (v11 == 1)
+    if (type == 1)
     {
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v12 = [(CSDConversation *)self activeRemoteParticipants];
-      v13 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+      v13 = [activeRemoteParticipants countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (!v13)
       {
 LABEL_13:
@@ -15459,12 +15459,12 @@ LABEL_7:
       {
         if (*v34 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(activeRemoteParticipants);
         }
 
-        v17 = [*(*(&v33 + 1) + 8 * v16) cluster];
-        v18 = [(CSDConversation *)self localParticipantCluster];
-        v19 = [v17 isEqual:v18];
+        cluster = [*(*(&v33 + 1) + 8 * v16) cluster];
+        localParticipantCluster3 = [(CSDConversation *)self localParticipantCluster];
+        v19 = [cluster isEqual:localParticipantCluster3];
 
         if ((v19 & 1) == 0)
         {
@@ -15473,7 +15473,7 @@ LABEL_7:
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
+          v14 = [activeRemoteParticipants countByEnumeratingWithState:&v33 objects:v38 count:16];
           if (v14)
           {
             goto LABEL_7;
@@ -15489,8 +15489,8 @@ LABEL_7:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [(CSDConversation *)self activeRemoteParticipants];
-  v20 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  activeRemoteParticipants = [(CSDConversation *)self activeRemoteParticipants];
+  v20 = [activeRemoteParticipants countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v20)
   {
     v21 = v20;
@@ -15501,18 +15501,18 @@ LABEL_16:
     {
       if (*v30 != v22)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(activeRemoteParticipants);
       }
 
       v24 = *(*(&v29 + 1) + 8 * v23);
-      v25 = [v24 cluster];
-      if (v25)
+      cluster2 = [v24 cluster];
+      if (cluster2)
       {
-        v26 = v25;
-        v27 = [v24 cluster];
-        v28 = [v27 type];
+        v26 = cluster2;
+        cluster3 = [v24 cluster];
+        type2 = [cluster3 type];
 
-        if (v28 == 1)
+        if (type2 == 1)
         {
           break;
         }
@@ -15520,7 +15520,7 @@ LABEL_16:
 
       if (v21 == ++v23)
       {
-        v21 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v21 = [activeRemoteParticipants countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v21)
         {
           goto LABEL_16;
@@ -15548,134 +15548,134 @@ LABEL_23:
   }
 }
 
-- (void)activitySessionManager:(id)a3 sessionUnjoined:(id)a4 startDate:(id)a5 endDate:(id)a6
+- (void)activitySessionManager:(id)manager sessionUnjoined:(id)unjoined startDate:(id)date endDate:(id)endDate
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v12);
+  unjoinedCopy = unjoined;
+  dateCopy = date;
+  endDateCopy = endDate;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412802;
-    v16 = v10;
+    v16 = dateCopy;
     v17 = 2112;
-    v18 = v11;
+    v18 = endDateCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = unjoinedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Did get session unjoined callback startDate %@ endDate %@ session %@", &v15, 0x20u);
   }
 
   v14 = +[CSDReportingController sharedInstance];
-  [v14 didEndSession:v9 startDate:v10 endDate:v11];
+  [v14 didEndSession:unjoinedCopy startDate:dateCopy endDate:endDateCopy];
 }
 
-- (void)activitySessionManager:(id)a3 requestForegroundPresentationForActivity:(id)a4
+- (void)activitySessionManager:(id)manager requestForegroundPresentationForActivity:(id)activity
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v6);
+  activityCopy = activity;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v5 activity];
-  v8 = [v7 isSystemActivity];
+  activity = [activityCopy activity];
+  isSystemActivity = [activity isSystemActivity];
 
-  if ((v8 & 1) == 0)
+  if ((isSystemActivity & 1) == 0)
   {
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v5;
+      v12 = activityCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CSDConversation setting appLaunchState to needsLaunch %@", &v11, 0xCu);
     }
 
-    v10 = [(CSDConversation *)self delegate];
-    [v10 conversation:self appLaunchState:1 forActivitySession:v5];
+    delegate = [(CSDConversation *)self delegate];
+    [delegate conversation:self appLaunchState:1 forActivitySession:activityCopy];
   }
 }
 
-- (void)activitySessionManager:(id)a3 activitySessionStateChanged:(id)a4 oldState:(unint64_t)a5
+- (void)activitySessionManager:(id)manager activitySessionStateChanged:(id)changed oldState:(unint64_t)state
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v9);
+  changedCopy = changed;
+  managerCopy = manager;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CSDConversation *)self delegate];
-  [(CSDConversation *)self activitySessionManager:v8 activitySessionChanged:v7];
+  delegate = [(CSDConversation *)self delegate];
+  [(CSDConversation *)self activitySessionManager:managerCopy activitySessionChanged:changedCopy];
 
-  [v10 conversation:self didChangeStateForActivitySession:v7];
+  [delegate conversation:self didChangeStateForActivitySession:changedCopy];
 }
 
-- (void)activitySessionManager:(id)a3 activitySessionAssociatedSceneChanged:(id)a4
+- (void)activitySessionManager:(id)manager activitySessionAssociatedSceneChanged:(id)changed
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  changedCopy = changed;
+  managerCopy = manager;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = changedCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CSDConversation associated scene changed for %@", &v11, 0xCu);
   }
 
-  v10 = [(CSDConversation *)self delegate];
-  [(CSDConversation *)self activitySessionManager:v7 activitySessionChanged:v6];
+  delegate = [(CSDConversation *)self delegate];
+  [(CSDConversation *)self activitySessionManager:managerCopy activitySessionChanged:changedCopy];
 
-  [v10 conversation:self didChangeSceneAssociationForActivitySession:v6];
+  [delegate conversation:self didChangeSceneAssociationForActivitySession:changedCopy];
 }
 
-- (void)activitySessionManager:(id)a3 sendResourceAtURL:(id)a4 toParticipants:(id)a5 metadata:(id)a6 activitySessionUUID:(id)a7 completion:(id)a8
+- (void)activitySessionManager:(id)manager sendResourceAtURL:(id)l toParticipants:(id)participants metadata:(id)metadata activitySessionUUID:(id)d completion:(id)completion
 {
-  v13 = a4;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v18);
+  lCopy = l;
+  completionCopy = completion;
+  dCopy = d;
+  metadataCopy = metadata;
+  participantsCopy = participants;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v19 = sub_100004778();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(CSDConversation *)self UUID];
-    v21 = [v13 URL];
-    v22 = [v21 path];
+    uUID = [(CSDConversation *)self UUID];
+    v21 = [lCopy URL];
+    path = [v21 path];
     v24 = 138412546;
-    v25 = v20;
+    v25 = uUID;
     v26 = 2112;
-    v27 = v22;
+    v27 = path;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Conversation UUID: %@ sending resource url.path: %@", &v24, 0x16u);
   }
 
-  v23 = [(CSDConversation *)self delegate];
-  [v23 conversation:self sendResourceAtURL:v13 toParticipants:v17 metadata:v16 activitySessionUUID:v15 completion:v14];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self sendResourceAtURL:lCopy toParticipants:participantsCopy metadata:metadataCopy activitySessionUUID:dCopy completion:completionCopy];
 }
 
-- (void)activitySessionManager:(id)a3 requestedEndpointWithIdentifier:(id)a4 activitySession:(id)a5 completion:(id)a6
+- (void)activitySessionManager:(id)manager requestedEndpointWithIdentifier:(id)identifier activitySession:(id)session completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v12);
+  completionCopy = completion;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v13 = [(CSDConversation *)self delegate];
-  [v13 conversation:self requestedEndpointWithIdentifier:v11 activitySession:v10 completion:v9];
+  delegate = [(CSDConversation *)self delegate];
+  [delegate conversation:self requestedEndpointWithIdentifier:identifierCopy activitySession:sessionCopy completion:completionCopy];
 }
 
-- (void)activitySessionManager:(id)a3 shouldRegisterPlugin:(id)a4
+- (void)activitySessionManager:(id)manager shouldRegisterPlugin:(id)plugin
 {
-  v5 = a4;
-  v6 = [(CSDConversation *)self featureFlags];
-  v7 = [v6 sharePlayInFaceTimeCanvasEnabled];
+  pluginCopy = plugin;
+  featureFlags = [(CSDConversation *)self featureFlags];
+  sharePlayInFaceTimeCanvasEnabled = [featureFlags sharePlayInFaceTimeCanvasEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((sharePlayInFaceTimeCanvasEnabled & 1) == 0)
   {
     v13 = sub_100004778();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -15692,13 +15692,13 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v8 = [(CSDConversation *)self queue];
-  dispatch_assert_queue_V2(v8);
+  queue = [(CSDConversation *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversation *)self idsSession];
-  v10 = [v9 isJoined];
+  idsSession = [(CSDConversation *)self idsSession];
+  isJoined = [idsSession isJoined];
 
-  if ((v10 & 1) == 0)
+  if ((isJoined & 1) == 0)
   {
     v13 = sub_100004778();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -15707,36 +15707,36 @@ LABEL_10:
     }
 
     *buf = 138412546;
-    v21 = v5;
+    v21 = pluginCopy;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v15 = "Not registering plugin %@ since we're not joined. Conversation: %@";
     v16 = v13;
     v17 = 22;
     goto LABEL_10;
   }
 
-  v11 = [(CSDConversation *)self virtualParticipantsByPluginName];
-  v12 = [v11 objectForKeyedSubscript:v5];
+  virtualParticipantsByPluginName = [(CSDConversation *)self virtualParticipantsByPluginName];
+  v12 = [virtualParticipantsByPluginName objectForKeyedSubscript:pluginCopy];
 
   if (!v12)
   {
     v18 = IDSGroupSessionPluginNameKey;
-    v19 = v5;
+    v19 = pluginCopy;
     v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v14 = [(CSDConversation *)self idsSession];
-    [(CSDConversation *)v14 registerPluginWithOptions:v13];
+    idsSession2 = [(CSDConversation *)self idsSession];
+    [(CSDConversation *)idsSession2 registerPluginWithOptions:v13];
     goto LABEL_12;
   }
 
   v13 = sub_100004778();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CSDConversation *)self virtualParticipantsByPluginName];
+    idsSession2 = [(CSDConversation *)self virtualParticipantsByPluginName];
     *buf = 138412546;
-    v21 = v5;
+    v21 = pluginCopy;
     v22 = 2112;
-    v23 = v14;
+    selfCopy = idsSession2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Not registering plugin %@ because it already exists. All current plugins: %@", buf, 0x16u);
 LABEL_12:
   }
@@ -15744,13 +15744,13 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)activitySessionManagerShouldSupportEndOnlyForMe:(id)a3
+- (BOOL)activitySessionManagerShouldSupportEndOnlyForMe:(id)me
 {
-  v4 = [(CSDConversation *)self featureFlags];
-  if ([v4 nearbyFaceTimeEnabled] && -[CSDConversation isNearbySession](self, "isNearbySession"))
+  featureFlags = [(CSDConversation *)self featureFlags];
+  if ([featureFlags nearbyFaceTimeEnabled] && -[CSDConversation isNearbySession](self, "isNearbySession"))
   {
-    v5 = [(CSDConversation *)self remoteMembers];
-    v6 = [v5 count] != 1;
+    remoteMembers = [(CSDConversation *)self remoteMembers];
+    v6 = [remoteMembers count] != 1;
   }
 
   else
@@ -15761,14 +15761,14 @@ LABEL_13:
   return v6;
 }
 
-- (void)systemStateObserver:(id)a3 screenSharingInitiationAllowedStateChanged:(BOOL)a4
+- (void)systemStateObserver:(id)observer screenSharingInitiationAllowedStateChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (changedCopy)
     {
       v7 = @"YES";
     }
@@ -15778,10 +15778,10 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "screenSharingInitiationAllowedStateChanged: %@", &v10, 0xCu);
   }
 
-  v8 = [(CSDConversation *)self featureFlags];
-  v9 = [v8 requestToScreenShareEnabled];
+  featureFlags = [(CSDConversation *)self featureFlags];
+  requestToScreenShareEnabled = [featureFlags requestToScreenShareEnabled];
 
-  if (v9)
+  if (requestToScreenShareEnabled)
   {
     [(CSDConversation *)self broadcastLocalParticipantData];
   }
@@ -15796,7 +15796,7 @@ LABEL_13:
 
 - (CSDConversationParticipant)localCSDParticipant
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10034E748();
 
   return v3;

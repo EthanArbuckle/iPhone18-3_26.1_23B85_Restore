@@ -1,71 +1,71 @@
 @interface ISImageBagIcon
-- (ISImageBagIcon)initWithImageBag:(id)a3;
-- (ISImageBagIcon)initWithImages:(id)a3 decorations:(id)a4;
-- (id)_generateImageWithDescriptor:(id)a3;
-- (id)_remoteGenerateImageWithDescriptor:(id)a3;
-- (id)imageForImageDescriptor:(id)a3;
+- (ISImageBagIcon)initWithImageBag:(id)bag;
+- (ISImageBagIcon)initWithImages:(id)images decorations:(id)decorations;
+- (id)_generateImageWithDescriptor:(id)descriptor;
+- (id)_remoteGenerateImageWithDescriptor:(id)descriptor;
+- (id)imageForImageDescriptor:(id)descriptor;
 - (id)makeResourceProvider;
-- (void)_prepareImagesForImageDescriptors:(id)a3;
-- (void)getImageForImageDescriptor:(id)a3 completion:(id)a4;
+- (void)_prepareImagesForImageDescriptors:(id)descriptors;
+- (void)getImageForImageDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation ISImageBagIcon
 
-- (ISImageBagIcon)initWithImages:(id)a3 decorations:(id)a4
+- (ISImageBagIcon)initWithImages:(id)images decorations:(id)decorations
 {
-  v7 = a3;
-  v8 = a4;
+  imagesCopy = images;
+  decorationsCopy = decorations;
   v15.receiver = self;
   v15.super_class = ISImageBagIcon;
-  v9 = [(ISIcon *)&v15 _init];
-  if (v9)
+  _init = [(ISIcon *)&v15 _init];
+  if (_init)
   {
     v10 = objc_opt_new();
-    imageCache = v9->_imageCache;
-    v9->_imageCache = v10;
+    imageCache = _init->_imageCache;
+    _init->_imageCache = v10;
 
-    objc_storeStrong(&v9->_images, a3);
-    v12 = [v8 copy];
-    decorations = v9->_decorations;
-    v9->_decorations = v12;
+    objc_storeStrong(&_init->_images, images);
+    v12 = [decorationsCopy copy];
+    decorations = _init->_decorations;
+    _init->_decorations = v12;
   }
 
-  return v9;
+  return _init;
 }
 
-- (ISImageBagIcon)initWithImageBag:(id)a3
+- (ISImageBagIcon)initWithImageBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = ISImageBagIcon;
-  v5 = [(ISIcon *)&v12 _init];
-  if (v5)
+  _init = [(ISIcon *)&v12 _init];
+  if (_init)
   {
     v6 = objc_opt_new();
-    imageCache = v5->_imageCache;
-    v5->_imageCache = v6;
+    imageCache = _init->_imageCache;
+    _init->_imageCache = v6;
 
-    v8 = [v4 images];
-    images = v5->_images;
-    v5->_images = v8;
+    images = [bagCopy images];
+    images = _init->_images;
+    _init->_images = images;
 
-    decorations = v5->_decorations;
-    v5->_decorations = MEMORY[0x1E695E0F0];
+    decorations = _init->_decorations;
+    _init->_decorations = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)_generateImageWithDescriptor:(id)a3
+- (id)_generateImageWithDescriptor:(id)descriptor
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc(MEMORY[0x1E69A8990]);
-  v6 = [(ISImageBagIcon *)self images];
-  p_super = [v5 initWithImages:v6];
+  images = [(ISImageBagIcon *)self images];
+  p_super = [v5 initWithImages:images];
 
-  v8 = [(ISImageBagIcon *)self images];
-  v9 = [v8 count];
+  images2 = [(ISImageBagIcon *)self images];
+  v9 = [images2 count];
 
   if (v9)
   {
@@ -85,8 +85,8 @@
     }
 
     v16 = +[ISStaticResources sharedInstance];
-    v17 = [*MEMORY[0x1E6982CA8] identifier];
-    v18 = [v16 fallbackResourceForHint:v17 descriptor:v4 referenceObj:self];
+    identifier = [*MEMORY[0x1E6982CA8] identifier];
+    v18 = [v16 fallbackResourceForHint:identifier descriptor:descriptorCopy referenceObj:self];
 
     p_super = v18;
     if (v18)
@@ -95,12 +95,12 @@ LABEL_3:
       v10 = +[ISDefaults sharedInstance];
       if ([(ISCompositingDescriptor *)v10 iconStackAppIconsAllowed])
       {
-        v11 = [v4 shape];
+        shape = [descriptorCopy shape];
 
-        if (v11 == 4)
+        if (shape == 4)
         {
 LABEL_7:
-          v13 = [ISRecipeFactory factoryWithDescriptor:v4];
+          v13 = [ISRecipeFactory factoryWithDescriptor:descriptorCopy];
           v14 = v13;
           if (v9)
           {
@@ -113,7 +113,7 @@ LABEL_7:
           }
           v20 = ;
           v21 = objc_alloc_init(ISCompositor);
-          if ([v4 shape] == 5 || objc_msgSend(v4, "shape") == 6)
+          if ([descriptorCopy shape] == 5 || objc_msgSend(descriptorCopy, "shape") == 6)
           {
             [(ISCompositor *)v21 setRenderingMode:2];
           }
@@ -123,23 +123,23 @@ LABEL_7:
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
           [(ISCompositor *)v21 addElementWithRecipe:v20 resources:v22];
 
-          [v4 size];
+          [descriptorCopy size];
           v24 = v23;
           v26 = v25;
-          [v4 scale];
+          [descriptorCopy scale];
           v19 = [(ISCompositor *)v21 imageForSize:v24 scale:v26, v27];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v4 size];
+            [descriptorCopy size];
             v29 = v28;
             v31 = v30;
-            [v4 scale];
+            [descriptorCopy scale];
             v33 = [p_super _finalizedIconForSize:v29 scale:v31, v32];
             v34 = objc_alloc(MEMORY[0x1E69A8988]);
-            v35 = [v19 CGImage];
-            [v4 scale];
-            v36 = [v34 initWithCGImage:v35 scale:v33 finalizedIcon:?];
+            cGImage = [v19 CGImage];
+            [descriptorCopy scale];
+            v36 = [v34 initWithCGImage:cGImage scale:v33 finalizedIcon:?];
 
             v19 = v36;
           }
@@ -147,7 +147,7 @@ LABEL_7:
           goto LABEL_22;
         }
 
-        v10 = [[ISCompositingDescriptor alloc] initWithImageDescriptor:v4];
+        v10 = [[ISCompositingDescriptor alloc] initWithImageDescriptor:descriptorCopy];
         v12 = [[ISIconStackCompositeResource alloc] initWithResource:p_super platform:[(ISCompositingDescriptor *)v10 assetPlatform]];
         [(ISIconStackCompositeResource *)v12 setCompositingDescriptor:v10];
 
@@ -172,33 +172,33 @@ LABEL_22:
   return v19;
 }
 
-- (id)_remoteGenerateImageWithDescriptor:(id)a3
+- (id)_remoteGenerateImageWithDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x1E69A8990];
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = [v4 alloc];
-  v7 = [(ISImageBagIcon *)self images];
-  v8 = [v6 initWithImages:v7];
+  images = [(ISImageBagIcon *)self images];
+  v8 = [v6 initWithImages:images];
 
-  [v5 size];
+  [descriptorCopy size];
   v10 = v9;
   v12 = v11;
-  [v5 scale];
+  [descriptorCopy scale];
   v14 = [v8 imageForSize:v10 scale:{v12, v13}];
   v15 = [[_ISImageIcon alloc] initImage:v14];
-  v16 = [v15 prepareImageForDescriptor:v5];
+  v16 = [v15 prepareImageForDescriptor:descriptorCopy];
 
   return v16;
 }
 
-- (void)_prepareImagesForImageDescriptors:(id)a3
+- (void)_prepareImagesForImageDescriptors:(id)descriptors
 {
   v28 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a3;
+  obj = descriptors;
   v4 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
@@ -219,9 +219,9 @@ LABEL_22:
         if (!v9 || (([v9 size], v12 = v11, v14 = v13, objc_msgSend(v8, "size"), v12 == v16) ? (v17 = v14 == v15) : (v17 = 0), !v17))
         {
           v18 = +[ISDefaults sharedInstance];
-          v19 = [v18 prepareImageBagIconsOutOfProcess];
+          prepareImageBagIconsOutOfProcess = [v18 prepareImageBagIconsOutOfProcess];
 
-          if (v19)
+          if (prepareImageBagIconsOutOfProcess)
           {
             [(ISImageBagIcon *)self _remoteGenerateImageWithDescriptor:v8];
           }
@@ -253,19 +253,19 @@ LABEL_22:
   return v2;
 }
 
-- (id)imageForImageDescriptor:(id)a3
+- (id)imageForImageDescriptor:(id)descriptor
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISImageCache *)self->_imageCache imageForDescriptor:v4];
+  descriptorCopy = descriptor;
+  v5 = [(ISImageCache *)self->_imageCache imageForDescriptor:descriptorCopy];
   v6 = v5;
-  if (!v5 || (([v5 size], v8 = v7, v10 = v9, objc_msgSend(v4, "size"), v8 == v12) ? (v13 = v10 == v11) : (v13 = 0), !v13))
+  if (!v5 || (([v5 size], v8 = v7, v10 = v9, objc_msgSend(descriptorCopy, "size"), v8 == v12) ? (v13 = v10 == v11) : (v13 = 0), !v13))
   {
-    v18[0] = v4;
+    v18[0] = descriptorCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     [(ISIcon *)self prepareImagesForImageDescriptors:v14];
 
-    v15 = [(ISImageCache *)self->_imageCache imageForDescriptor:v4];
+    v15 = [(ISImageCache *)self->_imageCache imageForDescriptor:descriptorCopy];
 
     v6 = v15;
   }
@@ -275,19 +275,19 @@ LABEL_22:
   return v6;
 }
 
-- (void)getImageForImageDescriptor:(id)a3 completion:(id)a4
+- (void)getImageForImageDescriptor:(id)descriptor completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  descriptorCopy = descriptor;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
-  [(ISIcon *)self prepareImagesForImageDescriptors:v9, v12, v13];
+  completionCopy = completion;
+  descriptorCopy2 = descriptor;
+  v9 = [v6 arrayWithObjects:&descriptorCopy count:1];
+  [(ISIcon *)self prepareImagesForImageDescriptors:v9, descriptorCopy, v13];
 
-  v10 = [(ISImageBagIcon *)self imageForImageDescriptor:v8];
+  v10 = [(ISImageBagIcon *)self imageForImageDescriptor:descriptorCopy2];
 
-  v7[2](v7, v10);
+  completionCopy[2](completionCopy, v10);
   v11 = *MEMORY[0x1E69E9840];
 }
 

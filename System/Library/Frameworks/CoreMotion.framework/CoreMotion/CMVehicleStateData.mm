@@ -1,34 +1,34 @@
 @interface CMVehicleStateData
-- (CMVehicleStateData)initWithCoder:(id)a3;
-- (CMVehicleStateData)initWithTimeRange:(id)a3 vehicleName:(id)a4 vehicleModelName:(id)a5 vehicleBluetoothAddress:(id)a6;
-- (CMVehicleStateData)initWithTimestamp:(id)a3 state:(unint64_t)a4 hints:(unint64_t)a5;
+- (CMVehicleStateData)initWithCoder:(id)coder;
+- (CMVehicleStateData)initWithTimeRange:(id)range vehicleName:(id)name vehicleModelName:(id)modelName vehicleBluetoothAddress:(id)address;
+- (CMVehicleStateData)initWithTimestamp:(id)timestamp state:(unint64_t)state hints:(unint64_t)hints;
 - (NSString)deviceId;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMVehicleStateData
 
-- (CMVehicleStateData)initWithTimeRange:(id)a3 vehicleName:(id)a4 vehicleModelName:(id)a5 vehicleBluetoothAddress:(id)a6
+- (CMVehicleStateData)initWithTimeRange:(id)range vehicleName:(id)name vehicleModelName:(id)modelName vehicleBluetoothAddress:(id)address
 {
   v12.receiver = self;
   v12.super_class = CMVehicleStateData;
   v10 = [(CMVehicleStateData *)&v12 init];
   if (v10)
   {
-    *(v10 + 1) = a3;
-    *(v10 + 2) = a4;
-    *(v10 + 3) = a5;
-    *(v10 + 4) = a6;
+    *(v10 + 1) = range;
+    *(v10 + 2) = name;
+    *(v10 + 3) = modelName;
+    *(v10 + 4) = address;
     *(v10 + 40) = xmmword_19B7B9450;
   }
 
   return v10;
 }
 
-- (CMVehicleStateData)initWithTimestamp:(id)a3 state:(unint64_t)a4 hints:(unint64_t)a5
+- (CMVehicleStateData)initWithTimestamp:(id)timestamp state:(unint64_t)state hints:(unint64_t)hints
 {
   v20.receiver = self;
   v20.super_class = CMVehicleStateData;
@@ -36,15 +36,15 @@
   if (v8)
   {
     v9 = [CMMotionTimeRange alloc];
-    objc_msgSend_timeIntervalSinceReferenceDate(a3, v10, v11);
+    objc_msgSend_timeIntervalSinceReferenceDate(timestamp, v10, v11);
     v13 = v12;
-    objc_msgSend_timeIntervalSinceReferenceDate(a3, v14, v15);
+    objc_msgSend_timeIntervalSinceReferenceDate(timestamp, v14, v15);
     v8->fTimeRange = objc_msgSend_initWithStartDate_endDate_(v9, v16, v17, v13, v18);
     v8->fVehicleName = 0;
     v8->fVehicleModelName = 0;
     v8->fVehicleBluetoothAddress = 0;
-    v8->fVehicularState = a4;
-    v8->fVehicularHints = a5;
+    v8->fVehicularState = state;
+    v8->fVehicularHints = hints;
   }
 
   return v8;
@@ -57,10 +57,10 @@
   [(CMVehicleStateData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend_init(v7, v8, v9);
   if (v12)
   {
@@ -74,7 +74,7 @@
   return v12;
 }
 
-- (CMVehicleStateData)initWithCoder:(id)a3
+- (CMVehicleStateData)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = CMVehicleStateData;
@@ -82,30 +82,30 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fTimeRange = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMVehicleStateDataCodingKeyTimeRange");
+    v4->fTimeRange = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMVehicleStateDataCodingKeyTimeRange");
     v7 = objc_opt_class();
-    v4->fVehicleName = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMVehicleStateDataCodingKeyVehicleName");
+    v4->fVehicleName = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMVehicleStateDataCodingKeyVehicleName");
     v9 = objc_opt_class();
-    v4->fVehicleModelName = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"kCMVehicleStateDataCodingKeyVehicleModelName");
+    v4->fVehicleModelName = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"kCMVehicleStateDataCodingKeyVehicleModelName");
     v11 = objc_opt_class();
-    v4->fVehicleBluetoothAddress = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress");
-    v4->fVehicularState = objc_msgSend_decodeIntegerForKey_(a3, v13, @"kCMVehicleStateDataCodingKeyState");
-    v4->fVehicularHints = objc_msgSend_decodeIntegerForKey_(a3, v14, @"kCMVehicleStateDataCodingKeyHints");
+    v4->fVehicleBluetoothAddress = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress");
+    v4->fVehicularState = objc_msgSend_decodeIntegerForKey_(coder, v13, @"kCMVehicleStateDataCodingKeyState");
+    v4->fVehicularHints = objc_msgSend_decodeIntegerForKey_(coder, v14, @"kCMVehicleStateDataCodingKeyHints");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fTimeRange, @"kCMVehicleStateDataCodingKeyTimeRange");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fVehicleName, @"kCMVehicleStateDataCodingKeyVehicleName");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->fVehicleModelName, @"kCMVehicleStateDataCodingKeyVehicleModelName");
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->fVehicleBluetoothAddress, @"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress");
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->fVehicularState, @"kCMVehicleStateDataCodingKeyState");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fTimeRange, @"kCMVehicleStateDataCodingKeyTimeRange");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fVehicleName, @"kCMVehicleStateDataCodingKeyVehicleName");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->fVehicleModelName, @"kCMVehicleStateDataCodingKeyVehicleModelName");
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->fVehicleBluetoothAddress, @"kCMVehicleStateDataCodingKeyVehicleBluetoothAddress");
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->fVehicularState, @"kCMVehicleStateDataCodingKeyState");
   fVehicularHints = self->fVehicularHints;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v9, fVehicularHints, @"kCMVehicleStateDataCodingKeyHints");
+  objc_msgSend_encodeInteger_forKey_(coder, v9, fVehicularHints, @"kCMVehicleStateDataCodingKeyHints");
 }
 
 - (id)description

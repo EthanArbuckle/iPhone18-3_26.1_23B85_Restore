@@ -1,18 +1,18 @@
 @interface TileSashView
-- (_TtC16HealthArticlesUI12TileSashView)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI12TileSashView)initWithFrame:(CGRect)a3;
+- (_TtC16HealthArticlesUI12TileSashView)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI12TileSashView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)preferredContentSizeCategoryDidChange;
 @end
 
 @implementation TileSashView
 
-- (_TtC16HealthArticlesUI12TileSashView)initWithFrame:(CGRect)a3
+- (_TtC16HealthArticlesUI12TileSashView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -26,7 +26,7 @@
   return v7;
 }
 
-- (_TtC16HealthArticlesUI12TileSashView)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI12TileSashView)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -36,7 +36,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_25133E3C4(a3);
+  v4 = sub_25133E3C4(coder);
 
   return v4;
 }
@@ -51,12 +51,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  [(TileSashView *)v3 frame];
+  selfCopy = self;
+  [(TileSashView *)selfCopy frame];
   v5 = v4;
-  [(TileSashView *)v3 layoutMargins];
+  [(TileSashView *)selfCopy layoutMargins];
   v7 = v6;
-  [(TileSashView *)v3 layoutMargins];
+  [(TileSashView *)selfCopy layoutMargins];
   v9 = v5 - (v7 + v8);
   v10 = sub_25133DFA0();
   [v10 setPreferredMaxLayoutWidth_];
@@ -64,7 +64,7 @@
   v11 = sub_25133DFAC();
   [v11 setPreferredMaxLayoutWidth_];
 
-  v12.receiver = v3;
+  v12.receiver = selfCopy;
   v12.super_class = type metadata accessor for TileSashView();
   [(TileSashView *)&v12 layoutSubviews];
 }
@@ -79,7 +79,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_25133E784();
 }
 

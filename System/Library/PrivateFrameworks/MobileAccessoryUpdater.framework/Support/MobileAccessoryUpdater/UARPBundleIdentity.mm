@@ -1,20 +1,20 @@
 @interface UARPBundleIdentity
-- (UARPBundleIdentity)initWithBuild:(id)a3 chipEntries:(id)a4;
+- (UARPBundleIdentity)initWithBuild:(id)build chipEntries:(id)entries;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation UARPBundleIdentity
 
-- (UARPBundleIdentity)initWithBuild:(id)a3 chipEntries:(id)a4
+- (UARPBundleIdentity)initWithBuild:(id)build chipEntries:(id)entries
 {
   v8.receiver = self;
   v8.super_class = UARPBundleIdentity;
   v6 = [(UARPBundleIdentity *)&v8 init];
   if (v6)
   {
-    v6->_build = [a3 copy];
-    v6->_chipEntries = [a4 copy];
+    v6->_build = [build copy];
+    v6->_chipEntries = [entries copy];
   }
 
   return v6;

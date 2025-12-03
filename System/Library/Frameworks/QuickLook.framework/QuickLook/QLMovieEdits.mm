@@ -1,7 +1,7 @@
 @interface QLMovieEdits
-+ (id)editsWithRightRotationsCount:(unint64_t)a3 trimStartTime:(double)a4 trimEndTime:(double)a5;
++ (id)editsWithRightRotationsCount:(unint64_t)count trimStartTime:(double)time trimEndTime:(double)endTime;
 - (BOOL)hasEdits;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)trimmed;
 - (QLMovieEdits)init;
 @end
@@ -22,20 +22,20 @@
   return v3;
 }
 
-+ (id)editsWithRightRotationsCount:(unint64_t)a3 trimStartTime:(double)a4 trimEndTime:(double)a5
++ (id)editsWithRightRotationsCount:(unint64_t)count trimStartTime:(double)time trimEndTime:(double)endTime
 {
   v8 = objc_opt_new();
-  [v8 setRightRotationsCount:a3];
-  [v8 setTrimStartTime:a4];
-  [v8 setTrimEndTime:a5];
+  [v8 setRightRotationsCount:count];
+  [v8 setTrimStartTime:time];
+  [v8 setTrimEndTime:endTime];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       rightRotationsCount = self->_rightRotationsCount;
       if (rightRotationsCount == [(QLMovieEdits *)v5 rightRotationsCount]&& (trimStartTime = self->_trimStartTime, [(QLMovieEdits *)v5 trimStartTime], trimStartTime == v8))
       {

@@ -2,11 +2,11 @@
 - (BOOL)isActivityAvailable;
 - (CMActivityManager)init;
 - (id)activityHandler;
-- (int64_t)overrideOscarSideband:(BOOL)a3 withState:(int64_t)a4;
-- (int64_t)simulateMotionState:(BOOL)a3 withState:(int64_t)a4 withHint:(int64_t)a5;
-- (int64_t)simulateMotionStateYouthWithState:(int64_t)a3;
+- (int64_t)overrideOscarSideband:(BOOL)sideband withState:(int64_t)state;
+- (int64_t)simulateMotionState:(BOOL)state withState:(int64_t)withState withHint:(int64_t)hint;
+- (int64_t)simulateMotionStateYouthWithState:(int64_t)state;
 - (void)dealloc;
-- (void)setActivityHandler:(id)a3;
+- (void)setActivityHandler:(id)handler;
 @end
 
 @implementation CMActivityManager
@@ -32,7 +32,7 @@
   [(CMActivityManager *)&v3 dealloc];
 }
 
-- (void)setActivityHandler:(id)a3
+- (void)setActivityHandler:(id)handler
 {
   internal = self->_internal;
   v4 = *(internal + 3);
@@ -41,7 +41,7 @@
   v5[2] = sub_19B6C05B4;
   v5[3] = &unk_1E7532B90;
   v5[4] = internal;
-  v5[5] = a3;
+  v5[5] = handler;
   dispatch_async(v4, v5);
 }
 
@@ -83,7 +83,7 @@
   return v2;
 }
 
-- (int64_t)overrideOscarSideband:(BOOL)a3 withState:(int64_t)a4
+- (int64_t)overrideOscarSideband:(BOOL)sideband withState:(int64_t)state
 {
   internal = self->_internal;
   v14 = 0;
@@ -106,9 +106,9 @@
     v11[1] = 3221225472;
     v11[2] = sub_19B6C0890;
     v11[3] = &unk_1E75343D0;
-    v12 = a3;
+    sidebandCopy = sideband;
     v11[5] = &v14;
-    v11[6] = a4;
+    v11[6] = state;
     v11[4] = internal;
     dispatch_sync(v9, v11);
     v8 = v15[3];
@@ -118,7 +118,7 @@
   return v8;
 }
 
-- (int64_t)simulateMotionState:(BOOL)a3 withState:(int64_t)a4 withHint:(int64_t)a5
+- (int64_t)simulateMotionState:(BOOL)state withState:(int64_t)withState withHint:(int64_t)hint
 {
   internal = self->_internal;
   v16 = 0;
@@ -141,9 +141,9 @@
     v13[1] = 3221225472;
     v13[2] = sub_19B6C0CD8;
     v13[3] = &unk_1E7534420;
-    v14 = a3;
-    v13[6] = a4;
-    v13[7] = a5;
+    stateCopy = state;
+    v13[6] = withState;
+    v13[7] = hint;
     v13[4] = internal;
     v13[5] = &v16;
     dispatch_sync(v11, v13);
@@ -154,7 +154,7 @@
   return v10;
 }
 
-- (int64_t)simulateMotionStateYouthWithState:(int64_t)a3
+- (int64_t)simulateMotionStateYouthWithState:(int64_t)state
 {
   internal = self->_internal;
   v4 = *(internal + 3);
@@ -163,7 +163,7 @@
   v6[2] = sub_19B6C0E1C;
   v6[3] = &unk_1E7533490;
   v6[4] = internal;
-  v6[5] = a3;
+  v6[5] = state;
   dispatch_sync(v4, v6);
   return *(internal + 13);
 }

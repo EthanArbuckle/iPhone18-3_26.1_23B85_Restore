@@ -1,37 +1,37 @@
 @interface CSMagSafeAccessoryTrayView
-- (CSMagSafeAccessoryTrayView)initWithFrame:(CGRect)a3;
-- (CSMagSafeAccessoryTrayView)initWithTrayColor:(id)a3;
+- (CSMagSafeAccessoryTrayView)initWithFrame:(CGRect)frame;
+- (CSMagSafeAccessoryTrayView)initWithTrayColor:(id)color;
 - (double)_trackRingLineWidthAnimationOffset;
 - (void)_dismissAnimation;
 - (void)_presentAnimation;
-- (void)_runAnimationWithType:(unint64_t)a3;
+- (void)_runAnimationWithType:(unint64_t)type;
 - (void)layoutSubviews;
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4;
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler;
 @end
 
 @implementation CSMagSafeAccessoryTrayView
 
-- (CSMagSafeAccessoryTrayView)initWithTrayColor:(id)a3
+- (CSMagSafeAccessoryTrayView)initWithTrayColor:(id)color
 {
   v81[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v80.receiver = self;
   v80.super_class = CSMagSafeAccessoryTrayView;
   v5 = [(CSMagSafeAccessoryView *)&v80 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CSMagSafeAccessoryTrayView *)v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(CSMagSafeAccessoryTrayView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v8 = [(CSMagSafeAccessoryView *)v6 isReduceTransparencyEnabled];
+    isReduceTransparencyEnabled = [(CSMagSafeAccessoryView *)v6 isReduceTransparencyEnabled];
     v9 = MEMORY[0x277CDA5C0];
-    v79 = v4;
-    if (v8)
+    v79 = colorCopy;
+    if (isReduceTransparencyEnabled)
     {
-      v10 = [MEMORY[0x277CD9E08] layer];
+      layer2 = [MEMORY[0x277CD9E08] layer];
       averageColorBackdropLayer = v6->_averageColorBackdropLayer;
-      v6->_averageColorBackdropLayer = v10;
+      v6->_averageColorBackdropLayer = layer2;
 
       [(CABackdropLayer *)v6->_averageColorBackdropLayer setOpacity:0.0];
       v12 = v6->_averageColorBackdropLayer;
@@ -80,10 +80,10 @@
       v25 = *v9;
     }
 
-    v26 = [(CSMagSafeAccessoryView *)v6 configuration];
-    v27 = [v26 ring];
+    configuration = [(CSMagSafeAccessoryView *)v6 configuration];
+    ring = [configuration ring];
 
-    [v27 splashRingDiameter];
+    [ring splashRingDiameter];
     v29 = v28 * 1.2 * 0.5;
     v30 = v28 * 2.1 * 0.5;
     v31 = *MEMORY[0x277CDA5E8];
@@ -103,11 +103,11 @@
     splashRing4 = v6->_splashRing4;
     v6->_splashRing4 = v38;
 
-    [v27 ringDiameter];
+    [ring ringDiameter];
     v41 = v40;
     [(CSMagSafeAccessoryTrayView *)v6 _trackRingLineWidthAnimationOffset];
     v43 = v41 + v42;
-    [v27 lineWidth];
+    [ring lineWidth];
     v45 = v44;
     [(CSMagSafeAccessoryTrayView *)v6 _trackRingLineWidthAnimationOffset];
     v47 = [CSRingLayer ringLayerWithBlendMode:v25 diameter:v43 lineWidth:v45 + v46 brightnessAmount:0.0 saturationAmount:1.25];
@@ -116,12 +116,12 @@
 
     [(CSRingLayer *)v6->_trackRing setAllowsGroupOpacity:0];
     [(CSRingLayer *)v6->_trackRing setAllowsGroupBlending:1];
-    v49 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
 
-    if (!v4 || v49 == v4)
+    if (!colorCopy || clearColor == colorCopy)
     {
-      v51 = [MEMORY[0x277D75348] systemWhiteColor];
-      v50 = [v51 CGColor];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      cGColor = [systemWhiteColor CGColor];
 
       v6->_clearColorAnimationNeeded = 1;
     }
@@ -129,47 +129,47 @@
     else
     {
       v6->_clearColorAnimationNeeded = 0;
-      v50 = [v4 CGColor];
+      cGColor = [colorCopy CGColor];
     }
 
-    [(CALayer *)v6->_splashRing1 setBackgroundColor:v50];
-    [(CALayer *)v6->_splashRing2 setBackgroundColor:v50];
-    [(CALayer *)v6->_splashRing3 setBackgroundColor:v50];
-    [(CALayer *)v6->_splashRing4 setBackgroundColor:v50];
-    [(CSRingLayer *)v6->_trackRing setStrokeColor:v50];
+    [(CALayer *)v6->_splashRing1 setBackgroundColor:cGColor];
+    [(CALayer *)v6->_splashRing2 setBackgroundColor:cGColor];
+    [(CALayer *)v6->_splashRing3 setBackgroundColor:cGColor];
+    [(CALayer *)v6->_splashRing4 setBackgroundColor:cGColor];
+    [(CSRingLayer *)v6->_trackRing setStrokeColor:cGColor];
     if ([(CSMagSafeAccessoryView *)v6 isReduceTransparencyEnabled])
     {
-      v52 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-      [v52 addSublayer:v6->_averageColorBackdropLayer];
+      layer3 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+      [layer3 addSublayer:v6->_averageColorBackdropLayer];
     }
 
-    v53 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-    [v53 addSublayer:v6->_backgroundBackdropLayer];
+    layer4 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+    [layer4 addSublayer:v6->_backgroundBackdropLayer];
 
-    v54 = [(CSMagSafeAccessoryView *)v6 isReduceMotionEnabled];
-    v55 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-    v56 = v55;
-    if (v54)
+    isReduceMotionEnabled = [(CSMagSafeAccessoryView *)v6 isReduceMotionEnabled];
+    layer5 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+    layer6 = layer5;
+    if (isReduceMotionEnabled)
     {
-      [v55 insertSublayer:v6->_backgroundRadiusBackdropLayer below:v6->_backgroundBackdropLayer];
+      [layer5 insertSublayer:v6->_backgroundRadiusBackdropLayer below:v6->_backgroundBackdropLayer];
     }
 
     else
     {
-      [v55 addSublayer:v6->_splashRing1];
+      [layer5 addSublayer:v6->_splashRing1];
 
-      v56 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-      [v56 addSublayer:v6->_splashRing2];
+      layer6 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+      [layer6 addSublayer:v6->_splashRing2];
     }
 
-    v57 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-    [v57 addSublayer:v6->_splashRing3];
+    layer7 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+    [layer7 addSublayer:v6->_splashRing3];
 
-    v58 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-    [v58 addSublayer:v6->_splashRing4];
+    layer8 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+    [layer8 addSublayer:v6->_splashRing4];
 
-    v59 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-    [v59 addSublayer:v6->_trackRing];
+    layer9 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+    [layer9 addSublayer:v6->_trackRing];
 
     if (v6->_clearColorAnimationNeeded)
     {
@@ -181,14 +181,14 @@
       v63 = [MEMORY[0x277CD9EA0] filterWithType:v25];
       [(CABackdropLayer *)v62 setCompositingFilter:v63];
 
-      v64 = [(CSMagSafeAccessoryView *)v6 configuration];
-      v65 = [v64 ring];
+      configuration2 = [(CSMagSafeAccessoryView *)v6 configuration];
+      ring2 = [configuration2 ring];
 
-      [v65 ringDiameter];
+      [ring2 ringDiameter];
       v67 = v66;
       [(CSMagSafeAccessoryTrayView *)v6 _trackRingLineWidthAnimationOffset];
       v69 = v67 + v68;
-      [v65 lineWidth];
+      [ring2 lineWidth];
       v71 = v70;
       [(CSMagSafeAccessoryTrayView *)v6 _trackRingLineWidthAnimationOffset];
       v73 = [CSRingLayer ringLayerWithBlendMode:v25 diameter:v69 lineWidth:v71 + v72 brightnessAmount:0.1 saturationAmount:1.25];
@@ -196,24 +196,24 @@
       v6->_trackRingBlurLayer = v73;
 
       v75 = v6->_trackRingBlurLayer;
-      v76 = [MEMORY[0x277D75348] whiteColor];
-      -[CSRingLayer setStrokeColor:](v75, "setStrokeColor:", [v76 CGColor]);
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      -[CSRingLayer setStrokeColor:](v75, "setStrokeColor:", [whiteColor CGColor]);
 
       [(CABackdropLayer *)v6->_trackRingBlurBackdropLayer setMask:v6->_trackRingBlurLayer];
-      v77 = [(CSMagSafeAccessoryTrayView *)v6 layer];
-      [v77 insertSublayer:v6->_trackRingBlurBackdropLayer above:v6->_backgroundBackdropLayer];
+      layer10 = [(CSMagSafeAccessoryTrayView *)v6 layer];
+      [layer10 insertSublayer:v6->_trackRingBlurBackdropLayer above:v6->_backgroundBackdropLayer];
     }
 
-    v4 = v79;
+    colorCopy = v79;
   }
 
   return v6;
 }
 
-- (CSMagSafeAccessoryTrayView)initWithFrame:(CGRect)a3
+- (CSMagSafeAccessoryTrayView)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [(CSMagSafeAccessoryTrayView *)self initWithTrayColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v5 = [(CSMagSafeAccessoryTrayView *)self initWithTrayColor:clearColor];
 
   return v5;
 }
@@ -223,23 +223,23 @@
   v42.receiver = self;
   v42.super_class = CSMagSafeAccessoryTrayView;
   [(CSMagSafeAccessoryView *)&v42 layoutSubviews];
-  v3 = [(CSMagSafeAccessoryTrayView *)self superview];
-  [v3 bounds];
+  superview = [(CSMagSafeAccessoryTrayView *)self superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(CSMagSafeAccessoryTrayView *)self setFrame:v5, v7, v9, v11];
-  v12 = [(CSMagSafeAccessoryView *)self configuration];
-  v13 = [v12 ring];
-  [v13 ringDiameter];
+  configuration = [(CSMagSafeAccessoryView *)self configuration];
+  ring = [configuration ring];
+  [ring ringDiameter];
   v41 = v14;
   [(CSMagSafeAccessoryTrayView *)self _trackRingLineWidthAnimationOffset];
   v40 = v15;
-  v16 = [(CSMagSafeAccessoryView *)self configuration];
-  v17 = [v16 ring];
-  [v17 ringDiameter];
+  configuration2 = [(CSMagSafeAccessoryView *)self configuration];
+  ring2 = [configuration2 ring];
+  [ring2 ringDiameter];
   v39 = v18;
   [(CSMagSafeAccessoryTrayView *)self _trackRingLineWidthAnimationOffset];
   v37 = v19;
@@ -293,9 +293,9 @@
     [(CSRingLayer *)trackRingBlurLayer setPosition:?];
   }
 
-  v27 = [(CSMagSafeAccessoryView *)self configuration];
-  v28 = [v27 ring];
-  [v28 splashRingDiameter];
+  configuration3 = [(CSMagSafeAccessoryView *)self configuration];
+  ring3 = [configuration3 ring];
+  [ring3 splashRingDiameter];
   v30 = v29;
 
   [(CALayer *)self->_splashRing1 setBounds:0.0, 0.0, v30, v30];
@@ -341,16 +341,16 @@
   v3 = 0.0;
   if (![(CSMagSafeAccessoryView *)self isReduceMotionEnabled])
   {
-    v4 = [(CSMagSafeAccessoryView *)self configuration];
-    v5 = [v4 ring];
-    [v5 lineWidth];
+    configuration = [(CSMagSafeAccessoryView *)self configuration];
+    ring = [configuration ring];
+    [ring lineWidth];
     v7 = v6;
 
     if (v7 < 30.0)
     {
-      v8 = [(CSMagSafeAccessoryView *)self configuration];
-      v9 = [v8 ring];
-      [v9 lineWidth];
+      configuration2 = [(CSMagSafeAccessoryView *)self configuration];
+      ring2 = [configuration2 ring];
+      [ring2 lineWidth];
       v3 = 30.0 - v10;
     }
   }
@@ -613,9 +613,9 @@
       [(CSRingLayer *)self->_trackRingBlurLayer addAnimation:v49 forKey:@"transform.scale.xy"];
     }
 
-    v54 = [(CSMagSafeAccessoryView *)self configuration];
-    v55 = [v54 ring];
-    [v55 lineWidth];
+    configuration = [(CSMagSafeAccessoryView *)self configuration];
+    ring = [configuration ring];
+    [ring lineWidth];
     v57 = v56;
 
     v58 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"lineWidth"];
@@ -745,9 +745,9 @@
 
   if (![(CSMagSafeAccessoryView *)self isReduceMotionEnabled])
   {
-    v11 = [(CSMagSafeAccessoryView *)self configuration];
-    v12 = [v11 ring];
-    [v12 lineWidth];
+    configuration = [(CSMagSafeAccessoryView *)self configuration];
+    ring = [configuration ring];
+    [ring lineWidth];
     v14 = v13;
 
     v15 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"lineWidth"];
@@ -847,27 +847,27 @@
   }
 }
 
-- (void)_runAnimationWithType:(unint64_t)a3
+- (void)_runAnimationWithType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [(CSMagSafeAccessoryTrayView *)self _dismissAnimation];
   }
 
-  else if (!a3)
+  else if (!type)
   {
     [(CSMagSafeAccessoryTrayView *)self _presentAnimation];
   }
 }
 
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler
 {
   v6 = MEMORY[0x277CD9FF0];
-  v7 = a4;
+  handlerCopy = handler;
   [v6 begin];
-  [MEMORY[0x277CD9FF0] setCompletionBlock:v7];
+  [MEMORY[0x277CD9FF0] setCompletionBlock:handlerCopy];
 
-  [(CSMagSafeAccessoryTrayView *)self _runAnimationWithType:a3];
+  [(CSMagSafeAccessoryTrayView *)self _runAnimationWithType:animation];
   v8 = MEMORY[0x277CD9FF0];
 
   [v8 commit];

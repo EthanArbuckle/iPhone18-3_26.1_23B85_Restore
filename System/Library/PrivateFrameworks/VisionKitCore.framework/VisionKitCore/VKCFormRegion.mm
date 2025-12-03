@@ -1,41 +1,41 @@
 @interface VKCFormRegion
-+ (id)autoFillContentTypeForCRContentType:(unint64_t)a3;
-- (VKCFormRegion)initWithSourceRegion:(id)a3;
-- (id)crFormFieldWithSize:(CGSize)a3;
++ (id)autoFillContentTypeForCRContentType:(unint64_t)type;
+- (VKCFormRegion)initWithSourceRegion:(id)region;
+- (id)crFormFieldWithSize:(CGSize)size;
 - (id)debugDescription;
 - (unint64_t)regionType;
 @end
 
 @implementation VKCFormRegion
 
-- (VKCFormRegion)initWithSourceRegion:(id)a3
+- (VKCFormRegion)initWithSourceRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = [(VKCFormRegion *)self init];
-  -[VKCFormRegion setFieldType:](v5, "setFieldType:", [v4 fieldType]);
-  v6 = [v4 boundingQuad];
-  v7 = [v6 vkQuad];
-  [(VKCFormRegion *)v5 setQuad:v7];
+  -[VKCFormRegion setFieldType:](v5, "setFieldType:", [regionCopy fieldType]);
+  boundingQuad = [regionCopy boundingQuad];
+  vkQuad = [boundingQuad vkQuad];
+  [(VKCFormRegion *)v5 setQuad:vkQuad];
 
   v8 = objc_opt_class();
-  v9 = VKDynamicCast(v8, v4);
+  v9 = VKDynamicCast(v8, regionCopy);
   -[VKCFormRegion setContentType:](v5, "setContentType:", [v9 textContentType]);
   -[VKCFormRegion setFieldSource:](v5, "setFieldSource:", [v9 fieldSource]);
   -[VKCFormRegion setMaxCharacterCount:](v5, "setMaxCharacterCount:", [v9 maxCharacterCount]);
   [v9 suggestedLineHeight];
   [(VKCFormRegion *)v5 setSuggestedLineHeight:?];
-  v10 = [v9 labelRegion];
-  v11 = [v10 text];
-  [(VKCFormRegion *)v5 setLabelText:v11];
+  labelRegion = [v9 labelRegion];
+  text = [labelRegion text];
+  [(VKCFormRegion *)v5 setLabelText:text];
 
   if (!v9)
   {
-    v12 = [(VKCFormRegion *)v5 quad];
-    [v12 maxHeight];
+    quad = [(VKCFormRegion *)v5 quad];
+    [quad maxHeight];
     [(VKCFormRegion *)v5 setSuggestedLineHeight:?];
   }
 
-  v13 = [v4 contentsWithTypes:0x2000];
+  v13 = [regionCopy contentsWithTypes:0x2000];
   v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
   if ([v13 count])
   {
@@ -65,11 +65,11 @@
   return v5;
 }
 
-- (id)crFormFieldWithSize:(CGSize)a3
+- (id)crFormFieldWithSize:(CGSize)size
 {
   v4 = objc_alloc(MEMORY[0x1E69D9DD8]);
-  v5 = [(VKCFormRegion *)self quad];
-  [v5 boundingBox];
+  quad = [(VKCFormRegion *)self quad];
+  [quad boundingBox];
   v6 = [v4 initWithNormalizedBoundingBox:? size:?];
 
   v7 = [objc_alloc(MEMORY[0x1E69D9D70]) initWithQuad:v6 type:-[VKCFormRegion fieldType](self source:"fieldType") value:-[VKCFormRegion fieldSource](self contentType:"fieldSource") maxCharacterCount:{&stru_1F2C04538, -[VKCFormRegion contentType](self, "contentType"), -[VKCFormRegion maxCharacterCount](self, "maxCharacterCount")}];
@@ -79,15 +79,15 @@
 
 - (unint64_t)regionType
 {
-  v3 = [(VKCFormRegion *)self fieldType];
-  if (v3 == 2)
+  fieldType = [(VKCFormRegion *)self fieldType];
+  if (fieldType == 2)
   {
     return 3;
   }
 
-  if (v3 != 1)
+  if (fieldType != 1)
   {
-    return v3 == 0;
+    return fieldType == 0;
   }
 
   if ([(VKCFormRegion *)self contentType]== 50)
@@ -98,9 +98,9 @@
   return 2;
 }
 
-+ (id)autoFillContentTypeForCRContentType:(unint64_t)a3
++ (id)autoFillContentTypeForCRContentType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       v3 = getAFTextContentTypeName();
@@ -288,13 +288,13 @@ LABEL_7:
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(VKCFormRegion *)self autoFillContentType];
+  autoFillContentType = [(VKCFormRegion *)self autoFillContentType];
   v27 = MEMORY[0x1E696AEC0];
-  v26 = [(VKCFormRegion *)self regionType];
-  v5 = [(VKCFormRegion *)self fieldSource];
-  v6 = [(VKCFormRegion *)self contentType];
-  v7 = [(VKCFormRegion *)self maxCharacterCount];
-  if (v7 == -1)
+  regionType = [(VKCFormRegion *)self regionType];
+  fieldSource = [(VKCFormRegion *)self fieldSource];
+  contentType = [(VKCFormRegion *)self contentType];
+  maxCharacterCount = [(VKCFormRegion *)self maxCharacterCount];
+  if (maxCharacterCount == -1)
   {
     v8 = @"uint_max";
   }
@@ -306,14 +306,14 @@ LABEL_7:
 
   [(VKCFormRegion *)self suggestedLineHeight];
   v10 = v9;
-  v11 = [(VKCFormRegion *)self autofillNewContextStart];
-  v12 = [(VKCFormRegion *)self children];
-  v25 = v11;
-  v13 = v4;
-  v14 = [v27 stringWithFormat:@"[VKCFormRegion] regionType:%lu source:%lu contentType:%lu autoFillType:%@, maxCharacterCount:%@ suggestedLineHeight:%lf autofillNewContextStart:%d #children:%lu", v26, v5, v6, v4, v8, v10, v25, objc_msgSend(v12, "count")];
+  autofillNewContextStart = [(VKCFormRegion *)self autofillNewContextStart];
+  children = [(VKCFormRegion *)self children];
+  v25 = autofillNewContextStart;
+  v13 = autoFillContentType;
+  v14 = [v27 stringWithFormat:@"[VKCFormRegion] regionType:%lu source:%lu contentType:%lu autoFillType:%@, maxCharacterCount:%@ suggestedLineHeight:%lf autofillNewContextStart:%d #children:%lu", regionType, fieldSource, contentType, autoFillContentType, v8, v10, v25, objc_msgSend(children, "count")];
   [v3 addObject:v14];
 
-  if (v7 != -1)
+  if (maxCharacterCount != -1)
   {
   }
 
@@ -321,8 +321,8 @@ LABEL_7:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v15 = [(VKCFormRegion *)self children];
-  v16 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  children2 = [(VKCFormRegion *)self children];
+  v16 = [children2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v16)
   {
     v17 = v16;
@@ -333,7 +333,7 @@ LABEL_7:
       {
         if (*v29 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(children2);
         }
 
         v20 = MEMORY[0x1E696AEC0];
@@ -342,7 +342,7 @@ LABEL_7:
         [v3 addObject:v22];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v17 = [children2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v17);

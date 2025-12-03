@@ -1,16 +1,16 @@
 @interface VoicemailSearchViewCell
-- (_TtC11MobilePhone23VoicemailSearchViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)handleContentSizeCategoryDidChange:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC11MobilePhone23VoicemailSearchViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)handleContentSizeCategoryDidChange:(id)change;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation VoicemailSearchViewCell
 
-- (_TtC11MobilePhone23VoicemailSearchViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11MobilePhone23VoicemailSearchViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,25 +19,25 @@
     v6 = 0;
   }
 
-  return VoicemailSearchViewCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return VoicemailSearchViewCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   VoicemailSearchViewCell.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)handleContentSizeCategoryDidChange:(id)a3
+- (void)handleContentSizeCategoryDidChange:(id)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation12NotificationVSgMd);
   __chkstk_darwin(v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (change)
   {
     static Notification._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Notification();
@@ -50,7 +50,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   VoicemailSearchViewCell.layoutForAccessibility()();
 
   outlined destroy of (NSAttributedStringKey, Any)(v7, &_s10Foundation12NotificationVSgMd);

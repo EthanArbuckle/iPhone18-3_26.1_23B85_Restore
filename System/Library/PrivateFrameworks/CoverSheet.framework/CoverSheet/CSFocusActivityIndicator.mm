@@ -1,15 +1,15 @@
 @interface CSFocusActivityIndicator
 + (CGSize)activityIndicatorExpandedSize;
 + (CGSize)activityIndicatorSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CSFocusActivityIndicator)init;
 - (int64_t)_userInterfaceStyleForCurrentActivity;
-- (void)_setSelected:(BOOL)a3;
+- (void)_setSelected:(BOOL)selected;
 - (void)_updateForActivity;
 - (void)_updateStyle;
-- (void)setActivity:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setActivity:(id)activity;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation CSFocusActivityIndicator
@@ -33,15 +33,15 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = CSFocusActivityIndicator;
-  [(CSFocusActivityIndicator *)&v4 setEnabled:a3];
+  [(CSFocusActivityIndicator *)&v4 setEnabled:enabled];
   [(CSFocusActivityIndicator *)self _updateStyle];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = objc_opt_class();
 
@@ -51,23 +51,23 @@
   return result;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (([v5 sb_isEqualToLegibilitySettings:self->_legibilitySettings] & 1) == 0)
+  settingsCopy = settings;
+  if (([settingsCopy sb_isEqualToLegibilitySettings:self->_legibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(CSFocusActivityIndicator *)self _updateStyle];
   }
 }
 
-- (void)setActivity:(id)a3
+- (void)setActivity:(id)activity
 {
-  v5 = a3;
-  if (self->_activity != v5)
+  activityCopy = activity;
+  if (self->_activity != activityCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_activity, a3);
+    v7 = activityCopy;
+    objc_storeStrong(&self->_activity, activity);
     activity = self->_activity;
     if (activity)
     {
@@ -76,7 +76,7 @@
 
     [(CSFocusActivityIndicator *)self _updateForActivity];
     [(CSFocusActivityIndicator *)self setOverrideUserInterfaceStyle:[(CSFocusActivityIndicator *)self _userInterfaceStyleForCurrentActivity]];
-    v5 = v7;
+    activityCopy = v7;
   }
 }
 
@@ -91,7 +91,7 @@
 
 + (CGSize)activityIndicatorExpandedSize
 {
-  [a1 activityIndicatorSize];
+  [self activityIndicatorSize];
   v3 = v2 + 29.0;
   v5 = v4 + 20.0;
   result.height = v3;
@@ -99,37 +99,37 @@
   return result;
 }
 
-- (void)_setSelected:(BOOL)a3
+- (void)_setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = CSFocusActivityIndicator;
   if ([(CSFocusActivityIndicator *)&v7 respondsToSelector:sel_setSelected_animated_])
   {
     v6.receiver = self;
     v6.super_class = CSFocusActivityIndicator;
-    [(CSFocusActivityIndicator *)&v6 setSelected:v3 animated:1];
+    [(CSFocusActivityIndicator *)&v6 setSelected:selectedCopy animated:1];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CSFocusActivityIndicator;
-    [(UICoverSheetButton *)&v5 setSelected:v3];
+    [(UICoverSheetButton *)&v5 setSelected:selectedCopy];
   }
 }
 
 - (void)_updateStyle
 {
-  v5 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
   if (([(CSFocusActivityIndicator *)self isEnabled]& 1) != 0)
   {
-    v3 = v5;
+    v3 = primaryColor;
   }
 
   else
   {
-    v4 = [v5 colorWithAlphaComponent:0.25];
+    v4 = [primaryColor colorWithAlphaComponent:0.25];
 
     v3 = v4;
   }
@@ -147,20 +147,20 @@
   }
 
   v4 = activity;
-  v10 = [(FCActivityDescribing *)v4 activitySymbolImageName];
-  v5 = [MEMORY[0x277D755B8] _systemImageNamed:v10];
+  activitySymbolImageName = [(FCActivityDescribing *)v4 activitySymbolImageName];
+  v5 = [MEMORY[0x277D755B8] _systemImageNamed:activitySymbolImageName];
   v6 = [v5 imageWithRenderingMode:2];
 
   [(UICoverSheetButton *)self setSelectedImage:v6];
   [(UICoverSheetButton *)self setImage:v6];
   v7 = [MEMORY[0x277D75348] fcui_colorForActivity:self->_activity];
   [(UICoverSheetButton *)self setSelectedTintColor:v7];
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [(CSFocusActivityIndicator *)self setTintColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(CSFocusActivityIndicator *)self setTintColor:whiteColor];
 
-  v9 = [(FCActivityDescribing *)self->_activity activityDisplayName];
+  activityDisplayName = [(FCActivityDescribing *)self->_activity activityDisplayName];
 
-  [(UICoverSheetButton *)self setLocalizedAccessoryTitle:v9];
+  [(UICoverSheetButton *)self setLocalizedAccessoryTitle:activityDisplayName];
   [(CSFocusActivityIndicator *)self _setSelected:self->_activity != 0];
   [(CSFocusActivityIndicator *)self setNeedsLayout];
 }

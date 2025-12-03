@@ -1,6 +1,6 @@
 @interface DelaunayTriangulation
 + (DelaunayTriangulation)shared;
-- (id)computeTriangulation:(id)a3;
+- (id)computeTriangulation:(id)triangulation;
 @end
 
 @implementation DelaunayTriangulation
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __31__DelaunayTriangulation_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[DelaunayTriangulation shared]::onceToken[0] != -1)
   {
     dispatch_once(+[DelaunayTriangulation shared]::onceToken, block);
@@ -30,10 +30,10 @@ uint64_t __31__DelaunayTriangulation_shared__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)computeTriangulation:(id)a3
+- (id)computeTriangulation:(id)triangulation
 {
   v55 = *MEMORY[0x277D85DE8];
-  v39 = a3;
+  triangulationCopy = triangulation;
   v40 = objc_opt_new();
   __src = 0;
   v47 = 0;
@@ -42,8 +42,8 @@ uint64_t __31__DelaunayTriangulation_shared__block_invoke(uint64_t a1)
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v3 = v39;
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v54 count:{16, v39}];
+  v3 = triangulationCopy;
+  v4 = [v3 countByEnumeratingWithState:&v42 objects:v54 count:{16, triangulationCopy}];
   if (v4)
   {
     v5 = *v43;

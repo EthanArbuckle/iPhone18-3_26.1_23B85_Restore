@@ -1,33 +1,33 @@
 @interface CRLGestureDispatcher
-- (BOOL)gestureActionShouldBegin:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)p_allowTextGestureTouch:(id)a3;
-- (CRLGestureDispatcher)initWithInteractiveCanvasController:(id)a3;
+- (BOOL)gestureActionShouldBegin:(id)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)p_allowTextGestureTouch:(id)touch;
+- (CRLGestureDispatcher)initWithInteractiveCanvasController:(id)controller;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
-- (id)p_getGestureTarget:(id)a3;
-- (void)allowSimultaneousRecognitionByRecognizerSet:(id)a3;
-- (void)allowSimultaneousRecognitionByRecognizers:(id)a3;
-- (void)gestureRemovedFromView:(id)a3;
-- (void)handleGesture:(id)a3;
-- (void)handleGesture:(id)a3 withTarget:(id)a4;
-- (void)p_gestureNoLongerInFlight:(id)a3;
-- (void)prioritizeRecognizer:(id)a3 overRecognizer:(id)a4;
+- (id)p_getGestureTarget:(id)target;
+- (void)allowSimultaneousRecognitionByRecognizerSet:(id)set;
+- (void)allowSimultaneousRecognitionByRecognizers:(id)recognizers;
+- (void)gestureRemovedFromView:(id)view;
+- (void)handleGesture:(id)gesture;
+- (void)handleGesture:(id)gesture withTarget:(id)target;
+- (void)p_gestureNoLongerInFlight:(id)flight;
+- (void)prioritizeRecognizer:(id)recognizer overRecognizer:(id)overRecognizer;
 - (void)teardown;
 @end
 
 @implementation CRLGestureDispatcher
 
-- (CRLGestureDispatcher)initWithInteractiveCanvasController:(id)a3
+- (CRLGestureDispatcher)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CRLGestureDispatcher;
   v5 = [(CRLGestureDispatcher *)&v12 init];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -56,7 +56,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:161 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    [(CRLGestureDispatcher *)v5 setInteractiveCanvasController:v4];
+    [(CRLGestureDispatcher *)v5 setInteractiveCanvasController:controllerCopy];
     v9 = +[NSMutableSet set];
     firedGestures = v5->_firedGestures;
     v5->_firedGestures = v9;
@@ -74,11 +74,11 @@
   [(NSMutableArray *)gesturesInFlight removeAllObjects];
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 cachedGestureTarget];
-  if (v5)
+  gestureCopy = gesture;
+  cachedGestureTarget = [gestureCopy cachedGestureTarget];
+  if (cachedGestureTarget)
   {
     targetsInFlight = self->_targetsInFlight;
     if (!targetsInFlight)
@@ -90,27 +90,27 @@
       targetsInFlight = self->_targetsInFlight;
     }
 
-    if (([(NSMutableArray *)targetsInFlight containsObject:v5]& 1) == 0)
+    if (([(NSMutableArray *)targetsInFlight containsObject:cachedGestureTarget]& 1) == 0)
     {
-      [v5 gestureSequenceWillBegin];
-      [(NSMutableArray *)self->_targetsInFlight insertObject:v5 atIndex:0];
+      [cachedGestureTarget gestureSequenceWillBegin];
+      [(NSMutableArray *)self->_targetsInFlight insertObject:cachedGestureTarget atIndex:0];
       if ([(NSMutableArray *)self->_targetsInFlight count]== 1)
       {
-        v9 = [(CRLGestureDispatcher *)self interactiveCanvasController];
-        v10 = [v9 editingCoordinator];
-        [v10 suspendCollaborationWithReason:@"CRLTextGesturesInFlight"];
+        interactiveCanvasController = [(CRLGestureDispatcher *)self interactiveCanvasController];
+        editingCoordinator = [interactiveCanvasController editingCoordinator];
+        [editingCoordinator suspendCollaborationWithReason:@"CRLTextGesturesInFlight"];
       }
     }
 
-    v11 = [(CRLGestureDispatcher *)self firedGestures];
-    [v11 addObject:v4];
+    firedGestures = [(CRLGestureDispatcher *)self firedGestures];
+    [firedGestures addObject:gestureCopy];
 
     self->_runningTargetHandleGesture = 1;
-    [v5 handleGesture:v4];
+    [cachedGestureTarget handleGesture:gestureCopy];
     self->_runningTargetHandleGesture = 0;
-    if ([v4 isDone])
+    if ([gestureCopy isDone])
     {
-      [v4 setTargetRep:0];
+      [gestureCopy setTargetRep:0];
     }
   }
 
@@ -144,10 +144,10 @@
   }
 }
 
-- (void)handleGesture:(id)a3 withTarget:(id)a4
+- (void)handleGesture:(id)gesture withTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  gestureCopy = gesture;
+  targetCopy = target;
   if (!self->_runningTargetHandleGesture)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -177,14 +177,14 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:221 isFatal:0 description:"handleGesture:withTarget: can only be called from a target's handleGesture: method"];
   }
 
-  [v6 setCachedGestureTarget:v7];
-  [(CRLGestureDispatcher *)self handleGesture:v6];
+  [gestureCopy setCachedGestureTarget:targetCopy];
+  [(CRLGestureDispatcher *)self handleGesture:gestureCopy];
 }
 
-- (void)allowSimultaneousRecognitionByRecognizers:(id)a3
+- (void)allowSimultaneousRecognitionByRecognizers:(id)recognizers
 {
-  v4 = a3;
-  v5 = [NSMutableSet setWithObject:v4];
+  recognizersCopy = recognizers;
+  v5 = [NSMutableSet setWithObject:recognizersCopy];
   v13 = &v15;
   v6 = v14;
   if (v6)
@@ -215,29 +215,29 @@
   [(NSMutableArray *)simultaneitySets addObject:v5];
 }
 
-- (void)allowSimultaneousRecognitionByRecognizerSet:(id)a3
+- (void)allowSimultaneousRecognitionByRecognizerSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   simultaneitySets = self->_simultaneitySets;
-  v9 = v4;
+  v9 = setCopy;
   if (!simultaneitySets)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_simultaneitySets;
     self->_simultaneitySets = v6;
 
-    v4 = v9;
+    setCopy = v9;
     simultaneitySets = self->_simultaneitySets;
   }
 
-  v8 = [v4 copy];
+  v8 = [setCopy copy];
   [(NSMutableArray *)simultaneitySets addObject:v8];
 }
 
-- (void)prioritizeRecognizer:(id)a3 overRecognizer:(id)a4
+- (void)prioritizeRecognizer:(id)recognizer overRecognizer:(id)overRecognizer
 {
-  v13 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  overRecognizerCopy = overRecognizer;
   priorityMap = self->_priorityMap;
   if (!priorityMap)
   {
@@ -248,42 +248,42 @@
     priorityMap = self->_priorityMap;
   }
 
-  v10 = [(CRLNoCopyDictionary *)priorityMap objectForKey:v6];
+  v10 = [(CRLNoCopyDictionary *)priorityMap objectForKey:overRecognizerCopy];
   if (v10)
   {
     v11 = v10;
-    v12 = [v10 setByAddingObject:v13];
+    v12 = [v10 setByAddingObject:recognizerCopy];
   }
 
   else
   {
-    v12 = [NSSet setWithObject:v13];
+    v12 = [NSSet setWithObject:recognizerCopy];
   }
 
-  [(CRLNoCopyDictionary *)self->_priorityMap setObject:v12 forUncopiedKey:v6];
+  [(CRLNoCopyDictionary *)self->_priorityMap setObject:v12 forUncopiedKey:overRecognizerCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [WeakRetained currentlyScrolling];
+  currentlyScrolling = [WeakRetained currentlyScrolling];
 
-  if ((v6 & 1) != 0 || ([(CRLGestureDispatcher *)self p_getGestureTarget:v4], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((currentlyScrolling & 1) != 0 || ([(CRLGestureDispatcher *)self p_getGestureTarget:beginCopy], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [v4 gestureKind];
+    gestureKind = [beginCopy gestureKind];
 
-    if (v9 == @"CRLWPUndefinedGestureKind")
+    if (gestureKind == @"CRLWPUndefinedGestureKind")
     {
-      v11 = [(CRLGestureDispatcher *)self interactiveCanvasController];
-      v12 = [v11 layerHost];
-      v13 = [v12 asUIKitHost];
+      interactiveCanvasController = [(CRLGestureDispatcher *)self interactiveCanvasController];
+      layerHost = [interactiveCanvasController layerHost];
+      asUIKitHost = [layerHost asUIKitHost];
 
-      v20 = sub_1003035DC(v13, 1, v14, v15, v16, v17, v18, v19, &OBJC_PROTOCOL___UIGestureRecognizerDelegate);
+      v20 = sub_1003035DC(asUIKitHost, 1, v14, v15, v16, v17, v18, v19, &OBJC_PROTOCOL___UIGestureRecognizerDelegate);
       if (v20)
       {
         v21 = v20;
-        v10 = [v20 gestureRecognizerShouldBegin:v4];
+        v10 = [v20 gestureRecognizerShouldBegin:beginCopy];
 
         v8 = 0;
         if (!v10)
@@ -301,12 +301,12 @@
   }
 
   v8 = v7;
-  [v4 setCachedGestureTarget:v7];
+  [beginCopy setCachedGestureTarget:v7];
 LABEL_8:
   priorityMap = self->_priorityMap;
   if (priorityMap)
   {
-    v23 = [(CRLNoCopyDictionary *)priorityMap objectForKey:v4];
+    v23 = [(CRLNoCopyDictionary *)priorityMap objectForKey:beginCopy];
     v24 = v23;
     if (v23)
     {
@@ -331,11 +331,11 @@ LABEL_8:
             }
 
             v36 = *(*(&v43 + 1) + 8 * i);
-            v37 = sub_1003035DC(v4, 1, v27, v28, v29, v30, v31, v32, &OBJC_PROTOCOL___CRLGesture);
+            v37 = sub_1003035DC(beginCopy, 1, v27, v28, v29, v30, v31, v32, &OBJC_PROTOCOL___CRLGesture);
             v38 = [v36 state] == 5 && objc_msgSend(v37, "inputType") == 2;
-            v39 = [v36 state];
+            state = [v36 state];
 
-            if (v39)
+            if (state)
             {
               v40 = !v38;
             }
@@ -388,58 +388,58 @@ LABEL_33:
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = sub_1003035DC(v6, 1, v8, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLGesture);
-  [v14 setInputType:{sub_10042B6C0(objc_msgSend(v7, "type"))}];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v14 = sub_1003035DC(recognizerCopy, 1, v8, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLGesture);
+  [v14 setInputType:{sub_10042B6C0(objc_msgSend(touchCopy, "type"))}];
   v15 = [v14 inputType] != 2;
-  v16 = [(CRLGestureDispatcher *)self interactiveCanvasController];
-  v17 = [v16 textInputResponder];
-  [v17 setIgnorePencilInputSource:v15];
+  interactiveCanvasController = [(CRLGestureDispatcher *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  [textInputResponder setIgnorePencilInputSource:v15];
 
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v19 = [WeakRetained layerHost];
-  v20 = [v19 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
   v21 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v22 = [v21 canvasView];
-  [v7 locationInView:v22];
+  canvasView = [v21 canvasView];
+  [touchCopy locationInView:canvasView];
   v24 = v23;
   v26 = v25;
 
-  if ([v20 shouldIgnoreTextGesture:v14 atPoint:{v24, v26}])
+  if ([asUIKitHost shouldIgnoreTextGesture:v14 atPoint:{v24, v26}])
   {
     goto LABEL_2;
   }
 
-  v28 = [v6 gestureKind];
-  if (v28 == @"CRLWPUndefinedGestureKind")
+  gestureKind = [recognizerCopy gestureKind];
+  if (gestureKind == @"CRLWPUndefinedGestureKind")
   {
     goto LABEL_10;
   }
 
-  v35 = v28;
-  v36 = [v6 gestureKind];
-  if (v36 == @"CRLWPImmediateSingleTap")
+  v35 = gestureKind;
+  gestureKind2 = [recognizerCopy gestureKind];
+  if (gestureKind2 == @"CRLWPImmediateSingleTap")
   {
-    v37 = [v14 inputType];
+    inputType = [v14 inputType];
 
-    if (v37)
+    if (inputType)
     {
       goto LABEL_7;
     }
 
 LABEL_10:
-    v38 = sub_1003035DC(v20, 1, v29, v30, v31, v32, v33, v34, &OBJC_PROTOCOL___UIGestureRecognizerDelegate);
-    v27 = v38;
+    v38 = sub_1003035DC(asUIKitHost, 1, v29, v30, v31, v32, v33, v34, &OBJC_PROTOCOL___UIGestureRecognizerDelegate);
+    firedGestures = v38;
     if (!v38)
     {
       goto LABEL_17;
     }
 
-    v39 = [v38 gestureRecognizer:v6 shouldReceiveTouch:v7];
+    v39 = [v38 gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
 
     if ((v39 & 1) == 0)
     {
@@ -450,10 +450,10 @@ LABEL_10:
   }
 
 LABEL_7:
-  if (!-[CRLGestureDispatcher p_allowTextGestureTouch:](self, "p_allowTextGestureTouch:", v7) && ![v20 allowTouchOutsideCanvasViewAtPoint:v6 forGesture:{v24, v26}])
+  if (!-[CRLGestureDispatcher p_allowTextGestureTouch:](self, "p_allowTextGestureTouch:", touchCopy) && ![asUIKitHost allowTouchOutsideCanvasViewAtPoint:recognizerCopy forGesture:{v24, v26}])
   {
 LABEL_2:
-    LOBYTE(v27) = 0;
+    LOBYTE(firedGestures) = 0;
     goto LABEL_17;
   }
 
@@ -461,81 +461,81 @@ LABEL_12:
   gesturesInFlight = self->_gesturesInFlight;
   if (gesturesInFlight)
   {
-    if ([(NSMutableArray *)gesturesInFlight indexOfObjectIdenticalTo:v6]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)gesturesInFlight indexOfObjectIdenticalTo:recognizerCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)self->_gesturesInFlight addObject:v6];
+      [(NSMutableArray *)self->_gesturesInFlight addObject:recognizerCopy];
     }
 
-    LOBYTE(v27) = 1;
+    LOBYTE(firedGestures) = 1;
   }
 
   else
   {
-    v41 = [[NSMutableArray alloc] initWithObjects:{v6, 0}];
+    v41 = [[NSMutableArray alloc] initWithObjects:{recognizerCopy, 0}];
     v42 = self->_gesturesInFlight;
     self->_gesturesInFlight = v41;
 
-    v27 = [(CRLGestureDispatcher *)self firedGestures];
-    [v27 removeAllObjects];
+    firedGestures = [(CRLGestureDispatcher *)self firedGestures];
+    [firedGestures removeAllObjects];
 
     v43 = +[NSNotificationCenter defaultCenter];
     v47 = @"CRLTextGesturesICC";
     v44 = objc_loadWeakRetained(&self->_interactiveCanvasController);
     v48 = v44;
-    LOBYTE(v27) = 1;
+    LOBYTE(firedGestures) = 1;
     v45 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     [v43 postNotificationName:@"CRLTextGesturesWillBeginNotification" object:self userInfo:v45];
   }
 
 LABEL_17:
 
-  return v27;
+  return firedGestures;
 }
 
-- (BOOL)p_allowTextGestureTouch:(id)a3
+- (BOOL)p_allowTextGestureTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [WeakRetained canvasView];
-  [v4 locationInView:v6];
+  canvasView = [WeakRetained canvasView];
+  [touchCopy locationInView:canvasView];
   v8 = v7;
   v10 = v9;
 
   v11 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v12 = [v11 layerHost];
-  v13 = [v12 asUIKitHost];
+  layerHost = [v11 layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  if ([v13 touchHitsCanvasViewAtPoint:{v8, v10}])
+  if ([asUIKitHost touchHitsCanvasViewAtPoint:{v8, v10}])
   {
-    v14 = 1;
+    shouldAllowTextGesturesInRestrictedGestureMode = 1;
   }
 
   else
   {
     v15 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v16 = [v15 layerHost];
-    v17 = [v16 asiOSCVC];
+    layerHost2 = [v15 layerHost];
+    asiOSCVC = [layerHost2 asiOSCVC];
 
-    v18 = [v17 delegate];
+    delegate = [asiOSCVC delegate];
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v18 currentDocumentMode];
-      v14 = [v19 shouldAllowTextGesturesInRestrictedGestureMode];
+      currentDocumentMode = [delegate currentDocumentMode];
+      shouldAllowTextGesturesInRestrictedGestureMode = [currentDocumentMode shouldAllowTextGesturesInRestrictedGestureMode];
     }
 
     else
     {
-      v14 = 0;
+      shouldAllowTextGesturesInRestrictedGestureMode = 0;
     }
   }
 
-  return v14;
+  return shouldAllowTextGesturesInRestrictedGestureMode;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   simultaneitySets = self->_simultaneitySets;
   if (simultaneitySets)
   {
@@ -558,7 +558,7 @@ LABEL_17:
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([v13 containsObject:{v6, v15}] && (objc_msgSend(v13, "containsObject:", v7) & 1) != 0)
+          if ([v13 containsObject:{recognizerCopy, v15}] && (objc_msgSend(v13, "containsObject:", gestureRecognizerCopy) & 1) != 0)
           {
             LOBYTE(v10) = 1;
             goto LABEL_14;
@@ -586,16 +586,16 @@ LABEL_14:
   return v10;
 }
 
-- (id)p_getGestureTarget:(id)a3
+- (id)p_getGestureTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(CRLGestureDispatcher *)self interactiveCanvasController];
-  v6 = [v5 editorController];
-  v7 = [v6 textInputEditor];
+  targetCopy = target;
+  interactiveCanvasController = [(CRLGestureDispatcher *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  textInputEditor = [editorController textInputEditor];
 
-  v14 = sub_1003035DC(v7, 1, v8, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLGestureTarget);
-  v21 = sub_1003035DC(v5, 1, v15, v16, v17, v18, v19, v20, &OBJC_PROTOCOL___CRLGestureTarget);
-  if (v14 && (v22 = [v14 canHandleGesture:v4], v23 = v14, (v22 & 1) != 0) || v21 && (v24 = objc_msgSend(v21, "canHandleGesture:", v4), v23 = v21, v24))
+  v14 = sub_1003035DC(textInputEditor, 1, v8, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLGestureTarget);
+  v21 = sub_1003035DC(interactiveCanvasController, 1, v15, v16, v17, v18, v19, v20, &OBJC_PROTOCOL___CRLGestureTarget);
+  if (v14 && (v22 = [v14 canHandleGesture:targetCopy], v23 = v14, (v22 & 1) != 0) || v21 && (v24 = objc_msgSend(v21, "canHandleGesture:", targetCopy), v23 = v21, v24))
   {
     v25 = v23;
   }
@@ -610,30 +610,30 @@ LABEL_14:
   return v25;
 }
 
-- (BOOL)gestureActionShouldBegin:(id)a3
+- (BOOL)gestureActionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CRLGestureDispatcher *)self p_getGestureTarget:v4];
+  beginCopy = begin;
+  v5 = [(CRLGestureDispatcher *)self p_getGestureTarget:beginCopy];
   if (v5)
   {
-    [v4 setCachedGestureTarget:v5];
+    [beginCopy setCachedGestureTarget:v5];
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 gestureKind];
+    gestureKind = [beginCopy gestureKind];
 
-    if (v7 == @"CRLWPUndefinedGestureKind")
+    if (gestureKind == @"CRLWPUndefinedGestureKind")
     {
       WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-      v9 = [WeakRetained layerHost];
-      v10 = [v9 asUIKitHost];
-      v17 = sub_1003035DC(v10, 1, v11, v12, v13, v14, v15, v16, &OBJC_PROTOCOL___CRLGestureDelegate);
+      layerHost = [WeakRetained layerHost];
+      asUIKitHost = [layerHost asUIKitHost];
+      v17 = sub_1003035DC(asUIKitHost, 1, v11, v12, v13, v14, v15, v16, &OBJC_PROTOCOL___CRLGestureDelegate);
 
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v17 gestureActionShouldBegin:v4];
+        v6 = [v17 gestureActionShouldBegin:beginCopy];
       }
 
       else
@@ -651,38 +651,38 @@ LABEL_14:
   return v6;
 }
 
-- (void)gestureRemovedFromView:(id)a3
+- (void)gestureRemovedFromView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   gesturesInFlight = self->_gesturesInFlight;
   if (gesturesInFlight)
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v8);
+    v6 = sub_100014370(v5, viewCopy);
     v7 = [(NSMutableArray *)gesturesInFlight indexOfObjectIdenticalTo:v6];
 
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(CRLGestureDispatcher *)self p_gestureNoLongerInFlight:v8];
+      [(CRLGestureDispatcher *)self p_gestureNoLongerInFlight:viewCopy];
     }
   }
 }
 
-- (void)p_gestureNoLongerInFlight:(id)a3
+- (void)p_gestureNoLongerInFlight:(id)flight
 {
-  v4 = a3;
+  flightCopy = flight;
   gesturesInFlight = self->_gesturesInFlight;
   v6 = objc_opt_class();
-  v7 = sub_100014370(v6, v4);
+  v7 = sub_100014370(v6, flightCopy);
   [(NSMutableArray *)gesturesInFlight removeObjectIdenticalTo:v7];
 
   if (![(NSMutableArray *)self->_gesturesInFlight count])
   {
     if ([(NSMutableArray *)self->_targetsInFlight count])
     {
-      v8 = [(CRLGestureDispatcher *)self interactiveCanvasController];
-      v9 = [v8 editingCoordinator];
-      [v9 resumeCollaborationWithReason:@"CRLTextGesturesInFlight"];
+      interactiveCanvasController = [(CRLGestureDispatcher *)self interactiveCanvasController];
+      editingCoordinator = [interactiveCanvasController editingCoordinator];
+      [editingCoordinator resumeCollaborationWithReason:@"CRLTextGesturesInFlight"];
 
       v34 = 0u;
       v35 = 0u;
@@ -723,8 +723,8 @@ LABEL_14:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v16 = [(CRLGestureDispatcher *)self firedGestures];
-    v17 = [v16 countByEnumeratingWithState:&v28 objects:v38 count:16];
+    firedGestures = [(CRLGestureDispatcher *)self firedGestures];
+    v17 = [firedGestures countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -736,17 +736,17 @@ LABEL_14:
         {
           if (*v29 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(firedGestures);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * v20) gestureKind];
-          [v15 addObject:v21];
+          gestureKind = [*(*(&v28 + 1) + 8 * v20) gestureKind];
+          [v15 addObject:gestureKind];
 
           v20 = v20 + 1;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v28 objects:v38 count:16];
+        v18 = [firedGestures countByEnumeratingWithState:&v28 objects:v38 count:16];
       }
 
       while (v18);
@@ -759,15 +759,15 @@ LABEL_14:
     v37[1] = v15;
     v36[1] = @"CRLTextGesturesDidEndNotificationFiredGestureKindsKey";
     v36[2] = @"CRLTextGesturesDidEndNotificationFiredGesturesKey";
-    v24 = [(CRLGestureDispatcher *)self firedGestures];
+    firedGestures2 = [(CRLGestureDispatcher *)self firedGestures];
     v36[3] = @"CRLTextGesturesTerminated";
-    v37[2] = v24;
-    v37[3] = v4;
+    v37[2] = firedGestures2;
+    v37[3] = flightCopy;
     v25 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:4];
     [v22 postNotificationName:@"CRLTextGesturesDidEndNotification" object:self userInfo:v25];
 
-    v26 = [(CRLGestureDispatcher *)self firedGestures];
-    [v26 removeAllObjects];
+    firedGestures3 = [(CRLGestureDispatcher *)self firedGestures];
+    [firedGestures3 removeAllObjects];
 
     v27 = self->_gesturesInFlight;
     self->_gesturesInFlight = 0;

@@ -1,5 +1,5 @@
 @interface CNUINavigationListViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityToggleSelection;
 - (id)accessibilityCustomActions;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,11 +7,11 @@
 
 @implementation CNUINavigationListViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNUINavigationListViewCell" hasInstanceMethod:@"accessoryImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNUINavigationListViewCell" hasProperty:@"accessoryControlExpanded" customGetter:@"isAccessoryControlExpanded" customSetter:0 withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNUINavigationListViewCell" hasInstanceMethod:@"accessoryImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNUINavigationListViewCell" hasProperty:@"accessoryControlExpanded" customGetter:@"isAccessoryControlExpanded" customSetter:0 withType:"B"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -25,16 +25,16 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v13.receiver = self;
   v13.super_class = CNUINavigationListViewCellAccessibility;
-  v4 = [(CNUINavigationListViewCellAccessibility *)&v13 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(CNUINavigationListViewCellAccessibility *)&v13 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   v5 = [(CNUINavigationListViewCellAccessibility *)self safeUIViewForKey:@"accessoryImageView"];
-  v6 = [v5 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v5 _accessibilityViewIsVisible];
 
-  if (v6)
+  if (_accessibilityViewIsVisible)
   {
     v7 = [(CNUINavigationListViewCellAccessibility *)self safeBoolForKey:@"accessoryControlExpanded"];
     v8 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -51,10 +51,10 @@
     v10 = accessibilityLocalizedString(v9);
     v11 = [v8 initWithName:v10 target:self selector:sel__accessibilityToggleSelection];
 
-    [v3 axSafelyAddObject:v11];
+    [array axSafelyAddObject:v11];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_accessibilityToggleSelection

@@ -1,12 +1,12 @@
 @interface PhotosAnalyticsSystemPropertyProvider
 - (id)deviceFreeSpaceDescription;
 - (id)deviceModel;
-- (id)getDynamicProperty:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5;
+- (id)getDynamicProperty:(id)property forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction;
 - (id)lowPowerModeEnabled;
 - (id)osVersion;
 - (id)percentageOfFreeSpaceOnDevice;
 - (id)process;
-- (void)registerSystemProperties:(id)a3;
+- (void)registerSystemProperties:(id)properties;
 @end
 
 @implementation PhotosAnalyticsSystemPropertyProvider
@@ -14,18 +14,18 @@
 - (id)lowPowerModeEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isLowPowerModeEnabled")}];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v4 = [v2 numberWithBool:{objc_msgSend(processInfo, "isLowPowerModeEnabled")}];
 
   return v4;
 }
 
 - (id)process
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
 
-  return v3;
+  return processName;
 }
 
 - (id)osVersion
@@ -33,12 +33,12 @@
   v7 = *MEMORY[0x277D85DE8];
   memset(&v6, 0, 512);
   uname(&v6);
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 operatingSystemVersionString];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return operatingSystemVersionString;
 }
 
 - (id)deviceModel
@@ -54,12 +54,12 @@
 
 - (id)deviceFreeSpaceDescription
 {
-  v2 = [(PhotosAnalyticsSystemPropertyProvider *)self percentageOfFreeSpaceOnDevice];
-  v3 = v2;
+  percentageOfFreeSpaceOnDevice = [(PhotosAnalyticsSystemPropertyProvider *)self percentageOfFreeSpaceOnDevice];
+  v3 = percentageOfFreeSpaceOnDevice;
   v4 = @"DeviceFreeSpaceUnknown";
-  if (v2)
+  if (percentageOfFreeSpaceOnDevice)
   {
-    [v2 doubleValue];
+    [percentageOfFreeSpaceOnDevice doubleValue];
     if (v5 <= 2.0)
     {
       v4 = @"DeviceFreeSpaceCritical";
@@ -107,10 +107,10 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 2uLL, 1);
-  v3 = [v2 lastObject];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  lastObject = [v2 lastObject];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v5 = [v4 attributesOfFileSystemForPath:v3 error:&v15];
+  v5 = [defaultManager attributesOfFileSystemForPath:lastObject error:&v15];
   v6 = v15;
 
   if (v6)
@@ -129,65 +129,65 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v3;
+      v17 = lastObject;
       v18 = 2112;
       v19 = v6;
       _os_log_error_impl(&dword_24260A000, v8, OS_LOG_TYPE_ERROR, "Unable to retrieve file system attributes at path %@ error: %@", buf, 0x16u);
     }
 
-    v10 = 0;
+    unsignedLongLongValue = 0;
   }
 
   else
   {
     v9 = [v5 objectForKey:*MEMORY[0x277CCA1D8]];
-    v10 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
     v11 = [v5 objectForKey:*MEMORY[0x277CCA1D0]];
-    v12 = [v11 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v11 unsignedLongLongValue];
 
-    if (v10)
+    if (unsignedLongLongValue)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithDouble:v12 * 100.0 / v10];
+      unsignedLongLongValue = [MEMORY[0x277CCABB0] numberWithDouble:unsignedLongLongValue2 * 100.0 / unsignedLongLongValue];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return unsignedLongLongValue;
 }
 
-- (id)getDynamicProperty:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5
+- (id)getDynamicProperty:(id)property forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction
 {
-  if ([a3 isEqualToString:{@"cpa_common_lowPowerModeEnabled", a4, a5}])
+  if ([property isEqualToString:{@"cpa_common_lowPowerModeEnabled", name, extraction}])
   {
-    v6 = [(PhotosAnalyticsSystemPropertyProvider *)self lowPowerModeEnabled];
+    lowPowerModeEnabled = [(PhotosAnalyticsSystemPropertyProvider *)self lowPowerModeEnabled];
   }
 
   else
   {
-    v6 = 0;
+    lowPowerModeEnabled = 0;
   }
 
-  return v6;
+  return lowPowerModeEnabled;
 }
 
-- (void)registerSystemProperties:(id)a3
+- (void)registerSystemProperties:(id)properties
 {
-  v8 = a3;
-  v4 = [(PhotosAnalyticsSystemPropertyProvider *)self deviceFreeSpaceDescription];
-  [v8 addProperty:@"cpa_common_deviceFreeSpace" withValue:v4];
+  propertiesCopy = properties;
+  deviceFreeSpaceDescription = [(PhotosAnalyticsSystemPropertyProvider *)self deviceFreeSpaceDescription];
+  [propertiesCopy addProperty:@"cpa_common_deviceFreeSpace" withValue:deviceFreeSpaceDescription];
 
-  v5 = [(PhotosAnalyticsSystemPropertyProvider *)self deviceModel];
-  [v8 addProperty:@"cpa_common_deviceModel" withValue:v5];
+  deviceModel = [(PhotosAnalyticsSystemPropertyProvider *)self deviceModel];
+  [propertiesCopy addProperty:@"cpa_common_deviceModel" withValue:deviceModel];
 
-  v6 = [(PhotosAnalyticsSystemPropertyProvider *)self osVersion];
-  [v8 addProperty:@"cpa_common_osVersion" withValue:v6];
+  osVersion = [(PhotosAnalyticsSystemPropertyProvider *)self osVersion];
+  [propertiesCopy addProperty:@"cpa_common_osVersion" withValue:osVersion];
 
-  v7 = [(PhotosAnalyticsSystemPropertyProvider *)self process];
-  [v8 addProperty:@"cpa_common_processName" withValue:v7];
+  process = [(PhotosAnalyticsSystemPropertyProvider *)self process];
+  [propertiesCopy addProperty:@"cpa_common_processName" withValue:process];
 
-  [v8 addDynamicProperty:@"cpa_common_lowPowerModeEnabled" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_common_lowPowerModeEnabled" withProvider:self];
 }
 
 @end

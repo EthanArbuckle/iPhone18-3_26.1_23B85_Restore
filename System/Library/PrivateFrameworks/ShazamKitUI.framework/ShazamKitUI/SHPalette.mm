@@ -1,8 +1,8 @@
 @interface SHPalette
-+ (CGColor)sh_colorNamed:(id)a3;
++ (CGColor)sh_colorNamed:(id)named;
 + (double)contentsScale;
 + (id)default;
-- (CGColor)R:(double)a3 G:(double)a4 B:(double)a5 A:(double)a6;
+- (CGColor)R:(double)r G:(double)g B:(double)b A:(double)a;
 - (CGColor)alternateTintColor;
 - (CGColor)appTintColor;
 - (CGColor)listeningButtonBackgroundColor;
@@ -17,8 +17,8 @@
 
 + (double)contentsScale
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
@@ -103,23 +103,23 @@
   return v3;
 }
 
-- (CGColor)R:(double)a3 G:(double)a4 B:(double)a5 A:(double)a6
+- (CGColor)R:(double)r G:(double)g B:(double)b A:(double)a
 {
-  SRGB = CGColorCreateSRGB(a3, a4, a5, a6);
+  SRGB = CGColorCreateSRGB(r, g, b, a);
   CFAutorelease(SRGB);
   return SRGB;
 }
 
-+ (CGColor)sh_colorNamed:(id)a3
++ (CGColor)sh_colorNamed:(id)named
 {
   v3 = MEMORY[0x277D75348];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 sh_UIBundle];
-  v7 = [v3 colorNamed:v5 inBundle:v6 compatibleWithTraitCollection:0];
+  namedCopy = named;
+  sh_UIBundle = [v4 sh_UIBundle];
+  v7 = [v3 colorNamed:namedCopy inBundle:sh_UIBundle compatibleWithTraitCollection:0];
 
-  v8 = [v7 CGColor];
-  return v8;
+  cGColor = [v7 CGColor];
+  return cGColor;
 }
 
 @end

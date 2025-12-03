@@ -1,36 +1,36 @@
 @interface NIServerHomePassiveSensingSession
-- (BOOL)_shouldRespondToDevice:(id)a3;
-- (BOOL)updateConfiguration:(id)a3;
-- (NIServerHomePassiveSensingSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (BOOL)_shouldRespondToDevice:(id)device;
+- (BOOL)updateConfiguration:(id)configuration;
+- (NIServerHomePassiveSensingSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
 - (id)configure;
 - (id)disableAllServices;
 - (id)lastConfiguration;
-- (id)objectFromIdentifier:(unint64_t)a3;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)objectFromIdentifier:(unint64_t)identifier;
+- (id)pauseWithSource:(int64_t)source;
 - (id)printableState;
 - (id)run;
-- (void)_notifyPeerRemoval:(id)a3 withReason:(unint64_t)a4;
-- (void)_peerHungUp:(unint64_t)a3;
-- (void)_removePeerObject:(id)a3 uwbIdentifier:(unint64_t)a4 withReason:(unint64_t)a5;
-- (void)_roseSession:(shared_ptr<rose:(int)a4 :objects::RoseBaseSession>)a3 invalidatedWithReason:;
+- (void)_notifyPeerRemoval:(id)removal withReason:(unint64_t)reason;
+- (void)_peerHungUp:(unint64_t)up;
+- (void)_removePeerObject:(id)object uwbIdentifier:(unint64_t)identifier withReason:(unint64_t)reason;
+- (void)_roseSession:(shared_ptr<rose:(int)session :objects::RoseBaseSession>)a3 invalidatedWithReason:;
 - (void)dealloc;
-- (void)device:(id)a3 rediscovered:(id)a4;
-- (void)deviceDiscovered:(id)a3;
-- (void)deviceLost:(id)a3;
-- (void)didReceiveNewSolution:(const void *)a3;
-- (void)didReceiveRemoteData:(const void *)a3;
+- (void)device:(id)device rediscovered:(id)rediscovered;
+- (void)deviceDiscovered:(id)discovered;
+- (void)deviceLost:(id)lost;
+- (void)didReceiveNewSolution:(const void *)solution;
+- (void)didReceiveRemoteData:(const void *)data;
 - (void)invalidate;
-- (void)responderServiceTicketId:(unsigned __int16)a3 didChangeRangingUpdateRate:(int)a4 newThrottleRate:(float)a5 prevThrottleRate:(float)a6 effectiveSinceCycleInde:(int)a7;
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4;
+- (void)responderServiceTicketId:(unsigned __int16)id didChangeRangingUpdateRate:(int)rate newThrottleRate:(float)throttleRate prevThrottleRate:(float)prevThrottleRate effectiveSinceCycleInde:(int)inde;
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation NIServerHomePassiveSensingSession
 
-- (NIServerHomePassiveSensingSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerHomePassiveSensingSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -44,9 +44,9 @@
     [v35 handleFailureInMethod:a2 object:self file:@"NIServerHomePassiveSensingSession.mm" lineNumber:98 description:@"NIServerhomePassiveSensingSession given invalid configuration."];
   }
 
-  v20 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v20)
+  if (!serverSessionIdentifier)
   {
     v36 = +[NSAssertionHandler currentHandler];
     [v36 handleFailureInMethod:a2 object:self file:@"NIServerHomePassiveSensingSession.mm" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -54,16 +54,16 @@
 
   v38.receiver = self;
   v38.super_class = NIServerHomePassiveSensingSession;
-  v21 = [(NIServerBaseSession *)&v38 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v21 = [(NIServerBaseSession *)&v38 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v21)
   {
-    v22 = [v9 uwbResource];
+    uwbResource = [managerCopy uwbResource];
     v23 = *(v21 + 19);
-    *(v21 + 19) = v22;
+    *(v21 + 19) = uwbResource;
 
-    if (v9)
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v24 = v37;
     }
 
@@ -79,18 +79,18 @@
       sub_10000AD84(v25);
     }
 
-    v26 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v27 = *(v21 + 10);
-    *(v21 + 10) = v26;
+    *(v21 + 10) = clientConnectionQueue;
 
-    v28 = [v10 copy];
+    v28 = [configurationCopy copy];
     v29 = *(v21 + 28);
     *(v21 + 28) = v28;
 
-    v30 = [v9 serverSessionIdentifier];
-    v31 = [v30 UUIDString];
+    serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier2 UUIDString];
     v32 = *(v21 + 11);
-    *(v21 + 11) = v31;
+    *(v21 + 11) = uUIDString;
 
     *(v21 + 18) = 3;
     *(v21 + 10) = xmmword_10056DAC8;
@@ -170,13 +170,13 @@ LABEL_13:
 
   v29.receiver = self;
   v29.super_class = NIServerHomePassiveSensingSession;
-  v17 = [(NIServerBaseSession *)&v29 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v29 resourcesManager];
   if (!self->_updatesEngine)
   {
     v18 = [NINearbyUpdatesEngine alloc];
     v19 = self->_configuration;
     clientQueue = self->_clientQueue;
-    v21 = [v17 analytics];
+    analytics = [resourcesManager analytics];
     cntrl = self->_pbLogger.__cntrl_;
     ptr = self->_pbLogger.__ptr_;
     v28 = cntrl;
@@ -186,7 +186,7 @@ LABEL_13:
     }
 
     v26 = 0;
-    v23 = [(NINearbyUpdatesEngine *)v18 initWithConfiguration:v19 queue:clientQueue delegate:self dataSource:self analyticsManager:v21 protobufLogger:&ptr error:&v26];
+    v23 = [(NINearbyUpdatesEngine *)v18 initWithConfiguration:v19 queue:clientQueue delegate:self dataSource:self analyticsManager:analytics protobufLogger:&ptr error:&v26];
     v16 = v26;
     updatesEngine = self->_updatesEngine;
     self->_updatesEngine = v23;
@@ -239,9 +239,9 @@ LABEL_23:
   {
     v24.receiver = self;
     v24.super_class = NIServerHomePassiveSensingSession;
-    v13 = [(NIServerBaseSession *)&v24 resourcesManager];
-    v14 = [v13 btResource];
-    [v14 setDeviceRelationshipFlags:2];
+    resourcesManager = [(NIServerBaseSession *)&v24 resourcesManager];
+    btResource = [resourcesManager btResource];
+    [btResource setDeviceRelationshipFlags:2];
 
     if (self->_isRunning)
     {
@@ -255,11 +255,11 @@ LABEL_23:
 
     else
     {
-      v16 = [v13 btResource];
-      [v16 startAdvertising];
+      btResource2 = [resourcesManager btResource];
+      [btResource2 startAdvertising];
 
-      v17 = [v13 btResource];
-      [v17 allowScreenOffOperation:1];
+      btResource3 = [resourcesManager btResource];
+      [btResource3 allowScreenOffOperation:1];
 
       [v11 doubleForKey:@"HomePassiveSensingInitialScanBurstDurationSecondsOverride"];
       v19 = v18;
@@ -277,8 +277,8 @@ LABEL_23:
         v20 = v19;
       }
 
-      v22 = [v13 btResource];
-      [v22 startScanningWithBurstPeriod:v20];
+      btResource4 = [resourcesManager btResource];
+      [btResource4 startScanningWithBurstPeriod:v20];
 
       self->_shouldDeliverUpdates = 1;
       self->_isRunning = 1;
@@ -288,7 +288,7 @@ LABEL_23:
   return 0;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -304,9 +304,9 @@ LABEL_23:
   return v12;
 }
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -321,9 +321,9 @@ LABEL_23:
     {
       configuration = self->_configuration;
       v23 = 138412546;
-      v24 = configuration;
+      configurationCopy2 = configuration;
       v25 = 2112;
-      v26 = v4;
+      v26 = configurationCopy;
       v20 = "#ses-hps,Can't update configuration, not running\nOld: %@\nNew: %@";
 LABEL_14:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, v20, &v23, 0x16u);
@@ -334,16 +334,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v4 || !self->_configuration || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!configurationCopy || !self->_configuration || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v18 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v21 = self->_configuration;
       v23 = 138412546;
-      v24 = v21;
+      configurationCopy2 = v21;
       v25 = 2112;
-      v26 = v4;
+      v26 = configurationCopy;
       v20 = "#ses-hps,Can't update configuration, one is nil or wrong type\nOld: %@\nNew: %@";
       goto LABEL_14;
     }
@@ -351,13 +351,13 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v13 = [(NIHomePassiveSensingConfiguration *)v4 copy];
+  v13 = [(NIHomePassiveSensingConfiguration *)configurationCopy copy];
   v14 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v15 = self->_configuration;
     v23 = 138412546;
-    v24 = v15;
+    configurationCopy2 = v15;
     v25 = 2112;
     v26 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ses-hps,Update configuration\nOld: %@\nNew: %@", &v23, 0x16u);
@@ -396,7 +396,7 @@ LABEL_16:
   dispatch_assert_queue_V2(self->_clientQueue);
   self->_isRunning = 0;
   self->_shouldDeliverUpdates = 0;
-  v11 = [(NIServerHomePassiveSensingSession *)self disableAllServices];
+  disableAllServices = [(NIServerHomePassiveSensingSession *)self disableAllServices];
   v12.receiver = self;
   v12.super_class = NIServerHomePassiveSensingSession;
   [(NIServerBaseSession *)&v12 invalidate];
@@ -409,17 +409,17 @@ LABEL_16:
   [(NIServerHomePassiveSensingSession *)&v2 dealloc];
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
-  v4 = a3;
+  discoveredCopy = discovered;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (v4 && ([v4 systemKeyRelationship] & 1) != 0)
+  if (discoveredCopy && ([discoveredCopy systemKeyRelationship] & 1) != 0)
   {
-    v5 = [v4 cbDevice];
-    v6 = [v5 model];
+    cbDevice = [discoveredCopy cbDevice];
+    model = [cbDevice model];
 
     v7 = qword_1009F9820;
-    if (!v6)
+    if (!model)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -435,19 +435,19 @@ LABEL_16:
       *buf = 138412546;
       *&buf[4] = containerUniqueIdentifier;
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = discoveredCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-hps,Device discovered. Session Identifier: %@. Device: %@", buf, 0x16u);
     }
 
     v50.receiver = self;
     v50.super_class = NIServerHomePassiveSensingSession;
-    v44 = [(NIServerBaseSession *)&v50 resourcesManager];
-    v9 = [v4 isUwbCapable];
+    resourcesManager = [(NIServerBaseSession *)&v50 resourcesManager];
+    isUwbCapable = [discoveredCopy isUwbCapable];
     v48 = xmmword_10056DAE0;
     v49 = 1;
     v45 = +[NSUserDefaults standardUserDefaults];
-    LOBYTE(v48) = [v6 hasPrefix:{@"AudioAccessory6, 1"}];
-    if ([v6 hasPrefix:{@"AudioAccessory6, 1"}])
+    LOBYTE(v48) = [model hasPrefix:{@"AudioAccessory6, 1"}];
+    if ([model hasPrefix:{@"AudioAccessory6, 1"}])
     {
       v10 = 2;
     }
@@ -539,7 +539,7 @@ LABEL_16:
       }
     }
 
-    v25 = [NINearbyObject objectFromBluetoothDevice:v4];
+    v25 = [NINearbyObject objectFromBluetoothDevice:discoveredCopy];
     if (!v25)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
@@ -554,9 +554,9 @@ LABEL_16:
     {
       v26 = sub_100005288();
       ptr = self->_pbLogger.__ptr_;
-      v28 = [v4 u64Identifier];
+      u64Identifier = [discoveredCopy u64Identifier];
       sub_1002D63A8(v25, buf);
-      sub_1002E1DCC(ptr, v28, buf, v26);
+      sub_1002E1DCC(ptr, u64Identifier, buf, v26);
       if (*buf)
       {
         *&buf[8] = *buf;
@@ -564,7 +564,7 @@ LABEL_16:
       }
     }
 
-    if (![(NIServerHomePassiveSensingSession *)self _shouldRespondToDevice:v4])
+    if (![(NIServerHomePassiveSensingSession *)self _shouldRespondToDevice:discoveredCopy])
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -574,32 +574,32 @@ LABEL_16:
       goto LABEL_67;
     }
 
-    if ([v4 isUwbCapable])
+    if ([discoveredCopy isUwbCapable])
     {
-      if (([v45 BOOLForKey:@"NIHomeAllowMobileAsAnchor"] & 1) == 0 && objc_msgSend(v4, "isMobilePhoneModel"))
+      if (([v45 BOOLForKey:@"NIHomeAllowMobileAsAnchor"] & 1) == 0 && objc_msgSend(discoveredCopy, "isMobilePhoneModel"))
       {
         v29 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v4;
+          *&buf[4] = discoveredCopy;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "#ses-hps,No uwb responding to another mobile: %@", buf, 0xCu);
         }
 
         goto LABEL_67;
       }
 
-      v30 = [v44 remote];
-      [v30 didDiscoverNearbyObject:v25];
+      remote = [resourcesManager remote];
+      [remote didDiscoverNearbyObject:v25];
 
       v31 = +[NIServerGRResponderRangingService sharedInstance];
-      v32 = [v31 getSessionTicketForDevice:v4 clientIdentifier:self->_containerUniqueIdentifier clientQueue:self->_clientQueue forDelegate:self];
+      v32 = [v31 getSessionTicketForDevice:discoveredCopy clientIdentifier:self->_containerUniqueIdentifier clientQueue:self->_clientQueue forDelegate:self];
       LOWORD(v51.__locale_) = v32;
       BYTE2(v51.__locale_) = BYTE2(v32);
 
       if (BYTE2(v51.__locale_) != 1)
       {
-        if (v9)
+        if (isUwbCapable)
         {
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
           {
@@ -612,7 +612,7 @@ LABEL_16:
         goto LABEL_64;
       }
 
-      *v52 = [v4 u64Identifier];
+      *v52 = [discoveredCopy u64Identifier];
       v33 = sub_100009978(&self->_responderSessions.__table_.__bucket_list_.__ptr_, v52);
       if (v33)
       {
@@ -644,7 +644,7 @@ LABEL_16:
       v36 = qword_1009F9820;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v4 u64Identifier];
+        u64Identifier2 = [discoveredCopy u64Identifier];
         v38 = "NO";
         if (v48)
         {
@@ -652,7 +652,7 @@ LABEL_16:
         }
 
         *buf = 134218242;
-        *&buf[4] = v37;
+        *&buf[4] = u64Identifier2;
         *&buf[12] = 2080;
         *&buf[14] = v38;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "#ses-hps,recorded mac addr 0x%llx needs bias correction: %s", buf, 0x16u);
@@ -665,7 +665,7 @@ LABEL_16:
         sub_1000195BC();
       }
 
-      v41 = [v39 triggerRangingForTicket:LOWORD(v51.__locale_) device:v4 updatedDevice:v4 clientIdentifier:self->_containerUniqueIdentifier uwbAddressRotated:v33 != 0];
+      v41 = [v39 triggerRangingForTicket:LOWORD(v51.__locale_) device:discoveredCopy updatedDevice:discoveredCopy clientIdentifier:self->_containerUniqueIdentifier uwbAddressRotated:v33 != 0];
 
       if (v41)
       {
@@ -674,12 +674,12 @@ LABEL_16:
           sub_1004C45B8();
         }
 
-        v42 = [v44 remote];
-        [v42 uwbSessionDidFailWithError:v41];
+        remote2 = [resourcesManager remote];
+        [remote2 uwbSessionDidFailWithError:v41];
       }
     }
 
-    if (v9)
+    if (isUwbCapable)
     {
 LABEL_67:
 
@@ -691,7 +691,7 @@ LABEL_64:
     v43 = qword_1009F9820;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
-      sub_1004C4628([v4 isUwbCapable], buf);
+      sub_1004C4628([discoveredCopy isUwbCapable], buf);
     }
 
     goto LABEL_67;
@@ -705,28 +705,28 @@ LABEL_64:
 LABEL_69:
 }
 
-- (void)device:(id)a3 rediscovered:(id)a4
+- (void)device:(id)device rediscovered:(id)rediscovered
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  rediscoveredCopy = rediscovered;
   dispatch_assert_queue_V2(self->_clientQueue);
-  v33[0] = [v6 u64Identifier];
+  v33[0] = [deviceCopy u64Identifier];
   v8 = sub_100009978(&self->_responderSessions.__table_.__bucket_list_.__ptr_, v33);
   if (v8)
   {
     v32.receiver = self;
     v32.super_class = NIServerHomePassiveSensingSession;
-    v29 = [(NIServerBaseSession *)&v32 resourcesManager];
+    resourcesManager = [(NIServerBaseSession *)&v32 resourcesManager];
     if (self->_pbLogger.__ptr_)
     {
       v9 = sub_100005288();
-      v10 = [NINearbyObject objectFromBluetoothDevice:v7];
+      v10 = [NINearbyObject objectFromBluetoothDevice:rediscoveredCopy];
       if (v10)
       {
         ptr = self->_pbLogger.__ptr_;
-        v12 = [v7 u64Identifier];
+        u64Identifier = [rediscoveredCopy u64Identifier];
         sub_1002D63A8(v10, __p);
-        sub_1002E1DCC(ptr, v12, __p, v9);
+        sub_1002E1DCC(ptr, u64Identifier, __p, v9);
         if (*__p)
         {
           *&__p[8] = *__p;
@@ -740,15 +740,15 @@ LABEL_69:
       }
     }
 
-    v31 = [v7 u64Identifier];
-    v13 = [v7 u64Identifier];
-    v14 = [v6 u64Identifier];
-    v15 = [v7 isUwbCapable];
-    v16 = [v6 isUwbCapable];
+    u64Identifier2 = [rediscoveredCopy u64Identifier];
+    u64Identifier3 = [rediscoveredCopy u64Identifier];
+    u64Identifier4 = [deviceCopy u64Identifier];
+    isUwbCapable = [rediscoveredCopy isUwbCapable];
+    isUwbCapable2 = [deviceCopy isUwbCapable];
     v17 = qword_1009F9820;
-    if (v15 == v16)
+    if (isUwbCapable == isUwbCapable2)
     {
-      if (v13 == v14)
+      if (u64Identifier3 == u64Identifier4)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
         {
@@ -762,9 +762,9 @@ LABEL_69:
           *__p = 138412802;
           *&__p[4] = containerUniqueIdentifier;
           *&__p[12] = 2112;
-          *&__p[14] = v7;
+          *&__p[14] = rediscoveredCopy;
           *&__p[22] = 2112;
-          *&__p[24] = v6;
+          *&__p[24] = deviceCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#ses-hps,Device re-discovered. Session Identifier: %@. New Device: %@, cached device: %@", __p, 0x20u);
         }
       }
@@ -781,22 +781,22 @@ LABEL_69:
         *__p = *(v8 + 3);
         *&__p[16] = v24;
         sub_10023DF54(&self->_responderSessions.__table_.__bucket_list_.__ptr_, v8 + 2);
-        v33[1] = &v31;
+        v33[1] = &u64Identifier2;
         *buf = __p;
         *&buf[8] = &__p[24];
-        sub_10023DAAC(&self->_responderSessions.__table_.__bucket_list_.__ptr_, &v31);
+        sub_10023DAAC(&self->_responderSessions.__table_.__bucket_list_.__ptr_, &u64Identifier2);
         v25 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
           *&buf[4] = v33[0];
           *&buf[12] = 2048;
-          *&buf[14] = v31;
+          *&buf[14] = u64Identifier2;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "#ses-hps,updated mac addr 0x%llx -> 0x%llx in processing info dictionary", buf, 0x16u);
         }
 
         v26 = +[NIServerGRResponderRangingService sharedInstance];
-        v27 = [v26 triggerRangingForTicket:*&__p[24] device:v6 updatedDevice:v7 clientIdentifier:self->_containerUniqueIdentifier uwbAddressRotated:1];
+        v27 = [v26 triggerRangingForTicket:*&__p[24] device:deviceCopy updatedDevice:rediscoveredCopy clientIdentifier:self->_containerUniqueIdentifier uwbAddressRotated:1];
 
         if (v27)
         {
@@ -805,8 +805,8 @@ LABEL_69:
             sub_1004C47AC();
           }
 
-          v28 = [v30 remote];
-          [v28 uwbSessionDidFailWithError:v27];
+          remote = [v30 remote];
+          [remote uwbSessionDidFailWithError:v27];
         }
       }
     }
@@ -816,19 +816,19 @@ LABEL_69:
       v18 = qword_1009F9820;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v6 isUwbCapable];
-        v20 = [v7 isUwbCapable];
-        v21 = [v7 isUwbCapable];
+        isUwbCapable3 = [deviceCopy isUwbCapable];
+        isUwbCapable4 = [rediscoveredCopy isUwbCapable];
+        isUwbCapable5 = [rediscoveredCopy isUwbCapable];
         *__p = 67109632;
-        *&__p[4] = v19;
+        *&__p[4] = isUwbCapable3;
         *&__p[8] = 1024;
-        *&__p[10] = v20;
+        *&__p[10] = isUwbCapable4;
         *&__p[14] = 1024;
-        *&__p[16] = v21;
+        *&__p[16] = isUwbCapable5;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#ses-hps,Device rediscovered device old UWB capble: %d -> new capable: %d, should stop? %d", __p, 0x14u);
       }
 
-      if (sub_100009978(&self->_responderSessions.__table_.__bucket_list_.__ptr_, v33) && ([v7 isUwbCapable] & 1) == 0)
+      if (sub_100009978(&self->_responderSessions.__table_.__bucket_list_.__ptr_, v33) && ([rediscoveredCopy isUwbCapable] & 1) == 0)
       {
         [(NIServerHomePassiveSensingSession *)self _peerHungUp:v33[0]];
       }
@@ -842,13 +842,13 @@ LABEL_69:
       sub_1004C48A8();
     }
 
-    [(NIServerHomePassiveSensingSession *)self deviceDiscovered:v7];
+    [(NIServerHomePassiveSensingSession *)self deviceDiscovered:rediscoveredCopy];
   }
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -856,21 +856,21 @@ LABEL_69:
     v7 = 138412546;
     v8 = containerUniqueIdentifier;
     v9 = 2112;
-    v10 = v4;
+    v10 = lostCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-hps,Device lost. Session Identifier: %@. Device: %@", &v7, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_clientQueue);
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  if ((*(a3 + 8) - 1) <= 2)
+  if ((*(solution + 8) - 1) <= 2)
   {
-    if (*(a3 + 24))
+    if (*(solution + 24))
     {
-      v5 = *(a3 + 5);
+      v5 = *(solution + 5);
       v10.receiver = self;
       v10.super_class = NIServerHomePassiveSensingSession;
       v11 = v5;
@@ -882,7 +882,7 @@ LABEL_69:
         {
           v8 = *(v7 + 3);
           v9 = v7[5];
-          [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:a3 withProcessingOptions:&v8];
+          [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:solution withProcessingOptions:&v8];
         }
 
         else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -904,7 +904,7 @@ LABEL_69:
   }
 }
 
-- (void)didReceiveRemoteData:(const void *)a3
+- (void)didReceiveRemoteData:(const void *)data
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -912,8 +912,8 @@ LABEL_69:
     sub_1004C4A04(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = *(a3 + 1);
-  if (*(a3 + 2) - v13 > 0xFuLL)
+  v13 = *(data + 1);
+  if (*(data + 2) - v13 > 0xFuLL)
   {
     if (*v13 == 2)
     {
@@ -922,13 +922,13 @@ LABEL_69:
         v14 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = *(a3 + 5);
+          v15 = *(data + 5);
           v16 = 134283521;
           v17 = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ses-hps,#hangup Received hangup from 0x%{private}llx.", &v16, 0xCu);
         }
 
-        [(NIServerHomePassiveSensingSession *)self _peerHungUp:*(a3 + 5)];
+        [(NIServerHomePassiveSensingSession *)self _peerHungUp:*(data + 5)];
       }
     }
 
@@ -940,13 +940,13 @@ LABEL_69:
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
-    sub_1004C4AB8(a3 + 4, a3 + 2);
+    sub_1004C4AB8(data + 4, data + 2);
   }
 }
 
-- (void)responderServiceTicketId:(unsigned __int16)a3 didChangeRangingUpdateRate:(int)a4 newThrottleRate:(float)a5 prevThrottleRate:(float)a6 effectiveSinceCycleInde:(int)a7
+- (void)responderServiceTicketId:(unsigned __int16)id didChangeRangingUpdateRate:(int)rate newThrottleRate:(float)throttleRate prevThrottleRate:(float)prevThrottleRate effectiveSinceCycleInde:(int)inde
 {
-  v11 = a3;
+  idCopy = id;
   v13 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -955,8 +955,8 @@ LABEL_69:
 
   v30.receiver = self;
   v30.super_class = NIServerHomePassiveSensingSession;
-  v21 = [(NIServerBaseSession *)&v30 resourcesManager];
-  if (a4)
+  resourcesManager = [(NIServerBaseSession *)&v30 resourcesManager];
+  if (rate)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -968,8 +968,8 @@ LABEL_69:
     v22 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v23 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v22];
 
-    v24 = [v21 remote];
-    [v24 uwbSessionDidFailWithError:v23];
+    remote = [resourcesManager remote];
+    [remote uwbSessionDidFailWithError:v23];
   }
 
   else
@@ -984,12 +984,12 @@ LABEL_69:
     v27 = 0;
     do
     {
-      if (*(next + 24) == v11)
+      if (*(next + 24) == idCopy)
       {
         v27 = next[2];
       }
 
-      v26 |= *(next + 24) == v11;
+      v26 |= *(next + 24) == idCopy;
       next = *next;
     }
 
@@ -1003,11 +1003,11 @@ LABEL_69:
         *buf = 138413058;
         v34 = v28;
         v35 = 2048;
-        v36 = a5;
+        throttleRateCopy = throttleRate;
         v37 = 2048;
-        v38 = a6;
+        prevThrottleRateCopy = prevThrottleRate;
         v39 = 1024;
-        v40 = a7;
+        indeCopy = inde;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "#ses-hps,#throttle Adjusting throttle rate succeeded for object %@. New rate %0.2f, old rate: %0.2f, cycle index: %d", buf, 0x26u);
       }
     }
@@ -1066,7 +1066,7 @@ LABEL_21:
   return v3;
 }
 
-- (void)_peerHungUp:(unint64_t)a3
+- (void)_peerHungUp:(unint64_t)up
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1078,16 +1078,16 @@ LABEL_21:
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134283521;
-    v17 = a3;
+    upCopy = up;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ses-hps,#hangup from address 0x%{private}llx.", buf, 0xCu);
   }
 
   v15.receiver = self;
   v15.super_class = NIServerHomePassiveSensingSession;
-  v14 = [(NIServerBaseSession *)&v15 discoveryTokenFromIdentifier:a3];
+  v14 = [(NIServerBaseSession *)&v15 discoveryTokenFromIdentifier:up];
   if (v14)
   {
-    [(NIServerHomePassiveSensingSession *)self _removePeerObject:v14 uwbIdentifier:a3 withReason:1];
+    [(NIServerHomePassiveSensingSession *)self _removePeerObject:v14 uwbIdentifier:up withReason:1];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -1096,7 +1096,7 @@ LABEL_21:
   }
 }
 
-- (void)_roseSession:(shared_ptr<rose:(int)a4 :objects::RoseBaseSession>)a3 invalidatedWithReason:
+- (void)_roseSession:(shared_ptr<rose:(int)session :objects::RoseBaseSession>)a3 invalidatedWithReason:
 {
   var1 = a3.var1;
   v6 = qword_1009F9820;
@@ -1115,12 +1115,12 @@ LABEL_21:
   [(NIServerHomePassiveSensingSession *)self invalidate];
   v17.receiver = self;
   v17.super_class = NIServerHomePassiveSensingSession;
-  v15 = [(NIServerBaseSession *)&v17 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v17 invalidationHandler];
   v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
-  (v15)[2](v15, v16);
+  (invalidationHandler)[2](invalidationHandler, v16);
 }
 
-- (BOOL)_shouldRespondToDevice:(id)a3
+- (BOOL)_shouldRespondToDevice:(id)device
 {
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
@@ -1131,9 +1131,9 @@ LABEL_21:
   return self->_responderSessions.__table_.__size_ < 5;
 }
 
-- (void)_notifyPeerRemoval:(id)a3 withReason:(unint64_t)a4
+- (void)_notifyPeerRemoval:(id)removal withReason:(unint64_t)reason
 {
-  v6 = a3;
+  removalCopy = removal;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -1143,20 +1143,20 @@ LABEL_21:
   dispatch_assert_queue_V2(self->_clientQueue);
   v21.receiver = self;
   v21.super_class = NIServerHomePassiveSensingSession;
-  v15 = [(NIServerBaseSession *)&v21 resourcesManager];
-  v16 = [v15 remote];
-  v28 = v6;
+  resourcesManager = [(NIServerBaseSession *)&v21 resourcesManager];
+  remote = [resourcesManager remote];
+  v28 = removalCopy;
   v17 = [NSArray arrayWithObjects:&v28 count:1];
-  [v16 didRemoveNearbyObjects:v17 withReason:a4];
+  [remote didRemoveNearbyObjects:v17 withReason:reason];
 
-  if (a4 >= 3)
+  if (reason >= 3)
   {
     v18 = &stru_1009B1428;
   }
 
   else
   {
-    v18 = *(&off_1009A8378 + a4);
+    v18 = *(&off_1009A8378 + reason);
   }
 
   v19 = qword_1009F9820;
@@ -1164,7 +1164,7 @@ LABEL_21:
   {
     containerUniqueIdentifier = self->_containerUniqueIdentifier;
     *buf = 138412802;
-    v23 = v6;
+    v23 = removalCopy;
     v24 = 2112;
     v25 = v18;
     v26 = 2112;
@@ -1173,10 +1173,10 @@ LABEL_21:
   }
 }
 
-- (void)_removePeerObject:(id)a3 uwbIdentifier:(unint64_t)a4 withReason:(unint64_t)a5
+- (void)_removePeerObject:(id)object uwbIdentifier:(unint64_t)identifier withReason:(unint64_t)reason
 {
-  v8 = a3;
-  v34 = a4;
+  objectCopy = object;
+  identifierCopy = identifier;
   v9 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -1186,8 +1186,8 @@ LABEL_21:
   dispatch_assert_queue_V2(self->_clientQueue);
   v33.receiver = self;
   v33.super_class = NIServerHomePassiveSensingSession;
-  v17 = [(NIServerBaseSession *)&v33 resourcesManager];
-  v18 = sub_100009978(&self->_responderSessions.__table_.__bucket_list_.__ptr_, &v34);
+  resourcesManager = [(NIServerBaseSession *)&v33 resourcesManager];
+  v18 = sub_100009978(&self->_responderSessions.__table_.__bucket_list_.__ptr_, &identifierCopy);
   if (!v18)
   {
     v22 = qword_1009F9820;
@@ -1197,7 +1197,7 @@ LABEL_21:
     }
 
     *buf = 138412290;
-    v36[0] = v8;
+    v36[0] = objectCopy;
     v23 = "#ses-hps,Did not find a UWB ToF session for token: %@";
     goto LABEL_10;
   }
@@ -1209,30 +1209,30 @@ LABEL_21:
     *buf = 67109376;
     LODWORD(v36[0]) = v20;
     WORD2(v36[0]) = 1024;
-    *(v36 + 6) = a5 != 1;
+    *(v36 + 6) = reason != 1;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#ses-hps,Invalidating session with ticket ID: %d. Send hangup signal: %d", buf, 0xEu);
   }
 
   v21 = +[NIServerGRResponderRangingService sharedInstance];
-  [v21 stopRangingForTicket:*(v18 + 24) clientIdentifier:self->_containerUniqueIdentifier uwbAddress:v34 sendingHangUp:a5 != 1];
+  [v21 stopRangingForTicket:*(v18 + 24) clientIdentifier:self->_containerUniqueIdentifier uwbAddress:identifierCopy sendingHangUp:reason != 1];
 
   sub_1000223BC(&self->_responderSessions.__table_.__bucket_list_.__ptr_, v18);
   v22 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v36[0] = v34;
+    v36[0] = identifierCopy;
     v23 = "#ses-hps,removing 0x%llx from tracked devices";
 LABEL_10:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, v23, buf, 0xCu);
   }
 
 LABEL_11:
-  [(NINearbyUpdatesEngine *)self->_updatesEngine clearStateForToken:v8];
-  v24 = [(NIServerHomePassiveSensingSession *)self objectFromIdentifier:v34];
+  [(NINearbyUpdatesEngine *)self->_updatesEngine clearStateForToken:objectCopy];
+  v24 = [(NIServerHomePassiveSensingSession *)self objectFromIdentifier:identifierCopy];
   if (v24)
   {
-    [(NIServerHomePassiveSensingSession *)self _notifyPeerRemoval:v24 withReason:a5];
+    [(NIServerHomePassiveSensingSession *)self _notifyPeerRemoval:v24 withReason:reason];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -1240,9 +1240,9 @@ LABEL_11:
     sub_1004C4FEC();
   }
 
-  v25 = [v17 btResource];
-  v26 = [v8 rawToken];
-  v27 = [v25 removePeerDiscoveryToken:v26];
+  btResource = [resourcesManager btResource];
+  rawToken = [objectCopy rawToken];
+  v27 = [btResource removePeerDiscoveryToken:rawToken];
 
   if (v27)
   {
@@ -1254,10 +1254,10 @@ LABEL_11:
 
   else
   {
-    v28 = [v17 btResource];
-    v29 = [v28 deviceCache];
-    v30 = [v8 rawToken];
-    v31 = [v29 uncacheDeviceByTokenData:v30];
+    btResource2 = [resourcesManager btResource];
+    deviceCache = [btResource2 deviceCache];
+    rawToken2 = [objectCopy rawToken];
+    v31 = [deviceCache uncacheDeviceByTokenData:rawToken2];
 
     if ((v31 & 1) == 0)
     {
@@ -1265,18 +1265,18 @@ LABEL_11:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36[0] = v8;
+        v36[0] = objectCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#ses-hps,Peer discovery token wasn't cached, so nothing to uncache. Peer likely hadn't been discovered yet. Token: %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_updatesEngine != v6)
+  engineCopy = engine;
+  objectsCopy = objects;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerHomePassiveSensingSession updatesEngine:didUpdateNearbyObjects:]", "NIServerHomePassiveSensingSession.mm", 768, "engine == _updatesEngine");
   }
@@ -1287,18 +1287,18 @@ LABEL_11:
   v10[2] = sub_100372390;
   v10[3] = &unk_10098A2E8;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = objectsCopy;
+  v9 = objectsCopy;
   dispatch_async(clientQueue, v10);
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
-  v12 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_clientQueue);
   v11.receiver = self;
   v11.super_class = NIServerHomePassiveSensingSession;
-  v5 = [(NIServerBaseSession *)&v11 objectFromIdentifier:a3];
+  v5 = [(NIServerBaseSession *)&v11 objectFromIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
@@ -1308,7 +1308,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = sub_100009978(&self->_btIdentifierHashToObjectMap.__table_.__bucket_list_.__ptr_, &v12);
+  v8 = sub_100009978(&self->_btIdentifierHashToObjectMap.__table_.__bucket_list_.__ptr_, &identifierCopy);
   if (v8)
   {
     v7 = v8[3];
@@ -1317,7 +1317,7 @@ LABEL_5:
 
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
-    sub_1004C5098(&v12);
+    sub_1004C5098(&identifierCopy);
   }
 
   v9 = 0;

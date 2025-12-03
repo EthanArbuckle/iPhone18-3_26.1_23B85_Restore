@@ -1,21 +1,21 @@
 @interface EXTableFilter
-+ (id)edTableFilterFromXmlTableFilterElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)edFilterOperatorFromXmlOperatorString:(id)a3;
++ (id)edTableFilterFromXmlTableFilterElement:(_xmlNode *)element state:(id)state;
++ (int)edFilterOperatorFromXmlOperatorString:(id)string;
 @end
 
 @implementation EXTableFilter
 
-+ (id)edTableFilterFromXmlTableFilterElement:(_xmlNode *)a3 state:(id)a4
++ (id)edTableFilterFromXmlTableFilterElement:(_xmlNode *)element state:(id)state
 {
-  if (a3)
+  if (element)
   {
     v6 = objc_alloc_init(EDTableFilter);
     v12 = 0;
-    v7 = CXOptionalStringAttribute(a3, CXNoNamespace, "operator", &v12);
+    v7 = CXOptionalStringAttribute(element, CXNoNamespace, "operator", &v12);
     v8 = v12;
     if (v7)
     {
-      v9 = [a1 edFilterOperatorFromXmlOperatorString:v8];
+      v9 = [self edFilterOperatorFromXmlOperatorString:v8];
     }
 
     else
@@ -25,7 +25,7 @@
 
     [(EDTableFilter *)v6 setOperatorType:v9];
     v11 = 0.0;
-    if (CXOptionalDoubleAttribute(a3, CXNoNamespace, "val", &v11))
+    if (CXOptionalDoubleAttribute(element, CXNoNamespace, "val", &v11))
     {
       [(EDTableFilter *)v6 setValue:v11];
     }
@@ -39,16 +39,16 @@
   return v6;
 }
 
-+ (int)edFilterOperatorFromXmlOperatorString:(id)a3
++ (int)edFilterOperatorFromXmlOperatorString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_12;
   }
 
-  if (([v3 isEqualToString:@"notEqual"] & 1) == 0)
+  if (([stringCopy isEqualToString:@"notEqual"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"greaterThanOrEqual"])
     {

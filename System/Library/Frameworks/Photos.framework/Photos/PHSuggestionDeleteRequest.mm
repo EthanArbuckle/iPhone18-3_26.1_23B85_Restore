@@ -1,28 +1,28 @@
 @interface PHSuggestionDeleteRequest
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4;
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4;
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error;
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library;
 @end
 
 @implementation PHSuggestionDeleteRequest
 
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [a4 managedObjectContext];
-  [v6 deleteObject:v5];
+  objectCopy = object;
+  managedObjectContext = [library managedObjectContext];
+  [managedObjectContext deleteObject:objectCopy];
 }
 
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PHSuggestionDeleteRequest;
   v9 = 0;
-  v5 = [(PHObjectDeleteRequest *)&v8 validateForDeleteManagedObject:a3 error:&v9];
+  v5 = [(PHObjectDeleteRequest *)&v8 validateForDeleteManagedObject:object error:&v9];
   v6 = v9;
-  if (a4 && !v5)
+  if (error && !v5)
   {
     v6 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   return v5;

@@ -6,9 +6,9 @@
 + (id)builtInVisionLanguages;
 + (id)builtInZeusLanguages;
 + (id)builtIniOSLanguages;
-+ (id)configValueForKey:(id)a3;
++ (id)configValueForKey:(id)key;
 + (id)internalLocales;
-+ (id)valueForKeyWithContext:(__CFString *)a3 withDomain:(__CFString *)a4;
++ (id)valueForKeyWithContext:(__CFString *)context withDomain:(__CFString *)domain;
 @end
 
 @implementation SLPreferences
@@ -501,23 +501,23 @@ void __31__SLPreferences_builtInLocales__block_invoke()
   return v5;
 }
 
-+ (id)valueForKeyWithContext:(__CFString *)a3 withDomain:(__CFString *)a4
++ (id)valueForKeyWithContext:(__CFString *)context withDomain:(__CFString *)domain
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(context, domain);
 
   return v4;
 }
 
-+ (id)configValueForKey:(id)a3
++ (id)configValueForKey:(id)key
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = a3;
+  keyCopy = key;
   v5 = +[SFPlatform systemRootDirectory];
   v6 = [v5 stringByAppendingPathComponent:@"AppleInternal/Library/Assistant/InternalConfig.plist"];
   v7 = [v3 fileURLWithPath:v6];
 
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v7];
-  v9 = [v8 objectForKey:v4];
+  v9 = [v8 objectForKey:keyCopy];
 
   return v9;
 }

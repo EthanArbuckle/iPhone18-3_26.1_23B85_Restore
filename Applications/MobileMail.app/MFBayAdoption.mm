@@ -1,12 +1,12 @@
 @interface MFBayAdoption
 + (OS_os_log)log;
-+ (id)composeWindowSceneActivationConfigurationWithContext:(id)a3 presentationSource:(id)a4 requestingScene:(id)a5;
-+ (id)openMessageInNewWindowActionWithMessage:(id)a3 messageList:(id)a4 preparation:(id)a5 completion:(id)a6;
-+ (id)openMessageInNewWindowConfigurationWithMessageListItem:(id)a3 messageList:(id)a4;
-+ (void)migrateDockedDrafts:(id)a3 completion:(id)a4;
-+ (void)migrateQuickReplyDraft:(id)a3 completion:(id)a4;
-+ (void)openComposeWithContext:(id)a3 presentationSource:(id)a4 requestingScene:(id)a5;
-+ (void)requestShelfPresentationForSceneWithIdentifier:(id)a3;
++ (id)composeWindowSceneActivationConfigurationWithContext:(id)context presentationSource:(id)source requestingScene:(id)scene;
++ (id)openMessageInNewWindowActionWithMessage:(id)message messageList:(id)list preparation:(id)preparation completion:(id)completion;
++ (id)openMessageInNewWindowConfigurationWithMessageListItem:(id)item messageList:(id)list;
++ (void)migrateDockedDrafts:(id)drafts completion:(id)completion;
++ (void)migrateQuickReplyDraft:(id)draft completion:(id)completion;
++ (void)openComposeWithContext:(id)context presentationSource:(id)source requestingScene:(id)scene;
++ (void)requestShelfPresentationForSceneWithIdentifier:(id)identifier;
 @end
 
 @implementation MFBayAdoption
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001A98DC;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD400 != -1)
   {
     dispatch_once(&qword_1006DD400, block);
@@ -28,38 +28,38 @@
   return v2;
 }
 
-+ (id)openMessageInNewWindowActionWithMessage:(id)a3 messageList:(id)a4 preparation:(id)a5 completion:(id)a6
++ (id)openMessageInNewWindowActionWithMessage:(id)message messageList:(id)list preparation:(id)preparation completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001A9AD4;
   v15[3] = &unk_1006533F0;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v9 = v19;
-  v10 = v17;
-  v11 = v16;
-  v12 = v18;
+  messageCopy = message;
+  listCopy = list;
+  preparationCopy = preparation;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = listCopy;
+  v11 = messageCopy;
+  v12 = preparationCopy;
   v13 = [UIWindowSceneActivationAction actionWithIdentifier:0 alternateAction:0 configurationProvider:v15];
 
   return v13;
 }
 
-+ (void)openComposeWithContext:(id)a3 presentationSource:(id)a4 requestingScene:(id)a5
++ (void)openComposeWithContext:(id)context presentationSource:(id)source requestingScene:(id)scene
 {
-  v8 = a4;
-  v9 = [a1 composeWindowSceneActivationConfigurationWithContext:a3 presentationSource:v8 requestingScene:a5];
+  sourceCopy = source;
+  v9 = [self composeWindowSceneActivationConfigurationWithContext:context presentationSource:sourceCopy requestingScene:scene];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if ((v8 == 0) | isKindOfClass & 1)
+  if ((sourceCopy == 0) | isKindOfClass & 1)
   {
     v11 = +[MFBayAdoption log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v8;
+      v16 = sourceCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Open compose from presentation source: %{public}@", &v15, 0xCu);
     }
   }
@@ -69,7 +69,7 @@
     v11 = +[MFBayAdoption log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10048AE08(v8, v11);
+      sub_10048AE08(sourceCopy, v11);
     }
   }
 
@@ -81,17 +81,17 @@
 
   else
     v12 = {;
-    v13 = [v9 userActivity];
-    v14 = [v9 options];
-    [v12 requestSceneSessionActivation:0 userActivity:v13 options:v14 errorHandler:&stru_100653430];
+    userActivity = [v9 userActivity];
+    options = [v9 options];
+    [v12 requestSceneSessionActivation:0 userActivity:userActivity options:options errorHandler:&stru_100653430];
   }
 }
 
-+ (id)composeWindowSceneActivationConfigurationWithContext:(id)a3 presentationSource:(id)a4 requestingScene:(id)a5
++ (id)composeWindowSceneActivationConfigurationWithContext:(id)context presentationSource:(id)source requestingScene:(id)scene
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  sourceCopy = source;
+  sceneCopy = scene;
   v11 = [NSUserActivity alloc];
   v12 = [v11 initWithActivityType:MSMailActivityHandoffTypeComposeWithStreams];
   v13 = [NSMutableDictionary alloc];
@@ -100,13 +100,13 @@
   v14 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v15 = [v13 initWithDictionary:v14];
 
-  v16 = [v8 composeType];
-  v17 = [v8 autosaveIdentifier];
-  if (v8)
+  composeType = [contextCopy composeType];
+  autosaveIdentifier = [contextCopy autosaveIdentifier];
+  if (contextCopy)
   {
-    v18 = [v8 compositionValues];
+    compositionValues = [contextCopy compositionValues];
     v27 = 0;
-    v19 = [NSKeyedArchiver archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v27];
+    v19 = [NSKeyedArchiver archivedDataWithRootObject:compositionValues requiringSecureCoding:1 error:&v27];
     v5 = v27;
 
     if (!v19)
@@ -121,34 +121,34 @@
     [v15 setObject:v19 forKeyedSubscript:MSMailActivityHandoffComposeKeyCompositionValues];
   }
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFELL) == 2 && v17)
+  if ((composeType & 0xFFFFFFFFFFFFFFFELL) == 2 && autosaveIdentifier)
   {
-    [v15 setObject:v17 forKeyedSubscript:MSMailActivityHandoffComposeKeyAutosaveID];
+    [v15 setObject:autosaveIdentifier forKeyedSubscript:MSMailActivityHandoffComposeKeyAutosaveID];
   }
 
   [v12 setUserInfo:v15];
-  v21 = v17;
-  if (!v17)
+  uUIDString = autosaveIdentifier;
+  if (!autosaveIdentifier)
   {
     v5 = +[NSUUID UUID];
-    v21 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
   }
 
   v22 = MSMailComposeWindowTargetContentIdentifierWithIdentifier();
   [v12 setTargetContentIdentifier:v22];
 
-  if (!v17)
+  if (!autosaveIdentifier)
   {
   }
 
   v23 = objc_alloc_init(UIWindowSceneActivationRequestOptions);
-  [v23 setRequestingScene:v10];
+  [v23 setRequestingScene:sceneCopy];
   [v23 setPreferredPresentationStyle:2];
   v24 = [[UIWindowSceneActivationConfiguration alloc] initWithUserActivity:v12];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = [[UITargetedPreview alloc] initWithView:v9];
+    v25 = [[UITargetedPreview alloc] initWithView:sourceCopy];
     [v24 setPreview:v25];
   }
 
@@ -157,17 +157,17 @@
   return v24;
 }
 
-+ (id)openMessageInNewWindowConfigurationWithMessageListItem:(id)a3 messageList:(id)a4
++ (id)openMessageInNewWindowConfigurationWithMessageListItem:(id)item messageList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  listCopy = list;
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_1001AA5AC;
   v22 = &unk_100653458;
-  v7 = v5;
+  v7 = itemCopy;
   v23 = v7;
-  v8 = v6;
+  v8 = listCopy;
   v24 = v8;
   v9 = [ConversationViewRestorationState stateWithBuilder:&v19];
   if (v9)
@@ -178,8 +178,8 @@
     v26[0] = v11;
     v25[0] = MSMailActivityHandoffTypeKey;
     v25[1] = MSMailActivityHandoffDisplayMessageKeyRestorationState;
-    v13 = [v9 dictionaryRepresentation];
-    v26[1] = v13;
+    dictionaryRepresentation = [v9 dictionaryRepresentation];
+    v26[1] = dictionaryRepresentation;
     v14 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
     [v12 setUserInfo:v14];
 
@@ -191,9 +191,9 @@
     v12 = [MFBayAdoption log:v19];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 ef_publicDescription];
-      v17 = [v7 ef_publicDescription];
-      sub_10048AF80(v16, v17, buf, v12);
+      ef_publicDescription = [v8 ef_publicDescription];
+      ef_publicDescription2 = [v7 ef_publicDescription];
+      sub_10048AF80(ef_publicDescription, ef_publicDescription2, buf, v12);
     }
 
     v15 = 0;
@@ -202,27 +202,27 @@
   return v15;
 }
 
-+ (void)requestShelfPresentationForSceneWithIdentifier:(id)a3
++ (void)requestShelfPresentationForSceneWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v3 = NSClassFromString(@"SBSApplicationMultiwindowService");
   if (v3)
   {
     v4 = objc_alloc_init(v3);
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      [v4 requestShelfPresentationForSceneWithIdentifier:v5];
+      [v4 requestShelfPresentationForSceneWithIdentifier:identifierCopy];
       [v4 invalidate];
     }
   }
 }
 
-+ (void)migrateDockedDrafts:(id)a3 completion:(id)a4
++ (void)migrateDockedDrafts:(id)drafts completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v16 = v6;
-  if ([v6 count])
+  draftsCopy = drafts;
+  completionCopy = completion;
+  v16 = draftsCopy;
+  if ([draftsCopy count])
   {
     v8 = dispatch_group_create();
     v9 = objc_alloc_init(NSMutableArray);
@@ -231,7 +231,7 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v6;
+    obj = draftsCopy;
     v10 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
@@ -247,7 +247,7 @@
 
           v13 = *(*(&v26 + 1) + 8 * i);
           dispatch_group_enter(v8);
-          v14 = [v13 storedUserActivity];
+          storedUserActivity = [v13 storedUserActivity];
           v22[0] = _NSConcreteStackBlock;
           v22[1] = 3221225472;
           v22[2] = sub_1001AAA10;
@@ -255,7 +255,7 @@
           v23 = v9;
           v24 = v13;
           v25 = v8;
-          sub_1001AAA50(a1, v14, v18, v22);
+          sub_1001AAA50(self, storedUserActivity, v18, v22);
         }
 
         v10 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -269,29 +269,29 @@
     block[2] = sub_1001AAAF4;
     block[3] = &unk_1006509B0;
     v20 = v9;
-    v21 = v7;
+    v21 = completionCopy;
     v15 = v9;
     dispatch_group_notify(v8, &_dispatch_main_q, block);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-+ (void)migrateQuickReplyDraft:(id)a3 completion:(id)a4
++ (void)migrateQuickReplyDraft:(id)draft completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  draftCopy = draft;
+  completionCopy = completion;
   v8 = SBSCreateOpenApplicationService();
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001AB590;
   v10[3] = &unk_10064E7F8;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  sub_1001AAC38(a1, v6, v8, 0, v10);
+  sub_1001AAC38(self, draftCopy, v8, 0, v10);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface TUNearbySuggestion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSuggestion:(id)a3;
-- (BOOL)isEquivalentToSuggestion:(id)a3;
-- (TUNearbySuggestion)initWithCoder:(id)a3;
-- (TUNearbySuggestion)initWithIdentifier:(id)a3 deviceHandle:(id)a4 activity:(id)a5 type:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSuggestion:(id)suggestion;
+- (BOOL)isEquivalentToSuggestion:(id)suggestion;
+- (TUNearbySuggestion)initWithCoder:(id)coder;
+- (TUNearbySuggestion)initWithIdentifier:(id)identifier deviceHandle:(id)handle activity:(id)activity type:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNearbySuggestion
 
-- (TUNearbySuggestion)initWithIdentifier:(id)a3 deviceHandle:(id)a4 activity:(id)a5 type:(int64_t)a6
+- (TUNearbySuggestion)initWithIdentifier:(id)identifier deviceHandle:(id)handle activity:(id)activity type:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  activityCopy = activity;
   v17.receiver = self;
   v17.super_class = TUNearbySuggestion;
   v14 = [(TUNearbySuggestion *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    objc_storeStrong(&v15->_deviceHandle, a4);
-    objc_storeStrong(&v15->_activity, a5);
-    v15->_type = a6;
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_deviceHandle, handle);
+    objc_storeStrong(&v15->_activity, activity);
+    v15->_type = type;
   }
 
   return v15;
@@ -65,80 +65,80 @@
   return v10;
 }
 
-- (TUNearbySuggestion)initWithCoder:(id)a3
+- (TUNearbySuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_identifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_deviceHandle);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_activity);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = NSStringFromSelector(sel_type);
-  v15 = [v4 decodeIntegerForKey:v14];
+  v15 = [coderCopy decodeIntegerForKey:v14];
 
   v16 = [(TUNearbySuggestion *)self initWithIdentifier:v7 deviceHandle:v10 activity:v13 type:v15];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_identifier);
-  [v5 encodeObject:identifier forKey:v6];
+  [coderCopy encodeObject:identifier forKey:v6];
 
   deviceHandle = self->_deviceHandle;
   v8 = NSStringFromSelector(sel_deviceHandle);
-  [v5 encodeObject:deviceHandle forKey:v8];
+  [coderCopy encodeObject:deviceHandle forKey:v8];
 
   activity = self->_activity;
   v10 = NSStringFromSelector(sel_activity);
-  [v5 encodeObject:activity forKey:v10];
+  [coderCopy encodeObject:activity forKey:v10];
 
   type = self->_type;
   v12 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v12];
+  [coderCopy encodeInteger:type forKey:v12];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUNearbySuggestion *)self isEqualToSuggestion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUNearbySuggestion *)self isEqualToSuggestion:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSuggestion:(id)a3
+- (BOOL)isEqualToSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(TUNearbySuggestion *)self identifier];
-  v6 = [v4 identifier];
+  suggestionCopy = suggestion;
+  identifier = [(TUNearbySuggestion *)self identifier];
+  identifier2 = [suggestionCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(suggestionCopy) = [identifier isEqual:identifier2];
+  return suggestionCopy;
 }
 
-- (BOOL)isEquivalentToSuggestion:(id)a3
+- (BOOL)isEquivalentToSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(TUNearbySuggestion *)self deviceHandle];
-  v6 = [v4 deviceHandle];
-  if ([v5 isEquivalentToDeviceHandle:v6])
+  suggestionCopy = suggestion;
+  deviceHandle = [(TUNearbySuggestion *)self deviceHandle];
+  deviceHandle2 = [suggestionCopy deviceHandle];
+  if ([deviceHandle isEquivalentToDeviceHandle:deviceHandle2])
   {
-    v7 = [(TUNearbySuggestion *)self activity];
-    v8 = [v4 activity];
-    if (TUObjectsAreEqualOrNil(v7, v8))
+    activity = [(TUNearbySuggestion *)self activity];
+    activity2 = [suggestionCopy activity];
+    if (TUObjectsAreEqualOrNil(activity, activity2))
     {
-      v9 = [(TUNearbySuggestion *)self type];
-      v10 = v9 == [v4 type];
+      type = [(TUNearbySuggestion *)self type];
+      v10 = type == [suggestionCopy type];
     }
 
     else
@@ -157,8 +157,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TUNearbySuggestion *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(TUNearbySuggestion *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

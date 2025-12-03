@@ -1,33 +1,33 @@
 @interface SUMediaPlayerViewController
-+ (BOOL)_URLIsITunesU:(id)a3;
-+ (void)_sendPingRequestsForURLs:(id)a3 URLBagKey:(id)a4 playerItem:(id)a5;
-+ (void)sendDownloadPingRequestsForMediaPlayerItem:(id)a3;
-+ (void)sendPlaybackPingRequestsForMediaPlayerItem:(id)a3;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
-- (SUMediaPlayerViewController)initWithMediaPlayerItem:(id)a3;
++ (BOOL)_URLIsITunesU:(id)u;
++ (void)_sendPingRequestsForURLs:(id)ls URLBagKey:(id)key playerItem:(id)item;
++ (void)sendDownloadPingRequestsForMediaPlayerItem:(id)item;
++ (void)sendPlaybackPingRequestsForMediaPlayerItem:(id)item;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (SUMediaPlayerViewController)initWithMediaPlayerItem:(id)item;
 - (id)_backgroundContainerView;
 - (id)copyScriptViewController;
-- (void)_dequeueOperation:(id)a3;
-- (void)_enqueueOperation:(id)a3;
+- (void)_dequeueOperation:(id)operation;
+- (void)_enqueueOperation:(id)operation;
 - (void)_loadBackgroundImage;
 - (void)_prepareMediaItem;
-- (void)_setIsActivePlayer:(BOOL)a3;
-- (void)_showBackgroundImage:(id)a3;
+- (void)_setIsActivePlayer:(BOOL)player;
+- (void)_showBackgroundImage:(id)image;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operationFinished:(id)a3;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operationFinished:(id)finished;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUMediaPlayerViewController
 
-- (SUMediaPlayerViewController)initWithMediaPlayerItem:(id)a3
+- (SUMediaPlayerViewController)initWithMediaPlayerItem:(id)item
 {
-  if (![a3 URL])
+  if (![item URL])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Must play a media item with a URL"];
   }
@@ -37,7 +37,7 @@
   v5 = [(SUMediaPlayerViewController *)&v10 init];
   if (v5)
   {
-    v5->_mediaItem = [a3 copy];
+    v5->_mediaItem = [item copy];
     [(SUMediaPlayerViewController *)v5 setModalPresentationStyle:0];
     v6 = objc_opt_new();
     v5->_playerViewController = v6;
@@ -46,8 +46,8 @@
     [(AVPlayerViewController *)v5->_playerViewController setPlayer:v7];
     [v7 addObserver:v5 forKeyPath:@"currentItem.playbackLikelyToKeepUp" options:0 context:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v5 selector:sel__playbackFinishedNotification_ name:*MEMORY[0x1E6987A10] object:{-[AVPlayer currentItem](-[AVPlayerViewController player](-[SUMediaPlayerViewController playerViewController](v5, "playerViewController"), "player"), "currentItem")}];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__playbackFinishedNotification_ name:*MEMORY[0x1E6987A10] object:{-[AVPlayer currentItem](-[AVPlayerViewController player](-[SUMediaPlayerViewController playerViewController](v5, "playerViewController"), "player"), "currentItem")}];
   }
 
   return v5;
@@ -93,28 +93,28 @@
   [(SUMediaPlayerViewController *)&v9 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"currentItem.playbackLikelyToKeepUp", a4, a5, a6}] && -[AVPlayerItem isPlaybackLikelyToKeepUp](-[AVPlayer currentItem](-[AVPlayerViewController player](-[SUMediaPlayerViewController playerViewController](self, "playerViewController"), "player"), "currentItem"), "isPlaybackLikelyToKeepUp"))
+  if ([path isEqualToString:{@"currentItem.playbackLikelyToKeepUp", object, change, context}] && -[AVPlayerItem isPlaybackLikelyToKeepUp](-[AVPlayer currentItem](-[AVPlayerViewController player](-[SUMediaPlayerViewController playerViewController](self, "playerViewController"), "player"), "currentItem"), "isPlaybackLikelyToKeepUp"))
   {
-    v7 = [(AVPlayerViewController *)[(SUMediaPlayerViewController *)self playerViewController] player];
+    player = [(AVPlayerViewController *)[(SUMediaPlayerViewController *)self playerViewController] player];
 
-    [(AVPlayer *)v7 play];
+    [(AVPlayer *)player play];
   }
 }
 
-+ (void)sendDownloadPingRequestsForMediaPlayerItem:(id)a3
++ (void)sendDownloadPingRequestsForMediaPlayerItem:(id)item
 {
-  v5 = [a3 downloadPingURLs];
+  downloadPingURLs = [item downloadPingURLs];
 
-  [a1 _sendPingRequestsForURLs:v5 URLBagKey:@"podcast-get-episode" playerItem:a3];
+  [self _sendPingRequestsForURLs:downloadPingURLs URLBagKey:@"podcast-get-episode" playerItem:item];
 }
 
-+ (void)sendPlaybackPingRequestsForMediaPlayerItem:(id)a3
++ (void)sendPlaybackPingRequestsForMediaPlayerItem:(id)item
 {
-  v5 = [a3 playbackPingURLs];
+  playbackPingURLs = [item playbackPingURLs];
 
-  [a1 _sendPingRequestsForURLs:v5 URLBagKey:@"podcast-play-episode" playerItem:a3];
+  [self _sendPingRequestsForURLs:playbackPingURLs URLBagKey:@"podcast-play-episode" playerItem:item];
 }
 
 - (void)viewDidLoad
@@ -132,28 +132,28 @@
   return v3;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v5 = [objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")];
   if (v5 != 1)
   {
     if ([[(AVPlayerViewController *)[(SUMediaPlayerViewController *)self playerViewController] player] isExternalPlaybackActive])
     {
-      LOBYTE(v5) = (a3 - 1) < 2;
+      LOBYTE(v5) = (orientation - 1) < 2;
     }
 
     else
     {
-      LOBYTE(v5) = (a3 - 3) < 2;
+      LOBYTE(v5) = (orientation - 3) < 2;
     }
   }
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_playerState)
   {
     self->_playerState = 1;
@@ -163,24 +163,24 @@
   [(SUMediaPlayerViewController *)self _setIsActivePlayer:1];
   v5.receiver = self;
   v5.super_class = SUMediaPlayerViewController;
-  [(SUMediaPlayerViewController *)&v5 viewWillAppear:v3];
+  [(SUMediaPlayerViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  [(SUClientInterface *)[(SUMediaPlayerViewController *)self clientInterface] _mediaPlayerViewControllerWillDismiss:self animated:a3];
+  disappearCopy = disappear;
+  [(SUClientInterface *)[(SUMediaPlayerViewController *)self clientInterface] _mediaPlayerViewControllerWillDismiss:self animated:disappear];
   v5.receiver = self;
   v5.super_class = SUMediaPlayerViewController;
-  [(SUMediaPlayerViewController *)&v5 viewWillDisappear:v3];
+  [(SUMediaPlayerViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SUDialogManager newDialogWithError:a4];
+    v7 = [SUDialogManager newDialogWithError:error];
     [[(AVPlayerViewController *)[(SUMediaPlayerViewController *)self playerViewController] player] pause];
     [(SUClientInterface *)[(SUMediaPlayerViewController *)self clientInterface] _presentDialog:v7];
     [(UIViewController *)self dismissAnimated:1];
@@ -195,10 +195,10 @@
     }
   }
 
-  [(SUMediaPlayerViewController *)self _dequeueOperation:a3];
+  [(SUMediaPlayerViewController *)self _dequeueOperation:operation];
 }
 
-- (void)operationFinished:(id)a3
+- (void)operationFinished:(id)finished
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -208,30 +208,30 @@
     [objc_opt_class() sendPlaybackPingRequestsForMediaPlayerItem:self->_mediaItem];
   }
 
-  [(SUMediaPlayerViewController *)self _dequeueOperation:a3];
+  [(SUMediaPlayerViewController *)self _dequeueOperation:finished];
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __106__SUMediaPlayerViewController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke;
   v4[3] = &unk_1E8166F78;
   v4[4] = self;
-  [a4 animateAlongsideTransition:0 completion:v4];
+  [coordinator animateAlongsideTransition:0 completion:v4];
 }
 
-+ (void)_sendPingRequestsForURLs:(id)a3 URLBagKey:(id)a4 playerItem:(id)a5
++ (void)_sendPingRequestsForURLs:(id)ls URLBagKey:(id)key playerItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([ls count])
   {
-    v9 = [MEMORY[0x1E69E4798] mainQueue];
+    mainQueue = [MEMORY[0x1E69E4798] mainQueue];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v10 = [ls countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -242,13 +242,13 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(ls);
           }
 
-          [v9 addOperation:{objc_msgSend(MEMORY[0x1E69E47E0], "pingOperationWithUrl:", *(*(&v18 + 1) + 8 * i))}];
+          [mainQueue addOperation:{objc_msgSend(MEMORY[0x1E69E47E0], "pingOperationWithUrl:", *(*(&v18 + 1) + 8 * i))}];
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [ls countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -257,26 +257,26 @@
 
   else
   {
-    v14 = [a5 itemIdentifier];
-    if (v14)
+    itemIdentifier = [item itemIdentifier];
+    if (itemIdentifier)
     {
-      v15 = v14;
-      if ([a5 itemType] == 1007 && (objc_msgSend(a1, "_URLIsITunesU:", objc_msgSend(a5, "URL")) & 1) == 0)
+      v15 = itemIdentifier;
+      if ([item itemType] == 1007 && (objc_msgSend(self, "_URLIsITunesU:", objc_msgSend(item, "URL")) & 1) == 0)
       {
-        v16 = [MEMORY[0x1E69E4798] mainQueue];
-        v17 = [MEMORY[0x1E69E47E0] itemPingOperationWithIdentifier:v15 urlBagKey:a4];
+        mainQueue2 = [MEMORY[0x1E69E4798] mainQueue];
+        v17 = [MEMORY[0x1E69E47E0] itemPingOperationWithIdentifier:v15 urlBagKey:key];
 
-        [v16 addOperation:v17];
+        [mainQueue2 addOperation:v17];
       }
     }
   }
 }
 
-+ (BOOL)_URLIsITunesU:(id)a3
++ (BOOL)_URLIsITunesU:(id)u
 {
   v4 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:@"deimos.*\\.apple\\.com" options:1 error:0];
-  v5 = [a3 host];
-  v6 = [v4 rangeOfFirstMatchInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+  host = [u host];
+  v6 = [v4 rangeOfFirstMatchInString:host options:0 range:{0, objc_msgSend(host, "length")}];
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -296,15 +296,15 @@
   return result;
 }
 
-- (void)_dequeueOperation:(id)a3
+- (void)_dequeueOperation:(id)operation
 {
-  [a3 setDelegate:0];
+  [operation setDelegate:0];
   operations = self->_operations;
 
-  [(NSMutableArray *)operations removeObjectIdenticalTo:a3];
+  [(NSMutableArray *)operations removeObjectIdenticalTo:operation];
 }
 
-- (void)_enqueueOperation:(id)a3
+- (void)_enqueueOperation:(id)operation
 {
   operations = self->_operations;
   if (!operations)
@@ -313,20 +313,20 @@
     self->_operations = operations;
   }
 
-  [(NSMutableArray *)operations addObject:a3];
-  [a3 setDelegate:self];
-  [a3 setShouldMessageMainThread:1];
-  v6 = [MEMORY[0x1E69E4798] mainQueue];
+  [(NSMutableArray *)operations addObject:operation];
+  [operation setDelegate:self];
+  [operation setShouldMessageMainThread:1];
+  mainQueue = [MEMORY[0x1E69E4798] mainQueue];
 
-  [v6 addOperation:a3];
+  [mainQueue addOperation:operation];
 }
 
 - (void)_loadBackgroundImage
 {
-  v3 = [(SUMediaPlayerItem *)self->_mediaItem backgroundImageURL];
-  if (v3)
+  backgroundImageURL = [(SUMediaPlayerItem *)self->_mediaItem backgroundImageURL];
+  if (backgroundImageURL)
   {
-    v4 = v3;
+    v4 = backgroundImageURL;
     v7 = objc_alloc_init(MEMORY[0x1E69E47E0]);
     v5 = objc_alloc_init(SUImageDataProvider);
     -[SUImageDataProvider setFillColor:](v5, "setFillColor:", [MEMORY[0x1E69DC888] blackColor]);
@@ -345,32 +345,32 @@
   [(SUMediaPlayerViewController *)self _enqueueOperation:v3];
 }
 
-- (void)_setIsActivePlayer:(BOOL)a3
+- (void)_setIsActivePlayer:(BOOL)player
 {
   v5 = +[SUClientApplicationController sharedController];
   v6 = v5;
-  if (!a3)
+  if (!player)
   {
     if ([v5 _activeMediaPlayer] != self)
     {
       return;
     }
 
-    v7 = self;
+    selfCopy = self;
     self = 0;
   }
 
   [v6 _setActiveMediaPlayer:self];
 }
 
-- (void)_showBackgroundImage:(id)a3
+- (void)_showBackgroundImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v5 = [(SUMediaPlayerViewController *)self _backgroundContainerView];
-    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:a3];
+    _backgroundContainerView = [(SUMediaPlayerViewController *)self _backgroundContainerView];
+    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:image];
     [v15 setAutoresizingMask:45];
-    [v5 bounds];
+    [_backgroundContainerView bounds];
     v7 = v6;
     v9 = v8;
     [v15 frame];

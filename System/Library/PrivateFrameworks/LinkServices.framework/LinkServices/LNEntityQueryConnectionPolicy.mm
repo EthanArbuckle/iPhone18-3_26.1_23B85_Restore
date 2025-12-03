@@ -1,22 +1,22 @@
 @interface LNEntityQueryConnectionPolicy
-- (BOOL)isEqual:(id)a3;
-- (LNEntityQueryConnectionPolicy)initWithCoder:(id)a3;
-- (LNEntityQueryConnectionPolicy)initWithEntityQueryIdentifier:(id)a3 entityQueryMangledTypeName:(id)a4 effectiveBundleIdentifier:(id)a5 appBundleIdentifier:(id)a6 processInstanceIdentifier:(id)a7;
-- (id)connectionWithUserIdentity:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNEntityQueryConnectionPolicy)initWithCoder:(id)coder;
+- (LNEntityQueryConnectionPolicy)initWithEntityQueryIdentifier:(id)identifier entityQueryMangledTypeName:(id)name effectiveBundleIdentifier:(id)bundleIdentifier appBundleIdentifier:(id)appBundleIdentifier processInstanceIdentifier:(id)instanceIdentifier;
+- (id)connectionWithUserIdentity:(id)identity error:(id *)error;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEntityQueryConnectionPolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -25,10 +25,10 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v7 = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
-    v8 = [(LNEntityQueryConnectionPolicy *)v6 entityQueryIdentifier];
-    v9 = v7;
-    v10 = v8;
+    entityQueryIdentifier = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
+    entityQueryIdentifier2 = [(LNEntityQueryConnectionPolicy *)v6 entityQueryIdentifier];
+    v9 = entityQueryIdentifier;
+    v10 = entityQueryIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -55,10 +55,10 @@ LABEL_45:
       }
     }
 
-    v16 = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
-    v17 = [(LNEntityQueryConnectionPolicy *)v6 entityQueryMangledTypeName];
-    v14 = v16;
-    v18 = v17;
+    entityQueryMangledTypeName = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
+    entityQueryMangledTypeName2 = [(LNEntityQueryConnectionPolicy *)v6 entityQueryMangledTypeName];
+    v14 = entityQueryMangledTypeName;
+    v18 = entityQueryMangledTypeName2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -85,10 +85,10 @@ LABEL_44:
       }
     }
 
-    v22 = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
-    v23 = [(LNEntityQueryConnectionPolicy *)v6 effectiveBundleIdentifier];
-    v20 = v22;
-    v24 = v23;
+    effectiveBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
+    effectiveBundleIdentifier2 = [(LNEntityQueryConnectionPolicy *)v6 effectiveBundleIdentifier];
+    v20 = effectiveBundleIdentifier;
+    v24 = effectiveBundleIdentifier2;
     v41 = v24;
     if (v20 != v24)
     {
@@ -108,10 +108,10 @@ LABEL_44:
 
 LABEL_24:
           v40 = v20;
-          v27 = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
-          v28 = [(LNEntityQueryConnectionPolicy *)v6 appBundleIdentifier];
-          v29 = v27;
-          v30 = v28;
+          appBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
+          appBundleIdentifier2 = [(LNEntityQueryConnectionPolicy *)v6 appBundleIdentifier];
+          v29 = appBundleIdentifier;
+          v30 = appBundleIdentifier2;
           v38 = v30;
           v39 = v29;
           if (v29 == v30)
@@ -151,9 +151,9 @@ LABEL_40:
           }
 
           v33 = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier:v38];
-          v34 = [(LNEntityQueryConnectionPolicy *)v6 processInstanceIdentifier];
+          processInstanceIdentifier = [(LNEntityQueryConnectionPolicy *)v6 processInstanceIdentifier];
           v29 = v33;
-          v35 = v34;
+          v35 = processInstanceIdentifier;
           v36 = v35;
           if (v29 == v35)
           {
@@ -209,16 +209,16 @@ LABEL_47:
 
 - (unint64_t)hash
 {
-  v3 = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
-  v8 = [v7 hash];
-  v9 = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
-  v12 = [v11 hash];
+  entityQueryIdentifier = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
+  v4 = [entityQueryIdentifier hash];
+  entityQueryMangledTypeName = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
+  v6 = [entityQueryMangledTypeName hash] ^ v4;
+  effectiveBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
+  v8 = [effectiveBundleIdentifier hash];
+  appBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
+  v10 = v6 ^ v8 ^ [appBundleIdentifier hash];
+  processInstanceIdentifier = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
+  v12 = [processInstanceIdentifier hash];
 
   return v10 ^ v12;
 }
@@ -228,86 +228,86 @@ LABEL_47:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
-  v7 = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
-  v8 = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
-  v9 = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
-  v10 = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
-  v11 = [v3 stringWithFormat:@"<%@: %p, entityQueryIdentifier: %@, entityQueryMangledTypeName: %@, effectiveBundleIdentifier: %@, appBundleIdentifier: %@, processInstanceIdentifier: %@>", v5, self, v6, v7, v8, v9, v10];
+  entityQueryIdentifier = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
+  entityQueryMangledTypeName = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
+  effectiveBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
+  appBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
+  v11 = [v3 stringWithFormat:@"<%@: %p, entityQueryIdentifier: %@, entityQueryMangledTypeName: %@, effectiveBundleIdentifier: %@, appBundleIdentifier: %@, processInstanceIdentifier: %@>", v5, self, entityQueryIdentifier, entityQueryMangledTypeName, effectiveBundleIdentifier, appBundleIdentifier, processInstanceIdentifier];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
-  [v4 encodeObject:v5 forKey:@"entityQueryIdentifier"];
+  coderCopy = coder;
+  entityQueryIdentifier = [(LNEntityQueryConnectionPolicy *)self entityQueryIdentifier];
+  [coderCopy encodeObject:entityQueryIdentifier forKey:@"entityQueryIdentifier"];
 
-  v6 = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
-  [v4 encodeObject:v6 forKey:@"entityQueryMangledTypeName"];
+  entityQueryMangledTypeName = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
+  [coderCopy encodeObject:entityQueryMangledTypeName forKey:@"entityQueryMangledTypeName"];
 
-  v7 = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"effectiveBundleIdentifier"];
+  effectiveBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
+  [coderCopy encodeObject:effectiveBundleIdentifier forKey:@"effectiveBundleIdentifier"];
 
-  v8 = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
-  [v4 encodeObject:v8 forKey:@"appBundleIdentifier"];
+  appBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"appBundleIdentifier"];
 
-  v9 = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
-  [v4 encodeObject:v9 forKey:@"processInstanceIdentifier"];
+  processInstanceIdentifier = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
+  [coderCopy encodeObject:processInstanceIdentifier forKey:@"processInstanceIdentifier"];
 }
 
-- (LNEntityQueryConnectionPolicy)initWithCoder:(id)a3
+- (LNEntityQueryConnectionPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityQueryIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityQueryMangledTypeName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"effectiveBundleIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processInstanceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityQueryIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityQueryMangledTypeName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"effectiveBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processInstanceIdentifier"];
 
-  v10 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7)
   {
     self = [(LNEntityQueryConnectionPolicy *)self initWithEntityQueryIdentifier:v5 entityQueryMangledTypeName:v6 effectiveBundleIdentifier:v7 appBundleIdentifier:v8 processInstanceIdentifier:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)connectionWithUserIdentity:(id)a3 error:(id *)a4
+- (id)connectionWithUserIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v7 = +[LNConnectionManager sharedInstance];
-  v8 = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
-  v9 = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
-  v10 = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
-  v11 = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
-  v12 = [v7 connectionForEffectiveBundleIdentifier:v8 appBundleIdentifier:v9 processInstanceIdentifier:v10 mangledTypeName:v11 userIdentity:v6 error:a4];
+  effectiveBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self effectiveBundleIdentifier];
+  appBundleIdentifier = [(LNEntityQueryConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNEntityQueryConnectionPolicy *)self processInstanceIdentifier];
+  entityQueryMangledTypeName = [(LNEntityQueryConnectionPolicy *)self entityQueryMangledTypeName];
+  v12 = [v7 connectionForEffectiveBundleIdentifier:effectiveBundleIdentifier appBundleIdentifier:appBundleIdentifier processInstanceIdentifier:processInstanceIdentifier mangledTypeName:entityQueryMangledTypeName userIdentity:identityCopy error:error];
 
   return v12;
 }
 
-- (LNEntityQueryConnectionPolicy)initWithEntityQueryIdentifier:(id)a3 entityQueryMangledTypeName:(id)a4 effectiveBundleIdentifier:(id)a5 appBundleIdentifier:(id)a6 processInstanceIdentifier:(id)a7
+- (LNEntityQueryConnectionPolicy)initWithEntityQueryIdentifier:(id)identifier entityQueryMangledTypeName:(id)name effectiveBundleIdentifier:(id)bundleIdentifier appBundleIdentifier:(id)appBundleIdentifier processInstanceIdentifier:(id)instanceIdentifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  identifierCopy = identifier;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  appBundleIdentifierCopy = appBundleIdentifier;
+  instanceIdentifierCopy = instanceIdentifier;
+  if (identifierCopy)
   {
-    if (v14)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"LNEntityQueryConnectionPolicy.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"entityQueryMangledTypeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNEntityQueryConnectionPolicy.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"entityQueryMangledTypeName"}];
 
-    if (v15)
+    if (bundleIdentifierCopy)
     {
       goto LABEL_4;
     }
@@ -315,23 +315,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"LNEntityQueryConnectionPolicy.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"entityQueryIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNEntityQueryConnectionPolicy.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"entityQueryIdentifier"}];
 
-  if (!v14)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v15)
+  if (bundleIdentifierCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v33 handleFailureInMethod:a2 object:self file:@"LNEntityQueryConnectionPolicy.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"effectiveBundleIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNEntityQueryConnectionPolicy.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"effectiveBundleIdentifier"}];
 
 LABEL_4:
   v34.receiver = self;
@@ -339,23 +339,23 @@ LABEL_4:
   v18 = [(LNEntityQueryConnectionPolicy *)&v34 init];
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [identifierCopy copy];
     entityQueryIdentifier = v18->_entityQueryIdentifier;
     v18->_entityQueryIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     entityQueryMangledTypeName = v18->_entityQueryMangledTypeName;
     v18->_entityQueryMangledTypeName = v21;
 
-    v23 = [v15 copy];
+    v23 = [bundleIdentifierCopy copy];
     effectiveBundleIdentifier = v18->_effectiveBundleIdentifier;
     v18->_effectiveBundleIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [appBundleIdentifierCopy copy];
     appBundleIdentifier = v18->_appBundleIdentifier;
     v18->_appBundleIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [instanceIdentifierCopy copy];
     processInstanceIdentifier = v18->_processInstanceIdentifier;
     v18->_processInstanceIdentifier = v27;
 

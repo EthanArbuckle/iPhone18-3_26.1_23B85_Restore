@@ -9,13 +9,13 @@
 - (NSString)userAgent;
 - (id)_appleClientVersions;
 - (id)localStoreFrontID;
-- (void)_softwareMapInvalidatedNotification:(id)a3;
+- (void)_softwareMapInvalidatedNotification:(id)notification;
 - (void)dealloc;
-- (void)setAppleClientApplication:(id)a3;
-- (void)setClientProvidedHeaders:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setPartnerHeader:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setAppleClientApplication:(id)application;
+- (void)setClientProvidedHeaders:(id)headers;
+- (void)setIdentifier:(id)identifier;
+- (void)setPartnerHeader:(id)header;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation ISClient
@@ -32,8 +32,8 @@
     lock = v3->_lock;
     v3->_lock = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel__softwareMapInvalidatedNotification_ name:@"ISSoftwareMapInvalidatedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__softwareMapInvalidatedNotification_ name:@"ISSoftwareMapInvalidatedNotification" object:0];
   }
 
   return v3;
@@ -41,8 +41,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"ISSoftwareMapInvalidatedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ISSoftwareMapInvalidatedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = ISClient;
@@ -118,24 +118,24 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
 
 - (NSDictionary)clientProvidedHeaders
 {
-  v3 = [(ISClient *)self lock];
-  [v3 lock];
+  lock = [(ISClient *)self lock];
+  [lock lock];
 
   v4 = [(NSDictionary *)self->_clientProvidedHeaders copy];
-  v5 = [(ISClient *)self lock];
-  [v5 unlock];
+  lock2 = [(ISClient *)self lock];
+  [lock2 unlock];
 
   if (v4)
   {
-    v6 = v4;
+    dictionary = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v7 = v6;
+  v7 = dictionary;
 
   return v7;
 }
@@ -146,10 +146,10 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
   identifier = self->_identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v6 = self->_identifier;
-    self->_identifier = v5;
+    self->_identifier = bundleIdentifier;
 
     identifier = self->_identifier;
   }
@@ -169,13 +169,13 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setAppleClientApplication:(id)a3
+- (void)setAppleClientApplication:(id)application
 {
-  v6 = a3;
+  applicationCopy = application;
   [(NSLock *)self->_lock lock];
-  if (self->_appleClientApplication != v6)
+  if (self->_appleClientApplication != applicationCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)applicationCopy copy];
     appleClientApplication = self->_appleClientApplication;
     self->_appleClientApplication = v4;
   }
@@ -183,30 +183,30 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setClientProvidedHeaders:(id)a3
+- (void)setClientProvidedHeaders:(id)headers
 {
-  v8 = a3;
-  v4 = [(ISClient *)self lock];
-  [v4 lock];
+  headersCopy = headers;
+  lock = [(ISClient *)self lock];
+  [lock lock];
 
-  if (self->_clientProvidedHeaders != v8)
+  if (self->_clientProvidedHeaders != headersCopy)
   {
-    v5 = [(NSDictionary *)v8 copy];
+    v5 = [(NSDictionary *)headersCopy copy];
     clientProvidedHeaders = self->_clientProvidedHeaders;
     self->_clientProvidedHeaders = v5;
   }
 
-  v7 = [(ISClient *)self lock];
-  [v7 unlock];
+  lock2 = [(ISClient *)self lock];
+  [lock2 unlock];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(NSLock *)self->_lock lock];
-  if (self->_identifier != v6)
+  if (self->_identifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)identifierCopy copy];
     identifier = self->_identifier;
     self->_identifier = v4;
   }
@@ -214,48 +214,48 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setPartnerHeader:(id)a3
+- (void)setPartnerHeader:(id)header
 {
-  v12 = a3;
+  headerCopy = header;
   [(NSLock *)self->_lock lock];
   partnerHeader = self->_partnerHeader;
-  if (partnerHeader == v12 || ([(NSString *)partnerHeader isEqual:v12]& 1) != 0)
+  if (partnerHeader == headerCopy || ([(NSString *)partnerHeader isEqual:headerCopy]& 1) != 0)
   {
     [(NSLock *)self->_lock unlock];
   }
 
   else
   {
-    v5 = [(NSString *)v12 copy];
+    v5 = [(NSString *)headerCopy copy];
     v6 = self->_partnerHeader;
     self->_partnerHeader = v5;
 
     [(NSLock *)self->_lock unlock];
     v7 = objc_alloc(MEMORY[0x277CBEAC0]);
     v8 = v7;
-    if (v12)
+    if (headerCopy)
     {
       v9 = [v7 initWithObjectsAndKeys:{@"ISClientValueParameter", 0}];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      v9 = [v8 initWithObjectsAndKeys:{v10, @"ISClientValueParameter", 0}];
+      null = [MEMORY[0x277CBEB68] null];
+      v9 = [v8 initWithObjectsAndKeys:{null, @"ISClientValueParameter", 0}];
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"ISClientPartnerHeaderChangedNotification" object:self userInfo:v9];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ISClientPartnerHeaderChangedNotification" object:self userInfo:v9];
   }
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v6 = a3;
+  agentCopy = agent;
   [(NSLock *)self->_lock lock];
-  if (self->_userAgent != v6)
+  if (self->_userAgent != agentCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)agentCopy copy];
     userAgent = self->_userAgent;
     self->_userAgent = v4;
   }
@@ -274,13 +274,13 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
 
 - (id)localStoreFrontID
 {
-  v2 = [MEMORY[0x277D69A80] currentDevice];
-  v3 = [v2 storeFrontIdentifier];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  storeFrontIdentifier = [currentDevice storeFrontIdentifier];
 
-  return v3;
+  return storeFrontIdentifier;
 }
 
-- (void)_softwareMapInvalidatedNotification:(id)a3
+- (void)_softwareMapInvalidatedNotification:(id)notification
 {
   [(NSLock *)self->_lock lock];
   appleClientVersions = self->_appleClientVersions;
@@ -318,17 +318,17 @@ void __31__ISClient_appleClientVersions__block_invoke(uint64_t a1)
         v9 = [v7 objectAtIndexedSubscript:1];
         v10 = [v8 initWithBundleIdentifier:v9];
 
-        v11 = [v10 clientVersion];
-        [(__CFString *)v11 doubleValue];
+        clientVersion = [v10 clientVersion];
+        [(__CFString *)clientVersion doubleValue];
         if (v12 == 0.0)
         {
 
-          v11 = @"??";
+          clientVersion = @"??";
         }
 
         v13 = MEMORY[0x277CCACA8];
         v14 = [v7 objectAtIndexedSubscript:0];
-        v15 = [v13 stringWithFormat:@"%@/%@", v14, v11];
+        v15 = [v13 stringWithFormat:@"%@/%@", v14, clientVersion];
         [v2 addObject:v15];
       }
 

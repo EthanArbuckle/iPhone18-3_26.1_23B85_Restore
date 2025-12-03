@@ -1,12 +1,12 @@
 @interface PSGInputSuggestionsResponseItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItem:(id)a3;
-- (PSGInputSuggestionsResponseItem)initWithCoder:(id)a3;
-- (PSGInputSuggestionsResponseItem)initWithTextualResponseSuggestion:(id)a3 structuredInfoSuggestion:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItem:(id)item;
+- (PSGInputSuggestionsResponseItem)initWithCoder:(id)coder;
+- (PSGInputSuggestionsResponseItem)initWithTextualResponseSuggestion:(id)suggestion structuredInfoSuggestion:(id)infoSuggestion;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)predictedValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSGInputSuggestionsResponseItem
@@ -18,34 +18,34 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGInputSuggestionsResponseItem *)self isEqualToItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGInputSuggestionsResponseItem *)self isEqualToItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_textualResponseSuggestion;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == itemCopy[1])
   {
   }
 
@@ -63,7 +63,7 @@ LABEL_4:
 
   v9 = self->_structuredInfoSuggestion;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == itemCopy[2])
   {
     v8 = 1;
   }
@@ -77,17 +77,17 @@ LABEL_10:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(PSGTextualResponseSuggestion *)self->_textualResponseSuggestion copyWithZone:a3];
+    v6 = [(PSGTextualResponseSuggestion *)self->_textualResponseSuggestion copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(PSGStructuredInfoSuggestion *)self->_structuredInfoSuggestion copyWithZone:a3];
+    v8 = [(PSGStructuredInfoSuggestion *)self->_structuredInfoSuggestion copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
   }
@@ -95,19 +95,19 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   textualResponseSuggestion = self->_textualResponseSuggestion;
-  v5 = a3;
-  [v5 encodeObject:textualResponseSuggestion forKey:@"trs"];
-  [v5 encodeObject:self->_structuredInfoSuggestion forKey:@"sis"];
+  coderCopy = coder;
+  [coderCopy encodeObject:textualResponseSuggestion forKey:@"trs"];
+  [coderCopy encodeObject:self->_structuredInfoSuggestion forKey:@"sis"];
 }
 
-- (PSGInputSuggestionsResponseItem)initWithCoder:(id)a3
+- (PSGInputSuggestionsResponseItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trs"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sis"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trs"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sis"];
 
   v7 = [(PSGInputSuggestionsResponseItem *)self initWithTextualResponseSuggestion:v5 structuredInfoSuggestion:v6];
   return v7;
@@ -118,7 +118,7 @@ LABEL_10:
   textualResponseSuggestion = self->_textualResponseSuggestion;
   if (textualResponseSuggestion)
   {
-    v4 = [(PSGTextualResponseSuggestion *)textualResponseSuggestion responseText];
+    responseText = [(PSGTextualResponseSuggestion *)textualResponseSuggestion responseText];
   }
 
   else
@@ -126,30 +126,30 @@ LABEL_10:
     structuredInfoSuggestion = self->_structuredInfoSuggestion;
     if (structuredInfoSuggestion)
     {
-      v4 = [(PSGStructuredInfoSuggestion *)structuredInfoSuggestion predictedValue];
+      responseText = [(PSGStructuredInfoSuggestion *)structuredInfoSuggestion predictedValue];
     }
 
     else
     {
-      v4 = &stru_287343650;
+      responseText = &stru_287343650;
     }
   }
 
-  return v4;
+  return responseText;
 }
 
-- (PSGInputSuggestionsResponseItem)initWithTextualResponseSuggestion:(id)a3 structuredInfoSuggestion:(id)a4
+- (PSGInputSuggestionsResponseItem)initWithTextualResponseSuggestion:(id)suggestion structuredInfoSuggestion:(id)infoSuggestion
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionCopy = suggestion;
+  infoSuggestionCopy = infoSuggestion;
   v12.receiver = self;
   v12.super_class = PSGInputSuggestionsResponseItem;
   v9 = [(PSGInputSuggestionsResponseItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textualResponseSuggestion, a3);
-    objc_storeStrong(&v10->_structuredInfoSuggestion, a4);
+    objc_storeStrong(&v9->_textualResponseSuggestion, suggestion);
+    objc_storeStrong(&v10->_structuredInfoSuggestion, infoSuggestion);
   }
 
   return v10;

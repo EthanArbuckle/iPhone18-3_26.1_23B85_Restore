@@ -1,23 +1,23 @@
 @interface INSetBinarySettingIntent
-- (INSetBinarySettingIntent)initWithSettingMetadata:(id)a3 binaryValue:(int64_t)a4 temporalEventTrigger:(id)a5;
+- (INSetBinarySettingIntent)initWithSettingMetadata:(id)metadata binaryValue:(int64_t)value temporalEventTrigger:(id)trigger;
 - (INSettingMetadata)settingMetadata;
 - (INTemporalEventTrigger)temporalEventTrigger;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)binaryValue;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setBinaryValue:(int64_t)a3;
-- (void)setSettingMetadata:(id)a3;
-- (void)setTemporalEventTrigger:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setBinaryValue:(int64_t)value;
+- (void)setSettingMetadata:(id)metadata;
+- (void)setTemporalEventTrigger:(id)trigger;
 @end
 
 @implementation INSetBinarySettingIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetBinarySettingIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetBinarySettingIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -26,43 +26,43 @@
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"settingMetadata";
-  v3 = [(INSetBinarySettingIntent *)self settingMetadata];
-  v4 = v3;
-  if (!v3)
+  settingMetadata = [(INSetBinarySettingIntent *)self settingMetadata];
+  null = settingMetadata;
+  if (!settingMetadata)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"binaryValue";
-  v5 = [(INSetBinarySettingIntent *)self binaryValue];
-  if ((v5 - 1) > 2)
+  binaryValue = [(INSetBinarySettingIntent *)self binaryValue];
+  if ((binaryValue - 1) > 2)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = *(&off_1E7287C40 + v5 - 1);
+    v6 = *(&off_1E7287C40 + binaryValue - 1);
   }
 
   v7 = v6;
   v14[1] = v7;
   v13[2] = @"temporalEventTrigger";
-  v8 = [(INSetBinarySettingIntent *)self temporalEventTrigger];
-  v9 = v8;
-  if (!v8)
+  temporalEventTrigger = [(INSetBinarySettingIntent *)self temporalEventTrigger];
+  null2 = temporalEventTrigger;
+  if (!temporalEventTrigger)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  if (!v8)
+  if (!temporalEventTrigger)
   {
   }
 
-  if (!v3)
+  if (!settingMetadata)
   {
   }
 
@@ -71,49 +71,49 @@
   return v10;
 }
 
-- (void)setTemporalEventTrigger:(id)a3
+- (void)setTemporalEventTrigger:(id)trigger
 {
-  v4 = a3;
-  v6 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTemporalEventTrigger(v4);
+  triggerCopy = trigger;
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTemporalEventTrigger(triggerCopy);
 
-  [v6 setTemporalEventTrigger:v5];
+  [_typedBackingStore setTemporalEventTrigger:v5];
 }
 
 - (INTemporalEventTrigger)temporalEventTrigger
 {
-  v2 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v3 = [v2 temporalEventTrigger];
-  v4 = INIntentSlotValueTransformFromTemporalEventTrigger(v3);
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  temporalEventTrigger = [_typedBackingStore temporalEventTrigger];
+  v4 = INIntentSlotValueTransformFromTemporalEventTrigger(temporalEventTrigger);
 
   return v4;
 }
 
-- (void)setBinaryValue:(int64_t)a3
+- (void)setBinaryValue:(int64_t)value
 {
-  v3 = a3 - 1;
-  v4 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = value - 1;
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 2)
   {
-    [v4 setHasBinaryValue:0];
+    [_typedBackingStore setHasBinaryValue:0];
   }
 
   else
   {
-    [v4 setBinaryValue:?];
+    [_typedBackingStore setBinaryValue:?];
   }
 }
 
 - (int64_t)binaryValue
 {
-  v3 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v4 = [v3 hasBinaryValue];
-  v5 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v6 = [v5 binaryValue];
-  if (((v6 - 1 < 3) & v4) != 0)
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  hasBinaryValue = [_typedBackingStore hasBinaryValue];
+  _typedBackingStore2 = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  binaryValue = [_typedBackingStore2 binaryValue];
+  if (((binaryValue - 1 < 3) & hasBinaryValue) != 0)
   {
-    v7 = v6;
+    v7 = binaryValue;
   }
 
   else
@@ -124,64 +124,64 @@
   return v7;
 }
 
-- (void)setSettingMetadata:(id)a3
+- (void)setSettingMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToSettingMetadata(v4);
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToSettingMetadata(metadataCopy);
 
-  [v6 setSettingMetadata:v5];
+  [_typedBackingStore setSettingMetadata:v5];
 }
 
 - (INSettingMetadata)settingMetadata
 {
-  v2 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v3 = [v2 settingMetadata];
-  v4 = INIntentSlotValueTransformFromSettingMetadata(v3);
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  settingMetadata = [_typedBackingStore settingMetadata];
+  v4 = INIntentSlotValueTransformFromSettingMetadata(settingMetadata);
 
   return v4;
 }
 
-- (INSetBinarySettingIntent)initWithSettingMetadata:(id)a3 binaryValue:(int64_t)a4 temporalEventTrigger:(id)a5
+- (INSetBinarySettingIntent)initWithSettingMetadata:(id)metadata binaryValue:(int64_t)value temporalEventTrigger:(id)trigger
 {
-  v8 = a3;
-  v9 = a5;
+  metadataCopy = metadata;
+  triggerCopy = trigger;
   v13.receiver = self;
   v13.super_class = INSetBinarySettingIntent;
   v10 = [(INIntent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(INSetBinarySettingIntent *)v10 setSettingMetadata:v8];
-    [(INSetBinarySettingIntent *)v11 setBinaryValue:a4];
-    [(INSetBinarySettingIntent *)v11 setTemporalEventTrigger:v9];
+    [(INSetBinarySettingIntent *)v10 setSettingMetadata:metadataCopy];
+    [(INSetBinarySettingIntent *)v11 setBinaryValue:value];
+    [(INSetBinarySettingIntent *)v11 setTemporalEventTrigger:triggerCopy];
   }
 
   return v11;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetBinarySettingIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetBinarySettingIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

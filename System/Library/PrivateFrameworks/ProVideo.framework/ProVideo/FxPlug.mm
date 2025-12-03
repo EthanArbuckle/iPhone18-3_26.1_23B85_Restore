@@ -1,19 +1,19 @@
 @interface FxPlug
-+ (id)fxPlugWithDescriptor:(id)a3 andHost:(id)a4;
-+ (id)pinInPinList:(id)a3 withUUID:(id)a4;
-+ (unsigned)leastCommonMultipleOfA:(unsigned int)a3 andB:(unsigned int)a4;
-- (BOOL)renderImageOutputAtTime:(double)a3 withOptions:(id)a4 inFxContext:(id)a5 inRegionOfInterest:(id)a6;
-- (FxPlug)initWithDescriptor:(id)a3 andHost:(id)a4;
-- (id)inputPinWithUUID:(id)a3;
++ (id)fxPlugWithDescriptor:(id)descriptor andHost:(id)host;
++ (id)pinInPinList:(id)list withUUID:(id)d;
++ (unsigned)leastCommonMultipleOfA:(unsigned int)a andB:(unsigned int)b;
+- (BOOL)renderImageOutputAtTime:(double)time withOptions:(id)options inFxContext:(id)context inRegionOfInterest:(id)interest;
+- (FxPlug)initWithDescriptor:(id)descriptor andHost:(id)host;
+- (id)inputPinWithUUID:(id)d;
 - (id)inputPins;
-- (id)outputPinWithUUID:(id)a3;
+- (id)outputPinWithUUID:(id)d;
 - (id)outputPins;
 - (void)dealloc;
 @end
 
 @implementation FxPlug
 
-- (FxPlug)initWithDescriptor:(id)a3 andHost:(id)a4
+- (FxPlug)initWithDescriptor:(id)descriptor andHost:(id)host
 {
   v9.receiver = self;
   v9.super_class = FxPlug;
@@ -24,8 +24,8 @@
     v6->_priv = v7;
     if (v7)
     {
-      v6->_priv->var1 = a3;
-      v6->_priv->var0 = a4;
+      v6->_priv->var1 = descriptor;
+      v6->_priv->var0 = host;
     }
   }
 
@@ -73,42 +73,42 @@
   [(FxPlug *)&v13 dealloc];
 }
 
-+ (id)pinInPinList:(id)a3 withUUID:(id)a4
++ (id)pinInPinList:(id)list withUUID:(id)d
 {
-  v5 = [a3 objectEnumerator];
+  objectEnumerator = [list objectEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    v7 = v6;
+    nextObject = [objectEnumerator nextObject];
+    v7 = nextObject;
   }
 
-  while (v6 && ![objc_msgSend(v6 "uuid")]);
+  while (nextObject && ![objc_msgSend(nextObject "uuid")]);
   return v7;
 }
 
-- (id)inputPinWithUUID:(id)a3
+- (id)inputPinWithUUID:(id)d
 {
   v5 = objc_opt_class();
-  v6 = [(FxPlug *)self inputPins];
+  inputPins = [(FxPlug *)self inputPins];
 
-  return [v5 pinInPinList:v6 withUUID:a3];
+  return [v5 pinInPinList:inputPins withUUID:d];
 }
 
-- (id)outputPinWithUUID:(id)a3
+- (id)outputPinWithUUID:(id)d
 {
   v5 = objc_opt_class();
-  v6 = [(FxPlug *)self outputPins];
+  outputPins = [(FxPlug *)self outputPins];
 
-  return [v5 pinInPinList:v6 withUUID:a3];
+  return [v5 pinInPinList:outputPins withUUID:d];
 }
 
-+ (id)fxPlugWithDescriptor:(id)a3 andHost:(id)a4
++ (id)fxPlugWithDescriptor:(id)descriptor andHost:(id)host
 {
-  v6 = [a3 plugInClass];
-  v7 = [v6 isSubclassOfClass:objc_opt_class()];
-  v8 = NSStringFromClass(v6);
+  plugInClass = [descriptor plugInClass];
+  v7 = [plugInClass isSubclassOfClass:objc_opt_class()];
+  v8 = NSStringFromClass(plugInClass);
   FxDebugAssert(v7, &cfstr_IsNotASubclass.isa, v9, v10, v11, v12, v13, v14, v8);
-  v15 = [[v6 alloc] initWithDescriptor:a3 andHost:a4];
+  v15 = [[plugInClass alloc] initWithDescriptor:descriptor andHost:host];
 
   return v15;
 }
@@ -137,49 +137,49 @@
   return result;
 }
 
-- (BOOL)renderImageOutputAtTime:(double)a3 withOptions:(id)a4 inFxContext:(id)a5 inRegionOfInterest:(id)a6
+- (BOOL)renderImageOutputAtTime:(double)time withOptions:(id)options inFxContext:(id)context inRegionOfInterest:(id)interest
 {
-  v10 = [(FxPlug *)self imageOutputPin];
-  if (v10)
+  imageOutputPin = [(FxPlug *)self imageOutputPin];
+  if (imageOutputPin)
   {
-    v10 = [v10 stream];
-    if (v10)
+    imageOutputPin = [imageOutputPin stream];
+    if (imageOutputPin)
     {
-      v10 = [v10 createSampleAtTime:a3];
-      if (v10)
+      imageOutputPin = [imageOutputPin createSampleAtTime:time];
+      if (imageOutputPin)
       {
-        v11 = v10;
-        [v10 setRegionOfInterest:a6];
-        [v11 setContext:a5];
-        LOBYTE(v10) = [v11 evaluateWithOptions:a4] != 0;
+        v11 = imageOutputPin;
+        [imageOutputPin setRegionOfInterest:interest];
+        [v11 setContext:context];
+        LOBYTE(imageOutputPin) = [v11 evaluateWithOptions:options] != 0;
       }
     }
   }
 
-  return v10;
+  return imageOutputPin;
 }
 
-+ (unsigned)leastCommonMultipleOfA:(unsigned int)a3 andB:(unsigned int)a4
++ (unsigned)leastCommonMultipleOfA:(unsigned int)a andB:(unsigned int)b
 {
-  if (a4)
+  if (b)
   {
-    v4 = a4;
-    v5 = a3;
+    bCopy = b;
+    aCopy = a;
     do
     {
-      v6 = v4;
-      v4 = v5 % v4;
-      v5 = v6;
+      aCopy2 = bCopy;
+      bCopy = aCopy % bCopy;
+      aCopy = aCopy2;
     }
 
-    while (v4);
-    return a4 * a3 / v6;
+    while (bCopy);
+    return b * a / aCopy2;
   }
 
-  v6 = a3;
-  if (a3)
+  aCopy2 = a;
+  if (a)
   {
-    return a4 * a3 / v6;
+    return b * a / aCopy2;
   }
 
   return 0;

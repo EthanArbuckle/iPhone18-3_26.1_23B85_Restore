@@ -1,25 +1,25 @@
 @interface NTKCFaceDetailViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetHeaderInteractableElements;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKCFaceDetailViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_currentSections" withType:"NSMutableArray"];
-  [v3 validateClass:@"NTKCFaceDetailComplicationSectionController"];
-  [v3 validateClass:@"NTKCFaceDetailViewController" hasInstanceMethod:@"tableView: didSelectRowAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_addButton" withType:"UIButton"];
-  [v3 validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_faceName" withType:"UILabel"];
-  [v3 validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_headerView" withType:"_NTKCDetailHeaderView"];
-  [v3 validateClass:@"_NTKCDetailHeaderView"];
-  [v3 validateClass:@"_NTKCDetailHeaderView" hasInstanceMethod:@"interactableSubviews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_NTKCDetailHeaderView" hasInstanceMethod:@"setInteractableSubviews:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_currentSections" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"NTKCFaceDetailComplicationSectionController"];
+  [validationsCopy validateClass:@"NTKCFaceDetailViewController" hasInstanceMethod:@"tableView: didSelectRowAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_addButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_faceName" withType:"UILabel"];
+  [validationsCopy validateClass:@"NTKCFaceDetailViewController" hasInstanceVariable:@"_headerView" withType:"_NTKCDetailHeaderView"];
+  [validationsCopy validateClass:@"_NTKCDetailHeaderView"];
+  [validationsCopy validateClass:@"_NTKCDetailHeaderView" hasInstanceMethod:@"interactableSubviews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_NTKCDetailHeaderView" hasInstanceMethod:@"setInteractableSubviews:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,14 +38,14 @@
   [(NTKCFaceDetailViewControllerAccessibility *)self _axSetHeaderInteractableElements];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = NTKCFaceDetailViewControllerAccessibility;
-  [(NTKCFaceDetailViewControllerAccessibility *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [v7 section];
+  [(NTKCFaceDetailViewControllerAccessibility *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -63,8 +63,8 @@
     AXSafeClassFromString();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = [NSIndexPath indexPathForRow:v10 + 1 inSection:v8];
-      v12 = [v6 cellForRowAtIndexPath:v11];
+      v11 = [NSIndexPath indexPathForRow:v10 + 1 inSection:section];
+      v12 = [viewCopy cellForRowAtIndexPath:v11];
 
       UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, v12);
     }

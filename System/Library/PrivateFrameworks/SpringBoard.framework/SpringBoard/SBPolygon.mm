@@ -1,58 +1,58 @@
 @interface SBPolygon
-+ (CGPoint)_pointAtIndex:(unint64_t)a3 ofPointArray:(id)a4;
-+ (id)_sortPoints:(id)a3;
++ (CGPoint)_pointAtIndex:(unint64_t)index ofPointArray:(id)array;
++ (id)_sortPoints:(id)points;
 - (BOOL)_isLeftHanded;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)_centroid;
-- (CGPoint)_pointAtIndex:(unint64_t)a3;
+- (CGPoint)_pointAtIndex:(unint64_t)index;
 - (CGPoint)_weightedCentroid;
-- (SBPolygon)initWithPoints:(CGPoint *)a3 pointCount:(unint64_t)a4;
-- (SBPolygon)initWithPoints:(id)a3;
+- (SBPolygon)initWithPoints:(CGPoint *)points pointCount:(unint64_t)count;
+- (SBPolygon)initWithPoints:(id)points;
 - (double)_baseOrientation;
 - (double)_meanFingertipRowAngle;
 - (double)_meanRadius;
 - (double)_perimeter;
-- (double)_weightAtIndex:(unint64_t)a3;
+- (double)_weightAtIndex:(unint64_t)index;
 - (double)distanceOfFarthestPointFromCentroid;
 - (id)description;
 - (unint64_t)_thumbIndex;
 - (unint64_t)pointCount;
-- (void)_applyTransform:(CGAffineTransform *)a3;
+- (void)_applyTransform:(CGAffineTransform *)transform;
 - (void)_flipHorizontally;
-- (void)_rotate:(double)a3;
-- (void)_scale:(double)a3;
-- (void)_translate:(CGPoint)a3;
+- (void)_rotate:(double)_rotate;
+- (void)_scale:(double)_scale;
+- (void)_translate:(CGPoint)_translate;
 - (void)_updateCentroid;
 - (void)_updateProperties;
 - (void)_updateWeightedCentroid;
 - (void)_updateWeights;
-- (void)enumeratePointsUsingBlock:(id)a3;
+- (void)enumeratePointsUsingBlock:(id)block;
 @end
 
 @implementation SBPolygon
 
-- (SBPolygon)initWithPoints:(CGPoint *)a3 pointCount:(unint64_t)a4
+- (SBPolygon)initWithPoints:(CGPoint *)points pointCount:(unint64_t)count
 {
-  v4 = a4;
-  if (a4 >= 6)
+  countCopy = count;
+  if (count >= 6)
   {
     [SBPolygon initWithPoints:a2 pointCount:self];
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4];
-  if (v4)
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:countCopy];
+  if (countCopy)
   {
-    p_y = &a3->y;
+    p_y = &points->y;
     do
     {
       v9 = [MEMORY[0x277CCAE60] valueWithCGPoint:{*(p_y - 1), *p_y}];
       [v7 addObject:v9];
 
       p_y += 2;
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   v10 = [(SBPolygon *)self initWithPoints:v7];
@@ -60,15 +60,15 @@
   return v10;
 }
 
-- (SBPolygon)initWithPoints:(id)a3
+- (SBPolygon)initWithPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v8.receiver = self;
   v8.super_class = SBPolygon;
   v5 = [(SBPolygon *)&v8 init];
   if (v5)
   {
-    v6 = [SBPolygon _sortPoints:v4];
+    v6 = [SBPolygon _sortPoints:pointsCopy];
     [(SBPolygon *)v5 _setPoints:v6];
     [(SBPolygon *)v5 _updateProperties];
   }
@@ -78,7 +78,7 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(SBPolygon *)self pointCount])
   {
     v4 = 0;
@@ -86,7 +86,7 @@
     {
       [(SBPolygon *)self _pointAtIndex:v4];
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%f, %f)", v5, v6];
-      [v3 addObject:v7];
+      [array addObject:v7];
 
       ++v4;
     }
@@ -98,15 +98,15 @@
   v9 = objc_opt_class();
   [(SBPolygon *)self _isLeftHanded];
   v10 = NSStringFromBOOL();
-  v11 = [v8 stringWithFormat:@"<%@:%p points=%@ leftHanded=%@ thumbIndex: %lu>", v9, self, v3, v10, -[SBPolygon _thumbIndex](self, "_thumbIndex")];
+  v11 = [v8 stringWithFormat:@"<%@:%p points=%@ leftHanded=%@ thumbIndex: %lu>", v9, self, array, v10, -[SBPolygon _thumbIndex](self, "_thumbIndex")];
 
   return v11;
 }
 
 - (unint64_t)pointCount
 {
-  v2 = [(SBPolygon *)self points];
-  v3 = [v2 count];
+  points = [(SBPolygon *)self points];
+  v3 = [points count];
 
   return v3;
 }
@@ -143,19 +143,19 @@ uint64_t __48__SBPolygon_distanceOfFarthestPointFromCentroid__block_invoke(uint6
   return result;
 }
 
-- (void)enumeratePointsUsingBlock:(id)a3
+- (void)enumeratePointsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = 0;
   if ([(SBPolygon *)self pointCount])
   {
     v5 = 1;
     do
     {
-      if (v4)
+      if (blockCopy)
       {
         [(SBPolygon *)self _pointAtIndex:v5 - 1];
-        v4[2](v4, v5 - 1, &v6);
+        blockCopy[2](blockCopy, v5 - 1, &v6);
       }
 
       if (v5 >= [(SBPolygon *)self pointCount])
@@ -170,10 +170,10 @@ uint64_t __48__SBPolygon_distanceOfFarthestPointFromCentroid__block_invoke(uint6
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -183,11 +183,11 @@ uint64_t __48__SBPolygon_distanceOfFarthestPointFromCentroid__block_invoke(uint6
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SBPolygon *)self points];
-      v7 = [(SBPolygon *)v5 points];
+      v5 = equalCopy;
+      points = [(SBPolygon *)self points];
+      points2 = [(SBPolygon *)v5 points];
 
-      v8 = [v6 isEqualToArray:v7];
+      v8 = [points isEqualToArray:points2];
     }
 
     else
@@ -219,17 +219,17 @@ uint64_t __48__SBPolygon_distanceOfFarthestPointFromCentroid__block_invoke(uint6
   return v3;
 }
 
-- (CGPoint)_pointAtIndex:(unint64_t)a3
+- (CGPoint)_pointAtIndex:(unint64_t)index
 {
-  [SBPolygon _pointAtIndex:a3 ofPointArray:self->_mutablePoints];
+  [SBPolygon _pointAtIndex:index ofPointArray:self->_mutablePoints];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (double)_weightAtIndex:(unint64_t)a3
+- (double)_weightAtIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_weights objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_weights objectAtIndex:index];
   [v3 doubleValue];
   v5 = v4;
 
@@ -261,8 +261,8 @@ uint64_t __48__SBPolygon_distanceOfFarthestPointFromCentroid__block_invoke(uint6
   v4[4] = &v9;
   v4[5] = &v5;
   [(SBPolygon *)self enumeratePointsUsingBlock:v4];
-  v3 = [(SBPolygon *)self pointCount];
-  [(SBPolygon *)self _setCentroid:v10[3] / v3, v6[3] / v3];
+  pointCount = [(SBPolygon *)self pointCount];
+  [(SBPolygon *)self _setCentroid:v10[3] / pointCount, v6[3] / pointCount];
   _Block_object_dispose(&v5, 8);
   _Block_object_dispose(&v9, 8);
 }
@@ -278,12 +278,12 @@ double __28__SBPolygon__updateCentroid__block_invoke(uint64_t a1, double a2, dou
 
 - (void)_updateWeights
 {
-  v3 = [(SBPolygon *)self pointCount];
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v3];
+  pointCount = [(SBPolygon *)self pointCount];
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:pointCount];
   v6 = v4;
-  if (v3)
+  if (pointCount)
   {
-    v5 = v3;
+    v5 = pointCount;
     do
     {
       [v4 addObject:&unk_283370FE8];
@@ -292,7 +292,7 @@ double __28__SBPolygon__updateCentroid__block_invoke(uint64_t a1, double a2, dou
     }
 
     while (v5);
-    if (v3 == 5)
+    if (pointCount == 5)
     {
       [v6 setObject:&unk_28336F340 atIndexedSubscript:{-[SBPolygon _thumbIndex](self, "_thumbIndex")}];
       v4 = v6;
@@ -380,7 +380,7 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)_applyTransform:(CGAffineTransform *)a3
+- (void)_applyTransform:(CGAffineTransform *)transform
 {
   [(SBPolygon *)self _centroid];
   v14 = v6;
@@ -394,10 +394,10 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
     do
     {
       [(SBPolygon *)self _pointAtIndex:v7, *&v13];
-      v16 = vaddq_f64(v13, vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v10 - v14), *&a3->a, v9 - v15)));
-      v11 = [(SBPolygon *)self _points];
+      v16 = vaddq_f64(v13, vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v10 - v14), *&transform->a, v9 - v15)));
+      _points = [(SBPolygon *)self _points];
       v12 = [MEMORY[0x277CCAE60] valueWithCGPoint:*&v16];
-      [v11 setObject:v12 atIndexedSubscript:v7];
+      [_points setObject:v12 atIndexedSubscript:v7];
 
       ++v7;
     }
@@ -410,23 +410,23 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
 {
   CGAffineTransformMakeScale(&v13, -1.0, 1.0);
   [(SBPolygon *)self _applyTransform:&v13];
-  v3 = [(SBPolygon *)self pointCount];
-  v4 = v3 - 1;
-  if (v3 != 1)
+  pointCount = [(SBPolygon *)self pointCount];
+  v4 = pointCount - 1;
+  if (pointCount != 1)
   {
     v5 = 1;
     do
     {
-      v6 = [(SBPolygon *)self _points];
-      v7 = [v6 objectAtIndex:v5 - 1];
+      _points = [(SBPolygon *)self _points];
+      v7 = [_points objectAtIndex:v5 - 1];
 
-      v8 = [(SBPolygon *)self _points];
-      v9 = [(SBPolygon *)self _points];
-      v10 = [v9 objectAtIndex:v4];
-      [v8 setObject:v10 atIndexedSubscript:v5 - 1];
+      _points2 = [(SBPolygon *)self _points];
+      _points3 = [(SBPolygon *)self _points];
+      v10 = [_points3 objectAtIndex:v4];
+      [_points2 setObject:v10 atIndexedSubscript:v5 - 1];
 
-      v11 = [(SBPolygon *)self _points];
-      [v11 setObject:v7 atIndexedSubscript:v4];
+      _points4 = [(SBPolygon *)self _points];
+      [_points4 setObject:v7 atIndexedSubscript:v4];
     }
 
     while (v5++ < --v4);
@@ -435,25 +435,25 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
   [(SBPolygon *)self _updateProperties];
 }
 
-- (void)_scale:(double)a3
+- (void)_scale:(double)_scale
 {
-  CGAffineTransformMakeScale(&v4, a3, a3);
+  CGAffineTransformMakeScale(&v4, _scale, _scale);
   [(SBPolygon *)self _applyTransform:&v4];
   [(SBPolygon *)self _updateCentroid];
   [(SBPolygon *)self _updateWeightedCentroid];
 }
 
-- (void)_rotate:(double)a3
+- (void)_rotate:(double)_rotate
 {
-  CGAffineTransformMakeRotation(&v4, a3);
+  CGAffineTransformMakeRotation(&v4, _rotate);
   [(SBPolygon *)self _applyTransform:&v4];
   [(SBPolygon *)self _updateCentroid];
   [(SBPolygon *)self _updateWeightedCentroid];
 }
 
-- (void)_translate:(CGPoint)a3
+- (void)_translate:(CGPoint)_translate
 {
-  CGAffineTransformMakeTranslation(&v4, a3.x, a3.y);
+  CGAffineTransformMakeTranslation(&v4, _translate.x, _translate.y);
   [(SBPolygon *)self _applyTransform:&v4];
   [(SBPolygon *)self _updateCentroid];
   [(SBPolygon *)self _updateWeightedCentroid];
@@ -476,8 +476,8 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
 
 - (double)_meanFingertipRowAngle
 {
-  v3 = [(SBPolygon *)self pointCount];
-  switch(v3)
+  pointCount = [(SBPolygon *)self pointCount];
+  switch(pointCount)
   {
     case 5uLL:
       if (![(SBPolygon *)self _isLeftHanded])
@@ -491,7 +491,7 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
         [(SBPolygon *)self _pointAtIndex:3];
         v14 = v23;
         v16 = v24;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 4;
         goto LABEL_11;
       }
@@ -516,10 +516,10 @@ double __36__SBPolygon__updateWeightedCentroid__block_invoke(uint64_t a1, uint64
   [(SBPolygon *)self _pointAtIndex:2];
   v14 = v13;
   v16 = v15;
-  v17 = self;
+  selfCopy2 = self;
   v18 = 3;
 LABEL_11:
-  [(SBPolygon *)v17 _pointAtIndex:v18];
+  [(SBPolygon *)selfCopy2 _pointAtIndex:v18];
 
   return mean_tetragon_orientation(v6, v8, v10, v12, v14, v16, v25, v26);
 }
@@ -572,9 +572,9 @@ double __24__SBPolygon__meanRadius__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-+ (CGPoint)_pointAtIndex:(unint64_t)a3 ofPointArray:(id)a4
++ (CGPoint)_pointAtIndex:(unint64_t)index ofPointArray:(id)array
 {
-  v4 = [a4 objectAtIndex:a3];
+  v4 = [array objectAtIndex:index];
   [v4 CGPointValue];
   v6 = v5;
   v8 = v7;
@@ -586,10 +586,10 @@ double __24__SBPolygon__meanRadius__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-+ (id)_sortPoints:(id)a3
++ (id)_sortPoints:(id)points
 {
-  v4 = a3;
-  v5 = [v4 count];
+  pointsCopy = points;
+  v5 = [pointsCopy count];
   if (v5)
   {
     v6 = v5;
@@ -600,7 +600,7 @@ double __24__SBPolygon__meanRadius__block_invoke(uint64_t a1, uint64_t a2)
     v11 = 1;
     do
     {
-      [a1 _pointAtIndex:v7 ofPointArray:v4];
+      [self _pointAtIndex:v7 ofPointArray:pointsCopy];
       v14 = v7 + 1;
       if (v6 > v7 + 1)
       {
@@ -608,7 +608,7 @@ double __24__SBPolygon__meanRadius__block_invoke(uint64_t a1, uint64_t a2)
         v16 = v13;
         for (i = v11; v6 > i; ++i)
         {
-          [a1 _pointAtIndex:i ofPointArray:v4];
+          [self _pointAtIndex:i ofPointArray:pointsCopy];
           v19 = v18;
           v21 = v20;
           UIDistanceBetweenPoints();
@@ -654,7 +654,7 @@ double __24__SBPolygon__meanRadius__block_invoke(uint64_t a1, uint64_t a2)
             v34 = 3.40282347e38;
             do
             {
-              [a1 _pointAtIndex:v30 ofPointArray:v4];
+              [self _pointAtIndex:v30 ofPointArray:pointsCopy];
               v37 = -((v36 - v15) * v32 + v31 * (v35 - v16)) / v24;
               if (v37 > v33)
               {
@@ -705,14 +705,14 @@ LABEL_30:
     while (v14 != v6);
     if (v10 > 0.0)
     {
-      [a1 _pointAtIndex:v8 ofPointArray:v4];
+      [self _pointAtIndex:v8 ofPointArray:pointsCopy];
       v39 = v38;
       v41 = v40;
-      [a1 _pointAtIndex:v9 ofPointArray:v4];
+      [self _pointAtIndex:v9 ofPointArray:pointsCopy];
       v43 = v42;
       v45 = v44;
-      v46 = [MEMORY[0x277CBEB18] array];
-      v47 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v48 = 0;
       v49 = v43 - v39;
       v50 = v45 - v41;
@@ -720,34 +720,34 @@ LABEL_30:
       {
         if (v8 != v48 && v9 != v48)
         {
-          [a1 _pointAtIndex:v48 ofPointArray:v4];
+          [self _pointAtIndex:v48 ofPointArray:pointsCopy];
           v52 = v51;
           v54 = v53;
           v55 = v50 * (v53 - v41) + v49 * (v51 - v39);
-          if ([v47 count])
+          if ([array2 count])
           {
-            if ([v47 count])
+            if ([array2 count])
             {
               v56 = 0;
               do
               {
-                v57 = [v47 objectAtIndex:v56];
+                v57 = [array2 objectAtIndex:v56];
                 [v57 doubleValue];
                 v59 = v58;
 
                 if (v55 <= v59)
                 {
                   v60 = [MEMORY[0x277CCABB0] numberWithDouble:v55];
-                  [v47 insertObject:v60 atIndex:v56];
+                  [array2 insertObject:v60 atIndex:v56];
 
                   v61 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v52, v54}];
-                  [v46 insertObject:v61 atIndex:v56];
+                  [array insertObject:v61 atIndex:v56];
                 }
 
                 ++v56;
               }
 
-              while ([v47 count] > v56 && v55 > v59);
+              while ([array2 count] > v56 && v55 > v59);
               if (v55 <= v59)
               {
                 goto LABEL_48;
@@ -755,19 +755,19 @@ LABEL_30:
             }
 
             v62 = [MEMORY[0x277CCABB0] numberWithDouble:v55];
-            [v47 addObject:v62];
+            [array2 addObject:v62];
 
             v63 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v52, v54}];
-            v64 = v46;
+            v64 = array;
           }
 
           else
           {
             v65 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v52, v54}];
-            [v46 addObject:v65];
+            [array addObject:v65];
 
             v63 = [MEMORY[0x277CCABB0] numberWithDouble:v55];
-            v64 = v47;
+            v64 = array2;
           }
 
           [v64 addObject:v63];
@@ -777,14 +777,14 @@ LABEL_48:
         if (++v48 == v6)
         {
           v66 = MEMORY[0x277CCAE60];
-          [a1 _pointAtIndex:v8 ofPointArray:v4];
+          [self _pointAtIndex:v8 ofPointArray:pointsCopy];
           v67 = [v66 valueWithCGPoint:?];
-          [v46 insertObject:v67 atIndex:0];
+          [array insertObject:v67 atIndex:0];
 
           v68 = MEMORY[0x277CCAE60];
-          [a1 _pointAtIndex:v9 ofPointArray:v4];
+          [self _pointAtIndex:v9 ofPointArray:pointsCopy];
           v69 = [v68 valueWithCGPoint:?];
-          [v46 insertObject:v69 atIndex:v6 - 1];
+          [array insertObject:v69 atIndex:v6 - 1];
 
           goto LABEL_51;
         }
@@ -792,10 +792,10 @@ LABEL_48:
     }
   }
 
-  v46 = v4;
+  array = pointsCopy;
 LABEL_51:
 
-  return v46;
+  return array;
 }
 
 - (CGPoint)_centroid

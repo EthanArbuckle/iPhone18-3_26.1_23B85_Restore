@@ -1,24 +1,24 @@
 @interface AudioDevice
 - (PLAudioAgent)ctx;
-- (id)initInputDeviceWithCtx:(id)a3;
-- (id)initOutputDeviceWithCtx:(id)a3;
+- (id)initInputDeviceWithCtx:(id)ctx;
+- (id)initOutputDeviceWithCtx:(id)ctx;
 - (void)cleanAndUpdateDeviceInfo;
-- (void)flushAndUpdateDeviceInfoWithBlock:(id)a3;
+- (void)flushAndUpdateDeviceInfoWithBlock:(id)block;
 - (void)initAudioPropertyHandler;
 @end
 
 @implementation AudioDevice
 
-- (id)initInputDeviceWithCtx:(id)a3
+- (id)initInputDeviceWithCtx:(id)ctx
 {
-  v4 = a3;
+  ctxCopy = ctx;
   v8.receiver = self;
   v8.super_class = AudioDevice;
   v5 = [(AudioDevice *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_ctx, v4);
+    objc_storeWeak(&v5->_ctx, ctxCopy);
     v6->_isInput = 1;
     [(AudioDevice *)v6 initAudioPropertyHandler];
   }
@@ -26,16 +26,16 @@
   return v6;
 }
 
-- (id)initOutputDeviceWithCtx:(id)a3
+- (id)initOutputDeviceWithCtx:(id)ctx
 {
-  v4 = a3;
+  ctxCopy = ctx;
   v8.receiver = self;
   v8.super_class = AudioDevice;
   v5 = [(AudioDevice *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_ctx, v4);
+    objc_storeWeak(&v5->_ctx, ctxCopy);
     v6->_isInput = 0;
     [(AudioDevice *)v6 initAudioPropertyHandler];
   }
@@ -70,45 +70,45 @@ void __39__AudioDevice_initAudioPropertyHandler__block_invoke(uint64_t a1, uint6
   }
 }
 
-- (void)flushAndUpdateDeviceInfoWithBlock:(id)a3
+- (void)flushAndUpdateDeviceInfoWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_ctx);
   if (WeakRetained)
   {
     if (self->_isDirty)
     {
-      v6 = [MEMORY[0x277CBEAA8] monotonicDate];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
       lastUpdateTime = self->_lastUpdateTime;
-      self->_lastUpdateTime = v6;
+      self->_lastUpdateTime = monotonicDate;
 
-      if (v4)
+      if (blockCopy)
       {
-        v4[2](v4);
+        blockCopy[2](blockCopy);
       }
     }
 
     else
     {
-      if (v4)
+      if (blockCopy)
       {
-        v4[2](v4);
+        blockCopy[2](blockCopy);
       }
 
       self->_isDirty = 1;
-      v8 = [MEMORY[0x277CBEAA8] monotonicDate];
+      monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
       v9 = self->_lastUpdateTime;
-      self->_lastUpdateTime = v8;
+      self->_lastUpdateTime = monotonicDate2;
 
       v10 = dispatch_time(0, 10000000000);
-      v11 = [WeakRetained workQueue];
+      workQueue = [WeakRetained workQueue];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __49__AudioDevice_flushAndUpdateDeviceInfoWithBlock___block_invoke;
       v12[3] = &unk_278259658;
       v13 = WeakRetained;
-      v14 = self;
-      dispatch_after(v10, v11, v12);
+      selfCopy = self;
+      dispatch_after(v10, workQueue, v12);
     }
   }
 }

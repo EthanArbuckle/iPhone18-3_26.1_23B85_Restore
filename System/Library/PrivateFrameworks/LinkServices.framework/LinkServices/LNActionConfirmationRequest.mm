@@ -1,21 +1,21 @@
 @interface LNActionConfirmationRequest
-- (LNActionConfirmationRequest)initWithCoder:(id)a3;
-- (LNActionConfirmationRequest)initWithIdentifier:(id)a3 systemStyle:(id)a4 result:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)respondWithConfirmation:(BOOL)a3;
-- (void)respondWithError:(id)a3;
-- (void)respondWithUpdates:(id)a3;
-- (void)respondWithValue:(id)a3;
+- (LNActionConfirmationRequest)initWithCoder:(id)coder;
+- (LNActionConfirmationRequest)initWithIdentifier:(id)identifier systemStyle:(id)style result:(id)result;
+- (void)encodeWithCoder:(id)coder;
+- (void)respondWithConfirmation:(BOOL)confirmation;
+- (void)respondWithError:(id)error;
+- (void)respondWithUpdates:(id)updates;
+- (void)respondWithValue:(id)value;
 @end
 
 @implementation LNActionConfirmationRequest
 
-- (LNActionConfirmationRequest)initWithCoder:(id)a3
+- (LNActionConfirmationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemStyle"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemStyle"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
 
   if (v5)
   {
@@ -29,40 +29,40 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNActionConfirmationRequest *)self initWithIdentifier:v5 systemStyle:v6 result:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionConfirmationRequest *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNActionConfirmationRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(LNActionConfirmationRequest *)self systemStyle];
-  [v4 encodeObject:v6 forKey:@"systemStyle"];
+  systemStyle = [(LNActionConfirmationRequest *)self systemStyle];
+  [coderCopy encodeObject:systemStyle forKey:@"systemStyle"];
 
-  v7 = [(LNActionConfirmationRequest *)self result];
-  [v4 encodeObject:v7 forKey:@"result"];
+  result = [(LNActionConfirmationRequest *)self result];
+  [coderCopy encodeObject:result forKey:@"result"];
 }
 
-- (void)respondWithError:(id)a3
+- (void)respondWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v6 = [(LNRequest *)self responseContext];
-    v7 = [v4 errorWithResponseContext:v6];
+    responseContext = [(LNRequest *)self responseContext];
+    v7 = [errorCopy errorWithResponseContext:responseContext];
     completionHandler[2](completionHandler, 0, v7);
 
     v8 = self->_completionHandler;
@@ -75,27 +75,27 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNActionConfirmationRequest *)self identifier];
+      identifier = [(LNActionConfirmationRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithUpdates:(id)a3
+- (void)respondWithUpdates:(id)updates
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   if (self->_completionHandler)
   {
     v5 = [LNActionConfirmationResponse alloc];
-    v6 = [(LNActionConfirmationRequest *)self identifier];
-    v7 = [(LNRequest *)self responseContext];
-    v8 = [(LNActionConfirmationResponse *)v5 initWithIdentifier:v6 context:v7 value:0 updates:v4];
+    identifier = [(LNActionConfirmationRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v8 = [(LNActionConfirmationResponse *)v5 initWithIdentifier:identifier context:responseContext value:0 updates:updatesCopy];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -108,27 +108,27 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNActionConfirmationRequest *)self identifier];
+      identifier2 = [(LNActionConfirmationRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier2;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithValue:(id)a3
+- (void)respondWithValue:(id)value
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   if (self->_completionHandler)
   {
     v5 = [LNActionConfirmationResponse alloc];
-    v6 = [(LNActionConfirmationRequest *)self identifier];
-    v7 = [(LNRequest *)self responseContext];
-    v8 = [(LNActionConfirmationResponse *)v5 initWithIdentifier:v6 context:v7 value:v4 updates:0];
+    identifier = [(LNActionConfirmationRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v8 = [(LNActionConfirmationResponse *)v5 initWithIdentifier:identifier context:responseContext value:valueCopy updates:0];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -141,21 +141,21 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNActionConfirmationRequest *)self identifier];
+      identifier2 = [(LNActionConfirmationRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier2;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)respondWithConfirmation:(BOOL)a3
+- (void)respondWithConfirmation:(BOOL)confirmation
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!confirmation)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
     [(LNActionConfirmationRequest *)self respondWithError:?];
@@ -165,9 +165,9 @@
   if (self->_completionHandler)
   {
     v4 = [LNActionConfirmationResponse alloc];
-    v5 = [(LNActionConfirmationRequest *)self identifier];
-    v6 = [(LNRequest *)self responseContext];
-    v13 = [(LNActionConfirmationResponse *)v4 initWithIdentifier:v5 context:v6 value:0 updates:0];
+    identifier = [(LNActionConfirmationRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v13 = [(LNActionConfirmationResponse *)v4 initWithIdentifier:identifier context:responseContext value:0 updates:0];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -183,25 +183,25 @@ LABEL_5:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = objc_opt_class();
-    v11 = [(LNActionConfirmationRequest *)self identifier];
+    identifier2 = [(LNActionConfirmationRequest *)self identifier];
     *buf = 138543618;
     v15 = v10;
     v16 = 2114;
-    v17 = v11;
+    v17 = identifier2;
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (LNActionConfirmationRequest)initWithIdentifier:(id)a3 systemStyle:(id)a4 result:(id)a5
+- (LNActionConfirmationRequest)initWithIdentifier:(id)identifier systemStyle:(id)style result:(id)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v12)
+  identifierCopy = identifier;
+  styleCopy = style;
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"LNActionConfirmationRequest.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"result"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionConfirmationRequest.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"result"}];
   }
 
   v21.receiver = self;
@@ -210,9 +210,9 @@ LABEL_5:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_systemStyle, a4);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_systemStyle, style);
+    v15 = [resultCopy copy];
     v16 = v14->_result;
     v14->_result = v15;
 

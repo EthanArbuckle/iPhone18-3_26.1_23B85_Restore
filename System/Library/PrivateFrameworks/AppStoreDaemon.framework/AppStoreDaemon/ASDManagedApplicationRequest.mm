@@ -1,14 +1,14 @@
 @interface ASDManagedApplicationRequest
-- (ASDManagedApplicationRequest)initWithOptions:(id)a3;
+- (ASDManagedApplicationRequest)initWithOptions:(id)options;
 - (void)dealloc;
-- (void)sendRequestWithCompletionBlock:(id)a3;
+- (void)sendRequestWithCompletionBlock:(id)block;
 @end
 
 @implementation ASDManagedApplicationRequest
 
-- (ASDManagedApplicationRequest)initWithOptions:(id)a3
+- (ASDManagedApplicationRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = ASDManagedApplicationRequest;
   v5 = [(ASDManagedApplicationRequest *)&v15 init];
@@ -24,7 +24,7 @@
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v12;
   }
@@ -40,11 +40,11 @@
   [(ASDManagedApplicationRequest *)&v3 dealloc];
 }
 
-- (void)sendRequestWithCompletionBlock:(id)a3
+- (void)sendRequestWithCompletionBlock:(id)block
 {
   v5 = self->_options;
-  v6 = a3;
-  if (!v6)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
   }
@@ -57,7 +57,7 @@
   block[4] = self;
   v8 = v5;
   v11 = v8;
-  v9 = v6;
+  v9 = blockCopy;
   v12 = v9;
   dispatch_async(accessQueue, block);
 }

@@ -1,8 +1,8 @@
 @interface DMDCoreTelephonyConnection
 - (DMDCoreTelephonyConnection)init;
 - (void)dealloc;
-- (void)fetchCachedVinylInfoWithCompletion:(id)a3;
-- (void)refreshCellularPlansWithCSN:(id)a3 serverURL:(id)a4 completion:(id)a5;
+- (void)fetchCachedVinylInfoWithCompletion:(id)completion;
+- (void)refreshCellularPlansWithCSN:(id)n serverURL:(id)l completion:(id)completion;
 @end
 
 @implementation DMDCoreTelephonyConnection
@@ -34,20 +34,20 @@
   [(DMDCoreTelephonyConnection *)&v4 dealloc];
 }
 
-- (void)fetchCachedVinylInfoWithCompletion:(id)a3
+- (void)fetchCachedVinylInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->ctConnection)
   {
-    v6 = v4;
+    v6 = completionCopy;
     v15 = v6;
     CachedVinylInfo = _CTServerConnectionStandaloneGetCachedVinylInfo();
     if (HIDWORD(CachedVinylInfo))
     {
       v10 = CachedVinylInfo;
-      v11 = [NSNumber numberWithInt:_NSConcreteStackBlock, 3221225472, sub_100033B08, &unk_1000CEDF8, v6, DMFCoreTelephonyErrorCodeKey];
-      v17[0] = v11;
+      dMFCoreTelephonyErrorCodeKey = [NSNumber numberWithInt:_NSConcreteStackBlock, 3221225472, sub_100033B08, &unk_1000CEDF8, v6, DMFCoreTelephonyErrorCodeKey];
+      v17[0] = dMFCoreTelephonyErrorCodeKey;
       v16[1] = DMFCoreTelephonyErrorDomainKey;
       v12 = [NSNumber numberWithInt:v10];
       v17[1] = v12;
@@ -76,21 +76,21 @@
   }
 }
 
-- (void)refreshCellularPlansWithCSN:(id)a3 serverURL:(id)a4 completion:(id)a5
+- (void)refreshCellularPlansWithCSN:(id)n serverURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 absoluteString];
+  nCopy = n;
+  completionCopy = completion;
+  absoluteString = [l absoluteString];
   if (self->ctConnection)
   {
-    v11 = v9;
+    v11 = completionCopy;
     v20 = v11;
     v12 = _CTServerConnectionStandaloneDownloadProfile();
     if (HIDWORD(v12))
     {
       v15 = v12;
-      v16 = [NSNumber numberWithInt:_NSConcreteStackBlock, 3221225472, sub_100033DE0, &unk_1000CEE20, v11, DMFCoreTelephonyErrorCodeKey];
-      v22[0] = v16;
+      dMFCoreTelephonyErrorCodeKey = [NSNumber numberWithInt:_NSConcreteStackBlock, 3221225472, sub_100033DE0, &unk_1000CEE20, v11, DMFCoreTelephonyErrorCodeKey];
+      v22[0] = dMFCoreTelephonyErrorCodeKey;
       v21[1] = DMFCoreTelephonyErrorDomainKey;
       v17 = [NSNumber numberWithInt:v15];
       v22[1] = v17;
@@ -115,7 +115,7 @@
   else
   {
     v14 = DMFErrorWithCodeAndUserInfo();
-    (*(v9 + 2))(v9, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 

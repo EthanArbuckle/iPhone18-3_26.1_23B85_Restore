@@ -8,13 +8,13 @@
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   v15 = 0;
-  v6 = [objc_msgSend(a1 "predicate")];
+  v6 = [objc_msgSend(self "predicate")];
   if (!v6)
   {
     goto LABEL_7;
   }
 
-  v7 = [objc_msgSend(a1 "trueExpression")];
+  v7 = [objc_msgSend(self "trueExpression")];
   if (!v7)
   {
     v6 = 0;
@@ -23,7 +23,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [objc_msgSend(a1 "falseExpression")];
+  v8 = [objc_msgSend(self "falseExpression")];
   if (!v8)
   {
     v6 = 0;

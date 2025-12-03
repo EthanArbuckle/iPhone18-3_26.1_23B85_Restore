@@ -1,23 +1,23 @@
 @interface PXStoryRecipeClipMotionStyleProvider
-- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForDisplayAssetCount:(SEL)a3 displayAssets:(int64_t)a4 excluding:(id)a5;
-- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForModuleExcludingMomentMotion:(SEL)a3 previousModuleMotion:(int64_t)a4 displayAssets:(int64_t)a5;
-- ($F9F23640EB60BD624986C393629F2534)updatedMotionForPortraitAspectAsset:(SEL)a3 motionInfo:(id)a4;
+- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForDisplayAssetCount:(SEL)count displayAssets:(int64_t)assets excluding:(id)excluding;
+- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForModuleExcludingMomentMotion:(SEL)motion previousModuleMotion:(int64_t)moduleMotion displayAssets:(int64_t)assets;
+- ($F9F23640EB60BD624986C393629F2534)updatedMotionForPortraitAspectAsset:(SEL)asset motionInfo:(id)info;
 - (PXStoryRecipeClipMotionStyleProvider)init;
-- (PXStoryRecipeClipMotionStyleProvider)initWithConfiguration:(id)a3 colorGradeCategory:(id)a4 songPace:(int64_t)a5 randomNumberGenerator:(id)a6 storyConfiguration:(id)a7;
-- (int64_t)_nextMotionStyleForDisplayAssetCount:(int64_t)a3 excluding:(id)a4;
-- (void)provideMotionStylesForMomentClipRange:(_NSRange)a3 withClipCatalog:(id)a4 usingBlock:(id)a5;
+- (PXStoryRecipeClipMotionStyleProvider)initWithConfiguration:(id)configuration colorGradeCategory:(id)category songPace:(int64_t)pace randomNumberGenerator:(id)generator storyConfiguration:(id)storyConfiguration;
+- (int64_t)_nextMotionStyleForDisplayAssetCount:(int64_t)count excluding:(id)excluding;
+- (void)provideMotionStylesForMomentClipRange:(_NSRange)range withClipCatalog:(id)catalog usingBlock:(id)block;
 @end
 
 @implementation PXStoryRecipeClipMotionStyleProvider
 
-- (void)provideMotionStylesForMomentClipRange:(_NSRange)a3 withClipCatalog:(id)a4 usingBlock:(id)a5
+- (void)provideMotionStylesForMomentClipRange:(_NSRange)range withClipCatalog:(id)catalog usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v57 = a4;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  catalogCopy = catalog;
+  blockCopy = block;
   v10 = +[PXStorySettings sharedInstance];
-  v53 = [v10 autoEditRotateMotionMax];
+  autoEditRotateMotionMax = [v10 autoEditRotateMotionMax];
 
   v66[0] = 0uLL;
   v65 = 0uLL;
@@ -35,17 +35,17 @@
     v14 = v50;
     while (1)
     {
-      v15 = [v57 clipAtIndex:v14];
-      v16 = [v15 displayAssets];
-      v17 = [v16 count];
+      v15 = [catalogCopy clipAtIndex:v14];
+      displayAssets = [v15 displayAssets];
+      v17 = [displayAssets count];
 
       if (v17 == 3)
       {
         v18 = v51;
         if ((v51 - 1) >= 3)
         {
-          v20 = [v15 displayAssets];
-          [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:3 displayAssets:v20];
+          displayAssets2 = [v15 displayAssets];
+          [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:3 displayAssets:displayAssets2];
           v18 = *v63;
           v64 = *&v63[8];
           v19 = &v64;
@@ -60,8 +60,8 @@
       {
         if ((v13 - 1) >= 3)
         {
-          v20 = [v15 displayAssets];
-          [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:2 displayAssets:v20];
+          displayAssets2 = [v15 displayAssets];
+          [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:2 displayAssets:displayAssets2];
           v18 = *v63;
           v65 = *&v63[8];
           v19 = &v65;
@@ -80,28 +80,28 @@ LABEL_19:
         v18 = v55;
         if (v17 != 1)
         {
-          v46 = [MEMORY[0x1E696AAA8] currentHandler];
-          v47 = [v15 displayAssets];
-          [v46 handleFailureInMethod:v48 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:295 description:{@"Invalid number of display assets (%ld) in clip", objc_msgSend(v47, "count")}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          displayAssets3 = [v15 displayAssets];
+          [currentHandler handleFailureInMethod:v48 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:295 description:{@"Invalid number of display assets (%ld) in clip", objc_msgSend(displayAssets3, "count")}];
 
           abort();
         }
 
         if ((v55 - 1) >= 3)
         {
-          if ([PXStoryRecipeClipUtilities canRotate1UpClipsInRange:v50 clipCatalog:v49 maxAdjacent1Ups:v57, v53])
+          if ([PXStoryRecipeClipUtilities canRotate1UpClipsInRange:v50 clipCatalog:v49 maxAdjacent1Ups:catalogCopy, autoEditRotateMotionMax])
           {
-            v20 = [v15 displayAssets];
-            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:v20];
+            displayAssets2 = [v15 displayAssets];
+            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:displayAssets2];
             v18 = *v63;
             v66[0] = *&v63[8];
           }
 
           else
           {
-            v20 = [v15 displayAssets];
+            displayAssets2 = [v15 displayAssets];
             v21 = [MEMORY[0x1E695DFD8] setWithObject:&unk_1F1909A00];
-            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:v20 excluding:v21];
+            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:displayAssets2 excluding:v21];
             v18 = *v63;
             v66[0] = *&v63[8];
           }
@@ -116,10 +116,10 @@ LABEL_19:
 
 LABEL_20:
       v58 = *v19;
-      v22 = v9[2];
+      v22 = blockCopy[2];
       *v63 = v18;
       *&v63[8] = v58;
-      v22(v9, v63, v14);
+      v22(blockCopy, v63, v14);
 
       if (++v14 > v12)
       {
@@ -128,9 +128,9 @@ LABEL_20:
         while (1)
         {
           v25 = v24 + 1;
-          v26 = [v57 clipAtIndex:v24];
-          v27 = [v26 displayAssets];
-          v28 = [v27 count];
+          v26 = [catalogCopy clipAtIndex:v24];
+          displayAssets4 = [v26 displayAssets];
+          v28 = [displayAssets4 count];
 
           if (v28 == 1)
           {
@@ -151,21 +151,21 @@ LABEL_43:
         }
 
         v52 = v23;
-        v30 = [v57 clipAtIndex:v24];
-        v31 = [v30 moduleInfo];
+        v30 = [catalogCopy clipAtIndex:v24];
+        moduleInfo = [v30 moduleInfo];
         v25 = v24;
         v32 = v55;
         while (1)
         {
-          v33 = [v30 moduleInfo];
-          if (v25 > v12 || v33 != v31)
+          moduleInfo2 = [v30 moduleInfo];
+          if (v25 > v12 || moduleInfo2 != moduleInfo)
           {
             break;
           }
 
           if (++v25 <= v12)
           {
-            v34 = [v57 clipAtIndex:v25];
+            v34 = [catalogCopy clipAtIndex:v25];
           }
 
           else
@@ -185,19 +185,19 @@ LABEL_43:
 LABEL_33:
         if ((v55 - 1) >= 3)
         {
-          if ([PXStoryRecipeClipUtilities canRotate1UpClipsInRange:v24 clipCatalog:v25 - v24 maxAdjacent1Ups:v57, v53])
+          if ([PXStoryRecipeClipUtilities canRotate1UpClipsInRange:v24 clipCatalog:v25 - v24 maxAdjacent1Ups:catalogCopy, autoEditRotateMotionMax])
           {
-            v36 = [v26 displayAssets];
-            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:v36];
+            displayAssets5 = [v26 displayAssets];
+            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:displayAssets5];
             v32 = *v63;
             v66[0] = *&v63[8];
           }
 
           else
           {
-            v36 = [v26 displayAssets];
+            displayAssets5 = [v26 displayAssets];
             v37 = [MEMORY[0x1E695DFD8] setWithObject:&unk_1F1909A00];
-            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:v36 excluding:v37];
+            [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForDisplayAssetCount:1 displayAssets:displayAssets5 excluding:v37];
             v56 = *v63;
             v66[0] = *&v63[8];
 
@@ -206,7 +206,7 @@ LABEL_33:
         }
 
         v55 = v32;
-        if ([PXStoryRecipeClipUtilities canRotate1UpClipsInRange:v24 clipCatalog:v25 - v24 maxAdjacent1Ups:v57, v53])
+        if ([PXStoryRecipeClipUtilities canRotate1UpClipsInRange:v24 clipCatalog:v25 - v24 maxAdjacent1Ups:catalogCopy, autoEditRotateMotionMax])
         {
           v38 = v32;
           v39 = v52;
@@ -228,9 +228,9 @@ LABEL_33:
               v38 = v55;
               if (v55 != 3)
               {
-                v42 = [v57 clipAtIndex:v24 - 1];
-                v43 = [v42 displayAssets];
-                v44 = [v43 count];
+                v42 = [catalogCopy clipAtIndex:v24 - 1];
+                displayAssets6 = [v42 displayAssets];
+                v44 = [displayAssets6 count];
 
                 if (v44 <= 1)
                 {
@@ -277,17 +277,17 @@ LABEL_33:
 
 LABEL_40:
         memset(v63, 0, sizeof(v63));
-        v40 = [v26 displayAssets];
-        [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForModuleExcludingMomentMotion:v38 previousModuleMotion:v39 displayAssets:v40];
+        displayAssets7 = [v26 displayAssets];
+        [(PXStoryRecipeClipMotionStyleProvider *)self nextMotionInfoForModuleExcludingMomentMotion:v38 previousModuleMotion:v39 displayAssets:displayAssets7];
 
         if (v25 > v24)
         {
           do
           {
-            v41 = v9[2];
+            v41 = blockCopy[2];
             v58 = *v63;
             v59 = *&v63[16];
-            v41(v9, &v58, v24++);
+            v41(blockCopy, &v58, v24++);
           }
 
           while (v25 != v24);
@@ -303,7 +303,7 @@ LABEL_40:
 LABEL_3:
 }
 
-- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForModuleExcludingMomentMotion:(SEL)a3 previousModuleMotion:(int64_t)a4 displayAssets:(int64_t)a5
+- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForModuleExcludingMomentMotion:(SEL)motion previousModuleMotion:(int64_t)moduleMotion displayAssets:(int64_t)assets
 {
   v10 = a6;
   v20 = 0;
@@ -328,10 +328,10 @@ LABEL_3:
   v16[3] = &unk_1E772E298;
   v16[4] = &v20;
   v13 = _Block_copy(v16);
-  v12[2](v12, a4, a5);
+  v12[2](v12, moduleMotion, assets);
   if ((v13[2](v13) & 1) == 0)
   {
-    v12[2](v12, a4, 0);
+    v12[2](v12, moduleMotion, 0);
   }
 
   if ((v13[2](v13) & 1) == 0)
@@ -375,13 +375,13 @@ void __120__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForModuleExcludin
   }
 }
 
-- ($F9F23640EB60BD624986C393629F2534)updatedMotionForPortraitAspectAsset:(SEL)a3 motionInfo:(id)a4
+- ($F9F23640EB60BD624986C393629F2534)updatedMotionForPortraitAspectAsset:(SEL)asset motionInfo:(id)info
 {
-  v10 = a4;
-  v8 = [(PXStoryRecipeClipMotionStyleProvider *)self storyConfiguration];
-  if ([v8 forcePanUpOrDownInOneUpKenBurnsWithPortraitAspectAsset])
+  infoCopy = info;
+  storyConfiguration = [(PXStoryRecipeClipMotionStyleProvider *)self storyConfiguration];
+  if ([storyConfiguration forcePanUpOrDownInOneUpKenBurnsWithPortraitAspectAsset])
   {
-    [v10 aspectRatio];
+    [infoCopy aspectRatio];
     PXAspectRatioIsPortrait();
   }
 
@@ -391,15 +391,15 @@ void __120__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForModuleExcludin
   return result;
 }
 
-- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForDisplayAssetCount:(SEL)a3 displayAssets:(int64_t)a4 excluding:(id)a5
+- ($F9F23640EB60BD624986C393629F2534)nextMotionInfoForDisplayAssetCount:(SEL)count displayAssets:(int64_t)assets excluding:(id)excluding
 {
-  v11 = a5;
+  excludingCopy = excluding;
   v12 = a6;
   retstr->var1.var0.var0 = 0;
   retstr->var1.var0.var1 = 0;
   retstr->var0 = 0;
-  v13 = [(PXStoryRecipeClipMotionStyleProvider *)self storyConfiguration];
-  v14 = [v13 disabledClipMotionStyles];
+  storyConfiguration = [(PXStoryRecipeClipMotionStyleProvider *)self storyConfiguration];
+  disabledClipMotionStyles = [storyConfiguration disabledClipMotionStyles];
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -411,12 +411,12 @@ void __120__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForModuleExcludin
   aBlock[2] = __99__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForDisplayAssetCount_displayAssets_excluding___block_invoke;
   aBlock[3] = &unk_1E772E248;
   aBlock[4] = &v28;
-  aBlock[5] = v14;
+  aBlock[5] = disabledClipMotionStyles;
   v15 = _Block_copy(aBlock);
   v15[2](v15, 1, 1);
   v15[2](v15, 2, 2);
   v15[2](v15, 4, 3);
-  v16 = [(PXStoryRecipeClipMotionStyleProvider *)self _nextMotionStyleForDisplayAssetCount:a4 excluding:v29[5]];
+  v16 = [(PXStoryRecipeClipMotionStyleProvider *)self _nextMotionStyleForDisplayAssetCount:assets excluding:v29[5]];
   retstr->var0 = v16;
   if (v16 == 3)
   {
@@ -430,23 +430,23 @@ void __120__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForModuleExcludin
       goto LABEL_18;
     }
 
-    if (a4 == 2)
+    if (assets == 2)
     {
       if ([(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:3]>= 3)
       {
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v25 handleFailureInMethod:a3 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:133 description:@"Impossible case"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:count object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:133 description:@"Impossible case"];
 
         abort();
       }
     }
 
-    else if (a4 != 3)
+    else if (assets != 3)
     {
       v17 = 1;
 LABEL_16:
       retstr->var1.var0.var0 = v17;
-      v18 = 2;
+      forcedKenBurnsScaleDirection = 2;
       v22 = 16;
       goto LABEL_17;
     }
@@ -461,24 +461,24 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v18 = [v13 forcedKenBurnsScaleDirection];
-  if (!v18)
+  forcedKenBurnsScaleDirection = [storyConfiguration forcedKenBurnsScaleDirection];
+  if (!forcedKenBurnsScaleDirection)
   {
-    v19 = [v13 keyAssetKenBurnsScaleDirection];
-    if (a4 != 1 || (v18 = v19) == 0 || ([v11 firstObject], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "keyAsset"), v21 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v26 & 1) == 0))
+    keyAssetKenBurnsScaleDirection = [storyConfiguration keyAssetKenBurnsScaleDirection];
+    if (assets != 1 || (forcedKenBurnsScaleDirection = keyAssetKenBurnsScaleDirection) == 0 || ([excludingCopy firstObject], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(storyConfiguration, "keyAsset"), v21 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v20, "isEqual:", v21), v21, v20, (v26 & 1) == 0))
     {
 LABEL_11:
-      v18 = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:2]+ 1;
+      forcedKenBurnsScaleDirection = [(PFRandomNumberGenerator *)self->_randomNumberGenerator nextUnsignedIntegerLessThan:2]+ 1;
     }
   }
 
   v22 = 8;
 LABEL_17:
-  *(&retstr->var0 + v22) = v18;
+  *(&retstr->var0 + v22) = forcedKenBurnsScaleDirection;
 LABEL_18:
-  if (a4 == 1)
+  if (assets == 1)
   {
-    [v11 firstObject];
+    [excludingCopy firstObject];
     [objc_claimAutoreleasedReturnValue() aspectRatio];
     PXAspectRatioIsPortrait();
   }
@@ -507,19 +507,19 @@ void __99__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForDisplayAssetCou
   }
 }
 
-- (int64_t)_nextMotionStyleForDisplayAssetCount:(int64_t)a3 excluding:(id)a4
+- (int64_t)_nextMotionStyleForDisplayAssetCount:(int64_t)count excluding:(id)excluding
 {
-  v7 = a4;
-  if ((a3 - 1) >= 3)
+  excludingCopy = excluding;
+  if ((count - 1) >= 3)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:71 description:{@"Unsupported display asset count: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:71 description:{@"Unsupported display asset count: %ld", count}];
 
     abort();
   }
 
-  v8 = v7;
-  v9 = *(&self->super.isa + a3);
+  v8 = excludingCopy;
+  v9 = *(&self->super.isa + count);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__PXStoryRecipeClipMotionStyleProvider__nextMotionStyleForDisplayAssetCount_excluding___block_invoke;
@@ -527,44 +527,44 @@ void __99__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForDisplayAssetCou
   v16 = v8;
   v10 = v8;
   v11 = [v9 nextValuePassingTest:v15];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
-  return v12;
+  return integerValue;
 }
 
-- (PXStoryRecipeClipMotionStyleProvider)initWithConfiguration:(id)a3 colorGradeCategory:(id)a4 songPace:(int64_t)a5 randomNumberGenerator:(id)a6 storyConfiguration:(id)a7
+- (PXStoryRecipeClipMotionStyleProvider)initWithConfiguration:(id)configuration colorGradeCategory:(id)category songPace:(int64_t)pace randomNumberGenerator:(id)generator storyConfiguration:(id)storyConfiguration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  configurationCopy = configuration;
+  categoryCopy = category;
+  generatorCopy = generator;
+  storyConfigurationCopy = storyConfiguration;
   v32.receiver = self;
   v32.super_class = PXStoryRecipeClipMotionStyleProvider;
   v17 = [(PXStoryRecipeClipMotionStyleProvider *)&v32 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_configuration, a3);
-    objc_storeStrong(&v18->_storyConfiguration, a7);
-    objc_storeStrong(&v18->_randomNumberGenerator, a6);
-    v19 = [(PFStoryAutoEditConfiguration *)v18->_configuration motionStyleTable];
-    v31 = [v19 motionStylesForColorGrade:v14 songPace:a5];
+    objc_storeStrong(&v17->_configuration, configuration);
+    objc_storeStrong(&v18->_storyConfiguration, storyConfiguration);
+    objc_storeStrong(&v18->_randomNumberGenerator, generator);
+    motionStyleTable = [(PFStoryAutoEditConfiguration *)v18->_configuration motionStyleTable];
+    v31 = [motionStyleTable motionStylesForColorGrade:categoryCopy songPace:pace];
 
-    v20 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v31 randomNumberGenerator:v15 fallbackValue:&unk_1F19099E8];
+    v20 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v31 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F19099E8];
     frequencyTable = v18->_frequencyTable;
     v18->_frequencyTable = v20;
 
-    v22 = [(PFStoryAutoEditConfiguration *)v18->_configuration diptychMotionStyleTable];
-    v23 = [v22 motionStylesForColorGrade:v14 songPace:a5];
+    diptychMotionStyleTable = [(PFStoryAutoEditConfiguration *)v18->_configuration diptychMotionStyleTable];
+    v23 = [diptychMotionStyleTable motionStylesForColorGrade:categoryCopy songPace:pace];
 
-    v24 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v23 randomNumberGenerator:v15 fallbackValue:&unk_1F19099E8];
+    v24 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v23 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F19099E8];
     diptychFrequencyTable = v18->_diptychFrequencyTable;
     v18->_diptychFrequencyTable = v24;
 
-    v26 = [(PFStoryAutoEditConfiguration *)v18->_configuration triptychMotionStyleTable];
-    v27 = [v26 motionStylesForColorGrade:v14 songPace:a5];
+    triptychMotionStyleTable = [(PFStoryAutoEditConfiguration *)v18->_configuration triptychMotionStyleTable];
+    v27 = [triptychMotionStyleTable motionStylesForColorGrade:categoryCopy songPace:pace];
 
-    v28 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v27 randomNumberGenerator:v15 fallbackValue:&unk_1F19099E8];
+    v28 = [objc_alloc(MEMORY[0x1E69C08A8]) initWithValueCounts:v27 randomNumberGenerator:generatorCopy fallbackValue:&unk_1F19099E8];
     triptychFrequencyTable = v18->_triptychFrequencyTable;
     v18->_triptychFrequencyTable = v28;
   }
@@ -574,8 +574,8 @@ void __99__PXStoryRecipeClipMotionStyleProvider_nextMotionInfoForDisplayAssetCou
 
 - (PXStoryRecipeClipMotionStyleProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXStoryRecipeClipMotionStyleProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeClipMotionStyleProvider.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXStoryRecipeClipMotionStyleProvider init]"}];
 
   abort();
 }

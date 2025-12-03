@@ -1,41 +1,41 @@
 @interface ISHintedFloat
-- (double)hintedFloatForSize:(CGSize)a3;
-- (double)hintedFloatForSize:(CGSize)a3 options:(unint64_t)a4;
-- (void)addHintedFloat:(double)a3 forSize:(CGSize)a4;
+- (double)hintedFloatForSize:(CGSize)size;
+- (double)hintedFloatForSize:(CGSize)size options:(unint64_t)options;
+- (void)addHintedFloat:(double)float forSize:(CGSize)size;
 @end
 
 @implementation ISHintedFloat
 
-- (void)addHintedFloat:(double)a3 forSize:(CGSize)a4
+- (void)addHintedFloat:(double)float forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  height = size.height;
+  width = size.width;
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:float];
   v8.receiver = self;
   v8.super_class = ISHintedFloat;
   [(ISHintedValue *)&v8 addHintedValue:v7 forSize:width, height];
 }
 
-- (double)hintedFloatForSize:(CGSize)a3
+- (double)hintedFloatForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ISHintedValue *)self options];
+  height = size.height;
+  width = size.width;
+  options = [(ISHintedValue *)self options];
 
-  [(ISHintedFloat *)self hintedFloatForSize:v6 options:width, height];
+  [(ISHintedFloat *)self hintedFloatForSize:options options:width, height];
   return result;
 }
 
-- (double)hintedFloatForSize:(CGSize)a3 options:(unint64_t)a4
+- (double)hintedFloatForSize:(CGSize)size options:(unint64_t)options
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  optionsCopy = options;
+  height = size.height;
+  width = size.width;
   v8 = [(ISHintedValue *)self indexForSize:?];
   v9 = [(ISHintedValue *)self hintedValueForIndex:v8];
   [v9 doubleValue];
   v11 = v10;
-  if (v4)
+  if (optionsCopy)
   {
     if ([(ISHintedValue *)self sizeOutsideHintedRange:width, height])
     {
@@ -54,7 +54,7 @@
   }
 
   v17 = round(v11);
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v11 = v17;
   }

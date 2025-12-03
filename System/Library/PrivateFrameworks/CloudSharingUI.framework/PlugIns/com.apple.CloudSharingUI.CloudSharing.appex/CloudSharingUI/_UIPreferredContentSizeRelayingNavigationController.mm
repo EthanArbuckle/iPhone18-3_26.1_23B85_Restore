@@ -1,10 +1,10 @@
 @interface _UIPreferredContentSizeRelayingNavigationController
 - (CGSize)preferredContentSize;
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithCoder:(id)a3;
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithRootViewController:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithCoder:(id)coder;
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithRootViewController:(id)controller;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation _UIPreferredContentSizeRelayingNavigationController
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_100006DFC(width, height);
 }
 
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController_preferredContentSizeDidChangeHandler);
   v8 = type metadata accessor for _UIPreferredContentSizeRelayingNavigationController();
@@ -35,10 +35,10 @@
   v7[1] = 0;
   v10.receiver = self;
   v10.super_class = v8;
-  return [(_UIPreferredContentSizeRelayingNavigationController *)&v10 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(_UIPreferredContentSizeRelayingNavigationController *)&v10 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithRootViewController:(id)a3
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithRootViewController:(id)controller
 {
   v5 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController_preferredContentSizeDidChangeHandler);
   v6 = type metadata accessor for _UIPreferredContentSizeRelayingNavigationController();
@@ -46,18 +46,18 @@
   v5[1] = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(_UIPreferredContentSizeRelayingNavigationController *)&v8 initWithRootViewController:a3];
+  return [(_UIPreferredContentSizeRelayingNavigationController *)&v8 initWithRootViewController:controller];
 }
 
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1000C6D84();
     v6 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController_preferredContentSizeDidChangeHandler);
     *v6 = 0;
     v6[1] = 0;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = sub_1000C6D44();
   }
 
@@ -66,26 +66,26 @@
     v9 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController_preferredContentSizeDidChangeHandler);
     *v9 = 0;
     v9[1] = 0;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for _UIPreferredContentSizeRelayingNavigationController();
-  v11 = [(_UIPreferredContentSizeRelayingNavigationController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(_UIPreferredContentSizeRelayingNavigationController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }
 
-- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithCoder:(id)a3
+- (_TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC37com_apple_CloudSharingUI_CloudSharing51_UIPreferredContentSizeRelayingNavigationController_preferredContentSizeDidChangeHandler);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for _UIPreferredContentSizeRelayingNavigationController();
-  v5 = a3;
-  v6 = [(_UIPreferredContentSizeRelayingNavigationController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(_UIPreferredContentSizeRelayingNavigationController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

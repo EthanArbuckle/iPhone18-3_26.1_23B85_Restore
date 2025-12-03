@@ -1,6 +1,6 @@
 @interface APIDAccountsSettings
 + (id)defaultValues;
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 @end
 
 @implementation APIDAccountsSettings
@@ -9,24 +9,24 @@
 {
   v2 = [@"BAAAAAAD" length];
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v4 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
+  uUIDString = [v3 UUIDString];
+  v5 = [uUIDString stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
 
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v7 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
+  uUIDString2 = [v6 UUIDString];
+  v8 = [uUIDString2 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
 
   v9 = +[NSUUID UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v10 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
+  uUIDString3 = [v9 UUIDString];
+  v11 = [uUIDString3 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
 
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v13 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
+  uUIDString4 = [v12 UUIDString];
+  v14 = [uUIDString4 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
 
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v16 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
+  uUIDString5 = [v15 UUIDString];
+  v17 = [uUIDString5 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
 
   v25[0] = @"iTunesDSID";
   v25[1] = @"isChild";
@@ -74,10 +74,10 @@
   return v21;
 }
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
-  v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:v3];
+  valuesCopy = values;
+  v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:valuesCopy];
 
   return v4;
 }

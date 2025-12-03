@@ -1,10 +1,10 @@
 @interface RTTrustedTimeCache
 - (RTTrustedTimeCache)init;
-- (double)convertMachContinuousTicksToSeconds:(unint64_t)a3;
+- (double)convertMachContinuousTicksToSeconds:(unint64_t)seconds;
 - (double)machContinuousTimeSeconds;
 - (id)getApproximateTrustedDateNow;
 - (id)getApproximateTrustedDateNowWithUnsecureFallback;
-- (void)setBoundsForReferenceTimeWithMinimumDate:(id)a3 maximumDate:(id)a4;
+- (void)setBoundsForReferenceTimeWithMinimumDate:(id)date maximumDate:(id)maximumDate;
 @end
 
 @implementation RTTrustedTimeCache
@@ -12,11 +12,11 @@
 - (id)getApproximateTrustedDateNowWithUnsecureFallback
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(RTTrustedTimeCache *)self getApproximateTrustedDateNow];
-  v4 = v3;
-  if (v3)
+  getApproximateTrustedDateNow = [(RTTrustedTimeCache *)self getApproximateTrustedDateNow];
+  v4 = getApproximateTrustedDateNow;
+  if (getApproximateTrustedDateNow)
   {
-    v5 = v3;
+    v5 = getApproximateTrustedDateNow;
 LABEL_28:
     v15 = v5;
     goto LABEL_29;
@@ -221,32 +221,32 @@ LABEL_8:
   return result;
 }
 
-- (double)convertMachContinuousTicksToSeconds:(unint64_t)a3
+- (double)convertMachContinuousTicksToSeconds:(unint64_t)seconds
 {
   if (qword_2814A7D78 != -1)
   {
     dispatch_once(&qword_2814A7D78, &__block_literal_global_103);
   }
 
-  return (_MergedGlobals_120 * a3 / *algn_2814A7D74) * 0.000000001;
+  return (_MergedGlobals_120 * seconds / *algn_2814A7D74) * 0.000000001;
 }
 
-- (void)setBoundsForReferenceTimeWithMinimumDate:(id)a3 maximumDate:(id)a4
+- (void)setBoundsForReferenceTimeWithMinimumDate:(id)date maximumDate:(id)maximumDate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  maximumDateCopy = maximumDate;
   self->_minBoundReferenceTimeCfatSeconds = 0.0;
   self->_maxBoundReferenceTimeCfatSeconds = 0.0;
-  if (v6)
+  if (dateCopy)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     self->_minBoundReferenceTimeCfatSeconds = v8;
   }
 
-  if (v7)
+  if (maximumDateCopy)
   {
-    [v7 timeIntervalSinceReferenceDate];
+    [maximumDateCopy timeIntervalSinceReferenceDate];
     self->_maxBoundReferenceTimeCfatSeconds = v9;
   }
 

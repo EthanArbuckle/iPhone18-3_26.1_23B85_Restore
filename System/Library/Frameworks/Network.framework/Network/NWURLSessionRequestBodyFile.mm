@@ -1,7 +1,7 @@
 @interface NWURLSessionRequestBodyFile
 - (int64_t)countOfBytesSent;
 - (void)close;
-- (void)readMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
+- (void)readMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
 @end
 
 @implementation NWURLSessionRequestBodyFile
@@ -18,15 +18,15 @@
   }
 }
 
-- (void)readMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   if (self && (error = self->_error, error))
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:error userInfo:0];
     v10 = [[NWURLError alloc] initWithErrorCode:-3001];
     [(NWURLError *)v10 setUnderlyingError:v9];
-    v7[2](v7, 0, 1, v10);
+    handlerCopy[2](handlerCopy, 0, 1, v10);
   }
 
   else
@@ -51,9 +51,9 @@
       queue = 0;
     }
 
-    if (a3 <= 0x4000)
+    if (length <= 0x4000)
     {
-      a3 = 0x4000;
+      length = 0x4000;
     }
 
     io_handler[0] = MEMORY[0x1E69E9820];
@@ -61,9 +61,9 @@
     io_handler[2] = __91__NWURLSessionRequestBodyFile_readMinimumIncompleteLength_maximumLength_completionHandler___block_invoke;
     io_handler[3] = &unk_1E6A332F8;
     io_handler[4] = self;
-    v16 = v7;
+    v16 = handlerCopy;
     v17 = v18;
-    dispatch_io_read(v13, 0, a3, queue, io_handler);
+    dispatch_io_read(v13, 0, length, queue, io_handler);
 
     _Block_object_dispose(v18, 8);
   }

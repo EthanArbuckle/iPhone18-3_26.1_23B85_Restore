@@ -1,42 +1,42 @@
 @interface AWDSharingProximityiOSSetupTriggered
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSmoothedRSSI:(BOOL)a3;
-- (void)setHasUserActionType:(BOOL)a3;
-- (void)setHasUserMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSmoothedRSSI:(BOOL)i;
+- (void)setHasUserActionType:(BOOL)type;
+- (void)setHasUserMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSharingProximityiOSSetupTriggered
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 36))
+  fromCopy = from;
+  if (*(fromCopy + 36))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDSharingProximityiOSSetupTriggered *)self setSessionUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_smoothedRSSI = *(v4 + 6);
+    self->_smoothedRSSI = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -49,17 +49,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 36) & 4) == 0)
+  else if ((*(fromCopy + 36) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_userActionType = *(v4 + 7);
+  self->_userActionType = *(fromCopy + 7);
   *&self->_has |= 4u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_8:
-    self->_userMs = *(v4 + 8);
+    self->_userMs = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 
@@ -117,31 +117,31 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_24;
   }
 
   sessionUUID = self->_sessionUUID;
-  if (sessionUUID | *(v4 + 2))
+  if (sessionUUID | *(equalCopy + 2))
   {
     if (![(NSString *)sessionUUID isEqual:?])
     {
@@ -151,12 +151,12 @@ LABEL_24:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_smoothedRSSI != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_smoothedRSSI != *(equalCopy + 6))
     {
       goto LABEL_24;
     }
@@ -169,7 +169,7 @@ LABEL_24:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_userActionType != *(v4 + 7))
+    if ((v6 & 4) == 0 || self->_userActionType != *(equalCopy + 7))
     {
       goto LABEL_24;
     }
@@ -183,7 +183,7 @@ LABEL_24:
   v8 = (v6 & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_userMs != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_userMs != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
@@ -196,9 +196,9 @@ LABEL_25:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -206,7 +206,7 @@ LABEL_25:
     *(v5 + 36) |= 1u;
   }
 
-  v7 = [(NSString *)self->_sessionUUID copyWithZone:a3];
+  v7 = [(NSString *)self->_sessionUUID copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
@@ -248,27 +248,27 @@ LABEL_6:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_sessionUUID)
   {
-    v6 = v4;
-    [v4 setSessionUUID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSessionUUID:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_smoothedRSSI;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 6) = self->_smoothedRSSI;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -287,21 +287,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 7) = self->_userActionType;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 7) = self->_userActionType;
+  *(toCopy + 36) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
-    *(v4 + 8) = self->_userMs;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 8) = self->_userMs;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_9:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
@@ -344,14 +344,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -362,18 +362,18 @@ LABEL_9:
       while (1)
       {
         v47 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v47 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v47 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v47 & 0x7F) << v6;
@@ -391,9 +391,9 @@ LABEL_9:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -410,18 +410,18 @@ LABEL_15:
           while (1)
           {
             v48 = 0;
-            v39 = [a3 position] + 1;
-            if (v39 >= [a3 position] && (v40 = objc_msgSend(a3, "position") + 1, v40 <= objc_msgSend(a3, "length")))
+            v39 = [from position] + 1;
+            if (v39 >= [from position] && (v40 = objc_msgSend(from, "position") + 1, v40 <= objc_msgSend(from, "length")))
             {
-              v41 = [a3 data];
-              [v41 getBytes:&v48 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v48 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v38 |= (v48 & 0x7F) << v36;
@@ -439,7 +439,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v42 = 0;
           }
@@ -485,18 +485,18 @@ LABEL_60:
             while (1)
             {
               v49 = 0;
-              v27 = [a3 position] + 1;
-              if (v27 >= [a3 position] && (v28 = objc_msgSend(a3, "position") + 1, v28 <= objc_msgSend(a3, "length")))
+              v27 = [from position] + 1;
+              if (v27 >= [from position] && (v28 = objc_msgSend(from, "position") + 1, v28 <= objc_msgSend(from, "length")))
               {
-                v29 = [a3 data];
-                [v29 getBytes:&v49 range:{objc_msgSend(a3, "position"), 1}];
+                data3 = [from data];
+                [data3 getBytes:&v49 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v26 |= (v49 & 0x7F) << v24;
@@ -514,7 +514,7 @@ LABEL_60:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -535,18 +535,18 @@ LABEL_65:
             while (1)
             {
               v51 = 0;
-              v33 = [a3 position] + 1;
-              if (v33 >= [a3 position] && (v34 = objc_msgSend(a3, "position") + 1, v34 <= objc_msgSend(a3, "length")))
+              v33 = [from position] + 1;
+              if (v33 >= [from position] && (v34 = objc_msgSend(from, "position") + 1, v34 <= objc_msgSend(from, "length")))
               {
-                v35 = [a3 data];
-                [v35 getBytes:&v51 range:{objc_msgSend(a3, "position"), 1}];
+                data4 = [from data];
+                [data4 getBytes:&v51 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v32 |= (v51 & 0x7F) << v30;
@@ -564,7 +564,7 @@ LABEL_65:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -585,18 +585,18 @@ LABEL_69:
             while (1)
             {
               v50 = 0;
-              v18 = [a3 position] + 1;
-              if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+              v18 = [from position] + 1;
+              if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
               {
-                v20 = [a3 data];
-                [v20 getBytes:&v50 range:{objc_msgSend(a3, "position"), 1}];
+                data5 = [from data];
+                [data5 getBytes:&v50 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v17 |= (v50 & 0x7F) << v15;
@@ -614,7 +614,7 @@ LABEL_69:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -635,13 +635,13 @@ LABEL_77:
       }
 
 LABEL_79:
-      v45 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v45 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v43) = [a3 hasError] ^ 1;
+  LOBYTE(v43) = [from hasError] ^ 1;
   return v43;
 }
 
@@ -704,15 +704,15 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = AWDSharingProximityiOSSetupTriggered;
   v3 = [(AWDSharingProximityiOSSetupTriggered *)&v7 description];
-  v4 = [(AWDSharingProximityiOSSetupTriggered *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDSharingProximityiOSSetupTriggered *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasUserMs:(BOOL)a3
+- (void)setHasUserMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -725,9 +725,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUserActionType:(BOOL)a3
+- (void)setHasUserActionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -740,9 +740,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSmoothedRSSI:(BOOL)a3
+- (void)setHasSmoothedRSSI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 2;
   }

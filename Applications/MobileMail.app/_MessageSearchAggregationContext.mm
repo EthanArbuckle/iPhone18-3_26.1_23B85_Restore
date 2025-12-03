@@ -1,14 +1,14 @@
 @interface _MessageSearchAggregationContext
 - (NSOrderedSet)allFoundRanges;
 - (void)dealloc;
-- (void)foundRange:(id)a3 forSearchString:(id)a4 inDocument:(id)a5;
+- (void)foundRange:(id)range forSearchString:(id)string inDocument:(id)document;
 - (void)invalidate;
-- (void)invalidateFoundRange:(id)a3 inDocument:(id)a4;
-- (void)webProcessDidBlockLoadingResourceWithURL:(id)a3;
-- (void)webProcessDidFailLoadingResourceWithURL:(id)a3;
-- (void)webProcessDidFinishDocumentLoadForURL:(id)a3 andRequestedRemoteURLs:(id)a4;
-- (void)webProcessDidFinishLoadForURL:(id)a3;
-- (void)webProcessFailedToLoadResourceWithProxyForURL:(id)a3 failureReason:(int64_t)a4;
+- (void)invalidateFoundRange:(id)range inDocument:(id)document;
+- (void)webProcessDidBlockLoadingResourceWithURL:(id)l;
+- (void)webProcessDidFailLoadingResourceWithURL:(id)l;
+- (void)webProcessDidFinishDocumentLoadForURL:(id)l andRequestedRemoteURLs:(id)ls;
+- (void)webProcessDidFinishLoadForURL:(id)l;
+- (void)webProcessFailedToLoadResourceWithProxyForURL:(id)l failureReason:(int64_t)reason;
 @end
 
 @implementation _MessageSearchAggregationContext
@@ -22,9 +22,9 @@
   [(_MessageSearchAggregationContext *)&v3 dealloc];
 }
 
-- (void)webProcessDidBlockLoadingResourceWithURL:(id)a3
+- (void)webProcessDidBlockLoadingResourceWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_100053E68();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -39,8 +39,8 @@
     }
 
     v7 = itemID;
-    v8 = [v4 absoluteString];
-    v9 = [EFPrivacy fullyRedactedStringForString:v8];
+    absoluteString = [lCopy absoluteString];
+    v9 = [EFPrivacy fullyRedactedStringForString:absoluteString];
     v10 = 136315650;
     v11 = "[_MessageSearchAggregationContext webProcessDidBlockLoadingResourceWithURL:]";
     v12 = 2114;
@@ -51,9 +51,9 @@
   }
 }
 
-- (void)webProcessDidFailLoadingResourceWithURL:(id)a3
+- (void)webProcessDidFailLoadingResourceWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_100053E68();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -68,8 +68,8 @@
     }
 
     v7 = itemID;
-    v8 = [v4 absoluteString];
-    v9 = [EFPrivacy fullyRedactedStringForString:v8];
+    absoluteString = [lCopy absoluteString];
+    v9 = [EFPrivacy fullyRedactedStringForString:absoluteString];
     v10 = 136315650;
     v11 = "[_MessageSearchAggregationContext webProcessDidFailLoadingResourceWithURL:]";
     v12 = 2114;
@@ -80,9 +80,9 @@
   }
 }
 
-- (void)webProcessDidFinishDocumentLoadForURL:(id)a3 andRequestedRemoteURLs:(id)a4
+- (void)webProcessDidFinishDocumentLoadForURL:(id)l andRequestedRemoteURLs:(id)ls
 {
-  v5 = a3;
+  lCopy = l;
   v6 = sub_100053E68();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -97,8 +97,8 @@
     }
 
     v8 = itemID;
-    v9 = [v5 absoluteString];
-    v10 = [EFPrivacy fullyRedactedStringForString:v9];
+    absoluteString = [lCopy absoluteString];
+    v10 = [EFPrivacy fullyRedactedStringForString:absoluteString];
     v11 = 136315650;
     v12 = "[_MessageSearchAggregationContext webProcessDidFinishDocumentLoadForURL:andRequestedRemoteURLs:]";
     v13 = 2114;
@@ -109,9 +109,9 @@
   }
 }
 
-- (void)webProcessFailedToLoadResourceWithProxyForURL:(id)a3 failureReason:(int64_t)a4
+- (void)webProcessFailedToLoadResourceWithProxyForURL:(id)l failureReason:(int64_t)reason
 {
-  v6 = a3;
+  lCopy = l;
   v7 = sub_100053E68();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -126,23 +126,23 @@
     }
 
     v9 = itemID;
-    v10 = [v6 absoluteString];
-    v11 = [EFPrivacy fullyRedactedStringForString:v10];
+    absoluteString = [lCopy absoluteString];
+    v11 = [EFPrivacy fullyRedactedStringForString:absoluteString];
     v12 = 136315906;
     v13 = "[_MessageSearchAggregationContext webProcessFailedToLoadResourceWithProxyForURL:failureReason:]";
     v14 = 2114;
     v15 = v9;
     v16 = 2048;
-    v17 = a4;
+    reasonCopy = reason;
     v18 = 2112;
     v19 = v11;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s: itemID:%{public}@ reason:%ld  %@", &v12, 0x2Au);
   }
 }
 
-- (void)foundRange:(id)a3 forSearchString:(id)a4 inDocument:(id)a5
+- (void)foundRange:(id)range forSearchString:(id)string inDocument:(id)document
 {
-  v11 = a3;
+  rangeCopy = range;
   if (self)
   {
     token = self->_token;
@@ -168,14 +168,14 @@
     }
 
     v9 = itemID;
-    v10 = sub_10005649C(ConversationSearchTextRange, v11, v9);
+    v10 = sub_10005649C(ConversationSearchTextRange, rangeCopy, v9);
     [(NSMutableOrderedSet *)v7 addObject:v10];
   }
 }
 
-- (void)invalidateFoundRange:(id)a3 inDocument:(id)a4
+- (void)invalidateFoundRange:(id)range inDocument:(id)document
 {
-  v10 = a3;
+  rangeCopy = range;
   if (self)
   {
     token = self->_token;
@@ -201,14 +201,14 @@
     }
 
     v8 = itemID;
-    v9 = sub_10005649C(ConversationSearchTextRange, v10, v8);
+    v9 = sub_10005649C(ConversationSearchTextRange, rangeCopy, v8);
     [(NSMutableOrderedSet *)v6 removeObject:v9];
   }
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_token;
@@ -216,9 +216,9 @@
 
   if (([(_MessageSearchAggregationContext *)self isCanceled]& 1) == 0)
   {
-    if (v2)
+    if (selfCopy)
     {
-      foundRanges = v2->_foundRanges;
+      foundRanges = selfCopy->_foundRanges;
     }
 
     else
@@ -240,9 +240,9 @@
   return self;
 }
 
-- (void)webProcessDidFinishLoadForURL:(id)a3
+- (void)webProcessDidFinishLoadForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (self)
   {
     token = self->_token;
@@ -266,7 +266,7 @@
     }
 
     v7 = loadingController;
-    v8 = [(MFWebViewLoadingController *)v7 webView];
+    webView = [(MFWebViewLoadingController *)v7 webView];
 
     v9 = sub_100053E68();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -282,15 +282,15 @@
       }
 
       v11 = itemID;
-      v12 = [v4 absoluteString];
-      v13 = [EFPrivacy fullyRedactedStringForString:v12];
+      absoluteString = [lCopy absoluteString];
+      v13 = [EFPrivacy fullyRedactedStringForString:absoluteString];
       *v18 = 136315906;
       sub_100007E94();
       *&v18[7] = v11;
       v18[11] = v14;
       v19 = v15;
       v20 = 2112;
-      v21 = v8;
+      v21 = webView;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: itemID:%{public}@, url:%{public}@, webview: %@", v18, 0x2Au);
     }
 
@@ -306,7 +306,7 @@
       searchOptions = 0;
     }
 
-    [v8 performTextSearchWithQueryString:v16 usingOptions:searchOptions resultAggregator:{self, *v18}];
+    [webView performTextSearchWithQueryString:v16 usingOptions:searchOptions resultAggregator:{self, *v18}];
   }
 }
 

@@ -1,47 +1,47 @@
 @interface NFCFeliCaTag
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)pollingWithSystemCode:(id)a3 requestCode:(int64_t)a4 timeSlot:(int64_t)a5 completionHandler:(id)a6;
-- (void)readWithoutEncryptionWithServiceCodeList:(id)a3 blockList:(id)a4 completionHandler:(id)a5;
-- (void)requestResponseWithCompletionHandler:(id)a3;
-- (void)requestServiceV2WithNodeCodeList:(id)a3 completionHandler:(id)a4;
-- (void)requestServiceWithNodeCodeList:(id)a3 completionHandler:(id)a4;
-- (void)requestSpecificationVersionWithCompletionHandler:(id)a3;
-- (void)requestSystemCodeWithCompletionHandler:(id)a3;
-- (void)resetModeWithCompletionHandler:(id)a3;
-- (void)sendFeliCaCommandPacket:(id)a3 completionHandler:(id)a4;
-- (void)writeWithoutEncryptionWithServiceCodeList:(id)a3 blockList:(id)a4 blockData:(id)a5 completionHandler:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)pollingWithSystemCode:(id)code requestCode:(int64_t)requestCode timeSlot:(int64_t)slot completionHandler:(id)handler;
+- (void)readWithoutEncryptionWithServiceCodeList:(id)list blockList:(id)blockList completionHandler:(id)handler;
+- (void)requestResponseWithCompletionHandler:(id)handler;
+- (void)requestServiceV2WithNodeCodeList:(id)list completionHandler:(id)handler;
+- (void)requestServiceWithNodeCodeList:(id)list completionHandler:(id)handler;
+- (void)requestSpecificationVersionWithCompletionHandler:(id)handler;
+- (void)requestSystemCodeWithCompletionHandler:(id)handler;
+- (void)resetModeWithCompletionHandler:(id)handler;
+- (void)sendFeliCaCommandPacket:(id)packet completionHandler:(id)handler;
+- (void)writeWithoutEncryptionWithServiceCodeList:(id)list blockList:(id)blockList blockData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation NFCFeliCaTag
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = NFCFeliCaTag;
-  return [(NFCTag *)&v4 copyWithZone:a3];
+  return [(NFCTag *)&v4 copyWithZone:zone];
 }
 
-- (void)pollingWithSystemCode:(id)a3 requestCode:(int64_t)a4 timeSlot:(int64_t)a5 completionHandler:(id)a6
+- (void)pollingWithSystemCode:(id)code requestCode:(int64_t)requestCode timeSlot:(int64_t)slot completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
-  v12 = a6;
+  slotCopy = slot;
+  requestCodeCopy = requestCode;
+  codeCopy = code;
+  handlerCopy = handler;
   v13 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag pollingWithSystemCode:requestCode:timeSlot:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v13, &state);
   os_activity_scope_leave(&state);
 
-  if ([v11 length] == 2)
+  if ([codeCopy length] == 2)
   {
-    v14 = [v11 bytes];
+    bytes = [codeCopy bytes];
     LOBYTE(state.opaque[0]) = 0;
-    BYTE1(state.opaque[0]) = *v14;
-    v15 = v14[1];
-    BYTE2(state.opaque[0]) = v14[1];
-    BYTE3(state.opaque[0]) = v8;
-    BYTE4(state.opaque[0]) = v7;
+    BYTE1(state.opaque[0]) = *bytes;
+    v15 = bytes[1];
+    BYTE2(state.opaque[0]) = bytes[1];
+    BYTE3(state.opaque[0]) = requestCodeCopy;
+    BYTE4(state.opaque[0]) = slotCopy;
     if (BYTE1(state.opaque[0]) == 255 || v15 == 255)
     {
       v19[0] = MEMORY[0x277D85DD0];
@@ -49,7 +49,7 @@
       v19[2] = sub_2372A7B5C;
       v19[3] = &unk_278A29BE8;
       v19[4] = self;
-      v20 = v12;
+      v20 = handlerCopy;
       v21 = a2;
       [(NFCTag *)self dispatchOnDelegateQueueAsync:v19];
       v16 = v20;
@@ -62,7 +62,7 @@
       v17[1] = 3221225472;
       v17[2] = sub_2372A7D28;
       v17[3] = &unk_278A29C10;
-      v18 = v12;
+      v18 = handlerCopy;
       [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v16 completionHandler:v17];
     }
   }
@@ -74,17 +74,17 @@
     v22[2] = sub_2372A7990;
     v22[3] = &unk_278A29BE8;
     v22[4] = self;
-    v23 = v12;
+    v23 = handlerCopy;
     v24 = a2;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v22];
   }
 }
 
-- (void)requestServiceWithNodeCodeList:(id)a3 completionHandler:(id)a4
+- (void)requestServiceWithNodeCodeList:(id)list completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  handlerCopy = handler;
   v9 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag requestServiceWithNodeCodeList:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -93,14 +93,14 @@
 
   v10 = objc_opt_new();
   v11 = objc_opt_new();
-  if ([v7 count] && objc_msgSend(v7, "count") < 0x21)
+  if ([listCopy count] && objc_msgSend(listCopy, "count") < 0x21)
   {
     v21 = a2;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v7;
+    v14 = listCopy;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v15)
     {
@@ -123,7 +123,7 @@
             v24[2] = sub_2372A8434;
             v24[3] = &unk_278A29BE8;
             v24[4] = self;
-            v25 = v8;
+            v25 = handlerCopy;
             v26 = v21;
             [(NFCTag *)self dispatchOnDelegateQueueAsync:v24];
 
@@ -145,8 +145,8 @@
 
     LOBYTE(state.opaque[0]) = 2;
     [v10 appendBytes:&state length:1];
-    v20 = [(NFCTag *)self identifier];
-    [v10 appendData:v20];
+    identifier = [(NFCTag *)self identifier];
+    [v10 appendData:identifier];
 
     LOBYTE(state.opaque[0]) = [v14 count];
     [v10 appendBytes:&state length:1];
@@ -155,7 +155,7 @@
     v22[1] = 3221225472;
     v22[2] = sub_2372A85E4;
     v22[3] = &unk_278A29C10;
-    v23 = v8;
+    v23 = handlerCopy;
     [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v10 completionHandler:v22];
     v12 = v23;
   }
@@ -167,7 +167,7 @@
     v31[2] = sub_2372A8284;
     v31[3] = &unk_278A29BE8;
     v31[4] = self;
-    v32 = v8;
+    v32 = handlerCopy;
     v33 = a2;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v31];
     v12 = v32;
@@ -177,9 +177,9 @@ LABEL_5:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestResponseWithCompletionHandler:(id)a3
+- (void)requestResponseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag requestResponseWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -188,31 +188,31 @@ LABEL_5:
 
   LOBYTE(state.opaque[0]) = 4;
   v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&state length:1];
-  v7 = [(NFCTag *)self identifier];
-  [v6 appendData:v7];
+  identifier = [(NFCTag *)self identifier];
+  [v6 appendData:identifier];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372A8940;
   v9[3] = &unk_278A29C10;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v6 completionHandler:v9];
 }
 
-- (void)readWithoutEncryptionWithServiceCodeList:(id)a3 blockList:(id)a4 completionHandler:(id)a5
+- (void)readWithoutEncryptionWithServiceCodeList:(id)list blockList:(id)blockList completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  listCopy = list;
+  blockListCopy = blockList;
+  handlerCopy = handler;
   v12 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag readWithoutEncryptionWithServiceCodeList:blockList:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v12, &state);
   os_activity_scope_leave(&state);
 
-  if ([v9 count] && objc_msgSend(v9, "count") < 0x11)
+  if ([listCopy count] && objc_msgSend(listCopy, "count") < 0x11)
   {
     v32 = a2;
     v13 = objc_opt_new();
@@ -220,7 +220,7 @@ LABEL_5:
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v14 = v9;
+    v14 = listCopy;
     v15 = [v14 countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v15)
     {
@@ -243,7 +243,7 @@ LABEL_5:
             v42[2] = sub_2372A910C;
             v42[3] = &unk_278A29BE8;
             v42[4] = self;
-            v43 = v11;
+            v43 = handlerCopy;
             v44 = v32;
             [(NFCTag *)self dispatchOnDelegateQueueAsync:v42];
 
@@ -264,15 +264,15 @@ LABEL_5:
       }
     }
 
-    v30 = v11;
+    v30 = handlerCopy;
 
     v20 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v31 = v10;
-    v21 = v10;
+    v31 = blockListCopy;
+    v21 = blockListCopy;
     v22 = [v21 countByEnumeratingWithState:&v38 objects:v53 count:16];
     if (v22)
     {
@@ -294,7 +294,7 @@ LABEL_5:
             v35[1] = 3221225472;
             v35[2] = sub_2372A92C4;
             v35[3] = &unk_278A29BE8;
-            v11 = v30;
+            handlerCopy = v30;
             v35[4] = self;
             v36 = v30;
             v37 = v32;
@@ -318,8 +318,8 @@ LABEL_5:
 
     LOBYTE(state.opaque[0]) = 6;
     v27 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&state length:1];
-    v28 = [(NFCTag *)self identifier];
-    [v27 appendData:v28];
+    identifier = [(NFCTag *)self identifier];
+    [v27 appendData:identifier];
 
     LOBYTE(state.opaque[0]) = [v14 count];
     [v27 appendBytes:&state length:1];
@@ -331,12 +331,12 @@ LABEL_5:
     v33[1] = 3221225472;
     v33[2] = sub_2372A947C;
     v33[3] = &unk_278A29C10;
-    v11 = v30;
+    handlerCopy = v30;
     v34 = v30;
     [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v27 completionHandler:v33];
 
 LABEL_24:
-    v10 = v31;
+    blockListCopy = v31;
 LABEL_25:
   }
 
@@ -347,7 +347,7 @@ LABEL_25:
     v49[2] = sub_2372A8F54;
     v49[3] = &unk_278A29BE8;
     v49[4] = self;
-    v50 = v11;
+    v50 = handlerCopy;
     v51 = a2;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v49];
     v13 = v50;
@@ -356,33 +356,33 @@ LABEL_25:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeWithoutEncryptionWithServiceCodeList:(id)a3 blockList:(id)a4 blockData:(id)a5 completionHandler:(id)a6
+- (void)writeWithoutEncryptionWithServiceCodeList:(id)list blockList:(id)blockList blockData:(id)data completionHandler:(id)handler
 {
   v80 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  listCopy = list;
+  blockListCopy = blockList;
+  dataCopy = data;
+  handlerCopy = handler;
   v15 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag writeWithoutEncryptionWithServiceCodeList:blockList:blockData:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[1] = 0;
   state.opaque[0] = 0;
   os_activity_scope_enter(v15, &state);
   os_activity_scope_leave(&state);
 
-  if ([v11 count] && objc_msgSend(v11, "count") < 0x11)
+  if ([listCopy count] && objc_msgSend(listCopy, "count") < 0x11)
   {
-    v18 = [v12 count];
-    if (v18 == [v13 count])
+    v18 = [blockListCopy count];
+    if (v18 == [dataCopy count])
     {
-      if ([v12 count] < 0x100)
+      if ([blockListCopy count] < 0x100)
       {
-        v41 = v13;
+        v41 = dataCopy;
         v16 = objc_opt_new();
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
         v66 = 0u;
-        obj = v11;
+        obj = listCopy;
         v19 = [obj countByEnumeratingWithState:&v63 objects:v79 count:16];
         if (v19)
         {
@@ -405,7 +405,7 @@ LABEL_25:
                 v60[2] = sub_2372AA32C;
                 v60[3] = &unk_278A29BE8;
                 v60[4] = self;
-                v61 = v14;
+                v61 = handlerCopy;
                 v62 = a2;
                 [(NFCTag *)self dispatchOnDelegateQueueAsync:v60];
                 v37 = v61;
@@ -431,8 +431,8 @@ LABEL_25:
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v39 = v12;
-        v42 = v12;
+        v39 = blockListCopy;
+        v42 = blockListCopy;
         v25 = [v42 countByEnumeratingWithState:&v56 objects:v78 count:16];
         if (v25)
         {
@@ -455,7 +455,7 @@ LABEL_25:
                 v53[2] = sub_2372AA4CC;
                 v53[3] = &unk_278A29BE8;
                 v53[4] = self;
-                v54 = v14;
+                v54 = handlerCopy;
                 v55 = a2;
                 [(NFCTag *)self dispatchOnDelegateQueueAsync:v53];
 
@@ -504,12 +504,12 @@ LABEL_25:
                 v46[2] = sub_2372AA66C;
                 v46[3] = &unk_278A29BE8;
                 v46[4] = self;
-                v47 = v14;
+                v47 = handlerCopy;
                 v48 = a2;
                 [(NFCTag *)self dispatchOnDelegateQueueAsync:v46];
 
                 v37 = v38;
-                v12 = v39;
+                blockListCopy = v39;
                 goto LABEL_39;
               }
 
@@ -528,8 +528,8 @@ LABEL_25:
 
         LOBYTE(state.opaque[0]) = 8;
         v35 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&state length:1];
-        v36 = [(NFCTag *)self identifier];
-        [v35 appendData:v36];
+        identifier = [(NFCTag *)self identifier];
+        [v35 appendData:identifier];
 
         LOBYTE(state.opaque[0]) = [obj count];
         [v35 appendBytes:&state length:1];
@@ -543,14 +543,14 @@ LABEL_25:
         v44[1] = 3221225472;
         v44[2] = sub_2372AA80C;
         v44[3] = &unk_278A29C10;
-        v45 = v14;
+        v45 = handlerCopy;
         [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v35 completionHandler:v44];
 
 LABEL_37:
-        v12 = v39;
+        blockListCopy = v39;
 LABEL_39:
 
-        v13 = v41;
+        dataCopy = v41;
       }
 
       else
@@ -560,7 +560,7 @@ LABEL_39:
         v67[2] = sub_2372AA18C;
         v67[3] = &unk_278A29BE8;
         v67[4] = self;
-        v68 = v14;
+        v68 = handlerCopy;
         v69 = a2;
         [(NFCTag *)self dispatchOnDelegateQueueAsync:v67];
         v16 = v68;
@@ -573,7 +573,7 @@ LABEL_39:
       v70[1] = 3221225472;
       v70[2] = sub_2372A9FEC;
       v70[3] = &unk_278A29BE8;
-      v71 = v14;
+      v71 = handlerCopy;
       v70[4] = self;
       v72 = a2;
       [(NFCTag *)self dispatchOnDelegateQueueAsync:v70];
@@ -587,7 +587,7 @@ LABEL_39:
     v73[1] = 3221225472;
     v73[2] = sub_2372A9E4C;
     v73[3] = &unk_278A29BE8;
-    v74 = v14;
+    v74 = handlerCopy;
     v73[4] = self;
     v75 = a2;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v73];
@@ -597,9 +597,9 @@ LABEL_39:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSystemCodeWithCompletionHandler:(id)a3
+- (void)requestSystemCodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag requestSystemCodeWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -608,23 +608,23 @@ LABEL_39:
 
   LOBYTE(state.opaque[0]) = 12;
   v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&state length:1];
-  v7 = [(NFCTag *)self identifier];
-  [v6 appendData:v7];
+  identifier = [(NFCTag *)self identifier];
+  [v6 appendData:identifier];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AAA88;
   v9[3] = &unk_278A29C10;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v6 completionHandler:v9];
 }
 
-- (void)requestServiceV2WithNodeCodeList:(id)a3 completionHandler:(id)a4
+- (void)requestServiceV2WithNodeCodeList:(id)list completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  handlerCopy = handler;
   v9 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag requestServiceV2WithNodeCodeList:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -633,14 +633,14 @@ LABEL_39:
 
   v10 = objc_opt_new();
   v11 = objc_opt_new();
-  if ([v7 count] && objc_msgSend(v7, "count") < 0x21)
+  if ([listCopy count] && objc_msgSend(listCopy, "count") < 0x21)
   {
     v21 = a2;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v7;
+    v14 = listCopy;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v15)
     {
@@ -663,7 +663,7 @@ LABEL_39:
             v24[2] = sub_2372AB1E0;
             v24[3] = &unk_278A29BE8;
             v24[4] = self;
-            v25 = v8;
+            v25 = handlerCopy;
             v26 = v21;
             [(NFCTag *)self dispatchOnDelegateQueueAsync:v24];
 
@@ -685,8 +685,8 @@ LABEL_39:
 
     LOBYTE(state.opaque[0]) = 50;
     [v10 appendBytes:&state length:1];
-    v20 = [(NFCTag *)self identifier];
-    [v10 appendData:v20];
+    identifier = [(NFCTag *)self identifier];
+    [v10 appendData:identifier];
 
     LOBYTE(state.opaque[0]) = [v14 count];
     [v10 appendBytes:&state length:1];
@@ -695,7 +695,7 @@ LABEL_39:
     v22[1] = 3221225472;
     v22[2] = sub_2372AB3B8;
     v22[3] = &unk_278A29C10;
-    v23 = v8;
+    v23 = handlerCopy;
     [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v10 completionHandler:v22];
     v12 = v23;
   }
@@ -707,7 +707,7 @@ LABEL_39:
     v31[2] = sub_2372AB008;
     v31[3] = &unk_278A29BE8;
     v31[4] = self;
-    v32 = v8;
+    v32 = handlerCopy;
     v33 = a2;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v31];
     v12 = v32;
@@ -717,9 +717,9 @@ LABEL_5:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSpecificationVersionWithCompletionHandler:(id)a3
+- (void)requestSpecificationVersionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag requestSpecificationVersionWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -729,8 +729,8 @@ LABEL_5:
   v6 = objc_opt_new();
   v11 = 60;
   [v6 appendBytes:&v11 length:1];
-  v7 = [(NFCTag *)self identifier];
-  [v6 appendData:v7];
+  identifier = [(NFCTag *)self identifier];
+  [v6 appendData:identifier];
 
   LOWORD(state.opaque[0]) = 0;
   [v6 appendBytes:&state length:2];
@@ -738,14 +738,14 @@ LABEL_5:
   v9[1] = 3221225472;
   v9[2] = sub_2372AB8C0;
   v9[3] = &unk_278A29C10;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v6 completionHandler:v9];
 }
 
-- (void)resetModeWithCompletionHandler:(id)a3
+- (void)resetModeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag resetModeWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -755,8 +755,8 @@ LABEL_5:
   v6 = objc_opt_new();
   v11 = 62;
   [v6 appendBytes:&v11 length:1];
-  v7 = [(NFCTag *)self identifier];
-  [v6 appendData:v7];
+  identifier = [(NFCTag *)self identifier];
+  [v6 appendData:identifier];
 
   LOWORD(state.opaque[0]) = 0;
   [v6 appendBytes:&state length:2];
@@ -764,33 +764,33 @@ LABEL_5:
   v9[1] = 3221225472;
   v9[2] = sub_2372ABD64;
   v9[3] = &unk_278A29C10;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCFeliCaTag *)self sendFeliCaCommandPacket:v6 completionHandler:v9];
 }
 
-- (void)sendFeliCaCommandPacket:(id)a3 completionHandler:(id)a4
+- (void)sendFeliCaCommandPacket:(id)packet completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  packetCopy = packet;
+  handlerCopy = handler;
   v9 = _os_activity_create(&dword_23728C000, "NFCFeliCaTag sendFeliCaCommandPacket:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v9, &state);
   os_activity_scope_leave(&state);
 
-  if ([v7 length] && objc_msgSend(v7, "length") < 0xFF)
+  if ([packetCopy length] && objc_msgSend(packetCopy, "length") < 0xFF)
   {
-    if (*[v7 bytes] || objc_msgSend(v7, "length") == 5)
+    if (*[packetCopy bytes] || objc_msgSend(packetCopy, "length") == 5)
     {
-      LOBYTE(state.opaque[0]) = [v7 length] + 1;
+      LOBYTE(state.opaque[0]) = [packetCopy length] + 1;
       v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&state length:1];
-      [v11 appendData:v7];
+      [v11 appendData:packetCopy];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = sub_2372AC320;
       v12[3] = &unk_278A29C10;
-      v13 = v8;
+      v13 = handlerCopy;
       [(NFCTag *)self _transceiveWithData:v11 completionHandler:v12];
 
       goto LABEL_8;
@@ -800,7 +800,7 @@ LABEL_5:
     v14[1] = 3221225472;
     v14[2] = sub_2372AC2A0;
     v14[3] = &unk_278A29C38;
-    v15 = v8;
+    v15 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v14];
     v10 = v15;
   }
@@ -812,7 +812,7 @@ LABEL_5:
     v16[2] = sub_2372AC0F0;
     v16[3] = &unk_278A29BE8;
     v16[4] = self;
-    v17 = v8;
+    v17 = handlerCopy;
     v18 = a2;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v16];
     v10 = v17;

@@ -4,22 +4,22 @@
 - (Class)toolkitValueClass;
 - (NSDateFormatter)hintDateFormatter;
 - (NSString)localizedIncompleteHintString;
-- (WFDateFieldParameter)initWithDefinition:(id)a3;
-- (id)createDialogTextFieldConfigurationWithDefaultState:(id)a3;
-- (id)dateFormatterForConfiguration:(id)a3;
+- (WFDateFieldParameter)initWithDefinition:(id)definition;
+- (id)createDialogTextFieldConfigurationWithDefaultState:(id)state;
+- (id)dateFormatterForConfiguration:(id)configuration;
 - (id)datePickerConfiguration;
-- (id)hintForState:(id)a3;
-- (id)parameterStateFromDialogResponse:(id)a3;
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6;
-- (void)setForcesAllDayDates:(BOOL)a3;
+- (id)hintForState:(id)state;
+- (id)parameterStateFromDialogResponse:(id)response;
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler;
+- (void)setForcesAllDayDates:(BOOL)dates;
 @end
 
 @implementation WFDateFieldParameter
 
 - (Class)toolkitValueClass
 {
-  v3 = [(WFDateFieldParameter *)self resultType];
-  v4 = [v3 isEqualToString:@"WFDetectedDate"];
+  resultType = [(WFDateFieldParameter *)self resultType];
+  v4 = [resultType isEqualToString:@"WFDetectedDate"];
 
   if (v4)
   {
@@ -28,8 +28,8 @@
 
   else
   {
-    v6 = [(WFDateFieldParameter *)self resultType];
-    v7 = [v6 isEqualToString:@"String"];
+    resultType2 = [(WFDateFieldParameter *)self resultType];
+    v7 = [resultType2 isEqualToString:@"String"];
 
     if (v7)
     {
@@ -38,8 +38,8 @@
 
     else
     {
-      v8 = [(WFDateFieldParameter *)self resultType];
-      [v8 isEqualToString:@"Date"];
+      resultType3 = [(WFDateFieldParameter *)self resultType];
+      [resultType3 isEqualToString:@"Date"];
 
       v5 = 0x1E695DF00;
     }
@@ -51,28 +51,28 @@
   return v10;
 }
 
-- (id)parameterStateFromDialogResponse:(id)a3
+- (id)parameterStateFromDialogResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 inputtedDate];
+    v5 = responseCopy;
+    inputtedDate = [v5 inputtedDate];
 
-    if (v6)
+    if (inputtedDate)
     {
-      v7 = [(WFDateFieldParameter *)self datePickerConfiguration];
-      v8 = [(WFDateFieldParameter *)self dateFormatterForConfiguration:v7];
+      datePickerConfiguration = [(WFDateFieldParameter *)self datePickerConfiguration];
+      v8 = [(WFDateFieldParameter *)self dateFormatterForConfiguration:datePickerConfiguration];
 
       v9 = [WFVariableString alloc];
-      v10 = [v5 inputtedDate];
-      v11 = [v8 stringFromDate:v10];
+      inputtedDate2 = [v5 inputtedDate];
+      v11 = [v8 stringFromDate:inputtedDate2];
       v12 = [(WFVariableString *)v9 initWithString:v11];
 
-      v6 = [(WFVariableStringParameterState *)[WFDateFieldParameterState alloc] initWithVariableString:v12];
-      v13 = [v5 inputtedDate];
-      [(WFDateFieldParameterState *)v6 setPreprocessedDate:v13];
+      inputtedDate = [(WFVariableStringParameterState *)[WFDateFieldParameterState alloc] initWithVariableString:v12];
+      inputtedDate3 = [v5 inputtedDate];
+      [(WFDateFieldParameterState *)inputtedDate setPreprocessedDate:inputtedDate3];
     }
   }
 
@@ -83,30 +83,30 @@
     {
       v15.receiver = self;
       v15.super_class = WFDateFieldParameter;
-      v6 = [(WFTextInputParameter *)&v15 parameterStateFromDialogResponse:v4];
+      inputtedDate = [(WFTextInputParameter *)&v15 parameterStateFromDialogResponse:responseCopy];
     }
 
     else
     {
-      v6 = 0;
+      inputtedDate = 0;
     }
   }
 
-  return v6;
+  return inputtedDate;
 }
 
-- (id)createDialogTextFieldConfigurationWithDefaultState:(id)a3
+- (id)createDialogTextFieldConfigurationWithDefaultState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFDateFieldParameter *)self timeOnlyMode];
-  v6 = [(WFDateFieldParameter *)self dateOnlyMode];
+  stateCopy = state;
+  timeOnlyMode = [(WFDateFieldParameter *)self timeOnlyMode];
+  dateOnlyMode = [(WFDateFieldParameter *)self dateOnlyMode];
   v11.receiver = self;
   v11.super_class = WFDateFieldParameter;
-  v7 = [(WFTextInputParameter *)&v11 createDialogTextFieldConfigurationWithDefaultState:v4];
+  v7 = [(WFTextInputParameter *)&v11 createDialogTextFieldConfigurationWithDefaultState:stateCopy];
 
   [v7 setShowsDateFormattingHint:1];
-  [v7 setTimeFormatStyle:!v6];
-  [v7 setDateFormatStyle:!v5];
+  [v7 setTimeFormatStyle:!dateOnlyMode];
+  [v7 setDateFormatStyle:!timeOnlyMode];
   if ([(WFDateFieldParameter *)self detectsAllDayDates])
   {
     v8 = [(WFDateFieldParameter *)self displaysAllDayString]^ 1;
@@ -119,45 +119,45 @@
 
   [v7 setDateHintPrefersDateOnly:v8];
   [v7 setDoesRelativeDateFormatting:1];
-  v9 = [(WFDateFieldParameter *)self localizedIncompleteHintString];
-  [v7 setLocalizedIncompleteHintString:v9];
+  localizedIncompleteHintString = [(WFDateFieldParameter *)self localizedIncompleteHintString];
+  [v7 setLocalizedIncompleteHintString:localizedIncompleteHintString];
 
   return v7;
 }
 
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11 && ([v11 variableString], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEmpty"), v14, (v15 & 1) == 0))
+  attributionCopy = attribution;
+  stateCopy = state;
+  promptCopy = prompt;
+  handlerCopy = handler;
+  if (stateCopy && ([stateCopy variableString], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEmpty"), v14, (v15 & 1) == 0))
   {
     v18.receiver = self;
     v18.super_class = WFDateFieldParameter;
-    [(WFTextInputParameter *)&v18 createDialogRequestWithAttribution:v10 defaultState:v11 prompt:v12 completionHandler:v13];
+    [(WFTextInputParameter *)&v18 createDialogRequestWithAttribution:attributionCopy defaultState:stateCopy prompt:promptCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v16 = [(WFDateFieldParameter *)self datePickerConfiguration];
-    v17 = [objc_alloc(MEMORY[0x1E69E0B70]) initWithDatePickerConfiguration:v16 message:0 attribution:v10 prompt:v12];
-    v13[2](v13, v17);
+    datePickerConfiguration = [(WFDateFieldParameter *)self datePickerConfiguration];
+    v17 = [objc_alloc(MEMORY[0x1E69E0B70]) initWithDatePickerConfiguration:datePickerConfiguration message:0 attribution:attributionCopy prompt:promptCopy];
+    handlerCopy[2](handlerCopy, v17);
   }
 }
 
-- (id)dateFormatterForConfiguration:(id)a3
+- (id)dateFormatterForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 datePickerMode];
-  v5 = v4 != *MEMORY[0x1E69E1008];
+  configurationCopy = configuration;
+  datePickerMode = [configurationCopy datePickerMode];
+  v5 = datePickerMode != *MEMORY[0x1E69E1008];
 
-  v6 = [v3 datePickerMode];
+  datePickerMode2 = [configurationCopy datePickerMode];
 
   v7 = *MEMORY[0x1E69E0FF8];
   v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v9 = v8;
-  if (v6 == v7)
+  if (datePickerMode2 == v7)
   {
     v10 = 0;
   }
@@ -199,11 +199,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)setForcesAllDayDates:(BOOL)a3
+- (void)setForcesAllDayDates:(BOOL)dates
 {
-  if (self->_forcesAllDayDates != a3)
+  if (self->_forcesAllDayDates != dates)
   {
-    self->_forcesAllDayDates = a3;
+    self->_forcesAllDayDates = dates;
     [(WFParameter *)self attributesDidChange];
   }
 }
@@ -225,50 +225,50 @@ LABEL_7:
   return v3;
 }
 
-- (id)hintForState:(id)a3
+- (id)hintForState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 variableString];
-  v6 = [v5 variables];
-  if ([v6 count])
+  stateCopy = state;
+  variableString = [stateCopy variableString];
+  variables = [variableString variables];
+  if ([variables count])
   {
 
-    v7 = 0;
+    localizedIncompleteHintString = 0;
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v9 = [v4 variableString];
-  v10 = [v9 stringByRemovingVariables];
-  v11 = [v10 length];
+  variableString2 = [stateCopy variableString];
+  stringByRemovingVariables = [variableString2 stringByRemovingVariables];
+  v11 = [stringByRemovingVariables length];
 
   if (v11)
   {
     v12 = MEMORY[0x1E6996DC0];
-    v13 = [v4 variableString];
-    v14 = [v13 stringByRemovingVariables];
-    v15 = [v12 datesInString:v14 error:0];
-    v5 = [v15 firstObject];
+    variableString3 = [stateCopy variableString];
+    stringByRemovingVariables2 = [variableString3 stringByRemovingVariables];
+    v15 = [v12 datesInString:stringByRemovingVariables2 error:0];
+    variableString = [v15 firstObject];
 
-    if (v5)
+    if (variableString)
     {
-      v16 = [(WFDateFieldParameter *)self hintDateFormatter];
-      v7 = [v16 stringFromDate:v5];
+      hintDateFormatter = [(WFDateFieldParameter *)self hintDateFormatter];
+      localizedIncompleteHintString = [hintDateFormatter stringFromDate:variableString];
     }
 
     else
     {
-      v7 = [(WFDateFieldParameter *)self localizedIncompleteHintString];
+      localizedIncompleteHintString = [(WFDateFieldParameter *)self localizedIncompleteHintString];
     }
 
     goto LABEL_3;
   }
 
-  v7 = 0;
+  localizedIncompleteHintString = 0;
 LABEL_4:
 
-  return v7;
+  return localizedIncompleteHintString;
 }
 
 - (NSDateFormatter)hintDateFormatter
@@ -276,71 +276,71 @@ LABEL_4:
   hintDateFormatter = self->_hintDateFormatter;
   if (!hintDateFormatter)
   {
-    v4 = [(WFDateFieldParameter *)self timeOnlyMode];
-    v5 = [(WFDateFieldParameter *)self dateOnlyMode];
-    v6 = [(WFDateFieldParameter *)self dateFormatterDateStyleNumber];
-    if (v6)
+    timeOnlyMode = [(WFDateFieldParameter *)self timeOnlyMode];
+    dateOnlyMode = [(WFDateFieldParameter *)self dateOnlyMode];
+    dateFormatterDateStyleNumber = [(WFDateFieldParameter *)self dateFormatterDateStyleNumber];
+    if (dateFormatterDateStyleNumber)
     {
-      v7 = [(WFDateFieldParameter *)self dateFormatterDateStyleNumber];
-      v8 = [v7 integerValue];
+      dateFormatterDateStyleNumber2 = [(WFDateFieldParameter *)self dateFormatterDateStyleNumber];
+      integerValue = [dateFormatterDateStyleNumber2 integerValue];
     }
 
     else
     {
-      v8 = 1;
+      integerValue = 1;
     }
 
-    v9 = [(WFDateFieldParameter *)self dateFormatterTimeStyleNumber];
-    if (v9)
+    dateFormatterTimeStyleNumber = [(WFDateFieldParameter *)self dateFormatterTimeStyleNumber];
+    if (dateFormatterTimeStyleNumber)
     {
-      v10 = [(WFDateFieldParameter *)self dateFormatterTimeStyleNumber];
-      v11 = [v10 integerValue];
-    }
-
-    else
-    {
-      v11 = 1;
-    }
-
-    v12 = [(WFDateFieldParameter *)self dateFormatterRelativeDateFormattingNumber];
-    if (v12)
-    {
-      v13 = [(WFDateFieldParameter *)self dateFormatterRelativeDateFormattingNumber];
-      v14 = [v13 BOOLValue];
+      dateFormatterTimeStyleNumber2 = [(WFDateFieldParameter *)self dateFormatterTimeStyleNumber];
+      integerValue2 = [dateFormatterTimeStyleNumber2 integerValue];
     }
 
     else
     {
-      v14 = 1;
+      integerValue2 = 1;
+    }
+
+    dateFormatterRelativeDateFormattingNumber = [(WFDateFieldParameter *)self dateFormatterRelativeDateFormattingNumber];
+    if (dateFormatterRelativeDateFormattingNumber)
+    {
+      dateFormatterRelativeDateFormattingNumber2 = [(WFDateFieldParameter *)self dateFormatterRelativeDateFormattingNumber];
+      bOOLValue = [dateFormatterRelativeDateFormattingNumber2 BOOLValue];
+    }
+
+    else
+    {
+      bOOLValue = 1;
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E696AB78]);
     v16 = v15;
-    if (v5)
+    if (dateOnlyMode)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = v11;
+      v17 = integerValue2;
     }
 
     [(NSDateFormatter *)v15 setTimeStyle:v17];
-    if (v4)
+    if (timeOnlyMode)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v8;
+      v18 = integerValue;
     }
 
     [(NSDateFormatter *)v16 setDateStyle:v18];
-    [(NSDateFormatter *)v16 setDoesRelativeDateFormatting:v14];
-    v19 = [(WFDateFieldParameter *)self dateFormatterTemplateString];
-    [(NSDateFormatter *)v16 setDateFormat:v19];
+    [(NSDateFormatter *)v16 setDoesRelativeDateFormatting:bOOLValue];
+    dateFormatterTemplateString = [(WFDateFieldParameter *)self dateFormatterTemplateString];
+    [(NSDateFormatter *)v16 setDateFormat:dateFormatterTemplateString];
 
     v20 = self->_hintDateFormatter;
     self->_hintDateFormatter = v16;
@@ -353,72 +353,72 @@ LABEL_4:
 
 - (BOOL)dateOnlyMode
 {
-  v2 = [(WFDateFieldParameter *)self hintDateMode];
-  v3 = [v2 isEqualToString:@"Date"];
+  hintDateMode = [(WFDateFieldParameter *)self hintDateMode];
+  v3 = [hintDateMode isEqualToString:@"Date"];
 
   return v3;
 }
 
 - (BOOL)timeOnlyMode
 {
-  v2 = [(WFDateFieldParameter *)self hintDateMode];
-  v3 = [v2 isEqualToString:@"Time"];
+  hintDateMode = [(WFDateFieldParameter *)self hintDateMode];
+  v3 = [hintDateMode isEqualToString:@"Time"];
 
   return v3;
 }
 
-- (WFDateFieldParameter)initWithDefinition:(id)a3
+- (WFDateFieldParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v41.receiver = self;
   v41.super_class = WFDateFieldParameter;
-  v5 = [(WFTextInputParameter *)&v41 initWithDefinition:v4];
+  v5 = [(WFTextInputParameter *)&v41 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"HintDateMode"];
+    v6 = [definitionCopy objectForKey:@"HintDateMode"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     v9 = [v8 copy];
     hintDateMode = v5->_hintDateMode;
     v5->_hintDateMode = v9;
 
-    v11 = [v4 objectForKey:@"ReactiveParameterKey"];
+    v11 = [definitionCopy objectForKey:@"ReactiveParameterKey"];
     v12 = objc_opt_class();
     v13 = WFEnforceClass_1501(v11, v12);
     v14 = [v13 copy];
     reactiveParameterKey = v5->_reactiveParameterKey;
     v5->_reactiveParameterKey = v14;
 
-    v16 = [v4 objectForKey:@"DetectsAllDayDates"];
+    v16 = [definitionCopy objectForKey:@"DetectsAllDayDates"];
     v17 = objc_opt_class();
     v18 = WFEnforceClass_1501(v16, v17);
     v5->_detectsAllDayDates = [v18 BOOLValue];
 
-    v19 = [v4 objectForKey:@"DisplaysAllDayString"];
+    v19 = [definitionCopy objectForKey:@"DisplaysAllDayString"];
     v20 = objc_opt_class();
     v21 = WFEnforceClass_1501(v19, v20);
     v5->_displaysAllDayString = [v21 BOOLValue];
 
-    v22 = [v4 objectForKey:@"DateFormatterDateStyle"];
+    v22 = [definitionCopy objectForKey:@"DateFormatterDateStyle"];
     v23 = objc_opt_class();
     v5->_dateFormatterDateStyleNumber = WFEnforceClass_1501(v22, v23);
 
-    v24 = [v4 objectForKey:@"DateFormatterTimeStyle"];
+    v24 = [definitionCopy objectForKey:@"DateFormatterTimeStyle"];
     v25 = objc_opt_class();
     v5->_dateFormatterTimeStyleNumber = WFEnforceClass_1501(v24, v25);
 
-    v26 = [v4 objectForKey:@"DateFormatterAllowsRelative"];
+    v26 = [definitionCopy objectForKey:@"DateFormatterAllowsRelative"];
     v27 = objc_opt_class();
     v5->_dateFormatterRelativeDateFormattingNumber = WFEnforceClass_1501(v26, v27);
 
-    v28 = [v4 objectForKey:@"DateFormatterTemplate"];
+    v28 = [definitionCopy objectForKey:@"DateFormatterTemplate"];
     v29 = objc_opt_class();
     v30 = WFEnforceClass_1501(v28, v29);
     v31 = [v30 copy];
     dateFormatterTemplateString = v5->_dateFormatterTemplateString;
     v5->_dateFormatterTemplateString = v31;
 
-    v33 = [v4 objectForKey:@"ResultType"];
+    v33 = [definitionCopy objectForKey:@"ResultType"];
     v34 = objc_opt_class();
     v35 = WFEnforceClass_1501(v33, v34);
     v36 = [v35 copy];

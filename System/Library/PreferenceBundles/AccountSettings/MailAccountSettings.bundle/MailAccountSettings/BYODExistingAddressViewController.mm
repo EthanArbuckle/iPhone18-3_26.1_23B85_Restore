@@ -1,14 +1,14 @@
 @interface BYODExistingAddressViewController
 + (id)log;
-- (BYODExistingAddressViewController)initWithACAccount:(id)a3 familyFlow:(BOOL)a4 existingAddress:(BOOL)a5;
+- (BYODExistingAddressViewController)initWithACAccount:(id)account familyFlow:(BOOL)flow existingAddress:(BOOL)address;
 - (id)_getDomainName;
 - (id)specifiers;
 - (void)_addDomain;
 - (void)_fetchDomainDetails;
 - (void)_fetchFamilyDetails;
-- (void)_showDomainConnectSignInAlert:(id)a3;
+- (void)_showDomainConnectSignInAlert:(id)alert;
 - (void)_triggerManualDomainSetupFlow;
-- (void)safariViewControllerDidFinish:(id)a3;
+- (void)safariViewControllerDidFinish:(id)finish;
 - (void)viewDidLoad;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_4A158;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6550 != -1)
   {
     dispatch_once(&qword_D6550, block);
@@ -31,18 +31,18 @@
   return v2;
 }
 
-- (BYODExistingAddressViewController)initWithACAccount:(id)a3 familyFlow:(BOOL)a4 existingAddress:(BOOL)a5
+- (BYODExistingAddressViewController)initWithACAccount:(id)account familyFlow:(BOOL)flow existingAddress:(BOOL)address
 {
-  v9 = a3;
+  accountCopy = account;
   v15.receiver = self;
   v15.super_class = BYODExistingAddressViewController;
   v10 = [(BYODExistingAddressViewController *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_loggedInuserAccount, a3);
-    v11->_isFamilyFlow = a4;
-    v11->_hasExistingAddress = a5;
+    objc_storeStrong(&v10->_loggedInuserAccount, account);
+    v11->_isFamilyFlow = flow;
+    v11->_hasExistingAddress = address;
     v12 = objc_alloc_init(FAFetchFamilyCircleRequest);
     familyRequest = v11->_familyRequest;
     v11->_familyRequest = v12;
@@ -58,24 +58,24 @@
   v14.receiver = self;
   v14.super_class = BYODExistingAddressViewController;
   [(BYODExistingAddressViewController *)&v14 viewDidLoad];
-  v3 = [(BYODExistingAddressViewController *)self navigationItem];
+  navigationItem = [(BYODExistingAddressViewController *)self navigationItem];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_ADD_DOMAIN_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  [v3 setTitle:v5];
+  [navigationItem setTitle:v5];
 
-  v6 = [(BYODExistingAddressViewController *)self navigationItem];
-  [v6 setHidesBackButton:0];
+  navigationItem2 = [(BYODExistingAddressViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:0];
 
-  v7 = [(BYODExistingAddressViewController *)self navigationItem];
+  navigationItem3 = [(BYODExistingAddressViewController *)self navigationItem];
   v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-  [v7 setLeftBarButtonItem:v8];
+  [navigationItem3 setLeftBarButtonItem:v8];
 
-  v9 = [(BYODExistingAddressViewController *)self navigationItem];
+  navigationItem4 = [(BYODExistingAddressViewController *)self navigationItem];
   v10 = [UIBarButtonItem alloc];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"NEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
   v13 = [v10 initWithTitle:v12 style:2 target:self action:"_continueButtonTapped:"];
-  [v9 setRightBarButtonItem:v13];
+  [navigationItem4 setRightBarButtonItem:v13];
 }
 
 - (id)specifiers
@@ -133,9 +133,9 @@
   v6 = objc_retainBlock(v17);
   v7 = [BYODAddDomainRequest alloc];
   loggedInuserAccount = self->_loggedInuserAccount;
-  v9 = [(ACAccount *)loggedInuserAccount accountStore];
-  v10 = [(BYODExistingAddressViewController *)self _getDomainName];
-  v11 = [(BYODAddDomainRequest *)v7 initWithAccount:loggedInuserAccount accountStore:v9 domain:v10 familyFlow:self->_isFamilyFlow hasEmail:self->_hasExistingAddress];
+  accountStore = [(ACAccount *)loggedInuserAccount accountStore];
+  _getDomainName = [(BYODExistingAddressViewController *)self _getDomainName];
+  v11 = [(BYODAddDomainRequest *)v7 initWithAccount:loggedInuserAccount accountStore:accountStore domain:_getDomainName familyFlow:self->_isFamilyFlow hasEmail:self->_hasExistingAddress];
 
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -167,9 +167,9 @@
   objc_initWeak(&location, self);
   v3 = [BYODGetDomainRequest alloc];
   loggedInuserAccount = self->_loggedInuserAccount;
-  v5 = [(ACAccount *)loggedInuserAccount accountStore];
-  v6 = [(BYODExistingAddressViewController *)self _getDomainName];
-  v7 = [(BYODGetDomainRequest *)v3 initWithAccount:loggedInuserAccount accountStore:v5 domain:v6];
+  accountStore = [(ACAccount *)loggedInuserAccount accountStore];
+  _getDomainName = [(BYODExistingAddressViewController *)self _getDomainName];
+  v7 = [(BYODGetDomainRequest *)v3 initWithAccount:loggedInuserAccount accountStore:accountStore domain:_getDomainName];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -182,23 +182,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_showDomainConnectSignInAlert:(id)a3
+- (void)_showDomainConnectSignInAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [v4 domainConnectServerUrl];
-  if ([v5 length])
+  alertCopy = alert;
+  domainConnectServerUrl = [alertCopy domainConnectServerUrl];
+  if ([domainConnectServerUrl length])
   {
-    v23 = [[NSURL alloc] initWithString:v5];
-    v24 = v5;
-    v27 = [v4 dnsProviderName];
-    v26 = [v4 name];
+    v23 = [[NSURL alloc] initWithString:domainConnectServerUrl];
+    v24 = domainConnectServerUrl;
+    dnsProviderName = [alertCopy dnsProviderName];
+    name = [alertCopy name];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_ALERT_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v25 = [NSString stringWithFormat:v7, v27];
+    v25 = [NSString stringWithFormat:v7, dnsProviderName];
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v10 = [NSString stringWithFormat:v9, v26, v27];
+    v10 = [NSString stringWithFormat:v9, name, dnsProviderName];
 
     v22 = v10;
     v11 = [UIAlertController alertControllerWithTitle:v25 message:v10 preferredStyle:1];
@@ -207,7 +207,7 @@
     v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
 
     v15 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = v24;
+    domainConnectServerUrl = v24;
     v16 = [v15 localizedStringForKey:@"CONTINUE_TEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -215,7 +215,7 @@
     v30[3] = &unk_B9388;
     v17 = v23;
     v31 = v17;
-    v32 = self;
+    selfCopy = self;
     v18 = [UIAlertAction actionWithTitle:v16 style:0 handler:v30];
 
     [v11 addAction:v14];
@@ -237,8 +237,8 @@
     v17 = +[BYODExistingAddressViewController log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v4 ef_publicDescription];
-      sub_79840(v21, buf, v17);
+      ef_publicDescription = [alertCopy ef_publicDescription];
+      sub_79840(ef_publicDescription, buf, v17);
     }
   }
 }
@@ -258,13 +258,13 @@
 {
   v2 = [(BYODExistingAddressViewController *)self specifierForID:@"DOMAIN_TEXT_FIELD"];
   v3 = [v2 propertyForKey:@"cellObject"];
-  v4 = [v3 textField];
-  v5 = [v4 text];
+  textField = [v3 textField];
+  text = [textField text];
 
-  return v5;
+  return text;
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"BYOD_REFRESH_NOTIFICATION" object:0 userInfo:0];

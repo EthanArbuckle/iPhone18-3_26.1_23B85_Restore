@@ -9,38 +9,38 @@
 - (CRLPlatformControlState)roundCornersToggledControlState;
 - (CRLPlatformControlState)shadowToggledControlState;
 - (id)loopToggledControlState;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)crlaxAddContextualMenuOptionsToArray:(id)a3 atPoint:(CGPoint)a4;
-- (void)replaceCanvasElementInfo:(id)a3 withFilesAtURLs:(id)a4 allowedTypes:(id)a5 actionString:(id)a6 completion:(id)a7;
-- (void)replaceSelectedMediaWithData:(id)a3 actionString:(id)a4 completion:(id)a5;
-- (void)resetSelectionToNaturalDataSize:(id)a3;
-- (void)showMediaReplaceUI:(id)a3;
-- (void)toggleLoop:(id)a3;
-- (void)toggleRoundCorners:(id)a3;
-- (void)toggleShadow:(id)a3;
-- (void)updateStateForCommand:(id)a3;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point;
+- (void)crlaxAddContextualMenuOptionsToArray:(id)array atPoint:(CGPoint)point;
+- (void)replaceCanvasElementInfo:(id)info withFilesAtURLs:(id)ls allowedTypes:(id)types actionString:(id)string completion:(id)completion;
+- (void)replaceSelectedMediaWithData:(id)data actionString:(id)string completion:(id)completion;
+- (void)resetSelectionToNaturalDataSize:(id)size;
+- (void)showMediaReplaceUI:(id)i;
+- (void)toggleLoop:(id)loop;
+- (void)toggleRoundCorners:(id)corners;
+- (void)toggleShadow:(id)shadow;
+- (void)updateStateForCommand:(id)command;
 @end
 
 @implementation CRLMediaEditor
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = v6;
-  if ("replaceCanvasElementInfo:withFilesAtURLs:allowedTypes:actionString:completion:" != a3)
+  senderCopy = sender;
+  v7 = senderCopy;
+  if ("replaceCanvasElementInfo:withFilesAtURLs:allowedTypes:actionString:completion:" != action)
   {
-    if ("resetSelectionToNaturalDataSize:" == a3)
+    if ("resetSelectionToNaturalDataSize:" == action)
     {
-      v20 = [(CRLMediaEditor *)self p_repCanResetMediaSize];
+      p_repCanResetMediaSize = [(CRLMediaEditor *)self p_repCanResetMediaSize];
     }
 
     else
     {
-      if (sel_isEqual(a3, "showMediaReplaceUI:"))
+      if (sel_isEqual(action, "showMediaReplaceUI:"))
       {
-        v8 = [(CRLBoardItemEditor *)self boardItems];
-        if ([v8 count] == 1)
+        boardItems = [(CRLBoardItemEditor *)self boardItems];
+        if ([boardItems count] == 1)
         {
           v9 = 1;
         }
@@ -53,26 +53,26 @@
         goto LABEL_29;
       }
 
-      if ("toggleShadow:" == a3 || "toggleRoundCorners:" == a3)
+      if ("toggleShadow:" == action || "toggleRoundCorners:" == action)
       {
-        v20 = [(CRLMediaEditor *)self p_allSelectedObjectsAllowTogglingOfRoundedCornersAndShadow];
+        p_repCanResetMediaSize = [(CRLMediaEditor *)self p_allSelectedObjectsAllowTogglingOfRoundedCornersAndShadow];
       }
 
       else
       {
-        if ("toggleLoop:" != a3)
+        if ("toggleLoop:" != action)
         {
           v23.receiver = self;
           v23.super_class = CRLMediaEditor;
-          v9 = [(CRLStyledEditor *)&v23 canPerformEditorAction:a3 withSender:v7];
+          v9 = [(CRLStyledEditor *)&v23 canPerformEditorAction:action withSender:v7];
           goto LABEL_29;
         }
 
-        v20 = [(CRLMediaEditor *)self p_allSelectedObjectsAllowTogglingOfLoop];
+        p_repCanResetMediaSize = [(CRLMediaEditor *)self p_allSelectedObjectsAllowTogglingOfLoop];
       }
     }
 
-    if (v20)
+    if (p_repCanResetMediaSize)
     {
       v9 = 1;
     }
@@ -85,13 +85,13 @@
     goto LABEL_29;
   }
 
-  v22 = v6;
+  v22 = senderCopy;
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(CRLMediaEditor *)self mediaItems];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  mediaItems = [(CRLMediaEditor *)self mediaItems];
+  v11 = [mediaItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
@@ -103,7 +103,7 @@ LABEL_10:
     {
       if (*v25 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(mediaItems);
       }
 
       v15 = *(*(&v24 + 1) + 8 * v14);
@@ -112,10 +112,10 @@ LABEL_10:
         break;
       }
 
-      v16 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-      v17 = [v16 canvasEditor];
-      v18 = [v17 canvasEditorHelper];
-      v19 = [v18 canReplaceBoardItem:v15];
+      interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+      canvasEditor = [interactiveCanvasController canvasEditor];
+      canvasEditorHelper = [canvasEditor canvasEditorHelper];
+      v19 = [canvasEditorHelper canReplaceBoardItem:v15];
 
       if (v19)
       {
@@ -124,7 +124,7 @@ LABEL_10:
 
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v12 = [mediaItems countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v12)
         {
           goto LABEL_10;
@@ -149,8 +149,8 @@ LABEL_29:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CRLMediaEditor *)self mediaItems];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  mediaItems = [(CRLMediaEditor *)self mediaItems];
+  v3 = [mediaItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -161,7 +161,7 @@ LABEL_29:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mediaItems);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) canResetMediaSize])
@@ -171,7 +171,7 @@ LABEL_29:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [mediaItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -187,16 +187,16 @@ LABEL_11:
   return v7;
 }
 
-- (void)resetSelectionToNaturalDataSize:(id)a3
+- (void)resetSelectionToNaturalDataSize:(id)size
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v5 = objc_alloc_init(_TtC8Freeform15CRLCommandGroup);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(CRLMediaEditor *)self mediaItems];
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  mediaItems = [(CRLMediaEditor *)self mediaItems];
+  v7 = [mediaItems countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -207,14 +207,14 @@ LABEL_11:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaItems);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
         if ([v11 canResetMediaSize])
         {
-          v12 = [v4 canvasEditor];
-          v13 = [v12 selectionPathWithInfo:v11];
+          canvasEditor = [interactiveCanvasController canvasEditor];
+          v13 = [canvasEditor selectionPathWithInfo:v11];
 
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
@@ -228,11 +228,11 @@ LABEL_11:
           v22[3] = &unk_1018462B0;
           v23 = v14;
           v15 = v14;
-          [v4 forLayoutNearestVisibleRectForInfosForSelectionPath:v13 performBlock:v22];
+          [interactiveCanvasController forLayoutNearestVisibleRectForInfosForSelectionPath:v13 performBlock:v22];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [mediaItems countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v8);
@@ -244,14 +244,14 @@ LABEL_11:
 
   if (![(CRLCommandGroup *)v5 isEmpty])
   {
-    v18 = [v4 commandController];
+    commandController = [interactiveCanvasController commandController];
     v19 = [CRLCanvasCommandSelectionBehavior alloc];
-    v20 = [v4 canvasEditor];
-    v21 = [(CRLCanvasCommandSelectionBehavior *)v19 initWithCanvasEditor:v20 type:2 constructedInfos:0];
+    canvasEditor2 = [interactiveCanvasController canvasEditor];
+    v21 = [(CRLCanvasCommandSelectionBehavior *)v19 initWithCanvasEditor:canvasEditor2 type:2 constructedInfos:0];
 
-    [v18 openGroupWithSelectionBehavior:v21];
-    [v18 enqueueCommand:v5];
-    [v18 closeGroup];
+    [commandController openGroupWithSelectionBehavior:v21];
+    [commandController enqueueCommand:v5];
+    [commandController closeGroup];
   }
 }
 
@@ -261,8 +261,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -273,7 +273,7 @@ LABEL_11:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(boardItems);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
@@ -288,9 +288,9 @@ LABEL_11:
 
           v8 = objc_opt_class();
           v9 = sub_100014370(v8, v7);
-          v10 = [v9 isAudioOnly];
+          isAudioOnly = [v9 isAudioOnly];
 
-          if ((v10 & 1) == 0)
+          if ((isAudioOnly & 1) == 0)
           {
             continue;
           }
@@ -300,7 +300,7 @@ LABEL_11:
         goto LABEL_14;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [boardItems countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -322,8 +322,8 @@ LABEL_14:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CRLMediaEditor *)self mediaItems];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  mediaItems = [(CRLMediaEditor *)self mediaItems];
+  v3 = [mediaItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -334,7 +334,7 @@ LABEL_14:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mediaItems);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) supportsTogglingShadowAndRoundedCorners])
@@ -344,7 +344,7 @@ LABEL_14:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [mediaItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -366,8 +366,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CRLMediaEditor *)self mediaItems];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  mediaItems = [(CRLMediaEditor *)self mediaItems];
+  v3 = [mediaItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -378,7 +378,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mediaItems);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) supportsTogglingLooping])
@@ -388,7 +388,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [mediaItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -410,8 +410,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -421,7 +421,7 @@ LABEL_11:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(boardItems);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
@@ -430,9 +430,9 @@ LABEL_11:
         if (v8)
         {
           v9 = v8;
-          v10 = [v8 shadow];
+          shadow = [v8 shadow];
 
-          if (v10)
+          if (shadow)
           {
             LOBYTE(v3) = 1;
             goto LABEL_12;
@@ -440,7 +440,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [boardItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v3)
       {
         continue;
@@ -461,8 +461,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -472,7 +472,7 @@ LABEL_12:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(boardItems);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
@@ -487,7 +487,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [boardItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -508,8 +508,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -519,7 +519,7 @@ LABEL_12:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(boardItems);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
@@ -534,7 +534,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [boardItems countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -549,13 +549,13 @@ LABEL_12:
   return v3;
 }
 
-- (void)toggleShadow:(id)a3
+- (void)toggleShadow:(id)shadow
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v6 = [CRLCanvasCommandSelectionBehavior alloc];
-  v7 = [v4 canvasEditor];
-  v8 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:v7 type:2 constructedInfos:0];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v8 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:canvasEditor type:2 constructedInfos:0];
 
   v9 = 0;
   if (![(CRLMediaEditor *)self anySelectedObjectsHaveShadow])
@@ -563,13 +563,13 @@ LABEL_12:
     v9 = +[CRLShadow defaultShadow];
   }
 
-  [v5 openGroupWithSelectionBehavior:v8];
+  [commandController openGroupWithSelectionBehavior:v8];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v11 = [boardItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v11)
   {
     goto LABEL_14;
@@ -577,7 +577,7 @@ LABEL_12:
 
   v12 = v11;
   v21 = v8;
-  v22 = v4;
+  v22 = interactiveCanvasController;
   v13 = 0;
   v14 = *v24;
   do
@@ -586,7 +586,7 @@ LABEL_12:
     {
       if (*v24 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(boardItems);
       }
 
       v16 = *(*(&v23 + 1) + 8 * i);
@@ -595,46 +595,46 @@ LABEL_12:
       if (v18)
       {
         v19 = [[_TtC8Freeform19CRLCommandSetShadow alloc] initWithBoardItem:v18 shadow:v9];
-        [v5 enqueueCommand:v19];
+        [commandController enqueueCommand:v19];
 
         v13 = 1;
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v12 = [boardItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   }
 
   while (v12);
 
-  v4 = v22;
+  interactiveCanvasController = v22;
   if (v13)
   {
-    v10 = +[NSBundle mainBundle];
-    v20 = [v10 localizedStringForKey:@"Shadow Setting" value:0 table:0];
-    [v5 setCurrentGroupActionString:v20];
+    boardItems = +[NSBundle mainBundle];
+    v20 = [boardItems localizedStringForKey:@"Shadow Setting" value:0 table:0];
+    [commandController setCurrentGroupActionString:v20];
 
 LABEL_14:
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)toggleRoundCorners:(id)a3
+- (void)toggleRoundCorners:(id)corners
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v6 = [CRLCanvasCommandSelectionBehavior alloc];
-  v7 = [v4 canvasEditor];
-  v8 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:v7 type:2 constructedInfos:0];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v8 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:canvasEditor type:2 constructedInfos:0];
 
-  v9 = [(CRLMediaEditor *)self anySelectedObjectsHaveRoundCorners];
-  [v5 openGroupWithSelectionBehavior:v8];
+  anySelectedObjectsHaveRoundCorners = [(CRLMediaEditor *)self anySelectedObjectsHaveRoundCorners];
+  [commandController openGroupWithSelectionBehavior:v8];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v11 = [boardItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v11)
   {
     goto LABEL_14;
@@ -642,7 +642,7 @@ LABEL_14:
 
   v12 = v11;
   v22 = v8;
-  v23 = v4;
+  v23 = interactiveCanvasController;
   v13 = 0;
   v14 = *v25;
   do
@@ -651,7 +651,7 @@ LABEL_14:
     {
       if (*v25 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(boardItems);
       }
 
       v16 = *(*(&v24 + 1) + 8 * i);
@@ -660,49 +660,49 @@ LABEL_14:
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 commandToSetRoundedCornersEnabled:v9 ^ 1];
+        v20 = [v18 commandToSetRoundedCornersEnabled:anySelectedObjectsHaveRoundCorners ^ 1];
         if (v20)
         {
-          [v5 enqueueCommand:v20];
+          [commandController enqueueCommand:v20];
           v13 = 1;
         }
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v12 = [boardItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v12);
 
-  v4 = v23;
+  interactiveCanvasController = v23;
   if (v13)
   {
     v21 = +[NSBundle mainBundle];
-    v10 = [v21 localizedStringForKey:@"Round Corners Setting" value:0 table:0];
+    boardItems = [v21 localizedStringForKey:@"Round Corners Setting" value:0 table:0];
 
-    [v5 setCurrentGroupActionString:v10];
+    [commandController setCurrentGroupActionString:boardItems];
 LABEL_14:
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
 }
 
-- (void)toggleLoop:(id)a3
+- (void)toggleLoop:(id)loop
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v5 = [v4 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
   v6 = [CRLCanvasCommandSelectionBehavior alloc];
-  v7 = [v4 canvasEditor];
-  v8 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:v7 type:2 constructedInfos:0];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v8 = [(CRLCanvasCommandSelectionBehavior *)v6 initWithCanvasEditor:canvasEditor type:2 constructedInfos:0];
 
-  v9 = [(CRLMediaEditor *)self anySelectedObjectsHaveLooping];
-  [v5 openGroupWithSelectionBehavior:v8];
+  anySelectedObjectsHaveLooping = [(CRLMediaEditor *)self anySelectedObjectsHaveLooping];
+  [commandController openGroupWithSelectionBehavior:v8];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [(CRLBoardItemEditor *)self boardItems];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v11 = [boardItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v11)
   {
     goto LABEL_14;
@@ -710,7 +710,7 @@ LABEL_14:
 
   v12 = v11;
   v22 = v8;
-  v23 = v4;
+  v23 = interactiveCanvasController;
   v13 = 0;
   v14 = *v25;
   do
@@ -719,7 +719,7 @@ LABEL_14:
     {
       if (*v25 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(boardItems);
       }
 
       v16 = *(*(&v24 + 1) + 8 * i);
@@ -728,31 +728,31 @@ LABEL_14:
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 commandToSetLoopingEnabled:v9 ^ 1];
+        v20 = [v18 commandToSetLoopingEnabled:anySelectedObjectsHaveLooping ^ 1];
         if (v20)
         {
-          [v5 enqueueCommand:v20];
+          [commandController enqueueCommand:v20];
           v13 = 1;
         }
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v12 = [boardItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v12);
 
-  v4 = v23;
+  interactiveCanvasController = v23;
   if (v13)
   {
     v21 = +[NSBundle mainBundle];
-    v10 = [v21 localizedStringForKey:@"Loop Setting" value:0 table:0];
+    boardItems = [v21 localizedStringForKey:@"Loop Setting" value:0 table:0];
 
-    [v5 setCurrentGroupActionString:v10];
+    [commandController setCurrentGroupActionString:boardItems];
 LABEL_14:
   }
 
-  [v5 closeGroup];
+  [commandController closeGroup];
 }
 
 - (CRLPlatformControlState)shadowToggledControlState
@@ -761,8 +761,8 @@ LABEL_14:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v3)
   {
 
@@ -781,7 +781,7 @@ LABEL_15:
     {
       if (*v20 != v7)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(boardItems);
       }
 
       v9 = *(*(&v19 + 1) + 8 * i);
@@ -790,9 +790,9 @@ LABEL_15:
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 shadow];
-        v14 = v13 != 0;
-        v15 = v13 == 0;
+        shadow = [v11 shadow];
+        v14 = shadow != 0;
+        v15 = shadow == 0;
 
         v5 |= v15;
         v6 |= v14;
@@ -804,7 +804,7 @@ LABEL_15:
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v4 = [boardItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v4);
@@ -833,8 +833,8 @@ LABEL_17:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v3)
   {
 
@@ -853,7 +853,7 @@ LABEL_15:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(boardItems);
       }
 
       v9 = *(*(&v17 + 1) + 8 * i);
@@ -862,9 +862,9 @@ LABEL_15:
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 hasRoundedCorners];
-        v5 |= v13 ^ 1;
-        v6 |= v13;
+        hasRoundedCorners = [v11 hasRoundedCorners];
+        v5 |= hasRoundedCorners ^ 1;
+        v6 |= hasRoundedCorners;
       }
 
       else
@@ -873,7 +873,7 @@ LABEL_15:
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v4 = [boardItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v4);
@@ -902,8 +902,8 @@ LABEL_17:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(CRLBoardItemEditor *)self boardItems];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v3 = [boardItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v3)
   {
 
@@ -922,7 +922,7 @@ LABEL_15:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(boardItems);
       }
 
       v9 = *(*(&v17 + 1) + 8 * i);
@@ -931,9 +931,9 @@ LABEL_15:
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 isLooping];
-        v5 |= v13 ^ 1;
-        v6 |= v13;
+        isLooping = [v11 isLooping];
+        v5 |= isLooping ^ 1;
+        v6 |= isLooping;
       }
 
       else
@@ -942,7 +942,7 @@ LABEL_15:
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v4 = [boardItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v4);
@@ -965,42 +965,42 @@ LABEL_17:
   return v15;
 }
 
-- (void)showMediaReplaceUI:(id)a3
+- (void)showMediaReplaceUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = [[CRLMediaReplacingHelper alloc] initWithEditor:self];
-  [(CRLMediaReplacingHelper *)v5 showMediaReplaceUI:v4];
+  [(CRLMediaReplacingHelper *)v5 showMediaReplaceUI:iCopy];
 }
 
-- (void)replaceSelectedMediaWithData:(id)a3 actionString:(id)a4 completion:(id)a5
+- (void)replaceSelectedMediaWithData:(id)data actionString:(id)string completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  stringCopy = string;
+  dataCopy = data;
   v11 = [[CRLMediaReplacingHelper alloc] initWithEditor:self];
-  [(CRLMediaReplacingHelper *)v11 replaceSelectedMediaWithData:v10 actionString:v9 completion:v8];
+  [(CRLMediaReplacingHelper *)v11 replaceSelectedMediaWithData:dataCopy actionString:stringCopy completion:completionCopy];
 }
 
-- (void)replaceCanvasElementInfo:(id)a3 withFilesAtURLs:(id)a4 allowedTypes:(id)a5 actionString:(id)a6 completion:(id)a7
+- (void)replaceCanvasElementInfo:(id)info withFilesAtURLs:(id)ls allowedTypes:(id)types actionString:(id)string completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  stringCopy = string;
+  typesCopy = types;
+  lsCopy = ls;
+  infoCopy = info;
   v17 = [[CRLMediaReplacingHelper alloc] initWithEditor:self];
-  [(CRLMediaReplacingHelper *)v17 replaceCanvasElementInfo:v16 withFilesAtURLs:v15 allowedTypes:v14 actionString:v13 completion:v12];
+  [(CRLMediaReplacingHelper *)v17 replaceCanvasElementInfo:infoCopy withFilesAtURLs:lsCopy allowedTypes:typesCopy actionString:stringCopy completion:completionCopy];
 }
 
-- (void)addContextualMenuElementsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)addContextualMenuElementsToArray:(id)array atPoint:(CGPoint)point
 {
-  v5 = a3;
+  arrayCopy = array;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v6 = [(CRLMediaEditor *)self mediaItems];
-  v7 = [v6 countByEnumeratingWithState:&v55 objects:v62 count:16];
+  mediaItems = [(CRLMediaEditor *)self mediaItems];
+  v7 = [mediaItems countByEnumeratingWithState:&v55 objects:v62 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1011,7 +1011,7 @@ LABEL_17:
       {
         if (*v56 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaItems);
         }
 
         if (![*(*(&v55 + 1) + 8 * i) supportsTogglingShadowAndRoundedCorners])
@@ -1021,7 +1021,7 @@ LABEL_17:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v55 objects:v62 count:16];
+      v8 = [mediaItems countByEnumeratingWithState:&v55 objects:v62 count:16];
       if (v8)
       {
         continue;
@@ -1038,8 +1038,8 @@ LABEL_11:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v12 = [(CRLMediaEditor *)self mediaItems];
-  v13 = [v12 countByEnumeratingWithState:&v51 objects:v61 count:16];
+  mediaItems2 = [(CRLMediaEditor *)self mediaItems];
+  v13 = [mediaItems2 countByEnumeratingWithState:&v51 objects:v61 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1050,7 +1050,7 @@ LABEL_11:
       {
         if (*v52 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(mediaItems2);
         }
 
         if (![*(*(&v51 + 1) + 8 * j) supportsTogglingLooping])
@@ -1060,7 +1060,7 @@ LABEL_11:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v51 objects:v61 count:16];
+      v14 = [mediaItems2 countByEnumeratingWithState:&v51 objects:v61 count:16];
       if (v14)
       {
         continue;
@@ -1081,59 +1081,59 @@ LABEL_21:
     v20 = [UIImage systemImageNamed:@"shadow"];
     v21 = [UICommand commandWithTitle:v19 image:v20 action:"toggleShadow:" propertyList:0];
 
-    v48 = [(CRLMediaEditor *)self shadowToggledControlState];
-    [v21 setState:{objc_msgSend(v48, "stateValue")}];
+    shadowToggledControlState = [(CRLMediaEditor *)self shadowToggledControlState];
+    [v21 setState:{objc_msgSend(shadowToggledControlState, "stateValue")}];
     v22 = +[NSBundle mainBundle];
     v23 = [v22 localizedStringForKey:@"Round Corners" value:0 table:0];
     v24 = [UIImage systemImageNamed:@"rectangle.roundedtop"];
     v25 = [UICommand commandWithTitle:v23 image:v24 action:"toggleRoundCorners:" propertyList:0];
 
-    v26 = [(CRLMediaEditor *)self roundCornersToggledControlState];
-    [v25 setState:{objc_msgSend(v26, "stateValue")}];
+    roundCornersToggledControlState = [(CRLMediaEditor *)self roundCornersToggledControlState];
+    [v25 setState:{objc_msgSend(roundCornersToggledControlState, "stateValue")}];
     v49 = v21;
     v60[0] = v21;
     v60[1] = v25;
     v27 = [NSArray arrayWithObjects:v60 count:2];
     v28 = [UIMenu menuWithTitle:&stru_1018BCA28 image:0 identifier:@"CRLShadowAndRoundCornersMenuIdentifier" options:1 children:v27];
 
-    if ([v5 count])
+    if ([arrayCopy count])
     {
       v29 = 1;
       while (1)
       {
         v30 = objc_opt_class();
-        v31 = [v5 objectAtIndexedSubscript:v29 - 1];
+        v31 = [arrayCopy objectAtIndexedSubscript:v29 - 1];
         v32 = sub_100014370(v30, v31);
 
         if (v32)
         {
-          v33 = [v32 identifier];
+          identifier = [v32 identifier];
 
-          if (v33 == @"CRLCutCopyPasteMenuIdentifier")
+          if (identifier == @"CRLCutCopyPasteMenuIdentifier")
           {
             break;
           }
         }
 
-        v34 = v29++ >= [v5 count];
+        v34 = v29++ >= [arrayCopy count];
         if (v34)
         {
           goto LABEL_28;
         }
       }
 
-      v35 = v48;
-      if (v29 - 1 < [v5 count])
+      v35 = shadowToggledControlState;
+      if (v29 - 1 < [arrayCopy count])
       {
-        [v5 insertObject:v28 atIndex:v29];
+        [arrayCopy insertObject:v28 atIndex:v29];
       }
     }
 
     else
     {
 LABEL_28:
-      [v5 addObject:v28];
-      v35 = v48;
+      [arrayCopy addObject:v28];
+      v35 = shadowToggledControlState;
     }
 
     v17 = v50;
@@ -1146,57 +1146,57 @@ LABEL_28:
     v38 = [UIImage systemImageNamed:@"repeat"];
     v39 = [UICommand commandWithTitle:v37 image:v38 action:"toggleLoop:" propertyList:0];
 
-    v40 = [(CRLMediaEditor *)self loopToggledControlState];
-    [v39 setState:{objc_msgSend(v40, "stateValue")}];
+    loopToggledControlState = [(CRLMediaEditor *)self loopToggledControlState];
+    [v39 setState:{objc_msgSend(loopToggledControlState, "stateValue")}];
     v59 = v39;
     v41 = [NSArray arrayWithObjects:&v59 count:1];
     v42 = [UIMenu menuWithTitle:&stru_1018BCA28 image:0 identifier:@"CRLLoopMenuIdentifier" options:1 children:v41];
 
-    if ([v5 count])
+    if ([arrayCopy count])
     {
       v43 = 1;
       while (1)
       {
         v44 = objc_opt_class();
-        v45 = [v5 objectAtIndexedSubscript:v43 - 1];
+        v45 = [arrayCopy objectAtIndexedSubscript:v43 - 1];
         v46 = sub_100014370(v44, v45);
 
         if (v46)
         {
-          v47 = [v46 identifier];
+          identifier2 = [v46 identifier];
 
-          if (v47 == @"CRLCutCopyPasteMenuIdentifier")
+          if (identifier2 == @"CRLCutCopyPasteMenuIdentifier")
           {
             break;
           }
         }
 
-        v34 = v43++ >= [v5 count];
+        v34 = v43++ >= [arrayCopy count];
         if (v34)
         {
           goto LABEL_37;
         }
       }
 
-      if (v43 - 1 < [v5 count])
+      if (v43 - 1 < [arrayCopy count])
       {
-        [v5 insertObject:v42 atIndex:v43];
+        [arrayCopy insertObject:v42 atIndex:v43];
       }
     }
 
     else
     {
 LABEL_37:
-      [v5 addObject:v42];
+      [arrayCopy addObject:v42];
     }
   }
 }
 
-- (void)crlaxAddContextualMenuOptionsToArray:(id)a3 atPoint:(CGPoint)a4
+- (void)crlaxAddContextualMenuOptionsToArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  arrayCopy = array;
   v8 = +[NSMutableArray array];
   [(CRLMediaEditor *)self addContextualMenuElementsToArray:v8 atPoint:x, y];
   v33 = 0u;
@@ -1229,8 +1229,8 @@ LABEL_37:
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v15 = v14;
-          v16 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          title2 = v14;
+          v16 = [title2 countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (!v16)
           {
             goto LABEL_22;
@@ -1244,26 +1244,26 @@ LABEL_37:
             {
               if (*v28 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(title2);
               }
 
               v20 = *(*(&v27 + 1) + 8 * i);
-              v21 = [v20 title];
-              if ([v21 length])
+              title = [v20 title];
+              if ([title length])
               {
-                v22 = [v20 state];
+                state = [v20 state];
 
-                if (v22 != 1)
+                if (state != 1)
                 {
                   continue;
                 }
 
-                v21 = [v20 title];
-                [v7 addObject:v21];
+                title = [v20 title];
+                [arrayCopy addObject:title];
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v17 = [title2 countByEnumeratingWithState:&v27 objects:v35 count:16];
             if (!v17)
             {
               v11 = v24;
@@ -1273,18 +1273,18 @@ LABEL_37:
           }
         }
 
-        v15 = [v13 title];
-        if ([v15 length])
+        title2 = [v13 title];
+        if ([title2 length])
         {
-          v23 = [v13 state];
+          state2 = [v13 state];
 
-          if (v23 != 1)
+          if (state2 != 1)
           {
             goto LABEL_23;
           }
 
-          v15 = [v13 title];
-          [v7 addObject:v15];
+          title2 = [v13 title];
+          [arrayCopy addObject:title2];
         }
 
 LABEL_22:
@@ -1301,25 +1301,25 @@ LABEL_23:
   }
 }
 
-- (void)updateStateForCommand:(id)a3
+- (void)updateStateForCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   if ([objc_msgSend(objc_opt_class() "superclass")])
   {
     v6.receiver = self;
     v6.super_class = CRLMediaEditor;
-    [(CRLBoardItemEditor *)&v6 updateStateForCommand:v4];
+    [(CRLBoardItemEditor *)&v6 updateStateForCommand:commandCopy];
   }
 
-  if ([v4 action] == "toggleRoundCorners:")
+  if ([commandCopy action] == "toggleRoundCorners:")
   {
-    [v4 setState:{-[CRLMediaEditor anySelectedObjectsHaveRoundCorners](self, "anySelectedObjectsHaveRoundCorners")}];
+    [commandCopy setState:{-[CRLMediaEditor anySelectedObjectsHaveRoundCorners](self, "anySelectedObjectsHaveRoundCorners")}];
   }
 
-  else if ([v4 action] == "toggleShadow:")
+  else if ([commandCopy action] == "toggleShadow:")
   {
-    v5 = [(CRLMediaEditor *)self shadowToggledControlState];
-    [v4 setState:{objc_msgSend(v5, "stateValue")}];
+    shadowToggledControlState = [(CRLMediaEditor *)self shadowToggledControlState];
+    [commandCopy setState:{objc_msgSend(shadowToggledControlState, "stateValue")}];
   }
 }
 

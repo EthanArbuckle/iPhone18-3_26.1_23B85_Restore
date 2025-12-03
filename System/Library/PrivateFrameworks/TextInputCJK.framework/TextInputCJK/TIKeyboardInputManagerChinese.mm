@@ -1,55 +1,55 @@
 @interface TIKeyboardInputManagerChinese
-+ (BOOL)shouldEnableHalfWidthPunctuationForDocumentContext:(id)a3 composedText:(id)a4;
-+ (id)GB18030CandidateFromString:(id)a3;
++ (BOOL)shouldEnableHalfWidthPunctuationForDocumentContext:(id)context composedText:(id)text;
++ (id)GB18030CandidateFromString:(id)string;
 + (id)pairedPunctuationDictionary;
-+ (id)punctuationPredictionsForString:(id)a3;
-+ (id)unicodeCandidateFromString:(id)a3;
-- (BOOL)handlePairedPunctuationInput:(id)a3 context:(id)a4;
++ (id)punctuationPredictionsForString:(id)string;
++ (id)unicodeCandidateFromString:(id)string;
+- (BOOL)handlePairedPunctuationInput:(id)input context:(id)context;
 - (BOOL)hasIdeographicCandidates;
-- (BOOL)isFacemarkInput:(id)a3;
+- (BOOL)isFacemarkInput:(id)input;
 - (BOOL)shouldEnableHalfWidthPunctuationForCurrentInputContext;
 - (BOOL)showingFacemarkCandidates;
 - (BOOL)updateCompletionCandidatesIfAppropriate;
 - (CIMCandidateData)candidateData;
 - (NSOperationQueue)operationQueue;
-- (TIKeyboardInputManagerChinese)initWithConfig:(id)a3 keyboardState:(id)a4;
-- (id)candidateResultSetFromCandidates:(id)a3 proactiveTriggers:(id)a4;
-- (id)completionCandidateResultSetForKeyHint:(id)a3;
-- (id)deleteFromInput:(unint64_t *)a3;
-- (id)didAcceptCandidate:(id)a3;
+- (TIKeyboardInputManagerChinese)initWithConfig:(id)config keyboardState:(id)state;
+- (id)candidateResultSetFromCandidates:(id)candidates proactiveTriggers:(id)triggers;
+- (id)completionCandidateResultSetForKeyHint:(id)hint;
+- (id)deleteFromInput:(unint64_t *)input;
+- (id)didAcceptCandidate:(id)candidate;
 - (id)firstCandidate;
 - (id)generateCompletions;
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4;
-- (id)outputByConvertingDecimalPointForInput:(id)a3;
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method;
+- (id)outputByConvertingDecimalPointForInput:(id)input;
 - (id)replacementForDoubleSpace;
-- (id)sortMethodsGroupsForCandidates:(id)a3;
-- (id)titleForSortingMethod:(id)a3;
+- (id)sortMethodsGroupsForCandidates:(id)candidates;
+- (id)titleForSortingMethod:(id)method;
 - (id)wordCharacters;
 - (unint64_t)initialSelectedIndex;
 - (unint64_t)predictionOptions;
-- (void)acceptFirstCandidateWithContext:(id)a3;
+- (void)acceptFirstCandidateWithContext:(id)context;
 - (void)clearInput;
-- (void)deleteFromInputWithContext:(id)a3;
-- (void)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4 completion:(id)a5;
-- (void)initImplementationWithMode:(id)a3 andLanguage:(id)a4;
+- (void)deleteFromInputWithContext:(id)context;
+- (void)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method completion:(id)completion;
+- (void)initImplementationWithMode:(id)mode andLanguage:(id)language;
 - (void)inputLocationChanged;
-- (void)mecabraCandidateRefFromPointerValue:(id)a3;
+- (void)mecabraCandidateRefFromPointerValue:(id)value;
 - (void)resetCommitHistory;
-- (void)setInput:(id)a3;
-- (void)syncToLayoutState:(id)a3;
-- (void)wordSearchEngineDidFindPredictionCandidates:(id)a3;
+- (void)setInput:(id)input;
+- (void)syncToLayoutState:(id)state;
+- (void)wordSearchEngineDidFindPredictionCandidates:(id)candidates;
 @end
 
 @implementation TIKeyboardInputManagerChinese
 
-- (BOOL)handlePairedPunctuationInput:(id)a3 context:(id)a4
+- (BOOL)handlePairedPunctuationInput:(id)input context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isFlick] & 1) == 0 && -[TIKeyboardInputManagerChinese supportsPairedPunctutationInput](self, "supportsPairedPunctutationInput"))
+  inputCopy = input;
+  contextCopy = context;
+  if (([inputCopy isFlick] & 1) == 0 && -[TIKeyboardInputManagerChinese supportsPairedPunctutationInput](self, "supportsPairedPunctutationInput"))
   {
-    v8 = [v6 string];
-    if (![v8 length])
+    string = [inputCopy string];
+    if (![string length])
     {
       v32 = 0;
 LABEL_29:
@@ -57,17 +57,17 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v9 = [v6 isMultitap];
-    if (v9)
+    isMultitap = [inputCopy isMultitap];
+    if (isMultitap)
     {
-      v10 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationOpenQuote];
-      v11 = [v10 length];
+      pairedPunctuationOpenQuote = [(TIKeyboardInputManagerChinese *)self pairedPunctuationOpenQuote];
+      v11 = [pairedPunctuationOpenQuote length];
 
       if (!v11)
       {
 LABEL_13:
-        v28 = [objc_opt_class() pairedPunctuationDictionary];
-        v14 = [v28 objectForKey:v8];
+        pairedPunctuationDictionary = [objc_opt_class() pairedPunctuationDictionary];
+        v14 = [pairedPunctuationDictionary objectForKey:string];
 
         if (![v14 length])
         {
@@ -79,98 +79,98 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        if (v9)
+        if (isMultitap)
         {
-          v29 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-          v30 = [v29 length];
+          pairedPunctuationSelectedText = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+          v30 = [pairedPunctuationSelectedText length];
 
           if (v30)
           {
-            v31 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-            [v7 deleteBackward:{objc_msgSend(v31, "length")}];
+            pairedPunctuationSelectedText2 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+            [contextCopy deleteBackward:{objc_msgSend(pairedPunctuationSelectedText2, "length")}];
 
-            [v7 deleteForward:1];
+            [contextCopy deleteForward:1];
           }
 
           else
           {
-            [v7 deleteBackward:1];
+            [contextCopy deleteBackward:1];
           }
         }
 
         else
         {
-          v33 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-          v34 = [v33 documentState];
-          v35 = [v34 selectedText];
-          [(TIKeyboardInputManagerChinese *)self setPairedPunctuationSelectedText:v35];
+          keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+          documentState = [keyboardState documentState];
+          selectedText = [documentState selectedText];
+          [(TIKeyboardInputManagerChinese *)self setPairedPunctuationSelectedText:selectedText];
 
           if ([(TIKeyboardInputManagerChinese *)self inputCount])
           {
-            [(TIKeyboardInputManagerChinese *)self acceptFirstCandidateWithContext:v7];
+            [(TIKeyboardInputManagerChinese *)self acceptFirstCandidateWithContext:contextCopy];
           }
 
           else
           {
-            [(TIKeyboardInputManagerChinese *)self acceptCurrentCandidateWithContext:v7];
+            [(TIKeyboardInputManagerChinese *)self acceptCurrentCandidateWithContext:contextCopy];
           }
         }
 
-        [(TIKeyboardInputManagerChinese *)self setPairedPunctuationOpenQuote:v8];
-        [v7 insertText:v8];
-        v36 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-        v37 = [v36 length];
+        [(TIKeyboardInputManagerChinese *)self setPairedPunctuationOpenQuote:string];
+        [contextCopy insertText:string];
+        pairedPunctuationSelectedText3 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+        v37 = [pairedPunctuationSelectedText3 length];
 
         if (v37)
         {
-          v38 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-          [v7 insertText:v38];
+          pairedPunctuationSelectedText4 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+          [contextCopy insertText:pairedPunctuationSelectedText4];
         }
 
-        [v7 insertTextAfterSelection:v14];
+        [contextCopy insertTextAfterSelection:v14];
 LABEL_27:
         v32 = 1;
         goto LABEL_28;
       }
 
-      v12 = [objc_opt_class() pairedPunctuationDictionary];
-      v13 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationOpenQuote];
-      v14 = [v12 objectForKey:v13];
+      pairedPunctuationDictionary2 = [objc_opt_class() pairedPunctuationDictionary];
+      pairedPunctuationOpenQuote2 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationOpenQuote];
+      v14 = [pairedPunctuationDictionary2 objectForKey:pairedPunctuationOpenQuote2];
 
       if ([v14 length])
       {
-        v15 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-        v16 = [v15 documentState];
-        v17 = [v16 contextAfterInput];
-        v18 = [v17 hasPrefix:v14];
+        keyboardState2 = [(TIKeyboardInputManagerChinese *)self keyboardState];
+        documentState2 = [keyboardState2 documentState];
+        contextAfterInput = [documentState2 contextAfterInput];
+        v18 = [contextAfterInput hasPrefix:v14];
 
         if (v18)
         {
-          v19 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-          v20 = [v19 length];
+          pairedPunctuationSelectedText5 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+          v20 = [pairedPunctuationSelectedText5 length];
 
           if (!v20)
           {
-            [v7 deleteForward:1];
+            [contextCopy deleteForward:1];
 
             goto LABEL_13;
           }
 
-          v21 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationOpenQuote];
-          v22 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-          v42 = [v21 stringByAppendingString:v22];
+          pairedPunctuationOpenQuote3 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationOpenQuote];
+          pairedPunctuationSelectedText6 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+          v42 = [pairedPunctuationOpenQuote3 stringByAppendingString:pairedPunctuationSelectedText6];
 
-          v23 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-          v24 = [v23 documentState];
-          v25 = [v24 contextBeforeInput];
-          v26 = [v25 rangeOfString:v42 options:4];
+          keyboardState3 = [(TIKeyboardInputManagerChinese *)self keyboardState];
+          documentState3 = [keyboardState3 documentState];
+          contextBeforeInput = [documentState3 contextBeforeInput];
+          v26 = [contextBeforeInput rangeOfString:v42 options:4];
           v41 = v27;
 
           if (v26 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v7 deleteBackward:v41];
-            v40 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
-            [v7 insertText:v40];
+            [contextCopy deleteBackward:v41];
+            pairedPunctuationSelectedText7 = [(TIKeyboardInputManagerChinese *)self pairedPunctuationSelectedText];
+            [contextCopy insertText:pairedPunctuationSelectedText7];
 
             [(TIKeyboardInputManagerChinese *)self setPairedPunctuationOpenQuote:0];
             goto LABEL_27;
@@ -190,49 +190,49 @@ LABEL_30:
   return v32;
 }
 
-- (void)acceptFirstCandidateWithContext:(id)a3
+- (void)acceptFirstCandidateWithContext:(id)context
 {
-  v12 = a3;
-  v4 = [(TIKeyboardInputManagerChinese *)self firstCandidate];
-  if (v4)
+  contextCopy = context;
+  firstCandidate = [(TIKeyboardInputManagerChinese *)self firstCandidate];
+  if (firstCandidate)
   {
-    [v12 acceptCandidate:v4];
-    v5 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-    v6 = [(TIKeyboardInputManagerMecabra *)self handleAcceptedCandidate:v4 keyboardState:v5];
+    [contextCopy acceptCandidate:firstCandidate];
+    keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+    v6 = [(TIKeyboardInputManagerMecabra *)self handleAcceptedCandidate:firstCandidate keyboardState:keyboardState];
 
     if ([(TIKeyboardInputManagerMecabra *)self usesComposingInput])
     {
-      v7 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-      v8 = [v7 hasKindOf:objc_opt_class()];
+      composingInput = [(TIKeyboardInputManagerMecabra *)self composingInput];
+      v8 = [composingInput hasKindOf:objc_opt_class()];
 
       if (v8)
       {
-        v9 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-        v10 = [v9 asCommittedText];
+        composingInput2 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+        asCommittedText = [composingInput2 asCommittedText];
 
-        v11 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-        [v11 removeAllInputs];
+        composingInput3 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+        [composingInput3 removeAllInputs];
 
         [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D6FF28]) setString:&stru_287EBF4E8];
-        v6 = v10;
+        v6 = asCommittedText;
       }
     }
 
     if (v6)
     {
-      [v12 unmarkText:v6];
+      [contextCopy unmarkText:v6];
     }
   }
 }
 
 - (id)firstCandidate
 {
-  v2 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v3 = [v2 candidates];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidates = [wordSearchCandidateResultSet candidates];
 
-  if ([v3 count])
+  if ([candidates count])
   {
-    v4 = [v3 objectAtIndex:0];
+    v4 = [candidates objectAtIndex:0];
   }
 
   else
@@ -243,28 +243,28 @@ LABEL_30:
   return v4;
 }
 
-- (id)outputByConvertingDecimalPointForInput:(id)a3
+- (id)outputByConvertingDecimalPointForInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-  v6 = [v5 hardwareKeyboardMode];
+  inputCopy = input;
+  keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+  hardwareKeyboardMode = [keyboardState hardwareKeyboardMode];
 
-  v7 = v4;
-  if (v6)
+  v7 = inputCopy;
+  if (hardwareKeyboardMode)
   {
-    v8 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-    v9 = [v8 documentState];
-    v10 = [v9 contextBeforeInput];
-    v11 = [v10 _lastGrapheme];
+    keyboardState2 = [(TIKeyboardInputManagerChinese *)self keyboardState];
+    documentState = [keyboardState2 documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    _lastGrapheme = [contextBeforeInput _lastGrapheme];
 
-    v12 = [(TIKeyboardInputManagerChinese *)self mathSymbolPunctuationController];
-    v13 = [v11 stringByAppendingString:v4];
-    v14 = [v12 mathSymbolPunctuationedStringForInputString:v13];
+    mathSymbolPunctuationController = [(TIKeyboardInputManagerChinese *)self mathSymbolPunctuationController];
+    v13 = [_lastGrapheme stringByAppendingString:inputCopy];
+    v14 = [mathSymbolPunctuationController mathSymbolPunctuationedStringForInputString:v13];
 
-    v7 = v4;
+    v7 = inputCopy;
     if (v14)
     {
-      v7 = [v14 substringFromIndex:{objc_msgSend(v11, "length")}];
+      v7 = [v14 substringFromIndex:{objc_msgSend(_lastGrapheme, "length")}];
     }
   }
 
@@ -273,65 +273,65 @@ LABEL_30:
 
 - (NSOperationQueue)operationQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  operationQueue = v2->_operationQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  operationQueue = selfCopy->_operationQueue;
   if (!operationQueue)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCABD8]);
-    v5 = v2->_operationQueue;
-    v2->_operationQueue = v4;
+    v5 = selfCopy->_operationQueue;
+    selfCopy->_operationQueue = v4;
 
-    [(NSOperationQueue *)v2->_operationQueue setMaxConcurrentOperationCount:1];
-    operationQueue = v2->_operationQueue;
+    [(NSOperationQueue *)selfCopy->_operationQueue setMaxConcurrentOperationCount:1];
+    operationQueue = selfCopy->_operationQueue;
   }
 
   v6 = operationQueue;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (CIMCandidateData)candidateData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  candidateData = v2->_candidateData;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  candidateData = selfCopy->_candidateData;
   if (!candidateData)
   {
     v4 = [CIMCandidateData alloc];
-    v5 = [(TIKeyboardInputManagerBase *)v2 inputMode];
-    v6 = [(CIMCandidateData *)v4 initWithInputMode:v5];
-    v7 = v2->_candidateData;
-    v2->_candidateData = v6;
+    inputMode = [(TIKeyboardInputManagerBase *)selfCopy inputMode];
+    v6 = [(CIMCandidateData *)v4 initWithInputMode:inputMode];
+    v7 = selfCopy->_candidateData;
+    selfCopy->_candidateData = v6;
 
-    candidateData = v2->_candidateData;
+    candidateData = selfCopy->_candidateData;
   }
 
   v8 = candidateData;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4 completion:(id)a5
+- (void)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10)
+  candidatesCopy = candidates;
+  methodCopy = method;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (methodCopy && completionCopy)
   {
-    v12 = [(TIKeyboardInputManagerChinese *)self operationQueue];
+    operationQueue = [(TIKeyboardInputManagerChinese *)self operationQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __95__TIKeyboardInputManagerChinese_groupedCandidatesFromCandidates_usingSortingMethod_completion___block_invoke;
     v13[3] = &unk_279D9D8A8;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
+    v14 = candidatesCopy;
+    v15 = methodCopy;
     v16 = v11;
-    [v12 addOperationWithBlock:v13];
+    [operationQueue addOperationWithBlock:v13];
   }
 }
 
@@ -350,17 +350,17 @@ void __95__TIKeyboardInputManagerChinese_groupedCandidatesFromCandidates_usingSo
   [v3 addOperationWithBlock:v6];
 }
 
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method
 {
-  if (a4)
+  if (method)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(TIKeyboardInputManagerChinese *)self candidateData];
-    [v8 setCandidates:v7];
+    methodCopy = method;
+    candidatesCopy = candidates;
+    candidateData = [(TIKeyboardInputManagerChinese *)self candidateData];
+    [candidateData setCandidates:candidatesCopy];
 
-    v9 = [v6 unsignedIntegerValue];
-    v10 = [v8 candidatesSortedByMethod:v9 omittingEmoji:{-[TIKeyboardInputManagerChinese shouldOmitEmojiCandidates](self, "shouldOmitEmojiCandidates")}];
+    unsignedIntegerValue = [methodCopy unsignedIntegerValue];
+    v10 = [candidateData candidatesSortedByMethod:unsignedIntegerValue omittingEmoji:{-[TIKeyboardInputManagerChinese shouldOmitEmojiCandidates](self, "shouldOmitEmojiCandidates")}];
   }
 
   else
@@ -371,24 +371,24 @@ void __95__TIKeyboardInputManagerChinese_groupedCandidatesFromCandidates_usingSo
   return v10;
 }
 
-- (id)sortMethodsGroupsForCandidates:(id)a3
+- (id)sortMethodsGroupsForCandidates:(id)candidates
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerChinese *)self candidateData];
-  [v5 clearCache];
+  candidatesCopy = candidates;
+  candidateData = [(TIKeyboardInputManagerChinese *)self candidateData];
+  [candidateData clearCache];
 
   v8.receiver = self;
   v8.super_class = TIKeyboardInputManagerChinese;
-  v6 = [(TIKeyboardInputManagerChinese *)&v8 sortMethodsGroupsForCandidates:v4];
+  v6 = [(TIKeyboardInputManagerChinese *)&v8 sortMethodsGroupsForCandidates:candidatesCopy];
 
   return v6;
 }
 
-- (id)candidateResultSetFromCandidates:(id)a3 proactiveTriggers:(id)a4
+- (id)candidateResultSetFromCandidates:(id)candidates proactiveTriggers:(id)triggers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  candidatesCopy = candidates;
+  triggersCopy = triggers;
+  v8 = candidatesCopy;
   v9 = v8;
   if ([(TIKeyboardInputManagerChinese *)self shouldOmitEmojiCandidates])
   {
@@ -397,29 +397,29 @@ void __95__TIKeyboardInputManagerChinese_groupedCandidatesFromCandidates_usingSo
 
   v12.receiver = self;
   v12.super_class = TIKeyboardInputManagerChinese;
-  v10 = [(TIKeyboardInputManagerChinese *)&v12 candidateResultSetFromCandidates:v9 proactiveTriggers:v7];
+  v10 = [(TIKeyboardInputManagerChinese *)&v12 candidateResultSetFromCandidates:v9 proactiveTriggers:triggersCopy];
 
   return v10;
 }
 
-- (id)titleForSortingMethod:(id)a3
+- (id)titleForSortingMethod:(id)method
 {
-  v3 = [a3 unsignedIntegerValue];
+  unsignedIntegerValue = [method unsignedIntegerValue];
 
-  return [CIMCandidateData sortTitleFromSortingMethod:v3];
+  return [CIMCandidateData sortTitleFromSortingMethod:unsignedIntegerValue];
 }
 
 - (unint64_t)initialSelectedIndex
 {
-  v4 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v5 = [v4 candidates];
-  v6 = [v5 count];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidates = [wordSearchCandidateResultSet candidates];
+  v6 = [candidates count];
   if (v6)
   {
-    v2 = [(TIKeyboardInputManagerChinese *)self inputString];
-    if ([v2 length])
+    inputString = [(TIKeyboardInputManagerChinese *)self inputString];
+    if ([inputString length])
     {
-      v7 = 0;
+      initialSelectedIndex = 0;
 LABEL_5:
 
       goto LABEL_6;
@@ -428,7 +428,7 @@ LABEL_5:
 
   v9.receiver = self;
   v9.super_class = TIKeyboardInputManagerChinese;
-  v7 = [(TIKeyboardInputManagerChinese *)&v9 initialSelectedIndex];
+  initialSelectedIndex = [(TIKeyboardInputManagerChinese *)&v9 initialSelectedIndex];
   if (v6)
   {
     goto LABEL_5;
@@ -436,17 +436,17 @@ LABEL_5:
 
 LABEL_6:
 
-  return v7;
+  return initialSelectedIndex;
 }
 
-- (id)completionCandidateResultSetForKeyHint:(id)a3
+- (id)completionCandidateResultSetForKeyHint:(id)hint
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"Chinese"])
+  hintCopy = hint;
+  if ([hintCopy isEqualToString:@"Chinese"])
   {
-    v5 = [(TIKeyboardInputManagerChinese *)self language];
-    v6 = [v5 isEqualToString:@"zh-Hans"];
+    language = [(TIKeyboardInputManagerChinese *)self language];
+    v6 = [language isEqualToString:@"zh-Hans"];
 
     v26 = 0;
     if (v6)
@@ -460,7 +460,7 @@ LABEL_6:
     }
   }
 
-  else if ([v4 isEqualToString:@"Latin"])
+  else if ([hintCopy isEqualToString:@"Latin"])
   {
     v7 = &unk_287EC3910;
     v26 = 1;
@@ -468,7 +468,7 @@ LABEL_6:
 
   else
   {
-    v26 = [v4 isEqualToString:@"Numbers"];
+    v26 = [hintCopy isEqualToString:@"Numbers"];
     if (v26)
     {
       v7 = &unk_287EC3928;
@@ -482,9 +482,9 @@ LABEL_6:
 
   if ([v7 count])
   {
-    v25 = v4;
+    v25 = hintCopy;
     v28 = objc_alloc_init(MEMORY[0x277D6FF00]);
-    v27 = [objc_opt_class() pairedPunctuationDictionary];
+    pairedPunctuationDictionary = [objc_opt_class() pairedPunctuationDictionary];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -544,7 +544,7 @@ LABEL_22:
 LABEL_25:
         v18 = v7;
 
-        v19 = [v27 objectForKeyedSubscript:v14];
+        v19 = [pairedPunctuationDictionary objectForKeyedSubscript:v14];
         v20 = v19;
         if (v19)
         {
@@ -569,7 +569,7 @@ LABEL_25:
       {
 LABEL_30:
 
-        v4 = v25;
+        hintCopy = v25;
         goto LABEL_32;
       }
     }
@@ -583,23 +583,23 @@ LABEL_32:
   return v28;
 }
 
-- (void)wordSearchEngineDidFindPredictionCandidates:(id)a3
+- (void)wordSearchEngineDidFindPredictionCandidates:(id)candidates
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  -[TIKeyboardInputManagerChinese setIsInCompletionMode:](self, "setIsInCompletionMode:", [v4 isEmpty] ^ 1);
+  candidatesCopy = candidates;
+  -[TIKeyboardInputManagerChinese setIsInCompletionMode:](self, "setIsInCompletionMode:", [candidatesCopy isEmpty] ^ 1);
   v5 = objc_opt_class();
-  v6 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-  v7 = [v6 documentState];
-  v8 = [v7 contextBeforeInput];
-  v9 = [v5 punctuationPredictionsForString:v8];
+  keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
+  v9 = [v5 punctuationPredictionsForString:contextBeforeInput];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v9 reverseObjectEnumerator];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+  v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -611,30 +611,30 @@ LABEL_32:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        [v4 insertSyntheticMecabraCandidateWithSurface:*(*(&v19 + 1) + 8 * v14++) input:&stru_287EBF4E8 atIndex:0];
+        [candidatesCopy insertSyntheticMecabraCandidateWithSurface:*(*(&v19 + 1) + 8 * v14++) input:&stru_287EBF4E8 atIndex:0];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  [(TIKeyboardInputManagerMecabra *)self updateProactiveCandidatesForCandidateResultSet:v4 withInput:&stru_287EBF4E8];
+  [(TIKeyboardInputManagerMecabra *)self updateProactiveCandidatesForCandidateResultSet:candidatesCopy withInput:&stru_287EBF4E8];
   if ([(TIKeyboardInputManagerChinese *)self candidateRange])
   {
-    v15 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-    v16 = [v15 candidateRefsDictionary];
-    [v4 addCandidates:MEMORY[0x277CBEBF8] candidateRefsDictionary:v16];
+    wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+    candidateRefsDictionary = [wordSearchCandidateResultSet candidateRefsDictionary];
+    [candidatesCopy addCandidates:MEMORY[0x277CBEBF8] candidateRefsDictionary:candidateRefsDictionary];
   }
 
-  [(TIKeyboardInputManagerMecabra *)self updateProactiveCandidatesForCandidateResultSet:v4 withInput:&stru_287EBF4E8];
-  [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:v4];
-  v17 = [(TIKeyboardInputManagerMecabra *)self candidateResultSetFromWordSearchCandidateResultSet:v4];
+  [(TIKeyboardInputManagerMecabra *)self updateProactiveCandidatesForCandidateResultSet:candidatesCopy withInput:&stru_287EBF4E8];
+  [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:candidatesCopy];
+  v17 = [(TIKeyboardInputManagerMecabra *)self candidateResultSetFromWordSearchCandidateResultSet:candidatesCopy];
   [(TIKeyboardInputManagerChinese *)self closeCandidateGenerationContextWithResults:v17];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -646,21 +646,21 @@ LABEL_32:
   {
     if (([(TIKeyboardInputManagerChinese *)self shouldLookForCompletionCandidates]& 1) != 0)
     {
-      v3 = [(TIKeyboardInputManagerChinese *)self currentKeyHint];
+      currentKeyHint = [(TIKeyboardInputManagerChinese *)self currentKeyHint];
 
-      if (v3)
+      if (currentKeyHint)
       {
-        v4 = [(TIKeyboardInputManagerChinese *)self currentKeyHint];
-        v5 = [(TIKeyboardInputManagerChinese *)self completionCandidateResultSetForKeyHint:v4];
+        currentKeyHint2 = [(TIKeyboardInputManagerChinese *)self currentKeyHint];
+        generateCompletions = [(TIKeyboardInputManagerChinese *)self completionCandidateResultSetForKeyHint:currentKeyHint2];
       }
 
       else
       {
-        v5 = [(TIKeyboardInputManagerChinese *)self generateCompletions];
+        generateCompletions = [(TIKeyboardInputManagerChinese *)self generateCompletions];
       }
 
-      [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:v5];
-      v7 = v5 != 0;
+      [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:generateCompletions];
+      v7 = generateCompletions != 0;
     }
 
     else
@@ -679,8 +679,8 @@ LABEL_32:
       [(TIKeyboardInputManagerChinese *)self setIsInCompletionMode:0];
     }
 
-    v6 = [MEMORY[0x277D6FF00] emptySet];
-    [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:v6];
+    emptySet = [MEMORY[0x277D6FF00] emptySet];
+    [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:emptySet];
 
     return 1;
   }
@@ -693,18 +693,18 @@ LABEL_32:
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     v3 = objc_alloc_init(MEMORY[0x277D6FF00]);
-    v4 = [(TIKeyboardInputManagerChinese *)self predictionOptions];
-    v5 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-    v6 = [v5 mecabraEnvironment];
+    predictionOptions = [(TIKeyboardInputManagerChinese *)self predictionOptions];
+    wordSearch = [(TIKeyboardInputManagerChinese *)self wordSearch];
+    mecabraEnvironment = [wordSearch mecabraEnvironment];
 
-    v7 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-    v8 = [v7 documentState];
+    keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+    documentState = [keyboardState documentState];
 
-    v9 = [v8 contextBeforeInput];
-    v10 = v9;
-    if (v9)
+    contextBeforeInput = [documentState contextBeforeInput];
+    v10 = contextBeforeInput;
+    if (contextBeforeInput)
     {
-      v11 = v9;
+      v11 = contextBeforeInput;
     }
 
     else
@@ -714,11 +714,11 @@ LABEL_32:
 
     v12 = v11;
 
-    v13 = [v8 contextAfterInput];
-    v14 = v13;
-    if (v13)
+    contextAfterInput = [documentState contextAfterInput];
+    v14 = contextAfterInput;
+    if (contextAfterInput)
     {
-      v15 = v13;
+      v15 = contextAfterInput;
     }
 
     else
@@ -733,32 +733,32 @@ LABEL_32:
     v32[1] = 3221225472;
     v32[2] = __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke;
     v32[3] = &unk_279D9D248;
-    v33 = v6;
+    v33 = mecabraEnvironment;
     v34 = v12;
     v35 = v16;
-    v38 = v4;
+    v38 = predictionOptions;
     v18 = v3;
     v36 = v18;
-    v37 = self;
+    selfCopy = self;
     v19 = v16;
     v20 = v12;
-    v21 = v6;
+    v21 = mecabraEnvironment;
     v22 = [v17 blockOperationWithBlock:v32];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke_77;
     v28[3] = &unk_279D9D2E8;
     v29 = v22;
-    v30 = self;
+    selfCopy2 = self;
     v31 = v18;
     v23 = v18;
     v24 = v22;
     [v24 setCompletionBlock:v28];
-    v25 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-    [v25 cancel];
+    wordSearch2 = [(TIKeyboardInputManagerChinese *)self wordSearch];
+    [wordSearch2 cancel];
 
-    v26 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-    [v26 performOperationAsync:v24];
+    wordSearch3 = [(TIKeyboardInputManagerChinese *)self wordSearch];
+    [wordSearch3 performOperationAsync:v24];
   }
 
   return 0;
@@ -924,10 +924,10 @@ void __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke_5(uin
     v4 = v3 | 4;
   }
 
-  v5 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-  v6 = [v5 hardwareKeyboardMode];
+  keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+  hardwareKeyboardMode = [keyboardState hardwareKeyboardMode];
 
-  if (v6)
+  if (hardwareKeyboardMode)
   {
     v7 = v4 | 0x10;
   }
@@ -937,10 +937,10 @@ void __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke_5(uin
     v7 = v4;
   }
 
-  v8 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-  v9 = [v8 candidateSelectionPredictionEnabled];
+  keyboardState2 = [(TIKeyboardInputManagerChinese *)self keyboardState];
+  candidateSelectionPredictionEnabled = [keyboardState2 candidateSelectionPredictionEnabled];
 
-  if (v9)
+  if (candidateSelectionPredictionEnabled)
   {
     return v7;
   }
@@ -951,12 +951,12 @@ void __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke_5(uin
   }
 }
 
-- (void)mecabraCandidateRefFromPointerValue:(id)a3
+- (void)mecabraCandidateRefFromPointerValue:(id)value
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v6 = [v5 candidateRefsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  valueCopy = value;
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidateRefsDictionary = [wordSearchCandidateResultSet candidateRefsDictionary];
+  v7 = [candidateRefsDictionary objectForKeyedSubscript:valueCopy];
 
   return v7;
 }
@@ -964,14 +964,14 @@ void __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke_5(uin
 - (BOOL)hasIdeographicCandidates
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v3 = [v2 candidates];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidates = [wordSearchCandidateResultSet candidates];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = candidates;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -985,10 +985,10 @@ void __52__TIKeyboardInputManagerChinese_generateCompletions__block_invoke_5(uin
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) candidate];
-        v9 = [v8 _containsIdeographicCharacters];
+        candidate = [*(*(&v12 + 1) + 8 * i) candidate];
+        _containsIdeographicCharacters = [candidate _containsIdeographicCharacters];
 
-        if (v9)
+        if (_containsIdeographicCharacters)
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -1014,14 +1014,14 @@ LABEL_11:
 - (BOOL)showingFacemarkCandidates
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v3 = [v2 candidates];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidates = [wordSearchCandidateResultSet candidates];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = candidates;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1083,27 +1083,27 @@ LABEL_14:
   return v7 < 2 * v8;
 }
 
-- (BOOL)isFacemarkInput:(id)a3
+- (BOOL)isFacemarkInput:(id)input
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6FF50]])
+  inputCopy = input;
+  if ([inputCopy isEqualToString:*MEMORY[0x277D6FF50]])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-    if ([v6 hardwareKeyboardMode])
+    keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+    if ([keyboardState hardwareKeyboardMode])
     {
-      if ([v4 isEqualToString:*MEMORY[0x277D6FF40]])
+      if ([inputCopy isEqualToString:*MEMORY[0x277D6FF40]])
       {
         v5 = 1;
       }
 
       else
       {
-        v5 = [v4 isEqualToString:*MEMORY[0x277D6FF48]];
+        v5 = [inputCopy isEqualToString:*MEMORY[0x277D6FF48]];
       }
     }
 
@@ -1118,9 +1118,9 @@ LABEL_14:
 
 - (BOOL)shouldEnableHalfWidthPunctuationForCurrentInputContext
 {
-  v3 = [(TIKeyboardInputManagerChinese *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 contextBeforeInput];
+  keyboardState = [(TIKeyboardInputManagerChinese *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
   if (*(&self->super.super.super.super.super.isa + *MEMORY[0x277D6FF28]))
   {
@@ -1132,7 +1132,7 @@ LABEL_14:
     v6 = 0;
   }
 
-  v7 = [TIKeyboardInputManagerChinese shouldEnableHalfWidthPunctuationForDocumentContext:v5 composedText:v6];
+  v7 = [TIKeyboardInputManagerChinese shouldEnableHalfWidthPunctuationForDocumentContext:contextBeforeInput composedText:v6];
 
   return v7;
 }
@@ -1143,9 +1143,9 @@ LABEL_14:
   if (![TIKeyboardInputManagerChinese wordCharacters]::__wordCharacterSet)
   {
     v3 = [objc_alloc(MEMORY[0x277D6F330]) initWithBaseCharacterSet:3];
-    v4 = [v3 invertedSetDescription];
+    invertedSetDescription = [v3 invertedSetDescription];
     v5 = [TIKeyboardInputManagerChinese wordCharacters]::__wordCharacterSet;
-    [TIKeyboardInputManagerChinese wordCharacters]::__wordCharacterSet = v4;
+    [TIKeyboardInputManagerChinese wordCharacters]::__wordCharacterSet = invertedSetDescription;
 
     v2 = [TIKeyboardInputManagerChinese wordCharacters]::__wordCharacterSet;
   }
@@ -1168,35 +1168,35 @@ LABEL_14:
   return v2;
 }
 
-- (void)deleteFromInputWithContext:(id)a3
+- (void)deleteFromInputWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(TIKeyboardInputManagerChinese *)self setDuringDeleteFromInputWithContext:1];
   v5.receiver = self;
   v5.super_class = TIKeyboardInputManagerChinese;
-  [(TIKeyboardInputManagerMecabra *)&v5 deleteFromInputWithContext:v4];
+  [(TIKeyboardInputManagerMecabra *)&v5 deleteFromInputWithContext:contextCopy];
 
   [(TIKeyboardInputManagerChinese *)self setDuringDeleteFromInputWithContext:0];
   [(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController setEnabled:[(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController converted]^ 1];
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
   [(TIKeyboardInputManagerChinese *)self setCurrentKeyHint:0];
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManagerChinese;
-  v5 = [(TIKeyboardInputManagerChinese *)&v7 deleteFromInput:a3];
+  v5 = [(TIKeyboardInputManagerChinese *)&v7 deleteFromInput:input];
 
   return v5;
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   [(TIKeyboardInputManagerChinese *)self setCurrentKeyHint:0];
   v5.receiver = self;
   v5.super_class = TIKeyboardInputManagerChinese;
-  [(TIKeyboardInputManager_mul *)&v5 setInput:v4];
+  [(TIKeyboardInputManager_mul *)&v5 setInput:inputCopy];
 }
 
 - (void)clearInput
@@ -1220,58 +1220,58 @@ LABEL_14:
   [(TIKeyboardInputManagerChinese *)&v3 inputLocationChanged];
 }
 
-- (id)didAcceptCandidate:(id)a3
+- (id)didAcceptCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   [(TIKeyboardInputManagerChinese *)self setCurrentKeyHint:0];
-  v5 = [(TIKeyboardInputManagerMecabra *)self mecabraCandidateRefFromCandidate:v4];
+  v5 = [(TIKeyboardInputManagerMecabra *)self mecabraCandidateRefFromCandidate:candidateCopy];
 
   if ([(TIKeyboardInputManagerChinese *)self isInCompletionMode]&& [(TIKeyboardInputManagerChinese *)self shouldLearnAcceptedCandidate]&& v5)
   {
     v6 = objc_alloc(MEMORY[0x277D6FF10]);
-    v7 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-    v8 = [v6 initWithWordSearch:v7 mecabraCandidate:v5 isPartial:0 isPrediction:1];
+    wordSearch = [(TIKeyboardInputManagerChinese *)self wordSearch];
+    v8 = [v6 initWithWordSearch:wordSearch mecabraCandidate:v5 isPartial:0 isPrediction:1];
 
-    v9 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-    [v9 performOperationAsync:v8];
+    wordSearch2 = [(TIKeyboardInputManagerChinese *)self wordSearch];
+    [wordSearch2 performOperationAsync:v8];
   }
 
   if ([(TIKeyboardInputManagerChinese *)self inputCount])
   {
-    v10 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-    v11 = [v10 candidates];
+    wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+    candidates = [wordSearchCandidateResultSet candidates];
 
-    if (!v11)
+    if (!candidates)
     {
       [(TIKeyboardInputManagerChinese *)self clearInput];
     }
   }
 
-  v12 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-  [v12 clearCache];
+  wordSearch3 = [(TIKeyboardInputManagerChinese *)self wordSearch];
+  [wordSearch3 clearCache];
 
   return 0;
 }
 
-- (void)syncToLayoutState:(id)a3
+- (void)syncToLayoutState:(id)state
 {
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManagerChinese;
-  v4 = a3;
-  [(TIKeyboardInputManagerChinese *)&v7 syncToLayoutState:v4];
-  v5 = [v4 isAlphabeticPlane];
+  stateCopy = state;
+  [(TIKeyboardInputManagerChinese *)&v7 syncToLayoutState:stateCopy];
+  isAlphabeticPlane = [stateCopy isAlphabeticPlane];
 
-  [(TIKeyboardInputManagerChinese *)self setIsAlphabeticPlane:v5];
-  v6 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-  [v6 clearCache];
+  [(TIKeyboardInputManagerChinese *)self setIsAlphabeticPlane:isAlphabeticPlane];
+  wordSearch = [(TIKeyboardInputManagerChinese *)self wordSearch];
+  [wordSearch clearCache];
 }
 
-- (void)initImplementationWithMode:(id)a3 andLanguage:(id)a4
+- (void)initImplementationWithMode:(id)mode andLanguage:(id)language
 {
   v9 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(TIKeyboardInputManagerChinese *)self setModeName:a3];
-  [(TIKeyboardInputManagerChinese *)self setLanguage:v6];
+  languageCopy = language;
+  [(TIKeyboardInputManagerChinese *)self setModeName:mode];
+  [(TIKeyboardInputManagerChinese *)self setLanguage:languageCopy];
 
   [(TIKeyboardInputManagerChinese *)self setIsInCompletionMode:0];
   result = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D6FF30]);
@@ -1286,24 +1286,24 @@ LABEL_14:
 
 - (void)resetCommitHistory
 {
-  v3 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-  [v3 resetPreviousWord];
+  wordSearch = [(TIKeyboardInputManagerChinese *)self wordSearch];
+  [wordSearch resetPreviousWord];
 
-  v4 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-  [v4 clearCache];
+  wordSearch2 = [(TIKeyboardInputManagerChinese *)self wordSearch];
+  [wordSearch2 clearCache];
 }
 
-- (TIKeyboardInputManagerChinese)initWithConfig:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInputManagerChinese)initWithConfig:(id)config keyboardState:(id)state
 {
-  v6 = a3;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = TIKeyboardInputManagerChinese;
-  v7 = [(TIKeyboardInputManagerMecabra *)&v15 initWithConfig:v6 keyboardState:a4];
+  v7 = [(TIKeyboardInputManagerMecabra *)&v15 initWithConfig:configCopy keyboardState:state];
   if (v7)
   {
-    v8 = [MEMORY[0x277D6FF08] sharedWordSearchController];
-    v9 = [v6 inputMode];
-    v10 = [v8 wordSearchForInputMode:v9];
+    mEMORY[0x277D6FF08] = [MEMORY[0x277D6FF08] sharedWordSearchController];
+    inputMode = [configCopy inputMode];
+    v10 = [mEMORY[0x277D6FF08] wordSearchForInputMode:inputMode];
     wordSearch = v7->_wordSearch;
     v7->_wordSearch = v10;
 
@@ -1335,22 +1335,22 @@ void __60__TIKeyboardInputManagerChinese_pairedPunctuationDictionary__block_invo
   +[TIKeyboardInputManagerChinese pairedPunctuationDictionary]::__pairedPunctuationDictionary = &unk_287EC3AE8;
 }
 
-+ (BOOL)shouldEnableHalfWidthPunctuationForDocumentContext:(id)a3 composedText:(id)a4
++ (BOOL)shouldEnableHalfWidthPunctuationForDocumentContext:(id)context composedText:(id)text
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if ([v5 length])
+  contextCopy = context;
+  textCopy = text;
+  v7 = textCopy;
+  if ([contextCopy length])
   {
-    if ([v6 length])
+    if ([textCopy length])
     {
-      v8 = [v5 stringByAppendingString:v6];
+      v8 = [contextCopy stringByAppendingString:textCopy];
     }
 
     else
     {
-      v8 = v5;
+      v8 = contextCopy;
     }
 
     v7 = v8;
@@ -1361,8 +1361,8 @@ void __60__TIKeyboardInputManagerChinese_pairedPunctuationDictionary__block_invo
     goto LABEL_19;
   }
 
-  v9 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v10 = [v7 rangeOfCharacterFromSet:v9 options:12];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v10 = [v7 rangeOfCharacterFromSet:decimalDigitCharacterSet options:12];
   v12 = v11;
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL || v10 + v12 != [v7 length])
@@ -1417,12 +1417,12 @@ LABEL_20:
   return v13;
 }
 
-+ (id)unicodeCandidateFromString:(id)a3
++ (id)unicodeCandidateFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"|u|"])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"|u|"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"|u|", "length")}];
+    v4 = [stringCopy substringFromIndex:{objc_msgSend(@"|u|", "length")}];
     v5 = [MEMORY[0x277CCAC80] scannerWithString:v4];
     v11 = 0;
     if ([v5 scanHexInt:&v11])
@@ -1458,12 +1458,12 @@ LABEL_20:
   return v8;
 }
 
-+ (id)GB18030CandidateFromString:(id)a3
++ (id)GB18030CandidateFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"|g|"])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"|g|"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"|g|", "length")}];
+    v4 = [stringCopy substringFromIndex:{objc_msgSend(@"|g|", "length")}];
     if ([v4 length])
     {
       v8 = 0;
@@ -1512,15 +1512,15 @@ LABEL_20:
   return v8;
 }
 
-+ (id)punctuationPredictionsForString:(id)a3
++ (id)punctuationPredictionsForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (+[TIKeyboardInputManagerChinese punctuationPredictionsForString:]::__onceToken != -1)
   {
     dispatch_once(&+[TIKeyboardInputManagerChinese punctuationPredictionsForString:]::__onceToken, &__block_literal_global);
   }
 
-  v4 = [v3 length];
+  v4 = [stringCopy length];
   v5 = v4;
   if (v4 < 2)
   {
@@ -1534,7 +1534,7 @@ LABEL_20:
   else
   {
     v6 = +[TIKeyboardInputManagerChinese punctuationPredictionsForString:]::__punctuationPredictions;
-    v7 = [v3 substringFromIndex:v4 - 2];
+    v7 = [stringCopy substringFromIndex:v4 - 2];
     v8 = [v6 objectForKey:v7];
 
     if (!v5)
@@ -1546,7 +1546,7 @@ LABEL_20:
   if (!v8)
   {
     v9 = +[TIKeyboardInputManagerChinese punctuationPredictionsForString:]::__punctuationPredictions;
-    v10 = [v3 substringFromIndex:v5 - 1];
+    v10 = [stringCopy substringFromIndex:v5 - 1];
     v8 = [v9 objectForKey:v10];
   }
 

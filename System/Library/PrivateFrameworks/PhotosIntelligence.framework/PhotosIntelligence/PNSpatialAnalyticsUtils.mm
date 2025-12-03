@@ -1,22 +1,22 @@
 @interface PNSpatialAnalyticsUtils
-- (void)sendToggleEventEnabled:(BOOL)a3 asset:(id)a4;
-- (void)sendToggleEventEnabled:(BOOL)a3 asset:(id)a4 isNavigationSourceWidget:(BOOL)a5;
+- (void)sendToggleEventEnabled:(BOOL)enabled asset:(id)asset;
+- (void)sendToggleEventEnabled:(BOOL)enabled asset:(id)asset isNavigationSourceWidget:(BOOL)widget;
 @end
 
 @implementation PNSpatialAnalyticsUtils
 
-- (void)sendToggleEventEnabled:(BOOL)a3 asset:(id)a4 isNavigationSourceWidget:(BOOL)a5
+- (void)sendToggleEventEnabled:(BOOL)enabled asset:(id)asset isNavigationSourceWidget:(BOOL)widget
 {
-  v8 = a4;
-  v9 = self;
-  PNSpatialAnalyticsUtils.sendToggleEventEnabled(_:asset:isNavigationSourceWidget:)(a3, v8, a5);
+  assetCopy = asset;
+  selfCopy = self;
+  PNSpatialAnalyticsUtils.sendToggleEventEnabled(_:asset:isNavigationSourceWidget:)(enabled, assetCopy, widget);
 }
 
-- (void)sendToggleEventEnabled:(BOOL)a3 asset:(id)a4
+- (void)sendToggleEventEnabled:(BOOL)enabled asset:(id)asset
 {
-  v6 = a4;
-  v7 = self;
-  PNSpatialAnalyticsUtils.sendToggleEventEnabled(_:asset:)(a3, v6);
+  assetCopy = asset;
+  selfCopy = self;
+  PNSpatialAnalyticsUtils.sendToggleEventEnabled(_:asset:)(enabled, assetCopy);
 }
 
 @end

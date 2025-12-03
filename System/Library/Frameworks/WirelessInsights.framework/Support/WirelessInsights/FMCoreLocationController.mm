@@ -1,14 +1,14 @@
 @interface FMCoreLocationController
-+ (double)distanceBetween:(double)a3 srcLongitude:(double)a4 destLatitude:(double)a5 destLongitude:(double)a6;
++ (double)distanceBetween:(double)between srcLongitude:(double)longitude destLatitude:(double)latitude destLongitude:(double)destLongitude;
 - (FMCoreLocationController)init;
-- (const)authStatusAsString:(int)a3;
-- (void)addDelegate:(id)a3;
+- (const)authStatusAsString:(int)string;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didReportVisit:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didReportVisit:(id)visit;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)start;
 @end
 
@@ -50,22 +50,22 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "FederatedMobility[FMCoreLocationController]:#N Starting location updates", &buf, 2u);
   }
 
-  v4 = [(FMCoreLocationController *)self queue];
+  queue = [(FMCoreLocationController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000991E4;
   block[3] = &unk_1002AB4D0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
   objc_initWeak(&buf, self);
   v5 = dispatch_time(0, 120000000000);
-  v6 = [(FMCoreLocationController *)self queue];
+  queue2 = [(FMCoreLocationController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000992FC;
   v7[3] = &unk_1002AC020;
   objc_copyWeak(&v8, &buf);
-  dispatch_after(v5, v6, v7);
+  dispatch_after(v5, queue2, v7);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&buf);
 }
@@ -77,11 +77,11 @@
     sub_1002035CC();
   }
 
-  v3 = [(FMCoreLocationController *)self locationManager];
-  [v3 setDelegate:0];
+  locationManager = [(FMCoreLocationController *)self locationManager];
+  [locationManager setDelegate:0];
 
-  v4 = [(FMCoreLocationController *)self authorizationManager];
-  [v4 setDelegate:0];
+  authorizationManager = [(FMCoreLocationController *)self authorizationManager];
+  [authorizationManager setDelegate:0];
 
   if ([(FMCoreLocationController *)self queue])
   {
@@ -93,33 +93,33 @@
   [(FMCoreLocationController *)&v5 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(FMCoreLocationController *)self queue];
+  delegateCopy = delegate;
+  queue = [(FMCoreLocationController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100099530;
   v7[3] = &unk_1002AD7E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = [(FMCoreLocationController *)self authorizationManager];
+  authorizationCopy = authorization;
+  authorizationManager = [(FMCoreLocationController *)self authorizationManager];
 
-  if (v5 == v4)
+  if (authorizationManager == authorizationCopy)
   {
-    v6 = [v4 authorizationStatus];
+    authorizationStatus = [authorizationCopy authorizationStatus];
     v7 = *(qword_1002DBE98 + 40);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v19 = [(FMCoreLocationController *)self authStatusAsString:v6];
+      v19 = [(FMCoreLocationController *)self authStatusAsString:authorizationStatus];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "FederatedMobility[FMCoreLocationController]:#N Updated auth status from locationd %s", buf, 0xCu);
     }
 
@@ -127,8 +127,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [(FMCoreLocationController *)self delegates];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    delegates = [(FMCoreLocationController *)self delegates];
+    v9 = [delegates countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = *v14;
@@ -138,17 +138,17 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(delegates);
           }
 
           v12 = *(*(&v13 + 1) + 8 * i);
           if (v12)
           {
-            [v12 handleLocationAuthorizationUpdate:{-[FMCoreLocationController statusIndicatesAuthorized:](self, "statusIndicatesAuthorized:", v6)}];
+            [v12 handleLocationAuthorizationUpdate:{-[FMCoreLocationController statusIndicatesAuthorized:](self, "statusIndicatesAuthorized:", authorizationStatus)}];
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [delegates countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -156,40 +156,40 @@
   }
 }
 
-- (const)authStatusAsString:(int)a3
+- (const)authStatusAsString:(int)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return "Auth status is unknown";
   }
 
   else
   {
-    return (&off_1002AE850)[a3];
+    return (&off_1002AE850)[string];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = [a4 lastObject];
-  if (v5)
+  lastObject = [locations lastObject];
+  if (lastObject)
   {
-    [(FMCoreLocationController *)self setCurrentLocation:v5];
+    [(FMCoreLocationController *)self setCurrentLocation:lastObject];
     v6 = [FMLocation alloc];
-    v7 = [v5 timestamp];
-    [v5 coordinate];
+    timestamp = [lastObject timestamp];
+    [lastObject coordinate];
     v9 = v8;
-    [v5 coordinate];
+    [lastObject coordinate];
     v11 = v10;
-    [v5 horizontalAccuracy];
-    v13 = [(FMLocation *)v6 init:v7 latitude:v9 longitude:v11 accuracy:v12];
+    [lastObject horizontalAccuracy];
+    v13 = [(FMLocation *)v6 init:timestamp latitude:v9 longitude:v11 accuracy:v12];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [(FMCoreLocationController *)self delegates];
-    v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    delegates = [(FMCoreLocationController *)self delegates];
+    v15 = [delegates countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
       v16 = *v20;
@@ -199,7 +199,7 @@
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(delegates);
           }
 
           v18 = *(*(&v19 + 1) + 8 * i);
@@ -209,7 +209,7 @@
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v15 = [delegates countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v15);
@@ -222,13 +222,13 @@
   }
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v5 = a4;
+  visitCopy = visit;
   v6 = +[FMConfiguration sharedInstance];
-  v7 = [v6 disableVisitChecking];
+  disableVisitChecking = [v6 disableVisitChecking];
 
-  if (v7)
+  if (disableVisitChecking)
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
@@ -238,44 +238,44 @@
     goto LABEL_31;
   }
 
-  v8 = [v5 _placeInference];
-  if (v8)
+  _placeInference = [visitCopy _placeInference];
+  if (_placeInference)
   {
-    v9 = [v5 _placeInference];
-    v10 = [v9 placemark];
-    if (v10)
+    _placeInference2 = [visitCopy _placeInference];
+    placemark = [_placeInference2 placemark];
+    if (placemark)
     {
-      v11 = [v5 _placeInference];
-      v12 = [v11 placemark];
-      v13 = [v12 location];
+      _placeInference3 = [visitCopy _placeInference];
+      placemark2 = [_placeInference3 placemark];
+      location = [placemark2 location];
 
-      if (v13)
+      if (location)
       {
-        v14 = [v5 _placeInference];
-        v15 = [v14 placemark];
-        v16 = [v15 location];
+        _placeInference4 = [visitCopy _placeInference];
+        placemark3 = [_placeInference4 placemark];
+        location2 = [placemark3 location];
 
-        v17 = [v5 departureDate];
+        departureDate = [visitCopy departureDate];
         v18 = +[NSDate distantFuture];
-        v19 = [v17 isEqualToDate:v18];
+        v19 = [departureDate isEqualToDate:v18];
 
         if (v19)
         {
           v20 = [FMLocation alloc];
-          v21 = [v5 arrivalDate];
-          [v16 coordinate];
+          arrivalDate = [visitCopy arrivalDate];
+          [location2 coordinate];
           v23 = v22;
-          [v16 coordinate];
+          [location2 coordinate];
           v25 = v24;
-          [v16 horizontalAccuracy];
-          v27 = [(FMLocation *)v20 init:v21 latitude:v23 longitude:v25 accuracy:v26];
+          [location2 horizontalAccuracy];
+          v27 = [(FMLocation *)v20 init:arrivalDate latitude:v23 longitude:v25 accuracy:v26];
 
           v50 = 0u;
           v51 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v28 = [(FMCoreLocationController *)self delegates];
-          v29 = [v28 countByEnumeratingWithState:&v48 objects:v53 count:16];
+          delegates = [(FMCoreLocationController *)self delegates];
+          v29 = [delegates countByEnumeratingWithState:&v48 objects:v53 count:16];
           if (v29)
           {
             v30 = *v49;
@@ -285,7 +285,7 @@
               {
                 if (*v49 != v30)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(delegates);
                 }
 
                 v32 = *(*(&v48 + 1) + 8 * i);
@@ -295,7 +295,7 @@
                 }
               }
 
-              v29 = [v28 countByEnumeratingWithState:&v48 objects:v53 count:16];
+              v29 = [delegates countByEnumeratingWithState:&v48 objects:v53 count:16];
             }
 
             while (v29);
@@ -305,20 +305,20 @@
         else
         {
           v33 = [FMLocation alloc];
-          v34 = [v5 departureDate];
-          [v16 coordinate];
+          departureDate2 = [visitCopy departureDate];
+          [location2 coordinate];
           v36 = v35;
-          [v16 coordinate];
+          [location2 coordinate];
           v38 = v37;
-          [v16 horizontalAccuracy];
-          v27 = [(FMLocation *)v33 init:v34 latitude:v36 longitude:v38 accuracy:v39];
+          [location2 horizontalAccuracy];
+          v27 = [(FMLocation *)v33 init:departureDate2 latitude:v36 longitude:v38 accuracy:v39];
 
           v46 = 0u;
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v28 = [(FMCoreLocationController *)self delegates];
-          v40 = [v28 countByEnumeratingWithState:&v44 objects:v52 count:16];
+          delegates = [(FMCoreLocationController *)self delegates];
+          v40 = [delegates countByEnumeratingWithState:&v44 objects:v52 count:16];
           if (v40)
           {
             v41 = *v45;
@@ -328,7 +328,7 @@
               {
                 if (*v45 != v41)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(delegates);
                 }
 
                 v43 = *(*(&v44 + 1) + 8 * j);
@@ -338,7 +338,7 @@
                 }
               }
 
-              v40 = [v28 countByEnumeratingWithState:&v44 objects:v52 count:16];
+              v40 = [delegates countByEnumeratingWithState:&v44 objects:v52 count:16];
             }
 
             while (v40);
@@ -362,13 +362,13 @@
 LABEL_31:
 }
 
-- (void)locationManager:(id)a3 didReportVisit:(id)a4
+- (void)locationManager:(id)manager didReportVisit:(id)visit
 {
-  v5 = a4;
+  visitCopy = visit;
   v6 = +[FMConfiguration sharedInstance];
-  v7 = [v6 disableVisitChecking];
+  disableVisitChecking = [v6 disableVisitChecking];
 
-  if (v7)
+  if (disableVisitChecking)
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
@@ -378,40 +378,40 @@ LABEL_31:
     goto LABEL_21;
   }
 
-  if (v5)
+  if (visitCopy)
   {
-    v8 = [v5 _placeInference];
-    if (v8)
+    _placeInference = [visitCopy _placeInference];
+    if (_placeInference)
     {
-      v9 = [v5 _placeInference];
-      v10 = [v9 placemark];
-      if (v10)
+      _placeInference2 = [visitCopy _placeInference];
+      placemark = [_placeInference2 placemark];
+      if (placemark)
       {
-        v11 = [v5 _placeInference];
-        v12 = [v11 placemark];
-        v13 = [v12 location];
+        _placeInference3 = [visitCopy _placeInference];
+        placemark2 = [_placeInference3 placemark];
+        location = [placemark2 location];
 
-        if (v13)
+        if (location)
         {
-          v14 = [v5 _placeInference];
-          v15 = [v14 placemark];
-          v16 = [v15 location];
+          _placeInference4 = [visitCopy _placeInference];
+          placemark3 = [_placeInference4 placemark];
+          location2 = [placemark3 location];
 
           v17 = [FMLocation alloc];
           v18 = +[NSDate now];
-          [v16 coordinate];
+          [location2 coordinate];
           v20 = v19;
-          [v16 coordinate];
+          [location2 coordinate];
           v22 = v21;
-          [v16 horizontalAccuracy];
+          [location2 horizontalAccuracy];
           v24 = [(FMLocation *)v17 init:v18 latitude:v20 longitude:v22 accuracy:v23];
 
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v25 = [(FMCoreLocationController *)self delegates];
-          v26 = [v25 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          delegates = [(FMCoreLocationController *)self delegates];
+          v26 = [delegates countByEnumeratingWithState:&v30 objects:v34 count:16];
           if (v26)
           {
             v27 = *v31;
@@ -421,7 +421,7 @@ LABEL_31:
               {
                 if (*v31 != v27)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(delegates);
                 }
 
                 v29 = *(*(&v30 + 1) + 8 * i);
@@ -431,7 +431,7 @@ LABEL_31:
                 }
               }
 
-              v26 = [v25 countByEnumeratingWithState:&v30 objects:v34 count:16];
+              v26 = [delegates countByEnumeratingWithState:&v30 objects:v34 count:16];
             }
 
             while (v26);
@@ -455,21 +455,21 @@ LABEL_31:
 LABEL_21:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v4 localizedDescription];
-    sub_1002036D0(v6, v7, [v4 code], v5);
+    localizedDescription = [errorCopy localizedDescription];
+    sub_1002036D0(localizedDescription, v7, [errorCopy code], v5);
   }
 }
 
-+ (double)distanceBetween:(double)a3 srcLongitude:(double)a4 destLatitude:(double)a5 destLongitude:(double)a6
++ (double)distanceBetween:(double)between srcLongitude:(double)longitude destLatitude:(double)latitude destLongitude:(double)destLongitude
 {
-  v8 = [[CLLocation alloc] initWithLatitude:a3 longitude:a4];
-  v9 = [[CLLocation alloc] initWithLatitude:a5 longitude:a6];
+  v8 = [[CLLocation alloc] initWithLatitude:between longitude:longitude];
+  v9 = [[CLLocation alloc] initWithLatitude:latitude longitude:destLongitude];
   [v8 distanceFromLocation:v9];
   v11 = v10;
 

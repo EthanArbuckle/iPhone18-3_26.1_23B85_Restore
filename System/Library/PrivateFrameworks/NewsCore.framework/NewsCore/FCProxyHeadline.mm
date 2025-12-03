@@ -10,7 +10,7 @@
 - (FCHeadlineThumbnail)thumbnailLQ;
 - (FCHeadlineThumbnail)thumbnailMedium;
 - (FCHeadlineThumbnail)thumbnailUltraHQ;
-- (FCProxyHeadline)initWithHeadline:(id)a3 overrideMetadata:(id)a4 configuration:(id)a5;
+- (FCProxyHeadline)initWithHeadline:(id)headline overrideMetadata:(id)metadata configuration:(id)configuration;
 - (NSDate)displayDate;
 - (NSDate)publishDate;
 - (NSString)description;
@@ -25,10 +25,10 @@
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v3 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v4 = [v3 hasThumbnail];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    hasThumbnail = [formatThumbnail hasThumbnail];
 
-    return v4;
+    return hasThumbnail;
   }
 
   else
@@ -41,19 +41,19 @@
 
 - (NSString)title
 {
-  v3 = [(FCHeadlineMetadata *)self->_overrideMetadata title];
-  v4 = v3;
-  if (v3)
+  title = [(FCHeadlineMetadata *)self->_overrideMetadata title];
+  v4 = title;
+  if (title)
   {
-    v5 = v3;
+    title2 = title;
   }
 
   else
   {
-    v5 = [(FCHeadlineProviding *)self->_headline title];
+    title2 = [(FCHeadlineProviding *)self->_headline title];
   }
 
-  v6 = v5;
+  v6 = title2;
 
   return v6;
 }
@@ -62,56 +62,56 @@
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 ultraQualityImage];
-    v4 = [v3 thumbnail];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    ultraQualityImage = [formatThumbnail ultraQualityImage];
+    thumbnail = [ultraQualityImage thumbnail];
   }
 
   else
   {
-    v4 = [(FCHeadlineProviding *)self->_headline thumbnailUltraHQ];
+    thumbnail = [(FCHeadlineProviding *)self->_headline thumbnailUltraHQ];
   }
 
-  return v4;
+  return thumbnail;
 }
 
 - (NSURL)routeURL
 {
-  v3 = [(FCHeadlineMetadata *)self->_overrideMetadata routeURL];
-  v4 = v3;
-  if (v3)
+  routeURL = [(FCHeadlineMetadata *)self->_overrideMetadata routeURL];
+  v4 = routeURL;
+  if (routeURL)
   {
-    v5 = v3;
+    routeURL2 = routeURL;
   }
 
   else
   {
-    v5 = [(FCHeadlineProviding *)self->_headline routeURL];
+    routeURL2 = [(FCHeadlineProviding *)self->_headline routeURL];
   }
 
-  v6 = v5;
+  v6 = routeURL2;
 
   return v6;
 }
 
-- (FCProxyHeadline)initWithHeadline:(id)a3 overrideMetadata:(id)a4 configuration:(id)a5
+- (FCProxyHeadline)initWithHeadline:(id)headline overrideMetadata:(id)metadata configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  headlineCopy = headline;
+  metadataCopy = metadata;
+  configurationCopy = configuration;
+  if (headlineCopy)
   {
-    objc_storeStrong(&self->_headline, a3);
-    objc_storeStrong(&self->_overrideMetadata, a4);
-    self->_overrideStoryType = [v9 storyType];
-    v12 = [v9 storyStyle];
+    objc_storeStrong(&self->_headline, headline);
+    objc_storeStrong(&self->_overrideMetadata, metadata);
+    self->_overrideStoryType = [headlineCopy storyType];
+    storyStyle = [headlineCopy storyStyle];
     overrideStoryStyle = self->_overrideStoryStyle;
-    self->_overrideStoryStyle = v12;
+    self->_overrideStoryStyle = storyStyle;
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v10 formatThumbnail];
-      self->_hasOverriddenThumbnail = v14 != 0;
+      formatThumbnail = [metadataCopy formatThumbnail];
+      self->_hasOverriddenThumbnail = formatThumbnail != 0;
     }
 
     else
@@ -119,42 +119,42 @@
       self->_hasOverriddenThumbnail = 0;
     }
 
-    v16 = [v10 storyType];
-    v17 = [v16 length];
+    storyType = [metadataCopy storyType];
+    v17 = [storyType length];
 
-    if (v11 && v17)
+    if (configurationCopy && v17)
     {
-      v18 = [v10 displayDate];
-      v19 = v18;
-      if (v18)
+      displayDate = [metadataCopy displayDate];
+      v19 = displayDate;
+      if (displayDate)
       {
-        v20 = v18;
+        publishDate = displayDate;
       }
 
       else
       {
-        v20 = [v9 publishDate];
+        publishDate = [headlineCopy publishDate];
       }
 
-      v21 = v20;
+      v21 = publishDate;
 
-      v22 = [MEMORY[0x1E695DF00] date];
-      [v22 timeIntervalSinceDate:v21];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:v21];
       v24 = v23;
-      v25 = [v11 topStoriesConfig];
-      v26 = [v25 storyTypeTimeout];
+      topStoriesConfig = [configurationCopy topStoriesConfig];
+      storyTypeTimeout = [topStoriesConfig storyTypeTimeout];
 
-      if (v24 >= v26)
+      if (v24 >= storyTypeTimeout)
       {
         self->_overrideStoryType = 0;
-        v30 = self->_overrideStoryStyle;
+        topStoriesConfig2 = self->_overrideStoryStyle;
         self->_overrideStoryStyle = 0;
       }
 
       else
       {
-        v27 = [v10 storyType];
-        v28 = PBArticleStoryTypeFromString(v27);
+        storyType2 = [metadataCopy storyType];
+        v28 = PBArticleStoryTypeFromString(storyType2);
         if ((v28 - 1) >= 5)
         {
           v29 = 0;
@@ -167,89 +167,89 @@
 
         self->_overrideStoryType = v29;
 
-        v30 = [v11 topStoriesConfig];
-        v31 = [v30 styleConfigurations];
+        topStoriesConfig2 = [configurationCopy topStoriesConfig];
+        styleConfigurations = [topStoriesConfig2 styleConfigurations];
         v32 = [MEMORY[0x1E696AD98] numberWithInt:self->_overrideStoryType];
-        v33 = [v31 objectForKey:v32];
+        v33 = [styleConfigurations objectForKey:v32];
         v34 = self->_overrideStoryStyle;
         self->_overrideStoryStyle = v33;
       }
     }
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FCHeadlineProviding *)self->_headline identifier];
-  v5 = [(FCHeadlineProviding *)self->_headline title];
-  v6 = [v3 stringWithFormat:@"id: %@, title: %@", v4, v5];
+  identifier = [(FCHeadlineProviding *)self->_headline identifier];
+  title = [(FCHeadlineProviding *)self->_headline title];
+  v6 = [v3 stringWithFormat:@"id: %@, title: %@", identifier, title];
 
   return v6;
 }
 
 - (NSDate)displayDate
 {
-  v3 = [(FCHeadlineMetadata *)self->_overrideMetadata displayDate];
-  v4 = v3;
-  if (v3)
+  displayDate = [(FCHeadlineMetadata *)self->_overrideMetadata displayDate];
+  v4 = displayDate;
+  if (displayDate)
   {
-    v5 = v3;
+    displayDate2 = displayDate;
   }
 
   else
   {
-    v5 = [(FCHeadlineProviding *)self->_headline displayDate];
+    displayDate2 = [(FCHeadlineProviding *)self->_headline displayDate];
   }
 
-  v6 = v5;
+  v6 = displayDate2;
 
   return v6;
 }
 
 - (NSDate)publishDate
 {
-  v3 = [(FCHeadlineMetadata *)self->_overrideMetadata displayDate];
-  v4 = v3;
-  if (v3)
+  displayDate = [(FCHeadlineMetadata *)self->_overrideMetadata displayDate];
+  v4 = displayDate;
+  if (displayDate)
   {
-    v5 = v3;
+    publishDate = displayDate;
   }
 
   else
   {
-    v5 = [(FCHeadlineProviding *)self->_headline publishDate];
+    publishDate = [(FCHeadlineProviding *)self->_headline publishDate];
   }
 
-  v6 = v5;
+  v6 = publishDate;
 
   return v6;
 }
 
 - (NSString)shortExcerpt
 {
-  v3 = [(FCHeadlineMetadata *)self->_overrideMetadata shortExcerpt];
-  v4 = v3;
-  if (v3)
+  shortExcerpt = [(FCHeadlineMetadata *)self->_overrideMetadata shortExcerpt];
+  v4 = shortExcerpt;
+  if (shortExcerpt)
   {
-    v5 = v3;
+    shortExcerpt2 = shortExcerpt;
   }
 
   else
   {
-    v5 = [(FCHeadlineProviding *)self->_headline shortExcerpt];
+    shortExcerpt2 = [(FCHeadlineProviding *)self->_headline shortExcerpt];
   }
 
-  v6 = v5;
+  v6 = shortExcerpt2;
 
   return v6;
 }
@@ -258,8 +258,8 @@
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    [v2 focalFrame];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    [formatThumbnail focalFrame];
     v4 = v3;
     v6 = v5;
     v8 = v7;
@@ -290,132 +290,132 @@
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 lowQualityImage];
-    v4 = [v3 thumbnail];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    lowQualityImage = [formatThumbnail lowQualityImage];
+    thumbnail = [lowQualityImage thumbnail];
   }
 
   else
   {
-    v4 = [(FCHeadlineProviding *)self->_headline thumbnailLQ];
+    thumbnail = [(FCHeadlineProviding *)self->_headline thumbnailLQ];
   }
 
-  return v4;
+  return thumbnail;
 }
 
 - (FCHeadlineThumbnail)thumbnail
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 defaultQualityImage];
-    v4 = [v3 thumbnail];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    defaultQualityImage = [formatThumbnail defaultQualityImage];
+    thumbnail = [defaultQualityImage thumbnail];
   }
 
   else
   {
-    v4 = [(FCHeadlineProviding *)self->_headline thumbnail];
+    thumbnail = [(FCHeadlineProviding *)self->_headline thumbnail];
   }
 
-  return v4;
+  return thumbnail;
 }
 
 - (FCHeadlineThumbnail)thumbnailMedium
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 mediumQualityImage];
-    v4 = [v3 thumbnail];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    mediumQualityImage = [formatThumbnail mediumQualityImage];
+    thumbnail = [mediumQualityImage thumbnail];
   }
 
   else
   {
-    v4 = [(FCHeadlineProviding *)self->_headline thumbnailMedium];
+    thumbnail = [(FCHeadlineProviding *)self->_headline thumbnailMedium];
   }
 
-  return v4;
+  return thumbnail;
 }
 
 - (FCHeadlineThumbnail)thumbnailHQ
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 highQualityImage];
-    v4 = [v3 thumbnail];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    highQualityImage = [formatThumbnail highQualityImage];
+    thumbnail = [highQualityImage thumbnail];
   }
 
   else
   {
-    v4 = [(FCHeadlineProviding *)self->_headline thumbnailHQ];
+    thumbnail = [(FCHeadlineProviding *)self->_headline thumbnailHQ];
   }
 
-  return v4;
+  return thumbnail;
 }
 
 - (FCColor)thumbnailImagePrimaryColor
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 primaryColor];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    primaryColor = [formatThumbnail primaryColor];
   }
 
   else
   {
-    v3 = [(FCHeadlineProviding *)self->_headline thumbnailImagePrimaryColor];
+    primaryColor = [(FCHeadlineProviding *)self->_headline thumbnailImagePrimaryColor];
   }
 
-  return v3;
+  return primaryColor;
 }
 
 - (FCColor)thumbnailImageBackgroundColor
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 backgroundColor];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    backgroundColor = [formatThumbnail backgroundColor];
   }
 
   else
   {
-    v3 = [(FCHeadlineProviding *)self->_headline thumbnailImageBackgroundColor];
+    backgroundColor = [(FCHeadlineProviding *)self->_headline thumbnailImageBackgroundColor];
   }
 
-  return v3;
+  return backgroundColor;
 }
 
 - (FCColor)thumbnailImageTextColor
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 textColor];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    textColor = [formatThumbnail textColor];
   }
 
   else
   {
-    v3 = [(FCHeadlineProviding *)self->_headline thumbnailImageTextColor];
+    textColor = [(FCHeadlineProviding *)self->_headline thumbnailImageTextColor];
   }
 
-  return v3;
+  return textColor;
 }
 
 - (FCColor)thumbnailImageAccentColor
 {
   if (self->_hasOverriddenThumbnail)
   {
-    v2 = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
-    v3 = [v2 accentColor];
+    formatThumbnail = [(FCHeadlineMetadata *)self->_overrideMetadata formatThumbnail];
+    accentColor = [formatThumbnail accentColor];
   }
 
   else
   {
-    v3 = [(FCHeadlineProviding *)self->_headline thumbnailImageAccentColor];
+    accentColor = [(FCHeadlineProviding *)self->_headline thumbnailImageAccentColor];
   }
 
-  return v3;
+  return accentColor;
 }
 
 @end

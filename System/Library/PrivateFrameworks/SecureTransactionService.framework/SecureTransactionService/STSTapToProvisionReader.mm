@@ -1,10 +1,10 @@
 @interface STSTapToProvisionReader
 - (STSTapToProvisionDelegate)delegate;
 - (STSTapToProvisionReader)init;
-- (id)checkStatusWithError:(id *)a3;
-- (void)checkStatusWithCompletion:(id)a3;
-- (void)onUpdateWithEvent:(int64_t)a3;
-- (void)provisionCardWithParameters:(id)a3 completion:(id)a4;
+- (id)checkStatusWithError:(id *)error;
+- (void)checkStatusWithCompletion:(id)completion;
+- (void)onUpdateWithEvent:(int64_t)event;
+- (void)provisionCardWithParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation STSTapToProvisionReader
@@ -27,8 +27,8 @@
       v8 = 1;
       do
       {
-        v9 = [v4 code];
-        if ((v8 & 1) == 0 || v9 != 14001)
+        code = [v4 code];
+        if ((v8 & 1) == 0 || code != 14001)
         {
           goto LABEL_11;
         }
@@ -69,26 +69,26 @@ LABEL_12:
   return v16;
 }
 
-- (void)onUpdateWithEvent:(int64_t)a3
+- (void)onUpdateWithEvent:(int64_t)event
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained onUpdateWithEvent:a3];
+  [WeakRetained onUpdateWithEvent:event];
 }
 
-- (void)checkStatusWithCompletion:(id)a3
+- (void)checkStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   reader = self->_reader;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_26539E288;
   v7[3] = &unk_279B941B0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(ORReader *)reader checkStatusWithCompletion:v7];
 }
 
-- (id)checkStatusWithError:(id *)a3
+- (id)checkStatusWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -113,9 +113,9 @@ LABEL_12:
   v10 = v6;
   [(STSTapToProvisionReader *)self checkStatusWithCompletion:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v14[5];
+    *error = v14[5];
   }
 
   v7 = v20[5];
@@ -126,18 +126,18 @@ LABEL_12:
   return v7;
 }
 
-- (void)provisionCardWithParameters:(id)a3 completion:(id)a4
+- (void)provisionCardWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 toOR];
+  completionCopy = completion;
+  toOR = [parameters toOR];
   reader = self->_reader;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_26539E61C;
   v10[3] = &unk_279B94200;
-  v11 = v6;
-  v9 = v6;
-  [(ORReader *)reader provisionCardWithParameters:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(ORReader *)reader provisionCardWithParameters:toOR completion:v10];
 }
 
 - (STSTapToProvisionDelegate)delegate

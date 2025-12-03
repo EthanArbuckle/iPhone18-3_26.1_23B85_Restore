@@ -1,31 +1,31 @@
 @interface HFRoomItem
 - (HFRoomItem)init;
-- (HFRoomItem)initWithHome:(id)a3 room:(id)a4;
+- (HFRoomItem)initWithHome:(id)home room:(id)room;
 - (NSString)description;
 - (id)_reorderableListsForAccessoryTypes;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)togglePowerState;
 @end
 
 @implementation HFRoomItem
 
-- (HFRoomItem)initWithHome:(id)a3 room:(id)a4
+- (HFRoomItem)initWithHome:(id)home room:(id)room
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  roomCopy = room;
   v16.receiver = self;
   v16.super_class = HFRoomItem;
   v9 = [(HFRoomItem *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_room, a4);
-    v11 = [(HFRoomItem *)v10 room];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [v12 UUIDString];
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_room, room);
+    room = [(HFRoomItem *)v10 room];
+    uniqueIdentifier = [room uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
     uuidString = v10->_uuidString;
-    v10->_uuidString = v13;
+    v10->_uuidString = uUIDString;
   }
 
   return v10;
@@ -33,8 +33,8 @@
 
 - (HFRoomItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFRoomItem.m" lineNumber:47 description:@"Use -initWithHome:room:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRoomItem.m" lineNumber:47 description:@"Use -initWithHome:room:"];
 
   return 0;
 }
@@ -44,73 +44,73 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFRoomItem *)self room];
-  v7 = [v6 hf_prettyDescription];
-  v8 = [(HFItem *)self latestResults];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, v7, v8];
+  room = [(HFRoomItem *)self room];
+  hf_prettyDescription = [room hf_prettyDescription];
+  latestResults = [(HFItem *)self latestResults];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@ %@>", v5, self, hf_prettyDescription, latestResults];
 
   return v9;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [(HFRoomItem *)self room];
+  room = [(HFRoomItem *)self room];
 
-  if (!v4)
+  if (!room)
   {
     NSLog(&cfstr_RoomMustBeSetO.isa);
   }
 
-  v5 = [(HFRoomItem *)self room];
+  room2 = [(HFRoomItem *)self room];
 
   v6 = MEMORY[0x277D2C900];
-  if (v5)
+  if (room2)
   {
     v7 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    v9 = [(HFRoomItem *)self room];
-    v10 = [v9 name];
-    [v8 setObject:v10 forKeyedSubscript:@"title"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    room3 = [(HFRoomItem *)self room];
+    name = [room3 name];
+    [dictionary setObject:name forKeyedSubscript:@"title"];
 
-    v11 = [(HFRoomItem *)self room];
-    v12 = [v11 uniqueIdentifier];
-    [v8 setObject:v12 forKeyedSubscript:@"roomIdentifier"];
+    room4 = [(HFRoomItem *)self room];
+    uniqueIdentifier = [room4 uniqueIdentifier];
+    [dictionary setObject:uniqueIdentifier forKeyedSubscript:@"roomIdentifier"];
 
-    v13 = [(HFRoomItem *)self room];
-    v14 = [v13 hf_reorderableServicesList];
-    [v8 setObject:v14 forKeyedSubscript:@"reorderableServiceItemList"];
+    room5 = [(HFRoomItem *)self room];
+    hf_reorderableServicesList = [room5 hf_reorderableServicesList];
+    [dictionary setObject:hf_reorderableServicesList forKeyedSubscript:@"reorderableServiceItemList"];
 
     v15 = [HFReorderableHomeKitItemList alloc];
-    v16 = [(HFRoomItem *)self room];
-    v17 = [(HFReorderableHomeKitItemList *)v15 initWithApplicationDataContainer:v16 category:@"roomActionSets"];
-    [v8 setObject:v17 forKeyedSubscript:@"reorderableActionSetItemList"];
+    room6 = [(HFRoomItem *)self room];
+    v17 = [(HFReorderableHomeKitItemList *)v15 initWithApplicationDataContainer:room6 category:@"roomActionSets"];
+    [dictionary setObject:v17 forKeyedSubscript:@"reorderableActionSetItemList"];
 
     v18 = [HFReorderableHomeKitItemList alloc];
-    v19 = [(HFRoomItem *)self room];
-    v20 = [(HFReorderableHomeKitItemList *)v18 initWithApplicationDataContainer:v19 category:@"roomCameras"];
-    [v8 setObject:v20 forKeyedSubscript:@"reorderableCameraItemList"];
+    room7 = [(HFRoomItem *)self room];
+    v20 = [(HFReorderableHomeKitItemList *)v18 initWithApplicationDataContainer:room7 category:@"roomCameras"];
+    [dictionary setObject:v20 forKeyedSubscript:@"reorderableCameraItemList"];
 
-    v21 = [(HFRoomItem *)self _reorderableListsForAccessoryTypes];
-    [v8 setObject:v21 forKeyedSubscript:@"reorderableServicesByTypeList"];
+    _reorderableListsForAccessoryTypes = [(HFRoomItem *)self _reorderableListsForAccessoryTypes];
+    [dictionary setObject:_reorderableListsForAccessoryTypes forKeyedSubscript:@"reorderableServicesByTypeList"];
 
     v22 = MEMORY[0x277CCABB0];
-    v23 = [(HFRoomItem *)self room];
-    v24 = [v23 home];
-    v25 = [v22 numberWithBool:{objc_msgSend(v24, "hf_currentUserIsAdministrator")}];
-    [v8 setObject:v25 forKeyedSubscript:@"administrator"];
+    room8 = [(HFRoomItem *)self room];
+    home = [room8 home];
+    v25 = [v22 numberWithBool:{objc_msgSend(home, "hf_currentUserIsAdministrator")}];
+    [dictionary setObject:v25 forKeyedSubscript:@"administrator"];
 
-    v26 = [(HFRoomItem *)self room];
-    v27 = [v26 name];
-    [v8 setObject:v27 forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
+    room9 = [(HFRoomItem *)self room];
+    name2 = [room9 name];
+    [dictionary setObject:name2 forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
 
-    v28 = [HFItemUpdateOutcome outcomeWithResults:v8];
+    v28 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
     [v7 finishWithResult:v28];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-    v7 = [v6 futureWithError:v8];
+    dictionary = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
+    v7 = [v6 futureWithError:dictionary];
   }
 
   return v7;
@@ -140,15 +140,15 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) uniqueIdentifier];
-        v10 = [v9 UUIDString];
+        uniqueIdentifier = [*(*(&v18 + 1) + 8 * i) uniqueIdentifier];
+        uUIDString = [uniqueIdentifier UUIDString];
 
-        v11 = [@"roomServicesGroupedByType-" stringByAppendingString:v10];
+        v11 = [@"roomServicesGroupedByType-" stringByAppendingString:uUIDString];
         v12 = [HFReorderableHomeKitItemList alloc];
-        v13 = [(HFRoomItem *)self room];
-        v14 = [(HFReorderableHomeKitItemList *)v12 initWithApplicationDataContainer:v13 category:v11];
+        room = [(HFRoomItem *)self room];
+        v14 = [(HFReorderableHomeKitItemList *)v12 initWithApplicationDataContainer:room category:v11];
 
-        [v4 setValue:v14 forKey:v10];
+        [v4 setValue:v14 forKey:uUIDString];
       }
 
       v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -165,28 +165,28 @@
 - (id)togglePowerState
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [(HFRoomItem *)self room];
+  room = [(HFRoomItem *)self room];
 
-  if (!v3)
+  if (!room)
   {
     NSLog(&cfstr_RoomMustBeSetO_0.isa);
   }
 
-  v4 = [(HFRoomItem *)self room];
-  if (v4)
+  room2 = [(HFRoomItem *)self room];
+  if (room2)
   {
-    v33 = self;
-    v5 = [(HFRoomItem *)self home];
-    v6 = [v5 hf_characteristicValueManager];
+    selfCopy = self;
+    home = [(HFRoomItem *)self home];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-    v7 = [v4 accessories];
+    accessories = [room2 accessories];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __30__HFRoomItem_togglePowerState__block_invoke;
     v60[3] = &unk_277DF3888;
-    v34 = v6;
+    v34 = hf_characteristicValueManager;
     v61 = v34;
-    v45 = [v7 na_all:v60];
+    v45 = [accessories na_all:v60];
 
     v35 = objc_alloc_init(MEMORY[0x277D2C900]);
     v8 = objc_alloc_init(HFCharacteristicValueSet);
@@ -194,8 +194,8 @@
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v36 = v4;
-    obj = [v4 accessories];
+    v36 = room2;
+    obj = [room2 accessories];
     v39 = [obj countByEnumeratingWithState:&v56 objects:v64 count:16];
     if (v39)
     {
@@ -216,8 +216,8 @@
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v41 = [v10 services];
-          v43 = [v41 countByEnumeratingWithState:&v52 objects:v63 count:16];
+          services = [v10 services];
+          v43 = [services countByEnumeratingWithState:&v52 objects:v63 count:16];
           if (v43)
           {
             v42 = *v53;
@@ -228,7 +228,7 @@
               {
                 if (*v53 != v42)
                 {
-                  objc_enumerationMutation(v41);
+                  objc_enumerationMutation(services);
                 }
 
                 v44 = v11;
@@ -237,8 +237,8 @@
                 v49 = 0u;
                 v50 = 0u;
                 v51 = 0u;
-                v13 = [v12 characteristics];
-                v14 = [v13 countByEnumeratingWithState:&v48 objects:v62 count:16];
+                characteristics = [v12 characteristics];
+                v14 = [characteristics countByEnumeratingWithState:&v48 objects:v62 count:16];
                 if (v14)
                 {
                   v15 = v14;
@@ -249,13 +249,13 @@
                     {
                       if (*v49 != v16)
                       {
-                        objc_enumerationMutation(v13);
+                        objc_enumerationMutation(characteristics);
                       }
 
                       v18 = *(*(&v48 + 1) + 8 * i);
-                      v19 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
-                      v20 = [v18 characteristicType];
-                      v21 = [v19 containsObject:v20];
+                      hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+                      characteristicType = [v18 characteristicType];
+                      v21 = [hf_powerStateCharacteristicTypes containsObject:characteristicType];
 
                       if (v21)
                       {
@@ -264,7 +264,7 @@
                       }
                     }
 
-                    v15 = [v13 countByEnumeratingWithState:&v48 objects:v62 count:16];
+                    v15 = [characteristics countByEnumeratingWithState:&v48 objects:v62 count:16];
                   }
 
                   while (v15);
@@ -274,7 +274,7 @@
               }
 
               while (v44 + 1 != v43);
-              v43 = [v41 countByEnumeratingWithState:&v52 objects:v63 count:16];
+              v43 = [services countByEnumeratingWithState:&v52 objects:v63 count:16];
             }
 
             while (v43);
@@ -290,47 +290,47 @@
       while (v39);
     }
 
-    v23 = [(HFCharacteristicValueSet *)v8 allCharacteristics];
-    v24 = [v23 count];
+    allCharacteristics = [(HFCharacteristicValueSet *)v8 allCharacteristics];
+    v24 = [allCharacteristics count];
 
     if (v24)
     {
-      v25 = [(HFRoomItem *)v33 home];
-      v26 = [v25 hf_characteristicValueManager];
+      home2 = [(HFRoomItem *)selfCopy home];
+      hf_characteristicValueManager2 = [home2 hf_characteristicValueManager];
 
-      [v26 beginTransactionWithReason:@"HFRoomItemTransactionReasonTogglePowerState"];
-      v27 = [v26 writeValuesForCharacteristics:v8];
+      [hf_characteristicValueManager2 beginTransactionWithReason:@"HFRoomItemTransactionReasonTogglePowerState"];
+      v27 = [hf_characteristicValueManager2 writeValuesForCharacteristics:v8];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __30__HFRoomItem_togglePowerState__block_invoke_4;
       v46[3] = &unk_277DF4700;
-      v28 = v35;
+      futureWithNoResult = v35;
       v47 = v35;
       v29 = [v27 addCompletionBlock:v46];
 
-      [v26 commitTransactionWithReason:@"HFRoomItemTransactionReasonTogglePowerState"];
+      [hf_characteristicValueManager2 commitTransactionWithReason:@"HFRoomItemTransactionReasonTogglePowerState"];
       v30 = v47;
-      v4 = v36;
+      room2 = v36;
     }
 
     else
     {
       v30 = NAEmptyResult();
-      v28 = v35;
+      futureWithNoResult = v35;
       [v35 finishWithResult:v30];
-      v4 = v36;
-      v26 = v34;
+      room2 = v36;
+      hf_characteristicValueManager2 = v34;
     }
   }
 
   else
   {
-    v28 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return futureWithNoResult;
 }
 
 uint64_t __30__HFRoomItem_togglePowerState__block_invoke(uint64_t a1, void *a2)

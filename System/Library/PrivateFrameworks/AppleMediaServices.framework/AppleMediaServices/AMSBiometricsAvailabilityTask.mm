@@ -14,7 +14,7 @@
 
 - (id)perform
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_192BD61F8();
 
   return v3;

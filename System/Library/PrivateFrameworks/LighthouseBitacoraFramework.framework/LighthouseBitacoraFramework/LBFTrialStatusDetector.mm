@@ -1,6 +1,6 @@
 @interface LBFTrialStatusDetector
 - (LBFTrialStatusDetector)init;
-- (id)getTrialStatus:(id)a3 deploymentId:(id)a4;
+- (id)getTrialStatus:(id)status deploymentId:(id)id;
 @end
 
 @implementation LBFTrialStatusDetector
@@ -469,16 +469,16 @@ LABEL_75:
   return v3;
 }
 
-- (id)getTrialStatus:(id)a3 deploymentId:(id)a4
+- (id)getTrialStatus:(id)status deploymentId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_objectForKey_(self->_observedTrialStatusHolder, v8, v6, v9, v10);
+  statusCopy = status;
+  idCopy = id;
+  v11 = objc_msgSend_objectForKey_(self->_observedTrialStatusHolder, v8, statusCopy, v9, v10);
 
-  if (v11 && (objc_msgSend_objectForKeyedSubscript_(self->_observedTrialStatusHolder, v12, v6, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v15, v16, v7, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), v19, v15, v19))
+  if (v11 && (objc_msgSend_objectForKeyedSubscript_(self->_observedTrialStatusHolder, v12, statusCopy, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v15, v16, idCopy, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), v19, v15, v19))
   {
-    v23 = objc_msgSend_objectForKeyedSubscript_(self->_observedTrialStatusHolder, v20, v6, v21, v22);
-    v27 = objc_msgSend_objectForKeyedSubscript_(v23, v24, v7, v25, v26);
+    v23 = objc_msgSend_objectForKeyedSubscript_(self->_observedTrialStatusHolder, v20, statusCopy, v21, v22);
+    v27 = objc_msgSend_objectForKeyedSubscript_(v23, v24, idCopy, v25, v26);
   }
 
   else

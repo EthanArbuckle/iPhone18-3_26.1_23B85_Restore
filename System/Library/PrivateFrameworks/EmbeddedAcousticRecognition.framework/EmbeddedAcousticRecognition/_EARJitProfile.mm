@@ -1,20 +1,20 @@
 @interface _EARJitProfile
-- (_EARJitProfile)initWithConfiguration:(id)a3 ncsRoot:(id)a4 language:(id)a5;
-- (id)jitProfileFromContextualStrings:(id)a3;
-- (id)jitProfileFromWordsWithMetadata:(id)a3;
+- (_EARJitProfile)initWithConfiguration:(id)configuration ncsRoot:(id)root language:(id)language;
+- (id)jitProfileFromContextualStrings:(id)strings;
+- (id)jitProfileFromWordsWithMetadata:(id)metadata;
 @end
 
 @implementation _EARJitProfile
 
-- (_EARJitProfile)initWithConfiguration:(id)a3 ncsRoot:(id)a4 language:(id)a5
+- (_EARJitProfile)initWithConfiguration:(id)configuration ncsRoot:(id)root language:(id)language
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  rootCopy = root;
+  languageCopy = language;
   v22.receiver = self;
   v22.super_class = _EARJitProfile;
   v11 = [(_EARJitProfile *)&v22 init];
-  if (v11 && ([v9 stringByAppendingPathComponent:@"en_US_napg.json"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringByAppendingPathComponent:", @"vocdelta.voc"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringByAppendingPathComponent:", @"pg.voc"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringByAppendingPathComponent:", @"mrec.psh"), v15 = objc_claimAutoreleasedReturnValue(), LOBYTE(v21) = 1, v16 = -[_EARUserProfileBuilder initWithConfiguration:language:overrides:sdapiOverrides:emptyVoc:pgVoc:paramsetHolder:isJit:]([_EARUserProfile alloc], "initWithConfiguration:language:overrides:sdapiOverrides:emptyVoc:pgVoc:paramsetHolder:isJit:", v8, v10, 0, v12, v13, v14, v15, v21), profileBuilder = v11->_profileBuilder, v11->_profileBuilder = &v16->super, profileBuilder, v18 = v11->_profileBuilder, v15, v14, v13, v12, !v18))
+  if (v11 && ([rootCopy stringByAppendingPathComponent:@"en_US_napg.json"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(rootCopy, "stringByAppendingPathComponent:", @"vocdelta.voc"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(rootCopy, "stringByAppendingPathComponent:", @"pg.voc"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(rootCopy, "stringByAppendingPathComponent:", @"mrec.psh"), v15 = objc_claimAutoreleasedReturnValue(), LOBYTE(v21) = 1, v16 = -[_EARUserProfileBuilder initWithConfiguration:language:overrides:sdapiOverrides:emptyVoc:pgVoc:paramsetHolder:isJit:]([_EARUserProfile alloc], "initWithConfiguration:language:overrides:sdapiOverrides:emptyVoc:pgVoc:paramsetHolder:isJit:", configurationCopy, languageCopy, 0, v12, v13, v14, v15, v21), profileBuilder = v11->_profileBuilder, v11->_profileBuilder = &v16->super, profileBuilder, v18 = v11->_profileBuilder, v15, v14, v13, v12, !v18))
   {
     v19 = 0;
   }
@@ -27,22 +27,22 @@
   return v19;
 }
 
-- (id)jitProfileFromContextualStrings:(id)a3
+- (id)jitProfileFromContextualStrings:(id)strings
 {
-  v4 = a3;
-  [(_EARUserProfileBuilder *)self->_profileBuilder createInlineLmeUserDataForContextStrings:v4];
-  v5 = [(_EARUserProfileBuilder *)self->_profileBuilder dataProfile];
+  stringsCopy = strings;
+  [(_EARUserProfileBuilder *)self->_profileBuilder createInlineLmeUserDataForContextStrings:stringsCopy];
+  dataProfile = [(_EARUserProfileBuilder *)self->_profileBuilder dataProfile];
 
-  return v5;
+  return dataProfile;
 }
 
-- (id)jitProfileFromWordsWithMetadata:(id)a3
+- (id)jitProfileFromWordsWithMetadata:(id)metadata
 {
-  v4 = a3;
-  [(_EARUserProfileBuilder *)self->_profileBuilder createInlineLmeUserDataForWordsWithMetadata:v4];
-  v5 = [(_EARUserProfileBuilder *)self->_profileBuilder dataProfile];
+  metadataCopy = metadata;
+  [(_EARUserProfileBuilder *)self->_profileBuilder createInlineLmeUserDataForWordsWithMetadata:metadataCopy];
+  dataProfile = [(_EARUserProfileBuilder *)self->_profileBuilder dataProfile];
 
-  return v5;
+  return dataProfile;
 }
 
 @end

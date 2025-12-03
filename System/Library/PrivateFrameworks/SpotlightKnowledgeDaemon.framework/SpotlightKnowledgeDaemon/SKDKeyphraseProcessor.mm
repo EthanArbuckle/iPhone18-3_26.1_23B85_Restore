@@ -1,8 +1,8 @@
 @interface SKDKeyphraseProcessor
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4;
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d;
 - (SKDKeyphraseProcessor)init;
-- (SKDKeyphraseProcessor)initWithListener:(id)a3;
-- (id)processRecord:(id)a3 bundleID:(id)a4;
+- (SKDKeyphraseProcessor)initWithListener:(id)listener;
+- (id)processRecord:(id)record bundleID:(id)d;
 - (id)processedAttributes;
 - (id)requiredAttributes;
 - (unint64_t)maxEntityCount;
@@ -13,22 +13,22 @@
 
 - (SKDKeyphraseProcessor)init
 {
-  v3 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v4 = [(SKDKeyphraseProcessor *)self initWithListener:v3];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  v4 = [(SKDKeyphraseProcessor *)self initWithListener:mEMORY[0x277D657A8]];
 
   return v4;
 }
 
-- (SKDKeyphraseProcessor)initWithListener:(id)a3
+- (SKDKeyphraseProcessor)initWithListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v9.receiver = self;
   v9.super_class = SKDKeyphraseProcessor;
   v6 = [(SKDRecordProcessor *)&v9 initWithName:@"keyphrase"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listener, a3);
+    objc_storeStrong(&v6->_listener, listener);
   }
 
   return v7;
@@ -36,10 +36,10 @@
 
 - (unint64_t)maxEntityCount
 {
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 maxKeyphraseCount];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  maxKeyphraseCount = [mEMORY[0x277D657A0] maxKeyphraseCount];
 
-  return v3;
+  return maxKeyphraseCount;
 }
 
 - (id)requiredAttributes
@@ -84,21 +84,21 @@ void __44__SKDKeyphraseProcessor_processedAttributes__block_invoke()
   processedAttributes_sKeyphraseAttributes = &unk_2846E8148;
 }
 
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v36.receiver = self;
   v36.super_class = SKDKeyphraseProcessor;
-  if ([(SKDRecordProcessor *)&v36 willProcessRecord:v6 bundleID:v7])
+  if ([(SKDRecordProcessor *)&v36 willProcessRecord:recordCopy bundleID:dCopy])
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = [(SKDKeyphraseProcessor *)self processedAttributes];
-    v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    processedAttributes = [(SKDKeyphraseProcessor *)self processedAttributes];
+    v9 = [processedAttributes countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -109,22 +109,22 @@ void __44__SKDKeyphraseProcessor_processedAttributes__block_invoke()
         {
           if (*v33 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(processedAttributes);
           }
 
-          v13 = [v6 objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
+          v13 = [recordCopy objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
 
           if (v13)
           {
-            v17 = [(SKDRecordProcessor *)self logger];
+            logger = [(SKDRecordProcessor *)self logger];
             v18 = +[SKDPipelineEvent alreadyProcessedEvent];
-            [v17 logEvent:v18 level:6];
+            [logger logEvent:v18 level:6];
 
             goto LABEL_14;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v10 = [processedAttributes countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v10)
         {
           continue;
@@ -134,46 +134,46 @@ void __44__SKDKeyphraseProcessor_processedAttributes__block_invoke()
       }
     }
 
-    v14 = [MEMORY[0x277D657A0] sharedContext];
-    v15 = [v14 keyphraseIncludeBundles];
-    if ([v15 containsObject:v7])
+    mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+    keyphraseIncludeBundles = [mEMORY[0x277D657A0] keyphraseIncludeBundles];
+    if ([keyphraseIncludeBundles containsObject:dCopy])
     {
     }
 
     else
     {
-      v19 = [v7 hasPrefix:@"com.apple."];
+      v19 = [dCopy hasPrefix:@"com.apple."];
 
       if (v19)
       {
-        v8 = [(SKDRecordProcessor *)self logger];
-        v17 = +[SKDPipelineEvent validateIneligibleEvent];
-        [v8 logEvent:v17 level:6];
+        processedAttributes = [(SKDRecordProcessor *)self logger];
+        logger = +[SKDPipelineEvent validateIneligibleEvent];
+        [processedAttributes logEvent:logger level:6];
 LABEL_14:
         v16 = 0;
         goto LABEL_27;
       }
     }
 
-    v8 = [v6 objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
-    if (v8)
+    processedAttributes = [recordCopy objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
+    if (processedAttributes)
     {
-      v17 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v8];
+      logger = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:processedAttributes];
     }
 
     else
     {
-      v17 = 0;
+      logger = 0;
     }
 
-    v20 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC31A0]];
+    v20 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CC31A0]];
     v21 = v20;
-    if (v17 && v20 && [v20 length] && (LanguageID = SILanguagesGetLanguageID(), Language = SILanguagesGetLanguage(), (LanguageID - 59) > 0xFFFFFFC6))
+    if (logger && v20 && [v20 length] && (LanguageID = SILanguagesGetLanguageID(), Language = SILanguagesGetLanguage(), (LanguageID - 59) > 0xFFFFFFC6))
     {
       v29 = Language;
-      v30 = [(SKDKeyphraseProcessor *)self listener];
-      v31 = [v30 currentPreferredLanguages];
-      LOBYTE(v29) = [v31 containsObject:v29];
+      listener = [(SKDKeyphraseProcessor *)self listener];
+      currentPreferredLanguages = [listener currentPreferredLanguages];
+      LOBYTE(v29) = [currentPreferredLanguages containsObject:v29];
 
       if (v29)
       {
@@ -181,18 +181,18 @@ LABEL_14:
         goto LABEL_26;
       }
 
-      v24 = [(SKDRecordProcessor *)self logger];
+      logger2 = [(SKDRecordProcessor *)self logger];
       v25 = +[SKDPipelineEvent stateUnavailableEvent];
     }
 
     else
     {
-      v24 = [(SKDRecordProcessor *)self logger];
+      logger2 = [(SKDRecordProcessor *)self logger];
       v25 = +[SKDPipelineEvent validateIneligibleEvent];
     }
 
     v26 = v25;
-    [v24 logEvent:v25 level:6];
+    [logger2 logEvent:v25 level:6];
 
     v16 = 0;
 LABEL_26:
@@ -208,23 +208,23 @@ LABEL_28:
   return v16;
 }
 
-- (id)processRecord:(id)a3 bundleID:(id)a4
+- (id)processRecord:(id)record bundleID:(id)d
 {
   v113 = *MEMORY[0x277D85DE8];
-  v70 = a3;
-  v67 = a4;
+  recordCopy = record;
+  dCopy = d;
   v6 = [SKDRecordUpdate alloc];
-  v71 = self;
+  selfCopy = self;
   v7 = [objc_opt_class() description];
-  v77 = [(SKDRecordUpdate *)v6 initWithStatus:0 identifier:v7 bundleID:v67];
+  v77 = [(SKDRecordUpdate *)v6 initWithStatus:0 identifier:v7 bundleID:dCopy];
 
-  v8 = [(SKDRecordProcessor *)v71 name];
-  [(SKDItemUpdate *)v77 setPipeline:v8];
+  name = [(SKDRecordProcessor *)selfCopy name];
+  [(SKDItemUpdate *)v77 setPipeline:name];
 
-  v68 = [v70 objectForKeyedSubscript:*MEMORY[0x277CC31A0]];
+  v68 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CC31A0]];
   -[SKDItemUpdate setTextContentLength:](v77, "setTextContentLength:", [v68 length]);
-  v66 = [v70 objectForKeyedSubscript:SKDItemAttributeTextContentEntityRanges];
-  v69 = [v70 objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
+  v66 = [recordCopy objectForKeyedSubscript:SKDItemAttributeTextContentEntityRanges];
+  v69 = [recordCopy objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
   if (v69)
   {
     v9 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:?];
@@ -250,12 +250,12 @@ LABEL_28:
   v64 = v12;
   if (!v15)
   {
-    v22 = [(SKDRecordProcessor *)v71 logger];
+    logger = [(SKDRecordProcessor *)selfCopy logger];
     v23 = +[SKDPipelineEvent stateUnavailableEvent];
-    [v22 logEvent:v23];
+    [logger logEvent:v23];
 
-    v24 = [(SKDRecordProcessor *)v71 logger];
-    [v24 logEvent:v77 level:6];
+    logger2 = [(SKDRecordProcessor *)selfCopy logger];
+    [logger2 logEvent:v77 level:6];
 
     goto LABEL_51;
   }
@@ -266,16 +266,16 @@ LABEL_28:
   aBlock[3] = &unk_27893E338;
   v60 = v12;
   v89 = v60;
-  v90 = v71;
+  v90 = selfCopy;
   v16 = _Block_copy(aBlock);
-  v17 = [(SKDRecordProcessor *)v71 logger];
-  v63 = [v17 trackingEventBeginWithName:@"keyphrases" event:v77];
+  logger3 = [(SKDRecordProcessor *)selfCopy logger];
+  v63 = [logger3 trackingEventBeginWithName:@"keyphrases" event:v77];
 
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
   v85 = __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke_2;
   v86 = &unk_27893E360;
-  v87 = v71;
+  v87 = selfCopy;
   v72 = v65;
   v18 = v68;
   v19 = v66;
@@ -299,18 +299,18 @@ LABEL_28:
 
   v25 = v21;
   v62 = v19;
-  v26 = [v21 firstObject];
+  firstObject = [v21 firstObject];
   v27 = 0;
   v104[0] = 0;
   v104[1] = v104;
   v104[2] = 0x3010000000;
   v104[3] = &unk_231C4157F;
   v105 = xmmword_231C220E0;
-  while (v26)
+  while (firstObject)
   {
-    v28 = [v26 rangeValue];
+    rangeValue = [firstObject rangeValue];
     v30 = v29;
-    if (v28 != v27)
+    if (rangeValue != v27)
     {
       goto LABEL_15;
     }
@@ -327,7 +327,7 @@ LABEL_28:
     }
 
     v27 += v30;
-    v26 = v31;
+    firstObject = v31;
 LABEL_26:
     if (v27 >= v20)
     {
@@ -336,11 +336,11 @@ LABEL_26:
   }
 
   v30 = 0;
-  v28 = v20;
+  rangeValue = v20;
   if (v20 != v27)
   {
 LABEL_15:
-    v32 = [obj substringWithRange:{v27, v28 - v27}];
+    v32 = [obj substringWithRange:{v27, rangeValue - v27}];
     v91 = MEMORY[0x277D85DD0];
     v92 = 3221225472;
     v93 = __enumerateKeyphraseInfo_block_invoke;
@@ -362,22 +362,22 @@ LABEL_15:
     {
       if (!v85(v33))
       {
-        if (v26)
+        if (firstObject)
         {
           [v25 removeObjectAtIndex:0];
-          v27 = v30 + v28;
+          v27 = v30 + rangeValue;
           if ([v25 count])
           {
             v37 = [v25 objectAtIndexedSubscript:0];
 
             v36 = 1;
-            v26 = v37;
+            firstObject = v37;
           }
 
           else
           {
 
-            v26 = 0;
+            firstObject = 0;
             v36 = 1;
           }
         }
@@ -385,7 +385,7 @@ LABEL_15:
         else
         {
           v36 = 1;
-          v27 = v28;
+          v27 = rangeValue;
         }
 
 LABEL_19:
@@ -406,19 +406,19 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v26 = 0;
+  firstObject = 0;
 LABEL_31:
   v38 = *(v107 + 24);
   _Block_object_dispose(v104, 8);
 
   _Block_object_dispose(&v106, 8);
-  v39 = [(SKDRecordProcessor *)v71 logger];
-  [v39 trackingEventEnd:v63];
+  logger4 = [(SKDRecordProcessor *)selfCopy logger];
+  [logger4 trackingEventEnd:v63];
 
-  v40 = [(SKDRecordProcessor *)v71 suspended];
+  suspended = [(SKDRecordProcessor *)selfCopy suspended];
   if (v38)
   {
-    v41 = v40;
+    v41 = suspended;
   }
 
   else
@@ -428,7 +428,7 @@ LABEL_31:
 
   if (v41 == 1)
   {
-    if ([(SKDRecordProcessor *)v71 suspended])
+    if ([(SKDRecordProcessor *)selfCopy suspended])
     {
       v42 = 3;
     }
@@ -443,15 +443,15 @@ LABEL_31:
 
   else
   {
-    v43 = [(SKDRecordProcessor *)v71 marker];
-    [(SKDItemUpdate *)v77 addAttribute:v43 value:MEMORY[0x277CBEC38]];
+    marker = [(SKDRecordProcessor *)selfCopy marker];
+    [(SKDItemUpdate *)v77 addAttribute:marker value:MEMORY[0x277CBEC38]];
 
     [(SKDEvent *)v77 updateStatus:2];
-    v74 = [v61 keyphrases];
-    if ([v74 count])
+    keyphrases = [v61 keyphrases];
+    if ([keyphrases count])
     {
-      -[SKDItemUpdate setKeyphrasesCount:](v77, "setKeyphrasesCount:", [v74 count]);
-      v44 = [(SKDKeyphraseProcessor *)v71 maxEntityCount];
+      -[SKDItemUpdate setKeyphrasesCount:](v77, "setKeyphrasesCount:", [keyphrases count]);
+      maxEntityCount = [(SKDKeyphraseProcessor *)selfCopy maxEntityCount];
       v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -459,7 +459,7 @@ LABEL_31:
       v83 = 0u;
       v80 = 0u;
       v81 = 0u;
-      obja = v74;
+      obja = keyphrases;
       v48 = [obja countByEnumeratingWithState:&v80 objects:v112 count:16];
       if (v48)
       {
@@ -474,8 +474,8 @@ LABEL_42:
           }
 
           v51 = *(*(&v80 + 1) + 8 * v50);
-          v52 = [v51 keyphrase];
-          [v45 addObject:v52];
+          keyphrase = [v51 keyphrase];
+          [v45 addObject:keyphrase];
 
           v53 = MEMORY[0x277CCABB0];
           [v51 score];
@@ -485,7 +485,7 @@ LABEL_42:
           v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v51, "count")}];
           [v47 addObject:v55];
 
-          if ([v45 count] >= v44)
+          if ([v45 count] >= maxEntityCount)
           {
             break;
           }
@@ -515,8 +515,8 @@ LABEL_42:
   }
 
   SILanguageModelRelease();
-  v57 = [(SKDRecordProcessor *)v71 logger];
-  [v57 logEvent:v77 level:6];
+  logger5 = [(SKDRecordProcessor *)selfCopy logger];
+  [logger5 logEvent:v77 level:6];
 
 LABEL_51:
   v58 = *MEMORY[0x277D85DE8];
@@ -542,19 +542,19 @@ void __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke(uint64_t 
 - (void)load
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(SKDRecordProcessor *)self logger];
+  logger = [(SKDRecordProcessor *)self logger];
   v4 = +[SKDPipelineEvent loadStartedEvent];
-  v27 = [v3 trackingEventBeginWithName:@"language-models" event:v4];
+  v27 = [logger trackingEventBeginWithName:@"language-models" event:v4];
 
-  v28 = self;
-  v26 = [(SKDKeyphraseProcessor *)self listener];
-  v5 = [v26 currentPreferredLocaleIdentifiers];
+  selfCopy = self;
+  listener = [(SKDKeyphraseProcessor *)self listener];
+  currentPreferredLocaleIdentifiers = [listener currentPreferredLocaleIdentifiers];
   memset(v37, 0, 60);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  v6 = [currentPreferredLocaleIdentifiers countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v6)
   {
     v7 = v6;
@@ -568,7 +568,7 @@ void __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke(uint64_t 
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentPreferredLocaleIdentifiers);
         }
 
         v11 = [*(v9 + 2808) localeWithLocaleIdentifier:*(*(&v30 + 1) + 8 * v10)];
@@ -584,7 +584,7 @@ void __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke(uint64_t 
           os_unfair_lock_lock(v17);
           if ((*(v37 + v14) & 1) == 0 && (!sLanguageModels[v14] || sRegions[v14] != RegionID))
           {
-            v18 = v5;
+            v18 = currentPreferredLocaleIdentifiers;
             v19 = *MEMORY[0x277D657C0];
             v34[0] = *MEMORY[0x277D657B8];
             v34[1] = v19;
@@ -607,7 +607,7 @@ void __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke(uint64_t 
             sLanguageModels[v14] = SILanguageModelCreateWithOptions();
             sRegions[v14] = RegionID;
 
-            v5 = v18;
+            currentPreferredLocaleIdentifiers = v18;
           }
 
           os_unfair_lock_unlock(v17);
@@ -621,7 +621,7 @@ void __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke(uint64_t 
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v7 = [currentPreferredLocaleIdentifiers countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v7);
@@ -650,8 +650,8 @@ void __48__SKDKeyphraseProcessor_processRecord_bundleID___block_invoke(uint64_t 
 
   while (v22 != 59);
 
-  v24 = [(SKDRecordProcessor *)v28 logger];
-  [v24 trackingEventEnd:v27];
+  logger2 = [(SKDRecordProcessor *)selfCopy logger];
+  [logger2 trackingEventEnd:v27];
 
   v25 = *MEMORY[0x277D85DE8];
 }

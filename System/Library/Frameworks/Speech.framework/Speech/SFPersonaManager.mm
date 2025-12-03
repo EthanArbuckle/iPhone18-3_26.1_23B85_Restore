@@ -1,27 +1,27 @@
 @interface SFPersonaManager
 + (id)sharedInstance;
-+ (void)runAsPersona:(id)a3 block:(id)a4;
-- (BOOL)personaMatchesEnrolledUser:(id)a3;
-- (id)_initWithQueue:(id)a3;
-- (void)_detectNewPersonas:(id)a3 currentPersonaIds:(id)a4;
-- (void)_detectRemovedPersonas:(id)a3 currentPersonaIds:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
++ (void)runAsPersona:(id)persona block:(id)block;
+- (BOOL)personaMatchesEnrolledUser:(id)user;
+- (id)_initWithQueue:(id)queue;
+- (void)_detectNewPersonas:(id)personas currentPersonaIds:(id)ids;
+- (void)_detectRemovedPersonas:(id)personas currentPersonaIds:(id)ids;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SFPersonaManager
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SFPersonaManager_removeObserver___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -31,17 +31,17 @@ void __35__SFPersonaManager_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__SFPersonaManager_addObserver___block_invoke;
   v7[3] = &unk_1E797CB08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -51,14 +51,14 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)_detectRemovedPersonas:(id)a3 currentPersonaIds:(id)a4
+- (void)_detectRemovedPersonas:(id)personas currentPersonaIds:(id)ids
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  personasCopy = personas;
+  idsCopy = ids;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 mutableCopy];
-  [v8 minusSet:v7];
+  v8 = [personasCopy mutableCopy];
+  [v8 minusSet:idsCopy];
   v9 = [v8 count];
   v10 = SFLogFramework;
   v11 = os_log_type_enabled(SFLogFramework, OS_LOG_TYPE_INFO);
@@ -77,8 +77,8 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(SFPersonaManager *)self observers];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    observers = [(SFPersonaManager *)self observers];
+    v13 = [observers countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -90,7 +90,7 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(observers);
           }
 
           v17 = *(*(&v19 + 1) + 8 * v16);
@@ -103,7 +103,7 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [observers countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
@@ -120,14 +120,14 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_detectNewPersonas:(id)a3 currentPersonaIds:(id)a4
+- (void)_detectNewPersonas:(id)personas currentPersonaIds:(id)ids
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  personasCopy = personas;
+  idsCopy = ids;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v7 mutableCopy];
-  [v8 minusSet:v6];
+  v8 = [idsCopy mutableCopy];
+  [v8 minusSet:personasCopy];
   v9 = [v8 count];
   v10 = SFLogFramework;
   v11 = os_log_type_enabled(SFLogFramework, OS_LOG_TYPE_INFO);
@@ -146,8 +146,8 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(SFPersonaManager *)self observers];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    observers = [(SFPersonaManager *)self observers];
+    v13 = [observers countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -159,7 +159,7 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(observers);
           }
 
           v17 = *(*(&v19 + 1) + 8 * v16);
@@ -172,7 +172,7 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [observers countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
@@ -189,19 +189,19 @@ void __32__SFPersonaManager_addObserver___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)personaMatchesEnrolledUser:(id)a3
+- (BOOL)personaMatchesEnrolledUser:(id)user
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  userCopy = user;
+  if (!userCopy)
   {
 LABEL_8:
     v8 = 0;
     goto LABEL_9;
   }
 
-  v5 = [(SFPersonaManager *)self personaIds];
-  v6 = [v5 containsObject:v4];
+  personaIds = [(SFPersonaManager *)self personaIds];
+  v6 = [personaIds containsObject:userCopy];
 
   v7 = SFLogFramework;
   if (!v6)
@@ -211,7 +211,7 @@ LABEL_8:
       v11 = 136315394;
       v12 = "[SFPersonaManager personaMatchesEnrolledUser:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = userCopy;
       _os_log_impl(&dword_1AC5BC000, v7, OS_LOG_TYPE_INFO, "%s Persona (%@) does not match an enrolled user.", &v11, 0x16u);
     }
 
@@ -223,7 +223,7 @@ LABEL_8:
     v11 = 136315394;
     v12 = "[SFPersonaManager personaMatchesEnrolledUser:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = userCopy;
     _os_log_debug_impl(&dword_1AC5BC000, v7, OS_LOG_TYPE_DEBUG, "%s Persona (%@) matches an enrolled user.", &v11, 0x16u);
   }
 
@@ -234,23 +234,23 @@ LABEL_9:
   return v8;
 }
 
-- (id)_initWithQueue:(id)a3
+- (id)_initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = SFPersonaManager;
   v6 = [(SFPersonaManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [MEMORY[0x1E695DFD8] set];
     personaIds = v7->_personaIds;
     v7->_personaIds = v8;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v10;
+    v7->_observers = weakObjectsHashTable;
 
     [(SFPersonaManager *)v7 _initializeUserProfileStore];
   }
@@ -258,11 +258,11 @@ LABEL_9:
   return v7;
 }
 
-+ (void)runAsPersona:(id)a3 block:(id)a4
++ (void)runAsPersona:(id)persona block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4);
+    (*(block + 2))(block);
   }
 }
 
@@ -272,7 +272,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __34__SFPersonaManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1977 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1977, block);

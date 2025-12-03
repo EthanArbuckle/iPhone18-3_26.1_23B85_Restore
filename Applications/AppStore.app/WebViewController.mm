@@ -1,36 +1,36 @@
 @interface WebViewController
-- (_TtC8AppStore17WebViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5;
-- (_TtC8AppStore17WebViewController)initWithCoder:(id)a3;
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (_TtC8AppStore17WebViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info;
+- (_TtC8AppStore17WebViewController)initWithCoder:(id)coder;
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation WebViewController
 
-- (_TtC8AppStore17WebViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5
+- (_TtC8AppStore17WebViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtC8AppStore17WebViewController)initWithCoder:(id)a3
+- (_TtC8AppStore17WebViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)webViewController:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = OBJC_IVAR____TtC8AppStore17WebViewController_protocolDelegate;
   swift_beginAccess();
   v10 = *&self->AMSUIWebViewController_opaque[v9];
-  v11 = a4;
-  v12 = self;
+  requestCopy = request;
+  selfCopy = self;
   v13 = v10;
   v14 = URLProtocolDelegate.performAuthentication(for:)();
 
@@ -47,16 +47,16 @@
   _Block_release(v15);
 }
 
-- (void)webViewController:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)webViewController:(id)controller handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = OBJC_IVAR____TtC8AppStore17WebViewController_protocolDelegate;
   swift_beginAccess();
   v10 = *&self->AMSUIWebViewController_opaque[v9];
-  v11 = a4;
-  v12 = self;
+  requestCopy = request;
+  selfCopy = self;
   v13 = v10;
   v14 = URLProtocolDelegate.presentDialog(for:)();
 

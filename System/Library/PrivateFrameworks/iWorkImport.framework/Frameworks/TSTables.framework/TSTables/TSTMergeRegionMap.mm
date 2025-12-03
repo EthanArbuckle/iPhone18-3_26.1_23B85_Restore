@@ -1,16 +1,16 @@
 @interface TSTMergeRegionMap
 - (id).cxx_construct;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTMergeRegionMap
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v24 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v24, v4, off_2812E4498[102], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[102], v5, v6);
 
   if (*(v7 + 24) >= 1)
   {
@@ -84,7 +84,7 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTMergeRegionMap saveToArchiver:]", v3, v4);

@@ -1,19 +1,19 @@
 @interface SFSiriReaderPlaybackController
-+ (BOOL)playerResponseIsForSiriReadThis:(id)a3;
++ (BOOL)playerResponseIsForSiriReadThis:(id)this;
 + (SFSiriReaderPlaybackController)sharedPlaybackController;
-- (BOOL)_tearDownListenerIfNowPlayControllerIsTakenOverByResponse:(id)a3;
+- (BOOL)_tearDownListenerIfNowPlayControllerIsTakenOverByResponse:(id)response;
 - (SFSiriReaderPlaybackControllerDelegate)delegate;
-- (void)controller:(id)a3 contentItemsDidUpdate:(id)a4;
-- (void)controller:(id)a3 playbackRateDidChangeFrom:(float)a4 to:(float)a5;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
+- (void)controller:(id)controller contentItemsDidUpdate:(id)update;
+- (void)controller:(id)controller playbackRateDidChangeFrom:(float)from to:(float)to;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
 - (void)pause;
 - (void)play;
-- (void)setPlaybackRate:(double)a3;
+- (void)setPlaybackRate:(double)rate;
 - (void)setupNowPlayingListenerIfNeeded;
 - (void)skipBackward;
 - (void)skipForward;
-- (void)updateContentIdentifierOnQueue:(id)a3 completion:(id)a4;
-- (void)updatePlaybackStateWithCompletion:(id)a3;
+- (void)updateContentIdentifierOnQueue:(id)queue completion:(id)completion;
+- (void)updatePlaybackStateWithCompletion:(id)completion;
 @end
 
 @implementation SFSiriReaderPlaybackController
@@ -41,9 +41,9 @@ void __58__SFSiriReaderPlaybackController_sharedPlaybackController__block_invoke
 {
   if (!self->_playbackController)
   {
-    v4 = [MEMORY[0x1E69B0A10] localDestination];
+    localDestination = [MEMORY[0x1E69B0A10] localDestination];
     destination = self->_destination;
-    self->_destination = v4;
+    self->_destination = localDestination;
 
     v6 = [objc_alloc(MEMORY[0x1E69B0A88]) initWithDestination:self->_destination];
     playbackController = self->_playbackController;
@@ -164,20 +164,20 @@ void __46__SFSiriReaderPlaybackController_skipBackward__block_invoke(uint64_t a1
   }
 }
 
-+ (BOOL)playerResponseIsForSiriReadThis:(id)a3
++ (BOOL)playerResponseIsForSiriReadThis:(id)this
 {
-  v3 = a3;
-  v4 = [v3 playerPath];
-  v5 = [v4 client];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 containsString:@"sirireaderd"];
+  thisCopy = this;
+  playerPath = [thisCopy playerPath];
+  client = [playerPath client];
+  bundleIdentifier = [client bundleIdentifier];
+  v7 = [bundleIdentifier containsString:@"sirireaderd"];
 
   if (v7)
   {
-    v8 = [v3 playerPath];
-    v9 = [v8 client];
-    v10 = [v9 parentApplicationBundleIdentifier];
-    v11 = [v10 isEqualToString:*MEMORY[0x1E69C8DA8]];
+    playerPath2 = [thisCopy playerPath];
+    client2 = [playerPath2 client];
+    parentApplicationBundleIdentifier = [client2 parentApplicationBundleIdentifier];
+    v11 = [parentApplicationBundleIdentifier isEqualToString:*MEMORY[0x1E69C8DA8]];
   }
 
   else
@@ -188,31 +188,31 @@ void __46__SFSiriReaderPlaybackController_skipBackward__block_invoke(uint64_t a1
   return v11;
 }
 
-- (void)setPlaybackRate:(double)a3
+- (void)setPlaybackRate:(double)rate
 {
   v15 = *MEMORY[0x1E69E9840];
   This = WBS_LOG_CHANNEL_PREFIXSiriReadThis();
   if (os_log_type_enabled(This, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = a3;
+    rateCopy = rate;
     _os_log_impl(&dword_18B7AC000, This, OS_LOG_TYPE_DEFAULT, "Safari requested changing playback rate to %f", buf, 0xCu);
   }
 
   playbackController = self->_playbackController;
   v11 = *MEMORY[0x1E69B1188];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
   v12 = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__SFSiriReaderPlaybackController_setPlaybackRate___block_invoke;
   v10[3] = &__block_descriptor_40_e25_v16__0__MRCommandResult_8l;
-  *&v10[4] = a3;
+  *&v10[4] = rate;
   [(MRNowPlayingController *)playbackController sendCommand:19 options:v8 completion:v10];
 
-  v9 = a3;
-  self->_currentPlaybackRate = v9;
+  rateCopy2 = rate;
+  self->_currentPlaybackRate = rateCopy2;
 }
 
 void __50__SFSiriReaderPlaybackController_setPlaybackRate___block_invoke(uint64_t a1, void *a2)
@@ -230,20 +230,20 @@ void __50__SFSiriReaderPlaybackController_setPlaybackRate___block_invoke(uint64_
   }
 }
 
-- (void)updateContentIdentifierOnQueue:(id)a3 completion:(id)a4
+- (void)updateContentIdentifierOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = MEMORY[0x1E69B0A98];
-    v8 = a3;
+    queueCopy = queue;
     v9 = [[v7 alloc] initWithDestination:self->_destination];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __76__SFSiriReaderPlaybackController_updateContentIdentifierOnQueue_completion___block_invoke;
     v10[3] = &unk_1E721B800;
-    v11 = v6;
-    [v9 requestNowPlayingItemMetadataOnQueue:v8 completion:v10];
+    v11 = completionCopy;
+    [v9 requestNowPlayingItemMetadataOnQueue:queueCopy completion:v10];
   }
 }
 
@@ -265,17 +265,17 @@ void __76__SFSiriReaderPlaybackController_updateContentIdentifierOnQueue_complet
   (*(v8 + 16))(v8, v9);
 }
 
-- (void)updatePlaybackStateWithCompletion:(id)a3
+- (void)updatePlaybackStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69B0A98]) initWithDestination:self->_destination];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__SFSiriReaderPlaybackController_updatePlaybackStateWithCompletion___block_invoke;
   v7[3] = &unk_1E721B828;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 requestPlaybackStateOnQueue:MEMORY[0x1E69E96A0] completion:v7];
 }
 
@@ -291,17 +291,17 @@ uint64_t __68__SFSiriReaderPlaybackController_updatePlaybackStateWithCompletion_
   return (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_tearDownListenerIfNowPlayControllerIsTakenOverByResponse:(id)a3
+- (BOOL)_tearDownListenerIfNowPlayControllerIsTakenOverByResponse:(id)response
 {
-  if ([SFSiriReaderPlaybackController playerResponseIsForSiriReadThis:a3])
+  if ([SFSiriReaderPlaybackController playerResponseIsForSiriReadThis:response])
   {
     return 0;
   }
 
   nowPlayingContentIdentifier = self->_nowPlayingContentIdentifier;
   v5 = +[SFSiriVoiceUtilities sharedVoiceUtilities];
-  v6 = [v5 activeSiriReaderSessionIdentifier];
-  LOBYTE(nowPlayingContentIdentifier) = [(NSString *)nowPlayingContentIdentifier isEqualToString:v6];
+  activeSiriReaderSessionIdentifier = [v5 activeSiriReaderSessionIdentifier];
+  LOBYTE(nowPlayingContentIdentifier) = [(NSString *)nowPlayingContentIdentifier isEqualToString:activeSiriReaderSessionIdentifier];
 
   if (nowPlayingContentIdentifier)
   {
@@ -322,17 +322,17 @@ uint64_t __68__SFSiriReaderPlaybackController_updatePlaybackStateWithCompletion_
   return 1;
 }
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
-  v7 = [a3 response];
-  v8 = [(SFSiriReaderPlaybackController *)self _tearDownListenerIfNowPlayControllerIsTakenOverByResponse:v7];
+  response = [controller response];
+  v8 = [(SFSiriReaderPlaybackController *)self _tearDownListenerIfNowPlayControllerIsTakenOverByResponse:response];
 
   if (v8)
   {
     return;
   }
 
-  if (a5 != 2)
+  if (to != 2)
   {
     v9 = 0;
     goto LABEL_6;
@@ -342,7 +342,7 @@ uint64_t __68__SFSiriReaderPlaybackController_updatePlaybackStateWithCompletion_
   {
     v9 = 2;
 LABEL_6:
-    if (a5 == 1)
+    if (to == 1)
     {
       v9 = 1;
     }
@@ -354,37 +354,37 @@ LABEL_6:
   [WeakRetained playbackStateDidChangeForSiriReaderPlaybackController:self];
 }
 
-- (void)controller:(id)a3 playbackRateDidChangeFrom:(float)a4 to:(float)a5
+- (void)controller:(id)controller playbackRateDidChangeFrom:(float)from to:(float)to
 {
-  v7 = a3;
-  if (self->_currentPlaybackRate != a5)
+  controllerCopy = controller;
+  if (self->_currentPlaybackRate != to)
   {
-    v10 = v7;
-    v8 = [v7 response];
-    v9 = [(SFSiriReaderPlaybackController *)self _tearDownListenerIfNowPlayControllerIsTakenOverByResponse:v8];
+    v10 = controllerCopy;
+    response = [controllerCopy response];
+    v9 = [(SFSiriReaderPlaybackController *)self _tearDownListenerIfNowPlayControllerIsTakenOverByResponse:response];
 
-    v7 = v10;
+    controllerCopy = v10;
     if (!v9)
     {
-      self->_currentPlaybackRate = a5;
+      self->_currentPlaybackRate = to;
     }
   }
 }
 
-- (void)controller:(id)a3 contentItemsDidUpdate:(id)a4
+- (void)controller:(id)controller contentItemsDidUpdate:(id)update
 {
-  v13 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  updateCopy = update;
   nowPlayingContentIdentifier = self->_nowPlayingContentIdentifier;
-  v8 = [v6 objectAtIndexedSubscript:0];
+  v8 = [updateCopy objectAtIndexedSubscript:0];
   LOBYTE(nowPlayingContentIdentifier) = [(NSString *)nowPlayingContentIdentifier isEqualToString:v8];
 
   if ((nowPlayingContentIdentifier & 1) == 0)
   {
-    v9 = [v13 response];
-    [(SFSiriReaderPlaybackController *)self _tearDownListenerIfNowPlayControllerIsTakenOverByResponse:v9];
+    response = [controllerCopy response];
+    [(SFSiriReaderPlaybackController *)self _tearDownListenerIfNowPlayControllerIsTakenOverByResponse:response];
 
-    v10 = [v6 objectAtIndexedSubscript:0];
+    v10 = [updateCopy objectAtIndexedSubscript:0];
     v11 = self->_nowPlayingContentIdentifier;
     self->_nowPlayingContentIdentifier = v10;
 

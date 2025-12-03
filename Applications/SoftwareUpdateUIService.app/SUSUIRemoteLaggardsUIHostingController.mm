@@ -1,19 +1,19 @@
 @interface SUSUIRemoteLaggardsUIHostingController
 - (SUSUIRemoteLaggardsUIHostingController)init;
-- (id)laggardsUIViewControllerForAction:(id)a3;
+- (id)laggardsUIViewControllerForAction:(id)action;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_configureWithAction:(id)a3 completion:(id)a4;
-- (void)_fireActionWithResponseIfNecessary:(BOOL)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)_configureWithAction:(id)action completion:(id)completion;
+- (void)_fireActionWithResponseIfNecessary:(BOOL)necessary;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didReceiveMemoryWarning;
-- (void)handleCancelButtonTapped:(id)a3;
+- (void)handleCancelButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUSUIRemoteLaggardsUIHostingController
@@ -46,7 +46,7 @@
 
 - (void)loadView
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = SUSUILogLaggardsUI();
   v13 = OS_LOG_TYPE_DEFAULT;
@@ -68,28 +68,28 @@
 
   [v12 setAutoresizingMask:18];
   [v12 setOpaque:0];
-  v10 = [v12 layer];
-  [v10 setAllowsGroupBlending:0];
+  layer = [v12 layer];
+  [layer setAllowsGroupBlending:0];
 
-  v11 = [v12 layer];
-  [v11 setAllowsGroupOpacity:0];
+  layer2 = [v12 layer];
+  [layer2 setAllowsGroupOpacity:0];
 
-  [(SUSUIRemoteLaggardsUIHostingController *)v15 setView:v12];
+  [(SUSUIRemoteLaggardsUIHostingController *)selfCopy setView:v12];
   objc_storeStrong(&v12, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SUSUIRemoteLaggardsUIHostingController;
-  [(SUSUIRemoteLaggardsUIHostingController *)&v5 viewWillAppear:a3];
+  [(SUSUIRemoteLaggardsUIHostingController *)&v5 viewWillAppear:appear];
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (appearCopy)
     {
       v3 = @"YES";
     }
@@ -106,18 +106,18 @@
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SUSUIRemoteLaggardsUIHostingController;
-  [(SUSUIRemoteLaggardsUIHostingController *)&v5 viewDidAppear:a3];
+  [(SUSUIRemoteLaggardsUIHostingController *)&v5 viewDidAppear:appear];
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (appearCopy)
     {
       v3 = @"YES";
     }
@@ -134,18 +134,18 @@
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SUSUIRemoteLaggardsUIHostingController;
-  [(SUSUIRemoteLaggardsUIHostingController *)&v5 viewWillDisappear:a3];
+  [(SUSUIRemoteLaggardsUIHostingController *)&v5 viewWillDisappear:disappear];
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (disappearCopy)
     {
       v3 = @"YES";
     }
@@ -162,16 +162,16 @@
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  disappearCopy = disappear;
   oslog = SUSUILogLaggardsUI();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7)
+    if (disappearCopy)
     {
       v3 = @"YES";
     }
@@ -186,15 +186,15 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v4.receiver = v9;
+  v4.receiver = selfCopy;
   v4.super_class = SUSUIRemoteLaggardsUIHostingController;
-  [(SUSUIRemoteLaggardsUIHostingController *)&v4 viewDidDisappear:v7];
-  [(SUSUIRemoteLaggardsUIHostingController *)v9 _fireActionWithResponseIfNecessary:0];
+  [(SUSUIRemoteLaggardsUIHostingController *)&v4 viewDidDisappear:disappearCopy];
+  [(SUSUIRemoteLaggardsUIHostingController *)selfCopy _fireActionWithResponseIfNecessary:0];
 }
 
 - (void)viewDidLoad
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = SUSUIRemoteLaggardsUIHostingController;
@@ -203,30 +203,30 @@
 
 - (void)didReceiveMemoryWarning
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = SUSUIRemoteLaggardsUIHostingController;
   [(SUSUIRemoteLaggardsUIHostingController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v13 = SUSUILogLaggardsUI();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     log = v13;
     type = v12;
-    v5 = v16;
-    v8 = [location[0] actions];
-    v11 = v8;
+    v5 = selfCopy;
+    actions = [location[0] actions];
+    v11 = actions;
     sub_100001A74(v17, v5, v11);
     _os_log_impl(&_mh_execute_header, log, type, "%@ - configure with context: %@", v17, 0x16u);
 
@@ -234,11 +234,11 @@
   }
 
   objc_storeStrong(&v13, 0);
-  v4 = [location[0] actions];
-  v10 = [v4 anyObject];
+  actions2 = [location[0] actions];
+  anyObject = [actions2 anyObject];
 
-  [(SUSUIRemoteLaggardsUIHostingController *)v16 _configureWithAction:v10 completion:v14];
-  objc_storeStrong(&v10, 0);
+  [(SUSUIRemoteLaggardsUIHostingController *)selfCopy _configureWithAction:anyObject completion:v14];
+  objc_storeStrong(&anyObject, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
@@ -246,9 +246,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [(UIDevice *)v3 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v3 userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -259,12 +259,12 @@
   }
 }
 
-- (id)laggardsUIViewControllerForAction:(id)a3
+- (id)laggardsUIViewControllerForAction:(id)action
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, action);
   oslog = SUSUILogLaggardsUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -273,19 +273,19 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUSUIRemoteLaggardsUIHostingController *)v7 doesNotRecognizeSelector:v6];
+  [(SUSUIRemoteLaggardsUIHostingController *)selfCopy doesNotRecognizeSelector:v6];
   objc_storeStrong(&location, 0);
   return 0;
 }
 
-- (void)_configureWithAction:(id)a3 completion:(id)a4
+- (void)_configureWithAction:(id)action completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, completion);
   v26 = SUSUILogLaggardsUI();
   v25 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -295,25 +295,25 @@
   }
 
   objc_storeStrong(&v26, 0);
-  objc_storeStrong(&v29->_action, location[0]);
-  if ([(SUSUIRemoteLaggardsUIHostingController *)v29 useNavigationController])
+  objc_storeStrong(&selfCopy->_action, location[0]);
+  if ([(SUSUIRemoteLaggardsUIHostingController *)selfCopy useNavigationController])
   {
-    v4 = [(SUSUIRemoteLaggardsUIHostingController *)v29 laggardsUIViewControllerForAction:location[0]];
-    rootViewController = v29->_rootViewController;
-    v29->_rootViewController = v4;
+    v4 = [(SUSUIRemoteLaggardsUIHostingController *)selfCopy laggardsUIViewControllerForAction:location[0]];
+    rootViewController = selfCopy->_rootViewController;
+    selfCopy->_rootViewController = v4;
 
     v6 = [OBNavigationController alloc];
-    v7 = [v6 initWithRootViewController:v29->_rootViewController];
-    presentingViewController = v29->_presentingViewController;
-    v29->_presentingViewController = v7;
+    v7 = [v6 initWithRootViewController:selfCopy->_rootViewController];
+    presentingViewController = selfCopy->_presentingViewController;
+    selfCopy->_presentingViewController = v7;
 
-    if ([(SUSUIRemoteLaggardsUIHostingController *)v29 allowCancel])
+    if ([(SUSUIRemoteLaggardsUIHostingController *)selfCopy allowCancel])
     {
       v9 = [UIBarButtonItem alloc];
-      v24 = [v9 initWithBarButtonSystemItem:1 target:v29 action:"handleCancelButtonTapped:"];
-      v16 = [(UIViewController *)v29->_presentingViewController navigationBar];
-      v15 = [v16 topItem];
-      [v15 setRightBarButtonItem:v24];
+      v24 = [v9 initWithBarButtonSystemItem:1 target:selfCopy action:"handleCancelButtonTapped:"];
+      navigationBar = [(UIViewController *)selfCopy->_presentingViewController navigationBar];
+      topItem = [navigationBar topItem];
+      [topItem setRightBarButtonItem:v24];
 
       objc_storeStrong(&v24, 0);
     }
@@ -321,23 +321,23 @@
 
   else
   {
-    v10 = [(SUSUIRemoteLaggardsUIHostingController *)v29 laggardsUIViewControllerForAction:location[0]];
-    v11 = v29->_presentingViewController;
-    v29->_presentingViewController = v10;
+    v10 = [(SUSUIRemoteLaggardsUIHostingController *)selfCopy laggardsUIViewControllerForAction:location[0]];
+    v11 = selfCopy->_presentingViewController;
+    selfCopy->_presentingViewController = v10;
 
-    objc_storeStrong(&v29->_rootViewController, v29->_presentingViewController);
+    objc_storeStrong(&selfCopy->_rootViewController, selfCopy->_presentingViewController);
   }
 
-  if (![(SUSUIRemoteLaggardsUIHostingController *)v29 enableSwipeToCancel])
+  if (![(SUSUIRemoteLaggardsUIHostingController *)selfCopy enableSwipeToCancel])
   {
-    [(UIViewController *)v29->_presentingViewController setModalInPresentation:1];
+    [(UIViewController *)selfCopy->_presentingViewController setModalInPresentation:1];
   }
 
-  v12 = [(UIViewController *)v29->_presentingViewController presentationController];
-  [(UIPresentationController *)v12 setDelegate:v29];
+  presentationController = [(UIViewController *)selfCopy->_presentingViewController presentationController];
+  [(UIPresentationController *)presentationController setDelegate:selfCopy];
 
-  v14 = v29;
-  v13 = v29->_presentingViewController;
+  v14 = selfCopy;
+  v13 = selfCopy->_presentingViewController;
   v18 = _NSConcreteStackBlock;
   v19 = -1073741824;
   v20 = 0;
@@ -350,7 +350,7 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_fireActionWithResponseIfNecessary:(BOOL)a3
+- (void)_fireActionWithResponseIfNecessary:(BOOL)necessary
 {
   if (self->_action)
   {
@@ -358,23 +358,23 @@
   }
 }
 
-- (void)handleCancelButtonTapped:(id)a3
+- (void)handleCancelButtonTapped:(id)tapped
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000C31C;
   v12[3] = &unk_1000185A8;
-  v13 = v16;
+  v13 = selfCopy;
   v14 = objc_retainBlock(v12);
-  v11 = v16->_rootViewController;
+  v11 = selfCopy->_rootViewController;
   if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v4 = v11;
-    v3 = v16;
+    v3 = selfCopy;
     v5 = _NSConcreteStackBlock;
     v6 = -1073741824;
     v7 = 0;
@@ -396,12 +396,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dismiss);
   v3 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
   v5 = _NSConcreteStackBlock;
@@ -409,7 +409,7 @@
   v7 = 0;
   v8 = sub_10000C84C;
   v9 = &unk_1000185A8;
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v5);
 
   objc_storeStrong(&v10, 0);

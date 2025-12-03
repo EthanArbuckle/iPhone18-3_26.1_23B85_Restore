@@ -2,26 +2,26 @@
 + (id)log;
 - (CNLimitedAccessContactPickerDelegate)delegate;
 - (id)footerBorderColor;
-- (id)initDeltaPickerForAppName:(id)a3 bundleId:(id)a4;
-- (id)initForAppName:(id)a3 bundleId:(id)a4;
-- (id)initForAppName:(id)a3 bundleId:(id)a4 pickerType:(int)a5 selectedContacts:(id)a6 searchText:(id)a7 caption:(unint64_t)a8;
-- (id)initForOnboarding:(id)a3 bundleId:(id)a4 selectedContacts:(id)a5;
-- (id)initForOnboarding:(id)a3 selectedContacts:(id)a4;
-- (id)initForShowSelected:(id)a3;
-- (id)initPickerWithContactsAvailableToAddForAppName:(id)a3 bundleId:(id)a4 searchText:(id)a5 caption:(unint64_t)a6;
-- (id)initSettingsPickerForAppName:(id)a3 bundleId:(id)a4;
-- (void)callDelegateWithSelectedContactList:(id)a3;
-- (void)contactListViewController:(id)a3 didUpdateLimitedAccessSelection:(id)a4;
-- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactPickerDidGoBack:(id)a3;
+- (id)initDeltaPickerForAppName:(id)name bundleId:(id)id;
+- (id)initForAppName:(id)name bundleId:(id)id;
+- (id)initForAppName:(id)name bundleId:(id)id pickerType:(int)type selectedContacts:(id)contacts searchText:(id)text caption:(unint64_t)caption;
+- (id)initForOnboarding:(id)onboarding bundleId:(id)id selectedContacts:(id)contacts;
+- (id)initForOnboarding:(id)onboarding selectedContacts:(id)contacts;
+- (id)initForShowSelected:(id)selected;
+- (id)initPickerWithContactsAvailableToAddForAppName:(id)name bundleId:(id)id searchText:(id)text caption:(unint64_t)caption;
+- (id)initSettingsPickerForAppName:(id)name bundleId:(id)id;
+- (void)callDelegateWithSelectedContactList:(id)list;
+- (void)contactListViewController:(id)controller didUpdateLimitedAccessSelection:(id)selection;
+- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)selection;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactPickerDidGoBack:(id)back;
 - (void)createContactsAvailableToSelectPickerView;
 - (void)createDeltaEditSelectedPickerView;
 - (void)createDeltaFooterView;
 - (void)createGenericFooterView;
-- (void)createGenericPickerViewWithMultiSelectSupport:(BOOL)a3;
+- (void)createGenericPickerViewWithMultiSelectSupport:(BOOL)support;
 - (void)createManageOOPFooterView;
 - (void)createOOPEditSelectedPickerView;
 - (void)createOnboardingFooterView;
@@ -37,15 +37,15 @@
 - (void)handleShowSelectedTapped;
 - (void)handleUndoTapped;
 - (void)registerForTraitChanges;
-- (void)saveSelectionToLimitedAccessContacts:(id)a3;
+- (void)saveSelectionToLimitedAccessContacts:(id)contacts;
 - (void)setupDeltaFooterConstraints;
 - (void)setupManagedOOPFooterConstraints;
 - (void)setupOnboardingFooterConstraints;
 - (void)setupShowSelectedFooterConstraints;
 - (void)updateColors;
-- (void)updateFooterShowSelectedButton:(unint64_t)a3;
-- (void)updateListViewWithSelectedContacts:(id)a3;
-- (void)updateOnboardingUIForSelectionCount:(unint64_t)a3;
+- (void)updateFooterShowSelectedButton:(unint64_t)button;
+- (void)updateListViewWithSelectedContacts:(id)contacts;
+- (void)updateOnboardingUIForSelectionCount:(unint64_t)count;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -58,7 +58,7 @@
   return WeakRetained;
 }
 
-- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)a3
+- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)selection
 {
   [(CNLimitedAccessContactPickerViewController *)self setIsSettingsEditingSelection:1];
   v4 = [[CNLimitedAccessContactPickerViewController alloc] initDeltaPickerForAppName:self->_appName bundleId:self->_appBundleId];
@@ -66,11 +66,11 @@
   [(CNLimitedAccessContactPickerViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)contactListViewController:(id)a3 didUpdateLimitedAccessSelection:(id)a4
+- (void)contactListViewController:(id)controller didUpdateLimitedAccessSelection:(id)selection
 {
-  v27 = a4;
-  objc_storeStrong(&self->_selectedIdentifiersInActivePicker, a4);
-  v6 = [v27 count];
+  selectionCopy = selection;
+  objc_storeStrong(&self->_selectedIdentifiersInActivePicker, selection);
+  v6 = [selectionCopy count];
   pickerType = self->_pickerType;
   if (pickerType > 2)
   {
@@ -81,11 +81,11 @@
 
     else if (pickerType == 4)
     {
-      v13 = [MEMORY[0x1E695DFA8] setWithSet:v27];
+      v13 = [MEMORY[0x1E695DFA8] setWithSet:selectionCopy];
       [v13 minusSet:self->_selectedIdentifiersOnLoad];
       v14 = [v13 count];
       v15 = [MEMORY[0x1E695DFA8] setWithSet:self->_selectedIdentifiersOnLoad];
-      [v15 minusSet:v27];
+      [v15 minusSet:selectionCopy];
       v16 = [v15 count];
       v17 = (v14 | v16) == 0;
       if (v14 | v16)
@@ -113,8 +113,8 @@
 
       [*p_deltaAddedAndRemovedLabel setHidden:v17];
       [*(&self->super.super.super.isa + *v19) setHidden:0];
-      v26 = [(CNLimitedAccessContactPickerViewController *)self view];
-      [v26 setNeedsLayout];
+      view = [(CNLimitedAccessContactPickerViewController *)self view];
+      [view setNeedsLayout];
     }
   }
 
@@ -144,17 +144,17 @@
   }
 }
 
-- (void)contactPickerDidGoBack:(id)a3
+- (void)contactPickerDidGoBack:(id)back
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+  delegate = [(CNLimitedAccessContactPickerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NSSet *)self->_selectedIdentifiersInActivePicker allObjects];
-    v7 = [(CNLimitedAccessContactPickerViewController *)self appBundleId];
-    v8 = [CNLimitedAccessPickerSupport contactsFromIdentifiers:v6 withBundleId:v7];
+    allObjects = [(NSSet *)self->_selectedIdentifiersInActivePicker allObjects];
+    appBundleId = [(CNLimitedAccessContactPickerViewController *)self appBundleId];
+    v8 = [CNLimitedAccessPickerSupport contactsFromIdentifiers:allObjects withBundleId:appBundleId];
 
     v9 = [objc_opt_class() log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -164,18 +164,18 @@
       _os_log_impl(&dword_199A75000, v9, OS_LOG_TYPE_INFO, "Telling delegate limited access went back with %lu selections", &v11, 0xCu);
     }
 
-    v10 = [(CNLimitedAccessContactPickerViewController *)self delegate];
-    [v10 contactPicker:self didGoBackWithSelectedContacts:v8];
+    delegate2 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+    [delegate2 contactPicker:self didGoBackWithSelectedContacts:v8];
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  if (self->_contactPickerViewController == a3)
+  if (self->_contactPickerViewController == cancel)
   {
     v11 = v3;
     v12 = v4;
-    v6 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+    delegate = [(CNLimitedAccessContactPickerViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
@@ -187,18 +187,18 @@
         _os_log_impl(&dword_199A75000, v8, OS_LOG_TYPE_INFO, "Telling delegate limited picker cancelled", v10, 2u);
       }
 
-      v9 = [(CNLimitedAccessContactPickerViewController *)self delegate];
-      [v9 contactPickerDidCancel:self];
+      delegate2 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+      [delegate2 contactPickerDidCancel:self];
     }
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  pickerCopy = picker;
+  contactsCopy = contacts;
+  v7 = contactsCopy;
+  if (!contactsCopy)
   {
     goto LABEL_14;
   }
@@ -210,7 +210,7 @@
     {
       if (pickerType == 3)
       {
-        [(CNLimitedAccessContactPickerViewController *)self saveSelectionToLimitedAccessContacts:v6];
+        [(CNLimitedAccessContactPickerViewController *)self saveSelectionToLimitedAccessContacts:contactsCopy];
         [(CNLimitedAccessContactPickerViewController *)self updateListViewWithSelectedContacts:v7];
         -[CNLimitedAccessContactPickerViewController updateFooterShowSelectedButton:](self, "updateFooterShowSelectedButton:", [v7 count]);
       }
@@ -218,13 +218,13 @@
       goto LABEL_12;
     }
 
-    -[CNLimitedAccessContactPickerViewController updateOnboardingUIForSelectionCount:](self, "updateOnboardingUIForSelectionCount:", [v6 count]);
+    -[CNLimitedAccessContactPickerViewController updateOnboardingUIForSelectionCount:](self, "updateOnboardingUIForSelectionCount:", [contactsCopy count]);
     goto LABEL_10;
   }
 
   if (pickerType == 4)
   {
-    [(CNLimitedAccessContactPickerViewController *)self saveSelectionToLimitedAccessContacts:v6];
+    [(CNLimitedAccessContactPickerViewController *)self saveSelectionToLimitedAccessContacts:contactsCopy];
   }
 
   else if (pickerType == 5)
@@ -243,21 +243,21 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pickerCopy = picker;
+  contactCopy = contact;
+  if (contactCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v15[0] = v7;
+      v15[0] = contactCopy;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
       [CNLimitedAccessPickerSupport addContactsToLimitedAccess:v8 forBundleID:self->_appBundleId];
 
-      v9 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+      delegate = [(CNLimitedAccessContactPickerViewController *)self delegate];
       LOBYTE(v8) = objc_opt_respondsToSelector();
 
       if (v8)
@@ -265,24 +265,24 @@ LABEL_14:
         v10 = [objc_opt_class() log];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [v7 identifier];
+          identifier = [contactCopy identifier];
           v13 = 138543362;
-          v14 = v11;
+          v14 = identifier;
           _os_log_impl(&dword_199A75000, v10, OS_LOG_TYPE_INFO, "Telling delegate limited access that %{public}@ has been selected", &v13, 0xCu);
         }
 
-        v12 = [(CNLimitedAccessContactPickerViewController *)self delegate];
-        [v12 contactPicker:self didSelectContact:v7];
+        delegate2 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+        [delegate2 contactPicker:self didSelectContact:contactCopy];
       }
     }
   }
 }
 
-- (void)callDelegateWithSelectedContactList:(id)a3
+- (void)callDelegateWithSelectedContactList:(id)list
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+  listCopy = list;
+  delegate = [(CNLimitedAccessContactPickerViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -291,34 +291,34 @@ LABEL_14:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 134217984;
-      v10 = [v4 count];
+      v10 = [listCopy count];
       _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_INFO, "Telling delegate limited access has %lu contacts", &v9, 0xCu);
     }
 
-    v8 = [(CNLimitedAccessContactPickerViewController *)self delegate];
-    [v8 contactPicker:self didSelectContacts:v4];
+    delegate2 = [(CNLimitedAccessContactPickerViewController *)self delegate];
+    [delegate2 contactPicker:self didSelectContacts:listCopy];
   }
 }
 
-- (void)saveSelectionToLimitedAccessContacts:(id)a3
+- (void)saveSelectionToLimitedAccessContacts:(id)contacts
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = [v4 count];
+    v7 = [contactsCopy count];
     _os_log_impl(&dword_199A75000, v5, OS_LOG_TYPE_INFO, "Saving limited access selection for %lu contacts", &v6, 0xCu);
   }
 
   [CNLimitedAccessPickerSupport removeAllLimitedAccessIdentifiersForBundleID:self->_appBundleId];
-  [CNLimitedAccessPickerSupport addContactsToLimitedAccess:v4 forBundleID:self->_appBundleId];
+  [CNLimitedAccessPickerSupport addContactsToLimitedAccess:contactsCopy forBundleID:self->_appBundleId];
 }
 
-- (void)updateFooterShowSelectedButton:(unint64_t)a3
+- (void)updateFooterShowSelectedButton:(unint64_t)button
 {
-  if (a3)
+  if (button)
   {
     [(UILabel *)self->_selectContactsLabel setHidden:1];
     p_showSelectedButton = &self->_showSelectedButton;
@@ -326,8 +326,8 @@ LABEL_14:
     v7 = MEMORY[0x1E696AEC0];
     v8 = CNContactsUIBundle();
     v9 = [v8 localizedStringForKey:@"LIMITED_CONTACTS_SHOW_SELECTED" value:&stru_1F0CE7398 table:@"Localized"];
-    v10 = [v7 localizedStringWithFormat:v9, a3];
-    [(UIButton *)showSelectedButton setTitle:v10 forState:0];
+    button = [v7 localizedStringWithFormat:v9, button];
+    [(UIButton *)showSelectedButton setTitle:button forState:0];
   }
 
   else
@@ -341,32 +341,32 @@ LABEL_14:
   [v11 setHidden:0];
 }
 
-- (void)updateListViewWithSelectedContacts:(id)a3
+- (void)updateListViewWithSelectedContacts:(id)contacts
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 134217984;
-    v12 = [v4 count];
+    v12 = [contactsCopy count];
     _os_log_impl(&dword_199A75000, v5, OS_LOG_TYPE_INFO, "Reloading limited access summary for %lu contacts", &v11, 0xCu);
   }
 
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [v4 _cn_map:*MEMORY[0x1E695C408]];
+  v7 = [contactsCopy _cn_map:*MEMORY[0x1E695C408]];
   v8 = [v6 setWithArray:v7];
   selectedIdentifiersInActivePicker = self->_selectedIdentifiersInActivePicker;
   self->_selectedIdentifiersInActivePicker = v8;
 
-  v10 = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
-  [v10 didResetLimitedAccessSelectionTo:self->_selectedIdentifiersInActivePicker];
+  navigationController = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
+  [navigationController didResetLimitedAccessSelectionTo:self->_selectedIdentifiersInActivePicker];
 }
 
-- (void)updateOnboardingUIForSelectionCount:(unint64_t)a3
+- (void)updateOnboardingUIForSelectionCount:(unint64_t)count
 {
   onboardingContinueButton = self->_onboardingContinueButton;
-  if (a3)
+  if (count)
   {
     [(UIButton *)onboardingContinueButton setEnabled:1];
     onboardingShowSelectedButton = self->_onboardingShowSelectedButton;
@@ -386,7 +386,7 @@ LABEL_14:
   v9 = MEMORY[0x1E696AEC0];
   v12 = CNContactsUIBundle();
   v10 = [v12 localizedStringForKey:@"LIMITED_CONTACTS_ONBOARDING_SELECTED" value:&stru_1F0CE7398 table:@"Localized"];
-  v11 = [v9 localizedStringWithFormat:v10, a3];
+  v11 = [v9 localizedStringWithFormat:v10, count];
   [(UIButton *)v8 setTitle:v11 forState:0];
 }
 
@@ -397,20 +397,20 @@ LABEL_14:
   [(CNLimitedAccessContactPickerViewController *)&v10 viewWillLayoutSubviews];
   if (self->_footerView)
   {
-    v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v4 = [v3 featureFlags];
-    v5 = [v4 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v5 = [featureFlags isFeatureEnabled:29];
 
     if (v5)
     {
-      v6 = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
-      if (!v6)
+      scrollView = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
+      if (!scrollView)
       {
         return;
       }
 
-      v7 = v6;
-      v8 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:v6 edge:4 style:0];
+      v7 = scrollView;
+      v8 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:scrollView edge:4 style:0];
       [(UIView *)self->_footerView addInteraction:v8];
     }
 
@@ -449,9 +449,9 @@ LABEL_14:
 
   [(UIView *)self->_footerView setClipsToBounds:1];
   [(UIView *)self->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v7 = [featureFlags isFeatureEnabled:29];
 
   if ((v7 & 1) == 0)
   {
@@ -466,57 +466,57 @@ LABEL_14:
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v11 setAlpha:1.0];
     [(UIView *)self->_footerView addSubview:v11];
-    v28 = [v11 topAnchor];
-    v27 = [(UIView *)self->_footerView topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    topAnchor = [v11 topAnchor];
+    topAnchor2 = [(UIView *)self->_footerView topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[0] = v26;
-    v25 = [v11 bottomAnchor];
-    v24 = [(UIView *)self->_footerView bottomAnchor];
-    v12 = [v25 constraintEqualToAnchor:v24];
+    bottomAnchor = [v11 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_footerView bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[1] = v12;
-    v13 = [v11 leadingAnchor];
-    v14 = [(UIView *)self->_footerView leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [v11 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_footerView leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[2] = v15;
-    v16 = [v11 trailingAnchor];
-    v17 = [(UIView *)self->_footerView trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [v11 trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_footerView trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[3] = v18;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v23];
-    v19 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     footerViewBorder = self->_footerViewBorder;
-    self->_footerViewBorder = v19;
+    self->_footerViewBorder = layer;
 
-    v21 = [(CNLimitedAccessContactPickerViewController *)self footerBorderColor];
-    -[CAShapeLayer setStrokeColor:](self->_footerViewBorder, "setStrokeColor:", [v21 CGColor]);
+    footerBorderColor = [(CNLimitedAccessContactPickerViewController *)self footerBorderColor];
+    -[CAShapeLayer setStrokeColor:](self->_footerViewBorder, "setStrokeColor:", [footerBorderColor CGColor]);
 
     [(CAShapeLayer *)self->_footerViewBorder setFillColor:0];
-    v22 = [(UIView *)self->_footerView layer];
-    [v22 addSublayer:self->_footerViewBorder];
+    layer2 = [(UIView *)self->_footerView layer];
+    [layer2 addSublayer:self->_footerViewBorder];
   }
 }
 
-- (void)createGenericPickerViewWithMultiSelectSupport:(BOOL)a3
+- (void)createGenericPickerViewWithMultiSelectSupport:(BOOL)support
 {
-  v3 = a3;
+  supportCopy = support;
   v5 = objc_alloc_init(CNContactPickerViewController);
   contactPickerViewController = self->_contactPickerViewController;
   self->_contactPickerViewController = v5;
 
-  if (v3)
+  if (supportCopy)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [[CNContactPickerSingleContactDelegate alloc] initWithTargetViewController:self];
+    selfCopy = [[CNContactPickerSingleContactDelegate alloc] initWithTargetViewController:self];
   }
 
   contactPickerDelegate = self->_contactPickerDelegate;
-  self->_contactPickerDelegate = v7;
+  self->_contactPickerDelegate = selfCopy;
 
   [(CNContactPickerViewController *)self->_contactPickerViewController setDelegate:self->_contactPickerDelegate];
   [(CNContactPickerViewController *)self->_contactPickerViewController setMode:2];
@@ -533,8 +533,8 @@ LABEL_14:
 
 - (id)footerBorderColor
 {
-  v2 = [(CNLimitedAccessContactPickerViewController *)self traitCollection];
-  if ([v2 userInterfaceStyle] == 2)
+  traitCollection = [(CNLimitedAccessContactPickerViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x1E69DC888] systemDarkGrayColor];
   }
@@ -550,9 +550,9 @@ LABEL_14:
 
 - (void)updateColors
 {
-  v4 = [(CNLimitedAccessContactPickerViewController *)self footerBorderColor];
-  v3 = v4;
-  -[CAShapeLayer setStrokeColor:](self->_footerViewBorder, "setStrokeColor:", [v4 CGColor]);
+  footerBorderColor = [(CNLimitedAccessContactPickerViewController *)self footerBorderColor];
+  v3 = footerBorderColor;
+  -[CAShapeLayer setStrokeColor:](self->_footerViewBorder, "setStrokeColor:", [footerBorderColor CGColor]);
 }
 
 - (void)registerForTraitChanges
@@ -577,14 +577,14 @@ LABEL_14:
   }
 
   v6 = v4;
-  v5 = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
-  [v5 didResetLimitedAccessSelectionTo:v6];
+  navigationController = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
+  [navigationController didResetLimitedAccessSelectionTo:v6];
 }
 
 - (void)handleUndoTapped
 {
-  v3 = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
-  [v3 didResetLimitedAccessSelectionTo:self->_selectedIdentifiersOnLoad];
+  navigationController = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
+  [navigationController didResetLimitedAccessSelectionTo:self->_selectedIdentifiersOnLoad];
 }
 
 - (void)handleShowSelectedTapped
@@ -592,8 +592,8 @@ LABEL_14:
   if ([(NSSet *)self->_selectedIdentifiersInActivePicker count])
   {
     v3 = [CNLimitedAccessContactPickerViewController alloc];
-    v4 = [(NSSet *)self->_selectedIdentifiersInActivePicker allObjects];
-    v5 = [(CNLimitedAccessContactPickerViewController *)v3 initForShowSelected:v4];
+    allObjects = [(NSSet *)self->_selectedIdentifiersInActivePicker allObjects];
+    v5 = [(CNLimitedAccessContactPickerViewController *)v3 initForShowSelected:allObjects];
 
     [v5 setDelegate:self];
     [(CNLimitedAccessContactPickerViewController *)self presentViewController:v5 animated:1 completion:0];
@@ -603,19 +603,19 @@ LABEL_14:
 - (void)setupShowSelectedFooterConstraints
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   footerView = self->_footerView;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v6 = [(UIView *)footerView centerYAnchor];
+    centerYAnchor = [(UIView *)footerView centerYAnchor];
   }
 
   else
   {
-    v7 = [(UIView *)footerView safeAreaLayoutGuide];
-    v6 = [v7 centerYAnchor];
+    safeAreaLayoutGuide = [(UIView *)footerView safeAreaLayoutGuide];
+    centerYAnchor = [safeAreaLayoutGuide centerYAnchor];
   }
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
@@ -623,32 +623,32 @@ LABEL_14:
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_footerConstraints];
   }
 
-  v25 = [(UIButton *)self->_deselectAllButton centerYAnchor];
-  v26 = v6;
-  v24 = [v25 constraintEqualToAnchor:v6];
+  centerYAnchor2 = [(UIButton *)self->_deselectAllButton centerYAnchor];
+  v26 = centerYAnchor;
+  v24 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor];
   v27[0] = v24;
-  v22 = [(UIButton *)self->_deselectAllButton centerXAnchor];
-  v23 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v21 = [v23 centerXAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  centerXAnchor = [(UIButton *)self->_deselectAllButton centerXAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide2 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v27[1] = v20;
-  v8 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v9 = [v8 heightAnchor];
-  v10 = [(UIButton *)self->_showSelectedButton heightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:40.0];
+  layoutMarginsGuide = [(UIView *)self->_footerView layoutMarginsGuide];
+  heightAnchor = [layoutMarginsGuide heightAnchor];
+  heightAnchor2 = [(UIButton *)self->_showSelectedButton heightAnchor];
+  v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:40.0];
   v27[2] = v11;
-  v12 = [(UIView *)self->_footerView bottomAnchor];
-  v13 = [(CNLimitedAccessContactPickerViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIView *)self->_footerView bottomAnchor];
+  view = [(CNLimitedAccessContactPickerViewController *)self view];
+  bottomAnchor2 = [view bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
   footerConstraints = self->_footerConstraints;
   self->_footerConstraints = v16;
 
-  v18 = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
+  scrollView = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
 
-  if (v18)
+  if (scrollView)
   {
     contactPickerViewController = self->_contactPickerViewController;
     [(UIView *)self->_footerView frame];
@@ -661,19 +661,19 @@ LABEL_14:
 - (void)setupDeltaFooterConstraints
 {
   v55[12] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   footerView = self->_footerView;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v6 = [(UIView *)footerView centerYAnchor];
+    centerYAnchor = [(UIView *)footerView centerYAnchor];
   }
 
   else
   {
-    v7 = [(UIView *)footerView safeAreaLayoutGuide];
-    v6 = [v7 centerYAnchor];
+    safeAreaLayoutGuide = [(UIView *)footerView safeAreaLayoutGuide];
+    centerYAnchor = [safeAreaLayoutGuide centerYAnchor];
   }
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
@@ -681,68 +681,68 @@ LABEL_14:
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_footerConstraints];
   }
 
-  v52 = [(UILabel *)self->_deltaSelectionCountLabel centerYAnchor];
-  v53 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v51 = [v53 centerYAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  centerYAnchor2 = [(UILabel *)self->_deltaSelectionCountLabel centerYAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  centerYAnchor3 = [safeAreaLayoutGuide2 centerYAnchor];
+  v50 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3];
   v55[0] = v50;
-  v48 = [(UILabel *)self->_deltaSelectionCountLabel centerXAnchor];
-  v49 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v47 = [v49 centerXAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  centerXAnchor = [(UILabel *)self->_deltaSelectionCountLabel centerXAnchor];
+  safeAreaLayoutGuide3 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide3 centerXAnchor];
+  v46 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v55[1] = v46;
-  v45 = [(UILabel *)self->_deltaEditedLabel bottomAnchor];
-  v44 = [v45 constraintEqualToAnchor:v6];
+  bottomAnchor = [(UILabel *)self->_deltaEditedLabel bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:centerYAnchor];
   v55[2] = v44;
-  v42 = [(UILabel *)self->_deltaEditedLabel topAnchor];
-  v43 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v41 = [v43 topAnchor];
-  v40 = [v42 constraintGreaterThanOrEqualToAnchor:v41];
+  topAnchor = [(UILabel *)self->_deltaEditedLabel topAnchor];
+  safeAreaLayoutGuide4 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide4 topAnchor];
+  v40 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v55[3] = v40;
-  v38 = [(UILabel *)self->_deltaEditedLabel centerXAnchor];
-  v39 = [(CNLimitedAccessContactPickerViewController *)self footerView];
-  v37 = [v39 centerXAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  centerXAnchor3 = [(UILabel *)self->_deltaEditedLabel centerXAnchor];
+  footerView = [(CNLimitedAccessContactPickerViewController *)self footerView];
+  centerXAnchor4 = [footerView centerXAnchor];
+  v36 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v55[4] = v36;
-  v35 = [(UILabel *)self->_deltaAddedAndRemovedLabel topAnchor];
-  v34 = [v35 constraintEqualToAnchor:v6];
+  topAnchor3 = [(UILabel *)self->_deltaAddedAndRemovedLabel topAnchor];
+  v34 = [topAnchor3 constraintEqualToAnchor:centerYAnchor];
   v55[5] = v34;
-  v32 = [(UILabel *)self->_deltaAddedAndRemovedLabel bottomAnchor];
-  v33 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v31 = [v33 bottomAnchor];
-  v30 = [v32 constraintLessThanOrEqualToAnchor:v31];
+  bottomAnchor2 = [(UILabel *)self->_deltaAddedAndRemovedLabel bottomAnchor];
+  safeAreaLayoutGuide5 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide5 bottomAnchor];
+  v30 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
   v55[6] = v30;
-  v28 = [(UILabel *)self->_deltaAddedAndRemovedLabel centerXAnchor];
-  v29 = [(CNLimitedAccessContactPickerViewController *)self footerView];
-  v27 = [v29 centerXAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerXAnchor5 = [(UILabel *)self->_deltaAddedAndRemovedLabel centerXAnchor];
+  footerView2 = [(CNLimitedAccessContactPickerViewController *)self footerView];
+  centerXAnchor6 = [footerView2 centerXAnchor];
+  v26 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v55[7] = v26;
-  v25 = [(UIButton *)self->_deltaUndoButton centerYAnchor];
-  v54 = v6;
-  v24 = [v25 constraintEqualToAnchor:v6];
+  centerYAnchor4 = [(UIButton *)self->_deltaUndoButton centerYAnchor];
+  v54 = centerYAnchor;
+  v24 = [centerYAnchor4 constraintEqualToAnchor:centerYAnchor];
   v55[8] = v24;
-  v22 = [(UIButton *)self->_deltaUndoButton trailingAnchor];
-  v23 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v21 = [v23 trailingAnchor];
-  v8 = [v22 constraintEqualToAnchor:v21 constant:-10.0];
+  trailingAnchor = [(UIButton *)self->_deltaUndoButton trailingAnchor];
+  layoutMarginsGuide = [(UIView *)self->_footerView layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v55[9] = v8;
-  v9 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v10 = [v9 heightAnchor];
-  v11 = [(UILabel *)self->_deltaSelectionCountLabel heightAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:24.0];
+  layoutMarginsGuide2 = [(UIView *)self->_footerView layoutMarginsGuide];
+  heightAnchor = [layoutMarginsGuide2 heightAnchor];
+  heightAnchor2 = [(UILabel *)self->_deltaSelectionCountLabel heightAnchor];
+  v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:24.0];
   v55[10] = v12;
-  v13 = [(UIView *)self->_footerView bottomAnchor];
-  v14 = [(CNLimitedAccessContactPickerViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor4 = [(UIView *)self->_footerView bottomAnchor];
+  view = [(CNLimitedAccessContactPickerViewController *)self view];
+  bottomAnchor5 = [view bottomAnchor];
+  v16 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v55[11] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:12];
   footerConstraints = self->_footerConstraints;
   self->_footerConstraints = v17;
 
-  v19 = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
+  scrollView = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
 
-  if (v19)
+  if (scrollView)
   {
     contactPickerViewController = self->_contactPickerViewController;
     [(UIView *)self->_footerView frame];
@@ -755,19 +755,19 @@ LABEL_14:
 - (void)setupManagedOOPFooterConstraints
 {
   v33[6] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   footerView = self->_footerView;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v6 = [(UIView *)footerView centerYAnchor];
+    centerYAnchor = [(UIView *)footerView centerYAnchor];
   }
 
   else
   {
-    v7 = [(UIView *)footerView safeAreaLayoutGuide];
-    v6 = [v7 centerYAnchor];
+    safeAreaLayoutGuide = [(UIView *)footerView safeAreaLayoutGuide];
+    centerYAnchor = [safeAreaLayoutGuide centerYAnchor];
   }
 
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
@@ -775,40 +775,40 @@ LABEL_14:
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_footerConstraints];
   }
 
-  v31 = [(UIButton *)self->_showSelectedButton centerYAnchor];
-  v30 = [v31 constraintEqualToAnchor:v6];
+  centerYAnchor2 = [(UIButton *)self->_showSelectedButton centerYAnchor];
+  v30 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor];
   v33[0] = v30;
-  v28 = [(UIButton *)self->_showSelectedButton centerXAnchor];
-  v29 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v27 = [v29 centerXAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerXAnchor = [(UIButton *)self->_showSelectedButton centerXAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide2 centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[1] = v26;
-  v25 = [(UILabel *)self->_selectContactsLabel centerYAnchor];
-  v32 = v6;
-  v24 = [v25 constraintEqualToAnchor:v6];
+  centerYAnchor3 = [(UILabel *)self->_selectContactsLabel centerYAnchor];
+  v32 = centerYAnchor;
+  v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor];
   v33[2] = v24;
-  v22 = [(UILabel *)self->_selectContactsLabel centerXAnchor];
-  v23 = [(UIView *)self->_footerView safeAreaLayoutGuide];
-  v21 = [v23 centerXAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  centerXAnchor3 = [(UILabel *)self->_selectContactsLabel centerXAnchor];
+  safeAreaLayoutGuide3 = [(UIView *)self->_footerView safeAreaLayoutGuide];
+  centerXAnchor4 = [safeAreaLayoutGuide3 centerXAnchor];
+  v20 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v33[3] = v20;
-  v8 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v9 = [v8 heightAnchor];
-  v10 = [(UIButton *)self->_showSelectedButton heightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:10.0];
+  layoutMarginsGuide = [(UIView *)self->_footerView layoutMarginsGuide];
+  heightAnchor = [layoutMarginsGuide heightAnchor];
+  heightAnchor2 = [(UIButton *)self->_showSelectedButton heightAnchor];
+  v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:10.0];
   v33[4] = v11;
-  v12 = [(UIView *)self->_footerView bottomAnchor];
-  v13 = [(CNLimitedAccessContactPickerViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIView *)self->_footerView bottomAnchor];
+  view = [(CNLimitedAccessContactPickerViewController *)self view];
+  bottomAnchor2 = [view bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[5] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:6];
   footerConstraints = self->_footerConstraints;
   self->_footerConstraints = v16;
 
-  v18 = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
+  scrollView = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
 
-  if (v18)
+  if (scrollView)
   {
     contactPickerViewController = self->_contactPickerViewController;
     [(UIView *)self->_footerView frame];
@@ -855,8 +855,8 @@ LABEL_14:
   deltaAddedAndRemovedLabel = self->_deltaAddedAndRemovedLabel;
   self->_deltaAddedAndRemovedLabel = v14;
 
-  v16 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)self->_deltaAddedAndRemovedLabel setTextColor:v16];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)self->_deltaAddedAndRemovedLabel setTextColor:systemGrayColor];
 
   [(UILabel *)self->_deltaAddedAndRemovedLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_deltaAddedAndRemovedLabel setFont:v25];
@@ -867,14 +867,14 @@ LABEL_14:
   deltaUndoButton = self->_deltaUndoButton;
   self->_deltaUndoButton = v17;
 
-  v19 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v20 = [v19 featureFlags];
-  LODWORD(v12) = [v20 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  LODWORD(v12) = [featureFlags isFeatureEnabled:29];
 
   if (v12)
   {
-    v21 = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
-    [(UIButton *)self->_deltaUndoButton setConfiguration:v21];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
+    [(UIButton *)self->_deltaUndoButton setConfiguration:_glassButtonConfiguration];
     v22 = self->_deltaUndoButton;
     v23 = [MEMORY[0x1E69DCAB8] cnui_symbolImageNamed:@"arrow.uturn.backward" scale:3 withColor:0 useFixedSize:0];
     [(UIButton *)v22 setImage:v23 forState:0];
@@ -883,8 +883,8 @@ LABEL_14:
   else
   {
     v24 = self->_deltaUndoButton;
-    v21 = [MEMORY[0x1E69DCAB8] cnui_symbolImageNamed:@"arrow.uturn.backward.circle" scale:3 withColor:0 useFixedSize:0];
-    [(UIButton *)v24 setImage:v21 forState:0];
+    _glassButtonConfiguration = [MEMORY[0x1E69DCAB8] cnui_symbolImageNamed:@"arrow.uturn.backward.circle" scale:3 withColor:0 useFixedSize:0];
+    [(UIButton *)v24 setImage:_glassButtonConfiguration forState:0];
   }
 
   [(UIButton *)self->_deltaUndoButton setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -915,27 +915,27 @@ LABEL_14:
   showSelectedButton = self->_showSelectedButton;
   self->_showSelectedButton = v10;
 
-  v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v13 = [v12 featureFlags];
-  LODWORD(v8) = [v13 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  LODWORD(v8) = [featureFlags isFeatureEnabled:29];
 
   if (v8)
   {
-    v14 = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
-    v15 = [v14 background];
-    [v15 setCornerRadius:26.0];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
+    background = [_glassButtonConfiguration background];
+    [background setCornerRadius:26.0];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   }
 
   v16 = MEMORY[0x1E696AEC0];
   v17 = CNContactsUIBundle();
   v18 = [v17 localizedStringForKey:@"LIMITED_CONTACTS_SHOW_SELECTED" value:&stru_1F0CE7398 table:@"Localized"];
   v19 = [v16 localizedStringWithFormat:v18, -[NSSet count](self->_selectedIdentifiersOnLoad, "count")];
-  [v14 setTitle:v19];
+  [_glassButtonConfiguration setTitle:v19];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -943,8 +943,8 @@ LABEL_14:
   v21[3] = &unk_1E74E6238;
   v22 = v3;
   v20 = v3;
-  [v14 setTitleTextAttributesTransformer:v21];
-  [(UIButton *)self->_showSelectedButton setConfiguration:v14];
+  [_glassButtonConfiguration setTitleTextAttributesTransformer:v21];
+  [(UIButton *)self->_showSelectedButton setConfiguration:_glassButtonConfiguration];
   [(UIButton *)self->_showSelectedButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_showSelectedButton addTarget:self action:sel_handleShowSelectedTapped forControlEvents:64];
   [(UIView *)self->_footerView addSubview:self->_showSelectedButton];
@@ -966,25 +966,25 @@ id __71__CNLimitedAccessContactPickerViewController_createManageOOPFooterView__b
   deselectAllButton = self->_deselectAllButton;
   self->_deselectAllButton = v4;
 
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 featureFlags];
-  v8 = [v7 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v8 = [featureFlags isFeatureEnabled:29];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
-    v10 = [v9 background];
-    [v10 setCornerRadius:26.0];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
+    background = [_glassButtonConfiguration background];
+    [background setCornerRadius:26.0];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    _glassButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   }
 
   v11 = CNContactsUIBundle();
   v12 = [v11 localizedStringForKey:@"LIMITED_CONTACTS_DESELECT_ALL" value:&stru_1F0CE7398 table:@"Localized"];
-  [v9 setTitle:v12];
+  [_glassButtonConfiguration setTitle:v12];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -992,8 +992,8 @@ id __71__CNLimitedAccessContactPickerViewController_createManageOOPFooterView__b
   v14[3] = &unk_1E74E6238;
   v15 = v3;
   v13 = v3;
-  [v9 setTitleTextAttributesTransformer:v14];
-  [(UIButton *)self->_deselectAllButton setConfiguration:v9];
+  [_glassButtonConfiguration setTitleTextAttributesTransformer:v14];
+  [(UIButton *)self->_deselectAllButton setConfiguration:_glassButtonConfiguration];
   [(UIButton *)self->_deselectAllButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_deselectAllButton addTarget:self action:sel_handleDeselectAllTapped forControlEvents:64];
   [(UIView *)self->_footerView addSubview:self->_deselectAllButton];
@@ -1121,8 +1121,8 @@ id __74__CNLimitedAccessContactPickerViewController_createShowSelectedFooterView
 
 - (void)handleContinueTapped
 {
-  v2 = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
-  [v2 didFinishLimitedAccessSelection];
+  navigationController = [(CNContactPickerViewController *)self->_contactPickerViewController navigationController];
+  [navigationController didFinishLimitedAccessSelection];
 }
 
 - (void)setupOnboardingFooterConstraints
@@ -1143,55 +1143,55 @@ id __74__CNLimitedAccessContactPickerViewController_createShowSelectedFooterView
     v3 = 0.0;
   }
 
-  v4 = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
+  scrollView = [(CNContactPickerViewController *)self->_contactPickerViewController scrollView];
 
-  if (v4)
+  if (scrollView)
   {
     [(CNContactPickerViewController *)self->_contactPickerViewController setBottomEdgeInsetForContentView:v3];
   }
 
-  v38 = [(UIButton *)self->_onboardingContinueButton topAnchor];
-  v39 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v37 = [v39 topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:10.0];
+  topAnchor = [(UIButton *)self->_onboardingContinueButton topAnchor];
+  layoutMarginsGuide = [(UIView *)self->_footerView layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v40[0] = v36;
-  v34 = [(UIButton *)self->_onboardingContinueButton leadingAnchor];
-  v35 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v33 = [v35 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:20.0];
+  leadingAnchor = [(UIButton *)self->_onboardingContinueButton leadingAnchor];
+  layoutMarginsGuide2 = [(UIView *)self->_footerView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v40[1] = v32;
-  v30 = [(UIButton *)self->_onboardingContinueButton trailingAnchor];
-  v31 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v29 = [v31 trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:-20.0];
+  trailingAnchor = [(UIButton *)self->_onboardingContinueButton trailingAnchor];
+  layoutMarginsGuide3 = [(UIView *)self->_footerView layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v40[2] = v28;
-  v27 = [(UIButton *)self->_onboardingContinueButton heightAnchor];
-  v26 = [v27 constraintEqualToConstant:52.0];
+  heightAnchor = [(UIButton *)self->_onboardingContinueButton heightAnchor];
+  v26 = [heightAnchor constraintEqualToConstant:52.0];
   v40[3] = v26;
-  v24 = [(UIButton *)self->_onboardingLaterButton leadingAnchor];
-  v25 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v23 = [v25 leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:20.0];
+  leadingAnchor3 = [(UIButton *)self->_onboardingLaterButton leadingAnchor];
+  layoutMarginsGuide4 = [(UIView *)self->_footerView layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+  v22 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
   v40[4] = v22;
-  v20 = [(UIButton *)self->_onboardingLaterButton trailingAnchor];
-  v21 = [(UIView *)self->_footerView layoutMarginsGuide];
-  v19 = [v21 trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:-20.0];
+  trailingAnchor3 = [(UIButton *)self->_onboardingLaterButton trailingAnchor];
+  layoutMarginsGuide5 = [(UIView *)self->_footerView layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+  v18 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
   v40[5] = v18;
-  v17 = [(UIButton *)self->_onboardingLaterButton topAnchor];
-  v16 = [(UIButton *)self->_onboardingContinueButton bottomAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16 constant:4.0];
+  topAnchor3 = [(UIButton *)self->_onboardingLaterButton topAnchor];
+  bottomAnchor = [(UIButton *)self->_onboardingContinueButton bottomAnchor];
+  v15 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:4.0];
   v40[6] = v15;
-  v5 = [(UIButton *)self->_onboardingLaterButton heightAnchor];
-  v6 = [v5 constraintEqualToConstant:52.0];
+  heightAnchor2 = [(UIButton *)self->_onboardingLaterButton heightAnchor];
+  v6 = [heightAnchor2 constraintEqualToConstant:52.0];
   v40[7] = v6;
-  v7 = [(UIView *)self->_footerView heightAnchor];
-  v8 = [v7 constraintEqualToConstant:v3];
+  heightAnchor3 = [(UIView *)self->_footerView heightAnchor];
+  v8 = [heightAnchor3 constraintEqualToConstant:v3];
   v40[8] = v8;
-  v9 = [(UIView *)self->_footerView bottomAnchor];
-  v10 = [(CNLimitedAccessContactPickerViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  bottomAnchor2 = [(UIView *)self->_footerView bottomAnchor];
+  view = [(CNLimitedAccessContactPickerViewController *)self view];
+  bottomAnchor3 = [view bottomAnchor];
+  v12 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v40[9] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:10];
   onboardingConstraints = self->_onboardingConstraints;
@@ -1208,9 +1208,9 @@ id __74__CNLimitedAccessContactPickerViewController_createShowSelectedFooterView
   onboardingContinueButton = self->_onboardingContinueButton;
   self->_onboardingContinueButton = v4;
 
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 featureFlags];
-  if ([v7 isFeatureEnabled:29])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:29])
   {
     [MEMORY[0x1E69DC740] _tintedGlassButtonConfiguration];
   }
@@ -1232,9 +1232,9 @@ id __74__CNLimitedAccessContactPickerViewController_createShowSelectedFooterView
   v11 = v3;
   v30 = v11;
   [v8 setTitleTextAttributesTransformer:v29];
-  v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v13 = [v12 featureFlags];
-  if ([v13 isFeatureEnabled:29])
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags2 = [currentEnvironment2 featureFlags];
+  if ([featureFlags2 isFeatureEnabled:29])
   {
     v14 = 26.0;
   }
@@ -1244,8 +1244,8 @@ id __74__CNLimitedAccessContactPickerViewController_createShowSelectedFooterView
     v14 = 14.0;
   }
 
-  v15 = [v8 background];
-  [v15 setCornerRadius:v14];
+  background = [v8 background];
+  [background setCornerRadius:v14];
 
   [v8 setCornerStyle:-1];
   [(UIButton *)self->_onboardingContinueButton setConfiguration:v8];
@@ -1256,9 +1256,9 @@ id __74__CNLimitedAccessContactPickerViewController_createShowSelectedFooterView
   onboardingLaterButton = self->_onboardingLaterButton;
   self->_onboardingLaterButton = v16;
 
-  v18 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v19 = [v18 featureFlags];
-  if ([v19 isFeatureEnabled:29])
+  currentEnvironment3 = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags3 = [currentEnvironment3 featureFlags];
+  if ([featureFlags3 isFeatureEnabled:29])
   {
     [MEMORY[0x1E69DC740] _glassButtonConfiguration];
   }
@@ -1315,36 +1315,36 @@ id __72__CNLimitedAccessContactPickerViewController_createOnboardingFooterView__
   onboardingShowSelectedButton = self->_onboardingShowSelectedButton;
   self->_onboardingShowSelectedButton = v5;
 
-  v25 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v7 = MEMORY[0x1E696AEC0];
   v8 = CNContactsUIBundle();
   v9 = [v8 localizedStringForKey:@"LIMITED_CONTACTS_ONBOARDING_SELECTED" value:&stru_1F0CE7398 table:@"Localized"];
   v10 = [v7 localizedStringWithFormat:v9, 0];
-  [v25 setTitle:v10];
+  [plainButtonConfiguration setTitle:v10];
 
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [v25 setBaseForegroundColor:v11];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [plainButtonConfiguration setBaseForegroundColor:labelColor];
 
-  [v25 setTitleTextAttributesTransformer:&__block_literal_global_90];
-  [(UIButton *)self->_onboardingShowSelectedButton setConfiguration:v25];
+  [plainButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_90];
+  [(UIButton *)self->_onboardingShowSelectedButton setConfiguration:plainButtonConfiguration];
   [(UIButton *)self->_onboardingShowSelectedButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_onboardingShowSelectedButton addTarget:self action:sel_handleShowSelectedTapped forControlEvents:64];
   [(UIView *)self->_headerView addSubview:self->_onboardingShowSelectedButton];
-  v24 = [(UIButton *)self->_onboardingShowSelectedButton topAnchor];
-  v23 = [(UIView *)self->_headerView topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:3.0];
+  topAnchor = [(UIButton *)self->_onboardingShowSelectedButton topAnchor];
+  topAnchor2 = [(UIView *)self->_headerView topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:3.0];
   v26[0] = v22;
-  v21 = [(UIButton *)self->_onboardingShowSelectedButton leadingAnchor];
-  v12 = [(UIView *)self->_headerView leadingAnchor];
-  v13 = [v21 constraintEqualToAnchor:v12 constant:20.0];
+  leadingAnchor = [(UIButton *)self->_onboardingShowSelectedButton leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_headerView leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v26[1] = v13;
-  v14 = [(UIButton *)self->_onboardingShowSelectedButton trailingAnchor];
-  v15 = [(UIView *)self->_headerView trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-20.0];
+  trailingAnchor = [(UIButton *)self->_onboardingShowSelectedButton trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_headerView trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v26[2] = v16;
-  v17 = [(UIButton *)self->_onboardingShowSelectedButton heightAnchor];
-  v18 = [(UIView *)self->_headerView heightAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  heightAnchor = [(UIButton *)self->_onboardingShowSelectedButton heightAnchor];
+  heightAnchor2 = [(UIView *)self->_headerView heightAnchor];
+  v19 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v26[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
 
@@ -1368,13 +1368,13 @@ id __72__CNLimitedAccessContactPickerViewController_createOnboardingHeaderView__
   [(CNContactPickerViewController *)contactPickerViewController setPrompt:&stru_1F0CE7398];
 }
 
-- (id)initForAppName:(id)a3 bundleId:(id)a4 pickerType:(int)a5 selectedContacts:(id)a6 searchText:(id)a7 caption:(unint64_t)a8
+- (id)initForAppName:(id)name bundleId:(id)id pickerType:(int)type selectedContacts:(id)contacts searchText:(id)text caption:(unint64_t)caption
 {
   v125[3] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v117 = a6;
-  v116 = a7;
+  nameCopy = name;
+  idCopy = id;
+  contactsCopy = contacts;
+  textCopy = text;
   v118.receiver = self;
   v118.super_class = CNLimitedAccessContactPickerViewController;
   v16 = [(CNLimitedAccessContactPickerViewController *)&v118 initWithNibName:0 bundle:0];
@@ -1383,36 +1383,36 @@ id __72__CNLimitedAccessContactPickerViewController_createOnboardingHeaderView__
     goto LABEL_35;
   }
 
-  v115 = v15;
+  v115 = idCopy;
   v17 = (*(*MEMORY[0x1E6996570] + 16))();
-  v114 = v14;
+  v114 = nameCopy;
   if ((v17 & 1) == 0)
   {
-    v14 = [CNLimitedAccessPickerSupport appNameForBundleId:v115];
+    nameCopy = [CNLimitedAccessPickerSupport appNameForBundleId:v115];
   }
 
-  objc_storeStrong(&v16->_appName, v14);
+  objc_storeStrong(&v16->_appName, nameCopy);
   if ((v17 & 1) == 0)
   {
   }
 
-  objc_storeStrong(&v16->_appBundleId, a4);
-  objc_storeStrong(&v16->_selectedIdentifiersOnLoad, a6);
-  v16->_pickerType = a5;
-  objc_storeStrong(&v16->_initalSearchText, a7);
-  v16->_caption = a8;
-  if (a5 <= 2)
+  objc_storeStrong(&v16->_appBundleId, id);
+  objc_storeStrong(&v16->_selectedIdentifiersOnLoad, contacts);
+  v16->_pickerType = type;
+  objc_storeStrong(&v16->_initalSearchText, text);
+  v16->_caption = caption;
+  if (type <= 2)
   {
-    if (a5)
+    if (type)
     {
-      if (a5 == 1)
+      if (type == 1)
       {
         [(CNLimitedAccessContactPickerViewController *)v16 createOnboardingPickerView];
         [(CNLimitedAccessContactPickerViewController *)v16 createOnboardingHeaderView];
         [(CNLimitedAccessContactPickerViewController *)v16 createOnboardingFooterView];
       }
 
-      else if (a5 == 2)
+      else if (type == 2)
       {
         [(CNLimitedAccessContactPickerViewController *)v16 createShowSelectedPickerView];
         [(CNLimitedAccessContactPickerViewController *)v16 createShowSelectedFooterView];
@@ -1425,20 +1425,20 @@ id __72__CNLimitedAccessContactPickerViewController_createOnboardingHeaderView__
     }
   }
 
-  else if (a5 > 4)
+  else if (type > 4)
   {
-    if (a5 == 5)
+    if (type == 5)
     {
       [(CNLimitedAccessContactPickerViewController *)v16 createSettingsShowSelectedPickerView];
     }
 
-    else if (a5 == 6)
+    else if (type == 6)
     {
       [(CNLimitedAccessContactPickerViewController *)v16 createContactsAvailableToSelectPickerView];
     }
   }
 
-  else if (a5 == 3)
+  else if (type == 3)
   {
     [(CNLimitedAccessContactPickerViewController *)v16 createOOPEditSelectedPickerView];
     [(CNLimitedAccessContactPickerViewController *)v16 createManageOOPFooterView];
@@ -1450,94 +1450,94 @@ id __72__CNLimitedAccessContactPickerViewController_createOnboardingHeaderView__
     [(CNLimitedAccessContactPickerViewController *)v16 createDeltaFooterView];
   }
 
-  v18 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(CNLimitedAccessContactPickerViewController *)v16 addChildViewController:v16->_contactPickerViewController];
-  v19 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v20 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-  [v19 addSubview:v20];
+  view2 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  view3 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+  [view2 addSubview:view3];
 
-  if (a5 != 4)
+  if (type != 4)
   {
     [(CNContactPickerViewController *)v16->_contactPickerViewController didMoveToParentViewController:v16];
   }
 
   v94 = MEMORY[0x1E696ACD8];
-  v112 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-  v106 = [v112 widthAnchor];
-  v109 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v103 = [v109 widthAnchor];
-  v100 = [v106 constraintEqualToAnchor:v103];
+  view4 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+  widthAnchor = [view4 widthAnchor];
+  view5 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  widthAnchor2 = [view5 widthAnchor];
+  v100 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v125[0] = v100;
-  v97 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-  v91 = [v97 leadingAnchor];
-  v21 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v22 = [v21 leadingAnchor];
-  v23 = [v91 constraintEqualToAnchor:v22];
+  view6 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+  leadingAnchor = [view6 leadingAnchor];
+  view7 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v125[1] = v23;
-  v24 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-  v25 = [v24 trailingAnchor];
-  v26 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v27 = [v26 trailingAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  view8 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+  trailingAnchor = [view8 trailingAnchor];
+  view9 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v125[2] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:3];
   [v94 activateConstraints:v29];
 
   if (v16->_headerView)
   {
-    v30 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    [v30 addSubview:v16->_headerView];
+    view10 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    [view10 addSubview:v16->_headerView];
 
     v104 = MEMORY[0x1E696ACD8];
-    v110 = [(UIView *)v16->_headerView widthAnchor];
-    v101 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v92 = [v101 widthAnchor];
-    v98 = [v110 constraintEqualToAnchor:v92];
+    widthAnchor3 = [(UIView *)v16->_headerView widthAnchor];
+    view11 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    widthAnchor4 = [view11 widthAnchor];
+    v98 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v124[0] = v98;
-    v85 = [(UIView *)v16->_headerView leadingAnchor];
-    v81 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v113 = [v81 leadingAnchor];
-    v107 = [v85 constraintEqualToAnchor:v113];
+    leadingAnchor3 = [(UIView *)v16->_headerView leadingAnchor];
+    view12 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    leadingAnchor4 = [view12 leadingAnchor];
+    v107 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v124[1] = v107;
-    v89 = [(UIView *)v16->_headerView trailingAnchor];
-    v95 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v87 = [v95 trailingAnchor];
-    v83 = [v89 constraintEqualToAnchor:v87];
+    trailingAnchor3 = [(UIView *)v16->_headerView trailingAnchor];
+    view13 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    trailingAnchor4 = [view13 trailingAnchor];
+    v83 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v124[2] = v83;
-    v79 = [(UIView *)v16->_headerView topAnchor];
-    v31 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v32 = [v31 topAnchor];
-    v33 = [v79 constraintEqualToAnchor:v32];
+    topAnchor = [(UIView *)v16->_headerView topAnchor];
+    view14 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    topAnchor2 = [view14 topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v124[3] = v33;
-    v34 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-    v35 = [v34 topAnchor];
-    v36 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v37 = [v36 topAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37];
+    view15 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+    topAnchor3 = [view15 topAnchor];
+    view16 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    topAnchor4 = [view16 topAnchor];
+    v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v124[4] = v38;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:5];
     [v104 activateConstraints:v39];
 
-    v40 = v81;
-    v41 = v92;
+    v40 = view12;
+    view18 = widthAnchor4;
 
-    v42 = v101;
-    v43 = v85;
+    topAnchor5 = view11;
+    v43 = leadingAnchor3;
 
-    v44 = v98;
-    v45 = v110;
+    topAnchor6 = v98;
+    view17 = widthAnchor3;
   }
 
   else
   {
     v46 = MEMORY[0x1E696ACD8];
-    v45 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-    v42 = [v45 topAnchor];
-    v41 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v44 = [v41 topAnchor];
-    v43 = [v42 constraintEqualToAnchor:v44];
+    view17 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+    topAnchor5 = [view17 topAnchor];
+    view18 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    topAnchor6 = [view18 topAnchor];
+    v43 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v123 = v43;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:1];
     [v46 activateConstraints:v40];
@@ -1546,81 +1546,81 @@ id __72__CNLimitedAccessContactPickerViewController_createOnboardingHeaderView__
   if (!v16->_footerView)
   {
     v66 = MEMORY[0x1E696ACD8];
-    v60 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-    v61 = [v60 bottomAnchor];
-    v62 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-    v63 = [v62 bottomAnchor];
-    v64 = [v61 constraintEqualToAnchor:v63];
+    view19 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+    bottomAnchor = [view19 bottomAnchor];
+    view20 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+    bottomAnchor2 = [view20 bottomAnchor];
+    v64 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v119 = v64;
     v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v119 count:1];
     [v66 activateConstraints:v67];
 
 LABEL_31:
-    v14 = v114;
+    nameCopy = v114;
     goto LABEL_32;
   }
 
-  v47 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  [v47 addSubview:v16->_footerView];
+  view21 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  [view21 addSubview:v16->_footerView];
 
   v88 = MEMORY[0x1E696ACD8];
-  v108 = [(UIView *)v16->_footerView widthAnchor];
-  v111 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v105 = [v111 widthAnchor];
-  v102 = [v108 constraintEqualToAnchor:v105];
+  widthAnchor5 = [(UIView *)v16->_footerView widthAnchor];
+  view22 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  widthAnchor6 = [view22 widthAnchor];
+  v102 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
   v122[0] = v102;
-  v96 = [(UIView *)v16->_footerView leadingAnchor];
-  v99 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v93 = [v99 leadingAnchor];
-  v90 = [v96 constraintEqualToAnchor:v93];
+  leadingAnchor5 = [(UIView *)v16->_footerView leadingAnchor];
+  view23 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  leadingAnchor6 = [view23 leadingAnchor];
+  v90 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v122[1] = v90;
-  v84 = [(UIView *)v16->_footerView trailingAnchor];
-  v86 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v82 = [v86 trailingAnchor];
-  v80 = [v84 constraintEqualToAnchor:v82];
+  trailingAnchor5 = [(UIView *)v16->_footerView trailingAnchor];
+  view24 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  trailingAnchor6 = [view24 trailingAnchor];
+  v80 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v122[2] = v80;
-  v77 = [(UIView *)v16->_footerView bottomAnchor];
-  v78 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v48 = [v78 bottomAnchor];
-  v49 = [v77 constraintEqualToAnchor:v48];
+  bottomAnchor3 = [(UIView *)v16->_footerView bottomAnchor];
+  view25 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  bottomAnchor4 = [view25 bottomAnchor];
+  v49 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v122[3] = v49;
-  v50 = [(UIView *)v16->_footerView layoutMarginsGuide];
-  v51 = [v50 bottomAnchor];
-  v52 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v53 = [v52 layoutMarginsGuide];
-  v54 = [v53 bottomAnchor];
-  v55 = [v51 constraintEqualToAnchor:v54];
+  layoutMarginsGuide = [(UIView *)v16->_footerView layoutMarginsGuide];
+  bottomAnchor5 = [layoutMarginsGuide bottomAnchor];
+  view26 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  layoutMarginsGuide2 = [view26 layoutMarginsGuide];
+  bottomAnchor6 = [layoutMarginsGuide2 bottomAnchor];
+  v55 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v122[4] = v55;
   v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v122 count:5];
   [v88 activateConstraints:v56];
 
-  v57 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v58 = [v57 featureFlags];
-  LODWORD(v56) = [v58 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  LODWORD(v56) = [featureFlags isFeatureEnabled:29];
 
   v59 = MEMORY[0x1E696ACD8];
   if (!v56)
   {
-    v60 = [(UIView *)v16->_footerView topAnchor];
-    v61 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-    v62 = [v61 bottomAnchor];
-    v63 = [v60 constraintEqualToAnchor:v62];
-    v120 = v63;
+    view19 = [(UIView *)v16->_footerView topAnchor];
+    bottomAnchor = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+    view20 = [bottomAnchor bottomAnchor];
+    bottomAnchor2 = [view19 constraintEqualToAnchor:view20];
+    v120 = bottomAnchor2;
     v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v120 count:1];
     [v59 activateConstraints:v64];
     goto LABEL_31;
   }
 
-  v60 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
-  v61 = [v60 bottomAnchor];
-  v62 = [(CNLimitedAccessContactPickerViewController *)v16 view];
-  v63 = [v62 bottomAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63];
+  view19 = [(CNContactPickerViewController *)v16->_contactPickerViewController view];
+  bottomAnchor = [view19 bottomAnchor];
+  view20 = [(CNLimitedAccessContactPickerViewController *)v16 view];
+  bottomAnchor2 = [view20 bottomAnchor];
+  v64 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v121 = v64;
   v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v121 count:1];
   [v59 activateConstraints:v65];
 
-  v14 = v114;
+  nameCopy = v114;
 LABEL_32:
 
   if (v16->_footerViewBorder)
@@ -1636,78 +1636,78 @@ LABEL_32:
 
   [(CNLimitedAccessContactPickerViewController *)v16 registerForTraitChanges];
   v75 = v16;
-  v15 = v115;
+  idCopy = v115;
 LABEL_35:
 
   return v16;
 }
 
-- (id)initPickerWithContactsAvailableToAddForAppName:(id)a3 bundleId:(id)a4 searchText:(id)a5 caption:(unint64_t)a6
+- (id)initPickerWithContactsAvailableToAddForAppName:(id)name bundleId:(id)id searchText:(id)text caption:(unint64_t)caption
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:v11];
-  v14 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:v12 bundleId:v11 pickerType:6 selectedContacts:v13 searchText:v10 caption:a6];
+  textCopy = text;
+  idCopy = id;
+  nameCopy = name;
+  v13 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:idCopy];
+  v14 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:nameCopy bundleId:idCopy pickerType:6 selectedContacts:v13 searchText:textCopy caption:caption];
 
   return v14;
 }
 
-- (id)initSettingsPickerForAppName:(id)a3 bundleId:(id)a4
+- (id)initSettingsPickerForAppName:(id)name bundleId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:v6];
-  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:v7 bundleId:v6 pickerType:5 selectedContacts:v8 searchText:0 caption:0];
+  idCopy = id;
+  nameCopy = name;
+  v8 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:idCopy];
+  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:nameCopy bundleId:idCopy pickerType:5 selectedContacts:v8 searchText:0 caption:0];
 
   return v9;
 }
 
-- (id)initDeltaPickerForAppName:(id)a3 bundleId:(id)a4
+- (id)initDeltaPickerForAppName:(id)name bundleId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:v6];
-  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:v7 bundleId:v6 pickerType:4 selectedContacts:v8 searchText:0 caption:0];
+  idCopy = id;
+  nameCopy = name;
+  v8 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:idCopy];
+  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:nameCopy bundleId:idCopy pickerType:4 selectedContacts:v8 searchText:0 caption:0];
 
   return v9;
 }
 
-- (id)initForAppName:(id)a3 bundleId:(id)a4
+- (id)initForAppName:(id)name bundleId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:v6];
-  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:v7 bundleId:v6 pickerType:3 selectedContacts:v8 searchText:0 caption:0];
+  idCopy = id;
+  nameCopy = name;
+  v8 = [CNLimitedAccessPickerSupport allowedIdentifiersForBundleID:idCopy];
+  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:nameCopy bundleId:idCopy pickerType:3 selectedContacts:v8 searchText:0 caption:0];
 
   return v9;
 }
 
-- (id)initForShowSelected:(id)a3
+- (id)initForShowSelected:(id)selected
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:selected];
   v5 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:&stru_1F0CE7398 bundleId:&stru_1F0CE7398 pickerType:2 selectedContacts:v4 searchText:0 caption:0];
 
   return v5;
 }
 
-- (id)initForOnboarding:(id)a3 bundleId:(id)a4 selectedContacts:(id)a5
+- (id)initForOnboarding:(id)onboarding bundleId:(id)id selectedContacts:(id)contacts
 {
   v8 = MEMORY[0x1E695DFD8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 setWithArray:a5];
-  v12 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:v10 bundleId:v9 pickerType:1 selectedContacts:v11 searchText:0 caption:0];
+  idCopy = id;
+  onboardingCopy = onboarding;
+  v11 = [v8 setWithArray:contacts];
+  v12 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:onboardingCopy bundleId:idCopy pickerType:1 selectedContacts:v11 searchText:0 caption:0];
 
   return v12;
 }
 
-- (id)initForOnboarding:(id)a3 selectedContacts:(id)a4
+- (id)initForOnboarding:(id)onboarding selectedContacts:(id)contacts
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [v6 setWithArray:a4];
-  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:v7 bundleId:&stru_1F0CE7398 pickerType:1 selectedContacts:v8 searchText:0 caption:0];
+  onboardingCopy = onboarding;
+  v8 = [v6 setWithArray:contacts];
+  v9 = [(CNLimitedAccessContactPickerViewController *)self initForAppName:onboardingCopy bundleId:&stru_1F0CE7398 pickerType:1 selectedContacts:v8 searchText:0 caption:0];
 
   return v9;
 }

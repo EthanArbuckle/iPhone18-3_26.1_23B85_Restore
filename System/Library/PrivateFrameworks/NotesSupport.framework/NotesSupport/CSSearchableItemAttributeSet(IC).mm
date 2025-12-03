@@ -46,17 +46,17 @@
 + (id)ic_customAttributeKeyWithName:()IC searchable:searchableByDefault:unique:multiValued:
 {
   v12 = a3;
-  v13 = a1;
-  objc_sync_enter(v13);
-  v14 = [v13 ic_customAttributeKeyDictionary];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ic_customAttributeKeyDictionary = [selfCopy ic_customAttributeKeyDictionary];
+  v15 = [ic_customAttributeKeyDictionary objectForKeyedSubscript:v12];
   if (!v15)
   {
     v15 = [objc_alloc(MEMORY[0x1E6964E00]) initWithKeyName:v12 searchable:a4 searchableByDefault:a5 unique:a6 multiValued:a7];
-    [v14 setObject:v15 forKey:v12];
+    [ic_customAttributeKeyDictionary setObject:v15 forKey:v12];
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
@@ -67,8 +67,8 @@
   if (v2)
   {
     v4 = v2;
-    v3 = [a1 displayName];
-    [a1 setValue:v3 forCustomKey:v4];
+    displayName = [self displayName];
+    [self setValue:displayName forCustomKey:v4];
 
     v2 = v4;
   }
@@ -89,21 +89,21 @@
 - (void)setIc_dataSourceIdentifier:()IC
 {
   v4 = a3;
-  v5 = [objc_opt_class() ic_dataSourceIdentifierCustomKey];
-  [a1 setValue:v4 forCustomKey:v5];
+  ic_dataSourceIdentifierCustomKey = [objc_opt_class() ic_dataSourceIdentifierCustomKey];
+  [self setValue:v4 forCustomKey:ic_dataSourceIdentifierCustomKey];
 }
 
 - (id)ic_dataSourceIdentifier
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() ic_dataSourceIdentifierCustomKey];
-  v4 = [a1 valueForCustomKey:v3];
+  ic_dataSourceIdentifierCustomKey = [objc_opt_class() ic_dataSourceIdentifierCustomKey];
+  v4 = [self valueForCustomKey:ic_dataSourceIdentifierCustomKey];
   v5 = ICDynamicCast(v2, v4);
 
   if (!v5)
   {
     v6 = objc_opt_class();
-    v7 = [a1 attributeForKey:@"DataSourceIdentifier"];
+    v7 = [self attributeForKey:@"DataSourceIdentifier"];
     v5 = ICDynamicCast(v6, v7);
   }
 
@@ -112,223 +112,223 @@
 
 - (uint64_t)ic_searchResultType
 {
-  v1 = [a1 attributeForKey:@"_ICItemSearchResultType"];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self attributeForKey:@"_ICItemSearchResultType"];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (void)setIc_searchResultType:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_searchResultTypeCustomKey];
-  if (v5)
+  ic_searchResultTypeCustomKey = [MEMORY[0x1E6964E90] ic_searchResultTypeCustomKey];
+  if (ic_searchResultTypeCustomKey)
   {
-    v7 = v5;
+    v7 = ic_searchResultTypeCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_searchResultTypeCustomKey = v7;
   }
 }
 
 - (uint64_t)ic_relevance
 {
-  v1 = [a1 queryResultRelevance];
-  v2 = [v1 integerValue];
+  queryResultRelevance = [self queryResultRelevance];
+  integerValue = [queryResultRelevance integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 - (uint64_t)ic_isLocked
 {
-  v1 = [a1 attributeForKey:@"_ICItemIsLocked"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemIsLocked"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_isLocked:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemIsLockedCustomKey];
-  if (v5)
+  ic_itemIsLockedCustomKey = [MEMORY[0x1E6964E90] ic_itemIsLockedCustomKey];
+  if (ic_itemIsLockedCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemIsLockedCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemIsLockedCustomKey = v7;
   }
 }
 
 - (uint64_t)ic_isShared
 {
-  v1 = [a1 attributeForKey:@"_ICItemIsShared"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemIsShared"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_isShared:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemIsSharedCustomKey];
-  if (v5)
+  ic_itemIsSharedCustomKey = [MEMORY[0x1E6964E90] ic_itemIsSharedCustomKey];
+  if (ic_itemIsSharedCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemIsSharedCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemIsSharedCustomKey = v7;
   }
 }
 
 - (void)setIc_relatedModernNoteUniqueIdentifier:()IC
 {
   v5 = a3;
-  v4 = [MEMORY[0x1E6964E90] ic_relatedModernNoteUniqueIdentifierCustomKey];
-  if (v4)
+  ic_relatedModernNoteUniqueIdentifierCustomKey = [MEMORY[0x1E6964E90] ic_relatedModernNoteUniqueIdentifierCustomKey];
+  if (ic_relatedModernNoteUniqueIdentifierCustomKey)
   {
-    [a1 setValue:v5 forCustomKey:v4];
+    [self setValue:v5 forCustomKey:ic_relatedModernNoteUniqueIdentifierCustomKey];
   }
 }
 
 - (uint64_t)ic_hasChecklists
 {
-  v1 = [a1 attributeForKey:@"_ICItemHasChecklists"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemHasChecklists"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_hasChecklists:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemHasChecklistsCustomKey];
-  if (v5)
+  ic_itemHasChecklistsCustomKey = [MEMORY[0x1E6964E90] ic_itemHasChecklistsCustomKey];
+  if (ic_itemHasChecklistsCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemHasChecklistsCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemHasChecklistsCustomKey = v7;
   }
 }
 
 - (uint64_t)ic_hasTags
 {
-  v1 = [a1 attributeForKey:@"_ICItemHasICItemHasTags"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemHasICItemHasTags"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_hasTags:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemHasTagsCustomKey];
-  if (v5)
+  ic_itemHasTagsCustomKey = [MEMORY[0x1E6964E90] ic_itemHasTagsCustomKey];
+  if (ic_itemHasTagsCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemHasTagsCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemHasTagsCustomKey = v7;
   }
 }
 
 - (uint64_t)ic_hasDrawings
 {
-  v1 = [a1 attributeForKey:@"_ICItemHasDrawings"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemHasDrawings"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_hasDrawings:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemHasDrawingsCustomKey];
-  if (v5)
+  ic_itemHasDrawingsCustomKey = [MEMORY[0x1E6964E90] ic_itemHasDrawingsCustomKey];
+  if (ic_itemHasDrawingsCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemHasDrawingsCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemHasDrawingsCustomKey = v7;
   }
 }
 
 - (uint64_t)ic_hasScannedDocuments
 {
-  v1 = [a1 attributeForKey:@"_ICItemHasScannedDocuments"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemHasScannedDocuments"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_hasScannedDocuments:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemHasScannedDocumentsCustomKey];
-  if (v5)
+  ic_itemHasScannedDocumentsCustomKey = [MEMORY[0x1E6964E90] ic_itemHasScannedDocumentsCustomKey];
+  if (ic_itemHasScannedDocumentsCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemHasScannedDocumentsCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemHasScannedDocumentsCustomKey = v7;
   }
 }
 
 - (uint64_t)ic_hasAttachments
 {
-  v1 = [a1 attributeForKey:@"_ICItemHasAttachments"];
-  v2 = [v1 BOOLValue];
+  v1 = [self attributeForKey:@"_ICItemHasAttachments"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setIc_hasAttachments:()IC
 {
-  v5 = [MEMORY[0x1E6964E90] ic_itemHasAttachmentsCustomKey];
-  if (v5)
+  ic_itemHasAttachmentsCustomKey = [MEMORY[0x1E6964E90] ic_itemHasAttachmentsCustomKey];
+  if (ic_itemHasAttachmentsCustomKey)
   {
-    v7 = v5;
+    v7 = ic_itemHasAttachmentsCustomKey;
     v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setValue:v6 forCustomKey:v7];
+    [self setValue:v6 forCustomKey:v7];
 
-    v5 = v7;
+    ic_itemHasAttachmentsCustomKey = v7;
   }
 }
 
 - (id)ic_accountName
 {
-  v1 = [a1 attributeForKey:@"_ICItemAccountName"];
-  v2 = [v1 stringValue];
+  v1 = [self attributeForKey:@"_ICItemAccountName"];
+  stringValue = [v1 stringValue];
 
-  return v2;
+  return stringValue;
 }
 
 - (void)setIc_accountName:()IC
 {
   v5 = a3;
-  v4 = [MEMORY[0x1E6964E90] ic_accountNameCustomKey];
-  if (v4)
+  ic_accountNameCustomKey = [MEMORY[0x1E6964E90] ic_accountNameCustomKey];
+  if (ic_accountNameCustomKey)
   {
-    [a1 setValue:v5 forCustomKey:v4];
+    [self setValue:v5 forCustomKey:ic_accountNameCustomKey];
   }
 }
 
 - (id)ic_folderName
 {
-  v1 = [a1 attributeForKey:@"_ICItemFolderName"];
-  v2 = [v1 stringValue];
+  v1 = [self attributeForKey:@"_ICItemFolderName"];
+  stringValue = [v1 stringValue];
 
-  return v2;
+  return stringValue;
 }
 
 - (void)setIc_folderName:()IC
 {
   v5 = a3;
-  v4 = [MEMORY[0x1E6964E90] ic_folderNameCustomKey];
-  if (v4)
+  ic_folderNameCustomKey = [MEMORY[0x1E6964E90] ic_folderNameCustomKey];
+  if (ic_folderNameCustomKey)
   {
-    [a1 setValue:v5 forCustomKey:v4];
+    [self setValue:v5 forCustomKey:ic_folderNameCustomKey];
   }
 }
 

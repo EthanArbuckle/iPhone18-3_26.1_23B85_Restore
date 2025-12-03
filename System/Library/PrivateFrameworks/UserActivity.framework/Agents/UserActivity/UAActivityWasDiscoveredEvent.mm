@@ -8,12 +8,12 @@
 - (id)eventPayload
 {
   v7 = @"activityType";
-  v2 = [(UAActivityWasDiscoveredEvent *)self reportedActivityType];
-  v3 = v2;
+  reportedActivityType = [(UAActivityWasDiscoveredEvent *)self reportedActivityType];
+  v3 = reportedActivityType;
   v4 = @"-";
-  if (v2)
+  if (reportedActivityType)
   {
-    v4 = v2;
+    v4 = reportedActivityType;
   }
 
   v8 = v4;
@@ -24,8 +24,8 @@
 
 - (id)reportedActivityType
 {
-  v3 = [(UAActivityWasDiscoveredEvent *)self activityType];
-  v4 = [(UAAnalyticsEvent *)self firstPartyActivityTypeOrUnknown:v3];
+  activityType = [(UAActivityWasDiscoveredEvent *)self activityType];
+  v4 = [(UAAnalyticsEvent *)self firstPartyActivityTypeOrUnknown:activityType];
 
   return v4;
 }

@@ -1,12 +1,12 @@
 @interface VCPAutoBugCapture
-+ (BOOL)captureCrashWithKnownTimeoutRisk:(unint64_t)a3;
-+ (BOOL)captureTimeoutCrashWithSubType:(id)a3;
++ (BOOL)captureCrashWithKnownTimeoutRisk:(unint64_t)risk;
++ (BOOL)captureTimeoutCrashWithSubType:(id)type;
 + (id)sharedCapturer;
-+ (id)timeoutSubTypeForKnownTimeoutRisk:(unint64_t)a3;
-- (BOOL)captureProcessingFailure:(id)a3 taskID:(unint64_t)a4 asset:(id)a5 previousAttempts:(unint64_t)a6;
++ (id)timeoutSubTypeForKnownTimeoutRisk:(unint64_t)risk;
+- (BOOL)captureProcessingFailure:(id)failure taskID:(unint64_t)d asset:(id)asset previousAttempts:(unint64_t)attempts;
 - (VCPAutoBugCapture)init;
-- (id)processingFailureReportTimeForTask:(unint64_t)a3;
-- (void)setLastProcessingFailureReportTime:(id)a3 forTask:(unint64_t)a4;
+- (id)processingFailureReportTimeForTask:(unint64_t)task;
+- (void)setLastProcessingFailureReportTime:(id)time forTask:(unint64_t)task;
 @end
 
 @implementation VCPAutoBugCapture
@@ -18,8 +18,8 @@
   v2 = [(VCPAutoBugCapture *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 persistentDomainForName:@"com.apple.mediaanalysisd"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults persistentDomainForName:@"com.apple.mediaanalysisd"];
     v5 = [v4 objectForKey:@"SceneAnalysisFailureDate"];
     SceneProcessingFailureReportTime = v2->SceneProcessingFailureReportTime;
     v2->SceneProcessingFailureReportTime = v5;
@@ -67,26 +67,26 @@ void __35__VCPAutoBugCapture_sharedCapturer__block_invoke()
   sharedCapturer_instance = v0;
 }
 
-+ (id)timeoutSubTypeForKnownTimeoutRisk:(unint64_t)a3
++ (id)timeoutSubTypeForKnownTimeoutRisk:(unint64_t)risk
 {
-  if (a3 - 1 > 5)
+  if (risk - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E83502E8 + a3 - 1);
+    return *(&off_1E83502E8 + risk - 1);
   }
 }
 
-- (id)processingFailureReportTimeForTask:(unint64_t)a3
+- (id)processingFailureReportTimeForTask:(unint64_t)task
 {
-  v3 = a3;
+  taskCopy = task;
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 > 9)
+  if (task > 9)
   {
-    switch(a3)
+    switch(task)
     {
       case 0xAuLL:
         OCRProcessingFailureReportTime = self->OCRProcessingFailureReportTime;
@@ -102,7 +102,7 @@ void __35__VCPAutoBugCapture_sharedCapturer__block_invoke()
 
   else
   {
-    switch(a3)
+    switch(task)
     {
       case 1uLL:
         OCRProcessingFailureReportTime = self->FullProcessingFailureReportTime;
@@ -121,7 +121,7 @@ LABEL_18:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = taskCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to determine timestamp of last ABC failure report for task %u", v7, 8u);
   }
 
@@ -131,15 +131,15 @@ LABEL_19:
   return v5;
 }
 
-- (void)setLastProcessingFailureReportTime:(id)a3 forTask:(unint64_t)a4
+- (void)setLastProcessingFailureReportTime:(id)time forTask:(unint64_t)task
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [v8 persistentDomainForName:@"com.apple.mediaanalysisd"];
-  if (a4 > 9)
+  timeCopy = time;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v9 = [standardUserDefaults persistentDomainForName:@"com.apple.mediaanalysisd"];
+  if (task > 9)
   {
-    switch(a4)
+    switch(task)
     {
       case 0xAuLL:
         v10 = @"OCRAnalysisFailureDate";
@@ -158,7 +158,7 @@ LABEL_19:
 
   else
   {
-    switch(a4)
+    switch(task)
     {
       case 1uLL:
         v10 = @"FullAnalysisFailureDate";
@@ -172,8 +172,8 @@ LABEL_19:
         v10 = @"FaceAnalysisFailureDate";
         v11 = 16;
 LABEL_17:
-        objc_storeStrong((&self->super.isa + v11), a3);
-        [v8 setObject:v7 forKey:v10];
+        objc_storeStrong((&self->super.isa + v11), time);
+        [standardUserDefaults setObject:timeCopy forKey:v10];
         goto LABEL_18;
     }
   }
@@ -181,21 +181,21 @@ LABEL_17:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12[0] = 67109120;
-    v12[1] = a4;
+    v12[1] = task;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VCPAutoBugCapture] Unable to set date of last processing failure for task %u", v12, 8u);
   }
 
 LABEL_18:
 }
 
-+ (BOOL)captureCrashWithKnownTimeoutRisk:(unint64_t)a3
++ (BOOL)captureCrashWithKnownTimeoutRisk:(unint64_t)risk
 {
-  v3 = a3;
+  riskCopy = risk;
   v9 = *MEMORY[0x1E69E9840];
-  v5 = [a1 timeoutSubTypeForKnownTimeoutRisk:?];
+  v5 = [self timeoutSubTypeForKnownTimeoutRisk:?];
   if (v5)
   {
-    v6 = [a1 captureTimeoutCrashWithSubType:v5];
+    v6 = [self captureTimeoutCrashWithSubType:v5];
   }
 
   else
@@ -203,7 +203,7 @@ LABEL_18:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v8[0] = 67109120;
-      v8[1] = v3;
+      v8[1] = riskCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VCPAutoBugCapture] unknown bug type: %d", v8, 8u);
     }
 
@@ -213,22 +213,22 @@ LABEL_18:
   return v6;
 }
 
-+ (BOOL)captureTimeoutCrashWithSubType:(id)a3
++ (BOOL)captureTimeoutCrashWithSubType:(id)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  typeCopy = type;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
   v4 = objc_alloc_init(getSDRDiagnosticReporterClass());
-  v5 = [v4 signatureWithDomain:@"MediaAnalysis" type:@"Timeout" subType:v3 subtypeContext:0 detectedProcess:@"com.apple.mediaanalysisd" triggerThresholdValues:0];
+  v5 = [v4 signatureWithDomain:@"MediaAnalysis" type:@"Timeout" subType:typeCopy subtypeContext:0 detectedProcess:@"com.apple.mediaanalysisd" triggerThresholdValues:0];
   v6 = dispatch_semaphore_create(0);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__VCPAutoBugCapture_captureTimeoutCrashWithSubType___block_invoke;
   v12[3] = &unk_1E8350288;
-  v7 = v3;
+  v7 = typeCopy;
   v13 = v7;
   v16 = &v17;
   v8 = v5;
@@ -314,36 +314,36 @@ LABEL_12:
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (BOOL)captureProcessingFailure:(id)a3 taskID:(unint64_t)a4 asset:(id)a5 previousAttempts:(unint64_t)a6
+- (BOOL)captureProcessingFailure:(id)failure taskID:(unint64_t)d asset:(id)asset previousAttempts:(unint64_t)attempts
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  failureCopy = failure;
+  assetCopy = asset;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
   v12 = [MEMORY[0x1E695DF00] now];
-  v13 = [(VCPAutoBugCapture *)self processingFailureReportTimeForTask:a4];
-  if (!v13)
+  distantPast = [(VCPAutoBugCapture *)self processingFailureReportTimeForTask:d];
+  if (!distantPast)
   {
-    v13 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  [v12 timeIntervalSinceDate:v13];
+  [v12 timeIntervalSinceDate:distantPast];
   if (v14 >= 86400.0)
   {
     v16 = objc_alloc_init(getSDRDiagnosticReporterClass());
-    v23 = VCPTaskIDDescription(a4);
+    v23 = VCPTaskIDDescription(d);
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v11 uuid];
-    v19 = [v17 stringWithFormat:@"%@/%lld", v18, a6];
-    v20 = [v16 signatureWithDomain:@"MediaAnalysis" type:@"ProcessingFailure" subType:v23 subtypeContext:v10 detectedProcess:@"com.apple.mediaanalysisd" triggerThresholdValues:v19];
+    uuid = [assetCopy uuid];
+    attempts = [v17 stringWithFormat:@"%@/%lld", uuid, attempts];
+    v20 = [v16 signatureWithDomain:@"MediaAnalysis" type:@"ProcessingFailure" subType:v23 subtypeContext:failureCopy detectedProcess:@"com.apple.mediaanalysisd" triggerThresholdValues:attempts];
 
     if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v36 = v11;
+      *v36 = assetCopy;
       *&v36[8] = 2112;
       *&v36[10] = v20;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPAutoBugCapture] Asset failed processing. Asset: %@, signature: %@", buf, 0x16u);
@@ -354,10 +354,10 @@ LABEL_12:
     v24[2] = __76__VCPAutoBugCapture_captureProcessingFailure_taskID_asset_previousAttempts___block_invoke;
     v24[3] = &unk_1E83502B0;
     v29 = &v31;
-    v25 = v10;
-    v26 = self;
+    v25 = failureCopy;
+    selfCopy = self;
     v27 = v12;
-    v30 = a4;
+    dCopy = d;
     v21 = v20;
     v28 = v21;
     if (([v16 snapshotWithSignature:v21 delay:0 events:0 payload:0 actions:v24 reply:0.0] & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -377,9 +377,9 @@ LABEL_12:
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
-      *v36 = a4;
+      *v36 = d;
       *&v36[4] = 2112;
-      *&v36[6] = v13;
+      *&v36[6] = distantPast;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[VCPAutoBugCapture] Last report for task %u was %@", buf, 0x12u);
     }
 

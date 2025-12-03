@@ -1,11 +1,11 @@
 @interface CLLocationInternalClient
 + (id)sharedServiceClient;
-- (BOOL)checkAndExerciseAuthorizationForBundleID:(id)a3 orBundlePath:(id)a4 services:(unint64_t)a5 error:(id *)a6;
-- (BOOL)deleteInterestZoneWithId:(id)a3 registeredForBundleId:(id)a4 orBundlePath:(id)a5 error:(id *)a6;
-- (BOOL)getLearnedRoutesAccess:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
-- (BOOL)getVisitHistoryAccess:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
-- (BOOL)getVisitHistoryAccessAllowedTime:(double *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
-- (BOOL)startStopAdvertisingBeacon:(id)a3 power:(id)a4;
+- (BOOL)checkAndExerciseAuthorizationForBundleID:(id)d orBundlePath:(id)path services:(unint64_t)services error:(id *)error;
+- (BOOL)deleteInterestZoneWithId:(id)id registeredForBundleId:(id)bundleId orBundlePath:(id)path error:(id *)error;
+- (BOOL)getLearnedRoutesAccess:(int *)access forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
+- (BOOL)getVisitHistoryAccess:(int *)access forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
+- (BOOL)getVisitHistoryAccessAllowedTime:(double *)time forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
+- (BOOL)startStopAdvertisingBeacon:(id)beacon power:(id)power;
 - (__CFArray)copyActivityAlarms;
 - (__CFArray)copyGnssBandsInUse;
 - (__CFArray)copyRecentLocationsBufferStatus;
@@ -13,81 +13,81 @@
 - (__CFDictionary)copyActiveClientsUsingLocation;
 - (__CFDictionary)copyAppsUsingLocation;
 - (__CFDictionary)copyInternalState;
-- (__CFDictionary)copyMonitoredRegionsForBundleIdentifier:(__CFString *)a3 orBundlePath:(__CFString *)a4;
+- (__CFDictionary)copyMonitoredRegionsForBundleIdentifier:(__CFString *)identifier orBundlePath:(__CFString *)path;
 - (__CFDictionary)copyNearbyAssetSettings;
-- (__CFDictionary)copyNearbyAssetSettingsOfAccessoryFile:(__CFString *)a3;
-- (__CFDictionary)copyRoutineAssetSettingsWithCompatibilityVersion:(int *)a3 contentVersion:(int *)a4;
+- (__CFDictionary)copyNearbyAssetSettingsOfAccessoryFile:(__CFString *)file;
+- (__CFDictionary)copyRoutineAssetSettingsWithCompatibilityVersion:(int *)version contentVersion:(int *)contentVersion;
 - (__CFDictionary)copyZaxisStats;
-- (double)modifyOrSetAuthorizationTime:(double)a3 forBundleID:(id)a4 orBundlePath:(id)a5;
-- (id)applyArchivedAuthorizationDecisions:(id)a3;
+- (double)modifyOrSetAuthorizationTime:(double)time forBundleID:(id)d orBundlePath:(id)path;
+- (id)applyArchivedAuthorizationDecisions:(id)decisions;
 - (id)asynchronousRemoteObject;
 - (id)connection;
-- (id)fetchRecentLocationAtCfAbsoluteTime:(double)a3;
-- (id)fetchRecentLocationAtMachContinuousTime:(double)a3;
+- (id)fetchRecentLocationAtCfAbsoluteTime:(double)time;
+- (id)fetchRecentLocationAtMachContinuousTime:(double)time;
 - (id)getAccessoryMotionSensorLogs;
-- (id)getArchivedAuthorizationDecisionsWithError:(id *)a3;
-- (id)getEEDCloakingKey:(id *)a3;
-- (id)getEEDEmergencyContactNames:(id *)a3;
+- (id)getArchivedAuthorizationDecisionsWithError:(id *)error;
+- (id)getEEDCloakingKey:(id *)key;
+- (id)getEEDEmergencyContactNames:(id *)names;
 - (id)getMotionSensorLogs;
 - (id)getOdometryBatchedLocations;
 - (id)getPipelinedCache;
-- (id)getTemporaryAuthorizationStatusForBundleId:(id)a3 orBundlePath:(id)a4 error:(id *)a5;
-- (id)setAuthorizationPromptMapDisplayEnabled:(unsigned __int8)a3;
-- (id)setTemporaryAuthorizationStatusForBundleId:(id)a3 orBundlePath:(id)a4 statusData:(id)a5;
+- (id)getTemporaryAuthorizationStatusForBundleId:(id)id orBundlePath:(id)path error:(id *)error;
+- (id)setAuthorizationPromptMapDisplayEnabled:(unsigned __int8)enabled;
+- (id)setTemporaryAuthorizationStatusForBundleId:(id)id orBundlePath:(id)path statusData:(id)data;
 - (id)synchronousRemoteObject;
-- (id)timeZoneAtLocation:(id)a3;
+- (id)timeZoneAtLocation:(id)location;
 - (id)triggerExpiredAuthorizationPurgeOnClientManager;
 - (int)getAccessoryPASCDTransmissionState;
 - (int)getAccessoryTypeBitSet;
 - (int)getStatusBarIconState;
 - (unsigned)clearLocationAuthorizations;
-- (unsigned)configure:(id)a3;
+- (unsigned)configure:(id)configure;
 - (unsigned)copyLastLog;
 - (unsigned)deleteCurrentEmergencyLocationAsset;
 - (unsigned)displayStatistics;
-- (unsigned)dumpLogs:(__CFString *)a3;
-- (unsigned)getAuthorizationPromptMapDisplayEnabled:(char *)a3;
-- (unsigned)getAuthorizationStatus:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
-- (unsigned)getAuthorizationStatusForApp:(int *)a3 withAuditToken:(id *)a4;
-- (unsigned)getControlPlaneStatusReportClear:(int)a3 startTime:(double *)a4 endTime:(double *)a5 latitude:(double *)a6 longitude:(double *)a7 altitude:(double *)a8 accuracy:(double *)a9 status:(unsigned int *)a10;
-- (unsigned)getEmergencyLocationSettingsCompatibilityVersion:(int *)a3 andContentVersion:(int *)a4;
-- (unsigned)getGestureServiceEnabled:(char *)a3;
-- (unsigned)getGroundAltitudeForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4 location:(id)a5 groundAltitude:(id *)a6;
-- (unsigned)getGyroCalibrationDatabaseBiasFit:(id *)a3 atTemperature:(float)a4;
-- (unsigned)getGyroCalibrationDatabaseNumTemperatures:(int *)a3;
-- (unsigned)getIncidentalUseMode:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
-- (unsigned)getLocationForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4 dynamicAccuracyReductionEnabled:(unsigned __int8)a5 allowsAlteredAccessoryLocations:(unsigned __int8)a6 location:(id *)a7;
-- (unsigned)getLocationServicesEnabled:(char *)a3;
-- (unsigned)getPinnedLocationAuthorizationState:(CLLocationCoordinate2D *)a3;
-- (unsigned)getPrecisionPermission:(char *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
+- (unsigned)dumpLogs:(__CFString *)logs;
+- (unsigned)getAuthorizationPromptMapDisplayEnabled:(char *)enabled;
+- (unsigned)getAuthorizationStatus:(int *)status forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
+- (unsigned)getAuthorizationStatusForApp:(int *)app withAuditToken:(id *)token;
+- (unsigned)getControlPlaneStatusReportClear:(int)clear startTime:(double *)time endTime:(double *)endTime latitude:(double *)latitude longitude:(double *)longitude altitude:(double *)altitude accuracy:(double *)accuracy status:(unsigned int *)self0;
+- (unsigned)getEmergencyLocationSettingsCompatibilityVersion:(int *)version andContentVersion:(int *)contentVersion;
+- (unsigned)getGestureServiceEnabled:(char *)enabled;
+- (unsigned)getGroundAltitudeForBundleID:(__CFString *)d orBundlePath:(__CFString *)path location:(id)location groundAltitude:(id *)altitude;
+- (unsigned)getGyroCalibrationDatabaseBiasFit:(id *)fit atTemperature:(float)temperature;
+- (unsigned)getGyroCalibrationDatabaseNumTemperatures:(int *)temperatures;
+- (unsigned)getIncidentalUseMode:(int *)mode forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
+- (unsigned)getLocationForBundleID:(__CFString *)d orBundlePath:(__CFString *)path dynamicAccuracyReductionEnabled:(unsigned __int8)enabled allowsAlteredAccessoryLocations:(unsigned __int8)locations location:(id *)location;
+- (unsigned)getLocationServicesEnabled:(char *)enabled;
+- (unsigned)getPinnedLocationAuthorizationState:(CLLocationCoordinate2D *)state;
+- (unsigned)getPrecisionPermission:(char *)permission forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
 - (unsigned)getPrivateMode;
-- (unsigned)gyroCalibrationDatabaseSupportsMiniCalibration:(int *)a3;
+- (unsigned)gyroCalibrationDatabaseSupportsMiniCalibration:(int *)calibration;
 - (unsigned)gyroCalibrationDatabaseWipe;
-- (unsigned)insertGyroCalibrationDatabaseBiasEstimateIfValid:(id)a3 temperature:(float)a4 variance:(id)a5 timestamp:(double)a6;
+- (unsigned)insertGyroCalibrationDatabaseBiasEstimateIfValid:(id)valid temperature:(float)temperature variance:(id)variance timestamp:(double)timestamp;
 - (unsigned)performMigration;
 - (unsigned)pingDaemon;
-- (unsigned)setBackgroundIndicatorForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4 enabled:(unsigned __int8)a5;
-- (unsigned)setTemporaryAuthorizationGranted:(unsigned __int8)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5 orAuditToken:(id *)a6 byLocationButton:(unsigned __int8)a7 voiceInteractionEnabled:(unsigned __int8)a8;
-- (unsigned)setTemporaryPreciseAuthorizationGranted:(unsigned __int8)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5;
+- (unsigned)setBackgroundIndicatorForBundleID:(__CFString *)d orBundlePath:(__CFString *)path enabled:(unsigned __int8)enabled;
+- (unsigned)setTemporaryAuthorizationGranted:(unsigned __int8)granted forBundleID:(__CFString *)d orBundlePath:(__CFString *)path orAuditToken:(id *)token byLocationButton:(unsigned __int8)button voiceInteractionEnabled:(unsigned __int8)enabled;
+- (unsigned)setTemporaryPreciseAuthorizationGranted:(unsigned __int8)granted forBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
 - (unsigned)shouldDisplayEEDUI;
 - (unsigned)shutdownDaemon;
-- (unsigned)tearDownLocationAuthPromptForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4;
-- (unsigned)timeSyncMachTimeStamp:(unint64_t *)a3 oscarTimeStamp:(unint64_t *)a4;
-- (unsigned)updatePromptedLatitude:(double)a3 longitude:(double)a4;
-- (void)checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)a3 orBundlePath:(id)a4 replyBlock:(id)a5;
-- (void)checkAndExercisePushClientAuthorizationForBundleID:(id)a3 replyBlock:(id)a4;
-- (void)clearLocationAuthorizationForBundleId:(__CFString *)a3 orBundlePath:(__CFString *)a4;
-- (void)getLocationDefaultForKey:(__CFString *)a3;
-- (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)a3 orBundlePath:(id)a4 replyBlock:(id)a5;
-- (void)notifyPassKitPayment:(id)a3 transaction:(id)a4 info:(id)a5;
-- (void)notifyWeatherForecast:(id)a3 airQualityConditions:(id)a4 hourlyForecasts:(id)a5 dailyForecasts:(id)a6 latitude:(double)a7 longitude:(double)a8;
+- (unsigned)tearDownLocationAuthPromptForBundleID:(__CFString *)d orBundlePath:(__CFString *)path;
+- (unsigned)timeSyncMachTimeStamp:(unint64_t *)stamp oscarTimeStamp:(unint64_t *)timeStamp;
+- (unsigned)updatePromptedLatitude:(double)latitude longitude:(double)longitude;
+- (void)checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)d orBundlePath:(id)path replyBlock:(id)block;
+- (void)checkAndExercisePushClientAuthorizationForBundleID:(id)d replyBlock:(id)block;
+- (void)clearLocationAuthorizationForBundleId:(__CFString *)id orBundlePath:(__CFString *)path;
+- (void)getLocationDefaultForKey:(__CFString *)key;
+- (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)d orBundlePath:(id)path replyBlock:(id)block;
+- (void)notifyPassKitPayment:(id)payment transaction:(id)transaction info:(id)info;
+- (void)notifyWeatherForecast:(id)forecast airQualityConditions:(id)conditions hourlyForecasts:(id)forecasts dailyForecasts:(id)dailyForecasts latitude:(double)latitude longitude:(double)longitude;
 - (void)requestRouteReconstructionForPedestrian;
-- (void)setGestureServiceEnabled:(unsigned __int8)a3;
-- (void)setLocationDefaultForKey:(__CFString *)a3 value:(void *)a4;
-- (void)setLocationServicesEnabled:(unsigned __int8)a3;
-- (void)setPrivateMode:(unsigned __int8)a3;
-- (void)setTrackRunHint:(id *)a3;
-- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)a3 toMachContinuousTime:(double)a4;
+- (void)setGestureServiceEnabled:(unsigned __int8)enabled;
+- (void)setLocationDefaultForKey:(__CFString *)key value:(void *)value;
+- (void)setLocationServicesEnabled:(unsigned __int8)enabled;
+- (void)setPrivateMode:(unsigned __int8)mode;
+- (void)setTrackRunHint:(id *)hint;
+- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)time toMachContinuousTime:(double)continuousTime;
 @end
 
 @implementation CLLocationInternalClient
@@ -142,13 +142,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B87F9C0;
   v5[3] = &unk_1E753E388;
   v5[4] = &v6;
-  [v2 getTechnologiesInUseWithReplyBlock:v5];
+  [synchronousRemoteObject getTechnologiesInUseWithReplyBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -160,13 +160,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B8846AC;
   v5[3] = &unk_1E753E388;
   v5[4] = &v6;
-  [v2 getGnssBandsInUseWithReplyBlock:v5];
+  [synchronousRemoteObject getGnssBandsInUseWithReplyBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -179,13 +179,13 @@
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_19B887888;
   v11[3] = &unk_1E753E518;
   v11[4] = &v12;
-  [v2 getAccessoryTypeBitSetWithReplyBlock:v11];
+  [synchronousRemoteObject getAccessoryTypeBitSetWithReplyBlock:v11];
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6E4D8);
@@ -234,38 +234,38 @@
   return v3;
 }
 
-- (unsigned)getIncidentalUseMode:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (unsigned)getIncidentalUseMode:(int *)mode forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B1B70;
   v10[3] = &unk_1E753E2E8;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v8 getIncidentalUseModeForBundleID:a4 orBundlePath:a5 replyBlock:v10];
-  LOBYTE(a5) = *(v12 + 24);
+  v10[5] = mode;
+  [synchronousRemoteObject getIncidentalUseModeForBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a5;
+  return path;
 }
 
-- (void)clearLocationAuthorizationForBundleId:(__CFString *)a3 orBundlePath:(__CFString *)a4
+- (void)clearLocationAuthorizationForBundleId:(__CFString *)id orBundlePath:(__CFString *)path
 {
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v9 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_19B9B1D50;
   v7[3] = &unk_1E753DC90;
   v7[4] = v8;
-  [v6 resetClientForBundleId:a3 orBundlePath:a4 withReplyBlock:v7];
+  [synchronousRemoteObject resetClientForBundleId:id orBundlePath:path withReplyBlock:v7];
   _Block_object_dispose(v8, 8);
 }
 
@@ -275,19 +275,19 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B1E28;
   v5[3] = &unk_1E753DC90;
   v5[4] = &v6;
-  [v2 resetAllClientsWithReplyBlock:v5];
+  [synchronousRemoteObject resetAllClientsWithReplyBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (id)getArchivedAuthorizationDecisionsWithError:(id *)a3
+- (id)getArchivedAuthorizationDecisionsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -301,14 +301,14 @@
   v14 = sub_19B9B1FE0;
   v15 = sub_19B9B1FF0;
   v16 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B1FFC;
   v10[3] = &unk_1E753E310;
   v10[4] = &v11;
   v10[5] = &v17;
-  [v4 getArchivedAuthorizationDecisionsWithReplyBlock:v10];
+  [synchronousRemoteObject getArchivedAuthorizationDecisionsWithReplyBlock:v10];
   v5 = v18[5];
   v6 = v12[5];
   if (!v18[5] && !v12[5])
@@ -317,9 +317,9 @@
     v12[5] = v7;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v8 = v18[5];
@@ -328,9 +328,9 @@
   return v8;
 }
 
-- (id)applyArchivedAuthorizationDecisions:(id)a3
+- (id)applyArchivedAuthorizationDecisions:(id)decisions
 {
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3052000000;
@@ -344,14 +344,14 @@
   v6 = 3;
   do
   {
-    v7 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_19B9B21FC;
     v11[3] = &unk_1E753E338;
     v11[4] = &v16;
     v11[5] = &v12;
-    [v7 applyArchivedAuthorizationDecisions:a3 withConfirmationToken:v5 replyBlock:v11];
+    [synchronousRemoteObject applyArchivedAuthorizationDecisions:decisions withConfirmationToken:uUID replyBlock:v11];
     if (v13[3])
     {
       v8 = v17[5];
@@ -384,13 +384,13 @@ LABEL_7:
   v9 = sub_19B9B1FE0;
   v10 = sub_19B9B1FF0;
   v11 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B2320;
   v5[3] = &unk_1E753E360;
   v5[4] = &v6;
-  [v2 getAppsUsingLocationWithReplyBlock:v5];
+  [synchronousRemoteObject getAppsUsingLocationWithReplyBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -404,13 +404,13 @@ LABEL_7:
   v9 = sub_19B9B1FE0;
   v10 = sub_19B9B1FF0;
   v11 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B2428;
   v5[3] = &unk_1E753E360;
   v5[4] = &v6;
-  [v2 getActiveClientsUsingLocationWithReplyBlock:v5];
+  [synchronousRemoteObject getActiveClientsUsingLocationWithReplyBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -424,13 +424,13 @@ LABEL_7:
   v9 = sub_19B9B1FE0;
   v10 = sub_19B9B1FF0;
   v11 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B2530;
   v5[3] = &unk_1E753E360;
   v5[4] = &v6;
-  [v2 getClientManagerInternalStateWithReplyBlock:v5];
+  [synchronousRemoteObject getClientManagerInternalStateWithReplyBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -442,32 +442,32 @@ LABEL_7:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B2618;
   v5[3] = &unk_1E753E360;
   v5[4] = &v6;
-  [v2 getZaxisStatsWithReplyBlock:v5];
+  [synchronousRemoteObject getZaxisStatsWithReplyBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)setLocationDefaultForKey:(__CFString *)a3 value:(void *)a4
+- (void)setLocationDefaultForKey:(__CFString *)key value:(void *)value
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (key)
   {
-    if (a4)
+    if (value)
     {
-      [MEMORY[0x1E696AE40] dataWithPropertyList:a4 format:200 options:0 error:0];
+      [MEMORY[0x1E696AE40] dataWithPropertyList:value format:200 options:0 error:0];
     }
 
-    v9 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v10 = *MEMORY[0x1E69E9840];
 
-    MEMORY[0x1EEE66B58](v9, sel_setLocationDefaultForKey_andValue_replyBlock_);
+    MEMORY[0x1EEE66B58](synchronousRemoteObject, sel_setLocationDefaultForKey_andValue_replyBlock_);
   }
 
   else
@@ -505,10 +505,10 @@ LABEL_7:
   }
 }
 
-- (void)getLocationDefaultForKey:(__CFString *)a3
+- (void)getLocationDefaultForKey:(__CFString *)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     v8 = 0;
     v9 = &v8;
@@ -516,36 +516,36 @@ LABEL_7:
     v11 = sub_19B9B1FE0;
     v12 = sub_19B9B1FF0;
     v13 = 0;
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_19B9B2B30;
     v7[3] = &unk_1E753E3B0;
     v7[4] = &v8;
-    [v4 getLocationDefaultForKey:v3 replyBlock:v7];
+    [synchronousRemoteObject getLocationDefaultForKey:keyCopy replyBlock:v7];
     v5 = v9[5];
     if (v5)
     {
-      v3 = [MEMORY[0x1E696AE40] propertyListWithData:v5 options:0 format:0 error:0];
+      keyCopy = [MEMORY[0x1E696AE40] propertyListWithData:v5 options:0 format:0 error:0];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (id)timeZoneAtLocation:(id)a3
+- (id)timeZoneAtLocation:(id)location
 {
-  if (!a3)
+  if (!location)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"-[CLLocationInternalClient timeZoneAtLocation:]") description:{@"LocationInternal.m", 665, @"Invalid parameter not satisfying: %@", @"nil != location"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"-[CLLocationInternalClient timeZoneAtLocation:]") description:{@"LocationInternal.m", 665, @"Invalid parameter not satisfying: %@", @"nil != location"}];
   }
 
   v11 = 0;
@@ -554,10 +554,10 @@ LABEL_7:
   v14 = sub_19B9B1FE0;
   v15 = sub_19B9B1FF0;
   v16 = 0;
-  v5 = [(CLLocationInternalClient *)self synchronousRemoteObject];
-  if (a3)
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  if (location)
   {
-    [a3 clientLocation];
+    [location clientLocation];
   }
 
   else
@@ -570,17 +570,17 @@ LABEL_7:
   v9[2] = sub_19B9B2DD4;
   v9[3] = &unk_1E753E3D8;
   v9[4] = &v11;
-  [v5 timeZoneForLocation:v10 replyBlock:v9];
+  [synchronousRemoteObject timeZoneForLocation:v10 replyBlock:v9];
   v6 = v12[5];
   _Block_object_dispose(&v11, 8);
   return v6;
 }
 
-- (void)setPrivateMode:(unsigned __int8)a3
+- (void)setPrivateMode:(unsigned __int8)mode
 {
-  v3 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v3, sel_setPrivateMode_replyBlock_);
+  MEMORY[0x1EEE66B58](synchronousRemoteObject, sel_setPrivateMode_replyBlock_);
 }
 
 - (unsigned)getPrivateMode
@@ -589,13 +589,13 @@ LABEL_7:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B30C8;
   v5[3] = &unk_1E753E400;
   v5[4] = &v6;
-  [v2 getPrivateMode:v5];
+  [synchronousRemoteObject getPrivateMode:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -607,19 +607,19 @@ LABEL_7:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B31A0;
   v5[3] = &unk_1E753DC90;
   v5[4] = &v6;
-  [v2 pingDaemonWithReplyBlock:v5];
+  [synchronousRemoteObject pingDaemonWithReplyBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)setLocationServicesEnabled:(unsigned __int8)a3
+- (void)setLocationServicesEnabled:(unsigned __int8)enabled
 {
   [-[CLLocationInternalClient synchronousRemoteObject](self "synchronousRemoteObject")];
   v3 = *MEMORY[0x1E695E8B8];
@@ -628,76 +628,76 @@ LABEL_7:
   CFPreferencesSynchronize(@"com.apple.locationd", v3, v4);
 }
 
-- (unsigned)getLocationServicesEnabled:(char *)a3
+- (unsigned)getLocationServicesEnabled:(char *)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     v7 = 0;
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = 0;
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_19B9B3488;
     v6[3] = &unk_1E753E2E8;
     v6[4] = &v7;
-    v6[5] = v3;
-    [v4 getLocationServicesEnabledWithReplyBlock:v6];
-    LOBYTE(v3) = *(v8 + 24);
+    v6[5] = enabledCopy;
+    [synchronousRemoteObject getLocationServicesEnabledWithReplyBlock:v6];
+    LOBYTE(enabledCopy) = *(v8 + 24);
     _Block_object_dispose(&v7, 8);
   }
 
-  return v3;
+  return enabledCopy;
 }
 
-- (id)setAuthorizationPromptMapDisplayEnabled:(unsigned __int8)a3
+- (id)setAuthorizationPromptMapDisplayEnabled:(unsigned __int8)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3052000000;
   v11 = sub_19B9B1FE0;
   v12 = sub_19B9B1FF0;
   v13 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_19B9B35AC;
   v7[3] = &unk_1E753DC90;
   v7[4] = &v8;
-  [v4 setAuthorizationPromptMapDisplayEnabled:v3 != 0 replyBlock:v7];
+  [synchronousRemoteObject setAuthorizationPromptMapDisplayEnabled:enabledCopy != 0 replyBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (unsigned)getAuthorizationPromptMapDisplayEnabled:(char *)a3
+- (unsigned)getAuthorizationPromptMapDisplayEnabled:(char *)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     v7 = 0;
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = 0;
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_19B9B3834;
     v6[3] = &unk_1E753E428;
     v6[4] = &v7;
-    v6[5] = v3;
-    [v4 getAuthorizationPromptMapDisplayEnabledWithReplyBlock:v6];
-    LOBYTE(v3) = *(v8 + 24);
+    v6[5] = enabledCopy;
+    [synchronousRemoteObject getAuthorizationPromptMapDisplayEnabledWithReplyBlock:v6];
+    LOBYTE(enabledCopy) = *(v8 + 24);
     _Block_object_dispose(&v7, 8);
   }
 
-  return v3;
+  return enabledCopy;
 }
 
-- (id)setTemporaryAuthorizationStatusForBundleId:(id)a3 orBundlePath:(id)a4 statusData:(id)a5
+- (id)setTemporaryAuthorizationStatusForBundleId:(id)id orBundlePath:(id)path statusData:(id)data
 {
   v14 = 0;
   v15 = &v14;
@@ -705,25 +705,25 @@ LABEL_7:
   v17 = sub_19B9B1FE0;
   v18 = sub_19B9B1FF0;
   v19 = 0;
-  if (!a5)
+  if (!data)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"-[CLLocationInternalClient setTemporaryAuthorizationStatusForBundleId:orBundlePath:statusData:]") description:{@"LocationInternal.m", 788, @"Invalid parameter not satisfying: %@", @"data != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"-[CLLocationInternalClient setTemporaryAuthorizationStatusForBundleId:orBundlePath:statusData:]") description:{@"LocationInternal.m", 788, @"Invalid parameter not satisfying: %@", @"data != nil"}];
   }
 
-  v9 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_19B9B39D0;
   v13[3] = &unk_1E753DC90;
   v13[4] = &v14;
-  [v9 setTemporaryAuthorizationStatusForBundleId:a3 orBundlePath:a4 statusData:a5 replyBlock:v13];
+  [synchronousRemoteObject setTemporaryAuthorizationStatusForBundleId:id orBundlePath:path statusData:data replyBlock:v13];
   v10 = v15[5];
   _Block_object_dispose(&v14, 8);
   return v10;
 }
 
-- (id)getTemporaryAuthorizationStatusForBundleId:(id)a3 orBundlePath:(id)a4 error:(id *)a5
+- (id)getTemporaryAuthorizationStatusForBundleId:(id)id orBundlePath:(id)path error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -731,32 +731,32 @@ LABEL_7:
   v15 = sub_19B9B1FE0;
   v16 = sub_19B9B1FF0;
   v17 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_19B9B3C84;
   v11[3] = &unk_1E753E450;
   v11[4] = &v12;
-  v11[5] = a5;
-  [v8 getTemporaryAuthorizationStatusForBundleId:a3 orBundlePath:a4 replyBlock:v11];
+  v11[5] = error;
+  [synchronousRemoteObject getTemporaryAuthorizationStatusForBundleId:id orBundlePath:path replyBlock:v11];
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
   return v9;
 }
 
-- (double)modifyOrSetAuthorizationTime:(double)a3 forBundleID:(id)a4 orBundlePath:(id)a5
+- (double)modifyOrSetAuthorizationTime:(double)time forBundleID:(id)d orBundlePath:(id)path
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0xBFF0000000000000;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_19B9B3F38;
   v11[3] = &unk_1E753E478;
   v11[4] = &v12;
-  [v8 modifyOrSetAuthorizationTime:a4 forBundleID:a5 orBundlePath:v11 replyBlock:a3];
+  [synchronousRemoteObject modifyOrSetAuthorizationTime:d forBundleID:path orBundlePath:v11 replyBlock:time];
   v9 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v9;
@@ -770,91 +770,91 @@ LABEL_7:
   v9 = sub_19B9B1FE0;
   v10 = sub_19B9B1FF0;
   v11 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B41CC;
   v5[3] = &unk_1E753DC90;
   v5[4] = &v6;
-  [v2 triggerExpiredAuthorizationPurgeWithReplyBlock:v5];
+  [synchronousRemoteObject triggerExpiredAuthorizationPurgeWithReplyBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)setGestureServiceEnabled:(unsigned __int8)a3
+- (void)setGestureServiceEnabled:(unsigned __int8)enabled
 {
-  v3 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v3, sel_setGestureServiceEnabled_replyBlock_);
+  MEMORY[0x1EEE66B58](synchronousRemoteObject, sel_setGestureServiceEnabled_replyBlock_);
 }
 
-- (unsigned)getGestureServiceEnabled:(char *)a3
+- (unsigned)getGestureServiceEnabled:(char *)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     v7 = 0;
     v8 = &v7;
     v9 = 0x2020000000;
     v10 = 0;
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_19B9B4620;
     v6[3] = &unk_1E753E428;
     v6[4] = &v7;
-    v6[5] = v3;
-    [v4 getGestureServiceEnabledWithReplyBlock:v6];
-    LOBYTE(v3) = *(v8 + 24);
+    v6[5] = enabledCopy;
+    [synchronousRemoteObject getGestureServiceEnabledWithReplyBlock:v6];
+    LOBYTE(enabledCopy) = *(v8 + 24);
     _Block_object_dispose(&v7, 8);
   }
 
-  return v3;
+  return enabledCopy;
 }
 
-- (unsigned)getAuthorizationStatusForApp:(int *)a3 withAuditToken:(id *)a4
+- (unsigned)getAuthorizationStatusForApp:(int *)app withAuditToken:(id *)token
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B4720;
   v10[3] = &unk_1E753E2E8;
   v10[4] = &v11;
-  v10[5] = a3;
-  v7 = *&a4->var0[4];
-  v9[0] = *a4->var0;
+  v10[5] = app;
+  v7 = *&token->var0[4];
+  v9[0] = *token->var0;
   v9[1] = v7;
-  [v6 getAuthorizationStatusForAppWithAuditToken:v9 replyBlock:v10];
-  LOBYTE(a4) = *(v12 + 24);
+  [synchronousRemoteObject getAuthorizationStatusForAppWithAuditToken:v9 replyBlock:v10];
+  LOBYTE(token) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a4;
+  return token;
 }
 
-- (unsigned)getAuthorizationStatus:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (unsigned)getAuthorizationStatus:(int *)status forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B4820;
   v10[3] = &unk_1E753E2E8;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v8 getAuthorizationStatusForBundleID:a4 orBundlePath:a5 replyBlock:v10];
-  LOBYTE(a5) = *(v12 + 24);
+  v10[5] = status;
+  [synchronousRemoteObject getAuthorizationStatusForBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a5;
+  return path;
 }
 
-- (unsigned)getPrecisionPermission:(char *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (unsigned)getPrecisionPermission:(char *)permission forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v34 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -867,15 +867,15 @@ LABEL_7:
   v22 = sub_19B9B1FE0;
   v23 = sub_19B9B1FF0;
   v24 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_19B9B4AFC;
   v18[3] = &unk_1E753E4A0;
   v18[5] = &v19;
-  v18[6] = a3;
+  v18[6] = permission;
   v18[4] = &v25;
-  [v8 getPrecisionPermissionForBundleID:a4 orBundlePath:a5 replyBlock:v18];
+  [synchronousRemoteObject getPrecisionPermissionForBundleID:d orBundlePath:path replyBlock:v18];
   v9 = v20;
   if (v20[5])
   {
@@ -930,13 +930,13 @@ LABEL_7:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B4D94;
   v9[3] = &unk_1E753DC90;
   v9[4] = &v10;
-  [v2 performMigrationWithReplyBlock:v9];
+  [synchronousRemoteObject performMigrationWithReplyBlock:v9];
   if (!*(v11 + 24))
   {
     if (qword_1ED519088 != -1)
@@ -982,13 +982,13 @@ LABEL_7:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B4FF4;
   v9[3] = &unk_1E753DC90;
   v9[4] = &v10;
-  [v2 shutdownDaemonWithReplyBlock:v9];
+  [synchronousRemoteObject shutdownDaemonWithReplyBlock:v9];
   if (!*(v11 + 24))
   {
     if (qword_1ED519088 != -1)
@@ -1034,13 +1034,13 @@ LABEL_7:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B5250;
   v9[3] = &unk_1E753DC90;
   v9[4] = &v10;
-  [v2 displayStatisticsWithReplyBlock:v9];
+  [synchronousRemoteObject displayStatisticsWithReplyBlock:v9];
   if (!*(v11 + 24))
   {
     if (qword_1ED519088 != -1)
@@ -1079,20 +1079,20 @@ LABEL_7:
   return v6;
 }
 
-- (unsigned)dumpLogs:(__CFString *)a3
+- (unsigned)dumpLogs:(__CFString *)logs
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_19B9B54B8;
   v11[3] = &unk_1E753DC90;
   v11[4] = &v12;
-  [v4 dumpLogsWithDescription:a3 replyBlock:v11];
+  [synchronousRemoteObject dumpLogsWithDescription:logs replyBlock:v11];
   if (!*(v13 + 24))
   {
     if (qword_1ED519088 != -1)
@@ -1131,25 +1131,25 @@ LABEL_7:
   return v8;
 }
 
-- (__CFDictionary)copyMonitoredRegionsForBundleIdentifier:(__CFString *)a3 orBundlePath:(__CFString *)a4
+- (__CFDictionary)copyMonitoredRegionsForBundleIdentifier:(__CFString *)identifier orBundlePath:(__CFString *)path
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B55A8;
   v9[3] = &unk_1E753E360;
   v9[4] = &v10;
-  [v6 getMonitoredRegionsForBundleID:a3 orBundlePath:a4 replyBlock:v9];
+  [synchronousRemoteObject getMonitoredRegionsForBundleID:identifier orBundlePath:path replyBlock:v9];
   v7 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v7;
 }
 
-- (BOOL)checkAndExerciseAuthorizationForBundleID:(id)a3 orBundlePath:(id)a4 services:(unint64_t)a5 error:(id *)a6
+- (BOOL)checkAndExerciseAuthorizationForBundleID:(id)d orBundlePath:(id)path services:(unint64_t)services error:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -1165,7 +1165,7 @@ LABEL_7:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v10 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_19B9B5794;
@@ -1173,7 +1173,7 @@ LABEL_7:
   v15[4] = &v20;
   v15[5] = &v26;
   v15[6] = &v16;
-  [v10 checkAndExerciseAuthorizationForBundleID:a3 orBundlePath:a4 services:a5 replyBlock:v15];
+  [synchronousRemoteObject checkAndExerciseAuthorizationForBundleID:d orBundlePath:path services:services replyBlock:v15];
   v11 = v21[5];
   if ((v17[3] & 1) == 0)
   {
@@ -1181,9 +1181,9 @@ LABEL_7:
     v21[5] = v12;
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = v21[5];
+    *error = v21[5];
   }
 
   v13 = *(v27 + 24);
@@ -1193,7 +1193,7 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)deleteInterestZoneWithId:(id)a3 registeredForBundleId:(id)a4 orBundlePath:(id)a5 error:(id *)a6
+- (BOOL)deleteInterestZoneWithId:(id)id registeredForBundleId:(id)bundleId orBundlePath:(id)path error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -1205,18 +1205,18 @@ LABEL_7:
   v18 = sub_19B9B1FE0;
   v19 = sub_19B9B1FF0;
   v20 = 0;
-  v10 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_19B9B5EBC;
   v14[3] = &unk_1E753E338;
   v14[4] = &v15;
   v14[5] = &v21;
-  [v10 deleteInterestZoneWithId:a3 registeredForBundleId:a4 orBundlePath:a5 replyBlock:v14];
+  [synchronousRemoteObject deleteInterestZoneWithId:id registeredForBundleId:bundleId orBundlePath:path replyBlock:v14];
   v11 = v16[5];
-  if (a6)
+  if (error)
   {
-    *a6 = v16[5];
+    *error = v16[5];
   }
 
   v12 = *(v22 + 24) != 0;
@@ -1225,49 +1225,49 @@ LABEL_7:
   return v12;
 }
 
-- (unsigned)getLocationForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4 dynamicAccuracyReductionEnabled:(unsigned __int8)a5 allowsAlteredAccessoryLocations:(unsigned __int8)a6 location:(id *)a7
+- (unsigned)getLocationForBundleID:(__CFString *)d orBundlePath:(__CFString *)path dynamicAccuracyReductionEnabled:(unsigned __int8)enabled allowsAlteredAccessoryLocations:(unsigned __int8)locations location:(id *)location
 {
-  if (!a7)
+  if (!location)
   {
     return 0;
   }
 
-  v8 = a6;
-  v9 = a5;
+  locationsCopy = locations;
+  enabledCopy = enabled;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v12 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_19B9B600C;
   v15[3] = &unk_1E753E450;
   v15[4] = &v16;
-  v15[5] = a7;
-  [v12 getLocationForBundleID:a3 orBundlePath:a4 dynamicAccuracyReductionEnabled:v9 != 0 allowsAlteredAccessoryLocations:v8 != 0 replyBlock:v15];
+  v15[5] = location;
+  [synchronousRemoteObject getLocationForBundleID:d orBundlePath:path dynamicAccuracyReductionEnabled:enabledCopy != 0 allowsAlteredAccessoryLocations:locationsCopy != 0 replyBlock:v15];
   v13 = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
   return v13;
 }
 
-- (unsigned)getGroundAltitudeForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4 location:(id)a5 groundAltitude:(id *)a6
+- (unsigned)getGroundAltitudeForBundleID:(__CFString *)d orBundlePath:(__CFString *)path location:(id)location groundAltitude:(id *)altitude
 {
   v6 = 0;
-  if (a5 && a6)
+  if (location && altitude)
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    v11 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B9B6154;
     v13[3] = &unk_1E753E4F0;
     v13[4] = &v14;
-    v13[5] = a6;
-    [v11 getGroundAltitudeForBundleID:a3 orBundlePath:a4 location:a5 replyBlock:v13];
+    v13[5] = altitude;
+    [synchronousRemoteObject getGroundAltitudeForBundleID:d orBundlePath:path location:location replyBlock:v13];
     v6 = *(v15 + 24);
     _Block_object_dispose(&v14, 8);
   }
@@ -1275,7 +1275,7 @@ LABEL_7:
   return v6;
 }
 
-- (void)setTrackRunHint:(id *)a3
+- (void)setTrackRunHint:(id *)hint
 {
   v10 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -1318,13 +1318,13 @@ LABEL_7:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 4;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_19B9B6CD8;
   v11[3] = &unk_1E753E518;
   v11[4] = &v12;
-  [v2 getAccessoryPASCDTransmissionStateWithReplyBlock:v11];
+  [synchronousRemoteObject getAccessoryPASCDTransmissionStateWithReplyBlock:v11];
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6E4D8);
@@ -1374,13 +1374,13 @@ LABEL_7:
   v15 = sub_19B9B1FE0;
   v16 = sub_19B9B1FF0;
   v17 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_19B9B7150;
   v11[3] = &unk_1E753E360;
   v11[4] = &v12;
-  [v2 getOdometryBatchedLocationsWithReplyBlock:v11];
+  [synchronousRemoteObject getOdometryBatchedLocationsWithReplyBlock:v11];
   if (v13[5])
   {
     if (qword_1ED519088 != -1)
@@ -1431,13 +1431,13 @@ LABEL_7:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B76D0;
   v9[3] = &unk_1E753DC90;
   v9[4] = &v10;
-  [v2 copyLastLogWithReplyBlock:v9];
+  [synchronousRemoteObject copyLastLogWithReplyBlock:v9];
   if (!*(v11 + 24))
   {
     if (qword_1ED519088 != -1)
@@ -1482,13 +1482,13 @@ LABEL_7:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B7C8C;
   v5[3] = &unk_1E753E518;
   v5[4] = &v6;
-  [v2 getStatusBarIconState:v5];
+  [synchronousRemoteObject getStatusBarIconState:v5];
   v3 = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -1505,13 +1505,13 @@ LABEL_7:
   v15 = 0;
   do
   {
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_19B9B7DC8;
     v9[3] = &unk_1E753E388;
     v9[4] = &v10;
-    [v4 getPipelinedCacheWithReply:v9];
+    [synchronousRemoteObject getPipelinedCacheWithReply:v9];
     v5 = v11[5];
     if (v5)
     {
@@ -1532,66 +1532,66 @@ LABEL_7:
   return v7;
 }
 
-- (unsigned)getGyroCalibrationDatabaseBiasFit:(id *)a3 atTemperature:(float)a4
+- (unsigned)getGyroCalibrationDatabaseBiasFit:(id *)fit atTemperature:(float)temperature
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B9B7EE0;
   v8[3] = &unk_1E753E450;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v6 getGyroCalibrationDatabaseBiasFitAtTemperature:v8 withReply:COERCE_DOUBLE(LODWORD(a4))];
-  LOBYTE(a3) = *(v10 + 24);
+  v8[5] = fit;
+  [synchronousRemoteObject getGyroCalibrationDatabaseBiasFitAtTemperature:v8 withReply:COERCE_DOUBLE(LODWORD(temperature))];
+  LOBYTE(fit) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return a3;
+  return fit;
 }
 
-- (BOOL)startStopAdvertisingBeacon:(id)a3 power:(id)a4
+- (BOOL)startStopAdvertisingBeacon:(id)beacon power:(id)power
 {
-  if (a4)
+  if (power)
   {
-    v6 = [a4 intValue];
+    intValue = [power intValue];
   }
 
   else
   {
-    v6 = 0xFFFFFFFFLL;
+    intValue = 0xFFFFFFFFLL;
   }
 
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B802C;
   v10[3] = &unk_1E753DC90;
   v10[4] = &v11;
-  [v7 startStopAdvertisingBeacon:a3 atPower:v6 replyBlock:v10];
+  [synchronousRemoteObject startStopAdvertisingBeacon:beacon atPower:intValue replyBlock:v10];
   v8 = *(v12 + 24) != 0;
   _Block_object_dispose(&v11, 8);
   return v8;
 }
 
-- (unsigned)insertGyroCalibrationDatabaseBiasEstimateIfValid:(id)a3 temperature:(float)a4 variance:(id)a5 timestamp:(double)a6
+- (unsigned)insertGyroCalibrationDatabaseBiasEstimateIfValid:(id)valid temperature:(float)temperature variance:(id)variance timestamp:(double)timestamp
 {
-  var2 = a5.var2;
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v11 = a3.var2;
-  v12 = a3.var1;
-  v13 = a3.var0;
+  var2 = variance.var2;
+  var1 = variance.var1;
+  var0 = variance.var0;
+  v11 = valid.var2;
+  v12 = valid.var1;
+  v13 = valid.var0;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v14 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = sub_19B9B8164;
@@ -1599,11 +1599,11 @@ LABEL_7:
   v23[4] = &v24;
   *&v15 = v12;
   *&v16 = v11;
-  *&v17 = a4;
+  *&v17 = temperature;
   *&v18 = var0;
   *&v19 = var1;
   *&v20 = var2;
-  [v14 insertGyroCalibrationDatabaseBiasEstimateIfValid:v23 temperature:COERCE_DOUBLE(LODWORD(v13)) variance:v15 timestamp:v16 replyBlock:{v17, v18, v19, v20, a6}];
+  [synchronousRemoteObject insertGyroCalibrationDatabaseBiasEstimateIfValid:v23 temperature:COERCE_DOUBLE(LODWORD(v13)) variance:v15 timestamp:v16 replyBlock:{v17, v18, v19, v20, timestamp}];
   v21 = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
   return v21;
@@ -1615,62 +1615,62 @@ LABEL_7:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B823C;
   v5[3] = &unk_1E753DC90;
   v5[4] = &v6;
-  [v2 gyroCalibrationDatabaseWipeWithReplyBlock:v5];
+  [synchronousRemoteObject gyroCalibrationDatabaseWipeWithReplyBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (unsigned)getGyroCalibrationDatabaseNumTemperatures:(int *)a3
+- (unsigned)getGyroCalibrationDatabaseNumTemperatures:(int *)temperatures
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_19B9B8318;
   v6[3] = &unk_1E753E2E8;
   v6[4] = &v7;
-  v6[5] = a3;
-  [v4 gyroCalibrationDatabaseGetNumTemperaturesWithReplyBlock:v6];
-  LOBYTE(a3) = *(v8 + 24);
+  v6[5] = temperatures;
+  [synchronousRemoteObject gyroCalibrationDatabaseGetNumTemperaturesWithReplyBlock:v6];
+  LOBYTE(temperatures) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return a3;
+  return temperatures;
 }
 
-- (unsigned)configure:(id)a3
+- (unsigned)configure:(id)configure
 {
-  v3 = *&a3.var7;
-  v4 = *&a3.var0;
+  v3 = *&configure.var7;
+  v4 = *&configure.var0;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_19B9B8414;
   v7[3] = &unk_1E753DC90;
   v7[4] = &v8;
-  [v5 configure:v4 replyBlock:{v3, v7}];
+  [synchronousRemoteObject configure:v4 replyBlock:{v3, v7}];
   LOBYTE(v3) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v3;
 }
 
-- (unsigned)getControlPlaneStatusReportClear:(int)a3 startTime:(double *)a4 endTime:(double *)a5 latitude:(double *)a6 longitude:(double *)a7 altitude:(double *)a8 accuracy:(double *)a9 status:(unsigned int *)a10
+- (unsigned)getControlPlaneStatusReportClear:(int)clear startTime:(double *)time endTime:(double *)endTime latitude:(double *)latitude longitude:(double *)longitude altitude:(double *)altitude accuracy:(double *)accuracy status:(unsigned int *)self0
 {
   v10 = 0;
   v36 = *MEMORY[0x1E69E9840];
-  if (a7 && a6 && a4 && a5 && a10)
+  if (longitude && latitude && time && endTime && status)
   {
     v29 = 0;
     v30 = &v29;
@@ -1678,20 +1678,20 @@ LABEL_7:
     v32 = sub_19B9B1FE0;
     v33 = sub_19B9B1FF0;
     v34 = 0;
-    v15 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = sub_19B9B87A8;
     v28[3] = &unk_1E753E568;
-    v28[6] = a5;
-    v28[7] = a6;
-    v28[8] = a7;
-    v28[9] = a8;
-    v28[10] = a9;
-    v28[11] = a10;
+    v28[6] = endTime;
+    v28[7] = latitude;
+    v28[8] = longitude;
+    v28[9] = altitude;
+    v28[10] = accuracy;
+    v28[11] = status;
     v28[4] = &v29;
-    v28[5] = a4;
-    [v15 getControlPlaneStatusReportClear:a3 replyBlock:v28];
+    v28[5] = time;
+    [synchronousRemoteObject getControlPlaneStatusReportClear:clear replyBlock:v28];
     while (1)
     {
       v16 = v30[5];
@@ -1737,20 +1737,20 @@ LABEL_7:
       }
 
       sleep(1u);
-      v20 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+      synchronousRemoteObject2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = sub_19B9B87E4;
       v26[3] = &unk_1E753E568;
-      v26[6] = a5;
-      v26[7] = a6;
-      v26[8] = a7;
-      v26[9] = a8;
-      v26[10] = a9;
-      v26[11] = a10;
+      v26[6] = endTime;
+      v26[7] = latitude;
+      v26[8] = longitude;
+      v26[9] = altitude;
+      v26[10] = accuracy;
+      v26[11] = status;
       v26[4] = &v29;
-      v26[5] = a4;
-      [v20 getControlPlaneStatusReportClear:a3 replyBlock:v26];
+      v26[5] = time;
+      [synchronousRemoteObject2 getControlPlaneStatusReportClear:clear replyBlock:v26];
     }
 
     v10 = v30[5] == 0;
@@ -1762,24 +1762,24 @@ LABEL_24:
   return v10;
 }
 
-- (unsigned)getEmergencyLocationSettingsCompatibilityVersion:(int *)a3 andContentVersion:(int *)a4
+- (unsigned)getEmergencyLocationSettingsCompatibilityVersion:(int *)version andContentVersion:(int *)contentVersion
 {
   v4 = 0;
-  if (a3 && a4)
+  if (version && contentVersion)
   {
     v10 = 0;
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v7 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_19B9B8900;
     v9[3] = &unk_1E753E590;
-    v9[5] = a3;
-    v9[6] = a4;
+    v9[5] = version;
+    v9[6] = contentVersion;
     v9[4] = &v10;
-    [v7 getEmergencyLocationSettingsVersion:v9];
+    [synchronousRemoteObject getEmergencyLocationSettingsVersion:v9];
     v4 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
   }
@@ -1793,13 +1793,13 @@ LABEL_24:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B89E4;
   v5[3] = &unk_1E753DC90;
   v5[4] = &v6;
-  [v2 deleteCurrentEmergencyLocationAsset:v5];
+  [synchronousRemoteObject deleteCurrentEmergencyLocationAsset:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -1813,19 +1813,19 @@ LABEL_24:
   v9 = sub_19B9B1FE0;
   v10 = sub_19B9B1FF0;
   v11 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B8AE0;
   v5[3] = &unk_1E753E5B8;
   v5[4] = &v6;
-  [v2 copyNearbyAssetSettings:v5];
+  [synchronousRemoteObject copyNearbyAssetSettings:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (__CFDictionary)copyNearbyAssetSettingsOfAccessoryFile:(__CFString *)a3
+- (__CFDictionary)copyNearbyAssetSettingsOfAccessoryFile:(__CFString *)file
 {
   v8 = 0;
   v9 = &v8;
@@ -1833,19 +1833,19 @@ LABEL_24:
   v11 = sub_19B9B1FE0;
   v12 = sub_19B9B1FF0;
   v13 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_19B9B8C04;
   v7[3] = &unk_1E753E5B8;
   v7[4] = &v8;
-  [v4 copyNearbyAssetSettingsOfAccessoryFile:a3 withReply:v7];
+  [synchronousRemoteObject copyNearbyAssetSettingsOfAccessoryFile:file withReply:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (__CFDictionary)copyRoutineAssetSettingsWithCompatibilityVersion:(int *)a3 contentVersion:(int *)a4
+- (__CFDictionary)copyRoutineAssetSettingsWithCompatibilityVersion:(int *)version contentVersion:(int *)contentVersion
 {
   v10 = 0;
   v11 = &v10;
@@ -1853,15 +1853,15 @@ LABEL_24:
   v13 = sub_19B9B1FE0;
   v14 = sub_19B9B1FF0;
   v15 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B8D34;
   v9[3] = &unk_1E753E5E0;
   v9[4] = &v10;
-  v9[5] = a3;
-  v9[6] = a4;
-  [v6 copyRoutineAssetSettings:v9];
+  v9[5] = version;
+  v9[6] = contentVersion;
+  [synchronousRemoteObject copyRoutineAssetSettings:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
   return v7;
@@ -1873,19 +1873,19 @@ LABEL_24:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B8E50;
   v5[3] = &unk_1E753E608;
   v5[4] = &v6;
-  [v2 shouldDisplayEEDUI:v5];
+  [synchronousRemoteObject shouldDisplayEEDUI:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (id)getEEDCloakingKey:(id *)a3
+- (id)getEEDCloakingKey:(id *)key
 {
   v9 = 0;
   v10 = &v9;
@@ -1893,21 +1893,21 @@ LABEL_24:
   v12 = sub_19B9B1FE0;
   v13 = sub_19B9B1FF0;
   v14 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B9B8F58;
   v8[3] = &unk_1E753E450;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 getEEDCloakingKeyWithReply:v8];
-  v5 = *a3;
+  v8[5] = key;
+  [synchronousRemoteObject getEEDCloakingKeyWithReply:v8];
+  v5 = *key;
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (id)getEEDEmergencyContactNames:(id *)a3
+- (id)getEEDEmergencyContactNames:(id *)names
 {
   v9 = 0;
   v10 = &v9;
@@ -1915,15 +1915,15 @@ LABEL_24:
   v12 = sub_19B9B1FE0;
   v13 = sub_19B9B1FF0;
   v14 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B9B9094;
   v8[3] = &unk_1E753E630;
   v8[4] = &v9;
-  v8[5] = a3;
-  [v4 getEEDEmergencyContactNamesWithReply:v8];
-  v5 = *a3;
+  v8[5] = names;
+  [synchronousRemoteObject getEEDEmergencyContactNamesWithReply:v8];
+  v5 = *names;
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
@@ -1945,13 +1945,13 @@ LABEL_24:
       break;
     }
 
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_19B9B91F0;
     v7[3] = &unk_1E753E658;
     v7[4] = &v8;
-    [v4 getMotionSensorLogsWithReply:v7];
+    [synchronousRemoteObject getMotionSensorLogsWithReply:v7];
   }
 
   v5 = v3;
@@ -1975,13 +1975,13 @@ LABEL_24:
       break;
     }
 
-    v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+    synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_19B9B9338;
     v7[3] = &unk_1E753E658;
     v7[4] = &v8;
-    [v4 getAccessoryMotionSensorLogsWithReply:v7];
+    [synchronousRemoteObject getAccessoryMotionSensorLogsWithReply:v7];
   }
 
   v5 = v3;
@@ -1989,105 +1989,105 @@ LABEL_24:
   return v5;
 }
 
-- (unsigned)setTemporaryAuthorizationGranted:(unsigned __int8)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5 orAuditToken:(id *)a6 byLocationButton:(unsigned __int8)a7 voiceInteractionEnabled:(unsigned __int8)a8
+- (unsigned)setTemporaryAuthorizationGranted:(unsigned __int8)granted forBundleID:(__CFString *)d orBundlePath:(__CFString *)path orAuditToken:(id *)token byLocationButton:(unsigned __int8)button voiceInteractionEnabled:(unsigned __int8)enabled
 {
-  v8 = a8;
-  v9 = a7;
-  v13 = a3;
+  enabledCopy = enabled;
+  buttonCopy = button;
+  grantedCopy = granted;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v14 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_19B9B9484;
   v18[3] = &unk_1E753DC90;
   v18[4] = &v19;
-  v15 = *&a6->var0[4];
-  v17[0] = *a6->var0;
+  v15 = *&token->var0[4];
+  v17[0] = *token->var0;
   v17[1] = v15;
-  [v14 setTemporaryAuthorizationGranted:v13 != 0 forBundleID:a4 orBundlePath:a5 orAuditToken:v17 byLocationButton:v9 != 0 voiceInteractionEnabled:v8 != 0 replyBlock:v18];
-  LOBYTE(a5) = *(v20 + 24);
+  [synchronousRemoteObject setTemporaryAuthorizationGranted:grantedCopy != 0 forBundleID:d orBundlePath:path orAuditToken:v17 byLocationButton:buttonCopy != 0 voiceInteractionEnabled:enabledCopy != 0 replyBlock:v18];
+  LOBYTE(path) = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
-  return a5;
+  return path;
 }
 
-- (unsigned)setTemporaryPreciseAuthorizationGranted:(unsigned __int8)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (unsigned)setTemporaryPreciseAuthorizationGranted:(unsigned __int8)granted forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
-  v7 = a3;
+  grantedCopy = granted;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B9580;
   v10[3] = &unk_1E753DC90;
   v10[4] = &v11;
-  [v8 setTemporaryPreciseAuthorizationGranted:v7 != 0 forBundleID:a4 orBundlePath:a5 replyBlock:v10];
-  LOBYTE(a5) = *(v12 + 24);
+  [synchronousRemoteObject setTemporaryPreciseAuthorizationGranted:grantedCopy != 0 forBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a5;
+  return path;
 }
 
-- (unsigned)tearDownLocationAuthPromptForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4
+- (unsigned)tearDownLocationAuthPromptForBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B9B9670;
   v8[3] = &unk_1E753DC90;
   v8[4] = &v9;
-  [v6 tearDownLocationAuthPromptForBundleID:a3 orBundlePath:a4 replyBlock:v8];
-  LOBYTE(a4) = *(v10 + 24);
+  [synchronousRemoteObject tearDownLocationAuthPromptForBundleID:d orBundlePath:path replyBlock:v8];
+  LOBYTE(path) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return a4;
+  return path;
 }
 
-- (unsigned)getPinnedLocationAuthorizationState:(CLLocationCoordinate2D *)a3
+- (unsigned)getPinnedLocationAuthorizationState:(CLLocationCoordinate2D *)state
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_19B9B982C;
   v6[3] = &unk_1E753E680;
   v6[4] = &v7;
-  v6[5] = a3;
-  [v4 getPinnedLocationAuthorizationStateWithReplyBlock:v6];
-  LOBYTE(a3) = *(v8 + 24);
+  v6[5] = state;
+  [synchronousRemoteObject getPinnedLocationAuthorizationStateWithReplyBlock:v6];
+  LOBYTE(state) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return a3;
+  return state;
 }
 
-- (void)checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)a3 orBundlePath:(id)a4 replyBlock:(id)a5
+- (void)checkAndExerciseLearnedRoutesAuthorizationForBundleID:(id)d orBundlePath:(id)path replyBlock:(id)block
 {
-  v5 = [(CLLocationInternalClient *)self asynchronousRemoteObject];
+  asynchronousRemoteObject = [(CLLocationInternalClient *)self asynchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v5, sel_checkAndExerciseLearnedRoutesAuthorizationForBundleID_orBundlePath_replyBlock_);
+  MEMORY[0x1EEE66B58](asynchronousRemoteObject, sel_checkAndExerciseLearnedRoutesAuthorizationForBundleID_orBundlePath_replyBlock_);
 }
 
-- (void)checkAndExercisePushClientAuthorizationForBundleID:(id)a3 replyBlock:(id)a4
+- (void)checkAndExercisePushClientAuthorizationForBundleID:(id)d replyBlock:(id)block
 {
-  v4 = [(CLLocationInternalClient *)self asynchronousRemoteObject];
+  asynchronousRemoteObject = [(CLLocationInternalClient *)self asynchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v4, sel_checkAndExercisePushClientAuthorizationForBundleID_replyBlock_);
+  MEMORY[0x1EEE66B58](asynchronousRemoteObject, sel_checkAndExercisePushClientAuthorizationForBundleID_replyBlock_);
 }
 
-- (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)a3 orBundlePath:(id)a4 replyBlock:(id)a5
+- (void)isEligibleForAlwaysAuthorizationRequestForBundleID:(id)d orBundlePath:(id)path replyBlock:(id)block
 {
-  v5 = [(CLLocationInternalClient *)self asynchronousRemoteObject];
+  asynchronousRemoteObject = [(CLLocationInternalClient *)self asynchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v5, sel_isEligibleForAlwaysAuthorizationRequestForBundleID_orBundlePath_replyBlock_);
+  MEMORY[0x1EEE66B58](asynchronousRemoteObject, sel_isEligibleForAlwaysAuthorizationRequestForBundleID_orBundlePath_replyBlock_);
 }
 
 - (__CFArray)copyActivityAlarms
@@ -2096,149 +2096,149 @@ LABEL_24:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9B99E4;
   v5[3] = &unk_1E753E388;
   v5[4] = &v6;
-  [v2 getActivitiesWithReplyBlock:v5];
+  [synchronousRemoteObject getActivitiesWithReplyBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (unsigned)updatePromptedLatitude:(double)a3 longitude:(double)a4
+- (unsigned)updatePromptedLatitude:(double)latitude longitude:(double)longitude
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_19B9B9CE0;
   v9[3] = &unk_1E753DC90;
   v9[4] = &v10;
-  [v6 updatePromptedLatitude:v9 longitude:a3 replyBlock:a4];
+  [synchronousRemoteObject updatePromptedLatitude:v9 longitude:latitude replyBlock:longitude];
   v7 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
   return v7;
 }
 
-- (unsigned)setBackgroundIndicatorForBundleID:(__CFString *)a3 orBundlePath:(__CFString *)a4 enabled:(unsigned __int8)a5
+- (unsigned)setBackgroundIndicatorForBundleID:(__CFString *)d orBundlePath:(__CFString *)path enabled:(unsigned __int8)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9B9FCC;
   v10[3] = &unk_1E753DC90;
   v10[4] = &v11;
-  [v8 setBackgroundIndicatorEnabled:v5 != 0 forBundleID:a3 orBundlePath:a4 replyBlock:v10];
-  LOBYTE(a4) = *(v12 + 24);
+  [synchronousRemoteObject setBackgroundIndicatorEnabled:enabledCopy != 0 forBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a4;
+  return path;
 }
 
-- (unsigned)gyroCalibrationDatabaseSupportsMiniCalibration:(int *)a3
+- (unsigned)gyroCalibrationDatabaseSupportsMiniCalibration:(int *)calibration
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_19B9BA0A8;
   v6[3] = &unk_1E753E2E8;
   v6[4] = &v7;
-  v6[5] = a3;
-  [v4 gyroCalibrationDatabaseSupportsMiniCalibrationWithReplyBlock:v6];
-  LOBYTE(a3) = *(v8 + 24);
+  v6[5] = calibration;
+  [synchronousRemoteObject gyroCalibrationDatabaseSupportsMiniCalibrationWithReplyBlock:v6];
+  LOBYTE(calibration) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return a3;
+  return calibration;
 }
 
-- (unsigned)timeSyncMachTimeStamp:(unint64_t *)a3 oscarTimeStamp:(unint64_t *)a4
+- (unsigned)timeSyncMachTimeStamp:(unint64_t *)stamp oscarTimeStamp:(unint64_t *)timeStamp
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v6 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B9BA1A0;
   v8[3] = &unk_1E753E6A8;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = stamp;
+  v8[6] = timeStamp;
   v8[4] = &v9;
-  [v6 getOscarTimeSyncWithReplyBlock:v8];
-  LOBYTE(a3) = *(v10 + 24);
+  [synchronousRemoteObject getOscarTimeSyncWithReplyBlock:v8];
+  LOBYTE(stamp) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return a3;
+  return stamp;
 }
 
-- (BOOL)getVisitHistoryAccessAllowedTime:(double *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (BOOL)getVisitHistoryAccessAllowedTime:(double *)time forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9BA638;
   v10[3] = &unk_1E753E6D0;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v8 getVisitHistoryAccessAllowedTimeForBundleID:a4 orBundlePath:a5 replyBlock:v10];
-  LOBYTE(a5) = *(v12 + 24) != 0;
+  v10[5] = time;
+  [synchronousRemoteObject getVisitHistoryAccessAllowedTimeForBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 24) != 0;
   _Block_object_dispose(&v11, 8);
-  return a5;
+  return path;
 }
 
-- (BOOL)getVisitHistoryAccess:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (BOOL)getVisitHistoryAccess:(int *)access forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9BA740;
   v10[3] = &unk_1E753E2E8;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v8 getVisitHistoryAccessForBundleID:a4 orBundlePath:a5 replyBlock:v10];
-  LOBYTE(a5) = *(v12 + 24) != 0;
+  v10[5] = access;
+  [synchronousRemoteObject getVisitHistoryAccessForBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 24) != 0;
   _Block_object_dispose(&v11, 8);
-  return a5;
+  return path;
 }
 
-- (BOOL)getLearnedRoutesAccess:(int *)a3 forBundleID:(__CFString *)a4 orBundlePath:(__CFString *)a5
+- (BOOL)getLearnedRoutesAccess:(int *)access forBundleID:(__CFString *)d orBundlePath:(__CFString *)path
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9BA848;
   v10[3] = &unk_1E753E2E8;
   v10[4] = &v11;
-  v10[5] = a3;
-  [v8 getLearnedRoutesAccessForBundleID:a4 orBundlePath:a5 replyBlock:v10];
-  LOBYTE(a5) = *(v12 + 6) != 0;
+  v10[5] = access;
+  [synchronousRemoteObject getLearnedRoutesAccessForBundleID:d orBundlePath:path replyBlock:v10];
+  LOBYTE(path) = *(v12 + 6) != 0;
   _Block_object_dispose(&v11, 8);
-  return a5;
+  return path;
 }
 
 - (__CFArray)copyRecentLocationsBufferStatus
@@ -2247,26 +2247,26 @@ LABEL_24:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_19B9BA92C;
   v5[3] = &unk_1E753E388;
   v5[4] = &v6;
-  [v2 getRecentLocationsBufferStatusWithReplyBlock:v5];
+  [synchronousRemoteObject getRecentLocationsBufferStatusWithReplyBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)a3 toMachContinuousTime:(double)a4
+- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)time toMachContinuousTime:(double)continuousTime
 {
-  v4 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v4, sel_triggerRecentLocationsRevisedFromMachContinuousTime_toMachContinuousTime_replyBlock_);
+  MEMORY[0x1EEE66B58](synchronousRemoteObject, sel_triggerRecentLocationsRevisedFromMachContinuousTime_toMachContinuousTime_replyBlock_);
 }
 
-- (id)fetchRecentLocationAtCfAbsoluteTime:(double)a3
+- (id)fetchRecentLocationAtCfAbsoluteTime:(double)time
 {
   v11 = 0;
   v12 = &v11;
@@ -2275,20 +2275,20 @@ LABEL_24:
   v15 = sub_19B9B1FF0;
   v16 = 0;
   v5 = [CLRecentLocationsFetchOptions alloc];
-  v6 = -[CLRecentLocationsFetchOptions initWithDate:](v5, "initWithDate:", [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:a3]);
-  v7 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  v6 = -[CLRecentLocationsFetchOptions initWithDate:](v5, "initWithDate:", [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:time]);
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9BAE88;
   v10[3] = &unk_1E753E6F8;
   v10[4] = &v11;
-  [v7 fetchRecentLocationsWithOptions:v6 replyBlock:v10];
+  [synchronousRemoteObject fetchRecentLocationsWithOptions:v6 replyBlock:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
   return v8;
 }
 
-- (id)fetchRecentLocationAtMachContinuousTime:(double)a3
+- (id)fetchRecentLocationAtMachContinuousTime:(double)time
 {
   v11 = 0;
   v12 = &v11;
@@ -2297,14 +2297,14 @@ LABEL_24:
   v15 = sub_19B9B1FF0;
   v16 = 0;
   v5 = [CLRecentLocationsFetchOptions alloc];
-  v6 = -[CLRecentLocationsFetchOptions initWithMachContinuousTimeSeconds:](v5, "initWithMachContinuousTimeSeconds:", [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a3]);
-  v7 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  v6 = -[CLRecentLocationsFetchOptions initWithMachContinuousTimeSeconds:](v5, "initWithMachContinuousTimeSeconds:", [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:time]);
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B9BB408;
   v10[3] = &unk_1E753E6F8;
   v10[4] = &v11;
-  [v7 fetchRecentLocationsWithOptions:v6 replyBlock:v10];
+  [synchronousRemoteObject fetchRecentLocationsWithOptions:v6 replyBlock:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
   return v8;
@@ -2312,23 +2312,23 @@ LABEL_24:
 
 - (void)requestRouteReconstructionForPedestrian
 {
-  v2 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
 
-  MEMORY[0x1EEE66B58](v2, sel_requestRouteReconstructionForPedestrianWithReplyBlock_);
+  MEMORY[0x1EEE66B58](synchronousRemoteObject, sel_requestRouteReconstructionForPedestrianWithReplyBlock_);
 }
 
-- (void)notifyPassKitPayment:(id)a3 transaction:(id)a4 info:(id)a5
+- (void)notifyPassKitPayment:(id)payment transaction:(id)transaction info:(id)info
 {
-  v8 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
 
-  [v8 notifyPassKitPayment:a3 transaction:a4 info:a5];
+  [synchronousRemoteObject notifyPassKitPayment:payment transaction:transaction info:info];
 }
 
-- (void)notifyWeatherForecast:(id)a3 airQualityConditions:(id)a4 hourlyForecasts:(id)a5 dailyForecasts:(id)a6 latitude:(double)a7 longitude:(double)a8
+- (void)notifyWeatherForecast:(id)forecast airQualityConditions:(id)conditions hourlyForecasts:(id)forecasts dailyForecasts:(id)dailyForecasts latitude:(double)latitude longitude:(double)longitude
 {
-  v14 = [(CLLocationInternalClient *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(CLLocationInternalClient *)self synchronousRemoteObject];
 
-  [v14 notifyWeatherForecast:a3 airQualityConditions:a4 hourlyForecasts:a5 dailyForecasts:a6 latitude:a7 longitude:a8];
+  [synchronousRemoteObject notifyWeatherForecast:forecast airQualityConditions:conditions hourlyForecasts:forecasts dailyForecasts:dailyForecasts latitude:latitude longitude:longitude];
 }
 
 @end

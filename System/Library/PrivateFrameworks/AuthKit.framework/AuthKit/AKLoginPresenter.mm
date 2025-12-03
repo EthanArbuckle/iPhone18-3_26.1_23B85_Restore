@@ -1,20 +1,20 @@
 @interface AKLoginPresenter
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_callCompletionWithResults:(id)a3 password:(id)a4 additionalData:(id)a5 error:(id)a6;
-- (void)authenticationRequestFinishedWithResults:(id)a3 password:(id)a4 additionalData:(id)a5 error:(id)a6;
-- (void)presentOOPLoginUIWithContext:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_callCompletionWithResults:(id)results password:(id)password additionalData:(id)data error:(id)error;
+- (void)authenticationRequestFinishedWithResults:(id)results password:(id)password additionalData:(id)data error:(id)error;
+- (void)presentOOPLoginUIWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKLoginPresenter
 
-- (void)presentOOPLoginUIWithContext:(id)a3 completion:(id)a4
+- (void)presentOOPLoginUIWithContext:(id)context completion:(id)completion
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, completion);
   v52 = 0;
   v51 = _AKLogSystem();
   v50 = OS_LOG_TYPE_DEBUG;
@@ -40,7 +40,7 @@
     }
 
     objc_storeStrong(&v47, 0);
-    v23 = v55;
+    v23 = selfCopy;
     v24 = [NSError ak_errorWithCode:-7034];
     [AKLoginPresenter _callCompletionWithResults:v23 password:"_callCompletionWithResults:password:additionalData:error:" additionalData:0 error:0];
     _objc_release(v24);
@@ -50,12 +50,12 @@
   [v45 setObject:v49 forKeyedSubscript:off_100370BE8];
   [v45 setObject:&off_100338FC8 forKeyedSubscript:off_100370BF0];
   v4 = +[NSXPCListener anonymousListener];
-  remoteListener = v55->_remoteListener;
-  v55->_remoteListener = v4;
+  remoteListener = selfCopy->_remoteListener;
+  selfCopy->_remoteListener = v4;
   _objc_release(remoteListener);
-  [(NSXPCListener *)v55->_remoteListener setDelegate:v55];
-  [(NSXPCListener *)v55->_remoteListener resume];
-  [(AKLoginPresenter *)v55 setPresentationCompletion:v53];
+  [(NSXPCListener *)selfCopy->_remoteListener setDelegate:selfCopy];
+  [(NSXPCListener *)selfCopy->_remoteListener resume];
+  [(AKLoginPresenter *)selfCopy setPresentationCompletion:v53];
   v44 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
   v43 = 0;
   v42 = [v44 canOpenApplication:off_100370BE0 reason:&v43];
@@ -63,11 +63,11 @@
   {
     v41 = objc_alloc_init(BSMutableSettings);
     [v41 setObject:v45 forSetting:0];
-    v18 = [(NSXPCListener *)v55->_remoteListener endpoint];
-    v17 = [(NSXPCListenerEndpoint *)v18 _endpoint];
+    endpoint = [(NSXPCListener *)selfCopy->_remoteListener endpoint];
+    _endpoint = [(NSXPCListenerEndpoint *)endpoint _endpoint];
     [v41 setObject:? forSetting:?];
-    _objc_release(v17);
-    _objc_release(v18);
+    _objc_release(_endpoint);
+    _objc_release(endpoint);
     v19 = [BSAction alloc];
     v20 = [v41 copy];
     v40 = [v19 initWithInfo:? responder:?];
@@ -103,7 +103,7 @@
     v32 = 0;
     v33 = sub_100085A64;
     v34 = &unk_1003213B8;
-    v35 = _objc_retain(v55);
+    v35 = _objc_retain(selfCopy);
     [v14 openApplication:v12 withOptions:v13 completion:&v30];
     objc_storeStrong(&v35, 0);
     objc_storeStrong(&v39, 0);
@@ -129,7 +129,7 @@
     }
 
     objc_storeStrong(&v29, 0);
-    v6 = v55;
+    v6 = selfCopy;
     v7 = [NSError ak_errorWithCode:-7034];
     [AKLoginPresenter _callCompletionWithResults:v6 password:"_callCompletionWithResults:password:additionalData:error:" additionalData:0 error:0];
     _objc_release(v7);
@@ -143,77 +143,77 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, listener);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, connection);
   v6 = +[AKLoginPresenterHostInterface XPCInterface];
   [v7 setExportedInterface:?];
   _objc_release(v6);
-  [v7 setExportedObject:v9];
+  [v7 setExportedObject:selfCopy];
   [v7 resume];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (void)authenticationRequestFinishedWithResults:(id)a3 password:(id)a4 additionalData:(id)a5 error:(id)a6
+- (void)authenticationRequestFinishedWithResults:(id)results password:(id)password additionalData:(id)data error:(id)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, password);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, data);
   v12 = 0;
-  objc_storeStrong(&v12, a6);
+  objc_storeStrong(&v12, error);
   v11 = _AKLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(AKLoginPresenter *)v16 presentationCompletion];
-    v6 = objc_retainBlock(v7);
+    presentationCompletion = [(AKLoginPresenter *)selfCopy presentationCompletion];
+    v6 = objc_retainBlock(presentationCompletion);
     sub_1000194D4(v17, v6);
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Call completion with authentication result with presentation completion: %@", v17, 0xCu);
     _objc_release(v6);
-    _objc_release(v7);
+    _objc_release(presentationCompletion);
   }
 
   objc_storeStrong(&v11, 0);
-  [(AKLoginPresenter *)v16 _callCompletionWithResults:location[0] password:v14 additionalData:v13 error:v12];
+  [(AKLoginPresenter *)selfCopy _callCompletionWithResults:location[0] password:v14 additionalData:v13 error:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_callCompletionWithResults:(id)a3 password:(id)a4 additionalData:(id)a5 error:(id)a6
+- (void)_callCompletionWithResults:(id)results password:(id)password additionalData:(id)data error:(id)error
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, password);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, data);
   v11 = 0;
-  objc_storeStrong(&v11, a6);
-  v10 = [(AKLoginPresenter *)v15 presentationCompletion];
-  _objc_release(v10);
-  if (v10)
+  objc_storeStrong(&v11, error);
+  presentationCompletion = [(AKLoginPresenter *)selfCopy presentationCompletion];
+  _objc_release(presentationCompletion);
+  if (presentationCompletion)
   {
-    v6 = [(AKLoginPresenter *)v15 presentationCompletion];
-    v6[2](v6, location[0], v13, v12, v11);
-    _objc_release(v6);
+    presentationCompletion2 = [(AKLoginPresenter *)selfCopy presentationCompletion];
+    presentationCompletion2[2](presentationCompletion2, location[0], v13, v12, v11);
+    _objc_release(presentationCompletion2);
   }
 
-  [(AKLoginPresenter *)v15 setPresentationCompletion:?];
+  [(AKLoginPresenter *)selfCopy setPresentationCompletion:?];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);

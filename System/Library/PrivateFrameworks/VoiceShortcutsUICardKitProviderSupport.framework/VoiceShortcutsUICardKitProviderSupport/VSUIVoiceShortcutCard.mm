@@ -1,59 +1,59 @@
 @interface VSUIVoiceShortcutCard
-- (VSUIVoiceShortcutCard)initWithCard:(id)a3;
-- (void)_configureWithCard:(id)a3;
-- (void)loadCardWithCompletion:(id)a3;
-- (void)loadCardWithContent:(id)a3 completion:(id)a4;
+- (VSUIVoiceShortcutCard)initWithCard:(id)card;
+- (void)_configureWithCard:(id)card;
+- (void)loadCardWithCompletion:(id)completion;
+- (void)loadCardWithContent:(id)content completion:(id)completion;
 @end
 
 @implementation VSUIVoiceShortcutCard
 
-- (VSUIVoiceShortcutCard)initWithCard:(id)a3
+- (VSUIVoiceShortcutCard)initWithCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   v9.receiver = self;
   v9.super_class = VSUIVoiceShortcutCard;
-  v5 = [(VSUIAsyncLoadingCard *)&v9 initWithCard:v4];
+  v5 = [(VSUIAsyncLoadingCard *)&v9 initWithCard:cardCopy];
   v6 = v5;
   if (v5)
   {
-    [(VSUIVoiceShortcutCard *)v5 _configureWithCard:v4];
+    [(VSUIVoiceShortcutCard *)v5 _configureWithCard:cardCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)_configureWithCard:(id)a3
+- (void)_configureWithCard:(id)card
 {
-  v4 = a3;
-  v5 = [v4 interactions];
-  v33 = [v5 anyObject];
+  cardCopy = card;
+  interactions = [cardCopy interactions];
+  anyObject = [interactions anyObject];
 
-  v6 = [v33 intent];
+  intent = [anyObject intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = v6;
-    v7 = [v32 voiceCommand];
-    v8 = [v7 vocabularyIdentifier];
+    v32 = intent;
+    voiceCommand = [v32 voiceCommand];
+    vocabularyIdentifier = [voiceCommand vocabularyIdentifier];
     shortcutIdentifier = self->_shortcutIdentifier;
-    self->_shortcutIdentifier = v8;
+    self->_shortcutIdentifier = vocabularyIdentifier;
 
-    v10 = [v33 intentResponse];
-    v11 = [v10 underlyingIntent];
-    v12 = [v10 underlyingIntentResponse];
-    v13 = [v11 typeName];
-    v14 = [v11 messageData];
+    intentResponse = [anyObject intentResponse];
+    underlyingIntent = [intentResponse underlyingIntent];
+    underlyingIntentResponse = [intentResponse underlyingIntentResponse];
+    typeName = [underlyingIntent typeName];
+    messageData = [underlyingIntent messageData];
     v15 = INIntentCreate();
 
-    v16 = [v12 typeName];
-    v17 = [v12 messageData];
+    typeName2 = [underlyingIntentResponse typeName];
+    messageData2 = [underlyingIntentResponse messageData];
     v31 = INIntentResponseCreate();
 
-    v18 = [v32 _metadata];
-    v19 = [(INIntent *)v15 _metadata];
-    [v19 setExecutionContext:{objc_msgSend(v18, "executionContext")}];
-    [(INIntent *)v15 _setMetadata:v19];
+    _metadata = [v32 _metadata];
+    _metadata2 = [(INIntent *)v15 _metadata];
+    [_metadata2 setExecutionContext:{objc_msgSend(_metadata, "executionContext")}];
+    [(INIntent *)v15 _setMetadata:_metadata2];
     intent = self->_intent;
     self->_intent = v15;
     v21 = v15;
@@ -64,22 +64,22 @@
 
   else
   {
-    objc_storeStrong(&self->_intent, v6);
-    v23 = [v33 intentResponse];
-    v10 = self->_intentResponse;
-    self->_intentResponse = v23;
+    objc_storeStrong(&self->_intent, intent);
+    intentResponse2 = [anyObject intentResponse];
+    intentResponse = self->_intentResponse;
+    self->_intentResponse = intentResponse2;
   }
 
-  v24 = [v4 cardSections];
+  cardSections = [cardCopy cardSections];
 
-  v25 = [v24 firstObject];
+  firstObject = [cardSections firstObject];
 
-  v26 = [v25 commands];
-  v27 = v26;
+  commands = [firstObject commands];
+  v27 = commands;
   v28 = MEMORY[0x277CBEBF8];
-  if (v26)
+  if (commands)
   {
-    v28 = v26;
+    v28 = commands;
   }
 
   v29 = v28;
@@ -88,15 +88,15 @@
   self->_sectionCommands = v29;
 }
 
-- (void)loadCardWithCompletion:(id)a3
+- (void)loadCardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSUIVoiceShortcutCard *)self intent];
-  v6 = [(VSUIVoiceShortcutCard *)self intentResponse];
-  if (v5)
+  completionCopy = completion;
+  intent = [(VSUIVoiceShortcutCard *)self intent];
+  intentResponse = [(VSUIVoiceShortcutCard *)self intentResponse];
+  if (intent)
   {
-    v7 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v5 response:v6];
-    [(VSUIVoiceShortcutCard *)self loadCardWithContent:v7 completion:v4];
+    v7 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:intent response:intentResponse];
+    [(VSUIVoiceShortcutCard *)self loadCardWithContent:v7 completion:completionCopy];
   }
 
   else
@@ -107,28 +107,28 @@
       [(VSUIVoiceShortcutCard *)self loadCardWithCompletion:v7];
     }
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)loadCardWithContent:(id)a3 completion:(id)a4
+- (void)loadCardWithContent:(id)content completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contentCopy = content;
   v8 = objc_opt_new();
   [v8 setStyle:0];
   [v8 setShowThumbnailImage:1];
   v9 = [objc_alloc(MEMORY[0x277CEBDE0]) initWithCardViewConfig:v8];
   [v9 setFormat:1];
-  [v9 setContent:v7];
+  [v9 setContent:contentCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__VSUIVoiceShortcutCard_loadCardWithContent_completion___block_invoke;
   v11[3] = &unk_279E530F0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 startWithReply:v11];
 }
 

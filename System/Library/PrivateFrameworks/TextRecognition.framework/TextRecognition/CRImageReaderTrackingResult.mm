@@ -1,12 +1,12 @@
 @interface CRImageReaderTrackingResult
-- (CRImageReaderTrackingResult)initWithTrackingLevel:(unint64_t)a3;
-- (CRImageReaderTrackingResult)resultByUpdatingWithDocument:(__n128)a3 sceneHomography:(__n128)a4 usesGroupedRegions:(uint64_t)a5;
-- (void)markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:(BOOL)a3 ransacReprojError:(float)a4 markedQuadArea:(double)a5;
+- (CRImageReaderTrackingResult)initWithTrackingLevel:(unint64_t)level;
+- (CRImageReaderTrackingResult)resultByUpdatingWithDocument:(__n128)document sceneHomography:(__n128)homography usesGroupedRegions:(uint64_t)regions;
+- (void)markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:(BOOL)dispatch ransacReprojError:(float)error markedQuadArea:(double)area;
 @end
 
 @implementation CRImageReaderTrackingResult
 
-- (CRImageReaderTrackingResult)initWithTrackingLevel:(unint64_t)a3
+- (CRImageReaderTrackingResult)initWithTrackingLevel:(unint64_t)level
 {
   v12.receiver = self;
   v12.super_class = CRImageReaderTrackingResult;
@@ -27,20 +27,20 @@
     updatedRegionIDs = v5->_updatedRegionIDs;
     v5->_updatedRegionIDs = v7;
 
-    v5->_trackedRegionType = [CRImageReaderTrackingSession regionTypeForTrackingLevel:a3];
+    v5->_trackedRegionType = [CRImageReaderTrackingSession regionTypeForTrackingLevel:level];
   }
 
   return v5;
 }
 
-- (CRImageReaderTrackingResult)resultByUpdatingWithDocument:(__n128)a3 sceneHomography:(__n128)a4 usesGroupedRegions:(uint64_t)a5
+- (CRImageReaderTrackingResult)resultByUpdatingWithDocument:(__n128)document sceneHomography:(__n128)homography usesGroupedRegions:(uint64_t)regions
 {
   v299 = *MEMORY[0x1E69E9840];
   v203 = a6;
   v8 = objc_alloc_init(CRImageReaderTrackingResult);
-  if (a1)
+  if (self)
   {
-    v9 = a1[6];
+    v9 = self[6];
   }
 
   else
@@ -49,16 +49,16 @@
   }
 
   v208 = v8;
-  v197 = a1;
+  selfCopy = self;
   if (!v8)
   {
-    v193 = a1;
+    selfCopy2 = self;
     v194 = v203;
     goto LABEL_149;
   }
 
   v8->_trackedRegionType = v9;
-  v10 = a1;
+  selfCopy3 = self;
   v11 = v203;
   if (CRSignpostLog_onceToken != -1)
   {
@@ -81,10 +81,10 @@
     _os_signpost_emit_with_name_impl(&dword_1B40D2000, v14, OS_SIGNPOST_INTERVAL_BEGIN, spid, "OCRTrackingPerformAssociationTime", "", buf, 2u);
   }
 
-  v204 = [v10 trackedRegions];
-  v15 = [v10 regionTrackingGroups];
+  trackedRegions = [selfCopy3 trackedRegions];
+  regionTrackingGroups = [selfCopy3 regionTrackingGroups];
   LODWORD(v16) = 0.75;
-  [v10 markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:1 ransacReprojError:v16 markedQuadArea:0.0];
+  [selfCopy3 markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:1 ransacReprojError:v16 markedQuadArea:0.0];
   if (v208->_trackedRegionType == 4)
   {
     v17 = [v11 contentsWithTypes:2];
@@ -133,10 +133,10 @@
   v213 = v26;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v204 count];
+    v28 = [trackedRegions count];
     v29 = [v200 count];
     v30 = [v213 count];
-    v31 = [v15 count];
+    v31 = [regionTrackingGroups count];
     *buf = 134218752;
     v289 = v28;
     v290 = 2048;
@@ -153,32 +153,32 @@
   v269[1] = 3221225472;
   v269[2] = __130__CRImageReaderTrackingResult_performHungarianAssociationWithPreviousResult_candidateDocument_sceneHomography_usesGroupedRegions___block_invoke;
   v269[3] = &unk_1E7BC3248;
-  v32 = v15;
+  v32 = regionTrackingGroups;
   v273 = v32;
-  v206 = v10;
+  v206 = selfCopy3;
   v274 = v206;
   v270 = a2;
-  v271 = a3;
-  v272 = a4;
+  documentCopy = document;
+  homographyCopy = homography;
   v267[0] = MEMORY[0x1E69E9820];
   v267[1] = 3221225472;
   v267[2] = __130__CRImageReaderTrackingResult_performHungarianAssociationWithPreviousResult_candidateDocument_sceneHomography_usesGroupedRegions___block_invoke_20;
   v267[3] = &unk_1E7BC3270;
   v267[4] = v208;
   v268 = a7;
-  v33 = [(CRTrackingAssociator *)CRHungarianTrackingAssociator performAssociationOnCandidates:v26 useRegionsAtOCRDispatchTime:1 existingRegions:v204 newRegionHandler:v269 matchedRegionHandler:v267];
+  v33 = [(CRTrackingAssociator *)CRHungarianTrackingAssociator performAssociationOnCandidates:v26 useRegionsAtOCRDispatchTime:1 existingRegions:trackedRegions newRegionHandler:v269 matchedRegionHandler:v267];
   v34 = CROSLogForCategory(1);
   v207 = v33;
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v33 tracked];
-    v36 = [v35 count];
-    v37 = [v33 updatedRegionIDs];
-    v38 = [v37 count];
-    v39 = [v33 removedRegionIDs];
-    v40 = [v39 count];
-    v41 = [v33 addedRegionIDs];
-    v42 = [v41 count];
+    tracked = [v33 tracked];
+    v36 = [tracked count];
+    updatedRegionIDs = [v33 updatedRegionIDs];
+    v38 = [updatedRegionIDs count];
+    removedRegionIDs = [v33 removedRegionIDs];
+    v40 = [removedRegionIDs count];
+    addedRegionIDs = [v33 addedRegionIDs];
+    v42 = [addedRegionIDs count];
     [v207 totalError];
     *buf = 134219008;
     v289 = v36;
@@ -195,13 +195,13 @@
     v33 = v207;
   }
 
-  v44 = [v33 tracked];
-  v45 = [v44 count];
+  tracked2 = [v33 tracked];
+  v45 = [tracked2 count];
 
   if (v45)
   {
-    v46 = [v33 tracked];
-    v47 = [CRTrackedRegionGroup groupsFromOutputRegions:v46];
+    tracked3 = [v33 tracked];
+    v47 = [CRTrackedRegionGroup groupsFromOutputRegions:tracked3];
   }
 
   else
@@ -219,14 +219,14 @@
   }
 
   v50 = [MEMORY[0x1E695DFA8] set];
-  v51 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v264[0] = MEMORY[0x1E69E9820];
   v264[1] = 3221225472;
   v264[2] = __130__CRImageReaderTrackingResult_performHungarianAssociationWithPreviousResult_candidateDocument_sceneHomography_usesGroupedRegions___block_invoke_29;
   v264[3] = &unk_1E7BC3298;
   v52 = v50;
   v265 = v52;
-  v218 = v51;
+  v218 = dictionary;
   v266 = v218;
   v196 = v32;
   v53 = [CRHungarianTrackingAssociator performAssociationOnCandidates:v47 useRegionsAtOCRDispatchTime:0 existingRegions:v32 fineGrainedResults:v33 newRegionHandler:&__block_literal_global_28_0 matchedRegionHandler:v264];
@@ -234,15 +234,15 @@
   v195 = v47;
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
   {
-    v226 = [v53 tracked];
+    tracked4 = [v53 tracked];
     v55 = v52;
-    v56 = [v226 count];
-    v57 = [v53 updatedRegionIDs];
-    v58 = [v57 count];
-    v59 = [v53 removedRegionIDs];
-    v60 = [v59 count];
-    v61 = [v53 addedRegionIDs];
-    v62 = [v61 count];
+    v56 = [tracked4 count];
+    updatedRegionIDs2 = [v53 updatedRegionIDs];
+    v58 = [updatedRegionIDs2 count];
+    removedRegionIDs2 = [v53 removedRegionIDs];
+    v60 = [removedRegionIDs2 count];
+    addedRegionIDs2 = [v53 addedRegionIDs];
+    v62 = [addedRegionIDs2 count];
     [v53 totalError];
     *buf = 134219008;
     v289 = v56;
@@ -269,11 +269,11 @@
     v64 = v33;
   }
 
-  v199 = [v64 updatedRegionIDs];
+  updatedRegionIDs3 = [v64 updatedRegionIDs];
 
-  v198 = [v64 removedRegionIDs];
+  removedRegionIDs3 = [v64 removedRegionIDs];
 
-  v202 = [v64 addedRegionIDs];
+  addedRegionIDs3 = [v64 addedRegionIDs];
 
   [v64 totalError];
   v66 = v65;
@@ -281,9 +281,9 @@
   v261 = 0u;
   v262 = 0u;
   v263 = 0u;
-  v67 = [v64 tracked];
+  tracked5 = [v64 tracked];
 
-  v68 = [v67 countByEnumeratingWithState:&v260 objects:v287 count:16];
+  v68 = [tracked5 countByEnumeratingWithState:&v260 objects:v287 count:16];
   if (v68)
   {
     v69 = v68;
@@ -295,16 +295,16 @@
       {
         if (*v261 != v70)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(tracked5);
         }
 
-        v73 = [*(*(&v260 + 1) + 8 * j) boundingQuad];
-        v74 = [v73 denormalizedQuad];
-        [v74 area];
+        boundingQuad = [*(*(&v260 + 1) + 8 * j) boundingQuad];
+        denormalizedQuad = [boundingQuad denormalizedQuad];
+        [denormalizedQuad area];
         v71 = v71 + v75;
       }
 
-      v69 = [v67 countByEnumeratingWithState:&v260 objects:v287 count:16];
+      v69 = [tracked5 countByEnumeratingWithState:&v260 objects:v287 count:16];
     }
 
     while (v69);
@@ -366,19 +366,19 @@
         v216 = v80;
         if (v76 < 0.300000012)
         {
-          v83 = v208->_regionTrackingGroups;
+          tracked6 = v208->_regionTrackingGroups;
         }
 
         else
         {
-          v83 = [v212 tracked];
+          tracked6 = [v212 tracked];
         }
 
         v254 = 0u;
         v255 = 0u;
         v252 = 0u;
         v253 = 0u;
-        v84 = v83;
+        v84 = tracked6;
         v85 = [(NSArray *)v84 countByEnumeratingWithState:&v252 objects:v285 count:16];
         if (v85)
         {
@@ -396,26 +396,26 @@
               if (v81)
               {
                 v89 = *(*(&v252 + 1) + 8 * k);
-                v90 = [v89 homographyGroupID];
-                if (v90)
+                homographyGroupID = [v89 homographyGroupID];
+                if (homographyGroupID)
                 {
-                  v91 = v90;
-                  v92 = [v89 homographyGroupID];
-                  v93 = [v92 integerValue];
-                  v94 = [v81 integerValue];
+                  v91 = homographyGroupID;
+                  homographyGroupID2 = [v89 homographyGroupID];
+                  integerValue = [homographyGroupID2 integerValue];
+                  integerValue2 = [v81 integerValue];
 
-                  if (v93 == v94)
+                  if (integerValue == integerValue2)
                   {
-                    v95 = [v89 trackingID];
-                    v96 = [v218 objectForKeyedSubscript:v95];
+                    trackingID = [v89 trackingID];
+                    v96 = [v218 objectForKeyedSubscript:trackingID];
 
                     if (v96)
                     {
-                      v97 = [v96 originalBoundingQuad];
-                      [v89 setOriginalBoundingQuad:v97];
+                      originalBoundingQuad = [v96 originalBoundingQuad];
+                      [v89 setOriginalBoundingQuad:originalBoundingQuad];
 
-                      v98 = [v96 boundingQuad];
-                      [v89 setBoundingQuad:v98];
+                      boundingQuad2 = [v96 boundingQuad];
+                      [v89 setBoundingQuad:boundingQuad2];
 
                       [v96 boundingQuadHomography];
                       [v89 setBoundingQuadHomography:v99];
@@ -445,53 +445,53 @@
   if (v76 >= 0.300000012)
   {
     v100 = v207;
-    v101 = [v207 tracked];
-    v102 = [v101 copy];
+    tracked7 = [v207 tracked];
+    v102 = [tracked7 copy];
     trackedRegions = v208->_trackedRegions;
     v208->_trackedRegions = v102;
 
-    v104 = [v212 tracked];
-    v105 = [v104 copy];
+    tracked8 = [v212 tracked];
+    v105 = [tracked8 copy];
     regionTrackingGroups = v208->_regionTrackingGroups;
     v208->_regionTrackingGroups = v105;
 
-    v107 = [v202 copy];
+    v107 = [addedRegionIDs3 copy];
     addedRegionIDs = v208->_addedRegionIDs;
     v208->_addedRegionIDs = v107;
 
-    v109 = [v198 copy];
+    v109 = [removedRegionIDs3 copy];
     removedRegionIDs = v208->_removedRegionIDs;
     v208->_removedRegionIDs = v109;
 
-    v111 = [v199 copy];
+    v111 = [updatedRegionIDs3 copy];
     updatedRegionIDs = v208->_updatedRegionIDs;
     v208->_updatedRegionIDs = v111;
     v113 = v196;
     goto LABEL_143;
   }
 
-  v227 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v202, "count")}];
-  v217 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v202, "count")}];
+  v227 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(addedRegionIDs3, "count")}];
+  v217 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(addedRegionIDs3, "count")}];
   v114 = objc_alloc(MEMORY[0x1E695DF70]);
-  v115 = [v212 addedRegionIDs];
-  v215 = [v114 initWithCapacity:{objc_msgSend(v115, "count")}];
+  addedRegionIDs4 = [v212 addedRegionIDs];
+  v215 = [v114 initWithCapacity:{objc_msgSend(addedRegionIDs4, "count")}];
 
   v116 = objc_alloc(MEMORY[0x1E695DF70]);
   v100 = v207;
-  v117 = [v207 addedRegionIDs];
-  v211 = [v116 initWithCapacity:{objc_msgSend(v117, "count")}];
+  addedRegionIDs5 = [v207 addedRegionIDs];
+  v211 = [v116 initWithCapacity:{objc_msgSend(addedRegionIDs5, "count")}];
 
   v250 = 0u;
   v251 = 0u;
   v248 = 0u;
   v249 = 0u;
-  v118 = [v212 tracked];
-  v119 = [v118 countByEnumeratingWithState:&v248 objects:v284 count:16];
+  tracked9 = [v212 tracked];
+  v119 = [tracked9 countByEnumeratingWithState:&v248 objects:v284 count:16];
   if (v119)
   {
     v120 = v119;
     v121 = *v249;
-    v223 = v118;
+    v223 = tracked9;
     v220 = *v249;
     do
     {
@@ -499,17 +499,17 @@
       {
         if (*v249 != v121)
         {
-          objc_enumerationMutation(v118);
+          objc_enumerationMutation(tracked9);
         }
 
         v123 = *(*(&v248 + 1) + 8 * m);
-        v124 = [v212 addedRegionIDs];
-        v125 = [v123 trackingID];
-        if ([v124 containsObject:v125])
+        addedRegionIDs6 = [v212 addedRegionIDs];
+        trackingID2 = [v123 trackingID];
+        if ([addedRegionIDs6 containsObject:trackingID2])
         {
-          v126 = [v123 boundingQuad];
-          v127 = [v126 denormalizedQuad];
-          [v127 area];
+          boundingQuad3 = [v123 boundingQuad];
+          denormalizedQuad2 = [boundingQuad3 denormalizedQuad];
+          [denormalizedQuad2 area];
           v129 = v128;
 
           if (v129 <= 900.0)
@@ -521,8 +521,8 @@
           v247 = 0u;
           v244 = 0u;
           v245 = 0u;
-          v124 = [v206 regionTrackingGroups];
-          v130 = [v124 countByEnumeratingWithState:&v244 objects:v283 count:16];
+          addedRegionIDs6 = [v206 regionTrackingGroups];
+          v130 = [addedRegionIDs6 countByEnumeratingWithState:&v244 objects:v283 count:16];
           if (v130)
           {
             v131 = v130;
@@ -533,13 +533,13 @@ LABEL_84:
             {
               if (*v245 != v132)
               {
-                objc_enumerationMutation(v124);
+                objc_enumerationMutation(addedRegionIDs6);
               }
 
               v134 = *(*(&v244 + 1) + 8 * v133);
-              v135 = [v123 boundingQuad];
-              v136 = [v134 boundingQuad];
-              v137 = [v135 overlapsNormalizedQuad:v136];
+              boundingQuad4 = [v123 boundingQuad];
+              boundingQuad5 = [v134 boundingQuad];
+              v137 = [boundingQuad4 overlapsNormalizedQuad:boundingQuad5];
 
               if (v137)
               {
@@ -548,7 +548,7 @@ LABEL_84:
 
               if (v131 == ++v133)
               {
-                v131 = [v124 countByEnumeratingWithState:&v244 objects:v283 count:16];
+                v131 = [addedRegionIDs6 countByEnumeratingWithState:&v244 objects:v283 count:16];
                 if (v131)
                 {
                   goto LABEL_84;
@@ -563,21 +563,21 @@ LABEL_84:
           {
 LABEL_90:
 
-            v138 = [v123 trackingID];
+            trackingID3 = [v123 trackingID];
 
-            if (!v138)
+            if (!trackingID3)
             {
-              v139 = [MEMORY[0x1E696AFB0] UUID];
-              [v123 setTrackingID:v139];
+              uUID = [MEMORY[0x1E696AFB0] UUID];
+              [v123 setTrackingID:uUID];
             }
 
             [(NSArray *)v227 addObject:v123];
-            v124 = [v123 trackingID];
-            [v215 addObject:v124];
+            addedRegionIDs6 = [v123 trackingID];
+            [v215 addObject:addedRegionIDs6];
           }
 
           v100 = v207;
-          v118 = v223;
+          tracked9 = v223;
           v121 = v220;
         }
 
@@ -586,7 +586,7 @@ LABEL_90:
         }
       }
 
-      v120 = [v118 countByEnumeratingWithState:&v248 objects:v284 count:16];
+      v120 = [tracked9 countByEnumeratingWithState:&v248 objects:v284 count:16];
     }
 
     while (v120);
@@ -596,8 +596,8 @@ LABEL_90:
   v243 = 0u;
   v240 = 0u;
   v241 = 0u;
-  v140 = [v100 tracked];
-  v141 = [v140 countByEnumeratingWithState:&v240 objects:v282 count:16];
+  tracked10 = [v100 tracked];
+  v141 = [tracked10 countByEnumeratingWithState:&v240 objects:v282 count:16];
   if (!v141)
   {
     goto LABEL_121;
@@ -605,7 +605,7 @@ LABEL_90:
 
   v142 = v141;
   v143 = *v241;
-  v224 = v140;
+  v224 = tracked10;
   v221 = *v241;
   do
   {
@@ -613,17 +613,17 @@ LABEL_90:
     {
       if (*v241 != v143)
       {
-        objc_enumerationMutation(v140);
+        objc_enumerationMutation(tracked10);
       }
 
       v145 = *(*(&v240 + 1) + 8 * n);
-      v146 = [v100 addedRegionIDs];
-      v147 = [v145 trackingID];
-      if ([v146 containsObject:v147])
+      addedRegionIDs7 = [v100 addedRegionIDs];
+      trackingID4 = [v145 trackingID];
+      if ([addedRegionIDs7 containsObject:trackingID4])
       {
-        v148 = [v145 boundingQuad];
-        v149 = [v148 denormalizedQuad];
-        [v149 area];
+        boundingQuad6 = [v145 boundingQuad];
+        denormalizedQuad3 = [boundingQuad6 denormalizedQuad];
+        [denormalizedQuad3 area];
         v151 = v150;
 
         v100 = v207;
@@ -636,8 +636,8 @@ LABEL_90:
         v239 = 0u;
         v236 = 0u;
         v237 = 0u;
-        v146 = [v206 trackedRegions];
-        v152 = [v146 countByEnumeratingWithState:&v236 objects:v281 count:16];
+        addedRegionIDs7 = [v206 trackedRegions];
+        v152 = [addedRegionIDs7 countByEnumeratingWithState:&v236 objects:v281 count:16];
         if (v152)
         {
           v153 = v152;
@@ -648,13 +648,13 @@ LABEL_107:
           {
             if (*v237 != v154)
             {
-              objc_enumerationMutation(v146);
+              objc_enumerationMutation(addedRegionIDs7);
             }
 
             v156 = *(*(&v236 + 1) + 8 * v155);
-            v157 = [v145 boundingQuad];
-            v158 = [v156 boundingQuad];
-            v159 = [v157 overlapsNormalizedQuad:v158];
+            boundingQuad7 = [v145 boundingQuad];
+            boundingQuad8 = [v156 boundingQuad];
+            v159 = [boundingQuad7 overlapsNormalizedQuad:boundingQuad8];
 
             if (v159)
             {
@@ -663,7 +663,7 @@ LABEL_107:
 
             if (v153 == ++v155)
             {
-              v153 = [v146 countByEnumeratingWithState:&v236 objects:v281 count:16];
+              v153 = [addedRegionIDs7 countByEnumeratingWithState:&v236 objects:v281 count:16];
               if (v153)
               {
                 goto LABEL_107;
@@ -678,21 +678,21 @@ LABEL_107:
         {
 LABEL_113:
 
-          v160 = [v145 trackingID];
+          trackingID5 = [v145 trackingID];
 
-          if (!v160)
+          if (!trackingID5)
           {
-            v161 = [MEMORY[0x1E696AFB0] UUID];
-            [v145 setTrackingID:v161];
+            uUID2 = [MEMORY[0x1E696AFB0] UUID];
+            [v145 setTrackingID:uUID2];
           }
 
           [v217 addObject:v145];
-          v146 = [v145 trackingID];
-          [v211 addObject:v146];
+          addedRegionIDs7 = [v145 trackingID];
+          [v211 addObject:addedRegionIDs7];
         }
 
         v100 = v207;
-        v140 = v224;
+        tracked10 = v224;
         v143 = v221;
       }
 
@@ -701,7 +701,7 @@ LABEL_113:
       }
     }
 
-    v142 = [v140 countByEnumeratingWithState:&v240 objects:v282 count:16];
+    v142 = [tracked10 countByEnumeratingWithState:&v240 objects:v282 count:16];
   }
 
   while (v142);
@@ -715,8 +715,8 @@ LABEL_121:
     v235 = 0u;
     v232 = 0u;
     v233 = 0u;
-    v164 = v208->_regionTrackingGroups;
-    v165 = [(NSArray *)v164 countByEnumeratingWithState:&v232 objects:v280 count:16];
+    trackedRegions2 = v208->_regionTrackingGroups;
+    v165 = [(NSArray *)trackedRegions2 countByEnumeratingWithState:&v232 objects:v280 count:16];
     if (v165)
     {
       v166 = v165;
@@ -727,7 +727,7 @@ LABEL_121:
         {
           if (*v233 != v167)
           {
-            objc_enumerationMutation(v164);
+            objc_enumerationMutation(trackedRegions2);
           }
 
           v169 = *(*(&v232 + 1) + 8 * ii);
@@ -738,11 +738,11 @@ LABEL_121:
             v170 = v162;
           }
 
-          v171 = [v169 trackingID];
-          [v170 addObject:v171];
+          trackingID6 = [v169 trackingID];
+          [v170 addObject:trackingID6];
         }
 
-        v166 = [(NSArray *)v164 countByEnumeratingWithState:&v232 objects:v280 count:16];
+        v166 = [(NSArray *)trackedRegions2 countByEnumeratingWithState:&v232 objects:v280 count:16];
       }
 
       while (v166);
@@ -757,8 +757,8 @@ LABEL_121:
     v231 = 0u;
     v228 = 0u;
     v229 = 0u;
-    v164 = [v206 trackedRegions];
-    v173 = [(NSArray *)v164 countByEnumeratingWithState:&v228 objects:v279 count:16];
+    trackedRegions2 = [v206 trackedRegions];
+    v173 = [(NSArray *)trackedRegions2 countByEnumeratingWithState:&v228 objects:v279 count:16];
     if (v173)
     {
       v174 = v173;
@@ -769,14 +769,14 @@ LABEL_121:
         {
           if (*v229 != v175)
           {
-            objc_enumerationMutation(v164);
+            objc_enumerationMutation(trackedRegions2);
           }
 
-          v177 = [*(*(&v228 + 1) + 8 * jj) trackingID];
-          [v162 addObject:v177];
+          trackingID7 = [*(*(&v228 + 1) + 8 * jj) trackingID];
+          [v162 addObject:trackingID7];
         }
 
-        v174 = [(NSArray *)v164 countByEnumeratingWithState:&v228 objects:v279 count:16];
+        v174 = [(NSArray *)trackedRegions2 countByEnumeratingWithState:&v228 objects:v279 count:16];
       }
 
       while (v174);
@@ -793,13 +793,13 @@ LABEL_121:
   v180 = v208->_removedRegionIDs;
   v208->_removedRegionIDs = v179;
 
-  v181 = [v206 trackedRegions];
-  v182 = [v217 arrayByAddingObjectsFromArray:v181];
+  trackedRegions3 = [v206 trackedRegions];
+  v182 = [v217 arrayByAddingObjectsFromArray:trackedRegions3];
   v183 = v208->_trackedRegions;
   v208->_trackedRegions = v182;
 
-  v184 = [v206 regionTrackingGroups];
-  v185 = [(NSArray *)v227 arrayByAddingObjectsFromArray:v184];
+  regionTrackingGroups2 = [v206 regionTrackingGroups];
+  v185 = [(NSArray *)v227 arrayByAddingObjectsFromArray:regionTrackingGroups2];
   v186 = v208->_regionTrackingGroups;
   v208->_regionTrackingGroups = v185;
 
@@ -838,9 +838,9 @@ LABEL_149:
   return v208;
 }
 
-- (void)markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:(BOOL)a3 ransacReprojError:(float)a4 markedQuadArea:(double)a5
+- (void)markTracksNotConformingSameHomographyUsingGroupsAtOCRDispatch:(BOOL)dispatch ransacReprojError:(float)error markedQuadArea:(double)area
 {
-  v38 = a3;
+  dispatchCopy = dispatch;
   v46 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
@@ -866,28 +866,28 @@ LABEL_149:
           }
 
           v11 = *(*(&v41 + 1) + 8 * i);
-          if (v38)
+          if (dispatchCopy)
           {
-            v12 = [*(*(&v41 + 1) + 8 * i) boundingQuadAtOCRDispatch];
-            v13 = [v12 denormalizedQuad];
+            boundingQuadAtOCRDispatch = [*(*(&v41 + 1) + 8 * i) boundingQuadAtOCRDispatch];
+            denormalizedQuad = [boundingQuadAtOCRDispatch denormalizedQuad];
           }
 
           else
           {
-            v13 = [v11 boundingQuadAfterOCR];
+            denormalizedQuad = [v11 boundingQuadAfterOCR];
           }
 
           v14 = [CRVCQuad alloc];
-          v15 = [MEMORY[0x1E696AFB0] UUID];
-          v16 = [(CRVCQuad *)v14 initWithImageSpaceQuad:v13 uuid:v15];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          v16 = [(CRVCQuad *)v14 initWithImageSpaceQuad:denormalizedQuad uuid:uUID];
 
           [v40 addObject:v16];
-          v17 = [v11 boundingQuad];
-          v18 = [v17 denormalizedQuad];
+          boundingQuad = [v11 boundingQuad];
+          denormalizedQuad2 = [boundingQuad denormalizedQuad];
 
           v19 = [CRVCQuad alloc];
-          v20 = [MEMORY[0x1E696AFB0] UUID];
-          v21 = [(CRVCQuad *)v19 initWithImageSpaceQuad:v18 uuid:v20];
+          uUID2 = [MEMORY[0x1E696AFB0] UUID];
+          v21 = [(CRVCQuad *)v19 initWithImageSpaceQuad:denormalizedQuad2 uuid:uUID2];
 
           [v39 addObject:v21];
         }
@@ -898,7 +898,7 @@ LABEL_149:
       while (v8);
     }
 
-    *&v22 = a4;
+    *&v22 = error;
     v23 = [MEMORY[0x1E69DF9A0] quadsConformHomographySrcQuads:v40 destQuads:v39 reprojError:v22];
     if ([(NSArray *)self->_regionTrackingGroups count])
     {
@@ -923,9 +923,9 @@ LABEL_149:
         [v34 setTrackNeedsReplacement:1];
 
         v33 = [(NSArray *)self->_regionTrackingGroups objectAtIndexedSubscript:v24];
-        v35 = [v33 boundingQuad];
-        v36 = [v35 denormalizedQuad];
-        [v36 area];
+        boundingQuad2 = [v33 boundingQuad];
+        denormalizedQuad3 = [boundingQuad2 denormalizedQuad];
+        [denormalizedQuad3 area];
 
 LABEL_21:
         if ([(NSArray *)self->_regionTrackingGroups count]<= ++v24)
@@ -936,14 +936,14 @@ LABEL_21:
 
 LABEL_17:
       v28 = [(NSArray *)self->_regionTrackingGroups objectAtIndexedSubscript:v24];
-      v29 = [v28 trackNeedsReplacement];
+      trackNeedsReplacement = [v28 trackNeedsReplacement];
 
-      if (v29)
+      if (trackNeedsReplacement)
       {
         v30 = [(NSArray *)self->_regionTrackingGroups objectAtIndexedSubscript:v24];
-        v31 = [v30 boundingQuad];
-        v32 = [v31 denormalizedQuad];
-        [v32 area];
+        boundingQuad3 = [v30 boundingQuad];
+        denormalizedQuad4 = [boundingQuad3 denormalizedQuad];
+        [denormalizedQuad4 area];
       }
 
       v33 = [(NSArray *)self->_regionTrackingGroups objectAtIndexedSubscript:v24];

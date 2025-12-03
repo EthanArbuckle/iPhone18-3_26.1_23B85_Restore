@@ -1,21 +1,21 @@
 @interface _UIImageViewPretiledImageWrapper
-+ (id)cacheValueWithPretiledImage:(id)a3 cacheKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)cacheValueWithPretiledImage:(id)image cacheKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation _UIImageViewPretiledImageWrapper
 
-+ (id)cacheValueWithPretiledImage:(id)a3 cacheKey:(id)a4
++ (id)cacheValueWithPretiledImage:(id)image cacheKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  keyCopy = key;
   v8 = objc_alloc_init(_UIImageViewPretiledImageWrapper);
   p_isa = &v8->super.isa;
   if (v8)
   {
-    objc_storeStrong(&v8->_pretiledImage, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v8->_pretiledImage, image);
+    objc_storeStrong(p_isa + 2, key);
     v10 = p_isa;
   }
 
@@ -30,11 +30,11 @@
   [(_UIImageViewPretiledImageWrapper *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_pretiledImage == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_pretiledImage == equalCopy[1];
 
   return v5;
 }

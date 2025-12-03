@@ -1,7 +1,7 @@
 @interface PXGSpriteMetadataStore
 - (PXGSpriteMetadataStore)init;
-- (unsigned)_indexOfResizableCapInsets:(id)a3;
-- (unsigned)addResizableCapInsets:(id)a3;
+- (unsigned)_indexOfResizableCapInsets:(id)insets;
+- (unsigned)addResizableCapInsets:(id)insets;
 - (void)dealloc;
 @end
 
@@ -21,14 +21,14 @@
   return v3;
 }
 
-- (unsigned)_indexOfResizableCapInsets:(id)a3
+- (unsigned)_indexOfResizableCapInsets:(id)insets
 {
   if (self->_numberOfResizableCapInsets)
   {
     v3 = 0;
-    var1 = a3.var1;
-    v5 = *&a3.var2;
-    while ((vminv_u16(vmovn_s32(vceqq_f32(a3, self->_resizableCapInsets[v3]))) & 1) == 0)
+    var1 = insets.var1;
+    v5 = *&insets.var2;
+    while ((vminv_u16(vmovn_s32(vceqq_f32(insets, self->_resizableCapInsets[v3]))) & 1) == 0)
     {
       if (self->_numberOfResizableCapInsets == ++v3)
       {
@@ -46,12 +46,12 @@ LABEL_5:
   return v3;
 }
 
-- (unsigned)addResizableCapInsets:(id)a3
+- (unsigned)addResizableCapInsets:(id)insets
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = insets.var3;
+  var2 = insets.var2;
+  var1 = insets.var1;
+  var0 = insets.var0;
   LODWORD(numberOfResizableCapInsets) = [(PXGSpriteMetadataStore *)self _indexOfResizableCapInsets:?];
   if (numberOfResizableCapInsets == 0xFFFF)
   {

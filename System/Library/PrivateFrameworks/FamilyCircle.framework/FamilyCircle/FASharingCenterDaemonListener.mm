@@ -1,11 +1,11 @@
 @interface FASharingCenterDaemonListener
-+ (id)createAndReturnError:(id *)a3;
++ (id)createAndReturnError:(id *)error;
 - (FASharingCenterDaemonListener)init;
 @end
 
 @implementation FASharingCenterDaemonListener
 
-+ (id)createAndReturnError:(id *)a3
++ (id)createAndReturnError:(id *)error
 {
   v3 = sub_100031314();
 

@@ -1,19 +1,19 @@
 @interface JavaLangAnnotationRetention
 + (id)__annotations;
-- (JavaLangAnnotationRetention)initWithValue:(id)a3;
+- (JavaLangAnnotationRetention)initWithValue:(id)value;
 - (id)annotationType;
 @end
 
 @implementation JavaLangAnnotationRetention
 
-- (JavaLangAnnotationRetention)initWithValue:(id)a3
+- (JavaLangAnnotationRetention)initWithValue:(id)value
 {
   v6.receiver = self;
   v6.super_class = JavaLangAnnotationRetention;
   v4 = [(JavaLangAnnotationRetention *)&v6 init];
   if (v4)
   {
-    v4->value_ = a3;
+    v4->value_ = value;
   }
 
   return v4;

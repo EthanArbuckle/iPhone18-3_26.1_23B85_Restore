@@ -4,12 +4,12 @@
 - (NSString)description;
 - (NSString)identifier;
 - (_UIBarSection)init;
-- (_UIBarSection)initWithPreferredPlacement:(int64_t)a3 item:(id)a4;
-- (_UIBarSection)initWithPreferredPlacement:(int64_t)a3 items:(id)a4;
+- (_UIBarSection)initWithPreferredPlacement:(int64_t)placement item:(id)item;
+- (_UIBarSection)initWithPreferredPlacement:(int64_t)placement items:(id)items;
 - (_UIBarSectionOwner)_owner;
-- (void)setGroups:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setItemGroups:(id)a3;
+- (void)setGroups:(id)groups;
+- (void)setIdentifier:(id)identifier;
+- (void)setItemGroups:(id)groups;
 @end
 
 @implementation _UIBarSection
@@ -39,7 +39,7 @@
   return v2;
 }
 
-- (_UIBarSection)initWithPreferredPlacement:(int64_t)a3 items:(id)a4
+- (_UIBarSection)initWithPreferredPlacement:(int64_t)placement items:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA933EB0);
   v7 = swift_allocObject();
@@ -48,16 +48,16 @@
   sub_188A34624(0, &qword_1ED48C698);
   v8 = sub_18A4A7518();
 
-  v9 = [(_UIBarSection *)self initWithPreferredPlacement:a3 groups:v8];
+  v9 = [(_UIBarSection *)self initWithPreferredPlacement:placement groups:v8];
 
   return v9;
 }
 
-- (void)setGroups:(id)a3
+- (void)setGroups:(id)groups
 {
   sub_188A34624(0, &qword_1ED48C698);
   *(self + OBJC_IVAR____UIBarSection_groups) = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
 
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -76,7 +76,7 @@
 
 - (NSArray)itemGroups
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E7EE68();
 
   sub_188A34624(0, &unk_1ED48DBD0);
@@ -85,17 +85,17 @@
   return v3;
 }
 
-- (void)setItemGroups:(id)a3
+- (void)setItemGroups:(id)groups
 {
   sub_188A34624(0, &unk_1ED48DBD0);
   v4 = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
   sub_188E7F08C(v4);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_18A4A7288();
   }
@@ -111,24 +111,24 @@
   v6[1] = v5;
 }
 
-- (_UIBarSection)initWithPreferredPlacement:(int64_t)a3 item:(id)a4
+- (_UIBarSection)initWithPreferredPlacement:(int64_t)placement item:(id)item
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA933EB0);
   v7 = swift_allocObject();
   *(v7 + 16) = xmmword_18A64B710;
-  *(v7 + 32) = a4;
+  *(v7 + 32) = item;
   sub_188A34624(0, &qword_1ED48E8C0);
-  v8 = a4;
+  itemCopy = item;
   v9 = sub_18A4A7518();
 
-  v10 = [(_UIBarSection *)self initWithPreferredPlacement:a3 items:v9];
+  v10 = [(_UIBarSection *)self initWithPreferredPlacement:placement items:v9];
 
   return v10;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E7F3CC();
 
   v3 = sub_18A4A7258();

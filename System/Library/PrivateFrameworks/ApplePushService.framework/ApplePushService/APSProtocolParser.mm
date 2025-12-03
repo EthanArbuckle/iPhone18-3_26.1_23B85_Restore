@@ -1,22 +1,22 @@
 @interface APSProtocolParser
 - (APSProtocolParser)init;
-- (BOOL)_parseSerialMessage:(id)a3 parameters:(id *)a4 isInvalid:(BOOL *)a5 lengthParsed:(unint64_t *)a6;
-- (BOOL)parseMessage:(id)a3 parameters:(id *)a4 isInvalid:(BOOL *)a5 lengthParsed:(unint64_t *)a6;
-- (id)copyFilterMessageWithEnabledHashes:(id)a3 ignoredHashes:(id)a4 opportunisticHashes:(id)a5 nonWakingHashes:(id)a6 pausedHashes:(id)a7 token:(id)a8 version:(unint64_t)a9;
-- (id)copyFlushMessageWithWantPaddingLength:(int)a3 paddingLength:(int)a4;
-- (id)copyFlushResponseMessageWithPaddingLength:(int)a3;
-- (id)copyKeepAliveMessageWithMetadata:(id)a3;
-- (id)copyMessageAcknowledgeMessageWithResponse:(int)a3 messageId:(id)a4 token:(id)a5;
-- (id)copyMessageTracingAckWithTopicHash:(id)a3 status:(int)a4 tracingUUID:(id)a5 token:(id)a6;
+- (BOOL)_parseSerialMessage:(id)message parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed;
+- (BOOL)parseMessage:(id)message parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed;
+- (id)copyFilterMessageWithEnabledHashes:(id)hashes ignoredHashes:(id)ignoredHashes opportunisticHashes:(id)opportunisticHashes nonWakingHashes:(id)wakingHashes pausedHashes:(id)pausedHashes token:(id)token version:(unint64_t)version;
+- (id)copyFlushMessageWithWantPaddingLength:(int)length paddingLength:(int)paddingLength;
+- (id)copyFlushResponseMessageWithPaddingLength:(int)length;
+- (id)copyKeepAliveMessageWithMetadata:(id)metadata;
+- (id)copyMessageAcknowledgeMessageWithResponse:(int)response messageId:(id)id token:(id)token;
+- (id)copyMessageTracingAckWithTopicHash:(id)hash status:(int)status tracingUUID:(id)d token:(id)token;
 - (id)copyMessageTransportAcknowledgeMessage;
-- (id)copyMessageWithTopicHash:(id)a3 identifier:(unint64_t)a4 payload:(id)a5 token:(id)a6 isPlistFormat:(BOOL)a7 lastRTT:(id)a8;
-- (void)APNSPackDecoder:(id)a3 ReceivedError:(int)a4;
-- (void)APNSPackEncoder:(id)a3 receivedError:(int)a4;
-- (void)dumpData:(id)a3 prefix:(const char *)a4 log_type:(unsigned __int8)a5;
-- (void)setSerialItemInParameters:(id)a3 commandID:(unint64_t)a4 itemID:(unint64_t)a5 itemData:(id)a6;
-- (void)setSerialNumberInParameters:(id)a3 commandID:(unint64_t)a4 itemID:(unint64_t)a5 Integer:(int64_t)a6;
-- (void)sharedCoderEncounteredParsingFailure:(id)a3;
-- (void)validateEncodedData:(id)a3 withPlist:(id)a4;
+- (id)copyMessageWithTopicHash:(id)hash identifier:(unint64_t)identifier payload:(id)payload token:(id)token isPlistFormat:(BOOL)format lastRTT:(id)t;
+- (void)APNSPackDecoder:(id)decoder ReceivedError:(int)error;
+- (void)APNSPackEncoder:(id)encoder receivedError:(int)error;
+- (void)dumpData:(id)data prefix:(const char *)prefix log_type:(unsigned __int8)log_type;
+- (void)setSerialItemInParameters:(id)parameters commandID:(unint64_t)d itemID:(unint64_t)iD itemData:(id)data;
+- (void)setSerialNumberInParameters:(id)parameters commandID:(unint64_t)d itemID:(unint64_t)iD Integer:(int64_t)integer;
+- (void)sharedCoderEncounteredParsingFailure:(id)failure;
+- (void)validateEncodedData:(id)data withPlist:(id)plist;
 @end
 
 @implementation APSProtocolParser
@@ -37,32 +37,32 @@
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:21];
   if (_os_feature_enabled_impl() && (sharedEncoder = self->_sharedEncoder) != 0)
   {
-    v5 = [(APSSharedEncoder *)sharedEncoder copyMessageData];
-    [(APSProtocolParser *)self validateEncodedData:v5];
+    copyMessageData = [(APSSharedEncoder *)sharedEncoder copyMessageData];
+    [(APSProtocolParser *)self validateEncodedData:copyMessageData];
   }
 
   else
   {
     if (self->_isPackedFormat)
     {
-      v6 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v6 = [(APSProtocolMessage *)v3 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v3 copyMessageData];
     }
 
-    v5 = v6;
+    copyMessageData = copyMessage;
   }
 
   v7 = +[APSLog protocolParser];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_100109E74(self, v5, v7);
+    sub_100109E74(self, copyMessageData, v7);
   }
 
-  return v5;
+  return copyMessageData;
 }
 
 - (APSProtocolParser)init
@@ -78,14 +78,14 @@
   return result;
 }
 
-- (id)copyFilterMessageWithEnabledHashes:(id)a3 ignoredHashes:(id)a4 opportunisticHashes:(id)a5 nonWakingHashes:(id)a6 pausedHashes:(id)a7 token:(id)a8 version:(unint64_t)a9
+- (id)copyFilterMessageWithEnabledHashes:(id)hashes ignoredHashes:(id)ignoredHashes opportunisticHashes:(id)opportunisticHashes nonWakingHashes:(id)wakingHashes pausedHashes:(id)pausedHashes token:(id)token version:(unint64_t)version
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  hashesCopy = hashes;
+  ignoredHashesCopy = ignoredHashes;
+  opportunisticHashesCopy = opportunisticHashes;
+  wakingHashesCopy = wakingHashes;
+  pausedHashesCopy = pausedHashes;
+  tokenCopy = token;
   if (self->_isPackedFormat)
   {
     v21 = 0;
@@ -98,22 +98,22 @@
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:9];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:9];
-  if (a9)
+  if (version)
   {
-    [(APSSharedEncoder *)self->_sharedEncoder appendEightByteItem:12 bytes:a9 isIndexable:0];
-    [(APSProtocolMessage *)v21 appendEightByteItem:12 bytes:a9];
-    [(APNSPackEncoder *)self->_encoderWrapper addInt64WithAttributeId:12 number:a9 isIndexable:0];
+    [(APSSharedEncoder *)self->_sharedEncoder appendEightByteItem:12 bytes:version isIndexable:0];
+    [(APSProtocolMessage *)v21 appendEightByteItem:12 bytes:version];
+    [(APNSPackEncoder *)self->_encoderWrapper addInt64WithAttributeId:12 number:version isIndexable:0];
   }
 
-  if (v20)
+  if (tokenCopy)
   {
-    [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:v20 isIndexable:1];
-    [(APSProtocolMessage *)v21 appendItem:1 data:v20];
-    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:v20 isIndexable:1];
+    [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:tokenCopy isIndexable:1];
+    [(APSProtocolMessage *)v21 appendItem:1 data:tokenCopy];
+    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:tokenCopy isIndexable:1];
   }
 
-  v83 = self;
-  v22 = [(APNSPackEncoder *)self->_encoderWrapper maxTableSize];
+  selfCopy = self;
+  maxTableSize = [(APNSPackEncoder *)self->_encoderWrapper maxTableSize];
   v150[0] = 0;
   v150[1] = v150;
   v150[2] = 0x2020000000;
@@ -126,18 +126,18 @@
   v139[1] = 3221225472;
   v139[2] = sub_1000605AC;
   v139[3] = &unk_100187958;
-  v147 = (vcvtd_n_f64_u64(v22, 1uLL) / 53.0);
+  v147 = (vcvtd_n_f64_u64(maxTableSize, 1uLL) / 53.0);
   v145 = v150;
   v146 = v148;
-  v80 = v20;
+  v80 = tokenCopy;
   v140 = v80;
-  v23 = v15;
+  v23 = hashesCopy;
   v141 = v23;
-  v24 = v16;
+  v24 = ignoredHashesCopy;
   v142 = v24;
-  v25 = v17;
+  v25 = opportunisticHashesCopy;
   v143 = v25;
-  v87 = v19;
+  v87 = pausedHashesCopy;
   v144 = v87;
   v136[0] = _NSConcreteStackBlock;
   v136[1] = 3221225472;
@@ -238,7 +238,7 @@
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v89 = v18;
+  v89 = wakingHashesCopy;
   v40 = [v89 countByEnumeratingWithState:&v120 objects:v175 count:16];
   if (v40)
   {
@@ -295,7 +295,7 @@
   v113[3] = &unk_1001879A8;
   v79 = v85;
   v115 = v79;
-  v113[4] = v83;
+  v113[4] = selfCopy;
   v82 = v81;
   v114 = v82;
   v47 = objc_retainBlock(v113);
@@ -434,44 +434,44 @@
     while (v64);
   }
 
-  if (_os_feature_enabled_impl() && (sharedEncoder = v83->_sharedEncoder) != 0)
+  if (_os_feature_enabled_impl() && (sharedEncoder = selfCopy->_sharedEncoder) != 0)
   {
-    v68 = [(APSSharedEncoder *)sharedEncoder copyMessageData];
-    [(APSProtocolParser *)v83 validateEncodedData:v68];
+    copyMessageData = [(APSSharedEncoder *)sharedEncoder copyMessageData];
+    [(APSProtocolParser *)selfCopy validateEncodedData:copyMessageData];
   }
 
   else
   {
-    if (v83->_isPackedFormat)
+    if (selfCopy->_isPackedFormat)
     {
-      v69 = [(APNSPackEncoder *)v83->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)selfCopy->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v69 = [(APSProtocolMessage *)v82 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v82 copyMessageData];
     }
 
-    v68 = v69;
+    copyMessageData = copyMessage;
   }
 
   v70 = +[APSLog protocolParser];
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
   {
-    identifier = v83->_identifier;
+    identifier = selfCopy->_identifier;
     v78 = [v80 debugDescription];
     v77 = [obj count];
     v76 = [v91 count];
     v75 = [v90 count];
     v74 = [v89 count];
     v72 = [v88 count];
-    v73 = [v68 length];
+    v73 = [copyMessageData length];
     *buf = 134220034;
     v152 = identifier;
     v153 = 2112;
     v154 = v78;
     v155 = 2048;
-    v156 = a9;
+    versionCopy = version;
     v157 = 2048;
     v158 = v77;
     v159 = 2048;
@@ -490,13 +490,13 @@
   _Block_object_dispose(v148, 8);
   _Block_object_dispose(v150, 8);
 
-  return v68;
+  return copyMessageData;
 }
 
-- (id)copyMessageAcknowledgeMessageWithResponse:(int)a3 messageId:(id)a4 token:(id)a5
+- (id)copyMessageAcknowledgeMessageWithResponse:(int)response messageId:(id)id token:(id)token
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  tokenCopy = token;
   if (self->_isPackedFormat)
   {
     v10 = 0;
@@ -509,52 +509,52 @@
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:11];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:11];
-  [(APSSharedEncoder *)self->_sharedEncoder appendOneByteItem:8 byte:a3 isIndexable:0];
-  [(APSProtocolMessage *)v10 appendOneByteItem:8 byte:a3];
-  [(APNSPackEncoder *)self->_encoderWrapper addInt8WithAttributeId:8 number:a3 isIndexable:0];
-  if (v8)
+  [(APSSharedEncoder *)self->_sharedEncoder appendOneByteItem:8 byte:response isIndexable:0];
+  [(APSProtocolMessage *)v10 appendOneByteItem:8 byte:response];
+  [(APNSPackEncoder *)self->_encoderWrapper addInt8WithAttributeId:8 number:response isIndexable:0];
+  if (idCopy)
   {
-    -[APSSharedEncoder appendFourByteItem:bytes:isIndexable:](self->_sharedEncoder, "appendFourByteItem:bytes:isIndexable:", 4, *[v8 bytes], 0);
-    [(APSProtocolMessage *)v10 appendItem:4 data:v8];
-    -[APNSPackEncoder addInt32WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt32WithAttributeId:number:isIndexable:", 4, *[v8 bytes], 0);
+    -[APSSharedEncoder appendFourByteItem:bytes:isIndexable:](self->_sharedEncoder, "appendFourByteItem:bytes:isIndexable:", 4, *[idCopy bytes], 0);
+    [(APSProtocolMessage *)v10 appendItem:4 data:idCopy];
+    -[APNSPackEncoder addInt32WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt32WithAttributeId:number:isIndexable:", 4, *[idCopy bytes], 0);
   }
 
-  if (v9)
+  if (tokenCopy)
   {
-    [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:v9 isIndexable:1];
-    [(APSProtocolMessage *)v10 appendItem:1 data:v9];
-    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:v9 isIndexable:1];
+    [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:tokenCopy isIndexable:1];
+    [(APSProtocolMessage *)v10 appendItem:1 data:tokenCopy];
+    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:tokenCopy isIndexable:1];
   }
 
   if (_os_feature_enabled_impl() && (sharedEncoder = self->_sharedEncoder) != 0)
   {
-    v12 = [(APSSharedEncoder *)sharedEncoder copyMessageData];
-    [(APSProtocolParser *)self validateEncodedData:v12];
+    copyMessageData = [(APSSharedEncoder *)sharedEncoder copyMessageData];
+    [(APSProtocolParser *)self validateEncodedData:copyMessageData];
   }
 
   else
   {
     if (self->_isPackedFormat)
     {
-      v13 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v13 = [(APSProtocolMessage *)v10 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v10 copyMessageData];
     }
 
-    v12 = v13;
+    copyMessageData = copyMessage;
   }
 
   v14 = +[APSLog protocolParser];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     identifier = self->_identifier;
-    v17 = [v9 debugDescription];
-    if (v8)
+    v17 = [tokenCopy debugDescription];
+    if (idCopy)
     {
-      v18 = *[v8 bytes];
+      v18 = *[idCopy bytes];
     }
 
     else
@@ -567,22 +567,22 @@
     v21 = 2112;
     v22 = v17;
     v23 = 2048;
-    v24 = a3;
+    responseCopy = response;
     v25 = 1024;
     v26 = v18;
     v27 = 2048;
-    v28 = [v12 length];
+    v28 = [copyMessageData length];
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "P%04llu <out:msgAck> token: %@ status: %lld messageID: %u  -- data.len: %llu", &v19, 0x30u);
   }
 
-  return v12;
+  return copyMessageData;
 }
 
-- (id)copyMessageTracingAckWithTopicHash:(id)a3 status:(int)a4 tracingUUID:(id)a5 token:(id)a6
+- (id)copyMessageTracingAckWithTopicHash:(id)hash status:(int)status tracingUUID:(id)d token:(id)token
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  hashCopy = hash;
+  dCopy = d;
+  tokenCopy = token;
   if (self->_isPackedFormat)
   {
     v13 = 0;
@@ -595,69 +595,69 @@
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:27];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:27];
-  [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:v10 isIndexable:1];
-  [(APSProtocolMessage *)v13 appendItem:1 data:v10];
-  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:v10 isIndexable:1];
-  [(APSSharedEncoder *)self->_sharedEncoder appendItem:2 data:v11 isIndexable:0];
-  [(APSProtocolMessage *)v13 appendItem:2 data:v11];
-  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:2 data:v11 isIndexable:0];
-  [(APSSharedEncoder *)self->_sharedEncoder appendOneByteItem:3 byte:a4 isIndexable:0];
-  [(APSProtocolMessage *)v13 appendOneByteItem:3 byte:a4];
-  [(APNSPackEncoder *)self->_encoderWrapper addInt8WithAttributeId:3 number:a4 isIndexable:0];
-  if (v12)
+  [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:hashCopy isIndexable:1];
+  [(APSProtocolMessage *)v13 appendItem:1 data:hashCopy];
+  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:hashCopy isIndexable:1];
+  [(APSSharedEncoder *)self->_sharedEncoder appendItem:2 data:dCopy isIndexable:0];
+  [(APSProtocolMessage *)v13 appendItem:2 data:dCopy];
+  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:2 data:dCopy isIndexable:0];
+  [(APSSharedEncoder *)self->_sharedEncoder appendOneByteItem:3 byte:status isIndexable:0];
+  [(APSProtocolMessage *)v13 appendOneByteItem:3 byte:status];
+  [(APNSPackEncoder *)self->_encoderWrapper addInt8WithAttributeId:3 number:status isIndexable:0];
+  if (tokenCopy)
   {
-    [(APSSharedEncoder *)self->_sharedEncoder appendItem:4 data:v12 isIndexable:1];
-    [(APSProtocolMessage *)v13 appendItem:4 data:v12];
-    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:4 data:v12 isIndexable:1];
+    [(APSSharedEncoder *)self->_sharedEncoder appendItem:4 data:tokenCopy isIndexable:1];
+    [(APSProtocolMessage *)v13 appendItem:4 data:tokenCopy];
+    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:4 data:tokenCopy isIndexable:1];
   }
 
   if (_os_feature_enabled_impl() && (sharedEncoder = self->_sharedEncoder) != 0)
   {
-    v15 = [(APSSharedEncoder *)sharedEncoder copyMessageData];
-    [(APSProtocolParser *)self validateEncodedData:v15];
+    copyMessageData = [(APSSharedEncoder *)sharedEncoder copyMessageData];
+    [(APSProtocolParser *)self validateEncodedData:copyMessageData];
   }
 
   else
   {
     if (self->_isPackedFormat)
     {
-      v16 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v16 = [(APSProtocolMessage *)v13 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v13 copyMessageData];
     }
 
-    v15 = v16;
+    copyMessageData = copyMessage;
   }
 
   v17 = +[APSLog protocolParser];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     identifier = self->_identifier;
-    v20 = [v12 debugDescription];
+    v20 = [tokenCopy debugDescription];
     v21 = 134219266;
     v22 = identifier;
     v23 = 2112;
     v24 = v20;
     v25 = 2112;
-    v26 = v10;
+    v26 = hashCopy;
     v27 = 2048;
-    v28 = a4;
+    statusCopy = status;
     v29 = 2112;
-    v30 = v11;
+    v30 = dCopy;
     v31 = 2048;
-    v32 = [v15 length];
+    v32 = [copyMessageData length];
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "P%04llu <out:msgTraceAck> token: %@ topicHash: %@d status: %lld tracingUUID: %@  -- data.len: %llu", &v21, 0x3Eu);
   }
 
-  return v15;
+  return copyMessageData;
 }
 
-- (id)copyKeepAliveMessageWithMetadata:(id)a3
+- (id)copyKeepAliveMessageWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if (self->_isPackedFormat)
   {
     v5 = 0;
@@ -670,144 +670,144 @@
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:12];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:12];
-  v6 = [v4 carrier];
-  v7 = [v6 length];
+  carrier = [metadataCopy carrier];
+  v7 = [carrier length];
 
   if (v7)
   {
     sharedEncoder = self->_sharedEncoder;
-    v9 = [v4 carrier];
-    [(APSSharedEncoder *)sharedEncoder appendItem:1 string:v9 isIndexable:1];
+    carrier2 = [metadataCopy carrier];
+    [(APSSharedEncoder *)sharedEncoder appendItem:1 string:carrier2 isIndexable:1];
 
-    v10 = [v4 carrier];
-    [(APSProtocolMessage *)v5 appendItem:1 string:v10];
+    carrier3 = [metadataCopy carrier];
+    [(APSProtocolMessage *)v5 appendItem:1 string:carrier3];
 
     encoderWrapper = self->_encoderWrapper;
-    v12 = [v4 carrier];
-    [(APNSPackEncoder *)encoderWrapper addStringWithAttributId:1 string:v12 isIndexable:1];
+    carrier4 = [metadataCopy carrier];
+    [(APNSPackEncoder *)encoderWrapper addStringWithAttributId:1 string:carrier4 isIndexable:1];
   }
 
-  v13 = [v4 softwareVersion];
-  v14 = [v13 length];
+  softwareVersion = [metadataCopy softwareVersion];
+  v14 = [softwareVersion length];
 
   if (v14)
   {
     v15 = self->_sharedEncoder;
-    v16 = [v4 softwareVersion];
-    [(APSSharedEncoder *)v15 appendItem:2 string:v16 isIndexable:1];
+    softwareVersion2 = [metadataCopy softwareVersion];
+    [(APSSharedEncoder *)v15 appendItem:2 string:softwareVersion2 isIndexable:1];
 
-    v17 = [v4 softwareVersion];
-    [(APSProtocolMessage *)v5 appendItem:2 string:v17];
+    softwareVersion3 = [metadataCopy softwareVersion];
+    [(APSProtocolMessage *)v5 appendItem:2 string:softwareVersion3];
 
     v18 = self->_encoderWrapper;
-    v19 = [v4 softwareVersion];
-    [(APNSPackEncoder *)v18 addStringWithAttributId:2 string:v19 isIndexable:1];
+    softwareVersion4 = [metadataCopy softwareVersion];
+    [(APNSPackEncoder *)v18 addStringWithAttributId:2 string:softwareVersion4 isIndexable:1];
   }
 
-  v20 = [v4 softwareBuild];
-  v21 = [v20 length];
+  softwareBuild = [metadataCopy softwareBuild];
+  v21 = [softwareBuild length];
 
   if (v21)
   {
     v22 = self->_sharedEncoder;
-    v23 = [v4 softwareBuild];
-    [(APSSharedEncoder *)v22 appendItem:3 string:v23 isIndexable:1];
+    softwareBuild2 = [metadataCopy softwareBuild];
+    [(APSSharedEncoder *)v22 appendItem:3 string:softwareBuild2 isIndexable:1];
 
-    v24 = [v4 softwareBuild];
-    [(APSProtocolMessage *)v5 appendItem:3 string:v24];
+    softwareBuild3 = [metadataCopy softwareBuild];
+    [(APSProtocolMessage *)v5 appendItem:3 string:softwareBuild3];
 
     v25 = self->_encoderWrapper;
-    v26 = [v4 softwareBuild];
-    [(APNSPackEncoder *)v25 addStringWithAttributId:3 string:v26 isIndexable:1];
+    softwareBuild4 = [metadataCopy softwareBuild];
+    [(APNSPackEncoder *)v25 addStringWithAttributId:3 string:softwareBuild4 isIndexable:1];
   }
 
-  v27 = [v4 hardwareVersion];
-  v28 = [v27 length];
+  hardwareVersion = [metadataCopy hardwareVersion];
+  v28 = [hardwareVersion length];
 
   if (v28)
   {
     v29 = self->_sharedEncoder;
-    v30 = [v4 hardwareVersion];
-    [(APSSharedEncoder *)v29 appendItem:4 string:v30 isIndexable:1];
+    hardwareVersion2 = [metadataCopy hardwareVersion];
+    [(APSSharedEncoder *)v29 appendItem:4 string:hardwareVersion2 isIndexable:1];
 
-    v31 = [v4 hardwareVersion];
-    [(APSProtocolMessage *)v5 appendItem:4 string:v31];
+    hardwareVersion3 = [metadataCopy hardwareVersion];
+    [(APSProtocolMessage *)v5 appendItem:4 string:hardwareVersion3];
 
     v32 = self->_encoderWrapper;
-    v33 = [v4 hardwareVersion];
-    [(APNSPackEncoder *)v32 addStringWithAttributId:4 string:v33 isIndexable:1];
+    hardwareVersion4 = [metadataCopy hardwareVersion];
+    [(APNSPackEncoder *)v32 addStringWithAttributId:4 string:hardwareVersion4 isIndexable:1];
   }
 
   v34 = self->_sharedEncoder;
-  v35 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 keepAliveInterval]);
+  v35 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [metadataCopy keepAliveInterval]);
   v36 = [v35 description];
   [(APSSharedEncoder *)v34 appendItem:5 string:v36 isIndexable:1];
 
-  v37 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 keepAliveInterval]);
+  v37 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [metadataCopy keepAliveInterval]);
   v38 = [v37 description];
   [(APSProtocolMessage *)v5 appendItem:5 string:v38];
 
   v39 = self->_encoderWrapper;
-  v40 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 keepAliveInterval]);
+  v40 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [metadataCopy keepAliveInterval]);
   v41 = [v40 description];
   [(APNSPackEncoder *)v39 addStringWithAttributId:5 string:v41 isIndexable:1];
 
-  if ([v4 delayedResponseInterval] >= 1)
+  if ([metadataCopy delayedResponseInterval] >= 1)
   {
     v42 = self->_sharedEncoder;
-    v43 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 delayedResponseInterval]);
+    v43 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [metadataCopy delayedResponseInterval]);
     v44 = [v43 description];
     [(APSSharedEncoder *)v42 appendItem:6 string:v44 isIndexable:1];
 
-    v45 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 delayedResponseInterval]);
+    v45 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [metadataCopy delayedResponseInterval]);
     v46 = [v45 description];
     [(APSProtocolMessage *)v5 appendItem:6 string:v46];
 
     v47 = self->_encoderWrapper;
-    v48 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 delayedResponseInterval]);
+    v48 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [metadataCopy delayedResponseInterval]);
     v49 = [v48 description];
     [(APNSPackEncoder *)v47 addStringWithAttributId:6 string:v49 isIndexable:1];
   }
 
-  if ([v4 usingServerStats])
+  if ([metadataCopy usingServerStats])
   {
     [(APSSharedEncoder *)self->_sharedEncoder appendTwoByteItem:8 bytes:1 isIndexable:0];
     [(APSProtocolMessage *)v5 appendTwoByteItem:8 bytes:1];
     [(APNSPackEncoder *)self->_encoderWrapper addInt16WithAttributeId:8 number:1 isIndexable:0];
   }
 
-  v50 = [v4 keepAliveState];
+  keepAliveState = [metadataCopy keepAliveState];
 
-  if (v50)
+  if (keepAliveState)
   {
-    v51 = [v4 keepAliveState];
-    -[APSSharedEncoder appendOneByteItem:byte:isIndexable:](self->_sharedEncoder, "appendOneByteItem:byte:isIndexable:", 9, [v51 state], 0);
-    -[APSProtocolMessage appendOneByteItem:byte:](v5, "appendOneByteItem:byte:", 9, [v51 state]);
-    -[APNSPackEncoder addInt8WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt8WithAttributeId:number:isIndexable:", 9, [v51 state], 0);
-    -[APSSharedEncoder appendOneByteItem:byte:isIndexable:](self->_sharedEncoder, "appendOneByteItem:byte:isIndexable:", 10, [v51 subState], 0);
-    -[APSProtocolMessage appendOneByteItem:byte:](v5, "appendOneByteItem:byte:", 10, [v51 subState]);
-    -[APNSPackEncoder addInt8WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt8WithAttributeId:number:isIndexable:", 10, [v51 subState], 0);
+    keepAliveState2 = [metadataCopy keepAliveState];
+    -[APSSharedEncoder appendOneByteItem:byte:isIndexable:](self->_sharedEncoder, "appendOneByteItem:byte:isIndexable:", 9, [keepAliveState2 state], 0);
+    -[APSProtocolMessage appendOneByteItem:byte:](v5, "appendOneByteItem:byte:", 9, [keepAliveState2 state]);
+    -[APNSPackEncoder addInt8WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt8WithAttributeId:number:isIndexable:", 9, [keepAliveState2 state], 0);
+    -[APSSharedEncoder appendOneByteItem:byte:isIndexable:](self->_sharedEncoder, "appendOneByteItem:byte:isIndexable:", 10, [keepAliveState2 subState], 0);
+    -[APSProtocolMessage appendOneByteItem:byte:](v5, "appendOneByteItem:byte:", 10, [keepAliveState2 subState]);
+    -[APNSPackEncoder addInt8WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt8WithAttributeId:number:isIndexable:", 10, [keepAliveState2 subState], 0);
   }
 
   if (_os_feature_enabled_impl() && (v52 = self->_sharedEncoder) != 0)
   {
-    v53 = [(APSSharedEncoder *)v52 copyMessageData];
-    [(APSProtocolParser *)self validateEncodedData:v53];
+    copyMessageData = [(APSSharedEncoder *)v52 copyMessageData];
+    [(APSProtocolParser *)self validateEncodedData:copyMessageData];
   }
 
   else
   {
     if (self->_isPackedFormat)
     {
-      v54 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v54 = [(APSProtocolMessage *)v5 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v5 copyMessageData];
     }
 
-    v53 = v54;
+    copyMessageData = copyMessage;
   }
 
   v55 = +[APSLog protocolParser];
@@ -817,22 +817,22 @@
     v58 = 134218498;
     v59 = identifier;
     v60 = 2112;
-    v61 = v4;
+    v61 = metadataCopy;
     v62 = 2048;
-    v63 = [v53 length];
+    v63 = [copyMessageData length];
     _os_log_debug_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEBUG, "P%04llu <out:ka> metadata: %@ -- data.len: %llu", &v58, 0x20u);
   }
 
-  return v53;
+  return copyMessageData;
 }
 
-- (id)copyMessageWithTopicHash:(id)a3 identifier:(unint64_t)a4 payload:(id)a5 token:(id)a6 isPlistFormat:(BOOL)a7 lastRTT:(id)a8
+- (id)copyMessageWithTopicHash:(id)hash identifier:(unint64_t)identifier payload:(id)payload token:(id)token isPlistFormat:(BOOL)format lastRTT:(id)t
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  formatCopy = format;
+  hashCopy = hash;
+  payloadCopy = payload;
+  tokenCopy = token;
+  tCopy = t;
   if (self->_isPackedFormat)
   {
     v18 = 0;
@@ -845,26 +845,26 @@
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:10];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:10];
-  [(APSSharedEncoder *)self->_sharedEncoder appendFourByteItem:4 bytes:a4 isIndexable:0];
-  [(APSProtocolMessage *)v18 appendFourByteItem:4 bytes:a4];
-  [(APNSPackEncoder *)self->_encoderWrapper addInt32WithAttributeId:4 number:a4 isIndexable:0];
-  [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:v14 isIndexable:1];
-  [(APSProtocolMessage *)v18 appendItem:1 data:v14];
-  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:v14 isIndexable:1];
-  if (v16)
+  [(APSSharedEncoder *)self->_sharedEncoder appendFourByteItem:4 bytes:identifier isIndexable:0];
+  [(APSProtocolMessage *)v18 appendFourByteItem:4 bytes:identifier];
+  [(APNSPackEncoder *)self->_encoderWrapper addInt32WithAttributeId:4 number:identifier isIndexable:0];
+  [(APSSharedEncoder *)self->_sharedEncoder appendItem:1 data:hashCopy isIndexable:1];
+  [(APSProtocolMessage *)v18 appendItem:1 data:hashCopy];
+  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:1 data:hashCopy isIndexable:1];
+  if (tokenCopy)
   {
-    [(APSSharedEncoder *)self->_sharedEncoder appendItem:2 data:v16 isIndexable:1];
-    [(APSProtocolMessage *)v18 appendItem:2 data:v16];
-    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:2 data:v16 isIndexable:1];
+    [(APSSharedEncoder *)self->_sharedEncoder appendItem:2 data:tokenCopy isIndexable:1];
+    [(APSProtocolMessage *)v18 appendItem:2 data:tokenCopy];
+    [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:2 data:tokenCopy isIndexable:1];
   }
 
-  [(APSProtocolMessage *)v18 appendItem:3 data:v15];
+  [(APSProtocolMessage *)v18 appendItem:3 data:payloadCopy];
   sharedEncoder = self->_sharedEncoder;
-  if (v9)
+  if (formatCopy)
   {
-    [(APSSharedEncoder *)sharedEncoder appendBinaryPropertyListItem:3 data:v15 isIndexable:0];
-    [(APNSPackEncoder *)self->_encoderWrapper addBinaryPropertyListWithAttributeId:3 data:v15 isIndexable:0];
-    if (!v17)
+    [(APSSharedEncoder *)sharedEncoder appendBinaryPropertyListItem:3 data:payloadCopy isIndexable:0];
+    [(APNSPackEncoder *)self->_encoderWrapper addBinaryPropertyListWithAttributeId:3 data:payloadCopy isIndexable:0];
+    if (!tCopy)
     {
       goto LABEL_11;
     }
@@ -872,28 +872,28 @@
     goto LABEL_10;
   }
 
-  [(APSSharedEncoder *)sharedEncoder appendItem:3 data:v15 isIndexable:0];
-  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:3 data:v15 isIndexable:0];
-  if (v17)
+  [(APSSharedEncoder *)sharedEncoder appendItem:3 data:payloadCopy isIndexable:0];
+  [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:3 data:payloadCopy isIndexable:0];
+  if (tCopy)
   {
 LABEL_10:
-    -[APSSharedEncoder appendTwoByteItem:bytes:isIndexable:](self->_sharedEncoder, "appendTwoByteItem:bytes:isIndexable:", 25, [v17 unsignedIntegerValue], 0);
-    -[APSProtocolMessage appendTwoByteItem:bytes:](v18, "appendTwoByteItem:bytes:", 25, [v17 unsignedIntegerValue]);
-    -[APNSPackEncoder addInt16WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt16WithAttributeId:number:isIndexable:", 25, [v17 unsignedIntegerValue], 0);
+    -[APSSharedEncoder appendTwoByteItem:bytes:isIndexable:](self->_sharedEncoder, "appendTwoByteItem:bytes:isIndexable:", 25, [tCopy unsignedIntegerValue], 0);
+    -[APSProtocolMessage appendTwoByteItem:bytes:](v18, "appendTwoByteItem:bytes:", 25, [tCopy unsignedIntegerValue]);
+    -[APNSPackEncoder addInt16WithAttributeId:number:isIndexable:](self->_encoderWrapper, "addInt16WithAttributeId:number:isIndexable:", 25, [tCopy unsignedIntegerValue], 0);
   }
 
 LABEL_11:
   if (_os_feature_enabled_impl() && (v20 = self->_sharedEncoder) != 0)
   {
-    v21 = [(APSSharedEncoder *)v20 copyMessageData];
-    if (v9)
+    copyMessageData = [(APSSharedEncoder *)v20 copyMessageData];
+    if (formatCopy)
     {
-      [(APSProtocolParser *)self validateEncodedData:v21 withPlist:v15];
+      [(APSProtocolParser *)self validateEncodedData:copyMessageData withPlist:payloadCopy];
     }
 
     else
     {
-      [(APSProtocolParser *)self validateEncodedData:v21];
+      [(APSProtocolParser *)self validateEncodedData:copyMessageData];
     }
   }
 
@@ -901,24 +901,24 @@ LABEL_11:
   {
     if (self->_isPackedFormat)
     {
-      v22 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v22 = [(APSProtocolMessage *)v18 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v18 copyMessageData];
     }
 
-    v21 = v22;
+    copyMessageData = copyMessage;
   }
 
   v23 = +[APSLog protocolParser];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     identifier = self->_identifier;
-    v25 = [v16 debugDescription];
-    v28 = [v15 length];
-    if (v9)
+    v25 = [tokenCopy debugDescription];
+    v28 = [payloadCopy length];
+    if (formatCopy)
     {
       v26 = @"YES";
     }
@@ -928,15 +928,15 @@ LABEL_11:
       v26 = @"NO";
     }
 
-    v27 = [v21 length];
+    v27 = [copyMessageData length];
     *buf = 134219522;
-    v32 = identifier;
+    identifierCopy = identifier;
     v33 = 2112;
     v34 = v25;
     v35 = 2112;
-    v36 = v14;
+    v36 = hashCopy;
     v37 = 2048;
-    v38 = a4;
+    identifierCopy2 = identifier;
     v39 = 2048;
     v40 = v29;
     v41 = 2112;
@@ -946,10 +946,10 @@ LABEL_11:
     _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "P%04llu <out:msg> token: %@ topicHash: %@ messageID: %llu payload.len: %llu isPlistFormat: %@ -- data.len: %llu", buf, 0x48u);
   }
 
-  return v21;
+  return copyMessageData;
 }
 
-- (id)copyFlushMessageWithWantPaddingLength:(int)a3 paddingLength:(int)a4
+- (id)copyFlushMessageWithWantPaddingLength:(int)length paddingLength:(int)paddingLength
 {
   if (self->_isPackedFormat)
   {
@@ -963,17 +963,17 @@ LABEL_11:
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:15];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:15];
-  if (a3)
+  if (length)
   {
-    [(APSSharedEncoder *)self->_sharedEncoder appendTwoByteItem:1 bytes:a3 isIndexable:0];
-    [(APSProtocolMessage *)v7 appendTwoByteItem:1 bytes:a3];
-    [(APNSPackEncoder *)self->_encoderWrapper addInt16WithAttributeId:1 number:a3 isIndexable:0];
+    [(APSSharedEncoder *)self->_sharedEncoder appendTwoByteItem:1 bytes:length isIndexable:0];
+    [(APSProtocolMessage *)v7 appendTwoByteItem:1 bytes:length];
+    [(APNSPackEncoder *)self->_encoderWrapper addInt16WithAttributeId:1 number:length isIndexable:0];
   }
 
-  if (a4)
+  if (paddingLength)
   {
     v8 = objc_alloc_init(NSMutableData);
-    [v8 increaseLengthBy:a4];
+    [v8 increaseLengthBy:paddingLength];
     [(APSSharedEncoder *)self->_sharedEncoder appendItem:2 data:v8 isIndexable:0];
     [(APSProtocolMessage *)v7 appendItem:2 data:v8];
     [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:2 data:v8 isIndexable:0];
@@ -981,23 +981,23 @@ LABEL_11:
 
   if (_os_feature_enabled_impl() && (sharedEncoder = self->_sharedEncoder) != 0)
   {
-    v10 = [(APSSharedEncoder *)sharedEncoder copyMessageData];
-    [(APSProtocolParser *)self validateEncodedData:v10];
+    copyMessageData = [(APSSharedEncoder *)sharedEncoder copyMessageData];
+    [(APSProtocolParser *)self validateEncodedData:copyMessageData];
   }
 
   else
   {
     if (self->_isPackedFormat)
     {
-      v11 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v11 = [(APSProtocolMessage *)v7 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v7 copyMessageData];
     }
 
-    v10 = v11;
+    copyMessageData = copyMessage;
   }
 
   v12 = +[APSLog protocolParser];
@@ -1007,18 +1007,18 @@ LABEL_11:
     v15 = 134218752;
     v16 = identifier;
     v17 = 2048;
-    v18 = a3;
+    lengthCopy = length;
     v19 = 2048;
-    v20 = a4;
+    paddingLengthCopy = paddingLength;
     v21 = 2048;
-    v22 = [v10 length];
+    v22 = [copyMessageData length];
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "P%04llu <out:flush> wantLength: %llu paddingLength: %llu  -- data.len: %llu", &v15, 0x2Au);
   }
 
-  return v10;
+  return copyMessageData;
 }
 
-- (id)copyFlushResponseMessageWithPaddingLength:(int)a3
+- (id)copyFlushResponseMessageWithPaddingLength:(int)length
 {
   if (self->_isPackedFormat)
   {
@@ -1032,10 +1032,10 @@ LABEL_11:
 
   [(APNSPackEncoder *)self->_encoderWrapper setCommand:16];
   [(APSSharedEncoder *)self->_sharedEncoder setCommand:16];
-  if (a3)
+  if (length)
   {
     v6 = objc_alloc_init(NSMutableData);
-    [v6 increaseLengthBy:a3];
+    [v6 increaseLengthBy:length];
     [(APSSharedEncoder *)self->_sharedEncoder appendItem:2 data:v6 isIndexable:0];
     [(APSProtocolMessage *)v5 appendItem:2 data:v6];
     [(APNSPackEncoder *)self->_encoderWrapper addDataWithAttributeId:2 data:v6 isIndexable:0];
@@ -1043,23 +1043,23 @@ LABEL_11:
 
   if (_os_feature_enabled_impl() && (sharedEncoder = self->_sharedEncoder) != 0)
   {
-    v8 = [(APSSharedEncoder *)sharedEncoder copyMessageData];
-    [(APSProtocolParser *)self validateEncodedData:v8];
+    copyMessageData = [(APSSharedEncoder *)sharedEncoder copyMessageData];
+    [(APSProtocolParser *)self validateEncodedData:copyMessageData];
   }
 
   else
   {
     if (self->_isPackedFormat)
     {
-      v9 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+      copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
     }
 
     else
     {
-      v9 = [(APSProtocolMessage *)v5 copyMessageData];
+      copyMessage = [(APSProtocolMessage *)v5 copyMessageData];
     }
 
-    v8 = v9;
+    copyMessageData = copyMessage;
   }
 
   v10 = +[APSLog protocolParser];
@@ -1069,43 +1069,43 @@ LABEL_11:
     v13 = 134218496;
     v14 = identifier;
     v15 = 2048;
-    v16 = a3;
+    lengthCopy = length;
     v17 = 2048;
-    v18 = [v8 length];
+    v18 = [copyMessageData length];
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "P%04llu <out:flushResp> paddingLength: %llu  -- data.len: %llu", &v13, 0x20u);
   }
 
-  return v8;
+  return copyMessageData;
 }
 
-- (void)dumpData:(id)a3 prefix:(const char *)a4 log_type:(unsigned __int8)a5
+- (void)dumpData:(id)data prefix:(const char *)prefix log_type:(unsigned __int8)log_type
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = +[APSLog protocolParser];
-  v8 = os_log_type_enabled(v7, a5);
+  v8 = os_log_type_enabled(v7, log_type);
 
   if (v8)
   {
-    v9 = [v6 bytes];
-    v26 = v6;
-    v10 = [v6 length];
+    bytes = [dataCopy bytes];
+    v26 = dataCopy;
+    v10 = [dataCopy length];
     v11 = +[APSLog protocolParser];
-    if (os_log_type_enabled(v11, a5))
+    if (os_log_type_enabled(v11, log_type))
     {
       *buf = 136315650;
-      v36 = a4;
+      prefixCopy = prefix;
       v37 = 2048;
-      v38 = v9;
+      v38 = bytes;
       v39 = 2048;
       v40 = v10;
-      _os_log_impl(&_mh_execute_header, v11, a5, "START %s @ %p,%ld:", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, v11, log_type, "START %s @ %p,%ld:", buf, 0x20u);
     }
 
     if (v10 >= 1)
     {
-      v12 = &v9[v10];
-      v13 = v9;
-      v27 = a5;
+      v12 = &bytes[v10];
+      v13 = bytes;
+      log_typeCopy = log_type;
       do
       {
         v14 = *v13++;
@@ -1116,7 +1116,7 @@ LABEL_11:
           v17 = 1;
           do
           {
-            v18 = &v9[v17];
+            v18 = &bytes[v17];
             if ((v17 & 7) != 0)
             {
               v19 = "";
@@ -1141,121 +1141,121 @@ LABEL_11:
           }
 
           while (v20 < v12);
-          v13 = &v9[v23];
-          a5 = v27;
+          v13 = &bytes[v23];
+          log_type = log_typeCopy;
         }
 
         v24 = +[APSLog protocolParser];
-        if (os_log_type_enabled(v24, a5))
+        if (os_log_type_enabled(v24, log_type))
         {
           *v29 = 136315650;
-          v30 = a4;
+          prefixCopy3 = prefix;
           v31 = 2048;
-          v32 = v9;
+          v32 = bytes;
           v33 = 2080;
           v34 = buf;
-          _os_log_impl(&_mh_execute_header, v24, a5, "DATA %s %p [%s]", v29, 0x20u);
+          _os_log_impl(&_mh_execute_header, v24, log_type, "DATA %s %p [%s]", v29, 0x20u);
         }
 
-        v9 = v13;
+        bytes = v13;
       }
 
       while (v13 < v12);
     }
 
     v25 = +[APSLog protocolParser];
-    if (os_log_type_enabled(v25, a5))
+    if (os_log_type_enabled(v25, log_type))
     {
       *v29 = 136315138;
-      v30 = a4;
-      _os_log_impl(&_mh_execute_header, v25, a5, "STOP %s", v29, 0xCu);
+      prefixCopy3 = prefix;
+      _os_log_impl(&_mh_execute_header, v25, log_type, "STOP %s", v29, 0xCu);
     }
 
-    v6 = v26;
+    dataCopy = v26;
   }
 }
 
-- (void)validateEncodedData:(id)a3 withPlist:(id)a4
+- (void)validateEncodedData:(id)data withPlist:(id)plist
 {
-  v8 = a3;
-  v6 = a4;
+  dataCopy = data;
+  plistCopy = plist;
   if ([(APSProtocolParser *)self isPackedFormat])
   {
-    [(APSProtocolParser *)self dumpData:v8 prefix:"libuaps" log_type:2];
-    v7 = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
-    if (([v8 isEqualToData:v7] & 1) == 0)
+    [(APSProtocolParser *)self dumpData:dataCopy prefix:"libuaps" log_type:2];
+    copyMessage = [(APNSPackEncoder *)self->_encoderWrapper copyMessage];
+    if (([dataCopy isEqualToData:copyMessage] & 1) == 0)
     {
-      [(APSProtocolParser *)self dumpData:v7 prefix:"APNSPackCPP" log_type:2];
-      if (v6)
+      [(APSProtocolParser *)self dumpData:copyMessage prefix:"APNSPackCPP" log_type:2];
+      if (plistCopy)
       {
-        [(APSProtocolParser *)self dumpData:v6 prefix:"bplist" log_type:2];
+        [(APSProtocolParser *)self dumpData:plistCopy prefix:"bplist" log_type:2];
       }
     }
   }
 }
 
-- (void)APNSPackEncoder:(id)a3 receivedError:(int)a4
+- (void)APNSPackEncoder:(id)encoder receivedError:(int)error
 {
-  if (self->_encoderWrapper == a3)
+  if (self->_encoderWrapper == encoder)
   {
     delegate = self->_delegate;
-    v7 = [a3 errorMessage];
-    [(APSProtocolParserDelegate *)delegate protocolParser:self receiveAPNSPackError:v7];
+    errorMessage = [encoder errorMessage];
+    [(APSProtocolParserDelegate *)delegate protocolParser:self receiveAPNSPackError:errorMessage];
   }
 }
 
-- (void)APNSPackDecoder:(id)a3 ReceivedError:(int)a4
+- (void)APNSPackDecoder:(id)decoder ReceivedError:(int)error
 {
-  if (self->_decoderWrapper == a3)
+  if (self->_decoderWrapper == decoder)
   {
     delegate = self->_delegate;
-    v7 = [a3 errorMessage];
-    [(APSProtocolParserDelegate *)delegate protocolParser:self receiveAPNSPackError:v7];
+    errorMessage = [decoder errorMessage];
+    [(APSProtocolParserDelegate *)delegate protocolParser:self receiveAPNSPackError:errorMessage];
   }
 }
 
-- (void)sharedCoderEncounteredParsingFailure:(id)a3
+- (void)sharedCoderEncounteredParsingFailure:(id)failure
 {
-  if (self->_sharedDecoder == a3 || self->_sharedEncoder == a3)
+  if (self->_sharedDecoder == failure || self->_sharedEncoder == failure)
   {
     [(APSProtocolParserDelegate *)self->_delegate protocolParser:self receiveAPNSPackError:@"Unknown Error"];
   }
 }
 
-- (BOOL)parseMessage:(id)a3 parameters:(id *)a4 isInvalid:(BOOL *)a5 lengthParsed:(unint64_t *)a6
+- (BOOL)parseMessage:(id)message parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed
 {
-  v10 = a3;
-  *a4 = 0;
-  *a5 = 0;
-  *a6 = 0;
-  if (![v10 length])
+  messageCopy = message;
+  *parameters = 0;
+  *invalid = 0;
+  *parsed = 0;
+  if (![messageCopy length])
   {
     LOBYTE(v15) = 0;
     goto LABEL_20;
   }
 
-  v11 = *[v10 bytes];
+  v11 = *[messageCopy bytes];
   if (v11 <= 0x22 && ((1 << v11) & 0x760C5EF80) != 0)
   {
     if (!_os_feature_enabled_impl() || (decoderWrapper = self->_sharedDecoder) == 0)
     {
       if (!self->_isPackedFormat)
       {
-        v14 = [(APSProtocolParser *)self _parseSerialMessage:v10 parameters:a4 isInvalid:a5 lengthParsed:a6];
+        v14 = [(APSProtocolParser *)self _parseSerialMessage:messageCopy parameters:parameters isInvalid:invalid lengthParsed:parsed];
         goto LABEL_13;
       }
 
       decoderWrapper = self->_decoderWrapper;
     }
 
-    v14 = [decoderWrapper decodeMessage:v10 parser:self parameters:a4 isInvalid:a5 lengthParsed:a6];
+    v14 = [decoderWrapper decodeMessage:messageCopy parser:self parameters:parameters isInvalid:invalid lengthParsed:parsed];
 LABEL_13:
     v15 = v14;
     goto LABEL_14;
   }
 
   v15 = 0;
-  *a5 = 1;
+  *invalid = 1;
 LABEL_14:
   v16 = +[APSLog protocolParser];
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
@@ -1276,11 +1276,11 @@ LABEL_14:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       identifier = self->_identifier;
-      v22 = [v10 length];
-      v23 = *a6;
+      v22 = [messageCopy length];
+      v23 = *parsed;
       v24 = @"NO";
-      v25 = *a4;
-      if (*a5)
+      v25 = *parameters;
+      if (*invalid)
       {
         v26 = @"YES";
       }
@@ -1320,13 +1320,13 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)_parseSerialMessage:(id)a3 parameters:(id *)a4 isInvalid:(BOOL *)a5 lengthParsed:(unint64_t *)a6
+- (BOOL)_parseSerialMessage:(id)message parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed
 {
-  v10 = a3;
-  v11 = [v10 length];
-  v12 = [v10 bytes];
+  messageCopy = message;
+  v11 = [messageCopy length];
+  bytes = [messageCopy bytes];
   v13 = +[NSMutableDictionary dictionary];
-  v14 = *v12;
+  v14 = *bytes;
   v15 = [NSNumber numberWithUnsignedInteger:v14];
   [v13 setObject:v15 forKey:@"APSProtocolCommand"];
 
@@ -1335,35 +1335,35 @@ LABEL_20:
     goto LABEL_4;
   }
 
-  v16 = *(v12 + 1);
+  v16 = *(bytes + 1);
   v17 = bswap32(v16);
   if ((v17 & 0x80000000) != 0)
   {
     v19 = 0;
-    *a5 = 1;
+    *invalid = 1;
     goto LABEL_11;
   }
 
-  v28 = a5;
+  invalidCopy = invalid;
   v18 = v17 + 5;
   if (v11 >= v18)
   {
-    v27 = a6;
+    parsedCopy = parsed;
     v20 = 5;
     if (v16)
     {
       while (1)
       {
-        v21 = &v12[v20];
+        v21 = &bytes[v20];
         v22 = v20 + 3;
-        v20 += 3 + (bswap32(*&v12[v20 + 1]) >> 16);
+        v20 += 3 + (bswap32(*&bytes[v20 + 1]) >> 16);
         if (v20 > v18)
         {
           break;
         }
 
         v23 = *v21;
-        v24 = [NSData dataWithBytes:&v12[v22] length:?];
+        v24 = [NSData dataWithBytes:&bytes[v22] length:?];
         [(APSProtocolParser *)self setSerialItemInParameters:v13 commandID:v14 itemID:v23 itemData:v24];
 
         if (v20 >= v18)
@@ -1373,15 +1373,15 @@ LABEL_20:
       }
 
       v19 = 0;
-      *v28 = 1;
+      *invalidCopy = 1;
     }
 
     else
     {
 LABEL_9:
       v25 = v13;
-      *a4 = v13;
-      *v27 = v20;
+      *parameters = v13;
+      *parsedCopy = v20;
       v19 = 1;
     }
   }
@@ -1397,41 +1397,41 @@ LABEL_11:
   return v19;
 }
 
-- (void)setSerialNumberInParameters:(id)a3 commandID:(unint64_t)a4 itemID:(unint64_t)a5 Integer:(int64_t)a6
+- (void)setSerialNumberInParameters:(id)parameters commandID:(unint64_t)d itemID:(unint64_t)iD Integer:(int64_t)integer
 {
-  v9 = a3;
-  if (a4 <= 14)
+  parametersCopy = parameters;
+  if (d <= 14)
   {
-    if (a4 > 9)
+    if (d > 9)
     {
-      switch(a4)
+      switch(d)
       {
         case 0xAuLL:
-          if (a5 <= 8)
+          if (iD <= 8)
           {
-            switch(a5)
+            switch(iD)
             {
               case 4uLL:
-                if (a6 != a6)
+                if (integer != integer)
                 {
                   goto LABEL_126;
                 }
 
-                v16 = a6;
-                v10 = [NSData dataWithBytes:&v16 length:4];
+                integerCopy = integer;
+                v10 = [NSData dataWithBytes:&integerCopy length:4];
                 v11 = @"APSProtocolMessageID";
                 break;
               case 5uLL:
-                if (HIDWORD(a6))
+                if (HIDWORD(integer))
                 {
                   goto LABEL_126;
                 }
 
-                v10 = [NSDate dateWithTimeIntervalSince1970:a6];
+                v10 = [NSDate dateWithTimeIntervalSince1970:integer];
                 v11 = @"APSProtocolMessageExpiry";
                 break;
               case 6uLL:
-                v10 = [NSNumber numberWithUnsignedLongLong:a6];
+                v10 = [NSNumber numberWithUnsignedLongLong:integer];
                 v11 = @"APSProtocolMessageTimestamp";
                 break;
               default:
@@ -1439,93 +1439,93 @@ LABEL_11:
             }
           }
 
-          else if (a5 > 25)
+          else if (iD > 25)
           {
-            if (a5 == 26)
+            if (iD == 26)
             {
-              if (a6 != a6)
+              if (integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedLong:a6];
+              v10 = [NSNumber numberWithUnsignedLong:integer];
               v11 = @"APSProtocolMessageAPNFlags";
             }
 
             else
             {
-              if (a5 != 28 || a6 != a6)
+              if (iD != 28 || integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedShort:a6];
+              v10 = [NSNumber numberWithUnsignedShort:integer];
               v11 = @"APSProtocolMessagePushType";
             }
           }
 
-          else if (a5 == 9)
+          else if (iD == 9)
           {
-            if (a6 != a6)
+            if (integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedInteger:a6];
+            v10 = [NSNumber numberWithUnsignedInteger:integer];
             v11 = @"APSProtocolMessageStorageFlags";
           }
 
           else
           {
-            if (a5 != 13 || a6 != a6)
+            if (iD != 13 || integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedInteger:a6];
+            v10 = [NSNumber numberWithUnsignedInteger:integer];
             v11 = @"APSProtocolMessagePriority";
           }
 
           break;
         case 0xBuLL:
-          if (a5 == 6)
+          if (iD == 6)
           {
-            v10 = [NSNumber numberWithUnsignedLongLong:a6];
+            v10 = [NSNumber numberWithUnsignedLongLong:integer];
             v11 = @"APSProtocolAckTimestampKey";
           }
 
           else
           {
-            if (a5 != 8 || a6 != a6)
+            if (iD != 8 || integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedInteger:a6];
+            v10 = [NSNumber numberWithUnsignedInteger:integer];
             v11 = @"APSProtocolDeliveryStatus";
           }
 
           break;
         case 0xDuLL:
-          if (a5 == 2)
+          if (iD == 2)
           {
-            if (a6 != a6)
+            if (integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedInt:a6];
+            v10 = [NSNumber numberWithUnsignedInt:integer];
             v11 = @"APSProtocolKeepAliveDelayKeepAliveDurationKey";
           }
 
           else
           {
-            if (a5 != 1 || a6 != a6)
+            if (iD != 1 || integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedInteger:a6];
+            v10 = [NSNumber numberWithUnsignedInteger:integer];
             v11 = @"APSProtocolKeepAliveResponse";
           }
 
@@ -1537,168 +1537,168 @@ LABEL_11:
 
     else
     {
-      switch(a4)
+      switch(d)
       {
         case 7uLL:
-          if (a5 != 2)
+          if (iD != 2)
           {
             goto LABEL_126;
           }
 
-          v10 = [NSNumber numberWithUnsignedInteger:a6];
+          v10 = [NSNumber numberWithUnsignedInteger:integer];
           v11 = @"APSProtocolPresenceStatus";
           break;
         case 8uLL:
-          if (a5 <= 9)
+          if (iD <= 9)
           {
-            if (a5 <= 5)
+            if (iD <= 5)
             {
-              if (a5 == 1)
+              if (iD == 1)
               {
-                if (a6 != a6)
+                if (integer != integer)
                 {
                   goto LABEL_126;
                 }
 
-                v10 = [NSNumber numberWithUnsignedInteger:a6];
+                v10 = [NSNumber numberWithUnsignedInteger:integer];
                 v11 = @"APSProtocolConnectedResponse";
               }
 
               else
               {
-                if (a5 != 4 || a6 != a6)
+                if (iD != 4 || integer != integer)
                 {
                   goto LABEL_126;
                 }
 
-                v10 = [NSNumber numberWithUnsignedInteger:a6];
+                v10 = [NSNumber numberWithUnsignedInteger:integer];
                 v11 = @"APSProtocolMessageSize";
               }
             }
 
-            else if (a5 == 6)
+            else if (iD == 6)
             {
-              if (a6 != a6)
+              if (integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedLong:a6];
-              v12 = [NSNumber numberWithBool:a6 & 1];
-              [v9 setObject:v12 forKey:@"APSProtocolDualChannelSupport"];
-              v13 = [NSNumber numberWithBool:(a6 >> 1) & 1];
-              [v9 setObject:v13 forKey:@"APSProtocolReportLastReversePushRTT"];
-              v14 = [NSNumber numberWithBool:(a6 >> 2) & 1];
-              [v9 setObject:v14 forKey:@"APSProtocolFilterOptimizationSupport"];
-              v15 = [NSNumber numberWithBool:(a6 >> 3) & 1];
-              [v9 setObject:v15 forKey:@"APSProtocolServerRequestedTTR"];
+              v10 = [NSNumber numberWithUnsignedLong:integer];
+              v12 = [NSNumber numberWithBool:integer & 1];
+              [parametersCopy setObject:v12 forKey:@"APSProtocolDualChannelSupport"];
+              v13 = [NSNumber numberWithBool:(integer >> 1) & 1];
+              [parametersCopy setObject:v13 forKey:@"APSProtocolReportLastReversePushRTT"];
+              v14 = [NSNumber numberWithBool:(integer >> 2) & 1];
+              [parametersCopy setObject:v14 forKey:@"APSProtocolFilterOptimizationSupport"];
+              v15 = [NSNumber numberWithBool:(integer >> 3) & 1];
+              [parametersCopy setObject:v15 forKey:@"APSProtocolServerRequestedTTR"];
 
               v11 = @"APSProtocolCapabilities";
             }
 
-            else if (a5 == 7)
+            else if (iD == 7)
             {
-              v10 = [NSNumber numberWithUnsignedLongLong:a6];
+              v10 = [NSNumber numberWithUnsignedLongLong:integer];
               v11 = @"APSProtocolServerTimeForBadNonce";
             }
 
             else
             {
-              if (a5 != 8 || a6 != a6)
+              if (iD != 8 || integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedInteger:a6];
+              v10 = [NSNumber numberWithUnsignedInteger:integer];
               v11 = @"APSProtocolLargeMessageSize";
             }
           }
 
-          else if (a5 > 17)
+          else if (iD > 17)
           {
-            if (a5 == 18)
+            if (iD == 18)
             {
-              if (a6 != a6)
+              if (integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedLongLong:a6];
+              v10 = [NSNumber numberWithUnsignedLongLong:integer];
               v11 = @"APSProtocolMaxKeepAliveInterval";
             }
 
-            else if (a5 == 20)
+            else if (iD == 20)
             {
-              if (a6 != a6)
+              if (integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedShort:a6];
+              v10 = [NSNumber numberWithUnsignedShort:integer];
               v11 = @"APSProtocolExperimentIDKey";
             }
 
             else
             {
-              if (a5 != 22 || a6 != a6)
+              if (iD != 22 || integer != integer)
               {
                 goto LABEL_126;
               }
 
-              v10 = [NSNumber numberWithUnsignedChar:a6];
+              v10 = [NSNumber numberWithUnsignedChar:integer];
               v11 = @"APSProtocolPSKVendingStatus";
             }
           }
 
-          else if (a5 == 10)
+          else if (iD == 10)
           {
-            v10 = [NSNumber numberWithUnsignedLongLong:a6];
+            v10 = [NSNumber numberWithUnsignedLongLong:integer];
             v11 = @"APSProtocolServerTime";
           }
 
-          else if (a5 == 16)
+          else if (iD == 16)
           {
-            if (a6 != a6)
+            if (integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedLongLong:a6];
+            v10 = [NSNumber numberWithUnsignedLongLong:integer];
             v11 = @"APSProtocolMinKeepAliveInterval";
           }
 
           else
           {
-            if (a5 != 17 || a6 != a6)
+            if (iD != 17 || integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedLongLong:a6];
+            v10 = [NSNumber numberWithUnsignedLongLong:integer];
             v11 = @"APSProtocolExpectedKeepAliveInterval";
           }
 
           break;
         case 9uLL:
-          if (a5 == 3)
+          if (iD == 3)
           {
-            if (a6 != a6)
+            if (integer != integer)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedInteger:a6];
+            v10 = [NSNumber numberWithUnsignedInteger:integer];
             v11 = @"APSProtocolFilterResponseStatusKey";
           }
 
           else
           {
-            if (a5 != 2)
+            if (iD != 2)
             {
               goto LABEL_126;
             }
 
-            v10 = [NSNumber numberWithUnsignedLongLong:a6];
+            v10 = [NSNumber numberWithUnsignedLongLong:integer];
             v11 = @"APSProtocolFilterResponseVersionKey";
           }
 
@@ -1711,79 +1711,79 @@ LABEL_11:
     goto LABEL_124;
   }
 
-  if (a4 > 29)
+  if (d > 29)
   {
-    switch(a4)
+    switch(d)
     {
       case 0x1EuLL:
-        if (a5 == 4)
+        if (iD == 4)
         {
           goto LABEL_65;
         }
 
-        if (a5 != 1)
+        if (iD != 1)
         {
           goto LABEL_126;
         }
 
-        if (a6 != a6)
+        if (integer != integer)
         {
 LABEL_65:
-          v10 = [NSNumber numberWithUnsignedLongLong:a6];
+          v10 = [NSNumber numberWithUnsignedLongLong:integer];
           v11 = @"APSProtocolPubSubUpdateTimestamp";
         }
 
         else
         {
-          v10 = [NSNumber numberWithInteger:a6];
+          v10 = [NSNumber numberWithInteger:integer];
           v11 = @"APSPtotocolPubsubUpdateMessageID";
         }
 
         break;
       case 0x20uLL:
-        if (a5 == 3)
+        if (iD == 3)
         {
-          if (a6 != a6)
+          if (integer != integer)
           {
             goto LABEL_126;
           }
 
-          v10 = [NSNumber numberWithInteger:a6];
+          v10 = [NSNumber numberWithInteger:integer];
           v11 = @"APSProtocolPresenceActivityStatusKey";
         }
 
         else
         {
-          if (a5 != 1 || a6 != a6)
+          if (iD != 1 || integer != integer)
           {
             goto LABEL_126;
           }
 
-          v10 = [NSNumber numberWithInteger:a6];
+          v10 = [NSNumber numberWithInteger:integer];
           v11 = @"APSProtocolPresenceActivityMessageIDKey";
         }
 
         break;
       case 0x21uLL:
-        if (a5 == 3)
+        if (iD == 3)
         {
-          if (a6 != a6)
+          if (integer != integer)
           {
             goto LABEL_126;
           }
 
-          v10 = [NSNumber numberWithUnsignedInteger:a6];
+          v10 = [NSNumber numberWithUnsignedInteger:integer];
           v11 = @"APSProtocolFilterUpdateStatusKey";
         }
 
         else
         {
-          if (a5 != 2)
+          if (iD != 2)
           {
             goto LABEL_126;
           }
 
-          v10 = [NSNumber numberWithUnsignedLongLong:a6];
+          v10 = [NSNumber numberWithUnsignedLongLong:integer];
           v11 = @"APSProtocolFilterUpdateVersionKey";
         }
 
@@ -1795,137 +1795,137 @@ LABEL_65:
 
   else
   {
-    if (a4 == 15)
+    if (d == 15)
     {
-      if (a5 != 1 || (a6 + 0x8000) >> 16)
+      if (iD != 1 || (integer + 0x8000) >> 16)
       {
         goto LABEL_126;
       }
 
-      v10 = [NSNumber numberWithUnsignedInteger:a6];
+      v10 = [NSNumber numberWithUnsignedInteger:integer];
       v11 = @"APSProtocolFlushWantPadding";
       goto LABEL_124;
     }
 
-    if (a4 == 18)
+    if (d == 18)
     {
-      if (a5 == 4)
+      if (iD == 4)
       {
-        if (a6 != a6)
+        if (integer != integer)
         {
           goto LABEL_126;
         }
 
-        v10 = [NSNumber numberWithInteger:a6];
+        v10 = [NSNumber numberWithInteger:integer];
         v11 = @"APSProtocolAppTokenGenerateResponseAppId";
       }
 
       else
       {
-        if (a5 != 1 || a6 != a6)
+        if (iD != 1 || integer != integer)
         {
           goto LABEL_126;
         }
 
-        v10 = [NSNumber numberWithInteger:a6];
+        v10 = [NSNumber numberWithInteger:integer];
         v11 = @"APSProtocolAppTokenGenerateResponse";
       }
 
       goto LABEL_124;
     }
 
-    if (a4 != 29)
+    if (d != 29)
     {
       goto LABEL_126;
     }
 
-    if (a5 == 5)
+    if (iD == 5)
     {
       goto LABEL_98;
     }
 
-    if (a5 != 4)
+    if (iD != 4)
     {
-      if (a5 != 1)
+      if (iD != 1)
       {
         goto LABEL_126;
       }
 
-      if (a6 == a6)
+      if (integer == integer)
       {
-        v10 = [NSNumber numberWithInteger:a6];
+        v10 = [NSNumber numberWithInteger:integer];
         v11 = @"APSProtocolPubSubMessageID";
         goto LABEL_124;
       }
 
 LABEL_98:
-      if (HIDWORD(a6))
+      if (HIDWORD(integer))
       {
         goto LABEL_126;
       }
 
-      v10 = [NSNumber numberWithInteger:a6];
+      v10 = [NSNumber numberWithInteger:integer];
       v11 = @"APSProtocolPubSubTimeout";
       goto LABEL_124;
     }
 
-    if (a6 != a6)
+    if (integer != integer)
     {
       goto LABEL_98;
     }
 
-    v10 = [NSNumber numberWithInteger:a6];
+    v10 = [NSNumber numberWithInteger:integer];
     v11 = @"APSProtocolPubSubStatus";
   }
 
 LABEL_124:
   if (v10)
   {
-    [v9 setObject:v10 forKey:v11];
+    [parametersCopy setObject:v10 forKey:v11];
   }
 
 LABEL_126:
 }
 
-- (void)setSerialItemInParameters:(id)a3 commandID:(unint64_t)a4 itemID:(unint64_t)a5 itemData:(id)a6
+- (void)setSerialItemInParameters:(id)parameters commandID:(unint64_t)d itemID:(unint64_t)iD itemData:(id)data
 {
-  v18 = a3;
-  v9 = a6;
-  v10 = v9;
-  switch(a4)
+  parametersCopy = parameters;
+  dataCopy = data;
+  v10 = dataCopy;
+  switch(d)
   {
     case 7uLL:
-      if (a5 == 1)
+      if (iD == 1)
       {
         goto LABEL_3;
       }
 
       goto LABEL_128;
     case 8uLL:
-      if (a5 > 7)
+      if (iD > 7)
       {
-        if (a5 > 10)
+        if (iD > 10)
         {
-          switch(a5)
+          switch(iD)
           {
             case 0xBuLL:
-              v11 = [[NSString alloc] initWithData:v9 encoding:4];
+              v11 = [[NSString alloc] initWithData:dataCopy encoding:4];
               v12 = @"APSProtocolGeoRegion";
               goto LABEL_126;
             case 0x13uLL:
-              v11 = v9;
+              v11 = dataCopy;
               v12 = @"APSProtocolClientIPAddress";
               goto LABEL_126;
             case 0x15uLL:
-              v11 = [[NSString alloc] initWithData:v9 encoding:4];
+              v11 = [[NSString alloc] initWithData:dataCopy encoding:4];
               v12 = @"APSProtocolInvalidPresenceReason";
               goto LABEL_126;
           }
         }
 
-        else if (a5 == 8)
+        else if (iD == 8)
         {
-          if ([v9 length] == 2)
+          if ([dataCopy length] == 2)
           {
             v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", bswap32(*[v10 bytes]) >> 16);
             v12 = @"APSProtocolLargeMessageSize";
@@ -1935,12 +1935,12 @@ LABEL_126:
 
         else
         {
-          if (a5 == 9)
+          if (iD == 9)
           {
             goto LABEL_68;
           }
 
-          if ([v9 length] == 8)
+          if ([dataCopy length] == 8)
           {
             v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[v10 bytes]));
             v12 = @"APSProtocolServerTime";
@@ -1949,11 +1949,11 @@ LABEL_126:
         }
       }
 
-      else if (a5 > 3)
+      else if (iD > 3)
       {
-        if (a5 == 4)
+        if (iD == 4)
         {
-          if ([v9 length] == 2)
+          if ([dataCopy length] == 2)
           {
             v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", bswap32(*[v10 bytes]) >> 16);
             v12 = @"APSProtocolMessageSize";
@@ -1961,27 +1961,27 @@ LABEL_126:
           }
         }
 
-        else if (a5 == 6)
+        else if (iD == 6)
         {
-          if ([v9 length] == 4)
+          if ([dataCopy length] == 4)
           {
             v13 = bswap32(*[v10 bytes]);
             v11 = [NSNumber numberWithUnsignedLong:v13];
             v14 = [NSNumber numberWithBool:v13 & 1];
-            [v18 setObject:v14 forKey:@"APSProtocolDualChannelSupport"];
+            [parametersCopy setObject:v14 forKey:@"APSProtocolDualChannelSupport"];
             v15 = [NSNumber numberWithBool:(v13 >> 1) & 1];
-            [v18 setObject:v15 forKey:@"APSProtocolReportLastReversePushRTT"];
+            [parametersCopy setObject:v15 forKey:@"APSProtocolReportLastReversePushRTT"];
             v16 = [NSNumber numberWithBool:(v13 >> 2) & 1];
-            [v18 setObject:v16 forKey:@"APSProtocolFilterOptimizationSupport"];
+            [parametersCopy setObject:v16 forKey:@"APSProtocolFilterOptimizationSupport"];
             v17 = [NSNumber numberWithBool:(v13 >> 3) & 1];
-            [v18 setObject:v17 forKey:@"APSProtocolServerRequestedTTR"];
+            [parametersCopy setObject:v17 forKey:@"APSProtocolServerRequestedTTR"];
 
             v12 = @"APSProtocolCapabilities";
             goto LABEL_126;
           }
         }
 
-        else if (a5 == 7 && [v9 length] == 8)
+        else if (iD == 7 && [dataCopy length] == 8)
         {
           v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[v10 bytes]));
           v12 = @"APSProtocolServerTimeForBadNonce";
@@ -1991,10 +1991,10 @@ LABEL_126:
 
       else
       {
-        switch(a5)
+        switch(iD)
         {
           case 1uLL:
-            if ([v9 length] == 1)
+            if ([dataCopy length] == 1)
             {
               v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", *[v10 bytes]);
               v12 = @"APSProtocolConnectedResponse";
@@ -2006,7 +2006,7 @@ LABEL_126:
             goto LABEL_48;
           case 3uLL:
 LABEL_3:
-            v11 = v9;
+            v11 = dataCopy;
             v12 = @"APSProtocolToken";
             goto LABEL_126;
         }
@@ -2014,10 +2014,10 @@ LABEL_3:
 
       goto LABEL_128;
     case 9uLL:
-      switch(a5)
+      switch(iD)
       {
         case 3uLL:
-          if ([v9 length] == 1)
+          if ([dataCopy length] == 1)
           {
             v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", *[v10 bytes]);
             v12 = @"APSProtocolFilterResponseStatusKey";
@@ -2026,7 +2026,7 @@ LABEL_3:
 
           break;
         case 2uLL:
-          if ([v9 length] == 8)
+          if ([dataCopy length] == 8)
           {
             v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[v10 bytes]));
             v12 = @"APSProtocolFilterResponseVersionKey";
@@ -2035,31 +2035,31 @@ LABEL_3:
 
           break;
         case 1uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolFilterResponseTokenKey";
           goto LABEL_126;
       }
 
       goto LABEL_128;
     case 0xAuLL:
-      switch(a5)
+      switch(iD)
       {
         case 1uLL:
           goto LABEL_3;
         case 2uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolTopicHash";
           goto LABEL_126;
         case 3uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolPayload";
           goto LABEL_126;
         case 4uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolMessageID";
           goto LABEL_126;
         case 5uLL:
-          if ([v9 length] != 4)
+          if ([dataCopy length] != 4)
           {
             goto LABEL_128;
           }
@@ -2068,7 +2068,7 @@ LABEL_3:
           v12 = @"APSProtocolMessageExpiry";
           break;
         case 6uLL:
-          if ([v9 length] != 8)
+          if ([dataCopy length] != 8)
           {
             goto LABEL_128;
           }
@@ -2077,7 +2077,7 @@ LABEL_3:
           v12 = @"APSProtocolMessageTimestamp";
           break;
         case 9uLL:
-          if ([v9 length] != 1)
+          if ([dataCopy length] != 1)
           {
             goto LABEL_128;
           }
@@ -2086,7 +2086,7 @@ LABEL_3:
           v12 = @"APSProtocolMessageStorageFlags";
           break;
         case 0xDuLL:
-          if ([v9 length] != 1)
+          if ([dataCopy length] != 1)
           {
             goto LABEL_128;
           }
@@ -2095,19 +2095,19 @@ LABEL_3:
           v12 = @"APSProtocolMessagePriority";
           break;
         case 0xFuLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolBaseToken";
           goto LABEL_126;
         case 0x15uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolMessageTracingUUID";
           goto LABEL_126;
         case 0x18uLL:
-          v11 = [[NSString alloc] initWithData:v9 encoding:4];
+          v11 = [[NSString alloc] initWithData:dataCopy encoding:4];
           v12 = @"APSProtocolMessageCorrelationIdentifier";
           goto LABEL_126;
         case 0x1AuLL:
-          if ([v9 length] != 4)
+          if ([dataCopy length] != 4)
           {
             goto LABEL_128;
           }
@@ -2116,7 +2116,7 @@ LABEL_3:
           v12 = @"APSProtocolMessageAPNFlags";
           break;
         case 0x1CuLL:
-          if ([v9 length] != 2)
+          if ([dataCopy length] != 2)
           {
             goto LABEL_128;
           }
@@ -2125,7 +2125,7 @@ LABEL_3:
           v12 = @"APSProtocolMessagePushType";
           break;
         case 0x1DuLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolMessagePubSubInfo";
           goto LABEL_126;
         default:
@@ -2134,9 +2134,9 @@ LABEL_3:
 
       goto LABEL_126;
     case 0xBuLL:
-      if (a5 != 6)
+      if (iD != 6)
       {
-        if (a5 == 8 && [v9 length] == 1)
+        if (iD == 8 && [dataCopy length] == 1)
         {
           v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", *[v10 bytes]);
           v12 = @"APSProtocolDeliveryStatus";
@@ -2146,7 +2146,7 @@ LABEL_3:
         goto LABEL_128;
       }
 
-      if ([v9 length] != 8)
+      if ([dataCopy length] != 8)
       {
         goto LABEL_128;
       }
@@ -2155,7 +2155,7 @@ LABEL_3:
       v12 = @"APSProtocolAckTimestampKey";
       goto LABEL_126;
     case 0xDuLL:
-      if (a5 != 1 || [v9 length] != 1)
+      if (iD != 1 || [dataCopy length] != 1)
       {
         goto LABEL_128;
       }
@@ -2164,7 +2164,7 @@ LABEL_3:
       v12 = @"APSProtocolKeepAliveResponse";
       goto LABEL_126;
     case 0xEuLL:
-      if (a5 != 1 || ![v9 length])
+      if (iD != 1 || ![dataCopy length])
       {
         goto LABEL_128;
       }
@@ -2173,7 +2173,7 @@ LABEL_3:
       v12 = @"APSProtocolDestination";
       goto LABEL_126;
     case 0xFuLL:
-      if (a5 != 1 || [v9 length] != 2)
+      if (iD != 1 || [dataCopy length] != 2)
       {
         goto LABEL_128;
       }
@@ -2182,11 +2182,11 @@ LABEL_3:
       v12 = @"APSProtocolFlushWantPadding";
       goto LABEL_126;
     case 0x12uLL:
-      if (a5 <= 2)
+      if (iD <= 2)
       {
-        if (a5 == 1)
+        if (iD == 1)
         {
-          if ([v9 length] != 1)
+          if ([dataCopy length] != 1)
           {
             goto LABEL_128;
           }
@@ -2197,21 +2197,21 @@ LABEL_3:
 
         else
         {
-          if (a5 != 2)
+          if (iD != 2)
           {
             goto LABEL_128;
           }
 
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolAppTokenGenerateResponseToken";
         }
 
         goto LABEL_126;
       }
 
-      if (a5 == 3)
+      if (iD == 3)
       {
-        if ([v9 length] == 20 || objc_msgSend(v10, "length") == 32)
+        if ([dataCopy length] == 20 || objc_msgSend(v10, "length") == 32)
         {
           v11 = v10;
           v12 = @"APSProtocolAppTokenGenerateResponseTopicHash";
@@ -2219,7 +2219,7 @@ LABEL_3:
         }
       }
 
-      else if (a5 == 4 && [v9 length] == 2)
+      else if (iD == 4 && [dataCopy length] == 2)
       {
         v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[v10 bytes]) >> 16);
         v12 = @"APSProtocolAppTokenGenerateResponseAppId";
@@ -2228,61 +2228,61 @@ LABEL_3:
 
       goto LABEL_128;
     case 0x17uLL:
-      if (a5 == 9)
+      if (iD == 9)
       {
 LABEL_68:
-        v11 = [[NSString alloc] initWithData:v9 encoding:4];
+        v11 = [[NSString alloc] initWithData:dataCopy encoding:4];
         v12 = @"APSProtocolRedirectReason";
       }
 
       else
       {
-        if (a5 != 2)
+        if (iD != 2)
         {
           goto LABEL_128;
         }
 
 LABEL_48:
-        v11 = [[NSString alloc] initWithData:v9 encoding:4];
+        v11 = [[NSString alloc] initWithData:dataCopy encoding:4];
         v12 = @"APSProtocolServerMetadata";
       }
 
       goto LABEL_126;
     case 0x1DuLL:
-      if (a5 <= 2)
+      if (iD <= 2)
       {
-        if (a5 == 1)
+        if (iD == 1)
         {
-          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[v9 bytes]));
+          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[dataCopy bytes]));
           v12 = @"APSProtocolPubSubMessageID";
         }
 
         else
         {
-          if (a5 != 2)
+          if (iD != 2)
           {
             goto LABEL_128;
           }
 
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolPubSubPayload";
         }
       }
 
       else
       {
-        switch(a5)
+        switch(iD)
         {
           case 3uLL:
-            v11 = v9;
+            v11 = dataCopy;
             v12 = @"APSProtocolPubSubToken";
             break;
           case 4uLL:
-            v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", *[v9 bytes]);
+            v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", *[dataCopy bytes]);
             v12 = @"APSProtocolPubSubStatus";
             break;
           case 5uLL:
-            v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[v9 bytes]));
+            v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[dataCopy bytes]));
             v12 = @"APSProtocolPubSubTimeout";
             break;
           default:
@@ -2292,57 +2292,57 @@ LABEL_48:
 
       goto LABEL_126;
     case 0x1EuLL:
-      if (a5 > 2)
+      if (iD > 2)
       {
-        if (a5 == 3)
+        if (iD == 3)
         {
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolPubSubUpdateToken";
         }
 
         else
         {
-          if (a5 != 4)
+          if (iD != 4)
           {
             goto LABEL_128;
           }
 
-          v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[v9 bytes]));
+          v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[dataCopy bytes]));
           v12 = @"APSProtocolPubSubUpdateTimestamp";
         }
       }
 
-      else if (a5 == 1)
+      else if (iD == 1)
       {
-        v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[v9 bytes]));
+        v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[dataCopy bytes]));
         v12 = @"APSPtotocolPubsubUpdateMessageID";
       }
 
       else
       {
-        if (a5 != 2)
+        if (iD != 2)
         {
           goto LABEL_128;
         }
 
-        v11 = v9;
+        v11 = dataCopy;
         v12 = @"APSProtocolPubSubUpdatePayload";
       }
 
       goto LABEL_126;
     case 0x20uLL:
-      switch(a5)
+      switch(iD)
       {
         case 1uLL:
-          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[v9 bytes]));
+          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", bswap32(*[dataCopy bytes]));
           v12 = @"APSProtocolPresenceActivityMessageIDKey";
           break;
         case 3uLL:
-          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", *[v9 bytes]);
+          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", *[dataCopy bytes]);
           v12 = @"APSProtocolPresenceActivityStatusKey";
           break;
         case 2uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolPresenceActivityPushTokenKey";
           break;
         default:
@@ -2351,18 +2351,18 @@ LABEL_48:
 
       goto LABEL_126;
     case 0x21uLL:
-      switch(a5)
+      switch(iD)
       {
         case 1uLL:
-          v11 = v9;
+          v11 = dataCopy;
           v12 = @"APSProtocolFilterUpdateTokenKey";
           break;
         case 3uLL:
-          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", *[v9 bytes]);
+          v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", *[dataCopy bytes]);
           v12 = @"APSProtocolFilterUpdateStatusKey";
           break;
         case 2uLL:
-          v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[v9 bytes]));
+          v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", bswap64(*[dataCopy bytes]));
           v12 = @"APSProtocolFilterUpdateVersionKey";
           break;
         default:
@@ -2372,7 +2372,7 @@ LABEL_48:
 LABEL_126:
       if (v11)
       {
-        [v18 setObject:v11 forKey:v12];
+        [parametersCopy setObject:v11 forKey:v12];
       }
 
 LABEL_128:

@@ -1,10 +1,10 @@
 @interface MMAssertion
-- (MMAssertion)initWithPolicy:(id)a3 description:(id)a4;
+- (MMAssertion)initWithPolicy:(id)policy description:(id)description;
 @end
 
 @implementation MMAssertion
 
-- (MMAssertion)initWithPolicy:(id)a3 description:(id)a4
+- (MMAssertion)initWithPolicy:(id)policy description:(id)description
 {
   v4 = sub_197A87938();
   v6 = v5;

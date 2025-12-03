@@ -1,64 +1,64 @@
 @interface SFAirport
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAirport)initWithCoder:(id)a3;
-- (SFAirport)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAirport)initWithCoder:(id)coder;
+- (SFAirport)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAirport
 
 - (unint64_t)hash
 {
-  v25 = [(SFAirport *)self code];
-  v3 = [v25 hash];
-  v24 = [(SFAirport *)self timezone];
-  v4 = [v24 hash] ^ v3;
-  v5 = [(SFAirport *)self location];
-  v6 = [v5 hash];
-  v7 = [(SFAirport *)self city];
-  v8 = v4 ^ v6 ^ [v7 hash];
-  v9 = [(SFAirport *)self street];
-  v10 = [v9 hash];
-  v11 = [(SFAirport *)self district];
-  v12 = v10 ^ [v11 hash];
-  v13 = [(SFAirport *)self state];
-  v23 = v8 ^ v12 ^ [v13 hash];
-  v14 = [(SFAirport *)self postalCode];
-  v15 = [v14 hash];
-  v16 = [(SFAirport *)self countryCode];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(SFAirport *)self country];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(SFAirport *)self name];
-  v21 = v19 ^ [v20 hash];
+  code = [(SFAirport *)self code];
+  v3 = [code hash];
+  timezone = [(SFAirport *)self timezone];
+  v4 = [timezone hash] ^ v3;
+  location = [(SFAirport *)self location];
+  v6 = [location hash];
+  city = [(SFAirport *)self city];
+  v8 = v4 ^ v6 ^ [city hash];
+  street = [(SFAirport *)self street];
+  v10 = [street hash];
+  district = [(SFAirport *)self district];
+  v12 = v10 ^ [district hash];
+  state = [(SFAirport *)self state];
+  v23 = v8 ^ v12 ^ [state hash];
+  postalCode = [(SFAirport *)self postalCode];
+  v15 = [postalCode hash];
+  countryCode = [(SFAirport *)self countryCode];
+  v17 = v15 ^ [countryCode hash];
+  country = [(SFAirport *)self country];
+  v19 = v17 ^ [country hash];
+  name = [(SFAirport *)self name];
+  v21 = v19 ^ [name hash];
 
   return v23 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_78;
   }
 
-  if (![(SFAirport *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(SFAirport *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v19 = 0;
     goto LABEL_78;
   }
 
-  v5 = v4;
-  v119 = [(SFAirport *)self code];
-  v118 = [(SFAirport *)v5 code];
-  v116 = v118 == 0;
-  v117 = v119 != 0;
+  v5 = equalCopy;
+  code = [(SFAirport *)self code];
+  code2 = [(SFAirport *)v5 code];
+  v116 = code2 == 0;
+  v117 = code != 0;
   if (v117 == v116)
   {
     v10 = 0;
@@ -79,15 +79,15 @@
     goto LABEL_15;
   }
 
-  v7 = [(SFAirport *)self code];
-  v8 = v7 != 0;
-  v111 = v7;
-  if (v7)
+  code3 = [(SFAirport *)self code];
+  v8 = code3 != 0;
+  v111 = code3;
+  if (code3)
   {
-    v9 = [(SFAirport *)self code];
-    v106 = [(SFAirport *)v5 code];
-    v107 = v9;
-    if (![v9 isEqual:?])
+    code4 = [(SFAirport *)self code];
+    code5 = [(SFAirport *)v5 code];
+    v107 = code4;
+    if (![code4 isEqual:?])
     {
       v10 = 0;
       memset(v114, 0, sizeof(v114));
@@ -109,10 +109,10 @@
     }
   }
 
-  v109 = [(SFAirport *)self timezone];
-  v108 = [(SFAirport *)v5 timezone];
+  timezone = [(SFAirport *)self timezone];
+  timezone2 = [(SFAirport *)v5 timezone];
   *&v115[24] = v8;
-  if ((v109 != 0) == (v108 == 0))
+  if ((timezone != 0) == (timezone2 == 0))
   {
     v10 = 0;
     v11 = 0;
@@ -133,15 +133,15 @@
     goto LABEL_15;
   }
 
-  v20 = [(SFAirport *)self timezone];
-  v21 = v20 != 0;
-  v105 = v20;
-  if (v20)
+  timezone3 = [(SFAirport *)self timezone];
+  v21 = timezone3 != 0;
+  v105 = timezone3;
+  if (timezone3)
   {
-    v22 = [(SFAirport *)self timezone];
-    v101 = [(SFAirport *)v5 timezone];
-    v102 = v22;
-    if (![v22 isEqual:?])
+    timezone4 = [(SFAirport *)self timezone];
+    timezone5 = [(SFAirport *)v5 timezone];
+    v102 = timezone4;
+    if (![timezone4 isEqual:?])
     {
       v10 = 0;
       memset(v114, 0, 24);
@@ -171,9 +171,9 @@
     *&v115[20] = 0;
   }
 
-  v104 = [(SFAirport *)self location];
-  v103 = [(SFAirport *)v5 location];
-  if ((v104 != 0) == (v103 == 0))
+  location = [(SFAirport *)self location];
+  location2 = [(SFAirport *)v5 location];
+  if ((location != 0) == (location2 == 0))
   {
     v10 = 0;
     v114[1] = 0;
@@ -196,15 +196,15 @@
     goto LABEL_15;
   }
 
-  v35 = [(SFAirport *)self location];
-  v36 = v35 != 0;
-  v100 = v35;
-  if (v35)
+  location3 = [(SFAirport *)self location];
+  v36 = location3 != 0;
+  v100 = location3;
+  if (location3)
   {
-    v37 = [(SFAirport *)self location];
-    v96 = [(SFAirport *)v5 location];
-    v97 = v37;
-    if (![v37 isEqual:?])
+    location4 = [(SFAirport *)self location];
+    location5 = [(SFAirport *)v5 location];
+    v97 = location4;
+    if (![location4 isEqual:?])
     {
       v10 = 0;
       v114[1] = 0;
@@ -237,9 +237,9 @@
     *&v115[16] = 0;
   }
 
-  v99 = [(SFAirport *)self city];
-  v98 = [(SFAirport *)v5 city];
-  if ((v99 != 0) == (v98 == 0))
+  city = [(SFAirport *)self city];
+  city2 = [(SFAirport *)v5 city];
+  if ((city != 0) == (city2 == 0))
   {
     v114[1] = 0;
     *&v115[8] = 0;
@@ -263,15 +263,15 @@
     goto LABEL_15;
   }
 
-  v38 = [(SFAirport *)self city];
-  v39 = v38 != 0;
-  v95 = v38;
-  if (v38)
+  city3 = [(SFAirport *)self city];
+  v39 = city3 != 0;
+  v95 = city3;
+  if (city3)
   {
-    v40 = [(SFAirport *)self city];
-    v91 = [(SFAirport *)v5 city];
-    v92 = v40;
-    if (![v40 isEqual:?])
+    city4 = [(SFAirport *)self city];
+    city5 = [(SFAirport *)v5 city];
+    v92 = city4;
+    if (![city4 isEqual:?])
     {
       *(v114 + 4) = 0;
       v11 = 0;
@@ -305,9 +305,9 @@
     *&v115[12] = 0;
   }
 
-  v94 = [(SFAirport *)self street];
-  v93 = [(SFAirport *)v5 street];
-  if ((v94 != 0) == (v93 == 0))
+  street = [(SFAirport *)self street];
+  street2 = [(SFAirport *)v5 street];
+  if ((street != 0) == (street2 == 0))
   {
     v11 = 0;
     *&v115[4] = 0;
@@ -331,15 +331,15 @@
     goto LABEL_15;
   }
 
-  v41 = [(SFAirport *)self street];
-  v42 = v41 != 0;
-  v90 = v41;
-  if (v41)
+  street3 = [(SFAirport *)self street];
+  v42 = street3 != 0;
+  v90 = street3;
+  if (street3)
   {
-    v43 = [(SFAirport *)self street];
-    v86 = [(SFAirport *)v5 street];
-    v87 = v43;
-    if (![v43 isEqual:?])
+    street4 = [(SFAirport *)self street];
+    street5 = [(SFAirport *)v5 street];
+    v87 = street4;
+    if (![street4 isEqual:?])
     {
       v113 = 0;
       *v115 = 0;
@@ -371,9 +371,9 @@
     *&v115[8] = 0;
   }
 
-  v89 = [(SFAirport *)self district];
-  v88 = [(SFAirport *)v5 district];
-  if ((v89 != 0) == (v88 == 0))
+  district = [(SFAirport *)self district];
+  district2 = [(SFAirport *)v5 district];
+  if ((district != 0) == (district2 == 0))
   {
     v114[1] = 0x100000000;
     *v115 = 0;
@@ -396,15 +396,15 @@
     goto LABEL_15;
   }
 
-  v44 = [(SFAirport *)self district];
-  v45 = v44 != 0;
-  v85 = v44;
-  if (v44)
+  district3 = [(SFAirport *)self district];
+  v45 = district3 != 0;
+  v85 = district3;
+  if (district3)
   {
-    v46 = [(SFAirport *)self district];
-    v81 = [(SFAirport *)v5 district];
-    v82 = v46;
-    if (![v46 isEqual:?])
+    district4 = [(SFAirport *)self district];
+    district5 = [(SFAirport *)v5 district];
+    v82 = district4;
+    if (![district4 isEqual:?])
     {
       v112 = 0;
       v12 = 0;
@@ -435,9 +435,9 @@
     *&v115[4] = 0;
   }
 
-  v84 = [(SFAirport *)self state];
-  v83 = [(SFAirport *)v5 state];
-  if ((v84 != 0) == (v83 == 0))
+  state = [(SFAirport *)self state];
+  state2 = [(SFAirport *)v5 state];
+  if ((state != 0) == (state2 == 0))
   {
     v12 = 0;
     v112 = 0x100000000;
@@ -460,15 +460,15 @@
     goto LABEL_15;
   }
 
-  v47 = [(SFAirport *)self state];
-  v48 = v47 != 0;
-  v80 = v47;
-  if (v47)
+  state3 = [(SFAirport *)self state];
+  v48 = state3 != 0;
+  v80 = state3;
+  if (state3)
   {
-    v49 = [(SFAirport *)self state];
-    v76 = [(SFAirport *)v5 state];
-    v77 = v49;
-    if (![v49 isEqual:?])
+    state4 = [(SFAirport *)self state];
+    state5 = [(SFAirport *)v5 state];
+    v77 = state4;
+    if (![state4 isEqual:?])
     {
       v112 = 0x100000000;
       v13 = 0;
@@ -499,9 +499,9 @@
     *v115 = 0;
   }
 
-  v79 = [(SFAirport *)self postalCode];
-  v78 = [(SFAirport *)v5 postalCode];
-  if ((v79 != 0) == (v78 == 0))
+  postalCode = [(SFAirport *)self postalCode];
+  postalCode2 = [(SFAirport *)v5 postalCode];
+  if ((postalCode != 0) == (postalCode2 == 0))
   {
     v13 = 0;
     v14 = 0;
@@ -523,15 +523,15 @@
     goto LABEL_15;
   }
 
-  v50 = [(SFAirport *)self postalCode];
-  LODWORD(v120[1]) = v50 != 0;
-  v75 = v50;
+  postalCode3 = [(SFAirport *)self postalCode];
+  LODWORD(v120[1]) = postalCode3 != 0;
+  v75 = postalCode3;
   v58 = v5;
-  if (!v50 || (-[SFAirport postalCode](self, "postalCode"), v51 = objc_claimAutoreleasedReturnValue(), -[SFAirport postalCode](v5, "postalCode"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v51, [v51 isEqual:?]))
+  if (!postalCode3 || (-[SFAirport postalCode](self, "postalCode"), v51 = objc_claimAutoreleasedReturnValue(), -[SFAirport postalCode](v5, "postalCode"), v71 = objc_claimAutoreleasedReturnValue(), v72 = v51, [v51 isEqual:?]))
   {
-    v74 = [(SFAirport *)self countryCode];
-    v73 = [(SFAirport *)v58 countryCode];
-    if ((v74 != 0) == (v73 == 0))
+    countryCode = [(SFAirport *)self countryCode];
+    countryCode2 = [(SFAirport *)v58 countryCode];
+    if ((countryCode != 0) == (countryCode2 == 0))
     {
       v14 = 0;
       v120[0] = 0;
@@ -554,14 +554,14 @@
 
     else
     {
-      v52 = [(SFAirport *)self countryCode];
-      HIDWORD(v120[0]) = v52 != 0;
-      v70 = v52;
-      if (!v52 || (-[SFAirport countryCode](self, "countryCode"), v53 = objc_claimAutoreleasedReturnValue(), -[SFAirport countryCode](v58, "countryCode"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v53, [v53 isEqual:?]))
+      countryCode3 = [(SFAirport *)self countryCode];
+      HIDWORD(v120[0]) = countryCode3 != 0;
+      v70 = countryCode3;
+      if (!countryCode3 || (-[SFAirport countryCode](self, "countryCode"), v53 = objc_claimAutoreleasedReturnValue(), -[SFAirport countryCode](v58, "countryCode"), v66 = objc_claimAutoreleasedReturnValue(), v67 = v53, [v53 isEqual:?]))
       {
-        v69 = [(SFAirport *)self country];
-        v68 = [(SFAirport *)v58 country];
-        if ((v69 != 0) == (v68 == 0))
+        country = [(SFAirport *)self country];
+        country2 = [(SFAirport *)v58 country];
+        if ((country != 0) == (country2 == 0))
         {
           v15 = 0;
           LODWORD(v120[0]) = 0;
@@ -584,14 +584,14 @@
 
         else
         {
-          v54 = [(SFAirport *)self country];
-          LODWORD(v120[0]) = v54 != 0;
-          v65 = v54;
-          if (!v54 || (-[SFAirport country](self, "country"), v55 = objc_claimAutoreleasedReturnValue(), -[SFAirport country](v58, "country"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v55, [v55 isEqual:?]))
+          country3 = [(SFAirport *)self country];
+          LODWORD(v120[0]) = country3 != 0;
+          v65 = country3;
+          if (!country3 || (-[SFAirport country](self, "country"), v55 = objc_claimAutoreleasedReturnValue(), -[SFAirport country](v58, "country"), v61 = objc_claimAutoreleasedReturnValue(), v62 = v55, [v55 isEqual:?]))
           {
-            v64 = [(SFAirport *)self name];
-            v63 = [(SFAirport *)v58 name];
-            if ((v64 != 0) == (v63 == 0))
+            name = [(SFAirport *)self name];
+            name2 = [(SFAirport *)v58 name];
+            if ((name != 0) == (name2 == 0))
             {
               v17 = 0;
               v18 = 0;
@@ -613,15 +613,15 @@
 
             else
             {
-              v60 = [(SFAirport *)self name];
-              if (v60)
+              name3 = [(SFAirport *)self name];
+              if (name3)
               {
-                v56 = [(SFAirport *)self name];
+                name4 = [(SFAirport *)self name];
                 v5 = v58;
-                v57 = [(SFAirport *)v58 name];
-                v59 = v56;
-                v19 = [v56 isEqual:v57];
-                v6 = v57;
+                name5 = [(SFAirport *)v58 name];
+                v59 = name4;
+                v19 = [name4 isEqual:name5];
+                v6 = name5;
                 v18 = 1;
                 v114[3] = 0x100000001;
                 v114[2] = 0x100000001;
@@ -640,7 +640,7 @@
                 goto LABEL_15;
               }
 
-              v60 = 0;
+              name3 = 0;
               v18 = 0;
               v114[3] = 0x100000001;
               v114[2] = 0x100000001;
@@ -732,7 +732,7 @@
 LABEL_15:
   if (v18)
   {
-    v110 = v4;
+    v110 = equalCopy;
     v23 = v19;
     v24 = v13;
     v25 = v12;
@@ -754,7 +754,7 @@ LABEL_15:
     v12 = v25;
     v13 = v24;
     v19 = v23;
-    v4 = v110;
+    equalCopy = v110;
     if (!v33)
     {
       goto LABEL_17;
@@ -902,51 +902,51 @@ LABEL_78:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFAirport *)self code];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  code = [(SFAirport *)self code];
+  v6 = [code copy];
   [v4 setCode:v6];
 
-  v7 = [(SFAirport *)self timezone];
-  v8 = [v7 copy];
+  timezone = [(SFAirport *)self timezone];
+  v8 = [timezone copy];
   [v4 setTimezone:v8];
 
-  v9 = [(SFAirport *)self location];
-  v10 = [v9 copy];
+  location = [(SFAirport *)self location];
+  v10 = [location copy];
   [v4 setLocation:v10];
 
-  v11 = [(SFAirport *)self city];
-  v12 = [v11 copy];
+  city = [(SFAirport *)self city];
+  v12 = [city copy];
   [v4 setCity:v12];
 
-  v13 = [(SFAirport *)self street];
-  v14 = [v13 copy];
+  street = [(SFAirport *)self street];
+  v14 = [street copy];
   [v4 setStreet:v14];
 
-  v15 = [(SFAirport *)self district];
-  v16 = [v15 copy];
+  district = [(SFAirport *)self district];
+  v16 = [district copy];
   [v4 setDistrict:v16];
 
-  v17 = [(SFAirport *)self state];
-  v18 = [v17 copy];
+  state = [(SFAirport *)self state];
+  v18 = [state copy];
   [v4 setState:v18];
 
-  v19 = [(SFAirport *)self postalCode];
-  v20 = [v19 copy];
+  postalCode = [(SFAirport *)self postalCode];
+  v20 = [postalCode copy];
   [v4 setPostalCode:v20];
 
-  v21 = [(SFAirport *)self countryCode];
-  v22 = [v21 copy];
+  countryCode = [(SFAirport *)self countryCode];
+  v22 = [countryCode copy];
   [v4 setCountryCode:v22];
 
-  v23 = [(SFAirport *)self country];
-  v24 = [v23 copy];
+  country = [(SFAirport *)self country];
+  v24 = [country copy];
   [v4 setCountry:v24];
 
-  v25 = [(SFAirport *)self name];
-  v26 = [v25 copy];
+  name = [(SFAirport *)self name];
+  v26 = [name copy];
   [v4 setName:v26];
 
   return v4;
@@ -955,31 +955,31 @@ LABEL_78:
 - (NSData)jsonData
 {
   v2 = [[_SFPBAirport alloc] initWithFacade:self];
-  v3 = [(_SFPBAirport *)v2 jsonData];
+  jsonData = [(_SFPBAirport *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAirport alloc] initWithFacade:self];
-  v3 = [(_SFPBAirport *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAirport *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBAirport alloc] initWithFacade:self];
-  v5 = [(_SFPBAirport *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBAirport *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFAirport)initWithCoder:(id)a3
+- (SFAirport)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBAirport alloc] initWithData:v5];
   v7 = [(SFAirport *)self initWithProtobuf:v6];
@@ -987,103 +987,103 @@ LABEL_78:
   return v7;
 }
 
-- (SFAirport)initWithProtobuf:(id)a3
+- (SFAirport)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v33.receiver = self;
   v33.super_class = SFAirport;
   v5 = [(SFAirport *)&v33 init];
   if (v5)
   {
-    v6 = [v4 code];
+    code = [protobufCopy code];
 
-    if (v6)
+    if (code)
     {
-      v7 = [v4 code];
-      [(SFAirport *)v5 setCode:v7];
+      code2 = [protobufCopy code];
+      [(SFAirport *)v5 setCode:code2];
     }
 
-    v8 = [v4 timezone];
+    timezone = [protobufCopy timezone];
 
-    if (v8)
+    if (timezone)
     {
-      v9 = [v4 timezone];
-      v10 = _SFPBTimeZoneHandwrittenTranslator(v9);
+      timezone2 = [protobufCopy timezone];
+      v10 = _SFPBTimeZoneHandwrittenTranslator(timezone2);
       [(SFAirport *)v5 setTimezone:v10];
     }
 
-    v11 = [v4 location];
+    location = [protobufCopy location];
 
-    if (v11)
+    if (location)
     {
       v12 = [SFLatLng alloc];
-      v13 = [v4 location];
-      v14 = [(SFLatLng *)v12 initWithProtobuf:v13];
+      location2 = [protobufCopy location];
+      v14 = [(SFLatLng *)v12 initWithProtobuf:location2];
       [(SFAirport *)v5 setLocation:v14];
     }
 
-    v15 = [v4 city];
+    city = [protobufCopy city];
 
-    if (v15)
+    if (city)
     {
-      v16 = [v4 city];
-      [(SFAirport *)v5 setCity:v16];
+      city2 = [protobufCopy city];
+      [(SFAirport *)v5 setCity:city2];
     }
 
-    v17 = [v4 street];
+    street = [protobufCopy street];
 
-    if (v17)
+    if (street)
     {
-      v18 = [v4 street];
-      [(SFAirport *)v5 setStreet:v18];
+      street2 = [protobufCopy street];
+      [(SFAirport *)v5 setStreet:street2];
     }
 
-    v19 = [v4 district];
+    district = [protobufCopy district];
 
-    if (v19)
+    if (district)
     {
-      v20 = [v4 district];
-      [(SFAirport *)v5 setDistrict:v20];
+      district2 = [protobufCopy district];
+      [(SFAirport *)v5 setDistrict:district2];
     }
 
-    v21 = [v4 state];
+    state = [protobufCopy state];
 
-    if (v21)
+    if (state)
     {
-      v22 = [v4 state];
-      [(SFAirport *)v5 setState:v22];
+      state2 = [protobufCopy state];
+      [(SFAirport *)v5 setState:state2];
     }
 
-    v23 = [v4 postalCode];
+    postalCode = [protobufCopy postalCode];
 
-    if (v23)
+    if (postalCode)
     {
-      v24 = [v4 postalCode];
-      [(SFAirport *)v5 setPostalCode:v24];
+      postalCode2 = [protobufCopy postalCode];
+      [(SFAirport *)v5 setPostalCode:postalCode2];
     }
 
-    v25 = [v4 countryCode];
+    countryCode = [protobufCopy countryCode];
 
-    if (v25)
+    if (countryCode)
     {
-      v26 = [v4 countryCode];
-      [(SFAirport *)v5 setCountryCode:v26];
+      countryCode2 = [protobufCopy countryCode];
+      [(SFAirport *)v5 setCountryCode:countryCode2];
     }
 
-    v27 = [v4 country];
+    country = [protobufCopy country];
 
-    if (v27)
+    if (country)
     {
-      v28 = [v4 country];
-      [(SFAirport *)v5 setCountry:v28];
+      country2 = [protobufCopy country];
+      [(SFAirport *)v5 setCountry:country2];
     }
 
-    v29 = [v4 name];
+    name = [protobufCopy name];
 
-    if (v29)
+    if (name)
     {
-      v30 = [v4 name];
-      [(SFAirport *)v5 setName:v30];
+      name2 = [protobufCopy name];
+      [(SFAirport *)v5 setName:name2];
     }
 
     v31 = v5;

@@ -1,12 +1,12 @@
 @interface NUMaskSource
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
 - ($41299696D20B6C925B74A5D5E4D5CC87)extent;
-- (NUMaskSource)initWithContentsOfURL:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6;
-- (NUMaskSource)initWithImage:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6;
-- (NUMaskSource)initWithImageBuffer:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6;
-- (id)_initWithDefinition:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6;
-- (id)newSourceNode:(id *)a3;
-- (id)sourceImage:(id *)a3;
+- (NUMaskSource)initWithContentsOfURL:(id)l identifier:(id)identifier extent:(id *)extent scale:(id)scale;
+- (NUMaskSource)initWithImage:(id)image identifier:(id)identifier extent:(id *)extent scale:(id)scale;
+- (NUMaskSource)initWithImageBuffer:(id)buffer identifier:(id)identifier extent:(id *)extent scale:(id)scale;
+- (id)_initWithDefinition:(id)definition identifier:(id)identifier extent:(id *)extent scale:(id)scale;
+- (id)newSourceNode:(id *)node;
+- (id)sourceImage:(id *)image;
 @end
 
 @implementation NUMaskSource
@@ -14,8 +14,8 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale
 {
   v40 = *MEMORY[0x1E69E9840];
-  v2 = [(NUSource *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"scale"];
+  settings = [(NUSource *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"scale"];
 
   if (!v3)
   {
@@ -38,8 +38,8 @@
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v39 = 138543618;
         *&v39[4] = v21;
         *&v39[12] = 2114;
@@ -50,8 +50,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v39 = 138543362;
       *&v39[4] = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v39, 0xCu);
@@ -81,8 +81,8 @@
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v31 callStackSymbols];
+        v34 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v39 = 138543618;
         *&v39[4] = v30;
         *&v39[12] = 2114;
@@ -93,8 +93,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *v39 = 138543362;
       *&v39[4] = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v39, 0xCu);
@@ -117,8 +117,8 @@
 - ($41299696D20B6C925B74A5D5E4D5CC87)extent
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(NUSource *)self settings];
-  v38 = [v3 objectForKeyedSubscript:@"extent"];
+  settings = [(NUSource *)self settings];
+  v38 = [settings objectForKeyedSubscript:@"extent"];
 
   if (!v38)
   {
@@ -141,8 +141,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v19;
         v41 = 2114;
@@ -153,8 +153,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -184,8 +184,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v29 callStackSymbols];
+        v32 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v28;
         v41 = 2114;
@@ -196,8 +196,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -211,63 +211,63 @@
   return result;
 }
 
-- (NUMaskSource)initWithContentsOfURL:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6
+- (NUMaskSource)initWithContentsOfURL:(id)l identifier:(id)identifier extent:(id *)extent scale:(id)scale
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[NUFileSourceDefinition alloc] initWithURL:v12 UTI:0];
+  var1 = scale.var1;
+  var0 = scale.var0;
+  identifierCopy = identifier;
+  lCopy = l;
+  v13 = [[NUFileSourceDefinition alloc] initWithURL:lCopy UTI:0];
 
-  v14 = a5->var1;
-  v17[0] = a5->var0;
+  v14 = extent->var1;
+  v17[0] = extent->var0;
   v17[1] = v14;
-  v15 = [(NUMaskSource *)self _initWithDefinition:v13 identifier:v11 extent:v17 scale:var0, var1];
+  var1 = [(NUMaskSource *)self _initWithDefinition:v13 identifier:identifierCopy extent:v17 scale:var0, var1];
 
-  return v15;
+  return var1;
 }
 
-- (NUMaskSource)initWithImage:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6
+- (NUMaskSource)initWithImage:(id)image identifier:(id)identifier extent:(id *)extent scale:(id)scale
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a4;
-  v12 = a3;
+  var1 = scale.var1;
+  var0 = scale.var0;
+  identifierCopy = identifier;
+  imageCopy = image;
   v13 = [NUMaskSourceDefinition alloc];
-  v14 = a5->var1;
-  v19 = a5->var0;
+  v14 = extent->var1;
+  v19 = extent->var0;
   v20 = v14;
-  v15 = [(NUMaskSourceDefinition *)v13 initWithCIImage:v12 croppedExtent:&v19 scale:var0 orientation:var1, 1];
+  v15 = [(NUMaskSourceDefinition *)v13 initWithCIImage:imageCopy croppedExtent:&v19 scale:var0 orientation:var1, 1];
 
-  v16 = a5->var1;
-  v19 = a5->var0;
+  v16 = extent->var1;
+  v19 = extent->var0;
   v20 = v16;
-  v17 = [(NUMaskSource *)self _initWithDefinition:v15 identifier:v11 extent:&v19 scale:var0, var1];
+  var1 = [(NUMaskSource *)self _initWithDefinition:v15 identifier:identifierCopy extent:&v19 scale:var0, var1];
 
-  return v17;
+  return var1;
 }
 
-- (NUMaskSource)initWithImageBuffer:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6
+- (NUMaskSource)initWithImageBuffer:(id)buffer identifier:(id)identifier extent:(id *)extent scale:(id)scale
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a4;
-  v12 = [a3 CVPixelBuffer];
-  v13 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v12];
-  v14 = a5->var1;
-  v17[0] = a5->var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
+  identifierCopy = identifier;
+  cVPixelBuffer = [buffer CVPixelBuffer];
+  v13 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:cVPixelBuffer];
+  v14 = extent->var1;
+  v17[0] = extent->var0;
   v17[1] = v14;
-  v15 = [(NUMaskSource *)self initWithImage:v13 identifier:v11 extent:v17 scale:var0, var1];
+  var1 = [(NUMaskSource *)self initWithImage:v13 identifier:identifierCopy extent:v17 scale:var0, var1];
 
-  return v15;
+  return var1;
 }
 
-- (id)_initWithDefinition:(id)a3 identifier:(id)a4 extent:(id *)a5 scale:(id)a6
+- (id)_initWithDefinition:(id)definition identifier:(id)identifier extent:(id *)extent scale:(id)scale
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a3;
-  v12 = a4;
+  var1 = scale.var1;
+  var0 = scale.var0;
+  definitionCopy = definition;
+  identifierCopy = identifier;
   v13 = +[NUSourceSchema sharedSourceSchema];
   v21.receiver = self;
   v21.super_class = NUMaskSource;
@@ -275,11 +275,11 @@
 
   if (v14)
   {
-    [(NUSource *)v14 setAssetIdentifier:v12];
-    [(NUSource *)v14 setDefinition:v11];
+    [(NUSource *)v14 setAssetIdentifier:identifierCopy];
+    [(NUSource *)v14 setDefinition:definitionCopy];
     v15 = objc_opt_new();
-    v16 = a5->var1;
-    v20[0] = a5->var0;
+    v16 = extent->var1;
+    v20[0] = extent->var0;
     v20[1] = v16;
     v17 = [MEMORY[0x1E696B098] nu_valueWithPixelRect:v20];
     [v15 setObject:v17 forKeyedSubscript:@"extent"];
@@ -293,10 +293,10 @@
   return v14;
 }
 
-- (id)sourceImage:(id *)a3
+- (id)sourceImage:(id *)image
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v15 = NUAssertLogger_26149();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -317,8 +317,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v22;
         v33 = 2114;
@@ -329,8 +329,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -339,19 +339,19 @@
     _NUAssertFailHandler("[NUMaskSource(MaskEvaluation) sourceImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Mask/NUMaskSource.m", 242, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "error != NULL");
   }
 
-  v5 = [(NUSource *)self definition];
+  definition = [(NUSource *)self definition];
 
-  if (v5)
+  if (definition)
   {
-    v6 = [(NUSource *)self definition];
+    definition2 = [(NUSource *)self definition];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v8 = [(NUSource *)self definition];
-    v9 = v8;
+    definition3 = [(NUSource *)self definition];
+    definition4 = definition3;
     if (isKindOfClass)
     {
-      v10 = [v8 image];
+      image = [definition3 image];
     }
 
     else
@@ -359,18 +359,18 @@
       objc_opt_class();
       v11 = objc_opt_isKindOfClass();
 
-      v9 = [(NUSource *)self definition];
+      definition4 = [(NUSource *)self definition];
       if (v11)
       {
         v12 = objc_alloc(MEMORY[0x1E695F658]);
-        v13 = [v9 url];
-        v10 = [v12 initWithContentsOfURL:v13];
+        v13 = [definition4 url];
+        image = [v12 initWithContentsOfURL:v13];
       }
 
       else
       {
-        [NUError unsupportedError:@"Unexpected source definition kind" object:v9];
-        *a3 = v10 = 0;
+        [NUError unsupportedError:@"Unexpected source definition kind" object:definition4];
+        *image = image = 0;
       }
     }
   }
@@ -378,16 +378,16 @@
   else
   {
     [NUError missingError:@"Missing source" object:self];
-    *a3 = v10 = 0;
+    *image = image = 0;
   }
 
-  return v10;
+  return image;
 }
 
-- (id)newSourceNode:(id *)a3
+- (id)newSourceNode:(id *)node
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!node)
   {
     v11 = NUAssertLogger_26149();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -408,8 +408,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -420,8 +420,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -430,25 +430,25 @@
     _NUAssertFailHandler("[NUMaskSource(MaskEvaluation) newSourceNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Mask/NUMaskSource.m", 219, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "error != NULL");
   }
 
-  v5 = [(NUSource *)self definition];
-  if (!v5)
+  definition = [(NUSource *)self definition];
+  if (!definition)
   {
     v9 = [NUError missingError:@"Missing source" object:self];
 LABEL_9:
     v7 = 0;
-    *a3 = v9;
+    *node = v9;
     goto LABEL_10;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [NUError invalidError:@"Unexpected source definition kind" object:v5];
+    v9 = [NUError invalidError:@"Unexpected source definition kind" object:definition];
     goto LABEL_9;
   }
 
-  v6 = [(NUSource *)self assetIdentifier];
-  v7 = [v5 generateSourceNodeWithIdentifier:v6 error:a3];
+  assetIdentifier = [(NUSource *)self assetIdentifier];
+  v7 = [definition generateSourceNodeWithIdentifier:assetIdentifier error:node];
 
   if (v7)
   {

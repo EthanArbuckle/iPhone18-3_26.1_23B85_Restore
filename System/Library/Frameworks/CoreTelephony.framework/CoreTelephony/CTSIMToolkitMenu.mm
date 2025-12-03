@@ -1,8 +1,8 @@
 @interface CTSIMToolkitMenu
-- (CTSIMToolkitMenu)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTSIMToolkitMenu)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSIMToolkitMenu
@@ -10,57 +10,57 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSIMToolkitMenu *)self title];
-  [v3 appendFormat:@", Title=%@", v4];
+  title = [(CTSIMToolkitMenu *)self title];
+  [v3 appendFormat:@", Title=%@", title];
 
-  v5 = [(CTSIMToolkitMenu *)self subTitles];
-  [v3 appendFormat:@", SubTitlesCount=%lu", objc_msgSend(v5, "count")];
+  subTitles = [(CTSIMToolkitMenu *)self subTitles];
+  [v3 appendFormat:@", SubTitlesCount=%lu", objc_msgSend(subTitles, "count")];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CTSIMToolkitMenu *)self title];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(CTSIMToolkitMenu *)self title];
+  v7 = [title copyWithZone:zone];
   [v5 setTitle:v7];
 
-  v8 = [(CTSIMToolkitMenu *)self subTitles];
-  v9 = [v8 copyWithZone:a3];
+  subTitles = [(CTSIMToolkitMenu *)self subTitles];
+  v9 = [subTitles copyWithZone:zone];
   [v5 setSubTitles:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTSIMToolkitMenu *)self title];
-  [v4 encodeObject:v5 forKey:@"kTitleKey"];
+  coderCopy = coder;
+  title = [(CTSIMToolkitMenu *)self title];
+  [coderCopy encodeObject:title forKey:@"kTitleKey"];
 
-  v6 = [(CTSIMToolkitMenu *)self subTitles];
-  [v4 encodeObject:v6 forKey:@"kSubTitlesKey"];
+  subTitles = [(CTSIMToolkitMenu *)self subTitles];
+  [coderCopy encodeObject:subTitles forKey:@"kSubTitlesKey"];
 }
 
-- (CTSIMToolkitMenu)initWithCoder:(id)a3
+- (CTSIMToolkitMenu)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CTSIMToolkitMenu;
   v5 = [(CTSIMToolkitMenu *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kSubTitlesKey"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kSubTitlesKey"];
     subTitles = v5->_subTitles;
     v5->_subTitles = v11;
   }

@@ -50,7 +50,7 @@
 
 - (void)handleCarPlayAllowedDidChange
 {
-  v3 = [(CRCarPlayPreferences *)self->_preferences isCarPlayAllowed];
+  isCarPlayAllowed = [(CRCarPlayPreferences *)self->_preferences isCarPlayAllowed];
   if (gLogCategory_APCarPlayPreferences <= 50 && (gLogCategory_APCarPlayPreferences != -1 || _LogCategory_Initialize()))
   {
     [APCarPlayPreferences handleCarPlayAllowedDidChange];
@@ -58,7 +58,7 @@
 
   delegate = self->_delegate;
 
-  [(APCarPlayPreferencesDelegate *)delegate setCarPlayEnabled:v3];
+  [(APCarPlayPreferencesDelegate *)delegate setCarPlayEnabled:isCarPlayAllowed];
 }
 
 @end

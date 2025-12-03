@@ -8,47 +8,47 @@
 
 - (id)afui_abbreviatedUnit
 {
-  v1 = [a1 unit];
-  if ([v1 isEqualToString:*MEMORY[0x277D47D40]])
+  unit = [self unit];
+  if ([unit isEqualToString:*MEMORY[0x277D47D40]])
   {
-    v2 = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
-    v3 = v2;
+    afui_assistantUIFrameworkBundle = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
+    v3 = afui_assistantUIFrameworkBundle;
     v4 = @"FEET_ABBREVIATION";
 LABEL_9:
-    v5 = [v2 assistantUILocalizedStringForKey:v4 table:@"Localizable"];
+    v5 = [afui_assistantUIFrameworkBundle assistantUILocalizedStringForKey:v4 table:@"Localizable"];
 
     goto LABEL_10;
   }
 
-  if ([v1 isEqualToString:*MEMORY[0x277D47D58]])
+  if ([unit isEqualToString:*MEMORY[0x277D47D58]])
   {
-    v2 = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
-    v3 = v2;
+    afui_assistantUIFrameworkBundle = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
+    v3 = afui_assistantUIFrameworkBundle;
     v4 = @"MILES_ABBREVIATION";
     goto LABEL_9;
   }
 
-  if ([v1 isEqualToString:*MEMORY[0x277D47D50]])
+  if ([unit isEqualToString:*MEMORY[0x277D47D50]])
   {
-    v2 = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
-    v3 = v2;
+    afui_assistantUIFrameworkBundle = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
+    v3 = afui_assistantUIFrameworkBundle;
     v4 = @"METERS_ABBREVIATION";
     goto LABEL_9;
   }
 
-  if ([v1 isEqualToString:*MEMORY[0x277D47D48]])
+  if ([unit isEqualToString:*MEMORY[0x277D47D48]])
   {
-    v2 = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
-    v3 = v2;
+    afui_assistantUIFrameworkBundle = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
+    v3 = afui_assistantUIFrameworkBundle;
     v4 = @"KILOMETERS_ABBREVIATION";
     goto LABEL_9;
   }
 
-  v5 = v1;
+  v5 = unit;
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
     [SADistance(AssistantUIAdditions) afui_abbreviatedUnit];
-    v5 = v1;
+    v5 = unit;
   }
 
 LABEL_10:
@@ -70,13 +70,13 @@ LABEL_10:
   v15[2] = &unk_28532BD40;
   v15[3] = &unk_28532BD50;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  v5 = [a1 unit];
-  v6 = [v4 objectForKey:v5];
+  unit = [self unit];
+  v6 = [v4 objectForKey:unit];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [a1 value];
-  [v9 doubleValue];
+  value = [self value];
+  [value doubleValue];
   v11 = v10;
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v8 * v11];
@@ -87,10 +87,10 @@ LABEL_10:
 - (uint64_t)afui_compare:()AssistantUIAdditions
 {
   v4 = a3;
-  v5 = [a1 afui_metersValue];
-  v6 = [v4 afui_metersValue];
+  afui_metersValue = [self afui_metersValue];
+  afui_metersValue2 = [v4 afui_metersValue];
 
-  v7 = [v5 compare:v6];
+  v7 = [afui_metersValue compare:afui_metersValue2];
   return v7;
 }
 

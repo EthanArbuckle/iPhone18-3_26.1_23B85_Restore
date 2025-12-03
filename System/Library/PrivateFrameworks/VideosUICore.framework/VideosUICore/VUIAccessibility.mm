@@ -1,9 +1,9 @@
 @interface VUIAccessibility
-+ (BOOL)contentSizeCategoryIsAccessibility:(unint64_t)a3;
-+ (BOOL)isAXLargeEnabled:(unint64_t)a3;
-+ (BOOL)isAXSmallEnabled:(unint64_t)a3;
-+ (BOOL)isFeatureEnabled:(int64_t)a3;
-+ (id)makeAccessibilityIdentifierString:(id)a3 additionalString:(id)a4;
++ (BOOL)contentSizeCategoryIsAccessibility:(unint64_t)accessibility;
++ (BOOL)isAXLargeEnabled:(unint64_t)enabled;
++ (BOOL)isAXSmallEnabled:(unint64_t)enabled;
++ (BOOL)isFeatureEnabled:(int64_t)enabled;
++ (id)makeAccessibilityIdentifierString:(id)string additionalString:(id)additionalString;
 + (id)sharedInstance;
 - (VUIAccessibility)init;
 - (void)_addObserverToAccessibilityNotifications;
@@ -49,30 +49,30 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
 
 - (void)_addObserverToAccessibilityNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__didChangeAccessibilityVoiceOverStatus name:*MEMORY[0x277D765F0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didChangeAccessibilityVoiceOverStatus name:*MEMORY[0x277D765F0] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__didChangeAccessibilityReduceMotionStatus name:*MEMORY[0x277D764C0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__didChangeAccessibilityReduceMotionStatus name:*MEMORY[0x277D764C0] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIAccessibility;
   [(VUIAccessibility *)&v4 dealloc];
 }
 
-+ (BOOL)isFeatureEnabled:(int64_t)a3
++ (BOOL)isFeatureEnabled:(int64_t)enabled
 {
-  if (a3 <= 2)
+  if (enabled <= 2)
   {
-    if (a3)
+    if (enabled)
     {
-      if (a3 == 1)
+      if (enabled == 1)
       {
 
         return UIAccessibilityIsReduceMotionEnabled();
@@ -80,7 +80,7 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
 
       else
       {
-        if (a3 != 2)
+        if (enabled != 2)
         {
           return v3;
         }
@@ -98,13 +98,13 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
 
   else
   {
-    if (a3 <= 4)
+    if (enabled <= 4)
     {
-      if (a3 != 3)
+      if (enabled != 3)
       {
-        v4 = [MEMORY[0x277D75128] sharedApplication];
-        v5 = [v4 preferredContentSizeCategory];
-        v3 = v5 != 0;
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+        preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+        v3 = preferredContentSizeCategory != 0;
 
         return v3;
       }
@@ -113,9 +113,9 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
       return v7 != 0;
     }
 
-    if (a3 != 5)
+    if (enabled != 5)
     {
-      if (a3 != 6)
+      if (enabled != 6)
       {
         return v3;
       }
@@ -130,27 +130,27 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
 
 - (void)_didChangeAccessibilityVoiceOverStatus
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"VUIAccessibilityVoiceOverStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIAccessibilityVoiceOverStatusDidChangeNotification" object:0];
 }
 
 - (void)_didChangeAccessibilityReduceMotionStatus
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"VUIAccessibilityReduceMotionStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIAccessibilityReduceMotionStatusDidChangeNotification" object:0];
 }
 
-+ (BOOL)contentSizeCategoryIsAccessibility:(unint64_t)a3
++ (BOOL)contentSizeCategoryIsAccessibility:(unint64_t)accessibility
 {
-  v3 = [VUICoreUtilities uiContentSizeCategoryFor:a3];
+  v3 = [VUICoreUtilities uiContentSizeCategoryFor:accessibility];
   v4 = v3;
   if (!v3 || [v3 isEqual:*MEMORY[0x277D76860]])
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    v6 = [v5 traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v4 = v7;
+    v4 = preferredContentSizeCategory;
   }
 
   IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
@@ -158,17 +158,17 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
   return IsAccessibilityCategory;
 }
 
-+ (BOOL)isAXSmallEnabled:(unint64_t)a3
++ (BOOL)isAXSmallEnabled:(unint64_t)enabled
 {
-  v3 = [VUICoreUtilities uiContentSizeCategoryFor:a3];
+  v3 = [VUICoreUtilities uiContentSizeCategoryFor:enabled];
   v4 = v3;
   if (!v3 || [v3 isEqual:*MEMORY[0x277D76860]])
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    v6 = [v5 traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v4 = v7;
+    v4 = preferredContentSizeCategory;
   }
 
   v8 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76818]) == NSOrderedDescending && UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D767F8]) == NSOrderedAscending;
@@ -176,17 +176,17 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
   return v8;
 }
 
-+ (BOOL)isAXLargeEnabled:(unint64_t)a3
++ (BOOL)isAXLargeEnabled:(unint64_t)enabled
 {
-  v3 = [VUICoreUtilities uiContentSizeCategoryFor:a3];
+  v3 = [VUICoreUtilities uiContentSizeCategoryFor:enabled];
   v4 = v3;
   if (!v3 || [v3 isEqual:*MEMORY[0x277D76860]])
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    v6 = [v5 traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v4 = v7;
+    v4 = preferredContentSizeCategory;
   }
 
   v8 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x277D76800]) == NSOrderedDescending;
@@ -194,20 +194,20 @@ uint64_t __34__VUIAccessibility_sharedInstance__block_invoke()
   return v8;
 }
 
-+ (id)makeAccessibilityIdentifierString:(id)a3 additionalString:(id)a4
++ (id)makeAccessibilityIdentifierString:(id)string additionalString:(id)additionalString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  stringCopy = string;
+  additionalStringCopy = additionalString;
+  v7 = additionalStringCopy;
+  if (!additionalStringCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Accessibility:: no additionalString for %@. Using Default", v5];
-    NSLog(&stru_2880D38B0.isa, v8);
+    stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Accessibility:: no additionalString for %@. Using Default", stringCopy];
+    NSLog(&stru_2880D38B0.isa, stringCopy);
 
     v7 = @"Default";
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@.%@", @"UIA.TV.", v5, v7];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@.%@", @"UIA.TV.", stringCopy, v7];
 
   return v9;
 }

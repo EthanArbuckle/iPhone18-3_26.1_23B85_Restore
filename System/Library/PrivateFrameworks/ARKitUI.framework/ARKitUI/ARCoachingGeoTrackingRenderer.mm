@@ -1,31 +1,31 @@
 @interface ARCoachingGeoTrackingRenderer
-- (ARCoachingGeoTrackingRenderer)initWithLayer:(id)a3 device:(id)a4 pixelFormat:(unint64_t)a5 sampleCount:(int)a6 deviceMaskImage:(id)a7;
-- (BOOL)loadOutlineModelWith:(id *)a3;
-- (void)drawBuildingOutlineWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5;
-- (void)drawDeviceWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5;
-- (void)drawWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5;
-- (void)prepareWithCompletionHandler:(id)a3;
-- (void)resetAnimationTime:(double)a3;
-- (void)resizeIfNeeded:(id)a3;
-- (void)updateFrameStateWithTimeDelta:(double)a3;
+- (ARCoachingGeoTrackingRenderer)initWithLayer:(id)layer device:(id)device pixelFormat:(unint64_t)format sampleCount:(int)count deviceMaskImage:(id)image;
+- (BOOL)loadOutlineModelWith:(id *)with;
+- (void)drawBuildingOutlineWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer;
+- (void)drawDeviceWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer;
+- (void)drawWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer;
+- (void)prepareWithCompletionHandler:(id)handler;
+- (void)resetAnimationTime:(double)time;
+- (void)resizeIfNeeded:(id)needed;
+- (void)updateFrameStateWithTimeDelta:(double)delta;
 @end
 
 @implementation ARCoachingGeoTrackingRenderer
 
-- (ARCoachingGeoTrackingRenderer)initWithLayer:(id)a3 device:(id)a4 pixelFormat:(unint64_t)a5 sampleCount:(int)a6 deviceMaskImage:(id)a7
+- (ARCoachingGeoTrackingRenderer)initWithLayer:(id)layer device:(id)device pixelFormat:(unint64_t)format sampleCount:(int)count deviceMaskImage:(id)image
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  layerCopy = layer;
+  deviceCopy = device;
+  imageCopy = image;
   v41.receiver = self;
   v41.super_class = ARCoachingGeoTrackingRenderer;
   v15 = [(ARCoachingGeoTrackingRenderer *)&v41 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_device, a4);
-    v16->_pixelFormat = a5;
-    objc_storeStrong(&v16->_layer, a3);
+    objc_storeStrong(&v15->_device, device);
+    v16->_pixelFormat = format;
+    objc_storeStrong(&v16->_layer, layer);
     v17 = objc_alloc_init(ARCoachingGlyphState);
     state = v16->_state;
     v16->_state = v17;
@@ -34,7 +34,7 @@
     time = v16->_time;
     v16->_time = v19;
 
-    v21 = [[ARCoachingDeviceController alloc] initWithDeviceMaskImage:v14 geoTrackingMode:1];
+    v21 = [[ARCoachingDeviceController alloc] initWithDeviceMaskImage:imageCopy geoTrackingMode:1];
     deviceController = v16->_deviceController;
     v16->_deviceController = v21;
 
@@ -81,17 +81,17 @@
   return v16;
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_invoke;
   v7[3] = &unk_278BCD430;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -108,19 +108,19 @@ void __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_in
   }
 }
 
-- (void)drawWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5
+- (void)drawWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer
 {
-  v8 = a5;
-  v9 = a4;
-  [(ARCoachingGeoTrackingRenderer *)self drawDeviceWithTimeDelta:v9 drawable:v8 commandBuffer:a3];
-  [(ARCoachingGeoTrackingRenderer *)self drawBuildingOutlineWithTimeDelta:v9 drawable:v8 commandBuffer:a3];
+  bufferCopy = buffer;
+  drawableCopy = drawable;
+  [(ARCoachingGeoTrackingRenderer *)self drawDeviceWithTimeDelta:drawableCopy drawable:bufferCopy commandBuffer:delta];
+  [(ARCoachingGeoTrackingRenderer *)self drawBuildingOutlineWithTimeDelta:drawableCopy drawable:bufferCopy commandBuffer:delta];
 }
 
-- (void)drawDeviceWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5
+- (void)drawDeviceWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer
 {
   time = self->_time;
-  [(ARCoachingAnimTime *)time absoluteTime:a4];
-  [(ARCoachingAnimTime *)time setAbsoluteTime:v8 + a3];
+  [(ARCoachingAnimTime *)time absoluteTime:drawable];
+  [(ARCoachingAnimTime *)time setAbsoluteTime:v8 + delta];
   v10 = kARCoachingDeviceRenderParamsHorizontalGeoTracking;
   v11 = 3233808384;
   deviceController = self->_deviceController;
@@ -128,47 +128,47 @@ void __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_in
   [ARCoachingDeviceController update:"update:visibility:layer:renderParams:" visibility:self->_layer layer:&v10 renderParams:?];
 }
 
-- (void)drawBuildingOutlineWithTimeDelta:(double)a3 drawable:(id)a4 commandBuffer:(id)a5
+- (void)drawBuildingOutlineWithTimeDelta:(double)delta drawable:(id)drawable commandBuffer:(id)buffer
 {
-  v35 = a4;
-  v8 = a5;
-  [(ARCoachingGeoTrackingRenderer *)self updateFrameStateWithTimeDelta:a3];
-  v9 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v10 = [v35 texture];
-  v11 = [v9 colorAttachments];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  [v12 setTexture:v10];
+  drawableCopy = drawable;
+  bufferCopy = buffer;
+  [(ARCoachingGeoTrackingRenderer *)self updateFrameStateWithTimeDelta:delta];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  texture = [drawableCopy texture];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v12 = [colorAttachments objectAtIndexedSubscript:0];
+  [v12 setTexture:texture];
 
-  v13 = [v9 colorAttachments];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v14 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v14 setStoreAction:1];
 
-  v15 = [v9 colorAttachments];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v16 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v16 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  v17 = [v9 colorAttachments];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  colorAttachments4 = [renderPassDescriptor colorAttachments];
+  v18 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v18 setLoadAction:2];
 
-  v19 = [v9 colorAttachments];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  colorAttachments5 = [renderPassDescriptor colorAttachments];
+  v20 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v20 setStoreAction:1];
 
   depthTexture = self->_depthTexture;
-  v22 = [v9 depthAttachment];
-  [v22 setTexture:depthTexture];
+  depthAttachment = [renderPassDescriptor depthAttachment];
+  [depthAttachment setTexture:depthTexture];
 
-  v23 = [v9 depthAttachment];
-  [v23 setLoadAction:2];
+  depthAttachment2 = [renderPassDescriptor depthAttachment];
+  [depthAttachment2 setLoadAction:2];
 
-  v24 = [v9 depthAttachment];
-  [v24 setClearDepth:1.0];
+  depthAttachment3 = [renderPassDescriptor depthAttachment];
+  [depthAttachment3 setClearDepth:1.0];
 
-  v25 = [v9 depthAttachment];
-  [v25 setDepthResolveFilter:0];
+  depthAttachment4 = [renderPassDescriptor depthAttachment];
+  [depthAttachment4 setDepthResolveFilter:0];
 
-  v26 = [v8 renderCommandEncoderWithDescriptor:v9];
+  v26 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v26 setLabel:@"Drawable Render Encoder"];
   [v26 setRenderPipelineState:self->_inflatedHullPipeline];
   [v26 setDepthStencilState:self->_depthState];
@@ -215,22 +215,22 @@ void __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_in
   [v26 endEncoding];
 }
 
-- (void)resizeIfNeeded:(id)a3
+- (void)resizeIfNeeded:(id)needed
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_depthTexture)
   {
-    v6 = [v4 texture];
-    v7 = [v6 width];
-    if (v7 == [(MTLTexture *)self->_depthTexture width])
+    texture = [neededCopy texture];
+    width = [texture width];
+    if (width == [(MTLTexture *)self->_depthTexture width])
     {
-      v8 = [v5 texture];
-      v9 = [v8 height];
-      v10 = [(MTLTexture *)self->_depthTexture height];
+      texture2 = [v5 texture];
+      height = [texture2 height];
+      height2 = [(MTLTexture *)self->_depthTexture height];
 
-      if (v9 == v10)
+      if (height == height2)
       {
         goto LABEL_9;
       }
@@ -241,10 +241,10 @@ void __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_in
     }
   }
 
-  v11 = [v5 texture];
-  v12 = [v11 width];
-  v13 = [v5 texture];
-  v14 = [v13 height];
+  texture3 = [v5 texture];
+  width2 = [texture3 width];
+  texture4 = [v5 texture];
+  height3 = [texture4 height];
 
   kdebug_trace();
   v15 = _ARLogCoaching_0();
@@ -255,16 +255,16 @@ void __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_in
     v26 = 138544130;
     v27 = v17;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2048;
-    v31 = v12;
+    v31 = width2;
     v32 = 2048;
-    v33 = v14;
+    v33 = height3;
     _os_log_impl(&dword_23D3AE000, v15, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Creating new depth texture because the drawable size has changed to %.0fx%.0f", &v26, 0x2Au);
   }
 
-  v18 = v14;
-  v19 = v12 / v18;
+  v18 = height3;
+  v19 = width2 / v18;
   v20 = tanf(0.56723);
   LODWORD(v21) = 0;
   *(&v21 + 1) = 1.0 / v20;
@@ -272,7 +272,7 @@ void __62__ARCoachingGeoTrackingRenderer_prepareWithCompletionHandler___block_in
   *&self->_anon_90[16] = v21;
   *&self->_anon_90[32] = xmmword_23D3DC090;
   *&self->_anon_90[48] = xmmword_23D3DC0A0;
-  v22 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:252 width:v12 height:v14 mipmapped:0];
+  v22 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:252 width:width2 height:height3 mipmapped:0];
   [v22 setStorageMode:2];
   [v22 setUsage:4];
   v23 = [(MTLDevice *)self->_device newTextureWithDescriptor:v22];
@@ -285,7 +285,7 @@ LABEL_9:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetAnimationTime:(double)a3
+- (void)resetAnimationTime:(double)time
 {
   v5 = objc_alloc_init(ARCoachingAnimTime);
   time = self->_time;
@@ -293,19 +293,19 @@ LABEL_9:
 
   v7 = self->_time;
 
-  [(ARCoachingAnimTime *)v7 setAbsoluteTime:a3];
+  [(ARCoachingAnimTime *)v7 setAbsoluteTime:time];
 }
 
-- (BOOL)loadOutlineModelWith:(id *)a3
+- (BOOL)loadOutlineModelWith:(id *)with
 {
   v131 = *MEMORY[0x277D85DE8];
   v5 = ARKitUIBundle();
   v6 = [v5 URLForResource:@"OutlineModel" withExtension:@"obj"];
-  v7 = [[GTMeshData alloc] initWithURL:v6 error:a3];
+  v7 = [[GTMeshData alloc] initWithURL:v6 error:with];
   v8 = v7;
-  if (!*a3)
+  if (!*with)
   {
-    v123 = a3;
+    withCopy = with;
     v17 = 16 * [(GTMeshData *)v7 vertexCount];
     v18 = 20 * [(GTMeshData *)v8 vertexCount];
     v19 = [(MTLDevice *)self->_device newBufferWithLength:v17 options:0];
@@ -316,17 +316,17 @@ LABEL_9:
     contentVertexGenerics = self->_contentVertexGenerics;
     self->_contentVertexGenerics = v21;
 
-    v23 = [(MTLBuffer *)self->_contentVertexPositions contents];
-    v24 = [(MTLBuffer *)self->_contentVertexGenerics contents];
-    v25 = [(GTMeshData *)v8 vertexData];
+    contents = [(MTLBuffer *)self->_contentVertexPositions contents];
+    contents2 = [(MTLBuffer *)self->_contentVertexGenerics contents];
+    vertexData = [(GTMeshData *)v8 vertexData];
     if ([(GTMeshData *)v8 vertexCount])
     {
       v26 = 0;
-      v27 = (v25 + 24);
-      v28 = (v24 + 16);
+      v27 = (vertexData + 24);
+      v28 = (contents2 + 16);
       do
       {
-        *(v23 + 16 * v26) = *(v27 - 6);
+        *(contents + 16 * v26) = *(v27 - 6);
         *(v28 - 2) = *(v27 - 2);
         *(v28 - 1) = *(v27 - 1);
         v29 = *v27;
@@ -343,78 +343,78 @@ LABEL_9:
     contentIndexBuffers = self->_contentIndexBuffers;
     self->_contentIndexBuffers = v30;
 
-    v32 = [(GTMeshData *)v8 submeshes];
-    v33 = [v32 allValues];
-    v34 = [v33 count];
+    submeshes = [(GTMeshData *)v8 submeshes];
+    allValues = [submeshes allValues];
+    v34 = [allValues count];
 
     if (v34)
     {
       v35 = 0;
       do
       {
-        v36 = [(GTMeshData *)v8 submeshes];
-        v37 = [v36 allValues];
-        v38 = [v37 objectAtIndexedSubscript:v35];
+        submeshes2 = [(GTMeshData *)v8 submeshes];
+        allValues2 = [submeshes2 allValues];
+        v38 = [allValues2 objectAtIndexedSubscript:v35];
 
         v39 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", [v38 indexData], 4 * objc_msgSend(v38, "indexCount"), 0);
         [(NSMutableArray *)self->_contentIndexBuffers setObject:v39 atIndexedSubscript:v35];
 
         ++v35;
-        v40 = [(GTMeshData *)v8 submeshes];
-        v41 = [v40 allValues];
-        v42 = [v41 count];
+        submeshes3 = [(GTMeshData *)v8 submeshes];
+        allValues3 = [submeshes3 allValues];
+        v42 = [allValues3 count];
       }
 
       while (v35 < v42);
     }
 
     v11 = objc_alloc_init(MEMORY[0x277CD7090]);
-    v43 = [v11 attributes];
-    v44 = [v43 objectAtIndexedSubscript:0];
+    attributes = [v11 attributes];
+    v44 = [attributes objectAtIndexedSubscript:0];
     [v44 setFormat:30];
 
-    v45 = [v11 attributes];
-    v46 = [v45 objectAtIndexedSubscript:0];
+    attributes2 = [v11 attributes];
+    v46 = [attributes2 objectAtIndexedSubscript:0];
     [v46 setOffset:0];
 
-    v47 = [v11 attributes];
-    v48 = [v47 objectAtIndexedSubscript:0];
+    attributes3 = [v11 attributes];
+    v48 = [attributes3 objectAtIndexedSubscript:0];
     [v48 setBufferIndex:0];
 
-    v49 = [v11 attributes];
-    v50 = [v49 objectAtIndexedSubscript:1];
+    attributes4 = [v11 attributes];
+    v50 = [attributes4 objectAtIndexedSubscript:1];
     [v50 setFormat:30];
 
-    v51 = [v11 attributes];
-    v52 = [v51 objectAtIndexedSubscript:1];
+    attributes5 = [v11 attributes];
+    v52 = [attributes5 objectAtIndexedSubscript:1];
     [v52 setOffset:8];
 
-    v53 = [v11 attributes];
-    v54 = [v53 objectAtIndexedSubscript:1];
+    attributes6 = [v11 attributes];
+    v54 = [attributes6 objectAtIndexedSubscript:1];
     [v54 setBufferIndex:1];
 
-    v55 = [v11 layouts];
-    v56 = [v55 objectAtIndexedSubscript:0];
+    layouts = [v11 layouts];
+    v56 = [layouts objectAtIndexedSubscript:0];
     [v56 setStride:16];
 
-    v57 = [v11 layouts];
-    v58 = [v57 objectAtIndexedSubscript:0];
+    layouts2 = [v11 layouts];
+    v58 = [layouts2 objectAtIndexedSubscript:0];
     [v58 setStepRate:1];
 
-    v59 = [v11 layouts];
-    v60 = [v59 objectAtIndexedSubscript:0];
+    layouts3 = [v11 layouts];
+    v60 = [layouts3 objectAtIndexedSubscript:0];
     [v60 setStepFunction:1];
 
-    v61 = [v11 layouts];
-    v62 = [v61 objectAtIndexedSubscript:1];
+    layouts4 = [v11 layouts];
+    v62 = [layouts4 objectAtIndexedSubscript:1];
     [v62 setStride:20];
 
-    v63 = [v11 layouts];
-    v64 = [v63 objectAtIndexedSubscript:1];
+    layouts5 = [v11 layouts];
+    v64 = [layouts5 objectAtIndexedSubscript:1];
     [v64 setStepRate:1];
 
-    v65 = [v11 layouts];
-    v66 = [v65 objectAtIndexedSubscript:1];
+    layouts6 = [v11 layouts];
+    v66 = [layouts6 objectAtIndexedSubscript:1];
     [v66 setStepFunction:1];
 
     v67 = objc_opt_new();
@@ -448,16 +448,16 @@ LABEL_9:
       {
         if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
         {
-          v117 = [v72 localizedDescription];
-          v76 = [v72 localizedFailureReason];
-          v77 = [v72 localizedRecoverySuggestion];
+          localizedDescription = [v72 localizedDescription];
+          localizedFailureReason = [v72 localizedFailureReason];
+          localizedRecoverySuggestion = [v72 localizedRecoverySuggestion];
           *buf = 138412802;
-          v126 = v117;
+          v126 = localizedDescription;
           v127 = 2112;
-          v128 = v76;
+          selfCopy4 = localizedFailureReason;
           v129 = 2112;
-          v130 = v77;
-          v78 = v77;
+          v130 = localizedRecoverySuggestion;
+          v78 = localizedRecoverySuggestion;
           v79 = "Error while loading metal library for coaching animation\n\tError: %@\n\tReason: %@\n\tSuggestion: %@";
           v80 = log;
           v81 = OS_LOG_TYPE_ERROR;
@@ -468,16 +468,16 @@ LABEL_31:
 
       else if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
       {
-        v117 = [v72 localizedDescription];
-        v76 = [v72 localizedFailureReason];
-        v89 = [v72 localizedRecoverySuggestion];
+        localizedDescription = [v72 localizedDescription];
+        localizedFailureReason = [v72 localizedFailureReason];
+        localizedRecoverySuggestion2 = [v72 localizedRecoverySuggestion];
         *buf = 138412802;
-        v126 = v117;
+        v126 = localizedDescription;
         v127 = 2112;
-        v128 = v76;
+        selfCopy4 = localizedFailureReason;
         v129 = 2112;
-        v130 = v89;
-        v78 = v89;
+        v130 = localizedRecoverySuggestion2;
+        v78 = localizedRecoverySuggestion2;
         v79 = "Error: Error while loading metal library for coaching animation\n\tError: %@\n\tReason: %@\n\tSuggestion: %@";
         v80 = log;
         v81 = OS_LOG_TYPE_INFO;
@@ -528,13 +528,13 @@ LABEL_37:
     [v67 setVertexFunction:v90];
     [v67 setFragmentFunction:v91];
     pixelFormat = self->_pixelFormat;
-    v93 = [v67 colorAttachments];
-    v94 = [v93 objectAtIndexedSubscript:0];
+    colorAttachments = [v67 colorAttachments];
+    v94 = [colorAttachments objectAtIndexedSubscript:0];
     [v94 setPixelFormat:pixelFormat];
 
     [v67 setDepthAttachmentPixelFormat:252];
     [v67 setLabel:@"Inflated Hull Pipeline"];
-    v95 = [(MTLDevice *)self->_device newRenderPipelineStateWithDescriptor:v67 error:v123];
+    v95 = [(MTLDevice *)self->_device newRenderPipelineStateWithDescriptor:v67 error:withCopy];
     inflatedHullPipeline = self->_inflatedHullPipeline;
     self->_inflatedHullPipeline = v95;
 
@@ -547,7 +547,7 @@ LABEL_37:
       v98 = [v71 newFunctionWithName:@"solidBlackFragmentShader"];
       [v67 setFragmentFunction:v98];
 
-      v99 = [(MTLDevice *)self->_device newRenderPipelineStateWithDescriptor:v67 error:v123];
+      v99 = [(MTLDevice *)self->_device newRenderPipelineStateWithDescriptor:v67 error:withCopy];
       blockColorPipeline = self->_blockColorPipeline;
       self->_blockColorPipeline = v99;
 
@@ -576,11 +576,11 @@ LABEL_56:
 LABEL_49:
           v107 = objc_opt_class();
           v108 = NSStringFromClass(v107);
-          v109 = *v123;
+          v109 = *withCopy;
           *buf = 138543874;
           v126 = v108;
           v127 = 2048;
-          v128 = self;
+          selfCopy4 = self;
           v129 = 2112;
           v130 = v109;
           v110 = "%{public}@ <%p>: Failed to create content render pipeline state, error: %@.";
@@ -632,11 +632,11 @@ LABEL_55:
 
     v113 = objc_opt_class();
     v108 = NSStringFromClass(v113);
-    v114 = *v123;
+    v114 = *withCopy;
     *buf = 138543874;
     v126 = v108;
     v127 = 2048;
-    v128 = self;
+    selfCopy4 = self;
     v129 = 2112;
     v130 = v114;
     v110 = "Error: %{public}@ <%p>: Failed to create content render pipeline state, error: %@.";
@@ -662,7 +662,7 @@ LABEL_55:
       *buf = 138543618;
       v126 = v13;
       v127 = 2048;
-      v128 = self;
+      selfCopy4 = self;
       v14 = "%{public}@ <%p>: Loading the outline model failed.";
       v15 = v11;
       v16 = OS_LOG_TYPE_ERROR;
@@ -678,7 +678,7 @@ LABEL_22:
     *buf = 138543618;
     v126 = v13;
     v127 = 2048;
-    v128 = self;
+    selfCopy4 = self;
     v14 = "Error: %{public}@ <%p>: Loading the outline model failed.";
     v15 = v11;
     v16 = OS_LOG_TYPE_INFO;
@@ -692,9 +692,9 @@ LABEL_57:
   return v83;
 }
 
-- (void)updateFrameStateWithTimeDelta:(double)a3
+- (void)updateFrameStateWithTimeDelta:(double)delta
 {
-  v4 = self->_ftime + a3;
+  v4 = self->_ftime + delta;
   self->_ftime = v4;
   v5 = (v4 * 0.25) * 3.14159265 + (v4 * 0.25) * 3.14159265;
   *v6.i64 = simd_matrix4x4(_PromotedConst);

@@ -1,20 +1,20 @@
 @interface ANSTLabelDetection
 + (id)new;
 - (ANSTLabelDetection)init;
-- (ANSTLabelDetection)initWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)addSupportedLabels:(id)a3 error:(id *)a4;
-- (BOOL)executeDecoderInferenceWithError:(id *)a3;
-- (BOOL)executeEncoderInferenceWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)updateTextFeature:(float *)a3 error:(id *)a4;
-- (BOOL)updateTextIds:(int *)a3 error:(id *)a4;
+- (ANSTLabelDetection)initWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)addSupportedLabels:(id)labels error:(id *)error;
+- (BOOL)executeDecoderInferenceWithError:(id *)error;
+- (BOOL)executeEncoderInferenceWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)updateTextFeature:(float *)feature error:(id *)error;
+- (BOOL)updateTextIds:(int *)ids error:(id *)error;
 - (NSSet)supportedLabels;
-- (id)listWithPixelBuffer:(__CVBuffer *)a3 labels:(id)a4 detectionThreshold:(float)a5 error:(id *)a6;
-- (id)listWithPixelBuffer:(__CVBuffer *)a3 labels:(id)a4 error:(id *)a5;
-- (id)trackWithPixelBuffer:(__CVBuffer *)a3 objects:(id)a4 error:(id *)a5;
-- (void)createESOP:(e5rt_execution_stream_operation *)a3 modelURL:(id)a4 error:(id *)a5;
+- (id)listWithPixelBuffer:(__CVBuffer *)buffer labels:(id)labels detectionThreshold:(float)threshold error:(id *)error;
+- (id)listWithPixelBuffer:(__CVBuffer *)buffer labels:(id)labels error:(id *)error;
+- (id)trackWithPixelBuffer:(__CVBuffer *)buffer objects:(id)objects error:(id *)error;
+- (void)createESOP:(e5rt_execution_stream_operation *)p modelURL:(id)l error:(id *)error;
 - (void)dealloc;
-- (void)preprocessInputImage:(__CVBuffer *)a3;
+- (void)preprocessInputImage:(__CVBuffer *)image;
 @end
 
 @implementation ANSTLabelDetection
@@ -28,17 +28,17 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v339[1] = *MEMORY[0x277D85DE8];
   if (!self->_readyForInference)
   {
-    v6 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], a2, a3);
+    v6 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], a2, error);
     if (objc_msgSend_fileExistsAtPath_(v6, v7, @"/AppleInternal/Library/Application Support/com.apple.ANSTKit/label_detection.mlmodelc/encoder.mil"))
     {
       v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v8, v9);
@@ -60,19 +60,19 @@
               sub_22E65B094();
             }
 
-            if (a3)
+            if (error)
             {
               v39 = MEMORY[0x277CCA9B8];
               v336 = *MEMORY[0x277CCA068];
               v337 = v36;
               v40 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, &v337, &v336, 1);
-              *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v39, v41, @"ANSTErrorDomain", 5, v40);
+              *error = objc_msgSend_errorWithDomain_code_userInfo_(v39, v41, @"ANSTErrorDomain", 5, v40);
             }
 
             goto LABEL_18;
           }
 
-          objc_msgSend_createESOP_modelURL_error_(self, v32, &self->decoder_operation, v31, a3);
+          objc_msgSend_createESOP_modelURL_error_(self, v32, &self->decoder_operation, v31, error);
         }
 
         if (!self->encoder_stream)
@@ -89,19 +89,19 @@
               sub_22E65B094();
             }
 
-            if (a3)
+            if (error)
             {
               v50 = MEMORY[0x277CCA9B8];
               v334 = *MEMORY[0x277CCA068];
               v335 = v47;
               v51 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v49, &v335, &v334, 1);
-              *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v50, v52, @"ANSTErrorDomain", 5, v51);
+              *error = objc_msgSend_errorWithDomain_code_userInfo_(v50, v52, @"ANSTErrorDomain", 5, v51);
             }
 
             goto LABEL_18;
           }
 
-          objc_msgSend_createESOP_modelURL_error_(self, v43, &self->encoder_operation, v42, a3);
+          objc_msgSend_createESOP_modelURL_error_(self, v43, &self->encoder_operation, v42, error);
         }
 
         v14 = e5rt_buffer_object_alloc();
@@ -116,13 +116,13 @@
             sub_22E65B094();
           }
 
-          if (a3)
+          if (error)
           {
             v21 = MEMORY[0x277CCA9B8];
             v332 = *MEMORY[0x277CCA068];
             v333 = v18;
             v22 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v20, &v333, &v332, 1);
-            *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v21, v23, @"ANSTErrorDomain", 5, v22);
+            *error = objc_msgSend_errorWithDomain_code_userInfo_(v21, v23, @"ANSTErrorDomain", 5, v22);
           }
 
 LABEL_18:
@@ -130,7 +130,7 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        _esopBindInputBufferObject(self->decoder_operation, @"text_feats", self->_inputBufferObject_text, a3);
+        _esopBindInputBufferObject(self->decoder_operation, @"text_feats", self->_inputBufferObject_text, error);
         decoder_operation = self->decoder_operation;
         v54 = e5rt_execution_stream_operation_retain_input_port();
         if (v54)
@@ -143,7 +143,7 @@ LABEL_18:
             sub_22E65B094();
           }
 
-          if (a3)
+          if (error)
           {
             v60 = MEMORY[0x277CCA9B8];
             v330 = *MEMORY[0x277CCA068];
@@ -152,7 +152,7 @@ LABEL_18:
             v63 = objc_msgSend_errorWithDomain_code_userInfo_(v60, v62, @"ANSTErrorDomain", 5, v61);
 LABEL_59:
             v3 = 0;
-            *a3 = v63;
+            *error = v63;
 
 LABEL_177:
             goto LABEL_19;
@@ -172,7 +172,7 @@ LABEL_177:
               sub_22E65B094();
             }
 
-            if (a3)
+            if (error)
             {
               v69 = MEMORY[0x277CCA9B8];
               v328 = *MEMORY[0x277CCA068];
@@ -196,7 +196,7 @@ LABEL_177:
                 sub_22E65B094();
               }
 
-              if (a3)
+              if (error)
               {
                 v76 = MEMORY[0x277CCA9B8];
                 v326 = *MEMORY[0x277CCA068];
@@ -220,7 +220,7 @@ LABEL_177:
                   sub_22E65B094();
                 }
 
-                if (a3)
+                if (error)
                 {
                   v83 = MEMORY[0x277CCA9B8];
                   v324 = *MEMORY[0x277CCA068];
@@ -244,7 +244,7 @@ LABEL_177:
                     sub_22E65B094();
                   }
 
-                  if (a3)
+                  if (error)
                   {
                     v90 = MEMORY[0x277CCA9B8];
                     v322 = *MEMORY[0x277CCA068];
@@ -311,7 +311,7 @@ LABEL_177:
                             sub_22E65B094();
                           }
 
-                          if (a3)
+                          if (error)
                           {
                             v137 = MEMORY[0x277CCA9B8];
                             v316 = *MEMORY[0x277CCA068];
@@ -339,7 +339,7 @@ LABEL_177:
                           sub_22E65B094();
                         }
 
-                        if (a3)
+                        if (error)
                         {
                           v113 = MEMORY[0x277CCA9B8];
                           v314 = *MEMORY[0x277CCA068];
@@ -364,7 +364,7 @@ LABEL_177:
                             sub_22E65B094();
                           }
 
-                          if (a3)
+                          if (error)
                           {
                             v145 = MEMORY[0x277CCA9B8];
                             v312 = *MEMORY[0x277CCA068];
@@ -393,7 +393,7 @@ LABEL_177:
                                   sub_22E65B094();
                                 }
 
-                                if (a3)
+                                if (error)
                                 {
                                   v178 = MEMORY[0x277CCA9B8];
                                   v306 = *MEMORY[0x277CCA068];
@@ -421,7 +421,7 @@ LABEL_177:
                                 sub_22E65B094();
                               }
 
-                              if (a3)
+                              if (error)
                               {
                                 v154 = MEMORY[0x277CCA9B8];
                                 v304 = *MEMORY[0x277CCA068];
@@ -446,7 +446,7 @@ LABEL_177:
                                   sub_22E65B094();
                                 }
 
-                                if (a3)
+                                if (error)
                                 {
                                   v186 = MEMORY[0x277CCA9B8];
                                   v302 = *MEMORY[0x277CCA068];
@@ -472,7 +472,7 @@ LABEL_177:
                                     sub_22E65B094();
                                   }
 
-                                  if (a3)
+                                  if (error)
                                   {
                                     v194 = MEMORY[0x277CCA9B8];
                                     v300 = *MEMORY[0x277CCA068];
@@ -485,7 +485,7 @@ LABEL_177:
 
                                 else
                                 {
-                                  _esopBindInputBufferObject(self->encoder_operation, @"text_ids", self->_inputBufferObject_text_ids, a3);
+                                  _esopBindInputBufferObject(self->encoder_operation, @"text_ids", self->_inputBufferObject_text_ids, error);
                                   if (self->_outputPort_text_feats || (v204 = self->encoder_operation, v205 = e5rt_execution_stream_operation_retain_output_port(), !v205))
                                   {
                                     if (self->_outputTensorDesc_text_feats || (v212 = self->_outputPort_text_feats, v213 = e5rt_io_port_retain_tensor_desc(), !v213))
@@ -504,7 +504,7 @@ LABEL_177:
                                             sub_22E65B094();
                                           }
 
-                                          if (a3)
+                                          if (error)
                                           {
                                             v226 = MEMORY[0x277CCA9B8];
                                             v294 = *MEMORY[0x277CCA068];
@@ -532,7 +532,7 @@ LABEL_177:
                                           sub_22E65B094();
                                         }
 
-                                        if (a3)
+                                        if (error)
                                         {
                                           v202 = MEMORY[0x277CCA9B8];
                                           v292 = *MEMORY[0x277CCA068];
@@ -557,7 +557,7 @@ LABEL_177:
                                             sub_22E65B094();
                                           }
 
-                                          if (a3)
+                                          if (error)
                                           {
                                             v234 = MEMORY[0x277CCA9B8];
                                             v290 = *MEMORY[0x277CCA068];
@@ -583,7 +583,7 @@ LABEL_177:
                                               sub_22E65B094();
                                             }
 
-                                            if (a3)
+                                            if (error)
                                             {
                                               v244 = MEMORY[0x277CCA9B8];
                                               v288 = *MEMORY[0x277CCA068];
@@ -609,7 +609,7 @@ LABEL_177:
                                                 sub_22E65B094();
                                               }
 
-                                              if (a3)
+                                              if (error)
                                               {
                                                 v255 = MEMORY[0x277CCA9B8];
                                                 v286 = *MEMORY[0x277CCA068];
@@ -675,7 +675,7 @@ LABEL_177:
                                         sub_22E65B094();
                                       }
 
-                                      if (a3)
+                                      if (error)
                                       {
                                         v218 = MEMORY[0x277CCA9B8];
                                         v296 = *MEMORY[0x277CCA068];
@@ -697,7 +697,7 @@ LABEL_177:
                                       sub_22E65B094();
                                     }
 
-                                    if (a3)
+                                    if (error)
                                     {
                                       v210 = MEMORY[0x277CCA9B8];
                                       v298 = *MEMORY[0x277CCA068];
@@ -722,7 +722,7 @@ LABEL_177:
                               sub_22E65B094();
                             }
 
-                            if (a3)
+                            if (error)
                             {
                               v170 = MEMORY[0x277CCA9B8];
                               v308 = *MEMORY[0x277CCA068];
@@ -744,7 +744,7 @@ LABEL_177:
                             sub_22E65B094();
                           }
 
-                          if (a3)
+                          if (error)
                           {
                             v162 = MEMORY[0x277CCA9B8];
                             v310 = *MEMORY[0x277CCA068];
@@ -767,7 +767,7 @@ LABEL_177:
                         sub_22E65B094();
                       }
 
-                      if (a3)
+                      if (error)
                       {
                         v129 = MEMORY[0x277CCA9B8];
                         v318 = *MEMORY[0x277CCA068];
@@ -789,7 +789,7 @@ LABEL_177:
                       sub_22E65B094();
                     }
 
-                    if (a3)
+                    if (error)
                     {
                       v121 = MEMORY[0x277CCA9B8];
                       v320 = *MEMORY[0x277CCA068];
@@ -821,13 +821,13 @@ LABEL_176:
       sub_22E65B014();
     }
 
-    if (a3)
+    if (error)
     {
       v26 = MEMORY[0x277CCA9B8];
       v338 = *MEMORY[0x277CCA450];
       v339[0] = @"Model files does not exist. Returning NO.";
       v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, v339, &v338, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 3, v27);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 3, v27);
     }
 
     goto LABEL_18;
@@ -839,13 +839,13 @@ LABEL_19:
   return v3;
 }
 
-- (void)createESOP:(e5rt_execution_stream_operation *)a3 modelURL:(id)a4 error:(id *)a5
+- (void)createESOP:(e5rt_execution_stream_operation *)p modelURL:(id)l error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  lCopy = l;
   if (!e5rt_e5_compiler_create() && !e5rt_e5_compiler_options_create())
   {
-    v9 = objc_msgSend_relativePath(v6, v7, v8);
+    v9 = objc_msgSend_relativePath(lCopy, v7, v8);
     v10 = v9;
     objc_msgSend_UTF8String(v9, v11, v12);
     if (e5rt_e5_compiler_compile() || e5rt_program_library_retain_program_function() || e5rt_precompiled_compute_op_create_options_create_with_program_function())
@@ -870,14 +870,14 @@ LABEL_19:
     sub_22E65B1FC(last_error_message, v14, v15, v16, v17, v18, v19, v20);
   }
 
-  if (a5)
+  if (error)
   {
     v22 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"MIL compilation failed due to E5 error (%s)", last_error_message);
     v23 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA068];
     v30[0] = v22;
     v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, v30, &v29, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v23, v26, @"ANSTErrorDomain", 5, v25);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v23, v26, @"ANSTErrorDomain", 5, v25);
   }
 
 LABEL_11:
@@ -885,17 +885,17 @@ LABEL_11:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (ANSTLabelDetection)initWithConfiguration:(id)a3 error:(id *)a4
+- (ANSTLabelDetection)initWithConfiguration:(id)configuration error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = ANSTLabelDetection;
-  v7 = [(ANSTAlgorithm *)&v19 initWithConfiguration:v6];
+  v7 = [(ANSTAlgorithm *)&v19 initWithConfiguration:configurationCopy];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
     v8->_readyForInference = 0;
     v8->_bgraInputBuffer = 0;
     v8->_inputImageTensorSurface = 0;
@@ -918,13 +918,13 @@ LABEL_11:
   return v8;
 }
 
-- (void)preprocessInputImage:(__CVBuffer *)a3
+- (void)preprocessInputImage:(__CVBuffer *)image
 {
-  CVPixelBufferLockBaseAddress(a3, 0);
+  CVPixelBufferLockBaseAddress(image, 0);
   CVPixelBufferLockBaseAddress(self->_transformedInputImage, 0);
   IOSurfaceLock(self->_inputImageTensorSurface, 0, 0);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v7 = CVPixelBufferGetWidth(self->_transformedInputImage);
   v8 = CVPixelBufferGetHeight(self->_transformedInputImage);
   if (v7 / Width >= v8 / Height)
@@ -974,10 +974,10 @@ LABEL_11:
   *&v37.a = *&self->_inputAffineTransform.a;
   *&v37.c = v19;
   *&v37.tx = *&self->_inputAffineTransform.tx;
-  v35[0] = CVPixelBufferGetBaseAddress(a3);
-  v35[1] = CVPixelBufferGetHeight(a3);
-  v35[2] = CVPixelBufferGetWidth(a3);
-  v35[3] = CVPixelBufferGetBytesPerRow(a3);
+  v35[0] = CVPixelBufferGetBaseAddress(image);
+  v35[1] = CVPixelBufferGetHeight(image);
+  v35[2] = CVPixelBufferGetWidth(image);
+  v35[3] = CVPixelBufferGetBytesPerRow(image);
   v34[0] = CVPixelBufferGetBaseAddress(self->_transformedInputImage);
   v34[1] = CVPixelBufferGetHeight(self->_transformedInputImage);
   v34[2] = CVPixelBufferGetWidth(self->_transformedInputImage);
@@ -1024,12 +1024,12 @@ LABEL_11:
     while (v27);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(image, 0);
   CVPixelBufferUnlockBaseAddress(self->_transformedInputImage, 0);
   IOSurfaceUnlock(self->_inputImageTensorSurface, 0, 0);
 }
 
-- (BOOL)executeDecoderInferenceWithError:(id *)a3
+- (BOOL)executeDecoderInferenceWithError:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
   decoder_stream = self->decoder_stream;
@@ -1044,13 +1044,13 @@ LABEL_11:
       sub_22E65B27C();
     }
 
-    if (a3)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA068];
       v17[0] = v8;
       v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v17, &v16, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
     }
   }
 
@@ -1059,7 +1059,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)executeEncoderInferenceWithError:(id *)a3
+- (BOOL)executeEncoderInferenceWithError:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
   encoder_stream = self->encoder_stream;
@@ -1074,13 +1074,13 @@ LABEL_11:
       sub_22E65B2F0();
     }
 
-    if (a3)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA068];
       v17[0] = v8;
       v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v17, &v16, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
     }
   }
 
@@ -1089,7 +1089,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)updateTextFeature:(float *)a3 error:(id *)a4
+- (BOOL)updateTextFeature:(float *)feature error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   inputBufferObject_text = self->_inputBufferObject_text;
@@ -1104,13 +1104,13 @@ LABEL_11:
       sub_22E65B364();
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA068];
       v20[0] = v10;
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v20, &v19, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
     }
   }
 
@@ -1118,7 +1118,7 @@ LABEL_11:
   {
     IOSurfaceLock(0, 0, 0);
     BaseAddress = IOSurfaceGetBaseAddress(0);
-    memcpy(BaseAddress, a3, 0x20000uLL);
+    memcpy(BaseAddress, feature, 0x20000uLL);
     IOSurfaceUnlock(0, 0, 0);
   }
 
@@ -1127,7 +1127,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)updateTextIds:(int *)a3 error:(id *)a4
+- (BOOL)updateTextIds:(int *)ids error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   inputBufferObject_text_ids = self->_inputBufferObject_text_ids;
@@ -1142,13 +1142,13 @@ LABEL_11:
       sub_22E65B3D8();
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA068];
       v20[0] = v10;
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v20, &v19, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
     }
   }
 
@@ -1156,7 +1156,7 @@ LABEL_11:
   {
     IOSurfaceLock(0, 0, 0);
     BaseAddress = IOSurfaceGetBaseAddress(0);
-    memcpy(BaseAddress, a3, 0x4000uLL);
+    memcpy(BaseAddress, ids, 0x4000uLL);
     IOSurfaceUnlock(0, 0, 0);
   }
 
@@ -1165,27 +1165,27 @@ LABEL_11:
   return result;
 }
 
-- (id)listWithPixelBuffer:(__CVBuffer *)a3 labels:(id)a4 error:(id *)a5
+- (id)listWithPixelBuffer:(__CVBuffer *)buffer labels:(id)labels error:(id *)error
 {
   LODWORD(v5) = 1036831949;
-  v6 = objc_msgSend_listWithPixelBuffer_labels_detectionThreshold_error_(self, a2, a3, a4, a5, v5);
+  v6 = objc_msgSend_listWithPixelBuffer_labels_detectionThreshold_error_(self, a2, buffer, labels, error, v5);
 
   return v6;
 }
 
-- (id)listWithPixelBuffer:(__CVBuffer *)a3 labels:(id)a4 detectionThreshold:(float)a5 error:(id *)a6
+- (id)listWithPixelBuffer:(__CVBuffer *)buffer labels:(id)labels detectionThreshold:(float)threshold error:(id *)error
 {
   v207[1] = *MEMORY[0x277D85DE8];
-  obj = a4;
+  obj = labels;
   if (!self->_readyForInference)
   {
-    if (a6)
+    if (error)
     {
       v21 = MEMORY[0x277CCA9B8];
       v206 = *MEMORY[0x277CCA450];
       v174 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v9, v207, &v206, 1);
       objc_msgSend_errorWithDomain_code_userInfo_(v21, v22, @"ANSTErrorDomain", 4);
-      *a6 = v23 = 0;
+      *error = v23 = 0;
 
       goto LABEL_88;
     }
@@ -1193,8 +1193,8 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  v172 = a6;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  errorCopy = error;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (PixelFormatType == objc_msgSend_networkInputBufferPixelFormat(self, v11, v12))
   {
 LABEL_24:
@@ -1232,7 +1232,7 @@ LABEL_24:
 
     if (isSubsetOfSet)
     {
-      objc_msgSend_preprocessInputImage_(self, v49, a3);
+      objc_msgSend_preprocessInputImage_(self, v49, buffer);
       if (obj && objc_msgSend_count(obj, v50, v51))
       {
         v52 = obj;
@@ -1284,7 +1284,7 @@ LABEL_24:
             textFeature = self->_textFeature;
           }
 
-          if ((objc_msgSend_updateTextFeature_error_(self, v62, textFeature, v172) & 1) == 0 || !objc_msgSend_executeDecoderInferenceWithError_(self, v77, v172))
+          if ((objc_msgSend_updateTextFeature_error_(self, v62, textFeature, errorCopy) & 1) == 0 || !objc_msgSend_executeDecoderInferenceWithError_(self, v77, errorCopy))
           {
             break;
           }
@@ -1366,7 +1366,7 @@ LABEL_24:
 
                   v105 = -1.60943791 / log(v104);
                   v106 = powf(v94, v105);
-                  if (v106 > a5)
+                  if (v106 > threshold)
                   {
                     *&v180.a = &v184;
                     v107 = sub_22E621730(v193, &v184);
@@ -1530,13 +1530,13 @@ LABEL_84:
       }
     }
 
-    else if (v172)
+    else if (errorCopy)
     {
       v53 = MEMORY[0x277CCA9B8];
       v199 = *MEMORY[0x277CCA450];
       v176 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v49, &v200, &v199, 1);
       objc_msgSend_errorWithDomain_code_userInfo_(v53, v54, @"ANSTErrorDomain", 2);
-      *v172 = v23 = 0;
+      *errorCopy = v23 = 0;
     }
 
     else
@@ -1547,8 +1547,8 @@ LABEL_84:
     goto LABEL_87;
   }
 
-  v15 = CVPixelBufferGetWidth(a3);
-  v18 = CVPixelBufferGetHeight(a3);
+  v15 = CVPixelBufferGetWidth(buffer);
+  v18 = CVPixelBufferGetHeight(buffer);
   bgraInputBuffer = self->_bgraInputBuffer;
   if (bgraInputBuffer)
   {
@@ -1577,7 +1577,7 @@ LABEL_84:
       sub_22E65B4CC();
     }
 
-    if (a6)
+    if (error)
     {
       v34 = MEMORY[0x277CCA9B8];
       v204 = *MEMORY[0x277CCA450];
@@ -1593,9 +1593,9 @@ LABEL_22:
   }
 
 LABEL_12:
-  if (!VTPixelTransferSessionTransferImage(self->_pixelTransferSession, a3, v20))
+  if (!VTPixelTransferSessionTransferImage(self->_pixelTransferSession, buffer, v20))
   {
-    a3 = self->_bgraInputBuffer;
+    buffer = self->_bgraInputBuffer;
     goto LABEL_24;
   }
 
@@ -1605,7 +1605,7 @@ LABEL_12:
     sub_22E65B44C();
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_22;
   }
@@ -1617,7 +1617,7 @@ LABEL_12:
   v31 = objc_msgSend_errorWithDomain_code_userInfo_(v29, v30, @"ANSTErrorDomain", 4);
 LABEL_21:
   v23 = 0;
-  *a6 = v31;
+  *error = v31;
 LABEL_87:
 
 LABEL_88:
@@ -1626,10 +1626,10 @@ LABEL_88:
   return v23;
 }
 
-- (id)trackWithPixelBuffer:(__CVBuffer *)a3 objects:(id)a4 error:(id *)a5
+- (id)trackWithPixelBuffer:(__CVBuffer *)buffer objects:(id)objects error:(id *)error
 {
   v182[1] = *MEMORY[0x277D85DE8];
-  v140 = a4;
+  objectsCopy = objects;
   if (objc_msgSend_runningFrameRate(self->_configuration, v7, v8) != 2)
   {
     v174[1] = 0;
@@ -1640,7 +1640,7 @@ LABEL_88:
     v169 = 0u;
     v170 = 0u;
     v171 = 0u;
-    v14 = v140;
+    v14 = objectsCopy;
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v168, v180, 16);
     if (v16)
     {
@@ -1725,7 +1725,7 @@ LABEL_88:
 
     v63 = objc_msgSend_allObjects(v51, v61, v62);
     LODWORD(v64) = 1036831949;
-    v139 = objc_msgSend_listWithPixelBuffer_labels_detectionThreshold_error_(self, v65, a3, v63, a5, v64);
+    v139 = objc_msgSend_listWithPixelBuffer_labels_detectionThreshold_error_(self, v65, buffer, v63, error, v64);
 
     objc_msgSend_labels(v139, v66, v67);
     memset(v152, 0, sizeof(v152));
@@ -1915,7 +1915,7 @@ LABEL_88:
         sub_22E65B54C();
       }
 
-      if (!a5)
+      if (!error)
       {
         v13 = 0;
         goto LABEL_63;
@@ -1926,7 +1926,7 @@ LABEL_88:
       v177 = @"Failed to post-process. Returning nil.";
       v105 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v134, &v177, &v176, 1);
       objc_msgSend_errorWithDomain_code_userInfo_(v135, v136, @"ANSTErrorDomain", 3, v105);
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
 LABEL_63:
@@ -1939,13 +1939,13 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  if (a5)
+  if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v181 = *MEMORY[0x277CCA450];
     v182[0] = @"Do not support ANSTLabelDetectionFrameRateOneTime in tracking, please use ANSTLabelDetectionFrameRateStandard or ANSTLabelDetectionFrameRateLow.";
     v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v9, v182, &v181, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v10, v12, @"ANSTErrorDomain", 3, v11);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v10, v12, @"ANSTErrorDomain", 3, v11);
   }
 
   v13 = 0;
@@ -2225,16 +2225,16 @@ LABEL_64:
   [(ANSTLabelDetection *)&v83 dealloc];
 }
 
-- (BOOL)addSupportedLabels:(id)a3 error:(id *)a4
+- (BOOL)addSupportedLabels:(id)labels error:(id *)error
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = v6;
+  labelsCopy = labels;
+  v9 = labelsCopy;
   if (self->_readyForInference)
   {
-    v76 = v6;
-    v10 = objc_msgSend_count(v6, v7, v8);
-    v74 = a4;
+    v76 = labelsCopy;
+    v10 = objc_msgSend_count(labelsCopy, v7, v8);
+    errorCopy = error;
     v13 = objc_msgSend_count(v9, v11, v12);
     v72 = vcvtpd_u64_f64(vcvtd_n_f64_u64(v10, 3uLL));
     if (!v72)
@@ -2353,7 +2353,7 @@ LABEL_34:
 
       v41 = self->_textIds - 616;
       self->_textIds = v41;
-      if ((objc_msgSend_updateTextIds_error_(self, v42, v41, v74) & 1) == 0 || !objc_msgSend_executeEncoderInferenceWithError_(self, v43, v74))
+      if ((objc_msgSend_updateTextIds_error_(self, v42, v41, errorCopy) & 1) == 0 || !objc_msgSend_executeEncoderInferenceWithError_(self, v43, errorCopy))
       {
         break;
       }
@@ -2386,7 +2386,7 @@ LABEL_34:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v67 = 0;
       goto LABEL_42;
@@ -2394,9 +2394,9 @@ LABEL_34:
 
     v68 = MEMORY[0x277CCA9B8];
     v86 = *MEMORY[0x277CCA450];
-    v76 = v6;
+    v76 = labelsCopy;
     v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v7, v87, &v86, 1);
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v68, v69, @"ANSTErrorDomain", 4, v23);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v68, v69, @"ANSTErrorDomain", 4, v23);
   }
 
   v67 = 0;

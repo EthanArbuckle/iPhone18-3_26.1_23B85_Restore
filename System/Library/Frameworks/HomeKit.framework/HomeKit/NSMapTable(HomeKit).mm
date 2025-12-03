@@ -6,21 +6,21 @@
 
 - (id)hm_allKeys
 {
-  v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
-  v3 = [a1 keyEnumerator];
-  v4 = [v3 nextObject];
-  if (v4)
+  v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
+  keyEnumerator = [self keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    v5 = nextObject;
     do
     {
       [v2 addObject:v5];
-      v6 = [v3 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v5 = v6;
+      v5 = nextObject2;
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
   v7 = [v2 copy];

@@ -1,6 +1,6 @@
 @interface AppInstallAction
 - (_TtC21CloudRecommendationUI16AppInstallAction)init;
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result;
 @end
 
 @implementation AppInstallAction
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v4 = self;
+  selfCopy = self;
   _s21CloudRecommendationUI16AppInstallActionC21productViewController_13didFinishWithySo014SKStoreProducthI0CSg_So19SKProductPageResultVtF_0();
 }
 

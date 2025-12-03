@@ -6,17 +6,17 @@
 
 - (id)ad_shortDescription
 {
-  if ([a1 length] < 9)
+  if ([self length] < 9)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 substringToIndex:8];
+    selfCopy = [self substringToIndex:8];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

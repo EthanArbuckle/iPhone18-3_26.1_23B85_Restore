@@ -1,5 +1,5 @@
 @interface HeadphoneLinkingViewController
-- (_TtC20HeadphoneProxService30HeadphoneLinkingViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService30HeadphoneLinkingViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (_TtC20HeadphoneProxService30HeadphoneLinkingViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService30HeadphoneLinkingViewController)initWithContentView:(id)view
 {
   v5 = &self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService30HeadphoneLinkingViewController_appleIDInfo];
   *v5 = 0u;
@@ -25,7 +25,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService30HeadphoneLinkingViewController_type] = 28;
   v7.receiver = self;
   v7.super_class = type metadata accessor for HeadphoneLinkingViewController();
-  return [(HeadphoneLinkingViewController *)&v7 initWithContentView:a3];
+  return [(HeadphoneLinkingViewController *)&v7 initWithContentView:view];
 }
 
 @end

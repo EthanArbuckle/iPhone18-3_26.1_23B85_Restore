@@ -1,12 +1,12 @@
 @interface CKDualSIMUtilities
 + (CKDualSIMUtilities)sharedUtilities;
-+ (id)_imageForLastUsedSIMForConversation:(id)a3;
-+ (id)_textAttachmentForLastUsedSIMForConversation:(id)a3;
-+ (id)makeSummaryAttributedStringWithSIMImageUsingAttributedString:(id)a3 forConversation:(id)a4;
++ (id)_imageForLastUsedSIMForConversation:(id)conversation;
++ (id)_textAttachmentForLastUsedSIMForConversation:(id)conversation;
++ (id)makeSummaryAttributedStringWithSIMImageUsingAttributedString:(id)string forConversation:(id)conversation;
 - (CKDualSIMUtilities)init;
 - (id)_conversationListSIMLabels;
 - (void)_createConversationListSIMLabelImagesDictionary;
-- (void)_resizeSIMLabel:(id)a3;
+- (void)_resizeSIMLabel:(id)label;
 - (void)updateConversationListSIMLabelImagesDictionary;
 @end
 
@@ -38,8 +38,8 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
   v2 = [(CKDualSIMUtilities *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleSIMSubscriptionsUpdate_ name:*MEMORY[0x1E69A78B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleSIMSubscriptionsUpdate_ name:*MEMORY[0x1E69A78B8] object:0];
   }
 
   return v2;
@@ -49,13 +49,13 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CKDualSIMUtilities *)self _conversationListSIMLabels];
+  _conversationListSIMLabels = [(CKDualSIMUtilities *)self _conversationListSIMLabels];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [_conversationListSIMLabels allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -66,24 +66,24 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v4 objectForKey:v10];
+        v11 = [_conversationListSIMLabels objectForKey:v10];
         [v11 bounds];
         v23.width = v12;
         v23.height = v13;
         UIGraphicsBeginImageContextWithOptions(v23, 0, 0.0);
-        v14 = [v11 layer];
-        [v14 renderInContext:UIGraphicsGetCurrentContext()];
+        layer = [v11 layer];
+        [layer renderInContext:UIGraphicsGetCurrentContext()];
 
         v15 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         [(NSDictionary *)v3 setObject:v15 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -97,20 +97,20 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
 {
   v48 = *MEMORY[0x1E69E9840];
   v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v2 = [MEMORY[0x1E69A8050] sharedManager];
-  v3 = [v2 activeSIMIDs];
+  mEMORY[0x1E69A8050] = [MEMORY[0x1E69A8050] sharedManager];
+  activeSIMIDs = [mEMORY[0x1E69A8050] activeSIMIDs];
 
-  v4 = [MEMORY[0x1E69DCA40] defaultMetrics];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 conversationListSIMLabelBaseRadius];
-  [v4 scaledValueForValue:?];
+  [defaultMetrics scaledValueForValue:?];
   v7 = v6;
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v3;
+  obj = activeSIMIDs;
   v8 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v8)
   {
@@ -126,23 +126,23 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
         }
 
         v11 = *(*(&v43 + 1) + 8 * i);
-        v12 = [MEMORY[0x1E69A8050] sharedManager];
-        v13 = [v12 shortNameForSIMLabel:v11];
+        mEMORY[0x1E69A8050]2 = [MEMORY[0x1E69A8050] sharedManager];
+        v13 = [mEMORY[0x1E69A8050]2 shortNameForSIMLabel:v11];
 
         v14 = objc_alloc(MEMORY[0x1E69DCC10]);
         v15 = +[CKUIBehavior sharedBehaviors];
-        v16 = [v15 conversationListSummaryFont];
-        [v16 capHeight];
+        conversationListSummaryFont = [v15 conversationListSummaryFont];
+        [conversationListSummaryFont capHeight];
         v18 = floor(v17 + 0.5);
         v19 = +[CKUIBehavior sharedBehaviors];
-        v20 = [v19 conversationListSummaryFont];
-        [v20 capHeight];
+        conversationListSummaryFont2 = [v19 conversationListSummaryFont];
+        [conversationListSummaryFont2 capHeight];
         v22 = [v14 initWithFrame:{0.0, 0.0, v18, floor(v21 + 0.5)}];
 
         v23 = MEMORY[0x1E69DB878];
         v24 = +[CKUIBehavior sharedBehaviors];
-        v25 = [v24 conversationListSummaryFont];
-        [v25 capHeight];
+        conversationListSummaryFont3 = [v24 conversationListSummaryFont];
+        [conversationListSummaryFont3 capHeight];
         v27 = floor(v26);
         v28 = +[CKUIBehavior sharedBehaviors];
         [v28 conversationListSIMLabelHeightTextSizeRatio];
@@ -151,19 +151,19 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
 
         [v22 setText:v13];
         v31 = +[CKUIBehavior sharedBehaviors];
-        v32 = [v31 conversationListSIMLabelTextColor];
-        [v22 setTextColor:v32];
+        conversationListSIMLabelTextColor = [v31 conversationListSIMLabelTextColor];
+        [v22 setTextColor:conversationListSIMLabelTextColor];
 
         [v22 setTextAlignment:1];
         v33 = +[CKUIBehavior sharedBehaviors];
-        v34 = [v33 conversationListSIMLabelBackgroundColor];
-        [v22 setBackgroundColor:v34];
+        conversationListSIMLabelBackgroundColor = [v33 conversationListSIMLabelBackgroundColor];
+        [v22 setBackgroundColor:conversationListSIMLabelBackgroundColor];
 
-        v35 = [v22 layer];
-        [v35 setMasksToBounds:1];
+        layer = [v22 layer];
+        [layer setMasksToBounds:1];
 
-        v36 = [v22 layer];
-        [v36 setCornerRadius:v7];
+        layer2 = [v22 layer];
+        [layer2 setCornerRadius:v7];
 
         [(CKDualSIMUtilities *)self _resizeSIMLabel:v22];
         [v42 setValue:v22 forKey:v11];
@@ -183,25 +183,25 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
 - (void)updateConversationListSIMLabelImagesDictionary
 {
   [(CKDualSIMUtilities *)self _createConversationListSIMLabelImagesDictionary];
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 __mainThreadPostNotificationName:@"__kCKSIMLabelImagesChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter __mainThreadPostNotificationName:@"__kCKSIMLabelImagesChanged" object:0];
 }
 
-- (void)_resizeSIMLabel:(id)a3
+- (void)_resizeSIMLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 conversationListSummaryFont];
-  [v5 capHeight];
+  conversationListSummaryFont = [v4 conversationListSummaryFont];
+  [conversationListSummaryFont capHeight];
   v7 = floor(v6 + 0.5);
 
-  v8 = [MEMORY[0x1E69DCA40] defaultMetrics];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
   v9 = +[CKUIBehavior sharedBehaviors];
   [v9 conversationListSIMLabelBaseBuffer];
-  [v8 scaledValueForValue:?];
+  [defaultMetrics scaledValueForValue:?];
   v11 = v10;
 
-  [v3 intrinsicContentSize];
+  [labelCopy intrinsicContentSize];
   v13 = floor(v11 + v12 + 0.5);
   if (v13 >= v7)
   {
@@ -214,18 +214,18 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
   }
 
   v17 = +[CKUIBehavior sharedBehaviors];
-  v15 = [v17 conversationListSummaryFont];
-  [v15 capHeight];
-  [v3 setFrame:{0.0, 0.0, v14, floor(v16 + 0.5)}];
+  conversationListSummaryFont2 = [v17 conversationListSummaryFont];
+  [conversationListSummaryFont2 capHeight];
+  [labelCopy setFrame:{0.0, 0.0, v14, floor(v16 + 0.5)}];
 }
 
-+ (id)makeSummaryAttributedStringWithSIMImageUsingAttributedString:(id)a3 forConversation:(id)a4
++ (id)makeSummaryAttributedStringWithSIMImageUsingAttributedString:(id)string forConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = [CKDualSIMUtilities _textAttachmentForLastUsedSIMForConversation:a4];
+  stringCopy = string;
+  v6 = [CKDualSIMUtilities _textAttachmentForLastUsedSIMForConversation:conversation];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v5];
+    v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:stringCopy];
     v8 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v6];
     [v7 insertAttributedString:v8 atIndex:0];
 
@@ -237,21 +237,21 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
 
   else
   {
-    v10 = v5;
+    v10 = stringCopy;
   }
 
   return v10;
 }
 
-+ (id)_textAttachmentForLastUsedSIMForConversation:(id)a3
++ (id)_textAttachmentForLastUsedSIMForConversation:(id)conversation
 {
-  v3 = [a1 _imageForLastUsedSIMForConversation:a3];
+  v3 = [self _imageForLastUsedSIMForConversation:conversation];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 conversationListSummaryFont];
-    [v6 capHeight];
+    conversationListSummaryFont = [v5 conversationListSummaryFont];
+    [conversationListSummaryFont capHeight];
     v8 = v7;
     [v3 size];
     v10 = (v8 - v9) * 0.5;
@@ -272,15 +272,15 @@ void __37__CKDualSIMUtilities_sharedUtilities__block_invoke()
   return v4;
 }
 
-+ (id)_imageForLastUsedSIMForConversation:(id)a3
++ (id)_imageForLastUsedSIMForConversation:(id)conversation
 {
-  v3 = [a3 chat];
-  v4 = [v3 lastAddressedSIMID];
+  chat = [conversation chat];
+  lastAddressedSIMID = [chat lastAddressedSIMID];
 
-  if (v4)
+  if (lastAddressedSIMID)
   {
     v5 = +[CKDualSIMUtilities sharedUtilities];
-    v6 = [v5 _conversationListSIMLabelImageForSIMID:v4];
+    v6 = [v5 _conversationListSIMLabelImageForSIMID:lastAddressedSIMID];
   }
 
   else

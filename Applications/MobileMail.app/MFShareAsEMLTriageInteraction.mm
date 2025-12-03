@@ -1,7 +1,7 @@
 @interface MFShareAsEMLTriageInteraction
 + (id)log;
 - (id)title;
-- (void)_dispatchInteractionWithCompletion:(id)a3;
+- (void)_dispatchInteractionWithCompletion:(id)completion;
 @end
 
 @implementation MFShareAsEMLTriageInteraction
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100216B88;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD668 != -1)
   {
     dispatch_once(&qword_1006DD668, block);
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (void)_dispatchInteractionWithCompletion:(id)a3
+- (void)_dispatchInteractionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[MFShareAsEMLTriageInteraction log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -33,11 +33,11 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Performing share as eml interaction", buf, 2u);
   }
 
-  v6 = [(MFTriageInteraction *)self messageListItemSelection];
-  v7 = [v6 messageListItems];
-  v8 = [v7 firstObject];
-  v9 = [v8 displayMessage];
-  v10 = [v9 result];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  firstObject = [messageListItems firstObject];
+  displayMessage = [firstObject displayMessage];
+  result = [displayMessage result];
 
   v11 = [EMContentRequestOptions optionsWithRequestedRepresentationType:EMContentRepresentationTypeRaw networkUsage:2];
   objc_initWeak(buf, self);
@@ -46,9 +46,9 @@
   v14[2] = sub_100216E2C;
   v14[3] = &unk_100655AA8;
   objc_copyWeak(&v16, buf);
-  v12 = v4;
+  v12 = completionCopy;
   v15 = v12;
-  v13 = [v10 requestRepresentationWithOptions:v11 completionHandler:v14];
+  v13 = [result requestRepresentationWithOptions:v11 completionHandler:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);

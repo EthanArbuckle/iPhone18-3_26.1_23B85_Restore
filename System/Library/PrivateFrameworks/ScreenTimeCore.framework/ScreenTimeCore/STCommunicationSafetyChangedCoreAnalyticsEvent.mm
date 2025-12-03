@@ -1,16 +1,16 @@
 @interface STCommunicationSafetyChangedCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STCommunicationSafetyChangedCoreAnalyticsEvent)initWithCommunicationSafetyEnabled:(BOOL)a3;
+- (STCommunicationSafetyChangedCoreAnalyticsEvent)initWithCommunicationSafetyEnabled:(BOOL)enabled;
 @end
 
 @implementation STCommunicationSafetyChangedCoreAnalyticsEvent
 
-- (STCommunicationSafetyChangedCoreAnalyticsEvent)initWithCommunicationSafetyEnabled:(BOOL)a3
+- (STCommunicationSafetyChangedCoreAnalyticsEvent)initWithCommunicationSafetyEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = STCommunicationSafetyChangedCoreAnalyticsEvent;
   result = [(STCommunicationSafetyChangedCoreAnalyticsEvent *)&v5 init];
-  result->_communicationSafetyEnabled = a3;
+  result->_communicationSafetyEnabled = enabled;
   return result;
 }
 

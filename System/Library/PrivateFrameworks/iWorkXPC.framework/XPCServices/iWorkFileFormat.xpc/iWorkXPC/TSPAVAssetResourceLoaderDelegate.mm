@@ -1,11 +1,11 @@
 @interface TSPAVAssetResourceLoaderDelegate
 + (BOOL)shouldDisableEntireLengthAvailableOnDemand;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
 - (TSPAVAssetResourceLoaderDelegate)init;
-- (TSPAVAssetResourceLoaderDelegate)initWithData:(id)a3;
-- (void)_provideContentInformationToLoadingRequest:(id)a3;
-- (void)_provideDataToLoadingRequest:(id)a3;
-- (void)_provideNextDataBlockToLoadingRequest:(id)a3 completion:(id)a4;
+- (TSPAVAssetResourceLoaderDelegate)initWithData:(id)data;
+- (void)_provideContentInformationToLoadingRequest:(id)request;
+- (void)_provideDataToLoadingRequest:(id)request;
+- (void)_provideNextDataBlockToLoadingRequest:(id)request completion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -45,29 +45,29 @@
   objc_exception_throw(v7);
 }
 
-- (TSPAVAssetResourceLoaderDelegate)initWithData:(id)a3
+- (TSPAVAssetResourceLoaderDelegate)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = TSPAVAssetResourceLoaderDelegate;
   v6 = [(TSPAVAssetResourceLoaderDelegate *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
-    v7->_dataLength = [v5 length];
-    v8 = [v5 digestString];
-    v9 = [NSString stringWithFormat:@"TSPAVAssetResourceLoaderDelegate.DelegateQueue[%@]", v8];
-    v10 = [v9 UTF8String];
+    objc_storeStrong(&v6->_data, data);
+    v7->_dataLength = [dataCopy length];
+    digestString = [dataCopy digestString];
+    v9 = [NSString stringWithFormat:@"TSPAVAssetResourceLoaderDelegate.DelegateQueue[%@]", digestString];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     delegateQueue = v7->_delegateQueue;
     v7->_delegateQueue = v12;
 
-    v14 = [NSString stringWithFormat:@"TSPAVAssetResourceLoaderDelegate.RequestHandlingQueue[%@]", v8];
-    v15 = [v14 UTF8String];
+    v14 = [NSString stringWithFormat:@"TSPAVAssetResourceLoaderDelegate.RequestHandlingQueue[%@]", digestString];
+    uTF8String2 = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String2, v16);
     requestHandlingQueue = v7->_requestHandlingQueue;
     v7->_requestHandlingQueue = v17;
   }
@@ -83,23 +83,23 @@
   [(TSPAVAssetResourceLoaderDelegate *)&v3 dealloc];
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v5 = a4;
-  if (([v5 isCancelled] & 1) == 0)
+  resourceCopy = resource;
+  if (([resourceCopy isCancelled] & 1) == 0)
   {
-    v6 = [v5 contentInformationRequest];
+    contentInformationRequest = [resourceCopy contentInformationRequest];
 
-    if (v6)
+    if (contentInformationRequest)
     {
-      [(TSPAVAssetResourceLoaderDelegate *)self _provideContentInformationToLoadingRequest:v5];
+      [(TSPAVAssetResourceLoaderDelegate *)self _provideContentInformationToLoadingRequest:resourceCopy];
     }
 
-    v7 = [v5 dataRequest];
+    dataRequest = [resourceCopy dataRequest];
 
-    if (v7)
+    if (dataRequest)
     {
-      [(TSPAVAssetResourceLoaderDelegate *)self _provideDataToLoadingRequest:v5];
+      [(TSPAVAssetResourceLoaderDelegate *)self _provideDataToLoadingRequest:resourceCopy];
     }
   }
 
@@ -116,47 +116,47 @@
   return byte_1001EA9D0;
 }
 
-- (void)_provideContentInformationToLoadingRequest:(id)a3
+- (void)_provideContentInformationToLoadingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   requestHandlingQueue = self->_requestHandlingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000906C;
   v7[3] = &unk_1001C52C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(requestHandlingQueue, v7);
 }
 
-- (void)_provideDataToLoadingRequest:(id)a3
+- (void)_provideDataToLoadingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   requestHandlingQueue = self->_requestHandlingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000091EC;
   v7[3] = &unk_1001C52C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(requestHandlingQueue, v7);
 }
 
-- (void)_provideNextDataBlockToLoadingRequest:(id)a3 completion:(id)a4
+- (void)_provideNextDataBlockToLoadingRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isCancelled])
+  requestCopy = request;
+  completionCopy = completion;
+  if ([requestCopy isCancelled])
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v8 = [v6 dataRequest];
-    if (!v8)
+    dataRequest = [requestCopy dataRequest];
+    if (!dataRequest)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -176,16 +176,16 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v11 = [v8 currentOffset];
-    v12 = [v8 requestedLength];
-    v13 = [v8 requestedOffset];
+    currentOffset = [dataRequest currentOffset];
+    requestedLength = [dataRequest requestedLength];
+    requestedOffset = [dataRequest requestedOffset];
     dataLength = self->_dataLength;
-    v15 = dataLength < v11;
-    v16 = dataLength - v11;
-    if (v15 || (v16 >= v13 + v12 - v11 ? (v17 = v13 + v12 - v11) : (v17 = v16), v17 >= 0x20000 ? (v18 = 0x20000) : (v18 = v17), !v17))
+    v15 = dataLength < currentOffset;
+    v16 = dataLength - currentOffset;
+    if (v15 || (v16 >= requestedOffset + requestedLength - currentOffset ? (v17 = requestedOffset + requestedLength - currentOffset) : (v17 = v16), v17 >= 0x20000 ? (v18 = 0x20000) : (v18 = v17), !v17))
     {
-      [v6 finishLoading];
-      v7[2](v7);
+      [requestCopy finishLoading];
+      completionCopy[2](completionCopy);
     }
 
     else
@@ -224,12 +224,12 @@
       v23[2] = sub_1000098C4;
       v23[3] = &unk_1001C57A0;
       v27 = v30;
-      v24 = v6;
-      v25 = self;
-      v26 = v7;
+      v24 = requestCopy;
+      selfCopy = self;
+      v26 = completionCopy;
       v28 = v17;
       v29 = v18;
-      [(TSUReadChannel *)readChannel readFromOffset:v11 length:v18 handler:v23];
+      [(TSUReadChannel *)readChannel readFromOffset:currentOffset length:v18 handler:v23];
 
       _Block_object_dispose(v30, 8);
     }

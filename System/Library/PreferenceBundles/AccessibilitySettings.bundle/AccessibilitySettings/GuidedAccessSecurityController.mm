@@ -1,7 +1,7 @@
 @interface GuidedAccessSecurityController
-- (id)accessibilityPreferenceForSpecifier:(id)a3;
+- (id)accessibilityPreferenceForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4;
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier;
 @end
 
 @implementation GuidedAccessSecurityController
@@ -83,10 +83,10 @@
   return v4;
 }
 
-- (id)accessibilityPreferenceForSpecifier:(id)a3
+- (id)accessibilityPreferenceForSpecifier:(id)specifier
 {
-  v3 = [a3 properties];
-  v4 = [v3 objectForKey:PSIDKey];
+  properties = [specifier properties];
+  v4 = [properties objectForKey:PSIDKey];
 
   if ([v4 isEqualToString:@"GAXTouchIDSwitch"])
   {
@@ -102,17 +102,17 @@
   return v6;
 }
 
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier
 {
-  v9 = a3;
-  v5 = [a4 properties];
-  v6 = [v5 objectForKey:PSIDKey];
+  preferenceCopy = preference;
+  properties = [specifier properties];
+  v6 = [properties objectForKey:PSIDKey];
 
   if ([v6 isEqualToString:@"GAXTouchIDSwitch"])
   {
-    v7 = [v9 BOOLValue];
+    bOOLValue = [preferenceCopy BOOLValue];
     v8 = +[AXSettings sharedInstance];
-    [v8 setGuidedAccessAllowsUnlockWithTouchID:v7];
+    [v8 setGuidedAccessAllowsUnlockWithTouchID:bOOLValue];
   }
 }
 

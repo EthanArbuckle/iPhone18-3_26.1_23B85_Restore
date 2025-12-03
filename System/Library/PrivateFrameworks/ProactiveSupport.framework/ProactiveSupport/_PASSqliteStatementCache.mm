@@ -1,8 +1,8 @@
 @interface _PASSqliteStatementCache
 - (_PASSqliteStatementCache)init;
-- (uLong)crc32ForStatement:(sqlite3_stmt *)a1;
-- (uint64_t)checkOutStatement:(id *)a3 associatedObject:(const char *)a4 withSQL:;
-- (void)evictCachedStatementForScoreSlot:(uint64_t)a1;
+- (uLong)crc32ForStatement:(sqlite3_stmt *)statement;
+- (uint64_t)checkOutStatement:(id *)statement associatedObject:(const char *)object withSQL:;
+- (void)evictCachedStatementForScoreSlot:(uint64_t)slot;
 @end
 
 @implementation _PASSqliteStatementCache
@@ -43,13 +43,13 @@
   return result;
 }
 
-- (void)evictCachedStatementForScoreSlot:(uint64_t)a1
+- (void)evictCachedStatementForScoreSlot:(uint64_t)slot
 {
-  if (*(a1 + 8 + 8 * a2 + 4) >= 9u)
+  if (*(slot + 8 + 8 * a2 + 4) >= 9u)
   {
     v3 = 0;
-    v4 = *(a1 + 8 + 8 * a2);
-    v5 = a1 + 264;
+    v4 = *(slot + 8 + 8 * a2);
+    v5 = slot + 264;
     while (1)
     {
       v6 = *(v5 + 8 * v3);
@@ -69,7 +69,7 @@
 
     sqlite3_finalize(*(v5 + 8 * v3));
     *(v5 + 8 * v3) = 0;
-    v7 = a1 + 328;
+    v7 = slot + 328;
     v8 = *(v7 + 8 * v3);
     if (v8)
     {
@@ -79,9 +79,9 @@
   }
 }
 
-- (uLong)crc32ForStatement:(sqlite3_stmt *)a1
+- (uLong)crc32ForStatement:(sqlite3_stmt *)statement
 {
-  v1 = sqlite3_sql(a1);
+  v1 = sqlite3_sql(statement);
   v2 = v1;
   if (v1)
   {
@@ -96,20 +96,20 @@
   return crc32_z(0, v2, v3);
 }
 
-- (uint64_t)checkOutStatement:(id *)a3 associatedObject:(const char *)a4 withSQL:
+- (uint64_t)checkOutStatement:(id *)statement associatedObject:(const char *)object withSQL:
 {
   result = 0;
-  if (a1 && a4)
+  if (self && object)
   {
     v9 = 0;
-    v10 = a1 + 264;
+    v10 = self + 264;
     while (1)
     {
       v11 = *(v10 + 8 * v9);
       if (v11)
       {
         v12 = sqlite3_sql(*(v10 + 8 * v9));
-        if (!strcmp(a4, v12))
+        if (!strcmp(object, v12))
         {
           break;
         }
@@ -122,12 +122,12 @@
     }
 
     *(v10 + 8 * v9) = 0;
-    if (a3)
+    if (statement)
     {
-      objc_storeStrong(a3, *(a1 + 8 * v9 + 328));
+      objc_storeStrong(statement, *(self + 8 * v9 + 328));
     }
 
-    v13 = a1 + 328;
+    v13 = self + 328;
     v14 = *(v13 + 8 * v9);
     if (v14)
     {

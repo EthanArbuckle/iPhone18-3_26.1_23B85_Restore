@@ -1,5 +1,5 @@
 @interface FCNewsTabiEventAggregationDurationEventConditions
-- (FCNewsTabiEventAggregationDurationEventConditions)initWithDictionary:(id)a3;
+- (FCNewsTabiEventAggregationDurationEventConditions)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -17,15 +17,15 @@
   return v3;
 }
 
-- (FCNewsTabiEventAggregationDurationEventConditions)initWithDictionary:(id)a3
+- (FCNewsTabiEventAggregationDurationEventConditions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = FCNewsTabiEventAggregationDurationEventConditions;
-  v5 = [(FCNewsTabiEventAggregationBaseEventConditions *)&v7 initWithDictionary:v4];
+  v5 = [(FCNewsTabiEventAggregationBaseEventConditions *)&v7 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v5->_duration = FCAppConfigurationDoubleValue(v4, @"duration", 0.0);
+    v5->_duration = FCAppConfigurationDoubleValue(dictionaryCopy, @"duration", 0.0);
   }
 
   return v5;

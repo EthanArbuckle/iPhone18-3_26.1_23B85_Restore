@@ -8,11 +8,11 @@
 {
   v8.receiver = self;
   v8.super_class = SBUISystemUISceneContinuitySceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v8 defaultExtensions];
-  v3 = v2;
-  if (v2)
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v8 defaultExtensions];
+  v3 = defaultExtensions;
+  if (defaultExtensions)
   {
-    v4 = v2;
+    v4 = defaultExtensions;
   }
 
   else

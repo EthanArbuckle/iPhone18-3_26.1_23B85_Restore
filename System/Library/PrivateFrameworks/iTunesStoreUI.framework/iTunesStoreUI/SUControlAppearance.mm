@@ -1,17 +1,17 @@
 @interface SUControlAppearance
-- (UIOffset)titlePositionAdjustmentForBarMetrics:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForState:(unint64_t)a3 barMetrics:(int64_t)a4;
-- (id)textAttributesForState:(unint64_t)a3;
+- (UIOffset)titlePositionAdjustmentForBarMetrics:(int64_t)metrics;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (id)textAttributesForState:(unint64_t)state;
 - (void)dealloc;
-- (void)enumerateImagesUsingBlock:(id)a3;
-- (void)enumerateTextAttributesUsingBlock:(id)a3;
-- (void)enumerateTitlePositionsUsingBlock:(id)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5;
-- (void)setTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)setTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4;
-- (void)styleBarButtonItem:(id)a3;
-- (void)styleButton:(id)a3;
+- (void)enumerateImagesUsingBlock:(id)block;
+- (void)enumerateTextAttributesUsingBlock:(id)block;
+- (void)enumerateTitlePositionsUsingBlock:(id)block;
+- (void)setImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (void)setTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)setTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics;
+- (void)styleBarButtonItem:(id)item;
+- (void)styleButton:(id)button;
 @end
 
 @implementation SUControlAppearance
@@ -23,7 +23,7 @@
   [(SUControlAppearance *)&v3 dealloc];
 }
 
-- (void)enumerateImagesUsingBlock:(id)a3
+- (void)enumerateImagesUsingBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -54,14 +54,14 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) integerValue];
-        v12 = [(SUControlAppearance *)self _copyKeyForState:v11 barMetrics:0];
+        integerValue = [*(*(&v17 + 1) + 8 * v10) integerValue];
+        v12 = [(SUControlAppearance *)self _copyKeyForState:integerValue barMetrics:0];
         v13 = [(NSMutableDictionary *)self->_images objectForKey:v12];
 
-        v14 = [(SUControlAppearance *)self _copyKeyForState:v11 barMetrics:1];
+        v14 = [(SUControlAppearance *)self _copyKeyForState:integerValue barMetrics:1];
         v15 = [(NSMutableDictionary *)self->_images objectForKey:v14];
 
-        (*(a3 + 2))(a3, v11, v13, v15);
+        (*(block + 2))(block, integerValue, v13, v15);
         ++v10;
       }
 
@@ -88,7 +88,7 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
   return result;
 }
 
-- (void)enumerateTextAttributesUsingBlock:(id)a3
+- (void)enumerateTextAttributesUsingBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -110,7 +110,7 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
           objc_enumerationMutation(textAttributes);
         }
 
-        (*(a3 + 2))(a3, [*(*(&v10 + 1) + 8 * i) integerValue], -[NSMutableDictionary objectForKey:](self->_textAttributes, "objectForKey:", *(*(&v10 + 1) + 8 * i)));
+        (*(block + 2))(block, [*(*(&v10 + 1) + 8 * i) integerValue], -[NSMutableDictionary objectForKey:](self->_textAttributes, "objectForKey:", *(*(&v10 + 1) + 8 * i)));
       }
 
       v7 = [(NSMutableDictionary *)textAttributes countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -120,7 +120,7 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
   }
 }
 
-- (void)enumerateTitlePositionsUsingBlock:(id)a3
+- (void)enumerateTitlePositionsUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -144,9 +144,9 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_titlePositions objectForKey:v10];
-        v12 = [v10 integerValue];
+        integerValue = [v10 integerValue];
         [v11 UIOffsetValue];
-        (*(a3 + 2))(a3, v12);
+        (*(block + 2))(block, integerValue);
       }
 
       v7 = [(NSMutableDictionary *)titlePositions countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -156,20 +156,20 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
   }
 }
 
-- (id)imageForState:(unint64_t)a3 barMetrics:(int64_t)a4
+- (id)imageForState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  v5 = [(SUControlAppearance *)self _copyKeyForState:a3 barMetrics:a4];
+  v5 = [(SUControlAppearance *)self _copyKeyForState:state barMetrics:metrics];
   v6 = [(NSMutableDictionary *)self->_images objectForKey:v5];
 
   return v6;
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (void)setImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  v7 = [(SUControlAppearance *)self _copyKeyForState:a4 barMetrics:a5];
+  v7 = [(SUControlAppearance *)self _copyKeyForState:state barMetrics:metrics];
   images = self->_images;
   v9 = v7;
-  if (a3)
+  if (image)
   {
     if (!images)
     {
@@ -178,7 +178,7 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
       self->_images = images;
     }
 
-    [(NSMutableDictionary *)images setObject:a3 forKey:v7];
+    [(NSMutableDictionary *)images setObject:image forKey:v7];
   }
 
   else
@@ -187,19 +187,19 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
   }
 }
 
-- (void)setTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:state];
   textAttributes = self->_textAttributes;
   v9 = v6;
-  if (a3)
+  if (attributes)
   {
     if (!textAttributes)
     {
       self->_textAttributes = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v8 = [a3 copy];
+    v8 = [attributes copy];
     [(NSMutableDictionary *)self->_textAttributes setObject:v8 forKey:v9];
   }
 
@@ -209,11 +209,11 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
   }
 }
 
-- (void)setTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4
+- (void)setTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:metrics];
   v8 = *(MEMORY[0x1E69DE258] + 8);
   titlePositions = self->_titlePositions;
   v10 = *MEMORY[0x1E69DE258] == horizontal && v8 == vertical;
@@ -235,27 +235,27 @@ uint64_t __49__SUControlAppearance_enumerateImagesUsingBlock___block_invoke(uint
   }
 }
 
-- (void)styleBarButtonItem:(id)a3
+- (void)styleBarButtonItem:(id)item
 {
-  v5 = [a3 style];
+  style = [item style];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__SUControlAppearance_styleBarButtonItem___block_invoke;
   v8[3] = &unk_1E8167278;
-  v8[4] = a3;
-  v8[5] = v5;
+  v8[4] = item;
+  v8[5] = style;
   [(SUControlAppearance *)self enumerateImagesUsingBlock:v8];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SUControlAppearance_styleBarButtonItem___block_invoke_2;
   v7[3] = &unk_1E8167228;
-  v7[4] = a3;
+  v7[4] = item;
   [(SUControlAppearance *)self enumerateTextAttributesUsingBlock:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__SUControlAppearance_styleBarButtonItem___block_invoke_3;
   v6[3] = &unk_1E81672A0;
-  v6[4] = a3;
+  v6[4] = item;
   [(SUControlAppearance *)self enumerateTitlePositionsUsingBlock:v6];
 }
 
@@ -282,19 +282,19 @@ uint64_t __42__SUControlAppearance_styleBarButtonItem___block_invoke(uint64_t a1
   }
 }
 
-- (void)styleButton:(id)a3
+- (void)styleButton:(id)button
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__SUControlAppearance_styleButton___block_invoke;
   v6[3] = &unk_1E8167200;
-  v6[4] = a3;
+  v6[4] = button;
   [(SUControlAppearance *)self enumerateImagesUsingBlock:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__SUControlAppearance_styleButton___block_invoke_2;
   v5[3] = &unk_1E8167228;
-  v5[4] = a3;
+  v5[4] = button;
   [(SUControlAppearance *)self enumerateTextAttributesUsingBlock:v5];
 }
 
@@ -352,17 +352,17 @@ void *__35__SUControlAppearance_styleButton___block_invoke_2(uint64_t a1, uint64
   return result;
 }
 
-- (id)textAttributesForState:(unint64_t)a3
+- (id)textAttributesForState:(unint64_t)state
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:state];
   v5 = [-[NSMutableDictionary objectForKey:](self->_textAttributes objectForKey:{v4), "copy"}];
 
   return v5;
 }
 
-- (UIOffset)titlePositionAdjustmentForBarMetrics:(int64_t)a3
+- (UIOffset)titlePositionAdjustmentForBarMetrics:(int64_t)metrics
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:metrics];
   v5 = [(NSMutableDictionary *)self->_titlePositions objectForKey:v4];
   if (v5)
   {
@@ -384,12 +384,12 @@ void *__35__SUControlAppearance_styleButton___block_invoke_2(uint64_t a1, uint64
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(NSMutableDictionary *)self->_images mutableCopyWithZone:a3];
-  v5[2] = [(NSMutableDictionary *)self->_textAttributes mutableCopyWithZone:a3];
-  v5[3] = [(NSMutableDictionary *)self->_titlePositions mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(NSMutableDictionary *)self->_images mutableCopyWithZone:zone];
+  v5[2] = [(NSMutableDictionary *)self->_textAttributes mutableCopyWithZone:zone];
+  v5[3] = [(NSMutableDictionary *)self->_titlePositions mutableCopyWithZone:zone];
   return v5;
 }
 

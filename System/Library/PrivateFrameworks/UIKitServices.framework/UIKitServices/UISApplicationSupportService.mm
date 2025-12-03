@@ -3,17 +3,17 @@
 - (BOOL)hasFinishedLaunching;
 - (UISApplicationInitializationContext)defaultContext;
 - (UISApplicationSupportService)init;
-- (UISApplicationSupportService)initWithCalloutQueue:(id)a3;
+- (UISApplicationSupportService)initWithCalloutQueue:(id)queue;
 - (id)_delegate;
-- (id)_initWithDelegate:(id)a3 targetQueue:(id)a4;
-- (void)_pendRequestUntilLaunch:(id)a3;
-- (void)_setDelegate:(id)a3;
+- (id)_initWithDelegate:(id)delegate targetQueue:(id)queue;
+- (void)_pendRequestUntilLaunch:(id)launch;
+- (void)_setDelegate:(id)delegate;
 - (void)dealloc;
-- (void)destroyScenesPersistentIdentifiers:(id)a3 animationType:(id)a4 destroySessions:(id)a5 completion:(id)a6;
-- (void)initializeClientWithParameters:(id)a3 completion:(id)a4;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)requestPasscodeUnlockUIWithCompletion:(id)a3;
-- (void)setDefaultContext:(id)a3;
+- (void)destroyScenesPersistentIdentifiers:(id)identifiers animationType:(id)type destroySessions:(id)sessions completion:(id)completion;
+- (void)initializeClientWithParameters:(id)parameters completion:(id)completion;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)requestPasscodeUnlockUIWithCompletion:(id)completion;
+- (void)setDefaultContext:(id)context;
 - (void)start;
 @end
 
@@ -46,21 +46,21 @@ uint64_t __46__UISApplicationSupportService_sharedInstance__block_invoke()
   return v3;
 }
 
-- (UISApplicationSupportService)initWithCalloutQueue:(id)a3
+- (UISApplicationSupportService)initWithCalloutQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[UISApplicationSupportService sharedInstance];
   targetQueue = v5->_targetQueue;
-  v5->_targetQueue = v4;
+  v5->_targetQueue = queueCopy;
 
   [(UISApplicationSupportService *)v5 start];
   return v5;
 }
 
-- (id)_initWithDelegate:(id)a3 targetQueue:(id)a4
+- (id)_initWithDelegate:(id)delegate targetQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = UISApplicationSupportService;
   v9 = [(UISApplicationSupportService *)&v24 init];
@@ -68,7 +68,7 @@ uint64_t __46__UISApplicationSupportService_sharedInstance__block_invoke()
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_targetQueue, a4);
+    objc_storeStrong(&v9->_targetQueue, queue);
     v11 = +[UISApplicationInitializationContext defaultContext];
     lock_defaultContext = v10->_lock_defaultContext;
     v10->_lock_defaultContext = v11;
@@ -85,9 +85,9 @@ uint64_t __46__UISApplicationSupportService_sharedInstance__block_invoke()
     listener = v14->_listener;
     v14->_listener = v15;
 
-    if (v7)
+    if (delegateCopy)
     {
-      [(UISApplicationSupportService *)v14 _setDelegate:v7, v18, v19, v20, v21];
+      [(UISApplicationSupportService *)v14 _setDelegate:delegateCopy, v18, v19, v20, v21];
     }
   }
 
@@ -131,8 +131,8 @@ void __62__UISApplicationSupportService__initWithDelegate_targetQueue___block_in
     if (!self->_targetQueue)
     {
       v3 = MEMORY[0x1E698F4D0];
-      v4 = [MEMORY[0x1E698F500] userInteractive];
-      v5 = [v3 queueWithName:@"UISApplicationSupportService" serviceQuality:v4];
+      userInteractive = [MEMORY[0x1E698F500] userInteractive];
+      v5 = [v3 queueWithName:@"UISApplicationSupportService" serviceQuality:userInteractive];
       targetQueue = self->_targetQueue;
       self->_targetQueue = v5;
     }
@@ -215,13 +215,13 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)setDefaultContext:(id)a3
+- (void)setDefaultContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
-  if (v6)
+  if (contextCopy)
   {
-    v4 = [v6 copy];
+    v4 = [contextCopy copy];
   }
 
   else
@@ -252,19 +252,19 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  v14 = a3;
-  if (!v14)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportService.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportService.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_delegate != v14)
+  if (self->_lock_delegate != delegateCopy)
   {
-    objc_storeStrong(&self->_lock_delegate, a3);
+    objc_storeStrong(&self->_lock_delegate, delegate);
     if (objc_opt_respondsToSelector())
     {
       v6 = 2;
@@ -347,15 +347,15 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_pendRequestUntilLaunch:(id)a3
+- (void)_pendRequestUntilLaunch:(id)launch
 {
-  v9 = a3;
+  launchCopy = launch;
   [(BSServiceQueue *)self->_targetQueue assertBarrierOnQueue];
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_finishedLaunching)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v9[2]();
+    launchCopy[2]();
   }
 
   else
@@ -370,7 +370,7 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
       lock_launchPendedRequests = self->_lock_launchPendedRequests;
     }
 
-    v7 = [v9 copy];
+    v7 = [launchCopy copy];
     v8 = MEMORY[0x19A8C69E0]();
     [(NSMutableArray *)lock_launchPendedRequests addObject:v8];
 
@@ -378,11 +378,11 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   v11 = [MEMORY[0x1E698F470] interfaceWithIdentifier:0x1F0A7D3B8];
   v12 = [MEMORY[0x1E698E710] protocolForProtocol:&unk_1F0A8B3E8];
   [v11 setServer:v12];
@@ -393,8 +393,8 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
   v19[3] = &unk_1E7458E98;
   v13 = v11;
   v20 = v13;
-  v21 = self;
-  [v9 configureConnection:v19];
+  selfCopy = self;
+  [connectionCopy configureConnection:v19];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -413,11 +413,11 @@ void __37__UISApplicationSupportService_start__block_invoke_2(uint64_t a1)
 
   v15 = v14;
   _Block_object_dispose(&v23, 8);
-  v16 = [v14 sharedInstance];
-  v17 = [v9 remoteProcess];
-  v18 = [v16 registerProcessForHandle:v17];
+  sharedInstance = [v14 sharedInstance];
+  remoteProcess = [connectionCopy remoteProcess];
+  v18 = [sharedInstance registerProcessForHandle:remoteProcess];
 
-  [v9 activate];
+  [connectionCopy activate];
 }
 
 void __74__UISApplicationSupportService_listener_didReceiveConnection_withContext___block_invoke(uint64_t a1, void *a2)
@@ -431,11 +431,11 @@ void __74__UISApplicationSupportService_listener_didReceiveConnection_withContex
   [v4 setInvalidationHandler:&__block_literal_global_94];
 }
 
-- (void)initializeClientWithParameters:(id)a3 completion:(id)a4
+- (void)initializeClientWithParameters:(id)parameters completion:(id)completion
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   lock_finishedLaunching = self->_lock_finishedLaunching;
   v9 = self->_lock_delegate;
@@ -456,20 +456,20 @@ void __74__UISApplicationSupportService_listener_didReceiveConnection_withContex
   if ((lock_delegateFlags & 0x28) == 0)
   {
 LABEL_5:
-    if (v7)
+    if (completionCopy)
     {
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [MEMORY[0x1E696AE30] processInfo];
-      v13 = [v12 processName];
-      v14 = [v11 stringWithFormat:@"%@ does not implement this service. Returning default context.", v13];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v14 = [v11 stringWithFormat:@"%@ does not implement this service. Returning default context.", processName];
 
-      v15 = [(UISApplicationSupportService *)self defaultContext];
+      defaultContext = [(UISApplicationSupportService *)self defaultContext];
       v16 = MEMORY[0x1E696ABC0];
       v71 = *MEMORY[0x1E696A588];
       v72 = v14;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
       v18 = [v16 errorWithDomain:@"UISApplicationSupportService" code:1 userInfo:v17];
-      v7[2](v7, v15, v18);
+      completionCopy[2](completionCopy, defaultContext, v18);
     }
 
     goto LABEL_48;
@@ -484,10 +484,10 @@ LABEL_8:
   v69[2] = __74__UISApplicationSupportService_initializeClientWithParameters_completion___block_invoke;
   v69[3] = &unk_1E7459698;
   v69[4] = self;
-  v70 = v7;
+  v70 = completionCopy;
   v20 = [v19 sentinelWithCompletion:v69];
-  v21 = [MEMORY[0x1E698F490] currentContext];
-  v22 = [v21 remoteProcess];
+  currentContext = [MEMORY[0x1E698F490] currentContext];
+  remoteProcess = [currentContext remoteProcess];
 
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
@@ -496,10 +496,10 @@ LABEL_8:
   v66 = (lock_delegateFlags & 8) != 0;
   v23 = v9;
   v61 = v23;
-  v62 = self;
-  v24 = v22;
+  selfCopy = self;
+  v24 = remoteProcess;
   v63 = v24;
-  v64 = v6;
+  v64 = parametersCopy;
   v58 = v20;
   v65 = v58;
   v67 = (lock_delegateFlags & 4) != 0;
@@ -519,14 +519,14 @@ LABEL_8:
     v29 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v24, "pid")}];
     v30 = [v28 handleForIdentifier:v29 error:0];
 
-    v31 = [v30 identity];
-    v32 = [v31 hostIdentifier];
+    identity = [v30 identity];
+    hostIdentifier = [identity hostIdentifier];
 
-    if (v32)
+    if (hostIdentifier)
     {
       while (1)
       {
-        v33 = [MEMORY[0x1E69C75D0] handleForIdentifier:v32 error:0];
+        v33 = [MEMORY[0x1E69C75D0] handleForIdentifier:hostIdentifier error:0];
         if (!v33)
         {
           break;
@@ -534,11 +534,11 @@ LABEL_8:
 
         v34 = v33;
 
-        v35 = [v34 identity];
-        v32 = [v35 hostIdentifier];
+        identity2 = [v34 identity];
+        hostIdentifier = [identity2 hostIdentifier];
 
         v30 = v34;
-        if (!v32)
+        if (!hostIdentifier)
         {
           goto LABEL_17;
         }
@@ -547,22 +547,22 @@ LABEL_8:
 
     v34 = v30;
 LABEL_17:
-    v56 = v7;
-    v57 = v6;
-    v36 = [v34 identity];
+    v56 = completionCopy;
+    v57 = parametersCopy;
+    identity3 = [v34 identity];
     v37 = [v34 pid];
     v38 = getpid();
-    if ([v36 isApplication])
+    if ([identity3 isApplication])
     {
-      v39 = 1;
+      isEmbeddedApplication = 1;
     }
 
     else
     {
-      v39 = [v36 isEmbeddedApplication];
+      isEmbeddedApplication = [identity3 isEmbeddedApplication];
     }
 
-    if (v37 == v38 && (v39 & 1) != 0 || ![v36 isXPCService])
+    if (v37 == v38 && (isEmbeddedApplication & 1) != 0 || ![identity3 isXPCService])
     {
       v47 = 0;
     }
@@ -570,27 +570,27 @@ LABEL_17:
     else
     {
       v52 = v25;
-      v40 = [v34 bundle];
-      v41 = [v40 path];
+      bundle = [v34 bundle];
+      path = [bundle path];
 
-      if (v41)
+      if (path)
       {
-        v51 = v36;
+        v51 = identity3;
         v53 = *MEMORY[0x1E6982D80];
         v42 = *MEMORY[0x1E6982CB0];
         while (1)
         {
-          if ([v41 isEqualToString:@"/"])
+          if ([path isEqualToString:@"/"])
           {
 LABEL_29:
             v47 = 0;
             goto LABEL_33;
           }
 
-          v43 = [v41 pathExtension];
-          if (v43)
+          pathExtension = [path pathExtension];
+          if (pathExtension)
           {
-            v44 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v43 conformingToType:v53];
+            v44 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension conformingToType:v53];
             v45 = [v44 isEqual:v42];
 
             if (v45)
@@ -599,10 +599,10 @@ LABEL_29:
             }
           }
 
-          v46 = [v41 stringByDeletingLastPathComponent];
+          stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-          v41 = v46;
-          if (!v46)
+          path = stringByDeletingLastPathComponent;
+          if (!stringByDeletingLastPathComponent)
           {
             goto LABEL_29;
           }
@@ -610,7 +610,7 @@ LABEL_29:
 
         v47 = 1;
 LABEL_33:
-        v36 = v51;
+        identity3 = v51;
       }
 
       else
@@ -628,13 +628,13 @@ LABEL_33:
 
     else
     {
-      v48 = v39;
+      v48 = isEmbeddedApplication;
     }
 
     if ((v48 & 1) != 0 || v47)
     {
-      v7 = v56;
-      v6 = v57;
+      completionCopy = v56;
+      parametersCopy = v57;
       v26 = v55;
       if (v54)
       {
@@ -668,12 +668,12 @@ LABEL_33:
 
     else
     {
-      v49 = [(UISApplicationSupportService *)self defaultContext];
+      defaultContext2 = [(UISApplicationSupportService *)self defaultContext];
       v27 = v58;
-      [v58 signalWithContext:v49];
+      [v58 signalWithContext:defaultContext2];
 
-      v7 = v56;
-      v6 = v57;
+      completionCopy = v56;
+      parametersCopy = v57;
       v26 = v55;
     }
 
@@ -809,17 +809,17 @@ LABEL_6:
   [v4 signalWithContext:{v3, v9}];
 }
 
-- (void)requestPasscodeUnlockUIWithCompletion:(id)a3
+- (void)requestPasscodeUnlockUIWithCompletion:(id)completion
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   lock_finishedLaunching = self->_lock_finishedLaunching;
   v6 = self->_lock_delegate;
   if (!v6)
   {
     os_unfair_lock_unlock(&self->_lock);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -836,11 +836,11 @@ LABEL_6:
     v24[1] = 3221225472;
     v24[2] = __70__UISApplicationSupportService_requestPasscodeUnlockUIWithCompletion___block_invoke;
     v24[3] = &unk_1E7459710;
-    v25 = v4;
+    v25 = completionCopy;
     v9 = [v8 sentinelWithCompletion:v24];
-    v10 = [MEMORY[0x1E698F490] currentContext];
-    v11 = [v10 remoteProcess];
-    v12 = [v11 auditToken];
+    currentContext = [MEMORY[0x1E698F490] currentContext];
+    remoteProcess = [currentContext remoteProcess];
+    auditToken = [remoteProcess auditToken];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -848,7 +848,7 @@ LABEL_6:
     v22[3] = &unk_1E7459738;
     v23 = v9;
     v13 = v9;
-    [(UISApplicationSupportServiceDelegate *)v6 requestPasscodeUnlockUIForClient:v12 withCompletion:v22];
+    [(UISApplicationSupportServiceDelegate *)v6 requestPasscodeUnlockUIForClient:auditToken withCompletion:v22];
 
     v14 = v25;
 LABEL_12:
@@ -856,23 +856,23 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v4)
+  if (completionCopy)
   {
     if ((lock_delegateFlags & 0x40) != 0)
     {
       v15 = @"%@ has not yet finished launching.";
 LABEL_11:
       v16 = MEMORY[0x1E696AEC0];
-      v17 = [MEMORY[0x1E696AE30] processInfo];
-      v18 = [v17 processName];
-      v14 = [v16 stringWithFormat:v15, v18];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v14 = [v16 stringWithFormat:v15, processName];
 
       v19 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A588];
       v27[0] = v14;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
       v21 = [v19 errorWithDomain:@"UISApplicationSupportService" code:1 userInfo:v20];
-      (*(v4 + 2))(v4, MEMORY[0x1E695E110], v21);
+      (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E110], v21);
 
       goto LABEL_12;
     }
@@ -910,21 +910,21 @@ void __70__UISApplicationSupportService_requestPasscodeUnlockUIWithCompletion___
   [v2 signalWithContext:v3];
 }
 
-- (void)destroyScenesPersistentIdentifiers:(id)a3 animationType:(id)a4 destroySessions:(id)a5 completion:(id)a6
+- (void)destroyScenesPersistentIdentifiers:(id)identifiers animationType:(id)type destroySessions:(id)sessions completion:(id)completion
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v10 count])
+  identifiersCopy = identifiers;
+  typeCopy = type;
+  sessionsCopy = sessions;
+  completionCopy = completion;
+  if (![identifiersCopy count])
   {
     v26 = MEMORY[0x1E696ABC0];
     v40 = *MEMORY[0x1E696A588];
     v41[0] = @"No persistent scene identifiers specified.";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v25 = [v26 errorWithDomain:@"UISApplicationSupportService" code:2 userInfo:v15];
-    v13[2](v13, MEMORY[0x1E695E110], v25);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E110], v25);
     goto LABEL_13;
   }
 
@@ -942,21 +942,21 @@ void __70__UISApplicationSupportService_requestPasscodeUnlockUIWithCompletion___
       v36[1] = 3221225472;
       v36[2] = __108__UISApplicationSupportService_destroyScenesPersistentIdentifiers_animationType_destroySessions_completion___block_invoke;
       v36[3] = &unk_1E7459710;
-      v37 = v13;
+      v37 = completionCopy;
       v18 = [v17 sentinelWithCompletion:v36];
-      v19 = [MEMORY[0x1E698F490] currentContext];
-      v20 = [v19 remoteProcess];
-      v21 = [v20 auditToken];
+      currentContext = [MEMORY[0x1E698F490] currentContext];
+      remoteProcess = [currentContext remoteProcess];
+      auditToken = [remoteProcess auditToken];
 
-      v22 = [v11 unsignedIntegerValue];
-      v23 = [v12 BOOLValue];
+      unsignedIntegerValue = [typeCopy unsignedIntegerValue];
+      bOOLValue = [sessionsCopy BOOLValue];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __108__UISApplicationSupportService_destroyScenesPersistentIdentifiers_animationType_destroySessions_completion___block_invoke_139;
       v34[3] = &unk_1E7459760;
       v35 = v18;
       v24 = v18;
-      [(UISApplicationSupportServiceDelegate *)v15 destroyScenesWithPersistentIdentifiers:v10 animationType:v22 destroySessions:v23 forClient:v21 completion:v34];
+      [(UISApplicationSupportServiceDelegate *)v15 destroyScenesWithPersistentIdentifiers:identifiersCopy animationType:unsignedIntegerValue destroySessions:bOOLValue forClient:auditToken completion:v34];
 
       v25 = v37;
 LABEL_13:
@@ -964,7 +964,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v13)
+    if (completionCopy)
     {
       if ((*&lock_delegateFlags & 0x80000000) != 0)
       {
@@ -976,16 +976,16 @@ LABEL_11:
       v27 = @"%@ does not implement this service.";
 LABEL_12:
       v28 = MEMORY[0x1E696AEC0];
-      v29 = [MEMORY[0x1E696AE30] processInfo];
-      v30 = [v29 processName];
-      v25 = [v28 stringWithFormat:v27, v30];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v25 = [v28 stringWithFormat:v27, processName];
 
       v31 = MEMORY[0x1E696ABC0];
       v38 = *MEMORY[0x1E696A588];
       v39 = v25;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       v33 = [v31 errorWithDomain:@"UISApplicationSupportService" code:1 userInfo:v32];
-      v13[2](v13, MEMORY[0x1E695E110], v33);
+      completionCopy[2](completionCopy, MEMORY[0x1E695E110], v33);
 
       goto LABEL_13;
     }
@@ -994,7 +994,7 @@ LABEL_12:
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    if (v13)
+    if (completionCopy)
     {
       goto LABEL_11;
     }

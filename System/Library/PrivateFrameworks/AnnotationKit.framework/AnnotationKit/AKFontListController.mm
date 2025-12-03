@@ -1,12 +1,12 @@
 @interface AKFontListController
-+ (id)attributedStringForFont:(id)a3;
-- (AKFontListController)initWithController:(id)a3;
++ (id)attributedStringForFont:(id)font;
+- (AKFontListController)initWithController:(id)controller;
 - (id)_createFontsList;
 @end
 
 @implementation AKFontListController
 
-- (AKFontListController)initWithController:(id)a3
+- (AKFontListController)initWithController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = AKFontListController;
@@ -14,9 +14,9 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(AKFontListController *)v3 _createFontsList];
+    _createFontsList = [(AKFontListController *)v3 _createFontsList];
     fonts = v4->_fonts;
-    v4->_fonts = v5;
+    v4->_fonts = _createFontsList;
   }
 
   return v4;
@@ -53,13 +53,13 @@
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [v10 valueForKey:@"fontFamily"];
         v12 = [v10 valueForKey:@"default"];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 
         v14 = [MEMORY[0x277D74300] fontWithName:v11 size:18.0];
         if (v14)
         {
           [v5 addObject:v14];
-          if (v13)
+          if (bOOLValue)
           {
             [(AKFontListController *)self setDefaultFont:v14];
           }
@@ -77,12 +77,12 @@
   return v5;
 }
 
-+ (id)attributedStringForFont:(id)a3
++ (id)attributedStringForFont:(id)font
 {
-  v3 = a3;
-  v4 = [v3 familyName];
-  v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v4];
-  [v5 addAttribute:*MEMORY[0x277D740A8] value:v3 range:{0, objc_msgSend(v4, "length")}];
+  fontCopy = font;
+  familyName = [fontCopy familyName];
+  v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:familyName];
+  [v5 addAttribute:*MEMORY[0x277D740A8] value:fontCopy range:{0, objc_msgSend(familyName, "length")}];
 
   return v5;
 }

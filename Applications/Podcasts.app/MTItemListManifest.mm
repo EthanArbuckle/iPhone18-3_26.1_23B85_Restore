@@ -1,15 +1,15 @@
 @interface MTItemListManifest
-- (MTItemListManifest)initWithItems:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (MTItemListManifest)initWithItems:(id)items;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (void)setItems:(id)a3;
+- (void)setItems:(id)items;
 @end
 
 @implementation MTItemListManifest
 
-- (MTItemListManifest)initWithItems:(id)a3
+- (MTItemListManifest)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v12.receiver = self;
   v12.super_class = MTItemListManifest;
   v5 = [(MTPlayerManifest *)&v12 init];
@@ -20,11 +20,11 @@
     v10[2] = sub_1000C6F30;
     v10[3] = &unk_1004DB538;
     v11 = +[PFRestrictionsController isExplicitContentAllowed];
-    v6 = [v4 ams_filterUsingTest:v10];
+    v6 = [itemsCopy ams_filterUsingTest:v10];
     [(MTItemListManifest *)v5 setItems:v6];
 
-    v7 = [(MTItemListManifest *)v5 items];
-    v8 = [v7 count];
+    items = [(MTItemListManifest *)v5 items];
+    v8 = [items count];
 
     if (v8)
     {
@@ -37,14 +37,14 @@
   return v5;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v9 = a3;
-  objc_storeStrong(&self->_items, a3);
-  if ([v9 count])
+  itemsCopy = items;
+  objc_storeStrong(&self->_items, items);
+  if ([itemsCopy count])
   {
-    v5 = [(MTItemListManifest *)self currentIndex];
-    if (v5 < [v9 count])
+    currentIndex = [(MTItemListManifest *)self currentIndex];
+    if (currentIndex < [itemsCopy count])
     {
       goto LABEL_6;
     }
@@ -59,27 +59,27 @@
 
   [(MTItemListManifest *)self setCurrentIndex:v6];
 LABEL_6:
-  if ([v9 count])
+  if ([itemsCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v9 objectAtIndex:v7];
+      v8 = [itemsCopy objectAtIndex:v7];
       [v8 setManifestIndex:v7];
 
       ++v7;
     }
 
-    while ([v9 count] > v7);
+    while ([itemsCopy count] > v7);
   }
 
   [(MTItemListManifest *)self postManifestDidChangeNotification];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v5 = [(MTItemListManifest *)self items];
-  v6 = [v5 objectAtIndex:a3];
+  items = [(MTItemListManifest *)self items];
+  v6 = [items objectAtIndex:index];
 
   [v6 setManifest:self];
 
@@ -88,8 +88,8 @@ LABEL_6:
 
 - (unint64_t)count
 {
-  v2 = [(MTItemListManifest *)self items];
-  v3 = [v2 count];
+  items = [(MTItemListManifest *)self items];
+  v3 = [items count];
 
   return v3;
 }

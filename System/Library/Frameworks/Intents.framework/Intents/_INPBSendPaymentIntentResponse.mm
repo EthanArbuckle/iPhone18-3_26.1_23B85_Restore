@@ -1,36 +1,36 @@
 @interface _INPBSendPaymentIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSendPaymentIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSendPaymentIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSendPaymentIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"paymentRecord"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  paymentRecord = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
+  dictionaryRepresentation = [paymentRecord dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"paymentRecord"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
-    v6 = [v4 paymentRecord];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    paymentRecord = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
+    paymentRecord2 = [equalCopy paymentRecord];
+    v7 = paymentRecord2;
+    if ((paymentRecord != 0) != (paymentRecord2 == 0))
     {
-      v8 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
-      if (!v8)
+      paymentRecord3 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
+      if (!paymentRecord3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
-      v11 = [v4 paymentRecord];
-      v12 = [v10 isEqual:v11];
+      v9 = paymentRecord3;
+      paymentRecord4 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
+      paymentRecord5 = [equalCopy paymentRecord];
+      v12 = [paymentRecord4 isEqual:paymentRecord5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSendPaymentIntentResponse allocWithZone:](_INPBSendPaymentIntentResponse init];
-  v6 = [(_INPBPaymentRecord *)self->_paymentRecord copyWithZone:a3];
+  v6 = [(_INPBPaymentRecord *)self->_paymentRecord copyWithZone:zone];
   [(_INPBSendPaymentIntentResponse *)v5 setPaymentRecord:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSendPaymentIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSendPaymentIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSendPaymentIntentResponse)initWithCoder:(id)a3
+- (_INPBSendPaymentIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSendPaymentIntentResponse *)self initWithData:v6];
+    self = [(_INPBSendPaymentIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
+  toCopy = to;
+  paymentRecord = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
 
-  if (v4)
+  if (paymentRecord)
   {
-    v5 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
+    paymentRecord2 = [(_INPBSendPaymentIntentResponse *)self paymentRecord];
     PBDataWriterWriteSubmessage();
   }
 }

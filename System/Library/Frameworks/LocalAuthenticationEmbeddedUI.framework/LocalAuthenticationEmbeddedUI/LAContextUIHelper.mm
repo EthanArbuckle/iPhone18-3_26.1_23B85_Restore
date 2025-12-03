@@ -1,7 +1,7 @@
 @interface LAContextUIHelper
-- (void)authenticateWithOptions:(id)a3 availableMechanisms:(id)a4 hostVC:(id)a5 context:(id)a6 reply:(id)a7;
+- (void)authenticateWithOptions:(id)options availableMechanisms:(id)mechanisms hostVC:(id)c context:(id)context reply:(id)reply;
 - (void)cancel;
-- (void)contextDidBecomeInvalid:(id)a3;
+- (void)contextDidBecomeInvalid:(id)invalid;
 - (void)dealloc;
 @end
 
@@ -17,7 +17,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238BCD000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocated", buf, 0xCu);
   }
 
@@ -27,20 +27,20 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticateWithOptions:(id)a3 availableMechanisms:(id)a4 hostVC:(id)a5 context:(id)a6 reply:(id)a7
+- (void)authenticateWithOptions:(id)options availableMechanisms:(id)mechanisms hostVC:(id)c context:(id)context reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  optionsCopy = options;
+  mechanismsCopy = mechanisms;
+  cCopy = c;
+  contextCopy = context;
+  replyCopy = reply;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_ui);
 
   if (WeakRetained)
   {
     v18 = [MEMORY[0x277CD47F0] errorWithCode:-1008 message:@"Another interactive authentication is ongoing"];
-    v16[2](v16, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
   }
 
   else
@@ -50,18 +50,18 @@
     v27[1] = 3221225472;
     v27[2] = __86__LAContextUIHelper_authenticateWithOptions_availableMechanisms_hostVC_context_reply___block_invoke;
     v27[3] = &unk_278A65638;
-    v28 = v13;
-    v29 = v15;
-    v30 = v12;
+    v28 = mechanismsCopy;
+    v29 = contextCopy;
+    v30 = optionsCopy;
     v20 = __86__LAContextUIHelper_authenticateWithOptions_availableMechanisms_hostVC_context_reply___block_invoke(v27);
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __86__LAContextUIHelper_authenticateWithOptions_availableMechanisms_hostVC_context_reply___block_invoke_2;
     v25 = &unk_278A65660;
-    v26 = v16;
+    v26 = replyCopy;
     v21 = [(LAAuthorizationViewController *)v19 initWithConfiguration:v20 completion:&v22];
 
-    [(LAAuthorizationViewController *)v21 presentInContainerViewController:v14, v22, v23, v24, v25];
+    [(LAAuthorizationViewController *)v21 presentInContainerViewController:cCopy, v22, v23, v24, v25];
     objc_storeWeak(&self->_ui, v21);
   }
 }
@@ -136,7 +136,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238BCD000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelled", &v6, 0xCu);
   }
 
@@ -146,9 +146,9 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contextDidBecomeInvalid:(id)a3
+- (void)contextDidBecomeInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
     [(LAContextUIHelper *)self cancel];
@@ -162,7 +162,7 @@ LABEL_8:
     block[2] = __45__LAContextUIHelper_contextDidBecomeInvalid___block_invoke;
     block[3] = &unk_278A65688;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = invalidCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v7);

@@ -1,5 +1,5 @@
 @interface W5PeerDiagnosticsManager
-- (W5PeerDiagnosticsManager)initWithStatusManager:(id)a3;
+- (W5PeerDiagnosticsManager)initWithStatusManager:(id)manager;
 - (id)gatherPeerDiagnostics;
 - (id)gatherPeerTypes;
 - (id)getDPSSummary;
@@ -12,19 +12,19 @@
 - (void)invalidateDiscoveryClient;
 - (void)registerCallbacksAndActivate;
 - (void)registerRequestHandler;
-- (void)requestDiagnostics:(id)a3 completionBlock:(id)a4;
+- (void)requestDiagnostics:(id)diagnostics completionBlock:(id)block;
 @end
 
 @implementation W5PeerDiagnosticsManager
 
-- (W5PeerDiagnosticsManager)initWithStatusManager:(id)a3
+- (W5PeerDiagnosticsManager)initWithStatusManager:(id)manager
 {
   self->_discoveryClientStatus = 0;
   v9.receiver = self;
   v9.super_class = W5PeerDiagnosticsManager;
   v4 = [(W5PeerDiagnosticsManager *)&v9 init];
   v5 = v4;
-  if (!a3 || !v4 || (v4->_status = a3, v6 = dispatch_queue_create("com.apple.wifid.peerdiagnosticsmanager", 0), (v5->_queue = v6) == 0))
+  if (!manager || !v4 || (v4->_status = manager, v6 = dispatch_queue_create("com.apple.wifid.peerdiagnosticsmanager", 0), (v5->_queue = v6) == 0))
   {
 
     v7 = sub_100098A04();
@@ -204,12 +204,12 @@
 - (id)getWiFiStatus
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5StatusManager *)self->_status wifiStatus];
-  [v3 setObject:+[NSNumber numberWithInt:](NSNumber forKeyedSubscript:{"numberWithInt:", objc_msgSend(v4, "rssi")), @"RSSI"}];
-  [v3 setObject:objc_msgSend(v4 forKeyedSubscript:{"macAddress"), @"MAC"}];
-  [v3 setObject:objc_msgSend(v4 forKeyedSubscript:{"ssidString"), @"SSID"}];
-  [v3 setObject:objc_msgSend(v4 forKeyedSubscript:{"bssid"), @"BSSID"}];
-  [v4 channel];
+  wifiStatus = [(W5StatusManager *)self->_status wifiStatus];
+  [v3 setObject:+[NSNumber numberWithInt:](NSNumber forKeyedSubscript:{"numberWithInt:", objc_msgSend(wifiStatus, "rssi")), @"RSSI"}];
+  [v3 setObject:objc_msgSend(wifiStatus forKeyedSubscript:{"macAddress"), @"MAC"}];
+  [v3 setObject:objc_msgSend(wifiStatus forKeyedSubscript:{"ssidString"), @"SSID"}];
+  [v3 setObject:objc_msgSend(wifiStatus forKeyedSubscript:{"bssid"), @"BSSID"}];
+  [wifiStatus channel];
   [v3 setObject:W5DescriptionForChannel() forKeyedSubscript:@"Channel"];
   return v3;
 }
@@ -298,7 +298,7 @@
   return v3;
 }
 
-- (void)requestDiagnostics:(id)a3 completionBlock:(id)a4
+- (void)requestDiagnostics:(id)diagnostics completionBlock:(id)block
 {
   v6 = sub_100098A04();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -310,25 +310,25 @@
     v14 = 1024;
     v15 = 372;
     v16 = 2114;
-    v17 = a3;
+    diagnosticsCopy = diagnostics;
     _os_log_send_and_compose_impl();
   }
 
   v7 = objc_alloc_init(RPCompanionLinkClient);
   [v7 setControlFlags:{objc_msgSend(v7, "controlFlags") | 0x8102}];
-  [v7 setDestinationDevice:a3];
+  [v7 setDestinationDevice:diagnostics];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10009C8DC;
   v9[3] = &unk_1000E1CE8;
-  v9[4] = a3;
+  v9[4] = diagnostics;
   [v7 setInvalidationHandler:v9];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009C9CC;
   v8[3] = &unk_1000E1E38;
   v8[4] = v7;
-  v8[5] = a4;
+  v8[5] = block;
   [v7 activateWithCompletion:v8];
 }
 
@@ -351,8 +351,8 @@
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v4 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-    v5 = [v4 countByEnumeratingWithState:&v27 objects:v47 count:16];
+    activeDevices = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+    v5 = [activeDevices countByEnumeratingWithState:&v27 objects:v47 count:16];
     v6 = 0;
     if (v5)
     {
@@ -364,7 +364,7 @@
         {
           if (*v28 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeDevices);
           }
 
           v9 = *(*(&v27 + 1) + 8 * v8);
@@ -408,7 +408,7 @@
         }
 
         while (v5 != v8);
-        v12 = [v4 countByEnumeratingWithState:&v27 objects:v47 count:16];
+        v12 = [activeDevices countByEnumeratingWithState:&v27 objects:v47 count:16];
         v5 = v12;
       }
 

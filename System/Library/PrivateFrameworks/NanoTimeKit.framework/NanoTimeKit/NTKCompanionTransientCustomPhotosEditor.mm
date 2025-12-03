@@ -1,25 +1,25 @@
 @interface NTKCompanionTransientCustomPhotosEditor
-- (BOOL)addImageList:(id)a3;
-- (BOOL)setOriginalCrop:(CGRect)a3 forPhotoAtIndex:(int64_t)a4;
-- (CGRect)originalCropForPhotoAtIndex:(int64_t)a3;
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3;
-- (NTKCompanionTransientCustomPhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4;
-- (id)_writeTransientPhotosInto:(id)a3;
-- (void)deletePhotoAtIndex:(int64_t)a3;
-- (void)finalizeWithCompletion:(id)a3;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)imageAndCropForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (BOOL)addImageList:(id)list;
+- (BOOL)setOriginalCrop:(CGRect)crop forPhotoAtIndex:(int64_t)index;
+- (CGRect)originalCropForPhotoAtIndex:(int64_t)index;
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index;
+- (NTKCompanionTransientCustomPhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device;
+- (id)_writeTransientPhotosInto:(id)into;
+- (void)deletePhotoAtIndex:(int64_t)index;
+- (void)finalizeWithCompletion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)imageAndCropForPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
 @end
 
 @implementation NTKCompanionTransientCustomPhotosEditor
 
-- (NTKCompanionTransientCustomPhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4
+- (NTKCompanionTransientCustomPhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device
 {
   v8.receiver = self;
   v8.super_class = NTKCompanionTransientCustomPhotosEditor;
-  v4 = [(NTKCompanionCustomPhotosEditor *)&v8 initWithResourceDirectory:0 forDevice:a4];
+  v4 = [(NTKCompanionCustomPhotosEditor *)&v8 initWithResourceDirectory:0 forDevice:device];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -49,15 +49,15 @@
   v23 = __Block_byref_object_copy__29;
   v24 = __Block_byref_object_dispose__29;
   v25 = 0;
-  v6 = [(NTKCompanionResourceDirectoryEditor *)self state];
+  state = [(NTKCompanionResourceDirectoryEditor *)self state];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__NTKCompanionTransientCustomPhotosEditor_generateGalleryPreviewResourceDirectoryWithCompletion___block_invoke;
   aBlock[3] = &unk_27877FEC0;
   v18 = buf;
-  v19 = v6;
+  v19 = state;
   aBlock[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v17 = v7;
   v8 = _Block_copy(aBlock);
   if ([(NTKCompanionResourceDirectoryEditor *)self state]>= 2 && [(NTKCompanionResourceDirectoryEditor *)self state]<= 2)
@@ -78,9 +78,9 @@
       goto LABEL_7;
     }
 
-    v10 = [(NTKCompanionResourceDirectoryEditor *)self galleryPreviewResourceDirectory];
+    galleryPreviewResourceDirectory = [(NTKCompanionResourceDirectoryEditor *)self galleryPreviewResourceDirectory];
     v11 = *(v21 + 5);
-    *(v21 + 5) = v10;
+    *(v21 + 5) = galleryPreviewResourceDirectory;
 
     v9 = 1;
   }
@@ -196,9 +196,9 @@ void __97__NTKCompanionTransientCustomPhotosEditor_generateGalleryPreviewResourc
   }
 }
 
-- (void)finalizeWithCompletion:(id)a3
+- (void)finalizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NTKCompanionResourceDirectoryEditor *)self state]>= 2 && [(NTKCompanionResourceDirectoryEditor *)self state]< 3)
   {
     [(NTKCompanionResourceDirectoryEditor *)self setState:4];
@@ -208,8 +208,8 @@ void __97__NTKCompanionTransientCustomPhotosEditor_generateGalleryPreviewResourc
     v9[2] = __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___block_invoke_2;
     v9[3] = &unk_27877FF60;
     v9[4] = self;
-    v10 = v4;
-    v8 = v4;
+    v10 = completionCopy;
+    v8 = completionCopy;
     dispatch_async(v7, v9);
 
     v6 = v10;
@@ -221,8 +221,8 @@ void __97__NTKCompanionTransientCustomPhotosEditor_generateGalleryPreviewResourc
     block[1] = 3221225472;
     block[2] = __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___block_invoke;
     block[3] = &unk_27877E960;
-    v12 = v4;
-    v5 = v4;
+    v12 = completionCopy;
+    v5 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v6 = v12;
   }
@@ -316,18 +316,18 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
   return v2();
 }
 
-- (BOOL)addImageList:(id)a3
+- (BOOL)addImageList:(id)list
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   if ([(NTKCompanionResourceDirectoryEditor *)self state]&& [(NTKCompanionResourceDirectoryEditor *)self state]<= 2 && (v5 = [(NTKCompanionTransientCustomPhotosEditor *)self photosCount], ([(NSMutableArray *)self->_photos count]+ v5) <= 0x18))
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v17 = v4;
-    v8 = v4;
+    v17 = listCopy;
+    v8 = listCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -345,9 +345,9 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
           v13 = *(*(&v18 + 1) + 8 * i);
           v14 = objc_opt_new();
           [v14 setImage:v13];
-          v15 = [v14 image];
-          v16 = [(NTKCompanionResourceDirectoryEditor *)self device];
-          NTKPhotosDefaultCropForImage(v15, v16);
+          image = [v14 image];
+          device = [(NTKCompanionResourceDirectoryEditor *)self device];
+          NTKPhotosDefaultCropForImage(image, device);
           [v14 setOriginalCrop:?];
 
           [(NSMutableArray *)self->_photos addObject:v14];
@@ -362,7 +362,7 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
     [(NTKCompanionResourceDirectoryEditor *)self setState:2];
     self->_previewIsValid = 0;
     v6 = 1;
-    v4 = v17;
+    listCopy = v17;
   }
 
   else
@@ -373,26 +373,26 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
   return v6;
 }
 
-- (void)deletePhotoAtIndex:(int64_t)a3
+- (void)deletePhotoAtIndex:(int64_t)index
 {
   v9 = *MEMORY[0x277D85DE8];
   if ([(NTKCompanionResourceDirectoryEditor *)self state])
   {
-    v5 = [(NTKCompanionResourceDirectoryEditor *)self state];
-    if ((a3 & 0x8000000000000000) == 0 && v5 <= 2 && [(NSMutableArray *)self->_photos count]> a3)
+    state = [(NTKCompanionResourceDirectoryEditor *)self state];
+    if ((index & 0x8000000000000000) == 0 && state <= 2 && [(NSMutableArray *)self->_photos count]> index)
     {
-      [(NSMutableArray *)self->_photos removeObjectAtIndex:a3];
+      [(NSMutableArray *)self->_photos removeObjectAtIndex:index];
       v6 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 134217984;
-        v8 = a3;
+        indexCopy = index;
         _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "deletePhotoAtIndex: deleting image at index %ld", &v7, 0xCu);
       }
 
       if (self->_previewIsValid)
       {
-        self->_previewIsValid = a3 != 0;
+        self->_previewIsValid = index != 0;
       }
 
       [(NTKCompanionResourceDirectoryEditor *)self setState:2];
@@ -400,35 +400,35 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
   }
 }
 
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(NTKCompanionResourceDirectoryEditor *)self state])
   {
-    v7 = [(NTKCompanionResourceDirectoryEditor *)self state];
-    if ((a3 & 0x8000000000000000) == 0 && v7 <= 2)
+    state = [(NTKCompanionResourceDirectoryEditor *)self state];
+    if ((index & 0x8000000000000000) == 0 && state <= 2)
     {
       v8 = [(NSMutableArray *)self->_photos count];
-      if ((a4 & 0x8000000000000000) == 0 && v8 > a3 && [(NSMutableArray *)self->_photos count]> a4)
+      if ((toIndex & 0x8000000000000000) == 0 && v8 > index && [(NSMutableArray *)self->_photos count]> toIndex)
       {
-        v9 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
+        v9 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
         v10 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 134218240;
-          v15 = a3;
+          indexCopy = index;
           v16 = 2048;
-          v17 = a4;
+          toIndexCopy = toIndex;
           _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "movePhotoAtIndex: moving photo from index %ld to index %ld", &v14, 0x16u);
         }
 
-        [(NSMutableArray *)self->_photos removeObjectAtIndex:a3];
-        [(NSMutableArray *)self->_photos insertObject:v9 atIndex:a4];
+        [(NSMutableArray *)self->_photos removeObjectAtIndex:index];
+        [(NSMutableArray *)self->_photos insertObject:v9 atIndex:toIndex];
         if (self->_previewIsValid)
         {
-          if (a3)
+          if (index)
           {
-            v11 = a4 == 0;
+            v11 = toIndex == 0;
           }
 
           else
@@ -436,7 +436,7 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
             v11 = 1;
           }
 
-          v13 = !v11 || a3 == a4;
+          v13 = !v11 || index == toIndex;
           self->_previewIsValid = v13;
         }
 
@@ -446,73 +446,73 @@ uint64_t __66__NTKCompanionTransientCustomPhotosEditor_finalizeWithCompletion___
   }
 }
 
-- (BOOL)setOriginalCrop:(CGRect)a3 forPhotoAtIndex:(int64_t)a4
+- (BOOL)setOriginalCrop:(CGRect)crop forPhotoAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(NTKCompanionResourceDirectoryEditor *)self state];
-  if (v10)
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  state = [(NTKCompanionResourceDirectoryEditor *)self state];
+  if (state)
   {
-    v11 = [(NTKCompanionResourceDirectoryEditor *)self state];
-    LOBYTE(v10) = 0;
-    if ((a4 & 0x8000000000000000) == 0 && v11 <= 2)
+    state2 = [(NTKCompanionResourceDirectoryEditor *)self state];
+    LOBYTE(state) = 0;
+    if ((index & 0x8000000000000000) == 0 && state2 <= 2)
     {
-      if ([(NSMutableArray *)self->_photos count]<= a4)
+      if ([(NSMutableArray *)self->_photos count]<= index)
       {
-        LOBYTE(v10) = 0;
+        LOBYTE(state) = 0;
       }
 
       else
       {
-        v12 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a4];
+        v12 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
         [v12 originalCrop];
         if ((CLKRectEqualsRect() & 1) == 0)
         {
           [v12 setOriginalCrop:{x, y, width, height}];
           if (self->_previewIsValid)
           {
-            self->_previewIsValid = a4 != 0;
+            self->_previewIsValid = index != 0;
           }
 
           [(NTKCompanionResourceDirectoryEditor *)self setState:2];
         }
 
-        LOBYTE(v10) = 1;
+        LOBYTE(state) = 1;
       }
     }
   }
 
-  return v10;
+  return state;
 }
 
-- (void)imageAndCropForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)imageAndCropForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
-  if (a3 < 0 || [(NSMutableArray *)self->_photos count]<= a3)
+  completionCopy = completion;
+  if (index < 0 || [(NSMutableArray *)self->_photos count]<= index)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion___block_invoke;
     v14[3] = &unk_27877E960;
-    v15 = v6;
-    v10 = v6;
+    v15 = completionCopy;
+    v10 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v14);
     v8 = v15;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion___block_invoke_2;
     block[3] = &unk_27877E570;
     v12 = v7;
-    v13 = v6;
+    v13 = completionCopy;
     v8 = v7;
-    v9 = v6;
+    v9 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -525,21 +525,21 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__NTKCompanionTransientCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_completion___block_invoke;
   block[3] = &unk_27877E960;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (CGRect)originalCropForPhotoAtIndex:(int64_t)a3
+- (CGRect)originalCropForPhotoAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableArray *)self->_photos count]<= a3)
+  if (index < 0 || [(NSMutableArray *)self->_photos count]<= index)
   {
     v7 = *MEMORY[0x277CBF398];
     v9 = *(MEMORY[0x277CBF398] + 8);
@@ -549,7 +549,7 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
 
   else
   {
-    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
     [v5 originalCrop];
     v7 = v6;
     v9 = v8;
@@ -568,10 +568,10 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
   return result;
 }
 
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index
 {
   v3 = 1.0;
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 1.0;
   }
@@ -579,18 +579,18 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
   else
   {
     v6 = 1.0;
-    if ([(NSMutableArray *)self->_photos count]> a3)
+    if ([(NSMutableArray *)self->_photos count]> index)
     {
-      v7 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
-      v8 = [v7 image];
+      v7 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
+      image = [v7 image];
 
-      [v8 size];
+      [image size];
       v10 = v9;
-      [v8 scale];
+      [image scale];
       v12 = v10 * v11;
-      [v8 size];
+      [image size];
       v14 = v13;
-      [v8 scale];
+      [image scale];
       v16 = v14 * v15;
       [objc_opt_class() _watchPhotoImageSize];
       v18 = v17 / v12;
@@ -624,10 +624,10 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
   return result;
 }
 
-- (id)_writeTransientPhotosInto:(id)a3
+- (id)_writeTransientPhotosInto:(id)into
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intoCopy = into;
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -654,11 +654,11 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
         v13 = v12;
         v15 = v14;
         v16 = objc_opt_class();
-        v17 = [v10 image];
+        image = [v10 image];
         [v10 originalCrop];
-        v18 = [v16 _cropAndScaleUIImage:v17 cropRect:? outputSize:?];
+        v18 = [v16 _cropAndScaleUIImage:image cropRect:? outputSize:?];
 
-        v19 = [objc_opt_class() _writeAsset:0 image:v18 withImageCrop:v4 to:{0.0, 0.0, v13, v15}];
+        v19 = [objc_opt_class() _writeAsset:0 image:v18 withImageCrop:intoCopy to:{0.0, 0.0, v13, v15}];
         if (!v19)
         {
 
@@ -668,8 +668,8 @@ void __82__NTKCompanionTransientCustomPhotosEditor_imageAndCropForPhotoAtIndex_c
         }
 
         v20 = v19;
-        v21 = [v19 encodeAsDictionary];
-        [v5 addObject:v21];
+        encodeAsDictionary = [v19 encodeAsDictionary];
+        [v5 addObject:encodeAsDictionary];
 
         objc_autoreleasePoolPop(v11);
       }

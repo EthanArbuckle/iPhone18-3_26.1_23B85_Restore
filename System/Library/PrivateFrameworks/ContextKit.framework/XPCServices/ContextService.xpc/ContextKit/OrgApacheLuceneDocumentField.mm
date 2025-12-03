@@ -1,33 +1,33 @@
 @interface OrgApacheLuceneDocumentField
 - (NSString)description;
-- (OrgApacheLuceneDocumentField)initWithNSString:(id)a3 withByteArray:(id)a4 withInt:(int)a5 withInt:(int)a6 withOrgApacheLuceneDocumentFieldType:(id)a7;
-- (OrgApacheLuceneDocumentField)initWithNSString:(id)a3 withNSString:(id)a4 withOrgApacheLuceneDocumentField_StoreEnum:(id)a5 withOrgApacheLuceneDocumentField_IndexEnum:(id)a6 withOrgApacheLuceneDocumentField_TermVectorEnum:(id)a7;
+- (OrgApacheLuceneDocumentField)initWithNSString:(id)string withByteArray:(id)array withInt:(int)int withInt:(int)withInt withOrgApacheLuceneDocumentFieldType:(id)type;
+- (OrgApacheLuceneDocumentField)initWithNSString:(id)string withNSString:(id)sString withOrgApacheLuceneDocumentField_StoreEnum:(id)enum withOrgApacheLuceneDocumentField_IndexEnum:(id)indexEnum withOrgApacheLuceneDocumentField_TermVectorEnum:(id)vectorEnum;
 - (id)binaryValue;
 - (id)numericValue;
 - (id)readerValue;
 - (id)stringValue;
-- (id)tokenStreamWithOrgApacheLuceneAnalysisAnalyzer:(id)a3 withOrgApacheLuceneAnalysisTokenStream:(id)tokenStream;
+- (id)tokenStreamWithOrgApacheLuceneAnalysisAnalyzer:(id)analyzer withOrgApacheLuceneAnalysisTokenStream:(id)tokenStream;
 - (void)dealloc;
-- (void)setBoostWithFloat:(float)a3;
-- (void)setByteValueWithByte:(char)a3;
-- (void)setBytesValueWithByteArray:(id)a3;
-- (void)setBytesValueWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (void)setDoubleValueWithDouble:(double)a3;
-- (void)setFloatValueWithFloat:(float)a3;
-- (void)setIntValueWithInt:(int)a3;
-- (void)setLongValueWithLong:(int64_t)a3;
-- (void)setReaderValueWithJavaIoReader:(id)a3;
-- (void)setShortValueWithShort:(signed __int16)a3;
-- (void)setStringValueWithNSString:(id)a3;
-- (void)setTokenStreamWithOrgApacheLuceneAnalysisTokenStream:(id)a3;
+- (void)setBoostWithFloat:(float)float;
+- (void)setByteValueWithByte:(char)byte;
+- (void)setBytesValueWithByteArray:(id)array;
+- (void)setBytesValueWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (void)setDoubleValueWithDouble:(double)double;
+- (void)setFloatValueWithFloat:(float)float;
+- (void)setIntValueWithInt:(int)int;
+- (void)setLongValueWithLong:(int64_t)long;
+- (void)setReaderValueWithJavaIoReader:(id)reader;
+- (void)setShortValueWithShort:(signed __int16)short;
+- (void)setStringValueWithNSString:(id)string;
+- (void)setTokenStreamWithOrgApacheLuceneAnalysisTokenStream:(id)stream;
 @end
 
 @implementation OrgApacheLuceneDocumentField
 
-- (OrgApacheLuceneDocumentField)initWithNSString:(id)a3 withByteArray:(id)a4 withInt:(int)a5 withInt:(int)a6 withOrgApacheLuceneDocumentFieldType:(id)a7
+- (OrgApacheLuceneDocumentField)initWithNSString:(id)string withByteArray:(id)array withInt:(int)int withInt:(int)withInt withOrgApacheLuceneDocumentFieldType:(id)type
 {
-  v10 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(a4, a5, a6);
-  OrgApacheLuceneDocumentField_initWithNSString_withOrgApacheLuceneUtilBytesRef_withOrgApacheLuceneDocumentFieldType_(self, a3, v10, a7);
+  v10 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_withInt_withInt_(array, int, withInt);
+  OrgApacheLuceneDocumentField_initWithNSString_withOrgApacheLuceneUtilBytesRef_withOrgApacheLuceneDocumentFieldType_(self, string, v10, type);
   return self;
 }
 
@@ -73,7 +73,7 @@
   return v4;
 }
 
-- (void)setStringValueWithNSString:(id)a3
+- (void)setStringValueWithNSString:(id)string
 {
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
@@ -92,16 +92,16 @@ LABEL_9:
     objc_exception_throw(v14);
   }
 
-  if (!a3)
+  if (!string)
   {
     v13 = @"value cannot be null";
     goto LABEL_9;
   }
 
-  JreStrongAssign(p_fieldsData, a3);
+  JreStrongAssign(p_fieldsData, string);
 }
 
-- (void)setReaderValueWithJavaIoReader:(id)a3
+- (void)setReaderValueWithJavaIoReader:(id)reader
 {
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
@@ -119,17 +119,17 @@ LABEL_9:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(p_fieldsData, a3);
+  JreStrongAssign(p_fieldsData, reader);
 }
 
-- (void)setBytesValueWithByteArray:(id)a3
+- (void)setBytesValueWithByteArray:(id)array
 {
-  v4 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_(a3);
+  v4 = new_OrgApacheLuceneUtilBytesRef_initWithByteArray_(array);
 
   [(OrgApacheLuceneDocumentField *)self setBytesValueWithOrgApacheLuceneUtilBytesRef:v4];
 }
 
-- (void)setBytesValueWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)setBytesValueWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
@@ -153,19 +153,19 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = [(OrgApacheLuceneDocumentFieldType *)type indexOptions];
+  indexOptions = [(OrgApacheLuceneDocumentFieldType *)type indexOptions];
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
-  if (v8 != OrgApacheLuceneIndexIndexOptionsEnum_values_[0])
+  if (indexOptions != OrgApacheLuceneIndexIndexOptionsEnum_values_[0])
   {
     v16 = @"cannot set a BytesRef value on an indexed field";
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!ref)
   {
     v16 = @"value cannot be null";
 LABEL_15:
@@ -173,12 +173,12 @@ LABEL_15:
     objc_exception_throw(v17);
   }
 
-  JreStrongAssign(p_fieldsData, a3);
+  JreStrongAssign(p_fieldsData, ref);
 }
 
-- (void)setByteValueWithByte:(char)a3
+- (void)setByteValueWithByte:(char)byte
 {
-  v3 = a3;
+  byteCopy = byte;
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
   objc_opt_class();
@@ -195,14 +195,14 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangByte_valueOfWithByte_(v3);
+  v6 = JavaLangByte_valueOfWithByte_(byteCopy);
 
   JreStrongAssign(p_fieldsData, v6);
 }
 
-- (void)setShortValueWithShort:(signed __int16)a3
+- (void)setShortValueWithShort:(signed __int16)short
 {
-  v3 = a3;
+  shortCopy = short;
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
   objc_opt_class();
@@ -219,35 +219,12 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangShort_valueOfWithShort_(v3);
+  v6 = JavaLangShort_valueOfWithShort_(shortCopy);
 
   JreStrongAssign(p_fieldsData, v6);
 }
 
-- (void)setIntValueWithInt:(int)a3
-{
-  p_fieldsData = &self->fieldsData_;
-  fieldsData = self->fieldsData_;
-  objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0)
-  {
-    if (*p_fieldsData)
-    {
-      [objc_msgSend(*p_fieldsData "getClass")];
-      v14 = JreStrcat("$$$", v7, v8, v9, v10, v11, v12, v13, @"cannot change value type from ");
-      v15 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
-      objc_exception_throw(v15);
-    }
-
-    JreThrowNullPointerException();
-  }
-
-  v6 = JavaLangInteger_valueOfWithInt_(a3);
-
-  JreStrongAssign(p_fieldsData, v6);
-}
-
-- (void)setLongValueWithLong:(int64_t)a3
+- (void)setIntValueWithInt:(int)int
 {
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
@@ -265,12 +242,12 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangLong_valueOfWithLong_(a3);
+  v6 = JavaLangInteger_valueOfWithInt_(int);
 
   JreStrongAssign(p_fieldsData, v6);
 }
 
-- (void)setFloatValueWithFloat:(float)a3
+- (void)setLongValueWithLong:(int64_t)long
 {
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
@@ -288,12 +265,12 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangFloat_valueOfWithFloat_(a3);
+  v6 = JavaLangLong_valueOfWithLong_(long);
 
   JreStrongAssign(p_fieldsData, v6);
 }
 
-- (void)setDoubleValueWithDouble:(double)a3
+- (void)setFloatValueWithFloat:(float)float
 {
   p_fieldsData = &self->fieldsData_;
   fieldsData = self->fieldsData_;
@@ -311,12 +288,35 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = JavaLangDouble_valueOfWithDouble_(a3);
+  v6 = JavaLangFloat_valueOfWithFloat_(float);
 
   JreStrongAssign(p_fieldsData, v6);
 }
 
-- (void)setTokenStreamWithOrgApacheLuceneAnalysisTokenStream:(id)a3
+- (void)setDoubleValueWithDouble:(double)double
+{
+  p_fieldsData = &self->fieldsData_;
+  fieldsData = self->fieldsData_;
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    if (*p_fieldsData)
+    {
+      [objc_msgSend(*p_fieldsData "getClass")];
+      v14 = JreStrcat("$$$", v7, v8, v9, v10, v11, v12, v13, @"cannot change value type from ");
+      v15 = new_JavaLangIllegalArgumentException_initWithNSString_(v14);
+      objc_exception_throw(v15);
+    }
+
+    JreThrowNullPointerException();
+  }
+
+  v6 = JavaLangDouble_valueOfWithDouble_(double);
+
+  JreStrongAssign(p_fieldsData, v6);
+}
+
+- (void)setTokenStreamWithOrgApacheLuceneAnalysisTokenStream:(id)stream
 {
   type = self->type_;
   if (!type)
@@ -324,13 +324,13 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v6 = [(OrgApacheLuceneDocumentFieldType *)type indexOptions];
+  indexOptions = [(OrgApacheLuceneDocumentFieldType *)type indexOptions];
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
-  if (v6 == OrgApacheLuceneIndexIndexOptionsEnum_values_[0] || ![(OrgApacheLuceneDocumentFieldType *)self->type_ tokenized])
+  if (indexOptions == OrgApacheLuceneIndexIndexOptionsEnum_values_[0] || ![(OrgApacheLuceneDocumentFieldType *)self->type_ tokenized])
   {
     v7 = @"TokenStream fields must be indexed and tokenized";
     goto LABEL_13;
@@ -344,12 +344,12 @@ LABEL_13:
     objc_exception_throw(v8);
   }
 
-  JreStrongAssign(&self->tokenStream_, a3);
+  JreStrongAssign(&self->tokenStream_, stream);
 }
 
-- (void)setBoostWithFloat:(float)a3
+- (void)setBoostWithFloat:(float)float
 {
-  if (a3 != 1.0)
+  if (float != 1.0)
   {
     type = self->type_;
     if (!type)
@@ -357,20 +357,20 @@ LABEL_13:
       JreThrowNullPointerException();
     }
 
-    v6 = [(OrgApacheLuceneDocumentFieldType *)type indexOptions];
+    indexOptions = [(OrgApacheLuceneDocumentFieldType *)type indexOptions];
     if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_100015608();
     }
 
-    if (v6 == OrgApacheLuceneIndexIndexOptionsEnum_values_[0] || [(OrgApacheLuceneDocumentFieldType *)self->type_ omitNorms])
+    if (indexOptions == OrgApacheLuceneIndexIndexOptionsEnum_values_[0] || [(OrgApacheLuceneDocumentFieldType *)self->type_ omitNorms])
     {
       v7 = new_JavaLangIllegalArgumentException_initWithNSString_(@"You cannot set an index-time boost on an unindexed field, or one that omits norms");
       objc_exception_throw(v7);
     }
   }
 
-  self->boost_ = a3;
+  self->boost_ = float;
 }
 
 - (id)numericValue
@@ -434,35 +434,35 @@ LABEL_13:
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (id)tokenStreamWithOrgApacheLuceneAnalysisAnalyzer:(id)a3 withOrgApacheLuceneAnalysisTokenStream:(id)tokenStream
+- (id)tokenStreamWithOrgApacheLuceneAnalysisAnalyzer:(id)analyzer withOrgApacheLuceneAnalysisTokenStream:(id)tokenStream
 {
-  v7 = [(OrgApacheLuceneDocumentField *)self fieldType];
-  if (!v7)
+  fieldType = [(OrgApacheLuceneDocumentField *)self fieldType];
+  if (!fieldType)
   {
     goto LABEL_63;
   }
 
-  v8 = [v7 indexOptions];
+  indexOptions = [fieldType indexOptions];
   if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100015608();
   }
 
-  if (v8 == OrgApacheLuceneIndexIndexOptionsEnum_values_[0])
+  if (indexOptions == OrgApacheLuceneIndexIndexOptionsEnum_values_[0])
   {
     return 0;
   }
 
-  v9 = [(OrgApacheLuceneDocumentField *)self fieldType];
-  if (!v9)
+  fieldType2 = [(OrgApacheLuceneDocumentField *)self fieldType];
+  if (!fieldType2)
   {
     goto LABEL_63;
   }
 
-  v10 = [v9 numericType];
-  if (v10)
+  numericType = [fieldType2 numericType];
+  if (numericType)
   {
-    v11 = v10;
+    v11 = numericType;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -480,14 +480,14 @@ LABEL_13:
       goto LABEL_64;
     }
 
-    v12 = [tokenStream getPrecisionStep];
+    getPrecisionStep = [tokenStream getPrecisionStep];
     type = self->type_;
     if (!type)
     {
       goto LABEL_63;
     }
 
-    if (v12 == [(OrgApacheLuceneDocumentFieldType *)type numericPrecisionStep])
+    if (getPrecisionStep == [(OrgApacheLuceneDocumentFieldType *)type numericPrecisionStep])
     {
       objc_opt_class();
     }
@@ -505,10 +505,10 @@ LABEL_32:
         objc_opt_class();
         if (!fieldsData || (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v20 = [v11 ordinal];
-          if (v20 > 1)
+          ordinal = [v11 ordinal];
+          if (ordinal > 1)
           {
-            if (v20 == 2)
+            if (ordinal == 2)
             {
               if (!v14 && fieldsData)
               {
@@ -520,7 +520,7 @@ LABEL_32:
               goto LABEL_63;
             }
 
-            if (v20 == 3)
+            if (ordinal == 3)
             {
               if (!v14 && fieldsData)
               {
@@ -535,7 +535,7 @@ LABEL_32:
 
           else
           {
-            if (!v20)
+            if (!ordinal)
             {
               if (!v14 && fieldsData)
               {
@@ -546,7 +546,7 @@ LABEL_32:
               goto LABEL_63;
             }
 
-            if (v20 == 1)
+            if (ordinal == 1)
             {
               if (!v14 && fieldsData)
               {
@@ -578,13 +578,13 @@ LABEL_64:
     goto LABEL_32;
   }
 
-  v15 = [(OrgApacheLuceneDocumentField *)self fieldType];
-  if (!v15)
+  fieldType3 = [(OrgApacheLuceneDocumentField *)self fieldType];
+  if (!fieldType3)
   {
     goto LABEL_63;
   }
 
-  if (([v15 tokenized] & 1) == 0)
+  if (([fieldType3 tokenized] & 1) == 0)
   {
     if (![(OrgApacheLuceneDocumentField *)self stringValue])
     {
@@ -650,15 +650,15 @@ LABEL_68:
 
   if ([(OrgApacheLuceneDocumentField *)self readerValue])
   {
-    if (!a3)
+    if (!analyzer)
     {
       goto LABEL_63;
     }
 
-    v16 = [(OrgApacheLuceneDocumentField *)self name];
-    v17 = [(OrgApacheLuceneDocumentField *)self readerValue];
+    name = [(OrgApacheLuceneDocumentField *)self name];
+    readerValue = [(OrgApacheLuceneDocumentField *)self readerValue];
 
-    return [a3 tokenStreamWithNSString:v16 withJavaIoReader:v17];
+    return [analyzer tokenStreamWithNSString:name withJavaIoReader:readerValue];
   }
 
   if (![(OrgApacheLuceneDocumentField *)self stringValue])
@@ -667,21 +667,21 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  if (!a3)
+  if (!analyzer)
   {
     goto LABEL_63;
   }
 
-  v29 = [(OrgApacheLuceneDocumentField *)self name];
-  v30 = [(OrgApacheLuceneDocumentField *)self stringValue];
+  name2 = [(OrgApacheLuceneDocumentField *)self name];
+  stringValue = [(OrgApacheLuceneDocumentField *)self stringValue];
 
-  return [a3 tokenStreamWithNSString:v29 withNSString:v30];
+  return [analyzer tokenStreamWithNSString:name2 withNSString:stringValue];
 }
 
-- (OrgApacheLuceneDocumentField)initWithNSString:(id)a3 withNSString:(id)a4 withOrgApacheLuceneDocumentField_StoreEnum:(id)a5 withOrgApacheLuceneDocumentField_IndexEnum:(id)a6 withOrgApacheLuceneDocumentField_TermVectorEnum:(id)a7
+- (OrgApacheLuceneDocumentField)initWithNSString:(id)string withNSString:(id)sString withOrgApacheLuceneDocumentField_StoreEnum:(id)enum withOrgApacheLuceneDocumentField_IndexEnum:(id)indexEnum withOrgApacheLuceneDocumentField_TermVectorEnum:(id)vectorEnum
 {
-  v10 = OrgApacheLuceneDocumentField_translateFieldTypeWithOrgApacheLuceneDocumentField_StoreEnum_withOrgApacheLuceneDocumentField_IndexEnum_withOrgApacheLuceneDocumentField_TermVectorEnum_(a5, a6, a7);
-  OrgApacheLuceneDocumentField_initWithNSString_withNSString_withOrgApacheLuceneDocumentFieldType_(self, a3, a4, v10);
+  v10 = OrgApacheLuceneDocumentField_translateFieldTypeWithOrgApacheLuceneDocumentField_StoreEnum_withOrgApacheLuceneDocumentField_IndexEnum_withOrgApacheLuceneDocumentField_TermVectorEnum_(enum, indexEnum, vectorEnum);
+  OrgApacheLuceneDocumentField_initWithNSString_withNSString_withOrgApacheLuceneDocumentFieldType_(self, string, sString, v10);
   return self;
 }
 

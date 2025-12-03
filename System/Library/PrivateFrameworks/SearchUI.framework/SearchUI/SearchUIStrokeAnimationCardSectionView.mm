@@ -1,7 +1,7 @@
 @interface SearchUIStrokeAnimationCardSectionView
 - (id)setupContentView;
 - (void)animationDidStart;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIStrokeAnimationCardSectionView
@@ -14,43 +14,43 @@
   return v4;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v15.receiver = self;
   v15.super_class = SearchUIStrokeAnimationCardSectionView;
-  [(SearchUICardSectionView *)&v15 updateWithRowModel:a3];
-  v4 = [(SearchUICardSectionView *)self rowModel];
-  v5 = [v4 cardSection];
+  [(SearchUICardSectionView *)&v15 updateWithRowModel:model];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
   v6 = objc_alloc(MEMORY[0x1E69D4E08]);
-  v7 = [v5 characters];
-  v8 = [v7 firstObject];
-  v9 = [v5 strokeAnimationRepresentation];
-  v10 = [v5 strokeNames];
-  v11 = [v5 pronunciations];
-  v12 = [v11 firstObject];
-  v13 = [v6 initWithCharacter:v8 strokeAnimationRepresention:v9 strokeNames:v10 pronunciation:v12];
+  characters = [cardSection characters];
+  firstObject = [characters firstObject];
+  strokeAnimationRepresentation = [cardSection strokeAnimationRepresentation];
+  strokeNames = [cardSection strokeNames];
+  pronunciations = [cardSection pronunciations];
+  firstObject2 = [pronunciations firstObject];
+  v13 = [v6 initWithCharacter:firstObject strokeAnimationRepresention:strokeAnimationRepresentation strokeNames:strokeNames pronunciation:firstObject2];
 
-  v14 = [(SearchUICardSectionView *)self contentView];
-  [v14 updateWithData:v13];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  [contentView updateWithData:v13];
 }
 
 - (void)animationDidStart
 {
-  v3 = [(SearchUICardSectionView *)self rowModel];
-  v4 = [v3 cardSection];
-  v5 = [v4 commands];
-  v6 = [v5 count];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
+  commands = [cardSection commands];
+  v6 = [commands count];
 
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69C9F10]);
-    v8 = [(SearchUICardSectionView *)self section];
-    v10 = [v7 initWithCardSection:v8 destination:0 triggerEvent:2 actionCardType:1];
+    section = [(SearchUICardSectionView *)self section];
+    v10 = [v7 initWithCardSection:section destination:0 triggerEvent:2 actionCardType:1];
 
     [v10 setActionTarget:4];
-    v9 = [(SearchUICardSectionView *)self feedbackDelegate];
-    [v9 didEngageCardSection:v10];
+    feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+    [feedbackDelegate didEngageCardSection:v10];
   }
 }
 

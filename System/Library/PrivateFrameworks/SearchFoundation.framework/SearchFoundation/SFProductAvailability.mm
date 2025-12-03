@@ -1,27 +1,27 @@
 @interface SFProductAvailability
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFProductAvailability)initWithCoder:(id)a3;
-- (SFProductAvailability)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFProductAvailability)initWithCoder:(id)coder;
+- (SFProductAvailability)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFProductAvailability
 
-- (SFProductAvailability)initWithProtobuf:(id)a3
+- (SFProductAvailability)initWithProtobuf:(id)protobuf
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v21.receiver = self;
   v21.super_class = SFProductAvailability;
   v5 = [(SFProductAvailability *)&v21 init];
   if (v5)
   {
-    v6 = [v4 results];
-    if (v6)
+    results = [protobufCopy results];
+    if (results)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -35,8 +35,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 results];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    results2 = [protobufCopy results];
+    v9 = [results2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -47,7 +47,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(results2);
           }
 
           v13 = [[SFProductInventoryResult alloc] initWithProtobuf:*(*(&v17 + 1) + 8 * i)];
@@ -57,7 +57,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v10 = [results2 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v10);
@@ -73,38 +73,38 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SFProductAvailability *)self results];
-  v3 = [v2 hash];
+  results = [(SFProductAvailability *)self results];
+  v3 = [results hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFProductAvailability *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFProductAvailability *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFProductAvailability *)self results];
-    v7 = [(SFProductAvailability *)v5 results];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    results = [(SFProductAvailability *)self results];
+    results2 = [(SFProductAvailability *)v5 results];
+    if ((results != 0) == (results2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFProductAvailability *)self results];
-      if (v8)
+      results3 = [(SFProductAvailability *)self results];
+      if (results3)
       {
-        v9 = [(SFProductAvailability *)self results];
-        v10 = [(SFProductAvailability *)v5 results];
-        v11 = [v9 isEqual:v10];
+        results4 = [(SFProductAvailability *)self results];
+        results5 = [(SFProductAvailability *)v5 results];
+        v11 = [results4 isEqual:results5];
       }
 
       else
@@ -122,11 +122,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFProductAvailability *)self results];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  results = [(SFProductAvailability *)self results];
+  v6 = [results copy];
   [v4 setResults:v6];
 
   return v4;
@@ -135,31 +135,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBProductAvailability alloc] initWithFacade:self];
-  v3 = [(_SFPBProductAvailability *)v2 jsonData];
+  jsonData = [(_SFPBProductAvailability *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBProductAvailability alloc] initWithFacade:self];
-  v3 = [(_SFPBProductAvailability *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBProductAvailability *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBProductAvailability alloc] initWithFacade:self];
-  v5 = [(_SFPBProductAvailability *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBProductAvailability *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFProductAvailability)initWithCoder:(id)a3
+- (SFProductAvailability)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBProductAvailability alloc] initWithData:v5];
   v7 = [(SFProductAvailability *)self initWithProtobuf:v6];

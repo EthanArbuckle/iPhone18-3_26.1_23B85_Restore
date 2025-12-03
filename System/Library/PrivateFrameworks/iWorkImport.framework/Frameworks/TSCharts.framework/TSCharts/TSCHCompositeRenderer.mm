@@ -1,24 +1,24 @@
 @interface TSCHCompositeRenderer
-+ (void)p_delegateSelector:(SEL)a3 toRenderer:(id)a4 transparencyLayer:(int)a5 inContext:(CGContext *)a6;
-+ (void)renderTSCHCompositeRendering:(id)a3 intoContext:(CGContext *)a4 visible:(CGRect)a5;
++ (void)p_delegateSelector:(SEL)selector toRenderer:(id)renderer transparencyLayer:(int)layer inContext:(CGContext *)context;
++ (void)renderTSCHCompositeRendering:(id)rendering intoContext:(CGContext *)context visible:(CGRect)visible;
 - (BOOL)needsAnySeparateLayers;
-- (TSCHCompositeRenderer)initWithChartRep:(id)a3 withSubRenderers:(id)a4;
+- (TSCHCompositeRenderer)initWithChartRep:(id)rep withSubRenderers:(id)renderers;
 - (id)allRenderingFills;
 - (id)transparencyLayers;
-- (void)drawIntoLayer:(int)a3 inContext:(CGContext *)a4 visible:(CGRect)a5;
-- (void)p_delegateSelectorToRenderers:(SEL)a3 transparencyLayer:(int)a4 inContext:(CGContext *)a5;
+- (void)drawIntoLayer:(int)layer inContext:(CGContext *)context visible:(CGRect)visible;
+- (void)p_delegateSelectorToRenderers:(SEL)renderers transparencyLayer:(int)layer inContext:(CGContext *)context;
 @end
 
 @implementation TSCHCompositeRenderer
 
-- (TSCHCompositeRenderer)initWithChartRep:(id)a3 withSubRenderers:(id)a4
+- (TSCHCompositeRenderer)initWithChartRep:(id)rep withSubRenderers:(id)renderers
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = v7;
-  if (v6)
+  repCopy = rep;
+  renderersCopy = renderers;
+  v12 = renderersCopy;
+  if (repCopy)
   {
-    if (v7)
+    if (renderersCopy)
     {
       goto LABEL_3;
     }
@@ -90,7 +90,7 @@ LABEL_13:
 LABEL_14:
   v106.receiver = self;
   v106.super_class = TSCHCompositeRenderer;
-  v99 = [(TSCHRenderer *)&v106 initWithChartRep:v6 layoutItem:v48];
+  v99 = [(TSCHRenderer *)&v106 initWithChartRep:repCopy layoutItem:v48];
   if (v99)
   {
     v103 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v98, v100, v101, v102, v12);
@@ -246,13 +246,13 @@ LABEL_15:
   return v7;
 }
 
-- (void)drawIntoLayer:(int)a3 inContext:(CGContext *)a4 visible:(CGRect)a5
+- (void)drawIntoLayer:(int)layer inContext:(CGContext *)context visible:(CGRect)visible
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = *&a3;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  v10 = *&layer;
   v37 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
@@ -289,12 +289,12 @@ LABEL_15:
 
         if (v26)
         {
-          objc_msgSend_drawIntoLayer_inContext_visible_(v26, v27, x, y, width, v10, a4, height);
+          objc_msgSend_drawIntoLayer_inContext_visible_(v26, v27, x, y, width, v10, context, height);
         }
 
         else
         {
-          objc_msgSend_renderIntoContext_visible_(v20, v27, x, y, width, a4, height);
+          objc_msgSend_renderIntoContext_visible_(v20, v27, x, y, width, context, height);
         }
 
         ++v19;
@@ -308,21 +308,21 @@ LABEL_15:
   }
 }
 
-+ (void)p_delegateSelector:(SEL)a3 toRenderer:(id)a4 transparencyLayer:(int)a5 inContext:(CGContext *)a6
++ (void)p_delegateSelector:(SEL)selector toRenderer:(id)renderer transparencyLayer:(int)layer inContext:(CGContext *)context
 {
-  v7 = *&a5;
-  v15 = a4;
+  v7 = *&layer;
+  rendererCopy = renderer;
   if (objc_opt_respondsToSelector())
   {
-    v9 = v15;
-    v14 = objc_msgSend_methodForSelector_(v9, v10, v11, v12, v13, a3);
-    v14(v9, a3, v7, a6);
+    v9 = rendererCopy;
+    v14 = objc_msgSend_methodForSelector_(v9, v10, v11, v12, v13, selector);
+    v14(v9, selector, v7, context);
   }
 }
 
-- (void)p_delegateSelectorToRenderers:(SEL)a3 transparencyLayer:(int)a4 inContext:(CGContext *)a5
+- (void)p_delegateSelectorToRenderers:(SEL)renderers transparencyLayer:(int)layer inContext:(CGContext *)context
 {
-  v6 = *&a4;
+  v6 = *&layer;
   v39 = *MEMORY[0x277D85DE8];
   v34 = 0u;
   v35 = 0u;
@@ -360,8 +360,8 @@ LABEL_15:
         if (objc_opt_respondsToSelector())
         {
           v24 = v23;
-          v29 = objc_msgSend_methodForSelector_(v24, v25, v26, v27, v28, a3);
-          v29(v24, a3, v6, a5);
+          v29 = objc_msgSend_methodForSelector_(v24, v25, v26, v27, v28, renderers);
+          v29(v24, renderers, v6, context);
         }
 
         ++v16;
@@ -375,26 +375,26 @@ LABEL_15:
   }
 }
 
-+ (void)renderTSCHCompositeRendering:(id)a3 intoContext:(CGContext *)a4 visible:(CGRect)a5
++ (void)renderTSCHCompositeRendering:(id)rendering intoContext:(CGContext *)context visible:(CGRect)visible
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   v66 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  CGContextSaveGState(a4);
-  objc_msgSend_tLayerRectForContext_(v11, v12, v13, v14, v15, a4);
+  renderingCopy = rendering;
+  CGContextSaveGState(context);
+  objc_msgSend_tLayerRectForContext_(renderingCopy, v12, v13, v14, v15, context);
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v25 = objc_msgSend_needsAnySeparateLayers(v11, v24, v16, v18, v20);
+  v25 = objc_msgSend_needsAnySeparateLayers(renderingCopy, v24, v16, v18, v20);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = objc_msgSend_transparencyLayers(v11, v26, 0.0, v27, v28);
+  obj = objc_msgSend_transparencyLayers(renderingCopy, v26, 0.0, v27, v28);
   v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v29, v30, v31, v32, &v61, v65, 16);
   if (v33)
   {
@@ -412,24 +412,24 @@ LABEL_15:
         v42 = objc_msgSend_intValue(*(*(&v61 + 1) + 8 * i), v34, v35, v36, v37);
         if (v25)
         {
-          CGContextSaveGState(a4);
-          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(a1, v43, v44, v45, v46, sel_willBeginTransparencyLayer_inContext_, v11, v42, a4);
+          CGContextSaveGState(context);
+          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(self, v43, v44, v45, v46, sel_willBeginTransparencyLayer_inContext_, renderingCopy, v42, context);
           v67.origin.x = v17;
           v67.origin.y = v19;
           v67.size.width = v21;
           v67.size.height = v23;
-          CGContextBeginTransparencyLayerWithRect(a4, v67, 0);
-          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(a1, v47, v48, v49, v50, sel_didBeginTransparencyLayer_inContext_, v11, v42, a4);
-          objc_msgSend_drawIntoLayer_inContext_visible_(v11, v51, x, y, width, v42, a4, height);
-          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(a1, v52, v53, v54, v55, sel_willEndTransparencyLayer_inContext_, v11, v42, a4);
-          CGContextEndTransparencyLayer(a4);
-          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(a1, v56, v57, v58, v59, sel_didEndTransparencyLayer_inContext_, v11, v42, a4);
-          CGContextRestoreGState(a4);
+          CGContextBeginTransparencyLayerWithRect(context, v67, 0);
+          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(self, v47, v48, v49, v50, sel_didBeginTransparencyLayer_inContext_, renderingCopy, v42, context);
+          objc_msgSend_drawIntoLayer_inContext_visible_(renderingCopy, v51, x, y, width, v42, context, height);
+          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(self, v52, v53, v54, v55, sel_willEndTransparencyLayer_inContext_, renderingCopy, v42, context);
+          CGContextEndTransparencyLayer(context);
+          objc_msgSend_p_delegateSelector_toRenderer_transparencyLayer_inContext_(self, v56, v57, v58, v59, sel_didEndTransparencyLayer_inContext_, renderingCopy, v42, context);
+          CGContextRestoreGState(context);
         }
 
         else
         {
-          objc_msgSend_drawIntoLayer_inContext_visible_(v11, v41, x, y, width, v42, a4, height);
+          objc_msgSend_drawIntoLayer_inContext_visible_(renderingCopy, v41, x, y, width, v42, context, height);
         }
       }
 
@@ -439,7 +439,7 @@ LABEL_15:
     while (v38);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (id)allRenderingFills

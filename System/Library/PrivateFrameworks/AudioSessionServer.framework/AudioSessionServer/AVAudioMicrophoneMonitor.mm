@@ -1,7 +1,7 @@
 @interface AVAudioMicrophoneMonitor
 + (id)sharedInstance;
 - (AVAudioMicrophoneMonitor)init;
-- (BOOL)setState:(BOOL)a3 clientType:(int64_t)a4 clientID:(unint64_t)a5 clientDescription:(const char *)a6;
+- (BOOL)setState:(BOOL)state clientType:(int64_t)type clientID:(unint64_t)d clientDescription:(const char *)description;
 - (id).cxx_construct;
 @end
 
@@ -34,16 +34,16 @@
   }
 }
 
-- (BOOL)setState:(BOOL)a3 clientType:(int64_t)a4 clientID:(unint64_t)a5 clientDescription:(const char *)a6
+- (BOOL)setState:(BOOL)state clientType:(int64_t)type clientID:(unint64_t)d clientDescription:(const char *)description
 {
-  v9 = a3;
+  stateCopy = state;
   if (MediaSafetyNetLibraryCore(0))
   {
     std::mutex::lock((self + 32));
-    if (!v9)
+    if (!stateCopy)
     {
-      __dst = a4;
-      v24 = a5;
+      __dst = type;
+      dCopy2 = d;
       v15 = std::__tree<std::pair<AVAudioMicrophoneMonitorClientType,unsigned long long>>::find<std::pair<AVAudioMicrophoneMonitorClientType,unsigned long long>>(self + 8, &__dst);
       if ((self + 16) == v15 || (std::__tree<std::pair<AVAudioMicrophoneMonitorClientType,unsigned long long>>::__remove_node_pointer(self + 1, v15), operator delete(v15), *(self + 3)))
       {
@@ -58,13 +58,13 @@
       goto LABEL_27;
     }
 
-    __dst = a4;
-    v24 = a5;
+    __dst = type;
+    dCopy2 = d;
     std::__tree<std::pair<AVAudioMicrophoneMonitorClientType,unsigned long long>>::__emplace_unique_key_args<std::pair<AVAudioMicrophoneMonitorClientType,unsigned long long>,std::pair<AVAudioMicrophoneMonitorClientType,unsigned long long>>(self + 8, &__dst);
     v12 = v11;
-    if (a6)
+    if (description)
     {
-      v13 = strlen(a6);
+      v13 = strlen(description);
       if (v13 >= 0x7FFFFFFFFFFFFFF8)
       {
         goto LABEL_30;
@@ -79,7 +79,7 @@
       HIBYTE(v25) = v13;
       if (v13)
       {
-        memcpy(&__dst, a6, v13);
+        memcpy(&__dst, description, v13);
       }
 
       *(&__dst + v14) = 0;
@@ -90,7 +90,7 @@
 
       else
       {
-        v16 = v24;
+        v16 = dCopy2;
       }
 
       if ((HIBYTE(v25) & 0x80) != 0)
@@ -100,7 +100,7 @@
 
       if (!v16)
       {
-        a6 = 0;
+        description = 0;
       }
     }
 
@@ -112,7 +112,7 @@
     if (!getMSNMonitorSetLastMicrophoneClientSymbolLoc(void)::ptr)
     {
       __dst = MEMORY[0x277D85DD0];
-      v24 = 3221225472;
+      dCopy2 = 3221225472;
       v25 = ___ZL45getMSNMonitorSetLastMicrophoneClientSymbolLocv_block_invoke;
       v26 = &unk_278CEAD30;
       v27 = &v28;
@@ -126,7 +126,7 @@
     _Block_object_dispose(&v28, 8);
     if (v17)
     {
-      v17(a6);
+      v17(description);
       if (v12)
       {
         v12 = 1;
@@ -137,9 +137,9 @@ LABEL_27:
       return v12 & 1;
     }
 
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"void ATMSNMonitorSetLastMicrophoneClient(const char *)"];
-    [v21 handleFailureInFunction:v22 file:@"MSNSoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v22 file:@"MSNSoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
 LABEL_30:

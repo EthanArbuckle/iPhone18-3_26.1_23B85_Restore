@@ -1,10 +1,10 @@
 @interface TPSIntroTipCollectionViewCell
-- (BOOL)setTip:(id)a3 withCellAppearance:(id)a4;
+- (BOOL)setTip:(id)tip withCellAppearance:(id)appearance;
 - (void)commonInit;
 - (void)prepareForReuse;
-- (void)setContentSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setImageLoadingFinished:(BOOL)a3;
-- (void)setLoading:(BOOL)a3;
+- (void)setContentSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setImageLoadingFinished:(BOOL)finished;
+- (void)setLoading:(BOOL)loading;
 - (void)updateLoadingStatus;
 @end
 
@@ -18,13 +18,13 @@
   [(TPSBaseTipCollectionViewCell *)self setHasBodyContent:0];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
+    self->_loading = loading;
     loadingView = self->_loadingView;
-    if (a3)
+    if (loading)
     {
       if (loadingView)
       {
@@ -36,31 +36,31 @@
       self->_loadingView = v6;
 
       [(TPSLoadingView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v21 = [(TPSIntroTipCollectionViewCell *)self contentView];
-      [v21 addSubview:self->_loadingView];
-      v8 = [(TPSLoadingView *)self->_loadingView topAnchor];
-      v9 = [v21 topAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9];
+      contentView = [(TPSIntroTipCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_loadingView];
+      topAnchor = [(TPSLoadingView *)self->_loadingView topAnchor];
+      topAnchor2 = [contentView topAnchor];
+      v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
       loadingViewTopAnchorConstraint = self->_loadingViewTopAnchorConstraint;
       self->_loadingViewTopAnchorConstraint = v10;
 
       [(NSLayoutConstraint *)self->_loadingViewTopAnchorConstraint setActive:1];
-      v12 = [(TPSLoadingView *)self->_loadingView bottomAnchor];
-      v13 = [v21 bottomAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      bottomAnchor = [(TPSLoadingView *)self->_loadingView bottomAnchor];
+      bottomAnchor2 = [contentView bottomAnchor];
+      v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v14 setActive:1];
 
-      v15 = [(TPSLoadingView *)self->_loadingView leadingAnchor];
-      v16 = [v21 leadingAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      leadingAnchor = [(TPSLoadingView *)self->_loadingView leadingAnchor];
+      leadingAnchor2 = [contentView leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v17 setActive:1];
 
-      v18 = [(TPSLoadingView *)self->_loadingView trailingAnchor];
-      v19 = [v21 trailingAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19];
+      trailingAnchor = [(TPSLoadingView *)self->_loadingView trailingAnchor];
+      trailingAnchor2 = [contentView trailingAnchor];
+      v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v20 setActive:1];
 
-      v5 = v21;
+      v5 = contentView;
     }
 
     else
@@ -72,15 +72,15 @@
   }
 }
 
-- (BOOL)setTip:(id)a3 withCellAppearance:(id)a4
+- (BOOL)setTip:(id)tip withCellAppearance:(id)appearance
 {
   v14.receiver = self;
   v14.super_class = TPSIntroTipCollectionViewCell;
-  v5 = [(TPSBookendsCollectionViewCell *)&v14 setTip:a3 withCellAppearance:a4];
+  v5 = [(TPSBookendsCollectionViewCell *)&v14 setTip:tip withCellAppearance:appearance];
   v6 = +[TPSAssetCacheController sharedInstance];
-  v7 = [(TPSBaseTipCollectionViewCell *)self heroAssetView];
-  v8 = [v7 cacheVideoIdentifier];
-  v9 = [v6 dataCacheForIdentifier:v8];
+  heroAssetView = [(TPSBaseTipCollectionViewCell *)self heroAssetView];
+  cacheVideoIdentifier = [heroAssetView cacheVideoIdentifier];
+  v9 = [v6 dataCacheForIdentifier:cacheVideoIdentifier];
 
   if (v9)
   {
@@ -92,8 +92,8 @@
     v10 = kTPSVideoAssetViewDefaultStartTime;
   }
 
-  v11 = [(TPSBaseTipCollectionViewCell *)self heroAssetView];
-  [v11 setVideoDelayTime:v10];
+  heroAssetView2 = [(TPSBaseTipCollectionViewCell *)self heroAssetView];
+  [heroAssetView2 setVideoDelayTime:v10];
 
   if (v9)
   {
@@ -128,24 +128,24 @@
   }
 }
 
-- (void)setImageLoadingFinished:(BOOL)a3
+- (void)setImageLoadingFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   v5.receiver = self;
   v5.super_class = TPSIntroTipCollectionViewCell;
   [(TPSBaseTipCollectionViewCell *)&v5 setImageLoadingFinished:?];
-  if (v3)
+  if (finishedCopy)
   {
     [(TPSIntroTipCollectionViewCell *)self setLoading:0];
   }
 }
 
-- (void)setContentSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setContentSafeAreaInsets:(UIEdgeInsets)insets
 {
-  top = a3.top;
+  top = insets.top;
   v5.receiver = self;
   v5.super_class = TPSIntroTipCollectionViewCell;
-  [(TPSBaseTipCollectionViewCell *)&v5 setContentSafeAreaInsets:a3.top, a3.left, a3.bottom, a3.right];
+  [(TPSBaseTipCollectionViewCell *)&v5 setContentSafeAreaInsets:insets.top, insets.left, insets.bottom, insets.right];
   [(NSLayoutConstraint *)self->_loadingViewTopAnchorConstraint setConstant:top];
 }
 

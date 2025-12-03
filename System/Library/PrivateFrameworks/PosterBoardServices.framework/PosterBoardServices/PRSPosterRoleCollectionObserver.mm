@@ -1,15 +1,15 @@
 @interface PRSPosterRoleCollectionObserver
-- (PRSPosterRoleCollectionObserver)initWithRole:(id)a3 needsSandboxExtensions:(BOOL)a4;
-- (void)issueUpdatedState:(id)a3;
+- (PRSPosterRoleCollectionObserver)initWithRole:(id)role needsSandboxExtensions:(BOOL)extensions;
+- (void)issueUpdatedState:(id)state;
 @end
 
 @implementation PRSPosterRoleCollectionObserver
 
-- (PRSPosterRoleCollectionObserver)initWithRole:(id)a3 needsSandboxExtensions:(BOOL)a4
+- (PRSPosterRoleCollectionObserver)initWithRole:(id)role needsSandboxExtensions:(BOOL)extensions
 {
-  v7 = a3;
+  roleCopy = role;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!roleCopy)
   {
     [PRSPosterRoleCollectionObserver initWithRole:a2 needsSandboxExtensions:?];
   }
@@ -24,40 +24,40 @@
   v8 = [(PRSPosterRoleCollectionObserver *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [roleCopy copy];
     role = v8->_role;
     v8->_role = v9;
 
-    v8->_needsSandboxExtensions = a4;
+    v8->_needsSandboxExtensions = extensions;
   }
 
   return v8;
 }
 
-- (void)issueUpdatedState:(id)a3
+- (void)issueUpdatedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = MEMORY[0x1E695DFB8];
-  v13 = v4;
-  v6 = [v4 bs_mapNoNulls:&__block_literal_global_348];
+  v13 = stateCopy;
+  v6 = [stateCopy bs_mapNoNulls:&__block_literal_global_348];
   v7 = [v5 orderedSetWithArray:v6];
 
-  v8 = self;
-  objc_sync_enter(v8);
-  posterCollection = v8->_posterCollection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  posterCollection = selfCopy->_posterCollection;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v10 = v8->_posterCollection;
-    objc_storeStrong(&v8->_posterCollection, v7);
-    v11 = [(PRSPosterRoleCollectionObserver *)v8 handler];
-    v12 = v11;
-    if (v11)
+    v10 = selfCopy->_posterCollection;
+    objc_storeStrong(&selfCopy->_posterCollection, v7);
+    handler = [(PRSPosterRoleCollectionObserver *)selfCopy handler];
+    v12 = handler;
+    if (handler)
     {
-      (*(v11 + 16))(v11, v8, v10, v7);
+      (*(handler + 16))(handler, selfCopy, v10, v7);
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 id __53__PRSPosterRoleCollectionObserver_issueUpdatedState___block_invoke(uint64_t a1, void *a2)

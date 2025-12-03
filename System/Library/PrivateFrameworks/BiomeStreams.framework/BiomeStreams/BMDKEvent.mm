@@ -1,16 +1,16 @@
 @interface BMDKEvent
-+ (id)eventWithDKEvent:(id)a3;
-- (BMDKEvent)initWithCoder:(id)a3;
-- (BMDKEvent)initWithDKEvent:(id)a3;
-- (BMDKEvent)initWithProto:(id)a3;
-- (BMDKEvent)initWithProtoData:(id)a3;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithDKEvent:(id)event;
+- (BMDKEvent)initWithCoder:(id)coder;
+- (BMDKEvent)initWithDKEvent:(id)event;
+- (BMDKEvent)initWithProto:(id)proto;
+- (BMDKEvent)initWithProtoData:(id)data;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMDKEvent
@@ -23,18 +23,18 @@
   return v4;
 }
 
-+ (id)eventWithDKEvent:(id)a3
++ (id)eventWithDKEvent:(id)event
 {
-  v3 = a3;
-  v4 = [[BMDKEvent alloc] initWithDKEvent:v3];
+  eventCopy = event;
+  v4 = [[BMDKEvent alloc] initWithDKEvent:eventCopy];
 
   return v4;
 }
 
-- (BMDKEvent)initWithDKEvent:(id)a3
+- (BMDKEvent)initWithDKEvent:(id)event
 {
-  v6 = a3;
-  if (!v6)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [(BMDKEvent *)a2 initWithDKEvent:?];
   }
@@ -45,7 +45,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dkEvent, a3);
+    objc_storeStrong(&v7->_dkEvent, event);
   }
 
   return v8;
@@ -59,8 +59,8 @@
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v4 = [(_DKEvent *)self->_dkEvent metadata];
-  v5 = [v4 countByEnumeratingWithState:&v72 objects:v78 count:16];
+  metadata = [(_DKEvent *)self->_dkEvent metadata];
+  v5 = [metadata countByEnumeratingWithState:&v72 objects:v78 count:16];
   if (v5)
   {
     v6 = v5;
@@ -71,12 +71,12 @@
       {
         if (*v73 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(metadata);
         }
 
         v9 = *(*(&v72 + 1) + 8 * i);
-        v10 = [(_DKEvent *)self->_dkEvent metadata];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        metadata2 = [(_DKEvent *)self->_dkEvent metadata];
+        v11 = [metadata2 objectForKeyedSubscript:v9];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -103,106 +103,106 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v72 objects:v78 count:16];
+      v6 = [metadata countByEnumeratingWithState:&v72 objects:v78 count:16];
     }
 
     while (v6);
   }
 
   v14 = objc_opt_new();
-  v15 = [(_DKEvent *)self->_dkEvent source];
+  source = [(_DKEvent *)self->_dkEvent source];
 
-  if (v15)
+  if (source)
   {
-    v16 = [(_DKEvent *)self->_dkEvent source];
-    v17 = [v16 sourceID];
-    if (v17)
+    source2 = [(_DKEvent *)self->_dkEvent source];
+    sourceID = [source2 sourceID];
+    if (sourceID)
     {
-      [v14 setObject:v17 forKeyedSubscript:@"sourceID"];
+      [v14 setObject:sourceID forKeyedSubscript:@"sourceID"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v14 setObject:v18 forKeyedSubscript:@"sourceID"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v14 setObject:null forKeyedSubscript:@"sourceID"];
     }
 
-    v19 = [(_DKEvent *)self->_dkEvent source];
-    v20 = [v19 bundleID];
-    if (v20)
+    source3 = [(_DKEvent *)self->_dkEvent source];
+    bundleID = [source3 bundleID];
+    if (bundleID)
     {
-      [v14 setObject:v20 forKeyedSubscript:@"bundleID"];
-    }
-
-    else
-    {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v14 setObject:v21 forKeyedSubscript:@"bundleID"];
-    }
-
-    v22 = [(_DKEvent *)self->_dkEvent source];
-    v23 = [v22 itemID];
-    if (v23)
-    {
-      [v14 setObject:v23 forKeyedSubscript:@"itemID"];
+      [v14 setObject:bundleID forKeyedSubscript:@"bundleID"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v14 setObject:v24 forKeyedSubscript:@"itemID"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [v14 setObject:null2 forKeyedSubscript:@"bundleID"];
     }
 
-    v25 = [(_DKEvent *)self->_dkEvent source];
-    v26 = [v25 groupID];
-    if (v26)
+    source4 = [(_DKEvent *)self->_dkEvent source];
+    itemID = [source4 itemID];
+    if (itemID)
     {
-      [v14 setObject:v26 forKeyedSubscript:@"groupID"];
-    }
-
-    else
-    {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v14 setObject:v27 forKeyedSubscript:@"groupID"];
-    }
-
-    v28 = [(_DKEvent *)self->_dkEvent source];
-    v29 = [v28 deviceID];
-    if (v29)
-    {
-      [v14 setObject:v29 forKeyedSubscript:@"deviceID"];
+      [v14 setObject:itemID forKeyedSubscript:@"itemID"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v14 setObject:v30 forKeyedSubscript:@"deviceID"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [v14 setObject:null3 forKeyedSubscript:@"itemID"];
     }
 
-    v31 = [(_DKEvent *)self->_dkEvent source];
-    v32 = [v31 userID];
-    if (v32)
+    source5 = [(_DKEvent *)self->_dkEvent source];
+    groupID = [source5 groupID];
+    if (groupID)
     {
-      [v14 setObject:v32 forKeyedSubscript:@"userID"];
+      [v14 setObject:groupID forKeyedSubscript:@"groupID"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v14 setObject:v33 forKeyedSubscript:@"userID"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [v14 setObject:null4 forKeyedSubscript:@"groupID"];
+    }
+
+    source6 = [(_DKEvent *)self->_dkEvent source];
+    deviceID = [source6 deviceID];
+    if (deviceID)
+    {
+      [v14 setObject:deviceID forKeyedSubscript:@"deviceID"];
+    }
+
+    else
+    {
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [v14 setObject:null5 forKeyedSubscript:@"deviceID"];
+    }
+
+    source7 = [(_DKEvent *)self->_dkEvent source];
+    userID = [source7 userID];
+    if (userID)
+    {
+      [v14 setObject:userID forKeyedSubscript:@"userID"];
+    }
+
+    else
+    {
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [v14 setObject:null6 forKeyedSubscript:@"userID"];
     }
   }
 
-  v34 = [(_DKEvent *)self->_dkEvent value];
+  value = [(_DKEvent *)self->_dkEvent value];
 
-  if (v34)
+  if (value)
   {
-    v35 = [(_DKEvent *)self->_dkEvent value];
-    v36 = [v35 stringValue];
-    v37 = v36;
-    if (v36)
+    value2 = [(_DKEvent *)self->_dkEvent value];
+    stringValue = [value2 stringValue];
+    v37 = stringValue;
+    if (stringValue)
     {
-      v38 = v36;
+      v38 = stringValue;
     }
 
     else
@@ -219,59 +219,59 @@
   }
 
   v76[0] = @"UUID";
-  v69 = [(_DKEvent *)self->_dkEvent UUID];
-  v40 = [v69 UUIDString];
-  v41 = v40;
-  if (!v40)
+  uUID = [(_DKEvent *)self->_dkEvent UUID];
+  uUIDString = [uUID UUIDString];
+  v41 = uUIDString;
+  if (!uUIDString)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    uUIDString = [MEMORY[0x1E695DFB0] null];
   }
 
-  v62 = v40;
-  v77[0] = v40;
+  v62 = uUIDString;
+  v77[0] = uUIDString;
   v76[1] = @"startDate";
-  v67 = [(_DKEvent *)self->_dkEvent startDate];
-  v42 = [v67 description];
-  v66 = v42;
-  if (!v42)
+  startDate = [(_DKEvent *)self->_dkEvent startDate];
+  null7 = [startDate description];
+  v66 = null7;
+  if (!null7)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v61 = v42;
-  v77[1] = v42;
+  v61 = null7;
+  v77[1] = null7;
   v76[2] = @"endDate";
-  v65 = [(_DKEvent *)self->_dkEvent endDate];
-  v43 = [v65 description];
-  v44 = v43;
-  if (!v43)
+  endDate = [(_DKEvent *)self->_dkEvent endDate];
+  null8 = [endDate description];
+  v44 = null8;
+  if (!null8)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v60 = v43;
-  v77[2] = v43;
+  v60 = null8;
+  v77[2] = null8;
   v76[3] = @"timeZone";
-  v64 = [(_DKEvent *)self->_dkEvent timeZone];
-  v45 = [v64 description];
-  v46 = v45;
-  if (!v45)
+  timeZone = [(_DKEvent *)self->_dkEvent timeZone];
+  null9 = [timeZone description];
+  v46 = null9;
+  if (!null9)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v59 = v45;
-  v77[3] = v45;
+  v59 = null9;
+  v77[3] = null9;
   v76[4] = @"value";
-  v47 = v39;
+  null10 = v39;
   v70 = v39;
   if (!v39)
   {
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
   v68 = v41;
-  v77[4] = v47;
+  v77[4] = null10;
   v77[5] = v3;
   v76[5] = @"metadata";
   v76[6] = @"confidence";
@@ -283,25 +283,25 @@
   v71 = v14;
   v76[7] = @"source";
   v76[8] = @"creationDate";
-  v50 = [(_DKEvent *)self->_dkEvent creationDate];
-  v51 = [v50 description];
-  v52 = v51;
+  creationDate = [(_DKEvent *)self->_dkEvent creationDate];
+  v51 = [creationDate description];
+  null11 = v51;
   if (!v51)
   {
-    v52 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v77[8] = v52;
+  v77[8] = null11;
   v76[9] = @"localCreationDate";
-  v53 = [(_DKEvent *)self->_dkEvent localCreationDate];
-  v54 = [v53 description];
-  v55 = v54;
+  localCreationDate = [(_DKEvent *)self->_dkEvent localCreationDate];
+  v54 = [localCreationDate description];
+  null12 = v54;
   if (!v54)
   {
-    v55 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v77[9] = v55;
+  v77[9] = null12;
   v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:10];
   if (!v54)
   {
@@ -339,9 +339,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMDKEvent *)self jsonDict];
+  jsonDict = [(BMDKEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:3 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:3 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -356,20 +356,20 @@
   return v4;
 }
 
-- (BMDKEvent)initWithProto:(id)a3
+- (BMDKEvent)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   v5 = [BMDKEventCodec codecWithVersion:2];
-  v6 = [v5 decodeWithProto:v4];
+  v6 = [v5 decodeWithProto:protoCopy];
 
   return v6;
 }
 
-- (BMDKEvent)initWithProtoData:(id)a3
+- (BMDKEvent)initWithProtoData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [BMDKEventCodec codecWithVersion:2];
-  v6 = [v5 decodeWithProtoData:v4];
+  v6 = [v5 decodeWithProtoData:dataCopy];
 
   return v6;
 }
@@ -382,44 +382,44 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMDKEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMDKEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMDKEvent)initWithCoder:(id)a3
+- (BMDKEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMDKEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDKEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMDKEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -430,12 +430,12 @@
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   dkEvent = self->_dkEvent;
-  if (a4 && !dkEvent)
+  if (error && !dkEvent)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
   }
 
   return dkEvent != 0;

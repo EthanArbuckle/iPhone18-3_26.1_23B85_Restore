@@ -208,7 +208,7 @@
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(CIKaleidoscope *)self _kernel];
+  _kernel = [(CIKaleidoscope *)self _kernel];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __29__CIKaleidoscope_outputImage__block_invoke;
@@ -219,7 +219,7 @@
   v36[0] = v21;
   v36[1] = v12;
   v36[2] = v13;
-  return [v32 applyWithExtent:v35 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v36, 3, MEMORY[0x1E69E9820], 3221225472, __29__CIKaleidoscope_outputImage__block_invoke, &__block_descriptor_48_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, __PAIR64__(LODWORD(v4), v23), __PAIR64__(LODWORD(v8), LODWORD(v6))), v25, v27, v29, v31}];
+  return [_kernel applyWithExtent:v35 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v36, 3, MEMORY[0x1E69E9820], 3221225472, __29__CIKaleidoscope_outputImage__block_invoke, &__block_descriptor_48_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, __PAIR64__(LODWORD(v4), v23), __PAIR64__(LODWORD(v8), LODWORD(v6))), v25, v27, v29, v31}];
 }
 
 double __29__CIKaleidoscope_outputImage__block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)

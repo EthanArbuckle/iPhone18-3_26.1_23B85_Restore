@@ -1,121 +1,121 @@
 @interface HDGymKitWorkoutSessionController
-+ (BOOL)supportsWorkoutConfiguration:(id)a3 clientApplicationIdentifier:(id)a4;
-+ (void)willFinishSessionWithRecoveryData:(id)a3 profile:(id)a4;
-- (BOOL)endWithError:(id *)a3;
-- (BOOL)pauseWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)resumeWithError:(id *)a3;
-- (BOOL)startActivityWithDate:(id)a3 error:(id *)a4;
-- (BOOL)stopActivityWithDate:(id)a3 error:(id *)a4;
-- (BOOL)storeSessionControllerState:(id)a3 forRecoveryIdentifier:(id)a4 error:(id *)a5;
-- (HDGymKitWorkoutSessionController)initWithProfile:(id)a3 sessionConfiguration:(id)a4 sessionStateController:(id)a5 recoveryState:(id)a6;
++ (BOOL)supportsWorkoutConfiguration:(id)configuration clientApplicationIdentifier:(id)identifier;
++ (void)willFinishSessionWithRecoveryData:(id)data profile:(id)profile;
+- (BOOL)endWithError:(id *)error;
+- (BOOL)pauseWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)resumeWithError:(id *)error;
+- (BOOL)startActivityWithDate:(id)date error:(id *)error;
+- (BOOL)stopActivityWithDate:(id)date error:(id *)error;
+- (BOOL)storeSessionControllerState:(id)state forRecoveryIdentifier:(id)identifier error:(id *)error;
+- (HDGymKitWorkoutSessionController)initWithProfile:(id)profile sessionConfiguration:(id)configuration sessionStateController:(id)controller recoveryState:(id)state;
 - (HDWorkoutDataAccumulator)workoutDataAccumulator;
-- (void)autoPauseWithDate:(id)a3;
-- (void)autoResumeWithDate:(id)a3;
+- (void)autoPauseWithDate:(id)date;
+- (void)autoResumeWithDate:(id)date;
 - (void)endHeartRateRecovery;
 - (void)finish;
-- (void)finishAggregationWithDate:(id)a3;
-- (void)fitnessMachineSessionUUID:(id)a3 updatedRecoveryConfiguration:(id)a4;
-- (void)generateConfigurationUpdate:(id)a3;
-- (void)generateError:(id)a3;
-- (void)generateEvent:(id)a3;
-- (void)generateMetadata:(id)a3;
-- (void)hktest_setStateTransitionCompletionHandler:(id)a3;
-- (void)workoutSessionServer:(id)a3 accumulatorDidChange:(id)a4;
-- (void)workoutSessionServer:(id)a3 didChangeConfiguration:(id)a4;
-- (void)workoutSessionServer:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 date:(id)a6;
+- (void)finishAggregationWithDate:(id)date;
+- (void)fitnessMachineSessionUUID:(id)d updatedRecoveryConfiguration:(id)configuration;
+- (void)generateConfigurationUpdate:(id)update;
+- (void)generateError:(id)error;
+- (void)generateEvent:(id)event;
+- (void)generateMetadata:(id)metadata;
+- (void)hktest_setStateTransitionCompletionHandler:(id)handler;
+- (void)workoutSessionServer:(id)server accumulatorDidChange:(id)change;
+- (void)workoutSessionServer:(id)server didChangeConfiguration:(id)configuration;
+- (void)workoutSessionServer:(id)server didTransitionFromState:(int64_t)state toState:(int64_t)toState date:(id)date;
 @end
 
 @implementation HDGymKitWorkoutSessionController
 
-- (HDGymKitWorkoutSessionController)initWithProfile:(id)a3 sessionConfiguration:(id)a4 sessionStateController:(id)a5 recoveryState:(id)a6
+- (HDGymKitWorkoutSessionController)initWithProfile:(id)profile sessionConfiguration:(id)configuration sessionStateController:(id)controller recoveryState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  stateCopy = state;
   v24.receiver = self;
   v24.super_class = HDGymKitWorkoutSessionController;
   v14 = [(HDGymKitWorkoutSessionController *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    v17 = [v11 workoutConfiguration];
-    v18 = [v17 fitnessMachineSessionUUID];
+    objc_storeWeak(&v14->_profile, profileCopy);
+    workoutConfiguration = [configurationCopy workoutConfiguration];
+    fitnessMachineSessionUUID = [workoutConfiguration fitnessMachineSessionUUID];
     fitnessMachineSessionUUID = v15->_fitnessMachineSessionUUID;
-    v15->_fitnessMachineSessionUUID = v18;
+    v15->_fitnessMachineSessionUUID = fitnessMachineSessionUUID;
 
-    v20 = [[HDDefaultWorkoutSessionController alloc] initWithProfile:v10 sessionConfiguration:v11 sessionStateController:v15 recoveryState:v13];
+    v20 = [[HDDefaultWorkoutSessionController alloc] initWithProfile:profileCopy sessionConfiguration:configurationCopy sessionStateController:v15 recoveryState:stateCopy];
     defaultSessionController = v15->_defaultSessionController;
     v15->_defaultSessionController = v20;
 
-    objc_storeWeak(&v15->_sessionStateController, v12);
+    objc_storeWeak(&v15->_sessionStateController, controllerCopy);
     v22 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v22;
 
     v15->_acceptsDataAccumulators = 1;
-    sub_2F060(v15, v13);
+    sub_2F060(v15, stateCopy);
   }
 
   return v15;
 }
 
-- (void)workoutSessionServer:(id)a3 didTransitionFromState:(int64_t)a4 toState:(int64_t)a5 date:(id)a6
+- (void)workoutSessionServer:(id)server didTransitionFromState:(int64_t)state toState:(int64_t)toState date:(id)date
 {
-  [(HDDefaultWorkoutSessionController *)self->_defaultSessionController workoutSessionServer:a3 didTransitionFromState:a4 toState:a5 date:a6];
+  [(HDDefaultWorkoutSessionController *)self->_defaultSessionController workoutSessionServer:server didTransitionFromState:state toState:toState date:date];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_121B8;
   block[3] = &unk_5D1B8;
-  block[5] = a5;
-  block[6] = a4;
+  block[5] = toState;
+  block[6] = state;
   block[4] = self;
   dispatch_async(queue, block);
 }
 
-- (void)workoutSessionServer:(id)a3 didChangeConfiguration:(id)a4
+- (void)workoutSessionServer:(id)server didChangeConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_12350;
   v8[3] = &unk_5C8C8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)workoutSessionServer:(id)a3 accumulatorDidChange:(id)a4
+- (void)workoutSessionServer:(id)server accumulatorDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_123F4;
   v8[3] = &unk_5C8C8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = changeCopy;
+  v7 = changeCopy;
   dispatch_async(queue, v8);
 }
 
-+ (void)willFinishSessionWithRecoveryData:(id)a3 profile:(id)a4
++ (void)willFinishSessionWithRecoveryData:(id)data profile:(id)profile
 {
-  v6 = a4;
-  v7 = a3;
+  profileCopy = profile;
+  dataCopy = data;
   v12 = 0;
-  v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v12];
+  v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v12];
 
   v9 = v12;
   if (v8)
   {
-    v10 = [v6 fitnessMachineManager];
-    [v10 finishSessionWithConfiguration:v8];
+    fitnessMachineManager = [profileCopy fitnessMachineManager];
+    [fitnessMachineManager finishSessionWithConfiguration:v8];
   }
 
   else
@@ -124,80 +124,80 @@
     v11 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
     {
-      sub_2F614(a1, v9, v11);
+      sub_2F614(self, v9, v11);
     }
   }
 }
 
-- (void)fitnessMachineSessionUUID:(id)a3 updatedRecoveryConfiguration:(id)a4
+- (void)fitnessMachineSessionUUID:(id)d updatedRecoveryConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  configurationCopy = configuration;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_129E8;
   block[3] = &unk_5C788;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = configurationCopy;
+  v9 = configurationCopy;
+  v10 = dCopy;
   dispatch_sync(queue, block);
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained prepareWithError:a3];
+  LOBYTE(error) = [WeakRetained prepareWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)startActivityWithDate:(id)a3 error:(id *)a4
+- (BOOL)startActivityWithDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a4) = [WeakRetained startActivityWithDate:v6 error:a4];
+  LOBYTE(error) = [WeakRetained startActivityWithDate:dateCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)stopActivityWithDate:(id)a3 error:(id *)a4
+- (BOOL)stopActivityWithDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a4) = [WeakRetained stopActivityWithDate:v6 error:a4];
+  LOBYTE(error) = [WeakRetained stopActivityWithDate:dateCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)endWithError:(id *)a3
-{
-  WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained endWithError:a3];
-
-  return a3;
-}
-
-- (BOOL)pauseWithError:(id *)a3
+- (BOOL)endWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained pauseWithError:a3];
+  LOBYTE(error) = [WeakRetained endWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)resumeWithError:(id *)a3
+- (BOOL)pauseWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a3) = [WeakRetained resumeWithError:a3];
+  LOBYTE(error) = [WeakRetained pauseWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (void)autoPauseWithDate:(id)a3
+- (BOOL)resumeWithError:(id *)error
+{
+  WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
+  LOBYTE(error) = [WeakRetained resumeWithError:error];
+
+  return error;
+}
+
+- (void)autoPauseWithDate:(id)date
 {
   _HKInitializeLogging();
   v3 = HKLogWorkouts;
@@ -208,7 +208,7 @@
   }
 }
 
-- (void)autoResumeWithDate:(id)a3
+- (void)autoResumeWithDate:(id)date
 {
   _HKInitializeLogging();
   v3 = HKLogWorkouts;
@@ -231,10 +231,10 @@
   [WeakRetained finish];
 }
 
-- (void)generateEvent:(id)a3
+- (void)generateEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 eventType] == &dword_4 + 3 || objc_msgSend(v4, "eventType") == &dword_8)
+  eventCopy = event;
+  if ([eventCopy eventType] == &dword_4 + 3 || objc_msgSend(eventCopy, "eventType") == &dword_8)
   {
     _HKInitializeLogging();
     v5 = HKLogWorkouts;
@@ -248,75 +248,75 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-    [WeakRetained generateEvent:v4];
+    [WeakRetained generateEvent:eventCopy];
   }
 }
 
-- (void)generateError:(id)a3
+- (void)generateError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateError:v4];
+  [WeakRetained generateError:errorCopy];
 }
 
-- (void)generateMetadata:(id)a3
+- (void)generateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateMetadata:v4];
+  [WeakRetained generateMetadata:metadataCopy];
 }
 
-- (void)generateConfigurationUpdate:(id)a3
+- (void)generateConfigurationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained generateConfigurationUpdate:v4];
+  [WeakRetained generateConfigurationUpdate:updateCopy];
 }
 
 - (HDWorkoutDataAccumulator)workoutDataAccumulator
 {
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  v3 = [WeakRetained workoutDataAccumulator];
+  workoutDataAccumulator = [WeakRetained workoutDataAccumulator];
 
-  return v3;
+  return workoutDataAccumulator;
 }
 
-- (BOOL)storeSessionControllerState:(id)a3 forRecoveryIdentifier:(id)a4 error:(id *)a5
+- (BOOL)storeSessionControllerState:(id)state forRecoveryIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  LOBYTE(a5) = [WeakRetained storeSessionControllerState:v9 forRecoveryIdentifier:v8 error:a5];
+  LOBYTE(error) = [WeakRetained storeSessionControllerState:stateCopy forRecoveryIdentifier:identifierCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)finishAggregationWithDate:(id)a3
+- (void)finishAggregationWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_sessionStateController);
-  [WeakRetained finishAggregationWithDate:v4];
+  [WeakRetained finishAggregationWithDate:dateCopy];
 }
 
-+ (BOOL)supportsWorkoutConfiguration:(id)a3 clientApplicationIdentifier:(id)a4
++ (BOOL)supportsWorkoutConfiguration:(id)configuration clientApplicationIdentifier:(id)identifier
 {
-  v4 = [a3 fitnessMachineSessionUUID];
-  v5 = v4 != 0;
+  fitnessMachineSessionUUID = [configuration fitnessMachineSessionUUID];
+  v5 = fitnessMachineSessionUUID != 0;
 
   return v5;
 }
 
-- (void)hktest_setStateTransitionCompletionHandler:(id)a3
+- (void)hktest_setStateTransitionCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_131A4;
   v7[3] = &unk_5C9D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 

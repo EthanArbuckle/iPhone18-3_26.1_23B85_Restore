@@ -1,30 +1,30 @@
 @interface _EFSamplingObservable
-- (_EFSamplingObservable)initWithObservable:(id)a3 sampler:(id)a4;
-- (id)subscribe:(id)a3;
+- (_EFSamplingObservable)initWithObservable:(id)observable sampler:(id)sampler;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _EFSamplingObservable
 
-- (_EFSamplingObservable)initWithObservable:(id)a3 sampler:(id)a4
+- (_EFSamplingObservable)initWithObservable:(id)observable sampler:(id)sampler
 {
-  v7 = a3;
-  v8 = a4;
+  observableCopy = observable;
+  samplerCopy = sampler;
   v12.receiver = self;
   v12.super_class = _EFSamplingObservable;
   v9 = [(_EFSamplingObservable *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_observable, a3);
-    objc_storeStrong(&v10->_sampler, a4);
+    objc_storeStrong(&v9->_observable, observable);
+    objc_storeStrong(&v10->_sampler, sampler);
   }
 
   return v10;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v27 = a3;
+  subscribeCopy = subscribe;
   v4 = objc_alloc_init(MEMORY[0x1E696AD10]);
   v57[0] = 0;
   v57[1] = v57;
@@ -47,7 +47,7 @@
   v7 = v5;
   v51 = v7;
   v53 = v57;
-  v8 = v27;
+  v8 = subscribeCopy;
   v52 = v8;
   v9 = _Block_copy(v50);
   v47[0] = MEMORY[0x1E69E9820];
@@ -65,8 +65,8 @@
   v45[3] = &unk_1E8248620;
   v11 = v9;
   v46 = v11;
-  v12 = [EFObserver observerWithResultBlock:v45, v6, v27];
-  v13 = [(EFObservable *)sampler subscribe:v12];
+  subscribeCopy = [EFObserver observerWithResultBlock:v45, v6, subscribeCopy];
+  v13 = [(EFObservable *)sampler subscribe:subscribeCopy];
 
   observable = self->_observable;
   v43[0] = MEMORY[0x1E69E9820];

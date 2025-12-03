@@ -1,24 +1,24 @@
 @interface FCAVAssetKeyContentArchive
-- (BOOL)isEqual:(id)a3;
-- (FCAVAssetKeyContentArchive)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCAVAssetKeyContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
 - (int64_t)storageSize;
 - (unint64_t)hash;
 @end
 
 @implementation FCAVAssetKeyContentArchive
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -36,9 +36,9 @@
 
   if (v6)
   {
-    v7 = [(NTPBAVAssetKey *)self->_avAssetKey identifier];
-    v8 = [v6[1] identifier];
-    v9 = [v7 isEqual:v8];
+    identifier = [(NTPBAVAssetKey *)self->_avAssetKey identifier];
+    identifier2 = [v6[1] identifier];
+    v9 = [identifier isEqual:identifier2];
   }
 
   else
@@ -51,8 +51,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NTPBAVAssetKey *)self->_avAssetKey identifier];
-  v3 = [v2 hash];
+  identifier = [(NTPBAVAssetKey *)self->_avAssetKey identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -61,20 +61,20 @@
 {
   v3 = [[FCDescription alloc] initWithObject:self];
   [(FCDescription *)v3 addField:@"avAssetKey" object:self->_avAssetKey];
-  v4 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v4;
+  return descriptionString;
 }
 
-- (FCAVAssetKeyContentArchive)initWithCoder:(id)a3
+- (FCAVAssetKeyContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FCAVAssetKeyContentArchive;
   v5 = [(FCAVAssetKeyContentArchive *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avAssetKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avAssetKey"];
     avAssetKey = v5->_avAssetKey;
     v5->_avAssetKey = v6;
   }
@@ -82,15 +82,15 @@
   return v5;
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
-  v4 = [a3 internalContentContext];
-  v5 = [v4 avAssetKeyCache];
-  [v5 importAVAssetKey:self->_avAssetKey];
+  internalContentContext = [context internalContentContext];
+  avAssetKeyCache = [internalContentContext avAssetKeyCache];
+  [avAssetKeyCache importAVAssetKey:self->_avAssetKey];
 
   v6 = [FCContentUnarchiveResult alloc];
-  v7 = [(FCAVAssetKeyContentArchive *)self storageSize];
-  v8 = [(FCContentUnarchiveResult *)v6 initWithInterestToken:MEMORY[0x1E695E0F0] storageSize:v7];
+  storageSize = [(FCAVAssetKeyContentArchive *)self storageSize];
+  v8 = [(FCContentUnarchiveResult *)v6 initWithInterestToken:MEMORY[0x1E695E0F0] storageSize:storageSize];
 
   return v8;
 }
@@ -99,8 +99,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = [FCContentManifest alloc];
-  v4 = [(NTPBAVAssetKey *)self->_avAssetKey identifier];
-  v9[0] = v4;
+  identifier = [(NTPBAVAssetKey *)self->_avAssetKey identifier];
+  v9[0] = identifier;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(FCContentManifest *)v3 initWithAVAssetKeyIDs:v5];
 
@@ -111,8 +111,8 @@
 
 - (int64_t)storageSize
 {
-  v2 = [(NTPBAVAssetKey *)self->_avAssetKey keyData];
-  v3 = [v2 length];
+  keyData = [(NTPBAVAssetKey *)self->_avAssetKey keyData];
+  v3 = [keyData length];
 
   return v3;
 }

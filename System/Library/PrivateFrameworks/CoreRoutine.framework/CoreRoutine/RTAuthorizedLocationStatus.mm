@@ -1,49 +1,49 @@
 @interface RTAuthorizedLocationStatus
-- (BOOL)isEqual:(id)a3;
-- (RTAuthorizedLocationStatus)initWithCoder:(id)a3;
-- (RTAuthorizedLocationStatus)initWithStatus:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTAuthorizedLocationStatus)initWithCoder:(id)coder;
+- (RTAuthorizedLocationStatus)initWithStatus:(int64_t)status;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation RTAuthorizedLocationStatus
 
-- (RTAuthorizedLocationStatus)initWithStatus:(int64_t)a3
+- (RTAuthorizedLocationStatus)initWithStatus:(int64_t)status
 {
   v5.receiver = self;
   v5.super_class = RTAuthorizedLocationStatus;
   result = [(RTAuthorizedLocationStatus *)&v5 init];
   if (result)
   {
-    result->_eStatus = a3;
+    result->_eStatus = status;
   }
 
   return result;
 }
 
-- (RTAuthorizedLocationStatus)initWithCoder:(id)a3
+- (RTAuthorizedLocationStatus)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"RTAuthorizedLocationStatus"];
+  v4 = [coder decodeIntegerForKey:@"RTAuthorizedLocationStatus"];
 
   return [(RTAuthorizedLocationStatus *)self initWithStatus:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   eStatus = self->_eStatus;
 
   return [v4 initWithStatus:eStatus];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
     eStatus = self->_eStatus;
-    v7 = eStatus == [v4 eStatus];
+    v7 = eStatus == [equalCopy eStatus];
   }
 
   else

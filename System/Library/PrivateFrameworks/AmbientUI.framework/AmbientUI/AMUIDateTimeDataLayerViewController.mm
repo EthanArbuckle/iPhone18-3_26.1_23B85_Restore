@@ -1,41 +1,41 @@
 @interface AMUIDateTimeDataLayerViewController
-- (BOOL)updatePosterConfiguration:(id)a3 withAnimationSettings:(id)a4;
-- (void)_noteWindowWillRotate:(id)a3;
+- (BOOL)updatePosterConfiguration:(id)configuration withAnimationSettings:(id)settings;
+- (void)_noteWindowWillRotate:(id)rotate;
 - (void)_updateDateTimeConstraintsForChromeOrientation;
-- (void)_updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:(int64_t)a3;
+- (void)_updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:(int64_t)orientation;
 - (void)_updateNominalSafeAreaGuide;
 - (void)loadView;
-- (void)setChromeOrientationPolicy:(int64_t)a3;
-- (void)setDateProvider:(id)a3;
+- (void)setChromeOrientationPolicy:(int64_t)policy;
+- (void)setDateProvider:(id)provider;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
-- (void)viewWillMoveToWindow:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillMoveToWindow:(id)window;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AMUIDateTimeDataLayerViewController
 
-- (void)setChromeOrientationPolicy:(int64_t)a3
+- (void)setChromeOrientationPolicy:(int64_t)policy
 {
-  self->_chromeOrientationPolicy = a3;
-  v3 = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
-  [v3 setNeedsUpdateConstraints];
+  self->_chromeOrientationPolicy = policy;
+  viewIfLoaded = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsUpdateConstraints];
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
-  objc_storeStrong(&self->_dateProvider, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dateProvider, provider);
+  providerCopy = provider;
   [(AMUIDateTimeViewController *)self->_dateTimeViewController setDateProvider:self->_dateProvider];
 }
 
-- (BOOL)updatePosterConfiguration:(id)a3 withAnimationSettings:(id)a4
+- (BOOL)updatePosterConfiguration:(id)configuration withAnimationSettings:(id)settings
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  settingsCopy = settings;
   v32 = 0;
-  v8 = [v6 pr_loadTitleStyleConfigurationWithError:&v32];
+  v8 = [configurationCopy pr_loadTitleStyleConfigurationWithError:&v32];
   v9 = v32;
   if (!v8)
   {
@@ -85,23 +85,23 @@
     v15 = v14;
     _Block_object_dispose(&v33, 8);
     v16 = [v14 alloc];
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    v18 = [v17 colorWithAlphaComponent:0.9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v18 = [whiteColor colorWithAlphaComponent:0.9];
     v19 = [v16 initWithColor:v18 preferredStyle:2];
 
     [v13 setTitleColor:v19];
     v8 = [v13 copy];
   }
 
-  v20 = [v6 pr_posterProvider];
-  if (v20)
+  pr_posterProvider = [configurationCopy pr_posterProvider];
+  if (pr_posterProvider)
   {
-    v21 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v20 error:0];
+    v21 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:pr_posterProvider error:0];
     v22 = [v21 URL];
 
     if (v22)
     {
-      v23 = [v8 vibrancyConfigurationWithExtensionBundleURL:v22];
+      vibrancyConfiguration = [v8 vibrancyConfigurationWithExtensionBundleURL:v22];
 
       goto LABEL_18;
     }
@@ -112,17 +112,17 @@
     v24 = AMUILogDataLayer();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [AMUIDateTimeDataLayerViewController updatePosterConfiguration:v6 withAnimationSettings:v24];
+      [AMUIDateTimeDataLayerViewController updatePosterConfiguration:configurationCopy withAnimationSettings:v24];
     }
   }
 
   v25 = AMUILogDataLayer();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
   {
-    [AMUIDateTimeDataLayerViewController updatePosterConfiguration:v6 withAnimationSettings:v25];
+    [AMUIDateTimeDataLayerViewController updatePosterConfiguration:configurationCopy withAnimationSettings:v25];
   }
 
-  v23 = [v8 vibrancyConfiguration];
+  vibrancyConfiguration = [v8 vibrancyConfiguration];
 LABEL_18:
   v26 = MEMORY[0x277CF0D38];
   v30[0] = MEMORY[0x277D85DD0];
@@ -130,9 +130,9 @@ LABEL_18:
   v30[2] = __87__AMUIDateTimeDataLayerViewController_updatePosterConfiguration_withAnimationSettings___block_invoke;
   v30[3] = &unk_278C75DD8;
   v30[4] = self;
-  v31 = v23;
-  v27 = v23;
-  [v26 animateWithSettings:v7 actions:v30];
+  v31 = vibrancyConfiguration;
+  v27 = vibrancyConfiguration;
+  [v26 animateWithSettings:settingsCopy actions:v30];
 
   v28 = *MEMORY[0x277D85DE8];
   return 1;
@@ -151,10 +151,10 @@ LABEL_18:
   [(AMUIDateTimeDataLayerViewController *)&v49 viewDidLoad];
   v3 = objc_alloc_init(AMUIDateTimeViewController);
   [(AMUIDateTimeViewController *)v3 setDateProvider:self->_dateProvider];
-  v4 = [(AMUIDateTimeDataLayerViewController *)self view];
-  v5 = [(AMUIDateTimeViewController *)v3 view];
-  [v5 setUserInteractionEnabled:0];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(AMUIDateTimeDataLayerViewController *)self view];
+  view2 = [(AMUIDateTimeViewController *)v3 view];
+  [view2 setUserInteractionEnabled:0];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   dateTimeViewController = self->_dateTimeViewController;
   self->_dateTimeViewController = v3;
   v7 = v3;
@@ -163,52 +163,52 @@ LABEL_18:
   nominalSafeAreaLayoutGuide = self->_nominalSafeAreaLayoutGuide;
   self->_nominalSafeAreaLayoutGuide = v8;
 
-  [v4 addLayoutGuide:self->_nominalSafeAreaLayoutGuide];
-  v10 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide topAnchor];
-  v11 = [v4 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:0.0];
+  [view addLayoutGuide:self->_nominalSafeAreaLayoutGuide];
+  topAnchor = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide topAnchor];
+  topAnchor2 = [view topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   nominalSafeAreaTopConstraint = self->_nominalSafeAreaTopConstraint;
   self->_nominalSafeAreaTopConstraint = v12;
 
-  v14 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide bottomAnchor];
-  v15 = [v4 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+  bottomAnchor = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   nominalSafeAreaBottomConstraint = self->_nominalSafeAreaBottomConstraint;
   self->_nominalSafeAreaBottomConstraint = v16;
 
-  v18 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide leftAnchor];
-  v19 = [v4 leftAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:0.0];
+  leftAnchor = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
   nominalSafeAreaLeftConstraint = self->_nominalSafeAreaLeftConstraint;
   self->_nominalSafeAreaLeftConstraint = v20;
 
-  v22 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide rightAnchor];
-  v23 = [v4 rightAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:0.0];
+  rightAnchor = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
   nominalSafeAreaRightConstraint = self->_nominalSafeAreaRightConstraint;
   self->_nominalSafeAreaRightConstraint = v24;
 
-  v26 = [v5 leadingAnchor];
-  v27 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   dateTimeLeadingEdgeConstraint = self->_dateTimeLeadingEdgeConstraint;
   self->_dateTimeLeadingEdgeConstraint = v28;
 
-  v30 = [v5 trailingAnchor];
-  v31 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide trailingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide trailingAnchor];
+  v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   dateTimeTrailingEdgeConstraint = self->_dateTimeTrailingEdgeConstraint;
   self->_dateTimeTrailingEdgeConstraint = v32;
 
-  v34 = [v5 leftAnchor];
-  v35 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide leftAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  leftAnchor3 = [view2 leftAnchor];
+  leftAnchor4 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide leftAnchor];
+  v36 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   dateTimeLeftEdgeConstraint = self->_dateTimeLeftEdgeConstraint;
   self->_dateTimeLeftEdgeConstraint = v36;
 
-  v38 = [v5 rightAnchor];
-  v39 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide rightAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  rightAnchor3 = [view2 rightAnchor];
+  rightAnchor4 = [(UILayoutGuide *)self->_nominalSafeAreaLayoutGuide rightAnchor];
+  v40 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   dateTimeRightEdgeConstraint = self->_dateTimeRightEdgeConstraint;
   self->_dateTimeRightEdgeConstraint = v40;
 
@@ -217,11 +217,11 @@ LABEL_18:
   v45[1] = 3221225472;
   v45[2] = __50__AMUIDateTimeDataLayerViewController_viewDidLoad__block_invoke;
   v45[3] = &unk_278C75E00;
-  v46 = v5;
-  v47 = v4;
-  v48 = self;
-  v43 = v4;
-  v44 = v5;
+  v46 = view2;
+  v47 = view;
+  selfCopy = self;
+  v43 = view;
+  v44 = view2;
   [(AMUIDateTimeDataLayerViewController *)self bs_addChildViewController:v42 animated:0 transitionBlock:v45];
 }
 
@@ -259,33 +259,33 @@ void __50__AMUIDateTimeDataLayerViewController_viewDidLoad__block_invoke(uint64_
   [(AMUIDateTimeDataLayerViewController *)self _updateDateTimeConstraintsForChromeOrientation];
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = AMUIDateTimeDataLayerViewController;
-  [(AMUIDateTimeDataLayerViewController *)&v5 viewWillMoveToWindow:a3];
-  v4 = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
-  [v4 setNeedsUpdateConstraints];
+  [(AMUIDateTimeDataLayerViewController *)&v5 viewWillMoveToWindow:window];
+  viewIfLoaded = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsUpdateConstraints];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __90__AMUIDateTimeDataLayerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_278C75E28;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:&__block_literal_global_0];
+  [coordinator animateAlongsideTransition:v4 completion:&__block_literal_global_0];
 }
 
 - (void)_updateNominalSafeAreaGuide
 {
-  v3 = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
-  v11 = [v3 window];
+  viewIfLoaded = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v11)
+  if (window)
   {
-    [v11 safeAreaInsets];
+    [window safeAreaInsets];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -307,23 +307,23 @@ void __50__AMUIDateTimeDataLayerViewController_viewDidLoad__block_invoke(uint64_
 
 - (void)_updateDateTimeConstraintsForChromeOrientation
 {
-  v4 = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
-  v3 = [v4 window];
-  -[AMUIDateTimeDataLayerViewController _updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:](self, "_updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:", [v3 _windowInterfaceOrientation]);
+  viewIfLoaded = [(AMUIDateTimeDataLayerViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  -[AMUIDateTimeDataLayerViewController _updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:](self, "_updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:", [window _windowInterfaceOrientation]);
 }
 
-- (void)_updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:(int64_t)a3
+- (void)_updateDateTimeConstraintsForChromeOrientationWithInterfaceOrientation:(int64_t)orientation
 {
   chromeOrientationPolicy = self->_chromeOrientationPolicy;
-  v5 = a3 == 4;
-  v6 = a3 != 4;
-  if (a3 == 3)
+  v5 = orientation == 4;
+  v6 = orientation != 4;
+  if (orientation == 3)
   {
     v5 = 0;
   }
 
-  v7 = a3 == 3;
-  if (a3 == 3)
+  v7 = orientation == 3;
+  if (orientation == 3)
   {
     v6 = 0;
   }
@@ -349,10 +349,10 @@ void __50__AMUIDateTimeDataLayerViewController_viewDidLoad__block_invoke(uint64_
   [(NSLayoutConstraint *)dateTimeTrailingEdgeConstraint setActive:v11];
 }
 
-- (void)_noteWindowWillRotate:(id)a3
+- (void)_noteWindowWillRotate:(id)rotate
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D772C0]];
+  userInfo = [rotate userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D772C0]];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)

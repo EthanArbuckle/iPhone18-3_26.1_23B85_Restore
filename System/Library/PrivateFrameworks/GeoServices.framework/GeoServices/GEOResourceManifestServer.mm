@@ -1,38 +1,38 @@
 @interface GEOResourceManifestServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (GEOResourceManifestServer)initWithDaemon:(id)a3;
-- (id)_configurationForPeer:(id)a3;
-- (id)_manifestManagerForPeer:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (GEOResourceManifestServer)initWithDaemon:(id)daemon;
+- (id)_configurationForPeer:(id)peer;
+- (id)_manifestManagerForPeer:(id)peer;
 - (void)_fireOpportunisticResourceLoads;
-- (void)_forEachPeerMatchingConfiguration:(id)a3 perform:(id)a4;
-- (void)activateFilterWithRequest:(id)a3;
-- (void)deactivateFilterWithRequest:(id)a3;
+- (void)_forEachPeerMatchingConfiguration:(id)configuration perform:(id)perform;
+- (void)activateFilterWithRequest:(id)request;
+- (void)deactivateFilterWithRequest:(id)request;
 - (void)dealloc;
-- (void)forceUpdateWithMessage:(id)a3;
-- (void)getMaxZoomWithRequest:(id)a3;
-- (void)getMaximumZoomLevelWithMessage:(id)a3;
-- (void)getMinZoomWithRequest:(id)a3;
-- (void)getResourceManifestWithMessage:(id)a3;
-- (void)peerDidConnect:(id)a3;
-- (void)peerDidDisconnect:(id)a3;
-- (void)resetActiveTileGroupWithMessage:(id)a3;
-- (void)runBackgroundTask:(id)a3;
-- (void)serverProxy:(id)a3 didChangeActiveTileGroup:(id)a4 finishedCallback:(id)a5;
-- (void)serverProxyNeedsWiFiResourceActivity:(id)a3;
-- (void)setActiveTileGroupIdentifierWithMessage:(id)a3;
-- (void)setConfigurationWithMessage:(id)a3;
-- (void)setRequestTokenWithMessage:(id)a3;
-- (void)updateIfNecessaryWithMessage:(id)a3;
+- (void)forceUpdateWithMessage:(id)message;
+- (void)getMaxZoomWithRequest:(id)request;
+- (void)getMaximumZoomLevelWithMessage:(id)message;
+- (void)getMinZoomWithRequest:(id)request;
+- (void)getResourceManifestWithMessage:(id)message;
+- (void)peerDidConnect:(id)connect;
+- (void)peerDidDisconnect:(id)disconnect;
+- (void)resetActiveTileGroupWithMessage:(id)message;
+- (void)runBackgroundTask:(id)task;
+- (void)serverProxy:(id)proxy didChangeActiveTileGroup:(id)group finishedCallback:(id)callback;
+- (void)serverProxyNeedsWiFiResourceActivity:(id)activity;
+- (void)setActiveTileGroupIdentifierWithMessage:(id)message;
+- (void)setConfigurationWithMessage:(id)message;
+- (void)setRequestTokenWithMessage:(id)message;
+- (void)updateIfNecessaryWithMessage:(id)message;
 @end
 
 @implementation GEOResourceManifestServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_100001334(v10);
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  v13 = sub_100001334(messageCopy);
   v14 = 0;
   if (v13 <= 1699)
   {
@@ -42,11 +42,11 @@
       {
         case 1033:
           v21 = objc_opt_class();
-          v22 = sub_100001388(@"resourcemanifest", v10, v11, v21, v12);
+          v22 = sub_100001388(@"resourcemanifest", messageCopy, objectCopy, v21, peerCopy);
           v16 = v22;
           if (v22)
           {
-            [v22 setSignpostId:a6];
+            [v22 setSignpostId:id];
             [(GEOResourceManifestServer *)self getMinZoomWithRequest:v16];
             goto LABEL_45;
           }
@@ -54,22 +54,22 @@
           goto LABEL_48;
         case 1035:
           v27 = objc_opt_class();
-          v28 = sub_100001388(@"resourcemanifest", v10, v11, v27, v12);
+          v28 = sub_100001388(@"resourcemanifest", messageCopy, objectCopy, v27, peerCopy);
           v16 = v28;
           if (v28)
           {
-            [v28 setSignpostId:a6];
+            [v28 setSignpostId:id];
             [(GEOResourceManifestServer *)self getMaxZoomWithRequest:v16];
             goto LABEL_45;
           }
 
           goto LABEL_48;
         case 1138:
-          v15 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+          v15 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
           v16 = v15;
           if (v15)
           {
-            [v15 setSignpostId:a6];
+            [v15 setSignpostId:id];
             [(GEOResourceManifestServer *)self forceUpdateWithMessage:v16];
 LABEL_45:
             v14 = 1;
@@ -87,11 +87,11 @@ LABEL_46:
     if (v13 == 1463)
     {
       v24 = objc_opt_class();
-      v25 = sub_100001388(@"resourcemanifest", v10, v11, v24, v12);
+      v25 = sub_100001388(@"resourcemanifest", messageCopy, objectCopy, v24, peerCopy);
       v16 = v25;
       if (v25)
       {
-        [v25 setSignpostId:a6];
+        [v25 setSignpostId:id];
         [(GEOResourceManifestServer *)self activateFilterWithRequest:v16];
         goto LABEL_45;
       }
@@ -104,14 +104,14 @@ LABEL_46:
       if (v13 == 1664)
       {
         v14 = 1;
-        if (sub_100001B78(v12, v11, @"resourcemanifest", v10, &off_100088E08, 1))
+        if (sub_100001B78(peerCopy, objectCopy, @"resourcemanifest", messageCopy, &off_100088E08, 1))
         {
           v18 = objc_opt_class();
-          v19 = sub_100001388(@"resourcemanifest", v10, v11, v18, v12);
+          v19 = sub_100001388(@"resourcemanifest", messageCopy, objectCopy, v18, peerCopy);
           v16 = v19;
           if (v19)
           {
-            [v19 setSignpostId:a6];
+            [v19 setSignpostId:id];
             [(GEOResourceManifestServer *)self deactivateFilterWithRequest:v16];
             goto LABEL_45;
           }
@@ -123,13 +123,13 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    if (sub_100001B78(v12, v11, @"resourcemanifest", v10, &off_100088DF0, 0))
+    if (sub_100001B78(peerCopy, objectCopy, @"resourcemanifest", messageCopy, &off_100088DF0, 0))
     {
-      v30 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v30 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v16 = v30;
       if (v30)
       {
-        [v30 setSignpostId:a6];
+        [v30 setSignpostId:id];
         [(GEOResourceManifestServer *)self setRequestTokenWithMessage:v16];
         goto LABEL_45;
       }
@@ -147,13 +147,13 @@ LABEL_42:
     switch(v13)
     {
       case 1983:
-        if (sub_100001B78(v12, v11, @"resourcemanifest", v10, &off_100088E20, 0))
+        if (sub_100001B78(peerCopy, objectCopy, @"resourcemanifest", messageCopy, &off_100088E20, 0))
         {
-          v26 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+          v26 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
           v16 = v26;
           if (v26)
           {
-            [v26 setSignpostId:a6];
+            [v26 setSignpostId:id];
             [(GEOResourceManifestServer *)self getResourceManifestWithMessage:v16];
             goto LABEL_45;
           }
@@ -163,24 +163,24 @@ LABEL_42:
 
         break;
       case 2074:
-        v31 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+        v31 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
         v16 = v31;
         if (v31)
         {
-          [v31 setSignpostId:a6];
+          [v31 setSignpostId:id];
           [(GEOResourceManifestServer *)self resetActiveTileGroupWithMessage:v16];
           goto LABEL_45;
         }
 
         goto LABEL_48;
       case 2886:
-        if (sub_100001B78(v12, v11, @"resourcemanifest", v10, &off_100088DD8, 0))
+        if (sub_100001B78(peerCopy, objectCopy, @"resourcemanifest", messageCopy, &off_100088DD8, 0))
         {
-          v20 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+          v20 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
           v16 = v20;
           if (v20)
           {
-            [v20 setSignpostId:a6];
+            [v20 setSignpostId:id];
             [(GEOResourceManifestServer *)self setActiveTileGroupIdentifierWithMessage:v16];
             goto LABEL_45;
           }
@@ -199,33 +199,33 @@ LABEL_42:
   switch(v13)
   {
     case 1700:
-      v23 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v23 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v16 = v23;
       if (v23)
       {
-        [v23 setSignpostId:a6];
+        [v23 setSignpostId:id];
         [(GEOResourceManifestServer *)self setConfigurationWithMessage:v16];
         goto LABEL_45;
       }
 
       goto LABEL_48;
     case 1759:
-      v29 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v29 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v16 = v29;
       if (v29)
       {
-        [v29 setSignpostId:a6];
+        [v29 setSignpostId:id];
         [(GEOResourceManifestServer *)self updateIfNecessaryWithMessage:v16];
         goto LABEL_45;
       }
 
       goto LABEL_48;
     case 1979:
-      v17 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v17 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v16 = v17;
       if (v17)
       {
-        [v17 setSignpostId:a6];
+        [v17 setSignpostId:id];
         [(GEOResourceManifestServer *)self getMaximumZoomLevelWithMessage:v16];
         goto LABEL_45;
       }
@@ -240,12 +240,12 @@ LABEL_47:
   return v14;
 }
 
-- (void)serverProxyNeedsWiFiResourceActivity:(id)a3
+- (void)serverProxyNeedsWiFiResourceActivity:(id)activity
 {
   if (sub_10001FD1C())
   {
-    v3 = [sub_10001FF30() sharedScheduler];
-    v4 = [v3 taskRequestForIdentifier:@"com.apple.geod.OpportunisticResourceLoading"];
+    sharedScheduler = [sub_10001FF30() sharedScheduler];
+    v4 = [sharedScheduler taskRequestForIdentifier:@"com.apple.geod.OpportunisticResourceLoading"];
     v5 = GEOFindOrCreateLog();
     v6 = v5;
     if (v4)
@@ -266,8 +266,8 @@ LABEL_47:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Ensuring existence of opportunistic resource loading background task.", buf, 2u);
       }
 
-      v7 = [sub_10001FF30() sharedScheduler];
-      v6 = [v7 taskRequestForIdentifier:@"com.apple.geod.OpportunisticResourceLoading"];
+      sharedScheduler2 = [sub_10001FF30() sharedScheduler];
+      v6 = [sharedScheduler2 taskRequestForIdentifier:@"com.apple.geod.OpportunisticResourceLoading"];
 
       if (!v6)
       {
@@ -280,7 +280,7 @@ LABEL_47:
         v9 = GeoServicesConfig_OpportunisticResourceLoadingActivityDelay[1];
         [v8 setScheduleAfter:GEOConfigGetInteger()];
         v14 = 0;
-        v10 = [v3 submitTaskRequest:v8 error:&v14];
+        v10 = [sharedScheduler submitTaskRequest:v8 error:&v14];
         v11 = v14;
         if ((v10 & 1) == 0)
         {
@@ -305,26 +305,26 @@ LABEL_47:
   }
 }
 
-- (void)serverProxy:(id)a3 didChangeActiveTileGroup:(id)a4 finishedCallback:(id)a5
+- (void)serverProxy:(id)proxy didChangeActiveTileGroup:(id)group finishedCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a5;
+  proxyCopy = proxy;
+  callbackCopy = callback;
   queue = self->_queue;
-  v14 = v8;
-  v13 = v7;
-  v10 = v8;
-  v11 = v7;
+  v14 = callbackCopy;
+  v13 = proxyCopy;
+  v10 = callbackCopy;
+  v11 = proxyCopy;
   v12 = geo_dispatch_block_clean_copy();
   dispatch_async(queue, v12);
 }
 
-- (void)_forEachPeerMatchingConfiguration:(id)a3 perform:(id)a4
+- (void)_forEachPeerMatchingConfiguration:(id)configuration perform:(id)perform
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GEOResourceManifestServer *)self daemon];
-  v9 = [v8 peers];
-  v10 = [v9 copy];
+  configurationCopy = configuration;
+  performCopy = perform;
+  daemon = [(GEOResourceManifestServer *)self daemon];
+  peers = [daemon peers];
+  v10 = [peers copy];
 
   v20 = 0u;
   v21 = 0u;
@@ -349,9 +349,9 @@ LABEL_47:
         if ([v16 isForServerType:{11, v18}])
         {
           v17 = [(GEOResourceManifestServer *)self _configurationForPeer:v16];
-          if ([v6 isEqual:v17])
+          if ([configurationCopy isEqual:v17])
           {
-            v7[2](v7, v16);
+            performCopy[2](performCopy, v16);
           }
         }
       }
@@ -363,65 +363,65 @@ LABEL_47:
   }
 }
 
-- (void)getResourceManifestWithMessage:(id)a3
+- (void)getResourceManifestWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v5];
-  v7 = [v6 serverProxy];
+  messageCopy = message;
+  peer = [messageCopy peer];
+  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v6 serverProxy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100048B28;
   v9[3] = &unk_100083698;
-  v10 = v4;
-  v8 = v4;
-  [v7 getResourceManifestWithHandler:v9];
+  v10 = messageCopy;
+  v8 = messageCopy;
+  [serverProxy getResourceManifestWithHandler:v9];
 }
 
-- (void)getMinZoomWithRequest:(id)a3
+- (void)getMinZoomWithRequest:(id)request
 {
-  v4 = a3;
-  v9 = [[GEOResourceManifestZoom alloc] initWithRequest:v4];
-  v5 = [v4 peer];
-  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v5];
-  v7 = [v6 serverProxy];
-  v8 = [v4 style];
+  requestCopy = request;
+  v9 = [[GEOResourceManifestZoom alloc] initWithRequest:requestCopy];
+  peer = [requestCopy peer];
+  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v6 serverProxy];
+  style = [requestCopy style];
 
-  [v9 setZoom:{objc_msgSend(v7, "minimumZoomLevelForStyle:", v8)}];
+  [v9 setZoom:{objc_msgSend(serverProxy, "minimumZoomLevelForStyle:", style)}];
   [v9 send];
 }
 
-- (void)getMaxZoomWithRequest:(id)a3
+- (void)getMaxZoomWithRequest:(id)request
 {
-  v4 = a3;
-  v9 = [[GEOResourceManifestZoom alloc] initWithRequest:v4];
-  v5 = [v4 peer];
-  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v5];
-  v7 = [v6 serverProxy];
-  v8 = [v4 style];
+  requestCopy = request;
+  v9 = [[GEOResourceManifestZoom alloc] initWithRequest:requestCopy];
+  peer = [requestCopy peer];
+  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v6 serverProxy];
+  style = [requestCopy style];
 
-  [v9 setZoom:{objc_msgSend(v7, "maximumZoomLevelForStyle:", v8)}];
+  [v9 setZoom:{objc_msgSend(serverProxy, "maximumZoomLevelForStyle:", style)}];
   [v9 send];
 }
 
-- (void)getMaximumZoomLevelWithMessage:(id)a3
+- (void)getMaximumZoomLevelWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"style"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"style"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"scale"];
+  userInfo2 = [messageCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"scale"];
 
   if (v6 && v8)
   {
-    v9 = [v6 intValue];
-    v10 = [v8 intValue];
+    intValue = [v6 intValue];
+    intValue2 = [v8 intValue];
     v19 = 2;
-    v11 = [v4 peer];
-    v12 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v11];
-    v13 = [v12 serverProxy];
-    v14 = [v13 maximumZoomLevelForStyle:v9 scale:v10 outSize:&v19];
+    peer = [messageCopy peer];
+    v12 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+    serverProxy = [v12 serverProxy];
+    v14 = [serverProxy maximumZoomLevelForStyle:intValue scale:intValue2 outSize:&v19];
 
     v20[0] = @"result";
     v15 = [NSNumber numberWithUnsignedInt:v14];
@@ -430,7 +430,7 @@ LABEL_47:
     v16 = [NSNumber numberWithInt:v19];
     v21[1] = v16;
     v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
-    [v4 sendReply:v17];
+    [messageCopy sendReply:v17];
   }
 
   else
@@ -444,195 +444,195 @@ LABEL_47:
 
     v15 = [NSError GEOErrorWithCode:-10 reason:@"Missing input parameters"];
     v16 = [NSDictionary _geo_replyDictionaryForError:v15 key:@"err"];
-    [v4 sendReply:v16];
+    [messageCopy sendReply:v16];
   }
 }
 
-- (void)deactivateFilterWithRequest:(id)a3
+- (void)deactivateFilterWithRequest:(id)request
 {
-  v4 = a3;
-  v10 = [v4 filter];
-  v5 = [v4 peer];
+  requestCopy = request;
+  filter = [requestCopy filter];
+  peer = [requestCopy peer];
 
-  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v5];
-  v7 = [v6 serverProxy];
+  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v6 serverProxy];
 
-  if (v10 && v7)
+  if (filter && serverProxy)
   {
-    v8 = [v10 whichFilter];
-    if (v8 == 3)
+    whichFilter = [filter whichFilter];
+    if (whichFilter == 3)
     {
-      v9 = [v10 name];
-      [v7 deactivateResourceName:v9];
+      name = [filter name];
+      [serverProxy deactivateResourceName:name];
     }
 
-    else if (v8 == 2)
+    else if (whichFilter == 2)
     {
-      [v7 deactivateResourceScenario:{objc_msgSend(v10, "scenario")}];
+      [serverProxy deactivateResourceScenario:{objc_msgSend(filter, "scenario")}];
     }
 
-    else if (v8 == 1)
+    else if (whichFilter == 1)
     {
-      [v7 deactivateResourceScale:{objc_msgSend(v10, "scale")}];
+      [serverProxy deactivateResourceScale:{objc_msgSend(filter, "scale")}];
     }
   }
 }
 
-- (void)activateFilterWithRequest:(id)a3
+- (void)activateFilterWithRequest:(id)request
 {
-  v4 = a3;
-  v10 = [v4 filter];
-  v5 = [v4 peer];
+  requestCopy = request;
+  filter = [requestCopy filter];
+  peer = [requestCopy peer];
 
-  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v5];
-  v7 = [v6 serverProxy];
+  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v6 serverProxy];
 
-  if (v10 && v7)
+  if (filter && serverProxy)
   {
-    v8 = [v10 whichFilter];
-    if (v8 == 3)
+    whichFilter = [filter whichFilter];
+    if (whichFilter == 3)
     {
-      v9 = [v10 name];
-      [v7 activateResourceName:v9];
+      name = [filter name];
+      [serverProxy activateResourceName:name];
     }
 
-    else if (v8 == 2)
+    else if (whichFilter == 2)
     {
-      [v7 activateResourceScenario:{objc_msgSend(v10, "scenario")}];
+      [serverProxy activateResourceScenario:{objc_msgSend(filter, "scenario")}];
     }
 
-    else if (v8 == 1)
+    else if (whichFilter == 1)
     {
-      [v7 activateResourceScale:{objc_msgSend(v10, "scale")}];
+      [serverProxy activateResourceScale:{objc_msgSend(filter, "scale")}];
     }
   }
 }
 
-- (void)setRequestTokenWithMessage:(id)a3
+- (void)setRequestTokenWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"requestToken"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"requestToken"];
 
-  v7 = [v4 peer];
-  v8 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v7];
-  v9 = [v8 serverProxy];
+  peer = [messageCopy peer];
+  v8 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v8 serverProxy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100049360;
   v11[3] = &unk_100083EC0;
-  v12 = v4;
-  v10 = v4;
-  [v9 setManifestToken:v6 completionHandler:v11];
+  v12 = messageCopy;
+  v10 = messageCopy;
+  [serverProxy setManifestToken:v6 completionHandler:v11];
 }
 
-- (void)resetActiveTileGroupWithMessage:(id)a3
+- (void)resetActiveTileGroupWithMessage:(id)message
 {
-  v6 = [a3 peer];
-  v4 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v6];
-  v5 = [v4 serverProxy];
-  [v5 resetActiveTileGroup];
+  peer = [message peer];
+  v4 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v4 serverProxy];
+  [serverProxy resetActiveTileGroup];
 }
 
-- (void)forceUpdateWithMessage:(id)a3
+- (void)forceUpdateWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"type"];
-  v7 = [v6 integerValue];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"type"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 peer];
-  v9 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v8];
-  v10 = [v9 serverProxy];
+  peer = [messageCopy peer];
+  v9 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v9 serverProxy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100049558;
   v12[3] = &unk_100083EC0;
-  v13 = v4;
-  v11 = v4;
-  [v10 forceUpdate:v7 completionHandler:v12];
+  v13 = messageCopy;
+  v11 = messageCopy;
+  [serverProxy forceUpdate:integerValue completionHandler:v12];
 }
 
-- (void)updateIfNecessaryWithMessage:(id)a3
+- (void)updateIfNecessaryWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v5];
-  v7 = [v6 serverProxy];
+  messageCopy = message;
+  peer = [messageCopy peer];
+  v6 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+  serverProxy = [v6 serverProxy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100049698;
   v9[3] = &unk_100083EC0;
-  v10 = v4;
-  v8 = v4;
-  [v7 updateIfNecessary:v9];
+  v10 = messageCopy;
+  v8 = messageCopy;
+  [serverProxy updateIfNecessary:v9];
 }
 
-- (void)setActiveTileGroupIdentifierWithMessage:(id)a3
+- (void)setActiveTileGroupIdentifierWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"reply"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"reply"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"identifier"];
+  userInfo2 = [messageCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:@"identifier"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v7)
+    if (bOOLValue)
     {
-      v10 = [v4 userInfo];
-      v11 = [v10 objectForKeyedSubscript:@"type"];
-      v12 = [v11 integerValue];
+      userInfo3 = [messageCopy userInfo];
+      v11 = [userInfo3 objectForKeyedSubscript:@"type"];
+      integerValue = [v11 integerValue];
 
-      v13 = [v4 peer];
-      v14 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v13];
-      v15 = [v14 serverProxy];
+      peer = [messageCopy peer];
+      v14 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer];
+      serverProxy = [v14 serverProxy];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100049964;
       v21[3] = &unk_100083EC0;
-      v22 = v4;
-      [v15 setActiveTileGroupIdentifier:v9 updateType:v12 completionHandler:v21];
+      v22 = messageCopy;
+      [serverProxy setActiveTileGroupIdentifier:v9 updateType:integerValue completionHandler:v21];
     }
 
     else
     {
-      v18 = [v4 peer];
-      v19 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:v18];
-      v20 = [v19 serverProxy];
-      [v20 setActiveTileGroupIdentifier:v9];
+      peer2 = [messageCopy peer];
+      v19 = [(GEOResourceManifestServer *)self _manifestManagerForPeer:peer2];
+      serverProxy2 = [v19 serverProxy];
+      [serverProxy2 setActiveTileGroupIdentifier:v9];
     }
   }
 
-  else if (v7)
+  else if (bOOLValue)
   {
     v16 = [NSError GEOErrorWithCode:-12 reason:@"Tile Group Identifier is not a number"];
     v17 = [NSDictionary _geo_replyDictionaryForError:v16 key:@"err"];
-    [v4 sendReply:v17];
+    [messageCopy sendReply:v17];
   }
 }
 
-- (void)setConfigurationWithMessage:(id)a3
+- (void)setConfigurationWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  if ([v5 hasEntitlement:@"com.apple.geoservices.custom-manifest-configuration"])
+  messageCopy = message;
+  peer = [messageCopy peer];
+  if ([peer hasEntitlement:@"com.apple.geoservices.custom-manifest-configuration"])
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"cfg"];
+    userInfo = [messageCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"cfg"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -642,7 +642,7 @@ LABEL_47:
 
       if (v9)
       {
-        [(NSMapTable *)self->_peerToConfiguration setObject:v9 forKey:v5];
+        [(NSMapTable *)self->_peerToConfiguration setObject:v9 forKey:peer];
         if (([(NSMutableSet *)self->_alreadyRegisteredConfigurations containsObject:v9]& 1) == 0)
         {
           [(NSMutableSet *)self->_alreadyRegisteredConfigurations addObject:v9];
@@ -664,9 +664,9 @@ LABEL_47:
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v12 = [v5 bundleIdentifier];
+      bundleIdentifier = [peer bundleIdentifier];
       v13 = 138543362;
-      v14 = v12;
+      v14 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "Un-entitled process %{public}@ is trying to set a custom manifest configuration", &v13, 0xCu);
     }
   }
@@ -682,19 +682,19 @@ LABEL_47:
   }
 
   v3 = +[GEOResourceManifestManager modernManager];
-  v4 = [v3 serverProxy];
-  [v4 performOpportunisticResourceLoading];
+  serverProxy = [v3 serverProxy];
+  [serverProxy performOpportunisticResourceLoading];
 
   if (sub_10000BF18())
   {
-    v5 = [sub_10000C0DC() sharedInstance];
-    [v5 getDevicesWithBlock:&stru_100083670];
+    sharedInstance = [sub_10000C0DC() sharedInstance];
+    [sharedInstance getDevicesWithBlock:&stru_100083670];
   }
 }
 
-- (id)_configurationForPeer:(id)a3
+- (id)_configurationForPeer:(id)peer
 {
-  v3 = [(NSMapTable *)self->_peerToConfiguration objectForKey:a3];
+  v3 = [(NSMapTable *)self->_peerToConfiguration objectForKey:peer];
   if (!v3)
   {
     if (qword_100096168 != -1)
@@ -708,25 +708,25 @@ LABEL_47:
   return v3;
 }
 
-- (id)_manifestManagerForPeer:(id)a3
+- (id)_manifestManagerForPeer:(id)peer
 {
-  v3 = [(NSMapTable *)self->_peerToConfiguration objectForKey:a3];
+  v3 = [(NSMapTable *)self->_peerToConfiguration objectForKey:peer];
   v4 = [GEOResourceManifestManager modernManagerForConfiguration:v3];
 
   return v4;
 }
 
-- (void)peerDidDisconnect:(id)a3
+- (void)peerDidDisconnect:(id)disconnect
 {
   peerToConfiguration = self->_peerToConfiguration;
-  v5 = a3;
-  [(NSMapTable *)peerToConfiguration removeObjectForKey:v5];
+  disconnectCopy = disconnect;
+  [(NSMapTable *)peerToConfiguration removeObjectForKey:disconnectCopy];
   v6.receiver = self;
   v6.super_class = GEOResourceManifestServer;
-  [(GEOResourceManifestServer *)&v6 peerDidDisconnect:v5];
+  [(GEOResourceManifestServer *)&v6 peerDidDisconnect:disconnectCopy];
 }
 
-- (void)peerDidConnect:(id)a3
+- (void)peerDidConnect:(id)connect
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -734,7 +734,7 @@ LABEL_47:
   block[3] = &unk_1000838C8;
   block[4] = self;
   v4 = qword_100096160;
-  v5 = a3;
+  connectCopy = connect;
   if (v4 != -1)
   {
     dispatch_once(&qword_100096160, block);
@@ -742,18 +742,18 @@ LABEL_47:
 
   v6.receiver = self;
   v6.super_class = GEOResourceManifestServer;
-  [(GEOResourceManifestServer *)&v6 peerDidConnect:v5];
+  [(GEOResourceManifestServer *)&v6 peerDidConnect:connectCopy];
 }
 
-- (void)runBackgroundTask:(id)a3
+- (void)runBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"com.apple.geod.OpportunisticResourceLoading"];
+  taskCopy = task;
+  identifier = [taskCopy identifier];
+  v6 = [identifier isEqualToString:@"com.apple.geod.OpportunisticResourceLoading"];
 
   if (v6)
   {
-    v7 = [v4 identifier];
+    identifier2 = [taskCopy identifier];
     GEOBackgroundTaskReportReportTaskInitiated();
 
     queue = self->_queue;
@@ -762,7 +762,7 @@ LABEL_47:
     block[2] = sub_10004A380;
     block[3] = &unk_100083940;
     block[4] = self;
-    v11 = v4;
+    v11 = taskCopy;
     dispatch_async(queue, block);
   }
 
@@ -770,7 +770,7 @@ LABEL_47:
   {
     v9.receiver = self;
     v9.super_class = GEOResourceManifestServer;
-    [(GEOResourceManifestServer *)&v9 runBackgroundTask:v4];
+    [(GEOResourceManifestServer *)&v9 runBackgroundTask:taskCopy];
   }
 }
 
@@ -815,11 +815,11 @@ LABEL_47:
   [(GEOResourceManifestServer *)&v9 dealloc];
 }
 
-- (GEOResourceManifestServer)initWithDaemon:(id)a3
+- (GEOResourceManifestServer)initWithDaemon:(id)daemon
 {
   v16.receiver = self;
   v16.super_class = GEOResourceManifestServer;
-  v3 = [(GEOResourceManifestServer *)&v16 initWithDaemon:a3];
+  v3 = [(GEOResourceManifestServer *)&v16 initWithDaemon:daemon];
   if (v3)
   {
     v4 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:512 capacity:5];

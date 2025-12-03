@@ -1,17 +1,17 @@
 @interface MDMMigrationManager
 + (id)_bootUUID;
-- (BOOL)_handleNewCloudConfigIfNeeded:(id)a3 currentCloudConfig:(id)a4 didPollFromDEP:(BOOL)a5;
+- (BOOL)_handleNewCloudConfigIfNeeded:(id)needed currentCloudConfig:(id)config didPollFromDEP:(BOOL)p;
 - (BOOL)_isFirstBoot;
-- (BOOL)_shouldMigrateWithNewCloudConfig:(id)a3 currentCloudConfig:(id)a4 isEligible:(BOOL *)a5 isMigrationNeeded:(BOOL *)a6;
-- (BOOL)handleDeadlineActionForNagItem:(id)a3;
+- (BOOL)_shouldMigrateWithNewCloudConfig:(id)config currentCloudConfig:(id)cloudConfig isEligible:(BOOL *)eligible isMigrationNeeded:(BOOL *)needed;
+- (BOOL)handleDeadlineActionForNagItem:(id)item;
 - (MDMMigrationManager)init;
-- (id)appliedGracePeriodToNagItem:(id)a3;
-- (void)_cancelMDMMigrationWithNewCloudConfig:(id)a3;
+- (id)appliedGracePeriodToNagItem:(id)item;
+- (void)_cancelMDMMigrationWithNewCloudConfig:(id)config;
 - (void)_depPushReceived;
-- (void)_evaluateMigrationStatusShouldPoll:(BOOL)a3 completionHandler:(id)a4;
-- (void)_retrieveAndStorePendingCloudConfigurationWithRetryCount:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_scheduleMDMMigrationWithNewCloudConfigDetails:(id)a3;
-- (void)nagWithCloudConfigDetails:(id)a3;
+- (void)_evaluateMigrationStatusShouldPoll:(BOOL)poll completionHandler:(id)handler;
+- (void)_retrieveAndStorePendingCloudConfigurationWithRetryCount:(unint64_t)count completionHandler:(id)handler;
+- (void)_scheduleMDMMigrationWithNewCloudConfigDetails:(id)details;
+- (void)nagWithCloudConfigDetails:(id)details;
 - (void)startMonitoringDEPServerPushIfNeeded;
 - (void)stopMonitoringDEPServerPush;
 - (void)stopNagging;
@@ -27,9 +27,9 @@
   v2 = [(MDMMigrationManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v4 = MDMMigrationDirectory();
-    v5 = [v3 fileExistsAtPath:v4];
+    v5 = [defaultManager fileExistsAtPath:v4];
 
     if ((v5 & 1) == 0)
     {
@@ -37,7 +37,7 @@
       v13 = *MEMORY[0x277CCA180];
       v14[0] = &unk_2868503C8;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      [v3 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v7 error:0];
+      [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v7 error:0];
     }
 
     v8 = +[MDMMigrationManager _bootUUID];
@@ -51,11 +51,11 @@
 
 - (void)startMonitoringDEPServerPushIfNeeded
 {
-  v3 = [MEMORY[0x277D24640] sharedConfiguration];
-  [v3 refreshDetailsFromDisk];
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  [mEMORY[0x277D24640] refreshDetailsFromDisk];
   v4 = MEMORY[0x277D031B0];
-  v5 = [v3 details];
-  LODWORD(v4) = [v4 isDeviceEligibleForMigrationWithExistingCloudConfig:v5 outReason:0];
+  details = [mEMORY[0x277D24640] details];
+  LODWORD(v4) = [v4 isDeviceEligibleForMigrationWithExistingCloudConfig:details outReason:0];
 
   if (v4)
   {
@@ -66,8 +66,8 @@
       _os_log_impl(&dword_2561F5000, v6, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Start monitoring DEP push notification", v8, 2u);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel__depPushReceived name:*MEMORY[0x277D245E0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__depPushReceived name:*MEMORY[0x277D245E0] object:0];
   }
 }
 
@@ -80,14 +80,14 @@
     _os_log_impl(&dword_2561F5000, v3, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Stop monitoring DEP push notification", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D245E0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D245E0] object:0];
 }
 
-- (void)_evaluateMigrationStatusShouldPoll:(BOOL)a3 completionHandler:(id)a4
+- (void)_evaluateMigrationStatusShouldPoll:(BOOL)poll completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  pollCopy = poll;
+  handlerCopy = handler;
   v7 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -95,15 +95,15 @@
     _os_log_impl(&dword_2561F5000, v7, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: evaluating migration status", buf, 2u);
   }
 
-  v8 = [MEMORY[0x277D24640] sharedConfiguration];
-  [v8 refreshDetailsFromDisk];
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  [mEMORY[0x277D24640] refreshDetailsFromDisk];
 
-  v9 = [MEMORY[0x277D24640] sharedConfiguration];
-  v10 = [v9 details];
+  mEMORY[0x277D24640]2 = [MEMORY[0x277D24640] sharedConfiguration];
+  details = [mEMORY[0x277D24640]2 details];
 
   v11 = *(DMCLogObjects() + 8);
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (pollCopy)
   {
     if (v12)
     {
@@ -115,13 +115,13 @@
     v15[1] = 3221225472;
     v15[2] = __76__MDMMigrationManager__evaluateMigrationStatusShouldPoll_completionHandler___block_invoke;
     v15[3] = &unk_27982BF28;
-    v17 = v6;
+    v17 = handlerCopy;
     v15[4] = self;
-    v16 = v10;
-    v18 = v4;
+    v16 = details;
+    v18 = pollCopy;
     [(MDMMigrationManager *)self _retrieveAndStorePendingCloudConfigurationWithRetryCount:2 completionHandler:v15];
 
-    v13 = v17;
+    readPendingCloudConfigDetails = v17;
   }
 
   else
@@ -132,11 +132,11 @@
       _os_log_impl(&dword_2561F5000, v11, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Using local pending cloud config", buf, 2u);
     }
 
-    v13 = [MEMORY[0x277D031B0] readPendingCloudConfigDetails];
-    v14 = [(MDMMigrationManager *)self _handleNewCloudConfigIfNeeded:v13 currentCloudConfig:v10 didPollFromDEP:0];
-    if (v6)
+    readPendingCloudConfigDetails = [MEMORY[0x277D031B0] readPendingCloudConfigDetails];
+    v14 = [(MDMMigrationManager *)self _handleNewCloudConfigIfNeeded:readPendingCloudConfigDetails currentCloudConfig:details didPollFromDEP:0];
+    if (handlerCopy)
     {
-      (*(v6 + 2))(v6, v14, 0);
+      (*(handlerCopy + 2))(handlerCopy, v14, 0);
     }
   }
 }
@@ -172,26 +172,26 @@ void __76__MDMMigrationManager__evaluateMigrationStatusShouldPoll_completionHand
 LABEL_7:
 }
 
-- (void)_retrieveAndStorePendingCloudConfigurationWithRetryCount:(unint64_t)a3 completionHandler:(id)a4
+- (void)_retrieveAndStorePendingCloudConfigurationWithRetryCount:(unint64_t)count completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __98__MDMMigrationManager__retrieveAndStorePendingCloudConfigurationWithRetryCount_completionHandler___block_invoke;
   aBlock[3] = &unk_27982BF50;
-  v14 = v6;
-  v15 = a3;
+  v14 = handlerCopy;
+  countCopy = count;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   v8 = _Block_copy(aBlock);
-  v9 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __98__MDMMigrationManager__retrieveAndStorePendingCloudConfigurationWithRetryCount_completionHandler___block_invoke_13;
   v11[3] = &unk_27982BFA0;
   v12 = v8;
   v10 = v8;
-  [v9 retrieveCloudConfigurationDetailsCompletionBlock:v11];
+  [mEMORY[0x277D262A0] retrieveCloudConfigurationDetailsCompletionBlock:v11];
 }
 
 void __98__MDMMigrationManager__retrieveAndStorePendingCloudConfigurationWithRetryCount_completionHandler___block_invoke(void *a1, void *a2, void *a3)
@@ -314,21 +314,21 @@ void __98__MDMMigrationManager__retrieveAndStorePendingCloudConfigurationWithRet
   [(MDMMigrationManager *)self _evaluateMigrationStatusShouldPoll:1 completionHandler:0];
 }
 
-- (BOOL)_handleNewCloudConfigIfNeeded:(id)a3 currentCloudConfig:(id)a4 didPollFromDEP:(BOOL)a5
+- (BOOL)_handleNewCloudConfigIfNeeded:(id)needed currentCloudConfig:(id)config didPollFromDEP:(BOOL)p
 {
-  v5 = a5;
-  v8 = a3;
+  pCopy = p;
+  neededCopy = needed;
   v16 = 0;
-  v9 = [(MDMMigrationManager *)self _shouldMigrateWithNewCloudConfig:v8 currentCloudConfig:a4 isEligible:&v16 + 1 isMigrationNeeded:&v16];
+  v9 = [(MDMMigrationManager *)self _shouldMigrateWithNewCloudConfig:neededCopy currentCloudConfig:config isEligible:&v16 + 1 isMigrationNeeded:&v16];
   if (v9)
   {
-    [(MDMMigrationManager *)self _scheduleMDMMigrationWithNewCloudConfigDetails:v8];
+    [(MDMMigrationManager *)self _scheduleMDMMigrationWithNewCloudConfigDetails:neededCopy];
     goto LABEL_21;
   }
 
-  if (!v8 || (v16 & 0x100) != 0)
+  if (!neededCopy || (v16 & 0x100) != 0)
   {
-    if (!v5)
+    if (!pCopy)
     {
       goto LABEL_15;
     }
@@ -336,12 +336,12 @@ void __98__MDMMigrationManager__retrieveAndStorePendingCloudConfigurationWithRet
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v8];
-    v11 = [v10 migrationDeadline];
+    v10 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:neededCopy];
+    migrationDeadline = [v10 migrationDeadline];
 
-    if (v11 || !v5)
+    if (migrationDeadline || !pCopy)
     {
-      if (v11)
+      if (migrationDeadline)
       {
         v12 = 0;
 LABEL_12:
@@ -352,7 +352,7 @@ LABEL_12:
           _os_log_impl(&dword_2561F5000, v13, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Sending EndMigrationRequest", v15, 2u);
         }
 
-        [MEMORY[0x277D031B0] makeEndMigrationRequestIfNeededWithCloudConfig:v8 success:v12 completionHandler:&__block_literal_global_0];
+        [MEMORY[0x277D031B0] makeEndMigrationRequestIfNeededWithCloudConfig:neededCopy success:v12 completionHandler:&__block_literal_global_0];
         goto LABEL_15;
       }
 
@@ -369,7 +369,7 @@ LABEL_12:
 LABEL_15:
   if ((v16 & 1) == 0)
   {
-    [(MDMMigrationManager *)self _cancelMDMMigrationWithNewCloudConfig:v8];
+    [(MDMMigrationManager *)self _cancelMDMMigrationWithNewCloudConfig:neededCopy];
   }
 
   if ((v16 & 0x100) == 0)
@@ -377,7 +377,7 @@ LABEL_15:
     [(MDMMigrationManager *)self stopMonitoringDEPServerPush];
     if ([MEMORY[0x277D034F8] isMigrationEligibilityReportEnabled])
     {
-      if (v5)
+      if (pCopy)
       {
         MDMSendMigrationEligibilityChangedNotification();
       }
@@ -389,31 +389,31 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)_shouldMigrateWithNewCloudConfig:(id)a3 currentCloudConfig:(id)a4 isEligible:(BOOL *)a5 isMigrationNeeded:(BOOL *)a6
+- (BOOL)_shouldMigrateWithNewCloudConfig:(id)config currentCloudConfig:(id)cloudConfig isEligible:(BOOL *)eligible isMigrationNeeded:(BOOL *)needed
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  configCopy = config;
+  cloudConfigCopy = cloudConfig;
+  if (eligible)
   {
-    *a5 = 0;
+    *eligible = 0;
   }
 
-  if (a6)
+  if (needed)
   {
-    *a6 = 0;
+    *needed = 0;
   }
 
-  if (![MEMORY[0x277D031B0] isDeviceEligibleForMigrationWithExistingCloudConfig:v10 outReason:0])
+  if (![MEMORY[0x277D031B0] isDeviceEligibleForMigrationWithExistingCloudConfig:cloudConfigCopy outReason:0])
   {
     goto LABEL_14;
   }
 
-  if (a5)
+  if (eligible)
   {
-    *a5 = 1;
+    *eligible = 1;
   }
 
-  if (([MEMORY[0x277D031B0] isMigrationNeededWithExistingCloudConfig:v10 newCloudConfig:v9] & 1) == 0)
+  if (([MEMORY[0x277D031B0] isMigrationNeededWithExistingCloudConfig:cloudConfigCopy newCloudConfig:configCopy] & 1) == 0)
   {
     v12 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -423,22 +423,22 @@ LABEL_21:
     }
 
 LABEL_14:
-    v11 = 0;
+    currentEnrollmentStateSupportsMigration = 0;
     goto LABEL_15;
   }
 
-  if (a6)
+  if (needed)
   {
-    *a6 = 1;
+    *needed = 1;
   }
 
-  v11 = [MEMORY[0x277D031B0] currentEnrollmentStateSupportsMigration];
+  currentEnrollmentStateSupportsMigration = [MEMORY[0x277D031B0] currentEnrollmentStateSupportsMigration];
 LABEL_15:
 
-  return v11;
+  return currentEnrollmentStateSupportsMigration;
 }
 
-- (void)_cancelMDMMigrationWithNewCloudConfig:(id)a3
+- (void)_cancelMDMMigrationWithNewCloudConfig:(id)config
 {
   [MEMORY[0x277D031B0] setUserInititiatedMigration:0];
   v5 = *(DMCLogObjects() + 8);
@@ -448,10 +448,10 @@ LABEL_15:
     _os_log_impl(&dword_2561F5000, v5, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Cleaning up pending cloud config if needed...", v7, 2u);
   }
 
-  if (a3)
+  if (config)
   {
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    [v6 storePendingCloudConfigurationDetailsForMigration:0 completionHandler:&__block_literal_global_19];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] storePendingCloudConfigurationDetailsForMigration:0 completionHandler:&__block_literal_global_19];
   }
 
   [(MDMMigrationManager *)self stopNagging];
@@ -490,16 +490,16 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleMDMMigrationWithNewCloudConfigDetails:(id)a3
+- (void)_scheduleMDMMigrationWithNewCloudConfigDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__MDMMigrationManager__scheduleMDMMigrationWithNewCloudConfigDetails___block_invoke;
   v6[3] = &unk_27982BAC8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = detailsCopy;
+  v5 = detailsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -515,24 +515,24 @@ uint64_t __70__MDMMigrationManager__scheduleMDMMigrationWithNewCloudConfigDetail
   return [*(a1 + 32) nagWithCloudConfigDetails:*(a1 + 40)];
 }
 
-- (void)nagWithCloudConfigDetails:(id)a3
+- (void)nagWithCloudConfigDetails:(id)details
 {
   v4 = MEMORY[0x277D24640];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCloudConfigDetails:v5];
+  detailsCopy = details;
+  v6 = [[v4 alloc] initWithCloudConfigDetails:detailsCopy];
 
   v7 = [MEMORY[0x277CBEBC0] URLWithString:*MEMORY[0x277D24D10]];
   v8 = MEMORY[0x277D032C8];
-  v9 = [v6 migrationDeadline];
-  v10 = [v8 migrationNagItemWithDeadline:v9 actionURL:v7 deadlineURL:v7];
+  migrationDeadline = [v6 migrationDeadline];
+  v10 = [v8 migrationNagItemWithDeadline:migrationDeadline actionURL:v7 deadlineURL:v7];
 
-  v11 = [(MDMMigrationManager *)self nagScheduler];
+  nagScheduler = [(MDMMigrationManager *)self nagScheduler];
 
-  if (v11)
+  if (nagScheduler)
   {
-    v12 = [(MDMMigrationManager *)self nagScheduler];
+    nagScheduler2 = [(MDMMigrationManager *)self nagScheduler];
     v15 = 0;
-    [v12 startNaggingItem:v10 error:&v15];
+    [nagScheduler2 startNaggingItem:v10 error:&v15];
     v13 = v15;
   }
 
@@ -549,17 +549,17 @@ uint64_t __70__MDMMigrationManager__scheduleMDMMigrationWithNewCloudConfigDetail
 
 - (void)stopNagging
 {
-  v3 = [(MDMMigrationManager *)self nagScheduler];
+  nagScheduler = [(MDMMigrationManager *)self nagScheduler];
 
-  if (v3)
+  if (nagScheduler)
   {
-    v4 = [(MDMMigrationManager *)self nagScheduler];
-    v5 = [MEMORY[0x277D032C8] migrationNagItemID];
-    v6 = [MEMORY[0x277D032C8] migrationNagClientID];
-    [v4 stopNaggingItemWithID:v5 clientID:v6];
+    nagScheduler2 = [(MDMMigrationManager *)self nagScheduler];
+    migrationNagItemID = [MEMORY[0x277D032C8] migrationNagItemID];
+    migrationNagClientID = [MEMORY[0x277D032C8] migrationNagClientID];
+    [nagScheduler2 stopNaggingItemWithID:migrationNagItemID clientID:migrationNagClientID];
 
-    v8 = [(MDMMigrationManager *)self nagScheduler];
-    [v8 evaluateNags];
+    nagScheduler3 = [(MDMMigrationManager *)self nagScheduler];
+    [nagScheduler3 evaluateNags];
   }
 
   else
@@ -573,17 +573,17 @@ uint64_t __70__MDMMigrationManager__scheduleMDMMigrationWithNewCloudConfigDetail
   }
 }
 
-- (BOOL)handleDeadlineActionForNagItem:(id)a3
+- (BOOL)handleDeadlineActionForNagItem:(id)item
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isMigrationNag] && (objc_msgSend(v3, "deadline"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEAA8], "date"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "compare:", v5), v5, v4, v6 == -1))
+  itemCopy = item;
+  if ([itemCopy isMigrationNag] && (objc_msgSend(itemCopy, "deadline"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEAA8], "date"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "compare:", v5), v5, v4, v6 == -1))
   {
     v10 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = v3;
+      v16 = itemCopy;
       _os_log_impl(&dword_2561F5000, v10, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Launching post-deadline system migration action for nag: %{public}@", &v15, 0xCu);
     }
 
@@ -612,26 +612,26 @@ uint64_t __70__MDMMigrationManager__scheduleMDMMigrationWithNewCloudConfigDetail
   return v7;
 }
 
-- (id)appliedGracePeriodToNagItem:(id)a3
+- (id)appliedGracePeriodToNagItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   if (![(MDMMigrationManager *)self _isFirstBoot])
   {
     v11 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(MDMMigrationManager *)self bootUUID];
+      bootUUID = [(MDMMigrationManager *)self bootUUID];
       v19 = 138543362;
-      v20 = *&v13;
+      v20 = *&bootUUID;
       _os_log_impl(&dword_2561F5000, v12, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Ignoring grace period because we already checked this boot: %{public}@", &v19, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  if (![v4 isMigrationNag])
+  if (![itemCopy isMigrationNag])
   {
 LABEL_8:
     v14 = 0;
@@ -640,8 +640,8 @@ LABEL_8:
 
   [MEMORY[0x277D03500] nagMigrationGracePeriod];
   v6 = v5;
-  v7 = [v4 deadline];
-  [v7 timeIntervalSinceNow];
+  deadline = [itemCopy deadline];
+  [deadline timeIntervalSinceNow];
   v9 = v8;
 
   if (v9 > v6)
@@ -650,15 +650,15 @@ LABEL_8:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = *&v4;
+      v20 = *&itemCopy;
       _os_log_impl(&dword_2561F5000, v10, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Ignoring grace period for far out MDM migration nag: %{public}@", &v19, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v17 = [MEMORY[0x277CBEAA8] date];
-  v14 = [v17 dateByAddingTimeInterval:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [date dateByAddingTimeInterval:v6];
 
   v18 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -668,7 +668,7 @@ LABEL_8:
     v21 = 2114;
     v22 = v14;
     v23 = 2114;
-    v24 = v4;
+    v24 = itemCopy;
     _os_log_impl(&dword_2561F5000, v18, OS_LOG_TYPE_DEFAULT, "MDMMigrationManager: Applying %{public}f grace period (%{public}@) to MDM migration nag: %{public}@", &v19, 0x20u);
   }
 
@@ -698,21 +698,21 @@ LABEL_9:
 
 - (BOOL)_isFirstBoot
 {
-  v3 = [(MDMMigrationManager *)self bootUUID];
+  bootUUID = [(MDMMigrationManager *)self bootUUID];
 
-  if (v3)
+  if (bootUUID)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 stringForKey:@"DMCNagMigrationLastBootUUID"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults stringForKey:@"DMCNagMigrationLastBootUUID"];
 
-    v6 = [(MDMMigrationManager *)self bootUUID];
-    v7 = [v5 isEqualToString:v6];
+    bootUUID2 = [(MDMMigrationManager *)self bootUUID];
+    v7 = [v5 isEqualToString:bootUUID2];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v9 = [(MDMMigrationManager *)self bootUUID];
-      [v8 setObject:v9 forKey:@"DMCNagMigrationLastBootUUID"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      bootUUID3 = [(MDMMigrationManager *)self bootUUID];
+      [standardUserDefaults2 setObject:bootUUID3 forKey:@"DMCNagMigrationLastBootUUID"];
     }
 
     v10 = v7 ^ 1;

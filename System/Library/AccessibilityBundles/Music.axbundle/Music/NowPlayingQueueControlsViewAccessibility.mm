@@ -1,5 +1,5 @@
 @interface NowPlayingQueueControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupAutoPlayButton;
 - (void)_setupRepeatButton;
@@ -9,16 +9,16 @@
 
 @implementation NowPlayingQueueControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"autoPlayState" withSwiftType:"Optional<Bool>"];
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"autoPlayButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"shuffleButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"repeatButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"transitionsButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasInstanceMethod:@"accessibilityShuffleType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Music.NowPlayingQueueControlsView" hasInstanceMethod:@"accessibilityRepeatType" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"autoPlayState" withSwiftType:"Optional<Bool>"];
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"autoPlayButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"shuffleButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"repeatButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasSwiftField:@"transitionsButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasInstanceMethod:@"accessibilityShuffleType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Music.NowPlayingQueueControlsView" hasInstanceMethod:@"accessibilityRepeatType" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

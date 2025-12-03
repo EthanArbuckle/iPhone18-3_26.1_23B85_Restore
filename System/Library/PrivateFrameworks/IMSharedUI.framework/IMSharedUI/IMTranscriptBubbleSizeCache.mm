@@ -1,9 +1,9 @@
 @interface IMTranscriptBubbleSizeCache
-- (CGSize)sizeForMaximumWidth:(double)a3;
+- (CGSize)sizeForMaximumWidth:(double)width;
 - (IMTranscriptBubbleSizeCache)init;
-- (id)_cacheEntryForMaximumWidth:(double)a3 getEffectiveIndex:(unint64_t *)a4;
-- (void)_insertCacheEntry:(id)a3;
-- (void)setSize:(CGSize)a3 forMaximumWidth:(double)a4;
+- (id)_cacheEntryForMaximumWidth:(double)width getEffectiveIndex:(unint64_t *)index;
+- (void)_insertCacheEntry:(id)entry;
+- (void)setSize:(CGSize)size forMaximumWidth:(double)width;
 @end
 
 @implementation IMTranscriptBubbleSizeCache
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (CGSize)sizeForMaximumWidth:(double)a3
+- (CGSize)sizeForMaximumWidth:(double)width
 {
   v13 = 0;
-  v3 = objc_msgSend__cacheEntryForMaximumWidth_getEffectiveIndex_(self, a2, &v13, a3);
+  v3 = objc_msgSend__cacheEntryForMaximumWidth_getEffectiveIndex_(self, a2, &v13, width);
   v6 = v3;
   if (v3)
   {
@@ -48,44 +48,44 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3 forMaximumWidth:(double)a4
+- (void)setSize:(CGSize)size forMaximumWidth:(double)width
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = [_IMTranscriptBubbleSizeCacheEntry alloc];
-  v12 = objc_msgSend_initWithSize_maximumWidth_(v8, v9, v10, width, height, a4);
+  v12 = objc_msgSend_initWithSize_maximumWidth_(v8, v9, v10, width, height, width);
   objc_msgSend__insertCacheEntry_(self, v11, v12);
 }
 
-- (void)_insertCacheEntry:(id)a3
+- (void)_insertCacheEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if (objc_msgSend_count(self->_sizeCache, v5, v6))
   {
     v13 = 0;
-    objc_msgSend_minimumWidth(v4, v7, v8);
+    objc_msgSend_minimumWidth(entryCopy, v7, v8);
     v11 = objc_msgSend__cacheEntryForMaximumWidth_getEffectiveIndex_(self, v9, &v13);
     sizeCache = self->_sizeCache;
     if (v11)
     {
-      objc_msgSend_replaceObjectAtIndex_withObject_(sizeCache, v10, v13, v4);
+      objc_msgSend_replaceObjectAtIndex_withObject_(sizeCache, v10, v13, entryCopy);
     }
 
     else
     {
-      objc_msgSend_insertObject_atIndex_(sizeCache, v10, v4, v13);
+      objc_msgSend_insertObject_atIndex_(sizeCache, v10, entryCopy, v13);
     }
   }
 
   else
   {
-    objc_msgSend_addObject_(self->_sizeCache, v7, v4);
+    objc_msgSend_addObject_(self->_sizeCache, v7, entryCopy);
   }
 }
 
-- (id)_cacheEntryForMaximumWidth:(double)a3 getEffectiveIndex:(unint64_t *)a4
+- (id)_cacheEntryForMaximumWidth:(double)width getEffectiveIndex:(unint64_t *)index
 {
-  v7 = objc_msgSend_count(self->_sizeCache, a2, a4);
+  v7 = objc_msgSend_count(self->_sizeCache, a2, index);
   if (v7)
   {
     v9 = v7;
@@ -94,10 +94,10 @@
     {
       v11 = objc_msgSend_objectAtIndex_(self->_sizeCache, v8, (v9 + v10) >> 1);
       objc_msgSend_minimumWidth(v11, v12, v13);
-      if (v16 <= a3)
+      if (v16 <= width)
       {
         objc_msgSend_maximumWidth(v11, v14, v15);
-        if (v17 >= a3)
+        if (v17 >= width)
         {
           v10 = (v9 + v10) >> 1;
           goto LABEL_12;
@@ -122,7 +122,7 @@
 LABEL_10:
   v11 = 0;
 LABEL_12:
-  *a4 = v10;
+  *index = v10;
 
   return v11;
 }

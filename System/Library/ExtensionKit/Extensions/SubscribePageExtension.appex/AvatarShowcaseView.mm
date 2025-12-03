@@ -1,11 +1,11 @@
 @interface AvatarShowcaseView
-- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AvatarShowcaseView
 
-- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension18AvatarShowcaseView_artworkLoader) = 0;
   result = sub_100754644();
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension18AvatarShowcaseView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

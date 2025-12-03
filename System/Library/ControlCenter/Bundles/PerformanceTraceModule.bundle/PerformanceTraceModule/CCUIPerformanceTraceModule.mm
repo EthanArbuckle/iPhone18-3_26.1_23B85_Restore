@@ -1,18 +1,18 @@
 @interface CCUIPerformanceTraceModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation CCUIPerformanceTraceModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   viewController = self->_viewController;
   if (!viewController)
   {
     v5 = objc_alloc_init(CCUIPerformanceTraceModuleViewController);
     v6 = [MEMORY[0x29EDB9F48] ccui_bundleForModuleInstance:self];
-    v7 = [v6 ccui_displayName];
-    [(CCUIMenuModuleViewController *)v5 setTitle:v7];
+    ccui_displayName = [v6 ccui_displayName];
+    [(CCUIMenuModuleViewController *)v5 setTitle:ccui_displayName];
 
     v8 = self->_viewController;
     self->_viewController = v5;

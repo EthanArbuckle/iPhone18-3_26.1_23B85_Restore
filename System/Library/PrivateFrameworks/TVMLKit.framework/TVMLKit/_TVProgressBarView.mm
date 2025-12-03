@@ -1,25 +1,25 @@
 @interface _TVProgressBarView
 - (UIEdgeInsets)padding;
-- (_TVProgressBarView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setCompleteTintColor:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setGradientStartColor:(id)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressTintColor:(id)a3;
-- (void)setShouldProgressBarUseRoundCorner:(BOOL)a3;
-- (void)setUseMaterial:(BOOL)a3;
-- (void)setgradientEndColor:(id)a3;
+- (_TVProgressBarView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setCompleteTintColor:(id)color;
+- (void)setCornerRadius:(double)radius;
+- (void)setGradientStartColor:(id)color;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setProgress:(double)progress;
+- (void)setProgressTintColor:(id)color;
+- (void)setShouldProgressBarUseRoundCorner:(BOOL)corner;
+- (void)setUseMaterial:(BOOL)material;
+- (void)setgradientEndColor:(id)color;
 @end
 
 @implementation _TVProgressBarView
 
-- (_TVProgressBarView)initWithFrame:(CGRect)a3
+- (_TVProgressBarView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVProgressBarView;
-  v3 = [(_TVProgressBarView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVProgressBarView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,12 +29,12 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v40 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();
   v43.origin.x = x;
@@ -49,8 +49,8 @@
   v16 = v15;
   if (!self->_useMaterial)
   {
-    v17 = [(_TVProgressBarView *)self completeTintColor];
-    [v17 setFill];
+    completeTintColor = [(_TVProgressBarView *)self completeTintColor];
+    [completeTintColor setFill];
     v18 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v10 cornerRadius:{v12, v14, v16, self->_cornerRadius}];
     [v18 fill];
   }
@@ -116,100 +116,100 @@
 
   else
   {
-    v37 = [(_TVProgressBarView *)self progressTintColor];
-    [v37 setFill];
+    progressTintColor = [(_TVProgressBarView *)self progressTintColor];
+    [progressTintColor setFill];
 
     [v31 fill];
   }
 }
 
-- (void)setCompleteTintColor:(id)a3
+- (void)setCompleteTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_completeTintColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_completeTintColor, a3);
+    objc_storeStrong(&self->_completeTintColor, color);
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (vabdd_f64(self->_cornerRadius, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_cornerRadius, radius) > 0.00000011920929)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (vabdd_f64(self->_progress, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_progress, progress) > 0.00000011920929)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setProgressTintColor:(id)a3
+- (void)setProgressTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_progressTintColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_progressTintColor, a3);
+    objc_storeStrong(&self->_progressTintColor, color);
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setGradientStartColor:(id)a3
+- (void)setGradientStartColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_gradientStartColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_gradientStartColor, a3);
+    objc_storeStrong(&self->_gradientStartColor, color);
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setgradientEndColor:(id)a3
+- (void)setgradientEndColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_gradientEndColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_gradientEndColor, a3);
+    objc_storeStrong(&self->_gradientEndColor, color);
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setUseMaterial:(BOOL)a3
+- (void)setUseMaterial:(BOOL)material
 {
-  if (self->_useMaterial != a3)
+  if (self->_useMaterial != material)
   {
-    self->_useMaterial = a3;
+    self->_useMaterial = material;
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_padding.top), vceqq_f64(v4, *&self->_padding.bottom)))) & 1) == 0)
   {
-    self->_padding = a3;
+    self->_padding = padding;
     [(_TVProgressBarView *)self setPadding:?];
 
     [(_TVProgressBarView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShouldProgressBarUseRoundCorner:(BOOL)a3
+- (void)setShouldProgressBarUseRoundCorner:(BOOL)corner
 {
-  if (self->_shouldProgressBarUseRoundCorner != a3)
+  if (self->_shouldProgressBarUseRoundCorner != corner)
   {
-    self->_shouldProgressBarUseRoundCorner = a3;
+    self->_shouldProgressBarUseRoundCorner = corner;
     [(_TVProgressBarView *)self setShouldProgressBarUseRoundCorner:?];
 
     [(_TVProgressBarView *)self setNeedsDisplay];

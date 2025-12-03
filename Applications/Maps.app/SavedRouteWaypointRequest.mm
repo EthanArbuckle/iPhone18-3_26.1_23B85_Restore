@@ -1,19 +1,19 @@
 @interface SavedRouteWaypointRequest
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)waypointName;
-- (SavedRouteWaypointRequest)initWithSavedRoute:(id)a3;
-- (SavedRouteWaypointRequest)initWithSavedRouteData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (id)waypointIconWithScale:(double)a3;
+- (SavedRouteWaypointRequest)initWithSavedRoute:(id)route;
+- (SavedRouteWaypointRequest)initWithSavedRouteData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (id)waypointIconWithScale:(double)scale;
 @end
 
 @implementation SavedRouteWaypointRequest
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  v8 = a5;
+  completionHandlerCopy = completionHandler;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -25,7 +25,7 @@
   v18[1] = 3221225472;
   v18[2] = sub_100955808;
   v18[3] = &unk_10164CB50;
-  v19 = v8;
+  v19 = completionHandlerCopy;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1009558B4;
@@ -33,7 +33,7 @@
   v16 = v19;
   v17 = &v20;
   v10 = v19;
-  v11 = [(GEOComposedRoute *)route _maps_convertToNavigableRouteWithTraits:a3 errorHandler:v18 completionHandler:v15];
+  v11 = [(GEOComposedRoute *)route _maps_convertToNavigableRouteWithTraits:traits errorHandler:v18 completionHandler:v15];
   v12 = v21[5];
   v21[5] = v11;
 
@@ -43,13 +43,13 @@
   return v13;
 }
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[1] isEqual:self->_routeData];
+    v5 = [requestCopy[1] isEqual:self->_routeData];
   }
 
   else
@@ -62,38 +62,38 @@
 
 - (NSString)waypointName
 {
-  v3 = [(GEOComposedRoute *)self->_route userProvidedName];
-  v4 = v3;
-  if (v3)
+  userProvidedName = [(GEOComposedRoute *)self->_route userProvidedName];
+  v4 = userProvidedName;
+  if (userProvidedName)
   {
-    v5 = v3;
+    name = userProvidedName;
   }
 
   else
   {
-    v5 = [(GEOComposedRoute *)self->_route name];
+    name = [(GEOComposedRoute *)self->_route name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
   v4 = +[GEOFeatureStyleAttributes customSavedRouteStyleAttributes];
-  v5 = [MKIconManager imageForStyle:v4 size:2 forScale:0 format:a3];
+  v5 = [MKIconManager imageForStyle:v4 size:2 forScale:0 format:scale];
 
   return v5;
 }
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = [(GEOComposedRoute *)self->_route origin];
-  v3 = v2;
-  if (v2)
+  origin = [(GEOComposedRoute *)self->_route origin];
+  v3 = origin;
+  if (origin)
   {
-    [v2 coordinate];
+    [origin coordinate];
     v5 = v4;
     [v3 coordinate];
     v7 = CLLocationCoordinate2DMake(v5, v6);
@@ -114,46 +114,46 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_routeData);
   objc_storeStrong(v4 + 2, self->_route);
   return v4;
 }
 
-- (SavedRouteWaypointRequest)initWithSavedRoute:(id)a3
+- (SavedRouteWaypointRequest)initWithSavedRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v10.receiver = self;
   v10.super_class = SavedRouteWaypointRequest;
   v6 = [(SavedRouteWaypointRequest *)&v10 init];
   if (v6)
   {
-    v7 = [v5 persistentData];
+    persistentData = [routeCopy persistentData];
     routeData = v6->_routeData;
-    v6->_routeData = v7;
+    v6->_routeData = persistentData;
 
-    objc_storeStrong(&v6->_route, a3);
+    objc_storeStrong(&v6->_route, route);
   }
 
   return v6;
 }
 
-- (SavedRouteWaypointRequest)initWithSavedRouteData:(id)a3
+- (SavedRouteWaypointRequest)initWithSavedRouteData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = SavedRouteWaypointRequest;
   v6 = [(SavedRouteWaypointRequest *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routeData, a3);
-    v8 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v5];
-    v9 = [v8 buildRoute];
+    objc_storeStrong(&v6->_routeData, data);
+    v8 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:dataCopy];
+    buildRoute = [v8 buildRoute];
     route = v7->_route;
-    v7->_route = v9;
+    v7->_route = buildRoute;
   }
 
   return v7;

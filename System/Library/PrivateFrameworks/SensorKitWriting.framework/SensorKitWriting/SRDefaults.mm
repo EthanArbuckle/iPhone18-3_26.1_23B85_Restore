@@ -1,18 +1,18 @@
 @interface SRDefaults
 - (void)dealloc;
-- (void)initWithDictionary:(void *)a1;
+- (void)initWithDictionary:(void *)dictionary;
 @end
 
 @implementation SRDefaults
 
-- (void)initWithDictionary:(void *)a1
+- (void)initWithDictionary:(void *)dictionary
 {
-  if (!a1)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = dictionary;
   v9.super_class = SRDefaults;
   v3 = objc_msgSendSuper2(&v9, sel_init);
   if (v3)

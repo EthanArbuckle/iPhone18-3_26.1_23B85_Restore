@@ -2,27 +2,27 @@
 - (BOOL)areAllItemsSelected;
 - (BOOL)isAnyItemSelected;
 - (BOOL)isAnySectionSelected;
-- (BOOL)isIndexPathSelected:(PXSimpleIndexPath *)a3;
+- (BOOL)isIndexPathSelected:(PXSimpleIndexPath *)selected;
 - (NSObject)firstObject;
 - (PXFastEnumeration)allItemsEnumerator;
 - (PXFastEnumeration)allObjectsEnumerator;
 - (PXFastEnumeration)allSectionsEnumerator;
 - (PXIndexPathSet)sectionIndexPathsContainingSelection;
 - (PXSelectionSnapshot)init;
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPath:(PXSimpleIndexPath *)a4;
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPaths:(id)a4;
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPaths:(id)a4 cursorIndexPath:(PXSimpleIndexPath *)a5;
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPaths:(id)a4 cursorIndexPath:(PXSimpleIndexPath *)a5 pendingIndexPath:(PXSimpleIndexPath *)a6 pressedIndexPath:(PXSimpleIndexPath *)a7 selectionLimitReached:(BOOL)a8 emptySelectionAvoided:(BOOL)a9 overallSelectionOrder:(id)a10;
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPath:(PXSimpleIndexPath *)path;
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPaths:(id)paths;
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPaths:(id)paths cursorIndexPath:(PXSimpleIndexPath *)path;
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPaths:(id)paths cursorIndexPath:(PXSimpleIndexPath *)path pendingIndexPath:(PXSimpleIndexPath *)indexPath pressedIndexPath:(PXSimpleIndexPath *)pressedIndexPath selectionLimitReached:(BOOL)reached emptySelectionAvoided:(BOOL)avoided overallSelectionOrder:(id)self0;
 - (PXSimpleIndexPath)cursorIndexPath;
 - (PXSimpleIndexPath)firstSelectedIndexPath;
-- (PXSimpleIndexPath)indexPathOfObjectPassingTest:(SEL)a3;
+- (PXSimpleIndexPath)indexPathOfObjectPassingTest:(SEL)test;
 - (PXSimpleIndexPath)lastSelectedIndexPath;
 - (PXSimpleIndexPath)pendingIndexPath;
 - (PXSimpleIndexPath)pressedIndexPath;
 - (id)description;
 - (id)fetchSelectedObjects;
-- (int64_t)overallSelectionOrderIndexForIndexPath:(PXSimpleIndexPath *)a3;
-- (void)enumerateSelectedObjectsUsingBlock:(id)a3;
+- (int64_t)overallSelectionOrderIndexForIndexPath:(PXSimpleIndexPath *)path;
+- (void)enumerateSelectedObjectsUsingBlock:(id)block;
 @end
 
 @implementation PXSelectionSnapshot
@@ -33,17 +33,17 @@
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __40__PXSelectionSnapshot_isAnyItemSelected__block_invoke;
   v4[3] = &unk_1E7BB6068;
   v4[4] = &v5;
-  [v2 enumerateItemIndexSetsUsingBlock:v4];
+  [selectedIndexPaths enumerateItemIndexSetsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(selectedIndexPaths) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selectedIndexPaths;
 }
 
 - (PXSimpleIndexPath)pressedIndexPath
@@ -76,54 +76,54 @@
   v9.receiver = self;
   v9.super_class = PXSelectionSnapshot;
   v4 = [(PXSelectionSnapshot *)&v9 description];
-  v5 = [(PXSelectionSnapshot *)self dataSource];
-  v6 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v7 = [v3 stringWithFormat:@"<%@ dataSource:%@ selectedIndexPaths:%@>", v4, v5, v6];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  v7 = [v3 stringWithFormat:@"<%@ dataSource:%@ selectedIndexPaths:%@>", v4, dataSource, selectedIndexPaths];
 
   return v7;
 }
 
 - (PXFastEnumeration)allObjectsEnumerator
 {
-  v3 = [(PXSelectionSnapshot *)self dataSource];
-  v4 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v5 = [v3 objectsEnumeratorForIndexPaths:v4];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  v5 = [dataSource objectsEnumeratorForIndexPaths:selectedIndexPaths];
 
   return v5;
 }
 
 - (PXFastEnumeration)allSectionsEnumerator
 {
-  v3 = [(PXSelectionSnapshot *)self dataSource];
-  v4 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v5 = [v3 sectionsEnumeratorForIndexPaths:v4];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  v5 = [dataSource sectionsEnumeratorForIndexPaths:selectedIndexPaths];
 
   return v5;
 }
 
 - (PXFastEnumeration)allItemsEnumerator
 {
-  v3 = [(PXSelectionSnapshot *)self dataSource];
-  v4 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v5 = [v3 itemsEnumeratorForIndexPaths:v4];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  v5 = [dataSource itemsEnumeratorForIndexPaths:selectedIndexPaths];
 
   return v5;
 }
 
 - (id)fetchSelectedObjects
 {
-  v3 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v4 = [(PXSelectionSnapshot *)self dataSource];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(selectedIndexPaths, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __43__PXSelectionSnapshot_fetchSelectedObjects__block_invoke;
   v11[3] = &unk_1E7BB6B50;
-  v12 = v4;
+  v12 = dataSource;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
-  [v3 enumerateAllIndexPathsUsingBlock:v11];
+  v7 = dataSource;
+  [selectedIndexPaths enumerateAllIndexPathsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 
@@ -140,20 +140,20 @@ void __43__PXSelectionSnapshot_fetchSelectedObjects__block_invoke(uint64_t a1, _
   [*(a1 + 40) addObject:v5];
 }
 
-- (void)enumerateSelectedObjectsUsingBlock:(id)a3
+- (void)enumerateSelectedObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXSelectionSnapshot *)self dataSource];
-  v6 = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  blockCopy = block;
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__PXSelectionSnapshot_enumerateSelectedObjectsUsingBlock___block_invoke;
   v9[3] = &unk_1E7BB6108;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 enumerateAllIndexPathsUsingBlock:v9];
+  v10 = dataSource;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = dataSource;
+  [selectedIndexPaths enumerateAllIndexPathsUsingBlock:v9];
 }
 
 void __58__PXSelectionSnapshot_enumerateSelectedObjectsUsingBlock___block_invoke(uint64_t a1, _OWORD *a2)
@@ -166,7 +166,7 @@ void __58__PXSelectionSnapshot_enumerateSelectedObjectsUsingBlock___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (PXSimpleIndexPath)indexPathOfObjectPassingTest:(SEL)a3
+- (PXSimpleIndexPath)indexPathOfObjectPassingTest:(SEL)test
 {
   v6 = a4;
   v17 = 0;
@@ -175,18 +175,18 @@ void __58__PXSelectionSnapshot_enumerateSelectedObjectsUsingBlock___block_invoke
   v20 = "";
   v21 = *PXSimpleIndexPathNull;
   v22 = *&PXSimpleIndexPathNull[16];
-  v7 = [(PXSelectionSnapshot *)self dataSource];
-  v8 = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__PXSelectionSnapshot_indexPathOfObjectPassingTest___block_invoke;
   v13[3] = &unk_1E7BB60E0;
-  v9 = v7;
+  v9 = dataSource;
   v14 = v9;
   v10 = v6;
   v15 = v10;
   v16 = &v17;
-  [v8 enumerateAllIndexPathsUsingBlock:v13];
+  [selectedIndexPaths enumerateAllIndexPathsUsingBlock:v13];
 
   v11 = *(v18 + 3);
   *&retstr->dataSourceIdentifier = *(v18 + 2);
@@ -216,23 +216,23 @@ void __52__PXSelectionSnapshot_indexPathOfObjectPassingTest___block_invoke(void 
 - (PXIndexPathSet)sectionIndexPathsContainingSelection
 {
   v3 = objc_alloc_init(PXMutableIndexPathSet);
-  v4 = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__PXSelectionSnapshot_sectionIndexPathsContainingSelection__block_invoke;
   v13[3] = &unk_1E7BB6090;
   v5 = v3;
   v14 = v5;
-  [v4 enumerateSectionIndexPathsUsingBlock:v13];
+  [selectedIndexPaths enumerateSectionIndexPathsUsingBlock:v13];
 
-  v6 = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  selectedIndexPaths2 = [(PXSelectionSnapshot *)self selectedIndexPaths];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__PXSelectionSnapshot_sectionIndexPathsContainingSelection__block_invoke_2;
   v11[3] = &unk_1E7BB60B8;
   v7 = v5;
   v12 = v7;
-  [v6 enumerateItemIndexSetsUsingBlock:v11];
+  [selectedIndexPaths2 enumerateItemIndexSetsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -275,19 +275,19 @@ uint64_t __59__PXSelectionSnapshot_sectionIndexPathsContainingSelection__block_i
 
 - (PXSimpleIndexPath)lastSelectedIndexPath
 {
-  v14 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v5 = [(PXSelectionSnapshot *)self dataSource];
-  v6 = [v5 identifier];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  identifier = [dataSource identifier];
 
   *retstr = *PXSimpleIndexPathNull;
-  v7 = [v14 sectionsWithItemsForDataSourceIdentifier:v6];
+  v7 = [selectedIndexPaths sectionsWithItemsForDataSourceIdentifier:identifier];
   v8 = v7;
   if (v7 && (v9 = [v7 lastIndex], v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v11 = v9;
-    v10 = [v14 itemIndexSetForDataSourceIdentifier:v6 section:v9];
-    v12 = [v10 lastIndex];
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex2 = v9;
+    v10 = [selectedIndexPaths itemIndexSetForDataSourceIdentifier:identifier section:v9];
+    lastIndex = [v10 lastIndex];
+    if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_7;
     }
@@ -295,19 +295,19 @@ uint64_t __59__PXSelectionSnapshot_sectionIndexPathsContainingSelection__block_i
 
   else
   {
-    v10 = [v14 sectionIndexSetForDataSourceIdentifier:v6];
+    v10 = [selectedIndexPaths sectionIndexSetForDataSourceIdentifier:identifier];
     if (![v10 count])
     {
       goto LABEL_7;
     }
 
-    v11 = [v10 lastIndex];
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    lastIndex2 = [v10 lastIndex];
+    lastIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  retstr->dataSourceIdentifier = v6;
-  retstr->section = v11;
-  retstr->item = v12;
+  retstr->dataSourceIdentifier = identifier;
+  retstr->section = lastIndex2;
+  retstr->item = lastIndex;
   retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_7:
 
@@ -316,19 +316,19 @@ LABEL_7:
 
 - (PXSimpleIndexPath)firstSelectedIndexPath
 {
-  v14 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v5 = [(PXSelectionSnapshot *)self dataSource];
-  v6 = [v5 identifier];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  identifier = [dataSource identifier];
 
   *retstr = *PXSimpleIndexPathNull;
-  v7 = [v14 sectionsWithItemsForDataSourceIdentifier:v6];
+  v7 = [selectedIndexPaths sectionsWithItemsForDataSourceIdentifier:identifier];
   v8 = v7;
   if (v7 && (v9 = [v7 firstIndex], v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v11 = v9;
-    v10 = [v14 itemIndexSetForDataSourceIdentifier:v6 section:v9];
-    v12 = [v10 firstIndex];
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex2 = v9;
+    v10 = [selectedIndexPaths itemIndexSetForDataSourceIdentifier:identifier section:v9];
+    firstIndex = [v10 firstIndex];
+    if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_7;
     }
@@ -336,19 +336,19 @@ LABEL_7:
 
   else
   {
-    v10 = [v14 sectionIndexSetForDataSourceIdentifier:v6];
+    v10 = [selectedIndexPaths sectionIndexSetForDataSourceIdentifier:identifier];
     if (![v10 count])
     {
       goto LABEL_7;
     }
 
-    v11 = [v10 firstIndex];
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    firstIndex2 = [v10 firstIndex];
+    firstIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  retstr->dataSourceIdentifier = v6;
-  retstr->section = v11;
-  retstr->item = v12;
+  retstr->dataSourceIdentifier = identifier;
+  retstr->section = firstIndex2;
+  retstr->item = firstIndex;
   retstr->subitem = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_7:
 
@@ -357,11 +357,11 @@ LABEL_7:
 
 - (BOOL)areAllItemsSelected
 {
-  v3 = [(PXSelectionSnapshot *)self dataSource];
-  v4 = v3;
+  dataSource = [(PXSelectionSnapshot *)self dataSource];
+  v4 = dataSource;
   v14 = 0u;
   v15 = 0u;
-  if (v3 && ([v3 firstItemIndexPath], v14))
+  if (dataSource && ([dataSource firstItemIndexPath], v14))
   {
     v12 = 0u;
     v13 = 0u;
@@ -373,8 +373,8 @@ LABEL_7:
     v5 = [v4 indexPathSetFromIndexPath:v11 toIndexPath:v10];
     v6 = +[(PXIndexPathSet *)PXMutableIndexPathSet];
     [v6 unionIndexPathSet:v5];
-    v7 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-    [v6 minusIndexPathSet:v7];
+    selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+    [v6 minusIndexPathSet:selectedIndexPaths];
 
     v8 = [v6 count] == 0;
   }
@@ -405,17 +405,17 @@ uint64_t __40__PXSelectionSnapshot_isAnyItemSelected__block_invoke(uint64_t a1, 
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __43__PXSelectionSnapshot_isAnySectionSelected__block_invoke;
   v4[3] = &unk_1E7BB6040;
   v4[4] = &v5;
-  [v2 enumerateSectionIndexSetsUsingBlock:v4];
+  [selectedIndexPaths enumerateSectionIndexSetsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(selectedIndexPaths) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selectedIndexPaths;
 }
 
 uint64_t __43__PXSelectionSnapshot_isAnySectionSelected__block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -430,18 +430,18 @@ uint64_t __43__PXSelectionSnapshot_isAnySectionSelected__block_invoke(uint64_t a
   return result;
 }
 
-- (int64_t)overallSelectionOrderIndexForIndexPath:(PXSimpleIndexPath *)a3
+- (int64_t)overallSelectionOrderIndexForIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [(PXSelectionSnapshot *)self overallSelectionOrder];
-  if (v5)
+  overallSelectionOrder = [(PXSelectionSnapshot *)self overallSelectionOrder];
+  if (overallSelectionOrder)
   {
-    v6 = [(PXSelectionSnapshot *)self dataSource];
-    v7 = *&a3->item;
-    v11[0] = *&a3->dataSourceIdentifier;
+    dataSource = [(PXSelectionSnapshot *)self dataSource];
+    v7 = *&path->item;
+    v11[0] = *&path->dataSourceIdentifier;
     v11[1] = v7;
-    v8 = [v6 objectIDAtIndexPath:v11];
+    v8 = [dataSource objectIDAtIndexPath:v11];
 
-    v9 = [v5 indexOfObject:v8];
+    v9 = [overallSelectionOrder indexOfObject:v8];
   }
 
   else
@@ -452,50 +452,50 @@ uint64_t __43__PXSelectionSnapshot_isAnySectionSelected__block_invoke(uint64_t a
   return v9;
 }
 
-- (BOOL)isIndexPathSelected:(PXSimpleIndexPath *)a3
+- (BOOL)isIndexPathSelected:(PXSimpleIndexPath *)selected
 {
-  v4 = [(PXSelectionSnapshot *)self selectedIndexPaths];
-  v5 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  selectedIndexPaths = [(PXSelectionSnapshot *)self selectedIndexPaths];
+  v5 = *&selected->item;
+  v7[0] = *&selected->dataSourceIdentifier;
   v7[1] = v5;
-  LOBYTE(a3) = [v4 containsIndexPath:v7];
+  LOBYTE(selected) = [selectedIndexPaths containsIndexPath:v7];
 
-  return a3;
+  return selected;
 }
 
 - (PXSelectionSnapshot)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:470 description:@"Not supported"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedSelectionManager.m" lineNumber:470 description:@"Not supported"];
 
   abort();
 }
 
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPath:(PXSimpleIndexPath *)a4
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = *&a4->item;
-  v12 = *&a4->dataSourceIdentifier;
+  v6 = *&path->item;
+  v12 = *&path->dataSourceIdentifier;
   v13 = v6;
-  v7 = a3;
+  sourceCopy = source;
   v8 = [PXIndexPathSet indexPathSetWithIndexPath:&v12];
-  v9 = *&a4->item;
-  v12 = *&a4->dataSourceIdentifier;
+  v9 = *&path->item;
+  v12 = *&path->dataSourceIdentifier;
   v13 = v9;
-  v10 = [(PXSelectionSnapshot *)self initWithDataSource:v7 selectedIndexPaths:v8 cursorIndexPath:&v12];
+  v10 = [(PXSelectionSnapshot *)self initWithDataSource:sourceCopy selectedIndexPaths:v8 cursorIndexPath:&v12];
 
   return v10;
 }
 
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPaths:(id)a4
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPaths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  pathsCopy = paths;
   v12 = 0u;
   v13 = 0u;
-  v8 = [v6 identifier];
-  if (v7)
+  identifier = [sourceCopy identifier];
+  if (pathsCopy)
   {
-    [v7 firstItemIndexPathForDataSourceIdentifier:v8];
+    [pathsCopy firstItemIndexPathForDataSourceIdentifier:identifier];
   }
 
   else
@@ -506,49 +506,49 @@ uint64_t __43__PXSelectionSnapshot_isAnySectionSelected__block_invoke(uint64_t a
 
   v11[0] = v12;
   v11[1] = v13;
-  v9 = [(PXSelectionSnapshot *)self initWithDataSource:v6 selectedIndexPaths:v7 cursorIndexPath:v11];
+  v9 = [(PXSelectionSnapshot *)self initWithDataSource:sourceCopy selectedIndexPaths:pathsCopy cursorIndexPath:v11];
 
   return v9;
 }
 
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPaths:(id)a4 cursorIndexPath:(PXSimpleIndexPath *)a5
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPaths:(id)paths cursorIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = *&a5->item;
-  v10[0] = *&a5->dataSourceIdentifier;
+  v5 = *&path->item;
+  v10[0] = *&path->dataSourceIdentifier;
   v10[1] = v5;
   v9[0] = *PXSimpleIndexPathNull;
   v9[1] = *&PXSimpleIndexPathNull[16];
   v8[0] = *PXSimpleIndexPathNull;
   v8[1] = *&PXSimpleIndexPathNull[16];
   LOBYTE(v7) = 0;
-  return [(PXSelectionSnapshot *)self initWithDataSource:a3 selectedIndexPaths:a4 cursorIndexPath:v10 pendingIndexPath:v9 pressedIndexPath:v8 selectionLimitReached:0 emptySelectionAvoided:v7 overallSelectionOrder:0];
+  return [(PXSelectionSnapshot *)self initWithDataSource:source selectedIndexPaths:paths cursorIndexPath:v10 pendingIndexPath:v9 pressedIndexPath:v8 selectionLimitReached:0 emptySelectionAvoided:v7 overallSelectionOrder:0];
 }
 
-- (PXSelectionSnapshot)initWithDataSource:(id)a3 selectedIndexPaths:(id)a4 cursorIndexPath:(PXSimpleIndexPath *)a5 pendingIndexPath:(PXSimpleIndexPath *)a6 pressedIndexPath:(PXSimpleIndexPath *)a7 selectionLimitReached:(BOOL)a8 emptySelectionAvoided:(BOOL)a9 overallSelectionOrder:(id)a10
+- (PXSelectionSnapshot)initWithDataSource:(id)source selectedIndexPaths:(id)paths cursorIndexPath:(PXSimpleIndexPath *)path pendingIndexPath:(PXSimpleIndexPath *)indexPath pressedIndexPath:(PXSimpleIndexPath *)pressedIndexPath selectionLimitReached:(BOOL)reached emptySelectionAvoided:(BOOL)avoided overallSelectionOrder:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a10;
+  sourceCopy = source;
+  pathsCopy = paths;
+  orderCopy = order;
   v28.receiver = self;
   v28.super_class = PXSelectionSnapshot;
   v20 = [(PXSelectionSnapshot *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_dataSource, a3);
-    objc_storeStrong(&v21->_selectedIndexPaths, a4);
-    v22 = *&a5->dataSourceIdentifier;
-    *&v21->_cursorIndexPath.item = *&a5->item;
+    objc_storeStrong(&v20->_dataSource, source);
+    objc_storeStrong(&v21->_selectedIndexPaths, paths);
+    v22 = *&path->dataSourceIdentifier;
+    *&v21->_cursorIndexPath.item = *&path->item;
     *&v21->_cursorIndexPath.dataSourceIdentifier = v22;
-    v23 = *&a6->dataSourceIdentifier;
-    *&v21->_pendingIndexPath.item = *&a6->item;
+    v23 = *&indexPath->dataSourceIdentifier;
+    *&v21->_pendingIndexPath.item = *&indexPath->item;
     *&v21->_pendingIndexPath.dataSourceIdentifier = v23;
-    v24 = *&a7->dataSourceIdentifier;
-    *&v21->_pressedIndexPath.item = *&a7->item;
+    v24 = *&pressedIndexPath->dataSourceIdentifier;
+    *&v21->_pressedIndexPath.item = *&pressedIndexPath->item;
     *&v21->_pressedIndexPath.dataSourceIdentifier = v24;
-    v21->_isSelectionLimitReached = a8;
-    v21->_isEmptySelectionAvoided = a9;
-    v25 = [v19 copy];
+    v21->_isSelectionLimitReached = reached;
+    v21->_isEmptySelectionAvoided = avoided;
+    v25 = [orderCopy copy];
     overallSelectionOrder = v21->_overallSelectionOrder;
     v21->_overallSelectionOrder = v25;
   }

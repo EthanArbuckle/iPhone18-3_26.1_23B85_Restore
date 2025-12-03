@@ -3,9 +3,9 @@
 - (SPHistoricalReportManager)init;
 - (id)filenameDateFormatter;
 - (void)cleanupOldReports;
-- (void)getReportsForDateInterval:(id)a3 reportHandler:(id)a4;
+- (void)getReportsForDateInterval:(id)interval reportHandler:(id)handler;
 - (void)init;
-- (void)saveReport:(id)a3 withType:(unsigned int)a4 errorHandler:(id)a5;
+- (void)saveReport:(id)report withType:(unsigned int)type errorHandler:(id)handler;
 @end
 
 @implementation SPHistoricalReportManager
@@ -52,15 +52,15 @@ uint64_t __43__SPHistoricalReportManager_sharedInstance__block_invoke()
     reportsDirectory = v2->_reportsDirectory;
     v2->_reportsDirectory = v6;
 
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v8 fileExistsAtPath:v2->_reportsDirectory];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v9 = [defaultManager fileExistsAtPath:v2->_reportsDirectory];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v11 = v2->_reportsDirectory;
       v15 = 0;
-      [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v15];
+      [defaultManager2 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v15];
       v12 = v15;
 
       if (v12)
@@ -100,24 +100,24 @@ void __50__SPHistoricalReportManager_filenameDateFormatter__block_invoke()
   [filenameDateFormatter_formatter setLocale:v2];
 }
 
-- (void)saveReport:(id)a3 withType:(unsigned int)a4 errorHandler:(id)a5
+- (void)saveReport:(id)report withType:(unsigned int)type errorHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  reportCopy = report;
+  handlerCopy = handler;
   v10 = self->_reportsDirectory;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SPHistoricalReportManager_saveReport_withType_errorHandler___block_invoke;
   block[3] = &unk_278934000;
-  v20 = a4;
-  v16 = v8;
-  v17 = self;
+  typeCopy = type;
+  v16 = reportCopy;
+  selfCopy = self;
   v18 = v10;
-  v19 = v9;
+  v19 = handlerCopy;
   v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v13 = handlerCopy;
+  v14 = reportCopy;
   dispatch_async(queue, block);
 }
 
@@ -241,10 +241,10 @@ void __62__SPHistoricalReportManager_saveReport_withType_errorHandler___block_in
   }
 }
 
-- (void)getReportsForDateInterval:(id)a3 reportHandler:(id)a4
+- (void)getReportsForDateInterval:(id)interval reportHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v8 = self->_reportsDirectory;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -252,11 +252,11 @@ void __62__SPHistoricalReportManager_saveReport_withType_errorHandler___block_in
   v13[2] = __69__SPHistoricalReportManager_getReportsForDateInterval_reportHandler___block_invoke;
   v13[3] = &unk_278934028;
   v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v17 = v7;
-  v10 = v6;
-  v11 = v7;
+  selfCopy = self;
+  v16 = intervalCopy;
+  v17 = handlerCopy;
+  v10 = intervalCopy;
+  v11 = handlerCopy;
   v12 = v8;
   dispatch_async(queue, v13);
 }
@@ -403,19 +403,19 @@ LABEL_29:
 - (void)cleanupOldReports
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   reportsDirectory = self->_reportsDirectory;
   v30 = 0;
-  v25 = v3;
-  v5 = [v3 contentsOfDirectoryAtPath:reportsDirectory error:&v30];
+  v25 = defaultManager;
+  v5 = [defaultManager contentsOfDirectoryAtPath:reportsDirectory error:&v30];
   v6 = v30;
   v7 = v6;
   if (v5)
   {
     v23 = v6;
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     retentionDays = self->_retentionDays;
-    v10 = [(SPHistoricalReportManager *)self filenameDateFormatter];
+    filenameDateFormatter = [(SPHistoricalReportManager *)self filenameDateFormatter];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -441,10 +441,10 @@ LABEL_29:
           if ([v17 length] >= 0xD)
           {
             v18 = [v17 substringToIndex:13];
-            v19 = [v10 dateFromString:v18];
+            v19 = [filenameDateFormatter dateFromString:v18];
             if (v19)
             {
-              [v8 timeIntervalSinceDate:v19];
+              [date timeIntervalSinceDate:v19];
               if (v20 > v14)
               {
                 v21 = [(NSString *)self->_reportsDirectory stringByAppendingPathComponent:v17];
@@ -471,7 +471,7 @@ LABEL_29:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_231A35000, a2, OS_LOG_TYPE_ERROR, "Error creating historical reports directory: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

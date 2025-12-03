@@ -1,23 +1,23 @@
 @interface HDSPSpringboardMonitor
 - (BOOL)_checkSpringBoardStarted;
 - (BOOL)isSpringboardStarted;
-- (HDSPSpringboardMonitor)initWithCallbackScheduler:(id)a3 isAppleWatch:(BOOL)a4;
+- (HDSPSpringboardMonitor)initWithCallbackScheduler:(id)scheduler isAppleWatch:(BOOL)watch;
 - (id)_processName;
 - (void)_checkAndNotify;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation HDSPSpringboardMonitor
 
-- (HDSPSpringboardMonitor)initWithCallbackScheduler:(id)a3 isAppleWatch:(BOOL)a4
+- (HDSPSpringboardMonitor)initWithCallbackScheduler:(id)scheduler isAppleWatch:(BOOL)watch
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  schedulerCopy = scheduler;
   v16.receiver = self;
   v16.super_class = HDSPSpringboardMonitor;
   v7 = [(HDSPSpringboardMonitor *)&v16 init];
@@ -35,10 +35,10 @@
       _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    v7[8] = a4;
+    v7[8] = watch;
     *(v7 + 12) = 0xFFFFFFFFLL;
     v7[9] = [v7 _checkSpringBoardStarted];
-    v11 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:v6];
+    v11 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:schedulerCopy];
     v12 = *(v7 + 3);
     *(v7 + 3) = v11;
 
@@ -49,11 +49,11 @@
   return v7;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_springboardStartedLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_springboardStartedLock);
 }
@@ -105,11 +105,11 @@
     {
       v5 = objc_opt_class();
       v6 = v5;
-      v7 = [(HDSPSpringboardMonitor *)self _processName];
+      _processName = [(HDSPSpringboardMonitor *)self _processName];
       *state64 = 138543874;
       *&state64[4] = v5;
       v12 = 2114;
-      v13 = v7;
+      v13 = _processName;
       v14 = 1024;
       v15 = v3;
       _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ started = %d", state64, 0x1Cu);
@@ -141,12 +141,12 @@
   [(HDSPSpringboardMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v4 = 0;
-    [(HKSPObserverSet *)self->_observers addObserver:a3 wasFirst:&v4];
+    [(HKSPObserverSet *)self->_observers addObserver:observer wasFirst:&v4];
     if (v4 == 1)
     {
       [(HDSPSpringboardMonitor *)self _startMonitoring];
@@ -154,12 +154,12 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v4 = 0;
-    [(HKSPObserverSet *)self->_observers removeObserver:a3 wasLast:&v4];
+    [(HKSPObserverSet *)self->_observers removeObserver:observer wasLast:&v4];
     if (v4 == 1)
     {
       [(HDSPSpringboardMonitor *)self _stopMonitoring];
@@ -183,11 +183,11 @@
     {
       v8 = objc_opt_class();
       v5 = v8;
-      v6 = [(HDSPSpringboardMonitor *)self _processName];
+      _processName = [(HDSPSpringboardMonitor *)self _processName];
       *buf = 138543618;
       v12 = v8;
       v13 = 2114;
-      v14 = v6;
+      v14 = _processName;
       v7 = "[%{public}@] Start monitoring %{public}@ start";
       goto LABEL_6;
     }
@@ -200,11 +200,11 @@
     {
       v4 = objc_opt_class();
       v5 = v4;
-      v6 = [(HDSPSpringboardMonitor *)self _processName];
+      _processName = [(HDSPSpringboardMonitor *)self _processName];
       *buf = 138543618;
       v12 = v4;
       v13 = 2114;
-      v14 = v6;
+      v14 = _processName;
       v7 = "[%{public}@] Alreay monitoring %{public}@";
 LABEL_6:
       _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, v7, buf, 0x16u);
@@ -267,11 +267,11 @@ _BYTE *__41__HDSPSpringboardMonitor__checkAndNotify__block_invoke(uint64_t a1)
     {
       v5 = objc_opt_class();
       v6 = v5;
-      v7 = [(HDSPSpringboardMonitor *)self _processName];
+      _processName = [(HDSPSpringboardMonitor *)self _processName];
       v9 = 138543618;
       v10 = v5;
       v11 = 2114;
-      v12 = v7;
+      v12 = _processName;
       _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stop monitoring %{public}@ start", &v9, 0x16u);
     }
   }

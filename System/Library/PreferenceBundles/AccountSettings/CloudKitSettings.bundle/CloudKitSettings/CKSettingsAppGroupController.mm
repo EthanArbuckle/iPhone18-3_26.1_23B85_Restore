@@ -1,7 +1,7 @@
 @interface CKSettingsAppGroupController
-- (id)enabledForSpecifier:(id)a3;
+- (id)enabledForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)setEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation CKSettingsAppGroupController
@@ -18,11 +18,11 @@
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"setEnabled:forSpecifier:" get:"enabledForSpecifier:" detail:0 cell:6 edit:0];
 
   v9 = +[PSSpecifier emptyGroupSpecifier];
-  v10 = [(CKSettingsAppGroupController *)self specifier];
-  v11 = [v10 propertyForKey:@"CKSettingsDisplayableAppPermissionGroup"];
+  specifier = [(CKSettingsAppGroupController *)self specifier];
+  v11 = [specifier propertyForKey:@"CKSettingsDisplayableAppPermissionGroup"];
 
-  v12 = [v11 appNameImages];
-  v13 = [v12 CKMap:&stru_14520];
+  appNameImages = [v11 appNameImages];
+  v13 = [appNameImages CKMap:&stru_14520];
 
   v14 = objc_opt_new();
   v15 = OBJC_IVAR___PSListController__specifiers;
@@ -39,19 +39,19 @@
   return v17;
 }
 
-- (void)setEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [(CKSettingsAppGroupController *)self parentController];
-  v6 = [(CKSettingsAppGroupController *)self specifier];
-  [v7 setAppPermissionEnabled:v5 forSpecifier:v6];
+  enabledCopy = enabled;
+  parentController = [(CKSettingsAppGroupController *)self parentController];
+  specifier = [(CKSettingsAppGroupController *)self specifier];
+  [parentController setAppPermissionEnabled:enabledCopy forSpecifier:specifier];
 }
 
-- (id)enabledForSpecifier:(id)a3
+- (id)enabledForSpecifier:(id)specifier
 {
-  v4 = [(CKSettingsAppGroupController *)self parentController];
-  v5 = [(CKSettingsAppGroupController *)self specifier];
-  v6 = [v4 appPermissionEnabledForSpecifier:v5];
+  parentController = [(CKSettingsAppGroupController *)self parentController];
+  specifier = [(CKSettingsAppGroupController *)self specifier];
+  v6 = [parentController appPermissionEnabledForSpecifier:specifier];
 
   return v6;
 }

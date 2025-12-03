@@ -1,47 +1,47 @@
 @interface _SFPBRFPrimaryHeaderStackedImageCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithFacade:(id)a3;
-- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithJSON:(id)a3;
+- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithFacade:(id)facade;
+- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addImages:(id)a3;
-- (void)setImages:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addImages:(id)images;
+- (void)setImages:(id)images;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFPrimaryHeaderStackedImageCardSection
 
-- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithFacade:(id)a3
+- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithFacade:(id)facade
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      text2 = [facadeCopy text];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:text2];
       [(_SFPBRFPrimaryHeaderStackedImageCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 text];
+    text3 = [facadeCopy text];
 
-    if (v10)
+    if (text3)
     {
       v11 = [_SFPBRFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:v12];
+      text4 = [facadeCopy text];
+      v13 = [(_SFPBRFTextProperty *)v11 initWithFacade:text4];
       [(_SFPBRFPrimaryHeaderStackedImageCardSection *)v5 setText_2:v13];
     }
 
-    v14 = [v4 images];
-    if (v14)
+    images = [facadeCopy images];
+    if (images)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -55,8 +55,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v4 images];
-    v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    images2 = [facadeCopy images];
+    v17 = [images2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
       v18 = v17;
@@ -67,7 +67,7 @@
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(images2);
           }
 
           v21 = [[_SFPBRFVisualProperty alloc] initWithFacade:*(*(&v25 + 1) + 8 * i)];
@@ -77,7 +77,7 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v18 = [images2 countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v18);
@@ -91,16 +91,16 @@
   return v5;
 }
 
-- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithDictionary:(id)a3
+- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = _SFPBRFPrimaryHeaderStackedImageCardSection;
   v5 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(_SFPBRFPrimaryHeaderStackedImageCardSection *)v5 setText_1:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"text2"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"text2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
       [(_SFPBRFPrimaryHeaderStackedImageCardSection *)v5 setText_2:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"images"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"images"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -165,30 +165,30 @@
   return v5;
 }
 
-- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithJSON:(id)a3
+- (_SFPBRFPrimaryHeaderStackedImageCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -202,10 +202,10 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_images count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -225,16 +225,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -244,44 +244,44 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"images"];
+    [dictionary setObject:array forKeyedSubscript:@"images"];
   }
 
   if (self->_text_1)
   {
-    v12 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    text = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+    dictionaryRepresentation2 = [text dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"text1"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"text1"];
     }
   }
 
   if (self->_text_2)
   {
-    v15 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    text2 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+    dictionaryRepresentation3 = [text2 dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"text2"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"text2"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"text2"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"text2"];
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -291,28 +291,28 @@
   return v4 ^ [(NSArray *)self->_images hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-  if (v7)
+  text3 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -324,20 +324,20 @@
   {
   }
 
-  v5 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-  if (v12)
+  text6 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+  if (text6)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-    v15 = [v4 text];
-    v16 = [v14 isEqual:v15];
+    v13 = text6;
+    text7 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+    text8 = [equalCopy text];
+    v16 = [text7 isEqual:text8];
 
     if (!v16)
     {
@@ -349,12 +349,12 @@
   {
   }
 
-  v5 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
-  v6 = [v4 images];
-  if ((v5 != 0) != (v6 == 0))
+  text = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
+  text2 = [equalCopy images];
+  if ((text != 0) != (text2 == 0))
   {
-    v17 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
-    if (!v17)
+    images = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
+    if (!images)
     {
 
 LABEL_20:
@@ -362,10 +362,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
-    v20 = [v4 images];
-    v21 = [v19 isEqual:v20];
+    v18 = images;
+    images2 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
+    images3 = [equalCopy images];
+    v21 = [images2 isEqual:images3];
 
     if (v21)
     {
@@ -385,28 +385,28 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-  if (v5)
+  toCopy = to;
+  text = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
-  if (v6)
+  text2 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self text];
+  if (text2)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
+  images = [(_SFPBRFPrimaryHeaderStackedImageCardSection *)self images];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [images countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -418,7 +418,7 @@ LABEL_18:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(images);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -427,7 +427,7 @@ LABEL_18:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [images countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -436,27 +436,27 @@ LABEL_18:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addImages:(id)a3
+- (void)addImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   images = self->_images;
-  v8 = v4;
+  v8 = imagesCopy;
   if (!images)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_images;
-    self->_images = v6;
+    self->_images = array;
 
-    v4 = v8;
+    imagesCopy = v8;
     images = self->_images;
   }
 
-  [(NSArray *)images addObject:v4];
+  [(NSArray *)images addObject:imagesCopy];
 }
 
-- (void)setImages:(id)a3
+- (void)setImages:(id)images
 {
-  v4 = [a3 copy];
+  v4 = [images copy];
   images = self->_images;
   self->_images = v4;
 

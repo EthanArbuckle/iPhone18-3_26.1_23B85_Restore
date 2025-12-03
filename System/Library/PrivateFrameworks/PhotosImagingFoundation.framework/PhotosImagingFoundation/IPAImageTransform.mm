@@ -1,8 +1,8 @@
 @interface IPAImageTransform
-+ (id)compositeTransforms:(id)a3;
-+ (id)identityTransformForGeometry:(id)a3;
++ (id)compositeTransforms:(id)transforms;
++ (id)identityTransformForGeometry:(id)geometry;
 - (IPAImageTransform)init;
-- (IPAImageTransform)initWithInputGeometry:(id)a3 intrinsicGeometry:(id)a4;
+- (IPAImageTransform)initWithInputGeometry:(id)geometry intrinsicGeometry:(id)intrinsicGeometry;
 - (id)description;
 - (id)inverseTransform;
 @end
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (IPAImageTransform)initWithInputGeometry:(id)a3 intrinsicGeometry:(id)a4
+- (IPAImageTransform)initWithInputGeometry:(id)geometry intrinsicGeometry:(id)intrinsicGeometry
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 && v8)
+  geometryCopy = geometry;
+  intrinsicGeometryCopy = intrinsicGeometry;
+  v9 = intrinsicGeometryCopy;
+  if (geometryCopy && intrinsicGeometryCopy)
   {
     v13.receiver = self;
     v13.super_class = IPAImageTransform;
@@ -42,8 +42,8 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_inputGeometry, a3);
-      objc_storeStrong(&v11->_intrinsicGeometry, a4);
+      objc_storeStrong(&v10->_inputGeometry, geometry);
+      objc_storeStrong(&v11->_intrinsicGeometry, intrinsicGeometry);
     }
 
     return v11;
@@ -65,12 +65,12 @@
   return result;
 }
 
-+ (id)compositeTransforms:(id)a3
++ (id)compositeTransforms:(id)transforms
 {
-  v3 = a3;
-  if ([v3 count])
+  transformsCopy = transforms;
+  if ([transformsCopy count])
   {
-    v4 = [[IPAImageTransformSequence alloc] initWithTransforms:v3];
+    v4 = [[IPAImageTransformSequence alloc] initWithTransforms:transformsCopy];
 
     return v4;
   }
@@ -84,12 +84,12 @@
   return result;
 }
 
-+ (id)identityTransformForGeometry:(id)a3
++ (id)identityTransformForGeometry:(id)geometry
 {
-  v3 = a3;
-  if (v3)
+  geometryCopy = geometry;
+  if (geometryCopy)
   {
-    v4 = [(IPAImageTransform *)[IPAImageIdentityTransform alloc] initWithInputGeometry:v3 intrinsicGeometry:v3];
+    v4 = [(IPAImageTransform *)[IPAImageIdentityTransform alloc] initWithInputGeometry:geometryCopy intrinsicGeometry:geometryCopy];
 
     return v4;
   }

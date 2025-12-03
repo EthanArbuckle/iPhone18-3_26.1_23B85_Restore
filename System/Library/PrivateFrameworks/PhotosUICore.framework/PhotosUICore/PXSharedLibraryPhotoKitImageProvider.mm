@@ -1,30 +1,30 @@
 @interface PXSharedLibraryPhotoKitImageProvider
 - (PXSharedLibraryPhotoKitImageProvider)init;
-- (PXSharedLibraryPhotoKitImageProvider)initWithParticipant:(id)a3;
-- (PXSharedLibraryPhotoKitImageProvider)initWithPerson:(id)a3;
-- (int64_t)requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 completionHandler:(id)a6;
-- (void)_handleResultForRequestWithIdentifier:(int64_t)a3 image:(id)a4 isDegraded:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)cancelRequestWithIdentifier:(int64_t)a3;
+- (PXSharedLibraryPhotoKitImageProvider)initWithParticipant:(id)participant;
+- (PXSharedLibraryPhotoKitImageProvider)initWithPerson:(id)person;
+- (int64_t)requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l completionHandler:(id)handler;
+- (void)_handleResultForRequestWithIdentifier:(int64_t)identifier image:(id)image isDegraded:(id)degraded error:(id)error completionHandler:(id)handler;
+- (void)cancelRequestWithIdentifier:(int64_t)identifier;
 @end
 
 @implementation PXSharedLibraryPhotoKitImageProvider
 
-- (void)_handleResultForRequestWithIdentifier:(int64_t)a3 image:(id)a4 isDegraded:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)_handleResultForRequestWithIdentifier:(int64_t)identifier image:(id)image isDegraded:(id)degraded error:(id)error completionHandler:(id)handler
 {
-  v18 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (self->_identifier == a3)
+  imageCopy = image;
+  degradedCopy = degraded;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (self->_identifier == identifier)
   {
-    v15 = v18;
-    if (v18 && !v13)
+    v15 = imageCopy;
+    if (imageCopy && !errorCopy)
     {
       v16 = 0;
       goto LABEL_8;
     }
 
-    v17 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXSharedLibraryImageProviderErrorDomain" code:-1001 underlyingError:v13 debugDescription:@"Request failed"];
+    v17 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXSharedLibraryImageProviderErrorDomain" code:-1001 underlyingError:errorCopy debugDescription:@"Request failed"];
   }
 
   else
@@ -37,27 +37,27 @@
   v15 = 0;
 LABEL_8:
   v19 = v15;
-  v14[2](v14);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)cancelRequestWithIdentifier:(int64_t)a3
+- (void)cancelRequestWithIdentifier:(int64_t)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"identifier != PXSharedLibraryImageProviderRequestIdentifierInvalid"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"identifier != PXSharedLibraryImageProviderRequestIdentifierInvalid"}];
   }
 
-  if (self->_identifier == a3)
+  if (self->_identifier == identifier)
   {
-    self->_identifier = a3 + 1;
+    self->_identifier = identifier + 1;
   }
 }
 
-- (int64_t)requestImageWithTargetSize:(CGSize)a3 displayScale:(double)a4 isRTL:(BOOL)a5 completionHandler:(id)a6
+- (int64_t)requestImageWithTargetSize:(CGSize)size displayScale:(double)scale isRTL:(BOOL)l completionHandler:(id)handler
 {
   v8 = *MEMORY[0x1E69E9840];
-  v6 = a6;
+  handlerCopy = handler;
   PXSizeIsEmpty();
 }
 
@@ -109,13 +109,13 @@ void __104__PXSharedLibraryPhotoKitImageProvider_requestImageWithTargetSize_disp
   (*(*(a1 + 32) + 16))();
 }
 
-- (PXSharedLibraryPhotoKitImageProvider)initWithParticipant:(id)a3
+- (PXSharedLibraryPhotoKitImageProvider)initWithParticipant:(id)participant
 {
-  v6 = a3;
-  if (!v6)
+  participantCopy = participant;
+  if (!participantCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"participant"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"participant"}];
   }
 
   v11.receiver = self;
@@ -125,19 +125,19 @@ void __104__PXSharedLibraryPhotoKitImageProvider_requestImageWithTargetSize_disp
   if (v7)
   {
     v7->_identifier = 0;
-    objc_storeStrong(&v7->_participant, a3);
+    objc_storeStrong(&v7->_participant, participant);
   }
 
   return v8;
 }
 
-- (PXSharedLibraryPhotoKitImageProvider)initWithPerson:(id)a3
+- (PXSharedLibraryPhotoKitImageProvider)initWithPerson:(id)person
 {
-  v6 = a3;
-  if (!v6)
+  personCopy = person;
+  if (!personCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v11.receiver = self;
@@ -147,7 +147,7 @@ void __104__PXSharedLibraryPhotoKitImageProvider_requestImageWithTargetSize_disp
   if (v7)
   {
     v7->_identifier = 0;
-    objc_storeStrong(&v7->_person, a3);
+    objc_storeStrong(&v7->_person, person);
   }
 
   return v8;
@@ -155,8 +155,8 @@ void __104__PXSharedLibraryPhotoKitImageProvider_requestImageWithTargetSize_disp
 
 - (PXSharedLibraryPhotoKitImageProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXSharedLibraryPhotoKitImageProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryPhotoKitImageProvider.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXSharedLibraryPhotoKitImageProvider init]"}];
 
   abort();
 }

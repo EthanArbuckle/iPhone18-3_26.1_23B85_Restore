@@ -1,70 +1,70 @@
 @interface CEKSmartStyle
 + (CEKSmartStyle)identityStyle;
 + (CEKSmartStyle)systemStyle;
-+ (id)defaultStylesIncludingSystemStyles:(BOOL)a3 systemStylePlaceholder:(BOOL)a4 creativeStyles:(BOOL)a5;
-+ (id)displayNameForPresetType:(int64_t)a3;
-+ (id)persistenceStringForPresetType:(int64_t)a3;
-+ (id)styleWithDictionary:(id)a3 error:(id *)a4;
-+ (int64_t)castTypeForPresetType:(int64_t)a3;
-+ (int64_t)presetTypeFromPersistenceString:(id)a3 success:(BOOL *)a4;
-+ (unint64_t)_indexForPresetString:(id)a3;
-+ (void)_getPresetValuesForPresetType:(int64_t)a3 castIntensity:(double *)a4 toneBias:(double *)a5 colorBias:(double *)a6;
++ (id)defaultStylesIncludingSystemStyles:(BOOL)styles systemStylePlaceholder:(BOOL)placeholder creativeStyles:(BOOL)creativeStyles;
++ (id)displayNameForPresetType:(int64_t)type;
++ (id)persistenceStringForPresetType:(int64_t)type;
++ (id)styleWithDictionary:(id)dictionary error:(id *)error;
++ (int64_t)castTypeForPresetType:(int64_t)type;
++ (int64_t)presetTypeFromPersistenceString:(id)string success:(BOOL *)success;
++ (unint64_t)_indexForPresetString:(id)string;
++ (void)_getPresetValuesForPresetType:(int64_t)type castIntensity:(double *)intensity toneBias:(double *)bias colorBias:(double *)colorBias;
 - (BOOL)isCustomizable;
 - (BOOL)isCustomized;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSmartStyle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSmartStyle:(id)style;
 - (BOOL)isNeutral;
-- (CEKSmartStyle)initWithPresetType:(int64_t)a3;
-- (CEKSmartStyle)initWithPresetType:(int64_t)a3 castIntensity:(double)a4 toneBias:(double)a5 colorBias:(double)a6;
+- (CEKSmartStyle)initWithPresetType:(int64_t)type;
+- (CEKSmartStyle)initWithPresetType:(int64_t)type castIntensity:(double)intensity toneBias:(double)bias colorBias:(double)colorBias;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 - (NSString)presetDisplayName;
-- (id)_analyticsDictionaryForCapture:(BOOL)a3;
+- (id)_analyticsDictionaryForCapture:(BOOL)capture;
 @end
 
 @implementation CEKSmartStyle
 
-- (CEKSmartStyle)initWithPresetType:(int64_t)a3 castIntensity:(double)a4 toneBias:(double)a5 colorBias:(double)a6
+- (CEKSmartStyle)initWithPresetType:(int64_t)type castIntensity:(double)intensity toneBias:(double)bias colorBias:(double)colorBias
 {
-  v18 = a5;
-  v19 = a4;
-  v17 = a6;
+  biasCopy = bias;
+  intensityCopy = intensity;
+  colorBiasCopy = colorBias;
   v16.receiver = self;
   v16.super_class = CEKSmartStyle;
   v7 = [(CEKSmartStyle *)&v16 init];
   if (v7)
   {
-    v8 = [objc_opt_class() castTypeForPresetType:a3];
-    v9 = [objc_opt_class() isCustomizablePresetType:a3];
+    v8 = [objc_opt_class() castTypeForPresetType:type];
+    v9 = [objc_opt_class() isCustomizablePresetType:type];
     v10 = objc_opt_class();
     if (v9)
     {
       if ([v10 canCustomizeCastIntensityForCastType:v8])
       {
 LABEL_7:
-        v7->_presetType = a3;
+        v7->_presetType = type;
         v7->_castType = v8;
-        v7->_castIntensity = CEKClamp(v19, 0.0, 1.0);
-        v7->_toneBias = CEKClamp(v18, -1.0, 1.0);
-        v7->_colorBias = CEKClamp(v17, -1.0, 1.0);
+        v7->_castIntensity = CEKClamp(intensityCopy, 0.0, 1.0);
+        v7->_toneBias = CEKClamp(biasCopy, -1.0, 1.0);
+        v7->_colorBias = CEKClamp(colorBiasCopy, -1.0, 1.0);
         v14 = v7;
         goto LABEL_8;
       }
 
       v10 = objc_opt_class();
-      v11 = a3;
+      typeCopy2 = type;
       v12 = 0;
       v13 = 0;
     }
 
     else
     {
-      v12 = &v18;
-      v13 = &v17;
-      v11 = a3;
+      v12 = &biasCopy;
+      v13 = &colorBiasCopy;
+      typeCopy2 = type;
     }
 
-    [v10 _getPresetValuesForPresetType:v11 castIntensity:&v19 toneBias:v12 colorBias:v13];
+    [v10 _getPresetValuesForPresetType:typeCopy2 castIntensity:&intensityCopy toneBias:v12 colorBias:v13];
     goto LABEL_7;
   }
 
@@ -73,13 +73,13 @@ LABEL_8:
   return v7;
 }
 
-- (CEKSmartStyle)initWithPresetType:(int64_t)a3
+- (CEKSmartStyle)initWithPresetType:(int64_t)type
 {
   v7 = 0.0;
   v8 = 0.0;
   v6 = 0.0;
-  [objc_opt_class() _getPresetValuesForPresetType:a3 castIntensity:&v8 toneBias:&v7 colorBias:&v6];
-  return [(CEKSmartStyle *)self initWithPresetType:a3 castIntensity:v8 toneBias:v7 colorBias:v6];
+  [objc_opt_class() _getPresetValuesForPresetType:type castIntensity:&v8 toneBias:&v7 colorBias:&v6];
+  return [(CEKSmartStyle *)self initWithPresetType:type castIntensity:v8 toneBias:v7 colorBias:v6];
 }
 
 + (CEKSmartStyle)identityStyle
@@ -124,69 +124,69 @@ uint64_t __28__CEKSmartStyle_systemStyle__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (int64_t)castTypeForPresetType:(int64_t)a3
++ (int64_t)castTypeForPresetType:(int64_t)type
 {
-  if ((a3 - 2) >= 0xF)
+  if ((type - 2) >= 0xF)
   {
     return 0;
   }
 
   else
   {
-    return a3 - 1;
+    return type - 1;
   }
 }
 
-+ (id)persistenceStringForPresetType:(int64_t)a3
++ (id)persistenceStringForPresetType:(int64_t)type
 {
-  if (a3 > 0x10)
+  if (type > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7CC6E08[a3];
+    return off_1E7CC6E08[type];
   }
 }
 
-+ (int64_t)presetTypeFromPersistenceString:(id)a3 success:(BOOL *)a4
++ (int64_t)presetTypeFromPersistenceString:(id)string success:(BOOL *)success
 {
-  v5 = [a1 _indexForPresetString:a3];
+  v5 = [self _indexForPresetString:string];
   v6 = v5 != 0x7FFFFFFFFFFFFFFFLL;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [&unk_1F2FE0278 objectAtIndexedSubscript:v5];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
 
-    if (!a4)
+    if (!success)
     {
-      return v8;
+      return integerValue;
     }
 
     goto LABEL_5;
   }
 
-  v8 = 1;
-  if (a4)
+  integerValue = 1;
+  if (success)
   {
 LABEL_5:
-    *a4 = v6;
+    *success = v6;
   }
 
-  return v8;
+  return integerValue;
 }
 
-+ (void)_getPresetValuesForPresetType:(int64_t)a3 castIntensity:(double *)a4 toneBias:(double *)a5 colorBias:(double *)a6
++ (void)_getPresetValuesForPresetType:(int64_t)type castIntensity:(double *)intensity toneBias:(double *)bias colorBias:(double *)colorBias
 {
-  if (a3 > 0x10)
+  if (type > 0x10)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = **(&unk_1E7CC6CF8 + a3);
+    v10 = **(&unk_1E7CC6CF8 + type);
   }
 
   v11 = [MEMORY[0x1E6991718] defaultStyleForCastType:v10];
@@ -195,37 +195,37 @@ LABEL_5:
     v12 = os_log_create("com.apple.camera", "CameraEditKit");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [CEKSmartStyle _getPresetValuesForPresetType:a3 castIntensity:v12 toneBias:? colorBias:?];
+      [CEKSmartStyle _getPresetValuesForPresetType:type castIntensity:v12 toneBias:? colorBias:?];
     }
   }
 
-  if (a4)
+  if (intensity)
   {
     [v11 castIntensity];
-    *a4 = v13;
+    *intensity = v13;
   }
 
-  if (a5)
+  if (bias)
   {
     [v11 toneBias];
-    *a5 = v14;
+    *bias = v14;
   }
 
-  if (a6)
+  if (colorBias)
   {
     [v11 colorBias];
-    *a6 = v15;
+    *colorBias = v15;
   }
 }
 
-+ (id)defaultStylesIncludingSystemStyles:(BOOL)a3 systemStylePlaceholder:(BOOL)a4 creativeStyles:(BOOL)a5
++ (id)defaultStylesIncludingSystemStyles:(BOOL)styles systemStylePlaceholder:(BOOL)placeholder creativeStyles:(BOOL)creativeStyles
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  creativeStylesCopy = creativeStyles;
+  placeholderCopy = placeholder;
+  stylesCopy = styles;
   v31 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v7)
+  if (stylesCopy)
   {
     v27 = 0u;
     v28 = 0u;
@@ -256,13 +256,13 @@ LABEL_5:
     }
   }
 
-  if (v6)
+  if (placeholderCopy)
   {
     v14 = [[CEKSmartStyle alloc] initWithPresetType:0];
     [v8 addObject:v14];
   }
 
-  if (v5)
+  if (creativeStylesCopy)
   {
     v23 = 0u;
     v24 = 0u;
@@ -298,11 +298,11 @@ LABEL_5:
 
 - (NSString)description
 {
-  v3 = [(CEKSmartStyle *)self isCustomized];
+  isCustomized = [(CEKSmartStyle *)self isCustomized];
   v4 = MEMORY[0x1E696AEC0];
   v5 = CEKDebugStringForSmartStylePresetType([(CEKSmartStyle *)self presetType]);
   v6 = v5;
-  if (v3)
+  if (isCustomized)
   {
     v7 = CEKDebugStringForSmartStyleCastType([(CEKSmartStyle *)self castType]);
     [(CEKSmartStyle *)self castIntensity];
@@ -321,12 +321,12 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CEKSmartStyle *)self isEqualToSmartStyle:v4];
+    v5 = [(CEKSmartStyle *)self isEqualToSmartStyle:equalCopy];
   }
 
   else
@@ -337,23 +337,23 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqualToSmartStyle:(id)a3
+- (BOOL)isEqualToSmartStyle:(id)style
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  styleCopy = style;
+  v5 = styleCopy;
+  if (!styleCopy)
   {
     goto LABEL_8;
   }
 
-  if (v4 == self)
+  if (styleCopy == self)
   {
     v17 = 1;
     goto LABEL_10;
   }
 
-  v6 = [(CEKSmartStyle *)self presetType];
-  if (v6 == [(CEKSmartStyle *)v5 presetType]&& (v7 = [(CEKSmartStyle *)self castType], v7 == [(CEKSmartStyle *)v5 castType]) && ([(CEKSmartStyle *)self castIntensity], v9 = v8, [(CEKSmartStyle *)v5 castIntensity], vabdd_f64(v9, v10) < 0.005) && ([(CEKSmartStyle *)self toneBias], v12 = v11, [(CEKSmartStyle *)v5 toneBias], vabdd_f64(v12, v13) < 0.005))
+  presetType = [(CEKSmartStyle *)self presetType];
+  if (presetType == [(CEKSmartStyle *)v5 presetType]&& (v7 = [(CEKSmartStyle *)self castType], v7 == [(CEKSmartStyle *)v5 castType]) && ([(CEKSmartStyle *)self castIntensity], v9 = v8, [(CEKSmartStyle *)v5 castIntensity], vabdd_f64(v9, v10) < 0.005) && ([(CEKSmartStyle *)self toneBias], v12 = v11, [(CEKSmartStyle *)v5 toneBias], vabdd_f64(v12, v13) < 0.005))
   {
     [(CEKSmartStyle *)self colorBias];
     v15 = v14;
@@ -392,38 +392,38 @@ LABEL_10:
 - (BOOL)isCustomizable
 {
   v3 = objc_opt_class();
-  v4 = [(CEKSmartStyle *)self presetType];
+  presetType = [(CEKSmartStyle *)self presetType];
 
-  return [v3 isCustomizablePresetType:v4];
+  return [v3 isCustomizablePresetType:presetType];
 }
 
 - (BOOL)isCustomized
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [[CEKSmartStyle alloc] initWithPresetType:[(CEKSmartStyle *)self presetType]];
-  LOBYTE(v2) = [(CEKSmartStyle *)v2 isEqualToSmartStyle:v3];
+  LOBYTE(selfCopy) = [(CEKSmartStyle *)selfCopy isEqualToSmartStyle:v3];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (NSString)presetDisplayName
 {
   v3 = objc_opt_class();
-  v4 = [(CEKSmartStyle *)self presetType];
+  presetType = [(CEKSmartStyle *)self presetType];
 
-  return [v3 displayNameForPresetType:v4];
+  return [v3 displayNameForPresetType:presetType];
 }
 
-+ (id)displayNameForPresetType:(int64_t)a3
++ (id)displayNameForPresetType:(int64_t)type
 {
-  if (a3 > 0x10)
+  if (type > 0x10)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E7CC6D80[a3];
+    v3 = off_1E7CC6D80[type];
   }
 
   return CEKLocalizedFrameworkString(v3, 0);
@@ -436,11 +436,11 @@ LABEL_10:
   v18 = 0.0;
   v16 = 0.0;
   [objc_opt_class() _getPresetValuesForPresetType:-[CEKSmartStyle presetType](self castIntensity:"presetType") toneBias:&v18 colorBias:{&v17, &v16}];
-  v4 = [(CEKSmartStyle *)self presetType];
+  presetType = [(CEKSmartStyle *)self presetType];
   v5 = 0;
-  if (v4 <= 0x10)
+  if (presetType <= 0x10)
   {
-    v5 = off_1E7CC6E08[v4];
+    v5 = off_1E7CC6E08[presetType];
   }
 
   [v3 setObject:v5 forKeyedSubscript:@"PresetType"];
@@ -474,20 +474,20 @@ LABEL_10:
   return v3;
 }
 
-+ (id)styleWithDictionary:(id)a3 error:(id *)a4
++ (id)styleWithDictionary:(id)dictionary error:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"PresetType"];
-  v7 = [v5 objectForKeyedSubscript:@"CastIntensity"];
-  v8 = [v5 objectForKeyedSubscript:@"ToneBias"];
-  v9 = [v5 objectForKeyedSubscript:@"ColorBias"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"PresetType"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"CastIntensity"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"ToneBias"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"ColorBias"];
 
   v10 = MEMORY[0x1E696A578];
-  if (!v6 && (v28 = MEMORY[0x1E696ABC0], v41 = *MEMORY[0x1E696A578], v42[0] = @"Unexpected CEKSmartStyle dictionary structure, missing required keys", [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "errorWithDomain:code:userInfo:", @"CEKSmartStyleErrorDomain", -1, v29), v13 = objc_claimAutoreleasedReturnValue(), v29, v13) || ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && v9) && (v11 = MEMORY[0x1E696ABC0], v39 = *v10, v40 = @"Unexpected CEKSmartStyle dictionary structure, incorrect type for values of known keys", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v40, &v39, 1), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "errorWithDomain:code:userInfo:", @"CEKSmartStyleErrorDomain", -2, v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v13) || (v14 = objc_msgSend(a1, "_indexForPresetString:", v6), v14 == 0x7FFFFFFFFFFFFFFFLL) && (v15 = MEMORY[0x1E696ABC0], v37 = *v10, v38 = @"Unexpected CEKSmartStyle dictionary structure, incorrect value for PresetTypeKey: no preset match found", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v38, &v37, 1), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "errorWithDomain:code:userInfo:", @"CEKSmartStyleErrorDomain", -2, v16), v13 = objc_claimAutoreleasedReturnValue(), v16, v13))
+  if (!v6 && (v28 = MEMORY[0x1E696ABC0], v41 = *MEMORY[0x1E696A578], v42[0] = @"Unexpected CEKSmartStyle dictionary structure, missing required keys", [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "errorWithDomain:code:userInfo:", @"CEKSmartStyleErrorDomain", -1, v29), v13 = objc_claimAutoreleasedReturnValue(), v29, v13) || ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && v9) && (v11 = MEMORY[0x1E696ABC0], v39 = *v10, v40 = @"Unexpected CEKSmartStyle dictionary structure, incorrect type for values of known keys", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v40, &v39, 1), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "errorWithDomain:code:userInfo:", @"CEKSmartStyleErrorDomain", -2, v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v13) || (v14 = objc_msgSend(self, "_indexForPresetString:", v6), v14 == 0x7FFFFFFFFFFFFFFFLL) && (v15 = MEMORY[0x1E696ABC0], v37 = *v10, v38 = @"Unexpected CEKSmartStyle dictionary structure, incorrect value for PresetTypeKey: no preset match found", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v38, &v37, 1), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "errorWithDomain:code:userInfo:", @"CEKSmartStyleErrorDomain", -2, v16), v13 = objc_claimAutoreleasedReturnValue(), v16, v13))
   {
     v30 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -496,7 +496,7 @@ LABEL_10:
   }
 
   v17 = [&unk_1F2FE0278 objectAtIndexedSubscript:v14];
-  v18 = [v17 integerValue];
+  integerValue = [v17 integerValue];
 
   v19 = v7;
   v20 = v8;
@@ -504,7 +504,7 @@ LABEL_10:
   v35 = 0.0;
   v36 = 0.0;
   v34 = 0.0;
-  [a1 _getPresetValuesForPresetType:v18 castIntensity:&v36 toneBias:&v35 colorBias:&v34];
+  [self _getPresetValuesForPresetType:integerValue castIntensity:&v36 toneBias:&v35 colorBias:&v34];
   if (v19)
   {
     [v19 floatValue];
@@ -544,14 +544,14 @@ LABEL_15:
 LABEL_24:
   v27 = v34;
 LABEL_25:
-  v30 = [[CEKSmartStyle alloc] initWithPresetType:v18 castIntensity:v23 toneBias:v25 colorBias:v27];
+  v30 = [[CEKSmartStyle alloc] initWithPresetType:integerValue castIntensity:v23 toneBias:v25 colorBias:v27];
 
   v13 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_18:
     v31 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_19:
@@ -559,35 +559,35 @@ LABEL_19:
   return v30;
 }
 
-+ (unint64_t)_indexForPresetString:(id)a3
++ (unint64_t)_indexForPresetString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     if (_indexForPresetString__onceToken != -1)
     {
       +[CEKSmartStyle _indexForPresetString:];
     }
 
-    v4 = [_indexForPresetString__indexesByString objectForKeyedSubscript:v3];
+    v4 = [_indexForPresetString__indexesByString objectForKeyedSubscript:stringCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 unsignedIntegerValue];
+      unsignedIntegerValue = [v4 unsignedIntegerValue];
     }
 
     else
     {
-      v6 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 void __39__CEKSmartStyle__indexForPresetString___block_invoke()
@@ -622,11 +622,11 @@ void __39__CEKSmartStyle__indexForPresetString___block_invoke_2(uint64_t a1, voi
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)_analyticsDictionaryForCapture:(BOOL)a3
+- (id)_analyticsDictionaryForCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v3)
+  if (captureCopy)
   {
     v6 = @"smartStylePreset";
   }
@@ -636,7 +636,7 @@ void __39__CEKSmartStyle__indexForPresetString___block_invoke_2(uint64_t a1, voi
     v6 = @"SmartStylePreset";
   }
 
-  if (v3)
+  if (captureCopy)
   {
     v7 = @"smartStyleCastIntensity";
   }
@@ -646,7 +646,7 @@ void __39__CEKSmartStyle__indexForPresetString___block_invoke_2(uint64_t a1, voi
     v7 = @"SmartStyleCastIntensity";
   }
 
-  if (v3)
+  if (captureCopy)
   {
     v8 = @"smartStyleToneBias";
   }
@@ -656,7 +656,7 @@ void __39__CEKSmartStyle__indexForPresetString___block_invoke_2(uint64_t a1, voi
     v8 = @"SmartStyleToneBias";
   }
 
-  if (v3)
+  if (captureCopy)
   {
     v9 = @"smartStyleColorBias";
   }
@@ -667,7 +667,7 @@ void __39__CEKSmartStyle__indexForPresetString___block_invoke_2(uint64_t a1, voi
   }
 
   v10 = @"SmartStyleCustomized";
-  if (v3)
+  if (captureCopy)
   {
     v10 = @"smartStyleCustomized";
   }
@@ -677,15 +677,15 @@ void __39__CEKSmartStyle__indexForPresetString___block_invoke_2(uint64_t a1, voi
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v16 = [(CEKSmartStyle *)self presetType];
-  if (v16 > 0x10)
+  presetType = [(CEKSmartStyle *)self presetType];
+  if (presetType > 0x10)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = off_1E7CC6E08[v16];
+    v17 = off_1E7CC6E08[presetType];
   }
 
   [v5 setObject:v17 forKeyedSubscript:v15];

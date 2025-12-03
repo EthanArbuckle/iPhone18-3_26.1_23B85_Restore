@@ -3,13 +3,13 @@
 - (BOOL)isPowerDuringSleepEnabled;
 - (BOOL)isPowerDuringSleepSupported;
 - (BOOL)resetAccessoryBaseCurrent;
-- (BOOL)setAccessoryRequestedCurrent:(unsigned int)a3;
-- (BOOL)setAccessoryUsedCurrent:(unsigned int)a3;
-- (BOOL)setFeaturesFromAuthStatus:(int)a3 authCert:(id)a4 certType:(int)a5;
-- (BOOL)setPowerDuringSleepEnabled:(BOOL)a3;
-- (BOOL)setUSBCurrentLimitBase:(unsigned int)a3 forceResponse:(BOOL)a4;
-- (BOOL)setUSBCurrentOffset:(int)a3;
-- (BOOL)setUSBMode:(int)a3;
+- (BOOL)setAccessoryRequestedCurrent:(unsigned int)current;
+- (BOOL)setAccessoryUsedCurrent:(unsigned int)current;
+- (BOOL)setFeaturesFromAuthStatus:(int)status authCert:(id)cert certType:(int)type;
+- (BOOL)setPowerDuringSleepEnabled:(BOOL)enabled;
+- (BOOL)setUSBCurrentLimitBase:(unsigned int)base forceResponse:(BOOL)response;
+- (BOOL)setUSBCurrentOffset:(int)offset;
+- (BOOL)setUSBMode:(int)mode;
 - (BOOL)supervisedTransportsRestricted;
 - (NSNumber)inductiveLocalDeviceID;
 - (NSSet)authCPChildPorts;
@@ -22,8 +22,8 @@
 - (NSString)regionCode;
 - (id)_connectionUUIDsForNotification;
 - (int)USBCurrentLimitOffsetInmA;
-- (int)_ACCPlatformUSBModeForIOAccessoryUSBConnectType:(int)a3;
-- (int)_IOAccUSBModeTypeForSetUSBMode:(int)a3;
+- (int)_ACCPlatformUSBModeForIOAccessoryUSBConnectType:(int)type;
+- (int)_IOAccUSBModeTypeForSetUSBMode:(int)mode;
 - (int)_connectionTypeForPrimaryPort;
 - (int)cableType;
 - (int)getUSBMode;
@@ -31,7 +31,7 @@
 - (unsigned)USBCurrentLimitBaseInmA;
 - (unsigned)USBCurrentLimitInmA;
 - (unsigned)accessoryChargingCurrentInmA;
-- (unsigned)accessoryPowerModeCurrentLimitInmA:(int)a3;
+- (unsigned)accessoryPowerModeCurrentLimitInmA:(int)a;
 - (unsigned)sleepPowerCurrentLimitInmA;
 - (void)USBChargingVoltageInmV;
 - (void)USBCurrentLimitBaseInmA;
@@ -40,33 +40,33 @@
 - (void)_clearAccessoryInfo;
 - (void)_connectionTypeForPrimaryPort;
 - (void)_connectionUUIDsForNotification;
-- (void)_handleNotificationUarpEndUpdateForModel:(id)a3;
-- (void)_handleNotificationUarpStagingStatusForModel:(id)a3 state:(unint64_t)a4;
-- (void)_handleNotificationUarpStartUpdateForModel:(id)a3;
-- (void)_handleRegisterationForUarpActivityForModel:(id)a3 shouldRegister:(BOOL)a4;
+- (void)_handleNotificationUarpEndUpdateForModel:(id)model;
+- (void)_handleNotificationUarpStagingStatusForModel:(id)model state:(unint64_t)state;
+- (void)_handleNotificationUarpStartUpdateForModel:(id)model;
+- (void)_handleRegisterationForUarpActivityForModel:(id)model shouldRegister:(BOOL)register;
 - (void)_handleUartActivityTimeout;
-- (void)_kickTimerForUarpActivityForModel:(id)a3;
+- (void)_kickTimerForUarpActivityForModel:(id)model;
 - (void)_pokeResistorID;
 - (void)_processAccessoryInfo;
 - (void)_registerForBatteryNotifications;
 - (void)_registerForIOAccessoryIDBusHIDDevice;
 - (void)_registerForIOAccessoryManagerInterestNotifications;
-- (void)_sendNotification:(id)a3;
+- (void)_sendNotification:(id)notification;
 - (void)_stopAuthTimer;
-- (void)_stopTimerForUarpActivityForModel:(id)a3;
-- (void)_updateInductiveInfo:(BOOL)a3;
-- (void)addIOAccessoryChildPort:(id)a3;
+- (void)_stopTimerForUarpActivityForModel:(id)model;
+- (void)_updateInductiveInfo:(BOOL)info;
+- (void)addIOAccessoryChildPort:(id)port;
 - (void)cableType;
 - (void)dealloc;
 - (void)getUSBMode;
-- (void)notifyDriverOfInductiveActivity:(BOOL)a3 paused:(BOOL)a4;
-- (void)removeIOAccessoryChildPort:(id)a3;
+- (void)notifyDriverOfInductiveActivity:(BOOL)activity paused:(BOOL)paused;
+- (void)removeIOAccessoryChildPort:(id)port;
 - (void)resetAccessoryBaseCurrent;
-- (void)setAccessoryPowerMode:(int)a3;
-- (void)setConnectionUUID:(id)a3;
-- (void)setInductiveDeviceUID:(id)a3;
-- (void)setInductiveLocalDeviceID:(id)a3;
-- (void)setRegionCode:(id)a3;
+- (void)setAccessoryPowerMode:(int)mode;
+- (void)setConnectionUUID:(id)d;
+- (void)setInductiveDeviceUID:(id)d;
+- (void)setInductiveLocalDeviceID:(id)d;
+- (void)setRegionCode:(id)code;
 - (void)supervisedTransportsRestricted;
 - (void)transportClassTerminated;
 @end
@@ -76,7 +76,7 @@
 - (void)_processAccessoryInfo
 {
   v8 = *MEMORY[0x277D85DE8];
-  *a1;
+  *self;
   [a2 ioService];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_3();
@@ -103,8 +103,8 @@
     v3 = 6;
   }
 
-  v6 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-  switch(v6)
+  primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+  switch(primaryPortNumber)
   {
     case 512:
       v3 = 4;
@@ -145,15 +145,15 @@
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
-  if (v4)
+  connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+  if (connectionUUID)
   {
-    [v3 addObject:v4];
+    [v3 addObject:connectionUUID];
   }
 
   if ([(ACCTransportIOAccessoryManager *)self isRootPort]&& [(ACCTransportIOAccessoryManager *)self _connectionTypeForPrimaryPort]!= 3)
   {
-    v27 = v4;
+    v27 = connectionUUID;
     if (gLogObjects && gNumLogObjects >= 4)
     {
       v5 = *(gLogObjects + 24);
@@ -197,10 +197,10 @@
     }
 
     v9 = +[ACCTransportIOAccessorySharedManager sharedManager];
-    v10 = [v9 delegate];
+    delegate = [v9 delegate];
 
-    [v10 startSafeConnectionTransaction];
-    [v10 allEndpointsUUIDs];
+    [delegate startSafeConnectionTransaction];
+    [delegate allEndpointsUUIDs];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -220,8 +220,8 @@
             objc_enumerationMutation(obj);
           }
 
-          v16 = [v10 connectionUUIDForEndpointWithUUID:*(*(&v29 + 1) + 8 * i)];
-          v17 = [v10 connectionTypeForConnectionWithUUID:v16];
+          v16 = [delegate connectionUUIDForEndpointWithUUID:*(*(&v29 + 1) + 8 * i)];
+          v17 = [delegate connectionTypeForConnectionWithUUID:v16];
           if (v17 == 6 || v17 == 1)
           {
             v19 = v17;
@@ -276,9 +276,9 @@
       while (v12);
     }
 
-    [v10 stopSafeConnectionTransaction];
+    [delegate stopSafeConnectionTransaction];
 
-    v4 = v27;
+    connectionUUID = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -461,7 +461,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v19 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "deallocating manager with service %d", buf, 8u);
   }
 
@@ -549,7 +549,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v12 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "IOAccessoryManager canceling auth timer for service %d", buf, 8u);
     }
 
@@ -574,9 +574,9 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addIOAccessoryChildPort:(id)a3
+- (void)addIOAccessoryChildPort:(id)port
 {
-  v4 = a3;
+  portCopy = port;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -605,43 +605,43 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ACCTransportIOAccessoryManager addIOAccessoryChildPort:v4];
+    [ACCTransportIOAccessoryManager addIOAccessoryChildPort:portCopy];
   }
 
-  v8 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryChildPorts];
-  [v8 addObject:v4];
+  mutableioAccessoryChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryChildPorts];
+  [mutableioAccessoryChildPorts addObject:portCopy];
 
-  if ([v4 ioServiceClassType] == 2)
+  if ([portCopy ioServiceClassType] == 2)
   {
-    v9 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryEAChildPorts];
-    [v9 addObject:v4];
+    mutableioAccessoryEAChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryEAChildPorts];
+    [mutableioAccessoryEAChildPorts addObject:portCopy];
   }
 
-  if ([v4 ioServiceClassType] == 3)
+  if ([portCopy ioServiceClassType] == 3)
   {
-    v10 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryAuthCPChildPorts];
-    [v10 addObject:v4];
+    mutableioAccessoryAuthCPChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryAuthCPChildPorts];
+    [mutableioAccessoryAuthCPChildPorts addObject:portCopy];
   }
 
-  if ([v4 ioServiceClassType] == 4)
+  if ([portCopy ioServiceClassType] == 4)
   {
-    v11 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryOOBPairingChildPorts];
-    [v11 addObject:v4];
+    mutableioAccessoryOOBPairingChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryOOBPairingChildPorts];
+    [mutableioAccessoryOOBPairingChildPorts addObject:portCopy];
   }
 
-  if ([v4 ioServiceClassType] == 6)
+  if ([portCopy ioServiceClassType] == 6)
   {
-    v12 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryConfigStreamChildPorts];
-    [v12 addObject:v4];
+    mutableioAccessoryConfigStreamChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryConfigStreamChildPorts];
+    [mutableioAccessoryConfigStreamChildPorts addObject:portCopy];
   }
 
   [(ACCTransportIOAccessoryManager *)self _pokeResistorID];
 }
 
-- (void)removeIOAccessoryChildPort:(id)a3
+- (void)removeIOAccessoryChildPort:(id)port
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  portCopy = port;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -670,22 +670,22 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ACCTransportIOAccessoryManager removeIOAccessoryChildPort:v4];
+    [ACCTransportIOAccessoryManager removeIOAccessoryChildPort:portCopy];
   }
 
-  v8 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryChildPorts];
-  [v8 removeObject:v4];
+  mutableioAccessoryChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryChildPorts];
+  [mutableioAccessoryChildPorts removeObject:portCopy];
 
-  if ([v4 ioServiceClassType] == 2)
+  if ([portCopy ioServiceClassType] == 2)
   {
-    v9 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryEAChildPorts];
-    [v9 removeObject:v4];
+    mutableioAccessoryEAChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryEAChildPorts];
+    [mutableioAccessoryEAChildPorts removeObject:portCopy];
   }
 
-  if ([v4 ioServiceClassType] == 3)
+  if ([portCopy ioServiceClassType] == 3)
   {
-    v10 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryAuthCPChildPorts];
-    [v10 removeObject:v4];
+    mutableioAccessoryAuthCPChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryAuthCPChildPorts];
+    [mutableioAccessoryAuthCPChildPorts removeObject:portCopy];
 
     if (gLogObjects && gNumLogObjects >= 4)
     {
@@ -713,27 +713,27 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
     [(ACCTransportIOAccessoryManager *)self _stopAuthTimer];
   }
 
-  if ([v4 ioServiceClassType] == 4)
+  if ([portCopy ioServiceClassType] == 4)
   {
-    v13 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryOOBPairingChildPorts];
-    [v13 removeObject:v4];
+    mutableioAccessoryOOBPairingChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryOOBPairingChildPorts];
+    [mutableioAccessoryOOBPairingChildPorts removeObject:portCopy];
   }
 
-  if ([v4 ioServiceClassType] == 6)
+  if ([portCopy ioServiceClassType] == 6)
   {
-    v14 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryConfigStreamChildPorts];
-    [v14 removeObject:v4];
+    mutableioAccessoryConfigStreamChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryConfigStreamChildPorts];
+    [mutableioAccessoryConfigStreamChildPorts removeObject:portCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setFeaturesFromAuthStatus:(int)a3 authCert:(id)a4 certType:(int)a5
+- (BOOL)setFeaturesFromAuthStatus:(int)status authCert:(id)cert certType:(int)type
 {
   v131 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(ACCTransportIOAccessoryBase *)self ioService];
-  CFProperty = IORegistryEntryCreateCFProperty(v8, @"IOAccessoryManagerInductiveFwMode", *MEMORY[0x277CBECE8], 0);
+  certCopy = cert;
+  ioService = [(ACCTransportIOAccessoryBase *)self ioService];
+  CFProperty = IORegistryEntryCreateCFProperty(ioService, @"IOAccessoryManagerInductiveFwMode", *MEMORY[0x277CBECE8], 0);
   valuePtr = 3;
   if (CFProperty)
   {
@@ -766,11 +766,11 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *v120 = a5;
+    *v120 = type;
     _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "setFeaturesFromAuthStatus: certType %d", buf, 8u);
   }
 
-  if (a5 == 3)
+  if (type == 3)
   {
     v13 = MFAACreateDEVNCertCapsForCable();
   }
@@ -782,7 +782,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
 
   v14 = v13;
   v114 = MFAACertificateAuthVersionNumber();
-  v115 = v7;
+  v115 = certCopy;
   if (v14)
   {
     v113 = *v14;
@@ -809,7 +809,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *v120 = a5;
+      *v120 = type;
       _os_log_impl(&dword_233656000, v15, OS_LOG_TYPE_DEFAULT, "setFeaturesFromAuthStatus: certType %d, certCaps: NONE", buf, 8u);
     }
 
@@ -819,9 +819,9 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
   v17 = MFAACanReceiveInductivePower();
   v18 = acc_userDefaults_copyIntegerForKey(@"OverrideCanReceiveInductivePowerOID");
   v19 = acc_policies_supportInductivePowerTX(v18, v17);
-  if (a5 == -1)
+  if (type == -1)
   {
-    a5 = mfaa_certificateManager_determineCertificateType();
+    type = mfaa_certificateManager_determineCertificateType();
     if (gLogObjects && gNumLogObjects >= 7)
     {
       v20 = *(gLogObjects + 48);
@@ -845,7 +845,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
       *&v120[8] = 1024;
       *v121 = -1;
       *&v121[4] = 1024;
-      *v122 = a5;
+      *v122 = type;
       _os_log_impl(&dword_233656000, v20, OS_LOG_TYPE_INFO, "%s: certType %d -> %d", buf, 0x18u);
     }
   }
@@ -868,21 +868,21 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
 
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v25 = [(ACCTransportIOAccessoryBase *)self ioService];
-    v26 = [(ACCTransportIOAccessoryManager *)self bAccConnected];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
+    bAccConnected = [(ACCTransportIOAccessoryManager *)self bAccConnected];
     bIsInductivePowerToAccessory = self->_bIsInductivePowerToAccessory;
     bIsInductive = self->_bIsInductive;
     *buf = 67111680;
-    *v120 = v24;
+    *v120 = primaryPortNumber;
     *&v120[4] = 1024;
-    *&v120[6] = a3;
+    *&v120[6] = status;
     *v121 = 1024;
-    *&v121[2] = a5;
+    *&v121[2] = type;
     *v122 = 1024;
-    *&v122[2] = v25;
+    *&v122[2] = ioService2;
     *v123 = 1024;
-    *&v123[2] = v26;
+    *&v123[2] = bAccConnected;
     LOWORD(v124) = 1024;
     *(&v124 + 2) = bIsInductivePowerToAccessory;
     HIWORD(v124) = 1024;
@@ -904,7 +904,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_48(ui
     v30 = 0xFFFF;
     v31 = 0x7FFFFFFF;
     v32 = 0x2812FE000uLL;
-    if (a3 == 1 || a3 == 4)
+    if (status == 1 || status == 4)
     {
       v36 = 0;
 LABEL_81:
@@ -912,7 +912,7 @@ LABEL_81:
       goto LABEL_82;
     }
 
-    if (a3 == 2)
+    if (status == 2)
     {
       if (![(ACCTransportIOAccessoryManager *)self bAccConnected])
       {
@@ -934,12 +934,12 @@ LABEL_81:
 
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-          v44 = [(ACCTransportIOAccessoryBase *)self ioService];
+          primaryPortNumber2 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+          ioService3 = [(ACCTransportIOAccessoryBase *)self ioService];
           *buf = 67109376;
-          *v120 = v43;
+          *v120 = primaryPortNumber2;
           *&v120[4] = 1024;
-          *&v120[6] = v44;
+          *&v120[6] = ioService3;
           _os_log_impl(&dword_233656000, v33, OS_LOG_TYPE_DEFAULT, "[%d] bAccConnected for service %d is false, but auth has passed", buf, 0xEu);
         }
 
@@ -953,7 +953,7 @@ LABEL_81:
         v36 = 65087;
 LABEL_80:
         v31 = 0x7FFFFFFF;
-        a3 = 2;
+        status = 2;
         v29 = 1;
         goto LABEL_81;
       }
@@ -962,7 +962,7 @@ LABEL_80:
       {
         v87 = 449;
         v88 = 65086;
-        if (a5 != 2 && a5 != 7)
+        if (type != 2 && type != 7)
         {
           if (MFAACanChargeInductive())
           {
@@ -999,8 +999,8 @@ LABEL_80:
           }
         }
 
-        v112 = a5 == 2;
-        if (a5 == 2)
+        v112 = type == 2;
+        if (type == 2)
         {
           v36 = v88 | 0x100;
         }
@@ -1053,9 +1053,9 @@ LABEL_80:
 
           if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
           {
-            v101 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+            primaryPortNumber3 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
             *buf = 67109120;
-            *v120 = v101;
+            *v120 = primaryPortNumber3;
             _os_log_impl(&dword_233656000, v94, OS_LOG_TYPE_DEFAULT, "[%d] V2.0 Class4, don't revoke nor allow AdvancedCharging !", buf, 8u);
           }
 
@@ -1099,9 +1099,9 @@ LABEL_80:
 
         if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
         {
-          v106 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+          primaryPortNumber4 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
           *buf = 67109120;
-          *v120 = v106;
+          *v120 = primaryPortNumber4;
           _os_log_impl(&dword_233656000, v103, OS_LOG_TYPE_DEFAULT, "[%d] HVC capable, allow AdvancedCharging !", buf, 8u);
         }
 
@@ -1132,7 +1132,7 @@ LABEL_248:
             v36 |= 0x40u;
           }
 
-          a3 = 2;
+          status = 2;
           v29 = 1;
           goto LABEL_82;
         }
@@ -1156,9 +1156,9 @@ LABEL_248:
 
         if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
         {
-          v109 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+          primaryPortNumber5 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
           *buf = 67109120;
-          *v120 = v109;
+          *v120 = primaryPortNumber5;
           _os_log_impl(&dword_233656000, v103, OS_LOG_TYPE_DEFAULT, "[%d] override caps and don't revoke nor allow AdvancedCharging !", buf, 8u);
         }
 
@@ -1219,10 +1219,10 @@ LABEL_248:
 
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+      primaryPortNumber6 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
       v39 = self->_bIsInductive;
       *buf = 67110656;
-      *v120 = v38;
+      *v120 = primaryPortNumber6;
       *&v120[4] = 1024;
       *&v120[6] = v39;
       *v121 = 1024;
@@ -1232,7 +1232,7 @@ LABEL_248:
       *v123 = 1024;
       *&v123[2] = 0;
       LOWORD(v124) = 1024;
-      *(&v124 + 2) = a3;
+      *(&v124 + 2) = status;
       HIWORD(v124) = 1024;
       *v125 = 1;
       _os_log_impl(&dword_233656000, v35, OS_LOG_TYPE_DEFAULT, "setFeaturesFromAuthStatus: [%d] _bIsInductive %d, inductiveFwMode %d (TX %d), supportInductivePowerTX %d, force AuthStatus to Failed! %d -> %d", buf, 0x2Cu);
@@ -1242,7 +1242,7 @@ LABEL_248:
     v36 = 0;
     v30 = 0xFFFF;
     v31 = 0x7FFFFFFF;
-    a3 = 1;
+    status = 1;
   }
 
 LABEL_82:
@@ -1276,13 +1276,13 @@ LABEL_82:
       v48 = "FAILED";
     }
 
-    v49 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v50 = [(ACCTransportIOAccessoryBase *)self ioService];
+    primaryPortNumber7 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    ioService4 = [(ACCTransportIOAccessoryBase *)self ioService];
     *buf = 136316930;
     *v120 = v48;
     v32 = 0x2812FE000uLL;
     *&v120[8] = 1024;
-    *v121 = v49;
+    *v121 = primaryPortNumber7;
     *&v121[4] = 1024;
     *v122 = v114;
     *&v122[4] = 1024;
@@ -1294,13 +1294,13 @@ LABEL_82:
     *v126 = 1024;
     *&v126[2] = v36;
     *v127 = 1024;
-    *&v127[2] = v50;
+    *&v127[2] = ioService4;
     _os_log_impl(&dword_233656000, v46, OS_LOG_TYPE_DEFAULT, "AUTH [%s], [%d] ver %d / %x, authCertCaps0:%08llX -> ioAccFeatMaskRevoke:%08X, ioAccFeatMaskAllow:%08X, self.ioService %d\n", buf, 0x3Au);
   }
 
   connect = 0;
-  v51 = [(ACCTransportIOAccessoryBase *)self ioService];
-  v52 = IOServiceOpen(v51, *MEMORY[0x277D85F48], 0, &connect);
+  ioService5 = [(ACCTransportIOAccessoryBase *)self ioService];
+  v52 = IOServiceOpen(ioService5, *MEMORY[0x277D85F48], 0, &connect);
   if (!v52 && connect)
   {
     v53 = v115;
@@ -1397,18 +1397,18 @@ LABEL_127:
 
   if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
   {
-    v95 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    primaryPortNumber8 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
     v96 = connect;
-    v97 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService6 = [(ACCTransportIOAccessoryBase *)self ioService];
     *buf = 67109888;
-    *v120 = v95;
+    *v120 = primaryPortNumber8;
     *&v120[4] = 1024;
     *&v120[6] = v52;
     *v121 = 1024;
     *&v121[2] = v96;
     v32 = 0x2812FE000;
     *v122 = 1024;
-    *&v122[2] = v97;
+    *&v122[2] = ioService6;
     _os_log_error_impl(&dword_233656000, v57, OS_LOG_TYPE_ERROR, "[%d] IOServiceOpen fail kernStatus:%02X, ioConnForService:%04X ioService:%d", buf, 0x1Au);
   }
 
@@ -1456,16 +1456,16 @@ LABEL_128:
         v68 = "FAILED";
       }
 
-      v69 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-      v70 = [(ACCTransportIOAccessoryBase *)self ioService];
+      primaryPortNumber9 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+      ioService7 = [(ACCTransportIOAccessoryBase *)self ioService];
       *buf = 136315906;
       *v120 = v68;
       *&v120[8] = 1024;
-      *v121 = v69;
+      *v121 = primaryPortNumber9;
       *&v121[4] = 1024;
       *v122 = v64;
       *&v122[4] = 1024;
-      *v123 = v70;
+      *v123 = ioService7;
       _os_log_impl(&dword_233656000, v66, OS_LOG_TYPE_DEFAULT, "AUTH [%s], for AWC [%d], setting power mode %d, self.ioService %d", buf, 0x1Eu);
     }
 
@@ -1510,7 +1510,7 @@ LABEL_128:
 
   if ((v75 & v74) != 1)
   {
-    if (a3 != 4 && a3 != 1)
+    if (status != 4 && status != 1)
     {
       goto LABEL_208;
     }
@@ -1544,9 +1544,9 @@ LABEL_207:
     goto LABEL_208;
   }
 
-  if (a3 != 4)
+  if (status != 4)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       v78 = *(v34 + 3720);
       if (v78 && gNumLogObjects >= 4)
@@ -1649,7 +1649,7 @@ LABEL_208:
   return v58;
 }
 
-- (BOOL)setUSBMode:(int)a3
+- (BOOL)setUSBMode:(int)mode
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = [(ACCTransportIOAccessoryManager *)self _IOAccUSBModeTypeForSetUSBMode:?];
@@ -1688,11 +1688,11 @@ LABEL_208:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v16 = 67109632;
-      v17 = a3;
+      modeCopy2 = mode;
       v18 = 1024;
       v19 = v5;
       v20 = 1024;
-      v21 = v8;
+      ioService = v8;
       _os_log_error_impl(&dword_233656000, v11, OS_LOG_TYPE_ERROR, "ERROR - IOAccessoryManagerConfigureUSBMode usbMode=%d usbModeType (IOAccessoryUSBModeType) %d failed 0x%X", &v16, 0x14u);
     }
   }
@@ -1718,11 +1718,11 @@ LABEL_208:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v16 = 67109632;
-      v17 = a3;
+      modeCopy2 = mode;
       v18 = 1024;
       v19 = v5;
       v20 = 1024;
-      v21 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_debug_impl(&dword_233656000, v11, OS_LOG_TYPE_DEBUG, "successfully set USB Mode %d (IOAccessoryUSBModeType %d) for service %d", &v16, 0x14u);
     }
   }
@@ -1796,7 +1796,7 @@ LABEL_208:
       v16 = 1024;
       v17 = 0;
       v18 = 1024;
-      v19 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_debug_impl(&dword_233656000, v6, OS_LOG_TYPE_DEBUG, "USB Connect %d, usbConnectActive %d, for service %d", buf, 0x14u);
     }
   }
@@ -1827,7 +1827,7 @@ LABEL_208:
   return v9;
 }
 
-- (BOOL)setUSBCurrentOffset:(int)a3
+- (BOOL)setUSBCurrentOffset:(int)offset
 {
   ioConnect = self->super._ioConnect;
   v4 = IOAccessoryManagerSetUSBCurrentOffset();
@@ -1894,9 +1894,9 @@ LABEL_208:
   return v5 == 0;
 }
 
-- (BOOL)setUSBCurrentLimitBase:(unsigned int)a3 forceResponse:(BOOL)a4
+- (BOOL)setUSBCurrentLimitBase:(unsigned int)base forceResponse:(BOOL)response
 {
-  v4 = a4;
+  responseCopy = response;
   v35 = *MEMORY[0x277D85DE8];
   ioConnect = self->super._ioConnect;
   v8 = IOAccessoryManagerSetUSBCurrentLimitBase();
@@ -1985,19 +1985,19 @@ LABEL_208:
       *buf = 67110144;
       v26 = currentLimitBaseInmA;
       v27 = 1024;
-      v28 = a3;
+      baseCopy = base;
       v29 = 1024;
       v30 = currentLimitBaseInmAValid;
       v31 = 1024;
       v32 = 1;
       v33 = 1024;
-      v34 = v4;
+      v34 = responseCopy;
       _os_log_impl(&dword_233656000, v15, OS_LOG_TYPE_DEFAULT, "setUSBCurrentLimitBase: not lightning device, currentLimitBaseInmA %d -> %d, valid %d -> %d, forceResponse %d", buf, 0x20u);
     }
 
-    if (v4 || self->_currentLimitBaseInmA != a3)
+    if (responseCopy || self->_currentLimitBaseInmA != base)
     {
-      self->_currentLimitBaseInmA = a3;
+      self->_currentLimitBaseInmA = base;
       self->_currentLimitBaseInmAValid = 1;
     }
 
@@ -2101,15 +2101,15 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+      connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
       *buf = 67109890;
       *v23 = v21;
       *&v23[4] = 1024;
       *&v23[6] = USBCurrentLimit;
       *v24 = 2112;
-      *&v24[2] = v20;
+      *&v24[2] = connectionUUID;
       v25 = 1024;
-      v26 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_error_impl(&dword_233656000, v8, OS_LOG_TYPE_ERROR, "ERROR - IOAccessoryManagerGetUSBCurrentLimit currentLimitBaseInmA=%d failed 0x%X for connectionUUID %@, self.ioService %d", buf, 0x1Eu);
     }
 
@@ -2200,7 +2200,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v21;
-    v16 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
     currentLimitBaseInmAValid = self->_currentLimitBaseInmAValid;
     *buf = 136316162;
     *v23 = "[ACCTransportIOAccessoryManager USBCurrentLimitInmA]";
@@ -2209,7 +2209,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
     *&v24[4] = 1024;
     *&v24[6] = v15;
     v25 = 1024;
-    v26 = v16;
+    ioService = ioService2;
     v27 = 1024;
     v28 = currentLimitBaseInmAValid;
     _os_log_impl(&dword_233656000, v13, OS_LOG_TYPE_DEFAULT, "%s: status %x, IOAccessoryManagerGetUSBCurrentLimit -> %d for service %d, _currentLimitBaseInmAValid %d", buf, 0x24u);
@@ -2257,15 +2257,15 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+      connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
       *buf = 67109890;
       *v23 = v21;
       *&v23[4] = 1024;
       *&v23[6] = USBCurrentLimitBase;
       *v24 = 2112;
-      *&v24[2] = v20;
+      *&v24[2] = connectionUUID;
       v25 = 1024;
-      v26 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_error_impl(&dword_233656000, v8, OS_LOG_TYPE_ERROR, "ERROR - IOAccessoryManagerGetUSBCurrentLimitBase currentLimitBaseInmA=%d failed 0x%X for connectionUUID %@, self.ioService %d", buf, 0x1Eu);
     }
 
@@ -2356,7 +2356,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v21;
-    v16 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
     currentLimitBaseInmAValid = self->_currentLimitBaseInmAValid;
     *buf = 136316162;
     *v23 = "[ACCTransportIOAccessoryManager USBCurrentLimitBaseInmA]";
@@ -2365,7 +2365,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
     *&v24[4] = 1024;
     *&v24[6] = v15;
     v25 = 1024;
-    v26 = v16;
+    ioService = ioService2;
     v27 = 1024;
     v28 = currentLimitBaseInmAValid;
     _os_log_impl(&dword_233656000, v13, OS_LOG_TYPE_DEFAULT, "%s: status %x, IOAccessoryManagerGetUSBCurrentLimitBase -> %d for service %d, _currentLimitBaseInmAValid %d", buf, 0x24u);
@@ -2470,7 +2470,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v15;
-    v12 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     *buf = 136315906;
     v17 = "[ACCTransportIOAccessoryManager USBCurrentLimitOffsetInmA]";
     v18 = 1024;
@@ -2478,7 +2478,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
     v20 = 1024;
     v21 = v11;
     v22 = 1024;
-    v23 = v12;
+    v23 = ioService;
     _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "%s: status %x, IOAccessoryManagerGetUSBCurrentLimitOffset -> %d for service %d", buf, 0x1Eu);
   }
 
@@ -2581,7 +2581,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v15;
-    v12 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     *buf = 136315906;
     v17 = "[ACCTransportIOAccessoryManager USBChargingVoltageInmV]";
     v18 = 1024;
@@ -2589,7 +2589,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
     v20 = 1024;
     v21 = v11;
     v22 = 1024;
-    v23 = v12;
+    v23 = ioService;
     _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "%s: status %x, IOAccessoryManagerGetUSBChargingVoltage -> %d for service %d", buf, 0x1Eu);
   }
 
@@ -2664,7 +2664,7 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
       v16 = 1024;
       v17 = 0;
       v18 = 1024;
-      v19 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_debug_impl(&dword_233656000, v6, OS_LOG_TYPE_DEBUG, "CableType: %d, usbConnectActive %d, for service %d", buf, 0x14u);
     }
   }
@@ -2697,9 +2697,9 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
 
 - (unsigned)sleepPowerCurrentLimitInmA
 {
-  v2 = [(ACCTransportIOAccessoryBase *)self ioService];
+  ioService = [(ACCTransportIOAccessoryBase *)self ioService];
 
-  return MEMORY[0x2821F10D8](v2);
+  return MEMORY[0x2821F10D8](ioService);
 }
 
 - (BOOL)isPowerDuringSleepSupported
@@ -2758,13 +2758,13 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     v12 = 136315650;
     v13 = "[ACCTransportIOAccessoryManager isPowerDuringSleepSupported]";
     v14 = 1024;
     v15 = IsSupported != 0;
     v16 = 1024;
-    v17 = v9;
+    v17 = ioService;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "%s: IOAccessoryManagerPowerDuringSleepIsSupported -> %d for service %d", &v12, 0x18u);
   }
 
@@ -2772,9 +2772,9 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
   return IsSupported != 0;
 }
 
-- (BOOL)setPowerDuringSleepEnabled:(BOOL)a3
+- (BOOL)setPowerDuringSleepEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x277D85DE8];
   ioConnect = self->super._ioConnect;
   v6 = IOAccessoryManagerSetPowerDuringSleep();
@@ -2835,9 +2835,9 @@ uint64_t __71__ACCTransportIOAccessoryManager_setUSBCurrentLimitBase_forceRespon
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v15[0] = 67109376;
-      v15[1] = v3;
+      v15[1] = enabledCopy;
       v16 = 1024;
-      v17 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "successfully set IOAccessoryManagerSetPowerDuringSleep enabled %d for service %d", v15, 0xEu);
     }
   }
@@ -3004,7 +3004,7 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
   return v4;
 }
 
-- (BOOL)setAccessoryRequestedCurrent:(unsigned int)a3
+- (BOOL)setAccessoryRequestedCurrent:(unsigned int)current
 {
   ioConnect = self->super._ioConnect;
   v4 = IOAccessoryManagerSetAccessoryRequestedCurrent();
@@ -3071,7 +3071,7 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
   return v5 == 0;
 }
 
-- (BOOL)setAccessoryUsedCurrent:(unsigned int)a3
+- (BOOL)setAccessoryUsedCurrent:(unsigned int)current
 {
   ioConnect = self->super._ioConnect;
   v4 = IOAccessoryManagerSetAccessoryUsedCurrent();
@@ -3244,7 +3244,7 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
     v11 = 1024;
     v12 = ActivePowerMode;
     v13 = 1024;
-    v14 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_debug_impl(&dword_233656000, v7, OS_LOG_TYPE_DEBUG, "successfully get accessoryChargingCurrentInmA %d with IOAccessoryPowerMode %d for service %d", v10, 0x14u);
   }
 
@@ -3252,7 +3252,7 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
   return v4;
 }
 
-- (unsigned)accessoryPowerModeCurrentLimitInmA:(int)a3
+- (unsigned)accessoryPowerModeCurrentLimitInmA:(int)a
 {
   v16 = *MEMORY[0x277D85DE8];
   [(ACCTransportIOAccessoryBase *)self ioService];
@@ -3288,9 +3288,9 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
     v11[0] = 67109632;
     v11[1] = v5;
     v12 = 1024;
-    v13 = a3;
+    aCopy = a;
     v14 = 1024;
-    v15 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_debug_impl(&dword_233656000, v8, OS_LOG_TYPE_DEBUG, "successfully get IOAccessoryManagerPowerModeCurrentLimit %d with ACCPlatform_Power_Mode_t %d for service %d", v11, 0x14u);
   }
 
@@ -3405,9 +3405,9 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
   }
 }
 
-- (int)_IOAccUSBModeTypeForSetUSBMode:(int)a3
+- (int)_IOAccUSBModeTypeForSetUSBMode:(int)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     if (gLogObjects)
     {
@@ -3445,7 +3445,7 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
 
   else
   {
-    v3 = dword_2336C0300[a3];
+    v3 = dword_2336C0300[mode];
   }
 
   if (gLogObjects)
@@ -3482,9 +3482,9 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
   return v3;
 }
 
-- (int)_ACCPlatformUSBModeForIOAccessoryUSBConnectType:(int)a3
+- (int)_ACCPlatformUSBModeForIOAccessoryUSBConnectType:(int)type
 {
-  if (a3 >= 6)
+  if (type >= 6)
   {
     if (gLogObjects)
     {
@@ -3522,7 +3522,7 @@ uint64_t __67__ACCTransportIOAccessoryManager_setBatteryPackMode_forceResponse__
 
   else
   {
-    v3 = dword_2336C030C[a3];
+    v3 = dword_2336C030C[type];
   }
 
   if (gLogObjects)
@@ -3651,15 +3651,15 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendNotification:(id)a3
+- (void)_sendNotification:(id)notification
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[ACCTransportIOAccessorySharedManager sharedManager];
   [v5 lockAccessoryPorts];
 
-  v6 = [(ACCTransportIOAccessoryManager *)self _connectionUUIDsForNotification];
-  if ([v6 count])
+  _connectionUUIDsForNotification = [(ACCTransportIOAccessoryManager *)self _connectionUUIDsForNotification];
+  if ([_connectionUUIDsForNotification count])
   {
     if (gLogObjects && gNumLogObjects >= 4)
     {
@@ -3679,15 +3679,15 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(ACCTransportIOAccessoryManager *)v4 _sendNotification:v6, v7];
+      [(ACCTransportIOAccessoryManager *)notificationCopy _sendNotification:_connectionUUIDsForNotification, v7];
     }
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v25 = v6;
-    obj = v6;
+    v25 = _connectionUUIDsForNotification;
+    obj = _connectionUUIDsForNotification;
     v9 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v9)
     {
@@ -3743,14 +3743,14 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v32 = v4;
+            v32 = notificationCopy;
             v33 = 2112;
             v34 = v16;
             _os_log_debug_impl(&dword_233656000, v21, OS_LOG_TYPE_DEBUG, "Sending %@ notification, notificationDict=%@", buf, 0x16u);
           }
 
-          v22 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v22 postNotificationName:v4 object:0 userInfo:v16];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:notificationCopy object:0 userInfo:v16];
         }
 
         v10 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
@@ -3759,7 +3759,7 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
       while (v10);
     }
 
-    v6 = v25;
+    _connectionUUIDsForNotification = v25;
   }
 
   v23 = +[ACCTransportIOAccessorySharedManager sharedManager];
@@ -3768,9 +3768,9 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateInductiveInfo:(BOOL)a3
+- (void)_updateInductiveInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   *&v59[5] = *MEMORY[0x277D85DE8];
   if (gLogObjects)
   {
@@ -3806,20 +3806,20 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
     v58 = 1024;
     *v59 = bIsInductive;
     v59[2] = 1024;
-    *&v59[3] = v3;
+    *&v59[3] = infoCopy;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "%s: _bIsInductive %d, force %d", buf, 0x18u);
   }
 
-  if (v3 || self->_bIsInductive)
+  if (infoCopy || self->_bIsInductive)
   {
     [(NSRecursiveLock *)self->_accessoryInfoLock lock];
     valuePtr = 0;
     v50 = 0;
-    if (v3 || ([(ACCTransportIOAccessoryManager *)self regionCode], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    if (infoCopy || ([(ACCTransportIOAccessoryManager *)self regionCode], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
-      v10 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       v11 = *MEMORY[0x277CBECE8];
-      CFProperty = IORegistryEntryCreateCFProperty(v10, @"IOAccessoryManagerInductiveRegionCodeData", *MEMORY[0x277CBECE8], 0);
+      CFProperty = IORegistryEntryCreateCFProperty(ioService, @"IOAccessoryManagerInductiveRegionCodeData", *MEMORY[0x277CBECE8], 0);
       if (gLogObjects && gNumLogObjects >= 4)
       {
         v13 = *(gLogObjects + 24);
@@ -3853,7 +3853,7 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
         [(ACCTransportIOAccessoryManager *)self setRegionCode:v15];
 
         CFRelease(CFProperty);
-        if (v3)
+        if (infoCopy)
         {
           goto LABEL_29;
         }
@@ -3862,16 +3862,16 @@ void __70__ACCTransportIOAccessoryManager__handleResistorIDChangeNotification___
       else
       {
         [(ACCTransportIOAccessoryManager *)self setRegionCode:0];
-        if (v3)
+        if (infoCopy)
         {
           goto LABEL_29;
         }
       }
     }
 
-    v16 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
+    inductiveDeviceType = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
 
-    if (v16)
+    if (inductiveDeviceType)
     {
       goto LABEL_41;
     }
@@ -3911,7 +3911,7 @@ LABEL_29:
       [(ACCTransportIOAccessoryManager *)self setInductiveDeviceType:v20];
 
       CFRelease(v17);
-      if (v3)
+      if (infoCopy)
       {
         goto LABEL_43;
       }
@@ -3920,16 +3920,16 @@ LABEL_29:
     else
     {
       [(ACCTransportIOAccessoryManager *)self setInductiveDeviceType:0];
-      if (v3)
+      if (infoCopy)
       {
         goto LABEL_43;
       }
     }
 
 LABEL_41:
-    v21 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceID];
+    inductiveDeviceID = [(ACCTransportIOAccessoryManager *)self inductiveDeviceID];
 
-    if (v21)
+    if (inductiveDeviceID)
     {
       goto LABEL_55;
     }
@@ -3969,7 +3969,7 @@ LABEL_43:
       [(ACCTransportIOAccessoryManager *)self setInductiveDeviceID:v25];
 
       CFRelease(v22);
-      if (v3)
+      if (infoCopy)
       {
         goto LABEL_56;
       }
@@ -3978,16 +3978,16 @@ LABEL_43:
     else
     {
       [(ACCTransportIOAccessoryManager *)self setInductiveDeviceID:0];
-      if (v3)
+      if (infoCopy)
       {
 LABEL_56:
-        v26 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
-        if (v26)
+        inductiveDeviceType2 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
+        if (inductiveDeviceType2)
         {
-          v27 = v26;
-          v28 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceID];
+          v27 = inductiveDeviceType2;
+          inductiveDeviceID2 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceID];
 
-          if (v28)
+          if (inductiveDeviceID2)
           {
             v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%03X-%06X", valuePtr, v50];
             [(NSLock *)self->_propertyLock lock];
@@ -4001,11 +4001,11 @@ LABEL_56:
           }
         }
 
-        if (v3)
+        if (infoCopy)
         {
 LABEL_64:
-          v32 = [(ACCTransportIOAccessoryBase *)self ioService];
-          v33 = IORegistryEntryCreateCFProperty(v32, @"IOAccessoryManagerInductiveLocalDeviceID", *MEMORY[0x277CBECE8], 0);
+          ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
+          v33 = IORegistryEntryCreateCFProperty(ioService2, @"IOAccessoryManagerInductiveLocalDeviceID", *MEMORY[0x277CBECE8], 0);
           if (gLogObjects && gNumLogObjects >= 4)
           {
             v34 = *(gLogObjects + 24);
@@ -4033,17 +4033,17 @@ LABEL_64:
 
           if (v33)
           {
-            v36 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
+            inductiveLocalDeviceID = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
             v37 = [v33 copy];
             [(ACCTransportIOAccessoryManager *)self setInductiveLocalDeviceID:v37];
 
             CFRelease(v33);
-            v38 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
-            v39 = v38;
-            if (v38 && v36)
+            inductiveLocalDeviceID2 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
+            v39 = inductiveLocalDeviceID2;
+            if (inductiveLocalDeviceID2 && inductiveLocalDeviceID)
             {
-              v40 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
-              v41 = [v40 isEqualToNumber:v36];
+              inductiveLocalDeviceID3 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
+              v41 = [inductiveLocalDeviceID3 isEqualToNumber:inductiveLocalDeviceID];
 
               if (v41)
               {
@@ -4056,8 +4056,8 @@ LABEL_64:
             }
 
             v54 = *MEMORY[0x277CFD2A8];
-            v42 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
-            v55 = v42;
+            inductiveLocalDeviceID4 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
+            v55 = inductiveLocalDeviceID4;
             v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
 
             v44 = +[ACCTransportIOAccessorySharedManager sharedManager];
@@ -4069,13 +4069,13 @@ LABEL_80:
 
           [(ACCTransportIOAccessoryManager *)self setInductiveLocalDeviceID:0];
 LABEL_81:
-          v45 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
+          inductiveDeviceType3 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
 
-          if (v45)
+          if (inductiveDeviceType3)
           {
             v52 = *MEMORY[0x277CFD2A0];
-            v46 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
-            v53 = v46;
+            inductiveDeviceType4 = [(ACCTransportIOAccessoryManager *)self inductiveDeviceType];
+            v53 = inductiveDeviceType4;
             v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
 
             v48 = +[ACCTransportIOAccessorySharedManager sharedManager];
@@ -4087,9 +4087,9 @@ LABEL_81:
         }
 
 LABEL_63:
-        v31 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
+        inductiveLocalDeviceID5 = [(ACCTransportIOAccessoryManager *)self inductiveLocalDeviceID];
 
-        if (v31)
+        if (inductiveLocalDeviceID5)
         {
           goto LABEL_81;
         }
@@ -4117,12 +4117,12 @@ LABEL_84:
   [(NSRecursiveLock *)self->_accessoryInfoLock lock];
   if ([(ACCTransportIOAccessoryManager *)self bIsInductive])
   {
-    v3 = [(ACCTransportIOAccessoryManager *)self deviceModelNumber];
+    deviceModelNumber = [(ACCTransportIOAccessoryManager *)self deviceModelNumber];
 
-    if (v3)
+    if (deviceModelNumber)
     {
-      v4 = [(ACCTransportIOAccessoryManager *)self deviceModelNumber];
-      [(ACCTransportIOAccessoryManager *)self _unregisterForUarpActivityForModel:v4];
+      deviceModelNumber2 = [(ACCTransportIOAccessoryManager *)self deviceModelNumber];
+      [(ACCTransportIOAccessoryManager *)self _unregisterForUarpActivityForModel:deviceModelNumber2];
     }
   }
 
@@ -4203,7 +4203,7 @@ LABEL_84:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 67109120;
-      v17 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "Poking resistorID for service (%d) for rear-port IOAccessoryManager", &v16, 8u);
     }
 
@@ -4211,7 +4211,7 @@ LABEL_84:
     AccessoryID = IOAccessoryManagerGetAccessoryID();
     if (AccessoryID <= 0xF)
     {
-      v7 = AccessoryID;
+      resistorID2 = AccessoryID;
       if (gLogObjects && gNumLogObjects >= 4)
       {
         v8 = *(gLogObjects + 24);
@@ -4230,16 +4230,16 @@ LABEL_84:
 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(ACCTransportIOAccessoryBase *)self ioService];
+        ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
         v16 = 67109376;
-        v17 = v7;
+        ioService = resistorID2;
         v18 = 1024;
-        v19 = v14;
+        v19 = ioService2;
         _os_log_impl(&dword_233656000, v8, OS_LOG_TYPE_DEFAULT, "Have a resistorID to update from poke, %d, from service %d", &v16, 0xEu);
       }
 
 LABEL_34:
-      [(ACCTransportIOAccessoryManager *)self _handleResistorIDChangeNotification:v7];
+      [(ACCTransportIOAccessoryManager *)self _handleResistorIDChangeNotification:resistorID2];
       goto LABEL_35;
     }
   }
@@ -4264,16 +4264,16 @@ LABEL_34:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ACCTransportIOAccessoryManager *)self resistorID];
-      v12 = [(ACCTransportIOAccessoryBase *)self ioService];
+      resistorID = [(ACCTransportIOAccessoryManager *)self resistorID];
+      ioService3 = [(ACCTransportIOAccessoryBase *)self ioService];
       v16 = 67109376;
-      v17 = v11;
+      ioService = resistorID;
       v18 = 1024;
-      v19 = v12;
+      v19 = ioService3;
       _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "Already have a resistorID to update from poke, %d, from service %d. Checking if we need to advertise connection", &v16, 0xEu);
     }
 
-    v7 = [(ACCTransportIOAccessoryManager *)self resistorID];
+    resistorID2 = [(ACCTransportIOAccessoryManager *)self resistorID];
     goto LABEL_34;
   }
 
@@ -4327,11 +4327,11 @@ LABEL_35:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRegisterationForUarpActivityForModel:(id)a3 shouldRegister:(BOOL)a4
+- (void)_handleRegisterationForUarpActivityForModel:(id)model shouldRegister:(BOOL)register
 {
-  v4 = a4;
+  registerCopy = register;
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 4;
@@ -4360,26 +4360,26 @@ LABEL_35:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v11 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     *buf = 136316162;
     v73 = "[ACCTransportIOAccessoryManager _handleRegisterationForUarpActivityForModel:shouldRegister:]";
     v74 = 1024;
-    v75 = v10;
+    v75 = primaryPortNumber;
     v76 = 2112;
-    v77 = v11;
+    v77 = connectionUUID;
     v78 = 2112;
-    v79 = v6;
+    v79 = modelCopy;
     v80 = 1024;
-    v81 = v4;
+    v81 = registerCopy;
     _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel %@, shouldRegister %d", buf, 0x2Cu);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if (v4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (registerCopy)
   {
-    if (v12->_notificationUarpRegistered)
+    if (selfCopy->_notificationUarpRegistered)
     {
       if (gLogObjects && gNumLogObjects >= 4)
       {
@@ -4399,16 +4399,16 @@ LABEL_35:
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(ACCTransportIOAccessoryBase *)v12 primaryPortNumber];
-        v30 = [(ACCTransportIOAccessoryManager *)v12 connectionUUID];
+        primaryPortNumber2 = [(ACCTransportIOAccessoryBase *)selfCopy primaryPortNumber];
+        connectionUUID2 = [(ACCTransportIOAccessoryManager *)selfCopy connectionUUID];
         *buf = 136316162;
         v73 = "[ACCTransportIOAccessoryManager _handleRegisterationForUarpActivityForModel:shouldRegister:]";
         v74 = 1024;
-        v75 = v29;
+        v75 = primaryPortNumber2;
         v76 = 2112;
-        v77 = v30;
+        v77 = connectionUUID2;
         v78 = 2112;
-        v79 = v6;
+        v79 = modelCopy;
         v80 = 1024;
         v81 = 1;
         _os_log_impl(&dword_233656000, v13, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel '%@', shouldRegister=%d, Already registered!!!", buf, 0x2Cu);
@@ -4419,7 +4419,7 @@ LABEL_39:
       goto LABEL_64;
     }
 
-    v17 = [v6 isEqualToString:@"A3250"];
+    v17 = [modelCopy isEqualToString:@"A3250"];
     v18 = @"A2580";
     if (!v17)
     {
@@ -4427,23 +4427,23 @@ LABEL_39:
     }
 
     v71 = v18;
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.startupdate.", v6];
-    notificationUarpStartUpdateName = v12->_notificationUarpStartUpdateName;
-    v12->_notificationUarpStartUpdateName = v19;
+    modelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.startupdate.", modelCopy];
+    notificationUarpStartUpdateName = selfCopy->_notificationUarpStartUpdateName;
+    selfCopy->_notificationUarpStartUpdateName = modelCopy;
 
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.endupdate.", v6];
-    notificationUarpEndUpdateName = v12->_notificationUarpEndUpdateName;
-    v12->_notificationUarpEndUpdateName = v21;
+    modelCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.endupdate.", modelCopy];
+    notificationUarpEndUpdateName = selfCopy->_notificationUarpEndUpdateName;
+    selfCopy->_notificationUarpEndUpdateName = modelCopy2;
 
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.stagingstatus.", v6];
-    notificationUarpStagingStatusName = v12->_notificationUarpStagingStatusName;
-    v12->_notificationUarpStagingStatusName = v23;
+    modelCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.stagingstatus.", modelCopy];
+    notificationUarpStagingStatusName = selfCopy->_notificationUarpStagingStatusName;
+    selfCopy->_notificationUarpStagingStatusName = modelCopy3;
 
     if (v17)
     {
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"com.apple.uarp.stagingstatus.", @"A2580"];
-      notificationUarpStagingStatusName2 = v12->_notificationUarpStagingStatusName2;
-      v12->_notificationUarpStagingStatusName2 = v25;
+      notificationUarpStagingStatusName2 = selfCopy->_notificationUarpStagingStatusName2;
+      selfCopy->_notificationUarpStagingStatusName2 = v25;
     }
 
     if (gLogObjects && gNumLogObjects >= 4)
@@ -4464,20 +4464,20 @@ LABEL_39:
 
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [(ACCTransportIOAccessoryBase *)v12 primaryPortNumber];
-      v55 = [(ACCTransportIOAccessoryManager *)v12 connectionUUID];
-      v56 = v12->_notificationUarpStartUpdateName;
-      v57 = v12->_notificationUarpEndUpdateName;
-      v58 = v12->_notificationUarpStagingStatusName;
-      v59 = v12->_notificationUarpStagingStatusName2;
+      primaryPortNumber3 = [(ACCTransportIOAccessoryBase *)selfCopy primaryPortNumber];
+      connectionUUID3 = [(ACCTransportIOAccessoryManager *)selfCopy connectionUUID];
+      v56 = selfCopy->_notificationUarpStartUpdateName;
+      v57 = selfCopy->_notificationUarpEndUpdateName;
+      v58 = selfCopy->_notificationUarpStagingStatusName;
+      v59 = selfCopy->_notificationUarpStagingStatusName2;
       *buf = 136317186;
       v73 = "[ACCTransportIOAccessoryManager _handleRegisterationForUarpActivityForModel:shouldRegister:]";
       v74 = 1024;
-      v75 = v54;
+      v75 = primaryPortNumber3;
       v76 = 2112;
-      v77 = v55;
+      v77 = connectionUUID3;
       v78 = 2112;
-      v79 = v6;
+      v79 = modelCopy;
       v80 = 1024;
       v81 = 1;
       v82 = 2112;
@@ -4492,36 +4492,36 @@ LABEL_39:
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    v61 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStartUpdateName];
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, v12, __handleNotificationUarpStartUpdate, v61, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    notificationUarpStartUpdateName = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStartUpdateName];
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, selfCopy, __handleNotificationUarpStartUpdate, notificationUarpStartUpdateName, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
     v62 = CFNotificationCenterGetDarwinNotifyCenter();
-    v63 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpEndUpdateName];
-    CFNotificationCenterAddObserver(v62, v12, __handleNotificationUarpEndUpdate, v63, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    notificationUarpEndUpdateName = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpEndUpdateName];
+    CFNotificationCenterAddObserver(v62, selfCopy, __handleNotificationUarpEndUpdate, notificationUarpEndUpdateName, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
     v64 = CFNotificationCenterGetDarwinNotifyCenter();
-    v65 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStagingStatusName];
-    CFNotificationCenterAddObserver(v64, v12, __handleNotificationUarpStagingStatus, v65, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    notificationUarpStagingStatusName = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStagingStatusName];
+    CFNotificationCenterAddObserver(v64, selfCopy, __handleNotificationUarpStagingStatus, notificationUarpStagingStatusName, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 
-    if (v12->_notificationUarpStagingStatusName2)
+    if (selfCopy->_notificationUarpStagingStatusName2)
     {
       v66 = CFNotificationCenterGetDarwinNotifyCenter();
-      v67 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStagingStatusName2];
-      CFNotificationCenterAddObserver(v66, v12, __handleNotificationUarpStagingStatus, v67, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+      notificationUarpStagingStatusName2 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStagingStatusName2];
+      CFNotificationCenterAddObserver(v66, selfCopy, __handleNotificationUarpStagingStatus, notificationUarpStagingStatusName2, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     }
 
     CFNotificationCenterGetDarwinNotifyCenter();
-    v68 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStagingStatusName];
-    __handleNotificationUarpStagingStatus(v68, v12, v68);
+    notificationUarpStagingStatusName3 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStagingStatusName];
+    __handleNotificationUarpStagingStatus(notificationUarpStagingStatusName3, selfCopy, notificationUarpStagingStatusName3);
 
-    if (v12->_notificationUarpStagingStatusName2)
+    if (selfCopy->_notificationUarpStagingStatusName2)
     {
       CFNotificationCenterGetDarwinNotifyCenter();
-      v69 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStagingStatusName2];
-      __handleNotificationUarpStagingStatus(v69, v12, v69);
+      notificationUarpStagingStatusName22 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStagingStatusName2];
+      __handleNotificationUarpStagingStatus(notificationUarpStagingStatusName22, selfCopy, notificationUarpStagingStatusName22);
     }
 
-    v12->_notificationUarpRegistered = 1;
+    selfCopy->_notificationUarpRegistered = 1;
   }
 
   else
@@ -4537,7 +4537,7 @@ LABEL_39:
     }
 
     v15 = !v14;
-    if (!v12->_notificationUarpRegistered)
+    if (!selfCopy->_notificationUarpRegistered)
     {
       if (v15)
       {
@@ -4557,16 +4557,16 @@ LABEL_39:
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [(ACCTransportIOAccessoryBase *)v12 primaryPortNumber];
-        v52 = [(ACCTransportIOAccessoryManager *)v12 connectionUUID];
+        primaryPortNumber4 = [(ACCTransportIOAccessoryBase *)selfCopy primaryPortNumber];
+        connectionUUID4 = [(ACCTransportIOAccessoryManager *)selfCopy connectionUUID];
         *buf = 136316162;
         v73 = "[ACCTransportIOAccessoryManager _handleRegisterationForUarpActivityForModel:shouldRegister:]";
         v74 = 1024;
-        v75 = v51;
+        v75 = primaryPortNumber4;
         v76 = 2112;
-        v77 = v52;
+        v77 = connectionUUID4;
         v78 = 2112;
-        v79 = v6;
+        v79 = modelCopy;
         v80 = 1024;
         v81 = 0;
         _os_log_impl(&dword_233656000, v13, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel '%@', shouldRegister=%d, Already unregistered!!!", buf, 0x2Cu);
@@ -4593,20 +4593,20 @@ LABEL_39:
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(ACCTransportIOAccessoryBase *)v12 primaryPortNumber];
-      v33 = [(ACCTransportIOAccessoryManager *)v12 connectionUUID];
-      v34 = v12->_notificationUarpStartUpdateName;
-      v35 = v12->_notificationUarpEndUpdateName;
-      v36 = v12->_notificationUarpStagingStatusName;
-      v37 = v12->_notificationUarpStagingStatusName2;
+      primaryPortNumber5 = [(ACCTransportIOAccessoryBase *)selfCopy primaryPortNumber];
+      connectionUUID5 = [(ACCTransportIOAccessoryManager *)selfCopy connectionUUID];
+      v34 = selfCopy->_notificationUarpStartUpdateName;
+      v35 = selfCopy->_notificationUarpEndUpdateName;
+      v36 = selfCopy->_notificationUarpStagingStatusName;
+      v37 = selfCopy->_notificationUarpStagingStatusName2;
       *buf = 136317186;
       v73 = "[ACCTransportIOAccessoryManager _handleRegisterationForUarpActivityForModel:shouldRegister:]";
       v74 = 1024;
-      v75 = v32;
+      v75 = primaryPortNumber5;
       v76 = 2112;
-      v77 = v33;
+      v77 = connectionUUID5;
       v78 = 2112;
-      v79 = v6;
+      v79 = modelCopy;
       v80 = 1024;
       v81 = 0;
       v82 = 2112;
@@ -4620,51 +4620,51 @@ LABEL_39:
       _os_log_impl(&dword_233656000, v16, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel '%@', shouldRegister=%d, Unregister %@ / %@ / %@ / %@", buf, 0x54u);
     }
 
-    [(ACCTransportIOAccessoryManager *)v12 _stopTimerForUarpActivityForModel:v6];
+    [(ACCTransportIOAccessoryManager *)selfCopy _stopTimerForUarpActivityForModel:modelCopy];
     v38 = CFNotificationCenterGetDarwinNotifyCenter();
-    v39 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStartUpdateName];
-    CFNotificationCenterRemoveObserver(v38, v12, v39, 0);
+    notificationUarpStartUpdateName2 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStartUpdateName];
+    CFNotificationCenterRemoveObserver(v38, selfCopy, notificationUarpStartUpdateName2, 0);
 
     v40 = CFNotificationCenterGetDarwinNotifyCenter();
-    v41 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpEndUpdateName];
-    CFNotificationCenterRemoveObserver(v40, v12, v41, 0);
+    notificationUarpEndUpdateName2 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpEndUpdateName];
+    CFNotificationCenterRemoveObserver(v40, selfCopy, notificationUarpEndUpdateName2, 0);
 
     v42 = CFNotificationCenterGetDarwinNotifyCenter();
-    v43 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStagingStatusName];
-    CFNotificationCenterRemoveObserver(v42, v12, v43, 0);
+    notificationUarpStagingStatusName4 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStagingStatusName];
+    CFNotificationCenterRemoveObserver(v42, selfCopy, notificationUarpStagingStatusName4, 0);
 
-    if (v12->_notificationUarpStagingStatusName2)
+    if (selfCopy->_notificationUarpStagingStatusName2)
     {
       v44 = CFNotificationCenterGetDarwinNotifyCenter();
-      v45 = [(ACCTransportIOAccessoryManager *)v12 notificationUarpStagingStatusName2];
-      CFNotificationCenterRemoveObserver(v44, v12, v45, 0);
+      notificationUarpStagingStatusName23 = [(ACCTransportIOAccessoryManager *)selfCopy notificationUarpStagingStatusName2];
+      CFNotificationCenterRemoveObserver(v44, selfCopy, notificationUarpStagingStatusName23, 0);
     }
 
-    v46 = v12->_notificationUarpStartUpdateName;
-    v12->_notificationUarpStartUpdateName = 0;
+    v46 = selfCopy->_notificationUarpStartUpdateName;
+    selfCopy->_notificationUarpStartUpdateName = 0;
 
-    v47 = v12->_notificationUarpEndUpdateName;
-    v12->_notificationUarpEndUpdateName = 0;
+    v47 = selfCopy->_notificationUarpEndUpdateName;
+    selfCopy->_notificationUarpEndUpdateName = 0;
 
-    v48 = v12->_notificationUarpStagingStatusName;
-    v12->_notificationUarpStagingStatusName = 0;
+    v48 = selfCopy->_notificationUarpStagingStatusName;
+    selfCopy->_notificationUarpStagingStatusName = 0;
 
-    v49 = v12->_notificationUarpStagingStatusName2;
-    v12->_notificationUarpStagingStatusName2 = 0;
+    v49 = selfCopy->_notificationUarpStagingStatusName2;
+    selfCopy->_notificationUarpStagingStatusName2 = 0;
 
-    v12->_notificationUarpRegistered = 0;
+    selfCopy->_notificationUarpRegistered = 0;
   }
 
 LABEL_64:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_kickTimerForUarpActivityForModel:(id)a3
+- (void)_kickTimerForUarpActivityForModel:(id)model
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -4693,17 +4693,17 @@ LABEL_64:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v9 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     v10 = self->_notificationUarpStagingStatusActivityTimer != 0;
     v24 = 136316162;
     v25 = "[ACCTransportIOAccessoryManager _kickTimerForUarpActivityForModel:]";
     v26 = 1024;
-    v27 = v8;
+    v27 = primaryPortNumber;
     v28 = 2112;
-    v29 = v9;
+    v29 = connectionUUID;
     v30 = 2112;
-    v31 = v4;
+    v31 = modelCopy;
     v32 = 1024;
     LODWORD(v33) = v10;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel '%@', (timer exist %d)", &v24, 0x2Cu);
@@ -4778,16 +4778,16 @@ LABEL_64:
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-        v18 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+        primaryPortNumber2 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+        connectionUUID2 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
         v24 = 136316418;
         v25 = "[ACCTransportIOAccessoryManager _kickTimerForUarpActivityForModel:]";
         v26 = 1024;
-        v27 = v17;
+        v27 = primaryPortNumber2;
         v28 = 2112;
-        v29 = v18;
+        v29 = connectionUUID2;
         v30 = 2112;
-        v31 = v4;
+        v31 = modelCopy;
         v32 = 2048;
         v33 = v12;
         v34 = 2048;
@@ -4799,17 +4799,17 @@ LABEL_64:
       v20 = dispatch_time(0, 1000000000 * v12);
       dispatch_source_set_timer(notificationUarpStagingStatusActivityTimer, v20, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * v13);
       v21 = __copyModelFromUarpNotificationName(self->_notificationUarpStagingStatusName2);
-      self->_notificationUarpStagingStatusAlternateActive = [v21 isEqualToString:v4];
+      self->_notificationUarpStagingStatusAlternateActive = [v21 isEqualToString:modelCopy];
     }
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopTimerForUarpActivityForModel:(id)a3
+- (void)_stopTimerForUarpActivityForModel:(id)model
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -4838,17 +4838,17 @@ LABEL_64:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v9 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     v10 = self->_notificationUarpStagingStatusActivityTimer != 0;
     v13 = 136316162;
     v14 = "[ACCTransportIOAccessoryManager _stopTimerForUarpActivityForModel:]";
     v15 = 1024;
-    v16 = v8;
+    v16 = primaryPortNumber;
     v17 = 2112;
-    v18 = v9;
+    v18 = connectionUUID;
     v19 = 2112;
-    v20 = v4;
+    v20 = modelCopy;
     v21 = 1024;
     v22 = v10;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel '%@', stop check timer. (timer exist %d)", &v13, 0x2Cu);
@@ -4863,10 +4863,10 @@ LABEL_64:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotificationUarpStartUpdateForModel:(id)a3
+- (void)_handleNotificationUarpStartUpdateForModel:(id)model
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -4895,16 +4895,16 @@ LABEL_64:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v9 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     v11 = 136315906;
     v12 = "[ACCTransportIOAccessoryManager _handleNotificationUarpStartUpdateForModel:]";
     v13 = 1024;
-    v14 = v8;
+    v14 = primaryPortNumber;
     v15 = 2112;
-    v16 = v9;
+    v16 = connectionUUID;
     v17 = 2112;
-    v18 = v4;
+    v18 = modelCopy;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel %@", &v11, 0x26u);
   }
 
@@ -4912,10 +4912,10 @@ LABEL_64:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotificationUarpEndUpdateForModel:(id)a3
+- (void)_handleNotificationUarpEndUpdateForModel:(id)model
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 4;
@@ -4944,16 +4944,16 @@ LABEL_64:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v9 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     v11 = 136315906;
     v12 = "[ACCTransportIOAccessoryManager _handleNotificationUarpEndUpdateForModel:]";
     v13 = 1024;
-    v14 = v8;
+    v14 = primaryPortNumber;
     v15 = 2112;
-    v16 = v9;
+    v16 = connectionUUID;
     v17 = 2112;
-    v18 = v4;
+    v18 = modelCopy;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel %@", &v11, 0x26u);
   }
 
@@ -4961,10 +4961,10 @@ LABEL_64:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotificationUarpStagingStatusForModel:(id)a3 state:(unint64_t)a4
+- (void)_handleNotificationUarpStagingStatusForModel:(id)model state:(unint64_t)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 4;
@@ -4993,39 +4993,39 @@ LABEL_64:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v11 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     notificationUarpStagingStatus = self->_notificationUarpStagingStatus;
     v14 = 136316418;
     v15 = "[ACCTransportIOAccessoryManager _handleNotificationUarpStagingStatusForModel:state:]";
     v16 = 1024;
-    v17 = v10;
+    v17 = primaryPortNumber;
     v18 = 2112;
-    v19 = v11;
+    v19 = connectionUUID;
     v20 = 2112;
-    v21 = v6;
+    v21 = modelCopy;
     v22 = 2048;
     v23 = notificationUarpStagingStatus;
     v24 = 2048;
-    v25 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, accessoryModel %@, state %llu -> %llu", &v14, 0x3Au);
   }
 
-  if (self->_notificationUarpStagingStatus != a4)
+  if (self->_notificationUarpStagingStatus != state)
   {
-    self->_notificationUarpStagingStatus = a4;
-    [(ACCTransportIOAccessoryManager *)self notifyDriverOfInductiveActivity:a4 != 0 paused:a4 == 2];
-    a4 = self->_notificationUarpStagingStatus;
+    self->_notificationUarpStagingStatus = state;
+    [(ACCTransportIOAccessoryManager *)self notifyDriverOfInductiveActivity:state != 0 paused:state == 2];
+    state = self->_notificationUarpStagingStatus;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
-    [(ACCTransportIOAccessoryManager *)self _kickTimerForUarpActivityForModel:v6];
+    [(ACCTransportIOAccessoryManager *)self _kickTimerForUarpActivityForModel:modelCopy];
   }
 
   else
   {
-    [(ACCTransportIOAccessoryManager *)self _stopTimerForUarpActivityForModel:v6];
+    [(ACCTransportIOAccessoryManager *)self _stopTimerForUarpActivityForModel:modelCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -5115,10 +5115,10 @@ LABEL_23:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDriverOfInductiveActivity:(BOOL)a3 paused:(BOOL)a4
+- (void)notifyDriverOfInductiveActivity:(BOOL)activity paused:(BOOL)paused
 {
-  v4 = a4;
-  v5 = a3;
+  pausedCopy = paused;
+  activityCopy = activity;
   v38 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
   {
@@ -5148,26 +5148,26 @@ LABEL_23:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-    v11 = [(ACCTransportIOAccessoryManager *)self connectionUUID];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    connectionUUID = [(ACCTransportIOAccessoryManager *)self connectionUUID];
     *buf = 136316418;
     v28 = "[ACCTransportIOAccessoryManager notifyDriverOfInductiveActivity:paused:]";
     v29 = 1024;
-    v30 = v10;
+    v30 = primaryPortNumber;
     v31 = 2112;
-    *v32 = v11;
+    *v32 = connectionUUID;
     *&v32[8] = 1024;
-    v33 = v5;
+    v33 = activityCopy;
     v34 = 1024;
-    v35 = v4;
+    v35 = pausedCopy;
     v36 = 1024;
-    v37 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "%s: [%d] %@, active %d, paused %d, service %d", buf, 0x2Eu);
   }
 
   connect = 0;
-  v12 = [(ACCTransportIOAccessoryBase *)self ioService];
-  v13 = IOServiceOpen(v12, *MEMORY[0x277D85F48], 0, &connect);
+  ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
+  v13 = IOServiceOpen(ioService2, *MEMORY[0x277D85F48], 0, &connect);
   if (v13)
   {
     v14 = 1;
@@ -5199,7 +5199,7 @@ LABEL_23:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v24 = connect;
-      v25 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService3 = [(ACCTransportIOAccessoryBase *)self ioService];
       *buf = 136315906;
       v28 = "[ACCTransportIOAccessoryManager notifyDriverOfInductiveActivity:paused:]";
       v29 = 1024;
@@ -5207,14 +5207,14 @@ LABEL_23:
       v31 = 1024;
       *v32 = v24;
       *&v32[4] = 1024;
-      *&v32[6] = v25;
+      *&v32[6] = ioService3;
       _os_log_error_impl(&dword_233656000, v15, OS_LOG_TYPE_ERROR, "%s: IOServiceOpen fail kernStatus:%02X, ioConnForService:%04X ioService:%d", buf, 0x1Eu);
     }
   }
 
   else
   {
-    if (v5)
+    if (activityCopy)
     {
       v16 = 0x400000;
     }
@@ -5224,7 +5224,7 @@ LABEL_23:
       v16 = 0;
     }
 
-    if (v4)
+    if (pausedCopy)
     {
       v17 = v16 | 0x800000;
     }
@@ -5234,7 +5234,7 @@ LABEL_23:
       v17 = v16;
     }
 
-    if ((!v5 || !v4) && IOAccessoryManagerRevokeFeatures())
+    if ((!activityCopy || !pausedCopy) && IOAccessoryManagerRevokeFeatures())
     {
       if (gLogObjects && gNumLogObjects >= 4)
       {
@@ -5291,8 +5291,8 @@ LABEL_23:
 - (NSSet)ioAccessoryChildPorts
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryChildPorts];
-  v5 = [v3 initWithSet:v4];
+  mutableioAccessoryChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryChildPorts];
+  v5 = [v3 initWithSet:mutableioAccessoryChildPorts];
 
   return v5;
 }
@@ -5300,8 +5300,8 @@ LABEL_23:
 - (NSSet)eaProtocolChildPorts
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryEAChildPorts];
-  v5 = [v3 initWithSet:v4];
+  mutableioAccessoryEAChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryEAChildPorts];
+  v5 = [v3 initWithSet:mutableioAccessoryEAChildPorts];
 
   return v5;
 }
@@ -5309,8 +5309,8 @@ LABEL_23:
 - (NSSet)authCPChildPorts
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryAuthCPChildPorts];
-  v5 = [v3 initWithSet:v4];
+  mutableioAccessoryAuthCPChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryAuthCPChildPorts];
+  v5 = [v3 initWithSet:mutableioAccessoryAuthCPChildPorts];
 
   return v5;
 }
@@ -5318,8 +5318,8 @@ LABEL_23:
 - (NSSet)oobPairingChildPorts
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryOOBPairingChildPorts];
-  v5 = [v3 initWithSet:v4];
+  mutableioAccessoryOOBPairingChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryOOBPairingChildPorts];
+  v5 = [v3 initWithSet:mutableioAccessoryOOBPairingChildPorts];
 
   return v5;
 }
@@ -5327,8 +5327,8 @@ LABEL_23:
 - (NSSet)configStreamChildPorts
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryConfigStreamChildPorts];
-  v5 = [v3 initWithSet:v4];
+  mutableioAccessoryConfigStreamChildPorts = [(ACCTransportIOAccessoryManager *)self mutableioAccessoryConfigStreamChildPorts];
+  v5 = [v3 initWithSet:mutableioAccessoryConfigStreamChildPorts];
 
   return v5;
 }
@@ -5360,7 +5360,7 @@ LABEL_23:
   return v3;
 }
 
-- (void)setAccessoryPowerMode:(int)a3
+- (void)setAccessoryPowerMode:(int)mode
 {
   v21 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -5392,11 +5392,11 @@ LABEL_23:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 67109632;
-    v16 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+    primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
     v17 = 1024;
-    v18 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     v19 = 1024;
-    v20 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "setAccessoryPowerMode: primaryPort %d, ioService %d, accessoryPowerMode: %d", &v15, 0x14u);
   }
 
@@ -5427,7 +5427,7 @@ LABEL_23:
 
   else
   {
-    self->_accessoryPowerMode = a3;
+    self->_accessoryPowerMode = mode;
     if (gLogObjects && gNumLogObjects >= 4)
     {
       v9 = *(gLogObjects + 24);
@@ -5446,12 +5446,12 @@ LABEL_23:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(ACCTransportIOAccessoryManager *)self accessoryPowerMode];
-      v13 = [(ACCTransportIOAccessoryBase *)self ioService];
+      accessoryPowerMode = [(ACCTransportIOAccessoryManager *)self accessoryPowerMode];
+      ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
       v15 = 67109376;
-      v16 = v12;
+      primaryPortNumber = accessoryPowerMode;
       v17 = 1024;
-      v18 = v13;
+      ioService = ioService2;
       _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "Successfully set acc. power mode to %u for service %u", &v15, 0xEu);
     }
   }
@@ -5459,12 +5459,12 @@ LABEL_23:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConnectionUUID:(id)a3
+- (void)setConnectionUUID:(id)d
 {
   propertyLock = self->_propertyLock;
-  v5 = a3;
+  dCopy = d;
   [(NSLock *)propertyLock lock];
-  v6 = [v5 copy];
+  v6 = [dCopy copy];
 
   connectionUUID = self->_connectionUUID;
   self->_connectionUUID = v6;
@@ -5474,12 +5474,12 @@ LABEL_23:
   [(NSLock *)v8 unlock];
 }
 
-- (void)setInductiveDeviceUID:(id)a3
+- (void)setInductiveDeviceUID:(id)d
 {
   propertyLock = self->_propertyLock;
-  v5 = a3;
+  dCopy = d;
   [(NSLock *)propertyLock lock];
-  v6 = [v5 copy];
+  v6 = [dCopy copy];
 
   inductiveDeviceUID = self->_inductiveDeviceUID;
   self->_inductiveDeviceUID = v6;
@@ -5489,12 +5489,12 @@ LABEL_23:
   [(NSLock *)v8 unlock];
 }
 
-- (void)setInductiveLocalDeviceID:(id)a3
+- (void)setInductiveLocalDeviceID:(id)d
 {
   propertyLock = self->_propertyLock;
-  v5 = a3;
+  dCopy = d;
   [(NSLock *)propertyLock lock];
-  v6 = [v5 copy];
+  v6 = [dCopy copy];
 
   inductiveLocalDeviceID = self->_inductiveLocalDeviceID;
   self->_inductiveLocalDeviceID = v6;
@@ -5504,12 +5504,12 @@ LABEL_23:
   [(NSLock *)v8 unlock];
 }
 
-- (void)setRegionCode:(id)a3
+- (void)setRegionCode:(id)code
 {
   propertyLock = self->_propertyLock;
-  v5 = a3;
+  codeCopy = code;
   [(NSLock *)propertyLock lock];
-  v6 = [v5 copy];
+  v6 = [codeCopy copy];
 
   regionCode = self->_regionCode;
   self->_regionCode = v6;
@@ -5685,7 +5685,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)USBCurrentLimitInmA
 {
   v2 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_13(a1, a2);
+  OUTLINED_FUNCTION_13(self, a2);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xEu);
@@ -5695,7 +5695,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)USBCurrentLimitBaseInmA
 {
   v2 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_13(a1, a2);
+  OUTLINED_FUNCTION_13(self, a2);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xEu);
@@ -5705,7 +5705,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)USBCurrentLimitOffsetInmA
 {
   v2 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_13(a1, a2);
+  OUTLINED_FUNCTION_13(self, a2);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xEu);
@@ -5715,7 +5715,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)USBChargingVoltageInmV
 {
   v2 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_13(a1, a2);
+  OUTLINED_FUNCTION_13(self, a2);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xEu);
@@ -5725,7 +5725,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)cableType
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_10();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x277D85DE8];
@@ -5802,7 +5802,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)resetAccessoryBaseCurrent
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a1 ioService];
+  [self ioService];
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 8u);
@@ -5812,7 +5812,7 @@ void __52__ACCTransportIOAccessoryManager_initWithIOService___block_invoke_cold_
 - (void)supervisedTransportsRestricted
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = [a2 connectionUUID];
+  connectionUUID = [a2 connectionUUID];
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
 

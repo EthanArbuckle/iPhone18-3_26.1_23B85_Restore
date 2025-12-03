@@ -1,9 +1,9 @@
 @interface BKSHIDEventDigitizerAttributes
 + (id)protobufSchema;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)digitizerSurfaceSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKSHIDEventDigitizerAttributes
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __48__BKSHIDEventDigitizerAttributes_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_436 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_436, block);
@@ -56,65 +56,65 @@ void __48__BKSHIDEventDigitizerAttributes_protobufSchema__block_invoke_2(uint64_
   return result;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v19.receiver = self;
   v19.super_class = BKSHIDEventDigitizerAttributes;
-  [(BKSHIDEventBaseAttributes *)&v19 appendDescriptionToFormatter:v4];
-  v5 = [v4 appendObject:self->_pathAttributes withName:@"pathAttributes" skipIfNil:1];
+  [(BKSHIDEventBaseAttributes *)&v19 appendDescriptionToFormatter:formatterCopy];
+  v5 = [formatterCopy appendObject:self->_pathAttributes withName:@"pathAttributes" skipIfNil:1];
   maximumForce = self->_maximumForce;
   if (maximumForce != 0.0)
   {
-    v7 = [v4 appendFloat:@"maximumForce" withName:maximumForce];
+    v7 = [formatterCopy appendFloat:@"maximumForce" withName:maximumForce];
   }
 
   if (self->_maximumPositionZ != 0.0)
   {
-    v8 = [v4 appendFloat:@"maximumPositionZ" withName:?];
+    v8 = [formatterCopy appendFloat:@"maximumPositionZ" withName:?];
   }
 
-  v9 = [v4 appendBool:self->_systemGesturesPossible withName:@"systemGesturesPossible" ifEqualTo:1];
-  v10 = [v4 appendBool:self->_systemGestureStateChange withName:@"systemGestureStateChange" ifEqualTo:1];
+  v9 = [formatterCopy appendBool:self->_systemGesturesPossible withName:@"systemGesturesPossible" ifEqualTo:1];
+  v10 = [formatterCopy appendBool:self->_systemGestureStateChange withName:@"systemGestureStateChange" ifEqualTo:1];
   sceneTouchBehavior = self->_sceneTouchBehavior;
   if (sceneTouchBehavior)
   {
     v12 = NSStringFromBKSSceneHostTouchBehavior(sceneTouchBehavior);
-    [v4 appendString:v12 withName:@"sceneTouchBehavior"];
+    [formatterCopy appendString:v12 withName:@"sceneTouchBehavior"];
   }
 
   if (self->_touchStreamIdentifier)
   {
     v13 = NSStringFromBKSTouchStreamIdentifier(self->_touchStreamIdentifier);
-    [v4 appendString:v13 withName:@"touchStreamIdentifier"];
+    [formatterCopy appendString:v13 withName:@"touchStreamIdentifier"];
   }
 
   if (self->_initialTouchTimestamp != 0.0)
   {
-    v14 = [v4 appendTimeInterval:@"initialTouchTimestamp" withName:0 decomposeUnits:?];
+    v14 = [formatterCopy appendTimeInterval:@"initialTouchTimestamp" withName:0 decomposeUnits:?];
   }
 
   activeModifiers = self->_activeModifiers;
   if (activeModifiers)
   {
     v16 = NSStringFromBKSKeyModifierFlags(activeModifiers);
-    v17 = [v4 appendObject:v16 withName:@"activeModifiers"];
+    v17 = [formatterCopy appendObject:v16 withName:@"activeModifiers"];
   }
 
   if (self->_digitizerSurfaceSize.width != 0.0 || self->_digitizerSurfaceSize.height != 0.0)
   {
-    v18 = [v4 appendSize:@"surfaceDimensions" withName:?];
+    v18 = [formatterCopy appendSize:@"surfaceDimensions" withName:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = BKSHIDEventDigitizerAttributes;
-  if ([(BKSHIDEventBaseAttributes *)&v11 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(BKSHIDEventBaseAttributes *)&v11 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_maximumForce == *(v5 + 15) && self->_maximumPositionZ == *(v5 + 8) && self->_digitizerSurfaceSize.height == *(v5 + 14) && self->_digitizerSurfaceSize.width == *(v5 + 13) && self->_initialTouchTimestamp == *(v5 + 10) && self->_activeModifiers == v5[11] && self->_systemGesturesPossible == *(v5 + 57) && self->_systemGestureStateChange == *(v5 + 58) && self->_sceneTouchBehavior == v5[12] && self->_touchStreamIdentifier == *(v5 + 56))
     {
       pathAttributes = self->_pathAttributes;
@@ -138,11 +138,11 @@ void __48__BKSHIDEventDigitizerAttributes_protobufSchema__block_invoke_2(uint64_
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = BKSHIDEventDigitizerAttributes;
-  v4 = [(BKSHIDEventBaseAttributes *)&v8 copyWithZone:a3];
+  v4 = [(BKSHIDEventBaseAttributes *)&v8 copyWithZone:zone];
   *(v4 + 15) = LODWORD(self->_maximumForce);
   *(v4 + 8) = *&self->_maximumPositionZ;
   *(v4 + 104) = self->_digitizerSurfaceSize;

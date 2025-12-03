@@ -1,19 +1,19 @@
 @interface VUIFocusableTextView
-+ (id)textViewWithElement:(id)a3 textLayout:(id)a4 titleElement:(id)a5 titleLayout:(id)a6 existingTextView:(id)a7;
-+ (id)textViewWithString:(id)a3 textLayout:(id)a4 titleString:(id)a5 titleLayout:(id)a6 existingTextView:(id)a7;
-- (VUIFocusableTextView)initWithFrame:(CGRect)a3;
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
++ (id)textViewWithElement:(id)element textLayout:(id)layout titleElement:(id)titleElement titleLayout:(id)titleLayout existingTextView:(id)view;
++ (id)textViewWithString:(id)string textLayout:(id)layout titleString:(id)titleString titleLayout:(id)titleLayout existingTextView:(id)view;
+- (VUIFocusableTextView)initWithFrame:(CGRect)frame;
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin;
 - (void)_updateTextColor;
 @end
 
 @implementation VUIFocusableTextView
 
-- (VUIFocusableTextView)initWithFrame:(CGRect)a3
+- (VUIFocusableTextView)initWithFrame:(CGRect)frame
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VUIFocusableTextView;
-  v3 = [(TVFocusableTextView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TVFocusableTextView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -59,17 +59,17 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
   [WeakRetained _updateTextColor];
 }
 
-+ (id)textViewWithString:(id)a3 textLayout:(id)a4 titleString:(id)a5 titleLayout:(id)a6 existingTextView:(id)a7
++ (id)textViewWithString:(id)string textLayout:(id)layout titleString:(id)titleString titleLayout:(id)titleLayout existingTextView:(id)view
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
+  layoutCopy = layout;
+  titleStringCopy = titleString;
+  titleLayoutCopy = titleLayout;
+  viewCopy = view;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v14;
+    v16 = viewCopy;
   }
 
   else
@@ -79,21 +79,21 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
   }
 
   v18 = v16;
-  [(VUIFocusableTextView *)v16 setTextLayout:v11];
-  v19 = [(VUIFocusableTextView *)v18 computationLabel];
-  v20 = [VUILabel labelWithString:@"Lorem" textLayout:v11 existingLabel:v19];
+  [(VUIFocusableTextView *)v16 setTextLayout:layoutCopy];
+  computationLabel = [(VUIFocusableTextView *)v18 computationLabel];
+  v20 = [VUILabel labelWithString:@"Lorem" textLayout:layoutCopy existingLabel:computationLabel];
 
   [(VUIFocusableTextView *)v18 setComputationLabel:v20];
-  v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v22 = [v21 traitCollection];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  -[TVFocusableTextView setMaximumNumberOfLines:](v18, "setMaximumNumberOfLines:", [v11 numberOfLinesForTraitCollection:v22]);
+  -[TVFocusableTextView setMaximumNumberOfLines:](v18, "setMaximumNumberOfLines:", [layoutCopy numberOfLinesForTraitCollection:traitCollection]);
   [(VUIFocusableTextView *)v18 _updateTextColor];
-  v23 = [v11 attributedStringWithString:v15 view:v18];
+  v23 = [layoutCopy attributedStringWithString:stringCopy view:v18];
 
-  if ([v12 length] && v23)
+  if ([titleStringCopy length] && v23)
   {
-    v24 = [v13 attributedStringWithString:v12 view:v18];
+    v24 = [titleLayoutCopy attributedStringWithString:titleStringCopy view:v18];
     v25 = [v24 mutableCopy];
     [v25 appendAttributedString:v23];
 
@@ -101,49 +101,49 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
   }
 
   [(TVFocusableTextView *)v18 setDescriptionText:v23];
-  -[TVFocusableTextView setDescriptionTextAlignment:](v18, "setDescriptionTextAlignment:", [v11 alignment]);
-  -[TVFocusableTextView setAlwaysFocusable:](v18, "setAlwaysFocusable:", [v11 alwaysFocusable]);
-  [v11 seeMoreHorizontalMargin];
+  -[TVFocusableTextView setDescriptionTextAlignment:](v18, "setDescriptionTextAlignment:", [layoutCopy alignment]);
+  -[TVFocusableTextView setAlwaysFocusable:](v18, "setAlwaysFocusable:", [layoutCopy alwaysFocusable]);
+  [layoutCopy seeMoreHorizontalMargin];
   [(TVFocusableTextView *)v18 setMoreHorizontalMargin:?];
 
   return v18;
 }
 
-+ (id)textViewWithElement:(id)a3 textLayout:(id)a4 titleElement:(id)a5 titleLayout:(id)a6 existingTextView:(id)a7
++ (id)textViewWithElement:(id)element textLayout:(id)layout titleElement:(id)titleElement titleLayout:(id)titleLayout existingTextView:(id)view
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = [v12 style];
-  v18 = [v17 tv_valueForStyle:*MEMORY[0x1E69D59E0]];
+  elementCopy = element;
+  layoutCopy = layout;
+  viewCopy = view;
+  titleLayoutCopy = titleLayout;
+  titleElementCopy = titleElement;
+  style = [elementCopy style];
+  v18 = [style tv_valueForStyle:*MEMORY[0x1E69D59E0]];
 
   if (v18)
   {
-    v19 = [v12 style];
-    v20 = [v19 tv_maxTextLines];
+    style2 = [elementCopy style];
+    tv_maxTextLines = [style2 tv_maxTextLines];
 
-    [v13 setNumberOfLines:v20];
-    [v13 setNumberOfLinesAXSmall:v20];
-    [v13 setNumberOfLinesAXLarge:v20];
+    [layoutCopy setNumberOfLines:tv_maxTextLines];
+    [layoutCopy setNumberOfLinesAXSmall:tv_maxTextLines];
+    [layoutCopy setNumberOfLinesAXLarge:tv_maxTextLines];
   }
 
-  v21 = [v12 text];
-  v22 = [v21 string];
+  text = [elementCopy text];
+  string = [text string];
 
-  v23 = [v16 text];
+  text2 = [titleElementCopy text];
 
-  v24 = [v23 string];
+  string2 = [text2 string];
 
-  v25 = [a1 textViewWithString:v22 textLayout:v13 titleString:v24 titleLayout:v15 existingTextView:v14];
+  v25 = [self textViewWithString:string textLayout:layoutCopy titleString:string2 titleLayout:titleLayoutCopy existingTextView:viewCopy];
 
-  [v25 transferLayoutStylesFromElement:v12];
+  [v25 transferLayoutStylesFromElement:elementCopy];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __97__VUIFocusableTextView_textViewWithElement_textLayout_titleElement_titleLayout_existingTextView___block_invoke;
   v31[3] = &unk_1E8732510;
-  v26 = v12;
+  v26 = elementCopy;
   v32 = v26;
   [v25 setSelectionHandler:v31];
   v29[0] = MEMORY[0x1E69E9820];
@@ -157,16 +157,16 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
   return v25;
 }
 
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
-  if (a3)
+  if (label)
   {
-    [(VUILabel *)self->_computationLabel topMarginToLabel:a4 withBaselineMargin:?];
+    [(VUILabel *)self->_computationLabel topMarginToLabel:margin withBaselineMargin:?];
   }
 
   else
   {
-    [(VUIFocusableTextView *)self topMarginWithBaselineMargin:a4];
+    [(VUIFocusableTextView *)self topMarginWithBaselineMargin:margin];
   }
 
   return result;
@@ -174,12 +174,12 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (void)_updateTextColor
 {
-  v14 = [(VUITextLayout *)self->_textLayout color];
-  v3 = [(VUITextLayout *)self->_textLayout seeMoreTextColor];
-  if (!v3)
+  color = [(VUITextLayout *)self->_textLayout color];
+  seeMoreTextColor = [(VUITextLayout *)self->_textLayout seeMoreTextColor];
+  if (!seeMoreTextColor)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 userInterfaceIdiom] == 2)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 2)
     {
       [MEMORY[0x1E69DC888] vui_secondaryTextColor];
     }
@@ -188,46 +188,46 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
     {
       [MEMORY[0x1E69DC888] vui_keyColor];
     }
-    v3 = ;
+    seeMoreTextColor = ;
   }
 
-  v5 = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
-  v6 = [(VUIFocusableTextView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  highlightOrSelectedColor = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
+  traitCollection = [(VUIFocusableTextView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v7 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v8 = [(VUITextLayout *)self->_textLayout darkColor];
+    darkColor = [(VUITextLayout *)self->_textLayout darkColor];
 
-    if (v8)
+    if (darkColor)
     {
-      v9 = [(VUITextLayout *)self->_textLayout darkColor];
+      darkColor2 = [(VUITextLayout *)self->_textLayout darkColor];
 
-      v14 = v9;
+      color = darkColor2;
     }
 
-    v10 = [(VUITextLayout *)self->_textLayout darkSeeMoreTextColor];
+    darkSeeMoreTextColor = [(VUITextLayout *)self->_textLayout darkSeeMoreTextColor];
 
-    if (v10)
+    if (darkSeeMoreTextColor)
     {
-      v11 = [(VUITextLayout *)self->_textLayout darkSeeMoreTextColor];
+      darkSeeMoreTextColor2 = [(VUITextLayout *)self->_textLayout darkSeeMoreTextColor];
 
-      v3 = v11;
+      seeMoreTextColor = darkSeeMoreTextColor2;
     }
 
-    v12 = [(VUITextLayout *)self->_textLayout darkHighlightOrSelectedColor];
+    darkHighlightOrSelectedColor = [(VUITextLayout *)self->_textLayout darkHighlightOrSelectedColor];
 
-    if (v12)
+    if (darkHighlightOrSelectedColor)
     {
-      v13 = [(VUITextLayout *)self->_textLayout darkHighlightOrSelectedColor];
+      darkHighlightOrSelectedColor2 = [(VUITextLayout *)self->_textLayout darkHighlightOrSelectedColor];
 
-      v5 = v13;
+      highlightOrSelectedColor = darkHighlightOrSelectedColor2;
     }
   }
 
-  if (v5)
+  if (highlightOrSelectedColor)
   {
-    if (v3)
+    if (seeMoreTextColor)
     {
       goto LABEL_15;
     }
@@ -235,18 +235,18 @@ void __38__VUIFocusableTextView_initWithFrame___block_invoke_2(uint64_t a1)
 
   else
   {
-    v5 = v14;
-    if (v3)
+    highlightOrSelectedColor = color;
+    if (seeMoreTextColor)
     {
       goto LABEL_15;
     }
   }
 
-  v3 = v14;
+  seeMoreTextColor = color;
 LABEL_15:
-  [(TVFocusableTextView *)self setDescriptionTextColor:v14];
-  [(TVFocusableTextView *)self setMoreLabelTextColor:v3];
-  [(TVFocusableTextView *)self setDescriptionTextHighlightColor:v5];
+  [(TVFocusableTextView *)self setDescriptionTextColor:color];
+  [(TVFocusableTextView *)self setMoreLabelTextColor:seeMoreTextColor];
+  [(TVFocusableTextView *)self setDescriptionTextHighlightColor:highlightOrSelectedColor];
 }
 
 @end

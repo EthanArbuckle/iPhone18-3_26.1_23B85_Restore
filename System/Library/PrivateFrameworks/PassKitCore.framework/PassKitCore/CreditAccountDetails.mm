@@ -8,32 +8,32 @@
 - (id)accountDetails
 {
   v3 = objc_alloc_init(PKCreditAccountDetails);
-  v4 = [objc_opt_class() _propertySettersForCreditAccountDetails];
-  v5 = [v4 allKeys];
+  _propertySettersForCreditAccountDetails = [objc_opt_class() _propertySettersForCreditAccountDetails];
+  allKeys = [_propertySettersForCreditAccountDetails allKeys];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000BA10;
   v17[3] = &unk_10083BEE0;
   v17[4] = self;
-  v18 = v4;
+  v18 = _propertySettersForCreditAccountDetails;
   v19 = v3;
   v6 = v3;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v17];
+  v7 = _propertySettersForCreditAccountDetails;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v17];
 
-  v8 = [(SQLiteEntity *)self persistentID];
-  v9 = [(SQLiteEntity *)self database];
-  v10 = [CreditAccountRates creditAccountRatesForCreditAccountDetailsPID:v8 inDatabase:v9];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  v10 = [CreditAccountRates creditAccountRatesForCreditAccountDetailsPID:persistentID inDatabase:database];
   [v6 setRates:v10];
 
-  v11 = [CreditAccountSummary creditAccountSummaryForCreditAccountDetailsPID:v8 inDatabase:v9];
+  v11 = [CreditAccountSummary creditAccountSummaryForCreditAccountDetailsPID:persistentID inDatabase:database];
   [v6 setAccountSummary:v11];
 
-  v12 = [VirtualCard virtualCardsForCreditAccountDetailsPID:v8 inDatabase:v9];
+  v12 = [VirtualCard virtualCardsForCreditAccountDetailsPID:persistentID inDatabase:database];
   [v6 setVirtualCards:v12];
 
-  v13 = [NSNumber numberWithUnsignedLongLong:v8];
-  v14 = [CreditInstallmentPlan installmentPlansForCreditAccountDetailsPID:v13 inDatabase:v9];
+  v13 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v14 = [CreditInstallmentPlan installmentPlansForCreditAccountDetailsPID:v13 inDatabase:database];
   [v6 setInstallmentPlans:v14];
 
   v15 = [[PKAccountDetails alloc] initWithCreditDetails:v6];

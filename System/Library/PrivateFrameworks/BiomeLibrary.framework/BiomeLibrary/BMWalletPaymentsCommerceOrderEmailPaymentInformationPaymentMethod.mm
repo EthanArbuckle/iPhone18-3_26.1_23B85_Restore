@@ -1,38 +1,38 @@
 @interface BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithDisplayName:(id)a3 lastFourDigits:(id)a4 isApplePay:(id)a5;
-- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithDisplayName:(id)name lastFourDigits:(id)digits isApplePay:(id)pay;
+- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
-    v7 = [v5 displayName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    displayName = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
+    displayName2 = [v5 displayName];
+    v8 = displayName2;
+    if (displayName == displayName2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
-      v10 = [v5 displayName];
-      v11 = [v9 isEqual:v10];
+      displayName3 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
+      displayName4 = [v5 displayName];
+      v11 = [displayName3 isEqual:displayName4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
-    v14 = [v5 lastFourDigits];
-    v15 = v14;
-    if (v13 == v14)
+    lastFourDigits = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
+    lastFourDigits2 = [v5 lastFourDigits];
+    v15 = lastFourDigits2;
+    if (lastFourDigits == lastFourDigits2)
     {
     }
 
     else
     {
-      v16 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
-      v17 = [v5 lastFourDigits];
-      v18 = [v16 isEqual:v17];
+      lastFourDigits3 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
+      lastFourDigits4 = [v5 lastFourDigits];
+      v18 = [lastFourDigits3 isEqual:lastFourDigits4];
 
       if (!v18)
       {
@@ -67,8 +67,8 @@
 
     if (-[BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod hasIsApplePay](self, "hasIsApplePay") && [v5 hasIsApplePay])
     {
-      v19 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self isApplePay];
-      v12 = v19 ^ [v5 isApplePay] ^ 1;
+      isApplePay = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self isApplePay];
+      v12 = isApplePay ^ [v5 isApplePay] ^ 1;
 LABEL_17:
 
       goto LABEL_18;
@@ -88,8 +88,8 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
-  v4 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
+  displayName = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
+  lastFourDigits = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
   if ([(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self hasIsApplePay])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod isApplePay](self, "isApplePay")}];
@@ -101,40 +101,40 @@ LABEL_18:
   }
 
   v12[0] = @"displayName";
-  v6 = v3;
-  if (!v3)
+  null = displayName;
+  if (!displayName)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"lastFourDigits";
-  v7 = v4;
-  if (!v4)
+  null2 = lastFourDigits;
+  if (!lastFourDigits)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"isApplePay";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
-    if (v4)
+    if (lastFourDigits)
     {
       goto LABEL_12;
     }
 
 LABEL_17:
 
-    if (v3)
+    if (displayName)
     {
       goto LABEL_13;
     }
@@ -142,13 +142,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!lastFourDigits)
   {
     goto LABEL_17;
   }
 
 LABEL_12:
-  if (v3)
+  if (displayName)
   {
     goto LABEL_13;
   }
@@ -161,25 +161,25 @@ LABEL_13:
   return v9;
 }
 
-- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"displayName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"displayName"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"lastFourDigits"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"lastFourDigits"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -191,8 +191,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v19 = [v23 initWithDomain:v18 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v19;
+        selfCopy = 0;
+        *error = v19;
         goto LABEL_11;
       }
 
@@ -204,13 +204,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"isApplePay"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isApplePay"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -218,11 +218,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isApplePay"];
           v26 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v24 initWithDomain:v22 code:2 userInfo:v21];
+          *error = [v24 initWithDomain:v22 code:2 userInfo:v21];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -235,7 +235,7 @@ LABEL_4:
     }
 
     self = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self initWithDisplayName:v8 lastFourDigits:v10 isApplePay:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
     goto LABEL_12;
@@ -248,10 +248,10 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -262,51 +262,51 @@ LABEL_11:
   v30[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v8 = 0;
-  v13 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
 LABEL_12:
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lastFourDigits)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasIsApplePay)
   {
     isApplePay = self->_isApplePay;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod;
   v5 = [(BMEventBase *)&v29 init];
@@ -315,12 +315,12 @@ LABEL_13:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -331,18 +331,18 @@ LABEL_13:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -360,9 +360,9 @@ LABEL_13:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -377,18 +377,18 @@ LABEL_16:
         while (1)
         {
           v30 = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v30 & 0x7F) << v19;
@@ -406,7 +406,7 @@ LABEL_16:
           }
         }
 
-        v25 = (v21 != 0) & ~[v4 hasError];
+        v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_36:
         v5->_isApplePay = v25;
       }
@@ -440,13 +440,13 @@ LABEL_36:
       }
 
 LABEL_37:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v27 = 0;
@@ -464,31 +464,31 @@ LABEL_40:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
-  v5 = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
+  displayName = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self displayName];
+  lastFourDigits = [(BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod *)self lastFourDigits];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod isApplePay](self, "isApplePay")}];
-  v7 = [v3 initWithFormat:@"BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod with displayName: %@, lastFourDigits: %@, isApplePay: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod with displayName: %@, lastFourDigits: %@, isApplePay: %@", displayName, lastFourDigits, v6];
 
   return v7;
 }
 
-- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithDisplayName:(id)a3 lastFourDigits:(id)a4 isApplePay:(id)a5
+- (BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)initWithDisplayName:(id)name lastFourDigits:(id)digits isApplePay:(id)pay
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  digitsCopy = digits;
+  payCopy = pay;
   v14.receiver = self;
   v14.super_class = BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_displayName, a3);
-    objc_storeStrong(&v12->_lastFourDigits, a4);
-    if (v11)
+    objc_storeStrong(&v12->_displayName, name);
+    objc_storeStrong(&v12->_lastFourDigits, digits);
+    if (payCopy)
     {
       v12->_hasIsApplePay = 1;
-      v12->_isApplePay = [v11 BOOLValue];
+      v12->_isApplePay = [payCopy BOOLValue];
     }
 
     else
@@ -532,9 +532,9 @@ LABEL_40:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -542,8 +542,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod alloc] initByReadFrom:v7];
     v4 = v8;

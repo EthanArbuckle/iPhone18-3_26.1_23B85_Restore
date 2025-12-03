@@ -5,14 +5,14 @@
 - (BOOL)isAvailableForIML;
 - (BOOL)isAvailableForSMS;
 - (IDSStewieCTMessagingClient)init;
-- (id)shortHandleBase64StringFromNumber:(id)a3;
-- (id)shortHandleNumberFromBase64String:(id)a3;
-- (id)uriForShortHandle:(id)a3;
-- (void)connectedServicesChanged:(int64_t)a3;
-- (void)messageReceived:(id)a3 withMetadata:(id)a4 completionBlock:(id)a5;
-- (void)sendFetchRequestForHandles:(id)a3 completion:(id)a4;
-- (void)sendOffGridMessage:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)sendOffGridStatusDecryptionKey:(id)a3 completion:(id)a4;
+- (id)shortHandleBase64StringFromNumber:(id)number;
+- (id)shortHandleNumberFromBase64String:(id)string;
+- (id)uriForShortHandle:(id)handle;
+- (void)connectedServicesChanged:(int64_t)changed;
+- (void)messageReceived:(id)received withMetadata:(id)metadata completionBlock:(id)block;
+- (void)sendFetchRequestForHandles:(id)handles completion:(id)completion;
+- (void)sendOffGridMessage:(id)message options:(id)options completion:(id)completion;
+- (void)sendOffGridStatusDecryptionKey:(id)key completion:(id)completion;
 @end
 
 @implementation IDSStewieCTMessagingClient
@@ -35,13 +35,13 @@
     ctDataClient = v2->_ctDataClient;
     v2->_ctDataClient = v7;
 
-    v9 = [(CTStewieDataClient *)v2->_ctDataClient start];
+    start = [(CTStewieDataClient *)v2->_ctDataClient start];
     v10 = +[IDSFoundationLog stewieMessaging];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
       v12 = v2->_ctDataClient;
-      if (v9)
+      if (start)
       {
         v11 = @"YES";
       }
@@ -71,58 +71,58 @@
 
 - (BOOL)isActiveForIML
 {
-  v2 = [(CTStewieDataClient *)self->_ctDataClient getState];
-  v3 = [v2 isActiveService:16];
+  getState = [(CTStewieDataClient *)self->_ctDataClient getState];
+  v3 = [getState isActiveService:16];
 
   return v3;
 }
 
 - (BOOL)isActiveForSMS
 {
-  v2 = [(CTStewieDataClient *)self->_ctDataClient getState];
-  v3 = [v2 isActiveService:32];
+  getState = [(CTStewieDataClient *)self->_ctDataClient getState];
+  v3 = [getState isActiveService:32];
 
   return v3;
 }
 
 - (BOOL)isAvailableForIML
 {
-  v2 = [(CTStewieDataClient *)self->_ctDataClient getState];
-  v3 = [v2 isAllowedService:16];
+  getState = [(CTStewieDataClient *)self->_ctDataClient getState];
+  v3 = [getState isAllowedService:16];
 
   return v3;
 }
 
 - (BOOL)isAvailableForSMS
 {
-  v2 = [(CTStewieDataClient *)self->_ctDataClient getState];
-  v3 = [v2 isAllowedService:32];
+  getState = [(CTStewieDataClient *)self->_ctDataClient getState];
+  v3 = [getState isAllowedService:32];
 
   return v3;
 }
 
-- (void)sendOffGridMessage:(id)a3 options:(id)a4 completion:(id)a5
+- (void)sendOffGridMessage:(id)message options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v38 = a5;
-  v9 = a4;
-  v10 = [v8 senderShortHandle];
-  v35 = [(IDSStewieCTMessagingClient *)self shortHandleNumberFromBase64String:v10];
+  messageCopy = message;
+  completionCopy = completion;
+  optionsCopy = options;
+  senderShortHandle = [messageCopy senderShortHandle];
+  v35 = [(IDSStewieCTMessagingClient *)self shortHandleNumberFromBase64String:senderShortHandle];
 
-  v11 = [v8 recipientShortHandle];
-  v34 = self;
-  v12 = [(IDSStewieCTMessagingClient *)self shortHandleNumberFromBase64String:v11];
+  recipientShortHandle = [messageCopy recipientShortHandle];
+  selfCopy = self;
+  v12 = [(IDSStewieCTMessagingClient *)self shortHandleNumberFromBase64String:recipientShortHandle];
 
-  [v9 serviceType];
+  [optionsCopy serviceType];
   v13 = [CTStewieIMessageLiteMessageOutgoing alloc];
-  v14 = [v8 encryptionProperties];
-  v15 = [v14 segmentNumber];
-  [v15 integerValue];
-  v16 = [v8 encryptionProperties];
-  v17 = [v16 totalSegments];
-  [v17 integerValue];
-  v37 = v8;
-  v18 = [v8 payload];
+  encryptionProperties = [messageCopy encryptionProperties];
+  segmentNumber = [encryptionProperties segmentNumber];
+  [segmentNumber integerValue];
+  encryptionProperties2 = [messageCopy encryptionProperties];
+  totalSegments = [encryptionProperties2 totalSegments];
+  [totalSegments integerValue];
+  v37 = messageCopy;
+  payload = [messageCopy payload];
   v42 = 0;
   v36 = v12;
   v19 = [v13 initWithMyShortHandle:&v42 otherShortHandle:? partNumber:? totalParts:? payload:? isRelay:? error:?];
@@ -137,8 +137,8 @@
       sub_10092C888(v20, v22);
     }
 
-    v23 = v38;
-    (*(v38 + 2))(v38, 0, v20);
+    v23 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, v20);
     v24 = v35;
     v26 = v36;
     v25 = v37;
@@ -151,54 +151,54 @@
     v25 = v37;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v37 encryptionProperties];
-      v27 = [v33 segmentNumber];
-      v32 = [v37 encryptionProperties];
-      v28 = [v32 totalSegments];
-      v29 = [v37 payload];
-      v30 = [v29 debugDescription];
+      encryptionProperties3 = [v37 encryptionProperties];
+      segmentNumber2 = [encryptionProperties3 segmentNumber];
+      encryptionProperties4 = [v37 encryptionProperties];
+      totalSegments2 = [encryptionProperties4 totalSegments];
+      payload2 = [v37 payload];
+      v30 = [payload2 debugDescription];
       *buf = 138413314;
       v44 = v35;
       v45 = 2112;
       v46 = v36;
       v47 = 2112;
-      v48 = v27;
+      v48 = segmentNumber2;
       v49 = 2112;
-      v50 = v28;
+      v50 = totalSegments2;
       v51 = 2112;
       v52 = v30;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Sending off grid message {sURI: %@, rURI: %@, pn: %@, tp: %@, p: %@}", buf, 0x34u);
     }
 
-    ctDataClient = v34->_ctDataClient;
+    ctDataClient = selfCopy->_ctDataClient;
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = sub_1005F1654;
     v39[3] = &unk_100BE1B50;
     v40 = v37;
-    v23 = v38;
-    v41 = v38;
+    v23 = completionCopy;
+    v41 = completionCopy;
     [(CTStewieDataClient *)ctDataClient sendMessage:v19 completion:v39];
   }
 }
 
-- (void)sendFetchRequestForHandles:(id)a3 completion:(id)a4
+- (void)sendFetchRequestForHandles:(id)handles completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  handlesCopy = handles;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1005F19C0;
   v19[3] = &unk_100BE1B78;
   v8 = objc_alloc_init(NSMutableSet);
   v20 = v8;
-  v21 = self;
-  [v7 enumerateObjectsUsingBlock:v19];
+  selfCopy = self;
+  [handlesCopy enumerateObjectsUsingBlock:v19];
 
   v9 = [CTStewieIMessageLiteFetchMessage alloc];
-  v10 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   v18 = 0;
-  v11 = [v9 initWithShortHandles:v10 error:&v18];
+  v11 = [v9 initWithShortHandles:allObjects error:&v18];
   v12 = v18;
 
   if (v12)
@@ -209,7 +209,7 @@
       sub_10092C900(v12, v13);
     }
 
-    v6[2](v6, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
   else
@@ -220,34 +220,34 @@
     v15[2] = sub_1005F1A18;
     v15[3] = &unk_100BE1B50;
     v16 = v11;
-    v17 = v6;
+    v17 = completionCopy;
     [(CTStewieDataClient *)ctDataClient sendMessage:v16 completion:v15];
   }
 }
 
-- (void)sendOffGridStatusDecryptionKey:(id)a3 completion:(id)a4
+- (void)sendOffGridStatusDecryptionKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = +[IDSFoundationLog stewieMessaging];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = keyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending key for offgrid mode: %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (keyCopy)
   {
     v15 = 0;
-    v9 = [[CTStewieOffGridModeMessage alloc] initWithOffGridModeKey:v6 error:&v15];
+    v9 = [[CTStewieOffGridModeMessage alloc] initWithOffGridModeKey:keyCopy error:&v15];
     v10 = v15;
     ctDataClient = self->_ctDataClient;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1005F1D70;
     v13[3] = &unk_100BE1BA0;
-    v14 = v7;
+    v14 = completionCopy;
     [(CTStewieDataClient *)ctDataClient sendMessage:v9 completion:v13];
   }
 
@@ -256,67 +256,67 @@
     v9 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"Invalid decryption key.", NSLocalizedDescriptionKey, 0}];
     v12 = [NSError alloc];
     v10 = [v12 initWithDomain:IDSOffGridStatusErrorDomain code:5 userInfo:v9];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (void)messageReceived:(id)a3 withMetadata:(id)a4 completionBlock:(id)a5
+- (void)messageReceived:(id)received withMetadata:(id)metadata completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  receivedCopy = received;
+  metadataCopy = metadata;
+  blockCopy = block;
   v11 = +[IDSFoundationLog stewieMessaging];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v105 = v8;
+    v105 = receivedCopy;
     v106 = 2112;
-    v107 = v9;
+    v107 = metadataCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Incoming stewie message: {message: %@, metadata: %@}", buf, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v82 = v10;
-    v84 = v8;
-    v12 = v8;
+    v82 = blockCopy;
+    v84 = receivedCopy;
+    v12 = receivedCopy;
     v13 = +[IDSFoundationLog stewieMessaging];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v105 = v12;
       v106 = 2112;
-      v107 = v9;
+      v107 = metadataCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received incoming iMessage Lite: %@ with Metadata %@", buf, 0x16u);
     }
 
-    v14 = [v12 otherShortHandle];
-    v15 = [(IDSStewieCTMessagingClient *)self shortHandleBase64StringFromNumber:v14];
+    otherShortHandle = [v12 otherShortHandle];
+    v15 = [(IDSStewieCTMessagingClient *)self shortHandleBase64StringFromNumber:otherShortHandle];
 
-    v16 = [v12 myShortHandle];
-    v17 = [(IDSStewieCTMessagingClient *)self shortHandleBase64StringFromNumber:v16];
+    myShortHandle = [v12 myShortHandle];
+    v17 = [(IDSStewieCTMessagingClient *)self shortHandleBase64StringFromNumber:myShortHandle];
 
     v18 = [(IDSStewieCTMessagingClient *)self uriForShortHandle:v15];
     v19 = [(IDSStewieCTMessagingClient *)self uriForShortHandle:v17];
     v20 = [IDSOffGridEncryptedMessage alloc];
-    v21 = [v12 payload];
+    payload = [v12 payload];
     v87 = v18;
     v86 = v19;
-    v22 = [v20 initWithPayload:v21 senderURI:v18 recipientURI:v19];
+    v22 = [v20 initWithPayload:payload senderURI:v18 recipientURI:v19];
 
-    v23 = [v12 timestamp];
-    [v23 doubleValue];
+    timestamp = [v12 timestamp];
+    [timestamp doubleValue];
     v25 = [NSDate dateWithTimeIntervalSince1970:v24 / 1000000000.0];
     [v22 setDate:v25];
 
-    v26 = [v22 encryptionProperties];
+    encryptionProperties = [v22 encryptionProperties];
     v27 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 partNumber]);
-    [v26 setSegmentNumber:v27];
+    [encryptionProperties setSegmentNumber:v27];
 
-    v28 = [v22 encryptionProperties];
+    encryptionProperties2 = [v22 encryptionProperties];
     v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 totalParts]);
-    [v28 setTotalSegments:v29];
+    [encryptionProperties2 setTotalSegments:v29];
 
     [v22 setSenderShortHandle:v15];
     v80 = v17;
@@ -329,9 +329,9 @@
 
     v32 = objc_alloc_init(IDSOffGridMessageContext);
     [v32 setTransportType:2];
-    v33 = [v12 isRelay];
-    v34 = v33;
-    if (v33)
+    isRelay = [v12 isRelay];
+    v34 = isRelay;
+    if (isRelay)
     {
       v35 = 2;
     }
@@ -341,7 +341,7 @@
       v35 = 1;
     }
 
-    if (v33)
+    if (isRelay)
     {
       v36 = 140;
     }
@@ -365,7 +365,7 @@
       }
 
       v106 = 2112;
-      v107 = v9;
+      v107 = metadataCopy;
       v108 = 2112;
       v109 = v15;
       v110 = 2112;
@@ -380,7 +380,7 @@
     }
 
     v77 = v15;
-    v39 = v9;
+    v39 = metadataCopy;
 
     v40 = [IDSServiceProperties alloc];
     v41 = &IDSServiceNameiMessageLiteRelay;
@@ -398,7 +398,7 @@
       if ((v44 & 1) == 0)
       {
         v45 = +[IDSFoundationLog stewieMessaging];
-        v8 = v84;
+        receivedCopy = v84;
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
@@ -411,8 +411,8 @@
         }
 
 LABEL_54:
-        v9 = v39;
-        v10 = v82;
+        metadataCopy = v39;
+        blockCopy = v82;
         v46 = v87;
         goto LABEL_55;
       }
@@ -421,7 +421,7 @@ LABEL_54:
     if (sub_1006D6B44(v87))
     {
       v45 = +[IDSFoundationLog stewieMessaging];
-      v8 = v84;
+      receivedCopy = v84;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
@@ -434,11 +434,11 @@ LABEL_54:
         v49 = 22;
 LABEL_53:
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, v47, buf, v49);
-        v9 = v39;
-        v10 = v82;
+        metadataCopy = v39;
+        blockCopy = v82;
 LABEL_55:
 
-        v10[2](v10);
+        blockCopy[2](blockCopy);
 LABEL_63:
 
         goto LABEL_64;
@@ -454,21 +454,21 @@ LABEL_63:
       v97[1] = 3221225472;
       v97[2] = sub_1005F29B8;
       v97[3] = &unk_100BD8CB0;
-      v9 = v39;
+      metadataCopy = v39;
       v98 = v39;
-      v99 = self;
-      v10 = v82;
+      selfCopy = self;
+      blockCopy = v82;
       v100 = v82;
       [(IDSStewieCTMessagingDelegate *)messagingDelegate incomingOffGridMessage:v22 messageContext:v32 completion:v97];
 
       v73 = v98;
-      v8 = v84;
+      receivedCopy = v84;
     }
 
     else
     {
       v73 = +[IDSFoundationLog stewieMessaging];
-      v9 = v39;
+      metadataCopy = v39;
       if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
       {
         v74 = @"NO";
@@ -494,13 +494,13 @@ LABEL_63:
         v116 = 2112;
         v117 = v74;
         _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "No delegate dropping incoming iMessage Lite: %@ with Metadata %@ senderShortHandle: %@ senderURI: %@ recipientShortHandle: %@ recipientURI: %@ isRelay: %@", buf, 0x48u);
-        v10 = v82;
-        v8 = v84;
+        blockCopy = v82;
+        receivedCopy = v84;
         goto LABEL_62;
       }
 
-      v10 = v82;
-      v8 = v84;
+      blockCopy = v82;
+      receivedCopy = v84;
     }
 
     v75 = v78;
@@ -513,10 +513,10 @@ LABEL_62:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v81 = v9;
-    v83 = v10;
-    v85 = v8;
-    v50 = v8;
+    v81 = metadataCopy;
+    v83 = blockCopy;
+    v85 = receivedCopy;
+    v50 = receivedCopy;
     v51 = +[IDSFoundationLog stewieMessaging];
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
@@ -531,8 +531,8 @@ LABEL_62:
     v95 = 0u;
     v96 = 0u;
     v79 = v50;
-    v52 = [v50 pendingCounts];
-    v53 = [v52 countByEnumeratingWithState:&v93 objects:v103 count:16];
+    pendingCounts = [v50 pendingCounts];
+    v53 = [pendingCounts countByEnumeratingWithState:&v93 objects:v103 count:16];
     if (v53)
     {
       v54 = v53;
@@ -543,12 +543,12 @@ LABEL_62:
         {
           if (*v94 != v55)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(pendingCounts);
           }
 
           v57 = *(*(&v93 + 1) + 8 * i);
-          v58 = [v57 otherShortHandle];
-          v59 = [(IDSStewieCTMessagingClient *)self shortHandleBase64StringFromNumber:v58];
+          otherShortHandle2 = [v57 otherShortHandle];
+          v59 = [(IDSStewieCTMessagingClient *)self shortHandleBase64StringFromNumber:otherShortHandle2];
 
           if (v59)
           {
@@ -589,7 +589,7 @@ LABEL_62:
 LABEL_41:
         }
 
-        v54 = [v52 countByEnumeratingWithState:&v93 objects:v103 count:16];
+        v54 = [pendingCounts countByEnumeratingWithState:&v93 objects:v103 count:16];
       }
 
       while (v54);
@@ -599,8 +599,8 @@ LABEL_41:
     v65 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v79 pendingIMessageLiteTotalCount]);
     v66 = [v64 initWithSummary:v88 totalPendingMessagesCount:v65];
 
-    v9 = v81;
-    v10 = v83;
+    metadataCopy = v81;
+    blockCopy = v83;
     if (self->_messagingDelegate)
     {
       v67 = objc_alloc_init(IDSOffGridMessageContext);
@@ -612,12 +612,12 @@ LABEL_41:
       v89[2] = sub_1005F2AE4;
       v89[3] = &unk_100BD8CB0;
       v90 = v81;
-      v91 = self;
+      selfCopy2 = self;
       v92 = v83;
       [(IDSStewieCTMessagingDelegate *)v68 incomingOffGridSummaryMessage:v66 messageContext:v67 completion:v89];
     }
 
-    v8 = v85;
+    receivedCopy = v85;
   }
 
   else
@@ -629,24 +629,24 @@ LABEL_41:
       *buf = 138412546;
       v105 = v70;
       v106 = 2112;
-      v107 = v9;
+      v107 = metadataCopy;
       v71 = v70;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "Received incoming message of unhandled type: %@ with metadata %@. Dropping!", buf, 0x16u);
     }
 
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 
 LABEL_64:
 }
 
-- (void)connectedServicesChanged:(int64_t)a3
+- (void)connectedServicesChanged:(int64_t)changed
 {
   v5 = +[IDSFoundationLog stewieMessaging];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"YES";
-    if ((a3 & 0x10) != 0)
+    if ((changed & 0x10) != 0)
     {
       v7 = @"YES";
     }
@@ -657,10 +657,10 @@ LABEL_64:
     }
 
     v8 = 134218498;
-    v9 = a3;
+    changedCopy = changed;
     v11 = v7;
     v10 = 2112;
-    if ((a3 & 0x20) == 0)
+    if ((changed & 0x20) == 0)
     {
       v6 = @"NO";
     }
@@ -674,24 +674,24 @@ LABEL_64:
   {
     if (objc_opt_respondsToSelector())
     {
-      [(IDSStewieCTAvailabilityDelegate *)self->_availabilityDelegate availabilityChangedForIML:(a3 >> 4) & 1];
+      [(IDSStewieCTAvailabilityDelegate *)self->_availabilityDelegate availabilityChangedForIML:(changed >> 4) & 1];
     }
   }
 }
 
-- (id)uriForShortHandle:(id)a3
+- (id)uriForShortHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = +[IDSPeerIDManager sharedInstance];
-  v5 = [v4 uriForShortHandle:v3];
+  v5 = [v4 uriForShortHandle:handleCopy];
 
   return v5;
 }
 
-- (id)shortHandleNumberFromBase64String:(id)a3
+- (id)shortHandleNumberFromBase64String:(id)string
 {
-  v3 = a3;
-  v4 = [[NSData alloc] initWithBase64EncodedString:v3 options:0];
+  stringCopy = string;
+  v4 = [[NSData alloc] initWithBase64EncodedString:stringCopy options:0];
 
   v5 = 0;
   if ([v4 length] == 7)
@@ -705,9 +705,9 @@ LABEL_64:
   return v5;
 }
 
-- (id)shortHandleBase64StringFromNumber:(id)a3
+- (id)shortHandleBase64StringFromNumber:(id)number
 {
-  v6 = bswap64([a3 unsignedLongLongValue]) >> 8;
+  v6 = bswap64([number unsignedLongLongValue]) >> 8;
   v3 = [NSData dataWithBytes:&v6 length:7];
   v4 = [v3 base64EncodedStringWithOptions:0];
 

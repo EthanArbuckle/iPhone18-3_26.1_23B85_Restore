@@ -1,23 +1,23 @@
 @interface HKMedicalIDPersonSummaryCell
-- (HKMedicalIDPersonSummaryCell)initWithFrame:(CGRect)a3;
+- (HKMedicalIDPersonSummaryCell)initWithFrame:(CGRect)frame;
 - (id)_cachedCalendar;
 - (id)notOrganDonorString;
-- (id)stringWithImageNamed:(id)a3 withText:(id)a4 andColor:(id)a5;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (id)stringWithImageNamed:(id)named withText:(id)text andColor:(id)color;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)buildEmergencyAccessTableItem;
 - (void)dealloc;
-- (void)timeZoneDidChange:(id)a3;
+- (void)timeZoneDidChange:(id)change;
 - (void)updateSubviewsFromData;
 @end
 
 @implementation HKMedicalIDPersonSummaryCell
 
-- (HKMedicalIDPersonSummaryCell)initWithFrame:(CGRect)a3
+- (HKMedicalIDPersonSummaryCell)initWithFrame:(CGRect)frame
 {
   v54[3] = *MEMORY[0x1E69E9840];
   v50.receiver = self;
   v50.super_class = HKMedicalIDPersonSummaryCell;
-  v3 = [(HKMedicalIDPersonSummaryCell *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKMedicalIDPersonSummaryCell *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -77,8 +77,8 @@
     [(UIStackView *)v3->_mainContainerView setAlignment:1];
     [(UIStackView *)v3->_mainContainerView setSpacing:16.0];
     [(UIStackView *)v3->_mainContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [(UIImageView *)v3->_pictureView layer];
-    [v22 setMasksToBounds:1];
+    layer = [(UIImageView *)v3->_pictureView layer];
+    [layer setMasksToBounds:1];
 
     [(UILabel *)v3->_nameLabel setNumberOfLines:0];
     [(UILabel *)v3->_birthdateLabel setNumberOfLines:0];
@@ -95,39 +95,39 @@
     [(UIStackView *)v3->_fullContainerView setAxis:1];
     [(UIStackView *)v3->_fullContainerView setSpacing:4.0];
     [(UIStackView *)v3->_fullContainerView addArrangedSubview:v3->_emergencyAccessLabel];
-    v27 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
-    [v27 addSubview:v3->_fullContainerView];
+    contentView = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
+    [contentView addSubview:v3->_fullContainerView];
 
-    v28 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
-    v29 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [v28 setBackgroundColor:v29];
+    contentView2 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [contentView2 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-    v47 = [(UIStackView *)v3->_fullContainerView leadingAnchor];
-    v48 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
-    v46 = [v48 leadingAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46 constant:16.0];
+    leadingAnchor = [(UIStackView *)v3->_fullContainerView leadingAnchor];
+    contentView3 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v51[0] = v45;
-    v43 = [(UIStackView *)v3->_fullContainerView trailingAnchor];
-    v44 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
-    v42 = [v44 trailingAnchor];
-    v30 = [v43 constraintEqualToAnchor:v42 constant:-16.0];
+    trailingAnchor = [(UIStackView *)v3->_fullContainerView trailingAnchor];
+    contentView4 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v51[1] = v30;
-    v31 = [(UIStackView *)v3->_fullContainerView topAnchor];
-    v32 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
-    v33 = [v32 topAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33 constant:20.0];
+    topAnchor = [(UIStackView *)v3->_fullContainerView topAnchor];
+    contentView5 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v34 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     v51[2] = v34;
-    v35 = [(UIStackView *)v3->_fullContainerView bottomAnchor];
-    v36 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
-    v37 = [v36 bottomAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37 constant:-20.0];
+    bottomAnchor = [(UIStackView *)v3->_fullContainerView bottomAnchor];
+    contentView6 = [(HKMedicalIDPersonSummaryCell *)v3 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
     v51[3] = v38;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v41];
     [(HKMedicalIDPersonSummaryCell *)v3 _contentSizeCategoryDidChange:0];
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v3 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -135,15 +135,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = HKMedicalIDPersonSummaryCell;
   [(HKMedicalIDPersonSummaryCell *)&v4 dealloc];
 }
 
-- (void)timeZoneDidChange:(id)a3
+- (void)timeZoneDidChange:(id)change
 {
   gregorianCalendar = self->_gregorianCalendar;
   self->_gregorianCalendar = 0;
@@ -151,7 +151,7 @@
   [(HKMedicalIDPersonSummaryCell *)self updateSubviewsFromData];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   if (HKUIApplicationIsUsingAccessibilityContentSizeCategory())
   {
@@ -212,19 +212,19 @@
     [(UIStackView *)self->_fullContainerView addArrangedSubview:self->_emergencyAccessLabel];
   }
 
-  v12 = [(UIImageView *)self->_pictureView widthAnchor];
-  v13 = [v12 constraintEqualToConstant:v7];
+  widthAnchor = [(UIImageView *)self->_pictureView widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:v7];
   pictureWidthAnchor = self->_pictureWidthAnchor;
   self->_pictureWidthAnchor = v13;
 
   [(NSLayoutConstraint *)self->_pictureWidthAnchor setActive:1];
-  v15 = [(UIImageView *)self->_pictureView heightAnchor];
-  v16 = [(UIImageView *)self->_pictureView widthAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  heightAnchor = [(UIImageView *)self->_pictureView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_pictureView widthAnchor];
+  v17 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   [v17 setActive:1];
 
-  v18 = [(UIImageView *)self->_pictureView layer];
-  [v18 setCornerRadius:v7 * 0.5];
+  layer = [(UIImageView *)self->_pictureView layer];
+  [layer setCornerRadius:v7 * 0.5];
 
   v19 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDDC8] symbolicTraits:32770];
   [(UILabel *)self->_nameLabel setFont:v19];
@@ -279,12 +279,12 @@
   [(NSLayoutConstraint *)self->_pictureWidthAnchor setActive:self->_picture != 0];
   if (self->_gregorianBirthday)
   {
-    v9 = [(HKMedicalIDPersonSummaryCell *)self _cachedCalendar];
-    v10 = [v9 dateFromComponents:self->_gregorianBirthday];
+    _cachedCalendar = [(HKMedicalIDPersonSummaryCell *)self _cachedCalendar];
+    v10 = [_cachedCalendar dateFromComponents:self->_gregorianBirthday];
 
-    v11 = [(HKMedicalIDPersonSummaryCell *)self _cachedCalendar];
-    v12 = [MEMORY[0x1E695DF00] date];
-    v13 = [v11 components:4 fromDate:v10 toDate:v12 options:0];
+    _cachedCalendar2 = [(HKMedicalIDPersonSummaryCell *)self _cachedCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v13 = [_cachedCalendar2 components:4 fromDate:v10 toDate:date options:0];
 
     v14 = updateSubviewsFromData___ageFormatter;
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "year")}];
@@ -313,12 +313,12 @@
 LABEL_12:
     organDonationLabel = self->_organDonationLabel;
     v21 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v22 = v21;
+    notOrganDonorString = v21;
     v23 = @"organ_donor_donate_life_registered";
 LABEL_13:
     v24 = [v21 localizedStringForKey:v23 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v25 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
-    v26 = [(HKMedicalIDPersonSummaryCell *)self stringWithImageNamed:@"heart.fill" withText:v24 andColor:v25];
+    hk_vitalsKeyColor = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
+    v26 = [(HKMedicalIDPersonSummaryCell *)self stringWithImageNamed:@"heart.fill" withText:v24 andColor:hk_vitalsKeyColor];
     [(UILabel *)organDonationLabel setAttributedText:v26];
 
 LABEL_14:
@@ -329,21 +329,21 @@ LABEL_14:
   if (self->_organDonationStatus)
   {
     [(UILabel *)v27 setHidden:0];
-    v28 = [(NSNumber *)self->_organDonationStatus integerValue];
-    switch(v28)
+    integerValue = [(NSNumber *)self->_organDonationStatus integerValue];
+    switch(integerValue)
     {
       case 2:
         goto LABEL_12;
       case 1:
         organDonationLabel = self->_organDonationLabel;
         v21 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-        v22 = v21;
+        notOrganDonorString = v21;
         v23 = @"organ_donor_self_reported";
         goto LABEL_13;
       case 0:
         v29 = self->_organDonationLabel;
-        v22 = [(HKMedicalIDPersonSummaryCell *)self notOrganDonorString];
-        [(UILabel *)v29 setAttributedText:v22];
+        notOrganDonorString = [(HKMedicalIDPersonSummaryCell *)self notOrganDonorString];
+        [(UILabel *)v29 setAttributedText:notOrganDonorString];
         goto LABEL_14;
     }
   }
@@ -359,18 +359,18 @@ LABEL_21:
   [(HKMedicalIDPersonSummaryCell *)self buildEmergencyAccessTableItem];
 }
 
-- (id)stringWithImageNamed:(id)a3 withText:(id)a4 andColor:(id)a5
+- (id)stringWithImageNamed:(id)named withText:(id)text andColor:(id)color
 {
   v26[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69DB878];
   v8 = *MEMORY[0x1E69DDD78];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  colorCopy = color;
+  textCopy = text;
+  namedCopy = named;
   v12 = [v7 hk_preferredFontForTextStyle:v8];
   v13 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   v14 = [MEMORY[0x1E69DCAD8] configurationWithFont:v12 scale:1];
-  v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11 withConfiguration:v14];
+  v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:namedCopy withConfiguration:v14];
 
   v16 = [v15 imageWithRenderingMode:2];
   [v13 setImage:v16];
@@ -379,17 +379,17 @@ LABEL_21:
   v18 = [v17 mutableCopy];
 
   v19 = *MEMORY[0x1E69DB650];
-  [v18 addAttribute:*MEMORY[0x1E69DB650] value:v9 range:{0, objc_msgSend(v18, "length")}];
+  [v18 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, objc_msgSend(v18, "length")}];
 
   v20 = *MEMORY[0x1E69DB648];
   v25[1] = v19;
   v26[0] = v12;
   v25[0] = v20;
-  v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v26[1] = v21;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v26[1] = secondaryLabelColor;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
 
-  v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v10 attributes:v22];
+  v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:textCopy attributes:v22];
   [v18 appendAttributedString:v23];
 
   return v18;
@@ -402,8 +402,8 @@ LABEL_21:
   v2 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDD78]];
   v11[0] = v2;
   v10[1] = *MEMORY[0x1E69DB650];
-  v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v11[1] = v3;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v11[1] = secondaryLabelColor;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v5 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -454,8 +454,8 @@ LABEL_21:
       }
     }
 
-    v8 = [MEMORY[0x1E69DC888] hk_appKeyColor];
-    v9 = [(HKMedicalIDPersonSummaryCell *)self stringWithImageNamed:@"checkmark.circle.fill" withText:v10 andColor:v8];
+    hk_appKeyColor = [MEMORY[0x1E69DC888] hk_appKeyColor];
+    v9 = [(HKMedicalIDPersonSummaryCell *)self stringWithImageNamed:@"checkmark.circle.fill" withText:v10 andColor:hk_appKeyColor];
     [(UILabel *)self->_emergencyAccessLabel setAttributedText:v9];
   }
 

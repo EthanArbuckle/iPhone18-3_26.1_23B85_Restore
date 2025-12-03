@@ -1,7 +1,7 @@
 @interface SYDefaults
 + (BOOL)shouldDisableQuickNoteTemporarily;
 + (int64_t)indicatorCoverage;
-+ (void)setIndicatorCoverage:(int64_t)a3;
++ (void)setIndicatorCoverage:(int64_t)coverage;
 @end
 
 @implementation SYDefaults
@@ -37,12 +37,12 @@
   return v4;
 }
 
-+ (void)setIndicatorCoverage:(int64_t)a3
++ (void)setIndicatorCoverage:(int64_t)coverage
 {
-  if (a3 <= 2)
+  if (coverage <= 2)
   {
     v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.Synapse"];
-    [v5 setInteger:a3 forKey:@"indicatorCoverage"];
+    [v5 setInteger:coverage forKey:@"indicatorCoverage"];
   }
 }
 

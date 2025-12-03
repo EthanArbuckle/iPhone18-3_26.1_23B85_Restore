@@ -1,9 +1,9 @@
 @interface PKPaymentValidationCache
 + (id)sharedInstance;
-- (BOOL)_hasCacheResult:(BOOL *)a3 forKey:(id)a4;
-- (BOOL)getResultForKey:(id)a3 orCompute:(id)a4;
+- (BOOL)_hasCacheResult:(BOOL *)result forKey:(id)key;
+- (BOOL)getResultForKey:(id)key orCompute:(id)compute;
 - (PKPaymentValidationCache)init;
-- (void)_setCacheResult:(BOOL)a3 forKey:(id)a4;
+- (void)_setCacheResult:(BOOL)result forKey:(id)key;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -45,22 +45,22 @@ void __42__PKPaymentValidationCache_sharedInstance__block_invoke()
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v5;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __32__PKPaymentValidationCache_init__block_invoke;
     v15[3] = &unk_1E79CA148;
     v8 = v2;
     v16 = v8;
-    v9 = [v7 addObserverForName:@"PKPassLibraryDidChangeNotification" object:0 queue:0 usingBlock:v15];
+    v9 = [defaultCenter addObserverForName:@"PKPassLibraryDidChangeNotification" object:0 queue:0 usingBlock:v15];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __32__PKPaymentValidationCache_init__block_invoke_2;
     v13[3] = &unk_1E79CA148;
     v14 = v8;
-    v11 = [v10 addObserverForName:@"PKPassLibraryRemotePaymentPassesDidChange" object:0 queue:0 usingBlock:v13];
+    v11 = [defaultCenter2 addObserverForName:@"PKPassLibraryRemotePaymentPassesDidChange" object:0 queue:0 usingBlock:v13];
   }
 
   return v2;
@@ -68,21 +68,21 @@ void __42__PKPaymentValidationCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPaymentValidationCache;
   [(PKPaymentValidationCache *)&v4 dealloc];
 }
 
-- (BOOL)getResultForKey:(id)a3 orCompute:(id)a4
+- (BOOL)getResultForKey:(id)key orCompute:(id)compute
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  keyCopy = key;
+  computeCopy = compute;
+  v8 = computeCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (keyCopy && computeCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -95,7 +95,7 @@ void __42__PKPaymentValidationCache_sharedInstance__block_invoke()
     v12[3] = &unk_1E79CA170;
     v12[4] = self;
     v15 = &v16;
-    v13 = v6;
+    v13 = keyCopy;
     v14 = v8;
     dispatch_sync(accessQueue, v12);
     v9 = *(v17 + 24);
@@ -141,19 +141,19 @@ void __54__PKPaymentValidationCache_getResultForKey_orCompute___block_invoke(uin
   }
 }
 
-- (void)_setCacheResult:(BOOL)a3 forKey:(id)a4
+- (void)_setCacheResult:(BOOL)result forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [[PKPaymentValidationCacheEntry alloc] initWithResult:v4];
-  [(NSCache *)self->_cache setObject:v7 forKey:v6];
+  resultCopy = result;
+  keyCopy = key;
+  v7 = [[PKPaymentValidationCacheEntry alloc] initWithResult:resultCopy];
+  [(NSCache *)self->_cache setObject:v7 forKey:keyCopy];
 }
 
-- (BOOL)_hasCacheResult:(BOOL *)a3 forKey:(id)a4
+- (BOOL)_hasCacheResult:(BOOL *)result forKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(NSCache *)self->_cache objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSCache *)self->_cache objectForKey:keyCopy];
   v8 = v7;
   if (!v7)
   {
@@ -171,17 +171,17 @@ LABEL_6:
       v13 = 134218242;
       v14 = v10;
       v15 = 2112;
-      v16 = v6;
+      v16 = keyCopy;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKPaymentValidationCache: Found expired cache entry (%.2f seconds old) for key %@", &v13, 0x16u);
     }
 
-    [(NSCache *)self->_cache removeObjectForKey:v6];
+    [(NSCache *)self->_cache removeObjectForKey:keyCopy];
     goto LABEL_6;
   }
 
-  if (a3)
+  if (result)
   {
-    *a3 = [v8 result];
+    *result = [v8 result];
   }
 
   v11 = 1;

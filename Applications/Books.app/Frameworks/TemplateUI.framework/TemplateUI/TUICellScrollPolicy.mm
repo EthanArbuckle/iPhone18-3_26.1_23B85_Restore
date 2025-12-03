@@ -1,12 +1,12 @@
 @interface TUICellScrollPolicy
-- (TUICellScrollPolicy)initWithCells:(const void *)a3;
+- (TUICellScrollPolicy)initWithCells:(const void *)cells;
 - (id).cxx_construct;
-- (id)newScrollableObserverInstanceWithView:(id)a3 host:(id)a4 uuid:(id)a5 uid:(id)a6;
+- (id)newScrollableObserverInstanceWithView:(id)view host:(id)host uuid:(id)uuid uid:(id)uid;
 @end
 
 @implementation TUICellScrollPolicy
 
-- (TUICellScrollPolicy)initWithCells:(const void *)a3
+- (TUICellScrollPolicy)initWithCells:(const void *)cells
 {
   v8.receiver = self;
   v8.super_class = TUICellScrollPolicy;
@@ -14,7 +14,7 @@
   p_cells = &v4->_cells;
   if (v4)
   {
-    v6 = p_cells == a3;
+    v6 = p_cells == cells;
   }
 
   else
@@ -24,19 +24,19 @@
 
   if (!v6)
   {
-    sub_15CBE0(p_cells, *a3, *(a3 + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(a3 + 1) - *a3) >> 3));
+    sub_15CBE0(p_cells, *cells, *(cells + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(cells + 1) - *cells) >> 3));
   }
 
   return v4;
 }
 
-- (id)newScrollableObserverInstanceWithView:(id)a3 host:(id)a4 uuid:(id)a5 uid:(id)a6
+- (id)newScrollableObserverInstanceWithView:(id)view host:(id)host uuid:(id)uuid uid:(id)uid
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[_TUICellScrollObserver alloc] initWithPolicy:self view:v10 host:v11 uuid:v12 uid:v13];
+  viewCopy = view;
+  hostCopy = host;
+  uuidCopy = uuid;
+  uidCopy = uid;
+  v14 = [[_TUICellScrollObserver alloc] initWithPolicy:self view:viewCopy host:hostCopy uuid:uuidCopy uid:uidCopy];
 
   return v14;
 }

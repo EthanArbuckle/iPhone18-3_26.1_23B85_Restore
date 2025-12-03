@@ -1,13 +1,13 @@
 @interface MAAssetTypeDescriptor
 + (id)_assetTypeDescriptors;
 + (id)_secureAssetTypeDescriptors;
-+ (id)_typeDescriptorDictionaryForAssetType:(void *)a3 typeDescriptors:;
-+ (id)_typeDescriptorsMatchingBooleanKey:(uint64_t)a1;
-+ (id)descriptorForAssetType:(id)a3;
-+ (void)_loadDescriptorsFromPath:(void *)a3 intoDictionary:;
++ (id)_typeDescriptorDictionaryForAssetType:(void *)type typeDescriptors:;
++ (id)_typeDescriptorsMatchingBooleanKey:(uint64_t)key;
++ (id)descriptorForAssetType:(id)type;
++ (void)_loadDescriptorsFromPath:(void *)path intoDictionary:;
 - (BOOL)shouldMakeDataVault;
 - (BOOL)shouldRemoveV1Assets;
-- (MAAssetTypeDescriptor)initWithAssetType:(id)a3;
+- (MAAssetTypeDescriptor)initWithAssetType:(id)type;
 - (NSArray)assetSpecifiers;
 - (NSDictionary)assetProperties;
 - (id)description;
@@ -15,18 +15,18 @@
 
 @implementation MAAssetTypeDescriptor
 
-+ (id)descriptorForAssetType:(id)a3
++ (id)descriptorForAssetType:(id)type
 {
-  v3 = a3;
-  v4 = [[MAAssetTypeDescriptor alloc] initWithAssetType:v3];
+  typeCopy = type;
+  v4 = [[MAAssetTypeDescriptor alloc] initWithAssetType:typeCopy];
 
   return v4;
 }
 
-- (MAAssetTypeDescriptor)initWithAssetType:(id)a3
+- (MAAssetTypeDescriptor)initWithAssetType:(id)type
 {
-  v5 = a3;
-  if (v5)
+  typeCopy = type;
+  if (typeCopy)
   {
     v14.receiver = self;
     v14.super_class = MAAssetTypeDescriptor;
@@ -35,7 +35,7 @@
     {
       v6 = +[MAAssetTypeDescriptor _assetTypeDescriptors];
       v7 = +[MAAssetTypeDescriptor _secureAssetTypeDescriptors];
-      v8 = [MAAssetTypeDescriptor _typeDescriptorDictionaryForAssetType:v5 typeDescriptors:v7];
+      v8 = [MAAssetTypeDescriptor _typeDescriptorDictionaryForAssetType:typeCopy typeDescriptors:v7];
       if (v8)
       {
         v9 = v8;
@@ -44,10 +44,10 @@
 
       else
       {
-        v12 = [MAAssetTypeDescriptor _typeDescriptorDictionaryForAssetType:v5 typeDescriptors:v6];
+        v12 = [MAAssetTypeDescriptor _typeDescriptorDictionaryForAssetType:typeCopy typeDescriptors:v6];
         if (!v12)
         {
-          v11 = 0;
+          selfCopy = 0;
           goto LABEL_9;
         }
 
@@ -57,18 +57,18 @@
 
       self->_isSecure = v10;
       objc_storeStrong(&self->_typeDescriptor, v9);
-      objc_storeStrong(&self->_assetType, a3);
-      v11 = self;
+      objc_storeStrong(&self->_assetType, type);
+      selfCopy = self;
 
 LABEL_9:
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
 + (id)_assetTypeDescriptors
@@ -97,10 +97,10 @@ LABEL_10:
   return v0;
 }
 
-+ (id)_typeDescriptorDictionaryForAssetType:(void *)a3 typeDescriptors:
++ (id)_typeDescriptorDictionaryForAssetType:(void *)type typeDescriptors:
 {
   v4 = a2;
-  v5 = a3;
+  typeCopy = type;
   objc_opt_self();
   v12 = 0;
   v13 = &v12;
@@ -115,7 +115,7 @@ LABEL_10:
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [typeCopy enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -126,13 +126,13 @@ LABEL_10:
 - (id)description
 {
   v3 = MEMORY[0x29EDBA0F8];
-  v4 = [(MAAssetTypeDescriptor *)self assetType];
-  v5 = [v3 stringWithFormat:@"<MAAssetTypeDescriptor: %p>: (AssetType: %@, Secure: %d)", self, v4, -[MAAssetTypeDescriptor isSecure](self, "isSecure")];
+  assetType = [(MAAssetTypeDescriptor *)self assetType];
+  v5 = [v3 stringWithFormat:@"<MAAssetTypeDescriptor: %p>: (AssetType: %@, Secure: %d)", self, assetType, -[MAAssetTypeDescriptor isSecure](self, "isSecure")];
 
   return v5;
 }
 
-+ (id)_typeDescriptorsMatchingBooleanKey:(uint64_t)a1
++ (id)_typeDescriptorsMatchingBooleanKey:(uint64_t)key
 {
   v2 = a2;
   objc_opt_self();
@@ -205,19 +205,19 @@ void __46__MAAssetTypeDescriptor__assetTypeDescriptors__block_invoke()
   [MAAssetTypeDescriptor _loadDescriptorsFromPath:v2 intoDictionary:?];
 }
 
-+ (void)_loadDescriptorsFromPath:(void *)a3 intoDictionary:
++ (void)_loadDescriptorsFromPath:(void *)path intoDictionary:
 {
   v42[1] = *MEMORY[0x29EDCA608];
   v4 = a2;
-  v29 = a3;
+  pathCopy = path;
   objc_opt_self();
-  v5 = [MEMORY[0x29EDB9FB8] defaultManager];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
   v6 = [MEMORY[0x29EDB8E70] fileURLWithPath:v4];
   v30 = *MEMORY[0x29EDB8D58];
   v42[0] = *MEMORY[0x29EDB8D58];
   v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v42 count:1];
   v36 = 0;
-  v8 = [v5 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:v7 options:4 error:&v36];
+  v8 = [defaultManager contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:v7 options:4 error:&v36];
   v9 = v36;
 
   if (v8)
@@ -246,13 +246,13 @@ void __46__MAAssetTypeDescriptor__assetTypeDescriptors__block_invoke()
 
           v15 = *(*(&v32 + 1) + 8 * i);
           v16 = objc_autoreleasePoolPush();
-          v17 = [v15 lastPathComponent];
-          v18 = v17;
-          if (v17)
+          lastPathComponent = [v15 lastPathComponent];
+          v18 = lastPathComponent;
+          if (lastPathComponent)
           {
-            v19 = [v17 stringByDeletingPathExtension];
-            v20 = v19;
-            if (v19 && [v19 length])
+            stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+            v20 = stringByDeletingPathExtension;
+            if (stringByDeletingPathExtension && [stringByDeletingPathExtension length])
             {
               v31 = 0;
               v21 = [v15 getResourceValue:&v31 forKey:v30 error:0];
@@ -263,7 +263,7 @@ void __46__MAAssetTypeDescriptor__assetTypeDescriptors__block_invoke()
                 v24 = [MEMORY[0x29EDB8DC0] dictionaryWithContentsOfURL:{v15, v26, v27, v28}];
                 if (v24)
                 {
-                  [v29 setObject:v24 forKeyedSubscript:v20];
+                  [pathCopy setObject:v24 forKeyedSubscript:v20];
                 }
               }
             }
@@ -382,15 +382,15 @@ uint64_t __79__MAAssetTypeDescriptor__typeDescriptorDictionaryForAssetType_typeD
   objc_opt_class();
   if (OUTLINED_FUNCTION_0_1())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldRemoveV1Assets
@@ -404,15 +404,15 @@ uint64_t __79__MAAssetTypeDescriptor__typeDescriptorDictionaryForAssetType_typeD
   objc_opt_class();
   if (OUTLINED_FUNCTION_0_1())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

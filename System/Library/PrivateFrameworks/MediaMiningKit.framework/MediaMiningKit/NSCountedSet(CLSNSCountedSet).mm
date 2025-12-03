@@ -8,15 +8,15 @@
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __83__NSCountedSet_CLSNSCountedSet__enumerateObjectsSortedByCountUsingBlock_ascending___block_invoke;
   v26[3] = &unk_2788A7998;
-  v8 = v7;
+  v8 = array;
   v27 = v8;
-  v28 = a1;
-  [a1 enumerateObjectsUsingBlock:v26];
+  selfCopy = self;
+  [self enumerateObjectsUsingBlock:v26];
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"count" ascending:a4];
   v30[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];

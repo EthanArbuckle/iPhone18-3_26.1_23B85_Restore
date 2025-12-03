@@ -1,18 +1,18 @@
 @interface TSCEFunction_CONCATENATE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)valueForArgumentRepeatingSingletonMode:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5 argSpec:(id)a6 outError:(id *)a7;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)valueForArgumentRepeatingSingletonMode:(id)mode functionSpec:(id)spec arguments:(const void *)arguments argSpec:(id)argSpec outError:(id *)error;
 @end
 
 @implementation TSCEFunction_CONCATENATE
 
-+ (id)valueForArgumentRepeatingSingletonMode:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5 argSpec:(id)a6 outError:(id *)a7
++ (id)valueForArgumentRepeatingSingletonMode:(id)mode functionSpec:(id)spec arguments:(const void *)arguments argSpec:(id)argSpec outError:(id *)error
 {
-  v10 = a3;
-  v11 = a6;
-  v13 = *a5;
-  v12 = *(a5 + 1);
-  v98 = v11;
-  v18 = objc_msgSend_argumentType(v11, v14, v15, v16, v17);
+  modeCopy = mode;
+  argSpecCopy = argSpec;
+  v13 = *arguments;
+  v12 = *(arguments + 1);
+  v98 = argSpecCopy;
+  v18 = objc_msgSend_argumentType(argSpecCopy, v14, v15, v16, v17);
   v19 = v12 - v13;
   v108 = 0;
   v109 = 0;
@@ -27,13 +27,13 @@
     v22 = (v19 >> 3) & 0x7FFFFFFF;
     do
     {
-      v23 = *(*a5 + 8 * v21);
+      v23 = *(*arguments + 8 * v21);
       isFlattened = v23;
       if (v20 == 7 && (objc_msgSend_isRegexString(v23, v24, v25, v26, v27) & 1) == 0)
       {
         if (isFlattened)
         {
-          objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(isFlattened, v24, v10, a4, 0, a7);
+          objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(isFlattened, v24, modeCopy, spec, 0, error);
         }
 
         else
@@ -41,7 +41,7 @@
           memset(&v101, 0, 24);
         }
 
-        if (*a7)
+        if (*error)
         {
           v86 = objc_msgSend_emptyGrid(TSCEGridValue, v24, v25, v26, v27);
 
@@ -53,7 +53,7 @@
         isFlattened = v29;
       }
 
-      if (objc_msgSend_isReferenceValue(isFlattened, v24, v25, v26, v27) && (!v11 || (objc_msgSend_referenceForGeometryOnly(v11, v30, v31, v32, v33) & 1) == 0))
+      if (objc_msgSend_isReferenceValue(isFlattened, v24, v25, v26, v27) && (!argSpecCopy || (objc_msgSend_referenceForGeometryOnly(argSpecCopy, v30, v31, v32, v33) & 1) == 0))
       {
         v34 = objc_msgSend_asReferenceValue(isFlattened, v30, v31, v32, v33);
         if (objc_msgSend_isOutputOfAFunction(v34, v35, v36, v37, v38))
@@ -71,65 +71,65 @@
             memset(&v101, 0, sizeof(v101));
           }
 
-          objc_msgSend_addCalculatedPrecedent_(v10, v39, &v101, v41, v42);
+          objc_msgSend_addCalculatedPrecedent_(modeCopy, v39, &v101, v41, v42);
         }
       }
 
-      v43 = objc_msgSend_deepType_(isFlattened, v30, v10, v32, v33);
+      v43 = objc_msgSend_deepType_(isFlattened, v30, modeCopy, v32, v33);
       v48 = objc_msgSend_nativeType(isFlattened, v44, v45, v46, v47);
-      if (!TSCEArgumentAccessor::valueSufficesForArgumentType(isFlattened, v20, v48, v43, v10, 0) || v11 && objc_msgSend_typeIsDisallowed_value_(v11, v49, v48, isFlattened, v52))
+      if (!TSCEArgumentAccessor::valueSufficesForArgumentType(isFlattened, v20, v48, v43, modeCopy, 0) || argSpecCopy && objc_msgSend_typeIsDisallowed_value_(argSpecCopy, v49, v48, isFlattened, v52))
       {
         if (v43 == 9)
         {
-          objc_msgSend_errorWithContext_(isFlattened, v49, v10, v51, v52);
+          objc_msgSend_errorWithContext_(isFlattened, v49, modeCopy, v51, v52);
         }
 
         else
         {
-          objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v49, isFlattened, v10, a4, 0);
+          objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v49, isFlattened, modeCopy, spec, 0);
         }
-        *a7 = ;
+        *error = ;
         v81 = objc_msgSend_emptyGrid(TSCEGridValue, v82, v83, v84, v85);
         goto LABEL_71;
       }
 
       if (v43 == 2 && (v20 == 8 || v20 == 5))
       {
-        objc_msgSend_reportBoolToNumberConversionWarningInContext_(TSCEWarning, v49, v10, v51, v52);
+        objc_msgSend_reportBoolToNumberConversionWarningInContext_(TSCEWarning, v49, modeCopy, v51, v52);
       }
 
       if (v20 == 8)
       {
-        v53 = a7;
+        errorCopy = error;
         v100 = 0;
-        v54 = TSCEArgumentAccessor::coerceValueToNumberOrDate(isFlattened, v10, a4, 0, v43, &v100);
+        v54 = TSCEArgumentAccessor::coerceValueToNumberOrDate(isFlattened, modeCopy, spec, 0, v43, &v100);
         v55 = v100;
 
         if (v55)
         {
           v88 = v55;
-          *v53 = v55;
+          *errorCopy = v55;
           v86 = objc_msgSend_emptyGrid(TSCEGridValue, v89, v90, v91, v92);
 
           isFlattened = v54;
-          v11 = v98;
+          argSpecCopy = v98;
           goto LABEL_72;
         }
 
         isFlattened = v54;
-        a7 = v53;
-        v11 = v98;
+        error = errorCopy;
+        argSpecCopy = v98;
       }
 
       v57 = v20 == 8 && v43 == 5;
       if (v20 == 5 || v57)
       {
-        v58 = TSCEArgumentAccessor::checkBoundsAndUnits(isFlattened, v10, a4, v11, 0, v43);
+        v58 = TSCEArgumentAccessor::checkBoundsAndUnits(isFlattened, modeCopy, spec, argSpecCopy, 0, v43);
         v59 = v58;
         if (v58)
         {
           v93 = v58;
-          *a7 = v59;
+          *error = v59;
           v86 = objc_msgSend_emptyGrid(TSCEGridValue, v94, v95, v96, v97);
 
           goto LABEL_72;
@@ -236,7 +236,7 @@ LABEL_62:
       v109 = v69;
       if (isFlattened)
       {
-        objc_msgSend_formatWithContext_(isFlattened, v65, v10, v66, v67);
+        objc_msgSend_formatWithContext_(isFlattened, v65, modeCopy, v66, v67);
       }
 
       else
@@ -272,16 +272,16 @@ LABEL_72:
   return v86;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v9 = objc_msgSend_argumentSpecForIndex_(a4, a2, 0, a4, a5);
+  v9 = objc_msgSend_argumentSpecForIndex_(spec, a2, 0, spec, arguments);
   v56 = 0;
-  v11 = objc_msgSend_valueForArgumentRepeatingSingletonMode_functionSpec_arguments_argSpec_outError_(a1, v10, a3, a4, a5, v9, &v56);
+  v11 = objc_msgSend_valueForArgumentRepeatingSingletonMode_functionSpec_arguments_argSpec_outError_(self, v10, context, spec, arguments, v9, &v56);
   v12 = v56;
   if (v12)
   {
     v17 = v12;
-    v18 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v12, v15, v16);
+    v18 = objc_msgSend_raiseErrorOrConvert_(context, v13, v12, v15, v16);
     goto LABEL_23;
   }
 
@@ -289,9 +289,9 @@ LABEL_72:
   v55[0] = 0;
   *(v55 + 7) = 0;
   v19 = objc_msgSend_count(v11, v13, v14, v15, v16);
-  v24 = a3;
-  v48[0] = v24;
-  v48[1] = a4;
+  contextCopy = context;
+  v48[0] = contextCopy;
+  v48[1] = spec;
   v49 = 0;
   v50[0] = 0;
   *(v50 + 7) = 0;
@@ -311,7 +311,7 @@ LABEL_72:
         v47 = 0;
         if (v28)
         {
-          objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v28, v33, v24, a4, 0, &v47);
+          objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v28, v33, contextCopy, spec, 0, &v47);
           v17 = v47;
         }
 
@@ -321,11 +321,11 @@ LABEL_72:
           memset(&v46, 0, 24);
         }
 
-        sub_221077424(&v54, &v46, v24);
+        sub_221077424(&v54, &v46, contextCopy);
 
         if (v17)
         {
-          v18 = objc_msgSend_raiseErrorOrConvert_(v24, v34, v17, v36, v37);
+          v18 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v34, v17, v36, v37);
 
           goto LABEL_22;
         }
@@ -369,7 +369,7 @@ LABEL_18:
     }
   }
 
-  objc_msgSend_formatWithContext_(v11, v20, v24, v22, v23);
+  objc_msgSend_formatWithContext_(v11, v20, contextCopy, v22, v23);
   if (v38)
   {
 LABEL_16:

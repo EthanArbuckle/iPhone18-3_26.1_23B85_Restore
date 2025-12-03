@@ -7,7 +7,7 @@
 
 + (void)disableGymKitNFCSwitchOnOldHardwareIfNeeded
 {
-  v23[2] = a1;
+  v23[2] = self;
   v23[1] = a2;
   v2 = [NSUserDefaults alloc];
   v23[0] = [v2 initWithSuiteName:kHKConnectedGymPreferencesDomain];

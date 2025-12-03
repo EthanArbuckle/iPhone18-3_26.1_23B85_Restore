@@ -1,9 +1,9 @@
 @interface WFWidgetConfigurationContainerViewController
 - (UIColor)containerBackgroundColor;
-- (WFWidgetConfigurationContainerViewController)initWithRequest:(id)a3 contentViewController:(id)a4;
+- (WFWidgetConfigurationContainerViewController)initWithRequest:(id)request contentViewController:(id)controller;
 - (WFWidgetConfigurationContainerViewControllerProtocolDelegate)containerDelegate;
 - (void)loadView;
-- (void)setContainerBackgroundColor:(id)a3;
+- (void)setContainerBackgroundColor:(id)color;
 - (void)viewDidLoad;
 @end
 
@@ -22,12 +22,12 @@
   v7.super_class = WFWidgetConfigurationContainerViewController;
   [(WFWidgetConfigurationContainerViewController *)&v7 viewDidLoad];
   v3 = objc_opt_new();
-  v4 = [(WFWidgetConfigurationContainerViewController *)self navigationBar];
-  [v4 setStandardAppearance:v3];
+  navigationBar = [(WFWidgetConfigurationContainerViewController *)self navigationBar];
+  [navigationBar setStandardAppearance:v3];
 
   v5 = objc_opt_new();
-  v6 = [(WFWidgetConfigurationContainerViewController *)self navigationBar];
-  [v6 setCompactAppearance:v5];
+  navigationBar2 = [(WFWidgetConfigurationContainerViewController *)self navigationBar];
+  [navigationBar2 setCompactAppearance:v5];
 }
 
 - (void)loadView
@@ -39,78 +39,78 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = v3;
 
-  v5 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
-  v6 = [v5 visualStylingProviderForCategory:1];
+  backgroundView = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
+  v6 = [backgroundView visualStylingProviderForCategory:1];
   strokeProvider = self->_strokeProvider;
   self->_strokeProvider = v6;
 
-  v8 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
-  v9 = [v8 visualStylingProviderForCategory:2];
+  backgroundView2 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
+  v9 = [backgroundView2 visualStylingProviderForCategory:2];
   fillProvider = self->_fillProvider;
   self->_fillProvider = v9;
 
-  v11 = [(WFWidgetConfigurationContainerViewController *)self request];
-  v12 = [v11 widgetPrimaryColor];
-  v13 = v12;
-  if (v12)
+  request = [(WFWidgetConfigurationContainerViewController *)self request];
+  widgetPrimaryColor = [request widgetPrimaryColor];
+  v13 = widgetPrimaryColor;
+  if (widgetPrimaryColor)
   {
-    v14 = v12;
+    wf_defaultWidgetConfigurationCardBackgroundColor = widgetPrimaryColor;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DC888] wf_defaultWidgetConfigurationCardBackgroundColor];
+    wf_defaultWidgetConfigurationCardBackgroundColor = [MEMORY[0x1E69DC888] wf_defaultWidgetConfigurationCardBackgroundColor];
   }
 
-  v15 = v14;
+  v15 = wf_defaultWidgetConfigurationCardBackgroundColor;
 
-  v16 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
-  [v16 setBackgroundColor:v15];
+  backgroundView3 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
+  [backgroundView3 setBackgroundColor:v15];
 
-  v17 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
-  [v17 setAutoresizingMask:18];
+  backgroundView4 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
+  [backgroundView4 setAutoresizingMask:18];
 
-  v18 = [(WFWidgetConfigurationContainerViewController *)self view];
-  [v18 bounds];
+  view = [(WFWidgetConfigurationContainerViewController *)self view];
+  [view bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  backgroundView5 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
+  [backgroundView5 setFrame:{v20, v22, v24, v26}];
 
-  v28 = [(WFWidgetConfigurationContainerViewController *)self view];
-  v29 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
-  [v28 insertSubview:v29 atIndex:0];
+  view2 = [(WFWidgetConfigurationContainerViewController *)self view];
+  backgroundView6 = [(WFWidgetConfigurationContainerViewController *)self backgroundView];
+  [view2 insertSubview:backgroundView6 atIndex:0];
 }
 
-- (void)setContainerBackgroundColor:(id)a3
+- (void)setContainerBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(WFWidgetConfigurationContainerViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  view = [(WFWidgetConfigurationContainerViewController *)self view];
+  [view setBackgroundColor:colorCopy];
 }
 
 - (UIColor)containerBackgroundColor
 {
-  v2 = [(WFWidgetConfigurationContainerViewController *)self view];
-  v3 = [v2 backgroundColor];
+  view = [(WFWidgetConfigurationContainerViewController *)self view];
+  backgroundColor = [view backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (WFWidgetConfigurationContainerViewController)initWithRequest:(id)a3 contentViewController:(id)a4
+- (WFWidgetConfigurationContainerViewController)initWithRequest:(id)request contentViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = WFWidgetConfigurationContainerViewController;
-  v9 = [(WFWidgetConfigurationContainerViewController *)&v13 initWithRootViewController:v8];
+  v9 = [(WFWidgetConfigurationContainerViewController *)&v13 initWithRootViewController:controllerCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_contentViewController, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_contentViewController, controller);
     v11 = v10;
   }
 

@@ -1,17 +1,17 @@
 @interface SKUIColumnViewElement
-- (SKUIColumnViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIColumnViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SKUIHeaderViewElement)headerElement;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SKUIColumnViewElement
 
-- (SKUIColumnViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIColumnViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIColumnViewElement initWithDOMElement:parent:elementFactory:];
@@ -19,21 +19,21 @@
 
   v16.receiver = self;
   v16.super_class = SKUIColumnViewElement;
-  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"span"];
+    v12 = [elementCopy getAttribute:@"span"];
     if ([v12 length])
     {
-      v13 = [v12 integerValue];
-      if (v13 <= 1)
+      integerValue = [v12 integerValue];
+      if (integerValue <= 1)
       {
         v14 = 1;
       }
 
       else
       {
-        v14 = v13;
+        v14 = integerValue;
       }
     }
 
@@ -80,30 +80,30 @@ void __38__SKUIColumnViewElement_headerElement__block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v7.receiver = self;
   v7.super_class = SKUIColumnViewElement;
-  v5 = [(SKUIViewElement *)&v7 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v7 applyUpdatesWithElement:elementCopy];
   if (v5 == self)
   {
-    self->_columnSpan = [v4 columnSpan];
+    self->_columnSpan = [elementCopy columnSpan];
   }
 
   return v5;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SKUIViewElement *)self descendsFromElementWithType:17])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__SKUIColumnViewElement_enumerateChildrenUsingBlock___block_invoke;
     v6[3] = &unk_2781FA298;
-    v7 = v4;
+    v7 = blockCopy;
     v5.receiver = self;
     v5.super_class = SKUIColumnViewElement;
     [(SKUIViewElement *)&v5 enumerateChildrenUsingBlock:v6];
@@ -113,7 +113,7 @@ void __38__SKUIColumnViewElement_headerElement__block_invoke(uint64_t a1, void *
   {
     v8.receiver = self;
     v8.super_class = SKUIColumnViewElement;
-    [(SKUIViewElement *)&v8 enumerateChildrenUsingBlock:v4];
+    [(SKUIViewElement *)&v8 enumerateChildrenUsingBlock:blockCopy];
   }
 }
 

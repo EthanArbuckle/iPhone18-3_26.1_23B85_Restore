@@ -1,5 +1,5 @@
 @interface VCMediaNegotiatorStreamGroupCodecConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,11 +19,11 @@
     [v4 appendFormat:@", useInBandFEC"];
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v5;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = array;
   if (self->_rtcpSREnabled)
   {
-    [v5 addObject:@"SR"];
+    [array addObject:@"SR"];
   }
 
   if (self->_rtcpPSFB_PLIEnabled)
@@ -54,9 +54,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

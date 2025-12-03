@@ -1,9 +1,9 @@
 @interface MapsSuggestionsPortraitRelevanceScoreProvider
-- (MapsSuggestionsPortraitRelevanceScoreProvider)initWithPortrait:(id)a3;
+- (MapsSuggestionsPortraitRelevanceScoreProvider)initWithPortrait:(id)portrait;
 - (NSString)uniqueName;
-- (char)relevanceScoreForNames:(id)a3 addresses:(id)a4 mapItems:(id)a5 completion:(id)a6;
+- (char)relevanceScoreForNames:(id)names addresses:(id)addresses mapItems:(id)items completion:(id)completion;
 - (id).cxx_construct;
-- (uint64_t)_searchForName:(uint64_t)a1;
+- (uint64_t)_searchForName:(uint64_t)name;
 - (void)_fetchStringsFromPortrait;
 - (void)preLoad;
 @end
@@ -17,9 +17,9 @@
   return [v2 description];
 }
 
-- (MapsSuggestionsPortraitRelevanceScoreProvider)initWithPortrait:(id)a3
+- (MapsSuggestionsPortraitRelevanceScoreProvider)initWithPortrait:(id)portrait
 {
-  v5 = a3;
+  portraitCopy = portrait;
   v26.receiver = self;
   v26.super_class = MapsSuggestionsPortraitRelevanceScoreProvider;
   v6 = [(MapsSuggestionsPortraitRelevanceScoreProvider *)&v26 init];
@@ -45,31 +45,31 @@
     name = v6->_queue._name;
     v6->_queue._name = v14;
 
-    v16 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     currentLocale = v6->_currentLocale;
-    v6->_currentLocale = v16;
+    v6->_currentLocale = currentLocale;
 
     v18 = [(NSLocale *)v6->_currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
     languageCode = v6->_languageCode;
     v6->_languageCode = v18;
 
-    v20 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-    v21 = [v20 countryCode];
+    mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+    countryCode = [mEMORY[0x1E69A1CD8] countryCode];
     currentCountryCode = v6->_currentCountryCode;
-    v6->_currentCountryCode = v21;
+    v6->_currentCountryCode = countryCode;
 
-    objc_storeStrong(&v6->_portrait, a3);
+    objc_storeStrong(&v6->_portrait, portrait);
   }
 
   return v6;
 }
 
-- (char)relevanceScoreForNames:(id)a3 addresses:(id)a4 mapItems:(id)a5 completion:(id)a6
+- (char)relevanceScoreForNames:(id)names addresses:(id)addresses mapItems:(id)items completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  namesCopy = names;
+  addressesCopy = addresses;
+  completionCopy = completion;
   if (MapsSuggestionsLoggingIsVerbose())
   {
     v12 = GEOFindOrCreateLog();
@@ -81,7 +81,7 @@
     }
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -135,9 +135,9 @@
       goto LABEL_25;
     }
 
-    v14 = [v9 copy];
+    v14 = [namesCopy copy];
 
-    v15 = [v10 copy];
+    v15 = [addressesCopy copy];
     if (v15)
     {
       v16 = [v14 count];
@@ -163,8 +163,8 @@
 
     else if (!v14)
     {
-      v9 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      namesCopy = GEOFindOrCreateLog();
+      if (os_log_type_enabled(namesCopy, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446978;
         v29 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsPortraitRelevanceScoreProvider.mm";
@@ -174,7 +174,7 @@
         v33 = "[MapsSuggestionsPortraitRelevanceScoreProvider relevanceScoreForNames:addresses:mapItems:completion:]";
         v34 = 2082;
         v35 = "(nil == names) && (nil == addresses)";
-        _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. names and addresses can't both be nil", buf, 0x26u);
+        _os_log_impl(&dword_1C5126000, namesCopy, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. names and addresses can't both be nil", buf, 0x26u);
       }
 
       goto LABEL_26;
@@ -189,11 +189,11 @@
       v22[3] = &unk_1E8203C10;
       v27 = v20;
       v23 = v14;
-      v24 = self;
+      selfCopy = self;
       v25 = v15;
-      v26 = v11;
+      v26 = completionCopy;
       v21 = v15;
-      v9 = v14;
+      namesCopy = v14;
       MSg::Queue::async<MapsSuggestionsPortraitRelevanceScoreProvider>(&self->_queue, self, v22);
 
       v18 = 1;
@@ -210,7 +210,7 @@
 LABEL_33:
 
     v18 = 0;
-    v9 = v14;
+    namesCopy = v14;
     goto LABEL_27;
   }
 
@@ -433,19 +433,19 @@ LABEL_48:
   }
 }
 
-- (uint64_t)_searchForName:(uint64_t)a1
+- (uint64_t)_searchForName:(uint64_t)name
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!name)
   {
     v10 = 0;
     goto LABEL_24;
   }
 
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v4 == v3)
+  if (null == v3)
   {
     v5 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -461,7 +461,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (![*(a1 + 16) count])
+  if (![*(name + 16) count])
   {
     v5 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -478,7 +478,7 @@ LABEL_20:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = *(a1 + 16);
+  v5 = *(name + 16);
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -496,8 +496,8 @@ LABEL_20:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * v9) name];
-        v12 = [v11 caseInsensitiveCompare:v3] == 0;
+        name = [*(*(&v18 + 1) + 8 * v9) name];
+        v12 = [name caseInsensitiveCompare:v3] == 0;
 
         if (v12)
         {
@@ -581,12 +581,12 @@ void __74__MapsSuggestionsPortraitRelevanceScoreProvider__fetchStringsFromPortra
 
 - (void)_fetchStringsFromPortrait
 {
-  if (a1)
+  if (self)
   {
     if (+[MapsSuggestionsSiri isEnabled])
     {
 
-      MSg::Queue::async<MapsSuggestionsPortraitRelevanceScoreProvider>(a1 + 3, a1, &__block_literal_global_42);
+      MSg::Queue::async<MapsSuggestionsPortraitRelevanceScoreProvider>(self + 3, self, &__block_literal_global_42);
     }
 
     else

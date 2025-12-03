@@ -1,23 +1,23 @@
 @interface MRExternalDeviceController
-- (BOOL)_isManagedConfigIDAllowed:(id)a3;
-- (MRExternalDeviceController)initWithBonjourServiceType:(id)a3;
+- (BOOL)_isManagedConfigIDAllowed:(id)allowed;
+- (MRExternalDeviceController)initWithBonjourServiceType:(id)type;
 - (MRExternalDeviceControllerDelegate)delegate;
 - (void)beginDiscovery;
 - (void)dealloc;
 - (void)endDiscovery;
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceDidResolveAddress:(id)a3;
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceDidResolveAddress:(id)address;
 @end
 
 @implementation MRExternalDeviceController
 
-- (MRExternalDeviceController)initWithBonjourServiceType:(id)a3
+- (MRExternalDeviceController)initWithBonjourServiceType:(id)type
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
     [(MRExternalDeviceController *)a2 initWithBonjourServiceType:?];
   }
@@ -27,7 +27,7 @@
   v6 = [(MRExternalDeviceController *)&v28 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [typeCopy copy];
     bonjourServiceType = v6->_bonjourServiceType;
     v6->_bonjourServiceType = v7;
 
@@ -44,13 +44,13 @@
 
     [(NSNetServiceBrowser *)v6->_serviceBrowser setDelegate:v6];
     v16 = +[MRUserSettings currentSettings];
-    v17 = [v16 usePeerToPeerExternalDeviceConnections];
+    usePeerToPeerExternalDeviceConnections = [v16 usePeerToPeerExternalDeviceConnections];
 
     v18 = _MRLogForCategory(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = @"NO";
-      if (v17)
+      if (usePeerToPeerExternalDeviceConnections)
       {
         v19 = @"YES";
       }
@@ -60,7 +60,7 @@
       _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "Configuring external device net service browser with includesPeerToPeer = %@", buf, 0xCu);
     }
 
-    [(NSNetServiceBrowser *)v6->_serviceBrowser setIncludesPeerToPeer:v17];
+    [(NSNetServiceBrowser *)v6->_serviceBrowser setIncludesPeerToPeer:usePeerToPeerExternalDeviceConnections];
     v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     discoveredDevices = v6->_discoveredDevices;
     v6->_discoveredDevices = v20;
@@ -129,29 +129,29 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
-  v6 = a4;
+  serviceCopy = service;
   v7 = _MRLogForCategory(3uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [MRExternalDeviceController netServiceBrowser:didFindService:moreComing:];
   }
 
-  [v6 setDelegate:self];
-  [(NSMutableSet *)self->_resolvingServices addObject:v6];
-  v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v6 scheduleInRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+  [serviceCopy setDelegate:self];
+  [(NSMutableSet *)self->_resolvingServices addObject:serviceCopy];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [serviceCopy scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-  [v6 startMonitoring];
-  [(NSMutableSet *)self->_monitoringServices addObject:v6];
-  [v6 resolveWithTimeout:10.0];
+  [serviceCopy startMonitoring];
+  [(NSMutableSet *)self->_monitoringServices addObject:serviceCopy];
+  [serviceCopy resolveWithTimeout:10.0];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  serviceCopy = service;
   v7 = _MRLogForCategory(3uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -178,9 +178,9 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v6 name];
-        v16 = [v14 isEqualToString:v15];
+        name = [v13 name];
+        name2 = [serviceCopy name];
+        v16 = [name isEqualToString:name2];
 
         if (v16)
         {
@@ -216,20 +216,20 @@
 
   v17 = 0;
 LABEL_16:
-  [v6 stopMonitoring];
-  [v6 setDelegate:0];
-  v21 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v6 removeFromRunLoop:v21 forMode:*MEMORY[0x1E695DA28]];
+  [serviceCopy stopMonitoring];
+  [serviceCopy setDelegate:0];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [serviceCopy removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-  [(NSMutableSet *)self->_monitoringServices removeObject:v6];
-  [(NSMutableSet *)self->_resolvingServices removeObject:v6];
+  [(NSMutableSet *)self->_monitoringServices removeObject:serviceCopy];
+  [(NSMutableSet *)self->_resolvingServices removeObject:serviceCopy];
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = _MRLogForCategory(3uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -237,24 +237,24 @@ LABEL_16:
   }
 
   v6 = +[MRExternalDeviceManager sharedManager];
-  v7 = [MRNetServiceTransport createDeviceInfoFromNetService:v4];
-  v8 = [v7 identifier];
-  v9 = [v6 deviceWithIdentifier:v8];
+  v7 = [MRNetServiceTransport createDeviceInfoFromNetService:addressCopy];
+  identifier = [v7 identifier];
+  v9 = [v6 deviceWithIdentifier:identifier];
 
   if (!v9)
   {
-    v10 = [[MRNetServiceTransport alloc] initWithNetService:v4];
+    v10 = [[MRNetServiceTransport alloc] initWithNetService:addressCopy];
     [(MRNetServiceTransport *)v10 setRequiresCustomPairing:[(NSString *)self->_bonjourServiceType isEqualToString:@"_mediaremotetv._tcp."]];
   }
 
   v11 = MRPairedDeviceCopyManagedConfigDeviceID(v7);
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v14 = [MEMORY[0x1E696AE30] processInfo];
-  v15 = [v14 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  if (([v13 isEqualToString:@"com.apple.TVRemote"] & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", @"com.apple.tvremotecore.xpc") & 1) == 0 && !objc_msgSend(v15, "isEqualToString:", @"tvremoted") || -[MRExternalDeviceController _isManagedConfigIDAllowed:](self, "_isManagedConfigIDAllowed:", v11))
+  if (([bundleIdentifier isEqualToString:@"com.apple.TVRemote"] & 1) == 0 && (objc_msgSend(bundleIdentifier, "isEqualToString:", @"com.apple.tvremotecore.xpc") & 1) == 0 && !objc_msgSend(processName, "isEqualToString:", @"tvremoted") || -[MRExternalDeviceController _isManagedConfigIDAllowed:](self, "_isManagedConfigIDAllowed:", v11))
   {
     [(NSMutableSet *)self->_discoveredDevices addObject:v9];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -267,36 +267,36 @@ LABEL_16:
     }
   }
 
-  [(NSMutableSet *)self->_resolvingServices removeObject:v4];
+  [(NSMutableSet *)self->_resolvingServices removeObject:addressCopy];
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = _MRLogForCategory(3uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = serviceCopy;
     _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "TXTRecord data did change for service %{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isManagedConfigIDAllowed:(id)a3
+- (BOOL)_isManagedConfigIDAllowed:(id)allowed
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  allowedCopy = allowed;
   v4 = _MRLogForCategory(3uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [MRExternalDeviceController _isManagedConfigIDAllowed:];
   }
 
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v6 = [v5 effectiveValuesForUnionSetting:*MEMORY[0x1E69ADF68]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v6 = [mEMORY[0x1E69ADFB8] effectiveValuesForUnionSetting:*MEMORY[0x1E69ADF68]];
 
   if ([v6 count])
   {
@@ -321,9 +321,9 @@ LABEL_6:
         objc_enumerationMutation(v7);
       }
 
-      v11 = [*(*(&v17 + 1) + 8 * v10) lowercaseString];
-      v12 = [v3 lowercaseString];
-      v13 = [v11 isEqualToString:v12];
+      lowercaseString = [*(*(&v17 + 1) + 8 * v10) lowercaseString];
+      lowercaseString2 = [allowedCopy lowercaseString];
+      v13 = [lowercaseString isEqualToString:lowercaseString2];
 
       if (v13)
       {

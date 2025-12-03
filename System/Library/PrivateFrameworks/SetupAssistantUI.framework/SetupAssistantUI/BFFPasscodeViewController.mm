@@ -3,35 +3,35 @@
 - (BFFPasscodeViewControllerDelegate)passcodeCreationDelegate;
 - (BOOL)_allowSkip;
 - (id)_firstEntryInstructions;
-- (id)_passcodeInputViewForState:(unint64_t)a3;
-- (id)instructionsForState:(unint64_t)a3;
+- (id)_passcodeInputViewForState:(unint64_t)state;
+- (id)instructionsForState:(unint64_t)state;
 - (id)passcodeInputView;
 - (id)passcodeOptionAlertController;
-- (id)titleForState:(unint64_t)a3;
-- (void)_animatedPasscodeViewTransitionToState:(unint64_t)a3 animation:(unint64_t)a4;
+- (id)titleForState:(unint64_t)state;
+- (void)_animatedPasscodeViewTransitionToState:(unint64_t)state animation:(unint64_t)animation;
 - (void)_commitPasscodeEntryTypeChange;
-- (void)_finishedWithPasscode:(id)a3;
+- (void)_finishedWithPasscode:(id)passcode;
 - (void)_setupFirstEntry;
 - (void)_showPasscodeOptionsSheet;
 - (void)_showSkipPasscodeAlert;
 - (void)_showWeakWarningAlert;
 - (void)_updateNextButton;
-- (void)_updateNextButtonForPasscode:(id)a3;
+- (void)_updateNextButtonForPasscode:(id)passcode;
 - (void)clear;
-- (void)configurePasscodeTypeUsingAnimations:(BOOL)a3;
+- (void)configurePasscodeTypeUsingAnimations:(BOOL)animations;
 - (void)dealloc;
 - (void)loadView;
 - (void)nextButtonPressed;
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4;
-- (void)passcodeInput:(id)a3 tappedFooterButton:(id)a4;
-- (void)passcodeManager:(id)a3 didSetPasscodeWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)passcodeManager:(id)a3 didTransitionFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)passcodeManagerWillSetPasscode:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode;
+- (void)passcodeInput:(id)input tappedFooterButton:(id)button;
+- (void)passcodeManager:(id)manager didSetPasscodeWithSuccess:(BOOL)success error:(id)error;
+- (void)passcodeManager:(id)manager didTransitionFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)passcodeManagerWillSetPasscode:(id)passcode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BFFPasscodeViewController
@@ -45,8 +45,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    v2 = [v3 isPasscodeRequired] ^ 1;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v2 = [mEMORY[0x277D262A0] isPasscodeRequired] ^ 1;
   }
 
   return v2;
@@ -54,8 +54,8 @@
 
 - (void)dealloc
 {
-  v3 = [(BFFPasscodeViewController *)self passcodeManager];
-  [v3 setDelegate:0];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  [passcodeManager setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = BFFPasscodeViewController;
@@ -73,8 +73,8 @@
   [(BFFPasscodeView *)v4 setPasscodeViewController:self];
   [(BFFPasscodeViewController *)self setView:v4];
   v5 = +[BFFStyle sharedStyle];
-  v6 = [(BFFPasscodeViewController *)self navigationItem];
-  [v5 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:v6];
+  navigationItem = [(BFFPasscodeViewController *)self navigationItem];
+  [v5 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:navigationItem];
 }
 
 - (void)_setupFirstEntry
@@ -82,23 +82,23 @@
   v3 = +[BFFPasscodeCreationManager sharedPasscodeManager];
   [(BFFPasscodeViewController *)self setPasscodeManager:v3];
 
-  v4 = [(BFFPasscodeViewController *)self passcodeManager];
-  [v4 reset];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  [passcodeManager reset];
 
-  v5 = [(BFFPasscodeViewController *)self passcodeManager];
-  [v5 setDelegate:self];
+  passcodeManager2 = [(BFFPasscodeViewController *)self passcodeManager];
+  [passcodeManager2 setDelegate:self];
 
   v21 = 0;
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  v7 = [v6 minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v21];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v7 = [mEMORY[0x277D262A0] minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:&v21];
 
   if (v7)
   {
-    v8 = [(BFFPasscodeViewController *)self passcodeManager];
-    [v8 setNumericPasscodeEntry:0];
+    passcodeManager3 = [(BFFPasscodeViewController *)self passcodeManager];
+    [passcodeManager3 setNumericPasscodeEntry:0];
 
-    v9 = [(BFFPasscodeViewController *)self passcodeManager];
-    [v9 setSimplePasscodeEntryLength:0];
+    passcodeManager4 = [(BFFPasscodeViewController *)self passcodeManager];
+    [passcodeManager4 setSimplePasscodeEntryLength:0];
   }
 
   else
@@ -114,8 +114,8 @@
     }
 
     v11 = (v21 == 1) | v10;
-    v12 = [(BFFPasscodeViewController *)self passcodeManager];
-    v13 = v12;
+    passcodeManager5 = [(BFFPasscodeViewController *)self passcodeManager];
+    v13 = passcodeManager5;
     if (v11)
     {
       v14 = 6;
@@ -126,23 +126,23 @@
       v14 = 4;
     }
 
-    [v12 setSimplePasscodeEntryLength:v14];
+    [passcodeManager5 setSimplePasscodeEntryLength:v14];
 
-    v9 = [(BFFPasscodeViewController *)self passcodeManager];
-    [v9 setNumericPasscodeEntry:1];
+    passcodeManager4 = [(BFFPasscodeViewController *)self passcodeManager];
+    [passcodeManager4 setNumericPasscodeEntry:1];
   }
 
   [(BFFPasscodeViewController *)self configurePasscodeTypeUsingAnimations:0];
-  v15 = [(BFFPasscodeViewController *)self passcodeManager];
-  v16 = [v15 passcodeState];
+  passcodeManager6 = [(BFFPasscodeViewController *)self passcodeManager];
+  passcodeState = [passcodeManager6 passcodeState];
 
-  v17 = [(BFFPasscodeViewController *)self view];
-  v18 = [(BFFPasscodeViewController *)self titleForState:v16];
-  [v17 setTitle:v18];
+  view = [(BFFPasscodeViewController *)self view];
+  v18 = [(BFFPasscodeViewController *)self titleForState:passcodeState];
+  [view setTitle:v18];
 
-  v19 = [(BFFPasscodeViewController *)self _passcodeInputViewForState:v16];
-  v20 = [(BFFPasscodeViewController *)self view];
-  [v20 transitionToPasscodeInput:v19 delegate:self];
+  v19 = [(BFFPasscodeViewController *)self _passcodeInputViewForState:passcodeState];
+  view2 = [(BFFPasscodeViewController *)self view];
+  [view2 transitionToPasscodeInput:v19 delegate:self];
 }
 
 - (void)viewDidLoad
@@ -154,54 +154,54 @@
   [(BFFPasscodeViewController *)self _setupFirstEntry];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = BFFPasscodeViewController;
-  [(BFFPasscodeViewController *)&v7 viewWillAppear:a3];
-  v4 = [(BFFPasscodeViewController *)self view];
-  v5 = [v4 passcodeInputView];
+  [(BFFPasscodeViewController *)&v7 viewWillAppear:appear];
+  view = [(BFFPasscodeViewController *)self view];
+  passcodeInputView = [view passcodeInputView];
 
-  [v5 becomeFirstResponder];
-  v6 = [v5 passcode];
-  [(BFFPasscodeViewController *)self _updateNextButtonForPasscode:v6];
+  [passcodeInputView becomeFirstResponder];
+  passcode = [passcodeInputView passcode];
+  [(BFFPasscodeViewController *)self _updateNextButtonForPasscode:passcode];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = BFFPasscodeViewController;
-  [(BFFPasscodeViewController *)&v11 viewDidAppear:a3];
-  v4 = [(BFFPasscodeViewController *)self view];
-  [v4 contentSize];
+  [(BFFPasscodeViewController *)&v11 viewDidAppear:appear];
+  view = [(BFFPasscodeViewController *)self view];
+  [view contentSize];
   v6 = v5;
-  v7 = [(BFFPasscodeViewController *)self view];
-  [v7 frame];
+  view2 = [(BFFPasscodeViewController *)self view];
+  [view2 frame];
   v9 = v8;
 
   if (v6 > v9)
   {
-    v10 = [(BFFPasscodeViewController *)self view];
-    [v10 flashScrollIndicators];
+    view3 = [(BFFPasscodeViewController *)self view];
+    [view3 flashScrollIndicators];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = BFFPasscodeViewController;
-  [(BFFPasscodeViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(BFFPasscodeViewController *)self view];
-  v5 = [v4 passcodeInputView];
+  [(BFFPasscodeViewController *)&v6 viewWillDisappear:disappear];
+  view = [(BFFPasscodeViewController *)self view];
+  passcodeInputView = [view passcodeInputView];
 
-  [v5 resignFirstResponder];
+  [passcodeInputView resignFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = BFFPasscodeViewController;
-  [(BFFPasscodeViewController *)&v7 viewDidDisappear:a3];
+  [(BFFPasscodeViewController *)&v7 viewDidDisappear:disappear];
   if (self->_showingSpinner)
   {
     [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"SETUP_PASSCODE_VIEW_CONTROLLER"];
@@ -209,9 +209,9 @@
   }
 
   v4 = +[BFFPasscodeCreationManager sharedPasscodeManager];
-  v5 = [v4 passcodeState];
+  passcodeState = [v4 passcodeState];
 
-  if (v5 == 4)
+  if (passcodeState == 4)
   {
     [(BFFPasscodeViewController *)self clear];
   }
@@ -225,30 +225,30 @@
 
 - (void)nextButtonPressed
 {
-  v3 = [(BFFPasscodeViewController *)self view];
-  v4 = [v3 passcodeInputView];
-  v6 = [v4 passcode];
+  view = [(BFFPasscodeViewController *)self view];
+  passcodeInputView = [view passcodeInputView];
+  passcode = [passcodeInputView passcode];
 
-  v5 = [(BFFPasscodeViewController *)self passcodeManager];
-  [v5 transitionToNextPasscodeStateForInput:v6];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  [passcodeManager transitionToNextPasscodeStateForInput:passcode];
 }
 
 - (void)_updateNextButton
 {
-  v3 = [(BFFPasscodeViewController *)self view];
-  v5 = [v3 passcodeInputView];
+  view = [(BFFPasscodeViewController *)self view];
+  passcodeInputView = [view passcodeInputView];
 
-  v4 = [v5 passcode];
-  [(BFFPasscodeViewController *)self _updateNextButtonForPasscode:v4];
+  passcode = [passcodeInputView passcode];
+  [(BFFPasscodeViewController *)self _updateNextButtonForPasscode:passcode];
 }
 
-- (void)_updateNextButtonForPasscode:(id)a3
+- (void)_updateNextButtonForPasscode:(id)passcode
 {
-  v9 = a3;
-  if ([v9 length])
+  passcodeCopy = passcode;
+  if ([passcodeCopy length])
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [v4 passcode:v9 meetsCurrentConstraintsOutError:0];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v5 = [mEMORY[0x277D262A0] passcode:passcodeCopy meetsCurrentConstraintsOutError:0];
   }
 
   else
@@ -256,23 +256,23 @@
     v5 = 0;
   }
 
-  v6 = [(BFFPasscodeViewController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setEnabled:v5];
+  navigationItem = [(BFFPasscodeViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v5];
 
-  v8 = [MEMORY[0x277D75658] activeKeyboard];
-  [v8 setReturnKeyEnabled:v5];
+  activeKeyboard = [MEMORY[0x277D75658] activeKeyboard];
+  [activeKeyboard setReturnKeyEnabled:v5];
 }
 
 - (BOOL)_allowSkip
 {
-  v3 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+  passcodeCreationDelegate = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
-    v6 = [v5 passcodeViewControllerAllowSkip:self];
+    passcodeCreationDelegate2 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+    v6 = [passcodeCreationDelegate2 passcodeViewControllerAllowSkip:self];
 
     return v6;
   }
@@ -284,11 +284,11 @@
   }
 }
 
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode
 {
-  v6 = a4;
-  v7 = [a3 passcodeField];
-  [v7 forceDisplayIfNeeded];
+  passcodeCopy = passcode;
+  passcodeField = [input passcodeField];
+  [passcodeField forceDisplayIfNeeded];
 
   v8 = dispatch_time(0, 76000000);
   v10[0] = MEMORY[0x277D85DD0];
@@ -296,8 +296,8 @@
   v10[2] = __59__BFFPasscodeViewController_passcodeInput_enteredPasscode___block_invoke;
   v10[3] = &unk_279BB4A70;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = passcodeCopy;
+  v9 = passcodeCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], v10);
 }
 
@@ -309,15 +309,15 @@ void __59__BFFPasscodeViewController_passcodeInput_enteredPasscode___block_invok
 
 - (id)passcodeInputView
 {
-  v3 = [(BFFPasscodeViewController *)self passcodeManager];
-  v4 = [v3 isSimplePasscodeEntry];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  isSimplePasscodeEntry = [passcodeManager isSimplePasscodeEntry];
 
-  if (v4)
+  if (isSimplePasscodeEntry)
   {
     v5 = [BFFSimplePasscodeInputView alloc];
-    v6 = [(BFFPasscodeViewController *)self passcodeManager];
-    v7 = [v6 simplePasscodeEntryLength];
-    v8 = [(BFFSimplePasscodeInputView *)v5 initWithFrame:v7 numberOfEntryFields:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    passcodeManager2 = [(BFFPasscodeViewController *)self passcodeManager];
+    simplePasscodeEntryLength = [passcodeManager2 simplePasscodeEntryLength];
+    v8 = [(BFFSimplePasscodeInputView *)v5 initWithFrame:simplePasscodeEntryLength numberOfEntryFields:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
     [(BFFSimplePasscodeInputView *)v8 setLimitCharactersToNumbers:0];
   }
@@ -325,27 +325,27 @@ void __59__BFFPasscodeViewController_passcodeInput_enteredPasscode___block_invok
   else
   {
     v9 = [BFFComplexPasscodeInputView alloc];
-    v10 = [(BFFPasscodeViewController *)self passcodeManager];
-    v11 = [v10 isNumericPasscodeEntry];
-    v8 = [(BFFComplexPasscodeInputView *)v9 initWithFrame:v11 numericOnly:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    passcodeManager3 = [(BFFPasscodeViewController *)self passcodeManager];
+    isNumericPasscodeEntry = [passcodeManager3 isNumericPasscodeEntry];
+    v8 = [(BFFComplexPasscodeInputView *)v9 initWithFrame:isNumericPasscodeEntry numericOnly:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   }
 
   return v8;
 }
 
-- (id)_passcodeInputViewForState:(unint64_t)a3
+- (id)_passcodeInputViewForState:(unint64_t)state
 {
-  v5 = [(BFFPasscodeViewController *)self passcodeInputView];
-  if (a3 == 3 || !a3)
+  passcodeInputView = [(BFFPasscodeViewController *)self passcodeInputView];
+  if (state == 3 || !state)
   {
-    v6 = [(BFFPasscodeViewController *)self passcodeOptionAlertController];
-    v7 = [v6 actions];
+    passcodeOptionAlertController = [(BFFPasscodeViewController *)self passcodeOptionAlertController];
+    actions = [passcodeOptionAlertController actions];
 
-    if ([v7 count] == 2)
+    if ([actions count] == 2)
     {
-      v8 = [(BFFPasscodeViewController *)self _allowSkip];
-      self->_footerButtonIsSkip = v8;
-      if (v8)
+      _allowSkip = [(BFFPasscodeViewController *)self _allowSkip];
+      self->_footerButtonIsSkip = _allowSkip;
+      if (_allowSkip)
       {
         v9 = @"DO_NOT_ADD_PASSCODE";
         goto LABEL_9;
@@ -357,7 +357,7 @@ void __59__BFFPasscodeViewController_passcodeInput_enteredPasscode___block_invok
       self->_footerButtonIsSkip = 0;
     }
 
-    if ([v7 count] < 2)
+    if ([actions count] < 2)
     {
 LABEL_10:
 
@@ -368,52 +368,52 @@ LABEL_10:
 LABEL_9:
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:v9 value:&stru_287761F90 table:@"Localizable"];
-    [v5 setFooterButtonText:v11];
+    [passcodeInputView setFooterButtonText:v11];
 
     goto LABEL_10;
   }
 
 LABEL_11:
-  v12 = [v5 instructions];
-  v13 = [(BFFPasscodeViewController *)self instructionsForState:a3];
-  [v12 setText:v13];
+  instructions = [passcodeInputView instructions];
+  v13 = [(BFFPasscodeViewController *)self instructionsForState:state];
+  [instructions setText:v13];
 
-  return v5;
+  return passcodeInputView;
 }
 
-- (void)_animatedPasscodeViewTransitionToState:(unint64_t)a3 animation:(unint64_t)a4
+- (void)_animatedPasscodeViewTransitionToState:(unint64_t)state animation:(unint64_t)animation
 {
-  v7 = [(BFFPasscodeViewController *)self _passcodeInputViewForState:a3];
-  v6 = [(BFFPasscodeViewController *)self view];
-  [v6 animateTransitionToPasscodeInput:v7 animation:a4];
+  v7 = [(BFFPasscodeViewController *)self _passcodeInputViewForState:state];
+  view = [(BFFPasscodeViewController *)self view];
+  [view animateTransitionToPasscodeInput:v7 animation:animation];
 }
 
-- (void)passcodeManager:(id)a3 didTransitionFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)passcodeManager:(id)manager didTransitionFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v8 = [(BFFPasscodeViewController *)self view];
-  v9 = [(BFFPasscodeViewController *)self titleForState:a5];
-  [v8 setTitle:v9];
+  view = [(BFFPasscodeViewController *)self view];
+  v9 = [(BFFPasscodeViewController *)self titleForState:toState];
+  [view setTitle:v9];
 
-  if (!a5)
+  if (!toState)
   {
-    v13 = [(BFFPasscodeViewController *)self view];
-    v14 = [v13 passcodeInputView];
-    [v14 setPasscode:&stru_287761F90];
+    view2 = [(BFFPasscodeViewController *)self view];
+    passcodeInputView = [view2 passcodeInputView];
+    [passcodeInputView setPasscode:&stru_287761F90];
 
-    if (a4 == 1)
+    if (state == 1)
     {
       goto LABEL_10;
     }
 
-    v11 = self;
-    v12 = 0;
+    selfCopy2 = self;
+    toStateCopy = 0;
     v10 = 3;
     goto LABEL_9;
   }
 
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((toState & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    if (a5 == 2)
+    if (toState == 2)
     {
       v10 = 2;
     }
@@ -423,21 +423,21 @@ LABEL_11:
       v10 = 1;
     }
 
-    v11 = self;
-    v12 = a5;
+    selfCopy2 = self;
+    toStateCopy = toState;
 LABEL_9:
-    [(BFFPasscodeViewController *)v11 _animatedPasscodeViewTransitionToState:v12 animation:v10];
+    [(BFFPasscodeViewController *)selfCopy2 _animatedPasscodeViewTransitionToState:toStateCopy animation:v10];
     goto LABEL_10;
   }
 
-  if (a5 == 4)
+  if (toState == 4)
   {
-    v15 = [(BFFPasscodeViewController *)self passcodeManager];
-    v16 = [v15 passcode];
-    [(BFFPasscodeViewController *)self _finishedWithPasscode:v16];
+    passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+    passcode = [passcodeManager passcode];
+    [(BFFPasscodeViewController *)self _finishedWithPasscode:passcode];
   }
 
-  else if (a5 == 1)
+  else if (toState == 1)
   {
     [(BFFPasscodeViewController *)self _showWeakWarningAlert];
   }
@@ -447,77 +447,77 @@ LABEL_10:
   [(BFFPasscodeViewController *)self _updateNextButton];
 }
 
-- (void)passcodeManagerWillSetPasscode:(id)a3
+- (void)passcodeManagerWillSetPasscode:(id)passcode
 {
   [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:self identifier:@"SETUP_PASSCODE_VIEW_CONTROLLER"];
   self->_showingSpinner = 1;
-  v4 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+  passcodeCreationDelegate = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
-    [v6 passcodeViewControllerWillSetPasscode:self];
+    passcodeCreationDelegate2 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+    [passcodeCreationDelegate2 passcodeViewControllerWillSetPasscode:self];
   }
 }
 
-- (void)passcodeManager:(id)a3 didSetPasscodeWithSuccess:(BOOL)a4 error:(id)a5
+- (void)passcodeManager:(id)manager didSetPasscodeWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v13 = a3;
-  v8 = a5;
+  successCopy = success;
+  managerCopy = manager;
+  errorCopy = error;
   if (self->_showingSpinner)
   {
     [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"SETUP_PASSCODE_VIEW_CONTROLLER"];
     self->_showingSpinner = 0;
   }
 
-  if (v6)
+  if (successCopy)
   {
-    v9 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+    passcodeCreationDelegate = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
-      v12 = [v13 passcode];
-      [v11 passcodeViewController:self didSetPasscode:v12];
+      passcodeCreationDelegate2 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+      passcode = [managerCopy passcode];
+      [passcodeCreationDelegate2 passcodeViewController:self didSetPasscode:passcode];
     }
   }
 }
 
-- (void)passcodeInput:(id)a3 tappedFooterButton:(id)a4
+- (void)passcodeInput:(id)input tappedFooterButton:(id)button
 {
   if (self->_footerButtonIsSkip)
   {
-    [(BFFPasscodeViewController *)self _showSkipPasscodeAlert:a3];
+    [(BFFPasscodeViewController *)self _showSkipPasscodeAlert:input];
   }
 
   else
   {
-    [(BFFPasscodeViewController *)self _showPasscodeOptionsSheet:a3];
+    [(BFFPasscodeViewController *)self _showPasscodeOptionsSheet:input];
   }
 }
 
 - (void)clear
 {
-  v3 = [(BFFPasscodeViewController *)self view];
-  [v3 transitionToPasscodeInput:0 delegate:0];
+  view = [(BFFPasscodeViewController *)self view];
+  [view transitionToPasscodeInput:0 delegate:0];
 
-  v4 = [(BFFPasscodeViewController *)self passcodeManager];
-  [v4 setDelegate:0];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  [passcodeManager setDelegate:0];
 
   [(BFFPasscodeViewController *)self setPasscodeManager:0];
 }
 
-- (void)_finishedWithPasscode:(id)a3
+- (void)_finishedWithPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
-  [v5 passcodeViewController:self didFinishWithPasscodeCreation:v4];
+  passcodeCopy = passcode;
+  passcodeCreationDelegate = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+  [passcodeCreationDelegate passcodeViewController:self didFinishWithPasscodeCreation:passcodeCopy];
 }
 
-- (id)titleForState:(unint64_t)a3
+- (id)titleForState:(unint64_t)state
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"CREATE_PASSCODE"];
@@ -526,52 +526,52 @@ LABEL_10:
   return v5;
 }
 
-- (id)instructionsForState:(unint64_t)a3
+- (id)instructionsForState:(unint64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = v7;
+    constraintInstructions = v7;
     v8 = @"PASSCODES_FAILED_TO_MATCH";
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = v7;
+    constraintInstructions = v7;
     v8 = @"RE_ENTER_PASSCODE";
 LABEL_9:
-    v6 = [(__CFString *)v7 localizedStringForKey:v8 value:&stru_287761F90 table:@"Localizable"];
+    _firstEntryInstructions = [(__CFString *)v7 localizedStringForKey:v8 value:&stru_287761F90 table:@"Localizable"];
     goto LABEL_10;
   }
 
-  if (a3)
+  if (state)
   {
-    v5 = &stru_287761F90;
+    constraintInstructions = &stru_287761F90;
   }
 
   else
   {
-    v4 = [(BFFPasscodeViewController *)self passcodeManager];
-    v5 = [v4 constraintInstructions];
+    passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+    constraintInstructions = [passcodeManager constraintInstructions];
 
-    if (!v5 || ![(__CFString *)v5 length])
+    if (!constraintInstructions || ![(__CFString *)constraintInstructions length])
     {
-      v6 = [(BFFPasscodeViewController *)self _firstEntryInstructions];
+      _firstEntryInstructions = [(BFFPasscodeViewController *)self _firstEntryInstructions];
 LABEL_10:
-      v9 = v6;
+      v9 = _firstEntryInstructions;
 
-      v5 = v9;
+      constraintInstructions = v9;
     }
   }
 
-  return v5;
+  return constraintInstructions;
 }
 
 - (id)_firstEntryInstructions
 {
-  v3 = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
+  passcodeCreationDelegate = [(BFFPasscodeViewController *)self passcodeCreationDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || (-[BFFPasscodeViewController passcodeCreationDelegate](self, "passcodeCreationDelegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 passcodeViewControllerCustomFirstEntryInstructions:self], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
@@ -584,16 +584,16 @@ LABEL_10:
   return v6;
 }
 
-- (void)configurePasscodeTypeUsingAnimations:(BOOL)a3
+- (void)configurePasscodeTypeUsingAnimations:(BOOL)animations
 {
-  v3 = a3;
-  v5 = [(BFFPasscodeViewController *)self passcodeManager];
-  v6 = [v5 isSimplePasscodeEntry];
+  animationsCopy = animations;
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  isSimplePasscodeEntry = [passcodeManager isSimplePasscodeEntry];
 
-  if (v6)
+  if (isSimplePasscodeEntry)
   {
-    v11 = [(BFFPasscodeViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:0 animated:v3];
+    navigationItem = [(BFFPasscodeViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0 animated:animationsCopy];
   }
 
   else
@@ -601,10 +601,10 @@ LABEL_10:
     v7 = objc_alloc(MEMORY[0x277D751E0]);
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"NEXT" value:&stru_287761F90 table:@"Localizable"];
-    v11 = [v7 initWithTitle:v9 style:2 target:self action:sel_nextButtonPressed];
+    navigationItem = [v7 initWithTitle:v9 style:2 target:self action:sel_nextButtonPressed];
 
-    v10 = [(BFFPasscodeViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v11 animated:v3];
+    navigationItem2 = [(BFFPasscodeViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:navigationItem animated:animationsCopy];
 
     [(BFFPasscodeViewController *)self _updateNextButton];
   }
@@ -711,21 +711,21 @@ uint64_t __51__BFFPasscodeViewController__showSkipPasscodeAlert__block_invoke(ui
 - (void)_commitPasscodeEntryTypeChange
 {
   [(BFFPasscodeViewController *)self configurePasscodeTypeUsingAnimations:1];
-  v3 = [(BFFPasscodeViewController *)self passcodeManager];
-  [v3 setPasscodeState:0];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  [passcodeManager setPasscodeState:0];
 }
 
 - (id)passcodeOptionAlertController
 {
   v45[0] = 0;
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:v45];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] minimumNewPasscodeEntryScreenTypeWithOutSimplePasscodeType:v45];
 
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v6 = [(BFFPasscodeViewController *)self passcodeManager];
-  v7 = [v6 isNumericPasscodeEntry];
+  passcodeManager = [(BFFPasscodeViewController *)self passcodeManager];
+  isNumericPasscodeEntry = [passcodeManager isNumericPasscodeEntry];
 
-  if (v7)
+  if (isNumericPasscodeEntry)
   {
     v8 = MEMORY[0x277D750F8];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -741,13 +741,13 @@ uint64_t __51__BFFPasscodeViewController__showSkipPasscodeAlert__block_invoke(ui
 
   if (v4 <= 1)
   {
-    v12 = [(BFFPasscodeViewController *)self passcodeManager];
-    if ([v12 isNumericPasscodeEntry])
+    passcodeManager2 = [(BFFPasscodeViewController *)self passcodeManager];
+    if ([passcodeManager2 isNumericPasscodeEntry])
     {
-      v13 = [(BFFPasscodeViewController *)self passcodeManager];
-      v14 = [v13 simplePasscodeEntryLength];
+      passcodeManager3 = [(BFFPasscodeViewController *)self passcodeManager];
+      simplePasscodeEntryLength = [passcodeManager3 simplePasscodeEntryLength];
 
-      if (v14 < 1)
+      if (simplePasscodeEntryLength < 1)
       {
         if (v4)
         {
@@ -755,10 +755,10 @@ uint64_t __51__BFFPasscodeViewController__showSkipPasscodeAlert__block_invoke(ui
         }
 
 LABEL_10:
-        v19 = [(BFFPasscodeViewController *)self passcodeManager];
-        v20 = [v19 simplePasscodeEntryLength];
+        passcodeManager4 = [(BFFPasscodeViewController *)self passcodeManager];
+        simplePasscodeEntryLength2 = [passcodeManager4 simplePasscodeEntryLength];
 
-        if (v20 != 6)
+        if (simplePasscodeEntryLength2 != 6)
         {
           v21 = MEMORY[0x277D750F8];
           v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -774,10 +774,10 @@ LABEL_10:
 
         if (!v45[0])
         {
-          v25 = [(BFFPasscodeViewController *)self passcodeManager];
-          v26 = [v25 simplePasscodeEntryLength];
+          passcodeManager5 = [(BFFPasscodeViewController *)self passcodeManager];
+          simplePasscodeEntryLength3 = [passcodeManager5 simplePasscodeEntryLength];
 
-          if (v26 != 4)
+          if (simplePasscodeEntryLength3 != 4)
           {
             v27 = MEMORY[0x277D750F8];
             v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -897,22 +897,22 @@ uint64_t __58__BFFPasscodeViewController_passcodeOptionAlertController__block_in
 
 - (void)_showPasscodeOptionsSheet
 {
-  v7 = [(BFFPasscodeViewController *)self passcodeOptionAlertController];
+  passcodeOptionAlertController = [(BFFPasscodeViewController *)self passcodeOptionAlertController];
   if (BFFIsiPad())
   {
-    [v7 setModalPresentationStyle:7];
-    v3 = [v7 popoverPresentationController];
-    v4 = [(BFFPasscodeViewController *)self view];
-    v5 = [v4 passcodeInputView];
-    v6 = [v5 footerButton];
+    [passcodeOptionAlertController setModalPresentationStyle:7];
+    popoverPresentationController = [passcodeOptionAlertController popoverPresentationController];
+    view = [(BFFPasscodeViewController *)self view];
+    passcodeInputView = [view passcodeInputView];
+    footerButton = [passcodeInputView footerButton];
 
-    [v3 setPermittedArrowDirections:2];
-    [v3 setSourceView:v6];
-    [v6 bounds];
-    [v3 setSourceRect:?];
+    [popoverPresentationController setPermittedArrowDirections:2];
+    [popoverPresentationController setSourceView:footerButton];
+    [footerButton bounds];
+    [popoverPresentationController setSourceRect:?];
   }
 
-  [(BFFPasscodeViewController *)self presentViewController:v7 animated:1 completion:0];
+  [(BFFPasscodeViewController *)self presentViewController:passcodeOptionAlertController animated:1 completion:0];
 }
 
 - (BFFPasscodeViewControllerDelegate)passcodeCreationDelegate

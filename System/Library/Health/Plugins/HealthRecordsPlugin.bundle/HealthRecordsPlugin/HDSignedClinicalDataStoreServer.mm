@@ -1,74 +1,74 @@
 @interface HDSignedClinicalDataStoreServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 - (HDHealthRecordsProfileExtension)profileExtension;
-- (HDSignedClinicalDataStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7 signedClinicalDataManager:(id)a8;
-- (void)remote_deleteSignedClinicalDataRecord:(id)a3 completion:(id)a4;
-- (void)remote_fetchCurrentRegistryIssuerContentVersionWithCompletion:(id)a3;
-- (void)remote_fetchCurrentRegistryPublicKeyContentVersionWithCompletion:(id)a3;
-- (void)remote_fetchPublicKeyEntriesWithCompletion:(id)a3;
-- (void)remote_fetchPublicKeyWithKeyID:(id)a3 completion:(id)a4;
-- (void)remote_fetchSignedClinicalDataGroupBackingMedicalRecord:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)remote_insertOrReplaceIssuerRegistryEntries:(id)a3 completion:(id)a4;
-- (void)remote_insertOrReplacePublicKeyEntries:(id)a3 completion:(id)a4;
-- (void)remote_removePublicKeyEntriesWithKeyIDs:(id)a3 completion:(id)a4;
-- (void)remote_setRegistryIssuerContentVersion:(id)a3 completion:(id)a4;
-- (void)remote_setRegistryPublicKeyContentVersion:(id)a3 completion:(id)a4;
+- (HDSignedClinicalDataStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension signedClinicalDataManager:(id)manager;
+- (void)remote_deleteSignedClinicalDataRecord:(id)record completion:(id)completion;
+- (void)remote_fetchCurrentRegistryIssuerContentVersionWithCompletion:(id)completion;
+- (void)remote_fetchCurrentRegistryPublicKeyContentVersionWithCompletion:(id)completion;
+- (void)remote_fetchPublicKeyEntriesWithCompletion:(id)completion;
+- (void)remote_fetchPublicKeyWithKeyID:(id)d completion:(id)completion;
+- (void)remote_fetchSignedClinicalDataGroupBackingMedicalRecord:(id)record options:(unint64_t)options completion:(id)completion;
+- (void)remote_insertOrReplaceIssuerRegistryEntries:(id)entries completion:(id)completion;
+- (void)remote_insertOrReplacePublicKeyEntries:(id)entries completion:(id)completion;
+- (void)remote_removePublicKeyEntriesWithKeyIDs:(id)ds completion:(id)completion;
+- (void)remote_setRegistryIssuerContentVersion:(id)version completion:(id)completion;
+- (void)remote_setRegistryPublicKeyContentVersion:(id)version completion:(id)completion;
 @end
 
 @implementation HDSignedClinicalDataStoreServer
 
-- (HDSignedClinicalDataStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 profileExtension:(id)a7 signedClinicalDataManager:(id)a8
+- (HDSignedClinicalDataStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate profileExtension:(id)extension signedClinicalDataManager:(id)manager
 {
-  v14 = a7;
-  v15 = a8;
+  extensionCopy = extension;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HDSignedClinicalDataStoreServer;
-  v16 = [(HDSignedClinicalDataStoreServer *)&v19 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v16 = [(HDSignedClinicalDataStoreServer *)&v19 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_profileExtension, v14);
-    objc_storeStrong(&v17->_signedClinicalDataManager, a8);
+    objc_storeWeak(&v16->_profileExtension, extensionCopy);
+    objc_storeStrong(&v17->_signedClinicalDataManager, manager);
   }
 
   return v17;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
-  v16 = [v15 profile];
-  v17 = [v16 profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
+  dCopy = d;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  clientCopy = client;
+  profile = [clientCopy profile];
+  v17 = [profile profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
 
-  v18 = [v17 signedClinicalDataManager];
-  if (v18)
+  signedClinicalDataManager = [v17 signedClinicalDataManager];
+  if (signedClinicalDataManager)
   {
-    v19 = [[a1 alloc] initWithUUID:v12 configuration:v13 client:v15 delegate:v14 profileExtension:v17 signedClinicalDataManager:v18];
+    v19 = [[self alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy profileExtension:v17 signedClinicalDataManager:signedClinicalDataManager];
   }
 
   else
   {
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = [v15 profile];
+    profile2 = [clientCopy profile];
 
-    [NSError hk_assignError:a7 code:100 format:@"Cannot use %@ on profile without SCD manager: %@", v21, v22];
+    [NSError hk_assignError:error code:100 format:@"Cannot use %@ on profile without SCD manager: %@", v21, profile2];
     v19 = 0;
-    v15 = v21;
+    clientCopy = v21;
   }
 
   return v19;
 }
 
-- (void)remote_fetchSignedClinicalDataGroupBackingMedicalRecord:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)remote_fetchSignedClinicalDataGroupBackingMedicalRecord:(id)record options:(unint64_t)options completion:(id)completion
 {
   signedClinicalDataManager = self->_signedClinicalDataManager;
   v13 = 0;
-  v8 = a5;
-  v9 = [(HDSignedClinicalDataManager *)signedClinicalDataManager signedClinicalDataGroupBackingMedicalRecord:a3 options:a4 error:&v13];
+  completionCopy = completion;
+  v9 = [(HDSignedClinicalDataManager *)signedClinicalDataManager signedClinicalDataGroupBackingMedicalRecord:record options:options error:&v13];
   v10 = v13;
   v11 = v10;
   if (v9)
@@ -81,27 +81,27 @@
     v12 = v10;
   }
 
-  (v8)[2](v8, v9, v12);
+  (completionCopy)[2](completionCopy, v9, v12);
 }
 
-- (void)remote_deleteSignedClinicalDataRecord:(id)a3 completion:(id)a4
+- (void)remote_deleteSignedClinicalDataRecord:(id)record completion:(id)completion
 {
   signedClinicalDataManager = self->_signedClinicalDataManager;
   v9 = 0;
-  v6 = a4;
-  v7 = [(HDSignedClinicalDataManager *)signedClinicalDataManager deleteSignedClinicalDataRecord:a3 error:&v9];
+  completionCopy = completion;
+  v7 = [(HDSignedClinicalDataManager *)signedClinicalDataManager deleteSignedClinicalDataRecord:record error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_fetchCurrentRegistryIssuerContentVersionWithCompletion:(id)a3
+- (void)remote_fetchCurrentRegistryIssuerContentVersionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v6 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
   v11 = 0;
-  v7 = [v6 issuerContentVersionWithError:&v11];
+  v7 = [createSignedClinicalDataRegistry issuerContentVersionWithError:&v11];
   v8 = v11;
   v9 = v8;
   if (v7)
@@ -116,44 +116,44 @@
 
   if (v10 || ![v8 hk_isHealthKitErrorWithCode:11])
   {
-    v4[2](v4, v7, v9);
+    completionCopy[2](completionCopy, v7, v9);
   }
 
   else
   {
-    v4[2](v4, &off_110030, 0);
+    completionCopy[2](completionCopy, &off_110030, 0);
   }
 }
 
-- (void)remote_setRegistryIssuerContentVersion:(id)a3 completion:(id)a4
+- (void)remote_setRegistryIssuerContentVersion:(id)version completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  versionCopy = version;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
   v12 = 0;
-  v10 = [v9 setIssuerContentVersion:v7 error:&v12];
+  v10 = [createSignedClinicalDataRegistry setIssuerContentVersion:versionCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
-- (void)remote_insertOrReplaceIssuerRegistryEntries:(id)a3 completion:(id)a4
+- (void)remote_insertOrReplaceIssuerRegistryEntries:(id)entries completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
   v17 = 0;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_14390;
   v14[3] = &unk_106148;
-  v10 = v6;
+  v10 = entriesCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = createSignedClinicalDataRegistry;
   v16 = v11;
   v12 = [v11 performTransactionWithError:&v17 block:v14];
   v13 = v17;
@@ -162,17 +162,17 @@
     [(HDSignedClinicalDataManager *)self->_signedClinicalDataManager updateIssuerTitlesUsingRegistry:v11];
   }
 
-  v7[2](v7, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 }
 
-- (void)remote_fetchCurrentRegistryPublicKeyContentVersionWithCompletion:(id)a3
+- (void)remote_fetchCurrentRegistryPublicKeyContentVersionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v6 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
   v11 = 0;
-  v7 = [v6 publicKeyContentVersionWithError:&v11];
+  v7 = [createSignedClinicalDataRegistry publicKeyContentVersionWithError:&v11];
   v8 = v11;
   v9 = v8;
   if (v7)
@@ -187,67 +187,67 @@
 
   if (v10 || ![v8 hk_isHealthKitErrorWithCode:11])
   {
-    v4[2](v4, v7, v9);
+    completionCopy[2](completionCopy, v7, v9);
   }
 
   else
   {
-    v4[2](v4, &off_110030, 0);
+    completionCopy[2](completionCopy, &off_110030, 0);
   }
 }
 
-- (void)remote_setRegistryPublicKeyContentVersion:(id)a3 completion:(id)a4
+- (void)remote_setRegistryPublicKeyContentVersion:(id)version completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  versionCopy = version;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
   v12 = 0;
-  v10 = [v9 setPublicKeyContentVersion:v7 error:&v12];
+  v10 = [createSignedClinicalDataRegistry setPublicKeyContentVersion:versionCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
-- (void)remote_insertOrReplacePublicKeyEntries:(id)a3 completion:(id)a4
+- (void)remote_insertOrReplacePublicKeyEntries:(id)entries completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
-  v16 = v9;
+  v16 = createSignedClinicalDataRegistry;
   v17 = 0;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_14770;
   v14[3] = &unk_106148;
-  v15 = v6;
-  v10 = v9;
-  v11 = v6;
+  v15 = entriesCopy;
+  v10 = createSignedClinicalDataRegistry;
+  v11 = entriesCopy;
   v12 = [v10 performTransactionWithError:&v17 block:v14];
   v13 = v17;
-  v7[2](v7, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 }
 
-- (void)remote_fetchPublicKeyWithKeyID:(id)a3 completion:(id)a4
+- (void)remote_fetchPublicKeyWithKeyID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v10 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
-  v9 = [v10 publicKeyWithID:v7];
+  v9 = [createSignedClinicalDataRegistry publicKeyWithID:dCopy];
 
-  v6[2](v6, v9, 0);
+  completionCopy[2](completionCopy, v9, 0);
 }
 
-- (void)remote_fetchPublicKeyEntriesWithCompletion:(id)a3
+- (void)remote_fetchPublicKeyEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v6 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
   v15 = 0;
   v16 = &v15;
@@ -261,7 +261,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_14B64;
   v11[3] = &unk_106170;
-  v7 = v6;
+  v7 = createSignedClinicalDataRegistry;
   v12 = v7;
   v8 = [v7 performTransactionWithError:&v14 block:v11];
   v9 = v14;
@@ -275,30 +275,30 @@
     v10 = 0;
   }
 
-  v4[2](v4, v10, v9);
+  completionCopy[2](completionCopy, v10, v9);
 
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)remote_removePublicKeyEntriesWithKeyIDs:(id)a3 completion:(id)a4
+- (void)remote_removePublicKeyEntriesWithKeyIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v9 = [WeakRetained createSignedClinicalDataRegistry];
+  createSignedClinicalDataRegistry = [WeakRetained createSignedClinicalDataRegistry];
 
-  v16 = v9;
+  v16 = createSignedClinicalDataRegistry;
   v17 = 0;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_14CE4;
   v14[3] = &unk_106148;
-  v15 = v6;
-  v10 = v9;
-  v11 = v6;
+  v15 = dsCopy;
+  v10 = createSignedClinicalDataRegistry;
+  v11 = dsCopy;
   v12 = [v10 performTransactionWithError:&v17 block:v14];
   v13 = v17;
-  v7[2](v7, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 }
 
 - (HDHealthRecordsProfileExtension)profileExtension

@@ -1,26 +1,26 @@
 @interface HMDEvent
 + (id)logCategory;
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4;
-- (BOOL)isCompatibleWithEvent:(id)a3;
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler;
+- (BOOL)isCompatibleWithEvent:(id)event;
 - (BOOL)isConfigured;
-- (BOOL)isEqual:(id)a3;
-- (HMDEvent)initWithCoder:(id)a3;
-- (HMDEvent)initWithModel:(id)a3 home:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDEvent)initWithCoder:(id)coder;
+- (HMDEvent)initWithModel:(id)model home:(id)home;
 - (HMDEventDelegate)delegate;
 - (HMDEventTrigger)eventTrigger;
 - (HMDHome)home;
 - (NSString)description;
 - (id)analyticsTriggerEventData;
 - (id)createPayload;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (unint64_t)hash;
 - (void)_registerForMessages;
 - (void)_setup;
-- (void)_transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)_transactionObjectRemoved:(id)removed message:(id)message;
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 - (void)_updateTriggerType;
-- (void)configure:(id)a3 messageDispatcher:(id)a4 queue:(id)a5 delegate:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)configure:(id)configure messageDispatcher:(id)dispatcher queue:(id)queue delegate:(id)delegate;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -60,18 +60,18 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)v8 activationType]);
-    v12 = HMDEventTriggerActivationTypeAsString(a3);
+    v11 = HMDEventTriggerActivationTypeAsString([(HMDEvent *)selfCopy activationType]);
+    v12 = HMDEventTriggerActivationTypeAsString(_activate);
     v18 = 138543874;
     v19 = v10;
     v20 = 2112;
@@ -82,13 +82,13 @@
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [(HMDEvent *)v8 activationType];
-  if (v13 != a3)
+  activationType = [(HMDEvent *)selfCopy activationType];
+  if (activationType != _activate)
   {
-    [(HMDEvent *)v8 setActivationType:a3];
+    [(HMDEvent *)selfCopy setActivationType:_activate];
   }
 
-  v14 = _Block_copy(v6);
+  v14 = _Block_copy(handlerCopy);
   v15 = v14;
   if (v14)
   {
@@ -96,13 +96,13 @@
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v13 != a3;
+  return activationType != _activate;
 }
 
-- (void)_transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)_transactionObjectRemoved:(id)removed message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  messageCopy = message;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -114,11 +114,11 @@
   objc_exception_throw(v13);
 }
 
-- (void)_transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)_transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -130,57 +130,57 @@
   objc_exception_throw(v16);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HMDEvent *)self uuid];
-  v5 = [v4 UUIDString];
-  [v8 encodeObject:v5 forKey:@"HM.eventIdentifier"];
+  coderCopy = coder;
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"HM.eventIdentifier"];
 
-  v6 = [(HMDEvent *)self eventTrigger];
-  [v8 encodeConditionalObject:v6 forKey:@"HM.eventTrigger"];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  [coderCopy encodeConditionalObject:eventTrigger forKey:@"HM.eventTrigger"];
 
-  v7 = [(HMDEvent *)self isEndEvent];
-  [v8 encodeBool:v7 forKey:*MEMORY[0x277CD22A0]];
+  isEndEvent = [(HMDEvent *)self isEndEvent];
+  [coderCopy encodeBool:isEndEvent forKey:*MEMORY[0x277CD22A0]];
 }
 
-- (HMDEvent)initWithCoder:(id)a3
+- (HMDEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMDEvent;
   v5 = [(HMDEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.eventIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.eventIdentifier"];
     v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
     uuid = v5->_uuid;
     v5->_uuid = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.eventTrigger"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.eventTrigger"];
     objc_storeWeak(&v5->_eventTrigger, v9);
 
-    v5->_endEvent = [v4 decodeBoolForKey:*MEMORY[0x277CD22A0]];
+    v5->_endEvent = [coderCopy decodeBoolForKey:*MEMORY[0x277CD22A0]];
     [(HMDEvent *)v5 _setup];
   }
 
   return v5;
 }
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDEvent *)self triggerType];
-  v6 = [v4 triggerType];
+  eventCopy = event;
+  triggerType = [(HMDEvent *)self triggerType];
+  triggerType2 = [eventCopy triggerType];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(eventCopy) = [triggerType isEqualToString:triggerType2];
+  return eventCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDEvent *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(HMDEvent *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
@@ -189,12 +189,12 @@
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = *MEMORY[0x277CD2340];
-  v3 = [(HMDEvent *)self uuid];
-  v4 = [v3 UUIDString];
-  v11[0] = v4;
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v11[0] = uUIDString;
   v10[1] = *MEMORY[0x277CD22F0];
-  v5 = [(HMDEvent *)self triggerType];
-  v11[1] = v5;
+  triggerType = [(HMDEvent *)self triggerType];
+  v11[1] = triggerType;
   v10[2] = *MEMORY[0x277CD22A0];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDEvent isEndEvent](self, "isEndEvent")}];
   v11[2] = v6;
@@ -205,10 +205,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -218,9 +218,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDEvent *)v4 uuid];
-      v6 = [(HMDEvent *)self uuid];
-      v7 = [v5 isEqual:v6];
+      uuid = [(HMDEvent *)equalCopy uuid];
+      uuid2 = [(HMDEvent *)self uuid];
+      v7 = [uuid isEqual:uuid2];
     }
 
     else
@@ -232,15 +232,15 @@
   return v7;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HMDEvent *)self uuid];
-  v7 = [v6 UUIDString];
-  v8 = [(HMDEvent *)self eventTrigger];
-  v9 = [v8 name];
-  v10 = [v5 stringWithFormat:@"uuid: %@, trigger: %@", v7, v9];
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  name = [eventTrigger name];
+  v10 = [v5 stringWithFormat:@"uuid: %@, trigger: %@", uUIDString, name];
 
   [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x277D0F170]];
 
@@ -250,62 +250,62 @@
 - (void)_registerForMessages
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDEvent *)self home];
-  v4 = [v3 administratorHandler];
+  home = [(HMDEvent *)self home];
+  administratorHandler = [home administratorHandler];
   v5 = *MEMORY[0x277CD2318];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:1];
   v10[0] = v6;
   v7 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v10[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
-  [v4 registerForMessage:v5 receiver:self policies:v8 selector:sel__handleUpdateRequest_];
+  [administratorHandler registerForMessage:v5 receiver:self policies:v8 selector:sel__handleUpdateRequest_];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (void)invalidate
 {
-  v3 = [(HMDEvent *)self msgDispatcher];
-  [v3 deregisterReceiver:self];
+  msgDispatcher = [(HMDEvent *)self msgDispatcher];
+  [msgDispatcher deregisterReceiver:self];
 
-  v4 = [(HMDEvent *)self home];
-  v5 = [v4 administratorHandler];
-  [v5 deregisterReceiver:self];
+  home = [(HMDEvent *)self home];
+  administratorHandler = [home administratorHandler];
+  [administratorHandler deregisterReceiver:self];
 
   [(HMDEvent *)self setMsgDispatcher:0];
 
   [(HMDEvent *)self setEventTrigger:0];
 }
 
-- (void)configure:(id)a3 messageDispatcher:(id)a4 queue:(id)a5 delegate:(id)a6
+- (void)configure:(id)configure messageDispatcher:(id)dispatcher queue:(id)queue delegate:(id)delegate
 {
   v10 = MEMORY[0x277CCACA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v14 name];
-  v16 = [(HMDEvent *)self uuid];
-  v17 = [v16 UUIDString];
-  v18 = [v10 stringWithFormat:@"%@/%@", v15, v17];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  configureCopy = configure;
+  name = [configureCopy name];
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v18 = [v10 stringWithFormat:@"%@/%@", name, uUIDString];
   [(HMDEvent *)self setLogString:v18];
 
-  [(HMDEvent *)self setEventTrigger:v14];
-  v19 = [v14 home];
+  [(HMDEvent *)self setEventTrigger:configureCopy];
+  home = [configureCopy home];
 
-  [(HMDEvent *)self setHome:v19];
-  [(HMDEvent *)self setMsgDispatcher:v13];
+  [(HMDEvent *)self setHome:home];
+  [(HMDEvent *)self setMsgDispatcher:dispatcherCopy];
 
-  [(HMDEvent *)self setWorkQueue:v12];
-  [(HMDEvent *)self setDelegate:v11];
+  [(HMDEvent *)self setWorkQueue:queueCopy];
+  [(HMDEvent *)self setDelegate:delegateCopy];
 
   [(HMDEvent *)self _registerForMessages];
 }
 
 - (BOOL)isConfigured
 {
-  v2 = [(HMDEvent *)self workQueue];
-  v3 = v2 != 0;
+  workQueue = [(HMDEvent *)self workQueue];
+  v3 = workQueue != 0;
 
   return v3;
 }
@@ -313,9 +313,9 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDEvent *)self uuid];
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringWithFormat:@"%@", v4];
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v5 = [v2 stringWithFormat:@"%@", uUIDString];
 
   return v5;
 }
@@ -372,30 +372,30 @@
   self->_activationType = 0;
   [(HMDEvent *)self _updateTriggerType];
   v3 = MEMORY[0x277CCACA8];
-  v8 = [(HMDEvent *)self eventTrigger];
-  v4 = [v8 name];
-  v5 = [(HMDEvent *)self uuid];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@/%@", v4, v6];
+  eventTrigger = [(HMDEvent *)self eventTrigger];
+  name = [eventTrigger name];
+  uuid = [(HMDEvent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v7 = [v3 stringWithFormat:@"%@/%@", name, uUIDString];
   [(HMDEvent *)self setLogString:v7];
 }
 
-- (HMDEvent)initWithModel:(id)a3 home:(id)a4
+- (HMDEvent)initWithModel:(id)model home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HMDEvent;
   v8 = [(HMDEvent *)&v13 init];
   if (v8)
   {
-    v9 = [v6 uuid];
+    uuid = [modelCopy uuid];
     uuid = v8->_uuid;
-    v8->_uuid = v9;
+    v8->_uuid = uuid;
 
-    objc_storeWeak(&v8->_home, v7);
-    v11 = [v6 endEvent];
-    v8->_endEvent = [v11 BOOLValue];
+    objc_storeWeak(&v8->_home, homeCopy);
+    endEvent = [modelCopy endEvent];
+    v8->_endEvent = [endEvent BOOLValue];
 
     [(HMDEvent *)v8 _setup];
   }

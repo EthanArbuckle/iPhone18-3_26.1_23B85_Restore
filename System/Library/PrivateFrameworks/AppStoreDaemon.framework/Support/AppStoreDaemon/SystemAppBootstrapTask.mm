@@ -15,11 +15,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Attempting to bootstrap %lu system app(s)", buf, 0xCu);
   }
 
-  v5 = [(NSMutableDictionary *)self->_installs allKeys];
-  v6 = [NSMutableSet setWithArray:v5];
+  allKeys = [(NSMutableDictionary *)self->_installs allKeys];
+  v6 = [NSMutableSet setWithArray:allKeys];
 
-  v7 = [v6 allObjects];
-  v8 = sub_1002D5E7C(SystemAppLookupTask, v7);
+  allObjects = [v6 allObjects];
+  v8 = sub_1002D5E7C(SystemAppLookupTask, allObjects);
 
   v86 = 0;
   v9 = [(Task *)self runSubTask:v8 returningError:&v86];
@@ -115,7 +115,7 @@
 
               v32 = [[_TtC9appstored23ReviewNetworkPolicyTask alloc] initWithDownload:v31];
               v81 = v29;
-              v33 = self;
+              selfCopy = self;
               v34 = [(Task *)self runSubTask:v32 returningError:&v81];
               v11 = v81;
 
@@ -126,7 +126,7 @@
                 sub_1003B66A8(v26, [(ReviewNetworkPolicyTask *)v32 interfaceMask]);
               }
 
-              self = v33;
+              self = selfCopy;
               v13 = v72;
               v6 = v73;
             }
@@ -220,9 +220,9 @@
     }
 
     [(Task *)self lock];
-    v49 = [(NSMutableDictionary *)self->_installs allValues];
+    allValues = [(NSMutableDictionary *)self->_installs allValues];
     results = self->_results;
-    self->_results = v49;
+    self->_results = allValues;
 
     [(Task *)self unlock];
     [(Task *)self completeWithSuccess];
@@ -251,8 +251,8 @@
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v53 = [(NSMutableDictionary *)self->_installs objectEnumerator];
-  v54 = [v53 countByEnumeratingWithState:&v87 objects:buf count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_installs objectEnumerator];
+  v54 = [objectEnumerator countByEnumeratingWithState:&v87 objects:buf count:16];
   if (!v54)
   {
     goto LABEL_68;
@@ -266,7 +266,7 @@
     {
       if (*v88 != v56)
       {
-        objc_enumerationMutation(v53);
+        objc_enumerationMutation(objectEnumerator);
       }
 
       if (!sub_10023E4DC(*(*(&v87 + 1) + 8 * j), @"supress_dialogs"))
@@ -275,13 +275,13 @@
         v58 = v52;
         objc_opt_self();
         v59 = v58;
-        v60 = [v59 domain];
-        v61 = [v60 isEqualToString:ASDErrorDomain];
+        domain = [v59 domain];
+        v61 = [domain isEqualToString:ASDErrorDomain];
 
         if (v61)
         {
-          v62 = [v59 userInfo];
-          v63 = [v62 objectForKeyedSubscript:NSUnderlyingErrorKey];
+          userInfo = [v59 userInfo];
+          v63 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
           v64 = v59;
           v6 = v73;
@@ -315,31 +315,31 @@
           {
 LABEL_67:
 
-            v53 = [AMSDialogRequest requestWithTitle:@"Internal Only" message:v65];
+            objectEnumerator = [AMSDialogRequest requestWithTitle:@"Internal Only" message:v65];
 
             v67 = ASDLocalizedString();
             v68 = [AMSDialogAction actionWithTitle:v67 style:0];
 
             v94 = v68;
             v69 = [NSArray arrayWithObjects:&v94 count:1];
-            [v53 setButtonActions:v69];
+            [objectEnumerator setButtonActions:v69];
 
-            sub_100406DAC(v53, @"systemAppBootstrapInternal");
+            sub_100406DAC(objectEnumerator, @"systemAppBootstrapInternal");
             sub_10022DA8C(v68, @"ok");
-            sub_1003124D4(InteractiveRequestPresenter, v53, 0);
+            sub_1003124D4(InteractiveRequestPresenter, objectEnumerator, 0);
 
             goto LABEL_68;
           }
         }
 
-        v66 = [v64 domain];
-        v65 = -[__CFString stringByAppendingFormat:](v65, "stringByAppendingFormat:", @" (%@: %ld)", v66, [v64 code]);
+        domain2 = [v64 domain];
+        v65 = -[__CFString stringByAppendingFormat:](v65, "stringByAppendingFormat:", @" (%@: %ld)", domain2, [v64 code]);
 
         goto LABEL_67;
       }
     }
 
-    v55 = [v53 countByEnumeratingWithState:&v87 objects:buf count:16];
+    v55 = [objectEnumerator countByEnumeratingWithState:&v87 objects:buf count:16];
     if (v55)
     {
       continue;

@@ -2,19 +2,19 @@
 - (_SFReaderExtractor)init;
 - (id)_configuration;
 - (id)_processPool;
-- (void)_finishWithContent:(id)a3 error:(id)a4;
+- (void)_finishWithContent:(id)content error:(id)error;
 - (void)_invalidateTimers;
 - (void)_scheduleLoadingTimeout;
 - (void)_scheduleReaderDataExtractionTimeout;
 - (void)_setUpReaderController;
-- (void)getExtractedDataForURL:(id)a3 withCompletion:(id)a4;
-- (void)getExtractedDataForURL:(id)a3 withData:(id)a4 withCompletion:(id)a5;
-- (void)readerController:(id)a3 didCollectArticleContent:(id)a4;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)getExtractedDataForURL:(id)l withCompletion:(id)completion;
+- (void)getExtractedDataForURL:(id)l withData:(id)data withCompletion:(id)completion;
+- (void)readerController:(id)controller didCollectArticleContent:(id)content;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation _SFReaderExtractor
@@ -45,8 +45,8 @@
   else
   {
     v5 = objc_alloc_init(MEMORY[0x1E69853F0]);
-    v6 = [MEMORY[0x1E696AAE8] safari_safariServicesInjectedBundleURL];
-    [v5 setInjectedBundleURL:v6];
+    safari_safariServicesInjectedBundleURL = [MEMORY[0x1E696AAE8] safari_safariServicesInjectedBundleURL];
+    [v5 setInjectedBundleURL:safari_safariServicesInjectedBundleURL];
 
     v7 = [objc_alloc(MEMORY[0x1E6985340]) _initWithConfiguration:v5];
     v8 = self->_processPool;
@@ -61,11 +61,11 @@
 - (id)_configuration
 {
   v3 = objc_alloc_init(MEMORY[0x1E69853A8]);
-  v4 = [(_SFReaderExtractor *)self _processPool];
-  [v3 setProcessPool:v4];
+  _processPool = [(_SFReaderExtractor *)self _processPool];
+  [v3 setProcessPool:_processPool];
 
-  v5 = [MEMORY[0x1E69853B8] safari_nonPersistentDataStore];
-  [v3 setWebsiteDataStore:v5];
+  safari_nonPersistentDataStore = [MEMORY[0x1E69853B8] safari_nonPersistentDataStore];
+  [v3 setWebsiteDataStore:safari_nonPersistentDataStore];
 
   [v3 _setClientNavigationsRunAtForegroundPriority:1];
 
@@ -75,8 +75,8 @@
 - (void)_setUpReaderController
 {
   v3 = objc_alloc(MEMORY[0x1E69853A0]);
-  v4 = [(_SFReaderExtractor *)self _configuration];
-  v5 = [v3 initWithFrame:v4 configuration:{0.0, 0.0, 1264.0, 760.0}];
+  _configuration = [(_SFReaderExtractor *)self _configuration];
+  v5 = [v3 initWithFrame:_configuration configuration:{0.0, 0.0, 1264.0, 760.0}];
   webView = self->_webView;
   self->_webView = v5;
 
@@ -94,11 +94,11 @@
   [(_SFReaderController *)v10 setDelegate:self];
 }
 
-- (void)_finishWithContent:(id)a3 error:(id)a4
+- (void)_finishWithContent:(id)content error:(id)error
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  errorCopy = error;
   [(_SFReaderExtractor *)self _invalidateTimers];
   v8 = _Block_copy(self->_completionHandler);
   v9 = self->_currentURL;
@@ -110,23 +110,23 @@
 
   if (v8)
   {
-    if (v7)
+    if (errorCopy)
     {
-      v8[2](v8, 0, v7);
+      v8[2](v8, 0, errorCopy);
     }
 
     else
     {
-      if ([v6 count])
+      if ([contentCopy count])
       {
-        v12 = [v6 objectForKeyedSubscript:@"error"];
+        v12 = [contentCopy objectForKeyedSubscript:@"error"];
         v13 = v12;
         if (v12)
         {
           v20[0] = @"error";
           v20[1] = @"stack";
           v21[0] = v12;
-          v14 = [v6 objectForKeyedSubscript:?];
+          v14 = [contentCopy objectForKeyedSubscript:?];
           v15 = v14;
           v16 = @"No stack trace";
           if (v14)
@@ -149,7 +149,7 @@
 
         else
         {
-          v17 = [[_SFReaderExtractedData alloc] initWithReaderContent:v6 url:v9];
+          v17 = [[_SFReaderExtractedData alloc] initWithReaderContent:contentCopy url:v9];
           (v8)[2](v8, v17, 0);
         }
       }
@@ -216,36 +216,36 @@
   objc_destroyWeak(&location);
 }
 
-- (void)getExtractedDataForURL:(id)a3 withCompletion:(id)a4
+- (void)getExtractedDataForURL:(id)l withCompletion:(id)completion
 {
-  v12 = a3;
-  v7 = _Block_copy(a4);
+  lCopy = l;
+  v7 = _Block_copy(completion);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v7;
 
-  objc_storeStrong(&self->_currentURL, a3);
+  objc_storeStrong(&self->_currentURL, l);
   webView = self->_webView;
-  v10 = [MEMORY[0x1E695AC68] safari_nonAppInitiatedRequestWithURL:v12];
+  v10 = [MEMORY[0x1E695AC68] safari_nonAppInitiatedRequestWithURL:lCopy];
   v11 = [(WKWebView *)webView loadRequest:v10];
 
   [(_SFReaderExtractor *)self _scheduleLoadingTimeout];
 }
 
-- (void)getExtractedDataForURL:(id)a3 withData:(id)a4 withCompletion:(id)a5
+- (void)getExtractedDataForURL:(id)l withData:(id)data withCompletion:(id)completion
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = _Block_copy(a5);
+  lCopy = l;
+  dataCopy = data;
+  v10 = _Block_copy(completion);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v10;
 
-  objc_storeStrong(&self->_currentURL, a3);
-  v12 = [(WKWebView *)self->_webView loadData:v9 MIMEType:@"text/html" characterEncodingName:@"UTF-8" baseURL:self->_currentURL];
+  objc_storeStrong(&self->_currentURL, l);
+  v12 = [(WKWebView *)self->_webView loadData:dataCopy MIMEType:@"text/html" characterEncodingName:@"UTF-8" baseURL:self->_currentURL];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  [(_SFReaderExtractor *)self _invalidateTimers:a3];
+  [(_SFReaderExtractor *)self _invalidateTimers:view];
   v5 = WBS_LOG_CHANNEL_PREFIXReaderExtraction();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,33 +257,33 @@
   [(_SFReaderExtractor *)self _scheduleReaderDataExtractionTimeout];
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = WBS_LOG_CHANNEL_PREFIXReaderExtraction();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [_SFReaderExtractor webView:v7 didFailProvisionalNavigation:v6 withError:?];
+    [_SFReaderExtractor webView:v7 didFailProvisionalNavigation:errorCopy withError:?];
   }
 
-  [(_SFReaderExtractor *)self _finishWithContent:0 error:v6];
+  [(_SFReaderExtractor *)self _finishWithContent:0 error:errorCopy];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [v6 code];
+  errorCopy = error;
+  code = [errorCopy code];
   v8 = WBS_LOG_CHANNEL_PREFIXReaderExtraction();
   v9 = v8;
-  if (v7 == -999)
+  if (code == -999)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v6 safari_privacyPreservingDescription];
+      safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
       v12 = 138543362;
-      v13 = v11;
+      v13 = safari_privacyPreservingDescription;
       _os_log_impl(&dword_1D4644000, v10, OS_LOG_TYPE_DEFAULT, "Failed navigation but ignoring error: %{public}@", &v12, 0xCu);
     }
   }
@@ -292,26 +292,26 @@
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [_SFReaderExtractor webView:v9 didFailNavigation:v6 withError:?];
+      [_SFReaderExtractor webView:v9 didFailNavigation:errorCopy withError:?];
     }
 
-    [(_SFReaderExtractor *)self _finishWithContent:0 error:v6];
+    [(_SFReaderExtractor *)self _finishWithContent:0 error:errorCopy];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v11 = a5;
-  v7 = a4;
-  v8 = [v7 response];
-  v9 = [v8 URL];
+  handlerCopy = handler;
+  responseCopy = response;
+  response = [responseCopy response];
+  v9 = [response URL];
 
-  LOBYTE(v8) = [v7 isForMainFrame];
-  v10 = (v8 & 1) != 0 || ![v9 safari_isHTTPFamilyURL] || objc_msgSend(v9, "safari_hasSameOriginAsURL:", self->_currentURL);
-  v11[2](v11, v10);
+  LOBYTE(response) = [responseCopy isForMainFrame];
+  v10 = (response & 1) != 0 || ![v9 safari_isHTTPFamilyURL] || objc_msgSend(v9, "safari_hasSameOriginAsURL:", self->_currentURL);
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
   v4 = WBS_LOG_CHANNEL_PREFIXReaderExtraction();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -323,19 +323,19 @@
   [(_SFReaderExtractor *)self _finishWithContent:0 error:v5];
 }
 
-- (void)readerController:(id)a3 didCollectArticleContent:(id)a4
+- (void)readerController:(id)controller didCollectArticleContent:(id)content
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contentCopy = content;
   v6 = WBS_LOG_CHANNEL_PREFIXReaderExtraction();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138739971;
-    v8 = v5;
+    v8 = contentCopy;
     _os_log_impl(&dword_1D4644000, v6, OS_LOG_TYPE_DEFAULT, "Did collect article content: %{sensitive}@", &v7, 0xCu);
   }
 
-  [(_SFReaderExtractor *)self _finishWithContent:v5 error:0];
+  [(_SFReaderExtractor *)self _finishWithContent:contentCopy error:0];
 }
 
 - (void)_finishWithContent:(os_log_t)log error:.cold.1(uint64_t a1, uint64_t a2, os_log_t log)

@@ -33,11 +33,11 @@ BOOL __38__ICLocalizationUtilities_supportsRTL__block_invoke_2()
 
 + (BOOL)isArabic
 {
-  v2 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v3 = [v2 languageCode];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  languageCode = [autoupdatingCurrentLocale languageCode];
 
-  LOBYTE(v2) = [v3 hasPrefix:@"ar"];
-  return v2;
+  LOBYTE(autoupdatingCurrentLocale) = [languageCode hasPrefix:@"ar"];
+  return autoupdatingCurrentLocale;
 }
 
 @end

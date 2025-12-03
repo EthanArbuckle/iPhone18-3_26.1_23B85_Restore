@@ -1,13 +1,13 @@
 @interface MapsOfflineUIHelper
 + (MapsOfflineUIHelper)sharedHelper;
-+ (int64_t)idealDisplayAspectRatio:(id)a3;
-- (BOOL)_isRegionDownloaded:(id)a3 requireFullyDownloaded:(BOOL)a4 coverageRequirement:(double)a5 forSubscriptionInfos:(id)a6;
-- (BOOL)isRegionDownloaded:(id)a3 requireFullyDownloaded:(BOOL)a4;
-- (BOOL)isRegionDownloaded:(id)a3 requireFullyDownloaded:(BOOL)a4 coverageRequirement:(double)a5;
++ (int64_t)idealDisplayAspectRatio:(id)ratio;
+- (BOOL)_isRegionDownloaded:(id)downloaded requireFullyDownloaded:(BOOL)fullyDownloaded coverageRequirement:(double)requirement forSubscriptionInfos:(id)infos;
+- (BOOL)isRegionDownloaded:(id)downloaded requireFullyDownloaded:(BOOL)fullyDownloaded;
+- (BOOL)isRegionDownloaded:(id)downloaded requireFullyDownloaded:(BOOL)fullyDownloaded coverageRequirement:(double)requirement;
 - (BOOL)isUsingForcedOfflineMaps;
 - (MapsOfflineUIHelper)init;
 - (id)_osUpdateRequiredAlert;
-- (id)_subscriptionInfoForRegion:(id)a3 requireContainment:(BOOL)a4 fromSubscriptionInfos:(id)a5;
+- (id)_subscriptionInfoForRegion:(id)region requireContainment:(BOOL)containment fromSubscriptionInfos:(id)infos;
 - (id)alertControllerForAttemptedAddCollection;
 - (id)alertControllerForAttemptedAddNote;
 - (id)alertControllerForAttemptedAddPhotos;
@@ -19,50 +19,50 @@
 - (id)alertControllerForAttemptedReportAnIssue;
 - (id)alertControllerForAttemptedShowMyShortcut;
 - (id)alertControllerForAttemptedUpdateAll;
-- (id)alertControllerForCellularDownloadConfirmationForRegionName:(id)a3 size:(int64_t)a4 actionHandler:(id)a5;
-- (id)alertControllerForCellularUpdateConfirmationForSize:(int64_t)a3 actionHandler:(id)a4;
-- (id)alertControllerForDisableAutomaticUpdatesWithActionHandler:(id)a3;
-- (id)alertControllerForDisableSyncToWatchWithActionHandler:(id)a3;
-- (id)alertControllerForInsufficientDiskSpaceForDownloadSize:(int64_t)a3;
-- (id)alertControllerForInsufficientDiskSpaceOnPairedDeviceForDownloadSize:(int64_t)a3;
-- (id)determineEstimatedSizeForSubscriptionWithRegion:(id)a3 completionHandler:(id)a4;
-- (id)subscriptionInfoForRegion:(id)a3 requireContainment:(BOOL)a4;
-- (int64_t)cellularBehaviorForDownloadOfSize:(int64_t)a3 forForcedDownload:(BOOL)a4;
-- (void)_captureDisplayDownloadMapsAlertWithType:(int64_t)a3;
+- (id)alertControllerForCellularDownloadConfirmationForRegionName:(id)name size:(int64_t)size actionHandler:(id)handler;
+- (id)alertControllerForCellularUpdateConfirmationForSize:(int64_t)size actionHandler:(id)handler;
+- (id)alertControllerForDisableAutomaticUpdatesWithActionHandler:(id)handler;
+- (id)alertControllerForDisableSyncToWatchWithActionHandler:(id)handler;
+- (id)alertControllerForInsufficientDiskSpaceForDownloadSize:(int64_t)size;
+- (id)alertControllerForInsufficientDiskSpaceOnPairedDeviceForDownloadSize:(int64_t)size;
+- (id)determineEstimatedSizeForSubscriptionWithRegion:(id)region completionHandler:(id)handler;
+- (id)subscriptionInfoForRegion:(id)region requireContainment:(BOOL)containment;
+- (int64_t)cellularBehaviorForDownloadOfSize:(int64_t)size forForcedDownload:(BOOL)download;
+- (void)_captureDisplayDownloadMapsAlertWithType:(int64_t)type;
 - (void)_commonInit;
 - (void)_postSubscriptionsDidChangeNotification;
 - (void)_reloadLastUpdatedDates;
 - (void)_reloadPairedDeviceSubscriptionInfos;
-- (void)_reloadSubscriptionInfosWithCompletion:(id)a3;
+- (void)_reloadSubscriptionInfosWithCompletion:(id)completion;
 - (void)_reloadSubscriptions;
-- (void)_startedUpdatingSubscription:(id)a3;
-- (void)_stoppedUpdatingSubscription:(id)a3;
+- (void)_startedUpdatingSubscription:(id)subscription;
+- (void)_stoppedUpdatingSubscription:(id)subscription;
 - (void)_subscriptionsDidChange;
 - (void)_updateExpiredSubscriptionsCount;
 - (void)_updateTotalDataSize;
 - (void)_updateUsingOfflineMaps;
-- (void)addKVOForSubscriptionInfo:(id)a3;
-- (void)addSubscriptionWithRegion:(id)a3 name:(id)a4 completion:(id)a5;
+- (void)addKVOForSubscriptionInfo:(id)info;
+- (void)addSubscriptionWithRegion:(id)region name:(id)name completion:(id)completion;
 - (void)dealloc;
-- (void)forceUpdateAllSubscriptionsWithMode:(unint64_t)a3;
-- (void)getAvailableDiskSpaceForPairedDeviceWithCompletionHandler:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pauseDownloadForSubscriptionInfo:(id)a3;
-- (void)removeKVOForSubscriptionInfo:(id)a3;
-- (void)restoreExpiredSubscription:(id)a3 completionHandler:(id)a4;
-- (void)resumeDownloadForSubscriptionInfo:(id)a3 mode:(unint64_t)a4;
-- (void)resumeDownloadForSubscriptionWithIdentifier:(id)a3 mode:(unint64_t)a4;
-- (void)setFullyLoadedSubscriptionsCount:(unint64_t)a3;
-- (void)setOutOfDateSubscriptionsCount:(unint64_t)a3;
-- (void)setPairedDeviceSubscriptionStatesMonitorCount:(int64_t)a3;
-- (void)setSubscriptionInfo:(id)a3 shouldSyncToPairedDevice:(BOOL)a4 completionHandler:(id)a5;
-- (void)setSubscriptionInfos:(id)a3;
-- (void)setUpdatingSubscriptions:(id)a3;
-- (void)setUsingOfflineMaps:(BOOL)a3;
+- (void)forceUpdateAllSubscriptionsWithMode:(unint64_t)mode;
+- (void)getAvailableDiskSpaceForPairedDeviceWithCompletionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pauseDownloadForSubscriptionInfo:(id)info;
+- (void)removeKVOForSubscriptionInfo:(id)info;
+- (void)restoreExpiredSubscription:(id)subscription completionHandler:(id)handler;
+- (void)resumeDownloadForSubscriptionInfo:(id)info mode:(unint64_t)mode;
+- (void)resumeDownloadForSubscriptionWithIdentifier:(id)identifier mode:(unint64_t)mode;
+- (void)setFullyLoadedSubscriptionsCount:(unint64_t)count;
+- (void)setOutOfDateSubscriptionsCount:(unint64_t)count;
+- (void)setPairedDeviceSubscriptionStatesMonitorCount:(int64_t)count;
+- (void)setSubscriptionInfo:(id)info shouldSyncToPairedDevice:(BOOL)device completionHandler:(id)handler;
+- (void)setSubscriptionInfos:(id)infos;
+- (void)setUpdatingSubscriptions:(id)subscriptions;
+- (void)setUsingOfflineMaps:(BOOL)maps;
 - (void)startMonitoringPairedDeviceSubscriptionStates;
 - (void)stopMonitoringPairedDeviceSubscriptionStates;
-- (void)updateName:(id)a3 forSubscriptionInfo:(id)a4 completion:(id)a5;
-- (void)updateRegion:(id)a3 forSubscriptionInfo:(id)a4 completion:(id)a5;
+- (void)updateName:(id)name forSubscriptionInfo:(id)info completion:(id)completion;
+- (void)updateRegion:(id)region forSubscriptionInfo:(id)info completion:(id)completion;
 @end
 
 @implementation MapsOfflineUIHelper
@@ -104,14 +104,14 @@
 - (BOOL)isUsingForcedOfflineMaps
 {
   v2 = +[GEOOfflineService shared];
-  v3 = [v2 state];
-  v4 = v3;
-  if (v3 < 2u)
+  state = [v2 state];
+  v4 = state;
+  if (state < 2u)
   {
     goto LABEL_9;
   }
 
-  if (v3 != 2)
+  if (state != 2)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -124,8 +124,8 @@
     goto LABEL_12;
   }
 
-  v5 = HIBYTE(v3);
-  if (HIBYTE(v3) >= 3u)
+  v5 = HIBYTE(state);
+  if (HIBYTE(state) >= 3u)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -142,7 +142,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v6 = 4u >> (HIBYTE(v3) & 7);
+  v6 = 4u >> (HIBYTE(state) & 7);
 LABEL_10:
 
   return v6 & 1;
@@ -208,14 +208,14 @@ LABEL_10:
 - (void)_updateExpiredSubscriptionsCount
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
   v4 = &_dispatch_main_q;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100029640;
   v5[3] = &unk_10165F290;
   objc_copyWeak(&v6, &location);
-  [v3 fetchAllExpiredSubscriptionsWithCallbackQueue:&_dispatch_main_q completionHandler:v5];
+  [subscriptionManager fetchAllExpiredSubscriptionsWithCallbackQueue:&_dispatch_main_q completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -224,14 +224,14 @@ LABEL_10:
 - (void)_updateTotalDataSize
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
   v4 = &_dispatch_main_q;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000296B4;
   v5[3] = &unk_10163B558;
   objc_copyWeak(&v6, &location);
-  [v3 _calculateTotalSizeOfOfflineSubscriptionsWithCallbackQueue:&_dispatch_main_q completionHandler:v5];
+  [subscriptionManager _calculateTotalSizeOfOfflineSubscriptionsWithCallbackQueue:&_dispatch_main_q completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -240,22 +240,22 @@ LABEL_10:
 - (void)_reloadLastUpdatedDates
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
   v4 = &_dispatch_main_q;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000287C8;
   v8[3] = &unk_10163AF20;
   objc_copyWeak(&v9, &location);
-  [v3 fetchLastUpdatedDateForPairedDeviceOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v8];
+  [subscriptionManager fetchLastUpdatedDateForPairedDeviceOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v8];
 
-  v5 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager2 = [(MapsOfflineUIHelper *)self subscriptionManager];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100028958;
   v6[3] = &unk_10163AF20;
   objc_copyWeak(&v7, &location);
-  [v5 fetchLastUpdatedDateForOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v6];
+  [subscriptionManager2 fetchLastUpdatedDateForOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
@@ -265,8 +265,8 @@ LABEL_10:
 - (void)_subscriptionsDidChange
 {
   observers = self->_observers;
-  v4 = [(MapsOfflineUIHelper *)self subscriptionInfos];
-  [(GEOObserverHashTable *)observers subscriptionInfosDidChange:v4];
+  subscriptionInfos = [(MapsOfflineUIHelper *)self subscriptionInfos];
+  [(GEOObserverHashTable *)observers subscriptionInfosDidChange:subscriptionInfos];
 
   [(MapsOfflineUIHelper *)self _postSubscriptionsDidChangeNotification];
 }
@@ -287,40 +287,40 @@ LABEL_10:
 - (void)_reloadPairedDeviceSubscriptionInfos
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
   v4 = &_dispatch_main_q;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100B6597C;
   v5[3] = &unk_10165F290;
   objc_copyWeak(&v6, &location);
-  [v3 fetchSubscriptionIdentifiersToSyncToPairedDeviceWithQueue:&_dispatch_main_q completionHandler:v5];
+  [subscriptionManager fetchSubscriptionIdentifiersToSyncToPairedDeviceWithQueue:&_dispatch_main_q completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (int64_t)cellularBehaviorForDownloadOfSize:(int64_t)a3 forForcedDownload:(BOOL)a4
+- (int64_t)cellularBehaviorForDownloadOfSize:(int64_t)size forForcedDownload:(BOOL)download
 {
-  v4 = a4;
+  downloadCopy = download;
   v7 = +[GEONetworkObserver sharedNetworkObserver];
-  v8 = [v7 isCellConnection];
+  isCellConnection = [v7 isCellConnection];
 
-  if (!v8)
+  if (!isCellConnection)
   {
     return 0;
   }
 
   if ((GEOConfigGetBOOL() & 1) == 0)
   {
-    return v4;
+    return downloadCopy;
   }
 
-  v9 = [(MapsOfflineUIHelper *)self hasSubscriptionsNeedingUpdate];
+  hasSubscriptionsNeedingUpdate = [(MapsOfflineUIHelper *)self hasSubscriptionsNeedingUpdate];
   result = 1;
-  if ((a3 & 0x8000000000000000) == 0 && (v9 & 1) == 0)
+  if ((size & 0x8000000000000000) == 0 && (hasSubscriptionsNeedingUpdate & 1) == 0)
   {
-    if (GEOConfigGetUInteger() <= a3)
+    if (GEOConfigGetUInteger() <= size)
     {
       return 1;
     }
@@ -334,16 +334,16 @@ LABEL_10:
   return result;
 }
 
-- (id)_subscriptionInfoForRegion:(id)a3 requireContainment:(BOOL)a4 fromSubscriptionInfos:(id)a5
+- (id)_subscriptionInfoForRegion:(id)region requireContainment:(BOOL)containment fromSubscriptionInfos:(id)infos
 {
-  v6 = a3;
-  v7 = a5;
+  regionCopy = region;
+  infosCopy = infos;
   GEOMapRectForMapRegion();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v7;
+  v8 = infosCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -361,8 +361,8 @@ LABEL_10:
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 subscription];
-        v16 = [v15 region];
+        subscription = [v14 subscription];
+        region = [subscription region];
         GEOMapRectForMapRegion();
 
         GEOMapRectIntersection();
@@ -395,14 +395,14 @@ LABEL_10:
   return v11;
 }
 
-- (id)subscriptionInfoForRegion:(id)a3 requireContainment:(BOOL)a4
+- (id)subscriptionInfoForRegion:(id)region requireContainment:(BOOL)containment
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(MapsOfflineUIHelper *)self isRegionDownloaded:v6 requireFullyDownloaded:0])
+  containmentCopy = containment;
+  regionCopy = region;
+  if ([(MapsOfflineUIHelper *)self isRegionDownloaded:regionCopy requireFullyDownloaded:0])
   {
-    v7 = [(MapsOfflineUIHelper *)self subscriptionInfos];
-    v8 = [(MapsOfflineUIHelper *)self _subscriptionInfoForRegion:v6 requireContainment:v4 fromSubscriptionInfos:v7];
+    subscriptionInfos = [(MapsOfflineUIHelper *)self subscriptionInfos];
+    v8 = [(MapsOfflineUIHelper *)self _subscriptionInfoForRegion:regionCopy requireContainment:containmentCopy fromSubscriptionInfos:subscriptionInfos];
   }
 
   else
@@ -413,17 +413,17 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_isRegionDownloaded:(id)a3 requireFullyDownloaded:(BOOL)a4 coverageRequirement:(double)a5 forSubscriptionInfos:(id)a6
+- (BOOL)_isRegionDownloaded:(id)downloaded requireFullyDownloaded:(BOOL)fullyDownloaded coverageRequirement:(double)requirement forSubscriptionInfos:(id)infos
 {
-  v7 = a4;
-  v8 = a6;
+  fullyDownloadedCopy = fullyDownloaded;
+  infosCopy = infos;
   GEOMapRectForMapRegion();
   v9 = +[NSMutableArray array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = v8;
+  v10 = infosCopy;
   v11 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v11)
   {
@@ -440,11 +440,11 @@ LABEL_10:
         }
 
         v15 = *(*(&v31 + 1) + 8 * v14);
-        if (!v7 || ([*(*(&v31 + 1) + 8 * v14) state], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "loadState"), v16, v17))
+        if (!fullyDownloadedCopy || ([*(*(&v31 + 1) + 8 * v14) state], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "loadState"), v16, v17))
         {
-          v18 = [v15 subscription];
-          v19 = [v18 region];
-          [v9 addObject:v19];
+          subscription = [v15 subscription];
+          region = [subscription region];
+          [v9 addObject:region];
         }
 
         v14 = v14 + 1;
@@ -483,35 +483,35 @@ LABEL_10:
   v29 = v28;
   free(v20);
 
-  return v29 >= a5;
+  return v29 >= requirement;
 }
 
-- (BOOL)isRegionDownloaded:(id)a3 requireFullyDownloaded:(BOOL)a4 coverageRequirement:(double)a5
+- (BOOL)isRegionDownloaded:(id)downloaded requireFullyDownloaded:(BOOL)fullyDownloaded coverageRequirement:(double)requirement
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(MapsOfflineUIHelper *)self subscriptionInfos];
-  LOBYTE(v6) = [(MapsOfflineUIHelper *)self _isRegionDownloaded:v8 requireFullyDownloaded:v6 coverageRequirement:v9 forSubscriptionInfos:a5];
+  fullyDownloadedCopy = fullyDownloaded;
+  downloadedCopy = downloaded;
+  subscriptionInfos = [(MapsOfflineUIHelper *)self subscriptionInfos];
+  LOBYTE(fullyDownloadedCopy) = [(MapsOfflineUIHelper *)self _isRegionDownloaded:downloadedCopy requireFullyDownloaded:fullyDownloadedCopy coverageRequirement:subscriptionInfos forSubscriptionInfos:requirement];
 
-  return v6;
+  return fullyDownloadedCopy;
 }
 
-- (BOOL)isRegionDownloaded:(id)a3 requireFullyDownloaded:(BOOL)a4
+- (BOOL)isRegionDownloaded:(id)downloaded requireFullyDownloaded:(BOOL)fullyDownloaded
 {
-  v4 = a4;
-  v6 = a3;
+  fullyDownloadedCopy = fullyDownloaded;
+  downloadedCopy = downloaded;
   GEOConfigGetDouble();
-  LOBYTE(v4) = [(MapsOfflineUIHelper *)self isRegionDownloaded:v6 requireFullyDownloaded:v4 coverageRequirement:?];
+  LOBYTE(fullyDownloadedCopy) = [(MapsOfflineUIHelper *)self isRegionDownloaded:downloadedCopy requireFullyDownloaded:fullyDownloadedCopy coverageRequirement:?];
 
-  return v4;
+  return fullyDownloadedCopy;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_101931340 != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_101931340 != context)
   {
     goto LABEL_7;
   }
@@ -527,18 +527,18 @@ LABEL_10:
     dispatch_once(&qword_10195E7F0, &stru_10163AFD0);
   }
 
-  if ([qword_10195E7F8 containsObject:v10])
+  if ([qword_10195E7F8 containsObject:pathCopy])
   {
-    v13 = [v12 copy];
+    v13 = [changeCopy copy];
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100B651CC;
     block[3] = &unk_10164DFE0;
     objc_copyWeak(&v21, &location);
-    v17 = v11;
-    v18 = v10;
-    v19 = v12;
+    v17 = objectCopy;
+    v18 = pathCopy;
+    v19 = changeCopy;
     v20 = v13;
     v14 = v13;
     dispatch_async(&_dispatch_main_q, block);
@@ -552,13 +552,13 @@ LABEL_10:
 LABEL_7:
     v15.receiver = self;
     v15.super_class = MapsOfflineUIHelper;
-    [(MapsOfflineUIHelper *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MapsOfflineUIHelper *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)removeKVOForSubscriptionInfo:(id)a3
+- (void)removeKVOForSubscriptionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -584,8 +584,8 @@ LABEL_7:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v4 state];
-        [v11 removeObserver:self forKeyPath:v10 context:off_101931340];
+        state = [infoCopy state];
+        [state removeObserver:self forKeyPath:v10 context:off_101931340];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -595,9 +595,9 @@ LABEL_7:
   }
 }
 
-- (void)addKVOForSubscriptionInfo:(id)a3
+- (void)addKVOForSubscriptionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -623,8 +623,8 @@ LABEL_7:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v4 state];
-        [v11 addObserver:self forKeyPath:v10 options:3 context:off_101931340];
+        state = [infoCopy state];
+        [state addObserver:self forKeyPath:v10 options:3 context:off_101931340];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -634,21 +634,21 @@ LABEL_7:
   }
 }
 
-- (void)setSubscriptionInfo:(id)a3 shouldSyncToPairedDevice:(BOOL)a4 completionHandler:(id)a5
+- (void)setSubscriptionInfo:(id)info shouldSyncToPairedDevice:(BOOL)device completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v12 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v10 = [v9 subscription];
+  deviceCopy = device;
+  handlerCopy = handler;
+  infoCopy = info;
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscription = [infoCopy subscription];
 
-  v11 = [v10 identifier];
-  [v12 setSubscriptionWithIdentifier:v11 shouldSyncToPairedDevice:v5 callbackQueue:&_dispatch_main_q completionHandler:v8];
+  identifier = [subscription identifier];
+  [subscriptionManager setSubscriptionWithIdentifier:identifier shouldSyncToPairedDevice:deviceCopy callbackQueue:&_dispatch_main_q completionHandler:handlerCopy];
 }
 
-- (void)setPairedDeviceSubscriptionStatesMonitorCount:(int64_t)a3
+- (void)setPairedDeviceSubscriptionStatesMonitorCount:(int64_t)count
 {
-  if (a3 < 0)
+  if (count < 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -660,14 +660,14 @@ LABEL_7:
   else
   {
     pairedDeviceSubscriptionStatesMonitorCount = self->_pairedDeviceSubscriptionStatesMonitorCount;
-    if (pairedDeviceSubscriptionStatesMonitorCount != a3)
+    if (pairedDeviceSubscriptionStatesMonitorCount != count)
     {
-      self->_pairedDeviceSubscriptionStatesMonitorCount = a3;
-      if ((a3 != 0) == pairedDeviceSubscriptionStatesMonitorCount < 1)
+      self->_pairedDeviceSubscriptionStatesMonitorCount = count;
+      if ((count != 0) == pairedDeviceSubscriptionStatesMonitorCount < 1)
       {
         v6 = sub_10003D9F4();
         v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-        if (a3)
+        if (count)
         {
           if (v7)
           {
@@ -729,11 +729,11 @@ LABEL_7:
   [(MapsOfflineUIHelper *)self setPairedDeviceSubscriptionStatesMonitorCount:v3];
 }
 
-- (void)setSubscriptionInfos:(id)a3
+- (void)setSubscriptionInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   subscriptionInfos = self->_subscriptionInfos;
-  if (subscriptionInfos != v4)
+  if (subscriptionInfos != infosCopy)
   {
     v24 = 0u;
     v25 = 0u;
@@ -766,7 +766,7 @@ LABEL_7:
       while (v8);
     }
 
-    v11 = [(NSArray *)v4 copy];
+    v11 = [(NSArray *)infosCopy copy];
     v12 = self->_subscriptionInfos;
     self->_subscriptionInfos = v11;
 
@@ -803,12 +803,12 @@ LABEL_7:
   }
 }
 
-- (void)_reloadSubscriptionInfosWithCompletion:(id)a3
+- (void)_reloadSubscriptionInfosWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = [NSString stringWithFormat:@"%@*", @"com.apple.Maps.offline."];
-  v6 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
   v14 = v5;
   v7 = [NSArray arrayWithObjects:&v14 count:1];
   v8 = &_dispatch_main_q;
@@ -817,55 +817,55 @@ LABEL_7:
   v10[2] = sub_100B66450;
   v10[3] = &unk_10165E308;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v11 = v9;
-  [v6 fetchSubscriptionsWithIdentifiers:v7 callbackQueue:&_dispatch_main_q completionHandler:v10];
+  [subscriptionManager fetchSubscriptionsWithIdentifiers:v7 callbackQueue:&_dispatch_main_q completionHandler:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)forceUpdateAllSubscriptionsWithMode:(unint64_t)a3
+- (void)forceUpdateAllSubscriptionsWithMode:(unint64_t)mode
 {
-  v4 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  [v4 forceUpdateForUserInitiatedSubscriptionsForDataType:1024 mode:a3];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  [subscriptionManager forceUpdateForUserInitiatedSubscriptionsForDataType:1024 mode:mode];
 }
 
-- (void)setUpdatingSubscriptions:(id)a3
+- (void)setUpdatingSubscriptions:(id)subscriptions
 {
-  v7 = a3;
-  if (self->_updatingSubscriptions != v7 && ([(NSMutableSet *)v7 isEqual:?]& 1) == 0)
+  subscriptionsCopy = subscriptions;
+  if (self->_updatingSubscriptions != subscriptionsCopy && ([(NSMutableSet *)subscriptionsCopy isEqual:?]& 1) == 0)
   {
-    v5 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
-    objc_storeStrong(&self->_updatingSubscriptions, a3);
-    v6 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
-    if (v5 != v6)
+    hasSubscriptionsBeingUpdated = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
+    objc_storeStrong(&self->_updatingSubscriptions, subscriptions);
+    hasSubscriptionsBeingUpdated2 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
+    if (hasSubscriptionsBeingUpdated != hasSubscriptionsBeingUpdated2)
     {
-      [(GEOObserverHashTable *)self->_observers subscriptionsBeingUpdatedDidChange:v6];
+      [(GEOObserverHashTable *)self->_observers subscriptionsBeingUpdatedDidChange:hasSubscriptionsBeingUpdated2];
     }
   }
 }
 
-- (void)_stoppedUpdatingSubscription:(id)a3
+- (void)_stoppedUpdatingSubscription:(id)subscription
 {
-  v6 = a3;
-  if (v6)
+  subscriptionCopy = subscription;
+  if (subscriptionCopy)
   {
-    v4 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
-    [(NSMutableSet *)self->_updatingSubscriptions removeObject:v6];
-    v5 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
-    if (v4 != v5)
+    hasSubscriptionsBeingUpdated = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
+    [(NSMutableSet *)self->_updatingSubscriptions removeObject:subscriptionCopy];
+    hasSubscriptionsBeingUpdated2 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
+    if (hasSubscriptionsBeingUpdated != hasSubscriptionsBeingUpdated2)
     {
-      [(GEOObserverHashTable *)self->_observers subscriptionsBeingUpdatedDidChange:v5];
+      [(GEOObserverHashTable *)self->_observers subscriptionsBeingUpdatedDidChange:hasSubscriptionsBeingUpdated2];
       [(MapsOfflineUIHelper *)self _updateTotalDataSize];
     }
   }
 }
 
-- (void)_startedUpdatingSubscription:(id)a3
+- (void)_startedUpdatingSubscription:(id)subscription
 {
-  v8 = a3;
-  if (v8)
+  subscriptionCopy = subscription;
+  if (subscriptionCopy)
   {
     if (!self->_updatingSubscriptions)
     {
@@ -874,163 +874,163 @@ LABEL_7:
       self->_updatingSubscriptions = v4;
     }
 
-    v6 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
-    [(NSMutableSet *)self->_updatingSubscriptions addObject:v8];
-    v7 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
-    if (v6 != v7)
+    hasSubscriptionsBeingUpdated = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
+    [(NSMutableSet *)self->_updatingSubscriptions addObject:subscriptionCopy];
+    hasSubscriptionsBeingUpdated2 = [(MapsOfflineUIHelper *)self hasSubscriptionsBeingUpdated];
+    if (hasSubscriptionsBeingUpdated != hasSubscriptionsBeingUpdated2)
     {
-      [(GEOObserverHashTable *)self->_observers subscriptionsBeingUpdatedDidChange:v7];
+      [(GEOObserverHashTable *)self->_observers subscriptionsBeingUpdatedDidChange:hasSubscriptionsBeingUpdated2];
     }
   }
 }
 
-- (void)setFullyLoadedSubscriptionsCount:(unint64_t)a3
+- (void)setFullyLoadedSubscriptionsCount:(unint64_t)count
 {
   fullyLoadedSubscriptionsCount = self->_fullyLoadedSubscriptionsCount;
-  if (fullyLoadedSubscriptionsCount != a3)
+  if (fullyLoadedSubscriptionsCount != count)
   {
-    self->_fullyLoadedSubscriptionsCount = a3;
-    if ((a3 != 0) == (fullyLoadedSubscriptionsCount == 0))
+    self->_fullyLoadedSubscriptionsCount = count;
+    if ((count != 0) == (fullyLoadedSubscriptionsCount == 0))
     {
-      [(GEOObserverHashTable *)self->_observers hasFullyLoadedSubscriptionsDidChange:a3 != 0];
+      [(GEOObserverHashTable *)self->_observers hasFullyLoadedSubscriptionsDidChange:count != 0];
     }
   }
 }
 
-- (void)setOutOfDateSubscriptionsCount:(unint64_t)a3
+- (void)setOutOfDateSubscriptionsCount:(unint64_t)count
 {
   outOfDateSubscriptionsCount = self->_outOfDateSubscriptionsCount;
-  if (outOfDateSubscriptionsCount != a3)
+  if (outOfDateSubscriptionsCount != count)
   {
-    self->_outOfDateSubscriptionsCount = a3;
-    if ((a3 != 0) == (outOfDateSubscriptionsCount == 0))
+    self->_outOfDateSubscriptionsCount = count;
+    if ((count != 0) == (outOfDateSubscriptionsCount == 0))
     {
-      [(GEOObserverHashTable *)self->_observers subscriptionsNeedUpdatingDidChange:a3 != 0];
+      [(GEOObserverHashTable *)self->_observers subscriptionsNeedUpdatingDidChange:count != 0];
     }
   }
 }
 
-- (void)getAvailableDiskSpaceForPairedDeviceWithCompletionHandler:(id)a3
+- (void)getAvailableDiskSpaceForPairedDeviceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MapsOfflineUIHelper *)self availableDiskSpaceForPairedDevice];
+  handlerCopy = handler;
+  availableDiskSpaceForPairedDevice = [(MapsOfflineUIHelper *)self availableDiskSpaceForPairedDevice];
 
-  if (v5)
+  if (availableDiskSpaceForPairedDevice)
   {
-    v6 = [(MapsOfflineUIHelper *)self availableDiskSpaceForPairedDevice];
-    v4[2](v4, [v6 longLongValue], 0);
+    availableDiskSpaceForPairedDevice2 = [(MapsOfflineUIHelper *)self availableDiskSpaceForPairedDevice];
+    handlerCopy[2](handlerCopy, [availableDiskSpaceForPairedDevice2 longLongValue], 0);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = [(MapsOfflineUIHelper *)self subscriptionManager];
+    subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
     v8 = &_dispatch_main_q;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100B67200;
     v9[3] = &unk_10163AEF8;
-    v10 = v4;
+    v10 = handlerCopy;
     objc_copyWeak(&v11, &location);
-    [v7 fetchAvailableDiskSpaceForPairedDeviceOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v9];
+    [subscriptionManager fetchAvailableDiskSpaceForPairedDeviceOfflineSubscriptionsWithQueue:&_dispatch_main_q completionHandler:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 }
 
-- (id)determineEstimatedSizeForSubscriptionWithRegion:(id)a3 completionHandler:(id)a4
+- (id)determineEstimatedSizeForSubscriptionWithRegion:(id)region completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v9 = [v8 determineEstimatedSizeForSubscriptionWithRegion:v7 dataTypes:1024 queue:&_dispatch_main_q completionHandler:v6];
+  handlerCopy = handler;
+  regionCopy = region;
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  v9 = [subscriptionManager determineEstimatedSizeForSubscriptionWithRegion:regionCopy dataTypes:1024 queue:&_dispatch_main_q completionHandler:handlerCopy];
 
   return v9;
 }
 
-- (void)updateName:(id)a3 forSubscriptionInfo:(id)a4 completion:(id)a5
+- (void)updateName:(id)name forSubscriptionInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v16 = [a4 subscription];
-  v10 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v11 = [v16 identifier];
-  v12 = [v16 dataTypes];
-  v13 = [v16 policy];
-  v14 = [v16 region];
-  v15 = [v16 expirationDate];
-  [v10 addSubscriptionWithIdentifier:v11 dataTypes:v12 policy:v13 region:v14 displayName:v9 expirationDate:v15 callbackQueue:&_dispatch_main_q completionHandler:v8];
+  completionCopy = completion;
+  nameCopy = name;
+  subscription = [info subscription];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  identifier = [subscription identifier];
+  dataTypes = [subscription dataTypes];
+  policy = [subscription policy];
+  region = [subscription region];
+  expirationDate = [subscription expirationDate];
+  [subscriptionManager addSubscriptionWithIdentifier:identifier dataTypes:dataTypes policy:policy region:region displayName:nameCopy expirationDate:expirationDate callbackQueue:&_dispatch_main_q completionHandler:completionCopy];
 }
 
-- (void)updateRegion:(id)a3 forSubscriptionInfo:(id)a4 completion:(id)a5
+- (void)updateRegion:(id)region forSubscriptionInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v16 = [a4 subscription];
-  v10 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v11 = [v16 identifier];
-  v12 = [v16 dataTypes];
-  v13 = [v16 policy];
-  v14 = [v16 displayName];
-  v15 = [v16 expirationDate];
-  [v10 addSubscriptionWithIdentifier:v11 dataTypes:v12 policy:v13 region:v9 displayName:v14 expirationDate:v15 callbackQueue:&_dispatch_main_q completionHandler:v8];
+  completionCopy = completion;
+  regionCopy = region;
+  subscription = [info subscription];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  identifier = [subscription identifier];
+  dataTypes = [subscription dataTypes];
+  policy = [subscription policy];
+  displayName = [subscription displayName];
+  expirationDate = [subscription expirationDate];
+  [subscriptionManager addSubscriptionWithIdentifier:identifier dataTypes:dataTypes policy:policy region:regionCopy displayName:displayName expirationDate:expirationDate callbackQueue:&_dispatch_main_q completionHandler:completionCopy];
 }
 
-- (void)restoreExpiredSubscription:(id)a3 completionHandler:(id)a4
+- (void)restoreExpiredSubscription:(id)subscription completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v9 = [v6 identifier];
-  v10 = [v6 dataTypes];
-  v11 = [v6 policy];
-  v12 = [v6 region];
-  v13 = [v6 displayName];
+  subscriptionCopy = subscription;
+  handlerCopy = handler;
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  identifier = [subscriptionCopy identifier];
+  dataTypes = [subscriptionCopy dataTypes];
+  policy = [subscriptionCopy policy];
+  region = [subscriptionCopy region];
+  displayName = [subscriptionCopy displayName];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100B676EC;
   v16[3] = &unk_10163AED0;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
-  [v8 addSubscriptionWithIdentifier:v9 dataTypes:v10 policy:v11 region:v12 displayName:v13 expirationDate:0 callbackQueue:&_dispatch_main_q completionHandler:v16];
+  v17 = subscriptionCopy;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = subscriptionCopy;
+  [subscriptionManager addSubscriptionWithIdentifier:identifier dataTypes:dataTypes policy:policy region:region displayName:displayName expirationDate:0 callbackQueue:&_dispatch_main_q completionHandler:v16];
 }
 
-- (void)resumeDownloadForSubscriptionWithIdentifier:(id)a3 mode:(unint64_t)a4
+- (void)resumeDownloadForSubscriptionWithIdentifier:(id)identifier mode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  [v7 startDownloadForSubscriptionIdentifier:v6 mode:a4];
+  identifierCopy = identifier;
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  [subscriptionManager startDownloadForSubscriptionIdentifier:identifierCopy mode:mode];
 }
 
-- (void)resumeDownloadForSubscriptionInfo:(id)a3 mode:(unint64_t)a4
+- (void)resumeDownloadForSubscriptionInfo:(id)info mode:(unint64_t)mode
 {
-  v6 = a3;
-  v9 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v7 = [v6 subscription];
+  infoCopy = info;
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscription = [infoCopy subscription];
 
-  v8 = [v7 identifier];
-  [v9 startDownloadForSubscriptionIdentifier:v8 mode:a4];
+  identifier = [subscription identifier];
+  [subscriptionManager startDownloadForSubscriptionIdentifier:identifier mode:mode];
 }
 
-- (void)pauseDownloadForSubscriptionInfo:(id)a3
+- (void)pauseDownloadForSubscriptionInfo:(id)info
 {
-  v4 = a3;
-  v7 = [(MapsOfflineUIHelper *)self subscriptionManager];
-  v5 = [v4 subscription];
+  infoCopy = info;
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscription = [infoCopy subscription];
 
-  v6 = [v5 identifier];
-  [v7 cancelDownloadForSubscriptionIdentifier:v6];
+  identifier = [subscription identifier];
+  [subscriptionManager cancelDownloadForSubscriptionIdentifier:identifier];
 }
 
-- (void)addSubscriptionWithRegion:(id)a3 name:(id)a4 completion:(id)a5
+- (void)addSubscriptionWithRegion:(id)region name:(id)name completion:(id)completion
 {
-  v31 = a3;
-  v8 = a4;
-  v30 = a5;
-  v32 = v8;
+  regionCopy = region;
+  nameCopy = name;
+  completionCopy = completion;
+  v32 = nameCopy;
   v9 = 1;
 LABEL_2:
   if (v9 <= 1)
@@ -1049,8 +1049,8 @@ LABEL_2:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = [(MapsOfflineUIHelper *)self subscriptions];
-  v14 = [v13 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  subscriptions = [(MapsOfflineUIHelper *)self subscriptions];
+  v14 = [subscriptions countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1061,16 +1061,16 @@ LABEL_2:
       {
         if (*v37 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subscriptions);
         }
 
         v18 = *(*(&v36 + 1) + 8 * i);
-        v19 = [v18 displayName];
-        if (v19)
+        displayName = [v18 displayName];
+        if (displayName)
         {
-          v20 = v19;
-          v21 = [v18 displayName];
-          v22 = [v21 isEqualToString:v12];
+          v20 = displayName;
+          displayName2 = [v18 displayName];
+          v22 = [displayName2 isEqualToString:v12];
 
           if (v22)
           {
@@ -1081,7 +1081,7 @@ LABEL_2:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      v15 = [subscriptions countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v15)
       {
         continue;
@@ -1105,35 +1105,35 @@ LABEL_2:
   }
 
   v24 = +[NSUUID UUID];
-  v25 = [v24 UUIDString];
-  v26 = [NSString stringWithFormat:@"%@%@", @"com.apple.Maps.offline.", v25];
+  uUIDString = [v24 UUIDString];
+  v26 = [NSString stringWithFormat:@"%@%@", @"com.apple.Maps.offline.", uUIDString];
 
-  v27 = [(MapsOfflineUIHelper *)self subscriptionManager];
+  subscriptionManager = [(MapsOfflineUIHelper *)self subscriptionManager];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100B67D0C;
   v33[3] = &unk_10163AED0;
   v34 = v26;
-  v35 = v30;
+  v35 = completionCopy;
   v28 = v26;
-  v29 = v30;
-  [v27 addSubscriptionWithIdentifier:v28 dataTypes:1024 policy:1 region:v31 displayName:v12 expirationDate:0 callbackQueue:&_dispatch_main_q completionHandler:v33];
+  v29 = completionCopy;
+  [subscriptionManager addSubscriptionWithIdentifier:v28 dataTypes:1024 policy:1 region:regionCopy displayName:v12 expirationDate:0 callbackQueue:&_dispatch_main_q completionHandler:v33];
 }
 
 - (void)_updateUsingOfflineMaps
 {
   v3 = +[GEOOfflineService shared];
-  v4 = [v3 isUsingOffline];
+  isUsingOffline = [v3 isUsingOffline];
 
-  [(MapsOfflineUIHelper *)self setUsingOfflineMaps:v4];
+  [(MapsOfflineUIHelper *)self setUsingOfflineMaps:isUsingOffline];
 }
 
-- (void)setUsingOfflineMaps:(BOOL)a3
+- (void)setUsingOfflineMaps:(BOOL)maps
 {
   usingOfflineMaps = self->_usingOfflineMaps;
-  if (usingOfflineMaps != a3)
+  if (usingOfflineMaps != maps)
   {
-    self->_usingOfflineMaps = a3;
+    self->_usingOfflineMaps = maps;
     v5 = sub_10003D9F4();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -1186,7 +1186,7 @@ LABEL_2:
   [(MapsOfflineUIHelper *)&v3 dealloc];
 }
 
-+ (int64_t)idealDisplayAspectRatio:(id)a3
++ (int64_t)idealDisplayAspectRatio:(id)ratio
 {
   GEOMapRectForMapRegion();
   v5 = v3 / v4;
@@ -1200,9 +1200,9 @@ LABEL_2:
   return v5 < v8;
 }
 
-- (void)_captureDisplayDownloadMapsAlertWithType:(int64_t)a3
+- (void)_captureDisplayDownloadMapsAlertWithType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"maps is offline";
   }
@@ -1215,9 +1215,9 @@ LABEL_2:
   [GEOAPPortal captureUserAction:369 target:0 value:v3];
 }
 
-- (id)alertControllerForDisableAutomaticUpdatesWithActionHandler:(id)a3
+- (id)alertControllerForDisableAutomaticUpdatesWithActionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSBundle mainBundle];
   v17 = [v4 localizedStringForKey:@"DISABLE_AUTOMATIC_UPDATES_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
 
@@ -1231,7 +1231,7 @@ LABEL_2:
   v20[1] = 3221225472;
   v20[2] = sub_100E63CFC;
   v20[3] = &unk_101660728;
-  v10 = v3;
+  v10 = handlerCopy;
   v21 = v10;
   v11 = [UIAlertAction actionWithTitle:v9 style:0 handler:v20];
   [v7 addAction:v11];
@@ -1250,9 +1250,9 @@ LABEL_2:
   return v7;
 }
 
-- (id)alertControllerForInsufficientDiskSpaceOnPairedDeviceForDownloadSize:(int64_t)a3
+- (id)alertControllerForInsufficientDiskSpaceOnPairedDeviceForDownloadSize:(int64_t)size
 {
-  v3 = [NSByteCountFormatter stringFromByteCount:(llround(a3 * 0.000001) * 1000000.0) countStyle:2];
+  v3 = [NSByteCountFormatter stringFromByteCount:(llround(size * 0.000001) * 1000000.0) countStyle:2];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"OFFLINE_MANAGEMENT_PAIRED_DEVICE_DISK_SPACE_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
   v6 = +[NSBundle mainBundle];
@@ -1273,15 +1273,15 @@ LABEL_2:
   return v9;
 }
 
-- (id)alertControllerForDisableSyncToWatchWithActionHandler:(id)a3
+- (id)alertControllerForDisableSyncToWatchWithActionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(MapsOfflineUIHelper *)self subscriptionInfos];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  subscriptionInfos = [(MapsOfflineUIHelper *)self subscriptionInfos];
+  v6 = [subscriptionInfos countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v6)
   {
     goto LABEL_12;
@@ -1295,18 +1295,18 @@ LABEL_2:
     {
       if (*v33 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(subscriptionInfos);
       }
 
-      v10 = [*(*(&v32 + 1) + 8 * i) pairedDeviceState];
+      pairedDeviceState = [*(*(&v32 + 1) + 8 * i) pairedDeviceState];
 
-      if (v10)
+      if (pairedDeviceState)
       {
         ++v7;
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v6 = [subscriptionInfos countByEnumeratingWithState:&v32 objects:v36 count:16];
   }
 
   while (v6);
@@ -1314,19 +1314,19 @@ LABEL_2:
   if (v7)
   {
     v11 = +[NSBundle mainBundle];
-    v5 = [v11 localizedStringForKey:@"DISABLE_SYNC_TO_WATCH_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
+    subscriptionInfos = [v11 localizedStringForKey:@"DISABLE_SYNC_TO_WATCH_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
 
     v12 = +[NSBundle mainBundle];
     v25 = [v12 localizedStringForKey:@"DISABLE_SYNC_TO_WATCH_ALERT_MESSAGE" value:@"localized string not found" table:@"Offline"];
 
-    v6 = [UIAlertController alertControllerWithTitle:v5 message:v25 preferredStyle:0];
+    v6 = [UIAlertController alertControllerWithTitle:subscriptionInfos message:v25 preferredStyle:0];
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"DISABLE_SYNC_TO_WATCH_ALERT_ACTION_KEEP" value:@"localized string not found" table:@"Offline"];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100E64410;
     v30[3] = &unk_101660728;
-    v15 = v4;
+    v15 = handlerCopy;
     v31 = v15;
     v16 = [UIAlertAction actionWithTitle:v14 style:0 handler:v30];
     [v6 addAction:v16];
@@ -1375,25 +1375,25 @@ LABEL_14:
     else
     {
       v8 = +[GEONetworkObserver sharedNetworkObserver];
-      v9 = [v8 isNetworkReachable];
+      isNetworkReachable = [v8 isNetworkReachable];
 
-      if (v9)
+      if (isNetworkReachable)
       {
         v4 = 0;
         v5 = 0;
 LABEL_9:
         if ([v4 length] && objc_msgSend(v5, "length"))
         {
-          v3 = [UIAlertController alertControllerWithTitle:v4 message:v5 preferredStyle:1];
+          _osUpdateRequiredAlert = [UIAlertController alertControllerWithTitle:v4 message:v5 preferredStyle:1];
           v12 = +[NSBundle mainBundle];
           v13 = [v12 localizedStringForKey:@"UPDATE_ALL_MAP_OFFLINE_ALERT_ACTION" value:@"localized string not found" table:@"Offline"];
           v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
-          [v3 addAction:v14];
+          [_osUpdateRequiredAlert addAction:v14];
         }
 
         else
         {
-          v3 = 0;
+          _osUpdateRequiredAlert = 0;
         }
 
         goto LABEL_13;
@@ -1412,24 +1412,24 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v3 = [(MapsOfflineUIHelper *)self _osUpdateRequiredAlert];
+  _osUpdateRequiredAlert = [(MapsOfflineUIHelper *)self _osUpdateRequiredAlert];
   v4 = 0;
   v5 = 0;
 LABEL_13:
 
-  return v3;
+  return _osUpdateRequiredAlert;
 }
 
-- (id)alertControllerForInsufficientDiskSpaceForDownloadSize:(int64_t)a3
+- (id)alertControllerForInsufficientDiskSpaceForDownloadSize:(int64_t)size
 {
   v4 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v5 = [v4 homeDirectory];
-  v6 = [NSURL fileURLWithPath:v5];
+  homeDirectory = [v4 homeDirectory];
+  v6 = [NSURL fileURLWithPath:homeDirectory];
 
   v35 = 0;
-  LOBYTE(v5) = [v6 getResourceValue:&v35 forKey:NSURLVolumeURLKey error:0];
+  LOBYTE(homeDirectory) = [v6 getResourceValue:&v35 forKey:NSURLVolumeURLKey error:0];
   v7 = v35;
-  if (v5)
+  if (homeDirectory)
   {
     v36 = NSURLVolumeAvailableCapacityForImportantUsageKey;
     v8 = [NSArray arrayWithObjects:&v36 count:1];
@@ -1443,38 +1443,38 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    v12 = [v10 longLongValue];
-    v13 = a3;
+    longLongValue = [v10 longLongValue];
+    sizeCopy = size;
     GEOConfigGetDouble();
-    if (a3 + 1000000 * GEOConfigGetUInteger() >= (v13 + v14 * v13))
+    if (size + 1000000 * GEOConfigGetUInteger() >= (sizeCopy + v14 * sizeCopy))
     {
-      v16 = a3 + 1000000 * GEOConfigGetUInteger();
+      v16 = size + 1000000 * GEOConfigGetUInteger();
     }
 
     else
     {
       GEOConfigGetDouble();
-      v16 = (v13 + v15 * v13);
+      v16 = (sizeCopy + v15 * sizeCopy);
     }
 
-    if (v16 > a3)
+    if (v16 > size)
     {
       GEOConfigGetDouble();
-      if (a3 + 1000000 * GEOConfigGetUInteger() >= (v13 + v17 * v13))
+      if (size + 1000000 * GEOConfigGetUInteger() >= (sizeCopy + v17 * sizeCopy))
       {
-        a3 += 1000000 * GEOConfigGetUInteger();
+        size += 1000000 * GEOConfigGetUInteger();
       }
 
       else
       {
         GEOConfigGetDouble();
-        a3 = (v13 + v18 * v13);
+        size = (sizeCopy + v18 * sizeCopy);
       }
     }
 
-    if (a3 > v12)
+    if (size > longLongValue)
     {
-      v32 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo10MB:a3 - v12];
+      v32 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo10MB:size - longLongValue];
       v19 = +[NSBundle mainBundle];
       v20 = [v19 localizedStringForKey:@"OFFLINE_MAPS_INSUFFICIENT_DISK_SPACE_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
       v31 = [NSString localizedStringWithFormat:v20, v32];
@@ -1517,10 +1517,10 @@ LABEL_12:
   return v23;
 }
 
-- (id)alertControllerForCellularUpdateConfirmationForSize:(int64_t)a3 actionHandler:(id)a4
+- (id)alertControllerForCellularUpdateConfirmationForSize:(int64_t)size actionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:a3];
+  handlerCopy = handler;
+  v6 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:size];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"UPDATE_OFFLINE_MAPS_CELLULAR_CONFIRMATION_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
 
@@ -1551,7 +1551,7 @@ LABEL_12:
   v27[1] = 3221225472;
   v27[2] = sub_100E64E60;
   v27[3] = &unk_101660728;
-  v19 = v5;
+  v19 = handlerCopy;
   v28 = v19;
   v20 = [UIAlertAction actionWithTitle:v15 style:1 handler:v27];
   [v18 addAction:v20];
@@ -1570,21 +1570,21 @@ LABEL_12:
   return v18;
 }
 
-- (id)alertControllerForCellularDownloadConfirmationForRegionName:(id)a3 size:(int64_t)a4 actionHandler:(id)a5
+- (id)alertControllerForCellularDownloadConfirmationForRegionName:(id)name size:(int64_t)size actionHandler:(id)handler
 {
-  v8 = a3;
-  v47 = a5;
-  v48 = self;
-  v50 = [(MapsOfflineUIHelper *)self hasSubscriptionsNeedingUpdate];
-  v9 = a4;
-  v49 = v8;
-  if (a4 < 0)
+  nameCopy = name;
+  handlerCopy = handler;
+  selfCopy = self;
+  hasSubscriptionsNeedingUpdate = [(MapsOfflineUIHelper *)self hasSubscriptionsNeedingUpdate];
+  sizeCopy5 = size;
+  v49 = nameCopy;
+  if (size < 0)
   {
     goto LABEL_19;
   }
 
-  v9 = a4;
-  if (!v50)
+  sizeCopy5 = size;
+  if (!hasSubscriptionsNeedingUpdate)
   {
     goto LABEL_19;
   }
@@ -1593,10 +1593,10 @@ LABEL_12:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v10 = [(MapsOfflineUIHelper *)self subscriptionInfos];
-  v11 = [v10 countByEnumeratingWithState:&v55 objects:v59 count:16];
-  v46 = a4;
-  v9 = a4;
+  subscriptionInfos = [(MapsOfflineUIHelper *)self subscriptionInfos];
+  v11 = [subscriptionInfos countByEnumeratingWithState:&v55 objects:v59 count:16];
+  sizeCopy3 = size;
+  sizeCopy5 = size;
   if (!v11)
   {
     goto LABEL_18;
@@ -1604,7 +1604,7 @@ LABEL_12:
 
   v12 = v11;
   v13 = *v56;
-  v9 = a4;
+  sizeCopy5 = size;
   do
   {
     v14 = 0;
@@ -1612,32 +1612,32 @@ LABEL_12:
     {
       if (*v56 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(subscriptionInfos);
       }
 
       v15 = *(*(&v55 + 1) + 8 * v14);
-      v16 = [v15 state];
-      if ([v16 loadState] == 1)
+      state = [v15 state];
+      if ([state loadState] == 1)
       {
         goto LABEL_11;
       }
 
-      v17 = [v15 state];
-      if ([v17 loadState] == 2)
+      state2 = [v15 state];
+      if ([state2 loadState] == 2)
       {
 
 LABEL_11:
 LABEL_12:
-        v18 = [v15 state];
-        v9 += [v18 downloadedDataSize];
+        state3 = [v15 state];
+        sizeCopy5 += [state3 downloadedDataSize];
 
         goto LABEL_13;
       }
 
-      v19 = [v15 state];
-      v20 = [v19 loadState];
+      state4 = [v15 state];
+      loadState = [state4 loadState];
 
-      if (v20 == 3)
+      if (loadState == 3)
       {
         goto LABEL_12;
       }
@@ -1647,34 +1647,34 @@ LABEL_13:
     }
 
     while (v12 != v14);
-    v21 = [v10 countByEnumeratingWithState:&v55 objects:v59 count:16];
+    v21 = [subscriptionInfos countByEnumeratingWithState:&v55 objects:v59 count:16];
     v12 = v21;
   }
 
   while (v21);
 LABEL_18:
 
-  v8 = v49;
-  a4 = v46;
+  nameCopy = v49;
+  size = sizeCopy3;
 LABEL_19:
-  if (a4 < 1)
+  if (size < 1)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:v9];
+    v22 = [MKRoundingByteCountFormatter stringFromByteCountWithRoundingTo1MB:sizeCopy5];
   }
 
   v23 = +[NSBundle mainBundle];
   v24 = v23;
-  if (v50)
+  if (hasSubscriptionsNeedingUpdate)
   {
     v25 = [v23 localizedStringForKey:@"DOWNLOAD_AND_UPDATE_MAP_CELLULAR_CONFIRMATION_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
-    v26 = [NSString localizedStringWithFormat:v25, v8];
+    nameCopy = [NSString localizedStringWithFormat:v25, nameCopy];
 
-    if (a4 >= 1)
+    if (size >= 1)
     {
       v27 = +[NSBundle mainBundle];
       v28 = v27;
@@ -1692,9 +1692,9 @@ LABEL_30:
   else
   {
     v30 = [v23 localizedStringForKey:@"DOWNLOAD_MAP_CELLULAR_CONFIRMATION_ALERT_TITLE" value:@"localized string not found" table:@"Offline"];
-    v26 = [NSString localizedStringWithFormat:v30, v8];
+    nameCopy = [NSString localizedStringWithFormat:v30, nameCopy];
 
-    if (a4 < 1)
+    if (size < 1)
     {
       v33 = +[NSBundle mainBundle];
       v28 = v33;
@@ -1726,12 +1726,12 @@ LABEL_27:
   v38 = +[NSBundle mainBundle];
   v39 = [v38 localizedStringForKey:@"DOWNLOAD_MAP_CELLULAR_CONFIRMATION_ALERT_ACTION_DOWNLOAD" value:@"localized string not found" table:@"Offline"];
 
-  v40 = [UIAlertController alertControllerWithTitle:v26 message:v32 preferredStyle:1];
+  v40 = [UIAlertController alertControllerWithTitle:nameCopy message:v32 preferredStyle:1];
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_100E6542C;
   v53[3] = &unk_101660728;
-  v41 = v47;
+  v41 = handlerCopy;
   v54 = v41;
   v42 = [UIAlertAction actionWithTitle:v37 style:1 handler:v53];
   [v40 addAction:v42];
@@ -1745,7 +1745,7 @@ LABEL_27:
   v44 = [UIAlertAction actionWithTitle:v39 style:0 handler:v51];
   [v40 addAction:v44];
   [v40 setPreferredAction:v44];
-  [(MapsOfflineUIHelper *)v48 _captureDisplayDownloadMapsAlertWithType:2];
+  [(MapsOfflineUIHelper *)selfCopy _captureDisplayDownloadMapsAlertWithType:2];
 
   return v40;
 }
@@ -1753,9 +1753,9 @@ LABEL_27:
 - (id)alertControllerForAttemptedReportAnIssue
 {
   v3 = +[GEONetworkObserver sharedNetworkObserver];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if (v4)
+  if (isNetworkReachable)
   {
     v5 = 0;
     v6 = 0;
@@ -1802,9 +1802,9 @@ LABEL_27:
 - (id)alertControllerForAttemptedAddPhotos
 {
   v3 = +[GEONetworkObserver sharedNetworkObserver];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if (v4)
+  if (isNetworkReachable)
   {
     v5 = 0;
     v6 = 0;
@@ -1851,9 +1851,9 @@ LABEL_27:
 - (id)alertControllerForAttemptedRate
 {
   v3 = +[GEONetworkObserver sharedNetworkObserver];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if (v4)
+  if (isNetworkReachable)
   {
     v5 = 0;
     v6 = 0;
@@ -1902,9 +1902,9 @@ LABEL_27:
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     v3 = +[GEONetworkObserver sharedNetworkObserver];
-    v4 = [v3 isNetworkReachable];
+    isNetworkReachable = [v3 isNetworkReachable];
 
-    if (v4)
+    if (isNetworkReachable)
     {
       v5 = 0;
       v6 = 0;
@@ -1959,9 +1959,9 @@ LABEL_27:
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     v3 = +[GEONetworkObserver sharedNetworkObserver];
-    v4 = [v3 isNetworkReachable];
+    isNetworkReachable = [v3 isNetworkReachable];
 
-    if (v4)
+    if (isNetworkReachable)
     {
       v5 = 0;
       v6 = 0;
@@ -2014,9 +2014,9 @@ LABEL_27:
 - (id)alertControllerForAttemptedAddCollection
 {
   v3 = +[GEONetworkObserver sharedNetworkObserver];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if (v4)
+  if (isNetworkReachable)
   {
     v5 = 0;
     v6 = 0;
@@ -2063,9 +2063,9 @@ LABEL_27:
 - (id)alertControllerForAttemptedAddShortcut
 {
   v3 = +[GEONetworkObserver sharedNetworkObserver];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if (v4)
+  if (isNetworkReachable)
   {
     v5 = 0;
     v6 = 0;
@@ -2136,9 +2136,9 @@ LABEL_27:
 - (id)alertControllerForAttemptedShowMyShortcut
 {
   v3 = +[GEONetworkObserver sharedNetworkObserver];
-  v4 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
 
-  if (v4)
+  if (isNetworkReachable)
   {
     v5 = 0;
     v6 = 0;
@@ -2210,7 +2210,7 @@ LABEL_27:
 {
   if (GEOConfigGetBOOL())
   {
-    v3 = [(MapsOfflineUIHelper *)self _osUpdateRequiredAlert];
+    _osUpdateRequiredAlert = [(MapsOfflineUIHelper *)self _osUpdateRequiredAlert];
     goto LABEL_9;
   }
 
@@ -2227,11 +2227,11 @@ LABEL_27:
   else
   {
     v9 = +[GEONetworkObserver sharedNetworkObserver];
-    v10 = [v9 isNetworkReachable];
+    isNetworkReachable = [v9 isNetworkReachable];
 
-    if (v10)
+    if (isNetworkReachable)
     {
-      v3 = 0;
+      _osUpdateRequiredAlert = 0;
       goto LABEL_9;
     }
 
@@ -2245,28 +2245,28 @@ LABEL_27:
 
   v12 = [v6 localizedStringForKey:v8 value:@"localized string not found" table:@"Offline"];
 
-  v3 = [UIAlertController alertControllerWithTitle:v5 message:v12 preferredStyle:1];
+  _osUpdateRequiredAlert = [UIAlertController alertControllerWithTitle:v5 message:v12 preferredStyle:1];
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"DOWNLOAD_MAP_OFFLINE_ALERT_ACTION" value:@"localized string not found" table:@"Offline"];
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:0];
-  [v3 addAction:v15];
+  [_osUpdateRequiredAlert addAction:v15];
 
   [(MapsOfflineUIHelper *)self _captureDisplayDownloadMapsAlertWithType:1];
 LABEL_9:
 
-  return v3;
+  return _osUpdateRequiredAlert;
 }
 
 - (id)alertControllerForAttemptedDataManagementDisplay
 {
   if ((GEOSupportsOfflineMaps() & 1) != 0 || [(MapsOfflineUIHelper *)self hasExpiredSubscriptions])
   {
-    v3 = 0;
+    _osUpdateRequiredAlert = 0;
   }
 
   else if (GEOConfigGetBOOL())
   {
-    v3 = [(MapsOfflineUIHelper *)self _osUpdateRequiredAlert];
+    _osUpdateRequiredAlert = [(MapsOfflineUIHelper *)self _osUpdateRequiredAlert];
   }
 
   else
@@ -2277,14 +2277,14 @@ LABEL_9:
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"OFFLINE_MAPS_NOT_AVAILABLE_ALERT_MESSAGE" value:@"localized string not found" table:@"Offline"];
 
-    v3 = [UIAlertController alertControllerWithTitle:v6 message:v8 preferredStyle:1];
+    _osUpdateRequiredAlert = [UIAlertController alertControllerWithTitle:v6 message:v8 preferredStyle:1];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"OFFLINE_MAPS_NOT_AVAILABLE_ALERT_ACTION" value:@"localized string not found" table:@"Offline"];
     v11 = [UIAlertAction actionWithTitle:v10 style:1 handler:0];
-    [v3 addAction:v11];
+    [_osUpdateRequiredAlert addAction:v11];
   }
 
-  return v3;
+  return _osUpdateRequiredAlert;
 }
 
 - (id)_osUpdateRequiredAlert

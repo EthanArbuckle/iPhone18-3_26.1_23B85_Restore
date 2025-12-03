@@ -3,9 +3,9 @@
 - (NSString)bundleID;
 - (NSURL)bundleURL;
 - (SKDialogProtocol)dialogObserver;
-- (_TtC22StoreKitUISceneService13DialogContext)initWithBundleID:(id)a3 bundleURL:(id)a4 processInfo:(id)a5 dialogObserver:(id)a6;
-- (void)handleEngagementRequest:(AMSEngagementRequest *)a3 bag:(AMSBagProtocol *)a4 hostSceneID:(NSString *)a5 completionHandler:(id)a6;
-- (void)setDialogObserver:(id)a3;
+- (_TtC22StoreKitUISceneService13DialogContext)initWithBundleID:(id)d bundleURL:(id)l processInfo:(id)info dialogObserver:(id)observer;
+- (void)handleEngagementRequest:(AMSEngagementRequest *)request bag:(AMSBagProtocol *)bag hostSceneID:(NSString *)d completionHandler:(id)handler;
+- (void)setDialogObserver:(id)observer;
 @end
 
 @implementation DialogContext
@@ -40,11 +40,11 @@
   return v2;
 }
 
-- (void)setDialogObserver:(id)a3
+- (void)setDialogObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100019640(a3);
+  selfCopy = self;
+  sub_100019640(observer);
 }
 
 - (AMSProcessInfo)processInfo
@@ -54,7 +54,7 @@
   return v2;
 }
 
-- (_TtC22StoreKitUISceneService13DialogContext)initWithBundleID:(id)a3 bundleURL:(id)a4 processInfo:(id)a5 dialogObserver:(id)a6
+- (_TtC22StoreKitUISceneService13DialogContext)initWithBundleID:(id)d bundleURL:(id)l processInfo:(id)info dialogObserver:(id)observer
 {
   v8 = type metadata accessor for URL();
   v9 = *(*(v8 - 8) + 64);
@@ -63,24 +63,24 @@
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a5;
+  infoCopy = info;
   swift_unknownObjectRetain();
-  return sub_10001969C(v12, v14, v11, v15, a6);
+  return sub_10001969C(v12, v14, v11, infoCopy, observer);
 }
 
-- (void)handleEngagementRequest:(AMSEngagementRequest *)a3 bag:(AMSBagProtocol *)a4 hostSceneID:(NSString *)a5 completionHandler:(id)a6
+- (void)handleEngagementRequest:(AMSEngagementRequest *)request bag:(AMSBagProtocol *)bag hostSceneID:(NSString *)d completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = request;
+  v11[3] = bag;
+  v11[4] = d;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  dCopy = d;
+  selfCopy = self;
 
   sub_10003A608(&unk_100094CD0, v11);
 }

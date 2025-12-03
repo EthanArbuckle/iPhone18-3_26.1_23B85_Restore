@@ -1,27 +1,27 @@
 @interface HMAccessoryInfoProtoSoftwareVersionInfoEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinorVersion:(BOOL)a3;
-- (void)setHasUpdateVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinorVersion:(BOOL)version;
+- (void)setHasUpdateVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryInfoProtoSoftwareVersionInfoEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_majorVersion = *(v4 + 1);
+    self->_majorVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -34,26 +34,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_minorVersion = *(v4 + 2);
+  self->_minorVersion = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
 LABEL_4:
-    self->_updateVersion = *(v4 + 3);
+    self->_updateVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HMAccessoryInfoProtoSoftwareVersionInfoEvent *)self setBuildVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -97,24 +97,24 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_buildVersion hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_majorVersion != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_majorVersion != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_19:
     v7 = 0;
@@ -123,32 +123,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_minorVersion != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_minorVersion != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_updateVersion != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_updateVersion != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   buildVersion = self->_buildVersion;
-  if (buildVersion | *(v4 + 4))
+  if (buildVersion | *(equalCopy + 4))
   {
     v7 = [(NSString *)buildVersion isEqual:?];
   }
@@ -163,9 +163,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -203,21 +203,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_majorVersion;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_majorVersion;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -236,34 +236,34 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_minorVersion;
-  *(v4 + 40) |= 2u;
+  toCopy[2] = self->_minorVersion;
+  *(toCopy + 40) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[3] = self->_updateVersion;
-    *(v4 + 40) |= 4u;
+    toCopy[3] = self->_updateVersion;
+    *(toCopy + 40) |= 4u;
   }
 
 LABEL_5:
   if (self->_buildVersion)
   {
-    v6 = v4;
-    [v4 setBuildVersion:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setBuildVersion:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     majorVersion = self->_majorVersion;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -284,31 +284,31 @@ LABEL_3:
 
   minorVersion = self->_minorVersion;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     updateVersion = self->_updateVersion;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_buildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_majorVersion];
-    [v3 setObject:v8 forKey:@"majorVersion"];
+    [dictionary setObject:v8 forKey:@"majorVersion"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -329,23 +329,23 @@ LABEL_3:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minorVersion];
-  [v3 setObject:v9 forKey:@"minorVersion"];
+  [dictionary setObject:v9 forKey:@"minorVersion"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_updateVersion];
-    [v3 setObject:v5 forKey:@"updateVersion"];
+    [dictionary setObject:v5 forKey:@"updateVersion"];
   }
 
 LABEL_5:
   buildVersion = self->_buildVersion;
   if (buildVersion)
   {
-    [v3 setObject:buildVersion forKey:@"buildVersion"];
+    [dictionary setObject:buildVersion forKey:@"buildVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -354,15 +354,15 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = HMAccessoryInfoProtoSoftwareVersionInfoEvent;
   v4 = [(HMAccessoryInfoProtoSoftwareVersionInfoEvent *)&v8 description];
-  v5 = [(HMAccessoryInfoProtoSoftwareVersionInfoEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryInfoProtoSoftwareVersionInfoEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasUpdateVersion:(BOOL)a3
+- (void)setHasUpdateVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -375,9 +375,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinorVersion:(BOOL)a3
+- (void)setHasMinorVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

@@ -1,7 +1,7 @@
 @interface TSCHChartRadarAreaLayoutItem
 - (CGRect)titleFrame;
-- (_TtC8TSChartsP33_A24BDC8710AF40968A8815BF7D0038C228TSCHChartRadarAreaLayoutItem)initWithParent:(id)a3;
-- (id)renderersWithRep:(id)a3;
+- (_TtC8TSChartsP33_A24BDC8710AF40968A8815BF7D0038C228TSCHChartRadarAreaLayoutItem)initWithParent:(id)parent;
+- (id)renderersWithRep:(id)rep;
 - (void)buildSubTree;
 - (void)layoutInward;
 - (void)layoutOutward;
@@ -11,12 +11,12 @@
 
 - (CGRect)titleFrame
 {
-  v2 = self;
-  v3 = [(TSCH2DChartAbstractAreaLayoutItem *)v2 titleElement];
-  if (v3)
+  selfCopy = self;
+  titleElement = [(TSCH2DChartAbstractAreaLayoutItem *)selfCopy titleElement];
+  if (titleElement)
   {
-    v4 = v3;
-    [(TSCHChartLayoutItem *)v3 rootedLayoutRect];
+    v4 = titleElement;
+    [(TSCHChartLayoutItem *)titleElement rootedLayoutRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -44,27 +44,27 @@
 
 - (void)buildSubTree
 {
-  v2 = self;
+  selfCopy = self;
   sub_2764A164C();
 }
 
 - (void)layoutInward
 {
-  v2 = self;
+  selfCopy = self;
   sub_2764A2B34();
 }
 
 - (void)layoutOutward
 {
-  v2 = self;
+  selfCopy = self;
   sub_2764A4380();
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2764A4E34(a3);
+  selfCopy = self;
+  sub_2764A4E34(rep);
   swift_unknownObjectRelease();
 
   sub_2764A12F8(0, &qword_280A46380);
@@ -73,10 +73,10 @@
   return v6;
 }
 
-- (_TtC8TSChartsP33_A24BDC8710AF40968A8815BF7D0038C228TSCHChartRadarAreaLayoutItem)initWithParent:(id)a3
+- (_TtC8TSChartsP33_A24BDC8710AF40968A8815BF7D0038C228TSCHChartRadarAreaLayoutItem)initWithParent:(id)parent
 {
-  v4 = a3;
-  v5 = sub_2764A6204(a3);
+  parentCopy = parent;
+  v5 = sub_2764A6204(parent);
 
   return v5;
 }

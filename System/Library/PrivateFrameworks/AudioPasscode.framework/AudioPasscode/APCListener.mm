@@ -1,10 +1,10 @@
 @interface APCListener
 + (id)capabilityData;
 - (APCListener)init;
-- (APCListener)initWithCodecConfiguration:(id)a3;
-- (APCListener)initWithConfigurationData:(id)a3;
-- (BOOL)getResultData:(id *)a3;
-- (void)startListeningWithError:(id *)a3;
+- (APCListener)initWithCodecConfiguration:(id)configuration;
+- (APCListener)initWithConfigurationData:(id)data;
+- (BOOL)getResultData:(id *)data;
+- (void)startListeningWithError:(id *)error;
 - (void)stopListening;
 @end
 
@@ -38,16 +38,16 @@
   return v4;
 }
 
-- (APCListener)initWithConfigurationData:(id)a3
+- (APCListener)initWithConfigurationData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = APCListener;
   v5 = [(APCListener *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:0];
     codecConfig = v5->_codecConfig;
     v5->_codecConfig = v6;
 
@@ -59,12 +59,12 @@
         v9 = APCLogObject();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [(AUPasscodeCodecConfiguration *)v5->_codecConfig payloadLengthBytes];
-          v11 = [(AUPasscodeCodecConfiguration *)v5->_codecConfig algorithmName];
+          payloadLengthBytes = [(AUPasscodeCodecConfiguration *)v5->_codecConfig payloadLengthBytes];
+          algorithmName = [(AUPasscodeCodecConfiguration *)v5->_codecConfig algorithmName];
           *buf = 134218242;
-          v20 = v10;
+          v20 = payloadLengthBytes;
           v21 = 2112;
-          v22 = v11;
+          v22 = algorithmName;
           _os_log_impl(&dword_24158E000, v9, OS_LOG_TYPE_INFO, "Created with configuration data. Payload length = %ld, codec = %@", buf, 0x16u);
         }
 
@@ -105,9 +105,9 @@ LABEL_14:
   return v14;
 }
 
-- (APCListener)initWithCodecConfiguration:(id)a3
+- (APCListener)initWithCodecConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = APCListener;
   v6 = [(APCListener *)&v16 init];
@@ -117,7 +117,7 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_codecConfig, a3);
+  objc_storeStrong(&v6->_codecConfig, configuration);
   codecConfig = v7->_codecConfig;
   if (!codecConfig)
   {
@@ -160,14 +160,14 @@ LABEL_12:
   return v11;
 }
 
-- (void)startListeningWithError:(id *)a3
+- (void)startListeningWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(APCListener *)self dispatchQueue];
-  v6 = v5;
-  if (v5)
+  dispatchQueue = [(APCListener *)self dispatchQueue];
+  v6 = dispatchQueue;
+  if (dispatchQueue)
   {
-    v7 = v5;
+    v7 = dispatchQueue;
   }
 
   else
@@ -229,10 +229,10 @@ LABEL_12:
     }
   }
 
-  if (a3)
+  if (error)
   {
     v18 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
 LABEL_16:
@@ -257,11 +257,11 @@ void __39__APCListener_startListeningWithError___block_invoke(uint64_t a1, void 
   [(APCListenerEngine *)self->_listenerEngine stopEngine];
   if (self->_invalidationHandler)
   {
-    v3 = [(APCListener *)self dispatchQueue];
-    v4 = v3;
-    if (v3)
+    dispatchQueue = [(APCListener *)self dispatchQueue];
+    v4 = dispatchQueue;
+    if (dispatchQueue)
     {
-      v5 = v3;
+      v5 = dispatchQueue;
     }
 
     else
@@ -275,15 +275,15 @@ void __39__APCListener_startListeningWithError___block_invoke(uint64_t a1, void 
   }
 }
 
-- (BOOL)getResultData:(id *)a3
+- (BOOL)getResultData:(id *)data
 {
-  v5 = [(APCListenerResultData *)self->_resultData isValid];
-  if (v5)
+  isValid = [(APCListenerResultData *)self->_resultData isValid];
+  if (isValid)
   {
-    *a3 = self->_resultData;
+    *data = self->_resultData;
   }
 
-  return v5;
+  return isValid;
 }
 
 @end

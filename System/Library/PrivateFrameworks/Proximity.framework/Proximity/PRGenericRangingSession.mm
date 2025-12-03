@@ -1,29 +1,29 @@
 @interface PRGenericRangingSession
-- (BOOL)startP2PRanging:(id)a3 error:(id *)a4;
-- (BOOL)stopP2PRanging:(id)a3 error:(id *)a4;
-- (PRGenericRangingSession)initWithDelegate:(id)a3 queue:(id)a4;
+- (BOOL)startP2PRanging:(id)ranging error:(id *)error;
+- (BOOL)stopP2PRanging:(id)ranging error:(id *)error;
+- (PRGenericRangingSession)initWithDelegate:(id)delegate queue:(id)queue;
 - (PRGenericRangingSessionDelegate)delegate;
 - (id)remoteObject;
 - (id)synchronousRemoteObject;
-- (void)configureForP2PRanging:(id)a3 options:(id)a4;
+- (void)configureForP2PRanging:(id)ranging options:(id)options;
 - (void)connectToDaemon;
-- (void)didFailWithError:(id)a3;
-- (void)didReceiveNewSolutions:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didReceiveNewSolutions:(id)solutions;
 - (void)handleInterruption;
 - (void)handleInvalidation;
 - (void)invalidate;
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3;
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4;
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4;
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status;
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause;
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state;
 @end
 
 @implementation PRGenericRangingSession
 
-- (PRGenericRangingSession)initWithDelegate:(id)a3 queue:(id)a4
+- (PRGenericRangingSession)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (!delegateCopy)
   {
     [PRGenericRangingSession initWithDelegate:a2 queue:self];
   }
@@ -37,10 +37,10 @@
     logger = v9->_logger;
     v9->_logger = v10;
 
-    objc_storeWeak(&v9->_delegate, v7);
-    if (v8)
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
     }
 
     else
@@ -101,11 +101,11 @@
   objc_copyWeak(&v17, &location);
   [(NSXPCConnection *)v12 setInvalidationHandler:v16];
   [(NSXPCConnection *)self->_connection resume];
-  v13 = [(PRGenericRangingSession *)self remoteObject];
+  remoteObject = [(PRGenericRangingSession *)self remoteObject];
   v15.receiver = self;
   v15.super_class = PRGenericRangingSession;
-  v14 = [(PRRangingDevice *)&v15 clientInfo];
-  [v13 connectWithClientInfo:v14];
+  clientInfo = [(PRRangingDevice *)&v15 clientInfo];
+  [remoteObject connectWithClientInfo:clientInfo];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -139,11 +139,11 @@ void __42__PRGenericRangingSession_connectToDaemon__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_230EB5000, v5, OS_LOG_TYPE_DEFAULT, "connection was interrupted: %@", buf, 0xCu);
   }
 
-  v7 = [(PRGenericRangingSession *)self remoteObject];
+  remoteObject = [(PRGenericRangingSession *)self remoteObject];
   v10.receiver = self;
   v10.super_class = PRGenericRangingSession;
-  v8 = [(PRRangingDevice *)&v10 clientInfo];
-  [v7 connectWithClientInfo:v8];
+  clientInfo = [(PRRangingDevice *)&v10 clientInfo];
+  [remoteObject connectWithClientInfo:clientInfo];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -224,63 +224,63 @@ void __50__PRGenericRangingSession_synchronousRemoteObject__block_invoke(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didFailWithError:v4];
+  [WeakRetained didFailWithError:errorCopy];
 }
 
-- (void)didReceiveNewSolutions:(id)a3
+- (void)didReceiveNewSolutions:(id)solutions
 {
-  v5 = a3;
-  WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (objc_opt_respondsToSelector())
-  {
-    [WeakRetained didReceiveNewSolutions:v5];
-  }
-}
-
-- (void)remoteDevice:(id)a3 didChangeState:(int64_t)a4
-{
-  v7 = a3;
+  solutionsCopy = solutions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained remoteDevice:v7 didChangeState:a4];
+    [WeakRetained didReceiveNewSolutions:solutionsCopy];
   }
 }
 
-- (void)rangingRequestDidUpdateStatus:(unint64_t)a3
+- (void)remoteDevice:(id)device didChangeState:(int64_t)state
 {
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained rangingRequestDidUpdateStatus:a3];
+    [WeakRetained remoteDevice:deviceCopy didChangeState:state];
   }
 }
 
-- (void)rangingServiceDidUpdateState:(unint64_t)a3 cause:(int64_t)a4
+- (void)rangingRequestDidUpdateStatus:(unint64_t)status
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained rangingServiceDidUpdateState:a3 cause:a4];
+    [WeakRetained rangingRequestDidUpdateStatus:status];
   }
 }
 
-- (void)configureForP2PRanging:(id)a3 options:(id)a4
+- (void)rangingServiceDidUpdateState:(unint64_t)state cause:(int64_t)cause
 {
-  v6 = a3;
-  v7 = a4;
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  if (objc_opt_respondsToSelector())
+  {
+    [WeakRetained rangingServiceDidUpdateState:state cause:cause];
+  }
+}
+
+- (void)configureForP2PRanging:(id)ranging options:(id)options
+{
+  rangingCopy = ranging;
+  optionsCopy = options;
   objc_initWeak(&location, self);
-  v8 = [(PRGenericRangingSession *)self remoteObject];
+  remoteObject = [(PRGenericRangingSession *)self remoteObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__PRGenericRangingSession_configureForP2PRanging_options___block_invoke;
   v9[3] = &unk_2788F3AE8;
   objc_copyWeak(&v10, &location);
-  [v8 configureForP2PRanging:v6 options:v7 reply:v9];
+  [remoteObject configureForP2PRanging:rangingCopy options:optionsCopy reply:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -304,9 +304,9 @@ void __58__PRGenericRangingSession_configureForP2PRanging_options___block_invoke
   }
 }
 
-- (BOOL)startP2PRanging:(id)a3 error:(id *)a4
+- (BOOL)startP2PRanging:(id)ranging error:(id *)error
 {
-  v6 = a3;
+  rangingCopy = ranging;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -317,18 +317,18 @@ void __58__PRGenericRangingSession_configureForP2PRanging_options___block_invoke
   v14 = __Block_byref_object_copy__2;
   v15 = __Block_byref_object_dispose__2;
   v16 = 0;
-  v7 = [(PRGenericRangingSession *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(PRGenericRangingSession *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__PRGenericRangingSession_startP2PRanging_error___block_invoke;
   v10[3] = &unk_2788F3CE0;
   v10[4] = &v11;
   v10[5] = &v17;
-  [v7 startP2PRanging:v6 reply:v10];
+  [synchronousRemoteObject startP2PRanging:rangingCopy reply:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v12[5];
+    *error = v12[5];
   }
 
   v8 = *(v18 + 24);
@@ -345,9 +345,9 @@ void __49__PRGenericRangingSession_startP2PRanging_error___block_invoke(uint64_t
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)stopP2PRanging:(id)a3 error:(id *)a4
+- (BOOL)stopP2PRanging:(id)ranging error:(id *)error
 {
-  v6 = a3;
+  rangingCopy = ranging;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -358,18 +358,18 @@ void __49__PRGenericRangingSession_startP2PRanging_error___block_invoke(uint64_t
   v14 = __Block_byref_object_copy__2;
   v15 = __Block_byref_object_dispose__2;
   v16 = 0;
-  v7 = [(PRGenericRangingSession *)self synchronousRemoteObject];
+  synchronousRemoteObject = [(PRGenericRangingSession *)self synchronousRemoteObject];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__PRGenericRangingSession_stopP2PRanging_error___block_invoke;
   v10[3] = &unk_2788F3CE0;
   v10[4] = &v11;
   v10[5] = &v17;
-  [v7 stopP2PRanging:v6 reply:v10];
+  [synchronousRemoteObject stopP2PRanging:rangingCopy reply:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v12[5];
+    *error = v12[5];
   }
 
   v8 = *(v18 + 24);

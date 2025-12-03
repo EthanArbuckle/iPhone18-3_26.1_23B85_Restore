@@ -1,14 +1,14 @@
 @interface TraceGuideMeBookmarkRow
-- (TraceGuideMeBookmarkRow)initWithBookmarkIndex:(unint64_t)a3 time:(double)a4;
+- (TraceGuideMeBookmarkRow)initWithBookmarkIndex:(unint64_t)index time:(double)time;
 @end
 
 @implementation TraceGuideMeBookmarkRow
 
-- (TraceGuideMeBookmarkRow)initWithBookmarkIndex:(unint64_t)a3 time:(double)a4
+- (TraceGuideMeBookmarkRow)initWithBookmarkIndex:(unint64_t)index time:(double)time
 {
-  v7 = [NSString stringWithFormat:@"Guide Me Bookmark %ld", a3 + 1];
-  v8 = [NSString stringWithFormat:@"%lu:%02lu", a4 / 0x3C, a4 % 0x3C];
-  v9 = [NSString stringWithFormat:@"At time: %@", v8];
+  v7 = [NSString stringWithFormat:@"Guide Me Bookmark %ld", index + 1];
+  0x3C = [NSString stringWithFormat:@"%lu:%02lu", time / 0x3C, time % 0x3C];
+  v9 = [NSString stringWithFormat:@"At time: %@", 0x3C];
 
   v13.receiver = self;
   v13.super_class = TraceGuideMeBookmarkRow;
@@ -16,7 +16,7 @@
   v11 = v10;
   if (v10)
   {
-    v10->_bookmarkIndex = a3;
+    v10->_bookmarkIndex = index;
   }
 
   return v11;

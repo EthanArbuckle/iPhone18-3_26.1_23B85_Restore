@@ -1,15 +1,15 @@
 @interface WebBundleConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSURL)absoluteBuiltInWebBundleDirectory;
 - (NSURL)absoluteCachedWebBundleDirectory;
 - (NSURL)entryPointUrlBase;
 - (NSURL)webBundleDirectory;
-- (WebBundleConfiguration)initWithCoder:(id)a3;
+- (WebBundleConfiguration)initWithCoder:(id)coder;
 - (id)_webBundleConfigurationStorageDirectory;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)directoryForNewWebBundleName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)directoryForNewWebBundleName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WebBundleConfiguration
@@ -18,22 +18,22 @@
 {
   if (!self->_webBundleDirectory)
   {
-    v3 = [(WebBundleConfiguration *)self absoluteBuiltInWebBundleDirectory];
+    absoluteBuiltInWebBundleDirectory = [(WebBundleConfiguration *)self absoluteBuiltInWebBundleDirectory];
     webBundleDirectory = self->_webBundleDirectory;
-    self->_webBundleDirectory = v3;
+    self->_webBundleDirectory = absoluteBuiltInWebBundleDirectory;
   }
 
   if ([(WebBundleConfiguration *)self temporarilyUseOnDeviceDirectory])
   {
-    v5 = [(WebBundleConfiguration *)self absoluteCachedWebBundleDirectory];
+    absoluteCachedWebBundleDirectory = [(WebBundleConfiguration *)self absoluteCachedWebBundleDirectory];
   }
 
   else
   {
-    v5 = self->_webBundleDirectory;
+    absoluteCachedWebBundleDirectory = self->_webBundleDirectory;
   }
 
-  return v5;
+  return absoluteCachedWebBundleDirectory;
 }
 
 - (id)_webBundleConfigurationStorageDirectory
@@ -47,18 +47,18 @@
 
 - (NSURL)absoluteCachedWebBundleDirectory
 {
-  v3 = [(WebBundleConfiguration *)self onDeviceDirectoryWritable];
-  v4 = [(WebBundleConfiguration *)self directoryForNewWebBundleName:v3];
+  onDeviceDirectoryWritable = [(WebBundleConfiguration *)self onDeviceDirectoryWritable];
+  v4 = [(WebBundleConfiguration *)self directoryForNewWebBundleName:onDeviceDirectoryWritable];
 
   return v4;
 }
 
-- (id)directoryForNewWebBundleName:(id)a3
+- (id)directoryForNewWebBundleName:(id)name
 {
-  v4 = a3;
-  v5 = [(WebBundleConfiguration *)self _webBundleConfigurationStorageDirectory];
+  nameCopy = name;
+  _webBundleConfigurationStorageDirectory = [(WebBundleConfiguration *)self _webBundleConfigurationStorageDirectory];
   v12 = 0;
-  [v5 setResourceValue:&__kCFBooleanTrue forKey:NSURLIsExcludedFromBackupKey error:&v12];
+  [_webBundleConfigurationStorageDirectory setResourceValue:&__kCFBooleanTrue forKey:NSURLIsExcludedFromBackupKey error:&v12];
   v6 = v12;
   if (v6)
   {
@@ -71,10 +71,10 @@
     }
   }
 
-  v8 = [(WebBundleConfiguration *)self rootDirectory];
-  v9 = [v5 URLByAppendingPathComponent:v8];
+  rootDirectory = [(WebBundleConfiguration *)self rootDirectory];
+  v9 = [_webBundleConfigurationStorageDirectory URLByAppendingPathComponent:rootDirectory];
 
-  v10 = [v9 URLByAppendingPathComponent:v4];
+  v10 = [v9 URLByAppendingPathComponent:nameCopy];
 
   return v10;
 }
@@ -84,44 +84,44 @@
   v2 = +[NSBundle mainBundle];
   v3 = [v2 pathForResource:@"index" ofType:@"html" inDirectory:@"OnDeviceWebBundle"];
 
-  v4 = [v3 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v3 stringByDeletingLastPathComponent];
 
-  v5 = [NSURL fileURLWithPath:v4];
+  v5 = [NSURL fileURLWithPath:stringByDeletingLastPathComponent];
 
   return v5;
 }
 
 - (NSURL)entryPointUrlBase
 {
-  v3 = [(WebBundleConfiguration *)self urlScheme];
-  v4 = [(WebBundleConfiguration *)self rootDirectory];
-  v5 = [NSString stringWithFormat:@"%@://%@/", v3, v4];
+  urlScheme = [(WebBundleConfiguration *)self urlScheme];
+  rootDirectory = [(WebBundleConfiguration *)self rootDirectory];
+  v5 = [NSString stringWithFormat:@"%@://%@/", urlScheme, rootDirectory];
   v6 = [NSURL URLWithString:v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(WebBundleConfiguration *)v5 webBundleDirectory];
-    v7 = [(WebBundleConfiguration *)self webBundleDirectory];
-    if (v6 == v7)
+    webBundleDirectory = [(WebBundleConfiguration *)v5 webBundleDirectory];
+    webBundleDirectory2 = [(WebBundleConfiguration *)self webBundleDirectory];
+    if (webBundleDirectory == webBundleDirectory2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqual:v7];
+      v8 = [webBundleDirectory isEqual:webBundleDirectory2];
     }
   }
 
@@ -135,39 +135,39 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WebBundleConfiguration *)self webBundleDirectory];
-  v3 = [v2 hash];
+  webBundleDirectory = [(WebBundleConfiguration *)self webBundleDirectory];
+  v3 = [webBundleDirectory hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WebBundleConfiguration *)self webBundleDirectory];
-  [v4 encodeObject:v5 forKey:@"WebBundleConfigurationDirectory"];
+  coderCopy = coder;
+  webBundleDirectory = [(WebBundleConfiguration *)self webBundleDirectory];
+  [coderCopy encodeObject:webBundleDirectory forKey:@"WebBundleConfigurationDirectory"];
 }
 
-- (WebBundleConfiguration)initWithCoder:(id)a3
+- (WebBundleConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WebBundleConfiguration;
   v5 = [(WebBundleConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebBundleConfigurationDirectory"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebBundleConfigurationDirectory"];
     [(WebBundleConfiguration *)v5 setWebBundleDirectory:v6];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(WebBundleConfiguration *)self webBundleDirectory];
-  [v4 setWebBundleDirectory:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  webBundleDirectory = [(WebBundleConfiguration *)self webBundleDirectory];
+  [v4 setWebBundleDirectory:webBundleDirectory];
 
   return v4;
 }

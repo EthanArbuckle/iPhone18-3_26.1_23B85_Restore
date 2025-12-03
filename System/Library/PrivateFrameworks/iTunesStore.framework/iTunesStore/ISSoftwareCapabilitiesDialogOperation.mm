@@ -1,5 +1,5 @@
 @interface ISSoftwareCapabilitiesDialogOperation
-- (ISSoftwareCapabilitiesDialogOperation)initWithRequiredCapabilities:(id)a3 mismatches:(id)a4;
+- (ISSoftwareCapabilitiesDialogOperation)initWithRequiredCapabilities:(id)capabilities mismatches:(id)mismatches;
 - (NSDictionary)mismatches;
 - (id)requiredCapabilities;
 - (void)_postDefaultDialog;
@@ -9,14 +9,14 @@
 
 @implementation ISSoftwareCapabilitiesDialogOperation
 
-- (ISSoftwareCapabilitiesDialogOperation)initWithRequiredCapabilities:(id)a3 mismatches:(id)a4
+- (ISSoftwareCapabilitiesDialogOperation)initWithRequiredCapabilities:(id)capabilities mismatches:(id)mismatches
 {
   __ISRecordSPIClassUsage(self);
   v7 = [(ISOperation *)self init];
   if (v7)
   {
-    v7->_mismatches = [a4 copy];
-    v7->_requiredCapabilities = [a3 copy];
+    v7->_mismatches = [mismatches copy];
+    v7->_requiredCapabilities = [capabilities copy];
   }
 
   return v7;
@@ -54,11 +54,11 @@
     v36 = v4;
     v37 = objc_alloc_init(ISStoreURLOperation);
     [(ISURLOperation *)v37 setDataProvider:+[(ISDataProvider *)ISProtocolDataProvider]];
-    v5 = [(ISSoftwareCapabilitiesDialogOperation *)self requiredCapabilities];
+    requiredCapabilities = [(ISSoftwareCapabilitiesDialogOperation *)self requiredCapabilities];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = requiredCapabilities;
     }
 
     else
@@ -67,7 +67,7 @@
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v38 = self;
+    selfCopy = self;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -118,31 +118,31 @@
     [(ISURLOperation *)v37 setRequestProperties:v17];
 
     v40 = 0;
-    if ([(ISOperation *)v38 runSubOperation:v37 returningError:&v40])
+    if ([(ISOperation *)selfCopy runSubOperation:v37 returningError:&v40])
     {
-      [(ISOperation *)v38 setSuccess:1];
+      [(ISOperation *)selfCopy setSuccess:1];
     }
 
     else
     {
-      v25 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v25)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v25 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v26 = [v25 shouldLog];
-      if ([v25 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v27 = v26 | 2;
+        v27 = shouldLog | 2;
       }
 
       else
       {
-        v27 = v26;
+        v27 = shouldLog;
       }
 
-      if (os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v28 = v27;
       }
@@ -170,31 +170,31 @@
         }
       }
 
-      [(ISSoftwareCapabilitiesDialogOperation *)v38 _postDefaultDialog];
-      [(ISOperation *)v38 setError:v40];
+      [(ISSoftwareCapabilitiesDialogOperation *)selfCopy _postDefaultDialog];
+      [(ISOperation *)selfCopy setError:v40];
     }
   }
 
   else
   {
-    v18 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v18)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v18 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
-    if ([v18 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog2 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog2;
     }
 
-    if (os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v21 = v20;
     }
@@ -231,15 +231,15 @@
 - (void)_postDefaultDialog
 {
   v8 = MGCopyAnswer();
-  v2 = [v8 intValue];
+  intValue = [v8 intValue];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = @"HARDWARE_INCOMPATIBLE_ERROR_BODY_IPHONE";
-  if (v2 == 3)
+  if (intValue == 3)
   {
     v4 = @"HARDWARE_INCOMPATIBLE_ERROR_BODY_IPAD";
   }
 
-  if (v2 == 2)
+  if (intValue == 2)
   {
     v5 = @"HARDWARE_INCOMPATIBLE_ERROR_BODY_IPOD";
   }

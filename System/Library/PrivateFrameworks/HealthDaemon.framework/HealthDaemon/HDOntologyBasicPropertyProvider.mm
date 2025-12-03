@@ -1,23 +1,23 @@
 @interface HDOntologyBasicPropertyProvider
-+ (id)_basicUserDomainConceptPropertyForAttribute:(id)a3;
-+ (id)basicAttributesForConcept:(id)a3 ofTypes:(id)a4;
-+ (int64_t)_basicPropertyTypeForConceptAttributeType:(int64_t)a3;
++ (id)_basicUserDomainConceptPropertyForAttribute:(id)attribute;
++ (id)basicAttributesForConcept:(id)concept ofTypes:(id)types;
++ (int64_t)_basicPropertyTypeForConceptAttributeType:(int64_t)type;
 @end
 
 @implementation HDOntologyBasicPropertyProvider
 
-+ (id)basicAttributesForConcept:(id)a3 ofTypes:(id)a4
++ (id)basicAttributesForConcept:(id)concept ofTypes:(id)types
 {
-  v6 = a4;
-  v7 = [a3 attributes];
+  typesCopy = types;
+  attributes = [concept attributes];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__HDOntologyBasicPropertyProvider_basicAttributesForConcept_ofTypes___block_invoke;
   v11[3] = &unk_278630110;
-  v12 = v6;
-  v13 = a1;
-  v8 = v6;
-  v9 = [v7 hk_map:v11];
+  v12 = typesCopy;
+  selfCopy = self;
+  v8 = typesCopy;
+  v9 = [attributes hk_map:v11];
 
   return v9;
 }
@@ -42,15 +42,15 @@ id __69__HDOntologyBasicPropertyProvider_basicAttributesForConcept_ofTypes___blo
   return v6;
 }
 
-+ (id)_basicUserDomainConceptPropertyForAttribute:(id)a3
++ (id)_basicUserDomainConceptPropertyForAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [a1 _basicPropertyTypeForConceptAttributeType:{objc_msgSend(v4, "type")}];
-  v6 = [v4 version];
+  attributeCopy = attribute;
+  v5 = [self _basicPropertyTypeForConceptAttributeType:{objc_msgSend(attributeCopy, "type")}];
+  version = [attributeCopy version];
   if (v5)
   {
-    v7 = v6;
-    if ([v4 isDeleted])
+    v7 = version;
+    if ([attributeCopy isDeleted])
     {
       v5 = [MEMORY[0x277CCDAF8] nullPropertyWithType:v5 version:v7];
     }
@@ -58,23 +58,23 @@ id __69__HDOntologyBasicPropertyProvider_basicAttributesForConcept_ofTypes___blo
     else
     {
       v8 = objc_alloc(MEMORY[0x277CCDAF8]);
-      v9 = [v4 stringValue];
-      v5 = [v8 initWithType:v5 version:v7 stringValue:v9];
+      stringValue = [attributeCopy stringValue];
+      v5 = [v8 initWithType:v5 version:v7 stringValue:stringValue];
     }
   }
 
   return v5;
 }
 
-+ (int64_t)_basicPropertyTypeForConceptAttributeType:(int64_t)a3
++ (int64_t)_basicPropertyTypeForConceptAttributeType:(int64_t)type
 {
   v3 = 184000;
-  if (a3 != 1008)
+  if (type != 1008)
   {
     v3 = 0;
   }
 
-  if (a3 == 984)
+  if (type == 984)
   {
     return 160013;
   }

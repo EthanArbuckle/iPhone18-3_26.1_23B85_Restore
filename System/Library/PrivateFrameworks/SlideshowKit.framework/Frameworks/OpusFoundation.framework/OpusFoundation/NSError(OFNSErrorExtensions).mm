@@ -8,11 +8,11 @@
 
 + (uint64_t)errorWithDomain:()OFNSErrorExtensions code:localizedDescription:userInfo:
 {
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
   if (a6)
   {
-    [v10 addEntriesFromDictionary:a6];
+    [dictionary addEntriesFromDictionary:a6];
   }
 
   [v11 setObject:a5 forKey:*MEMORY[0x277CCA450]];

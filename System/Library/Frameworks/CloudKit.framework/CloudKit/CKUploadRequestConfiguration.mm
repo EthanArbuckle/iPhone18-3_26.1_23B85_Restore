@@ -1,25 +1,25 @@
 @interface CKUploadRequestConfiguration
-+ (id)configurationFromBaseContainer:(id)a3;
-+ (id)resolvedConfigurationWithBaseContainer:(id)a3 overrides:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CKUploadRequestConfiguration)initWithCoder:(id)a3;
-- (CKUploadRequestConfiguration)initWithSqliteRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromBaseContainer:(id)a3;
++ (id)configurationFromBaseContainer:(id)container;
++ (id)resolvedConfigurationWithBaseContainer:(id)container overrides:(id)overrides;
+- (BOOL)isEqual:(id)equal;
+- (CKUploadRequestConfiguration)initWithCoder:(id)coder;
+- (CKUploadRequestConfiguration)initWithSqliteRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromBaseContainer:(id)container;
 - (id)sqliteRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKUploadRequestConfiguration
 
-+ (id)resolvedConfigurationWithBaseContainer:(id)a3 overrides:(id)a4
++ (id)resolvedConfigurationWithBaseContainer:(id)container overrides:(id)overrides
 {
-  v5 = a4;
-  v7 = v5;
-  if (a3)
+  overridesCopy = overrides;
+  v7 = overridesCopy;
+  if (container)
   {
-    v8 = objc_msgSend_configurationFromBaseContainer_(CKUploadRequestConfiguration, v6, a3);
+    v8 = objc_msgSend_configurationFromBaseContainer_(CKUploadRequestConfiguration, v6, container);
     v13 = objc_msgSend_containerIdentifier(v7, v9, v10);
     if (v13)
     {
@@ -41,37 +41,37 @@
 
   else
   {
-    v8 = v5;
+    v8 = overridesCopy;
   }
 
   return v8;
 }
 
-+ (id)configurationFromBaseContainer:(id)a3
++ (id)configurationFromBaseContainer:(id)container
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initFromBaseContainer_(v5, v6, v4);
+  containerCopy = container;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initFromBaseContainer_(v5, v6, containerCopy);
 
   return v7;
 }
 
-- (id)initFromBaseContainer:(id)a3
+- (id)initFromBaseContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v25.receiver = self;
   v25.super_class = CKUploadRequestConfiguration;
   v7 = [(CKUploadRequestConfiguration *)&v25 init];
   if (v7)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = objc_msgSend_containerIdentifier(v4, v5, v6);
+    v9 = objc_msgSend_containerIdentifier(containerCopy, v5, v6);
     v11 = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v8, v10, @"com.apple.cloudkit.metadata-%@", @"%@", 0, v9);
     containerIdentifier = v7->_containerIdentifier;
     v7->_containerIdentifier = v11;
 
     v13 = MEMORY[0x1E696AEC0];
-    v16 = objc_msgSend_primaryIdentifier(v4, v14, v15);
+    v16 = objc_msgSend_primaryIdentifier(containerCopy, v14, v15);
     v18 = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(v13, v17, @"com.apple.upload-request-proxy.%@", @"%@", 0, v16);
     applicationBundleIdentifierOverride = v7->_applicationBundleIdentifierOverride;
     v7->_applicationBundleIdentifierOverride = v18;
@@ -85,7 +85,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKUploadRequestConfiguration);
   v7 = objc_msgSend_containerIdentifier(self, v5, v6);
@@ -106,28 +106,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_containerIdentifier(self, v5, v6);
   v8 = NSStringFromSelector(sel_containerIdentifier);
-  objc_msgSend_encodeObject_forKey_(v20, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v12 = objc_msgSend_applicationBundleIdentifierOverride(self, v10, v11);
   v13 = NSStringFromSelector(sel_applicationBundleIdentifierOverride);
-  objc_msgSend_encodeObject_forKey_(v20, v14, v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, v12, v13);
 
   v17 = objc_msgSend_repairZoneID(self, v15, v16);
   v18 = NSStringFromSelector(sel_repairZoneID);
-  objc_msgSend_encodeObject_forKey_(v20, v19, v17, v18);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v17, v18);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKUploadRequestConfiguration)initWithCoder:(id)a3
+- (CKUploadRequestConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CKUploadRequestConfiguration;
   v5 = [(CKUploadRequestConfiguration *)&v23 init];
@@ -136,19 +136,19 @@
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_containerIdentifier);
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v7, v8);
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v7, v8);
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v10;
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_applicationBundleIdentifierOverride);
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v12, v13);
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v12, v13);
     applicationBundleIdentifierOverride = v5->_applicationBundleIdentifierOverride;
     v5->_applicationBundleIdentifierOverride = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector(sel_repairZoneID);
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v17, v18);
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v17, v18);
     repairZoneID = v5->_repairZoneID;
     v5->_repairZoneID = v20;
 
@@ -169,10 +169,10 @@
   return v13 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v26 = 1;
   }
@@ -182,7 +182,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_containerIdentifier(v5, v6, v7);
       v11 = objc_msgSend_containerIdentifier(self, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -253,13 +253,13 @@
   return v28;
 }
 
-- (CKUploadRequestConfiguration)initWithSqliteRepresentation:(id)a3
+- (CKUploadRequestConfiguration)initWithSqliteRepresentation:(id)representation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  representationCopy = representation;
+  if (objc_msgSend_length(representationCopy, v5, v6))
   {
-    v8 = objc_msgSend_dataUsingEncoding_(v4, v7, 4);
+    v8 = objc_msgSend_dataUsingEncoding_(representationCopy, v7, 4);
     v33 = 0;
     v10 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v9, v8, 0, &v33);
     v11 = v33;
@@ -278,7 +278,7 @@
         _os_log_error_impl(&dword_1883EA000, v29, OS_LOG_TYPE_ERROR, "Error converting JSON data to CKUploadRequestConfiguration: %@", buf, 0xCu);
       }
 
-      v28 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -307,17 +307,17 @@
       }
 
       self = v12;
-      v28 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
   v30 = *MEMORY[0x1E69E9840];
-  return v28;
+  return selfCopy;
 }
 
 @end

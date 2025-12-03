@@ -3,7 +3,7 @@
 - (AXKonaSpeechSegment)init;
 - (_NSRange)range;
 - (void)dealloc;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation AXKonaSpeechSegment
@@ -52,19 +52,19 @@
   [(AXKonaSpeechSegment *)&v4 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v26 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v4 = [v19 copy];
+  textCopy = text;
+  v4 = [textCopy copy];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
   v5 = +[AXKonaSpeechSegment encodingReplacements];
-  v6 = [v5 allKeys];
+  allKeys = [v5 allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = *v22;
@@ -76,7 +76,7 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v9);
@@ -89,7 +89,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);

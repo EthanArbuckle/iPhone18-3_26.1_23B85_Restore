@@ -1,6 +1,6 @@
 @interface GDKTSSliceData
-- (GDKTSSliceData)initWithIdentifier:(id)a3 context:(id)a4 data:(id)a5 metadata:(id)a6;
-- (GDKTSSliceData)initWithIdentifier:(id)a3 context:(id)a4 data:(id)a5 parameters:(id)a6;
+- (GDKTSSliceData)initWithIdentifier:(id)identifier context:(id)context data:(id)data metadata:(id)metadata;
+- (GDKTSSliceData)initWithIdentifier:(id)identifier context:(id)context data:(id)data parameters:(id)parameters;
 - (NSString)description;
 @end
 
@@ -9,34 +9,34 @@
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(GDKTSSliceData *)self parameters];
-  v5 = [(GDKTSSliceData *)self identifier];
-  v6 = [(GDKTSSliceData *)self data];
-  v7 = [(GDKTSSliceData *)self context];
-  v8 = [v3 initWithFormat:@"GDKTSSliceData<parameters: %@, identifier: %@, data: %@, context: %@>", v4, v5, v6, v7];
+  parameters = [(GDKTSSliceData *)self parameters];
+  identifier = [(GDKTSSliceData *)self identifier];
+  data = [(GDKTSSliceData *)self data];
+  context = [(GDKTSSliceData *)self context];
+  v8 = [v3 initWithFormat:@"GDKTSSliceData<parameters: %@, identifier: %@, data: %@, context: %@>", parameters, identifier, data, context];
 
   return v8;
 }
 
-- (GDKTSSliceData)initWithIdentifier:(id)a3 context:(id)a4 data:(id)a5 metadata:(id)a6
+- (GDKTSSliceData)initWithIdentifier:(id)identifier context:(id)context data:(id)data metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = GDKTSSliceData;
   v12 = [(GDKTSSliceData *)&v20 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v15 = [v11 copy];
+    v15 = [dataCopy copy];
     data = v12->_data;
     v12->_data = v15;
 
-    v17 = [v10 copy];
+    v17 = [contextCopy copy];
     context = v12->_context;
     v12->_context = v17;
   }
@@ -44,30 +44,30 @@
   return v12;
 }
 
-- (GDKTSSliceData)initWithIdentifier:(id)a3 context:(id)a4 data:(id)a5 parameters:(id)a6
+- (GDKTSSliceData)initWithIdentifier:(id)identifier context:(id)context data:(id)data parameters:(id)parameters
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  dataCopy = data;
+  parametersCopy = parameters;
   v24.receiver = self;
   v24.super_class = GDKTSSliceData;
   v14 = [(GDKTSSliceData *)&v24 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [parametersCopy copy];
     parameters = v14->_parameters;
     v14->_parameters = v15;
 
-    v17 = [v10 copy];
+    v17 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [dataCopy copy];
     data = v14->_data;
     v14->_data = v19;
 
-    v21 = [v11 copy];
+    v21 = [contextCopy copy];
     context = v14->_context;
     v14->_context = v21;
   }

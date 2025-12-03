@@ -1,12 +1,12 @@
 @interface COSScreenTimeSetPasscodeViewController
-- (BOOL)_errorIsUserCanceledSettingPIN:(id)a3;
+- (BOOL)_errorIsUserCanceledSettingPIN:(id)n;
 - (COSScreenTimeSetPasscodeViewController)init;
 - (STSMiniFlowControllerDelegate)miniFlowDelegate;
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)_collectThenSetScreenTimePasscodeForFamilyMember:(id)a3 withCompletionHandler:(id)a4;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)_collectThenSetScreenTimePasscodeForFamilyMember:(id)member withCompletionHandler:(id)handler;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSScreenTimeSetPasscodeViewController
@@ -35,12 +35,12 @@
 
 - (id)detailString
 {
-  v2 = [(COSScreenTimeSetPasscodeViewController *)self miniFlowDelegate];
-  v3 = [v2 familyMemberFirstName];
+  miniFlowDelegate = [(COSScreenTimeSetPasscodeViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"SCREEN_TIME_SET_PASSCODE_DETAIL_%@_%@" value:&stru_10026E598 table:@"ScreenTimeSetupLocalizable"];
-  v6 = [NSString stringWithFormat:v5, v3, v3];
+  v6 = [NSString stringWithFormat:v5, familyMemberFirstName, familyMemberFirstName];
 
   return v6;
 }
@@ -53,7 +53,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = sub_100015C10();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -63,35 +63,35 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [(COSScreenTimeSetPasscodeViewController *)self miniFlowDelegate];
-  v6 = [v5 familyMember];
+  miniFlowDelegate = [(COSScreenTimeSetPasscodeViewController *)self miniFlowDelegate];
+  familyMember = [miniFlowDelegate familyMember];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006CCB8;
   v7[3] = &unk_1002684A8;
   v7[4] = self;
-  [(COSScreenTimeSetPasscodeViewController *)self _collectThenSetScreenTimePasscodeForFamilyMember:v6 withCompletionHandler:v7];
+  [(COSScreenTimeSetPasscodeViewController *)self _collectThenSetScreenTimePasscodeForFamilyMember:familyMember withCompletionHandler:v7];
 }
 
-- (void)_collectThenSetScreenTimePasscodeForFamilyMember:(id)a3 withCompletionHandler:(id)a4
+- (void)_collectThenSetScreenTimePasscodeForFamilyMember:(id)member withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  memberCopy = member;
+  handlerCopy = handler;
   v7 = sub_100015C10();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 dsid];
+    dsid = [memberCopy dsid];
     *buf = 136315650;
     *&buf[4] = "[COSScreenTimeSetPasscodeViewController _collectThenSetScreenTimePasscodeForFamilyMember:withCompletionHandler:]";
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = memberCopy;
     *&buf[22] = 2114;
-    v51 = v8;
+    v51 = dsid;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: familyMember:%@, dsid:%{public}@", buf, 0x20u);
   }
 
-  v9 = [v5 dsid];
-  v10 = v9 == 0;
+  dsid2 = [memberCopy dsid];
+  v10 = dsid2 == 0;
 
   if (v10)
   {
@@ -147,8 +147,8 @@
   v22 = v21;
   _Block_object_dispose(&v42, 8);
   v23 = [v21 alloc];
-  v24 = [v5 dsid];
-  v25 = [v23 initWithDSID:v24];
+  dsid3 = [memberCopy dsid];
+  v25 = [v23 initWithDSID:dsid3];
 
   v41 = 0;
   v26 = [v20 currentConfigurationForUser:v25 error:&v41];
@@ -165,12 +165,12 @@
 LABEL_21:
 
 LABEL_22:
-    v6[2](v6, v28);
+    handlerCopy[2](handlerCopy, v28);
     v25 = v28;
     goto LABEL_23;
   }
 
-  v31 = [v26 screenTimeState];
+  screenTimeState = [v26 screenTimeState];
   v32 = sub_100015C10();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
@@ -181,7 +181,7 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%s: currentConfiguration:%{public}@", buf, 0x16u);
   }
 
-  if (v31 != 1)
+  if (screenTimeState != 1)
   {
     v46 = NSLocalizedDescriptionKey;
     v47 = @"Screen Time not enabled";
@@ -211,7 +211,7 @@ LABEL_22:
   v37[3] = &unk_100269A40;
   v38 = v26;
   v39 = v20;
-  v40 = v6;
+  v40 = handlerCopy;
   v34 = v20;
   v35 = v26;
   [v34 collectPasscodeFromUserWithCompletionHandler:v37];
@@ -219,13 +219,13 @@ LABEL_22:
 LABEL_23:
 }
 
-- (BOOL)_errorIsUserCanceledSettingPIN:(id)a3
+- (BOOL)_errorIsUserCanceledSettingPIN:(id)n
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"STErrorDomain"])
+  nCopy = n;
+  domain = [nCopy domain];
+  if ([domain isEqualToString:@"STErrorDomain"])
   {
-    v5 = [v3 code] == 48;
+    v5 = [nCopy code] == 48;
   }
 
   else

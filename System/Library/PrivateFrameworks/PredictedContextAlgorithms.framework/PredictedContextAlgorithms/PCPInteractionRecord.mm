@@ -1,83 +1,83 @@
 @interface PCPInteractionRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInteractionCommand:(id)a3;
+- (int)StringAsInteractionCommand:(id)command;
 - (int)interactionCommand;
 - (unint64_t)hash;
 - (void)clearOneofValuesForInteractionCommand;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setApplyStateEvent:(id)a3;
-- (void)setComputeEvent:(id)a3;
-- (void)setInterruptRequest:(id)a3;
-- (void)setLifecycleEvent:(id)a3;
-- (void)setPredictEvent:(id)a3;
-- (void)setRetrieveStateEvent:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setApplyStateEvent:(id)event;
+- (void)setComputeEvent:(id)event;
+- (void)setInterruptRequest:(id)request;
+- (void)setLifecycleEvent:(id)event;
+- (void)setPredictEvent:(id)event;
+- (void)setRetrieveStateEvent:(id)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPInteractionRecord
 
-- (void)setLifecycleEvent:(id)a3
+- (void)setLifecycleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PCPInteractionRecord *)self clearOneofValuesForInteractionCommand];
   *&self->_has |= 1u;
   self->_interactionCommand = 1;
   lifecycleEvent = self->_lifecycleEvent;
-  self->_lifecycleEvent = v4;
+  self->_lifecycleEvent = eventCopy;
 }
 
-- (void)setApplyStateEvent:(id)a3
+- (void)setApplyStateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PCPInteractionRecord *)self clearOneofValuesForInteractionCommand];
   *&self->_has |= 1u;
   self->_interactionCommand = 2;
   applyStateEvent = self->_applyStateEvent;
-  self->_applyStateEvent = v4;
+  self->_applyStateEvent = eventCopy;
 }
 
-- (void)setRetrieveStateEvent:(id)a3
+- (void)setRetrieveStateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PCPInteractionRecord *)self clearOneofValuesForInteractionCommand];
   *&self->_has |= 1u;
   self->_interactionCommand = 3;
   retrieveStateEvent = self->_retrieveStateEvent;
-  self->_retrieveStateEvent = v4;
+  self->_retrieveStateEvent = eventCopy;
 }
 
-- (void)setComputeEvent:(id)a3
+- (void)setComputeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PCPInteractionRecord *)self clearOneofValuesForInteractionCommand];
   *&self->_has |= 1u;
   self->_interactionCommand = 4;
   computeEvent = self->_computeEvent;
-  self->_computeEvent = v4;
+  self->_computeEvent = eventCopy;
 }
 
-- (void)setPredictEvent:(id)a3
+- (void)setPredictEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(PCPInteractionRecord *)self clearOneofValuesForInteractionCommand];
   *&self->_has |= 1u;
   self->_interactionCommand = 5;
   predictEvent = self->_predictEvent;
-  self->_predictEvent = v4;
+  self->_predictEvent = eventCopy;
 }
 
-- (void)setInterruptRequest:(id)a3
+- (void)setInterruptRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(PCPInteractionRecord *)self clearOneofValuesForInteractionCommand];
   *&self->_has |= 1u;
   self->_interactionCommand = 6;
   interruptRequest = self->_interruptRequest;
-  self->_interruptRequest = v4;
+  self->_interruptRequest = requestCopy;
 }
 
 - (int)interactionCommand
@@ -93,40 +93,40 @@
   }
 }
 
-- (int)StringAsInteractionCommand:(id)a3
+- (int)StringAsInteractionCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  commandCopy = command;
+  if ([commandCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"lifecycleEvent"])
+  else if ([commandCopy isEqualToString:@"lifecycleEvent"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"applyStateEvent"])
+  else if ([commandCopy isEqualToString:@"applyStateEvent"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"retrieveStateEvent"])
+  else if ([commandCopy isEqualToString:@"retrieveStateEvent"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"computeEvent"])
+  else if ([commandCopy isEqualToString:@"computeEvent"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"predictEvent"])
+  else if ([commandCopy isEqualToString:@"predictEvent"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"InterruptRequest"])
+  else if ([commandCopy isEqualToString:@"InterruptRequest"])
   {
     v4 = 6;
   }
@@ -168,55 +168,55 @@
   v8.receiver = self;
   v8.super_class = PCPInteractionRecord;
   v4 = [(PCPInteractionRecord *)&v8 description];
-  v5 = [(PCPInteractionRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPInteractionRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   lifecycleEvent = self->_lifecycleEvent;
   if (lifecycleEvent)
   {
-    v5 = [(PCPLifecycleEvent *)lifecycleEvent dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"lifecycleEvent"];
+    dictionaryRepresentation = [(PCPLifecycleEvent *)lifecycleEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"lifecycleEvent"];
   }
 
   applyStateEvent = self->_applyStateEvent;
   if (applyStateEvent)
   {
-    v7 = [(PCPApplyState *)applyStateEvent dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"applyStateEvent"];
+    dictionaryRepresentation2 = [(PCPApplyState *)applyStateEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"applyStateEvent"];
   }
 
   retrieveStateEvent = self->_retrieveStateEvent;
   if (retrieveStateEvent)
   {
-    v9 = [(PCPRetrieveState *)retrieveStateEvent dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"retrieveStateEvent"];
+    dictionaryRepresentation3 = [(PCPRetrieveState *)retrieveStateEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"retrieveStateEvent"];
   }
 
   computeEvent = self->_computeEvent;
   if (computeEvent)
   {
-    v11 = [(PCPComputeRequest *)computeEvent dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"computeEvent"];
+    dictionaryRepresentation4 = [(PCPComputeRequest *)computeEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"computeEvent"];
   }
 
   predictEvent = self->_predictEvent;
   if (predictEvent)
   {
-    v13 = [(PCPPredictRequest *)predictEvent dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"predictEvent"];
+    dictionaryRepresentation5 = [(PCPPredictRequest *)predictEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"predictEvent"];
   }
 
   interruptRequest = self->_interruptRequest;
   if (interruptRequest)
   {
-    v15 = [(PCPComputeInterruptRequest *)interruptRequest dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"InterruptRequest"];
+    dictionaryRepresentation6 = [(PCPComputeInterruptRequest *)interruptRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"InterruptRequest"];
   }
 
   if (*&self->_has)
@@ -232,103 +232,103 @@
       v17 = off_1E83B8098[interactionCommand];
     }
 
-    [v3 setObject:v17 forKey:@"interaction_command"];
+    [dictionary setObject:v17 forKey:@"interaction_command"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_lifecycleEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_applyStateEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_retrieveStateEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_computeEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_predictEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_interruptRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_interactionCommand;
-    *(v4 + 64) |= 1u;
+    toCopy[6] = self->_interactionCommand;
+    *(toCopy + 64) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_lifecycleEvent)
   {
-    [v4 setLifecycleEvent:?];
-    v4 = v5;
+    [toCopy setLifecycleEvent:?];
+    toCopy = v5;
   }
 
   if (self->_applyStateEvent)
   {
     [v5 setApplyStateEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_retrieveStateEvent)
   {
     [v5 setRetrieveStateEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_computeEvent)
   {
     [v5 setComputeEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_predictEvent)
   {
     [v5 setPredictEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_interruptRequest)
   {
     [v5 setInterruptRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -336,51 +336,51 @@
     *(v5 + 64) |= 1u;
   }
 
-  v7 = [(PCPLifecycleEvent *)self->_lifecycleEvent copyWithZone:a3];
+  v7 = [(PCPLifecycleEvent *)self->_lifecycleEvent copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
-  v9 = [(PCPApplyState *)self->_applyStateEvent copyWithZone:a3];
+  v9 = [(PCPApplyState *)self->_applyStateEvent copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
-  v11 = [(PCPRetrieveState *)self->_retrieveStateEvent copyWithZone:a3];
+  v11 = [(PCPRetrieveState *)self->_retrieveStateEvent copyWithZone:zone];
   v12 = v6[7];
   v6[7] = v11;
 
-  v13 = [(PCPComputeRequest *)self->_computeEvent copyWithZone:a3];
+  v13 = [(PCPComputeRequest *)self->_computeEvent copyWithZone:zone];
   v14 = v6[2];
   v6[2] = v13;
 
-  v15 = [(PCPPredictRequest *)self->_predictEvent copyWithZone:a3];
+  v15 = [(PCPPredictRequest *)self->_predictEvent copyWithZone:zone];
   v16 = v6[6];
   v6[6] = v15;
 
-  v17 = [(PCPComputeInterruptRequest *)self->_interruptRequest copyWithZone:a3];
+  v17 = [(PCPComputeInterruptRequest *)self->_interruptRequest copyWithZone:zone];
   v18 = v6[4];
   v6[4] = v17;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_interactionCommand != *(v4 + 6))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_interactionCommand != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -388,13 +388,13 @@ LABEL_19:
   }
 
   lifecycleEvent = self->_lifecycleEvent;
-  if (lifecycleEvent | *(v4 + 5) && ![(PCPLifecycleEvent *)lifecycleEvent isEqual:?])
+  if (lifecycleEvent | *(equalCopy + 5) && ![(PCPLifecycleEvent *)lifecycleEvent isEqual:?])
   {
     goto LABEL_19;
   }
 
   applyStateEvent = self->_applyStateEvent;
-  if (applyStateEvent | *(v4 + 1))
+  if (applyStateEvent | *(equalCopy + 1))
   {
     if (![(PCPApplyState *)applyStateEvent isEqual:?])
     {
@@ -403,7 +403,7 @@ LABEL_19:
   }
 
   retrieveStateEvent = self->_retrieveStateEvent;
-  if (retrieveStateEvent | *(v4 + 7))
+  if (retrieveStateEvent | *(equalCopy + 7))
   {
     if (![(PCPRetrieveState *)retrieveStateEvent isEqual:?])
     {
@@ -412,7 +412,7 @@ LABEL_19:
   }
 
   computeEvent = self->_computeEvent;
-  if (computeEvent | *(v4 + 2))
+  if (computeEvent | *(equalCopy + 2))
   {
     if (![(PCPComputeRequest *)computeEvent isEqual:?])
     {
@@ -421,7 +421,7 @@ LABEL_19:
   }
 
   predictEvent = self->_predictEvent;
-  if (predictEvent | *(v4 + 6))
+  if (predictEvent | *(equalCopy + 6))
   {
     if (![(PCPPredictRequest *)predictEvent isEqual:?])
     {
@@ -430,7 +430,7 @@ LABEL_19:
   }
 
   interruptRequest = self->_interruptRequest;
-  if (interruptRequest | *(v4 + 4))
+  if (interruptRequest | *(equalCopy + 4))
   {
     v12 = [(PCPComputeInterruptRequest *)interruptRequest isEqual:?];
   }
@@ -465,13 +465,13 @@ LABEL_20:
   return v6 ^ v8 ^ [(PCPComputeInterruptRequest *)self->_interruptRequest hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 64))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 64))
   {
-    self->_interactionCommand = *(v4 + 6);
+    self->_interactionCommand = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 

@@ -1,8 +1,8 @@
 @interface LocationModel
 - (_TtC13SleepHealthUI13LocationModel)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation LocationModel
@@ -14,29 +14,29 @@
   return result;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_269D6DC78(v8);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_269D6DC78(errorCopy);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_269C1B0B8(0, &qword_28034E668);
   v6 = sub_269D9A7E0();
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_269D6DF34(v6);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5._internal = self;
   internal = v5._internal;
-  v5.super.isa = v4;
+  v5.super.isa = authorizationCopy;
   LocationModel.locationManagerDidChangeAuthorization(_:)(v5);
 }
 

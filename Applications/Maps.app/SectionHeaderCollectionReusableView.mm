@@ -2,48 +2,48 @@
 + (NSString)reuseIdentifier;
 - (BOOL)firstNonEmptySection;
 - (BOOL)showsBottomHairline;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSString)actionTitle;
 - (NSString)title;
-- (SectionHeaderCollectionReusableView)initWithFrame:(CGRect)a3;
-- (SectionHeaderCollectionReusableView)initWithTitle:(id)a3 isFirstNonEmptySection:(BOOL)a4;
+- (SectionHeaderCollectionReusableView)initWithFrame:(CGRect)frame;
+- (SectionHeaderCollectionReusableView)initWithTitle:(id)title isFirstNonEmptySection:(BOOL)section;
 - (id)actionHandler;
 - (void)layoutMarginsDidChange;
 - (void)prepareForReuse;
-- (void)setAccessibilityIdentifiersWithBaseString:(id)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setActionTitle:(id)a3 completionHandler:(id)a4;
-- (void)setFirstNonEmptySection:(BOOL)a3;
-- (void)setFirstNonEmptySection:(BOOL)a3 topMargin:(double)a4;
-- (void)setShowsBottomHairline:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityIdentifiersWithBaseString:(id)string;
+- (void)setActionHandler:(id)handler;
+- (void)setActionTitle:(id)title;
+- (void)setActionTitle:(id)title completionHandler:(id)handler;
+- (void)setFirstNonEmptySection:(BOOL)section;
+- (void)setFirstNonEmptySection:(BOOL)section topMargin:(double)margin;
+- (void)setShowsBottomHairline:(BOOL)hairline;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SectionHeaderCollectionReusableView
 
-- (void)setActionTitle:(id)a3 completionHandler:(id)a4
+- (void)setActionTitle:(id)title completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v8 setActionTitle:v7];
+  handlerCopy = handler;
+  titleCopy = title;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setActionTitle:titleCopy];
 
-  v9 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v9 setActionHandler:v6];
+  sectionHeaderView2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView2 setActionHandler:handlerCopy];
 }
 
-- (SectionHeaderCollectionReusableView)initWithTitle:(id)a3 isFirstNonEmptySection:(BOOL)a4
+- (SectionHeaderCollectionReusableView)initWithTitle:(id)title isFirstNonEmptySection:(BOOL)section
 {
-  v4 = a4;
-  v6 = a3;
+  sectionCopy = section;
+  titleCopy = title;
   v7 = [(SectionHeaderCollectionReusableView *)self init];
   v8 = v7;
   if (v7)
   {
-    [(SectionHeaderCollectionReusableView *)v7 setTitle:v6];
-    [(SectionHeaderCollectionReusableView *)v8 setFirstNonEmptySection:v4];
+    [(SectionHeaderCollectionReusableView *)v7 setTitle:titleCopy];
+    [(SectionHeaderCollectionReusableView *)v8 setFirstNonEmptySection:sectionCopy];
   }
 
   return v8;
@@ -51,112 +51,112 @@
 
 - (id)actionHandler
 {
-  v2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v3 = [v2 actionHandler];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  actionHandler = [sectionHeaderView actionHandler];
 
-  return v3;
+  return actionHandler;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v5 setActionHandler:v4];
+  handlerCopy = handler;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setActionHandler:handlerCopy];
 }
 
 - (BOOL)showsBottomHairline
 {
-  v2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v3 = [v2 showsBottomHairline];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  showsBottomHairline = [sectionHeaderView showsBottomHairline];
 
-  return v3;
+  return showsBottomHairline;
 }
 
-- (void)setShowsBottomHairline:(BOOL)a3
+- (void)setShowsBottomHairline:(BOOL)hairline
 {
-  v3 = a3;
-  v4 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v4 setShowsBottomHairline:v3];
+  hairlineCopy = hairline;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setShowsBottomHairline:hairlineCopy];
 }
 
 - (BOOL)firstNonEmptySection
 {
-  v2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v3 = [v2 firstNonEmptySection];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  firstNonEmptySection = [sectionHeaderView firstNonEmptySection];
 
-  return v3;
+  return firstNonEmptySection;
 }
 
-- (void)setFirstNonEmptySection:(BOOL)a3
+- (void)setFirstNonEmptySection:(BOOL)section
 {
-  v3 = a3;
-  v4 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v4 setFirstNonEmptySection:v3];
+  sectionCopy = section;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setFirstNonEmptySection:sectionCopy];
 }
 
 - (NSString)actionTitle
 {
-  v2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v3 = [v2 actionTitle];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  actionTitle = [sectionHeaderView actionTitle];
 
-  return v3;
+  return actionTitle;
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v5 setActionTitle:v4];
+  titleCopy = title;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setActionTitle:titleCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v3 = [v2 title];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  title = [sectionHeaderView title];
 
-  return v3;
+  return title;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setTitle:titleCopy];
 }
 
-- (void)setAccessibilityIdentifiersWithBaseString:(id)a3
+- (void)setAccessibilityIdentifiersWithBaseString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingString:@"SectionHeaderView"];
+  stringCopy = string;
+  v5 = [stringCopy stringByAppendingString:@"SectionHeaderView"];
   [(SectionHeaderCollectionReusableView *)self setAccessibilityIdentifier:v5];
 
-  v6 = [v4 stringByAppendingString:@"Section"];
-  v7 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v7 setAccessibilityIdentifier:v6];
+  v6 = [stringCopy stringByAppendingString:@"Section"];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setAccessibilityIdentifier:v6];
 
-  v8 = [v4 stringByAppendingString:@"Action"];
-  v9 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v10 = [v9 actionButton];
-  [v10 setAccessibilityIdentifier:v8];
+  v8 = [stringCopy stringByAppendingString:@"Action"];
+  sectionHeaderView2 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  actionButton = [sectionHeaderView2 actionButton];
+  [actionButton setAccessibilityIdentifier:v8];
 
-  v13 = [v4 stringByAppendingString:@"Title"];
+  v13 = [stringCopy stringByAppendingString:@"Title"];
 
-  v11 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  v12 = [v11 label];
-  [v12 setAccessibilityIdentifier:v13];
+  sectionHeaderView3 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  label = [sectionHeaderView3 label];
+  [label setAccessibilityIdentifier:v13];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = SectionHeaderCollectionReusableView;
-  v4 = a3;
-  [(SectionHeaderCollectionReusableView *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SectionHeaderCollectionReusableView *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(SectionHeaderCollectionReusableView *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(SectionHeaderCollectionReusableView *)self invalidateIntrinsicContentSize];
@@ -171,21 +171,21 @@
   [(SectionHeaderCollectionReusableView *)self invalidateIntrinsicContentSize];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SectionHeaderCollectionReusableView *)self layoutMargins];
   v11 = v10;
   [(SectionHeaderCollectionReusableView *)self layoutMargins];
   v13 = width - (v11 + v12);
-  v14 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v14 updateConstraintsWithAvailableWidthWithoutMargins:v13];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView updateConstraintsWithAvailableWidthWithoutMargins:v13];
 
   v19.receiver = self;
   v19.super_class = SectionHeaderCollectionReusableView;
-  *&v15 = a4;
-  *&v16 = a5;
+  *&v15 = priority;
+  *&v16 = fittingPriority;
   [(SectionHeaderCollectionReusableView *)&v19 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v15, v16];
   result.height = v18;
   result.width = v17;
@@ -197,22 +197,22 @@
   v4.receiver = self;
   v4.super_class = SectionHeaderCollectionReusableView;
   [(SectionHeaderCollectionReusableView *)&v4 prepareForReuse];
-  v3 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v3 clearContents];
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView clearContents];
 }
 
-- (void)setFirstNonEmptySection:(BOOL)a3 topMargin:(double)a4
+- (void)setFirstNonEmptySection:(BOOL)section topMargin:(double)margin
 {
-  v5 = a3;
-  v6 = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
-  [v6 setFirstNonEmptySection:v5 topMargin:a4];
+  sectionCopy = section;
+  sectionHeaderView = [(SectionHeaderCollectionReusableView *)self sectionHeaderView];
+  [sectionHeaderView setFirstNonEmptySection:sectionCopy topMargin:margin];
 }
 
-- (SectionHeaderCollectionReusableView)initWithFrame:(CGRect)a3
+- (SectionHeaderCollectionReusableView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = SectionHeaderCollectionReusableView;
-  v3 = [(SectionHeaderCollectionReusableView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SectionHeaderCollectionReusableView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -227,21 +227,21 @@
 
     [(SectionHeaderView *)v3->_sectionHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SectionHeaderCollectionReusableView *)v3 addSubview:v3->_sectionHeaderView];
-    v20 = [(SectionHeaderView *)v3->_sectionHeaderView leadingAnchor];
-    v19 = [(SectionHeaderCollectionReusableView *)v3 leadingAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    leadingAnchor = [(SectionHeaderView *)v3->_sectionHeaderView leadingAnchor];
+    leadingAnchor2 = [(SectionHeaderCollectionReusableView *)v3 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[0] = v18;
-    v17 = [(SectionHeaderView *)v3->_sectionHeaderView trailingAnchor];
-    v7 = [(SectionHeaderCollectionReusableView *)v3 trailingAnchor];
-    v8 = [v17 constraintEqualToAnchor:v7];
+    trailingAnchor = [(SectionHeaderView *)v3->_sectionHeaderView trailingAnchor];
+    trailingAnchor2 = [(SectionHeaderCollectionReusableView *)v3 trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[1] = v8;
-    v9 = [(SectionHeaderView *)v3->_sectionHeaderView topAnchor];
-    v10 = [(SectionHeaderCollectionReusableView *)v3 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(SectionHeaderView *)v3->_sectionHeaderView topAnchor];
+    topAnchor2 = [(SectionHeaderCollectionReusableView *)v3 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v22[2] = v11;
-    v12 = [(SectionHeaderView *)v3->_sectionHeaderView bottomAnchor];
-    v13 = [(SectionHeaderCollectionReusableView *)v3 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(SectionHeaderView *)v3->_sectionHeaderView bottomAnchor];
+    bottomAnchor2 = [(SectionHeaderCollectionReusableView *)v3 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v22[3] = v14;
     v15 = [NSArray arrayWithObjects:v22 count:4];
     [NSLayoutConstraint activateConstraints:v15];

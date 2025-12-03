@@ -99,10 +99,4 @@ void __76__NSCharacterSet_CRLineWrappingUtilities___crClosingPunctuationCharacte
   qword_1ED960168 = v0;
 }
 
-void __61__NSCharacterSet_CRLineWrappingUtilities___crMOSCharacterSet__block_invoke()
-  v0 = {;
-  v1 = qword_1ED960178;
-  qword_1ED960178 = v0;
-}
-
 @end

@@ -1,23 +1,23 @@
 @interface PKDTransaction
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)marshalPaths:(id)a3;
-- (BOOL)processPaths:(id)a3;
-- (BOOL)processUuidList:(id)a3;
+- (BOOL)marshalPaths:(id)paths;
+- (BOOL)processPaths:(id)paths;
+- (BOOL)processUuidList:(id)list;
 - (OS_xpc_object)connection;
 - (PKDServer)server;
-- (PKDTransaction)initWithRequest:(id)a3 forClient:(id)a4;
-- (id)findPlugInByPathURL:(id)a3;
-- (id)findPlugInByUUID:(id)a3;
+- (PKDTransaction)initWithRequest:(id)request forClient:(id)client;
+- (id)findPlugInByPathURL:(id)l;
+- (id)findPlugInByUUID:(id)d;
 - (void)accessPlugIns;
-- (void)addAnnotationForPlugIn:(id)a3 in:(id)a4;
+- (void)addAnnotationForPlugIn:(id)in in:(id)a4;
 - (void)addPlugIns;
 - (void)annotatePlugIns;
 - (void)bulkAnnotatePlugIns;
 - (void)bulkPlugIns;
 - (void)dispatch;
 - (void)done;
-- (void)fail:(int64_t)a3 error:(id)a4;
-- (void)fail:(int64_t)a3 message:(id)a4;
+- (void)fail:(int64_t)fail error:(id)error;
+- (void)fail:(int64_t)fail message:(id)message;
 - (void)findPlugIn;
 - (void)lockDownPlugIns;
 - (void)matchPlugIns;
@@ -29,9 +29,9 @@
 
 - (void)dispatch
 {
-  v2 = [a1 client];
-  [v2 pid];
-  v7 = a1[1];
+  client = [self client];
+  [client pid];
+  v7 = self[1];
   dispatch_queue_get_label(0);
   OUTLINED_FUNCTION_1_2();
   _os_log_debug_impl(v3, v4, OS_LOG_TYPE_DEBUG, v5, v6, 0x1Cu);
@@ -39,15 +39,15 @@
 
 - (PKDServer)server
 {
-  v2 = [(PKDTransaction *)self client];
-  v3 = [v2 server];
+  client = [(PKDTransaction *)self client];
+  server = [client server];
 
-  return v3;
+  return server;
 }
 
 - (void)matchPlugIns
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEFAULT))
   {
     OUTLINED_FUNCTION_1_2();
     _os_log_impl(v1, v2, OS_LOG_TYPE_DEFAULT, v3, v4, 2u);
@@ -56,25 +56,25 @@
 
 - (void)findPlugIn
 {
-  v2 = [a1 uuid];
-  v3 = [a1 identifier];
-  v8 = [a1 version];
+  uuid = [self uuid];
+  identifier = [self identifier];
+  version = [self version];
   OUTLINED_FUNCTION_1_2();
   _os_log_error_impl(v4, v5, OS_LOG_TYPE_ERROR, v6, v7, 0x2Au);
 }
 
 - (OS_xpc_object)connection
 {
-  v2 = [(PKDTransaction *)self client];
-  v3 = [v2 connection];
+  client = [(PKDTransaction *)self client];
+  connection = [client connection];
 
-  return v3;
+  return connection;
 }
 
 - (void)done
 {
-  v3 = [(PKDTransaction *)self reply];
-  uint64 = xpc_dictionary_get_uint64(v3, &PKDErrorCodeKey);
+  reply = [(PKDTransaction *)self reply];
+  uint64 = xpc_dictionary_get_uint64(reply, &PKDErrorCodeKey);
 
   v5 = pklog_handle_for_category();
   v6 = v5;
@@ -89,9 +89,9 @@
     _os_signpost_emit_with_name_impl(&dword_0, v6, OS_SIGNPOST_INTERVAL_END, interval, "DaemonXPCRequest", " command=%{public, signpost.description:attribute}s  error=%{public, signpost.description:attribute}llu ", &v11, 0x16u);
   }
 
-  v9 = [(PKDTransaction *)self connection];
-  v10 = [(PKDTransaction *)self reply];
-  xpc_connection_send_message(v9, v10);
+  connection = [(PKDTransaction *)self connection];
+  reply2 = [(PKDTransaction *)self reply];
+  xpc_connection_send_message(connection, reply2);
 }
 
 void __30__PKDTransaction_matchPlugIns__block_invoke_151(uint64_t a1, void *a2)
@@ -815,15 +815,15 @@ LABEL_25:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Ready plugins received as euid = %d, uid = %d, personaid = %d, type = %s, name = %s", buf, 0x28u);
   }
 
-  v5 = [(PKDTransaction *)self request];
-  v6 = xpc_dictionary_get_dictionary(v5, &PKDEnvironmentKey);
+  request = [(PKDTransaction *)self request];
+  v6 = xpc_dictionary_get_dictionary(request, &PKDEnvironmentKey);
   v7 = _CFXPCCreateCFObjectFromXPCObject();
 
   if (v7)
   {
-    v8 = [(PKDTransaction *)self client];
+    client = [(PKDTransaction *)self client];
     v9 = PKEnvironmentProvisionEntitlement;
-    v10 = [v8 hasEntitlement:PKEnvironmentProvisionEntitlement];
+    v10 = [client hasEntitlement:PKEnvironmentProvisionEntitlement];
 
     if ((v10 & 1) == 0)
     {
@@ -835,8 +835,8 @@ LABEL_25:
     v11 = pklog_handle_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(PKDTransaction *)self client];
-      v13 = [v12 pid];
+      client2 = [(PKDTransaction *)self client];
+      v13 = [client2 pid];
       v14 = [v7 count];
       *v66 = 67109376;
       *&v66[4] = v13;
@@ -846,14 +846,14 @@ LABEL_25:
     }
   }
 
-  v15 = [(PKDTransaction *)self request];
-  string = xpc_dictionary_get_string(v15, &PKDSandboxOverrideKey);
+  request2 = [(PKDTransaction *)self request];
+  string = xpc_dictionary_get_string(request2, &PKDSandboxOverrideKey);
 
   if (string)
   {
-    v17 = [(PKDTransaction *)self client];
+    client3 = [(PKDTransaction *)self client];
     v18 = PKSandboxOverrideEntitlement;
-    v19 = [v17 hasEntitlement:PKSandboxOverrideEntitlement];
+    v19 = [client3 hasEntitlement:PKSandboxOverrideEntitlement];
 
     if ((v19 & 1) == 0)
     {
@@ -866,8 +866,8 @@ LABEL_25:
     v20 = pklog_handle_for_category();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [(PKDTransaction *)self client];
-      v22 = [v21 pid];
+      client4 = [(PKDTransaction *)self client];
+      v22 = [client4 pid];
       *v66 = 67109378;
       *&v66[4] = v22;
       *&v66[8] = 2112;
@@ -876,14 +876,14 @@ LABEL_25:
     }
   }
 
-  v23 = [(PKDTransaction *)self request];
-  v24 = xpc_dictionary_get_array(v23, &PKDPreferredLanguagesKey);
+  request3 = [(PKDTransaction *)self request];
+  v24 = xpc_dictionary_get_array(request3, &PKDPreferredLanguagesKey);
   v40 = _CFXPCCreateCFObjectFromXPCObject();
 
   v25 = objc_opt_new();
   v26 = objc_opt_new();
-  v27 = [(PKDTransaction *)self request];
-  v28 = xpc_dictionary_get_string(v27, &PKDLaunchPersonaKey);
+  request4 = [(PKDTransaction *)self request];
+  v28 = xpc_dictionary_get_string(request4, &PKDLaunchPersonaKey);
 
   if (v28)
   {
@@ -923,7 +923,7 @@ LABEL_25:
     v41[2] = __30__PKDTransaction_readyPlugIns__block_invoke_85;
     v41[3] = &unk_28D60;
     v42 = v32;
-    v43 = self;
+    selfCopy = self;
     v44 = v7;
     v45 = v40;
     v46 = v39;
@@ -936,14 +936,14 @@ LABEL_25:
     if ([v34 count])
     {
       v36 = _CFXPCCreateXPCObjectFromCFObject();
-      v37 = [(PKDTransaction *)self reply];
-      xpc_dictionary_set_value(v37, &PKDPidArrayKey, v36);
+      reply = [(PKDTransaction *)self reply];
+      xpc_dictionary_set_value(reply, &PKDPidArrayKey, v36);
     }
 
     if (*(*&v66[8] + 24) == 1 && xpc_array_get_count(v35))
     {
-      v38 = [(PKDTransaction *)self reply];
-      xpc_dictionary_set_value(v38, &PKDUUIDKey, v35);
+      reply2 = [(PKDTransaction *)self reply];
+      xpc_dictionary_set_value(reply2, &PKDUUIDKey, v35);
     }
 
     [(PKDTransaction *)self done];
@@ -1096,10 +1096,10 @@ void __30__PKDTransaction_readyPlugIns__block_invoke_85(uint64_t a1, void *a2, u
   }
 }
 
-- (PKDTransaction)initWithRequest:(id)a3 forClient:(id)a4
+- (PKDTransaction)initWithRequest:(id)request forClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  clientCopy = client;
   v25.receiver = self;
   v25.super_class = PKDTransaction;
   v9 = [(PKDTransaction *)&v25 init];
@@ -1109,15 +1109,15 @@ void __30__PKDTransaction_readyPlugIns__block_invoke_85(uint64_t a1, void *a2, u
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v9->_client, a4);
-  objc_storeStrong(&v10->_request, a3);
-  v11 = [(PKDTransaction *)v10 request];
-  reply = xpc_dictionary_create_reply(v11);
+  objc_storeStrong(&v9->_client, client);
+  objc_storeStrong(&v10->_request, request);
+  request = [(PKDTransaction *)v10 request];
+  reply = xpc_dictionary_create_reply(request);
   v13 = v10->_reply;
   v10->_reply = reply;
 
-  v14 = [(PKDTransaction *)v10 request];
-  v10->_type = xpc_dictionary_get_string(v14, &PKDRequestKey);
+  request2 = [(PKDTransaction *)v10 request];
+  v10->_type = xpc_dictionary_get_string(request2, &PKDRequestKey);
 
   v15 = pklog_handle_for_category();
   v10->_interval = os_signpost_id_make_with_pointer(v15, v10);
@@ -1125,7 +1125,7 @@ void __30__PKDTransaction_readyPlugIns__block_invoke_85(uint64_t a1, void *a2, u
   type = v10->_type;
   if (!strcmp(type, &PKDMatchRequest))
   {
-    uuid = xpc_dictionary_get_uuid(v7, &PKDUUIDKey);
+    uuid = xpc_dictionary_get_uuid(requestCopy, &PKDUUIDKey);
     if (!uuid)
     {
       goto LABEL_7;
@@ -1140,7 +1140,7 @@ void __30__PKDTransaction_readyPlugIns__block_invoke_85(uint64_t a1, void *a2, u
     goto LABEL_7;
   }
 
-  v24 = xpc_dictionary_get_array(v7, &PKDUUIDKey);
+  v24 = xpc_dictionary_get_array(requestCopy, &PKDUUIDKey);
   uuid = xpc_array_get_uuid(v24, 0);
 
   if (uuid)
@@ -1172,12 +1172,12 @@ LABEL_11:
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(PKDTransaction *)self client];
-  if (v4)
+  client = [(PKDTransaction *)self client];
+  if (client)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = client;
+    [client auditToken];
+    client = v6;
   }
 
   else
@@ -1189,11 +1189,11 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)marshalPaths:(id)a3
+- (BOOL)marshalPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(PKDTransaction *)self request];
-  v6 = xpc_dictionary_get_array(v5, &PKDPathsKey);
+  pathsCopy = paths;
+  request = [(PKDTransaction *)self request];
+  v6 = xpc_dictionary_get_array(request, &PKDPathsKey);
 
   if (v6 && xpc_get_type(v6) == &_xpc_type_array)
   {
@@ -1202,7 +1202,7 @@ LABEL_11:
     v9[2] = __31__PKDTransaction_marshalPaths___block_invoke;
     v9[3] = &unk_28C70;
     v9[4] = self;
-    v10 = v4;
+    v10 = pathsCopy;
     v7 = xpc_array_apply(v6, v9);
   }
 
@@ -1253,14 +1253,14 @@ uint64_t __31__PKDTransaction_marshalPaths___block_invoke(uint64_t a1, int a2, x
   return v11;
 }
 
-- (BOOL)processPaths:(id)a3
+- (BOOL)processPaths:(id)paths
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __31__PKDTransaction_processPaths___block_invoke;
   v7[3] = &unk_28C98;
-  v4 = a3;
-  v8 = v4;
+  pathsCopy = paths;
+  v8 = pathsCopy;
   v5 = [(PKDTransaction *)self marshalPaths:v7];
   if (v5)
   {
@@ -1272,8 +1272,8 @@ uint64_t __31__PKDTransaction_marshalPaths___block_invoke(uint64_t a1, int a2, x
 
 - (void)addPlugIns
 {
-  v1 = [a1 client];
-  [v1 pid];
+  client = [self client];
+  [client pid];
   OUTLINED_FUNCTION_1_2();
   _os_log_error_impl(v2, v3, OS_LOG_TYPE_ERROR, v4, v5, 8u);
 }
@@ -1361,8 +1361,8 @@ BOOL __31__PKDTransaction_removePlugIns__block_invoke(uint64_t a1, void *a2)
 
 - (void)bulkPlugIns
 {
-  v3 = [(PKDTransaction *)self request];
-  uint64 = xpc_dictionary_get_uint64(v3, &PKDFlagsKey);
+  request = [(PKDTransaction *)self request];
+  uint64 = xpc_dictionary_get_uint64(request, &PKDFlagsKey);
 
   v5 = pklog_handle_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1373,20 +1373,20 @@ BOOL __31__PKDTransaction_removePlugIns__block_invoke(uint64_t a1, void *a2)
   [(PKDTransaction *)self done];
 }
 
-- (BOOL)processUuidList:(id)a3
+- (BOOL)processUuidList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
   v28 = 0;
-  v5 = [(PKDTransaction *)self request];
-  v6 = xpc_dictionary_get_array(v5, &PKDUUIDKey);
+  request = [(PKDTransaction *)self request];
+  v6 = xpc_dictionary_get_array(request, &PKDUUIDKey);
 
   if (v6 && xpc_get_type(v6) == &_xpc_type_array)
   {
-    v8 = [(PKDTransaction *)self request];
-    v9 = xpc_dictionary_get_array(v8, &PKDPathsKey);
+    request2 = [(PKDTransaction *)self request];
+    v9 = xpc_dictionary_get_array(request2, &PKDPathsKey);
 
     if (v9 && xpc_get_type(v9) != &_xpc_type_array)
     {
@@ -1416,8 +1416,8 @@ BOOL __31__PKDTransaction_removePlugIns__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v13 = [(PKDTransaction *)self request];
-    v14 = xpc_dictionary_get_array(v13, &PKDOneShotUUIDsKey);
+    request3 = [(PKDTransaction *)self request];
+    v14 = xpc_dictionary_get_array(request3, &PKDOneShotUUIDsKey);
 
     if (v14 && xpc_get_type(v14) != &_xpc_type_array)
     {
@@ -1457,7 +1457,7 @@ BOOL __31__PKDTransaction_removePlugIns__block_invoke(uint64_t a1, void *a2)
     v25 = v27;
     v19 = v14;
     v23 = v19;
-    v24 = v4;
+    v24 = listCopy;
     v7 = xpc_array_apply(v6, applier);
   }
 
@@ -1725,8 +1725,8 @@ BOOL __31__PKDTransaction_accessPlugIns__block_invoke(uint64_t a1, void *a2)
 
 - (void)annotatePlugIns
 {
-  v3 = [(PKDTransaction *)self request];
-  v4 = xpc_dictionary_get_dictionary(v3, &PKDAnnotationsKey);
+  request = [(PKDTransaction *)self request];
+  v4 = xpc_dictionary_get_dictionary(request, &PKDAnnotationsKey);
 
   if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
   {
@@ -1784,7 +1784,7 @@ LABEL_17:
       v21 = 3221225472;
       v22 = __33__PKDTransaction_annotatePlugIns__block_invoke;
       v23 = &unk_28D88;
-      v24 = self;
+      selfCopy = self;
       v25 = v6;
       if ([(PKDTransaction *)self processUuidList:&v20])
       {
@@ -1852,8 +1852,8 @@ uint64_t __33__PKDTransaction_annotatePlugIns__block_invoke(uint64_t a1, void *a
 
 - (void)bulkAnnotatePlugIns
 {
-  v3 = [a1 client];
-  [v3 pid];
+  client = [self client];
+  [client pid];
   [a2 count];
   OUTLINED_FUNCTION_1_2();
   _os_log_debug_impl(v4, v5, OS_LOG_TYPE_DEBUG, v6, v7, 0xEu);
@@ -1861,12 +1861,12 @@ uint64_t __33__PKDTransaction_annotatePlugIns__block_invoke(uint64_t a1, void *a
 
 - (void)lockDownPlugIns
 {
-  v3 = [(PKDTransaction *)self request];
-  uint64 = xpc_dictionary_get_uint64(v3, &PKDFlagsKey);
+  request = [(PKDTransaction *)self request];
+  uint64 = xpc_dictionary_get_uint64(request, &PKDFlagsKey);
 
   v5 = uint64 & 0x10;
-  v6 = [(PKDTransaction *)self request];
-  v7 = xpc_dictionary_get_array(v6, &PKDUUIDKey);
+  request2 = [(PKDTransaction *)self request];
+  v7 = xpc_dictionary_get_array(request2, &PKDUUIDKey);
 
   if (!v7)
   {
@@ -1933,11 +1933,11 @@ LABEL_17:
               }
 
               v27 = *(*(&v52 + 1) + 8 * v25);
-              v28 = [v27 checkBusy];
-              if (v28)
+              checkBusy = [v27 checkBusy];
+              if (checkBusy)
               {
                 [v21 addObject:v27];
-                xpc_array_append_value(v20, v28);
+                xpc_array_append_value(v20, checkBusy);
               }
 
               ++v25;
@@ -1963,8 +1963,8 @@ LABEL_17:
           [PKDTransaction lockDownPlugIns];
         }
 
-        v30 = [(PKDTransaction *)self reply];
-        xpc_dictionary_set_value(v30, &PKDConflictsKey, v20);
+        reply = [(PKDTransaction *)self reply];
+        xpc_dictionary_set_value(reply, &PKDConflictsKey, v20);
 
         [(PKDTransaction *)self fail:14 message:@"plugins are busy"];
       }
@@ -1973,36 +1973,36 @@ LABEL_17:
       {
         v31 = v7;
         v32 = [PKDPlugInHold alloc];
-        v33 = [(PKDTransaction *)self client];
-        v34 = [(PKDPlugInHold *)v32 initWithPlugIns:v9 extensionPointName:v10 forClient:v33];
+        client = [(PKDTransaction *)self client];
+        v34 = [(PKDPlugInHold *)v32 initWithPlugIns:v9 extensionPointName:v10 forClient:client];
 
-        v35 = [(PKDTransaction *)self server];
-        [v35 addHold:v34 silent:v47 != 0];
+        server = [(PKDTransaction *)self server];
+        [server addHold:v34 silent:v47 != 0];
 
         *buf = 0uLL;
-        v36 = [(PKDPlugInHold *)v34 uuid];
-        [v36 getUUIDBytes:buf];
+        uuid = [(PKDPlugInHold *)v34 uuid];
+        [uuid getUUIDBytes:buf];
 
-        v37 = [(PKDTransaction *)self reply];
-        xpc_dictionary_set_uuid(v37, &PKDUUIDKey, buf);
+        reply2 = [(PKDTransaction *)self reply];
+        xpc_dictionary_set_uuid(reply2, &PKDUUIDKey, buf);
 
         if ((uint64 & 4) != 0)
         {
           if ((uint64 & 0x20) != 0)
           {
-            v41 = [(PKDTransaction *)self server];
-            v42 = [v41 plugInsWithExtensionPointName:v10 platforms:v48];
+            server2 = [(PKDTransaction *)self server];
+            v42 = [server2 plugInsWithExtensionPointName:v10 platforms:v48];
             [v9 addObjectsFromArray:v42];
           }
 
-          v43 = [(PKDTransaction *)self server];
+          server3 = [(PKDTransaction *)self server];
           v49[0] = _NSConcreteStackBlock;
           v49[1] = 3221225472;
           v49[2] = __33__PKDTransaction_lockDownPlugIns__block_invoke_124;
           v49[3] = &unk_28E28;
           v50 = v34;
-          v51 = self;
-          [v43 terminatePlugIns:v9 synchronously:(uint64 >> 3) & 1 reply:v49];
+          selfCopy = self;
+          [server3 terminatePlugIns:v9 synchronously:(uint64 >> 3) & 1 reply:v49];
         }
 
         else
@@ -2010,10 +2010,10 @@ LABEL_17:
           v38 = pklog_handle_for_category();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = [(PKDPlugInHold *)v34 uuid];
-            v40 = [v39 UUIDString];
+            uuid2 = [(PKDPlugInHold *)v34 uuid];
+            uUIDString = [uuid2 UUIDString];
             *v63 = 138543362;
-            v64 = v40;
+            v64 = uUIDString;
             _os_log_impl(&dword_0, v38, OS_LOG_TYPE_DEFAULT, "hold request granted token: %{public}@", v63, 0xCu);
           }
 
@@ -2027,8 +2027,8 @@ LABEL_17:
       goto LABEL_45;
     }
 
-    v12 = [(PKDTransaction *)self request];
-    string = xpc_dictionary_get_string(v12, &PKDExtensionPointNameKey);
+    request3 = [(PKDTransaction *)self request];
+    string = xpc_dictionary_get_string(request3, &PKDExtensionPointNameKey);
 
     if (!string)
     {
@@ -2039,8 +2039,8 @@ LABEL_17:
     }
 
     v10 = [NSString stringWithUTF8String:string];
-    v14 = [(PKDTransaction *)self request];
-    v15 = xpc_dictionary_get_array(v14, &PKDExtensionPointPlatformsKey);
+    request4 = [(PKDTransaction *)self request];
+    v15 = xpc_dictionary_get_array(request4, &PKDExtensionPointPlatformsKey);
 
     if (v15 && xpc_array_get_count(v15))
     {
@@ -2221,14 +2221,14 @@ id __33__PKDTransaction_lockDownPlugIns__block_invoke_124(uint64_t a1)
   return [*(a1 + 40) done];
 }
 
-- (id)findPlugInByUUID:(id)a3
+- (id)findPlugInByUUID:(id)d
 {
-  bytes = xpc_uuid_get_bytes(a3);
+  bytes = xpc_uuid_get_bytes(d);
   if (bytes)
   {
     v5 = [[NSUUID alloc] initWithUUIDBytes:bytes];
-    v6 = [(PKDTransaction *)self server];
-    v7 = [v6 findPlugInWithUUID:v5];
+    server = [(PKDTransaction *)self server];
+    v7 = [server findPlugInWithUUID:v5];
   }
 
   else
@@ -2245,17 +2245,17 @@ id __33__PKDTransaction_lockDownPlugIns__block_invoke_124(uint64_t a1)
   return v7;
 }
 
-- (id)findPlugInByPathURL:(id)a3
+- (id)findPlugInByPathURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [NSString alloc];
-  string_ptr = xpc_string_get_string_ptr(v4);
+  string_ptr = xpc_string_get_string_ptr(lCopy);
 
   v7 = [v5 initWithUTF8String:string_ptr];
   v8 = [NSURL URLWithString:v7];
 
-  v9 = [(PKDTransaction *)self server];
-  v10 = [v9 findPlugInAtPath:v8];
+  server = [(PKDTransaction *)self server];
+  v10 = [server findPlugInAtPath:v8];
 
   return v10;
 }
@@ -2427,16 +2427,16 @@ LABEL_17:
   return v15;
 }
 
-- (void)addAnnotationForPlugIn:(id)a3 in:(id)a4
+- (void)addAnnotationForPlugIn:(id)in in:(id)a4
 {
-  v6 = a3;
+  inCopy = in;
   v7 = a4;
-  v8 = [(PKDTransaction *)self server];
-  v9 = [v8 annotationForPlugIn:v6];
+  server = [(PKDTransaction *)self server];
+  v9 = [server annotationForPlugIn:inCopy];
 
   if (!v9)
   {
-    if ([(PKDTransaction *)self pluginShouldBeAutoEnabled:v6])
+    if ([(PKDTransaction *)self pluginShouldBeAutoEnabled:inCopy])
     {
       v10 = PKAnnotationElectionKey;
       v11 = &off_2A240;
@@ -2452,38 +2452,38 @@ LABEL_17:
   [v7 setObject:v9 forKeyedSubscript:PKAnnotationsFormKey];
 }
 
-- (void)fail:(int64_t)a3 message:(id)a4
+- (void)fail:(int64_t)fail message:(id)message
 {
-  v6 = a4;
-  v7 = [(PKDTransaction *)self reply];
-  xpc_dictionary_set_uint64(v7, &PKDErrorCodeKey, a3);
+  messageCopy = message;
+  reply = [(PKDTransaction *)self reply];
+  xpc_dictionary_set_uint64(reply, &PKDErrorCodeKey, fail);
 
-  v8 = [(PKDTransaction *)self reply];
-  v9 = [v6 UTF8String];
+  reply2 = [(PKDTransaction *)self reply];
+  uTF8String = [messageCopy UTF8String];
 
-  xpc_dictionary_set_string(v8, &PKDErrorKey, v9);
+  xpc_dictionary_set_string(reply2, &PKDErrorKey, uTF8String);
 
   [(PKDTransaction *)self done];
 }
 
-- (void)fail:(int64_t)a3 error:(id)a4
+- (void)fail:(int64_t)fail error:(id)error
 {
-  v11 = a4;
-  v6 = [v11 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v7 = PKPlugInKitErrorDomain;
 
-  if (v6 == v7)
+  if (domain == v7)
   {
-    v9 = [v11 code];
-    v8 = [v11 userInfo];
-    v10 = [v8 objectForKeyedSubscript:NSLocalizedDescriptionKey];
-    [(PKDTransaction *)self fail:v9 message:v10];
+    code = [errorCopy code];
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:NSLocalizedDescriptionKey];
+    [(PKDTransaction *)self fail:code message:v10];
   }
 
   else
   {
-    v8 = [v11 localizedDescription];
-    [(PKDTransaction *)self fail:a3 message:v8];
+    userInfo = [errorCopy localizedDescription];
+    [(PKDTransaction *)self fail:fail message:userInfo];
   }
 }
 

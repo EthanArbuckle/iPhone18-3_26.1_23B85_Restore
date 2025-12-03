@@ -1,5 +1,5 @@
 @interface _HDSortedSampleIteratorInternalPager
-+ (void)getSamplesWithQueryDescriptor:(id)a3 sortDescriptors:(id)a4 anchor:(id)a5 limit:(unint64_t)a6 includeDeletedObjects:(BOOL)a7 profile:(id)a8 resultsHandler:(id)a9;
++ (void)getSamplesWithQueryDescriptor:(id)descriptor sortDescriptors:(id)descriptors anchor:(id)anchor limit:(unint64_t)limit includeDeletedObjects:(BOOL)objects profile:(id)profile resultsHandler:(id)handler;
 - (_HDSortedSampleIteratorInternalPager)init;
 @end
 
@@ -14,31 +14,31 @@
   return 0;
 }
 
-+ (void)getSamplesWithQueryDescriptor:(id)a3 sortDescriptors:(id)a4 anchor:(id)a5 limit:(unint64_t)a6 includeDeletedObjects:(BOOL)a7 profile:(id)a8 resultsHandler:(id)a9
++ (void)getSamplesWithQueryDescriptor:(id)descriptor sortDescriptors:(id)descriptors anchor:(id)anchor limit:(unint64_t)limit includeDeletedObjects:(BOOL)objects profile:(id)profile resultsHandler:(id)handler
 {
-  v70 = a3;
-  v71 = a4;
-  v13 = a5;
-  v69 = a8;
-  v66 = a9;
-  if (a6 - 101 <= 0xFFFFFFFFFFFFFF9BLL)
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  anchorCopy = anchor;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (limit - 101 <= 0xFFFFFFFFFFFFFF9BLL)
   {
-    v63 = [MEMORY[0x277CCA890] currentHandler];
-    [v63 handleFailureInMethod:a2 object:a1 file:@"_HDSortedSampleIteratorInternalPager.mm" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"limit > 0 && limit <= 100"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HDSortedSampleIteratorInternalPager.mm" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"limit > 0 && limit <= 100"}];
   }
 
-  v73 = a6;
-  v64 = v13;
-  if (v13)
+  limitCopy = limit;
+  v64 = anchorCopy;
+  if (anchorCopy)
   {
-    v14 = [v13 copy];
+    v14 = [anchorCopy copy];
   }
 
   else
   {
-    if (v71)
+    if (descriptorsCopy)
     {
-      v15 = v71;
+      v15 = descriptorsCopy;
     }
 
     else
@@ -82,23 +82,23 @@
   while (1)
   {
     v92 = 0;
-    v21 = v69;
-    v22 = v70;
+    v21 = profileCopy;
+    v22 = descriptorCopy;
     v23 = v20;
     objc_opt_self();
-    v24 = [v22 sampleTypes];
-    v25 = [HDSampleEntity entityEnumeratorWithTypes:v24 profile:v21 error:&v92];
+    sampleTypes = [v22 sampleTypes];
+    v25 = [HDSampleEntity entityEnumeratorWithTypes:sampleTypes profile:v21 error:&v92];
 
     if (v25)
     {
-      v26 = [v23 querySortDescriptors];
-      [v25 setSortDescriptors:v26];
+      querySortDescriptors = [v23 querySortDescriptors];
+      [v25 setSortDescriptors:querySortDescriptors];
 
-      v27 = [v22 encodingOptions];
-      v28 = v27;
-      if (v27)
+      encodingOptions = [v22 encodingOptions];
+      v28 = encodingOptions;
+      if (encodingOptions)
       {
-        v29 = v27;
+        v29 = encodingOptions;
       }
 
       else
@@ -108,46 +108,46 @@
 
       [v25 addEncodingOptionsFromDictionary:v29];
 
-      v30 = [v22 restrictedSourceEntities];
-      [v25 setRestrictedSourceEntities:v30];
+      restrictedSourceEntities = [v22 restrictedSourceEntities];
+      [v25 setRestrictedSourceEntities:restrictedSourceEntities];
 
-      [v25 setLimitCount:v73 - (((v17 - v16) >> 4) + ((v19 - v18) >> 4))];
-      v31 = [v22 authorizationFilter];
-      [v25 setAuthorizationFilter:v31];
+      [v25 setLimitCount:limitCopy - (((v17 - v16) >> 4) + ((v19 - v18) >> 4))];
+      authorizationFilter = [v22 authorizationFilter];
+      [v25 setAuthorizationFilter:authorizationFilter];
 
-      v32 = [v22 samplePredicate];
-      [v25 setPredicate:v32];
+      samplePredicate = [v22 samplePredicate];
+      [v25 setPredicate:samplePredicate];
 
-      v33 = [v22 deletedObjectsPredicate];
-      [v25 setDeletedObjectsPredicate:v33];
+      deletedObjectsPredicate = [v22 deletedObjectsPredicate];
+      [v25 setDeletedObjectsPredicate:deletedObjectsPredicate];
 
       v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v35 = [v23 predicate];
+      predicate = [v23 predicate];
 
-      if (v35)
+      if (predicate)
       {
-        v36 = [v23 predicate];
-        [v34 addObject:v36];
+        predicate2 = [v23 predicate];
+        [v34 addObject:predicate2];
       }
 
       v37 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v34];
-      v38 = [v22 sampleTypes];
-      v39 = [v37 hk_filterRepresentationForDataTypes:v38];
+      sampleTypes2 = [v22 sampleTypes];
+      v39 = [v37 hk_filterRepresentationForDataTypes:sampleTypes2];
 
-      v40 = [v22 filter];
+      filter = [v22 filter];
 
-      if (v40)
+      if (filter)
       {
         v41 = MEMORY[0x277CCDD48];
-        v42 = [v22 filter];
-        v43 = [v41 compoundFilterWithFilter:v39 otherFilter:v42];
+        filter2 = [v22 filter];
+        v43 = [v41 compoundFilterWithFilter:v39 otherFilter:filter2];
 
         v39 = v43;
       }
 
       [v25 setFilter:v39];
-      v44 = [v23 objectID];
-      [v25 setAnchor:v44];
+      objectID = [v23 objectID];
+      [v25 setAnchor:objectID];
 
       v45 = v25;
     }
@@ -160,7 +160,7 @@
       std::vector<std::tuple<long long,HKSample * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKSample * {__strong}>*,std::tuple<long long,HKSample * {__strong}>*>(v91, v111[6], v111[7], (v111[7] - v111[6]) >> 4);
       memset(v90, 0, sizeof(v90));
       std::vector<std::tuple<long long,HKDeletedObject * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKDeletedObject * {__strong}>*,std::tuple<long long,HKDeletedObject * {__strong}>*>(v90, v104[6], v104[7], (v104[7] - v104[6]) >> 4);
-      (*(v66 + 2))(v66, 0, v91, v90, 0, 0, v47);
+      (*(handlerCopy + 2))(handlerCopy, 0, v91, v90, 0, 0, v47);
       v117[0] = v90;
       std::vector<std::tuple<long long,HKSample * {__strong}>>::__destroy_vector::operator()[abi:ne200100](v117);
       v117[0] = v91;
@@ -178,11 +178,11 @@ LABEL_34:
     v80[5] = __144___HDSortedSampleIteratorInternalPager_getSamplesWithQueryDescriptor_sortDescriptors_anchor_limit_includeDeletedObjects_profile_resultsHandler___block_invoke;
     v80[6] = &unk_278622858;
     v86 = a2;
-    v87 = a1;
+    selfCopy = self;
     v82 = &v110;
     v83 = &v97;
-    v48 = v71;
-    v88 = a7;
+    v48 = descriptorsCopy;
+    objectsCopy = objects;
     v81 = v48;
     v84 = &v103;
     v85 = &v93;
@@ -194,7 +194,7 @@ LABEL_34:
       std::vector<std::tuple<long long,HKSample * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKSample * {__strong}>*,std::tuple<long long,HKSample * {__strong}>*>(v80, v111[6], v111[7], (v111[7] - v111[6]) >> 4);
       memset(v79, 0, sizeof(v79));
       std::vector<std::tuple<long long,HKDeletedObject * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKDeletedObject * {__strong}>*,std::tuple<long long,HKDeletedObject * {__strong}>*>(v79, v104[6], v104[7], (v104[7] - v104[6]) >> 4);
-      (*(v66 + 2))(v66, 0, v80, v79, 0, 0, v47);
+      (*(handlerCopy + 2))(handlerCopy, 0, v80, v79, 0, 0, v47);
       v117[0] = v79;
       std::vector<std::tuple<long long,HKSample * {__strong}>>::__destroy_vector::operator()[abi:ne200100](v117);
       v117[0] = v80;
@@ -202,10 +202,10 @@ LABEL_34:
       goto LABEL_33;
     }
 
-    v50 = v73;
-    if (((v104[7] - v104[6]) >> 4) + ((v111[7] - v111[6]) >> 4) < v73)
+    v50 = limitCopy;
+    if (((v104[7] - v104[6]) >> 4) + ((v111[7] - v111[6]) >> 4) < limitCopy)
     {
-      if (a7 || ![v98[5] canRelax])
+      if (objects || ![v98[5] canRelax])
       {
         v53 = v98[5];
         v98[5] = 0;
@@ -226,7 +226,7 @@ LABEL_34:
           std::vector<std::tuple<long long,HKSample * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKSample * {__strong}>*,std::tuple<long long,HKSample * {__strong}>*>(v77, v111[6], v111[7], (v111[7] - v111[6]) >> 4);
           memset(v76, 0, sizeof(v76));
           std::vector<std::tuple<long long,HKDeletedObject * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKDeletedObject * {__strong}>*,std::tuple<long long,HKDeletedObject * {__strong}>*>(v76, v104[6], v104[7], (v104[7] - v104[6]) >> 4);
-          (*(v66 + 2))(v66, 0, v77, v76, 0, 0, v53);
+          (*(handlerCopy + 2))(handlerCopy, 0, v77, v76, 0, 0, v53);
           v117[0] = v76;
           std::vector<std::tuple<long long,HKSample * {__strong}>>::__destroy_vector::operator()[abi:ne200100](v117);
           v117[0] = v77;
@@ -237,7 +237,7 @@ LABEL_33:
         }
       }
 
-      v50 = v73;
+      v50 = limitCopy;
     }
 
     v18 = v111[6];
@@ -319,7 +319,7 @@ LABEL_37:
   std::vector<std::tuple<long long,HKSample * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKSample * {__strong}>*,std::tuple<long long,HKSample * {__strong}>*>(v75, v18, v19, v58);
   memset(v74, 0, sizeof(v74));
   std::vector<std::tuple<long long,HKDeletedObject * {__strong}>>::__init_with_size[abi:ne200100]<std::tuple<long long,HKDeletedObject * {__strong}>*,std::tuple<long long,HKDeletedObject * {__strong}>*>(v74, v104[6], v104[7], (v104[7] - v104[6]) >> 4);
-  (*(v66 + 2))(v66, 1, v75, v74, v98[5], v57, 0);
+  (*(handlerCopy + 2))(handlerCopy, 1, v75, v74, v98[5], v57, 0);
   v117[0] = v74;
   std::vector<std::tuple<long long,HKSample * {__strong}>>::__destroy_vector::operator()[abi:ne200100](v117);
   v117[0] = v75;

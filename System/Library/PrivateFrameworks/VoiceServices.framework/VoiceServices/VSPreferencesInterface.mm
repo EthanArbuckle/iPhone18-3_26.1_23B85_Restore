@@ -1,25 +1,25 @@
 @interface VSPreferencesInterface
 + (VSPreferencesInterface)defaultInstance;
-+ (id)dictionaryRepresentationOfVoices:(id)a3;
++ (id)dictionaryRepresentationOfVoices:(id)voices;
 - (NSString)deviceUUID;
-- (VSPreferencesInterface)initWithSuiteName:(id)a3;
+- (VSPreferencesInterface)initWithSuiteName:(id)name;
 - (_opaque_pthread_mutex_t)lock;
-- (id)subscribedVoicesForClientID:(id)a3 accessoryID:(id)a4;
+- (id)subscribedVoicesForClientID:(id)d accessoryID:(id)iD;
 - (void)dealloc;
 - (void)migrateDefaults;
-- (void)removeSubscriptionsForAccessory:(id)a3;
-- (void)setLock:(_opaque_pthread_mutex_t *)a3;
-- (void)setSubscribedVoices:(id)a3 forClientID:(id)a4 accessoryID:(id)a5;
+- (void)removeSubscriptionsForAccessory:(id)accessory;
+- (void)setLock:(_opaque_pthread_mutex_t *)lock;
+- (void)setSubscribedVoices:(id)voices forClientID:(id)d accessoryID:(id)iD;
 @end
 
 @implementation VSPreferencesInterface
 
-- (void)setLock:(_opaque_pthread_mutex_t *)a3
+- (void)setLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_lock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  v5 = *&lock->__opaque[40];
+  *&self->_lock.__opaque[24] = *&lock->__opaque[24];
   *&self->_lock.__opaque[40] = v5;
   *&self->_lock.__sig = v3;
   *&self->_lock.__opaque[8] = v4;
@@ -42,24 +42,24 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    uUIDString = v3;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(NSUserDefaults *)self->_defaults setObject:v5 forKey:@"deviceID"];
+    [(NSUserDefaults *)self->_defaults setObject:uUIDString forKey:@"deviceID"];
   }
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)removeSubscriptionsForAccessory:(id)a3
+- (void)removeSubscriptionsForAccessory:(id)accessory
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   pthread_mutex_lock(&self->_lock);
   v5 = [(NSUserDefaults *)self->_defaults dictionaryForKey:@"subscribedAssets"];
   v6 = [v5 mutableCopy];
@@ -68,60 +68,60 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = accessoryCopy;
     _os_log_impl(&dword_272850000, v7, OS_LOG_TYPE_DEFAULT, "clearing auto-downloaded voice preferences for accessory %@", &v9, 0xCu);
   }
 
-  [v6 setObject:0 forKeyedSubscript:v4];
+  [v6 setObject:0 forKeyedSubscript:accessoryCopy];
   [(NSUserDefaults *)self->_defaults setObject:v6 forKey:@"subscribedAssets"];
   pthread_mutex_unlock(&self->_lock);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSubscribedVoices:(id)a3 forClientID:(id)a4 accessoryID:(id)a5
+- (void)setSubscribedVoices:(id)voices forClientID:(id)d accessoryID:(id)iD
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [VSPreferencesInterface dictionaryRepresentationOfVoices:v8];
+  voicesCopy = voices;
+  dCopy = d;
+  iDCopy = iD;
+  v11 = [VSPreferencesInterface dictionaryRepresentationOfVoices:voicesCopy];
   pthread_mutex_lock(&self->_lock);
   v12 = [(NSUserDefaults *)self->_defaults dictionaryForKey:@"subscribedAssets"];
   v13 = [v12 mutableCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = v13;
+    dictionary = v13;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v16 = v15;
+  v16 = dictionary;
 
-  v17 = [v16 objectForKeyedSubscript:v10];
+  v17 = [v16 objectForKeyedSubscript:iDCopy];
   v18 = [v17 mutableCopy];
   v19 = v18;
   if (v18)
   {
-    v20 = v18;
+    dictionary2 = v18;
   }
 
   else
   {
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v21 = v20;
+  v21 = dictionary2;
 
-  [v21 setObject:v11 forKeyedSubscript:v9];
-  [v16 setObject:v21 forKeyedSubscript:v10];
+  [v21 setObject:v11 forKeyedSubscript:dCopy];
+  [v16 setObject:v21 forKeyedSubscript:iDCopy];
   [(NSUserDefaults *)self->_defaults setObject:v16 forKey:@"subscribedAssets"];
   pthread_mutex_unlock(&self->_lock);
-  if (![v10 length] && objc_msgSend(v9, "isEqualToString:", @"com.apple.AssistantServices"))
+  if (![iDCopy length] && objc_msgSend(dCopy, "isEqualToString:", @"com.apple.AssistantServices"))
   {
     soft_BYSetupAssistantNeedsToRun();
     if (v22 && ![(VSPreferencesInterface *)self OOBNeedsToBeMeasured])
@@ -135,19 +135,19 @@
       soft_BYSetupAssistantNeedsToRun();
       if ((v23 & 1) == 0)
       {
-        v24 = [v8 firstObject];
-        v25 = [(VSPreferencesInterface *)self OOBTriggeredDate];
+        firstObject = [voicesCopy firstObject];
+        oOBTriggeredDate = [(VSPreferencesInterface *)self OOBTriggeredDate];
 
-        if (!v25)
+        if (!oOBTriggeredDate)
         {
           v26 = VSGetLogEvent();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = [v24 languages];
-            v50 = [v53 firstObject];
-            [v24 name];
+            languages = [firstObject languages];
+            firstObject2 = [languages firstObject];
+            [firstObject name];
             *buf = 138412546;
-            v56 = v50;
+            v56 = firstObject2;
             v58 = v57 = 2112;
             v27 = v58;
             _os_log_impl(&dword_272850000, v26, OS_LOG_TYPE_DEFAULT, "OOB subscription start observed with %@ %@", buf, 0x16u);
@@ -160,7 +160,7 @@
         if ([(VSPreferencesInterface *)self OOBNeedsToBeMeasured])
         {
           v29 = +[VSMobileAssetsManager sharedManager];
-          v30 = [v29 preferredDownloadForVoice:v24];
+          v30 = [v29 preferredDownloadForVoice:firstObject];
           v31 = v30;
           if (v30)
           {
@@ -169,42 +169,42 @@
 
           else
           {
-            v32 = v24;
+            v32 = firstObject;
           }
 
           v33 = v32;
 
           v48 = +[VSMobileAssetsManager sharedManager];
-          v51 = [v33 languages];
-          v47 = [v51 firstObject];
+          languages2 = [v33 languages];
+          firstObject3 = [languages2 firstObject];
           [v33 name];
           v34 = v54 = v33;
-          v35 = [v48 selectVoiceForLang:v47 name:v34 type:objc_msgSend(v33 gender:"type") footprint:{objc_msgSend(v33, "gender"), objc_msgSend(v33, "footprint")}];
-          v36 = [v35 voiceData];
+          v35 = [v48 selectVoiceForLang:firstObject3 name:v34 type:objc_msgSend(v33 gender:"type") footprint:{objc_msgSend(v33, "gender"), objc_msgSend(v33, "footprint")}];
+          voiceData = [v35 voiceData];
 
-          if ([v36 footprint] >= 2)
+          if ([voiceData footprint] >= 2)
           {
             v49 = [VSDownloadMetrics alloc];
-            v37 = [v36 name];
-            v38 = [v36 languages];
-            [v38 firstObject];
-            v39 = v52 = v36;
-            v40 = [v36 gender];
-            v41 = v37;
-            v42 = [(VSDownloadMetrics *)v49 initWithVoiceName:v37 languageCode:v39 gender:v40];
+            name = [voiceData name];
+            languages3 = [voiceData languages];
+            [languages3 firstObject];
+            v39 = v52 = voiceData;
+            gender = [voiceData gender];
+            v41 = name;
+            v42 = [(VSDownloadMetrics *)v49 initWithVoiceName:name languageCode:v39 gender:gender];
 
-            v43 = [MEMORY[0x277CCA8D8] mainBundle];
-            v44 = [v43 bundleIdentifier];
-            [(VSDownloadMetrics *)v42 setClientBundleIdentifier:v44];
+            mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+            bundleIdentifier = [mainBundle bundleIdentifier];
+            [(VSDownloadMetrics *)v42 setClientBundleIdentifier:bundleIdentifier];
 
-            v36 = v52;
+            voiceData = v52;
             [(VSDownloadMetrics *)v42 setDownloadSize:&unk_2881E0E60];
             LODWORD(v45) = 1.0;
             [(VSDownloadMetrics *)v42 setDownloadProgress:v45];
             [VSAnalytics reportDownloadMetrics:v42];
           }
 
-          v24 = v54;
+          firstObject = v54;
         }
       }
     }
@@ -213,36 +213,36 @@
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (id)subscribedVoicesForClientID:(id)a3 accessoryID:(id)a4
+- (id)subscribedVoicesForClientID:(id)d accessoryID:(id)iD
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = [(NSUserDefaults *)self->_defaults dictionaryForKey:@"subscribedAssets"];
-  v40 = [MEMORY[0x277CBEB18] array];
-  v28 = v7;
-  if (v7)
+  array = [MEMORY[0x277CBEB18] array];
+  v28 = iDCopy;
+  if (iDCopy)
   {
-    v57[0] = v7;
-    v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
+    v57[0] = iDCopy;
+    allKeys = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
   }
 
   else
   {
-    v9 = [v8 allKeys];
+    allKeys = [v8 allKeys];
   }
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v9;
+  obj = allKeys;
   v33 = [obj countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v33)
   {
     v30 = *v50;
     v31 = v8;
-    v32 = v6;
+    v32 = dCopy;
     do
     {
       v10 = 0;
@@ -257,9 +257,9 @@
         v12 = [v8 objectForKey:v11];
         v13 = v12;
         v34 = v10;
-        if (v6)
+        if (dCopy)
         {
-          v55 = v6;
+          v55 = dCopy;
           [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
         }
 
@@ -310,13 +310,13 @@
                     }
 
                     v22 = [[VSVoiceAsset alloc] initWithDictionaryRepresentation:*(*(&v41 + 1) + 8 * i)];
-                    v23 = [(VSVoiceAsset *)v22 languages];
-                    v24 = [v23 count];
+                    languages = [(VSVoiceAsset *)v22 languages];
+                    v24 = [languages count];
 
                     if (v24)
                     {
                       v25 = [[VSVoiceSubscription alloc] initWithClient:v16 accessory:v11 voice:v22];
-                      [v40 addObject:v25];
+                      [array addObject:v25];
                     }
                   }
 
@@ -339,7 +339,7 @@
 
         v10 = v34 + 1;
         v8 = v31;
-        v6 = v32;
+        dCopy = v32;
       }
 
       while (v34 + 1 != v33);
@@ -351,7 +351,7 @@
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v40;
+  return array;
 }
 
 - (void)migrateDefaults
@@ -364,15 +364,15 @@
     v5 = v4;
     if (v4)
     {
-      v6 = v4;
+      dictionary = v4;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v7 = v6;
+    v7 = dictionary;
 
     [v7 setObject:v14 forKey:@"com.apple.AssistantServices"];
     [(NSUserDefaults *)self->_defaults setObject:v7 forKey:@"autoDownloadedAssets"];
@@ -387,15 +387,15 @@
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      dictionary2 = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v13 = v12;
+    v13 = dictionary2;
 
     [v13 setObject:v8 forKeyedSubscript:&stru_2881D71A8];
     [(NSUserDefaults *)self->_defaults setObject:v13 forKey:@"subscribedAssets"];
@@ -411,9 +411,9 @@
   [(VSPreferencesInterface *)&v3 dealloc];
 }
 
-- (VSPreferencesInterface)initWithSuiteName:(id)a3
+- (VSPreferencesInterface)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = VSPreferencesInterface;
   v5 = [(VSPreferencesInterface *)&v12 init];
@@ -431,7 +431,7 @@
       }
     }
 
-    v8 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v4];
+    v8 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
     defaults = v6->_defaults;
     v6->_defaults = v8;
 
@@ -441,15 +441,15 @@
   return v6;
 }
 
-+ (id)dictionaryRepresentationOfVoices:(id)a3
++ (id)dictionaryRepresentationOfVoices:(id)voices
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  voicesCopy = voices;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v41 count:16];
+  v4 = [voicesCopy countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v4)
   {
     v6 = v4;
@@ -462,19 +462,19 @@
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(voicesCopy);
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
-        v10 = [v9 languages];
-        v11 = [v10 firstObject];
+        languages = [v9 languages];
+        firstObject = [languages firstObject];
 
         v12 = +[VSSpeechSynthesizerPreference availableLanguages];
-        v13 = [v12 containsObject:v11];
+        v13 = [v12 containsObject:firstObject];
 
         if ((v13 & 1) == 0)
         {
-          v14 = [VSSpeechSynthesizerPreference fallbackLanguageForLanguage:v11];
+          v14 = [VSSpeechSynthesizerPreference fallbackLanguageForLanguage:firstObject];
           v40 = v14;
           v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
           [v9 setLanguages:v15];
@@ -483,7 +483,7 @@
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v26;
-            v37 = v11;
+            v37 = firstObject;
             v38 = 2114;
             v39 = v14;
             _os_log_impl(&dword_272850000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ is not TTS language, fallback to %{public}@", buf, 0x16u);
@@ -491,18 +491,18 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v31 objects:v41 count:16];
+      v6 = [voicesCopy countByEnumeratingWithState:&v31 objects:v41 count:16];
     }
 
     while (v6);
   }
 
-  v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(voicesCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = v3;
+  v18 = voicesCopy;
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
@@ -517,8 +517,8 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-        [v17 addObject:v23];
+        dictionaryRepresentation = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+        [v17 addObject:dictionaryRepresentation];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];

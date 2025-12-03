@@ -1,61 +1,61 @@
 @interface ATXContextMenuFeedbackTracker
-+ (id)_suggestionStringForProactiveSuggestion:(id)a3;
-+ (void)_logContextMenuFeedbackWithMenuActionType:(int)a3 suggestion:(id)a4 consumerSubType:(unsigned __int8)a5 tracker:(id)a6;
++ (id)_suggestionStringForProactiveSuggestion:(id)suggestion;
++ (void)_logContextMenuFeedbackWithMenuActionType:(int)type suggestion:(id)suggestion consumerSubType:(unsigned __int8)subType tracker:(id)tracker;
 @end
 
 @implementation ATXContextMenuFeedbackTracker
 
-+ (void)_logContextMenuFeedbackWithMenuActionType:(int)a3 suggestion:(id)a4 consumerSubType:(unsigned __int8)a5 tracker:(id)a6
++ (void)_logContextMenuFeedbackWithMenuActionType:(int)type suggestion:(id)suggestion consumerSubType:(unsigned __int8)subType tracker:(id)tracker
 {
-  v6 = a5;
-  v8 = *&a3;
-  v10 = a6;
-  v11 = a4;
+  subTypeCopy = subType;
+  v8 = *&type;
+  trackerCopy = tracker;
+  suggestionCopy = suggestion;
   v12 = objc_opt_new();
   [v12 setMenuActionType:v8];
-  v13 = [v11 clientModelSpecification];
-  v14 = [v13 clientModelId];
-  [v12 setClientModelId:v14];
+  clientModelSpecification = [suggestionCopy clientModelSpecification];
+  clientModelId = [clientModelSpecification clientModelId];
+  [v12 setClientModelId:clientModelId];
 
   v15 = MEMORY[0x1E69C5BC8];
-  v16 = [v11 executableSpecification];
-  v17 = [v15 stringForExecutableType:{objc_msgSend(v16, "executableType")}];
+  executableSpecification = [suggestionCopy executableSpecification];
+  v17 = [v15 stringForExecutableType:{objc_msgSend(executableSpecification, "executableType")}];
   [v12 setExecutableType:v17];
 
-  v18 = [MEMORY[0x1E698B028] stringForConsumerSubtype:v6];
+  v18 = [MEMORY[0x1E698B028] stringForConsumerSubtype:subTypeCopy];
   [v12 setConsumerSubType:v18];
 
-  v19 = [a1 _suggestionStringForProactiveSuggestion:v11];
+  v19 = [self _suggestionStringForProactiveSuggestion:suggestionCopy];
 
   [v12 setSuggestion:v19];
-  [v10 trackScalarForMessage:v12];
+  [trackerCopy trackScalarForMessage:v12];
 
   v20 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    [ATXContextMenuFeedbackTracker _logContextMenuFeedbackWithMenuActionType:a1 suggestion:v12 consumerSubType:v20 tracker:?];
+    [ATXContextMenuFeedbackTracker _logContextMenuFeedbackWithMenuActionType:self suggestion:v12 consumerSubType:v20 tracker:?];
   }
 }
 
-+ (id)_suggestionStringForProactiveSuggestion:(id)a3
++ (id)_suggestionStringForProactiveSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 executableSpecification];
-  v5 = [v4 executableObject];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableObject = [executableSpecification executableObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 actionKey];
+    actionKey = [executableObject actionKey];
   }
 
   else
   {
-    v7 = [v3 executableSpecification];
-    v6 = [v7 executableIdentifier];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    actionKey = [executableSpecification2 executableIdentifier];
   }
 
-  return v6;
+  return actionKey;
 }
 
 + (void)_logContextMenuFeedbackWithMenuActionType:(NSObject *)a3 suggestion:consumerSubType:tracker:.cold.1(objc_class *a1, void *a2, NSObject *a3)

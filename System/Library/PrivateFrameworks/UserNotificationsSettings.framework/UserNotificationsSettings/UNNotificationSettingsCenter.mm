@@ -1,27 +1,27 @@
 @interface UNNotificationSettingsCenter
 + (id)currentNotificationSettingsCenter;
-- (BOOL)mutateNotificationSettingsForSourceIdentifier:(id)a3 mutatingBlock:(id)a4 error:(id *)a5;
-- (BOOL)setSourceSettings:(id)a3 error:(id *)a4;
+- (BOOL)mutateNotificationSettingsForSourceIdentifier:(id)identifier mutatingBlock:(id)block error:(id *)error;
+- (BOOL)setSourceSettings:(id)settings error:(id *)error;
 - (UNNotificationSettingsCenterDelegate)delegate;
 - (id)_init;
 - (id)allNotificationSources;
-- (id)notificationSourceWithIdentifier:(id)a3;
-- (id)notificationSourcesWithFilter:(id)a3;
-- (id)notificationSourcesWithIdentifiers:(id)a3;
+- (id)notificationSourceWithIdentifier:(id)identifier;
+- (id)notificationSourcesWithFilter:(id)filter;
+- (id)notificationSourcesWithIdentifiers:(id)identifiers;
 - (id)notificationSystemSettings;
-- (id)sourceWithIdentifier:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)authorizationWithOptions:(unint64_t)a3 forNotificationSourceIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (id)sourceWithIdentifier:(id)identifier;
+- (void)addObserver:(id)observer;
+- (void)authorizationWithOptions:(unint64_t)options forNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)replaceNotificationSettings:(id)a3 forNotificationSourceIdentifier:(id)a4;
-- (void)replaceNotificationTopicSettings:(id)a3 forNotificationSourceIdentifier:(id)a4 topicIdentifier:(id)a5;
+- (void)removeObserver:(id)observer;
+- (void)replaceNotificationSettings:(id)settings forNotificationSourceIdentifier:(id)identifier;
+- (void)replaceNotificationTopicSettings:(id)settings forNotificationSourceIdentifier:(id)identifier topicIdentifier:(id)topicIdentifier;
 - (void)resetScheduledDeliverySetting;
-- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setNotificationSystemSettings:(id)a3;
-- (void)settingsServiceConnection:(id)a3 didUpdateNotificationSourcesWithIdentifiers:(id)a4;
-- (void)settingsServiceConnection:(id)a3 didUpdateNotificationSystemSettings:(id)a4;
+- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setNotificationSystemSettings:(id)settings;
+- (void)settingsServiceConnection:(id)connection didUpdateNotificationSourcesWithIdentifiers:(id)identifiers;
+- (void)settingsServiceConnection:(id)connection didUpdateNotificationSystemSettings:(id)settings;
 @end
 
 @implementation UNNotificationSettingsCenter
@@ -41,9 +41,9 @@
 - (id)notificationSystemSettings
 {
   v2 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v3 = [v2 notificationSystemSettings];
+  notificationSystemSettings = [v2 notificationSystemSettings];
 
-  return v3;
+  return notificationSystemSettings;
 }
 
 uint64_t __65__UNNotificationSettingsCenter_currentNotificationSettingsCenter__block_invoke()
@@ -63,9 +63,9 @@ uint64_t __65__UNNotificationSettingsCenter_currentNotificationSettingsCenter__b
   queue = v2->_queue;
   v2->_queue = v4;
 
-  v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   observers = v2->_observers;
-  v2->_observers = v6;
+  v2->_observers = weakObjectsHashTable;
 
   v8 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
   [v8 addObserver:v2];
@@ -83,9 +83,9 @@ uint64_t __65__UNNotificationSettingsCenter_currentNotificationSettingsCenter__b
   [(UNNotificationSettingsCenter *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (obj && WeakRetained)
   {
@@ -114,57 +114,57 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__UNNotificationSettingsCenter_addObserver___block_invoke;
   v7[3] = &unk_279E14DA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__UNNotificationSettingsCenter_removeObserver___block_invoke;
   v7[3] = &unk_279E14DA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)sourceWithIdentifier:(id)a3
+- (id)sourceWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v5 = [v4 notificationSourceWithIdentifier:v3];
+  v5 = [v4 notificationSourceWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)notificationSourceWithIdentifier:(id)a3
+- (id)notificationSourceWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v5 = [v4 notificationSourceWithIdentifier:v3];
+  v5 = [v4 notificationSourceWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)notificationSourcesWithIdentifiers:(id)a3
+- (id)notificationSourcesWithIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v5 = [v4 notificationSourcesWithIdentifiers:v3];
+  v5 = [v4 notificationSourcesWithIdentifiers:identifiersCopy];
 
   return v5;
 }
@@ -177,126 +177,126 @@ LABEL_7:
   return v3;
 }
 
-- (id)notificationSourcesWithFilter:(id)a3
+- (id)notificationSourcesWithFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v5 = [v4 notificationSourcesWithFilter:v3];
+  v5 = [v4 notificationSourcesWithFilter:filterCopy];
 
   return v5;
 }
 
-- (void)authorizationWithOptions:(unint64_t)a3 forNotificationSourceIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)authorizationWithOptions:(unint64_t)options forNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v9 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  [v9 authorizationWithOptions:a3 forNotificationSourceIdentifier:v8 withCompletionHandler:v7];
+  [v9 authorizationWithOptions:options forNotificationSourceIdentifier:identifierCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)revokeAuthorizationForNotificationSourceIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v7 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  [v7 revokeAuthorizationForNotificationSourceIdentifier:v6 withCompletionHandler:v5];
+  [v7 revokeAuthorizationForNotificationSourceIdentifier:identifierCopy withCompletionHandler:handlerCopy];
 }
 
-- (BOOL)mutateNotificationSettingsForSourceIdentifier:(id)a3 mutatingBlock:(id)a4 error:(id *)a5
+- (BOOL)mutateNotificationSettingsForSourceIdentifier:(id)identifier mutatingBlock:(id)block error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v9 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v10 = [v9 notificationSettingsForSourceIdentifier:v7];
+  v10 = [v9 notificationSettingsForSourceIdentifier:identifierCopy];
 
   v11 = [v10 mutableCopy];
   if (v11)
   {
     v12 = v11;
-    if (v8)
+    if (blockCopy)
     {
-      v13 = v8[2](v8, v11);
+      v13 = blockCopy[2](blockCopy, v11);
 
-      a5 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-      [a5 replaceNotificationSettings:v13 forNotificationSourceIdentifier:v7];
+      error = +[UNUserNotificationSettingsServiceConnection sharedInstance];
+      [error replaceNotificationSettings:v13 forNotificationSourceIdentifier:identifierCopy];
 
-      LOBYTE(a5) = 1;
+      LOBYTE(error) = 1;
       v12 = v13;
     }
 
-    else if (a5)
+    else if (error)
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA050];
       v23 = *MEMORY[0x277CCA450];
       v24 = @"mutatingBlock cannot be nil";
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-      *a5 = [v18 errorWithDomain:v19 code:4001 userInfo:v20];
+      *error = [v18 errorWithDomain:v19 code:4001 userInfo:v20];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277CCA050];
       v25 = *MEMORY[0x277CCA450];
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"settings object is nil for '%@'", v7];
-      v26[0] = v16;
+      identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"settings object is nil for '%@'", identifierCopy];
+      v26[0] = identifierCopy;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-      *a5 = [v14 errorWithDomain:v15 code:4000 userInfo:v17];
+      *error = [v14 errorWithDomain:v15 code:4000 userInfo:v17];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
 
     v12 = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (void)replaceNotificationSettings:(id)a3 forNotificationSourceIdentifier:(id)a4
+- (void)replaceNotificationSettings:(id)settings forNotificationSourceIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v7 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  [v7 replaceNotificationSettings:v6 forNotificationSourceIdentifier:v5];
+  [v7 replaceNotificationSettings:settingsCopy forNotificationSourceIdentifier:identifierCopy];
 }
 
-- (BOOL)setSourceSettings:(id)a3 error:(id *)a4
+- (BOOL)setSourceSettings:(id)settings error:(id *)error
 {
-  v5 = a3;
+  settingsCopy = settings;
   v6 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  v7 = [v6 setSourceSettings:v5];
+  v7 = [v6 setSourceSettings:settingsCopy];
 
-  if (a4 && v7)
+  if (error && v7)
   {
     v8 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   return v7 == 0;
 }
 
-- (void)replaceNotificationTopicSettings:(id)a3 forNotificationSourceIdentifier:(id)a4 topicIdentifier:(id)a5
+- (void)replaceNotificationTopicSettings:(id)settings forNotificationSourceIdentifier:(id)identifier topicIdentifier:(id)topicIdentifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  topicIdentifierCopy = topicIdentifier;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v10 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  [v10 replaceNotificationTopicSettings:v9 forNotificationSourceIdentifier:v8 topicIdentifier:v7];
+  [v10 replaceNotificationTopicSettings:settingsCopy forNotificationSourceIdentifier:identifierCopy topicIdentifier:topicIdentifierCopy];
 }
 
-- (void)setNotificationSystemSettings:(id)a3
+- (void)setNotificationSystemSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v4 = +[UNUserNotificationSettingsServiceConnection sharedInstance];
-  [v4 setNotificationSystemSettings:v3];
+  [v4 setNotificationSystemSettings:settingsCopy];
 }
 
 - (void)resetScheduledDeliverySetting
@@ -305,16 +305,16 @@ LABEL_7:
   [v2 resetScheduledDeliverySetting];
 }
 
-- (void)settingsServiceConnection:(id)a3 didUpdateNotificationSourcesWithIdentifiers:(id)a4
+- (void)settingsServiceConnection:(id)connection didUpdateNotificationSourcesWithIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __102__UNNotificationSettingsCenter_settingsServiceConnection_didUpdateNotificationSourcesWithIdentifiers___block_invoke;
   v14 = &unk_279E14DA0;
-  v15 = self;
-  v7 = v5;
+  selfCopy = self;
+  v7 = identifiersCopy;
   v16 = v7;
   dispatch_async(queue, &v11);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -323,7 +323,7 @@ LABEL_7:
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 userNotificationSettingsCenter:self didUpdateNotificationSourceIdentifiers:{v7, v11, v12, v13, v14, v15}];
+    [v10 userNotificationSettingsCenter:self didUpdateNotificationSourceIdentifiers:{v7, v11, v12, v13, v14, selfCopy}];
   }
 }
 
@@ -369,16 +369,16 @@ void __102__UNNotificationSettingsCenter_settingsServiceConnection_didUpdateNoti
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)settingsServiceConnection:(id)a3 didUpdateNotificationSystemSettings:(id)a4
+- (void)settingsServiceConnection:(id)connection didUpdateNotificationSystemSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   queue = self->_queue;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __94__UNNotificationSettingsCenter_settingsServiceConnection_didUpdateNotificationSystemSettings___block_invoke;
   v14 = &unk_279E14DA0;
-  v15 = self;
-  v7 = v5;
+  selfCopy = self;
+  v7 = settingsCopy;
   v16 = v7;
   dispatch_async(queue, &v11);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -387,7 +387,7 @@ void __102__UNNotificationSettingsCenter_settingsServiceConnection_didUpdateNoti
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 userNotificationSettingsCenter:self didUpdateNotificationSystemSettings:{v7, v11, v12, v13, v14, v15}];
+    [v10 userNotificationSettingsCenter:self didUpdateNotificationSystemSettings:{v7, v11, v12, v13, v14, selfCopy}];
   }
 }
 

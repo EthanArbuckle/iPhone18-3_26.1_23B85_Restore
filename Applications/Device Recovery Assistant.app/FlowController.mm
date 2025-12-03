@@ -1,45 +1,45 @@
 @interface FlowController
-+ (id)_descriptionForStep:(int)a3;
++ (id)_descriptionForStep:(int)step;
 + (id)_recoveryQueue;
-+ (int)_nextStepForUserAuthenticated:(BOOL)a3 dataVolumeMounted:(BOOL)a4 networkAvailable:(BOOL)a5 brainLoaded:(BOOL)a6 scanComplete:(BOOL)a7 issuesFound:(BOOL)a8 recoveryComplete:(BOOL)a9 deviceHasPasscode:(BOOL)a10 deviceHasNetwork:(BOOL)a11 promptForTermsComplete:(BOOL)a12 promptForPasscodeComplete:(BOOL)a13 promptForNetworkComplete:(BOOL)a14 promptForRecoveryComplete:(BOOL)a15 userInfo:(id)a16;
++ (int)_nextStepForUserAuthenticated:(BOOL)authenticated dataVolumeMounted:(BOOL)mounted networkAvailable:(BOOL)available brainLoaded:(BOOL)loaded scanComplete:(BOOL)complete issuesFound:(BOOL)found recoveryComplete:(BOOL)recoveryComplete deviceHasPasscode:(BOOL)self0 deviceHasNetwork:(BOOL)self1 promptForTermsComplete:(BOOL)self2 promptForPasscodeComplete:(BOOL)self3 promptForNetworkComplete:(BOOL)self4 promptForRecoveryComplete:(BOOL)self5 userInfo:(id)self6;
 + (void)start;
 - (BOOL)userApprovedDiagnosticsSubmission;
-- (FlowController)initWithDeviceRecoveryController:(id)a3 viewFactory:(id)a4;
-- (FlowController)initWithViewFactory:(id)a3;
+- (FlowController)initWithDeviceRecoveryController:(id)controller viewFactory:(id)factory;
+- (FlowController)initWithViewFactory:(id)factory;
 - (ViewFactory)viewFactory;
-- (int)_nextStepWithUserInfo:(id)a3;
-- (void)_endFlowWithError:(id)a3;
+- (int)_nextStepWithUserInfo:(id)info;
+- (void)_endFlowWithError:(id)error;
 - (void)disableRecoveryAutoBoot;
-- (void)performNextStepWithInfo:(id)a3;
+- (void)performNextStepWithInfo:(id)info;
 - (void)reboot;
 - (void)rebootToNeRD;
 @end
 
 @implementation FlowController
 
-- (FlowController)initWithDeviceRecoveryController:(id)a3 viewFactory:(id)a4
+- (FlowController)initWithDeviceRecoveryController:(id)controller viewFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = FlowController;
   v9 = [(FlowController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deviceRecoveryController, a3);
-    objc_storeWeak(&v10->_viewFactory, v8);
+    objc_storeStrong(&v9->_deviceRecoveryController, controller);
+    objc_storeWeak(&v10->_viewFactory, factoryCopy);
     *&v10->_promptForPasscodeComplete = 0;
   }
 
   return v10;
 }
 
-- (FlowController)initWithViewFactory:(id)a3
+- (FlowController)initWithViewFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v5 = +[DeviceRecoveryController sharedController];
-  v6 = [(FlowController *)self initWithDeviceRecoveryController:v5 viewFactory:v4];
+  v6 = [(FlowController *)self initWithDeviceRecoveryController:v5 viewFactory:factoryCopy];
 
   return v6;
 }
@@ -69,10 +69,10 @@
   dispatch_async(v4, block);
 }
 
-- (void)performNextStepWithInfo:(id)a3
+- (void)performNextStepWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FlowController *)self _nextStepWithUserInfo:v4];
+  infoCopy = info;
+  v5 = [(FlowController *)self _nextStepWithUserInfo:infoCopy];
   v6 = sub_100012608();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,7 +124,7 @@
         v24[2] = sub_10000987C;
         v24[3] = &unk_100028980;
         v24[4] = self;
-        v25 = v4;
+        v25 = infoCopy;
         dispatch_async(v13, v24);
 
         goto LABEL_28;
@@ -225,7 +225,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [v4 objectForKeyedSubscript:DeviceRecoveryResultsAttributeRequriedUserApproval];
+  [infoCopy objectForKeyedSubscript:DeviceRecoveryResultsAttributeRequriedUserApproval];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100009C98;
@@ -259,70 +259,70 @@ LABEL_28:
 
 - (BOOL)userApprovedDiagnosticsSubmission
 {
-  v2 = [(FlowController *)self deviceRecoveryController];
-  v3 = [v2 userApprovedDiagnosticsSubmission];
+  deviceRecoveryController = [(FlowController *)self deviceRecoveryController];
+  userApprovedDiagnosticsSubmission = [deviceRecoveryController userApprovedDiagnosticsSubmission];
 
-  return v3;
+  return userApprovedDiagnosticsSubmission;
 }
 
-+ (id)_descriptionForStep:(int)a3
++ (id)_descriptionForStep:(int)step
 {
-  if ((a3 - 1) > 9)
+  if ((step - 1) > 9)
   {
     return @"Show Terms and Conditions";
   }
 
   else
   {
-    return off_100028A00[a3 - 1];
+    return off_100028A00[step - 1];
   }
 }
 
-- (void)_endFlowWithError:(id)a3
+- (void)_endFlowWithError:(id)error
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000A4C4;
   v4[3] = &unk_100028980;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  errorCopy = error;
+  v3 = errorCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (int)_nextStepWithUserInfo:(id)a3
+- (int)_nextStepWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(FlowController *)self deviceRecoveryController];
-  v25 = [v5 isPasscodeSet];
+  infoCopy = info;
+  deviceRecoveryController = [(FlowController *)self deviceRecoveryController];
+  isPasscodeSet = [deviceRecoveryController isPasscodeSet];
 
-  v28 = [(FlowController *)self deviceRecoveryController];
-  v23 = [v28 userAuthenticated];
-  v27 = [(FlowController *)self deviceRecoveryController];
-  v22 = [v27 dataVolumeMounted];
-  v26 = [(FlowController *)self deviceRecoveryController];
-  v20 = [v26 networkAvailable];
-  v24 = [(FlowController *)self deviceRecoveryController];
-  v19 = [v24 recoveryBrainLoaded];
-  v21 = [(FlowController *)self deviceRecoveryController];
-  v18 = [v21 issuesScanComplete];
-  v6 = [(FlowController *)self deviceRecoveryController];
-  v17 = [v6 repairableIssuesFound];
-  v7 = [(FlowController *)self deviceRecoveryController];
-  v8 = [v7 recoveryComplete];
+  deviceRecoveryController2 = [(FlowController *)self deviceRecoveryController];
+  userAuthenticated = [deviceRecoveryController2 userAuthenticated];
+  deviceRecoveryController3 = [(FlowController *)self deviceRecoveryController];
+  dataVolumeMounted = [deviceRecoveryController3 dataVolumeMounted];
+  deviceRecoveryController4 = [(FlowController *)self deviceRecoveryController];
+  networkAvailable = [deviceRecoveryController4 networkAvailable];
+  deviceRecoveryController5 = [(FlowController *)self deviceRecoveryController];
+  recoveryBrainLoaded = [deviceRecoveryController5 recoveryBrainLoaded];
+  deviceRecoveryController6 = [(FlowController *)self deviceRecoveryController];
+  issuesScanComplete = [deviceRecoveryController6 issuesScanComplete];
+  deviceRecoveryController7 = [(FlowController *)self deviceRecoveryController];
+  repairableIssuesFound = [deviceRecoveryController7 repairableIssuesFound];
+  deviceRecoveryController8 = [(FlowController *)self deviceRecoveryController];
+  recoveryComplete = [deviceRecoveryController8 recoveryComplete];
   v9 = +[NetworkMonitor shared];
-  v10 = [v9 networkAvailable];
-  v11 = [(FlowController *)self promptForTermsComplete];
-  v12 = [(FlowController *)self promptForPasscodeComplete];
-  v13 = [(FlowController *)self promptForNetworkComplete];
+  networkAvailable2 = [v9 networkAvailable];
+  promptForTermsComplete = [(FlowController *)self promptForTermsComplete];
+  promptForPasscodeComplete = [(FlowController *)self promptForPasscodeComplete];
+  promptForNetworkComplete = [(FlowController *)self promptForNetworkComplete];
   BYTE6(v16) = [(FlowController *)self promptForRecoveryComplete];
-  BYTE5(v16) = v13;
-  BYTE4(v16) = v12;
-  BYTE3(v16) = v11;
-  BYTE2(v16) = v10;
-  BYTE1(v16) = v25;
-  LOBYTE(v16) = v8;
-  v14 = [FlowController _nextStepForUserAuthenticated:"_nextStepForUserAuthenticated:dataVolumeMounted:networkAvailable:brainLoaded:scanComplete:issuesFound:recoveryComplete:deviceHasPasscode:deviceHasNetwork:promptForTermsComplete:promptForPasscodeComplete:promptForNetworkComplete:promptForRecoveryComplete:userInfo:" dataVolumeMounted:v23 networkAvailable:v22 brainLoaded:v20 scanComplete:v19 issuesFound:v18 recoveryComplete:v17 deviceHasPasscode:v16 deviceHasNetwork:v4 promptForTermsComplete:? promptForPasscodeComplete:? promptForNetworkComplete:? promptForRecoveryComplete:? userInfo:?];
+  BYTE5(v16) = promptForNetworkComplete;
+  BYTE4(v16) = promptForPasscodeComplete;
+  BYTE3(v16) = promptForTermsComplete;
+  BYTE2(v16) = networkAvailable2;
+  BYTE1(v16) = isPasscodeSet;
+  LOBYTE(v16) = recoveryComplete;
+  v14 = [FlowController _nextStepForUserAuthenticated:"_nextStepForUserAuthenticated:dataVolumeMounted:networkAvailable:brainLoaded:scanComplete:issuesFound:recoveryComplete:deviceHasPasscode:deviceHasNetwork:promptForTermsComplete:promptForPasscodeComplete:promptForNetworkComplete:promptForRecoveryComplete:userInfo:" dataVolumeMounted:userAuthenticated networkAvailable:dataVolumeMounted brainLoaded:networkAvailable scanComplete:recoveryBrainLoaded issuesFound:issuesScanComplete recoveryComplete:repairableIssuesFound deviceHasPasscode:v16 deviceHasNetwork:infoCopy promptForTermsComplete:? promptForPasscodeComplete:? promptForNetworkComplete:? promptForRecoveryComplete:? userInfo:?];
 
   if (v14 == 5)
   {
@@ -332,34 +332,34 @@ LABEL_28:
   return v14;
 }
 
-+ (int)_nextStepForUserAuthenticated:(BOOL)a3 dataVolumeMounted:(BOOL)a4 networkAvailable:(BOOL)a5 brainLoaded:(BOOL)a6 scanComplete:(BOOL)a7 issuesFound:(BOOL)a8 recoveryComplete:(BOOL)a9 deviceHasPasscode:(BOOL)a10 deviceHasNetwork:(BOOL)a11 promptForTermsComplete:(BOOL)a12 promptForPasscodeComplete:(BOOL)a13 promptForNetworkComplete:(BOOL)a14 promptForRecoveryComplete:(BOOL)a15 userInfo:(id)a16
++ (int)_nextStepForUserAuthenticated:(BOOL)authenticated dataVolumeMounted:(BOOL)mounted networkAvailable:(BOOL)available brainLoaded:(BOOL)loaded scanComplete:(BOOL)complete issuesFound:(BOOL)found recoveryComplete:(BOOL)recoveryComplete deviceHasPasscode:(BOOL)self0 deviceHasNetwork:(BOOL)self1 promptForTermsComplete:(BOOL)self2 promptForPasscodeComplete:(BOOL)self3 promptForNetworkComplete:(BOOL)self4 promptForRecoveryComplete:(BOOL)self5 userInfo:(id)self6
 {
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v22 = [a16 objectForKeyedSubscript:DeviceRecoveryResultsAttributeRequriedUserApproval];
-  if (a12)
+  foundCopy = found;
+  completeCopy = complete;
+  loadedCopy = loaded;
+  availableCopy = available;
+  mountedCopy = mounted;
+  v22 = [info objectForKeyedSubscript:DeviceRecoveryResultsAttributeRequriedUserApproval];
+  if (termsComplete)
   {
-    if (a3)
+    if (authenticated)
     {
-      if (v20)
+      if (mountedCopy)
       {
         v23 = objc_alloc_init(DeviceRecoveryOverrideClient);
         v24 = [v23 fetchOverride:@"AlwaysShowWiFiPicker"];
 
         if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v25 = [v24 BOOLValue];
+          bOOLValue = [v24 BOOLValue];
         }
 
         else
         {
-          v25 = 0;
+          bOOLValue = 0;
         }
 
-        if ((((v19 | a14) ^ 1) & (!a11 | v25)) != 0)
+        if ((((availableCopy | networkComplete) ^ 1) & (!network | bOOLValue)) != 0)
         {
           v27 = 3;
         }
@@ -369,7 +369,7 @@ LABEL_28:
           v27 = 5;
         }
 
-        if (v18)
+        if (loadedCopy)
         {
           v28 = 8;
         }
@@ -379,12 +379,12 @@ LABEL_28:
           v28 = 7;
         }
 
-        if ((a14 & ~v19) != 0)
+        if ((networkComplete & ~availableCopy) != 0)
         {
           v28 = 4;
         }
 
-        if (!v16 || a9)
+        if (!foundCopy || recoveryComplete)
         {
           v29 = 10;
         }
@@ -404,27 +404,27 @@ LABEL_28:
           v30 = v29;
         }
 
-        if (!v17)
+        if (!completeCopy)
         {
           v30 = v28;
         }
 
-        if (!v18)
+        if (!loadedCopy)
         {
           v30 = v28;
         }
 
-        if ((a14 & ~v19 & 1) == 0)
+        if ((networkComplete & ~availableCopy & 1) == 0)
         {
           v28 = v30;
         }
 
-        if (!a15)
+        if (!forRecoveryComplete)
         {
           v28 = v27;
         }
 
-        if (((v19 | a14) ^ 1) & (!a11 | v25))
+        if (((availableCopy | networkComplete) ^ 1) & (!network | bOOLValue))
         {
           v26 = v27;
         }
@@ -445,7 +445,7 @@ LABEL_28:
     else
     {
       v24 = 0;
-      if (!a10 || a13)
+      if (!passcode || passcodeComplete)
       {
         v26 = 2;
       }

@@ -1,14 +1,14 @@
 @interface IOHIDOutputTransactionClass
-- (IOHIDOutputTransactionClass)initWithDevice:(id)a3;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
+- (IOHIDOutputTransactionClass)initWithDevice:(id)device;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
 - (void)dealloc;
 @end
 
 @implementation IOHIDOutputTransactionClass
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(0, 0x80u, 0xCDu, 0xCCu, 0, 0x75u, 0x5Du, 0x11u, 0xD4u, 0x80u, 0xEFu, 0, 5u, 2u, 0x8Fu, 0x18u, 0xD5u);
   if (!CFEqual(v6, v7))
   {
@@ -21,7 +21,7 @@
     goto LABEL_3;
   }
 
-  *a4 = &self->_outputInterface;
+  *outInterface = &self->_outputInterface;
   CFRetain(self);
   v8 = 0;
   if (v6)
@@ -33,11 +33,11 @@ LABEL_3:
   return v8;
 }
 
-- (IOHIDOutputTransactionClass)initWithDevice:(id)a3
+- (IOHIDOutputTransactionClass)initWithDevice:(id)device
 {
   v11.receiver = self;
   v11.super_class = IOHIDOutputTransactionClass;
-  v3 = [(IOHIDTransactionClass *)&v11 initWithDevice:a3];
+  v3 = [(IOHIDTransactionClass *)&v11 initWithDevice:device];
   v4 = v3;
   if (v3)
   {

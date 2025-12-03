@@ -1,16 +1,16 @@
 @interface FBSDisplayConfigurationBuilder
 - (FBSDisplayConfigurationBuilder)init;
-- (FBSDisplayConfigurationBuilder)initWithConfiguration:(id)a3;
-- (id)_lock_sanitizedModeForMode:(id)a3;
-- (id)buildWithError:(id *)a3;
-- (void)setCloningSupported:(BOOL)a3;
-- (void)setCurrentMode:(id)a3 preferredMode:(id)a4 otherModes:(id)a5;
-- (void)setDisplayType:(int64_t)a3;
+- (FBSDisplayConfigurationBuilder)initWithConfiguration:(id)configuration;
+- (id)_lock_sanitizedModeForMode:(id)mode;
+- (id)buildWithError:(id *)error;
+- (void)setCloningSupported:(BOOL)supported;
+- (void)setCurrentMode:(id)mode preferredMode:(id)preferredMode otherModes:(id)modes;
+- (void)setDisplayType:(int64_t)type;
 - (void)setExpectsSecureRendering;
-- (void)setOverscanned:(BOOL)a3 compensation:(int64_t)a4 safeRatio:(CGSize)a5;
-- (void)setPixelSize:(CGSize)a3 nativeBounds:(CGRect)a4 bounds:(CGRect)a5;
+- (void)setOverscanned:(BOOL)overscanned compensation:(int64_t)compensation safeRatio:(CGSize)ratio;
+- (void)setPixelSize:(CGSize)size nativeBounds:(CGRect)bounds bounds:(CGRect)a5;
 - (void)setUIKitMainLike;
-- (void)setUniqueIdentifier:(id)a3;
+- (void)setUniqueIdentifier:(id)identifier;
 @end
 
 @implementation FBSDisplayConfigurationBuilder
@@ -33,7 +33,7 @@
     v14 = 2114;
     v15 = v11;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"FBSDisplayConfigurationBuilder.m";
     v20 = 1024;
@@ -47,11 +47,11 @@
   _bs_set_crash_log_message();
 }
 
-- (FBSDisplayConfigurationBuilder)initWithConfiguration:(id)a3
+- (FBSDisplayConfigurationBuilder)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   NSClassFromString(&cfstr_Fbsdisplayconf_0.isa);
-  if (!v5)
+  if (!configurationCopy)
   {
     [FBSDisplayConfigurationBuilder initWithConfiguration:a2];
   }
@@ -66,7 +66,7 @@
   v6 = [(FBSDisplayConfigurationBuilder *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [configurationCopy copy];
     configuration = v6->_configuration;
     v6->_configuration = v7;
 
@@ -76,17 +76,17 @@
   return v6;
 }
 
-- (id)_lock_sanitizedModeForMode:(id)a3
+- (id)_lock_sanitizedModeForMode:(id)mode
 {
-  v5 = a3;
-  if (!v5)
+  modeCopy = mode;
+  if (!modeCopy)
   {
     [FBSDisplayConfigurationBuilder _lock_sanitizedModeForMode:a2];
   }
 
-  v6 = v5;
-  v7 = [(FBSDisplayConfiguration *)self->_configuration availableModes];
-  v8 = [v7 containsObject:v6];
+  v6 = modeCopy;
+  availableModes = [(FBSDisplayConfiguration *)self->_configuration availableModes];
+  v8 = [availableModes containsObject:v6];
 
   if (v8 || (v10 = [(FBSDisplayConfiguration *)self->_configuration _nativeRotation], v11 = *(v6 + 8), v10 == v11) && v6[72] == 1)
   {
@@ -127,15 +127,15 @@
   return v17;
 }
 
-- (id)buildWithError:(id *)a3
+- (id)buildWithError:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(FBSDisplayConfiguration *)self->_configuration identity];
-  v6 = v5;
+  identity = [(FBSDisplayConfiguration *)self->_configuration identity];
+  v6 = identity;
   if (self->_lock_secure || self->_lock_mainLike || self->_lock_uniqueIdentifier || self->_lock_displayTypeSet)
   {
-    p_lock_displayType = (v5 + 24);
+    p_lock_displayType = (identity + 24);
     if (self->_lock_displayTypeSet)
     {
       v8 = 0;
@@ -143,7 +143,7 @@
 
     else
     {
-      v8 = *(v5 + 48);
+      v8 = *(identity + 48);
     }
 
     if (self->_lock_displayTypeSet)
@@ -189,7 +189,7 @@
   v18 = self->_configuration->_otherModes;
   lock_currentMode = self->_lock_currentMode;
   v20 = lock_currentMode != 0;
-  v85 = a3;
+  errorCopy = error;
   if (!lock_currentMode)
   {
     v36 = 0;
@@ -291,11 +291,11 @@ LABEL_28:
 LABEL_29:
     os_unfair_lock_unlock(&self->_lock);
 LABEL_30:
-    if (*v85)
+    if (*errorCopy)
     {
       v39 = v36;
       v40 = 0;
-      *v85 = v36;
+      *errorCopy = v36;
     }
 
     else
@@ -410,11 +410,11 @@ LABEL_71:
   return v40;
 }
 
-- (void)setUniqueIdentifier:(id)a3
+- (void)setUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [identifierCopy copy];
 
   lock_uniqueIdentifier = self->_lock_uniqueIdentifier;
   self->_lock_uniqueIdentifier = v5;
@@ -422,27 +422,27 @@ LABEL_71:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCurrentMode:(id)a3 preferredMode:(id)a4 otherModes:(id)a5
+- (void)setCurrentMode:(id)mode preferredMode:(id)preferredMode otherModes:(id)modes
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  modeCopy = mode;
+  preferredModeCopy = preferredMode;
+  modesCopy = modes;
+  v12 = modeCopy;
   NSClassFromString(&cfstr_Fbsdisplaymode.isa);
   if (v12)
   {
     if (objc_opt_isKindOfClass())
     {
 
-      v13 = v10;
+      v13 = preferredModeCopy;
       NSClassFromString(&cfstr_Fbsdisplaymode.isa);
       if (v13)
       {
         if (objc_opt_isKindOfClass())
         {
 
-          v14 = v11;
+          v14 = modesCopy;
           if (!v14 || (NSClassFromString(&cfstr_Nsset.isa), (objc_opt_isKindOfClass() & 1) != 0))
           {
 
@@ -510,18 +510,18 @@ LABEL_71:
   [FBSDisplayConfigurationBuilder setCurrentMode:a2 preferredMode:? otherModes:?];
 }
 
-- (void)setPixelSize:(CGSize)a3 nativeBounds:(CGRect)a4 bounds:(CGRect)a5
+- (void)setPixelSize:(CGSize)size nativeBounds:(CGRect)bounds bounds:(CGRect)a5
 {
-  if (a3.width <= 0.0 || a3.width > 100000.0 || a3.height <= 0.0 || a3.height > 100000.0)
+  if (size.width <= 0.0 || size.width > 100000.0 || size.height <= 0.0 || size.height > 100000.0)
   {
     [FBSDisplayConfigurationBuilder setPixelSize:nativeBounds:bounds:];
   }
 
-  x = a4.origin.x;
-  y = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  if (CGRectIsEmpty(a4) || (v12.origin.x = x, v12.origin.y = y, v12.size.width = width, v12.size.height = height, CGRectIsInfinite(v12)))
+  x = bounds.origin.x;
+  y = bounds.origin.y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  if (CGRectIsEmpty(bounds) || (v12.origin.x = x, v12.origin.y = y, v12.size.width = width, v12.size.height = height, CGRectIsInfinite(v12)))
   {
     [FBSDisplayConfigurationBuilder setPixelSize:nativeBounds:bounds:];
   }
@@ -533,7 +533,7 @@ LABEL_71:
 
   os_unfair_lock_lock(&self->_lock);
   self->_lock_geometrySet = 1;
-  self->_lock_pixelSize = a3;
+  self->_lock_pixelSize = size;
   self->_lock_nativeBounds.origin.x = x;
   self->_lock_nativeBounds.origin.y = y;
   self->_lock_nativeBounds.size.width = width;
@@ -559,33 +559,33 @@ LABEL_71:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCloningSupported:(BOOL)a3
+- (void)setCloningSupported:(BOOL)supported
 {
   os_unfair_lock_lock(&self->_lock);
   self->_lock_cloningSet = 1;
-  self->_lock_cloningSupported = a3;
+  self->_lock_cloningSupported = supported;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setOverscanned:(BOOL)a3 compensation:(int64_t)a4 safeRatio:(CGSize)a5
+- (void)setOverscanned:(BOOL)overscanned compensation:(int64_t)compensation safeRatio:(CGSize)ratio
 {
-  if (FBSDisplayOverscanCompensationIsValid(a4))
+  if (FBSDisplayOverscanCompensationIsValid(compensation))
   {
     BSFloatGreaterThanOrEqualToFloat();
   }
 
-  [FBSDisplayConfigurationBuilder setOverscanned:a4 compensation:a2 safeRatio:?];
+  [FBSDisplayConfigurationBuilder setOverscanned:compensation compensation:a2 safeRatio:?];
 }
 
-- (void)setDisplayType:(int64_t)a3
+- (void)setDisplayType:(int64_t)type
 {
-  if ((FBSDisplayTypeIsValid(a3) & 1) == 0)
+  if ((FBSDisplayTypeIsValid(type) & 1) == 0)
   {
-    [(FBSDisplayConfigurationBuilder *)a3 setDisplayType:a2];
+    [(FBSDisplayConfigurationBuilder *)type setDisplayType:a2];
   }
 
-  if (!a3)
+  if (!type)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"do not set the display type to main, use mainConfiguration on FBDisplayManager."];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -597,7 +597,7 @@ LABEL_71:
     _bs_set_crash_log_message();
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"do not set the display type to airPlay, find that display via FBDisplayManager."];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -611,7 +611,7 @@ LABEL_71:
 
   os_unfair_lock_lock(&self->_lock);
   self->_lock_displayTypeSet = 1;
-  self->_lock_displayType = a3;
+  self->_lock_displayType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }

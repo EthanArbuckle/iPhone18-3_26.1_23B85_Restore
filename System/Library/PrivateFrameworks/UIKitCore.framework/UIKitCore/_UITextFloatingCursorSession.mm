@@ -1,50 +1,50 @@
 @interface _UITextFloatingCursorSession
-- (CGPoint)floatingCursorPositionForPoint:(CGPoint)a3 lineSnapping:(BOOL)a4;
+- (CGPoint)floatingCursorPositionForPoint:(CGPoint)point lineSnapping:(BOOL)snapping;
 - (UITextSelectionDisplayInteraction)manager;
-- (_UITextFloatingCursorSession)initWithCursorView:(id)a3 selectionManager:(id)a4;
+- (_UITextFloatingCursorSession)initWithCursorView:(id)view selectionManager:(id)manager;
 - (id)_selectionContainerView;
-- (void)_invalidateAnimated:(BOOL)a3;
-- (void)_updateCursorFadedHiddenForFloatingCursorAtPoint:(CGPoint)a3;
+- (void)_invalidateAnimated:(BOOL)animated;
+- (void)_updateCursorFadedHiddenForFloatingCursorAtPoint:(CGPoint)point;
 - (void)dealloc;
-- (void)updateWithPoint:(CGPoint)a3 inContainer:(id)a4 animated:(BOOL)a5;
+- (void)updateWithPoint:(CGPoint)point inContainer:(id)container animated:(BOOL)animated;
 @end
 
 @implementation _UITextFloatingCursorSession
 
-- (_UITextFloatingCursorSession)initWithCursorView:(id)a3 selectionManager:(id)a4
+- (_UITextFloatingCursorSession)initWithCursorView:(id)view selectionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = _UITextFloatingCursorSession;
   v8 = [(_UITextFloatingCursorSession *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_manager, v7);
+    objc_storeWeak(&v8->_manager, managerCopy);
     v9->_isValid = 1;
-    v10 = [v6 _createFloatingCursorView];
+    _createFloatingCursorView = [viewCopy _createFloatingCursorView];
     floatingCursorView = v9->_floatingCursorView;
-    v9->_floatingCursorView = v10;
+    v9->_floatingCursorView = _createFloatingCursorView;
 
-    v12 = [(_UITextFloatingCursorSession *)v9 _selectionContainerView];
-    [v12 addSubview:v9->_floatingCursorView];
+    _selectionContainerView = [(_UITextFloatingCursorSession *)v9 _selectionContainerView];
+    [_selectionContainerView addSubview:v9->_floatingCursorView];
 
-    v13 = [v7 _obtainGhostCursorAssertion];
+    _obtainGhostCursorAssertion = [managerCopy _obtainGhostCursorAssertion];
     ghostCursorAssertion = v9->_ghostCursorAssertion;
-    v9->_ghostCursorAssertion = v13;
+    v9->_ghostCursorAssertion = _obtainGhostCursorAssertion;
 
-    [v6 frame];
+    [viewCopy frame];
     v17 = v16 + v15 * 0.5;
     v20 = v19 + v18 * 0.5;
-    v21 = [v6 superview];
-    [(_UITextFloatingCursorSession *)v9 updateWithPoint:v21 inContainer:0 animated:v17, v20];
+    superview = [viewCopy superview];
+    [(_UITextFloatingCursorSession *)v9 updateWithPoint:superview inContainer:0 animated:v17, v20];
   }
 
   return v9;
 }
 
-- (void)updateWithPoint:(CGPoint)a3 inContainer:(id)a4 animated:(BOOL)a5
+- (void)updateWithPoint:(CGPoint)point inContainer:(id)container animated:(BOOL)animated
 {
   if (self->_isValid)
   {
@@ -54,21 +54,21 @@
     v27[10] = v7;
     v27[15] = v5;
     v27[16] = v6;
-    v11 = a5;
-    y = a3.y;
-    x = a3.x;
-    v15 = a4;
-    v16 = [(_UITextFloatingCursorSession *)self _selectionContainerView];
-    [v16 convertPoint:v15 fromCoordinateSpace:{x, y}];
+    animatedCopy = animated;
+    y = point.y;
+    x = point.x;
+    containerCopy = container;
+    _selectionContainerView = [(_UITextFloatingCursorSession *)self _selectionContainerView];
+    [_selectionContainerView convertPoint:containerCopy fromCoordinateSpace:{x, y}];
     v18 = v17;
     v20 = v19;
 
     [(_UITextFloatingCursorSession *)self floatingCursorPositionForPoint:1 lineSnapping:v18, v20];
     v23 = v21;
     v24 = v22;
-    if (v11)
+    if (animatedCopy)
     {
-      v25 = [(_UITextFloatingCursorSession *)self _springAnimation];
+      _springAnimation = [(_UITextFloatingCursorSession *)self _springAnimation];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __69___UITextFloatingCursorSession_updateWithPoint_inContainer_animated___block_invoke;
@@ -76,7 +76,7 @@
       v27[4] = self;
       v27[5] = v23;
       v27[6] = v24;
-      [UIView _animateUsingSpringBehavior:v25 tracking:0 animations:v27 completion:0];
+      [UIView _animateUsingSpringBehavior:_springAnimation tracking:0 animations:v27 completion:0];
     }
 
     else
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)_invalidateAnimated:(BOOL)a3
+- (void)_invalidateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_isValid = 0;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -106,25 +106,25 @@
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_manager);
-    v8 = [WeakRetained cursorView];
+    cursorView = [WeakRetained cursorView];
 
-    v9 = [(_UITextFloatingCursorSession *)self _springAnimation];
+    _springAnimation = [(_UITextFloatingCursorSession *)self _springAnimation];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52___UITextFloatingCursorSession__invalidateAnimated___block_invoke_2;
     v13[3] = &unk_1E70F35B8;
     v13[4] = self;
-    v14 = v8;
+    v14 = cursorView;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52___UITextFloatingCursorSession__invalidateAnimated___block_invoke_3;
     v11[3] = &unk_1E7103030;
     v12 = v6;
-    v10 = v8;
-    [UIView _animateUsingSpringBehavior:v9 tracking:0 animations:v13 completion:v11];
+    v10 = cursorView;
+    [UIView _animateUsingSpringBehavior:_springAnimation tracking:0 animations:v13 completion:v11];
   }
 
   else
@@ -145,13 +145,13 @@
   [(_UITextFloatingCursorSession *)&v3 dealloc];
 }
 
-- (void)_updateCursorFadedHiddenForFloatingCursorAtPoint:(CGPoint)a3
+- (void)_updateCursorFadedHiddenForFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v7 = [WeakRetained cursorView];
-  [v7 frame];
+  cursorView = [WeakRetained cursorView];
+  [cursorView frame];
   v10 = v9 + v8 * 0.5;
   v13 = v12 + v11 * 0.5;
 
@@ -164,26 +164,26 @@
 - (id)_selectionContainerView
 {
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v3 = [WeakRetained _hostViewAboveText];
+  _hostViewAboveText = [WeakRetained _hostViewAboveText];
 
-  return v3;
+  return _hostViewAboveText;
 }
 
-- (CGPoint)floatingCursorPositionForPoint:(CGPoint)a3 lineSnapping:(BOOL)a4
+- (CGPoint)floatingCursorPositionForPoint:(CGPoint)point lineSnapping:(BOOL)snapping
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  snappingCopy = snapping;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_manager);
-  v9 = [WeakRetained textInput];
+  textInput = [WeakRetained textInput];
   v10 = objc_opt_respondsToSelector();
 
   v11 = objc_loadWeakRetained(&self->_manager);
-  v12 = [v11 textInput];
-  v13 = v12;
+  textInput2 = [v11 textInput];
+  textInput3 = textInput2;
   if (v10)
   {
-    [v12 selectionClipRect];
+    [textInput2 selectionClipRect];
 LABEL_5:
     v19 = v14;
     v20 = v15;
@@ -198,8 +198,8 @@ LABEL_5:
   if (v18)
   {
     v11 = objc_loadWeakRetained(&self->_manager);
-    v13 = [v11 textInput];
-    [v13 _selectionClipRect];
+    textInput3 = [v11 textInput];
+    [textInput3 _selectionClipRect];
     goto LABEL_5;
   }
 
@@ -209,8 +209,8 @@ LABEL_5:
   v22 = *(MEMORY[0x1E695F050] + 24);
 LABEL_7:
   v23 = objc_loadWeakRetained(&self->_manager);
-  v24 = [v23 textInput];
-  v25 = [v24 textInputView];
+  textInput4 = [v23 textInput];
+  textInputView = [textInput4 textInputView];
 
   v55.origin.x = v19;
   v55.origin.y = v20;
@@ -218,15 +218,15 @@ LABEL_7:
   v55.size.height = v22;
   if (CGRectIsNull(v55))
   {
-    [v25 bounds];
+    [textInputView bounds];
     v19 = v26;
     v20 = v27;
     v21 = v28;
     v22 = v29;
   }
 
-  v30 = [(_UITextFloatingCursorSession *)self _selectionContainerView];
-  [v30 convertRect:v25 fromView:{v19, v20, v21, v22}];
+  _selectionContainerView = [(_UITextFloatingCursorSession *)self _selectionContainerView];
+  [_selectionContainerView convertRect:textInputView fromView:{v19, v20, v21, v22}];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -273,12 +273,12 @@ LABEL_7:
     }
   }
 
-  if (v4)
+  if (snappingCopy)
   {
     v48 = objc_loadWeakRetained(&self->_manager);
-    v49 = [v48 _cursorView];
+    _cursorView = [v48 _cursorView];
 
-    [v49 frame];
+    [_cursorView frame];
     y = v51 + v50 * 0.5 + (y - (v51 + v50 * 0.5)) * 0.3;
   }
 

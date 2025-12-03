@@ -1,6 +1,6 @@
 @interface CNContactSection
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,19 +26,19 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(CNContactSection *)self title];
-  [v4 setTitle:v5];
+  title = [(CNContactSection *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(CNContactSection *)self range];
-  [v4 setRange:{v6, v7}];
-  v8 = [(CNContactSection *)self identifier];
-  [v4 setIdentifier:v8];
+  range = [(CNContactSection *)self range];
+  [v4 setRange:{range, v7}];
+  identifier = [(CNContactSection *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v9 = [(CNContactSection *)self sortKey];
-  [v4 setSortKey:v9];
+  sortKey = [(CNContactSection *)self sortKey];
+  [v4 setSortKey:sortKey];
 
   return v4;
 }

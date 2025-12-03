@@ -1,5 +1,5 @@
 @interface VCPAsset
-+ (void)unimplementedExceptionForMethodName:(id)a3;
++ (void)unimplementedExceptionForMethodName:(id)name;
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)slomoRange;
 - (BOOL)hadFlash;
 - (CGSize)originalMovieSize;
@@ -12,12 +12,12 @@
 
 @implementation VCPAsset
 
-+ (void)unimplementedExceptionForMethodName:(id)a3
++ (void)unimplementedExceptionForMethodName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x1E695DF30];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPAsset %@] should not be called", v3];
-  v6 = [v4 exceptionWithName:@"NotImplementedException" reason:v5 userInfo:0];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPAsset %@] should not be called", nameCopy];
+  v6 = [v4 exceptionWithName:@"NotImplementedException" reason:nameCopy userInfo:0];
   v7 = v6;
 
   objc_exception_throw(v6);
@@ -47,10 +47,10 @@
       return @"HDR Photo";
     }
 
-    v3 = [(VCPAsset *)self mediaSubtypes];
+    mediaSubtypes = [(VCPAsset *)self mediaSubtypes];
     v4 = @"SDOF Photo";
     v5 = @"Photo";
-    v6 = (v3 & 0x10) == 0;
+    v6 = (mediaSubtypes & 0x10) == 0;
   }
 
   else
@@ -65,10 +65,10 @@
       return @"Slow-mo Movie";
     }
 
-    v7 = [(VCPAsset *)self mediaSubtypes];
+    mediaSubtypes2 = [(VCPAsset *)self mediaSubtypes];
     v4 = @"Timelapse Movie";
     v5 = @"Movie";
-    v6 = (v7 & 0x40000) == 0;
+    v6 = (mediaSubtypes2 & 0x40000) == 0;
   }
 
   if (v6)
@@ -84,19 +84,19 @@
 
 - (BOOL)hadFlash
 {
-  v2 = [(VCPAsset *)self exif];
-  v3 = v2;
-  if (v2)
+  exif = [(VCPAsset *)self exif];
+  v3 = exif;
+  if (exif)
   {
-    v4 = [v2 vcp_flashFired];
+    vcp_flashFired = [exif vcp_flashFired];
   }
 
   else
   {
-    v4 = 0;
+    vcp_flashFired = 0;
   }
 
-  return v4;
+  return vcp_flashFired;
 }
 
 - (float)exposureTimeSeconds
@@ -104,11 +104,11 @@
   v3 = 0.0;
   if ([(VCPAsset *)self isLivePhoto])
   {
-    v4 = [(VCPAsset *)self exif];
-    v5 = v4;
-    if (v4)
+    exif = [(VCPAsset *)self exif];
+    v5 = exif;
+    if (exif)
     {
-      [v4 vcp_scaledExposureTime];
+      [exif vcp_scaledExposureTime];
       v3 = v6;
     }
 
@@ -123,9 +123,9 @@
 
 - (float)photoOffsetSeconds
 {
-  v2 = [(VCPAsset *)self isLivePhoto];
+  isLivePhoto = [(VCPAsset *)self isLivePhoto];
   result = 1.6;
-  if (!v2)
+  if (!isLivePhoto)
   {
     return 0.0;
   }
@@ -135,9 +135,9 @@
 
 - (float)originalPhotoOffsetSeconds
 {
-  v2 = [(VCPAsset *)self isLivePhoto];
+  isLivePhoto = [(VCPAsset *)self isLivePhoto];
   result = 1.6;
-  if (!v2)
+  if (!isLivePhoto)
   {
     return 0.0;
   }
@@ -157,9 +157,9 @@
 
 - (float)timelapseRate
 {
-  v2 = [(VCPAsset *)self isTimelapse];
+  isTimelapse = [(VCPAsset *)self isTimelapse];
   result = 0.66667;
-  if (!v2)
+  if (!isTimelapse)
   {
     return 1.0;
   }

@@ -1,33 +1,33 @@
 @interface CATIDSMessageMetadata
-+ (id)instanceWithDictionary:(id)a3;
-- (CATIDSMessageMetadata)initWithMessageIdentifier:(id)a3 messageType:(int64_t)a4 messagingVersion:(int64_t)a5;
-- (CATIDSMessageMetadata)initWithMessageType:(int64_t)a3;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATIDSMessageMetadata)initWithMessageIdentifier:(id)identifier messageType:(int64_t)type messagingVersion:(int64_t)version;
+- (CATIDSMessageMetadata)initWithMessageType:(int64_t)type;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATIDSMessageMetadata
 
-- (CATIDSMessageMetadata)initWithMessageIdentifier:(id)a3 messageType:(int64_t)a4 messagingVersion:(int64_t)a5
+- (CATIDSMessageMetadata)initWithMessageIdentifier:(id)identifier messageType:(int64_t)type messagingVersion:(int64_t)version
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CATIDSMessageMetadata;
   v10 = [(CATIDSMessageMetadata *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_messageIdentifier, a3);
-    v11->_messageType = a4;
-    v11->_messagingVersion = a5;
+    objc_storeStrong(&v10->_messageIdentifier, identifier);
+    v11->_messageType = type;
+    v11->_messagingVersion = version;
   }
 
   return v11;
 }
 
-- (CATIDSMessageMetadata)initWithMessageType:(int64_t)a3
+- (CATIDSMessageMetadata)initWithMessageType:(int64_t)type
 {
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [(CATIDSMessageMetadata *)self initWithMessageIdentifier:v5 messageType:a3 messagingVersion:2];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v6 = [(CATIDSMessageMetadata *)self initWithMessageIdentifier:uUID messageType:type messagingVersion:2];
 
   return v6;
 }
@@ -36,9 +36,9 @@
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"MessageIdentifier";
-  v3 = [(CATIDSMessageMetadata *)self messageIdentifier];
-  v4 = [v3 UUIDString];
-  v11[0] = v4;
+  messageIdentifier = [(CATIDSMessageMetadata *)self messageIdentifier];
+  uUIDString = [messageIdentifier UUIDString];
+  v11[0] = uUIDString;
   v10[1] = @"ContentType";
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CATIDSMessageMetadata messageType](self, "messageType")}];
   v11[1] = v5;
@@ -54,11 +54,11 @@
   return v7;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 cat_uuidForKey:@"MessageIdentifier"];
-  v5 = [v3 objectForKeyedSubscript:@"ContentType"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy cat_uuidForKey:@"MessageIdentifier"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"ContentType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -72,7 +72,7 @@
 
   v7 = v6;
 
-  v8 = [v3 objectForKeyedSubscript:@"MessagingVersion"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"MessagingVersion"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

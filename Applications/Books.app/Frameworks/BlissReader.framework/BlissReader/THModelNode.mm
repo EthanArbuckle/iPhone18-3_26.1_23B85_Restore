@@ -1,63 +1,63 @@
 @interface THModelNode
-- (BOOL)isEqual:(id)a3;
-- (THModelNode)initWithTitle:(id)a3 includeInTOC:(BOOL)a4 context:(id)a5;
-- (_NSRange)absolutePageRangeForPresentationType:(id)a3;
-- (id)modelLinkWithFragment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (THModelNode)initWithTitle:(id)title includeInTOC:(BOOL)c context:(id)context;
+- (_NSRange)absolutePageRangeForPresentationType:(id)type;
+- (id)modelLinkWithFragment:(id)fragment;
 - (id)nextSibling;
-- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)a3 presentationType:(id)a4;
+- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)index presentationType:(id)type;
 - (id)previousSibling;
-- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)a3;
-- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)a3 forPresentationType:(id)a4;
-- (unint64_t)precedingPageCountForPresentationType:(id)a3;
-- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)a3;
-- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)a3 forPresentationType:(id)a4;
-- (void)addMappingFromGUIDToNodeToDictionary:(id)a3;
+- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)index;
+- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)index forPresentationType:(id)type;
+- (unint64_t)precedingPageCountForPresentationType:(id)type;
+- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)index;
+- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)index forPresentationType:(id)type;
+- (void)addMappingFromGUIDToNodeToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)enterAddedState:(id)a3;
-- (void)enterAddingState:(id)a3;
-- (void)enterRemovedState:(id)a3;
-- (void)enterRemovingState:(id)a3;
-- (void)setNodeGUID:(id)a3;
-- (void)setPageCount:(unint64_t)a3 forPresentationType:(id)a4;
-- (void)setTitle:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)enterAddedState:(id)state;
+- (void)enterAddingState:(id)state;
+- (void)enterRemovedState:(id)state;
+- (void)enterRemovingState:(id)state;
+- (void)setNodeGUID:(id)d;
+- (void)setPageCount:(unint64_t)count forPresentationType:(id)type;
+- (void)setTitle:(id)title;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation THModelNode
 
-- (void)setNodeGUID:(id)a3
+- (void)setNodeGUID:(id)d
 {
   [(THModelNode *)self willModify];
-  v5 = a3;
+  dCopy = d;
 
-  self->mGUID = a3;
+  self->mGUID = d;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   [(THModelNode *)self willModify];
-  v5 = a3;
+  titleCopy = title;
 
-  self->mTitle = a3;
+  self->mTitle = title;
 }
 
-- (THModelNode)initWithTitle:(id)a3 includeInTOC:(BOOL)a4 context:(id)a5
+- (THModelNode)initWithTitle:(id)title includeInTOC:(BOOL)c context:(id)context
 {
-  v6 = a4;
+  cCopy = c;
   v11.receiver = self;
   v11.super_class = THModelNode;
-  v8 = [(THModelNode *)&v11 initWithContext:a5];
+  v8 = [(THModelNode *)&v11 initWithContext:context];
   v9 = v8;
   if (v8)
   {
     [(THModelNode *)v8 setState:0];
     [(THModelNode *)v9 setNodeGUID:+[NSString tsu_stringWithUUID]];
-    [(THModelNode *)v9 setTitle:a3];
-    [(THModelNode *)v9 setIncludeInTOC:v6];
-    [(THModelNode *)v9 setPaginatedPresentationType:[THPresentationType paginatedPresentationTypeInContext:a5]];
+    [(THModelNode *)v9 setTitle:title];
+    [(THModelNode *)v9 setIncludeInTOC:cCopy];
+    [(THModelNode *)v9 setPaginatedPresentationType:[THPresentationType paginatedPresentationTypeInContext:context]];
   }
 
   return v9;
@@ -77,7 +77,7 @@
   [(THModelNode *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -85,35 +85,35 @@
     return 0;
   }
 
-  v5 = [(THModelNode *)self nodeGUID];
-  v6 = [a3 nodeGUID];
+  nodeGUID = [(THModelNode *)self nodeGUID];
+  nodeGUID2 = [equal nodeGUID];
 
-  return [(NSString *)v5 isEqualToString:v6];
+  return [(NSString *)nodeGUID isEqualToString:nodeGUID2];
 }
 
-- (unint64_t)precedingPageCountForPresentationType:(id)a3
+- (unint64_t)precedingPageCountForPresentationType:(id)type
 {
-  v5 = [[(THModelNode *)self parent] precedingPageCountForPresentationType:a3];
+  v5 = [[(THModelNode *)self parent] precedingPageCountForPresentationType:type];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v5;
-    v8 = [(THModelNode *)self previousSibling];
-    if (v8)
+    previousSibling = [(THModelNode *)self previousSibling];
+    if (previousSibling)
     {
-      v9 = v8;
+      previousSibling2 = previousSibling;
       v6 = v7;
       while (1)
       {
-        v10 = [v9 pageCountForPresentationType:a3];
+        v10 = [previousSibling2 pageCountForPresentationType:type];
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
           break;
         }
 
         v6 += v10;
-        v9 = [v9 previousSibling];
-        if (!v9)
+        previousSibling2 = [previousSibling2 previousSibling];
+        if (!previousSibling2)
         {
           return v6;
         }
@@ -131,12 +131,12 @@
   return v6;
 }
 
-- (void)setPageCount:(unint64_t)a3 forPresentationType:(id)a4
+- (void)setPageCount:(unint64_t)count forPresentationType:(id)type
 {
   mPageCountByPresentationType = self->mPageCountByPresentationType;
   if (mPageCountByPresentationType)
   {
-    [-[TSUNoCopyDictionary objectForKey:](mPageCountByPresentationType objectForKey:{a4), "integerValue"}];
+    [-[TSUNoCopyDictionary objectForKey:](mPageCountByPresentationType objectForKey:{type), "integerValue"}];
     v8 = self->mPageCountByPresentationType;
   }
 
@@ -146,12 +146,12 @@
     self->mPageCountByPresentationType = v8;
   }
 
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:count];
 
-  [(TSUNoCopyDictionary *)v8 setObject:v9 forUncopiedKey:a4];
+  [(TSUNoCopyDictionary *)v8 setObject:v9 forUncopiedKey:type];
 }
 
-- (_NSRange)absolutePageRangeForPresentationType:(id)a3
+- (_NSRange)absolutePageRangeForPresentationType:(id)type
 {
   v5 = [(THModelNode *)self pageCountForPresentationType:?];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
@@ -163,7 +163,7 @@
   else
   {
     v7 = v5;
-    v6 = [(THModelNode *)self precedingPageCountForPresentationType:a3];
+    v6 = [(THModelNode *)self precedingPageCountForPresentationType:type];
   }
 
   v8 = v7;
@@ -172,64 +172,64 @@
   return result;
 }
 
-- (void)addMappingFromGUIDToNodeToDictionary:(id)a3
+- (void)addMappingFromGUIDToNodeToDictionary:(id)dictionary
 {
-  v5 = [(THModelNode *)self nodeGUID];
+  nodeGUID = [(THModelNode *)self nodeGUID];
 
-  [a3 setObject:self forKey:v5];
+  [dictionary setObject:self forKey:nodeGUID];
 }
 
-- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)a3 forPresentationType:(id)a4
+- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)index forPresentationType:(id)type
 {
   if ([(THModelNode *)self parent])
   {
-    a3 = [[(THModelNode *)self parent] relativePageIndexForAbsolutePageIndex:a3 forPresentationType:a4];
-    v7 = [(THModelNode *)self previousSibling];
-    if (v7)
+    index = [[(THModelNode *)self parent] relativePageIndexForAbsolutePageIndex:index forPresentationType:type];
+    previousSibling = [(THModelNode *)self previousSibling];
+    if (previousSibling)
     {
-      v8 = v7;
+      previousSibling2 = previousSibling;
       do
       {
-        a3 -= [v8 pageCountForPresentationType:a4];
-        v8 = [v8 previousSibling];
+        index -= [previousSibling2 pageCountForPresentationType:type];
+        previousSibling2 = [previousSibling2 previousSibling];
       }
 
-      while (v8);
+      while (previousSibling2);
     }
   }
 
-  return a3;
+  return index;
 }
 
-- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)a3
+- (unint64_t)relativePageIndexForAbsolutePageIndex:(unint64_t)index
 {
-  v5 = [(THModelNode *)self paginatedPresentationType];
+  paginatedPresentationType = [(THModelNode *)self paginatedPresentationType];
 
-  return [(THModelNode *)self relativePageIndexForAbsolutePageIndex:a3 forPresentationType:v5];
+  return [(THModelNode *)self relativePageIndexForAbsolutePageIndex:index forPresentationType:paginatedPresentationType];
 }
 
-- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)a3 forPresentationType:(id)a4
+- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)index forPresentationType:(id)type
 {
-  v5 = [(THModelNode *)self precedingPageCountForPresentationType:a4];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || a3 == 0x7FFFFFFFFFFFFFFFLL)
+  v5 = [(THModelNode *)self precedingPageCountForPresentationType:type];
+  if (v5 == 0x7FFFFFFFFFFFFFFFLL || index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return v5 + a3;
+    return v5 + index;
   }
 }
 
-- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)a3
+- (unint64_t)absolutePageIndexForRelativePageIndex:(unint64_t)index
 {
-  v5 = [(THModelNode *)self paginatedPresentationType];
+  paginatedPresentationType = [(THModelNode *)self paginatedPresentationType];
 
-  return [(THModelNode *)self absolutePageIndexForRelativePageIndex:a3 forPresentationType:v5];
+  return [(THModelNode *)self absolutePageIndexForRelativePageIndex:index forPresentationType:paginatedPresentationType];
 }
 
-- (id)modelLinkWithFragment:(id)a3
+- (id)modelLinkWithFragment:(id)fragment
 {
   v5 = [@"/" stringByAppendingPathComponent:{objc_msgSend(-[THModelNode documentRoot](self, "documentRoot"), "applePubDocId")}];
   objc_opt_class();
@@ -277,14 +277,14 @@ LABEL_2:
     }
   }
 
-  v7 = -[THModelLink initWithPath:fragment:context:]([THModelLink alloc], "initWithPath:fragment:context:", v5, a3, [-[THModelNode documentRoot](self "documentRoot")]);
+  v7 = -[THModelLink initWithPath:fragment:context:]([THModelLink alloc], "initWithPath:fragment:context:", v5, fragment, [-[THModelNode documentRoot](self "documentRoot")]);
 
   return v7;
 }
 
-- (void)enterAddingState:(id)a3
+- (void)enterAddingState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -292,9 +292,9 @@ LABEL_2:
   [(THModelNode *)self setState:1];
 }
 
-- (void)enterAddedState:(id)a3
+- (void)enterAddedState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -302,9 +302,9 @@ LABEL_2:
   [(THModelNode *)self setState:2];
 }
 
-- (void)enterRemovingState:(id)a3
+- (void)enterRemovingState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -312,9 +312,9 @@ LABEL_2:
   [(THModelNode *)self setState:3];
 }
 
-- (void)enterRemovedState:(id)a3
+- (void)enterRemovedState:(id)state
 {
-  if (!a3)
+  if (!state)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -324,43 +324,43 @@ LABEL_2:
 
 - (id)nextSibling
 {
-  v3 = [(THModelNode *)self parent];
+  parent = [(THModelNode *)self parent];
 
-  return [(THModelContainerNode *)v3 nodeAfterNode:self];
+  return [(THModelContainerNode *)parent nodeAfterNode:self];
 }
 
 - (id)previousSibling
 {
-  v3 = [(THModelNode *)self parent];
+  parent = [(THModelNode *)self parent];
 
-  return [(THModelContainerNode *)v3 nodeBeforeNode:self];
+  return [(THModelContainerNode *)parent nodeBeforeNode:self];
 }
 
-- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)a3 presentationType:(id)a4
+- (id)pageNumberStringForAbsolutePageIndex:(unint64_t)index presentationType:(id)type
 {
   v7 = [THBundle() localizedStringForKey:@"-" value:&stru_471858 table:0];
-  v8 = [(THModelNode *)self relativePageIndexForAbsolutePageIndex:a3 forPresentationType:a4];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (v9 = [(THModelNode *)self contentNodeForRelativePageIndex:v8 forPresentationType:a4]) == 0)
+  v8 = [(THModelNode *)self relativePageIndexForAbsolutePageIndex:index forPresentationType:type];
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (v9 = [(THModelNode *)self contentNodeForRelativePageIndex:v8 forPresentationType:type]) == 0)
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       return v7;
     }
 
     else
     {
-      return [NSString localizedStringWithFormat:@"%lu", a3 + 1];
+      return [NSString localizedStringWithFormat:@"%lu", index + 1];
     }
   }
 
   else
   {
 
-    return [v9 pageNumberStringForAbsolutePageIndex:a3 presentationType:a4];
+    return [v9 pageNumberStringForAbsolutePageIndex:index presentationType:type];
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
   if (([(THModelNode *)self state]| 4) == 4)
   {
@@ -380,7 +380,7 @@ LABEL_2:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
   if ([(THModelNode *)self state]== 1)
   {
@@ -400,7 +400,7 @@ LABEL_2:
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   if ([(THModelNode *)self state]== 2)
   {
@@ -420,7 +420,7 @@ LABEL_2:
   }
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   if ([(THModelNode *)self state]== 4)
   {

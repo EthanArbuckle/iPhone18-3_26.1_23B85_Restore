@@ -15,9 +15,9 @@
   if (objc_opt_class() && objc_opt_class())
   {
     v3 = BiomeLibrary();
-    v4 = [v3 OSAnalytics];
-    v5 = [v4 CA];
-    v6 = [v5 HighEngagementDevices];
+    oSAnalytics = [v3 OSAnalytics];
+    v5 = [oSAnalytics CA];
+    highEngagementDevices = [v5 HighEngagementDevices];
 
     v7 = objc_opt_new();
     [v7 setDay:-1];
@@ -26,7 +26,7 @@
     v10 = [v9 dateByAddingComponents:v7 toDate:v8 options:0];
 
     v11 = [[BMPublisherOptions alloc] initWithStartDate:v10 endDate:v8 maxEvents:1 lastN:1 reversed:0];
-    v12 = [v6 publisherWithOptions:v11];
+    v12 = [highEngagementDevices publisherWithOptions:v11];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100076C08;

@@ -1,7 +1,7 @@
 @interface FTAudioDescription
 - (AudioStreamBasicDescription)audioStreamBasicDescription;
-- (FTAudioDescription)initWithFlatbuffData:(id)a3 root:(const AudioDescription *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)a3;
+- (FTAudioDescription)initWithFlatbuffData:(id)data root:(const AudioDescription *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)buffer;
 - (double)sample_rate;
 - (id)flatbuffData;
 - (unsigned)bits_per_channel;
@@ -32,10 +32,10 @@
   return result;
 }
 
-- (FTAudioDescription)initWithFlatbuffData:(id)a3 root:(const AudioDescription *)a4 verify:(BOOL)a5
+- (FTAudioDescription)initWithFlatbuffData:(id)data root:(const AudioDescription *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTAudioDescription;
   v10 = [(FTAudioDescription *)&v25 init];
@@ -44,35 +44,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -235,33 +235,33 @@ LABEL_13:
   }
 }
 
-- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
+  selfCopy = self;
   [(FTAudioDescription *)self sample_rate];
   v6 = v5;
-  v7 = [(FTAudioDescription *)v4 format_id];
-  v8 = [(FTAudioDescription *)v4 format_flags];
-  v9 = [(FTAudioDescription *)v4 bytes_per_packet];
-  v10 = [(FTAudioDescription *)v4 frames_per_packet];
-  v11 = [(FTAudioDescription *)v4 bytes_per_frame];
-  v12 = [(FTAudioDescription *)v4 channels_per_frame];
-  v13 = [(FTAudioDescription *)v4 bits_per_channel];
-  LODWORD(v4) = [(FTAudioDescription *)v4 reserved];
-  *(a3 + 70) = 1;
-  v16 = *(a3 + 10);
-  v14 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(a3, 4, v6, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v7, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v8, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v9, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v10, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v11, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 16, v12, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 18, v13, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 20, v4, 0);
+  format_id = [(FTAudioDescription *)selfCopy format_id];
+  format_flags = [(FTAudioDescription *)selfCopy format_flags];
+  bytes_per_packet = [(FTAudioDescription *)selfCopy bytes_per_packet];
+  frames_per_packet = [(FTAudioDescription *)selfCopy frames_per_packet];
+  bytes_per_frame = [(FTAudioDescription *)selfCopy bytes_per_frame];
+  channels_per_frame = [(FTAudioDescription *)selfCopy channels_per_frame];
+  bits_per_channel = [(FTAudioDescription *)selfCopy bits_per_channel];
+  LODWORD(selfCopy) = [(FTAudioDescription *)selfCopy reserved];
+  *(buffer + 70) = 1;
+  v16 = *(buffer + 10);
+  v14 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(buffer, 4, v6, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, format_id, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, format_flags, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, bytes_per_packet, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, frames_per_packet, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, bytes_per_frame, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 16, channels_per_frame, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 18, bits_per_channel, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 20, selfCopy, 0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v14 + v16);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v14 + v16);
 }
 
 - (id)flatbuffData

@@ -1,5 +1,5 @@
 @interface PedestrianARFeatureSetMapEntry
-- (PedestrianARFeatureSetMapEntry)initWithFeatureSet:(id)a3 featureEntries:(id)a4;
+- (PedestrianARFeatureSetMapEntry)initWithFeatureSet:(id)set featureEntries:(id)entries;
 - (id)description;
 @end
 
@@ -14,11 +14,11 @@
   return v5;
 }
 
-- (PedestrianARFeatureSetMapEntry)initWithFeatureSet:(id)a3 featureEntries:(id)a4
+- (PedestrianARFeatureSetMapEntry)initWithFeatureSet:(id)set featureEntries:(id)entries
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  setCopy = set;
+  entriesCopy = entries;
+  if (!setCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
     }
   }
 
-  if (!v8)
+  if (!entriesCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -82,8 +82,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_featureSet, a3);
-    objc_storeStrong(&v10->_featureEntries, a4);
+    objc_storeStrong(&v9->_featureSet, set);
+    objc_storeStrong(&v10->_featureEntries, entries);
   }
 
   return v10;

@@ -1,7 +1,7 @@
 @interface PIIStringProcessorWrapper
 + (id)makeProcessor;
 - (_TtC10FinanceKit25PIIStringProcessorWrapper)init;
-- (id)redactFromString:(id)a3 forCountryCodes:(id)a4;
+- (id)redactFromString:(id)string forCountryCodes:(id)codes;
 @end
 
 @implementation PIIStringProcessorWrapper
@@ -13,12 +13,12 @@
   return v2;
 }
 
-- (id)redactFromString:(id)a3 forCountryCodes:(id)a4
+- (id)redactFromString:(id)string forCountryCodes:(id)codes
 {
   v5 = sub_1B7800868();
   v7 = v6;
   v8 = sub_1B7800FA8();
-  v9 = self;
+  selfCopy = self;
   PIIStringProcessor.redact(from:forCountryCodes:)(v5, v7, v8, &v12);
 
   if (v13 == 1)

@@ -1,26 +1,26 @@
 @interface SOSMessagingStatus
-- (BOOL)isEqual:(id)a3;
-- (SOSMessagingStatus)initWithSOSStatus:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SOSMessagingStatus)initWithSOSStatus:(id)status;
 - (SOSStatus)sosStatus;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFlowState:(BOOL)a3;
-- (void)setHasIsPairedDeviceStatus:(BOOL)a3;
-- (void)setHasResolution:(BOOL)a3;
-- (void)setHasTimeOfResolution:(BOOL)a3;
-- (void)setHasTrigger:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFlowState:(BOOL)state;
+- (void)setHasIsPairedDeviceStatus:(BOOL)status;
+- (void)setHasResolution:(BOOL)resolution;
+- (void)setHasTimeOfResolution:(BOOL)resolution;
+- (void)setHasTrigger:(BOOL)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SOSMessagingStatus
 
-- (void)setHasTrigger:(BOOL)a3
+- (void)setHasTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 16;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTimeOfResolution:(BOOL)a3
+- (void)setHasTimeOfResolution:(BOOL)resolution
 {
-  if (a3)
+  if (resolution)
   {
     v3 = 2;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasResolution:(BOOL)a3
+- (void)setHasResolution:(BOOL)resolution
 {
-  if (a3)
+  if (resolution)
   {
     v3 = 8;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasFlowState:(BOOL)a3
+- (void)setHasFlowState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsPairedDeviceStatus:(BOOL)a3
+- (void)setHasIsPairedDeviceStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 32;
   }
@@ -99,20 +99,20 @@
   v8.receiver = self;
   v8.super_class = SOSMessagingStatus;
   v4 = [(SOSMessagingStatus *)&v8 description];
-  v5 = [(SOSMessagingStatus *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SOSMessagingStatus *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
@@ -202,14 +202,14 @@ LABEL_10:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -217,7 +217,7 @@ LABEL_10:
   {
     trigger = self->_trigger;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -238,7 +238,7 @@ LABEL_5:
 
   timeOfDetection = self->_timeOfDetection;
   PBDataWriterWriteDoubleField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -254,7 +254,7 @@ LABEL_6:
 LABEL_15:
   timeOfResolution = self->_timeOfResolution;
   PBDataWriterWriteDoubleField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -270,7 +270,7 @@ LABEL_7:
 LABEL_16:
   resolution = self->_resolution;
   PBDataWriterWriteInt32Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -286,33 +286,33 @@ LABEL_8:
 LABEL_17:
   flowState = self->_flowState;
   PBDataWriterWriteInt32Field();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_9:
     isPairedDeviceStatus = self->_isPairedDeviceStatus;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    v6 = v4;
-    [v4 setUuid:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setUuid:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 8) = self->_trigger;
-    *(v4 + 52) |= 0x10u;
+    *(toCopy + 8) = self->_trigger;
+    *(toCopy + 52) |= 0x10u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -331,8 +331,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_timeOfDetection;
-  *(v4 + 52) |= 1u;
+  *(toCopy + 1) = *&self->_timeOfDetection;
+  *(toCopy + 52) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -346,8 +346,8 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 2) = *&self->_timeOfResolution;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 2) = *&self->_timeOfResolution;
+  *(toCopy + 52) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -361,8 +361,8 @@ LABEL_7:
   }
 
 LABEL_16:
-  *(v4 + 7) = self->_resolution;
-  *(v4 + 52) |= 8u;
+  *(toCopy + 7) = self->_resolution;
+  *(toCopy + 52) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -376,22 +376,22 @@ LABEL_8:
   }
 
 LABEL_17:
-  *(v4 + 6) = self->_flowState;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 6) = self->_flowState;
+  *(toCopy + 52) |= 4u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_9:
-    *(v4 + 48) = self->_isPairedDeviceStatus;
-    *(v4 + 52) |= 0x20u;
+    *(toCopy + 48) = self->_isPairedDeviceStatus;
+    *(toCopy + 52) |= 0x20u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -475,16 +475,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 5))
+  if (uuid | *(equalCopy + 5))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -494,73 +494,73 @@ LABEL_7:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0 || self->_trigger != *(v4 + 8))
+    if ((*(equalCopy + 52) & 0x10) == 0 || self->_trigger != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_timeOfDetection != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_timeOfDetection != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_timeOfResolution != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_timeOfResolution != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_resolution != *(v4 + 7))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_resolution != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_flowState != *(v4 + 6))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_flowState != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_31;
   }
 
-  v6 = (*(v4 + 52) & 0x20) == 0;
+  v6 = (*(equalCopy + 52) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 52) & 0x20) == 0)
+    if ((*(equalCopy + 52) & 0x20) == 0)
     {
 LABEL_31:
       v6 = 0;
@@ -569,13 +569,13 @@ LABEL_31:
 
     if (self->_isPairedDeviceStatus)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_31;
     }
@@ -709,22 +709,22 @@ LABEL_22:
   return v6 ^ v3 ^ v10 ^ v11 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SOSMessagingStatus *)self setUuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 0x10) != 0)
   {
-    self->_trigger = *(v4 + 8);
+    self->_trigger = *(fromCopy + 8);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -737,14 +737,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 52) & 1) == 0)
+  else if ((*(fromCopy + 52) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_timeOfDetection = *(v4 + 1);
+  self->_timeOfDetection = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -757,9 +757,9 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_timeOfResolution = *(v4 + 2);
+  self->_timeOfResolution = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -772,9 +772,9 @@ LABEL_7:
   }
 
 LABEL_16:
-  self->_resolution = *(v4 + 7);
+  self->_resolution = *(fromCopy + 7);
   *&self->_has |= 8u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -787,48 +787,48 @@ LABEL_8:
   }
 
 LABEL_17:
-  self->_flowState = *(v4 + 6);
+  self->_flowState = *(fromCopy + 6);
   *&self->_has |= 4u;
-  if ((*(v4 + 52) & 0x20) != 0)
+  if ((*(fromCopy + 52) & 0x20) != 0)
   {
 LABEL_9:
-    self->_isPairedDeviceStatus = *(v4 + 48);
+    self->_isPairedDeviceStatus = *(fromCopy + 48);
     *&self->_has |= 0x20u;
   }
 
 LABEL_10:
 }
 
-- (SOSMessagingStatus)initWithSOSStatus:(id)a3
+- (SOSMessagingStatus)initWithSOSStatus:(id)status
 {
-  v4 = a3;
-  if (v4)
+  statusCopy = status;
+  if (statusCopy)
   {
     v13.receiver = self;
     v13.super_class = SOSMessagingStatus;
     v5 = [(SOSMessagingStatus *)&v13 init];
     if (v5)
     {
-      v6 = [v4 uuid];
-      v7 = [v6 UUIDString];
-      [(SOSMessagingStatus *)v5 setUuid:v7];
+      uuid = [statusCopy uuid];
+      uUIDString = [uuid UUIDString];
+      [(SOSMessagingStatus *)v5 setUuid:uUIDString];
 
-      -[SOSMessagingStatus setTrigger:](v5, "setTrigger:", [v4 trigger]);
-      v8 = [v4 timeOfDetection];
-      [v8 timeIntervalSince1970];
+      -[SOSMessagingStatus setTrigger:](v5, "setTrigger:", [statusCopy trigger]);
+      timeOfDetection = [statusCopy timeOfDetection];
+      [timeOfDetection timeIntervalSince1970];
       [(SOSMessagingStatus *)v5 setTimeOfDetection:?];
 
-      v9 = [v4 timeOfResolution];
-      [v9 timeIntervalSince1970];
+      timeOfResolution = [statusCopy timeOfResolution];
+      [timeOfResolution timeIntervalSince1970];
       [(SOSMessagingStatus *)v5 setTimeOfResolution:?];
 
-      -[SOSMessagingStatus setResolution:](v5, "setResolution:", [v4 resolution]);
-      -[SOSMessagingStatus setFlowState:](v5, "setFlowState:", [v4 flowState]);
-      -[SOSMessagingStatus setIsPairedDeviceStatus:](v5, "setIsPairedDeviceStatus:", [v4 isPairedDeviceStatus]);
+      -[SOSMessagingStatus setResolution:](v5, "setResolution:", [statusCopy resolution]);
+      -[SOSMessagingStatus setFlowState:](v5, "setFlowState:", [statusCopy flowState]);
+      -[SOSMessagingStatus setIsPairedDeviceStatus:](v5, "setIsPairedDeviceStatus:", [statusCopy isPairedDeviceStatus]);
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -839,10 +839,10 @@ LABEL_10:
       [SOSMessagingStatus(Additions) initWithSOSStatus:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (SOSStatus)sosStatus
@@ -855,8 +855,8 @@ LABEL_10:
       if ([(SOSMessagingStatus *)self hasTimeOfDetection])
       {
         v4 = objc_alloc(MEMORY[0x277CCAD78]);
-        v5 = [(SOSMessagingStatus *)self uuid];
-        v6 = [v4 initWithUUIDString:v5];
+        uuid = [(SOSMessagingStatus *)self uuid];
+        v6 = [v4 initWithUUIDString:uuid];
         [(SOSStatus *)v3 setUuid:v6];
 
         [(SOSStatus *)v3 setTrigger:[(SOSMessagingStatus *)self trigger]];
@@ -880,26 +880,26 @@ LABEL_10:
 
         if ([(SOSMessagingStatus *)self hasResolution])
         {
-          v14 = [(SOSMessagingStatus *)self resolution];
+          resolution = [(SOSMessagingStatus *)self resolution];
         }
 
         else
         {
-          v14 = 0;
+          resolution = 0;
         }
 
-        [(SOSStatus *)v3 setResolution:v14];
+        [(SOSStatus *)v3 setResolution:resolution];
         if ([(SOSMessagingStatus *)self hasFlowState])
         {
-          v15 = [(SOSMessagingStatus *)self flowState];
+          flowState = [(SOSMessagingStatus *)self flowState];
         }
 
         else
         {
-          v15 = 0;
+          flowState = 0;
         }
 
-        [(SOSStatus *)v3 setFlowState:v15];
+        [(SOSStatus *)v3 setFlowState:flowState];
         [(SOSStatus *)v3 setIsPairedDeviceStatus:[(SOSMessagingStatus *)self isPairedDeviceStatus]];
         v12 = [(SOSStatus *)v3 copy];
         goto LABEL_13;

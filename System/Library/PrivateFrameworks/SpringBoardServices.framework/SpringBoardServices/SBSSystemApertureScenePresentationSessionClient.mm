@@ -8,21 +8,21 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSSystemApertureScenePresentationSessionClient.m" lineNumber:45 description:@"Client must be invalidated before deallocating session"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSSystemApertureScenePresentationSessionClient.m" lineNumber:45 description:@"Client must be invalidated before deallocating session"];
 }
 
 - (void)destroyScene
 {
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v3 = [(SBSSystemApertureScenePresentationSessionClient *)self identityToken];
-  [v4 requestSystemApertureSceneInvalidationWithIdentityToken:v3];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  identityToken = [(SBSSystemApertureScenePresentationSessionClient *)self identityToken];
+  [remoteTarget requestSystemApertureSceneInvalidationWithIdentityToken:identityToken];
 }
 
 - (void)requestScene
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSSystemApertureScenePresentationSessionClient.m" lineNumber:80 description:@"In-process Jindo Presentations are not supported"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSSystemApertureScenePresentationSessionClient.m" lineNumber:80 description:@"In-process Jindo Presentations are not supported"];
 }
 
 void __63__SBSSystemApertureScenePresentationSessionClient_requestScene__block_invoke(uint64_t a1, void *a2)

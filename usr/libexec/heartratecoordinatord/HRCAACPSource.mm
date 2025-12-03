@@ -1,31 +1,31 @@
 @interface HRCAACPSource
 - (BOOL)available;
 - (HRCAACPSource)init;
-- (id)initMatching:(id)a3;
+- (id)initMatching:(id)matching;
 - (void)_audioAccessoryDaemonSetup;
 - (void)_audioAccessoryDisconnectHandler;
-- (void)_audioAccessoryHRMDeviceChanged:(id)a3 abstractedHIDDevice:(unsigned __int8)a4;
-- (void)_handleHeartRate:(id)a3;
-- (void)_handleVendorDefinedEvent:(id)a3;
-- (void)_initMatching:(id)a3;
-- (void)_notifySourceUpdate:(unint64_t)a3 forSource:(id)a4;
-- (void)_removalHandler:(unint64_t)a3;
-- (void)_serviceDidConnect:(id)a3;
-- (void)_setStreamingMode:(unint64_t)a3;
-- (void)_setStreamingMode:(unint64_t)a3 forService:(id)a4;
-- (void)_startStreaming:(id)a3;
-- (void)_stopStreaming:(id)a3;
+- (void)_audioAccessoryHRMDeviceChanged:(id)changed abstractedHIDDevice:(unsigned __int8)device;
+- (void)_handleHeartRate:(id)rate;
+- (void)_handleVendorDefinedEvent:(id)event;
+- (void)_initMatching:(id)matching;
+- (void)_notifySourceUpdate:(unint64_t)update forSource:(id)source;
+- (void)_removalHandler:(unint64_t)handler;
+- (void)_serviceDidConnect:(id)connect;
+- (void)_setStreamingMode:(unint64_t)mode;
+- (void)_setStreamingMode:(unint64_t)mode forService:(id)service;
+- (void)_startStreaming:(id)streaming;
+- (void)_stopStreaming:(id)streaming;
 - (void)_updateStreamingMode;
 - (void)activate;
 - (void)dealloc;
-- (void)postUserFitNotification:(id)a3;
-- (void)setAnalyticsReportHandler:(id)a3;
-- (void)setAvailabilityHandler:(id)a3;
-- (void)setFitNotificationParamUpdateHandler:(id)a3;
-- (void)setHeartRateHandler:(id)a3;
-- (void)setOpportunisticMode:(BOOL)a3;
-- (void)setSourceUpdateHandler:(id)a3;
-- (void)setStreamingMode:(unint64_t)a3;
+- (void)postUserFitNotification:(id)notification;
+- (void)setAnalyticsReportHandler:(id)handler;
+- (void)setAvailabilityHandler:(id)handler;
+- (void)setFitNotificationParamUpdateHandler:(id)handler;
+- (void)setHeartRateHandler:(id)handler;
+- (void)setOpportunisticMode:(BOOL)mode;
+- (void)setSourceUpdateHandler:(id)handler;
+- (void)setStreamingMode:(unint64_t)mode;
 @end
 
 @implementation HRCAACPSource
@@ -55,9 +55,9 @@
   return v7;
 }
 
-- (id)initMatching:(id)a3
+- (id)initMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v25.receiver = self;
   v25.super_class = HRCAACPSource;
   v5 = [(HRCAACPSource *)&v25 init];
@@ -93,8 +93,8 @@
   v21[3] = &unk_100040BC8;
   v16 = v5;
   v22 = v16;
-  v23 = v4;
-  v17 = v4;
+  v23 = matchingCopy;
+  v17 = matchingCopy;
   dispatch_sync(v15, v21);
   v18 = v23;
   v19 = v16;
@@ -136,7 +136,7 @@
   dispatch_async(serviceQueue, block);
 }
 
-- (void)setStreamingMode:(unint64_t)a3
+- (void)setStreamingMode:(unint64_t)mode
 {
   serviceQueue = self->_serviceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -144,53 +144,53 @@
   v4[2] = sub_100013BA8;
   v4[3] = &unk_100040840;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = mode;
   dispatch_async(serviceQueue, v4);
 }
 
-- (void)setHeartRateHandler:(id)a3
+- (void)setHeartRateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100013C4C;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)setAvailabilityHandler:(id)a3
+- (void)setAvailabilityHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100013D28;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)setSourceUpdateHandler:(id)a3
+- (void)setSourceUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100013E04;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)setOpportunisticMode:(BOOL)a3
+- (void)setOpportunisticMode:(BOOL)mode
 {
   v3 = sub_10000132C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -219,51 +219,51 @@
   return v3;
 }
 
-- (void)setAnalyticsReportHandler:(id)a3
+- (void)setAnalyticsReportHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014010;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)setFitNotificationParamUpdateHandler:(id)a3
+- (void)setFitNotificationParamUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000140F0;
   v7[3] = &unk_100040818;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)postUserFitNotification:(id)a3
+- (void)postUserFitNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serviceQueue = self->_serviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000141CC;
   v7[3] = &unk_100040BC8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)_initMatching:(id)a3
+- (void)_initMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   objc_initWeak(&location, self);
   v5 = self->_serviceQueue;
   dispatch_assert_queue_V2(self->_serviceQueue);
@@ -280,7 +280,7 @@
   self->_streamingClient = v7;
 
   [(HIDEventSystemClient *)self->_streamingClient setDispatchQueue:self->_serviceQueue];
-  [(HIDEventSystemClient *)self->_streamingClient setMatching:v4];
+  [(HIDEventSystemClient *)self->_streamingClient setMatching:matchingCopy];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100014650;
@@ -299,7 +299,7 @@
   monitorClient = self->_monitorClient;
   self->_monitorClient = v10;
 
-  [(HIDEventSystemClient *)self->_monitorClient setMatching:v4];
+  [(HIDEventSystemClient *)self->_monitorClient setMatching:matchingCopy];
   [(HIDEventSystemClient *)self->_monitorClient setDispatchQueue:self->_serviceQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -359,48 +359,48 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_audioAccessoryHRMDeviceChanged:(id)a3 abstractedHIDDevice:(unsigned __int8)a4
+- (void)_audioAccessoryHRMDeviceChanged:(id)changed abstractedHIDDevice:(unsigned __int8)device
 {
-  v4 = a4;
-  v7 = a3;
+  deviceCopy = device;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_serviceQueue);
   v8 = sub_10000132C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 name];
-    v10 = [v7 bluetoothAddress];
-    v11 = v10;
-    if (v4 > 2)
+    name = [changedCopy name];
+    bluetoothAddress = [changedCopy bluetoothAddress];
+    v11 = bluetoothAddress;
+    if (deviceCopy > 2)
     {
       v12 = "default";
     }
 
     else
     {
-      v12 = off_100040D58[v4];
+      v12 = off_100040D58[deviceCopy];
     }
 
     *buf = 138543874;
-    v30 = v9;
+    v30 = name;
     v31 = 2114;
-    v32 = v10;
+    v32 = bluetoothAddress;
     v33 = 2082;
     v34 = v12;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "HRCAACPSource Active HRM route set to %{public}@ (%{public}@) %{public}s", buf, 0x20u);
   }
 
-  if (!v7 || v4)
+  if (!changedCopy || deviceCopy)
   {
-    objc_storeStrong(&self->_aaDevice, a3);
-    self->_virtualDevice = v4 == 2;
+    objc_storeStrong(&self->_aaDevice, changed);
+    self->_virtualDevice = deviceCopy == 2;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = [(HRCAACPSource *)self services];
-    v16 = [v15 allValues];
+    services = [(HRCAACPSource *)self services];
+    allValues = [services allValues];
 
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v17 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v17)
     {
       v18 = *v25;
@@ -410,15 +410,15 @@
         {
           if (*v25 != v18)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allValues);
           }
 
           if (self->_aaDevice)
           {
             v20 = *(*(&v24 + 1) + 8 * i);
-            v21 = [v20 bluetoothAddress];
-            v22 = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
-            v23 = [v21 isEqualToData:v22];
+            bluetoothAddress2 = [v20 bluetoothAddress];
+            bluetoothAddressData = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
+            v23 = [bluetoothAddress2 isEqualToData:bluetoothAddressData];
 
             if (v23)
             {
@@ -427,7 +427,7 @@
           }
         }
 
-        v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v17 = [allValues countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v17);
@@ -441,8 +441,8 @@
     v13 = sub_10000132C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      v14 = [v7 name];
-      sub_100017114(v14, buf, v13);
+      name2 = [changedCopy name];
+      sub_100017114(name2, buf, v13);
     }
   }
 }
@@ -456,19 +456,19 @@
   [(HRCAACPSource *)self _updateStreamingMode];
 }
 
-- (void)_serviceDidConnect:(id)a3
+- (void)_serviceDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v5 = [v4 serviceID];
-  v6 = [[HRCServiceInfo alloc] initWithService:v4];
-  v7 = [(HRCAACPSource *)self services];
-  v8 = [NSNumber numberWithUnsignedLongLong:v5];
-  [v7 setObject:v6 forKeyedSubscript:v8];
+  serviceID = [connectCopy serviceID];
+  v6 = [[HRCServiceInfo alloc] initWithService:connectCopy];
+  services = [(HRCAACPSource *)self services];
+  v8 = [NSNumber numberWithUnsignedLongLong:serviceID];
+  [services setObject:v6 forKeyedSubscript:v8];
 
-  v9 = [(HRCServiceInfo *)v6 bluetoothAddress];
-  v10 = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
-  v11 = [v9 isEqualToData:v10];
+  bluetoothAddress = [(HRCServiceInfo *)v6 bluetoothAddress];
+  bluetoothAddressData = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
+  v11 = [bluetoothAddress isEqualToData:bluetoothAddressData];
 
   if (v11)
   {
@@ -481,8 +481,8 @@
   v13[2] = sub_100015244;
   v13[3] = &unk_1000409E0;
   objc_copyWeak(v14, &location);
-  v14[1] = v5;
-  [v4 setRemovalHandler:v13];
+  v14[1] = serviceID;
+  [connectCopy setRemovalHandler:v13];
   self->_available = [(NSMutableDictionary *)self->_services count]!= 0;
   if ([(NSMutableDictionary *)self->_services count]== 1)
   {
@@ -498,12 +498,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_removalHandler:(unint64_t)a3
+- (void)_removalHandler:(unint64_t)handler
 {
   dispatch_assert_queue_V2(self->_serviceQueue);
   activeService = self->_activeService;
   services = self->_services;
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
+  v7 = [NSNumber numberWithUnsignedLongLong:handler];
   v8 = [(NSMutableDictionary *)services objectForKeyedSubscript:v7];
 
   if (activeService == v8)
@@ -514,7 +514,7 @@
   }
 
   v10 = self->_services;
-  v11 = [NSNumber numberWithUnsignedLongLong:a3];
+  v11 = [NSNumber numberWithUnsignedLongLong:handler];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
   if (![(NSMutableDictionary *)self->_services count])
@@ -530,15 +530,15 @@
   v13 = sub_10000132C();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(HRCAACPSource *)self services];
-    v15 = [NSNumber numberWithUnsignedLongLong:a3];
-    v16 = [v14 objectForKeyedSubscript:v15];
-    v17 = [v16 uuid];
+    services = [(HRCAACPSource *)self services];
+    v15 = [NSNumber numberWithUnsignedLongLong:handler];
+    v16 = [services objectForKeyedSubscript:v15];
+    uuid = [v16 uuid];
     available = self->_available;
     v19 = 134218498;
-    v20 = a3;
+    handlerCopy = handler;
     v21 = 2114;
-    v22 = v17;
+    v22 = uuid;
     v23 = 1024;
     v24 = available;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "AACP HR service removed:0x%llx uuid: %{public}@ available:%{BOOL}u", &v19, 0x1Cu);
@@ -547,18 +547,18 @@
   [(HRCAACPSource *)self _updateStreamingMode];
 }
 
-- (void)_setStreamingMode:(unint64_t)a3
+- (void)_setStreamingMode:(unint64_t)mode
 {
   dispatch_assert_queue_V2(self->_serviceQueue);
-  if (self->_streamingMode != a3)
+  if (self->_streamingMode != mode)
   {
-    self->_streamingMode = a3;
+    self->_streamingMode = mode;
     v5 = sub_10000132C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       available = self->_available;
       v7[0] = 67240448;
-      v7[1] = a3;
+      v7[1] = mode;
       v8 = 1024;
       v9 = available;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "AACP Source streaming mode set %{public}d available:%{BOOL}u", v7, 0xEu);
@@ -586,10 +586,10 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v28 = [(HRCAACPSource *)self services];
-    v8 = [v28 allValues];
+    services = [(HRCAACPSource *)self services];
+    allValues = [services allValues];
 
-    v29 = [v8 countByEnumeratingWithState:&v43 objects:v50 count:16];
+    v29 = [allValues countByEnumeratingWithState:&v43 objects:v50 count:16];
     if (v29)
     {
       v30 = *v44;
@@ -599,14 +599,14 @@
         {
           if (*v44 != v30)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          v32 = [*(*(&v43 + 1) + 8 * i) service];
-          [(HRCAACPSource *)self _setStreamingMode:0 forService:v32];
+          service = [*(*(&v43 + 1) + 8 * i) service];
+          [(HRCAACPSource *)self _setStreamingMode:0 forService:service];
         }
 
-        v29 = [v8 countByEnumeratingWithState:&v43 objects:v50 count:16];
+        v29 = [allValues countByEnumeratingWithState:&v43 objects:v50 count:16];
       }
 
       while (v29);
@@ -615,22 +615,22 @@
     goto LABEL_37;
   }
 
-  v4 = [(HRCServiceInfo *)activeService bluetoothAddress];
-  v5 = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
-  v6 = [v4 isEqualToData:v5];
+  bluetoothAddress = [(HRCServiceInfo *)activeService bluetoothAddress];
+  bluetoothAddressData = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
+  v6 = [bluetoothAddress isEqualToData:bluetoothAddressData];
 
   if (((*location != 0) & v6) == 1)
   {
     virtualDevice = self->_virtualDevice;
     if (virtualDevice == [*location virtualDevice])
     {
-      v8 = sub_10000132C();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      allValues = sub_10000132C();
+      if (os_log_type_enabled(allValues, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [*location service];
+        service2 = [*location service];
         *buf = 134349056;
-        v49 = [v9 serviceID];
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Active service 0x%{public}llx still valid", buf, 0xCu);
+        serviceID = [service2 serviceID];
+        _os_log_impl(&_mh_execute_header, allValues, OS_LOG_TYPE_DEFAULT, "Active service 0x%{public}llx still valid", buf, 0xCu);
       }
 
 LABEL_37:
@@ -645,13 +645,13 @@ LABEL_37:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = [(HRCAACPSource *)self services];
-  v11 = [v10 allValues];
+  services2 = [(HRCAACPSource *)self services];
+  allValues2 = [services2 allValues];
 
-  obj = v11;
+  obj = allValues2;
   v12 = 0;
   v13 = 0;
-  v14 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  v14 = [allValues2 countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (!v14)
   {
     goto LABEL_40;
@@ -668,9 +668,9 @@ LABEL_37:
       }
 
       v17 = *(*(&v39 + 1) + 8 * j);
-      v18 = [v17 bluetoothAddress];
-      v19 = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
-      v20 = [v18 isEqualToData:v19];
+      bluetoothAddress2 = [v17 bluetoothAddress];
+      bluetoothAddressData2 = [(AudioAccessoryDevice *)self->_aaDevice bluetoothAddressData];
+      v20 = [bluetoothAddress2 isEqualToData:bluetoothAddressData2];
 
       if (v20)
       {
@@ -686,7 +686,7 @@ LABEL_37:
             }
           }
 
-          v23 = v13;
+          service3 = v13;
           v13 = v17;
           goto LABEL_20;
         }
@@ -694,15 +694,15 @@ LABEL_37:
 
       if (([v17 simulator]& 1) != 0)
       {
-        v23 = v12;
+        service3 = v12;
         v12 = v17;
 LABEL_20:
         v24 = v17;
         goto LABEL_22;
       }
 
-      v23 = [v17 service];
-      [(HRCAACPSource *)self _setStreamingMode:0 forService:v23];
+      service3 = [v17 service];
+      [(HRCAACPSource *)self _setStreamingMode:0 forService:service3];
 LABEL_22:
     }
 
@@ -744,8 +744,8 @@ LABEL_40:
   if (v25)
   {
     streamingMode = self->_streamingMode;
-    v35 = [v25 service];
-    [(HRCAACPSource *)self _setStreamingMode:streamingMode forService:v35];
+    service4 = [v25 service];
+    [(HRCAACPSource *)self _setStreamingMode:streamingMode forService:service4];
 
     objc_storeStrong(locationa, v25);
     [(HRCAACPSource *)self _notifySourceUpdate:self->_streamingMode forSource:self->_activeService];
@@ -754,14 +754,14 @@ LABEL_40:
 LABEL_45:
 }
 
-- (void)_notifySourceUpdate:(unint64_t)a3 forSource:(id)a4
+- (void)_notifySourceUpdate:(unint64_t)update forSource:(id)source
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 && self->_fitNotificationParamUpdateHandler)
+  sourceCopy = source;
+  v7 = sourceCopy;
+  if (update && self->_fitNotificationParamUpdateHandler)
   {
-    v8 = [v6 aaDevice];
-    if ([v8 productID] == 8221)
+    aaDevice = [sourceCopy aaDevice];
+    if ([aaDevice productID] == 8221)
     {
 
       v9.n128_u32[0] = 1036831949;
@@ -781,10 +781,10 @@ LABEL_45:
   {
     v13 = +[NSDate now];
     std::chrono::steady_clock::now();
-    v11 = [v7 service];
-    v12 = [v7 aaDevice];
-    v14 = [HRCServiceInfo makeDevice:v11 aaDevice:v12];
-    v15 = [v7 uuid];
+    service = [v7 service];
+    aaDevice2 = [v7 aaDevice];
+    v14 = [HRCServiceInfo makeDevice:service aaDevice:aaDevice2];
+    uuid = [v7 uuid];
     [v7 virtualDevice];
     [v7 aaDevice];
 
@@ -792,34 +792,34 @@ LABEL_45:
   }
 }
 
-- (void)_setStreamingMode:(unint64_t)a3 forService:(id)a4
+- (void)_setStreamingMode:(unint64_t)mode forService:(id)service
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 - 1 >= 2)
+  serviceCopy = service;
+  v7 = serviceCopy;
+  if (mode - 1 >= 2)
   {
-    if (!a3)
+    if (!mode)
     {
-      [(HRCAACPSource *)self _stopStreaming:v6];
+      [(HRCAACPSource *)self _stopStreaming:serviceCopy];
     }
   }
 
   else
   {
-    [(HRCAACPSource *)self _startStreaming:v6];
+    [(HRCAACPSource *)self _startStreaming:serviceCopy];
   }
 }
 
-- (void)_startStreaming:(id)a3
+- (void)_startStreaming:(id)streaming
 {
-  v3 = a3;
-  if ([v3 setProperty:&off_1000432A0 forKey:@"ReportInterval"])
+  streamingCopy = streaming;
+  if ([streamingCopy setProperty:&off_1000432A0 forKey:@"ReportInterval"])
   {
     v4 = sub_10000132C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134349056;
-      v6 = [v3 serviceID];
+      serviceID = [streamingCopy serviceID];
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Streaming started for AACP source 0x%{public}llx", &v5, 0xCu);
     }
   }
@@ -829,21 +829,21 @@ LABEL_45:
     v4 = sub_10000132C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_1000171F0(&v5, [v3 serviceID], v4);
+      sub_1000171F0(&v5, [streamingCopy serviceID], v4);
     }
   }
 }
 
-- (void)_stopStreaming:(id)a3
+- (void)_stopStreaming:(id)streaming
 {
-  v3 = a3;
-  if ([v3 setProperty:&off_1000432E8 forKey:@"ReportInterval"])
+  streamingCopy = streaming;
+  if ([streamingCopy setProperty:&off_1000432E8 forKey:@"ReportInterval"])
   {
     v4 = sub_10000132C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134349056;
-      v6 = [v3 serviceID];
+      serviceID = [streamingCopy serviceID];
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Streaming stopped for AACP source 0x%{public}llx", &v5, 0xCu);
     }
   }
@@ -853,47 +853,47 @@ LABEL_45:
     v4 = sub_10000132C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_10001722C(&v5, [v3 serviceID], v4);
+      sub_10001722C(&v5, [streamingCopy serviceID], v4);
     }
   }
 }
 
-- (void)_handleHeartRate:(id)a3
+- (void)_handleHeartRate:(id)rate
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  rateCopy = rate;
+  v4 = rateCopy;
+  if (!rateCopy)
   {
     goto LABEL_53;
   }
 
-  v58 = v3;
-  [v3 doubleValueForField:2818049];
+  v58 = rateCopy;
+  [rateCopy doubleValueForField:2818049];
   v6 = v5;
   v54 = [v4 integerValueForField:2818050];
-  v7 = [v4 timestamp];
+  timestamp = [v4 timestamp];
   v53 = [v4 integerValueForField:2818048];
   dispatch_assert_queue_V2(self->_serviceQueue);
   v55 = +[NSUUID UUID];
-  v8 = [(HRCAACPSource *)self services];
+  services = [(HRCAACPSource *)self services];
   v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v58 senderID]);
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [services objectForKeyedSubscript:v9];
 
   v57 = v10;
-  v11 = [v10 hrcDevice];
+  hrcDevice = [v10 hrcDevice];
 
-  if (!v11)
+  if (!hrcDevice)
   {
-    v12 = [v10 service];
-    v13 = [v10 aaDevice];
-    v14 = [HRCServiceInfo makeDevice:v12 aaDevice:v13];
+    service = [v10 service];
+    aaDevice = [v10 aaDevice];
+    v14 = [HRCServiceInfo makeDevice:service aaDevice:aaDevice];
     [v57 setHrcDevice:v14];
   }
 
-  v15 = [(HRCAACPSource *)self services];
+  services2 = [(HRCAACPSource *)self services];
   v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v58 senderID]);
-  v17 = [v15 objectForKeyedSubscript:v16];
-  v56 = [v17 uuid];
+  v17 = [services2 objectForKeyedSubscript:v16];
+  uuid = [v17 uuid];
 
   v18 = sub_10000132C();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -905,31 +905,31 @@ LABEL_45:
     v71 = 1026;
     v72 = v54;
     v73 = 2050;
-    v74 = v7;
+    v74 = timestamp;
     v75 = 2050;
-    v76 = [v58 senderID];
+    senderID = [v58 senderID];
     v77 = 2114;
-    v78 = v56;
+    v78 = uuid;
     v79 = 2114;
     v80 = v55;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "AACP HR %{sensitive}ld (%{sensitive}f conf) loc:%{public}hu gen:%{public}llu sender:0x%{public}llx Source:%{public}@ Sample:%{public}@ \n", buf, 0x44u);
   }
 
-  v19 = [(HRCServiceInfo *)self->_activeService uuid];
-  v20 = [v56 isEqual:v19];
+  uuid2 = [(HRCServiceInfo *)self->_activeService uuid];
+  v20 = [uuid isEqual:uuid2];
 
   if ((v20 & 1) == 0)
   {
     v21 = sub_10000132C();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(HRCServiceInfo *)self->_activeService uuid];
-      sub_100017268(v22, v56, buf, v21);
+      uuid3 = [(HRCServiceInfo *)self->_activeService uuid];
+      sub_100017268(uuid3, uuid, buf, v21);
     }
   }
 
-  v23 = [v57 hrcDevice];
-  v24 = v23 == 0;
+  hrcDevice2 = [v57 hrcDevice];
+  v24 = hrcDevice2 == 0;
 
   if (v24)
   {
@@ -946,8 +946,8 @@ LABEL_45:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v25 = [v58 children];
-  v26 = [v25 countByEnumeratingWithState:&v60 objects:v64 count:16];
+  children = [v58 children];
+  v26 = [children countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (!v26)
   {
 
@@ -973,7 +973,7 @@ LABEL_51:
     {
       if (*v61 != v29)
       {
-        objc_enumerationMutation(v25);
+        objc_enumerationMutation(children);
       }
 
       v31 = *(*(&v60 + 1) + 8 * v30);
@@ -1063,7 +1063,7 @@ LABEL_35:
     }
 
     while (v26 != v30);
-    v44 = [v25 countByEnumeratingWithState:&v60 objects:v64 count:16];
+    v44 = [children countByEnumeratingWithState:&v60 objects:v64 count:16];
     v26 = v44;
   }
 
@@ -1086,11 +1086,11 @@ LABEL_35:
 
   v46 = [HRCHeartRateData alloc];
   v47 = [NSNumber numberWithDouble:v6];
-  v48 = [v57 hrcDevice];
+  hrcDevice3 = [v57 hrcDevice];
   HIDWORD(v52) = v27;
   LOBYTE(v52) = v45;
   LOWORD(v51) = 1;
-  v49 = [v46 initWithHeartRate:v47 confidence:0 confidenceLevel:1 arbitrationStatus:2 context:2 hrContext:v28 timestamp:v53 sampleUuid:v55 sourceType:v51 streamingThrottleStatus:v56 deviceUuid:v48 device:v52 sensorLocation:? flags:?];
+  v49 = [v46 initWithHeartRate:v47 confidence:0 confidenceLevel:1 arbitrationStatus:2 context:2 hrContext:v28 timestamp:v53 sampleUuid:v55 sourceType:v51 streamingThrottleStatus:uuid deviceUuid:hrcDevice3 device:v52 sensorLocation:? flags:?];
 
   heartRateHandler = self->_heartRateHandler;
   if (heartRateHandler)
@@ -1104,13 +1104,13 @@ LABEL_52:
 LABEL_53:
 }
 
-- (void)_handleVendorDefinedEvent:(id)a3
+- (void)_handleVendorDefinedEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = [v4 integerValueForField:0x10000];
+    v6 = [eventCopy integerValueForField:0x10000];
     v7 = [v5 integerValueForField:65537];
     v8 = v7;
     if (v6 != 65290 || v7 != 19)
@@ -1128,12 +1128,12 @@ LABEL_53:
       goto LABEL_27;
     }
 
-    v9 = [(HRCAACPSource *)self services];
+    services = [(HRCAACPSource *)self services];
     v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 senderID]);
-    v11 = [v9 objectForKeyedSubscript:v10];
+    v11 = [services objectForKeyedSubscript:v10];
 
-    v12 = [v11 aaDevice];
-    if (v12)
+    aaDevice = [v11 aaDevice];
+    if (aaDevice)
     {
     }
 
@@ -1166,8 +1166,8 @@ LABEL_27:
     }
 
     v16 = [NSData dataWithBytes:v13 length:v14];
-    v17 = [v11 aaDevice];
-    if ([v17 productID] == 8221)
+    aaDevice2 = [v11 aaDevice];
+    if ([aaDevice2 productID] == 8221)
     {
 
       goto LABEL_26;
@@ -1187,11 +1187,11 @@ LABEL_27:
     {
     }
 
-    v20 = [v11 aaDevice];
-    if ([v20 productID] != 8231)
+    aaDevice3 = [v11 aaDevice];
+    if ([aaDevice3 productID] != 8231)
     {
-      v21 = [v11 aaDevice];
-      if ([v21 productID] != 8232)
+      aaDevice4 = [v11 aaDevice];
+      if ([aaDevice4 productID] != 8232)
       {
         [v11 simulator];
 

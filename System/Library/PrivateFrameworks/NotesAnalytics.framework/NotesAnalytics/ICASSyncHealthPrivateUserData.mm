@@ -1,20 +1,20 @@
 @interface ICASSyncHealthPrivateUserData
-- (ICASSyncHealthPrivateUserData)initWithSyncHealthPrivateUserID:(id)a3;
+- (ICASSyncHealthPrivateUserData)initWithSyncHealthPrivateUserID:(id)d;
 - (id)toDict;
 @end
 
 @implementation ICASSyncHealthPrivateUserData
 
-- (ICASSyncHealthPrivateUserData)initWithSyncHealthPrivateUserID:(id)a3
+- (ICASSyncHealthPrivateUserData)initWithSyncHealthPrivateUserID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = ICASSyncHealthPrivateUserData;
   v6 = [(ICASSyncHealthPrivateUserData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_syncHealthPrivateUserID, a3);
+    objc_storeStrong(&v6->_syncHealthPrivateUserID, d);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"syncHealthPrivateUserID";
-  v3 = [(ICASSyncHealthPrivateUserData *)self syncHealthPrivateUserID];
-  if (v3)
+  syncHealthPrivateUserID = [(ICASSyncHealthPrivateUserData *)self syncHealthPrivateUserID];
+  if (syncHealthPrivateUserID)
   {
-    v4 = [(ICASSyncHealthPrivateUserData *)self syncHealthPrivateUserID];
+    syncHealthPrivateUserID2 = [(ICASSyncHealthPrivateUserData *)self syncHealthPrivateUserID];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    syncHealthPrivateUserID2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = syncHealthPrivateUserID2;
+  v10[0] = syncHealthPrivateUserID2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

@@ -1,6 +1,6 @@
 @interface SMConversationDeletedNotification
 - (SMConversationDeletedNotification)init;
-- (SMConversationDeletedNotification)initWithConversation:(id)a3;
+- (SMConversationDeletedNotification)initWithConversation:(id)conversation;
 @end
 
 @implementation SMConversationDeletedNotification
@@ -21,11 +21,11 @@
   return 0;
 }
 
-- (SMConversationDeletedNotification)initWithConversation:(id)a3
+- (SMConversationDeletedNotification)initWithConversation:(id)conversation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  conversationCopy = conversation;
+  if (conversationCopy)
   {
     v17.receiver = self;
     v17.super_class = SMConversationDeletedNotification;
@@ -33,7 +33,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_conversation, a3);
+      objc_storeStrong(&v7->_conversation, conversation);
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -48,14 +48,14 @@
           v20 = 2112;
           v21 = v15;
           v22 = 2112;
-          v23 = conversation;
+          conversationCopy2 = conversation;
           _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "#SafetyCache,%@,%@,conversation,%@", buf, 0x20u);
         }
       }
     }
 
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -67,10 +67,10 @@
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: conversation", buf, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

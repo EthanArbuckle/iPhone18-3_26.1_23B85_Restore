@@ -1,18 +1,18 @@
 @interface _UIDruidSourceConnection
 - (_UIDruidSourceConnection)init;
-- (id)addItems:(id)a3 withOldItemCollection:(id)a4;
+- (id)addItems:(id)items withOldItemCollection:(id)collection;
 - (void)_internalDragFailed;
-- (void)beginDragWithConfiguration:(id)a3 completion:(id)a4;
-- (void)canHandOffCancelledItems:(id)a3 withReply:(id)a4;
+- (void)beginDragWithConfiguration:(id)configuration completion:(id)completion;
+- (void)canHandOffCancelledItems:(id)items withReply:(id)reply;
 - (void)cancelAndClearWatchdogTimer;
 - (void)cancelDrag;
 - (void)dataTransferSessionFinished;
-- (void)dirtyItems:(id)a3;
-- (void)dragEndedWithOperation:(unint64_t)a3;
+- (void)dirtyItems:(id)items;
+- (void)dragEndedWithOperation:(unint64_t)operation;
 - (void)dragFailed;
-- (void)handOffCancelledItems:(id)a3 withFence:(id)a4 completion:(id)a5;
-- (void)requestDragPreviewsForIndexSet:(id)a3 reply:(id)a4;
-- (void)updatedPresentation:(id)a3;
+- (void)handOffCancelledItems:(id)items withFence:(id)fence completion:(id)completion;
+- (void)requestDragPreviewsForIndexSet:(id)set reply:(id)reply;
+- (void)updatedPresentation:(id)presentation;
 @end
 
 @implementation _UIDruidSourceConnection
@@ -62,17 +62,17 @@
   return v2;
 }
 
-- (void)beginDragWithConfiguration:(id)a3 completion:(id)a4
+- (void)beginDragWithConfiguration:(id)configuration completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v33 = a4;
-  v7 = [v6 touchIDs];
-  v8 = [v7 count];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  touchIDs = [configurationCopy touchIDs];
+  v8 = [touchIDs count];
 
-  v9 = [v6 items];
-  v10 = [v6 axEndpoint];
-  if (v10 || ([v6 initiatedWithPointer] & 1) != 0)
+  items = [configurationCopy items];
+  axEndpoint = [configurationCopy axEndpoint];
+  if (axEndpoint || ([configurationCopy initiatedWithPointer] & 1) != 0)
   {
   }
 
@@ -81,17 +81,17 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"touches must have 1 or 2 objects"];
   }
 
-  if (!v9)
+  if (!items)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"items must be non-nil"];
   }
 
-  if (![v9 count])
+  if (![items count])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"items must not be empty"];
   }
 
-  if (!v33)
+  if (!completionCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"completion must be non-nil"];
   }
@@ -105,7 +105,7 @@
 
   if ([(_UIDruidSourceConnection *)self isCancelled])
   {
-    (*(v33 + 2))(v33, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     [(NSXPCConnection *)self->_connection invalidate];
   }
 
@@ -130,12 +130,12 @@
     objc_destroyWeak(&buf);
   }
 
-  v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(items, "count")}];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v18 = v9;
+  v18 = items;
   v19 = [v18 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v19)
   {
@@ -149,8 +149,8 @@
           objc_enumerationMutation(v18);
         }
 
-        v22 = [*(*(&v40 + 1) + 8 * i) itemProvider];
-        v23 = [objc_alloc(MEMORY[0x1E69BC800]) initWithNSItemProvider:v22];
+        itemProvider = [*(*(&v40 + 1) + 8 * i) itemProvider];
+        v23 = [objc_alloc(MEMORY[0x1E69BC800]) initWithNSItemProvider:itemProvider];
         [v17 addObject:v23];
       }
 
@@ -161,10 +161,10 @@
   }
 
   v24 = [objc_alloc(MEMORY[0x1E69BC808]) initWithItems:v17];
-  [v24 setOriginatorDataOwner:{objc_msgSend(v6, "dataOwner")}];
-  [v6 setItemCollection:v24];
-  v25 = [v24 dataConsumersEndpoint];
-  [v6 setDataProviderEndpoint:v25];
+  [v24 setOriginatorDataOwner:{objc_msgSend(configurationCopy, "dataOwner")}];
+  [configurationCopy setItemCollection:v24];
+  dataConsumersEndpoint = [v24 dataConsumersEndpoint];
+  [configurationCopy setDataProviderEndpoint:dataConsumersEndpoint];
 
   objc_initWeak(&buf, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -172,9 +172,9 @@
   aBlock[2] = __66___UIDruidSourceConnection_beginDragWithConfiguration_completion___block_invoke_590;
   aBlock[3] = &unk_1E7106738;
   objc_copyWeak(&v39, &buf);
-  v26 = v33;
+  v26 = completionCopy;
   v38 = v26;
-  v27 = v6;
+  v27 = configurationCopy;
   v37 = v27;
   v28 = _Block_copy(aBlock);
   connection = self->_connection;
@@ -197,9 +197,9 @@
   objc_destroyWeak(&buf);
 }
 
-- (void)dirtyItems:(id)a3
+- (void)dirtyItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = *(__UILogGetCategoryCachedImpl("Dragging", &dirtyItems____s_category) + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -207,21 +207,21 @@
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "_UIDruidSourceConnection dirtyItems:", v6, 2u);
   }
 
-  [(_DUIServerSessionSource *)self->_serverSession dirtySourceItems:v4];
+  [(_DUIServerSessionSource *)self->_serverSession dirtySourceItems:itemsCopy];
 }
 
-- (id)addItems:(id)a3 withOldItemCollection:(id)a4
+- (id)addItems:(id)items withOldItemCollection:(id)collection
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 items];
-  v8 = [v7 mutableCopy];
+  itemsCopy = items;
+  items = [collection items];
+  v8 = [items mutableCopy];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -238,8 +238,8 @@
 
         v14 = *(*(&v22 + 1) + 8 * i);
         v15 = objc_alloc(MEMORY[0x1E69BC800]);
-        v16 = [v14 itemProvider];
-        v17 = [v15 initWithNSItemProvider:v16];
+        itemProvider = [v14 itemProvider];
+        v17 = [v15 initWithNSItemProvider:itemProvider];
 
         [v8 addObject:v17];
       }
@@ -252,8 +252,8 @@
 
   v18 = [objc_alloc(MEMORY[0x1E69BC808]) initWithItems:v8];
   serverSession = self->_serverSession;
-  v20 = [v18 dataConsumersEndpoint];
-  [(_DUIServerSessionSource *)serverSession addItemCollection:v18 dataProviderEndpoint:v20];
+  dataConsumersEndpoint = [v18 dataConsumersEndpoint];
+  [(_DUIServerSessionSource *)serverSession addItemCollection:v18 dataProviderEndpoint:dataConsumersEndpoint];
 
   return v18;
 }
@@ -284,16 +284,16 @@
   }
 }
 
-- (void)requestDragPreviewsForIndexSet:(id)a3 reply:(id)a4
+- (void)requestDragPreviewsForIndexSet:(id)set reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  replyCopy = reply;
   v8 = *(__UILogGetCategoryCachedImpl("Dragging", &requestDragPreviewsForIndexSet_reply____s_category) + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = setCopy;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "_UIDruidSourceConnection requestDragPreviewsForIndexSet:reply: %@", buf, 0xCu);
   }
 
@@ -303,31 +303,31 @@
   v12[2] = __65___UIDruidSourceConnection_requestDragPreviewsForIndexSet_reply___block_invoke;
   v12[3] = &unk_1E70FCE28;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = setCopy;
+  v14 = replyCopy;
+  v10 = replyCopy;
+  v11 = setCopy;
   [v9 performAsync:v12];
 }
 
-- (void)updatedPresentation:(id)a3
+- (void)updatedPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = +[UIApplication _systemAnimationFenceExemptQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48___UIDruidSourceConnection_updatedPresentation___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = presentationCopy;
+  v6 = presentationCopy;
   [v5 performAsync:v7];
 }
 
-- (void)canHandOffCancelledItems:(id)a3 withReply:(id)a4
+- (void)canHandOffCancelledItems:(id)items withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  replyCopy = reply;
   v8 = *(__UILogGetCategoryCachedImpl("Dragging", &canHandOffCancelledItems_withReply____s_category) + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -341,18 +341,18 @@
   v12[2] = __63___UIDruidSourceConnection_canHandOffCancelledItems_withReply___block_invoke;
   v12[3] = &unk_1E70FCE28;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = itemsCopy;
+  v14 = replyCopy;
+  v10 = replyCopy;
+  v11 = itemsCopy;
   [v9 performAsync:v12];
 }
 
-- (void)handOffCancelledItems:(id)a3 withFence:(id)a4 completion:(id)a5
+- (void)handOffCancelledItems:(id)items withFence:(id)fence completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  fenceCopy = fence;
+  completionCopy = completion;
   v11 = *(__UILogGetCategoryCachedImpl("Dragging", &handOffCancelledItems_withFence_completion____s_category) + 8);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,23 +366,23 @@
   v16[2] = __71___UIDruidSourceConnection_handOffCancelledItems_withFence_completion___block_invoke;
   v16[3] = &unk_1E70F5F08;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = itemsCopy;
+  v18 = fenceCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = fenceCopy;
+  v15 = itemsCopy;
   [v12 performAsync:v16];
 }
 
-- (void)dragEndedWithOperation:(unint64_t)a3
+- (void)dragEndedWithOperation:(unint64_t)operation
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = *(__UILogGetCategoryCachedImpl("Dragging", &dragEndedWithOperation____s_category) + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = a3;
+    operationCopy = operation;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "_UIDruidSourceConnection dragEndedWithOperation:%ld", buf, 0xCu);
   }
 
@@ -392,7 +392,7 @@
   v7[2] = __51___UIDruidSourceConnection_dragEndedWithOperation___block_invoke;
   v7[3] = &unk_1E70F32F0;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = operation;
   [v6 performAsync:v7];
 }
 

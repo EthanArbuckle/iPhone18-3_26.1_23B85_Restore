@@ -1,29 +1,29 @@
 @interface HUMatterConnectedServicesItemManager
 - (HMAccessory)accessory;
-- (HUMatterConnectedServicesItemManager)initWithConnectedServicesItemProvider:(id)a3 delegate:(id)a4;
+- (HUMatterConnectedServicesItemManager)initWithConnectedServicesItemProvider:(id)provider delegate:(id)delegate;
 - (HUMatterHomeConnectedEcosystemItemProvider)connectedHomeEcosystemItemProvider;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)connectedAccessoryEcosystemItemProvider;
 - (id)fetchSystemCommissionerPairingUUID;
-- (void)connectedServicesSectionFooterLink:(id)a3 isForAccessory:(BOOL)a4;
+- (void)connectedServicesSectionFooterLink:(id)link isForAccessory:(BOOL)accessory;
 @end
 
 @implementation HUMatterConnectedServicesItemManager
 
-- (HUMatterConnectedServicesItemManager)initWithConnectedServicesItemProvider:(id)a3 delegate:(id)a4
+- (HUMatterConnectedServicesItemManager)initWithConnectedServicesItemProvider:(id)provider delegate:(id)delegate
 {
-  v7 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = HUMatterConnectedServicesItemManager;
-  v8 = [(HFItemManager *)&v13 initWithDelegate:a4 sourceItem:0];
+  v8 = [(HFItemManager *)&v13 initWithDelegate:delegate sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connectedServicesItemProvider, a3);
-    v10 = [(HUMatterConnectedServicesItemManager *)v9 connectedHomeEcosystemItemProvider];
-    v11 = [v10 home];
-    [(HFItemManager *)v9 setHome:v11];
+    objc_storeStrong(&v8->_connectedServicesItemProvider, provider);
+    connectedHomeEcosystemItemProvider = [(HUMatterConnectedServicesItemManager *)v9 connectedHomeEcosystemItemProvider];
+    home = [connectedHomeEcosystemItemProvider home];
+    [(HFItemManager *)v9 setHome:home];
   }
 
   return v9;
@@ -31,32 +31,32 @@
 
 - (id)fetchSystemCommissionerPairingUUID
 {
-  v3 = [(HUMatterConnectedServicesItemManager *)self connectedAccessoryEcosystemItemProvider];
+  connectedAccessoryEcosystemItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedAccessoryEcosystemItemProvider];
 
-  if (([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || !v3)
+  if (([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || !connectedAccessoryEcosystemItemProvider)
   {
-    v6 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
     v4 = objc_alloc_init(MEMORY[0x277D2C900]);
     objc_initWeak(&location, self);
-    v5 = [(HUMatterConnectedServicesItemManager *)self accessory];
+    accessory = [(HUMatterConnectedServicesItemManager *)self accessory];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __74__HUMatterConnectedServicesItemManager_fetchSystemCommissionerPairingUUID__block_invoke;
     v8[3] = &unk_277DBFF00;
     objc_copyWeak(&v10, &location);
-    v6 = v4;
-    v9 = v6;
-    [v5 fetchCHIPPairingsWithCompletion:v8];
+    futureWithNoResult = v4;
+    v9 = futureWithNoResult;
+    [accessory fetchCHIPPairingsWithCompletion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 
-  return v6;
+  return futureWithNoResult;
 }
 
 void __74__HUMatterConnectedServicesItemManager_fetchSystemCommissionerPairingUUID__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -100,12 +100,12 @@ void __74__HUMatterConnectedServicesItemManager_fetchSystemCommissionerPairingUU
   [*(a1 + 32) finishWithNoResult];
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUMatterConnectedServicesItemManager *)self connectedHomeEcosystemItemProvider];
+  connectedHomeEcosystemItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedHomeEcosystemItemProvider];
 
-  if (v4)
+  if (connectedHomeEcosystemItemProvider)
   {
     v5 = [HUInstructionsItem alloc];
     v6 = _HULocalizedStringWithDefaultValue(@"HUMatterHomeConnectedEcosystemsInfoTitle", @"HUMatterHomeConnectedEcosystemsInfoTitle", 1);
@@ -114,44 +114,44 @@ void __74__HUMatterConnectedServicesItemManager_fetchSystemCommissionerPairingUU
 
     v8 = objc_alloc(MEMORY[0x277D14B40]);
     v9 = MEMORY[0x277CBEB98];
-    v10 = [(HUMatterConnectedServicesItemManager *)self instructionsItem];
-    v19[0] = v10;
+    instructionsItem = [(HUMatterConnectedServicesItemManager *)self instructionsItem];
+    v19[0] = instructionsItem;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     v12 = [v9 setWithArray:v11];
-    v13 = [v8 initWithItems:v12];
+    connectedServicesItemProvider2 = [v8 initWithItems:v12];
 
-    v18[0] = v13;
-    v14 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
-    v18[1] = v14;
+    v18[0] = connectedServicesItemProvider2;
+    connectedServicesItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+    v18[1] = connectedServicesItemProvider;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
   }
 
   else
   {
-    v13 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
-    v17 = v13;
+    connectedServicesItemProvider2 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+    v17 = connectedServicesItemProvider2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
   }
 
   return v15;
 }
 
-- (void)connectedServicesSectionFooterLink:(id)a3 isForAccessory:(BOOL)a4
+- (void)connectedServicesSectionFooterLink:(id)link isForAccessory:(BOOL)accessory
 {
-  v4 = a4;
+  accessoryCopy = accessory;
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  linkCopy = link;
   if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0)
   {
     v7 = _HULocalizedStringWithDefaultValue(@"HUMatterConnectedEcosystemsFooterLink", @"HUMatterConnectedEcosystemsFooterLink", 1);
     v8 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\n"];
-    [v6 appendAttributedString:v8];
+    [linkCopy appendAttributedString:v8];
 
-    if (v4)
+    if (accessoryCopy)
     {
-      v9 = [(HUMatterConnectedServicesItemManager *)self accessorySystemCommisionerUUID];
+      accessorySystemCommisionerUUID = [(HUMatterConnectedServicesItemManager *)self accessorySystemCommisionerUUID];
 
-      if (!v9)
+      if (!accessorySystemCommisionerUUID)
       {
         v13 = HFLogForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -165,8 +165,8 @@ void __74__HUMatterConnectedServicesItemManager_fetchSystemCommissionerPairingUU
       }
 
       v10 = MEMORY[0x277CCACA8];
-      v11 = [(HUMatterConnectedServicesItemManager *)self accessorySystemCommisionerUUID];
-      v12 = [v10 stringWithFormat:@"%@/%@", @"prefs:root=General&path=MATTER_ACCESSORIES", v11];
+      accessorySystemCommisionerUUID2 = [(HUMatterConnectedServicesItemManager *)self accessorySystemCommisionerUUID];
+      v12 = [v10 stringWithFormat:@"%@/%@", @"prefs:root=General&path=MATTER_ACCESSORIES", accessorySystemCommisionerUUID2];
 
       v13 = [MEMORY[0x277CBEBC0] URLWithString:v12];
       v14 = objc_alloc(MEMORY[0x277CCA898]);
@@ -191,40 +191,40 @@ void __74__HUMatterConnectedServicesItemManager_fetchSystemCommissionerPairingUU
 
     v18 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:1];
     v19 = [v14 initWithString:v7 attributes:v18];
-    [v6 appendAttributedString:v19];
+    [linkCopy appendAttributedString:v19];
 
 LABEL_7:
   }
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v40 = _HULocalizedStringWithDefaultValue(@"HUMatterAccessoryConnectedEcosystemsFooter", @"HUMatterAccessoryConnectedEcosystemsFooter", 1);
   v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v40];
-  v6 = [(HUMatterConnectedServicesItemManager *)self connectedHomeEcosystemItemProvider];
+  connectedHomeEcosystemItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedHomeEcosystemItemProvider];
 
-  if (v6)
+  if (connectedHomeEcosystemItemProvider)
   {
     v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"ConnectedEcosystemsInstructions"];
-    v8 = [(HUMatterConnectedServicesItemManager *)self instructionsItem];
-    v51[0] = v8;
+    instructionsItem = [(HUMatterConnectedServicesItemManager *)self instructionsItem];
+    v51[0] = instructionsItem;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
     [v7 setItems:v9];
 
     v10 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"ConnectedEcosystems"];
-    v11 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
-    v12 = [v11 items];
-    v13 = [v12 allObjects];
-    v14 = [objc_opt_class() connectedServicesItemComparator];
-    v15 = [v13 sortedArrayUsingComparator:v14];
-    [v10 setItems:v15 filteringToDisplayedItems:v4];
+    connectedServicesItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+    items = [connectedServicesItemProvider items];
+    allObjects = [items allObjects];
+    connectedServicesItemComparator = [objc_opt_class() connectedServicesItemComparator];
+    v15 = [allObjects sortedArrayUsingComparator:connectedServicesItemComparator];
+    [v10 setItems:v15 filteringToDisplayedItems:itemsCopy];
 
-    v16 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
-    LODWORD(v11) = [v16 hasSystemCommissionerEcosystem];
+    connectedServicesItemProvider2 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+    LODWORD(connectedServicesItemProvider) = [connectedServicesItemProvider2 hasSystemCommissionerEcosystem];
 
-    if (v11)
+    if (connectedServicesItemProvider)
     {
       [(HUMatterConnectedServicesItemManager *)self connectedServicesSectionFooterLink:v5 isForAccessory:0];
       v17 = HFLogForCategory();
@@ -242,7 +242,7 @@ LABEL_7:
     v50[0] = v7;
     v50[1] = v10;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
-    v20 = [v18 filterSections:v19 toDisplayedItems:v4];
+    v20 = [v18 filterSections:v19 toDisplayedItems:itemsCopy];
   }
 
   else
@@ -260,8 +260,8 @@ LABEL_7:
     [v23 setHeaderTitle:v24];
 
     v25 = [MEMORY[0x277CBEB58] set];
-    v26 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
-    v27 = [v26 items];
+    connectedServicesItemProvider3 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+    items2 = [connectedServicesItemProvider3 items];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __73__HUMatterConnectedServicesItemManager__buildSectionsWithDisplayedItems___block_invoke;
@@ -269,12 +269,12 @@ LABEL_7:
     p_buf = &buf;
     v28 = v25;
     v42 = v28;
-    v29 = [v27 na_filter:v41];
+    v29 = [items2 na_filter:v41];
 
-    v30 = [v29 allObjects];
-    v31 = [objc_opt_class() connectedServicesItemComparator];
-    v32 = [v30 sortedArrayUsingComparator:v31];
-    [v21 setItems:v32 filteringToDisplayedItems:v4];
+    allObjects2 = [v29 allObjects];
+    connectedServicesItemComparator2 = [objc_opt_class() connectedServicesItemComparator];
+    v32 = [allObjects2 sortedArrayUsingComparator:connectedServicesItemComparator2];
+    [v21 setItems:v32 filteringToDisplayedItems:itemsCopy];
 
     if (*(*(&buf + 1) + 24) == 1)
     {
@@ -290,16 +290,16 @@ LABEL_7:
       [v21 setAttributedFooterTitle:v5];
     }
 
-    v34 = [v28 allObjects];
-    v35 = [objc_opt_class() connectedServicesItemComparator];
-    v36 = [v34 sortedArrayUsingComparator:v35];
-    [v23 setItems:v36 filteringToDisplayedItems:v4];
+    allObjects3 = [v28 allObjects];
+    connectedServicesItemComparator3 = [objc_opt_class() connectedServicesItemComparator];
+    v36 = [allObjects3 sortedArrayUsingComparator:connectedServicesItemComparator3];
+    [v23 setItems:v36 filteringToDisplayedItems:itemsCopy];
 
     v37 = MEMORY[0x277D14778];
     v44[0] = v21;
     v44[1] = v23;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
-    v20 = [v37 filterSections:v38 toDisplayedItems:v4];
+    v20 = [v37 filterSections:v38 toDisplayedItems:itemsCopy];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -427,19 +427,19 @@ uint64_t __71__HUMatterConnectedServicesItemManager_connectedServicesItemCompara
 
 - (HMAccessory)accessory
 {
-  v2 = [(HUMatterConnectedServicesItemManager *)self connectedAccessoryEcosystemItemProvider];
-  v3 = [v2 accessory];
+  connectedAccessoryEcosystemItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedAccessoryEcosystemItemProvider];
+  accessory = [connectedAccessoryEcosystemItemProvider accessory];
 
-  return v3;
+  return accessory;
 }
 
 - (id)connectedAccessoryEcosystemItemProvider
 {
   objc_opt_class();
-  v3 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+  connectedServicesItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = connectedServicesItemProvider;
   }
 
   else
@@ -455,10 +455,10 @@ uint64_t __71__HUMatterConnectedServicesItemManager_connectedServicesItemCompara
 - (HUMatterHomeConnectedEcosystemItemProvider)connectedHomeEcosystemItemProvider
 {
   objc_opt_class();
-  v3 = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
+  connectedServicesItemProvider = [(HUMatterConnectedServicesItemManager *)self connectedServicesItemProvider];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = connectedServicesItemProvider;
   }
 
   else

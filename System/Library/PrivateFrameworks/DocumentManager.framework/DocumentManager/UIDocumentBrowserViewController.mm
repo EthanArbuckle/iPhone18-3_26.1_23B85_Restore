@@ -1,14 +1,14 @@
 @interface UIDocumentBrowserViewController
 + (id)placeholderURLForDownloadsFolder;
 - (BOOL)_canSendDocumentLandingDidPickDocumentsAtURLs;
-- (BOOL)_delegateRespondsToSelector:(SEL)a3;
+- (BOOL)_delegateRespondsToSelector:(SEL)selector;
 - (BOOL)_expectsRemoteViewController;
-- (BOOL)_hasExistingRemoteViewControllerWithInUIPDocumentLanding:(BOOL)a3;
-- (BOOL)_shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks:(id)a3;
+- (BOOL)_hasExistingRemoteViewControllerWithInUIPDocumentLanding:(BOOL)landing;
+- (BOOL)_shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks:(id)bookmarks;
 - (BOOL)_updateAppearanceShowsCreateButton;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)enclosedInUIPDocumentLanding;
-- (BOOL)supportsRemovableFileProvidersForConfiguration:(id)a3;
+- (BOOL)supportsRemovableFileProvidersForConfiguration:(id)configuration;
 - (CGSize)preferredContentSize;
 - (DOCDocBrowserVC_UIActivityViewController)activityViewController;
 - (NSArray)allowedContentTypes;
@@ -18,108 +18,108 @@
 - (UIDocumentBrowserTransitionController)transitionControllerForDocumentAtURL:(NSURL *)documentURL;
 - (UIDocumentBrowserViewController)initForOpeningContentTypes:(NSArray *)contentTypes;
 - (UIDocumentBrowserViewController)initForOpeningFilesWithContentTypes:(NSArray *)allowedContentTypes;
-- (UIDocumentBrowserViewController)initWithCoder:(id)a3;
-- (UIDocumentBrowserViewController)initWithConfiguration:(id)a3;
+- (UIDocumentBrowserViewController)initWithCoder:(id)coder;
+- (UIDocumentBrowserViewController)initWithConfiguration:(id)configuration;
 - (_UIDocumentLandingPresenter)documentLandingPresenter;
-- (id)_activityViewControllerWithItemBookmarks:(id)a3 isForTitleMenuFolderSharing:(BOOL)a4 popoverTracker:(id)a5 isContentManaged:(BOOL)a6 additionalActivities:(id)a7 activityRunner:(id)a8;
-- (id)_sandboxingURLWrapperForURL:(id)a3 readonly:(BOOL)a4 error:(id *)a5;
+- (id)_activityViewControllerWithItemBookmarks:(id)bookmarks isForTitleMenuFolderSharing:(BOOL)sharing popoverTracker:(id)tracker isContentManaged:(BOOL)managed additionalActivities:(id)activities activityRunner:(id)runner;
+- (id)_sandboxingURLWrapperForURL:(id)l readonly:(BOOL)readonly error:(id *)error;
 - (id)_unavailableConfigurationForTryAgain;
-- (id)configurationForOpeningDocumentsWithContentTypes:(id)a3;
+- (id)configurationForOpeningDocumentsWithContentTypes:(id)types;
 - (id)delegate;
 - (id)keyCommands;
 - (id)preferredFocusEnvironments;
 - (id)recentDocumentsContentTypesFromInfoPlist;
-- (id)remoteBarButtonForUUID:(id)a3;
-- (id)trackingViewForUUID:(id)a3;
+- (id)remoteBarButtonForUUID:(id)d;
+- (id)trackingViewForUUID:(id)d;
 - (int64_t)_currentLandingModeBasedForObservedPresentationController;
 - (int64_t)_preferredModalPresentationStyle;
 - (void)__commonInit;
-- (void)_applyBrowserStateChange:(id)a3 serviceProxy:(id)a4 animated:(BOOL)a5;
+- (void)_applyBrowserStateChange:(id)change serviceProxy:(id)proxy animated:(BOOL)animated;
 - (void)_beginMonitoringUIPPresentationController;
-- (void)_beginTransitionCoordinatorSessionForDocumentURL:(id)a3;
-- (void)_checkIfObservedUIPPresentationControllerDetentDidChangeForReason:(id)a3;
+- (void)_beginTransitionCoordinatorSessionForDocumentURL:(id)l;
+- (void)_checkIfObservedUIPPresentationControllerDetentDidChangeForReason:(id)reason;
 - (void)_clearCurrentOpenInteractionUnlessUIPDocumentLanding;
 - (void)_clearShownViewControllers;
-- (void)_commitDocumentURLPreview:(id)a3;
-- (void)_core_didImportDocumentAtURL:(id)a3 toDestinationURL:(id)a4;
-- (void)_core_didRequestDocumentCreationWithHandler:(id)a3;
-- (void)_core_didTriggerDocumentCreationIntent:(id)a3;
-- (void)_core_failedToImportDocumentAtURL:(id)a3 error:(id)a4;
+- (void)_commitDocumentURLPreview:(id)preview;
+- (void)_core_didImportDocumentAtURL:(id)l toDestinationURL:(id)rL;
+- (void)_core_didRequestDocumentCreationWithHandler:(id)handler;
+- (void)_core_didTriggerDocumentCreationIntent:(id)intent;
+- (void)_core_failedToImportDocumentAtURL:(id)l error:(id)error;
 - (void)_didAttachToDocumentLaunchOptionsForUseInUIPDocumentLanding;
-- (void)_didDenyCreateDocumentSessionWithError:(id)a3;
-- (void)_didPickItemBookmarks:(id)a3;
+- (void)_didDenyCreateDocumentSessionWithError:(id)error;
+- (void)_didPickItemBookmarks:(id)bookmarks;
 - (void)_didTapTryAgainButton;
-- (void)_didTriggerBarButtonWithUUID:(id)a3 overflowAction:(BOOL)a4;
-- (void)_didTriggerCustomActionWithIdentifier:(id)a3 onItemBookmarks:(id)a4;
-- (void)_displayActivityControllerWithItemBookmarks:(id)a3 popoverTracker:(id)a4 isContentManaged:(BOOL)a5 additionalActivities:(id)a6 activityProxy:(id)a7;
+- (void)_didTriggerBarButtonWithUUID:(id)d overflowAction:(BOOL)action;
+- (void)_didTriggerCustomActionWithIdentifier:(id)identifier onItemBookmarks:(id)bookmarks;
+- (void)_displayActivityControllerWithItemBookmarks:(id)bookmarks popoverTracker:(id)tracker isContentManaged:(BOOL)managed additionalActivities:(id)activities activityProxy:(id)proxy;
 - (void)_displayRemoteControllerIfNeeded;
 - (void)_doc_endDelayingRemotePresentation;
-- (void)_doc_performRemoteUpdateAppearanceForReason:(unint64_t)a3;
+- (void)_doc_performRemoteUpdateAppearanceForReason:(unint64_t)reason;
 - (void)_embedDocumentBrowserViewController;
-- (void)_embedViewController:(id)a3;
+- (void)_embedViewController:(id)controller;
 - (void)_endMonitoringUIPPresentationController;
 - (void)_endTransitionCoordinatorSession;
 - (void)_ensurePreparedForAPIRequringXPC;
 - (void)_ensurePreparedForAPIRequringXPC_asLegacy;
 - (void)_ensurePreparedForAPIRequringXPC_asUIP;
-- (void)_establishFirstResponderOnServiceSideForKeyCommand:(id)a3;
-- (void)_fallbackRenameDocumentAtURL:(id)a3 proposedName:(id)a4 completionHandler:(id)a5;
-- (void)_iOS_didImportDocumentAtURL:(id)a3 toDestinationItemBookmark:(id)a4;
-- (void)_iOS_didRequestDocumentCreationWithHandler:(id)a3;
-- (void)_iOS_failedToImportDocumentAtURL:(id)a3 error:(id)a4;
-- (void)_importDocumentAtURL:(id)a3 neighbourURL:(id)a4 mode:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_initiateDocumentCreationWithIntent:(id)a3;
-- (void)_instantiateRemoteViewControllerWithCompletion:(id)a3;
+- (void)_establishFirstResponderOnServiceSideForKeyCommand:(id)command;
+- (void)_fallbackRenameDocumentAtURL:(id)l proposedName:(id)name completionHandler:(id)handler;
+- (void)_iOS_didImportDocumentAtURL:(id)l toDestinationItemBookmark:(id)bookmark;
+- (void)_iOS_didRequestDocumentCreationWithHandler:(id)handler;
+- (void)_iOS_failedToImportDocumentAtURL:(id)l error:(id)error;
+- (void)_importDocumentAtURL:(id)l neighbourURL:(id)rL mode:(unint64_t)mode completionHandler:(id)handler;
+- (void)_initiateDocumentCreationWithIntent:(id)intent;
+- (void)_instantiateRemoteViewControllerWithCompletion:(id)completion;
 - (void)_prepareForPresentingInUIPDocumentLanding;
-- (void)_presentActivityViewControllerForItemBookmarks:(id)a3 withPopoverTracker:(id)a4 isContentManaged:(BOOL)a5 additionalActivities:(id)a6 activityProxy:(id)a7;
-- (void)_requestAnimationInfoForDocumentAtURL:(id)a3 completion:(id)a4;
-- (void)_sendBrowserChange:(id)a3 serviceProxy:(id)a4;
-- (void)_sendBrowserLandingModeChangeForReason:(id)a3;
-- (void)_sendDocumentLandingDidPickDocumentsAtURLs:(id)a3;
-- (void)_showDocumentBrowserViewController:(BOOL)a3;
+- (void)_presentActivityViewControllerForItemBookmarks:(id)bookmarks withPopoverTracker:(id)tracker isContentManaged:(BOOL)managed additionalActivities:(id)activities activityProxy:(id)proxy;
+- (void)_requestAnimationInfoForDocumentAtURL:(id)l completion:(id)completion;
+- (void)_sendBrowserChange:(id)change serviceProxy:(id)proxy;
+- (void)_sendBrowserLandingModeChangeForReason:(id)reason;
+- (void)_sendDocumentLandingDidPickDocumentsAtURLs:(id)ls;
+- (void)_showDocumentBrowserViewController:(BOOL)controller;
 - (void)_showErrorViewController;
-- (void)_updateRemoteBarButtonFrames:(id)a3 forUUID:(id)a4;
+- (void)_updateRemoteBarButtonFrames:(id)frames forUUID:(id)d;
 - (void)_viewControllerPresentationDidInitiate;
 - (void)addDummySplitViewControllerForPreferredContentSize;
-- (void)addOperationToServiceQueue:(id)a3;
-- (void)applicationDidBecomeActive:(id)a3;
+- (void)addOperationToServiceQueue:(id)queue;
+- (void)applicationDidBecomeActive:(id)active;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)dismissAllPresentedViewControllers:(BOOL)a3 completion:(id)a4;
-- (void)effectiveAppearanceDidChange:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardHostSceneIdentifier:(id)a3;
-- (void)getTrackingViews:(id *)a3 remoteButtons:(id *)a4 fromBarButtons:(id)a5;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)dismissAllPresentedViewControllers:(BOOL)controllers completion:(id)completion;
+- (void)effectiveAppearanceDidChange:(id)change;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardHostSceneIdentifier:(id)identifier;
+- (void)getTrackingViews:(id *)views remoteButtons:(id *)buttons fromBarButtons:(id)barButtons;
 - (void)importDocumentAtURL:(NSURL *)documentURL nextToDocumentAtURL:(NSURL *)neighbourURL mode:(UIDocumentBrowserImportMode)importMode completionHandler:(void *)completion;
-- (void)importDocumentAtURL:(id)a3 byMoving:(BOOL)a4 toCurrentBrowserLocationWithCompletion:(id)a5;
-- (void)manageOverrideIfNecessaryForPresentationController:(id)a3;
-- (void)performBrowserStateChange:(id)a3;
-- (void)performBrowserStateChange:(id)a3 animated:(BOOL)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)prepareItemBookmarks:(id)a3 forMode:(unint64_t)a4 usingBookmark:(BOOL)a5 completionBlock:(id)a6;
-- (void)prepareItemBookmarks:(id)a3 usingBookmark:(BOOL)a4 completionBlock:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)remoteViewControllerDidTerminateViewServiceWithError:(id)a3;
+- (void)importDocumentAtURL:(id)l byMoving:(BOOL)moving toCurrentBrowserLocationWithCompletion:(id)completion;
+- (void)manageOverrideIfNecessaryForPresentationController:(id)controller;
+- (void)performBrowserStateChange:(id)change;
+- (void)performBrowserStateChange:(id)change animated:(BOOL)animated;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)prepareItemBookmarks:(id)bookmarks forMode:(unint64_t)mode usingBookmark:(BOOL)bookmark completionBlock:(id)block;
+- (void)prepareItemBookmarks:(id)bookmarks usingBookmark:(BOOL)bookmark completionBlock:(id)block;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)remoteViewControllerDidTerminateViewServiceWithError:(id)error;
 - (void)renameDocumentAtURL:(NSURL *)documentURL proposedName:(NSString *)proposedName completionHandler:(void *)completionHandler;
 - (void)revealDocumentAtURL:(NSURL *)url importIfNeeded:(BOOL)importIfNeeded completion:(void *)completion;
 - (void)setAdditionalLeadingNavigationBarButtonItems:(NSArray *)additionalLeadingNavigationBarButtonItems;
 - (void)setAdditionalTrailingNavigationBarButtonItems:(NSArray *)additionalTrailingNavigationBarButtonItems;
 - (void)setAllowsDocumentCreation:(BOOL)allowsDocumentCreation;
 - (void)setAllowsPickingMultipleItems:(BOOL)allowsPickingMultipleItems;
-- (void)setBrowserHostedCreateDocumentsMenu:(id)a3;
+- (void)setBrowserHostedCreateDocumentsMenu:(id)menu;
 - (void)setBrowserUserInterfaceStyle:(UIDocumentBrowserUserInterfaceStyle)browserUserInterfaceStyle;
 - (void)setCustomActions:(NSArray *)customActions;
 - (void)setDefaultDocumentAspectRatio:(CGFloat)defaultDocumentAspectRatio;
 - (void)setDelegate:(id)delegate;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setLocalizedCreateDocumentActionTitle:(NSString *)localizedCreateDocumentActionTitle;
-- (void)setPreferredUIPBrowserState:(id)a3;
+- (void)setPreferredUIPBrowserState:(id)state;
 - (void)setShouldShowFileExtensions:(BOOL)shouldShowFileExtensions;
 - (void)updateBackgroundColor;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIDocumentBrowserViewController
@@ -178,10 +178,10 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
   trackingViewsContainer = self->_trackingViewsContainer;
   self->_trackingViewsContainer = v12;
 
-  v14 = [(UIDocumentBrowserViewController *)self configuration];
-  v15 = [v14 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v15 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
     v16 = objc_opt_new();
     serviceQueue = self->_serviceQueue;
@@ -191,11 +191,11 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
     [(NSOperationQueue *)self->_serviceQueue setSuspended:1];
   }
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 
-  v20 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-  v19 = [(UIDocumentBrowserViewController *)self registerForTraitChanges:v20 withAction:sel_updateForChangedTraitsAffectingColors];
+  systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+  v19 = [(UIDocumentBrowserViewController *)self registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_updateForChangedTraitsAffectingColors];
 }
 
 - (void)viewDidLoad
@@ -203,61 +203,61 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
   v6.receiver = self;
   v6.super_class = UIDocumentBrowserViewController;
   [(UIDocumentBrowserViewController *)&v6 viewDidLoad];
-  v3 = [(UIDocumentBrowserViewController *)self view];
-  [v3 bounds];
+  view = [(UIDocumentBrowserViewController *)self view];
+  [view bounds];
   [(UIView *)self->_trackingViewsContainer setFrame:?];
 
   [(UIView *)self->_trackingViewsContainer setAutoresizingMask:18];
-  v4 = [(UIDocumentBrowserViewController *)self view];
-  [v4 addSubview:self->_trackingViewsContainer];
+  view2 = [(UIDocumentBrowserViewController *)self view];
+  [view2 addSubview:self->_trackingViewsContainer];
 
   [(UIDocumentBrowserViewController *)self addDummySplitViewControllerForPreferredContentSize];
   [(UIDocumentBrowserViewController *)self _showDocumentBrowserViewController:0];
   [(UIDocumentBrowserViewController *)self effectiveAppearanceDidChange:self->_appearance];
   if ([(UIDocumentBrowserViewController *)self allowsDocumentCreation])
   {
-    v5 = [(UIDocumentBrowserViewController *)self documentCreationController];
-    [v5 warnIfNoValidCreationHandler];
+    documentCreationController = [(UIDocumentBrowserViewController *)self documentCreationController];
+    [documentCreationController warnIfNoValidCreationHandler];
   }
 }
 
 - (void)addDummySplitViewControllerForPreferredContentSize
 {
-  v18 = [(UIDocumentBrowserViewController *)self configuration];
-  if ([v18 isPickerUI])
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  if ([configuration isPickerUI])
   {
-    v3 = [(UIDocumentBrowserViewController *)self dummySplitViewController];
+    dummySplitViewController = [(UIDocumentBrowserViewController *)self dummySplitViewController];
 
-    if (v3)
+    if (dummySplitViewController)
     {
       return;
     }
 
-    v18 = [objc_alloc(MEMORY[0x1E69DCF78]) initWithStyle:1];
-    v4 = [v18 view];
-    [v4 setHidden:1];
+    configuration = [objc_alloc(MEMORY[0x1E69DCF78]) initWithStyle:1];
+    view = [configuration view];
+    [view setHidden:1];
 
-    v5 = [v18 view];
-    [v5 setAutoresizingMask:18];
+    view2 = [configuration view];
+    [view2 setAutoresizingMask:18];
 
-    v6 = [(UIDocumentBrowserViewController *)self view];
-    [v6 bounds];
+    view3 = [(UIDocumentBrowserViewController *)self view];
+    [view3 bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v18 view];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    view4 = [configuration view];
+    [view4 setFrame:{v8, v10, v12, v14}];
 
-    [v18 set_alwaysAllowsSystemPreferredContentSize:1];
-    [(UIDocumentBrowserViewController *)self addChildViewController:v18];
-    v16 = [(UIDocumentBrowserViewController *)self view];
-    v17 = [v18 view];
-    [v16 addSubview:v17];
+    [configuration set_alwaysAllowsSystemPreferredContentSize:1];
+    [(UIDocumentBrowserViewController *)self addChildViewController:configuration];
+    view5 = [(UIDocumentBrowserViewController *)self view];
+    view6 = [configuration view];
+    [view5 addSubview:view6];
 
-    [v18 didMoveToParentViewController:self];
-    [(UIDocumentBrowserViewController *)self setDummySplitViewController:v18];
-    [v18 preferredContentSize];
+    [configuration didMoveToParentViewController:self];
+    [(UIDocumentBrowserViewController *)self setDummySplitViewController:configuration];
+    [configuration preferredContentSize];
     [(UIDocumentBrowserViewController *)self setPreferredContentSize:?];
   }
 }
@@ -269,8 +269,8 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(UIDocumentBrowserViewController *)self childViewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [(UIDocumentBrowserViewController *)self childViewControllers];
+  v3 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -281,18 +281,18 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
         [v7 willMoveToParentViewController:0];
-        v8 = [v7 view];
-        [v8 removeFromSuperview];
+        view = [v7 view];
+        [view removeFromSuperview];
 
         [v7 removeFromParentViewController];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -302,10 +302,10 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
 - (void)_embedDocumentBrowserViewController
 {
   [(UIDocumentBrowserViewController *)self setContentUnavailableConfiguration:0];
-  v3 = [(UIDocumentBrowserViewController *)self configuration];
-  v4 = [v3 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v4 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
     objc_initWeak(&location, self);
     v5 = MEMORY[0x1E69E9820];
@@ -329,10 +329,10 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
 
 - (BOOL)_updateAppearanceShowsCreateButton
 {
-  v3 = [(DOCAppearance *)self->_appearance showsCreateButton];
+  showsCreateButton = [(DOCAppearance *)self->_appearance showsCreateButton];
   v4 = self->_browserHostedCreateDocumentsMenu == 0 && self->_allowsDocumentCreation;
-  v5 = v3 ^ (self->_browserHostedCreateDocumentsMenu == 0 && self->_allowsDocumentCreation);
-  if (v3 != v4)
+  v5 = showsCreateButton ^ (self->_browserHostedCreateDocumentsMenu == 0 && self->_allowsDocumentCreation);
+  if (showsCreateButton != v4)
   {
     v6 = [(DOCAppearance *)self->_appearance copy];
     [v6 setShowsCreateButton:v4];
@@ -350,10 +350,10 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
 
 - (BOOL)_expectsRemoteViewController
 {
-  v2 = [(UIDocumentBrowserViewController *)self configuration];
-  v3 = [v2 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  return v3 ^ 1;
+  return inProcess ^ 1;
 }
 
 - (id)delegate
@@ -365,18 +365,18 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
 
 - (BOOL)enclosedInUIPDocumentLanding
 {
-  v2 = [(UIDocumentBrowserViewController *)self configuration];
-  v3 = [v2 isInUIPDocumentLanding];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  isInUIPDocumentLanding = [configuration isInUIPDocumentLanding];
 
-  return v3;
+  return isInUIPDocumentLanding;
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(UIDocumentBrowserViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIDocumentBrowserViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v5 = 640.0;
     v6 = 960.0;
@@ -396,10 +396,10 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
 
 - (int64_t)_preferredModalPresentationStyle
 {
-  v3 = [(UIDocumentBrowserViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIDocumentBrowserViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     return 2;
   }
@@ -411,37 +411,37 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
 
 - (void)updateBackgroundColor
 {
-  v2 = self;
-  v3 = [(UIDocumentBrowserViewController *)self configuration];
-  v4 = [v3 isPickerUI];
+  selfCopy = self;
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  isPickerUI = [configuration isPickerUI];
 
-  if (v4)
+  if (isPickerUI)
   {
-    if (v2->_isDisplayingRemoteViewController)
+    if (selfCopy->_isDisplayingRemoteViewController)
     {
-      v15 = [MEMORY[0x1E69DC888] clearColor];
-      v5 = [(UIDocumentBrowserViewController *)v2 viewIfLoaded];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      viewIfLoaded = [(UIDocumentBrowserViewController *)selfCopy viewIfLoaded];
       goto LABEL_16;
     }
 
-    v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    clearColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
   else
   {
-    v6 = [(DOCAppearance *)v2->_appearance backgroundColor];
-    v7 = [(UIDocumentBrowserViewController *)v2 traitCollection];
-    v15 = [v6 resolvedColorWithTraitCollection:v7];
+    backgroundColor = [(DOCAppearance *)selfCopy->_appearance backgroundColor];
+    traitCollection = [(UIDocumentBrowserViewController *)selfCopy traitCollection];
+    clearColor = [backgroundColor resolvedColorWithTraitCollection:traitCollection];
 
-    v2 = v2;
-    v8 = [(UIDocumentBrowserViewController *)v2 activePresentationController];
+    selfCopy = selfCopy;
+    activePresentationController = [(UIDocumentBrowserViewController *)selfCopy activePresentationController];
     objc_opt_class();
-    LOBYTE(v7) = objc_opt_isKindOfClass();
+    LOBYTE(traitCollection) = objc_opt_isKindOfClass();
 
-    if (v7)
+    if (traitCollection)
     {
       objc_opt_class();
-      v9 = v2;
+      v9 = selfCopy;
       v10 = v9;
       do
       {
@@ -450,38 +450,38 @@ void __75__UIDocumentBrowserViewController_recentDocumentsContentTypesFromInfoPl
           break;
         }
 
-        v11 = [v10 parentViewController];
-        if (!v11)
+        parentViewController = [v10 parentViewController];
+        if (!parentViewController)
         {
-          v11 = [v10 presentingViewController];
+          parentViewController = [v10 presentingViewController];
         }
 
-        v10 = v11;
+        v10 = parentViewController;
       }
 
-      while (v11);
+      while (parentViewController);
 
       if (!v10)
       {
         goto LABEL_15;
       }
 
-      v12 = [MEMORY[0x1E69DC888] clearColor];
-      v13 = v15;
-      v15 = v12;
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      v13 = clearColor;
+      clearColor = clearColor2;
     }
 
     else
     {
-      v13 = v2;
+      v13 = selfCopy;
     }
   }
 
 LABEL_15:
-  v5 = [(UIDocumentBrowserViewController *)v2 view];
+  viewIfLoaded = [(UIDocumentBrowserViewController *)selfCopy view];
 LABEL_16:
-  v14 = v5;
-  [v5 setBackgroundColor:v15];
+  v14 = viewIfLoaded;
+  [viewIfLoaded setBackgroundColor:clearColor];
 }
 
 - (void)_beginMonitoringUIPPresentationController
@@ -490,21 +490,21 @@ LABEL_16:
   {
     v10[11] = v2;
     v10[12] = v3;
-    v5 = [(UIDocumentBrowserViewController *)self presentationController];
+    presentationController = [(UIDocumentBrowserViewController *)self presentationController];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v5 != self->_observedUIPPresentationController)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && presentationController != self->_observedUIPPresentationController)
     {
       [(UIDocumentBrowserViewController *)self _endMonitoringUIPPresentationController];
-      objc_storeStrong(&self->_observedUIPPresentationController, v5);
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
+      objc_storeStrong(&self->_observedUIPPresentationController, presentationController);
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v7 = *MEMORY[0x1E69DE888];
-      v8 = [MEMORY[0x1E696ADC8] mainQueue];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __106__UIDocumentBrowserViewController_DOCUIPPresentationController___beginMonitoringUIPPresentationController__block_invoke;
       v10[3] = &unk_1E8782E30;
       v10[4] = self;
-      v9 = [v6 addObserverForName:v7 object:v5 queue:v8 usingBlock:v10];
+      v9 = [defaultCenter addObserverForName:v7 object:presentationController queue:mainQueue usingBlock:v10];
 
       if ([(UIDocumentBrowserViewController *)self _appearState]- 1 <= 1)
       {
@@ -523,8 +523,8 @@ LABEL_16:
     if (self->_isDelayingParentPresentation)
     {
       self->_isDelayingParentPresentation = 0;
-      v4 = [(UIDocumentBrowserViewController *)self parentViewController];
-      [v4 _endDelayingPresentation];
+      parentViewController = [(UIDocumentBrowserViewController *)self parentViewController];
+      [parentViewController _endDelayingPresentation];
     }
 
     [(UIDocumentBrowserViewController *)self _displayRemoteControllerIfNeeded];
@@ -574,8 +574,8 @@ LABEL_16:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) identifier];
-          [v5 addObject:v11];
+          identifier = [*(*(&v18 + 1) + 8 * i) identifier];
+          [v5 addObject:identifier];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -605,9 +605,9 @@ LABEL_16:
   return v14;
 }
 
-- (id)configurationForOpeningDocumentsWithContentTypes:(id)a3
+- (id)configurationForOpeningDocumentsWithContentTypes:(id)types
 {
-  if (a3)
+  if (types)
   {
     v4 = [MEMORY[0x1E6982C38] doc_contentTypesForIdentifiers:?];
   }
@@ -619,34 +619,34 @@ LABEL_16:
 
   v5 = [MEMORY[0x1E699A3E0] configurationForImportingDocumentContentTypes:v4 mode:1];
   [v5 setSupportsRemovableFileProviders:{-[UIDocumentBrowserViewController supportsRemovableFileProvidersForConfiguration:](self, "supportsRemovableFileProvidersForConfiguration:", v5)}];
-  v6 = [(UIDocumentBrowserViewController *)self recentDocumentsContentTypesFromInfoPlist];
-  [v5 setRecentDocumentsContentTypes:v6];
+  recentDocumentsContentTypesFromInfoPlist = [(UIDocumentBrowserViewController *)self recentDocumentsContentTypesFromInfoPlist];
+  [v5 setRecentDocumentsContentTypes:recentDocumentsContentTypesFromInfoPlist];
 
   return v5;
 }
 
-- (UIDocumentBrowserViewController)initWithCoder:(id)a3
+- (UIDocumentBrowserViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UIDocumentBrowserViewController;
-  v5 = [(UIDocumentBrowserViewController *)&v14 initWithCoder:v4];
+  v5 = [(UIDocumentBrowserViewController *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E699A3E0];
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 bundleIdentifier];
-    v9 = [v6 configurationForOpeningDocumentsOfApplicationWithBundleIdentifier:v8];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v9 = [v6 configurationForOpeningDocumentsOfApplicationWithBundleIdentifier:bundleIdentifier];
     configuration = v5->_configuration;
     v5->_configuration = v9;
 
     [(DOCConfiguration *)v5->_configuration setSupportsRemovableFileProviders:[(UIDocumentBrowserViewController *)v5 supportsRemovableFileProvidersForConfiguration:v5->_configuration]];
     [(UIDocumentBrowserViewController *)v5 __commonInit];
-    v11 = [v4 decodeObjectForKey:@"UIDocumentBrowserViewControllerAllowsDocumentCreation"];
+    v11 = [coderCopy decodeObjectForKey:@"UIDocumentBrowserViewControllerAllowsDocumentCreation"];
 
     if (v11)
     {
-      v5->_allowsDocumentCreation = [v4 decodeBoolForKey:@"UIDocumentBrowserViewControllerAllowsDocumentCreation"];
+      v5->_allowsDocumentCreation = [coderCopy decodeBoolForKey:@"UIDocumentBrowserViewControllerAllowsDocumentCreation"];
     }
 
     else
@@ -654,28 +654,28 @@ LABEL_16:
       v5->_allowsDocumentCreation = 1;
     }
 
-    v5->_allowsPickingMultipleItems = [v4 decodeBoolForKey:@"UIDocumentBrowserViewControllerAllowsPickingMultipleItems"];
-    -[DOCAppearance setBrowserUserInterfaceStyle:](v5->_appearance, "setBrowserUserInterfaceStyle:", [v4 decodeIntForKey:@"UIDocumentBrowserViewControllerBrowserUserInterfaceStyle"]);
+    v5->_allowsPickingMultipleItems = [coderCopy decodeBoolForKey:@"UIDocumentBrowserViewControllerAllowsPickingMultipleItems"];
+    -[DOCAppearance setBrowserUserInterfaceStyle:](v5->_appearance, "setBrowserUserInterfaceStyle:", [coderCopy decodeIntForKey:@"UIDocumentBrowserViewControllerBrowserUserInterfaceStyle"]);
     v12 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[UIDocumentBrowserViewController allowsDocumentCreation](self forKey:{"allowsDocumentCreation"), @"UIDocumentBrowserViewControllerAllowsDocumentCreation"}];
-  [v4 encodeBool:-[UIDocumentBrowserViewController allowsPickingMultipleItems](self forKey:{"allowsPickingMultipleItems"), @"UIDocumentBrowserViewControllerAllowsPickingMultipleItems"}];
-  [v4 encodeInteger:-[UIDocumentBrowserViewController browserUserInterfaceStyle](self forKey:{"browserUserInterfaceStyle"), @"UIDocumentBrowserViewControllerBrowserUserInterfaceStyle"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[UIDocumentBrowserViewController allowsDocumentCreation](self forKey:{"allowsDocumentCreation"), @"UIDocumentBrowserViewControllerAllowsDocumentCreation"}];
+  [coderCopy encodeBool:-[UIDocumentBrowserViewController allowsPickingMultipleItems](self forKey:{"allowsPickingMultipleItems"), @"UIDocumentBrowserViewControllerAllowsPickingMultipleItems"}];
+  [coderCopy encodeInteger:-[UIDocumentBrowserViewController browserUserInterfaceStyle](self forKey:{"browserUserInterfaceStyle"), @"UIDocumentBrowserViewControllerBrowserUserInterfaceStyle"}];
 }
 
-- (UIDocumentBrowserViewController)initWithConfiguration:(id)a3
+- (UIDocumentBrowserViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if ([v5 isPickerUI] && (objc_msgSend(v5, "shouldIgnoreInteractionMode") & 1) == 0)
+  configurationCopy = configuration;
+  if ([configurationCopy isPickerUI] && (objc_msgSend(configurationCopy, "shouldIgnoreInteractionMode") & 1) == 0)
   {
-    [v5 setSupportsRemovableFileProviders:{-[UIDocumentBrowserViewController supportsRemovableFileProvidersForConfiguration:](self, "supportsRemovableFileProvidersForConfiguration:", v5)}];
+    [configurationCopy setSupportsRemovableFileProviders:{-[UIDocumentBrowserViewController supportsRemovableFileProvidersForConfiguration:](self, "supportsRemovableFileProvidersForConfiguration:", configurationCopy)}];
   }
 
   v10.receiver = self;
@@ -684,7 +684,7 @@ LABEL_16:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(UIDocumentBrowserViewController *)v7 __commonInit];
     v8 = v7;
   }
@@ -692,16 +692,16 @@ LABEL_16:
   return v7;
 }
 
-- (void)performBrowserStateChange:(id)a3
+- (void)performBrowserStateChange:(id)change
 {
-  v4 = a3;
-  v3 = v4;
+  changeCopy = change;
+  v3 = changeCopy;
   DOCRunInMainThread();
 }
 
-- (void)performBrowserStateChange:(id)a3 animated:(BOOL)a4
+- (void)performBrowserStateChange:(id)change animated:(BOOL)animated
 {
-  v5 = a3;
+  changeCopy = change;
   if (self->_configuredForUIPDocumentLanding && [MEMORY[0x1E699A3F0] _UIPDocLandingInfrastructureEnabled] && (self->_serviceProxy || !self->_remoteHasReceivedInitialUIPBrowserState))
   {
     objc_initWeak(&location, self);
@@ -710,7 +710,7 @@ LABEL_16:
     v6[2] = __70__UIDocumentBrowserViewController_performBrowserStateChange_animated___block_invoke;
     v6[3] = &unk_1E8782370;
     objc_copyWeak(&v8, &location);
-    v7 = v5;
+    v7 = changeCopy;
     [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v6];
 
     objc_destroyWeak(&v8);
@@ -744,37 +744,37 @@ void __70__UIDocumentBrowserViewController_performBrowserStateChange_animated___
   [WeakRetained _applyBrowserStateChange:*(a1 + 32) serviceProxy:*(a1 + 40) animated:1];
 }
 
-- (void)setPreferredUIPBrowserState:(id)a3
+- (void)setPreferredUIPBrowserState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if (([(DOCUIPBrowserState *)self->_preferredUIPBrowserState isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_preferredUIPBrowserState, a3);
+    objc_storeStrong(&self->_preferredUIPBrowserState, state);
     [(UIDocumentBrowserViewController *)self _updateAppearanceShowsCreateButton];
   }
 }
 
-- (void)_applyBrowserStateChange:(id)a3 serviceProxy:(id)a4 animated:(BOOL)a5
+- (void)_applyBrowserStateChange:(id)change serviceProxy:(id)proxy animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  changeCopy = change;
+  proxyCopy = proxy;
   self->_remoteHasReceivedInitialUIPBrowserState = 1;
-  v10 = [(UIDocumentBrowserViewController *)self sheetPresentationController];
+  sheetPresentationController = [(UIDocumentBrowserViewController *)self sheetPresentationController];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __82__UIDocumentBrowserViewController__applyBrowserStateChange_serviceProxy_animated___block_invoke;
   v22[3] = &unk_1E8782398;
   v22[4] = self;
-  v11 = v8;
+  v11 = changeCopy;
   v23 = v11;
-  v12 = v9;
+  v12 = proxyCopy;
   v24 = v12;
-  v13 = v10;
+  v13 = sheetPresentationController;
   v25 = v13;
   v14 = MEMORY[0x1E692E2E0](v22);
   v15 = v14;
-  if (v5)
+  if (animatedCopy)
   {
     if (v13)
     {
@@ -824,31 +824,31 @@ uint64_t __82__UIDocumentBrowserViewController__applyBrowserStateChange_serviceP
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_sendBrowserChange:(id)a3 serviceProxy:(id)a4
+- (void)_sendBrowserChange:(id)change serviceProxy:(id)proxy
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 documentLandingMode] != -1)
+  changeCopy = change;
+  proxyCopy = proxy;
+  if ([changeCopy documentLandingMode] != -1)
   {
-    v7 = [(UIDocumentBrowserViewController *)self preferredUIPBrowserState];
-    v8 = [v7 copy];
+    preferredUIPBrowserState = [(UIDocumentBrowserViewController *)self preferredUIPBrowserState];
+    v8 = [preferredUIPBrowserState copy];
 
-    [v8 setDocumentLandingMode:{objc_msgSend(v9, "documentLandingMode")}];
+    [v8 setDocumentLandingMode:{objc_msgSend(changeCopy, "documentLandingMode")}];
     [(UIDocumentBrowserViewController *)self setPreferredUIPBrowserState:v8];
   }
 
-  [v6 applyBrowserStateChange:v9];
+  [proxyCopy applyBrowserStateChange:changeCopy];
 }
 
-- (BOOL)_hasExistingRemoteViewControllerWithInUIPDocumentLanding:(BOOL)a3
+- (BOOL)_hasExistingRemoteViewControllerWithInUIPDocumentLanding:(BOOL)landing
 {
   remoteViewController = self->_remoteViewController;
   if (remoteViewController)
   {
-    v5 = [(DOCRemoteContainerViewController *)remoteViewController configuration];
-    v6 = [v5 isInUIPDocumentLanding];
+    configuration = [(DOCRemoteContainerViewController *)remoteViewController configuration];
+    isInUIPDocumentLanding = [configuration isInUIPDocumentLanding];
 
-    LOBYTE(remoteViewController) = v6 ^ a3 ^ 1;
+    LOBYTE(remoteViewController) = isInUIPDocumentLanding ^ landing ^ 1;
   }
 
   return remoteViewController;
@@ -857,7 +857,7 @@ uint64_t __82__UIDocumentBrowserViewController__applyBrowserStateChange_serviceP
 - (void)_didAttachToDocumentLaunchOptionsForUseInUIPDocumentLanding
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = a1;
+  selfCopy = self;
   v3 = [OUTLINED_FUNCTION_7() description];
   [v3 UTF8String];
   OUTLINED_FUNCTION_2();
@@ -866,10 +866,10 @@ uint64_t __82__UIDocumentBrowserViewController__applyBrowserStateChange_serviceP
 
 - (void)_prepareForPresentingInUIPDocumentLanding
 {
-  v3 = [(UIDocumentBrowserViewController *)self configuration];
-  v4 = [v3 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v4 & 1) == 0 && !self->_configuredForUIPDocumentLanding)
+  if ((inProcess & 1) == 0 && !self->_configuredForUIPDocumentLanding)
   {
     self->_configuredForUIPDocumentLanding = 1;
     [(UIDocumentBrowserViewController *)self _didAttachToDocumentLaunchOptionsForUseInUIPDocumentLanding];
@@ -884,35 +884,35 @@ uint64_t __82__UIDocumentBrowserViewController__applyBrowserStateChange_serviceP
   }
 }
 
-- (void)_initiateDocumentCreationWithIntent:(id)a3
+- (void)_initiateDocumentCreationWithIntent:(id)intent
 {
-  v4 = a3;
-  if (v4)
+  intentCopy = intent;
+  if (intentCopy)
   {
-    v5 = [(UIDocumentBrowserViewController *)self documentCreationController];
-    [v5 setActiveDocumentCreationIntent:v4];
+    documentCreationController = [(UIDocumentBrowserViewController *)self documentCreationController];
+    [documentCreationController setActiveDocumentCreationIntent:intentCopy];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __71__UIDocumentBrowserViewController__initiateDocumentCreationWithIntent___block_invoke;
     v6[3] = &unk_1E87823E8;
-    v7 = v4;
+    v7 = intentCopy;
     [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v6];
   }
 }
 
 - (NSString)_activeDocumentCreationIntent
 {
-  v2 = [(UIDocumentBrowserViewController *)self documentCreationController];
-  v3 = [v2 activeDocumentCreationIntent];
+  documentCreationController = [(UIDocumentBrowserViewController *)self documentCreationController];
+  activeDocumentCreationIntent = [documentCreationController activeDocumentCreationIntent];
 
-  return v3;
+  return activeDocumentCreationIntent;
 }
 
-- (void)_didDenyCreateDocumentSessionWithError:(id)a3
+- (void)_didDenyCreateDocumentSessionWithError:(id)error
 {
-  v4 = a3;
-  v3 = v4;
+  errorCopy = error;
+  v3 = errorCopy;
   DOCRunInMainThread();
 }
 
@@ -922,12 +922,12 @@ void __74__UIDocumentBrowserViewController__didDenyCreateDocumentSessionWithErro
   [v2 didDenyCreateDocumentSessionWithError:*(a1 + 40)];
 }
 
-- (void)_requestAnimationInfoForDocumentAtURL:(id)a3 completion:(id)a4
+- (void)_requestAnimationInfoForDocumentAtURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!lCopy)
   {
     [UIDocumentBrowserViewController _requestAnimationInfoForDocumentAtURL:completion:];
     if (v8)
@@ -940,7 +940,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -954,7 +954,7 @@ LABEL_3:
   objc_copyWeak(&v14, &location);
   v9 = v8;
   v13 = v9;
-  v10 = v6;
+  v10 = lCopy;
   v12 = v10;
   [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v11];
 
@@ -1090,8 +1090,8 @@ void __84__UIDocumentBrowserViewController__requestAnimationInfoForDocumentAtURL
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
 
   [(UIDocumentBrowserViewController *)self _endMonitoringUIPPresentationController];
   v4.receiver = self;
@@ -1108,9 +1108,9 @@ void __84__UIDocumentBrowserViewController__requestAnimationInfoForDocumentAtURL
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  isKindOfClass = a3;
+  isKindOfClass = controller;
   v5 = isKindOfClass;
   if (self->_isDelayingRemotePresentation && !self->_isDelayingParentPresentation)
   {
@@ -1199,36 +1199,36 @@ void __70__UIDocumentBrowserViewController__embedDocumentBrowserViewController__
   }
 }
 
-- (void)_instantiateRemoteViewControllerWithCompletion:(id)a3
+- (void)_instantiateRemoteViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NSOperationQueue *)self->_serviceQueue setSuspended:1];
   self->_isDisplayingRemoteViewController = 0;
-  v5 = [(UIDocumentBrowserViewController *)self configuration];
-  v6 = [v5 isPickerUI];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  isPickerUI = [configuration isPickerUI];
 
-  if (v6)
+  if (isPickerUI)
   {
     [(UIDocumentBrowserViewController *)self updateBackgroundColor];
   }
 
   objc_initWeak(&location, self);
-  v7 = [(UIDocumentBrowserViewController *)self preferredUIPBrowserState];
-  self->_remoteHasReceivedInitialUIPBrowserState = v7 != 0;
-  v8 = [(UIDocumentBrowserViewController *)self configuration];
+  preferredUIPBrowserState = [(UIDocumentBrowserViewController *)self preferredUIPBrowserState];
+  self->_remoteHasReceivedInitialUIPBrowserState = preferredUIPBrowserState != 0;
+  configuration2 = [(UIDocumentBrowserViewController *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__UIDocumentBrowserViewController__instantiateRemoteViewControllerWithCompletion___block_invoke;
   v13[3] = &unk_1E8782500;
   objc_copyWeak(&v15, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v14 = v9;
-  v10 = [DOCRemoteViewController instantiateRemoteDocumentBrowserViewControllerWithHostProxy:self configuration:v8 initialUIPBrowserState:v7 completionBlock:v13];
+  v10 = [DOCRemoteViewController instantiateRemoteDocumentBrowserViewControllerWithHostProxy:self configuration:configuration2 initialUIPBrowserState:preferredUIPBrowserState completionBlock:v13];
   remoteViewController = self->_remoteViewController;
   self->_remoteViewController = v10;
 
-  v12 = [(DOCRemoteContainerViewController *)self->_remoteViewController view];
-  [v12 setAlpha:0.0];
+  view = [(DOCRemoteContainerViewController *)self->_remoteViewController view];
+  [view setAlpha:0.0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1249,36 +1249,36 @@ void __82__UIDocumentBrowserViewController__instantiateRemoteViewControllerWithC
   }
 }
 
-- (void)_embedViewController:(id)a3
+- (void)_embedViewController:(id)controller
 {
-  v17 = a3;
-  v4 = [v17 view];
-  [v4 setAutoresizingMask:18];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setAutoresizingMask:18];
 
-  v5 = [(UIDocumentBrowserViewController *)self view];
-  [v5 bounds];
+  view2 = [(UIDocumentBrowserViewController *)self view];
+  [view2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v17 view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view3 = [controllerCopy view];
+  [view3 setFrame:{v7, v9, v11, v13}];
 
-  [(UIDocumentBrowserViewController *)self addChildViewController:v17];
-  v15 = [(UIDocumentBrowserViewController *)self view];
-  v16 = [v17 view];
-  [v15 addSubview:v16];
+  [(UIDocumentBrowserViewController *)self addChildViewController:controllerCopy];
+  view4 = [(UIDocumentBrowserViewController *)self view];
+  view5 = [controllerCopy view];
+  [view4 addSubview:view5];
 
-  [v17 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = UIDocumentBrowserViewController;
-  v4 = a3;
-  [(UIDocumentBrowserViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(UIDocumentBrowserViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -1305,32 +1305,32 @@ void __82__UIDocumentBrowserViewController__instantiateRemoteViewControllerWithC
 
     self->_isDisplayingRemoteViewController = 1;
     [(UIDocumentBrowserViewController *)self updateBackgroundColor];
-    v5 = [(DOCRemoteContainerViewController *)self->_remoteViewController view];
-    [v5 setAlpha:1.0];
+    view = [(DOCRemoteContainerViewController *)self->_remoteViewController view];
+    [view setAlpha:1.0];
 
-    v6 = [(UIDocumentBrowserViewController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 windowScene];
-    v9 = [v8 session];
-    v10 = [v9 persistentIdentifier];
+    view2 = [(UIDocumentBrowserViewController *)self view];
+    window = [view2 window];
+    windowScene = [window windowScene];
+    session = [windowScene session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    if (v10)
+    if (persistentIdentifier)
     {
-      v11 = [(UIDocumentBrowserViewController *)self view];
-      v12 = [v11 window];
-      v13 = [v12 windowScene];
-      v14 = [v13 session];
-      v15 = [v14 persistentIdentifier];
-      [(UIDocumentBrowserViewController *)self forwardHostSceneIdentifier:v15];
+      view3 = [(UIDocumentBrowserViewController *)self view];
+      window2 = [view3 window];
+      windowScene2 = [window2 windowScene];
+      session2 = [windowScene2 session];
+      persistentIdentifier2 = [session2 persistentIdentifier];
+      [(UIDocumentBrowserViewController *)self forwardHostSceneIdentifier:persistentIdentifier2];
     }
   }
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(DOCAppearance *)self->_appearance browserUserInterfaceStyle];
-  if (v5 != [(DOCAppearance *)v4 browserUserInterfaceStyle])
+  changeCopy = change;
+  browserUserInterfaceStyle = [(DOCAppearance *)self->_appearance browserUserInterfaceStyle];
+  if (browserUserInterfaceStyle != [(DOCAppearance *)changeCopy browserUserInterfaceStyle])
   {
     [(UIDocumentBrowserViewController *)self updateBackgroundColor];
     if ((dyld_program_sdk_at_least() & 1) == 0)
@@ -1340,19 +1340,19 @@ void __82__UIDocumentBrowserViewController__instantiateRemoteViewControllerWithC
   }
 
   appearance = self->_appearance;
-  self->_appearance = v4;
+  self->_appearance = changeCopy;
 
   [(UIDocumentBrowserViewController *)self _doc_performRemoteUpdateAppearanceForReason:0];
 }
 
-- (void)_doc_performRemoteUpdateAppearanceForReason:(unint64_t)a3
+- (void)_doc_performRemoteUpdateAppearanceForReason:(unint64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
   if ([(UIDocumentBrowserViewController *)self _expectsRemoteViewController])
   {
-    if (a3)
+    if (reason)
     {
-      if (a3 == 1)
+      if (reason == 1)
       {
         if (self->_isDelayingRemotePresentation)
         {
@@ -1399,7 +1399,7 @@ void __82__UIDocumentBrowserViewController__instantiateRemoteViewControllerWithC
       v10 = v7;
       v11 = v9;
       *buf = 136315138;
-      v17 = [v7 UTF8String];
+      uTF8String = [v7 UTF8String];
       _os_log_impl(&dword_1E57D8000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 
@@ -1506,7 +1506,7 @@ void __79__UIDocumentBrowserViewController__doc_performRemoteUpdateAppearanceFor
   [*(a1 + 40) _doc_endDelayingRemotePresentation];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v10.receiver = self;
   v10.super_class = UIDocumentBrowserViewController;
@@ -1515,8 +1515,8 @@ void __79__UIDocumentBrowserViewController__doc_performRemoteUpdateAppearanceFor
   v7[1] = 3221225472;
   v7[2] = __55__UIDocumentBrowserViewController_setEditing_animated___block_invoke;
   v7[3] = &__block_descriptor_34_e88_v24__0___DOCServiceDocumentBrowserViewControllerInterface__8__DOCRemoteViewController_16l;
-  v8 = a3;
-  v9 = a4;
+  editingCopy = editing;
+  animatedCopy = animated;
   [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v7];
 }
 
@@ -1853,11 +1853,11 @@ void __81__UIDocumentBrowserViewController_revealDocumentAtURL_importIfNeeded_co
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     [(UIDocumentBrowserViewController *)self clearCurrentOpenInteraction];
@@ -1868,7 +1868,7 @@ void __81__UIDocumentBrowserViewController_revealDocumentAtURL_importIfNeeded_co
   {
     v15.receiver = self;
     v15.super_class = UIDocumentBrowserViewController;
-    [(UIDocumentBrowserViewController *)&v15 presentViewController:v8 animated:v6 completion:v9];
+    [(UIDocumentBrowserViewController *)&v15 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -1877,11 +1877,11 @@ void __81__UIDocumentBrowserViewController_revealDocumentAtURL_importIfNeeded_co
     v10[1] = 3221225472;
     v10[2] = __77__UIDocumentBrowserViewController_presentViewController_animated_completion___block_invoke;
     v10[3] = &unk_1E8782770;
-    v11 = v8;
-    v14 = v6;
-    v12 = self;
-    v13 = v9;
-    [(UIDocumentBrowserViewController *)self dismissAllPresentedViewControllers:v6 completion:v10];
+    v11 = controllerCopy;
+    v14 = animatedCopy;
+    selfCopy = self;
+    v13 = completionCopy;
+    [(UIDocumentBrowserViewController *)self dismissAllPresentedViewControllers:animatedCopy completion:v10];
   }
 }
 
@@ -1902,23 +1902,23 @@ id __77__UIDocumentBrowserViewController_presentViewController_animated_completi
   return objc_msgSendSuper2(&v5, sel_presentViewController_animated_completion_, v1, v2, v3);
 }
 
-- (void)dismissAllPresentedViewControllers:(BOOL)a3 completion:(id)a4
+- (void)dismissAllPresentedViewControllers:(BOOL)controllers completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(UIDocumentBrowserViewController *)self _expectsRemoteViewController])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __81__UIDocumentBrowserViewController_dismissAllPresentedViewControllers_completion___block_invoke;
     v7[3] = &unk_1E87827C0;
-    v8 = v6;
-    v9 = a3;
+    v8 = completionCopy;
+    controllersCopy = controllers;
     [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v7];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1999,11 +1999,11 @@ void __81__UIDocumentBrowserViewController_dismissAllPresentedViewControllers_co
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_beginTransitionCoordinatorSessionForDocumentURL:(id)a3
+- (void)_beginTransitionCoordinatorSessionForDocumentURL:(id)l
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(UIDocumentBrowserTransitionController *)self->_uipTransitionCoordinator isCoordinatingForURL:v4])
+  lCopy = l;
+  if (![(UIDocumentBrowserTransitionController *)self->_uipTransitionCoordinator isCoordinatingForURL:lCopy])
   {
     v5 = MEMORY[0x1E699A450];
     v6 = *MEMORY[0x1E699A450];
@@ -2016,14 +2016,14 @@ void __81__UIDocumentBrowserViewController_dismissAllPresentedViewControllers_co
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = lCopy;
       _os_log_impl(&dword_1E57D8000, v6, OS_LOG_TYPE_INFO, "Beginning UIP transition to open document: %@", buf, 0xCu);
     }
 
     v7 = [UIDocumentBrowserTransitionController alloc];
     serviceProxy = self->_serviceProxy;
-    v9 = [(UIDocumentBrowserViewController *)self view];
-    v10 = [(UIDocumentBrowserTransitionController *)v7 initWithItemURL:v4 documentBrowserProxy:serviceProxy referenceView:v9];
+    view = [(UIDocumentBrowserViewController *)self view];
+    v10 = [(UIDocumentBrowserTransitionController *)v7 initWithItemURL:lCopy documentBrowserProxy:serviceProxy referenceView:view];
 
     objc_storeStrong(&self->_uipTransitionCoordinator, v10);
     v11 = dispatch_time(0, 30000000000);
@@ -2033,7 +2033,7 @@ void __81__UIDocumentBrowserViewController_dismissAllPresentedViewControllers_co
     block[3] = &unk_1E87827E8;
     block[4] = self;
     v14 = v10;
-    v15 = v4;
+    v15 = lCopy;
     v12 = v10;
     dispatch_after(v11, MEMORY[0x1E69E96A0], block);
   }
@@ -2084,9 +2084,9 @@ uint64_t __84__UIDocumentBrowserViewController__beginTransitionCoordinatorSessio
     {
       uipTransitionCoordinator = self->_uipTransitionCoordinator;
       v6 = v4;
-      v7 = [(UIDocumentBrowserTransitionController *)uipTransitionCoordinator itemURL];
+      itemURL = [(UIDocumentBrowserTransitionController *)uipTransitionCoordinator itemURL];
       v9 = 138412290;
-      v10 = v7;
+      v10 = itemURL;
       _os_log_impl(&dword_1E57D8000, v6, OS_LOG_TYPE_INFO, "Ending UIP transition to open document: %@", &v9, 0xCu);
     }
 
@@ -2112,8 +2112,8 @@ uint64_t __84__UIDocumentBrowserViewController__beginTransitionCoordinatorSessio
   {
     v7 = [UIDocumentBrowserTransitionController alloc];
     serviceProxy = self->_serviceProxy;
-    v9 = [(UIDocumentBrowserViewController *)self view];
-    v6 = [(UIDocumentBrowserTransitionController *)v7 initWithItemURL:v4 documentBrowserProxy:serviceProxy referenceView:v9];
+    view = [(UIDocumentBrowserViewController *)self view];
+    v6 = [(UIDocumentBrowserTransitionController *)v7 initWithItemURL:v4 documentBrowserProxy:serviceProxy referenceView:view];
   }
 
   return v6;
@@ -2136,9 +2136,9 @@ uint64_t __84__UIDocumentBrowserViewController__beginTransitionCoordinatorSessio
   [(UIDocumentBrowserViewController *)self _importDocumentAtURL:documentURL neighbourURL:neighbourURL mode:importMode completionHandler:?];
 }
 
-- (void)importDocumentAtURL:(id)a3 byMoving:(BOOL)a4 toCurrentBrowserLocationWithCompletion:(id)a5
+- (void)importDocumentAtURL:(id)l byMoving:(BOOL)moving toCurrentBrowserLocationWithCompletion:(id)completion
 {
-  if (a4)
+  if (moving)
   {
     v6 = 2;
   }
@@ -2148,27 +2148,27 @@ uint64_t __84__UIDocumentBrowserViewController__beginTransitionCoordinatorSessio
     v6 = 1;
   }
 
-  [(UIDocumentBrowserViewController *)self _importDocumentAtURL:a3 neighbourURL:0 mode:v6 completionHandler:a5];
+  [(UIDocumentBrowserViewController *)self _importDocumentAtURL:l neighbourURL:0 mode:v6 completionHandler:completion];
 }
 
-- (void)_importDocumentAtURL:(id)a3 neighbourURL:(id)a4 mode:(unint64_t)a5 completionHandler:(id)a6
+- (void)_importDocumentAtURL:(id)l neighbourURL:(id)rL mode:(unint64_t)mode completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(UIDocumentBrowserViewController *)self configuration];
-  v14 = [v13 inProcess];
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if (v14)
+  if (inProcess)
   {
-    if (v11)
+    if (rLCopy)
     {
-      [(UIDocumentBrowserViewController *)self importDocumentAtURL:v10 nextToDocumentAtURL:v11 mode:a5 completionHandler:v12];
+      [(UIDocumentBrowserViewController *)self importDocumentAtURL:lCopy nextToDocumentAtURL:rLCopy mode:mode completionHandler:handlerCopy];
     }
 
     else
     {
-      [(UIDocumentBrowserViewController *)self importDocumentAtURL:v10 mode:a5 toCurrentBrowserLocationWithCompletion:v12];
+      [(UIDocumentBrowserViewController *)self importDocumentAtURL:lCopy mode:mode toCurrentBrowserLocationWithCompletion:handlerCopy];
     }
   }
 
@@ -2181,11 +2181,11 @@ uint64_t __84__UIDocumentBrowserViewController__beginTransitionCoordinatorSessio
     v15[2] = __92__UIDocumentBrowserViewController__importDocumentAtURL_neighbourURL_mode_completionHandler___block_invoke;
     v15[3] = &unk_1E87828D8;
     objc_copyWeak(v19, &location);
-    v20 = a5 == 2;
-    v16 = v10;
-    v18 = v12;
-    v17 = v11;
-    v19[1] = a5;
+    v20 = mode == 2;
+    v16 = lCopy;
+    v18 = handlerCopy;
+    v17 = rLCopy;
+    v19[1] = mode;
     [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v15];
 
     objc_destroyWeak(v19);
@@ -2424,22 +2424,22 @@ uint64_t __92__UIDocumentBrowserViewController__importDocumentAtURL_neighbourURL
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UIDocumentBrowserViewController;
-  [(UIDocumentBrowserViewController *)&v4 viewWillAppear:a3];
+  [(UIDocumentBrowserViewController *)&v4 viewWillAppear:appear];
   [(UIDocumentBrowserViewController *)self _checkIfObservedUIPPresentationControllerDetentDidChangeForReason:@"initial state check (viewWillAppear)"];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = UIDocumentBrowserViewController;
-  v7 = a4;
-  [(UIDocumentBrowserViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(UIDocumentBrowserViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -2450,7 +2450,7 @@ uint64_t __92__UIDocumentBrowserViewController__importDocumentAtURL_neighbourURL
   v8[1] = 3221225472;
   v8[2] = __86__UIDocumentBrowserViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_1E8782900;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 void __86__UIDocumentBrowserViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1, void *a2)
@@ -2593,9 +2593,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = MEMORY[0x1E699A450];
   v6 = *MEMORY[0x1E699A450];
   if (!*MEMORY[0x1E699A450])
@@ -2610,23 +2610,23 @@ LABEL_11:
     _os_log_impl(&dword_1E57D8000, v6, OS_LOG_TYPE_DEFAULT, "Application did become active.", v10, 2u);
   }
 
-  v7 = [(UIDocumentBrowserViewController *)self configuration];
-  v8 = [v7 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v8 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
-    v9 = [(UIDocumentBrowserViewController *)self presentedViewController];
+    presentedViewController = [(UIDocumentBrowserViewController *)self presentedViewController];
 
-    if (!v9)
+    if (!presentedViewController)
     {
       [(UIDocumentBrowserViewController *)self _establishFirstResponderOnServiceSideForKeyCommand:0];
     }
   }
 }
 
-- (void)remoteViewControllerDidTerminateViewServiceWithError:(id)a3
+- (void)remoteViewControllerDidTerminateViewServiceWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   remoteViewController = self->_remoteViewController;
   self->_remoteViewController = 0;
 
@@ -2649,17 +2649,17 @@ LABEL_11:
       [UIDocumentBrowserViewController remoteViewControllerDidTerminateViewServiceWithError:];
     }
 
-    [(UIDocumentBrowserViewController *)self _failedToImportDocumentAtURL:self->_urlCurrentlyBeingImported error:v4];
+    [(UIDocumentBrowserViewController *)self _failedToImportDocumentAtURL:self->_urlCurrentlyBeingImported error:errorCopy];
     urlCurrentlyBeingImported = self->_urlCurrentlyBeingImported;
     self->_urlCurrentlyBeingImported = 0;
   }
 
-  v10 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __88__UIDocumentBrowserViewController_remoteViewControllerDidTerminateViewServiceWithError___block_invoke;
   v19[3] = &unk_1E8782978;
-  v11 = v10;
+  v11 = date;
   v20 = v11;
   v12 = MEMORY[0x1E692E2E0](v19);
   v13 = v12[2]();
@@ -2679,7 +2679,7 @@ LABEL_11:
   }
 
   remoteViewControllerDidTerminateViewServiceWithError__remoteViewControllerRecoveryAttempts = v14;
-  objc_storeStrong(&remoteViewControllerDidTerminateViewServiceWithError__lastRemoteViewControllerRecoveryAttempt, v10);
+  objc_storeStrong(&remoteViewControllerDidTerminateViewServiceWithError__lastRemoteViewControllerRecoveryAttempt, date);
   v15 = *v7;
   if (remoteViewControllerDidTerminateViewServiceWithError__remoteViewControllerRecoveryAttempts < 4)
   {
@@ -2716,10 +2716,10 @@ LABEL_11:
       [UIDocumentBrowserViewController remoteViewControllerDidTerminateViewServiceWithError:];
     }
 
-    v16 = [(UIDocumentBrowserViewController *)self configuration];
-    v17 = [v16 isPickerUI];
+    configuration = [(UIDocumentBrowserViewController *)self configuration];
+    isPickerUI = [configuration isPickerUI];
 
-    if (v17)
+    if (isPickerUI)
     {
       [(UIDocumentBrowserViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -2753,9 +2753,9 @@ double __88__UIDocumentBrowserViewController_remoteViewControllerDidTerminateVie
 - (NSArray)allowedContentTypes
 {
   v2 = MEMORY[0x1E6982C38];
-  v3 = [(UIDocumentBrowserViewController *)self configuration];
-  v4 = [v3 documentContentTypes];
-  v5 = [v2 doc_identifiersForContentTypes:v4];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  documentContentTypes = [configuration documentContentTypes];
+  v5 = [v2 doc_identifiersForContentTypes:documentContentTypes];
 
   return v5;
 }
@@ -2763,21 +2763,21 @@ double __88__UIDocumentBrowserViewController_remoteViewControllerDidTerminateVie
 - (NSArray)recentDocumentsContentTypes
 {
   v2 = MEMORY[0x1E6982C38];
-  v3 = [(UIDocumentBrowserViewController *)self configuration];
-  v4 = [v3 recentDocumentsContentTypes];
-  v5 = [v2 doc_identifiersForContentTypes:v4];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  recentDocumentsContentTypes = [configuration recentDocumentsContentTypes];
+  v5 = [v2 doc_identifiersForContentTypes:recentDocumentsContentTypes];
 
   return v5;
 }
 
 - (NSArray)contentTypesForRecentDocuments
 {
-  v2 = [(UIDocumentBrowserViewController *)self configuration];
-  v3 = [v2 recentDocumentsContentTypes];
-  v4 = v3;
-  if (v3)
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  recentDocumentsContentTypes = [configuration recentDocumentsContentTypes];
+  v4 = recentDocumentsContentTypes;
+  if (recentDocumentsContentTypes)
   {
-    v5 = v3;
+    v5 = recentDocumentsContentTypes;
   }
 
   else
@@ -2811,10 +2811,10 @@ double __88__UIDocumentBrowserViewController_remoteViewControllerDidTerminateVie
   }
 
   objc_storeStrong(&self->_additionalLeadingNavigationBarButtonItems, additionalLeadingNavigationBarButtonItems);
-  v9 = [(UIDocumentBrowserViewController *)self configuration];
-  v10 = [v9 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v10 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
     v25 = 0u;
     v26 = 0u;
@@ -2883,10 +2883,10 @@ void __80__UIDocumentBrowserViewController_setAdditionalLeadingNavigationBarButt
   v30 = *MEMORY[0x1E69E9840];
   v5 = additionalTrailingNavigationBarButtonItems;
   objc_storeStrong(&self->_additionalTrailingNavigationBarButtonItems, additionalTrailingNavigationBarButtonItems);
-  v6 = [(UIDocumentBrowserViewController *)self configuration];
-  v7 = [v6 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v7 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
     v8 = MEMORY[0x1E699A450];
     v9 = *MEMORY[0x1E699A450];
@@ -3004,24 +3004,24 @@ void __81__UIDocumentBrowserViewController_setAdditionalTrailingNavigationBarBut
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v5 = [(UIDocumentBrowserViewController *)self allowsDocumentCreation];
+    allowsDocumentCreation = [(UIDocumentBrowserViewController *)self allowsDocumentCreation];
     v6 = obj;
-    if (v5)
+    if (allowsDocumentCreation)
     {
-      v7 = [(UIDocumentBrowserViewController *)self viewIfLoaded];
+      viewIfLoaded = [(UIDocumentBrowserViewController *)self viewIfLoaded];
 
       v6 = obj;
-      if (v7)
+      if (viewIfLoaded)
       {
-        v8 = [(UIDocumentBrowserViewController *)self documentCreationController];
-        [v8 warnIfNoValidCreationHandler];
+        documentCreationController = [(UIDocumentBrowserViewController *)self documentCreationController];
+        [documentCreationController warnIfNoValidCreationHandler];
 
         v6 = obj;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](allowsDocumentCreation, v6);
 }
 
 - (void)setAllowsPickingMultipleItems:(BOOL)allowsPickingMultipleItems
@@ -3039,30 +3039,30 @@ void __81__UIDocumentBrowserViewController_setAdditionalTrailingNavigationBarBut
 {
   if (allowsDocumentCreation)
   {
-    v4 = [(UIDocumentBrowserViewController *)self documentCreationController];
-    v5 = [v4 hasCreationHandlerWithoutValidatingMethodRequirements];
+    documentCreationController = [(UIDocumentBrowserViewController *)self documentCreationController];
+    hasCreationHandlerWithoutValidatingMethodRequirements = [documentCreationController hasCreationHandlerWithoutValidatingMethodRequirements];
 
-    if (v5)
+    if (hasCreationHandlerWithoutValidatingMethodRequirements)
     {
-      v6 = [(UIDocumentBrowserViewController *)self documentCreationController];
-      [v6 warnIfNoValidCreationHandler];
+      documentCreationController2 = [(UIDocumentBrowserViewController *)self documentCreationController];
+      [documentCreationController2 warnIfNoValidCreationHandler];
 
-      v7 = [(UIDocumentBrowserViewController *)self documentCreationController];
-      v8 = [v7 hasCreationHandlerWithRequiredMethods];
+      documentCreationController3 = [(UIDocumentBrowserViewController *)self documentCreationController];
+      hasCreationHandlerWithRequiredMethods = [documentCreationController3 hasCreationHandlerWithRequiredMethods];
     }
 
     else
     {
-      v8 = 1;
+      hasCreationHandlerWithRequiredMethods = 1;
     }
   }
 
   else
   {
-    v8 = 0;
+    hasCreationHandlerWithRequiredMethods = 0;
   }
 
-  self->_allowsDocumentCreation = v8;
+  self->_allowsDocumentCreation = hasCreationHandlerWithRequiredMethods;
 
   [(UIDocumentBrowserViewController *)self _updateAppearanceShowsCreateButton];
 }
@@ -3088,8 +3088,8 @@ void __81__UIDocumentBrowserViewController_setAdditionalTrailingNavigationBarBut
 - (void)setLocalizedCreateDocumentActionTitle:(NSString *)localizedCreateDocumentActionTitle
 {
   v4 = localizedCreateDocumentActionTitle;
-  v5 = [(DOCAppearance *)self->_appearance collectionCreateButtonTitle];
-  v6 = [v5 isEqual:v4];
+  collectionCreateButtonTitle = [(DOCAppearance *)self->_appearance collectionCreateButtonTitle];
+  v6 = [collectionCreateButtonTitle isEqual:v4];
 
   if ((v6 & 1) == 0)
   {
@@ -3107,15 +3107,15 @@ void __81__UIDocumentBrowserViewController_setAdditionalTrailingNavigationBarBut
   [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v9];
 }
 
-- (void)setBrowserHostedCreateDocumentsMenu:(id)a3
+- (void)setBrowserHostedCreateDocumentsMenu:(id)menu
 {
-  v5 = a3;
-  objc_storeStrong(&self->_browserHostedCreateDocumentsMenu, a3);
+  menuCopy = menu;
+  objc_storeStrong(&self->_browserHostedCreateDocumentsMenu, menu);
   [(UIDocumentBrowserViewController *)self _updateAppearanceShowsCreateButton];
-  v6 = [(UIDocumentBrowserViewController *)self configuration];
-  v7 = [v6 inProcess];
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v7 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x1E69E9820];
@@ -3141,14 +3141,14 @@ void __71__UIDocumentBrowserViewController_setBrowserHostedCreateDocumentsMenu__
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = UIDocumentBrowserViewController;
-  v6 = a3;
-  [(UIDocumentBrowserViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  windowCopy = window;
+  [(UIDocumentBrowserViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
     [(UIDocumentBrowserViewController *)self updateBackgroundColor:v8.receiver];
     [(UIDocumentBrowserViewController *)self _beginMonitoringUIPPresentationController];
@@ -3159,9 +3159,9 @@ void __71__UIDocumentBrowserViewController_setBrowserHostedCreateDocumentsMenu__
     [(UIDocumentBrowserViewController *)self _endMonitoringUIPPresentationController:v8.receiver];
   }
 
-  v7 = [v6 rootViewController];
+  rootViewController = [windowCopy rootViewController];
 
-  if (v7 == self)
+  if (rootViewController == self)
   {
     [(UIDocumentBrowserViewController *)self _doc_endDelayingRemotePresentation];
   }
@@ -3191,8 +3191,8 @@ void __71__UIDocumentBrowserViewController_setBrowserHostedCreateDocumentsMenu__
 
 - (id)_unavailableConfigurationForTryAgain
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [mainBundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
   v5 = v4;
   if (v4)
   {
@@ -3208,28 +3208,28 @@ void __71__UIDocumentBrowserViewController_setBrowserHostedCreateDocumentsMenu__
   v8 = _DocumentManagerBundle();
   v9 = [v8 localizedStringForKey:@"Something went wrong while displaying documents." value:@"Something went wrong while displaying documents." table:@"Localizable"];
 
-  v10 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-  [v10 setText:v6];
-  [v10 setSecondaryText:v9];
+  emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+  [emptyConfiguration setText:v6];
+  [emptyConfiguration setSecondaryText:v9];
   if ([(UIDocumentBrowserViewController *)self enclosedInUIPDocumentLanding])
   {
     v11 = objc_alloc(MEMORY[0x1E69DD298]);
     v12 = [MEMORY[0x1E69DC730] effectWithStyle:8];
     v13 = [v11 initWithEffect:v12];
-    v14 = [v10 background];
-    [v14 setCustomView:v13];
+    background = [emptyConfiguration background];
+    [background setCustomView:v13];
   }
 
-  v15 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v16 = _DocumentManagerBundle();
   v17 = [v16 localizedStringForKey:@"Try Again" value:@"Try Again" table:@"Localizable"];
-  [v15 setTitle:v17];
+  [plainButtonConfiguration setTitle:v17];
 
-  v18 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v15 setBaseForegroundColor:v18];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [plainButtonConfiguration setBaseForegroundColor:systemBlueColor];
 
   objc_initWeak(&location, self);
-  [v10 setButton:v15];
+  [emptyConfiguration setButton:plainButtonConfiguration];
   v19 = MEMORY[0x1E69DC628];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
@@ -3237,13 +3237,13 @@ void __71__UIDocumentBrowserViewController_setBrowserHostedCreateDocumentsMenu__
   v26 = &unk_1E8782A50;
   objc_copyWeak(&v27, &location);
   v20 = [v19 actionWithHandler:&v23];
-  v21 = [v10 buttonProperties];
-  [v21 setPrimaryAction:v20];
+  buttonProperties = [emptyConfiguration buttonProperties];
+  [buttonProperties setPrimaryAction:v20];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
 
-  return v10;
+  return emptyConfiguration;
 }
 
 void __71__UIDocumentBrowserViewController__unavailableConfigurationForTryAgain__block_invoke(uint64_t a1)
@@ -3255,76 +3255,76 @@ void __71__UIDocumentBrowserViewController__unavailableConfigurationForTryAgain_
 - (void)_showErrorViewController
 {
   [(UIDocumentBrowserViewController *)self _clearShownViewControllers];
-  v3 = [(UIDocumentBrowserViewController *)self _unavailableConfigurationForTryAgain];
-  [(UIDocumentBrowserViewController *)self setContentUnavailableConfiguration:v3];
+  _unavailableConfigurationForTryAgain = [(UIDocumentBrowserViewController *)self _unavailableConfigurationForTryAgain];
+  [(UIDocumentBrowserViewController *)self setContentUnavailableConfiguration:_unavailableConfigurationForTryAgain];
 }
 
 - (void)_didTapTryAgainButton
 {
-  v4 = [(UIDocumentBrowserViewController *)self contentUnavailableConfiguration];
+  contentUnavailableConfiguration = [(UIDocumentBrowserViewController *)self contentUnavailableConfiguration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v4 buttonProperties];
-    [v3 setEnabled:0];
+    buttonProperties = [contentUnavailableConfiguration buttonProperties];
+    [buttonProperties setEnabled:0];
 
-    [(UIDocumentBrowserViewController *)self setContentUnavailableConfiguration:v4];
+    [(UIDocumentBrowserViewController *)self setContentUnavailableConfiguration:contentUnavailableConfiguration];
   }
 
   [(UIDocumentBrowserViewController *)self _showDocumentBrowserViewController:1];
 }
 
-- (void)_showDocumentBrowserViewController:(BOOL)a3
+- (void)_showDocumentBrowserViewController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   [(UIDocumentBrowserViewController *)self _clearShownViewControllers];
   [(UIDocumentBrowserViewController *)self _embedDocumentBrowserViewController];
   [(UIDocumentBrowserViewController *)self setAllowsDocumentCreation:[(UIDocumentBrowserViewController *)self allowsDocumentCreation]];
-  if (v3)
+  if (controllerCopy)
   {
     [(UIDocumentBrowserViewController *)self effectiveAppearanceDidChange:self->_appearance];
     [(UIDocumentBrowserViewController *)self setEditing:[(UIDocumentBrowserViewController *)self isEditing]];
     [(UIDocumentBrowserViewController *)self setAdditionalLeadingNavigationBarButtonItems:self->_additionalLeadingNavigationBarButtonItems];
     [(UIDocumentBrowserViewController *)self setAdditionalTrailingNavigationBarButtonItems:self->_additionalTrailingNavigationBarButtonItems];
     [(UIDocumentBrowserViewController *)self setBrowserHostedCreateDocumentsMenu:self->_browserHostedCreateDocumentsMenu];
-    v5 = [(UIDocumentBrowserViewController *)self customActions];
-    [(UIDocumentBrowserViewController *)self setCustomActions:v5];
+    customActions = [(UIDocumentBrowserViewController *)self customActions];
+    [(UIDocumentBrowserViewController *)self setCustomActions:customActions];
   }
 }
 
-- (BOOL)_delegateRespondsToSelector:(SEL)a3
+- (BOOL)_delegateRespondsToSelector:(SEL)selector
 {
-  v3 = [(UIDocumentBrowserViewController *)self delegate];
+  delegate = [(UIDocumentBrowserViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (void)prepareItemBookmarks:(id)a3 usingBookmark:(BOOL)a4 completionBlock:(id)a5
+- (void)prepareItemBookmarks:(id)bookmarks usingBookmark:(BOOL)bookmark completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(UIDocumentBrowserViewController *)self configuration];
-  -[UIDocumentBrowserViewController prepareItemBookmarks:forMode:usingBookmark:completionBlock:](self, "prepareItemBookmarks:forMode:usingBookmark:completionBlock:", v9, [v10 interactionModeForPreparing], v5, v8);
+  bookmarkCopy = bookmark;
+  blockCopy = block;
+  bookmarksCopy = bookmarks;
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  -[UIDocumentBrowserViewController prepareItemBookmarks:forMode:usingBookmark:completionBlock:](self, "prepareItemBookmarks:forMode:usingBookmark:completionBlock:", bookmarksCopy, [configuration interactionModeForPreparing], bookmarkCopy, blockCopy);
 }
 
-- (void)prepareItemBookmarks:(id)a3 forMode:(unint64_t)a4 usingBookmark:(BOOL)a5 completionBlock:(id)a6
+- (void)prepareItemBookmarks:(id)bookmarks forMode:(unint64_t)mode usingBookmark:(BOOL)bookmark completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  bookmarksCopy = bookmarks;
+  blockCopy = block;
   v12 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBookmark_completionBlock___block_invoke;
   block[3] = &unk_1E8782AC8;
-  v20 = a5;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a4;
-  v13 = v11;
-  v14 = v10;
+  bookmarkCopy = bookmark;
+  v16 = bookmarksCopy;
+  selfCopy = self;
+  v18 = blockCopy;
+  modeCopy = mode;
+  v13 = blockCopy;
+  v14 = bookmarksCopy;
   dispatch_async(v12, block);
 }
 
@@ -3412,17 +3412,17 @@ void __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBoo
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getTrackingViews:(id *)a3 remoteButtons:(id *)a4 fromBarButtons:(id)a5
+- (void)getTrackingViews:(id *)views remoteButtons:(id *)buttons fromBarButtons:(id)barButtons
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  barButtonsCopy = barButtons;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v6;
+  obj = barButtonsCopy;
   v32 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v32)
   {
@@ -3442,13 +3442,13 @@ void __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBoo
 
         v13 = [objc_alloc(*(v10 + 3368)) initWithBarButton:*(*(&v33 + 1) + 8 * v12)];
         v14 = objc_alloc(*(v11 + 3376));
-        v15 = [v13 uuid];
-        v16 = [v14 initWithUUID:v15];
+        uuid = [v13 uuid];
+        v16 = [v14 initWithUUID:uuid];
 
         [v7 addObject:v13];
         [v8 addObject:v16];
-        v17 = [v13 barButton];
-        [v17 set_doc_ipi_view:v16];
+        barButton = [v13 barButton];
+        [barButton set_doc_ipi_view:v16];
 
         [(UIView *)self->_trackingViewsContainer addSubview:v16];
         v18 = *MEMORY[0x1E699A450];
@@ -3463,7 +3463,7 @@ void __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBoo
           v19 = v18;
           [v13 uuid];
           v20 = v8;
-          v21 = self;
+          selfCopy = self;
           v23 = v22 = v7;
           [v23 UUIDString];
           v25 = v24 = v11;
@@ -3473,7 +3473,7 @@ void __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBoo
 
           v11 = v24;
           v7 = v22;
-          self = v21;
+          self = selfCopy;
           v8 = v20;
           v9 = v30;
           v10 = 0x1E8781000;
@@ -3490,15 +3490,15 @@ void __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBoo
   }
 
   v26 = v8;
-  *a3 = v8;
+  *views = v8;
   v27 = v7;
-  *a4 = v7;
+  *buttons = v7;
 }
 
-- (id)trackingViewForUUID:(id)a3
+- (id)trackingViewForUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
   [v5 addObjectsFromArray:self->_leadingBarButtonTrackingViews];
   [v5 addObjectsFromArray:self->_trailingBarButtonTrackingViews];
@@ -3521,8 +3521,8 @@ void __94__UIDocumentBrowserViewController_prepareItemBookmarks_forMode_usingBoo
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -3546,10 +3546,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)remoteBarButtonForUUID:(id)a3
+- (id)remoteBarButtonForUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
   [v5 addObjectsFromArray:self->_remoteAdditionalLeadingNavigationBarButtonItems];
   [v5 addObjectsFromArray:self->_remoteAdditionalTrailingNavigationBarButtonItems];
@@ -3572,8 +3572,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -3597,13 +3597,13 @@ LABEL_11:
   return v7;
 }
 
-- (void)addOperationToServiceQueue:(id)a3
+- (void)addOperationToServiceQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(UIDocumentBrowserViewController *)self configuration];
-  v6 = [v5 inProcess];
+  queueCopy = queue;
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  inProcess = [configuration inProcess];
 
-  if ((v6 & 1) == 0)
+  if ((inProcess & 1) == 0)
   {
     serviceQueue = self->_serviceQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -3611,7 +3611,7 @@ LABEL_11:
     v8[2] = __62__UIDocumentBrowserViewController_addOperationToServiceQueue___block_invoke;
     v8[3] = &unk_1E8782AA0;
     v8[4] = self;
-    v9 = v4;
+    v9 = queueCopy;
     [(NSOperationQueue *)serviceQueue addOperationWithBlock:v8];
   }
 }
@@ -3625,21 +3625,21 @@ void __62__UIDocumentBrowserViewController_addOperationToServiceQueue___block_in
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)_displayActivityControllerWithItemBookmarks:(id)a3 popoverTracker:(id)a4 isContentManaged:(BOOL)a5 additionalActivities:(id)a6 activityProxy:(id)a7
+- (void)_displayActivityControllerWithItemBookmarks:(id)bookmarks popoverTracker:(id)tracker isContentManaged:(BOOL)managed additionalActivities:(id)activities activityProxy:(id)proxy
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(UIDocumentBrowserViewController *)self _activityViewControllerWithItemBookmarks:v12 isForTitleMenuFolderSharing:0 popoverTracker:v13 isContentManaged:v9 additionalActivities:v14 activityRunner:v15];
+  managedCopy = managed;
+  bookmarksCopy = bookmarks;
+  trackerCopy = tracker;
+  activitiesCopy = activities;
+  proxyCopy = proxy;
+  v16 = [(UIDocumentBrowserViewController *)self _activityViewControllerWithItemBookmarks:bookmarksCopy isForTitleMenuFolderSharing:0 popoverTracker:trackerCopy isContentManaged:managedCopy additionalActivities:activitiesCopy activityRunner:proxyCopy];
   v17 = v16;
-  if (v13 && v16)
+  if (trackerCopy && v16)
   {
     objc_initWeak(location, self);
     objc_storeWeak(&self->_activityViewController, v17);
     v20 = v17;
-    v21 = v13;
+    v21 = trackerCopy;
     objc_copyWeak(&v22, location);
     DOCRunInMainThread();
     objc_destroyWeak(&v22);
@@ -3730,11 +3730,11 @@ void __146__UIDocumentBrowserViewController__displayActivityControllerWithItemBo
   }
 }
 
-- (BOOL)_shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks:(id)a3
+- (BOOL)_shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks:(id)bookmarks
 {
-  v4 = a3;
-  v5 = [(UIDocumentBrowserViewController *)self configuration];
-  v6 = [v5 documentContentTypes];
+  bookmarksCopy = bookmarks;
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  documentContentTypes = [configuration documentContentTypes];
 
   v7 = [MEMORY[0x1E695DFA8] set];
   v19[0] = MEMORY[0x1E69E9820];
@@ -3743,19 +3743,19 @@ void __146__UIDocumentBrowserViewController__displayActivityControllerWithItemBo
   v19[3] = &unk_1E8782B68;
   v20 = v7;
   v8 = v7;
-  [v4 enumerateObjectsUsingBlock:v19];
+  [bookmarksCopy enumerateObjectsUsingBlock:v19];
 
-  v9 = [v8 allObjects];
-  v10 = [v9 indexOfObjectPassingTest:&__block_literal_global_201];
+  allObjects = [v8 allObjects];
+  v10 = [allObjects indexOfObjectPassingTest:&__block_literal_global_201];
 
-  v11 = [v8 allObjects];
+  allObjects2 = [v8 allObjects];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __106__UIDocumentBrowserViewController__shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks___block_invoke_3;
   v17[3] = &unk_1E8782BB0;
-  v18 = v6;
-  v12 = v6;
-  v13 = [v11 indexOfObjectPassingTest:v17];
+  v18 = documentContentTypes;
+  v12 = documentContentTypes;
+  v13 = [allObjects2 indexOfObjectPassingTest:v17];
 
   v15 = v10 != 0x7FFFFFFFFFFFFFFFLL || v13 != 0x7FFFFFFFFFFFFFFFLL;
   return v15;
@@ -3790,19 +3790,19 @@ BOOL __106__UIDocumentBrowserViewController__shouldConsultDelegateShouldShowActi
   return v6;
 }
 
-- (id)_activityViewControllerWithItemBookmarks:(id)a3 isForTitleMenuFolderSharing:(BOOL)a4 popoverTracker:(id)a5 isContentManaged:(BOOL)a6 additionalActivities:(id)a7 activityRunner:(id)a8
+- (id)_activityViewControllerWithItemBookmarks:(id)bookmarks isForTitleMenuFolderSharing:(BOOL)sharing popoverTracker:(id)tracker isContentManaged:(BOOL)managed additionalActivities:(id)activities activityRunner:(id)runner
 {
-  v59 = a6;
+  managedCopy = managed;
   v83 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v58 = a5;
-  v12 = a7;
-  v68 = a8;
-  v61 = v11;
-  obj = v12;
-  if ([DOCItemBookmark isAnyItemBookmarkAFault:v11]&& !DOCIsNetworkReachable())
+  bookmarksCopy = bookmarks;
+  trackerCopy = tracker;
+  activitiesCopy = activities;
+  runnerCopy = runner;
+  v61 = bookmarksCopy;
+  obj = activitiesCopy;
+  if ([DOCItemBookmark isAnyItemBookmarkAFault:bookmarksCopy]&& !DOCIsNetworkReachable())
   {
-    if (!a4)
+    if (!sharing)
     {
       DOCAlertUserTheNetworkIsNotReachable(self);
     }
@@ -3810,17 +3810,17 @@ BOOL __106__UIDocumentBrowserViewController__shouldConsultDelegateShouldShowActi
     goto LABEL_10;
   }
 
-  if (a4 || ![(UIDocumentBrowserViewController *)self _shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks:v11])
+  if (sharing || ![(UIDocumentBrowserViewController *)self _shouldConsultDelegateShouldShowActivityViewControllerForItemBookmarks:bookmarksCopy])
   {
     goto LABEL_13;
   }
 
-  v13 = [(UIDocumentBrowserViewController *)self delegate];
+  delegate = [(UIDocumentBrowserViewController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if ((v14 & 1) == 0)
   {
-    v19 = [(UIDocumentBrowserViewController *)self delegate];
+    delegate2 = [(UIDocumentBrowserViewController *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if ((v20 & 1) == 0)
@@ -3828,9 +3828,9 @@ BOOL __106__UIDocumentBrowserViewController__shouldConsultDelegateShouldShowActi
       goto LABEL_13;
     }
 
-    v21 = [DOCItemBookmark documentsURLsForItemBookmarks:v11];
-    v22 = [(UIDocumentBrowserViewController *)self delegate];
-    v23 = [v22 documentBrowser:self shouldShowActivityViewControllerForDocumentURLs:v21 barButtonItem:0 popoverTracker:v58];
+    v21 = [DOCItemBookmark documentsURLsForItemBookmarks:bookmarksCopy];
+    delegate3 = [(UIDocumentBrowserViewController *)self delegate];
+    v23 = [delegate3 documentBrowser:self shouldShowActivityViewControllerForDocumentURLs:v21 barButtonItem:0 popoverTracker:trackerCopy];
 
     if (v23)
     {
@@ -3842,9 +3842,9 @@ LABEL_10:
     goto LABEL_44;
   }
 
-  v15 = [DOCItemBookmark documentsURLsForItemBookmarks:v11];
-  v16 = [(UIDocumentBrowserViewController *)self delegate];
-  v17 = [v16 documentBrowser:self shouldShowActivityViewControllerForDocumentURLs:v15 popoverTracker:v58 isContentManaged:v59 additionalActivities:obj activityProxy:v68];
+  v15 = [DOCItemBookmark documentsURLsForItemBookmarks:bookmarksCopy];
+  delegate4 = [(UIDocumentBrowserViewController *)self delegate];
+  v17 = [delegate4 documentBrowser:self shouldShowActivityViewControllerForDocumentURLs:v15 popoverTracker:trackerCopy isContentManaged:managedCopy additionalActivities:obj activityProxy:runnerCopy];
 
   if ((v17 & 1) == 0)
   {
@@ -3852,18 +3852,18 @@ LABEL_10:
   }
 
 LABEL_13:
-  v24 = [(UIDocumentBrowserViewController *)self delegate];
+  delegate5 = [(UIDocumentBrowserViewController *)self delegate];
   v25 = objc_opt_respondsToSelector();
 
-  if ((v25 & 1) == 0 || (+[DOCItemBookmark documentsURLsForItemBookmarks:](DOCItemBookmark, "documentsURLsForItemBookmarks:", v11), v26 = objc_claimAutoreleasedReturnValue(), -[UIDocumentBrowserViewController delegate](self, "delegate"), v27 = objc_claimAutoreleasedReturnValue(), [v27 documentBrowser:self applicationActivitiesForDocumentURLs:v26], v28 = objc_claimAutoreleasedReturnValue(), v27, v26, !v28))
+  if ((v25 & 1) == 0 || (+[DOCItemBookmark documentsURLsForItemBookmarks:](DOCItemBookmark, "documentsURLsForItemBookmarks:", bookmarksCopy), v26 = objc_claimAutoreleasedReturnValue(), -[UIDocumentBrowserViewController delegate](self, "delegate"), v27 = objc_claimAutoreleasedReturnValue(), [v27 documentBrowser:self applicationActivitiesForDocumentURLs:v26], array = objc_claimAutoreleasedReturnValue(), v27, v26, !array))
   {
-    v28 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v62 = [MEMORY[0x1E695DF70] array];
-  [v62 addObject:@"com.apple.DocumentManagerUICore.SaveToFiles"];
-  v29 = [MEMORY[0x1E699A3F8] defaultPermission];
-  v30 = [v29 canCopySourceIsContentManaged:v59];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObject:@"com.apple.DocumentManagerUICore.SaveToFiles"];
+  defaultPermission = [MEMORY[0x1E699A3F8] defaultPermission];
+  v30 = [defaultPermission canCopySourceIsContentManaged:managedCopy];
 
   if (v30)
   {
@@ -3877,7 +3877,7 @@ LABEL_13:
     v32 = obj;
   }
 
-  [v62 addObject:*MEMORY[0x1E69CDA90]];
+  [array2 addObject:*MEMORY[0x1E69CDA90]];
   v79 = 0u;
   v80 = 0u;
   v78 = 0u;
@@ -3890,7 +3890,7 @@ LABEL_13:
     do
     {
       v35 = 0;
-      v36 = v28;
+      v36 = array;
       do
       {
         if (*v78 != v34)
@@ -3898,11 +3898,11 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v37 = [DOCActivity activityWithIdentifier:*(*(&v77 + 1) + 8 * v35) actionPerformerProxy:v68];
-        v28 = [v36 arrayByAddingObject:v37];
+        v37 = [DOCActivity activityWithIdentifier:*(*(&v77 + 1) + 8 * v35) actionPerformerProxy:runnerCopy];
+        array = [v36 arrayByAddingObject:v37];
 
         ++v35;
-        v36 = v28;
+        v36 = array;
       }
 
       while (v33 != v35);
@@ -3913,7 +3913,7 @@ LABEL_13:
   }
 
   v67 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v61, "count")}];
-  v64 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
@@ -3934,21 +3934,21 @@ LABEL_13:
         }
 
         v42 = *(*(&v73 + 1) + 8 * i);
-        v43 = [v42 fileURL];
-        [v67 addObject:v43];
-        v44 = [v42 node];
-        v45 = [v44 isTrashed];
+        fileURL = [v42 fileURL];
+        [v67 addObject:fileURL];
+        node = [v42 node];
+        isTrashed = [node isTrashed];
 
-        v46 = [v42 fileURL];
-        v47 = [v46 startAccessingSecurityScopedResource];
+        fileURL2 = [v42 fileURL];
+        startAccessingSecurityScopedResource = [fileURL2 startAccessingSecurityScopedResource];
 
-        if (v47)
+        if (startAccessingSecurityScopedResource)
         {
-          v48 = [v42 fileURL];
-          [v64 addObject:v48];
+          fileURL3 = [v42 fileURL];
+          [array3 addObject:fileURL3];
         }
 
-        v38 |= v45;
+        v38 |= isTrashed;
       }
 
       v39 = [v65 countByEnumeratingWithState:&v73 objects:v81 count:16];
@@ -3958,45 +3958,45 @@ LABEL_13:
   }
 
   objc_initWeak(&location, self);
-  v49 = [[DOCDocBrowserVC_UIActivityViewController alloc] initWithActivityItems:v67 applicationActivities:v28];
-  [(DOCDocBrowserVC_UIActivityViewController *)v49 setIsContentManaged:v59];
+  v49 = [[DOCDocBrowserVC_UIActivityViewController alloc] initWithActivityItems:v67 applicationActivities:array];
+  [(DOCDocBrowserVC_UIActivityViewController *)v49 setIsContentManaged:managedCopy];
   v69[0] = MEMORY[0x1E69E9820];
   v69[1] = 3221225472;
   v69[2] = __172__UIDocumentBrowserViewController__activityViewControllerWithItemBookmarks_isForTitleMenuFolderSharing_popoverTracker_isContentManaged_additionalActivities_activityRunner___block_invoke;
   v69[3] = &unk_1E8782BD8;
-  v50 = v64;
+  v50 = array3;
   v70 = v50;
   objc_copyWeak(&v71, &location);
   [(DOCDocBrowserVC_UIActivityViewController *)v49 setCompletionWithItemsHandler:v69];
-  if (!a4)
+  if (!sharing)
   {
-    v51 = [(UIDocumentBrowserViewController *)self delegate];
+    delegate6 = [(UIDocumentBrowserViewController *)self delegate];
     v52 = objc_opt_respondsToSelector();
 
     if (v52)
     {
-      v53 = [(UIDocumentBrowserViewController *)self delegate];
-      [v53 documentBrowser:self willPresentActivityViewController:v49];
+      delegate7 = [(UIDocumentBrowserViewController *)self delegate];
+      [delegate7 documentBrowser:self willPresentActivityViewController:v49];
     }
   }
 
   if (v38)
   {
-    [v62 addObject:@"com.apple.UIKit.activity.CloudSharing"];
-    [v62 addObject:@"com.apple.DocumentManager.action.copySharedLink"];
-    v54 = [(DOCDocBrowserVC_UIActivityViewController *)v49 excludedActivityTypes];
-    v55 = [v54 count] == 0;
+    [array2 addObject:@"com.apple.UIKit.activity.CloudSharing"];
+    [array2 addObject:@"com.apple.DocumentManager.action.copySharedLink"];
+    excludedActivityTypes = [(DOCDocBrowserVC_UIActivityViewController *)v49 excludedActivityTypes];
+    v55 = [excludedActivityTypes count] == 0;
 
     if (!v55)
     {
-      v56 = [(DOCDocBrowserVC_UIActivityViewController *)v49 excludedActivityTypes];
-      [v62 addObjectsFromArray:v56];
+      excludedActivityTypes2 = [(DOCDocBrowserVC_UIActivityViewController *)v49 excludedActivityTypes];
+      [array2 addObjectsFromArray:excludedActivityTypes2];
     }
   }
 
-  if ([v62 count])
+  if ([array2 count])
   {
-    [(DOCDocBrowserVC_UIActivityViewController *)v49 setExcludedActivityTypes:v62];
+    [(DOCDocBrowserVC_UIActivityViewController *)v49 setExcludedActivityTypes:array2];
   }
 
   [(DOCDocBrowserVC_UIActivityViewController *)v49 setModalPresentationStyle:7];
@@ -4053,13 +4053,13 @@ void __172__UIDocumentBrowserViewController__activityViewControllerWithItemBookm
   }
 }
 
-- (id)_sandboxingURLWrapperForURL:(id)a3 readonly:(BOOL)a4 error:(id *)a5
+- (id)_sandboxingURLWrapperForURL:(id)l readonly:(BOOL)readonly error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 checkPromisedItemIsReachableAndReturnError:a5])
+  readonlyCopy = readonly;
+  lCopy = l;
+  if ([lCopy checkPromisedItemIsReachableAndReturnError:error])
   {
-    v8 = [MEMORY[0x1E6967408] wrapperWithURL:v7 readonly:v6 error:a5];
+    v8 = [MEMORY[0x1E6967408] wrapperWithURL:lCopy readonly:readonlyCopy error:error];
   }
 
   else
@@ -4086,14 +4086,14 @@ void __172__UIDocumentBrowserViewController__activityViewControllerWithItemBookm
 
 - (id)keyCommands
 {
-  v3 = [(UIDocumentBrowserViewController *)self presentedViewController];
+  presentedViewController = [(UIDocumentBrowserViewController *)self presentedViewController];
   if ([(UIDocumentBrowserViewController *)self isViewLoaded])
   {
-    v4 = [(UIDocumentBrowserViewController *)self view];
-    v5 = [v4 window];
-    if (v5)
+    view = [(UIDocumentBrowserViewController *)self view];
+    window = [view window];
+    if (window)
     {
-      v6 = v3 == 0;
+      v6 = presentedViewController == 0;
     }
 
     else
@@ -4103,7 +4103,7 @@ void __172__UIDocumentBrowserViewController__activityViewControllerWithItemBookm
 
     v7 = v6;
 
-    if (v3)
+    if (presentedViewController)
     {
       goto LABEL_9;
     }
@@ -4112,10 +4112,10 @@ void __172__UIDocumentBrowserViewController__activityViewControllerWithItemBookm
   else
   {
     v7 = 0;
-    if (v3)
+    if (presentedViewController)
     {
 LABEL_9:
-      v8 = [v3 conformsToProtocol:&unk_1F5F80E68];
+      v8 = [presentedViewController conformsToProtocol:&unk_1F5F80E68];
       goto LABEL_12;
     }
   }
@@ -4125,15 +4125,15 @@ LABEL_12:
   if ((v7 | v8))
   {
     IsKeyInput = DOCFirstResponderIsKeyInput();
-    v10 = [(UIDocumentBrowserViewController *)self configuration];
-    v11 = [v10 isFilesApp];
+    configuration = [(UIDocumentBrowserViewController *)self configuration];
+    isFilesApp = [configuration isFilesApp];
 
     v12 = objc_opt_new();
-    if ((v11 & 1) == 0)
+    if ((isFilesApp & 1) == 0)
     {
       v13 = objc_opt_new();
-      v14 = [(UIDocumentBrowserViewController *)self configuration];
-      if ([v14 inProcess])
+      configuration2 = [(UIDocumentBrowserViewController *)self configuration];
+      if ([configuration2 inProcess])
       {
         [v13 allKeyCommands];
       }
@@ -4145,8 +4145,8 @@ LABEL_12:
       v16 = ;
 
       [v12 addObjectsFromArray:v16];
-      v17 = [(UIDocumentBrowserViewController *)self configuration];
-      v18 = [v17 inProcess] | IsKeyInput;
+      configuration3 = [(UIDocumentBrowserViewController *)self configuration];
+      v18 = [configuration3 inProcess] | IsKeyInput;
 
       if ((v18 & 1) == 0)
       {
@@ -4168,51 +4168,51 @@ LABEL_12:
 {
   v4.receiver = self;
   v4.super_class = UIDocumentBrowserViewController;
-  v2 = [(UIDocumentBrowserViewController *)&v4 preferredFocusEnvironments];
+  preferredFocusEnvironments = [(UIDocumentBrowserViewController *)&v4 preferredFocusEnvironments];
 
-  return v2;
+  return preferredFocusEnvironments;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(UIDocumentBrowserViewController *)self configuration];
-  v8 = [v7 isFilesApp];
+  senderCopy = sender;
+  configuration = [(UIDocumentBrowserViewController *)self configuration];
+  isFilesApp = [configuration isFilesApp];
 
   objc_opt_class();
-  v9 = a3;
+  actionCopy6 = action;
   if (objc_opt_isKindOfClass())
   {
-    v9 = a3;
+    actionCopy6 = action;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v6 propertyList];
-      v9 = a3;
-      if (v10)
+      propertyList = [senderCopy propertyList];
+      actionCopy6 = action;
+      if (propertyList)
       {
-        v11 = v10;
-        v12 = [v6 propertyList];
+        v11 = propertyList;
+        propertyList2 = [senderCopy propertyList];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
-        v9 = a3;
+        actionCopy6 = action;
         if (isKindOfClass)
         {
-          v14 = [v6 propertyList];
-          v15 = [v14 objectForKeyedSubscript:@"com.apple.DocumentManager.keyCommands.originalKeyCommandAction"];
+          propertyList3 = [senderCopy propertyList];
+          v15 = [propertyList3 objectForKeyedSubscript:@"com.apple.DocumentManager.keyCommands.originalKeyCommandAction"];
 
-          v9 = a3;
+          actionCopy6 = action;
           if (v15)
           {
             v16 = NSSelectorFromString(v15);
             if (v16)
             {
-              v9 = v16;
+              actionCopy6 = v16;
             }
 
             else
             {
-              v9 = a3;
+              actionCopy6 = action;
             }
           }
         }
@@ -4220,19 +4220,19 @@ LABEL_12:
     }
   }
 
-  if (v9 == sel_performPreview_)
+  if (actionCopy6 == sel_performPreview_)
   {
 LABEL_15:
     v17 = 0;
     goto LABEL_18;
   }
 
-  if (v9 == sel_performConnectToServer_)
+  if (actionCopy6 == sel_performConnectToServer_)
   {
-    if ((v8 & 1) == 0)
+    if ((isFilesApp & 1) == 0)
     {
-      v18 = [(UIDocumentBrowserViewController *)self configuration];
-      v17 = [(UIDocumentBrowserViewController *)self supportsRemovableFileProvidersForConfiguration:v18];
+      configuration2 = [(UIDocumentBrowserViewController *)self configuration];
+      v17 = [(UIDocumentBrowserViewController *)self supportsRemovableFileProvidersForConfiguration:configuration2];
 
       goto LABEL_18;
     }
@@ -4240,7 +4240,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (sel_performKeyCommandNoOpOnHostSide_ == a3)
+  if (sel_performKeyCommandNoOpOnHostSide_ == action)
   {
     v17 = 1;
   }
@@ -4249,7 +4249,7 @@ LABEL_15:
   {
     v20.receiver = self;
     v20.super_class = UIDocumentBrowserViewController;
-    v17 = [(UIDocumentBrowserViewController *)&v20 canPerformAction:a3 withSender:v6];
+    v17 = [(UIDocumentBrowserViewController *)&v20 canPerformAction:action withSender:senderCopy];
   }
 
 LABEL_18:
@@ -4257,25 +4257,25 @@ LABEL_18:
   return v17;
 }
 
-- (void)_establishFirstResponderOnServiceSideForKeyCommand:(id)a3
+- (void)_establishFirstResponderOnServiceSideForKeyCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__UIDocumentBrowserViewController__establishFirstResponderOnServiceSideForKeyCommand___block_invoke;
   v6[3] = &unk_1E87823E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = commandCopy;
+  v5 = commandCopy;
   [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v6];
 }
 
-- (void)_presentActivityViewControllerForItemBookmarks:(id)a3 withPopoverTracker:(id)a4 isContentManaged:(BOOL)a5 additionalActivities:(id)a6 activityProxy:(id)a7
+- (void)_presentActivityViewControllerForItemBookmarks:(id)bookmarks withPopoverTracker:(id)tracker isContentManaged:(BOOL)managed additionalActivities:(id)activities activityProxy:(id)proxy
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  bookmarksCopy = bookmarks;
+  trackerCopy = tracker;
+  activitiesCopy = activities;
+  proxyCopy = proxy;
   v16 = MEMORY[0x1E699A450];
   v17 = *MEMORY[0x1E699A450];
   if (!*MEMORY[0x1E699A450])
@@ -4287,9 +4287,9 @@ LABEL_18:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v12;
+    v28 = bookmarksCopy;
     v29 = 2112;
-    v30 = v13;
+    v30 = trackerCopy;
     _os_log_impl(&dword_1E57D8000, v17, OS_LOG_TYPE_DEFAULT, "Present the activity view controller in the host on items: %@ popoverTracker:%@", buf, 0x16u);
   }
 
@@ -4311,14 +4311,14 @@ LABEL_18:
   v22[2] = __153__UIDocumentBrowserViewController__presentActivityViewControllerForItemBookmarks_withPopoverTracker_isContentManaged_additionalActivities_activityProxy___block_invoke;
   v22[3] = &unk_1E8782C00;
   v22[4] = self;
-  v23 = v13;
-  v26 = a5;
-  v24 = v14;
-  v25 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  [(UIDocumentBrowserViewController *)self prepareItemBookmarks:v12 forMode:1 usingBookmark:0 completionBlock:v22];
+  v23 = trackerCopy;
+  managedCopy = managed;
+  v24 = activitiesCopy;
+  v25 = proxyCopy;
+  v19 = proxyCopy;
+  v20 = activitiesCopy;
+  v21 = trackerCopy;
+  [(UIDocumentBrowserViewController *)self prepareItemBookmarks:bookmarksCopy forMode:1 usingBookmark:0 completionBlock:v22];
 }
 
 - (BOOL)_canSendDocumentLandingDidPickDocumentsAtURLs
@@ -4329,26 +4329,26 @@ LABEL_18:
   return v3 & 1;
 }
 
-- (void)_sendDocumentLandingDidPickDocumentsAtURLs:(id)a3
+- (void)_sendDocumentLandingDidPickDocumentsAtURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   WeakRetained = objc_loadWeakRetained(&self->_documentLandingPresenter);
-  [WeakRetained documentLandingBrowser:self didPickDocumentsAtURLs:v4];
+  [WeakRetained documentLandingBrowser:self didPickDocumentsAtURLs:lsCopy];
 }
 
-- (void)_commitDocumentURLPreview:(id)a3
+- (void)_commitDocumentURLPreview:(id)preview
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v10[0] = v4;
+  previewCopy = preview;
+  v10[0] = previewCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__UIDocumentBrowserViewController__commitDocumentURLPreview___block_invoke;
   v7[3] = &unk_1E8782C28;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = previewCopy;
+  selfCopy = self;
+  v6 = previewCopy;
   [(UIDocumentBrowserViewController *)self prepareItemBookmarks:v5 usingBookmark:1 completionBlock:v7];
 }
 
@@ -4389,10 +4389,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_didTriggerCustomActionWithIdentifier:(id)a3 onItemBookmarks:(id)a4
+- (void)_didTriggerCustomActionWithIdentifier:(id)identifier onItemBookmarks:(id)bookmarks
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bookmarksCopy = bookmarks;
   v8 = MEMORY[0x1E699A450];
   v9 = *MEMORY[0x1E699A450];
   if (!*MEMORY[0x1E699A450])
@@ -4412,9 +4412,9 @@ LABEL_8:
   v11[2] = __89__UIDocumentBrowserViewController__didTriggerCustomActionWithIdentifier_onItemBookmarks___block_invoke;
   v11[3] = &unk_1E8782C28;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [(UIDocumentBrowserViewController *)self prepareItemBookmarks:v7 forMode:1 usingBookmark:0 completionBlock:v11];
+  v12 = identifierCopy;
+  v10 = identifierCopy;
+  [(UIDocumentBrowserViewController *)self prepareItemBookmarks:bookmarksCopy forMode:1 usingBookmark:0 completionBlock:v11];
 }
 
 void __89__UIDocumentBrowserViewController__didTriggerCustomActionWithIdentifier_onItemBookmarks___block_invoke(uint64_t a1, void *a2)
@@ -4469,21 +4469,21 @@ uint64_t __89__UIDocumentBrowserViewController__didTriggerCustomActionWithIdenti
   return v7;
 }
 
-- (void)_didPickItemBookmarks:(id)a3
+- (void)_didPickItemBookmarks:(id)bookmarks
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bookmarksCopy = bookmarks;
   if (![(UIDocumentBrowserViewController *)self enclosedInUIPDocumentLanding]|| !self->_uipTransitionCoordinator)
   {
     [(UIDocumentBrowserViewController *)self _clearCurrentOpenInteractionUnlessUIPDocumentLanding];
     v5 = [(UIDocumentBrowserViewController *)self _delegateRespondsToSelector:sel_documentBrowser_didPickDocumentURLs_];
     v6 = [(UIDocumentBrowserViewController *)self _delegateRespondsToSelector:sel_documentBrowser_didPickDocumentsAtURLs_];
-    v7 = [(UIDocumentBrowserViewController *)self _canSendDocumentLandingDidPickDocumentsAtURLs];
-    v8 = v7;
-    if (v5 || v6 || v7)
+    _canSendDocumentLandingDidPickDocumentsAtURLs = [(UIDocumentBrowserViewController *)self _canSendDocumentLandingDidPickDocumentsAtURLs];
+    v8 = _canSendDocumentLandingDidPickDocumentsAtURLs;
+    if (v5 || v6 || _canSendDocumentLandingDidPickDocumentsAtURLs)
     {
-      v9 = [(UIDocumentBrowserViewController *)self configuration];
-      v10 = [v9 interactionMode];
+      configuration = [(UIDocumentBrowserViewController *)self configuration];
+      interactionMode = [configuration interactionMode];
 
       v11 = MEMORY[0x1E699A450];
       v12 = *MEMORY[0x1E699A450];
@@ -4496,7 +4496,7 @@ uint64_t __89__UIDocumentBrowserViewController__didTriggerCustomActionWithIdenti
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = @"NO";
-        if (v10 == 1)
+        if (interactionMode == 1)
         {
           v13 = @"YES";
         }
@@ -4514,8 +4514,8 @@ uint64_t __89__UIDocumentBrowserViewController__didTriggerCustomActionWithIdenti
       v14[4] = self;
       v17 = v6;
       v18 = v5;
-      v15 = v4;
-      [(UIDocumentBrowserViewController *)self prepareItemBookmarks:v15 usingBookmark:v10 == 1 completionBlock:v14];
+      v15 = bookmarksCopy;
+      [(UIDocumentBrowserViewController *)self prepareItemBookmarks:v15 usingBookmark:interactionMode == 1 completionBlock:v14];
     }
   }
 }
@@ -4701,17 +4701,17 @@ void __62__UIDocumentBrowserViewController__documentPickerWasCancelled__block_in
   }
 }
 
-- (void)_core_didTriggerDocumentCreationIntent:(id)a3
+- (void)_core_didTriggerDocumentCreationIntent:(id)intent
 {
-  v4 = a3;
-  v3 = v4;
+  intentCopy = intent;
+  v3 = intentCopy;
   DOCRunInMainThread();
 }
 
-- (void)_iOS_didRequestDocumentCreationWithHandler:(id)a3
+- (void)_iOS_didRequestDocumentCreationWithHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got %s: %s", "iOS", "-[UIDocumentBrowserViewController _iOS_didRequestDocumentCreationWithHandler:]"];
   v6 = MEMORY[0x1E699A448];
   v7 = *MEMORY[0x1E699A448];
@@ -4726,22 +4726,22 @@ void __62__UIDocumentBrowserViewController__documentPickerWasCancelled__block_in
     v8 = v5;
     v9 = v7;
     *buf = 136315138;
-    v19 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     _os_log_impl(&dword_1E57D8000, v9, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v10 = [(UIDocumentBrowserViewController *)self documentCreationController];
+  documentCreationController = [(UIDocumentBrowserViewController *)self documentCreationController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__UIDocumentBrowserViewController__iOS_didRequestDocumentCreationWithHandler___block_invoke;
   v13[3] = &unk_1E8782CF0;
   objc_copyWeak(&v17, buf);
-  v11 = v4;
+  v11 = handlerCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = documentCreationController;
   v14 = v12;
-  v15 = self;
+  selfCopy = self;
   [(UIDocumentBrowserViewController *)self _core_didRequestDocumentCreationWithHandler:v13];
 
   objc_destroyWeak(&v17);
@@ -4806,11 +4806,11 @@ uint64_t __78__UIDocumentBrowserViewController__iOS_didRequestDocumentCreationWi
   return [v2 didEndSessionWithImportedURL:0 canceled:1 error:0];
 }
 
-- (void)_core_didRequestDocumentCreationWithHandler:(id)a3
+- (void)_core_didRequestDocumentCreationWithHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 stringWithFormat:@"Got %s: %s", "core", "-[UIDocumentBrowserViewController _core_didRequestDocumentCreationWithHandler:]"];
   v7 = MEMORY[0x1E699A448];
   v8 = *MEMORY[0x1E699A448];
@@ -4825,12 +4825,12 @@ uint64_t __78__UIDocumentBrowserViewController__iOS_didRequestDocumentCreationWi
     v9 = v6;
     v10 = v8;
     *buf = 136315138;
-    v20 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     _os_log_impl(&dword_1E57D8000, v10, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v11 = MEMORY[0x1E692E2E0](v5);
+  v11 = MEMORY[0x1E692E2E0](handlerCopy);
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -4959,11 +4959,11 @@ void __79__UIDocumentBrowserViewController__core_didRequestDocumentCreationWithH
   }
 }
 
-- (void)_iOS_didImportDocumentAtURL:(id)a3 toDestinationItemBookmark:(id)a4
+- (void)_iOS_didImportDocumentAtURL:(id)l toDestinationItemBookmark:(id)bookmark
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  bookmarkCopy = bookmark;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got %s: %s", "iOS", "-[UIDocumentBrowserViewController _iOS_didImportDocumentAtURL:toDestinationItemBookmark:]"];
   v9 = MEMORY[0x1E699A448];
   v10 = *MEMORY[0x1E699A448];
@@ -4978,16 +4978,16 @@ void __79__UIDocumentBrowserViewController__core_didRequestDocumentCreationWithH
     v11 = v8;
     v12 = v10;
     *buf = 136315138;
-    v18 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     _os_log_impl(&dword_1E57D8000, v12, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
   urlCurrentlyBeingImported = self->_urlCurrentlyBeingImported;
   self->_urlCurrentlyBeingImported = 0;
 
-  v16 = v6;
-  v14 = v6;
-  v15 = v7;
+  v16 = lCopy;
+  v14 = lCopy;
+  v15 = bookmarkCopy;
   DOCRunInMainThread();
 }
 
@@ -5038,11 +5038,11 @@ void __89__UIDocumentBrowserViewController__iOS_didImportDocumentAtURL_toDestina
   }
 }
 
-- (void)_core_didImportDocumentAtURL:(id)a3 toDestinationURL:(id)a4
+- (void)_core_didImportDocumentAtURL:(id)l toDestinationURL:(id)rL
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got %s: %s", "core", "-[UIDocumentBrowserViewController _core_didImportDocumentAtURL:toDestinationURL:]"];
   v9 = MEMORY[0x1E699A448];
   v10 = *MEMORY[0x1E699A448];
@@ -5057,16 +5057,16 @@ void __89__UIDocumentBrowserViewController__iOS_didImportDocumentAtURL_toDestina
     v11 = v8;
     v12 = v10;
     *buf = 136315138;
-    v18 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     _os_log_impl(&dword_1E57D8000, v12, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
   urlCurrentlyBeingImported = self->_urlCurrentlyBeingImported;
   self->_urlCurrentlyBeingImported = 0;
 
-  v16 = v6;
-  v14 = v7;
-  v15 = v6;
+  v16 = lCopy;
+  v14 = rLCopy;
+  v15 = lCopy;
   DOCRunInMainThread();
 }
 
@@ -5076,11 +5076,11 @@ void __81__UIDocumentBrowserViewController__core_didImportDocumentAtURL_toDestin
   [v2 performDidImportDocumentAtURL:*(a1 + 40) toDestinationURL:*(a1 + 48)];
 }
 
-- (void)_iOS_failedToImportDocumentAtURL:(id)a3 error:(id)a4
+- (void)_iOS_failedToImportDocumentAtURL:(id)l error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got %s: %s", "iOS", "-[UIDocumentBrowserViewController _iOS_failedToImportDocumentAtURL:error:]"];
   v9 = MEMORY[0x1E699A448];
   v10 = *MEMORY[0x1E699A448];
@@ -5095,16 +5095,16 @@ void __81__UIDocumentBrowserViewController__core_didImportDocumentAtURL_toDestin
     v11 = v8;
     v12 = v10;
     *buf = 136315138;
-    v18 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     _os_log_impl(&dword_1E57D8000, v12, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
   urlCurrentlyBeingImported = self->_urlCurrentlyBeingImported;
   self->_urlCurrentlyBeingImported = 0;
 
-  v16 = v6;
-  v14 = v7;
-  v15 = v6;
+  v16 = lCopy;
+  v14 = errorCopy;
+  v15 = lCopy;
   DOCRunInMainThread();
 }
 
@@ -5114,11 +5114,11 @@ void __74__UIDocumentBrowserViewController__iOS_failedToImportDocumentAtURL_erro
   [v2 performFailedToImportDocumentAtURL:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)_core_failedToImportDocumentAtURL:(id)a3 error:(id)a4
+- (void)_core_failedToImportDocumentAtURL:(id)l error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Got %s: %s", "core", "-[UIDocumentBrowserViewController _core_failedToImportDocumentAtURL:error:]"];
   v9 = MEMORY[0x1E699A448];
   v10 = *MEMORY[0x1E699A448];
@@ -5133,16 +5133,16 @@ void __74__UIDocumentBrowserViewController__iOS_failedToImportDocumentAtURL_erro
     v11 = v8;
     v12 = v10;
     *buf = 136315138;
-    v18 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     _os_log_impl(&dword_1E57D8000, v12, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
   urlCurrentlyBeingImported = self->_urlCurrentlyBeingImported;
   self->_urlCurrentlyBeingImported = 0;
 
-  v16 = v6;
-  v14 = v7;
-  v15 = v6;
+  v16 = lCopy;
+  v14 = errorCopy;
+  v15 = lCopy;
   DOCRunInMainThread();
 }
 
@@ -5152,12 +5152,12 @@ void __75__UIDocumentBrowserViewController__core_failedToImportDocumentAtURL_err
   [v2 performFailedToImportDocumentAtURL:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)_updateRemoteBarButtonFrames:(id)a3 forUUID:(id)a4
+- (void)_updateRemoteBarButtonFrames:(id)frames forUUID:(id)d
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  framesCopy = frames;
+  dCopy = d;
+  v6 = dCopy;
+  v7 = framesCopy;
   DOCRunInMainThread();
 }
 
@@ -5210,10 +5210,10 @@ void __72__UIDocumentBrowserViewController__updateRemoteBarButtonFrames_forUUID_
   }
 }
 
-- (void)_didTriggerBarButtonWithUUID:(id)a3 overflowAction:(BOOL)a4
+- (void)_didTriggerBarButtonWithUUID:(id)d overflowAction:(BOOL)action
 {
-  v5 = a3;
-  v4 = v5;
+  dCopy = d;
+  v4 = dCopy;
   DOCRunInMainThread();
 }
 
@@ -5344,13 +5344,13 @@ void __79__UIDocumentBrowserViewController__didTriggerBarButtonWithUUID_overflow
   }
 }
 
-- (void)_fallbackRenameDocumentAtURL:(id)a3 proposedName:(id)a4 completionHandler:(id)a5
+- (void)_fallbackRenameDocumentAtURL:(id)l proposedName:(id)name completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v13 = 0;
-  v9 = [DOCFileRenamingSupport fallbackRename:v7 toProposedName:a4 error:&v13];
+  v9 = [DOCFileRenamingSupport fallbackRename:lCopy toProposedName:name error:&v13];
   v10 = v13;
   v11 = MEMORY[0x1E699A450];
   v12 = *MEMORY[0x1E699A450];
@@ -5374,7 +5374,7 @@ void __79__UIDocumentBrowserViewController__didTriggerBarButtonWithUUID_overflow
     else if (v10)
     {
 LABEL_12:
-      v8[2](v8, 0, v10);
+      handlerCopy[2](handlerCopy, 0, v10);
       goto LABEL_13;
     }
 
@@ -5391,13 +5391,13 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v15 = v7;
+    v15 = lCopy;
     v16 = 2112;
     v17 = v9;
     _os_log_impl(&dword_1E57D8000, v12, OS_LOG_TYPE_INFO, "Success. Renamed from: %@ to: %@", buf, 0x16u);
   }
 
-  (v8)[2](v8, v9, 0);
+  (handlerCopy)[2](handlerCopy, v9, 0);
 LABEL_13:
 }
 
@@ -5577,16 +5577,16 @@ void __86__UIDocumentBrowserViewController_renameDocumentAtURL_proposedName_comp
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (BOOL)supportsRemovableFileProvidersForConfiguration:(id)a3
+- (BOOL)supportsRemovableFileProvidersForConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__UIDocumentBrowserViewController_supportsRemovableFileProvidersForConfiguration___block_invoke;
   block[3] = &unk_1E87829A0;
-  v9 = v3;
+  v9 = configurationCopy;
   v4 = supportsRemovableFileProvidersForConfiguration__onceToken;
-  v5 = v3;
+  v5 = configurationCopy;
   if (v4 != -1)
   {
     dispatch_once(&supportsRemovableFileProvidersForConfiguration__onceToken, block);
@@ -5612,15 +5612,15 @@ void __82__UIDocumentBrowserViewController_supportsRemovableFileProvidersForConf
   supportsRemovableFileProvidersForConfiguration__supportsRemovableFileProviders = v5;
 }
 
-- (void)forwardHostSceneIdentifier:(id)a3
+- (void)forwardHostSceneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__UIDocumentBrowserViewController_forwardHostSceneIdentifier___block_invoke;
   v6[3] = &unk_1E87823E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(UIDocumentBrowserViewController *)self addOperationToServiceQueue:v6];
 }
 
@@ -5645,10 +5645,10 @@ uint64_t __67__UIDocumentBrowserViewController_placeholderURLForDownloadsFolder_
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)manageOverrideIfNecessaryForPresentationController:(id)a3
+- (void)manageOverrideIfNecessaryForPresentationController:(id)controller
 {
-  v8 = a3;
-  v4 = [v8 presentedViewController];
+  controllerCopy = controller;
+  presentedViewController = [controllerCopy presentedViewController];
   if ([(UIDocumentBrowserViewController *)self overrideUserInterfaceStyle])
   {
     objc_opt_class();
@@ -5656,13 +5656,13 @@ uint64_t __67__UIDocumentBrowserViewController_placeholderURLForDownloadsFolder_
     {
       if (dyld_program_sdk_at_least())
       {
-        v5 = [(UIDocumentBrowserViewController *)self traitCollection];
-        v6 = [v5 userInterfaceStyle];
+        traitCollection = [(UIDocumentBrowserViewController *)self traitCollection];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-        v7 = [v8 traitOverrides];
-        [v7 setUserInterfaceStyle:v6];
+        traitOverrides = [controllerCopy traitOverrides];
+        [traitOverrides setUserInterfaceStyle:userInterfaceStyle];
 
-        [v8 setDelegate:self];
+        [controllerCopy setDelegate:self];
       }
     }
   }
@@ -5675,19 +5675,19 @@ uint64_t __67__UIDocumentBrowserViewController_placeholderURLForDownloadsFolder_
   return WeakRetained;
 }
 
-- (void)_checkIfObservedUIPPresentationControllerDetentDidChangeForReason:(id)a3
+- (void)_checkIfObservedUIPPresentationControllerDetentDidChangeForReason:(id)reason
 {
-  v8 = a3;
+  reasonCopy = reason;
   v4 = self->_observedUIPPresentationController;
   if (v4)
   {
-    v5 = [(UIDocumentBrowserViewController *)self _currentLandingModeBasedForObservedPresentationController];
-    v6 = [(UIDocumentBrowserViewController *)self preferredUIPBrowserState];
-    v7 = [v6 documentLandingMode];
+    _currentLandingModeBasedForObservedPresentationController = [(UIDocumentBrowserViewController *)self _currentLandingModeBasedForObservedPresentationController];
+    preferredUIPBrowserState = [(UIDocumentBrowserViewController *)self preferredUIPBrowserState];
+    documentLandingMode = [preferredUIPBrowserState documentLandingMode];
 
-    if (v5 != v7)
+    if (_currentLandingModeBasedForObservedPresentationController != documentLandingMode)
     {
-      [(UIDocumentBrowserViewController *)self _sendBrowserLandingModeChangeForReason:v8];
+      [(UIDocumentBrowserViewController *)self _sendBrowserLandingModeChangeForReason:reasonCopy];
     }
   }
 }
@@ -5698,18 +5698,18 @@ uint64_t __67__UIDocumentBrowserViewController_placeholderURLForDownloadsFolder_
   v4 = v3;
   if (v3)
   {
-    v5 = [(UISheetPresentationController *)v3 selectedDetentIdentifier];
-    v6 = [(UIDocumentBrowserViewController *)self traitCollection];
-    v7 = [v6 verticalSizeClass];
+    selectedDetentIdentifier = [(UISheetPresentationController *)v3 selectedDetentIdentifier];
+    traitCollection = [(UIDocumentBrowserViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    if (v7 == 1)
+    if (verticalSizeClass == 1)
     {
       v8 = [(UISheetPresentationController *)v4 doc_detentForDocumentLandingMode:0];
 
-      v5 = v8;
+      selectedDetentIdentifier = v8;
     }
 
-    v9 = [(UISheetPresentationController *)v4 doc_documentLandingModeForDetent:v5];
+    v9 = [(UISheetPresentationController *)v4 doc_documentLandingModeForDetent:selectedDetentIdentifier];
   }
 
   else
@@ -5720,10 +5720,10 @@ uint64_t __67__UIDocumentBrowserViewController_placeholderURLForDownloadsFolder_
   return v9;
 }
 
-- (void)_sendBrowserLandingModeChangeForReason:(id)a3
+- (void)_sendBrowserLandingModeChangeForReason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = self->_observedUIPPresentationController;
   if (v5)
   {
@@ -5740,7 +5740,7 @@ uint64_t __67__UIDocumentBrowserViewController_placeholderURLForDownloadsFolder_
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_1E57D8000, v8, OS_LOG_TYPE_DEFAULT, "Sending updated landingMode change in response to: %@", buf, 0xCu);
     }
 
@@ -5773,8 +5773,8 @@ void __104__UIDocumentBrowserViewController_DOCUIPPresentationController___sendB
   {
     v4 = MEMORY[0x1E696AD88];
     v7 = observedUIPPresentationController;
-    v5 = [v4 defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE888] object:0];
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE888] object:0];
 
     v6 = self->_observedUIPPresentationController;
     self->_observedUIPPresentationController = 0;

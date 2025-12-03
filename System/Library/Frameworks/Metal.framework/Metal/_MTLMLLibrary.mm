@@ -1,19 +1,19 @@
 @interface _MTLMLLibrary
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4;
+- (BOOL)serializeToURL:(id)l error:(id *)error;
 - (NSArray)functionNames;
-- (_MTLMLLibrary)initWithDevice:(id)a3 executable:(id)a4 url:(id)a5 reflection:(id)a6;
-- (id)executableWithDeviceSelection:(int64_t)a3;
-- (id)newExternFunctionWithName:(id)a3;
-- (id)newFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 error:(id *)a5;
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 functionCache:(id)a5 error:(id *)a6;
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 pipelineLibrary:(id)a5 error:(id *)a6;
-- (id)reflectionForFunctionWithName:(id)a3;
+- (_MTLMLLibrary)initWithDevice:(id)device executable:(id)executable url:(id)url reflection:(id)reflection;
+- (id)executableWithDeviceSelection:(int64_t)selection;
+- (id)newExternFunctionWithName:(id)name;
+- (id)newFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive error:(id *)error;
+- (id)newFunctionWithName:(id)name constantValues:(id)values functionCache:(id)cache error:(id *)error;
+- (id)newFunctionWithName:(id)name constantValues:(id)values pipelineLibrary:(id)library error:(id *)error;
+- (id)reflectionForFunctionWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation _MTLMLLibrary
 
-- (_MTLMLLibrary)initWithDevice:(id)a3 executable:(id)a4 url:(id)a5 reflection:(id)a6
+- (_MTLMLLibrary)initWithDevice:(id)device executable:(id)executable url:(id)url reflection:(id)reflection
 {
   v13.receiver = self;
   v13.super_class = _MTLMLLibrary;
@@ -21,10 +21,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_device = a3;
-    v10->_executables[0] = a4;
-    v11->_mpsgraphPackageURL = [a5 copy];
-    v11->_reflection = a6;
+    v10->_device = device;
+    v10->_executables[0] = executable;
+    v11->_mpsgraphPackageURL = [url copy];
+    v11->_reflection = reflection;
     v11->_lock._os_unfair_lock_opaque = 0;
     v11->_type = 0;
   }
@@ -32,24 +32,24 @@
   return v11;
 }
 
-- (id)executableWithDeviceSelection:(int64_t)a3
+- (id)executableWithDeviceSelection:(int64_t)selection
 {
   os_unfair_lock_lock(&self->_lock);
-  if (a3 > 2)
+  if (selection > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = self->_executables[a3];
+    v5 = self->_executables[selection];
     if (!v5)
     {
       MPSGraphClassByName = getMPSGraphClassByName("MPSGraphExecutable");
-      v7 = _MTLNewMPSGraphCompilationDescriptor(a3);
+      v7 = _MTLNewMPSGraphCompilationDescriptor(selection);
       v5 = [[MPSGraphClassByName alloc] initWithMPSGraphPackageAtURL:self->_mpsgraphPackageURL compilationDescriptor:v7];
 
-      self->_executables[a3] = v5;
+      self->_executables[selection] = v5;
     }
   }
 
@@ -87,7 +87,7 @@
   }
 }
 
-- (id)reflectionForFunctionWithName:(id)a3
+- (id)reflectionForFunctionWithName:(id)name
 {
   reflection = self->_reflection;
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -98,10 +98,10 @@
 
   if ([-[MPSGraphExecutableReflectionProxy functionNames](self->_reflection "functionNames")])
   {
-    v13 = [(MPSGraphExecutableReflectionProxy *)self->_reflection inputNamesForFunction:a3];
-    v14 = [(MPSGraphExecutableReflectionProxy *)self->_reflection outputNamesForFunction:a3];
-    v15 = [(MPSGraphExecutableReflectionProxy *)self->_reflection inputShapesForFunction:a3];
-    v16 = [(MPSGraphExecutableReflectionProxy *)self->_reflection outputShapesForFunction:a3];
+    v13 = [(MPSGraphExecutableReflectionProxy *)self->_reflection inputNamesForFunction:name];
+    v14 = [(MPSGraphExecutableReflectionProxy *)self->_reflection outputNamesForFunction:name];
+    v15 = [(MPSGraphExecutableReflectionProxy *)self->_reflection inputShapesForFunction:name];
+    v16 = [(MPSGraphExecutableReflectionProxy *)self->_reflection outputShapesForFunction:name];
     v38 = v15;
     v17 = [v15 count];
     v18 = [v16 count] + v17;
@@ -133,8 +133,8 @@
         }
 
         v22 = v21;
-        v23 = [v21 dataType];
-        v31 = MTLTensorDataTypeFromMPSDataType(v23, v24, v25, v26, v27, v28, v29, v30);
+        dataType = [v21 dataType];
+        v31 = MTLTensorDataTypeFromMPSDataType(dataType, v24, v25, v26, v27, v28, v29, v30);
         v32 = -[MTLTensorBindingInternal initWithName:access:isActive:locationIndex:arrayLength:dataType:indexType:dimensions:]([MTLTensorBindingInternal alloc], "initWithName:access:isActive:locationIndex:arrayLength:dataType:indexType:dimensions:", v20, 2 * (v17 <= i), 1, i, 1, v31, 33, TensorExtentsFromMPSShape([v22 shape]));
         v39[i] = v32;
       }
@@ -163,42 +163,42 @@
     return v33;
   }
 
-  [(_MTLMLLibrary *)a3 reflectionForFunctionWithName:v6, v7, v8, v9, v10, v11, v12];
+  [(_MTLMLLibrary *)name reflectionForFunctionWithName:v6, v7, v8, v9, v10, v11, v12];
   return 0;
 }
 
-- (id)newExternFunctionWithName:(id)a3
+- (id)newExternFunctionWithName:(id)name
 {
-  v3 = [NSStringFromSelector(a2) UTF8String];
-  MTLReportFailure(0, "[_MTLMLLibrary newExternFunctionWithName:]", 21832, @"%s is not supported for machine learning libraries", v4, v5, v6, v7, v3);
+  uTF8String = [NSStringFromSelector(a2) UTF8String];
+  MTLReportFailure(0, "[_MTLMLLibrary newExternFunctionWithName:]", 21832, @"%s is not supported for machine learning libraries", v4, v5, v6, v7, uTF8String);
   return 0;
 }
 
-- (id)newFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 error:(id *)a5
+- (id)newFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive error:(id *)error
 {
-  v5 = [NSStringFromSelector(a2) UTF8String];
-  MTLReportFailure(0, "[_MTLMLLibrary newFunctionWithDescriptor:destinationArchive:error:]", 21837, @"%s is not supported for machine learning libraries", v6, v7, v8, v9, v5);
+  uTF8String = [NSStringFromSelector(a2) UTF8String];
+  MTLReportFailure(0, "[_MTLMLLibrary newFunctionWithDescriptor:destinationArchive:error:]", 21837, @"%s is not supported for machine learning libraries", v6, v7, v8, v9, uTF8String);
   return 0;
 }
 
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 functionCache:(id)a5 error:(id *)a6
+- (id)newFunctionWithName:(id)name constantValues:(id)values functionCache:(id)cache error:(id *)error
 {
-  v6 = [NSStringFromSelector(a2) UTF8String];
-  MTLReportFailure(0, "[_MTLMLLibrary newFunctionWithName:constantValues:functionCache:error:]", 21842, @"%s is not supported for machine learning libraries", v7, v8, v9, v10, v6);
+  uTF8String = [NSStringFromSelector(a2) UTF8String];
+  MTLReportFailure(0, "[_MTLMLLibrary newFunctionWithName:constantValues:functionCache:error:]", 21842, @"%s is not supported for machine learning libraries", v7, v8, v9, v10, uTF8String);
   return 0;
 }
 
-- (id)newFunctionWithName:(id)a3 constantValues:(id)a4 pipelineLibrary:(id)a5 error:(id *)a6
+- (id)newFunctionWithName:(id)name constantValues:(id)values pipelineLibrary:(id)library error:(id *)error
 {
-  v6 = [NSStringFromSelector(a2) UTF8String];
-  MTLReportFailure(0, "[_MTLMLLibrary newFunctionWithName:constantValues:pipelineLibrary:error:]", 21851, @"%s is not supported for machine learning libraries", v7, v8, v9, v10, v6);
+  uTF8String = [NSStringFromSelector(a2) UTF8String];
+  MTLReportFailure(0, "[_MTLMLLibrary newFunctionWithName:constantValues:pipelineLibrary:error:]", 21851, @"%s is not supported for machine learning libraries", v7, v8, v9, v10, uTF8String);
   return 0;
 }
 
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeToURL:(id)l error:(id *)error
 {
-  v4 = [NSStringFromSelector(a2) UTF8String];
-  MTLReportFailure(0, "[_MTLMLLibrary serializeToURL:error:]", 21856, @"%s is not supported for machine learning libraries", v5, v6, v7, v8, v4);
+  uTF8String = [NSStringFromSelector(a2) UTF8String];
+  MTLReportFailure(0, "[_MTLMLLibrary serializeToURL:error:]", 21856, @"%s is not supported for machine learning libraries", v5, v6, v7, v8, uTF8String);
   return 0;
 }
 

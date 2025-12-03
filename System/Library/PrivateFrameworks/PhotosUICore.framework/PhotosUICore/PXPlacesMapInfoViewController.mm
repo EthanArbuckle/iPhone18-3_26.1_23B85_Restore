@@ -1,69 +1,69 @@
 @interface PXPlacesMapInfoViewController
 - (PXPlacesMapInfoViewController)init;
-- (PXPlacesMapInfoViewController)initWithCoder:(id)a3;
-- (PXPlacesMapInfoViewController)initWithMapModeController:(id)a3;
-- (PXPlacesMapInfoViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)mapTypeChanged:(id)a3;
-- (void)tapped3dButton:(id)a3;
-- (void)tappedDimView:(id)a3;
-- (void)tappedDone:(id)a3;
+- (PXPlacesMapInfoViewController)initWithCoder:(id)coder;
+- (PXPlacesMapInfoViewController)initWithMapModeController:(id)controller;
+- (PXPlacesMapInfoViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)mapTypeChanged:(id)changed;
+- (void)tapped3dButton:(id)button;
+- (void)tappedDimView:(id)view;
+- (void)tappedDone:(id)done;
 - (void)viewDidLoad;
 @end
 
 @implementation PXPlacesMapInfoViewController
 
-- (void)mapTypeChanged:(id)a3
+- (void)mapTypeChanged:(id)changed
 {
-  v8 = a3;
+  changedCopy = changed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v8 selectedSegmentIndex];
-    if (v4 == 2)
+    selectedSegmentIndex = [changedCopy selectedSegmentIndex];
+    if (selectedSegmentIndex == 2)
     {
       v5 = 2;
     }
 
     else
     {
-      v5 = v4 == 1;
+      v5 = selectedSegmentIndex == 1;
     }
 
-    v6 = [(PXPlacesMapInfoViewController *)self mapModeController];
-    [v6 setMapStyle:v5];
+    mapModeController = [(PXPlacesMapInfoViewController *)self mapModeController];
+    [mapModeController setMapStyle:v5];
   }
 
-  v7 = [(PXPlacesMapInfoViewController *)self presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PXPlacesMapInfoViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tapped3dButton:(id)a3
+- (void)tapped3dButton:(id)button
 {
-  v4 = [(PXPlacesMapInfoViewController *)self mapModeController];
-  v5 = [v4 togglePerspectiveIfPossible];
+  mapModeController = [(PXPlacesMapInfoViewController *)self mapModeController];
+  togglePerspectiveIfPossible = [mapModeController togglePerspectiveIfPossible];
 
-  if ((v5 & 1) == 0)
+  if ((togglePerspectiveIfPossible & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  v6 = [(PXPlacesMapInfoViewController *)self presentingViewController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PXPlacesMapInfoViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tappedDimView:(id)a3
+- (void)tappedDimView:(id)view
 {
-  if ([a3 state] == 3)
+  if ([view state] == 3)
   {
-    v4 = [(PXPlacesMapInfoViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PXPlacesMapInfoViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)tappedDone:(id)a3
+- (void)tappedDone:(id)done
 {
-  v3 = [(PXPlacesMapInfoViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PXPlacesMapInfoViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)viewDidLoad
@@ -76,9 +76,9 @@
   [(PXPlacesMapInfoViewController *)self setTitle:v3];
 
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_tappedDone_];
-  v5 = [(PXPlacesMapInfoViewController *)self navigationItem];
+  navigationItem = [(PXPlacesMapInfoViewController *)self navigationItem];
   v46 = v4;
-  [v5 setRightBarButtonItem:v4];
+  [navigationItem setRightBarButtonItem:v4];
 
   v6 = objc_alloc(MEMORY[0x1E69DCF38]);
   v7 = PXLocalizedStringFromTable(@"PXPlacesMapTypeStandardButtonTitle", @"PhotosUICore");
@@ -90,16 +90,16 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:3];
   v11 = [v6 initWithItems:v10];
 
-  v12 = [(PXPlacesMapInfoViewController *)self mapModeController];
-  v13 = [v12 mapStyle];
-  if (v13 == 2)
+  mapModeController = [(PXPlacesMapInfoViewController *)self mapModeController];
+  mapStyle = [mapModeController mapStyle];
+  if (mapStyle == 2)
   {
     v14 = 2;
   }
 
   else
   {
-    v14 = v13 == 1;
+    v14 = mapStyle == 1;
   }
 
   [v11 setSelectedSegmentIndex:v14];
@@ -108,15 +108,15 @@
   [v11 addTarget:self action:sel_mapTypeChanged_ forControlEvents:4096];
   v15 = [MEMORY[0x1E69DC738] buttonWithType:1];
   v16 = PXLocalizedStringFromTable(@"PXPlaces3dMapButtonTitle", @"PhotosUICore");
-  v17 = [(PXPlacesMapInfoViewController *)self mapModeController];
-  v18 = [v17 supportsPerspectiveToggling];
+  mapModeController2 = [(PXPlacesMapInfoViewController *)self mapModeController];
+  supportsPerspectiveToggling = [mapModeController2 supportsPerspectiveToggling];
 
-  if (v18)
+  if (supportsPerspectiveToggling)
   {
-    v19 = [(PXPlacesMapInfoViewController *)self mapModeController];
-    v20 = [v19 is3DPerspectiveActive];
+    mapModeController3 = [(PXPlacesMapInfoViewController *)self mapModeController];
+    is3DPerspectiveActive = [mapModeController3 is3DPerspectiveActive];
 
-    if (v20)
+    if (is3DPerspectiveActive)
     {
       v21 = PXLocalizedStringFromTable(@"PXPlaces2dMapButtonTitle", @"PhotosUICore");
 
@@ -135,8 +135,8 @@
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
   v22 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [MEMORY[0x1E69DC888] blackColor];
-  [v22 setBackgroundColor:v23];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v22 setBackgroundColor:blackColor];
 
   [v22 setAlpha:0.5];
   v24 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_tappedDimView_];
@@ -144,8 +144,8 @@
 
   v25 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v26 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v25 setBackgroundColor:v26];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v25 setBackgroundColor:systemBackgroundColor];
 
   [v25 addSubview:v11];
   [v25 addSubview:v15];
@@ -159,70 +159,70 @@
   [v25 addConstraints:v30];
 
   v31 = MEMORY[0x1E696ACD8];
-  v32 = [v28 superview];
-  v33 = [v31 constraintWithItem:v15 attribute:9 relatedBy:0 toItem:v32 attribute:9 multiplier:1.0 constant:0.0];
+  superview = [v28 superview];
+  v33 = [v31 constraintWithItem:v15 attribute:9 relatedBy:0 toItem:superview attribute:9 multiplier:1.0 constant:0.0];
   [v25 addConstraint:v33];
 
-  v34 = [(PXPlacesMapInfoViewController *)self view];
-  v35 = [MEMORY[0x1E69DC888] clearColor];
-  [v34 setBackgroundColor:v35];
+  view = [(PXPlacesMapInfoViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  [v34 addSubview:v22];
-  [v34 addSubview:v25];
-  v36 = [v22 topAnchor];
-  v37 = [v34 safeAreaLayoutGuide];
-  v38 = [v37 topAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  [view addSubview:v22];
+  [view addSubview:v25];
+  topAnchor = [v22 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v39 setActive:1];
 
   v40 = _NSDictionaryOfVariableBindings(&cfstr_DimviewButtonc.isa, v22, v25, 0);
   v41 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:[dimView][buttonContainer]|" options:0 metrics:0 views:v40];
-  [v34 addConstraints:v41];
+  [view addConstraints:v41];
 
   v42 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[dimView]|" options:0 metrics:0 views:v40];
-  [v34 addConstraints:v42];
+  [view addConstraints:v42];
 
   v43 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[buttonContainer]|" options:0 metrics:0 views:v40];
-  [v34 addConstraints:v43];
+  [view addConstraints:v43];
 }
 
-- (PXPlacesMapInfoViewController)initWithCoder:(id)a3
+- (PXPlacesMapInfoViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPlacesMapInfoViewController.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXPlacesMapInfoViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapInfoViewController.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXPlacesMapInfoViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXPlacesMapInfoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXPlacesMapInfoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXPlacesMapInfoViewController.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXPlacesMapInfoViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapInfoViewController.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXPlacesMapInfoViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
 - (PXPlacesMapInfoViewController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPlacesMapInfoViewController.m" lineNumber:72 description:{@"%s is not available as initializer", "-[PXPlacesMapInfoViewController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapInfoViewController.m" lineNumber:72 description:{@"%s is not available as initializer", "-[PXPlacesMapInfoViewController init]"}];
 
   abort();
 }
 
-- (PXPlacesMapInfoViewController)initWithMapModeController:(id)a3
+- (PXPlacesMapInfoViewController)initWithMapModeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PXPlacesMapInfoViewController;
   v6 = [(PXPlacesMapInfoViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapModeController, a3);
+    objc_storeStrong(&v6->_mapModeController, controller);
     [(PXPlacesMapInfoViewController *)v7 setModalPresentationStyle:5];
   }
 

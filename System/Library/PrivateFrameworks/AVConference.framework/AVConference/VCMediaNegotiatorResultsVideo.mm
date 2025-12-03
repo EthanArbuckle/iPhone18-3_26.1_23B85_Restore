@@ -1,8 +1,8 @@
 @interface VCMediaNegotiatorResultsVideo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VCMediaNegotiatorResultsVideo)init;
-- (void)addFeatureString:(id)a3 payload:(int)a4;
-- (void)addParameterSet:(id)a3 payload:(int)a4;
+- (void)addFeatureString:(id)string payload:(int)payload;
+- (void)addParameterSet:(id)set payload:(int)payload;
 - (void)dealloc;
 @end
 
@@ -36,34 +36,34 @@
   [(VCMediaNegotiatorResultsVideo *)&v3 dealloc];
 }
 
-- (void)addFeatureString:(id)a3 payload:(int)a4
+- (void)addFeatureString:(id)string payload:(int)payload
 {
   featureStrings = self->_featureStrings;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
-  [(NSMutableDictionary *)featureStrings setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)featureStrings setObject:string forKeyedSubscript:v6];
 }
 
-- (void)addParameterSet:(id)a3 payload:(int)a4
+- (void)addParameterSet:(id)set payload:(int)payload
 {
   parameterSets = self->_parameterSets;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
-  [(NSMutableDictionary *)parameterSets setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)parameterSets setObject:set forKeyedSubscript:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_isSupported != [a3 isSupported] || objc_msgSend(a3, "remoteSSRC") != self->_remoteSSRC || self->_isRTCPFBEnabled != objc_msgSend(a3, "isRTCPFBEnabled") || objc_msgSend(a3, "customVideoWidth") != self->_customVideoWidth || objc_msgSend(a3, "customVideoHeight") != self->_customVideoHeight || objc_msgSend(a3, "tilesPerFrame") != self->_tilesPerFrame || self->_ltrpEnabled != objc_msgSend(a3, "ltrpEnabled") || self->_fecEnabled != objc_msgSend(a3, "fecEnabled") || self->_rtxEnabled != objc_msgSend(a3, "rtxEnabled") || self->_blackFrameOnClearScreenEnabled != objc_msgSend(a3, "blackFrameOnClearScreenEnabled") || objc_msgSend(a3, "cipherSuite") != self->_cipherSuite || self->_enableInterleavedEncoding != objc_msgSend(a3, "enableInterleavedEncoding") || !-[NSMutableDictionary isEqualToDictionary:](self->_featureStrings, "isEqualToDictionary:", objc_msgSend(a3, "featureStrings")) || !-[NSMutableDictionary isEqualToDictionary:](self->_parameterSets, "isEqualToDictionary:", objc_msgSend(a3, "parameterSets")) || !-[NSMutableSet isEqualToSet:](self->_pixelFormats, "isEqualToSet:", objc_msgSend(a3, "pixelFormats")) || !-[NSMutableSet isEqualToSet:](self->_hdrModesNegotiated, "isEqualToSet:", objc_msgSend(a3, "hdrModesNegotiated")))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_isSupported != [equal isSupported] || objc_msgSend(equal, "remoteSSRC") != self->_remoteSSRC || self->_isRTCPFBEnabled != objc_msgSend(equal, "isRTCPFBEnabled") || objc_msgSend(equal, "customVideoWidth") != self->_customVideoWidth || objc_msgSend(equal, "customVideoHeight") != self->_customVideoHeight || objc_msgSend(equal, "tilesPerFrame") != self->_tilesPerFrame || self->_ltrpEnabled != objc_msgSend(equal, "ltrpEnabled") || self->_fecEnabled != objc_msgSend(equal, "fecEnabled") || self->_rtxEnabled != objc_msgSend(equal, "rtxEnabled") || self->_blackFrameOnClearScreenEnabled != objc_msgSend(equal, "blackFrameOnClearScreenEnabled") || objc_msgSend(equal, "cipherSuite") != self->_cipherSuite || self->_enableInterleavedEncoding != objc_msgSend(equal, "enableInterleavedEncoding") || !-[NSMutableDictionary isEqualToDictionary:](self->_featureStrings, "isEqualToDictionary:", objc_msgSend(equal, "featureStrings")) || !-[NSMutableDictionary isEqualToDictionary:](self->_parameterSets, "isEqualToDictionary:", objc_msgSend(equal, "parameterSets")) || !-[NSMutableSet isEqualToSet:](self->_pixelFormats, "isEqualToSet:", objc_msgSend(equal, "pixelFormats")) || !-[NSMutableSet isEqualToSet:](self->_hdrModesNegotiated, "isEqualToSet:", objc_msgSend(equal, "hdrModesNegotiated")))
   {
     return 0;
   }
 
   videoRuleCollections = self->_videoRuleCollections;
-  v6 = [a3 videoRuleCollections];
+  videoRuleCollections = [equal videoRuleCollections];
 
-  return [(VCVideoRuleCollections *)videoRuleCollections isEqual:v6];
+  return [(VCVideoRuleCollections *)videoRuleCollections isEqual:videoRuleCollections];
 }
 
 @end

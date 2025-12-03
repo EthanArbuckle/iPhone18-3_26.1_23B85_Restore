@@ -1,17 +1,17 @@
 @interface TVRootViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI20TVRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC9SeymourUI20TVRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)handleSignInTapped;
 - (void)handleSignOutButtonLongPress;
 - (void)handleSignOutTapped;
 - (void)handleUpNextQueueButton;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVRootViewController
@@ -32,39 +32,39 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB23804();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TVRootViewController();
   v4 = v5.receiver;
-  [(TVRootViewController *)&v5 viewWillAppear:v3];
+  [(TVRootViewController *)&v5 viewWillAppear:appearCopy];
   v4[OBJC_IVAR____TtC9SeymourUI20TVRootViewController_engagementPresentability] = 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BB239E0(a3);
+  selfCopy = self;
+  sub_20BB239E0(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BB243FC(a3);
+  selfCopy = self;
+  sub_20BB243FC(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TVRootViewController();
   v4 = v5.receiver;
-  [(TVRootViewController *)&v5 viewDidDisappear:v3];
+  [(TVRootViewController *)&v5 viewDidDisappear:disappearCopy];
   v4[OBJC_IVAR____TtC9SeymourUI20TVRootViewController_engagementPresentability] = 2;
   sub_20BB2AA64(&qword_27C76A910, type metadata accessor for TVRootViewController);
   sub_20BB2AA64(&unk_27C76A918, type metadata accessor for TVRootViewController);
@@ -85,18 +85,18 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v14.receiver = self;
   v14.super_class = type metadata accessor for TVRootViewController();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v14.receiver;
-  [(TVRootViewController *)&v14 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
-  v9 = [v8 navigationController];
-  v10 = [v9 visibleViewController];
+  [(TVRootViewController *)&v14 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
+  navigationController = [v8 navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
-  if (!v10 || (sub_20B51C88C(0, &qword_281100550), v11 = v8, v12 = sub_20C13D5F4(), v10, v11, v13 = 0, (v12 & 1) == 0))
+  if (!visibleViewController || (sub_20B51C88C(0, &qword_281100550), v11 = v8, v12 = sub_20C13D5F4(), visibleViewController, v11, v13 = 0, (v12 & 1) == 0))
   {
     v13 = 2;
   }
@@ -106,29 +106,29 @@
 
 - (void)handleSignInTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB265D4();
 }
 
 - (void)handleSignOutButtonLongPress
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B8FC47C();
 }
 
 - (void)handleSignOutTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB269C8();
 }
 
 - (void)handleUpNextQueueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB26E84();
 }
 
-- (_TtC9SeymourUI20TVRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI20TVRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

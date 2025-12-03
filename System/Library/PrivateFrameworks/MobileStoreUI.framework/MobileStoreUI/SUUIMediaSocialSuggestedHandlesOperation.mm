@@ -1,24 +1,24 @@
 @interface SUUIMediaSocialSuggestedHandlesOperation
 - (NSArray)words;
-- (SUUIMediaSocialSuggestedHandlesOperation)initWithClientContext:(id)a3;
+- (SUUIMediaSocialSuggestedHandlesOperation)initWithClientContext:(id)context;
 - (id)outputBlock;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
-- (void)setWords:(id)a3;
+- (void)setOutputBlock:(id)block;
+- (void)setWords:(id)words;
 @end
 
 @implementation SUUIMediaSocialSuggestedHandlesOperation
 
-- (SUUIMediaSocialSuggestedHandlesOperation)initWithClientContext:(id)a3
+- (SUUIMediaSocialSuggestedHandlesOperation)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SUUIMediaSocialSuggestedHandlesOperation;
   v6 = [(SSVOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v7->_lock;
     v7->_lock = v8;
@@ -48,13 +48,13 @@
   return v3;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -62,13 +62,13 @@
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setWords:(id)a3
+- (void)setWords:(id)words
 {
-  v6 = a3;
+  wordsCopy = words;
   [(NSLock *)self->_lock lock];
-  if (self->_words != v6)
+  if (self->_words != wordsCopy)
   {
-    v4 = [(NSArray *)v6 copy];
+    v4 = [(NSArray *)wordsCopy copy];
     words = self->_words;
     self->_words = v4;
   }
@@ -84,11 +84,11 @@
   v44 = __Block_byref_object_copy__68;
   v45 = __Block_byref_object_dispose__68;
   v46 = 0;
-  v3 = [(SUUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
   v4 = *MEMORY[0x277D6A670];
   v5 = (v42 + 5);
   obj = v42[5];
-  v6 = [v3 valueForKey:v4 error:&obj];
+  v6 = [uRLBag valueForKey:v4 error:&obj];
   objc_storeStrong(v5, obj);
 
   objc_opt_class();
@@ -109,8 +109,8 @@
     v9 = [MEMORY[0x277CBEBC0] URLWithString:v7];
     v10 = [v8 initWithURL:v9 resolvingAgainstBaseURL:0];
 
-    v11 = [(SUUIMediaSocialSuggestedHandlesOperation *)self words];
-    v12 = [v11 componentsJoinedByString:{@", "}];
+    words = [(SUUIMediaSocialSuggestedHandlesOperation *)self words];
+    v12 = [words componentsJoinedByString:{@", "}];
 
     v13 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"words" value:v12];
     v14 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v13, 0}];
@@ -121,8 +121,8 @@
 
     SSVAddMediaSocialHeadersToURLRequest();
     v18 = [(SSVComplexOperation *)self newLoadURLOperationWithRequest:v17];
-    v19 = [MEMORY[0x277D69D48] consumer];
-    [v18 setDataConsumer:v19];
+    consumer = [MEMORY[0x277D69D48] consumer];
+    [v18 setDataConsumer:consumer];
     v32 = v13;
 
     v34 = 0;
@@ -163,8 +163,8 @@
 
     if (!(v42[5] | v24))
     {
-      v26 = [v18 URLResponse];
-      if ([v26 statusCode] == 403)
+      uRLResponse = [v18 URLResponse];
+      if ([uRLResponse statusCode] == 403)
       {
         v27 = 3;
       }
@@ -190,11 +190,11 @@
     v42[5] = v25;
   }
 
-  v30 = [(SUUIMediaSocialSuggestedHandlesOperation *)self outputBlock];
-  v31 = v30;
-  if (v30)
+  outputBlock = [(SUUIMediaSocialSuggestedHandlesOperation *)self outputBlock];
+  v31 = outputBlock;
+  if (outputBlock)
   {
-    (*(v30 + 16))(v30, v24, v42[5]);
+    (*(outputBlock + 16))(outputBlock, v24, v42[5]);
   }
 
   _Block_object_dispose(&v41, 8);

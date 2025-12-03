@@ -1,15 +1,15 @@
 @interface FadeOutDismissalAnimator
 - (_TtC22SubscribePageExtension24FadeOutDismissalAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FadeOutDismissalAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1005BC4A4(a3);
+  selfCopy = self;
+  sub_1005BC4A4(transition);
   swift_unknownObjectRelease();
 }
 

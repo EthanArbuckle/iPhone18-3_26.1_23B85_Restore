@@ -1,15 +1,15 @@
 @interface CLKCComplicationDataSource
 - (CLKCComplicationDataSource)init;
-- (CLKCComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (CLKCComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5 context:(id)a6;
+- (CLKCComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (CLKCComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device context:(id)context;
 - (CLKCComplicationDataSourceDelegate)delegate;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getDesiredUpdateIntervalWithHandler:(id)a3;
-- (void)getSupportedTimeTravelDirectionsWithHandler:(id)a3;
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5;
-- (void)getTimelineEntriesBeforeDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5;
-- (void)getTimelineStartDateWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getDesiredUpdateIntervalWithHandler:(id)handler;
+- (void)getSupportedTimeTravelDirectionsWithHandler:(id)handler;
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
+- (void)getTimelineEntriesBeforeDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
+- (void)getTimelineStartDateWithHandler:(id)handler;
 @end
 
 @implementation CLKCComplicationDataSource
@@ -29,19 +29,19 @@
   return v2;
 }
 
-- (CLKCComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (CLKCComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v9 = a3;
-  v10 = a5;
+  complicationCopy = complication;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = CLKCComplicationDataSource;
   v11 = [(CLKCComplicationDataSource *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_complication, a3);
-    v12->_family = a4;
-    objc_storeStrong(&v12->_device, a5);
+    objc_storeStrong(&v11->_complication, complication);
+    v12->_family = family;
+    objc_storeStrong(&v12->_device, device);
     v13 = objc_opt_new();
     context = v12->_context;
     v12->_context = v13;
@@ -50,14 +50,14 @@
   return v12;
 }
 
-- (CLKCComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5 context:(id)a6
+- (CLKCComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device context:(id)context
 {
-  v11 = a6;
-  v12 = [(CLKCComplicationDataSource *)self initWithComplication:a3 family:a4 forDevice:a5];
+  contextCopy = context;
+  v12 = [(CLKCComplicationDataSource *)self initWithComplication:complication family:family forDevice:device];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a6);
+    objc_storeStrong(&v12->_context, context);
   }
 
   return v13;
@@ -75,12 +75,12 @@
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   NSRequestConcreteImplementation();
-  v2 = [objc_alloc(MEMORY[0x277CBB720]) initPrivate];
+  initPrivate = [objc_alloc(MEMORY[0x277CBB720]) initPrivate];
 
-  return v2;
+  return initPrivate;
 }
 
-- (void)getSupportedTimeTravelDirectionsWithHandler:(id)a3
+- (void)getSupportedTimeTravelDirectionsWithHandler:(id)handler
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -88,7 +88,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)getTimelineStartDateWithHandler:(id)a3
+- (void)getTimelineStartDateWithHandler:(id)handler
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -96,7 +96,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -104,7 +104,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)getTimelineEntriesBeforeDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5
+- (void)getTimelineEntriesBeforeDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -112,7 +112,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
@@ -120,7 +120,7 @@
   NSRequestConcreteImplementation();
 }
 
-- (void)getDesiredUpdateIntervalWithHandler:(id)a3
+- (void)getDesiredUpdateIntervalWithHandler:(id)handler
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();

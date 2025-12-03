@@ -1,23 +1,23 @@
 @interface HDFreezeSeriesOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDFreezeSeriesOperation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDFreezeSeriesOperation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDFreezeSeriesOperation
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v6 = [(objc_class *)self->_entityClass freezeSeriesWithIdentifier:self->_identifier metadata:self->_metadata profile:a3 error:a5];
+  v6 = [(objc_class *)self->_entityClass freezeSeriesWithIdentifier:self->_identifier metadata:self->_metadata profile:profile error:error];
   frozenIdentifier = self->_frozenIdentifier;
   self->_frozenIdentifier = v6;
 
   return v6 != 0;
 }
 
-- (HDFreezeSeriesOperation)initWithCoder:(id)a3
+- (HDFreezeSeriesOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = HDFreezeSeriesOperation;
   v5 = [(HDFreezeSeriesOperation *)&v19 init];
@@ -26,16 +26,16 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"metadata"];
+  hk_secureCodingClasses = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
+  v9 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"metadata"];
   metadata = v5->_metadata;
   v5->_metadata = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entity_class"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entity_class"];
   v12 = v11;
   if (!v11 || (NSClassFromString(v11), v13 = objc_claimAutoreleasedReturnValue(), entityClass = v5->_entityClass, v5->_entityClass = v13, entityClass, v5->_entityClass))
   {
@@ -58,14 +58,14 @@ LABEL_6:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
   v6 = NSStringFromClass(self->_entityClass);
-  [v5 encodeObject:v6 forKey:@"entity_class"];
+  [coderCopy encodeObject:v6 forKey:@"entity_class"];
 }
 
 @end

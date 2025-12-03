@@ -1,35 +1,35 @@
 @interface CPParagraphMaker
-- (BOOL)firstWordOf:(id)a3 fits:(id)a4 indent:(double)a5;
-- (BOOL)fitsBelow:(id)a3 alignment:(unint64_t)a4 spacing:(double)a5 from:(int)a6;
-- (BOOL)isGraphicBetween:(id)a3 and:(id)a4;
-- (BOOL)line:(id)a3 isAlignedWith:(id)a4;
-- (BOOL)line:(id)a3 isBelow:(id)a4;
-- (BOOL)line:(id)a3 isDirectlyBelow:(id)a4;
-- (BOOL)spacingOf:(id)a3 and:(id)a4 and:(id)a5 is:(double *)a6;
-- (BOOL)styleOf:(id)a3 differsFromStyleOf:(id)a4;
-- (id)newInitialParagraphIn:(id)a3;
-- (int)indexOfUniqueLineBelow:(id)a3 from:(int)a4;
-- (int)linesThatOverlapLineAt:(int)a3 between:(double)a4 and:(double)a5 from:(int)a6;
-- (unint64_t)alignmentOf:(id)a3 and:(id)a4;
-- (unint64_t)alignmentOf:(id)a3 and:(id)a4 and:(id)a5;
-- (void)addCompoundedShapesOn:(id)a3 to:(id)a4;
-- (void)addIntersectingParagraph:(id)a3;
-- (void)addLinesTo:(id)a3;
+- (BOOL)firstWordOf:(id)of fits:(id)fits indent:(double)indent;
+- (BOOL)fitsBelow:(id)below alignment:(unint64_t)alignment spacing:(double)spacing from:(int)from;
+- (BOOL)isGraphicBetween:(id)between and:(id)and;
+- (BOOL)line:(id)line isAlignedWith:(id)with;
+- (BOOL)line:(id)line isBelow:(id)below;
+- (BOOL)line:(id)line isDirectlyBelow:(id)below;
+- (BOOL)spacingOf:(id)of and:(id)and and:(id)a5 is:(double *)is;
+- (BOOL)styleOf:(id)of differsFromStyleOf:(id)styleOf;
+- (id)newInitialParagraphIn:(id)in;
+- (int)indexOfUniqueLineBelow:(id)below from:(int)from;
+- (int)linesThatOverlapLineAt:(int)at between:(double)between and:(double)and from:(int)from;
+- (unint64_t)alignmentOf:(id)of and:(id)and;
+- (unint64_t)alignmentOf:(id)of and:(id)and and:(id)a5;
+- (void)addCompoundedShapesOn:(id)on to:(id)to;
+- (void)addIntersectingParagraph:(id)paragraph;
+- (void)addLinesTo:(id)to;
 - (void)dealloc;
-- (void)makeParagraphsIn:(id)a3;
+- (void)makeParagraphsIn:(id)in;
 @end
 
 @implementation CPParagraphMaker
 
-- (void)makeParagraphsIn:(id)a3
+- (void)makeParagraphsIn:(id)in
 {
-  v5 = [a3 textLinesInZone];
-  v6 = [v5 count];
+  textLinesInZone = [in textLinesInZone];
+  v6 = [textLinesInZone count];
   if (v6)
   {
-    self->parent = a3;
-    self->page = [a3 page];
-    self->avail = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v5];
+    self->parent = in;
+    self->page = [in page];
+    self->avail = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:textLinesInZone];
 
     self->paragraphs = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v6 == 1)
@@ -43,10 +43,10 @@
     else
     {
       self->compoundedShapesOnPage = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-      -[CPParagraphMaker addCompoundedShapesOn:to:](self, "addCompoundedShapesOn:to:", [a3 page], self->compoundedShapesOnPage);
-      v7 = [a3 hasRotatedCharacters];
+      -[CPParagraphMaker addCompoundedShapesOn:to:](self, "addCompoundedShapesOn:to:", [in page], self->compoundedShapesOnPage);
+      hasRotatedCharacters = [in hasRotatedCharacters];
       v8 = &selRef_baseLineDescendingApprox_;
-      if (!v7)
+      if (!hasRotatedCharacters)
       {
         v8 = &selRef_baseLineDescending_;
       }
@@ -55,8 +55,8 @@
       while ([(NSMutableArray *)self->avail count])
       {
         self->spacingSet = 0;
-        v9 = [(CPParagraphMaker *)self newInitialParagraphIn:a3];
-        if ([a3 hasRotatedCharacters])
+        v9 = [(CPParagraphMaker *)self newInitialParagraphIn:in];
+        if ([in hasRotatedCharacters])
         {
           [(CPParagraphMaker *)self addIntersectingParagraph:v9];
         }
@@ -77,13 +77,13 @@
   }
 }
 
-- (void)addIntersectingParagraph:(id)a3
+- (void)addIntersectingParagraph:(id)paragraph
 {
   v37 = *MEMORY[0x1E69E9840];
-  [objc_msgSend(a3 "page")];
+  [objc_msgSend(paragraph "page")];
   v6 = v5;
   v8 = v7;
-  [a3 bounds];
+  [paragraph bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -128,7 +128,7 @@
         v40.size.height = height;
         if (CGRectIntersectsRect(v40, v41))
         {
-          [v26 addChildrenOf:a3];
+          [v26 addChildrenOf:paragraph];
           [v26 sortUsingSelector:sel_baseLineDescendingApprox_];
           v31 = v26;
           [(NSMutableArray *)self->paragraphs removeObject:v26];
@@ -148,23 +148,23 @@
     }
   }
 
-  [(NSMutableArray *)self->paragraphs addObject:a3];
+  [(NSMutableArray *)self->paragraphs addObject:paragraph];
 }
 
-- (void)addCompoundedShapesOn:(id)a3 to:(id)a4
+- (void)addCompoundedShapesOn:(id)on to:(id)to
 {
-  v7 = [a3 count];
+  v7 = [on count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     do
     {
-      v10 = [a3 childAtIndex:v9];
+      v10 = [on childAtIndex:v9];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(CPParagraphMaker *)self addCompoundedShapesOn:v10 to:a4];
+        [(CPParagraphMaker *)self addCompoundedShapesOn:v10 to:to];
       }
 
       else
@@ -172,7 +172,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          [a4 addObject:v10];
+          [to addObject:v10];
         }
       }
 
@@ -183,11 +183,11 @@
   }
 }
 
-- (void)addLinesTo:(id)a3
+- (void)addLinesTo:(id)to
 {
-  v5 = [a3 alignment];
-  v6 = [a3 childAtIndex:1];
-  v7 = [a3 childAtIndex:2];
+  alignment = [to alignment];
+  v6 = [to childAtIndex:1];
+  v7 = [to childAtIndex:2];
   [v6 bounds];
   v12 = v8;
   if (v10 < 0.0 || v11 < 0.0)
@@ -195,7 +195,7 @@
     *&v12 = CGRectStandardize(*&v8);
   }
 
-  [a3 bounds];
+  [to bounds];
   v17 = v13;
   if (v15 < 0.0 || v16 < 0.0)
   {
@@ -258,7 +258,7 @@
           {
             if (v32 < v21)
             {
-              [a3 bounds];
+              [to bounds];
               v43 = v42;
               rect = v44;
               v46 = v45;
@@ -268,9 +268,9 @@
               v52 = v51;
               v54 = v53;
               v56 = v55;
-              v57 = [a3 childAtIndex:{objc_msgSend(a3, "count") - 2}];
-              v58 = [a3 lastChild];
-              [v58 rotationAngle];
+              v57 = [to childAtIndex:{objc_msgSend(to, "count") - 2}];
+              lastChild = [to lastChild];
+              [lastChild rotationAngle];
               v60 = v59;
               [v57 rotationAngle];
               if (vabdd_f64(v60, v61) <= 0.00872664626)
@@ -294,23 +294,23 @@
                 }
 
                 v62 = vabdd_f64(v43, v50);
-                [a3 bounds];
+                [to bounds];
                 if (v65 < 0.0 || v66 < 0.0)
                 {
                   *(&v65 - 2) = CGRectStandardize(*&v63);
                 }
 
-                if (v62 < v65 * 0.25 || [(CPParagraphMaker *)self styleOf:v58 differsFromStyleOf:v30])
+                if (v62 < v65 * 0.25 || [(CPParagraphMaker *)self styleOf:lastChild differsFromStyleOf:v30])
                 {
-                  v67 = [a3 count];
-                  v68 = a3;
+                  v67 = [to count];
+                  toCopy = to;
                   [(NSMutableArray *)self->paragraphs removeLastObject];
                   v69 = v67 - 1;
                   if (v67 != 1)
                   {
                     do
                     {
-                      v70 = [a3 childAtIndex:0];
+                      v70 = [to childAtIndex:0];
                       v71 = objc_alloc_init(CPParagraph);
                       [(CPChunk *)v71 add:v70];
                       [(NSMutableArray *)self->paragraphs addObject:v71];
@@ -321,7 +321,7 @@
                     while (v69);
                   }
 
-                  v72 = [a3 childAtIndex:0];
+                  v72 = [to childAtIndex:0];
 
                   [(NSMutableArray *)self->avail insertObject:v72 atIndex:0];
                 }
@@ -331,28 +331,28 @@
             goto LABEL_45;
           }
 
-          if ([(CPParagraphMaker *)self line:v30 isAlignedWith:a3])
+          if ([(CPParagraphMaker *)self line:v30 isAlignedWith:to])
           {
             goto LABEL_25;
           }
 
-          v33 = [(CPParagraphMaker *)self paragraph:a3 splits:v30];
+          v33 = [(CPParagraphMaker *)self paragraph:to splits:v30];
           if (v33 > 0)
           {
             break;
           }
 
-          if (([a3 alignment] & 8) == 0)
+          if (([to alignment] & 8) == 0)
           {
             goto LABEL_45;
           }
 
-          if ((-[CPParagraphMaker alignmentOf:and:](self, "alignmentOf:and:", [a3 childAtIndex:1], v30) & 1) == 0)
+          if ((-[CPParagraphMaker alignmentOf:and:](self, "alignmentOf:and:", [to childAtIndex:1], v30) & 1) == 0)
           {
             goto LABEL_45;
           }
 
-          [a3 add:v30];
+          [to add:v30];
           [(NSMutableArray *)self->avail removeObjectAtIndex:v28];
           v38 = [(CPParagraphMaker *)self indexOfUniqueLineBelow:v7 from:v28];
           if ((v38 & 0x80000000) != 0)
@@ -365,19 +365,19 @@
           v40 = v39;
           v7 = [(NSMutableArray *)self->avail objectAtIndex:v28];
           [v7 baseline];
-          if (vabdd_f64(v40 - v41, v21) > 2.0 || (-[CPParagraphMaker alignmentOf:and:](self, "alignmentOf:and:", [a3 childAtIndex:1], v7) & 1) == 0)
+          if (vabdd_f64(v40 - v41, v21) > 2.0 || (-[CPParagraphMaker alignmentOf:and:](self, "alignmentOf:and:", [to childAtIndex:1], v7) & 1) == 0)
           {
             goto LABEL_45;
           }
 
-          [a3 setAlignment:1];
+          [to setAlignment:1];
 LABEL_26:
-          if ([(CPParagraphMaker *)self fitsBelow:v7 alignment:v5 spacing:v28 from:v21])
+          if ([(CPParagraphMaker *)self fitsBelow:v7 alignment:alignment spacing:v28 from:v21])
           {
             goto LABEL_45;
           }
 
-          [a3 add:v7];
+          [to add:v7];
           [(NSMutableArray *)self->avail removeObjectAtIndex:v28];
           [v7 baseline];
           v24 = v35;
@@ -388,8 +388,8 @@ LABEL_26:
           }
 
           v28 = [(CPParagraphMaker *)self indexOfUniqueLineBelow:v7 from:v28];
-          v36 = [a3 alignment];
-          if ((v28 & 0x80000000) != 0 || (v36 & 0x10) != 0)
+          alignment2 = [to alignment];
+          if ((v28 & 0x80000000) != 0 || (alignment2 & 0x10) != 0)
           {
             if ((v28 & 0x80000000) != 0)
             {
@@ -397,7 +397,7 @@ LABEL_26:
             }
           }
 
-          else if ([a3 alignment])
+          else if ([to alignment])
           {
             v37 = [(NSMutableArray *)self->avail objectAtIndex:v28];
             if ([v37 wordCount])
@@ -439,7 +439,7 @@ LABEL_45:
   }
 }
 
-- (id)newInitialParagraphIn:(id)a3
+- (id)newInitialParagraphIn:(id)in
 {
   v5 = objc_alloc_init(CPParagraph);
   v6 = [(NSMutableArray *)self->avail objectAtIndex:0];
@@ -448,7 +448,7 @@ LABEL_45:
   [(CPParagraph *)v5 setAlignment:1];
   [(CPChunk *)v5 add:v6];
 
-  if ([a3 hasRotatedCharacters] && -[NSMutableArray count](self->avail, "count"))
+  if ([in hasRotatedCharacters] && -[NSMutableArray count](self->avail, "count"))
   {
     do
     {
@@ -532,14 +532,14 @@ LABEL_45:
           goto LABEL_35;
         }
 
-        v48 = [v43 charSequence];
-        v49 = [v48 length];
+        charSequence = [v43 charSequence];
+        v49 = [charSequence length];
         v50 = 0;
         if (v49)
         {
           do
           {
-            v51 = [v48 charAtIndex:v50];
+            v51 = [charSequence charAtIndex:v50];
             if (CPPDFStyleEqual(v126, *(v51 + 160), 63487))
             {
               break;
@@ -705,17 +705,17 @@ LABEL_55:
 
               if (vabdd_f64(v98, v103) >= 0.9 || (v104 = v98 - v104, v104 <= 1.9))
               {
-                v108 = [(CPParagraphMaker *)self alignmentOf:v6 and:v43 and:v74, v104];
-                v75 = v108 != 0;
-                if (v108)
+                v104 = [(CPParagraphMaker *)self alignmentOf:v6 and:v43 and:v74, v104];
+                v75 = v104 != 0;
+                if (v104)
                 {
-                  v52 = v108;
+                  v52 = v104;
                 }
 
                 v76 = v52 != 0;
-                if (v108 && v52)
+                if (v104 && v52)
                 {
-                  v122 = v108;
+                  v122 = v104;
                   v109 = [(CPParagraphMaker *)self indexOfUniqueLineBelow:v74 from:(v53 + 1)];
                   if ((v109 & 0x80000000) != 0 || (v110 = -[NSMutableArray objectAtIndex:](self->avail, "objectAtIndex:", v109), v111 = -[CPParagraphMaker alignmentOf:and:](self, "alignmentOf:and:", v74, v110), [v74 baseline], v113 = v112, objc_msgSend(v110, "baseline"), v111 != v122) || v113 - v114 + 1.0 >= v127)
                   {
@@ -762,18 +762,18 @@ LABEL_55:
   return v5;
 }
 
-- (BOOL)fitsBelow:(id)a3 alignment:(unint64_t)a4 spacing:(double)a5 from:(int)a6
+- (BOOL)fitsBelow:(id)below alignment:(unint64_t)alignment spacing:(double)spacing from:(int)from
 {
-  v10 = [(CPParagraphMaker *)self indexOfUniqueLineBelow:a3 from:(a6 + 1)];
+  v10 = [(CPParagraphMaker *)self indexOfUniqueLineBelow:below from:(from + 1)];
   if ((v10 & 0x80000000) != 0)
   {
     return 0;
   }
 
   v11 = v10;
-  v50 = a5;
+  spacingCopy = spacing;
   v12 = [(NSMutableArray *)self->avail objectAtIndex:v10];
-  [a3 bounds];
+  [below bounds];
   x = v13;
   rect = v15;
   width = v16;
@@ -833,29 +833,29 @@ LABEL_55:
     return 0;
   }
 
-  if (v11 <= a6 + 2)
+  if (v11 <= from + 2)
   {
     v33 = (v11 + 1);
   }
 
   else
   {
-    v33 = (a6 + 2);
+    v33 = (from + 2);
   }
 
   v34 = [(CPParagraphMaker *)self indexOfUniqueLineBelow:v12 from:v33];
   if ((v34 & 0x80000000) != 0)
   {
-    [a3 baseline];
+    [below baseline];
     v47 = v46;
     [v12 baseline];
-    return v47 - v48 < v50 * 0.9;
+    return v47 - v48 < spacingCopy * 0.9;
   }
 
   else
   {
     v35 = [(NSMutableArray *)self->avail objectAtIndex:v34];
-    [a3 baseline];
+    [below baseline];
     v37 = v36;
     [v12 baseline];
     v39 = v37 - v38;
@@ -863,25 +863,25 @@ LABEL_55:
     v41 = v40;
     [v35 baseline];
     v43 = v42;
-    [a3 bounds];
-    if (v39 > v44 * 3.0 || vabdd_f64(v39, v50) < 2.0)
+    [below bounds];
+    if (v39 > v44 * 3.0 || vabdd_f64(v39, spacingCopy) < 2.0)
     {
       return 0;
     }
 
     v49 = vabdd_f64(v39, v41 - v43) < 2.0;
-    return v39 + 2.0 < v50 && v49;
+    return v39 + 2.0 < spacingCopy && v49;
   }
 }
 
-- (BOOL)line:(id)a3 isAlignedWith:(id)a4
+- (BOOL)line:(id)line isAlignedWith:(id)with
 {
-  v6 = [a4 alignment];
-  [a3 anchor];
+  alignment = [with alignment];
+  [line anchor];
   v8 = v7;
-  [a3 center];
+  [line center];
   v10 = v9;
-  [a3 bounds];
+  [line bounds];
   x = v11;
   width = v13;
   if (v13 < 0.0 || v14 < 0.0)
@@ -889,23 +889,23 @@ LABEL_55:
     v39 = CGRectStandardize(*&v11);
     x = v39.origin.x;
     width = v39.size.width;
-    if ((v6 & 1) == 0)
+    if ((alignment & 1) == 0)
     {
       goto LABEL_4;
     }
   }
 
-  else if ((v6 & 1) == 0)
+  else if ((alignment & 1) == 0)
   {
 LABEL_4:
     v17 = 0;
     goto LABEL_10;
   }
 
-  if ([a4 hasDropCap])
+  if ([with hasDropCap])
   {
-    v18 = [a4 childAtIndex:0];
-    v19 = [a4 childAtIndex:1];
+    v18 = [with childAtIndex:0];
+    v19 = [with childAtIndex:1];
     [v18 anchor];
     v21 = vabdd_f64(v8, v20);
     [v19 anchor];
@@ -914,24 +914,24 @@ LABEL_4:
 
   else
   {
-    [objc_msgSend(a4 childAtIndex:{1), "anchor"}];
+    [objc_msgSend(with childAtIndex:{1), "anchor"}];
     v23 = vabdd_f64(v8, v24);
   }
 
   v17 = v23 <= 1.0;
 LABEL_10:
   v25 = x + width;
-  if ((v6 & 2) == 0)
+  if ((alignment & 2) == 0)
   {
     v26 = 0;
-    if ((v6 & 4) != 0)
+    if ((alignment & 4) != 0)
     {
       goto LABEL_12;
     }
 
 LABEL_15:
     v28 = 0;
-    if ((v6 & 8) == 0)
+    if ((alignment & 8) == 0)
     {
       goto LABEL_20;
     }
@@ -939,23 +939,23 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [objc_msgSend(a4 childAtIndex:{1), "right"}];
+  [objc_msgSend(with childAtIndex:{1), "right"}];
   v26 = vabdd_f64(v25, v29) <= 1.0;
-  if ((v6 & 4) == 0)
+  if ((alignment & 4) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_12:
-  [objc_msgSend(a4 childAtIndex:{1), "center"}];
+  [objc_msgSend(with childAtIndex:{1), "center"}];
   v28 = vabdd_f64(v10, v27) <= 1.0;
-  if ((v6 & 8) == 0)
+  if ((alignment & 8) == 0)
   {
     goto LABEL_20;
   }
 
 LABEL_16:
-  v30 = [a4 childAtIndex:1];
+  v30 = [with childAtIndex:1];
   [v30 anchor];
   v32 = v31;
   [v30 right];
@@ -963,7 +963,7 @@ LABEL_16:
   {
     if (vabdd_f64(v32, v8) > 1.0 || vabdd_f64(v33, v25) > 3.0)
     {
-      [objc_msgSend(a4 childAtIndex:{1), "right"}];
+      [objc_msgSend(with childAtIndex:{1), "right"}];
       v35 = 0;
       v26 |= vabdd_f64(v25, v38) < 1.0;
     }
@@ -980,7 +980,7 @@ LABEL_20:
   v35 = 0;
 LABEL_21:
   v36 = v17 | v26 | v28 | v35;
-  if (v6 & !v17)
+  if (alignment & !v17)
   {
     v36 = v28;
   }
@@ -988,15 +988,15 @@ LABEL_21:
   return v36 & 1;
 }
 
-- (unint64_t)alignmentOf:(id)a3 and:(id)a4 and:(id)a5
+- (unint64_t)alignmentOf:(id)of and:(id)and and:(id)a5
 {
-  [a3 anchor];
+  [of anchor];
   v73 = v8;
-  [a4 anchor];
+  [and anchor];
   v81 = v9;
   [a5 anchor];
   v80 = v10;
-  [a3 bounds];
+  [of bounds];
   if (v13 < 0.0 || v14 < 0.0)
   {
     *&v11 = CGRectStandardize(*&v11);
@@ -1004,7 +1004,7 @@ LABEL_21:
 
   v78 = v13;
   v79 = v11;
-  [a4 bounds];
+  [and bounds];
   if (v17 < 0.0 || v18 < 0.0)
   {
     *&v15 = CGRectStandardize(*&v15);
@@ -1026,7 +1026,7 @@ LABEL_21:
     x = v19;
   }
 
-  [a4 bounds];
+  [and bounds];
   v28 = v26;
   if (v26 < 0.0 || v27 < 0.0)
   {
@@ -1034,14 +1034,14 @@ LABEL_21:
     v28 = v29;
   }
 
-  [a3 bounds];
+  [of bounds];
   if (v32 < 0.0 || v33 < 0.0)
   {
     v30 = CGRectStandardize(*&v30);
   }
 
   v74 = *&v30;
-  [a3 bounds];
+  [of bounds];
   v38 = v36;
   if (v36 < 0.0 || v37 < 0.0)
   {
@@ -1049,14 +1049,14 @@ LABEL_21:
     v38 = v39;
   }
 
-  [a4 bounds];
+  [and bounds];
   v44 = v40;
   if (v42 < 0.0 || v43 < 0.0)
   {
     *&v44 = CGRectStandardize(*&v40);
   }
 
-  [a4 bounds];
+  [and bounds];
   v49 = v47;
   if (v47 < 0.0 || v48 < 0.0)
   {
@@ -1117,14 +1117,14 @@ LABEL_21:
     v71 = v66 | 8;
   }
 
-  return v71 | [a3 hasDropCap];
+  return v71 | [of hasDropCap];
 }
 
-- (BOOL)styleOf:(id)a3 differsFromStyleOf:(id)a4
+- (BOOL)styleOf:(id)of differsFromStyleOf:(id)styleOf
 {
   v6 = 0;
   v7 = 0;
-  if ([a3 styleIsUniform:&v7 styleFlags:63487] && objc_msgSend(a4, "styleIsUniform:styleFlags:", &v6, 63487))
+  if ([of styleIsUniform:&v7 styleFlags:63487] && objc_msgSend(styleOf, "styleIsUniform:styleFlags:", &v6, 63487))
   {
     return CPPDFStyleEqual(v7, v6, 63487) ^ 1;
   }
@@ -1135,13 +1135,13 @@ LABEL_21:
   }
 }
 
-- (unint64_t)alignmentOf:(id)a3 and:(id)a4
+- (unint64_t)alignmentOf:(id)of and:(id)and
 {
-  [a3 anchor];
+  [of anchor];
   v48 = v6;
-  [a4 anchor];
+  [and anchor];
   v8 = v7;
-  [a3 bounds];
+  [of bounds];
   x = v9;
   width = v11;
   if (v11 < 0.0 || v12 < 0.0)
@@ -1151,7 +1151,7 @@ LABEL_21:
     width = v49.size.width;
   }
 
-  [a4 bounds];
+  [and bounds];
   v19 = v15;
   v20 = v17;
   if (v17 < 0.0 || v18 < 0.0)
@@ -1161,14 +1161,14 @@ LABEL_21:
     v20 = v50.size.width;
   }
 
-  [a3 bounds];
+  [of bounds];
   v25 = v21;
   if (v23 < 0.0 || v24 < 0.0)
   {
     *&v25 = CGRectStandardize(*&v21);
   }
 
-  [a3 bounds];
+  [of bounds];
   v30 = v28;
   if (v28 < 0.0 || v29 < 0.0)
   {
@@ -1176,14 +1176,14 @@ LABEL_21:
     v30 = v31;
   }
 
-  [a4 bounds];
+  [and bounds];
   v36 = v32;
   if (v34 < 0.0 || v35 < 0.0)
   {
     *&v36 = CGRectStandardize(*&v32);
   }
 
-  [a4 bounds];
+  [and bounds];
   if (v39 < 0.0 || v40 < 0.0)
   {
     *(&v39 - 2) = CGRectStandardize(*&v37);
@@ -1230,27 +1230,27 @@ LABEL_21:
   }
 }
 
-- (BOOL)spacingOf:(id)a3 and:(id)a4 and:(id)a5 is:(double *)a6
+- (BOOL)spacingOf:(id)of and:(id)and and:(id)a5 is:(double *)is
 {
-  [a3 baseline];
+  [of baseline];
   v10 = v9;
-  [a4 baseline];
+  [and baseline];
   v12 = v10 - v11;
-  [a4 baseline];
+  [and baseline];
   v14 = v13;
   [a5 baseline];
   v16 = vabdd_f64(v12, v14 - v15);
   if (v16 < 2.0)
   {
-    *a6 = v12;
+    *is = v12;
   }
 
   return v16 < 2.0;
 }
 
-- (int)indexOfUniqueLineBelow:(id)a3 from:(int)a4
+- (int)indexOfUniqueLineBelow:(id)below from:(int)from
 {
-  LODWORD(v4) = a4;
+  LODWORD(v4) = from;
   v7 = [(NSMutableArray *)self->avail count];
   v8 = v7 - v4;
   if (v7 <= v4)
@@ -1265,8 +1265,8 @@ LABEL_21:
     while (1)
     {
       v9 = [(NSMutableArray *)self->avail objectAtIndex:v4];
-      v10 = [(CPParagraphMaker *)self line:v9 isDirectlyBelow:a3];
-      if (v10 || [(CPParagraphMaker *)self line:v9 isBelow:a3])
+      v10 = [(CPParagraphMaker *)self line:v9 isDirectlyBelow:below];
+      if (v10 || [(CPParagraphMaker *)self line:v9 isBelow:below])
       {
         break;
       }
@@ -1316,7 +1316,7 @@ LABEL_9:
             goto LABEL_25;
           }
 
-          if (![(CPParagraphMaker *)self line:v15 isDirectlyBelow:a3, v18 + v20])
+          if (![(CPParagraphMaker *)self line:v15 isDirectlyBelow:below, v18 + v20])
           {
             v10 = 0;
             goto LABEL_29;
@@ -1325,12 +1325,12 @@ LABEL_9:
 
         else
         {
-          if (![(CPParagraphMaker *)self line:v15 isDirectlyBelow:a3])
+          if (![(CPParagraphMaker *)self line:v15 isDirectlyBelow:below])
           {
             if (!v10)
             {
               v10 = 0;
-              if ([(CPParagraphMaker *)self line:v15 isBelow:a3])
+              if ([(CPParagraphMaker *)self line:v15 isBelow:below])
               {
                 LODWORD(v4) = -1;
               }
@@ -1365,11 +1365,11 @@ LABEL_29:
   return v4;
 }
 
-- (int)linesThatOverlapLineAt:(int)a3 between:(double)a4 and:(double)a5 from:(int)a6
+- (int)linesThatOverlapLineAt:(int)at between:(double)between and:(double)and from:(int)from
 {
-  LODWORD(i) = a6;
+  LODWORD(i) = from;
   v11 = [(NSMutableArray *)self->avail count];
-  v12 = [(NSMutableArray *)self->avail objectAtIndex:a3];
+  v12 = [(NSMutableArray *)self->avail objectAtIndex:at];
   [v12 bounds];
   v14 = v13;
   v16 = v15;
@@ -1396,7 +1396,7 @@ LABEL_29:
     v33 = v28 + v30;
     for (i = i; ; ++i)
     {
-      if (a3 != i)
+      if (at != i)
       {
         v34 = [(NSMutableArray *)self->avail objectAtIndex:i, v27];
         [v34 bounds];
@@ -1427,7 +1427,7 @@ LABEL_29:
             *&v43 = CGRectStandardize(*&v43);
           }
 
-          if (v43 > a4)
+          if (v43 > between)
           {
             [v34 bounds];
             if (v49 < 0.0 || v50 < 0.0)
@@ -1435,7 +1435,7 @@ LABEL_29:
               *&v47 = CGRectStandardize(*&v47);
             }
 
-            if (v47 < a5)
+            if (v47 < and)
             {
               goto LABEL_31;
             }
@@ -1448,7 +1448,7 @@ LABEL_29:
           }
 
           v27 = v51 + v53;
-          if (v27 > a4)
+          if (v27 > between)
           {
             [v34 bounds];
             if (v57 < 0.0 || v58 < 0.0)
@@ -1457,7 +1457,7 @@ LABEL_29:
             }
 
             v27 = v55 + v57;
-            if (v27 < a5)
+            if (v27 < and)
             {
 LABEL_31:
               [v34 bounds];
@@ -1485,21 +1485,21 @@ LABEL_31:
   return 0;
 }
 
-- (BOOL)line:(id)a3 isBelow:(id)a4
+- (BOOL)line:(id)line isBelow:(id)below
 {
-  v6 = [a3 leftSpacerIndex];
-  if (v6 != [a4 leftSpacerIndex])
+  leftSpacerIndex = [line leftSpacerIndex];
+  if (leftSpacerIndex != [below leftSpacerIndex])
   {
     return 0;
   }
 
-  v7 = [a3 rightSpacerIndex];
-  if (v7 != [a4 rightSpacerIndex])
+  rightSpacerIndex = [line rightSpacerIndex];
+  if (rightSpacerIndex != [below rightSpacerIndex])
   {
     return 0;
   }
 
-  [a3 bounds];
+  [line bounds];
   v12 = v8;
   v13 = v9;
   v14 = v10;
@@ -1510,13 +1510,13 @@ LABEL_31:
   }
 
   v16 = v9 + v11;
-  [a4 baseline];
+  [below baseline];
   if (v16 >= v17)
   {
     return 0;
   }
 
-  [a4 bounds];
+  [below bounds];
   v21 = v20;
   v23 = v22;
   v24 = v15 * 6.0;
@@ -1631,14 +1631,14 @@ LABEL_31:
   return v12 <= x + width;
 }
 
-- (BOOL)line:(id)a3 isDirectlyBelow:(id)a4
+- (BOOL)line:(id)line isDirectlyBelow:(id)below
 {
-  [a3 bounds];
+  [line bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [a4 bounds];
+  [below bounds];
   x = v13;
   rect = v15;
   width = v16;
@@ -1697,7 +1697,7 @@ LABEL_31:
   return v6 <= x + width;
 }
 
-- (BOOL)isGraphicBetween:(id)a3 and:(id)a4
+- (BOOL)isGraphicBetween:(id)between and:(id)and
 {
   if (!self->parent)
   {
@@ -1706,7 +1706,7 @@ LABEL_31:
 
   compoundedShapesOnPage = self->compoundedShapesOnPage;
   v7 = [(NSMutableArray *)compoundedShapesOnPage count];
-  [a3 bounds];
+  [between bounds];
   v12 = v9;
   if (v10 < 0.0 || v11 < 0.0)
   {
@@ -1714,7 +1714,7 @@ LABEL_31:
     v12 = v13;
   }
 
-  [a4 bounds];
+  [and bounds];
   v18 = v15;
   v19 = v17;
   if (v16 < 0.0 || v17 < 0.0)
@@ -1724,14 +1724,14 @@ LABEL_31:
     v19 = v21;
   }
 
-  [a3 bounds];
+  [between bounds];
   v26 = v22;
   if (v24 < 0.0 || v25 < 0.0)
   {
     *&v26 = CGRectStandardize(*&v22);
   }
 
-  [a3 bounds];
+  [between bounds];
   x = v27;
   width = v29;
   if (v29 < 0.0 || v30 < 0.0)
@@ -1741,7 +1741,7 @@ LABEL_31:
     width = v56.size.width;
   }
 
-  [a4 bounds];
+  [and bounds];
   v37 = v33;
   if (v35 < 0.0 || v36 < 0.0)
   {
@@ -1749,7 +1749,7 @@ LABEL_31:
   }
 
   v38 = x + width;
-  [a4 bounds];
+  [and bounds];
   if (v41 < 0.0 || v42 < 0.0)
   {
     *&v39 = CGRectStandardize(*&v39);
@@ -1817,28 +1817,28 @@ LABEL_31:
   return 1;
 }
 
-- (BOOL)firstWordOf:(id)a3 fits:(id)a4 indent:(double)a5
+- (BOOL)firstWordOf:(id)of fits:(id)fits indent:(double)indent
 {
-  v8 = [a3 wordCount];
-  if (v8)
+  wordCount = [of wordCount];
+  if (wordCount)
   {
-    [objc_msgSend(a4 "parent")];
+    [objc_msgSend(fits "parent")];
     if (v11 < 0.0 || v12 < 0.0)
     {
       *&v9 = CGRectStandardize(*&v9);
     }
 
-    v13 = v11 - a5;
-    [a4 bounds];
+    v13 = v11 - indent;
+    [fits bounds];
     if (v16 < 0.0 || v17 < 0.0)
     {
       *&v14 = CGRectStandardize(*&v14);
     }
 
     v18 = v13 - v16;
-    v19 = [a3 wordAtIndex:{0, v14, v15}];
-    v20 = *(*([objc_msgSend(a3 "charSequence")] + 160) + 64);
-    v21 = *(*([objc_msgSend(a3 "charSequence")] + 160) + 72);
+    v19 = [of wordAtIndex:{0, v14, v15}];
+    v20 = *(*([objc_msgSend(of "charSequence")] + 160) + 64);
+    v21 = *(*([objc_msgSend(of "charSequence")] + 160) + 72);
     [v20 spaceWidth];
     v23 = v21 * v22;
     v24 = *(v19 + 32);
@@ -1850,10 +1850,10 @@ LABEL_31:
       *(&v24 - 2) = CGRectStandardize(*(&v24 - 2));
     }
 
-    LOBYTE(v8) = v18 > v23 + v24;
+    LOBYTE(wordCount) = v18 > v23 + v24;
   }
 
-  return v8;
+  return wordCount;
 }
 
 - (void)dealloc

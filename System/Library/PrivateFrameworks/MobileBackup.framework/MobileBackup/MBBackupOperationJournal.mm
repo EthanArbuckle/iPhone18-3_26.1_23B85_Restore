@@ -1,23 +1,23 @@
 @interface MBBackupOperationJournal
-+ (id)backupOperationJournalWithBatchSize:(unint64_t)a3;
-- (MBBackupOperationJournal)initWithBatchSize:(unint64_t)a3;
-- (id)operationEnumeratorWithDomainManager:(id)a3;
++ (id)backupOperationJournalWithBatchSize:(unint64_t)size;
+- (MBBackupOperationJournal)initWithBatchSize:(unint64_t)size;
+- (id)operationEnumeratorWithDomainManager:(id)manager;
 - (unint64_t)size;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 - (void)close;
 - (void)commit;
 @end
 
 @implementation MBBackupOperationJournal
 
-+ (id)backupOperationJournalWithBatchSize:(unint64_t)a3
++ (id)backupOperationJournalWithBatchSize:(unint64_t)size
 {
-  v3 = [[MBBackupOperationJournal alloc] initWithBatchSize:a3];
+  v3 = [[MBBackupOperationJournal alloc] initWithBatchSize:size];
 
   return v3;
 }
 
-- (MBBackupOperationJournal)initWithBatchSize:(unint64_t)a3
+- (MBBackupOperationJournal)initWithBatchSize:(unint64_t)size
 {
   v5 = MBTemporaryPath();
   v6 = [MBEncoder encoderToFile:v5 error:0];
@@ -38,7 +38,7 @@
     objc_storeStrong(&v8->_path, v5);
     objc_storeStrong(&v9->_encoder, v7);
     v10 = 0;
-    v9->_batchSize = a3;
+    v9->_batchSize = size;
     driveOperationsByType = v9->_driveOperationsByType;
     do
     {
@@ -59,35 +59,35 @@
 {
   v3 = +[NSFileManager defaultManager];
   v4 = [v3 attributesOfItemAtPath:self->_path error:0];
-  v5 = [v4 fileSize];
+  fileSize = [v4 fileSize];
+
+  return fileSize;
+}
+
+- (id)operationEnumeratorWithDomainManager:(id)manager
+{
+  managerCopy = manager;
+  v5 = [[MBBackupOperationJournalEnumerator alloc] initWithFile:self->_path domainManager:managerCopy];
 
   return v5;
 }
 
-- (id)operationEnumeratorWithDomainManager:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [[MBBackupOperationJournalEnumerator alloc] initWithFile:self->_path domainManager:v4];
-
-  return v5;
-}
-
-- (void)addOperation:(id)a3
-{
-  v8 = a3;
-  v4 = [v8 type];
-  [v8 encode:self->_encoder];
-  v5 = v4;
-  v6 = &self->super.isa + v4;
+  operationCopy = operation;
+  type = [operationCopy type];
+  [operationCopy encode:self->_encoder];
+  v5 = type;
+  v6 = &self->super.isa + type;
   v6[3] = (v6[3] + 1);
-  v6[8] = ([v8 size] + v6[8]);
-  if (([v8 flags] & 3) == 0)
+  v6[8] = ([operationCopy size] + v6[8]);
+  if (([operationCopy flags] & 3) == 0)
   {
-    self->_sizeExcludingHardlinksAndClonesForType[v5] += [v8 size];
+    self->_sizeExcludingHardlinksAndClonesForType[v5] += [operationCopy size];
   }
 
   ++self->_batchCountByType[v5];
-  self->_batchSizeByType[v5] += [v8 size];
+  self->_batchSizeByType[v5] += [operationCopy size];
   if (self->_batchCountByType[v5] == self->_batchSize)
   {
     v7 = [MBBackupOperationJournal driveOperationWithBackupOperationType:"driveOperationWithBackupOperationType:count:size:" count:v5 size:?];

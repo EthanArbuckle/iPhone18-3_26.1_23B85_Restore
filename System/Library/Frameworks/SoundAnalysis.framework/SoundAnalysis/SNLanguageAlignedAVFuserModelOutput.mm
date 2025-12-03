@@ -1,32 +1,32 @@
 @interface SNLanguageAlignedAVFuserModelOutput
-- (SNLanguageAlignedAVFuserModelOutput)initWithFused_embedding:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (SNLanguageAlignedAVFuserModelOutput)initWithFused_embedding:(id)fused_embedding;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SNLanguageAlignedAVFuserModelOutput
 
-- (SNLanguageAlignedAVFuserModelOutput)initWithFused_embedding:(id)a3
+- (SNLanguageAlignedAVFuserModelOutput)initWithFused_embedding:(id)fused_embedding
 {
-  v5 = a3;
+  fused_embeddingCopy = fused_embedding;
   v9.receiver = self;
   v9.super_class = SNLanguageAlignedAVFuserModelOutput;
   v6 = [(SNLanguageAlignedAVFuserModelOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fused_embedding, a3);
+    objc_storeStrong(&v6->_fused_embedding, fused_embedding);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"fused_embedding"])
+  if ([name isEqualToString:@"fused_embedding"])
   {
     v4 = MEMORY[0x1E695FE60];
-    v5 = [(SNLanguageAlignedAVFuserModelOutput *)self fused_embedding];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    fused_embedding = [(SNLanguageAlignedAVFuserModelOutput *)self fused_embedding];
+    v6 = [v4 featureValueWithMultiArray:fused_embedding];
   }
 
   else

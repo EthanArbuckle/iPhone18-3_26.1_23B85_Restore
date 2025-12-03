@@ -1,16 +1,16 @@
 @interface DOCCollaborationHighlightManager
-- (void)highlightCenterHighlightsDidChange:(id)a3;
+- (void)highlightCenterHighlightsDidChange:(id)change;
 @end
 
 @implementation DOCCollaborationHighlightManager
 
-- (void)highlightCenterHighlightsDidChange:(id)a3
+- (void)highlightCenterHighlightsDidChange:(id)change
 {
   ObjectType = swift_getObjectType();
   v5 = swift_allocObject();
   *(v5 + 16) = self;
   *(v5 + 24) = ObjectType;
-  v6 = self;
+  selfCopy = self;
   DOCRunInMainThread(_:)();
 }
 

@@ -1,14 +1,14 @@
 @interface CWFXPCEvent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToXPCEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToXPCEvent:(id)event;
 - (CWFEventID)eventID;
 - (CWFXPCEvent)init;
-- (CWFXPCEvent)initWithCoder:(id)a3;
+- (CWFXPCEvent)initWithCoder:(id)coder;
 - (id)__descriptionForEventType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFXPCEvent
@@ -20,9 +20,9 @@
   v2 = [(CWFXPCEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
   }
 
   return v2;
@@ -32,23 +32,23 @@
 {
   if (([(CWFXPCEvent *)self type]- 43) > 3)
   {
-    v7 = [(CWFXPCEvent *)self type];
-    v6 = [(CWFXPCEvent *)self interfaceName];
-    v3 = [CWFEventID eventIDWithType:v7 interfaceName:v6];
+    type = [(CWFXPCEvent *)self type];
+    interfaceName = [(CWFXPCEvent *)self interfaceName];
+    v3 = [CWFEventID eventIDWithType:type interfaceName:interfaceName];
   }
 
   else
   {
     v3 = objc_alloc_init(CWFWiFiNetworkSharingEventID);
     [(CWFEventID *)v3 setType:[(CWFXPCEvent *)self type]];
-    v4 = [(CWFXPCEvent *)self interfaceName];
-    [(CWFEventID *)v3 setInterfaceName:v4];
+    interfaceName2 = [(CWFXPCEvent *)self interfaceName];
+    [(CWFEventID *)v3 setInterfaceName:interfaceName2];
 
-    v5 = [(CWFXPCEvent *)self wifiNetworkSharingClientID];
-    [(CWFWiFiNetworkSharingEventID *)v3 setClientID:v5];
+    wifiNetworkSharingClientID = [(CWFXPCEvent *)self wifiNetworkSharingClientID];
+    [(CWFWiFiNetworkSharingEventID *)v3 setClientID:wifiNetworkSharingClientID];
 
-    v6 = [(CWFXPCEvent *)self wifiNetworkSharingNetworkListUpdateEventPredicateData];
-    [(CWFWiFiNetworkSharingEventID *)v3 setNetworkListUpdateEventPredicateData:v6];
+    interfaceName = [(CWFXPCEvent *)self wifiNetworkSharingNetworkListUpdateEventPredicateData];
+    [(CWFWiFiNetworkSharingEventID *)v3 setNetworkListUpdateEventPredicateData:interfaceName];
   }
 
   return v3;
@@ -74,24 +74,24 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CWFXPCEvent *)self __descriptionForEventType];
+  __descriptionForEventType = [(CWFXPCEvent *)self __descriptionForEventType];
   interfaceName = self->_interfaceName;
-  v6 = [(NSUUID *)self->_UUID UUIDString];
-  v7 = [v6 substringToIndex:5];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v7 = [uUIDString substringToIndex:5];
   v8 = sub_1E0BCC248(self->_timestamp);
-  v9 = [v3 stringWithFormat:@"type=%@, intf=%@, uuid=%@, timestamp=%@, ackTimeout=%lluns, wifiNetworkSharingClientID=%@, hasWiFiNetworkSharingPredicate=%d, info=%@", v4, interfaceName, v7, v8, self->_acknowledgementTimeout, self->_wifiNetworkSharingClientID, self->_wifiNetworkSharingNetworkListUpdateEventPredicateData != 0, self->_info];
+  v9 = [v3 stringWithFormat:@"type=%@, intf=%@, uuid=%@, timestamp=%@, ackTimeout=%lluns, wifiNetworkSharingClientID=%@, hasWiFiNetworkSharingPredicate=%d, info=%@", __descriptionForEventType, interfaceName, v7, v8, self->_acknowledgementTimeout, self->_wifiNetworkSharingClientID, self->_wifiNetworkSharingNetworkListUpdateEventPredicateData != 0, self->_info];
 
   return v9;
 }
 
-- (BOOL)isEqualToXPCEvent:(id)a3
+- (BOOL)isEqualToXPCEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
+  eventCopy = event;
+  v6 = eventCopy;
   if (self->_UUID)
   {
-    v7 = [v5 UUID];
-    if (!v7)
+    uUID = [eventCopy UUID];
+    if (!uUID)
     {
       v15 = 0;
 LABEL_42:
@@ -100,8 +100,8 @@ LABEL_42:
     }
 
     UUID = self->_UUID;
-    v9 = [v6 UUID];
-    if (![(NSUUID *)UUID isEqual:v9])
+    uUID2 = [v6 UUID];
+    if (![(NSUUID *)UUID isEqual:uUID2])
     {
       v15 = 0;
 LABEL_41:
@@ -110,8 +110,8 @@ LABEL_41:
     }
 
     interfaceName = self->_interfaceName;
-    v11 = [v6 interfaceName];
-    if (interfaceName != v11)
+    interfaceName = [v6 interfaceName];
+    if (interfaceName != interfaceName)
     {
       if (!self->_interfaceName || ([v6 interfaceName], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
       {
@@ -121,8 +121,8 @@ LABEL_41:
 
       v13 = v12;
       v14 = self->_interfaceName;
-      v3 = [v6 interfaceName];
-      if (![(NSString *)v14 isEqual:v3])
+      interfaceName2 = [v6 interfaceName];
+      if (![(NSString *)v14 isEqual:interfaceName2])
       {
         v15 = 0;
 LABEL_39:
@@ -134,15 +134,15 @@ LABEL_39:
     }
 
     wifiNetworkSharingClientID = self->_wifiNetworkSharingClientID;
-    v17 = [v6 wifiNetworkSharingClientID];
-    v18 = v17;
-    if (wifiNetworkSharingClientID == v17)
+    wifiNetworkSharingClientID = [v6 wifiNetworkSharingClientID];
+    v18 = wifiNetworkSharingClientID;
+    if (wifiNetworkSharingClientID == wifiNetworkSharingClientID)
     {
-      v22 = v11;
+      v22 = interfaceName;
       v23 = interfaceName;
-      v24 = v17;
+      v24 = wifiNetworkSharingClientID;
       v25 = wifiNetworkSharingClientID;
-      v26 = v3;
+      v26 = interfaceName2;
     }
 
     else
@@ -155,25 +155,25 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v19 = [v6 wifiNetworkSharingClientID];
-      if (!v19)
+      wifiNetworkSharingClientID2 = [v6 wifiNetworkSharingClientID];
+      if (!wifiNetworkSharingClientID2)
       {
         v15 = 0;
         goto LABEL_51;
       }
 
-      v44 = v3;
-      v42 = v19;
+      v44 = interfaceName2;
+      v42 = wifiNetworkSharingClientID2;
       v20 = self->_wifiNetworkSharingClientID;
-      v21 = [v6 wifiNetworkSharingClientID];
-      if (![(CWFWiFiNetworkSharingClientID *)v20 isEqual:v21])
+      wifiNetworkSharingClientID3 = [v6 wifiNetworkSharingClientID];
+      if (![(CWFWiFiNetworkSharingClientID *)v20 isEqual:wifiNetworkSharingClientID3])
       {
         v15 = 0;
         v13 = v46;
 LABEL_46:
 
-        v3 = v44;
-        if (interfaceName == v11)
+        interfaceName2 = v44;
+        if (interfaceName == interfaceName)
         {
           goto LABEL_40;
         }
@@ -181,35 +181,35 @@ LABEL_46:
         goto LABEL_39;
       }
 
-      v22 = v11;
+      v22 = interfaceName;
       v23 = interfaceName;
       v24 = v18;
       v25 = wifiNetworkSharingClientID;
       v26 = v44;
-      v41 = v21;
+      v41 = wifiNetworkSharingClientID3;
     }
 
     wifiNetworkSharingNetworkListUpdateEventPredicateData = self->_wifiNetworkSharingNetworkListUpdateEventPredicateData;
-    v28 = [v6 wifiNetworkSharingNetworkListUpdateEventPredicateData];
+    wifiNetworkSharingNetworkListUpdateEventPredicateData = [v6 wifiNetworkSharingNetworkListUpdateEventPredicateData];
     v43 = wifiNetworkSharingNetworkListUpdateEventPredicateData;
-    if (wifiNetworkSharingNetworkListUpdateEventPredicateData == v28)
+    if (wifiNetworkSharingNetworkListUpdateEventPredicateData == wifiNetworkSharingNetworkListUpdateEventPredicateData)
     {
       v44 = v26;
       v29 = v25;
       v18 = v24;
       interfaceName = v23;
-      v11 = v22;
-      v30 = v28;
+      interfaceName = v22;
+      v30 = wifiNetworkSharingNetworkListUpdateEventPredicateData;
     }
 
     else
     {
-      v3 = v26;
+      interfaceName2 = v26;
       v29 = v25;
       v18 = v24;
       interfaceName = v23;
-      v11 = v22;
-      v30 = v28;
+      interfaceName = v22;
+      v30 = wifiNetworkSharingNetworkListUpdateEventPredicateData;
       if (!self->_wifiNetworkSharingNetworkListUpdateEventPredicateData || ([v6 wifiNetworkSharingNetworkListUpdateEventPredicateData], (v31 = objc_claimAutoreleasedReturnValue()) == 0))
       {
 LABEL_35:
@@ -223,7 +223,7 @@ LABEL_35:
 
       v40 = v31;
       v45 = self->_wifiNetworkSharingNetworkListUpdateEventPredicateData;
-      v39 = [v6 wifiNetworkSharingNetworkListUpdateEventPredicateData];
+      wifiNetworkSharingNetworkListUpdateEventPredicateData2 = [v6 wifiNetworkSharingNetworkListUpdateEventPredicateData];
       if (![(NSData *)v45 isEqual:?])
       {
         v15 = 0;
@@ -235,7 +235,7 @@ LABEL_53:
 
 LABEL_38:
           v13 = v46;
-          if (interfaceName != v11)
+          if (interfaceName != interfaceName)
           {
             goto LABEL_39;
           }
@@ -248,7 +248,7 @@ LABEL_40:
 LABEL_51:
         v13 = v46;
 
-        if (interfaceName == v11)
+        if (interfaceName == interfaceName)
         {
           goto LABEL_40;
         }
@@ -256,7 +256,7 @@ LABEL_51:
         goto LABEL_39;
       }
 
-      v44 = v3;
+      v44 = interfaceName2;
     }
 
     type = self->_type;
@@ -267,22 +267,22 @@ LABEL_51:
       {
         if (self->_timestamp)
         {
-          v34 = [v6 timestamp];
-          if (v34)
+          timestamp = [v6 timestamp];
+          if (timestamp)
           {
-            v35 = v34;
+            v35 = timestamp;
             timestamp = self->_timestamp;
-            v38 = [v6 timestamp];
-            v15 = [(NSDate *)timestamp isEqual:v38];
+            timestamp2 = [v6 timestamp];
+            v15 = [(NSDate *)timestamp isEqual:timestamp2];
 
-            v3 = v44;
+            interfaceName2 = v44;
             if (v43 == v30)
             {
 
               if (v29 != v18)
               {
                 v13 = v46;
-                v21 = v41;
+                wifiNetworkSharingClientID3 = v41;
                 goto LABEL_46;
               }
 
@@ -295,7 +295,7 @@ LABEL_51:
       }
     }
 
-    v3 = v44;
+    interfaceName2 = v44;
     if (v43 != v30)
     {
     }
@@ -309,18 +309,18 @@ LABEL_43:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFXPCEvent *)self isEqualToXPCEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFXPCEvent *)self isEqualToXPCEvent:v5];
   }
 
   return v6;
@@ -335,7 +335,7 @@ LABEL_43:
   return v5 ^ v6 ^ [(NSData *)self->_wifiNetworkSharingNetworkListUpdateEventPredicateData hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFXPCEvent allocWithZone:?]];
   [(CWFXPCEvent *)v4 setUUID:self->_UUID];
@@ -350,56 +350,56 @@ LABEL_43:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v6 encodeObject:v4->_UUID forKey:@"_UUID"];
-  [v6 encodeObject:v4->_timestamp forKey:@"_timestamp"];
-  [v6 encodeInteger:v4->_type forKey:@"_type"];
-  [v6 encodeInteger:v4->_internalType forKey:@"_internalType"];
-  [v6 encodeObject:v4->_wifiNetworkSharingClientID forKey:@"_wifiNetworkSharingClientID"];
-  [v6 encodeObject:v4->_wifiNetworkSharingNetworkListUpdateEventPredicateData forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
-  [v6 encodeObject:v4->_interfaceName forKey:@"_interfaceName"];
-  [v6 encodeObject:v4->_info forKey:@"_info"];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v4->_acknowledgementTimeout];
-  [v6 encodeObject:v5 forKey:@"_acknowledgementTimeout"];
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_UUID forKey:@"_UUID"];
+  [coderCopy encodeObject:selfCopy->_timestamp forKey:@"_timestamp"];
+  [coderCopy encodeInteger:selfCopy->_type forKey:@"_type"];
+  [coderCopy encodeInteger:selfCopy->_internalType forKey:@"_internalType"];
+  [coderCopy encodeObject:selfCopy->_wifiNetworkSharingClientID forKey:@"_wifiNetworkSharingClientID"];
+  [coderCopy encodeObject:selfCopy->_wifiNetworkSharingNetworkListUpdateEventPredicateData forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
+  [coderCopy encodeObject:selfCopy->_interfaceName forKey:@"_interfaceName"];
+  [coderCopy encodeObject:selfCopy->_info forKey:@"_info"];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:selfCopy->_acknowledgementTimeout];
+  [coderCopy encodeObject:v5 forKey:@"_acknowledgementTimeout"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (CWFXPCEvent)initWithCoder:(id)a3
+- (CWFXPCEvent)initWithCoder:(id)coder
 {
   v24[17] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CWFXPCEvent;
   v5 = [(CWFXPCEvent *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingClientID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingClientID"];
     wifiNetworkSharingClientID = v5->_wifiNetworkSharingClientID;
     v5->_wifiNetworkSharingClientID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
     wifiNetworkSharingNetworkListUpdateEventPredicateData = v5->_wifiNetworkSharingNetworkListUpdateEventPredicateData;
     v5->_wifiNetworkSharingNetworkListUpdateEventPredicateData = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
     interfaceName = v5->_interfaceName;
     v5->_interfaceName = v14;
 
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v5->_internalType = [v4 decodeIntegerForKey:@"_internalType"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v5->_internalType = [coderCopy decodeIntegerForKey:@"_internalType"];
     v24[0] = objc_opt_class();
     v24[1] = objc_opt_class();
     v24[2] = objc_opt_class();
@@ -419,11 +419,11 @@ LABEL_43:
     v24[16] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:17];
     v17 = [MEMORY[0x1E695DFD8] setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_info"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_info"];
     info = v5->_info;
     v5->_info = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_acknowledgementTimeout"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_acknowledgementTimeout"];
     v5->_acknowledgementTimeout = [v20 unsignedLongLongValue];
   }
 

@@ -1,57 +1,57 @@
 @interface CKMediaObjectDeleteAssetActionPerformer
-+ (BOOL)canPerformWithActionManager:(id)a3;
-+ (id)createPreviewActionWithActionManager:(id)a3 handler:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-- (void)_performRetractScheduledChatItem:(id)a3 completion:(id)a4;
-- (void)_performRetractScheduledChatItems:(id)a3 fromAggregateChatItem:(id)a4 completion:(id)a5;
-- (void)_presentDeleteConfirmationDialogForTypedCount:(id)a3 completionHandler:(id)a4;
++ (BOOL)canPerformWithActionManager:(id)manager;
++ (id)createPreviewActionWithActionManager:(id)manager handler:(id)handler;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
+- (void)_performRetractScheduledChatItem:(id)item completion:(id)completion;
+- (void)_performRetractScheduledChatItems:(id)items fromAggregateChatItem:(id)item completion:(id)completion;
+- (void)_presentDeleteConfirmationDialogForTypedCount:(id)count completionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation CKMediaObjectDeleteAssetActionPerformer
 
-+ (BOOL)canPerformWithActionManager:(id)a3
++ (BOOL)canPerformWithActionManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 chatItem];
+  managerCopy = manager;
+  chatItem = [managerCopy chatItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 selectionManager];
-    v7 = [v6 selectionSnapshot];
-    v8 = [v7 isAnyItemSelected];
+    selectionManager = [managerCopy selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
+    isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
   }
 
   else
   {
-    v8 = 1;
+    isAnyItemSelected = 1;
   }
 
-  return v8;
+  return isAnyItemSelected;
 }
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   v73 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMediaObjectAssetActionPerformer *)self chatItem];
-  v4 = [v3 message];
-  v5 = [v4 fileTransferGUIDs];
-  v6 = [v5 count];
+  chatItem = [(CKMediaObjectAssetActionPerformer *)self chatItem];
+  message = [chatItem message];
+  fileTransferGUIDs = [message fileTransferGUIDs];
+  v6 = [fileTransferGUIDs count];
 
-  v7 = [(CKMediaObjectAssetActionPerformer *)v2 chatItem];
+  chatItem2 = [(CKMediaObjectAssetActionPerformer *)selfCopy chatItem];
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(message) = objc_opt_isKindOfClass();
 
-  if (v4)
+  if (message)
   {
-    v8 = [(PXAssetActionPerformer *)v2 selectionSnapshot];
-    if ([v8 isAnyItemSelected])
+    selectionSnapshot = [(PXAssetActionPerformer *)selfCopy selectionSnapshot];
+    if ([selectionSnapshot isAnyItemSelected])
     {
-      v9 = [(CKMediaObjectAssetActionPerformer *)v2 chatItem];
-      CanBeCancelled = _ChatItemCanBeCancelled(v9);
+      chatItem3 = [(CKMediaObjectAssetActionPerformer *)selfCopy chatItem];
+      CanBeCancelled = _ChatItemCanBeCancelled(chatItem3);
 
       if (CanBeCancelled)
       {
@@ -62,14 +62,14 @@
           _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Performing retraction for selected scheduled chat items.", buf, 2u);
         }
 
-        v12 = v8;
+        chatItem7 = selectionSnapshot;
         v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
         v71 = 0u;
-        v14 = [v12 allItemsEnumerator];
-        v15 = [v14 countByEnumeratingWithState:&v68 objects:buf count:16];
+        allItemsEnumerator = [chatItem7 allItemsEnumerator];
+        v15 = [allItemsEnumerator countByEnumeratingWithState:&v68 objects:buf count:16];
         if (v15)
         {
           v16 = v15;
@@ -80,49 +80,49 @@
             {
               if (*v69 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(allItemsEnumerator);
               }
 
-              v19 = [*(*(&v68 + 1) + 8 * i) chatItem];
-              if (v19)
+              chatItem4 = [*(*(&v68 + 1) + 8 * i) chatItem];
+              if (chatItem4)
               {
-                [v13 addObject:v19];
+                [v13 addObject:chatItem4];
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v68 objects:buf count:16];
+            v16 = [allItemsEnumerator countByEnumeratingWithState:&v68 objects:buf count:16];
           }
 
           while (v16);
         }
 
-        v20 = [(CKMediaObjectAssetActionPerformer *)v2 chatItem];
+        chatItem5 = [(CKMediaObjectAssetActionPerformer *)selfCopy chatItem];
         v67[0] = MEMORY[0x1E69E9820];
         v67[1] = 3221225472;
         v67[2] = __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTask__block_invoke;
         v67[3] = &unk_1E72EBA18;
-        v67[4] = v2;
-        [(CKMediaObjectDeleteAssetActionPerformer *)v2 _performRetractScheduledChatItems:v13 fromAggregateChatItem:v20 completion:v67];
+        v67[4] = selfCopy;
+        [(CKMediaObjectDeleteAssetActionPerformer *)selfCopy _performRetractScheduledChatItems:v13 fromAggregateChatItem:chatItem5 completion:v67];
 
         goto LABEL_65;
       }
 
       v58 = v6;
-      v12 = v8;
+      chatItem7 = selectionSnapshot;
       v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v27 = [v12 allItemsEnumerator];
-      v28 = [v27 countByEnumeratingWithState:&v68 objects:buf count:16];
+      allItemsEnumerator2 = [chatItem7 allItemsEnumerator];
+      v28 = [allItemsEnumerator2 countByEnumeratingWithState:&v68 objects:buf count:16];
       if (v28)
       {
         v29 = v28;
-        obj = v27;
+        obj = allItemsEnumerator2;
         v30 = v26;
-        v56 = v12;
-        v57 = v2;
+        v56 = chatItem7;
+        v57 = selfCopy;
         v31 = 0;
         v32 = 0;
         v33 = 0;
@@ -137,16 +137,16 @@
             }
 
             v36 = *(*(&v68 + 1) + 8 * j);
-            v37 = [v36 mediaObject];
-            v38 = v37;
-            if (v37)
+            mediaObject = [v36 mediaObject];
+            v38 = mediaObject;
+            if (mediaObject)
             {
-              v39 = [v37 transferGUID];
-              [v30 addObject:v39];
+              transferGUID = [mediaObject transferGUID];
+              [v30 addObject:transferGUID];
             }
 
-            v40 = [v36 mediaType];
-            if (v40 == 1)
+            mediaType = [v36 mediaType];
+            if (mediaType == 1)
             {
               v41 = v31;
             }
@@ -156,7 +156,7 @@
               v41 = v31 + 1;
             }
 
-            if (v40 == 1)
+            if (mediaType == 1)
             {
               v42 = v33 + 1;
             }
@@ -166,7 +166,7 @@
               v42 = v33;
             }
 
-            if (v40 == 2)
+            if (mediaType == 2)
             {
               ++v32;
             }
@@ -176,7 +176,7 @@
               v31 = v41;
             }
 
-            if (v40 != 2)
+            if (mediaType != 2)
             {
               v33 = v42;
             }
@@ -189,8 +189,8 @@
 
         if (v33)
         {
-          v12 = v56;
-          v2 = v57;
+          chatItem7 = v56;
+          selfCopy = v57;
           v26 = v30;
           if (!(v32 | v31))
           {
@@ -204,11 +204,11 @@ LABEL_63:
               v64[2] = __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTask__block_invoke_2;
               v64[3] = &unk_1E72EEA08;
               v55 = v32 + v33;
-              v64[4] = v2;
+              v64[4] = selfCopy;
               v65 = v26;
               v66 = v58;
               v13 = v26;
-              [(CKMediaObjectDeleteAssetActionPerformer *)v2 _presentDeleteConfirmationDialogForTypedCount:v55 + v31 completionHandler:v43, v64];
+              [(CKMediaObjectDeleteAssetActionPerformer *)selfCopy _presentDeleteConfirmationDialogForTypedCount:v55 + v31 completionHandler:v43, v64];
 
 LABEL_65:
               goto LABEL_69;
@@ -222,8 +222,8 @@ LABEL_65:
 
         else
         {
-          v12 = v56;
-          v2 = v57;
+          chatItem7 = v56;
+          selfCopy = v57;
           v26 = v30;
         }
       }
@@ -259,26 +259,26 @@ LABEL_65:
       goto LABEL_63;
     }
 
-    v12 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"CKMediaObjectDeleteAssetActionPerformer: No items selected for delete action"];
+    chatItem7 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"CKMediaObjectDeleteAssetActionPerformer: No items selected for delete action"];
 
 LABEL_68:
-    [(PXActionPerformer *)v2 completeUserInteractionTaskWithSuccess:0 error:v12];
+    [(PXActionPerformer *)selfCopy completeUserInteractionTaskWithSuccess:0 error:chatItem7];
     goto LABEL_69;
   }
 
-  v21 = [(CKMediaObjectAssetActionPerformer *)v2 chatItem];
+  chatItem6 = [(CKMediaObjectAssetActionPerformer *)selfCopy chatItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = 0;
+    chatItem7 = 0;
     goto LABEL_68;
   }
 
-  v12 = [(CKMediaObjectAssetActionPerformer *)v2 chatItem];
-  v23 = [(CKMediaObjectAssetActionPerformer *)v2 chatItem];
-  v24 = _ChatItemCanBeCancelled(v23);
+  chatItem7 = [(CKMediaObjectAssetActionPerformer *)selfCopy chatItem];
+  chatItem8 = [(CKMediaObjectAssetActionPerformer *)selfCopy chatItem];
+  v24 = _ChatItemCanBeCancelled(chatItem8);
 
   if (v24)
   {
@@ -293,55 +293,55 @@ LABEL_68:
     v63[1] = 3221225472;
     v63[2] = __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTask__block_invoke_231;
     v63[3] = &unk_1E72EBA18;
-    v63[4] = v2;
-    [(CKMediaObjectDeleteAssetActionPerformer *)v2 _performRetractScheduledChatItem:v12 completion:v63];
+    v63[4] = selfCopy;
+    [(CKMediaObjectDeleteAssetActionPerformer *)selfCopy _performRetractScheduledChatItem:chatItem7 completion:v63];
   }
 
   else
   {
-    v44 = [v12 mediaObject];
+    mediaObject2 = [chatItem7 mediaObject];
 
-    if (!v44)
+    if (!mediaObject2)
     {
       v49 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"CKMediaObjectDeleteAssetActionPerformer: attachment part item doesn't have a media object"];
 LABEL_67:
 
-      v12 = v49;
+      chatItem7 = v49;
       goto LABEL_68;
     }
 
-    v45 = [v12 mediaObject];
-    v46 = [v45 mediaType];
-    v47 = [v45 transferGUID];
+    mediaObject3 = [chatItem7 mediaObject];
+    mediaType2 = [mediaObject3 mediaType];
+    transferGUID2 = [mediaObject3 transferGUID];
 
-    if (v47)
+    if (transferGUID2)
     {
-      if (v46 == 3)
+      if (mediaType2 == 3)
       {
         v48 = 1;
       }
 
       else
       {
-        v48 = 2 * (v46 == 2);
+        v48 = 2 * (mediaType2 == 2);
       }
 
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTask__block_invoke_2_232;
       v60[3] = &unk_1E72EEA08;
-      v60[4] = v2;
-      v61 = v45;
+      v60[4] = selfCopy;
+      v61 = mediaObject3;
       v62 = v6;
-      [(CKMediaObjectDeleteAssetActionPerformer *)v2 _presentDeleteConfirmationDialogForTypedCount:1 completionHandler:v48, v60];
+      [(CKMediaObjectDeleteAssetActionPerformer *)selfCopy _presentDeleteConfirmationDialogForTypedCount:1 completionHandler:v48, v60];
     }
 
     else
     {
       v50 = MEMORY[0x1E696ABC0];
-      v51 = [v12 IMChatItem];
-      v52 = [v51 guid];
-      v53 = [v50 px_genericErrorWithDebugDescription:{@"CKMediaObjectDeleteAssetActionPerformer: mediaObject has no transferGUID. attachmentChatItem.IMChatItem.guid: %@", v52}];
+      iMChatItem = [chatItem7 IMChatItem];
+      guid = [iMChatItem guid];
+      v53 = [v50 px_genericErrorWithDebugDescription:{@"CKMediaObjectDeleteAssetActionPerformer: mediaObject has no transferGUID. attachmentChatItem.IMChatItem.guid: %@", guid}];
     }
   }
 
@@ -376,11 +376,11 @@ uint64_t __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTas
   return [*(a1 + 32) completeUserInteractionTaskWithSuccess:1 error:0];
 }
 
-- (void)_presentDeleteConfirmationDialogForTypedCount:(id)a3 completionHandler:(id)a4
+- (void)_presentDeleteConfirmationDialogForTypedCount:(id)count completionHandler:(id)handler
 {
-  var0 = a3.var0;
-  v6 = a4;
-  if (v6)
+  var0 = count.var0;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (var0)
     {
@@ -389,12 +389,12 @@ uint64_t __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTas
       v9 = CKFrameworkBundle();
       v31 = v7;
       v10 = [v9 localizedStringForKey:v7 value:&stru_1F04268F8 table:@"ChatKit"];
-      v11 = [v8 localizedStringWithFormat:v10, var0];
+      var0 = [v8 localizedStringWithFormat:v10, var0];
 
-      v12 = [MEMORY[0x1E69DC668] sharedApplication];
-      v13 = [v12 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v13 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v14 = @"\u200F";
       }
@@ -404,7 +404,7 @@ uint64_t __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTas
         v14 = @"\u200E";
       }
 
-      v15 = [(__CFString *)v14 stringByAppendingString:v11];
+      v15 = [(__CFString *)v14 stringByAppendingString:var0];
 
       v16 = CKFrameworkBundle();
       v17 = [v16 localizedStringForKey:@"CANCEL" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -430,7 +430,7 @@ uint64_t __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTas
       v34[1] = 3221225472;
       v34[2] = __107__CKMediaObjectDeleteAssetActionPerformer__presentDeleteConfirmationDialogForTypedCount_completionHandler___block_invoke;
       v34[3] = &unk_1E72EC218;
-      v26 = v6;
+      v26 = handlerCopy;
       v35 = v26;
       v27 = [CKAlertAction actionWithTitle:v15 style:2 handler:v34];
       [v25 addAction:v27];
@@ -464,7 +464,7 @@ uint64_t __69__CKMediaObjectDeleteAssetActionPerformer_performUserInteractionTas
         [CKMediaObjectDeleteAssetActionPerformer _presentDeleteConfirmationDialogForTypedCount:v19 completionHandler:?];
       }
 
-      (*(v6 + 2))(v6, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -502,31 +502,31 @@ uint64_t __107__CKMediaObjectDeleteAssetActionPerformer__presentDeleteConfirmati
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_performRetractScheduledChatItem:(id)a3 completion:(id)a4
+- (void)_performRetractScheduledChatItem:(id)item completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(CKMediaObjectAssetActionPerformer *)self chatActionHelper];
-  [v7 retractScheduledChatItem:v6];
+  completionCopy = completion;
+  itemCopy = item;
+  chatActionHelper = [(CKMediaObjectAssetActionPerformer *)self chatActionHelper];
+  [chatActionHelper retractScheduledChatItem:itemCopy];
 
-  v8[2]();
+  completionCopy[2]();
 }
 
-- (void)_performRetractScheduledChatItems:(id)a3 fromAggregateChatItem:(id)a4 completion:(id)a5
+- (void)_performRetractScheduledChatItems:(id)items fromAggregateChatItem:(id)item completion:(id)completion
 {
-  v11 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKMediaObjectAssetActionPerformer *)self chatActionHelper];
-  [v10 retractScheduledChatItems:v9 fromAggregateChatItem:v8];
+  completionCopy = completion;
+  itemCopy = item;
+  itemsCopy = items;
+  chatActionHelper = [(CKMediaObjectAssetActionPerformer *)self chatActionHelper];
+  [chatActionHelper retractScheduledChatItems:itemsCopy fromAggregateChatItem:itemCopy];
 
-  v11[2]();
+  completionCopy[2]();
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = [a4 chatItem];
-  CanBeCancelled = _ChatItemCanBeCancelled(v4);
+  chatItem = [manager chatItem];
+  CanBeCancelled = _ChatItemCanBeCancelled(chatItem);
 
   v6 = CKFrameworkBundle();
   v7 = v6;
@@ -545,11 +545,11 @@ uint64_t __107__CKMediaObjectDeleteAssetActionPerformer__presentDeleteConfirmati
   return v9;
 }
 
-+ (id)createPreviewActionWithActionManager:(id)a3 handler:(id)a4
++ (id)createPreviewActionWithActionManager:(id)manager handler:(id)handler
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CKMediaObjectDeleteAssetActionPerformer;
-  v4 = objc_msgSendSuper2(&v6, sel_createPreviewActionWithActionManager_handler_, a3, a4);
+  v4 = objc_msgSendSuper2(&v6, sel_createPreviewActionWithActionManager_handler_, manager, handler);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

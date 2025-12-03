@@ -1,16 +1,16 @@
 @interface SESTLV
-+ (id)TLVWithData:(id)a3;
-+ (id)TLVWithTag:(unsigned int)a3 children:(id)a4;
-+ (id)TLVWithTag:(unsigned int)a3 fromData:(id)a4;
-+ (id)TLVWithTag:(unsigned int)a3 value:(id)a4;
-+ (id)TLVsWithData:(id)a3;
-+ (id)_intToData:(unsigned int)a3;
-+ (id)dataWithTLVs:(id)a3;
-+ (id)simpleTLVsWithData:(id)a3;
-+ (id)simpleTLVsWithTag:(unsigned int)a3 fromData:(id)a4;
++ (id)TLVWithData:(id)data;
++ (id)TLVWithTag:(unsigned int)tag children:(id)children;
++ (id)TLVWithTag:(unsigned int)tag fromData:(id)data;
++ (id)TLVWithTag:(unsigned int)tag value:(id)value;
++ (id)TLVsWithData:(id)data;
++ (id)_intToData:(unsigned int)data;
++ (id)dataWithTLVs:(id)vs;
++ (id)simpleTLVsWithData:(id)data;
++ (id)simpleTLVsWithTag:(unsigned int)tag fromData:(id)data;
 - (id)asData;
-- (id)childWithTag:(unsigned int)a3;
-- (id)childrenWithTag:(unsigned int)a3;
+- (id)childWithTag:(unsigned int)tag;
+- (id)childrenWithTag:(unsigned int)tag;
 - (id)description;
 - (id)valueAsString;
 - (unint64_t)valueAsUnsignedLongLong;
@@ -21,16 +21,16 @@
 
 @implementation SESTLV
 
-+ (id)dataWithTLVs:(id)a3
++ (id)dataWithTLVs:(id)vs
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  vsCopy = vs;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = vsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -45,8 +45,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) asData];
-        [v4 appendData:v10];
+        asData = [*(*(&v13 + 1) + 8 * i) asData];
+        [v4 appendData:asData];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -60,33 +60,33 @@
   return v4;
 }
 
-+ (id)TLVsWithData:(id)a3
++ (id)TLVsWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v10 = [v6 bytes];
-  v7 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v7 = [dataCopy2 length];
 
-  v8 = [a1 _parseTLVs:&v10 end:v10 + v7 simple:0];
+  v8 = [self _parseTLVs:&bytes end:bytes + v7 simple:0];
 
   return v8;
 }
 
-+ (id)simpleTLVsWithData:(id)a3
++ (id)simpleTLVsWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v10 = [v6 bytes];
-  v7 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v7 = [dataCopy2 length];
 
-  v8 = [a1 _parseTLVs:&v10 end:v10 + v7 simple:1];
+  v8 = [self _parseTLVs:&bytes end:bytes + v7 simple:1];
 
   return v8;
 }
 
-+ (id)TLVWithData:(id)a3
++ (id)TLVWithData:(id)data
 {
-  v3 = [a1 TLVsWithData:a3];
+  v3 = [self TLVsWithData:data];
   if (![v3 count])
   {
     v4 = SESDefaultLogObject();
@@ -100,7 +100,7 @@
 
 LABEL_8:
 
-    v7 = 0;
+    lastObject = 0;
     goto LABEL_10;
   }
 
@@ -120,20 +120,20 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 LABEL_10:
 
-  return v7;
+  return lastObject;
 }
 
-+ (id)TLVWithTag:(unsigned int)a3 fromData:(id)a4
++ (id)TLVWithTag:(unsigned int)tag fromData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [SESTLV TLVsWithData:a4, 0];
+  v5 = [SESTLV TLVsWithData:data, 0];
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -149,7 +149,7 @@ LABEL_10:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 tag] == a3)
+        if ([v10 tag] == tag)
         {
           v11 = v10;
           goto LABEL_11;
@@ -174,16 +174,16 @@ LABEL_11:
   return v11;
 }
 
-+ (id)simpleTLVsWithTag:(unsigned int)a3 fromData:(id)a4
++ (id)simpleTLVsWithTag:(unsigned int)tag fromData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  dataCopy = data;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [SESTLV simpleTLVsWithData:v5, 0];
+  v7 = [SESTLV simpleTLVsWithData:dataCopy, 0];
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -199,9 +199,9 @@ LABEL_11:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 tag] == a3)
+        if ([v12 tag] == tag)
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -213,21 +213,21 @@ LABEL_11:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
-+ (id)TLVWithTag:(unsigned int)a3 children:(id)a4
++ (id)TLVWithTag:(unsigned int)tag children:(id)children
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  childrenCopy = children;
   v7 = objc_opt_new();
-  *(v7 + 8) = a3;
-  objc_storeStrong((v7 + 24), a4);
+  *(v7 + 8) = tag;
+  objc_storeStrong((v7 + 24), children);
   if (*(v7 + 24))
   {
-    v8 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     v9 = *(v7 + 16);
-    *(v7 + 16) = v8;
+    *(v7 + 16) = data;
 
     v21 = 0u;
     v22 = 0u;
@@ -249,8 +249,8 @@ LABEL_11:
           }
 
           v15 = *(v7 + 16);
-          v16 = [*(*(&v19 + 1) + 8 * i) asData];
-          [v15 appendData:v16];
+          asData = [*(*(&v19 + 1) + 8 * i) asData];
+          [v15 appendData:asData];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -265,13 +265,13 @@ LABEL_11:
   return v7;
 }
 
-+ (id)TLVWithTag:(unsigned int)a3 value:(id)a4
++ (id)TLVWithTag:(unsigned int)tag value:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   v6 = objc_opt_new();
-  *(v6 + 8) = a3;
+  *(v6 + 8) = tag;
   v7 = *(v6 + 16);
-  *(v6 + 16) = v5;
+  *(v6 + 16) = valueCopy;
 
   return v6;
 }
@@ -285,8 +285,8 @@ LABEL_11:
     v13.super_class = SESTLV;
     v4 = [(SESTLV *)&v13 description];
     tag = self->_tag;
-    v6 = [(SESTLV *)self children];
-    [v3 stringWithFormat:@"%@ %02x : %@", v4, tag, v6, v10];
+    children = [(SESTLV *)self children];
+    [v3 stringWithFormat:@"%@ %02x : %@", v4, tag, children, v10];
   }
 
   else
@@ -297,16 +297,16 @@ LABEL_11:
     {
       v12.receiver = self;
       v12.super_class = SESTLV;
-      v6 = [(SESTLV *)&v12 description];
-      [v7 stringWithFormat:@"%@ %02x = %@ %@", v6, self->_tag, self->_value, v4];
+      children = [(SESTLV *)&v12 description];
+      [v7 stringWithFormat:@"%@ %02x = %@ %@", children, self->_tag, self->_value, v4];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = SESTLV;
-      v6 = [(SESTLV *)&v11 description];
-      [v7 stringWithFormat:@"%@ %02x = %@", v6, self->_tag, self->_value, v10];
+      children = [(SESTLV *)&v11 description];
+      [v7 stringWithFormat:@"%@ %02x = %@", children, self->_tag, self->_value, v10];
     }
   }
   v8 = ;
@@ -378,7 +378,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v6 = [(NSData *)self->_value bytes];
+  bytes = [(NSData *)self->_value bytes];
   if (![(NSData *)self->_value length])
   {
 LABEL_10:
@@ -390,7 +390,7 @@ LABEL_10:
   v8 = 0;
   do
   {
-    v8 = v6[v7++] | (v8 << 8);
+    v8 = bytes[v7++] | (v8 << 8);
   }
 
   while ([(NSData *)self->_value length]> v7);
@@ -422,7 +422,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v6 = [(NSData *)self->_value bytes];
+  bytes = [(NSData *)self->_value bytes];
   if (![(NSData *)self->_value length])
   {
 LABEL_10:
@@ -434,7 +434,7 @@ LABEL_10:
   v8 = 0;
   do
   {
-    v8 = v6[v7++] | (v8 << 8);
+    v8 = bytes[v7++] | (v8 << 8);
   }
 
   while ([(NSData *)self->_value length]> v7);
@@ -466,7 +466,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v6 = [(NSData *)self->_value bytes];
+  bytes = [(NSData *)self->_value bytes];
   if (![(NSData *)self->_value length])
   {
 LABEL_10:
@@ -478,7 +478,7 @@ LABEL_10:
   v8 = 0;
   do
   {
-    v8 = v6[v7++] | (v8 << 8);
+    v8 = bytes[v7++] | (v8 << 8);
   }
 
   while ([(NSData *)self->_value length]> v7);
@@ -487,16 +487,16 @@ LABEL_11:
   return v8;
 }
 
-- (id)childrenWithTag:(unsigned int)a3
+- (id)childrenWithTag:(unsigned int)tag
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SESTLV *)self children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [(SESTLV *)self children];
+  v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -507,17 +507,17 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 tag] == a3)
+        if ([v11 tag] == tag)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -525,18 +525,18 @@ LABEL_11:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)childWithTag:(unsigned int)a3
+- (id)childWithTag:(unsigned int)tag
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SESTLV *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(SESTLV *)self children];
+  v5 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -547,18 +547,18 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 tag] == a3)
+        if ([v9 tag] == tag)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -576,23 +576,23 @@ LABEL_11:
   return v10;
 }
 
-+ (id)_intToData:(unsigned int)a3
++ (id)_intToData:(unsigned int)data
 {
   v4 = [MEMORY[0x1E695DF88] dataWithCapacity:4];
   v5 = v4;
   v9 = 0;
-  if (a3)
+  if (data)
   {
     v6 = 4;
-    if (HIBYTE(a3))
+    if (HIBYTE(data))
     {
       goto LABEL_14;
     }
 
     do
     {
-      v7 = HIWORD(a3);
-      a3 <<= 8;
+      v7 = HIWORD(data);
+      data <<= 8;
       --v6;
     }
 
@@ -602,9 +602,9 @@ LABEL_11:
 LABEL_14:
       do
       {
-        v9 = HIBYTE(a3);
+        v9 = HIBYTE(data);
         [v5 appendBytes:&v9 length:1];
-        a3 <<= 8;
+        data <<= 8;
         --v6;
       }
 
@@ -623,16 +623,16 @@ LABEL_14:
 - (id)asData
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v4 = [SESTLV _intToData:self->_tag];
-  [v3 appendData:v4];
+  [data appendData:v4];
 
-  v5 = self->_value;
-  if (!v5)
+  data2 = self->_value;
+  if (!data2)
   {
     if (self->_children)
     {
-      v5 = [MEMORY[0x1E695DF88] data];
+      data2 = [MEMORY[0x1E695DF88] data];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -652,8 +652,8 @@ LABEL_14:
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v18 + 1) + 8 * i) asData];
-            [(NSData *)v5 appendData:v11];
+            asData = [*(*(&v18 + 1) + 8 * i) asData];
+            [(NSData *)data2 appendData:asData];
           }
 
           v8 = [(NSArray *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -665,28 +665,28 @@ LABEL_14:
 
     else
     {
-      v5 = 0;
+      data2 = 0;
     }
   }
 
-  v12 = [(NSData *)v5 length];
+  v12 = [(NSData *)data2 length];
   v13 = [SESTLV _intToData:v12];
   v14 = v13;
   if (v12 >= 0x80)
   {
     v17 = [v13 length] | 0x80;
-    [v3 appendBytes:&v17 length:1];
+    [data appendBytes:&v17 length:1];
   }
 
-  [v3 appendData:v14];
-  if (v5)
+  [data appendData:v14];
+  if (data2)
   {
-    [v3 appendData:v5];
+    [data appendData:data2];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return data;
 }
 
 @end

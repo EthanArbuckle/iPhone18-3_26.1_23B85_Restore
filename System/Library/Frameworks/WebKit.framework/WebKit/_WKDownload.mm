@@ -1,31 +1,31 @@
 @interface _WKDownload
-+ (id)downloadWithDownload:(id)a3;
++ (id)downloadWithDownload:(id)download;
 - (NSArray)redirectChain;
 - (NSData)resumeData;
 - (WKFrameInfo)originatingFrame;
 - (WKWebView)originatingWebView;
-- (_WKDownload)initWithDownload2:(id)a3;
+- (_WKDownload)initWithDownload2:(id)download2;
 - (uint64_t)cancel;
 - (void)cancel;
-- (void)publishProgressAtURL:(id)a3;
+- (void)publishProgressAtURL:(id)l;
 @end
 
 @implementation _WKDownload
 
-- (_WKDownload)initWithDownload2:(id)a3
+- (_WKDownload)initWithDownload2:(id)download2
 {
   v8.receiver = self;
   v8.super_class = _WKDownload;
   v4 = [(_WKDownload *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (download2)
     {
-      v5 = a3;
+      download2Copy = download2;
     }
 
     m_ptr = v4->_download.m_ptr;
-    v4->_download.m_ptr = a3;
+    v4->_download.m_ptr = download2;
     if (m_ptr)
     {
     }
@@ -34,13 +34,13 @@
   return v4;
 }
 
-+ (id)downloadWithDownload:(id)a3
++ (id)downloadWithDownload:(id)download
 {
-  v4 = [downloadWrapperMap() objectForKey:a3];
+  v4 = [downloadWrapperMap() objectForKey:download];
   if (!v4)
   {
-    v4 = [[_WKDownload alloc] initWithDownload2:a3];
-    [downloadWrapperMap() setObject:v4 forKey:a3];
+    v4 = [[_WKDownload alloc] initWithDownload2:download];
+    [downloadWrapperMap() setObject:v4 forKey:download];
     if (v4)
     {
       v5 = v4;
@@ -52,21 +52,21 @@
 
 - (void)cancel
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10FB3D8;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10FB3D8;
+  self[1] = 0;
   if (v2)
   {
     CFRelease(*(v2 + 8));
   }
 
-  return a1;
+  return self;
 }
 
-- (void)publishProgressAtURL:(id)a3
+- (void)publishProgressAtURL:(id)l
 {
   m_ptr = self->_download.m_ptr;
-  MEMORY[0x19EB01DE0](v6, a3);
+  MEMORY[0x19EB01DE0](v6, l);
   WebKit::DownloadProxy::publishProgress(&m_ptr->_download, v6);
   v5 = v6[0];
   v6[0] = 0;

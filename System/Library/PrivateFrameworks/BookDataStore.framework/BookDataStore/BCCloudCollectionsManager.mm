@@ -3,7 +3,7 @@
 + (id)sharedManager;
 - (NSManagedObjectModel)objectModel;
 - (id)initClientXPCProxy;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
 @end
 
 @implementation BCCloudCollectionsManager
@@ -65,9 +65,9 @@
   return objectModel;
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = BDSCloudKitSyncLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,8 +75,8 @@
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_DEFAULT, "BCCloudCollectionsManager dissociateCloudDataFromSyncWithCompletion", v7, 2u);
   }
 
-  v6 = [(BCCloudCollectionsManager *)self serviceProxy];
-  [v6 dissociateCloudDataFromSyncWithCompletion:v4];
+  serviceProxy = [(BCCloudCollectionsManager *)self serviceProxy];
+  [serviceProxy dissociateCloudDataFromSyncWithCompletion:completionCopy];
 }
 
 @end

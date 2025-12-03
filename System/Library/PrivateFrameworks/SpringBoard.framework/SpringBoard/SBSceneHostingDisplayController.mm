@@ -1,46 +1,46 @@
 @interface SBSceneHostingDisplayController
-- (SBSceneHostingDisplayController)initWithWorkspaceEventQueue:(id)a3 policy:(id)a4;
-- (id)_createBlankingWindowWithConfiguration:(id)a3;
+- (SBSceneHostingDisplayController)initWithWorkspaceEventQueue:(id)queue policy:(id)policy;
+- (id)_createBlankingWindowWithConfiguration:(id)configuration;
 - (id)_createDisplayAssertionPreferences;
-- (id)_createPresentationBinderWithConfiguration:(id)a3;
-- (id)_createUpdateTransactionWithLabel:(id)a3;
-- (id)createTransactionForTransitionRequest:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_createPresentationBinderWithConfiguration:(id)configuration;
+- (id)_createUpdateTransactionWithLabel:(id)label;
+- (id)createTransactionForTransitionRequest:(id)request;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)signpostDescription;
 - (void)_createDisplayAssertionPreferences;
 - (void)_enqueueEvaluateAndApplyPresentationUpdate;
-- (void)_ensureCADisplayUpToDate:(id)a3 completion:(id)a4;
-- (void)_runRootTransaction:(id)a3 withLabel:(id)a4 completion:(id)a5;
-- (void)_runRootUpdateTransactionWithLabel:(id)a3 completion:(id)a4;
-- (void)_sendBlankingWindowToFront:(BOOL)a3;
+- (void)_ensureCADisplayUpToDate:(id)date completion:(id)completion;
+- (void)_runRootTransaction:(id)transaction withLabel:(id)label completion:(id)completion;
+- (void)_runRootUpdateTransactionWithLabel:(id)label completion:(id)completion;
+- (void)_sendBlankingWindowToFront:(BOOL)front;
 - (void)_updateBlankingWindowIfNecessary;
 - (void)_updateLayoutPublisherIfNecessary;
-- (void)_updatePolicyForPresentation:(id)a3;
+- (void)_updatePolicyForPresentation:(id)presentation;
 - (void)_updatePresentationBinderIfNecessary;
-- (void)connectToDisplayIdentity:(id)a3 configuration:(id)a4 displayManager:(id)a5 sceneManager:(id)a6 caDisplayQueue:(id)a7 assertion:(id)a8 embeddedBacklightOn:(BOOL)a9;
+- (void)connectToDisplayIdentity:(id)identity configuration:(id)configuration displayManager:(id)manager sceneManager:(id)sceneManager caDisplayQueue:(id)queue assertion:(id)assertion embeddedBacklightOn:(BOOL)on;
 - (void)dealloc;
-- (void)displayAssertion:(id)a3 didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a4;
-- (void)displayAssertion:(id)a3 didReceiveNewDeactivationReasons:(unint64_t)a4;
-- (void)displayAssertionDidGainControlOfDisplay:(id)a3;
-- (void)displayIdentityDidDisconnect:(id)a3;
-- (void)displayIdentityDidUpdate:(id)a3 configuration:(id)a4;
-- (void)embeddedBacklightStateDidChange:(BOOL)a3 source:(int64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)requestUpdate:(unint64_t)a3;
-- (void)transformDisplayConfiguration:(id)a3 withBuilder:(id)a4;
+- (void)displayAssertion:(id)assertion didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons;
+- (void)displayAssertion:(id)assertion didReceiveNewDeactivationReasons:(unint64_t)reasons;
+- (void)displayAssertionDidGainControlOfDisplay:(id)display;
+- (void)displayIdentityDidDisconnect:(id)disconnect;
+- (void)displayIdentityDidUpdate:(id)update configuration:(id)configuration;
+- (void)embeddedBacklightStateDidChange:(BOOL)change source:(int64_t)source;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)requestUpdate:(unint64_t)update;
+- (void)transformDisplayConfiguration:(id)configuration withBuilder:(id)builder;
 @end
 
 @implementation SBSceneHostingDisplayController
 
-- (SBSceneHostingDisplayController)initWithWorkspaceEventQueue:(id)a3 policy:(id)a4
+- (SBSceneHostingDisplayController)initWithWorkspaceEventQueue:(id)queue policy:(id)policy
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  policyCopy = policy;
+  v9 = policyCopy;
+  if (queueCopy)
   {
-    if (v8)
+    if (policyCopy)
     {
       goto LABEL_3;
     }
@@ -63,8 +63,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_workspaceEventQueue, a3);
-    objc_storeStrong(&v11->_policy, a4);
+    objc_storeStrong(&v10->_workspaceEventQueue, queue);
+    objc_storeStrong(&v11->_policy, policy);
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingWork = v11->_pendingWork;
     v11->_pendingWork = v12;
@@ -112,15 +112,15 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
   [(SBSceneHostingDisplayController *)&v3 dealloc];
 }
 
-- (void)transformDisplayConfiguration:(id)a3 withBuilder:(id)a4
+- (void)transformDisplayConfiguration:(id)configuration withBuilder:(id)builder
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identity];
-  v9 = [v8 rootIdentity];
-  v10 = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
-  v11 = [v9 isEqual:v10];
+  configurationCopy = configuration;
+  builderCopy = builder;
+  identity = [configurationCopy identity];
+  rootIdentity = [identity rootIdentity];
+  rootIdentity2 = [(FBSDisplayIdentity *)self->_displayIdentity rootIdentity];
+  v11 = [rootIdentity isEqual:rootIdentity2];
 
   if ((v11 & 1) == 0)
   {
@@ -132,14 +132,14 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
     v12 = [(SBSceneHostingDisplayControllerPolicy *)self->_policy displayPreferencesForDisplayController:self];
     if ([v12 keepOtherModes])
     {
-      v13 = [v6 availableModes];
-      v14 = [v13 mutableCopy];
+      availableModes = [configurationCopy availableModes];
+      v14 = [availableModes mutableCopy];
 
-      v15 = [v6 preferredMode];
-      [v14 removeObject:v15];
+      preferredMode = [configurationCopy preferredMode];
+      [v14 removeObject:preferredMode];
 
-      v16 = [v6 currentMode];
-      [v14 removeObject:v16];
+      currentMode = [configurationCopy currentMode];
+      [v14 removeObject:currentMode];
     }
 
     else
@@ -147,23 +147,23 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
       v14 = 0;
     }
 
-    v18 = [v6 immutableCADisplay];
-    v19 = [v12 CADisplayModeCriteria];
-    v20 = [v18 preferredModeWithCriteria:v19];
+    immutableCADisplay = [configurationCopy immutableCADisplay];
+    cADisplayModeCriteria = [v12 CADisplayModeCriteria];
+    v20 = [immutableCADisplay preferredModeWithCriteria:cADisplayModeCriteria];
 
-    v21 = [v20 width];
+    width = [v20 width];
     v56 = v20;
-    v22 = [v20 height];
+    height = [v20 height];
     v23 = 1.0;
     v24 = 1.0;
-    if ([v18 displayType] != 2)
+    if ([immutableCADisplay displayType] != 2)
     {
       [v12 logicalScale];
       v26 = v25;
       v28 = v27;
-      [v18 maximumLogicalScale];
+      [immutableCADisplay maximumLogicalScale];
       v24 = v29;
-      [v18 minimumLogicalScale];
+      [immutableCADisplay minimumLogicalScale];
       if (v30 < v26)
       {
         v30 = v26;
@@ -174,9 +174,9 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
         v24 = v30;
       }
 
-      [v18 maximumLogicalScale];
+      [immutableCADisplay maximumLogicalScale];
       v32 = v31;
-      [v18 minimumLogicalScale];
+      [immutableCADisplay minimumLogicalScale];
       if (v33 < v28)
       {
         v33 = v28;
@@ -193,40 +193,40 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
       }
     }
 
-    v34 = v24 * v21;
+    v34 = v24 * width;
     [v12 contentsScale];
     v36 = v35;
-    size = v21;
-    v37 = v24 * v21 / v35;
-    v38 = v23 * v22 / v35;
-    v39 = [v6 currentMode];
-    v40 = [v39 _copyWithOverrideSize:v37 scale:{v38, v36}];
+    size = width;
+    v37 = v24 * width / v35;
+    v38 = v23 * height / v35;
+    currentMode2 = [configurationCopy currentMode];
+    v40 = [currentMode2 _copyWithOverrideSize:v37 scale:{v38, v36}];
 
-    [v7 setCurrentMode:v40 preferredMode:v40 otherModes:v14];
-    [v7 setPixelSize:v34 nativeBounds:v23 * v22 bounds:{0.0, 0.0, v34, v23 * v22, 0, 0, *&v37, *&v38}];
-    v41 = [v12 displayConfigurationRequest];
-    v42 = [v41 overscanCompensation];
+    [builderCopy setCurrentMode:v40 preferredMode:v40 otherModes:v14];
+    [builderCopy setPixelSize:v34 nativeBounds:v23 * height bounds:{0.0, 0.0, v34, v23 * height, 0, 0, *&v37, *&v38}];
+    displayConfigurationRequest = [v12 displayConfigurationRequest];
+    overscanCompensation = [displayConfigurationRequest overscanCompensation];
     v55 = v14;
-    v43 = (v42 - 1) < 0xFFFFFFFFFFFFFFFELL;
-    if ((v42 - 1) >= 0xFFFFFFFFFFFFFFFELL)
+    v43 = (overscanCompensation - 1) < 0xFFFFFFFFFFFFFFFELL;
+    if ((overscanCompensation - 1) >= 0xFFFFFFFFFFFFFFFELL)
     {
       v44 = 0;
     }
 
     else
     {
-      v44 = v42;
+      v44 = overscanCompensation;
     }
 
-    [v6 safeOverscanRatio];
-    [v7 setOverscanned:v43 compensation:v44 safeRatio:?];
+    [configurationCopy safeOverscanRatio];
+    [builderCopy setOverscanned:v43 compensation:v44 safeRatio:?];
     v45 = SBLogDisplayTransforming();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
       size_8 = _SBDisplayControllerLoggingProem(self->_displayIdentity);
-      v51 = [v6 identity];
+      identity2 = [configurationCopy identity];
       v78.width = size;
-      v78.height = v22;
+      v78.height = height;
       sizea = NSStringFromCGSize(v78);
       v79.width = v37;
       v79.height = v38;
@@ -234,7 +234,7 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
       v81.origin.x = 0.0;
       v81.origin.y = 0.0;
       v81.size.width = v34;
-      v81.size.height = v23 * v22;
+      v81.size.height = v23 * height;
       v49 = NSStringFromCGRect(v81);
       v82.origin.x = 0.0;
       v82.origin.y = 0.0;
@@ -248,7 +248,7 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
       *buf = 138545666;
       v58 = size_8;
       v59 = 2114;
-      v60 = v51;
+      v60 = identity2;
       v61 = 2114;
       v62 = sizea;
       v63 = 2114;
@@ -282,7 +282,7 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
   }
 }
 
-- (id)createTransactionForTransitionRequest:(id)a3
+- (id)createTransactionForTransitionRequest:(id)request
 {
   v4 = MEMORY[0x277CBEB98];
   v5 = objc_opt_class();
@@ -293,16 +293,16 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
   return v8;
 }
 
-- (void)requestUpdate:(unint64_t)a3
+- (void)requestUpdate:(unint64_t)update
 {
   v27 = *MEMORY[0x277D85DE8];
   v6 = SBLogDisplayControlling();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = _SBDisplayControllerLoggingProem(self->_displayIdentity);
-    if (a3)
+    if (update)
     {
-      v8 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       v19 = a2;
       v20[0] = 0;
       v20[1] = v20;
@@ -313,17 +313,17 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
       *&buf[16] = __SBSceneHostingDisplayControllerUpdateFlagsDescription_block_invoke;
       v24 = &unk_2783ABA80;
       v26 = v20;
-      v9 = v8;
+      v9 = string;
       v25 = v9;
       v10 = buf;
       v11 = 0;
       v22 = 0;
-      v12 = vcnt_s8(a3);
+      v12 = vcnt_s8(update);
       v12.i16[0] = vaddlv_u8(v12);
       v13 = v12.i32[0];
       do
       {
-        if (((1 << v11) & a3) != 0)
+        if (((1 << v11) & update) != 0)
         {
           (*&buf[16])(v10);
           if (v22)
@@ -359,10 +359,10 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%{public}@ asked to update for %{public}@", buf, 0x16u);
   }
 
-  if (a3)
+  if (update)
   {
-    v14 = [(SBSceneHostingDisplayController *)self _createDisplayAssertionPreferences];
-    if ([(SBDisplayAssertionPreferences *)self->_currentDisplayAssertionPreferences isEqual:v14])
+    _createDisplayAssertionPreferences = [(SBSceneHostingDisplayController *)self _createDisplayAssertionPreferences];
+    if ([(SBDisplayAssertionPreferences *)self->_currentDisplayAssertionPreferences isEqual:_createDisplayAssertionPreferences])
     {
       v15 = SBLogDisplayControlling();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -376,14 +376,14 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
 
     else
     {
-      objc_storeStrong(&self->_currentDisplayAssertionPreferences, v14);
+      objc_storeStrong(&self->_currentDisplayAssertionPreferences, _createDisplayAssertionPreferences);
       [(SBDisplayAssertion *)self->_displayAssertion updateWithPreferences:self->_currentDisplayAssertionPreferences];
     }
   }
 
   if (!self->_connectionCompleted)
   {
-    if ((a3 & 2) == 0)
+    if ((update & 2) == 0)
     {
       return;
     }
@@ -391,14 +391,14 @@ id __70__SBSceneHostingDisplayController_initWithWorkspaceEventQueue_policy___bl
     goto LABEL_24;
   }
 
-  if ((a3 & 6) == 2)
+  if ((update & 6) == 2)
   {
 LABEL_24:
     [(SBSceneHostingDisplayController *)self _enqueueEvaluateAndApplyPresentationUpdate];
     return;
   }
 
-  if ((a3 & 4) != 0)
+  if ((update & 4) != 0)
   {
     v17 = objc_opt_class();
     v18 = _SBDisplayControllerTransactionLabel(v17, @"policyRequested");
@@ -406,15 +406,15 @@ LABEL_24:
   }
 }
 
-- (void)connectToDisplayIdentity:(id)a3 configuration:(id)a4 displayManager:(id)a5 sceneManager:(id)a6 caDisplayQueue:(id)a7 assertion:(id)a8 embeddedBacklightOn:(BOOL)a9
+- (void)connectToDisplayIdentity:(id)identity configuration:(id)configuration displayManager:(id)manager sceneManager:(id)sceneManager caDisplayQueue:(id)queue assertion:(id)assertion embeddedBacklightOn:(BOOL)on
 {
   v44 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v16 = a4;
-  v17 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
+  identityCopy = identity;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  sceneManagerCopy = sceneManager;
+  queueCopy = queue;
+  assertionCopy = assertion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneHostingDisplayController connectToDisplayIdentity:configuration:displayManager:sceneManager:caDisplayQueue:assertion:embeddedBacklightOn:];
@@ -425,44 +425,44 @@ LABEL_24:
     [SBSceneHostingDisplayController connectToDisplayIdentity:configuration:displayManager:sceneManager:caDisplayQueue:assertion:embeddedBacklightOn:];
   }
 
-  objc_storeStrong(&self->_displayIdentity, a3);
-  objc_storeStrong(&self->_displayManager, a5);
-  objc_storeStrong(&self->_currentConfiguration, a4);
+  objc_storeStrong(&self->_displayIdentity, identity);
+  objc_storeStrong(&self->_displayManager, manager);
+  objc_storeStrong(&self->_currentConfiguration, configuration);
   objc_storeStrong(&self->_presentedConfiguration, self->_currentConfiguration);
-  objc_storeStrong(&self->_sceneManager, a6);
-  v18 = [v16 CADisplay];
+  objc_storeStrong(&self->_sceneManager, sceneManager);
+  cADisplay = [configurationCopy CADisplay];
   caDisplay = self->_caDisplay;
-  self->_caDisplay = v18;
+  self->_caDisplay = cADisplay;
 
-  objc_storeStrong(&self->_displayMutationQueue, a7);
+  objc_storeStrong(&self->_displayMutationQueue, queue);
   v20 = objc_alloc_init(MEMORY[0x277CF0B80]);
   displayDisconnectedSignal = self->_displayDisconnectedSignal;
   self->_displayDisconnectedSignal = v20;
 
-  v22 = [v36 rootIdentity];
-  v23 = [v17 layoutPublisherForDisplay:v22];
+  rootIdentity = [identityCopy rootIdentity];
+  v23 = [managerCopy layoutPublisherForDisplay:rootIdentity];
   layoutPublisher = self->_layoutPublisher;
   self->_layoutPublisher = v23;
 
-  self->_embeddedBacklightOn = a9;
+  self->_embeddedBacklightOn = on;
   v25 = SBLogDisplayControlling();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v26 = _SBDisplayControllerLoggingProem(self->_displayIdentity);
     v27 = SBDisplayAssertionLevelDescription([(SBDisplayAssertion *)self->_displayAssertion level]);
-    v28 = [(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay];
+    hasControlOfDisplay = [(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay];
     *buf = 138543874;
     v39 = v26;
     v40 = 2114;
     v41 = v27;
     v42 = 1024;
-    v43 = v28;
+    v43 = hasControlOfDisplay;
     _os_log_impl(&dword_21ED4E000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ connected to display. assertion level: %{public}@; in control: %{BOOL}u", buf, 0x1Cu);
   }
 
   displayAssertion = self->_displayAssertion;
-  self->_displayAssertion = v32;
-  v30 = v32;
+  self->_displayAssertion = assertionCopy;
+  v30 = assertionCopy;
 
   [(SBSceneHostingDisplayControllerPolicy *)self->_policy connectToDisplayController:self displayConfiguration:self->_currentConfiguration embeddedBacklightOn:self->_embeddedBacklightOn];
   [(BSAtomicSignal *)self->_readyToTransformDisplaysSignal signal];
@@ -518,14 +518,14 @@ void __147__SBSceneHostingDisplayController_connectToDisplayIdentity_configurati
   }
 }
 
-- (void)displayIdentityDidUpdate:(id)a3 configuration:(id)a4
+- (void)displayIdentityDidUpdate:(id)update configuration:(id)configuration
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  updateCopy = update;
+  configurationCopy = configuration;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (v8)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
@@ -534,7 +534,7 @@ void __147__SBSceneHostingDisplayController_connectToDisplayIdentity_configurati
   else
   {
     [SBSceneHostingDisplayController displayIdentityDidUpdate:configuration:];
-    if (v8)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
@@ -542,14 +542,14 @@ void __147__SBSceneHostingDisplayController_connectToDisplayIdentity_configurati
 
   [SBSceneHostingDisplayController displayIdentityDidUpdate:configuration:];
 LABEL_3:
-  v9 = [(FBSDisplayConfiguration *)self->_currentConfiguration isEqual:v8];
-  v10 = SBLogDisplayControlling();
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
+  v9 = [(FBSDisplayConfiguration *)self->_currentConfiguration isEqual:configurationCopy];
+  displayConfiguration = SBLogDisplayControlling();
+  v11 = os_log_type_enabled(displayConfiguration, OS_LOG_TYPE_DEBUG);
   if (v9)
   {
     if (v11)
     {
-      [(SBSceneHostingDisplayController *)self displayIdentityDidUpdate:a2 configuration:v10];
+      [(SBSceneHostingDisplayController *)self displayIdentityDidUpdate:a2 configuration:displayConfiguration];
     }
 
 LABEL_14:
@@ -563,17 +563,17 @@ LABEL_14:
     v32 = 138543618;
     v33 = v31;
     v34 = 2114;
-    v35 = v7;
-    _os_log_debug_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEBUG, "%{public}@: identity=%{public}@", &v32, 0x16u);
+    v35 = updateCopy;
+    _os_log_debug_impl(&dword_21ED4E000, displayConfiguration, OS_LOG_TYPE_DEBUG, "%{public}@: identity=%{public}@", &v32, 0x16u);
   }
 
-  objc_storeStrong(&self->_currentConfiguration, a4);
+  objc_storeStrong(&self->_currentConfiguration, configuration);
   if ([(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay])
   {
-    v12 = [(_UIRootWindow *)self->_blankingWindow screen];
-    v10 = [v12 displayConfiguration];
+    screen = [(_UIRootWindow *)self->_blankingWindow screen];
+    displayConfiguration = [screen displayConfiguration];
 
-    [v10 bounds];
+    [displayConfiguration bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -613,7 +613,7 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)displayIdentityDidDisconnect:(id)a3
+- (void)displayIdentityDidDisconnect:(id)disconnect
 {
   v15 = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
@@ -666,18 +666,18 @@ LABEL_15:
   }
 }
 
-- (void)embeddedBacklightStateDidChange:(BOOL)a3 source:(int64_t)a4
+- (void)embeddedBacklightStateDidChange:(BOOL)change source:(int64_t)source
 {
-  v5 = a3;
+  changeCopy = change;
   if (objc_opt_respondsToSelector())
   {
     policy = self->_policy;
 
-    [(SBSceneHostingDisplayControllerPolicy *)policy embeddedBacklightStateDidChange:v5 source:a4];
+    [(SBSceneHostingDisplayControllerPolicy *)policy embeddedBacklightStateDidChange:changeCopy source:source];
   }
 }
 
-- (void)displayAssertionDidGainControlOfDisplay:(id)a3
+- (void)displayAssertionDidGainControlOfDisplay:(id)display
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -696,7 +696,7 @@ LABEL_15:
   [(SBSceneHostingDisplayController *)self _enqueueEvaluateAndApplyPresentationUpdate];
 }
 
-- (void)displayAssertion:(id)a3 didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a4
+- (void)displayAssertion:(id)assertion didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -705,30 +705,30 @@ LABEL_15:
 
   [(CADisplay *)self->_caDisplay removeObserver:self forKeyPath:@"preferences" context:self];
   [(BSAtomicSignal *)self->_presentationUpdateInvalidationSignal signal];
-  self->_currentDeactivationReasons = a4;
+  self->_currentDeactivationReasons = reasons;
   blankingWindow = self->_blankingWindow;
   self->_blankingWindow = 0;
 
   [(SBSceneManager *)self->_sceneManager updatePresentationBinder:0];
-  [(SBSceneHostingDisplayControllerPolicy *)self->_policy displayController:self sceneManager:self->_sceneManager didLoseControlOfDisplayWithDeactivationReasons:a4];
+  [(SBSceneHostingDisplayControllerPolicy *)self->_policy displayController:self sceneManager:self->_sceneManager didLoseControlOfDisplayWithDeactivationReasons:reasons];
 
   [(SBSceneHostingDisplayController *)self _enqueueEvaluateAndApplyPresentationUpdate];
 }
 
-- (void)displayAssertion:(id)a3 didReceiveNewDeactivationReasons:(unint64_t)a4
+- (void)displayAssertion:(id)assertion didReceiveNewDeactivationReasons:(unint64_t)reasons
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneHostingDisplayController displayAssertion:didReceiveNewDeactivationReasons:];
   }
 
-  self->_currentDeactivationReasons = a4;
-  [(SBSceneHostingDisplayControllerPolicy *)self->_policy displayController:self sceneManager:self->_sceneManager didReceiveNewDeactivationReasons:a4];
+  self->_currentDeactivationReasons = reasons;
+  [(SBSceneHostingDisplayControllerPolicy *)self->_policy displayController:self sceneManager:self->_sceneManager didReceiveNewDeactivationReasons:reasons];
 
   [(SBSceneHostingDisplayController *)self _enqueueEvaluateAndApplyPresentationUpdate];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -754,11 +754,11 @@ uint64_t __82__SBSceneHostingDisplayController_observeValueForKeyPath_ofObject_c
   return [*(a1 + 32) _enqueueEvaluateAndApplyPresentationUpdate];
 }
 
-- (void)_ensureCADisplayUpToDate:(id)a3 completion:(id)a4
+- (void)_ensureCADisplayUpToDate:(id)date completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneHostingDisplayController _ensureCADisplayUpToDate:completion:];
@@ -771,11 +771,11 @@ uint64_t __82__SBSceneHostingDisplayController_observeValueForKeyPath_ofObject_c
 
   v9 = [(SBSceneHostingDisplayControllerPolicy *)self->_policy displayPreferencesForDisplayController:self];
   caDisplay = self->_caDisplay;
-  v11 = [v9 CADisplayModeCriteria];
-  v12 = [(CADisplay *)caDisplay preferredModeWithCriteria:v11];
+  cADisplayModeCriteria = [v9 CADisplayModeCriteria];
+  v12 = [(CADisplay *)caDisplay preferredModeWithCriteria:cADisplayModeCriteria];
 
-  v13 = [v9 displayConfigurationRequest];
-  [v13 overscanCompensation];
+  displayConfigurationRequest = [v9 displayConfigurationRequest];
+  [displayConfigurationRequest overscanCompensation];
   v14 = FBSDisplayOverscanCompensationToCADisplayOverscanAdjustment();
 
   v15 = 1.0;
@@ -847,7 +847,7 @@ uint64_t __82__SBSceneHostingDisplayController_observeValueForKeyPath_ofObject_c
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       _SBDisplayControllerLoggingProem(self->_displayIdentity);
-      v34 = v38 = v7;
+      v34 = v38 = dateCopy;
       v63.width = v16;
       v63.height = v15;
       v35 = NSStringFromCGSize(v63);
@@ -867,7 +867,7 @@ uint64_t __82__SBSceneHostingDisplayController_observeValueForKeyPath_ofObject_c
       v61 = v36;
       _os_log_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ requesting display change: mode=%{public}@ overscan=%{public}@ logicalScale=%{public}@ pointScale=%lu (from)bounds=%{public}@", buf, 0x3Eu);
 
-      v7 = v38;
+      dateCopy = v38;
     }
 
     displayMutationQueue = self->_displayMutationQueue;
@@ -875,21 +875,21 @@ uint64_t __82__SBSceneHostingDisplayController_observeValueForKeyPath_ofObject_c
     block[1] = 3221225472;
     block[2] = __71__SBSceneHostingDisplayController__ensureCADisplayUpToDate_completion___block_invoke;
     block[3] = &unk_2783AB968;
-    v41 = v7;
-    v42 = self;
+    v41 = dateCopy;
+    selfCopy = self;
     v43 = v12;
     v44 = v14;
     v46 = v16;
     v47 = v15;
     v48 = v28;
     v49 = v39;
-    v45 = v8;
+    v45 = completionCopy;
     dispatch_async(displayMutationQueue, block);
   }
 
   else
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1005,9 +1005,9 @@ LABEL_9:
   return (*(*(a1 + 64) + 16))();
 }
 
-- (void)_updatePolicyForPresentation:(id)a3
+- (void)_updatePolicyForPresentation:(id)presentation
 {
-  v5 = a3;
+  presentationCopy = presentation;
   if (![(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay])
   {
     [SBSceneHostingDisplayController _updatePolicyForPresentation:];
@@ -1020,10 +1020,10 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __64__SBSceneHostingDisplayController__updatePolicyForPresentation___block_invoke;
   v10[3] = &unk_2783AB990;
-  v11 = v5;
+  v11 = presentationCopy;
   v12 = a2;
   v10[4] = self;
-  v9 = v5;
+  v9 = presentationCopy;
   [(SBSceneHostingDisplayControllerPolicy *)policy displayController:self updatePresentationWithSceneManager:sceneManager displayConfiguration:presentedConfiguration completion:v10];
 }
 
@@ -1045,7 +1045,7 @@ uint64_t __64__SBSceneHostingDisplayController__updatePolicyForPresentation___bl
 - (void)_updatePresentationBinderIfNecessary
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1053,7 +1053,7 @@ uint64_t __64__SBSceneHostingDisplayController__updatePolicyForPresentation___bl
 - (void)_updateLayoutPublisherIfNecessary
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1061,14 +1061,14 @@ uint64_t __64__SBSceneHostingDisplayController__updatePolicyForPresentation___bl
 - (void)_updateBlankingWindowIfNecessary
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
 - (void)_enqueueEvaluateAndApplyPresentationUpdate
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneHostingDisplayController _enqueueEvaluateAndApplyPresentationUpdate]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -1271,11 +1271,11 @@ LABEL_13:
   return [*(a1 + 48) invalidate];
 }
 
-- (id)_createUpdateTransactionWithLabel:(id)a3
+- (id)_createUpdateTransactionWithLabel:(id)label
 {
   v28 = *MEMORY[0x277D85DE8];
   updateTransactionInvalidator = self->_updateTransactionInvalidator;
-  v6 = a3;
+  labelCopy = label;
   [(BSAtomicSignal *)updateTransactionInvalidator signal];
   v7 = objc_alloc_init(MEMORY[0x277CF0B80]);
   v8 = self->_updateTransactionInvalidator;
@@ -1299,12 +1299,12 @@ LABEL_13:
   v21 = &unk_2783ABA08;
   v22 = v9;
   v23 = v10;
-  v24 = self;
+  selfCopy = self;
   v25 = a2;
   v14 = v10;
   v15 = v9;
   v16 = [v13 initWithBlock:&v18];
-  [v16 setDebugName:{v6, v18, v19, v20, v21}];
+  [v16 setDebugName:{labelCopy, v18, v19, v20, v21}];
 
   return v16;
 }
@@ -1356,42 +1356,42 @@ void __69__SBSceneHostingDisplayController__createUpdateTransactionWithLabel___b
   }
 }
 
-- (id)_createBlankingWindowWithConfiguration:(id)a3
+- (id)_createBlankingWindowWithConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277D761C0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithDisplay:v4];
+  configurationCopy = configuration;
+  v5 = [[v3 alloc] initWithDisplay:configurationCopy];
   v6 = objc_alloc(MEMORY[0x277D75D18]);
-  [v4 bounds];
+  [configurationCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
   v15 = [v6 initWithFrame:{v8, v10, v12, v14}];
-  v16 = [MEMORY[0x277D75348] blackColor];
-  [v15 setBackgroundColor:v16];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v15 setBackgroundColor:blackColor];
 
   [v15 setOpaque:1];
   [v15 setAutoresizingMask:18];
   v17 = objc_alloc_init(MEMORY[0x277D75D28]);
   [v17 setView:v15];
   [v5 setRootViewController:v17];
-  v18 = [MEMORY[0x277D75348] blackColor];
-  [v5 setBackgroundColor:v18];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  [v5 setBackgroundColor:blackColor2];
 
   [v5 setHidden:0];
 
   return v5;
 }
 
-- (void)_sendBlankingWindowToFront:(BOOL)a3
+- (void)_sendBlankingWindowToFront:(BOOL)front
 {
-  v3 = a3;
+  frontCopy = front;
   v13 = *MEMORY[0x277D85DE8];
   v5 = SBLogDisplayControlling();
   v6 = os_signpost_enabled(v5);
-  if (v3)
+  if (frontCopy)
   {
     if (v6)
     {
@@ -1422,14 +1422,14 @@ void __69__SBSceneHostingDisplayController__createUpdateTransactionWithLabel___b
   [(_UIRootWindow *)self->_blankingWindow setWindowLevel:v10];
 }
 
-- (id)_createPresentationBinderWithConfiguration:(id)a3
+- (id)_createPresentationBinderWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_opt_class();
   v6 = [(FBSDisplayIdentity *)self->_displayIdentity description];
   v7 = _SBDisplayControllerTransactionLabel(v5, v6);
 
-  v8 = [(SBRootSceneWindow *)[SBSceneHostingDisplayControllerRootSceneWindow alloc] initWithDisplayConfiguration:v4];
+  v8 = [(SBRootSceneWindow *)[SBSceneHostingDisplayControllerRootSceneWindow alloc] initWithDisplayConfiguration:configurationCopy];
   v9 = [[SBRootWindowScenePresentationBinder alloc] initWithIdentifier:v7 priority:-10 appearanceStyle:0 rootWindow:v8];
 
   return v9;
@@ -1448,24 +1448,24 @@ void __69__SBSceneHostingDisplayController__createUpdateTransactionWithLabel___b
   return [(SBSceneHostingDisplayControllerPolicy *)policy assertionPreferencesForDisplay:self displayConfiguration:currentConfiguration];
 }
 
-- (void)_runRootTransaction:(id)a3 withLabel:(id)a4 completion:(id)a5
+- (void)_runRootTransaction:(id)transaction withLabel:(id)label completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transactionCopy = transaction;
+  labelCopy = label;
+  completionCopy = completion;
   workspaceEventQueue = self->_workspaceEventQueue;
   v12 = MEMORY[0x277D0AB18];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __76__SBSceneHostingDisplayController__runRootTransaction_withLabel_completion___block_invoke;
   v20 = &unk_2783ABA58;
-  v21 = v9;
-  v22 = v8;
-  v23 = self;
-  v24 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v21 = labelCopy;
+  v22 = transactionCopy;
+  selfCopy = self;
+  v24 = completionCopy;
+  v13 = completionCopy;
+  v14 = transactionCopy;
+  v15 = labelCopy;
   v16 = [v12 eventWithName:v15 handler:&v17];
   [(FBWorkspaceEventQueue *)workspaceEventQueue executeOrAppendEvent:v16, v17, v18, v19, v20];
 }
@@ -1513,23 +1513,23 @@ void __76__SBSceneHostingDisplayController__runRootTransaction_withLabel_complet
   [*(a1 + 40) relinquish];
 }
 
-- (void)_runRootUpdateTransactionWithLabel:(id)a3 completion:(id)a4
+- (void)_runRootUpdateTransactionWithLabel:(id)label completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSceneHostingDisplayController *)self _createUpdateTransactionWithLabel:v7];
-  [(SBSceneHostingDisplayController *)self _runRootTransaction:v8 withLabel:v7 completion:v6];
+  completionCopy = completion;
+  labelCopy = label;
+  v8 = [(SBSceneHostingDisplayController *)self _createUpdateTransactionWithLabel:labelCopy];
+  [(SBSceneHostingDisplayController *)self _runRootTransaction:v8 withLabel:labelCopy completion:completionCopy];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneHostingDisplayController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneHostingDisplayController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [(FBSDisplayIdentity *)self->_displayIdentity description];
@@ -1539,7 +1539,7 @@ void __76__SBSceneHostingDisplayController__runRootTransaction_withLabel_complet
   v9[3] = &unk_2783A92D8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   [v6 appendBodySectionWithName:v5 multilinePrefix:0 block:v9];
 
   v7 = v6;
@@ -1823,7 +1823,7 @@ void __69__SBSceneHostingDisplayController__createUpdateTransactionWithLabel___b
 - (void)_createDisplayAssertionPreferences
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:@"_displayIdentity" object:? file:? lineNumber:? description:?];
 }

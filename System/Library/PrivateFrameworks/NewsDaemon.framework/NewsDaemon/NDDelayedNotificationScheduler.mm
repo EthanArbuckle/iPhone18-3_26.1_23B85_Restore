@@ -1,7 +1,7 @@
 @interface NDDelayedNotificationScheduler
 - (NDDelayedNotificationScheduler)init;
 - (void)activate;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
 @end
 
 @implementation NDDelayedNotificationScheduler
@@ -18,7 +18,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_100018090(0, 0, v6, &unk_10005AC50, v8);
 }
 
@@ -29,16 +29,16 @@
   return result;
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
   v7 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v19 - v9;
   v11 = FCNotificationsLog;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  centerCopy = center;
+  settingsCopy = settings;
+  selfCopy = self;
   v15 = v11;
   static os_log_type_t.default.getter();
   os_log(_:dso:log:type:_:)();
@@ -48,8 +48,8 @@
   v17 = swift_allocObject();
   v17[2] = 0;
   v17[3] = 0;
-  v17[4] = v14;
-  v18 = v14;
+  v17[4] = selfCopy;
+  v18 = selfCopy;
   sub_100018090(0, 0, v10, &unk_10005AC08, v17);
 }
 

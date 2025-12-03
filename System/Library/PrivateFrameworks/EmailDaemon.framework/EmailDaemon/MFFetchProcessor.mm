@@ -1,66 +1,66 @@
 @interface MFFetchProcessor
 + (id)intelligentSkeletonFetchProcessor;
-+ (id)mailboxes:(id)a3 sortedByDate:(id)a4;
-+ (id)mailboxesSortedByLastFetchDate:(id)a3;
++ (id)mailboxes:(id)mailboxes sortedByDate:(id)date;
++ (id)mailboxesSortedByLastFetchDate:(id)date;
 + (id)powernapProcessor;
-+ (id)processorWithName:(id)a3 condition:(id)a4;
-+ (id)sortedMailboxesInArrayWithMailboxes:(id)a3 ranking:(id)a4;
++ (id)processorWithName:(id)name condition:(id)condition;
++ (id)sortedMailboxesInArrayWithMailboxes:(id)mailboxes ranking:(id)ranking;
 + (void)initialize;
 - (BOOL)_processEligibleMailboxesAndWait;
-- (BOOL)_runSynchronously:(int64_t)a3;
-- (MFFetchProcessor)initWithName:(id)a3 condition:(id)a4;
+- (BOOL)_runSynchronously:(int64_t)synchronously;
+- (MFFetchProcessor)initWithName:(id)name condition:(id)condition;
 - (id)_mailboxesToFetch;
 - (id)_observeChangesInConditions;
 - (void)_cancelCurrentInvocations;
-- (void)_fetchCompleted:(id)a3;
+- (void)_fetchCompleted:(id)completed;
 - (void)_finishRequest;
 - (void)dealloc;
-- (void)runSynchronouslyWithDuration:(double)a3;
+- (void)runSynchronouslyWithDuration:(double)duration;
 @end
 
 @implementation MFFetchProcessor
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(NSMutableSet);
     v3 = qword_100185888;
     qword_100185888 = v2;
 
     v4 = +[NSProcessInfo processInfo];
-    v5 = [v4 processorCount];
+    processorCount = [v4 processorCount];
 
-    if (v5 <= 1)
+    if (processorCount <= 1)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v5;
+      v6 = processorCount;
     }
 
     qword_100185890 = v6;
   }
 }
 
-- (MFFetchProcessor)initWithName:(id)a3 condition:(id)a4
+- (MFFetchProcessor)initWithName:(id)name condition:(id)condition
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  conditionCopy = condition;
   v26.receiver = self;
   v26.super_class = MFFetchProcessor;
   v8 = [(MFFetchProcessor *)&v26 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    if (v7)
+    if (conditionCopy)
     {
-      v11 = v7;
+      v11 = conditionCopy;
     }
 
     else
@@ -114,11 +114,11 @@
   [(MFFetchProcessor *)&v3 dealloc];
 }
 
-+ (id)processorWithName:(id)a3 condition:(id)a4
++ (id)processorWithName:(id)name condition:(id)condition
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MFFetchProcessor alloc] initWithName:v5 condition:v6];
+  nameCopy = name;
+  conditionCopy = condition;
+  v7 = [[MFFetchProcessor alloc] initWithName:nameCopy condition:conditionCopy];
 
   return v7;
 }
@@ -149,20 +149,20 @@
   return v3;
 }
 
-- (void)runSynchronouslyWithDuration:(double)a3
+- (void)runSynchronouslyWithDuration:(double)duration
 {
-  self->_stopTime = CFAbsoluteTimeGetCurrent() + a3;
+  self->_stopTime = CFAbsoluteTimeGetCurrent() + duration;
 
   [(MFFetchProcessor *)self _runSynchronously:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (BOOL)_runSynchronously:(int64_t)a3
+- (BOOL)_runSynchronously:(int64_t)synchronously
 {
   v5 = qword_100185888;
   objc_sync_enter(v5);
   v6 = qword_100185888;
-  v7 = [(MFFetchProcessor *)self name];
-  LOBYTE(v6) = [v6 containsObject:v7];
+  name = [(MFFetchProcessor *)self name];
+  LOBYTE(v6) = [v6 containsObject:name];
 
   if (v6)
   {
@@ -171,9 +171,9 @@
     v8 = MFAutoFetchLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(MFFetchProcessor *)self name];
+      name2 = [(MFFetchProcessor *)self name];
       v26 = 138412290;
-      v27 = *&v9;
+      v27 = *&name2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Canceling fetch %@ because one with the same name is currently running", &v26, 0xCu);
     }
 
@@ -183,8 +183,8 @@
   else
   {
     v11 = qword_100185888;
-    v12 = [(MFFetchProcessor *)self name];
-    [v11 addObject:v12];
+    name3 = [(MFFetchProcessor *)self name];
+    [v11 addObject:name3];
 
     objc_sync_exit(v5);
     v13 = objc_alloc_init(EFManualCancelationToken);
@@ -192,16 +192,16 @@
     self->_cancelationToken = v13;
 
     v15 = self->_cancelationToken;
-    v16 = [(MFFetchProcessor *)self _observeChangesInConditions];
-    [(EFManualCancelationToken *)v15 addCancelable:v16];
+    _observeChangesInConditions = [(MFFetchProcessor *)self _observeChangesInConditions];
+    [(EFManualCancelationToken *)v15 addCancelable:_observeChangesInConditions];
 
     Current = CFAbsoluteTimeGetCurrent();
-    v18 = 0;
+    synchronouslyCopy = 0;
     while ([(MFFetchProcessor *)self _processEligibleMailboxesAndWait])
     {
-      if (a3 == ++v18)
+      if (synchronously == ++synchronouslyCopy)
       {
-        v18 = a3;
+        synchronouslyCopy = synchronously;
         break;
       }
     }
@@ -224,18 +224,18 @@
     v23 = qword_100185888;
     objc_sync_enter(v23);
     v24 = qword_100185888;
-    v25 = [(MFFetchProcessor *)self name];
-    [v24 removeObject:v25];
+    name4 = [(MFFetchProcessor *)self name];
+    [v24 removeObject:name4];
 
     objc_sync_exit(v23);
-    return v18 > 0;
+    return synchronouslyCopy > 0;
   }
 }
 
 - (BOOL)_processEligibleMailboxesAndWait
 {
-  v52 = [(MFFetchProcessor *)self _mailboxesToFetch];
-  if (![v52 count])
+  _mailboxesToFetch = [(MFFetchProcessor *)self _mailboxesToFetch];
+  if (![_mailboxesToFetch count])
   {
     v29 = MFAutoFetchLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -248,9 +248,9 @@
     goto LABEL_43;
   }
 
-  v5 = [(MFFetchProcessor *)self requestLimiter];
+  requestLimiter = [(MFFetchProcessor *)self requestLimiter];
 
-  if (v5)
+  if (requestLimiter)
   {
     v42 = +[NSAssertionHandler currentHandler];
     [v42 handleFailureInMethod:a2 object:self file:@"MFFetchProcessor.m" lineNumber:184 description:@"_processEligibleMailboxesAndWait is being re-entered"];
@@ -262,13 +262,13 @@
   v7 = dispatch_semaphore_create(0);
   [(MFFetchProcessor *)self setFinishedProcessing:v7];
 
-  v8 = [v52 count];
+  v8 = [_mailboxesToFetch count];
   self->_numberOfRemainingRequestsToProcess = v8;
   v9 = MFAutoFetchLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v52 count];
+    *(&buf + 4) = [_mailboxesToFetch count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "powernap: start processing %lu mailboxes", &buf, 0xCu);
   }
 
@@ -278,7 +278,7 @@
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v52;
+  obj = _mailboxesToFetch;
   v10 = [obj countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (!v10)
   {
@@ -307,13 +307,13 @@
       }
 
       v15 = *(*(&v57 + 1) + 8 * v14);
-      v16 = [(MFFetchProcessor *)self requestLimiter];
-      dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
+      requestLimiter2 = [(MFFetchProcessor *)self requestLimiter];
+      dispatch_semaphore_wait(requestLimiter2, 0xFFFFFFFFFFFFFFFFLL);
 
-      v17 = [(MFFetchProcessor *)self condition];
-      v18 = [v17 isSatisfied];
+      condition = [(MFFetchProcessor *)self condition];
+      isSatisfied = [condition isSatisfied];
 
-      if ((v18 & 1) == 0)
+      if ((isSatisfied & 1) == 0)
       {
         v31 = MFAutoFetchLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -425,10 +425,10 @@ LABEL_41:
       [v22 setIsUserRequested:0];
       [v22 setDownloadAllMessages:0];
       [v22 setIsForegroundRequest:0];
-      v23 = [(MFFetchProcessor *)self loadMessageBodies];
-      if (v23)
+      loadMessageBodies = [(MFFetchProcessor *)self loadMessageBodies];
+      if (loadMessageBodies)
       {
-        v2 = [v15 account];
+        account = [v15 account];
         objc_opt_class();
         v24 = objc_opt_isKindOfClass() ^ 1;
       }
@@ -439,7 +439,7 @@ LABEL_41:
       }
 
       [v22 setShouldLoadMessageBody:v24 & 1];
-      if (v23)
+      if (loadMessageBodies)
       {
       }
 
@@ -452,8 +452,8 @@ LABEL_41:
       objc_sync_enter(v26);
       [(NSMutableSet *)self->_currentInvocations addObject:v25];
       v27 = +[NSNotificationCenter defaultCenter];
-      v28 = [v25 monitor];
-      [v27 addObserver:self selector:v49 name:v47 object:v28];
+      monitor = [v25 monitor];
+      [v27 addObserver:self selector:v49 name:v47 object:monitor];
 
       objc_sync_exit(v26);
       [(MFInvocationQueue *)self->_workQueue addInvocation:v25];
@@ -478,8 +478,8 @@ LABEL_41:
 
 LABEL_42:
 
-  v39 = [(MFFetchProcessor *)self finishedProcessing];
-  dispatch_semaphore_wait(v39, 0xFFFFFFFFFFFFFFFFLL);
+  finishedProcessing = [(MFFetchProcessor *)self finishedProcessing];
+  dispatch_semaphore_wait(finishedProcessing, 0xFFFFFFFFFFFFFFFFLL);
 
   [(MFFetchProcessor *)self setFinishedProcessing:0];
   [(MFFetchProcessor *)self setRequestLimiter:0];
@@ -495,14 +495,14 @@ LABEL_43:
 - (id)_observeChangesInConditions
 {
   objc_initWeak(&location, self);
-  v3 = [(MFFetchProcessor *)self condition];
-  v4 = [v3 conditionsObservable];
+  condition = [(MFFetchProcessor *)self condition];
+  conditionsObservable = [condition conditionsObservable];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006915C;
   v7[3] = &unk_1001589E8;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 subscribeWithResultBlock:v7];
+  v5 = [conditionsObservable subscribeWithResultBlock:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -535,23 +535,23 @@ LABEL_43:
 
         v6 = *(*(&v18 + 1) + 8 * i);
         v7 = +[NSNotificationCenter defaultCenter];
-        v8 = [v6 monitor];
-        [v7 removeObserver:self name:v4 object:v8];
+        monitor = [v6 monitor];
+        [v7 removeObserver:self name:v4 object:monitor];
 
-        v9 = [v6 target];
+        target = [v6 target];
         v10 = MFLogGeneral();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 mailbox];
-          v12 = [v11 account];
-          v13 = [v12 ef_publicDescription];
+          mailbox = [target mailbox];
+          account = [mailbox account];
+          ef_publicDescription = [account ef_publicDescription];
           *buf = 138543362;
-          v23 = v13;
+          v23 = ef_publicDescription;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Canceling in-flight fetch for %{public}@", buf, 0xCu);
         }
 
-        v14 = [v6 monitor];
-        [v14 cancel];
+        monitor2 = [v6 monitor];
+        [monitor2 cancel];
 
         [(MFFetchProcessor *)self _finishRequest];
       }
@@ -568,11 +568,11 @@ LABEL_43:
 
 - (void)_finishRequest
 {
-  v3 = [(MFFetchProcessor *)self requestLimiter];
-  v4 = v3;
-  if (v3)
+  requestLimiter = [(MFFetchProcessor *)self requestLimiter];
+  v4 = requestLimiter;
+  if (requestLimiter)
   {
-    dispatch_semaphore_signal(v3);
+    dispatch_semaphore_signal(requestLimiter);
   }
 
   stateQueue = self->_stateQueue;
@@ -584,47 +584,47 @@ LABEL_43:
   dispatch_sync(stateQueue, block);
 }
 
-- (void)_fetchCompleted:(id)a3
+- (void)_fetchCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:MonitoredActivityInvocation];
+  completedCopy = completed;
+  userInfo = [completedCopy userInfo];
+  v6 = [userInfo objectForKey:MonitoredActivityInvocation];
 
-  v7 = self->_currentInvocations;
-  objc_sync_enter(v7);
+  target = self->_currentInvocations;
+  objc_sync_enter(target);
   if ([(NSMutableSet *)self->_currentInvocations containsObject:v6])
   {
     v8 = +[NSNotificationCenter defaultCenter];
-    v9 = [v6 monitor];
-    [v8 removeObserver:self name:MonitoredActivityEnded object:v9];
+    monitor = [v6 monitor];
+    [v8 removeObserver:self name:MonitoredActivityEnded object:monitor];
 
     [(NSMutableSet *)self->_currentInvocations removeObject:v6];
-    objc_sync_exit(v7);
+    objc_sync_exit(target);
 
-    v7 = [v6 target];
-    v10 = [(NSMutableSet *)v7 mailbox];
-    if ([(NSMutableSet *)v7 _fetchedSuccessfully])
+    target = [v6 target];
+    mailbox = [(NSMutableSet *)target mailbox];
+    if ([(NSMutableSet *)target _fetchedSuccessfully])
     {
       v11 = MFAutoFetchLog();
       if (os_log_type_enabled(&v11->super.super, OS_LOG_TYPE_INFO))
       {
-        v21 = [v10 account];
-        v23 = [v21 loggingIdentifier];
-        v22 = [v10 name];
+        account = [mailbox account];
+        loggingIdentifier = [account loggingIdentifier];
+        name = [mailbox name];
         v12 = +[MFMailMessageLibrary defaultInstance];
-        v13 = [v10 URLString];
-        v14 = [v12 totalCountForMailbox:v13];
-        v15 = [v10 store];
+        uRLString = [mailbox URLString];
+        v14 = [v12 totalCountForMailbox:uRLString];
+        store = [mailbox store];
         *buf = 138413314;
-        v25 = v23;
+        v25 = loggingIdentifier;
         v26 = 2048;
-        v27 = v10;
+        v27 = mailbox;
         v28 = 2112;
-        v29 = v22;
+        v29 = name;
         v30 = 1024;
         v31 = v14;
         v32 = 2048;
-        v33 = [v15 serverMessageCount];
+        serverMessageCount = [store serverMessageCount];
         _os_log_impl(&_mh_execute_header, &v11->super.super, OS_LOG_TYPE_INFO, "powernap: %@ %p [%@ %d %lu]", buf, 0x30u);
       }
     }
@@ -634,21 +634,21 @@ LABEL_43:
       v17 = MFAutoFetchLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [v10 account];
-        v19 = [v18 loggingIdentifier];
-        v20 = [v10 name];
+        account2 = [mailbox account];
+        loggingIdentifier2 = [account2 loggingIdentifier];
+        name2 = [mailbox name];
         *buf = 138412802;
-        v25 = v19;
+        v25 = loggingIdentifier2;
         v26 = 2048;
-        v27 = v10;
+        v27 = mailbox;
         v28 = 2112;
-        v29 = v20;
+        v29 = name2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "powernap: %@ %p [%@ FAIL]", buf, 0x20u);
       }
 
       v11 = self->_failedMailboxes;
       objc_sync_enter(v11);
-      [(NSMutableSet *)self->_failedMailboxes addObject:v10];
+      [(NSMutableSet *)self->_failedMailboxes addObject:mailbox];
       objc_sync_exit(v11);
     }
 
@@ -664,7 +664,7 @@ LABEL_43:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "MFFetchProcessor: invocation canceled after notification fired", buf, 2u);
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(target);
   }
 }
 
@@ -692,14 +692,14 @@ LABEL_43:
 
         v5 = *(*(&v30 + 1) + 8 * i);
         v6 = objc_autoreleasePoolPush();
-        v7 = [v5 allMailboxUids];
-        v8 = [NSMutableSet setWithArray:v7];
+        allMailboxUids = [v5 allMailboxUids];
+        v8 = [NSMutableSet setWithArray:allMailboxUids];
 
         [v8 minusSet:self->_failedMailboxes];
         if (![(MFFetchProcessor *)self includePushedMailboxes])
         {
-          v9 = [v5 pushedMailboxUids];
-          [v8 minusSet:v9];
+          pushedMailboxUids = [v5 pushedMailboxUids];
+          [v8 minusSet:pushedMailboxUids];
         }
 
         if (![(MFFetchProcessor *)self includeFavoritesMailboxes])
@@ -722,16 +722,16 @@ LABEL_43:
         v12 = [v8 objectsPassingTest:v28];
         [v8 minusSet:v12];
 
-        v13 = [v8 allObjects];
+        allObjects = [v8 allObjects];
         if ([(MFFetchProcessor *)self useMailboxFrecencyRanking])
         {
           v14 = +[MFMailMessageLibrary defaultInstance];
-          v15 = [v14 mailboxFrecencyController];
+          mailboxFrecencyController = [v14 mailboxFrecencyController];
 
-          v16 = [v15 sortedArrayOfMailboxesForAccount:v5];
-          v17 = [objc_opt_class() sortedMailboxesInArrayWithMailboxes:v13 ranking:v16];
+          v16 = [mailboxFrecencyController sortedArrayOfMailboxesForAccount:v5];
+          v17 = [objc_opt_class() sortedMailboxesInArrayWithMailboxes:allObjects ranking:v16];
 
-          v13 = v17;
+          allObjects = v17;
         }
 
         accountMailboxesBatchSize = self->_accountMailboxesBatchSize;
@@ -746,7 +746,7 @@ LABEL_43:
           v20 = accountMailboxesBatchSize;
         }
 
-        v21 = [v13 subarrayWithRange:{0, v20}];
+        v21 = [allObjects subarrayWithRange:{0, v20}];
         [v27 addObjectsFromArray:v21];
 
         objc_autoreleasePoolPop(v6);
@@ -763,17 +763,17 @@ LABEL_43:
   return v22;
 }
 
-+ (id)sortedMailboxesInArrayWithMailboxes:(id)a3 ranking:(id)a4
++ (id)sortedMailboxesInArrayWithMailboxes:(id)mailboxes ranking:(id)ranking
 {
-  v5 = a3;
-  v19 = a4;
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
-  v7 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [v5 count]);
+  mailboxesCopy = mailboxes;
+  rankingCopy = ranking;
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [mailboxesCopy count]);
+  v7 = +[NSMutableIndexSet indexSetWithIndexesInRange:](NSMutableIndexSet, "indexSetWithIndexesInRange:", 0, [mailboxesCopy count]);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v19;
+  v8 = rankingCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -788,7 +788,7 @@ LABEL_43:
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v5 indexOfObject:v12];
+        v13 = [mailboxesCopy indexOfObject:v12];
         if (v13 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [v6 addObject:v12];
@@ -808,7 +808,7 @@ LABEL_43:
   v20[3] = &unk_100158A38;
   v14 = v6;
   v21 = v14;
-  v15 = v5;
+  v15 = mailboxesCopy;
   v22 = v15;
   [v7 enumerateIndexesUsingBlock:v20];
   v16 = v22;
@@ -817,37 +817,37 @@ LABEL_43:
   return v14;
 }
 
-+ (id)mailboxesSortedByLastFetchDate:(id)a3
++ (id)mailboxesSortedByLastFetchDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   +[MailPersistentStorage sharedStorage];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006A420;
   v9 = v8[3] = &unk_100158A60;
   v5 = v9;
-  v6 = [a1 mailboxes:v4 sortedByDate:v8];
+  v6 = [self mailboxes:dateCopy sortedByDate:v8];
 
   return v6;
 }
 
-+ (id)mailboxes:(id)a3 sortedByDate:(id)a4
++ (id)mailboxes:(id)mailboxes sortedByDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] > 1)
+  mailboxesCopy = mailboxes;
+  dateCopy = date;
+  if ([mailboxesCopy count] > 1)
   {
-    v9 = [v5 count];
+    v9 = [mailboxesCopy count];
     v10 = malloc_type_calloc(v9, 0x10uLL, 0x1000040451B5BE8uLL);
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_10006A678;
     v18 = &unk_100158A88;
-    v19 = v6;
+    v19 = dateCopy;
     v20 = v10;
-    [v5 enumerateObjectsUsingBlock:&v15];
+    [mailboxesCopy enumerateObjectsUsingBlock:&v15];
     qsort(v10, v9, 0x10uLL, sub_10006A778);
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [mailboxesCopy count]);
     if (v9)
     {
       v11 = v10;
@@ -855,7 +855,7 @@ LABEL_43:
       {
         v12 = *v11;
         v11 += 2;
-        v13 = [v5 objectAtIndexedSubscript:v12];
+        v13 = [mailboxesCopy objectAtIndexedSubscript:v12];
         [v8 addObject:v13];
 
         --v9;
@@ -870,9 +870,9 @@ LABEL_43:
   else
   {
     v7 = &__NSArray0__struct;
-    if (v5)
+    if (mailboxesCopy)
     {
-      v7 = v5;
+      v7 = mailboxesCopy;
     }
 
     v8 = v7;

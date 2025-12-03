@@ -1,21 +1,21 @@
 @interface TXRArrayElement
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initAsLevel:(unint64_t)a3 element:(unint64_t)a4 cubemap:(BOOL)a5 dataSourceProvider:(id)a6;
-- (id)initAsLevel:(unint64_t)a3 element:(unint64_t)a4 dimensions:(unint64_t)a5 pixelFormat:(unint64_t)a6 alphaInfo:(BOOL)a7 cubemap:(id)a8 bufferAllocator:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initAsLevel:(unint64_t)level element:(unint64_t)element cubemap:(BOOL)cubemap dataSourceProvider:(id)provider;
+- (id)initAsLevel:(unint64_t)level element:(unint64_t)element dimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:(BOOL)info cubemap:(id)cubemap bufferAllocator:;
 @end
 
 @implementation TXRArrayElement
 
-- (id)initAsLevel:(unint64_t)a3 element:(unint64_t)a4 cubemap:(BOOL)a5 dataSourceProvider:(id)a6
+- (id)initAsLevel:(unint64_t)level element:(unint64_t)element cubemap:(BOOL)cubemap dataSourceProvider:(id)provider
 {
-  v6 = a5;
-  v10 = a6;
+  cubemapCopy = cubemap;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = TXRArrayElement;
   v11 = [(TXRArrayElement *)&v19 init];
   if (v11)
   {
-    if (v6)
+    if (cubemapCopy)
     {
       v12 = 6;
     }
@@ -32,7 +32,7 @@
     for (i = 0; i != v12; ++i)
     {
       v16 = v11->_faces;
-      v17 = [[TXRImage alloc] initAsLevel:a3 element:a4 face:i dataSourceProvider:v10];
+      v17 = [[TXRImage alloc] initAsLevel:level element:element face:i dataSourceProvider:providerCopy];
       [(NSMutableArray *)v16 addObject:v17];
     }
   }
@@ -40,17 +40,17 @@
   return v11;
 }
 
-- (id)initAsLevel:(unint64_t)a3 element:(unint64_t)a4 dimensions:(unint64_t)a5 pixelFormat:(unint64_t)a6 alphaInfo:(BOOL)a7 cubemap:(id)a8 bufferAllocator:
+- (id)initAsLevel:(unint64_t)level element:(unint64_t)element dimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:(BOOL)info cubemap:(id)cubemap bufferAllocator:
 {
-  v9 = a7;
+  infoCopy = info;
   v21 = v8;
-  v13 = a8;
+  cubemapCopy = cubemap;
   v22.receiver = self;
   v22.super_class = TXRArrayElement;
   v14 = [(TXRArrayElement *)&v22 init];
   if (v14)
   {
-    if (v9)
+    if (infoCopy)
     {
       v15 = 6;
     }
@@ -67,7 +67,7 @@
     do
     {
       v18 = v14->_faces;
-      v19 = [[TXRImageIndependent alloc] initWithDimensions:a5 pixelFormat:a6 alphaInfo:v13 bufferAllocator:v21];
+      v19 = [[TXRImageIndependent alloc] initWithDimensions:dimensions pixelFormat:format alphaInfo:cubemapCopy bufferAllocator:v21];
       [(NSMutableArray *)v18 addObject:v19];
 
       --v15;
@@ -79,11 +79,11 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = [+[TXRArrayElement allocWithZone:](TXRArrayElement init];
-  v6 = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{a3), "initWithCapacity:", -[NSMutableArray count](self->_faces, "count")}];
+  v6 = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{zone), "initWithCapacity:", -[NSMutableArray count](self->_faces, "count")}];
   faces = v5->_faces;
   v5->_faces = v6;
 
@@ -108,7 +108,7 @@
         }
 
         v13 = v5->_faces;
-        v14 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{zone, v17}];
         [(NSMutableArray *)v13 addObject:v14];
 
         ++v12;

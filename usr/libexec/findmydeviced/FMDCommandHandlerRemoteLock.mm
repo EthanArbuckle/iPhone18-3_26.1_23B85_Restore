@@ -1,18 +1,18 @@
 @interface FMDCommandHandlerRemoteLock
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandlerRemoteLock
 
 - (void)handleCommand
 {
-  v3 = [(FMDCommandHandler *)self provider];
+  provider = [(FMDCommandHandler *)self provider];
   v8 = qword_100314CD0;
-  v4 = [(FMDCommandHandler *)self commandParams];
-  v5 = [v4 objectForKeyedSubscript:@"newPasscode"];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v5 = [commandParams objectForKeyedSubscript:@"newPasscode"];
 
-  [v3 setPasscodeLock:v5 statusCode:&v8];
+  [provider setPasscodeLock:v5 statusCode:&v8];
   v6 = +[NSMutableDictionary dictionary];
   v7 = [NSNumber numberWithInteger:v8];
   [v6 setObject:v7 forKeyedSubscript:@"status"];
@@ -20,32 +20,32 @@
   [(FMDCommandHandler *)self didHandleCommandWithAckData:v6];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FMDCommandHandler *)self commandParams];
-  v6 = [v5 objectForKeyedSubscript:@"ackURL"];
+  completionCopy = completion;
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v6 = [commandParams objectForKeyedSubscript:@"ackURL"];
 
-  v7 = [(FMDCommandHandler *)self provider];
-  v8 = [(FMDCommandHandler *)self ackDataForCommand];
-  v9 = [v8 objectForKeyedSubscript:@"status"];
-  v10 = [v9 intValue];
+  provider = [(FMDCommandHandler *)self provider];
+  ackDataForCommand = [(FMDCommandHandler *)self ackDataForCommand];
+  v9 = [ackDataForCommand objectForKeyedSubscript:@"status"];
+  intValue = [v9 intValue];
 
   if (v6)
   {
-    v11 = v10;
+    v11 = intValue;
     v12 = [NSURL URLWithString:v6];
     v13 = [FMDRequestAckLock alloc];
-    v14 = [(FMDCommandHandler *)self commandParams];
-    v15 = [(FMDRequestAckLock *)v13 initWithProvider:v7 lockCommand:v14 cmdStatusCode:v11 ackURL:v12];
+    commandParams2 = [(FMDCommandHandler *)self commandParams];
+    v15 = [(FMDRequestAckLock *)v13 initWithProvider:provider lockCommand:commandParams2 cmdStatusCode:v11 ackURL:v12];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100146878;
     v17[3] = &unk_1002CD1D0;
-    v18 = v4;
+    v18 = completionCopy;
     [(FMDRequest *)v15 setCompletionHandler:v17];
-    [v7 enqueueRequest:v15];
+    [provider enqueueRequest:v15];
   }
 
   else

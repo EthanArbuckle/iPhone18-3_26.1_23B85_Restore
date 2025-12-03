@@ -1,50 +1,50 @@
 @interface FPCTLTermDumper
-+ (void)execPagerOnFileFd:(int)a3;
-+ (void)setupPagerForFd:(int)a3;
-- (FPCTLTermDumper)initWithCoder:(id)a3;
-- (FPCTLTermDumper)initWithFd:(int)a3 forceColor:(BOOL)a4;
-- (id)annotateString:(id)a3 markedIdentifiers:(id)a4;
-- (unint64_t)_startInCString:(char)a3[256] fgColor:(int)a4 bgColor:(int)a5 attr:(int)a6;
++ (void)execPagerOnFileFd:(int)fd;
++ (void)setupPagerForFd:(int)fd;
+- (FPCTLTermDumper)initWithCoder:(id)coder;
+- (FPCTLTermDumper)initWithFd:(int)fd forceColor:(BOOL)color;
+- (id)annotateString:(id)string markedIdentifiers:(id)identifiers;
+- (unint64_t)_startInCString:(char)string[256] fgColor:(int)color bgColor:(int)bgColor attr:(int)attr;
 - (unint64_t)remainingSpace;
-- (void)_putsAndCrop:(const char *)a3 len:(unint64_t)a4;
-- (void)cursorDown:(unsigned int)a3;
+- (void)_putsAndCrop:(const char *)crop len:(unint64_t)len;
+- (void)cursorDown:(unsigned int)down;
 - (void)cursorGotoLineStart;
-- (void)cursorLeft:(unsigned int)a3;
+- (void)cursorLeft:(unsigned int)left;
 - (void)cursorRestore;
-- (void)cursorRight:(unsigned int)a3;
+- (void)cursorRight:(unsigned int)right;
 - (void)cursorSave;
-- (void)cursorUp:(unsigned int)a3;
-- (void)dumpImage:(id)a3 characterWidth:(unint64_t)a4 characterHeight:(unint64_t)a5;
-- (void)dumpImage:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (void)dumpProgress:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)cursorUp:(unsigned int)up;
+- (void)dumpImage:(id)image characterWidth:(unint64_t)width characterHeight:(unint64_t)height;
+- (void)dumpImage:(id)image width:(unint64_t)width height:(unint64_t)height;
+- (void)dumpProgress:(id)progress;
+- (void)encodeWithCoder:(id)coder;
 - (void)endLine;
 - (void)eraseEndOfLine;
 - (void)eraseLine;
 - (void)eraseScreenDown;
 - (void)eraseScreenUp;
 - (void)eraseStartOfLine;
-- (void)put:(id)a3;
-- (void)puts:(const char *)a3;
-- (void)puts:(const char *)a3 len:(unint64_t)a4;
+- (void)put:(id)put;
+- (void)puts:(const char *)puts;
+- (void)puts:(const char *)puts len:(unint64_t)len;
 - (void)startNewLine;
 - (void)startPager;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation FPCTLTermDumper
 
-- (FPCTLTermDumper)initWithFd:(int)a3 forceColor:(BOOL)a4
+- (FPCTLTermDumper)initWithFd:(int)fd forceColor:(BOOL)color
 {
-  v4 = a4;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = FPCTLTermDumper;
   v6 = [(FPCTLTermDumper *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    v6->_fd = a3;
-    v8 = isatty(a3) != 0;
+    v6->_fd = fd;
+    v8 = isatty(fd) != 0;
     v7->_isatty = v8;
     v9 = getenv("TERM");
     v10 = v9;
@@ -59,22 +59,22 @@
     }
 
     v7->_supportsEscapeSequences = v11;
-    if (!v4 && v11)
+    if (!colorCopy && v11)
     {
       if (strcasestr(v9, "ansi"))
       {
-        v4 = 1;
+        colorCopy = 1;
       }
 
       else
       {
-        v4 = strstr(v10, "color") != 0;
+        colorCopy = strstr(v10, "color") != 0;
       }
     }
 
     v12 = 0;
-    v7->_useColor = v4;
-    if (v10 && v4)
+    v7->_useColor = colorCopy;
+    if (v10 && colorCopy)
     {
       v12 = strstr(v10, "256color") != 0;
     }
@@ -86,18 +86,18 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AC00];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [[v4 alloc] initWithFileDescriptor:self->_fd];
-  [v5 encodeObject:v6 forKey:@"FileHandleKey"];
+  [coderCopy encodeObject:v6 forKey:@"FileHandleKey"];
 }
 
-- (FPCTLTermDumper)initWithCoder:(id)a3
+- (FPCTLTermDumper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FileHandleKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FileHandleKey"];
 
   v6 = -[FPCTLTermDumper initWithFd:forceColor:](self, "initWithFd:forceColor:", [v5 fileDescriptor], 1);
   v7 = v6;
@@ -109,10 +109,10 @@
   return v7;
 }
 
-+ (void)setupPagerForFd:(int)a3
++ (void)setupPagerForFd:(int)fd
 {
   v3 = 0;
-  ioctl(a3, 0x40087468uLL, &v3);
+  ioctl(fd, 0x40087468uLL, &v3);
   if (!getenv("LESS"))
   {
     putenv("LESS=FRSX");
@@ -124,11 +124,11 @@
   }
 }
 
-+ (void)execPagerOnFileFd:(int)a3
++ (void)execPagerOnFileFd:(int)fd
 {
-  [a1 setupPagerForFd:?];
-  dup2(a3, 0);
-  lseek(a3, 0, 0);
+  [self setupPagerForFd:?];
+  dup2(fd, 0);
+  lseek(fd, 0, 0);
   if (execlp("less", "less", "-", 0) < 0)
   {
     perror("execvp");
@@ -195,27 +195,27 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)_startInCString:(char)a3[256] fgColor:(int)a4 bgColor:(int)a5 attr:(int)a6
+- (unint64_t)_startInCString:(char)string[256] fgColor:(int)color bgColor:(int)bgColor attr:(int)attr
 {
-  curAttrs = a6;
-  curBg = a5;
-  curFg = a4;
-  if (a5 == -1)
+  curAttrs = attr;
+  curBg = bgColor;
+  curFg = color;
+  if (bgColor == -1)
   {
     curBg = self->_curBg;
   }
 
-  if (a4 == -1)
+  if (color == -1)
   {
     curFg = self->_curFg;
   }
 
-  if (a6 == -1)
+  if (attr == -1)
   {
     curAttrs = self->_curAttrs;
   }
 
-  strcpy(a3, "\x1B[");
+  strcpy(string, "\x1B[");
   if (curAttrs == self->_curAttrs)
   {
     v11 = self->_curFg;
@@ -224,13 +224,13 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
 
   else
   {
-    strcpy(a3 + 2, "0;");
+    strcpy(string + 2, "0;");
     v12 = 4;
     for (i = 1; i != 32; ++i)
     {
       if ((curAttrs >> i))
       {
-        v12 += snprintf(&a3[v12], 256 - v12, "%zd;", i);
+        v12 += snprintf(&string[v12], 256 - v12, "%zd;", i);
       }
     }
 
@@ -241,13 +241,13 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
 
   if (curFg != v11)
   {
-    v12 += snprintf(&a3[v12], 256 - v12, "%d;", curFg + 30);
+    v12 += snprintf(&string[v12], 256 - v12, "%d;", curFg + 30);
     self->_curFg = curFg;
   }
 
   if (curBg != self->_curBg)
   {
-    v12 += snprintf(&a3[v12], 256 - v12, "%d;", curBg + 40);
+    v12 += snprintf(&string[v12], 256 - v12, "%d;", curBg + 40);
     self->_curBg = curBg;
   }
 
@@ -256,7 +256,7 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
     return 0;
   }
 
-  a3[v12 - 1] = 109;
+  string[v12 - 1] = 109;
   return v12;
 }
 
@@ -316,35 +316,35 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
   }
 }
 
-- (void)cursorUp:(unsigned int)a3
+- (void)cursorUp:(unsigned int)up
 {
   if (self->_supportsEscapeSequences)
   {
-    dprintf(self->_fd, "\x1B[%d%c", a3, 65);
+    dprintf(self->_fd, "\x1B[%d%c", up, 65);
   }
 }
 
-- (void)cursorDown:(unsigned int)a3
+- (void)cursorDown:(unsigned int)down
 {
   if (self->_supportsEscapeSequences)
   {
-    dprintf(self->_fd, "\x1B[%d%c", a3, 66);
+    dprintf(self->_fd, "\x1B[%d%c", down, 66);
   }
 }
 
-- (void)cursorRight:(unsigned int)a3
+- (void)cursorRight:(unsigned int)right
 {
   if (self->_supportsEscapeSequences)
   {
-    dprintf(self->_fd, "\x1B[%d%c", a3, 67);
+    dprintf(self->_fd, "\x1B[%d%c", right, 67);
   }
 }
 
-- (void)cursorLeft:(unsigned int)a3
+- (void)cursorLeft:(unsigned int)left
 {
   if (self->_supportsEscapeSequences)
   {
-    dprintf(self->_fd, "\x1B[%d%c", a3, 68);
+    dprintf(self->_fd, "\x1B[%d%c", left, 68);
   }
 }
 
@@ -386,23 +386,23 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
   return v3 - self->_usedTermWidth;
 }
 
-- (void)dumpImage:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (void)dumpImage:(id)image width:(unint64_t)width height:(unint64_t)height
 {
-  v9 = [a3 base64EncodedStringWithOptions:0];
+  v9 = [image base64EncodedStringWithOptions:0];
   v8 = v9;
-  -[FPCTLTermDumper write:](self, "write:", @"\x1B]1337;File=inline=1;width=%lupx;height=%lupx:%s\a\n", a4, a5, [v9 UTF8String]);
+  -[FPCTLTermDumper write:](self, "write:", @"\x1B]1337;File=inline=1;width=%lupx;height=%lupx:%s\a\n", width, height, [v9 UTF8String]);
 }
 
-- (void)dumpImage:(id)a3 characterWidth:(unint64_t)a4 characterHeight:(unint64_t)a5
+- (void)dumpImage:(id)image characterWidth:(unint64_t)width characterHeight:(unint64_t)height
 {
-  v9 = [a3 base64EncodedStringWithOptions:0];
+  v9 = [image base64EncodedStringWithOptions:0];
   v8 = v9;
-  -[FPCTLTermDumper write:](self, "write:", @"\x1B]1337;File=inline=1;width=%lu;height=%lu:%s\a", a4, a5, [v9 UTF8String]);
+  -[FPCTLTermDumper write:](self, "write:", @"\x1B]1337;File=inline=1;width=%lu;height=%lu:%s\a", width, height, [v9 UTF8String]);
 }
 
-- (void)dumpProgress:(id)a3
+- (void)dumpProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   if ([(FPCTLTermDumper *)self supportsEscapeSequences])
   {
     [(FPCTLTermDumper *)self cursorGotoLineStart];
@@ -422,15 +422,15 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
       v7 = v6;
     }
 
-    [v4 fractionCompleted];
+    [progressCopy fractionCompleted];
     v9 = (v8 * v7);
-    v10 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     if (v9)
     {
       v11 = v9;
       do
       {
-        [v10 appendString:@"█"];
+        [string appendString:@"█"];
         --v11;
       }
 
@@ -442,69 +442,69 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
       v12 = v7 - v9;
       do
       {
-        [v10 appendString:@" "];
+        [string appendString:@" "];
         --v12;
       }
 
       while (v12);
     }
 
-    [v4 fractionCompleted];
-    [v10 appendFormat:@"| %lu%%", (v13 * 100.0)];
-    [(FPCTLTermDumper *)self write:@"%@", v10];
+    [progressCopy fractionCompleted];
+    [string appendFormat:@"| %lu%%", (v13 * 100.0)];
+    [(FPCTLTermDumper *)self write:@"%@", string];
   }
 }
 
-- (void)_putsAndCrop:(const char *)a3 len:(unint64_t)a4
+- (void)_putsAndCrop:(const char *)crop len:(unint64_t)len
 {
   usedTermWidth = self->_usedTermWidth;
-  if (self->_termWidth - usedTermWidth >= a4)
+  if (self->_termWidth - usedTermWidth >= len)
   {
-    v6 = a4;
+    lenCopy = len;
   }
 
   else
   {
-    v6 = self->_termWidth - usedTermWidth;
+    lenCopy = self->_termWidth - usedTermWidth;
   }
 
-  self->_usedTermWidth = v6 + usedTermWidth;
-  write(self->_fd, a3, v6);
+  self->_usedTermWidth = lenCopy + usedTermWidth;
+  write(self->_fd, crop, lenCopy);
 }
 
-- (void)puts:(const char *)a3 len:(unint64_t)a4
+- (void)puts:(const char *)puts len:(unint64_t)len
 {
   if (self->_termWidth)
   {
-    [(FPCTLTermDumper *)self _putsAndCrop:a3 len:a4];
+    [(FPCTLTermDumper *)self _putsAndCrop:puts len:len];
   }
 
   else
   {
-    write(self->_fd, a3, a4);
+    write(self->_fd, puts, len);
   }
 }
 
-- (void)puts:(const char *)a3
+- (void)puts:(const char *)puts
 {
-  v5 = strlen(a3);
+  v5 = strlen(puts);
 
-  [(FPCTLTermDumper *)self puts:a3 len:v5];
+  [(FPCTLTermDumper *)self puts:puts len:v5];
 }
 
-- (void)put:(id)a3
+- (void)put:(id)put
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  putCopy = put;
+  uTF8String = [put UTF8String];
 
-  [(FPCTLTermDumper *)self puts:v6];
+  [(FPCTLTermDumper *)self puts:uTF8String];
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  writeCopy = write;
+  v6 = [[v4 alloc] initWithFormat:writeCopy arguments:&v7];
 
   if (self->_termWidth)
   {
@@ -517,13 +517,13 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
   }
 }
 
-- (id)annotateString:(id)a3 markedIdentifiers:(id)a4
+- (id)annotateString:(id)string markedIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = v6;
+  stringCopy = string;
+  v7 = stringCopy;
   if (self->_useColor)
   {
-    v8 = a4;
+    identifiersCopy = identifiers;
     v9 = [v7 mutableCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -532,7 +532,7 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
     v14[4] = self;
     v10 = v9;
     v15 = v10;
-    [v8 enumerateKeysAndObjectsUsingBlock:v14];
+    [identifiersCopy enumerateKeysAndObjectsUsingBlock:v14];
 
     v11 = v15;
     v12 = v10;
@@ -540,7 +540,7 @@ void __29__FPCTLTermDumper_startPager__block_invoke(uint64_t a1)
 
   else
   {
-    v12 = v6;
+    v12 = stringCopy;
   }
 
   return v12;

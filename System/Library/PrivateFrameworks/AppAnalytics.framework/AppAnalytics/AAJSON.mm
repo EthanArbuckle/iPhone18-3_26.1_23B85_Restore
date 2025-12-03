@@ -1,6 +1,6 @@
 @interface AAJSON
 - (AAJSON)init;
-- (AAJSON)initWithData:(id)a3;
+- (AAJSON)initWithData:(id)data;
 - (BOOL)exists;
 - (NSArray)array;
 - (NSDictionary)object;
@@ -8,16 +8,16 @@
 - (NSString)description;
 - (NSString)string;
 - (id)any;
-- (id)objectAtIndexedSubscript:(int64_t)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)toDataWithOptions:(unint64_t)a3 :(id *)a4;
+- (id)objectAtIndexedSubscript:(int64_t)subscript;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)toDataWithOptions:(unint64_t)options :(id *)a4;
 @end
 
 @implementation AAJSON
 
-- (AAJSON)initWithData:(id)a3
+- (AAJSON)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_1B6AB8C80();
   v6 = v5;
 
@@ -26,20 +26,20 @@
   return v7;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   v4 = sub_1B6AB92E0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1B69D90E4(v4, v6);
 
   return v8;
 }
 
-- (id)objectAtIndexedSubscript:(int64_t)a3
+- (id)objectAtIndexedSubscript:(int64_t)subscript
 {
-  v4 = self;
-  v5 = sub_1B69D92A8(a3);
+  selfCopy = self;
+  v5 = sub_1B69D92A8(subscript);
 
   return v5;
 }
@@ -104,7 +104,7 @@ LABEL_6:
 
 - (NSArray)array
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B69D995C();
 
   if (v3)
@@ -123,7 +123,7 @@ LABEL_6:
 
 - (NSDictionary)object
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B69D9B74();
 
   if (v3)
@@ -142,16 +142,16 @@ LABEL_6:
 
 - (NSNumber)number
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B69D9EFC();
 
   return v3;
 }
 
-- (id)toDataWithOptions:(unint64_t)a3 :(id *)a4
+- (id)toDataWithOptions:(unint64_t)options :(id *)a4
 {
-  v5 = self;
-  v6 = sub_1B69DA064(a3);
+  selfCopy = self;
+  v6 = sub_1B69DA064(options);
   v8 = v7;
 
   v9 = sub_1B6AB8C60();
@@ -169,7 +169,7 @@ LABEL_6:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   JSON.description.getter();
 
   v3 = sub_1B6AB92B0();

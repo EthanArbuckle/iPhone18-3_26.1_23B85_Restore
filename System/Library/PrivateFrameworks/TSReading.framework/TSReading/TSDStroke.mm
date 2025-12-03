@@ -1,76 +1,76 @@
 @interface TSDStroke
-+ (id)editedStrokeFromModelStroke:(id)a3 selectedStroke:(id)a4;
++ (id)editedStrokeFromModelStroke:(id)stroke selectedStroke:(id)selectedStroke;
 + (id)emptyStroke;
 + (id)i_newEmptyStroke;
 + (id)i_newStroke;
 + (id)stroke;
-+ (id)strokeWithColor:(id)a3 width:(double)a4;
-+ (id)strokeWithColor:(id)a3 width:(double)a4 cap:(int)a5 join:(int)a6 pattern:(id)a7;
-+ (int64_t)indexOfStroke:(id)a3 strokeArray:(id)a4;
++ (id)strokeWithColor:(id)color width:(double)width;
++ (id)strokeWithColor:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern;
++ (int64_t)indexOfStroke:(id)stroke strokeArray:(id)array;
 - (BOOL)canApplyDirectlyToRepRenderable;
 - (BOOL)canApplyToShapeRenderable;
 - (BOOL)dontClearBackground;
 - (BOOL)isDash;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStroke:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStroke:(id)stroke;
 - (BOOL)isNearlyWhite;
 - (BOOL)isRoundDash;
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7;
-- (CGRect)boundsForPath:(id)a3;
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform;
+- (CGRect)boundsForPath:(id)path;
 - (NSString)description;
 - (TSDStroke)init;
-- (TSDStroke)initWithColor:(id)a3 width:(double)a4 cap:(int)a5 join:(int)a6 pattern:(id)a7 miterLimit:(double)a8;
+- (TSDStroke)initWithColor:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit;
 - (_TSDStrokeOutsets)outsets;
 - (double)dashSpacing;
 - (double)horizontalMarginForSwatch;
-- (id)colorForCGContext:(CGContext *)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)pathForLineEnd:(id)a3 wrapPath:(BOOL)a4 atPoint:(CGPoint)a5 atAngle:(double)a6 withScale:(double)a7;
-- (id)pathToStrokeFromTSDBezierPath:(id)a3;
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3;
-- (id)strokeLineEnd:(id)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)colorForCGContext:(CGContext *)context;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)pathForLineEnd:(id)end wrapPath:(BOOL)path atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale;
+- (id)pathToStrokeFromTSDBezierPath:(id)path;
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform;
+- (id)strokeLineEnd:(id)end;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4;
-- (void)applyToRepRenderable:(id)a3 withScale:(double)a4;
-- (void)applyToShapeRenderable:(id)a3 insideStroke:(BOOL)a4 withScale:(double)a5;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)i_setCap:(int)a3;
-- (void)i_setPattern:(id)a3;
-- (void)i_setPatternPropertiesFromStroke:(id)a3;
-- (void)i_setPropertiesFromStroke:(id)a3;
-- (void)p_strokePathChunk:(CGPath *)a3 inContext:(CGContext *)a4 wantsInteriorStroke:(BOOL)a5;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
-- (void)paintRect:(CGRect)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5;
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke;
+- (void)applyToRepRenderable:(id)renderable withScale:(double)scale;
+- (void)applyToShapeRenderable:(id)renderable insideStroke:(BOOL)stroke withScale:(double)scale;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)i_setCap:(int)cap;
+- (void)i_setPattern:(id)pattern;
+- (void)i_setPatternPropertiesFromStroke:(id)stroke;
+- (void)i_setPropertiesFromStroke:(id)stroke;
+- (void)p_strokePathChunk:(CGPath *)chunk inContext:(CGContext *)context wantsInteriorStroke:(BOOL)stroke;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
+- (void)paintRect:(CGRect)rect wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context;
 @end
 
 @implementation TSDStroke
 
-- (TSDStroke)initWithColor:(id)a3 width:(double)a4 cap:(int)a5 join:(int)a6 pattern:(id)a7 miterLimit:(double)a8
+- (TSDStroke)initWithColor:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit
 {
-  v14 = a3;
-  v15 = a7;
+  colorCopy = color;
+  patternCopy = pattern;
   v22.receiver = self;
   v22.super_class = TSDStroke;
   v16 = [(TSDStroke *)&v22 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [colorCopy copy];
     color = v16->_color;
     v16->_color = v17;
 
-    v16->_width = a4;
-    v16->_actualWidth = a4;
-    v16->_cap = a5;
-    v16->_join = a6;
-    v19 = [v15 copy];
+    v16->_width = width;
+    v16->_actualWidth = width;
+    v16->_cap = cap;
+    v16->_join = join;
+    v19 = [patternCopy copy];
     pattern = v16->_pattern;
     v16->_pattern = v19;
 
-    v16->_miterLimit = a8;
-    if ([v15 isRoundDash])
+    v16->_miterLimit = limit;
+    if ([patternCopy isRoundDash])
     {
       v16->_cap = 1;
     }
@@ -81,66 +81,66 @@
 
 - (TSDStroke)init
 {
-  v3 = [MEMORY[0x277D6C2A8] blackColor];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
   v4 = +[TSDStrokePattern solidPattern];
-  v5 = [(TSDStroke *)self initWithColor:v3 width:0 cap:0 join:v4 pattern:1.0];
+  v5 = [(TSDStroke *)self initWithColor:blackColor width:0 cap:0 join:v4 pattern:1.0];
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableStroke allocWithZone:a3];
-  v5 = [(TSDStroke *)self color];
+  v4 = [TSDMutableStroke allocWithZone:zone];
+  color = [(TSDStroke *)self color];
   [(TSDStroke *)self width];
   v7 = v6;
   v8 = [(TSDStroke *)self cap];
-  v9 = [(TSDStroke *)self join];
-  v10 = [(TSDStroke *)self pattern];
+  join = [(TSDStroke *)self join];
+  pattern = [(TSDStroke *)self pattern];
   [(TSDStroke *)self miterLimit];
-  v12 = [(TSDStroke *)v4 initWithColor:v5 width:v8 cap:v9 join:v10 pattern:v7 miterLimit:v11];
+  v12 = [(TSDStroke *)v4 initWithColor:color width:v8 cap:join join:pattern pattern:v7 miterLimit:v11];
 
   [(TSDStroke *)self actualWidth];
   [(TSDStroke *)v12 setI_actualWidth:?];
   return v12;
 }
 
-- (void)i_setCap:(int)a3
+- (void)i_setCap:(int)cap
 {
-  if (self->_cap != a3)
+  if (self->_cap != cap)
   {
     if ([(TSDStroke *)self isRoundDash])
     {
-      v7 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStroke i_setCap:]"];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-      [v7 handleFailureInFunction:v5 file:v6 lineNumber:518 description:@"Cannot change cap style on a round-dash stroke."];
+      [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:518 description:@"Cannot change cap style on a round-dash stroke."];
     }
 
     else
     {
-      self->_cap = a3;
+      self->_cap = cap;
     }
   }
 }
 
-- (void)i_setPattern:(id)a3
+- (void)i_setPattern:(id)pattern
 {
-  v10 = a3;
-  v4 = [(TSDStroke *)self pattern];
+  patternCopy = pattern;
+  pattern = [(TSDStroke *)self pattern];
 
-  v5 = v10;
-  if (v4 != v10)
+  v5 = patternCopy;
+  if (pattern != patternCopy)
   {
-    v6 = [(TSDStroke *)self isRoundDash];
-    v7 = [v10 copy];
+    isRoundDash = [(TSDStroke *)self isRoundDash];
+    v7 = [patternCopy copy];
     pattern = self->_pattern;
     self->_pattern = v7;
 
-    if ([v10 isRoundDash])
+    if ([patternCopy isRoundDash])
     {
-      v5 = v10;
-      if (v6)
+      v5 = patternCopy;
+      if (isRoundDash)
       {
         goto LABEL_8;
       }
@@ -150,8 +150,8 @@
 
     else
     {
-      v5 = v10;
-      if (!v6)
+      v5 = patternCopy;
+      if (!isRoundDash)
       {
         goto LABEL_8;
       }
@@ -160,7 +160,7 @@
     }
 
     [(TSDStroke *)self i_setCap:v9];
-    v5 = v10;
+    v5 = patternCopy;
   }
 
 LABEL_8:
@@ -168,20 +168,20 @@ LABEL_8:
 
 + (id)i_newStroke
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277D6C2A8] blackColor];
+  v2 = [self alloc];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
   v4 = +[TSDStrokePattern solidPattern];
-  v5 = [v2 initWithColor:v3 width:0 cap:0 join:v4 pattern:1.0];
+  v5 = [v2 initWithColor:blackColor width:0 cap:0 join:v4 pattern:1.0];
 
   return v5;
 }
 
 + (id)i_newEmptyStroke
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277D6C2A8] blackColor];
+  v2 = [self alloc];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
   v4 = +[TSDStrokePattern emptyPattern];
-  v5 = [v2 initWithColor:v3 width:0 cap:0 join:v4 pattern:1.0];
+  v5 = [v2 initWithColor:blackColor width:0 cap:0 join:v4 pattern:1.0];
 
   return v5;
 }
@@ -192,7 +192,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __19__TSDStroke_stroke__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (stroke_pred != -1)
   {
     dispatch_once(&stroke_pred, block);
@@ -216,7 +216,7 @@ uint64_t __19__TSDStroke_stroke__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __24__TSDStroke_emptyStroke__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (emptyStroke_pred != -1)
   {
     dispatch_once(&emptyStroke_pred, block);
@@ -234,31 +234,31 @@ uint64_t __24__TSDStroke_emptyStroke__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)strokeWithColor:(id)a3 width:(double)a4
++ (id)strokeWithColor:(id)color width:(double)width
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_alloc(objc_opt_class());
   v7 = +[TSDStrokePattern solidPattern];
-  v8 = [v6 initWithColor:v5 width:0 cap:0 join:v7 pattern:a4];
+  v8 = [v6 initWithColor:colorCopy width:0 cap:0 join:v7 pattern:width];
 
   return v8;
 }
 
-+ (id)strokeWithColor:(id)a3 width:(double)a4 cap:(int)a5 join:(int)a6 pattern:(id)a7
++ (id)strokeWithColor:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern
 {
-  v7 = *&a6;
-  v8 = *&a5;
-  v11 = a7;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithColor:v12 width:v8 cap:v7 join:v11 pattern:a4];
+  v7 = *&join;
+  v8 = *&cap;
+  patternCopy = pattern;
+  colorCopy = color;
+  v13 = [objc_alloc(objc_opt_class()) initWithColor:colorCopy width:v8 cap:v7 join:patternCopy pattern:width];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_29;
   }
@@ -275,82 +275,82 @@ uint64_t __24__TSDStroke_emptyStroke__block_invoke(uint64_t a1)
     goto LABEL_5;
   }
 
-  v5 = [objc_opt_class() mutableClass];
-  if (v5 != [objc_opt_class() mutableClass])
+  mutableClass = [objc_opt_class() mutableClass];
+  if (mutableClass != [objc_opt_class() mutableClass])
   {
     goto LABEL_5;
   }
 
-  v7 = [(TSDStroke *)self supportsWidth];
-  v8 = [(TSDStroke *)v4 supportsWidth];
-  if (v7)
+  supportsWidth = [(TSDStroke *)self supportsWidth];
+  supportsWidth2 = [(TSDStroke *)equalCopy supportsWidth];
+  if (supportsWidth)
   {
-    if (!v8)
+    if (!supportsWidth2)
     {
       goto LABEL_5;
     }
 
     [(TSDStroke *)self width];
     v10 = v9;
-    [(TSDStroke *)v4 width];
+    [(TSDStroke *)equalCopy width];
     if (vabdd_f64(v10, v11) >= 0.00999999978)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v8)
+  else if (supportsWidth2)
   {
     goto LABEL_5;
   }
 
-  v12 = [(TSDStroke *)self supportsLineOptions];
-  v13 = [(TSDStroke *)v4 supportsLineOptions];
-  if (v12)
+  supportsLineOptions = [(TSDStroke *)self supportsLineOptions];
+  supportsLineOptions2 = [(TSDStroke *)equalCopy supportsLineOptions];
+  if (supportsLineOptions)
   {
-    if (!v13)
+    if (!supportsLineOptions2)
     {
       goto LABEL_5;
     }
 
     v14 = [(TSDStroke *)self cap];
-    if (v14 != [(TSDStroke *)v4 cap])
+    if (v14 != [(TSDStroke *)equalCopy cap])
     {
       goto LABEL_5;
     }
 
-    v15 = [(TSDStroke *)self join];
-    if (v15 != [(TSDStroke *)v4 join])
+    join = [(TSDStroke *)self join];
+    if (join != [(TSDStroke *)equalCopy join])
     {
       goto LABEL_5;
     }
 
     [(TSDStroke *)self miterLimit];
     v17 = v16;
-    [(TSDStroke *)v4 miterLimit];
+    [(TSDStroke *)equalCopy miterLimit];
     if (v17 != v18)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v13)
+  else if (supportsLineOptions2)
   {
     goto LABEL_5;
   }
 
-  v19 = [(TSDStroke *)self supportsPattern];
-  v20 = [(TSDStroke *)v4 supportsPattern];
-  if (v19)
+  supportsPattern = [(TSDStroke *)self supportsPattern];
+  supportsPattern2 = [(TSDStroke *)equalCopy supportsPattern];
+  if (supportsPattern)
   {
-    if (!v20)
+    if (!supportsPattern2)
     {
       goto LABEL_5;
     }
 
-    v21 = [(TSDStroke *)self pattern];
-    v22 = [(TSDStroke *)v4 pattern];
-    v23 = [v21 isEqual:v22];
+    pattern = [(TSDStroke *)self pattern];
+    pattern2 = [(TSDStroke *)equalCopy pattern];
+    v23 = [pattern isEqual:pattern2];
 
     if ((v23 & 1) == 0)
     {
@@ -358,26 +358,26 @@ uint64_t __24__TSDStroke_emptyStroke__block_invoke(uint64_t a1)
     }
   }
 
-  else if (v20)
+  else if (supportsPattern2)
   {
     goto LABEL_5;
   }
 
-  v24 = [(TSDStroke *)self supportsColor];
-  v25 = [(TSDStroke *)v4 supportsColor];
-  if (v24)
+  supportsColor = [(TSDStroke *)self supportsColor];
+  supportsColor2 = [(TSDStroke *)equalCopy supportsColor];
+  if (supportsColor)
   {
-    if (v25)
+    if (supportsColor2)
     {
       color = self->_color;
-      v27 = [(TSDStroke *)v4 color];
-      if (!(color | v27))
+      color = [(TSDStroke *)equalCopy color];
+      if (!(color | color))
       {
         goto LABEL_29;
       }
 
-      v28 = v27;
-      v29 = [(TSUColor *)color isEqual:v27];
+      v28 = color;
+      v29 = [(TSUColor *)color isEqual:color];
 
       if (v29)
       {
@@ -386,7 +386,7 @@ uint64_t __24__TSDStroke_emptyStroke__block_invoke(uint64_t a1)
     }
   }
 
-  else if (!v25)
+  else if (!supportsColor2)
   {
 LABEL_29:
     v6 = 1;
@@ -432,13 +432,13 @@ LABEL_30:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSDStroke *)self pattern];
+  pattern = [(TSDStroke *)self pattern];
   [(TSDStroke *)self width];
   v8 = v7;
-  v9 = [(TSDStroke *)self color];
+  color = [(TSDStroke *)self color];
   v10 = NSStringFromCGLineCap([(TSDStroke *)self cap]);
   v11 = NSStringFromCGLineJoin([(TSDStroke *)self join]);
-  v12 = [v3 stringWithFormat:@"<%@ %p pattern=<%@>' width=%f color=<%@> cap=%@ join=%@>", v5, self, v6, v8, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"<%@ %p pattern=<%@>' width=%f color=<%@> cap=%@ join=%@>", v5, self, pattern, v8, color, v10, v11];
 
   return v12;
 }
@@ -457,39 +457,39 @@ LABEL_30:
 
 - (BOOL)isDash
 {
-  v3 = [(TSDStrokePattern *)self->_pattern isDash];
-  if (v3)
+  isDash = [(TSDStrokePattern *)self->_pattern isDash];
+  if (isDash)
   {
-    LOBYTE(v3) = self->_cap != 1;
+    LOBYTE(isDash) = self->_cap != 1;
   }
 
-  return v3;
+  return isDash;
 }
 
 - (BOOL)isRoundDash
 {
-  v3 = [(TSDStrokePattern *)self->_pattern isRoundDash];
-  if (v3)
+  isRoundDash = [(TSDStrokePattern *)self->_pattern isRoundDash];
+  if (isRoundDash)
   {
-    LOBYTE(v3) = self->_cap == 1;
+    LOBYTE(isRoundDash) = self->_cap == 1;
   }
 
-  return v3;
+  return isRoundDash;
 }
 
-- (id)pathToStrokeFromTSDBezierPath:(id)a3
+- (id)pathToStrokeFromTSDBezierPath:(id)path
 {
-  v4 = a3;
-  v5 = -[TSDStroke pathToStrokeFromCGPath:](self, "pathToStrokeFromCGPath:", [v4 CGPath]);
-  if (v5 == [v4 CGPath])
+  pathCopy = path;
+  v5 = -[TSDStroke pathToStrokeFromCGPath:](self, "pathToStrokeFromCGPath:", [pathCopy CGPath]);
+  if (v5 == [pathCopy CGPath])
   {
-    v6 = v4;
+    v6 = pathCopy;
   }
 
   else
   {
     v6 = objc_alloc_init(TSDBezierPath);
-    [v4 copyPathAttributesTo:v6];
+    [pathCopy copyPathAttributesTo:v6];
     v7 = [TSDBezierPath bezierPathWithCGPath:v5];
     [(TSDBezierPath *)v6 appendBezierPath:v7];
   }
@@ -497,9 +497,9 @@ LABEL_30:
   return v6;
 }
 
-- (CGRect)boundsForPath:(id)a3
+- (CGRect)boundsForPath:(id)path
 {
-  [a3 boundsIncludingTSDStroke:self];
+  [path boundsIncludingTSDStroke:self];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -509,9 +509,9 @@ LABEL_30:
 
 - (_TSDStrokeOutsets)outsets
 {
-  v3 = [(TSDStroke *)self supportsWidth];
+  supportsWidth = [(TSDStroke *)self supportsWidth];
   v4 = 0.0;
-  if (v3)
+  if (supportsWidth)
   {
     [(TSDStroke *)self width];
     v4 = v5 * 0.5;
@@ -527,82 +527,82 @@ LABEL_30:
   return result;
 }
 
-- (void)i_setPropertiesFromStroke:(id)a3
+- (void)i_setPropertiesFromStroke:(id)stroke
 {
-  v4 = a3;
-  if ([v4 isFrame])
+  strokeCopy = stroke;
+  if ([strokeCopy isFrame])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStroke i_setPropertiesFromStroke:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:791 description:@"Setting properties for a TSDStroke from a TSDFrame"];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:791 description:@"Setting properties for a TSDStroke from a TSDFrame"];
   }
 
-  v8 = [v4 color];
-  [(TSDStroke *)self setI_color:v8];
+  color = [strokeCopy color];
+  [(TSDStroke *)self setI_color:color];
 
-  [v4 width];
+  [strokeCopy width];
   [(TSDStroke *)self setI_width:?];
-  -[TSDStroke setI_join:](self, "setI_join:", [v4 join]);
-  [v4 miterLimit];
+  -[TSDStroke setI_join:](self, "setI_join:", [strokeCopy join]);
+  [strokeCopy miterLimit];
   [(TSDStroke *)self setI_miterLimit:?];
-  [v4 actualWidth];
+  [strokeCopy actualWidth];
   [(TSDStroke *)self setI_actualWidth:?];
-  v9 = [v4 pattern];
-  [(TSDStroke *)self i_setPattern:v9];
+  pattern = [strokeCopy pattern];
+  [(TSDStroke *)self i_setPattern:pattern];
 
-  v10 = [v4 cap];
+  v10 = [strokeCopy cap];
 
   [(TSDStroke *)self i_setCap:v10];
 }
 
-- (void)i_setPatternPropertiesFromStroke:(id)a3
+- (void)i_setPatternPropertiesFromStroke:(id)stroke
 {
-  v4 = a3;
-  if ([v4 isFrame])
+  strokeCopy = stroke;
+  if ([strokeCopy isFrame])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStroke i_setPatternPropertiesFromStroke:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:802 description:@"Setting properties for a TSDStroke from a TSDFrame"];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:802 description:@"Setting properties for a TSDStroke from a TSDFrame"];
   }
 
-  -[TSDStroke setI_join:](self, "setI_join:", [v4 join]);
-  [v4 miterLimit];
+  -[TSDStroke setI_join:](self, "setI_join:", [strokeCopy join]);
+  [strokeCopy miterLimit];
   [(TSDStroke *)self setI_miterLimit:?];
-  v8 = [v4 pattern];
-  [(TSDStroke *)self i_setPattern:v8];
+  pattern = [strokeCopy pattern];
+  [(TSDStroke *)self i_setPattern:pattern];
 
-  v9 = [v4 cap];
+  v9 = [strokeCopy cap];
 
   [(TSDStroke *)self i_setCap:v9];
 }
 
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke
 {
-  v4 = a4;
+  strokeCopy = stroke;
   v7 = [(TSDStroke *)self colorForCGContext:?];
-  CGContextSetStrokeColorWithColor(a3, [v7 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [v7 CGColor]);
   width = self->_width;
-  if (v4)
+  if (strokeCopy)
   {
     width = width + width;
   }
 
-  CGContextSetLineWidth(a3, width);
-  CGContextSetLineJoin(a3, self->_join);
-  CGContextSetMiterLimit(a3, self->_miterLimit);
+  CGContextSetLineWidth(context, width);
+  CGContextSetLineJoin(context, self->_join);
+  CGContextSetMiterLimit(context, self->_miterLimit);
   *cap = self->_cap;
-  [(TSDStrokePattern *)self->_pattern i_applyToContext:a3 lineWidth:cap capStyle:self->_width * (self->_actualWidth / self->_width)];
-  CGContextSetLineCap(a3, cap[0]);
+  [(TSDStrokePattern *)self->_pattern i_applyToContext:context lineWidth:cap capStyle:self->_width * (self->_actualWidth / self->_width)];
+  CGContextSetLineCap(context, cap[0]);
 }
 
-- (id)strokeLineEnd:(id)a3
+- (id)strokeLineEnd:(id)end
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4 && [v4 rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL)
+  endCopy = end;
+  identifier = [endCopy identifier];
+  v5 = identifier;
+  if (identifier && [identifier rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [v5 substringFromIndex:{objc_msgSend(v5, "rangeOfString:", @":"}];
     v6 = [TSDLineEnd lineEndWithIdentifier:v7];
@@ -610,15 +610,15 @@ LABEL_30:
 
   else
   {
-    v6 = v3;
+    v6 = endCopy;
   }
 
   return v6;
 }
 
-- (id)colorForCGContext:(CGContext *)a3
+- (id)colorForCGContext:(CGContext *)context
 {
-  if (TSDCGContextHasBackgroundsSuppressed(a3))
+  if (TSDCGContextHasBackgroundsSuppressed(context))
   {
     [MEMORY[0x277D6C2A8] blackColor];
   }
@@ -632,57 +632,57 @@ LABEL_30:
   return v4;
 }
 
-- (void)paintRect:(CGRect)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5
+- (void)paintRect:(CGRect)rect wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context
 {
-  v6 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  strokeCopy = stroke;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
   CGPathAddRect(Mutable, 0, v14);
-  [(TSDStroke *)self paintPath:Mutable wantsInteriorStroke:v6 inContext:a5];
+  [(TSDStroke *)self paintPath:Mutable wantsInteriorStroke:strokeCopy inContext:context];
 
   CGPathRelease(Mutable);
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v9 = a4;
+  strokeCopy = stroke;
   v32 = *MEMORY[0x277D85DE8];
-  if ([(TSDStroke *)self shouldRender:a3])
+  if ([(TSDStroke *)self shouldRender:path])
   {
-    CGContextSaveGState(a5);
-    if (TSDPathGetSegmentCount(a3) > 0x9C40)
+    CGContextSaveGState(context);
+    if (TSDPathGetSegmentCount(path) > 0x9C40)
     {
-      v12 = [TSDBezierPath bezierPathWithCGPath:a3];
+      v12 = [TSDBezierPath bezierPathWithCGPath:path];
       v13 = [v12 pathSplitAtSubpathBoundariesWithSoftElementLimit:40000 hardElementLimit:50000];
-      v14 = [(TSDStroke *)self color];
-      [v14 alphaComponent];
+      color = [(TSDStroke *)self color];
+      [color alphaComponent];
       v16 = v15;
 
       if (v16 >= 1.0)
       {
-        [(TSDStroke *)self applyToContext:a5 insideStroke:v9];
+        [(TSDStroke *)self applyToContext:context insideStroke:strokeCopy];
       }
 
       else
       {
-        v17 = [(TSDStroke *)self color];
-        [v17 alphaComponent];
-        CGContextSetAlpha(a5, v18);
+        color2 = [(TSDStroke *)self color];
+        [color2 alphaComponent];
+        CGContextSetAlpha(context, v18);
 
-        CGContextBeginTransparencyLayer(a5, 0);
+        CGContextBeginTransparencyLayer(context, 0);
         v19 = [(TSDStroke *)self mutableCopy];
-        v20 = [v19 color];
-        v21 = [v20 colorWithAlphaComponent:1.0];
+        color3 = [v19 color];
+        v21 = [color3 colorWithAlphaComponent:1.0];
         [v19 setColor:v21];
 
-        [v19 applyToContext:a5 insideStroke:v9];
+        [v19 applyToContext:context insideStroke:strokeCopy];
       }
 
       v29 = 0u;
@@ -704,7 +704,7 @@ LABEL_30:
               objc_enumerationMutation(v22);
             }
 
-            -[TSDStroke p_strokePathChunk:inContext:wantsInteriorStroke:](self, "p_strokePathChunk:inContext:wantsInteriorStroke:", [*(*(&v27 + 1) + 8 * i) CGPath], a5, v9);
+            -[TSDStroke p_strokePathChunk:inContext:wantsInteriorStroke:](self, "p_strokePathChunk:inContext:wantsInteriorStroke:", [*(*(&v27 + 1) + 8 * i) CGPath], context, strokeCopy);
           }
 
           v24 = [v22 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -715,104 +715,104 @@ LABEL_30:
 
       if (v16 < 1.0)
       {
-        CGContextEndTransparencyLayer(a5);
+        CGContextEndTransparencyLayer(context);
       }
     }
 
     else
     {
-      [(TSDStroke *)self applyToContext:a5 insideStroke:v9];
-      [(TSDStroke *)self p_strokePathChunk:a3 inContext:a5 wantsInteriorStroke:v9];
+      [(TSDStroke *)self applyToContext:context insideStroke:strokeCopy];
+      [(TSDStroke *)self p_strokePathChunk:path inContext:context wantsInteriorStroke:strokeCopy];
     }
 
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)p_strokePathChunk:(CGPath *)a3 inContext:(CGContext *)a4 wantsInteriorStroke:(BOOL)a5
+- (void)p_strokePathChunk:(CGPath *)chunk inContext:(CGContext *)context wantsInteriorStroke:(BOOL)stroke
 {
-  v5 = a5;
-  CGContextSaveGState(a4);
-  if (v5)
+  strokeCopy = stroke;
+  CGContextSaveGState(context);
+  if (strokeCopy)
   {
-    CGContextAddPath(a4, a3);
-    CGContextClip(a4);
+    CGContextAddPath(context, chunk);
+    CGContextClip(context);
   }
 
-  CGContextAddPath(a4, a3);
-  CGContextStrokePath(a4);
+  CGContextAddPath(context, chunk);
+  CGContextStrokePath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  CGContextSaveGState(a7);
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  CGContextSaveGState(context);
   memset(&v21, 0, sizeof(v21));
   CGAffineTransformMakeTranslation(&v21, x, y);
   v19 = v21;
-  CGAffineTransformScale(&transform, &v19, a6, a6);
+  CGAffineTransformScale(&transform, &v19, scale, scale);
   v21 = transform;
   v19 = transform;
-  CGAffineTransformRotate(&transform, &v19, a5);
+  CGAffineTransformRotate(&transform, &v19, angle);
   v21 = transform;
-  [v14 endPoint];
+  [endCopy endPoint];
   v16 = -v15;
-  [v14 endPoint];
+  [endCopy endPoint];
   v19 = v21;
   CGAffineTransformTranslate(&transform, &v19, v16, -v17);
   v21 = transform;
-  CGContextConcatCTM(a7, &transform);
-  CGContextAddPath(a7, [v14 path]);
-  if ([v14 isFilled])
+  CGContextConcatCTM(context, &transform);
+  CGContextAddPath(context, [endCopy path]);
+  if ([endCopy isFilled])
   {
-    CGContextFillPath(a7);
+    CGContextFillPath(context);
   }
 
   else
   {
     [(TSDStroke *)self width];
-    CGContextSetLineWidth(a7, v18 / a6);
-    CGContextSetLineJoin(a7, [v14 lineJoin]);
-    CGContextStrokePath(a7);
+    CGContextSetLineWidth(context, v18 / scale);
+    CGContextSetLineJoin(context, [endCopy lineJoin]);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
+  y = point.y;
+  x = point.x;
+  endCopy = end;
   memset(&v34, 0, sizeof(v34));
   CGAffineTransformMakeTranslation(&v34, x, y);
   t1 = v34;
-  CGAffineTransformScale(&v33, &t1, a6, a6);
+  CGAffineTransformScale(&v33, &t1, scale, scale);
   v34 = v33;
   t1 = v33;
-  CGAffineTransformRotate(&v33, &t1, a5);
+  CGAffineTransformRotate(&v33, &t1, angle);
   v34 = v33;
-  [v13 endPoint];
+  [endCopy endPoint];
   v15 = -v14;
-  [v13 endPoint];
+  [endCopy endPoint];
   t1 = v34;
   CGAffineTransformTranslate(&v33, &t1, v15, -v16);
   v34 = v33;
   t1 = v33;
-  v17 = *&a7->c;
-  *&v31.a = *&a7->a;
+  v17 = *&transform->c;
+  *&v31.a = *&transform->a;
   *&v31.c = v17;
-  *&v31.tx = *&a7->tx;
+  *&v31.tx = *&transform->tx;
   CGAffineTransformConcat(&v33, &t1, &v31);
   v34 = v33;
-  v18 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [v13 path]);
+  v18 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [endCopy path]);
   v33 = v34;
   [v18 transformUsingAffineTransform:&v33];
-  if ([v13 isFilled])
+  if ([endCopy isFilled])
   {
     [v18 bounds];
   }
@@ -821,7 +821,7 @@ LABEL_30:
   {
     [(TSDStroke *)self width];
     [v18 setLineWidth:?];
-    [v18 setLineJoinStyle:{objc_msgSend(v13, "lineJoin")}];
+    [v18 setLineJoinStyle:{objc_msgSend(endCopy, "lineJoin")}];
     [v18 boundsIncludingStroke];
   }
 
@@ -841,36 +841,36 @@ LABEL_30:
   return result;
 }
 
-- (id)pathForLineEnd:(id)a3 wrapPath:(BOOL)a4 atPoint:(CGPoint)a5 atAngle:(double)a6 withScale:(double)a7
+- (id)pathForLineEnd:(id)end wrapPath:(BOOL)path atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a4;
-  v13 = a3;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  endCopy = end;
   memset(&v23, 0, sizeof(v23));
   CGAffineTransformMakeTranslation(&v23, x, y);
   v21 = v23;
-  CGAffineTransformScale(&v22, &v21, a7, a7);
+  CGAffineTransformScale(&v22, &v21, scale, scale);
   v23 = v22;
   v21 = v22;
-  CGAffineTransformRotate(&v22, &v21, a6);
+  CGAffineTransformRotate(&v22, &v21, angle);
   v23 = v22;
-  [v13 endPoint];
+  [endCopy endPoint];
   v15 = -v14;
-  [v13 endPoint];
+  [endCopy endPoint];
   v21 = v23;
   CGAffineTransformTranslate(&v22, &v21, v15, -v16);
   v23 = v22;
-  v17 = [v13 path];
-  if (v11)
+  path = [endCopy path];
+  if (pathCopy)
   {
-    v17 = [v13 wrapPath];
+    path = [endCopy wrapPath];
   }
 
-  v18 = [TSDBezierPath bezierPathWithCGPath:v17];
+  v18 = [TSDBezierPath bezierPathWithCGPath:path];
   v22 = v23;
   [v18 transformUsingAffineTransform:&v22];
-  if ([v13 isFilled])
+  if ([endCopy isFilled])
   {
     [v18 setLineWidth:0.0];
   }
@@ -879,10 +879,10 @@ LABEL_30:
   {
     [(TSDStroke *)self width];
     [v18 setLineWidth:?];
-    [v18 setLineJoinStyle:{objc_msgSend(v13, "lineJoin")}];
-    v19 = [v18 outlineStroke];
+    [v18 setLineJoinStyle:{objc_msgSend(endCopy, "lineJoin")}];
+    outlineStroke = [v18 outlineStroke];
 
-    v18 = v19;
+    v18 = outlineStroke;
   }
 
   return v18;
@@ -890,11 +890,11 @@ LABEL_30:
 
 - (double)horizontalMarginForSwatch
 {
-  v2 = [(TSDStroke *)self pattern];
-  v3 = [v2 isRoundDash];
+  pattern = [(TSDStroke *)self pattern];
+  isRoundDash = [pattern isRoundDash];
 
   result = 0.0;
-  if (v3)
+  if (isRoundDash)
   {
     return -3.0;
   }
@@ -902,40 +902,40 @@ LABEL_30:
   return result;
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v40 = *MEMORY[0x277D85DE8];
   [(TSDStroke *)self horizontalMarginForSwatch];
   v11 = v10;
   if ([(TSDStroke *)self isNullStroke])
   {
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     v12 = (height + -35.0) * 0.5;
     v13 = y + floorf(v12) + 0.5;
     v14 = width + v11 * -2.0 + -1.0;
-    v15 = [(TSDStroke *)self color];
-    CGContextSetStrokeColorWithColor(a4, [v15 CGColor]);
+    color = [(TSDStroke *)self color];
+    CGContextSetStrokeColorWithColor(context, [color CGColor]);
 
     *lengths = xmmword_26CA65510;
-    CGContextSetLineWidth(a4, 1.0);
-    CGContextSetLineDash(a4, 0.0, lengths, 2uLL);
+    CGContextSetLineWidth(context, 1.0);
+    CGContextSetLineDash(context, 0.0, lengths, 2uLL);
     v42.origin.x = x + v11 + 0.5;
     v42.origin.y = v13;
     v42.size.width = v14;
     v42.size.height = 35.0;
-    CGContextStrokeRect(a4, v42);
-    CGContextRestoreGState(a4);
-    v16 = [(TSDStroke *)self color];
-    CGContextSetFillColorWithColor(a4, [v16 CGColor]);
+    CGContextStrokeRect(context, v42);
+    CGContextRestoreGState(context);
+    color2 = [(TSDStroke *)self color];
+    CGContextSetFillColorWithColor(context, [color2 CGColor]);
 
     v17 = TSDBundle();
     v18 = [v17 localizedStringForKey:@"None" value:&stru_287D36338 table:@"TSDrawables"];
 
-    UIGraphicsPushContext(a4);
+    UIGraphicsPushContext(context);
     v19 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
     v37 = *MEMORY[0x277D740A8];
     v38 = v19;
@@ -963,9 +963,9 @@ LABEL_30:
     v26 = MidY + v25 * -0.5;
     [(TSDStroke *)self width];
     v28 = v27;
-    v29 = [(TSDStroke *)self pattern];
+    pattern = [(TSDStroke *)self pattern];
     [(TSDStroke *)self width];
-    [v29 p_renderableLengthForUnclippedPatternWithLineWidth:? withinAvailableLength:?];
+    [pattern p_renderableLengthForUnclippedPatternWithLineWidth:? withinAvailableLength:?];
     v31 = v30;
 
     Mutable = CGPathCreateMutable();
@@ -991,7 +991,7 @@ LABEL_30:
     v48.size.height = v28;
     v36 = CGRectGetMidY(v48);
     CGPathAddLineToPoint(Mutable, 0, MaxX, v36);
-    [(TSDStroke *)self paintPath:Mutable inContext:a4];
+    [(TSDStroke *)self paintPath:Mutable inContext:context];
 
     CGPathRelease(Mutable);
   }
@@ -1004,10 +1004,10 @@ LABEL_30:
     return 0;
   }
 
-  v4 = [(TSDStroke *)self color];
-  v5 = [v4 isNearlyWhite];
+  color = [(TSDStroke *)self color];
+  isNearlyWhite = [color isNearlyWhite];
 
-  return v5;
+  return isNearlyWhite;
 }
 
 - (BOOL)canApplyDirectlyToRepRenderable
@@ -1017,18 +1017,18 @@ LABEL_30:
     return 1;
   }
 
-  v3 = [(TSDStroke *)self color];
-  v4 = [v3 isOpaque];
+  color = [(TSDStroke *)self color];
+  isOpaque = [color isOpaque];
 
-  v5 = [(TSDStroke *)self pattern];
-  if ([v5 count])
+  pattern = [(TSDStroke *)self pattern];
+  if ([pattern count])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 patternType] != 1;
+    v6 = [pattern patternType] != 1;
   }
 
   v8 = [(TSDStroke *)self cap];
@@ -1038,7 +1038,7 @@ LABEL_30:
     v9 = 0;
   }
 
-  if (v4)
+  if (isOpaque)
   {
     v7 = v9;
   }
@@ -1051,33 +1051,33 @@ LABEL_30:
   return v7;
 }
 
-- (void)applyToRepRenderable:(id)a3 withScale:(double)a4
+- (void)applyToRepRenderable:(id)renderable withScale:(double)scale
 {
-  v12 = a3;
+  renderableCopy = renderable;
   if (![(TSDStroke *)self canApplyDirectlyToRepRenderable])
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStroke applyToRepRenderable:withScale:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:1115 description:@"Applying stroke with unsupported properties to renderable"];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:1115 description:@"Applying stroke with unsupported properties to renderable"];
   }
 
   if ([(TSDStroke *)self shouldRender])
   {
-    v9 = [(TSDStroke *)self color];
-    [v12 setBorderColor:{objc_msgSend(v9, "CGColor")}];
+    color = [(TSDStroke *)self color];
+    [renderableCopy setBorderColor:{objc_msgSend(color, "CGColor")}];
 
     [(TSDStroke *)self width];
-    v11 = v10 * a4;
+    v11 = v10 * scale;
   }
 
   else
   {
-    [v12 setBorderColor:0];
+    [renderableCopy setBorderColor:0];
     v11 = 0.0;
   }
 
-  [v12 setBorderWidth:v11];
+  [renderableCopy setBorderWidth:v11];
 }
 
 - (BOOL)canApplyToShapeRenderable
@@ -1092,69 +1092,69 @@ LABEL_30:
   return [(TSDStroke *)self isMemberOfClass:v4];
 }
 
-- (void)applyToShapeRenderable:(id)a3 insideStroke:(BOOL)a4 withScale:(double)a5
+- (void)applyToShapeRenderable:(id)renderable insideStroke:(BOOL)stroke withScale:(double)scale
 {
-  v6 = a4;
-  v16 = a3;
+  strokeCopy = stroke;
+  renderableCopy = renderable;
   if (![(TSDStroke *)self canApplyToShapeRenderable])
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStroke applyToShapeRenderable:insideStroke:withScale:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:1141 description:@"don't try to apply this stroke to a shape renderable"];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:1141 description:@"don't try to apply this stroke to a shape renderable"];
   }
 
   if ([(TSDStroke *)self shouldRender])
   {
     [(TSDStroke *)self width];
-    v12 = v11 * a5;
-    v13 = [(TSDStroke *)self color];
-    [v16 setStrokeColor:{objc_msgSend(v13, "CGColor")}];
+    v12 = v11 * scale;
+    color = [(TSDStroke *)self color];
+    [renderableCopy setStrokeColor:{objc_msgSend(color, "CGColor")}];
 
     v14 = v12 + v12;
-    if (!v6)
+    if (!strokeCopy)
     {
       v14 = v12;
     }
 
-    [v16 setLineWidth:v14];
+    [renderableCopy setLineWidth:v14];
     [(TSDStroke *)self miterLimit];
-    [v16 setMiterLimit:?];
-    [v16 setCGLineCap:{-[TSDStroke cap](self, "cap")}];
-    [v16 setCGLineJoin:{-[TSDStroke join](self, "join")}];
+    [renderableCopy setMiterLimit:?];
+    [renderableCopy setCGLineCap:{-[TSDStroke cap](self, "cap")}];
+    [renderableCopy setCGLineJoin:{-[TSDStroke join](self, "join")}];
     if ([(TSDStroke *)self supportsPattern])
     {
-      v15 = [(TSDStroke *)self pattern];
-      [v15 p_applyToShapeRenderable:v16 lineWidth:v12];
+      pattern = [(TSDStroke *)self pattern];
+      [pattern p_applyToShapeRenderable:renderableCopy lineWidth:v12];
     }
 
     else
     {
-      [v16 setLineDashPattern:0];
+      [renderableCopy setLineDashPattern:0];
     }
   }
 
   else
   {
-    [v16 setStrokeColor:0];
+    [renderableCopy setStrokeColor:0];
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
   if (v5)
   {
-    v6 = [(TSDStroke *)self pattern];
-    v7 = [v5 pattern];
-    v8 = TSDMixingTypeWithObjects(v6, v7);
+    pattern = [(TSDStroke *)self pattern];
+    pattern2 = [v5 pattern];
+    v8 = TSDMixingTypeWithObjects(pattern, pattern2);
     v9 = TSDMixingTypeBestFromMixingTypes(4, v8);
 
-    LODWORD(v6) = [(TSDStroke *)self isNullStroke];
-    if (v6 != [v5 isNullStroke] || (v10 = -[TSDStroke shouldRender](self, "shouldRender"), v10 != objc_msgSend(v5, "shouldRender")) || (v11 = -[TSDStroke isFrame](self, "isFrame"), v11 != objc_msgSend(v5, "isFrame")))
+    LODWORD(pattern) = [(TSDStroke *)self isNullStroke];
+    if (pattern != [v5 isNullStroke] || (v10 = -[TSDStroke shouldRender](self, "shouldRender"), v10 != objc_msgSend(v5, "shouldRender")) || (v11 = -[TSDStroke isFrame](self, "isFrame"), v11 != objc_msgSend(v5, "isFrame")))
     {
       v9 = TSDMixingTypeBestFromMixingTypes(v9, 2);
     }
@@ -1176,64 +1176,64 @@ LABEL_30:
   return v9;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
 
   if (v7)
   {
     v8 = objc_alloc(objc_opt_class());
-    v9 = [(TSDStroke *)self color];
-    v10 = [(TSDStroke *)v7 color];
-    v27 = v9;
-    v11 = [v9 blendedColorWithFraction:v10 ofColor:a3];
+    color = [(TSDStroke *)self color];
+    color2 = [(TSDStroke *)v7 color];
+    v27 = color;
+    v11 = [color blendedColorWithFraction:color2 ofColor:fraction];
     [(TSDStroke *)self width];
     [(TSDStroke *)v7 width];
     TSUMix();
     v13 = v12;
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
       v14 = [(TSDStroke *)v7 cap];
-      v15 = v7;
+      selfCopy = v7;
     }
 
     else
     {
       v14 = [(TSDStroke *)self cap];
-      v15 = self;
+      selfCopy = self;
     }
 
-    v21 = [(TSDStroke *)v15 join];
-    v22 = [(TSDStroke *)self pattern];
-    v23 = [(TSDStroke *)v7 pattern];
-    v24 = TSDMixingMixedObjectWithFractionEx(v22, v23, a3);
+    join = [(TSDStroke *)selfCopy join];
+    pattern = [(TSDStroke *)self pattern];
+    pattern2 = [(TSDStroke *)v7 pattern];
+    v24 = TSDMixingMixedObjectWithFractionEx(pattern, pattern2, fraction);
     [(TSDStroke *)self miterLimit];
     [(TSDStroke *)v7 miterLimit];
     TSUMix();
-    v16 = [v8 initWithColor:v11 width:v14 cap:v21 join:v24 pattern:v13 miterLimit:v25];
+    v16 = [v8 initWithColor:v11 width:v14 cap:join join:v24 pattern:v13 miterLimit:v25];
   }
 
   else
   {
     v16 = [(TSDStroke *)self mutableCopy];
-    v17 = [(TSDStroke *)self color];
-    [v17 getRGBAComponents:v28];
+    color3 = [(TSDStroke *)self color];
+    [color3 getRGBAComponents:v28];
 
     v18 = [MEMORY[0x277D6C2A8] colorWithRed:v28[0] green:v28[1] blue:v28[2] alpha:0.0];
-    v19 = [(TSDStroke *)self color];
-    v20 = [v18 blendedColorWithFraction:v19 ofColor:a3];
+    color4 = [(TSDStroke *)self color];
+    v20 = [v18 blendedColorWithFraction:color4 ofColor:fraction];
     [v16 setI_color:v20];
   }
 
   return v16;
 }
 
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform
 {
-  v3 = fmin(a3->a, a3->d);
+  v3 = fmin(transform->a, transform->d);
   v4 = [(TSDStroke *)self mutableCopy];
   [v4 width];
   [v4 setWidth:{fmax(floor(v3 * v5), 0.25)}];
@@ -1241,30 +1241,30 @@ LABEL_30:
   return v4;
 }
 
-+ (int64_t)indexOfStroke:(id)a3 strokeArray:(id)a4
++ (int64_t)indexOfStroke:(id)stroke strokeArray:(id)array
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  strokeCopy = stroke;
+  arrayCopy = array;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 strokeName];
+    strokeName = [v7 strokeName];
   }
 
   else
   {
-    v9 = 0;
+    strokeName = 0;
   }
 
-  v26 = [v5 pattern];
+  pattern = [strokeCopy pattern];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v6;
+  v10 = arrayCopy;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v11)
   {
@@ -1274,7 +1274,7 @@ LABEL_30:
 
   v12 = v11;
   v23 = v8;
-  v24 = v5;
+  v24 = strokeCopy;
   v13 = 0;
   v14 = *v28;
   while (2)
@@ -1292,21 +1292,21 @@ LABEL_30:
       objc_opt_class();
       v17 = TSUDynamicCast();
       v18 = v17;
-      if (v9 && v17)
+      if (strokeName && v17)
       {
-        v19 = [v17 strokeName];
-        v20 = [v9 isEqualToString:v19];
+        strokeName2 = [v17 strokeName];
+        v20 = [strokeName isEqualToString:strokeName2];
       }
 
       else
       {
-        if (v9)
+        if (strokeName)
         {
           goto LABEL_15;
         }
 
-        v19 = [v16 pattern];
-        v20 = [v26 isEqual:v19];
+        strokeName2 = [v16 pattern];
+        v20 = [pattern isEqual:strokeName2];
       }
 
       v21 = v20;
@@ -1337,20 +1337,20 @@ LABEL_15:
   v13 = -1;
 LABEL_19:
   v8 = v23;
-  v5 = v24;
+  strokeCopy = v24;
 LABEL_21:
 
   return v13;
 }
 
-+ (id)editedStrokeFromModelStroke:(id)a3 selectedStroke:(id)a4
++ (id)editedStrokeFromModelStroke:(id)stroke selectedStroke:(id)selectedStroke
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 mutableCopy];
-  if (([v5 isFrame] & 1) == 0)
+  strokeCopy = stroke;
+  selectedStrokeCopy = selectedStroke;
+  v7 = [selectedStrokeCopy mutableCopy];
+  if (([strokeCopy isFrame] & 1) == 0)
   {
-    [v7 setPropertiesFromStroke:v5];
+    [v7 setPropertiesFromStroke:strokeCopy];
   }
 
   [v7 width];
@@ -1362,7 +1362,7 @@ LABEL_21:
     [v7 setWidth:?];
   }
 
-  [v7 setPatternPropertiesFromStroke:v6];
+  [v7 setPatternPropertiesFromStroke:selectedStrokeCopy];
 
   return v7;
 }
@@ -1374,13 +1374,13 @@ LABEL_21:
   return [AssociatedObject dontClearBackground];
 }
 
-- (BOOL)isEqualToStroke:(id)a3
+- (BOOL)isEqualToStroke:(id)stroke
 {
   result = 0;
   if ([(TSDStroke *)self isEqual:?])
   {
-    v5 = [(TSDStroke *)self dontClearBackground];
-    if (v5 == [a3 dontClearBackground])
+    dontClearBackground = [(TSDStroke *)self dontClearBackground];
+    if (dontClearBackground == [stroke dontClearBackground])
     {
       return 1;
     }

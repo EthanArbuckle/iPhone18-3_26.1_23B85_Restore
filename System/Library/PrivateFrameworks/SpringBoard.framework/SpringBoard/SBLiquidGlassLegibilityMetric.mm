@@ -1,17 +1,17 @@
 @interface SBLiquidGlassLegibilityMetric
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 @end
 
 @implementation SBLiquidGlassLegibilityMetric
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
-  if (a3 == 11)
+  if (event == 11)
   {
     AnalyticsSendEventLazy();
   }
 
-  return a3 == 11;
+  return event == 11;
 }
 
 id __57__SBLiquidGlassLegibilityMetric_handleEvent_withContext___block_invoke()

@@ -1,71 +1,71 @@
 @interface Alarm
-+ (BOOL)verifyDaySetting:(id)a3 withMessageList:(id)a4;
-+ (BOOL)verifyHourSetting:(id)a3 withMessageList:(id)a4;
-+ (BOOL)verifyIdSetting:(id)a3 withMessageList:(id)a4;
-+ (BOOL)verifyMinuteSetting:(id)a3 withMessageList:(id)a4;
-+ (BOOL)verifySettings:(id)a3;
-- (Alarm)initWithSettings:(id)a3;
++ (BOOL)verifyDaySetting:(id)setting withMessageList:(id)list;
++ (BOOL)verifyHourSetting:(id)setting withMessageList:(id)list;
++ (BOOL)verifyIdSetting:(id)setting withMessageList:(id)list;
++ (BOOL)verifyMinuteSetting:(id)setting withMessageList:(id)list;
++ (BOOL)verifySettings:(id)settings;
+- (Alarm)initWithSettings:(id)settings;
 - (AlarmDelegate)delegate;
 - (BOOL)isActive;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)repeatDays;
 - (NSDictionary)settings;
 - (NSString)alarmID;
 - (NSString)uiTitle;
 - (NSString)vibrationID;
 - (NSURL)alarmIDURL;
-- (id)_newBaseDateComponentsForDay:(int64_t)a3;
+- (id)_newBaseDateComponentsForDay:(int64_t)day;
 - (id)debugDescription;
 - (int64_t)bedtimeHour;
 - (int64_t)bedtimeMinute;
-- (int64_t)compareTime:(id)a3;
+- (int64_t)compareTime:(id)time;
 - (unint64_t)hash;
 - (void)applyChangesFromEditingProxy;
-- (void)applySettings:(id)a3;
+- (void)applySettings:(id)settings;
 - (void)dropEditingProxy;
 - (void)markModified;
 - (void)prepareEditingProxy;
 - (void)refreshActiveState;
-- (void)setAllowsSnooze:(BOOL)a3;
-- (void)setBedtimeHour:(int64_t)a3;
-- (void)setBedtimeMinute:(int64_t)a3;
-- (void)setBedtimeReminderMinutes:(id)a3;
-- (void)setDaySetting:(unsigned int)a3;
-- (void)setHour:(unsigned int)a3;
-- (void)setIsSleepAlarm:(BOOL)a3;
-- (void)setMinute:(unsigned int)a3;
-- (void)setSound:(id)a3 ofType:(int64_t)a4;
-- (void)setSoundVolume:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setVibrationID:(id)a3;
+- (void)setAllowsSnooze:(BOOL)snooze;
+- (void)setBedtimeHour:(int64_t)hour;
+- (void)setBedtimeMinute:(int64_t)minute;
+- (void)setBedtimeReminderMinutes:(id)minutes;
+- (void)setDaySetting:(unsigned int)setting;
+- (void)setHour:(unsigned int)hour;
+- (void)setIsSleepAlarm:(BOOL)alarm;
+- (void)setMinute:(unsigned int)minute;
+- (void)setSound:(id)sound ofType:(int64_t)type;
+- (void)setSoundVolume:(id)volume;
+- (void)setTitle:(id)title;
+- (void)setVibrationID:(id)d;
 @end
 
 @implementation Alarm
 
-- (Alarm)initWithSettings:(id)a3
+- (Alarm)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v10.receiver = self;
   v10.super_class = Alarm;
   v5 = [(Alarm *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     lastModified = v5->_lastModified;
-    v5->_lastModified = v6;
+    v5->_lastModified = distantPast;
 
     v5->_revision = 0;
-    [(Alarm *)v5 applySettings:v4];
+    [(Alarm *)v5 applySettings:settingsCopy];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
   v33[14] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   v32[0] = @"alarmId";
   v32[1] = @"hour";
   v33[0] = &stru_1F29360E0;
@@ -100,71 +100,71 @@
   settings = self->_settings;
   self->_settings = v7;
 
-  if (v4)
+  if (settingsCopy)
   {
-    v9 = [v4 objectForKey:@"alarmId"];
+    v9 = [settingsCopy objectForKey:@"alarmId"];
     alarmID = self->_alarmID;
     self->_alarmID = v9;
 
     [(NSMutableDictionary *)self->_settings setObject:self->_alarmID forKey:@"alarmId"];
-    v11 = [v4 objectForKey:@"hour"];
+    v11 = [settingsCopy objectForKey:@"hour"];
     -[Alarm setHour:](self, "setHour:", [v11 unsignedIntValue]);
 
-    v12 = [v4 objectForKey:@"minute"];
+    v12 = [settingsCopy objectForKey:@"minute"];
     -[Alarm setMinute:](self, "setMinute:", [v12 unsignedIntValue]);
 
-    v13 = [v4 objectForKey:@"allowsSnooze"];
+    v13 = [settingsCopy objectForKey:@"allowsSnooze"];
     -[Alarm setAllowsSnooze:](self, "setAllowsSnooze:", [v13 BOOLValue]);
 
-    v14 = [v4 objectForKey:@"soundType"];
+    v14 = [settingsCopy objectForKey:@"soundType"];
     if (!v14)
     {
       v14 = [MEMORY[0x1E696AD98] numberWithInt:1];
     }
 
-    v15 = [v4 objectForKey:@"sound"];
+    v15 = [settingsCopy objectForKey:@"sound"];
     -[Alarm setSound:ofType:](self, "setSound:ofType:", v15, [v14 intValue]);
 
-    v16 = [v4 objectForKey:@"soundVolume"];
+    v16 = [settingsCopy objectForKey:@"soundVolume"];
     [(Alarm *)self setSoundVolume:v16];
 
-    v17 = [v4 objectForKey:@"vibe"];
+    v17 = [settingsCopy objectForKey:@"vibe"];
     [(Alarm *)self setVibrationID:v17];
 
-    v18 = [v4 objectForKey:@"title"];
+    v18 = [settingsCopy objectForKey:@"title"];
     [(Alarm *)self setTitle:v18];
 
-    v19 = [v4 objectForKey:@"daySetting"];
+    v19 = [settingsCopy objectForKey:@"daySetting"];
     -[Alarm setDaySetting:](self, "setDaySetting:", [v19 unsignedIntValue]);
 
-    v20 = [v4 objectForKey:@"isSleepAlarm"];
+    v20 = [settingsCopy objectForKey:@"isSleepAlarm"];
     -[Alarm setIsSleepAlarm:](self, "setIsSleepAlarm:", [v20 BOOLValue]);
 
-    v21 = [v4 objectForKey:@"bedtimeReminderMinutes"];
+    v21 = [settingsCopy objectForKey:@"bedtimeReminderMinutes"];
     [(Alarm *)self setBedtimeReminderMinutes:v21];
 
-    v22 = [v4 objectForKey:@"bedtimeHour"];
+    v22 = [settingsCopy objectForKey:@"bedtimeHour"];
     -[Alarm setBedtimeHour:](self, "setBedtimeHour:", [v22 integerValue]);
 
-    v23 = [v4 objectForKey:@"bedtimeMinute"];
+    v23 = [settingsCopy objectForKey:@"bedtimeMinute"];
     -[Alarm setBedtimeMinute:](self, "setBedtimeMinute:", [v23 integerValue]);
 
-    v24 = [v4 objectForKey:@"lastModified"];
+    v24 = [settingsCopy objectForKey:@"lastModified"];
 
     if (v24)
     {
-      v25 = [v4 objectForKey:@"lastModified"];
+      v25 = [settingsCopy objectForKey:@"lastModified"];
       lastModified = self->_lastModified;
       self->_lastModified = v25;
 
       [(NSMutableDictionary *)self->_settings setObject:self->_lastModified forKey:@"lastModified"];
     }
 
-    v27 = [v4 objectForKey:@"revision"];
+    v27 = [settingsCopy objectForKey:@"revision"];
 
     if (v27)
     {
-      v28 = [v4 objectForKey:@"revision"];
+      v28 = [settingsCopy objectForKey:@"revision"];
       self->_revision = [v28 unsignedIntValue];
 
       v29 = self->_settings;
@@ -184,16 +184,16 @@
   self->_editingProxy = v3;
 
   v5 = self->_editingProxy;
-  v6 = [(Alarm *)self settings];
-  [(Alarm *)v5 applySettings:v6];
+  settings = [(Alarm *)self settings];
+  [(Alarm *)v5 applySettings:settings];
 
   self->_editingProxy->_pretendActiveIfProxy = [(Alarm *)self isActive];
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@::%@", @"AlarmEditingProxyID", self->_alarmID];
   [(Alarm *)self->_editingProxy setAlarmID:v10];
   v7 = self->_editingProxy;
   settings = v7->_settings;
-  v9 = [(Alarm *)v7 alarmID];
-  [(NSMutableDictionary *)settings setObject:v9 forKey:@"alarmId"];
+  alarmID = [(Alarm *)v7 alarmID];
+  [(NSMutableDictionary *)settings setObject:alarmID forKey:@"alarmId"];
 
   [(Alarm *)self->_editingProxy setAlarmIDURL:0];
 }
@@ -204,14 +204,14 @@
   [(Alarm *)self setMinute:[(Alarm *)self->_editingProxy minute]];
   [(Alarm *)self setDaySetting:[(Alarm *)self->_editingProxy daySetting]];
   [(Alarm *)self setAllowsSnooze:[(Alarm *)self->_editingProxy allowsSnooze]];
-  v3 = [(Alarm *)self->_editingProxy sound];
-  [(Alarm *)self setSound:v3 ofType:[(Alarm *)self->_editingProxy soundType]];
+  sound = [(Alarm *)self->_editingProxy sound];
+  [(Alarm *)self setSound:sound ofType:[(Alarm *)self->_editingProxy soundType]];
 
-  v4 = [(Alarm *)self->_editingProxy vibrationID];
-  [(Alarm *)self setVibrationID:v4];
+  vibrationID = [(Alarm *)self->_editingProxy vibrationID];
+  [(Alarm *)self setVibrationID:vibrationID];
 
-  v5 = [(Alarm *)self->_editingProxy title];
-  [(Alarm *)self setTitle:v5];
+  title = [(Alarm *)self->_editingProxy title];
+  [(Alarm *)self setTitle:title];
 }
 
 - (void)dropEditingProxy
@@ -221,21 +221,21 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)verifyIdSetting:(id)a3 withMessageList:(id)a4
++ (BOOL)verifyIdSetting:(id)setting withMessageList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  settingCopy = setting;
+  listCopy = list;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = @"Settings :: ID is wrong type";
 LABEL_6:
-    [v6 addObject:v8];
+    [listCopy addObject:v8];
     v7 = 0;
     goto LABEL_7;
   }
 
-  if (![v5 length])
+  if (![settingCopy length])
   {
     v8 = @"Settings :: ID is invalid";
     goto LABEL_6;
@@ -247,14 +247,14 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)verifyHourSetting:(id)a3 withMessageList:(id)a4
++ (BOOL)verifyHourSetting:(id)setting withMessageList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  settingCopy = setting;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([v5 intValue] & 0x80000000) == 0 && objc_msgSend(v5, "intValue") < 24)
+    if (([settingCopy intValue] & 0x80000000) == 0 && objc_msgSend(settingCopy, "intValue") < 24)
     {
       v8 = 1;
       goto LABEL_7;
@@ -268,21 +268,21 @@ LABEL_7:
     v7 = @"Settings :: hour is wrong type";
   }
 
-  [v6 addObject:v7];
+  [listCopy addObject:v7];
   v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-+ (BOOL)verifyMinuteSetting:(id)a3 withMessageList:(id)a4
++ (BOOL)verifyMinuteSetting:(id)setting withMessageList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  settingCopy = setting;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([v5 intValue] & 0x80000000) == 0 && objc_msgSend(v5, "intValue") < 60)
+    if (([settingCopy intValue] & 0x80000000) == 0 && objc_msgSend(settingCopy, "intValue") < 60)
     {
       v8 = 1;
       goto LABEL_7;
@@ -296,28 +296,28 @@ LABEL_7:
     v7 = @"Settings :: minute is wrong type";
   }
 
-  [v6 addObject:v7];
+  [listCopy addObject:v7];
   v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-+ (BOOL)verifyDaySetting:(id)a3 withMessageList:(id)a4
++ (BOOL)verifyDaySetting:(id)setting withMessageList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  settingCopy = setting;
+  listCopy = list;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = @"Settings :: day setting is wrong type";
 LABEL_6:
-    [v6 addObject:v8];
+    [listCopy addObject:v8];
     v7 = 0;
     goto LABEL_7;
   }
 
-  if ([v5 unsignedIntValue] >= 0x80)
+  if ([settingCopy unsignedIntValue] >= 0x80)
   {
     v8 = @"Settings :: day setting is invalid";
     goto LABEL_6;
@@ -329,24 +329,24 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)verifySettings:(id)a3
++ (BOOL)verifySettings:(id)settings
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  settingsCopy = settings;
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:5];
   v5 = v4;
-  if (v3)
+  if (settingsCopy)
   {
-    v6 = [v3 objectForKey:@"alarmId"];
+    v6 = [settingsCopy objectForKey:@"alarmId"];
     v7 = [Alarm verifyIdSetting:v6 withMessageList:v5];
 
-    v8 = [v3 objectForKey:@"hour"];
+    v8 = [settingsCopy objectForKey:@"hour"];
     v9 = [Alarm verifyHourSetting:v8 withMessageList:v5];
 
-    v10 = [v3 objectForKey:@"minute"];
+    v10 = [settingsCopy objectForKey:@"minute"];
     v11 = [Alarm verifyMinuteSetting:v10 withMessageList:v5];
 
-    v12 = [v3 objectForKey:@"daySetting"];
+    v12 = [settingsCopy objectForKey:@"daySetting"];
     LODWORD(v10) = [Alarm verifyDaySetting:v12 withMessageList:v5];
 
     if (v10 && v11 && v9 && v7)
@@ -355,9 +355,9 @@ LABEL_7:
       goto LABEL_20;
     }
 
-    v23 = v3;
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Settings :: settings %@", v3];
-    [v5 addObject:v14];
+    v23 = settingsCopy;
+    settingsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Settings :: settings %@", settingsCopy];
+    [v5 addObject:settingsCopy];
   }
 
   else
@@ -400,22 +400,22 @@ LABEL_7:
   }
 
   v13 = 0;
-  v3 = v23;
+  settingsCopy = v23;
 LABEL_20:
 
   v21 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (id)_newBaseDateComponentsForDay:(int64_t)a3
+- (id)_newBaseDateComponentsForDay:(int64_t)day
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v4 setYear:2014];
   [v4 setMonth:1];
   [v4 setWeekdayOrdinal:1];
-  if (a3 < 7)
+  if (day < 7)
   {
-    v5 = a3 + 1;
+    v5 = day + 1;
   }
 
   else
@@ -489,22 +489,22 @@ LABEL_9:
   return v7;
 }
 
-- (int64_t)compareTime:(id)a3
+- (int64_t)compareTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = +[Alarm timeComparator];
-  v6 = (v5)[2](v5, self, v4);
+  v6 = (v5)[2](v5, self, timeCopy);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     hour = self->_hour;
     if (hour != [v6 hour] || (minute = self->_minute, minute != objc_msgSend(v6, "minute")))
     {
@@ -515,12 +515,12 @@ LABEL_17:
     }
 
     title = self->_title;
-    v10 = [v6 title];
-    if (title == v10 || (v11 = self->_title, [v6 title], v3 = objc_claimAutoreleasedReturnValue(), -[NSString isEqualToString:](v11, "isEqualToString:", v3)))
+    title = [v6 title];
+    if (title == title || (v11 = self->_title, [v6 title], v3 = objc_claimAutoreleasedReturnValue(), -[NSString isEqualToString:](v11, "isEqualToString:", v3)))
     {
       sound = self->_sound;
-      v14 = [v6 sound];
-      if (-[NSString isEqualToString:](sound, "isEqualToString:", v14) && (v15 = -[Alarm isActive](self, "isActive"), v15 == [v6 isActive]) && (daySetting = self->_daySetting, daySetting == objc_msgSend(v6, "daySetting")))
+      sound = [v6 sound];
+      if (-[NSString isEqualToString:](sound, "isEqualToString:", sound) && (v15 = -[Alarm isActive](self, "isActive"), v15 == [v6 isActive]) && (daySetting = self->_daySetting, daySetting == objc_msgSend(v6, "daySetting")))
       {
         allowsSnooze = self->_allowsSnooze;
         v12 = allowsSnooze == [v6 allowsSnooze];
@@ -531,7 +531,7 @@ LABEL_17:
         v12 = 0;
       }
 
-      if (title == v10)
+      if (title == title)
       {
         goto LABEL_16;
       }
@@ -554,8 +554,8 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(Alarm *)self alarmID];
-  v3 = [v2 hash];
+  alarmID = [(Alarm *)self alarmID];
+  v3 = [alarmID hash];
 
   return v3;
 }
@@ -585,8 +585,8 @@ LABEL_18:
   if (!alarmIDURL)
   {
     v4 = objc_alloc(MEMORY[0x1E695DFF8]);
-    v5 = [(Alarm *)self alarmID];
-    v6 = [@"x-apple-clock:alarm?id=" stringByAppendingString:v5];
+    alarmID = [(Alarm *)self alarmID];
+    v6 = [@"x-apple-clock:alarm?id=" stringByAppendingString:alarmID];
     v7 = [v4 initWithString:v6];
     v8 = self->_alarmIDURL;
     self->_alarmIDURL = v7;
@@ -604,17 +604,17 @@ LABEL_18:
   return v2;
 }
 
-- (void)setHour:(unsigned int)a3
+- (void)setHour:(unsigned int)hour
 {
-  self->_hour = a3;
+  self->_hour = hour;
   settings = self->_settings;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   [(NSMutableDictionary *)settings setObject:v4 forKey:@"hour"];
 }
 
-- (void)setMinute:(unsigned int)a3
+- (void)setMinute:(unsigned int)minute
 {
-  self->_minute = a3;
+  self->_minute = minute;
   settings = self->_settings;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   [(NSMutableDictionary *)settings setObject:v4 forKey:@"minute"];
@@ -635,20 +635,20 @@ LABEL_18:
   return 0;
 }
 
-- (void)setIsSleepAlarm:(BOOL)a3
+- (void)setIsSleepAlarm:(BOOL)alarm
 {
-  self->_isSleepAlarm = a3;
+  self->_isSleepAlarm = alarm;
   settings = self->_settings;
   v4 = [MEMORY[0x1E696AD98] numberWithBool:?];
   [(NSMutableDictionary *)settings setObject:v4 forKey:@"isSleepAlarm"];
 }
 
-- (void)setBedtimeReminderMinutes:(id)a3
+- (void)setBedtimeReminderMinutes:(id)minutes
 {
   settings = self->_settings;
-  if (a3)
+  if (minutes)
   {
-    [(NSMutableDictionary *)settings setObject:a3 forKey:@"bedtimeReminderMinutes"];
+    [(NSMutableDictionary *)settings setObject:minutes forKey:@"bedtimeReminderMinutes"];
   }
 
   else
@@ -660,30 +660,30 @@ LABEL_18:
 - (int64_t)bedtimeHour
 {
   v2 = [(NSMutableDictionary *)self->_settings objectForKey:@"bedtimeHour"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setBedtimeHour:(int64_t)a3
+- (void)setBedtimeHour:(int64_t)hour
 {
   settings = self->_settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:hour];
   [(NSMutableDictionary *)settings setObject:v4 forKey:@"bedtimeHour"];
 }
 
 - (int64_t)bedtimeMinute
 {
   v2 = [(NSMutableDictionary *)self->_settings objectForKey:@"bedtimeMinute"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setBedtimeMinute:(int64_t)a3
+- (void)setBedtimeMinute:(int64_t)minute
 {
   settings = self->_settings;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:minute];
   [(NSMutableDictionary *)settings setObject:v4 forKey:@"bedtimeMinute"];
 }
 
@@ -712,9 +712,9 @@ LABEL_18:
   return repeatDays;
 }
 
-- (void)setDaySetting:(unsigned int)a3
+- (void)setDaySetting:(unsigned int)setting
 {
-  self->_daySetting = a3;
+  self->_daySetting = setting;
   settings = self->_settings;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   [(NSMutableDictionary *)settings setObject:v5 forKey:@"daySetting"];
@@ -723,17 +723,17 @@ LABEL_18:
   self->_repeatDays = 0;
 }
 
-- (void)setAllowsSnooze:(BOOL)a3
+- (void)setAllowsSnooze:(BOOL)snooze
 {
-  self->_allowsSnooze = a3;
+  self->_allowsSnooze = snooze;
   settings = self->_settings;
   v4 = [MEMORY[0x1E696AD98] numberWithBool:?];
   [(NSMutableDictionary *)settings setObject:v4 forKey:@"allowsSnooze"];
 }
 
-- (void)setSound:(id)a3 ofType:(int64_t)a4
+- (void)setSound:(id)sound ofType:(int64_t)type
 {
-  obj = a3;
+  obj = sound;
   if ([(NSString *)obj length])
   {
     v6 = obj;
@@ -747,7 +747,7 @@ LABEL_18:
 
   if (!v6)
   {
-    a4 = 0;
+    type = 0;
   }
 
   if (v6 != self->_sound)
@@ -766,24 +766,24 @@ LABEL_18:
     [(NSMutableDictionary *)self->_settings setObject:sound forKey:@"sound"];
   }
 
-  if (a4 != self->_soundType)
+  if (type != self->_soundType)
   {
-    self->_soundType = a4;
+    self->_soundType = type;
     settings = self->_settings;
-    v9 = [MEMORY[0x1E696AD98] numberWithInt:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithInt:type];
     [(NSMutableDictionary *)settings setObject:v9 forKey:@"soundType"];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSoundVolume:(id)a3
+- (void)setSoundVolume:(id)volume
 {
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  volumeCopy = volume;
+  v8 = volumeCopy;
+  if (volumeCopy)
   {
-    [v5 floatValue];
+    [volumeCopy floatValue];
     if (v6 < 0.0 || ([v8 floatValue], v7 > 1.0))
     {
       [(Alarm *)a2 setSoundVolume:?];
@@ -808,18 +808,18 @@ LABEL_18:
 
   else
   {
-    v4 = [MEMORY[0x1E69DA8F8] sharedVibrationManager];
-    v3 = [v4 defaultVibrationIdentifierForAlertType:13];
+    mEMORY[0x1E69DA8F8] = [MEMORY[0x1E69DA8F8] sharedVibrationManager];
+    v3 = [mEMORY[0x1E69DA8F8] defaultVibrationIdentifierForAlertType:13];
   }
 
   return v3;
 }
 
-- (void)setVibrationID:(id)a3
+- (void)setVibrationID:(id)d
 {
-  obj = a3;
-  v4 = [MEMORY[0x1E69DA8F8] sharedVibrationManager];
-  if ([v4 vibrationWithIdentifierIsValid:obj])
+  obj = d;
+  mEMORY[0x1E69DA8F8] = [MEMORY[0x1E69DA8F8] sharedVibrationManager];
+  if ([mEMORY[0x1E69DA8F8] vibrationWithIdentifierIsValid:obj])
   {
     v5 = obj;
     if (obj)
@@ -832,7 +832,7 @@ LABEL_18:
   {
   }
 
-  v5 = [v4 defaultVibrationIdentifierForAlertType:13];
+  v5 = [mEMORY[0x1E69DA8F8] defaultVibrationIdentifierForAlertType:13];
 LABEL_6:
   obja = v5;
   if (v5 != self->_vibrationID)
@@ -859,12 +859,12 @@ LABEL_6:
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  if ([(NSString *)v7 length])
+  titleCopy = title;
+  if ([(NSString *)titleCopy length])
   {
-    v4 = v7;
+    v4 = titleCopy;
   }
 
   else

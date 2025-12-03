@@ -1,19 +1,19 @@
 @interface HUEventCreationUIFlow
-- (HUEventCreationUIFlow)initWithTriggerBuilder:(id)a3 eventBuilderItem:(id)a4;
-- (id)_initialStepForEventType:(unint64_t)a3;
-- (id)_summaryStepForEventType:(unint64_t)a3;
-- (id)_viewControllerForStep:(id)a3;
+- (HUEventCreationUIFlow)initWithTriggerBuilder:(id)builder eventBuilderItem:(id)item;
+- (id)_initialStepForEventType:(unint64_t)type;
+- (id)_summaryStepForEventType:(unint64_t)type;
+- (id)_viewControllerForStep:(id)step;
 - (void)setupNavigationController;
-- (void)transitionToViewController:(id)a3;
+- (void)transitionToViewController:(id)controller;
 @end
 
 @implementation HUEventCreationUIFlow
 
-- (HUEventCreationUIFlow)initWithTriggerBuilder:(id)a3 eventBuilderItem:(id)a4
+- (HUEventCreationUIFlow)initWithTriggerBuilder:(id)builder eventBuilderItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = HUEventCreationUIFlow;
-  result = [(HUEventUIFlow *)&v5 initWithTriggerBuilder:a3 eventBuilderItem:a4];
+  result = [(HUEventUIFlow *)&v5 initWithTriggerBuilder:builder eventBuilderItem:item];
   if (result)
   {
     result->_modalInPresentation = 0;
@@ -37,8 +37,8 @@
     v5 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v4];
     [(HUEventCreationUIFlow *)self setNavigationController:v5];
 
-    v6 = [(HUEventCreationUIFlow *)self navigationController];
-    [v6 setModalPresentationStyle:2];
+    navigationController = [(HUEventCreationUIFlow *)self navigationController];
+    [navigationController setModalPresentationStyle:2];
   }
 
   else
@@ -76,20 +76,20 @@ id __50__HUEventCreationUIFlow_setupNavigationController__block_invoke(uint64_t 
   return v5;
 }
 
-- (void)transitionToViewController:(id)a3
+- (void)transitionToViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [(HUEventCreationUIFlow *)self navigationController];
-  v5 = [v4 hu_pushPreloadableViewController:v6 animated:1];
+  controllerCopy = controller;
+  navigationController = [(HUEventCreationUIFlow *)self navigationController];
+  v5 = [navigationController hu_pushPreloadableViewController:controllerCopy animated:1];
 }
 
-- (id)_viewControllerForStep:(id)a3
+- (id)_viewControllerForStep:(id)step
 {
   v8.receiver = self;
   v8.super_class = HUEventCreationUIFlow;
-  v4 = a3;
-  v5 = [(HUEventUIFlow *)&v8 _viewControllerForStep:v4];
-  v6 = [v4 isEqualToString:{@"typePicker", v8.receiver, v8.super_class}];
+  stepCopy = step;
+  v5 = [(HUEventUIFlow *)&v8 _viewControllerForStep:stepCopy];
+  v6 = [stepCopy isEqualToString:{@"typePicker", v8.receiver, v8.super_class}];
 
   if ((v6 & 1) == 0)
   {
@@ -99,25 +99,25 @@ id __50__HUEventCreationUIFlow_setupNavigationController__block_invoke(uint64_t 
   return v5;
 }
 
-- (id)_summaryStepForEventType:(unint64_t)a3
+- (id)_summaryStepForEventType:(unint64_t)type
 {
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    self = *off_277DBDF50[a3];
+    self = *off_277DBDF50[type];
   }
 
   return self;
 }
 
-- (id)_initialStepForEventType:(unint64_t)a3
+- (id)_initialStepForEventType:(unint64_t)type
 {
-  if (a3 == 5)
+  if (type == 5)
   {
     v3 = HUEventUIFlowStepAlarmPicker;
     goto LABEL_5;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v3 = HUEventUIFlowStepAccessoryPicker;
 LABEL_5:

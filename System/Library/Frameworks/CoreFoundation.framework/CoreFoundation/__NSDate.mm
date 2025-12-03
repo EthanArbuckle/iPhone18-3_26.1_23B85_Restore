@@ -1,5 +1,5 @@
 @interface __NSDate
-- (__NSDate)initWithTimeIntervalSinceReferenceDate:(double)a3;
+- (__NSDate)initWithTimeIntervalSinceReferenceDate:(double)date;
 - (void)dealloc;
 @end
 
@@ -14,11 +14,11 @@
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSDate)initWithTimeIntervalSinceReferenceDate:(double)a3
+- (__NSDate)initWithTimeIntervalSinceReferenceDate:(double)date
 {
   v4 = [NSDate alloc];
 
-  return [(NSDate *)v4 initWithTimeIntervalSinceReferenceDate:a3];
+  return [(NSDate *)v4 initWithTimeIntervalSinceReferenceDate:date];
 }
 
 @end

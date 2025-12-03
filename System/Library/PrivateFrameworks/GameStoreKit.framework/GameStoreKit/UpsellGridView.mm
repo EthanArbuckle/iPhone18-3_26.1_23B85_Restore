@@ -1,6 +1,6 @@
 @interface UpsellGridView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC12GameStoreKit14UpsellGridView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC12GameStoreKit14UpsellGridView)initWithFrame:(CGRect)frame;
 - (id)impressionItems;
 - (void)layoutSubviews;
 @end
@@ -16,12 +16,12 @@
   sub_24F740180();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
-  [(UpsellGridView *)v6 bounds];
+  height = fitting.height;
+  width = fitting.width;
+  selfCopy = self;
+  [(UpsellGridView *)selfCopy bounds];
   sub_24F740044(v13, v7);
   swift_beginAccess();
 
@@ -47,7 +47,7 @@
   return v2;
 }
 
-- (_TtC12GameStoreKit14UpsellGridView)initWithFrame:(CGRect)a3
+- (_TtC12GameStoreKit14UpsellGridView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

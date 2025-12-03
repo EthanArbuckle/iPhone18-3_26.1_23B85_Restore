@@ -1,15 +1,15 @@
 @interface FigCameraUsageListener
 + (void)initialize;
-- (FigCameraUsageListener)initWithChangeHandler:(id)a3;
+- (FigCameraUsageListener)initWithChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation FigCameraUsageListener
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -18,16 +18,16 @@
   }
 }
 
-- (FigCameraUsageListener)initWithChangeHandler:(id)a3
+- (FigCameraUsageListener)initWithChangeHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     v6.receiver = self;
     v6.super_class = FigCameraUsageListener;
     v4 = [(FigCameraUsageListener *)&v6 init];
     if (v4)
     {
-      v4->_changeHandler = [a3 copy];
+      v4->_changeHandler = [handler copy];
       v4->_isProhibitedLock = FigSimpleMutexCreate();
       FigSimpleMutexLock();
       [objc_msgSend(MEMORY[0x1E69ADFB8] "sharedConnection")];
@@ -55,7 +55,7 @@
   [(FigCameraUsageListener *)&v3 dealloc];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = FigCameraUsageProhibited();
   FigSimpleMutexLock();

@@ -3,14 +3,14 @@
 + (void)load;
 - (PLSCDynamicStoreAgent)init;
 - (void)initOperatorDependancies;
-- (void)networkLinkQualityChanged:(__SCDynamicStore *)a3 withChangedKeys:(id)a4;
+- (void)networkLinkQualityChanged:(__SCDynamicStore *)changed withChangedKeys:(id)keys;
 @end
 
 @implementation PLSCDynamicStoreAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSCDynamicStoreAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -33,13 +33,13 @@
   v61 = *MEMORY[0x277D3F540];
   v6 = v61;
   v56[0] = @"Active";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
   v56[1] = @"LinkQuality";
-  v57[0] = v35;
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v57[1] = v33;
+  v57[0] = commonTypeDict_BoolFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v57[1] = commonTypeDict_IntegerFormat;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:2];
   v62[1] = v32;
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:&v60 count:2];
@@ -54,13 +54,13 @@
   v54[1] = v6;
   v55[0] = v30;
   v50[0] = @"Active";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
   v50[1] = @"LinkQuality";
-  v51[0] = v28;
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v51[1] = v26;
+  v51[0] = commonTypeDict_BoolFormat2;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v51[1] = commonTypeDict_IntegerFormat2;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
   v55[1] = v25;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
@@ -75,13 +75,13 @@
   v48[1] = v6;
   v49[0] = v23;
   v44[0] = @"Active";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
   v44[1] = @"LinkQuality";
-  v45[0] = v21;
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v45[1] = v19;
+  v45[0] = commonTypeDict_BoolFormat3;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v45[1] = commonTypeDict_IntegerFormat3;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
   v49[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
@@ -96,13 +96,13 @@
   v42[1] = v6;
   v43[0] = v9;
   v38[0] = @"Active";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_BoolFormat];
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_BoolFormat];
   v38[1] = @"LinkQuality";
-  v39[0] = v11;
-  v12 = [MEMORY[0x277D3F198] sharedInstance];
-  v13 = [v12 commonTypeDict_IntegerFormat];
-  v39[1] = v13;
+  v39[0] = commonTypeDict_BoolFormat4;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v39[1] = commonTypeDict_IntegerFormat4;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v43[1] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
@@ -128,8 +128,8 @@
     v4 = *MEMORY[0x277CBECE8];
     v5 = SCDynamicStoreCreate(*MEMORY[0x277CBECE8], @"PLSCDynamicStoreAgent", networkLinkQualityChangeCallback, &v16);
     _dynamicStore = v5;
-    v6 = [(PLOperator *)v3 workQueue];
-    SCDynamicStoreSetDispatchQueue(v5, v6);
+    workQueue = [(PLOperator *)v3 workQueue];
+    SCDynamicStoreSetDispatchQueue(v5, workQueue);
 
     v7 = objc_opt_new();
     v8 = objc_opt_new();
@@ -154,15 +154,15 @@
 
 - (void)initOperatorDependancies
 {
-  v3 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v2 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v3 createDistributionEventForwardWithDistributionID:8 withRemovingChildNodeName:@"Hotspot" withStartDate:v2];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:8 withRemovingChildNodeName:@"Hotspot" withStartDate:monotonicDate];
 }
 
-- (void)networkLinkQualityChanged:(__SCDynamicStore *)a3 withChangedKeys:(id)a4
+- (void)networkLinkQualityChanged:(__SCDynamicStore *)changed withChangedKeys:(id)keys
 {
   v92 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  keysCopy = keys;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -178,18 +178,18 @@
 
     if (_MergedGlobals_108 == 1)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"SCDS Changed Keys: %@", v5];
+      keysCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SCDS Changed Keys: %@", keysCopy];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLSCDynamicStoreAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSCDynamicStoreAgent networkLinkQualityChanged:withChangedKeys:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:163];
+      [v8 logMessage:keysCopy fromFile:lastPathComponent fromFunction:v11 fromLineNumber:163];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v91 = v7;
+        v91 = keysCopy;
         _os_log_debug_impl(&dword_21A4C6000, v12, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -228,13 +228,13 @@
     if (byte_2811F7E41 == 1)
     {
       v83 = v14;
-      v22 = self;
+      selfCopy = self;
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"SCDS Dynamic store dictionary: %@", v20];
       v24 = MEMORY[0x277D3F178];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLSCDynamicStoreAgent.m"];
-      v26 = [v25 lastPathComponent];
+      lastPathComponent2 = [v25 lastPathComponent];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSCDynamicStoreAgent networkLinkQualityChanged:withChangedKeys:]"];
-      [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:174];
+      [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:174];
 
       v28 = PLLogCommon();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -244,30 +244,30 @@
         _os_log_debug_impl(&dword_21A4C6000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      self = v22;
+      self = selfCopy;
       v14 = v83;
     }
   }
 
-  if ([v5 containsObject:@"State:/Network/Interface/en0/Link"])
+  if ([keysCopy containsObject:@"State:/Network/Interface/en0/Link"])
   {
-    v29 = [(__CFDictionary *)v20 allKeys];
-    if (![v29 containsObject:@"State:/Network/Interface/en0/Link"])
+    allKeys = [(__CFDictionary *)v20 allKeys];
+    if (![allKeys containsObject:@"State:/Network/Interface/en0/Link"])
     {
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v30 = [(__CFDictionary *)v20 allKeys];
-    v31 = [v30 containsObject:@"State:/Network/Interface/en0/LinkQuality"];
+    allKeys2 = [(__CFDictionary *)v20 allKeys];
+    v31 = [allKeys2 containsObject:@"State:/Network/Interface/en0/LinkQuality"];
 
     if (v31)
     {
       v84 = v14;
-      v32 = self;
-      v29 = [(PLOperator *)PLSCDynamicStoreAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"WifiActive"];
-      v33 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v29];
+      selfCopy2 = self;
+      allKeys = [(PLOperator *)PLSCDynamicStoreAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"WifiActive"];
+      v33 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:allKeys];
       v34 = [(__CFDictionary *)v20 objectForKeyedSubscript:@"State:/Network/Interface/en0/Link"];
       v35 = [v34 objectForKeyedSubscript:@"Active"];
       v36 = [v35 isEqual:&unk_282C12528];
@@ -292,8 +292,8 @@ LABEL_25:
         [v33 setObject:v40 forKeyedSubscript:@"LinkQuality"];
       }
 
-      self = v32;
-      [(PLOperator *)v32 logEntry:v33];
+      self = selfCopy2;
+      [(PLOperator *)selfCopy2 logEntry:v33];
 
       v14 = v84;
       goto LABEL_25;
@@ -301,10 +301,10 @@ LABEL_25:
   }
 
 LABEL_26:
-  if ([v5 containsObject:@"State:/Network/Interface/ap1/Link"])
+  if ([keysCopy containsObject:@"State:/Network/Interface/ap1/Link"])
   {
-    v41 = [(__CFDictionary *)v20 allKeys];
-    v42 = [v41 containsObject:@"State:/Network/Interface/ap1/Link"];
+    allKeys3 = [(__CFDictionary *)v20 allKeys];
+    v42 = [allKeys3 containsObject:@"State:/Network/Interface/ap1/Link"];
 
     if (v42)
     {
@@ -318,17 +318,17 @@ LABEL_26:
       if (v48)
       {
         [v45 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"Active"];
-        v49 = [MEMORY[0x277D3F0C0] sharedInstance];
-        v50 = [v45 entryDate];
-        [v49 createDistributionEventForwardWithDistributionID:41 withAddingChildNodeName:@"Hotspot" withStartDate:v50];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+        entryDate = [v45 entryDate];
+        [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:41 withAddingChildNodeName:@"Hotspot" withStartDate:entryDate];
       }
 
       else
       {
         [v45 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"Active"];
-        v49 = [MEMORY[0x277D3F0C0] sharedInstance];
-        v50 = [v45 entryDate];
-        [v49 createDistributionEventForwardWithDistributionID:41 withRemovingChildNodeName:@"Hotspot" withStartDate:v50];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+        entryDate = [v45 entryDate];
+        [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:41 withRemovingChildNodeName:@"Hotspot" withStartDate:entryDate];
       }
 
       [(PLOperator *)self logEntry:v45];
@@ -336,10 +336,10 @@ LABEL_26:
     }
   }
 
-  if (([v5 containsObject:@"State:/Network/Interface/pdp_ip0/Link"] & 1) != 0 || objc_msgSend(v5, "containsObject:", @"State:/Network/Interface/pdp_ip0/LinkQuality"))
+  if (([keysCopy containsObject:@"State:/Network/Interface/pdp_ip0/Link"] & 1) != 0 || objc_msgSend(keysCopy, "containsObject:", @"State:/Network/Interface/pdp_ip0/LinkQuality"))
   {
-    v51 = [(__CFDictionary *)v20 allKeys];
-    v52 = [v51 containsObject:@"State:/Network/Interface/pdp_ip0/LinkQuality"];
+    allKeys4 = [(__CFDictionary *)v20 allKeys];
+    v52 = [allKeys4 containsObject:@"State:/Network/Interface/pdp_ip0/LinkQuality"];
 
     if (v52)
     {
@@ -348,12 +348,12 @@ LABEL_26:
       v54 = [(__CFDictionary *)v20 objectForKeyedSubscript:@"State:/Network/Interface/pdp_ip0/LinkQuality"];
       [v54 objectForKeyedSubscript:@"LinkQuality"];
       v55 = v13;
-      v56 = v5;
+      v56 = keysCopy;
       v58 = v57 = self;
       v59 = [v58 isEqual:&unk_282C12540];
 
       self = v57;
-      v5 = v56;
+      keysCopy = v56;
       v13 = v55;
 
       if (v59)
@@ -375,12 +375,12 @@ LABEL_26:
     }
   }
 
-  if ([v5 containsObject:@"State:/Network/Interface/en2/Link"])
+  if ([keysCopy containsObject:@"State:/Network/Interface/en2/Link"])
   {
     v63 = [(PLOperator *)PLSCDynamicStoreAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"BTHotspotActive"];
     v64 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v63];
-    v65 = [(__CFDictionary *)v20 allKeys];
-    v66 = [v65 containsObject:@"State:/Network/Interface/en2/Link"];
+    allKeys5 = [(__CFDictionary *)v20 allKeys];
+    v66 = [allKeys5 containsObject:@"State:/Network/Interface/en2/Link"];
 
     if (v66)
     {
@@ -406,14 +406,14 @@ LABEL_26:
 
           if (byte_2811F7E42 == 1)
           {
-            v82 = self;
+            selfCopy3 = self;
             v86 = v14;
             v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Interface en2 keys exist, but active=no. Expected en2.active=yes whenever en2 interface exists"];
             v77 = MEMORY[0x277D3F178];
             v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLSCDynamicStoreAgent.m"];
-            v79 = [v78 lastPathComponent];
+            lastPathComponent3 = [v78 lastPathComponent];
             v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSCDynamicStoreAgent networkLinkQualityChanged:withChangedKeys:]"];
-            [v77 logMessage:v76 fromFile:v79 fromFunction:v80 fromLineNumber:239];
+            [v77 logMessage:v76 fromFile:lastPathComponent3 fromFunction:v80 fromLineNumber:239];
 
             v81 = PLLogCommon();
             if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
@@ -423,7 +423,7 @@ LABEL_26:
               _os_log_debug_impl(&dword_21A4C6000, v81, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            self = v82;
+            self = selfCopy3;
             v14 = v86;
           }
         }

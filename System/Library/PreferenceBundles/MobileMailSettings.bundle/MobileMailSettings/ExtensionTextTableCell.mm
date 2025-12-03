@@ -1,20 +1,20 @@
 @interface ExtensionTextTableCell
-- (ExtensionTextTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (ExtensionTextTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ExtensionTextTableCell
 
-- (ExtensionTextTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ExtensionTextTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v42.receiver = self;
   v42.super_class = ExtensionTextTableCell;
-  v39 = a4;
-  v5 = [(ExtensionTextTableCell *)&v42 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(ExtensionTextTableCell *)&v42 initWithStyle:style reuseIdentifier:?];
   v6 = v5;
   if (v5)
   {
-    v40 = [(ExtensionTextTableCell *)v5 contentView];
+    contentView = [(ExtensionTextTableCell *)v5 contentView];
     v7 = objc_alloc_init(UILabel);
     primaryLabel = v6->_primaryLabel;
     v6->_primaryLabel = v7;
@@ -28,7 +28,7 @@
     [(UILabel *)v6->_primaryLabel setNumberOfLines:0];
     [(UILabel *)v6->_primaryLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v6->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v40 addSubview:v6->_primaryLabel];
+    [contentView addSubview:v6->_primaryLabel];
     v11 = objc_alloc_init(UILabel);
     secondaryLabel = v6->_secondaryLabel;
     v6->_secondaryLabel = v11;
@@ -42,35 +42,35 @@
     [(UILabel *)v6->_secondaryLabel setNumberOfLines:4];
     [(UILabel *)v6->_secondaryLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v6->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v40 addSubview:v6->_secondaryLabel];
-    v41 = [v40 layoutMarginsGuide];
-    v38 = [(UILabel *)v6->_primaryLabel leadingAnchor];
-    v33 = [v41 leadingAnchor];
-    v32 = [v38 constraintEqualToAnchor:0.0 constant:?];
+    [contentView addSubview:v6->_secondaryLabel];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor = [(UILabel *)v6->_primaryLabel leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:0.0 constant:?];
     v43[0] = v32;
-    v37 = [(UILabel *)v6->_primaryLabel trailingAnchor];
-    v31 = [v41 trailingAnchor];
-    v30 = [v37 constraintEqualToAnchor:?];
+    trailingAnchor = [(UILabel *)v6->_primaryLabel trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:?];
     v43[1] = v30;
-    v36 = [(UILabel *)v6->_primaryLabel topAnchor];
-    v29 = [v41 topAnchor];
-    v28 = [v36 constraintEqualToAnchor:?];
+    topAnchor = [(UILabel *)v6->_primaryLabel topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:?];
     v43[2] = v28;
-    v35 = [(UILabel *)v6->_secondaryLabel topAnchor];
-    v27 = [(UILabel *)v6->_primaryLabel lastBaselineAnchor];
-    v26 = [v35 constraintEqualToAnchor:6.0 constant:?];
+    topAnchor3 = [(UILabel *)v6->_secondaryLabel topAnchor];
+    lastBaselineAnchor = [(UILabel *)v6->_primaryLabel lastBaselineAnchor];
+    v26 = [topAnchor3 constraintEqualToAnchor:6.0 constant:?];
     v43[3] = v26;
-    v34 = [(UILabel *)v6->_secondaryLabel leadingAnchor];
-    v25 = [(UILabel *)v6->_primaryLabel leadingAnchor];
-    v15 = [v34 constraintEqualToAnchor:?];
+    leadingAnchor3 = [(UILabel *)v6->_secondaryLabel leadingAnchor];
+    leadingAnchor4 = [(UILabel *)v6->_primaryLabel leadingAnchor];
+    v15 = [leadingAnchor3 constraintEqualToAnchor:?];
     v43[4] = v15;
-    v16 = [(UILabel *)v6->_secondaryLabel bottomAnchor];
-    v17 = [v41 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [(UILabel *)v6->_secondaryLabel bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v43[5] = v18;
-    v19 = [(UILabel *)v6->_secondaryLabel trailingAnchor];
-    v20 = [v41 trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor3 = [(UILabel *)v6->_secondaryLabel trailingAnchor];
+    trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+    v21 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v43[6] = v21;
     v22 = [NSArray arrayWithObjects:v43 count:7];
     [NSLayoutConstraint activateConstraints:v22];
@@ -81,16 +81,16 @@
   return v6;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = ExtensionTextTableCell;
-  [(ExtensionTextTableCell *)&v11 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"title"];
-  v7 = [v5 objectForKeyedSubscript:@"subtitle"];
-  v8 = [v5 objectForKeyedSubscript:@"subtitleNumberOfLines"];
+  [(ExtensionTextTableCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"title"];
+  v7 = [userInfo objectForKeyedSubscript:@"subtitle"];
+  v8 = [userInfo objectForKeyedSubscript:@"subtitleNumberOfLines"];
   primaryLabel = self->_primaryLabel;
   if (v6)
   {

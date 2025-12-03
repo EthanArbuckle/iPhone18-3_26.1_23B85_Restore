@@ -1,10 +1,10 @@
 @interface WKMaterialHostingSupport
 + (BOOL)isMaterialHostingAvailable;
-+ (id)contentLayerForMaterialHostingLayer:(id)a3;
++ (id)contentLayerForMaterialHostingLayer:(id)layer;
 + (id)hostingLayer;
-+ (id)hostingView:(id)a3;
-+ (void)updateHostingLayer:(id)a3 materialEffectType:(int64_t)a4 colorScheme:(int64_t)a5 cornerRadius:(double)a6;
-+ (void)updateHostingView:(id)a3 contentView:(id)a4 materialEffectType:(int64_t)a5 colorScheme:(int64_t)a6 cornerRadius:(double)a7;
++ (id)hostingView:(id)view;
++ (void)updateHostingLayer:(id)layer materialEffectType:(int64_t)type colorScheme:(int64_t)scheme cornerRadius:(double)radius;
++ (void)updateHostingView:(id)view contentView:(id)contentView materialEffectType:(int64_t)type colorScheme:(int64_t)scheme cornerRadius:(double)radius;
 - (WKMaterialHostingSupport)init;
 @end
 
@@ -48,7 +48,7 @@
   return v2;
 }
 
-+ (void)updateHostingLayer:(id)a3 materialEffectType:(int64_t)a4 colorScheme:(int64_t)a5 cornerRadius:(double)a6
++ (void)updateHostingLayer:(id)layer materialEffectType:(int64_t)type colorScheme:(int64_t)scheme cornerRadius:(double)radius
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -61,7 +61,7 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB017908);
   if (swift_dynamicCastClass())
   {
-    v9 = a3;
+    layerCopy = layer;
     v7 = sub_19D62ADF8();
     if (v7)
     {
@@ -79,7 +79,7 @@
   }
 }
 
-+ (id)contentLayerForMaterialHostingLayer:(id)a3
++ (id)contentLayerForMaterialHostingLayer:(id)layer
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -89,13 +89,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  layerCopy = layer;
   v5 = sub_19D62ADF8();
 
   return v5;
 }
 
-+ (id)hostingView:(id)a3
++ (id)hostingView:(id)view
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -106,13 +106,13 @@
   }
 
   v4 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB017910));
-  v5 = a3;
+  viewCopy = view;
   v6 = sub_19E6CD218();
 
   return v6;
 }
 
-+ (void)updateHostingView:(id)a3 contentView:(id)a4 materialEffectType:(int64_t)a5 colorScheme:(int64_t)a6 cornerRadius:(double)a7
++ (void)updateHostingView:(id)view contentView:(id)contentView materialEffectType:(int64_t)type colorScheme:(int64_t)scheme cornerRadius:(double)radius
 {
   sub_19E6CD5B8();
   sub_19E6CD5A8();
@@ -125,8 +125,8 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB017910);
   if (swift_dynamicCastClass())
   {
-    v9 = a4;
-    v10 = a3;
+    contentViewCopy = contentView;
+    viewCopy = view;
     sub_19E6CD228();
   }
 

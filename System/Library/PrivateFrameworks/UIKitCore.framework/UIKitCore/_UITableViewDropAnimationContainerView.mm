@@ -4,8 +4,8 @@
 - (_UITableViewDropAnimationContainerView)init;
 - (void)beginDropAnimation;
 - (void)endDropAnimation;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
 - (void)updateOffsetFromTargetCenterIfNeeded;
 @end
 
@@ -30,13 +30,13 @@
 - (NSArray)cells
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(UIView *)self subviews];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  subviews = [(UIView *)self subviews];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(subviews, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = subviews;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -81,19 +81,19 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UITableViewDropAnimationContainerView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UITableViewDropAnimationContainerView *)self updateOffsetFromTargetCenterIfNeeded];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = _UITableViewDropAnimationContainerView;
-  [(UIView *)&v4 setCenter:a3.x, a3.y];
+  [(UIView *)&v4 setCenter:center.x, center.y];
   [(_UITableViewDropAnimationContainerView *)self updateOffsetFromTargetCenterIfNeeded];
 }
 
@@ -113,7 +113,7 @@
         if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
         {
           v8 = 138412290;
-          v9 = self;
+          selfCopy2 = self;
           _os_log_fault_impl(&dword_188A29000, v6, OS_LOG_TYPE_FAULT, "The drop animation container view needs to have a valid frame set before -beginDropAnimation is called the first time: %@", &v8, 0xCu);
         }
       }
@@ -125,7 +125,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "The drop animation container view needs to have a valid frame set before -beginDropAnimation is called the first time: %@", &v8, 0xCu);
       }
     }
@@ -142,8 +142,8 @@
   [(_UITableViewDropAnimationContainerView *)self setActiveDropAnimationCount:[(_UITableViewDropAnimationContainerView *)self activeDropAnimationCount]- 1];
   if ([(_UITableViewDropAnimationContainerView *)self activeDropAnimationCount]< 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_UITableViewDropAnimationContainerView.m" lineNumber:94 description:@"UITableView internal inconsistency: attempted to end an animation on the drop animation container view that never began"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UITableViewDropAnimationContainerView.m" lineNumber:94 description:@"UITableView internal inconsistency: attempted to end an animation on the drop animation container view that never began"];
   }
 
   if (![(_UITableViewDropAnimationContainerView *)self activeDropAnimationCount])

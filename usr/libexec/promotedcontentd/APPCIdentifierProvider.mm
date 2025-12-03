@@ -1,12 +1,12 @@
 @interface APPCIdentifierProvider
 - (APPCIdentifierProvider)init;
-- (APPCIdentifierProvider)initWithIdentifierProvider:(id)a3;
-- (id)getIdentifiersWithType:(int64_t)a3 source:(int64_t)a4 processId:(id)a5;
+- (APPCIdentifierProvider)initWithIdentifierProvider:(id)provider;
+- (id)getIdentifiersWithType:(int64_t)type source:(int64_t)source processId:(id)id;
 @end
 
 @implementation APPCIdentifierProvider
 
-- (APPCIdentifierProvider)initWithIdentifierProvider:(id)a3
+- (APPCIdentifierProvider)initWithIdentifierProvider:(id)provider
 {
   ObjectType = swift_getObjectType();
   result = [swift_unknownObjectRetain() provider];
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (id)getIdentifiersWithType:(int64_t)a3 source:(int64_t)a4 processId:(id)a5
+- (id)getIdentifiersWithType:(int64_t)type source:(int64_t)source processId:(id)id
 {
   sub_100398F58();
-  v7 = self;
-  PCIdentifierProvider.getIdentifiers(type:source:processId:)(a3);
+  selfCopy = self;
+  PCIdentifierProvider.getIdentifiers(type:source:processId:)(type);
 
   type metadata accessor for PCRotatingIdentifier();
   v8.super.isa = sub_100399178().super.isa;

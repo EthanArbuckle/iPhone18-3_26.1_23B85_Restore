@@ -7,19 +7,19 @@
 
 - (id)gtm_stringByUnescapingFromHTML
 {
-  v2 = [a1 length];
-  v3 = [a1 rangeOfString:@"&" options:4 range:{0, v2}];
+  v2 = [self length];
+  v3 = [self rangeOfString:@"&" options:4 range:{0, v2}];
   if (v4)
   {
     v5 = v3;
-    v25 = [MEMORY[0x277CCAB68] stringWithString:a1];
+    v25 = [MEMORY[0x277CCAB68] stringWithString:self];
     do
     {
-      v6 = [a1 rangeOfString:@";" options:0 range:{v5, v2 - v5}];
+      v6 = [self rangeOfString:@";" options:0 range:{v5, v2 - v5}];
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v7 = v6 - v5;
-        v8 = [a1 substringWithRange:{v5, v6 - v5 + 1}];
+        v8 = [self substringWithRange:{v5, v6 - v5 + 1}];
         v9 = [v8 length];
         v10 = v9 - 4;
         if ((v9 - 4) <= 6)
@@ -97,34 +97,34 @@ LABEL_27:
       }
 
       v2 = v5;
-      v5 = [a1 rangeOfString:@"&" options:4 range:{0, v5}];
+      v5 = [self rangeOfString:@"&" options:4 range:{0, v5}];
     }
 
     while (v22);
-    v23 = v25;
+    selfCopy = v25;
   }
 
   else
   {
-    v23 = a1;
+    selfCopy = self;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (__CFString)gtm_stringByEscapingHTMLUsingTable:()GTMNSStringHTMLAdditions ofSize:escapingUnicode:
 {
-  v9 = [(__CFString *)a1 length];
+  v9 = [(__CFString *)self length];
   if (!v9)
   {
-    v16 = a1;
+    selfCopy = self;
     goto LABEL_26;
   }
 
   v10 = v9;
-  v11 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v12 = [MEMORY[0x277CBEB28] dataWithCapacity:2 * v10];
-  CharactersPtr = CFStringGetCharactersPtr(a1);
+  CharactersPtr = CFStringGetCharactersPtr(self);
   if (CharactersPtr)
   {
     goto LABEL_5;
@@ -134,15 +134,15 @@ LABEL_27:
   if (v14)
   {
     v15 = v14;
-    -[__CFString getCharacters:](a1, "getCharacters:", [v14 mutableBytes]);
+    -[__CFString getCharacters:](self, "getCharacters:", [v14 mutableBytes]);
     CharactersPtr = [v15 bytes];
 
 LABEL_5:
-    v16 = 0;
+    selfCopy = 0;
     if (CharactersPtr && v12)
     {
       v23 = v12;
-      v17 = [v12 mutableBytes];
+      mutableBytes = [v12 mutableBytes];
       v18 = 0;
       v19 = a4 >> 4;
       do
@@ -152,17 +152,17 @@ LABEL_5:
         {
           if (v18)
           {
-            CFStringAppendCharacters(v11, v17, v18);
+            CFStringAppendCharacters(string, mutableBytes, v18);
           }
 
           if (v20)
           {
-            [(__CFString *)v11 appendString:*v20];
+            [(__CFString *)string appendString:*v20];
           }
 
           else
           {
-            [(__CFString *)v11 appendFormat:@"&#%d;", *CharactersPtr];
+            [(__CFString *)string appendFormat:@"&#%d;", *CharactersPtr];
           }
 
           v18 = 0;
@@ -170,7 +170,7 @@ LABEL_5:
 
         else
         {
-          v17[v18++] = v21;
+          mutableBytes[v18++] = v21;
         }
 
         ++CharactersPtr;
@@ -180,22 +180,22 @@ LABEL_5:
       while (v10);
       if (v18)
       {
-        CFStringAppendCharacters(v11, v17, v18);
+        CFStringAppendCharacters(string, mutableBytes, v18);
       }
 
-      v16 = v11;
+      selfCopy = string;
       v12 = v23;
     }
 
     goto LABEL_25;
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_25:
 
 LABEL_26:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

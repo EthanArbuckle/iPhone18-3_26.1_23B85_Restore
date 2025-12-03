@@ -1,28 +1,28 @@
 @interface PHSearchSuggestion
 + (id)indexCategoriesWithApproximateCounts;
 - (BOOL)hasApproximateCount;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)personUUIDs;
-- (PHSearchSuggestion)initWithCoder:(id)a3;
-- (PHSearchSuggestion)initWithType:(unint64_t)a3 categoriesType:(unint64_t)a4 text:(id)a5 matchRangeOfSearchText:(_NSRange)a6 count:(unint64_t)a7 suggestionComponents:(id)a8 nextTokenSuggestions:(id)a9;
+- (PHSearchSuggestion)initWithCoder:(id)coder;
+- (PHSearchSuggestion)initWithType:(unint64_t)type categoriesType:(unint64_t)categoriesType text:(id)text matchRangeOfSearchText:(_NSRange)searchText count:(unint64_t)count suggestionComponents:(id)components nextTokenSuggestions:(id)suggestions;
 - (_NSRange)matchRangeOfSearchText;
 - (float)score;
 - (id)description;
-- (id)initForDateFilterWithStartDate:(id)a3 endDate:(id)a4;
-- (id)initForDateFilterWithStartDateComponents:(id)a3 endDateComponents:(id)a4;
-- (id)initForGenericLocationFilterWithText:(id)a3 genericLocationTuples:(id)a4 allowedIndexCategories:(id)a5;
-- (id)initForLocationFilterWithAssetUUIDs:(id)a3 locationText:(id)a4;
-- (id)initForMeaningFilterWithMeaningfulEvent:(id)a3;
-- (id)initForPartOfDayFilterWithPartOfDayLocalizedText:(id)a3;
-- (id)initForPartOfWeekFilterWithPartOfWeekLocalizedText:(id)a3;
-- (id)initForPersonFilterWithPersonUUIDs:(id)a3;
-- (id)initForPersonalEventFilterWithMomentUUIDs:(id)a3;
-- (id)initForSeasonFilterWithSeasonLocalizedText:(id)a3;
-- (id)initForTripFilterWithLocationName:(id)a3;
+- (id)initForDateFilterWithStartDate:(id)date endDate:(id)endDate;
+- (id)initForDateFilterWithStartDateComponents:(id)components endDateComponents:(id)dateComponents;
+- (id)initForGenericLocationFilterWithText:(id)text genericLocationTuples:(id)tuples allowedIndexCategories:(id)categories;
+- (id)initForLocationFilterWithAssetUUIDs:(id)ds locationText:(id)text;
+- (id)initForMeaningFilterWithMeaningfulEvent:(id)event;
+- (id)initForPartOfDayFilterWithPartOfDayLocalizedText:(id)text;
+- (id)initForPartOfWeekFilterWithPartOfWeekLocalizedText:(id)text;
+- (id)initForPersonFilterWithPersonUUIDs:(id)ds;
+- (id)initForPersonalEventFilterWithMomentUUIDs:(id)ds;
+- (id)initForSeasonFilterWithSeasonLocalizedText:(id)text;
+- (id)initForTripFilterWithLocationName:(id)name;
 - (id)jsonDictionary;
 - (id)redactedJSONDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHSearchSuggestion
@@ -47,8 +47,8 @@
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHSearchSuggestion categoriesType](self, "categoriesType")}];
   v27[1] = v5;
   v26[2] = @"text";
-  v6 = [(PHSearchSuggestion *)self text];
-  v27[2] = v6;
+  text = [(PHSearchSuggestion *)self text];
+  v27[2] = text;
   v26[3] = @"match_range";
   location = self->_matchRangeOfSearchText.location;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
@@ -91,49 +91,49 @@
   categoriesType = self->_categoriesType;
   if (categoriesType == 9 || categoriesType == 7)
   {
-    v14 = [(PHSearchSuggestion *)self personUUIDs];
-    [v10 setObject:v14 forKeyedSubscript:@"personUUIDs"];
+    personUUIDs = [(PHSearchSuggestion *)self personUUIDs];
+    [v10 setObject:personUUIDs forKeyedSubscript:@"personUUIDs"];
 
     categoriesType = self->_categoriesType;
   }
 
   if (categoriesType == 1)
   {
-    v15 = [(PHSearchSuggestion *)self locationAssetUUIDs];
-    [v10 setObject:v15 forKeyedSubscript:@"location_assetUUIDs"];
+    locationAssetUUIDs = [(PHSearchSuggestion *)self locationAssetUUIDs];
+    [v10 setObject:locationAssetUUIDs forKeyedSubscript:@"location_assetUUIDs"];
 
     categoriesType = self->_categoriesType;
   }
 
   if (categoriesType == 4)
   {
-    v16 = [(PHSearchSuggestion *)self startDate];
-    if (v16 && (v17 = v16, [(PHSearchSuggestion *)self endDate], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+    startDate = [(PHSearchSuggestion *)self startDate];
+    if (startDate && (v17 = startDate, [(PHSearchSuggestion *)self endDate], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
     {
-      v19 = [(PHSearchSuggestion *)self startDate];
-      [v10 setObject:v19 forKeyedSubscript:@"start_date"];
+      startDate2 = [(PHSearchSuggestion *)self startDate];
+      [v10 setObject:startDate2 forKeyedSubscript:@"start_date"];
 
-      v20 = [(PHSearchSuggestion *)self endDate];
+      endDate = [(PHSearchSuggestion *)self endDate];
       v21 = @"end_date";
     }
 
     else
     {
-      v22 = [(PHSearchSuggestion *)self startDateComponents];
-      [v10 setObject:v22 forKeyedSubscript:@"start_date_components"];
+      startDateComponents = [(PHSearchSuggestion *)self startDateComponents];
+      [v10 setObject:startDateComponents forKeyedSubscript:@"start_date_components"];
 
-      v23 = [(PHSearchSuggestion *)self endDateComponents];
+      endDateComponents = [(PHSearchSuggestion *)self endDateComponents];
 
-      if (!v23)
+      if (!endDateComponents)
       {
         goto LABEL_23;
       }
 
-      v20 = [(PHSearchSuggestion *)self endDateComponents];
+      endDate = [(PHSearchSuggestion *)self endDateComponents];
       v21 = @"end_date_components";
     }
 
-    [v10 setObject:v20 forKeyedSubscript:v21];
+    [v10 setObject:endDate forKeyedSubscript:v21];
   }
 
 LABEL_23:
@@ -153,8 +153,8 @@ LABEL_23:
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHSearchSuggestion categoriesType](self, "categoriesType")}];
   v44[1] = v5;
   v43[2] = @"text";
-  v6 = [(PHSearchSuggestion *)self text];
-  v44[2] = v6;
+  text = [(PHSearchSuggestion *)self text];
+  v44[2] = text;
   v43[3] = @"match_range";
   location = self->_matchRangeOfSearchText.location;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
@@ -197,67 +197,67 @@ LABEL_23:
   categoriesType = self->_categoriesType;
   if (categoriesType == 9 || categoriesType == 7)
   {
-    v14 = [(PHSearchSuggestion *)self personUUIDs];
-    [v10 setObject:v14 forKeyedSubscript:@"personUUIDs"];
+    personUUIDs = [(PHSearchSuggestion *)self personUUIDs];
+    [v10 setObject:personUUIDs forKeyedSubscript:@"personUUIDs"];
 
     categoriesType = self->_categoriesType;
   }
 
   if (categoriesType == 1)
   {
-    v15 = [(PHSearchSuggestion *)self locationAssetUUIDs];
-    [v10 setObject:v15 forKeyedSubscript:@"location_assetUUIDs"];
+    locationAssetUUIDs = [(PHSearchSuggestion *)self locationAssetUUIDs];
+    [v10 setObject:locationAssetUUIDs forKeyedSubscript:@"location_assetUUIDs"];
 
     categoriesType = self->_categoriesType;
   }
 
   if (categoriesType == 4)
   {
-    v16 = [(PHSearchSuggestion *)self startDate];
-    if (v16 && (v17 = v16, [(PHSearchSuggestion *)self endDate], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+    startDate = [(PHSearchSuggestion *)self startDate];
+    if (startDate && (v17 = startDate, [(PHSearchSuggestion *)self endDate], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
     {
-      v19 = [(PHSearchSuggestion *)self startDate];
-      [v10 setObject:v19 forKeyedSubscript:@"start_date"];
+      startDate2 = [(PHSearchSuggestion *)self startDate];
+      [v10 setObject:startDate2 forKeyedSubscript:@"start_date"];
 
-      v20 = [(PHSearchSuggestion *)self endDate];
+      endDate = [(PHSearchSuggestion *)self endDate];
       v21 = @"end_date";
     }
 
     else
     {
-      v22 = [(PHSearchSuggestion *)self startDateComponents];
-      [v10 setObject:v22 forKeyedSubscript:@"start_date_components"];
+      startDateComponents = [(PHSearchSuggestion *)self startDateComponents];
+      [v10 setObject:startDateComponents forKeyedSubscript:@"start_date_components"];
 
-      v23 = [(PHSearchSuggestion *)self endDateComponents];
+      endDateComponents = [(PHSearchSuggestion *)self endDateComponents];
 
-      if (!v23)
+      if (!endDateComponents)
       {
         goto LABEL_23;
       }
 
-      v20 = [(PHSearchSuggestion *)self endDateComponents];
+      endDate = [(PHSearchSuggestion *)self endDateComponents];
       v21 = @"end_date_components";
     }
 
-    [v10 setObject:v20 forKeyedSubscript:v21];
+    [v10 setObject:endDate forKeyedSubscript:v21];
   }
 
 LABEL_23:
-  v24 = [(PHSearchSuggestion *)self nextTokenSuggestions];
-  v25 = [v24 count];
+  nextTokenSuggestions = [(PHSearchSuggestion *)self nextTokenSuggestions];
+  v25 = [nextTokenSuggestions count];
 
   if (v25)
   {
     v26 = objc_alloc(MEMORY[0x1E695DF70]);
-    v27 = [(PHSearchSuggestion *)self nextTokenSuggestions];
-    v28 = [v26 initWithCapacity:{objc_msgSend(v27, "count")}];
+    nextTokenSuggestions2 = [(PHSearchSuggestion *)self nextTokenSuggestions];
+    v28 = [v26 initWithCapacity:{objc_msgSend(nextTokenSuggestions2, "count")}];
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v29 = [(PHSearchSuggestion *)self nextTokenSuggestions];
-    v30 = [v29 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    nextTokenSuggestions3 = [(PHSearchSuggestion *)self nextTokenSuggestions];
+    v30 = [nextTokenSuggestions3 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v30)
     {
       v31 = v30;
@@ -268,14 +268,14 @@ LABEL_23:
         {
           if (*v39 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(nextTokenSuggestions3);
           }
 
-          v34 = [*(*(&v38 + 1) + 8 * i) jsonDictionary];
-          [v28 addObject:v34];
+          jsonDictionary = [*(*(&v38 + 1) + 8 * i) jsonDictionary];
+          [v28 addObject:jsonDictionary];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v31 = [nextTokenSuggestions3 countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v31);
@@ -294,9 +294,9 @@ LABEL_23:
 
 - (id)description
 {
-  v3 = [(PHSearchSuggestion *)self hasApproximateCount];
+  hasApproximateCount = [(PHSearchSuggestion *)self hasApproximateCount];
   v4 = @"NO";
-  if (v3)
+  if (hasApproximateCount)
   {
     v4 = @"YES";
   }
@@ -340,8 +340,8 @@ LABEL_23:
     v14 = NSStringFromRange(self->_matchRangeOfSearchText);
   }
 
-  v15 = [(PHSearchSuggestion *)self personUUIDs];
-  v16 = [v19 stringWithFormat:@"%@: %p, type: %ld (%@), categories type: %ld (%@) text: '%@', match range: %@, personUUIDs: %@, count: %tu, hasApproximateCount: %@, start date: %@, end date: %@, start date components: %@, end date components: %@, location asset UUIDs: %@, momentUUIDs: %@, version: %tu", v18, self, type, v8, categoriesType, v11, text, v14, v15, self->_count, v5, self->_startDate, self->_endDate, self->_startDateComponents, self->_endDateComponents, self->_locationAssetUUIDs, self->_momentUUIDs, self->_version];
+  personUUIDs = [(PHSearchSuggestion *)self personUUIDs];
+  v16 = [v19 stringWithFormat:@"%@: %p, type: %ld (%@), categories type: %ld (%@) text: '%@', match range: %@, personUUIDs: %@, count: %tu, hasApproximateCount: %@, start date: %@, end date: %@, start date components: %@, end date components: %@, location asset UUIDs: %@, momentUUIDs: %@, version: %tu", v18, self, type, v8, categoriesType, v11, text, v14, personUUIDs, self->_count, v5, self->_startDate, self->_endDate, self->_startDateComponents, self->_endDateComponents, self->_locationAssetUUIDs, self->_momentUUIDs, self->_version];
 
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -350,125 +350,125 @@ LABEL_23:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:type];
-  [v6 encodeObject:v7 forKey:@"PHSearchSuggestionPropertyType"];
+  [coderCopy encodeObject:v7 forKey:@"PHSearchSuggestionPropertyType"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_categoriesType];
-  [v6 encodeObject:v8 forKey:@"PHSearchSuggestionPropertyCategoriesType"];
+  [coderCopy encodeObject:v8 forKey:@"PHSearchSuggestionPropertyCategoriesType"];
 
-  [v6 encodeObject:self->_text forKey:@"PHSearchSuggestionPropertyText"];
+  [coderCopy encodeObject:self->_text forKey:@"PHSearchSuggestionPropertyText"];
   v9 = [MEMORY[0x1E696B098] valueWithRange:{self->_matchRangeOfSearchText.location, self->_matchRangeOfSearchText.length}];
-  [v6 encodeObject:v9 forKey:@"PHSearchSuggestionPropertyMatchRangeOfSearchText"];
+  [coderCopy encodeObject:v9 forKey:@"PHSearchSuggestionPropertyMatchRangeOfSearchText"];
 
-  [v6 encodeObject:self->_personUUIDs forKey:@"PHSearchSuggestionPropertyPersonUUIDs"];
+  [coderCopy encodeObject:self->_personUUIDs forKey:@"PHSearchSuggestionPropertyPersonUUIDs"];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_count];
-  [v6 encodeObject:v10 forKey:@"PHSearchSuggestionPropertyCount"];
+  [coderCopy encodeObject:v10 forKey:@"PHSearchSuggestionPropertyCount"];
 
-  [v6 encodeObject:self->_startDate forKey:@"PHSearchSuggestionPropertyStartDate"];
-  [v6 encodeObject:self->_endDate forKey:@"PHSearchSuggestionPropertyEndDate"];
-  [v6 encodeObject:self->_startDateComponents forKey:@"PHSearchSuggestionPropertyStartDateComponents"];
-  [v6 encodeObject:self->_endDateComponents forKey:@"PHSearchSuggestionPropertyEndDateComponents"];
-  v11 = [(NSSet *)self->_locationAssetUUIDs allObjects];
-  [v6 encodeObject:v11 forKey:@"PHSearchSuggestionPropertyLocationAssetUUIDs"];
+  [coderCopy encodeObject:self->_startDate forKey:@"PHSearchSuggestionPropertyStartDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"PHSearchSuggestionPropertyEndDate"];
+  [coderCopy encodeObject:self->_startDateComponents forKey:@"PHSearchSuggestionPropertyStartDateComponents"];
+  [coderCopy encodeObject:self->_endDateComponents forKey:@"PHSearchSuggestionPropertyEndDateComponents"];
+  allObjects = [(NSSet *)self->_locationAssetUUIDs allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"PHSearchSuggestionPropertyLocationAssetUUIDs"];
 
-  [v6 encodeObject:self->_suggestionComponents forKey:@"PHSearchSuggestionPropertySuggestionComponents"];
-  [v6 encodeObject:self->_nextTokenSuggestions forKey:@"PHSearchSuggestionPropertyNextTokenSuggestions"];
-  [v6 encodeObject:self->_momentUUIDs forKey:@"PHSearchSuggestionPropertyHighlightUUIDs"];
+  [coderCopy encodeObject:self->_suggestionComponents forKey:@"PHSearchSuggestionPropertySuggestionComponents"];
+  [coderCopy encodeObject:self->_nextTokenSuggestions forKey:@"PHSearchSuggestionPropertyNextTokenSuggestions"];
+  [coderCopy encodeObject:self->_momentUUIDs forKey:@"PHSearchSuggestionPropertyHighlightUUIDs"];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_version];
-  [v6 encodeObject:v12 forKey:@"PHSearchSuggestionPropertyVersion"];
+  [coderCopy encodeObject:v12 forKey:@"PHSearchSuggestionPropertyVersion"];
 }
 
-- (PHSearchSuggestion)initWithCoder:(id)a3
+- (PHSearchSuggestion)initWithCoder:(id)coder
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyVersion"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyVersion"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (!v6)
+  if (!unsignedIntegerValue)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyType"];
-    v49 = [v9 unsignedIntegerValue];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyType"];
+    unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyCategoriesType"];
-    v47 = [v10 unsignedIntegerValue];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyCategoriesType"];
+    unsignedIntegerValue3 = [v10 unsignedIntegerValue];
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyText"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyMatchRangeOfSearchText"];
-    v46 = [v11 rangeValue];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyText"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyMatchRangeOfSearchText"];
+    rangeValue = [v11 rangeValue];
     v44 = v12;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v50 = [v4 decodeObjectOfClasses:v15 forKey:@"PHSearchSuggestionPropertyPersonUUIDs"];
+    v50 = [coderCopy decodeObjectOfClasses:v15 forKey:@"PHSearchSuggestionPropertyPersonUUIDs"];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyCount"];
-    v17 = [v16 unsignedIntegerValue];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyCount"];
+    unsignedIntegerValue4 = [v16 unsignedIntegerValue];
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyStartDate"];
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyEndDate"];
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyStartDateComponents"];
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyEndDateComponents"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyStartDate"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyEndDate"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyStartDateComponents"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHSearchSuggestionPropertyEndDateComponents"];
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v20 forKey:@"PHSearchSuggestionPropertyLocationAssetUUIDs"];
+    v48 = [coderCopy decodeObjectOfClasses:v20 forKey:@"PHSearchSuggestionPropertyLocationAssetUUIDs"];
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v45 = [v4 decodeObjectOfClasses:v23 forKey:@"PHSearchSuggestionPropertySuggestionComponents"];
+    v45 = [coderCopy decodeObjectOfClasses:v23 forKey:@"PHSearchSuggestionPropertySuggestionComponents"];
 
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"PHSearchSuggestionPropertyNextTokenSuggestions"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"PHSearchSuggestionPropertyNextTokenSuggestions"];
 
     v28 = MEMORY[0x1E695DFD8];
     v29 = objc_opt_class();
-    v30 = v47;
+    v30 = unsignedIntegerValue3;
     v31 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"PHSearchSuggestionPropertyHighlightUUIDs"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"PHSearchSuggestionPropertyHighlightUUIDs"];
 
-    v33 = v17;
+    v33 = unsignedIntegerValue4;
     v34 = v44;
-    v35 = v46;
-    if (v49 == 3)
+    v35 = rangeValue;
+    if (unsignedIntegerValue2 == 3)
     {
-      if (![objc_opt_class() _suggestionsCategoryTypeIsSupportedForDisambiguation:v47])
+      if (![objc_opt_class() _suggestionsCategoryTypeIsSupportedForDisambiguation:unsignedIntegerValue3])
       {
-        v8 = 0;
+        selfCopy6 = 0;
 LABEL_23:
         v38 = v50;
         v37 = v51;
         goto LABEL_24;
       }
 
-      if (v47 > 6)
+      if (unsignedIntegerValue3 > 6)
       {
-        if (v47 == 44)
+        if (unsignedIntegerValue3 == 44)
         {
           v41 = [(PHSearchSuggestion *)self initForPersonalEventFilterWithMomentUUIDs:v32];
 LABEL_22:
           self = v41;
-          v8 = self;
+          selfCopy6 = self;
           goto LABEL_23;
         }
 
-        v35 = v46;
+        v35 = rangeValue;
         v34 = v44;
-        v33 = v17;
-        if (v47 == 7)
+        v33 = unsignedIntegerValue4;
+        if (unsignedIntegerValue3 == 7)
         {
           v38 = v50;
           self = [(PHSearchSuggestion *)self initForPersonFilterWithPersonUUIDs:v50];
-          v8 = self;
+          selfCopy6 = self;
           v37 = v51;
 LABEL_24:
           v36 = v53;
@@ -478,7 +478,7 @@ LABEL_24:
 
       else
       {
-        if (v47 == 1)
+        if (unsignedIntegerValue3 == 1)
         {
           v39 = v48;
           if ([v48 count])
@@ -486,7 +486,7 @@ LABEL_24:
             v40 = [MEMORY[0x1E695DFD8] setWithArray:v48];
             self = [(PHSearchSuggestion *)self initForLocationFilterWithAssetUUIDs:v40 locationText:0];
 
-            v8 = self;
+            selfCopy6 = self;
             v37 = v51;
           }
 
@@ -494,7 +494,7 @@ LABEL_24:
           {
             v37 = v51;
             self = [(PHSearchSuggestion *)self initForLocationFilterWithAssetUUIDs:0 locationText:v51];
-            v8 = self;
+            selfCopy6 = self;
           }
 
           v38 = v50;
@@ -502,16 +502,16 @@ LABEL_24:
           goto LABEL_26;
         }
 
-        v35 = v46;
+        v35 = rangeValue;
         v34 = v44;
-        v33 = v17;
-        if (v47 == 4)
+        v33 = unsignedIntegerValue4;
+        if (unsignedIntegerValue3 == 4)
         {
           v36 = v53;
           if (v53 && v55)
           {
             self = [(PHSearchSuggestion *)self initForDateFilterWithStartDate:v53 endDate:v55];
-            v8 = self;
+            selfCopy6 = self;
             v38 = v50;
             v37 = v51;
 LABEL_25:
@@ -524,9 +524,9 @@ LABEL_28:
           }
 
           v30 = 4;
-          v35 = v46;
+          v35 = rangeValue;
           v34 = v44;
-          v33 = v17;
+          v33 = unsignedIntegerValue4;
           if (v54)
           {
             v41 = [(PHSearchSuggestion *)self initForDateFilterWithStartDateComponents:v54 endDateComponents:v52];
@@ -538,8 +538,8 @@ LABEL_28:
 
     v42 = v45;
     v37 = v51;
-    self = [(PHSearchSuggestion *)self initWithType:v49 categoriesType:v30 text:v51 matchRangeOfSearchText:v35 count:v34 suggestionComponents:v33 nextTokenSuggestions:v45, v27];
-    v8 = self;
+    self = [(PHSearchSuggestion *)self initWithType:unsignedIntegerValue2 categoriesType:v30 text:v51 matchRangeOfSearchText:v35 count:v34 suggestionComponents:v33 nextTokenSuggestions:v45, v27];
+    selfCopy6 = self;
     v38 = v50;
     v36 = v53;
     v39 = v48;
@@ -550,57 +550,57 @@ LABEL_28:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218240;
-    v57 = v6;
+    v57 = unsignedIntegerValue;
     v58 = 1024;
     v59 = 0;
     _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Version of encoded PHSearchSuggestion: %tu does not match the current search suggestion SPI version: %d, cannot instantiate suggestion", buf, 0x12u);
   }
 
-  v8 = 0;
+  selfCopy6 = 0;
 LABEL_29:
 
-  return v8;
+  return selfCopy6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PHSearchSuggestion *)self type];
-  v32 = [(PHSearchSuggestion *)self text];
-  v31 = [v32 localizedLowercaseString];
-  v4 = [v31 hash];
-  v30 = [(PHSearchSuggestion *)self personUUIDs];
-  v5 = v4 ^ v3 ^ [v30 hash];
-  v6 = [(PHSearchSuggestion *)self matchRangeOfSearchText];
-  v29 = [(PHSearchSuggestion *)self startDate];
-  v7 = v6 ^ [v29 hash];
-  v28 = [(PHSearchSuggestion *)self endDate];
-  v8 = v5 ^ v7 ^ [v28 hash];
-  v9 = [(PHSearchSuggestion *)self startDateComponents];
-  v10 = [v9 date];
-  v11 = [v10 hash];
-  v12 = [(PHSearchSuggestion *)self endDateComponents];
-  v13 = [v12 date];
-  v14 = v11 ^ [v13 hash];
-  v15 = [(PHSearchSuggestion *)self locationAssetUUIDs];
-  v16 = v8 ^ v14 ^ [v15 hash];
+  type = [(PHSearchSuggestion *)self type];
+  text = [(PHSearchSuggestion *)self text];
+  localizedLowercaseString = [text localizedLowercaseString];
+  v4 = [localizedLowercaseString hash];
+  personUUIDs = [(PHSearchSuggestion *)self personUUIDs];
+  v5 = v4 ^ type ^ [personUUIDs hash];
+  matchRangeOfSearchText = [(PHSearchSuggestion *)self matchRangeOfSearchText];
+  startDate = [(PHSearchSuggestion *)self startDate];
+  v7 = matchRangeOfSearchText ^ [startDate hash];
+  endDate = [(PHSearchSuggestion *)self endDate];
+  v8 = v5 ^ v7 ^ [endDate hash];
+  startDateComponents = [(PHSearchSuggestion *)self startDateComponents];
+  date = [startDateComponents date];
+  v11 = [date hash];
+  endDateComponents = [(PHSearchSuggestion *)self endDateComponents];
+  date2 = [endDateComponents date];
+  v14 = v11 ^ [date2 hash];
+  locationAssetUUIDs = [(PHSearchSuggestion *)self locationAssetUUIDs];
+  v16 = v8 ^ v14 ^ [locationAssetUUIDs hash];
   v17 = [(PHSearchSuggestion *)self count];
   v18 = v17 ^ [(PHSearchSuggestion *)self hasApproximateCount];
   v19 = v18 ^ [(PHSearchSuggestion *)self categoriesType];
-  v20 = [(PHSearchSuggestion *)self suggestionComponents];
-  v27 = v16 ^ v19 ^ [v20 hash];
-  v21 = [(PHSearchSuggestion *)self momentUUIDs];
-  v22 = [v21 hash];
-  v23 = [(PHSearchSuggestion *)self nextTokenSuggestions];
-  v24 = v22 ^ [v23 hash];
+  suggestionComponents = [(PHSearchSuggestion *)self suggestionComponents];
+  v27 = v16 ^ v19 ^ [suggestionComponents hash];
+  momentUUIDs = [(PHSearchSuggestion *)self momentUUIDs];
+  v22 = [momentUUIDs hash];
+  nextTokenSuggestions = [(PHSearchSuggestion *)self nextTokenSuggestions];
+  v24 = v22 ^ [nextTokenSuggestions hash];
   v25 = v24 ^ [(PHSearchSuggestion *)self version];
 
   return v27 ^ v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -610,32 +610,32 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHSearchSuggestion *)self type];
-      if (v6 != [(PHSearchSuggestion *)v5 type])
+      v5 = equalCopy;
+      type = [(PHSearchSuggestion *)self type];
+      if (type != [(PHSearchSuggestion *)v5 type])
       {
         goto LABEL_5;
       }
 
-      v7 = [(PHSearchSuggestion *)self text];
-      v8 = [(PHSearchSuggestion *)v5 text];
-      v9 = [v7 localizedCaseInsensitiveCompare:v8];
+      text = [(PHSearchSuggestion *)self text];
+      text2 = [(PHSearchSuggestion *)v5 text];
+      v9 = [text localizedCaseInsensitiveCompare:text2];
 
       if (v9)
       {
         goto LABEL_5;
       }
 
-      v44 = [(PHSearchSuggestion *)self personUUIDs];
-      if (v44 && ([(PHSearchSuggestion *)v5 personUUIDs], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
+      personUUIDs = [(PHSearchSuggestion *)self personUUIDs];
+      if (personUUIDs && ([(PHSearchSuggestion *)v5 personUUIDs], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v46 = v45;
         v47 = MEMORY[0x1E695DFD8];
-        v48 = [(PHSearchSuggestion *)self personUUIDs];
-        v49 = [v47 setWithArray:v48];
+        personUUIDs2 = [(PHSearchSuggestion *)self personUUIDs];
+        v49 = [v47 setWithArray:personUUIDs2];
         v50 = MEMORY[0x1E695DFD8];
-        v51 = [(PHSearchSuggestion *)v5 personUUIDs];
-        v52 = [v50 setWithArray:v51];
+        personUUIDs3 = [(PHSearchSuggestion *)v5 personUUIDs];
+        v52 = [v50 setWithArray:personUUIDs3];
         v53 = [v49 isEqualToSet:v52];
 
         if ((v53 & 1) == 0)
@@ -646,14 +646,14 @@ LABEL_29:
 
       else
       {
-        v56 = [(PHSearchSuggestion *)self personUUIDs];
-        v57 = [(PHSearchSuggestion *)v5 personUUIDs];
+        personUUIDs4 = [(PHSearchSuggestion *)self personUUIDs];
+        personUUIDs5 = [(PHSearchSuggestion *)v5 personUUIDs];
 
-        if (v44)
+        if (personUUIDs)
         {
         }
 
-        if (v56 != v57)
+        if (personUUIDs4 != personUUIDs5)
         {
           goto LABEL_5;
         }
@@ -662,48 +662,48 @@ LABEL_29:
       v58 = [(PHSearchSuggestion *)self count];
       if (v58 == [(PHSearchSuggestion *)v5 count])
       {
-        v59 = [(PHSearchSuggestion *)self hasApproximateCount];
-        if (v59 == [(PHSearchSuggestion *)v5 hasApproximateCount])
+        hasApproximateCount = [(PHSearchSuggestion *)self hasApproximateCount];
+        if (hasApproximateCount == [(PHSearchSuggestion *)v5 hasApproximateCount])
         {
-          v60 = [(PHSearchSuggestion *)self startDate];
-          if (!v60 || ([(PHSearchSuggestion *)v5 startDate], (v61 = objc_claimAutoreleasedReturnValue()) == 0))
+          startDate = [(PHSearchSuggestion *)self startDate];
+          if (!startDate || ([(PHSearchSuggestion *)v5 startDate], (v61 = objc_claimAutoreleasedReturnValue()) == 0))
           {
-            v86 = [(PHSearchSuggestion *)self startDate];
-            v87 = [(PHSearchSuggestion *)v5 startDate];
+            startDate2 = [(PHSearchSuggestion *)self startDate];
+            startDate3 = [(PHSearchSuggestion *)v5 startDate];
 
-            if (v60)
+            if (startDate)
             {
             }
 
-            if (v86 != v87)
+            if (startDate2 != startDate3)
             {
               goto LABEL_5;
             }
 
 LABEL_77:
-            v88 = [(PHSearchSuggestion *)self endDate];
-            if (v88 && ([(PHSearchSuggestion *)v5 endDate], (v89 = objc_claimAutoreleasedReturnValue()) != 0))
+            endDate = [(PHSearchSuggestion *)self endDate];
+            if (endDate && ([(PHSearchSuggestion *)v5 endDate], (v89 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v90 = v89;
-              v91 = [(PHSearchSuggestion *)self endDate];
-              v92 = [(PHSearchSuggestion *)v5 endDate];
-              v10 = [v91 isEqualToDate:v92];
+              endDate4 = v89;
+              endDate2 = [(PHSearchSuggestion *)self endDate];
+              endDate3 = [(PHSearchSuggestion *)v5 endDate];
+              v10 = [endDate2 isEqualToDate:endDate3];
             }
 
             else
             {
-              v90 = [(PHSearchSuggestion *)self endDate];
-              v91 = [(PHSearchSuggestion *)v5 endDate];
-              v10 = v90 == v91;
+              endDate4 = [(PHSearchSuggestion *)self endDate];
+              endDate2 = [(PHSearchSuggestion *)v5 endDate];
+              v10 = endDate4 == endDate2;
             }
 
             goto LABEL_6;
           }
 
           v62 = v61;
-          v63 = [(PHSearchSuggestion *)self startDate];
-          v64 = [(PHSearchSuggestion *)v5 startDate];
-          v65 = [v63 isEqualToDate:v64];
+          startDate4 = [(PHSearchSuggestion *)self startDate];
+          startDate5 = [(PHSearchSuggestion *)v5 startDate];
+          v65 = [startDate4 isEqualToDate:startDate5];
 
           if (v65)
           {
@@ -715,12 +715,12 @@ LABEL_77:
 LABEL_5:
       v10 = 0;
 LABEL_6:
-      v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v12 = [(PHSearchSuggestion *)self startDateComponents];
-      if (v12)
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      startDateComponents = [(PHSearchSuggestion *)self startDateComponents];
+      if (startDateComponents)
       {
-        v13 = [(PHSearchSuggestion *)self startDateComponents];
-        v14 = [v11 dateFromComponents:v13];
+        startDateComponents2 = [(PHSearchSuggestion *)self startDateComponents];
+        v14 = [currentCalendar dateFromComponents:startDateComponents2];
       }
 
       else
@@ -728,11 +728,11 @@ LABEL_6:
         v14 = 0;
       }
 
-      v16 = [(PHSearchSuggestion *)v5 startDateComponents];
-      if (v16)
+      startDateComponents3 = [(PHSearchSuggestion *)v5 startDateComponents];
+      if (startDateComponents3)
       {
-        v17 = [(PHSearchSuggestion *)v5 startDateComponents];
-        v18 = [v11 dateFromComponents:v17];
+        startDateComponents4 = [(PHSearchSuggestion *)v5 startDateComponents];
+        v18 = [currentCalendar dateFromComponents:startDateComponents4];
       }
 
       else
@@ -742,18 +742,18 @@ LABEL_6:
 
       if (v10)
       {
-        v19 = [(PHSearchSuggestion *)self startDateComponents];
-        if (v19 && ([(PHSearchSuggestion *)v5 startDateComponents], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+        startDateComponents5 = [(PHSearchSuggestion *)self startDateComponents];
+        if (startDateComponents5 && ([(PHSearchSuggestion *)v5 startDateComponents], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v21 = v20;
+          startDateComponents6 = v20;
           v22 = [v14 isEqualToDate:v18];
         }
 
         else
         {
-          v21 = [(PHSearchSuggestion *)self startDateComponents];
-          v23 = [(PHSearchSuggestion *)v5 startDateComponents];
-          v22 = v21 == v23;
+          startDateComponents6 = [(PHSearchSuggestion *)self startDateComponents];
+          startDateComponents7 = [(PHSearchSuggestion *)v5 startDateComponents];
+          v22 = startDateComponents6 == startDateComponents7;
         }
       }
 
@@ -762,12 +762,12 @@ LABEL_6:
         v22 = 0;
       }
 
-      v24 = [(PHSearchSuggestion *)self endDateComponents];
+      endDateComponents = [(PHSearchSuggestion *)self endDateComponents];
       v112 = v14;
-      if (v24)
+      if (endDateComponents)
       {
-        v25 = [(PHSearchSuggestion *)self endDateComponents];
-        v26 = [v11 dateFromComponents:v25];
+        endDateComponents2 = [(PHSearchSuggestion *)self endDateComponents];
+        v26 = [currentCalendar dateFromComponents:endDateComponents2];
       }
 
       else
@@ -775,11 +775,11 @@ LABEL_6:
         v26 = 0;
       }
 
-      v27 = [(PHSearchSuggestion *)v5 endDateComponents];
-      if (v27)
+      endDateComponents3 = [(PHSearchSuggestion *)v5 endDateComponents];
+      if (endDateComponents3)
       {
-        v28 = [(PHSearchSuggestion *)v5 endDateComponents];
-        v29 = [v11 dateFromComponents:v28];
+        endDateComponents4 = [(PHSearchSuggestion *)v5 endDateComponents];
+        v29 = [currentCalendar dateFromComponents:endDateComponents4];
       }
 
       else
@@ -792,8 +792,8 @@ LABEL_6:
         goto LABEL_35;
       }
 
-      v30 = [(PHSearchSuggestion *)self endDateComponents];
-      if (v30 && ([(PHSearchSuggestion *)v5 endDateComponents], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+      endDateComponents5 = [(PHSearchSuggestion *)self endDateComponents];
+      if (endDateComponents5 && ([(PHSearchSuggestion *)v5 endDateComponents], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v32 = v31;
         v33 = [v26 isEqualToDate:v29];
@@ -806,29 +806,29 @@ LABEL_6:
 
       else
       {
-        v34 = [(PHSearchSuggestion *)self endDateComponents];
-        v35 = [(PHSearchSuggestion *)v5 endDateComponents];
+        endDateComponents6 = [(PHSearchSuggestion *)self endDateComponents];
+        endDateComponents7 = [(PHSearchSuggestion *)v5 endDateComponents];
 
-        if (v30)
+        if (endDateComponents5)
         {
         }
 
-        if (v34 != v35)
+        if (endDateComponents6 != endDateComponents7)
         {
           goto LABEL_35;
         }
       }
 
-      v37 = [(PHSearchSuggestion *)self locationAssetUUIDs];
+      locationAssetUUIDs = [(PHSearchSuggestion *)self locationAssetUUIDs];
       v111 = v26;
-      if (v37 && ([(PHSearchSuggestion *)v5 locationAssetUUIDs], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (locationAssetUUIDs && ([(PHSearchSuggestion *)v5 locationAssetUUIDs], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v39 = v38;
-        v40 = [(PHSearchSuggestion *)self locationAssetUUIDs];
+        locationAssetUUIDs2 = [(PHSearchSuggestion *)self locationAssetUUIDs];
         [(PHSearchSuggestion *)v5 locationAssetUUIDs];
         v41 = v29;
         v43 = v42 = v18;
-        v107 = [v40 isEqualToSet:v43];
+        v107 = [locationAssetUUIDs2 isEqualToSet:v43];
 
         v18 = v42;
         v29 = v41;
@@ -841,21 +841,21 @@ LABEL_6:
 
       else
       {
-        v54 = [(PHSearchSuggestion *)self locationAssetUUIDs];
-        v55 = [(PHSearchSuggestion *)v5 locationAssetUUIDs];
+        locationAssetUUIDs3 = [(PHSearchSuggestion *)self locationAssetUUIDs];
+        locationAssetUUIDs4 = [(PHSearchSuggestion *)v5 locationAssetUUIDs];
 
-        if (v37)
+        if (locationAssetUUIDs)
         {
         }
 
-        if (v54 != v55)
+        if (locationAssetUUIDs3 != locationAssetUUIDs4)
         {
           goto LABEL_47;
         }
       }
 
-      v66 = [(PHSearchSuggestion *)self categoriesType];
-      v67 = v66 == [(PHSearchSuggestion *)v5 categoriesType];
+      categoriesType = [(PHSearchSuggestion *)self categoriesType];
+      v67 = categoriesType == [(PHSearchSuggestion *)v5 categoriesType];
       v36 = v112;
       if (!v67)
       {
@@ -863,15 +863,15 @@ LABEL_6:
         goto LABEL_64;
       }
 
-      v68 = [(PHSearchSuggestion *)self suggestionComponents];
-      if (v68 && ([(PHSearchSuggestion *)v5 suggestionComponents], (v69 = objc_claimAutoreleasedReturnValue()) != 0))
+      suggestionComponents = [(PHSearchSuggestion *)self suggestionComponents];
+      if (suggestionComponents && ([(PHSearchSuggestion *)v5 suggestionComponents], (v69 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v70 = v69;
-        v71 = [(PHSearchSuggestion *)self suggestionComponents];
+        suggestionComponents2 = [(PHSearchSuggestion *)self suggestionComponents];
         [(PHSearchSuggestion *)v5 suggestionComponents];
         v72 = v29;
         v74 = v73 = v18;
-        v108 = [v71 isEqualToArray:v74];
+        v108 = [suggestionComponents2 isEqualToArray:v74];
 
         v18 = v73;
         v29 = v72;
@@ -884,30 +884,30 @@ LABEL_6:
 
       else
       {
-        v76 = [(PHSearchSuggestion *)self suggestionComponents];
-        v77 = [(PHSearchSuggestion *)v5 suggestionComponents];
+        suggestionComponents3 = [(PHSearchSuggestion *)self suggestionComponents];
+        suggestionComponents4 = [(PHSearchSuggestion *)v5 suggestionComponents];
 
-        if (v68)
+        if (suggestionComponents)
         {
         }
 
-        if (v76 != v77)
+        if (suggestionComponents3 != suggestionComponents4)
         {
           goto LABEL_47;
         }
       }
 
-      v78 = [(PHSearchSuggestion *)self momentUUIDs];
-      if (v78 && ([(PHSearchSuggestion *)v5 momentUUIDs], (v79 = objc_claimAutoreleasedReturnValue()) != 0))
+      momentUUIDs = [(PHSearchSuggestion *)self momentUUIDs];
+      if (momentUUIDs && ([(PHSearchSuggestion *)v5 momentUUIDs], (v79 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v80 = v79;
         v109 = v18;
         v81 = MEMORY[0x1E695DFD8];
-        v106 = [(PHSearchSuggestion *)self momentUUIDs];
-        v82 = [v81 setWithArray:v106];
+        momentUUIDs2 = [(PHSearchSuggestion *)self momentUUIDs];
+        v82 = [v81 setWithArray:momentUUIDs2];
         v83 = MEMORY[0x1E695DFD8];
-        v84 = [(PHSearchSuggestion *)v5 momentUUIDs];
-        v85 = [v83 setWithArray:v84];
+        momentUUIDs3 = [(PHSearchSuggestion *)v5 momentUUIDs];
+        v85 = [v83 setWithArray:momentUUIDs3];
         v105 = [v82 isEqualToSet:v85];
 
         v18 = v109;
@@ -920,26 +920,26 @@ LABEL_6:
 
       else
       {
-        v93 = [(PHSearchSuggestion *)self momentUUIDs];
-        v94 = [(PHSearchSuggestion *)v5 momentUUIDs];
+        momentUUIDs4 = [(PHSearchSuggestion *)self momentUUIDs];
+        momentUUIDs5 = [(PHSearchSuggestion *)v5 momentUUIDs];
 
-        if (v78)
+        if (momentUUIDs)
         {
         }
 
         v26 = v111;
-        if (v93 == v94)
+        if (momentUUIDs4 == momentUUIDs5)
         {
 LABEL_83:
-          v95 = [(PHSearchSuggestion *)self nextTokenSuggestions];
-          if (v95 && ([(PHSearchSuggestion *)v5 nextTokenSuggestions], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
+          nextTokenSuggestions = [(PHSearchSuggestion *)self nextTokenSuggestions];
+          if (nextTokenSuggestions && ([(PHSearchSuggestion *)v5 nextTokenSuggestions], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v97 = v96;
-            v98 = [(PHSearchSuggestion *)self nextTokenSuggestions];
+            nextTokenSuggestions2 = [(PHSearchSuggestion *)self nextTokenSuggestions];
             [(PHSearchSuggestion *)v5 nextTokenSuggestions];
             v99 = v29;
             v101 = v100 = v18;
-            v110 = [v98 isEqualToArray:v101];
+            v110 = [nextTokenSuggestions2 isEqualToArray:v101];
 
             v18 = v100;
             v29 = v99;
@@ -947,22 +947,22 @@ LABEL_83:
             if (v110)
             {
 LABEL_92:
-              v104 = [(PHSearchSuggestion *)self version];
-              v15 = v104 == [(PHSearchSuggestion *)v5 version];
+              version = [(PHSearchSuggestion *)self version];
+              v15 = version == [(PHSearchSuggestion *)v5 version];
               goto LABEL_48;
             }
           }
 
           else
           {
-            v102 = [(PHSearchSuggestion *)self nextTokenSuggestions];
-            v103 = [(PHSearchSuggestion *)v5 nextTokenSuggestions];
+            nextTokenSuggestions3 = [(PHSearchSuggestion *)self nextTokenSuggestions];
+            nextTokenSuggestions4 = [(PHSearchSuggestion *)v5 nextTokenSuggestions];
 
-            if (v95)
+            if (nextTokenSuggestions)
             {
             }
 
-            if (v102 == v103)
+            if (nextTokenSuggestions3 == nextTokenSuggestions4)
             {
               goto LABEL_92;
             }
@@ -1005,8 +1005,8 @@ LABEL_66:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(PHSearchSuggestion *)self suggestionComponents];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    suggestionComponents = [(PHSearchSuggestion *)self suggestionComponents];
+    v6 = [suggestionComponents countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1017,18 +1017,18 @@ LABEL_66:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(suggestionComponents);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
           if ([v10 indexCategory] == 1300 || objc_msgSend(v10, "indexCategory") == 1301 || objc_msgSend(v10, "indexCategory") == 1330 || objc_msgSend(v10, "indexCategory") == 1331)
           {
-            v11 = [v10 lookupIdentifier];
-            [v4 addObject:v11];
+            lookupIdentifier = [v10 lookupIdentifier];
+            [v4 addObject:lookupIdentifier];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [suggestionComponents countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -1047,8 +1047,8 @@ LABEL_66:
 - (float)score
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PHSearchSuggestion *)self suggestionComponents];
-  v4 = [v3 count];
+  suggestionComponents = [(PHSearchSuggestion *)self suggestionComponents];
+  v4 = [suggestionComponents count];
 
   if (!v4)
   {
@@ -1059,8 +1059,8 @@ LABEL_66:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PHSearchSuggestion *)self suggestionComponents];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  suggestionComponents2 = [(PHSearchSuggestion *)self suggestionComponents];
+  v6 = [suggestionComponents2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1072,14 +1072,14 @@ LABEL_66:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(suggestionComponents2);
         }
 
         [*(*(&v15 + 1) + 8 * i) score];
         v9 = v9 + v11;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [suggestionComponents2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1090,8 +1090,8 @@ LABEL_66:
     v9 = 0.0;
   }
 
-  v13 = [(PHSearchSuggestion *)self suggestionComponents];
-  v12 = v9 / [v13 count];
+  suggestionComponents3 = [(PHSearchSuggestion *)self suggestionComponents];
+  v12 = v9 / [suggestionComponents3 count];
 
   return v12;
 }
@@ -1099,13 +1099,13 @@ LABEL_66:
 - (BOOL)hasApproximateCount
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() indexCategoriesWithApproximateCounts];
+  indexCategoriesWithApproximateCounts = [objc_opt_class() indexCategoriesWithApproximateCounts];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PHSearchSuggestion *)self suggestionComponents];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  suggestionComponents = [(PHSearchSuggestion *)self suggestionComponents];
+  v5 = [suggestionComponents countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -1115,17 +1115,17 @@ LABEL_66:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionComponents);
         }
 
-        if ([v3 containsIndex:{objc_msgSend(*(*(&v9 + 1) + 8 * i), "indexCategory")}])
+        if ([indexCategoriesWithApproximateCounts containsIndex:{objc_msgSend(*(*(&v9 + 1) + 8 * i), "indexCategory")}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [suggestionComponents countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -1140,81 +1140,81 @@ LABEL_11:
   return v5;
 }
 
-- (PHSearchSuggestion)initWithType:(unint64_t)a3 categoriesType:(unint64_t)a4 text:(id)a5 matchRangeOfSearchText:(_NSRange)a6 count:(unint64_t)a7 suggestionComponents:(id)a8 nextTokenSuggestions:(id)a9
+- (PHSearchSuggestion)initWithType:(unint64_t)type categoriesType:(unint64_t)categoriesType text:(id)text matchRangeOfSearchText:(_NSRange)searchText count:(unint64_t)count suggestionComponents:(id)components nextTokenSuggestions:(id)suggestions
 {
-  length = a6.length;
-  location = a6.location;
-  v14 = a9;
+  length = searchText.length;
+  location = searchText.location;
+  suggestionsCopy = suggestions;
   v49 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a8;
-  v17 = a9;
-  if (a3)
+  textCopy = text;
+  componentsCopy = components;
+  suggestionsCopy2 = suggestions;
+  if (type)
   {
-    if (a4)
+    if (categoriesType)
     {
       goto LABEL_3;
     }
 
 LABEL_26:
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"categoriesType != PHSearchSuggestionCategoriesTypeUndefined"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"categoriesType != PHSearchSuggestionCategoriesTypeUndefined"}];
 
-    if (v15)
+    if (textCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_27:
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"text"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"text"}];
 
     goto LABEL_4;
   }
 
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"type != PHSearchSuggestionTypeUndefined"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"type != PHSearchSuggestionTypeUndefined"}];
 
-  if (!a4)
+  if (!categoriesType)
   {
     goto LABEL_26;
   }
 
 LABEL_3:
-  if (!v15)
+  if (!textCopy)
   {
     goto LABEL_27;
   }
 
 LABEL_4:
-  if (a3 - 1 <= 1)
+  if (type - 1 <= 1)
   {
-    if (![v16 count])
+    if (![componentsCopy count])
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"suggestionComponents.count > 0"}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"suggestionComponents.count > 0"}];
     }
 
-    if (a3 == 1 && location == 0x7FFFFFFFFFFFFFFFLL)
+    if (type == 1 && location == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"matchRangeOfSearchText.location != NSNotFound"}];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"matchRangeOfSearchText.location != NSNotFound"}];
 
       goto LABEL_10;
     }
   }
 
-  if ((a3 | 2) == 3)
+  if ((type | 2) == 3)
   {
 LABEL_10:
-    v38 = a4;
+    categoriesTypeCopy = categoriesType;
     v39 = location;
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v40 = v17;
-    v18 = v17;
+    v40 = suggestionsCopy2;
+    v18 = suggestionsCopy2;
     v19 = [v18 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v19)
     {
@@ -1232,12 +1232,12 @@ LABEL_10:
           if ([*(*(&v44 + 1) + 8 * i) type] != 2)
           {
             [MEMORY[0x1E696AAA8] currentHandler];
-            v37 = v15;
-            v24 = v23 = v14;
+            v37 = textCopy;
+            v24 = v23 = suggestionsCopy;
             [v24 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"nextToken.type == PHSearchSuggestionTypeNextToken"}];
 
-            v14 = v23;
-            v15 = v37;
+            suggestionsCopy = v23;
+            textCopy = v37;
           }
         }
 
@@ -1248,15 +1248,15 @@ LABEL_10:
     }
 
     location = v39;
-    v17 = v40;
-    a4 = v38;
+    suggestionsCopy2 = v40;
+    categoriesType = categoriesTypeCopy;
     goto LABEL_22;
   }
 
-  if ([v17 count])
+  if ([suggestionsCopy2 count])
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"nextTokenSuggestions.count == 0"}];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"nextTokenSuggestions.count == 0"}];
   }
 
 LABEL_22:
@@ -1265,20 +1265,20 @@ LABEL_22:
   v25 = [(PHSearchSuggestion *)&v43 init];
   if (v25)
   {
-    v26 = [v15 copy];
+    v26 = [textCopy copy];
     text = v25->_text;
     v25->_text = v26;
 
-    v25->_type = a3;
+    v25->_type = type;
     v25->_matchRangeOfSearchText.location = location;
     v25->_matchRangeOfSearchText.length = length;
-    v25->_categoriesType = a4;
-    v25->_count = a7;
-    v28 = [v16 copy];
+    v25->_categoriesType = categoriesType;
+    v25->_count = count;
+    v28 = [componentsCopy copy];
     suggestionComponents = v25->_suggestionComponents;
     v25->_suggestionComponents = v28;
 
-    objc_storeStrong(&v25->_nextTokenSuggestions, v14);
+    objc_storeStrong(&v25->_nextTokenSuggestions, suggestionsCopy);
     v25->_version = 0;
   }
 
@@ -1304,13 +1304,13 @@ LABEL_22:
   return v3;
 }
 
-- (id)initForPersonalEventFilterWithMomentUUIDs:(id)a3
+- (id)initForPersonalEventFilterWithMomentUUIDs:(id)ds
 {
-  v6 = a3;
-  if (![v6 count])
+  dsCopy = ds;
+  if (![dsCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:633 description:{@"Invalid parameter not satisfying: %@", @"momentUUIDs.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:633 description:{@"Invalid parameter not satisfying: %@", @"momentUUIDs.count > 0"}];
   }
 
   v12.receiver = self;
@@ -1325,21 +1325,21 @@ LABEL_22:
     v8->_type = 3;
     v8->_categoriesType = 44;
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
-    objc_storeStrong(&v8->_momentUUIDs, a3);
+    objc_storeStrong(&v8->_momentUUIDs, ds);
     v8->_version = 0;
   }
 
   return v8;
 }
 
-- (id)initForMeaningFilterWithMeaningfulEvent:(id)a3
+- (id)initForMeaningFilterWithMeaningfulEvent:(id)event
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 length])
+  eventCopy = event;
+  if (![eventCopy length])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:609 description:{@"Invalid parameter not satisfying: %@", @"meaningfulEvent.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:609 description:{@"Invalid parameter not satisfying: %@", @"meaningfulEvent.length > 0"}];
   }
 
   v15.receiver = self;
@@ -1348,11 +1348,11 @@ LABEL_22:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_text, a3);
+    objc_storeStrong(&v7->_text, event);
     v8->_type = 3;
     v8->_categoriesType = 12;
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
-    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:v6 groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1600 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:{0, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:eventCopy groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1600 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:{0, 0}];
     v10 = v9;
     if (v9)
     {
@@ -1368,13 +1368,13 @@ LABEL_22:
   return v8;
 }
 
-- (id)initForTripFilterWithLocationName:(id)a3
+- (id)initForTripFilterWithLocationName:(id)name
 {
-  v6 = a3;
-  if (![v6 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"locationName.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"locationName.length > 0"}];
   }
 
   v11.receiver = self;
@@ -1383,7 +1383,7 @@ LABEL_22:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_text, a3);
+    objc_storeStrong(&v7->_text, name);
     v8->_categoriesType = 42;
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
     *&v8->_version = xmmword_19CB295C0;
@@ -1392,19 +1392,19 @@ LABEL_22:
   return v8;
 }
 
-- (id)initForGenericLocationFilterWithText:(id)a3 genericLocationTuples:(id)a4 allowedIndexCategories:(id)a5
+- (id)initForGenericLocationFilterWithText:(id)text genericLocationTuples:(id)tuples allowedIndexCategories:(id)categories
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  tuplesCopy = tuples;
+  categoriesCopy = categories;
   v36.receiver = self;
   v36.super_class = PHSearchSuggestion;
   v12 = [(PHSearchSuggestion *)&v36 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_text, a3);
+    objc_storeStrong(&v12->_text, text);
     v13->_type = 3;
     v13->_categoriesType = 12;
     v30 = v13;
@@ -1414,8 +1414,8 @@ LABEL_22:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v31 = v10;
-    v15 = v10;
+    v31 = tuplesCopy;
+    v15 = tuplesCopy;
     v16 = [v15 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (!v16)
     {
@@ -1434,15 +1434,15 @@ LABEL_22:
         }
 
         v20 = *(*(&v32 + 1) + 8 * i);
-        v21 = [v20 indexCategory];
-        if (![v11 count] || objc_msgSend(v11, "containsIndex:", v21))
+        indexCategory = [v20 indexCategory];
+        if (![categoriesCopy count] || objc_msgSend(categoriesCopy, "containsIndex:", indexCategory))
         {
-          if (v21 > 1599)
+          if (indexCategory > 1599)
           {
-            v26 = (v21 - 1800) > 3 || v21 == 1801;
-            if (!v26 || (v21 - 1600) < 2 || (v21 - 1700) < 2)
+            v26 = (indexCategory - 1800) > 3 || indexCategory == 1801;
+            if (!v26 || (indexCategory - 1600) < 2 || (indexCategory - 1700) < 2)
             {
-              v25 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:v9 groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:v21 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:{0, 0}];
+              v25 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:textCopy groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:indexCategory lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:{0, 0}];
               if (v25)
               {
 LABEL_24:
@@ -1453,11 +1453,11 @@ LABEL_24:
             }
           }
 
-          else if ((v21 - 1500) <= 0x1F && ((1 << (v21 + 36)) & 0xC0300C03) != 0)
+          else if ((indexCategory - 1500) <= 0x1F && ((1 << (indexCategory + 36)) & 0xC0300C03) != 0)
           {
             v23 = objc_alloc(MEMORY[0x1E69BE7C0]);
-            v24 = [v20 lookupIdentifier];
-            v25 = [v23 initWithContentString:v9 groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:v21 lookupIdentifier:0.0 score:v24 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:{0, 0}];
+            lookupIdentifier = [v20 lookupIdentifier];
+            v25 = [v23 initWithContentString:textCopy groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:indexCategory lookupIdentifier:0.0 score:lookupIdentifier suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:{0, 0}];
 
             if (v25)
             {
@@ -1478,7 +1478,7 @@ LABEL_27:
         v30->_suggestionComponents = v27;
 
         v30->_version = 0;
-        v10 = v31;
+        tuplesCopy = v31;
         break;
       }
     }
@@ -1487,14 +1487,14 @@ LABEL_27:
   return v13;
 }
 
-- (id)initForSeasonFilterWithSeasonLocalizedText:(id)a3
+- (id)initForSeasonFilterWithSeasonLocalizedText:(id)text
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  textCopy = text;
+  if (!textCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:512 description:{@"Invalid parameter not satisfying: %@", @"seasonLocalizedText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:512 description:{@"Invalid parameter not satisfying: %@", @"seasonLocalizedText"}];
   }
 
   v15.receiver = self;
@@ -1503,11 +1503,11 @@ LABEL_27:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_text, a3);
+    objc_storeStrong(&v7->_text, text);
     v8->_type = 3;
     v8->_categoriesType = 4;
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
-    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:v6 groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1104 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:v8->_matchRangeOfSearchText.location matchType:{v8->_matchRangeOfSearchText.length, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:textCopy groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1104 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:v8->_matchRangeOfSearchText.location matchType:{v8->_matchRangeOfSearchText.length, 0}];
     v10 = v9;
     if (v9)
     {
@@ -1523,14 +1523,14 @@ LABEL_27:
   return v8;
 }
 
-- (id)initForPartOfWeekFilterWithPartOfWeekLocalizedText:(id)a3
+- (id)initForPartOfWeekFilterWithPartOfWeekLocalizedText:(id)text
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  textCopy = text;
+  if (!textCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:491 description:{@"Invalid parameter not satisfying: %@", @"partOfWeekLocalizedText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:491 description:{@"Invalid parameter not satisfying: %@", @"partOfWeekLocalizedText"}];
   }
 
   v15.receiver = self;
@@ -1539,11 +1539,11 @@ LABEL_27:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_text, a3);
+    objc_storeStrong(&v7->_text, text);
     v8->_type = 3;
     v8->_categoriesType = 4;
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
-    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:v6 groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1107 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:v8->_matchRangeOfSearchText.location matchType:{v8->_matchRangeOfSearchText.length, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:textCopy groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1107 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:v8->_matchRangeOfSearchText.location matchType:{v8->_matchRangeOfSearchText.length, 0}];
     v10 = v9;
     if (v9)
     {
@@ -1559,14 +1559,14 @@ LABEL_27:
   return v8;
 }
 
-- (id)initForPartOfDayFilterWithPartOfDayLocalizedText:(id)a3
+- (id)initForPartOfDayFilterWithPartOfDayLocalizedText:(id)text
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  textCopy = text;
+  if (!textCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"partOfDayLocalizedText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"partOfDayLocalizedText"}];
   }
 
   v15.receiver = self;
@@ -1575,11 +1575,11 @@ LABEL_27:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_text, a3);
+    objc_storeStrong(&v7->_text, text);
     v8->_type = 3;
     v8->_categoriesType = 4;
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
-    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:v6 groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1106 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:v8->_matchRangeOfSearchText.location matchType:{v8->_matchRangeOfSearchText.length, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E69BE7C0]) initWithContentString:textCopy groupId:0 owningGroupId:0 matchedAssetsCount:0 matchedCollectionsCount:0 indexCategory:1106 lookupIdentifier:0.0 score:0 suggestionType:3 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:v8->_matchRangeOfSearchText.location matchType:{v8->_matchRangeOfSearchText.length, 0}];
     v10 = v9;
     if (v9)
     {
@@ -1595,14 +1595,14 @@ LABEL_27:
   return v8;
 }
 
-- (id)initForDateFilterWithStartDateComponents:(id)a3 endDateComponents:(id)a4
+- (id)initForDateFilterWithStartDateComponents:(id)components endDateComponents:(id)dateComponents
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  if (!componentsCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:452 description:{@"Invalid parameter not satisfying: %@", @"startDateComponents"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:452 description:{@"Invalid parameter not satisfying: %@", @"startDateComponents"}];
   }
 
   v15.receiver = self;
@@ -1617,22 +1617,22 @@ LABEL_27:
     v11->_type = 3;
     v11->_categoriesType = 4;
     v11->_matchRangeOfSearchText = xmmword_19CB29550;
-    objc_storeStrong(&v11->_startDateComponents, a3);
-    objc_storeStrong(&v11->_endDateComponents, a4);
+    objc_storeStrong(&v11->_startDateComponents, components);
+    objc_storeStrong(&v11->_endDateComponents, dateComponents);
     v11->_version = 0;
   }
 
   return v11;
 }
 
-- (id)initForDateFilterWithStartDate:(id)a3 endDate:(id)a4
+- (id)initForDateFilterWithStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = endDateCopy;
+  if (dateCopy)
   {
-    if (v9)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -1640,8 +1640,8 @@ LABEL_27:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:433 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:433 description:{@"Invalid parameter not satisfying: %@", @"startDate"}];
 
     if (v10)
     {
@@ -1649,8 +1649,8 @@ LABEL_27:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:434 description:{@"Invalid parameter not satisfying: %@", @"endDate"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:434 description:{@"Invalid parameter not satisfying: %@", @"endDate"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -1665,21 +1665,21 @@ LABEL_3:
     v12->_type = 3;
     v12->_categoriesType = 4;
     v12->_matchRangeOfSearchText = xmmword_19CB29550;
-    objc_storeStrong(&v12->_startDate, a3);
-    objc_storeStrong(&v12->_endDate, a4);
+    objc_storeStrong(&v12->_startDate, date);
+    objc_storeStrong(&v12->_endDate, endDate);
     v12->_version = 0;
   }
 
   return v12;
 }
 
-- (id)initForPersonFilterWithPersonUUIDs:(id)a3
+- (id)initForPersonFilterWithPersonUUIDs:(id)ds
 {
-  v6 = a3;
-  if (![v6 count])
+  dsCopy = ds;
+  if (![dsCopy count])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"personUUIDs.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"personUUIDs.count > 0"}];
   }
 
   v12.receiver = self;
@@ -1693,7 +1693,7 @@ LABEL_3:
 
     v8->_type = 3;
     v8->_categoriesType = 7;
-    objc_storeStrong(&v8->_personUUIDs, a3);
+    objc_storeStrong(&v8->_personUUIDs, ds);
     v8->_matchRangeOfSearchText = xmmword_19CB29550;
     v8->_version = 0;
   }
@@ -1701,14 +1701,14 @@ LABEL_3:
   return v8;
 }
 
-- (id)initForLocationFilterWithAssetUUIDs:(id)a3 locationText:(id)a4
+- (id)initForLocationFilterWithAssetUUIDs:(id)ds locationText:(id)text
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 count] && !-[__CFString length](v9, "length"))
+  dsCopy = ds;
+  textCopy = text;
+  if (![dsCopy count] && !-[__CFString length](textCopy, "length"))
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:395 description:{@"Invalid parameter not satisfying: %@", @"assetUUIDs.count > 0 || locationText.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchSuggestion.m" lineNumber:395 description:{@"Invalid parameter not satisfying: %@", @"assetUUIDs.count > 0 || locationText.length > 0"}];
   }
 
   v16.receiver = self;
@@ -1716,7 +1716,7 @@ LABEL_3:
   v10 = [(PHSearchSuggestion *)&v16 init];
   if (v10)
   {
-    if ([v8 count])
+    if ([dsCopy count])
     {
       v11 = *(v10 + 2);
       *(v10 + 2) = &stru_1F0FC60C8;
@@ -1725,9 +1725,9 @@ LABEL_3:
     else
     {
       v12 = &stru_1F0FC60C8;
-      if (v9)
+      if (textCopy)
       {
-        v12 = v9;
+        v12 = textCopy;
       }
 
       v13 = v12;
@@ -1735,7 +1735,7 @@ LABEL_3:
       *(v10 + 2) = v13;
     }
 
-    objc_storeStrong(v10 + 11, a3);
+    objc_storeStrong(v10 + 11, ds);
     *(v10 + 3) = 1;
     *(v10 + 120) = xmmword_19CB29550;
     *(v10 + 40) = xmmword_19CB295C0;

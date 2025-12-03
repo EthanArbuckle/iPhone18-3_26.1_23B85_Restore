@@ -1,14 +1,14 @@
 @interface PGGraphIngestPetProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestPetProcessor)initWithGraphBuilder:(id)a3;
-- (id)_fetchAllVerifiedPetsInPhotosLibrary:(id)a3;
-- (id)_fetchVerifiedPetsWithLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4;
-- (id)initForTestingWithGraphBuilder:(id)a3;
-- (id)momentNodesForPerson:(id)a3 inPhotoLibrary:(id)a4 withGraph:(id)a5;
-- (unint64_t)_speciesForDetectionType:(signed __int16)a3;
-- (void)_deleteAllPetNodesInGraph:(id)a3;
-- (void)_deletePetNodesWithLocalIdentifiers:(id)a3 inGraph:(id)a4;
-- (void)runPetIngestWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestPetProcessor)initWithGraphBuilder:(id)builder;
+- (id)_fetchAllVerifiedPetsInPhotosLibrary:(id)library;
+- (id)_fetchVerifiedPetsWithLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library;
+- (id)initForTestingWithGraphBuilder:(id)builder;
+- (id)momentNodesForPerson:(id)person inPhotoLibrary:(id)library withGraph:(id)graph;
+- (unint64_t)_speciesForDetectionType:(signed __int16)type;
+- (void)_deleteAllPetNodesInGraph:(id)graph;
+- (void)_deletePetNodesWithLocalIdentifiers:(id)identifiers inGraph:(id)graph;
+- (void)runPetIngestWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestPetProcessor
@@ -39,42 +39,42 @@ void __92__PGGraphIngestPetProcessor__donatePetRelationshipsForPetNodes_isFullRe
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteAllPetNodesInGraph:(id)a3
+- (void)_deleteAllPetNodesInGraph:(id)graph
 {
-  v3 = a3;
-  v5 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection nodesInGraph:v3];
+  graphCopy = graph;
+  v5 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection nodesInGraph:graphCopy];
   v4 = objc_alloc_init(MEMORY[0x277D22C50]);
   [v4 removeNodes:v5];
-  [v3 executeGraphChangeRequest:v4];
+  [graphCopy executeGraphChangeRequest:v4];
 }
 
-- (void)_deletePetNodesWithLocalIdentifiers:(id)a3 inGraph:(id)a4
+- (void)_deletePetNodesWithLocalIdentifiers:(id)identifiers inGraph:(id)graph
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  graphCopy = graph;
+  if ([identifiersCopy count])
   {
-    v6 = [PGGraphPetNodeCollection petNodesForLocalIdentifiers:v8 inGraph:v5];
+    v6 = [PGGraphPetNodeCollection petNodesForLocalIdentifiers:identifiersCopy inGraph:graphCopy];
     v7 = objc_alloc_init(MEMORY[0x277D22C50]);
     [v7 removeNodes:v6];
-    [v5 executeGraphChangeRequest:v7];
+    [graphCopy executeGraphChangeRequest:v7];
   }
 }
 
-- (id)_fetchVerifiedPetsWithLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4
+- (id)_fetchVerifiedPetsWithLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  identifiersCopy = identifiers;
+  libraryCopy = library;
+  if ([identifiersCopy count])
   {
-    v7 = [v6 librarySpecificFetchOptions];
-    v8 = [objc_opt_class() supportedPetDetectionTypes];
-    [v7 setIncludedDetectionTypes:v8];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    supportedPetDetectionTypes = [objc_opt_class() supportedPetDetectionTypes];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:supportedPetDetectionTypes];
 
-    [v7 setPersonContext:1];
+    [librarySpecificFetchOptions setPersonContext:1];
     v9 = MEMORY[0x277CD9938];
-    v10 = [v5 allObjects];
-    v11 = [v9 fetchPersonsWithLocalIdentifiers:v10 options:v7];
+    allObjects = [identifiersCopy allObjects];
+    v11 = [v9 fetchPersonsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
   }
 
   else
@@ -85,36 +85,36 @@ void __92__PGGraphIngestPetProcessor__donatePetRelationshipsForPetNodes_isFullRe
   return v11;
 }
 
-- (id)_fetchAllVerifiedPetsInPhotosLibrary:(id)a3
+- (id)_fetchAllVerifiedPetsInPhotosLibrary:(id)library
 {
-  v3 = [a3 librarySpecificFetchOptions];
-  v4 = [objc_opt_class() supportedPetDetectionTypes];
-  [v3 setIncludedDetectionTypes:v4];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  supportedPetDetectionTypes = [objc_opt_class() supportedPetDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:supportedPetDetectionTypes];
 
-  [v3 setPersonContext:1];
-  v5 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v3];
+  [librarySpecificFetchOptions setPersonContext:1];
+  v5 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
 
   return v5;
 }
 
-- (unint64_t)_speciesForDetectionType:(signed __int16)a3
+- (unint64_t)_speciesForDetectionType:(signed __int16)type
 {
   result = 1;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v9 = v3;
         v10 = v4;
         v6 = +[PGLogging sharedLogging];
-        v7 = [v6 loggingConnection];
+        loggingConnection = [v6 loggingConnection];
 
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *v8 = 0;
-          _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "Received person's face when expected animal's face", v8, 2u);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Received person's face when expected animal's face", v8, 2u);
         }
 
         return 0;
@@ -126,12 +126,12 @@ void __92__PGGraphIngestPetProcessor__donatePetRelationshipsForPetNodes_isFullRe
     return 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 0;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return 2;
   }
@@ -139,17 +139,17 @@ void __92__PGGraphIngestPetProcessor__donatePetRelationshipsForPetNodes_isFullRe
   return result;
 }
 
-- (id)momentNodesForPerson:(id)a3 inPhotoLibrary:(id)a4 withGraph:(id)a5
+- (id)momentNodesForPerson:(id)person inPhotoLibrary:(id)library withGraph:(id)graph
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  libraryCopy = library;
+  graphCopy = graph;
   v9 = MEMORY[0x277CD98F8];
-  v10 = [a3 localIdentifier];
-  v29[0] = v10;
+  localIdentifier = [person localIdentifier];
+  v29[0] = localIdentifier;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-  v12 = [v7 librarySpecificFetchOptions];
-  v13 = [v9 fetchMomentsForPersonsWithLocalIdentifiers:v11 options:v12];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v13 = [v9 fetchMomentsForPersonsWithLocalIdentifiers:v11 options:librarySpecificFetchOptions];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
@@ -171,8 +171,8 @@ void __92__PGGraphIngestPetProcessor__donatePetRelationshipsForPetNodes_isFullRe
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v24 + 1) + 8 * i) uuid];
-        [v14 addObject:v20];
+        uuid = [*(*(&v24 + 1) + 8 * i) uuid];
+        [v14 addObject:uuid];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -181,28 +181,28 @@ void __92__PGGraphIngestPetProcessor__donatePetRelationshipsForPetNodes_isFullRe
     while (v17);
   }
 
-  v21 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v14 inGraph:v8];
+  v21 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v14 inGraph:graphCopy];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-- (void)runPetIngestWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runPetIngestWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v116 = *MEMORY[0x277D85DE8];
-  v90 = a3;
-  v81 = a4;
+  updateCopy = update;
+  blockCopy = block;
   v5 = 0.0;
-  v94 = _Block_copy(v81);
+  v94 = _Block_copy(blockCopy);
   if (!v94 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
-    v92 = [(PGGraphBuilder *)self->_graphBuilder graph];
-    v85 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
-    v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    v8 = os_signpost_id_generate(v7);
-    v9 = v7;
+    graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+    photoLibrary = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    v8 = os_signpost_id_generate(loggingConnection);
+    v9 = loggingConnection;
     v10 = v9;
     spid = v8;
     v79 = v8 - 1;
@@ -243,34 +243,34 @@ LABEL_7:
       }
     }
 
-    v80 = [v90 isResumingFullAnalysis];
-    if (v80)
+    isResumingFullAnalysis = [updateCopy isResumingFullAnalysis];
+    if (isResumingFullAnalysis)
     {
-      [(PGGraphIngestPetProcessor *)self _deleteAllPetNodesInGraph:v92];
-      v86 = [(PGGraphIngestPetProcessor *)self _fetchAllVerifiedPetsInPhotosLibrary:v85];
+      [(PGGraphIngestPetProcessor *)self _deleteAllPetNodesInGraph:graph];
+      v86 = [(PGGraphIngestPetProcessor *)self _fetchAllVerifiedPetsInPhotosLibrary:photoLibrary];
     }
 
     else
     {
-      v13 = [v90 momentNodesToProcessInGraph:v92 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
-      v14 = [v13 petNodes];
-      v15 = [v14 localIdentifiers];
+      v13 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+      petNodes = [v13 petNodes];
+      localIdentifiers = [petNodes localIdentifiers];
 
       v16 = [MEMORY[0x277CBEB58] set];
-      [v16 unionSet:v15];
-      v17 = [v90 localIdentifiersOfPersonsToUpdate];
-      [v16 unionSet:v17];
+      [v16 unionSet:localIdentifiers];
+      localIdentifiersOfPersonsToUpdate = [updateCopy localIdentifiersOfPersonsToUpdate];
+      [v16 unionSet:localIdentifiersOfPersonsToUpdate];
 
-      v18 = [v90 localIdentifiersOfPersonsToDelete];
-      [v16 unionSet:v18];
+      localIdentifiersOfPersonsToDelete = [updateCopy localIdentifiersOfPersonsToDelete];
+      [v16 unionSet:localIdentifiersOfPersonsToDelete];
 
       v19 = [MEMORY[0x277CBEB58] set];
-      [v19 unionSet:v15];
-      v20 = [v90 localIdentifiersOfPersonsToUpdate];
-      [v19 unionSet:v20];
+      [v19 unionSet:localIdentifiers];
+      localIdentifiersOfPersonsToUpdate2 = [updateCopy localIdentifiersOfPersonsToUpdate];
+      [v19 unionSet:localIdentifiersOfPersonsToUpdate2];
 
-      [(PGGraphIngestPetProcessor *)self _deletePetNodesWithLocalIdentifiers:v16 inGraph:v92];
-      v86 = [(PGGraphIngestPetProcessor *)self _fetchVerifiedPetsWithLocalIdentifiers:v19 inPhotoLibrary:v85];
+      [(PGGraphIngestPetProcessor *)self _deletePetNodesWithLocalIdentifiers:v16 inGraph:graph];
+      v86 = [(PGGraphIngestPetProcessor *)self _fetchVerifiedPetsWithLocalIdentifiers:v19 inPhotoLibrary:photoLibrary];
     }
 
     if (!v86 || ![v86 count])
@@ -348,7 +348,7 @@ LABEL_31:
     v106[3] = &unk_2788800B8;
     v106[4] = buf;
     [v86 enumerateObjectsUsingBlock:v106];
-    v89 = [MEMORY[0x277CD98F8] fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs:*(*&buf[8] + 40) photoLibrary:v85];
+    v89 = [MEMORY[0x277CD98F8] fetchMomentUUIDsByPersonUUIDForPersonsWithUUIDs:*(*&buf[8] + 40) photoLibrary:photoLibrary];
     if (v94)
     {
       v30 = CFAbsoluteTimeGetCurrent();
@@ -405,17 +405,17 @@ LABEL_31:
           v38 = *(*(&v101 + 1) + 8 * v36);
           v39 = objc_autoreleasePoolPush();
           v40 = -[PGGraphIngestPetProcessor _speciesForDetectionType:](self, "_speciesForDetectionType:", [v38 detectionType]);
-          v41 = [v38 uuid];
-          v42 = [v89 objectForKeyedSubscript:v41];
+          uuid = [v38 uuid];
+          v42 = [v89 objectForKeyedSubscript:uuid];
 
           if ([v42 count])
           {
-            v43 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v42 inGraph:v92];
-            v44 = [v38 type];
+            v43 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v42 inGraph:graph];
+            type = [v38 type];
             v45 = [PGPet alloc];
-            v46 = [v38 localIdentifier];
-            v47 = [v38 name];
-            v48 = [(PGPet *)v45 initWithLocalIdentifier:v46 petSpecies:v40 name:v47 isFavorite:v44 == 1 momentNodes:v43 ownerNodes:0];
+            localIdentifier = [v38 localIdentifier];
+            name = [v38 name];
+            v48 = [(PGPet *)v45 initWithLocalIdentifier:localIdentifier petSpecies:v40 name:name isFavorite:type == 1 momentNodes:v43 ownerNodes:0];
 
             [v84 addObject:v48];
           }
@@ -620,17 +620,17 @@ LABEL_104:
     v95[3] = &unk_2788800E0;
     v64 = v63;
     v96 = v64;
-    [PGImportantEntitiesPetProcessor processUserPetsInGraph:v92 progressBlock:v81 withProcessInferredPetNodeClosure:v95];
+    [PGImportantEntitiesPetProcessor processUserPetsInGraph:graph progressBlock:blockCopy withProcessInferredPetNodeClosure:v95];
     if ([v64 count])
     {
       graphBuilder = self->_graphBuilder;
-      v66 = [v92 meNode];
-      [(PGGraphBuilder *)graphBuilder insertOwner:v66 forPets:v64];
+      meNode = [graph meNode];
+      [(PGGraphBuilder *)graphBuilder insertOwner:meNode forPets:v64];
 
       v61 = &unk_22F784000;
     }
 
-    [(PGGraphIngestPetProcessor *)self _donatePetRelationshipsForPetNodes:v64 isFullRebuild:v80 progressBlock:v81, v76];
+    [(PGGraphIngestPetProcessor *)self _donatePetRelationshipsForPetNodes:v64 isFullRebuild:isResumingFullAnalysis progressBlock:blockCopy, v76];
     if (v94 && CFAbsoluteTimeGetCurrent() - v5 >= v61[76] && (v105 = 0, v94[2](v94, &v105, 1.0), v105 | v91 & 1))
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -709,49 +709,49 @@ void __71__PGGraphIngestPetProcessor_runPetIngestWithGraphUpdate_progressBlock__
   [v2 addObject:v3];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasPersonsToUpdate") & 1) != 0 || (objc_msgSend(v3, "hasPersonsToDelete"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasPersonsToUpdate") & 1) != 0 || (objc_msgSend(updateCopy, "hasPersonsToDelete"))
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v6) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (id)initForTestingWithGraphBuilder:(id)a3
+- (id)initForTestingWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestPetProcessor;
   v6 = [(PGGraphIngestPetProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v7->_petPrintClusteringEnabled = 0;
   }
 
   return v7;
 }
 
-- (PGGraphIngestPetProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestPetProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestPetProcessor;
   v6 = [(PGGraphIngestPetProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v7->_petPrintClusteringEnabled = 1;
   }
 

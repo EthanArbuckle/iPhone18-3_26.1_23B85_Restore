@@ -1,6 +1,6 @@
 @interface RMUserInteractionMonitorAttentionAwareness
 - (RMUserInteractionMonitorAttentionAwareness)init;
-- (void)startUserInteractionUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startUserInteractionUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopUserInteractionUpdates;
 @end
 
@@ -20,22 +20,22 @@
     v4 = objc_opt_new();
     [(RMUserInteractionMonitorAttentionAwareness *)v2 setAttentionAwarenessClient:v4];
 
-    v5 = [(RMUserInteractionMonitorAttentionAwareness *)v2 attentionAwarenessClient];
+    attentionAwarenessClient = [(RMUserInteractionMonitorAttentionAwareness *)v2 attentionAwarenessClient];
     v14 = 0;
-    v6 = [v5 setConfiguration:v3 shouldReset:0 error:&v14];
+    v6 = [attentionAwarenessClient setConfiguration:v3 shouldReset:0 error:&v14];
     v7 = v14;
 
     if (v6)
     {
       objc_initWeak(location, v2);
-      v8 = [(RMUserInteractionMonitorAttentionAwareness *)v2 attentionAwarenessClient];
+      attentionAwarenessClient2 = [(RMUserInteractionMonitorAttentionAwareness *)v2 attentionAwarenessClient];
       v9 = &_dispatch_main_q;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100001810;
       v12[3] = &unk_1000247D0;
       objc_copyWeak(&v13, location);
-      [v8 setEventHandlerWithQueue:&_dispatch_main_q block:v12];
+      [attentionAwarenessClient2 setEventHandlerWithQueue:&_dispatch_main_q block:v12];
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(location);
@@ -63,14 +63,14 @@
   return v2;
 }
 
-- (void)startUserInteractionUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startUserInteractionUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v9.receiver = self;
   v9.super_class = RMUserInteractionMonitorAttentionAwareness;
-  [(RMUserInteractionMonitor *)&v9 startUserInteractionUpdatesToQueue:a3 withHandler:a4];
-  v5 = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
+  [(RMUserInteractionMonitor *)&v9 startUserInteractionUpdatesToQueue:queue withHandler:handler];
+  attentionAwarenessClient = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
 
-  if (v5)
+  if (attentionAwarenessClient)
   {
     if (qword_10002C0C8 != -1)
     {
@@ -84,8 +84,8 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[RMUserInteractionMonitorAttentionAwareness] Starting user interaction monitoring", v8, 2u);
     }
 
-    v7 = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
-    [v7 resumeWithError:0];
+    attentionAwarenessClient2 = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
+    [attentionAwarenessClient2 resumeWithError:0];
   }
 }
 
@@ -94,9 +94,9 @@
   v7.receiver = self;
   v7.super_class = RMUserInteractionMonitorAttentionAwareness;
   [(RMUserInteractionMonitor *)&v7 stopUserInteractionUpdates];
-  v3 = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
+  attentionAwarenessClient = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
 
-  if (v3)
+  if (attentionAwarenessClient)
   {
     if (qword_10002C0C8 != -1)
     {
@@ -110,8 +110,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[RMUserInteractionMonitorAttentionAwareness] Stopping user interaction monitoring", v6, 2u);
     }
 
-    v5 = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
-    [v5 suspendWithError:0];
+    attentionAwarenessClient2 = [(RMUserInteractionMonitorAttentionAwareness *)self attentionAwarenessClient];
+    [attentionAwarenessClient2 suspendWithError:0];
   }
 }
 

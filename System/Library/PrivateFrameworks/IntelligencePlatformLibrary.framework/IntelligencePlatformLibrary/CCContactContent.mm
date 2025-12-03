@@ -1,8 +1,8 @@
 @interface CCContactContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCContactContent)initWithGivenName:(id)a3 middleName:(id)a4 familyName:(id)a5 previousFamilyName:(id)a6 nickname:(id)a7 namePrefix:(id)a8 nameSuffix:(id)a9 phoneNumbers:(id)a10 emailAddresses:(id)a11 postalAddresses:(id)a12 urlAddresses:(id)a13 socialProfiles:(id)a14 instantMessageAddresses:(id)a15 relations:(id)a16 organizationName:(id)a17 departmentName:(id)a18 jobTitle:(id)a19 phoneticGivenName:(id)a20 phoneticMiddleName:(id)a21 phoneticFamilyName:(id)a22 phoneticOrganizationName:(id)a23 note:(id)a24 birthday:(id)a25 nonGregorianBirthday:(id)a26 dates:(id)a27 error:(id *)a28;
-- (CCContactContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCContactContent)initWithGivenName:(id)name middleName:(id)middleName familyName:(id)familyName previousFamilyName:(id)previousFamilyName nickname:(id)nickname namePrefix:(id)prefix nameSuffix:(id)suffix phoneNumbers:(id)self0 emailAddresses:(id)self1 postalAddresses:(id)self2 urlAddresses:(id)self3 socialProfiles:(id)self4 instantMessageAddresses:(id)self5 relations:(id)self6 organizationName:(id)self7 departmentName:(id)self8 jobTitle:(id)self9 phoneticGivenName:(id)givenName phoneticMiddleName:(id)phoneticMiddleName phoneticFamilyName:(id)phoneticFamilyName phoneticOrganizationName:(id)phoneticOrganizationName note:(id)note birthday:(id)birthday nonGregorianBirthday:(id)gregorianBirthday dates:(id)dates error:(id *)error;
+- (CCContactContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCContactDate)birthday;
 - (CCContactDate)nonGregorianBirthday;
 - (NSArray)dates;
@@ -29,29 +29,29 @@
 - (NSString)phoneticOrganizationName;
 - (NSString)previousFamilyName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCContactContent
 
-- (CCContactContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCContactContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v265 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v256 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"givenName"];
-    v10 = [v6 objectForKeyedSubscript:@"middleName"];
-    v205 = [v6 objectForKeyedSubscript:@"familyName"];
-    v204 = [v6 objectForKeyedSubscript:@"previousFamilyName"];
-    v203 = [v6 objectForKeyedSubscript:@"nickname"];
-    v202 = [v6 objectForKeyedSubscript:@"namePrefix"];
-    v201 = [v6 objectForKeyedSubscript:@"nameSuffix"];
-    v11 = [v6 objectForKeyedSubscript:@"phoneNumbers"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"givenName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"middleName"];
+    v205 = [dictionaryCopy objectForKeyedSubscript:@"familyName"];
+    v204 = [dictionaryCopy objectForKeyedSubscript:@"previousFamilyName"];
+    v203 = [dictionaryCopy objectForKeyedSubscript:@"nickname"];
+    v202 = [dictionaryCopy objectForKeyedSubscript:@"namePrefix"];
+    v201 = [dictionaryCopy objectForKeyedSubscript:@"nameSuffix"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumbers"];
     if (v11)
     {
       v12 = v11;
@@ -71,9 +71,9 @@ LABEL_162:
         goto LABEL_163;
       }
 
-      obj = a4;
+      obj = error;
       v195 = v10;
-      v172 = self;
+      selfCopy = self;
       v15 = objc_opt_new();
       v251 = 0u;
       v252 = 0u;
@@ -116,7 +116,7 @@ LABEL_162:
 
               v42 = 0;
               v15 = v16;
-              self = v172;
+              self = selfCopy;
               v10 = v195;
               goto LABEL_162;
             }
@@ -130,8 +130,8 @@ LABEL_162:
         while (v18);
       }
 
-      self = v172;
-      a4 = obj;
+      self = selfCopy;
+      error = obj;
     }
 
     else
@@ -140,7 +140,7 @@ LABEL_162:
       v14 = v8;
     }
 
-    v26 = [v6 objectForKeyedSubscript:@"emailAddresses"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"emailAddresses"];
     if (v26)
     {
       v27 = v26;
@@ -160,10 +160,10 @@ LABEL_161:
         goto LABEL_162;
       }
 
-      obja = a4;
+      obja = error;
       v188 = v9;
       v196 = v10;
-      v173 = self;
+      selfCopy2 = self;
       v30 = objc_opt_new();
       v245 = 0u;
       v246 = 0u;
@@ -206,7 +206,7 @@ LABEL_161:
 
               v42 = 0;
               v30 = v31;
-              self = v173;
+              self = selfCopy2;
               v9 = v188;
               v10 = v196;
               goto LABEL_161;
@@ -221,7 +221,7 @@ LABEL_161:
         while (v33);
       }
 
-      a4 = obja;
+      error = obja;
       v9 = v188;
     }
 
@@ -232,7 +232,7 @@ LABEL_161:
       v29 = v14;
     }
 
-    v43 = [v6 objectForKeyedSubscript:@"postalAddresses"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"postalAddresses"];
     if (v43)
     {
       v44 = v43;
@@ -253,9 +253,9 @@ LABEL_160:
         goto LABEL_161;
       }
 
-      objb = a4;
+      objb = error;
       v189 = v9;
-      v174 = self;
+      selfCopy3 = self;
       v200 = objc_opt_new();
       v239 = 0u;
       v240 = 0u;
@@ -297,7 +297,7 @@ LABEL_160:
               CCSetError();
 
               v42 = 0;
-              self = v174;
+              self = selfCopy3;
               v9 = v189;
               v10 = v196;
               goto LABEL_160;
@@ -312,8 +312,8 @@ LABEL_160:
         while (v49);
       }
 
-      self = v174;
-      a4 = objb;
+      self = selfCopy3;
+      error = objb;
       v9 = v189;
     }
 
@@ -323,7 +323,7 @@ LABEL_160:
       v46 = v29;
     }
 
-    v58 = [v6 objectForKeyedSubscript:@"urlAddresses"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"urlAddresses"];
     if (v58)
     {
       v59 = v58;
@@ -345,9 +345,9 @@ LABEL_159:
         goto LABEL_160;
       }
 
-      objc = a4;
+      objc = error;
       v190 = v9;
-      v175 = self;
+      selfCopy4 = self;
       v171 = objc_opt_new();
       v233 = 0u;
       v234 = 0u;
@@ -389,7 +389,7 @@ LABEL_159:
               CCSetError();
 
               v42 = 0;
-              self = v175;
+              self = selfCopy4;
               v9 = v190;
               v10 = v196;
               goto LABEL_159;
@@ -404,8 +404,8 @@ LABEL_159:
         while (v64);
       }
 
-      self = v175;
-      a4 = objc;
+      self = selfCopy4;
+      error = objc;
       v9 = v190;
     }
 
@@ -415,7 +415,7 @@ LABEL_159:
       v61 = v46;
     }
 
-    v73 = [v6 objectForKeyedSubscript:@"socialProfiles"];
+    v73 = [dictionaryCopy objectForKeyedSubscript:@"socialProfiles"];
     if (v73)
     {
       v74 = v73;
@@ -438,9 +438,9 @@ LABEL_158:
       }
 
       v168 = v76;
-      objd = a4;
+      objd = error;
       v191 = v9;
-      v176 = self;
+      selfCopy5 = self;
       v77 = objc_opt_new();
       v227 = 0u;
       v228 = 0u;
@@ -484,7 +484,7 @@ LABEL_158:
 
               v42 = 0;
               v77 = v78;
-              self = v176;
+              self = selfCopy5;
               v9 = v191;
               v10 = v196;
               v76 = v168;
@@ -501,8 +501,8 @@ LABEL_158:
         while (v80);
       }
 
-      self = v176;
-      a4 = objd;
+      self = selfCopy5;
+      error = objd;
       v9 = v191;
       v61 = v168;
     }
@@ -512,7 +512,7 @@ LABEL_158:
       v77 = 0;
     }
 
-    v90 = [v6 objectForKeyedSubscript:@"instantMessageAddresses"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"instantMessageAddresses"];
     v166 = v77;
     if (v90)
     {
@@ -534,9 +534,9 @@ LABEL_120:
         goto LABEL_157;
       }
 
-      obje = a4;
+      obje = error;
       v192 = v9;
-      v177 = self;
+      selfCopy6 = self;
       v169 = objc_opt_new();
       v221 = 0u;
       v222 = 0u;
@@ -579,7 +579,7 @@ LABEL_120:
               CCSetError();
 
               v42 = 0;
-              self = v177;
+              self = selfCopy6;
               v9 = v192;
               v10 = v196;
               goto LABEL_120;
@@ -594,8 +594,8 @@ LABEL_120:
         while (v96);
       }
 
-      self = v177;
-      a4 = obje;
+      self = selfCopy6;
+      error = obje;
       v9 = v192;
       v77 = v166;
     }
@@ -605,7 +605,7 @@ LABEL_120:
       v169 = 0;
     }
 
-    v105 = [v6 objectForKeyedSubscript:@"relations"];
+    v105 = [dictionaryCopy objectForKeyedSubscript:@"relations"];
     v10 = v196;
     if (v105)
     {
@@ -629,7 +629,7 @@ LABEL_127:
         goto LABEL_156;
       }
 
-      objf = a4;
+      objf = error;
       v193 = v9;
       v167 = objc_opt_new();
       v215 = 0u;
@@ -688,7 +688,7 @@ LABEL_127:
 
       v9 = v193;
       v10 = v196;
-      a4 = objf;
+      error = objf;
       v77 = v166;
     }
 
@@ -698,15 +698,15 @@ LABEL_127:
       v165 = v61;
     }
 
-    v163 = [v6 objectForKeyedSubscript:@"organizationName"];
-    v162 = [v6 objectForKeyedSubscript:@"departmentName"];
-    v161 = [v6 objectForKeyedSubscript:@"jobTitle"];
-    v160 = [v6 objectForKeyedSubscript:@"phoneticGivenName"];
-    v159 = [v6 objectForKeyedSubscript:@"phoneticMiddleName"];
-    v158 = [v6 objectForKeyedSubscript:@"phoneticFamilyName"];
-    v157 = [v6 objectForKeyedSubscript:@"phoneticOrganizationName"];
-    v156 = [v6 objectForKeyedSubscript:@"note"];
-    v122 = [v6 objectForKeyedSubscript:@"birthday"];
+    v163 = [dictionaryCopy objectForKeyedSubscript:@"organizationName"];
+    v162 = [dictionaryCopy objectForKeyedSubscript:@"departmentName"];
+    v161 = [dictionaryCopy objectForKeyedSubscript:@"jobTitle"];
+    v160 = [dictionaryCopy objectForKeyedSubscript:@"phoneticGivenName"];
+    v159 = [dictionaryCopy objectForKeyedSubscript:@"phoneticMiddleName"];
+    v158 = [dictionaryCopy objectForKeyedSubscript:@"phoneticFamilyName"];
+    v157 = [dictionaryCopy objectForKeyedSubscript:@"phoneticOrganizationName"];
+    v156 = [dictionaryCopy objectForKeyedSubscript:@"note"];
+    v122 = [dictionaryCopy objectForKeyedSubscript:@"birthday"];
     v123 = 0x1E73E5000uLL;
     if (v122)
     {
@@ -733,7 +733,7 @@ LABEL_127:
       v164 = 0;
     }
 
-    v128 = [v6 objectForKeyedSubscript:@"nonGregorianBirthday"];
+    v128 = [dictionaryCopy objectForKeyedSubscript:@"nonGregorianBirthday"];
     if (v128)
     {
       v129 = objc_alloc(*(v123 + 2392));
@@ -771,7 +771,7 @@ LABEL_157:
       v132 = v165;
     }
 
-    v134 = [v6 objectForKeyedSubscript:@"dates"];
+    v134 = [dictionaryCopy objectForKeyedSubscript:@"dates"];
     if (!v134)
     {
       v165 = v132;
@@ -783,7 +783,7 @@ LABEL_152:
       v77 = v166;
       v133 = v128;
       v94 = v169;
-      v42 = [[CCContactContent alloc] initWithGivenName:v9 middleName:v10 familyName:v205 previousFamilyName:v204 nickname:v203 namePrefix:v202 nameSuffix:v201 phoneNumbers:v15 emailAddresses:v30 postalAddresses:v200 urlAddresses:v171 socialProfiles:v166 instantMessageAddresses:v169 relations:v167 organizationName:v163 departmentName:v162 jobTitle:v161 phoneticGivenName:v160 phoneticMiddleName:v159 phoneticFamilyName:v158 phoneticOrganizationName:v157 note:v156 birthday:v164 nonGregorianBirthday:v153 dates:v154 error:a4];
+      v42 = [[CCContactContent alloc] initWithGivenName:v9 middleName:v10 familyName:v205 previousFamilyName:v204 nickname:v203 namePrefix:v202 nameSuffix:v201 phoneNumbers:v15 emailAddresses:v30 postalAddresses:v200 urlAddresses:v171 socialProfiles:v166 instantMessageAddresses:v169 relations:v167 organizationName:v163 departmentName:v162 jobTitle:v161 phoneticGivenName:v160 phoneticMiddleName:v159 phoneticFamilyName:v158 phoneticOrganizationName:v157 note:v156 birthday:v164 nonGregorianBirthday:v153 dates:v154 error:error];
       v152 = v199;
       goto LABEL_155;
     }
@@ -803,7 +803,7 @@ LABEL_152:
       v170 = v30;
       v194 = v9;
       v198 = v10;
-      v178 = self;
+      selfCopy7 = self;
       v138 = objc_opt_new();
       v207 = 0u;
       v208 = 0u;
@@ -845,7 +845,7 @@ LABEL_152:
               CCSetError();
 
               v42 = 0;
-              self = v178;
+              self = selfCopy7;
               v9 = v194;
               v10 = v198;
               v77 = v166;
@@ -865,7 +865,7 @@ LABEL_152:
         while (v140);
       }
 
-      self = v178;
+      self = selfCopy7;
       v9 = v194;
       v10 = v198;
       v30 = v170;
@@ -898,44 +898,44 @@ LABEL_163:
   v3 = objc_opt_new();
   if (self->_givenName)
   {
-    v4 = [(CCContactContent *)self givenName];
-    [v3 setObject:v4 forKeyedSubscript:@"givenName"];
+    givenName = [(CCContactContent *)self givenName];
+    [v3 setObject:givenName forKeyedSubscript:@"givenName"];
   }
 
   if (self->_middleName)
   {
-    v5 = [(CCContactContent *)self middleName];
-    [v3 setObject:v5 forKeyedSubscript:@"middleName"];
+    middleName = [(CCContactContent *)self middleName];
+    [v3 setObject:middleName forKeyedSubscript:@"middleName"];
   }
 
   if (self->_familyName)
   {
-    v6 = [(CCContactContent *)self familyName];
-    [v3 setObject:v6 forKeyedSubscript:@"familyName"];
+    familyName = [(CCContactContent *)self familyName];
+    [v3 setObject:familyName forKeyedSubscript:@"familyName"];
   }
 
   if (self->_previousFamilyName)
   {
-    v7 = [(CCContactContent *)self previousFamilyName];
-    [v3 setObject:v7 forKeyedSubscript:@"previousFamilyName"];
+    previousFamilyName = [(CCContactContent *)self previousFamilyName];
+    [v3 setObject:previousFamilyName forKeyedSubscript:@"previousFamilyName"];
   }
 
   if (self->_nickname)
   {
-    v8 = [(CCContactContent *)self nickname];
-    [v3 setObject:v8 forKeyedSubscript:@"nickname"];
+    nickname = [(CCContactContent *)self nickname];
+    [v3 setObject:nickname forKeyedSubscript:@"nickname"];
   }
 
   if (self->_namePrefix)
   {
-    v9 = [(CCContactContent *)self namePrefix];
-    [v3 setObject:v9 forKeyedSubscript:@"namePrefix"];
+    namePrefix = [(CCContactContent *)self namePrefix];
+    [v3 setObject:namePrefix forKeyedSubscript:@"namePrefix"];
   }
 
   if (self->_nameSuffix)
   {
-    v10 = [(CCContactContent *)self nameSuffix];
-    [v3 setObject:v10 forKeyedSubscript:@"nameSuffix"];
+    nameSuffix = [(CCContactContent *)self nameSuffix];
+    [v3 setObject:nameSuffix forKeyedSubscript:@"nameSuffix"];
   }
 
   if (self->_phoneNumbers)
@@ -945,8 +945,8 @@ LABEL_163:
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v12 = [(CCContactContent *)self phoneNumbers];
-    v13 = [v12 countByEnumeratingWithState:&v110 objects:v121 count:16];
+    phoneNumbers = [(CCContactContent *)self phoneNumbers];
+    v13 = [phoneNumbers countByEnumeratingWithState:&v110 objects:v121 count:16];
     if (v13)
     {
       v14 = v13;
@@ -957,14 +957,14 @@ LABEL_163:
         {
           if (*v111 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(phoneNumbers);
           }
 
-          v17 = [*(*(&v110 + 1) + 8 * i) jsonDictionary];
-          [v11 addObject:v17];
+          jsonDictionary = [*(*(&v110 + 1) + 8 * i) jsonDictionary];
+          [v11 addObject:jsonDictionary];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v110 objects:v121 count:16];
+        v14 = [phoneNumbers countByEnumeratingWithState:&v110 objects:v121 count:16];
       }
 
       while (v14);
@@ -980,8 +980,8 @@ LABEL_163:
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v19 = [(CCContactContent *)self emailAddresses];
-    v20 = [v19 countByEnumeratingWithState:&v106 objects:v120 count:16];
+    emailAddresses = [(CCContactContent *)self emailAddresses];
+    v20 = [emailAddresses countByEnumeratingWithState:&v106 objects:v120 count:16];
     if (v20)
     {
       v21 = v20;
@@ -992,14 +992,14 @@ LABEL_163:
         {
           if (*v107 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v24 = [*(*(&v106 + 1) + 8 * j) jsonDictionary];
-          [v18 addObject:v24];
+          jsonDictionary2 = [*(*(&v106 + 1) + 8 * j) jsonDictionary];
+          [v18 addObject:jsonDictionary2];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v106 objects:v120 count:16];
+        v21 = [emailAddresses countByEnumeratingWithState:&v106 objects:v120 count:16];
       }
 
       while (v21);
@@ -1015,8 +1015,8 @@ LABEL_163:
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v26 = [(CCContactContent *)self postalAddresses];
-    v27 = [v26 countByEnumeratingWithState:&v102 objects:v119 count:16];
+    postalAddresses = [(CCContactContent *)self postalAddresses];
+    v27 = [postalAddresses countByEnumeratingWithState:&v102 objects:v119 count:16];
     if (v27)
     {
       v28 = v27;
@@ -1027,14 +1027,14 @@ LABEL_163:
         {
           if (*v103 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(postalAddresses);
           }
 
-          v31 = [*(*(&v102 + 1) + 8 * k) jsonDictionary];
-          [v25 addObject:v31];
+          jsonDictionary3 = [*(*(&v102 + 1) + 8 * k) jsonDictionary];
+          [v25 addObject:jsonDictionary3];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v102 objects:v119 count:16];
+        v28 = [postalAddresses countByEnumeratingWithState:&v102 objects:v119 count:16];
       }
 
       while (v28);
@@ -1050,8 +1050,8 @@ LABEL_163:
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v33 = [(CCContactContent *)self urlAddresses];
-    v34 = [v33 countByEnumeratingWithState:&v98 objects:v118 count:16];
+    urlAddresses = [(CCContactContent *)self urlAddresses];
+    v34 = [urlAddresses countByEnumeratingWithState:&v98 objects:v118 count:16];
     if (v34)
     {
       v35 = v34;
@@ -1062,14 +1062,14 @@ LABEL_163:
         {
           if (*v99 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(urlAddresses);
           }
 
-          v38 = [*(*(&v98 + 1) + 8 * m) jsonDictionary];
-          [v32 addObject:v38];
+          jsonDictionary4 = [*(*(&v98 + 1) + 8 * m) jsonDictionary];
+          [v32 addObject:jsonDictionary4];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v98 objects:v118 count:16];
+        v35 = [urlAddresses countByEnumeratingWithState:&v98 objects:v118 count:16];
       }
 
       while (v35);
@@ -1085,8 +1085,8 @@ LABEL_163:
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v40 = [(CCContactContent *)self socialProfiles];
-    v41 = [v40 countByEnumeratingWithState:&v94 objects:v117 count:16];
+    socialProfiles = [(CCContactContent *)self socialProfiles];
+    v41 = [socialProfiles countByEnumeratingWithState:&v94 objects:v117 count:16];
     if (v41)
     {
       v42 = v41;
@@ -1097,14 +1097,14 @@ LABEL_163:
         {
           if (*v95 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(socialProfiles);
           }
 
-          v45 = [*(*(&v94 + 1) + 8 * n) jsonDictionary];
-          [v39 addObject:v45];
+          jsonDictionary5 = [*(*(&v94 + 1) + 8 * n) jsonDictionary];
+          [v39 addObject:jsonDictionary5];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v94 objects:v117 count:16];
+        v42 = [socialProfiles countByEnumeratingWithState:&v94 objects:v117 count:16];
       }
 
       while (v42);
@@ -1120,8 +1120,8 @@ LABEL_163:
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v47 = [(CCContactContent *)self instantMessageAddresses];
-    v48 = [v47 countByEnumeratingWithState:&v90 objects:v116 count:16];
+    instantMessageAddresses = [(CCContactContent *)self instantMessageAddresses];
+    v48 = [instantMessageAddresses countByEnumeratingWithState:&v90 objects:v116 count:16];
     if (v48)
     {
       v49 = v48;
@@ -1132,14 +1132,14 @@ LABEL_163:
         {
           if (*v91 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(instantMessageAddresses);
           }
 
-          v52 = [*(*(&v90 + 1) + 8 * ii) jsonDictionary];
-          [v46 addObject:v52];
+          jsonDictionary6 = [*(*(&v90 + 1) + 8 * ii) jsonDictionary];
+          [v46 addObject:jsonDictionary6];
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v90 objects:v116 count:16];
+        v49 = [instantMessageAddresses countByEnumeratingWithState:&v90 objects:v116 count:16];
       }
 
       while (v49);
@@ -1155,8 +1155,8 @@ LABEL_163:
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v54 = [(CCContactContent *)self relations];
-    v55 = [v54 countByEnumeratingWithState:&v86 objects:v115 count:16];
+    relations = [(CCContactContent *)self relations];
+    v55 = [relations countByEnumeratingWithState:&v86 objects:v115 count:16];
     if (v55)
     {
       v56 = v55;
@@ -1167,14 +1167,14 @@ LABEL_163:
         {
           if (*v87 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(relations);
           }
 
-          v59 = [*(*(&v86 + 1) + 8 * jj) jsonDictionary];
-          [v53 addObject:v59];
+          jsonDictionary7 = [*(*(&v86 + 1) + 8 * jj) jsonDictionary];
+          [v53 addObject:jsonDictionary7];
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v86 objects:v115 count:16];
+        v56 = [relations countByEnumeratingWithState:&v86 objects:v115 count:16];
       }
 
       while (v56);
@@ -1185,64 +1185,64 @@ LABEL_163:
 
   if (self->_organizationName)
   {
-    v60 = [(CCContactContent *)self organizationName];
-    [v3 setObject:v60 forKeyedSubscript:@"organizationName"];
+    organizationName = [(CCContactContent *)self organizationName];
+    [v3 setObject:organizationName forKeyedSubscript:@"organizationName"];
   }
 
   if (self->_departmentName)
   {
-    v61 = [(CCContactContent *)self departmentName];
-    [v3 setObject:v61 forKeyedSubscript:@"departmentName"];
+    departmentName = [(CCContactContent *)self departmentName];
+    [v3 setObject:departmentName forKeyedSubscript:@"departmentName"];
   }
 
   if (self->_jobTitle)
   {
-    v62 = [(CCContactContent *)self jobTitle];
-    [v3 setObject:v62 forKeyedSubscript:@"jobTitle"];
+    jobTitle = [(CCContactContent *)self jobTitle];
+    [v3 setObject:jobTitle forKeyedSubscript:@"jobTitle"];
   }
 
   if (self->_phoneticGivenName)
   {
-    v63 = [(CCContactContent *)self phoneticGivenName];
-    [v3 setObject:v63 forKeyedSubscript:@"phoneticGivenName"];
+    phoneticGivenName = [(CCContactContent *)self phoneticGivenName];
+    [v3 setObject:phoneticGivenName forKeyedSubscript:@"phoneticGivenName"];
   }
 
   if (self->_phoneticMiddleName)
   {
-    v64 = [(CCContactContent *)self phoneticMiddleName];
-    [v3 setObject:v64 forKeyedSubscript:@"phoneticMiddleName"];
+    phoneticMiddleName = [(CCContactContent *)self phoneticMiddleName];
+    [v3 setObject:phoneticMiddleName forKeyedSubscript:@"phoneticMiddleName"];
   }
 
   if (self->_phoneticFamilyName)
   {
-    v65 = [(CCContactContent *)self phoneticFamilyName];
-    [v3 setObject:v65 forKeyedSubscript:@"phoneticFamilyName"];
+    phoneticFamilyName = [(CCContactContent *)self phoneticFamilyName];
+    [v3 setObject:phoneticFamilyName forKeyedSubscript:@"phoneticFamilyName"];
   }
 
   if (self->_phoneticOrganizationName)
   {
-    v66 = [(CCContactContent *)self phoneticOrganizationName];
-    [v3 setObject:v66 forKeyedSubscript:@"phoneticOrganizationName"];
+    phoneticOrganizationName = [(CCContactContent *)self phoneticOrganizationName];
+    [v3 setObject:phoneticOrganizationName forKeyedSubscript:@"phoneticOrganizationName"];
   }
 
   if (self->_note)
   {
-    v67 = [(CCContactContent *)self note];
-    [v3 setObject:v67 forKeyedSubscript:@"note"];
+    note = [(CCContactContent *)self note];
+    [v3 setObject:note forKeyedSubscript:@"note"];
   }
 
   if (self->_birthday)
   {
-    v68 = [(CCContactContent *)self birthday];
-    v69 = [v68 jsonDictionary];
-    [v3 setObject:v69 forKeyedSubscript:@"birthday"];
+    birthday = [(CCContactContent *)self birthday];
+    jsonDictionary8 = [birthday jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"birthday"];
   }
 
   if (self->_nonGregorianBirthday)
   {
-    v70 = [(CCContactContent *)self nonGregorianBirthday];
-    v71 = [v70 jsonDictionary];
-    [v3 setObject:v71 forKeyedSubscript:@"nonGregorianBirthday"];
+    nonGregorianBirthday = [(CCContactContent *)self nonGregorianBirthday];
+    jsonDictionary9 = [nonGregorianBirthday jsonDictionary];
+    [v3 setObject:jsonDictionary9 forKeyedSubscript:@"nonGregorianBirthday"];
   }
 
   if (self->_dates)
@@ -1252,8 +1252,8 @@ LABEL_163:
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v73 = [(CCContactContent *)self dates];
-    v74 = [v73 countByEnumeratingWithState:&v82 objects:v114 count:16];
+    dates = [(CCContactContent *)self dates];
+    v74 = [dates countByEnumeratingWithState:&v82 objects:v114 count:16];
     if (v74)
     {
       v75 = v74;
@@ -1264,14 +1264,14 @@ LABEL_163:
         {
           if (*v83 != v76)
           {
-            objc_enumerationMutation(v73);
+            objc_enumerationMutation(dates);
           }
 
-          v78 = [*(*(&v82 + 1) + 8 * kk) jsonDictionary];
-          [v72 addObject:v78];
+          jsonDictionary10 = [*(*(&v82 + 1) + 8 * kk) jsonDictionary];
+          [v72 addObject:jsonDictionary10];
         }
 
-        v75 = [v73 countByEnumeratingWithState:&v82 objects:v114 count:16];
+        v75 = [dates countByEnumeratingWithState:&v82 objects:v114 count:16];
       }
 
       while (v75);
@@ -1287,160 +1287,160 @@ LABEL_163:
   return v79;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v31 = a3;
+  blockCopy = block;
   if (self->_givenName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19679 stringValue:self->_givenName];
-    v31[2](v31, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_middleName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19680 stringValue:self->_middleName];
-    v31[2](v31, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_familyName)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19681 stringValue:self->_familyName];
-    v31[2](v31, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_previousFamilyName)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19682 stringValue:self->_previousFamilyName];
-    v31[2](v31, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_nickname)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19683 stringValue:self->_nickname];
-    v31[2](v31, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_namePrefix)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19684 stringValue:self->_namePrefix];
-    v31[2](v31, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_nameSuffix)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19685 stringValue:self->_nameSuffix];
-    v31[2](v31, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_phoneNumbers)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19686 repeatedSubMessageValue:self->_phoneNumbers];
-    v31[2](v31, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_emailAddresses)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19687 repeatedSubMessageValue:self->_emailAddresses];
-    v31[2](v31, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_postalAddresses)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19688 repeatedSubMessageValue:self->_postalAddresses];
-    v31[2](v31, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_urlAddresses)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19689 repeatedSubMessageValue:self->_urlAddresses];
-    v31[2](v31, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_socialProfiles)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19690 repeatedSubMessageValue:self->_socialProfiles];
-    v31[2](v31, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_instantMessageAddresses)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19691 repeatedSubMessageValue:self->_instantMessageAddresses];
-    v31[2](v31, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_relations)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19692 repeatedSubMessageValue:self->_relations];
-    v31[2](v31, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_organizationName)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19693 stringValue:self->_organizationName];
-    v31[2](v31, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_departmentName)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19694 stringValue:self->_departmentName];
-    v31[2](v31, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if (self->_jobTitle)
   {
     v21 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19695 stringValue:self->_jobTitle];
-    v31[2](v31, v21);
+    blockCopy[2](blockCopy, v21);
   }
 
   if (self->_phoneticGivenName)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19696 stringValue:self->_phoneticGivenName];
-    v31[2](v31, v22);
+    blockCopy[2](blockCopy, v22);
   }
 
   if (self->_phoneticMiddleName)
   {
     v23 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19697 stringValue:self->_phoneticMiddleName];
-    v31[2](v31, v23);
+    blockCopy[2](blockCopy, v23);
   }
 
   if (self->_phoneticFamilyName)
   {
     v24 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19698 stringValue:self->_phoneticFamilyName];
-    v31[2](v31, v24);
+    blockCopy[2](blockCopy, v24);
   }
 
   if (self->_phoneticOrganizationName)
   {
     v25 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19699 stringValue:self->_phoneticOrganizationName];
-    v31[2](v31, v25);
+    blockCopy[2](blockCopy, v25);
   }
 
   if (self->_note)
   {
     v26 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19700 stringValue:self->_note];
-    v31[2](v31, v26);
+    blockCopy[2](blockCopy, v26);
   }
 
   if (self->_birthday)
   {
     v27 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19701 subMessageValue:self->_birthday];
-    v31[2](v31, v27);
+    blockCopy[2](blockCopy, v27);
   }
 
   if (self->_nonGregorianBirthday)
   {
     v28 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19702 subMessageValue:self->_nonGregorianBirthday];
-    v31[2](v31, v28);
+    blockCopy[2](blockCopy, v28);
   }
 
-  v29 = v31;
+  v29 = blockCopy;
   if (self->_dates)
   {
     v30 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19705 repeatedSubMessageValue:self->_dates];
-    v31[2](v31, v30);
+    blockCopy[2](blockCopy, v30);
 
-    v29 = v31;
+    v29 = blockCopy;
   }
 }
 
@@ -1619,11 +1619,11 @@ LABEL_163:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v66 = a4;
-  v67 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v67];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] >= *&v5[*MEMORY[0x1E6993AB0]])
@@ -1934,7 +1934,7 @@ LABEL_85:
             {
               v27 = v9;
 LABEL_76:
-              [v27 addObject:{v26, v66}];
+              [v27 addObject:{v26, errorCopy}];
             }
 
 LABEL_77:
@@ -2024,13 +2024,13 @@ LABEL_91:
   {
     CCSetError();
     v58 = 0;
-    v59 = v67;
+    v59 = dataCopy;
   }
 
   else
   {
     v60 = MEMORY[0x1E6993AA8];
-    v59 = v67;
+    v59 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v61 = objc_opt_class();
@@ -2051,39 +2051,39 @@ LABEL_91:
   return v58;
 }
 
-- (CCContactContent)initWithGivenName:(id)a3 middleName:(id)a4 familyName:(id)a5 previousFamilyName:(id)a6 nickname:(id)a7 namePrefix:(id)a8 nameSuffix:(id)a9 phoneNumbers:(id)a10 emailAddresses:(id)a11 postalAddresses:(id)a12 urlAddresses:(id)a13 socialProfiles:(id)a14 instantMessageAddresses:(id)a15 relations:(id)a16 organizationName:(id)a17 departmentName:(id)a18 jobTitle:(id)a19 phoneticGivenName:(id)a20 phoneticMiddleName:(id)a21 phoneticFamilyName:(id)a22 phoneticOrganizationName:(id)a23 note:(id)a24 birthday:(id)a25 nonGregorianBirthday:(id)a26 dates:(id)a27 error:(id *)a28
+- (CCContactContent)initWithGivenName:(id)name middleName:(id)middleName familyName:(id)familyName previousFamilyName:(id)previousFamilyName nickname:(id)nickname namePrefix:(id)prefix nameSuffix:(id)suffix phoneNumbers:(id)self0 emailAddresses:(id)self1 postalAddresses:(id)self2 urlAddresses:(id)self3 socialProfiles:(id)self4 instantMessageAddresses:(id)self5 relations:(id)self6 organizationName:(id)self7 departmentName:(id)self8 jobTitle:(id)self9 phoneticGivenName:(id)givenName phoneticMiddleName:(id)phoneticMiddleName phoneticFamilyName:(id)phoneticFamilyName phoneticOrganizationName:(id)phoneticOrganizationName note:(id)note birthday:(id)birthday nonGregorianBirthday:(id)gregorianBirthday dates:(id)dates error:(id *)error
 {
   v220 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v34 = a4;
-  v35 = a5;
-  v36 = a6;
-  v37 = a7;
-  v151 = a8;
-  v154 = a9;
-  v153 = a10;
-  v152 = a11;
-  v150 = a12;
-  v149 = a13;
-  v148 = a14;
-  v147 = a15;
-  v146 = a16;
-  v145 = a17;
-  v38 = a18;
-  v143 = a19;
-  v142 = a20;
-  v141 = a21;
-  v140 = a22;
-  v139 = a23;
-  v138 = a24;
-  v137 = a25;
-  v135 = a26;
-  v136 = a27;
+  nameCopy = name;
+  middleNameCopy = middleName;
+  familyNameCopy = familyName;
+  previousFamilyNameCopy = previousFamilyName;
+  nicknameCopy = nickname;
+  prefixCopy = prefix;
+  suffixCopy = suffix;
+  numbersCopy = numbers;
+  addressesCopy = addresses;
+  postalAddressesCopy = postalAddresses;
+  urlAddressesCopy = urlAddresses;
+  profilesCopy = profiles;
+  messageAddressesCopy = messageAddresses;
+  relationsCopy = relations;
+  organizationNameCopy = organizationName;
+  departmentNameCopy = departmentName;
+  titleCopy = title;
+  givenNameCopy = givenName;
+  phoneticMiddleNameCopy = phoneticMiddleName;
+  phoneticFamilyNameCopy = phoneticFamilyName;
+  phoneticOrganizationNameCopy = phoneticOrganizationName;
+  noteCopy = note;
+  birthdayCopy = birthday;
+  gregorianBirthdayCopy = gregorianBirthday;
+  datesCopy = dates;
   v39 = objc_opt_new();
   v40 = 0x1E696A000uLL;
-  v133 = v35;
-  v144 = v38;
-  if (v33)
+  v133 = familyNameCopy;
+  v144 = departmentNameCopy;
+  if (nameCopy)
   {
     objc_opt_class();
     v211 = 0;
@@ -2102,8 +2102,8 @@ LABEL_91:
     v42 = 0;
   }
 
-  v43 = v151;
-  if (v34)
+  v43 = prefixCopy;
+  if (middleNameCopy)
   {
     objc_opt_class();
     v210 = v42;
@@ -2117,22 +2117,22 @@ LABEL_91:
 
     CCPBDataWriterWriteStringField();
     v40 = 0x1E696A000uLL;
-    if (!v35)
+    if (!familyNameCopy)
     {
 LABEL_8:
       v42 = v45;
-      if (v36)
+      if (previousFamilyNameCopy)
       {
         goto LABEL_9;
       }
 
 LABEL_18:
       v45 = v42;
-      if (!v37)
+      if (!nicknameCopy)
       {
 LABEL_11:
         v42 = v45;
-        if (v151)
+        if (prefixCopy)
         {
           goto LABEL_12;
         }
@@ -2147,7 +2147,7 @@ LABEL_11:
   else
   {
     v45 = v42;
-    if (!v35)
+    if (!familyNameCopy)
     {
       goto LABEL_8;
     }
@@ -2165,7 +2165,7 @@ LABEL_11:
 
   CCPBDataWriterWriteStringField();
   v40 = 0x1E696A000uLL;
-  if (!v36)
+  if (!previousFamilyNameCopy)
   {
     goto LABEL_18;
   }
@@ -2180,7 +2180,7 @@ LABEL_9:
   {
     CCPBDataWriterWriteStringField();
     v40 = 0x1E696A000uLL;
-    if (!v37)
+    if (!nicknameCopy)
     {
       goto LABEL_11;
     }
@@ -2195,7 +2195,7 @@ LABEL_19:
     {
       CCPBDataWriterWriteStringField();
       v40 = 0x1E696A000uLL;
-      if (v151)
+      if (prefixCopy)
       {
 LABEL_12:
         objc_opt_class();
@@ -2216,7 +2216,7 @@ LABEL_12:
 LABEL_21:
       v45 = v42;
 LABEL_22:
-      if (v154)
+      if (suffixCopy)
       {
         v53 = *(v40 + 3776);
         objc_opt_class();
@@ -2226,12 +2226,12 @@ LABEL_22:
 
         if (!v54)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           CCSetError();
           v50 = 0;
 LABEL_51:
-          v55 = self;
+          selfCopy4 = self;
           goto LABEL_141;
         }
 
@@ -2243,15 +2243,15 @@ LABEL_51:
         v42 = v45;
       }
 
-      v132 = v33;
-      if (!v153)
+      v132 = nameCopy;
+      if (!numbersCopy)
       {
         v57 = v42;
         goto LABEL_40;
       }
 
-      v48 = v36;
-      v49 = v37;
+      v48 = previousFamilyNameCopy;
+      v49 = nicknameCopy;
       objc_opt_class();
       v204 = v42;
       v56 = CCValidateArrayValues();
@@ -2263,7 +2263,7 @@ LABEL_51:
         v203 = 0u;
         v200 = 0u;
         v201 = 0u;
-        v58 = v153;
+        v58 = numbersCopy;
         v59 = [v58 countByEnumeratingWithState:&v200 objects:v219 count:16];
         if (v59)
         {
@@ -2278,7 +2278,7 @@ LABEL_51:
                 objc_enumerationMutation(v58);
               }
 
-              v63 = [*(*(&v200 + 1) + 8 * i) data];
+              data = [*(*(&v200 + 1) + 8 * i) data];
               CCPBDataWriterWriteDataField();
             }
 
@@ -2288,14 +2288,14 @@ LABEL_51:
           while (v60);
         }
 
-        v33 = v132;
-        v37 = v49;
-        v36 = v48;
+        nameCopy = v132;
+        nicknameCopy = v49;
+        previousFamilyNameCopy = v48;
 LABEL_40:
-        if (v152)
+        if (addressesCopy)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           objc_opt_class();
           v199 = v57;
           v64 = CCValidateArrayValues();
@@ -2310,7 +2310,7 @@ LABEL_40:
           v198 = 0u;
           v195 = 0u;
           v196 = 0u;
-          v65 = v152;
+          v65 = addressesCopy;
           v66 = [v65 countByEnumeratingWithState:&v195 objects:v218 count:16];
           if (v66)
           {
@@ -2325,7 +2325,7 @@ LABEL_40:
                   objc_enumerationMutation(v65);
                 }
 
-                v70 = [*(*(&v195 + 1) + 8 * j) data];
+                data2 = [*(*(&v195 + 1) + 8 * j) data];
                 CCPBDataWriterWriteDataField();
               }
 
@@ -2335,9 +2335,9 @@ LABEL_40:
             while (v67);
           }
 
-          v33 = v132;
-          v37 = v49;
-          v36 = v48;
+          nameCopy = v132;
+          nicknameCopy = v49;
+          previousFamilyNameCopy = v48;
         }
 
         else
@@ -2345,10 +2345,10 @@ LABEL_40:
           v42 = v57;
         }
 
-        if (v150)
+        if (postalAddressesCopy)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           objc_opt_class();
           v194 = v42;
           v71 = CCValidateArrayValues();
@@ -2363,7 +2363,7 @@ LABEL_40:
           v193 = 0u;
           v190 = 0u;
           v191 = 0u;
-          v73 = v150;
+          v73 = postalAddressesCopy;
           v74 = [v73 countByEnumeratingWithState:&v190 objects:v217 count:16];
           if (v74)
           {
@@ -2378,7 +2378,7 @@ LABEL_40:
                   objc_enumerationMutation(v73);
                 }
 
-                v78 = [*(*(&v190 + 1) + 8 * k) data];
+                data3 = [*(*(&v190 + 1) + 8 * k) data];
                 CCPBDataWriterWriteDataField();
               }
 
@@ -2388,9 +2388,9 @@ LABEL_40:
             while (v75);
           }
 
-          v33 = v132;
-          v37 = v49;
-          v36 = v48;
+          nameCopy = v132;
+          nicknameCopy = v49;
+          previousFamilyNameCopy = v48;
         }
 
         else
@@ -2398,10 +2398,10 @@ LABEL_40:
           v72 = v42;
         }
 
-        if (v149)
+        if (urlAddressesCopy)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           objc_opt_class();
           v189 = v72;
           v79 = CCValidateArrayValues();
@@ -2416,7 +2416,7 @@ LABEL_40:
           v188 = 0u;
           v185 = 0u;
           v186 = 0u;
-          v80 = v149;
+          v80 = urlAddressesCopy;
           v81 = [v80 countByEnumeratingWithState:&v185 objects:v216 count:16];
           if (v81)
           {
@@ -2431,7 +2431,7 @@ LABEL_40:
                   objc_enumerationMutation(v80);
                 }
 
-                v85 = [*(*(&v185 + 1) + 8 * m) data];
+                data4 = [*(*(&v185 + 1) + 8 * m) data];
                 CCPBDataWriterWriteDataField();
               }
 
@@ -2441,9 +2441,9 @@ LABEL_40:
             while (v82);
           }
 
-          v33 = v132;
-          v37 = v49;
-          v36 = v48;
+          nameCopy = v132;
+          nicknameCopy = v49;
+          previousFamilyNameCopy = v48;
         }
 
         else
@@ -2451,10 +2451,10 @@ LABEL_40:
           v42 = v72;
         }
 
-        if (v148)
+        if (profilesCopy)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           objc_opt_class();
           v184 = v42;
           v86 = CCValidateArrayValues();
@@ -2469,7 +2469,7 @@ LABEL_40:
           v183 = 0u;
           v180 = 0u;
           v181 = 0u;
-          v87 = v148;
+          v87 = profilesCopy;
           v88 = [v87 countByEnumeratingWithState:&v180 objects:v215 count:16];
           if (v88)
           {
@@ -2484,7 +2484,7 @@ LABEL_40:
                   objc_enumerationMutation(v87);
                 }
 
-                v92 = [*(*(&v180 + 1) + 8 * n) data];
+                data5 = [*(*(&v180 + 1) + 8 * n) data];
                 CCPBDataWriterWriteDataField();
               }
 
@@ -2494,9 +2494,9 @@ LABEL_40:
             while (v89);
           }
 
-          v33 = v132;
-          v37 = v49;
-          v36 = v48;
+          nameCopy = v132;
+          nicknameCopy = v49;
+          previousFamilyNameCopy = v48;
         }
 
         else
@@ -2504,10 +2504,10 @@ LABEL_40:
           v72 = v42;
         }
 
-        if (v147)
+        if (messageAddressesCopy)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           objc_opt_class();
           v179 = v72;
           v93 = CCValidateArrayValues();
@@ -2522,7 +2522,7 @@ LABEL_40:
           v178 = 0u;
           v175 = 0u;
           v176 = 0u;
-          v94 = v147;
+          v94 = messageAddressesCopy;
           v95 = [v94 countByEnumeratingWithState:&v175 objects:v214 count:16];
           if (v95)
           {
@@ -2537,7 +2537,7 @@ LABEL_40:
                   objc_enumerationMutation(v94);
                 }
 
-                v99 = [*(*(&v175 + 1) + 8 * ii) data];
+                data6 = [*(*(&v175 + 1) + 8 * ii) data];
                 CCPBDataWriterWriteDataField();
               }
 
@@ -2547,9 +2547,9 @@ LABEL_40:
             while (v96);
           }
 
-          v33 = v132;
-          v37 = v49;
-          v36 = v48;
+          nameCopy = v132;
+          nicknameCopy = v49;
+          previousFamilyNameCopy = v48;
         }
 
         else
@@ -2557,10 +2557,10 @@ LABEL_40:
           v42 = v72;
         }
 
-        if (v146)
+        if (relationsCopy)
         {
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           objc_opt_class();
           v174 = v42;
           v100 = CCValidateArrayValues();
@@ -2575,7 +2575,7 @@ LABEL_40:
           v173 = 0u;
           v170 = 0u;
           v171 = 0u;
-          v101 = v146;
+          v101 = relationsCopy;
           v102 = [v101 countByEnumeratingWithState:&v170 objects:v213 count:16];
           if (v102)
           {
@@ -2590,7 +2590,7 @@ LABEL_40:
                   objc_enumerationMutation(v101);
                 }
 
-                v106 = [*(*(&v170 + 1) + 8 * jj) data];
+                data7 = [*(*(&v170 + 1) + 8 * jj) data];
                 CCPBDataWriterWriteDataField();
               }
 
@@ -2600,9 +2600,9 @@ LABEL_40:
             while (v103);
           }
 
-          v33 = v132;
-          v37 = v49;
-          v36 = v48;
+          nameCopy = v132;
+          nicknameCopy = v49;
+          previousFamilyNameCopy = v48;
         }
 
         else
@@ -2611,7 +2611,7 @@ LABEL_40:
         }
 
         v107 = 0x1E696A000uLL;
-        if (v145)
+        if (organizationNameCopy)
         {
           objc_opt_class();
           v169 = v72;
@@ -2654,7 +2654,7 @@ LABEL_40:
           v72 = v42;
         }
 
-        if (v143)
+        if (titleCopy)
         {
           v111 = *(v107 + 3776);
           objc_opt_class();
@@ -2675,7 +2675,7 @@ LABEL_40:
           v42 = v72;
         }
 
-        if (v142)
+        if (givenNameCopy)
         {
           objc_opt_class();
           v166 = v42;
@@ -2695,7 +2695,7 @@ LABEL_40:
           v72 = v42;
         }
 
-        if (v141)
+        if (phoneticMiddleNameCopy)
         {
           objc_opt_class();
           v165 = v72;
@@ -2715,7 +2715,7 @@ LABEL_40:
           v42 = v72;
         }
 
-        if (!v140)
+        if (!phoneticFamilyNameCopy)
         {
           v72 = v42;
           goto LABEL_134;
@@ -2730,7 +2730,7 @@ LABEL_40:
         {
           CCPBDataWriterWriteStringField();
 LABEL_134:
-          if (!v139)
+          if (!phoneticOrganizationNameCopy)
           {
             v42 = v72;
             goto LABEL_143;
@@ -2745,15 +2745,15 @@ LABEL_134:
           {
             CCPBDataWriterWriteStringField();
 LABEL_143:
-            v48 = v36;
-            if (!v138)
+            v48 = previousFamilyNameCopy;
+            if (!noteCopy)
             {
-              v49 = v37;
+              v49 = nicknameCopy;
               v72 = v42;
               goto LABEL_147;
             }
 
-            v49 = v37;
+            v49 = nicknameCopy;
             objc_opt_class();
             v162 = v42;
             v119 = CCValidateIsInstanceOfExpectedClass();
@@ -2763,7 +2763,7 @@ LABEL_143:
             {
               CCPBDataWriterWriteStringField();
 LABEL_147:
-              if (!v137)
+              if (!birthdayCopy)
               {
                 v42 = v72;
                 goto LABEL_151;
@@ -2776,11 +2776,11 @@ LABEL_147:
 
               if (v120)
               {
-                v121 = [v137 data];
+                data8 = [birthdayCopy data];
                 CCPBDataWriterWriteDataField();
 
 LABEL_151:
-                if (!v135)
+                if (!gregorianBirthdayCopy)
                 {
                   v72 = v42;
                   goto LABEL_155;
@@ -2793,11 +2793,11 @@ LABEL_151:
 
                 if (v122)
                 {
-                  v123 = [v135 data];
+                  data9 = [gregorianBirthdayCopy data];
                   CCPBDataWriterWriteDataField();
 
 LABEL_155:
-                  if (v136)
+                  if (datesCopy)
                   {
                     objc_opt_class();
                     v159 = v72;
@@ -2808,8 +2808,8 @@ LABEL_155:
                     {
                       CCSetError();
                       v50 = 0;
-                      v55 = self;
-                      v33 = v132;
+                      selfCopy4 = self;
+                      nameCopy = v132;
                       goto LABEL_140;
                     }
 
@@ -2817,7 +2817,7 @@ LABEL_155:
                     v158 = 0u;
                     v155 = 0u;
                     v156 = 0u;
-                    v125 = v136;
+                    v125 = datesCopy;
                     v126 = [v125 countByEnumeratingWithState:&v155 objects:v212 count:16];
                     if (v126)
                     {
@@ -2832,7 +2832,7 @@ LABEL_155:
                             objc_enumerationMutation(v125);
                           }
 
-                          v130 = [*(*(&v155 + 1) + 8 * kk) data];
+                          data10 = [*(*(&v155 + 1) + 8 * kk) data];
                           CCPBDataWriterWriteDataField();
                         }
 
@@ -2842,7 +2842,7 @@ LABEL_155:
                       while (v127);
                     }
 
-                    v33 = v132;
+                    nameCopy = v132;
                   }
 
                   else
@@ -2850,12 +2850,12 @@ LABEL_155:
                     v42 = v72;
                   }
 
-                  v131 = [v39 immutableData];
-                  v55 = [(CCItemMessage *)self initWithData:v131 error:a28];
+                  immutableData = [v39 immutableData];
+                  selfCopy4 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-                  v50 = v55;
+                  v50 = selfCopy4;
 LABEL_140:
-                  v43 = v151;
+                  v43 = prefixCopy;
                   goto LABEL_141;
                 }
 
@@ -2873,19 +2873,19 @@ LABEL_132:
             v50 = 0;
             v42 = v72;
 LABEL_139:
-            v55 = self;
+            selfCopy4 = self;
             goto LABEL_140;
           }
 
 LABEL_137:
-          v48 = v36;
-          v49 = v37;
+          v48 = previousFamilyNameCopy;
+          v49 = nicknameCopy;
           goto LABEL_138;
         }
 
 LABEL_131:
-        v48 = v36;
-        v49 = v37;
+        v48 = previousFamilyNameCopy;
+        v49 = nicknameCopy;
         goto LABEL_132;
       }
 
@@ -2896,37 +2896,37 @@ LABEL_131:
     }
 
 LABEL_25:
-    v48 = v36;
-    v49 = v37;
+    v48 = previousFamilyNameCopy;
+    v49 = nicknameCopy;
     CCSetError();
     v50 = 0;
     goto LABEL_26;
   }
 
 LABEL_14:
-  v48 = v36;
-  v49 = v37;
+  v48 = previousFamilyNameCopy;
+  v49 = nicknameCopy;
   CCSetError();
   v50 = 0;
   v42 = v45;
 LABEL_26:
-  v55 = self;
+  selfCopy4 = self;
 LABEL_141:
 
   v117 = *MEMORY[0x1E69E9840];
   return v50;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 19668) > 0x6D)
+  if ((identifier - 19668) > 0x6D)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E6E98 + (a3 - 19668));
+    return *(&off_1E73E6E98 + (identifier - 19668));
   }
 }
 

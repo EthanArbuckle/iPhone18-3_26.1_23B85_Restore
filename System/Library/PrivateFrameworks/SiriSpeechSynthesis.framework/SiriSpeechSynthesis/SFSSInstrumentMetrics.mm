@@ -100,8 +100,8 @@
 
 - (id)description
 {
-  v2 = [(SFSSInstrumentMetrics *)self dictionaryMetrics];
-  v3 = [v2 description];
+  dictionaryMetrics = [(SFSSInstrumentMetrics *)self dictionaryMetrics];
+  v3 = [dictionaryMetrics description];
 
   return v3;
 }

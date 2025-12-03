@@ -3,36 +3,36 @@
 - (id)_cacheFileURL;
 - (id)_loadCacheDictionary;
 - (id)getCurrentURLMappingSet;
-- (void)_saveCachedResponsePayload:(id)a3 eTag:(id)a4;
+- (void)_saveCachedResponsePayload:(id)payload eTag:(id)tag;
 - (void)clearCachedURLMappings;
-- (void)setCurrentURLMappingSet:(id)a3;
-- (void)updateURLMappingsWithCompletion:(id)a3;
+- (void)setCurrentURLMappingSet:(id)set;
+- (void)updateURLMappingsWithCompletion:(id)completion;
 @end
 
 @implementation ICMediaAPIURLMappingProvider
 
-- (void)_saveCachedResponsePayload:(id)a3 eTag:(id)a4
+- (void)_saveCachedResponsePayload:(id)payload eTag:(id)tag
 {
   v18 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
-  v8 = a3;
+  tagCopy = tag;
+  payloadCopy = payload;
   v9 = [v6 dictionaryWithCapacity:2];
-  [v9 setObject:v8 forKeyedSubscript:@"mappings"];
+  [v9 setObject:payloadCopy forKeyedSubscript:@"mappings"];
 
-  [v9 setObject:v7 forKeyedSubscript:@"etag"];
-  v10 = [(ICMediaAPIURLMappingProvider *)self _cacheFileURL];
+  [v9 setObject:tagCopy forKeyedSubscript:@"etag"];
+  _cacheFileURL = [(ICMediaAPIURLMappingProvider *)self _cacheFileURL];
   v13 = 0;
-  LOBYTE(v8) = [v9 writeToURL:v10 error:&v13];
+  LOBYTE(payloadCopy) = [v9 writeToURL:_cacheFileURL error:&v13];
   v11 = v13;
 
-  if ((v8 & 1) == 0)
+  if ((payloadCopy & 1) == 0)
   {
     v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = v11;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@ Failed to save cache dicationry. err=%{public}@", buf, 0x16u);
@@ -43,9 +43,9 @@
 - (id)_loadCacheDictionary
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(ICMediaAPIURLMappingProvider *)self _cacheFileURL];
+  _cacheFileURL = [(ICMediaAPIURLMappingProvider *)self _cacheFileURL];
   v8 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v3 error:&v8];
+  v4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:_cacheFileURL error:&v8];
   v5 = v8;
   if (!v4)
   {
@@ -53,7 +53,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = v5;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load cache from file. err=%{public}@", buf, 0x16u);
@@ -74,10 +74,10 @@
   return v5;
 }
 
-- (void)setCurrentURLMappingSet:(id)a3
+- (void)setCurrentURLMappingSet:(id)set
 {
-  v4 = [a3 responsePayload];
-  [(ICMediaAPIURLMappingProvider *)self _saveCachedResponsePayload:v4 eTag:0];
+  responsePayload = [set responsePayload];
+  [(ICMediaAPIURLMappingProvider *)self _saveCachedResponsePayload:responsePayload eTag:0];
 }
 
 - (void)clearCachedURLMappings
@@ -87,14 +87,14 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing cache file", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(ICMediaAPIURLMappingProvider *)self _cacheFileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _cacheFileURL = [(ICMediaAPIURLMappingProvider *)self _cacheFileURL];
   v9 = 0;
-  v6 = [v4 removeItemAtURL:v5 error:&v9];
+  v6 = [defaultManager removeItemAtURL:_cacheFileURL error:&v9];
   v7 = v9;
 
   if ((v6 & 1) == 0)
@@ -103,7 +103,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2114;
       v13 = v7;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Failed to remove cache file. err=%{public}@", buf, 0x16u);
@@ -111,9 +111,9 @@
   }
 }
 
-- (void)updateURLMappingsWithCompletion:(id)a3
+- (void)updateURLMappingsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [ICStoreRequestContext alloc];
   v6 = +[ICUserIdentity activeAccount];
   v7 = [(ICStoreRequestContext *)v5 initWithIdentity:v6];
@@ -124,10 +124,10 @@
   v11[2] = __64__ICMediaAPIURLMappingProvider_updateURLMappingsWithCompletion___block_invoke;
   v11[3] = &unk_1E7BF9DB0;
   v12 = v7;
-  v13 = v4;
+  v13 = completionCopy;
   v11[4] = self;
   v9 = v7;
-  v10 = v4;
+  v10 = completionCopy;
   [v8 getBagForRequestContext:v9 withCompletionHandler:v11];
 }
 
@@ -258,11 +258,11 @@ void __64__ICMediaAPIURLMappingProvider_updateURLMappingsWithCompletion___block_
 - (id)getCurrentURLMappingSet
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(ICMediaAPIURLMappingProvider *)self _loadCacheDictionary];
-  v4 = v3;
-  if (v3)
+  _loadCacheDictionary = [(ICMediaAPIURLMappingProvider *)self _loadCacheDictionary];
+  v4 = _loadCacheDictionary;
+  if (_loadCacheDictionary)
   {
-    v5 = [v3 ic_arrayValueForKey:@"mappings"];
+    v5 = [_loadCacheDictionary ic_arrayValueForKey:@"mappings"];
     if (v5)
     {
       v6 = v5;
@@ -274,7 +274,7 @@ void __64__ICMediaAPIURLMappingProvider_updateURLMappingsWithCompletion___block_
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load url mappings from cache file", &v10, 0xCu);
     }
 
@@ -287,7 +287,7 @@ void __64__ICMediaAPIURLMappingProvider_updateURLMappingsWithCompletion___block_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load mapping cache", &v10, 0xCu);
     }
   }

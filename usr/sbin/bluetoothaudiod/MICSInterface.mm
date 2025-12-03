@@ -1,25 +1,25 @@
 @interface MICSInterface
-- (BOOL)sendGainSetting:(char)a3 inputType:(unsigned __int8)a4;
-- (MICSInterface)initWithPeripheral:(id)a3 service:(id)a4;
-- (id)getIncludedServiceInterfaceForService:(id)a3;
+- (BOOL)sendGainSetting:(char)setting inputType:(unsigned __int8)type;
+- (MICSInterface)initWithPeripheral:(id)peripheral service:(id)service;
+- (id)getIncludedServiceInterfaceForService:(id)service;
 - (void)_handleMuteUpdate;
 - (void)dealloc;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverIncludedServicesForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverIncludedServicesForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MICSInterface
 
-- (MICSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (MICSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v9.receiver = self;
   v9.super_class = MICSInterface;
-  v4 = [(ServiceInterface *)&v9 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v9 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -45,17 +45,17 @@
   v14[1] = v4;
   v5 = [NSArray arrayWithObjects:v14 count:2];
 
-  v6 = [(ServiceInterface *)self peripheral];
-  v7 = [(ServiceInterface *)self service];
-  [v6 discoverCharacteristics:v5 forService:v7];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v5 forService:service];
 
   v8 = [CBUUID UUIDWithString:CBUUIDAudioInputControlServiceString];
   v13 = v8;
   v9 = [NSArray arrayWithObjects:&v13 count:1];
 
-  v10 = [(ServiceInterface *)self peripheral];
-  v11 = [(ServiceInterface *)self service];
-  [v10 discoverIncludedServices:v9 forService:v11];
+  peripheral2 = [(ServiceInterface *)self peripheral];
+  service2 = [(ServiceInterface *)self service];
+  [peripheral2 discoverIncludedServices:v9 forService:service2];
 }
 
 - (void)stop
@@ -108,28 +108,28 @@
   [(MICSInterface *)&v9 dealloc];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v25 = a3;
-  v7 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
   v9 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v8;
+    v32 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService %@", buf, 0xCu);
   }
 
-  if (!v8)
+  if (!errorCopy)
   {
-    v23 = v7;
+    v23 = serviceCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v7 characteristics];
-    v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    characteristics = [serviceCopy characteristics];
+    v11 = [characteristics countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v11)
     {
       v12 = v11;
@@ -141,7 +141,7 @@
         {
           if (*v27 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(characteristics);
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
@@ -149,75 +149,75 @@
           if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v17;
-            v19 = [v16 UUID];
+            uUID = [v16 UUID];
             *buf = 138412290;
-            v32 = v19;
+            v32 = uUID;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "didDiscoverCharacteristicsForService Characteristic %@", buf, 0xCu);
           }
 
-          v20 = [v16 UUID];
+          uUID2 = [v16 UUID];
           v21 = [CBUUID UUIDWithString:v14];
-          v22 = [v20 isEqual:v21];
+          v22 = [uUID2 isEqual:v21];
 
           if (v22)
           {
             [(MICSInterface *)self setMuteCharacteristic:v16];
             if (([v16 properties] & 0x10) != 0)
             {
-              [v25 setNotifyValue:1 forCharacteristic:v16];
+              [peripheralCopy setNotifyValue:1 forCharacteristic:v16];
             }
 
-            [v25 readValueForCharacteristic:v16];
+            [peripheralCopy readValueForCharacteristic:v16];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v12 = [characteristics countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v12);
     }
 
     [(ServiceInterface *)self notifyDidStart];
-    v8 = 0;
-    v7 = v23;
+    errorCopy = 0;
+    serviceCopy = v23;
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverIncludedServicesForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverIncludedServicesForService:(id)service error:(id)error
 {
-  v43 = a3;
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
   v10 = &qword_1000A9FE0;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 includedServices];
+    includedServices = [serviceCopy includedServices];
     *buf = 138412802;
-    v53 = v13;
+    v53 = includedServices;
     v54 = 2112;
-    v55 = v8;
+    v55 = serviceCopy;
     v56 = 2112;
-    v57 = v9;
+    v57 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "didDiscoverIncludedServicesForService %@ for service %@ : %@", buf, 0x20u);
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v41 = v8;
+    v41 = serviceCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v14 = [v8 includedServices];
-    v15 = [v14 countByEnumeratingWithState:&v45 objects:v51 count:16];
+    includedServices2 = [serviceCopy includedServices];
+    v15 = [includedServices2 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v15)
     {
       v16 = v15;
       v17 = *v46;
       v44 = CBUUIDAudioInputControlServiceString;
-      v42 = v14;
+      v42 = includedServices2;
       do
       {
         v18 = 0;
@@ -225,22 +225,22 @@
         {
           if (*v46 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(includedServices2);
           }
 
           v19 = *(*(&v45 + 1) + 8 * v18);
-          v20 = [(MICSInterface *)self includedServiceInterfaceMap];
-          v21 = [v20 objectForKey:v19];
+          includedServiceInterfaceMap = [(MICSInterface *)self includedServiceInterfaceMap];
+          v21 = [includedServiceInterfaceMap objectForKey:v19];
 
           if (!v21)
           {
-            v22 = [v19 UUID];
+            uUID = [v19 UUID];
             v23 = [CBUUID UUIDWithString:v44];
-            v24 = [v22 isEqual:v23];
+            v24 = [uUID isEqual:v23];
 
             if (v24)
             {
-              v25 = [objc_alloc(NSClassFromString(@"AICSInterface")) initWithPeripheral:v43 service:v19];
+              v25 = [objc_alloc(NSClassFromString(@"AICSInterface")) initWithPeripheral:peripheralCopy service:v19];
               [v25 setParentServiceInterface:self];
               v26 = *v10;
               if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEBUG))
@@ -253,20 +253,20 @@
               if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEFAULT))
               {
                 v29 = v28;
-                v30 = [v43 name];
-                v31 = [v19 UUID];
+                name = [peripheralCopy name];
+                uUID2 = [v19 UUID];
                 *buf = 138412802;
-                v53 = v30;
+                v53 = name;
                 v54 = 2114;
-                v55 = v31;
+                v55 = uUID2;
                 v56 = 2112;
                 v57 = v19;
                 _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Peripheral %@ supports included service %{public}@. %@", buf, 0x20u);
               }
 
               [(NSMapTable *)self->_includedServiceInterfaceMap setObject:v25 forKey:v19];
-              v32 = [(ServiceInterface *)self serviceEventHandler];
-              [v25 setServiceEventHandler:v32];
+              serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+              [v25 setServiceEventHandler:serviceEventHandler];
 
               v10 = v27;
               if (([v25 isStarted] & 1) == 0)
@@ -275,13 +275,13 @@
                 if (os_log_type_enabled(*v27, OS_LOG_TYPE_DEFAULT))
                 {
                   v34 = v33;
-                  v35 = [v19 UUID];
-                  v36 = [(ServiceInterface *)self peripheral];
-                  v37 = [v36 name];
+                  uUID3 = [v19 UUID];
+                  peripheral = [(ServiceInterface *)self peripheral];
+                  name2 = [peripheral name];
                   *buf = 138412546;
-                  v53 = v35;
+                  v53 = uUID3;
                   v54 = 2112;
-                  v55 = v37;
+                  v55 = name2;
                   _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Starting included service %@ on peripheral %@", buf, 0x16u);
 
                   v10 = v27;
@@ -290,7 +290,7 @@
                 [v25 start];
               }
 
-              v14 = v42;
+              includedServices2 = v42;
             }
           }
 
@@ -298,38 +298,38 @@
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v45 objects:v51 count:16];
+        v16 = [includedServices2 countByEnumeratingWithState:&v45 objects:v51 count:16];
       }
 
       while (v16);
     }
 
-    v38 = [(MICSInterface *)self includedServiceInterfaceMap];
-    v39 = [v38 count];
+    includedServiceInterfaceMap2 = [(MICSInterface *)self includedServiceInterfaceMap];
+    v39 = [includedServiceInterfaceMap2 count];
 
-    v9 = 0;
-    v8 = v41;
+    errorCopy = 0;
+    serviceCopy = v41;
     if (!v39)
     {
       v40 = *v10;
       if (os_log_type_enabled(*v10, OS_LOG_TYPE_DEBUG))
       {
-        sub_10005B564(v40, v43, v41);
+        sub_10005B564(v40, peripheralCopy, v41);
       }
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 description];
+    v13 = [characteristicCopy description];
     v15 = 136315394;
     v16 = "[MICSInterface peripheral:didUpdateValueForCharacteristic:error:]";
     v17 = 2112;
@@ -337,27 +337,27 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "MICSClientService %s updated characteristic %@ ", &v15, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v14 = [(MICSInterface *)self muteCharacteristic];
+    muteCharacteristic = [(MICSInterface *)self muteCharacteristic];
 
-    if (v14 == v9)
+    if (muteCharacteristic == characteristicCopy)
     {
       [(MICSInterface *)self _handleMuteUpdate];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 description];
+    v13 = [characteristicCopy description];
     v15 = 136315394;
     v16 = "[MICSInterface peripheral:didUpdateNotificationStateForCharacteristic:error:]";
     v17 = 2112;
@@ -365,87 +365,87 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "MICSClientService %s notified updated characteristic %@ ", &v15, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v14 = [(MICSInterface *)self muteCharacteristic];
+    muteCharacteristic = [(MICSInterface *)self muteCharacteristic];
 
-    if (v14 == v9)
+    if (muteCharacteristic == characteristicCopy)
     {
       [(MICSInterface *)self _handleMuteUpdate];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(MICSInterface *)self muteCharacteristic];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  muteCharacteristic = [(MICSInterface *)self muteCharacteristic];
 
-  if (v9 == v8)
+  if (muteCharacteristic == characteristicCopy)
   {
     v10 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(ServiceInterface *)self peripheral];
-      v13 = [v12 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       v23 = 138412546;
-      v24 = v13;
+      v24 = name;
       v25 = 2112;
-      v26 = v7;
+      v26 = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Mute result for member %@: %@", &v23, 0x16u);
     }
 
-    if ([v7 code] == 19)
+    if ([errorCopy code] == 19)
     {
       v14 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
-        sub_10005EFD0(v7, v14);
+        sub_10005EFD0(errorCopy, v14);
       }
     }
 
-    else if ([v7 code] == 128)
+    else if ([errorCopy code] == 128)
     {
       v15 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
       {
-        sub_10005EF58(v7, v15);
+        sub_10005EF58(errorCopy, v15);
       }
     }
 
-    else if (![v7 code])
+    else if (![errorCopy code])
     {
       v16 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [(MICSInterface *)self mute];
+        mute = [(MICSInterface *)self mute];
         v23 = 67109120;
-        LODWORD(v24) = v18;
+        LODWORD(v24) = mute;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Mute: %d", &v23, 8u);
       }
     }
 
-    v19 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
 
-    if (v19)
+    if (serviceEventHandler)
     {
       v20 = objc_alloc_init(NSMutableDictionary);
-      v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 code]);
+      v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
       [v20 setValue:v21 forKey:@"kMicrophoneMute"];
 
-      v22 = [(ServiceInterface *)self serviceEventHandler];
-      (v22)[2](v22, 6, v20);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 6, v20);
     }
   }
 }
 
-- (BOOL)sendGainSetting:(char)a3 inputType:(unsigned __int8)a4
+- (BOOL)sendGainSetting:(char)setting inputType:(unsigned __int8)type
 {
-  v4 = a4;
-  v18 = a3;
+  typeCopy = type;
+  settingCopy = setting;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -469,15 +469,15 @@
         }
 
         v12 = [(NSMapTable *)self->_includedServiceInterfaceMap objectForKey:*(*(&v20 + 1) + 8 * i), v17];
-        v13 = [v12 getAudioInputType];
-        if (v13 == v4)
+        getAudioInputType = [v12 getAudioInputType];
+        if (getAudioInputType == typeCopy)
         {
-          v9 |= [v12 sendGainSetting:v18];
+          v9 |= [v12 sendGainSetting:settingCopy];
         }
 
         else
         {
-          v14 = v13;
+          v14 = getAudioInputType;
           v15 = qword_1000A9FE0;
           if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
           {
@@ -502,20 +502,20 @@
   return v9 & 1;
 }
 
-- (id)getIncludedServiceInterfaceForService:(id)a3
+- (id)getIncludedServiceInterfaceForService:(id)service
 {
-  v4 = a3;
-  v5 = [(MICSInterface *)self includedServiceInterfaceMap];
-  v6 = [v5 objectForKey:v4];
+  serviceCopy = service;
+  includedServiceInterfaceMap = [(MICSInterface *)self includedServiceInterfaceMap];
+  v6 = [includedServiceInterfaceMap objectForKey:serviceCopy];
 
   return v6;
 }
 
 - (void)_handleMuteUpdate
 {
-  v3 = [(MICSInterface *)self muteCharacteristic];
-  v4 = [v3 value];
-  v5 = [DataInputStream inputStreamWithData:v4];
+  muteCharacteristic = [(MICSInterface *)self muteCharacteristic];
+  value = [muteCharacteristic value];
+  v5 = [DataInputStream inputStreamWithData:value];
 
   v6 = objc_alloc_init(NSMutableDictionary);
   v16 = 0;
@@ -525,10 +525,10 @@
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(ServiceInterface *)self peripheral];
-      v10 = [v9 name];
+      peripheral = [(ServiceInterface *)self peripheral];
+      name = [peripheral name];
       *buf = 138412546;
-      v18 = v10;
+      v18 = name;
       v19 = 1024;
       v20 = v16;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Mute for member %@: %u", buf, 0x12u);
@@ -543,16 +543,16 @@
     }
   }
 
-  v12 = [(ServiceInterface *)self serviceEventHandler];
-  if (v12)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v13 = v12;
+    v13 = serviceEventHandler;
     v14 = [v6 count];
 
     if (v14)
     {
-      v15 = [(ServiceInterface *)self serviceEventHandler];
-      (v15)[2](v15, 7, v6);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 7, v6);
     }
   }
 }

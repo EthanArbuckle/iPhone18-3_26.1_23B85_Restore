@@ -1,31 +1,31 @@
 @interface AWDSiriNetworkAnalyzerRun
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnalyzingSuccessfulRetry:(BOOL)a3;
-- (void)setHasGatewayPingsDropped:(BOOL)a3;
-- (void)setHasGatewayPingsSent:(BOOL)a3;
-- (void)setHasGatewayStatus:(BOOL)a3;
-- (void)setHasInterface:(BOOL)a3;
-- (void)setHasIsUserRequest:(BOOL)a3;
-- (void)setHasKnownURLLoadDuration:(BOOL)a3;
-- (void)setHasSendBufferBytesRemaining:(BOOL)a3;
-- (void)setHasSiriSaltURLLoadDuration:(BOOL)a3;
-- (void)setHasSiriURLLoadDuration:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasWwanPreferred:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnalyzingSuccessfulRetry:(BOOL)retry;
+- (void)setHasGatewayPingsDropped:(BOOL)dropped;
+- (void)setHasGatewayPingsSent:(BOOL)sent;
+- (void)setHasGatewayStatus:(BOOL)status;
+- (void)setHasInterface:(BOOL)interface;
+- (void)setHasIsUserRequest:(BOOL)request;
+- (void)setHasKnownURLLoadDuration:(BOOL)duration;
+- (void)setHasSendBufferBytesRemaining:(BOOL)remaining;
+- (void)setHasSiriSaltURLLoadDuration:(BOOL)duration;
+- (void)setHasSiriURLLoadDuration:(BOOL)duration;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasWwanPreferred:(BOOL)preferred;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSiriNetworkAnalyzerRun
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasInterface:(BOOL)a3
+- (void)setHasInterface:(BOOL)interface
 {
-  if (a3)
+  if (interface)
   {
     v3 = 256;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsUserRequest:(BOOL)a3
+- (void)setHasIsUserRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 2048;
   }
@@ -68,9 +68,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAnalyzingSuccessfulRetry:(BOOL)a3
+- (void)setHasAnalyzingSuccessfulRetry:(BOOL)retry
 {
-  if (a3)
+  if (retry)
   {
     v3 = 1024;
   }
@@ -83,9 +83,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasWwanPreferred:(BOOL)a3
+- (void)setHasWwanPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 4096;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSendBufferBytesRemaining:(BOOL)a3
+- (void)setHasSendBufferBytesRemaining:(BOOL)remaining
 {
-  if (a3)
+  if (remaining)
   {
     v3 = 512;
   }
@@ -113,9 +113,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasKnownURLLoadDuration:(BOOL)a3
+- (void)setHasKnownURLLoadDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -128,9 +128,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasSiriURLLoadDuration:(BOOL)a3
+- (void)setHasSiriURLLoadDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -143,9 +143,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSiriSaltURLLoadDuration:(BOOL)a3
+- (void)setHasSiriSaltURLLoadDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -158,9 +158,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasGatewayStatus:(BOOL)a3
+- (void)setHasGatewayStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 128;
   }
@@ -173,9 +173,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasGatewayPingsSent:(BOOL)a3
+- (void)setHasGatewayPingsSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 64;
   }
@@ -188,9 +188,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasGatewayPingsDropped:(BOOL)a3
+- (void)setHasGatewayPingsDropped:(BOOL)dropped
 {
-  if (a3)
+  if (dropped)
   {
     v3 = 32;
   }
@@ -212,11 +212,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -235,7 +235,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_interface), @"interface"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_interface), @"interface"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -249,7 +249,7 @@ LABEL_4:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isUserRequest), @"isUserRequest"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isUserRequest), @"isUserRequest"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -263,7 +263,7 @@ LABEL_5:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_analyzingSuccessfulRetry), @"analyzingSuccessfulRetry"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_analyzingSuccessfulRetry), @"analyzingSuccessfulRetry"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -277,7 +277,7 @@ LABEL_6:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wwanPreferred), @"wwanPreferred"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wwanPreferred), @"wwanPreferred"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -291,7 +291,7 @@ LABEL_7:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_sendBufferBytesRemaining), @"sendBufferBytesRemaining"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_sendBufferBytesRemaining), @"sendBufferBytesRemaining"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -305,7 +305,7 @@ LABEL_8:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_knownURLLoadDuration), @"knownURLLoadDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_knownURLLoadDuration), @"knownURLLoadDuration"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -319,7 +319,7 @@ LABEL_9:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_siriURLLoadDuration), @"siriURLLoadDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_siriURLLoadDuration), @"siriURLLoadDuration"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -333,7 +333,7 @@ LABEL_10:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_siriSaltURLLoadDuration), @"siriSaltURLLoadDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_siriSaltURLLoadDuration), @"siriSaltURLLoadDuration"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -347,7 +347,7 @@ LABEL_11:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_gatewayStatus), @"gatewayStatus"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_gatewayStatus), @"gatewayStatus"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -358,17 +358,17 @@ LABEL_12:
     }
 
 LABEL_27:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayPingsSent), @"gatewayPingsSent"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayPingsSent), @"gatewayPingsSent"}];
     if ((*&self->_has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_14;
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_gatewayPingDuration), @"gatewayPingDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_gatewayPingDuration), @"gatewayPingDuration"}];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -379,13 +379,13 @@ LABEL_13:
   if ((has & 0x20) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayPingsDropped), @"gatewayPingsDropped"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayPingsDropped), @"gatewayPingsDropped"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -573,13 +573,13 @@ LABEL_27:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 5) = self->_timestamp;
-    *(a3 + 36) |= 0x10u;
+    *(to + 5) = self->_timestamp;
+    *(to + 36) |= 0x10u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -598,8 +598,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 15) = self->_interface;
-  *(a3 + 36) |= 0x100u;
+  *(to + 15) = self->_interface;
+  *(to + 36) |= 0x100u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(a3 + 69) = self->_isUserRequest;
-  *(a3 + 36) |= 0x800u;
+  *(to + 69) = self->_isUserRequest;
+  *(to + 36) |= 0x800u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -628,8 +628,8 @@ LABEL_5:
   }
 
 LABEL_18:
-  *(a3 + 68) = self->_analyzingSuccessfulRetry;
-  *(a3 + 36) |= 0x400u;
+  *(to + 68) = self->_analyzingSuccessfulRetry;
+  *(to + 36) |= 0x400u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -643,8 +643,8 @@ LABEL_6:
   }
 
 LABEL_19:
-  *(a3 + 70) = self->_wwanPreferred;
-  *(a3 + 36) |= 0x1000u;
+  *(to + 70) = self->_wwanPreferred;
+  *(to + 36) |= 0x1000u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -658,8 +658,8 @@ LABEL_7:
   }
 
 LABEL_20:
-  *(a3 + 16) = self->_sendBufferBytesRemaining;
-  *(a3 + 36) |= 0x200u;
+  *(to + 16) = self->_sendBufferBytesRemaining;
+  *(to + 36) |= 0x200u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -673,8 +673,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(a3 + 2) = self->_knownURLLoadDuration;
-  *(a3 + 36) |= 2u;
+  *(to + 2) = self->_knownURLLoadDuration;
+  *(to + 36) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -688,8 +688,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(a3 + 4) = self->_siriURLLoadDuration;
-  *(a3 + 36) |= 8u;
+  *(to + 4) = self->_siriURLLoadDuration;
+  *(to + 36) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -703,8 +703,8 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(a3 + 3) = self->_siriSaltURLLoadDuration;
-  *(a3 + 36) |= 4u;
+  *(to + 3) = self->_siriSaltURLLoadDuration;
+  *(to + 36) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -718,8 +718,8 @@ LABEL_11:
   }
 
 LABEL_24:
-  *(a3 + 14) = self->_gatewayStatus;
-  *(a3 + 36) |= 0x80u;
+  *(to + 14) = self->_gatewayStatus;
+  *(to + 36) |= 0x80u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -733,8 +733,8 @@ LABEL_12:
   }
 
 LABEL_25:
-  *(a3 + 1) = self->_gatewayPingDuration;
-  *(a3 + 36) |= 1u;
+  *(to + 1) = self->_gatewayPingDuration;
+  *(to + 36) |= 1u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -745,23 +745,23 @@ LABEL_13:
     }
 
 LABEL_27:
-    *(a3 + 12) = self->_gatewayPingsDropped;
-    *(a3 + 36) |= 0x20u;
+    *(to + 12) = self->_gatewayPingsDropped;
+    *(to + 36) |= 0x20u;
     return;
   }
 
 LABEL_26:
-  *(a3 + 13) = self->_gatewayPingsSent;
-  *(a3 + 36) |= 0x40u;
+  *(to + 13) = self->_gatewayPingsSent;
+  *(to + 36) |= 0x40u;
   if ((*&self->_has & 0x20) != 0)
   {
     goto LABEL_27;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -948,19 +948,19 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 36);
+  v7 = *(equal + 36);
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_timestamp != *(a3 + 5))
+    if ((v7 & 0x10) == 0 || self->_timestamp != *(equal + 5))
     {
       goto LABEL_75;
     }
@@ -973,85 +973,85 @@ LABEL_14:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 36) & 0x100) == 0 || self->_interface != *(a3 + 15))
+    if ((*(equal + 36) & 0x100) == 0 || self->_interface != *(equal + 15))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(a3 + 36) & 0x100) != 0)
+  else if ((*(equal + 36) & 0x100) != 0)
   {
     goto LABEL_75;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(a3 + 36) & 0x800) == 0)
+    if ((*(equal + 36) & 0x800) == 0)
     {
       goto LABEL_75;
     }
 
-    v8 = *(a3 + 69);
+    v8 = *(equal + 69);
     if (self->_isUserRequest)
     {
-      if ((*(a3 + 69) & 1) == 0)
+      if ((*(equal + 69) & 1) == 0)
       {
         goto LABEL_75;
       }
     }
 
-    else if (*(a3 + 69))
+    else if (*(equal + 69))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(a3 + 36) & 0x800) != 0)
+  else if ((*(equal + 36) & 0x800) != 0)
   {
     goto LABEL_75;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 36) & 0x400) == 0)
+    if ((*(equal + 36) & 0x400) == 0)
     {
       goto LABEL_75;
     }
 
-    v9 = *(a3 + 68);
+    v9 = *(equal + 68);
     if (self->_analyzingSuccessfulRetry)
     {
-      if ((*(a3 + 68) & 1) == 0)
+      if ((*(equal + 68) & 1) == 0)
       {
         goto LABEL_75;
       }
     }
 
-    else if (*(a3 + 68))
+    else if (*(equal + 68))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(a3 + 36) & 0x400) != 0)
+  else if ((*(equal + 36) & 0x400) != 0)
   {
     goto LABEL_75;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(a3 + 36) & 0x1000) != 0)
+    if ((*(equal + 36) & 0x1000) != 0)
     {
-      v10 = *(a3 + 70);
+      v10 = *(equal + 70);
       if (self->_wwanPreferred)
       {
-        if ((*(a3 + 70) & 1) == 0)
+        if ((*(equal + 70) & 1) == 0)
         {
           goto LABEL_75;
         }
       }
 
-      else if (*(a3 + 70))
+      else if (*(equal + 70))
       {
         goto LABEL_75;
       }
@@ -1064,7 +1064,7 @@ LABEL_75:
     return v5;
   }
 
-  if ((*(a3 + 36) & 0x1000) != 0)
+  if ((*(equal + 36) & 0x1000) != 0)
   {
     goto LABEL_75;
   }
@@ -1072,20 +1072,20 @@ LABEL_75:
 LABEL_18:
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(a3 + 36) & 0x200) == 0 || self->_sendBufferBytesRemaining != *(a3 + 16))
+    if ((*(equal + 36) & 0x200) == 0 || self->_sendBufferBytesRemaining != *(equal + 16))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(a3 + 36) & 0x200) != 0)
+  else if ((*(equal + 36) & 0x200) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_knownURLLoadDuration != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_knownURLLoadDuration != *(equal + 2))
     {
       goto LABEL_75;
     }
@@ -1098,7 +1098,7 @@ LABEL_18:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_siriURLLoadDuration != *(a3 + 4))
+    if ((v7 & 8) == 0 || self->_siriURLLoadDuration != *(equal + 4))
     {
       goto LABEL_75;
     }
@@ -1111,7 +1111,7 @@ LABEL_18:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_siriSaltURLLoadDuration != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_siriSaltURLLoadDuration != *(equal + 3))
     {
       goto LABEL_75;
     }
@@ -1124,7 +1124,7 @@ LABEL_18:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_gatewayStatus != *(a3 + 14))
+    if ((v7 & 0x80) == 0 || self->_gatewayStatus != *(equal + 14))
     {
       goto LABEL_75;
     }
@@ -1137,7 +1137,7 @@ LABEL_18:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_gatewayPingDuration != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_gatewayPingDuration != *(equal + 1))
     {
       goto LABEL_75;
     }
@@ -1150,7 +1150,7 @@ LABEL_18:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_gatewayPingsSent != *(a3 + 13))
+    if ((v7 & 0x40) == 0 || self->_gatewayPingsSent != *(equal + 13))
     {
       goto LABEL_75;
     }
@@ -1164,7 +1164,7 @@ LABEL_18:
   LOBYTE(v5) = (v7 & 0x20) == 0;
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_gatewayPingsDropped != *(a3 + 12))
+    if ((v7 & 0x20) == 0 || self->_gatewayPingsDropped != *(equal + 12))
     {
       goto LABEL_75;
     }
@@ -1356,14 +1356,14 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x10) != 0)
   {
-    self->_timestamp = *(a3 + 5);
+    self->_timestamp = *(from + 5);
     *&self->_has |= 0x10u;
-    v3 = *(a3 + 36);
+    v3 = *(from + 36);
     if ((v3 & 0x100) == 0)
     {
 LABEL_3:
@@ -1376,14 +1376,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 0x100) == 0)
+  else if ((*(from + 36) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_interface = *(a3 + 15);
+  self->_interface = *(from + 15);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x800) == 0)
   {
 LABEL_4:
@@ -1396,9 +1396,9 @@ LABEL_4:
   }
 
 LABEL_17:
-  self->_isUserRequest = *(a3 + 69);
+  self->_isUserRequest = *(from + 69);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x400) == 0)
   {
 LABEL_5:
@@ -1411,9 +1411,9 @@ LABEL_5:
   }
 
 LABEL_18:
-  self->_analyzingSuccessfulRetry = *(a3 + 68);
+  self->_analyzingSuccessfulRetry = *(from + 68);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_6:
@@ -1426,9 +1426,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_wwanPreferred = *(a3 + 70);
+  self->_wwanPreferred = *(from + 70);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x200) == 0)
   {
 LABEL_7:
@@ -1441,9 +1441,9 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_sendBufferBytesRemaining = *(a3 + 16);
+  self->_sendBufferBytesRemaining = *(from + 16);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 2) == 0)
   {
 LABEL_8:
@@ -1456,9 +1456,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_knownURLLoadDuration = *(a3 + 2);
+  self->_knownURLLoadDuration = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 8) == 0)
   {
 LABEL_9:
@@ -1471,9 +1471,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_siriURLLoadDuration = *(a3 + 4);
+  self->_siriURLLoadDuration = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 4) == 0)
   {
 LABEL_10:
@@ -1486,9 +1486,9 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_siriSaltURLLoadDuration = *(a3 + 3);
+  self->_siriSaltURLLoadDuration = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x80) == 0)
   {
 LABEL_11:
@@ -1501,9 +1501,9 @@ LABEL_11:
   }
 
 LABEL_24:
-  self->_gatewayStatus = *(a3 + 14);
+  self->_gatewayStatus = *(from + 14);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 1) == 0)
   {
 LABEL_12:
@@ -1516,9 +1516,9 @@ LABEL_12:
   }
 
 LABEL_25:
-  self->_gatewayPingDuration = *(a3 + 1);
+  self->_gatewayPingDuration = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x40) == 0)
   {
 LABEL_13:
@@ -1528,15 +1528,15 @@ LABEL_13:
     }
 
 LABEL_27:
-    self->_gatewayPingsDropped = *(a3 + 12);
+    self->_gatewayPingsDropped = *(from + 12);
     *&self->_has |= 0x20u;
     return;
   }
 
 LABEL_26:
-  self->_gatewayPingsSent = *(a3 + 13);
+  self->_gatewayPingsSent = *(from + 13);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 36) & 0x20) != 0)
+  if ((*(from + 36) & 0x20) != 0)
   {
     goto LABEL_27;
   }

@@ -7,26 +7,26 @@
 - (void)animateStatusBarFromLockToHome
 {
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 coverSheetViewController];
-  v5 = [v4 _sbWindowScene];
+  coverSheetViewController = [v3 coverSheetViewController];
+  _sbWindowScene = [coverSheetViewController _sbWindowScene];
 
-  v6 = [v5 statusBarManager];
-  v7 = [v6 assertionManager];
+  statusBarManager = [_sbWindowScene statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
   if (SBReduceMotion())
   {
-    v8 = [v5 statusBarManager];
-    [v8 updateHomeScreenStatusBarLegibility];
+    statusBarManager2 = [_sbWindowScene statusBarManager];
+    [statusBarManager2 updateHomeScreenStatusBarLegibility];
 
     [v3 updateSpringBoardStatusBarForLockScreenTeardown];
-    if ([v6 isStatusBarEffectivelyHidden])
+    if ([statusBarManager isStatusBarEffectivelyHidden])
     {
       v16 = MEMORY[0x277CF0D38];
-      v9 = [MEMORY[0x277D661A0] rootSettings];
-      v10 = [v9 iconAnimationSettings];
-      v11 = [v10 reducedMotionSettings];
-      v12 = [v11 centralAnimationSettings];
-      v13 = [v12 BSAnimationSettings];
-      v17 = [v16 factoryWithSettings:v13];
+      rootSettings = [MEMORY[0x277D661A0] rootSettings];
+      iconAnimationSettings = [rootSettings iconAnimationSettings];
+      reducedMotionSettings = [iconAnimationSettings reducedMotionSettings];
+      centralAnimationSettings = [reducedMotionSettings centralAnimationSettings];
+      bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
+      v17 = [v16 factoryWithSettings:bSAnimationSettings];
 
       v14 = MEMORY[0x277CF0D38];
       v31[0] = MEMORY[0x277D85DD0];
@@ -34,7 +34,7 @@
       v31[2] = __62__SBLockToAppStatusBarAnimator_animateStatusBarFromLockToHome__block_invoke;
       v31[3] = &unk_2783A92D8;
       v31[4] = self;
-      v32 = v7;
+      v32 = assertionManager;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __62__SBLockToAppStatusBarAnimator_animateStatusBarFromLockToHome__block_invoke_2;
@@ -58,15 +58,15 @@
     v24[2] = __62__SBLockToAppStatusBarAnimator_animateStatusBarFromLockToHome__block_invoke_21;
     v24[3] = &unk_2783AB258;
     v27 = v28;
-    v25 = v7;
-    v26 = self;
+    v25 = assertionManager;
+    selfCopy = self;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__SBLockToAppStatusBarAnimator_animateStatusBarFromLockToHome__block_invoke_2_26;
     v18[3] = &unk_2783BE978;
-    v19 = v5;
+    v19 = _sbWindowScene;
     v20 = v3;
-    v21 = self;
+    selfCopy2 = self;
     v22 = v28;
     v23 = 0x3FD0000000000000;
     [v15 animateWithDuration:v24 animations:v18 completion:0.25];

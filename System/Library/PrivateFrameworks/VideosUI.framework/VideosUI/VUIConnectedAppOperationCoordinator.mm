@@ -1,10 +1,10 @@
 @interface VUIConnectedAppOperationCoordinator
 - (BOOL)isCurrentlyPrompting;
-- (BOOL)isReloadingForID:(id)a3;
+- (BOOL)isReloadingForID:(id)d;
 - (VUIConnectedAppOperationCoordinator)init;
-- (id)specifierToggleValueForID:(id)a3;
-- (void)clearOperationForID:(id)a3;
-- (void)setOperationForID:(id)a3 operationType:(int64_t)a4;
+- (id)specifierToggleValueForID:(id)d;
+- (void)clearOperationForID:(id)d;
+- (void)setOperationForID:(id)d operationType:(int64_t)type;
 @end
 
 @implementation VUIConnectedAppOperationCoordinator
@@ -24,43 +24,43 @@
   return v2;
 }
 
-- (void)setOperationForID:(id)a3 operationType:(int64_t)a4
+- (void)setOperationForID:(id)d operationType:(int64_t)type
 {
-  v8 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableDictionary *)v6->_activeOperations setObject:v7 forKeyedSubscript:v8];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [(NSMutableDictionary *)selfCopy->_activeOperations setObject:v7 forKeyedSubscript:dCopy];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)clearOperationForID:(id)a3
+- (void)clearOperationForID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_activeOperations removeObjectForKey:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_activeOperations removeObjectForKey:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)specifierToggleValueForID:(id)a3
+- (id)specifierToggleValueForID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_activeOperations objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_activeOperations objectForKeyedSubscript:dCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v9 = &unk_1F5E5DB78;
-    if ((v8 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+    if ((integerValue & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
       v9 = 0;
     }
 
-    if ((v8 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    if ((integerValue & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
       v9 = &unk_1F5E5DB60;
     }
@@ -73,17 +73,17 @@
     v10 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (BOOL)isReloadingForID:(id)a3
+- (BOOL)isReloadingForID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_activeOperations objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_activeOperations objectForKeyedSubscript:dCopy];
   v7 = v6;
   if (v6)
   {
@@ -95,21 +95,21 @@
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
 - (BOOL)isCurrentlyPrompting
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)v2->_activeOperations allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)selfCopy->_activeOperations allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -119,7 +119,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) integerValue] <= 1)
@@ -129,7 +129,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -141,7 +141,7 @@
 
 LABEL_11:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 

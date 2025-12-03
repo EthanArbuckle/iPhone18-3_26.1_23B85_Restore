@@ -1,9 +1,9 @@
 @interface PKLinkedAppContentView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKLinkedAppContentView)initWithCoder:(id)a3;
-- (PKLinkedAppContentView)initWithFrame:(CGRect)a3;
-- (PKLinkedAppContentView)initWithLinkedApplication:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKLinkedAppContentView)initWithCoder:(id)coder;
+- (PKLinkedAppContentView)initWithFrame:(CGRect)frame;
+- (PKLinkedAppContentView)initWithLinkedApplication:(id)application;
 - (PKLinkedAppViewDelegate)delegate;
 - (id)_presentingViewController;
 - (void)_cleanupViews;
@@ -15,45 +15,45 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)linkedApplicationDidChangeState:(id)a3;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidFinishRequest:(id)a3;
-- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)a3;
-- (void)setLoadingText:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidFinishRequest:(id)request;
+- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)size;
+- (void)setLoadingText:(id)text;
 @end
 
 @implementation PKLinkedAppContentView
 
-- (PKLinkedAppContentView)initWithCoder:(id)a3
+- (PKLinkedAppContentView)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This class is not NSCoding compliant"];
 
   return [(PKLinkedAppContentView *)self init];
 }
 
-- (PKLinkedAppContentView)initWithFrame:(CGRect)a3
+- (PKLinkedAppContentView)initWithFrame:(CGRect)frame
 {
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"This class is not NSCoding compliant", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"This class is not NSCoding compliant", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
 
   return [(PKLinkedAppContentView *)self init];
 }
 
-- (PKLinkedAppContentView)initWithLinkedApplication:(id)a3
+- (PKLinkedAppContentView)initWithLinkedApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v11.receiver = self;
   v11.super_class = PKLinkedAppContentView;
   v5 = [(PKLinkedAppContentView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v6 = v4;
-    if (!v4)
+    v6 = applicationCopy;
+    if (!applicationCopy)
     {
       v6 = [[PKLinkedApplication alloc] initWithStoreIDs:0 defaultLaunchURL:0];
     }
 
     objc_storeStrong(&v5->_linkedApplication, v6);
-    if (!v4)
+    if (!applicationCopy)
     {
     }
 
@@ -86,9 +86,9 @@
   v4.receiver = self;
   v4.super_class = PKLinkedAppContentView;
   [(PKLinkedAppContentView *)&v4 didMoveToWindow];
-  v3 = [(PKLinkedAppContentView *)self window];
+  window = [(PKLinkedAppContentView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PKLinkedApplication *)self->_linkedApplication reloadApplicationStateIfNecessary];
   }
@@ -102,10 +102,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(ASCLockupView *)self->_lockupView sizeThatFits:a3.width + -28.0, 1.79769313e308];
+  width = fits.width;
+  [(ASCLockupView *)self->_lockupView sizeThatFits:fits.width + -28.0, 1.79769313e308];
   v5 = v4 + 24.0;
   v6 = width;
   result.height = v5;
@@ -118,8 +118,8 @@
   v4.receiver = self;
   v4.super_class = PKLinkedAppContentView;
   [(PKLinkedAppContentView *)&v4 layoutSubviews];
-  v3 = [(PKLinkedApplication *)self->_linkedApplication state];
-  switch(v3)
+  state = [(PKLinkedApplication *)self->_linkedApplication state];
+  switch(state)
   {
     case 2:
       [(PKLinkedAppContentView *)self _layoutNotAvailableView];
@@ -243,13 +243,13 @@
 
 - (void)_configureAppLockUpIfNecessary
 {
-  v3 = [(PKLinkedApplication *)self->_linkedApplication isInstalled];
-  v4 = v3;
-  v5 = !v3;
+  isInstalled = [(PKLinkedApplication *)self->_linkedApplication isInstalled];
+  v4 = isInstalled;
+  v5 = !isInstalled;
   wasInstalledWhenLastConfigured = self->_wasInstalledWhenLastConfigured;
-  v7 = [(ASCLockupView *)self->_lockupView request];
+  request = [(ASCLockupView *)self->_lockupView request];
 
-  if (v7)
+  if (request)
   {
     v8 = wasInstalledWhenLastConfigured == v5;
   }
@@ -264,16 +264,16 @@
     self->_wasInstalledWhenLastConfigured = v4;
     [(ASCLockupView *)self->_lockupView setLockup:0];
     [(ASCLockupView *)self->_lockupView setRequest:0];
-    v9 = [(PKLinkedApplication *)self->_linkedApplication storeIdentifier];
-    v10 = v9;
-    if (v9)
+    storeIdentifier = [(PKLinkedApplication *)self->_linkedApplication storeIdentifier];
+    v10 = storeIdentifier;
+    if (storeIdentifier)
     {
-      v11 = _PKCreateASCLookupRequestForStoreID(v9, 0);
+      v11 = _PKCreateASCLookupRequestForStoreID(storeIdentifier, 0);
       [(ASCLockupView *)self->_lockupView setRequest:v11];
     }
 
-    v12 = [(PKLinkedApplication *)self->_linkedApplication systemAppBundleIdentifiers];
-    v13 = [v12 firstObject];
+    systemAppBundleIdentifiers = [(PKLinkedApplication *)self->_linkedApplication systemAppBundleIdentifiers];
+    firstObject = [systemAppBundleIdentifiers firstObject];
 
     if (v10)
     {
@@ -282,7 +282,7 @@
 
     else
     {
-      v14 = v13 == 0;
+      v14 = firstObject == 0;
     }
 
     if (!v14)
@@ -294,7 +294,7 @@
       v17[2] = __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invoke;
       v17[3] = &unk_1E8020A38;
       v17[4] = self;
-      [v15 _lockupRequestForBundleID:v13 withContext:v16 completionBlock:v17];
+      [v15 _lockupRequestForBundleID:firstObject withContext:v16 completionBlock:v17];
     }
   }
 }
@@ -309,11 +309,11 @@ uint64_t __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invo
   return result;
 }
 
-- (void)setLoadingText:(id)a3
+- (void)setLoadingText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   loadingLabel = self->_loadingLabel;
-  v13 = v4;
+  v13 = textCopy;
   if (!loadingLabel)
   {
     v6 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -327,26 +327,26 @@ uint64_t __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invo
 
     [(UILabel *)self->_loadingLabel setNumberOfLines:3];
     v11 = self->_loadingLabel;
-    v12 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UILabel *)v11 setTextColor:v12];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UILabel *)v11 setTextColor:tertiaryLabelColor];
 
-    v4 = v13;
+    textCopy = v13;
     loadingLabel = self->_loadingLabel;
   }
 
-  [(UILabel *)loadingLabel setText:v4];
+  [(UILabel *)loadingLabel setText:textCopy];
   [(UILabel *)self->_loadingLabel sizeToFit];
 }
 
 - (void)appLockupViewTapped
 {
-  v3 = [(PKLinkedApplication *)self->_linkedApplication customProductPageIdentifier];
+  customProductPageIdentifier = [(PKLinkedApplication *)self->_linkedApplication customProductPageIdentifier];
 
-  if (v3)
+  if (customProductPageIdentifier)
   {
     linkedApplication = self->_linkedApplication;
-    v6 = [(PKLinkedAppContentView *)self _presentingViewController];
-    [(PKLinkedApplication *)linkedApplication openApplication:v6];
+    _presentingViewController = [(PKLinkedAppContentView *)self _presentingViewController];
+    [(PKLinkedApplication *)linkedApplication openApplication:_presentingViewController];
   }
 
   else
@@ -357,16 +357,16 @@ uint64_t __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invo
   }
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
-  v5 = a3;
-  if (![v5 state])
+  stateCopy = state;
+  if (![stateCopy state])
   {
-    v4 = [(PKLinkedAppContentView *)self window];
+    window = [(PKLinkedAppContentView *)self window];
 
-    if (v4)
+    if (window)
     {
-      [v5 reloadApplicationStateIfNecessary];
+      [stateCopy reloadApplicationStateIfNecessary];
     }
   }
 
@@ -377,25 +377,25 @@ uint64_t __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invo
 
 - (id)_presentingViewController
 {
-  v2 = [(UIView *)self pkui_viewControllerFromResponderChain];
-  v3 = [v2 pkui_frontMostViewController];
+  pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
+  pkui_frontMostViewController = [pkui_viewControllerFromResponderChain pkui_frontMostViewController];
 
-  return v3;
+  return pkui_frontMostViewController;
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = a4;
+    errorCopy = error;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKLinkedApplication: failed to load app with error: %@", &v6, 0xCu);
   }
 }
 
-- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)a3
+- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)size
 {
   if ([(PKLinkedApplication *)self->_linkedApplication state]== 1)
   {
@@ -413,24 +413,24 @@ uint64_t __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invo
   }
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  if (self->_lockupView == v4)
+  requestCopy = request;
+  if (self->_lockupView == requestCopy)
   {
-    v5 = [(PKLinkedApplication *)self->_linkedApplication defaultLaunchURL];
-    if (!v5 || ![(PKLinkedApplication *)self->_linkedApplication isInstalled])
+    defaultLaunchURL = [(PKLinkedApplication *)self->_linkedApplication defaultLaunchURL];
+    if (!defaultLaunchURL || ![(PKLinkedApplication *)self->_linkedApplication isInstalled])
     {
       goto LABEL_6;
     }
 
-    v6 = [(PKLinkedApplication *)self->_linkedApplication state];
+    state = [(PKLinkedApplication *)self->_linkedApplication state];
 
-    if (v6 == 1)
+    if (state == 1)
     {
       v7 = MEMORY[0x1E698B3E0];
       v8 = PKLocalizedString(&cfstr_OpenButton.isa);
-      v5 = [v7 textMetadataWithTitle:v8 subtitle:0];
+      defaultLaunchURL = [v7 textMetadataWithTitle:v8 subtitle:0];
 
       objc_initWeak(&location, self);
       v9 = objc_alloc(MEMORY[0x1E698B3A8]);
@@ -439,10 +439,10 @@ uint64_t __56__PKLinkedAppContentView__configureAppLockUpIfNecessary__block_invo
       v15 = __53__PKLinkedAppContentView_lockupViewDidFinishRequest___block_invoke;
       v16 = &unk_1E8010998;
       objc_copyWeak(&v17, &location);
-      v10 = [v9 initWithMetadata:v5 action:&v13];
-      v11 = [(ASCLockupView *)v4 lockup:v13];
+      v10 = [v9 initWithMetadata:defaultLaunchURL action:&v13];
+      v11 = [(ASCLockupView *)requestCopy lockup:v13];
       v12 = [v11 lockupWithOffer:v10];
-      [(ASCLockupView *)v4 setLockup:v12];
+      [(ASCLockupView *)requestCopy setLockup:v12];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);

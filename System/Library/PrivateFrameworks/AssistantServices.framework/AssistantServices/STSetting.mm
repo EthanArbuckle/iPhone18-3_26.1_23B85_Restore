@@ -7,8 +7,8 @@
 - (id)_ad_aceSettingBooleanEntityRepresentation
 {
   v3 = objc_alloc_init(SASettingBooleanEntity);
-  v4 = [(STSetting *)self value];
-  [v3 setValue:{objc_msgSend(v4, "BOOLValue")}];
+  value = [(STSetting *)self value];
+  [v3 setValue:{objc_msgSend(value, "BOOLValue")}];
 
   return v3;
 }

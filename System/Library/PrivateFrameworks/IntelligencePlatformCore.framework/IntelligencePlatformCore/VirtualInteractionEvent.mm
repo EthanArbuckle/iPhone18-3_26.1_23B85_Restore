@@ -1,18 +1,18 @@
 @interface VirtualInteractionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 - (id)serialize;
 @end
 
 @implementation VirtualInteractionEvent
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = sub_1C4EF9A68();
   v8 = v7;
 
   swift_getObjCClassMetadata();
-  v9 = sub_1C4D36008(v6, v8, a4);
+  v9 = sub_1C4D36008(v6, v8, version);
   sub_1C4434000(v6, v8);
 
   return v9;
@@ -20,7 +20,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C4D36370();
   v5 = v4;
 

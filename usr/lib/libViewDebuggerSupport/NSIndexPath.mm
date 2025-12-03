@@ -1,13 +1,13 @@
 @interface NSIndexPath
-+ (NSIndexPath)indexPathWithDebugHierarchyValue:(id)a3;
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4;
++ (NSIndexPath)indexPathWithDebugHierarchyValue:(id)value;
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation NSIndexPath
 
-+ (NSIndexPath)indexPathWithDebugHierarchyValue:(id)a3
++ (NSIndexPath)indexPathWithDebugHierarchyValue:(id)value
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
+  v4 = [value componentsSeparatedByString:@"."];
   v5 = [v4 count];
   v6 = malloc_type_malloc(8 * v5, 0x100004000313F17uLL);
   if (v5)
@@ -19,13 +19,13 @@
     }
   }
 
-  v9 = [a1 indexPathWithIndexes:v6 length:v5];
+  v9 = [self indexPathWithIndexes:v6 length:v5];
   free(v6);
 
   return v9;
 }
 
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error
 {
   v6 = objc_opt_class();
   if (!v6 || (v7 = v6, !object_isClass(v6)))
@@ -53,7 +53,7 @@ LABEL_7:
   v19[0] = @"public.plain-text";
   v19[1] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
-  *a3 = v13;
+  *options = v13;
   v14 = [NSString stringWithFormat:@"%lu", [(NSIndexPath *)self indexAtPosition:0]];
   if ([(NSIndexPath *)self length]< 2)
   {

@@ -1,13 +1,13 @@
 @interface FigaroSummaryCell
-- (_TtC5JSApp17FigaroSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5JSApp17FigaroSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation FigaroSummaryCell
 
-- (_TtC5JSApp17FigaroSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5JSApp17FigaroSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_843AC();
   }
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_788D8();
 }
 

@@ -1,15 +1,15 @@
 @interface SBSceneHandleActiveAppearanceAssertion
-- (SBSceneHandleActiveAppearanceAssertion)initWithReason:(id)a3 activeAppearance:(int64_t)a4 priority:(int64_t)a5 invalidationBlock:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBSceneHandleActiveAppearanceAssertion)initWithReason:(id)reason activeAppearance:(int64_t)appearance priority:(int64_t)priority invalidationBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBSceneHandleActiveAppearanceAssertion
 
-- (SBSceneHandleActiveAppearanceAssertion)initWithReason:(id)a3 activeAppearance:(int64_t)a4 priority:(int64_t)a5 invalidationBlock:(id)a6
+- (SBSceneHandleActiveAppearanceAssertion)initWithReason:(id)reason activeAppearance:(int64_t)appearance priority:(int64_t)priority invalidationBlock:(id)block
 {
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  reasonCopy = reason;
+  blockCopy = block;
+  if (!reasonCopy)
   {
     [SBSceneHandleActiveAppearanceAssertion initWithReason:a2 activeAppearance:self priority:? invalidationBlock:?];
   }
@@ -20,16 +20,16 @@
   v19[1] = 3221225472;
   v19[2] = __101__SBSceneHandleActiveAppearanceAssertion_initWithReason_activeAppearance_priority_invalidationBlock___block_invoke;
   v19[3] = &unk_2783A8A70;
-  v20 = v12;
+  v20 = blockCopy;
   v18.receiver = self;
   v18.super_class = SBSceneHandleActiveAppearanceAssertion;
-  v15 = v12;
-  v16 = [(BSSimpleAssertion *)&v18 initWithIdentifier:v14 forReason:v11 invalidationBlock:v19];
+  v15 = blockCopy;
+  v16 = [(BSSimpleAssertion *)&v18 initWithIdentifier:v14 forReason:reasonCopy invalidationBlock:v19];
 
   if (v16)
   {
-    v16->_activeAppearance = a4;
-    v16->_priority = a5;
+    v16->_activeAppearance = appearance;
+    v16->_priority = priority;
   }
 
   return v16;
@@ -72,11 +72,11 @@ void __101__SBSceneHandleActiveAppearanceAssertion_initWithReason_activeAppearan
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v8.receiver = self;
   v8.super_class = SBSceneHandleActiveAppearanceAssertion;
-  v4 = [(BSSimpleAssertion *)&v8 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BSSimpleAssertion *)&v8 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = NSStringFromUIUserInterfaceActiveAppearance([(SBSceneHandleActiveAppearanceAssertion *)self activeAppearance]);
   [v4 appendString:v5 withName:@"activeAppearance"];
 

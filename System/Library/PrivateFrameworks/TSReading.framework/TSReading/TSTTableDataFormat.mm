@@ -1,12 +1,12 @@
 @interface TSTTableDataFormat
-- (BOOL)isEqual:(id)a3;
-- (id)initObjectWithFormat:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)initObjectWithFormat:(id *)format;
 - (void)dealloc;
 @end
 
 @implementation TSTTableDataFormat
 
-- (id)initObjectWithFormat:(id *)a3
+- (id)initObjectWithFormat:(id *)format
 {
   v9.receiver = self;
   v9.super_class = TSTTableDataFormat;
@@ -14,9 +14,9 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *(&a3->var1.var7 + 3);
-    v7 = *&a3->var1.var7.var2;
-    *&v4->mFormat.mFormatType = *&a3->var0;
+    v6 = *(&format->var1.var7 + 3);
+    v7 = *&format->var1.var7.var2;
+    *&v4->mFormat.mFormatType = *&format->var0;
     *&v4->mFormat.var0.mMultipleChoiceListFormatStruct.mData = v7;
     *(&v4->mFormat.var0.mMultipleChoiceListFormatStruct + 3) = v6;
     TSUFormatStructRetain();
@@ -26,7 +26,7 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -36,16 +36,16 @@
 
   p_mFormat = &self->mFormat;
   mFormatType = self->mFormat.mFormatType;
-  v7 = a3 + 16;
-  if (mFormatType != *(a3 + 4))
+  v7 = equal + 16;
+  if (mFormatType != *(equal + 4))
   {
     goto LABEL_60;
   }
 
   mMinimum = self->mFormat.var0.mControlFormatStruct.mMinimum;
   mMaximum = self->mFormat.var0.mControlFormatStruct.mMaximum;
-  v10 = *(a3 + 3);
-  v11 = *(a3 + 4);
+  v10 = *(equal + 3);
+  v11 = *(equal + 4);
   v12 = LOWORD(mMaximum);
   v13 = *(v7 + 2);
   mCurrencyCode = p_mFormat->var0.mNumberFormatStruct.mCurrencyCode;
@@ -183,9 +183,9 @@ LABEL_30:
     }
 
 LABEL_41:
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"BOOL TSUEqualFormatStructs(TSUFormatStruct, TSUFormatStruct)"}];
-    [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Binaries/AlderShared/install/Root/usr/local/include/TSFrameworks/TSUtility/TSUFormatUtilities.h"), 191, @"We should have dealt with any types earlier."}];
+    [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Binaries/AlderShared/install/Root/usr/local/include/TSFrameworks/TSUtility/TSUFormatUtilities.h"), 191, @"We should have dealt with any types earlier."}];
     goto LABEL_60;
   }
 

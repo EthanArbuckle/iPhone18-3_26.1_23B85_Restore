@@ -1,13 +1,13 @@
 @interface MDBackgroundTaskRunner
-- (id)initTaskWithIdentifier:(id)a3;
-- (void)registerTaskWithIdentifier:(id)a3;
+- (id)initTaskWithIdentifier:(id)identifier;
+- (void)registerTaskWithIdentifier:(id)identifier;
 @end
 
 @implementation MDBackgroundTaskRunner
 
-- (id)initTaskWithIdentifier:(id)a3
+- (id)initTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MDBackgroundTaskRunner;
   v5 = [(MDBackgroundTaskRunner *)&v12 init];
@@ -22,15 +22,15 @@
     backgroundTasks = v5->_backgroundTasks;
     v5->_backgroundTasks = v9;
 
-    [(MDBackgroundTaskRunner *)v5 registerTaskWithIdentifier:v4];
+    [(MDBackgroundTaskRunner *)v5 registerTaskWithIdentifier:identifierCopy];
   }
 
   return v5;
 }
 
-- (void)registerTaskWithIdentifier:(id)a3
+- (void)registerTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[BGSystemTaskScheduler sharedScheduler];
   taskQueue = self->_taskQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -38,7 +38,7 @@
   v7[2] = sub_100019AFC;
   v7[3] = &unk_10003D3D8;
   v7[4] = self;
-  [v5 registerForTaskWithIdentifier:v4 usingQueue:taskQueue launchHandler:v7];
+  [v5 registerForTaskWithIdentifier:identifierCopy usingQueue:taskQueue launchHandler:v7];
 }
 
 @end

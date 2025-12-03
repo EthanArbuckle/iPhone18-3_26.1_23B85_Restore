@@ -1,17 +1,17 @@
 @interface NIServerCryptoSession
-- (NIServerCryptoSession)initWithKeyDerivationKey:(id)a3 sessionIdentifier:(id)a4 encrypt:(BOOL)a5;
-- (id)_deriveSessionKeyFromKeyDerivationKey:(id)a3 sessionIdentifier:(id)a4;
-- (id)decrypt:(id)a3;
-- (id)encrypt:(id)a3;
+- (NIServerCryptoSession)initWithKeyDerivationKey:(id)key sessionIdentifier:(id)identifier encrypt:(BOOL)encrypt;
+- (id)_deriveSessionKeyFromKeyDerivationKey:(id)key sessionIdentifier:(id)identifier;
+- (id)decrypt:(id)decrypt;
+- (id)encrypt:(id)encrypt;
 @end
 
 @implementation NIServerCryptoSession
 
-- (NIServerCryptoSession)initWithKeyDerivationKey:(id)a3 sessionIdentifier:(id)a4 encrypt:(BOOL)a5
+- (NIServerCryptoSession)initWithKeyDerivationKey:(id)key sessionIdentifier:(id)identifier encrypt:(BOOL)encrypt
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  encryptCopy = encrypt;
+  keyCopy = key;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = NIServerCryptoSession;
   v11 = [(NIServerCryptoSession *)&v23 init];
@@ -20,25 +20,25 @@
     goto LABEL_18;
   }
 
-  if ([v9 length])
+  if ([keyCopy length])
   {
-    if ([v10 length])
+    if ([identifierCopy length])
     {
-      objc_storeStrong(&v11->_keyDerivationKey, a3);
-      objc_storeStrong(&v11->_sessionIdentifier, a4);
+      objc_storeStrong(&v11->_keyDerivationKey, key);
+      objc_storeStrong(&v11->_sessionIdentifier, identifier);
       sessionIdentifier = v11->_sessionIdentifier;
       v13 = CUPrintNSObjectMasked();
       logIdentifier = v11->_logIdentifier;
       v11->_logIdentifier = v13;
 
-      v11->_encrypt = v5;
-      v15 = [(NIServerCryptoSession *)v11 _deriveSessionKeyFromKeyDerivationKey:v9 sessionIdentifier:v10];
+      v11->_encrypt = encryptCopy;
+      v15 = [(NIServerCryptoSession *)v11 _deriveSessionKeyFromKeyDerivationKey:keyCopy sessionIdentifier:identifierCopy];
       sessionKey = v11->_sessionKey;
       v11->_sessionKey = v15;
 
       if (v11->_sessionKey)
       {
-        if (v5)
+        if (encryptCopy)
         {
           v11->_nonce = arc4random_uniform(0xFFFF0000);
           v17 = qword_1009F9820;
@@ -95,9 +95,9 @@ LABEL_19:
   return v20;
 }
 
-- (id)encrypt:(id)a3
+- (id)encrypt:(id)encrypt
 {
-  v4 = a3;
+  encryptCopy = encrypt;
   if (!self->_encrypt)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -147,7 +147,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  [v4 length];
+  [encryptCopy length];
   if (CCCryptorAddParameter())
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -200,15 +200,15 @@ LABEL_23:
 
   else
   {
-    OutputLength = CCCryptorGetOutputLength(cryptorRef, [v4 length], 0);
+    OutputLength = CCCryptorGetOutputLength(cryptorRef, [encryptCopy length], 0);
     LOBYTE(__p) = 0;
     sub_100025100(&v24, OutputLength);
     dataOutMoved = 0;
     v13 = cryptorRef;
-    v14 = v4;
-    v15 = [v4 bytes];
-    v16 = [v4 length];
-    if (CCCryptorUpdate(v13, v15, v16, v24, v25 - v24, &dataOutMoved))
+    v14 = encryptCopy;
+    bytes = [encryptCopy bytes];
+    v16 = [encryptCopy length];
+    if (CCCryptorUpdate(v13, bytes, v16, v24, v25 - v24, &dataOutMoved))
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -305,10 +305,10 @@ LABEL_24:
   return v9;
 }
 
-- (id)decrypt:(id)a3
+- (id)decrypt:(id)decrypt
 {
-  v4 = a3;
-  v5 = v4;
+  decryptCopy = decrypt;
+  v5 = decryptCopy;
   if (self->_encrypt)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -322,7 +322,7 @@ LABEL_15:
   }
 
   v31 = 0;
-  if (![v4 length])
+  if (![decryptCopy length])
   {
     v7 = qword_1009F9820;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -608,12 +608,12 @@ LABEL_16:
   return v8;
 }
 
-- (id)_deriveSessionKeyFromKeyDerivationKey:(id)a3 sessionIdentifier:(id)a4
+- (id)_deriveSessionKeyFromKeyDerivationKey:(id)key sessionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 bytes];
-  [v7 length];
+  keyCopy = key;
+  identifierCopy = identifier;
+  [identifierCopy bytes];
+  [identifierCopy length];
   Hkdf = CCKDFParametersCreateHkdf();
   v9 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))

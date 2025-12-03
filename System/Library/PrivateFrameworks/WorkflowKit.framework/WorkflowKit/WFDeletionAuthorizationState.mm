@@ -1,18 +1,18 @@
 @interface WFDeletionAuthorizationState
-+ (id)deniedPermissionsErrorForContentItemClass:(Class)a3;
-+ (id)dontDeleteErrorForContentItemClass:(Class)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (id)stateFromDatabaseData:(id)a3;
++ (id)deniedPermissionsErrorForContentItemClass:(Class)class;
++ (id)dontDeleteErrorForContentItemClass:(Class)class;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (id)stateFromDatabaseData:(id)data;
 - (NSString)description;
-- (WFDeletionAuthorizationState)initWithCoder:(id)a3;
-- (WFDeletionAuthorizationState)initWithStatus:(id)a3 contentItemClassName:(id)a4 actionUUID:(id)a5 count:(unint64_t)a6;
-- (WFDeletionAuthorizationState)stateWithStatus:(id)a3 count:(unint64_t)a4;
-- (id)databaseDataWithError:(id *)a3;
+- (WFDeletionAuthorizationState)initWithCoder:(id)coder;
+- (WFDeletionAuthorizationState)initWithStatus:(id)status contentItemClassName:(id)name actionUUID:(id)d count:(unint64_t)count;
+- (WFDeletionAuthorizationState)stateWithStatus:(id)status count:(unint64_t)count;
+- (id)databaseDataWithError:(id *)error;
 - (id)deniedPermissionsError;
 - (id)localizedExfiltrationRestrictedError;
 - (id)siriActionToolDescription;
 - (id)wfSerializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFDeletionAuthorizationState
@@ -41,13 +41,13 @@
   return v6;
 }
 
-- (WFDeletionAuthorizationState)initWithCoder:(id)a3
+- (WFDeletionAuthorizationState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentItemClassName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
-  v8 = [v4 decodeIntegerForKey:@"count"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentItemClassName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionUUID"];
+  v8 = [coderCopy decodeIntegerForKey:@"count"];
 
   if (v6)
   {
@@ -61,45 +61,45 @@
 
   if (v9 || v8 == 0)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(WFDeletionAuthorizationState *)self initWithStatus:v5 contentItemClassName:v6 actionUUID:v7 count:v8];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(WFDeletionAuthorizationState *)self status];
-  [v7 encodeObject:v4 forKey:@"status"];
+  coderCopy = coder;
+  status = [(WFDeletionAuthorizationState *)self status];
+  [coderCopy encodeObject:status forKey:@"status"];
 
-  v5 = [(WFDeletionAuthorizationState *)self contentItemClassName];
-  [v7 encodeObject:v5 forKey:@"contentItemClassName"];
+  contentItemClassName = [(WFDeletionAuthorizationState *)self contentItemClassName];
+  [coderCopy encodeObject:contentItemClassName forKey:@"contentItemClassName"];
 
-  v6 = [(WFDeletionAuthorizationState *)self actionUUID];
-  [v7 encodeObject:v6 forKey:@"actionUUID"];
+  actionUUID = [(WFDeletionAuthorizationState *)self actionUUID];
+  [coderCopy encodeObject:actionUUID forKey:@"actionUUID"];
 
-  [v7 encodeInteger:-[WFDeletionAuthorizationState count](self forKey:{"count"), @"count"}];
+  [coderCopy encodeInteger:-[WFDeletionAuthorizationState count](self forKey:{"count"), @"count"}];
 }
 
 - (id)wfSerializedRepresentation
 {
   v11[5] = *MEMORY[0x1E69E9840];
   v10[0] = @"ActionUUID";
-  v3 = [(WFDeletionAuthorizationState *)self actionUUID];
-  v11[0] = v3;
+  actionUUID = [(WFDeletionAuthorizationState *)self actionUUID];
+  v11[0] = actionUUID;
   v10[1] = @"Status";
-  v4 = [(WFDeletionAuthorizationState *)self status];
-  v11[1] = v4;
+  status = [(WFDeletionAuthorizationState *)self status];
+  v11[1] = status;
   v10[2] = @"ContentItemClassName";
-  v5 = [(WFDeletionAuthorizationState *)self contentItemClassName];
-  v11[2] = v5;
+  contentItemClassName = [(WFDeletionAuthorizationState *)self contentItemClassName];
+  v11[2] = contentItemClassName;
   v10[3] = @"Count";
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFDeletionAuthorizationState count](self, "count")}];
   v10[4] = @"DataType";
@@ -112,11 +112,11 @@
   return v7;
 }
 
-- (id)databaseDataWithError:(id *)a3
+- (id)databaseDataWithError:(id *)error
 {
   v4 = MEMORY[0x1E696AE40];
-  v5 = [(WFDeletionAuthorizationState *)self wfSerializedRepresentation];
-  v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:a3];
+  wfSerializedRepresentation = [(WFDeletionAuthorizationState *)self wfSerializedRepresentation];
+  v6 = [v4 dataWithPropertyList:wfSerializedRepresentation format:200 options:0 error:error];
 
   return v6;
 }
@@ -124,8 +124,8 @@
 - (id)deniedPermissionsError
 {
   v3 = objc_opt_class();
-  v4 = [(WFDeletionAuthorizationState *)self contentItemClassName];
-  v5 = [v3 deniedPermissionsErrorForContentItemClass:NSClassFromString(v4)];
+  contentItemClassName = [(WFDeletionAuthorizationState *)self contentItemClassName];
+  v5 = [v3 deniedPermissionsErrorForContentItemClass:NSClassFromString(contentItemClassName)];
 
   return v5;
 }
@@ -133,26 +133,26 @@
 - (id)localizedExfiltrationRestrictedError
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(WFDeletionAuthorizationState *)self contentItemClassName];
-  v4 = NSClassFromString(v3);
+  contentItemClassName = [(WFDeletionAuthorizationState *)self contentItemClassName];
+  v4 = NSClassFromString(contentItemClassName);
 
-  v5 = [(objc_class *)v4 localizedPluralFilterDescription];
+  localizedPluralFilterDescription = [(objc_class *)v4 localizedPluralFilterDescription];
   if ([(objc_class *)v4 canLowercaseTypeDescription])
   {
-    v6 = [v5 localizedLowercaseString];
+    localizedLowercaseString = [localizedPluralFilterDescription localizedLowercaseString];
 
-    v5 = v6;
+    localizedPluralFilterDescription = localizedLowercaseString;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(objc_class *)v4 localizedCountDescriptionWithValue:[(WFDeletionAuthorizationState *)self count]];
-    if (v7)
+    localizedLowercaseString2 = [(objc_class *)v4 localizedCountDescriptionWithValue:[(WFDeletionAuthorizationState *)self count]];
+    if (localizedLowercaseString2)
     {
 LABEL_5:
       v8 = MEMORY[0x1E696AEC0];
       v9 = WFLocalizedString(@"This action is trying to delete %@, which is not allowed.");
-      [v8 stringWithFormat:v9, v7];
+      [v8 stringWithFormat:v9, localizedLowercaseString2];
       v17 = LABEL_11:;
 
       goto LABEL_12;
@@ -162,11 +162,11 @@ LABEL_5:
   else
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(objc_class *)v4 countDescription];
-    v12 = [v10 localizedStringWithFormat:v11, -[WFDeletionAuthorizationState count](self, "count")];
-    v7 = [v12 localizedLowercaseString];
+    countDescription = [(objc_class *)v4 countDescription];
+    v12 = [v10 localizedStringWithFormat:countDescription, -[WFDeletionAuthorizationState count](self, "count")];
+    localizedLowercaseString2 = [v12 localizedLowercaseString];
 
-    if (v7)
+    if (localizedLowercaseString2)
     {
       goto LABEL_5;
     }
@@ -174,31 +174,31 @@ LABEL_5:
 
   v13 = getWFWorkflowExecutionLogObject();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_FAULT);
-  if (v5)
+  if (localizedPluralFilterDescription)
   {
     if (v14)
     {
-      v15 = [(WFDeletionAuthorizationState *)self contentItemClassName];
+      contentItemClassName2 = [(WFDeletionAuthorizationState *)self contentItemClassName];
       *buf = 136315394;
       v30 = "[WFDeletionAuthorizationState localizedExfiltrationRestrictedError]";
       v31 = 2112;
-      v32 = v15;
+      v32 = contentItemClassName2;
       _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_FAULT, "%s Missing countDescription for %@", buf, 0x16u);
     }
 
     v16 = MEMORY[0x1E696AEC0];
     v9 = WFLocalizedString(@"This action is trying to delete a large amount of %@, which is not allowed.");
-    [v16 stringWithFormat:v9, v5];
+    [v16 stringWithFormat:v9, localizedPluralFilterDescription];
     goto LABEL_11;
   }
 
   if (v14)
   {
-    v26 = [(WFDeletionAuthorizationState *)self contentItemClassName];
+    contentItemClassName3 = [(WFDeletionAuthorizationState *)self contentItemClassName];
     *buf = 136315394;
     v30 = "[WFDeletionAuthorizationState localizedExfiltrationRestrictedError]";
     v31 = 2112;
-    v32 = v26;
+    v32 = contentItemClassName3;
     _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_FAULT, "%s Missing countDescription and typeDescription for %@", buf, 0x16u);
   }
 
@@ -220,26 +220,26 @@ LABEL_12:
   return v23;
 }
 
-- (WFDeletionAuthorizationState)stateWithStatus:(id)a3 count:(unint64_t)a4
+- (WFDeletionAuthorizationState)stateWithStatus:(id)status count:(unint64_t)count
 {
-  v6 = a3;
+  statusCopy = status;
   v7 = [WFDeletionAuthorizationState alloc];
-  v8 = [(WFDeletionAuthorizationState *)self contentItemClassName];
-  v9 = [(WFDeletionAuthorizationState *)self actionUUID];
-  v10 = [(WFDeletionAuthorizationState *)v7 initWithStatus:v6 contentItemClassName:v8 actionUUID:v9 count:a4];
+  contentItemClassName = [(WFDeletionAuthorizationState *)self contentItemClassName];
+  actionUUID = [(WFDeletionAuthorizationState *)self actionUUID];
+  v10 = [(WFDeletionAuthorizationState *)v7 initWithStatus:statusCopy contentItemClassName:contentItemClassName actionUUID:actionUUID count:count];
 
   return v10;
 }
 
-- (WFDeletionAuthorizationState)initWithStatus:(id)a3 contentItemClassName:(id)a4 actionUUID:(id)a5 count:(unint64_t)a6
+- (WFDeletionAuthorizationState)initWithStatus:(id)status contentItemClassName:(id)name actionUUID:(id)d count:(unint64_t)count
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (v13)
+  statusCopy = status;
+  nameCopy = name;
+  dCopy = d;
+  v15 = dCopy;
+  if (nameCopy)
   {
-    if (v14)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -247,8 +247,8 @@ LABEL_12:
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFDeletionAuthorizationState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"contentItemClassName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDeletionAuthorizationState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"contentItemClassName"}];
 
     if (v15)
     {
@@ -256,8 +256,8 @@ LABEL_12:
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"WFDeletionAuthorizationState.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"actionUUID"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDeletionAuthorizationState.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"actionUUID"}];
 
 LABEL_3:
   v26.receiver = self;
@@ -266,8 +266,8 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_status, a3);
-    v18 = [v13 copy];
+    objc_storeStrong(&v16->_status, status);
+    v18 = [nameCopy copy];
     contentItemClassName = v17->_contentItemClassName;
     v17->_contentItemClassName = v18;
 
@@ -275,22 +275,22 @@ LABEL_3:
     actionUUID = v17->_actionUUID;
     v17->_actionUUID = v20;
 
-    v17->_count = a6;
+    v17->_count = count;
     v22 = v17;
   }
 
   return v17;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"DataType"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"DataType"];
   v6 = v5;
   if (v5 && [v5 isEqualToString:@"DeletionAuthorization"])
   {
-    v7 = [v4 objectForKey:@"ContentItemClassName"];
+    v7 = [representationCopy objectForKey:@"ContentItemClassName"];
     if (v7)
     {
       objc_opt_class();
@@ -312,7 +312,7 @@ LABEL_3:
 
     v10 = v8;
 
-    v11 = [v4 objectForKey:@"Status"];
+    v11 = [representationCopy objectForKey:@"Status"];
     if (v11)
     {
       objc_opt_class();
@@ -334,7 +334,7 @@ LABEL_3:
 
     v13 = v12;
 
-    v14 = [v4 objectForKey:@"ActionUUID"];
+    v14 = [representationCopy objectForKey:@"ActionUUID"];
     if (v14)
     {
       objc_opt_class();
@@ -356,7 +356,7 @@ LABEL_3:
 
     v16 = v15;
 
-    v17 = [v4 objectForKey:@"Count"];
+    v17 = [representationCopy objectForKey:@"Count"];
     if (v17)
     {
       objc_opt_class();
@@ -378,10 +378,10 @@ LABEL_3:
 
     v19 = v18;
 
-    v20 = [v19 unsignedIntegerValue];
-    if (v10 && v13 && v16 && v20)
+    unsignedIntegerValue = [v19 unsignedIntegerValue];
+    if (v10 && v13 && v16 && unsignedIntegerValue)
     {
-      v9 = [[a1 alloc] initWithStatus:v13 contentItemClassName:v10 actionUUID:v16 count:v20];
+      v9 = [[self alloc] initWithStatus:v13 contentItemClassName:v10 actionUUID:v16 count:unsignedIntegerValue];
     }
 
     else
@@ -392,7 +392,7 @@ LABEL_3:
         v24 = 136315394;
         v25 = "+[WFDeletionAuthorizationState objectWithWFSerializedRepresentation:]";
         v26 = 2114;
-        v27 = v4;
+        v27 = representationCopy;
         _os_log_impl(&dword_1CA256000, v21, OS_LOG_TYPE_FAULT, "%s Failed to deserialize WFDeletionAuthorizationState, returning nil: %{public}@", &v24, 0x16u);
       }
 
@@ -410,11 +410,11 @@ LABEL_3:
   return v9;
 }
 
-+ (id)stateFromDatabaseData:(id)a3
++ (id)stateFromDatabaseData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v13];
+  v4 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -432,7 +432,7 @@ LABEL_3:
 
   else
   {
-    v8 = [a1 objectWithWFSerializedRepresentation:v4];
+    v8 = [self objectWithWFSerializedRepresentation:v4];
     if (v8)
     {
       v6 = v8;
@@ -459,7 +459,7 @@ LABEL_10:
   return v9;
 }
 
-+ (id)dontDeleteErrorForContentItemClass:(Class)a3
++ (id)dontDeleteErrorForContentItemClass:(Class)class
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = getWFWorkflowExecutionLogObject();
@@ -470,19 +470,19 @@ LABEL_10:
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_DEFAULT, "%s User tapped 'Don't Delete'.", buf, 0xCu);
   }
 
-  v5 = [(objc_class *)a3 localizedPluralFilterDescription];
-  if ([(objc_class *)a3 canLowercaseTypeDescription])
+  localizedPluralFilterDescription = [(objc_class *)class localizedPluralFilterDescription];
+  if ([(objc_class *)class canLowercaseTypeDescription])
   {
-    v6 = [v5 localizedLowercaseString];
+    localizedLowercaseString = [localizedPluralFilterDescription localizedLowercaseString];
 
-    v5 = v6;
+    localizedPluralFilterDescription = localizedLowercaseString;
   }
 
-  if (v5)
+  if (localizedPluralFilterDescription)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = WFLocalizedString(@"You opted not to delete any %@.");
-    v9 = [v7 localizedStringWithFormat:v8, v5];
+    v9 = [v7 localizedStringWithFormat:v8, localizedPluralFilterDescription];
   }
 
   else
@@ -490,7 +490,7 @@ LABEL_10:
     v10 = getWFWorkflowExecutionLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v11 = NSStringFromClass(a3);
+      v11 = NSStringFromClass(class);
       *buf = 136315394;
       v20 = "+[WFDeletionAuthorizationState dontDeleteErrorForContentItemClass:]";
       v21 = 2112;
@@ -512,22 +512,22 @@ LABEL_10:
   return v14;
 }
 
-+ (id)deniedPermissionsErrorForContentItemClass:(Class)a3
++ (id)deniedPermissionsErrorForContentItemClass:(Class)class
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [(objc_class *)a3 localizedPluralFilterDescription];
-  if ([(objc_class *)a3 canLowercaseTypeDescription])
+  localizedPluralFilterDescription = [(objc_class *)class localizedPluralFilterDescription];
+  if ([(objc_class *)class canLowercaseTypeDescription])
   {
-    v5 = [v4 localizedLowercaseString];
+    localizedLowercaseString = [localizedPluralFilterDescription localizedLowercaseString];
 
-    v4 = v5;
+    localizedPluralFilterDescription = localizedLowercaseString;
   }
 
-  if (v4)
+  if (localizedPluralFilterDescription)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = WFLocalizedString(@"This shortcut can’t delete %@. You can change this in the shortcut’s privacy settings.");
-    v8 = [v6 localizedStringWithFormat:v7, v4];
+    v8 = [v6 localizedStringWithFormat:v7, localizedPluralFilterDescription];
   }
 
   else
@@ -535,7 +535,7 @@ LABEL_10:
     v9 = getWFWorkflowExecutionLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v10 = NSStringFromClass(a3);
+      v10 = NSStringFromClass(class);
       *buf = 136315394;
       v19 = "+[WFDeletionAuthorizationState deniedPermissionsErrorForContentItemClass:]";
       v20 = 2112;

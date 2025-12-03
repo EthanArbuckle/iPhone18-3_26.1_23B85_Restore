@@ -1,31 +1,31 @@
 @interface STStatusBarDataBoolImageAndStringEntry
-- (STStatusBarDataBoolImageAndStringEntry)initWithBSXPCCoder:(id)a3;
-- (STStatusBarDataBoolImageAndStringEntry)initWithCoder:(id)a3;
-- (id)_equalsBuilderWithObject:(id)a3;
+- (STStatusBarDataBoolImageAndStringEntry)initWithBSXPCCoder:(id)coder;
+- (STStatusBarDataBoolImageAndStringEntry)initWithCoder:(id)coder;
+- (id)_equalsBuilderWithObject:(id)object;
 - (id)_hashBuilder;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusBarDataBoolImageAndStringEntry
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v4 = a3;
-  [(STStatusBarDataBoolImageEntry *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_stringValue forKey:{@"stringValue", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(STStatusBarDataBoolImageEntry *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_stringValue forKey:{@"stringValue", v5.receiver, v5.super_class}];
 }
 
-- (STStatusBarDataBoolImageAndStringEntry)initWithCoder:(id)a3
+- (STStatusBarDataBoolImageAndStringEntry)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v3 = a3;
-  v4 = [(STStatusBarDataBoolImageEntry *)&v8 initWithCoder:v3];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"stringValue", v8.receiver, v8.super_class}];
+  coderCopy = coder;
+  v4 = [(STStatusBarDataBoolImageEntry *)&v8 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"stringValue", v8.receiver, v8.super_class}];
 
   stringValue = v4->_stringValue;
   v4->_stringValue = v5;
@@ -37,28 +37,28 @@
 {
   v6.receiver = self;
   v6.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v3 = [(STStatusBarDataBoolImageEntry *)&v6 succinctDescriptionBuilder];
-  v4 = [(STStatusBarDataBoolImageAndStringEntry *)self stringValue];
-  [v3 appendString:v4 withName:@"stringValue"];
+  succinctDescriptionBuilder = [(STStatusBarDataBoolImageEntry *)&v6 succinctDescriptionBuilder];
+  stringValue = [(STStatusBarDataBoolImageAndStringEntry *)self stringValue];
+  [succinctDescriptionBuilder appendString:stringValue withName:@"stringValue"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (id)_equalsBuilderWithObject:(id)a3
+- (id)_equalsBuilderWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v5 = [(STStatusBarDataBoolImageEntry *)&v13 _equalsBuilderWithObject:v4];
-  v6 = v4;
-  v7 = [(STStatusBarDataBoolImageAndStringEntry *)self stringValue];
+  v5 = [(STStatusBarDataBoolImageEntry *)&v13 _equalsBuilderWithObject:objectCopy];
+  v6 = objectCopy;
+  stringValue = [(STStatusBarDataBoolImageAndStringEntry *)self stringValue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__STStatusBarDataBoolImageAndStringEntry__equalsBuilderWithObject___block_invoke;
   v11[3] = &unk_1E85DDD28;
   v12 = v6;
   v8 = v6;
-  v9 = [v5 appendString:v7 counterpart:v11];
+  v9 = [v5 appendString:stringValue counterpart:v11];
 
   return v5;
 }
@@ -67,31 +67,31 @@
 {
   v7.receiver = self;
   v7.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v3 = [(STStatusBarDataBoolImageEntry *)&v7 _hashBuilder];
-  v4 = [(STStatusBarDataBoolImageAndStringEntry *)self stringValue];
-  v5 = [v3 appendString:v4];
+  _hashBuilder = [(STStatusBarDataBoolImageEntry *)&v7 _hashBuilder];
+  stringValue = [(STStatusBarDataBoolImageAndStringEntry *)self stringValue];
+  v5 = [_hashBuilder appendString:stringValue];
 
-  return v3;
+  return _hashBuilder;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v4 = a3;
-  [(STStatusBarDataBoolImageEntry *)&v5 encodeWithBSXPCCoder:v4];
-  [v4 encodeObject:self->_stringValue forKey:{@"stringValue", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(STStatusBarDataBoolImageEntry *)&v5 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_stringValue forKey:{@"stringValue", v5.receiver, v5.super_class}];
 }
 
-- (STStatusBarDataBoolImageAndStringEntry)initWithBSXPCCoder:(id)a3
+- (STStatusBarDataBoolImageAndStringEntry)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STStatusBarDataBoolImageAndStringEntry;
-  v5 = [(STStatusBarDataBoolImageEntry *)&v9 initWithBSXPCCoder:v4];
+  v5 = [(STStatusBarDataBoolImageEntry *)&v9 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"stringValue"];
+    v6 = [coderCopy decodeStringForKey:@"stringValue"];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
   }

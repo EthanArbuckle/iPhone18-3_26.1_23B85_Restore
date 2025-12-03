@@ -1,30 +1,30 @@
 @interface OADFontReference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)applyToParagraphProperties:(id)a3;
+- (void)applyToParagraphProperties:(id)properties;
 @end
 
 @implementation OADFontReference
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v5[2] = self->mIndex;
-  v6 = [(OADColor *)self->mColor copyWithZone:a3];
+  v6 = [(OADColor *)self->mColor copyWithZone:zone];
   v7 = *(v5 + 2);
   *(v5 + 2) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if (self->mIndex == *(v7 + 2))
     {
       mColor = self->mColor;
@@ -53,9 +53,9 @@
   return v6;
 }
 
-- (void)applyToParagraphProperties:(id)a3
+- (void)applyToParagraphProperties:(id)properties
 {
-  v10 = a3;
+  propertiesCopy = properties;
   mIndex = self->mIndex;
   if (mIndex)
   {
@@ -76,31 +76,31 @@
     v7 = @"+mj-cs";
   }
 
-  v8 = [v10 isMergedWithParent];
-  [v10 setMergedWithParent:0];
-  if (([v10 hasLatinFont] & 1) == 0)
+  isMergedWithParent = [propertiesCopy isMergedWithParent];
+  [propertiesCopy setMergedWithParent:0];
+  if (([propertiesCopy hasLatinFont] & 1) == 0)
   {
-    [v10 setLatinFont:v5];
+    [propertiesCopy setLatinFont:v5];
   }
 
-  if (([v10 hasEastAsianFont] & 1) == 0)
+  if (([propertiesCopy hasEastAsianFont] & 1) == 0)
   {
-    [v10 setEastAsianFont:v6];
+    [propertiesCopy setEastAsianFont:v6];
   }
 
-  if (([v10 hasBidiFont] & 1) == 0)
+  if (([propertiesCopy hasBidiFont] & 1) == 0)
   {
-    [v10 setBidiFont:v7];
+    [propertiesCopy setBidiFont:v7];
   }
 
-  if (self->mColor && ([v10 hasFill] & 1) == 0)
+  if (self->mColor && ([propertiesCopy hasFill] & 1) == 0)
   {
     v9 = objc_alloc_init(OADSolidFill);
     [(OADSolidFill *)v9 setColor:self->mColor];
-    [v10 setFill:v9];
+    [propertiesCopy setFill:v9];
   }
 
-  [v10 setMergedWithParent:v8];
+  [propertiesCopy setMergedWithParent:isMergedWithParent];
 LABEL_15:
 }
 

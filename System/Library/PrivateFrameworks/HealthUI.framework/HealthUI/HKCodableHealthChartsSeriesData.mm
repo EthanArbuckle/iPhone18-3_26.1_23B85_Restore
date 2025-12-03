@@ -1,33 +1,33 @@
 @interface HKCodableHealthChartsSeriesData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPoints:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPoints:(id)points;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHealthChartsSeriesData
 
-- (void)addPoints:(id)a3
+- (void)addPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   points = self->_points;
-  v8 = v4;
+  v8 = pointsCopy;
   if (!points)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_points;
     self->_points = v6;
 
-    v4 = v8;
+    pointsCopy = v8;
     points = self->_points;
   }
 
-  [(NSMutableArray *)points addObject:v4];
+  [(NSMutableArray *)points addObject:pointsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableHealthChartsSeriesData;
   v4 = [(HKCodableHealthChartsSeriesData *)&v8 description];
-  v5 = [(HKCodableHealthChartsSeriesData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHealthChartsSeriesData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_points count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_points, "count")}];
@@ -68,8 +68,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -78,28 +78,28 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"points"];
+    [dictionary setObject:v4 forKey:@"points"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_aggregation];
-    [v3 setObject:v11 forKey:@"aggregation"];
+    [dictionary setObject:v11 forKey:@"aggregation"];
   }
 
   unitString = self->_unitString;
   if (unitString)
   {
-    [v3 setObject:unitString forKey:@"unitString"];
+    [dictionary setObject:unitString forKey:@"unitString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -142,42 +142,42 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(HKCodableHealthChartsSeriesData *)self pointsCount])
   {
-    [v9 clearPoints];
-    v4 = [(HKCodableHealthChartsSeriesData *)self pointsCount];
-    if (v4)
+    [toCopy clearPoints];
+    pointsCount = [(HKCodableHealthChartsSeriesData *)self pointsCount];
+    if (pointsCount)
     {
-      v5 = v4;
+      v5 = pointsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableHealthChartsSeriesData *)self pointsAtIndex:i];
-        [v9 addPoints:v7];
+        [toCopy addPoints:v7];
       }
     }
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (*&self->_has)
   {
-    *(v9 + 1) = self->_aggregation;
-    *(v9 + 32) |= 1u;
+    *(toCopy + 1) = self->_aggregation;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_unitString)
   {
-    [v9 setUnitString:?];
-    v8 = v9;
+    [toCopy setUnitString:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -198,7 +198,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) copyWithZone:{a3, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * v10) copyWithZone:{zone, v15}];
         [v5 addPoints:v11];
 
         ++v10;
@@ -217,23 +217,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v12 = [(NSString *)self->_unitString copyWithZone:a3, v15];
+  v12 = [(NSString *)self->_unitString copyWithZone:zone, v15];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   points = self->_points;
-  if (points | *(v4 + 2))
+  if (points | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)points isEqual:?])
     {
@@ -243,13 +243,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_aggregation != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_aggregation != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -257,7 +257,7 @@ LABEL_11:
   }
 
   unitString = self->_unitString;
-  if (unitString | *(v4 + 3))
+  if (unitString | *(equalCopy + 3))
   {
     v7 = [(NSString *)unitString isEqual:?];
   }
@@ -288,15 +288,15 @@ LABEL_12:
   return v4 ^ v3 ^ [(NSString *)self->_unitString hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -320,13 +320,13 @@ LABEL_12:
     while (v7);
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_aggregation = *(v4 + 1);
+    self->_aggregation = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HKCodableHealthChartsSeriesData *)self setUnitString:?];
   }

@@ -1,27 +1,27 @@
 @interface SQLiteMemoryEntity
-- (BOOL)isEqual:(id)a3;
-- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)a3 properties:(id)a4;
-- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)entity properties:(id)properties;
+- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SQLiteMemoryEntity
 
-- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5
+- (SQLiteMemoryEntity)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues
 {
-  v8 = a4;
-  v9 = a5;
+  valuesCopy = values;
+  propertyValuesCopy = propertyValues;
   v19.receiver = self;
   v19.super_class = SQLiteMemoryEntity;
   v10 = [(SQLiteMemoryEntity *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    v10->_databaseID = a3;
-    if (v8)
+    v10->_databaseID = d;
+    if (valuesCopy)
     {
-      v12 = v8;
+      v12 = valuesCopy;
     }
 
     else
@@ -33,9 +33,9 @@
     propertyValues = v11->_propertyValues;
     v11->_propertyValues = v13;
 
-    if (v9)
+    if (propertyValuesCopy)
     {
-      v15 = v9;
+      v15 = propertyValuesCopy;
     }
 
     else
@@ -51,20 +51,20 @@
   return v11;
 }
 
-- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)a3 properties:(id)a4
+- (SQLiteMemoryEntity)initWithDatabaseEntity:(id)entity properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SQLiteMemoryEntity initWithDatabaseID:propertyValues:externalPropertyValues:](self, "initWithDatabaseID:propertyValues:externalPropertyValues:", [v6 persistentID], &__NSDictionary0__struct, &__NSDictionary0__struct);
+  entityCopy = entity;
+  propertiesCopy = properties;
+  v8 = -[SQLiteMemoryEntity initWithDatabaseID:propertyValues:externalPropertyValues:](self, "initWithDatabaseID:propertyValues:externalPropertyValues:", [entityCopy persistentID], &__NSDictionary0__struct, &__NSDictionary0__struct);
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [propertiesCopy copy];
     properties = v8->_properties;
     v8->_properties = v9;
 
-    if ([v7 count])
+    if ([propertiesCopy count])
     {
-      sub_10023DF24(v8, v6);
+      sub_10023DF24(v8, entityCopy);
     }
   }
 
@@ -81,14 +81,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [(SQLiteMemoryEntity *)self databaseID];
-    if (v6 == [v4 databaseID])
+    databaseID = [(SQLiteMemoryEntity *)self databaseID];
+    if (databaseID == [equalCopy databaseID])
     {
       if (self)
       {
@@ -101,9 +101,9 @@
       }
 
       v8 = propertyValues;
-      if (v4)
+      if (equalCopy)
       {
-        v9 = v4[2];
+        v9 = equalCopy[2];
       }
 
       else
@@ -121,10 +121,10 @@
       if (self)
       {
         externalPropertyValues = self->_externalPropertyValues;
-        if (v4)
+        if (equalCopy)
         {
 LABEL_10:
-          v12 = v4[3];
+          v12 = equalCopy[3];
 LABEL_11:
           v13 = externalPropertyValues;
           v14 = [(NSMutableDictionary *)v13 isEqualToDictionary:v12];
@@ -137,7 +137,7 @@ LABEL_15:
       else
       {
         externalPropertyValues = 0;
-        if (v4)
+        if (equalCopy)
         {
           goto LABEL_10;
         }
@@ -154,9 +154,9 @@ LABEL_13:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   databaseID = self->_databaseID;
   propertyValues = self->_propertyValues;
   externalPropertyValues = self->_externalPropertyValues;

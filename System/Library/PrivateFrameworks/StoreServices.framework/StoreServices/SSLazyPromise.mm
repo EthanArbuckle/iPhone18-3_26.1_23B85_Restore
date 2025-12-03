@@ -1,24 +1,24 @@
 @interface SSLazyPromise
 - (BOOL)_runBlock;
-- (SSLazyPromise)initWithBlock:(id)a3;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultWithError:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (void)addErrorBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
+- (SSLazyPromise)initWithBlock:(id)block;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultWithError:(id *)error;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (void)addErrorBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
 @end
 
 @implementation SSLazyPromise
 
-- (SSLazyPromise)initWithBlock:(id)a3
+- (SSLazyPromise)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = SSLazyPromise;
   v5 = [(SSPromise *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 
@@ -30,90 +30,90 @@
   return v5;
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(SSLazyPromise *)self _runBlock];
   v5.receiver = self;
   v5.super_class = SSLazyPromise;
-  [(SSPromise *)&v5 addErrorBlock:v4];
+  [(SSPromise *)&v5 addErrorBlock:blockCopy];
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(SSLazyPromise *)self _runBlock];
   v5.receiver = self;
   v5.super_class = SSLazyPromise;
-  [(SSPromise *)&v5 addSuccessBlock:v4];
+  [(SSPromise *)&v5 addSuccessBlock:blockCopy];
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   [(SSLazyPromise *)self _runBlock];
   v9.receiver = self;
   v9.super_class = SSLazyPromise;
-  v7 = [(SSPromise *)&v9 resultBeforeDate:v6 error:a4];
+  v7 = [(SSPromise *)&v9 resultBeforeDate:dateCopy error:error];
 
   return v7;
 }
 
-- (id)resultWithError:(id *)a3
+- (id)resultWithError:(id *)error
 {
   [(SSLazyPromise *)self _runBlock];
   v7.receiver = self;
   v7.super_class = SSLazyPromise;
-  v5 = [(SSPromise *)&v7 resultWithError:a3];
+  v5 = [(SSPromise *)&v7 resultWithError:error];
 
   return v5;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
   [(SSLazyPromise *)self _runBlock];
   v9.receiver = self;
   v9.super_class = SSLazyPromise;
-  v7 = [(SSPromise *)&v9 resultWithTimeout:a4 error:a3];
+  v7 = [(SSPromise *)&v9 resultWithTimeout:error error:timeout];
 
   return v7;
 }
 
 - (BOOL)_runBlock
 {
-  v3 = [(SSPromise *)self stateLock];
-  [v3 lock];
+  stateLock = [(SSPromise *)self stateLock];
+  [stateLock lock];
 
-  v4 = [(SSPromise *)self stateLock];
-  v5 = [v4 condition];
+  stateLock2 = [(SSPromise *)self stateLock];
+  condition = [stateLock2 condition];
 
-  v6 = [(SSPromise *)self stateLock];
-  [v6 unlock];
+  stateLock3 = [(SSPromise *)self stateLock];
+  [stateLock3 unlock];
 
-  if (v5 == 1)
+  if (condition == 1)
   {
     return 0;
   }
 
-  v7 = [(SSLazyPromise *)self executeBlockLock];
-  [v7 lock];
+  executeBlockLock = [(SSLazyPromise *)self executeBlockLock];
+  [executeBlockLock lock];
 
   if ([(SSLazyPromise *)self executedBlock])
   {
-    v8 = [(SSLazyPromise *)self executeBlockLock];
-    [v8 unlock];
+    executeBlockLock2 = [(SSLazyPromise *)self executeBlockLock];
+    [executeBlockLock2 unlock];
 
     return 0;
   }
 
   objc_initWeak(&location, self);
-  v10 = [(SSLazyPromise *)self block];
+  block = [(SSLazyPromise *)self block];
   v11 = objc_loadWeakRetained(&location);
-  (v10)[2](v10, v11);
+  (block)[2](block, v11);
 
   [(SSLazyPromise *)self setExecutedBlock:1];
-  v12 = [(SSLazyPromise *)self executeBlockLock];
-  [v12 unlock];
+  executeBlockLock3 = [(SSLazyPromise *)self executeBlockLock];
+  [executeBlockLock3 unlock];
 
   objc_destroyWeak(&location);
   return 1;

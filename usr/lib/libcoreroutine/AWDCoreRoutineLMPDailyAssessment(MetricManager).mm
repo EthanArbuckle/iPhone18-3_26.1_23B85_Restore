@@ -8,7 +8,7 @@
 
 - (char)_init
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_2846265C0;
   result = objc_msgSendSuper2(&v2, sel_init);
   if (result)
@@ -28,7 +28,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -74,7 +74,7 @@ LABEL_9:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringWithFormat:@"%@, dailyEvents %d, eventsWithLocation %d, eventsWithLMPLocation %d, eventsWithMaybeLocation %d, visitLocation %d, visitLMPLocation %d, visitMaybeLocation %d", v4, objc_msgSend(a1, "dailyEvents"), objc_msgSend(a1, "eventsWithLocation"), objc_msgSend(a1, "eventsWithLMPLocation"), objc_msgSend(a1, "eventsWithMaybeLocation"), objc_msgSend(a1, "visitLocation"), objc_msgSend(a1, "visitLMPLocation"), objc_msgSend(a1, "visitMaybeLocation")];
+  v5 = [v2 stringWithFormat:@"%@, dailyEvents %d, eventsWithLocation %d, eventsWithLMPLocation %d, eventsWithMaybeLocation %d, visitLocation %d, visitLMPLocation %d, visitMaybeLocation %d", v4, objc_msgSend(self, "dailyEvents"), objc_msgSend(self, "eventsWithLocation"), objc_msgSend(self, "eventsWithLMPLocation"), objc_msgSend(self, "eventsWithMaybeLocation"), objc_msgSend(self, "visitLocation"), objc_msgSend(self, "visitLMPLocation"), objc_msgSend(self, "visitMaybeLocation")];
 
   return v5;
 }

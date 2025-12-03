@@ -2,7 +2,7 @@
 - (CGRect)finalFrameForContainerView;
 - (id)backgroundObscuringView;
 - (void)containerViewWillLayoutSubviews;
-- (void)setContentVisible:(BOOL)a3;
+- (void)setContentVisible:(BOOL)visible;
 @end
 
 @implementation _UISearchCarPlayPresentationController
@@ -13,17 +13,17 @@
   if (!blurView)
   {
     v4 = [UIVisualEffectView alloc];
-    v5 = [(UIPresentationController *)self presentedViewController];
-    v6 = [v5 searchBar];
-    v7 = [(UIPresentationController *)self traitCollection];
-    v8 = [v6 _presentationBackgroundBlurEffectForTraitCollection:v7];
+    presentedViewController = [(UIPresentationController *)self presentedViewController];
+    searchBar = [presentedViewController searchBar];
+    traitCollection = [(UIPresentationController *)self traitCollection];
+    v8 = [searchBar _presentationBackgroundBlurEffectForTraitCollection:traitCollection];
     v9 = [(UIVisualEffectView *)v4 initWithEffect:v8];
     v10 = self->_blurView;
     self->_blurView = v9;
 
-    v11 = [(UIPresentationController *)self presentedViewController];
-    v12 = [v11 view];
-    [v12 bounds];
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+    view = [presentedViewController2 view];
+    [view bounds];
     [(UIView *)self->_blurView setFrame:?];
 
     [(UIView *)self->_blurView setAutoresizingMask:26];
@@ -46,21 +46,21 @@
   return result;
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(UIPresentationController *)self presentedView];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  presentedView = [(UIPresentationController *)self presentedView];
+  [presentedView setHidden:!visibleCopy];
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v7 = [(_UISearchCarPlayPresentationController *)self blurView];
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = [v3 searchBar];
-  v5 = [(UIPresentationController *)self traitCollection];
-  v6 = [v4 _presentationBackgroundBlurEffectForTraitCollection:v5];
-  [v7 setEffect:v6];
+  blurView = [(_UISearchCarPlayPresentationController *)self blurView];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  searchBar = [presentedViewController searchBar];
+  traitCollection = [(UIPresentationController *)self traitCollection];
+  v6 = [searchBar _presentationBackgroundBlurEffectForTraitCollection:traitCollection];
+  [blurView setEffect:v6];
 }
 
 @end

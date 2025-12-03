@@ -1,25 +1,25 @@
 @interface CKPosterConfigurationBuilder
-+ (void)createPosterConfigurationForExtensionIdentifier:(id)a3 completion:(id)a4;
++ (void)createPosterConfigurationForExtensionIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CKPosterConfigurationBuilder
 
-+ (void)createPosterConfigurationForExtensionIdentifier:(id)a3 completion:(id)a4
++ (void)createPosterConfigurationForExtensionIdentifier:(id)identifier completion:(id)completion
 {
-  v14 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v6 = MEMORY[0x193AF5EC0](@"PRUISPosterConfigurationBuilder", @"PosterKit");
   if (v6)
   {
     v7 = [v6 alloc];
     Helper_x8__PRSPosterRoleBackdrop = gotLoadHelper_x8__PRSPosterRoleBackdrop(v8);
-    v12 = [v11 initWithProvider:v14 role:{**(v10 + 104), Helper_x8__PRSPosterRoleBackdrop}];
-    v13 = [v12 buildPosterConfigurationWithCompletion:v5];
+    v12 = [v11 initWithProvider:identifierCopy role:{**(v10 + 104), Helper_x8__PRSPosterRoleBackdrop}];
+    v13 = [v12 buildPosterConfigurationWithCompletion:completionCopy];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

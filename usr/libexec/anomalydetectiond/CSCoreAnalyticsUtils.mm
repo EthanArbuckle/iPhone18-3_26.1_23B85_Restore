@@ -1,5 +1,5 @@
 @interface CSCoreAnalyticsUtils
-+ (BOOL)shouldAttemptCoreAnalyticsUploadWithInterval:(double)a3 persistentKey:(id)a4;
++ (BOOL)shouldAttemptCoreAnalyticsUploadWithInterval:(double)interval persistentKey:(id)key;
 + (double)getSecondsSinceReboot;
 @end
 
@@ -43,24 +43,24 @@
   return v5;
 }
 
-+ (BOOL)shouldAttemptCoreAnalyticsUploadWithInterval:(double)a3 persistentKey:(id)a4
++ (BOOL)shouldAttemptCoreAnalyticsUploadWithInterval:(double)interval persistentKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = +[CSPersistentConfiguration sharedConfiguration];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
     v10 = +[NSDate date];
     [v10 timeIntervalSinceDate:v9];
-    v12 = a3 <= 0.0;
+    v12 = interval <= 0.0;
     if (v11 <= 0.0)
     {
       v12 = 1;
     }
 
-    v13 = v11 >= a3 * 0.9 || v12;
+    v13 = v11 >= interval * 0.9 || v12;
     if (!v13)
     {
       if (qword_1004568A8 != -1)

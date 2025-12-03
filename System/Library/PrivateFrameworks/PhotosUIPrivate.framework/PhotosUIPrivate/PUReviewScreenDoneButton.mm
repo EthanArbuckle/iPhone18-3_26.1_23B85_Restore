@@ -4,19 +4,19 @@
 - (UIEdgeInsets)tappableEdgeInsets;
 - (void)_updateIfNeeded;
 - (void)layoutSubviews;
-- (void)setPreferredStyle:(unint64_t)a3;
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3;
+- (void)setPreferredStyle:(unint64_t)style;
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PUReviewScreenDoneButton
 
 + (id)doneButton
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___PUReviewScreenDoneButton;
   v2 = objc_msgSendSuper2(&v5, sel_buttonWithType_, 1);
-  v3 = [MEMORY[0x1E69DC888] systemYellowColor];
-  [v2 setTintColor:v3];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  [v2 setTintColor:systemYellowColor];
 
   [v2 set_needsUpdate:1];
 
@@ -43,10 +43,10 @@
     return;
   }
 
-  v3 = [(PUReviewScreenDoneButton *)self preferredStyle];
-  if (v3)
+  preferredStyle = [(PUReviewScreenDoneButton *)self preferredStyle];
+  if (preferredStyle)
   {
-    if (v3 != 1)
+    if (preferredStyle != 1)
     {
       v5 = &stru_1F2AC6818;
       goto LABEL_9;
@@ -66,11 +66,11 @@ LABEL_9:
   if ([(__CFString *)v5 length])
   {
     v6 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:17.0];
-    v7 = [(PUReviewScreenDoneButton *)self titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(PUReviewScreenDoneButton *)self titleLabel];
+    [titleLabel setFont:v6];
 
     [(PUReviewScreenDoneButton *)self setImage:0 forState:0];
-    v8 = self;
+    selfCopy2 = self;
     v9 = v11;
   }
 
@@ -80,31 +80,31 @@ LABEL_9:
     [(PUReviewScreenDoneButton *)self setImage:v10 forState:0];
 
     v9 = &stru_1F2AC6818;
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  [(PUReviewScreenDoneButton *)v8 setTitle:v9 forState:0];
+  [(PUReviewScreenDoneButton *)selfCopy2 setTitle:v9 forState:0];
   [(PUReviewScreenDoneButton *)self set_needsUpdate:0];
 }
 
-- (void)setPreferredStyle:(unint64_t)a3
+- (void)setPreferredStyle:(unint64_t)style
 {
-  if (self->_preferredStyle != a3)
+  if (self->_preferredStyle != style)
   {
-    self->_preferredStyle = a3;
+    self->_preferredStyle = style;
     [(PUReviewScreenDoneButton *)self set_needsUpdate:1];
   }
 }
 
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_tappableEdgeInsets.top), vceqq_f64(v4, *&self->_tappableEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_tappableEdgeInsets = a3;
+    self->_tappableEdgeInsets = insets;
     [(PUReviewScreenDoneButton *)self setContentEdgeInsets:?];
 
     [(PUReviewScreenDoneButton *)self setNeedsLayout];

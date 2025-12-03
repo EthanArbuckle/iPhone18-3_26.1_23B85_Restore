@@ -1,7 +1,7 @@
 @interface AutoLinkUpgradeHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)read:(id)read returnedValues:(id)values;
 @end
 
 @implementation AutoLinkUpgradeHandler
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __40__AutoLinkUpgradeHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_42 != -1)
   {
     dispatch_once(&sharedInstance_pred_42, block);
@@ -35,21 +35,21 @@ void __40__AutoLinkUpgradeHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[AutoLinkUpgradeHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

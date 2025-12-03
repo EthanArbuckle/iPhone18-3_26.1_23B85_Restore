@@ -6,13 +6,13 @@
 - (SDXPCHelperConnection)helperConnection;
 - (id)availableNodesChangedHandler;
 - (id)transferUpdateChangedHandler;
-- (void)activateWithBundleID:(id)a3;
+- (void)activateWithBundleID:(id)d;
 - (void)cancelCurrentSend;
 - (void)invalidate;
-- (void)send:(id)a3 to:(id)a4 itemPreviewData:(id)a5 requestSource:(id)a6;
-- (void)setAvailableNodes:(id)a3;
-- (void)setAvailableNodesChangedHandler:(id)a3;
-- (void)setTransferUpdateChangedHandler:(id)a3;
+- (void)send:(id)send to:(id)to itemPreviewData:(id)data requestSource:(id)source;
+- (void)setAvailableNodes:(id)nodes;
+- (void)setAvailableNodesChangedHandler:(id)handler;
+- (void)setTransferUpdateChangedHandler:(id)handler;
 - (void)showAirDropUnavailableAlert;
 @end
 
@@ -54,9 +54,9 @@
   return v3;
 }
 
-- (void)setTransferUpdateChangedHandler:(id)a3
+- (void)setTransferUpdateChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -75,7 +75,7 @@
   v9 = *(self + OBJC_IVAR___SDShareSheetAirDropController_transferUpdateChangedHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100015D04(v8);
 }
 
@@ -101,9 +101,9 @@
   return v3;
 }
 
-- (void)setAvailableNodesChangedHandler:(id)a3
+- (void)setAvailableNodesChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -122,7 +122,7 @@
   v9 = *(self + OBJC_IVAR___SDShareSheetAirDropController_availableNodesChangedHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100015D04(v8);
 }
 
@@ -136,7 +136,7 @@
   return v3.super.isa;
 }
 
-- (void)setAvailableNodes:(id)a3
+- (void)setAvailableNodes:(id)nodes
 {
   sub_10028088C(&qword_100986248, &qword_10080D420);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -159,21 +159,21 @@
   return self;
 }
 
-- (void)activateWithBundleID:(id)a3
+- (void)activateWithBundleID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1005DC514(v4, v6);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005DDDD8();
 }
 
-- (void)send:(id)a3 to:(id)a4 itemPreviewData:(id)a5 requestSource:(id)a6
+- (void)send:(id)send to:(id)to itemPreviewData:(id)data requestSource:(id)source
 {
   v9 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v10 = *(*(v9 - 8) + 64);
@@ -189,14 +189,14 @@
   type metadata accessor for URL();
   v45 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  if (!a5)
+  if (!data)
   {
-    v26 = a6;
-    v27 = self;
+    sourceCopy = source;
+    selfCopy = self;
     v46 = 0xF000000000000000;
     v47 = 0;
-    v49 = self;
-    if (a6)
+    selfCopy4 = self;
+    if (source)
     {
       goto LABEL_3;
     }
@@ -207,15 +207,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v19 = a6;
-  v20 = self;
-  v21 = a5;
+  sourceCopy2 = source;
+  selfCopy3 = self;
+  dataCopy = data;
   v22 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v46 = v23;
   v47 = v22;
 
-  v49 = self;
-  if (!a6)
+  selfCopy4 = self;
+  if (!source)
   {
     goto LABEL_5;
   }
@@ -238,8 +238,8 @@ LABEL_6:
   *(v33 + 2) = 0;
   *(v33 + 3) = 0;
   v34 = v12;
-  v35 = v49;
-  *(v33 + 4) = v49;
+  v35 = selfCopy4;
+  *(v33 + 4) = selfCopy4;
   (*(v14 + 32))(&v33[v30], v29, v13);
   v36 = v46;
   *&v33[v31] = v45;
@@ -271,7 +271,7 @@ LABEL_6:
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_1002B281C(0, 0, v6, &unk_10080D398, v8);
 }
 

@@ -1,40 +1,40 @@
 @interface PGMemoryNotificationHelper
-+ (BOOL)memoriesOfTheDayAreWorthNotifyingWithPhotoLibrary:(id)a3;
-+ (id)_memoryFetchOptionsWithPhotoLibrary:(id)a3;
-+ (id)lastTriggeredNotificationDateWithPhotoLibrary:(id)a3;
-+ (id)nextPossibleNotificationDateWithPhotoLibrary:(id)a3;
++ (BOOL)memoriesOfTheDayAreWorthNotifyingWithPhotoLibrary:(id)library;
++ (id)_memoryFetchOptionsWithPhotoLibrary:(id)library;
++ (id)lastTriggeredNotificationDateWithPhotoLibrary:(id)library;
++ (id)nextPossibleNotificationDateWithPhotoLibrary:(id)library;
 @end
 
 @implementation PGMemoryNotificationHelper
 
-+ (id)_memoryFetchOptionsWithPhotoLibrary:(id)a3
++ (id)_memoryFetchOptionsWithPhotoLibrary:(id)library
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = [a3 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v9[0] = v4;
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"objectID" ascending:0];
   v9[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-  [v3 setSortDescriptors:v6];
+  [librarySpecificFetchOptions setSortDescriptors:v6];
 
-  [v3 setIncludePendingMemories:0];
-  [v3 setIncludeRejectedMemories:1];
+  [librarySpecificFetchOptions setIncludePendingMemories:0];
+  [librarySpecificFetchOptions setIncludeRejectedMemories:1];
   v7 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-+ (BOOL)memoriesOfTheDayAreWorthNotifyingWithPhotoLibrary:(id)a3
++ (BOOL)memoriesOfTheDayAreWorthNotifyingWithPhotoLibrary:(id)library
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 startOfDayForDate:v5];
+  libraryCopy = library;
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar startOfDayForDate:date];
 
-  v8 = [a1 _memoryFetchOptionsWithPhotoLibrary:v4];
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d && (%K >= %@) && (%K <= %@)", @"category", 401, @"creationDate", v7, @"creationDate", v5];
+  v8 = [self _memoryFetchOptionsWithPhotoLibrary:libraryCopy];
+  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d && (%K >= %@) && (%K <= %@)", @"category", 401, @"creationDate", v7, @"creationDate", date];
   [v8 setPredicate:v9];
 
   [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v8];
@@ -86,9 +86,9 @@ LABEL_14:
   return v16;
 }
 
-+ (id)lastTriggeredNotificationDateWithPhotoLibrary:(id)a3
++ (id)lastTriggeredNotificationDateWithPhotoLibrary:(id)library
 {
-  v3 = [a1 _memoryFetchOptionsWithPhotoLibrary:a3];
+  v3 = [self _memoryFetchOptionsWithPhotoLibrary:library];
   [v3 setFetchLimit:1];
   [v3 setChunkSizeForFetch:100];
   [v3 setCacheSizeForFetch:{objc_msgSend(v3, "chunkSizeForFetch")}];
@@ -96,18 +96,18 @@ LABEL_14:
   [v3 setPredicate:v4];
 
   v5 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v3];
-  v6 = [v5 firstObject];
-  v7 = [v6 creationDate];
+  firstObject = [v5 firstObject];
+  creationDate = [firstObject creationDate];
 
-  return v7;
+  return creationDate;
 }
 
-+ (id)nextPossibleNotificationDateWithPhotoLibrary:(id)a3
++ (id)nextPossibleNotificationDateWithPhotoLibrary:(id)library
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [a1 _memoryFetchOptionsWithPhotoLibrary:v4];
+  libraryCopy = library;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [self _memoryFetchOptionsWithPhotoLibrary:libraryCopy];
   [v6 setChunkSizeForFetch:100];
   [v6 setCacheSizeForFetch:{objc_msgSend(v6, "chunkSizeForFetch")}];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"category", 401];
@@ -150,9 +150,9 @@ LABEL_3:
       }
     }
 
-    v14 = [v13 creationDate];
+    creationDate = [v13 creationDate];
 
-    if (v14)
+    if (creationDate)
     {
       goto LABEL_14;
     }
@@ -163,30 +163,30 @@ LABEL_3:
 LABEL_9:
   }
 
-  v15 = [v5 objectForKey:@"PGManagerNotificationUserDefaultsDateOfFirstTimeUsage"];
+  v15 = [standardUserDefaults objectForKey:@"PGManagerNotificationUserDefaultsDateOfFirstTimeUsage"];
   if (v15)
   {
-    v14 = v15;
+    creationDate = v15;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    [v5 setObject:v14 forKey:@"PGManagerNotificationUserDefaultsDateOfFirstTimeUsage"];
+    creationDate = [MEMORY[0x277CBEAA8] date];
+    [standardUserDefaults setObject:creationDate forKey:@"PGManagerNotificationUserDefaultsDateOfFirstTimeUsage"];
   }
 
 LABEL_14:
-  v16 = [MEMORY[0x277CBEA80] currentCalendar];
-  v17 = [MEMORY[0x277CBEAA8] date];
-  if ([v16 isDateInWeekend:v17])
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  if ([currentCalendar isDateInWeekend:date])
   {
     v18 = +[PGLogging sharedLogging];
-    v19 = [v18 loggingConnection];
+    loggingConnection = [v18 loggingConnection];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_INFO, "Memories Notification generated over the weekend, special time interval between notification applied.", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Memories Notification generated over the weekend, special time interval between notification applied.", buf, 2u);
     }
 
     v20 = 259200.0;
@@ -197,7 +197,7 @@ LABEL_14:
     v20 = 518400.0;
   }
 
-  v21 = [v5 objectForKey:@"PGManagerNotificationUserDefaultsRegularTimeIntervalBeforeNotifying"];
+  v21 = [standardUserDefaults objectForKey:@"PGManagerNotificationUserDefaultsRegularTimeIntervalBeforeNotifying"];
   v22 = v21;
   if (v21)
   {
@@ -214,7 +214,7 @@ LABEL_14:
   if (v25)
   {
     v26 = v25;
-    v37 = v4;
+    v37 = libraryCopy;
     v27 = *v39;
     while (2)
     {
@@ -227,7 +227,7 @@ LABEL_14:
 
         if ([*(*(&v38 + 1) + 8 * i) notificationState] == 1)
         {
-          v29 = [v5 objectForKey:@"PGManagerNotificationUserDefaultsExtendedTimeIntervalBeforeNotifying"];
+          v29 = [standardUserDefaults objectForKey:@"PGManagerNotificationUserDefaultsExtendedTimeIntervalBeforeNotifying"];
           v30 = v29;
           if (v29)
           {
@@ -241,12 +241,12 @@ LABEL_14:
           }
 
           v32 = +[PGLogging sharedLogging];
-          v33 = [v32 loggingConnection];
+          loggingConnection2 = [v32 loggingConnection];
 
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
-            _os_log_impl(&dword_22F0FC000, v33, OS_LOG_TYPE_INFO, "Extending notification time interval because one or more memories are still in the state PHMemoryNotificationStateRequested", buf, 2u);
+            _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "Extending notification time interval because one or more memories are still in the state PHMemoryNotificationStateRequested", buf, 2u);
           }
 
           goto LABEL_36;
@@ -263,10 +263,10 @@ LABEL_14:
     }
 
 LABEL_36:
-    v4 = v37;
+    libraryCopy = v37;
   }
 
-  v34 = [v14 dateByAddingTimeInterval:v20];
+  v34 = [creationDate dateByAddingTimeInterval:v20];
 
   v35 = *MEMORY[0x277D85DE8];
 

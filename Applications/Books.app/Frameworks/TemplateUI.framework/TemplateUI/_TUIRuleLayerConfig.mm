@@ -1,45 +1,45 @@
 @interface _TUIRuleLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
-- (_TUIRuleLayerConfig)initWithColor:(id)a3;
-- (void)configureLayer:(id)a3;
-- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)a3;
+- (BOOL)isEqualToConfig:(id)config;
+- (_TUIRuleLayerConfig)initWithColor:(id)color;
+- (void)configureLayer:(id)layer;
+- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)layer;
 @end
 
 @implementation _TUIRuleLayerConfig
 
-- (_TUIRuleLayerConfig)initWithColor:(id)a3
+- (_TUIRuleLayerConfig)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = _TUIRuleLayerConfig;
   v6 = [(_TUIRuleLayerConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_color, a3);
+    objc_storeStrong(&v6->_color, color);
   }
 
   return v7;
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
   color = self->_color;
-  v4 = a3;
-  [v4 setBackgroundColor:{-[UIColor CGColor](color, "CGColor")}];
+  layerCopy = layer;
+  [layerCopy setBackgroundColor:{-[UIColor CGColor](color, "CGColor")}];
 }
 
-- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)a3
+- (void)dynamicUserInterfaceTraitDidChangeForLayer:(id)layer
 {
   color = self->_color;
-  v4 = a3;
-  [v4 setBackgroundColor:{-[UIColor CGColor](color, "CGColor")}];
+  layerCopy = layer;
+  [layerCopy setBackgroundColor:{-[UIColor CGColor](color, "CGColor")}];
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
-  if (self == v4)
+  configCopy = config;
+  if (self == configCopy)
   {
     v6 = 1;
   }
@@ -49,16 +49,16 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(_TUIRuleLayerConfig *)v4 color];
+      color = [(_TUIRuleLayerConfig *)configCopy color];
       color = self->_color;
-      if (color == v7)
+      if (color == color)
       {
         v6 = 1;
       }
 
       else
       {
-        v6 = [(UIColor *)color isEqual:v7];
+        v6 = [(UIColor *)color isEqual:color];
       }
     }
 

@@ -1,34 +1,34 @@
 @interface _MFDataCollector
-- (_MFDataCollector)initWithLibrary:(id)a3 message:(id)a4 part:(id)a5 partial:(BOOL)a6 incomplete:(BOOL)a7 relaxDataProtection:(BOOL)a8 data:(id)a9;
+- (_MFDataCollector)initWithLibrary:(id)library message:(id)message part:(id)part partial:(BOOL)partial incomplete:(BOOL)incomplete relaxDataProtection:(BOOL)protection data:(id)data;
 - (id)pathForStorage;
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)done;
 - (void)pathForStorage;
 @end
 
 @implementation _MFDataCollector
 
-- (_MFDataCollector)initWithLibrary:(id)a3 message:(id)a4 part:(id)a5 partial:(BOOL)a6 incomplete:(BOOL)a7 relaxDataProtection:(BOOL)a8 data:(id)a9
+- (_MFDataCollector)initWithLibrary:(id)library message:(id)message part:(id)part partial:(BOOL)partial incomplete:(BOOL)incomplete relaxDataProtection:(BOOL)protection data:(id)data
 {
-  v25 = a3;
-  v24 = a4;
-  v16 = a5;
-  v17 = a9;
+  libraryCopy = library;
+  messageCopy = message;
+  partCopy = part;
+  dataCopy = data;
   v26.receiver = self;
   v26.super_class = _MFDataCollector;
   v18 = [(_MFDataCollector *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_library, a3);
-    objc_storeStrong(&v19->_message, a4);
-    objc_storeStrong(&v19->_part, a5);
-    v19->_partial = a6;
-    v19->_incomplete = a7;
-    v19->_relaxDataProtection = a8;
-    if (v17)
+    objc_storeStrong(&v18->_library, library);
+    objc_storeStrong(&v19->_message, message);
+    objc_storeStrong(&v19->_part, part);
+    v19->_partial = partial;
+    v19->_incomplete = incomplete;
+    v19->_relaxDataProtection = protection;
+    if (dataCopy)
     {
-      v20 = v17;
+      v20 = dataCopy;
       data = v19->_data;
       v19->_data = v20;
     }
@@ -72,19 +72,19 @@
   return v7;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   consumer = self->_consumer;
   if (!consumer)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:8586 description:{@"Invalid parameter not satisfying: %@", @"_consumer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MailMessageLibrary.m" lineNumber:8586 description:{@"Invalid parameter not satisfying: %@", @"_consumer"}];
 
     consumer = self->_consumer;
   }
 
-  v7 = [(MFBufferedDataConsumer *)consumer appendData:v5];
+  v7 = [(MFBufferedDataConsumer *)consumer appendData:dataCopy];
 
   return v7;
 }

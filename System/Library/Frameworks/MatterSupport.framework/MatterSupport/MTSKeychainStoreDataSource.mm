@@ -1,16 +1,16 @@
 @interface MTSKeychainStoreDataSource
-- (BOOL)addItemWithAttributes:(id)a3 error:(id *)a4;
-- (BOOL)removeItemsMatchingQuery:(id)a3 error:(id *)a4;
-- (BOOL)updateItemMatchingQuery:(id)a3 withAttributes:(id)a4 error:(id *)a5;
-- (id)resultMatchingQuery:(id)a3 error:(id *)a4;
+- (BOOL)addItemWithAttributes:(id)attributes error:(id *)error;
+- (BOOL)removeItemsMatchingQuery:(id)query error:(id *)error;
+- (BOOL)updateItemMatchingQuery:(id)query withAttributes:(id)attributes error:(id *)error;
+- (id)resultMatchingQuery:(id)query error:(id *)error;
 @end
 
 @implementation MTSKeychainStoreDataSource
 
-- (BOOL)removeItemsMatchingQuery:(id)a3 error:(id *)a4
+- (BOOL)removeItemsMatchingQuery:(id)query error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = SecItemDelete(a3);
+  v5 = SecItemDelete(query);
   v6 = v5;
   if (v5)
   {
@@ -20,9 +20,9 @@
     v13[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:v9];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:v9];
     }
   }
 
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (BOOL)updateItemMatchingQuery:(id)a3 withAttributes:(id)a4 error:(id *)a5
+- (BOOL)updateItemMatchingQuery:(id)query withAttributes:(id)attributes error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = SecItemUpdate(a3, a4);
+  v6 = SecItemUpdate(query, attributes);
   v7 = v6;
   if (v6)
   {
@@ -44,9 +44,9 @@
     v14[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v7 userInfo:v10];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v7 userInfo:v10];
     }
   }
 
@@ -55,10 +55,10 @@
   return result;
 }
 
-- (BOOL)addItemWithAttributes:(id)a3 error:(id *)a4
+- (BOOL)addItemWithAttributes:(id)attributes error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = SecItemAdd(a3, 0);
+  v5 = SecItemAdd(attributes, 0);
   v6 = v5;
   if (v5)
   {
@@ -68,9 +68,9 @@
     v13[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:v9];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:v9];
     }
   }
 
@@ -79,11 +79,11 @@
   return result;
 }
 
-- (id)resultMatchingQuery:(id)a3 error:(id *)a4
+- (id)resultMatchingQuery:(id)query error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   result = 0;
-  v5 = SecItemCopyMatching(a3, &result);
+  v5 = SecItemCopyMatching(query, &result);
   if (v5)
   {
     v6 = v5;
@@ -93,9 +93,9 @@
     v15[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:v9];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:v9];
     }
 
     v10 = 0;

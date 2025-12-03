@@ -1,39 +1,39 @@
 @interface JavaBeansPropertyChangeSupport
 + (void)initialize;
-- (BOOL)hasListenersWithNSString:(id)a3;
+- (BOOL)hasListenersWithNSString:(id)string;
 - (id)getPropertyChangeListeners;
-- (id)getPropertyChangeListenersWithNSString:(id)a3;
-- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3;
-- (void)addPropertyChangeListenerWithNSString:(id)a3 withJavaBeansPropertyChangeListener:(id)a4;
+- (id)getPropertyChangeListenersWithNSString:(id)string;
+- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener;
+- (void)addPropertyChangeListenerWithNSString:(id)string withJavaBeansPropertyChangeListener:(id)listener;
 - (void)dealloc;
-- (void)fireIndexedPropertyChangeWithNSString:(id)a3 withInt:(int)a4 withId:(id)a5 withId:(id)a6;
-- (void)firePropertyChangeWithJavaBeansPropertyChangeEvent:(id)a3;
-- (void)firePropertyChangeWithNSString:(id)a3 withBoolean:(BOOL)a4 withBoolean:(BOOL)a5;
-- (void)firePropertyChangeWithNSString:(id)a3 withId:(id)a4 withId:(id)a5;
-- (void)firePropertyChangeWithNSString:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3;
-- (void)removePropertyChangeListenerWithNSString:(id)a3 withJavaBeansPropertyChangeListener:(id)a4;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)fireIndexedPropertyChangeWithNSString:(id)string withInt:(int)int withId:(id)id withId:(id)withId;
+- (void)firePropertyChangeWithJavaBeansPropertyChangeEvent:(id)event;
+- (void)firePropertyChangeWithNSString:(id)string withBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean;
+- (void)firePropertyChangeWithNSString:(id)string withId:(id)id withId:(id)withId;
+- (void)firePropertyChangeWithNSString:(id)string withInt:(int)int withInt:(int)withInt;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener;
+- (void)removePropertyChangeListenerWithNSString:(id)string withJavaBeansPropertyChangeListener:(id)listener;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaBeansPropertyChangeSupport
 
-- (void)firePropertyChangeWithNSString:(id)a3 withId:(id)a4 withId:(id)a5
+- (void)firePropertyChangeWithNSString:(id)string withId:(id)id withId:(id)withId
 {
-  v6 = new_JavaBeansPropertyChangeEvent_initWithId_withNSString_withId_withId_(self->sourceBean_, a3, a4, a5);
+  v6 = new_JavaBeansPropertyChangeEvent_initWithId_withNSString_withId_withId_(self->sourceBean_, string, id, withId);
 
   [(JavaBeansPropertyChangeSupport *)self firePropertyChangeWithJavaBeansPropertyChangeEvent:v6];
 }
 
-- (void)fireIndexedPropertyChangeWithNSString:(id)a3 withInt:(int)a4 withId:(id)a5 withId:(id)a6
+- (void)fireIndexedPropertyChangeWithNSString:(id)string withInt:(int)int withId:(id)id withId:(id)withId
 {
-  v7 = new_JavaBeansIndexedPropertyChangeEvent_initWithId_withNSString_withId_withId_withInt_(self->sourceBean_, a3, a5, a6, a4);
+  v7 = new_JavaBeansIndexedPropertyChangeEvent_initWithId_withNSString_withId_withId_withInt_(self->sourceBean_, string, id, withId, int);
 
   [(JavaBeansPropertyChangeSupport *)self firePropertyChangeWithJavaBeansPropertyChangeEvent:v7];
 }
 
-- (void)removePropertyChangeListenerWithNSString:(id)a3 withJavaBeansPropertyChangeListener:(id)a4
+- (void)removePropertyChangeListenerWithNSString:(id)string withJavaBeansPropertyChangeListener:(id)listener
 {
   v13 = 0u;
   v14 = 0u;
@@ -60,7 +60,7 @@
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if (sub_1001CE0AC(a3, a4, v12))
+        if (sub_1001CE0AC(string, listener, v12))
         {
           [(JavaUtilList *)self->listeners_ removeWithId:v12, v13];
           return;
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)addPropertyChangeListenerWithNSString:(id)a3 withJavaBeansPropertyChangeListener:(id)a4
+- (void)addPropertyChangeListenerWithNSString:(id)string withJavaBeansPropertyChangeListener:(id)listener
 {
-  if (a3 && a4)
+  if (string && listener)
   {
     listeners = self->listeners_;
     if (!listeners)
@@ -88,13 +88,13 @@
       JreThrowNullPointerException();
     }
 
-    v5 = new_JavaBeansPropertyChangeListenerProxy_initWithNSString_withJavaBeansPropertyChangeListener_(a3, a4);
+    v5 = new_JavaBeansPropertyChangeListenerProxy_initWithNSString_withJavaBeansPropertyChangeListener_(string, listener);
 
     [(JavaUtilList *)listeners addWithId:v5];
   }
 }
 
-- (id)getPropertyChangeListenersWithNSString:(id)a3
+- (id)getPropertyChangeListenersWithNSString:(id)string
 {
   v5 = new_JavaUtilArrayList_init();
   v14 = 0u;
@@ -138,7 +138,7 @@ LABEL_16:
             JreThrowClassCastException();
           }
 
-          if (LibcoreUtilObjects_equalWithId_withId_(a3, [v12 getPropertyName]))
+          if (LibcoreUtilObjects_equalWithId_withId_(string, [v12 getPropertyName]))
           {
             [(JavaUtilArrayList *)v7 addWithId:v12];
           }
@@ -154,23 +154,23 @@ LABEL_16:
   return [(JavaUtilArrayList *)v7 toArrayWithNSObjectArray:[IOSObjectArray arrayWithLength:[(JavaUtilArrayList *)v7 size] type:JavaBeansPropertyChangeListener_class_()]];
 }
 
-- (void)firePropertyChangeWithNSString:(id)a3 withBoolean:(BOOL)a4 withBoolean:(BOOL)a5
+- (void)firePropertyChangeWithNSString:(id)string withBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean
 {
-  v8 = JavaLangBoolean_valueOfWithBoolean_(a4);
-  v9 = JavaLangBoolean_valueOfWithBoolean_(a5);
+  v8 = JavaLangBoolean_valueOfWithBoolean_(boolean);
+  v9 = JavaLangBoolean_valueOfWithBoolean_(withBoolean);
 
-  [(JavaBeansPropertyChangeSupport *)self firePropertyChangeWithNSString:a3 withId:v8 withId:v9];
+  [(JavaBeansPropertyChangeSupport *)self firePropertyChangeWithNSString:string withId:v8 withId:v9];
 }
 
-- (void)firePropertyChangeWithNSString:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)firePropertyChangeWithNSString:(id)string withInt:(int)int withInt:(int)withInt
 {
-  v8 = JavaLangInteger_valueOfWithInt_(a4);
-  v9 = JavaLangInteger_valueOfWithInt_(a5);
+  v8 = JavaLangInteger_valueOfWithInt_(int);
+  v9 = JavaLangInteger_valueOfWithInt_(withInt);
 
-  [(JavaBeansPropertyChangeSupport *)self firePropertyChangeWithNSString:a3 withId:v8 withId:v9];
+  [(JavaBeansPropertyChangeSupport *)self firePropertyChangeWithNSString:string withId:v8 withId:v9];
 }
 
-- (BOOL)hasListenersWithNSString:(id)a3
+- (BOOL)hasListenersWithNSString:(id)string
 {
   v11 = 0u;
   v12 = 0u;
@@ -215,7 +215,7 @@ LABEL_17:
           JreThrowClassCastException();
         }
 
-        if (LibcoreUtilObjects_equalWithId_withId_(a3, [v9 getPropertyName]))
+        if (LibcoreUtilObjects_equalWithId_withId_(string, [v9 getPropertyName]))
         {
 LABEL_14:
           LOBYTE(v5) = 1;
@@ -237,7 +237,7 @@ LABEL_14:
   return v5;
 }
 
-- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3
+- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener
 {
   v11 = 0u;
   v12 = 0u;
@@ -264,7 +264,7 @@ LABEL_14:
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
-        if (sub_1001CE0AC(0, a3, v10))
+        if (sub_1001CE0AC(0, listener, v10))
         {
           [(JavaUtilList *)self->listeners_ removeWithId:v10, v11];
           return;
@@ -282,9 +282,9 @@ LABEL_14:
   }
 }
 
-- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3
+- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener
 {
-  if (a3)
+  if (listener)
   {
     listeners = self->listeners_;
     if (!listeners)
@@ -309,7 +309,7 @@ LABEL_14:
   return [(JavaUtilList *)listeners toArrayWithNSObjectArray:v3];
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   v5 = new_JavaUtilHashtable_init();
   v34 = 0u;
@@ -323,7 +323,7 @@ LABEL_14:
   }
 
   v7 = v5;
-  v29 = a3;
+  streamCopy = stream;
   v8 = [(JavaUtilList *)listeners countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v8)
   {
@@ -388,7 +388,7 @@ LABEL_14:
     while (v9);
   }
 
-  if (!v29 || (v21 = [v29 putFields]) == 0)
+  if (!streamCopy || (v21 = [streamCopy putFields]) == 0)
   {
 LABEL_33:
     JreThrowNullPointerException();
@@ -397,7 +397,7 @@ LABEL_33:
   v22 = v21;
   [v21 putWithNSString:@"source" withId:self->sourceBean_];
   [v22 putWithNSString:@"children" withId:v7];
-  [v29 writeFields];
+  [streamCopy writeFields];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -420,7 +420,7 @@ LABEL_33:
         v28 = *(*(&v30 + 1) + 8 * j);
         if ([JavaIoSerializable_class_() isInstance:v28])
         {
-          [v29 writeObjectWithId:v28];
+          [streamCopy writeObjectWithId:v28];
         }
       }
 
@@ -430,25 +430,25 @@ LABEL_33:
     while (v25);
   }
 
-  [v29 writeObjectWithId:0];
+  [streamCopy writeObjectWithId:0];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_26;
   }
 
-  v5 = [a3 readFields];
-  if (!v5)
+  readFields = [stream readFields];
+  if (!readFields)
   {
     goto LABEL_26;
   }
 
-  v6 = v5;
-  v24 = a3;
-  JreStrongAssign(&self->sourceBean_, [v5 getWithNSString:@"source" withId:0]);
+  v6 = readFields;
+  streamCopy = stream;
+  JreStrongAssign(&self->sourceBean_, [readFields getWithNSString:@"source" withId:0]);
   v7 = new_JavaUtilConcurrentCopyOnWriteArrayList_init();
   JreStrongAssignAndConsume(&self->listeners_, v7);
   v8 = [v6 getWithNSString:@"children" withId:0];
@@ -468,15 +468,15 @@ LABEL_27:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v10 = [v8 entrySet];
-  if (!v10)
+  entrySet = [v8 entrySet];
+  if (!entrySet)
   {
 LABEL_26:
     JreThrowNullPointerException();
   }
 
-  v11 = v10;
-  v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v11 = entrySet;
+  v12 = [entrySet countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (!v12)
   {
     goto LABEL_22;
@@ -504,13 +504,13 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v16 = [v15 getValue];
-      if (!v16)
+      getValue = [v15 getValue];
+      if (!getValue)
       {
         goto LABEL_26;
       }
 
-      v17 = v16[2];
+      v17 = getValue[2];
       v18 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v18)
       {
@@ -542,33 +542,33 @@ LABEL_26:
 LABEL_22:
   while (1)
   {
-    v22 = [v24 readObject];
+    readObject = [streamCopy readObject];
     v23 = JavaBeansPropertyChangeListener_class_();
-    if (!v22)
+    if (!readObject)
     {
       break;
     }
 
-    if (([v23 isInstance:v22] & 1) == 0)
+    if (([v23 isInstance:readObject] & 1) == 0)
     {
       goto LABEL_27;
     }
 
-    [(JavaUtilList *)self->listeners_ addWithId:v22];
+    [(JavaUtilList *)self->listeners_ addWithId:readObject];
   }
 }
 
-- (void)firePropertyChangeWithJavaBeansPropertyChangeEvent:(id)a3
+- (void)firePropertyChangeWithJavaBeansPropertyChangeEvent:(id)event
 {
-  if (!a3)
+  if (!event)
   {
     goto LABEL_25;
   }
 
-  v5 = [a3 getPropertyName];
-  v6 = [a3 getOldValue];
-  v7 = [a3 getNewValue];
-  if (v7 && v6 && ([v7 isEqual:v6] & 1) != 0)
+  getPropertyName = [event getPropertyName];
+  getOldValue = [event getOldValue];
+  getNewValue = [event getNewValue];
+  if (getNewValue && getOldValue && ([getNewValue isEqual:getOldValue] & 1) != 0)
   {
     return;
   }
@@ -598,7 +598,7 @@ LABEL_25:
           objc_enumerationMutation(listeners);
         }
 
-        v13 = *(*(&v15 + 1) + 8 * i);
+        getListener = *(*(&v15 + 1) + 8 * i);
         while (1)
         {
           objc_opt_class();
@@ -608,21 +608,21 @@ LABEL_25:
           }
 
           objc_opt_class();
-          if (!v13)
+          if (!getListener)
           {
             goto LABEL_25;
           }
 
           if (objc_opt_isKindOfClass())
           {
-            if (!LibcoreUtilObjects_equalWithId_withId_([v13 getPropertyName], v5))
+            if (!LibcoreUtilObjects_equalWithId_withId_([getListener getPropertyName], getPropertyName))
             {
               goto LABEL_21;
             }
 
-            v13 = [v13 getListener];
+            getListener = [getListener getListener];
             v14 = JavaBeansPropertyChangeListener_class_();
-            if (!v13 || ([v14 isInstance:v13] & 1) != 0)
+            if (!getListener || ([v14 isInstance:getListener] & 1) != 0)
             {
               continue;
             }
@@ -631,12 +631,12 @@ LABEL_25:
           JreThrowClassCastException();
         }
 
-        if (!v13)
+        if (!getListener)
         {
           goto LABEL_25;
         }
 
-        [v13 propertyChangeWithJavaBeansPropertyChangeEvent:{a3, v15}];
+        [getListener propertyChangeWithJavaBeansPropertyChangeEvent:{event, v15}];
 LABEL_21:
         ;
       }
@@ -657,7 +657,7 @@ LABEL_21:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = NSObject_class_();
     v6[0] = new_JavaIoObjectStreamField_initWithNSString_withIOSClass_(@"source", v2);

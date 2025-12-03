@@ -1,26 +1,26 @@
 @interface PKFooterHyperlinkCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDirectionalEdgeInsets)edgeInsets;
-- (PKFooterHyperlinkCell)initWithCoder:(id)a3;
-- (PKFooterHyperlinkCell)initWithFrame:(CGRect)a3;
+- (PKFooterHyperlinkCell)initWithCoder:(id)coder;
+- (PKFooterHyperlinkCell)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_configureHyperlinkViewIfNecessary;
 - (void)layoutSubviews;
-- (void)setLinkTextColor:(id)a3;
-- (void)setSources:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setLinkTextColor:(id)color;
+- (void)setSources:(id)sources;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation PKFooterHyperlinkCell
 
-- (PKFooterHyperlinkCell)initWithCoder:(id)a3
+- (PKFooterHyperlinkCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKFooterHyperlinkCell;
-  v3 = [(PKFooterHyperlinkCell *)&v6 initWithCoder:a3];
+  v3 = [(PKFooterHyperlinkCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (PKFooterHyperlinkCell)initWithFrame:(CGRect)a3
+- (PKFooterHyperlinkCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKFooterHyperlinkCell;
-  v3 = [(PKFooterHyperlinkCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKFooterHyperlinkCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,9 +47,9 @@
 - (void)_commonInit
 {
   self->_textAlignment = 1;
-  v3 = [MEMORY[0x1E69DC888] linkColor];
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
   linkTextColor = self->_linkTextColor;
-  self->_linkTextColor = v3;
+  self->_linkTextColor = linkColor;
 
   v5 = PKTableViewCellTextInset();
   v6 = PKTableViewCellTextInset();
@@ -67,27 +67,27 @@
   v4.receiver = self;
   v4.super_class = PKFooterHyperlinkCell;
   [(PKFooterHyperlinkCell *)&v4 layoutSubviews];
-  v3 = [(PKFooterHyperlinkCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKFooterHyperlinkCell *)self contentView];
+  [contentView bounds];
   [(PKFooterHyperlinkCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKFooterHyperlinkCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKFooterHyperlinkCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = [(PKFooterHyperlinkCell *)self _shouldReverseLayoutDirection];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  _shouldReverseLayoutDirection = [(PKFooterHyperlinkCell *)self _shouldReverseLayoutDirection];
   p_edgeInsets = &self->_edgeInsets;
   v10 = 8;
-  if (v8)
+  if (_shouldReverseLayoutDirection)
   {
     v11 = 24;
   }
@@ -97,7 +97,7 @@
     v11 = 8;
   }
 
-  if (!v8)
+  if (!_shouldReverseLayoutDirection)
   {
     v10 = 24;
   }
@@ -108,7 +108,7 @@
   [(PKMultiHyperlinkView *)self->_hyperLinkView sizeThatFits:v12, height - v13];
   PKRectCenteredIntegralRect();
   v15 = v14;
-  if (!a4)
+  if (!layout)
   {
     [(PKMultiHyperlinkView *)self->_hyperLinkView setFrame:?];
   }
@@ -120,75 +120,75 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   text = self->_text;
-  v9 = v5;
-  v7 = text;
-  if (v7 == v9)
+  v9 = textCopy;
+  textCopy2 = text;
+  if (textCopy2 == v9)
   {
 
     goto LABEL_9;
   }
 
-  if (!v9 || !v7)
+  if (!v9 || !textCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NSString *)v9 isEqualToString:v7];
+  v8 = [(NSString *)v9 isEqualToString:textCopy2];
 
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     [(PKFooterHyperlinkCell *)self _configureHyperlinkViewIfNecessary];
   }
 
 LABEL_9:
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(PKFooterHyperlinkCell *)self _configureHyperlinkViewIfNecessary];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(PKFooterHyperlinkCell *)self _configureHyperlinkViewIfNecessary];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setLinkTextColor:(id)a3
+- (void)setLinkTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_linkTextColor != v5)
+  colorCopy = color;
+  if (self->_linkTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_linkTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_linkTextColor, color);
     [(PKFooterHyperlinkCell *)self _configureHyperlinkViewIfNecessary];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setSources:(id)a3
+- (void)setSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sources, a3);
+    objc_storeStrong(&self->_sources, sources);
     [(PKFooterHyperlinkCell *)self _configureHyperlinkViewIfNecessary];
   }
 }
@@ -202,8 +202,8 @@ LABEL_9:
     v5 = self->_hyperLinkView;
     self->_hyperLinkView = v4;
 
-    v6 = [(PKFooterHyperlinkCell *)self contentView];
-    [v6 addSubview:self->_hyperLinkView];
+    contentView = [(PKFooterHyperlinkCell *)self contentView];
+    [contentView addSubview:self->_hyperLinkView];
 
     hyperLinkView = self->_hyperLinkView;
   }

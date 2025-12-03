@@ -1,18 +1,18 @@
 @interface PIPortraitNode
-+ (id)vectorWithFloats:(id)a3;
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3;
++ (id)vectorWithFloats:(id)floats;
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data;
 - (NURenderNode)blurMap;
 - (NURenderNode)input;
-- (id)_evaluateImageProperties:(id *)a3;
+- (id)_evaluateImageProperties:(id *)properties;
 @end
 
 @implementation PIPortraitNode
 
-+ (id)vectorWithFloats:(id)a3
++ (id)vectorWithFloats:(id)floats
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 count];
+  floatsCopy = floats;
+  v4 = [floatsCopy count];
   if (v4 >= 0x20)
   {
     v5 = 32;
@@ -23,7 +23,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 subarrayWithRange:{0, v5}];
+  v6 = [floatsCopy subarrayWithRange:{0, v5}];
 
   v16 = 0u;
   v17 = 0u;
@@ -60,12 +60,12 @@
   return v14;
 }
 
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data
 {
-  v5 = [(PIPortraitNode *)self input];
-  v6 = [v5 canPropagateOriginalAuxiliaryData:a3];
+  input = [(PIPortraitNode *)self input];
+  v6 = [input canPropagateOriginalAuxiliaryData:data];
 
-  if (a3 == 7 && v6)
+  if (data == 7 && v6)
   {
     return ![(PIPortraitNode *)self shouldDisableGainMap];
   }
@@ -73,10 +73,10 @@
   return v6;
 }
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
-  v5 = [(PIPortraitNode *)self input];
-  v6 = [v5 imageProperties:a3];
+  input = [(PIPortraitNode *)self input];
+  v6 = [input imageProperties:properties];
 
   if (v6 && [(PIPortraitNode *)self shouldDisableGainMap])
   {
@@ -91,16 +91,16 @@
 
 - (NURenderNode)blurMap
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:@"inputBlurMap"];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:@"inputBlurMap"];
 
   return v3;
 }
 
 - (NURenderNode)input
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:@"inputImage"];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:@"inputImage"];
 
   return v3;
 }

@@ -1,23 +1,23 @@
 @interface MCStateHandler
-+ (void)addStateHandlerWithName:(const char *)a3 stateBlock:(id)a4;
++ (void)addStateHandlerWithName:(const char *)name stateBlock:(id)block;
 @end
 
 @implementation MCStateHandler
 
-+ (void)addStateHandlerWithName:(const char *)a3 stateBlock:(id)a4
++ (void)addStateHandlerWithName:(const char *)name stateBlock:(id)block
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   v6 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136446210;
-    v11 = a3;
+    nameCopy = name;
     _os_log_impl(&dword_1A795B000, v6, OS_LOG_TYPE_DEBUG, "Adding os_state handler: %{public}s", buf, 0xCu);
   }
 
   v7 = dispatch_get_global_queue(0, 0);
-  v8 = v5;
+  v8 = blockCopy;
   os_state_add_handler();
 
   v9 = *MEMORY[0x1E69E9840];

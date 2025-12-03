@@ -1,44 +1,44 @@
 @interface ICLocalFileWrapper
-- (BOOL)matchesContentsOfURL:(id)a3;
-- (BOOL)readFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 originalContentsURL:(id)a5 error:(id *)a6;
-- (ICLocalFileWrapper)initWithCoder:(id)a3;
-- (ICLocalFileWrapper)initWithLocalURL:(id)a3;
-- (id)addFileWrapper:(id)a3;
-- (id)addRegularFileWithContents:(id)a3 preferredFilename:(id)a4;
-- (id)dataWithError:(id *)a3;
+- (BOOL)matchesContentsOfURL:(id)l;
+- (BOOL)readFromURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BOOL)writeToURL:(id)l options:(unint64_t)options originalContentsURL:(id)rL error:(id *)error;
+- (ICLocalFileWrapper)initWithCoder:(id)coder;
+- (ICLocalFileWrapper)initWithLocalURL:(id)l;
+- (id)addFileWrapper:(id)wrapper;
+- (id)addRegularFileWithContents:(id)contents preferredFilename:(id)filename;
+- (id)dataWithError:(id *)error;
 - (id)filename;
-- (id)keyForFileWrapper:(id)a3;
+- (id)keyForFileWrapper:(id)wrapper;
 - (id)regularFileContents;
 - (id)serializedRepresentation;
 - (id)symbolicLinkDestinationURL;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeFileWrapper:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeFileWrapper:(id)wrapper;
 @end
 
 @implementation ICLocalFileWrapper
 
-- (ICLocalFileWrapper)initWithLocalURL:(id)a3
+- (ICLocalFileWrapper)initWithLocalURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = ICLocalFileWrapper;
   v5 = [(ICLocalFileWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICLocalFileWrapper *)v5 setLocalURL:v4];
+    [(ICLocalFileWrapper *)v5 setLocalURL:lCopy];
   }
 
   return v6;
 }
 
-- (ICLocalFileWrapper)initWithCoder:(id)a3
+- (ICLocalFileWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localURL"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localURL"];
   }
 
   else
@@ -51,32 +51,32 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v4 = [(ICLocalFileWrapper *)self localURL];
-    [v5 encodeObject:v4 forKey:@"localURL"];
+    localURL = [(ICLocalFileWrapper *)self localURL];
+    [coderCopy encodeObject:localURL forKey:@"localURL"];
   }
 }
 
 - (id)filename
 {
-  v2 = [(ICLocalFileWrapper *)self localURL];
-  v3 = [v2 lastPathComponent];
+  localURL = [(ICLocalFileWrapper *)self localURL];
+  lastPathComponent = [localURL lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 originalContentsURL:(id)a5 error:(id *)a6
+- (BOOL)writeToURL:(id)l options:(unint64_t)options originalContentsURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = [(ICLocalFileWrapper *)self dataWithError:a6];
+  lCopy = l;
+  v9 = [(ICLocalFileWrapper *)self dataWithError:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 writeToURL:v8 options:0 error:a6];
+    v11 = [v9 writeToURL:lCopy options:0 error:error];
   }
 
   else
@@ -101,15 +101,15 @@
   return v2;
 }
 
-- (id)dataWithError:(id *)a3
+- (id)dataWithError:(id *)error
 {
-  v5 = [(ICLocalFileWrapper *)self cachedData];
+  cachedData = [(ICLocalFileWrapper *)self cachedData];
 
-  if (!v5)
+  if (!cachedData)
   {
     v6 = MEMORY[0x277CBEA90];
-    v7 = [(ICLocalFileWrapper *)self localURL];
-    v8 = [v6 dataWithContentsOfURL:v7 options:0 error:a3];
+    localURL = [(ICLocalFileWrapper *)self localURL];
+    v8 = [v6 dataWithContentsOfURL:localURL options:0 error:error];
     [(ICLocalFileWrapper *)self setCachedData:v8];
   }
 
@@ -127,7 +127,7 @@
   return 0;
 }
 
-- (BOOL)matchesContentsOfURL:(id)a3
+- (BOOL)matchesContentsOfURL:(id)l
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -138,7 +138,7 @@
   return 0;
 }
 
-- (BOOL)readFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)readFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -149,7 +149,7 @@
   return 0;
 }
 
-- (id)addFileWrapper:(id)a3
+- (id)addFileWrapper:(id)wrapper
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -160,7 +160,7 @@
   return 0;
 }
 
-- (void)removeFileWrapper:(id)a3
+- (void)removeFileWrapper:(id)wrapper
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -169,7 +169,7 @@
   [v3 raise:v4 format:{@"Cannot call %s on %@", "-[ICLocalFileWrapper removeFileWrapper:]", v6}];
 }
 
-- (id)addRegularFileWithContents:(id)a3 preferredFilename:(id)a4
+- (id)addRegularFileWithContents:(id)contents preferredFilename:(id)filename
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -180,7 +180,7 @@
   return 0;
 }
 
-- (id)keyForFileWrapper:(id)a3
+- (id)keyForFileWrapper:(id)wrapper
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];

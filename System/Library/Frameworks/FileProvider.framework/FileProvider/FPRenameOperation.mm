@@ -1,69 +1,69 @@
 @interface FPRenameOperation
-- (FPRenameOperation)initWithItem:(id)a3 newDisplayName:(id)a4;
-- (FPRenameOperation)initWithItem:(id)a3 newFileName:(id)a4;
-- (FPRenameOperation)initWithItem:(id)a3 newNameInternal:(id)a4;
+- (FPRenameOperation)initWithItem:(id)item newDisplayName:(id)name;
+- (FPRenameOperation)initWithItem:(id)item newFileName:(id)name;
+- (FPRenameOperation)initWithItem:(id)item newNameInternal:(id)internal;
 - (id)fp_prettyDescription;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPRenameOperation
 
-- (FPRenameOperation)initWithItem:(id)a3 newFileName:(id)a4
+- (FPRenameOperation)initWithItem:(id)item newFileName:(id)name
 {
-  v6 = a3;
-  v7 = [a4 fp_filenameFromDisplayNameWithExtension:0];
-  v8 = [(FPRenameOperation *)self initWithItem:v6 newNameInternal:v7];
+  itemCopy = item;
+  v7 = [name fp_filenameFromDisplayNameWithExtension:0];
+  v8 = [(FPRenameOperation *)self initWithItem:itemCopy newNameInternal:v7];
 
   return v8;
 }
 
-- (FPRenameOperation)initWithItem:(id)a3 newDisplayName:(id)a4
+- (FPRenameOperation)initWithItem:(id)item newDisplayName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFolder])
+  itemCopy = item;
+  nameCopy = name;
+  if ([itemCopy isFolder])
   {
-    v8 = 0;
+    pathExtension = 0;
   }
 
   else
   {
-    v9 = [v6 filename];
-    v8 = [v9 pathExtension];
+    filename = [itemCopy filename];
+    pathExtension = [filename pathExtension];
   }
 
-  v10 = [v7 fp_filenameFromDisplayNameWithExtension:v8];
-  v11 = [(FPRenameOperation *)self initWithItem:v6 newNameInternal:v10];
+  v10 = [nameCopy fp_filenameFromDisplayNameWithExtension:pathExtension];
+  v11 = [(FPRenameOperation *)self initWithItem:itemCopy newNameInternal:v10];
 
   return v11;
 }
 
-- (FPRenameOperation)initWithItem:(id)a3 newNameInternal:(id)a4
+- (FPRenameOperation)initWithItem:(id)item newNameInternal:(id)internal
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 providerDomainID];
+  itemCopy = item;
+  internalCopy = internal;
+  providerDomainID = [itemCopy providerDomainID];
   v20.receiver = self;
   v20.super_class = FPRenameOperation;
-  v10 = [(FPActionOperation *)&v20 initWithProvider:v9 action:@"Rename"];
+  v10 = [(FPActionOperation *)&v20 initWithProvider:providerDomainID action:@"Rename"];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_item, a3);
-    objc_storeStrong(&v10->_newName, a4);
-    v21[0] = v7;
+    objc_storeStrong(&v10->_item, item);
+    objc_storeStrong(&v10->_newName, internal);
+    v21[0] = itemCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     [(FPActionOperation *)v10 setSourceItemsToPreflight:v11];
 
     [(FPActionOperation *)v10 setSetupRemoteOperationService:1];
     v12 = *MEMORY[0x1E6982D60];
     v13 = [FPItem alloc];
-    v14 = [v7 providerDomainID];
-    v15 = [v7 parentItemIdentifier];
-    v16 = [(FPItem *)v13 initWithProviderDomainID:v14 itemIdentifier:@"fakeIdentifier" parentItemIdentifier:v15 filename:v8 contentType:v12];
+    providerDomainID2 = [itemCopy providerDomainID];
+    parentItemIdentifier = [itemCopy parentItemIdentifier];
+    v16 = [(FPItem *)v13 initWithProviderDomainID:providerDomainID2 itemIdentifier:@"fakeIdentifier" parentItemIdentifier:parentItemIdentifier filename:internalCopy contentType:v12];
 
     v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:&unk_1F1FC9C38];
     [(FPActionOperation *)v10 setDestinationItemKeysAllowList:v17];
@@ -77,15 +77,15 @@
 
 - (void)actionMain
 {
-  v3 = [(FPItem *)self->_item strippedCopy];
-  [v3 setFilename:self->_newName];
-  v4 = [(FPActionOperation *)self remoteServiceProxy];
+  strippedCopy = [(FPItem *)self->_item strippedCopy];
+  [strippedCopy setFilename:self->_newName];
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __31__FPRenameOperation_actionMain__block_invoke;
   v5[3] = &unk_1E793B0E0;
   v5[4] = self;
-  [v4 singleItemChange:v3 changedFields:2 bounce:0 completionHandler:v5];
+  [remoteServiceProxy singleItemChange:strippedCopy changedFields:2 bounce:0 completionHandler:v5];
 }
 
 void __31__FPRenameOperation_actionMain__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -127,27 +127,27 @@ LABEL_9:
   [*(a1 + 32) completedWithResult:v5 error:v6];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPActionOperation *)self stitcher];
-  [v8 finishWithItem:v7 error:v6];
+  errorCopy = error;
+  resultCopy = result;
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItem:resultCopy error:errorCopy];
 
-  v9 = [v6 fp_annotatedErrorWithItem:self->_item variant:@"Rename"];
+  v9 = [errorCopy fp_annotatedErrorWithItem:self->_item variant:@"Rename"];
 
   v10.receiver = self;
   v10.super_class = FPRenameOperation;
-  [(FPActionOperation *)&v10 finishWithResult:v7 error:v9];
+  [(FPActionOperation *)&v10 finishWithResult:resultCopy error:v9];
 }
 
 - (void)presendNotifications
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
+  stitcher2 = [(FPActionOperation *)self stitcher];
   v9[0] = self->_item;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -155,10 +155,10 @@ LABEL_9:
   v8[2] = __41__FPRenameOperation_presendNotifications__block_invoke;
   v8[3] = &unk_1E793CA10;
   v8[4] = self;
-  [v4 transformItems:v5 handler:v8];
+  [stitcher2 transformItems:v5 handler:v8];
 
-  v6 = [(FPActionOperation *)self stitcher];
-  [v6 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -176,8 +176,8 @@ void __41__FPRenameOperation_presendNotifications__block_invoke(uint64_t a1, voi
 - (id)fp_prettyDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FPItem *)self->_item itemIdentifier];
-  v5 = [v3 stringWithFormat:@"rename %@ to %@", v4, self->_newName];
+  itemIdentifier = [(FPItem *)self->_item itemIdentifier];
+  v5 = [v3 stringWithFormat:@"rename %@ to %@", itemIdentifier, self->_newName];
 
   return v5;
 }

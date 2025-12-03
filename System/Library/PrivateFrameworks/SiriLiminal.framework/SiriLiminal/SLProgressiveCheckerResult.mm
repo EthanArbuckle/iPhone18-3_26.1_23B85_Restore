@@ -1,22 +1,22 @@
 @interface SLProgressiveCheckerResult
-- (SLProgressiveCheckerResult)initWithScore:(float)a3 ofType:(unint64_t)a4 analyzedSamples:(unint64_t)a5 detailedResults:(id)a6;
+- (SLProgressiveCheckerResult)initWithScore:(float)score ofType:(unint64_t)type analyzedSamples:(unint64_t)samples detailedResults:(id)results;
 @end
 
 @implementation SLProgressiveCheckerResult
 
-- (SLProgressiveCheckerResult)initWithScore:(float)a3 ofType:(unint64_t)a4 analyzedSamples:(unint64_t)a5 detailedResults:(id)a6
+- (SLProgressiveCheckerResult)initWithScore:(float)score ofType:(unint64_t)type analyzedSamples:(unint64_t)samples detailedResults:(id)results
 {
-  v11 = a6;
+  resultsCopy = results;
   v15.receiver = self;
   v15.super_class = SLProgressiveCheckerResult;
   v12 = [(SLProgressiveCheckerResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_score = a3;
-    v12->_analyzedSamples = a5;
-    objc_storeStrong(&v12->_detailedResult, a6);
-    v13->_resultType = a4;
+    v12->_score = score;
+    v12->_analyzedSamples = samples;
+    objc_storeStrong(&v12->_detailedResult, results);
+    v13->_resultType = type;
   }
 
   return v13;

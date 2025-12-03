@@ -1,15 +1,15 @@
 @interface PGGraphSubmeaningOfEdge
 + (id)filter;
-- (id)initFromSubmeaningNode:(id)a3 toParentMeaningNode:(id)a4;
+- (id)initFromSubmeaningNode:(id)node toParentMeaningNode:(id)meaningNode;
 @end
 
 @implementation PGGraphSubmeaningOfEdge
 
-- (id)initFromSubmeaningNode:(id)a3 toParentMeaningNode:(id)a4
+- (id)initFromSubmeaningNode:(id)node toParentMeaningNode:(id)meaningNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphSubmeaningOfEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:meaningNode];
 }
 
 + (id)filter

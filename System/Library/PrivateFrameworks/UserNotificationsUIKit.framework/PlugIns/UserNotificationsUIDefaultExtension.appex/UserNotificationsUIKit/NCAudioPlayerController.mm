@@ -2,26 +2,26 @@
 + (void)initialize;
 - (BOOL)shouldEnableProximityMonitoring;
 - (BOOL)updateProximityMonitoring;
-- (NCAudioPlayerController)initWithPlayer:(id)a3;
-- (NCAudioPlayerController)initWithURL:(id)a3;
+- (NCAudioPlayerController)initWithPlayer:(id)player;
+- (NCAudioPlayerController)initWithURL:(id)l;
 - (NCAudioPlayerControllerDelegate)delegate;
 - (double)duration;
 - (float)currentTime;
 - (void)activateAudioSession;
 - (void)deactivateAudioSession;
 - (void)dealloc;
-- (void)handleAudioSessionInterruptionNotification:(id)a3;
-- (void)handleAudioSessionRouteChangeNotification:(id)a3;
-- (void)handlePlayerItemDidPlayToEndTimeNotification:(id)a3;
-- (void)handlePlayerItemFailedToPlayToEndTimeNotification:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleAudioSessionInterruptionNotification:(id)notification;
+- (void)handleAudioSessionRouteChangeNotification:(id)notification;
+- (void)handlePlayerItemDidPlayToEndTimeNotification:(id)notification;
+- (void)handlePlayerItemFailedToPlayToEndTimeNotification:(id)notification;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)seekToTime:(float)a3;
-- (void)setAudioSessionActive:(BOOL)a3;
-- (void)setPlaybackState:(int64_t)a3;
-- (void)setRate:(float)a3;
-- (void)setStatus:(int64_t)a3;
+- (void)seekToTime:(float)time;
+- (void)setAudioSessionActive:(BOOL)active;
+- (void)setPlaybackState:(int64_t)state;
+- (void)setRate:(float)rate;
+- (void)setStatus:(int64_t)status;
 - (void)stop;
 @end
 
@@ -35,9 +35,9 @@
   }
 }
 
-- (NCAudioPlayerController)initWithURL:(id)a3
+- (NCAudioPlayerController)initWithURL:(id)l
 {
-  v4 = [AVPlayer playerWithURL:a3];
+  v4 = [AVPlayer playerWithURL:l];
   [v4 setActionAtItemEnd:1];
   [v4 setAllowsExternalPlayback:0];
   v5 = [(NCAudioPlayerController *)self initWithPlayer:v4];
@@ -45,9 +45,9 @@
   return v5;
 }
 
-- (NCAudioPlayerController)initWithPlayer:(id)a3
+- (NCAudioPlayerController)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v23.receiver = self;
   v23.super_class = NCAudioPlayerController;
   v6 = [(NCAudioPlayerController *)&v23 init];
@@ -55,11 +55,11 @@
   if (v6)
   {
     v6->_audioSessionActive = 0;
-    objc_storeStrong(&v6->_player, a3);
-    v7->_playbackState = [v5 timeControlStatus];
-    [v5 rate];
+    objc_storeStrong(&v6->_player, player);
+    v7->_playbackState = [playerCopy timeControlStatus];
+    [playerCopy rate];
     v7->_rate = v8;
-    v7->_status = [v5 status];
+    v7->_status = [playerCopy status];
     objc_initWeak(&location, v7);
     player = v7->_player;
     CMTimeMake(&v21, 1, 100);
@@ -77,9 +77,9 @@
     v14 = NSStringFromSelector("status");
     [(AVPlayer *)v13 addObserver:v7 forKeyPath:v14 options:0 context:&off_10000C418];
 
-    v15 = [(AVPlayer *)v7->_player currentItem];
+    currentItem = [(AVPlayer *)v7->_player currentItem];
     v16 = NSStringFromSelector("duration");
-    [v15 addObserver:v7 forKeyPath:v16 options:0 context:&off_10000C418];
+    [currentItem addObserver:v7 forKeyPath:v16 options:0 context:&off_10000C418];
 
     v17 = +[NSNotificationCenter defaultCenter];
     [v17 addObserver:v7 selector:"handlePlayerItemDidPlayToEndTimeNotification:" name:AVPlayerItemDidPlayToEndTimeNotification object:0];
@@ -103,9 +103,9 @@
   v6 = NSStringFromSelector("status");
   [(AVPlayer *)v5 removeObserver:self forKeyPath:v6 context:&off_10000C418];
 
-  v7 = [(AVPlayer *)self->_player currentItem];
+  currentItem = [(AVPlayer *)self->_player currentItem];
   v8 = NSStringFromSelector("duration");
-  [v7 removeObserver:self forKeyPath:v8 context:&off_10000C418];
+  [currentItem removeObserver:self forKeyPath:v8 context:&off_10000C418];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 removeObserver:self];
@@ -118,11 +118,11 @@
 - (float)currentTime
 {
   memset(&v6, 0, sizeof(v6));
-  v2 = [(NCAudioPlayerController *)self player];
-  v3 = v2;
-  if (v2)
+  player = [(NCAudioPlayerController *)self player];
+  v3 = player;
+  if (player)
   {
-    [v2 currentTime];
+    [player currentTime];
   }
 
   else
@@ -137,12 +137,12 @@
 - (double)duration
 {
   v7 = kCMTimeIndefinite;
-  v2 = [(NCAudioPlayerController *)self player];
-  v3 = [v2 currentItem];
+  player = [(NCAudioPlayerController *)self player];
+  currentItem = [player currentItem];
 
-  if (v3)
+  if (currentItem)
   {
-    [v3 duration];
+    [currentItem duration];
   }
 
   v6 = v7;
@@ -153,8 +153,8 @@
 
 - (void)pause
 {
-  v2 = [(NCAudioPlayerController *)self player];
-  [v2 pause];
+  player = [(NCAudioPlayerController *)self player];
+  [player pause];
 }
 
 - (void)play
@@ -166,20 +166,20 @@
 
   if ([(NCAudioPlayerController *)self isAudioSessionActive])
   {
-    v3 = [(NCAudioPlayerController *)self player];
-    [v3 play];
+    player = [(NCAudioPlayerController *)self player];
+    [player play];
   }
 }
 
 - (void)stop
 {
-  v3 = [(NCAudioPlayerController *)self player];
-  [v3 pause];
+  player = [(NCAudioPlayerController *)self player];
+  [player pause];
 
-  v4 = [(NCAudioPlayerController *)self player];
+  player2 = [(NCAudioPlayerController *)self player];
   v5 = *&kCMTimeZero.value;
   epoch = kCMTimeZero.epoch;
-  [v4 seekToTime:&v5];
+  [player2 seekToTime:&v5];
 
   if ([(NCAudioPlayerController *)self isAudioSessionActive])
   {
@@ -187,92 +187,92 @@
   }
 }
 
-- (void)seekToTime:(float)a3
+- (void)seekToTime:(float)time
 {
-  v5 = [(NCAudioPlayerController *)self delegate];
+  delegate = [(NCAudioPlayerController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    *&v6 = a3;
-    [v5 playerController:self willSeekToTime:v6];
+    *&v6 = time;
+    [delegate playerController:self willSeekToTime:v6];
   }
 
   memset(&v10, 0, sizeof(v10));
-  CMTimeMakeWithSeconds(&v10, a3, 1);
-  v7 = [(NCAudioPlayerController *)self player];
+  CMTimeMakeWithSeconds(&v10, time, 1);
+  player = [(NCAudioPlayerController *)self player];
   v9 = v10;
-  [v7 seekToTime:&v9];
+  [player seekToTime:&v9];
 
   if (objc_opt_respondsToSelector())
   {
-    *&v8 = a3;
-    [v5 playerController:self didSeekToTime:v8];
+    *&v8 = time;
+    [delegate playerController:self didSeekToTime:v8];
   }
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
-  if (self->_playbackState != a3)
+  if (self->_playbackState != state)
   {
-    v6 = [(NCAudioPlayerController *)self delegate];
+    delegate = [(NCAudioPlayerController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 playerController:self willChangeToPlaybackState:a3];
+      [delegate playerController:self willChangeToPlaybackState:state];
     }
 
-    self->_playbackState = a3;
+    self->_playbackState = state;
     if (objc_opt_respondsToSelector())
     {
-      [v6 playerController:self didChangeToPlaybackState:a3];
-    }
-  }
-}
-
-- (void)setRate:(float)a3
-{
-  if (self->_rate != a3)
-  {
-    v8 = [(NCAudioPlayerController *)self delegate];
-    if (objc_opt_respondsToSelector())
-    {
-      *&v5 = a3;
-      [v8 playerController:self willChangeToRate:v5];
-    }
-
-    self->_rate = a3;
-    if (objc_opt_respondsToSelector())
-    {
-      *&v6 = a3;
-      [v8 playerController:self didChangeToRate:v6];
-    }
-
-    v7 = [(NCAudioPlayerController *)self player];
-    -[NCAudioPlayerController setTimeControlStatus:](self, "setTimeControlStatus:", [v7 timeControlStatus]);
-  }
-}
-
-- (void)setStatus:(int64_t)a3
-{
-  if (self->_status != a3)
-  {
-    v6 = [(NCAudioPlayerController *)self delegate];
-    if (objc_opt_respondsToSelector())
-    {
-      [v6 playerController:self willChangeToStatus:a3];
-    }
-
-    self->_status = a3;
-    if (objc_opt_respondsToSelector())
-    {
-      [v6 playerController:self didChangeToStatus:a3];
+      [delegate playerController:self didChangeToPlaybackState:state];
     }
   }
 }
 
-- (void)setAudioSessionActive:(BOOL)a3
+- (void)setRate:(float)rate
 {
-  if (self->_audioSessionActive != a3)
+  if (self->_rate != rate)
   {
-    self->_audioSessionActive = a3;
+    delegate = [(NCAudioPlayerController *)self delegate];
+    if (objc_opt_respondsToSelector())
+    {
+      *&v5 = rate;
+      [delegate playerController:self willChangeToRate:v5];
+    }
+
+    self->_rate = rate;
+    if (objc_opt_respondsToSelector())
+    {
+      *&v6 = rate;
+      [delegate playerController:self didChangeToRate:v6];
+    }
+
+    player = [(NCAudioPlayerController *)self player];
+    -[NCAudioPlayerController setTimeControlStatus:](self, "setTimeControlStatus:", [player timeControlStatus]);
+  }
+}
+
+- (void)setStatus:(int64_t)status
+{
+  if (self->_status != status)
+  {
+    delegate = [(NCAudioPlayerController *)self delegate];
+    if (objc_opt_respondsToSelector())
+    {
+      [delegate playerController:self willChangeToStatus:status];
+    }
+
+    self->_status = status;
+    if (objc_opt_respondsToSelector())
+    {
+      [delegate playerController:self didChangeToStatus:status];
+    }
+  }
+}
+
+- (void)setAudioSessionActive:(BOOL)active
+{
+  if (self->_audioSessionActive != active)
+  {
+    self->_audioSessionActive = active;
     v5 = +[NSNotificationCenter defaultCenter];
     if (self->_audioSessionActive)
     {
@@ -298,8 +298,8 @@
   {
     v3 = +[AVAudioSession sharedInstance];
     v4 = AVAudioSessionCategoryVoiceMail;
-    v5 = [v3 category];
-    v6 = [v5 isEqualToString:v4];
+    category = [v3 category];
+    v6 = [category isEqualToString:v4];
 
     if ((v6 & 1) == 0)
     {
@@ -320,8 +320,8 @@
       }
     }
 
-    v17 = [v3 category];
-    v18 = [v17 isEqualToString:v4];
+    category2 = [v3 category];
+    v18 = [category2 isEqualToString:v4];
 
     if (v18)
     {
@@ -373,23 +373,23 @@
 
 - (BOOL)shouldEnableProximityMonitoring
 {
-  v2 = [(NCAudioPlayerController *)self player];
-  v3 = [v2 timeControlStatus];
+  player = [(NCAudioPlayerController *)self player];
+  timeControlStatus = [player timeControlStatus];
 
-  if ((v3 - 1) > 1)
+  if ((timeControlStatus - 1) > 1)
   {
     return 0;
   }
 
   v4 = +[AVAudioSession sharedInstance];
-  v5 = [v4 currentRoute];
-  v6 = [v5 outputs];
+  currentRoute = [v4 currentRoute];
+  outputs = [currentRoute outputs];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = outputs;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -405,13 +405,13 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 portType];
-        v14 = [AVAudioSessionPortBuiltInReceiver isEqualToString:v13];
+        portType = [v12 portType];
+        v14 = [AVAudioSessionPortBuiltInReceiver isEqualToString:portType];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v12 portType];
-          v16 = [AVAudioSessionPortBuiltInSpeaker isEqualToString:v15];
+          portType2 = [v12 portType];
+          v16 = [AVAudioSessionPortBuiltInSpeaker isEqualToString:portType2];
 
           if (!v16 || !UIAccessibilityIsVoiceOverRunning())
           {
@@ -441,25 +441,25 @@ LABEL_15:
 
 - (BOOL)updateProximityMonitoring
 {
-  v2 = [(NCAudioPlayerController *)self shouldEnableProximityMonitoring];
+  shouldEnableProximityMonitoring = [(NCAudioPlayerController *)self shouldEnableProximityMonitoring];
   v3 = +[UIDevice currentDevice];
-  [v3 setProximityMonitoringEnabled:v2];
-  LOBYTE(v2) = [v3 isProximityMonitoringEnabled];
+  [v3 setProximityMonitoringEnabled:shouldEnableProximityMonitoring];
+  LOBYTE(shouldEnableProximityMonitoring) = [v3 isProximityMonitoringEnabled];
 
-  return v2;
+  return shouldEnableProximityMonitoring;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v29 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a6 == &off_10000C418)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = changeCopy;
+  if (context == &off_10000C418)
   {
-    if (v11)
+    if (changeCopy)
     {
-      v13 = [v11 objectForKeyedSubscript:NSKeyValueChangeNotificationIsPriorKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNotificationIsPriorKey];
       objc_opt_class();
       v14 = (objc_opt_isKindOfClass() & 1) != 0 ? [&__kCFBooleanTrue isEqualToNumber:v13] : 0;
     }
@@ -469,24 +469,24 @@ LABEL_15:
       v14 = 0;
     }
 
-    if (v29)
+    if (pathCopy)
     {
-      v15 = [v29 length];
-      if (v10)
+      v15 = [pathCopy length];
+      if (objectCopy)
       {
         if (v15)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = v10;
-            v17 = [(NCAudioPlayerController *)self player];
-            v18 = [v16 isEqual:v17];
+            v16 = objectCopy;
+            player = [(NCAudioPlayerController *)self player];
+            v18 = [v16 isEqual:player];
 
             if (v18)
             {
               v19 = NSStringFromSelector("rate");
-              v20 = [v29 isEqualToString:v19];
+              v20 = [pathCopy isEqualToString:v19];
 
               if (v20)
               {
@@ -501,7 +501,7 @@ LABEL_15:
               else
               {
                 v27 = NSStringFromSelector("status");
-                v28 = [v29 isEqualToString:v27];
+                v28 = [pathCopy isEqualToString:v27];
 
                 if (!(v14 & 1 | ((v28 & 1) == 0)))
                 {
@@ -519,32 +519,32 @@ LABEL_15:
               goto LABEL_2;
             }
 
-            v21 = v10;
-            v22 = [(NCAudioPlayerController *)self player];
-            v23 = [v22 currentItem];
-            LODWORD(v21) = [v21 isEqual:v23];
+            v21 = objectCopy;
+            player2 = [(NCAudioPlayerController *)self player];
+            currentItem = [player2 currentItem];
+            LODWORD(v21) = [v21 isEqual:currentItem];
 
             if (v21)
             {
               v24 = NSStringFromSelector("duration");
-              v25 = [v29 isEqualToString:v24];
+              v25 = [pathCopy isEqualToString:v24];
 
               if (v25)
               {
-                v26 = [(NCAudioPlayerController *)self delegate];
+                delegate = [(NCAudioPlayerController *)self delegate];
                 if (v14)
                 {
                   if (objc_opt_respondsToSelector())
                   {
                     [(NCAudioPlayerController *)self duration];
-                    [v26 playerController:self willChangeToDuration:?];
+                    [delegate playerController:self willChangeToDuration:?];
                   }
                 }
 
                 else if (objc_opt_respondsToSelector())
                 {
                   [(NCAudioPlayerController *)self duration];
-                  [v26 playerController:self didChangeToDuration:?];
+                  [delegate playerController:self didChangeToDuration:?];
                 }
               }
             }
@@ -557,32 +557,32 @@ LABEL_15:
 LABEL_2:
 }
 
-- (void)handleAudioSessionInterruptionNotification:(id)a3
+- (void)handleAudioSessionInterruptionNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [notification userInfo];
+  if (userInfo)
   {
-    v9 = v4;
-    v5 = [v4 objectForKeyedSubscript:AVAudioSessionInterruptionTypeKey];
+    v9 = userInfo;
+    v5 = [userInfo objectForKeyedSubscript:AVAudioSessionInterruptionTypeKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 unsignedIntegerValue];
-      if (v6 == 1)
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
+      if (unsignedIntegerValue == 1)
       {
         [(NCAudioPlayerController *)self pause];
         [(NCAudioPlayerController *)self deactivateAudioSession];
       }
 
-      else if (!v6)
+      else if (!unsignedIntegerValue)
       {
         v7 = [v9 objectForKeyedSubscript:AVAudioSessionInterruptionOptionKey];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-          if (v8 == 1)
+          if (unsignedIntegerValue2 == 1)
           {
             [(NCAudioPlayerController *)self play];
           }
@@ -594,61 +594,61 @@ LABEL_2:
       }
     }
 
-    v4 = v9;
+    userInfo = v9;
   }
 }
 
-- (void)handleAudioSessionRouteChangeNotification:(id)a3
+- (void)handleAudioSessionRouteChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [notification userInfo];
+  if (userInfo)
   {
-    v6 = v4;
-    v5 = [v4 objectForKeyedSubscript:AVAudioSessionRouteChangeReasonKey];
+    v6 = userInfo;
+    v5 = [userInfo objectForKeyedSubscript:AVAudioSessionRouteChangeReasonKey];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 unsignedIntegerValue] - 1 <= 3)
     {
       [(NCAudioPlayerController *)self updateProximityMonitoring];
     }
 
-    v4 = v6;
+    userInfo = v6;
   }
 }
 
-- (void)handlePlayerItemDidPlayToEndTimeNotification:(id)a3
+- (void)handlePlayerItemDidPlayToEndTimeNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [notification object];
+  if (object)
   {
-    v7 = v4;
-    v5 = [(NCAudioPlayerController *)self player];
-    v6 = [v5 currentItem];
+    v7 = object;
+    player = [(NCAudioPlayerController *)self player];
+    currentItem = [player currentItem];
 
-    v4 = v7;
-    if (v7 == v6)
+    object = v7;
+    if (v7 == currentItem)
     {
       [(NCAudioPlayerController *)self stop];
-      v4 = v7;
+      object = v7;
     }
   }
 }
 
-- (void)handlePlayerItemFailedToPlayToEndTimeNotification:(id)a3
+- (void)handlePlayerItemFailedToPlayToEndTimeNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [v10 object];
-  if (v4)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if (object)
   {
-    v5 = [(NCAudioPlayerController *)self player];
-    v6 = [v5 currentItem];
+    player = [(NCAudioPlayerController *)self player];
+    currentItem = [player currentItem];
 
-    if (v4 == v6)
+    if (object == currentItem)
     {
-      v7 = [v10 userInfo];
-      v8 = v7;
-      if (v7)
+      userInfo = [notificationCopy userInfo];
+      v8 = userInfo;
+      if (userInfo)
       {
-        v9 = [v7 objectForKeyedSubscript:AVPlayerItemFailedToPlayToEndTimeErrorKey];
+        v9 = [userInfo objectForKeyedSubscript:AVPlayerItemFailedToPlayToEndTimeErrorKey];
         objc_opt_class();
         objc_opt_isKindOfClass();
       }

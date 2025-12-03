@@ -6,7 +6,7 @@
 
 - (int64_t)limitType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AssetFetcherLimiter.limitType.getter();
 
   return v3;

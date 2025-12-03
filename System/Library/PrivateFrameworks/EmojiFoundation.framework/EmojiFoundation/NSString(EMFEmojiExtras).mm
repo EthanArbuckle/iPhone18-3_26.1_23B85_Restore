@@ -7,10 +7,10 @@
 
 - (BOOL)_containsEmoji
 {
-  v2 = [MEMORY[0x1E696AB08] _emojiCharacterSet];
-  if (v2)
+  _emojiCharacterSet = [MEMORY[0x1E696AB08] _emojiCharacterSet];
+  if (_emojiCharacterSet)
   {
-    v3 = [a1 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL;
+    v3 = [self rangeOfCharacterFromSet:_emojiCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else

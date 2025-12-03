@@ -1,13 +1,13 @@
 @interface _UIHDRUsageCoordinatorSceneComponent
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
-- (_UIHDRUsageCoordinatorSceneComponent)initWithScene:(id)a3;
-- (id)_settingsDiffActionsForScene:(id)a3;
+- (_UIHDRUsageCoordinatorSceneComponent)initWithScene:(id)scene;
+- (id)_settingsDiffActionsForScene:(id)scene;
 - (void)_invalidateTraitOverrides;
-- (void)_powerStateDidChange:(id)a3;
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5;
-- (void)_setApplicationOcclusionRects:(id)a3;
-- (void)_setSystemOcclusionRects:(id)a3;
+- (void)_powerStateDidChange:(id)change;
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask;
+- (void)_setApplicationOcclusionRects:(id)rects;
+- (void)_setSystemOcclusionRects:(id)rects;
 - (void)dealloc;
 @end
 
@@ -17,17 +17,17 @@
 {
   if ((*&self->_flags & 0x38) == 8)
   {
-    v2 = [MEMORY[0x1E696AE30] processInfo];
-    v3 = [v2 isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
   }
 
   else
   {
-    v3 = 1;
+    isLowPowerModeEnabled = 1;
   }
 
   v4 = +[_UIHDRUsageCoordinator sharedInstance];
-  v5 = [(_UIHDRUsageCoordinator *)v4 traitCollectionSuppressingHDR:v3];
+  v5 = [(_UIHDRUsageCoordinator *)v4 traitCollectionSuppressingHDR:isLowPowerModeEnabled];
 
   return v5;
 }
@@ -41,16 +41,16 @@
   }
 }
 
-- (_UIHDRUsageCoordinatorSceneComponent)initWithScene:(id)a3
+- (_UIHDRUsageCoordinatorSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v15.receiver = self;
   v15.super_class = _UIHDRUsageCoordinatorSceneComponent;
   v5 = [(_UIHDRUsageCoordinatorSceneComponent *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_scene, v4);
+    v7 = objc_storeWeak(&v5->_scene, sceneCopy);
     objc_opt_class();
     *&v6->_flags = *&v6->_flags & 0xFE | objc_opt_isKindOfClass() & 1;
 
@@ -83,8 +83,8 @@
     v12 = objc_loadWeakRetained(&v6->_scene);
     *&v6->_flags = *&v6->_flags & 0xF7 | (8 * ([v12 activationState] < 1));
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v6 selector:sel__powerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__powerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
   }
 
   return v6;
@@ -92,15 +92,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696A7D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696A7D8] object:0];
 
   v4.receiver = self;
   v4.super_class = _UIHDRUsageCoordinatorSceneComponent;
   [(_UIHDRUsageCoordinatorSceneComponent *)&v4 dealloc];
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
@@ -110,7 +110,7 @@
   return v4;
 }
 
-- (void)_powerStateDidChange:(id)a3
+- (void)_powerStateDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -120,24 +120,24 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_setApplicationOcclusionRects:(id)a3
+- (void)_setApplicationOcclusionRects:(id)rects
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  rectsCopy = rects;
+  v5 = rectsCopy;
   if (*&self->_flags)
   {
-    v6 = [v4 count];
+    v6 = [rectsCopy count];
     if (v6)
     {
       v7 = v6;
       WeakRetained = objc_loadWeakRetained(&self->_scene);
-      v9 = [WeakRetained screen];
-      v10 = [v9 fixedCoordinateSpace];
+      screen = [WeakRetained screen];
+      fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-      v11 = [WeakRetained _coordinateSpace];
-      v12 = v11;
-      if (!v10 || !v11)
+      _coordinateSpace = [WeakRetained _coordinateSpace];
+      v12 = _coordinateSpace;
+      if (!fixedCoordinateSpace || !_coordinateSpace)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -145,7 +145,7 @@
           if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
           {
             *buf = 134218240;
-            v46 = v10;
+            v46 = fixedCoordinateSpace;
             v47 = 2048;
             v48 = v12;
             _os_log_fault_impl(&dword_188A29000, v42, OS_LOG_TYPE_FAULT, "Could not obtain source(%p) or destination(%p) coordinate space", buf, 0x16u);
@@ -158,7 +158,7 @@
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218240;
-            v46 = v10;
+            v46 = fixedCoordinateSpace;
             v47 = 2048;
             v48 = v12;
             _os_log_impl(&dword_188A29000, v39, OS_LOG_TYPE_ERROR, "Could not obtain source(%p) or destination(%p) coordinate space", buf, 0x16u);
@@ -174,7 +174,7 @@
         goto LABEL_23;
       }
 
-      [v11 bounds];
+      [_coordinateSpace bounds];
       if (v7 != 1)
       {
         if (!os_variant_has_internal_diagnostics())
@@ -206,14 +206,14 @@
       v18 = v13;
       v19 = v16;
       v20 = v15;
-      v21 = [v5 firstObject];
-      [v21 CGRectValue];
+      firstObject = [v5 firstObject];
+      [firstObject CGRectValue];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
 
-      [v10 convertRect:v12 toCoordinateSpace:{v23, v25, v27, v29}];
+      [fixedCoordinateSpace convertRect:v12 toCoordinateSpace:{v23, v25, v27, v29}];
       x = v52.origin.x;
       y = v52.origin.y;
       width = v52.size.width;
@@ -309,14 +309,14 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)_setSystemOcclusionRects:(id)a3
+- (void)_setSystemOcclusionRects:(id)rects
 {
-  v4 = a3;
-  v5 = v4;
+  rectsCopy = rects;
+  v5 = rectsCopy;
   if (*&self->_flags)
   {
-    v8 = v4;
-    v6 = [v4 count];
+    v8 = rectsCopy;
+    v6 = [rectsCopy count];
     v5 = v8;
     flags = self->_flags;
     if ((v6 != 0) == ((flags & 0x20) == 0))
@@ -328,14 +328,14 @@ LABEL_25:
   }
 }
 
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask
 {
   if (self)
   {
     flags = self->_flags;
-    if (a4 < 1 == ((flags & 8) == 0))
+    if (state < 1 == ((flags & 8) == 0))
     {
-      *&self->_flags = flags & 0xF7 | (8 * (a4 < 1));
+      *&self->_flags = flags & 0xF7 | (8 * (state < 1));
       [(_UIHDRUsageCoordinatorSceneComponent *)self _invalidateTraitOverrides];
     }
   }

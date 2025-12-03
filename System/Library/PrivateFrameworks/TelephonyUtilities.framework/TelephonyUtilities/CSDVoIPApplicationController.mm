@@ -1,47 +1,47 @@
 @interface CSDVoIPApplicationController
-+ (id)bundleIdFromTopic:(id)a3;
-+ (id)topicFromBundleId:(id)a3 forType:(int)a4;
-- (BOOL)_appHasOngoingCall:(id)a3;
-- (BOOL)_isApplicationPreventedFromBeingLaunched:(id)a3;
-- (BOOL)containsAnyOutstandingMessageForBundleIdentifier:(id)a3;
-- (BOOL)containsOutstandingMessage:(id)a3 forBundleIdentifier:(id)a4;
-- (BOOL)pttDeprecationAlertWaitingPeriodHasPassedForApplication:(id)a3;
-- (BOOL)shouldAllowIncomingCall:(id)a3;
++ (id)bundleIdFromTopic:(id)topic;
++ (id)topicFromBundleId:(id)id forType:(int)type;
+- (BOOL)_appHasOngoingCall:(id)call;
+- (BOOL)_isApplicationPreventedFromBeingLaunched:(id)launched;
+- (BOOL)containsAnyOutstandingMessageForBundleIdentifier:(id)identifier;
+- (BOOL)containsOutstandingMessage:(id)message forBundleIdentifier:(id)identifier;
+- (BOOL)pttDeprecationAlertWaitingPeriodHasPassedForApplication:(id)application;
+- (BOOL)shouldAllowIncomingCall:(id)call;
 - (CSDCallStateController)callStateController;
 - (CSDVoIPApplicationController)init;
-- (id)_apsConnectionForEnvironment:(id)a3;
-- (id)_createAPSConnectionForEnvironment:(id)a3 namedDelegatePort:(id)a4;
-- (id)_findOrCreateApplicationWithBundleIdentifier:(id)a3;
-- (void)_incrementKillCountForApplication:(id)a3;
-- (void)_moveOpportunisticTopicsToIgnoredListForConnection:(id)a3;
+- (id)_apsConnectionForEnvironment:(id)environment;
+- (id)_createAPSConnectionForEnvironment:(id)environment namedDelegatePort:(id)port;
+- (id)_findOrCreateApplicationWithBundleIdentifier:(id)identifier;
+- (void)_incrementKillCountForApplication:(id)application;
+- (void)_moveOpportunisticTopicsToIgnoredListForConnection:(id)connection;
 - (void)_pruneUninstalledAppPushTopics;
-- (void)_pruneUninstalledAppPushTopicsForConnection:(id)a3;
-- (void)_registerNetworkExtensionApplicationWithBundleIdentifier:(id)a3 client:(id)a4;
+- (void)_pruneUninstalledAppPushTopicsForConnection:(id)connection;
+- (void)_registerNetworkExtensionApplicationWithBundleIdentifier:(id)identifier client:(id)client;
 - (void)_removeAllApplicationsFromKillCountsDictionary;
-- (void)_removeApplicationFromKillCountsDictionary:(id)a3;
-- (void)_removeTopic:(id)a3 fromConnection:(id)a4;
-- (void)activePersistedChannelIdentityChangedTo:(id)a3;
-- (void)addOutstandingMessage:(id)a3 forBundleIdentifier:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)_removeApplicationFromKillCountsDictionary:(id)dictionary;
+- (void)_removeTopic:(id)topic fromConnection:(id)connection;
+- (void)activePersistedChannelIdentityChangedTo:(id)to;
+- (void)addOutstandingMessage:(id)message forBundleIdentifier:(id)identifier;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
-- (void)displayPTTDeprecationAlert:(id)a3;
-- (void)handleApplicationUninstalledNotification:(id)a3;
-- (void)handlePTTAppReportedValidActiveRemoteParticipant:(id)a3;
-- (void)networkExtensionMessageControllerHost:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5;
-- (void)networkExtensionMessageControllerHost:(id)a3 didReceiveIncomingPushToTalkMessage:(id)a4 forBundleIdentifier:(id)a5;
-- (void)notificationServiceExtensionHost:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5 reply:(id)a6;
-- (void)openApplicationWithBundleIdentifier:(id)a3 message:(id)a4;
-- (void)processOverBudgetPTTServiceUpdateMessage:(id)a3 forApplication:(id)a4;
-- (void)pttCheckInWithReply:(id)a3;
+- (void)displayPTTDeprecationAlert:(id)alert;
+- (void)handleApplicationUninstalledNotification:(id)notification;
+- (void)handlePTTAppReportedValidActiveRemoteParticipant:(id)participant;
+- (void)networkExtensionMessageControllerHost:(id)host didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier;
+- (void)networkExtensionMessageControllerHost:(id)host didReceiveIncomingPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier;
+- (void)notificationServiceExtensionHost:(id)host didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)openApplicationWithBundleIdentifier:(id)identifier message:(id)message;
+- (void)processOverBudgetPTTServiceUpdateMessage:(id)message forApplication:(id)application;
+- (void)pttCheckInWithReply:(id)reply;
 - (void)pttRegister;
 - (void)pttUnregister;
 - (void)reconcileChannelTopicFilters;
 - (void)registerVoIPNetworkExtension;
-- (void)removeApplicationFromPTTDeprecationAlertDictionary:(id)a3;
-- (void)removeOutstandingMessagesForBundleIdentifier:(id)a3;
-- (void)updatePTTDeprecationAlertLogForApplication:(id)a3;
+- (void)removeApplicationFromPTTDeprecationAlertDictionary:(id)dictionary;
+- (void)removeOutstandingMessagesForBundleIdentifier:(id)identifier;
+- (void)updatePTTDeprecationAlertLogForApplication:(id)application;
 - (void)voipRegister;
 - (void)voipUnregister;
 @end
@@ -87,48 +87,48 @@
   return v2;
 }
 
-- (BOOL)shouldAllowIncomingCall:(id)a3
+- (BOOL)shouldAllowIncomingCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationController *)self voIPDOSCache];
-  v6 = [v5 shouldAllowCallFor:v4];
+  callCopy = call;
+  voIPDOSCache = [(CSDVoIPApplicationController *)self voIPDOSCache];
+  v6 = [voIPDOSCache shouldAllowCallFor:callCopy];
 
   if ((v6 & 1) == 0)
   {
     v7 = +[CSDReportingController sharedInstance];
-    [v7 voipDOSCallIgnored:v4];
+    [v7 voipDOSCallIgnored:callCopy];
   }
 
   return v6;
 }
 
-- (void)handleApplicationUninstalledNotification:(id)a3
+- (void)handleApplicationUninstalledNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationController *)self queue];
+  notificationCopy = notification;
+  queue = [(CSDVoIPApplicationController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DFF48;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)dealloc
 {
-  v3 = [(CSDVoIPApplicationController *)self developmentConnection];
-  [v3 setDelegate:0];
+  developmentConnection = [(CSDVoIPApplicationController *)self developmentConnection];
+  [developmentConnection setDelegate:0];
 
-  v4 = [(CSDVoIPApplicationController *)self productionConnection];
-  [v4 setDelegate:0];
+  productionConnection = [(CSDVoIPApplicationController *)self productionConnection];
+  [productionConnection setDelegate:0];
 
-  v5 = [(CSDVoIPApplicationController *)self developmentConnection];
-  [v5 removeFromRunLoop];
+  developmentConnection2 = [(CSDVoIPApplicationController *)self developmentConnection];
+  [developmentConnection2 removeFromRunLoop];
 
-  v6 = [(CSDVoIPApplicationController *)self productionConnection];
-  [v6 removeFromRunLoop];
+  productionConnection2 = [(CSDVoIPApplicationController *)self productionConnection];
+  [productionConnection2 removeFromRunLoop];
 
   v7.receiver = self;
   v7.super_class = CSDVoIPApplicationController;
@@ -137,21 +137,21 @@
 
 - (void)registerVoIPNetworkExtension
 {
-  v3 = [(CSDVoIPApplicationController *)self networkExtensionClientManager];
-  v4 = [v3 currentClient];
+  networkExtensionClientManager = [(CSDVoIPApplicationController *)self networkExtensionClientManager];
+  currentClient = [networkExtensionClientManager currentClient];
 
-  if ([v4 hasVoIPNetworkExtensionEntitlement])
+  if ([currentClient hasVoIPNetworkExtensionEntitlement])
   {
-    v5 = [v4 processBundleIdentifier];
+    processBundleIdentifier = [currentClient processBundleIdentifier];
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = processBundleIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received request to register VoIP Network Extension for client process with bundle identifier %@", &v10, 0xCu);
     }
 
-    v7 = [v5 length];
+    v7 = [processBundleIdentifier length];
     v8 = sub_100004778();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
     if (v7)
@@ -159,11 +159,11 @@
       if (v9)
       {
         v10 = 138412290;
-        v11 = v5;
+        v11 = processBundleIdentifier;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Registering VoIP Network Extension for application with bundle identifier %@", &v10, 0xCu);
       }
 
-      [(CSDVoIPApplicationController *)self _registerNetworkExtensionApplicationWithBundleIdentifier:v5 client:v4];
+      [(CSDVoIPApplicationController *)self _registerNetworkExtensionApplicationWithBundleIdentifier:processBundleIdentifier client:currentClient];
     }
 
     else
@@ -171,7 +171,7 @@
       if (v9)
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = currentClient;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to register VoIP Network Extension; could not obtain a bundle identifier from client process %@", &v10, 0xCu);
       }
     }
@@ -179,52 +179,52 @@
 
   else
   {
-    v5 = sub_100004778();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    processBundleIdentifier = sub_100004778();
+    if (os_log_type_enabled(processBundleIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[WARN] Aborting register request for VoIP Network Extension; entitlement was not found on client %@", &v10, 0xCu);
+      v11 = currentClient;
+      _os_log_impl(&_mh_execute_header, processBundleIdentifier, OS_LOG_TYPE_DEFAULT, "[WARN] Aborting register request for VoIP Network Extension; entitlement was not found on client %@", &v10, 0xCu);
     }
   }
 }
 
 - (void)voipRegister
 {
-  v4 = [(CSDVoIPApplicationController *)self pushKitClientManager];
-  v3 = [v4 currentClient];
-  [(CSDVoIPApplicationController *)self _registerForPushTokenWithType:2 client:v3];
+  pushKitClientManager = [(CSDVoIPApplicationController *)self pushKitClientManager];
+  currentClient = [pushKitClientManager currentClient];
+  [(CSDVoIPApplicationController *)self _registerForPushTokenWithType:2 client:currentClient];
 }
 
 - (void)voipUnregister
 {
-  v4 = [(CSDVoIPApplicationController *)self pushKitClientManager];
-  v3 = [v4 currentClient];
-  [(CSDVoIPApplicationController *)self _unregisterForPushTokenWithType:2 client:v3];
+  pushKitClientManager = [(CSDVoIPApplicationController *)self pushKitClientManager];
+  currentClient = [pushKitClientManager currentClient];
+  [(CSDVoIPApplicationController *)self _unregisterForPushTokenWithType:2 client:currentClient];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v38 = v6;
+    v38 = connectionCopy;
     v39 = 2112;
-    v40 = v7;
+    v40 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "for connection: %@ publicToken: %@", buf, 0x16u);
   }
 
   v9 = APSEnvironmentDevelopment;
   v10 = [(CSDVoIPApplicationController *)self _apsConnectionForEnvironment:APSEnvironmentDevelopment];
 
-  if ((v10 == v6 || (v9 = APSEnvironmentProduction, [(CSDVoIPApplicationController *)self _apsConnectionForEnvironment:APSEnvironmentProduction], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 == v6)) && (v12 = v9) != 0)
+  if ((v10 == connectionCopy || (v9 = APSEnvironmentProduction, [(CSDVoIPApplicationController *)self _apsConnectionForEnvironment:APSEnvironmentProduction], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 == connectionCopy)) && (v12 = v9) != 0)
   {
     v13 = v12;
-    v29 = v7;
-    v30 = v6;
+    v29 = tokenCopy;
+    v30 = connectionCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -245,15 +245,15 @@
           }
 
           v18 = *(*(&v32 + 1) + 8 * i);
-          v19 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
-          v20 = [v19 objectForKeyedSubscript:v18];
-          v21 = [v20 environment];
-          v22 = [v21 isEqualToIgnoringCase:v13];
+          bundleIdentifierToVoIPApplication = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
+          v20 = [bundleIdentifierToVoIPApplication objectForKeyedSubscript:v18];
+          environment = [v20 environment];
+          v22 = [environment isEqualToIgnoringCase:v13];
 
           if (v22)
           {
-            v23 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
-            v24 = [v23 objectForKeyedSubscript:v18];
+            bundleIdentifierToVoIPApplication2 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
+            v24 = [bundleIdentifierToVoIPApplication2 objectForKeyedSubscript:v18];
 
             [v24 unsetVoIPToken];
             [v24 unsetChannelPushToken];
@@ -297,8 +297,8 @@
       while (v15);
     }
 
-    v6 = v30;
-    v7 = v29;
+    connectionCopy = v30;
+    tokenCopy = v29;
   }
 
   else
@@ -307,79 +307,79 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v6;
+      v38 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[WARN] No environment found for connection %@", buf, 0xCu);
     }
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v14 = sub_100004778();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138413058;
-    v18 = v10;
+    v18 = connectionCopy;
     v19 = 2112;
-    v20 = v11;
+    v20 = tokenCopy;
     v21 = 2112;
-    v22 = v12;
+    v22 = topicCopy;
     v23 = 2112;
-    v24 = v13;
+    v24 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "for connection: %@ token: %@ topic: %@ identifier: %@", &v17, 0x2Au);
   }
 
-  v15 = [objc_opt_class() bundleIdFromTopic:v12];
+  v15 = [objc_opt_class() bundleIdFromTopic:topicCopy];
   v16 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:v15];
-  if ([v12 hasSuffix:@"voip-ptt"])
+  if ([topicCopy hasSuffix:@"voip-ptt"])
   {
-    [v16 deliverChannelPushToken:v11];
+    [v16 deliverChannelPushToken:tokenCopy];
   }
 
   else
   {
-    [v16 deliverVoIPToken:v11];
+    [v16 deliverVoIPToken:tokenCopy];
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412546;
-    v20 = v6;
+    v20 = connectionCopy;
     v21 = 2112;
-    v22 = v7;
+    v22 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "for connection: %@ message: %@", &v19, 0x16u);
   }
 
-  v9 = [v7 topic];
-  v10 = [v7 userInfo];
-  v11 = [objc_opt_class() bundleIdFromTopic:v9];
-  if (![v9 hasSuffix:@"voip-ptt"])
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
+  v11 = [objc_opt_class() bundleIdFromTopic:topic];
+  if (![topic hasSuffix:@"voip-ptt"])
   {
-    v13 = [[CSDVoIPApplicationMessage alloc] initWithTransportType:2 payload:v10];
+    activePersistedChannelIdentity = [[CSDVoIPApplicationMessage alloc] initWithTransportType:2 payload:userInfo];
     goto LABEL_7;
   }
 
-  v12 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
-  v13 = [v12 activePersistedChannelIdentity];
+  persistedChannelRegistry = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
+  activePersistedChannelIdentity = [persistedChannelRegistry activePersistedChannelIdentity];
 
-  v14 = [(CSDVoIPApplicationMessage *)v13 bundleIdentifier];
-  v15 = [v14 isEqualToString:v11];
+  bundleIdentifier = [(CSDVoIPApplicationMessage *)activePersistedChannelIdentity bundleIdentifier];
+  v15 = [bundleIdentifier isEqualToString:v11];
 
   if (v15)
   {
-    v16 = -[CSDVoIPApplicationController createPTTApplicationMessageForChannel:withPayload:isWakingMessage:](self, "createPTTApplicationMessageForChannel:withPayload:isWakingMessage:", v13, v10, [v7 priority] == 10);
+    v16 = -[CSDVoIPApplicationController createPTTApplicationMessageForChannel:withPayload:isWakingMessage:](self, "createPTTApplicationMessageForChannel:withPayload:isWakingMessage:", activePersistedChannelIdentity, userInfo, [messageCopy priority] == 10);
 
-    v13 = v16;
+    activePersistedChannelIdentity = v16;
 LABEL_7:
     v17 = sub_100004778();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -387,11 +387,11 @@ LABEL_7:
       v19 = 138412546;
       v20 = v11;
       v21 = 2112;
-      v22 = v9;
+      v22 = topic;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received incoming APS message from application with bundle identifier %@ and topic %@", &v19, 0x16u);
     }
 
-    [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:v11 message:v13];
+    [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:v11 message:activePersistedChannelIdentity];
     goto LABEL_13;
   }
 
@@ -417,29 +417,29 @@ LABEL_13:
   [v3 setObject:0 forKey:@"CSDVoIPApplicationKillCounts"];
 }
 
-- (void)_removeApplicationFromKillCountsDictionary:(id)a3
+- (void)_removeApplicationFromKillCountsDictionary:(id)dictionary
 {
-  v10 = a3;
+  dictionaryCopy = dictionary;
   v3 = +[NSUserDefaults tu_defaults];
   v4 = [v3 objectForKey:@"CSDVoIPApplicationKillCounts"];
 
-  v5 = [v10 bundleIdentifier];
-  v6 = [v4 objectForKey:v5];
+  bundleIdentifier = [dictionaryCopy bundleIdentifier];
+  v6 = [v4 objectForKey:bundleIdentifier];
 
   if (v6)
   {
     v7 = [v4 mutableCopy];
-    v8 = [v10 bundleIdentifier];
-    [v7 removeObjectForKey:v8];
+    bundleIdentifier2 = [dictionaryCopy bundleIdentifier];
+    [v7 removeObjectForKey:bundleIdentifier2];
 
     v9 = +[NSUserDefaults tu_defaults];
     [v9 setObject:v7 forKey:@"CSDVoIPApplicationKillCounts"];
   }
 }
 
-- (void)_incrementKillCountForApplication:(id)a3
+- (void)_incrementKillCountForApplication:(id)application
 {
-  v17 = a3;
+  applicationCopy = application;
   v3 = +[NSUserDefaults tu_defaults];
   v4 = [v3 objectForKey:@"CSDVoIPApplicationKillCounts"];
 
@@ -454,39 +454,39 @@ LABEL_13:
   }
 
   v6 = v5;
-  v7 = [v17 bundleIdentifier];
-  v8 = [v6 objectForKey:v7];
-  v9 = [v8 intValue];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v8 = [v6 objectForKey:bundleIdentifier];
+  intValue = [v8 intValue];
 
-  LODWORD(v7) = v9 + 1;
-  v10 = [NSNumber numberWithInt:v9 + 1];
-  v11 = [v17 bundleIdentifier];
-  [v6 setObject:v10 forKey:v11];
+  LODWORD(bundleIdentifier) = intValue + 1;
+  v10 = [NSNumber numberWithInt:intValue + 1];
+  bundleIdentifier2 = [applicationCopy bundleIdentifier];
+  [v6 setObject:v10 forKey:bundleIdentifier2];
 
   v12 = +[NSUserDefaults tu_defaults];
   [v12 setObject:v6 forKey:@"CSDVoIPApplicationKillCounts"];
 
   v13 = +[CSDReportingController sharedInstance];
-  v14 = [v17 bundleIdentifier];
-  [v13 voipAppFailedToPostIncomingCall:v14];
+  bundleIdentifier3 = [applicationCopy bundleIdentifier];
+  [v13 voipAppFailedToPostIncomingCall:bundleIdentifier3];
 
-  if (v7 == 3)
+  if (bundleIdentifier == 3)
   {
     v15 = +[CSDReportingController sharedInstance];
-    v16 = [v17 bundleIdentifier];
-    [v15 voipAppBecameDisabledFromLaunching:v16];
+    bundleIdentifier4 = [applicationCopy bundleIdentifier];
+    [v15 voipAppBecameDisabledFromLaunching:bundleIdentifier4];
   }
 }
 
-- (BOOL)_isApplicationPreventedFromBeingLaunched:(id)a3
+- (BOOL)_isApplicationPreventedFromBeingLaunched:(id)launched
 {
-  v3 = a3;
-  if ([v3 requiresStrictPolicyEnforcement])
+  launchedCopy = launched;
+  if ([launchedCopy requiresStrictPolicyEnforcement])
   {
     v4 = +[NSUserDefaults tu_defaults];
     v5 = [v4 objectForKey:@"CSDVoIPApplicationKillCounts"];
-    v6 = [v3 bundleIdentifier];
-    v7 = [v5 objectForKey:v6];
+    bundleIdentifier = [launchedCopy bundleIdentifier];
+    v7 = [v5 objectForKey:bundleIdentifier];
 
     v8 = [v7 intValue] > 2;
   }
@@ -499,55 +499,55 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)_appHasOngoingCall:(id)a3
+- (BOOL)_appHasOngoingCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationController *)self callStateController];
-  v6 = [v4 bundleIdentifier];
+  callCopy = call;
+  callStateController = [(CSDVoIPApplicationController *)self callStateController];
+  bundleIdentifier = [callCopy bundleIdentifier];
 
-  LOBYTE(v4) = [v5 isTrackingVoIPCallForBundleIdentifier:v6];
-  return v4;
+  LOBYTE(callCopy) = [callStateController isTrackingVoIPCallForBundleIdentifier:bundleIdentifier];
+  return callCopy;
 }
 
-+ (id)bundleIdFromTopic:(id)a3
++ (id)bundleIdFromTopic:(id)topic
 {
-  v3 = a3;
+  topicCopy = topic;
   v4 = @"voip-ptt";
-  if (![v3 hasSuffix:@"voip-ptt"])
+  if (![topicCopy hasSuffix:@"voip-ptt"])
   {
     v4 = @"voip";
   }
 
-  v5 = [v3 substringWithRange:{0, objc_msgSend(v3, "length") + ~-[__CFString length](v4, "length")}];
+  v5 = [topicCopy substringWithRange:{0, objc_msgSend(topicCopy, "length") + ~-[__CFString length](v4, "length")}];
 
   return v5;
 }
 
-+ (id)topicFromBundleId:(id)a3 forType:(int)a4
++ (id)topicFromBundleId:(id)id forType:(int)type
 {
   v4 = @"voip";
-  if (a4 == 3)
+  if (type == 3)
   {
     v4 = @"voip-ptt";
   }
 
-  return [NSString stringWithFormat:@"%@.%@", a3, v4];
+  return [NSString stringWithFormat:@"%@.%@", id, v4];
 }
 
-- (id)_findOrCreateApplicationWithBundleIdentifier:(id)a3
+- (id)_findOrCreateApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  bundleIdentifierToVoIPApplication = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
+  v6 = [bundleIdentifierToVoIPApplication objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
-    v6 = [[CSDVoIPApplication alloc] initWithBundleIdentifier:v4];
-    v7 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    v6 = [[CSDVoIPApplication alloc] initWithBundleIdentifier:identifierCopy];
+    bundleIdentifierToVoIPApplication2 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
+    [bundleIdentifierToVoIPApplication2 setObject:v6 forKeyedSubscript:identifierCopy];
 
-    v8 = [(CSDVoIPApplicationController *)self applicationMonitor];
-    [v8 addVoIPApplication:v6];
+    applicationMonitor = [(CSDVoIPApplicationController *)self applicationMonitor];
+    [applicationMonitor addVoIPApplication:v6];
   }
 
   return v6;
@@ -555,22 +555,22 @@ LABEL_13:
 
 - (void)_pruneUninstalledAppPushTopics
 {
-  v3 = [(CSDVoIPApplicationController *)self developmentConnection];
-  [(CSDVoIPApplicationController *)self _pruneUninstalledAppPushTopicsForConnection:v3];
+  developmentConnection = [(CSDVoIPApplicationController *)self developmentConnection];
+  [(CSDVoIPApplicationController *)self _pruneUninstalledAppPushTopicsForConnection:developmentConnection];
 
-  v4 = [(CSDVoIPApplicationController *)self productionConnection];
-  [(CSDVoIPApplicationController *)self _pruneUninstalledAppPushTopicsForConnection:v4];
+  productionConnection = [(CSDVoIPApplicationController *)self productionConnection];
+  [(CSDVoIPApplicationController *)self _pruneUninstalledAppPushTopicsForConnection:productionConnection];
 }
 
-- (void)_pruneUninstalledAppPushTopicsForConnection:(id)a3
+- (void)_pruneUninstalledAppPushTopicsForConnection:(id)connection
 {
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = a3;
-  v4 = [v24 enabledTopics];
-  v5 = [v4 copy];
+  connectionCopy = connection;
+  enabledTopics = [connectionCopy enabledTopics];
+  v5 = [enabledTopics copy];
 
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v6)
@@ -622,7 +622,7 @@ LABEL_13:
 
           ++v26;
 
-          [(CSDVoIPApplicationController *)self _removeTopic:v10 fromConnection:v24];
+          [(CSDVoIPApplicationController *)self _removeTopic:v10 fromConnection:connectionCopy];
         }
       }
 
@@ -670,15 +670,15 @@ LABEL_24:
 LABEL_25:
 }
 
-- (id)_apsConnectionForEnvironment:(id)a3
+- (id)_apsConnectionForEnvironment:(id)environment
 {
-  v4 = a3;
-  if ([v4 isEqualToString:APSEnvironmentProduction])
+  environmentCopy = environment;
+  if ([environmentCopy isEqualToString:APSEnvironmentProduction])
   {
     productionConnection = self->_productionConnection;
     if (!productionConnection)
     {
-      v6 = [(CSDVoIPApplicationController *)self _createAPSConnectionForEnvironment:v4 namedDelegatePort:@"com.apple.telephonyutilities.callservicesdaemon.voip.push"];
+      v6 = [(CSDVoIPApplicationController *)self _createAPSConnectionForEnvironment:environmentCopy namedDelegatePort:@"com.apple.telephonyutilities.callservicesdaemon.voip.push"];
       v7 = self->_productionConnection;
       self->_productionConnection = v6;
 
@@ -690,12 +690,12 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:APSEnvironmentDevelopment])
+  if ([environmentCopy isEqualToString:APSEnvironmentDevelopment])
   {
     productionConnection = self->_developmentConnection;
     if (!productionConnection)
     {
-      v8 = [(CSDVoIPApplicationController *)self _createAPSConnectionForEnvironment:v4 namedDelegatePort:@"com.apple.telephonyutilities.callservicesdaemon.voip.push.development"];
+      v8 = [(CSDVoIPApplicationController *)self _createAPSConnectionForEnvironment:environmentCopy namedDelegatePort:@"com.apple.telephonyutilities.callservicesdaemon.voip.push.development"];
       developmentConnection = self->_developmentConnection;
       self->_developmentConnection = v8;
 
@@ -709,7 +709,7 @@ LABEL_7:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = environmentCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[WARN] No APS connection found for environment %@", &v13, 0xCu);
   }
 
@@ -719,37 +719,37 @@ LABEL_11:
   return v10;
 }
 
-- (id)_createAPSConnectionForEnvironment:(id)a3 namedDelegatePort:(id)a4
+- (id)_createAPSConnectionForEnvironment:(id)environment namedDelegatePort:(id)port
 {
-  v6 = a4;
-  v7 = a3;
+  portCopy = port;
+  environmentCopy = environment;
   v8 = [APSConnection alloc];
-  v9 = [(CSDVoIPApplicationController *)self queue];
-  v10 = [v8 initWithEnvironmentName:v7 namedDelegatePort:v6 queue:v9];
+  queue = [(CSDVoIPApplicationController *)self queue];
+  v10 = [v8 initWithEnvironmentName:environmentCopy namedDelegatePort:portCopy queue:queue];
 
   [v10 setDelegate:self];
 
   return v10;
 }
 
-- (void)_registerNetworkExtensionApplicationWithBundleIdentifier:(id)a3 client:(id)a4
+- (void)_registerNetworkExtensionApplicationWithBundleIdentifier:(id)identifier client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = clientCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Registering client process %@ with bundle identifier %@ for NetworkExtension VoIP", &v12, 0x16u);
   }
 
-  v9 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:v6];
+  v9 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:identifierCopy];
   if ([v9 hasVoIPBackgroundMode] && objc_msgSend(v9, "hasVoIPNetworkExtensionEntitlement"))
   {
-    [v9 setNetworkExtensionClient:v7];
+    [v9 setNetworkExtensionClient:clientCopy];
   }
 
   else
@@ -757,52 +757,52 @@ LABEL_11:
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_10047A490(v6, v9);
+      sub_10047A490(identifierCopy, v9);
     }
 
-    v11 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
-    [v11 removeObjectForKey:v6];
+    bundleIdentifierToVoIPApplication = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
+    [bundleIdentifierToVoIPApplication removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)networkExtensionMessageControllerHost:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5
+- (void)networkExtensionMessageControllerHost:(id)host didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
+  identifierCopy = identifier;
+  messageCopy = message;
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received incoming network extension message from application with bundle identifier %@", &v11, 0xCu);
   }
 
-  v10 = [[CSDVoIPApplicationMessage alloc] initWithTransportType:1 payload:v8];
-  [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:v7 message:v10];
+  v10 = [[CSDVoIPApplicationMessage alloc] initWithTransportType:1 payload:messageCopy];
+  [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:identifierCopy message:v10];
 }
 
-- (void)networkExtensionMessageControllerHost:(id)a3 didReceiveIncomingPushToTalkMessage:(id)a4 forBundleIdentifier:(id)a5
+- (void)networkExtensionMessageControllerHost:(id)host didReceiveIncomingPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v8;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received incoming network extension PushToTalk message from application with bundle identifier %@", &v15, 0xCu);
   }
 
-  v10 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
-  v11 = [v10 activePersistedChannelIdentity];
+  persistedChannelRegistry = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
+  activePersistedChannelIdentity = [persistedChannelRegistry activePersistedChannelIdentity];
 
-  v12 = [v11 bundleIdentifier];
-  v13 = [v12 isEqualToString:v8];
+  bundleIdentifier = [activePersistedChannelIdentity bundleIdentifier];
+  v13 = [bundleIdentifier isEqualToString:identifierCopy];
 
   if (v13)
   {
-    v14 = [(CSDVoIPApplicationController *)self createPTTApplicationMessageForChannel:v11 withPayload:v7 isWakingMessage:1];
-    [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:v8 message:v14];
+    v14 = [(CSDVoIPApplicationController *)self createPTTApplicationMessageForChannel:activePersistedChannelIdentity withPayload:messageCopy isWakingMessage:1];
+    [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:identifierCopy message:v14];
   }
 
   else
@@ -815,113 +815,113 @@ LABEL_11:
   }
 }
 
-- (void)_removeTopic:(id)a3 fromConnection:(id)a4
+- (void)_removeTopic:(id)topic fromConnection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 enabledTopics];
-  v12 = [v7 mutableCopy];
+  connectionCopy = connection;
+  topicCopy = topic;
+  enabledTopics = [connectionCopy enabledTopics];
+  v12 = [enabledTopics mutableCopy];
 
-  [v12 removeObject:v6];
-  [v5 _setEnabledTopics:v12];
-  v8 = [v5 opportunisticTopics];
-  v9 = [v8 mutableCopy];
+  [v12 removeObject:topicCopy];
+  [connectionCopy _setEnabledTopics:v12];
+  opportunisticTopics = [connectionCopy opportunisticTopics];
+  v9 = [opportunisticTopics mutableCopy];
 
-  [v9 removeObject:v6];
-  [v5 _setOpportunisticTopics:v9];
-  v10 = [v5 ignoredTopics];
-  v11 = [v10 mutableCopy];
+  [v9 removeObject:topicCopy];
+  [connectionCopy _setOpportunisticTopics:v9];
+  ignoredTopics = [connectionCopy ignoredTopics];
+  v11 = [ignoredTopics mutableCopy];
 
-  [v11 removeObject:v6];
-  [v5 _setIgnoredTopics:v11];
-  [v5 invalidateTokenForTopic:v6 identifier:&stru_100631E68];
+  [v11 removeObject:topicCopy];
+  [connectionCopy _setIgnoredTopics:v11];
+  [connectionCopy invalidateTokenForTopic:topicCopy identifier:&stru_100631E68];
 }
 
-- (void)addOutstandingMessage:(id)a3 forBundleIdentifier:(id)a4
+- (void)addOutstandingMessage:(id)message forBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CSDVoIPApplicationController *)self outstandingMessages];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  messageCopy = message;
+  identifierCopy = identifier;
+  outstandingMessages = [(CSDVoIPApplicationController *)self outstandingMessages];
+  v8 = [outstandingMessages objectForKeyedSubscript:identifierCopy];
 
   if (!v8)
   {
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [(CSDVoIPApplicationController *)self outstandingMessages];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    outstandingMessages2 = [(CSDVoIPApplicationController *)self outstandingMessages];
+    [outstandingMessages2 setObject:v8 forKeyedSubscript:identifierCopy];
   }
 
-  [v8 addObject:v10];
+  [v8 addObject:messageCopy];
 }
 
-- (BOOL)containsAnyOutstandingMessageForBundleIdentifier:(id)a3
+- (BOOL)containsAnyOutstandingMessageForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationController *)self outstandingMessages];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  outstandingMessages = [(CSDVoIPApplicationController *)self outstandingMessages];
+  v6 = [outstandingMessages objectForKeyedSubscript:identifierCopy];
 
-  LOBYTE(v5) = [v6 count] != 0;
-  return v5;
+  LOBYTE(outstandingMessages) = [v6 count] != 0;
+  return outstandingMessages;
 }
 
-- (BOOL)containsOutstandingMessage:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)containsOutstandingMessage:(id)message forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDVoIPApplicationController *)self outstandingMessages];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  messageCopy = message;
+  outstandingMessages = [(CSDVoIPApplicationController *)self outstandingMessages];
+  v9 = [outstandingMessages objectForKeyedSubscript:identifierCopy];
 
-  LOBYTE(v8) = [v9 containsObject:v7];
-  return v8;
+  LOBYTE(outstandingMessages) = [v9 containsObject:messageCopy];
+  return outstandingMessages;
 }
 
-- (void)removeOutstandingMessagesForBundleIdentifier:(id)a3
+- (void)removeOutstandingMessagesForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001E3040;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)openApplicationWithBundleIdentifier:(id)a3 message:(id)a4
+- (void)openApplicationWithBundleIdentifier:(id)identifier message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:v6];
-  v9 = [v7 transportType];
-  v52 = v9 == 3;
-  if (v9 == 3)
+  identifierCopy = identifier;
+  messageCopy = message;
+  v8 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:identifierCopy];
+  transportType = [messageCopy transportType];
+  v52 = transportType == 3;
+  if (transportType == 3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 isServiceUpdateMessage];
-      v11 = [v7 isWakingMessage];
-      v12 = [(CSDVoIPApplicationController *)self pttServiceUpdatePushMonitor];
-      v13 = [v12 remainingPTTWakingServiceUpdateBudgetForApplication:v8];
+      isServiceUpdateMessage = [messageCopy isServiceUpdateMessage];
+      isWakingMessage = [messageCopy isWakingMessage];
+      pttServiceUpdatePushMonitor = [(CSDVoIPApplicationController *)self pttServiceUpdatePushMonitor];
+      v13 = [pttServiceUpdatePushMonitor remainingPTTWakingServiceUpdateBudgetForApplication:v8];
 
-      [v7 setRemainingHighPriorityServiceUpdateBudget:v13];
-      if ((v10 & v11) == 1)
+      [messageCopy setRemainingHighPriorityServiceUpdateBudget:v13];
+      if ((isServiceUpdateMessage & isWakingMessage) == 1)
       {
         if (v13 < 1)
         {
-          [(CSDVoIPApplicationController *)self processOverBudgetPTTServiceUpdateMessage:v7 forApplication:v8];
+          [(CSDVoIPApplicationController *)self processOverBudgetPTTServiceUpdateMessage:messageCopy forApplication:v8];
           goto LABEL_56;
         }
 
-        v14 = [(CSDVoIPApplicationController *)self pttServiceUpdatePushMonitor];
-        [v14 incrementPTTWakingServiceUpdateCountForApplication:v8];
+        pttServiceUpdatePushMonitor2 = [(CSDVoIPApplicationController *)self pttServiceUpdatePushMonitor];
+        [pttServiceUpdatePushMonitor2 incrementPTTWakingServiceUpdateCountForApplication:v8];
 
-        [v7 setRemainingHighPriorityServiceUpdateBudget:v13 - 1];
+        [messageCopy setRemainingHighPriorityServiceUpdateBudget:v13 - 1];
       }
 
-      v15 = v10;
+      v15 = isServiceUpdateMessage;
     }
 
     else
@@ -930,9 +930,9 @@ LABEL_11:
     }
 
     [(CSDVoIPApplicationController *)self _isApplicationPreventedFromBeingLaunched:v8];
-    v20 = [v8 requiresStrictPolicyEnforcement];
-    v21 = [(CSDVoIPApplicationController *)self containsAnyOutstandingMessageForBundleIdentifier:v6];
-    v51 = v20;
+    requiresStrictPolicyEnforcement = [v8 requiresStrictPolicyEnforcement];
+    v21 = [(CSDVoIPApplicationController *)self containsAnyOutstandingMessageForBundleIdentifier:identifierCopy];
+    requiresStrictPolicyEnforcement2 = requiresStrictPolicyEnforcement;
     if (v15 & 1) != 0 || (v21)
     {
       v50 = 0;
@@ -940,7 +940,7 @@ LABEL_11:
       goto LABEL_22;
     }
 
-    [(CSDVoIPApplicationController *)self addOutstandingMessage:v7 forBundleIdentifier:v6];
+    [(CSDVoIPApplicationController *)self addOutstandingMessage:messageCopy forBundleIdentifier:identifierCopy];
     when = 0;
     v22 = 1;
     goto LABEL_16;
@@ -948,21 +948,21 @@ LABEL_11:
 
   if (![(CSDVoIPApplicationController *)self _isApplicationPreventedFromBeingLaunched:v8])
   {
-    v51 = [v8 requiresStrictPolicyEnforcement];
-    v23 = [(CSDVoIPApplicationController *)self applicationMonitor];
-    if (([v23 isRunningForegroundForVoIPApplication:v8] & 1) != 0 || -[CSDVoIPApplicationController _appHasOngoingCall:](self, "_appHasOngoingCall:", v8))
+    requiresStrictPolicyEnforcement2 = [v8 requiresStrictPolicyEnforcement];
+    applicationMonitor = [(CSDVoIPApplicationController *)self applicationMonitor];
+    if (([applicationMonitor isRunningForegroundForVoIPApplication:v8] & 1) != 0 || -[CSDVoIPApplicationController _appHasOngoingCall:](self, "_appHasOngoingCall:", v8))
     {
     }
 
     else
     {
-      v45 = [(CSDVoIPApplicationController *)self containsAnyOutstandingMessageForBundleIdentifier:v6];
+      v45 = [(CSDVoIPApplicationController *)self containsAnyOutstandingMessageForBundleIdentifier:identifierCopy];
 
       if ((v45 & 1) == 0)
       {
-        [(CSDVoIPApplicationController *)self addOutstandingMessage:v7 forBundleIdentifier:v6];
+        [(CSDVoIPApplicationController *)self addOutstandingMessage:messageCopy forBundleIdentifier:identifierCopy];
         when = 0;
-        v22 = v51;
+        v22 = requiresStrictPolicyEnforcement2;
 LABEL_16:
         v50 = v22;
 LABEL_22:
@@ -990,7 +990,7 @@ LABEL_22:
         v62[1] = 3221225472;
         v62[2] = sub_1001E38A8;
         v62[3] = &unk_10061E228;
-        v29 = v6;
+        v29 = identifierCopy;
         v63 = v29;
         p_buf = &buf;
         v30 = v25;
@@ -1037,7 +1037,7 @@ LABEL_22:
             }
 
             v36 = 7000000000;
-            if (!((v9 == 3) | v51))
+            if (!((transportType == 3) | requiresStrictPolicyEnforcement2))
             {
               v36 = 30000000000;
             }
@@ -1053,7 +1053,7 @@ LABEL_22:
             }
 
             whena = dispatch_time(0, v37);
-            v38 = [(CSDVoIPApplicationController *)self queue];
+            queue = [(CSDVoIPApplicationController *)self queue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_1001E39BC;
@@ -1063,14 +1063,14 @@ LABEL_22:
             v39 = v33;
             v59 = v52;
             v55 = v39;
-            v56 = self;
-            v40 = v7;
+            selfCopy = self;
+            v40 = messageCopy;
             v57 = v40;
             v41 = v8;
             v58 = v41;
-            v60 = v51;
+            v60 = requiresStrictPolicyEnforcement2;
             v61 = v50;
-            dispatch_after(whena, v38, block);
+            dispatch_after(whena, queue, block);
 
             if (v41)
             {
@@ -1111,8 +1111,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v16 = [(CSDVoIPApplicationController *)self applicationMonitor];
-  v17 = [v16 isRunningForegroundForVoIPApplication:v8];
+  applicationMonitor2 = [(CSDVoIPApplicationController *)self applicationMonitor];
+  v17 = [applicationMonitor2 isRunningForegroundForVoIPApplication:v8];
 
   v18 = sub_100004778();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -1121,11 +1121,11 @@ LABEL_22:
     if (v19)
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Application %@ will not be launched because it failed to report an incoming call too many times or repeatedly crashed. However because the app is foreground, delivering VOIP payload anyway.", &buf, 0xCu);
     }
 
-    [v8 deliverMessage:v7 withAssertion:0 applicationShouldPostIncomingCall:0];
+    [v8 deliverMessage:messageCopy withAssertion:0 applicationShouldPostIncomingCall:0];
   }
 
   else
@@ -1133,31 +1133,31 @@ LABEL_22:
     if (v19)
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Application %@ will not be launched because it failed to report an incoming call too many times (or repeatedly crashed.)", &buf, 0xCu);
     }
 
     v42 = +[CSDReportingController sharedInstance];
-    v43 = [v8 bundleIdentifier];
-    [v42 voipPushDroppedOnTheFloor:v43];
+    bundleIdentifier = [v8 bundleIdentifier];
+    [v42 voipPushDroppedOnTheFloor:bundleIdentifier];
   }
 
 LABEL_56:
 }
 
-- (void)notificationServiceExtensionHost:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5 reply:(id)a6
+- (void)notificationServiceExtensionHost:(id)host didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:v10];
+  messageCopy = message;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v12 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:identifierCopy];
   if ([v12 hasVoIPBackgroundMode])
   {
-    v13 = [[CSDVoIPApplicationMessage alloc] initWithTransportType:2 payload:v9];
-    [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:v10 message:v13];
-    if (v11)
+    v13 = [[CSDVoIPApplicationMessage alloc] initWithTransportType:2 payload:messageCopy];
+    [(CSDVoIPApplicationController *)self openApplicationWithBundleIdentifier:identifierCopy message:v13];
+    if (replyCopy)
     {
-      v11[2](v11, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1166,21 +1166,21 @@ LABEL_56:
     v14 = sub_100004778();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_10047A918(v10, v12);
+      sub_10047A918(identifierCopy, v12);
     }
 
-    v15 = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
-    [v15 removeObjectForKey:v10];
+    bundleIdentifierToVoIPApplication = [(CSDVoIPApplicationController *)self bundleIdentifierToVoIPApplication];
+    [bundleIdentifierToVoIPApplication removeObjectForKey:identifierCopy];
 
-    if (v11)
+    if (replyCopy)
     {
       v16 = [NSError cx_errorWithCode:3];
-      (v11)[2](v11, v16);
+      (replyCopy)[2](replyCopy, v16);
     }
   }
 }
 
-- (void)activePersistedChannelIdentityChangedTo:(id)a3
+- (void)activePersistedChannelIdentityChangedTo:(id)to
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1191,11 +1191,11 @@ LABEL_56:
   dispatch_async(queue, block);
 }
 
-- (void)handlePTTAppReportedValidActiveRemoteParticipant:(id)a3
+- (void)handlePTTAppReportedValidActiveRemoteParticipant:(id)participant
 {
-  v4 = [a3 object];
-  v5 = [v4 provider];
-  v6 = [v5 bundleIdentifier];
+  object = [participant object];
+  provider = [object provider];
+  bundleIdentifier = [provider bundleIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1204,50 +1204,50 @@ LABEL_56:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Channel: app posted a valid remote participant %@", &v8, 0xCu);
     }
 
-    [(CSDVoIPApplicationController *)self removeOutstandingMessagesForBundleIdentifier:v6];
+    [(CSDVoIPApplicationController *)self removeOutstandingMessagesForBundleIdentifier:bundleIdentifier];
   }
 }
 
 - (void)reconcileChannelTopicFilters
 {
-  v3 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
-  v4 = [v3 activePersistedChannelIdentity];
+  persistedChannelRegistry = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
+  activePersistedChannelIdentity = [persistedChannelRegistry activePersistedChannelIdentity];
 
-  v5 = [(CSDVoIPApplicationController *)self developmentConnection];
-  [(CSDVoIPApplicationController *)self _moveOpportunisticTopicsToIgnoredListForConnection:v5];
+  developmentConnection = [(CSDVoIPApplicationController *)self developmentConnection];
+  [(CSDVoIPApplicationController *)self _moveOpportunisticTopicsToIgnoredListForConnection:developmentConnection];
 
-  v6 = [(CSDVoIPApplicationController *)self productionConnection];
-  [(CSDVoIPApplicationController *)self _moveOpportunisticTopicsToIgnoredListForConnection:v6];
+  productionConnection = [(CSDVoIPApplicationController *)self productionConnection];
+  [(CSDVoIPApplicationController *)self _moveOpportunisticTopicsToIgnoredListForConnection:productionConnection];
 
-  if (v4)
+  if (activePersistedChannelIdentity)
   {
-    v7 = [v4 bundleIdentifier];
-    v8 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:v7];
+    bundleIdentifier = [activePersistedChannelIdentity bundleIdentifier];
+    v8 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:bundleIdentifier];
 
     if (v8)
     {
-      v9 = [v8 environment];
-      if (!v9)
+      environment = [v8 environment];
+      if (!environment)
       {
         v10 = sub_100004778();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
         {
-          sub_10047A9B0(v4, v10);
+          sub_10047A9B0(activePersistedChannelIdentity, v10);
         }
 
-        v9 = [v8 pushEnvironmentAccordingToLaunchServices];
+        environment = [v8 pushEnvironmentAccordingToLaunchServices];
       }
 
-      v11 = [(CSDVoIPApplicationController *)self _apsConnectionForEnvironment:v9];
+      v11 = [(CSDVoIPApplicationController *)self _apsConnectionForEnvironment:environment];
       if (v11)
       {
         v12 = objc_opt_class();
-        v13 = [v4 bundleIdentifier];
-        v14 = [v12 topicFromBundleId:v13 forType:3];
+        bundleIdentifier2 = [activePersistedChannelIdentity bundleIdentifier];
+        v14 = [v12 topicFromBundleId:bundleIdentifier2 forType:3];
 
         v16 = v14;
         v15 = [NSArray arrayWithObjects:&v16 count:1];
@@ -1259,37 +1259,37 @@ LABEL_56:
         v14 = sub_100004778();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_10047AA44(v4);
+          sub_10047AA44(activePersistedChannelIdentity);
         }
       }
     }
 
     else
     {
-      v9 = sub_100004778();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      environment = sub_100004778();
+      if (os_log_type_enabled(environment, OS_LOG_TYPE_ERROR))
       {
-        sub_10047AAD0(v4);
+        sub_10047AAD0(activePersistedChannelIdentity);
       }
     }
   }
 }
 
-- (void)_moveOpportunisticTopicsToIgnoredListForConnection:(id)a3
+- (void)_moveOpportunisticTopicsToIgnoredListForConnection:(id)connection
 {
-  v13 = a3;
-  v3 = [v13 opportunisticTopics];
-  v4 = v3;
+  connectionCopy = connection;
+  opportunisticTopics = [connectionCopy opportunisticTopics];
+  v4 = opportunisticTopics;
   v5 = &__NSArray0__struct;
-  if (v3)
+  if (opportunisticTopics)
   {
-    v5 = v3;
+    v5 = opportunisticTopics;
   }
 
   v6 = v5;
 
-  v7 = [v13 ignoredTopics];
-  v8 = [v7 mutableCopy];
+  ignoredTopics = [connectionCopy ignoredTopics];
+  v8 = [ignoredTopics mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -1305,42 +1305,42 @@ LABEL_56:
 
   [v11 addObjectsFromArray:v6];
   v12 = [v11 copy];
-  [v13 _setIgnoredTopics:v12];
+  [connectionCopy _setIgnoredTopics:v12];
 
-  [v13 _setOpportunisticTopics:&__NSArray0__struct];
+  [connectionCopy _setOpportunisticTopics:&__NSArray0__struct];
 }
 
-- (void)pttCheckInWithReply:(id)a3
+- (void)pttCheckInWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationController *)self channelClientManager];
-  v6 = [v5 currentClient];
+  replyCopy = reply;
+  channelClientManager = [(CSDVoIPApplicationController *)self channelClientManager];
+  currentClient = [channelClientManager currentClient];
 
-  v7 = [v6 processBundleIdentifier];
-  v8 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:v7];
+  processBundleIdentifier = [currentClient processBundleIdentifier];
+  v8 = [(CSDVoIPApplicationController *)self _findOrCreateApplicationWithBundleIdentifier:processBundleIdentifier];
   if ([v8 meetsRequirementsForPTT])
   {
-    v9 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
-    v10 = [v9 persistedTornDownChannelUUIDForBundleIdentifier:v7];
+    persistedChannelRegistry = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
+    v10 = [persistedChannelRegistry persistedTornDownChannelUUIDForBundleIdentifier:processBundleIdentifier];
 
     if (v10)
     {
       [v8 dropUndeliveredChannelPushesOnTheFloor];
-      v11 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
-      [v11 clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:v7];
+      persistedChannelRegistry2 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
+      [persistedChannelRegistry2 clearPendingChannelTeardownAcknowledgementsForBundleIdentfier:processBundleIdentifier];
 
-      v12 = [[NSUUID alloc] initWithUUIDString:v10];
-      v4[2](v4, 2, v12);
+      activePersistedChannelIdentity = [[NSUUID alloc] initWithUUIDString:v10];
+      replyCopy[2](replyCopy, 2, activePersistedChannelIdentity);
     }
 
     else
     {
-      v13 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
-      v12 = [v13 activePersistedChannelIdentity];
+      persistedChannelRegistry3 = [(CSDVoIPApplicationController *)self persistedChannelRegistry];
+      activePersistedChannelIdentity = [persistedChannelRegistry3 activePersistedChannelIdentity];
 
-      if (v12 && ([v12 bundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v7), v14, v15))
+      if (activePersistedChannelIdentity && ([activePersistedChannelIdentity bundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", processBundleIdentifier), v14, v15))
       {
-        v16 = [v12 channelUUID];
+        channelUUID = [activePersistedChannelIdentity channelUUID];
         if ([v8 hasPendingChannelPushMessagesToDeliver])
         {
           v17 = 1;
@@ -1351,21 +1351,21 @@ LABEL_56:
           v17 = 3;
         }
 
-        v4[2](v4, v17, v16);
+        replyCopy[2](replyCopy, v17, channelUUID);
       }
 
       else
       {
-        v4[2](v4, 0, 0);
+        replyCopy[2](replyCopy, 0, 0);
       }
     }
 
-    [v8 setChannelPushClient:v6];
+    [v8 setChannelPushClient:currentClient];
   }
 
   else
   {
-    v4[2](v4, 4, 0);
+    replyCopy[2](replyCopy, 4, 0);
     v10 = sub_100004778();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1376,27 +1376,27 @@ LABEL_56:
 
 - (void)pttRegister
 {
-  v4 = [(CSDVoIPApplicationController *)self channelClientManager];
-  v3 = [v4 currentClient];
-  [(CSDVoIPApplicationController *)self _registerForPushTokenWithType:3 client:v3];
+  channelClientManager = [(CSDVoIPApplicationController *)self channelClientManager];
+  currentClient = [channelClientManager currentClient];
+  [(CSDVoIPApplicationController *)self _registerForPushTokenWithType:3 client:currentClient];
 }
 
 - (void)pttUnregister
 {
-  v4 = [(CSDVoIPApplicationController *)self channelClientManager];
-  v3 = [v4 currentClient];
-  [(CSDVoIPApplicationController *)self _unregisterForPushTokenWithType:3 client:v3];
+  channelClientManager = [(CSDVoIPApplicationController *)self channelClientManager];
+  currentClient = [channelClientManager currentClient];
+  [(CSDVoIPApplicationController *)self _unregisterForPushTokenWithType:3 client:currentClient];
 }
 
-- (void)displayPTTDeprecationAlert:(id)a3
+- (void)displayPTTDeprecationAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v4 = +[NSMutableDictionary dictionary];
   v5 = TUBundle();
   v6 = [v5 localizedStringForKey:@"PUSH_TO_TALK_APP_REQUIRES_UPDATES_TITLE" value:&stru_100631E68 table:@"TelephonyUtilities"];
-  v7 = [NSString stringWithFormat:v6, v3];
+  alertCopy = [NSString stringWithFormat:v6, alertCopy];
 
-  [v4 setObject:v7 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
+  [v4 setObject:alertCopy forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
   v8 = TUBundle();
   v9 = [v8 localizedStringForKey:@"PUSH_TO_TALK_APP_REQUIRES_UPDATES_MESSAGE" value:&stru_100631E68 table:@"TelephonyUtilities"];
   [v4 setObject:v9 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
@@ -1418,9 +1418,9 @@ LABEL_56:
   }
 }
 
-- (void)updatePTTDeprecationAlertLogForApplication:(id)a3
+- (void)updatePTTDeprecationAlertLogForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[NSUserDefaults tu_defaults];
   v10 = [v4 objectForKey:@"CSDPTTDeprecationAlertLog"];
 
@@ -1436,21 +1436,21 @@ LABEL_56:
 
   v6 = v5;
   v7 = +[NSDate date];
-  v8 = [v3 bundleIdentifier];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
 
-  [v6 setObject:v7 forKey:v8];
+  [v6 setObject:v7 forKey:bundleIdentifier];
   v9 = +[NSUserDefaults tu_defaults];
   [v9 setObject:v6 forKey:@"CSDPTTDeprecationAlertLog"];
 }
 
-- (BOOL)pttDeprecationAlertWaitingPeriodHasPassedForApplication:(id)a3
+- (BOOL)pttDeprecationAlertWaitingPeriodHasPassedForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[NSUserDefaults tu_defaults];
   v5 = [v4 objectForKey:@"CSDPTTDeprecationAlertLog"];
-  v6 = [v3 bundleIdentifier];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [v5 objectForKey:bundleIdentifier];
 
   if (v7)
   {
@@ -1469,32 +1469,32 @@ LABEL_56:
   return v11;
 }
 
-- (void)removeApplicationFromPTTDeprecationAlertDictionary:(id)a3
+- (void)removeApplicationFromPTTDeprecationAlertDictionary:(id)dictionary
 {
-  v10 = a3;
+  dictionaryCopy = dictionary;
   v3 = +[NSUserDefaults tu_defaults];
   v4 = [v3 objectForKey:@"CSDPTTDeprecationAlertLog"];
 
-  v5 = [v10 bundleIdentifier];
-  v6 = [v4 objectForKey:v5];
+  bundleIdentifier = [dictionaryCopy bundleIdentifier];
+  v6 = [v4 objectForKey:bundleIdentifier];
 
   if (v6)
   {
     v7 = [v4 mutableCopy];
-    v8 = [v10 bundleIdentifier];
-    [v7 removeObjectForKey:v8];
+    bundleIdentifier2 = [dictionaryCopy bundleIdentifier];
+    [v7 removeObjectForKey:bundleIdentifier2];
 
     v9 = +[NSUserDefaults tu_defaults];
     [v9 setObject:v7 forKey:@"CSDPTTDeprecationAlertLog"];
   }
 }
 
-- (void)processOverBudgetPTTServiceUpdateMessage:(id)a3 forApplication:(id)a4
+- (void)processOverBudgetPTTServiceUpdateMessage:(id)message forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDVoIPApplicationController *)self applicationMonitor];
-  v9 = [v8 isRunningForegroundForVoIPApplication:v7];
+  messageCopy = message;
+  applicationCopy = application;
+  applicationMonitor = [(CSDVoIPApplicationController *)self applicationMonitor];
+  v9 = [applicationMonitor isRunningForegroundForVoIPApplication:applicationCopy];
 
   v10 = sub_100004778();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -1502,30 +1502,30 @@ LABEL_56:
   {
     if (v11)
     {
-      v12 = [v7 bundleIdentifier];
+      bundleIdentifier = [applicationCopy bundleIdentifier];
       v16 = 138412290;
-      v17 = v12;
+      v17 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Application %@ will not be launched because the number of PushToTalk Service Update Messages have exceeded the allotted budget. However because the app is foreground, delivering Service Update Message anyway.", &v16, 0xCu);
     }
 
-    [v7 deliverMessage:v6 withAssertion:0 applicationShouldPostIncomingCall:0];
+    [applicationCopy deliverMessage:messageCopy withAssertion:0 applicationShouldPostIncomingCall:0];
   }
 
   else
   {
     if (v11)
     {
-      v13 = [v7 bundleIdentifier];
+      bundleIdentifier2 = [applicationCopy bundleIdentifier];
       v16 = 138412290;
-      v17 = v13;
+      v17 = bundleIdentifier2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Application %@ will not be launched because the number of PushToTalk Service Update Messages have exceeded the allotted budget.", &v16, 0xCu);
     }
 
-    if ([v7 isDevelopmentOrTestFlightApp] && MKBGetDeviceLockState() != 1 && MKBGetDeviceLockState() != 2)
+    if ([applicationCopy isDevelopmentOrTestFlightApp] && MKBGetDeviceLockState() != 1 && MKBGetDeviceLockState() != 2)
     {
-      v14 = [(CSDVoIPApplicationController *)self pttServiceUpdatePushMonitor];
-      v15 = [v7 localizedAppName];
-      [v14 displayPTTServiceUpdateOverBugetAlert:v15];
+      pttServiceUpdatePushMonitor = [(CSDVoIPApplicationController *)self pttServiceUpdatePushMonitor];
+      localizedAppName = [applicationCopy localizedAppName];
+      [pttServiceUpdatePushMonitor displayPTTServiceUpdateOverBugetAlert:localizedAppName];
     }
   }
 }

@@ -1,36 +1,36 @@
 @interface IPv4AddressFormatter
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5;
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description;
 @end
 
 @implementation IPv4AddressFormatter
 
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description
 {
   v67.receiver = self;
   v67.super_class = IPv4AddressFormatter;
   v8 = [APFormatter isPartialStringValid:sel_isPartialStringValid_newEditingString_errorDescription_ newEditingString:? errorDescription:?];
   if (v8)
   {
-    if (!objc_msgSend_length(a3, v9, v10))
+    if (!objc_msgSend_length(valid, v9, v10))
     {
       goto LABEL_12;
     }
 
-    v12 = objc_msgSend_componentsSeparatedByString_(a3, v11, @".");
+    v12 = objc_msgSend_componentsSeparatedByString_(valid, v11, @".");
     v15 = objc_msgSend_count(v12, v13, v14);
     if (v15 > 4)
     {
-      if (a4)
+      if (string)
       {
         v17 = MEMORY[0x277CCACA8];
         v18 = objc_msgSend_objectAtIndex_(v12, v16, 0);
         v20 = objc_msgSend_objectAtIndex_(v12, v19, 1);
         v22 = objc_msgSend_objectAtIndex_(v12, v21, 2);
         v24 = objc_msgSend_objectAtIndex_(v12, v23, 3);
-        *a4 = objc_msgSend_stringWithFormat_(v17, v25, @"%@.%@.%@.%@", v18, v20, v22, v24);
+        *string = objc_msgSend_stringWithFormat_(v17, v25, @"%@.%@.%@.%@", v18, v20, v22, v24);
       }
 
-      if (a5)
+      if (description)
       {
         goto LABEL_7;
       }
@@ -61,14 +61,14 @@ LABEL_12:
       }
     }
 
-    if (!a4)
+    if (!string)
     {
 LABEL_45:
-      if (a5)
+      if (description)
       {
 LABEL_7:
         LOBYTE(v8) = 0;
-        *a5 = @"gErE";
+        *description = @"gErE";
         return v8;
       }
 
@@ -140,7 +140,7 @@ LABEL_36:
       if (v26 != 2)
       {
 LABEL_44:
-        *a4 = v28;
+        *string = v28;
         goto LABEL_45;
       }
 

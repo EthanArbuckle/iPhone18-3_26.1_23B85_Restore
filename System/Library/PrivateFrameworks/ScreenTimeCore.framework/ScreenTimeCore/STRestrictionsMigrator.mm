@@ -1,13 +1,13 @@
 @interface STRestrictionsMigrator
-- (BOOL)_isEmptyConfiguration:(id)a3;
+- (BOOL)_isEmptyConfiguration:(id)configuration;
 - (BOOL)hasMigratorRun;
-- (BOOL)migrateContentPrivacyConfigurationsInContext:(id)a3 error:(id *)a4;
-- (BOOL)performMigrationWithContext:(id)a3 error:(id *)a4;
+- (BOOL)migrateContentPrivacyConfigurationsInContext:(id)context error:(id *)error;
+- (BOOL)performMigrationWithContext:(id)context error:(id *)error;
 - (id)allSourceFeatures;
-- (id)dayItemFromCurfew:(id)a3;
-- (id)invertBooleanNumber:(id)a3;
+- (id)dayItemFromCurfew:(id)curfew;
+- (id)invertBooleanNumber:(id)number;
 - (id)sourceRatingRegionCode;
-- (id)typeForConfigurationIdentifier:(id)a3;
+- (id)typeForConfigurationIdentifier:(id)identifier;
 - (void)cleanUpAfterMigration;
 - (void)collectMCFeatures;
 - (void)migrateSettingsToConfigurations;
@@ -99,14 +99,14 @@
 - (void)collectMCFeatures
 {
   v26 = objc_opt_new();
-  v25 = self;
-  v3 = [(STRestrictionsMigrator *)self allSourceFeatures];
+  selfCopy = self;
+  allSourceFeatures = [(STRestrictionsMigrator *)self allSourceFeatures];
   v30 = +[MCProfileConnection sharedConnection];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = allSourceFeatures;
   v29 = [obj countByEnumeratingWithState:&v31 objects:v47 count:16];
   if (v29)
   {
@@ -247,9 +247,9 @@ LABEL_27:
     while (v29);
   }
 
-  v21 = [v30 userBookmarks];
-  v22 = v21;
-  if (v21 && [v21 count])
+  userBookmarks = [v30 userBookmarks];
+  v22 = userBookmarks;
+  if (userBookmarks && [userBookmarks count])
   {
     [v26 setObject:v22 forKeyedSubscript:@"MCBookmarks"];
   }
@@ -265,14 +265,14 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Collected changed features (out of %d): %{public}@", buf, 0x12u);
   }
 
-  [(STRestrictionsMigrator *)v25 setCollectedSettings:v26];
+  [(STRestrictionsMigrator *)selfCopy setCollectedSettings:v26];
 }
 
-- (BOOL)_isEmptyConfiguration:(id)a3
+- (BOOL)_isEmptyConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 serialize];
-  v5 = [v4 objectForKeyedSubscript:@"Payload"];
+  configurationCopy = configuration;
+  serialize = [configurationCopy serialize];
+  v5 = [serialize objectForKeyedSubscript:@"Payload"];
   v6 = [v5 count];
 
   if (v6)
@@ -281,9 +281,9 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v3;
+      v10 = configurationCopy;
       v11 = 2112;
-      v12 = v4;
+      v12 = serialize;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Built configuration %@: %@", &v9, 0x16u);
     }
   }
@@ -291,22 +291,22 @@ LABEL_27:
   return v6 == 0;
 }
 
-- (id)typeForConfigurationIdentifier:(id)a3
+- (id)typeForConfigurationIdentifier:(id)identifier
 {
   v3 = STRestrictionsBaseIdentifier;
-  v4 = a3;
-  v5 = [v4 substringFromIndex:{objc_msgSend(v3, "length") + 1}];
+  identifierCopy = identifier;
+  v5 = [identifierCopy substringFromIndex:{objc_msgSend(v3, "length") + 1}];
 
   return v5;
 }
 
-- (id)invertBooleanNumber:(id)a3
+- (id)invertBooleanNumber:(id)number
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  numberCopy = number;
+  v4 = numberCopy;
+  if (numberCopy)
   {
-    if ([v3 BOOLValue])
+    if ([numberCopy BOOLValue])
     {
       v5 = &__kCFBooleanFalse;
     }
@@ -325,18 +325,18 @@ LABEL_27:
   return v5;
 }
 
-- (id)dayItemFromCurfew:(id)a3
+- (id)dayItemFromCurfew:(id)curfew
 {
-  v3 = a3;
+  curfewCopy = curfew;
   v4 = +[NSCalendar currentCalendar];
   v5 = objc_opt_new();
   [v5 setFormatOptions:544];
-  v6 = [v4 timeZone];
-  [v5 setTimeZone:v6];
+  timeZone = [v4 timeZone];
+  [v5 setTimeZone:timeZone];
 
-  v7 = [v3 objectForKeyedSubscript:@"start"];
-  v8 = [v3 objectForKeyedSubscript:@"end"];
-  v9 = [v3 objectForKeyedSubscript:@"enabled"];
+  v7 = [curfewCopy objectForKeyedSubscript:@"start"];
+  v8 = [curfewCopy objectForKeyedSubscript:@"end"];
+  v9 = [curfewCopy objectForKeyedSubscript:@"enabled"];
 
   v10 = 0;
   if (![v9 BOOLValue] || !v7)
@@ -381,8 +381,8 @@ LABEL_14:
 - (void)migrateSettingsToConfigurations
 {
   v4 = objc_opt_new();
-  v5 = [(STRestrictionsMigrator *)self collectedSettings];
-  if (!v5)
+  collectedSettings = [(STRestrictionsMigrator *)self collectedSettings];
+  if (!collectedSettings)
   {
     sub_10011CAA4(a2, self);
   }
@@ -391,10 +391,10 @@ LABEL_14:
   v7 = [CEMAccountSettingsDeclaration buildRequiredOnlyWithIdentifier:v6];
 
   v8 = MCFeatureAccountModificationAllowed;
-  v9 = [v5 objectForKeyedSubscript:MCFeatureAccountModificationAllowed];
+  v9 = [collectedSettings objectForKeyedSubscript:MCFeatureAccountModificationAllowed];
   [v7 setPayloadAllowAccountModification:v9];
 
-  [v5 setObject:0 forKeyedSubscript:v8];
+  [collectedSettings setObject:0 forKeyedSubscript:v8];
   if (![(STRestrictionsMigrator *)self _isEmptyConfiguration:v7])
   {
     [v4 addObject:v7];
@@ -404,10 +404,10 @@ LABEL_14:
   v11 = [CEMApplicationSettingsDeclaration buildRequiredOnlyWithIdentifier:v10];
 
   v12 = MCFeatureAutomaticAppUpdatesModificationAllowed;
-  v13 = [v5 objectForKeyedSubscript:MCFeatureAutomaticAppUpdatesModificationAllowed];
+  v13 = [collectedSettings objectForKeyedSubscript:MCFeatureAutomaticAppUpdatesModificationAllowed];
   [v11 setPayloadAllowAutomaticAppUpdatesModification:v13];
 
-  [v5 setObject:0 forKeyedSubscript:v12];
+  [collectedSettings setObject:0 forKeyedSubscript:v12];
   if (![(STRestrictionsMigrator *)self _isEmptyConfiguration:v11])
   {
     [v4 addObject:v11];
@@ -417,23 +417,23 @@ LABEL_14:
   v15 = [CEMApplicationStoreDeclaration buildRequiredOnlyWithIdentifier:v14];
 
   v16 = MCFeatureAppClipsAllowed;
-  v17 = [v5 objectForKeyedSubscript:MCFeatureAppClipsAllowed];
+  v17 = [collectedSettings objectForKeyedSubscript:MCFeatureAppClipsAllowed];
   [v15 setPayloadAllowAppClips:v17];
 
   v18 = MCFeatureAppInstallationAllowed;
-  v19 = [v5 objectForKeyedSubscript:MCFeatureAppInstallationAllowed];
+  v19 = [collectedSettings objectForKeyedSubscript:MCFeatureAppInstallationAllowed];
   [v15 setPayloadAllowAppInstallation:v19];
 
   v20 = MCFeatureAppRemovalAllowed;
-  v21 = [v5 objectForKeyedSubscript:MCFeatureAppRemovalAllowed];
+  v21 = [collectedSettings objectForKeyedSubscript:MCFeatureAppRemovalAllowed];
   [v15 setPayloadAllowAppRemoval:v21];
 
   v22 = MCFeatureInAppPurchasesAllowed;
-  v23 = [v5 objectForKeyedSubscript:MCFeatureInAppPurchasesAllowed];
+  v23 = [collectedSettings objectForKeyedSubscript:MCFeatureInAppPurchasesAllowed];
   [v15 setPayloadAllowInAppPurchases:v23];
 
   v24 = MCFeatureITunesStorePasswordEntryForced;
-  v25 = [v5 objectForKeyedSubscript:MCFeatureITunesStorePasswordEntryForced];
+  v25 = [collectedSettings objectForKeyedSubscript:MCFeatureITunesStorePasswordEntryForced];
   [v15 setPayloadForceITunesStorePasswordEntry:v25];
 
   v199[0] = v16;
@@ -442,7 +442,7 @@ LABEL_14:
   v199[3] = v22;
   v199[4] = v24;
   v26 = [NSArray arrayWithObjects:v199 count:5];
-  [v5 removeObjectsForKeys:v26];
+  [collectedSettings removeObjectsForKeys:v26];
 
   if (![(STRestrictionsMigrator *)self _isEmptyConfiguration:v15])
   {
@@ -453,28 +453,28 @@ LABEL_14:
   v28 = [CEMLegacyRestrictionsAppsDeclaration buildRequiredOnlyWithIdentifier:v27];
 
   v29 = MCFeatureITunesAllowed;
-  v30 = [v5 objectForKeyedSubscript:MCFeatureITunesAllowed];
+  v30 = [collectedSettings objectForKeyedSubscript:MCFeatureITunesAllowed];
   [v28 setPayloadAllowiTunes:v30];
 
   v31 = MCFeatureNewsAllowed;
-  v32 = [v5 objectForKeyedSubscript:MCFeatureNewsAllowed];
+  v32 = [collectedSettings objectForKeyedSubscript:MCFeatureNewsAllowed];
   [v28 setPayloadAllowNews:v32];
 
   v33 = MCFeaturePodcastsAllowed;
-  v34 = [v5 objectForKeyedSubscript:MCFeaturePodcastsAllowed];
+  v34 = [collectedSettings objectForKeyedSubscript:MCFeaturePodcastsAllowed];
   [v28 setPayloadAllowPodcasts:v34];
 
   v35 = MCFeatureSafariAllowed;
-  v36 = [v5 objectForKeyedSubscript:MCFeatureSafariAllowed];
+  v36 = [collectedSettings objectForKeyedSubscript:MCFeatureSafariAllowed];
   [v28 setPayloadAllowSafari:v36];
 
   v37 = MCFeatureVideoConferencingAllowed;
-  v38 = [v5 objectForKeyedSubscript:MCFeatureVideoConferencingAllowed];
+  v38 = [collectedSettings objectForKeyedSubscript:MCFeatureVideoConferencingAllowed];
   [v28 setPayloadAllowVideoConferencing:v38];
 
   v39 = MCFeatureGroupActivityAllowed;
-  [v5 objectForKeyedSubscript:MCFeatureGroupActivityAllowed];
-  v40 = v175 = v5;
+  [collectedSettings objectForKeyedSubscript:MCFeatureGroupActivityAllowed];
+  v40 = v175 = collectedSettings;
   [v28 setPayloadAllowGroupActivity:v40];
 
   v198[0] = v29;
@@ -682,7 +682,7 @@ LABEL_14:
 
     v105 = MCFeatureMaximumMoviesRating;
 LABEL_34:
-    v171 = [(STRestrictionsMigrator *)v174 sourceRatingRegionCode];
+    sourceRatingRegionCode = [(STRestrictionsMigrator *)v174 sourceRatingRegionCode];
     v107 = MCFeatureMaximumTVShowsRating;
     goto LABEL_35;
   }
@@ -703,7 +703,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v171 = 0;
+  sourceRatingRegionCode = 0;
 LABEL_35:
   v168 = v105;
   v161 = v107;
@@ -718,7 +718,7 @@ LABEL_35:
   v114 = [v175 objectForKeyedSubscript:MCFeatureTVShowingUndownloadedTVShowsAllowed];
   v115 = MCFeatureTVShowingUndownloadedMoviesAllowed;
   v116 = [v175 objectForKeyedSubscript:MCFeatureTVShowingUndownloadedMoviesAllowed];
-  v117 = [CEMSystemRatingsDeclaration buildWithIdentifier:v160 withRatingRegion:v171 withRatingApps:v109 withRatingMovies:v110 withRatingTVShows:v111 withAllowExplicitContent:v112 withAllowShowingUndownloadedTV:v114 withAllowShowingUndownloadedMovies:v116];
+  v117 = [CEMSystemRatingsDeclaration buildWithIdentifier:v160 withRatingRegion:sourceRatingRegionCode withRatingApps:v109 withRatingMovies:v110 withRatingTVShows:v111 withAllowExplicitContent:v112 withAllowShowingUndownloadedTV:v114 withAllowShowingUndownloadedMovies:v116];
 
   v193[0] = v166;
   v193[1] = v168;
@@ -813,9 +813,9 @@ LABEL_35:
 
           v146 = *(*(&v176 + 1) + 8 * i);
           v147 = [v146 URL];
-          v148 = [v147 absoluteString];
-          v149 = [v146 title];
-          v150 = [CEMSystemBasicWebContentFilterDeclaration_SiteWhiteListItem buildWithAddress:v148 withPageTitle:v149];
+          absoluteString = [v147 absoluteString];
+          title = [v146 title];
+          v150 = [CEMSystemBasicWebContentFilterDeclaration_SiteWhiteListItem buildWithAddress:absoluteString withPageTitle:title];
 
           [v140 addObject:v150];
         }
@@ -909,11 +909,11 @@ LABEL_35:
   return v3;
 }
 
-- (BOOL)migrateContentPrivacyConfigurationsInContext:(id)a3 error:(id *)a4
+- (BOOL)migrateContentPrivacyConfigurationsInContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v121 = 0;
-  v7 = [STCoreUser fetchLocalUserInContext:v6 error:&v121];
+  v7 = [STCoreUser fetchLocalUserInContext:contextCopy error:&v121];
   v8 = v121;
   if (v7)
   {
@@ -936,10 +936,10 @@ LABEL_35:
       }
     }
 
-    v13 = [v7 localSettings];
-    v14 = [v13 organization];
+    localSettings = [v7 localSettings];
+    organization = [localSettings organization];
 
-    if (!v14)
+    if (!organization)
     {
       v16 = +[STLog restrictionsMigrator];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -951,9 +951,9 @@ LABEL_35:
       goto LABEL_97;
     }
 
-    v109 = self;
-    v15 = [v7 dsid];
-    v16 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:v15 fromOrganization:v14];
+    selfCopy = self;
+    dsid = [v7 dsid];
+    v16 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:dsid fromOrganization:organization];
 
     v120 = v8;
     v17 = [v16 execute:&v120];
@@ -967,11 +967,11 @@ LABEL_35:
         sub_10011D05C();
       }
 
-      if (a4)
+      if (error)
       {
         v21 = v18;
         v12 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -999,17 +999,17 @@ LABEL_97:
       goto LABEL_98;
     }
 
-    v22 = [(STRestrictionsMigrator *)v109 restrictionConfigurations];
-    v104 = a4;
+    restrictionConfigurations = [(STRestrictionsMigrator *)selfCopy restrictionConfigurations];
+    errorCopy = error;
     v105 = v17;
-    v102 = v22;
+    v102 = restrictionConfigurations;
     v103 = v16;
-    if ([v22 count])
+    if ([restrictionConfigurations count])
     {
-      v23 = [[STBlueprint alloc] initWithContext:v6];
+      v23 = [[STBlueprint alloc] initWithContext:contextCopy];
       [v23 setType:STBlueprintTypeRestrictions];
       [v23 setIdentifier:STRestrictionsBaseIdentifier];
-      [v23 setOrganization:v14];
+      [v23 setOrganization:organization];
       v97 = v7;
       v24 = [NSSet setWithObject:v7];
       [v23 setUsers:v24];
@@ -1023,15 +1023,15 @@ LABEL_97:
         sub_10011CBD8();
       }
 
-      v99 = v14;
-      v26 = v6;
+      v99 = organization;
+      v26 = contextCopy;
 
       v107 = objc_opt_new();
       v116 = 0u;
       v117 = 0u;
       v118 = 0u;
       v119 = 0u;
-      obj = v22;
+      obj = restrictionConfigurations;
       v27 = [obj countByEnumeratingWithState:&v116 objects:v122 count:16];
       if (v27)
       {
@@ -1062,16 +1062,16 @@ LABEL_97:
                 sub_10011CC48();
               }
 
-              v6 = v26;
-              v14 = v99;
+              contextCopy = v26;
+              organization = v99;
               v43 = v102;
               v16 = v103;
               v17 = v105;
-              if (v104)
+              if (errorCopy)
               {
                 v44 = v18;
                 v12 = 0;
-                *v104 = v18;
+                *errorCopy = v18;
               }
 
               else
@@ -1084,11 +1084,11 @@ LABEL_97:
             }
 
             v34 = [[STBlueprintConfiguration alloc] initWithContext:v26];
-            v35 = [v32 declarationIdentifier];
-            [v34 setIdentifier:v35];
+            declarationIdentifier = [v32 declarationIdentifier];
+            [v34 setIdentifier:declarationIdentifier];
 
-            v36 = [v32 declarationIdentifier];
-            v37 = [(STRestrictionsMigrator *)v109 typeForConfigurationIdentifier:v36];
+            declarationIdentifier2 = [v32 declarationIdentifier];
+            v37 = [(STRestrictionsMigrator *)selfCopy typeForConfigurationIdentifier:declarationIdentifier2];
             [v34 setType:v37];
 
             [v34 setPayloadPlist:v33];
@@ -1117,9 +1117,9 @@ LABEL_97:
         sub_10011CCB0();
       }
 
-      v6 = v26;
+      contextCopy = v26;
       v7 = v97;
-      v14 = v99;
+      organization = v99;
     }
 
     v108 = STAvailableVersion1CategoriesExcludingSystemCategories();
@@ -1134,7 +1134,7 @@ LABEL_97:
       if (!v39)
       {
         v40 = +[STLog restrictionsMigrator];
-        v41 = v109;
+        v41 = selfCopy;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           sub_10011CD20();
@@ -1142,23 +1142,23 @@ LABEL_97:
 
         obj = 0;
 LABEL_51:
-        v45 = [(STRestrictionsMigrator *)v41 downtimeConfiguration];
-        v98 = v45;
-        if (v45)
+        downtimeConfiguration = [(STRestrictionsMigrator *)v41 downtimeConfiguration];
+        v98 = downtimeConfiguration;
+        if (downtimeConfiguration)
         {
-          v46 = v45;
-          v47 = [[STBlueprint alloc] initWithContext:v6];
+          v46 = downtimeConfiguration;
+          v47 = [[STBlueprint alloc] initWithContext:contextCopy];
           [v47 setType:STBlueprintTypeDowntime];
           v48 = [(STRestrictionsMigrator *)v41 localOrganizationIdentifierWithBase:STActivationIdentifierDowntime];
           [v47 setIdentifier:v48];
 
-          [v47 setOrganization:v14];
+          [v47 setOrganization:organization];
           v49 = [NSSet setWithObject:v7];
           [v47 setUsers:v49];
 
           [v47 setEnabled:1];
           [v47 setIsDirty:1];
-          v50 = [[STBlueprintSchedule alloc] initWithContext:v6];
+          v50 = [[STBlueprintSchedule alloc] initWithContext:contextCopy];
           [v50 setScheduleRepresentation:v46];
           [v50 setCalendarIdentifier:NSCalendarIdentifierGregorian];
           v51 = [NSNumber numberWithDouble:STDefaultTimeIntervalBeforeDowntime];
@@ -1178,12 +1178,12 @@ LABEL_51:
           v93 = v53;
           if (v54)
           {
-            v55 = [[STBlueprintConfiguration alloc] initWithContext:v6];
-            v56 = [v53 declarationType];
-            [v55 setType:v56];
+            v55 = [[STBlueprintConfiguration alloc] initWithContext:contextCopy];
+            declarationType = [v53 declarationType];
+            [v55 setType:declarationType];
 
-            v57 = [v53 declarationIdentifier];
-            [v55 setIdentifier:v57];
+            declarationIdentifier3 = [v53 declarationIdentifier];
+            [v55 setIdentifier:declarationIdentifier3];
 
             [v55 setPayloadPlist:v54];
             [v55 setBlueprint:v95];
@@ -1215,10 +1215,10 @@ LABEL_51:
 
             v61 = &_sSo17OS_dispatch_queueC8DispatchE10AttributesVMa_ptr;
             v60 = v92;
-            if (v104)
+            if (errorCopy)
             {
               v63 = v18;
-              *v104 = v18;
+              *errorCopy = v18;
             }
           }
 
@@ -1231,7 +1231,7 @@ LABEL_51:
           }
 
           v100 = v18;
-          v41 = v109;
+          v41 = selfCopy;
         }
 
         else
@@ -1239,22 +1239,22 @@ LABEL_51:
           v61 = &_sSo17OS_dispatch_queueC8DispatchE10AttributesVMa_ptr;
         }
 
-        v64 = [(STRestrictionsMigrator *)v41 limitConfiguration];
-        v110 = v64;
-        if (v64)
+        limitConfiguration = [(STRestrictionsMigrator *)v41 limitConfiguration];
+        v110 = limitConfiguration;
+        if (limitConfiguration)
         {
-          v65 = v64;
-          v66 = [[STBlueprint alloc] initWithContext:v6];
+          v65 = limitConfiguration;
+          v66 = [[STBlueprint alloc] initWithContext:contextCopy];
           [v66 setType:STBlueprintTypeUsageLimit];
           v67 = [(STRestrictionsMigrator *)v41 localOrganizationIdentifierWithBase:STActivationIdentifierUsageLimit];
           [v66 setIdentifier:v67];
 
-          [v66 setOrganization:v14];
+          [v66 setOrganization:organization];
           v68 = [v61[234] setWithObject:v7];
           [v66 setUsers:v68];
 
           [v66 setIsDirty:1];
-          v69 = [[STBlueprintUsageLimit alloc] initWithContext:v6];
+          v69 = [[STBlueprintUsageLimit alloc] initWithContext:contextCopy];
           [v69 setBudgetLimitScheduleRepresentation:v65];
           [v69 setCategoryIdentifiers:v108];
           [v69 setCategoryIdentifiersVersion2:v107];
@@ -1276,13 +1276,13 @@ LABEL_51:
           {
             v74 = v73;
             v75 = v72;
-            v76 = [[STBlueprintConfiguration alloc] initWithContext:v6];
-            v77 = [v75 declarationType];
-            [v76 setType:v77];
+            v76 = [[STBlueprintConfiguration alloc] initWithContext:contextCopy];
+            declarationType2 = [v75 declarationType];
+            [v76 setType:declarationType2];
 
             v101 = v75;
-            v78 = [v75 declarationIdentifier];
-            [v76 setIdentifier:v78];
+            declarationIdentifier4 = [v75 declarationIdentifier];
+            [v76 setIdentifier:declarationIdentifier4];
 
             [v76 setPayloadPlist:v74];
             [v76 setBlueprint:v66];
@@ -1294,7 +1294,7 @@ LABEL_51:
 
             v80 = +[STLog restrictionsMigrator];
             v16 = v103;
-            v81 = v104;
+            v81 = errorCopy;
             v17 = v105;
             if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
             {
@@ -1313,12 +1313,12 @@ LABEL_51:
               sub_10011CE6C();
             }
 
-            v81 = v104;
+            v81 = errorCopy;
             v17 = v105;
-            if (v104)
+            if (errorCopy)
             {
               v84 = v18;
-              *v104 = v18;
+              *errorCopy = v18;
             }
           }
 
@@ -1331,11 +1331,11 @@ LABEL_51:
         else
         {
           v16 = v103;
-          v81 = v104;
+          v81 = errorCopy;
           v18 = v100;
         }
 
-        if (![v6 hasChanges])
+        if (![contextCopy hasChanges])
         {
           v12 = 1;
 LABEL_92:
@@ -1350,7 +1350,7 @@ LABEL_95:
         }
 
         v111 = v18;
-        v85 = [v6 save:&v111];
+        v85 = [contextCopy save:&v111];
         v86 = v111;
         v87 = v18;
         v18 = v86;
@@ -1396,7 +1396,7 @@ LABEL_91:
       v100 = v18;
     }
 
-    v41 = v109;
+    v41 = selfCopy;
     goto LABEL_51;
   }
 
@@ -1406,11 +1406,11 @@ LABEL_91:
     sub_10011D104();
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
     v12 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1446,9 +1446,9 @@ LABEL_98:
   }
 }
 
-- (BOOL)performMigrationWithContext:(id)a3 error:(id *)a4
+- (BOOL)performMigrationWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = +[STLog restrictionsMigrator];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1457,23 +1457,23 @@ LABEL_98:
   }
 
   [(STRestrictionsMigrator *)self collectMCFeatures];
-  v8 = [(STRestrictionsMigrator *)self collectedSettings];
-  v9 = [v8 count];
+  collectedSettings = [(STRestrictionsMigrator *)self collectedSettings];
+  v9 = [collectedSettings count];
   [(STRestrictionsMigrator *)self migrateSettingsToConfigurations];
-  v10 = [(STRestrictionsMigrator *)self collectedSettings];
-  v11 = [v10 count];
+  collectedSettings2 = [(STRestrictionsMigrator *)self collectedSettings];
+  v11 = [collectedSettings2 count];
 
   if (v11)
   {
     v12 = +[STLog restrictionsMigrator];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 count];
-      v14 = [v8 allKeys];
+      v13 = [collectedSettings count];
+      allKeys = [collectedSettings allKeys];
       v22 = 67109378;
       *v23 = v13;
       *&v23[4] = 2114;
-      *&v23[6] = v14;
+      *&v23[6] = allKeys;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Incomplete migration, %d features left behind: %{public}@", &v22, 0x12u);
     }
   }
@@ -1491,8 +1491,8 @@ LABEL_98:
       v16 = @"not needed";
     }
 
-    v17 = [(STRestrictionsMigrator *)self restrictionConfigurations];
-    v18 = [v17 count];
+    restrictionConfigurations = [(STRestrictionsMigrator *)self restrictionConfigurations];
+    v18 = [restrictionConfigurations count];
     v22 = 138543874;
     *v23 = v16;
     *&v23[8] = 1024;
@@ -1504,7 +1504,7 @@ LABEL_98:
 
   if (v9)
   {
-    if (![(STRestrictionsMigrator *)self migrateContentPrivacyConfigurationsInContext:v6 error:a4])
+    if (![(STRestrictionsMigrator *)self migrateContentPrivacyConfigurationsInContext:contextCopy error:error])
     {
       v20 = 0;
       goto LABEL_17;

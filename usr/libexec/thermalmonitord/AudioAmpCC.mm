@@ -1,12 +1,12 @@
 @interface AudioAmpCC
-- (AudioAmpCC)initWithParams:(__CFDictionary *)a3;
+- (AudioAmpCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)defaultAction;
 @end
 
 @implementation AudioAmpCC
 
-- (AudioAmpCC)initWithParams:(__CFDictionary *)a3
+- (AudioAmpCC)initWithParams:(__CFDictionary *)params
 {
   v7.receiver = self;
   v7.super_class = AudioAmpCC;
@@ -19,9 +19,9 @@
     v4->_targetPower = 0.0;
     v4->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d AudioAmp ", 10);
     v5->super.previousValue = v5->super.currentLoadingIndex;
-    if (a3)
+    if (params)
     {
-      sub_100002A20(a3, @"maxAudioAmpPower", kCFNumberFloatType, &v5->_currentPower);
+      sub_100002A20(params, @"maxAudioAmpPower", kCFNumberFloatType, &v5->_currentPower);
     }
   }
 

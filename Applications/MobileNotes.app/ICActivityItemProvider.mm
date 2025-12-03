@@ -1,35 +1,35 @@
 @interface ICActivityItemProvider
-- (ICActivityItemProvider)initWithItemProvider:(id)a3 title:(id)a4 image:(id)a5;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (ICActivityItemProvider)initWithItemProvider:(id)provider title:(id)title image:(id)image;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation ICActivityItemProvider
 
-- (ICActivityItemProvider)initWithItemProvider:(id)a3 title:(id)a4 image:(id)a5
+- (ICActivityItemProvider)initWithItemProvider:(id)provider title:(id)title image:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  titleCopy = title;
+  imageCopy = image;
   v15.receiver = self;
   v15.super_class = ICActivityItemProvider;
-  v11 = [(ICActivityItemProvider *)&v15 initWithPlaceholderItem:v8];
+  v11 = [(ICActivityItemProvider *)&v15 initWithPlaceholderItem:providerCopy];
   v12 = v11;
   if (v11)
   {
-    [(ICActivityItemProvider *)v11 setItemProvider:v8];
-    v13 = [[ICLinkPresentationMetadata alloc] initWithTitle:v9 image:v10];
+    [(ICActivityItemProvider *)v11 setItemProvider:providerCopy];
+    v13 = [[ICLinkPresentationMetadata alloc] initWithTitle:titleCopy image:imageCopy];
     [(ICActivityItemProvider *)v12 setLinkPresentationMetadata:v13];
   }
 
   return v12;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v3 = [(ICActivityItemProvider *)self linkPresentationMetadata];
-  v4 = [v3 linkMetadata];
+  linkPresentationMetadata = [(ICActivityItemProvider *)self linkPresentationMetadata];
+  linkMetadata = [linkPresentationMetadata linkMetadata];
 
-  return v4;
+  return linkMetadata;
 }
 
 @end

@@ -1,58 +1,58 @@
 @interface MNVirtualGarageManager
 + (MNVirtualGarageManager)sharedManager;
-- (BOOL)_isStandardProvider:(id)a3;
+- (BOOL)_isStandardProvider:(id)provider;
 - (id)_standardVirtualGarageProvider;
 - (id)initPrivate;
 - (void)_start;
 - (void)_stop;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)setProvider:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updatedVehicleStateWithHandler:(id)a3;
-- (void)virtualGarageProvider:(id)a3 didUpdateSelectedVehicle:(id)a4;
+- (void)registerObserver:(id)observer;
+- (void)setProvider:(id)provider;
+- (void)unregisterObserver:(id)observer;
+- (void)updatedVehicleStateWithHandler:(id)handler;
+- (void)virtualGarageProvider:(id)provider didUpdateSelectedVehicle:(id)vehicle;
 @end
 
 @implementation MNVirtualGarageManager
 
-- (void)virtualGarageProvider:(id)a3 didUpdateSelectedVehicle:(id)a4
+- (void)virtualGarageProvider:(id)provider didUpdateSelectedVehicle:(id)vehicle
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  vehicleCopy = vehicle;
   v6 = MNGetMNVirtualGarageManagerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v5 displayedBatteryPercentage];
-    v26 = [v5 currentVehicleState];
-    v25 = [v26 currentEVRange];
-    v24 = [MEMORY[0x1E696B058] meters];
-    v23 = [v25 measurementByConvertingToUnit:v24];
+    displayedBatteryPercentage = [vehicleCopy displayedBatteryPercentage];
+    currentVehicleState = [vehicleCopy currentVehicleState];
+    currentEVRange = [currentVehicleState currentEVRange];
+    meters = [MEMORY[0x1E696B058] meters];
+    v23 = [currentEVRange measurementByConvertingToUnit:meters];
     [v23 doubleValue];
     v8 = v7;
-    v22 = [v5 currentVehicleState];
-    v9 = [v22 currentBatteryCapacity];
-    v10 = [MEMORY[0x1E696B030] kilowattHours];
-    [v9 measurementByConvertingToUnit:v10];
+    currentVehicleState2 = [vehicleCopy currentVehicleState];
+    currentBatteryCapacity = [currentVehicleState2 currentBatteryCapacity];
+    kilowattHours = [MEMORY[0x1E696B030] kilowattHours];
+    [currentBatteryCapacity measurementByConvertingToUnit:kilowattHours];
     v11 = v27 = self;
     [v11 doubleValue];
     v13 = v12;
-    v14 = [v5 currentVehicleState];
-    v15 = [v14 isCharging];
-    v16 = [v5 identifier];
-    v17 = [v5 currentVehicleState];
-    v18 = [v17 identifier];
+    currentVehicleState3 = [vehicleCopy currentVehicleState];
+    isCharging = [currentVehicleState3 isCharging];
+    identifier = [vehicleCopy identifier];
+    currentVehicleState4 = [vehicleCopy currentVehicleState];
+    identifier2 = [currentVehicleState4 identifier];
     *buf = 134219266;
-    v31 = v21;
+    v31 = displayedBatteryPercentage;
     v32 = 2048;
     v33 = v8;
     v34 = 2048;
     v35 = v13;
     v36 = 1024;
-    v37 = v15;
+    v37 = isCharging;
     v38 = 2112;
-    v39 = v16;
+    v39 = identifier;
     v40 = 2112;
-    v41 = v18;
+    v41 = identifier2;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEBUG, "Vehicle update | Battery: %lu%%, Range: %0.0f m, Charge: %0.0f kWH, isCharging: %d | %@ %@", buf, 0x3Au);
 
     self = v27;
@@ -63,8 +63,8 @@
   block[2] = __73__MNVirtualGarageManager_virtualGarageProvider_didUpdateSelectedVehicle___block_invoke;
   block[3] = &unk_1E8430D50;
   block[4] = self;
-  v29 = v5;
-  v19 = v5;
+  v29 = vehicleCopy;
+  v19 = vehicleCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v20 = *MEMORY[0x1E69E9840];
@@ -111,11 +111,11 @@ uint64_t __73__MNVirtualGarageManager_virtualGarageProvider_didUpdateSelectedVeh
   return [v16 virtualGarageManager:? didUpdateSelectedVehicle:?];
 }
 
-- (BOOL)_isStandardProvider:(id)a3
+- (BOOL)_isStandardProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
-    v3 = a3;
+    providerCopy = provider;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -158,45 +158,45 @@ uint64_t __73__MNVirtualGarageManager_virtualGarageProvider_didUpdateSelectedVeh
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    [(GEOObserverHashTable *)self->_observers unregisterObserver:v4];
-    v4 = v6;
+    v6 = observerCopy;
+    [(GEOObserverHashTable *)self->_observers unregisterObserver:observerCopy];
+    observerCopy = v6;
     if (self->_isStarted)
     {
-      v5 = [(GEOObserverHashTable *)self->_observers hasObservers];
-      v4 = v6;
-      if ((v5 & 1) == 0)
+      hasObservers = [(GEOObserverHashTable *)self->_observers hasObservers];
+      observerCopy = v6;
+      if ((hasObservers & 1) == 0)
       {
         [(MNVirtualGarageManager *)self _stop];
-        v4 = v6;
+        observerCopy = v6;
       }
     }
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v7 = v4;
+    v7 = observerCopy;
     if (self->_isStarted)
     {
-      [(GEOObserverHashTable *)observers registerObserver:v4];
+      [(GEOObserverHashTable *)observers registerObserver:observerCopy];
     }
 
     else
     {
-      v6 = [(GEOObserverHashTable *)observers hasObservers];
+      hasObservers = [(GEOObserverHashTable *)observers hasObservers];
       [(GEOObserverHashTable *)self->_observers registerObserver:v7];
-      v4 = v7;
-      if (v6)
+      observerCopy = v7;
+      if (hasObservers)
       {
         goto LABEL_7;
       }
@@ -204,23 +204,23 @@ uint64_t __73__MNVirtualGarageManager_virtualGarageProvider_didUpdateSelectedVeh
       [(MNVirtualGarageManager *)self _start];
     }
 
-    v4 = v7;
+    observerCopy = v7;
   }
 
 LABEL_7:
 }
 
-- (void)updatedVehicleStateWithHandler:(id)a3
+- (void)updatedVehicleStateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   provider = self->_provider;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MNVirtualGarageManager_updatedVehicleStateWithHandler___block_invoke;
   v7[3] = &unk_1E8430900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(MNVirtualGarageProvider *)provider updatedVehicleStateWithHandler:v7];
 }
 
@@ -240,21 +240,21 @@ void __57__MNVirtualGarageManager_updatedVehicleStateWithHandler___block_invoke(
   }
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v4 = a3;
-  v5 = v4;
+  providerCopy = provider;
+  _standardVirtualGarageProvider = providerCopy;
   provider = self->_provider;
-  if (provider != v4)
+  if (provider != providerCopy)
   {
-    if (!provider || (obj = v4, v7 = [(MNVirtualGarageManager *)self _isStandardProvider:?], v5 = obj, !v7) || (v4 = [(MNVirtualGarageManager *)self _isStandardProvider:self->_provider], v5 = obj, (v4 & 1) == 0))
+    if (!provider || (obj = providerCopy, v7 = [(MNVirtualGarageManager *)self _isStandardProvider:?], _standardVirtualGarageProvider = obj, !v7) || (providerCopy = [(MNVirtualGarageManager *)self _isStandardProvider:self->_provider], _standardVirtualGarageProvider = obj, (providerCopy & 1) == 0))
     {
-      if (!v5)
+      if (!_standardVirtualGarageProvider)
       {
-        v5 = [(MNVirtualGarageManager *)self _standardVirtualGarageProvider];
+        _standardVirtualGarageProvider = [(MNVirtualGarageManager *)self _standardVirtualGarageProvider];
       }
 
-      obja = v5;
+      obja = _standardVirtualGarageProvider;
       [(MNVirtualGarageProvider *)self->_provider setVirtualGarageDelegate:0];
       [(MNVirtualGarageProvider *)self->_provider stopVirtualGarageUpdates];
       objc_storeStrong(&self->_provider, obja);
@@ -264,12 +264,12 @@ void __57__MNVirtualGarageManager_updatedVehicleStateWithHandler___block_invoke(
 
       if (self->_isStarted)
       {
-        v4 = [(MNVirtualGarageProvider *)self->_provider startVirtualGarageUpdates];
+        providerCopy = [(MNVirtualGarageProvider *)self->_provider startVirtualGarageUpdates];
       }
     }
   }
 
-  MEMORY[0x1EEE66BE0](v4);
+  MEMORY[0x1EEE66BE0](providerCopy);
 }
 
 - (void)dealloc
@@ -291,8 +291,8 @@ void __57__MNVirtualGarageManager_updatedVehicleStateWithHandler___block_invoke(
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [(MNVirtualGarageManager *)v2 _standardVirtualGarageProvider];
-    [(MNVirtualGarageManager *)v2 setProvider:v5];
+    _standardVirtualGarageProvider = [(MNVirtualGarageManager *)v2 _standardVirtualGarageProvider];
+    [(MNVirtualGarageManager *)v2 setProvider:_standardVirtualGarageProvider];
   }
 
   return v2;

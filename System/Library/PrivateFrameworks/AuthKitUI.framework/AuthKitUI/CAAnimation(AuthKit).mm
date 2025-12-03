@@ -6,7 +6,7 @@
 
 + (id)ak_jiggleAnimation
 {
-  v19[2] = a1;
+  v19[2] = self;
   v19[1] = a2;
   v19[0] = [MEMORY[0x277CD9FA0] animation];
   [v19[0] setMass:1.20000005];

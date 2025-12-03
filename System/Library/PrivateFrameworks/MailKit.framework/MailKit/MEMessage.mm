@@ -1,149 +1,149 @@
 @interface MEMessage
-+ (BOOL)extensionCanSetHeaderKey:(id)a3;
++ (BOOL)extensionCanSetHeaderKey:(id)key;
 + (id)_protectedHeaders;
-- (BOOL)isEqual:(id)a3;
-- (MEMessage)initWithCoder:(id)a3;
-- (MEMessage)initWithState:(int64_t)a3 encryptionState:(int64_t)a4 signatureState:(int64_t)a5 subject:(id)a6 recipients:(id)a7 from:(id)a8 dataSent:(id)a9 dateReceived:(id)a10 headers:(id)a11 rawData:(id)a12 senderMetadata:(id)a13;
+- (BOOL)isEqual:(id)equal;
+- (MEMessage)initWithCoder:(id)coder;
+- (MEMessage)initWithState:(int64_t)state encryptionState:(int64_t)encryptionState signatureState:(int64_t)signatureState subject:(id)subject recipients:(id)recipients from:(id)from dataSent:(id)sent dateReceived:(id)self0 headers:(id)self1 rawData:(id)self2 senderMetadata:(id)self3;
 - (NSString)ef_publicDescription;
-- (id)_sanitaizedHeadersForHeaders:(id)a3;
+- (id)_sanitaizedHeadersForHeaders:(id)headers;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEMessage
 
-- (MEMessage)initWithState:(int64_t)a3 encryptionState:(int64_t)a4 signatureState:(int64_t)a5 subject:(id)a6 recipients:(id)a7 from:(id)a8 dataSent:(id)a9 dateReceived:(id)a10 headers:(id)a11 rawData:(id)a12 senderMetadata:(id)a13
+- (MEMessage)initWithState:(int64_t)state encryptionState:(int64_t)encryptionState signatureState:(int64_t)signatureState subject:(id)subject recipients:(id)recipients from:(id)from dataSent:(id)sent dateReceived:(id)self0 headers:(id)self1 rawData:(id)self2 senderMetadata:(id)self3
 {
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
-  v29 = a9;
-  v28 = a10;
-  v17 = a11;
-  v27 = a12;
-  v26 = a13;
+  subjectCopy = subject;
+  recipientsCopy = recipients;
+  fromCopy = from;
+  sentCopy = sent;
+  receivedCopy = received;
+  headersCopy = headers;
+  dataCopy = data;
+  metadataCopy = metadata;
   v33.receiver = self;
   v33.super_class = MEMessage;
   v18 = [(MEMessage *)&v33 init];
   v19 = v18;
   if (v18)
   {
-    v18->_state = a3;
-    v18->_encryptionState = a4;
-    v18->_signatureState = a5;
-    objc_storeStrong(&v18->_subject, a6);
-    objc_storeStrong(&v19->_fromAddress, a8);
-    v20 = [(MEMessage *)v19 _sanitaizedHeadersForHeaders:v17];
+    v18->_state = state;
+    v18->_encryptionState = encryptionState;
+    v18->_signatureState = signatureState;
+    objc_storeStrong(&v18->_subject, subject);
+    objc_storeStrong(&v19->_fromAddress, from);
+    v20 = [(MEMessage *)v19 _sanitaizedHeadersForHeaders:headersCopy];
     headers = v19->_headers;
     v19->_headers = v20;
 
-    objc_storeStrong(&v19->_recipients, a7);
-    objc_storeStrong(&v19->_dateSent, a9);
-    objc_storeStrong(&v19->_dateReceived, a10);
-    objc_storeStrong(&v19->_rawData, a12);
-    objc_storeStrong(&v19->_senderMetadata, a13);
+    objc_storeStrong(&v19->_recipients, recipients);
+    objc_storeStrong(&v19->_dateSent, sent);
+    objc_storeStrong(&v19->_dateReceived, received);
+    objc_storeStrong(&v19->_rawData, data);
+    objc_storeStrong(&v19->_senderMetadata, metadata);
   }
 
   return v19;
 }
 
-- (MEMessage)initWithCoder:(id)a3
+- (MEMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"EFPropertyKey_state"];
-  v6 = [v4 decodeIntegerForKey:@"EFPropertyKey_encryptionState"];
-  v7 = [v4 decodeIntegerForKey:@"EFPropertyKey_signatureState"];
-  v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_subject"];
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_recipients"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_state"];
+  v6 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_encryptionState"];
+  v7 = [coderCopy decodeIntegerForKey:@"EFPropertyKey_signatureState"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_subject"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_recipients"];
   v27 = v7;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_fromAddress"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_fromAddress"];
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"EFPropertyKey_headers"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"EFPropertyKey_headers"];
   v14 = v5;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_dateSent"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_dateSent"];
   dateSent = self->_dateSent;
   self->_dateSent = v15;
 
   v17 = v15;
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_dateReceived"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_dateReceived"];
   dateReceived = self->_dateReceived;
   self->_dateReceived = v18;
 
   v20 = v18;
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rawData"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rawData"];
   rawData = self->_rawData;
   self->_rawData = v21;
 
   v23 = v21;
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_senderMetadata"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_senderMetadata"];
   v25 = [(MEMessage *)self initWithState:v14 encryptionState:v6 signatureState:v27 subject:v29 recipients:v28 from:v8 dataSent:v17 dateReceived:v20 headers:v13 rawData:v23 senderMetadata:v24];
 
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  [v12 encodeInteger:self->_state forKey:@"EFPropertyKey_state"];
-  [v12 encodeInteger:self->_encryptionState forKey:@"EFPropertyKey_encryptionState"];
-  [v12 encodeInteger:self->_signatureState forKey:@"EFPropertyKey_signatureState"];
-  v4 = [(MEMessage *)self subject];
-  [v12 encodeObject:v4 forKey:@"EFPropertyKey_subject"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_state forKey:@"EFPropertyKey_state"];
+  [coderCopy encodeInteger:self->_encryptionState forKey:@"EFPropertyKey_encryptionState"];
+  [coderCopy encodeInteger:self->_signatureState forKey:@"EFPropertyKey_signatureState"];
+  subject = [(MEMessage *)self subject];
+  [coderCopy encodeObject:subject forKey:@"EFPropertyKey_subject"];
 
-  v5 = [(MEMessage *)self recipients];
-  [v12 encodeObject:v5 forKey:@"EFPropertyKey_recipients"];
+  recipients = [(MEMessage *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"EFPropertyKey_recipients"];
 
-  v6 = [(MEMessage *)self fromAddress];
-  [v12 encodeObject:v6 forKey:@"EFPropertyKey_fromAddress"];
+  fromAddress = [(MEMessage *)self fromAddress];
+  [coderCopy encodeObject:fromAddress forKey:@"EFPropertyKey_fromAddress"];
 
-  v7 = [(MEMessage *)self dateSent];
-  [v12 encodeObject:v7 forKey:@"EFPropertyKey_dateSent"];
+  dateSent = [(MEMessage *)self dateSent];
+  [coderCopy encodeObject:dateSent forKey:@"EFPropertyKey_dateSent"];
 
-  v8 = [(MEMessage *)self dateReceived];
-  [v12 encodeObject:v8 forKey:@"EFPropertyKey_dateReceived"];
+  dateReceived = [(MEMessage *)self dateReceived];
+  [coderCopy encodeObject:dateReceived forKey:@"EFPropertyKey_dateReceived"];
 
-  v9 = [(MEMessage *)self headers];
-  [v12 encodeObject:v9 forKey:@"EFPropertyKey_headers"];
+  headers = [(MEMessage *)self headers];
+  [coderCopy encodeObject:headers forKey:@"EFPropertyKey_headers"];
 
-  v10 = [(MEMessage *)self rawData];
-  [v12 encodeObject:v10 forKey:@"EFPropertyKey_rawData"];
+  rawData = [(MEMessage *)self rawData];
+  [coderCopy encodeObject:rawData forKey:@"EFPropertyKey_rawData"];
 
-  v11 = [(MEMessage *)self senderMetadata];
-  [v12 encodeObject:v11 forKey:@"EFPropertyKey_senderMetadata"];
+  senderMetadata = [(MEMessage *)self senderMetadata];
+  [coderCopy encodeObject:senderMetadata forKey:@"EFPropertyKey_senderMetadata"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MEMessage *)self state];
-    if (v7 == [v6 state] && (v8 = -[MEMessage encryptionState](self, "encryptionState"), v8 == objc_msgSend(v6, "encryptionState")))
+    v6 = equalCopy;
+    state = [(MEMessage *)self state];
+    if (state == [v6 state] && (v8 = -[MEMessage encryptionState](self, "encryptionState"), v8 == objc_msgSend(v6, "encryptionState")))
     {
-      v9 = [(MEMessage *)self subject];
-      v10 = [v6 subject];
-      if ([v9 isEqual:v10])
+      subject = [(MEMessage *)self subject];
+      subject2 = [v6 subject];
+      if ([subject isEqual:subject2])
       {
-        v11 = [(MEMessage *)self recipients];
-        v12 = [v6 recipients];
-        if ([v11 isEqual:v12])
+        recipients = [(MEMessage *)self recipients];
+        recipients2 = [v6 recipients];
+        if ([recipients isEqual:recipients2])
         {
-          v20 = [(MEMessage *)self fromAddress];
-          v13 = [v6 fromAddress];
-          if ([v20 isEqual:v13])
+          fromAddress = [(MEMessage *)self fromAddress];
+          fromAddress2 = [v6 fromAddress];
+          if ([fromAddress isEqual:fromAddress2])
           {
-            v19 = [(MEMessage *)self senderMetadata];
-            v18 = [v6 senderMetadata];
+            senderMetadata = [(MEMessage *)self senderMetadata];
+            senderMetadata2 = [v6 senderMetadata];
             if (EFObjectsAreEqual())
             {
-              v17 = [(MEMessage *)self headers];
-              v14 = [v6 headers];
+              headers = [(MEMessage *)self headers];
+              headers2 = [v6 headers];
               v15 = EFObjectsAreEqual();
             }
 
@@ -187,38 +187,38 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MEMessage *)self state];
-  v4 = [(MEMessage *)self encryptionState];
-  v5 = [(MEMessage *)self subject];
-  v6 = [v5 hash];
+  state = [(MEMessage *)self state];
+  encryptionState = [(MEMessage *)self encryptionState];
+  subject = [(MEMessage *)self subject];
+  v6 = [subject hash];
 
-  v7 = [(MEMessage *)self recipients];
-  v8 = [v7 hash];
+  recipients = [(MEMessage *)self recipients];
+  v8 = [recipients hash];
 
-  v9 = [(MEMessage *)self fromAddress];
-  v10 = [v9 hash];
+  fromAddress = [(MEMessage *)self fromAddress];
+  v10 = [fromAddress hash];
 
-  v11 = [(MEMessage *)self senderMetadata];
-  v12 = [v11 hash];
+  senderMetadata = [(MEMessage *)self senderMetadata];
+  v12 = [senderMetadata hash];
 
-  v13 = [(MEMessage *)self headers];
-  v14 = 33 * (33 * (33 * (33 * (33 * (33 * v3 + v4) + v6) + v8) + v10) + v12);
-  v15 = [v13 hash] + 0xD09303BF9D65;
+  headers = [(MEMessage *)self headers];
+  v14 = 33 * (33 * (33 * (33 * (33 * (33 * state + encryptionState) + v6) + v8) + v10) + v12);
+  v15 = [headers hash] + 0xD09303BF9D65;
 
   return v14 + v15;
 }
 
-- (id)_sanitaizedHeadersForHeaders:(id)a3
+- (id)_sanitaizedHeadersForHeaders:(id)headers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  headersCopy = headers;
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = v14;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:{16, v14}];
+  v3 = headersCopy;
+  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:{16, headersCopy}];
   if (v4)
   {
     v5 = *v17;
@@ -284,36 +284,36 @@ uint64_t __42__MEMessage__sanitaizedHeadersForHeaders___block_invoke(uint64_t a1
 
 - (NSString)ef_publicDescription
 {
-  v3 = [MEMORY[0x277D07148] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x277D07148] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     v5 = [objc_alloc(MEMORY[0x277D07090]) initWithStyle:2];
-    v6 = [(MEMessage *)self recipients];
+    recipients = [(MEMessage *)self recipients];
     v21 = MEMORY[0x277CCACA8];
-    v30 = v6;
+    v30 = recipients;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = MEMORY[0x277D07080];
     v29 = v8;
-    v28 = [(MEMessage *)self fromAddress];
-    v27 = [v28 rawString];
-    v25 = [v9 emailAddressWithString:v27];
-    v26 = [v25 ef_publicDescription];
-    v24 = [v6 to];
+    fromAddress = [(MEMessage *)self fromAddress];
+    rawString = [fromAddress rawString];
+    v25 = [v9 emailAddressWithString:rawString];
+    ef_publicDescription = [v25 ef_publicDescription];
+    v24 = [recipients to];
     v22 = [v24 ef_compactMap:&__block_literal_global_44];
     v23 = [v5 stringFromEmailAddressList:v22];
-    v20 = [v6 cc];
+    v20 = [recipients cc];
     v18 = [v20 ef_compactMap:&__block_literal_global_44];
     v19 = [v5 stringFromEmailAddressList:v18];
-    v17 = [v6 bcc];
+    v17 = [recipients bcc];
     v10 = [v17 ef_compactMap:&__block_literal_global_44];
     v11 = [v5 stringFromEmailAddressList:v10];
     v12 = MEMORY[0x277D07198];
-    v13 = [(MEMessage *)self subject];
-    v14 = [v12 partiallyRedactedStringForString:v13 maximumUnredactedLength:3];
-    v15 = [v21 stringWithFormat:@"<%@: %p>\nfromAddress: %@\nto: %@\ncc: %@\nbcc: %@\nsubject: %@\nstate: %ld", v29, self, v26, v23, v19, v11, v14, -[MEMessage state](self, "state")];
+    subject = [(MEMessage *)self subject];
+    v14 = [v12 partiallyRedactedStringForString:subject maximumUnredactedLength:3];
+    v15 = [v21 stringWithFormat:@"<%@: %p>\nfromAddress: %@\nto: %@\ncc: %@\nbcc: %@\nsubject: %@\nstate: %ld", v29, self, ef_publicDescription, v23, v19, v11, v14, -[MEMessage state](self, "state")];
   }
 
   else
@@ -414,12 +414,12 @@ void __30__MEMessage__protectedHeaders__block_invoke()
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)extensionCanSetHeaderKey:(id)a3
++ (BOOL)extensionCanSetHeaderKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _protectedHeaders];
-  v5 = [v3 lowercaseString];
-  v6 = [v4 containsObject:v5];
+  keyCopy = key;
+  _protectedHeaders = [objc_opt_class() _protectedHeaders];
+  lowercaseString = [keyCopy lowercaseString];
+  v6 = [_protectedHeaders containsObject:lowercaseString];
 
   return v6 ^ 1;
 }

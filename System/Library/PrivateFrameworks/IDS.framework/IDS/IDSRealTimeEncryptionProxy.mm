@@ -1,15 +1,15 @@
 @interface IDSRealTimeEncryptionProxy
-- (IDSRealTimeEncryptionProxy)initWithAccount:(id)a3;
+- (IDSRealTimeEncryptionProxy)initWithAccount:(id)account;
 - (void)dealloc;
-- (void)sendMKMRecoveryRequestToGroup:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)sendMKMRecoveryRequestToGroup:(id)group;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation IDSRealTimeEncryptionProxy
 
-- (IDSRealTimeEncryptionProxy)initWithAccount:(id)a3
+- (IDSRealTimeEncryptionProxy)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   if (_IDSRunningInDaemon())
   {
     v5 = +[IDSLogging IDSRealTimeEncryptionProxy];
@@ -18,20 +18,20 @@
       sub_195B268D8(self, v5);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = +[IDSInternalQueueController sharedInstance];
-    v8 = [v7 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v7 assertQueueIsCurrent];
 
-    if (v8)
+    if (assertQueueIsCurrent)
     {
-      v9 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
-        sub_195B44FA4(v9);
+        sub_195B44FA4(utilities);
       }
     }
 
@@ -40,16 +40,16 @@
     v10 = [(IDSRealTimeEncryptionProxy *)&v14 init];
     if (v10)
     {
-      v11 = [[_IDSRealTimeEncryptionProxy alloc] initWithAccount:v4];
+      v11 = [[_IDSRealTimeEncryptionProxy alloc] initWithAccount:accountCopy];
       internal = v10->_internal;
       v10->_internal = v11;
     }
 
     self = v10;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -74,34 +74,34 @@
   [(IDSRealTimeEncryptionProxy *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B22708;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11];
 }
 
-- (void)sendMKMRecoveryRequestToGroup:(id)a3
+- (void)sendMKMRecoveryRequestToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195B227EC;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupCopy;
+  v6 = groupCopy;
   [v5 performBlock:v7];
 }
 

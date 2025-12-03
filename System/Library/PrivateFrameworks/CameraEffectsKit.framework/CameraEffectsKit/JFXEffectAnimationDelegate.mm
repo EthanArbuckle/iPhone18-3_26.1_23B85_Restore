@@ -1,27 +1,27 @@
 @interface JFXEffectAnimationDelegate
-- (void)animateWithCompletion:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateWithCompletion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation JFXEffectAnimationDelegate
 
-- (void)animateWithCompletion:(id)a3
+- (void)animateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(JFXEffectAnimationDelegate *)self setAnimationDidBegin:1];
-  [(JFXEffectAnimationDelegate *)self setCompletion:v4];
+  [(JFXEffectAnimationDelegate *)self setCompletion:completionCopy];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   [(JFXEffectAnimationDelegate *)self setAnimationDidEnd:1];
-  v6 = [(JFXEffectAnimationDelegate *)self completion];
+  completion = [(JFXEffectAnimationDelegate *)self completion];
 
-  if (v6)
+  if (completion)
   {
-    v7 = [(JFXEffectAnimationDelegate *)self completion];
-    v7[2](v7, v4);
+    completion2 = [(JFXEffectAnimationDelegate *)self completion];
+    completion2[2](completion2, finishedCopy);
   }
 
   [(JFXEffectAnimationDelegate *)self setCompletion:0];

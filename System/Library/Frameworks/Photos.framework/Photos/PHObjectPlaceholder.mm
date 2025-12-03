@@ -1,6 +1,6 @@
 @interface PHObjectPlaceholder
-- (BOOL)isEqual:(id)a3;
-- (PHObjectPlaceholder)initWithLocalIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PHObjectPlaceholder)initWithLocalIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PHObjectPlaceholder *)self localIdentifier];
-  v3 = [v2 hash];
+  localIdentifier = [(PHObjectPlaceholder *)self localIdentifier];
+  v3 = [localIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     IsEqual = 1;
   }
@@ -27,9 +27,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHObjectPlaceholder *)self localIdentifier];
-      v7 = [(PHObjectPlaceholder *)v5 localIdentifier];
+      v5 = equalCopy;
+      localIdentifier = [(PHObjectPlaceholder *)self localIdentifier];
+      localIdentifier2 = [(PHObjectPlaceholder *)v5 localIdentifier];
 
       IsEqual = PLObjectIsEqual();
     }
@@ -43,15 +43,15 @@
   return IsEqual;
 }
 
-- (PHObjectPlaceholder)initWithLocalIdentifier:(id)a3
+- (PHObjectPlaceholder)initWithLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PHObjectPlaceholder;
   v5 = [(PHObjectPlaceholder *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     localIdentifier = v5->_localIdentifier;
     v5->_localIdentifier = v6;
 

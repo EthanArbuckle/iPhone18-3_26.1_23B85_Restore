@@ -2,7 +2,7 @@
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)title;
 - (_TtCC7Journal10MapManager15MOMapAnnotation)init;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MapManager.MOMapAnnotation
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

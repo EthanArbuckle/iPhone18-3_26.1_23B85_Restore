@@ -1,13 +1,13 @@
 @interface CHInsertPrecedingSpaceForUnitsStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHInsertPrecedingSpaceForUnitsStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v5 = a3;
-  v89 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -23,7 +23,7 @@
   v90 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
   for (i = 0; ; ++i)
   {
-    v18 = objc_msgSend_result(v5, v12, v13, v14, v15, v16);
+    v18 = objc_msgSend_result(processCopy, v12, v13, v14, v15, v16);
     v24 = objc_msgSend_transcriptionPaths(v18, v19, v20, v21, v22, v23);
     v30 = objc_msgSend_count(v24, v25, v26, v27, v28, v29);
 
@@ -32,7 +32,7 @@
       break;
     }
 
-    v36 = objc_msgSend_result(v5, v31, v32, v33, v34, v35);
+    v36 = objc_msgSend_result(processCopy, v31, v32, v33, v34, v35);
     v42 = objc_msgSend_transcriptionPaths(v36, v37, v38, v39, v40, v41);
     v47 = objc_msgSend_objectAtIndexedSubscript_(v42, v43, i, v44, v45, v46);
 
@@ -62,8 +62,8 @@
     v98[1] = v98;
     v98[2] = 0x2020000000;
     v99 = 0;
-    v59 = objc_msgSend_result(v5, v53, v54, v55, v56, v57);
-    v65 = objc_msgSend_result(v5, v60, v61, v62, v63, v64);
+    v59 = objc_msgSend_result(processCopy, v53, v54, v55, v56, v57);
+    v65 = objc_msgSend_result(processCopy, v60, v61, v62, v63, v64);
     v71 = objc_msgSend_tokenColumnCount(v65, v66, v67, v68, v69, v70);
     v91[0] = MEMORY[0x1E69E9820];
     v91[1] = 3221225472;
@@ -88,9 +88,9 @@
 
   v78 = [CHTokenizedMathResult alloc];
   v83 = objc_msgSend_initWithBestPathTokens_(v78, v79, v90, v80, v81, v82);
-  objc_msgSend_setResult_(v5, v84, v83, v85, v86, v87);
+  objc_msgSend_setResult_(processCopy, v84, v83, v85, v86, v87);
 
-  return v5;
+  return processCopy;
 }
 
 @end

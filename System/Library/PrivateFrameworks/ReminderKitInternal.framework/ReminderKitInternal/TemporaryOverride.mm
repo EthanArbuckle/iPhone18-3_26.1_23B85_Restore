@@ -10,22 +10,22 @@
   ObjectType = swift_getObjectType();
   if (*(&self->super.isa + OBJC_IVAR____TtC19ReminderKitInternalP33_BCDA9BEAAF9519B32B6DBABA4FDACDFF17TemporaryOverride_finishCalled) == 1)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     *(&self->super.isa + OBJC_IVAR____TtC19ReminderKitInternalP33_BCDA9BEAAF9519B32B6DBABA4FDACDFF17TemporaryOverride_finishCalled) = 1;
     v5 = qword_280C9C350;
-    v6 = self;
+    selfCopy2 = self;
     if (v5 != -1)
     {
-      v8 = v6;
+      v8 = selfCopy2;
       swift_once();
-      v6 = v8;
+      selfCopy2 = v8;
     }
 
-    v7 = *(&v6->super.isa + OBJC_IVAR____TtC19ReminderKitInternalP33_BCDA9BEAAF9519B32B6DBABA4FDACDFF17TemporaryOverride_overridesToRestore);
+    v7 = *(&selfCopy2->super.isa + OBJC_IVAR____TtC19ReminderKitInternalP33_BCDA9BEAAF9519B32B6DBABA4FDACDFF17TemporaryOverride_overridesToRestore);
     swift_beginAccess();
     off_280C9C358 = v7;
   }

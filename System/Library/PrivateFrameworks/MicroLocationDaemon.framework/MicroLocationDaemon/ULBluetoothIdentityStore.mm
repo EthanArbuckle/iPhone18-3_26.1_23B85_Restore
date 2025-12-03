@@ -1,10 +1,10 @@
 @interface ULBluetoothIdentityStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)insertDataObjects:(const void *)a3;
+- (BOOL)insertDataObjects:(const void *)objects;
 - (id)insertDataObjects:;
 - (uint64_t)insertDataObjects:;
-- (vector<ULBluetoothIdentityDO,)fetchBtIdentityEntriesBetweenTimes:(ULBluetoothIdentityStore *)self toTime:(SEL)a3;
-- (void)fetchBtIdentityEntriesBetweenTimes:(uint64_t)a3 toTime:(int)a4;
+- (vector<ULBluetoothIdentityDO,)fetchBtIdentityEntriesBetweenTimes:(ULBluetoothIdentityStore *)self toTime:(SEL)time;
+- (void)fetchBtIdentityEntriesBetweenTimes:(uint64_t)times toTime:(int)time;
 @end
 
 @implementation ULBluetoothIdentityStore
@@ -12,73 +12,73 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULBluetoothIdentityTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71958 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71958 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A56020;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULBluetoothIdentityDO,ULBluetoothIdentityMO>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULBluetoothIdentityDO,ULBluetoothIdentityMO>(self, objects, v7);
   std::__function::__value_func<ULBluetoothIdentityMO * ()(ULBluetoothIdentityDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (vector<ULBluetoothIdentityDO,)fetchBtIdentityEntriesBetweenTimes:(ULBluetoothIdentityStore *)self toTime:(SEL)a3
+- (vector<ULBluetoothIdentityDO,)fetchBtIdentityEntriesBetweenTimes:(ULBluetoothIdentityStore *)self toTime:(SEL)time
 {
   v31[1] = *MEMORY[0x277D85DE8];
   v9 = +[ULDefaultsSingleton shared];
-  v10 = [v9 defaultsDictionary];
+  defaultsDictionary = [v9 defaultsDictionary];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULDatabaseSelectionLimit"];
-  v12 = [v10 objectForKey:v11];
+  v12 = [defaultsDictionary objectForKey:v11];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v13 = [v12 unsignedIntValue];
+    unsignedIntValue = [v12 unsignedIntValue];
   }
 
   else
   {
-    v13 = [&unk_286A71940 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71940 unsignedIntValue];
   }
 
-  v14 = v13;
+  v14 = unsignedIntValue;
 
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
   v15 = objc_autoreleasePoolPush();
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = MEMORY[0x277CCAC30];
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
   v20 = [v17 predicateWithFormat:@"%K > %@ && %K <= %@", @"lastSeenTimeStamp", v18, @"lastSeenTimeStamp", v19];
-  [v16 addObject:v20];
+  [array addObject:v20];
 
   v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v31[0] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-  [(ULBluetoothIdentityStore *)self _fetchBtIdentityEntriesByAndPredicates:v16 sortDescriptors:v22 andLimit:v14];
+  [(ULBluetoothIdentityStore *)self _fetchBtIdentityEntriesByAndPredicates:array sortDescriptors:v22 andLimit:v14];
   std::vector<ULBluetoothIdentityDO>::__vdeallocate(&retstr->var0);
   *&retstr->var0 = v28;
   retstr->var2 = v29;
@@ -105,17 +105,17 @@
   return result;
 }
 
-- (void)fetchBtIdentityEntriesBetweenTimes:(uint64_t)a3 toTime:(int)a4
+- (void)fetchBtIdentityEntriesBetweenTimes:(uint64_t)times toTime:(int)time
 {
   v6 = a2;
-  v7 = a1;
+  selfCopy = self;
   v199 = *MEMORY[0x277D85DE8];
   v191 = a2;
-  v192 = a1;
+  selfCopy2 = self;
   while (1)
   {
-    v8 = v6 - v7;
-    v9 = 0x8E38E38E38E38E39 * ((v6 - v7) >> 3);
+    v8 = v6 - selfCopy;
+    v9 = 0x8E38E38E38E38E39 * ((v6 - selfCopy) >> 3);
     v10 = v9 - 2;
     if (v9 <= 2)
     {
@@ -127,12 +127,12 @@
       if (v9 == 2)
       {
         v191 = v6 - 9;
-        if (*(v6 - 1) >= *(v7 + 64))
+        if (*(v6 - 1) >= *(selfCopy + 64))
         {
           goto LABEL_232;
         }
 
-        v91 = &v192;
+        v91 = &selfCopy2;
         v92 = &v191;
         goto LABEL_231;
       }
@@ -142,12 +142,12 @@
 
     if (v9 == 3)
     {
-      *v197 = v7;
-      *&v198 = v7 + 72;
+      *v197 = selfCopy;
+      *&v198 = selfCopy + 72;
       *&v195 = v6 - 9;
-      v95 = *(v7 + 136);
+      v95 = *(selfCopy + 136);
       v96 = *(v6 - 1);
-      if (v95 >= *(v7 + 64))
+      if (v95 >= *(selfCopy + 64))
       {
         if (v96 >= v95)
         {
@@ -192,7 +192,7 @@ LABEL_231:
     if (v9 == 4)
     {
       v191 = v6 - 9;
-      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *,0>(v7, (v7 + 72), v7 + 144, (v6 - 9));
+      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *,0>(selfCopy, (selfCopy + 72), selfCopy + 144, (v6 - 9));
       goto LABEL_232;
     }
 
@@ -204,14 +204,14 @@ LABEL_231:
 LABEL_9:
     if (v8 <= 1727)
     {
-      v97 = (v7 + 72);
-      v99 = v7 == v6 || v97 == v6;
-      if (a4)
+      v97 = (selfCopy + 72);
+      v99 = selfCopy == v6 || v97 == v6;
+      if (time)
       {
         if (!v99)
         {
           v100 = 0;
-          v101 = v7;
+          v101 = selfCopy;
           do
           {
             v102 = v97;
@@ -238,9 +238,9 @@ LABEL_9:
               while (1)
               {
                 v109 = v108;
-                v110 = v7 + v108;
-                *(v7 + v108 + 72) = *(v7 + v108);
-                if (*(v7 + v108 + 111) < 0)
+                v110 = selfCopy + v108;
+                *(selfCopy + v108 + 72) = *(selfCopy + v108);
+                if (*(selfCopy + v108 + 111) < 0)
                 {
                   operator delete(*(v110 + 88));
                 }
@@ -254,10 +254,10 @@ LABEL_9:
                   operator delete(*(v110 + 112));
                 }
 
-                v111 = v7 + v109;
-                *(v110 + 112) = *(v7 + v109 + 40);
-                v112 = *(v7 + v109 + 64);
-                *(v110 + 128) = *(v7 + v109 + 56);
+                v111 = selfCopy + v109;
+                *(v110 + 112) = *(selfCopy + v109 + 40);
+                v112 = *(selfCopy + v109 + 64);
+                *(v110 + 128) = *(selfCopy + v109 + 56);
                 *(v111 + 63) = 0;
                 *(v111 + 40) = 0;
                 *(v111 + 136) = v112;
@@ -269,12 +269,12 @@ LABEL_9:
                 v108 = v109 - 72;
                 if (v103 >= *(v111 - 8))
                 {
-                  v113 = v7 + v109;
+                  v113 = selfCopy + v109;
                   goto LABEL_154;
                 }
               }
 
-              v113 = v7;
+              v113 = selfCopy;
 LABEL_154:
               *v113 = v198;
               if (*(v113 + 39) < 0)
@@ -283,7 +283,7 @@ LABEL_154:
               }
 
               *(v111 + 16) = v105;
-              v114 = v7 + v109;
+              v114 = selfCopy + v109;
               v115 = v195;
               *(v114 + 31) = *(&v195 + 7);
               *(v114 + 24) = v115;
@@ -312,28 +312,28 @@ LABEL_154:
 
       else if (!v99)
       {
-        v164 = (v7 + 136);
+        v164 = (selfCopy + 136);
         do
         {
           v165 = v97;
-          v166 = *(v7 + 136);
-          if (v166 < *(v7 + 64))
+          v166 = *(selfCopy + 136);
+          if (v166 < *(selfCopy + 64))
           {
             v167 = *v97;
-            *v197 = *(v7 + 113);
-            v168 = *(v7 + 88);
-            *&v195 = *(v7 + 96);
-            *(&v195 + 7) = *(v7 + 103);
-            v169 = *(v7 + 111);
-            *(v7 + 88) = 0;
-            *(v7 + 96) = 0;
-            v170 = *(v7 + 112);
-            *&v197[14] = *(v7 + 127);
-            v171 = *(v7 + 135);
-            *(v7 + 104) = 0;
-            *(v7 + 112) = 0;
-            *(v7 + 120) = 0;
-            *(v7 + 128) = 0;
+            *v197 = *(selfCopy + 113);
+            v168 = *(selfCopy + 88);
+            *&v195 = *(selfCopy + 96);
+            *(&v195 + 7) = *(selfCopy + 103);
+            v169 = *(selfCopy + 111);
+            *(selfCopy + 88) = 0;
+            *(selfCopy + 96) = 0;
+            v170 = *(selfCopy + 112);
+            *&v197[14] = *(selfCopy + 127);
+            v171 = *(selfCopy + 135);
+            *(selfCopy + 104) = 0;
+            *(selfCopy + 112) = 0;
+            *(selfCopy + 120) = 0;
+            *(selfCopy + 128) = 0;
             v172 = v164;
             v198 = v167;
             do
@@ -392,7 +392,7 @@ LABEL_154:
 
           v97 = v165 + 9;
           v164 += 9;
-          v7 = v165;
+          selfCopy = v165;
         }
 
         while ((v165 + 72) != v6);
@@ -401,9 +401,9 @@ LABEL_154:
       goto LABEL_232;
     }
 
-    if (!a3)
+    if (!times)
     {
-      if (v7 != v6)
+      if (selfCopy != v6)
       {
         v117 = v10 >> 1;
         v118 = v10 >> 1;
@@ -413,14 +413,14 @@ LABEL_154:
           if (v117 >= v118)
           {
             v120 = (2 * v118) | 1;
-            v121 = v7 + 72 * v120;
+            v121 = selfCopy + 72 * v120;
             if (2 * v119 + 2 < v9 && *(v121 + 64) < *(v121 + 136))
             {
               v121 += 72;
               v120 = 2 * v119 + 2;
             }
 
-            v122 = v7 + 72 * v119;
+            v122 = selfCopy + 72 * v119;
             v123 = *(v122 + 64);
             if (*(v121 + 64) >= v123)
             {
@@ -473,7 +473,7 @@ LABEL_154:
 
                 v129 = 2 * v120;
                 v120 = (2 * v120) | 1;
-                v121 = v7 + 72 * v120;
+                v121 = selfCopy + 72 * v120;
                 v130 = v129 + 2;
                 if (v130 < v9 && *(v121 + 64) < *(v121 + 136))
                 {
@@ -518,23 +518,23 @@ LABEL_154:
         {
           v133 = 0;
           v134 = v6;
-          v195 = *v7;
-          v135 = *(v7 + 16);
-          *v194 = *(v7 + 24);
-          *&v194[7] = *(v7 + 31);
-          v136 = *(v7 + 39);
-          *(v7 + 16) = 0;
-          *(v7 + 24) = 0;
-          v137 = *(v7 + 40);
-          v193[0] = *(v7 + 48);
-          *(v193 + 7) = *(v7 + 55);
-          v189 = *(v7 + 63);
-          *(v7 + 48) = 0;
-          *(v7 + 56) = 0;
-          *(v7 + 32) = 0;
-          *(v7 + 40) = 0;
-          v138 = v7;
-          v182 = *(v7 + 64);
+          v195 = *selfCopy;
+          v135 = *(selfCopy + 16);
+          *v194 = *(selfCopy + 24);
+          *&v194[7] = *(selfCopy + 31);
+          v136 = *(selfCopy + 39);
+          *(selfCopy + 16) = 0;
+          *(selfCopy + 24) = 0;
+          v137 = *(selfCopy + 40);
+          v193[0] = *(selfCopy + 48);
+          *(v193 + 7) = *(selfCopy + 55);
+          v189 = *(selfCopy + 63);
+          *(selfCopy + 48) = 0;
+          *(selfCopy + 56) = 0;
+          *(selfCopy + 32) = 0;
+          *(selfCopy + 40) = 0;
+          v138 = selfCopy;
+          v182 = *(selfCopy + 64);
           v185 = v137;
           do
           {
@@ -660,11 +660,11 @@ LABEL_154:
             *(v134 - 17) = *(v193 + 7);
             *(v134 - 9) = v189;
             *(v134 - 1) = v182;
-            v149 = v140 + 72 - v7;
+            v149 = v140 + 72 - selfCopy;
             if (v149 >= 73)
             {
               v150 = (-2 - 0x71C71C71C71C71C7 * (v149 >> 3)) >> 1;
-              v151 = v7 + 72 * v150;
+              v151 = selfCopy + 72 * v150;
               v152 = *(v140 + 64);
               if (*(v151 + 64) < v152)
               {
@@ -714,7 +714,7 @@ LABEL_154:
                   }
 
                   v150 = (v150 - 1) >> 1;
-                  v151 = v7 + 72 * v150;
+                  v151 = selfCopy + 72 * v150;
                   v140 = v156;
                 }
 
@@ -752,39 +752,39 @@ LABEL_154:
     }
 
     v11 = v9 >> 1;
-    v12 = v7 + 72 * (v9 >> 1);
+    v12 = selfCopy + 72 * (v9 >> 1);
     if (v8 >= 0x2401)
     {
-      *v197 = v7;
+      *v197 = selfCopy;
       *&v198 = v12;
       *&v195 = v6 - 9;
       v13 = *(v12 + 64);
       v14 = *(v6 - 1);
-      if (v13 >= *(v7 + 64))
+      if (v13 >= *(selfCopy + 64))
       {
         if (v14 >= v13 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULBluetoothIdentityDO *&,ULBluetoothIdentityDO *&>(&v198, &v195), *(v198 + 64) >= *(*v197 + 64)))
         {
 LABEL_26:
-          v21 = v7 + 72 * v11;
+          v21 = selfCopy + 72 * v11;
           v22 = v21 - 72;
-          *v197 = v7 + 72;
+          *v197 = selfCopy + 72;
           *&v198 = v21 - 72;
           *&v195 = v6 - 18;
           v23 = *(v21 - 8);
           v24 = *(v6 - 10);
-          if (v23 >= *(v7 + 136))
+          if (v23 >= *(selfCopy + 136))
           {
             if (v24 >= v23 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULBluetoothIdentityDO *&,ULBluetoothIdentityDO *&>(&v198, &v195), *(v198 + 64) >= *(*v197 + 64)))
             {
 LABEL_39:
-              v27 = v7 + 72 * v11;
+              v27 = selfCopy + 72 * v11;
               v28 = v27 + 72;
-              *v197 = v7 + 144;
+              *v197 = selfCopy + 144;
               *&v198 = v27 + 72;
               *&v195 = v6 - 27;
               v29 = *(v27 + 136);
               v30 = *(v6 - 19);
-              if (v29 >= *(v7 + 208))
+              if (v29 >= *(selfCopy + 208))
               {
                 if (v30 >= v29 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULBluetoothIdentityDO *&,ULBluetoothIdentityDO *&>(&v198, &v195), *(v198 + 64) >= *(*v197 + 64)))
                 {
@@ -820,34 +820,34 @@ LABEL_48:
                       if (*(v195 + 64) >= *(v198 + 64))
                       {
 LABEL_57:
-                        *v197 = *v7;
-                        v37 = *(v7 + 16);
-                        *&v198 = *(v7 + 24);
-                        *(&v198 + 7) = *(v7 + 31);
-                        v38 = *(v7 + 39);
-                        *(v7 + 16) = 0;
-                        *(v7 + 24) = 0;
-                        v39 = *(v7 + 40);
-                        *&v195 = *(v7 + 48);
-                        *(&v195 + 7) = *(v7 + 55);
-                        v40 = *(v7 + 63);
-                        *(v7 + 32) = 0;
-                        *(v7 + 40) = 0;
-                        *(v7 + 48) = 0;
-                        *(v7 + 56) = 0;
-                        v41 = *(v7 + 64);
+                        *v197 = *selfCopy;
+                        v37 = *(selfCopy + 16);
+                        *&v198 = *(selfCopy + 24);
+                        *(&v198 + 7) = *(selfCopy + 31);
+                        v38 = *(selfCopy + 39);
+                        *(selfCopy + 16) = 0;
+                        *(selfCopy + 24) = 0;
+                        v39 = *(selfCopy + 40);
+                        *&v195 = *(selfCopy + 48);
+                        *(&v195 + 7) = *(selfCopy + 55);
+                        v40 = *(selfCopy + 63);
+                        *(selfCopy + 32) = 0;
+                        *(selfCopy + 40) = 0;
+                        *(selfCopy + 48) = 0;
+                        *(selfCopy + 56) = 0;
+                        v41 = *(selfCopy + 64);
                         v42 = *v12;
                         v43 = *(v12 + 16);
-                        *(v7 + 32) = *(v12 + 32);
-                        *v7 = v42;
-                        *(v7 + 16) = v43;
+                        *(selfCopy + 32) = *(v12 + 32);
+                        *selfCopy = v42;
+                        *(selfCopy + 16) = v43;
                         *(v12 + 39) = 0;
                         *(v12 + 16) = 0;
                         v45 = *(v12 + 56);
                         v44 = *(v12 + 64);
-                        *(v7 + 40) = *(v12 + 40);
-                        *(v7 + 56) = v45;
-                        *(v7 + 64) = v44;
+                        *(selfCopy + 40) = *(v12 + 40);
+                        *(selfCopy + 56) = v45;
+                        *(selfCopy + 64) = v44;
                         *(v12 + 63) = 0;
                         *(v12 + 40) = 0;
                         *v12 = *v197;
@@ -951,9 +951,9 @@ LABEL_57:
     }
 
     *v197 = v12;
-    *&v198 = v7;
+    *&v198 = selfCopy;
     *&v195 = v6 - 9;
-    v17 = *(v7 + 64);
+    v17 = *(selfCopy + 64);
     v18 = *(v6 - 1);
     if (v17 < *(v12 + 64))
     {
@@ -986,39 +986,39 @@ LABEL_34:
     }
 
 LABEL_58:
-    v186 = a3 - 1;
-    if (a4)
+    v186 = times - 1;
+    if (time)
     {
-      v183 = a4;
-      v48 = *(v7 + 64);
+      timeCopy2 = time;
+      v48 = *(selfCopy + 64);
     }
 
     else
     {
-      v48 = *(v7 + 64);
-      if (*(v7 - 8) >= v48)
+      v48 = *(selfCopy + 64);
+      if (*(selfCopy - 8) >= v48)
       {
         *v194 = v6;
-        v198 = *v7;
-        v61 = (v7 + 16);
-        v60 = *(v7 + 16);
-        *&v195 = *(v7 + 24);
-        *(&v195 + 7) = *(v7 + 31);
-        v62 = *(v7 + 39);
-        *(v7 + 16) = 0;
-        *(v7 + 24) = 0;
-        *(v7 + 32) = 0;
-        v64 = (v7 + 40);
-        v63 = *(v7 + 40);
-        *v197 = *(v7 + 41);
-        *&v197[14] = *(v7 + 55);
-        v65 = *(v7 + 63);
-        *(v7 + 48) = 0;
-        *(v7 + 56) = 0;
-        *(v7 + 40) = 0;
+        v198 = *selfCopy;
+        v61 = (selfCopy + 16);
+        v60 = *(selfCopy + 16);
+        *&v195 = *(selfCopy + 24);
+        *(&v195 + 7) = *(selfCopy + 31);
+        v62 = *(selfCopy + 39);
+        *(selfCopy + 16) = 0;
+        *(selfCopy + 24) = 0;
+        *(selfCopy + 32) = 0;
+        v64 = (selfCopy + 40);
+        v63 = *(selfCopy + 40);
+        *v197 = *(selfCopy + 41);
+        *&v197[14] = *(selfCopy + 55);
+        v65 = *(selfCopy + 63);
+        *(selfCopy + 48) = 0;
+        *(selfCopy + 56) = 0;
+        *(selfCopy + 40) = 0;
         if (*(v6 - 1) <= v48)
         {
-          v80 = v7 + 72;
+          v80 = selfCopy + 72;
           do
           {
             v67 = v80;
@@ -1036,7 +1036,7 @@ LABEL_58:
 
         else
         {
-          v66 = v7;
+          v66 = selfCopy;
           do
           {
             v67 = v66 + 72;
@@ -1089,30 +1089,30 @@ LABEL_58:
         }
 
         v86 = (v67 - 72);
-        if (v67 - 72 != v7)
+        if (v67 - 72 != selfCopy)
         {
-          *v7 = *v86;
-          if (*(v7 + 39) < 0)
+          *selfCopy = *v86;
+          if (*(selfCopy + 39) < 0)
           {
             operator delete(*v61);
           }
 
           v87 = *(v67 - 56);
-          *(v7 + 32) = *(v67 - 40);
+          *(selfCopy + 32) = *(v67 - 40);
           *v61 = v87;
           *(v67 - 33) = 0;
           *(v67 - 56) = 0;
-          if (*(v7 + 63) < 0)
+          if (*(selfCopy + 63) < 0)
           {
             operator delete(*v64);
           }
 
           v88 = *(v67 - 32);
-          *(v7 + 56) = *(v67 - 16);
+          *(selfCopy + 56) = *(v67 - 16);
           *v64 = v88;
           *(v67 - 9) = 0;
           *(v67 - 32) = 0;
-          *(v7 + 64) = *(v67 - 8);
+          *(selfCopy + 64) = *(v67 - 8);
         }
 
         *v86 = v198;
@@ -1131,7 +1131,7 @@ LABEL_58:
           operator delete(*(v67 - 32));
         }
 
-        a4 = 0;
+        time = 0;
         *(v67 - 32) = v63;
         v90 = *v197;
         *(v67 - 17) = *&v197[14];
@@ -1139,41 +1139,41 @@ LABEL_58:
         *(v67 - 9) = v65;
         *(v67 - 8) = v48;
         v69 = *v196;
-        v192 = *v196;
-        a3 = v186;
+        selfCopy2 = *v196;
+        times = v186;
         goto LABEL_122;
       }
 
-      v183 = a4;
+      timeCopy2 = time;
     }
 
     v49 = 0;
-    v198 = *v7;
-    v51 = (v7 + 16);
-    v50 = *(v7 + 16);
-    *&v195 = *(v7 + 24);
-    *(&v195 + 7) = *(v7 + 31);
-    v52 = *(v7 + 39);
-    *(v7 + 16) = 0;
-    *(v7 + 24) = 0;
-    *(v7 + 32) = 0;
-    v53 = (v7 + 40);
-    v180 = *(v7 + 40);
-    *v197 = *(v7 + 41);
-    *&v197[14] = *(v7 + 55);
-    v54 = *(v7 + 63);
-    *(v7 + 48) = 0;
-    *(v7 + 56) = 0;
-    *(v7 + 40) = 0;
+    v198 = *selfCopy;
+    v51 = (selfCopy + 16);
+    v50 = *(selfCopy + 16);
+    *&v195 = *(selfCopy + 24);
+    *(&v195 + 7) = *(selfCopy + 31);
+    v52 = *(selfCopy + 39);
+    *(selfCopy + 16) = 0;
+    *(selfCopy + 24) = 0;
+    *(selfCopy + 32) = 0;
+    v53 = (selfCopy + 40);
+    v180 = *(selfCopy + 40);
+    *v197 = *(selfCopy + 41);
+    *&v197[14] = *(selfCopy + 55);
+    v54 = *(selfCopy + 63);
+    *(selfCopy + 48) = 0;
+    *(selfCopy + 56) = 0;
+    *(selfCopy + 40) = 0;
     do
     {
-      v55 = *(v7 + v49 + 136);
+      v55 = *(selfCopy + v49 + 136);
       v49 += 72;
     }
 
     while (v55 < v48);
-    v56 = v7 + v49;
-    *v196 = v7 + v49;
+    v56 = selfCopy + v49;
+    *v196 = selfCopy + v49;
     if (v49 == 72)
     {
       while (v56 < v6)
@@ -1204,7 +1204,7 @@ LABEL_58:
 
 LABEL_75:
     *v194 = v57;
-    v69 = v7 + v49;
+    v69 = selfCopy + v49;
     if (v56 < v57)
     {
       do
@@ -1234,30 +1234,30 @@ LABEL_75:
     }
 
     v73 = (v69 - 72);
-    if (v69 - 72 != v7)
+    if (v69 - 72 != selfCopy)
     {
-      *v7 = *v73;
-      if (*(v7 + 39) < 0)
+      *selfCopy = *v73;
+      if (*(selfCopy + 39) < 0)
       {
         operator delete(*v51);
       }
 
       v74 = *(v69 - 56);
-      *(v7 + 32) = *(v69 - 40);
+      *(selfCopy + 32) = *(v69 - 40);
       *v51 = v74;
       *(v69 - 33) = 0;
       *(v69 - 56) = 0;
-      if (*(v7 + 63) < 0)
+      if (*(selfCopy + 63) < 0)
       {
         operator delete(*v53);
       }
 
       v75 = *(v69 - 32);
-      *(v7 + 56) = *(v69 - 16);
+      *(selfCopy + 56) = *(v69 - 16);
       *v53 = v75;
       *(v69 - 9) = 0;
       *(v69 - 32) = 0;
-      *(v7 + 64) = *(v69 - 8);
+      *(selfCopy + 64) = *(v69 - 8);
     }
 
     *v73 = v198;
@@ -1271,7 +1271,7 @@ LABEL_75:
     *(v69 - 41) = *(&v195 + 7);
     *(v69 - 48) = v76;
     *(v69 - 33) = v52;
-    a3 = v186;
+    times = v186;
     if (*(v69 - 9) < 0)
     {
       operator delete(*(v69 - 32));
@@ -1284,23 +1284,23 @@ LABEL_75:
     *(v69 - 9) = v54;
     *(v69 - 8) = v48;
     v78 = v56 >= v57;
-    a4 = v183;
+    time = timeCopy2;
     if (!v78)
     {
       goto LABEL_92;
     }
 
-    v79 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *>(v192, v69 - 72);
+    v79 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *>(selfCopy2, v69 - 72);
     if (!std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *>(v69, v191))
     {
       if (!v79)
       {
 LABEL_92:
-        std::__introsort<std::_ClassicAlgPolicy,[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *,false>(v192, v69 - 72, v186, v183 & 1);
-        a4 = 0;
+        std::__introsort<std::_ClassicAlgPolicy,[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *,false>(selfCopy2, v69 - 72, v186, timeCopy2 & 1);
+        time = 0;
       }
 
-      v192 = v69;
+      selfCopy2 = v69;
       goto LABEL_122;
     }
 
@@ -1310,30 +1310,30 @@ LABEL_92:
     }
 
     v191 = (v69 - 72);
-    v69 = v192;
+    v69 = selfCopy2;
 LABEL_122:
     v6 = v191;
-    v7 = v69;
+    selfCopy = v69;
   }
 
   v191 = v6 - 9;
-  *v197 = v7;
-  *&v198 = v7 + 72;
-  *&v195 = v7 + 144;
-  *v196 = v7 + 216;
+  *v197 = selfCopy;
+  *&v198 = selfCopy + 72;
+  *&v195 = selfCopy + 144;
+  *v196 = selfCopy + 216;
   *v194 = v6 - 9;
-  std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *,0>(v7, (v7 + 72), v7 + 144, v7 + 216);
-  if (*(v6 - 1) < *(v7 + 280))
+  std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULBluetoothIdentityStore fetchBtIdentityEntriesBetweenTimes:toTime:]::$_1 &,ULBluetoothIdentityDO *,0>(selfCopy, (selfCopy + 72), selfCopy + 144, selfCopy + 216);
+  if (*(v6 - 1) < *(selfCopy + 280))
   {
     std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULBluetoothIdentityDO *&,ULBluetoothIdentityDO *&>(v196, v194);
-    if (*(*v196 + 64) < *(v7 + 208))
+    if (*(*v196 + 64) < *(selfCopy + 208))
     {
       std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULBluetoothIdentityDO *&,ULBluetoothIdentityDO *&>(&v195, v196);
-      if (*(v195 + 64) < *(v7 + 136))
+      if (*(v195 + 64) < *(selfCopy + 136))
       {
         std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULBluetoothIdentityDO *&,ULBluetoothIdentityDO *&>(&v198, &v195);
         v93 = *(v198 + 64);
-        v94 = *(v7 + 64);
+        v94 = *(selfCopy + 64);
         goto LABEL_229;
       }
     }
@@ -1346,7 +1346,7 @@ LABEL_232:
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -1357,8 +1357,8 @@ LABEL_232:
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULBluetoothIdentityMO createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULBluetoothIdentityMO createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

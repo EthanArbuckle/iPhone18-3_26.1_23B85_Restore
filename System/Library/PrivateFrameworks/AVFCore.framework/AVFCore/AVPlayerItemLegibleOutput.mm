@@ -1,20 +1,20 @@
 @interface AVPlayerItemLegibleOutput
 - (AVPlayerItemLegibleOutput)init;
-- (AVPlayerItemLegibleOutput)initWithDependencyFactory:(id)a3 mediaSubtypesForNativeRepresentation:(id)a4;
+- (AVPlayerItemLegibleOutput)initWithDependencyFactory:(id)factory mediaSubtypesForNativeRepresentation:(id)representation;
 - (AVPlayerItemLegibleOutput)initWithMediaSubtypesForNativeRepresentation:(NSArray *)subtypes;
 - (AVPlayerItemLegibleOutputTextStylingResolution)textStylingResolution;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (BOOL)suppressesPlayerRendering;
 - (NSTimeInterval)advanceIntervalForDelegateInvocation;
 - (id)_figLegibleOutputsDictionaryOptions;
 - (void)_collectUncollectables;
 - (void)_detachFromPlayerItem;
-- (void)_pushAttributedStrings:(id)a3 andSampleBuffers:(id)a4 atItemTime:(id *)a5;
+- (void)_pushAttributedStrings:(id)strings andSampleBuffers:(id)buffers atItemTime:(id *)time;
 - (void)_signalFlush;
 - (void)dealloc;
 - (void)setAdvanceIntervalForDelegateInvocation:(NSTimeInterval)advanceIntervalForDelegateInvocation;
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateQueue;
-- (void)setSuppressesPlayerRendering:(BOOL)a3;
+- (void)setSuppressesPlayerRendering:(BOOL)rendering;
 - (void)setTextStylingResolution:(AVPlayerItemLegibleOutputTextStylingResolution)textStylingResolution;
 @end
 
@@ -22,9 +22,9 @@
 
 - (AVPlayerItemLegibleOutput)init
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 
-  return [(AVPlayerItemLegibleOutput *)self initWithMediaSubtypesForNativeRepresentation:v3];
+  return [(AVPlayerItemLegibleOutput *)self initWithMediaSubtypesForNativeRepresentation:array];
 }
 
 - (AVPlayerItemLegibleOutput)initWithMediaSubtypesForNativeRepresentation:(NSArray *)subtypes
@@ -38,42 +38,42 @@
   return [(AVPlayerItemLegibleOutput *)self initWithDependencyFactory:v5 mediaSubtypesForNativeRepresentation:subtypes];
 }
 
-- (AVPlayerItemLegibleOutput)initWithDependencyFactory:(id)a3 mediaSubtypesForNativeRepresentation:(id)a4
+- (AVPlayerItemLegibleOutput)initWithDependencyFactory:(id)factory mediaSubtypesForNativeRepresentation:(id)representation
 {
-  v5 = self;
+  selfCopy = self;
   v42 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!representation)
   {
-    v34 = self;
+    selfCopy2 = self;
     v23 = MEMORY[0x1E695DF30];
     v24 = *MEMORY[0x1E695D940];
     v25 = "subtypes != nil";
 LABEL_19:
-    v27 = AVMethodExceptionReasonWithObjectAndSelector(v5, a2, @"invalid parameter not satisfying: %s", v18, v19, v20, v21, v22, v25);
+    v27 = AVMethodExceptionReasonWithObjectAndSelector(selfCopy, a2, @"invalid parameter not satisfying: %s", v18, v19, v20, v21, v22, v25);
 LABEL_21:
     objc_exception_throw([v23 exceptionWithName:v24 reason:v27 userInfo:0]);
   }
 
   v40.receiver = self;
   v40.super_class = AVPlayerItemLegibleOutput;
-  v5 = [(AVPlayerItemOutput *)&v40 init];
-  if (v5)
+  selfCopy = [(AVPlayerItemOutput *)&v40 init];
+  if (selfCopy)
   {
     v8 = objc_alloc_init(AVPlayerItemLegibleOutputInternal);
-    *(v5 + 2) = v8;
+    *(selfCopy + 2) = v8;
     if (v8)
     {
       CFRetain(v8);
-      *(*(v5 + 2) + 24) = objc_alloc_init(AVWeakReferencingDelegateStorage);
-      *(*(v5 + 2) + 8) = a3;
-      *(*(v5 + 2) + 16) = [a4 copy];
-      *(*(v5 + 2) + 32) = av_readwrite_dispatch_queue_create("com.apple.avplayeritemlegibleoutput.ivars");
-      *(*(v5 + 2) + 64) = [@"AVPlayerItemLegibleOutputTextStylingResolutionDefault" copy];
+      *(*(selfCopy + 2) + 24) = objc_alloc_init(AVWeakReferencingDelegateStorage);
+      *(*(selfCopy + 2) + 8) = factory;
+      *(*(selfCopy + 2) + 16) = [representation copy];
+      *(*(selfCopy + 2) + 32) = av_readwrite_dispatch_queue_create("com.apple.avplayeritemlegibleoutput.ivars");
+      *(*(selfCopy + 2) + 64) = [@"AVPlayerItemLegibleOutputTextStylingResolutionDefault" copy];
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v9 = *(*(v5 + 2) + 16);
+      v9 = *(*(selfCopy + 2) + 16);
       v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (v10)
       {
@@ -92,29 +92,29 @@ LABEL_21:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v17 = v5;
+              v17 = selfCopy;
               v23 = MEMORY[0x1E695DF30];
               v24 = *MEMORY[0x1E695D940];
               v25 = "[mediaSubtypeObject isKindOfClass:[NSNumber class]]";
               goto LABEL_19;
             }
 
-            v15 = [v14 unsignedLongLongValue];
-            if (HIDWORD(v15))
+            unsignedLongLongValue = [v14 unsignedLongLongValue];
+            if (HIDWORD(unsignedLongLongValue))
             {
-              v26 = v5;
+              v26 = selfCopy;
               v23 = MEMORY[0x1E695DF30];
               v24 = *MEMORY[0x1E695D940];
               v25 = "integerValueAppearsToBeAFourCC";
               goto LABEL_19;
             }
 
-            if (v15 == 1664495672)
+            if (unsignedLongLongValue == 1664495672)
             {
-              v28 = v5;
+              v28 = selfCopy;
               v23 = MEMORY[0x1E695DF30];
               v24 = *MEMORY[0x1E695D940];
-              v27 = AVMethodExceptionReasonWithObjectAndSelector(v5, a2, @"Native representation is not available for media subtype 'c608'", v29, v30, v31, v32, v33, v35);
+              v27 = AVMethodExceptionReasonWithObjectAndSelector(selfCopy, a2, @"Native representation is not available for media subtype 'c608'", v29, v30, v31, v32, v33, v35);
               goto LABEL_21;
             }
           }
@@ -133,7 +133,7 @@ LABEL_21:
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)_collectUncollectables
@@ -163,7 +163,7 @@ LABEL_21:
   [(AVPlayerItemOutput *)&v4 dealloc];
 }
 
-- (void)_pushAttributedStrings:(id)a3 andSampleBuffers:(id)a4 atItemTime:(id *)a5
+- (void)_pushAttributedStrings:(id)strings andSampleBuffers:(id)buffers atItemTime:(id *)time
 {
   delegateStorage = self->_legibleOutputInternal->delegateStorage;
   v6[0] = MEMORY[0x1E69E9820];
@@ -171,9 +171,9 @@ LABEL_21:
   v6[2] = __80__AVPlayerItemLegibleOutput__pushAttributedStrings_andSampleBuffers_atItemTime___block_invoke;
   v6[3] = &unk_1E7465B68;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v7 = *a5;
+  v6[5] = strings;
+  v6[6] = buffers;
+  v7 = *time;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v6];
 }
 
@@ -225,13 +225,13 @@ uint64_t __41__AVPlayerItemLegibleOutput__signalFlush__block_invoke(uint64_t res
   return result;
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (!a3)
+  if (!item)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "playerItem != nil"), 0}];
     objc_exception_throw(v13);
@@ -278,18 +278,18 @@ id __49__AVPlayerItemLegibleOutput__attachToPlayerItem___block_invoke(id result)
 
 - (id)_figLegibleOutputsDictionaryOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(AVPlayerItemLegibleOutput *)self advanceIntervalForDelegateInvocation];
   if (v4 != 0.0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    [v3 setObject:v5 forKey:*MEMORY[0x1E6972428]];
+    [dictionary setObject:v5 forKey:*MEMORY[0x1E6972428]];
   }
 
   nativeRepresentationSubtypes = self->_legibleOutputInternal->nativeRepresentationSubtypes;
   if (nativeRepresentationSubtypes)
   {
-    [v3 setObject:nativeRepresentationSubtypes forKey:*MEMORY[0x1E6972430]];
+    [dictionary setObject:nativeRepresentationSubtypes forKey:*MEMORY[0x1E6972430]];
   }
 
   v7 = [(NSString *)[(AVPlayerItemLegibleOutput *)self textStylingResolution] isEqualToString:@"AVPlayerItemLegibleOutputTextStylingResolutionSourceAndRulesOnly"];
@@ -299,8 +299,8 @@ id __49__AVPlayerItemLegibleOutput__attachToPlayerItem___block_invoke(id result)
     v8 = MEMORY[0x1E6972440];
   }
 
-  [v3 setObject:*v8 forKey:*MEMORY[0x1E6972438]];
-  return v3;
+  [dictionary setObject:*v8 forKey:*MEMORY[0x1E6972438]];
+  return dictionary;
 }
 
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateQueue
@@ -499,7 +499,7 @@ id __54__AVPlayerItemLegibleOutput_setTextStylingResolution___block_invoke(uint6
   return v4;
 }
 
-- (void)setSuppressesPlayerRendering:(BOOL)a3
+- (void)setSuppressesPlayerRendering:(BOOL)rendering
 {
   v13 = 0;
   v14 = &v13;
@@ -518,7 +518,7 @@ id __54__AVPlayerItemLegibleOutput_setTextStylingResolution___block_invoke(uint6
   v5[3] = &unk_1E7464708;
   v5[4] = self;
   v5[5] = &v13;
-  v6 = a3;
+  renderingCopy = rendering;
   v5[6] = &v7;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v5);
   if (*(v14 + 24) == 1)

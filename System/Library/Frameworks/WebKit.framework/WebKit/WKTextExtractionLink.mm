@@ -1,7 +1,7 @@
 @interface WKTextExtractionLink
 - (NSURL)url;
 - (WKTextExtractionLink)init;
-- (WKTextExtractionLink)initWithURL:(id)a3 range:(_NSRange)a4;
+- (WKTextExtractionLink)initWithURL:(id)l range:(_NSRange)range;
 - (_NSRange)range;
 @end
 
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (WKTextExtractionLink)initWithURL:(id)a3 range:(_NSRange)a4
+- (WKTextExtractionLink)initWithURL:(id)l range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = sub_19E6CCF28();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);

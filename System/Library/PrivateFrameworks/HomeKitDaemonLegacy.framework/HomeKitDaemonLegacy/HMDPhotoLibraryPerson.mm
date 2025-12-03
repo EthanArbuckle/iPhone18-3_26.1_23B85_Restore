@@ -1,53 +1,53 @@
 @interface HMDPhotoLibraryPerson
-- (BOOL)isEqual:(id)a3;
-- (HMDPhotoLibraryPerson)initWithHMPerson:(id)a3;
-- (HMDPhotoLibraryPerson)initWithUUID:(id)a3 name:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDPhotoLibraryPerson)initWithHMPerson:(id)person;
+- (HMDPhotoLibraryPerson)initWithUUID:(id)d name:(id)name;
 - (id)attributeDescriptions;
 - (id)createHMPerson;
 - (unint64_t)hash;
-- (void)updateHMPerson:(id)a3;
+- (void)updateHMPerson:(id)person;
 @end
 
 @implementation HMDPhotoLibraryPerson
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDPhotoLibraryPerson *)self UUID];
-  v6 = [v4 initWithName:@"UUID" value:v5];
-  [v3 addObject:v6];
+  uUID = [(HMDPhotoLibraryPerson *)self UUID];
+  v6 = [v4 initWithName:@"UUID" value:uUID];
+  [array addObject:v6];
 
-  v7 = [(HMDPhotoLibraryPerson *)self name];
+  name = [(HMDPhotoLibraryPerson *)self name];
 
-  if (v7)
+  if (name)
   {
     v8 = objc_alloc(MEMORY[0x277D0F778]);
-    v9 = [(HMDPhotoLibraryPerson *)self name];
-    v10 = [v8 initWithName:@"Name" value:v9];
-    [v3 addObject:v10];
+    name2 = [(HMDPhotoLibraryPerson *)self name];
+    v10 = [v8 initWithName:@"Name" value:name2];
+    [array addObject:v10];
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDPhotoLibraryPerson *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMDPhotoLibraryPerson *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -58,12 +58,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDPhotoLibraryPerson *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMDPhotoLibraryPerson *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMDPhotoLibraryPerson *)self name];
-      v10 = [v6 name];
+      name = [(HMDPhotoLibraryPerson *)self name];
+      name2 = [v6 name];
       v11 = HMFEqualObjects();
     }
 
@@ -81,39 +81,39 @@
   return v11;
 }
 
-- (void)updateHMPerson:(id)a3
+- (void)updateHMPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(HMDPhotoLibraryPerson *)self name];
-  [v4 setName:v5];
+  personCopy = person;
+  name = [(HMDPhotoLibraryPerson *)self name];
+  [personCopy setName:name];
 
-  v6 = [(HMDPhotoLibraryPerson *)self UUID];
-  [v4 setExternalPersonUUID:v6];
+  uUID = [(HMDPhotoLibraryPerson *)self UUID];
+  [personCopy setExternalPersonUUID:uUID];
 }
 
 - (id)createHMPerson
 {
-  v3 = [(HMDPhotoLibraryPerson *)self UUID];
-  v4 = [objc_alloc(MEMORY[0x277CD1C70]) initWithUUID:v3];
+  uUID = [(HMDPhotoLibraryPerson *)self UUID];
+  v4 = [objc_alloc(MEMORY[0x277CD1C70]) initWithUUID:uUID];
   [(HMDPhotoLibraryPerson *)self updateHMPerson:v4];
   v5 = [v4 copy];
 
   return v5;
 }
 
-- (HMDPhotoLibraryPerson)initWithUUID:(id)a3 name:(id)a4
+- (HMDPhotoLibraryPerson)initWithUUID:(id)d name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  nameCopy = name;
+  if (dCopy)
   {
-    v8 = v7;
+    v8 = nameCopy;
     v18.receiver = self;
     v18.super_class = HMDPhotoLibraryPerson;
     v9 = [(HMDPhotoLibraryPerson *)&v18 init];
     if (v9)
     {
-      v10 = [v6 copy];
+      v10 = [dCopy copy];
       UUID = v9->_UUID;
       v9->_UUID = v10;
 
@@ -132,25 +132,25 @@
   }
 }
 
-- (HMDPhotoLibraryPerson)initWithHMPerson:(id)a3
+- (HMDPhotoLibraryPerson)initWithHMPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 externalPersonUUID];
-  v6 = v5;
-  if (v5)
+  personCopy = person;
+  externalPersonUUID = [personCopy externalPersonUUID];
+  v6 = externalPersonUUID;
+  if (externalPersonUUID)
   {
-    v7 = v5;
+    uUID = externalPersonUUID;
   }
 
   else
   {
-    v7 = [v4 UUID];
+    uUID = [personCopy UUID];
   }
 
-  v8 = v7;
+  v8 = uUID;
 
-  v9 = [v4 name];
-  v10 = [(HMDPhotoLibraryPerson *)self initWithUUID:v8 name:v9];
+  name = [personCopy name];
+  v10 = [(HMDPhotoLibraryPerson *)self initWithUUID:v8 name:name];
 
   return v10;
 }

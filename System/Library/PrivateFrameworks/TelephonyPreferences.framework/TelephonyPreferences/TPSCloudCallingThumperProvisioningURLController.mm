@@ -3,22 +3,22 @@
 - (BOOL)isCapabilityProvisioningURLInvalid;
 - (BOOL)shouldShowEmergencyAddress;
 - (BOOL)shouldShowUpgradeToThumperButton;
-- (TPSCloudCallingThumperProvisioningURLController)initWithSubscriptionContext:(id)a3;
+- (TPSCloudCallingThumperProvisioningURLController)initWithSubscriptionContext:(id)context;
 - (id)capabilityProvisioningPostData;
 - (id)capabilityProvisioningURL;
 - (int)capabilityProvisioningStatus;
-- (void)didChangeThumperCallingProvisionalURLForSenderIdentityWithUUID:(id)a3;
+- (void)didChangeThumperCallingProvisionalURLForSenderIdentityWithUUID:(id)d;
 - (void)enableCapability;
 - (void)webSheetCompletion;
 @end
 
 @implementation TPSCloudCallingThumperProvisioningURLController
 
-- (TPSCloudCallingThumperProvisioningURLController)initWithSubscriptionContext:(id)a3
+- (TPSCloudCallingThumperProvisioningURLController)initWithSubscriptionContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = TPSCloudCallingThumperProvisioningURLController;
-  v3 = [(TPSCloudCallingURLController *)&v5 initWithSubscriptionContext:a3];
+  v3 = [(TPSCloudCallingURLController *)&v5 initWithSubscriptionContext:context];
   if (v3)
   {
     [MEMORY[0x277D6EDE8] addDelegate:v3 queue:MEMORY[0x277D85CD0]];
@@ -39,17 +39,17 @@
     return 1;
   }
 
-  v5 = [(TPSCloudCallingThumperProvisioningURLController *)self capabilityProvisioningURL];
-  v3 = v5 != 0;
+  capabilityProvisioningURL = [(TPSCloudCallingThumperProvisioningURLController *)self capabilityProvisioningURL];
+  v3 = capabilityProvisioningURL != 0;
 
   return v3;
 }
 
 - (void)webSheetCompletion
 {
-  v3 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
   [(TPSCloudCallingThumperProvisioningURLController *)self enableCapability];
-  [v3 invalidateAndRefreshThumperCallingProvisioningURL];
+  [subscriptionCapabilities invalidateAndRefreshThumperCallingProvisioningURL];
 }
 
 - (void)enableCapability
@@ -61,14 +61,14 @@
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "Enabling Thumper calling", v5, 2u);
   }
 
-  v4 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  [v4 setThumperCallingEnabled:1];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  [subscriptionCapabilities setThumperCallingEnabled:1];
 }
 
 - (BOOL)shouldShowUpgradeToThumperButton
 {
-  v3 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  if ([MEMORY[0x277D6EDE8] isRelayCallingEnabled] && objc_msgSend(v3, "supportsThumperCalling") && (objc_msgSend(v3, "isThumperCallingEnabled") & 1) == 0)
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  if ([MEMORY[0x277D6EDE8] isRelayCallingEnabled] && objc_msgSend(subscriptionCapabilities, "supportsThumperCalling") && (objc_msgSend(subscriptionCapabilities, "isThumperCallingEnabled") & 1) == 0)
   {
     if ([MEMORY[0x277D6EDE8] supportsPrimaryCalling])
     {
@@ -91,51 +91,51 @@ LABEL_5:
 
 - (BOOL)isCapabilityEnabled
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 isThumperCallingEnabled];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  isThumperCallingEnabled = [subscriptionCapabilities isThumperCallingEnabled];
 
-  return v3;
+  return isThumperCallingEnabled;
 }
 
 - (int)capabilityProvisioningStatus
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 thumperCallingProvisioningStatus];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  thumperCallingProvisioningStatus = [subscriptionCapabilities thumperCallingProvisioningStatus];
 
-  return v3;
+  return thumperCallingProvisioningStatus;
 }
 
 - (id)capabilityProvisioningURL
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 thumperCallingProvisioningURL];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  thumperCallingProvisioningURL = [subscriptionCapabilities thumperCallingProvisioningURL];
 
-  return v3;
+  return thumperCallingProvisioningURL;
 }
 
 - (BOOL)isCapabilityProvisioningURLInvalid
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 isThumperCallingProvisioningURLInvalid];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  isThumperCallingProvisioningURLInvalid = [subscriptionCapabilities isThumperCallingProvisioningURLInvalid];
 
-  return v3;
+  return isThumperCallingProvisioningURLInvalid;
 }
 
 - (id)capabilityProvisioningPostData
 {
-  v2 = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
-  v3 = [v2 thumperCallingProvisioningPostData];
+  subscriptionCapabilities = [(TPSCloudCallingURLController *)self subscriptionCapabilities];
+  thumperCallingProvisioningPostData = [subscriptionCapabilities thumperCallingProvisioningPostData];
 
-  return v3;
+  return thumperCallingProvisioningPostData;
 }
 
-- (void)didChangeThumperCallingProvisionalURLForSenderIdentityWithUUID:(id)a3
+- (void)didChangeThumperCallingProvisionalURLForSenderIdentityWithUUID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSCloudCallingURLController *)self subscriptionContext];
-  v6 = [v5 uuid];
-  v7 = [v4 isEqual:v6];
+  dCopy = d;
+  subscriptionContext = [(TPSCloudCallingURLController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v7 = [dCopy isEqual:uuid];
 
   if (v7)
   {
@@ -143,7 +143,7 @@ LABEL_5:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&dword_21B8E9000, v8, OS_LOG_TYPE_DEFAULT, "Thumper calling provisioning URL changed for sender identity with UUID %@.", &v10, 0xCu);
     }
 

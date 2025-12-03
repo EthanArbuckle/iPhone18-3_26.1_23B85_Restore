@@ -1,31 +1,31 @@
 @interface CPTextLineMerge
-- (BOOL)fits:(id)a3 into:(id)a4;
+- (BOOL)fits:(id)fits into:(id)into;
 - (BOOL)hasOverlappingLines;
-- (double)averageHeight:(id)a3;
-- (id)findLineFor:(id)a3 in:(id)a4;
-- (unsigned)countOverlapsOfLineAtIndex:(unsigned int)a3 in:(id)a4;
-- (void)addInterval:(id)a3 to:(id)a4;
-- (void)detachDropCaps:(id)a3 to:(id)a4;
-- (void)dropCaps:(id)a3 to:(id)a4;
-- (void)eliminate:(id)a3;
-- (void)makeOverlappingLinesTo:(id)a3;
-- (void)mergeByColumn:(id)a3;
-- (void)mergeColumn:(id)a3 overlapping:(id)a4;
-- (void)mergeLinesIn:(id)a3;
-- (void)mergeLinesInInterval:(id)a3 from:(id)a4;
-- (void)removeOverlapping:(id)a3;
+- (double)averageHeight:(id)height;
+- (id)findLineFor:(id)for in:(id)in;
+- (unsigned)countOverlapsOfLineAtIndex:(unsigned int)index in:(id)in;
+- (void)addInterval:(id)interval to:(id)to;
+- (void)detachDropCaps:(id)caps to:(id)to;
+- (void)dropCaps:(id)caps to:(id)to;
+- (void)eliminate:(id)eliminate;
+- (void)makeOverlappingLinesTo:(id)to;
+- (void)mergeByColumn:(id)column;
+- (void)mergeColumn:(id)column overlapping:(id)overlapping;
+- (void)mergeLinesIn:(id)in;
+- (void)mergeLinesInInterval:(id)interval from:(id)from;
+- (void)removeOverlapping:(id)overlapping;
 @end
 
 @implementation CPTextLineMerge
 
-- (void)mergeLinesIn:(id)a3
+- (void)mergeLinesIn:(id)in
 {
-  v5 = [a3 count];
+  v5 = [in count];
   if ((v5 & 0xFFFFFFFE) != 0)
   {
     v6 = v5;
-    [a3 sortUsingFunction:sortTopDescending context:0];
-    self->avail = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:a3];
+    [in sortUsingFunction:sortTopDescending context:0];
+    self->avail = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:in];
     if ([(CPTextLineMerge *)self hasOverlappingLines])
     {
       v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6];
@@ -39,7 +39,7 @@
 
         else
         {
-          [(CPTextLineMerge *)self dropCaps:v7 to:a3];
+          [(CPTextLineMerge *)self dropCaps:v7 to:in];
           if ([v7 count] >= 2)
           {
             [(CPTextLineMerge *)self eliminate:v7];
@@ -66,12 +66,12 @@
   }
 }
 
-- (void)dropCaps:(id)a3 to:(id)a4
+- (void)dropCaps:(id)caps to:(id)to
 {
   [CPTextLineMerge detachDropCaps:"detachDropCaps:to:" to:?];
-  [(CPTextLineMerge *)self averageHeight:a4];
+  [(CPTextLineMerge *)self averageHeight:to];
   v8 = v7;
-  v9 = [a3 count];
+  v9 = [caps count];
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v9 >= 1)
   {
@@ -79,7 +79,7 @@
     v11 = (v9 & 0x7FFFFFFF) - 1;
     do
     {
-      v12 = [a3 objectAtIndex:v11];
+      v12 = [caps objectAtIndex:v11];
       if ([v12 length] == 1)
       {
         [v12 bounds];
@@ -88,10 +88,10 @@
           *&v13 = CGRectStandardize(*&v13);
         }
 
-        if (v16 > v10 && [(CPTextLineMerge *)self countOverlapsOfLineAtIndex:v11 in:a3, v13, v14, v15])
+        if (v16 > v10 && [(CPTextLineMerge *)self countOverlapsOfLineAtIndex:v11 in:caps, v13, v14, v15])
         {
           [v23 addObject:v12];
-          [a3 removeObjectAtIndex:v11];
+          [caps removeObjectAtIndex:v11];
         }
       }
 
@@ -110,7 +110,7 @@
     {
       v21 = [v23 objectAtIndex:v19];
       [(NSMutableArray *)self->avail removeObject:v21];
-      v22 = [(CPTextLineMerge *)self findLineFor:v21 in:a3];
+      v22 = [(CPTextLineMerge *)self findLineFor:v21 in:caps];
       if (v22)
       {
         [v22 mergeByAnchorXIncreasingYDecreasing:v21];
@@ -124,9 +124,9 @@
   }
 }
 
-- (double)averageHeight:(id)a3
+- (double)averageHeight:(id)height
 {
-  v4 = [a3 count];
+  v4 = [height count];
   v5 = v4;
   if (!v4)
   {
@@ -145,7 +145,7 @@
     v8 = 0.0;
     do
     {
-      [objc_msgSend(a3 objectAtIndex:{v6), "bounds"}];
+      [objc_msgSend(height objectAtIndex:{v6), "bounds"}];
       if (v11 < 0.0 || v12 < 0.0)
       {
         *(&v12 - 3) = CGRectStandardize(*&v9);
@@ -161,14 +161,14 @@
   return v8 / v5;
 }
 
-- (id)findLineFor:(id)a3 in:(id)a4
+- (id)findLineFor:(id)for in:(id)in
 {
-  [a3 bounds];
+  [for bounds];
   v6 = v5;
   rect_16 = v7;
   v9 = v8;
   v11 = v10;
-  v12 = [a4 count];
+  v12 = [in count];
   if (v12 < 1)
   {
     return 0;
@@ -181,7 +181,7 @@
   rect = v6;
   while (1)
   {
-    v16 = [a4 objectAtIndex:{v13, *&v33}];
+    v16 = [in objectAtIndex:{v13, *&v33}];
     [v16 normalizedBounds];
     v21 = v20;
     y = v17;
@@ -255,9 +255,9 @@
   return v16;
 }
 
-- (void)detachDropCaps:(id)a3 to:(id)a4
+- (void)detachDropCaps:(id)caps to:(id)to
 {
-  v6 = [a3 count];
+  v6 = [caps count];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v6 >= 1)
   {
@@ -265,7 +265,7 @@
     v8 = v6 & 0x7FFFFFFF;
     do
     {
-      v9 = [a3 objectAtIndex:v7];
+      v9 = [caps objectAtIndex:v7];
       if ([v9 length] >= 2)
       {
         [v9 removeSubsequences:v10 whereTrue:sizeChange passing:0];
@@ -279,17 +279,17 @@
 
   if ([v10 count])
   {
-    [a3 addObjectsFromArray:v10];
-    [a4 addObjectsFromArray:v10];
+    [caps addObjectsFromArray:v10];
+    [to addObjectsFromArray:v10];
   }
 
-  [a3 sortUsingFunction:sortTopDescending context:0];
+  [caps sortUsingFunction:sortTopDescending context:0];
 }
 
-- (unsigned)countOverlapsOfLineAtIndex:(unsigned int)a3 in:(id)a4
+- (unsigned)countOverlapsOfLineAtIndex:(unsigned int)index in:(id)in
 {
-  v5 = a3;
-  [objc_msgSend(a4 objectAtIndex:{a3), "normalizedBounds"}];
+  indexCopy = index;
+  [objc_msgSend(in objectAtIndex:{index), "normalizedBounds"}];
   v10 = v6;
   y = v7;
   v12 = v8;
@@ -311,7 +311,7 @@
     v14 = v7 + v9;
   }
 
-  v15 = [a4 count];
+  v15 = [in count];
   v16 = v15;
   if (v15)
   {
@@ -319,9 +319,9 @@
     v18 = 0;
     while (1)
     {
-      if (v5 != v17)
+      if (indexCopy != v17)
       {
-        [objc_msgSend(a4 objectAtIndex:{v17), "normalizedBounds"}];
+        [objc_msgSend(in objectAtIndex:{v17), "normalizedBounds"}];
         v23 = v19;
         v24 = v20;
         v25 = v21;
@@ -361,26 +361,26 @@ LABEL_14:
   return 0;
 }
 
-- (void)removeOverlapping:(id)a3
+- (void)removeOverlapping:(id)overlapping
 {
-  v5 = [a3 count];
+  v5 = [overlapping count];
   if (v5 >= 1)
   {
     v6 = 0;
     v7 = v5 & 0x7FFFFFFF;
     do
     {
-      -[NSMutableArray removeObject:](self->avail, "removeObject:", [a3 objectAtIndex:v6++]);
+      -[NSMutableArray removeObject:](self->avail, "removeObject:", [overlapping objectAtIndex:v6++]);
     }
 
     while (v7 != v6);
   }
 }
 
-- (void)makeOverlappingLinesTo:(id)a3
+- (void)makeOverlappingLinesTo:(id)to
 {
   v5 = [(NSMutableArray *)self->avail objectAtIndex:0];
-  [a3 addObject:v5];
+  [to addObject:v5];
   [v5 normalizedBounds];
   v7 = v6;
   v9 = v8;
@@ -437,7 +437,7 @@ LABEL_14:
         ++v19;
       }
 
-      [a3 addObject:v20];
+      [to addObject:v20];
       if (y < v9)
       {
         v9 = y;
@@ -523,22 +523,22 @@ LABEL_14:
   return v17;
 }
 
-- (void)eliminate:(id)a3
+- (void)eliminate:(id)eliminate
 {
   v5 = 0;
-  v6 = [a3 count] - 1;
+  v6 = [eliminate count] - 1;
   while ((v6 & ~(v6 >> 31)) != v5)
   {
     v7 = v5;
-    v8 = [a3 objectAtIndex:v5++];
-    if (!-[CPTextLineMerge fits:into:](self, "fits:into:", v8, [a3 objectAtIndex:v5]))
+    v8 = [eliminate objectAtIndex:v5++];
+    if (!-[CPTextLineMerge fits:into:](self, "fits:into:", v8, [eliminate objectAtIndex:v5]))
     {
       if (v6 > v7)
       {
         v9 = v6;
         do
         {
-          [a3 removeObjectAtIndex:v9--];
+          [eliminate removeObjectAtIndex:v9--];
         }
 
         while (v9 > v7);
@@ -549,17 +549,17 @@ LABEL_14:
   }
 }
 
-- (void)mergeByColumn:(id)a3
+- (void)mergeByColumn:(id)column
 {
   v36 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-  v5 = [a3 count];
+  v5 = [column count];
   if (v5 >= 1)
   {
     v6 = 0;
     v7 = v5 & 0x7FFFFFFF;
     do
     {
-      v8 = [a3 objectAtIndex:v6];
+      v8 = [column objectAtIndex:v6];
       [v8 normalizedBounds];
       x = v9;
       v12 = v11;
@@ -609,8 +609,8 @@ LABEL_14:
           v28 = x - v24;
         }
 
-        v29 = [(CPInterval *)v27 initLeft:v28 right:v23 + x + width];
-        [(CPTextLineMerge *)self addInterval:v29 to:v36];
+        width = [(CPInterval *)v27 initLeft:v28 right:v23 + x + width];
+        [(CPTextLineMerge *)self addInterval:width to:v36];
       }
 
       ++v6;
@@ -620,7 +620,7 @@ LABEL_14:
   }
 
   v30 = [v36 count];
-  v31 = [a3 mutableCopy];
+  v31 = [column mutableCopy];
   if (v30 >= 1)
   {
     v32 = 0;
@@ -642,18 +642,18 @@ LABEL_14:
   }
 }
 
-- (void)mergeLinesInInterval:(id)a3 from:(id)a4
+- (void)mergeLinesInInterval:(id)interval from:(id)from
 {
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [a4 count];
+  v7 = [from count];
   if (v7 >= 1)
   {
     v8 = 0;
     v9 = v7 & 0x7FFFFFFF;
     do
     {
-      v10 = [a4 objectAtIndex:v8];
-      if ([a3 contains:v10])
+      v10 = [from objectAtIndex:v8];
+      if ([interval contains:v10])
       {
         [v11 addObject:v10];
       }
@@ -666,23 +666,23 @@ LABEL_14:
 
   if ([v11 count] > 1)
   {
-    [(CPTextLineMerge *)self mergeColumn:v11 overlapping:a4];
+    [(CPTextLineMerge *)self mergeColumn:v11 overlapping:from];
   }
 }
 
-- (void)mergeColumn:(id)a3 overlapping:(id)a4
+- (void)mergeColumn:(id)column overlapping:(id)overlapping
 {
-  v7 = [a3 count];
+  v7 = [column count];
   if (v7)
   {
-    v8 = [a3 objectAtIndex:0];
+    v8 = [column objectAtIndex:0];
     if (v7 != 1)
     {
       v9 = v8;
       v10 = v7;
       for (i = 1; i != v10; ++i)
       {
-        v12 = [a3 objectAtIndex:i];
+        v12 = [column objectAtIndex:i];
         [v9 normalizedBounds];
         v14 = v13;
         v16 = v15;
@@ -737,7 +737,7 @@ LABEL_14:
         {
           [v9 mergeByAnchorXIncreasingYDecreasing:v12];
           [v12 removeAllChars];
-          [a4 removeObject:v12];
+          [overlapping removeObject:v12];
         }
 
         else
@@ -749,13 +749,13 @@ LABEL_14:
   }
 }
 
-- (void)addInterval:(id)a3 to:(id)a4
+- (void)addInterval:(id)interval to:(id)to
 {
-  [a3 left];
+  [interval left];
   v7 = v6;
-  [a3 right];
+  [interval right];
   v9 = v8;
-  v10 = [a4 count];
+  v10 = [to count];
   v11 = v10;
   if (v10 >= 1)
   {
@@ -763,8 +763,8 @@ LABEL_14:
     v13 = v10 & 0x7FFFFFFF;
     do
     {
-      v14 = [a4 objectAtIndex:v12];
-      if ([a3 intersects:v14])
+      v14 = [to objectAtIndex:v12];
+      if ([interval intersects:v14])
       {
         [v14 left];
         v16 = v15;
@@ -792,9 +792,9 @@ LABEL_14:
     v18 = (v11 & 0x7FFFFFFF) + 1;
     do
     {
-      if ([objc_msgSend(a4 objectAtIndex:{v18 - 2), "intersects:", v19}])
+      if ([objc_msgSend(to objectAtIndex:{v18 - 2), "intersects:", v19}])
       {
-        [a4 removeObjectAtIndex:v18 - 2];
+        [to removeObjectAtIndex:v18 - 2];
       }
 
       --v18;
@@ -803,21 +803,21 @@ LABEL_14:
     while (v18 > 1);
   }
 
-  [a4 addObject:v19];
+  [to addObject:v19];
 }
 
-- (BOOL)fits:(id)a3 into:(id)a4
+- (BOOL)fits:(id)fits into:(id)into
 {
   v6 = 0.0;
   v7 = 0.0;
-  if ([a3 length])
+  if ([fits length])
   {
-    v7 = *([a3 charAtIndex:0] + 104);
+    v7 = *([fits charAtIndex:0] + 104);
   }
 
-  if ([a4 length])
+  if ([into length])
   {
-    v6 = *([a4 charAtIndex:0] + 104);
+    v6 = *([into charAtIndex:0] + 104);
   }
 
   v10 = 0;
@@ -827,7 +827,7 @@ LABEL_14:
     LOBYTE(v10) = 1;
   }
 
-  return [a3 map:fits whereNeighborsWith:a4 passing:&v9];
+  return [fits map:fits whereNeighborsWith:into passing:&v9];
 }
 
 @end

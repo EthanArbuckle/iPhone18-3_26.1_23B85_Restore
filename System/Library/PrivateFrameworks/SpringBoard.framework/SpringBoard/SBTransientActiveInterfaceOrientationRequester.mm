@@ -1,24 +1,24 @@
 @interface SBTransientActiveInterfaceOrientationRequester
-- (SBTransientActiveInterfaceOrientationRequester)initWithOrientation:(int64_t)a3 andReason:(id)a4;
+- (SBTransientActiveInterfaceOrientationRequester)initWithOrientation:(int64_t)orientation andReason:(id)reason;
 @end
 
 @implementation SBTransientActiveInterfaceOrientationRequester
 
-- (SBTransientActiveInterfaceOrientationRequester)initWithOrientation:(int64_t)a3 andReason:(id)a4
+- (SBTransientActiveInterfaceOrientationRequester)initWithOrientation:(int64_t)orientation andReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v11.receiver = self;
   v11.super_class = SBTransientActiveInterfaceOrientationRequester;
   v7 = [(SBTransientActiveInterfaceOrientationRequester *)&v11 init];
   if (v7)
   {
-    if (!v6)
+    if (!reasonCopy)
     {
       [SBTransientActiveInterfaceOrientationRequester initWithOrientation:andReason:];
     }
 
-    v7->_orientation = a3;
-    v8 = [v6 copy];
+    v7->_orientation = orientation;
+    v8 = [reasonCopy copy];
     reason = v7->_reason;
     v7->_reason = v8;
   }

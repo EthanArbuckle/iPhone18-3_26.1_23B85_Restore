@@ -1,14 +1,14 @@
 @interface _PSFTZKWTrialWrapper
 + (id)sharedInstance;
-+ (void)runIfUpdated:(id)a3;
-+ (void)runWithData:(id)a3;
++ (void)runIfUpdated:(id)updated;
++ (void)runWithData:(id)data;
 - (_PSFTZKWTrialWrapper)init;
-- (int64_t)loadLevelAsConfidenceCategoryFromFactor:(id)a3 withDefault:(int64_t)a4;
-- (int64_t)loadLevelAsInteractionModelTypeFromFactor:(id)a3 withDefault:(int64_t)a4;
+- (int64_t)loadLevelAsConfidenceCategoryFromFactor:(id)factor withDefault:(int64_t)default;
+- (int64_t)loadLevelAsInteractionModelTypeFromFactor:(id)factor withDefault:(int64_t)default;
 - (void)loadFactors;
 - (void)refresh;
-- (void)runIfUpdated:(id)a3;
-- (void)runWithData:(id)a3;
+- (void)runIfUpdated:(id)updated;
+- (void)runWithData:(id)data;
 @end
 
 @implementation _PSFTZKWTrialWrapper
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __38___PSFTZKWTrialWrapper_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7, block);
@@ -30,18 +30,18 @@
   return v2;
 }
 
-+ (void)runWithData:(id)a3
++ (void)runWithData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  [v5 runWithData:v4];
+  dataCopy = data;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance runWithData:dataCopy];
 }
 
-+ (void)runIfUpdated:(id)a3
++ (void)runIfUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  [v5 runIfUpdated:v4];
+  updatedCopy = updated;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance runIfUpdated:updatedCopy];
 }
 
 - (_PSFTZKWTrialWrapper)init
@@ -109,16 +109,16 @@
   [(_PSFTZKWTrialWrapper *)self loadFactors];
 }
 
-- (int64_t)loadLevelAsConfidenceCategoryFromFactor:(id)a3 withDefault:(int64_t)a4
+- (int64_t)loadLevelAsConfidenceCategoryFromFactor:(id)factor withDefault:(int64_t)default
 {
-  v6 = a3;
-  v7 = [(TRIClient *)self->_triClient levelForFactor:v6 withNamespaceName:@"COREML_SYSTEMS_FACETIME_CONTACT_PREDICTION"];
+  factorCopy = factor;
+  v7 = [(TRIClient *)self->_triClient levelForFactor:factorCopy withNamespaceName:@"COREML_SYSTEMS_FACETIME_CONTACT_PREDICTION"];
   v8 = v7;
   if (v7)
   {
     if (([v7 longValue] & 0x8000000000000000) == 0 && objc_msgSend(v8, "longValue") < 5)
     {
-      a4 = [v8 longValue];
+      default = [v8 longValue];
       goto LABEL_9;
     }
 
@@ -139,19 +139,19 @@
   }
 
 LABEL_9:
-  return a4;
+  return default;
 }
 
-- (int64_t)loadLevelAsInteractionModelTypeFromFactor:(id)a3 withDefault:(int64_t)a4
+- (int64_t)loadLevelAsInteractionModelTypeFromFactor:(id)factor withDefault:(int64_t)default
 {
-  v6 = a3;
-  v7 = [(TRIClient *)self->_triClient levelForFactor:v6 withNamespaceName:@"COREML_SYSTEMS_FACETIME_CONTACT_PREDICTION"];
+  factorCopy = factor;
+  v7 = [(TRIClient *)self->_triClient levelForFactor:factorCopy withNamespaceName:@"COREML_SYSTEMS_FACETIME_CONTACT_PREDICTION"];
   v8 = v7;
   if (v7)
   {
     if (([v7 longValue] & 0x8000000000000000) == 0 && objc_msgSend(v8, "longValue") < 3)
     {
-      a4 = [v8 longValue];
+      default = [v8 longValue];
       goto LABEL_9;
     }
 
@@ -172,7 +172,7 @@ LABEL_9:
   }
 
 LABEL_9:
-  return a4;
+  return default;
 }
 
 - (void)loadFactors
@@ -199,30 +199,30 @@ LABEL_9:
   }
 }
 
-- (void)runWithData:(id)a3
+- (void)runWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36___PSFTZKWTrialWrapper_runWithData___block_invoke;
   v7[3] = &unk_1E7C26CA0;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)runIfUpdated:(id)a3
+- (void)runIfUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   updateLock = self->_updateLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37___PSFTZKWTrialWrapper_runIfUpdated___block_invoke;
   v7[3] = &unk_1E7C26CC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   [(_PASLock *)updateLock runWithLockAcquired:v7];
 }
 

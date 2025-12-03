@@ -1,9 +1,9 @@
 @interface CAMExposureBiasStatusIndicator
 - (CAMExposureBiasStatusIndicator)init;
-- (CGRect)_clippingTickFrameForClipping:(double)a3 leftAligned:(BOOL)a4;
+- (CGRect)_clippingTickFrameForClipping:(double)clipping leftAligned:(BOOL)aligned;
 - (CGSize)intrinsicContentSize;
 - (double)_horizontalExposureLabelOffset;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (void)_layoutHighlightClippingTick;
 - (void)_layoutShadowClippingTick;
 - (void)_updateExposureLabel;
@@ -11,10 +11,10 @@
 - (void)_updateShadowClippingTickAlpha;
 - (void)_updateTicks;
 - (void)layoutSubviews;
-- (void)setExposureBiasValue:(double)a3;
-- (void)setExposureValueVisible:(BOOL)a3;
-- (void)setHighlightClipping:(double)a3;
-- (void)setShadowClipping:(double)a3;
+- (void)setExposureBiasValue:(double)value;
+- (void)setExposureValueVisible:(BOOL)visible;
+- (void)setHighlightClipping:(double)clipping;
+- (void)setShadowClipping:(double)clipping;
 @end
 
 @implementation CAMExposureBiasStatusIndicator
@@ -60,12 +60,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
-  [v3 intrinsicContentSize];
+  _exposureLabel = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
+  [_exposureLabel intrinsicContentSize];
   v5 = v4;
 
-  v6 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
-  [v6 intrinsicContentSize];
+  _ticksView = [(CAMExposureBiasStatusIndicator *)self _ticksView];
+  [_ticksView intrinsicContentSize];
   v8 = v7;
   v10 = v9;
 
@@ -80,9 +80,9 @@
 {
   [(CAMExposureBiasStatusIndicator *)self exposureBiasValue];
   v4 = v3;
-  v5 = [(CAMExposureBiasStatusIndicator *)self isExposureValueVisible];
+  isExposureValueVisible = [(CAMExposureBiasStatusIndicator *)self isExposureValueVisible];
   result = 0.0;
-  if (v5)
+  if (isExposureValueVisible)
   {
     result = -4.0;
     if (v4 <= 0.0)
@@ -104,21 +104,21 @@
   v35.super_class = CAMExposureBiasStatusIndicator;
   [(CAMControlStatusIndicator *)&v35 layoutSubviews];
   [(CAMExposureBiasStatusIndicator *)self bounds];
-  v3 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
-  [v3 intrinsicContentSize];
+  _exposureLabel = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
+  [_exposureLabel intrinsicContentSize];
 
-  v4 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
-  [v4 intrinsicContentSize];
+  _ticksView = [(CAMExposureBiasStatusIndicator *)self _ticksView];
+  [_ticksView intrinsicContentSize];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
-  v10 = [v9 font];
-  [v10 ascender];
+  _exposureLabel2 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
+  font = [_exposureLabel2 font];
+  [font ascender];
 
-  v11 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
-  v12 = [v11 font];
-  [v12 capHeight];
+  _exposureLabel3 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
+  font2 = [_exposureLabel3 font];
+  [font2 capHeight];
 
   UIRectCenteredRect();
   v14 = v13;
@@ -134,16 +134,16 @@
   UIPointRoundToViewScale();
   v22 = v21;
   v24 = v23;
-  v25 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
-  [v25 setFrame:{v22, v24, v6, v8}];
+  _ticksView2 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
+  [_ticksView2 setFrame:{v22, v24, v6, v8}];
 
   UIRectIntegralWithScale();
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
-  [v34 setFrame:{v27, v29, v31, v33}];
+  _exposureLabel4 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
+  [_exposureLabel4 setFrame:{v27, v29, v31, v33}];
 
   [(CAMExposureBiasStatusIndicator *)self _layoutShadowClippingTick];
   [(CAMExposureBiasStatusIndicator *)self _layoutHighlightClippingTick];
@@ -157,8 +157,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMExposureBiasStatusIndicator *)self _shadowClippingTick];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _shadowClippingTick = [(CAMExposureBiasStatusIndicator *)self _shadowClippingTick];
+  [_shadowClippingTick setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_layoutHighlightClippingTick
@@ -169,8 +169,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMExposureBiasStatusIndicator *)self _highlightClippingTick];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _highlightClippingTick = [(CAMExposureBiasStatusIndicator *)self _highlightClippingTick];
+  [_highlightClippingTick setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_updateExposureLabel
@@ -189,8 +189,8 @@
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"."];
   }
 
-  v7 = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
-  [v7 setText:v8];
+  _exposureLabel = [(CAMExposureBiasStatusIndicator *)self _exposureLabel];
+  [_exposureLabel setText:v8];
 
   [(CAMExposureBiasStatusIndicator *)self setNeedsLayout];
 }
@@ -216,17 +216,17 @@
   }
 
   v6 = v4 - v5;
-  v7 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
-  [v7 setSelectedRange:{v5, v6 + 1}];
+  _ticksView = [(CAMExposureBiasStatusIndicator *)self _ticksView];
+  [_ticksView setSelectedRange:{v5, v6 + 1}];
 }
 
-- (CGRect)_clippingTickFrameForClipping:(double)a3 leftAligned:(BOOL)a4
+- (CGRect)_clippingTickFrameForClipping:(double)clipping leftAligned:(BOOL)aligned
 {
   CEKProgressClamped();
   CEKInterpolate();
-  v6 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
-  [v6 frame];
-  if (a4)
+  _ticksView = [(CAMExposureBiasStatusIndicator *)self _ticksView];
+  [_ticksView frame];
+  if (aligned)
   {
     CGRectGetMinX(*&v7);
   }
@@ -236,8 +236,8 @@
     CGRectGetMaxX(*&v7);
   }
 
-  v11 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
-  [v11 frame];
+  _ticksView2 = [(CAMExposureBiasStatusIndicator *)self _ticksView];
+  [_ticksView2 frame];
   CGRectGetMaxY(v17);
 
   UIRectIntegralWithScale();
@@ -253,8 +253,8 @@
   [(CAMExposureBiasStatusIndicator *)self shadowClipping];
   [(CAMExposureBiasStatusIndicator *)self _clippingTickAlphaForClipping:?];
   v4 = v3;
-  v5 = [(CAMExposureBiasStatusIndicator *)self _shadowClippingTick];
-  [v5 setAlpha:v4];
+  _shadowClippingTick = [(CAMExposureBiasStatusIndicator *)self _shadowClippingTick];
+  [_shadowClippingTick setAlpha:v4];
 }
 
 - (void)_updateHighlightClippingTickAlpha
@@ -262,39 +262,39 @@
   [(CAMExposureBiasStatusIndicator *)self highlightClipping];
   [(CAMExposureBiasStatusIndicator *)self _clippingTickAlphaForClipping:?];
   v4 = v3;
-  v5 = [(CAMExposureBiasStatusIndicator *)self _highlightClippingTick];
-  [v5 setAlpha:v4];
+  _highlightClippingTick = [(CAMExposureBiasStatusIndicator *)self _highlightClippingTick];
+  [_highlightClippingTick setAlpha:v4];
 }
 
-- (void)setExposureBiasValue:(double)a3
+- (void)setExposureBiasValue:(double)value
 {
-  if (self->_exposureBiasValue != a3)
+  if (self->_exposureBiasValue != value)
   {
-    self->_exposureBiasValue = a3;
+    self->_exposureBiasValue = value;
     [(CAMExposureBiasStatusIndicator *)self _updateTicks];
 
     [(CAMExposureBiasStatusIndicator *)self _updateExposureLabel];
   }
 }
 
-- (void)setExposureValueVisible:(BOOL)a3
+- (void)setExposureValueVisible:(BOOL)visible
 {
-  if (self->_exposureValueVisible != a3)
+  if (self->_exposureValueVisible != visible)
   {
-    self->_exposureValueVisible = a3;
+    self->_exposureValueVisible = visible;
     [(CAMExposureBiasStatusIndicator *)self _updateExposureLabel];
   }
 }
 
-- (void)setShadowClipping:(double)a3
+- (void)setShadowClipping:(double)clipping
 {
   CEKClamp();
   if (v4 != self->_shadowClipping)
   {
     self->_shadowClipping = sqrt(v4);
-    v5 = [(CAMExposureBiasStatusIndicator *)self _shadowClippingTick];
+    _shadowClippingTick = [(CAMExposureBiasStatusIndicator *)self _shadowClippingTick];
 
-    if (!v5)
+    if (!_shadowClippingTick)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
       shadowClippingTick = self->__shadowClippingTick;
@@ -312,15 +312,15 @@
   }
 }
 
-- (void)setHighlightClipping:(double)a3
+- (void)setHighlightClipping:(double)clipping
 {
   CEKClamp();
   if (v4 != self->_highlightClipping)
   {
     self->_highlightClipping = sqrt(v4);
-    v5 = [(CAMExposureBiasStatusIndicator *)self _highlightClippingTick];
+    _highlightClippingTick = [(CAMExposureBiasStatusIndicator *)self _highlightClippingTick];
 
-    if (!v5)
+    if (!_highlightClippingTick)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
       highlightClippingTick = self->__highlightClippingTick;
@@ -338,11 +338,11 @@
   }
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
   v10.receiver = self;
   v10.super_class = CAMExposureBiasStatusIndicator;
-  v4 = [(CAMControlStatusIndicator *)&v10 hudItemForAccessibilityHUDManager:a3];
+  v4 = [(CAMControlStatusIndicator *)&v10 hudItemForAccessibilityHUDManager:manager];
   v5 = +[CAMExposureSlider decimalFormatter];
   v6 = MEMORY[0x1E696AD98];
   [(CAMExposureBiasStatusIndicator *)self exposureBiasValue];

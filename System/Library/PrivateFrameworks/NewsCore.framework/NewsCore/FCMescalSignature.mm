@@ -1,27 +1,27 @@
 @interface FCMescalSignature
-+ (void)signatureFromData:(id)a3 completion:(id)a4;
++ (void)signatureFromData:(id)data completion:(id)completion;
 @end
 
 @implementation FCMescalSignature
 
-+ (void)signatureFromData:(id)a3 completion:(id)a4
++ (void)signatureFromData:(id)data completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v7 = +[FCAMSBag bag];
-  v8 = [v6 bytes];
-  v9 = [v6 length];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
 
-  CC_SHA1(v8, v9, md);
+  CC_SHA1(bytes, v9, md);
   v10 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
   v11 = [MEMORY[0x1E698C9F0] signaturePromiseFromData:v10 type:1 bag:v7];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__FCMescalSignature_signatureFromData_completion___block_invoke;
   v14[3] = &unk_1E7C3F2D8;
-  v15 = v5;
-  v12 = v5;
+  v15 = completionCopy;
+  v12 = completionCopy;
   [v11 addFinishBlock:v14];
 
   v13 = *MEMORY[0x1E69E9840];

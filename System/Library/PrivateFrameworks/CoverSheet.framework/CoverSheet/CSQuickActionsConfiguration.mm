@@ -1,22 +1,22 @@
 @interface CSQuickActionsConfiguration
-- (CSQuickActionsConfiguration)initWithPosterActionsConfiguration:(id)a3;
-- (int64_t)_categoryFromPosterCategory:(int64_t)a3;
-- (int64_t)_typeFromControlType:(unint64_t)a3;
+- (CSQuickActionsConfiguration)initWithPosterActionsConfiguration:(id)configuration;
+- (int64_t)_categoryFromPosterCategory:(int64_t)category;
+- (int64_t)_typeFromControlType:(unint64_t)type;
 @end
 
 @implementation CSQuickActionsConfiguration
 
-- (CSQuickActionsConfiguration)initWithPosterActionsConfiguration:(id)a3
+- (CSQuickActionsConfiguration)initWithPosterActionsConfiguration:(id)configuration
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v28.receiver = self;
   v28.super_class = CSQuickActionsConfiguration;
   v5 = [(CSQuickActionsConfiguration *)&v28 init];
   if (v5)
   {
-    v6 = [v4 leadingControl];
-    v7 = [v4 trailingControl];
+    leadingControl = [configurationCopy leadingControl];
+    trailingControl = [configurationCopy trailingControl];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __66__CSQuickActionsConfiguration_initWithPosterActionsConfiguration___block_invoke;
@@ -24,16 +24,16 @@
     v8 = v5;
     v27 = v8;
     v9 = MEMORY[0x223D698D0](&v23);
-    if (v6)
+    if (leadingControl)
     {
-      if ([v6 category] == 3)
+      if ([leadingControl category] == 3)
       {
-        v10 = (v9)[2](v9, v6, 1);
+        v10 = (v9)[2](v9, leadingControl, 1);
         goto LABEL_8;
       }
 
       v13 = [CSQuickActionControl alloc];
-      v12 = -[CSQuickActionsConfiguration _categoryFromPosterCategory:](v8, "_categoryFromPosterCategory:", [v6 category]);
+      v12 = -[CSQuickActionsConfiguration _categoryFromPosterCategory:](v8, "_categoryFromPosterCategory:", [leadingControl category]);
       v11 = v13;
     }
 
@@ -46,11 +46,11 @@
     v10 = [(CSQuickActionControl *)v11 initWithCategory:v12 position:1, v23, v24, v25, v26];
 LABEL_8:
     v14 = v10;
-    if (v7)
+    if (trailingControl)
     {
-      if ([v7 category] == 3)
+      if ([trailingControl category] == 3)
       {
-        v15 = (v9)[2](v9, v7, 2);
+        v15 = (v9)[2](v9, trailingControl, 2);
 LABEL_14:
         v19 = v15;
         v29[0] = v14;
@@ -63,7 +63,7 @@ LABEL_14:
       }
 
       v18 = [CSQuickActionControl alloc];
-      v17 = -[CSQuickActionsConfiguration _categoryFromPosterCategory:](v8, "_categoryFromPosterCategory:", [v7 category]);
+      v17 = -[CSQuickActionsConfiguration _categoryFromPosterCategory:](v8, "_categoryFromPosterCategory:", [trailingControl category]);
       v16 = v18;
     }
 
@@ -95,29 +95,29 @@ CSQuickActionSystemControl *__66__CSQuickActionsConfiguration_initWithPosterActi
   return v10;
 }
 
-- (int64_t)_categoryFromPosterCategory:(int64_t)a3
+- (int64_t)_categoryFromPosterCategory:(int64_t)category
 {
-  if ((a3 - 1) >= 3)
+  if ((category - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return category;
   }
 }
 
-- (int64_t)_typeFromControlType:(unint64_t)a3
+- (int64_t)_typeFromControlType:(unint64_t)type
 {
-  if (a3 - 1 >= 3)
+  if (type - 1 >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 

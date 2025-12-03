@@ -1,18 +1,18 @@
 @interface UABestAppSuggestionController
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)resume;
 - (BOOL)suspend;
 - (BOOL)terminate;
-- (UABestAppSuggestionController)initWithManager:(id)a3 name:(id)a4;
+- (UABestAppSuggestionController)initWithManager:(id)manager name:(id)name;
 @end
 
 @implementation UABestAppSuggestionController
 
-- (UABestAppSuggestionController)initWithManager:(id)a3 name:(id)a4
+- (UABestAppSuggestionController)initWithManager:(id)manager name:(id)name
 {
   v11.receiver = self;
   v11.super_class = UABestAppSuggestionController;
-  v4 = [(UACornerActionManagerHandler *)&v11 initWithManager:a3 name:a4];
+  v4 = [(UACornerActionManagerHandler *)&v11 initWithManager:manager name:name];
   if (v4)
   {
     v5 = [NSXPCListener alloc];
@@ -37,8 +37,8 @@
 {
   v8.receiver = self;
   v8.super_class = UABestAppSuggestionController;
-  v3 = [(UACornerActionManagerHandler *)&v8 suspend];
-  if (v3)
+  suspend = [(UACornerActionManagerHandler *)&v8 suspend];
+  if (suspend)
   {
     v4 = sub_100001A30(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -47,19 +47,19 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "BESTAPP: suspend", v7, 2u);
     }
 
-    v5 = [(UABestAppSuggestionController *)self bestAppsListener];
-    [v5 suspend];
+    bestAppsListener = [(UABestAppSuggestionController *)self bestAppsListener];
+    [bestAppsListener suspend];
   }
 
-  return v3;
+  return suspend;
 }
 
 - (BOOL)resume
 {
   v8.receiver = self;
   v8.super_class = UABestAppSuggestionController;
-  v3 = [(UACornerActionManagerHandler *)&v8 resume];
-  if (v3)
+  resume = [(UACornerActionManagerHandler *)&v8 resume];
+  if (resume)
   {
     v4 = sub_100001A30(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -68,19 +68,19 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "BESTAPP: resume", v7, 2u);
     }
 
-    v5 = [(UABestAppSuggestionController *)self bestAppsListener];
-    [v5 resume];
+    bestAppsListener = [(UABestAppSuggestionController *)self bestAppsListener];
+    [bestAppsListener resume];
   }
 
-  return v3;
+  return resume;
 }
 
 - (BOOL)terminate
 {
   v8.receiver = self;
   v8.super_class = UABestAppSuggestionController;
-  v3 = [(UACornerActionManagerHandler *)&v8 terminate];
-  if (v3)
+  terminate = [(UACornerActionManagerHandler *)&v8 terminate];
+  if (terminate)
   {
     v4 = sub_100001A30(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -89,24 +89,24 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "BESTAPP: terminate", v7, 2u);
     }
 
-    v5 = [(UABestAppSuggestionController *)self bestAppsListener];
-    [v5 invalidate];
+    bestAppsListener = [(UABestAppSuggestionController *)self bestAppsListener];
+    [bestAppsListener invalidate];
 
     [(UABestAppSuggestionController *)self setBestAppsListener:0];
   }
 
-  return v3;
+  return terminate;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100001A30(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    if (v5)
+    if (connectionCopy)
     {
-      [v5 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -122,24 +122,24 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "BESTAPP: received listener request from process %ld", &atoken, 0xCu);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.private.coreservices.lsuseractivityd.bestappsuggestion"];
-  if (([v7 BOOLValue] & 1) != 0 || !objc_msgSend(v5, "effectiveUserIdentifier"))
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.private.coreservices.lsuseractivityd.bestappsuggestion"];
+  if (([v7 BOOLValue] & 1) != 0 || !objc_msgSend(connectionCopy, "effectiveUserIdentifier"))
   {
   }
 
   else
   {
-    v8 = [(UABestAppSuggestionController *)self disableEntitlementsCheck];
+    disableEntitlementsCheck = [(UABestAppSuggestionController *)self disableEntitlementsCheck];
 
-    if ((v8 & 1) == 0)
+    if ((disableEntitlementsCheck & 1) == 0)
     {
       v9 = sub_100001A30(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = [UAAuditToken alloc];
-        if (v5)
+        if (connectionCopy)
         {
-          [v5 auditToken];
+          [connectionCopy auditToken];
         }
 
         else
@@ -155,7 +155,7 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "*** Attempt to access BestAppSuggestion xpc interface fror process %{public}@, which doesn't have the %{public}@ entitlement", &atoken, 0x16u);
       }
 
-      [v5 invalidate];
+      [connectionCopy invalidate];
       v17 = 0;
       goto LABEL_19;
     }
@@ -164,9 +164,9 @@
   v11 = sub_100001A30(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (connectionCopy)
     {
-      [v5 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -183,14 +183,14 @@
   }
 
   v12 = [UABestAppSuggestionNotifier alloc];
-  v13 = [(UACornerActionManagerHandler *)self manager];
-  v14 = [(UABestAppSuggestionNotifier *)v12 initWithManager:v13 connection:v5];
+  manager = [(UACornerActionManagerHandler *)self manager];
+  v14 = [(UABestAppSuggestionNotifier *)v12 initWithManager:manager connection:connectionCopy];
 
-  v15 = [(UACornerActionManagerHandler *)self manager];
-  [v15 addActivityNotifier:v14];
+  manager2 = [(UACornerActionManagerHandler *)self manager];
+  [manager2 addActivityNotifier:v14];
 
-  v16 = [(UACornerActionManagerHandler *)self manager];
-  -[UACornerActionManagerHandler setSuspended:](v14, "setSuspended:", [v16 suspended]);
+  manager3 = [(UACornerActionManagerHandler *)self manager];
+  -[UACornerActionManagerHandler setSuspended:](v14, "setSuspended:", [manager3 suspended]);
 
   v17 = 1;
 LABEL_19:

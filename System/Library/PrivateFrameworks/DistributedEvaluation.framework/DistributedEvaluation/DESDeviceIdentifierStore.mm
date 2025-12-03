@@ -1,7 +1,7 @@
 @interface DESDeviceIdentifierStore
 - (DESDeviceIdentifierStore)init;
-- (DESDeviceIdentifierStore)initWithStoreURL:(id)a3;
-- (id)identifierForBundleId:(id)a3;
+- (DESDeviceIdentifierStore)initWithStoreURL:(id)l;
+- (id)identifierForBundleId:(id)id;
 - (void)_readIdentifierStore;
 - (void)_writeIdentifierStore;
 @end
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (DESDeviceIdentifierStore)initWithStoreURL:(id)a3
+- (DESDeviceIdentifierStore)initWithStoreURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = DESDeviceIdentifierStore;
   v6 = [(DESDeviceIdentifierStore *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storeURL, a3);
+    objc_storeStrong(&v6->_storeURL, l);
     v8 = dispatch_queue_create("com.apple.distributed-evaluation.identifier-store", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -42,16 +42,16 @@
   return v7;
 }
 
-- (id)identifierForBundleId:(id)a3
+- (id)identifierForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"dodML_%@_identifier", v4];
+  idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dodML_%@_identifier", idCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -59,7 +59,7 @@
   block[3] = &unk_278F83C80;
   v22 = &v23;
   block[4] = self;
-  v7 = v5;
+  v7 = idCopy;
   v21 = v7;
   dispatch_sync(queue, block);
   v8 = v24[5];
@@ -70,18 +70,18 @@
 
   else
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v12 = v24[5];
-    v24[5] = v11;
+    v24[5] = uUIDString;
 
     v13 = self->_queue;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __50__DESDeviceIdentifierStore_identifierForBundleId___block_invoke_2;
     v15[3] = &unk_278F83CA8;
-    v16 = v4;
-    v17 = self;
+    v16 = idCopy;
+    selfCopy = self;
     v19 = &v23;
     v18 = v7;
     dispatch_async(v13, v15);
@@ -125,7 +125,7 @@ uint64_t __50__DESDeviceIdentifierStore_identifierForBundleId___block_invoke_2(u
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248FF7000, a2, OS_LOG_TYPE_ERROR, "Failed to read DES identifier data because %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,14 +1,14 @@
 @interface _NSFileAccessClaimPresenterRelinquishment
-- (_NSFileAccessClaimPresenterRelinquishment)initWithClaim:(id)a3 presenterID:(id)a4 relinquisher:(id)a5;
+- (_NSFileAccessClaimPresenterRelinquishment)initWithClaim:(id)claim presenterID:(id)d relinquisher:(id)relinquisher;
 - (void)abandon;
-- (void)blockClaimForPresenterAt:(const char *)a3;
+- (void)blockClaimForPresenterAt:(const char *)at;
 - (void)dealloc;
 - (void)performRelinquish;
 @end
 
 @implementation _NSFileAccessClaimPresenterRelinquishment
 
-- (_NSFileAccessClaimPresenterRelinquishment)initWithClaim:(id)a3 presenterID:(id)a4 relinquisher:(id)a5
+- (_NSFileAccessClaimPresenterRelinquishment)initWithClaim:(id)claim presenterID:(id)d relinquisher:(id)relinquisher
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -16,9 +16,9 @@
   v8 = [(_NSFileAccessClaimPresenterRelinquishment *)&v10 init];
   if (v8)
   {
-    v8->_claim = a3;
-    v8->_presenterID = a4;
-    v8->_relinquisher = a5;
+    v8->_claim = claim;
+    v8->_presenterID = d;
+    v8->_relinquisher = relinquisher;
   }
 
   return v8;
@@ -33,20 +33,20 @@
   [(_NSFileAccessClaimPresenterRelinquishment *)&v3 dealloc];
 }
 
-- (void)blockClaimForPresenterAt:(const char *)a3
+- (void)blockClaimForPresenterAt:(const char *)at
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = _NSFCClaimsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSFileAccessClaim *)self->_claim claimID];
+    claimID = [(NSFileAccessClaim *)self->_claim claimID];
     presenterID = self->_presenterID;
     *buf = 138543874;
-    v10 = v6;
+    v10 = claimID;
     v11 = 2114;
     v12 = presenterID;
     v13 = 2082;
-    v14 = a3;
+    atCopy = at;
     _os_log_impl(&dword_18075C000, v5, OS_LOG_TYPE_DEFAULT, "Claimer for %{public}@ is waiting for presenter %{public}@ on %{public}s to relinquish", buf, 0x20u);
   }
 

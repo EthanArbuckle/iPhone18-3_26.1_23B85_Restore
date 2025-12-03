@@ -1,21 +1,21 @@
 @interface ATXCachedCandidateCounter
-- (ATXCachedCandidateCounter)initWithCandidateIdPublisher:(id)a3;
-- (int64_t)countForCandidate:(id)a3;
+- (ATXCachedCandidateCounter)initWithCandidateIdPublisher:(id)publisher;
+- (int64_t)countForCandidate:(id)candidate;
 - (void)populateCache;
 @end
 
 @implementation ATXCachedCandidateCounter
 
-- (ATXCachedCandidateCounter)initWithCandidateIdPublisher:(id)a3
+- (ATXCachedCandidateCounter)initWithCandidateIdPublisher:(id)publisher
 {
-  v5 = a3;
+  publisherCopy = publisher;
   v11.receiver = self;
   v11.super_class = ATXCachedCandidateCounter;
   v6 = [(ATXCachedCandidateCounter *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_publisher, a3);
+    objc_storeStrong(&v6->_publisher, publisher);
     v8 = objc_opt_new();
     cache = v7->_cache;
     v7->_cache = v8;
@@ -52,12 +52,12 @@ void __42__ATXCachedCandidateCounter_populateCache__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (int64_t)countForCandidate:(id)a3
+- (int64_t)countForCandidate:(id)candidate
 {
-  v3 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:candidate];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 @end

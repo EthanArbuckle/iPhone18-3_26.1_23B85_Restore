@@ -1,15 +1,15 @@
 @interface NTKCollieQuad
 - (AVTRenderer)renderer;
 - (BOOL)paused;
-- (BOOL)prepareForTime:(double)a3;
+- (BOOL)prepareForTime:(double)time;
 - (NTKCollieQuad)init;
 - (void)ensureRenderer;
-- (void)prewarmAvatar:(id)a3;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
-- (void)setAvatar:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPaused:(BOOL)a3 completion:(id)a4;
-- (void)setupForQuadView:(id)a3;
+- (void)prewarmAvatar:(id)avatar;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setAvatar:(id)avatar;
+- (void)setPaused:(BOOL)paused;
+- (void)setPaused:(BOOL)paused completion:(id)completion;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKCollieQuad
@@ -42,7 +42,7 @@
   return v2;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   rendererQueue = self->_rendererQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -50,22 +50,22 @@
   v4[2] = sub_9908;
   v4[3] = &unk_2CA58;
   v4[4] = self;
-  v5 = a3;
+  pausedCopy = paused;
   dispatch_sync(rendererQueue, v4);
 }
 
-- (void)setPaused:(BOOL)a3 completion:(id)a4
+- (void)setPaused:(BOOL)paused completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   rendererQueue = self->_rendererQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_99D4;
   block[3] = &unk_2CA80;
-  v11 = a3;
+  pausedCopy = paused;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(rendererQueue, block);
 }
 
@@ -128,38 +128,38 @@
   return v3;
 }
 
-- (void)prewarmAvatar:(id)a3
+- (void)prewarmAvatar:(id)avatar
 {
-  v4 = a3;
+  avatarCopy = avatar;
   rendererQueue = self->_rendererQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_9DAC;
   v7[3] = &unk_2CAD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = avatarCopy;
+  v6 = avatarCopy;
   dispatch_sync(rendererQueue, v7);
 }
 
-- (void)setAvatar:(id)a3
+- (void)setAvatar:(id)avatar
 {
-  v5 = a3;
-  objc_storeStrong(&self->_avatar, a3);
+  avatarCopy = avatar;
+  objc_storeStrong(&self->_avatar, avatar);
   rendererQueue = self->_rendererQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_9ED0;
   v8[3] = &unk_2CAD0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = avatarCopy;
+  selfCopy = self;
+  v7 = avatarCopy;
   dispatch_sync(rendererQueue, v8);
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v12 = a3;
+  viewCopy = view;
   v4 = +[CLKDevice currentDevice];
   [v4 screenBounds];
   v6 = v5;
@@ -171,10 +171,10 @@
 
   self->_size.width = v6 * v11;
   self->_size.height = v8 * v11;
-  [v12 setOpaque:0];
+  [viewCopy setOpaque:0];
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
   rendererQueue = self->_rendererQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -182,15 +182,15 @@
   v5[2] = sub_A0F8;
   v5[3] = &unk_2C740;
   v5[4] = self;
-  *&v5[5] = a3;
+  *&v5[5] = time;
   dispatch_sync(rendererQueue, v5);
   return 1;
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
   v8 = dispatch_group_create();
   dispatch_group_enter(v8);
   v18[0] = _NSConcreteStackBlock;
@@ -199,19 +199,19 @@
   v18[3] = &unk_2CAF8;
   v9 = v8;
   v19 = v9;
-  [v6 addCompletedHandler:v18];
+  [bufferCopy addCompletedHandler:v18];
   rendererQueue = self->_rendererQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_A278;
   block[3] = &unk_2CB20;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = bufferCopy;
+  v16 = descriptorCopy;
   v17 = v9;
   v11 = v9;
-  v12 = v7;
-  v13 = v6;
+  v12 = descriptorCopy;
+  v13 = bufferCopy;
   dispatch_sync(rendererQueue, block);
 }
 

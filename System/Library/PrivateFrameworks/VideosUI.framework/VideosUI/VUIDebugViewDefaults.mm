@@ -1,37 +1,37 @@
 @interface VUIDebugViewDefaults
-- (VUIDebugViewDefaults)initWithTitle:(id)a3 subtitle:(id)a4 domain:(id)a5 defaultName:(id)a6 BOOLType:(BOOL)a7;
-- (void)setDefaultIntegerValue:(unint64_t)a3;
+- (VUIDebugViewDefaults)initWithTitle:(id)title subtitle:(id)subtitle domain:(id)domain defaultName:(id)name BOOLType:(BOOL)type;
+- (void)setDefaultIntegerValue:(unint64_t)value;
 - (void)toggleDefaultBoolValue;
 @end
 
 @implementation VUIDebugViewDefaults
 
-- (VUIDebugViewDefaults)initWithTitle:(id)a3 subtitle:(id)a4 domain:(id)a5 defaultName:(id)a6 BOOLType:(BOOL)a7
+- (VUIDebugViewDefaults)initWithTitle:(id)title subtitle:(id)subtitle domain:(id)domain defaultName:(id)name BOOLType:(BOOL)type
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  typeCopy = type;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  domainCopy = domain;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = VUIDebugViewDefaults;
   v17 = [(VUIDebugViewDefaults *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    objc_storeStrong(&v18->_subtitle, a4);
-    objc_storeStrong(&v18->_domain, a5);
-    objc_storeStrong(&v18->_defaultName, a6);
-    v18->_integerValueType = !v7;
-    if (!v7)
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_subtitle, subtitle);
+    objc_storeStrong(&v18->_domain, domain);
+    objc_storeStrong(&v18->_defaultName, name);
+    v18->_integerValueType = !typeCopy;
+    if (!typeCopy)
     {
-      v18->_defaultIntegerValue = CFPreferencesGetAppIntegerValue(v16, v15, 0);
+      v18->_defaultIntegerValue = CFPreferencesGetAppIntegerValue(nameCopy, domainCopy, 0);
     }
 
     else
     {
-      v18->_defaultBoolValue = CFPreferencesGetAppBooleanValue(v16, v15, 0) != 0;
+      v18->_defaultBoolValue = CFPreferencesGetAppBooleanValue(nameCopy, domainCopy, 0) != 0;
     }
   }
 
@@ -60,9 +60,9 @@
   CFPreferencesAppSynchronize(domain);
 }
 
-- (void)setDefaultIntegerValue:(unint64_t)a3
+- (void)setDefaultIntegerValue:(unint64_t)value
 {
-  self->_defaultIntegerValue = a3;
+  self->_defaultIntegerValue = value;
   CFPreferencesSetAppValue(self->_defaultName, [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?], self->_domain);
   domain = self->_domain;
 

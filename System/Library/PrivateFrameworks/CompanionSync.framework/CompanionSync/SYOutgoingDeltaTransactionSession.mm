@@ -1,61 +1,61 @@
 @interface SYOutgoingDeltaTransactionSession
-- (SYOutgoingDeltaTransactionSession)initWithService:(id)a3;
+- (SYOutgoingDeltaTransactionSession)initWithService:(id)service;
 - (void)_fetchNextBatch;
 - (void)_installStateListener;
-- (void)_messageExpiredWithSeqno:(unint64_t)a3 identifier:(id)a4;
+- (void)_messageExpiredWithSeqno:(unint64_t)seqno identifier:(id)identifier;
 - (void)_notifySessionComplete;
 - (void)_processNextState;
-- (void)_sentMessageWithIdentifier:(id)a3 userInfo:(id)a4;
-- (void)_setMessageTimerForSeqno:(unint64_t)a3;
-- (void)_setStateQuietly:(unsigned int)a3;
+- (void)_sentMessageWithIdentifier:(id)identifier userInfo:(id)info;
+- (void)_setMessageTimerForSeqno:(unint64_t)seqno;
+- (void)_setStateQuietly:(unsigned int)quietly;
 - (void)_setupChangeConcurrency;
 - (void)_waitForMessageWindow;
-- (void)cancelWithError:(id)a3;
-- (void)setState:(unsigned int)a3;
-- (void)start:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)setState:(unsigned int)state;
+- (void)start:(id)start;
 @end
 
 @implementation SYOutgoingDeltaTransactionSession
 
-- (SYOutgoingDeltaTransactionSession)initWithService:(id)a3
+- (SYOutgoingDeltaTransactionSession)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v29.receiver = self;
   v29.super_class = SYOutgoingDeltaTransactionSession;
-  v5 = [(SYSession *)&v29 initWithService:v4];
+  v5 = [(SYSession *)&v29 initWithService:serviceCopy];
   v6 = v5;
   if (v5)
   {
     v5->_state = 0;
-    v7 = [v4 serviceActivity];
-    v8 = _os_activity_create(&dword_1DF835000, "SYSession (Outgoing v1 Delta)", v7, OS_ACTIVITY_FLAG_DEFAULT);
+    serviceActivity = [serviceCopy serviceActivity];
+    v8 = _os_activity_create(&dword_1DF835000, "SYSession (Outgoing v1 Delta)", serviceActivity, OS_ACTIVITY_FLAG_DEFAULT);
 
     sessionActivity = v6->_sessionActivity;
     v6->_sessionActivity = v8;
 
     objc_initWeak(&location, v6);
     v10 = [_SYMessageTimerTable alloc];
-    v11 = [(SYSession *)v6 queue];
+    queue = [(SYSession *)v6 queue];
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __53__SYOutgoingDeltaTransactionSession_initWithService___block_invoke;
     v26 = &unk_1E86CA230;
     objc_copyWeak(&v27, &location);
-    v12 = [(_SYMessageTimerTable *)v10 initWithQueue:v11 timerCallback:&v23];
+    v12 = [(_SYMessageTimerTable *)v10 initWithQueue:queue timerCallback:&v23];
     timers = v6->_timers;
     v6->_timers = v12;
 
-    v14 = [v4 name];
-    v15 = [v14 lastPathComponent];
-    v16 = [v15 stringByAppendingString:@" Change Enqueuer"];
+    name = [serviceCopy name];
+    lastPathComponent = [name lastPathComponent];
+    v16 = [lastPathComponent stringByAppendingString:@" Change Enqueuer"];
 
     v17 = dispatch_queue_create([v16 UTF8String], 0);
     changeFetcherQueue = v6->_changeFetcherQueue;
     v6->_changeFetcherQueue = v17;
 
     v19 = objc_opt_new();
-    v20 = [v19 UUIDString];
-    [(SYSession *)v6 setIdentifier:v20];
+    uUIDString = [v19 UUIDString];
+    [(SYSession *)v6 setIdentifier:uUIDString];
 
     v21 = v6;
     objc_destroyWeak(&v27);
@@ -76,7 +76,7 @@ void __53__SYOutgoingDeltaTransactionSession_initWithService___block_invoke(uint
   }
 }
 
-- (void)setState:(unsigned int)a3
+- (void)setState:(unsigned int)state
 {
   v16 = *MEMORY[0x1E69E9840];
   v11.opaque[0] = 0;
@@ -95,17 +95,17 @@ void __53__SYOutgoingDeltaTransactionSession_initWithService___block_invoke(uint
     *buf = 138543618;
     v13 = v7;
     v14 = 1024;
-    v15 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting state to %{companionsync:SYSessionState}d", buf, 0x12u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v8->_state = a3;
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_state = state;
+  objc_sync_exit(selfCopy);
 
-  stateUpdateSource = v8->_stateUpdateSource;
-  if (stateUpdateSource && !dispatch_source_testcancel(v8->_stateUpdateSource))
+  stateUpdateSource = selfCopy->_stateUpdateSource;
+  if (stateUpdateSource && !dispatch_source_testcancel(selfCopy->_stateUpdateSource))
   {
     dispatch_source_merge_data(stateUpdateSource, 1uLL);
   }
@@ -114,7 +114,7 @@ void __53__SYOutgoingDeltaTransactionSession_initWithService___block_invoke(uint
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setStateQuietly:(unsigned int)a3
+- (void)_setStateQuietly:(unsigned int)quietly
 {
   v14 = *MEMORY[0x1E69E9840];
   v9.opaque[0] = 0;
@@ -133,11 +133,11 @@ void __53__SYOutgoingDeltaTransactionSession_initWithService___block_invoke(uint
     *buf = 138543618;
     v11 = v7;
     v12 = 1024;
-    v13 = a3;
+    quietlyCopy = quietly;
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting state (quietly) to %{companionsync:SYSessionState}d", buf, 0x12u);
   }
 
-  self->_state = a3;
+  self->_state = quietly;
   os_activity_scope_leave(&v9);
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -213,8 +213,8 @@ void __58__SYOutgoingDeltaTransactionSession__waitForMessageWindow__block_invoke
 
 - (void)_fetchNextBatch
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
   v27[0] = 0;
@@ -240,7 +240,7 @@ void __58__SYOutgoingDeltaTransactionSession__waitForMessageWindow__block_invoke
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v7 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__SYOutgoingDeltaTransactionSession__fetchNextBatch__block_invoke_8;
@@ -250,7 +250,7 @@ void __58__SYOutgoingDeltaTransactionSession__waitForMessageWindow__block_invoke
   v8 = v6;
   v11 = v8;
   v13 = &v18;
-  dispatch_sync(v7, block);
+  dispatch_sync(targetQueue, block);
 
   v9 = *(v15 + 6);
   if ((v9 - 1) >= 2)
@@ -361,8 +361,8 @@ void __62__SYOutgoingDeltaTransactionSession__sendSyncBatch_nextState___block_in
 
 - (void)_notifySessionComplete
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(_SYCountedSemaphore *)self->_changeConcurrencySemaphore invalidate];
   stateUpdateSource = self->_stateUpdateSource;
@@ -371,17 +371,17 @@ void __62__SYOutgoingDeltaTransactionSession__sendSyncBatch_nextState___block_in
     dispatch_source_cancel(stateUpdateSource);
   }
 
-  v5 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__SYOutgoingDeltaTransactionSession__notifySessionComplete__block_invoke;
   block[3] = &unk_1E86C9FB0;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(targetQueue, block);
 
-  v6 = [(SYSession *)self service];
-  v7 = [(SYSession *)self error];
-  [v6 sessionDidEnd:self withError:v7];
+  service = [(SYSession *)self service];
+  error = [(SYSession *)self error];
+  [service sessionDidEnd:self withError:error];
 
   [(SYSession *)self didCompleteSession];
 }
@@ -406,9 +406,9 @@ void __59__SYOutgoingDeltaTransactionSession__notifySessionComplete__block_invok
   [v3 syncSession:v4 didEndWithError:v5];
 }
 
-- (void)_messageExpiredWithSeqno:(unint64_t)a3 identifier:(id)a4
+- (void)_messageExpiredWithSeqno:(unint64_t)seqno identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -417,7 +417,7 @@ void __59__SYOutgoingDeltaTransactionSession__notifySessionComplete__block_invok
   v7 = qword_1EDE73420;
   if (os_log_type_enabled(qword_1EDE73420, OS_LOG_TYPE_ERROR))
   {
-    [(SYOutgoingBatchSyncSession *)v6 _messageExpiredWithSeqno:a3 identifier:v7];
+    [(SYOutgoingBatchSyncSession *)identifierCopy _messageExpiredWithSeqno:seqno identifier:v7];
   }
 
   v8 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2007 userInfo:0];
@@ -429,34 +429,34 @@ void __59__SYOutgoingDeltaTransactionSession__notifySessionComplete__block_invok
 - (void)_processNextState
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &v10);
-  v4 = self;
-  objc_sync_enter(v4);
-  state = v4->_state;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   if (state <= 3)
   {
     if (state == 1)
     {
-      [(SYOutgoingDeltaTransactionSession *)v4 _waitForMessageWindow];
+      [(SYOutgoingDeltaTransactionSession *)selfCopy _waitForMessageWindow];
     }
 
     else if (state == 2)
     {
-      [(SYOutgoingDeltaTransactionSession *)v4 setState:9];
+      [(SYOutgoingDeltaTransactionSession *)selfCopy setState:9];
     }
   }
 
   else if (state == 4)
   {
     v6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2008 userInfo:0];
-    [(SYSession *)v4 setError:v6];
+    [(SYSession *)selfCopy setError:v6];
   }
 
   else
@@ -471,9 +471,9 @@ void __59__SYOutgoingDeltaTransactionSession__notifySessionComplete__block_invok
       v7 = qword_1EDE73420;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(SYSession *)v4 error];
+        error = [(SYSession *)selfCopy error];
         *buf = 138412290;
-        v12 = v8;
+        v12 = error;
         _os_log_impl(&dword_1DF835000, v7, OS_LOG_TYPE_DEFAULT, "SYSession entered error state. Error = %@", buf, 0xCu);
       }
     }
@@ -483,7 +483,7 @@ void __59__SYOutgoingDeltaTransactionSession__notifySessionComplete__block_invok
       goto LABEL_17;
     }
 
-    [(SYOutgoingDeltaTransactionSession *)v4 _notifySessionComplete];
+    [(SYOutgoingDeltaTransactionSession *)selfCopy _notifySessionComplete];
   }
 
 LABEL_17:
@@ -491,7 +491,7 @@ LABEL_17:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setMessageTimerForSeqno:(unint64_t)a3
+- (void)_setMessageTimerForSeqno:(unint64_t)seqno
 {
   [(SYSession *)self perMessageTimeout];
   if (v5 != 0.0)
@@ -500,14 +500,14 @@ LABEL_17:
     v7 = MEMORY[0x1E695DF00];
     [(SYSession *)self perMessageTimeout];
     v8 = [v7 dateWithTimeIntervalSinceNow:?];
-    [(_SYMessageTimerTable *)timers addTimerWithFireDate:v8 forSequenceNumber:a3];
+    [(_SYMessageTimerTable *)timers addTimerWithFireDate:v8 forSequenceNumber:seqno];
   }
 }
 
 - (void)_installStateListener
 {
-  v3 = [(SYSession *)self queue];
-  v4 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, v3);
+  queue = [(SYSession *)self queue];
+  v4 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, queue);
   stateUpdateSource = self->_stateUpdateSource;
   self->_stateUpdateSource = v4;
 
@@ -535,22 +535,22 @@ void __58__SYOutgoingDeltaTransactionSession__installStateListener__block_invoke
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SYSession *)self delegate];
+  startCopy = start;
+  delegate = [(SYSession *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(SYSession *)self serializer];
+    serializer = [(SYSession *)self serializer];
     if (objc_opt_respondsToSelector())
     {
     }
 
     else
     {
-      v12 = [(SYSession *)self serializer];
+      serializer2 = [(SYSession *)self serializer];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0)
@@ -569,7 +569,7 @@ void __58__SYOutgoingDeltaTransactionSession__installStateListener__block_invoke
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
         v25 = [v19 initWithSYError:2020 userInfo:v24];
 
-        v26 = [(SYSession *)self queue];
+        queue = [(SYSession *)self queue];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __43__SYOutgoingDeltaTransactionSession_start___block_invoke_2;
@@ -577,9 +577,9 @@ void __58__SYOutgoingDeltaTransactionSession__installStateListener__block_invoke
         v31[4] = self;
         v32 = v25;
         v27 = v25;
-        dispatch_async(v26, v31);
+        dispatch_async(queue, v31);
 
-        v4[2](v4, 0, v27);
+        startCopy[2](startCopy, 0, v27);
         goto LABEL_12;
       }
     }
@@ -597,21 +597,21 @@ void __58__SYOutgoingDeltaTransactionSession__installStateListener__block_invoke
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [(SYSession *)self identifier];
+      identifier = [(SYSession *)self identifier];
       *buf = 138543618;
       v36 = v16;
       v37 = 2114;
-      v38 = v17;
+      v38 = identifier;
       _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "Starting %{public}@ with identifier %{public}@", buf, 0x16u);
     }
 
-    v18 = [(SYSession *)self queue];
+    queue2 = [(SYSession *)self queue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __43__SYOutgoingDeltaTransactionSession_start___block_invoke_82;
     v29[3] = &unk_1E86C9FB0;
     v29[4] = self;
-    dispatch_async(v18, v29);
+    dispatch_async(queue2, v29);
 
     os_activity_scope_leave(&state);
   }
@@ -624,7 +624,7 @@ void __58__SYOutgoingDeltaTransactionSession__installStateListener__block_invoke
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
     v9 = [v7 initWithSYError:2001 userInfo:v8];
 
-    v10 = [(SYSession *)self queue];
+    queue3 = [(SYSession *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__SYOutgoingDeltaTransactionSession_start___block_invoke;
@@ -632,9 +632,9 @@ void __58__SYOutgoingDeltaTransactionSession__installStateListener__block_invoke
     block[4] = self;
     v34 = v9;
     v11 = v9;
-    dispatch_async(v10, block);
+    dispatch_async(queue3, block);
 
-    v4[2](v4, 0, v11);
+    startCopy[2](startCopy, 0, v11);
   }
 
 LABEL_12:
@@ -672,15 +672,15 @@ uint64_t __43__SYOutgoingDeltaTransactionSession_start___block_invoke_82(uint64_
   return [v2 setState:1];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v7 = a3;
-  v4 = [v7 domain];
-  if ([v4 isEqualToString:@"SYErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"SYErrorDomain"])
   {
-    v5 = [v7 code];
+    code = [errorCopy code];
 
-    if (v5 == -128)
+    if (code == -128)
     {
       self->_cancelled = 1;
       v6 = 3;
@@ -692,15 +692,15 @@ uint64_t __43__SYOutgoingDeltaTransactionSession_start___block_invoke_82(uint64_
   {
   }
 
-  [(SYSession *)self setError:v7];
+  [(SYSession *)self setError:errorCopy];
   v6 = 5;
 LABEL_6:
   [(SYOutgoingDeltaTransactionSession *)self setState:v6];
 }
 
-- (void)_sentMessageWithIdentifier:(id)a3 userInfo:(id)a4
+- (void)_sentMessageWithIdentifier:(id)identifier userInfo:(id)info
 {
-  [(_SYMessageTimerTable *)self->_timers cancelTimerForIdentifier:a3, a4];
+  [(_SYMessageTimerTable *)self->_timers cancelTimerForIdentifier:identifier, info];
   if (![(_SYMessageTimerTable *)self->_timers timerCount]&& [(SYOutgoingDeltaTransactionSession *)self state]== 7)
   {
 

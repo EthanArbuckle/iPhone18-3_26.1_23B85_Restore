@@ -1,22 +1,22 @@
 @interface BLSinfsArray
-- (BLSinfsArray)initWithSINFs:(id)a3;
-- (BOOL)_isRecognizedProperty:(id)a3;
-- (id)_copyValueForSINF:(id)a3 property:(id)a4 error:(id *)a5;
-- (id)copyValueForField:(int64_t)a3 error:(id *)a4;
-- (id)copyValueForProperty:(id)a3 error:(id *)a4;
+- (BLSinfsArray)initWithSINFs:(id)fs;
+- (BOOL)_isRecognizedProperty:(id)property;
+- (id)_copyValueForSINF:(id)f property:(id)property error:(id *)error;
+- (id)copyValueForField:(int64_t)field error:(id *)error;
+- (id)copyValueForProperty:(id)property error:(id *)error;
 @end
 
 @implementation BLSinfsArray
 
-- (BLSinfsArray)initWithSINFs:(id)a3
+- (BLSinfsArray)initWithSINFs:(id)fs
 {
-  v4 = a3;
+  fsCopy = fs;
   v9.receiver = self;
   v9.super_class = BLSinfsArray;
   v5 = [(BLSinfsArray *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [fsCopy copy];
     sinfs = v5->_sinfs;
     v5->_sinfs = v6;
   }
@@ -24,7 +24,7 @@
   return v5;
 }
 
-- (id)copyValueForField:(int64_t)a3 error:(id *)a4
+- (id)copyValueForField:(int64_t)field error:(id *)error
 {
   v17 = 0u;
   v18 = 0u;
@@ -39,14 +39,14 @@ LABEL_9:
 LABEL_13:
     v14 = sub_1000A91BC(@"FairPlayErrorDomain", 3, 0, 0);
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
     v14 = v14;
-    *a4 = v14;
+    *error = v14;
     goto LABEL_15;
   }
 
@@ -63,7 +63,7 @@ LABEL_3:
 
     v11 = *(*(&v17 + 1) + 8 * v10);
     v16 = 0;
-    if (!sub_1000AA8E8(v11, a3, &v16))
+    if (!sub_1000AA8E8(v11, field, &v16))
     {
       break;
     }
@@ -89,7 +89,7 @@ LABEL_3:
   }
 
   v14 = 0;
-  if (a4)
+  if (error)
   {
     goto LABEL_14;
   }
@@ -99,10 +99,10 @@ LABEL_15:
   return v13;
 }
 
-- (id)copyValueForProperty:(id)a3 error:(id *)a4
+- (id)copyValueForProperty:(id)property error:(id *)error
 {
-  v6 = a3;
-  if (![(BLSinfsArray *)self _isRecognizedProperty:v6])
+  propertyCopy = property;
+  if (![(BLSinfsArray *)self _isRecognizedProperty:propertyCopy])
   {
     v16 = 2;
 LABEL_15:
@@ -132,7 +132,7 @@ LABEL_15:
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v19 = 0;
-        v13 = [(BLSinfsArray *)self _copyValueForSINF:v12 property:v6 error:&v19];
+        v13 = [(BLSinfsArray *)self _copyValueForSINF:v12 property:propertyCopy error:&v19];
         v14 = v19;
         if (v13 | v14)
         {
@@ -162,36 +162,36 @@ LABEL_13:
   }
 
 LABEL_16:
-  if (a4)
+  if (error)
   {
     v17 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   return v13;
 }
 
-- (id)_copyValueForSINF:(id)a3 property:(id)a4 error:(id *)a5
+- (id)_copyValueForSINF:(id)f property:(id)property error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 isEqualToString:@"SinfPropertyAccountIdentifier"])
+  fCopy = f;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SinfPropertyAccountIdentifier"])
   {
     v15 = 0;
-    v9 = v7;
+    v9 = fCopy;
     v10 = 2;
   }
 
   else
   {
-    if (![v8 isEqualToString:@"SinfPropertyFairPlayKeyIdentifier"])
+    if (![propertyCopy isEqualToString:@"SinfPropertyFairPlayKeyIdentifier"])
     {
       v12 = 0;
       goto LABEL_11;
     }
 
     v15 = 0;
-    v9 = v7;
+    v9 = fCopy;
     v10 = 5;
   }
 
@@ -203,9 +203,9 @@ LABEL_16:
     v12 = [v13 initWithUnsignedLongLong:v15];
   }
 
-  if (a5 && v11)
+  if (error && v11)
   {
-    *a5 = sub_1000A91BC(@"FairPlayErrorDomain", v11, 0, 0);
+    *error = sub_1000A91BC(@"FairPlayErrorDomain", v11, 0, 0);
   }
 
 LABEL_11:
@@ -213,17 +213,17 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)_isRecognizedProperty:(id)a3
+- (BOOL)_isRecognizedProperty:(id)property
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SinfPropertyAccountIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SinfPropertyAccountIdentifier"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SinfPropertyFairPlayKeyIdentifier"];
+    v4 = [propertyCopy isEqualToString:@"SinfPropertyFairPlayKeyIdentifier"];
   }
 
   return v4;

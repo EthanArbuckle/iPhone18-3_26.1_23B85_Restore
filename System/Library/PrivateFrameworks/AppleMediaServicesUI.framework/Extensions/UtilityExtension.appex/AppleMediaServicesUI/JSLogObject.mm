@@ -1,46 +1,46 @@
 @interface JSLogObject
-- (void)debug:(id)a3;
-- (void)default:(id)a3;
-- (void)error:(id)a3;
-- (void)fault:(id)a3;
-- (void)info:(id)a3;
+- (void)debug:(id)debug;
+- (void)default:(id)default;
+- (void)error:(id)error;
+- (void)fault:(id)fault;
+- (void)info:(id)info;
 @end
 
 @implementation JSLogObject
 
-- (void)debug:(id)a3
+- (void)debug:(id)debug
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001EC3C(v4);
+  debugCopy = debug;
+  selfCopy = self;
+  sub_10001EC3C(debugCopy);
 }
 
-- (void)default:(id)a3
+- (void)default:(id)default
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001ECBC(v4);
+  defaultCopy = default;
+  selfCopy = self;
+  sub_10001ECBC(defaultCopy);
 }
 
-- (void)error:(id)a3
+- (void)error:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001ED3C(v4);
+  errorCopy = error;
+  selfCopy = self;
+  sub_10001ED3C(errorCopy);
 }
 
-- (void)fault:(id)a3
+- (void)fault:(id)fault
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001EDBC(v4);
+  faultCopy = fault;
+  selfCopy = self;
+  sub_10001EDBC(faultCopy);
 }
 
-- (void)info:(id)a3
+- (void)info:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001EE3C(v4);
+  infoCopy = info;
+  selfCopy = self;
+  sub_10001EE3C(infoCopy);
 }
 
 @end

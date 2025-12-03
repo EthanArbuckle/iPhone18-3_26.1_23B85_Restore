@@ -7,10 +7,10 @@
 - (ACCNavigationLaneGuidanceInfo)laneGuidance
 {
   [objc_opt_class() ACCNavigationInfoClass];
-  v3 = [(CRAccNavInfo *)self accNavInfo];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  accNavInfo = [(CRAccNavInfo *)self accNavInfo];
+  if (accNavInfo && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = accNavInfo;
   }
 
   else

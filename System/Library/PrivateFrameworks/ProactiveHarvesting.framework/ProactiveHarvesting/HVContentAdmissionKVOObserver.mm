@@ -1,14 +1,14 @@
 @interface HVContentAdmissionKVOObserver
-+ (id)observeObject:(id)a3 key:(id)a4 handler:(id)a5;
-- (HVContentAdmissionKVOObserver)initWithKey:(id)a3 handler:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
++ (id)observeObject:(id)object key:(id)key handler:(id)handler;
+- (HVContentAdmissionKVOObserver)initWithKey:(id)key handler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation HVContentAdmissionKVOObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{self->_key, a4, a5, a6}])
+  if ([path isEqualToString:{self->_key, object, change, context}])
   {
     handler = self->_handler;
     if (handler)
@@ -20,18 +20,18 @@
   }
 }
 
-- (HVContentAdmissionKVOObserver)initWithKey:(id)a3 handler:(id)a4
+- (HVContentAdmissionKVOObserver)initWithKey:(id)key handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = HVContentAdmissionKVOObserver;
   v9 = [(HVContentAdmissionKVOObserver *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_key, a3);
-    v11 = MEMORY[0x238381E60](v8);
+    objc_storeStrong(&v9->_key, key);
+    v11 = MEMORY[0x238381E60](handlerCopy);
     handler = v10->_handler;
     v10->_handler = v11;
   }
@@ -39,14 +39,14 @@
   return v10;
 }
 
-+ (id)observeObject:(id)a3 key:(id)a4 handler:(id)a5
++ (id)observeObject:(id)object key:(id)key handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HVContentAdmissionKVOObserver alloc] initWithKey:v8 handler:v7];
+  handlerCopy = handler;
+  keyCopy = key;
+  objectCopy = object;
+  v10 = [[HVContentAdmissionKVOObserver alloc] initWithKey:keyCopy handler:handlerCopy];
 
-  [v9 addObserver:v10 forKeyPath:v8 options:0 context:0];
+  [objectCopy addObserver:v10 forKeyPath:keyCopy options:0 context:0];
 
   return v10;
 }

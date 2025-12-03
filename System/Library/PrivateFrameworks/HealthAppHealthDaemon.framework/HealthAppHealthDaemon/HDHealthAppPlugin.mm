@@ -1,29 +1,29 @@
 @interface HDHealthAppPlugin
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)stateSyncEntityClasses;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
 - (void)handleDatabaseObliteration;
 @end
 
 @implementation HDHealthAppPlugin
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[HDHealthAppDaemonExtension alloc] initWithDaemon:v3];
+  daemonCopy = daemon;
+  v4 = [[HDHealthAppDaemonExtension alloc] initWithDaemon:daemonCopy];
 
   return v4;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [[HDHealthAppProfileExtension alloc] initWithProfile:v3];
+    v4 = [[HDHealthAppProfileExtension alloc] initWithProfile:profileCopy];
   }
 
   else
@@ -82,9 +82,9 @@
   return v3;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  if ((a3 - 1) >= 2)
+  if ((class - 1) >= 2)
   {
     return 0;
   }
@@ -95,10 +95,10 @@
   }
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (class == 1)
   {
     v6[0] = objc_opt_class();
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];

@@ -1,10 +1,10 @@
 @interface HUSoftwareUpdateInfoItem
 + (id)_dateFormatter;
-+ (id)_iconDescriptorForAccessories:(id)a3;
++ (id)_iconDescriptorForAccessories:(id)accessories;
 - (HUSoftwareUpdateInfoItem)init;
-- (HUSoftwareUpdateInfoItem)initWithAccessories:(id)a3;
+- (HUSoftwareUpdateInfoItem)initWithAccessories:(id)accessories;
 - (id)_releaseNotesResultsFuture;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)description;
 @end
 
@@ -35,20 +35,20 @@ uint64_t __42__HUSoftwareUpdateInfoItem__dateFormatter__block_invoke()
   return [v3 setTimeStyle:0];
 }
 
-+ (id)_iconDescriptorForAccessories:(id)a3
++ (id)_iconDescriptorForAccessories:(id)accessories
 {
-  v3 = a3;
-  v4 = [v3 anyObject];
-  v5 = [v4 hf_isMediaAccessory];
+  accessoriesCopy = accessories;
+  anyObject = [accessoriesCopy anyObject];
+  hf_isMediaAccessory = [anyObject hf_isMediaAccessory];
 
-  if (v5)
+  if (hf_isMediaAccessory)
   {
-    v6 = [v3 na_flatMap:&__block_literal_global_13_2];
+    v6 = [accessoriesCopy na_flatMap:&__block_literal_global_13_2];
     if ([v6 count] == 1)
     {
-      v7 = [v6 anyObject];
+      anyObject2 = [v6 anyObject];
 
-      if (v7)
+      if (anyObject2)
       {
         goto LABEL_7;
       }
@@ -60,12 +60,12 @@ uint64_t __42__HUSoftwareUpdateInfoItem__dateFormatter__block_invoke()
   }
 
   v8 = MEMORY[0x277D14AC0];
-  v9 = [v3 anyObject];
-  v7 = [v8 iconDescriptorForAccessory:v9];
+  anyObject3 = [accessoriesCopy anyObject];
+  anyObject2 = [v8 iconDescriptorForAccessory:anyObject3];
 
 LABEL_7:
 
-  return v7;
+  return anyObject2;
 }
 
 id __58__HUSoftwareUpdateInfoItem__iconDescriptorForAccessories___block_invoke(uint64_t a1, void *a2)
@@ -81,23 +81,23 @@ id __58__HUSoftwareUpdateInfoItem__iconDescriptorForAccessories___block_invoke(u
 
 - (HUSoftwareUpdateInfoItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccessories_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateInfoItem.m" lineNumber:72 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateInfoItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateInfoItem.m" lineNumber:72 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateInfoItem init]", v5}];
 
   return 0;
 }
 
-- (HUSoftwareUpdateInfoItem)initWithAccessories:(id)a3
+- (HUSoftwareUpdateInfoItem)initWithAccessories:(id)accessories
 {
-  v5 = a3;
+  accessoriesCopy = accessories;
   v9.receiver = self;
   v9.super_class = HUSoftwareUpdateInfoItem;
   v6 = [(HUSoftwareUpdateInfoItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessories, a3);
+    objc_storeStrong(&v6->_accessories, accessories);
   }
 
   return v7;
@@ -105,7 +105,7 @@ id __58__HUSoftwareUpdateInfoItem__iconDescriptorForAccessories___block_invoke(u
 
 - (id)_releaseNotesResultsFuture
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -121,22 +121,22 @@ id __58__HUSoftwareUpdateInfoItem__iconDescriptorForAccessories___block_invoke(u
   v4 = __54__HUSoftwareUpdateInfoItem__releaseNotesResultsFuture__block_invoke(v18);
   if (![v4 length] || !objc_msgSend(v20[5], "isEqual:", *MEMORY[0x277CE1DA0]))
   {
-    [v3 setObject:v4 forKeyedSubscript:@"releaseNotesString"];
+    [dictionary setObject:v4 forKeyedSubscript:@"releaseNotesString"];
     [(HUSoftwareUpdateInfoItem *)self setReleaseNotesHTMLString:0];
     [(HUSoftwareUpdateInfoItem *)self setReleaseNotesAttributedString:0];
     goto LABEL_6;
   }
 
-  v5 = [(HUSoftwareUpdateInfoItem *)self releaseNotesHTMLString];
-  v6 = [v4 isEqualToString:v5];
+  releaseNotesHTMLString = [(HUSoftwareUpdateInfoItem *)self releaseNotesHTMLString];
+  v6 = [v4 isEqualToString:releaseNotesHTMLString];
 
   if (v6)
   {
-    v7 = [(HUSoftwareUpdateInfoItem *)self releaseNotesAttributedString];
-    [v3 setObject:v7 forKeyedSubscript:@"releaseNotesAttributedString"];
+    releaseNotesAttributedString = [(HUSoftwareUpdateInfoItem *)self releaseNotesAttributedString];
+    [dictionary setObject:releaseNotesAttributedString forKeyedSubscript:@"releaseNotesAttributedString"];
 
 LABEL_6:
-    v8 = [MEMORY[0x277D2C900] futureWithResult:v3];
+    v8 = [MEMORY[0x277D2C900] futureWithResult:dictionary];
     goto LABEL_7;
   }
 
@@ -147,7 +147,7 @@ LABEL_6:
   v15[3] = &unk_277DBFD90;
   v15[4] = self;
   v16 = v4;
-  v11 = v3;
+  v11 = dictionary;
   v17 = v11;
   v12 = [v10 flatMap:v15];
   v13[0] = MEMORY[0x277D85DD0];
@@ -234,18 +234,18 @@ uint64_t __54__HUSoftwareUpdateInfoItem__releaseNotesResultsFuture__block_invoke
   return [v8 futureWithResult:v9];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HUSoftwareUpdateInfoItem *)self _releaseNotesResultsFuture];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _releaseNotesResultsFuture = [(HUSoftwareUpdateInfoItem *)self _releaseNotesResultsFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HUSoftwareUpdateInfoItem__subclass_updateWithOptions___block_invoke;
   v9[3] = &unk_277DB9090;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v10 = dictionary;
+  selfCopy = self;
+  v6 = dictionary;
+  v7 = [_releaseNotesResultsFuture flatMap:v9];
 
   return v7;
 }
@@ -424,17 +424,17 @@ id __56__HUSoftwareUpdateInfoItem__subclass_updateWithOptions___block_invoke_6(u
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUSoftwareUpdateInfoItem *)self latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+  latestResults = [(HUSoftwareUpdateInfoItem *)self latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
   v6 = [v3 appendBool:objc_msgSend(v5 withName:"BOOLValue") ifEqualTo:{@"hidden", 1}];
 
-  v7 = [(HUSoftwareUpdateInfoItem *)self accessories];
-  v8 = [v7 hf_prettyDescription];
-  v9 = [v3 appendObject:v8 withName:@"accessories"];
+  accessories = [(HUSoftwareUpdateInfoItem *)self accessories];
+  hf_prettyDescription = [accessories hf_prettyDescription];
+  v9 = [v3 appendObject:hf_prettyDescription withName:@"accessories"];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

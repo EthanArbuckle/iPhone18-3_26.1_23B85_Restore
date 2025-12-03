@@ -1,26 +1,26 @@
 @interface STUIStatusBarActivityIconView
 - (UIEdgeInsets)alignmentRectInsets;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)_setupRingingLayersForStyleAttributes:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)_setupRingingLayersForStyleAttributes:(id)attributes;
 - (void)_teardownRingingLayers;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)resumePersistentAnimation;
-- (void)setRinging:(BOOL)a3 forUpdate:(id)a4;
-- (void)setSymbolPulsing:(BOOL)a3 forUpdate:(id)a4;
+- (void)setRinging:(BOOL)ringing forUpdate:(id)update;
+- (void)setSymbolPulsing:(BOOL)pulsing forUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarActivityIconView
 
-- (void)_setupRingingLayersForStyleAttributes:(id)a3
+- (void)_setupRingingLayersForStyleAttributes:(id)attributes
 {
   if (!self->_innerRingShapeLayer)
   {
-    [a3 iconScale];
+    [attributes iconScale];
     self->_ringingIconScale = v4;
-    v5 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     innerRingShapeLayer = self->_innerRingShapeLayer;
-    self->_innerRingShapeLayer = v5;
+    self->_innerRingShapeLayer = layer;
 
     Mutable = CGPathCreateMutable();
     v8 = CGPathCreateMutable();
@@ -39,16 +39,16 @@
     v11 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.75];
     -[CAShapeLayer setStrokeColor:](self->_innerRingShapeLayer, "setStrokeColor:", [v11 CGColor]);
 
-    v12 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](self->_innerRingShapeLayer, "setFillColor:", [v12 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](self->_innerRingShapeLayer, "setFillColor:", [clearColor CGColor]);
 
     CGPathRelease(Mutable);
-    v13 = [(STUIStatusBarActivityIconView *)self layer];
-    [v13 addSublayer:self->_innerRingShapeLayer];
+    layer2 = [(STUIStatusBarActivityIconView *)self layer];
+    [layer2 addSublayer:self->_innerRingShapeLayer];
 
-    v14 = [MEMORY[0x277CD9F90] layer];
+    layer3 = [MEMORY[0x277CD9F90] layer];
     outerRingShapeLayer = self->_outerRingShapeLayer;
-    self->_outerRingShapeLayer = v14;
+    self->_outerRingShapeLayer = layer3;
 
     v16 = CGPathCreateMutable();
     v17 = CGPathCreateMutable();
@@ -66,12 +66,12 @@
     v19 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
     -[CAShapeLayer setStrokeColor:](self->_outerRingShapeLayer, "setStrokeColor:", [v19 CGColor]);
 
-    v20 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](self->_outerRingShapeLayer, "setFillColor:", [v20 CGColor]);
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](self->_outerRingShapeLayer, "setFillColor:", [clearColor2 CGColor]);
 
     CGPathRelease(v16);
-    v21 = [(STUIStatusBarActivityIconView *)self layer];
-    [v21 addSublayer:self->_outerRingShapeLayer];
+    layer4 = [(STUIStatusBarActivityIconView *)self layer];
+    [layer4 addSublayer:self->_outerRingShapeLayer];
   }
 }
 
@@ -106,14 +106,14 @@
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
+  attributesCopy = attributes;
+  v5 = attributesCopy;
   if (self->_ringing)
   {
     ringingIconScale = self->_ringingIconScale;
-    [v4 iconScale];
+    [attributesCopy iconScale];
     if (ringingIconScale != v7)
     {
       v8 = self->_ringingIconScale;
@@ -125,12 +125,12 @@
         [(STUIStatusBarActivityIconView *)self resumePersistentAnimation];
       }
 
-      v10 = [v5 imageTintColor];
-      v11 = [v10 colorWithAlphaComponent:0.75];
+      imageTintColor = [v5 imageTintColor];
+      v11 = [imageTintColor colorWithAlphaComponent:0.75];
       -[CAShapeLayer setStrokeColor:](self->_innerRingShapeLayer, "setStrokeColor:", [v11 CGColor]);
 
-      v12 = [v5 imageTintColor];
-      v13 = [v12 colorWithAlphaComponent:0.5];
+      imageTintColor2 = [v5 imageTintColor];
+      v13 = [imageTintColor2 colorWithAlphaComponent:0.5];
       -[CAShapeLayer setStrokeColor:](self->_outerRingShapeLayer, "setStrokeColor:", [v13 CGColor]);
     }
   }
@@ -140,17 +140,17 @@
   [(STUIStatusBarImageView *)&v14 applyStyleAttributes:v5];
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x277CDA7D0]])
+  layerCopy = layer;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:*MEMORY[0x277CDA7D0]])
   {
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __55__STUIStatusBarActivityIconView_actionForLayer_forKey___block_invoke;
     v15 = &unk_279D37F00;
-    v16 = self;
+    selfCopy = self;
     v8 = _StatusBar_UIBlockBasedCAAction();
   }
 
@@ -158,7 +158,7 @@
   {
     v11.receiver = self;
     v11.super_class = STUIStatusBarActivityIconView;
-    v8 = [(STUIStatusBarActivityIconView *)&v11 actionForLayer:v6 forKey:v7];
+    v8 = [(STUIStatusBarActivityIconView *)&v11 actionForLayer:layerCopy forKey:keyCopy];
   }
 
   v9 = v8;
@@ -185,16 +185,16 @@
     [v4 setValues:v6];
 
     [v4 setDuration:1.85];
-    v7 = [MEMORY[0x277CD9E00] animation];
-    [v7 setDuration:2.0];
+    animation = [MEMORY[0x277CD9E00] animation];
+    [animation setDuration:2.0];
     v21[0] = v3;
     v21[1] = v4;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-    [v7 setAnimations:v8];
+    [animation setAnimations:v8];
 
     LODWORD(v9) = 2139095040;
-    [v7 setRepeatCount:v9];
-    [(CAShapeLayer *)self->_innerRingShapeLayer addAnimation:v7 forKey:@"innerRing"];
+    [animation setRepeatCount:v9];
+    [(CAShapeLayer *)self->_innerRingShapeLayer addAnimation:animation forKey:@"innerRing"];
     v10 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
     [v10 setValues:&unk_287D1AF00];
     [v10 setBeginTime:0.15];
@@ -210,23 +210,23 @@
 
     [v11 setBeginTime:0.15];
     [v11 setDuration:1.85];
-    v14 = [MEMORY[0x277CD9E00] animation];
-    [v14 setDuration:2.0];
+    animation2 = [MEMORY[0x277CD9E00] animation];
+    [animation2 setDuration:2.0];
     v19[0] = v10;
     v19[1] = v11;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
-    [v14 setAnimations:v15];
+    [animation2 setAnimations:v15];
 
     LODWORD(v16) = 2139095040;
-    [v14 setRepeatCount:v16];
-    [(CAShapeLayer *)self->_outerRingShapeLayer addAnimation:v14 forKey:@"outerRing"];
+    [animation2 setRepeatCount:v16];
+    [(CAShapeLayer *)self->_outerRingShapeLayer addAnimation:animation2 forKey:@"outerRing"];
   }
 
   symbolPulseEffect = self->_symbolPulseEffect;
   if (symbolPulseEffect)
   {
-    v18 = [MEMORY[0x277CE15D8] optionsWithRepeating];
-    [(STUIStatusBarActivityIconView *)self addSymbolEffect:symbolPulseEffect options:v18 animated:1];
+    optionsWithRepeating = [MEMORY[0x277CE15D8] optionsWithRepeating];
+    [(STUIStatusBarActivityIconView *)self addSymbolEffect:symbolPulseEffect options:optionsWithRepeating animated:1];
   }
 }
 
@@ -256,18 +256,18 @@
   return result;
 }
 
-- (void)setRinging:(BOOL)a3 forUpdate:(id)a4
+- (void)setRinging:(BOOL)ringing forUpdate:(id)update
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_ringing != v4)
+  ringingCopy = ringing;
+  updateCopy = update;
+  if (self->_ringing != ringingCopy)
   {
-    self->_ringing = v4;
-    v8 = v6;
-    if (v4)
+    self->_ringing = ringingCopy;
+    v8 = updateCopy;
+    if (ringingCopy)
     {
-      v7 = [v6 styleAttributes];
-      [(STUIStatusBarActivityIconView *)self _setupRingingLayersForStyleAttributes:v7];
+      styleAttributes = [updateCopy styleAttributes];
+      [(STUIStatusBarActivityIconView *)self _setupRingingLayersForStyleAttributes:styleAttributes];
 
       [(STUIStatusBarActivityIconView *)self resumePersistentAnimation];
     }
@@ -278,32 +278,32 @@
     }
 
     [(STUIStatusBarActivityIconView *)self invalidateIntrinsicContentSize];
-    v6 = v8;
+    updateCopy = v8;
   }
 }
 
-- (void)setSymbolPulsing:(BOOL)a3 forUpdate:(id)a4
+- (void)setSymbolPulsing:(BOOL)pulsing forUpdate:(id)update
 {
-  v4 = a3;
-  if ([(STUIStatusBarActivityIconView *)self isSymbolPulsing:a3]!= a3)
+  pulsingCopy = pulsing;
+  if ([(STUIStatusBarActivityIconView *)self isSymbolPulsing:pulsing]!= pulsing)
   {
-    if (v4)
+    if (pulsingCopy)
     {
-      v6 = [MEMORY[0x277CE15F0] effect];
+      effect = [MEMORY[0x277CE15F0] effect];
       symbolPulseEffect = self->_symbolPulseEffect;
-      self->_symbolPulseEffect = v6;
+      self->_symbolPulseEffect = effect;
 
       v8 = self->_symbolPulseEffect;
-      v12 = [MEMORY[0x277CE15D8] optionsWithRepeating];
-      [(STUIStatusBarActivityIconView *)self addSymbolEffect:v8 options:v12 animated:1];
-      v9 = v12;
+      optionsWithRepeating = [MEMORY[0x277CE15D8] optionsWithRepeating];
+      [(STUIStatusBarActivityIconView *)self addSymbolEffect:v8 options:optionsWithRepeating animated:1];
+      v9 = optionsWithRepeating;
     }
 
     else
     {
       v10 = self->_symbolPulseEffect;
-      v11 = [MEMORY[0x277CE15D8] options];
-      [(STUIStatusBarActivityIconView *)self removeSymbolEffectOfType:v10 options:v11 animated:1];
+      options = [MEMORY[0x277CE15D8] options];
+      [(STUIStatusBarActivityIconView *)self removeSymbolEffectOfType:v10 options:options animated:1];
 
       v9 = self->_symbolPulseEffect;
       self->_symbolPulseEffect = 0;

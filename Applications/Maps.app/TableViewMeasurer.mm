@@ -1,15 +1,15 @@
 @interface TableViewMeasurer
-- (CGRect)rectForHeaderInSection:(int64_t)a3;
-- (CGRect)rectForRowAtIndexPath:(id)a3;
+- (CGRect)rectForHeaderInSection:(int64_t)section;
+- (CGRect)rectForRowAtIndexPath:(id)path;
 - (MeasurableView)view;
-- (TableViewMeasurer)initWithMeasurableView:(id)a3;
+- (TableViewMeasurer)initWithMeasurableView:(id)view;
 - (double)fittingHeight;
 - (id)headerRectCache;
 - (id)rowRectCache;
-- (void)_measureRectsUntilRowAtIndexPath:(id)a3;
+- (void)_measureRectsUntilRowAtIndexPath:(id)path;
 - (void)_updateForCurrentTableWidth;
 - (void)invalidatePreviousMeasurements;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation TableViewMeasurer
@@ -51,23 +51,23 @@
   return rowRectCache;
 }
 
-- (void)_measureRectsUntilRowAtIndexPath:(id)a3
+- (void)_measureRectsUntilRowAtIndexPath:(id)path
 {
-  v36 = a3;
-  v4 = [(TableViewMeasurer *)self rowRectCache];
-  v5 = [(TableViewMeasurer *)self headerRectCache];
-  if (([v36 section] & 0x8000000000000000) == 0)
+  pathCopy = path;
+  rowRectCache = [(TableViewMeasurer *)self rowRectCache];
+  headerRectCache = [(TableViewMeasurer *)self headerRectCache];
+  if (([pathCopy section] & 0x8000000000000000) == 0)
   {
     v6 = 0;
     do
     {
       v7 = [NSNumber numberWithInteger:v6];
-      v8 = [v5 objectForKey:v7];
+      v8 = [headerRectCache objectForKey:v7];
 
       if (!v8)
       {
-        v9 = [(TableViewMeasurer *)self view];
-        [v9 _maps_rectForHeaderInSection:v6];
+        view = [(TableViewMeasurer *)self view];
+        [view _maps_rectForHeaderInSection:v6];
         v11 = v10;
         v13 = v12;
         v15 = v14;
@@ -75,18 +75,18 @@
 
         v18 = [NSValue valueWithCGRect:v11, v13, v15, v17];
         v19 = [NSNumber numberWithInteger:v6];
-        [v5 setObject:v18 forKey:v19];
+        [headerRectCache setObject:v18 forKey:v19];
       }
 
-      if (v6 == [v36 section])
+      if (v6 == [pathCopy section])
       {
-        v20 = [v36 row] + 1;
+        v20 = [pathCopy row] + 1;
       }
 
       else
       {
-        v21 = [(TableViewMeasurer *)self view];
-        v20 = [v21 _maps_numberOfRowsInSection:v6];
+        view2 = [(TableViewMeasurer *)self view];
+        v20 = [view2 _maps_numberOfRowsInSection:v6];
       }
 
       if (v20 >= 1)
@@ -94,32 +94,32 @@
         for (i = 0; i != v20; ++i)
         {
           v23 = [NSIndexPath indexPathForRow:i inSection:v6];
-          v24 = [v4 objectForKey:v23];
+          v24 = [rowRectCache objectForKey:v23];
 
           if (!v24)
           {
-            v25 = [(TableViewMeasurer *)self view];
-            [v25 _maps_rectForRowAtIndexPath:v23];
+            view3 = [(TableViewMeasurer *)self view];
+            [view3 _maps_rectForRowAtIndexPath:v23];
             v27 = v26;
             v29 = v28;
             v31 = v30;
             v33 = v32;
 
             v34 = [NSValue valueWithCGRect:v27, v29, v31, v33];
-            [v4 setObject:v34 forKey:v23];
+            [rowRectCache setObject:v34 forKey:v23];
           }
         }
       }
     }
 
-    while (v6++ < [v36 section]);
+    while (v6++ < [pathCopy section]);
   }
 }
 
 - (void)_updateForCurrentTableWidth
 {
-  v3 = [(TableViewMeasurer *)self view];
-  [v3 bounds];
+  view = [(TableViewMeasurer *)self view];
+  [view bounds];
   v5 = v4;
 
   widthForRectCache = self->_widthForRectCache;
@@ -142,12 +142,12 @@
   [(NSCache *)headerRectCache removeAllObjects];
 }
 
-- (CGRect)rectForHeaderInSection:(int64_t)a3
+- (CGRect)rectForHeaderInSection:(int64_t)section
 {
-  v5 = [(TableViewMeasurer *)self view];
-  v6 = [v5 _maps_numberOfSections];
+  view = [(TableViewMeasurer *)self view];
+  _maps_numberOfSections = [view _maps_numberOfSections];
 
-  if (v6 <= a3)
+  if (_maps_numberOfSections <= section)
   {
     x = CGRectZero.origin.x;
     y = CGRectZero.origin.y;
@@ -158,17 +158,17 @@
   else
   {
     [(TableViewMeasurer *)self _updateForCurrentTableWidth];
-    v7 = [(TableViewMeasurer *)self headerRectCache];
-    v8 = [NSNumber numberWithInteger:a3];
-    v9 = [v7 objectForKey:v8];
+    headerRectCache = [(TableViewMeasurer *)self headerRectCache];
+    v8 = [NSNumber numberWithInteger:section];
+    v9 = [headerRectCache objectForKey:v8];
 
     if (!v9)
     {
-      v10 = [NSIndexPath indexPathForRow:-1 inSection:a3];
+      v10 = [NSIndexPath indexPathForRow:-1 inSection:section];
       [(TableViewMeasurer *)self _measureRectsUntilRowAtIndexPath:v10];
 
-      v11 = [NSNumber numberWithInteger:a3];
-      v9 = [v7 objectForKey:v11];
+      v11 = [NSNumber numberWithInteger:section];
+      v9 = [headerRectCache objectForKey:v11];
     }
 
     [v9 CGRectValue];
@@ -189,19 +189,19 @@
   return result;
 }
 
-- (CGRect)rectForRowAtIndexPath:(id)a3
+- (CGRect)rectForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 section], -[TableViewMeasurer view](self, "view"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_maps_numberOfSections"), v7, v6 < v8) && (v9 = objc_msgSend(v5, "row"), -[TableViewMeasurer view](self, "view"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "_maps_numberOfRowsInSection:", objc_msgSend(v5, "section")), v10, v9 < v11))
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && (v6 = [pathCopy section], -[TableViewMeasurer view](self, "view"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "_maps_numberOfSections"), v7, v6 < v8) && (v9 = objc_msgSend(v5, "row"), -[TableViewMeasurer view](self, "view"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "_maps_numberOfRowsInSection:", objc_msgSend(v5, "section")), v10, v9 < v11))
   {
     [(TableViewMeasurer *)self _updateForCurrentTableWidth];
-    v12 = [(TableViewMeasurer *)self rowRectCache];
-    v13 = [v12 objectForKey:v5];
+    rowRectCache = [(TableViewMeasurer *)self rowRectCache];
+    v13 = [rowRectCache objectForKey:v5];
     if (!v13)
     {
       [(TableViewMeasurer *)self _measureRectsUntilRowAtIndexPath:v5];
-      v13 = [v12 objectForKey:v5];
+      v13 = [rowRectCache objectForKey:v5];
     }
 
     v14 = v13;
@@ -233,22 +233,22 @@
 
 - (double)fittingHeight
 {
-  v3 = [(TableViewMeasurer *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TableViewMeasurer *)self view];
+  [view layoutIfNeeded];
 
-  v4 = [(TableViewMeasurer *)self view];
-  [v4 _maps_commitUpdates];
+  view2 = [(TableViewMeasurer *)self view];
+  [view2 _maps_commitUpdates];
 
-  v5 = [(TableViewMeasurer *)self view];
-  [v5 _maps_contentSize];
+  view3 = [(TableViewMeasurer *)self view];
+  [view3 _maps_contentSize];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
@@ -260,16 +260,16 @@
   }
 }
 
-- (TableViewMeasurer)initWithMeasurableView:(id)a3
+- (TableViewMeasurer)initWithMeasurableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = TableViewMeasurer;
   v5 = [(TableViewMeasurer *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
+    objc_storeWeak(&v5->_view, viewCopy);
     v7 = v6;
   }
 

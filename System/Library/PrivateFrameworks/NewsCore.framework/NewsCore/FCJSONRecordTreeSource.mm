@@ -1,22 +1,22 @@
 @interface FCJSONRecordTreeSource
-- (FCJSONRecordTreeSource)initWithContext:(id)a3 jsonRecordSources:(id)a4;
-- (void)fetchRecordTreeWithRootIDs:(id)a3 branchKeysByRecordType:(id)a4 cachePolicy:(id)a5 edgeCacheHint:(id)a6 completion:(id)a7;
+- (FCJSONRecordTreeSource)initWithContext:(id)context jsonRecordSources:(id)sources;
+- (void)fetchRecordTreeWithRootIDs:(id)ds branchKeysByRecordType:(id)type cachePolicy:(id)policy edgeCacheHint:(id)hint completion:(id)completion;
 @end
 
 @implementation FCJSONRecordTreeSource
 
-- (FCJSONRecordTreeSource)initWithContext:(id)a3 jsonRecordSources:(id)a4
+- (FCJSONRecordTreeSource)initWithContext:(id)context jsonRecordSources:(id)sources
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  sourcesCopy = sources;
   v14.receiver = self;
   v14.super_class = FCJSONRecordTreeSource;
   v9 = [(FCJSONRecordTreeSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_context, context);
+    v11 = [sourcesCopy copy];
     jsonRecordSources = v10->_jsonRecordSources;
     v10->_jsonRecordSources = v11;
   }
@@ -24,13 +24,13 @@
   return v10;
 }
 
-- (void)fetchRecordTreeWithRootIDs:(id)a3 branchKeysByRecordType:(id)a4 cachePolicy:(id)a5 edgeCacheHint:(id)a6 completion:(id)a7
+- (void)fetchRecordTreeWithRootIDs:(id)ds branchKeysByRecordType:(id)type cachePolicy:(id)policy edgeCacheHint:(id)hint completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  hintCopy = hint;
+  policyCopy = policy;
+  typeCopy = type;
+  dsCopy = ds;
   v17 = objc_alloc_init(FCRecordChainFetchOperation);
   HIDWORD(v18) = qos_class_self() - 9;
   LODWORD(v18) = HIDWORD(v18);
@@ -46,27 +46,27 @@
   }
 
   [(FCOperation *)v17 setQualityOfService:v20];
-  v21 = [(FCJSONRecordTreeSource *)self context];
-  [(FCRecordChainFetchOperation *)v17 setContext:v21];
+  context = [(FCJSONRecordTreeSource *)self context];
+  [(FCRecordChainFetchOperation *)v17 setContext:context];
 
-  v22 = [(FCJSONRecordTreeSource *)self jsonRecordSources];
-  [(FCRecordChainFetchOperation *)v17 setAdditionalRecordSources:v22];
+  jsonRecordSources = [(FCJSONRecordTreeSource *)self jsonRecordSources];
+  [(FCRecordChainFetchOperation *)v17 setAdditionalRecordSources:jsonRecordSources];
 
-  [(FCRecordChainFetchOperation *)v17 setTopLevelRecordIDs:v16];
-  [(FCRecordChainFetchOperation *)v17 setLinkKeysByRecordType:v15];
+  [(FCRecordChainFetchOperation *)v17 setTopLevelRecordIDs:dsCopy];
+  [(FCRecordChainFetchOperation *)v17 setLinkKeysByRecordType:typeCopy];
 
-  [(FCRecordChainFetchOperation *)v17 setEdgeCacheHint:v13];
-  [(FCRecordChainFetchOperation *)v17 setCachePolicy:v14];
+  [(FCRecordChainFetchOperation *)v17 setEdgeCacheHint:hintCopy];
+  [(FCRecordChainFetchOperation *)v17 setCachePolicy:policyCopy];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __113__FCJSONRecordTreeSource_fetchRecordTreeWithRootIDs_branchKeysByRecordType_cachePolicy_edgeCacheHint_completion___block_invoke;
   v25[3] = &unk_1E7C379A0;
-  v26 = v12;
-  v23 = v12;
+  v26 = completionCopy;
+  v23 = completionCopy;
   [(FCRecordChainFetchOperation *)v17 setRecordChainCompletionHandler:v25];
-  v24 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-  [v24 addOperation:v17];
+  fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+  [fc_sharedConcurrentQueue addOperation:v17];
 }
 
 void __113__FCJSONRecordTreeSource_fetchRecordTreeWithRootIDs_branchKeysByRecordType_cachePolicy_edgeCacheHint_completion___block_invoke(uint64_t a1, void *a2, void *a3)

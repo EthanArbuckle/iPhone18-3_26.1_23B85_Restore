@@ -1,5 +1,5 @@
 @interface ParticipantCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,35 +7,35 @@
 
 @implementation ParticipantCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.ParticipantCell" hasInstanceMethod:@"participantView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantCell" hasInstanceMethod:@"accessibilityDisplayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.ParticipantCell" hasInstanceMethod:@"participantView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantCell" hasInstanceMethod:@"accessibilityDisplayName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(ParticipantCellAccessibility *)self safeValueForKey:@"participantView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(ParticipantCellAccessibility *)self safeValueForKey:@"participantView"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
   v2 = [(ParticipantCellAccessibility *)self safeValueForKey:@"participantView"];
-  v3 = [v2 accessibilityCustomActions];
+  accessibilityCustomActions = [v2 accessibilityCustomActions];
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 @end

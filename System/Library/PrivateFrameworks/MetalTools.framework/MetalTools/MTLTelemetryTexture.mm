@@ -1,35 +1,35 @@
 @interface MTLTelemetryTexture
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 buffer:(id)a5 descriptor:(id)a6 offset:(unint64_t)a7 bytesPerRow:(unint64_t)a8;
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 descriptor:(id)a5;
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 descriptor:(id)a5 plane:(unint64_t)a6;
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 descriptor:(id)a6;
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 pixelFormat:(unint64_t)a6 textureType:(unint64_t)a7 levels:(_NSRange)a8 slices:(_NSRange)a9 swizzle:(id)a10;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7;
-- (void)accumTextureDistribution:(id)a3 category:(unint64_t)a4 pixelFormat:(unint64_t)a5 baseAddr:(unint64_t)a6 rowBytes:(unint64_t)a7 isLinear:(BOOL)a8;
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device buffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device descriptor:(id)descriptor;
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device descriptor:(id)descriptor plane:(unint64_t)plane;
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 descriptor:(id)descriptor;
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 pixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)self0;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle;
+- (void)accumTextureDistribution:(id)distribution category:(unint64_t)category pixelFormat:(unint64_t)format baseAddr:(unint64_t)addr rowBytes:(unint64_t)bytes isLinear:(BOOL)linear;
 - (void)initMipmapClipType;
 @end
 
 @implementation MTLTelemetryTexture
 
-- (void)accumTextureDistribution:(id)a3 category:(unint64_t)a4 pixelFormat:(unint64_t)a5 baseAddr:(unint64_t)a6 rowBytes:(unint64_t)a7 isLinear:(BOOL)a8
+- (void)accumTextureDistribution:(id)distribution category:(unint64_t)category pixelFormat:(unint64_t)format baseAddr:(unint64_t)addr rowBytes:(unint64_t)bytes isLinear:(BOOL)linear
 {
-  v12 = a4;
-  v15 = [a3 textureType];
+  categoryCopy = category;
+  textureType = [distribution textureType];
   queue = self->_telemetryDevice->queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__MTLTelemetryTexture_accumTextureDistribution_category_pixelFormat_baseAddr_rowBytes_isLinear___block_invoke;
   block[3] = &unk_2787B3EF8;
-  v18 = v12;
-  v19 = v15;
+  v18 = categoryCopy;
+  v19 = textureType;
   block[4] = self;
-  block[5] = a3;
-  v20 = a8;
-  block[6] = a5;
-  block[7] = a7;
-  block[8] = a6;
+  block[5] = distribution;
+  linearCopy = linear;
+  block[6] = format;
+  block[7] = bytes;
+  block[8] = addr;
   dispatch_sync(queue, block);
 }
 
@@ -274,26 +274,26 @@ LABEL_71:
 
 - (void)initMipmapClipType
 {
-  v3 = [(MTLToolsTexture *)self width];
-  if (v3 <= [(MTLToolsTexture *)self height])
+  width = [(MTLToolsTexture *)self width];
+  if (width <= [(MTLToolsTexture *)self height])
   {
-    v4 = [(MTLToolsTexture *)self height];
+    height = [(MTLToolsTexture *)self height];
   }
 
   else
   {
-    v4 = [(MTLToolsTexture *)self width];
+    height = [(MTLToolsTexture *)self width];
   }
 
-  if (v4 <= [(MTLToolsTexture *)self depth])
+  if (height <= [(MTLToolsTexture *)self depth])
   {
     [(MTLToolsTexture *)self depth];
   }
 
   else
   {
-    v5 = [(MTLToolsTexture *)self width];
-    if (v5 <= [(MTLToolsTexture *)self height])
+    width2 = [(MTLToolsTexture *)self width];
+    if (width2 <= [(MTLToolsTexture *)self height])
     {
       [(MTLToolsTexture *)self height];
     }
@@ -334,74 +334,74 @@ LABEL_71:
   }
 }
 
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 buffer:(id)a5 descriptor:(id)a6 offset:(unint64_t)a7 bytesPerRow:(unint64_t)a8
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device buffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
   v16.receiver = self;
   v16.super_class = MTLTelemetryTexture;
   v14 = [MTLToolsTexture initWithBaseObject:sel_initWithBaseObject_parent_buffer_ parent:? buffer:?];
   if (v14)
   {
-    v14->_telemetryDescriptor = [a6 copy];
-    v14->_telemetryDevice = a4;
-    if ([a4 enableTelemetry])
+    v14->_telemetryDescriptor = [descriptor copy];
+    v14->_telemetryDevice = device;
+    if ([device enableTelemetry])
     {
       [(MTLTelemetryTexture *)v14 initMipmapClipType];
-      -[MTLTelemetryTexture accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:](v14, "accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:", a3, 1, [a3 pixelFormat], objc_msgSend(a5, "contents") + a7, a8, 1);
+      -[MTLTelemetryTexture accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:](v14, "accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:", texture, 1, [texture pixelFormat], objc_msgSend(buffer, "contents") + offset, row, 1);
     }
   }
 
   return v14;
 }
 
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 descriptor:(id)a5 plane:(unint64_t)a6
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device descriptor:(id)descriptor plane:(unint64_t)plane
 {
   v14.receiver = self;
   v14.super_class = MTLTelemetryTexture;
-  v9 = [(MTLToolsResource *)&v14 initWithBaseObject:a3 parent:a4, a5, a6];
-  if (v9)
+  plane = [(MTLToolsResource *)&v14 initWithBaseObject:texture parent:device, descriptor, plane];
+  if (plane)
   {
-    v9->_telemetryDescriptor = [a5 copy];
-    v9->_telemetryDevice = a4;
-    if ([a4 enableTelemetry])
+    plane->_telemetryDescriptor = [descriptor copy];
+    plane->_telemetryDevice = device;
+    if ([device enableTelemetry])
     {
-      [(MTLTelemetryTexture *)v9 initMipmapClipType];
-      v10 = [-[MTLToolsObject baseObject](v9 "baseObject")];
-      v11 = [a3 pixelFormat];
+      [(MTLTelemetryTexture *)plane initMipmapClipType];
+      v10 = [-[MTLToolsObject baseObject](plane "baseObject")];
+      pixelFormat = [texture pixelFormat];
       BaseAddress = IOSurfaceGetBaseAddress(v10);
-      [(MTLTelemetryTexture *)v9 accumTextureDistribution:a3 category:3 pixelFormat:v11 baseAddr:BaseAddress rowBytes:IOSurfaceGetBytesPerRow(v10) isLinear:1];
+      [(MTLTelemetryTexture *)plane accumTextureDistribution:texture category:3 pixelFormat:pixelFormat baseAddr:BaseAddress rowBytes:IOSurfaceGetBytesPerRow(v10) isLinear:1];
     }
   }
 
-  return v9;
+  return plane;
 }
 
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 descriptor:(id)a5
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device descriptor:(id)descriptor
 {
-  v8 = [(MTLTelemetryTexture *)self initWithBaseTexture:a3 device:a4 descriptor:a5 plane:0];
+  v8 = [(MTLTelemetryTexture *)self initWithBaseTexture:texture device:device descriptor:descriptor plane:0];
   if (v8)
   {
-    v8->_telemetryDescriptor = [a5 copy];
-    v8->_telemetryDevice = a4;
-    if ([a4 enableTelemetry])
+    v8->_telemetryDescriptor = [descriptor copy];
+    v8->_telemetryDevice = device;
+    if ([device enableTelemetry])
     {
       [(MTLTelemetryTexture *)v8 initMipmapClipType];
-      -[MTLTelemetryTexture accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:](v8, "accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:", a3, 0, [a3 pixelFormat], 0, 0, 0);
+      -[MTLTelemetryTexture accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:](v8, "accumTextureDistribution:category:pixelFormat:baseAddr:rowBytes:isLinear:", texture, 0, [texture pixelFormat], 0, 0, 0);
     }
   }
 
   return v8;
 }
 
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 descriptor:(id)a6
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLTelemetryTexture;
-  v8 = [(MTLToolsTexture *)&v10 initWithBaseObject:a3 parent:a4 parentTexture:a5];
+  v8 = [(MTLToolsTexture *)&v10 initWithBaseObject:texture parent:device parentTexture:a5];
   if (v8)
   {
-    v8->_telemetryDescriptor = [a6 copy];
-    v8->_telemetryDevice = a4;
-    if ([a4 enableTelemetry])
+    v8->_telemetryDescriptor = [descriptor copy];
+    v8->_telemetryDevice = device;
+    if ([device enableTelemetry])
     {
       [(MTLTelemetryTexture *)v8 initMipmapClipType];
     }
@@ -410,20 +410,20 @@ LABEL_71:
   return v8;
 }
 
-- (MTLTelemetryTexture)initWithBaseTexture:(id)a3 device:(id)a4 texture:(id)a5 pixelFormat:(unint64_t)a6 textureType:(unint64_t)a7 levels:(_NSRange)a8 slices:(_NSRange)a9 swizzle:(id)a10
+- (MTLTelemetryTexture)initWithBaseTexture:(id)texture device:(id)device texture:(id)a5 pixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)self0
 {
-  v14 = [(MTLTelemetryTexture *)self initWithBaseTexture:a3 device:a4 texture:a5 descriptor:self->_telemetryDescriptor];
-  if (v14 && [a4 enableTelemetry])
+  v14 = [(MTLTelemetryTexture *)self initWithBaseTexture:texture device:device texture:a5 descriptor:self->_telemetryDescriptor];
+  if (v14 && [device enableTelemetry])
   {
     queue = v14->_telemetryDevice->queue;
-    if (a7 - 5 >= 2)
+    if (type - 5 >= 2)
     {
-      length = a9.length;
+      length = slices.length;
     }
 
     else
     {
-      length = a9.length / 6;
+      length = slices.length / 6;
     }
 
     block[0] = MEMORY[0x277D85DD0];
@@ -431,10 +431,10 @@ LABEL_71:
     block[2] = __104__MTLTelemetryTexture_initWithBaseTexture_device_texture_pixelFormat_textureType_levels_slices_swizzle___block_invoke;
     block[3] = &unk_2787B3F20;
     v20 = 2;
-    v21 = a7;
-    block[6] = a6;
+    typeCopy = type;
+    block[6] = format;
     block[7] = length;
-    v19 = a9;
+    slicesCopy = slices;
     block[4] = v14;
     block[5] = a5;
     dispatch_sync(queue, block);
@@ -644,13 +644,13 @@ LABEL_55:
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3
+- (id)newTextureViewWithPixelFormat:(unint64_t)format
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v6 = result;
-    v7 = -[MTLTelemetryTexture initWithBaseTexture:device:texture:pixelFormat:textureType:levels:slices:swizzle:]([MTLTelemetryTexture alloc], "initWithBaseTexture:device:texture:pixelFormat:textureType:levels:slices:swizzle:", v6, -[MTLToolsObject device](self, "device"), self, a3, [v6 textureType], 0, objc_msgSend(v6, "arrayLength"), 0, 0, 84148994);
+    v7 = -[MTLTelemetryTexture initWithBaseTexture:device:texture:pixelFormat:textureType:levels:slices:swizzle:]([MTLTelemetryTexture alloc], "initWithBaseTexture:device:texture:pixelFormat:textureType:levels:slices:swizzle:", v6, -[MTLToolsObject device](self, "device"), self, format, [v6 textureType], 0, objc_msgSend(v6, "arrayLength"), 0, 0, 84148994);
 
     return v7;
   }
@@ -658,35 +658,35 @@ LABEL_55:
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices
 {
-  length = a6.length;
-  location = a6.location;
-  v8 = a5.length;
-  v9 = a5.location;
+  length = slices.length;
+  location = slices.location;
+  v8 = levels.length;
+  v9 = levels.location;
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v14 = result;
-    v15 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] texture:self pixelFormat:a3 textureType:a4 levels:v9 slices:v8 swizzle:location, length, 84148994];
+    84148994 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] texture:self pixelFormat:format textureType:type levels:v9 slices:v8 swizzle:location, length, 84148994];
 
-    return v15;
+    return 84148994;
   }
 
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle
 {
-  length = a6.length;
-  location = a6.location;
-  v9 = a5.length;
-  v10 = a5.location;
+  length = slices.length;
+  location = slices.location;
+  v9 = levels.length;
+  v10 = levels.location;
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v15 = result;
-    v16 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] texture:self pixelFormat:a3 textureType:a4 levels:v10 slices:v9 swizzle:location, length, *&a7];
+    v16 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:[(MTLToolsObject *)self device] texture:self pixelFormat:format textureType:type levels:v10 slices:v9 swizzle:location, length, *&swizzle];
 
     return v16;
   }

@@ -1,38 +1,38 @@
 @interface AXHAController
-+ (id)descriptionForHandoffReason:(int64_t)a3;
++ (id)descriptionForHandoffReason:(int64_t)reason;
 + (id)sharedController;
 - (AXHAController)init;
-- (BOOL)hearingAidsIsLEA2:(id)a3;
+- (BOOL)hearingAidsIsLEA2:(id)a2;
 - (BOOL)hearingAidsPaired;
-- (id)_registerForLiveListenUpdates_BOOLValue:(id)a3;
-- (id)_registerForLiveListenUpdates_enumValue:(id)a3;
-- (id)_toggleLiveListen_BOOLValue:(id)a3;
-- (id)_toggleLiveListen_enumValue:(id)a3;
-- (id)connectToControllerWithID:(id)a3;
+- (id)_registerForLiveListenUpdates_BOOLValue:(id)value;
+- (id)_registerForLiveListenUpdates_enumValue:(id)value;
+- (id)_toggleLiveListen_BOOLValue:(id)value;
+- (id)_toggleLiveListen_enumValue:(id)value;
+- (id)connectToControllerWithID:(id)d;
 - (id)currentDeviceController;
 - (id)liveListenController;
-- (id)observeRemoteLiveListenUpdates:(id)a3;
-- (id)readAvailableControllers:(id)a3;
-- (id)readAvailableDevices:(id)a3;
-- (id)readDeviceProperty:(id)a3;
-- (id)registerForAvailableDevicesUpdates:(id)a3;
-- (id)registerForControlMessageUpdates:(id)a3;
-- (id)registerForDeviceUpdates:(id)a3;
-- (id)registerForLiveListenUpdates:(id)a3;
-- (id)sendMessagesPriority:(id)a3;
-- (id)toggleLiveListen:(id)a3;
-- (id)toggleLiveListenRewind:(id)a3;
-- (id)writeDeviceProperty:(id)a3;
+- (id)observeRemoteLiveListenUpdates:(id)updates;
+- (id)readAvailableControllers:(id)controllers;
+- (id)readAvailableDevices:(id)devices;
+- (id)readDeviceProperty:(id)property;
+- (id)registerForAvailableDevicesUpdates:(id)updates;
+- (id)registerForControlMessageUpdates:(id)updates;
+- (id)registerForDeviceUpdates:(id)updates;
+- (id)registerForLiveListenUpdates:(id)updates;
+- (id)sendMessagesPriority:(id)priority;
+- (id)toggleLiveListen:(id)listen;
+- (id)toggleLiveListenRewind:(id)rewind;
+- (id)writeDeviceProperty:(id)property;
 - (void)connectToPairedDevice;
 - (void)dealloc;
 - (void)liveListenControllerStateDidChange;
-- (void)processPropertyUpdates:(id)a3 isLocal:(BOOL)a4;
+- (void)processPropertyUpdates:(id)updates isLocal:(BOOL)local;
 - (void)readLiveListenLevels;
-- (void)sendUpdatesForProperties:(id)a3 excludingClient:(id)a4;
-- (void)setListenForAvailableDeviceUpdates:(BOOL)a3;
-- (void)setPairedHearingAidID:(id)a3;
+- (void)sendUpdatesForProperties:(id)properties excludingClient:(id)client;
+- (void)setListenForAvailableDeviceUpdates:(BOOL)updates;
+- (void)setPairedHearingAidID:(id)d;
 - (void)transitionToPeer;
-- (void)updateNearbyDeviceAvailabilityWithForce:(BOOL)a3;
+- (void)updateNearbyDeviceAvailabilityWithForce:(BOOL)force;
 - (void)willSwitchUser;
 @end
 
@@ -79,21 +79,21 @@ uint64_t __34__AXHAController_sharedController__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)descriptionForHandoffReason:(int64_t)a3
++ (id)descriptionForHandoffReason:(int64_t)reason
 {
   if (descriptionForHandoffReason__onceToken != -1)
   {
     +[AXHAController descriptionForHandoffReason:];
   }
 
-  if ([descriptionForHandoffReason__HandoffReasonDeacription count] <= a3)
+  if ([descriptionForHandoffReason__HandoffReasonDeacription count] <= reason)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = [descriptionForHandoffReason__HandoffReasonDeacription objectAtIndexedSubscript:a3];
+    v4 = [descriptionForHandoffReason__HandoffReasonDeacription objectAtIndexedSubscript:reason];
   }
 
   return v4;
@@ -113,7 +113,7 @@ void __46__AXHAController_descriptionForHandoffReason___block_invoke()
   if (v2)
   {
     v3 = +[HUHearingAidSettings sharedInstance];
-    v4 = [v3 pairedHearingAids];
+    pairedHearingAids = [v3 pairedHearingAids];
 
     objc_initWeak(&location, v2);
     v5 = +[HUHearingAidSettings sharedInstance];
@@ -136,17 +136,17 @@ void __46__AXHAController_descriptionForHandoffReason___block_invoke()
 
     if ([MEMORY[0x1E69A4560] deviceIsMultiUser])
     {
-      v8 = [getUMUserManagerClass() sharedManager];
-      [v8 registerUserSwitchStakeHolder:v2];
+      sharedManager = [getUMUserManagerClass() sharedManager];
+      [sharedManager registerUserSwitchStakeHolder:v2];
     }
 
     v9 = objc_alloc_init(HUAudioHalController);
     audioHalController = v2->_audioHalController;
     v2->_audioHalController = v9;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     liveListenCountsPerClient = v2->_liveListenCountsPerClient;
-    v2->_liveListenCountsPerClient = v11;
+    v2->_liveListenCountsPerClient = dictionary;
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -194,8 +194,8 @@ void __22__AXHAController_init__block_invoke_21(uint64_t a1, char a2)
   [(AXHAController *)self setPairedDeviceUUID:0];
   [(AXHAController *)self setAvailableDevicesDescription:0];
   [(AXHAController *)self setLiveListenCountsPerClient:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXHAController;
@@ -204,10 +204,10 @@ void __22__AXHAController_init__block_invoke_21(uint64_t a1, char a2)
 
 - (void)willSwitchUser
 {
-  v3 = [getUMUserManagerClass() sharedManager];
-  v4 = [v3 isLoginSession];
+  sharedManager = [getUMUserManagerClass() sharedManager];
+  isLoginSession = [sharedManager isLoginSession];
 
-  if ((v4 & 1) == 0)
+  if ((isLoginSession & 1) == 0)
   {
 
     [(AXHAController *)self setPairedHearingAidID:0];
@@ -218,17 +218,17 @@ void __22__AXHAController_init__block_invoke_21(uint64_t a1, char a2)
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = +[AXHearingAidDeviceController sharedController];
-  v4 = [(AXHAController *)self pairedDeviceUUID];
-  v5 = [v3 hearingAidForDeviceID:v4];
+  pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
+  v5 = [v3 hearingAidForDeviceID:pairedDeviceUUID];
 
   if ([v5 leftAvailable])
   {
-    v6 = 1;
+    rightAvailable = 1;
   }
 
   else
   {
-    v6 = [v5 rightAvailable];
+    rightAvailable = [v5 rightAvailable];
   }
 
   v7 = +[AXHearingAidDeviceController sharedController];
@@ -237,23 +237,23 @@ void __22__AXHAController_init__block_invoke_21(uint64_t a1, char a2)
 
 LABEL_6:
     v8 = +[AXHearingAidDeviceController sharedController];
-    v9 = [(AXHAController *)self pairedDeviceUUID];
-    v10 = [v8 hearingAidForDeviceID:v9];
+    pairedDeviceUUID2 = [(AXHAController *)self pairedDeviceUUID];
+    v10 = [v8 hearingAidForDeviceID:pairedDeviceUUID2];
 
     v11 = HCLogHearingAids();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = +[AXHearingAidDeviceController sharedController];
-      v13 = [v12 isConnected];
-      v14 = [v10 isConnecting];
+      isConnected = [v12 isConnected];
+      isConnecting = [v10 isConnecting];
       v15 = +[HUNearbyHearingAidController sharedInstance];
-      v16 = [v15 descriptionForCurrentState];
+      descriptionForCurrentState = [v15 descriptionForCurrentState];
       v23[0] = 67109890;
-      v23[1] = v13;
+      v23[1] = isConnected;
       v24 = 1024;
-      v25 = v14;
+      v25 = isConnecting;
       v26 = 2112;
-      v27 = v16;
+      v27 = descriptionForCurrentState;
       v28 = 2112;
       v29 = v10;
       _os_log_impl(&dword_1DA5E2000, v11, OS_LOG_TYPE_DEFAULT, "HAController: Current controller is device, connected=%d, connecting=%d, nearby state=%@\nPaired Device=%@", v23, 0x22u);
@@ -264,12 +264,12 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if ([v5 isConnecting] & v6)
+  if ([v5 isConnecting] & rightAvailable)
   {
     v18 = +[HUNearbyHearingAidController sharedInstance];
-    v19 = [v18 state];
+    state = [v18 state];
 
-    if (v19 != 2)
+    if (state != 2)
     {
       goto LABEL_6;
     }
@@ -298,29 +298,29 @@ LABEL_16:
 {
   v8 = *MEMORY[0x1E69E9840];
   v2 = +[HUHearingAidSettings sharedInstance];
-  v3 = [v2 pairedHearingAids];
+  pairedHearingAids = [v2 pairedHearingAids];
 
   v4 = HCLogHearingAids();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3 != 0;
+    v7[1] = pairedHearingAids != 0;
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "HAController: Checking paired %d", v7, 8u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3 != 0;
+  return pairedHearingAids != 0;
 }
 
-- (void)setListenForAvailableDeviceUpdates:(BOOL)a3
+- (void)setListenForAvailableDeviceUpdates:(BOOL)updates
 {
-  if (self->_isListening != a3)
+  if (self->_isListening != updates)
   {
-    v3 = a3;
-    self->_isListening = a3;
+    updatesCopy = updates;
+    self->_isListening = updates;
     v5 = +[AXHearingAidDeviceController sharedController];
     v6 = v5;
-    if (v3)
+    if (updatesCopy)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -460,53 +460,53 @@ void __53__AXHAController_setListenForAvailableDeviceUpdates___block_invoke_2(ui
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hearingAidsIsLEA2:(id)a3
+- (BOOL)hearingAidsIsLEA2:(id)a2
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 availableInputEars];
-  v5 = [v3 leftPeripheralUUID];
-  if (v5)
+  a2Copy = a2;
+  availableInputEars = [a2Copy availableInputEars];
+  leftPeripheralUUID = [a2Copy leftPeripheralUUID];
+  if (leftPeripheralUUID)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 rightPeripheralUUID];
-    v6 = v7 != 0;
+    rightPeripheralUUID = [a2Copy rightPeripheralUUID];
+    v6 = rightPeripheralUUID != 0;
   }
 
   v8 = +[HUHearingAidSettings sharedInstance];
-  v9 = [v8 hearingAidsLEAVersionFromiCloud];
+  hearingAidsLEAVersionFromiCloud = [v8 hearingAidsLEAVersionFromiCloud];
 
   v10 = HCLogHearingAids();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v3 name];
+    name = [a2Copy name];
     v12 = +[HUHearingAidSettings sharedInstance];
     v18 = 138413314;
-    v19 = v11;
+    v19 = name;
     v20 = 1024;
-    v21 = v9 == 2;
+    v21 = hearingAidsLEAVersionFromiCloud == 2;
     v22 = 1024;
     v23 = v6;
     v24 = 1024;
-    v25 = [v12 isiCloudPaired];
+    isiCloudPaired = [v12 isiCloudPaired];
     v26 = 1024;
-    v27 = [v3 availableInputEars];
+    availableInputEars2 = [a2Copy availableInputEars];
     _os_log_impl(&dword_1DA5E2000, v10, OS_LOG_TYPE_DEFAULT, " %@ LEA version from iCloud: %d, real hearing aids: %d, iCloud paired: %d, available input ears: %d", &v18, 0x24u);
   }
 
-  v13 = v9 == 2 || v6 && v4 != 0;
+  v13 = hearingAidsLEAVersionFromiCloud == 2 || v6 && availableInputEars != 0;
   if (v13)
   {
     v14 = HCLogHearingAids();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v3 name];
+      name2 = [a2Copy name];
       v18 = 138412290;
-      v19 = v15;
+      v19 = name2;
       _os_log_impl(&dword_1DA5E2000, v14, OS_LOG_TYPE_DEFAULT, " %@ is LEA 2.0", &v18, 0xCu);
     }
   }
@@ -515,34 +515,34 @@ void __53__AXHAController_setListenForAvailableDeviceUpdates___block_invoke_2(ui
   return v13;
 }
 
-- (void)setPairedHearingAidID:(id)a3
+- (void)setPairedHearingAidID:(id)d
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[AXHearingAidDeviceController sharedController];
-  v6 = [v5 hearingAidForDeviceID:v4];
+  v6 = [v5 hearingAidForDeviceID:dCopy];
 
   v7 = +[AXHearingAidDeviceController sharedController];
-  v8 = [(AXHAController *)self pairedDeviceUUID];
-  v9 = [v7 hearingAidForDeviceID:v8];
+  pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
+  v9 = [v7 hearingAidForDeviceID:pairedDeviceUUID];
 
-  v10 = [v6 deviceUUID];
-  v11 = [v9 containsPeripheralWithUUID:v10];
+  deviceUUID = [v6 deviceUUID];
+  v11 = [v9 containsPeripheralWithUUID:deviceUUID];
 
-  v12 = [v6 didLoadPersistentProperties];
+  didLoadPersistentProperties = [v6 didLoadPersistentProperties];
   v13 = HCLogHearingAids();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413826;
-    v45 = v4;
+    v45 = dCopy;
     v46 = 1024;
     v47 = v11;
     v48 = 1024;
-    v49 = [v9 hasConnection];
+    hasConnection = [v9 hasConnection];
     v50 = 1024;
-    v51 = [v6 hasConnection];
+    hasConnection2 = [v6 hasConnection];
     v52 = 1024;
-    v53 = v12;
+    v53 = didLoadPersistentProperties;
     v54 = 2112;
     v55 = v9;
     v56 = 2112;
@@ -552,17 +552,17 @@ void __53__AXHAController_setListenForAvailableDeviceUpdates___block_invoke_2(ui
 
   if (v11 && ([v9 hasConnection] & 1) == 0)
   {
-    v14 = [v6 hasConnection];
+    hasConnection3 = [v6 hasConnection];
   }
 
   else
   {
-    v14 = 0;
+    hasConnection3 = 0;
   }
 
   if (v6)
   {
-    v15 = v12;
+    v15 = didLoadPersistentProperties;
   }
 
   else
@@ -570,9 +570,9 @@ void __53__AXHAController_setListenForAvailableDeviceUpdates___block_invoke_2(ui
     v15 = 1;
   }
 
-  if (!(v14 & 1 | ((v11 & 1) == 0)) || !v15)
+  if (!(hasConnection3 & 1 | ((v11 & 1) == 0)) || !v15)
   {
-    if (v4)
+    if (dCopy)
     {
       goto LABEL_36;
     }
@@ -594,27 +594,27 @@ LABEL_32:
   }
 
   [v9 setKeepInSync:0];
-  if ((v14 & 1) == 0)
+  if ((hasConnection3 & 1) == 0)
   {
     [v9 disconnectAndUnpair:1];
   }
 
   [v9 setIsPaired:0];
-  v17 = [v6 deviceUUID];
-  [(AXHAController *)self setPairedDeviceUUID:v17];
+  deviceUUID2 = [v6 deviceUUID];
+  [(AXHAController *)self setPairedDeviceUUID:deviceUUID2];
 
-  v18 = [(AXHAController *)self currentDeviceController];
-  [v18 stopPropertyUpdates];
+  currentDeviceController = [(AXHAController *)self currentDeviceController];
+  [currentDeviceController stopPropertyUpdates];
 
-  if (!v4)
+  if (!dCopy)
   {
     v22 = +[AXHearingAidDeviceController sharedController];
     [v22 forgetDevice:v9];
 
     if ((liveListenStreamSelected() & 1) == 0)
     {
-      v23 = [(AXHAController *)self liveListenController];
-      [v23 stopListeningWithCompletion:0];
+      liveListenController = [(AXHAController *)self liveListenController];
+      [liveListenController stopListeningWithCompletion:0];
     }
 
     [(AXHAController *)self setListenForAvailableDeviceUpdates:0];
@@ -633,8 +633,8 @@ LABEL_32:
     v27 = MEMORY[0x1E69A4570];
     v28 = MEMORY[0x1E69A4560];
     v42 = @"No_HA_Devices";
-    v29 = [MEMORY[0x1E695DFB0] null];
-    v43 = v29;
+    null = [MEMORY[0x1E695DFB0] null];
+    v43 = null;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v31 = [v28 messagePayloadFromDictionary:v30 andIdentifier:32];
     v32 = [v27 messageWithPayload:v31];
@@ -719,35 +719,35 @@ uint64_t __40__AXHAController_setPairedHearingAidID___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)processPropertyUpdates:(id)a3 isLocal:(BOOL)a4
+- (void)processPropertyUpdates:(id)updates isLocal:(BOOL)local
 {
-  v4 = a4;
+  localCopy = local;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = [a3 copy];
+  v6 = [updates copy];
   v7 = HCLogHearingAids();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v25[0] = 67109378;
-    v25[1] = v4;
+    v25[1] = localCopy;
     v26 = 2112;
     v27 = v6;
     _os_log_impl(&dword_1DA5E2000, v7, OS_LOG_TYPE_DEFAULT, "UPDATE isLocal %d %@", v25, 0x12u);
   }
 
-  v8 = [(AXHAController *)self pairedDeviceUUID];
-  v9 = [v6 objectForKey:v8];
+  pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
+  v9 = [v6 objectForKey:pairedDeviceUUID];
   v10 = [v9 objectForKey:&unk_1F5623C38];
 
   if (v10)
   {
     v11 = +[AXHearingAidDeviceController sharedController];
-    v12 = [(AXHAController *)self pairedDeviceUUID];
-    v13 = [v11 hearingAidForDeviceID:v12];
+    pairedDeviceUUID2 = [(AXHAController *)self pairedDeviceUUID];
+    v13 = [v11 hearingAidForDeviceID:pairedDeviceUUID2];
 
     if (([v13 hasConnection] & 1) == 0 && (liveListenStreamSelected() & 1) == 0)
     {
-      v14 = [(AXHAController *)self liveListenController];
-      [v14 stopListeningWithCompletion:0];
+      liveListenController = [(AXHAController *)self liveListenController];
+      [liveListenController stopListeningWithCompletion:0];
     }
 
     v15 = HCLogHearingAids();
@@ -774,9 +774,9 @@ uint64_t __40__AXHAController_setPairedHearingAidID___block_invoke(uint64_t resu
   [v20 sendUpdateMessage:v19 forIdentifier:64];
 
   v21 = +[AXHearingAidDeviceController sharedController];
-  v22 = [v21 isConnected];
+  isConnected = [v21 isConnected];
 
-  if (v22 && v4)
+  if (isConnected && localCopy)
   {
     v23 = +[HUNearbyHearingAidController sharedInstance];
     [v23 sendWriteToAllDevices:v6];
@@ -891,10 +891,10 @@ void __38__AXHAController_readLiveListenLevels__block_invoke(uint64_t a1)
 
 - (void)liveListenControllerStateDidChange
 {
-  v3 = [(AXHAController *)self liveListenController];
-  v4 = [v3 isListening];
+  liveListenController = [(AXHAController *)self liveListenController];
+  isListening = [liveListenController isListening];
 
-  if (v4)
+  if (isListening)
   {
 
     [(AXHAController *)self readLiveListenLevels];
@@ -925,36 +925,36 @@ uint64_t __38__AXHAController_liveListenController__block_invoke(uint64_t a1)
   [v2 relinquishConnection];
 }
 
-- (id)registerForAvailableDevicesUpdates:(id)a3
+- (id)registerForAvailableDevicesUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"ax_hearing_should_register_client_key"];
-  v7 = [v6 BOOLValue];
+  updatesCopy = updates;
+  payload = [updatesCopy payload];
+  v6 = [payload objectForKey:@"ax_hearing_should_register_client_key"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 payload];
-  v9 = [v8 objectForKey:@"ax_hearing_should_begin_searching_key"];
-  v10 = [v9 BOOLValue];
+  payload2 = [updatesCopy payload];
+  v9 = [payload2 objectForKey:@"ax_hearing_should_begin_searching_key"];
+  bOOLValue2 = [v9 BOOLValue];
 
   v11 = +[AXHearingAidDeviceController sharedController];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __53__AXHAController_registerForAvailableDevicesUpdates___block_invoke;
   v19[3] = &unk_1E85CB870;
-  v21 = v7;
+  v21 = bOOLValue;
   v19[4] = self;
-  v12 = v4;
+  v12 = updatesCopy;
   v20 = v12;
-  v22 = v10;
+  v22 = bOOLValue2;
   [v11 checkPartiallyPairedWithCompletion:v19];
 
-  v13 = [(AXHAController *)self availableDevicesDescription];
+  availableDevicesDescription = [(AXHAController *)self availableDevicesDescription];
 
-  if (v13)
+  if (availableDevicesDescription)
   {
     v14 = MEMORY[0x1E69A4560];
-    v15 = [(AXHAController *)self availableDevicesDescription];
-    v16 = [v14 messagePayloadFromDictionary:v15 andIdentifier:32];
+    availableDevicesDescription2 = [(AXHAController *)self availableDevicesDescription];
+    v16 = [v14 messagePayloadFromDictionary:availableDevicesDescription2 andIdentifier:32];
     v17 = [v12 replyMessageWithPayload:v16];
   }
 
@@ -1076,15 +1076,15 @@ void __53__AXHAController_registerForAvailableDevicesUpdates___block_invoke_2(ui
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)registerForDeviceUpdates:(id)a3
+- (id)registerForDeviceUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"ax_hearing_should_register_client_key"];
-  v7 = [v6 BOOLValue];
+  updatesCopy = updates;
+  payload = [updatesCopy payload];
+  v6 = [payload objectForKey:@"ax_hearing_should_register_client_key"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 client];
-  [v8 setWantsUpdates:v7 forIdentifier:64];
+  client = [updatesCopy client];
+  [client setWantsUpdates:bOOLValue forIdentifier:64];
 
   [(AXHAController *)self availableRemoteControllersDidChange];
   v9 = HCLogHearingAids();
@@ -1095,27 +1095,27 @@ void __53__AXHAController_registerForAvailableDevicesUpdates___block_invoke_2(ui
   }
 
   v10 = MEMORY[0x1E69A4560];
-  v11 = [(AXHAController *)self availableDevicesDescription];
-  v12 = [v10 messagePayloadFromDictionary:v11 andIdentifier:32];
-  v13 = [v4 replyMessageWithPayload:v12];
+  availableDevicesDescription = [(AXHAController *)self availableDevicesDescription];
+  v12 = [v10 messagePayloadFromDictionary:availableDevicesDescription andIdentifier:32];
+  v13 = [updatesCopy replyMessageWithPayload:v12];
 
   return v13;
 }
 
-- (id)readDeviceProperty:(id)a3
+- (id)readDeviceProperty:(id)property
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 allKeys];
+  propertyCopy = property;
+  payload = [propertyCopy payload];
+  allKeys = [payload allKeys];
 
-  v7 = [v4 payload];
+  payload2 = [propertyCopy payload];
 
-  v8 = [v7 objectForKey:&unk_1F5623C50];
+  v8 = [payload2 objectForKey:&unk_1F5623C50];
 
   if (v8)
   {
-    v9 = [(AXHAController *)self pairedDeviceUUID];
-    v10 = [v9 isEqualToString:v8];
+    pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
+    v10 = [pairedDeviceUUID isEqualToString:v8];
 
     if (v10)
     {
@@ -1125,7 +1125,7 @@ void __53__AXHAController_registerForAvailableDevicesUpdates___block_invoke_2(ui
       v12[3] = &unk_1E85CACD0;
       v12[4] = self;
       v13 = v8;
-      [v6 enumerateObjectsUsingBlock:v12];
+      [allKeys enumerateObjectsUsingBlock:v12];
     }
   }
 
@@ -1142,23 +1142,23 @@ void __37__AXHAController_readDeviceProperty___block_invoke(uint64_t a1, void *a
   [v6 updateProperty:v5 forDeviceID:*(a1 + 40)];
 }
 
-- (void)sendUpdatesForProperties:(id)a3 excludingClient:(id)a4
+- (void)sendUpdatesForProperties:(id)properties excludingClient:(id)client
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  clientCopy = client;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a3;
-  v9 = [v7 dictionary];
-  v10 = [(AXHAController *)self pairedDeviceUUID];
+  propertiesCopy = properties;
+  dictionary = [v7 dictionary];
+  pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __59__AXHAController_sendUpdatesForProperties_excludingClient___block_invoke;
   v18[3] = &unk_1E85CAD48;
-  v11 = v10;
+  v11 = pairedDeviceUUID;
   v19 = v11;
-  v12 = v9;
+  v12 = dictionary;
   v20 = v12;
-  [v8 enumerateObjectsUsingBlock:v18];
+  [propertiesCopy enumerateObjectsUsingBlock:v18];
 
   if ([v12 count] && objc_msgSend(v11, "length"))
   {
@@ -1168,7 +1168,7 @@ void __37__AXHAController_readDeviceProperty___block_invoke(uint64_t a1, void *a
     v22[0] = v12;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v16 = [v14 messagePayloadFromDictionary:v15 andIdentifier:64];
-    [v13 sendClientsMessageWithPayload:v16 excluding:v6];
+    [v13 sendClientsMessageWithPayload:v16 excluding:clientCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1186,38 +1186,38 @@ void __59__AXHAController_sendUpdatesForProperties_excludingClient___block_invok
   }
 }
 
-- (id)writeDeviceProperty:(id)a3
+- (id)writeDeviceProperty:(id)property
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertyCopy = property;
   v5 = +[AXHearingAidDeviceController sharedController];
-  v6 = [(AXHAController *)self pairedDeviceUUID];
-  v7 = [v5 hearingAidForDeviceID:v6];
+  pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
+  v7 = [v5 hearingAidForDeviceID:pairedDeviceUUID];
 
-  v8 = [v4 payload];
-  v9 = [v8 objectForKey:&unk_1F5623C50];
+  payload = [propertyCopy payload];
+  v9 = [payload objectForKey:&unk_1F5623C50];
 
   if (v9)
   {
-    v10 = [v7 deviceUUID];
-    if ([v10 isEqualToString:v9])
+    deviceUUID = [v7 deviceUUID];
+    if ([deviceUUID isEqualToString:v9])
     {
-      v11 = [v7 isPaired];
+      isPaired = [v7 isPaired];
 
-      if (v11)
+      if (isPaired)
       {
-        v12 = [v4 payload];
+        payload2 = [propertyCopy payload];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __38__AXHAController_writeDeviceProperty___block_invoke;
         v30[3] = &unk_1E85CA558;
         v31 = v9;
-        [v12 enumerateKeysAndObjectsUsingBlock:v30];
+        [payload2 enumerateKeysAndObjectsUsingBlock:v30];
 
-        v13 = [v4 payload];
-        v14 = [v13 allKeys];
-        v15 = [v4 client];
-        [(AXHAController *)self sendUpdatesForProperties:v14 excludingClient:v15];
+        payload3 = [propertyCopy payload];
+        allKeys = [payload3 allKeys];
+        client = [propertyCopy client];
+        [(AXHAController *)self sendUpdatesForProperties:allKeys excludingClient:client];
 
         v16 = v31;
 LABEL_13:
@@ -1230,8 +1230,8 @@ LABEL_13:
     {
     }
 
-    v17 = [v4 payload];
-    v18 = [v17 objectForKey:&unk_1F5623C38];
+    payload4 = [propertyCopy payload];
+    v18 = [payload4 objectForKey:&unk_1F5623C38];
 
     if (v18)
     {
@@ -1244,8 +1244,8 @@ LABEL_13:
         v24 = 3221225472;
         v25 = __38__AXHAController_writeDeviceProperty___block_invoke_2;
         v26 = &unk_1E85CB788;
-        v27 = v4;
-        v28 = self;
+        v27 = propertyCopy;
+        selfCopy = self;
         v29 = v9;
         [v16 enumerateObjectsUsingBlock:&v23];
         if ([v16 count] >= 2)
@@ -1305,36 +1305,36 @@ void __38__AXHAController_writeDeviceProperty___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (id)registerForControlMessageUpdates:(id)a3
+- (id)registerForControlMessageUpdates:(id)updates
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKey:@"ax_hearing_should_register_client_key"];
-  v6 = [v5 BOOLValue];
+  updatesCopy = updates;
+  payload = [updatesCopy payload];
+  v5 = [payload objectForKey:@"ax_hearing_should_register_client_key"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v3 client];
+  client = [updatesCopy client];
 
-  [v7 setWantsUpdates:v6 forIdentifier:0x8000000000000000];
+  [client setWantsUpdates:bOOLValue forIdentifier:0x8000000000000000];
   return 0;
 }
 
-- (void)updateNearbyDeviceAvailabilityWithForce:(BOOL)a3
+- (void)updateNearbyDeviceAvailabilityWithForce:(BOOL)force
 {
-  v5 = [(AXHAController *)self pairedDeviceUUID];
-  v6 = [v5 length];
+  pairedDeviceUUID = [(AXHAController *)self pairedDeviceUUID];
+  v6 = [pairedDeviceUUID length];
 
   if (v6)
   {
     v7 = +[AXHearingAidDeviceController sharedController];
     if ([v7 isConnected])
     {
-      v8 = 1;
+      isPartiallyConnected = 1;
     }
 
     else
     {
       v10 = +[AXHearingAidDeviceController sharedController];
-      v8 = [v10 isPartiallyConnected];
+      isPartiallyConnected = [v10 isPartiallyConnected];
     }
 
     v11 = +[HUNearbyHearingAidController sharedInstance];
@@ -1342,9 +1342,9 @@ void __38__AXHAController_writeDeviceProperty___block_invoke_2(uint64_t a1, void
     v12[1] = 3221225472;
     v12[2] = __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke;
     v12[3] = &unk_1E85CB898;
-    v13 = v8;
+    v13 = isPartiallyConnected;
     v12[4] = self;
-    v14 = a3;
+    forceCopy = force;
     [v11 connectedPeerWithCompletion:v12];
   }
 
@@ -1353,7 +1353,7 @@ void __38__AXHAController_writeDeviceProperty___block_invoke_2(uint64_t a1, void
     v9 = +[HUHearingAidSettings sharedInstance];
     [v9 setAvailableHearingDeviceName:0];
 
-    if (!a3)
+    if (!force)
     {
 
       [(AXHAController *)self sendAvailabilityDidChangeNotification];
@@ -1497,18 +1497,18 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (id)readAvailableDevices:(id)a3
+- (id)readAvailableDevices:(id)devices
 {
   v4 = MEMORY[0x1E69A4560];
-  v5 = a3;
-  v6 = [(AXHAController *)self availableDevicesDescription];
-  v7 = [v4 messagePayloadFromDictionary:v6 andIdentifier:32];
-  v8 = [v5 replyMessageWithPayload:v7];
+  devicesCopy = devices;
+  availableDevicesDescription = [(AXHAController *)self availableDevicesDescription];
+  v7 = [v4 messagePayloadFromDictionary:availableDevicesDescription andIdentifier:32];
+  v8 = [devicesCopy replyMessageWithPayload:v7];
 
   return v8;
 }
 
-- (id)readAvailableControllers:(id)a3
+- (id)readAvailableControllers:(id)controllers
 {
   v4 = HCLogHearingAids();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1521,105 +1521,105 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
   return 0;
 }
 
-- (id)connectToControllerWithID:(id)a3
+- (id)connectToControllerWithID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 valueForKey:@"controller"];
+  dCopy = d;
+  payload = [dCopy payload];
+  v5 = [payload valueForKey:@"controller"];
 
-  v6 = [v3 payload];
+  payload2 = [dCopy payload];
 
-  v7 = [v6 valueForKey:@"reason"];
+  v7 = [payload2 valueForKey:@"reason"];
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 1;
+    integerValue = 1;
   }
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v9)
+  if (v5 == null)
   {
     v10 = +[HUNearbyHearingAidController sharedInstance];
     v11 = v10;
-    if (v8 == 1)
+    if (integerValue == 1)
     {
       [v10 requestConnectionForMedia];
     }
 
     else
     {
-      [v10 requestConnectionForReason:v8];
+      [v10 requestConnectionForReason:integerValue];
     }
   }
 
   return 0;
 }
 
-- (id)toggleLiveListen:(id)a3
+- (id)toggleLiveListen:(id)listen
 {
-  v4 = a3;
+  listenCopy = listen;
   if (_os_feature_enabled_impl())
   {
-    [(AXHAController *)self _toggleLiveListen_enumValue:v4];
+    [(AXHAController *)self _toggleLiveListen_enumValue:listenCopy];
   }
 
   else
   {
-    [(AXHAController *)self _toggleLiveListen_BOOLValue:v4];
+    [(AXHAController *)self _toggleLiveListen_BOOLValue:listenCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)registerForLiveListenUpdates:(id)a3
+- (id)registerForLiveListenUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   if (_os_feature_enabled_impl())
   {
-    [(AXHAController *)self _registerForLiveListenUpdates_enumValue:v4];
+    [(AXHAController *)self _registerForLiveListenUpdates_enumValue:updatesCopy];
   }
 
   else
   {
-    [(AXHAController *)self _registerForLiveListenUpdates_BOOLValue:v4];
+    [(AXHAController *)self _registerForLiveListenUpdates_BOOLValue:updatesCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)_toggleLiveListen_BOOLValue:(id)a3
+- (id)_toggleLiveListen_BOOLValue:(id)value
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 payload];
+  valueCopy = value;
+  payload = [valueCopy payload];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:128];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 BOOLValue];
+  v7 = [payload objectForKey:v6];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(AXHAController *)self liveListenController];
-  LODWORD(v6) = [v9 isListening];
+  liveListenController = [(AXHAController *)self liveListenController];
+  LODWORD(v6) = [liveListenController isListening];
 
-  if (v8 != v6)
+  if (bOOLValue != v6)
   {
-    v10 = [(AXHAController *)self liveListenController];
-    v11 = v10;
-    if (v8)
+    liveListenController2 = [(AXHAController *)self liveListenController];
+    v11 = liveListenController2;
+    if (bOOLValue)
     {
-      [v10 startListeningWithCompletion:0];
-      v12 = v4;
+      [liveListenController2 startListeningWithCompletion:0];
+      v12 = valueCopy;
     }
 
     else
     {
-      [v10 stopListeningWithCompletion:0];
+      [liveListenController2 stopListeningWithCompletion:0];
       v12 = 0;
     }
 
@@ -1631,27 +1631,27 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:128];
   v23 = v14;
   v15 = MEMORY[0x1E696AD98];
-  v16 = [(AXHAController *)self liveListenController];
-  v17 = [v15 numberWithBool:{objc_msgSend(v16, "isListening")}];
+  liveListenController3 = [(AXHAController *)self liveListenController];
+  v17 = [v15 numberWithBool:{objc_msgSend(liveListenController3, "isListening")}];
   v24[0] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   v19 = [v13 messagePayloadFromDictionary:v18 andIdentifier:128];
-  v20 = [v4 replyMessageWithPayload:v19];
+  v20 = [valueCopy replyMessageWithPayload:v19];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)_registerForLiveListenUpdates_BOOLValue:(id)a3
+- (id)_registerForLiveListenUpdates_BOOLValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"ax_hearing_should_register_client_key"];
-  v7 = [v6 BOOLValue];
+  valueCopy = value;
+  payload = [valueCopy payload];
+  v6 = [payload objectForKey:@"ax_hearing_should_register_client_key"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 client];
-  [v8 setWantsUpdates:v7 forIdentifier:512];
+  client = [valueCopy client];
+  [client setWantsUpdates:bOOLValue forIdentifier:512];
 
   v9 = +[AXHeardController sharedServer];
   v10 = [v9 countOfClientsListeningForIdentifier:512];
@@ -1673,23 +1673,23 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
   v12 = MEMORY[0x1E695DF20];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:512];
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(AXHAController *)self liveListenController];
-  v16 = [v14 numberWithBool:{objc_msgSend(v15, "isListening")}];
+  liveListenController = [(AXHAController *)self liveListenController];
+  v16 = [v14 numberWithBool:{objc_msgSend(liveListenController, "isListening")}];
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:1024];
   v18 = [v12 dictionaryWithObjectsAndKeys:{&unk_1F5624870, v13, v16, v17, 0}];
   v19 = [v11 messagePayloadFromDictionary:v18 andIdentifier:512];
-  v20 = [v4 replyMessageWithPayload:v19];
+  v20 = [valueCopy replyMessageWithPayload:v19];
 
   return v20;
 }
 
-- (id)_toggleLiveListen_enumValue:(id)a3
+- (id)_toggleLiveListen_enumValue:(id)value
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKeyedSubscript:&unk_1F5623CB0];
-  v7 = [v6 BOOLValue];
+  valueCopy = value;
+  payload = [valueCopy payload];
+  v6 = [payload objectForKeyedSubscript:&unk_1F5623CB0];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = +[HUNearbyLiveListenController sharedInstance];
   v9 = isLiveListenEnabledForState([v8 state]);
@@ -1700,18 +1700,18 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
     v24[0] = 67109376;
     v24[1] = v9;
     v25 = 1024;
-    v26 = v7;
+    v26 = bOOLValue;
     _os_log_impl(&dword_1DA5E2000, v10, OS_LOG_TYPE_INFO, "Toggle Live Listen: %{BOOL}d -> %{BOOL}d", v24, 0xEu);
   }
 
-  if (v7 != v9)
+  if (bOOLValue != v9)
   {
     v11 = +[HUNearbyLiveListenController sharedInstance];
     v12 = v11;
-    if (v7)
+    if (bOOLValue)
     {
       [v11 startLiveListen];
-      v13 = v4;
+      v13 = valueCopy;
     }
 
     else
@@ -1724,64 +1724,64 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
   }
 
   v14 = +[HUNearbyLiveListenController sharedInstance];
-  v15 = [v14 state];
+  state = [v14 state];
 
   v16 = +[HUNearbyLiveListenController sharedInstance];
-  v17 = [v16 isPlayingBack];
+  isPlayingBack = [v16 isPlayingBack];
 
   v18 = HCLogHearingAids();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [AXHAController _toggleLiveListen_enumValue:v15];
+    [AXHAController _toggleLiveListen_enumValue:state];
   }
 
-  v19 = [(AXHAController *)self _liveListenPayloadWithState:v15 audioLevel:v17 isPlayingBack:&stru_1F5614A78 transcription:0.0];
+  v19 = [(AXHAController *)self _liveListenPayloadWithState:state audioLevel:isPlayingBack isPlayingBack:&stru_1F5614A78 transcription:0.0];
   v20 = [MEMORY[0x1E69A4560] messagePayloadFromDictionary:v19 andIdentifier:128];
-  v21 = [v4 replyMessageWithPayload:v20];
+  v21 = [valueCopy replyMessageWithPayload:v20];
 
   v22 = *MEMORY[0x1E69E9840];
 
   return v21;
 }
 
-- (id)_registerForLiveListenUpdates_enumValue:(id)a3
+- (id)_registerForLiveListenUpdates_enumValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = +[AXHeardController sharedServer];
   v6 = [v5 countOfClientsListeningForIdentifier:512];
 
-  v7 = [v4 payload];
-  v8 = [v7 objectForKeyedSubscript:@"ax_hearing_should_register_client_key"];
-  v9 = [v8 BOOLValue];
+  payload = [valueCopy payload];
+  v8 = [payload objectForKeyedSubscript:@"ax_hearing_should_register_client_key"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [(AXHAController *)self liveListenCountsPerClient];
+  liveListenCountsPerClient = [(AXHAController *)self liveListenCountsPerClient];
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v4 client];
-  v13 = [v11 numberWithInt:{objc_msgSend(v12, "pid")}];
-  v14 = [v10 objectForKey:v13];
-  v15 = [v14 intValue];
+  client = [valueCopy client];
+  v13 = [v11 numberWithInt:{objc_msgSend(client, "pid")}];
+  v14 = [liveListenCountsPerClient objectForKey:v13];
+  intValue = [v14 intValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v16 = (v15 + 1);
+    v16 = (intValue + 1);
   }
 
   else
   {
-    v16 = (v15 - 1);
+    v16 = (intValue - 1);
   }
 
-  v17 = [(AXHAController *)self liveListenCountsPerClient];
+  liveListenCountsPerClient2 = [(AXHAController *)self liveListenCountsPerClient];
   v18 = [MEMORY[0x1E696AD98] numberWithInt:v16];
   v19 = MEMORY[0x1E696AD98];
-  v20 = [v4 client];
-  v21 = [v19 numberWithInt:{objc_msgSend(v20, "pid")}];
-  [v17 setObject:v18 forKey:v21];
+  client2 = [valueCopy client];
+  v21 = [v19 numberWithInt:{objc_msgSend(client2, "pid")}];
+  [liveListenCountsPerClient2 setObject:v18 forKey:v21];
 
-  if ((v9 & 1) != 0 || !v16)
+  if ((bOOLValue & 1) != 0 || !v16)
   {
-    v22 = [v4 client];
-    [v22 setWantsUpdates:v9 forIdentifier:512];
+    client3 = [valueCopy client];
+    [client3 setWantsUpdates:bOOLValue forIdentifier:512];
   }
 
   v23 = +[AXHeardController sharedServer];
@@ -1795,7 +1795,7 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
     }
 
     v27 = +[HUNearbyLiveListenController sharedInstance];
-    v26 = [v27 deviceImplementation];
+    deviceImplementation = [v27 deviceImplementation];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || (+[HUNearbyController sharedInstance](HUNearbyController, "sharedInstance"), v28 = objc_claimAutoreleasedReturnValue(), [v28 nearbyDevices], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "count"), v29, v28, !v30))
@@ -1821,36 +1821,36 @@ void __58__AXHAController_updateNearbyDeviceAvailabilityWithForce___block_invoke
       _os_log_impl(&dword_1DA5E2000, v25, OS_LOG_TYPE_DEFAULT, "Registering for Live Listen state updates", buf, 2u);
     }
 
-    v26 = +[HUNearbyLiveListenController sharedInstance];
+    deviceImplementation = +[HUNearbyLiveListenController sharedInstance];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __58__AXHAController__registerForLiveListenUpdates_enumValue___block_invoke;
     v44[3] = &unk_1E85CB8C0;
     v44[4] = self;
-    [v26 registerUpdateBlock:v44 withListener:self];
+    [deviceImplementation registerUpdateBlock:v44 withListener:self];
   }
 
 LABEL_19:
   v33 = +[HUNearbyLiveListenController sharedInstance];
-  v34 = [v33 state];
+  state = [v33 state];
 
   v35 = +[HUNearbyLiveListenController sharedInstance];
-  v36 = [v35 isPlayingBack];
+  isPlayingBack = [v35 isPlayingBack];
 
   v37 = +[HUNearbyLiveListenController sharedInstance];
-  v38 = [v37 transcription];
+  transcription = [v37 transcription];
 
   v39 = HCLogHearingAids();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
   {
-    [AXHAController _toggleLiveListen_enumValue:v34];
+    [AXHAController _toggleLiveListen_enumValue:state];
   }
 
-  if (v34)
+  if (state)
   {
-    v40 = [(AXHAController *)self _liveListenPayloadWithState:v34 audioLevel:v36 isPlayingBack:v38 transcription:0.0];
+    v40 = [(AXHAController *)self _liveListenPayloadWithState:state audioLevel:isPlayingBack isPlayingBack:transcription transcription:0.0];
     v41 = [MEMORY[0x1E69A4560] messagePayloadFromDictionary:v40 andIdentifier:512];
-    v42 = [v4 replyMessageWithPayload:v41];
+    v42 = [valueCopy replyMessageWithPayload:v41];
   }
 
   else
@@ -1886,16 +1886,16 @@ void __58__AXHAController__registerForLiveListenUpdates_enumValue___block_invoke
   [v14 sendUpdateMessage:v15 forIdentifier:512];
 }
 
-- (id)toggleLiveListenRewind:(id)a3
+- (id)toggleLiveListenRewind:(id)rewind
 {
-  v3 = [a3 payload];
+  payload = [rewind payload];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:0x2000000];
-  v5 = [v3 objectForKey:v4];
-  v6 = [v5 BOOLValue];
+  v5 = [payload objectForKey:v4];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[HUNearbyLiveListenController sharedInstance];
   v8 = v7;
-  if (v6)
+  if (bOOLValue)
   {
     [v7 startLiveListenRewind];
   }
@@ -1908,58 +1908,58 @@ void __58__AXHAController__registerForLiveListenUpdates_enumValue___block_invoke
   return 0;
 }
 
-- (id)observeRemoteLiveListenUpdates:(id)a3
+- (id)observeRemoteLiveListenUpdates:(id)updates
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"ax_hearing_should_register_client_key"];
-  v5 = [v4 BOOLValue];
+  payload = [updates payload];
+  v4 = [payload objectForKey:@"ax_hearing_should_register_client_key"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = +[HUNearbyLiveListenController sharedInstance];
-  v7 = [v6 deviceImplementation];
-  v8 = v7;
-  if (v5)
+  deviceImplementation = [v6 deviceImplementation];
+  v8 = deviceImplementation;
+  if (bOOLValue)
   {
-    [v7 startObservingRemoteSession];
+    [deviceImplementation startObservingRemoteSession];
   }
 
   else
   {
-    [v7 stopObservingRemoteSession];
+    [deviceImplementation stopObservingRemoteSession];
   }
 
   return 0;
 }
 
-- (id)sendMessagesPriority:(id)a3
+- (id)sendMessagesPriority:(id)priority
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 payload];
+  priorityCopy = priority;
+  payload = [priorityCopy payload];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:0x20000];
-  v6 = [v4 objectForKey:v5];
-  v7 = [v6 BOOLValue];
+  v6 = [payload objectForKey:v5];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = HCLogHearingAids();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v3 client];
+    client = [priorityCopy client];
     v14[0] = 67109376;
-    v14[1] = v7;
+    v14[1] = bOOLValue;
     v15 = 1024;
-    v16 = [v9 pid];
+    v16 = [client pid];
     _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "XPC received MessagesPriority isHigh: %d for client: %d", v14, 0xEu);
   }
 
   v10 = +[HUNearbyHearingAidController sharedInstance];
-  v11 = [v3 client];
-  if (v7)
+  client2 = [priorityCopy client];
+  if (bOOLValue)
   {
-    [v10 sendMessagesPriorityHighForClient:v11];
+    [v10 sendMessagesPriorityHighForClient:client2];
   }
 
   else
   {
-    [v10 sendMessagesPriorityDefaultForClient:v11];
+    [v10 sendMessagesPriorityDefaultForClient:client2];
   }
 
   v12 = *MEMORY[0x1E69E9840];

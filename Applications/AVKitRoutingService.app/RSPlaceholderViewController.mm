@@ -19,9 +19,9 @@
   [v5 setTitle:@"Kill AVKitRoutingService"];
   [v5 setButtonSize:3];
   [v3 setButton:v5];
-  v6 = [v3 buttonProperties];
+  buttonProperties = [v3 buttonProperties];
   v7 = [UIAction actionWithHandler:&stru_10007BD08];
-  [v6 setPrimaryAction:v7];
+  [buttonProperties setPrimaryAction:v7];
 
   v8 = [[UIContentUnavailableView alloc] initWithConfiguration:v3];
   v9 = +[UIColor systemBackgroundColor];

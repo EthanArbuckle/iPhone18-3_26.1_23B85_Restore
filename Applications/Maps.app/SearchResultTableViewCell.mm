@@ -1,7 +1,7 @@
 @interface SearchResultTableViewCell
 + (CGSize)photoSize;
 - (CGSize)_imageSize;
-- (SearchResultTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SearchResultTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)horizontalSpacing;
 - (double)leadingMargin;
 - (double)trailingMargin;
@@ -11,13 +11,13 @@
 - (void)didUpdateMapItem;
 - (void)didUpdatePublisherResult;
 - (void)didUpdateRelatedSection;
-- (void)getDefaultImage:(id)a3;
+- (void)getDefaultImage:(id)image;
 - (void)loadPhoto;
 - (void)prepareForActionMenuPresentation;
 - (void)prepareForReuse;
 - (void)setDefaultImage;
-- (void)setDisplaysAsChainResult:(BOOL)a3;
-- (void)setMapsImage:(id)a3;
+- (void)setDisplaysAsChainResult:(BOOL)result;
+- (void)setMapsImage:(id)image;
 - (void)updateImageViewAlignmentAndSpacingIfNeeded;
 - (void)updateTheme;
 @end
@@ -30,8 +30,8 @@
   v4.super_class = SearchResultTableViewCell;
   [(_SearchResultTableViewCell *)&v4 prepareForActionMenuPresentation];
   [(UIImageView *)self->_imageView _setContinuousCornerRadius:8.0];
-  v3 = [(UIImageView *)self->_imageView layer];
-  [v3 setMasksToBounds:1];
+  layer = [(UIImageView *)self->_imageView layer];
+  [layer setMasksToBounds:1];
 }
 
 - (CGSize)_imageSize
@@ -40,9 +40,9 @@
   v4 = 24.0;
   if (v3 != 5)
   {
-    v5 = [(_SearchResultTableViewCell *)self displaysAsChainResult];
+    displaysAsChainResult = [(_SearchResultTableViewCell *)self displaysAsChainResult];
     v4 = 64.0;
-    if (v5)
+    if (displaysAsChainResult)
     {
       v4 = 50.0;
     }
@@ -70,15 +70,15 @@
   }
 }
 
-- (void)getDefaultImage:(id)a3
+- (void)getDefaultImage:(id)image
 {
-  v4 = a3;
-  if (v4)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v5 = [(_SearchResultTableViewCell *)self searchCategory];
-    if (v5 && (v6 = v5, +[BrowseManager sharedManager](BrowseManager, "sharedManager"), v7 = objc_claimAutoreleasedReturnValue(), -[_SearchResultTableViewCell searchCategory](self, "searchCategory"), v8 = objc_claimAutoreleasedReturnValue(), [v7 cellImageForCategory:v8], v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v9))
+    searchCategory = [(_SearchResultTableViewCell *)self searchCategory];
+    if (searchCategory && (v6 = searchCategory, +[BrowseManager sharedManager](BrowseManager, "sharedManager"), v7 = objc_claimAutoreleasedReturnValue(), -[_SearchResultTableViewCell searchCategory](self, "searchCategory"), v8 = objc_claimAutoreleasedReturnValue(), [v7 cellImageForCategory:v8], v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v9))
     {
-      v4[2](v4, v9);
+      imageCopy[2](imageCopy, v9);
     }
 
     else
@@ -87,9 +87,9 @@
       v9 = objc_opt_new();
       [v9 setSize:4];
       [v9 setTransparent:1];
-      v11 = [(_SearchResultTableViewCell *)self mapItem];
-      v12 = [v11 _styleAttributes];
-      [v9 setStyle:v12];
+      mapItem = [(_SearchResultTableViewCell *)self mapItem];
+      _styleAttributes = [mapItem _styleAttributes];
+      [v9 setStyle:_styleAttributes];
 
       objc_initWeak(&location, self);
       v13 = +[MapsUIImageCache sharedCache];
@@ -99,7 +99,7 @@
       v14[3] = &unk_10164C858;
       objc_copyWeak(&v16, &location);
       v17 = imageState;
-      v15 = v4;
+      v15 = imageCopy;
       [v13 getImageForSpec:v9 completion:v14];
 
       objc_destroyWeak(&v16);
@@ -122,12 +122,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setMapsImage:(id)a3
+- (void)setMapsImage:(id)image
 {
   imageView = self->_imageView;
-  v5 = a3;
+  imageCopy = image;
   [(UIImageView *)imageView setContentMode:2];
-  [(UIImageView *)self->_imageView setImage:v5];
+  [(UIImageView *)self->_imageView setImage:imageCopy];
 }
 
 - (void)loadPhoto
@@ -138,14 +138,14 @@
   {
     objc_initWeak(&location, self);
     v4 = +[MapsUIImageCache sharedCache];
-    v5 = [(_SearchResultTableViewCell *)self mapItem];
+    mapItem = [(_SearchResultTableViewCell *)self mapItem];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100BBBB60;
     v18[3] = &unk_10164C808;
     objc_copyWeak(&v19, &location);
     v20 = imageState;
-    [v4 getImageForMapItem:v5 completion:v18];
+    [v4 getImageForMapItem:mapItem completion:v18];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -153,11 +153,11 @@
 
   else
   {
-    v6 = [(_SearchResultTableViewCell *)self mapItem];
-    v7 = [v6 _geoMapItem];
-    v8 = [v7 _photos];
+    mapItem2 = [(_SearchResultTableViewCell *)self mapItem];
+    _geoMapItem = [mapItem2 _geoMapItem];
+    _photos = [_geoMapItem _photos];
     [objc_opt_class() photoSize];
-    v9 = [v8 _geo_firstPhotoOfAtLeastSize:?];
+    v9 = [_photos _geo_firstPhotoOfAtLeastSize:?];
 
     v10 = [v9 url];
     v11 = [v10 copy];
@@ -193,9 +193,9 @@
   v5.receiver = self;
   v5.super_class = SearchResultTableViewCell;
   [(_SearchResultTableViewCell *)&v5 didUpdateRelatedSection];
-  v3 = [(_SearchResultTableViewCell *)self relatedSection];
+  relatedSection = [(_SearchResultTableViewCell *)self relatedSection];
 
-  if (v3)
+  if (relatedSection)
   {
     v4 = [UIImage imageNamed:@"Fallback-Guide"];
     [(SearchResultTableViewCell *)self setMapsImage:v4];
@@ -236,15 +236,15 @@
   [(_SearchResultTableViewCell *)&v9 updateTheme];
   if (sub_10000FA08(self) != 5)
   {
-    v3 = [(SearchResultTableViewCell *)self theme];
-    v4 = [v3 imageBackgroundColor];
-    [(UIImageView *)self->_imageView setBackgroundColor:v4];
+    theme = [(SearchResultTableViewCell *)self theme];
+    imageBackgroundColor = [theme imageBackgroundColor];
+    [(UIImageView *)self->_imageView setBackgroundColor:imageBackgroundColor];
 
-    v5 = [(SearchResultTableViewCell *)self theme];
-    v6 = [v5 imageBorderColor];
-    v7 = [v6 CGColor];
-    v8 = [(UIImageView *)self->_imageView layer];
-    [v8 setBorderColor:v7];
+    theme2 = [(SearchResultTableViewCell *)self theme];
+    imageBorderColor = [theme2 imageBorderColor];
+    cGColor = [imageBorderColor CGColor];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setBorderColor:cGColor];
   }
 }
 
@@ -293,11 +293,11 @@
   return result;
 }
 
-- (void)setDisplaysAsChainResult:(BOOL)a3
+- (void)setDisplaysAsChainResult:(BOOL)result
 {
   v8.receiver = self;
   v8.super_class = SearchResultTableViewCell;
-  [(_SearchResultTableViewCell *)&v8 setDisplaysAsChainResult:a3];
+  [(_SearchResultTableViewCell *)&v8 setDisplaysAsChainResult:result];
   [(SearchResultTableViewCell *)self _imageSize];
   v5 = v4;
   v7 = v6;
@@ -351,11 +351,11 @@
   [(_SearchResultTableViewCell *)&v7 _updateSpacings];
   if (sub_10000FA08(self) != 5)
   {
-    v3 = [(NUIContainerStackView *)self->super._labelStackView arrangedSubviews];
-    if ([v3 containsObject:self->super._secondLabelStackView])
+    arrangedSubviews = [(NUIContainerStackView *)self->super._labelStackView arrangedSubviews];
+    if ([arrangedSubviews containsObject:self->super._secondLabelStackView])
     {
-      v4 = [v3 indexOfObject:self->super._secondLabelStackView];
-      if (v4 < [v3 count] - 1)
+      v4 = [arrangedSubviews indexOfObject:self->super._secondLabelStackView];
+      if (v4 < [arrangedSubviews count] - 1)
       {
         labelStackView = self->super._labelStackView;
         [(NUIContainerStackView *)labelStackView spacing];
@@ -365,20 +365,20 @@
   }
 }
 
-- (SearchResultTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SearchResultTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v21.receiver = self;
   v21.super_class = SearchResultTableViewCell;
-  v4 = [(_SearchResultTableViewCell *)&v21 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_SearchResultTableViewCell *)&v21 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(SearchResultTableViewCell *)v4 window];
-    v7 = [v6 screen];
-    v8 = v7;
-    if (v7)
+    window = [(SearchResultTableViewCell *)v4 window];
+    screen = [window screen];
+    v8 = screen;
+    if (screen)
     {
-      [v7 nativeScale];
+      [screen nativeScale];
       v10 = v9;
     }
 
@@ -408,8 +408,8 @@
     else if (!v5->super._accessibilityEnabled)
     {
       [(UIImageView *)v5->_imageView _setContinuousCornerRadius:8.0];
-      v15 = [(UIImageView *)v5->_imageView layer];
-      [v15 setBorderWidth:1.0 / v10];
+      layer = [(UIImageView *)v5->_imageView layer];
+      [layer setBorderWidth:1.0 / v10];
 
       v16 = +[UIColor tertiaryLabelColor];
       [(UIImageView *)v5->_imageView setTintColor:v16];

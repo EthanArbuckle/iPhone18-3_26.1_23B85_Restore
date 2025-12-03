@@ -1,45 +1,45 @@
 @interface SKPaymentQueue
 + (BOOL)canMakePayments;
 + (SKPaymentQueue)defaultQueue;
-- (BOOL)shouldContinueTransaction:(id)a3 inNewStorefront:(id)a4;
+- (BOOL)shouldContinueTransaction:(id)transaction inNewStorefront:(id)storefront;
 - (NSArray)transactionObservers;
 - (NSArray)transactions;
-- (SKPaymentQueue)initWithPaymentQueueClient:(id)a3;
+- (SKPaymentQueue)initWithPaymentQueueClient:(id)client;
 - (SKStorefront)storefront;
 - (id)_initSKPaymentQueue;
 - (id)delegate;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
 - (void)_checkForMessages;
-- (void)_checkServerQueueForced:(BOOL)a3;
-- (void)_logEventWithPrimaryError:(id)a3 mappedError:(id)a4 inAppPurchaseID:(id)a5 userAction:(int64_t)a6;
-- (void)_notifyObserversAboutChanges:(id)a3 sendUpdatedDownloads:(BOOL)a4;
-- (void)_notifyObserversAboutRemovals:(id)a3;
-- (void)_processTransactionDict:(id)a3 forTransaction:(id)a4 error:(id)a5;
-- (void)_removeLocalTransaction:(id)a3;
+- (void)_checkServerQueueForced:(BOOL)forced;
+- (void)_logEventWithPrimaryError:(id)error mappedError:(id)mappedError inAppPurchaseID:(id)d userAction:(int64_t)action;
+- (void)_notifyObserversAboutChanges:(id)changes sendUpdatedDownloads:(BOOL)downloads;
+- (void)_notifyObserversAboutRemovals:(id)removals;
+- (void)_processTransactionDict:(id)dict forTransaction:(id)transaction error:(id)error;
+- (void)_removeLocalTransaction:(id)transaction;
 - (void)_removeNilTransactionObservers;
-- (void)_updatedTransactions:(id)a3 restored:(BOOL)a4;
+- (void)_updatedTransactions:(id)transactions restored:(BOOL)restored;
 - (void)addPayment:(SKPayment *)payment;
 - (void)addTransactionObserver:(id)observer;
-- (void)askToShowMessageWithReplyBlock:(id)a3;
+- (void)askToShowMessageWithReplyBlock:(id)block;
 - (void)cancelDownloads:(NSArray *)downloads;
 - (void)clearTransactions;
 - (void)dealloc;
-- (void)downloadAdded:(id)a3;
-- (void)downloadRemoved:(id)a3;
-- (void)downloadStatusChanged:(id)a3;
+- (void)downloadAdded:(id)added;
+- (void)downloadRemoved:(id)removed;
+- (void)downloadStatusChanged:(id)changed;
 - (void)finishTransaction:(SKPaymentTransaction *)transaction;
-- (void)forceSandboxForBundleIdentifier:(id)a3 untilDate:(id)a4;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
+- (void)forceSandboxForBundleIdentifier:(id)identifier untilDate:(id)date;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
 - (void)listenForPurchaseIntents;
-- (void)notifyObserversForNewStorefront:(id)a3;
-- (void)notifyPurchaseIntentObserversForProducts:(id)a3;
+- (void)notifyObserversForNewStorefront:(id)storefront;
+- (void)notifyPurchaseIntentObserversForProducts:(id)products;
 - (void)pauseDownloads:(NSArray *)downloads;
 - (void)presentCodeRedemptionSheet;
 - (void)removeTransactionObserver:(id)observer;
-- (void)removeTransactionWithID:(unint64_t)a3;
-- (void)removedEntitlementsForProductIdentifiers:(id)a3;
-- (void)removedTransactions:(id)a3;
+- (void)removeTransactionWithID:(unint64_t)d;
+- (void)removedEntitlementsForProductIdentifiers:(id)identifiers;
+- (void)removedTransactions:(id)transactions;
 - (void)restoreCompletedTransactionsWithApplicationUsername:(NSString *)username;
 - (void)resumeDownloads:(NSArray *)downloads;
 - (void)showPriceConsentIfNeeded;
@@ -63,9 +63,9 @@
     v5 = +[SKClientBroker defaultBroker];
     [v5 registerClient:v2 withIdentifier:*(v2->_internal + 2)];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
-    [v6 addObserver:v2 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x1E69DDAB0] object:0];
   }
 
   return v2;
@@ -76,8 +76,8 @@
   v3 = +[SKClientBroker defaultBroker];
   [v3 unregisterClientWithIdentifier:*(self->_internal + 2)];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAB0] object:0];
 
   v5.receiver = self;
   v5.super_class = SKPaymentQueue;
@@ -90,7 +90,7 @@
   block[1] = 3221225472;
   block[2] = __30__SKPaymentQueue_defaultQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultQueue_sSharedInstanceOnce != -1)
   {
     dispatch_once(&defaultQueue_sSharedInstanceOnce, block);
@@ -121,11 +121,11 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
 + (BOOL)canMakePayments
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 applicationHasMIDBasedSINF] ^ 1;
+    v4 = [bundleRecordForCurrentProcess applicationHasMIDBasedSINF] ^ 1;
   }
 
   else
@@ -133,12 +133,12 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
     v4 = 1;
   }
 
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x1E69ADEC8]];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v6 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADEC8]];
 
-  v7 = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
-  v8 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v9 = [v8 isOnDeviceAppInstallationAllowed];
+  isRunningInStoreDemoMode = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
+  mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isOnDeviceAppInstallationAllowed = [mEMORY[0x1E69ADFB8]2 isOnDeviceAppInstallationAllowed];
 
   if (v6 == 2)
   {
@@ -150,11 +150,11 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
     v10 = v4;
   }
 
-  v11 = v10 & (v7 ^ 1) & v9;
+  v11 = v10 & (isRunningInStoreDemoMode ^ 1) & isOnDeviceAppInstallationAllowed;
   if ((v11 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"NO";
-    if (v7)
+    if (isRunningInStoreDemoMode)
     {
       v13 = @"YES";
     }
@@ -165,7 +165,7 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
     }
 
     v17 = 138544386;
-    v18 = a1;
+    selfCopy = self;
     if (v4)
     {
       v14 = @"YES";
@@ -190,7 +190,7 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
 
     v21 = 2114;
     v22 = v14;
-    if (v9)
+    if (isOnDeviceAppInstallationAllowed)
     {
       v12 = @"YES";
     }
@@ -212,8 +212,8 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v6 = [(SKPayment *)v4 productIdentifier];
-    v7 = [v6 length];
+    productIdentifier = [(SKPayment *)v4 productIdentifier];
+    v7 = [productIdentifier length];
 
     if (v7)
     {
@@ -230,7 +230,7 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
         block[2] = __29__SKPaymentQueue_addPayment___block_invoke;
         block[3] = &unk_1E7B28640;
         v13 = v5;
-        v14 = self;
+        selfCopy = self;
         os_activity_apply(v8, block);
       }
     }
@@ -239,15 +239,15 @@ uint64_t __30__SKPaymentQueue_defaultQueue__block_invoke(uint64_t a1)
     {
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D940];
-      v11 = [(SKPayment *)v5 productIdentifier];
-      [v9 raise:v10 format:{@"Invalid product identifier: %@", v11}];
+      productIdentifier2 = [(SKPayment *)v5 productIdentifier];
+      [v9 raise:v10 format:{@"Invalid product identifier: %@", productIdentifier2}];
     }
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: Cannot add nil payment to SKPaymentQueue", buf, 0xCu);
   }
 }
@@ -509,13 +509,13 @@ BOOL __41__SKPaymentQueue_addTransactionObserver___block_invoke(uint64_t a1, voi
         if (![v12 state] || objc_msgSend(v12, "state") == 1 || objc_msgSend(v12, "state") == 2)
         {
           v13 = *(self->_internal + 4);
-          v14 = [v12 _downloadID];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          _downloadID = [v12 _downloadID];
+          v15 = [v13 objectForKeyedSubscript:_downloadID];
 
           if (v15)
           {
-            v16 = [v12 _downloadID];
-            [v6 cancelDownloadWithID:v16];
+            _downloadID2 = [v12 _downloadID];
+            [v6 cancelDownloadWithID:_downloadID2];
           }
         }
       }
@@ -553,7 +553,7 @@ void __34__SKPaymentQueue_cancelDownloads___block_invoke()
     v6[2] = __36__SKPaymentQueue_finishTransaction___block_invoke;
     v6[3] = &unk_1E7B28640;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     os_activity_apply(v5, v6);
   }
 
@@ -625,13 +625,13 @@ void __36__SKPaymentQueue_finishTransaction___block_invoke(uint64_t a1)
         if (![v12 state] || objc_msgSend(v12, "state") == 1)
         {
           v13 = *(self->_internal + 4);
-          v14 = [v12 _downloadID];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          _downloadID = [v12 _downloadID];
+          v15 = [v13 objectForKeyedSubscript:_downloadID];
 
           if (v15)
           {
-            v16 = [v12 _downloadID];
-            [v6 pauseDownloadWithID:v16];
+            _downloadID2 = [v12 _downloadID];
+            [v6 pauseDownloadWithID:_downloadID2];
           }
         }
       }
@@ -911,13 +911,13 @@ LABEL_6:
         if ([v12 state] == 2)
         {
           v13 = *(self->_internal + 4);
-          v14 = [v12 _downloadID];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          _downloadID = [v12 _downloadID];
+          v15 = [v13 objectForKeyedSubscript:_downloadID];
 
           if (v15)
           {
-            v16 = [v12 _downloadID];
-            [v6 resumeDownloadWithID:v16];
+            _downloadID2 = [v12 _downloadID];
+            [v6 resumeDownloadWithID:_downloadID2];
           }
         }
       }
@@ -1015,18 +1015,18 @@ void __44__SKPaymentQueue_presentCodeRedemptionSheet__block_invoke()
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
-        v13 = [v12 state];
-        if (v13 > 5 || ((1 << v13) & 0x31) == 0)
+        state = [v12 state];
+        if (state > 5 || ((1 << state) & 0x31) == 0)
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v12 state];
+            state2 = [v12 state];
             *buf = v20;
-            v28 = self;
+            selfCopy = self;
             v29 = 2114;
             v30 = v12;
             v31 = 2048;
-            v32 = v18;
+            v32 = state2;
             _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring download %{public}@ in state %ld.", buf, 0x20u);
           }
         }
@@ -1034,11 +1034,11 @@ void __44__SKPaymentQueue_presentCodeRedemptionSheet__block_invoke()
         else
         {
           v15 = *(self->_internal + 4);
-          v16 = [v12 _downloadID];
-          [v15 setObject:v12 forKeyedSubscript:v16];
+          _downloadID = [v12 _downloadID];
+          [v15 setObject:v12 forKeyedSubscript:_downloadID];
 
-          v17 = [v12 _downloadID];
-          [v6 addDownloadWithID:v17];
+          _downloadID2 = [v12 _downloadID];
+          [v6 addDownloadWithID:_downloadID2];
         }
 
         ++v11;
@@ -1069,17 +1069,17 @@ void __33__SKPaymentQueue_startDownloads___block_invoke()
   {
     v4 = *(self->_internal + 8);
     objc_sync_enter(v4);
-    v5 = *(self->_internal + 7);
+    storefront = *(self->_internal + 7);
     objc_sync_exit(v4);
   }
 
   else
   {
     v4 = +[SKPaymentQueue defaultQueue];
-    v5 = [v4 storefront];
+    storefront = [v4 storefront];
   }
 
-  return v5;
+  return storefront;
 }
 
 - (NSArray)transactions
@@ -1092,50 +1092,50 @@ void __33__SKPaymentQueue_startDownloads___block_invoke()
   return v4;
 }
 
-- (SKPaymentQueue)initWithPaymentQueueClient:(id)a3
+- (SKPaymentQueue)initWithPaymentQueueClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SKPaymentQueue *)self _initSKPaymentQueue];
-  if (v5)
+  clientCopy = client;
+  _initSKPaymentQueue = [(SKPaymentQueue *)self _initSKPaymentQueue];
+  if (_initSKPaymentQueue)
   {
-    v6 = [v4 copy];
-    internal = v5->_internal;
+    v6 = [clientCopy copy];
+    internal = _initSKPaymentQueue->_internal;
     v8 = internal[3];
     internal[3] = v6;
   }
 
-  return v5;
+  return _initSKPaymentQueue;
 }
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SKPaymentQueue *)self paymentQueueClient];
-  v8 = [v7 delegate];
+  requestCopy = request;
+  handlerCopy = handler;
+  paymentQueueClient = [(SKPaymentQueue *)self paymentQueueClient];
+  delegate = [paymentQueueClient delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 handleEngagementRequest:v10 resultHandler:v6];
+    [delegate handleEngagementRequest:requestCopy resultHandler:handlerCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SKErrorDomain" code:5 userInfo:0];
-    v6[2](v6, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 }
 
-- (void)askToShowMessageWithReplyBlock:(id)a3
+- (void)askToShowMessageWithReplyBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(SKPaymentQueue *)self delegate];
+  blockCopy = block;
+  delegate = [(SKPaymentQueue *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SKPaymentQueue *)self delegate];
-    v7 = [v6 paymentQueueShouldShowPriceConsent:self];
+    delegate2 = [(SKPaymentQueue *)self delegate];
+    v7 = [delegate2 paymentQueueShouldShowPriceConsent:self];
   }
 
   else
@@ -1143,13 +1143,13 @@ void __33__SKPaymentQueue_startDownloads___block_invoke()
     v7 = 1;
   }
 
-  v8[2](v8, v5 & 1, v7);
+  blockCopy[2](blockCopy, v5 & 1, v7);
 }
 
-- (void)removedTransactions:(id)a3
+- (void)removedTransactions:(id)transactions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionsCopy = transactions;
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = objc_alloc_init(MEMORY[0x1E696AD50]);
   obj = *(self->_internal + 6);
@@ -1158,7 +1158,7 @@ void __33__SKPaymentQueue_startDownloads___block_invoke()
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v4;
+  v5 = transactionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -1178,8 +1178,8 @@ void __33__SKPaymentQueue_startDownloads___block_invoke()
         while ([*(self->_internal + 6) count] > v9)
         {
           v11 = [*(self->_internal + 6) objectAtIndexedSubscript:v9];
-          v12 = [v11 UUID];
-          v13 = [v12 isEqualToString:v10];
+          uUID = [v11 UUID];
+          v13 = [uUID isEqualToString:v10];
 
           if (v13)
           {
@@ -1254,11 +1254,11 @@ void __38__SKPaymentQueue_removedTransactions___block_invoke_2(uint64_t a1)
   [v1 paymentQueue:v2 removedTransactions:v3];
 }
 
-- (void)downloadAdded:(id)a3
+- (void)downloadAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = *(self->_internal + 4);
-  v6 = [v4 objectForKeyedSubscript:0x1F29BDD20];
+  v6 = [addedCopy objectForKeyedSubscript:0x1F29BDD20];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   [v7 _setDownloadState:0];
@@ -1307,11 +1307,11 @@ void __32__SKPaymentQueue_downloadAdded___block_invoke_2(void *a1)
   [v1 paymentQueue:v2 updatedDownloads:v3];
 }
 
-- (void)downloadStatusChanged:(id)a3
+- (void)downloadStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:0x1F29BDD20];
-  v6 = [v4 objectForKeyedSubscript:0x1F29BDD60];
+  changedCopy = changed;
+  v5 = [changedCopy objectForKeyedSubscript:0x1F29BDD20];
+  v6 = [changedCopy objectForKeyedSubscript:0x1F29BDD60];
   if (v5)
   {
     v7 = [*(self->_internal + 4) objectForKeyedSubscript:v5];
@@ -1324,19 +1324,19 @@ void __32__SKPaymentQueue_downloadAdded___block_invoke_2(void *a1)
         [v7 _setError:0];
         [v7 _setTimeRemaining:SKDownloadTimeRemainingUnknown];
         v8 = [v6 objectForKeyedSubscript:0x1F29BDCC0];
-        v9 = [v8 integerValue];
+        integerValue = [v8 integerValue];
 
-        if (v9 != 4)
+        if (integerValue != 4)
         {
           v10 = [v6 objectForKeyedSubscript:@"isFailed"];
-          v11 = [v10 BOOLValue];
+          bOOLValue = [v10 BOOLValue];
 
-          if (!v11)
+          if (!bOOLValue)
           {
             v22 = [v6 objectForKeyedSubscript:@"isCancelled"];
-            v23 = [v22 BOOLValue];
+            bOOLValue2 = [v22 BOOLValue];
 
-            if (v23)
+            if (bOOLValue2)
             {
               [v7 _setDownloadState:5];
               LODWORD(v24) = 1.0;
@@ -1358,7 +1358,7 @@ LABEL_20:
               goto LABEL_21;
             }
 
-            if (v9 == 2 || ([v6 objectForKeyedSubscript:@"isPaused"], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "BOOLValue"), v28, v29))
+            if (integerValue == 2 || ([v6 objectForKeyedSubscript:@"isPaused"], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "BOOLValue"), v28, v29))
             {
               [v7 _setDownloadState:2];
               v13 = [v6 objectForKeyedSubscript:0x1F29BDD40];
@@ -1373,7 +1373,7 @@ LABEL_20:
               [v31 doubleValue];
               v33 = v32;
 
-              if (v9 == 3 || (v34 = 1.0 - v33, 1.0 - v33 < 0.0001))
+              if (integerValue == 3 || (v34 = 1.0 - v33, 1.0 - v33 < 0.0001))
               {
                 v35 = [v6 objectForKeyedSubscript:{0x1F29BDDA0, v34}];
                 if ([v35 length])
@@ -1417,11 +1417,11 @@ LABEL_19:
             v17 = v13;
             v14 = [v17 objectForKeyedSubscript:@"domain"];
             v18 = [v17 objectForKeyedSubscript:@"code"];
-            v38 = [v18 integerValue];
+            integerValue2 = [v18 integerValue];
 
             v19 = [v17 objectForKeyedSubscript:@"userInfo"];
 
-            v20 = [MEMORY[0x1E696ABC0] errorWithDomain:v14 code:v38 userInfo:v19];
+            v20 = [MEMORY[0x1E696ABC0] errorWithDomain:v14 code:integerValue2 userInfo:v19];
             v21 = _SKErrorFromNSError(v20);
 
             [v7 _setError:v21];
@@ -1437,12 +1437,12 @@ LABEL_19:
         }
 
         v14 = v13;
-        v15 = [v14 domain];
-        if ([v15 isEqualToString:*MEMORY[0x1E696A250]])
+        domain = [v14 domain];
+        if ([domain isEqualToString:*MEMORY[0x1E696A250]])
         {
-          v16 = [v14 code];
+          code = [v14 code];
 
-          if (v16 == 3072)
+          if (code == 3072)
           {
             [v7 _setDownloadState:5];
 LABEL_18:
@@ -1502,11 +1502,11 @@ void __40__SKPaymentQueue_downloadStatusChanged___block_invoke_2(void *a1)
   [v1 paymentQueue:v2 updatedDownloads:v3];
 }
 
-- (void)downloadRemoved:(id)a3
+- (void)downloadRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v5 = *(self->_internal + 4);
-  v6 = [v4 objectForKeyedSubscript:0x1F29BDD20];
+  v6 = [removedCopy objectForKeyedSubscript:0x1F29BDD20];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   if ([v7 state] != 3 && objc_msgSend(v7, "state") != 4 && objc_msgSend(v7, "state") != 5)
@@ -1557,9 +1557,9 @@ void __34__SKPaymentQueue_downloadRemoved___block_invoke_2(void *a1)
   [v1 paymentQueue:v2 updatedDownloads:v3];
 }
 
-- (void)removedEntitlementsForProductIdentifiers:(id)a3
+- (void)removedEntitlementsForProductIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = *(self->_internal + 8);
   objc_sync_enter(v5);
   v6 = *(self->_internal + 8);
@@ -1568,7 +1568,7 @@ void __34__SKPaymentQueue_downloadRemoved___block_invoke_2(void *a1)
   v8[2] = __59__SKPaymentQueue_removedEntitlementsForProductIdentifiers___block_invoke;
   v8[3] = &unk_1E7B28988;
   v8[4] = self;
-  v7 = v4;
+  v7 = identifiersCopy;
   v9 = v7;
   [v6 enumerateObjectsUsingBlock:v8];
 
@@ -1584,7 +1584,7 @@ void __59__SKPaymentQueue_removedEntitlementsForProductIdentifiers___block_invok
   }
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
   [(SKPaymentQueue *)self _checkServerQueueForced:0];
   if ([*(self->_internal + 8) count])
@@ -1594,7 +1594,7 @@ void __59__SKPaymentQueue_removedEntitlementsForProductIdentifiers___block_invok
   }
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   if (*(self->_internal + 8) == 1)
   {
@@ -1612,11 +1612,11 @@ void __59__SKPaymentQueue_removedEntitlementsForProductIdentifiers___block_invok
   objc_sync_exit(obj);
 }
 
-- (void)removeTransactionWithID:(unint64_t)a3
+- (void)removeTransactionWithID:(unint64_t)d
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [v3 stringValue];
+  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  stringValue = [v3 stringValue];
 
   obj = *(self->_internal + 6);
   objc_sync_enter(obj);
@@ -1641,8 +1641,8 @@ void __59__SKPaymentQueue_removedEntitlementsForProductIdentifiers___block_invok
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 transactionIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        transactionIdentifier = [v11 transactionIdentifier];
+        v13 = [transactionIdentifier isEqualToString:stringValue];
 
         if (v13)
         {
@@ -1675,8 +1675,8 @@ void __59__SKPaymentQueue_removedEntitlementsForProductIdentifiers___block_invok
         }
 
         v18 = *(*(&v28 + 1) + 8 * j);
-        v19 = [v18 transactionIdentifier];
-        v20 = [v19 isEqualToString:v4];
+        transactionIdentifier2 = [v18 transactionIdentifier];
+        v20 = [transactionIdentifier2 isEqualToString:stringValue];
 
         if (v20)
         {
@@ -1723,7 +1723,7 @@ void __35__SKPaymentQueue__checkForMessages__block_invoke()
   }
 }
 
-- (void)_checkServerQueueForced:(BOOL)a3
+- (void)_checkServerQueueForced:(BOOL)forced
 {
   if ([*(self->_internal + 8) count])
   {
@@ -1733,7 +1733,7 @@ void __35__SKPaymentQueue__checkForMessages__block_invoke()
     v6[2] = __42__SKPaymentQueue__checkServerQueueForced___block_invoke;
     v6[3] = &unk_1E7B27F08;
     v6[4] = self;
-    v7 = a3;
+    forcedCopy = forced;
     os_activity_apply(v5, v6);
   }
 }
@@ -1767,11 +1767,11 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
   }
 }
 
-- (void)_notifyObserversAboutChanges:(id)a3 sendUpdatedDownloads:(BOOL)a4
+- (void)_notifyObserversAboutChanges:(id)changes sendUpdatedDownloads:(BOOL)downloads
 {
-  v24 = a4;
+  downloadsCopy = downloads;
   v45 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  changesCopy = changes;
   [(SKPaymentQueue *)self _removeNilTransactionObservers];
   v17 = *(self->_internal + 8);
   objc_sync_enter(v17);
@@ -1779,7 +1779,7 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = *(self->_internal + 8);
   v5 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v5)
@@ -1797,28 +1797,28 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v39 + 1) + 8 * i) object];
+        object = [*(*(&v39 + 1) + 8 * i) object];
         if (objc_opt_respondsToSelector())
         {
-          v9 = *(v21->_internal + 9);
+          v9 = *(selfCopy->_internal + 9);
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           v35[0] = __68__SKPaymentQueue__notifyObserversAboutChanges_sendUpdatedDownloads___block_invoke;
           v35[1] = &unk_1E7B28960;
-          v36 = v8;
-          v37 = v21;
-          v38 = v22;
+          v36 = object;
+          v37 = selfCopy;
+          v38 = changesCopy;
           dispatch_async(v9, block);
         }
 
-        if (v24 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (downloadsCopy && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v11 = v22;
+          v11 = changesCopy;
           v12 = [v11 countByEnumeratingWithState:&v30 objects:v43 count:16];
           if (v12)
           {
@@ -1833,10 +1833,10 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
                   objc_enumerationMutation(v11);
                 }
 
-                v15 = [*(*(&v30 + 1) + 8 * v14) downloads];
-                if (v15)
+                downloads = [*(*(&v30 + 1) + 8 * v14) downloads];
+                if (downloads)
                 {
-                  [v10 addObjectsFromArray:v15];
+                  [v10 addObjectsFromArray:downloads];
                 }
 
                 ++v14;
@@ -1851,13 +1851,13 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
 
           if ([v10 count])
           {
-            v16 = *(v21->_internal + 9);
+            v16 = *(selfCopy->_internal + 9);
             v25[0] = MEMORY[0x1E69E9820];
             v25[1] = 3221225472;
             v26[0] = __68__SKPaymentQueue__notifyObserversAboutChanges_sendUpdatedDownloads___block_invoke_2;
             v26[1] = &unk_1E7B28960;
-            v27 = v8;
-            v28 = v21;
+            v27 = object;
+            v28 = selfCopy;
             v29 = v10;
             dispatch_async(v16, v25);
           }
@@ -1873,10 +1873,10 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
   objc_sync_exit(v17);
 }
 
-- (void)_notifyObserversAboutRemovals:(id)a3
+- (void)_notifyObserversAboutRemovals:(id)removals
 {
   v21 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  removalsCopy = removals;
   [(SKPaymentQueue *)self _removeNilTransactionObservers];
   obj = *(self->_internal + 8);
   objc_sync_enter(obj);
@@ -1899,7 +1899,7 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * v7) object];
+        object = [*(*(&v16 + 1) + 8 * v7) object];
         if (objc_opt_respondsToSelector())
         {
           v9 = *(self->_internal + 9);
@@ -1907,9 +1907,9 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
           block[1] = 3221225472;
           block[2] = __48__SKPaymentQueue__notifyObserversAboutRemovals___block_invoke;
           block[3] = &unk_1E7B28960;
-          v13 = v8;
-          v14 = self;
-          v15 = v11;
+          v13 = object;
+          selfCopy = self;
+          v15 = removalsCopy;
           dispatch_async(v9, block);
         }
 
@@ -1926,63 +1926,63 @@ void __42__SKPaymentQueue__checkServerQueueForced___block_invoke_2()
   objc_sync_exit(obj);
 }
 
-- (void)_processTransactionDict:(id)a3 forTransaction:(id)a4 error:(id)a5
+- (void)_processTransactionDict:(id)dict forTransaction:(id)transaction error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  dictCopy = dict;
+  transactionCopy = transaction;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (!errorCopy)
   {
-    if (v8)
+    if (dictCopy)
     {
-      [v9 mergeWithServerTransaction:v8];
+      [transactionCopy mergeWithServerTransaction:dictCopy];
       goto LABEL_13;
     }
 
-    [v9 _setTransactionState:2];
+    [transactionCopy _setTransactionState:2];
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SKErrorDomain" code:0 userInfo:0];
-    [v9 _setError:v14];
-    v15 = [v9 payment];
-    v16 = [v15 productIdentifier];
-    v17 = self;
+    [transactionCopy _setError:v14];
+    payment = [transactionCopy payment];
+    productIdentifier = [payment productIdentifier];
+    selfCopy2 = self;
     v18 = v14;
     v19 = 0;
 LABEL_12:
-    [(SKPaymentQueue *)v17 _logEventWithPrimaryError:v18 mappedError:v19 inAppPurchaseID:v16 userAction:3];
+    [(SKPaymentQueue *)selfCopy2 _logEventWithPrimaryError:v18 mappedError:v19 inAppPurchaseID:productIdentifier userAction:3];
 
     goto LABEL_13;
   }
 
-  v12 = [v10 domain];
-  if (![v12 isEqualToString:@"ASDErrorDomain"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"ASDErrorDomain"])
   {
 
     goto LABEL_10;
   }
 
-  v13 = [v11 code];
+  code = [v11 code];
 
-  if (v13 != 1052)
+  if (code != 1052)
   {
 LABEL_10:
-    [v9 _setTransactionState:2];
+    [transactionCopy _setTransactionState:2];
     v14 = _SKErrorFromNSError(v11);
-    [v9 _setError:v14];
-    v15 = [v9 payment];
-    v16 = [v15 productIdentifier];
-    v17 = self;
+    [transactionCopy _setError:v14];
+    payment = [transactionCopy payment];
+    productIdentifier = [payment productIdentifier];
+    selfCopy2 = self;
     v18 = v11;
     v19 = v14;
     goto LABEL_12;
   }
 
-  if (v8)
+  if (dictCopy)
   {
-    [v9 mergeWithServerTransaction:v8];
+    [transactionCopy mergeWithServerTransaction:dictCopy];
   }
 
-  [v9 _setTransactionState:4];
+  [transactionCopy _setTransactionState:4];
 LABEL_13:
   v20 = *(self->_internal + 8);
   objc_sync_enter(v20);
@@ -1992,7 +1992,7 @@ LABEL_13:
   v23[2] = __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_invoke;
   v23[3] = &unk_1E7B28988;
   v23[4] = self;
-  v22 = v9;
+  v22 = transactionCopy;
   v24 = v22;
   [v21 enumerateObjectsUsingBlock:v23];
 
@@ -2029,17 +2029,17 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
   [v1 paymentQueue:v2 updatedTransactions:v3];
 }
 
-- (void)_removeLocalTransaction:(id)a3
+- (void)_removeLocalTransaction:(id)transaction
 {
-  v7 = a3;
+  transactionCopy = transaction;
   v4 = *(self->_internal + 6);
   objc_sync_enter(v4);
-  v5 = [*(self->_internal + 5) indexOfObject:v7];
+  v5 = [*(self->_internal + 5) indexOfObject:transactionCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v7, 0}];
+    v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{transactionCopy, 0}];
     [*(self->_internal + 5) removeObjectAtIndex:v5];
-    [*(self->_internal + 6) removeObject:v7];
+    [*(self->_internal + 6) removeObject:transactionCopy];
     [(SKPaymentQueue *)self _notifyObserversAboutRemovals:v6];
   }
 
@@ -2061,9 +2061,9 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
     }
 
     v7 = [v6 objectAtIndexedSubscript:i];
-    v8 = [v7 object];
+    object = [v7 object];
 
-    if (!v8)
+    if (!object)
     {
       [v3 addIndex:i];
     }
@@ -2074,16 +2074,16 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
   objc_sync_exit(obj);
 }
 
-- (void)_updatedTransactions:(id)a3 restored:(BOOL)a4
+- (void)_updatedTransactions:(id)transactions restored:(BOOL)restored
 {
-  v40 = a4;
+  restoredCopy = restored;
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  transactionsCopy = transactions;
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = *(self->_internal + 6);
   objc_sync_enter(v35);
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -2103,20 +2103,20 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
         }
 
         v12 = *(*(&v50 + 1) + 8 * i);
-        v13 = [v12 UUID];
+        uUID = [v12 UUID];
 
-        if (v13)
+        if (uUID)
         {
-          v14 = [v12 UUID];
-          [v7 setObject:v12 forKeyedSubscript:v14];
+          uUID2 = [v12 UUID];
+          [dictionary2 setObject:v12 forKeyedSubscript:uUID2];
         }
 
-        v15 = [v12 transactionIdentifier];
+        transactionIdentifier = [v12 transactionIdentifier];
 
-        if (v15)
+        if (transactionIdentifier)
         {
-          v16 = [v12 transactionIdentifier];
-          [v6 setObject:v12 forKeyedSubscript:v16];
+          transactionIdentifier2 = [v12 transactionIdentifier];
+          [dictionary setObject:v12 forKeyedSubscript:transactionIdentifier2];
         }
       }
 
@@ -2130,7 +2130,7 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
   v47 = 0u;
   v48 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = transactionsCopy;
   v17 = [obj countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v17)
   {
@@ -2148,10 +2148,10 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
         v20 = *(*(&v46 + 1) + 8 * j);
         v21 = [[SKPaymentTransaction alloc] initWithServerTransaction:v20];
         v22 = v21;
-        if (v40)
+        if (restoredCopy)
         {
-          v23 = [(SKPaymentTransaction *)v21 originalTransaction];
-          if (v23)
+          originalTransaction = [(SKPaymentTransaction *)v21 originalTransaction];
+          if (originalTransaction)
           {
             v24 = [(SKPaymentTransaction *)v22 transactionState]== SKPaymentTransactionStatePurchased;
 
@@ -2164,11 +2164,11 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
 
         v25 = [(SKPaymentTransaction *)v22 UUID:v35];
 
-        if (!v25 || (-[SKPaymentTransaction UUID](v22, "UUID"), v26 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:v26], v27 = objc_claimAutoreleasedReturnValue(), v26, !v27))
+        if (!v25 || (-[SKPaymentTransaction UUID](v22, "UUID"), v26 = objc_claimAutoreleasedReturnValue(), [dictionary2 objectForKeyedSubscript:v26], v27 = objc_claimAutoreleasedReturnValue(), v26, !v27))
         {
-          v28 = [(SKPaymentTransaction *)v22 transactionIdentifier];
+          transactionIdentifier3 = [(SKPaymentTransaction *)v22 transactionIdentifier];
 
-          if (!v28 || (-[SKPaymentTransaction transactionIdentifier](v22, "transactionIdentifier"), v29 = objc_claimAutoreleasedReturnValue(), [v6 objectForKeyedSubscript:v29], v27 = objc_claimAutoreleasedReturnValue(), v29, !v27))
+          if (!transactionIdentifier3 || (-[SKPaymentTransaction transactionIdentifier](v22, "transactionIdentifier"), v29 = objc_claimAutoreleasedReturnValue(), [dictionary objectForKeyedSubscript:v29], v27 = objc_claimAutoreleasedReturnValue(), v29, !v27))
           {
             v30 = *(self->_internal + 6);
             v43[0] = MEMORY[0x1E69E9820];
@@ -2189,8 +2189,8 @@ void __63__SKPaymentQueue__processTransactionDict_forTransaction_error___block_i
           }
         }
 
-        v32 = [(SKPaymentTransaction *)v22 transactionState];
-        if (v32 == [(SKPaymentTransaction *)v27 transactionState]|| [(SKPaymentTransaction *)v27 transactionState]== SKPaymentTransactionStatePurchasing || [(SKPaymentTransaction *)v27 transactionState]== SKPaymentTransactionStateDeferred)
+        transactionState = [(SKPaymentTransaction *)v22 transactionState];
+        if (transactionState == [(SKPaymentTransaction *)v27 transactionState]|| [(SKPaymentTransaction *)v27 transactionState]== SKPaymentTransactionStatePurchasing || [(SKPaymentTransaction *)v27 transactionState]== SKPaymentTransactionStateDeferred)
         {
           if (v27)
           {
@@ -2291,30 +2291,30 @@ void __48__SKPaymentQueue__updatedTransactions_restored___block_invoke_2(uint64_
   [v1 paymentQueue:v2 updatedTransactions:v3];
 }
 
-- (void)_logEventWithPrimaryError:(id)a3 mappedError:(id)a4 inAppPurchaseID:(id)a5 userAction:(int64_t)a6
+- (void)_logEventWithPrimaryError:(id)error mappedError:(id)mappedError inAppPurchaseID:(id)d userAction:(int64_t)action
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  dCopy = d;
+  mappedErrorCopy = mappedError;
+  errorCopy = error;
   v12 = objc_alloc_init(SKOneErrorEvent);
-  [(SKBaseErrorEvent *)v12 setInAppPurchaseID:v9];
+  [(SKBaseErrorEvent *)v12 setInAppPurchaseID:dCopy];
 
-  [(SKBaseErrorEvent *)v12 setUserAction:a6];
-  [(SKBaseErrorEvent *)v12 setPrimaryError:v11];
+  [(SKBaseErrorEvent *)v12 setUserAction:action];
+  [(SKBaseErrorEvent *)v12 setPrimaryError:errorCopy];
 
-  [(SKBaseErrorEvent *)v12 setMappedError:v10];
+  [(SKBaseErrorEvent *)v12 setMappedError:mappedErrorCopy];
   [SKAnalyticsManager sendEvent:v12];
 }
 
-- (void)notifyObserversForNewStorefront:(id)a3
+- (void)notifyObserversForNewStorefront:(id)storefront
 {
-  v5 = a3;
+  storefrontCopy = storefront;
   v6 = *(self->_internal + 8);
   objc_sync_enter(v6);
   v7 = *(self->_internal + 7);
-  if (!v7 || ([v5 identifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, (v10 & 1) == 0))
+  if (!v7 || ([storefrontCopy identifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, (v10 & 1) == 0))
   {
-    objc_storeStrong(self->_internal + 7, a3);
+    objc_storeStrong(self->_internal + 7, storefront);
     v11 = *(self->_internal + 8);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -2336,10 +2336,10 @@ void __59__SKPaymentQueue_Package__notifyObserversForNewStorefront___block_invok
   }
 }
 
-- (void)notifyPurchaseIntentObserversForProducts:(id)a3
+- (void)notifyPurchaseIntentObserversForProducts:(id)products
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  productsCopy = products;
   [(SKPaymentQueue *)self _removeNilTransactionObservers];
   v13 = *(self->_internal + 8);
   objc_sync_enter(v13);
@@ -2347,7 +2347,7 @@ void __59__SKPaymentQueue_Package__notifyObserversForNewStorefront___block_invok
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = productsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -2381,7 +2381,7 @@ void __59__SKPaymentQueue_Package__notifyObserversForNewStorefront___block_invok
                 objc_enumerationMutation(v7);
               }
 
-              v11 = [*(*(&v23 + 1) + 8 * j) object];
+              object = [*(*(&v23 + 1) + 8 * j) object];
               if (objc_opt_respondsToSelector())
               {
                 v12 = *(self->_internal + 9);
@@ -2389,8 +2389,8 @@ void __59__SKPaymentQueue_Package__notifyObserversForNewStorefront___block_invok
                 block[1] = 3221225472;
                 block[2] = __68__SKPaymentQueue_Package__notifyPurchaseIntentObserversForProducts___block_invoke;
                 block[3] = &unk_1E7B27BF8;
-                v19 = v11;
-                v20 = self;
+                v19 = object;
+                selfCopy = self;
                 v21 = v17;
                 v22 = v6;
                 dispatch_async(v12, block);
@@ -2440,10 +2440,10 @@ void __68__SKPaymentQueue_Package__notifyPurchaseIntentObserversForProducts___bl
   }
 }
 
-- (BOOL)shouldContinueTransaction:(id)a3 inNewStorefront:(id)a4
+- (BOOL)shouldContinueTransaction:(id)transaction inNewStorefront:(id)storefront
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  storefrontCopy = storefront;
   WeakRetained = objc_loadWeakRetained(self->_internal + 10);
   objc_sync_enter(WeakRetained);
   v9 = objc_loadWeakRetained(self->_internal + 10);
@@ -2451,7 +2451,7 @@ void __68__SKPaymentQueue_Package__notifyPurchaseIntentObserversForProducts___bl
 
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [v9 paymentQueue:self shouldContinueTransaction:v6 inStorefront:v7];
+    v10 = [v9 paymentQueue:self shouldContinueTransaction:transactionCopy inStorefront:storefrontCopy];
   }
 
   else
@@ -2464,17 +2464,17 @@ void __68__SKPaymentQueue_Package__notifyPurchaseIntentObserversForProducts___bl
 
 - (void)listenForPurchaseIntents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B2484C5C();
 }
 
 - (void)stopListeningForPurchaseIntents
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B24854F8();
 }
 
-- (void)forceSandboxForBundleIdentifier:(id)a3 untilDate:(id)a4
+- (void)forceSandboxForBundleIdentifier:(id)identifier untilDate:(id)date
 {
   v5 = sub_1B256D36C();
   v6 = *(v5 - 8);
@@ -2482,7 +2482,7 @@ void __68__SKPaymentQueue_Package__notifyPurchaseIntentObserversForProducts___bl
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B256D9BC();
   sub_1B256D33C();
-  v9 = self;
+  selfCopy = self;
   SKPaymentQueue.forceSandbox(forBundleIdentifier:until:)();
 
   (*(v6 + 8))(v8, v5);

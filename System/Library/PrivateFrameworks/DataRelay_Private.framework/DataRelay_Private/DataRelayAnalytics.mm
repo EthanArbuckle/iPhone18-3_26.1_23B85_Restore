@@ -9,8 +9,8 @@
 - (void)setDRSessionStarted;
 - (void)setHRMServiceSetupTime;
 - (void)submitDataRelaySessionAnalytics;
-- (void)updateRapportDiscoveryTime:(double)a3;
-- (void)updateSetupReturnStatus:(id)a3;
+- (void)updateRapportDiscoveryTime:(double)time;
+- (void)updateSetupReturnStatus:(id)status;
 @end
 
 @implementation DataRelayAnalytics
@@ -96,8 +96,8 @@ uint64_t __33__DataRelayAnalytics_getInstance__block_invoke()
 
 - (void)setDRSessionEnded
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_sessionStartTimestamp];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_sessionStartTimestamp];
   v5 = v4;
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
@@ -112,8 +112,8 @@ uint64_t __33__DataRelayAnalytics_getInstance__block_invoke()
   hrmServiceStartedTimestamp = self->_hrmServiceStartedTimestamp;
   self->_hrmServiceStartedTimestamp = v3;
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSinceDate:self->_sessionStartTimestamp];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_sessionStartTimestamp];
   v7 = v6;
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
@@ -126,8 +126,8 @@ uint64_t __33__DataRelayAnalytics_getInstance__block_invoke()
   dm6ServiceStartedTimestamp = self->_dm6ServiceStartedTimestamp;
   self->_dm6ServiceStartedTimestamp = v3;
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSinceDate:self->_sessionStartTimestamp];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_sessionStartTimestamp];
   v7 = v6;
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
@@ -136,8 +136,8 @@ uint64_t __33__DataRelayAnalytics_getInstance__block_invoke()
 
 - (void)markHRMFirstPacket
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_hrmServiceStartedTimestamp];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_hrmServiceStartedTimestamp];
   v5 = v4;
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
@@ -146,25 +146,25 @@ uint64_t __33__DataRelayAnalytics_getInstance__block_invoke()
 
 - (void)markDM6FirstPacket
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_dm6ServiceStartedTimestamp];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_dm6ServiceStartedTimestamp];
   v5 = v4;
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
   [(NSMutableDictionary *)self->_dataRelaySessionAnalyticDict setObject:v6 forKeyedSubscript:@"dm6TimeToFirstPacket"];
 }
 
-- (void)updateSetupReturnStatus:(id)a3
+- (void)updateSetupReturnStatus:(id)status
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a3, "code")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(status, "code")}];
   [(NSMutableDictionary *)self->_dataRelaySessionAnalyticDict setObject:v4 forKeyedSubscript:@"setupReturnStatus"];
 
   [(DataRelayAnalytics *)self submitDataRelaySessionAnalytics];
 }
 
-- (void)updateRapportDiscoveryTime:(double)a3
+- (void)updateRapportDiscoveryTime:(double)time
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   [(NSMutableDictionary *)self->_dataRelaySessionAnalyticDict setObject:v4 forKeyedSubscript:@"rapportDiscoveryTime"];
 }
 

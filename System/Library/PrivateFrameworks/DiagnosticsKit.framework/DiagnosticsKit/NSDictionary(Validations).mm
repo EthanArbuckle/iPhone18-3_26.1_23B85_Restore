@@ -26,7 +26,7 @@
 {
   v10 = a3;
   v11 = a5;
-  v12 = [a1 objectForKey:v10];
+  v12 = [self objectForKey:v10];
   if (!v12)
   {
     v15 = v11;
@@ -76,7 +76,7 @@ LABEL_12:
   v11 = a5;
   v12 = a3;
   v13 = [v10 valueForKeyPath:@"@max.length"];
-  v14 = [a1 dk_stringFromKey:v12 maxLength:objc_msgSend(v13 defaultValue:"unsignedIntegerValue") failed:{v11, a6}];
+  v14 = [self dk_stringFromKey:v12 maxLength:objc_msgSend(v13 defaultValue:"unsignedIntegerValue") failed:{v11, a6}];
 
   if (v14)
   {
@@ -111,7 +111,7 @@ LABEL_12:
   v13 = a4;
   v14 = a5;
   v15 = a6;
-  v16 = [a1 objectForKey:v12];
+  v16 = [self objectForKey:v12];
   if (!v16)
   {
     v21 = v15;
@@ -191,7 +191,7 @@ LABEL_17:
 - (uint64_t)dk_BOOLFromKey:()Validations defaultValue:failed:
 {
   v8 = a3;
-  v9 = [a1 objectForKey:v8];
+  v9 = [self objectForKey:v8];
   if (v9)
   {
     if (objc_opt_respondsToSelector())
@@ -221,7 +221,7 @@ LABEL_17:
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 objectForKey:v8];
+  v10 = [self objectForKey:v8];
   if (v10)
   {
     v11 = v10;
@@ -259,17 +259,17 @@ LABEL_17:
 - (id)dk_dictionaryFromKey:()Validations limitedToKeys:defaultValue:failed:
 {
   v10 = a4;
-  v11 = [a1 dk_dictionaryFromKey:a3 defaultValue:a5 failed:a6];
+  v11 = [self dk_dictionaryFromKey:a3 defaultValue:a5 failed:a6];
   v12 = v11;
   if (v11)
   {
     v13 = MEMORY[0x277CBEB58];
-    v14 = [v11 allKeys];
-    v15 = [v13 setWithArray:v14];
+    allKeys = [v11 allKeys];
+    v15 = [v13 setWithArray:allKeys];
 
     [v15 intersectSet:v10];
-    v16 = [v15 allObjects];
-    v17 = [v12 dictionaryWithValuesForKeys:v16];
+    allObjects = [v15 allObjects];
+    v17 = [v12 dictionaryWithValuesForKeys:allObjects];
   }
 
   else
@@ -287,7 +287,7 @@ LABEL_17:
   v15 = a4;
   v16 = a6;
   v17 = a8;
-  v18 = [a1 objectForKey:v14];
+  v18 = [self objectForKey:v14];
   if (!v18)
   {
     v20 = v16;
@@ -413,7 +413,7 @@ LABEL_28:
   v12 = a3;
   v13 = a4;
   v14 = a6;
-  v15 = [a1 objectForKey:v12];
+  v15 = [self objectForKey:v12];
   if (!v15)
   {
     v17 = v14;
@@ -510,7 +510,7 @@ LABEL_23:
   v27 = *MEMORY[0x277D85DE8];
   v12 = a3;
   v13 = a6;
-  v14 = [a1 objectForKey:v12];
+  v14 = [self objectForKey:v12];
   if (!v14)
   {
     v18 = v13;
@@ -585,7 +585,7 @@ LABEL_11:
 
 - (__CFString)dk_stringFromRequiredKey:()Validations maxLength:failed:
 {
-  v6 = [a1 dk_stringFromKey:a3 maxLength:a4 defaultValue:0 failed:a5];
+  v6 = [self dk_stringFromKey:a3 maxLength:a4 defaultValue:0 failed:a5];
   if (!v6)
   {
     if (a5)
@@ -602,23 +602,23 @@ LABEL_11:
 - (id)dk_stringFromRequiredKey:()Validations inSet:failed:
 {
   v8 = a4;
-  v9 = [a1 dk_stringFromKey:a3 inSet:v8 defaultValue:0 failed:a5];
-  if (!v9)
+  anyObject = [self dk_stringFromKey:a3 inSet:v8 defaultValue:0 failed:a5];
+  if (!anyObject)
   {
-    v9 = [v8 anyObject];
+    anyObject = [v8 anyObject];
     if (a5)
     {
       *a5 = 1;
     }
   }
 
-  return v9;
+  return anyObject;
 }
 
 - (id)dk_numberFromRequiredKey:()Validations lowerBound:upperBound:failed:
 {
   v10 = a4;
-  v11 = [a1 dk_numberFromKey:a3 lowerBound:v10 upperBound:a5 defaultValue:0 failed:a6];
+  v11 = [self dk_numberFromKey:a3 lowerBound:v10 upperBound:a5 defaultValue:0 failed:a6];
   if (!v11)
   {
     v11 = v10;
@@ -634,10 +634,10 @@ LABEL_11:
 - (uint64_t)dk_BOOLFromRequiredKey:()Validations failed:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
   if (v7)
   {
-    v8 = [a1 dk_BOOLFromKey:v6 defaultValue:0 failed:a4];
+    v8 = [self dk_BOOLFromKey:v6 defaultValue:0 failed:a4];
   }
 
   else
@@ -654,7 +654,7 @@ LABEL_11:
 
 - (id)dk_dictionaryFromRequiredKey:()Validations failed:
 {
-  v5 = [a1 dk_dictionaryFromKey:a3 defaultValue:0 failed:a4];
+  v5 = [self dk_dictionaryFromKey:a3 defaultValue:0 failed:a4];
   if (!v5)
   {
     if (a4)
@@ -671,17 +671,17 @@ LABEL_11:
 - (id)dk_dictionaryFromRequiredKey:()Validations limitedToKeys:failed:
 {
   v8 = a4;
-  v9 = [a1 dk_dictionaryFromRequiredKey:a3 failed:a5];
+  v9 = [self dk_dictionaryFromRequiredKey:a3 failed:a5];
   v10 = v9;
   if (v9)
   {
     v11 = MEMORY[0x277CBEB58];
-    v12 = [v9 allKeys];
-    v13 = [v11 setWithArray:v12];
+    allKeys = [v9 allKeys];
+    v13 = [v11 setWithArray:allKeys];
 
     [v13 intersectSet:v8];
-    v14 = [v13 allObjects];
-    v15 = [v10 dictionaryWithValuesForKeys:v14];
+    allObjects = [v13 allObjects];
+    v15 = [v10 dictionaryWithValuesForKeys:allObjects];
   }
 
   else
@@ -694,7 +694,7 @@ LABEL_11:
 
 - (id)dk_arrayFromRequiredKey:()Validations types:maxLength:failed:
 {
-  v7 = [a1 dk_arrayFromKey:a3 types:a4 maxLength:a5 defaultValue:0 failed:a6];
+  v7 = [self dk_arrayFromKey:a3 types:a4 maxLength:a5 defaultValue:0 failed:a6];
   if (!v7)
   {
     if (a6)
@@ -710,7 +710,7 @@ LABEL_11:
 
 - (id)dk_arrayFromRequiredKey:()Validations types:maxLength:failed:validator:
 {
-  v8 = [a1 dk_arrayFromKey:a3 types:a4 maxLength:a5 defaultValue:0 failed:a6 validator:a7];
+  v8 = [self dk_arrayFromKey:a3 types:a4 maxLength:a5 defaultValue:0 failed:a6 validator:a7];
   if (!v8)
   {
     if (a6)
@@ -726,7 +726,7 @@ LABEL_11:
 
 - (id)dk_arrayFromRequiredKey:()Validations inSet:maxLength:failed:
 {
-  v7 = [a1 dk_arrayFromKey:a3 inSet:a4 maxLength:a5 defaultValue:0 failed:a6];
+  v7 = [self dk_arrayFromKey:a3 inSet:a4 maxLength:a5 defaultValue:0 failed:a6];
   if (!v7)
   {
     if (a6)
@@ -742,17 +742,17 @@ LABEL_11:
 
 - (id)dk_dataFromRequiredKey:()Validations maxLength:failed:
 {
-  v6 = [a1 dk_dataFromKey:a3 minLength:0 maxLength:a4 defaultValue:0 failed:a5];
-  if (!v6)
+  data = [self dk_dataFromKey:a3 minLength:0 maxLength:a4 defaultValue:0 failed:a5];
+  if (!data)
   {
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     if (a5)
     {
       *a5 = 1;
     }
   }
 
-  return v6;
+  return data;
 }
 
 - (void)dk_stringFromKey:()Validations maxLength:defaultValue:failed:.cold.1()

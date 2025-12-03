@@ -1,26 +1,26 @@
 @interface PersonDetectionManager
-- (BOOL)isInCenterRectFromRow:(unint64_t)a3 column:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6;
-- (BOOL)isIntersectingWithCenter:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (CGPoint)project3dPoint:(CGSize)a3 viewSize:(int64_t)a4 interfaceOrientation:;
+- (BOOL)isInCenterRectFromRow:(unint64_t)row column:(unint64_t)column width:(unint64_t)width height:(unint64_t)height;
+- (BOOL)isIntersectingWithCenter:(id)center width:(unint64_t)width height:(unint64_t)height;
+- (CGPoint)project3dPoint:(CGSize)point viewSize:(int64_t)size interfaceOrientation:;
 - (CGSize)centerDetectionSize;
-- (PersonDetectionManager)initWithCenterDetectionSize:(CGSize)a3 labellingTolerance:(float)a4 significantAreaThresholdMM:(float)a5 closeDetectionFactor:(float)a6;
-- (double)unprojectPoint:(double)a3 atDepth:(double)a4 viewSize:(double)a5 interfaceOrientation:(double)a6;
-- (float)areaFactorForDepth:(float)a3 camera:(id)a4 orientation:(int64_t)a5;
-- (id)computeLabelIn:(id)a3 x:(unint64_t)a4 y:(unint64_t)a5 depth:(float)a6;
-- (id)getDetectedPersonsFromBuffer:(__CVBuffer *)a3 camera:(id)a4 interfaceOrientation:(int64_t)a5;
-- (unsigned)findLabel:(unsigned __int16)a3 inLabels:(id)a4;
-- (unsigned)unionLabel:(unsigned __int16)a3 with:(unsigned __int16)a4 inLabels:(id)a5;
-- (void)computePersonDetectionFromFrame:(id)a3 interfaceOrientation:(int64_t)a4;
+- (PersonDetectionManager)initWithCenterDetectionSize:(CGSize)size labellingTolerance:(float)tolerance significantAreaThresholdMM:(float)m closeDetectionFactor:(float)factor;
+- (double)unprojectPoint:(double)point atDepth:(double)depth viewSize:(double)size interfaceOrientation:(double)orientation;
+- (float)areaFactorForDepth:(float)depth camera:(id)camera orientation:(int64_t)orientation;
+- (id)computeLabelIn:(id)in x:(unint64_t)x y:(unint64_t)y depth:(float)depth;
+- (id)getDetectedPersonsFromBuffer:(__CVBuffer *)buffer camera:(id)camera interfaceOrientation:(int64_t)orientation;
+- (unsigned)findLabel:(unsigned __int16)label inLabels:(id)labels;
+- (unsigned)unionLabel:(unsigned __int16)label with:(unsigned __int16)with inLabels:(id)labels;
+- (void)computePersonDetectionFromFrame:(id)frame interfaceOrientation:(int64_t)orientation;
 - (void)dealloc;
-- (void)updateLabel:(id)a3 x:(unint64_t)a4 y:(unint64_t)a5 depth:(float)a6;
+- (void)updateLabel:(id)label x:(unint64_t)x y:(unint64_t)y depth:(float)depth;
 @end
 
 @implementation PersonDetectionManager
 
-- (PersonDetectionManager)initWithCenterDetectionSize:(CGSize)a3 labellingTolerance:(float)a4 significantAreaThresholdMM:(float)a5 closeDetectionFactor:(float)a6
+- (PersonDetectionManager)initWithCenterDetectionSize:(CGSize)size labellingTolerance:(float)tolerance significantAreaThresholdMM:(float)m closeDetectionFactor:(float)factor
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17.receiver = self;
   v17.super_class = PersonDetectionManager;
   v11 = [(PersonDetectionManager *)&v17 init];
@@ -37,9 +37,9 @@
     v12->_maxLabel = 0;
     v12->_centerDetectionSize.width = width;
     v12->_centerDetectionSize.height = height;
-    v12->_labellingTolerance = a4;
-    v12->_significantAreaThresholdMM = a5;
-    v12->_closeDetectionFactor = a6;
+    v12->_labellingTolerance = tolerance;
+    v12->_significantAreaThresholdMM = m;
+    v12->_closeDetectionFactor = factor;
     v15 = v12;
   }
 
@@ -59,61 +59,61 @@
   [(PersonDetectionManager *)&v4 dealloc];
 }
 
-- (void)computePersonDetectionFromFrame:(id)a3 interfaceOrientation:(int64_t)a4
+- (void)computePersonDetectionFromFrame:(id)frame interfaceOrientation:(int64_t)orientation
 {
-  v22 = a3;
-  if (v22)
+  frameCopy = frame;
+  if (frameCopy)
   {
     if (self->_arCamera)
     {
-      v6 = [v22 camera];
-      [v6 intrinsics];
+      camera = [frameCopy camera];
+      [camera intrinsics];
       [(ARCamera *)self->_arCamera setIntrinsics:?];
 
-      v7 = [v22 camera];
-      [v7 imageResolution];
+      camera2 = [frameCopy camera];
+      [camera2 imageResolution];
       [(ARCamera *)self->_arCamera setImageResolution:?];
     }
 
     else
     {
       v8 = objc_alloc(MEMORY[0x277CE5238]);
-      v7 = [v22 camera];
-      [v7 intrinsics];
+      camera2 = [frameCopy camera];
+      [camera2 intrinsics];
       v20 = v10;
       v21 = v9;
       v19 = v11;
-      v12 = [v22 camera];
-      [v12 imageResolution];
+      camera3 = [frameCopy camera];
+      [camera3 imageResolution];
       v15 = [v8 initWithIntrinsics:v21 imageResolution:{v20, v19, v13, v14}];
       arCamera = self->_arCamera;
       self->_arCamera = v15;
     }
 
-    v17 = -[PersonDetectionManager getDetectedPersonsFromBuffer:camera:interfaceOrientation:](self, "getDetectedPersonsFromBuffer:camera:interfaceOrientation:", [v22 estimatedDepthData], self->_arCamera, a4);
+    v17 = -[PersonDetectionManager getDetectedPersonsFromBuffer:camera:interfaceOrientation:](self, "getDetectedPersonsFromBuffer:camera:interfaceOrientation:", [frameCopy estimatedDepthData], self->_arCamera, orientation);
     detectedPersonArray = self->_detectedPersonArray;
     self->_detectedPersonArray = v17;
   }
 }
 
-- (double)unprojectPoint:(double)a3 atDepth:(double)a4 viewSize:(double)a5 interfaceOrientation:(double)a6
+- (double)unprojectPoint:(double)point atDepth:(double)depth viewSize:(double)size interfaceOrientation:(double)orientation
 {
-  v6 = *(a1 + 40);
+  v6 = *(self + 40);
   if (!v6)
   {
     return 0.0;
   }
 
-  [v6 unprojectPoint:a2 ontoPlaneWithTransform:a3 orientation:*&_PromotedConst viewportSize:{0.0, -0.0078125, 0.0, a5, a6}];
+  [v6 unprojectPoint:a2 ontoPlaneWithTransform:point orientation:*&_PromotedConst viewportSize:{0.0, -0.0078125, 0.0, size, orientation}];
   return result;
 }
 
-- (CGPoint)project3dPoint:(CGSize)a3 viewSize:(int64_t)a4 interfaceOrientation:
+- (CGPoint)project3dPoint:(CGSize)point viewSize:(int64_t)size interfaceOrientation:
 {
   arCamera = self->_arCamera;
   if (arCamera)
   {
-    [(ARCamera *)arCamera projectPoint:a4 orientation:a3.width viewportSize:a3.height];
+    [(ARCamera *)arCamera projectPoint:size orientation:point.width viewportSize:point.height];
   }
 
   else
@@ -127,7 +127,7 @@
   return result;
 }
 
-- (id)getDetectedPersonsFromBuffer:(__CVBuffer *)a3 camera:(id)a4 interfaceOrientation:(int64_t)a5
+- (id)getDetectedPersonsFromBuffer:(__CVBuffer *)buffer camera:(id)camera interfaceOrientation:(int64_t)orientation
 {
   v5 = MEMORY[0x28223BE20](self);
   v84 = v6;
@@ -262,18 +262,18 @@
                       v44 = 0;
                     }
 
-                    v43 = [v9 unionLabel:v41 with:v44 inLabels:{v86, v22, v34}];
+                    alias = [v9 unionLabel:v41 with:v44 inLabels:{v86, v22, v34}];
                     goto LABEL_47;
                   }
 
                   if (!obj)
                   {
 LABEL_41:
-                    v43 = 0;
+                    alias = 0;
                     goto LABEL_47;
                   }
 
-                  v43 = *&obj[2 * v28];
+                  alias = *&obj[2 * v28];
                 }
 
                 else
@@ -283,19 +283,19 @@ LABEL_41:
                     goto LABEL_41;
                   }
 
-                  v43 = *v32;
+                  alias = *v32;
                 }
               }
 
               else
               {
                 v42 = [v9 computeLabelIn:v86 x:v28 y:v23 depth:{v22, v34}];
-                v43 = [v42 alias];
+                alias = [v42 alias];
               }
 
 LABEL_47:
-              *(v32 + 1) = v43;
-              v45 = [v86 objectAtIndexedSubscript:v43];
+              *(v32 + 1) = alias;
+              v45 = [v86 objectAtIndexedSubscript:alias];
               *&v46 = *v33;
               [v9 updateLabel:v45 x:v28 y:v23 depth:v46];
 
@@ -381,18 +381,18 @@ LABEL_48:
                     v58 = *(*(&v87 + 1) + 8 * k);
                     if ([v58 computeArea] >= 0x19)
                     {
-                      v59 = [v58 minX];
-                      v60 = [v58 maxX];
-                      v61 = [v58 minY];
-                      v62 = [v58 maxY];
+                      minX = [v58 minX];
+                      maxX = [v58 maxX];
+                      minY = [v58 minY];
+                      maxY = [v58 maxY];
                       v63 = [DetectedPersonData alloc];
                       [v58 depth];
                       LODWORD(v65) = v64;
-                      v66 = [(DetectedPersonData *)v63 initWithNormalizedMinX:v81 maxX:v84 minY:v59 / width maxY:v60 / width depth:v61 / height camera:v62 / height orientation:v65];
-                      v67 = [(DetectedPersonData *)v66 computeArea];
+                      v66 = [(DetectedPersonData *)v63 initWithNormalizedMinX:v81 maxX:v84 minY:minX / width maxY:maxX / width depth:minY / height camera:maxY / height orientation:v65];
+                      computeArea = [(DetectedPersonData *)v66 computeArea];
                       [v58 depth];
                       [v9 areaFactorForDepth:*(v9 + 40) camera:v84 orientation:?];
-                      if ((v68 * *(v9 + 16)) > v67)
+                      if ((v68 * *(v9 + 16)) > computeArea)
                       {
                         [(DetectedPersonData *)v66 setIsEnabled:0];
                       }
@@ -464,104 +464,104 @@ LABEL_7:
   return v8;
 }
 
-- (unsigned)findLabel:(unsigned __int16)a3 inLabels:(id)a4
+- (unsigned)findLabel:(unsigned __int16)label inLabels:(id)labels
 {
-  v5 = a4;
-  v6 = a3;
+  labelsCopy = labels;
+  labelCopy = label;
   while (1)
   {
-    v7 = [v5 objectAtIndexedSubscript:v6];
-    v8 = [v7 alias];
+    v7 = [labelsCopy objectAtIndexedSubscript:labelCopy];
+    alias = [v7 alias];
 
-    if (v8 == v6)
+    if (alias == labelCopy)
     {
       break;
     }
 
-    v9 = [v5 objectAtIndexedSubscript:v6];
-    v6 = [v9 alias];
+    v9 = [labelsCopy objectAtIndexedSubscript:labelCopy];
+    labelCopy = [v9 alias];
   }
 
   while (1)
   {
-    v12 = a3;
-    v13 = [v5 objectAtIndexedSubscript:a3];
-    v14 = [v13 alias];
+    labelCopy2 = label;
+    v13 = [labelsCopy objectAtIndexedSubscript:label];
+    alias2 = [v13 alias];
 
-    if (v14 == v12)
+    if (alias2 == labelCopy2)
     {
       break;
     }
 
-    v10 = [v5 objectAtIndexedSubscript:v12];
-    a3 = [v10 alias];
+    v10 = [labelsCopy objectAtIndexedSubscript:labelCopy2];
+    label = [v10 alias];
 
-    v11 = [v5 objectAtIndexedSubscript:v12];
-    [v11 setAlias:v6];
+    v11 = [labelsCopy objectAtIndexedSubscript:labelCopy2];
+    [v11 setAlias:labelCopy];
   }
 
-  return v6;
+  return labelCopy;
 }
 
-- (unsigned)unionLabel:(unsigned __int16)a3 with:(unsigned __int16)a4 inLabels:(id)a5
+- (unsigned)unionLabel:(unsigned __int16)label with:(unsigned __int16)with inLabels:(id)labels
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PersonDetectionManager *)self findLabel:v6 inLabels:v8];
-  v10 = [(PersonDetectionManager *)self findLabel:v5 inLabels:v8];
-  v11 = [v8 objectAtIndexedSubscript:v9];
-  v12 = [v8 objectAtIndexedSubscript:v10];
+  withCopy = with;
+  labelCopy = label;
+  labelsCopy = labels;
+  v9 = [(PersonDetectionManager *)self findLabel:labelCopy inLabels:labelsCopy];
+  v10 = [(PersonDetectionManager *)self findLabel:withCopy inLabels:labelsCopy];
+  v11 = [labelsCopy objectAtIndexedSubscript:v9];
+  v12 = [labelsCopy objectAtIndexedSubscript:v10];
   [v11 setAlias:v10];
-  v13 = [v11 minX];
-  v14 = [v12 minX];
-  if (v13 >= v14)
+  minX = [v11 minX];
+  minX2 = [v12 minX];
+  if (minX >= minX2)
   {
-    v15 = v14;
+    v15 = minX2;
   }
 
   else
   {
-    v15 = v13;
+    v15 = minX;
   }
 
   [v12 setMinX:v15];
-  v16 = [v11 maxX];
-  v17 = [v12 maxX];
-  if (v16 <= v17)
+  maxX = [v11 maxX];
+  maxX2 = [v12 maxX];
+  if (maxX <= maxX2)
   {
-    v18 = v17;
+    v18 = maxX2;
   }
 
   else
   {
-    v18 = v16;
+    v18 = maxX;
   }
 
   [v12 setMaxX:v18];
-  v19 = [v11 minY];
-  v20 = [v12 minY];
-  if (v19 >= v20)
+  minY = [v11 minY];
+  minY2 = [v12 minY];
+  if (minY >= minY2)
   {
-    v21 = v20;
+    v21 = minY2;
   }
 
   else
   {
-    v21 = v19;
+    v21 = minY;
   }
 
   [v12 setMinY:v21];
-  v22 = [v11 maxY];
-  v23 = [v12 maxY];
-  if (v22 <= v23)
+  maxY = [v11 maxY];
+  maxY2 = [v12 maxY];
+  if (maxY <= maxY2)
   {
-    v24 = v23;
+    v24 = maxY2;
   }
 
   else
   {
-    v24 = v22;
+    v24 = maxY;
   }
 
   [v12 setMaxY:v24];
@@ -569,102 +569,102 @@ LABEL_7:
   return v10;
 }
 
-- (id)computeLabelIn:(id)a3 x:(unint64_t)a4 y:(unint64_t)a5 depth:(float)a6
+- (id)computeLabelIn:(id)in x:(unint64_t)x y:(unint64_t)y depth:(float)depth
 {
-  v8 = a3;
-  v9 = [v8 objectAtIndexedSubscript:0];
+  inCopy = in;
+  v9 = [inCopy objectAtIndexedSubscript:0];
   [v9 setAlias:{(objc_msgSend(v9, "alias") + 1)}];
 
-  v10 = [v8 objectAtIndexedSubscript:0];
-  v11 = [v8 objectAtIndexedSubscript:{objc_msgSend(v10, "alias")}];
+  v10 = [inCopy objectAtIndexedSubscript:0];
+  v11 = [inCopy objectAtIndexedSubscript:{objc_msgSend(v10, "alias")}];
 
-  v12 = [v8 objectAtIndexedSubscript:0];
+  v12 = [inCopy objectAtIndexedSubscript:0];
   [v11 setAlias:{objc_msgSend(v12, "alias")}];
 
-  [v11 setMinX:a4];
-  [v11 setMaxX:a4];
-  [v11 setMinY:a5];
-  [v11 setMaxY:a5];
+  [v11 setMinX:x];
+  [v11 setMaxX:x];
+  [v11 setMinY:y];
+  [v11 setMaxY:y];
 
   return v11;
 }
 
-- (void)updateLabel:(id)a3 x:(unint64_t)a4 y:(unint64_t)a5 depth:(float)a6
+- (void)updateLabel:(id)label x:(unint64_t)x y:(unint64_t)y depth:(float)depth
 {
-  v18 = a3;
-  v9 = [v18 minX];
-  if (v9 >= a4)
+  labelCopy = label;
+  minX = [labelCopy minX];
+  if (minX >= x)
   {
-    v10 = a4;
+    xCopy = x;
   }
 
   else
   {
-    v10 = v9;
+    xCopy = minX;
   }
 
-  [v18 setMinX:v10];
-  v11 = [v18 maxX];
-  if (v11 <= a4)
+  [labelCopy setMinX:xCopy];
+  maxX = [labelCopy maxX];
+  if (maxX <= x)
   {
-    v12 = a4;
+    xCopy2 = x;
   }
 
   else
   {
-    v12 = v11;
+    xCopy2 = maxX;
   }
 
-  [v18 setMaxX:v12];
-  v13 = [v18 minY];
-  if (v13 >= a5)
+  [labelCopy setMaxX:xCopy2];
+  minY = [labelCopy minY];
+  if (minY >= y)
   {
-    v14 = a5;
+    yCopy = y;
   }
 
   else
   {
-    v14 = v13;
+    yCopy = minY;
   }
 
-  [v18 setMinY:v14];
-  v15 = [v18 maxY];
-  if (v15 <= a5)
+  [labelCopy setMinY:yCopy];
+  maxY = [labelCopy maxY];
+  if (maxY <= y)
   {
-    v16 = a5;
+    yCopy2 = y;
   }
 
   else
   {
-    v16 = v15;
+    yCopy2 = maxY;
   }
 
-  [v18 setMaxY:v16];
-  *&v17 = a6;
-  [v18 setDepth:v17];
+  [labelCopy setMaxY:yCopy2];
+  *&v17 = depth;
+  [labelCopy setDepth:v17];
 }
 
-- (BOOL)isIntersectingWithCenter:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (BOOL)isIntersectingWithCenter:(id)center width:(unint64_t)width height:(unint64_t)height
 {
-  v8 = a3;
+  centerCopy = center;
   width = self->_centerDetectionSize.width;
   height = self->_centerDetectionSize.height;
-  [v8 screenRect];
-  v13.size.width = width / a4;
+  [centerCopy screenRect];
+  v13.size.width = width / width;
   v13.origin.x = v13.size.width * -0.5 + 0.5;
-  v13.size.height = height / a5;
+  v13.size.height = height / height;
   v13.origin.y = v13.size.height * -0.5 + 0.5;
-  LOBYTE(a5) = CGRectIntersectsRect(v12, v13);
+  LOBYTE(height) = CGRectIntersectsRect(v12, v13);
 
-  return a5;
+  return height;
 }
 
-- (BOOL)isInCenterRectFromRow:(unint64_t)a3 column:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6
+- (BOOL)isInCenterRectFromRow:(unint64_t)row column:(unint64_t)column width:(unint64_t)width height:(unint64_t)height
 {
-  v6 = a4 - a5 / 2;
+  v6 = column - width / 2;
   if (v6 < 0)
   {
-    v6 = a5 / 2 - a4;
+    v6 = width / 2 - column;
   }
 
   if (v6 > (self->_centerDetectionSize.width * 0.5))
@@ -672,26 +672,26 @@ LABEL_7:
     return 0;
   }
 
-  v8 = a3 - a6 / 2;
+  v8 = row - height / 2;
   if (v8 < 0)
   {
-    v8 = a6 / 2 - a3;
+    v8 = height / 2 - row;
   }
 
   return v8 <= (self->_centerDetectionSize.height * 0.5);
 }
 
-- (float)areaFactorForDepth:(float)a3 camera:(id)a4 orientation:(int64_t)a5
+- (float)areaFactorForDepth:(float)depth camera:(id)camera orientation:(int64_t)orientation
 {
-  v8 = a4;
+  cameraCopy = camera;
   v9 = [DetectedPersonData alloc];
-  *&v10 = a3;
-  v11 = [(DetectedPersonData *)v9 initWithNormalizedMinX:v8 maxX:a5 minY:0.0 maxY:1.0 depth:0.0 camera:1.0 orientation:v10];
-  v12 = [(DetectedPersonData *)v11 computeArea];
+  *&v10 = depth;
+  v11 = [(DetectedPersonData *)v9 initWithNormalizedMinX:cameraCopy maxX:orientation minY:0.0 maxY:1.0 depth:0.0 camera:1.0 orientation:v10];
+  computeArea = [(DetectedPersonData *)v11 computeArea];
   closeDetectionFactor = self->_closeDetectionFactor;
-  if ((v12 / (self->_significantAreaThresholdMM * closeDetectionFactor)) <= 1.0)
+  if ((computeArea / (self->_significantAreaThresholdMM * closeDetectionFactor)) <= 1.0)
   {
-    v14 = v12 / (self->_significantAreaThresholdMM * closeDetectionFactor);
+    v14 = computeArea / (self->_significantAreaThresholdMM * closeDetectionFactor);
   }
 
   else

@@ -1,20 +1,20 @@
 @interface HMDApplicationInfo
-+ (id)applicationInfoForBundleIdentifier:(id)a3;
-+ (id)applicationInfoForBundleURL:(id)a3;
-+ (id)clientIdentifierSaltForBundleIdentifier:(id)a3 error:(id *)a4;
++ (id)applicationInfoForBundleIdentifier:(id)identifier;
++ (id)applicationInfoForBundleURL:(id)l;
++ (id)clientIdentifierSaltForBundleIdentifier:(id)identifier error:(id *)error;
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDApplicationInfo)init;
-- (HMDApplicationInfo)initWithBundleIdentifier:(id)a3 bundleURL:(id)a4;
+- (HMDApplicationInfo)initWithBundleIdentifier:(id)identifier bundleURL:(id)l;
 - (NSArray)processes;
 - (NSData)vendorIdentifier;
 - (NSURL)bundleURL;
 - (id)attributeDescriptions;
-- (id)clientIdentifierSalt:(id *)a3;
+- (id)clientIdentifierSalt:(id *)salt;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)addProcess:(id)a3;
-- (void)removeProcess:(id)a3;
+- (void)addProcess:(id)process;
+- (void)removeProcess:(id)process;
 @end
 
 @implementation HMDApplicationInfo
@@ -23,13 +23,13 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDApplicationInfo *)self bundleIdentifier];
-  v5 = [v3 initWithName:@"Bundle Identifier" value:v4];
+  bundleIdentifier = [(HMDApplicationInfo *)self bundleIdentifier];
+  v5 = [v3 initWithName:@"Bundle Identifier" value:bundleIdentifier];
   v13[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDApplicationInfo *)self vendorIdentifier];
-  v8 = [MEMORY[0x277D0F8D8] defaultFormatter];
-  v9 = [v6 initWithName:@"Vendor Identifier" value:v7 options:1 formatter:v8];
+  vendorIdentifier = [(HMDApplicationInfo *)self vendorIdentifier];
+  defaultFormatter = [MEMORY[0x277D0F8D8] defaultFormatter];
+  v9 = [v6 initWithName:@"Vendor Identifier" value:vendorIdentifier options:1 formatter:defaultFormatter];
   v13[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
@@ -44,12 +44,12 @@
   if (!bundleURL)
   {
     v4 = MEMORY[0x277CCA8D8];
-    v5 = [(HMDApplicationInfo *)self bundleIdentifier];
-    v6 = [v4 bundleWithIdentifier:v5];
+    bundleIdentifier = [(HMDApplicationInfo *)self bundleIdentifier];
+    v6 = [v4 bundleWithIdentifier:bundleIdentifier];
 
-    v7 = [v6 bundleURL];
+    bundleURL = [v6 bundleURL];
     v8 = self->_bundleURL;
-    self->_bundleURL = v7;
+    self->_bundleURL = bundleURL;
 
     bundleURL = self->_bundleURL;
   }
@@ -67,49 +67,49 @@
   else
   {
     v4 = +[HMDApplicationVendorIDStore sharedStore];
-    v5 = [(HMDApplicationInfo *)self bundleIdentifier];
-    v3 = [v4 vendorIDForApplicationBundleID:v5];
+    bundleIdentifier = [(HMDApplicationInfo *)self bundleIdentifier];
+    v3 = [v4 vendorIDForApplicationBundleID:bundleIdentifier];
   }
 
   return v3;
 }
 
-- (void)removeProcess:(id)a3
+- (void)removeProcess:(id)process
 {
-  v4 = a3;
-  if (v4)
+  processCopy = process;
+  if (processCopy)
   {
-    v5 = v4;
+    v5 = processCopy;
     os_unfair_lock_lock_with_options();
     [(NSHashTable *)self->_processes removeObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    processCopy = v5;
   }
 }
 
-- (void)addProcess:(id)a3
+- (void)addProcess:(id)process
 {
-  v4 = a3;
-  if (v4)
+  processCopy = process;
+  if (processCopy)
   {
-    v5 = v4;
+    v5 = processCopy;
     os_unfair_lock_lock_with_options();
     [(NSHashTable *)self->_processes addObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    processCopy = v5;
   }
 }
 
 - (NSArray)processes
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSHashTable *)self->_processes allObjects];
+  allObjects = [(NSHashTable *)self->_processes allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (id)clientIdentifierSalt:(id *)a3
+- (id)clientIdentifierSalt:(id *)salt
 {
   if ([(HMDApplicationInfo *)self isEntitledForSPIAccess])
   {
@@ -118,8 +118,8 @@
 
   else
   {
-    v6 = [(HMDApplicationInfo *)self vendorIdentifier];
-    v5 = [HMDApplicationInfo clientIdentifierSaltWithVendorIdentifier:v6 deviceSpecific:1 error:a3];
+    vendorIdentifier = [(HMDApplicationInfo *)self vendorIdentifier];
+    v5 = [HMDApplicationInfo clientIdentifierSaltWithVendorIdentifier:vendorIdentifier deviceSpecific:1 error:salt];
   }
 
   return v5;
@@ -128,16 +128,16 @@
 - (id)shortDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDApplicationInfo *)self bundleIdentifier];
-  v4 = [v2 stringWithFormat:@"Application %@", v3];
+  bundleIdentifier = [(HMDApplicationInfo *)self bundleIdentifier];
+  v4 = [v2 stringWithFormat:@"Application %@", bundleIdentifier];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -147,7 +147,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -158,9 +158,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDApplicationInfo *)self bundleIdentifier];
-      v8 = [(HMDApplicationInfo *)v6 bundleIdentifier];
-      v9 = [v7 isEqualToString:v8];
+      bundleIdentifier = [(HMDApplicationInfo *)self bundleIdentifier];
+      bundleIdentifier2 = [(HMDApplicationInfo *)v6 bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:bundleIdentifier2];
     }
 
     else
@@ -174,23 +174,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDApplicationInfo *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(HMDApplicationInfo *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
 
-- (HMDApplicationInfo)initWithBundleIdentifier:(id)a3 bundleURL:(id)a4
+- (HMDApplicationInfo)initWithBundleIdentifier:(id)identifier bundleURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  lCopy = l;
+  if (!identifierCopy)
   {
     v17 = _HMFPreconditionFailure();
     [(HMDApplicationInfo *)v17 init];
   }
 
-  v8 = v7;
+  v8 = lCopy;
   v19.receiver = self;
   v19.super_class = HMDApplicationInfo;
   v9 = [(HMDApplicationInfo *)&v19 init];
@@ -200,14 +200,14 @@
     bundleURL = v9->_bundleURL;
     v9->_bundleURL = v10;
 
-    v12 = [v6 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v12;
 
     v9->_independent = 1;
-    v14 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     processes = v9->_processes;
-    v9->_processes = v14;
+    v9->_processes = weakObjectsHashTable;
   }
 
   return v9;
@@ -246,30 +246,30 @@ void __33__HMDApplicationInfo_logCategory__block_invoke()
   logCategory__hmf_once_v9_130326 = v1;
 }
 
-+ (id)clientIdentifierSaltForBundleIdentifier:(id)a3 error:(id *)a4
++ (id)clientIdentifierSaltForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[HMDApplicationVendorIDStore sharedStore];
-  v7 = [v6 vendorIDForApplicationBundleID:v5];
+  v7 = [v6 vendorIDForApplicationBundleID:identifierCopy];
 
-  v8 = [HMDApplicationInfo clientIdentifierSaltWithVendorIdentifier:v7 deviceSpecific:1 error:a4];
+  v8 = [HMDApplicationInfo clientIdentifierSaltWithVendorIdentifier:v7 deviceSpecific:1 error:error];
 
   return v8;
 }
 
-+ (id)applicationInfoForBundleIdentifier:(id)a3
++ (id)applicationInfoForBundleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v16 = 0;
     goto LABEL_11;
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v4 error:0];
+  v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:identifierCopy error:0];
   v6 = objc_autoreleasePoolPush();
-  v7 = a1;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -277,7 +277,7 @@ void __33__HMDApplicationInfo_logCategory__block_invoke()
     *buf = 138543874;
     v21 = v9;
     v22 = 2112;
-    v23 = v4;
+    v23 = identifierCopy;
     v24 = 2112;
     v25 = v5;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Initializing application info with URL: %@, extension: %@", buf, 0x20u);
@@ -285,12 +285,12 @@ void __33__HMDApplicationInfo_logCategory__block_invoke()
 
   objc_autoreleasePoolPop(v6);
   v19 = 0;
-  v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v19];
+  v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v19];
   v11 = v19;
-  v12 = [v10 applicationState];
-  v13 = [v12 isValid];
+  applicationState = [v10 applicationState];
+  isValid = [applicationState isValid];
 
-  if (v13)
+  if (isValid)
   {
     v14 = [__HMDApplicationInfo alloc];
     v15 = v10;
@@ -317,19 +317,19 @@ LABEL_11:
   return v16;
 }
 
-+ (id)applicationInfoForBundleURL:(id)a3
++ (id)applicationInfoForBundleURL:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v16 = 0;
     goto LABEL_11;
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithURL:v4 error:0];
+  v5 = [objc_alloc(MEMORY[0x277CC1E50]) initWithURL:lCopy error:0];
   v6 = objc_autoreleasePoolPush();
-  v7 = a1;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -337,7 +337,7 @@ LABEL_11:
     *buf = 138543874;
     v21 = v9;
     v22 = 2112;
-    v23 = v4;
+    v23 = lCopy;
     v24 = 2112;
     v25 = v5;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Initializing application info with URL: %@, extension: %@", buf, 0x20u);
@@ -345,12 +345,12 @@ LABEL_11:
 
   objc_autoreleasePoolPop(v6);
   v19 = 0;
-  v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithURL:v4 allowPlaceholder:0 error:&v19];
+  v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithURL:lCopy allowPlaceholder:0 error:&v19];
   v11 = v19;
-  v12 = [v10 applicationState];
-  v13 = [v12 isValid];
+  applicationState = [v10 applicationState];
+  isValid = [applicationState isValid];
 
-  if (v13)
+  if (isValid)
   {
     v14 = [__HMDApplicationInfo alloc];
     v15 = v10;

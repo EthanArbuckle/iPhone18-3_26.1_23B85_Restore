@@ -1,88 +1,88 @@
 @interface PKBeacon
-- (PKBeacon)initWithCoder:(id)a3;
+- (PKBeacon)initWithCoder:(id)coder;
 - (id)description;
 - (id)proximityUUIDAsString;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProximityUUIDWithString:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProximityUUIDWithString:(id)string;
 @end
 
 @implementation PKBeacon
 
-- (void)setProximityUUIDWithString:(id)a3
+- (void)setProximityUUIDWithString:(id)string
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithUUIDString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithUUIDString:stringCopy];
 
   [(PKBeacon *)self setProximityUUID:v6];
 }
 
 - (id)proximityUUIDAsString
 {
-  v2 = [(PKBeacon *)self proximityUUID];
-  v3 = [v2 UUIDString];
+  proximityUUID = [(PKBeacon *)self proximityUUID];
+  uUIDString = [proximityUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PKBeacon *)self proximityUUID];
-  v5 = [v4 UUIDString];
-  v6 = [(PKBeacon *)self major];
-  v7 = [v6 stringValue];
-  v8 = [(PKBeacon *)self minor];
-  v9 = [v8 stringValue];
-  v10 = [v3 stringWithFormat:@"(uuid:%@ major:%@ minor:%@)", v5, v7, v9];
+  proximityUUID = [(PKBeacon *)self proximityUUID];
+  uUIDString = [proximityUUID UUIDString];
+  major = [(PKBeacon *)self major];
+  stringValue = [major stringValue];
+  minor = [(PKBeacon *)self minor];
+  stringValue2 = [minor stringValue];
+  v10 = [v3 stringWithFormat:@"(uuid:%@ major:%@ minor:%@)", uUIDString, stringValue, stringValue2];
 
   return v10;
 }
 
-- (PKBeacon)initWithCoder:(id)a3
+- (PKBeacon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKBeacon;
   v5 = [(PKBeacon *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proximityUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proximityUUID"];
     [(PKBeacon *)v5 setProximityUUID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"major"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"major"];
     [(PKBeacon *)v5 setMajor:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minor"];
     [(PKBeacon *)v5 setMinor:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(PKBeacon *)v5 setName:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevantText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevantText"];
     [(PKBeacon *)v5 setRelevantText:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKBeacon *)self proximityUUID];
-  [v4 encodeObject:v5 forKey:@"proximityUUID"];
+  coderCopy = coder;
+  proximityUUID = [(PKBeacon *)self proximityUUID];
+  [coderCopy encodeObject:proximityUUID forKey:@"proximityUUID"];
 
-  v6 = [(PKBeacon *)self major];
-  [v4 encodeObject:v6 forKey:@"major"];
+  major = [(PKBeacon *)self major];
+  [coderCopy encodeObject:major forKey:@"major"];
 
-  v7 = [(PKBeacon *)self minor];
-  [v4 encodeObject:v7 forKey:@"minor"];
+  minor = [(PKBeacon *)self minor];
+  [coderCopy encodeObject:minor forKey:@"minor"];
 
-  v8 = [(PKBeacon *)self name];
-  [v4 encodeObject:v8 forKey:@"name"];
+  name = [(PKBeacon *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v9 = [(PKBeacon *)self relevantText];
-  [v4 encodeObject:v9 forKey:@"relevantText"];
+  relevantText = [(PKBeacon *)self relevantText];
+  [coderCopy encodeObject:relevantText forKey:@"relevantText"];
 }
 
 @end

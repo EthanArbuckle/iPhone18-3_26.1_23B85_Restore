@@ -1,41 +1,41 @@
 @interface ODDSiriSchemaODDwatchOSAssistantProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsSiriTryItCompleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsSiriTryItCompleted:(BOOL)completed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDwatchOSAssistantProperties
 
-- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDwatchOSAssistantProperties;
   v5 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isRaiseToSpeakEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isRaiseToSpeakEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDwatchOSAssistantProperties setIsRaiseToSpeakEnabled:](v5, "setIsRaiseToSpeakEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isSiriTryItCompleted"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isSiriTryItCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDwatchOSAssistantProperties setIsSiriTryItCompleted:](v5, "setIsSiriTryItCompleted:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"headGestures"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"headGestures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDwatchOSAssistantProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_headGestures)
   {
-    v4 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    headGestures = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
+    dictionaryRepresentation = [headGestures dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"headGestures"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"headGestures"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"headGestures"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"headGestures"];
     }
   }
 
@@ -106,7 +106,7 @@
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDwatchOSAssistantProperties isRaiseToSpeakEnabled](self, "isRaiseToSpeakEnabled")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isRaiseToSpeakEnabled"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isRaiseToSpeakEnabled"];
 
     has = self->_has;
   }
@@ -114,12 +114,12 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDwatchOSAssistantProperties isSiriTryItCompleted](self, "isSiriTryItCompleted")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isSiriTryItCompleted"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isSiriTryItCompleted"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -148,16 +148,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(ODDSiriSchemaODDHeadGestureProperties *)self->_headGestures hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -166,27 +166,27 @@ LABEL_3:
   if (*&has)
   {
     isRaiseToSpeakEnabled = self->_isRaiseToSpeakEnabled;
-    if (isRaiseToSpeakEnabled != [v4 isRaiseToSpeakEnabled])
+    if (isRaiseToSpeakEnabled != [equalCopy isRaiseToSpeakEnabled])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (isSiriTryItCompleted = self->_isSiriTryItCompleted, isSiriTryItCompleted == [v4 isSiriTryItCompleted]))
+    if (!v8 || (isSiriTryItCompleted = self->_isSiriTryItCompleted, isSiriTryItCompleted == [equalCopy isSiriTryItCompleted]))
     {
-      v10 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
-      v11 = [v4 headGestures];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      headGestures = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
+      headGestures2 = [equalCopy headGestures];
+      v12 = headGestures2;
+      if ((headGestures != 0) != (headGestures2 == 0))
       {
-        v13 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
-        if (!v13)
+        headGestures3 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
+        if (!headGestures3)
         {
 
 LABEL_17:
@@ -194,10 +194,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
-        v16 = [v4 headGestures];
-        v17 = [v15 isEqual:v16];
+        v14 = headGestures3;
+        headGestures4 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
+        headGestures5 = [equalCopy headGestures];
+        v17 = [headGestures4 isEqual:headGestures5];
 
         if (v17)
         {
@@ -218,9 +218,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -233,21 +233,21 @@ LABEL_15:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
+  headGestures = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (headGestures)
   {
-    v7 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
+    headGestures2 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasIsSiriTryItCompleted:(BOOL)a3
+- (void)setHasIsSiriTryItCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 2;
   }
@@ -260,17 +260,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDwatchOSAssistantProperties;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDwatchOSAssistantProperties *)self headGestures:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDwatchOSAssistantProperties *)self deleteHeadGestures];
   }

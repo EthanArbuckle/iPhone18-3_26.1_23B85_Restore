@@ -1,11 +1,11 @@
 @interface FBSSceneLayer
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
 - (FBSSceneLayer)init;
-- (FBSSceneLayer)initWithContextID:(unsigned int)a3 renderID:(unint64_t)a4 level:(double)a5;
-- (FBSSceneLayer)initWithKeyboardContext:(id)a3;
-- (FBSSceneLayer)initWithKeyboardOwner:(id)a3 level:(double)a4;
-- (FBSSceneLayer)initWithWindowContext:(id)a3;
+- (FBSSceneLayer)initWithContextID:(unsigned int)d renderID:(unint64_t)iD level:(double)level;
+- (FBSSceneLayer)initWithKeyboardContext:(id)context;
+- (FBSSceneLayer)initWithKeyboardOwner:(id)owner level:(double)level;
+- (FBSSceneLayer)initWithWindowContext:(id)context;
 - (id)_init;
 - (id)capture;
 - (id)description;
@@ -31,8 +31,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FBSSceneLayer *)self stringRepresentation];
-  v3 = [v2 hash];
+  stringRepresentation = [(FBSSceneLayer *)self stringRepresentation];
+  v3 = [stringRepresentation hash];
 
   return v3;
 }
@@ -81,8 +81,8 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
   contextID = self->_contextID;
   if (contextID)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%x (%u)", self->_contextID, contextID];
-    v9 = [v3 appendObject:v8 withName:@"contextID"];
+    contextID = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%x (%u)", self->_contextID, contextID];
+    v9 = [v3 appendObject:contextID withName:@"contextID"];
   }
 
   if (self->_renderID)
@@ -104,9 +104,9 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
     [v3 appendString:v15 withName:@"alignment"];
   }
 
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 - (FBSSceneLayer)init
@@ -122,7 +122,7 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSSceneLayer.m";
     v16 = 1024;
@@ -136,26 +136,26 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
   _bs_set_crash_log_message();
 }
 
-- (FBSSceneLayer)initWithWindowContext:(id)a3
+- (FBSSceneLayer)initWithWindowContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [FBSSceneLayer initWithWindowContext:a2];
   }
 
-  v7 = v6;
-  v8 = [(FBSSceneLayer *)self _init];
-  v9 = v8;
-  if (v8)
+  v7 = contextCopy;
+  _init = [(FBSSceneLayer *)self _init];
+  v9 = _init;
+  if (_init)
   {
-    *&v8->_type = xmmword_1A2E69400;
-    objc_storeStrong(&v8->_context, a3);
+    *&_init->_type = xmmword_1A2E69400;
+    objc_storeStrong(&_init->_context, context);
     [v7 level];
     v9->_level = v10;
     v9->_contextID = [v7 contextId];
-    v11 = [v7 layer];
-    v9->_renderID = soft_CALayerGetRenderId(v11);
+    layer = [v7 layer];
+    v9->_renderID = soft_CALayerGetRenderId(layer);
 
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%x", v9->_contextID];
     stringRepresentation = v9->_stringRepresentation;
@@ -165,21 +165,21 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (FBSSceneLayer)initWithKeyboardContext:(id)a3
+- (FBSSceneLayer)initWithKeyboardContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [FBSSceneLayer initWithKeyboardContext:a2];
   }
 
-  v7 = v6;
-  v8 = [(FBSSceneLayer *)self _init];
-  v9 = v8;
-  if (v8)
+  v7 = contextCopy;
+  _init = [(FBSSceneLayer *)self _init];
+  v9 = _init;
+  if (_init)
   {
-    *&v8->_type = xmmword_1A2E69410;
-    objc_storeStrong(&v8->_context, a3);
+    *&_init->_type = xmmword_1A2E69410;
+    objc_storeStrong(&_init->_context, context);
     [v7 level];
     v9->_level = v10;
     stringRepresentation = v9->_stringRepresentation;
@@ -189,22 +189,22 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (FBSSceneLayer)initWithContextID:(unsigned int)a3 renderID:(unint64_t)a4 level:(double)a5
+- (FBSSceneLayer)initWithContextID:(unsigned int)d renderID:(unint64_t)iD level:(double)level
 {
-  if (!a3)
+  if (!d)
   {
     [FBSSceneLayer initWithContextID:a2 renderID:? level:?];
   }
 
-  v7 = *&a3;
-  v8 = [(FBSSceneLayer *)self _init];
-  v9 = v8;
-  if (v8)
+  v7 = *&d;
+  _init = [(FBSSceneLayer *)self _init];
+  v9 = _init;
+  if (_init)
   {
-    *&v8->_type = xmmword_1A2E69400;
-    v8->_contextID = v7;
-    v8->_renderID = a4;
-    v8->_level = a5;
+    *&_init->_type = xmmword_1A2E69400;
+    _init->_contextID = v7;
+    _init->_renderID = iD;
+    _init->_level = level;
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%x", v7];
     stringRepresentation = v9->_stringRepresentation;
     v9->_stringRepresentation = v10;
@@ -213,45 +213,45 @@ void __24__FBSSceneLayer_dealloc__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (FBSSceneLayer)initWithKeyboardOwner:(id)a3 level:(double)a4
+- (FBSSceneLayer)initWithKeyboardOwner:(id)owner level:(double)level
 {
-  v8 = a3;
-  if (!v8)
+  ownerCopy = owner;
+  if (!ownerCopy)
   {
     [FBSSceneLayer initWithKeyboardOwner:a2 level:?];
   }
 
-  v9 = v8;
-  v10 = [(FBSSceneLayer *)self _init];
-  v11 = v10;
-  if (v10)
+  v9 = ownerCopy;
+  _init = [(FBSSceneLayer *)self _init];
+  v11 = _init;
+  if (_init)
   {
-    *&v10->_type = xmmword_1A2E69410;
-    objc_storeStrong(&v10->_keyboardOwner, a3);
-    v11->_level = a4;
-    v12 = [(FBSSceneIdentityToken *)v11->_keyboardOwner stringRepresentation];
+    *&_init->_type = xmmword_1A2E69410;
+    objc_storeStrong(&_init->_keyboardOwner, owner);
+    v11->_level = level;
+    stringRepresentation = [(FBSSceneIdentityToken *)v11->_keyboardOwner stringRepresentation];
     stringRepresentation = v11->_stringRepresentation;
-    v11->_stringRepresentation = v12;
+    v11->_stringRepresentation = stringRepresentation;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (self == v4)
+      if (self == equalCopy)
       {
         v5 = 1;
         goto LABEL_9;
       }
 
-      if (self->_type == v4->_type && self->_contextID == v4->_contextID && self->_renderID == v4->_renderID)
+      if (self->_type == equalCopy->_type && self->_contextID == equalCopy->_contextID && self->_renderID == equalCopy->_renderID)
       {
         BSFloatEqualToFloat();
       }
@@ -264,16 +264,16 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3 && [(FBSSceneLayer *)self isCAContextLayer]|| objc_opt_class() == a3 && [(FBSSceneLayer *)self isKeyboardLayer]|| objc_opt_class() == a3 && [(FBSSceneLayer *)self isKeyboardProxyLayer])
+  if (objc_opt_class() == class && [(FBSSceneLayer *)self isCAContextLayer]|| objc_opt_class() == class && [(FBSSceneLayer *)self isKeyboardLayer]|| objc_opt_class() == class && [(FBSSceneLayer *)self isKeyboardProxyLayer])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = FBSSceneLayer;
-  return [(FBSSceneLayer *)&v6 isKindOfClass:a3];
+  return [(FBSSceneLayer *)&v6 isKindOfClass:class];
 }
 
 - (void)initWithWindowContext:(char *)a1 .cold.1(char *a1)

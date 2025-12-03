@@ -1,14 +1,14 @@
 @interface PSDataStream
-+ (id)dataStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5;
-+ (id)dataStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5;
-+ (id)dataStreamWithResourceKey:(id)a3 type:(unint64_t)a4 options:(ps_resource_options *)a5 length:(unint64_t)a6;
-+ (id)dataStreamWithResourceKey:(id)a3 type:(unint64_t)a4 options:(ps_resource_options *)a5 length:(unint64_t)a6 descriptor:(__CFData *)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)dataStreamWithKey:(char *)key options:(ps_resource_options *)options length:(unint64_t)length;
++ (id)dataStreamWithResourceKey:(id)key options:(ps_resource_options *)options length:(unint64_t)length;
++ (id)dataStreamWithResourceKey:(id)key type:(unint64_t)type options:(ps_resource_options *)options length:(unint64_t)length;
++ (id)dataStreamWithResourceKey:(id)key type:(unint64_t)type options:(ps_resource_options *)options length:(unint64_t)length descriptor:(__CFData *)descriptor;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSDataStream)init;
-- (PSDataStream)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(unint64_t)a3;
+- (PSDataStream)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(unint64_t)type;
 @end
 
 @implementation PSDataStream
@@ -27,42 +27,42 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PSDataStream;
-  [(PSResourceStream *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_length forKey:@"length"];
+  [(PSResourceStream *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_length forKey:@"length"];
 }
 
-- (PSDataStream)initWithCoder:(id)a3
+- (PSDataStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSDataStream;
-  v5 = [(PSResourceStream *)&v9 initWithCoder:v4];
+  v5 = [(PSResourceStream *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PSResourceStream *)v5 setResourceClass:1];
-    v6->_length = [v4 decodeInt64ForKey:@"length"];
+    v6->_length = [coderCopy decodeInt64ForKey:@"length"];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v10.receiver = self;
@@ -87,62 +87,62 @@
   return v8;
 }
 
-+ (id)dataStreamWithKey:(char *)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5
++ (id)dataStreamWithKey:(char *)key options:(ps_resource_options *)options length:(unint64_t)length
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", a3];
-  v8 = [PSDataStream dataStreamWithResourceKey:v7 options:a4 length:a5];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", key];
+  v8 = [PSDataStream dataStreamWithResourceKey:v7 options:options length:length];
 
   return v8;
 }
 
-+ (id)dataStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 length:(unint64_t)a5
++ (id)dataStreamWithResourceKey:(id)key options:(ps_resource_options *)options length:(unint64_t)length
 {
-  v7 = a3;
+  keyCopy = key;
   v8 = objc_alloc_init(PSDataStream);
-  [(PSResourceStream *)v8 setKey:v7];
-  v8->_length = a5;
-  [(PSResourceStream *)v8 setOptions:a4->storage_mode, a4->creation_mode];
+  [(PSResourceStream *)v8 setKey:keyCopy];
+  v8->_length = length;
+  [(PSResourceStream *)v8 setOptions:options->storage_mode, options->creation_mode];
 
   return v8;
 }
 
-+ (id)dataStreamWithResourceKey:(id)a3 type:(unint64_t)a4 options:(ps_resource_options *)a5 length:(unint64_t)a6
++ (id)dataStreamWithResourceKey:(id)key type:(unint64_t)type options:(ps_resource_options *)options length:(unint64_t)length
 {
-  v9 = a3;
+  keyCopy = key;
   v10 = objc_alloc_init(PSDataStream);
-  [(PSResourceStream *)v10 setKey:v9];
-  [(PSDataStream *)v10 setType:a4];
-  v10->_length = a6;
-  [(PSResourceStream *)v10 setOptions:a5->storage_mode, a5->creation_mode];
+  [(PSResourceStream *)v10 setKey:keyCopy];
+  [(PSDataStream *)v10 setType:type];
+  v10->_length = length;
+  [(PSResourceStream *)v10 setOptions:options->storage_mode, options->creation_mode];
 
   return v10;
 }
 
-+ (id)dataStreamWithResourceKey:(id)a3 type:(unint64_t)a4 options:(ps_resource_options *)a5 length:(unint64_t)a6 descriptor:(__CFData *)a7
++ (id)dataStreamWithResourceKey:(id)key type:(unint64_t)type options:(ps_resource_options *)options length:(unint64_t)length descriptor:(__CFData *)descriptor
 {
-  v8 = [PSDataStream dataStreamWithResourceKey:a3 type:a4 options:a5 length:a6];
-  [v8 setSampleDescriptor:a7];
+  v8 = [PSDataStream dataStreamWithResourceKey:key type:type options:options length:length];
+  [v8 setSampleDescriptor:descriptor];
 
   return v8;
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PSDataStream;
   [(PSResourceStream *)&v5 setType:?];
-  if (a3 == 6)
+  if (type == 6)
   {
     [(PSResourceStream *)self setResourceClass:12];
   }
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   if ([(PSResourceStream *)self resourceClass]!= 1 && [(PSResourceStream *)self resourceClass]!= 12)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource Class invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -155,13 +155,13 @@
   if (!v5)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream key invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
 
 LABEL_23:
-    *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
+    *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
     goto LABEL_24;
   }
 
@@ -169,7 +169,7 @@ LABEL_23:
   if (!v6)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.creation_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -180,7 +180,7 @@ LABEL_23:
   if ([(PSResourceStream *)self options]== 0)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.storage_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -191,7 +191,7 @@ LABEL_23:
   if (!self->_length)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Data length invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -203,7 +203,7 @@ LABEL_23:
   if (v7 != 1)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Only description mode (options.creation_mode) supported for data stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_24;
     }
@@ -217,7 +217,7 @@ LABEL_23:
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Storage mode (options.storage_mode) invalid"];
-  if (a3)
+  if (validate)
   {
     goto LABEL_23;
   }

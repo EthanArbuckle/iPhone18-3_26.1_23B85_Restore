@@ -1,38 +1,38 @@
 @interface SBMenuBarMainMenuView
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (SBMenuBarMainMenuView)initWithMainMenu:(id)a3 type:(int64_t)a4 delegate:(id)a5;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (SBMenuBarMainMenuView)initWithMainMenu:(id)menu type:(int64_t)type delegate:(id)delegate;
 - (SBMenuBarMainMenuViewDelegate)delegate;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)_menuBarTitleFontFromStatusBarFont:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)displayTitleWithAttributes:(id)a3;
-- (void)_focusSpringBoardForMenuBar:(BOOL)a3;
-- (void)_handleTapToDismiss:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)_menuBarTitleFontFromStatusBarFont:(id)font;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)displayTitleWithAttributes:(id)attributes;
+- (void)_focusSpringBoardForMenuBar:(BOOL)bar;
+- (void)_handleTapToDismiss:(id)dismiss;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)setDismissingMenuForPointerHover:(BOOL)a3;
-- (void)setPresentingMenuForKeyPress:(BOOL)a3;
-- (void)setPresentingMenuForPointerHover:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setDismissingMenuForPointerHover:(BOOL)hover;
+- (void)setPresentingMenuForKeyPress:(BOOL)press;
+- (void)setPresentingMenuForPointerHover:(BOOL)hover;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SBMenuBarMainMenuView
 
-- (SBMenuBarMainMenuView)initWithMainMenu:(id)a3 type:(int64_t)a4 delegate:(id)a5
+- (SBMenuBarMainMenuView)initWithMainMenu:(id)menu type:(int64_t)type delegate:(id)delegate
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  menuCopy = menu;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = SBMenuBarMainMenuView;
   v11 = [(SBMenuBarMainMenuView *)&v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mainMenu, a3);
-    v12->_type = a4;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeStrong(&v11->_mainMenu, menu);
+    v12->_type = type;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     objc_initWeak(&location, v12);
     v13 = objc_opt_self();
     v28[0] = v13;
@@ -81,34 +81,34 @@ void __56__SBMenuBarMainMenuView_initWithMainMenu_type_delegate___block_invoke(u
   }
 }
 
-- (id)_menuBarTitleFontFromStatusBarFont:(id)a3
+- (id)_menuBarTitleFontFromStatusBarFont:(id)font
 {
-  v3 = a3;
-  v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76800], v4) == NSOrderedAscending)
+  fontCopy = font;
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76800], preferredContentSizeCategory) == NSOrderedAscending)
   {
     v6 = 20.0;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76808], v4) == NSOrderedAscending)
+  else if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76808], preferredContentSizeCategory) == NSOrderedAscending)
   {
     v6 = 19.0;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76818], v4) == NSOrderedAscending)
+  else if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76818], preferredContentSizeCategory) == NSOrderedAscending)
   {
     v6 = 18.0;
   }
 
-  else if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76828], v4) == NSOrderedAscending)
+  else if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76828], preferredContentSizeCategory) == NSOrderedAscending)
   {
     v6 = 17.0;
   }
 
   else
   {
-    v5 = v3;
-    if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76838], v4) != NSOrderedAscending)
+    v5 = fontCopy;
+    if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76838], preferredContentSizeCategory) != NSOrderedAscending)
     {
       goto LABEL_12;
     }
@@ -116,16 +116,16 @@ void __56__SBMenuBarMainMenuView_initWithMainMenu_type_delegate___block_invoke(u
     v6 = 16.0;
   }
 
-  v5 = [v3 fontWithSize:v6];
+  v5 = [fontCopy fontWithSize:v6];
 
 LABEL_12:
 
   return v5;
 }
 
-- (id)displayTitleWithAttributes:(id)a3
+- (id)displayTitleWithAttributes:(id)attributes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attributes mutableCopy];
   v5 = *MEMORY[0x277D740A8];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
   v7 = [(SBMenuBarMainMenuView *)self _menuBarTitleFontFromStatusBarFont:v6];
@@ -136,7 +136,7 @@ LABEL_12:
   {
     v9 = MEMORY[0x277D755D0];
     v10 = [v8 objectForKey:v5];
-    v11 = [v9 configurationWithFont:v10];
+    mainMenu = [v9 configurationWithFont:v10];
 
     v12 = MEMORY[0x277D755B8];
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -149,21 +149,21 @@ LABEL_12:
       v13 = @"chevron.right.2";
     }
 
-    v14 = [v12 systemImageNamed:v13 withConfiguration:v11];
-    v15 = [MEMORY[0x277D74270] textAttachmentWithImage:v14];
+    uiMenu = [v12 systemImageNamed:v13 withConfiguration:mainMenu];
+    v15 = [MEMORY[0x277D74270] textAttachmentWithImage:uiMenu];
     v16 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v15 attributes:v8];
   }
 
   else
   {
     v17 = objc_alloc(MEMORY[0x277CCA898]);
-    v11 = [(SBMenuBarMainMenuView *)self mainMenu];
-    v14 = [v11 uiMenu];
-    v18 = [v14 title];
-    v15 = v18;
-    if (v18)
+    mainMenu = [(SBMenuBarMainMenuView *)self mainMenu];
+    uiMenu = [mainMenu uiMenu];
+    title = [uiMenu title];
+    v15 = title;
+    if (title)
     {
-      v19 = v18;
+      v19 = title;
     }
 
     else
@@ -179,36 +179,36 @@ LABEL_12:
   return v20;
 }
 
-- (void)setPresentingMenuForPointerHover:(BOOL)a3
+- (void)setPresentingMenuForPointerHover:(BOOL)hover
 {
-  if (self->_presentingMenuForPointerHover != a3)
+  if (self->_presentingMenuForPointerHover != hover)
   {
-    self->_presentingMenuForPointerHover = a3;
-    if (a3)
+    self->_presentingMenuForPointerHover = hover;
+    if (hover)
     {
       [(SBMenuBarMainMenuView *)self _focusSpringBoardForMenuBar:1];
     }
   }
 }
 
-- (void)setPresentingMenuForKeyPress:(BOOL)a3
+- (void)setPresentingMenuForKeyPress:(BOOL)press
 {
-  if (self->_presentingMenuForKeyPress != a3)
+  if (self->_presentingMenuForKeyPress != press)
   {
-    self->_presentingMenuForKeyPress = a3;
-    if (a3)
+    self->_presentingMenuForKeyPress = press;
+    if (press)
     {
       [(SBMenuBarMainMenuView *)self _focusSpringBoardForMenuBar:1];
     }
   }
 }
 
-- (void)setDismissingMenuForPointerHover:(BOOL)a3
+- (void)setDismissingMenuForPointerHover:(BOOL)hover
 {
-  if (self->_dismissingMenuForPointerHover != a3)
+  if (self->_dismissingMenuForPointerHover != hover)
   {
-    self->_dismissingMenuForPointerHover = a3;
-    if (a3)
+    self->_dismissingMenuForPointerHover = hover;
+    if (hover)
     {
       self->_presentingMenuForPointerHover = 0;
     }
@@ -224,7 +224,7 @@ LABEL_12:
   [(SBMenuBarMainMenuView *)&v3 dealloc];
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   MaxX = 0.0;
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -246,9 +246,9 @@ LABEL_12:
   return result;
 }
 
-- (void)_focusSpringBoardForMenuBar:(BOOL)a3
+- (void)_focusSpringBoardForMenuBar:(BOOL)bar
 {
-  if (!a3)
+  if (!bar)
   {
     [(BSInvalidatable *)self->_keyboardFocusLockAssertion invalidate];
     keyboardFocusLockAssertion = self->_keyboardFocusLockAssertion;
@@ -273,10 +273,10 @@ LABEL_8:
   if (!self->_keyboardFocusLockAssertion)
   {
     v14 = +[SBWorkspace mainWorkspace];
-    v9 = [v14 keyboardFocusController];
-    v10 = [(UIView *)self _sbWindowScene];
+    keyboardFocusController = [v14 keyboardFocusController];
+    _sbWindowScene = [(UIView *)self _sbWindowScene];
     v11 = +[SBKeyboardFocusLockReason menuBar];
-    v12 = [v9 focusLockSpringBoardWindowScene:v10 forReason:v11];
+    v12 = [keyboardFocusController focusLockSpringBoardWindowScene:_sbWindowScene forReason:v11];
     v13 = self->_keyboardFocusLockAssertion;
     self->_keyboardFocusLockAssertion = v12;
 
@@ -285,30 +285,30 @@ LABEL_8:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 anyObject];
-  self->_transitioningMenuForPointerClick = [v8 _isPointerTouch];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  self->_transitioningMenuForPointerClick = [anyObject _isPointerTouch];
 
   v9.receiver = self;
   v9.super_class = SBMenuBarMainMenuView;
-  [(SBMenuBarMainMenuView *)&v9 touchesBegan:v7 withEvent:v6];
+  [(SBMenuBarMainMenuView *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)_handleTapToDismiss:(id)a3
+- (void)_handleTapToDismiss:(id)dismiss
 {
-  self->_transitioningMenuForPointerClick = [a3 sbf_hasPointerTouch];
+  self->_transitioningMenuForPointerClick = [dismiss sbf_hasPointerTouch];
   self->_dismissingMenuForPointerHover = 0;
-  v4 = [(SBMenuBarMainMenuView *)self contextMenuInteraction];
-  [v4 dismissMenu];
+  contextMenuInteraction = [(SBMenuBarMainMenuView *)self contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained willLoadMenuElementsForMainMenuView:self];
   v7 = objc_alloc_init(MEMORY[0x277D75EA0]);
@@ -379,14 +379,14 @@ void __79__SBMenuBarMainMenuView_contextMenuInteraction_configurationForMenuAtLo
   [v8 performWithoutAnimation:v10];
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v15.receiver = self;
   v15.super_class = SBMenuBarMainMenuView;
-  v9 = [(SBMenuBarMainMenuView *)&v15 _contextMenuInteraction:v7 styleForMenuWithConfiguration:v6];
+  v9 = [(SBMenuBarMainMenuView *)&v15 _contextMenuInteraction:interactionCopy styleForMenuWithConfiguration:configurationCopy];
 
   v10 = [WeakRetained menuPresentationViewForMainMenuView:self];
   [v9 setContainerView:v10];
@@ -401,12 +401,12 @@ void __79__SBMenuBarMainMenuView_contextMenuInteraction_configurationForMenuAtLo
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v14.receiver = self;
   v14.super_class = SBMenuBarMainMenuView;
-  v8 = a5;
-  [(SBMenuBarMainMenuView *)&v14 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:v8];
+  animatorCopy = animator;
+  [(SBMenuBarMainMenuView *)&v14 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animatorCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained willPresentContextMenuForMainMenuView:self forPointerClick:self->_transitioningMenuForPointerClick];
   [(SBMenuBarMainMenuView *)self _focusSpringBoardForMenuBar:1];
@@ -418,16 +418,16 @@ void __79__SBMenuBarMainMenuView_contextMenuInteraction_configurationForMenuAtLo
   v11[2] = __89__SBMenuBarMainMenuView_contextMenuInteraction_willDisplayMenuForConfiguration_animator___block_invoke;
   v11[3] = &unk_2783A92D8;
   v12 = WeakRetained;
-  v13 = self;
+  selfCopy = self;
   v10 = WeakRetained;
-  [v8 addCompletion:v11];
+  [animatorCopy addCompletion:v11];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = SBMenuBarMainMenuView;
-  [(SBMenuBarMainMenuView *)&v7 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
+  [(SBMenuBarMainMenuView *)&v7 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
   [(SBMenuBarMainMenuView *)self _focusSpringBoardForMenuBar:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained willDismissContextMenuForMainMenuView:self forPointerClick:self->_transitioningMenuForPointerClick];

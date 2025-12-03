@@ -1,5 +1,5 @@
 @interface BUBlockCallThrottler
-- (BOOL)_runBlock:(id)a3 throttle:(BOOL)a4;
+- (BOOL)_runBlock:(id)block throttle:(BOOL)throttle;
 - (BUBlockCallThrottler)init;
 @end
 
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (BOOL)_runBlock:(id)a3 throttle:(BOOL)a4
+- (BOOL)_runBlock:(id)block throttle:(BOOL)throttle
 {
-  v4 = a4;
-  v6 = a3;
+  throttleCopy = throttle;
+  blockCopy = block;
   v9 = objc_msgSend_date(MEMORY[0x277CBEAA8], v7, v8);
   objc_msgSend_minimumTimeBetweenCalls(self, v10, v11);
   v13 = v12;
@@ -39,13 +39,13 @@
     v22 = v13 + 1.0;
   }
 
-  if ((objc_msgSend_running(self, v17, v18) & 1) != 0 || v4 && (objc_msgSend_minimumTimeBetweenCalls(self, v23, v24), v22 < v28))
+  if ((objc_msgSend_running(self, v17, v18) & 1) != 0 || throttleCopy && (objc_msgSend_minimumTimeBetweenCalls(self, v23, v24), v22 < v28))
   {
     v25 = objc_msgSend_date(MEMORY[0x277CBEAA8], v23, v24);
     objc_msgSend_setLastBlockCallDate_(self, v26, v25);
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
     v27 = 1;
     objc_msgSend_setRunning_(self, v23, 1);
@@ -54,7 +54,7 @@
     v30[2] = sub_241DC7794;
     v30[3] = &unk_278D1D148;
     v30[4] = self;
-    v6[2](v6, v30);
+    blockCopy[2](blockCopy, v30);
     goto LABEL_11;
   }
 

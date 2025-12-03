@@ -1,15 +1,15 @@
 @interface BMXPCListener
-+ (id)anonymousListenerWithQueue:(id)a3;
++ (id)anonymousListenerWithQueue:(id)queue;
 + (id)serviceListener;
-- (BMXPCListener)initWithMachServiceName:(id)a3 queue:(id)a4;
+- (BMXPCListener)initWithMachServiceName:(id)name queue:(id)queue;
 - (BMXPCListenerDelegate)delegate;
 - (NSXPCListenerEndpoint)endpoint;
 - (id)_eventHandler;
-- (id)_initWithType:(unint64_t)a3 connection:(id)a4 queue:(id)a5;
-- (void)_handleConnection:(id)a3;
+- (id)_initWithType:(unint64_t)type connection:(id)connection queue:(id)queue;
+- (void)_handleConnection:(id)connection;
 - (void)activate;
 - (void)invalidate;
-- (void)setQueue:(id)a3;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation BMXPCListener
@@ -59,11 +59,11 @@ void __30__BMXPCListener__eventHandler__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-+ (id)anonymousListenerWithQueue:(id)a3
++ (id)anonymousListenerWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = xpc_connection_create(0, v3);
-  v5 = [[BMXPCListener alloc] _initWithType:1 connection:v4 queue:v3];
+  queueCopy = queue;
+  v4 = xpc_connection_create(0, queueCopy);
+  v5 = [[BMXPCListener alloc] _initWithType:1 connection:v4 queue:queueCopy];
 
   return v5;
 }
@@ -76,34 +76,34 @@ uint64_t __32__BMXPCListener_serviceListener__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BMXPCListener)initWithMachServiceName:(id)a3 queue:(id)a4
+- (BMXPCListener)initWithMachServiceName:(id)name queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  mach_service = xpc_connection_create_mach_service([a3 UTF8String], v8, 1uLL);
-  v10 = [[BMXPCListener alloc] _initWithType:2 connection:mach_service queue:v8];
+  nameCopy = name;
+  queueCopy = queue;
+  mach_service = xpc_connection_create_mach_service([name UTF8String], queueCopy, 1uLL);
+  v10 = [[BMXPCListener alloc] _initWithType:2 connection:mach_service queue:queueCopy];
 
   return v10;
 }
 
-- (id)_initWithType:(unint64_t)a3 connection:(id)a4 queue:(id)a5
+- (id)_initWithType:(unint64_t)type connection:(id)connection queue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = BMXPCListener;
   v11 = [(BMXPCListener *)&v16 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_queue, a5);
-    if (v9)
+    v11->_type = type;
+    objc_storeStrong(&v11->_queue, queue);
+    if (connectionCopy)
     {
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(p_isa + 2, connection);
       v13 = p_isa[2];
-      v14 = [p_isa _eventHandler];
-      xpc_connection_set_event_handler(v13, v14);
+      _eventHandler = [p_isa _eventHandler];
+      xpc_connection_set_event_handler(v13, _eventHandler);
     }
   }
 
@@ -122,23 +122,23 @@ uint64_t __32__BMXPCListener_serviceListener__block_invoke()
   return v2;
 }
 
-- (void)_handleConnection:(id)a3
+- (void)_handleConnection:(id)connection
 {
-  v3 = self;
-  v5 = [MEMORY[0x1E696B0B8] bm_connectionWithPeer:a3 queue:self->_queue];
-  v4 = [(BMXPCListener *)v3 delegate];
-  LOBYTE(v3) = [v4 listener:v3 shouldAcceptNewConnection:v5];
+  selfCopy = self;
+  v5 = [MEMORY[0x1E696B0B8] bm_connectionWithPeer:connection queue:self->_queue];
+  delegate = [(BMXPCListener *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate listener:selfCopy shouldAcceptNewConnection:v5];
 
-  if ((v3 & 1) == 0)
+  if ((selfCopy & 1) == 0)
   {
     [v5 invalidate];
   }
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  targetq = a3;
-  objc_storeStrong(&self->_queue, a3);
+  targetq = queue;
+  objc_storeStrong(&self->_queue, queue);
   if (self->_type)
   {
     xpc_connection_set_target_queue(self->_listener, targetq);

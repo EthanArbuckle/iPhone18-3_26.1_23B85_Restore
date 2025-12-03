@@ -1,8 +1,8 @@
 @interface MRDAVHostedExternalDevicePendingClientStateOutputDeviceModifications
 - (id)description;
-- (void)addOutputDevice:(id)a3;
-- (void)changeOutputDevice:(id)a3;
-- (void)removeOutputDevice:(id)a3;
+- (void)addOutputDevice:(id)device;
+- (void)changeOutputDevice:(id)device;
+- (void)removeOutputDevice:(id)device;
 @end
 
 @implementation MRDAVHostedExternalDevicePendingClientStateOutputDeviceModifications
@@ -34,29 +34,29 @@
   return v3;
 }
 
-- (void)addOutputDevice:(id)a3
+- (void)addOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   addedOutputDevices = self->_addedOutputDevices;
-  v8 = v4;
+  v8 = deviceCopy;
   if (!addedOutputDevices)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_addedOutputDevices;
     self->_addedOutputDevices = v6;
 
-    v4 = v8;
+    deviceCopy = v8;
     addedOutputDevices = self->_addedOutputDevices;
   }
 
-  [(NSMutableArray *)addedOutputDevices addObject:v4];
+  [(NSMutableArray *)addedOutputDevices addObject:deviceCopy];
   [(NSMutableArray *)self->_changedOutputDevices removeObject:v8];
   [(NSMutableArray *)self->_removedOutputDevices removeObject:v8];
 }
 
-- (void)changeOutputDevice:(id)a3
+- (void)changeOutputDevice:(id)device
 {
-  v8 = a3;
+  deviceCopy = device;
   v4 = [(NSMutableArray *)self->_addedOutputDevices indexOfObject:?];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -70,18 +70,18 @@
       changedOutputDevices = self->_changedOutputDevices;
     }
 
-    [(NSMutableArray *)changedOutputDevices addObject:v8];
+    [(NSMutableArray *)changedOutputDevices addObject:deviceCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_addedOutputDevices replaceObjectAtIndex:v4 withObject:v8];
+    [(NSMutableArray *)self->_addedOutputDevices replaceObjectAtIndex:v4 withObject:deviceCopy];
   }
 }
 
-- (void)removeOutputDevice:(id)a3
+- (void)removeOutputDevice:(id)device
 {
-  v8 = a3;
+  deviceCopy = device;
   v4 = [(NSMutableArray *)self->_addedOutputDevices indexOfObject:?];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -95,8 +95,8 @@
       removedOutputDevices = self->_removedOutputDevices;
     }
 
-    [(NSMutableArray *)removedOutputDevices addObject:v8];
-    [(NSMutableArray *)self->_changedOutputDevices removeObject:v8];
+    [(NSMutableArray *)removedOutputDevices addObject:deviceCopy];
+    [(NSMutableArray *)self->_changedOutputDevices removeObject:deviceCopy];
   }
 
   else

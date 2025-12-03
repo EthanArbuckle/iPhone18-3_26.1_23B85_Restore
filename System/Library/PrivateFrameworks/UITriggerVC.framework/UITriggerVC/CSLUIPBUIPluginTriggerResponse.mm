@@ -1,11 +1,11 @@
 @interface CSLUIPBUIPluginTriggerResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSLUIPBUIPluginTriggerResponse
@@ -16,32 +16,32 @@
   v8.receiver = self;
   v8.super_class = CSLUIPBUIPluginTriggerResponse;
   v4 = [(CSLUIPBUIPluginTriggerResponse *)&v8 description];
-  v5 = [(CSLUIPBUIPluginTriggerResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CSLUIPBUIPluginTriggerResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-  [v3 setObject:v4 forKey:@"success"];
+  [dictionary setObject:v4 forKey:@"success"];
 
   errorString = self->_errorString;
   if (errorString)
   {
-    [v3 setObject:errorString forKey:@"errorString"];
+    [dictionary setObject:errorString forKey:@"errorString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   success = self->_success;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteBOOLField();
   if (self->_errorString)
   {
@@ -49,34 +49,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 16) = self->_success;
+  *(to + 16) = self->_success;
   errorString = self->_errorString;
   if (errorString)
   {
-    [a3 setErrorString:errorString];
+    [to setErrorString:errorString];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_success;
-  v6 = [(NSString *)self->_errorString copyWithZone:a3];
+  v6 = [(NSString *)self->_errorString copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_success == *(v4 + 16))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_success == *(equalCopy + 16))
   {
     errorString = self->_errorString;
-    if (errorString | v4[1])
+    if (errorString | equalCopy[1])
     {
       v6 = [(NSString *)errorString isEqual:?];
     }
@@ -95,10 +95,10 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_success = *(a3 + 16);
-  if (*(a3 + 1))
+  self->_success = *(from + 16);
+  if (*(from + 1))
   {
     [(CSLUIPBUIPluginTriggerResponse *)self setErrorString:?];
   }

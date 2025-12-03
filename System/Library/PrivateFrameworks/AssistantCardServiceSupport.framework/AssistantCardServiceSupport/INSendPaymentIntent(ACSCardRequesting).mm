@@ -10,109 +10,109 @@
   v6 = a4;
   if (v6)
   {
-    v7 = [a3 content];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 underlyingInteraction], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    content = [a3 content];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([content underlyingInteraction], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
-      v10 = [v8 intentResponse];
+      intentResponse = [v8 intentResponse];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v9 intentResponse];
+        intentResponse2 = [v9 intentResponse];
       }
 
       else
       {
-        v11 = 0;
+        intentResponse2 = 0;
       }
 
-      v15 = [v11 paymentRecord];
-      v16 = [MEMORY[0x277CBEB18] array];
-      v65 = [MEMORY[0x277D4C230] acs_uniquelyIdentifiedCard];
-      v17 = [v9 intent];
-      v18 = [v17 acs_needsTitleCardSection];
+      paymentRecord = [intentResponse2 paymentRecord];
+      array = [MEMORY[0x277CBEB18] array];
+      acs_uniquelyIdentifiedCard = [MEMORY[0x277D4C230] acs_uniquelyIdentifiedCard];
+      intent = [v9 intent];
+      acs_needsTitleCardSection = [intent acs_needsTitleCardSection];
 
-      if (v18)
+      if (acs_needsTitleCardSection)
       {
-        v19 = [MEMORY[0x277D4C5A0] acs_uniquelyIdentifiedCardSection];
-        [v19 setIsCentered:1];
-        [v19 setSeparatorStyle:5];
-        v20 = [v9 intentHandlingStatus];
-        if (v20 <= 6)
+        acs_uniquelyIdentifiedCardSection = [MEMORY[0x277D4C5A0] acs_uniquelyIdentifiedCardSection];
+        [acs_uniquelyIdentifiedCardSection setIsCentered:1];
+        [acs_uniquelyIdentifiedCardSection setSeparatorStyle:5];
+        intentHandlingStatus = [v9 intentHandlingStatus];
+        if (intentHandlingStatus <= 6)
         {
-          v21 = off_278CCFB90[v20];
+          v21 = off_278CCFB90[intentHandlingStatus];
           v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v23 = [v22 localizedStringForKey:v21 value:&stru_2853137F0 table:0];
-          [v19 setTitle:v23];
+          [acs_uniquelyIdentifiedCardSection setTitle:v23];
         }
 
-        [v16 addObject:v19];
+        [array addObject:acs_uniquelyIdentifiedCardSection];
       }
 
-      v66 = v11;
-      v24 = [MEMORY[0x277D4C4C0] acs_wildCardSection];
-      [v16 addObject:v24];
+      v66 = intentResponse2;
+      acs_wildCardSection = [MEMORY[0x277D4C4C0] acs_wildCardSection];
+      [array addObject:acs_wildCardSection];
 
-      v25 = [a1 payee];
+      payee = [self payee];
       v26 = 0x277CBE000;
-      v67 = v16;
-      if (v25)
+      v67 = array;
+      if (payee)
       {
-        v27 = v25;
-        v28 = [a1 currencyAmount];
+        v27 = payee;
+        currencyAmount = [self currencyAmount];
 
-        if (v28)
+        if (currencyAmount)
         {
-          v29 = [MEMORY[0x277D4C5A0] acs_uniquelyIdentifiedCardSection];
-          v30 = [a1 payee];
-          v31 = [v30 image];
+          acs_uniquelyIdentifiedCardSection2 = [MEMORY[0x277D4C5A0] acs_uniquelyIdentifiedCardSection];
+          payee2 = [self payee];
+          image = [payee2 image];
 
-          if (v31)
+          if (image)
           {
             v32 = objc_alloc(MEMORY[0x277CD4608]);
-            v33 = [a1 payee];
-            v34 = [v33 image];
-            v35 = [v32 initWithIntentsImage:v34];
+            payee3 = [self payee];
+            image2 = [payee3 image];
+            v35 = [v32 initWithIntentsImage:image2];
 
-            [v29 setTitleImage:v35];
+            [acs_uniquelyIdentifiedCardSection2 setTitleImage:v35];
           }
 
-          [v29 setIsCentered:1];
-          v36 = [a1 payee];
-          v37 = [v36 acs_formattedPersonName];
-          [v29 setTitle:v37];
+          [acs_uniquelyIdentifiedCardSection2 setIsCentered:1];
+          payee4 = [self payee];
+          acs_formattedPersonName = [payee4 acs_formattedPersonName];
+          [acs_uniquelyIdentifiedCardSection2 setTitle:acs_formattedPersonName];
 
-          v38 = [a1 currencyAmount];
-          v63 = [v38 acs_formattedAmountString];
+          currencyAmount2 = [self currencyAmount];
+          acs_formattedAmountString = [currencyAmount2 acs_formattedAmountString];
 
-          [v29 setSubtitle:v63];
-          [v29 setSeparatorStyle:5];
+          [acs_uniquelyIdentifiedCardSection2 setSubtitle:acs_formattedAmountString];
+          [acs_uniquelyIdentifiedCardSection2 setSeparatorStyle:5];
           v39 = NSStringFromSelector(sel_payee);
           v71[0] = v39;
           v40 = NSStringFromSelector(sel_displayName);
           v71[1] = v40;
           v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:2];
-          [ACSCardServiceHelper addParameterToSection:v29 selectorStrings:v41 class:objc_opt_class()];
+          [ACSCardServiceHelper addParameterToSection:acs_uniquelyIdentifiedCardSection2 selectorStrings:v41 class:objc_opt_class()];
 
           v26 = 0x277CBE000uLL;
           v42 = NSStringFromSelector(sel_currencyAmount);
           v70 = v42;
           v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
-          [ACSCardServiceHelper addParameterToSection:v29 selectorStrings:v43 class:objc_opt_class()];
+          [ACSCardServiceHelper addParameterToSection:acs_uniquelyIdentifiedCardSection2 selectorStrings:v43 class:objc_opt_class()];
 
-          [v67 addObject:v29];
+          [v67 addObject:acs_uniquelyIdentifiedCardSection2];
         }
       }
 
-      v44 = [a1 note];
-      v45 = [v44 length];
+      note = [self note];
+      v45 = [note length];
 
       if (v45)
       {
         v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v47 = [v46 localizedStringForKey:@"NOTE" value:&stru_2853137F0 table:0];
-        v48 = [a1 note];
-        v49 = [ACSCardServiceHelper rowCardSectionFromLeadingText:v47 trailingText:v48];
+        note2 = [self note];
+        v49 = [ACSCardServiceHelper rowCardSectionFromLeadingText:v47 trailingText:note2];
 
         v26 = 0x277CBE000uLL;
         v50 = NSStringFromSelector(sel_note);
@@ -123,17 +123,17 @@
         [v67 addObject:v49];
       }
 
-      v52 = [v15 feeAmount];
+      feeAmount = [paymentRecord feeAmount];
 
       v53 = v67;
-      if (v52)
+      if (feeAmount)
       {
-        v54 = [v15 feeAmount];
-        v64 = [v54 acs_formattedAmountString];
+        feeAmount2 = [paymentRecord feeAmount];
+        acs_formattedAmountString2 = [feeAmount2 acs_formattedAmountString];
 
         v55 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v56 = [v55 localizedStringForKey:@"FEE" value:&stru_2853137F0 table:0];
-        v57 = [ACSCardServiceHelper rowCardSectionFromLeadingText:v56 trailingText:v64];
+        v57 = [ACSCardServiceHelper rowCardSectionFromLeadingText:v56 trailingText:acs_formattedAmountString2];
 
         v58 = NSStringFromSelector(sel_paymentRecord);
         v68[0] = v58;
@@ -148,10 +148,10 @@
       }
 
       v61 = [*(v26 + 2656) arrayWithArray:v53];
-      [v65 setCardSections:v61];
+      [acs_uniquelyIdentifiedCard setCardSections:v61];
 
-      [v65 acs_setInteraction:v9];
-      v6[2](v6, v65, 0);
+      [acs_uniquelyIdentifiedCard acs_setInteraction:v9];
+      v6[2](v6, acs_uniquelyIdentifiedCard, 0);
 
       v14 = v66;
     }
@@ -161,11 +161,11 @@
       v12 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CF93E8];
       v72 = *MEMORY[0x277CCA068];
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content %@ is incompatible with this service", v7];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Content %@ is incompatible with this service", content];
       v73[0] = v9;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:&v72 count:1];
-      v15 = [v12 errorWithDomain:v13 code:400 userInfo:v14];
-      (v6)[2](v6, 0, v15);
+      paymentRecord = [v12 errorWithDomain:v13 code:400 userInfo:v14];
+      (v6)[2](v6, 0, paymentRecord);
     }
   }
 

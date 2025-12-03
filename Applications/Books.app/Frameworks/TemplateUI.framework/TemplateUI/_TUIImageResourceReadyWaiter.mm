@@ -1,16 +1,16 @@
 @interface _TUIImageResourceReadyWaiter
-- (_TUIImageResourceReadyWaiter)initWithImageResources:(id)a3 assertion:(id)a4 assertionQueue:(id)a5;
+- (_TUIImageResourceReadyWaiter)initWithImageResources:(id)resources assertion:(id)assertion assertionQueue:(id)queue;
 - (void)dealloc;
-- (void)imageResourceDidChangeImage:(id)a3;
+- (void)imageResourceDidChangeImage:(id)image;
 @end
 
 @implementation _TUIImageResourceReadyWaiter
 
-- (_TUIImageResourceReadyWaiter)initWithImageResources:(id)a3 assertion:(id)a4 assertionQueue:(id)a5
+- (_TUIImageResourceReadyWaiter)initWithImageResources:(id)resources assertion:(id)assertion assertionQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resourcesCopy = resources;
+  assertionCopy = assertion;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = _TUIImageResourceReadyWaiter;
   v11 = [(_TUIImageResourceReadyWaiter *)&v31 init];
@@ -22,7 +22,7 @@
     group = v12->_group;
     v12->_group = v13;
 
-    v15 = [v8 copy];
+    v15 = [resourcesCopy copy];
     imageResources = v12->_imageResources;
     v12->_imageResources = v15;
 
@@ -30,7 +30,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = v8;
+    v17 = resourcesCopy;
     v18 = [v17 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v18)
     {
@@ -66,14 +66,14 @@
       while (v19);
     }
 
-    objc_storeStrong(&v12->_assertion, a4);
+    objc_storeStrong(&v12->_assertion, assertion);
     v23 = v12->_group;
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_116768;
     v25[3] = &unk_25DE30;
-    v26 = v9;
-    TUIDispatchGroupNotifyViaRunloopIfMain(v23, v10, v25);
+    v26 = assertionCopy;
+    TUIDispatchGroupNotifyViaRunloopIfMain(v23, queueCopy, v25);
   }
 
   return v12;
@@ -117,16 +117,16 @@
   [(_TUIImageResourceReadyWaiter *)&v8 dealloc];
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
-  v5 = a3;
-  v4 = [v5 isImageLoaded];
+  imageCopy = image;
+  isImageLoaded = [imageCopy isImageLoaded];
   os_unfair_lock_lock(&self->_lock);
-  if (v4 && [(NSHashTable *)self->_imageResources containsObject:v5])
+  if (isImageLoaded && [(NSHashTable *)self->_imageResources containsObject:imageCopy])
   {
-    [(NSHashTable *)self->_imageResources removeObject:v5];
+    [(NSHashTable *)self->_imageResources removeObject:imageCopy];
     os_unfair_lock_unlock(&self->_lock);
-    [v5 removeObserver:self];
+    [imageCopy removeObserver:self];
     dispatch_group_leave(self->_group);
   }
 

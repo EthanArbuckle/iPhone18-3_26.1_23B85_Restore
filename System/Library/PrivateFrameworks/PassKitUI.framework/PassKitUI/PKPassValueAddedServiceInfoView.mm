@@ -1,20 +1,20 @@
 @interface PKPassValueAddedServiceInfoView
 - (CGSize)_snapshotSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPassValueAddedServiceInfoView)initWithStyle:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPassValueAddedServiceInfoView)initWithStyle:(int64_t)style;
 - (double)_baselineDistance;
-- (id)_labelAttributedStringForString:(id)a3;
-- (id)_statusAttributedStringForStyle:(int64_t)a3;
-- (void)_calculateViewMetricsForWidth:(double)a3 labelSize:(CGSize *)a4 statusSize:(CGSize *)a5 baselineAdjustment:(double *)a6;
+- (id)_labelAttributedStringForString:(id)string;
+- (id)_statusAttributedStringForStyle:(int64_t)style;
+- (void)_calculateViewMetricsForWidth:(double)width labelSize:(CGSize *)size statusSize:(CGSize *)statusSize baselineAdjustment:(double *)adjustment;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setPass:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setPass:(id)pass animated:(BOOL)animated completion:(id)completion;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation PKPassValueAddedServiceInfoView
 
-- (PKPassValueAddedServiceInfoView)initWithStyle:(int64_t)a3
+- (PKPassValueAddedServiceInfoView)initWithStyle:(int64_t)style
 {
   v18.receiver = self;
   v18.super_class = PKPassValueAddedServiceInfoView;
@@ -22,7 +22,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     v6 = objc_alloc_init(PKPassSnapshotter);
     snapshotter = v5->_snapshotter;
     v5->_snapshotter = v6;
@@ -45,14 +45,14 @@
     v5->_statusView = v12;
 
     v14 = v5->_statusView;
-    v15 = [(PKPassValueAddedServiceInfoView *)v5 _statusAttributedStringForStyle:a3];
+    v15 = [(PKPassValueAddedServiceInfoView *)v5 _statusAttributedStringForStyle:style];
     [(UILabel *)v14 setAttributedText:v15];
 
     [(UILabel *)v5->_statusView setNumberOfLines:1];
     [(PKPassValueAddedServiceInfoView *)v5 addSubview:v5->_statusView];
     [(UIView *)v5 pkui_setMaskType:3];
-    v16 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(PKPassValueAddedServiceInfoView *)v5 setBackgroundColor:v16];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(PKPassValueAddedServiceInfoView *)v5 setBackgroundColor:secondarySystemGroupedBackgroundColor];
   }
 
   return v5;
@@ -109,10 +109,10 @@
   [(UIImageView *)self->_snapshotView setFrame:v17, v22, v10, v12];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKPassValueAddedServiceInfoView *)self _snapshotSize:a3.width];
+  width = fits.width;
+  [(PKPassValueAddedServiceInfoView *)self _snapshotSize:fits.width];
   v13 = 0.0;
   v14 = 0.0;
   v11 = 0.0;
@@ -128,53 +128,53 @@
   return result;
 }
 
-- (void)_calculateViewMetricsForWidth:(double)a3 labelSize:(CGSize *)a4 statusSize:(CGSize *)a5 baselineAdjustment:(double *)a6
+- (void)_calculateViewMetricsForWidth:(double)width labelSize:(CGSize *)size statusSize:(CGSize *)statusSize baselineAdjustment:(double *)adjustment
 {
-  [(UILabel *)self->_labelView pkui_sizeThatFits:1 forceWordWrap:a3, 1.79769313e308];
-  a4->width = v11;
-  a4->height = v12;
-  [(UILabel *)self->_statusView pkui_sizeThatFits:0 forceWordWrap:a3, 1.79769313e308];
-  a5->width = v13;
-  a5->height = v14;
-  height = a4->height;
-  v16 = [(UILabel *)self->_labelView font];
-  [v16 descender];
+  [(UILabel *)self->_labelView pkui_sizeThatFits:1 forceWordWrap:width, 1.79769313e308];
+  size->width = v11;
+  size->height = v12;
+  [(UILabel *)self->_statusView pkui_sizeThatFits:0 forceWordWrap:width, 1.79769313e308];
+  statusSize->width = v13;
+  statusSize->height = v14;
+  height = size->height;
+  font = [(UILabel *)self->_labelView font];
+  [font descender];
   v18 = height + v17;
 
-  v19 = a5->height + a4->height;
-  v20 = [(UILabel *)self->_statusView font];
-  [v20 descender];
+  v19 = statusSize->height + size->height;
+  font2 = [(UILabel *)self->_statusView font];
+  [font2 descender];
   v22 = v19 + v21;
 
   [(PKPassValueAddedServiceInfoView *)self _baselineDistance];
-  *a6 = fmax(v23 - (v22 - v18), 0.0);
+  *adjustment = fmax(v23 - (v22 - v18), 0.0);
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setStyle:(int64_t)style animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (self->_style == a3)
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_style == style)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    self->_style = a3;
+    self->_style = style;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __64__PKPassValueAddedServiceInfoView_setStyle_animated_completion___block_invoke;
     aBlock[3] = &unk_1E80119C8;
     aBlock[4] = self;
-    aBlock[5] = a3;
+    aBlock[5] = style;
     v10 = _Block_copy(aBlock);
     v11 = v10;
-    if (v5)
+    if (animatedCopy)
     {
       v12 = MEMORY[0x1E69DD250];
       v16[0] = MEMORY[0x1E69E9820];
@@ -226,22 +226,22 @@ uint64_t __64__PKPassValueAddedServiceInfoView_setStyle_animated_completion___bl
   return [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:a1[6] completion:0.2];
 }
 
-- (void)setPass:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPass:(id)pass animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  passCopy = pass;
+  completionCopy = completion;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __63__PKPassValueAddedServiceInfoView_setPass_animated_completion___block_invoke;
   v19 = &unk_1E8021138;
-  v11 = v9;
+  v11 = passCopy;
   v20 = v11;
-  v21 = self;
-  v23 = a4;
-  v12 = v10;
+  selfCopy = self;
+  animatedCopy = animated;
+  v12 = completionCopy;
   v22 = v12;
   v13 = _Block_copy(&v16);
-  objc_storeStrong(&self->_pass, a3);
+  objc_storeStrong(&self->_pass, pass);
   pass = self->_pass;
   if (pass)
   {
@@ -379,31 +379,31 @@ uint64_t __63__PKPassValueAddedServiceInfoView_setPass_animated_completion___blo
   return result;
 }
 
-- (id)_labelAttributedStringForString:(id)a3
+- (id)_labelAttributedStringForString:(id)string
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
     v4 = MEMORY[0x1E69DB7C8];
-    v5 = a3;
-    v6 = [v4 defaultParagraphStyle];
-    v7 = [v6 mutableCopy];
+    stringCopy = string;
+    defaultParagraphStyle = [v4 defaultParagraphStyle];
+    v7 = [defaultParagraphStyle mutableCopy];
 
     [v7 setAlignment:4];
     [v7 setLineBreakMode:4];
     v15[0] = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v9 = *MEMORY[0x1E69DB688];
-    v16[0] = v8;
+    v16[0] = labelColor;
     v16[1] = v7;
     v10 = *MEMORY[0x1E69DB648];
     v15[1] = v9;
     v15[2] = v10;
-    v11 = [(PKPassValueAddedServiceInfoView *)self _labelFont];
-    v16[2] = v11;
+    _labelFont = [(PKPassValueAddedServiceInfoView *)self _labelFont];
+    v16[2] = _labelFont;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
-    v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v12];
+    v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:v12];
   }
 
   else
@@ -414,12 +414,12 @@ uint64_t __63__PKPassValueAddedServiceInfoView_setPass_animated_completion___blo
   return v13;
 }
 
-- (id)_statusAttributedStringForStyle:(int64_t)a3
+- (id)_statusAttributedStringForStyle:(int64_t)style
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       v5 = 0;
       goto LABEL_8;
@@ -436,21 +436,21 @@ uint64_t __63__PKPassValueAddedServiceInfoView_setPass_animated_completion___blo
   v5 = PKLocalizedString(&v4->isa);
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-    v7 = [v6 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+    v7 = [defaultParagraphStyle mutableCopy];
 
     [v7 setAlignment:4];
     [v7 setLineBreakMode:4];
     v15[0] = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v9 = *MEMORY[0x1E69DB688];
-    v16[0] = v8;
+    v16[0] = secondaryLabelColor;
     v16[1] = v7;
     v10 = *MEMORY[0x1E69DB648];
     v15[1] = v9;
     v15[2] = v10;
-    v11 = [(PKPassValueAddedServiceInfoView *)self _statusFont];
-    v16[2] = v11;
+    _statusFont = [(PKPassValueAddedServiceInfoView *)self _statusFont];
+    v16[2] = _statusFont;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
     v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v12];
@@ -466,8 +466,8 @@ LABEL_9:
 
 - (double)_baselineDistance
 {
-  v2 = [(PKPassValueAddedServiceInfoView *)self _labelFont];
-  [v2 _bodyLeading];
+  _labelFont = [(PKPassValueAddedServiceInfoView *)self _labelFont];
+  [_labelFont _bodyLeading];
   PKFloatRoundToPixel();
   v4 = v3;
 

@@ -1,12 +1,12 @@
 @interface PXGImageRequestQueue
 - (PXGImageRequestPerformer)imageRequestPerformer;
-- (void)_discardIndexes:(id)a3;
+- (void)_discardIndexes:(id)indexes;
 - (void)_removeAllRequests;
-- (void)cancelTextureRequests:(id)a3;
+- (void)cancelTextureRequests:(id)requests;
 - (void)dealloc;
-- (void)enqueueRequestsWithSpriteIndexRange:(_PXGSpriteIndexRange)a3 textureRequestIDs:(_NSRange)a4 displayAssetFetchResult:(id)a5 observer:(id)a6 presentationStyles:(unint64_t)a7 targetSize:(CGSize)a8 screenScale:(double)a9 screenMaxHeadroom:(double)a10 adjustment:(id)a11 intent:(unint64_t)a12 useLowMemoryDecode:(BOOL)a13 applyCleanApertureCrop:(BOOL)a14 mediaProvider:(id)a15;
-- (void)performRequestsWithAllowedIDs:(id)a3;
-- (void)setCount:(int64_t)a3;
+- (void)enqueueRequestsWithSpriteIndexRange:(_PXGSpriteIndexRange)range textureRequestIDs:(_NSRange)ds displayAssetFetchResult:(id)result observer:(id)observer presentationStyles:(unint64_t)styles targetSize:(CGSize)size screenScale:(double)scale screenMaxHeadroom:(double)self0 adjustment:(id)self1 intent:(unint64_t)self2 useLowMemoryDecode:(BOOL)self3 applyCleanApertureCrop:(BOOL)self4 mediaProvider:(id)self5;
+- (void)performRequestsWithAllowedIDs:(id)ds;
+- (void)setCount:(int64_t)count;
 @end
 
 @implementation PXGImageRequestQueue
@@ -18,14 +18,14 @@
   return WeakRetained;
 }
 
-- (void)_discardIndexes:(id)a3
+- (void)_discardIndexes:(id)indexes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __40__PXGImageRequestQueue__discardIndexes___block_invoke;
   v3[3] = &unk_2782AA948;
   v3[4] = self;
-  [a3 enumerateRangesWithOptions:2 usingBlock:v3];
+  [indexes enumerateRangesWithOptions:2 usingBlock:v3];
 }
 
 uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -63,15 +63,15 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
   [(PXGImageRequestQueue *)self setCount:0];
 }
 
-- (void)cancelTextureRequests:(id)a3
+- (void)cancelTextureRequests:(id)requests
 {
-  v4 = a3;
-  v5 = v4;
+  requestsCopy = requests;
+  v5 = requestsCopy;
   count = self->_count;
   if (count)
   {
-    v13 = v4;
-    v7 = [v4 count];
+    v13 = requestsCopy;
+    v7 = [requestsCopy count];
     v5 = v13;
     if (v7)
     {
@@ -105,17 +105,17 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)performRequestsWithAllowedIDs:(id)a3
+- (void)performRequestsWithAllowedIDs:(id)ds
 {
-  v4 = a3;
-  v5 = v4;
+  dsCopy = ds;
+  v5 = dsCopy;
   count = self->_count;
   if (count)
   {
-    v23 = v4;
-    if (!v4 || (v7 = [v4 count], v5 = v23, v7))
+    v23 = dsCopy;
+    if (!dsCopy || (v7 = [dsCopy count], v5 = v23, v7))
     {
-      v8 = [(PXGImageRequestQueue *)self imageRequestPerformer];
+      imageRequestPerformer = [(PXGImageRequestQueue *)self imageRequestPerformer];
       v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
       v10 = v23;
       v11 = v9;
@@ -142,7 +142,7 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
               v21 = 0;
             }
 
-            [v8 performRequestForSpriteIndex:var0 textureRequestID:var1 sharedState:v21];
+            [imageRequestPerformer performRequestForSpriteIndex:var0 textureRequestID:var1 sharedState:v21];
             v22 = v16->var2;
             if (v22)
             {
@@ -165,30 +165,30 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)enqueueRequestsWithSpriteIndexRange:(_PXGSpriteIndexRange)a3 textureRequestIDs:(_NSRange)a4 displayAssetFetchResult:(id)a5 observer:(id)a6 presentationStyles:(unint64_t)a7 targetSize:(CGSize)a8 screenScale:(double)a9 screenMaxHeadroom:(double)a10 adjustment:(id)a11 intent:(unint64_t)a12 useLowMemoryDecode:(BOOL)a13 applyCleanApertureCrop:(BOOL)a14 mediaProvider:(id)a15
+- (void)enqueueRequestsWithSpriteIndexRange:(_PXGSpriteIndexRange)range textureRequestIDs:(_NSRange)ds displayAssetFetchResult:(id)result observer:(id)observer presentationStyles:(unint64_t)styles targetSize:(CGSize)size screenScale:(double)scale screenMaxHeadroom:(double)self0 adjustment:(id)self1 intent:(unint64_t)self2 useLowMemoryDecode:(BOOL)self3 applyCleanApertureCrop:(BOOL)self4 mediaProvider:(id)self5
 {
-  location = a4.location;
-  height = a8.height;
-  width = a8.width;
-  v21 = a3;
-  length = a3.length;
-  v33 = a5;
-  v24 = a6;
-  v25 = a11;
-  v26 = a15;
-  LOBYTE(v31) = a14;
-  v27 = [[PXGImageRequestSharedState alloc] initWithDisplayAssetFetchResult:v33 observer:v24 presentationStyles:a7 targetSize:v25 screenScale:a12 screenMaxHeadroom:a13 adjustment:width intent:height useLowMemoryDecode:a9 applyCleanApertureCrop:a10 mediaProvider:v31, v26];
+  location = ds.location;
+  height = size.height;
+  width = size.width;
+  rangeCopy = range;
+  length = range.length;
+  resultCopy = result;
+  observerCopy = observer;
+  adjustmentCopy = adjustment;
+  providerCopy = provider;
+  LOBYTE(v31) = crop;
+  providerCopy = [[PXGImageRequestSharedState alloc] initWithDisplayAssetFetchResult:resultCopy observer:observerCopy presentationStyles:styles targetSize:adjustmentCopy screenScale:intent screenMaxHeadroom:decode adjustment:width intent:height useLowMemoryDecode:scale applyCleanApertureCrop:headroom mediaProvider:v31, providerCopy];
   v28 = [(PXGImageRequestQueue *)self count];
-  [(PXGImageRequestQueue *)self setCount:[(PXGImageRequestQueue *)self count]+ HIDWORD(*&v21)];
+  [(PXGImageRequestQueue *)self setCount:[(PXGImageRequestQueue *)self count]+ HIDWORD(*&rangeCopy)];
   if (length)
   {
     p_var2 = &self->_requests[v28].var2;
     do
     {
-      *(p_var2 - 2) = v21.location;
+      *(p_var2 - 2) = rangeCopy.location;
       *(p_var2 - 1) = location;
       *p_var2 = 0;
-      v30 = v27;
+      v30 = providerCopy;
       if (*p_var2 != v30)
       {
 
@@ -197,7 +197,7 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
 
       p_var2 += 2;
       ++location;
-      ++v21.location;
+      ++rangeCopy.location;
       --length;
     }
 
@@ -205,13 +205,13 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     capacity = self->_capacity;
-    if (capacity < a3)
+    if (capacity < count)
     {
       if (!capacity)
       {
@@ -219,14 +219,14 @@ uint64_t __40__PXGImageRequestQueue__discardIndexes___block_invoke(uint64_t a1, 
         self->_capacity = 32;
       }
 
-      if (capacity < a3)
+      if (capacity < count)
       {
         do
         {
           capacity *= 2;
         }
 
-        while (capacity < a3);
+        while (capacity < count);
         self->_capacity = capacity;
       }
 

@@ -1,31 +1,31 @@
 @interface SCWWatchlistReorderSymbolInWatchlistCommand
-- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithCoder:(id)a3;
-- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithSymbol:(id)a3 precedingSymbol:(id)a4 watchlistIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithCoder:(id)coder;
+- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithSymbol:(id)symbol precedingSymbol:(id)precedingSymbol watchlistIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWWatchlistReorderSymbolInWatchlistCommand
 
-- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithSymbol:(id)a3 precedingSymbol:(id)a4 watchlistIdentifier:(id)a5
+- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithSymbol:(id)symbol precedingSymbol:(id)precedingSymbol watchlistIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  symbolCopy = symbol;
+  precedingSymbolCopy = precedingSymbol;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = SCWWatchlistReorderSymbolInWatchlistCommand;
   v11 = [(SCWWatchlistReorderSymbolInWatchlistCommand *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [symbolCopy copy];
     symbol = v11->_symbol;
     v11->_symbol = v12;
 
-    v14 = [v9 copy];
+    v14 = [precedingSymbolCopy copy];
     precedingSymbol = v11->_precedingSymbol;
     v11->_precedingSymbol = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     watchlistIdentifier = v11->_watchlistIdentifier;
     v11->_watchlistIdentifier = v16;
   }
@@ -33,17 +33,17 @@
   return v11;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__SCWWatchlistReorderSymbolInWatchlistCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v4 = a3;
+  zoneCopy = zone;
   v5 = _Block_copy(aBlock);
-  v6 = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self watchlistIdentifier];
-  [v4 createOrUpdateRecordWithName:v6 recordType:@"Watchlist" modifyBlock:v5];
+  watchlistIdentifier = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self watchlistIdentifier];
+  [zoneCopy createOrUpdateRecordWithName:watchlistIdentifier recordType:@"Watchlist" modifyBlock:v5];
 }
 
 void __63__SCWWatchlistReorderSymbolInWatchlistCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -97,40 +97,40 @@ void __63__SCWWatchlistReorderSymbolInWatchlistCommand_executeWithZone___block_i
   }
 }
 
-- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithCoder:(id)a3
+- (SCWWatchlistReorderSymbolInWatchlistCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"precedingStockSymbol"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"precedingStockSymbol"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
 
   if (v5)
   {
     self = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self initWithSymbol:v5 precedingSymbol:v6 watchlistIdentifier:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self symbol];
-  [v4 encodeObject:v5 forKey:@"symbol"];
+  coderCopy = coder;
+  symbol = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self symbol];
+  [coderCopy encodeObject:symbol forKey:@"symbol"];
 
-  v6 = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self precedingSymbol];
-  [v4 encodeObject:v6 forKey:@"precedingStockSymbol"];
+  precedingSymbol = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self precedingSymbol];
+  [coderCopy encodeObject:precedingSymbol forKey:@"precedingStockSymbol"];
 
-  v7 = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self watchlistIdentifier];
-  [v4 encodeObject:v7 forKey:@"watchlistIdentifier"];
+  watchlistIdentifier = [(SCWWatchlistReorderSymbolInWatchlistCommand *)self watchlistIdentifier];
+  [coderCopy encodeObject:watchlistIdentifier forKey:@"watchlistIdentifier"];
 }
 
 @end

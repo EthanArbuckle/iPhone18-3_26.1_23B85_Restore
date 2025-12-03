@@ -1,53 +1,53 @@
 @interface NFTrustSignRequest
-+ (id)signRequestWithChallenge:(id)a3 data:(id)a4;
-- (NFTrustSignRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)signRequestWithChallenge:(id)challenge data:(id)data;
+- (NFTrustSignRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTrustSignRequest
 
-- (NFTrustSignRequest)initWithCoder:(id)a3
+- (NFTrustSignRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NFTrustSignRequest;
-  v5 = [(NFTrustObject *)&v9 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
     [(NFTrustSignRequest *)v5 setValue:v6 forKey:@"challenge"];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     [(NFTrustSignRequest *)v5 setValue:v7 forKey:@"data"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NFTrustSignRequest *)self challenge];
-  [v4 encodeObject:v5 forKey:@"challenge"];
+  coderCopy = coder;
+  challenge = [(NFTrustSignRequest *)self challenge];
+  [coderCopy encodeObject:challenge forKey:@"challenge"];
 
-  v6 = [(NFTrustSignRequest *)self data];
-  [v4 encodeObject:v6 forKey:@"data"];
+  data = [(NFTrustSignRequest *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-+ (id)signRequestWithChallenge:(id)a3 data:(id)a4
++ (id)signRequestWithChallenge:(id)challenge data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  challengeCopy = challenge;
+  dataCopy = data;
+  if (!challengeCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v12 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v16 = 45;
       if (isMetaClass)
@@ -65,7 +65,7 @@
       goto LABEL_26;
     }
 
-    v18 = object_getClass(a1);
+    v18 = object_getClass(self);
     if (class_isMetaClass(v18))
     {
       v19 = 43;
@@ -79,7 +79,7 @@
     *buf = 67109890;
     v33 = v19;
     v34 = 2082;
-    v35 = object_getClassName(a1);
+    v35 = object_getClassName(self);
     v36 = 2082;
     v37 = sel_getName(a2);
     v38 = 1024;
@@ -88,16 +88,16 @@
     goto LABEL_25;
   }
 
-  if ([v7 length] != 8)
+  if ([challengeCopy length] != 8)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v21 = NFLogGetLogger();
     if (v21)
     {
       v22 = v21;
-      v23 = object_getClass(a1);
+      v23 = object_getClass(self);
       v24 = class_isMetaClass(v23);
-      v25 = object_getClassName(a1);
+      v25 = object_getClassName(self);
       v31 = sel_getName(a2);
       v26 = 45;
       if (v24)
@@ -115,7 +115,7 @@
       goto LABEL_26;
     }
 
-    v27 = object_getClass(a1);
+    v27 = object_getClass(self);
     if (class_isMetaClass(v27))
     {
       v28 = 43;
@@ -129,7 +129,7 @@
     *buf = 67109890;
     v33 = v28;
     v34 = 2082;
-    v35 = object_getClassName(a1);
+    v35 = object_getClassName(self);
     v36 = 2082;
     v37 = sel_getName(a2);
     v38 = 1024;
@@ -143,18 +143,18 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (![v8 length])
+  if (![dataCopy length])
   {
 
-    v8 = 0;
+    dataCopy = 0;
   }
 
-  v9 = [a1 alloc];
+  v9 = [self alloc];
   v10 = v9;
   if (v9)
   {
-    [v9 setChallenge:v7];
-    [v10 setData:v8];
+    [v9 setChallenge:challengeCopy];
+    [v10 setData:dataCopy];
   }
 
 LABEL_27:

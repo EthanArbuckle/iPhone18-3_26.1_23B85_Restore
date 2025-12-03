@@ -1,13 +1,13 @@
 @interface ShockwaveEffectViewController
-- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithCoder:(id)a3;
-- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithCoder:(id)coder;
+- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)viewDidDisappear:;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ShockwaveEffectViewController
 
-- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithCoder:(id)a3
+- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9AirDropUI29ShockwaveEffectViewController_hasSetInitialState) = 0;
   v4 = OBJC_IVAR____TtC9AirDropUI29ShockwaveEffectViewController_effectState;
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   if ((*(&self->super.super.super.isa + OBJC_IVAR____TtC9AirDropUI29ShockwaveEffectViewController_hasSetInitialState) & 1) == 0)
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC9AirDropUI29ShockwaveEffectViewController_hasSetInitialState) = 1;
-    v4 = self;
+    selfCopy = self;
     sub_1000489B8(1);
   }
 }
 
-- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9AirDropUI29ShockwaveEffectViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

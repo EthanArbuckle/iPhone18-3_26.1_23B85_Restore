@@ -1,14 +1,14 @@
 @interface CKSettingsCheckInDevicesList
 - (_TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList)init;
-- (_TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList)initWithFullDataSharing:(BOOL)a3;
+- (_TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList)initWithFullDataSharing:(BOOL)sharing;
 - (id)getView;
 @end
 
 @implementation CKSettingsCheckInDevicesList
 
-- (_TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList)initWithFullDataSharing:(BOOL)a3
+- (_TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList)initWithFullDataSharing:(BOOL)sharing
 {
-  if (a3)
+  if (sharing)
   {
     v4 = 1;
   }
@@ -18,8 +18,8 @@
     v4 = 2;
   }
 
-  v5 = [objc_opt_self() mainScreen];
-  [v5 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v7 = v6;
 
   v8 = self + OBJC_IVAR____TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList_view;
@@ -37,7 +37,7 @@
   v8 = *(&self->super.isa + OBJC_IVAR____TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList_view);
   v9 = self->view[OBJC_IVAR____TtC21CommunicationsSetupUI28CKSettingsCheckInDevicesList_view];
   v4 = objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EDA8BB0, &qword_243C83AF0));
-  v5 = self;
+  selfCopy = self;
   v6 = sub_243C6EF38();
   sub_243C6EF68();
   sub_243C6EF28();

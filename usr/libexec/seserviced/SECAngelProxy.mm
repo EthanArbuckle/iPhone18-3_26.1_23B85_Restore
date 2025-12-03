@@ -1,10 +1,10 @@
 @interface SECAngelProxy
 + (id)sharedInstance;
 - (SECAngelProxy)init;
-- (void)presentGDPRinAppWithBundleId:(id)a3 completion:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentGDPRinAppWithBundleId:(id)id completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation SECAngelProxy
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (void)presentGDPRinAppWithBundleId:(id)a3 completion:(id)a4
+- (void)presentGDPRinAppWithBundleId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [RBSProcessPredicate predicateMatchingBundleIdentifier:v6];
+  idCopy = id;
+  completionCopy = completion;
+  v8 = [RBSProcessPredicate predicateMatchingBundleIdentifier:idCopy];
   v28 = 0;
   v27 = [RBSProcessHandle handleForPredicate:v8 error:&v28];
   v9 = v28;
@@ -47,13 +47,13 @@
   {
     v10 = SESDefaultLogObject();
     v11 = SESCreateAndLogError();
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    v12 = [v27 legacyHandle];
-    v10 = [SBSRemoteAlertPresentationTargetPredicate predicateForProcess:v12];
+    legacyHandle = [v27 legacyHandle];
+    v10 = [SBSRemoteAlertPresentationTargetPredicate predicateForProcess:legacyHandle];
 
     v11 = [[SBSRemoteAlertPresentationTarget alloc] initWithTargetPredicate:v10];
     [v11 setShouldDismissOnUILock:1];
@@ -85,7 +85,7 @@
       v9 = 0;
     }
 
-    v23 = objc_retainBlock(v7);
+    v23 = objc_retainBlock(completionCopy);
     v24 = self->_gdprCompletion;
     self->_gdprCompletion = v23;
 
@@ -94,7 +94,7 @@
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = SESDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -104,7 +104,7 @@
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = SESDefaultLogObject();
@@ -125,7 +125,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = SESDefaultLogObject();

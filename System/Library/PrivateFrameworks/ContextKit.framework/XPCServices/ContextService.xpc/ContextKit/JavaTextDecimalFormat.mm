@@ -1,53 +1,53 @@
 @interface JavaTextDecimalFormat
 + (void)initialize;
 - (BOOL)isDecimalSeparatorAlwaysShown;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGroupingUsed;
 - (BOOL)isParseBigDecimal;
 - (BOOL)isParseIntegerOnly;
-- (JavaTextDecimalFormat)formatWithDouble:(double)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextDecimalFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextDecimalFormat)formatWithLong:(int64_t)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextDecimalFormat)initWithNSString:(id)a3;
+- (JavaTextDecimalFormat)formatWithDouble:(double)double withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextDecimalFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextDecimalFormat)formatWithLong:(int64_t)long withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextDecimalFormat)initWithNSString:(id)string;
 - (id)clone;
-- (id)formatToCharacterIteratorWithId:(id)a3;
+- (id)formatToCharacterIteratorWithId:(id)id;
 - (id)getCurrency;
 - (id)getDecimalFormatSymbols;
 - (id)getNegativePrefix;
 - (id)getNegativeSuffix;
 - (id)getPositivePrefix;
 - (id)getPositiveSuffix;
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4;
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position;
 - (id)toLocalizedPattern;
 - (id)toPattern;
 - (int)getGroupingSize;
 - (int)getMultiplier;
 - (unint64_t)hash;
-- (void)applyLocalizedPatternWithNSString:(id)a3;
-- (void)applyPatternWithNSString:(id)a3;
+- (void)applyLocalizedPatternWithNSString:(id)string;
+- (void)applyPatternWithNSString:(id)string;
 - (void)dealloc;
-- (void)initNativeWithNSString:(id)a3;
-- (void)setCurrencyWithJavaUtilCurrency:(id)a3;
-- (void)setDecimalFormatSymbolsWithJavaTextDecimalFormatSymbols:(id)a3;
-- (void)setNegativePrefixWithNSString:(id)a3;
-- (void)setNegativeSuffixWithNSString:(id)a3;
-- (void)setPositivePrefixWithNSString:(id)a3;
-- (void)setPositiveSuffixWithNSString:(id)a3;
-- (void)setRoundingModeWithJavaMathRoundingModeEnum:(id)a3;
+- (void)initNativeWithNSString:(id)string;
+- (void)setCurrencyWithJavaUtilCurrency:(id)currency;
+- (void)setDecimalFormatSymbolsWithJavaTextDecimalFormatSymbols:(id)symbols;
+- (void)setNegativePrefixWithNSString:(id)string;
+- (void)setNegativeSuffixWithNSString:(id)string;
+- (void)setPositivePrefixWithNSString:(id)string;
+- (void)setPositiveSuffixWithNSString:(id)string;
+- (void)setRoundingModeWithJavaMathRoundingModeEnum:(id)enum;
 @end
 
 @implementation JavaTextDecimalFormat
 
-- (JavaTextDecimalFormat)initWithNSString:(id)a3
+- (JavaTextDecimalFormat)initWithNSString:(id)string
 {
   Default = JavaUtilLocale_getDefault();
-  JavaTextDecimalFormat_initWithNSString_withJavaUtilLocale_(self, a3, Default);
+  JavaTextDecimalFormat_initWithNSString_withJavaUtilLocale_(self, string, Default);
   return self;
 }
 
-- (void)initNativeWithNSString:(id)a3
+- (void)initNativeWithNSString:(id)string
 {
-  v4 = new_LibcoreIcuNativeDecimalFormat_initWithNSString_withJavaTextDecimalFormatSymbols_(a3, *(&self->super.minimumFractionDigits_ + 1));
+  v4 = new_LibcoreIcuNativeDecimalFormat_initWithNSString_withJavaTextDecimalFormatSymbols_(string, *(&self->super.minimumFractionDigits_ + 1));
   JreStrongAssignAndConsume((&self->symbols_ + 4), v4);
   v5 = *(&self->symbols_ + 4);
   if (!v5)
@@ -58,21 +58,21 @@
   v12.receiver = self;
   v12.super_class = JavaTextDecimalFormat;
   -[JavaTextNumberFormat setMaximumFractionDigitsWithInt:](&v12, "setMaximumFractionDigitsWithInt:", [v5 getMaximumFractionDigits]);
-  v6 = [*(&self->symbols_ + 4) getMaximumIntegerDigits];
+  getMaximumIntegerDigits = [*(&self->symbols_ + 4) getMaximumIntegerDigits];
   v11.receiver = self;
   v11.super_class = JavaTextDecimalFormat;
-  [(JavaTextNumberFormat *)&v11 setMaximumIntegerDigitsWithInt:v6];
-  v7 = [*(&self->symbols_ + 4) getMinimumFractionDigits];
+  [(JavaTextNumberFormat *)&v11 setMaximumIntegerDigitsWithInt:getMaximumIntegerDigits];
+  getMinimumFractionDigits = [*(&self->symbols_ + 4) getMinimumFractionDigits];
   v10.receiver = self;
   v10.super_class = JavaTextDecimalFormat;
-  [(JavaTextNumberFormat *)&v10 setMinimumFractionDigitsWithInt:v7];
-  v8 = [*(&self->symbols_ + 4) getMinimumIntegerDigits];
+  [(JavaTextNumberFormat *)&v10 setMinimumFractionDigitsWithInt:getMinimumFractionDigits];
+  getMinimumIntegerDigits = [*(&self->symbols_ + 4) getMinimumIntegerDigits];
   v9.receiver = self;
   v9.super_class = JavaTextDecimalFormat;
-  [(JavaTextNumberFormat *)&v9 setMinimumIntegerDigitsWithInt:v8];
+  [(JavaTextNumberFormat *)&v9 setMinimumIntegerDigitsWithInt:getMinimumIntegerDigits];
 }
 
-- (void)applyLocalizedPatternWithNSString:(id)a3
+- (void)applyLocalizedPatternWithNSString:(id)string
 {
   v4 = *(&self->symbols_ + 4);
   if (!v4)
@@ -80,10 +80,10 @@
     JreThrowNullPointerException();
   }
 
-  [v4 applyLocalizedPatternWithNSString:a3];
+  [v4 applyLocalizedPatternWithNSString:string];
 }
 
-- (void)applyPatternWithNSString:(id)a3
+- (void)applyPatternWithNSString:(id)string
 {
   v4 = *(&self->symbols_ + 4);
   if (!v4)
@@ -91,16 +91,16 @@
     JreThrowNullPointerException();
   }
 
-  [v4 applyPatternWithNSString:a3];
+  [v4 applyPatternWithNSString:string];
 }
 
 - (id)clone
 {
   v9.receiver = self;
   v9.super_class = JavaTextDecimalFormat;
-  v3 = [(JavaTextNumberFormat *)&v9 clone];
+  clone = [(JavaTextNumberFormat *)&v9 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_11;
   }
@@ -116,15 +116,15 @@
     goto LABEL_11;
   }
 
-  v5 = [v4 clone];
+  clone2 = [v4 clone];
   objc_opt_class();
-  if (v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_10:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign((v3 + 36), v5);
+  JreStrongAssign((clone + 36), clone2);
   v6 = *(&self->super.minimumFractionDigits_ + 1);
   if (!v6)
   {
@@ -132,20 +132,20 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v7 = [v6 clone];
+  clone3 = [v6 clone];
   objc_opt_class();
-  if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone3 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  JreStrongAssign((v3 + 28), v7);
-  return v3;
+  JreStrongAssign((clone + 28), clone3);
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v7) = 1;
     return v7;
@@ -158,7 +158,7 @@ LABEL_11:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_17;
   }
@@ -169,7 +169,7 @@ LABEL_11:
   }
 
   v5 = *(&self->symbols_ + 4);
-  v6 = *(a3 + 36);
+  v6 = *(equal + 36);
   if (!v5)
   {
     if (!v6)
@@ -189,23 +189,23 @@ LABEL_10:
   }
 
 LABEL_12:
-  v8 = [(JavaTextDecimalFormat *)self getDecimalFormatSymbols];
-  if (!v8)
+  getDecimalFormatSymbols = [(JavaTextDecimalFormat *)self getDecimalFormatSymbols];
+  if (!getDecimalFormatSymbols)
   {
 LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v9 = v8;
-  v10 = [a3 getDecimalFormatSymbols];
+  v9 = getDecimalFormatSymbols;
+  getDecimalFormatSymbols2 = [equal getDecimalFormatSymbols];
 
-  LOBYTE(v7) = [v9 isEqual:v10];
+  LOBYTE(v7) = [v9 isEqual:getDecimalFormatSymbols2];
   return v7;
 }
 
-- (id)formatToCharacterIteratorWithId:(id)a3
+- (id)formatToCharacterIteratorWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"object == null");
     objc_exception_throw(v5);
@@ -220,9 +220,9 @@ LABEL_17:
   return [v3 formatToCharacterIteratorWithId:?];
 }
 
-- (JavaTextDecimalFormat)formatWithDouble:(double)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextDecimalFormat)formatWithDouble:(double)double withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
-  sub_100265C90(a4, a5);
+  sub_100265C90(buffer, position);
   v9 = *(&self->ndf_ + 4);
   if ((atomic_load_explicit(JavaMathRoundingModeEnum__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -238,7 +238,7 @@ LABEL_17:
 
     [(JavaTextDecimalFormat *)self setRoundingModeWithJavaMathRoundingModeEnum:JavaMathRoundingModeEnum_values_[0]];
     v10 = new_JavaLangStringBuffer_init();
-    v11 = [(JavaTextDecimalFormat *)self formatWithDouble:v10 withJavaLangStringBuffer:new_JavaTextFieldPosition_initWithInt_(0) withJavaTextFieldPosition:a3];
+    v11 = [(JavaTextDecimalFormat *)self formatWithDouble:v10 withJavaLangStringBuffer:new_JavaTextFieldPosition_initWithInt_(0) withJavaTextFieldPosition:double];
     if (!v11)
     {
       JreThrowNullPointerException();
@@ -252,7 +252,7 @@ LABEL_17:
 
     [(JavaTextDecimalFormat *)self setRoundingModeWithJavaMathRoundingModeEnum:qword_100557E18];
     v13 = new_JavaLangStringBuffer_init();
-    v14 = [(JavaTextDecimalFormat *)self formatWithDouble:v13 withJavaLangStringBuffer:new_JavaTextFieldPosition_initWithInt_(0) withJavaTextFieldPosition:a3];
+    v14 = [(JavaTextDecimalFormat *)self formatWithDouble:v13 withJavaLangStringBuffer:new_JavaTextFieldPosition_initWithInt_(0) withJavaTextFieldPosition:double];
     if (!v14 || (v15 = [(JavaTextDecimalFormat *)v14 description], !v12))
     {
       JreThrowNullPointerException();
@@ -272,52 +272,52 @@ LABEL_17:
     [(JavaTextDecimalFormat *)self setRoundingModeWithJavaMathRoundingModeEnum:qword_100557E48];
   }
 
-  if (!a4 || (v16 = *(&self->symbols_ + 4)) == 0)
+  if (!buffer || (v16 = *(&self->symbols_ + 4)) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  [a4 appendWithCharArray:{objc_msgSend(v16, "formatDoubleWithDouble:withJavaTextFieldPosition:", a5, a3)}];
-  return a4;
+  [buffer appendWithCharArray:{objc_msgSend(v16, "formatDoubleWithDouble:withJavaTextFieldPosition:", position, double)}];
+  return buffer;
 }
 
-- (JavaTextDecimalFormat)formatWithLong:(int64_t)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextDecimalFormat)formatWithLong:(int64_t)long withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
-  sub_100265C90(a4, a5);
-  if (!a4 || (v9 = *(&self->symbols_ + 4)) == 0)
+  sub_100265C90(buffer, position);
+  if (!buffer || (v9 = *(&self->symbols_ + 4)) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  [a4 appendWithCharArray:{objc_msgSend(v9, "formatLongWithLong:withJavaTextFieldPosition:", a3, a5)}];
-  return a4;
+  [buffer appendWithCharArray:{objc_msgSend(v9, "formatLongWithLong:withJavaTextFieldPosition:", long, position)}];
+  return buffer;
 }
 
-- (JavaTextDecimalFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextDecimalFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
-  v6 = a4;
-  sub_100265C90(a4, a5);
+  bufferCopy = buffer;
+  sub_100265C90(buffer, position);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (!a3)
+    if (!id)
     {
       goto LABEL_19;
     }
 
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a3 bitLength];
+      bitLength = [id bitLength];
       v10 = *(&self->symbols_ + 4);
-      if (v9 > 63)
+      if (bitLength > 63)
       {
         if (!v10)
         {
           goto LABEL_19;
         }
 
-        v11 = [v10 formatBigIntegerWithJavaMathBigInteger:a3 withJavaTextFieldPosition:a5];
+        v11 = [v10 formatBigIntegerWithJavaMathBigInteger:id withJavaTextFieldPosition:position];
       }
 
       else
@@ -327,11 +327,11 @@ LABEL_17:
           goto LABEL_19;
         }
 
-        v11 = [v10 formatLongWithLong:objc_msgSend(a3 withJavaTextFieldPosition:{"longLongValue"), a5}];
+        v11 = [v10 formatLongWithLong:objc_msgSend(id withJavaTextFieldPosition:{"longLongValue"), position}];
       }
 
       v13 = v11;
-      if (v6)
+      if (bufferCopy)
       {
         goto LABEL_17;
       }
@@ -347,7 +347,7 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!v6)
+    if (!bufferCopy)
     {
       goto LABEL_19;
     }
@@ -359,12 +359,12 @@ LABEL_20:
     }
 
     objc_opt_class();
-    if (!a3 || (objc_opt_isKindOfClass() & 1) != 0)
+    if (!id || (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v13 = [v12 formatBigDecimalWithJavaMathBigDecimal:a3 withJavaTextFieldPosition:a5];
+      v13 = [v12 formatBigDecimalWithJavaMathBigDecimal:id withJavaTextFieldPosition:position];
 LABEL_17:
-      [(JavaTextDecimalFormat *)v6 appendWithCharArray:v13];
-      return v6;
+      [(JavaTextDecimalFormat *)bufferCopy appendWithCharArray:v13];
+      return bufferCopy;
     }
 
     goto LABEL_20;
@@ -372,7 +372,7 @@ LABEL_17:
 
   v15.receiver = self;
   v15.super_class = JavaTextDecimalFormat;
-  return [(JavaTextNumberFormat *)&v15 formatWithId:a3 withJavaLangStringBuffer:v6 withJavaTextFieldPosition:a5];
+  return [(JavaTextNumberFormat *)&v15 formatWithId:id withJavaLangStringBuffer:bufferCopy withJavaTextFieldPosition:position];
 }
 
 - (id)getDecimalFormatSymbols
@@ -383,14 +383,14 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v3 = [v2 clone];
+  clone = [v2 clone];
   objc_opt_class();
-  if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v3;
+  return clone;
 }
 
 - (id)getCurrency
@@ -472,13 +472,13 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(JavaTextDecimalFormat *)self getPositivePrefix];
-  if (!v2)
+  getPositivePrefix = [(JavaTextDecimalFormat *)self getPositivePrefix];
+  if (!getPositivePrefix)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 hash];
+  return [getPositivePrefix hash];
 }
 
 - (BOOL)isDecimalSeparatorAlwaysShown
@@ -514,7 +514,7 @@ LABEL_17:
   return [v3 isParseIntegerOnly];
 }
 
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position
 {
   v5 = *(&self->symbols_ + 4);
   if (!v5)
@@ -522,7 +522,7 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v6 = [v5 parseWithNSString:a3 withJavaTextParsePosition:a4];
+  v6 = [v5 parseWithNSString:string withJavaTextParsePosition:position];
   if (!v6)
   {
     return v6;
@@ -594,18 +594,18 @@ LABEL_14:
   return JavaLangLong_valueOfWithLong_(0);
 }
 
-- (void)setDecimalFormatSymbolsWithJavaTextDecimalFormatSymbols:(id)a3
+- (void)setDecimalFormatSymbolsWithJavaTextDecimalFormatSymbols:(id)symbols
 {
-  if (a3)
+  if (symbols)
   {
-    v4 = [a3 clone];
+    clone = [symbols clone];
     objc_opt_class();
-    if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (clone && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    JreStrongAssign((&self->super.minimumFractionDigits_ + 1), v4);
+    JreStrongAssign((&self->super.minimumFractionDigits_ + 1), clone);
     v5 = *(&self->symbols_ + 4);
     if (!v5)
     {
@@ -618,15 +618,15 @@ LABEL_14:
   }
 }
 
-- (void)setCurrencyWithJavaUtilCurrency:(id)a3
+- (void)setCurrencyWithJavaUtilCurrency:(id)currency
 {
   v3 = *(&self->symbols_ + 4);
-  if (!v3 || !a3 || ([v3 setCurrencyWithJavaUtilCurrency:{JavaUtilCurrency_getInstanceWithNSString_(objc_msgSend(a3, "getCurrencyCode"))}], (v6 = *(&self->super.minimumFractionDigits_ + 1)) == 0))
+  if (!v3 || !currency || ([v3 setCurrencyWithJavaUtilCurrency:{JavaUtilCurrency_getInstanceWithNSString_(objc_msgSend(currency, "getCurrencyCode"))}], (v6 = *(&self->super.minimumFractionDigits_ + 1)) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  [v6 setCurrencyWithJavaUtilCurrency:a3];
+  [v6 setCurrencyWithJavaUtilCurrency:currency];
 }
 
 - (BOOL)isGroupingUsed
@@ -640,7 +640,7 @@ LABEL_14:
   return [v3 isGroupingUsed];
 }
 
-- (void)setNegativePrefixWithNSString:(id)a3
+- (void)setNegativePrefixWithNSString:(id)string
 {
   v4 = *(&self->symbols_ + 4);
   if (!v4)
@@ -648,10 +648,10 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  [v4 setNegativePrefixWithNSString:a3];
+  [v4 setNegativePrefixWithNSString:string];
 }
 
-- (void)setNegativeSuffixWithNSString:(id)a3
+- (void)setNegativeSuffixWithNSString:(id)string
 {
   v4 = *(&self->symbols_ + 4);
   if (!v4)
@@ -659,10 +659,10 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  [v4 setNegativeSuffixWithNSString:a3];
+  [v4 setNegativeSuffixWithNSString:string];
 }
 
-- (void)setPositivePrefixWithNSString:(id)a3
+- (void)setPositivePrefixWithNSString:(id)string
 {
   v4 = *(&self->symbols_ + 4);
   if (!v4)
@@ -670,10 +670,10 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  [v4 setPositivePrefixWithNSString:a3];
+  [v4 setPositivePrefixWithNSString:string];
 }
 
-- (void)setPositiveSuffixWithNSString:(id)a3
+- (void)setPositiveSuffixWithNSString:(id)string
 {
   v4 = *(&self->symbols_ + 4);
   if (!v4)
@@ -681,7 +681,7 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  [v4 setPositiveSuffixWithNSString:a3];
+  [v4 setPositiveSuffixWithNSString:string];
 }
 
 - (id)toLocalizedPattern
@@ -706,21 +706,21 @@ LABEL_14:
   return [v3 toPattern];
 }
 
-- (void)setRoundingModeWithJavaMathRoundingModeEnum:(id)a3
+- (void)setRoundingModeWithJavaMathRoundingModeEnum:(id)enum
 {
-  if (!a3)
+  if (!enum)
   {
     v9 = new_JavaLangNullPointerException_initWithNSString_(@"roundingMode == null");
     objc_exception_throw(v9);
   }
 
-  JreStrongAssign((&self->ndf_ + 4), a3);
+  JreStrongAssign((&self->ndf_ + 4), enum);
   if ((atomic_load_explicit(JavaMathRoundingModeEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100164E08();
   }
 
-  if (qword_100557E48 != a3)
+  if (qword_100557E48 != enum)
   {
     v5 = JavaLangMath_maxWithInt_withInt_(0, [(JavaTextNumberFormat *)self getMaximumFractionDigits]);
     v6 = JavaLangMath_powWithDouble_withDouble_(10.0, v5);
@@ -732,7 +732,7 @@ LABEL_14:
 
     v8 = 1.0 / v6;
 
-    [v7 setRoundingModeWithJavaMathRoundingModeEnum:a3 withDouble:v8];
+    [v7 setRoundingModeWithJavaMathRoundingModeEnum:enum withDouble:v8];
   }
 }
 
@@ -745,7 +745,7 @@ LABEL_14:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaLangDouble_initWithDouble_(-0.0);
     JreStrongAssignAndConsume(&qword_1005568B8, v2);

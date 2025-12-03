@@ -1,21 +1,21 @@
 @interface AVTSelectableStickerSheetControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axMarkupCell:(id)a3 indexPath:(id)a4;
+- (void)_axMarkupCell:(id)cell indexPath:(id)path;
 @end
 
 @implementation AVTSelectableStickerSheetControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"avatarRecord" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"isCameraItem:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"stickerItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTUIStickerItem" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"avatarRecord" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"isCameraItem:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"AVTSelectableStickerSheetController" hasInstanceMethod:@"stickerItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTUIStickerItem" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,8 +36,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 visibleCells];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  visibleCells = [v4 visibleCells];
+  v7 = [visibleCells countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -48,7 +48,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         [(AVTSelectableStickerSheetControllerAccessibility *)self _axMarkupCell:v11 indexPath:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v8);
@@ -65,24 +65,24 @@
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AVTSelectableStickerSheetControllerAccessibility;
-  v6 = a4;
-  v7 = [(AVTSelectableStickerSheetControllerAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(AVTSelectableStickerSheetControllerAccessibility *)self _axMarkupCell:v7 indexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AVTSelectableStickerSheetControllerAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(AVTSelectableStickerSheetControllerAccessibility *)self _axMarkupCell:v7 indexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }
 
-- (void)_axMarkupCell:(id)a3 indexPath:(id)a4
+- (void)_axMarkupCell:(id)cell indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v8 = [(AVTSelectableStickerSheetControllerAccessibility *)self safeArrayForKey:@"stickerItems"];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "item")}];
+  v9 = [v8 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
   v16 = 0;
   v17 = &v16;
@@ -102,7 +102,7 @@
   _Block_object_dispose(&v16, 8);
   if (v9 == 1)
   {
-    [v6 _setAccessibilityLabelBlock:&__block_literal_global_0];
+    [cellCopy _setAccessibilityLabelBlock:&__block_literal_global_0];
   }
 
   else
@@ -112,21 +112,21 @@
     v13[2] = __76__AVTSelectableStickerSheetControllerAccessibility__axMarkupCell_indexPath___block_invoke_3;
     v13[3] = &unk_29F2A39F0;
     objc_copyWeak(v15, &location);
-    v14 = v7;
-    [v6 _setAccessibilityLabelBlock:v13];
-    [v6 _setAccessibilityHintBlock:&__block_literal_global_326];
+    v14 = pathCopy;
+    [cellCopy _setAccessibilityLabelBlock:v13];
+    [cellCopy _setAccessibilityHintBlock:&__block_literal_global_326];
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
     v11[2] = __76__AVTSelectableStickerSheetControllerAccessibility__axMarkupCell_indexPath___block_invoke_5;
     v11[3] = &unk_29F2A3B08;
     objc_copyWeak(&v12, &location);
-    [v6 _setAccessibilityCustomContentBlock:v11];
+    [cellCopy _setAccessibilityCustomContentBlock:v11];
     objc_destroyWeak(&v12);
 
     objc_destroyWeak(v15);
   }
 
-  [v6 setIsAccessibilityElement:1];
+  [cellCopy setIsAccessibilityElement:1];
 
   objc_destroyWeak(&location);
 }

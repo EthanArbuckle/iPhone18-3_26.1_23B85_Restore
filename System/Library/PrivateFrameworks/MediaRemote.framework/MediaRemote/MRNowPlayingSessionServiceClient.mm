@@ -1,29 +1,29 @@
 @interface MRNowPlayingSessionServiceClient
-- (MRNowPlayingSessionServiceClient)initWithService:(id)a3;
-- (id)_existingPlayerPathForOrigin:(id)a3;
+- (MRNowPlayingSessionServiceClient)initWithService:(id)service;
+- (id)_existingPlayerPathForOrigin:(id)origin;
 - (id)_generatePlayerID;
-- (id)_generatePlayerPathForOrigin:(id)a3;
-- (void)_handleCreatePlayerForOrigin:(id)a3 deviceInfo:(id)a4 completion:(id)a5;
-- (void)_handleDestroyPlayersForOrigin:(id)a3;
-- (void)mediaServicesResetNotification:(id)a3;
+- (id)_generatePlayerPathForOrigin:(id)origin;
+- (void)_handleCreatePlayerForOrigin:(id)origin deviceInfo:(id)info completion:(id)completion;
+- (void)_handleDestroyPlayersForOrigin:(id)origin;
+- (void)mediaServicesResetNotification:(id)notification;
 @end
 
 @implementation MRNowPlayingSessionServiceClient
 
-- (MRNowPlayingSessionServiceClient)initWithService:(id)a3
+- (MRNowPlayingSessionServiceClient)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v23.receiver = self;
   v23.super_class = MRNowPlayingSessionServiceClient;
   v6 = [(MRNowPlayingSessionServiceClient *)&v23 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     playerPathsByOrigin = v6->_playerPathsByOrigin;
-    v6->_playerPathsByOrigin = v7;
+    v6->_playerPathsByOrigin = dictionary;
 
-    v9 = [v5 service];
-    v10 = [v9 mrXPCConnection];
+    service = [serviceCopy service];
+    mrXPCConnection = [service mrXPCConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__MRNowPlayingSessionServiceClient_initWithService___block_invoke;
@@ -31,17 +31,17 @@
     v22 = a2;
     v11 = v6;
     v21 = v11;
-    [v10 addCustomXPCHandler:v20 forKey:0x40000000000000CLL];
+    [mrXPCConnection addCustomXPCHandler:v20 forKey:0x40000000000000CLL];
 
-    v12 = [v5 service];
-    v13 = [v12 mrXPCConnection];
+    service2 = [serviceCopy service];
+    mrXPCConnection2 = [service2 mrXPCConnection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __52__MRNowPlayingSessionServiceClient_initWithService___block_invoke_3;
     v18[3] = &unk_1E76A4C28;
     v14 = v11;
     v19 = v14;
-    [v13 addCustomXPCHandler:v18 forKey:0x40000000000000DLL];
+    [mrXPCConnection2 addCustomXPCHandler:v18 forKey:0x40000000000000DLL];
 
     v15 = *MEMORY[0x1E6958110];
     if (!*MEMORY[0x1E6958110])
@@ -49,8 +49,8 @@
       [(MRNowPlayingSessionServiceClient *)a2 initWithService:v14];
     }
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v14 selector:sel_mediaServicesResetNotification_ name:v15 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel_mediaServicesResetNotification_ name:v15 object:0];
   }
 
   return v6;
@@ -103,17 +103,17 @@ void __52__MRNowPlayingSessionServiceClient_initWithService___block_invoke_3(uin
   [*(a1 + 32) _handleDestroyPlayersForOrigin:v3];
 }
 
-- (void)mediaServicesResetNotification:(id)a3
+- (void)mediaServicesResetNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[MRNowPlayingOriginClientManager sharedManager];
-  v6 = [v5 destroyPlayerCallback];
+  destroyPlayerCallback = [v5 destroyPlayerCallback];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_playerPathsByOrigin copy];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_playerPathsByOrigin copy];
+  objc_sync_exit(selfCopy);
 
   if ([v8 count])
   {
@@ -130,12 +130,12 @@ void __52__MRNowPlayingSessionServiceClient_initWithService___block_invoke_3(uin
   v13[1] = 3221225472;
   v13[2] = __67__MRNowPlayingSessionServiceClient_mediaServicesResetNotification___block_invoke;
   v13[3] = &unk_1E76A4C50;
-  v10 = v6;
+  v10 = destroyPlayerCallback;
   v14 = v10;
   [v8 enumerateKeysAndObjectsUsingBlock:v13];
-  v11 = v7;
+  v11 = selfCopy;
   objc_sync_enter(v11);
-  [(NSMutableDictionary *)v7->_playerPathsByOrigin removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_playerPathsByOrigin removeAllObjects];
   objc_sync_exit(v11);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -154,22 +154,22 @@ void __67__MRNowPlayingSessionServiceClient_mediaServicesResetNotification___blo
   [v6 removeOrigin:v7];
 }
 
-- (void)_handleDestroyPlayersForOrigin:(id)a3
+- (void)_handleDestroyPlayersForOrigin:(id)origin
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  originCopy = origin;
   v5 = +[MRNowPlayingOriginClientManager sharedManager];
-  v6 = [v5 destroyPlayerCallback];
+  destroyPlayerCallback = [v5 destroyPlayerCallback];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_playerPathsByOrigin objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)v7->_playerPathsByOrigin setObject:0 forKeyedSubscript:v4];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_playerPathsByOrigin objectForKeyedSubscript:originCopy];
+  [(NSMutableDictionary *)selfCopy->_playerPathsByOrigin setObject:0 forKeyedSubscript:originCopy];
+  objc_sync_exit(selfCopy);
 
-  if (v8 && v6)
+  if (v8 && destroyPlayerCallback)
   {
-    (v6)[2](v6, v8);
+    (destroyPlayerCallback)[2](destroyPlayerCallback, v8);
   }
 
   else if (!v8)
@@ -183,53 +183,53 @@ void __67__MRNowPlayingSessionServiceClient_mediaServicesResetNotification___blo
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = originCopy;
     _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingSessionServiceClient] Destroying player %@ created for origin: %@", &v12, 0x16u);
   }
 
   v10 = +[MRNowPlayingOriginClientManager sharedManager];
-  [v10 removeOrigin:v4];
+  [v10 removeOrigin:originCopy];
 
 LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCreatePlayerForOrigin:(id)a3 deviceInfo:(id)a4 completion:(id)a5
+- (void)_handleCreatePlayerForOrigin:(id)origin deviceInfo:(id)info completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MRNowPlayingSessionServiceClient *)self _existingPlayerPathForOrigin:v9];
+  originCopy = origin;
+  infoCopy = info;
+  completionCopy = completion;
+  v12 = [(MRNowPlayingSessionServiceClient *)self _existingPlayerPathForOrigin:originCopy];
   if (!v12)
   {
     v14 = +[MRNowPlayingOriginClientManager sharedManager];
-    v15 = [v14 createNewPlayerCallback];
+    createNewPlayerCallback = [v14 createNewPlayerCallback];
 
-    if (v15)
+    if (createNewPlayerCallback)
     {
-      v16 = [v10 routingContextID];
+      routingContextID = [infoCopy routingContextID];
 
-      if (!v16)
+      if (!routingContextID)
       {
         [MRNowPlayingSessionServiceClient _handleCreatePlayerForOrigin:a2 deviceInfo:self completion:?];
       }
 
       v17 = +[MRNowPlayingOriginClientManager sharedManager];
-      v18 = [v10 routingContextID];
-      v19 = [v17 createCustomOriginClientForOrigin:v9 routingContextID:v18];
+      routingContextID2 = [infoCopy routingContextID];
+      v19 = [v17 createCustomOriginClientForOrigin:originCopy routingContextID:routingContextID2];
 
-      v12 = [(MRNowPlayingSessionServiceClient *)self _generatePlayerPathForOrigin:v9];
+      v12 = [(MRNowPlayingSessionServiceClient *)self _generatePlayerPathForOrigin:originCopy];
       v20 = +[MRNowPlayingOriginClientManager sharedManager];
       v21 = [v20 playerClientForPlayerPath:v12];
 
-      v22 = [v10 routingContextID];
-      (v15)[2](v15, v12, v22);
+      routingContextID3 = [infoCopy routingContextID];
+      (createNewPlayerCallback)[2](createNewPlayerCallback, v12, routingContextID3);
     }
 
     else
     {
-      if (![v9 isLocal])
+      if (![originCopy isLocal])
       {
         v27 = _MRLogForCategory(1uLL);
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -245,17 +245,17 @@ LABEL_8:
 
       v23 = [MRPlayerPath alloc];
       v19 = +[MRClient localClient];
-      v12 = [(MRPlayerPath *)v23 initWithOrigin:v9 client:v19 player:0];
+      v12 = [(MRPlayerPath *)v23 initWithOrigin:originCopy client:v19 player:0];
     }
 
     v24 = 0;
 LABEL_12:
-    v25 = self;
-    objc_sync_enter(v25);
-    [(NSMutableDictionary *)v25->_playerPathsByOrigin setObject:v12 forKeyedSubscript:v9];
-    objc_sync_exit(v25);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_playerPathsByOrigin setObject:v12 forKeyedSubscript:originCopy];
+    objc_sync_exit(selfCopy);
 
-    v11[2](v11, v12, v24);
+    completionCopy[2](completionCopy, v12, v24);
     goto LABEL_13;
   }
 
@@ -267,31 +267,31 @@ LABEL_12:
     _os_log_impl(&dword_1A2860000, v13, OS_LOG_TYPE_DEFAULT, "[MRNowPlayingSessionServiceClient] Not creating new player for origin because playerPath already exists: %@", &v28, 0xCu);
   }
 
-  v11[2](v11, v12, 0);
+  completionCopy[2](completionCopy, v12, 0);
 LABEL_13:
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_existingPlayerPathForOrigin:(id)a3
+- (id)_existingPlayerPathForOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_playerPathsByOrigin objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  originCopy = origin;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_playerPathsByOrigin objectForKeyedSubscript:originCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)_generatePlayerPathForOrigin:(id)a3
+- (id)_generatePlayerPathForOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = [(MRNowPlayingSessionServiceClient *)self _generatePlayerID];
+  originCopy = origin;
+  _generatePlayerID = [(MRNowPlayingSessionServiceClient *)self _generatePlayerID];
   v6 = [MRPlayerPath alloc];
   v7 = +[MRClient localClient];
-  v8 = [[MRPlayer alloc] initWithIdentifier:v5 displayName:v5];
-  v9 = [(MRPlayerPath *)v6 initWithOrigin:v4 client:v7 player:v8];
+  v8 = [[MRPlayer alloc] initWithIdentifier:_generatePlayerID displayName:_generatePlayerID];
+  v9 = [(MRPlayerPath *)v6 initWithOrigin:originCopy client:v7 player:v8];
 
   return v9;
 }
@@ -299,15 +299,15 @@ LABEL_13:
 - (id)_generatePlayerID
 {
   v2 = +[MRNowPlayingOriginClientManager sharedManager];
-  v3 = [v2 generatePlayerIDCallback];
+  generatePlayerIDCallback = [v2 generatePlayerIDCallback];
 
-  if (!v3 || (v3[2](v3), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!generatePlayerIDCallback || (generatePlayerIDCallback[2](generatePlayerIDCallback), (uUIDString = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v5 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)initWithService:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

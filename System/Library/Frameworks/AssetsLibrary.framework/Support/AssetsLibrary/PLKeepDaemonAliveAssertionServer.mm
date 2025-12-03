@@ -1,16 +1,16 @@
 @interface PLKeepDaemonAliveAssertionServer
 - (PLKeepDaemonAliveAssertionServer)init;
 - (void)_deactivateCameraSession;
-- (void)_registerNewConnection:(id)a3;
+- (void)_registerNewConnection:(id)connection;
 - (void)_startServer;
 - (void)dealloc;
 @end
 
 @implementation PLKeepDaemonAliveAssertionServer
 
-- (void)_registerNewConnection:(id)a3
+- (void)_registerNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,11 +19,11 @@
   }
 
   [(PLCameraCaptureTaskConstraintCoordinator *)self->_taskConstraintCoordinator activateCameraSessionTaskConstraints];
-  xpc_connection_set_event_handler(v4, &stru_10002D350);
-  xpc_connection_set_target_queue(v4, self->_connectionQueue);
-  xpc_connection_set_context(v4, qword_100034C10);
-  xpc_connection_set_finalizer_f(v4, sub_10001128C);
-  xpc_connection_resume(v4);
+  xpc_connection_set_event_handler(connectionCopy, &stru_10002D350);
+  xpc_connection_set_target_queue(connectionCopy, self->_connectionQueue);
+  xpc_connection_set_context(connectionCopy, qword_100034C10);
+  xpc_connection_set_finalizer_f(connectionCopy, sub_10001128C);
+  xpc_connection_resume(connectionCopy);
 }
 
 - (void)_deactivateCameraSession

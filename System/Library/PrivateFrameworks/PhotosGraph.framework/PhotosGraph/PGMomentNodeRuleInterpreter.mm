@@ -1,23 +1,23 @@
 @interface PGMomentNodeRuleInterpreter
-- (PGMomentNodeRuleInterpreter)initWithGraph:(id)a3;
-- (id)evaluateMomentNodes:(id)a3 forDateRangeCondition:(id)a4;
-- (id)evaluateMomentNodes:(id)a3 forPersonCondition:(id)a4;
-- (id)evaluateObjects:(id)a3 forCondition:(id)a4;
+- (PGMomentNodeRuleInterpreter)initWithGraph:(id)graph;
+- (id)evaluateMomentNodes:(id)nodes forDateRangeCondition:(id)condition;
+- (id)evaluateMomentNodes:(id)nodes forPersonCondition:(id)condition;
+- (id)evaluateObjects:(id)objects forCondition:(id)condition;
 @end
 
 @implementation PGMomentNodeRuleInterpreter
 
-- (id)evaluateMomentNodes:(id)a3 forPersonCondition:(id)a4
+- (id)evaluateMomentNodes:(id)nodes forPersonCondition:(id)condition
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 personUUIDs];
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  nodesCopy = nodes;
+  personUUIDs = [condition personUUIDs];
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(personUUIDs, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v7;
+  obj = personUUIDs;
   v9 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
@@ -52,8 +52,8 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v27 = v6;
-    v28 = v6;
+    v27 = nodesCopy;
+    v28 = nodesCopy;
     v17 = [v28 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (!v17)
     {
@@ -72,15 +72,15 @@
         }
 
         v21 = *(*(&v30 + 1) + 8 * j);
-        v22 = [v21 consolidatedPersonNodesPresentInAssets];
-        if ([v22 intersectsSet:v15])
+        consolidatedPersonNodesPresentInAssets = [v21 consolidatedPersonNodesPresentInAssets];
+        if ([consolidatedPersonNodesPresentInAssets intersectsSet:v15])
         {
         }
 
         else
         {
-          v23 = [v21 personNodesInProximity];
-          v24 = [v23 intersectsSet:v15];
+          personNodesInProximity = [v21 personNodesInProximity];
+          v24 = [personNodesInProximity intersectsSet:v15];
 
           if (!v24)
           {
@@ -96,7 +96,7 @@
       {
 LABEL_20:
 
-        v6 = v27;
+        nodesCopy = v27;
         goto LABEL_22;
       }
     }
@@ -110,35 +110,35 @@ LABEL_22:
   return v16;
 }
 
-- (id)evaluateMomentNodes:(id)a3 forDateRangeCondition:(id)a4
+- (id)evaluateMomentNodes:(id)nodes forDateRangeCondition:(id)condition
 {
   v5 = MEMORY[0x277CCAC30];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
+  conditionCopy = condition;
+  nodesCopy = nodes;
+  startDate = [conditionCopy startDate];
+  endDate = [conditionCopy endDate];
 
-  v10 = [v5 predicateWithFormat:@"localStartDate >= %@ && localEndDate <= %@", v8, v9];
-  v11 = [v7 filteredSetUsingPredicate:v10];
+  v10 = [v5 predicateWithFormat:@"localStartDate >= %@ && localEndDate <= %@", startDate, endDate];
+  v11 = [nodesCopy filteredSetUsingPredicate:v10];
 
   return v11;
 }
 
-- (id)evaluateObjects:(id)a3 forCondition:(id)a4
+- (id)evaluateObjects:(id)objects forCondition:(id)condition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 type];
-  if (v8 == 2)
+  objectsCopy = objects;
+  conditionCopy = condition;
+  type = [conditionCopy type];
+  if (type == 2)
   {
-    v9 = [(PGMomentNodeRuleInterpreter *)self evaluateMomentNodes:v6 forPersonCondition:v7];
+    v9 = [(PGMomentNodeRuleInterpreter *)self evaluateMomentNodes:objectsCopy forPersonCondition:conditionCopy];
   }
 
   else
   {
-    if (v8 == 1)
+    if (type == 1)
     {
-      [(PGMomentNodeRuleInterpreter *)self evaluateMomentNodes:v6 forDateRangeCondition:v7];
+      [(PGMomentNodeRuleInterpreter *)self evaluateMomentNodes:objectsCopy forDateRangeCondition:conditionCopy];
     }
 
     else
@@ -153,16 +153,16 @@ LABEL_22:
   return v10;
 }
 
-- (PGMomentNodeRuleInterpreter)initWithGraph:(id)a3
+- (PGMomentNodeRuleInterpreter)initWithGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v9.receiver = self;
   v9.super_class = PGMomentNodeRuleInterpreter;
   v6 = [(PGMomentNodeRuleInterpreter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graph, a3);
+    objc_storeStrong(&v6->_graph, graph);
   }
 
   return v7;

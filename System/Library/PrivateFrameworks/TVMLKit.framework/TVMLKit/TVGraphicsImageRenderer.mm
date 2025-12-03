@@ -1,11 +1,11 @@
 @interface TVGraphicsImageRenderer
-+ (id)decodedImage:(id)a3 opaque:(BOOL)a4;
-+ (id)formatWithCGImage:(CGImage *)a3;
-+ (id)formatWithUIImage:(id)a3;
-+ (id)imageWithSize:(CGSize)a3 alpha:(BOOL)a4 actions:(id)a5;
-+ (id)imageWithSize:(CGSize)a3 alpha:(BOOL)a4 cgContextActions:(id)a5;
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 actions:(id)a5;
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 cgContextActions:(id)a5;
++ (id)decodedImage:(id)image opaque:(BOOL)opaque;
++ (id)formatWithCGImage:(CGImage *)image;
++ (id)formatWithUIImage:(id)image;
++ (id)imageWithSize:(CGSize)size alpha:(BOOL)alpha actions:(id)actions;
++ (id)imageWithSize:(CGSize)size alpha:(BOOL)alpha cgContextActions:(id)actions;
++ (id)imageWithSize:(CGSize)size format:(id)format actions:(id)actions;
++ (id)imageWithSize:(CGSize)size format:(id)format cgContextActions:(id)actions;
 + (id)preferredFormat;
 @end
 
@@ -14,60 +14,60 @@
 + (id)preferredFormat
 {
   v2 = MEMORY[0x277D75568];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 traitCollection];
-  v5 = [v2 formatForTraitCollection:v4];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v5 = [v2 formatForTraitCollection:traitCollection];
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
 
   return v5;
 }
 
-+ (id)formatWithCGImage:(CGImage *)a3
++ (id)formatWithCGImage:(CGImage *)image
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277D755B8] imageWithCGImage:a3];
+  v5 = [MEMORY[0x277D755B8] imageWithCGImage:image];
   v6 = [v4 formatWithUIImage:v5];
 
   return v6;
 }
 
-+ (id)formatWithUIImage:(id)a3
++ (id)formatWithUIImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   if (formatWithUIImage__onceToken != -1)
   {
     +[TVGraphicsImageRenderer formatWithUIImage:];
   }
 
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 _supportsDeepColor];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _supportsDeepColor = [currentDevice _supportsDeepColor];
 
-  if (!v8)
+  if (!_supportsDeepColor)
   {
-    v9 = 0;
+    imageRendererFormat = 0;
 LABEL_9:
     v10 = +[TVGraphicsImageRenderer preferredFormat];
 
-    v9 = v10;
+    imageRendererFormat = v10;
     goto LABEL_10;
   }
 
-  v9 = [v3 imageRendererFormat];
-  [v9 setScale:v6];
-  if (!v9 || formatWithUIImage__sOverrideDefault && formatWithUIImage__sPrefersExtendedRange)
+  imageRendererFormat = [imageCopy imageRendererFormat];
+  [imageRendererFormat setScale:v6];
+  if (!imageRendererFormat || formatWithUIImage__sOverrideDefault && formatWithUIImage__sPrefersExtendedRange)
   {
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v9;
+  return imageRendererFormat;
 }
 
 uint64_t __45__TVGraphicsImageRenderer_formatWithUIImage___block_invoke()
@@ -77,21 +77,21 @@ uint64_t __45__TVGraphicsImageRenderer_formatWithUIImage___block_invoke()
   return result;
 }
 
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 actions:(id)a5
++ (id)imageWithSize:(CGSize)size format:(id)format actions:(id)actions
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v9 = MEMORY[0x277D75560];
-  v10 = a4;
-  v11 = [[v9 alloc] initWithSize:v10 format:{width, height}];
+  formatCopy = format;
+  v11 = [[v9 alloc] initWithSize:formatCopy format:{width, height}];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__TVGraphicsImageRenderer_imageWithSize_format_actions___block_invoke;
   v15[3] = &unk_279D706D0;
-  v16 = v8;
-  v12 = v8;
+  v16 = actionsCopy;
+  v12 = actionsCopy;
   v13 = [v11 imageWithActions:v15];
 
   return v13;
@@ -104,14 +104,14 @@ void __56__TVGraphicsImageRenderer_imageWithSize_format_actions___block_invoke(u
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)imageWithSize:(CGSize)a3 format:(id)a4 cgContextActions:(id)a5
++ (id)imageWithSize:(CGSize)size format:(id)format cgContextActions:(id)actions
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v9 = MEMORY[0x277D75560];
-  v10 = a4;
-  v11 = [[v9 alloc] initWithSize:v10 format:{width, height}];
+  formatCopy = format;
+  v11 = [[v9 alloc] initWithSize:formatCopy format:{width, height}];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -119,8 +119,8 @@ void __56__TVGraphicsImageRenderer_imageWithSize_format_actions___block_invoke(u
   v15[3] = &unk_279D706F8;
   v17 = width;
   v18 = height;
-  v16 = v8;
-  v12 = v8;
+  v16 = actionsCopy;
+  v12 = actionsCopy;
   v13 = [v11 imageWithActions:v15];
 
   return v13;
@@ -137,21 +137,21 @@ uint64_t __65__TVGraphicsImageRenderer_imageWithSize_format_cgContextActions___b
   return v4();
 }
 
-+ (id)imageWithSize:(CGSize)a3 alpha:(BOOL)a4 actions:(id)a5
++ (id)imageWithSize:(CGSize)size alpha:(BOOL)alpha actions:(id)actions
 {
-  v5 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  alphaCopy = alpha;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v9 = +[TVGraphicsImageRenderer preferredFormat];
-  [v9 setOpaque:!v5];
+  [v9 setOpaque:!alphaCopy];
   v10 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v9 format:{width, height}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__TVGraphicsImageRenderer_imageWithSize_alpha_actions___block_invoke;
   v14[3] = &unk_279D706D0;
-  v15 = v8;
-  v11 = v8;
+  v15 = actionsCopy;
+  v11 = actionsCopy;
   v12 = [v10 imageWithActions:v14];
 
   return v12;
@@ -164,14 +164,14 @@ void __55__TVGraphicsImageRenderer_imageWithSize_alpha_actions___block_invoke(ui
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)imageWithSize:(CGSize)a3 alpha:(BOOL)a4 cgContextActions:(id)a5
++ (id)imageWithSize:(CGSize)size alpha:(BOOL)alpha cgContextActions:(id)actions
 {
-  v5 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  alphaCopy = alpha;
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
   v9 = +[TVGraphicsImageRenderer preferredFormat];
-  [v9 setOpaque:!v5];
+  [v9 setOpaque:!alphaCopy];
   v10 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v9 format:{width, height}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -179,8 +179,8 @@ void __55__TVGraphicsImageRenderer_imageWithSize_alpha_actions___block_invoke(ui
   v14[3] = &unk_279D706F8;
   v16 = width;
   v17 = height;
-  v15 = v8;
-  v11 = v8;
+  v15 = actionsCopy;
+  v11 = actionsCopy;
   v12 = [v10 imageWithActions:v14];
 
   return v12;
@@ -197,23 +197,23 @@ uint64_t __64__TVGraphicsImageRenderer_imageWithSize_alpha_cgContextActions___bl
   return v4();
 }
 
-+ (id)decodedImage:(id)a3 opaque:(BOOL)a4
++ (id)decodedImage:(id)image opaque:(BOOL)opaque
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  opaqueCopy = opaque;
+  imageCopy = image;
+  if (imageCopy)
   {
-    v6 = [TVGraphicsImageRenderer formatWithUIImage:v5];
+    v6 = [TVGraphicsImageRenderer formatWithUIImage:imageCopy];
     [v6 setScale:1.0];
-    [v6 setOpaque:v4];
-    [v5 size];
+    [v6 setOpaque:opaqueCopy];
+    [imageCopy size];
     v8 = v7;
     v10 = v9;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __47__TVGraphicsImageRenderer_decodedImage_opaque___block_invoke;
     v13[3] = &unk_279D6F620;
-    v14 = v5;
+    v14 = imageCopy;
     v11 = [TVGraphicsImageRenderer imageWithSize:v6 format:v13 actions:v8, v10];
   }
 

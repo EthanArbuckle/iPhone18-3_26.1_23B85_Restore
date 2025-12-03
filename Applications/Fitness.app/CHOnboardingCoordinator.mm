@@ -58,13 +58,13 @@
 
 - (void)setCompletedWelcomeViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005F930C();
 }
 
 - (void)setCompletedWhatsNewViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005F9818();
 }
 

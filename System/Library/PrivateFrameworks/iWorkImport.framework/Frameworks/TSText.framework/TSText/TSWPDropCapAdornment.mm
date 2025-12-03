@@ -1,6 +1,6 @@
 @interface TSWPDropCapAdornment
-+ (CGRect)boundsOfMinimumCircleEnclosingPath:(id)a3;
-+ (unint64_t)convertPointsToConvexHull:(CGPoint *)a3 count:(unint64_t)a4;
++ (CGRect)boundsOfMinimumCircleEnclosingPath:(id)path;
++ (unint64_t)convertPointsToConvexHull:(CGPoint *)hull count:(unint64_t)count;
 - (BOOL)characterFillShouldFillTextContainer;
 - (BOOL)p_calculateMetrics;
 - (CGPoint)glyphOffset;
@@ -14,49 +14,49 @@
 - (CGRect)glyphBounds;
 - (CGRect)insetTextFrame;
 - (CGRect)outermostPathRawBounds;
-- (CGRect)p_imageBoundsIncludingShadow:(BOOL)a3;
+- (CGRect)p_imageBoundsIncludingShadow:(BOOL)shadow;
 - (CGRect)rectAllocatedForUnderline;
 - (CGRect)textFrame;
 - (CGRect)trailingCaretBounds;
 - (CGSize)size;
 - (NSString)debugDescription;
 - (TSDFill)characterFill;
-- (TSWPDropCapAdornment)initWithDropCapStyle:(id)a3 characterStyle:(id)a4 paragraphStyle:(id)a5 text:(id)a6 rightToLeft:(BOOL)a7 vertical:(BOOL)a8 fontHeightInfo:(TSWPFontHeightInfo *)a9 lineSpacingMode:(int)a10 lineSpacingAmount:(double)a11;
+- (TSWPDropCapAdornment)initWithDropCapStyle:(id)style characterStyle:(id)characterStyle paragraphStyle:(id)paragraphStyle text:(id)text rightToLeft:(BOOL)left vertical:(BOOL)vertical fontHeightInfo:(TSWPFontHeightInfo *)info lineSpacingMode:(int)self0 lineSpacingAmount:(double)self1;
 - (TSWPFontHeightInfo)heightInfo;
 - (TSWPFontHeightInfo)unscaledFontHeightInfo;
 - (double)baselineShift;
 - (double)dynamicPadding;
 - (double)outdentInPoints;
 - (double)scaledFontSize;
-- (double)widthForCharacterAtIndex:(unint64_t)a3;
+- (double)widthForCharacterAtIndex:(unint64_t)index;
 - (id)p_createWrapSegments;
 - (id)p_paddedPathForExteriorWrap;
 - (id)p_pathForExteriorWrap;
-- (id)p_styleArrayWithFontSize:(double)a3;
+- (id)p_styleArrayWithFontSize:(double)size;
 - (id)paddedPathForExteriorWrap;
-- (id)splitLine:(CGRect)a3 skipHint:(double *)a4;
-- (void)drawAdornment:(id)a3 inContext:(CGContext *)a4 viewScale:(double)a5 flipShadows:(BOOL)a6 blackAndWhite:(BOOL)a7;
-- (void)offsetBy:(CGSize)a3;
-- (void)setHeightInfo:(TSWPFontHeightInfo *)a3;
-- (void)setOrigin:(CGPoint)a3;
-- (void)setUnscaledFontHeightInfo:(TSWPFontHeightInfo *)a3;
+- (id)splitLine:(CGRect)line skipHint:(double *)hint;
+- (void)drawAdornment:(id)adornment inContext:(CGContext *)context viewScale:(double)scale flipShadows:(BOOL)shadows blackAndWhite:(BOOL)white;
+- (void)offsetBy:(CGSize)by;
+- (void)setHeightInfo:(TSWPFontHeightInfo *)info;
+- (void)setOrigin:(CGPoint)origin;
+- (void)setUnscaledFontHeightInfo:(TSWPFontHeightInfo *)info;
 @end
 
 @implementation TSWPDropCapAdornment
 
-+ (unint64_t)convertPointsToConvexHull:(CGPoint *)a3 count:(unint64_t)a4
++ (unint64_t)convertPointsToConvexHull:(CGPoint *)hull count:(unint64_t)count
 {
-  if (!a4)
+  if (!count)
   {
     return 0;
   }
 
-  x = a3->x;
-  y = a3->y;
-  v8 = a4 - 1;
-  if (a4 != 1)
+  x = hull->x;
+  y = hull->y;
+  v8 = count - 1;
+  if (count != 1)
   {
-    v9 = a3 + 1;
+    v9 = hull + 1;
     do
     {
       v10 = v9->y;
@@ -89,12 +89,12 @@ LABEL_9:
     while (v8);
   }
 
-  v12 = malloc_type_calloc(a4, 0x20uLL, 0x1000040E0EAB150uLL);
+  v12 = malloc_type_calloc(count, 0x20uLL, 0x1000040E0EAB150uLL);
   v13 = 0;
   v14 = v12 + 3;
   do
   {
-    v15 = a3[v13];
+    v15 = hull[v13];
     *(v14 - 3) = v15;
     v16 = 0;
     v17 = v15.x == x && v15.y == y;
@@ -113,8 +113,8 @@ LABEL_9:
     v14 += 4;
   }
 
-  while (a4 != v13);
-  qsort(v12, a4, 0x20uLL, sub_276D98DF8);
+  while (count != v13);
+  qsort(v12, count, 0x20uLL, sub_276D98DF8);
   v20 = 0;
   v21 = 0;
   do
@@ -122,7 +122,7 @@ LABEL_9:
     v22 = *&v12[4 * v20];
     if (v21)
     {
-      v23 = &a3[v21 - 1];
+      v23 = &hull[v21 - 1];
       do
       {
         v24 = v23->y;
@@ -139,25 +139,25 @@ LABEL_9:
       while (v21);
     }
 
-    a3[v21++] = v22;
+    hull[v21++] = v22;
     ++v20;
   }
 
-  while (v20 != a4);
+  while (v20 != count);
   free(v12);
   return v21;
 }
 
-+ (CGRect)boundsOfMinimumCircleEnclosingPath:(id)a3
++ (CGRect)boundsOfMinimumCircleEnclosingPath:(id)path
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v5 = *MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
   v11 = 0.0;
-  if ((objc_msgSend_isEmpty(v4, v7, v8) & 1) == 0)
+  if ((objc_msgSend_isEmpty(pathCopy, v7, v8) & 1) == 0)
   {
-    v12 = objc_msgSend_bezierPathByFlatteningPath(v4, v9, v10);
+    v12 = objc_msgSend_bezierPathByFlatteningPath(pathCopy, v9, v10);
     v15 = objc_msgSend_elementCount(v12, v13, v14);
     v16 = malloc_type_calloc(v15, 0x10uLL, 0x1000040451B5BE8uLL);
     v17 = v12;
@@ -166,7 +166,7 @@ LABEL_9:
       sub_276F4F324();
     }
 
-    v87 = a1;
+    selfCopy = self;
     if (objc_msgSend_elementCount(v17, v20, v21) < 1)
     {
       v24 = 0;
@@ -203,7 +203,7 @@ LABEL_9:
       while (objc_msgSend_elementCount(v17, v26, v27) > v23);
     }
 
-    v36 = objc_msgSend_convertPointsToConvexHull_count_(v87, v35, v16, v24);
+    v36 = objc_msgSend_convertPointsToConvexHull_count_(selfCopy, v35, v16, v24);
     v11 = 0.0;
     if (v36)
     {
@@ -359,40 +359,40 @@ LABEL_42:
   return result;
 }
 
-- (TSWPDropCapAdornment)initWithDropCapStyle:(id)a3 characterStyle:(id)a4 paragraphStyle:(id)a5 text:(id)a6 rightToLeft:(BOOL)a7 vertical:(BOOL)a8 fontHeightInfo:(TSWPFontHeightInfo *)a9 lineSpacingMode:(int)a10 lineSpacingAmount:(double)a11
+- (TSWPDropCapAdornment)initWithDropCapStyle:(id)style characterStyle:(id)characterStyle paragraphStyle:(id)paragraphStyle text:(id)text rightToLeft:(BOOL)left vertical:(BOOL)vertical fontHeightInfo:(TSWPFontHeightInfo *)info lineSpacingMode:(int)self0 lineSpacingAmount:(double)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
+  styleCopy = style;
+  characterStyleCopy = characterStyle;
+  paragraphStyleCopy = paragraphStyle;
+  textCopy = text;
   v37.receiver = self;
   v37.super_class = TSWPDropCapAdornment;
   v22 = [(TSWPDropCapAdornment *)&v37 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_dropCapStyle, a3);
-    objc_storeStrong(&v23->_characterStyle, a4);
-    objc_storeStrong(&v23->_paragraphStyle, a5);
-    v26 = objc_msgSend_dropCap(v18, v24, v25);
+    objc_storeStrong(&v22->_dropCapStyle, style);
+    objc_storeStrong(&v23->_characterStyle, characterStyle);
+    objc_storeStrong(&v23->_paragraphStyle, paragraphStyle);
+    v26 = objc_msgSend_dropCap(styleCopy, v24, v25);
     dropCap = v23->_dropCap;
     v23->_dropCap = v26;
 
-    objc_storeStrong(&v23->_text, a6);
-    v23->_isRightToLeft = a7;
-    v28 = *&a9->ascent;
-    *&v23->_unscaledFontHeightInfo.spaceBefore = *&a9->spaceBefore;
+    objc_storeStrong(&v23->_text, text);
+    v23->_isRightToLeft = left;
+    v28 = *&info->ascent;
+    *&v23->_unscaledFontHeightInfo.spaceBefore = *&info->spaceBefore;
     *&v23->_unscaledFontHeightInfo.ascent = v28;
-    v29 = *&a9->descent;
-    v30 = *&a9->leadingBelow;
-    v31 = *&a9->underlinePosition;
-    *&v23->_unscaledFontHeightInfo.verticalHeight = *&a9->verticalHeight;
+    v29 = *&info->descent;
+    v30 = *&info->leadingBelow;
+    v31 = *&info->underlinePosition;
+    *&v23->_unscaledFontHeightInfo.verticalHeight = *&info->verticalHeight;
     *&v23->_unscaledFontHeightInfo.underlinePosition = v31;
     *&v23->_unscaledFontHeightInfo.descent = v29;
     *&v23->_unscaledFontHeightInfo.leadingBelow = v30;
-    v23->_lineSpacingMode = a10;
-    v23->_lineSpacingAmount = a11;
-    v23->_isVertical = a8;
+    v23->_lineSpacingMode = mode;
+    v23->_lineSpacingAmount = amount;
+    v23->_isVertical = vertical;
     v32 = *(MEMORY[0x277CBF398] + 16);
     v23->_rectAllocatedForUnderline.origin = *MEMORY[0x277CBF398];
     v23->_rectAllocatedForUnderline.size = v32;
@@ -406,11 +406,11 @@ LABEL_42:
   return v23;
 }
 
-- (void)setOrigin:(CGPoint)a3
+- (void)setOrigin:(CGPoint)origin
 {
-  if (self->_origin.x != a3.x || self->_origin.y != a3.y)
+  if (self->_origin.x != origin.x || self->_origin.y != origin.y)
   {
-    self->_origin = a3;
+    self->_origin = origin;
     v6 = objc_msgSend_dropCap(self, a2, v3);
     v9 = objc_msgSend_wrapType(v6, v7, v8);
 
@@ -425,10 +425,10 @@ LABEL_42:
   }
 }
 
-- (void)offsetBy:(CGSize)a3
+- (void)offsetBy:(CGSize)by
 {
-  height = a3.height;
-  width = a3.width;
+  height = by.height;
+  width = by.width;
   objc_msgSend_origin(self, a2, v3);
   v10 = width + v9;
   v12 = height + v11;
@@ -551,10 +551,10 @@ LABEL_42:
   return result;
 }
 
-- (CGRect)p_imageBoundsIncludingShadow:(BOOL)a3
+- (CGRect)p_imageBoundsIncludingShadow:(BOOL)shadow
 {
-  v3 = a3;
-  v5 = objc_msgSend_p_styleArray(self, a2, a3);
+  shadowCopy = shadow;
+  v5 = objc_msgSend_p_styleArray(self, a2, shadow);
   v8 = objc_msgSend_dropCap(self, v6, v7);
   v11 = objc_msgSend_shapeEnabled(v8, v9, v10);
 
@@ -612,7 +612,7 @@ LABEL_42:
   v51 = v80.origin.y;
   v52 = v80.size.width;
   v53 = v80.size.height;
-  if (v3)
+  if (shadowCopy)
   {
     objc_opt_class();
     v54 = TSWPResolvePropertyForStyles(v5, 40);
@@ -751,9 +751,9 @@ LABEL_42:
   return v9;
 }
 
-- (double)widthForCharacterAtIndex:(unint64_t)a3
+- (double)widthForCharacterAtIndex:(unint64_t)index
 {
-  v5 = objc_msgSend_characterMetrics(self, a2, a3);
+  v5 = objc_msgSend_characterMetrics(self, a2, index);
   v8 = objc_msgSend_count(v5, v6, v7);
   v11 = objc_msgSend_text(self, v9, v10);
   v14 = objc_msgSend_length(v11, v12, v13);
@@ -774,7 +774,7 @@ LABEL_42:
   if (v27 > 1)
   {
     v35 = objc_msgSend_characterMetrics(self, v28, v29);
-    v37 = objc_msgSend_metricsForCharIndex_(v35, v36, a3);
+    v37 = objc_msgSend_metricsForCharIndex_(v35, v36, index);
 
     v42 = 0.0;
     if (objc_msgSend_hasLeadingOffset(v37, v38, v39))
@@ -782,10 +782,10 @@ LABEL_42:
       objc_msgSend_leadingOffset(v37, v40, v41);
       v44 = v43;
       v47 = objc_msgSend_characterMetrics(self, v45, v46);
-      v49 = objc_msgSend_metricsForCharIndex_(v47, v48, a3);
+      v49 = objc_msgSend_metricsForCharIndex_(v47, v48, index);
 
       v52 = objc_msgSend_characterMetrics(self, v50, v51);
-      if (objc_msgSend_count(v52, v53, v54) <= a3)
+      if (objc_msgSend_count(v52, v53, v54) <= index)
       {
         v63 = v49;
 LABEL_14:
@@ -795,7 +795,7 @@ LABEL_14:
 
       else
       {
-        v57 = a3;
+        indexCopy = index;
         while (1)
         {
           hasTrailingOffset = objc_msgSend_hasTrailingOffset(v49, v55, v56);
@@ -805,13 +805,13 @@ LABEL_14:
             break;
           }
 
-          ++v57;
+          ++indexCopy;
           v61 = objc_msgSend_characterMetrics(self, v59, v60);
-          v63 = objc_msgSend_metricsForCharIndex_(v61, v62, v57);
+          v63 = objc_msgSend_metricsForCharIndex_(v61, v62, indexCopy);
 
           v52 = objc_msgSend_characterMetrics(self, v64, v65);
           v49 = v63;
-          if (v57 >= objc_msgSend_count(v52, v66, v67))
+          if (indexCopy >= objc_msgSend_count(v52, v66, v67))
           {
             goto LABEL_14;
           }
@@ -829,7 +829,7 @@ LABEL_14:
         v71 = MEMORY[0x277D81150];
         v72 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v68, "[TSWPDropCapAdornment widthForCharacterAtIndex:]");
         v74 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v73, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDropCapAdornment.m");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v71, v75, v72, v74, 757, 0, "Unexpectedly cannot find trailing offset for char index %lu while laying out drop cap.", a3);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v71, v75, v72, v74, 757, 0, "Unexpectedly cannot find trailing offset for char index %lu while laying out drop cap.", index);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v76, v77);
         v42 = 0.0;
@@ -847,12 +847,12 @@ LABEL_14:
   }
 }
 
-- (id)splitLine:(CGRect)a3 skipHint:(double *)a4
+- (id)splitLine:(CGRect)line skipHint:(double *)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
   v10 = objc_opt_new();
   objc_msgSend_origin(self, v11, v12);
   objc_msgSend_size(self, v13, v14);
@@ -989,7 +989,7 @@ LABEL_16:
     }
 
     v88 = objc_msgSend_wrapSegments(self, v79, v80);
-    objc_msgSend_splitLine_lineSegmentRects_wrapSegments_type_skipHint_(TSWPTextWrapper, v89, v10, v88, 1, a4, v69, v68, *&v131.size);
+    objc_msgSend_splitLine_lineSegmentRects_wrapSegments_type_skipHint_(TSWPTextWrapper, v89, v10, v88, 1, hint, v69, v68, *&v131.size);
 
     if (objc_msgSend_count(v10, v90, v91))
     {
@@ -1060,7 +1060,7 @@ LABEL_27:
   v141.origin.y = y;
   v141.size.width = v131.size.width;
   v141.size.height = v131.size.height;
-  *a4 = fmax(v123 - CGRectGetMinY(v141), v24);
+  *hint = fmax(v123 - CGRectGetMinY(v141), v24);
   objc_msgSend_makeEmpty(v10, v124, v125);
 LABEL_28:
 
@@ -1109,30 +1109,30 @@ LABEL_28:
   return result;
 }
 
-- (void)drawAdornment:(id)a3 inContext:(CGContext *)a4 viewScale:(double)a5 flipShadows:(BOOL)a6 blackAndWhite:(BOOL)a7
+- (void)drawAdornment:(id)adornment inContext:(CGContext *)context viewScale:(double)scale flipShadows:(BOOL)shadows blackAndWhite:(BOOL)white
 {
-  v8 = a6;
+  shadowsCopy = shadows;
   v157 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  CGContextSaveGState(a4);
-  v146 = v12;
-  v147 = self;
-  v148 = a4;
-  if (v12 != self)
+  adornmentCopy = adornment;
+  CGContextSaveGState(context);
+  v146 = adornmentCopy;
+  selfCopy = self;
+  contextCopy = context;
+  if (adornmentCopy != self)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSWPDropCapAdornment drawAdornment:inContext:viewScale:flipShadows:blackAndWhite:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDropCapAdornment.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 881, 0, "Expect to be rendering self, not some other adornment.");
 
-    a4 = v148;
+    context = contextCopy;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
   objc_msgSend_originIncludingOutdent(self, v13, v14);
-  CGContextTranslateCTM(a4, v22, v23);
+  CGContextTranslateCTM(context, v22, v23);
   v149 = objc_msgSend_p_styleArray(self, v24, v25);
-  if (a7)
+  if (white)
   {
     objc_msgSend_blackColor(MEMORY[0x277D801F8], v26, v27);
   }
@@ -1156,26 +1156,26 @@ LABEL_28:
       v38 = objc_msgSend_shapePath(self, v36, v37);
       v39 = v38;
       v42 = objc_msgSend_CGPath(v39, v40, v41);
-      objc_msgSend_paintPath_inContext_(v35, v43, v42, a4);
+      objc_msgSend_paintPath_inContext_(v35, v43, v42, context);
     }
   }
 
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   objc_opt_class();
   v44 = TSWPResolvePropertyForStyles(v149, 40);
   v45 = TSUDynamicCast();
 
   if (v45)
   {
-    objc_msgSend_applyToContext_viewScale_flipped_(v45, v46, a4, v8, a5);
-    CGContextBeginTransparencyLayer(a4, 0);
+    objc_msgSend_applyToContext_viewScale_flipped_(v45, v46, context, shadowsCopy, scale);
+    CGContextBeginTransparencyLayer(context, 0);
   }
 
   v145 = v45;
   objc_msgSend_glyphOffset(self, v46, v47);
   v49 = v48;
   objc_msgSend_glyphOffset(self, v50, v51);
-  CGContextTranslateCTM(a4, v49, v52);
+  CGContextTranslateCTM(context, v49, v52);
   v55 = objc_msgSend_glyphAuthorColors(self, v53, v54);
   v58 = objc_msgSend_objectEnumerator(v55, v56, v57);
 
@@ -1209,27 +1209,27 @@ LABEL_28:
           v76 = objc_msgSend_initWithColor_(v74, v75, v71);
           v77 = v67;
           v80 = objc_msgSend_CGPath(v77, v78, v79);
-          objc_msgSend_paintPath_inContext_(v76, v81, v80, a4);
+          objc_msgSend_paintPath_inContext_(v76, v81, v80, context);
         }
 
         else
         {
           if (v150)
           {
-            objc_msgSend_characterFillRect(v147, v72, v73);
+            objc_msgSend_characterFillRect(selfCopy, v72, v73);
             if (CGRectIsEmpty(v158))
             {
-              objc_msgSend_glyphBounds(v147, v82, v83);
+              objc_msgSend_glyphBounds(selfCopy, v82, v83);
             }
 
             else
             {
-              objc_msgSend_characterFillRect(v147, v82, v83);
+              objc_msgSend_characterFillRect(selfCopy, v82, v83);
               v91 = v90;
               v93 = v92;
               v95 = v94;
               v97 = v96;
-              objc_msgSend_glyphBounds(v147, v98, v99);
+              objc_msgSend_glyphBounds(selfCopy, v98, v99);
               v162.origin.x = v100;
               v162.origin.y = v101;
               v162.size.width = v102;
@@ -1245,7 +1245,7 @@ LABEL_28:
             v105 = v87;
             v106 = v88;
             v107 = v89;
-            objc_msgSend_glyphOriginIncludingOutdent(v147, v84, v85);
+            objc_msgSend_glyphOriginIncludingOutdent(selfCopy, v84, v85);
             CGAffineTransformMakeTranslation(&transform, -v108, -v109);
             v160.origin.x = v104;
             v160.origin.y = v105;
@@ -1258,7 +1258,7 @@ LABEL_28:
             height = v161.size.height;
             v114 = v67;
             v117 = objc_msgSend_CGPath(v114, v115, v116);
-            objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(v150, v118, v117, a4, 0, x, y, width, height);
+            objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(v150, v118, v117, context, 0, x, y, width, height);
           }
 
           objc_opt_class();
@@ -1269,13 +1269,13 @@ LABEL_28:
           {
             v120 = v67;
             v123 = objc_msgSend_CGPath(v120, v121, v122);
-            a4 = v148;
-            objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v76, v124, v123, 0, v148);
+            context = contextCopy;
+            objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v76, v124, v123, 0, contextCopy);
           }
 
           else
           {
-            a4 = v148;
+            context = contextCopy;
           }
         }
       }
@@ -1288,11 +1288,11 @@ LABEL_28:
 
   if (v145)
   {
-    CGContextEndTransparencyLayer(a4);
+    CGContextEndTransparencyLayer(context);
   }
 
-  CGContextRestoreGState(a4);
-  v128 = objc_msgSend_dropCap(v147, v126, v127);
+  CGContextRestoreGState(context);
+  v128 = objc_msgSend_dropCap(selfCopy, v126, v127);
   v131 = objc_msgSend_shapeEnabled(v128, v129, v130);
 
   if (v131)
@@ -1303,20 +1303,20 @@ LABEL_28:
 
     if (v133)
     {
-      CGContextSaveGState(a4);
-      CGContextGetCTM(&transform, a4);
+      CGContextSaveGState(context);
+      CGContextGetCTM(&transform, context);
       if (TSUIsTransformAxisAligned())
       {
         CGAffineTransformMakeRotation(&transform, 0.000001);
-        CGContextConcatCTM(a4, &transform);
+        CGContextConcatCTM(context, &transform);
       }
 
-      v136 = objc_msgSend_shapePath(v147, v134, v135);
+      v136 = objc_msgSend_shapePath(selfCopy, v134, v135);
       v137 = v136;
       v140 = objc_msgSend_CGPath(v137, v138, v139);
-      objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v133, v141, v140, 0, a4);
+      objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v133, v141, v140, 0, context);
 
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
     }
   }
 
@@ -1325,48 +1325,48 @@ LABEL_28:
 
   if (v143 && TSDCGContextIsPDFContext())
   {
-    objc_msgSend_handleDropCapAdornment_(v143, v144, v147, &unk_28866BEF0);
+    objc_msgSend_handleDropCapAdornment_(v143, v144, selfCopy, &unk_28866BEF0);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (BOOL)p_calculateMetrics
 {
-  v3 = self;
+  selfCopy = self;
   v671 = *MEMORY[0x277D85DE8];
   v4 = objc_msgSend_dropCap(self, a2, v2);
   v609 = objc_msgSend_shapeEnabled(v4, v5, v6);
 
-  v9 = objc_msgSend_dropCap(v3, v7, v8);
+  v9 = objc_msgSend_dropCap(selfCopy, v7, v8);
   objc_msgSend_cornerRadius(v9, v10, v11);
   v13 = v12;
 
-  v16 = objc_msgSend_dropCap(v3, v14, v15);
+  v16 = objc_msgSend_dropCap(selfCopy, v14, v15);
   objc_msgSend_characterScale(v16, v17, v18);
   v20 = v19;
 
-  v23 = objc_msgSend_dropCap(v3, v21, v22);
+  v23 = objc_msgSend_dropCap(selfCopy, v21, v22);
   v602 = objc_msgSend_wrapType(v23, v24, v25);
 
   v608 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v26, @"%C", 8203);
-  objc_msgSend_unscaledFontHeightInfo(v3, v27, v28);
-  LODWORD(v23) = objc_msgSend_lineSpacingMode(v3, v29, v30);
-  objc_msgSend_lineSpacingAmount(v3, v31, v32);
+  objc_msgSend_unscaledFontHeightInfo(selfCopy, v27, v28);
+  LODWORD(v23) = objc_msgSend_lineSpacingMode(selfCopy, v29, v30);
+  objc_msgSend_lineSpacingAmount(selfCopy, v31, v32);
   v34 = sub_276D35C8C(&v647, v23, v33);
-  objc_msgSend_setSingleLineHeight_(v3, v35, v36, v34);
+  objc_msgSend_setSingleLineHeight_(selfCopy, v35, v36, v34);
   v632 = 0u;
   v633 = 0u;
   v630 = 0u;
   v631 = 0u;
   v628 = 0u;
   v629 = 0u;
-  objc_msgSend_unscaledFontHeightInfo(v3, v37, v38);
-  v41 = objc_msgSend_dropCap(v3, v39, v40);
+  objc_msgSend_unscaledFontHeightInfo(selfCopy, v37, v38);
+  v41 = objc_msgSend_dropCap(selfCopy, v39, v40);
   v44 = objc_msgSend_numberOfLines(v41, v42, v43);
-  objc_msgSend_singleLineHeight(v3, v45, v46);
+  objc_msgSend_singleLineHeight(selfCopy, v45, v46);
   v48 = v47;
-  isVertical = objc_msgSend_isVertical(v3, v49, v50);
+  isVertical = objc_msgSend_isVertical(selfCopy, v49, v50);
   v52 = -(0.0 + 0.0);
   if (!isVertical)
   {
@@ -1375,21 +1375,21 @@ LABEL_28:
 
   v53 = v52 + v44 * v48;
 
-  if (objc_msgSend_isVertical(v3, v54, v55))
+  if (objc_msgSend_isVertical(selfCopy, v54, v55))
   {
     v58 = v53 * 0.5;
   }
 
   else
   {
-    v59 = objc_msgSend_dropCap(v3, v56, v57);
+    v59 = objc_msgSend_dropCap(selfCopy, v56, v57);
     v62 = (objc_msgSend_numberOfLines(v59, v60, v61) - 1);
-    objc_msgSend_singleLineHeight(v3, v63, v64);
+    objc_msgSend_singleLineHeight(selfCopy, v63, v64);
     v58 = *(&v630 + 1) + *&v629 + v62 * v65;
   }
 
   *(&v628 + 1) = v58;
-  if (objc_msgSend_isVertical(v3, v56, v57))
+  if (objc_msgSend_isVertical(selfCopy, v56, v57))
   {
     *&v630 = *(&v628 + 1);
     *&v629 = *(&v628 + 1);
@@ -1401,10 +1401,10 @@ LABEL_28:
   v652 = v633;
   v647 = v628;
   v648 = v629;
-  objc_msgSend_setHeightInfo_(v3, v66, &v647);
-  v610 = objc_msgSend_p_styleArrayWithFontSize_(v3, v67, v68, v53);
+  objc_msgSend_setHeightInfo_(selfCopy, v66, &v647);
+  v610 = objc_msgSend_p_styleArrayWithFontSize_(selfCopy, v67, v68, v53);
   v69 = sub_276D38B74(v610, 0x64uLL);
-  if (objc_msgSend_isVertical(v3, v70, v71))
+  if (objc_msgSend_isVertical(selfCopy, v70, v71))
   {
     v72 = sub_276D35910(v69);
   }
@@ -1417,9 +1417,9 @@ LABEL_28:
 
   v74 = v72;
   v75 = sub_276D35B50(v72);
-  objc_msgSend_setFontPostScriptName_(v3, v76, v75);
+  objc_msgSend_setFontPostScriptName_(selfCopy, v76, v75);
 
-  objc_msgSend_setUnscaledFontSize_(v3, v77, v78, v53);
+  objc_msgSend_setUnscaledFontSize_(selfCopy, v77, v78, v53);
   v626 = 0u;
   v627 = 0u;
   v624 = 0u;
@@ -1431,7 +1431,7 @@ LABEL_28:
   v661 = *MEMORY[0x277D740A8];
   v662 = v74;
   v82 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v81, &v662, &v661, 1);
-  v85 = objc_msgSend_text(v3, v83, v84);
+  v85 = objc_msgSend_text(selfCopy, v83, v84);
   v88 = objc_msgSend_string(v85, v86, v87);
   v91 = objc_msgSend_mutableCopy(v88, v89, v90);
 
@@ -1459,10 +1459,10 @@ LABEL_28:
     while (v97 < objc_msgSend_length(v91, v100, v101));
   }
 
-  objc_msgSend_setCoreTextString_(v3, v102, v91);
-  v105 = objc_msgSend_coreTextString(v3, v103, v104);
+  objc_msgSend_setCoreTextString_(selfCopy, v102, v91);
+  v105 = objc_msgSend_coreTextString(selfCopy, v103, v104);
   v108 = objc_msgSend_length(v105, v106, v107);
-  v111 = objc_msgSend_text(v3, v109, v110);
+  v111 = objc_msgSend_text(selfCopy, v109, v110);
   v114 = objc_msgSend_length(v111, v112, v113);
 
   if (v108 != v114)
@@ -1477,22 +1477,22 @@ LABEL_28:
 
   font = v74;
   v123 = objc_alloc(MEMORY[0x277CCAB48]);
-  v126 = objc_msgSend_coreTextString(v3, v124, v125);
+  v126 = objc_msgSend_coreTextString(selfCopy, v124, v125);
   v607 = v82;
   v128 = objc_msgSend_initWithString_attributes_(v123, v127, v126, v82);
 
-  if (objc_msgSend_isVertical(v3, v129, v130))
+  if (objc_msgSend_isVertical(selfCopy, v129, v130))
   {
     sub_276D3A17C(v128, 0);
   }
 
-  v133 = objc_msgSend_text(v3, v131, v132);
+  v133 = objc_msgSend_text(selfCopy, v131, v132);
   v136 = objc_msgSend_length(v133, v134, v135);
 
-  v139 = objc_msgSend_text(v3, v137, v138);
+  v139 = objc_msgSend_text(selfCopy, v137, v138);
   v141 = objc_msgSend_charIndexMappedToStorage_(v139, v140, 0);
 
-  v144 = objc_msgSend_text(v3, v142, v143);
+  v144 = objc_msgSend_text(selfCopy, v142, v143);
   stringRange = v136;
   v146 = objc_msgSend_charIndexMappedToStorage_(v144, v145, v136);
 
@@ -1513,17 +1513,17 @@ LABEL_28:
   v649 = 0u;
   v647 = 0u;
   v616 = v146;
-  v618 = v3;
+  v618 = selfCopy;
   if (v141 < v146)
   {
     v150 = 0;
     v614 = *MEMORY[0x277CC49C0];
     while (1)
     {
-      v151 = objc_msgSend_text(v3, v147, v148);
+      v151 = objc_msgSend_text(selfCopy, v147, v148);
       v153 = objc_msgSend_charIndexMappedFromStorage_(v151, v152, v141);
 
-      v156 = objc_msgSend_text(v3, v154, v155);
+      v156 = objc_msgSend_text(selfCopy, v154, v155);
       objc_msgSend_attributesAtCharIndex_attributesOfInterest_attributesTable_effectiveRange_(v156, v157, v153, &v659, &v647, 0);
 
       v158 = *(&v654 + 1);
@@ -1591,7 +1591,7 @@ LABEL_28:
 
       v141 = v172;
       v150 = v149;
-      v3 = v618;
+      selfCopy = v618;
       if (v172 >= v616)
       {
         goto LABEL_41;
@@ -1604,12 +1604,12 @@ LABEL_28:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v188, v192, v189, v191, 1109, 0, "bad charIndex: %lu >= %lu", v141, v172);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v193, v194);
-    v3 = v618;
+    selfCopy = v618;
   }
 
 LABEL_41:
   v615 = v149;
-  v195 = objc_msgSend_styleArray(v3, v147, v148);
+  v195 = objc_msgSend_styleArray(selfCopy, v147, v148);
   v196 = TSWPResolvePropertyForStyles(v195, 36);
 
   if (v196)
@@ -1619,7 +1619,7 @@ LABEL_41:
     {
       objc_msgSend_floatValue(v196, v199, v200);
       v203 = v202;
-      objc_msgSend_unscaledFontSize(v3, v204, v205);
+      objc_msgSend_unscaledFontSize(selfCopy, v204, v205);
       v207 = *MEMORY[0x277CC49E0];
       v210 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v208, v209, v206 * v203);
       v213 = objc_msgSend_length(v128, v211, v212);
@@ -2378,7 +2378,7 @@ LABEL_53:
   return v20;
 }
 
-- (id)p_styleArrayWithFontSize:(double)a3
+- (id)p_styleArrayWithFontSize:(double)size
 {
   v5 = objc_opt_new();
   v8 = objc_msgSend_dropCapStyle(self, v6, v7);
@@ -2390,7 +2390,7 @@ LABEL_53:
     v17 = objc_msgSend_context(v14, v15, v16);
     v19 = objc_msgSend_initWithContext_(v11, v18, v17);
 
-    *&v20 = a3;
+    *&v20 = size;
     objc_msgSend_setFloatValue_forProperty_(v19, v21, 17, v20);
     objc_msgSend_addObject_(v5, v22, v19);
 
@@ -2474,15 +2474,15 @@ LABEL_53:
   return self;
 }
 
-- (void)setHeightInfo:(TSWPFontHeightInfo *)a3
+- (void)setHeightInfo:(TSWPFontHeightInfo *)info
 {
-  v3 = *&a3->ascent;
-  *&self->_heightInfo.spaceBefore = *&a3->spaceBefore;
+  v3 = *&info->ascent;
+  *&self->_heightInfo.spaceBefore = *&info->spaceBefore;
   *&self->_heightInfo.ascent = v3;
-  v4 = *&a3->descent;
-  v5 = *&a3->leadingBelow;
-  v6 = *&a3->underlinePosition;
-  *&self->_heightInfo.verticalHeight = *&a3->verticalHeight;
+  v4 = *&info->descent;
+  v5 = *&info->leadingBelow;
+  v6 = *&info->underlinePosition;
+  *&self->_heightInfo.verticalHeight = *&info->verticalHeight;
   *&self->_heightInfo.underlinePosition = v6;
   *&self->_heightInfo.descent = v4;
   *&self->_heightInfo.leadingBelow = v5;
@@ -2546,15 +2546,15 @@ LABEL_53:
   return self;
 }
 
-- (void)setUnscaledFontHeightInfo:(TSWPFontHeightInfo *)a3
+- (void)setUnscaledFontHeightInfo:(TSWPFontHeightInfo *)info
 {
-  v3 = *&a3->ascent;
-  *&self->_unscaledFontHeightInfo.spaceBefore = *&a3->spaceBefore;
+  v3 = *&info->ascent;
+  *&self->_unscaledFontHeightInfo.spaceBefore = *&info->spaceBefore;
   *&self->_unscaledFontHeightInfo.ascent = v3;
-  v4 = *&a3->descent;
-  v5 = *&a3->leadingBelow;
-  v6 = *&a3->underlinePosition;
-  *&self->_unscaledFontHeightInfo.verticalHeight = *&a3->verticalHeight;
+  v4 = *&info->descent;
+  v5 = *&info->leadingBelow;
+  v6 = *&info->underlinePosition;
+  *&self->_unscaledFontHeightInfo.verticalHeight = *&info->verticalHeight;
   *&self->_unscaledFontHeightInfo.underlinePosition = v6;
   *&self->_unscaledFontHeightInfo.descent = v4;
   *&self->_unscaledFontHeightInfo.leadingBelow = v5;

@@ -1,26 +1,26 @@
 @interface FCFeedTransformationUnreadOnly
-+ (id)transformationWithReadingHistory:(id)a3;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithReadingHistory:(id)history;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationUnreadOnly
 
-+ (id)transformationWithReadingHistory:(id)a3
++ (id)transformationWithReadingHistory:(id)history
 {
-  v3 = a3;
+  historyCopy = history;
   v4 = objc_opt_new();
-  [v4 setHistory:v3];
+  [v4 setHistory:historyCopy];
 
   return v4;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCFeedTransformationUnreadOnly *)self history];
+  itemsCopy = items;
+  history = [(FCFeedTransformationUnreadOnly *)self history];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!history && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"can't filter read articles without history"];
     *buf = 136315906;
@@ -34,16 +34,16 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v6 = [(FCFeedTransformationUnreadOnly *)self history];
-  v7 = [v6 allReadArticleIDs];
+  history2 = [(FCFeedTransformationUnreadOnly *)self history];
+  allReadArticleIDs = [history2 allReadArticleIDs];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__FCFeedTransformationUnreadOnly_transformFeedItems___block_invoke;
   v13[3] = &unk_1E7C37898;
-  v14 = v7;
-  v8 = v7;
-  v9 = [v4 fc_arrayOfObjectsPassingTest:v13];
+  v14 = allReadArticleIDs;
+  v8 = allReadArticleIDs;
+  v9 = [itemsCopy fc_arrayOfObjectsPassingTest:v13];
 
   v10 = *MEMORY[0x1E69E9840];
 

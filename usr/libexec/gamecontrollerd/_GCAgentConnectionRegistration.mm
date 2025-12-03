@@ -1,18 +1,18 @@
 @interface _GCAgentConnectionRegistration
-- (_GCAgentConnectionRegistration)initWithUserIdentifier:(unsigned int)a3;
+- (_GCAgentConnectionRegistration)initWithUserIdentifier:(unsigned int)identifier;
 - (void)invalidate;
 @end
 
 @implementation _GCAgentConnectionRegistration
 
-- (_GCAgentConnectionRegistration)initWithUserIdentifier:(unsigned int)a3
+- (_GCAgentConnectionRegistration)initWithUserIdentifier:(unsigned int)identifier
 {
   v5.receiver = self;
   v5.super_class = _GCAgentConnectionRegistration;
   result = [(_GCAgentConnectionRegistration *)&v5 init];
   if (result)
   {
-    result->_userIdentifier = a3;
+    result->_userIdentifier = identifier;
   }
 
   return result;

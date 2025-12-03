@@ -1,21 +1,21 @@
 @interface CNAvatarPosterPairCollectionViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGSize)collectionViewContentSize;
 - (_TtC10ContactsUI38CNAvatarPosterPairCollectionViewLayout)init;
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (void)finalizeCollectionViewUpdates;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
 @end
 
 @implementation CNAvatarPosterPairCollectionViewLayout
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for CNAvatarPosterPairCollectionViewLayout();
-  [(CNAvatarPosterPairCollectionViewLayout *)&v4 prepareForCollectionViewUpdates:a3];
+  [(CNAvatarPosterPairCollectionViewLayout *)&v4 prepareForCollectionViewUpdates:updates];
 }
 
 - (void)finalizeCollectionViewUpdates
@@ -29,7 +29,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_199B5B0D0();
 }
 
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind
 {
   sub_199DF738C();
   sub_199DF81AC();
@@ -51,13 +51,13 @@
   return v3;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_199B5D860(x, y, width, height);
 
   if (v8)
@@ -74,10 +74,10 @@
   return v9;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  v4 = self;
+  x = offset.x;
+  selfCopy = self;
   sub_199B5E274(x);
   v6 = v5;
   v8 = v7;

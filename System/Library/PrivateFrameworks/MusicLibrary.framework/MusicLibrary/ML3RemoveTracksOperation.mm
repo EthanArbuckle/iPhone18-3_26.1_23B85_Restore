@@ -1,11 +1,11 @@
 @interface ML3RemoveTracksOperation
-- (BOOL)_execute:(id *)a3;
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3;
+- (BOOL)_execute:(id *)_execute;
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties;
 @end
 
 @implementation ML3RemoveTracksOperation
 
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties
 {
   v9.receiver = self;
   v9.super_class = ML3RemoveTracksOperation;
@@ -14,37 +14,37 @@
     return 0;
   }
 
-  v5 = [(ML3DatabaseOperation *)self attributes];
-  v6 = [v5 objectForKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v6 = [attributes objectForKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
   v7 = v6 != 0;
 
-  if (a3 && !v6)
+  if (properties && !v6)
   {
     [ML3MediaLibraryWriter writerErrorWithCode:500 description:@"ML3RemoveTracksOperation requires a track source attribute"];
-    *a3 = v7 = 0;
+    *properties = v7 = 0;
   }
 
   return v7;
 }
 
-- (BOOL)_execute:(id *)a3
+- (BOOL)_execute:(id *)_execute
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [(ML3DatabaseOperation *)self transaction];
-  v6 = [v5 connection];
-  v7 = [v5 library];
-  v8 = [(ML3DatabaseOperation *)self attributes];
-  v9 = [v8 objectForKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
-  v10 = [v9 intValue];
+  transaction = [(ML3DatabaseOperation *)self transaction];
+  connection = [transaction connection];
+  library = [transaction library];
+  attributes = [(ML3DatabaseOperation *)self attributes];
+  v9 = [attributes objectForKey:@"MLDatabaseOperationAttributeTrackSourceKey"];
+  intValue = [v9 intValue];
 
-  v11 = [(ML3DatabaseOperation *)self attributes];
-  v12 = [v11 objectForKey:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
+  attributes2 = [(ML3DatabaseOperation *)self attributes];
+  v12 = [attributes2 objectForKey:@"MLDatabaseOperationAttributePersistentIDsArrayKey"];
 
   v13 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 67109376;
-    v23 = v10;
+    v23 = intValue;
     v24 = 2048;
     v25 = COERCE_DOUBLE([v12 count]);
     _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_DEFAULT, "[ML3RemoveTracksOperation] Beginning remove tracks operation with source %d (%lu specified tracks)", &v22, 0x12u);
@@ -54,12 +54,12 @@
   v15 = v14;
   if ([v12 count])
   {
-    v16 = [v7 removeSource:v10 fromPersistentIDS:v12 forImportOperation:self usingConnection:v6 postNotifications:1];
+    v16 = [library removeSource:intValue fromPersistentIDS:v12 forImportOperation:self usingConnection:connection postNotifications:1];
   }
 
   else
   {
-    v16 = [v7 removeSource:v10 forImportOperation:self usingConnection:v6 postNotifications:1];
+    v16 = [library removeSource:intValue forImportOperation:self usingConnection:connection postNotifications:1];
   }
 
   v17 = v16;
@@ -75,9 +75,9 @@
     _os_log_impl(&dword_22D2FA000, v20, OS_LOG_TYPE_DEFAULT, "[ML3RemoveTracksOperation] Remove tracks operation success=%d in %.3f seconds", &v22, 0x12u);
   }
 
-  if (a3)
+  if (_execute)
   {
-    *a3 = 0;
+    *_execute = 0;
   }
 
   return v17;

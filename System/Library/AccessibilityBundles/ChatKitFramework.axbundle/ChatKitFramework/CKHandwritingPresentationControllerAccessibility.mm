@@ -1,5 +1,5 @@
 @interface CKHandwritingPresentationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CKHandwritingPresentationControllerAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSubscribeToVoiceOverNotifications;
@@ -10,12 +10,12 @@
 
 @implementation CKHandwritingPresentationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKHandwritingPresentationController" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKHandwritingPresentationController" hasInstanceMethod:@"requestedVisibility" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKHandwritingPresentationController" hasInstanceMethod:@"_updateVisibilityState" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKHandwritingPresentationController" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKHandwritingPresentationController" hasInstanceMethod:@"requestedVisibility" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKHandwritingPresentationController" hasInstanceMethod:@"_updateVisibilityState" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -56,16 +56,16 @@
     {
       if (v4)
       {
-        v5 = [MEMORY[0x29EDC7A58] currentDevice];
-        v6 = [v5 orientation];
+        currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+        orientation = [currentDevice orientation];
       }
 
       else
       {
-        v6 = 0;
+        orientation = 0;
       }
 
-      [*MEMORY[0x29EDC8008] _accessibilitySetApplicationOrientation:v6];
+      [*MEMORY[0x29EDC8008] _accessibilitySetApplicationOrientation:orientation];
     }
   }
 }

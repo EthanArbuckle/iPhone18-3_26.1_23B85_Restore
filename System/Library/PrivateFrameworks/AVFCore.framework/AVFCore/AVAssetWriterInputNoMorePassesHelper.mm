@@ -1,31 +1,31 @@
 @interface AVAssetWriterInputNoMorePassesHelper
-- (AVAssetWriterInputNoMorePassesHelper)initWithWritingHelper:(id)a3;
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4;
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4;
-- (int64_t)appendCaption:(id)a3 error:(id *)a4;
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4;
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
+- (AVAssetWriterInputNoMorePassesHelper)initWithWritingHelper:(id)helper;
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time;
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time;
+- (int64_t)appendCaption:(id)caption error:(id *)error;
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error;
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
 - (void)dealloc;
 - (void)markCurrentPassAsFinished;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
 - (void)stopRequestingMediaData;
 @end
 
 @implementation AVAssetWriterInputNoMorePassesHelper
 
-- (AVAssetWriterInputNoMorePassesHelper)initWithWritingHelper:(id)a3
+- (AVAssetWriterInputNoMorePassesHelper)initWithWritingHelper:(id)helper
 {
-  if (!a3)
+  if (!helper)
   {
     [AVAssetWriterInputNoMorePassesHelper initWithWritingHelper:];
   }
 
   v7.receiver = self;
   v7.super_class = AVAssetWriterInputNoMorePassesHelper;
-  v5 = -[AVAssetWriterInputHelper initWithConfigurationState:](&v7, sel_initWithConfigurationState_, [a3 configurationState]);
+  v5 = -[AVAssetWriterInputHelper initWithConfigurationState:](&v7, sel_initWithConfigurationState_, [helper configurationState]);
   if (v5)
   {
-    v5->_writingHelper = a3;
+    v5->_writingHelper = helper;
   }
 
   return v5;
@@ -38,7 +38,7 @@
   [(AVAssetWriterInputHelper *)&v3 dealloc];
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -58,18 +58,18 @@
   objc_exception_throw(v12);
 }
 
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
-  if (a4)
+  if (error)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"not allowed when no media data is being requested.  Check the value of %@.", NSStringFromSelector(sel_currentPassDescription)), 0}];
-    *a4 = AVErrorForClientProgrammingError(v5);
+    *error = AVErrorForClientProgrammingError(v5);
   }
 
   return 1;
 }
 
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -79,7 +79,7 @@
   objc_exception_throw(v14);
 }
 
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -89,23 +89,23 @@
   objc_exception_throw(v14);
 }
 
-- (int64_t)appendCaption:(id)a3 error:(id *)a4
+- (int64_t)appendCaption:(id)caption error:(id *)error
 {
-  if (a4)
+  if (error)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"not allowed when no media data is being requested.  Check the value of %@.", NSStringFromSelector(sel_currentPassDescription)), 0}];
-    *a4 = AVErrorForClientProgrammingError(v5);
+    *error = AVErrorForClientProgrammingError(v5);
   }
 
   return 1;
 }
 
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error
 {
-  if (a4)
+  if (error)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"not allowed when no media data is being requested.  Check the value of %@.", NSStringFromSelector(sel_currentPassDescription)), 0}];
-    *a4 = AVErrorForClientProgrammingError(v5);
+    *error = AVErrorForClientProgrammingError(v5);
   }
 
   return 1;

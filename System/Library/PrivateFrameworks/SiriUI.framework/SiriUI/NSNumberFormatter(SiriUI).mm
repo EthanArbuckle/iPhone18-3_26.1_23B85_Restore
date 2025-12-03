@@ -9,9 +9,9 @@
   v3 = MEMORY[0x277CCABB8];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
-  v7 = [v6 assistantUILocale];
-  [v5 setLocale:v7];
+  afui_assistantUIFrameworkBundle = [MEMORY[0x277CCA8D8] afui_assistantUIFrameworkBundle];
+  assistantUILocale = [afui_assistantUIFrameworkBundle assistantUILocale];
+  [v5 setLocale:assistantUILocale];
 
   v8 = [v5 stringFromNumber:v4];
 

@@ -1,21 +1,21 @@
 @interface AXLTHistogramCalculator
-+ (id)histogramForAudioPCMBuffer:(id)a3;
-+ (id)histogramForAudioQueueBuffer:(AudioQueueBuffer *)a3 packetCount:(int64_t)a4 channelsCount:(int64_t)a5 format:(unint64_t)a6;
-+ (id)histogramForFloat32MonoBuffer:(float *)a3 samplesCount:(int64_t)a4;
-+ (id)histogramForInt16MonoBuffer:(signed __int16 *)a3 samplesCount:(int64_t)a4;
++ (id)histogramForAudioPCMBuffer:(id)buffer;
++ (id)histogramForAudioQueueBuffer:(AudioQueueBuffer *)buffer packetCount:(int64_t)count channelsCount:(int64_t)channelsCount format:(unint64_t)format;
++ (id)histogramForFloat32MonoBuffer:(float *)buffer samplesCount:(int64_t)count;
++ (id)histogramForInt16MonoBuffer:(signed __int16 *)buffer samplesCount:(int64_t)count;
 @end
 
 @implementation AXLTHistogramCalculator
 
-+ (id)histogramForAudioPCMBuffer:(id)a3
++ (id)histogramForAudioPCMBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 format];
-  v6 = [v5 channelCount];
+  bufferCopy = buffer;
+  format = [bufferCopy format];
+  channelCount = [format channelCount];
 
-  if (v6 <= 1 && (v7 = [v4 frameLength], objc_msgSend(v4, "format"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "commonFormat"), v8, v9 == 1))
+  if (channelCount <= 1 && (v7 = [bufferCopy frameLength], objc_msgSend(bufferCopy, "format"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "commonFormat"), v8, v9 == 1))
   {
-    v10 = [a1 histogramForFloat32MonoBuffer:*(objc_msgSend(v4 samplesCount:{"audioBufferList") + 16), v7}];
+    v10 = [self histogramForFloat32MonoBuffer:*(objc_msgSend(bufferCopy samplesCount:{"audioBufferList") + 16), v7}];
   }
 
   else
@@ -26,60 +26,60 @@
   return v10;
 }
 
-+ (id)histogramForAudioQueueBuffer:(AudioQueueBuffer *)a3 packetCount:(int64_t)a4 channelsCount:(int64_t)a5 format:(unint64_t)a6
++ (id)histogramForAudioQueueBuffer:(AudioQueueBuffer *)buffer packetCount:(int64_t)count channelsCount:(int64_t)channelsCount format:(unint64_t)format
 {
   v9 = 0;
-  if (a5 <= 1 && a6 == 3)
+  if (channelsCount <= 1 && format == 3)
   {
-    v9 = [a1 histogramForInt16MonoBuffer:a3->mAudioData samplesCount:{a5 * a4, v6}];
+    v9 = [self histogramForInt16MonoBuffer:buffer->mAudioData samplesCount:{channelsCount * count, v6}];
   }
 
   return v9;
 }
 
-+ (id)histogramForInt16MonoBuffer:(signed __int16 *)a3 samplesCount:(int64_t)a4
++ (id)histogramForInt16MonoBuffer:(signed __int16 *)buffer samplesCount:(int64_t)count
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (buffer)
   {
     v6 = objc_opt_new();
     v34 = objc_opt_new();
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    v10 = a4 / 16;
-    v11 = a4 / 16;
+    v10 = count / 16;
+    v11 = count / 16;
     do
     {
-      if (a4 >= v11)
+      if (count >= v11)
       {
-        v12 = v11;
+        countCopy = v11;
       }
 
       else
       {
-        v12 = a4;
+        countCopy = count;
       }
 
       v13 = v9 * v10;
-      if (++v9 * v10 >= a4)
+      if (++v9 * v10 >= count)
       {
-        v14 = a4;
+        countCopy2 = count;
       }
 
       else
       {
-        v14 = v9 * v10;
+        countCopy2 = v9 * v10;
       }
 
-      if (v13 < v14)
+      if (v13 < countCopy2)
       {
         v15 = 0;
         v16 = 0;
-        v17 = v12 + v7;
+        v17 = countCopy + v7;
         do
         {
-          LODWORD(v18) = a3[v13];
+          LODWORD(v18) = buffer[v13];
           if (v18 < 0)
           {
             LODWORD(v18) = -v18;
@@ -105,7 +105,7 @@
           ++v13;
         }
 
-        while (v13 < v14);
+        while (v13 < countCopy2);
         if (v16 <= v17 >> 1)
         {
           if (v17)
@@ -186,45 +186,45 @@
   return v6;
 }
 
-+ (id)histogramForFloat32MonoBuffer:(float *)a3 samplesCount:(int64_t)a4
++ (id)histogramForFloat32MonoBuffer:(float *)buffer samplesCount:(int64_t)count
 {
   v38 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (buffer)
   {
     v6 = objc_opt_new();
     v7 = objc_opt_new();
     v8 = 0;
     v9 = 0;
-    v10 = a4 / 16;
-    v11 = a4 / 16;
+    v10 = count / 16;
+    v11 = count / 16;
     v12 = 0.0;
     do
     {
-      if (a4 >= v11)
+      if (count >= v11)
       {
-        v13 = v11;
+        countCopy = v11;
       }
 
       else
       {
-        v13 = a4;
+        countCopy = count;
       }
 
       v14 = v9 * v10;
-      v15 = ++v9 * v10;
-      if (v9 * v10 >= a4)
+      countCopy2 = ++v9 * v10;
+      if (v9 * v10 >= count)
       {
-        v15 = a4;
+        countCopy2 = count;
       }
 
-      if (v14 < v15)
+      if (v14 < countCopy2)
       {
         v16 = 0;
-        v17 = v13 + v8;
+        v17 = countCopy + v8;
         v18 = 0.0;
         do
         {
-          v19 = fabsf(a3[v14]);
+          v19 = fabsf(buffer[v14]);
           if (v19 < 0.001)
           {
             v19 = 0.0;
@@ -235,7 +235,7 @@
           ++v14;
         }
 
-        while (v14 < v15);
+        while (v14 < countCopy2);
         if (v16 <= v17 >> 1)
         {
           if (v17)

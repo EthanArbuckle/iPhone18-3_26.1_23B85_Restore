@@ -1,6 +1,6 @@
 @interface AnnotationCollectionViewHostingCell
-- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
 @end
 
@@ -17,12 +17,12 @@
   *&v2[OBJC_IVAR____TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell_viewState] = sub_100747ED4();
 }
 
-- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell_viewState;
   sub_100747EE4();
@@ -33,17 +33,17 @@
   return [(SwiftUIViewHostingCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC22SubscribePageExtension35AnnotationCollectionViewHostingCell_viewState;
   sub_100747EE4();
   swift_allocObject();
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.super.super.isa + v6) = sub_100747ED4();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(SwiftUIViewHostingCell *)&v10 initWithCoder:v7];
+  v8 = [(SwiftUIViewHostingCell *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

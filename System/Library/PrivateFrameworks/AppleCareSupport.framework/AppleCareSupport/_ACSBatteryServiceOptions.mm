@@ -1,6 +1,6 @@
 @interface _ACSBatteryServiceOptions
 - (_ACSBatteryServiceOptions)init;
-- (_ACSBatteryServiceOptions)initWithValues:(id)a3;
+- (_ACSBatteryServiceOptions)initWithValues:(id)values;
 @end
 
 @implementation _ACSBatteryServiceOptions
@@ -13,7 +13,7 @@
   return [(_ACSBatteryServiceOptions *)&v4 init];
 }
 
-- (_ACSBatteryServiceOptions)initWithValues:(id)a3
+- (_ACSBatteryServiceOptions)initWithValues:(id)values
 {
   *(&self->super.isa + OBJC_IVAR____ACSBatteryServiceOptions_storage) = sub_2402A7338();
   v5.receiver = self;

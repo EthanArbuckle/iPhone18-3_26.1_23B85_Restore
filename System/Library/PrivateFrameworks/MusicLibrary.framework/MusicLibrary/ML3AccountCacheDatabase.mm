@@ -1,26 +1,26 @@
 @interface ML3AccountCacheDatabase
-- (BOOL)getPropertiesForDSID:(unint64_t)a3 appleID:(id *)a4 altDSID:(id *)a5;
-- (BOOL)setAppleID:(id)a3 altDSID:(id)a4 forDSID:(unint64_t)a5;
-- (ML3AccountCacheDatabase)initWithLibrary:(id)a3;
-- (id)_cacheEntryForDSID:(unint64_t)a3;
-- (id)appleIDForDSID:(unint64_t)a3;
-- (void)_setCacheEntry:(id)a3 forDSID:(unint64_t)a4;
+- (BOOL)getPropertiesForDSID:(unint64_t)d appleID:(id *)iD altDSID:(id *)sID;
+- (BOOL)setAppleID:(id)d altDSID:(id)iD forDSID:(unint64_t)sID;
+- (ML3AccountCacheDatabase)initWithLibrary:(id)library;
+- (id)_cacheEntryForDSID:(unint64_t)d;
+- (id)appleIDForDSID:(unint64_t)d;
+- (void)_setCacheEntry:(id)entry forDSID:(unint64_t)d;
 @end
 
 @implementation ML3AccountCacheDatabase
 
-- (void)_setCacheEntry:(id)a3 forDSID:(unint64_t)a4
+- (void)_setCacheEntry:(id)entry forDSID:(unint64_t)d
 {
-  v6 = a3;
+  entryCopy = entry;
   accessQueue = self->accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke;
   block[3] = &unk_278765770;
-  v10 = v6;
-  v11 = a4;
+  v10 = entryCopy;
+  dCopy = d;
   block[4] = self;
-  v8 = v6;
+  v8 = entryCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -32,7 +32,7 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
   [v2 setObject:v1 forKeyedSubscript:v3];
 }
 
-- (id)_cacheEntryForDSID:(unint64_t)a3
+- (id)_cacheEntryForDSID:(unint64_t)d
 {
   v53 = *MEMORY[0x277D85DE8];
   v41 = 0;
@@ -54,7 +54,7 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
   block[3] = &unk_2787656D0;
   block[4] = self;
   block[5] = &v41;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(accessQueue, block);
   v6 = v42[5];
   if (!v6)
@@ -77,7 +77,7 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
     v21[2] = __46__ML3AccountCacheDatabase__cacheEntryForDSID___block_invoke_2;
     v21[3] = &unk_278765720;
     v21[7] = &v22;
-    v21[8] = a3;
+    v21[8] = d;
     v21[4] = self;
     v21[5] = &v35;
     v21[6] = &v28;
@@ -88,7 +88,7 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
       {
         v8 = +[ML3AccountStore defaultStore];
         v20 = 0;
-        v9 = [v8 altDSIDForAccountWithDSID:a3 options:1 error:&v20];
+        v9 = [v8 altDSIDForAccountWithDSID:d options:1 error:&v20];
         v10 = v20;
         v11 = v23[5];
         v23[5] = v9;
@@ -99,9 +99,9 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543874;
-            v48 = self;
+            selfCopy = self;
             v49 = 2048;
-            v50 = a3;
+            dCopy = d;
             v51 = 2114;
             v52 = v10;
             _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to resolve altDSID for DSID %lld. err=%{public}@", buf, 0x20u);
@@ -114,7 +114,7 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
         v19[2] = __46__ML3AccountCacheDatabase__cacheEntryForDSID___block_invoke_43;
         v19[3] = &unk_278765748;
         v19[5] = &v22;
-        v19[6] = a3;
+        v19[6] = d;
         v19[4] = self;
         [(ML3MusicLibrary *)v13 databaseConnectionAllowingWrites:1 withBlock:v19];
       }
@@ -124,7 +124,7 @@ void __50__ML3AccountCacheDatabase__setCacheEntry_forDSID___block_invoke(void *a
       v16 = v42[5];
       v42[5] = v15;
 
-      [(ML3AccountCacheDatabase *)self _setCacheEntry:v42[5] forDSID:a3];
+      [(ML3AccountCacheDatabase *)self _setCacheEntry:v42[5] forDSID:d];
     }
 
     _Block_object_dispose(&v22, 8);
@@ -249,44 +249,44 @@ void __46__ML3AccountCacheDatabase__cacheEntryForDSID___block_invoke_3(void *a1,
   }
 }
 
-- (BOOL)getPropertiesForDSID:(unint64_t)a3 appleID:(id *)a4 altDSID:(id *)a5
+- (BOOL)getPropertiesForDSID:(unint64_t)d appleID:(id *)iD altDSID:(id *)sID
 {
-  v7 = [(ML3AccountCacheDatabase *)self _cacheEntryForDSID:a3];
+  v7 = [(ML3AccountCacheDatabase *)self _cacheEntryForDSID:d];
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (iD)
     {
-      *a4 = [v7 appleID];
+      *iD = [v7 appleID];
     }
 
-    if (a5)
+    if (sID)
     {
-      *a5 = [v8 altDSID];
+      *sID = [v8 altDSID];
     }
   }
 
   return v8 != 0;
 }
 
-- (id)appleIDForDSID:(unint64_t)a3
+- (id)appleIDForDSID:(unint64_t)d
 {
   v5 = 0;
-  [(ML3AccountCacheDatabase *)self getPropertiesForDSID:a3 appleID:&v5 altDSID:0];
+  [(ML3AccountCacheDatabase *)self getPropertiesForDSID:d appleID:&v5 altDSID:0];
   v3 = v5;
 
   return v3;
 }
 
-- (BOOL)setAppleID:(id)a3 altDSID:(id)a4 forDSID:(unint64_t)a5
+- (BOOL)setAppleID:(id)d altDSID:(id)iD forDSID:(unint64_t)sID
 {
   v57 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  dCopy = d;
+  iDCopy = iD;
+  if (!dCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"ML3AccountCacheDatabase.m" lineNumber:65 description:@"appleID cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3AccountCacheDatabase.m" lineNumber:65 description:@"appleID cannot be nil"];
   }
 
   v45 = 0;
@@ -300,22 +300,22 @@ void __46__ML3AccountCacheDatabase__cacheEntryForDSID___block_invoke_3(void *a1,
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__25156;
   v43 = __Block_byref_object_dispose__25157;
-  v11 = v10;
+  v11 = iDCopy;
   v44 = v11;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__25156;
   v37 = __Block_byref_object_dispose__25157;
-  v38 = [(ML3AccountCacheDatabase *)self _cacheEntryForDSID:a5];
+  v38 = [(ML3AccountCacheDatabase *)self _cacheEntryForDSID:sID];
   v12 = v34[5];
-  if (!v12 || ([v12 appleID], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(v34[5], "appleID"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v9), v14, v13, (v15 & 1) == 0))
+  if (!v12 || ([v12 appleID], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (objc_msgSend(v34[5], "appleID"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", dCopy), v14, v13, (v15 & 1) == 0))
   {
     if (!v40[5])
     {
       v16 = +[ML3AccountStore defaultStore];
       v32 = 0;
-      v17 = [v16 altDSIDForAccountWithDSID:a5 options:1 error:&v32];
+      v17 = [v16 altDSIDForAccountWithDSID:sID options:1 error:&v32];
       v18 = v32;
       v19 = v40[5];
       v40[5] = v17;
@@ -326,9 +326,9 @@ void __46__ML3AccountCacheDatabase__cacheEntryForDSID___block_invoke_3(void *a1,
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v52 = self;
+          selfCopy = self;
           v53 = 2048;
-          v54 = a5;
+          sIDCopy = sID;
           v55 = 2114;
           v56 = v18;
           _os_log_impl(&dword_22D2FA000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Failed to resolve altDSID for DSID %lld. err=%{public}@", buf, 0x20u);
@@ -341,9 +341,9 @@ void __46__ML3AccountCacheDatabase__cacheEntryForDSID___block_invoke_3(void *a1,
     v25[1] = 3221225472;
     v25[2] = __54__ML3AccountCacheDatabase_setAppleID_altDSID_forDSID___block_invoke;
     v25[3] = &unk_2787656A8;
-    v31 = a5;
-    v26 = v9;
-    v27 = self;
+    sIDCopy2 = sID;
+    v26 = dCopy;
+    selfCopy2 = self;
     v28 = &v39;
     v29 = &v45;
     v30 = &v33;
@@ -413,19 +413,19 @@ void __54__ML3AccountCacheDatabase_setAppleID_altDSID_forDSID___block_invoke(uin
   }
 }
 
-- (ML3AccountCacheDatabase)initWithLibrary:(id)a3
+- (ML3AccountCacheDatabase)initWithLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = ML3AccountCacheDatabase;
   v6 = [(ML3AccountCacheDatabase *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     propertiesCache = v6->_propertiesCache;
-    v6->_propertiesCache = v7;
+    v6->_propertiesCache = dictionary;
 
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v10 = dispatch_queue_create("com.apple.medialibrary.ML3AccountCacheDatabase.operationQueue.accessQueue", v9);
     accessQueue = v6->accessQueue;

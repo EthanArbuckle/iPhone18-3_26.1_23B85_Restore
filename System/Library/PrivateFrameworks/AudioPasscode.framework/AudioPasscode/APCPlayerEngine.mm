@@ -1,26 +1,26 @@
 @interface APCPlayerEngine
-+ (id)playerWithAssetURL:(id)a3 codecConfig:(id)a4 payload:(id)a5 error:(id *)a6;
++ (id)playerWithAssetURL:(id)l codecConfig:(id)config payload:(id)payload error:(id *)error;
 - (APCPlayerEmbedInfo)embeddingInfo;
-- (APCPlayerEngine)initWithAssetURL:(id)a3 codecConfig:(id)a4 payload:(id)a5 error:(id *)a6;
-- (BOOL)startEngineAtTime:(unint64_t)a3 withBeginning:(id)a4 callbackTime:(unint64_t)a5;
+- (APCPlayerEngine)initWithAssetURL:(id)l codecConfig:(id)config payload:(id)payload error:(id *)error;
+- (BOOL)startEngineAtTime:(unint64_t)time withBeginning:(id)beginning callbackTime:(unint64_t)callbackTime;
 - (float)evaluateAsset;
-- (id)createAU:(AudioComponentDescription *)a3;
+- (id)createAU:(AudioComponentDescription *)u;
 - (void)_playbackBufferLoopCompletionHdlr;
 - (void)_stopAudioEngineAndSession;
 - (void)createEngineAndAttachNodes;
 - (void)endPasscodeEmbedding;
 - (void)makeEngineConnections;
-- (void)setDispatchQueue:(id)a3;
+- (void)setDispatchQueue:(id)queue;
 - (void)setupAudioSession;
-- (void)startAPCPlayLoopAtTime:(unint64_t)a3;
-- (void)stopEngine:(BOOL)a3 withCompletion:(id)a4;
-- (void)stopEngineAfterMinimumLoops:(unint64_t)a3 withCompletion:(id)a4;
-- (void)stopEngineWithFadeOut:(float)a3 completion:(id)a4;
+- (void)startAPCPlayLoopAtTime:(unint64_t)time;
+- (void)stopEngine:(BOOL)engine withCompletion:(id)completion;
+- (void)stopEngineAfterMinimumLoops:(unint64_t)loops withCompletion:(id)completion;
+- (void)stopEngineWithFadeOut:(float)out completion:(id)completion;
 @end
 
 @implementation APCPlayerEngine
 
-- (id)createAU:(AudioComponentDescription *)a3
+- (id)createAU:(AudioComponentDescription *)u
 {
   v33 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -41,7 +41,7 @@
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  buf = *a3;
+  buf = *u;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __28__APCPlayerEngine_createAU___block_invoke;
@@ -61,16 +61,16 @@
       v9 = v27[5];
       if (v9)
       {
-        v10 = [v27[5] localizedDescription];
+        localizedDescription = [v27[5] localizedDescription];
       }
 
       else
       {
-        v10 = @"AVAudioUnit instantiateWithComponentDescription timed out";
+        localizedDescription = @"AVAudioUnit instantiateWithComponentDescription timed out";
       }
 
       buf.componentType = 138412290;
-      *&buf.componentSubType = v10;
+      *&buf.componentSubType = localizedDescription;
       _os_log_impl(&dword_24158E000, v8, OS_LOG_TYPE_ERROR, "AU instatiation failed with %@", &buf, 0xCu);
       if (v9)
       {
@@ -112,22 +112,22 @@ void __28__APCPlayerEngine_createAU___block_invoke(void *a1, void *a2, void *a3)
   dispatch_semaphore_signal(*(*(a1[6] + 8) + 40));
 }
 
-+ (id)playerWithAssetURL:(id)a3 codecConfig:(id)a4 payload:(id)a5 error:(id *)a6
++ (id)playerWithAssetURL:(id)l codecConfig:(id)config payload:(id)payload error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[APCPlayerEngine alloc] initWithAssetURL:v9 codecConfig:v10 payload:v11 error:a6];
+  lCopy = l;
+  configCopy = config;
+  payloadCopy = payload;
+  v12 = [[APCPlayerEngine alloc] initWithAssetURL:lCopy codecConfig:configCopy payload:payloadCopy error:error];
 
   return v12;
 }
 
-- (APCPlayerEngine)initWithAssetURL:(id)a3 codecConfig:(id)a4 payload:(id)a5 error:(id *)a6
+- (APCPlayerEngine)initWithAssetURL:(id)l codecConfig:(id)config payload:(id)payload error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  configCopy = config;
+  payloadCopy = payload;
   v53.receiver = self;
   v53.super_class = APCPlayerEngine;
   v13 = [(APCPlayerEngine *)&v53 init];
@@ -137,7 +137,7 @@ void __28__APCPlayerEngine_createAU___block_invoke(void *a1, void *a2, void *a3)
     goto LABEL_35;
   }
 
-  if (v10 && v11 && v12)
+  if (lCopy && configCopy && payloadCopy)
   {
     v13->_isRunning = 0;
     v13->_prePlayVolume = 0.5;
@@ -150,7 +150,7 @@ void __28__APCPlayerEngine_createAU___block_invoke(void *a1, void *a2, void *a3)
     v17 = v14->_encoderAUNode;
     if (v17)
     {
-      v18 = [(AVAudioUnit *)v17 AUAudioUnit];
+      aUAudioUnit = [(AVAudioUnit *)v17 AUAudioUnit];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -164,20 +164,20 @@ void __28__APCPlayerEngine_createAU___block_invoke(void *a1, void *a2, void *a3)
           _os_log_impl(&dword_24158E000, v30, OS_LOG_TYPE_ERROR, "Encoder AU is not the expected class, it is a %@", buf, 0xCu);
         }
 
-        if (a6)
+        if (error)
         {
-          *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"AudioPasscodeDomain" code:0 userInfo:0];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"AudioPasscodeDomain" code:0 userInfo:0];
         }
 
         goto LABEL_27;
       }
 
-      v19 = [(AVAudioUnit *)v14->_encoderAUNode AUAudioUnit];
+      aUAudioUnit2 = [(AVAudioUnit *)v14->_encoderAUNode AUAudioUnit];
       encoderAU = v14->_encoderAU;
-      v14->_encoderAU = v19;
+      v14->_encoderAU = aUAudioUnit2;
 
       v52 = 0;
-      v21 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:v10 error:&v52];
+      v21 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:lCopy error:&v52];
       v22 = v52;
       if (v22)
       {
@@ -190,10 +190,10 @@ void __28__APCPlayerEngine_createAU___block_invoke(void *a1, void *a2, void *a3)
           _os_log_impl(&dword_24158E000, v24, OS_LOG_TYPE_ERROR, "Failed to open the player asset: %@", buf, 0xCu);
         }
 
-        if (a6)
+        if (error)
         {
           v25 = v23;
-          *a6 = v23;
+          *error = v23;
         }
 
 LABEL_27:
@@ -202,18 +202,18 @@ LABEL_27:
       }
 
       v33 = objc_alloc(MEMORY[0x277CB83C8]);
-      v34 = [v21 processingFormat];
-      v35 = [v33 initWithPCMFormat:v34 frameCapacity:objc_msgSend(v21, "length")];
+      processingFormat = [v21 processingFormat];
+      v35 = [v33 initWithPCMFormat:processingFormat frameCapacity:objc_msgSend(v21, "length")];
       assetBuffer = v14->_assetBuffer;
       v14->_assetBuffer = v35;
 
-      [v11 setPayloadLengthBytes:{objc_msgSend(v12, "length")}];
-      v37 = [v21 processingFormat];
-      [v37 sampleRate];
-      [v11 setSampleRate:v38];
+      [configCopy setPayloadLengthBytes:{objc_msgSend(payloadCopy, "length")}];
+      processingFormat2 = [v21 processingFormat];
+      [processingFormat2 sampleRate];
+      [configCopy setSampleRate:v38];
 
-      [(AUPasscodeEncoder *)v14->_encoderAU setPayload:v12];
-      [(AUPasscodeEncoder *)v14->_encoderAU setCodecConfig:v11];
+      [(AUPasscodeEncoder *)v14->_encoderAU setPayload:payloadCopy];
+      [(AUPasscodeEncoder *)v14->_encoderAU setCodecConfig:configCopy];
       -[AUPasscodeEncoder setAssetLength:](v14->_encoderAU, "setAssetLength:", [v21 length]);
       objc_initWeak(&location, v14);
       v49[0] = MEMORY[0x277D85DD0];
@@ -240,10 +240,10 @@ LABEL_27:
           _os_log_impl(&dword_24158E000, v43, OS_LOG_TYPE_ERROR, "Failed to read the asset file into the PCM buffer (Error=%@)", buf, 0xCu);
         }
 
-        if (a6)
+        if (error)
         {
           v44 = v42;
-          *a6 = v42;
+          *error = v42;
         }
       }
 
@@ -276,7 +276,7 @@ LABEL_35:
       _os_log_impl(&dword_24158E000, v28, OS_LOG_TYPE_ERROR, "Failed to create the encoder AU", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -293,7 +293,7 @@ LABEL_35:
       _os_log_impl(&dword_24158E000, v26, OS_LOG_TYPE_ERROR, "Bad arguments to APCPlayerEngine", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -302,7 +302,7 @@ LABEL_35:
   }
 
   v29 = 0;
-  *a6 = v27;
+  *error = v27;
 LABEL_36:
 
   v46 = *MEMORY[0x277D85DE8];
@@ -328,9 +328,9 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
 - (void)setupAudioSession
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CB83F8] auxiliarySession];
+  auxiliarySession = [MEMORY[0x277CB83F8] auxiliarySession];
   session = self->_session;
-  self->_session = v3;
+  self->_session = auxiliarySession;
 
   v5 = self->_session;
   v6 = *MEMORY[0x277CB8030];
@@ -365,9 +365,9 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
   }
 
   v13 = self->_session;
-  v14 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+  codecConfig = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
   v37 = 0;
-  -[AVAudioSession setPreferredSampleRate:error:](v13, "setPreferredSampleRate:error:", &v37, [v14 sampleRate]);
+  -[AVAudioSession setPreferredSampleRate:error:](v13, "setPreferredSampleRate:error:", &v37, [codecConfig sampleRate]);
   v15 = v37;
 
   if (v15)
@@ -375,21 +375,21 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
     v16 = APCLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
-      v18 = [v17 sampleRate];
+      codecConfig2 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+      sampleRate = [codecConfig2 sampleRate];
       *buf = 134218242;
-      v41 = llround(v18);
+      v41 = llround(sampleRate);
       v42 = 2112;
       v43 = v15;
       _os_log_impl(&dword_24158E000, v16, OS_LOG_TYPE_ERROR, "Error setting preferred sample rate to %ld: %@", buf, 0x16u);
     }
   }
 
-  v19 = [(AVAudioSession *)self->_session outputNumberOfChannels];
-  v20 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
-  LOBYTE(v19) = v19 == [v20 numChannels];
+  outputNumberOfChannels = [(AVAudioSession *)self->_session outputNumberOfChannels];
+  codecConfig3 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+  LOBYTE(outputNumberOfChannels) = outputNumberOfChannels == [codecConfig3 numChannels];
 
-  if (v19)
+  if (outputNumberOfChannels)
   {
     v21 = v15;
   }
@@ -397,9 +397,9 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
   else
   {
     v22 = self->_session;
-    v23 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+    codecConfig4 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
     v36 = v15;
-    -[AVAudioSession setPreferredOutputNumberOfChannels:error:](v22, "setPreferredOutputNumberOfChannels:error:", [v23 numChannels], &v36);
+    -[AVAudioSession setPreferredOutputNumberOfChannels:error:](v22, "setPreferredOutputNumberOfChannels:error:", [codecConfig4 numChannels], &v36);
     v21 = v36;
 
     if (v21)
@@ -407,10 +407,10 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
       v24 = APCLogObject();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
-        v26 = [v25 numChannels];
+        codecConfig5 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+        numChannels = [codecConfig5 numChannels];
         *buf = 134218242;
-        v41 = v26;
+        v41 = numChannels;
         v42 = 2112;
         v43 = v21;
         _os_log_impl(&dword_24158E000, v24, OS_LOG_TYPE_ERROR, "Could not set preferred number of output channels to %ld (AU will handle the mapping): %@", buf, 0x16u);
@@ -430,11 +430,11 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
     v32 = APCLogObject();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = [v31 localizedDescription];
+      localizedDescription = [v31 localizedDescription];
       *buf = 134218242;
       v41 = *&v29;
       v42 = 2112;
-      v43 = v33;
+      v43 = localizedDescription;
       _os_log_impl(&dword_24158E000, v32, OS_LOG_TYPE_ERROR, "Error setting preferred io buffer duration to %0.3f seconds: %@", buf, 0x16u);
     }
   }
@@ -451,11 +451,11 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
 
   [(AVAudioEngine *)self->_engine attachNode:self->_encoderAUNode];
   [(AVAudioEngine *)self->_engine attachNode:self->_player];
-  v5 = [(AVAudioEngine *)self->_engine outputNode];
-  v6 = [v5 audioUnit];
+  outputNode = [(AVAudioEngine *)self->_engine outputNode];
+  audioUnit = [outputNode audioUnit];
 
   inData = [(AVAudioSession *)self->_session opaqueSessionID];
-  v7 = AudioUnitSetProperty(v6, 0x7E7u, 0, 0, &inData, 4u);
+  v7 = AudioUnitSetProperty(audioUnit, 0x7E7u, 0, 0, &inData, 4u);
   if (v7)
   {
     v8 = APCLogObject();
@@ -472,39 +472,39 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
 
 - (void)makeEngineConnections
 {
-  v6 = [(AVAudioPCMBuffer *)self->_assetBuffer format];
+  format = [(AVAudioPCMBuffer *)self->_assetBuffer format];
   [(AVAudioEngine *)self->_engine connect:self->_player to:self->_encoderAUNode format:?];
   engine = self->_engine;
   encoderAUNode = self->_encoderAUNode;
-  v5 = [(AVAudioEngine *)engine outputNode];
-  [(AVAudioEngine *)engine connect:encoderAUNode to:v5 format:v6];
+  outputNode = [(AVAudioEngine *)engine outputNode];
+  [(AVAudioEngine *)engine connect:encoderAUNode to:outputNode format:format];
 }
 
 - (float)evaluateAsset
 {
-  v3 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+  codecConfig = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
   assetBuffer = self->_assetBuffer;
   v20 = 0;
-  [APCCodecFactory evaluateCarrierWithConfig:v3 carrier:assetBuffer embeddingResult:&v20];
+  [APCCodecFactory evaluateCarrierWithConfig:codecConfig carrier:assetBuffer embeddingResult:&v20];
   v6 = v5;
   v7 = v20;
 
   if (v7)
   {
-    v8 = [(AVAudioUnit *)self->_encoderAUNode AUAudioUnit];
-    [v8 setPasscodeEmbedInfo:v7];
+    aUAudioUnit = [(AVAudioUnit *)self->_encoderAUNode AUAudioUnit];
+    [aUAudioUnit setPasscodeEmbedInfo:v7];
     v9 = [MEMORY[0x277CCABB0] numberWithInt:108];
     v10 = [v7 objectForKey:v9];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
     v12 = [MEMORY[0x277CCABB0] numberWithInt:1000];
     v13 = [v7 objectForKey:v12];
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-    v15 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
-    v16 = [v15 sampleRate];
+    codecConfig2 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+    sampleRate = [codecConfig2 sampleRate];
 
-    v17 = [[APCPlayerEmbedInfo alloc] initWithPasscodeDurationNSec:((v14 + v11) / v16 * 1000000000.0)];
+    v17 = [[APCPlayerEmbedInfo alloc] initWithPasscodeDurationNSec:((unsignedIntegerValue2 + unsignedIntegerValue) / sampleRate * 1000000000.0)];
     embeddingInfo = self->_embeddingInfo;
     self->_embeddingInfo = v17;
   }
@@ -512,10 +512,10 @@ void __62__APCPlayerEngine_initWithAssetURL_codecConfig_payload_error___block_in
   return v6;
 }
 
-- (BOOL)startEngineAtTime:(unint64_t)a3 withBeginning:(id)a4 callbackTime:(unint64_t)a5
+- (BOOL)startEngineAtTime:(unint64_t)time withBeginning:(id)beginning callbackTime:(unint64_t)callbackTime
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  beginningCopy = beginning;
   engine = self->_engine;
   if (!engine)
   {
@@ -557,21 +557,21 @@ LABEL_39:
     if (((v13 == 0) & v9) == 0)
     {
       v10 = v13;
-      v14 = APCLogObject();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      mEMORY[0x277D26E58] = APCLogObject();
+      if (os_log_type_enabled(mEMORY[0x277D26E58], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v45 = v10;
-        _os_log_impl(&dword_24158E000, v14, OS_LOG_TYPE_ERROR, "Error activating session: %@", buf, 0xCu);
+        timeCopy = v10;
+        _os_log_impl(&dword_24158E000, mEMORY[0x277D26E58], OS_LOG_TYPE_ERROR, "Error activating session: %@", buf, 0xCu);
       }
 
       goto LABEL_38;
     }
 
-    v14 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v14 getActiveCategoryVolume:&self->_prePlayVolume andName:0];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [mEMORY[0x277D26E58] getActiveCategoryVolume:&self->_prePlayVolume andName:0];
     [APCDefaults floatForDefault:0];
-    [v14 setActiveCategoryVolumeTo:?];
+    [mEMORY[0x277D26E58] setActiveCategoryVolumeTo:?];
     v15 = self->_engine;
     v42 = 0;
     v9 = [(AVAudioEngine *)v15 startAndReturnError:&v42];
@@ -581,21 +581,21 @@ LABEL_39:
       v20 = APCLogObject();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138412290;
-        v45 = v24;
+        timeCopy = localizedDescription;
         _os_log_impl(&dword_24158E000, v20, OS_LOG_TYPE_ERROR, "Couldn't start audio engine, %@", buf, 0xCu);
       }
 
       goto LABEL_37;
     }
 
-    if (v7)
+    if (beginningCopy)
     {
       v16 = __udivti3();
       v17 = mach_absolute_time();
       v18 = v17;
-      if (a3 && v17 + v16 > a3)
+      if (time && v17 + v16 > time)
       {
         v19 = APCLogObject();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -611,7 +611,7 @@ LABEL_39:
         }
 
         *buf = 134218496;
-        v45 = a3;
+        timeCopy = time;
         v46 = 2048;
         v47 = v18;
         v48 = 2048;
@@ -623,7 +623,7 @@ LABEL_39:
       }
 
       v25 = __udivti3();
-      if (a3 - v16 >= v18)
+      if (time - v16 >= v18)
       {
         v26 = v25;
       }
@@ -633,8 +633,8 @@ LABEL_39:
         v26 = -v25;
       }
 
-      v27 = [(APCPlayerEngine *)self dispatchQueue];
-      if (v27)
+      dispatchQueue = [(APCPlayerEngine *)self dispatchQueue];
+      if (dispatchQueue)
       {
         [(APCPlayerEngine *)self dispatchQueue];
       }
@@ -669,27 +669,27 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v31 = MEMORY[0x245CEABB0](v7);
+      v31 = MEMORY[0x245CEABB0](beginningCopy);
       beginningCallback = self->_beginningCallback;
       self->_beginningCallback = v31;
 
       v33 = self->_callbackDispatchSrc;
       v34 = dispatch_time(0, v26 & ~(v26 >> 63));
-      v35 = [(AUPasscodeEncoder *)self->_encoderAU assetLength];
-      v36 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
-      dispatch_source_set_timer(v33, v34, 1000000000 * v35 / [v36 sampleRate], 0);
+      assetLength = [(AUPasscodeEncoder *)self->_encoderAU assetLength];
+      codecConfig = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+      dispatch_source_set_timer(v33, v34, 1000000000 * assetLength / [codecConfig sampleRate], 0);
 
       v37 = self->_callbackDispatchSrc;
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __64__APCPlayerEngine_startEngineAtTime_withBeginning_callbackTime___block_invoke;
       handler[3] = &unk_278CE1D30;
-      v41 = v7;
+      v41 = beginningCopy;
       dispatch_source_set_event_handler(v37, handler);
       dispatch_resume(self->_callbackDispatchSrc);
     }
 
-    [(APCPlayerEngine *)self startAPCPlayLoopAtTime:a3];
+    [(APCPlayerEngine *)self startAPCPlayLoopAtTime:time];
     [(AVAudioPlayerNode *)self->_player play];
     v9 = 1;
 LABEL_38:
@@ -712,8 +712,8 @@ LABEL_40:
     self->_requestingStop = 0;
     if (self->_stopEngineCompletion)
     {
-      v3 = [(APCPlayerEngine *)self dispatchQueue];
-      if (v3)
+      dispatchQueue = [(APCPlayerEngine *)self dispatchQueue];
+      if (dispatchQueue)
       {
         [(APCPlayerEngine *)self dispatchQueue];
       }
@@ -740,12 +740,12 @@ LABEL_40:
   }
 }
 
-- (void)startAPCPlayLoopAtTime:(unint64_t)a3
+- (void)startAPCPlayLoopAtTime:(unint64_t)time
 {
-  v3 = a3;
-  if (a3)
+  timeCopy = time;
+  if (time)
   {
-    v3 = [objc_alloc(MEMORY[0x277CB8428]) initWithHostTime:a3];
+    timeCopy = [objc_alloc(MEMORY[0x277CB8428]) initWithHostTime:time];
   }
 
   player = self->_player;
@@ -755,7 +755,7 @@ LABEL_40:
   v7[2] = __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke;
   v7[3] = &unk_278CE1D58;
   v7[4] = self;
-  [(AVAudioPlayerNode *)player scheduleBuffer:assetBuffer atTime:v3 options:4 completionHandler:v7];
+  [(AVAudioPlayerNode *)player scheduleBuffer:assetBuffer atTime:timeCopy options:4 completionHandler:v7];
 }
 
 void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
@@ -786,10 +786,10 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
   [(AVAudioEngine *)self->_engine pause];
   [(AUPasscodeEncoder *)self->_encoderAU reset];
   [(AVAudioPlayerNode *)self->_player reset];
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   *&v4 = self->_prePlayVolume;
-  v5 = v3;
-  [v3 setActiveCategoryVolumeTo:v4];
+  v5 = mEMORY[0x277D26E58];
+  [mEMORY[0x277D26E58] setActiveCategoryVolumeTo:v4];
   [(AVAudioSession *)self->_session setActive:0 error:0];
 }
 
@@ -803,11 +803,11 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopEngine:(BOOL)a3 withCompletion:(id)a4
+- (void)stopEngine:(BOOL)engine withCompletion:(id)completion
 {
-  v4 = a3;
-  v10 = a4;
-  if (v4)
+  engineCopy = engine;
+  completionCopy = completion;
+  if (engineCopy)
   {
     self->_requestingStop = 1;
   }
@@ -817,7 +817,7 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
     [(AUPasscodeEncoder *)self->_encoderAU setSilenceOutputOnNextAssetEnding:1];
   }
 
-  v6 = MEMORY[0x245CEABB0](v10);
+  v6 = MEMORY[0x245CEABB0](completionCopy);
   stopEngineCompletion = self->_stopEngineCompletion;
   self->_stopEngineCompletion = v6;
 
@@ -830,23 +830,23 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopEngineWithFadeOut:(float)a3 completion:(id)a4
+- (void)stopEngineWithFadeOut:(float)out completion:(id)completion
 {
-  v6 = MEMORY[0x245CEABB0](a4, a2);
+  v6 = MEMORY[0x245CEABB0](completion, a2);
   stopEngineCompletion = self->_stopEngineCompletion;
   self->_stopEngineCompletion = v6;
 
   if ([(AVAudioEngine *)self->_engine isRunning])
   {
-    *&v8 = a3;
+    *&v8 = out;
     [(AUPasscodeEncoder *)self->_encoderAU setFadeOutTimeSeconds:v8];
     [(AUPasscodeEncoder *)self->_encoderAU setTriggerFadeOut:1];
   }
 
   else if (self->_stopEngineCompletion)
   {
-    v9 = [(APCPlayerEngine *)self dispatchQueue];
-    if (v9)
+    dispatchQueue = [(APCPlayerEngine *)self dispatchQueue];
+    if (dispatchQueue)
     {
       [(APCPlayerEngine *)self dispatchQueue];
     }
@@ -874,21 +874,21 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopEngineAfterMinimumLoops:(unint64_t)a3 withCompletion:(id)a4
+- (void)stopEngineAfterMinimumLoops:(unint64_t)loops withCompletion:(id)completion
 {
-  v6 = MEMORY[0x245CEABB0](a4, a2);
+  v6 = MEMORY[0x245CEABB0](completion, a2);
   stopEngineCompletion = self->_stopEngineCompletion;
   self->_stopEngineCompletion = v6;
 
   if ([(AVAudioEngine *)self->_engine isRunning])
   {
-    [(AUPasscodeEncoder *)self->_encoderAU setNumLoopsToStopAfter:a3];
+    [(AUPasscodeEncoder *)self->_encoderAU setNumLoopsToStopAfter:loops];
   }
 
   else if (self->_stopEngineCompletion)
   {
-    v8 = [(APCPlayerEngine *)self dispatchQueue];
-    if (v8)
+    dispatchQueue = [(APCPlayerEngine *)self dispatchQueue];
+    if (dispatchQueue)
     {
       [(APCPlayerEngine *)self dispatchQueue];
     }
@@ -916,14 +916,14 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v6 = a3;
-  objc_storeStrong(&self->_dispatchQueue, a3);
+  queueCopy = queue;
+  objc_storeStrong(&self->_dispatchQueue, queue);
   encoderAU = self->_encoderAU;
   if (encoderAU)
   {
-    [(AUPasscodeEncoder *)encoderAU setDispatchQueue:v6];
+    [(AUPasscodeEncoder *)encoderAU setDispatchQueue:queueCopy];
   }
 }
 
@@ -931,13 +931,13 @@ void __42__APCPlayerEngine_startAPCPlayLoopAtTime___block_invoke(uint64_t a1)
 {
   if (self->_embeddingInfo)
   {
-    v3 = [(AVAudioUnit *)self->_encoderAUNode AUAudioUnit];
-    v4 = [v3 passcodeEmbedInfo];
+    aUAudioUnit = [(AVAudioUnit *)self->_encoderAUNode AUAudioUnit];
+    passcodeEmbedInfo = [aUAudioUnit passcodeEmbedInfo];
     v5 = [MEMORY[0x277CCABB0] numberWithInt:1001];
-    v6 = [v4 objectForKey:v5];
-    v7 = [v6 unsignedIntegerValue];
+    v6 = [passcodeEmbedInfo objectForKey:v5];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    [(APCPlayerEmbedInfo *)self->_embeddingInfo setMeasPasscodeDuration:v7];
+    [(APCPlayerEmbedInfo *)self->_embeddingInfo setMeasPasscodeDuration:unsignedIntegerValue];
     embeddingInfo = self->_embeddingInfo;
   }
 

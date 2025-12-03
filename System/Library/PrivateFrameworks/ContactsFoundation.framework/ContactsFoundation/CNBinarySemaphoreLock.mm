@@ -61,9 +61,9 @@
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"semaphore" pointerValue:self->_semaphore];
   v5 = [v3 appendName:@"name" object:self->_name];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

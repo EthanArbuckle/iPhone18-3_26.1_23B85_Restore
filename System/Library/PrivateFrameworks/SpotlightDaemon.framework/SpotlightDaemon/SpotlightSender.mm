@@ -1,28 +1,28 @@
 @interface SpotlightSender
-+ (BOOL)enabledForClient:(int64_t)a3;
-+ (BOOL)jobForTextUnderstanding:(int64_t)a3;
-+ (id)clientConnection:(int64_t)a3;
-+ (id)clientConnection:(int64_t)a3 jobType:(int)a4;
-+ (id)connectionForClient:(int64_t)a3 jobType:(int64_t)a4;
++ (BOOL)enabledForClient:(int64_t)client;
++ (BOOL)jobForTextUnderstanding:(int64_t)understanding;
++ (id)clientConnection:(int64_t)connection;
++ (id)clientConnection:(int64_t)connection jobType:(int)type;
++ (id)connectionForClient:(int64_t)client jobType:(int64_t)type;
 + (id)copyDiagnosticInfo;
 + (id)supportedConfigs;
-+ (void)addInteraction:(id)a3 intentClassName:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 client:(int64_t)a7;
-+ (void)addOrUpdateSearchableItems:(id)a3 itemsContent:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 client:(int64_t)a7;
-+ (void)addUserActions:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 client:(int64_t)a6;
++ (void)addInteraction:(id)interaction intentClassName:(id)name bundleID:(id)d protectionClass:(id)class client:(int64_t)client;
++ (void)addOrUpdateSearchableItems:(id)items itemsContent:(id)content bundleID:(id)d protectionClass:(id)class client:(int64_t)client;
++ (void)addUserActions:(id)actions bundleID:(id)d protectionClass:(id)class client:(int64_t)client;
 + (void)clearCache;
-+ (void)deleteAllInteractionsWithBundleID:(id)a3 protectionClass:(id)a4 client:(int64_t)a5;
-+ (void)deleteAllSearchableItemsWithBundleID:(id)a3 client:(int64_t)a4;
-+ (void)deleteAllUserActivities:(id)a3 client:(int64_t)a4;
-+ (void)deleteInteractionsWithGroupIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 client:(int64_t)a6;
-+ (void)deleteInteractionsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 client:(int64_t)a6;
-+ (void)deleteSearchableItemsSinceDate:(id)a3 bundleID:(id)a4 client:(int64_t)a5;
-+ (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5;
-+ (void)deleteSearchableItemsWithEncodedIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5;
-+ (void)deleteSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4 contentType:(id)a5 client:(int64_t)a6;
-+ (void)deleteUserActivitiesWithPersistentIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5 retainedData:(id)a6;
-+ (void)dispatchWithOptions:(int64_t)a3 block:(id)a4;
-+ (void)donateRelevantActions:(id)a3 bundleID:(id)a4 client:(int64_t)a5;
-+ (void)purgeSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5;
++ (void)deleteAllInteractionsWithBundleID:(id)d protectionClass:(id)class client:(int64_t)client;
++ (void)deleteAllSearchableItemsWithBundleID:(id)d client:(int64_t)client;
++ (void)deleteAllUserActivities:(id)activities client:(int64_t)client;
++ (void)deleteInteractionsWithGroupIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class client:(int64_t)client;
++ (void)deleteInteractionsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class client:(int64_t)client;
++ (void)deleteSearchableItemsSinceDate:(id)date bundleID:(id)d client:(int64_t)client;
++ (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client;
++ (void)deleteSearchableItemsWithEncodedIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client;
++ (void)deleteSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d contentType:(id)type client:(int64_t)client;
++ (void)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client retainedData:(id)data;
++ (void)dispatchWithOptions:(int64_t)options block:(id)block;
++ (void)donateRelevantActions:(id)actions bundleID:(id)d client:(int64_t)client;
++ (void)purgeSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client;
 + (void)reset;
 + (void)setupInstantSender;
 + (void)setupScheduledSender;
@@ -211,7 +211,7 @@ uint64_t __37__SpotlightSender_setupInstantSender__block_invoke_2()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)clientConnection:(int64_t)a3 jobType:(int)a4
++ (id)clientConnection:(int64_t)connection jobType:(int)type
 {
   v8 = 0;
   v9 = &v8;
@@ -229,7 +229,7 @@ uint64_t __37__SpotlightSender_setupInstantSender__block_invoke_2()
   v7[2] = __44__SpotlightSender_clientConnection_jobType___block_invoke;
   v7[3] = &unk_278934360;
   v7[4] = &v8;
-  v7[5] = a3;
+  v7[5] = connection;
   dispatch_sync(MDInstantSenderQueue_sMDInstantSenderQueue, v7);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -252,7 +252,7 @@ void __44__SpotlightSender_clientConnection_jobType___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)clientConnection:(int64_t)a3
++ (id)clientConnection:(int64_t)connection
 {
   v7 = 0;
   v8 = &v7;
@@ -270,7 +270,7 @@ void __44__SpotlightSender_clientConnection_jobType___block_invoke(uint64_t a1)
   v6[2] = __36__SpotlightSender_clientConnection___block_invoke;
   v6[3] = &unk_278934360;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = connection;
   dispatch_sync(MDInstantSenderQueue_sMDInstantSenderQueue, v6);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -293,7 +293,7 @@ void __36__SpotlightSender_clientConnection___block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)enabledForClient:(int64_t)a3
++ (BOOL)enabledForClient:(int64_t)client
 {
   v7 = 0;
   v8 = &v7;
@@ -311,7 +311,7 @@ void __36__SpotlightSender_clientConnection___block_invoke(uint64_t a1)
   v6[2] = __36__SpotlightSender_enabledForClient___block_invoke;
   v6[3] = &unk_278934360;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = client;
   dispatch_sync(MDInstantSenderQueue_sMDInstantSenderQueue, v6);
   v4 = v8[5] != 0;
   _Block_object_dispose(&v7, 8);
@@ -329,11 +329,11 @@ uint64_t __36__SpotlightSender_enabledForClient___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)jobForTextUnderstanding:(int64_t)a3
++ (BOOL)jobForTextUnderstanding:(int64_t)understanding
 {
-  if ((a3 & 0x1024F) != 0)
+  if ((understanding & 0x1024F) != 0)
   {
-    return BYTE2(a3) & 1;
+    return BYTE2(understanding) & 1;
   }
 
   else
@@ -342,10 +342,10 @@ uint64_t __36__SpotlightSender_enabledForClient___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)dispatchWithOptions:(int64_t)a3 block:(id)a4
++ (void)dispatchWithOptions:(int64_t)options block:(id)block
 {
   v6 = 0;
-  v9 = a4;
+  blockCopy = block;
   do
   {
     v7 = sAllReceiverClientIDs[v6];
@@ -353,7 +353,7 @@ uint64_t __36__SpotlightSender_enabledForClient___block_invoke(uint64_t a1)
     {
       if (v7 == 3)
       {
-        if (([a1 jobForImages:a3] & 1) == 0)
+        if (([self jobForImages:options] & 1) == 0)
         {
           goto LABEL_22;
         }
@@ -361,13 +361,13 @@ uint64_t __36__SpotlightSender_enabledForClient___block_invoke(uint64_t a1)
 
       else if (v7 == 4)
       {
-        if (([a1 jobForAssets:a3] & 1) == 0)
+        if (([self jobForAssets:options] & 1) == 0)
         {
           goto LABEL_22;
         }
       }
 
-      else if (v7 != 5 || ([a1 jobForTextUnderstanding:a3] & 1) == 0)
+      else if (v7 != 5 || ([self jobForTextUnderstanding:options] & 1) == 0)
       {
         goto LABEL_22;
       }
@@ -377,19 +377,19 @@ uint64_t __36__SpotlightSender_enabledForClient___block_invoke(uint64_t a1)
     {
       if (v7 == 1)
       {
-        if (([a1 jobForDuet:a3] & 1) == 0)
+        if (([self jobForDuet:options] & 1) == 0)
         {
           goto LABEL_22;
         }
       }
 
-      else if (v7 != 2 || ([a1 jobForSuggestions:a3] & 1) == 0)
+      else if (v7 != 2 || ([self jobForSuggestions:options] & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (![a1 jobForTest:a3])
+    else if (![self jobForTest:options])
     {
       goto LABEL_22;
     }
@@ -398,7 +398,7 @@ uint64_t __36__SpotlightSender_enabledForClient___block_invoke(uint64_t a1)
 
     if (v8)
     {
-      v9[2](v9, v7);
+      blockCopy[2](blockCopy, v7);
     }
 
 LABEL_22:
@@ -408,138 +408,138 @@ LABEL_22:
   while (v6 != 6);
 }
 
-+ (void)addOrUpdateSearchableItems:(id)a3 itemsContent:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 client:(int64_t)a7
++ (void)addOrUpdateSearchableItems:(id)items itemsContent:(id)content bundleID:(id)d protectionClass:(id)class client:(int64_t)client
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [SpotlightSender clientConnection:a7 jobType:1];
-  [v15 indexFromBundle:v12 protectionClass:v11 items:v14 itemsContent:v13];
+  classCopy = class;
+  dCopy = d;
+  contentCopy = content;
+  itemsCopy = items;
+  v15 = [SpotlightSender clientConnection:client jobType:1];
+  [v15 indexFromBundle:dCopy protectionClass:classCopy items:itemsCopy itemsContent:contentCopy];
 }
 
-+ (void)deleteSearchableItemsWithEncodedIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5
++ (void)deleteSearchableItemsWithEncodedIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SpotlightSender clientConnection:a5 jobType:2];
-  [v9 deleteFromBundle:v7 encodedIdentifiers:v8];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v9 = [SpotlightSender clientConnection:client jobType:2];
+  [v9 deleteFromBundle:dCopy encodedIdentifiers:identifiersCopy];
 }
 
-+ (void)deleteSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4 contentType:(id)a5 client:(int64_t)a6
++ (void)deleteSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d contentType:(id)type client:(int64_t)client
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [SpotlightSender clientConnection:a6 jobType:2];
-  [v12 deleteFromBundle:v10 contentType:v9 identifiers:v11];
+  typeCopy = type;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v12 = [SpotlightSender clientConnection:client jobType:2];
+  [v12 deleteFromBundle:dCopy contentType:typeCopy identifiers:identifiersCopy];
 }
 
-+ (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5
++ (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SpotlightSender clientConnection:a5 jobType:4];
-  [v9 deleteFromBundle:v7 domainIdentifiers:v8];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v9 = [SpotlightSender clientConnection:client jobType:4];
+  [v9 deleteFromBundle:dCopy domainIdentifiers:identifiersCopy];
 }
 
-+ (void)deleteAllSearchableItemsWithBundleID:(id)a3 client:(int64_t)a4
++ (void)deleteAllSearchableItemsWithBundleID:(id)d client:(int64_t)client
 {
-  v5 = a3;
-  v6 = [SpotlightSender clientConnection:a4 jobType:8];
-  [v6 deleteFromBundle:v5];
+  dCopy = d;
+  v6 = [SpotlightSender clientConnection:client jobType:8];
+  [v6 deleteFromBundle:dCopy];
 }
 
-+ (void)deleteSearchableItemsSinceDate:(id)a3 bundleID:(id)a4 client:(int64_t)a5
++ (void)deleteSearchableItemsSinceDate:(id)date bundleID:(id)d client:(int64_t)client
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SpotlightSender clientConnection:a5 jobType:16];
-  [v9 deleteFromBundle:v7 sinceDate:v8];
+  dCopy = d;
+  dateCopy = date;
+  v9 = [SpotlightSender clientConnection:client jobType:16];
+  [v9 deleteFromBundle:dCopy sinceDate:dateCopy];
 }
 
-+ (void)purgeSearchableItemsWithIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5
++ (void)purgeSearchableItemsWithIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SpotlightSender clientConnection:a5 jobType:32];
-  [v9 purgeFromBundle:v7 identifiers:v8];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v9 = [SpotlightSender clientConnection:client jobType:32];
+  [v9 purgeFromBundle:dCopy identifiers:identifiersCopy];
 }
 
-+ (void)addUserActions:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 client:(int64_t)a6
++ (void)addUserActions:(id)actions bundleID:(id)d protectionClass:(id)class client:(int64_t)client
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [SpotlightSender clientConnection:a6 jobType:64];
-  [v12 addUserActions:v11 bundleID:v10 protectionClass:v9];
+  classCopy = class;
+  dCopy = d;
+  actionsCopy = actions;
+  v12 = [SpotlightSender clientConnection:client jobType:64];
+  [v12 addUserActions:actionsCopy bundleID:dCopy protectionClass:classCopy];
 }
 
-+ (void)deleteAllUserActivities:(id)a3 client:(int64_t)a4
++ (void)deleteAllUserActivities:(id)activities client:(int64_t)client
 {
-  v5 = a3;
-  v6 = [SpotlightSender clientConnection:a4 jobType:4096];
-  [v6 deleteAllUserActivities:v5];
+  activitiesCopy = activities;
+  v6 = [SpotlightSender clientConnection:client jobType:4096];
+  [v6 deleteAllUserActivities:activitiesCopy];
 }
 
-+ (void)deleteUserActivitiesWithPersistentIdentifiers:(id)a3 bundleID:(id)a4 client:(int64_t)a5 retainedData:(id)a6
++ (void)deleteUserActivitiesWithPersistentIdentifiers:(id)identifiers bundleID:(id)d client:(int64_t)client retainedData:(id)data
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [SpotlightSender clientConnection:a5 jobType:0x2000];
-  [v12 deleteUserActivitiesWithPersistentIdentifiers:v11 bundleID:v10 retainedData:v9];
+  dataCopy = data;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v12 = [SpotlightSender clientConnection:client jobType:0x2000];
+  [v12 deleteUserActivitiesWithPersistentIdentifiers:identifiersCopy bundleID:dCopy retainedData:dataCopy];
 }
 
-+ (void)addInteraction:(id)a3 intentClassName:(id)a4 bundleID:(id)a5 protectionClass:(id)a6 client:(int64_t)a7
++ (void)addInteraction:(id)interaction intentClassName:(id)name bundleID:(id)d protectionClass:(id)class client:(int64_t)client
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [SpotlightSender clientConnection:a7 jobType:128];
-  [v15 addInteraction:v14 intentClassName:v13 bundleID:v12 protectionClass:v11];
+  classCopy = class;
+  dCopy = d;
+  nameCopy = name;
+  interactionCopy = interaction;
+  v15 = [SpotlightSender clientConnection:client jobType:128];
+  [v15 addInteraction:interactionCopy intentClassName:nameCopy bundleID:dCopy protectionClass:classCopy];
 }
 
-+ (void)deleteInteractionsWithIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 client:(int64_t)a6
++ (void)deleteInteractionsWithIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class client:(int64_t)client
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [SpotlightSender clientConnection:a6 jobType:256];
-  [v12 deleteInteractionsWithIdentifiers:v11 bundleID:v10 protectionClass:v9];
+  classCopy = class;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v12 = [SpotlightSender clientConnection:client jobType:256];
+  [v12 deleteInteractionsWithIdentifiers:identifiersCopy bundleID:dCopy protectionClass:classCopy];
 }
 
-+ (void)deleteInteractionsWithGroupIdentifiers:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 client:(int64_t)a6
++ (void)deleteInteractionsWithGroupIdentifiers:(id)identifiers bundleID:(id)d protectionClass:(id)class client:(int64_t)client
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [SpotlightSender clientConnection:a6 jobType:512];
-  [v12 deleteInteractionsWithGroupIdentifiers:v11 bundleID:v10 protectionClass:v9];
+  classCopy = class;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  v12 = [SpotlightSender clientConnection:client jobType:512];
+  [v12 deleteInteractionsWithGroupIdentifiers:identifiersCopy bundleID:dCopy protectionClass:classCopy];
 }
 
-+ (void)deleteAllInteractionsWithBundleID:(id)a3 protectionClass:(id)a4 client:(int64_t)a5
++ (void)deleteAllInteractionsWithBundleID:(id)d protectionClass:(id)class client:(int64_t)client
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SpotlightSender clientConnection:a5 jobType:1024];
-  [v9 deleteAllInteractionsWithBundleID:v8 protectionClass:v7];
+  classCopy = class;
+  dCopy = d;
+  v9 = [SpotlightSender clientConnection:client jobType:1024];
+  [v9 deleteAllInteractionsWithBundleID:dCopy protectionClass:classCopy];
 }
 
-+ (void)donateRelevantActions:(id)a3 bundleID:(id)a4 client:(int64_t)a5
++ (void)donateRelevantActions:(id)actions bundleID:(id)d client:(int64_t)client
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [SpotlightSender clientConnection:a5 jobType:18432];
-  [v9 donateRelevantActions:v8 bundleID:v7];
+  dCopy = d;
+  actionsCopy = actions;
+  v9 = [SpotlightSender clientConnection:client jobType:18432];
+  [v9 donateRelevantActions:actionsCopy bundleID:dCopy];
 }
 
-+ (id)connectionForClient:(int64_t)a3 jobType:(int64_t)a4
++ (id)connectionForClient:(int64_t)client jobType:(int64_t)type
 {
-  v5 = [SpotlightSender clientConnection:a3];
+  v5 = [SpotlightSender clientConnection:client];
   v6 = v5;
-  if (a4 && v5 && (a4 > 0xF || ((1 << a4) & 0xC1CE) == 0 || ![v5 canRun] || (objc_msgSend(v6, "supportedJobs") & 0x100000) == 0))
+  if (type && v5 && (type > 0xF || ((1 << type) & 0xC1CE) == 0 || ![v5 canRun] || (objc_msgSend(v6, "supportedJobs") & 0x100000) == 0))
   {
 
     v6 = 0;
@@ -567,12 +567,12 @@ uint64_t __65__SpotlightSender_SpotlightScheduledSender__setupScheduledSender__b
 {
   v18 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [sConnectionManager clients];
+  clients = [sConnectionManager clients];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [clients countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -583,19 +583,19 @@ uint64_t __65__SpotlightSender_SpotlightScheduledSender__setupScheduledSender__b
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clients);
         }
 
         v8 = [sConnectionManager clientConnection:{objc_msgSend(*(*(&v13 + 1) + 8 * i), "intValue")}];
         v9 = v8;
         if (v8)
         {
-          v10 = [v8 configs];
-          [v2 addObjectsFromArray:v10];
+          configs = [v8 configs];
+          [v2 addObjectsFromArray:configs];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [clients countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -613,8 +613,8 @@ uint64_t __65__SpotlightSender_SpotlightScheduledSender__setupScheduledSender__b
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [sConnectionManager clients];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  clients = [sConnectionManager clients];
+  v3 = [clients countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -626,18 +626,18 @@ uint64_t __65__SpotlightSender_SpotlightScheduledSender__setupScheduledSender__b
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(clients);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * v6) intValue];
-        v8 = [sConnectionManager clientConnection:v7];
+        intValue = [*(*(&v10 + 1) + 8 * v6) intValue];
+        v8 = [sConnectionManager clientConnection:intValue];
         [v8 suspend];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [clients countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -653,8 +653,8 @@ uint64_t __65__SpotlightSender_SpotlightScheduledSender__setupScheduledSender__b
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [sConnectionManager clients];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  clients = [sConnectionManager clients];
+  v3 = [clients countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -666,18 +666,18 @@ uint64_t __65__SpotlightSender_SpotlightScheduledSender__setupScheduledSender__b
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(clients);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * v6) intValue];
-        v8 = [sConnectionManager clientConnection:v7];
+        intValue = [*(*(&v10 + 1) + 8 * v6) intValue];
+        v8 = [sConnectionManager clientConnection:intValue];
         [v8 reset];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [clients countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);

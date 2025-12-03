@@ -1,6 +1,6 @@
 @interface SearchHomeNoDataDataFetcher
 - (SearchHomeDataFetcherDelegate)delegate;
-- (SearchHomeNoDataDataFetcher)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4;
+- (SearchHomeNoDataDataFetcher)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route;
 - (void)fetchContent;
 @end
 
@@ -15,9 +15,9 @@
 
 - (void)fetchContent
 {
-  v3 = [(SearchHomeNoDataDataFetcher *)self dataProviders];
+  dataProviders = [(SearchHomeNoDataDataFetcher *)self dataProviders];
 
-  if (!v3)
+  if (!dataProviders)
   {
     v4 = [SearchHomeNoDataDataProvider alloc];
     v10 = @"SearchHomeNoData";
@@ -29,13 +29,13 @@
     [(SearchHomeNoDataDataFetcher *)self setDataProviders:v7];
   }
 
-  v8 = [(SearchHomeNoDataDataFetcher *)self delegate];
-  [v8 didUpdateDataFetcher:self];
+  delegate = [(SearchHomeNoDataDataFetcher *)self delegate];
+  [delegate didUpdateDataFetcher:self];
 }
 
-- (SearchHomeNoDataDataFetcher)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4
+- (SearchHomeNoDataDataFetcher)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = SearchHomeNoDataDataFetcher;
   v6 = [(SearchHomeNoDataDataFetcher *)&v9 init];
@@ -43,7 +43,7 @@
   if (v6)
   {
     v6->_isFetchingDataComplete = 1;
-    objc_storeWeak(&v6->_delegate, v5);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
   }
 
   return v7;

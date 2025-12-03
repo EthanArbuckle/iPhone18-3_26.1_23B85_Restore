@@ -1,23 +1,23 @@
 @interface CaseDampeningExceptions
-+ (BOOL)allowDampeningExceptionFor:(id)a3;
-+ (BOOL)isException:(id)a3 containedInString:(id)a4;
-+ (BOOL)isString:(id)a3 inExceptionList:(id)a4;
++ (BOOL)allowDampeningExceptionFor:(id)for;
++ (BOOL)isException:(id)exception containedInString:(id)string;
++ (BOOL)isString:(id)string inExceptionList:(id)list;
 @end
 
 @implementation CaseDampeningExceptions
 
-+ (BOOL)isString:(id)a3 inExceptionList:(id)a4
++ (BOOL)isString:(id)string inExceptionList:(id)list
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "count"))
+  stringCopy = string;
+  listCopy = list;
+  if ([stringCopy length] && objc_msgSend(listCopy, "count"))
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v6;
+    v7 = listCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -33,7 +33,7 @@
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          if ([v12 length] >= 2 && objc_msgSend(v12, "containsString:", @"*") && +[CaseDampeningExceptions isException:containedInString:](CaseDampeningExceptions, "isException:containedInString:", v12, v5))
+          if ([v12 length] >= 2 && objc_msgSend(v12, "containsString:", @"*") && +[CaseDampeningExceptions isException:containedInString:](CaseDampeningExceptions, "isException:containedInString:", v12, stringCopy))
           {
             v13 = 1;
             goto LABEL_16;
@@ -63,36 +63,36 @@ LABEL_16:
   return v13;
 }
 
-+ (BOOL)isException:(id)a3 containedInString:(id)a4
++ (BOOL)isException:(id)exception containedInString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  exceptionCopy = exception;
+  stringCopy = string;
+  if ([exceptionCopy length] && objc_msgSend(stringCopy, "length"))
   {
-    if ([v5 length] >= 3 && objc_msgSend(v5, "hasPrefix:", @"*") && objc_msgSend(v5, "hasSuffix:", @"*"))
+    if ([exceptionCopy length] >= 3 && objc_msgSend(exceptionCopy, "hasPrefix:", @"*") && objc_msgSend(exceptionCopy, "hasSuffix:", @"*"))
     {
       v7 = 1;
-      v8 = [v5 substringWithRange:{1, objc_msgSend(v5, "length") - 2}];
-      if ([v6 rangeOfString:v8] != 0x7FFFFFFFFFFFFFFFLL)
+      v8 = [exceptionCopy substringWithRange:{1, objc_msgSend(exceptionCopy, "length") - 2}];
+      if ([stringCopy rangeOfString:v8] != 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_19;
       }
     }
 
-    else if ([v5 length] >= 2 && objc_msgSend(v5, "hasPrefix:", @"*"))
+    else if ([exceptionCopy length] >= 2 && objc_msgSend(exceptionCopy, "hasPrefix:", @"*"))
     {
       v7 = 1;
-      v8 = [v5 substringWithRange:{1, objc_msgSend(v5, "length") - 1}];
-      if ([v6 hasSuffix:v8])
+      v8 = [exceptionCopy substringWithRange:{1, objc_msgSend(exceptionCopy, "length") - 1}];
+      if ([stringCopy hasSuffix:v8])
       {
         goto LABEL_19;
       }
     }
 
-    else if ([v5 length] >= 2 && objc_msgSend(v5, "hasSuffix:", @"*"))
+    else if ([exceptionCopy length] >= 2 && objc_msgSend(exceptionCopy, "hasSuffix:", @"*"))
     {
-      v8 = [v5 substringWithRange:{0, objc_msgSend(v5, "length") - 1}];
-      if ([v6 hasPrefix:v8])
+      v8 = [exceptionCopy substringWithRange:{0, objc_msgSend(exceptionCopy, "length") - 1}];
+      if ([stringCopy hasPrefix:v8])
       {
         v7 = 1;
 LABEL_19:
@@ -116,16 +116,16 @@ LABEL_20:
   return v7;
 }
 
-+ (BOOL)allowDampeningExceptionFor:(id)a3
++ (BOOL)allowDampeningExceptionFor:(id)for
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  forCopy = for;
+  if ([forCopy count])
   {
-    v4 = [v3 objectForKeyedSubscript:@"domain"];
-    v5 = [v3 objectForKeyedSubscript:@"type"];
-    v6 = [v3 objectForKeyedSubscript:@"subtype"];
-    v7 = [v3 objectForKeyedSubscript:@"additional"];
+    v4 = [forCopy objectForKeyedSubscript:@"domain"];
+    v5 = [forCopy objectForKeyedSubscript:@"type"];
+    v6 = [forCopy objectForKeyedSubscript:@"subtype"];
+    v7 = [forCopy objectForKeyedSubscript:@"additional"];
     if (![v4 length] || !objc_msgSend(v5, "length") || !objc_msgSend(v6, "length"))
     {
       v20 = 0;
@@ -193,7 +193,7 @@ LABEL_72:
     v13 = _logHandle;
     if (_logHandle && os_log_type_enabled(_logHandle, OS_LOG_TYPE_DEBUG))
     {
-      [(CaseDampeningExceptions *)v3 allowDampeningExceptionFor:v13];
+      [(CaseDampeningExceptions *)forCopy allowDampeningExceptionFor:v13];
     }
 
     v14 = [v12 objectForKeyedSubscript:v4];

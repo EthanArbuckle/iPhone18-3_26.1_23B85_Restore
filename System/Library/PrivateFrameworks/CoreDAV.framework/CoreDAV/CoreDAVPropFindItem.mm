@@ -13,17 +13,17 @@
   v4 = [(CoreDAVItem *)&v10 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVPropFindItem *)self propName];
-  [v3 appendFormat:@"\n  Propname: [%@]", v5];
+  propName = [(CoreDAVPropFindItem *)self propName];
+  [v3 appendFormat:@"\n  Propname: [%@]", propName];
 
-  v6 = [(CoreDAVPropFindItem *)self allProp];
-  [v3 appendFormat:@"\n  Allprop: [%@]", v6];
+  allProp = [(CoreDAVPropFindItem *)self allProp];
+  [v3 appendFormat:@"\n  Allprop: [%@]", allProp];
 
-  v7 = [(CoreDAVPropFindItem *)self include];
-  [v3 appendFormat:@"\n  Include: [%@]", v7];
+  include = [(CoreDAVPropFindItem *)self include];
+  [v3 appendFormat:@"\n  Include: [%@]", include];
 
-  v8 = [(CoreDAVPropFindItem *)self prop];
-  [v3 appendFormat:@"\n  Prop: [%@]", v8];
+  prop = [(CoreDAVPropFindItem *)self prop];
+  [v3 appendFormat:@"\n  Prop: [%@]", prop];
 
   return v3;
 }
@@ -31,7 +31,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -48,7 +48,7 @@
     v5 = [v17 initWithObjectsAndKeys:{v16, v15, v6, v7, v8, v9, v10, v11, 0}];
 
     v12 = +[CoreDAVItem parseRuleCache];
-    v13 = NSStringFromClass(a1);
+    v13 = NSStringFromClass(self);
     [v12 setObject:v5 forKey:v13];
   }
 

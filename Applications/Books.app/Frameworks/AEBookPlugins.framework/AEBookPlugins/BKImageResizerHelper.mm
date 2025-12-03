@@ -1,6 +1,6 @@
 @interface BKImageResizerHelper
 - (BKImageResizerHelper)init;
-- (id)resizeImage:(id)a3 toSize:(CGSize)a4 callback:(id)a5;
+- (id)resizeImage:(id)image toSize:(CGSize)size callback:(id)callback;
 @end
 
 @implementation BKImageResizerHelper
@@ -15,19 +15,19 @@
     v3 = objc_alloc_init(NSOperationQueue);
     [(BKImageResizerHelper *)v2 setOperationQueue:v3];
 
-    v4 = [(BKImageResizerHelper *)v2 operationQueue];
-    [v4 setMaxConcurrentOperationCount:5];
+    operationQueue = [(BKImageResizerHelper *)v2 operationQueue];
+    [operationQueue setMaxConcurrentOperationCount:5];
   }
 
   return v2;
 }
 
-- (id)resizeImage:(id)a3 toSize:(CGSize)a4 callback:(id)a5
+- (id)resizeImage:(id)image toSize:(CGSize)size callback:(id)callback
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  callbackCopy = callback;
   v11 = objc_alloc_init(NSBlockOperation);
   objc_initWeak(&location, v11);
   v16 = _NSConcreteStackBlock;
@@ -35,11 +35,11 @@
   v18 = sub_8422C;
   v19 = &unk_1E4AE0;
   objc_copyWeak(v22, &location);
-  v12 = v9;
+  v12 = imageCopy;
   v20 = v12;
   v22[1] = *&width;
   v22[2] = *&height;
-  v13 = v10;
+  v13 = callbackCopy;
   v21 = v13;
   [v11 addExecutionBlock:&v16];
   v14 = [(BKImageResizerHelper *)self operationQueue:v16];

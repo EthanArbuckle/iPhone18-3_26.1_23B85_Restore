@@ -1,17 +1,17 @@
 @interface MatterAccessoryInvokeCommandLogEvent
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
-- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithHomeUUID:(id)a3;
-- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
-- (id)biomeEventsRepresentationForLogObserver:(id)a3;
+- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithHomeUUID:(id)d;
+- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
+- (id)biomeEventsRepresentationForLogObserver:(id)observer;
 @end
 
 @implementation MatterAccessoryInvokeCommandLogEvent
 
-- (id)biomeEventsRepresentationForLogObserver:(id)a3
+- (id)biomeEventsRepresentationForLogObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
+  observerCopy = observer;
+  selfCopy = self;
   sub_229621E84();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87E180, &qword_22A57B2F0);
@@ -32,7 +32,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_229656904();
 
   sub_22956540C();
@@ -41,7 +41,7 @@
   return v3;
 }
 
-- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithHomeUUID:(id)a3
+- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithHomeUUID:(id)d
 {
   v3 = sub_22A4DB7DC();
   v4 = *(*(v3 - 8) + 64);
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtC13HomeKitDaemon36MatterAccessoryInvokeCommandLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(*(v4 - 8) + 64);

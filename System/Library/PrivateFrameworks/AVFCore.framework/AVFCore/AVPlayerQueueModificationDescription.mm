@@ -1,8 +1,8 @@
 @interface AVPlayerQueueModificationDescription
-+ (id)modificationForInsertingItem:(id)a3 afterItem:(id)a4;
-+ (id)modificationForRemovingItem:(id)a3;
++ (id)modificationForInsertingItem:(id)item afterItem:(id)afterItem;
++ (id)modificationForRemovingItem:(id)item;
 - (AVPlayerQueueModificationDescription)init;
-- (AVPlayerQueueModificationDescription)initWithModificationType:(int64_t)a3 item:(id)a4 afterItem:(id)a5;
+- (AVPlayerQueueModificationDescription)initWithModificationType:(int64_t)type item:(id)item afterItem:(id)afterItem;
 - (void)dealloc;
 @end
 
@@ -18,16 +18,16 @@
   objc_exception_throw(v12);
 }
 
-+ (id)modificationForInsertingItem:(id)a3 afterItem:(id)a4
++ (id)modificationForInsertingItem:(id)item afterItem:(id)afterItem
 {
-  v4 = [[a1 alloc] initWithModificationType:0 item:a3 afterItem:a4];
+  v4 = [[self alloc] initWithModificationType:0 item:item afterItem:afterItem];
 
   return v4;
 }
 
-+ (id)modificationForRemovingItem:(id)a3
++ (id)modificationForRemovingItem:(id)item
 {
-  v3 = [[a1 alloc] initWithModificationType:1 item:a3 afterItem:0];
+  v3 = [[self alloc] initWithModificationType:1 item:item afterItem:0];
 
   return v3;
 }
@@ -39,7 +39,7 @@
   [(AVPlayerQueueModificationDescription *)&v3 dealloc];
 }
 
-- (AVPlayerQueueModificationDescription)initWithModificationType:(int64_t)a3 item:(id)a4 afterItem:(id)a5
+- (AVPlayerQueueModificationDescription)initWithModificationType:(int64_t)type item:(id)item afterItem:(id)afterItem
 {
   v11.receiver = self;
   v11.super_class = AVPlayerQueueModificationDescription;
@@ -47,9 +47,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_modificationType = a3;
-    v8->_item = a4;
-    v9->_afterItem = a5;
+    v8->_modificationType = type;
+    v8->_item = item;
+    v9->_afterItem = afterItem;
   }
 
   return v9;

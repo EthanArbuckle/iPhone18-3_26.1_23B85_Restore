@@ -1,24 +1,24 @@
 @interface AVTFunCamAvatarPickerStyle
 + (id)defaultLayoutStyle;
-+ (id)insetProviderForConstant:(double)a3;
-- (AVTFunCamAvatarPickerStyle)initWithCellSize:(CGSize)a3 engagedCellSize:(CGSize)a4 interitemSpacing:(double)a5 gridEdgeInsets:(UIEdgeInsets)a6;
++ (id)insetProviderForConstant:(double)constant;
+- (AVTFunCamAvatarPickerStyle)initWithCellSize:(CGSize)size engagedCellSize:(CGSize)cellSize interitemSpacing:(double)spacing gridEdgeInsets:(UIEdgeInsets)insets;
 - (CGSize)cellSize;
 - (CGSize)engagedCellSize;
 - (UIEdgeInsets)gridEdgeInsets;
-- (double)edgeLengthFittingWidth:(double)a3 environment:(id)a4;
+- (double)edgeLengthFittingWidth:(double)width environment:(id)environment;
 - (id)imageItemInsetsForGrid;
 - (id)imageItemInsetsForList;
 @end
 
 @implementation AVTFunCamAvatarPickerStyle
 
-+ (id)insetProviderForConstant:(double)a3
++ (id)insetProviderForConstant:(double)constant
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__AVTFunCamAvatarPickerStyle_insetProviderForConstant___block_invoke;
   v5[3] = &__block_descriptor_40_e8_d16__0d8l;
-  *&v5[4] = a3;
+  *&v5[4] = constant;
   v3 = [v5 copy];
 
   return v3;
@@ -26,17 +26,17 @@
 
 + (id)defaultLayoutStyle
 {
-  v2 = [[AVTFunCamAvatarPickerStyle alloc] initWithCellSize:74.0 engagedCellSize:74.0 interitemSpacing:108.0 gridEdgeInsets:108.0, 16.0, 0, 0x4020000000000000, 0, 0x4020000000000000];
+  0x4020000000000000 = [[AVTFunCamAvatarPickerStyle alloc] initWithCellSize:74.0 engagedCellSize:74.0 interitemSpacing:108.0 gridEdgeInsets:108.0, 16.0, 0, 0x4020000000000000, 0, 0x4020000000000000];
 
-  return v2;
+  return 0x4020000000000000;
 }
 
-- (AVTFunCamAvatarPickerStyle)initWithCellSize:(CGSize)a3 engagedCellSize:(CGSize)a4 interitemSpacing:(double)a5 gridEdgeInsets:(UIEdgeInsets)a6
+- (AVTFunCamAvatarPickerStyle)initWithCellSize:(CGSize)size engagedCellSize:(CGSize)cellSize interitemSpacing:(double)spacing gridEdgeInsets:(UIEdgeInsets)insets
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.height;
-  v10 = a3.width;
+  height = cellSize.height;
+  width = cellSize.width;
+  v9 = size.height;
+  v10 = size.width;
   v12.receiver = self;
   v12.super_class = AVTFunCamAvatarPickerStyle;
   result = [(AVTFunCamAvatarPickerStyle *)&v12 init];
@@ -44,21 +44,21 @@
   {
     result->_cellSize.height = v9 + 14.0;
     result->_engagedCellSize.width = width;
-    result->_interitemSpacing = a5;
+    result->_interitemSpacing = spacing;
     result->_cellSize.width = v10;
     result->_engagedCellSize.height = height + 14.0;
-    result->_gridEdgeInsets = a6;
+    result->_gridEdgeInsets = insets;
   }
 
   return result;
 }
 
-- (double)edgeLengthFittingWidth:(double)a3 environment:(id)a4
+- (double)edgeLengthFittingWidth:(double)width environment:(id)environment
 {
   [(AVTFunCamAvatarPickerStyle *)self gridEdgeInsets];
   v7 = v6;
   [(AVTFunCamAvatarPickerStyle *)self gridEdgeInsets];
-  result = floor((a3 - (v7 + v8)) * 0.25);
+  result = floor((width - (v7 + v8)) * 0.25);
   if (result < 50.0)
   {
     return 50.0;

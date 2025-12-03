@@ -1,14 +1,14 @@
 @interface DNDBinarySettingIntentHandler
-- (void)handleGetSetting:(id)a3 completion:(id)a4;
-- (void)handleSetBinarySetting:(id)a3 completion:(id)a4;
+- (void)handleGetSetting:(id)setting completion:(id)completion;
+- (void)handleSetBinarySetting:(id)setting completion:(id)completion;
 @end
 
 @implementation DNDBinarySettingIntentHandler
 
-- (void)handleSetBinarySetting:(id)a3 completion:(id)a4
+- (void)handleSetBinarySetting:(id)setting completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  settingCopy = setting;
+  completionCopy = completion;
   v7 = objc_alloc_init(DNDIntentHandler);
   v8 = [DNDStateService serviceForClientIdentifier:@"com.apple.DoNotDisturb.Intents"];
   v9 = [v8 queryCurrentStateWithError:0];
@@ -22,23 +22,23 @@
     v10 = 2;
   }
 
-  v11 = [v5 toDNDIntent];
+  toDNDIntent = [settingCopy toDNDIntent];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100001E2C;
   v14[3] = &unk_100008200;
-  v15 = v5;
-  v16 = v6;
+  v15 = settingCopy;
+  v16 = completionCopy;
   v17 = v10;
-  v12 = v5;
-  v13 = v6;
-  [(DNDIntentHandler *)v7 handleToggleDoNotDisturb:v11 completion:v14];
+  v12 = settingCopy;
+  v13 = completionCopy;
+  [(DNDIntentHandler *)v7 handleToggleDoNotDisturb:toDNDIntent completion:v14];
 }
 
-- (void)handleGetSetting:(id)a3 completion:(id)a4
+- (void)handleGetSetting:(id)setting completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  settingCopy = setting;
   v7 = [DNDStateService serviceForClientIdentifier:@"com.apple.DoNotDisturb.Intents"];
   v8 = [v7 queryCurrentStateWithError:0];
   if ([v8 isActive])
@@ -53,14 +53,14 @@
 
   v10 = [[INGetSettingIntentResponse alloc] initWithCode:3 userActivity:0];
   v11 = [INGetSettingResponseData alloc];
-  v12 = [v6 settingMetadata];
+  settingMetadata = [settingCopy settingMetadata];
 
-  v13 = [v11 initWithSettingMetadata:v12 numericValue:0 boundedValue:0 binaryValue:v9 labeledValue:0];
+  v13 = [v11 initWithSettingMetadata:settingMetadata numericValue:0 boundedValue:0 binaryValue:v9 labeledValue:0];
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];
   [v10 setSettingResponseDatas:v14];
 
-  v5[2](v5, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
 @end

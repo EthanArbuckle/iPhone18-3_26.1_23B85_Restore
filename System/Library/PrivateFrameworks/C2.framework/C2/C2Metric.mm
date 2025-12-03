@@ -1,7 +1,7 @@
 @interface C2Metric
 + (id)generateDeviceInfo;
-+ (id)generateError:(id)a3;
-+ (id)generateGenericEventWithName:(id)a3 genericMetricType:(int64_t)a4 startTime:(id)a5 endTime:(id)a6 attributes:(id)a7;
++ (id)generateError:(id)error;
++ (id)generateGenericEventWithName:(id)name genericMetricType:(int64_t)type startTime:(id)time endTime:(id)endTime attributes:(id)attributes;
 @end
 
 @implementation C2Metric
@@ -38,42 +38,42 @@
   return v2;
 }
 
-+ (id)generateError:(id)a3
++ (id)generateError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(C2MPError);
-  v5 = [v3 domain];
-  v6 = [v5 description];
+  domain = [errorCopy domain];
+  v6 = [domain description];
   [(C2MPError *)v4 setErrorDomain:v6];
 
-  -[C2MPError setErrorCode:](v4, "setErrorCode:", [v3 code]);
+  -[C2MPError setErrorCode:](v4, "setErrorCode:", [errorCopy code]);
   if (+[C2DeviceInfo isAppleInternal])
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"CKErrorDescription"];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"CKErrorDescription"];
     [(C2MPError *)v4 setErrorDescription:v8];
 
-    v9 = [(C2MPError *)v4 errorDescription];
+    errorDescription = [(C2MPError *)v4 errorDescription];
 
-    if (!v9)
+    if (!errorDescription)
     {
-      v10 = [v3 userInfo];
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA068]];
+      userInfo2 = [errorCopy userInfo];
+      v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA068]];
       [(C2MPError *)v4 setErrorDescription:v11];
     }
 
-    v12 = [(C2MPError *)v4 errorDescription];
+    errorDescription2 = [(C2MPError *)v4 errorDescription];
 
-    if (!v12)
+    if (!errorDescription2)
     {
-      v13 = [v3 userInfo];
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
+      userInfo3 = [errorCopy userInfo];
+      v14 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CCA450]];
       [(C2MPError *)v4 setErrorDescription:v14];
     }
   }
 
-  v15 = [v3 userInfo];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo4 = [errorCopy userInfo];
+  v16 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   if (v16)
   {
@@ -84,22 +84,22 @@
   return v4;
 }
 
-+ (id)generateGenericEventWithName:(id)a3 genericMetricType:(int64_t)a4 startTime:(id)a5 endTime:(id)a6 attributes:(id)a7
++ (id)generateGenericEventWithName:(id)name genericMetricType:(int64_t)type startTime:(id)time endTime:(id)endTime attributes:(id)attributes
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  attributesCopy = attributes;
   v15 = objc_alloc_init(C2MPGenericEvent);
-  [(C2MPGenericEvent *)v15 setName:v11];
-  if (a4 == 2)
+  [(C2MPGenericEvent *)v15 setName:nameCopy];
+  if (type == 2)
   {
     v16 = v15;
     v17 = 201;
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     v16 = v15;
     v17 = 101;
@@ -116,9 +116,9 @@
     if (os_log_type_enabled(C2_DEFAULT_LOG_INTERNAL_0, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v31 = v11;
+      v31 = nameCopy;
       v32 = 2048;
-      v33 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_242158000, v18, OS_LOG_TYPE_ERROR, "genericMetric with name %{public}@ had unknown metricType %llu", buf, 0x16u);
     }
 
@@ -127,9 +127,9 @@
   }
 
   [(C2MPGenericEvent *)v16 setType:v17];
-  if (v12)
+  if (timeCopy)
   {
-    [v12 timeIntervalSinceReferenceDate];
+    [timeCopy timeIntervalSinceReferenceDate];
     v19 = [C2Time convertTimeIntervalToServerTime:?];
   }
 
@@ -139,9 +139,9 @@
   }
 
   [(C2MPGenericEvent *)v15 setTimestampStart:v19];
-  if (v13)
+  if (endTimeCopy)
   {
-    [v13 timeIntervalSinceReferenceDate];
+    [endTimeCopy timeIntervalSinceReferenceDate];
     v20 = [C2Time convertTimeIntervalToServerTime:?];
   }
 
@@ -155,11 +155,11 @@
   v27[1] = 3221225472;
   v27[2] = __88__C2Metric_generateGenericEventWithName_genericMetricType_startTime_endTime_attributes___block_invoke_12;
   v27[3] = &unk_278D402B0;
-  v28 = v11;
+  v28 = nameCopy;
   v21 = v15;
   v29 = v21;
-  v22 = v11;
-  [v14 enumerateKeysAndObjectsUsingBlock:v27];
+  v22 = nameCopy;
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v27];
 
   v23 = v29;
   v24 = v21;

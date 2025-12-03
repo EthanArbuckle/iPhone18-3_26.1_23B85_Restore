@@ -1,9 +1,9 @@
 @interface RTIInputSystemUIService
-+ (id)sharedServiceWithDomainName:(id)a3 serviceName:(id)a4;
-- (RTIInputSystemUIService)initWithDomainName:(id)a3 serviceName:(id)a4;
++ (id)sharedServiceWithDomainName:(id)name serviceName:(id)serviceName;
+- (RTIInputSystemUIService)initWithDomainName:(id)name serviceName:(id)serviceName;
 - (void)_createListenerIfNecessary;
 - (void)_destroyListenerIfNecessary;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation RTIInputSystemUIService
@@ -37,20 +37,20 @@ void __53__RTIInputSystemUIService__createListenerIfNecessary__block_invoke(uint
   [v4 setDelegate:*(a1 + 32)];
 }
 
-+ (id)sharedServiceWithDomainName:(id)a3 serviceName:(id)a4
++ (id)sharedServiceWithDomainName:(id)name serviceName:(id)serviceName
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   if (sharedServiceWithDomainName_serviceName__onceToken != -1)
   {
     +[RTIInputSystemUIService sharedServiceWithDomainName:serviceName:];
   }
 
-  v7 = [sharedServiceWithDomainName_serviceName___services objectForKey:v6];
+  v7 = [sharedServiceWithDomainName_serviceName___services objectForKey:serviceNameCopy];
   if (!v7)
   {
-    v7 = [[RTIInputSystemUIService alloc] initWithDomainName:v5 serviceName:v6];
-    [sharedServiceWithDomainName_serviceName___services setObject:v7 forKey:v6];
+    v7 = [[RTIInputSystemUIService alloc] initWithDomainName:nameCopy serviceName:serviceNameCopy];
+    [sharedServiceWithDomainName_serviceName___services setObject:v7 forKey:serviceNameCopy];
   }
 
   return v7;
@@ -63,20 +63,20 @@ uint64_t __67__RTIInputSystemUIService_sharedServiceWithDomainName_serviceName__
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (RTIInputSystemUIService)initWithDomainName:(id)a3 serviceName:(id)a4
+- (RTIInputSystemUIService)initWithDomainName:(id)name serviceName:(id)serviceName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   v14.receiver = self;
   v14.super_class = RTIInputSystemUIService;
   v8 = [(RTIInputSystemService *)&v14 initWithMachName:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     domainName = v8->_domainName;
     v8->_domainName = v9;
 
-    v11 = [v7 copy];
+    v11 = [serviceNameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v11;
 
@@ -97,33 +97,33 @@ uint64_t __67__RTIInputSystemUIService_sharedServiceWithDomainName_serviceName__
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = RTILogFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v19 = "[RTIInputSystemUIService listener:didReceiveConnection:withContext:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = connectionCopy;
     _os_log_impl(&dword_19A2A6000, v7, OS_LOG_TYPE_DEFAULT, "%s  didReceiveConnection: %@", buf, 0x16u);
   }
 
-  v8 = [v6 remoteProcess];
-  v9 = [v6 extractNSXPCConnectionWithConfigurator:&__block_literal_global_6];
-  v10 = [(RTIInputSystemService *)self dispatchQueue];
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [connectionCopy extractNSXPCConnectionWithConfigurator:&__block_literal_global_6];
+  dispatchQueue = [(RTIInputSystemService *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__RTIInputSystemUIService_listener_didReceiveConnection_withContext___block_invoke_2;
   block[3] = &unk_1E75142D0;
   v15 = v9;
-  v16 = v8;
-  v17 = self;
-  v11 = v8;
+  v16 = remoteProcess;
+  selfCopy = self;
+  v11 = remoteProcess;
   v12 = v9;
-  dispatch_async(v10, block);
+  dispatch_async(dispatchQueue, block);
 
   v13 = *MEMORY[0x1E69E9840];
 }

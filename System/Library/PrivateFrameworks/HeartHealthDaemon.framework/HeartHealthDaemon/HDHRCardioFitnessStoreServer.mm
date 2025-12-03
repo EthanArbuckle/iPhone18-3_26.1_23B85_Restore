@@ -1,21 +1,21 @@
 @interface HDHRCardioFitnessStoreServer
-- (BOOL)_insertSampleWithLocalSource:(id)a3 error:(id *)a4;
-- (BOOL)_saveCardioFitnessNotificationWithValue:(id)a3 threshold:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(unint64_t)a7 error:(id *)a8;
-- (HDHRCardioFitnessStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)remote_saveCardioFitnessAlertWithValue:(id)a3 threshold:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(unint64_t)a7 completion:(id)a8;
+- (BOOL)_insertSampleWithLocalSource:(id)source error:(id *)error;
+- (BOOL)_saveCardioFitnessNotificationWithValue:(id)value threshold:(id)threshold startDate:(id)date endDate:(id)endDate options:(unint64_t)options error:(id *)error;
+- (HDHRCardioFitnessStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)remote_saveCardioFitnessAlertWithValue:(id)value threshold:(id)threshold startDate:(id)date endDate:(id)endDate options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HDHRCardioFitnessStoreServer
 
-- (HDHRCardioFitnessStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDHRCardioFitnessStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v10.receiver = self;
   v10.super_class = HDHRCardioFitnessStoreServer;
-  v6 = [(HDStandardTaskServer *)&v10 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v6 = [(HDStandardTaskServer *)&v10 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (v6)
   {
-    v7 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v7 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
 
     v8 = v6;
   }
@@ -23,41 +23,41 @@
   return v6;
 }
 
-- (void)remote_saveCardioFitnessAlertWithValue:(id)a3 threshold:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(unint64_t)a7 completion:(id)a8
+- (void)remote_saveCardioFitnessAlertWithValue:(id)value threshold:(id)threshold startDate:(id)date endDate:(id)endDate options:(unint64_t)options completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = a6;
-  v18 = a5;
+  valueCopy = value;
+  thresholdCopy = threshold;
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
   _HKInitializeLogging();
   v19 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = objc_opt_class();
     v28 = v20;
-    [v14 description];
-    v21 = v29 = v14;
+    [valueCopy description];
+    v21 = v29 = valueCopy;
     HKSensitiveLogItem();
     v22 = v30 = self;
-    v23 = [v15 description];
+    v23 = [thresholdCopy description];
     *buf = 138544131;
     v33 = v20;
     v34 = 2112;
     v35 = v22;
     v36 = 2049;
-    v37 = a7;
+    optionsCopy = options;
     v38 = 2112;
     v39 = v23;
     _os_log_impl(&dword_229486000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Saving fitness alert: %@, options:%{private}lu, threshold: %@", buf, 0x2Au);
 
-    v14 = v29;
+    valueCopy = v29;
     self = v30;
   }
 
   v31 = 0;
-  v24 = [(HDHRCardioFitnessStoreServer *)self _saveCardioFitnessNotificationWithValue:v14 threshold:v15 startDate:v18 endDate:v17 options:a7 error:&v31];
+  v24 = [(HDHRCardioFitnessStoreServer *)self _saveCardioFitnessNotificationWithValue:valueCopy threshold:thresholdCopy startDate:dateCopy endDate:endDateCopy options:options error:&v31];
 
   v25 = v31;
   if (!v24)
@@ -70,65 +70,65 @@
     }
   }
 
-  v16[2](v16, v24, v25);
+  completionCopy[2](completionCopy, v24, v25);
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveCardioFitnessNotificationWithValue:(id)a3 threshold:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(unint64_t)a7 error:(id *)a8
+- (BOOL)_saveCardioFitnessNotificationWithValue:(id)value threshold:(id)threshold startDate:(id)date endDate:(id)endDate options:(unint64_t)options error:(id *)error
 {
-  v9 = a7;
+  optionsCopy = options;
   v31[3] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277CCD0B0];
   v15 = MEMORY[0x277CCD0C0];
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [v15 lowCardioFitnessEventType];
+  endDateCopy = endDate;
+  dateCopy = date;
+  thresholdCopy = threshold;
+  valueCopy = value;
+  lowCardioFitnessEventType = [v15 lowCardioFitnessEventType];
   v21 = *MEMORY[0x277CCC4D8];
   v30[0] = *MEMORY[0x277CCC540];
   v30[1] = v21;
-  v31[0] = v19;
-  v31[1] = v18;
+  v31[0] = valueCopy;
+  v31[1] = thresholdCopy;
   v30[2] = *MEMORY[0x277CCE0D8];
-  v22 = [MEMORY[0x277CCABB0] numberWithBool:v9 & 1];
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:optionsCopy & 1];
   v31[2] = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
-  v24 = [v14 categorySampleWithType:v20 value:1 startDate:v17 endDate:v16 metadata:v23];
+  v24 = [v14 categorySampleWithType:lowCardioFitnessEventType value:1 startDate:dateCopy endDate:endDateCopy metadata:v23];
 
-  LOBYTE(a8) = [(HDHRCardioFitnessStoreServer *)self _insertSampleWithLocalSource:v24 error:a8];
+  LOBYTE(error) = [(HDHRCardioFitnessStoreServer *)self _insertSampleWithLocalSource:v24 error:error];
   v25 = [HDHRHealthKitSyncManager alloc];
-  v26 = [(HDStandardTaskServer *)self profile];
-  v27 = [(HDHRHealthKitSyncManager *)v25 initWithProfile:v26];
+  profile = [(HDStandardTaskServer *)self profile];
+  v27 = [(HDHRHealthKitSyncManager *)v25 initWithProfile:profile];
 
   [(HDHRHealthKitSyncManager *)v27 triggerImmediateSyncWithReason:@"New Cardio Fitness Notification sample added" loggingCategory:*MEMORY[0x277CCC2D0]];
   v28 = *MEMORY[0x277D85DE8];
-  return a8;
+  return error;
 }
 
-- (BOOL)_insertSampleWithLocalSource:(id)a3 error:(id *)a4
+- (BOOL)_insertSampleWithLocalSource:(id)source error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 sourceManager];
-  v9 = [v8 localDeviceSourceWithError:a4];
+  sourceCopy = source;
+  profile = [(HDStandardTaskServer *)self profile];
+  sourceManager = [profile sourceManager];
+  v9 = [sourceManager localDeviceSourceWithError:error];
 
   if (v9)
   {
-    v10 = [v7 deviceManager];
-    v11 = [v10 currentDeviceEntityWithError:a4];
+    deviceManager = [profile deviceManager];
+    v11 = [deviceManager currentDeviceEntityWithError:error];
 
     if (v11)
     {
-      v12 = [v7 dataProvenanceManager];
-      v13 = [v12 localDataProvenanceForSourceEntity:v9 version:0 deviceEntity:v11];
+      dataProvenanceManager = [profile dataProvenanceManager];
+      v13 = [dataProvenanceManager localDataProvenanceForSourceEntity:v9 version:0 deviceEntity:v11];
 
-      v14 = [v7 dataManager];
-      v29[0] = v6;
+      dataManager = [profile dataManager];
+      v29[0] = sourceCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
-      v16 = [v14 insertDataObjects:v15 withProvenance:v13 creationDate:0 skipInsertionFilter:a4 error:CFAbsoluteTimeGetCurrent()];
+      v16 = [dataManager insertDataObjects:v15 withProvenance:v13 creationDate:0 skipInsertionFilter:error error:CFAbsoluteTimeGetCurrent()];
 
       if (v16)
       {

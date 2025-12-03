@@ -10,7 +10,7 @@
 - (id)triLogDesc
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = objc_getAssociatedObject(a1, "triLogDesc");
+  v3 = objc_getAssociatedObject(self, "triLogDesc");
   if (!v3)
   {
     objc_opt_class();
@@ -20,13 +20,13 @@
       goto LABEL_24;
     }
 
-    v4 = a1;
+    selfCopy = self;
     v5 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = [v4 subpredicates];
+    obj = [selfCopy subpredicates];
     v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v6)
     {
@@ -43,9 +43,9 @@
 
           v10 = *(*(&v23 + 1) + 8 * i);
           v11 = objc_alloc(MEMORY[0x277CCACA8]);
-          v12 = [v10 triLogDesc];
-          v13 = v12;
-          if (!v12)
+          triLogDesc = [v10 triLogDesc];
+          v13 = triLogDesc;
+          if (!triLogDesc)
           {
             v1 = [v10 description];
             v13 = v1;
@@ -54,7 +54,7 @@
           v14 = [v11 initWithFormat:@"(%@)", v13];
           [v5 addObject:v14];
 
-          if (!v12)
+          if (!triLogDesc)
           {
           }
         }
@@ -65,17 +65,17 @@
       while (v7);
     }
 
-    v15 = [v4 compoundPredicateType];
-    if (v15 == 2)
+    compoundPredicateType = [selfCopy compoundPredicateType];
+    if (compoundPredicateType == 2)
     {
       v18 = @" OR ";
     }
 
     else
     {
-      if (v15 != 1)
+      if (compoundPredicateType != 1)
       {
-        if (v15)
+        if (compoundPredicateType)
         {
           v3 = 0;
         }
@@ -197,7 +197,7 @@ LABEL_16:
   v11 = objc_autoreleasePoolPush();
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:v10 arguments:&a9];
   v14 = &a9;
-  [a1 _triAnnotatePredicate:v12 format:v10 usingArgs:&v14];
+  [self _triAnnotatePredicate:v12 format:v10 usingArgs:&v14];
   objc_autoreleasePoolPop(v11);
 
   return v12;

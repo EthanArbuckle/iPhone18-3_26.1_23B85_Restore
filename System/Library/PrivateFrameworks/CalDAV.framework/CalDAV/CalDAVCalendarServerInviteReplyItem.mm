@@ -1,29 +1,29 @@
 @interface CalDAVCalendarServerInviteReplyItem
 - (id)copyParseRules;
-- (void)setAcceptedURLItem:(id)a3;
-- (void)setFirstNameItem:(id)a3;
-- (void)setLastNameItem:(id)a3;
+- (void)setAcceptedURLItem:(id)item;
+- (void)setFirstNameItem:(id)item;
+- (void)setLastNameItem:(id)item;
 @end
 
 @implementation CalDAVCalendarServerInviteReplyItem
 
-- (void)setFirstNameItem:(id)a3
+- (void)setFirstNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerInviteReplyItem *)self setFirstName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerInviteReplyItem *)self setFirstName:payloadAsString];
 }
 
-- (void)setLastNameItem:(id)a3
+- (void)setLastNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerInviteReplyItem *)self setLastName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerInviteReplyItem *)self setLastName:payloadAsString];
 }
 
-- (void)setAcceptedURLItem:(id)a3
+- (void)setAcceptedURLItem:(id)item
 {
-  v5 = [a3 href];
-  v4 = [v5 payloadAsFullURL];
-  [(CalDAVCalendarServerInviteReplyItem *)self setAcceptedURL:v4];
+  href = [item href];
+  payloadAsFullURL = [href payloadAsFullURL];
+  [(CalDAVCalendarServerInviteReplyItem *)self setAcceptedURL:payloadAsFullURL];
 }
 
 - (id)copyParseRules

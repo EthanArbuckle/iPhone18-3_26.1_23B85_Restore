@@ -1,38 +1,38 @@
 @interface INBalanceAmount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INBalanceAmount)initWithAmount:(NSDecimalNumber *)amount balanceType:(INBalanceType)balanceType;
 - (INBalanceAmount)initWithAmount:(NSDecimalNumber *)amount currencyCode:(NSString *)currencyCode;
-- (INBalanceAmount)initWithAmount:(id)a3 balanceType:(int64_t)a4 currencyCode:(id)a5;
-- (INBalanceAmount)initWithCoder:(id)a3;
+- (INBalanceAmount)initWithAmount:(id)amount balanceType:(int64_t)type currencyCode:(id)code;
+- (INBalanceAmount)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INBalanceAmount
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [v5 locale];
-  v7 = [(INBalanceAmount *)self currencyCode];
-  if (v7)
+  localizerCopy = localizer;
+  locale = [localizerCopy locale];
+  currencyCode = [(INBalanceAmount *)self currencyCode];
+  if (currencyCode)
   {
-    v8 = v7;
-    v9 = [(INBalanceAmount *)self amount];
+    v8 = currencyCode;
+    amount = [(INBalanceAmount *)self amount];
 
-    if (v9)
+    if (amount)
     {
-      v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-      [v10 setNumberStyle:2];
-      v11 = [(INBalanceAmount *)self currencyCode];
-      [v10 setCurrencyCode:v11];
+      amount4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
+      [amount4 setNumberStyle:2];
+      currencyCode2 = [(INBalanceAmount *)self currencyCode];
+      [amount4 setCurrencyCode:currencyCode2];
 
-      [v10 setLocale:v6];
-      v12 = [(INBalanceAmount *)self amount];
-      v13 = [v10 stringFromNumber:v12];
+      [amount4 setLocale:locale];
+      amount2 = [(INBalanceAmount *)self amount];
+      v13 = [amount4 stringFromNumber:amount2];
 LABEL_7:
       v16 = v13;
 
@@ -42,14 +42,14 @@ LABEL_7:
 
   if ([(INBalanceAmount *)self balanceType])
   {
-    v14 = [(INBalanceAmount *)self amount];
+    amount3 = [(INBalanceAmount *)self amount];
 
-    if (v14)
+    if (amount3)
     {
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v10 = [(INBalanceAmount *)self amount];
-      v12 = INBalanceTypeGetLocalizedName([(INBalanceAmount *)self balanceType], v5);
-      v13 = [v15 initWithFormat:@"%@ %@" locale:v6, v10, v12];
+      amount4 = [(INBalanceAmount *)self amount];
+      amount2 = INBalanceTypeGetLocalizedName([(INBalanceAmount *)self balanceType], localizerCopy);
+      v13 = [v15 initWithFormat:@"%@ %@" locale:locale, amount4, amount2];
       goto LABEL_7;
     }
   }
@@ -65,13 +65,13 @@ LABEL_9:
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"amount";
   amount = self->_amount;
-  v4 = amount;
+  null = amount;
   if (!amount)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"balanceType";
   v5 = self->_balanceType - 1;
   if (v5 > 2)
@@ -88,13 +88,13 @@ LABEL_9:
   v14[1] = v7;
   v13[2] = @"currencyCode";
   currencyCode = self->_currencyCode;
-  v9 = currencyCode;
+  null2 = currencyCode;
   if (!currencyCode)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   if (!currencyCode)
   {
@@ -109,46 +109,46 @@ LABEL_9:
   return v10;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INBalanceAmount;
   v6 = [(INBalanceAmount *)&v11 description];
-  v7 = [(INBalanceAmount *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INBalanceAmount *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeInteger:self->_balanceType forKey:@"balanceType"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeInteger:self->_balanceType forKey:@"balanceType"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
 }
 
-- (INBalanceAmount)initWithCoder:(id)a3
+- (INBalanceAmount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
-  v6 = [v4 decodeIntegerForKey:@"balanceType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+  v6 = [coderCopy decodeIntegerForKey:@"balanceType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
 
   v8 = [(INBalanceAmount *)self initWithAmount:v5 balanceType:v6 currencyCode:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     amount = self->_amount;
     v8 = 0;
     if ((amount == v5[1] || [(NSDecimalNumber *)amount isEqual:?]) && self->_balanceType == v5[2])
@@ -177,21 +177,21 @@ LABEL_9:
   return v5 ^ [(NSString *)currencyCode hash];
 }
 
-- (INBalanceAmount)initWithAmount:(id)a3 balanceType:(int64_t)a4 currencyCode:(id)a5
+- (INBalanceAmount)initWithAmount:(id)amount balanceType:(int64_t)type currencyCode:(id)code
 {
-  v8 = a3;
-  v9 = a5;
+  amountCopy = amount;
+  codeCopy = code;
   v16.receiver = self;
   v16.super_class = INBalanceAmount;
   v10 = [(INBalanceAmount *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [amountCopy copy];
     amount = v10->_amount;
     v10->_amount = v11;
 
-    v10->_balanceType = a4;
-    v13 = [v9 copy];
+    v10->_balanceType = type;
+    v13 = [codeCopy copy];
     currencyCode = v10->_currencyCode;
     v10->_currencyCode = v13;
   }
@@ -227,7 +227,7 @@ LABEL_9:
   if (balanceType == INBalanceTypeMoney)
   {
     NSLog(@"Initializing INBalanceAmount with INBalanceTypeMoney not allowed. Use initWithAmount:currencyCode: instead");
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -247,10 +247,10 @@ LABEL_9:
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

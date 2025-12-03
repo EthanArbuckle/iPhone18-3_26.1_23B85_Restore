@@ -1,58 +1,58 @@
 @interface REPHASESoundEvent
-+ (void)controllerWithEngine:(id)a3 streamUUID:(id)a4 mixerDefinition:(id)a5 source:(id)a6 listener:(id)a7 normalizationMode:(int)a8 targetLUFS:(double)a9 calibrationMode:(int)a10 calibrationLevel:(double)a11 callback:(id)a12;
-+ (void)eventWithEngine:(id)a3 streamUUID:(id)a4 maximumFramesToRender:(unsigned int)a5 audioFormat:(id)a6 audioUnit:(id)a7 renderBlock:(id)a8 mixerDefinition:(id)a9 source:(id)a10 listener:(id)a11 group:(id)a12 normalizationMode:(int)a13 calibrationMode:(int)a14 calibrationLevel:(double)a15 audioSession:(id)a16 phaseQueue:(id)a17 callback:(id)a18;
-+ (void)eventWithEngine:(id)a3 streamUUID:(id)a4 mixerDefinition:(id)a5 source:(id)a6 listener:(id)a7 normalizationMode:(int)a8 targetLUFS:(double)a9 calibrationMode:(int)a10 calibrationLevel:(double)a11 audioSession:(id)a12 phaseQueue:(id)a13 callback:(id)a14;
++ (void)controllerWithEngine:(id)engine streamUUID:(id)d mixerDefinition:(id)definition source:(id)source listener:(id)listener normalizationMode:(int)mode targetLUFS:(double)s calibrationMode:(int)self0 calibrationLevel:(double)self1 callback:(id)self2;
++ (void)eventWithEngine:(id)engine streamUUID:(id)d maximumFramesToRender:(unsigned int)render audioFormat:(id)format audioUnit:(id)unit renderBlock:(id)block mixerDefinition:(id)definition source:(id)self0 listener:(id)self1 group:(id)self2 normalizationMode:(int)self3 calibrationMode:(int)self4 calibrationLevel:(double)self5 audioSession:(id)self6 phaseQueue:(id)self7 callback:(id)self8;
++ (void)eventWithEngine:(id)engine streamUUID:(id)d mixerDefinition:(id)definition source:(id)source listener:(id)listener normalizationMode:(int)mode targetLUFS:(double)s calibrationMode:(int)self0 calibrationLevel:(double)self1 audioSession:(id)self2 phaseQueue:(id)self3 callback:(id)self4;
 - (BOOL)_pause;
 - (BOOL)_resume;
-- (BOOL)_seekToTime:(double)a3;
+- (BOOL)_seekToTime:(double)time;
 - (BOOL)_start;
 - (BOOL)_stopAndDestroy;
 - (BOOL)_stopAndRePrepare;
-- (BOOL)changeFromExpectedState:(unint64_t)a3 toState:(unint64_t)a4;
-- (BOOL)seekToTime:(double)a3;
-- (REPHASESoundEvent)initWithEngine:(id)a3 soundEventAsset:(id)a4 source:(id)a5 listener:(id)a6 mixerParameters:(id)a7 audioSession:(id)a8 phaseQueue:(id)a9 outError:(id *)a10;
-- (REPHASESoundEvent)initWithEngine:(id)a3 source:(id)a4 listener:(id)a5 audioSession:(id)a6 phaseQueue:(id)a7;
-- (REPHASESoundEvent)initWithEngine:(id)a3 sources:(vector<PHASESource *) listener:(std:(id)a5 :(id)a6 allocator<PHASESource *>> *)a4 audioSession:(id)a7 phaseQueue:;
-- (REPHASESoundEvent)initWithSoundEventFactory:(id)a3 phaseQueue:(id)a4;
+- (BOOL)changeFromExpectedState:(unint64_t)state toState:(unint64_t)toState;
+- (BOOL)seekToTime:(double)time;
+- (REPHASESoundEvent)initWithEngine:(id)engine soundEventAsset:(id)asset source:(id)source listener:(id)listener mixerParameters:(id)parameters audioSession:(id)session phaseQueue:(id)queue outError:(id *)self0;
+- (REPHASESoundEvent)initWithEngine:(id)engine source:(id)source listener:(id)listener audioSession:(id)session phaseQueue:(id)queue;
+- (REPHASESoundEvent)initWithEngine:(id)engine sources:(vector<PHASESource *) listener:(std:(id)listener :(id)a6 allocator<PHASESource *>> *)a4 audioSession:(id)session phaseQueue:;
+- (REPHASESoundEvent)initWithSoundEventFactory:(id)factory phaseQueue:(id)queue;
 - (REPHASESoundEventObserver)observer;
 - (double)sourcePose;
 - (id).cxx_construct;
 - (id)description;
-- (id)initSyncGroupWithEngine:(id)a3 rootNode:(id)a4 assetIdentifier:(id)a5 listener:(id)a6 mixerParameters:(id)a7 audioSession:(id)a8 phaseQueue:(id)a9 sources:(vector<PHASESource *) outError:(std:(id *)a11 :allocator<PHASESource *>> *)a10;
+- (id)initSyncGroupWithEngine:(id)engine rootNode:(id)node assetIdentifier:(id)identifier listener:(id)listener mixerParameters:(id)parameters audioSession:(id)session phaseQueue:(id)queue sources:(vector<PHASESource *) outError:(std:(id *)self1 :allocator<PHASESource *>> *)self0;
 - (id)mixer;
-- (id)paramForKey:(id)a3;
+- (id)paramForKey:(id)key;
 - (shared_ptr<re::audio::REPHASESoundPrepareState>)prepareState;
-- (unint64_t)changeToState:(unint64_t)a3;
+- (unint64_t)changeToState:(unint64_t)state;
 - (vector<simd_float4x4,)sourcePoses;
 - (void)_updateCommandQueue;
 - (void)clearSoundEventEngine;
 - (void)dealloc;
 - (void)pause;
 - (void)prepareWithCompletion:;
-- (void)prepareWithCompletion:(id)a3;
+- (void)prepareWithCompletion:(id)completion;
 - (void)resume;
-- (void)setPrepareState:(shared_ptr<re::audio::REPHASESoundPrepareState>)a3;
+- (void)setPrepareState:(shared_ptr<re::audio::REPHASESoundPrepareState>)state;
 - (void)setPrepareStates:(unordered_map<unsigned long)long;
 - (void)stopAndDestroy;
 - (void)stopAndRePrepare;
-- (void)stream:(id)a3 didInvalidateWithError:(id)a4;
+- (void)stream:(id)stream didInvalidateWithError:(id)error;
 - (void)updateCommandQueue;
 @end
 
 @implementation REPHASESoundEvent
 
-- (REPHASESoundEvent)initWithSoundEventFactory:(id)a3 phaseQueue:(id)a4
+- (REPHASESoundEvent)initWithSoundEventFactory:(id)factory phaseQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REPHASESoundEvent *)self initWithEngine:0 source:0 listener:0 audioSession:0 phaseQueue:v7];
+  factoryCopy = factory;
+  queueCopy = queue;
+  v8 = [(REPHASESoundEvent *)self initWithEngine:0 source:0 listener:0 audioSession:0 phaseQueue:queueCopy];
   if (v8)
   {
-    v9 = v6[2](v6);
+    v9 = factoryCopy[2](factoryCopy);
     soundEvent = v8->_soundEvent;
     v8->_soundEvent = v9;
 
-    v11 = _Block_copy(v6);
+    v11 = _Block_copy(factoryCopy);
     soundEventFactory = v8->_soundEventFactory;
     v8->_soundEventFactory = v11;
   }
@@ -60,13 +60,13 @@
   return v8;
 }
 
-- (REPHASESoundEvent)initWithEngine:(id)a3 source:(id)a4 listener:(id)a5 audioSession:(id)a6 phaseQueue:(id)a7
+- (REPHASESoundEvent)initWithEngine:(id)engine source:(id)source listener:(id)listener audioSession:(id)session phaseQueue:(id)queue
 {
-  v23 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  engineCopy = engine;
+  sourceCopy = source;
+  listenerCopy = listener;
+  sessionCopy = session;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = REPHASESoundEvent;
   v17 = [(REPHASESoundEvent *)&v24 init];
@@ -81,10 +81,10 @@
     v18->_externalStreamController = 0;
 
     atomic_store(9uLL, &v18->_state.__a_.__a_value);
-    objc_storeStrong(&v18->_engine, a3);
-    objc_storeStrong(&v18->_source, a4);
-    objc_storeStrong(&v18->_listener, a5);
-    objc_storeStrong(&v18->_audioSession, a6);
+    objc_storeStrong(&v18->_engine, engine);
+    objc_storeStrong(&v18->_source, source);
+    objc_storeStrong(&v18->_listener, listener);
+    objc_storeStrong(&v18->_audioSession, session);
     *&v18->_cachedPlaybackSpeed = vneg_f32(0x3F0000003FLL);
     v18->_cachedDirectSendLevel = NAN;
     v18->_soundEventPlayed = 0;
@@ -94,12 +94,12 @@
   return 0;
 }
 
-- (REPHASESoundEvent)initWithEngine:(id)a3 sources:(vector<PHASESource *) listener:(std:(id)a5 :(id)a6 allocator<PHASESource *>> *)a4 audioSession:(id)a7 phaseQueue:
+- (REPHASESoundEvent)initWithEngine:(id)engine sources:(vector<PHASESource *) listener:(std:(id)listener :(id)a6 allocator<PHASESource *>> *)a4 audioSession:(id)session phaseQueue:
 {
-  v13 = a3;
-  v14 = a5;
+  engineCopy = engine;
+  listenerCopy = listener;
   v42 = a6;
-  v41 = a7;
+  sessionCopy = session;
   v43.receiver = self;
   v43.super_class = REPHASESoundEvent;
   v15 = [(REPHASESoundEvent *)&v43 init];
@@ -114,7 +114,7 @@
     v16->_externalStreamController = 0;
 
     atomic_store(9uLL, &v16->_state.__a_.__a_value);
-    objc_storeStrong(&v16->_engine, a3);
+    objc_storeStrong(&v16->_engine, engine);
     p_begin = &v16->_sources.__begin_;
     if (&v16->_sources != a4)
     {
@@ -207,7 +207,7 @@
       }
     }
 
-    objc_storeStrong(&v16->_listener, a5);
+    objc_storeStrong(&v16->_listener, listener);
     objc_storeStrong(&v16->_audioSession, a6);
     *&v16->_cachedPlaybackSpeed = vneg_f32(0x3F0000003FLL);
     v16->_cachedDirectSendLevel = NAN;
@@ -218,34 +218,34 @@
   return 0;
 }
 
-- (REPHASESoundEvent)initWithEngine:(id)a3 soundEventAsset:(id)a4 source:(id)a5 listener:(id)a6 mixerParameters:(id)a7 audioSession:(id)a8 phaseQueue:(id)a9 outError:(id *)a10
+- (REPHASESoundEvent)initWithEngine:(id)engine soundEventAsset:(id)asset source:(id)source listener:(id)listener mixerParameters:(id)parameters audioSession:(id)session phaseQueue:(id)queue outError:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v32 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(REPHASESoundEvent *)self initWithEngine:v16 source:v18 listener:v19 audioSession:v20 phaseQueue:v21];
+  engineCopy = engine;
+  assetCopy = asset;
+  sourceCopy = source;
+  listenerCopy = listener;
+  parametersCopy = parameters;
+  sessionCopy = session;
+  queueCopy = queue;
+  v22 = [(REPHASESoundEvent *)self initWithEngine:engineCopy source:sourceCopy listener:listenerCopy audioSession:sessionCopy phaseQueue:queueCopy];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_mixerParameters, a7);
-    objc_storeStrong(&v23->_soundEventAsset, a4);
+    objc_storeStrong(&v22->_mixerParameters, parameters);
+    objc_storeStrong(&v23->_soundEventAsset, asset);
     v24 = objc_alloc(MEMORY[0x1E6978210]);
-    v25 = [v17 identifier];
-    v26 = [v24 initWithEngine:v16 assetIdentifier:v25 mixerParameters:v32 error:a10];
+    identifier = [assetCopy identifier];
+    v26 = [v24 initWithEngine:engineCopy assetIdentifier:identifier mixerParameters:parametersCopy error:error];
     soundEvent = v23->_soundEvent;
     v23->_soundEvent = v26;
 
-    v28 = [v17 identifier];
+    identifier2 = [assetCopy identifier];
     assetIdentifier = v23->_assetIdentifier;
-    v23->_assetIdentifier = v28;
+    v23->_assetIdentifier = identifier2;
 
-    v30 = [(REPHASESoundEvent *)v23 soundEvent];
+    soundEvent = [(REPHASESoundEvent *)v23 soundEvent];
 
-    if (!v30)
+    if (!soundEvent)
     {
 
       v23 = 0;
@@ -255,31 +255,31 @@
   return v23;
 }
 
-- (id)initSyncGroupWithEngine:(id)a3 rootNode:(id)a4 assetIdentifier:(id)a5 listener:(id)a6 mixerParameters:(id)a7 audioSession:(id)a8 phaseQueue:(id)a9 sources:(vector<PHASESource *) outError:(std:(id *)a11 :allocator<PHASESource *>> *)a10
+- (id)initSyncGroupWithEngine:(id)engine rootNode:(id)node assetIdentifier:(id)identifier listener:(id)listener mixerParameters:(id)parameters audioSession:(id)session phaseQueue:(id)queue sources:(vector<PHASESource *) outError:(std:(id *)self1 :allocator<PHASESource *>> *)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  engineCopy = engine;
+  identifierCopy = identifier;
+  listenerCopy = listener;
+  parametersCopy = parameters;
+  sessionCopy = session;
+  queueCopy = queue;
   memset(v27, 0, sizeof(v27));
   std::vector<PHASESource * {__strong}>::__init_with_size[abi:ne200100]<PHASESource * {__strong}*,PHASESource * {__strong}*>(v27, a10->__begin_, a10->var0, a10->var0 - a10->__begin_);
-  v22 = [(REPHASESoundEvent *)self initWithEngine:v16 sources:v27 listener:v18 audioSession:v20 phaseQueue:v21];
+  v22 = [(REPHASESoundEvent *)self initWithEngine:engineCopy sources:v27 listener:listenerCopy audioSession:sessionCopy phaseQueue:queueCopy];
   v28 = v27;
   std::vector<PHASESource * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v28);
   if (v22)
   {
-    objc_storeStrong(&v22->_mixerParameters, a7);
-    v23 = [objc_alloc(MEMORY[0x1E6978210]) initWithEngine:v22->_engine assetIdentifier:v17 mixerParameters:v19 error:a11];
+    objc_storeStrong(&v22->_mixerParameters, parameters);
+    v23 = [objc_alloc(MEMORY[0x1E6978210]) initWithEngine:v22->_engine assetIdentifier:identifierCopy mixerParameters:parametersCopy error:error];
     soundEvent = v22->_soundEvent;
     v22->_soundEvent = v23;
 
-    objc_storeStrong(&v22->_assetIdentifier, a5);
+    objc_storeStrong(&v22->_assetIdentifier, identifier);
     v22->_isGroupPlaybackEvent = 1;
-    v25 = [(REPHASESoundEvent *)v22 soundEvent];
+    soundEvent = [(REPHASESoundEvent *)v22 soundEvent];
 
-    if (!v25)
+    if (!soundEvent)
     {
 
       v22 = 0;
@@ -289,22 +289,22 @@
   return v22;
 }
 
-+ (void)controllerWithEngine:(id)a3 streamUUID:(id)a4 mixerDefinition:(id)a5 source:(id)a6 listener:(id)a7 normalizationMode:(int)a8 targetLUFS:(double)a9 calibrationMode:(int)a10 calibrationLevel:(double)a11 callback:(id)a12
++ (void)controllerWithEngine:(id)engine streamUUID:(id)d mixerDefinition:(id)definition source:(id)source listener:(id)listener normalizationMode:(int)mode targetLUFS:(double)s calibrationMode:(int)self0 calibrationLevel:(double)self1 callback:(id)self2
 {
-  v31 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a12;
+  engineCopy = engine;
+  dCopy = d;
+  definitionCopy = definition;
+  sourceCopy = source;
+  listenerCopy = listener;
+  callbackCopy = callback;
   v24 = [objc_alloc(MEMORY[0x1E69781E0]) initWithValue:@"gain" minimum:1.0 maximum:0.0 identifier:4.0];
   v25 = objc_opt_respondsToSelector();
   if (v25)
   {
     v26 = MEMORY[0x1E69781A8];
-    v27 = [MEMORY[0x1E696AD98] numberWithDouble:a9];
-    LOBYTE(v30) = a8 == 1;
-    [v26 controllerWithEngine:v31 streamUUID:v19 gainMetaParameterDefinition:v24 mixerDefinition:v20 source:v21 listener:v22 group:a11 normalize:0 targetLKFS:v30 calibrationMode:v27 level:a10 callback:v23];
+    v27 = [MEMORY[0x1E696AD98] numberWithDouble:s];
+    LOBYTE(v30) = mode == 1;
+    [v26 controllerWithEngine:engineCopy streamUUID:dCopy gainMetaParameterDefinition:v24 mixerDefinition:definitionCopy source:sourceCopy listener:listenerCopy group:level normalize:0 targetLKFS:v30 calibrationMode:v27 level:calibrationMode callback:callbackCopy];
   }
 
   else
@@ -316,34 +316,34 @@
       _os_log_error_impl(&dword_1E1C61000, v28, OS_LOG_TYPE_ERROR, "[RE/PHASE] [Prepare] PHASEExternalOutputStreamController does not support target LKFS", buf, 2u);
     }
 
-    LOBYTE(v29) = a8 == 1;
-    [MEMORY[0x1E69781A8] controllerWithEngine:v31 streamUUID:v19 gainMetaParameterDefinition:v24 mixerDefinition:v20 source:v21 listener:v22 normalize:a11 calibrationMode:v29 level:a10 callback:v23];
+    LOBYTE(v29) = mode == 1;
+    [MEMORY[0x1E69781A8] controllerWithEngine:engineCopy streamUUID:dCopy gainMetaParameterDefinition:v24 mixerDefinition:definitionCopy source:sourceCopy listener:listenerCopy normalize:level calibrationMode:v29 level:calibrationMode callback:callbackCopy];
   }
 }
 
-+ (void)eventWithEngine:(id)a3 streamUUID:(id)a4 mixerDefinition:(id)a5 source:(id)a6 listener:(id)a7 normalizationMode:(int)a8 targetLUFS:(double)a9 calibrationMode:(int)a10 calibrationLevel:(double)a11 audioSession:(id)a12 phaseQueue:(id)a13 callback:(id)a14
++ (void)eventWithEngine:(id)engine streamUUID:(id)d mixerDefinition:(id)definition source:(id)source listener:(id)listener normalizationMode:(int)mode targetLUFS:(double)s calibrationMode:(int)self0 calibrationLevel:(double)self1 audioSession:(id)self2 phaseQueue:(id)self3 callback:(id)self4
 {
-  v20 = a3;
-  v34 = a4;
-  v33 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v32 = v23;
-  v26 = [[REPHASESoundEvent alloc] initWithEngine:v20 source:v21 listener:v22 audioSession:v23 phaseQueue:v24];
+  engineCopy = engine;
+  dCopy = d;
+  definitionCopy = definition;
+  sourceCopy = source;
+  listenerCopy = listener;
+  sessionCopy = session;
+  queueCopy = queue;
+  callbackCopy = callback;
+  v32 = sessionCopy;
+  v26 = [[REPHASESoundEvent alloc] initWithEngine:engineCopy source:sourceCopy listener:listenerCopy audioSession:sessionCopy phaseQueue:queueCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __175__REPHASESoundEvent_eventWithEngine_streamUUID_mixerDefinition_source_listener_normalizationMode_targetLUFS_calibrationMode_calibrationLevel_audioSession_phaseQueue_callback___block_invoke;
   aBlock[3] = &unk_1E871B698;
   v27 = v26;
   v36 = v27;
-  v28 = v25;
+  v28 = callbackCopy;
   v37 = v28;
   v29 = _Block_copy(aBlock);
-  LODWORD(v30) = a10;
-  [REPHASESoundEvent controllerWithEngine:v20 streamUUID:v34 mixerDefinition:v33 source:v21 listener:v22 normalizationMode:a8 targetLUFS:a9 calibrationMode:a11 calibrationLevel:v30 callback:v29];
+  LODWORD(v30) = calibrationMode;
+  [REPHASESoundEvent controllerWithEngine:engineCopy streamUUID:dCopy mixerDefinition:definitionCopy source:sourceCopy listener:listenerCopy normalizationMode:mode targetLUFS:s calibrationMode:level calibrationLevel:v30 callback:v29];
 }
 
 void __175__REPHASESoundEvent_eventWithEngine_streamUUID_mixerDefinition_source_listener_normalizationMode_targetLUFS_calibrationMode_calibrationLevel_audioSession_phaseQueue_callback___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -362,21 +362,21 @@ void __175__REPHASESoundEvent_eventWithEngine_streamUUID_mixerDefinition_source_
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)eventWithEngine:(id)a3 streamUUID:(id)a4 maximumFramesToRender:(unsigned int)a5 audioFormat:(id)a6 audioUnit:(id)a7 renderBlock:(id)a8 mixerDefinition:(id)a9 source:(id)a10 listener:(id)a11 group:(id)a12 normalizationMode:(int)a13 calibrationMode:(int)a14 calibrationLevel:(double)a15 audioSession:(id)a16 phaseQueue:(id)a17 callback:(id)a18
++ (void)eventWithEngine:(id)engine streamUUID:(id)d maximumFramesToRender:(unsigned int)render audioFormat:(id)format audioUnit:(id)unit renderBlock:(id)block mixerDefinition:(id)definition source:(id)self0 listener:(id)self1 group:(id)self2 normalizationMode:(int)self3 calibrationMode:(int)self4 calibrationLevel:(double)self5 audioSession:(id)self6 phaseQueue:(id)self7 callback:(id)self8
 {
-  v22 = a3;
-  a4;
-  a6;
-  a7;
-  v23 = a8;
-  a9;
-  v24 = a10;
-  v25 = a11;
-  a12;
-  v26 = a16;
-  v27 = a17;
-  a18;
-  [[REPHASESoundEvent alloc] initWithEngine:v22 source:v24 listener:v25 audioSession:v26 phaseQueue:v27];
+  engineCopy = engine;
+  d;
+  format;
+  unit;
+  blockCopy = block;
+  definition;
+  sourceCopy = source;
+  listenerCopy = listener;
+  group;
+  sessionCopy = session;
+  queueCopy = queue;
+  callback;
+  [[REPHASESoundEvent alloc] initWithEngine:engineCopy source:sourceCopy listener:listenerCopy audioSession:sessionCopy phaseQueue:queueCopy];
   operator new();
 }
 
@@ -503,29 +503,29 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
   [(REPHASESoundEvent *)&v3 dealloc];
 }
 
-- (void)stream:(id)a3 didInvalidateWithError:(id)a4
+- (void)stream:(id)stream didInvalidateWithError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = *re::audioLogObjects(v4);
+  errorCopy = error;
+  v5 = *re::audioLogObjects(errorCopy);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_error_impl(&dword_1E1C61000, v5, OS_LOG_TYPE_ERROR, "Could not create PHASEExternalOutputStream: %@", &v6, 0xCu);
   }
 }
 
-- (unint64_t)changeToState:(unint64_t)a3
+- (unint64_t)changeToState:(unint64_t)state
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = atomic_load(&self->_state.__a_.__a_value);
   v6 = v5;
-  atomic_compare_exchange_strong(&self->_state, &v6, a3);
+  atomic_compare_exchange_strong(&self->_state, &v6, state);
   while (v6 != v5)
   {
     v5 = v6;
-    atomic_compare_exchange_strong(&self->_state, &v6, a3);
+    atomic_compare_exchange_strong(&self->_state, &v6, state);
   }
 
   v7 = *re::audioLogObjects(self);
@@ -534,7 +534,7 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
     re::audio::nameForPlaybackState(v5, v25);
     v19 = v26;
     v20 = v25[0];
-    re::audio::nameForPlaybackState(a3, __p);
+    re::audio::nameForPlaybackState(state, __p);
     v21 = v25;
     if (v19 < 0)
     {
@@ -569,10 +569,10 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
     }
   }
 
-  v8 = [(REPHASESoundEvent *)self playbackStateChangeHandler];
-  if (v8)
+  playbackStateChangeHandler = [(REPHASESoundEvent *)self playbackStateChangeHandler];
+  if (playbackStateChangeHandler)
   {
-    v9 = v5 == a3;
+    v9 = v5 == state;
   }
 
   else
@@ -584,11 +584,11 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
 
   if (v10)
   {
-    v11 = [(REPHASESoundEvent *)self playbackStateChangeHandler];
-    v11[2](v11, v5, a3);
+    playbackStateChangeHandler2 = [(REPHASESoundEvent *)self playbackStateChangeHandler];
+    playbackStateChangeHandler2[2](playbackStateChangeHandler2, v5, state);
   }
 
-  if (a3 == 1 && ![(REPHASESoundEvent *)self soundEventPlayed])
+  if (state == 1 && ![(REPHASESoundEvent *)self soundEventPlayed])
   {
     Instance = re::AudioManagerTelemetryReporter::getInstance([(REPHASESoundEvent *)self setSoundEventPlayed:1]);
     *block = MEMORY[0x1E69E9820];
@@ -614,22 +614,22 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
   return v5;
 }
 
-- (BOOL)changeFromExpectedState:(unint64_t)a3 toState:(unint64_t)a4
+- (BOOL)changeFromExpectedState:(unint64_t)state toState:(unint64_t)toState
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  atomic_compare_exchange_strong(&self->_state, &v7, a4);
-  v8 = v7 == a3;
-  v9 = *re::audioLogObjects(self);
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
+  stateCopy = state;
+  atomic_compare_exchange_strong(&self->_state, &stateCopy, toState);
+  v8 = stateCopy == state;
+  playbackStateChangeHandler2 = *re::audioLogObjects(self);
+  v10 = os_log_type_enabled(playbackStateChangeHandler2, OS_LOG_TYPE_DEBUG);
   if (!v8)
   {
     if (v10)
     {
-      re::audio::nameForPlaybackState(v7, v25);
+      re::audio::nameForPlaybackState(stateCopy, v25);
       v19 = v26;
       v20 = v25[0];
-      re::audio::nameForPlaybackState(a4, __p);
+      re::audio::nameForPlaybackState(toState, __p);
       v21 = v25;
       if (v19 < 0)
       {
@@ -647,12 +647,12 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
       }
 
       *buf = 138412802;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2080;
       v30 = v21;
       v31 = 2080;
       v32 = v22;
-      _os_log_debug_impl(&dword_1E1C61000, v9, OS_LOG_TYPE_DEBUG, "%@ state was not changed from expected state %s to %s", buf, 0x20u);
+      _os_log_debug_impl(&dword_1E1C61000, playbackStateChangeHandler2, OS_LOG_TYPE_DEBUG, "%@ state was not changed from expected state %s to %s", buf, 0x20u);
       if (v24 < 0)
       {
         operator delete(__p[0]);
@@ -669,10 +669,10 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
 
   if (v10)
   {
-    re::audio::nameForPlaybackState(a3, v25);
+    re::audio::nameForPlaybackState(state, v25);
     v15 = v26;
     v16 = v25[0];
-    re::audio::nameForPlaybackState(a4, __p);
+    re::audio::nameForPlaybackState(toState, __p);
     v17 = v25;
     if (v15 < 0)
     {
@@ -690,12 +690,12 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
     }
 
     *buf = 138412802;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2080;
     v30 = v17;
     v31 = 2080;
     v32 = v18;
-    _os_log_debug_impl(&dword_1E1C61000, v9, OS_LOG_TYPE_DEBUG, "%@ changed state from %s to %s", buf, 0x20u);
+    _os_log_debug_impl(&dword_1E1C61000, playbackStateChangeHandler2, OS_LOG_TYPE_DEBUG, "%@ changed state from %s to %s", buf, 0x20u);
     if (v24 < 0)
     {
       operator delete(__p[0]);
@@ -707,13 +707,13 @@ void __226__REPHASESoundEvent_eventWithEngine_streamUUID_maximumFramesToRender_a
     }
   }
 
-  v11 = [(REPHASESoundEvent *)self playbackStateChangeHandler];
-  v13 = a3 != a4 && v11 != 0;
+  playbackStateChangeHandler = [(REPHASESoundEvent *)self playbackStateChangeHandler];
+  v13 = state != toState && playbackStateChangeHandler != 0;
 
   if (v13)
   {
-    v9 = [(REPHASESoundEvent *)self playbackStateChangeHandler];
-    (v9[2].isa)(v9, a3, a4);
+    playbackStateChangeHandler2 = [(REPHASESoundEvent *)self playbackStateChangeHandler];
+    (playbackStateChangeHandler2[2].isa)(playbackStateChangeHandler2, state, toState);
 LABEL_12:
   }
 
@@ -727,7 +727,7 @@ LABEL_12:
   {
     if (self->_isGroupPlaybackEvent)
     {
-      v3 = [(REPHASESoundEvent *)self sourcePoses];
+      sourcePoses = [(REPHASESoundEvent *)self sourcePoses];
       v5 = *location;
       v6 = *&location[8];
       if (*location == *&location[8])
@@ -739,7 +739,7 @@ LABEL_12:
       v47 = v4;
       do
       {
-        v7 = *re::audioLogObjects(v3);
+        v7 = *re::audioLogObjects(sourcePoses);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v8 = *(self->_prepareState.__ptr_ + 3);
@@ -817,7 +817,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v10 = [(REPHASESoundEvent *)self sourcePoses];
+  sourcePoses2 = [(REPHASESoundEvent *)self sourcePoses];
   v5 = *location;
   v12 = *&location[8];
   if (*location == *&location[8])
@@ -829,7 +829,7 @@ LABEL_39:
   v47 = v11;
   do
   {
-    v13 = *re::audioLogObjects(v10);
+    v13 = *re::audioLogObjects(sourcePoses2);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = *(self->_prepareState.__ptr_ + 3);
@@ -860,8 +860,8 @@ LABEL_24:
   }
 
 LABEL_40:
-  v29 = [(REPHASESoundEvent *)self soundEvent];
-  v30 = v29 != 0;
+  soundEvent = [(REPHASESoundEvent *)self soundEvent];
+  v30 = soundEvent != 0;
 
   if (v30)
   {
@@ -888,10 +888,10 @@ LABEL_40:
     }
 
     objc_initWeak(location, self);
-    v31 = [(REPHASESoundEvent *)self soundEvent];
-    v32 = [v31 hash];
+    soundEvent2 = [(REPHASESoundEvent *)self soundEvent];
+    v32 = [soundEvent2 hash];
 
-    v33 = [(REPHASESoundEvent *)self soundEvent];
+    soundEvent3 = [(REPHASESoundEvent *)self soundEvent];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __27__REPHASESoundEvent__start__block_invoke;
@@ -899,20 +899,20 @@ LABEL_40:
     objc_copyWeak(v50, location);
     v50[1] = v32;
     v49[4] = self;
-    [v33 startWithCompletion:v49];
+    [soundEvent3 startWithCompletion:v49];
 
     objc_destroyWeak(v50);
     objc_destroyWeak(location);
   }
 
-  v34 = [(REPHASESoundEvent *)self externalStreamController];
+  externalStreamController = [(REPHASESoundEvent *)self externalStreamController];
   v35 = v30;
-  if (v34)
+  if (externalStreamController)
   {
 
-    v36 = [(REPHASESoundEvent *)self externalStreamController];
+    externalStreamController2 = [(REPHASESoundEvent *)self externalStreamController];
     v48 = 0;
-    v30 = [v36 startAndReturnError:&v48];
+    v30 = [externalStreamController2 startAndReturnError:&v48];
     v37 = v48;
 
     if ((v30 & 1) == 0)
@@ -931,14 +931,14 @@ LABEL_40:
     v35 = 1;
   }
 
-  v40 = [(REPHASESoundEvent *)self externalStream];
-  if (v40)
+  externalStream = [(REPHASESoundEvent *)self externalStream];
+  if (externalStream)
   {
 
     if ((v35 ^ 1 | v30))
     {
-      v41 = [(REPHASESoundEvent *)self externalStream];
-      [v41 resume];
+      externalStream2 = [(REPHASESoundEvent *)self externalStream];
+      [externalStream2 resume];
 
 LABEL_58:
       if (self->_stationaryTime.__engaged_)
@@ -947,10 +947,10 @@ LABEL_58:
       }
 
       [(REPHASESoundEvent *)self changeToState:1];
-      v42 = [(REPHASESoundEvent *)self observer];
+      observer = [(REPHASESoundEvent *)self observer];
       [(REPHASESoundEvent *)self prepareState];
       LODWORD(v43) = *(*location + 192);
-      [v42 soundDidStartOrResume:self withGain:v43];
+      [observer soundDidStartOrResume:self withGain:v43];
       if (*&location[8])
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](*&location[8]);
@@ -966,7 +966,7 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  v45 = *re::audioLogObjects(v40);
+  v45 = *re::audioLogObjects(externalStream);
   v44 = os_log_type_enabled(v45, OS_LOG_TYPE_ERROR);
   if (v44)
   {
@@ -1230,7 +1230,7 @@ void __27__REPHASESoundEvent__start__block_invoke_35(uint64_t a1, void *a2)
 
 - (BOOL)_resume
 {
-  v2 = self;
+  selfCopy = self;
   v23 = *MEMORY[0x1E69E9840];
   v3 = atomic_load(&self->_state.__a_.__a_value);
   if (v3 <= 2)
@@ -1252,7 +1252,7 @@ LABEL_20:
     v13 = *re::audioLogObjects(self);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(REPHASESoundEvent *)v2 prepareState];
+      [(REPHASESoundEvent *)selfCopy prepareState];
       v16 = *(v20 + 24);
       *buf = 134218240;
       *&buf[4] = v16;
@@ -1278,7 +1278,7 @@ LABEL_20:
         v14 = *re::audioLogObjects(self);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          [(REPHASESoundEvent *)v2 prepareState];
+          [(REPHASESoundEvent *)selfCopy prepareState];
           v18 = *(v20 + 24);
           *buf = 134218240;
           *&buf[4] = v18;
@@ -1291,7 +1291,7 @@ LABEL_20:
           }
         }
 
-        LOBYTE(self) = [(REPHASESoundEvent *)v2 _start];
+        LOBYTE(self) = [(REPHASESoundEvent *)selfCopy _start];
         return self & 1;
       }
 
@@ -1301,16 +1301,16 @@ LABEL_20:
       }
 
 LABEL_22:
-      v11 = *re::audioLogObjects(self);
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      observer = *re::audioLogObjects(self);
+      if (os_log_type_enabled(observer, OS_LOG_TYPE_DEBUG))
       {
-        [(REPHASESoundEvent *)v2 prepareState];
+        [(REPHASESoundEvent *)selfCopy prepareState];
         v17 = *(v20 + 24);
         *buf = 134218240;
         *&buf[4] = v17;
         *&buf[12] = 2048;
         *&buf[14] = v3;
-        _os_log_debug_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_DEBUG, "[RE/PHASE] [Resume] REPHASESoundEvent: playbackToken %llu, do nothing for redundant calls to resume, just report success. state %llu: ", buf, 0x16u);
+        _os_log_debug_impl(&dword_1E1C61000, observer, OS_LOG_TYPE_DEBUG, "[RE/PHASE] [Resume] REPHASESoundEvent: playbackToken %llu, do nothing for redundant calls to resume, just report success. state %llu: ", buf, 0x16u);
         if (v21)
         {
           std::__shared_weak_count::__release_shared[abi:nn200100](v21);
@@ -1329,7 +1329,7 @@ LABEL_6:
     v4 = *re::audioLogObjects(self);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(REPHASESoundEvent *)v2 prepareState];
+      [(REPHASESoundEvent *)selfCopy prepareState];
       v19 = *(v20 + 24);
       *buf = 134218240;
       *&buf[4] = v19;
@@ -1342,34 +1342,34 @@ LABEL_6:
       }
     }
 
-    v5 = [(REPHASESoundEvent *)v2 soundEvent];
-    v6 = v5 == 0;
+    soundEvent = [(REPHASESoundEvent *)selfCopy soundEvent];
+    v6 = soundEvent == 0;
 
     if (!v6)
     {
-      v7 = [(REPHASESoundEvent *)v2 soundEvent];
-      [v7 resume];
+      soundEvent2 = [(REPHASESoundEvent *)selfCopy soundEvent];
+      [soundEvent2 resume];
     }
 
-    v8 = [(REPHASESoundEvent *)v2 externalStream];
-    v9 = v8 == 0;
+    externalStream = [(REPHASESoundEvent *)selfCopy externalStream];
+    v9 = externalStream == 0;
 
     if (!v9)
     {
-      v10 = [(REPHASESoundEvent *)v2 externalStream];
-      [v10 resume];
+      externalStream2 = [(REPHASESoundEvent *)selfCopy externalStream];
+      [externalStream2 resume];
     }
 
-    if (v2->_stationaryTime.__engaged_)
+    if (selfCopy->_stationaryTime.__engaged_)
     {
-      v2->_stationaryTime.__engaged_ = 0;
+      selfCopy->_stationaryTime.__engaged_ = 0;
     }
 
-    [(REPHASESoundEvent *)v2 changeToState:1];
-    v11 = [(REPHASESoundEvent *)v2 observer];
-    [(REPHASESoundEvent *)v2 prepareState];
+    [(REPHASESoundEvent *)selfCopy changeToState:1];
+    observer = [(REPHASESoundEvent *)selfCopy observer];
+    [(REPHASESoundEvent *)selfCopy prepareState];
     LODWORD(v12) = *(*buf + 192);
-    [v11 soundDidStartOrResume:v2 withGain:v12];
+    [observer soundDidStartOrResume:selfCopy withGain:v12];
     if (*&buf[8])
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](*&buf[8]);
@@ -1393,25 +1393,25 @@ LABEL_23:
 
   if (v2 == 1)
   {
-    v4 = [(REPHASESoundEvent *)self soundEvent];
+    soundEvent = [(REPHASESoundEvent *)self soundEvent];
 
-    if (v4)
+    if (soundEvent)
     {
-      v5 = [(REPHASESoundEvent *)self soundEvent];
-      [v5 pause];
+      soundEvent2 = [(REPHASESoundEvent *)self soundEvent];
+      [soundEvent2 pause];
     }
 
-    v6 = [(REPHASESoundEvent *)self externalStream];
+    externalStream = [(REPHASESoundEvent *)self externalStream];
 
-    if (v6)
+    if (externalStream)
     {
-      v7 = [(REPHASESoundEvent *)self externalStream];
-      [v7 pause];
+      externalStream2 = [(REPHASESoundEvent *)self externalStream];
+      [externalStream2 pause];
     }
 
     [(REPHASESoundEvent *)self changeToState:3];
-    v8 = [(REPHASESoundEvent *)self observer];
-    [v8 soundDidPause:self];
+    observer = [(REPHASESoundEvent *)self observer];
+    [observer soundDidPause:self];
 
     return 1;
   }
@@ -1429,12 +1429,12 @@ LABEL_23:
     return v13;
   }
 
-  v5 = [(REPHASESoundEvent *)self soundEvent];
+  soundEvent = [(REPHASESoundEvent *)self soundEvent];
 
-  if (v5)
+  if (soundEvent)
   {
-    v7 = [(REPHASESoundEvent *)self soundEvent];
-    [v7 stopAndInvalidate];
+    soundEvent2 = [(REPHASESoundEvent *)self soundEvent];
+    [soundEvent2 stopAndInvalidate];
 
     [(REPHASESoundEvent *)self changeToState:0];
     soundEvent = self->_soundEvent;
@@ -1466,8 +1466,8 @@ LABEL_23:
 
     v12 = 0;
 LABEL_14:
-    v21 = [(REPHASESoundEvent *)self soundEvent];
-    v22 = v21 == 0;
+    soundEvent3 = [(REPHASESoundEvent *)self soundEvent];
+    v22 = soundEvent3 == 0;
 
     if (v22)
     {
@@ -1475,7 +1475,7 @@ LABEL_14:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v29 = self;
+        selfCopy = self;
         v30 = 2112;
         v31 = v12;
         _os_log_error_impl(&dword_1E1C61000, v24, OS_LOG_TYPE_ERROR, "[RE/PHASE] [stopAndRePrepare] %@ failed to re-create after completion, error: %@", buf, 0x16u);
@@ -1533,12 +1533,12 @@ void __38__REPHASESoundEvent__stopAndRePrepare__block_invoke(uint64_t a1, void *
 - (BOOL)_stopAndDestroy
 {
   atomic_store(1u, &self->_isStopping);
-  v3 = [(REPHASESoundEvent *)self soundEvent];
+  soundEvent = [(REPHASESoundEvent *)self soundEvent];
 
-  if (v3)
+  if (soundEvent)
   {
-    v4 = [(REPHASESoundEvent *)self soundEvent];
-    [v4 stopAndInvalidate];
+    soundEvent2 = [(REPHASESoundEvent *)self soundEvent];
+    [soundEvent2 stopAndInvalidate];
 
     soundEvent = self->_soundEvent;
     self->_soundEvent = 0;
@@ -1546,39 +1546,39 @@ void __38__REPHASESoundEvent__stopAndRePrepare__block_invoke(uint64_t a1, void *
 
   if (self->_soundEventAsset && *(self->_prepareState.__ptr_ + 7) != 1)
   {
-    v6 = [(PHASEEngine *)self->_engine assetRegistry];
-    v7 = [(PHASESoundEventNodeAsset *)self->_soundEventAsset identifier];
-    [v6 unregisterAssetWithIdentifier:v7 completion:0];
+    assetRegistry = [(PHASEEngine *)self->_engine assetRegistry];
+    identifier = [(PHASESoundEventNodeAsset *)self->_soundEventAsset identifier];
+    [assetRegistry unregisterAssetWithIdentifier:identifier completion:0];
   }
 
-  v8 = [(REPHASESoundEvent *)self externalStreamController];
+  externalStreamController = [(REPHASESoundEvent *)self externalStreamController];
 
-  if (v8)
+  if (externalStreamController)
   {
-    v9 = [(REPHASESoundEvent *)self externalStreamController];
-    [v9 stopAndInvalidate];
+    externalStreamController2 = [(REPHASESoundEvent *)self externalStreamController];
+    [externalStreamController2 stopAndInvalidate];
 
     externalStreamController = self->_externalStreamController;
     self->_externalStreamController = 0;
   }
 
-  v11 = [(REPHASESoundEvent *)self externalStream];
+  externalStream = [(REPHASESoundEvent *)self externalStream];
 
-  if (v11)
+  if (externalStream)
   {
-    v12 = [(REPHASESoundEvent *)self externalStream];
+    externalStream2 = [(REPHASESoundEvent *)self externalStream];
     v13 = objc_opt_respondsToSelector();
 
-    v14 = [(REPHASESoundEvent *)self externalStream];
-    v15 = v14;
+    externalStream3 = [(REPHASESoundEvent *)self externalStream];
+    v15 = externalStream3;
     if (v13)
     {
-      [v14 stopAndInvalidate];
+      [externalStream3 stopAndInvalidate];
     }
 
     else
     {
-      [v14 pause];
+      [externalStream3 pause];
     }
 
     externalStream = self->_externalStream;
@@ -1589,7 +1589,7 @@ void __38__REPHASESoundEvent__stopAndRePrepare__block_invoke(uint64_t a1, void *
   return 1;
 }
 
-- (BOOL)_seekToTime:(double)a3
+- (BOOL)_seekToTime:(double)time
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = atomic_load(&self->_state.__a_.__a_value);
@@ -1603,19 +1603,19 @@ void __38__REPHASESoundEvent__stopAndRePrepare__block_invoke(uint64_t a1, void *
     return 0;
   }
 
-  if (((1 << v5) & 0x18) == 0 || !self->_stationaryTime.__engaged_ || vabdd_f64(self->_stationaryTime.var0.__val_, a3) >= 0.0000208333333)
+  if (((1 << v5) & 0x18) == 0 || !self->_stationaryTime.__engaged_ || vabdd_f64(self->_stationaryTime.var0.__val_, time) >= 0.0000208333333)
   {
 LABEL_7:
-    v7 = [(REPHASESoundEvent *)self soundEvent];
+    soundEvent = [(REPHASESoundEvent *)self soundEvent];
 
-    if (v7)
+    if (soundEvent)
     {
       v9 = atomic_load(&self->_state.__a_.__a_value);
       if (v9 == 4 && (v8 = [(REPHASESoundEvent *)self isGroupPlaybackEvent], v8))
       {
         [(REPHASESoundEvent *)self _start];
-        v10 = [(REPHASESoundEvent *)self soundEvent];
-        [v10 pause];
+        soundEvent2 = [(REPHASESoundEvent *)self soundEvent];
+        [soundEvent2 pause];
 
         [(REPHASESoundEvent *)self changeToState:3];
       }
@@ -1626,24 +1626,24 @@ LABEL_7:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v17 = self;
+          selfCopy = self;
           v18 = 2048;
-          v19 = a3;
+          timeCopy = time;
           _os_log_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_INFO, "%@ seeking to %5.3f", buf, 0x16u);
         }
 
         v12 = [(REPHASESoundEvent *)self changeToState:12];
-        atomic_store(*&a3, &self->_latestSeekTarget);
+        atomic_store(*&time, &self->_latestSeekTarget);
         objc_initWeak(buf, self);
-        v13 = [(REPHASESoundEvent *)self soundEvent];
+        soundEvent3 = [(REPHASESoundEvent *)self soundEvent];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __33__REPHASESoundEvent__seekToTime___block_invoke;
         v14[3] = &unk_1E871B760;
         objc_copyWeak(v15, buf);
-        v15[1] = *&a3;
+        v15[1] = *&time;
         v15[2] = v12;
-        [v13 seekToTime:v14 completion:a3];
+        [soundEvent3 seekToTime:v14 completion:time];
 
         objc_destroyWeak(v15);
         objc_destroyWeak(buf);
@@ -1774,12 +1774,12 @@ LABEL_21:
 
 - (id)mixer
 {
-  v2 = [(PHASESoundEvent *)self->_soundEvent mixers];
-  v3 = [v2 allValues];
+  mixers = [(PHASESoundEvent *)self->_soundEvent mixers];
+  allValues = [mixers allValues];
 
-  if ([v3 count])
+  if ([allValues count])
   {
-    v4 = [v3 objectAtIndex:0];
+    v4 = [allValues objectAtIndex:0];
   }
 
   else
@@ -1864,39 +1864,39 @@ LABEL_21:
   }
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v3 = self;
+  selfCopy = self;
   v58 = *MEMORY[0x1E69E9840];
-  v52 = self;
-  v4 = a3;
-  v5 = [(REPHASESoundEvent *)v3 playbackStateChangeHandler];
+  selfCopy2 = self;
+  completionCopy = completion;
+  playbackStateChangeHandler = [(REPHASESoundEvent *)selfCopy playbackStateChangeHandler];
 
-  if (!v5)
+  if (!playbackStateChangeHandler)
   {
-    [(REPHASESoundEvent *)v3 prepareState];
-    [(REPHASESoundEvent *)v52 setPlaybackStateChangeHandler:*(buf.value + 320)];
+    [(REPHASESoundEvent *)selfCopy prepareState];
+    [(REPHASESoundEvent *)selfCopy2 setPlaybackStateChangeHandler:*(buf.value + 320)];
     if (*&buf.timescale)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](*&buf.timescale);
     }
 
-    v3 = v52;
+    selfCopy = selfCopy2;
   }
 
-  objc_initWeak(&location, v3);
-  v6 = [(REPHASESoundEvent *)v52 isGroupPlaybackEvent];
+  objc_initWeak(&location, selfCopy);
+  isGroupPlaybackEvent = [(REPHASESoundEvent *)selfCopy2 isGroupPlaybackEvent];
   v7 = re::internal::enableSignposts(0, 0);
-  if (v6)
+  if (isGroupPlaybackEvent)
   {
     if (!v7)
     {
       goto LABEL_15;
     }
 
-    [(REPHASESoundEvent *)v52 prepareState];
-    [(REPHASESoundEvent *)v52 prepareState];
-    [(NSString *)v52->_assetIdentifier longLongValue];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
+    [(NSString *)selfCopy2->_assetIdentifier longLongValue];
     kdebug_trace();
   }
 
@@ -1907,9 +1907,9 @@ LABEL_21:
       goto LABEL_15;
     }
 
-    [(REPHASESoundEvent *)v52 prepareState];
-    [(REPHASESoundEvent *)v52 prepareState];
-    [(REPHASESoundEvent *)v52 prepareState];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
     kdebug_trace();
     if (v57)
     {
@@ -1933,14 +1933,14 @@ LABEL_15:
   aBlock[2] = __43__REPHASESoundEvent_prepareWithCompletion___block_invoke;
   aBlock[3] = &unk_1E871B788;
   objc_copyWeak(&v50, &location);
-  aBlock[4] = v52;
-  v8 = v4;
+  aBlock[4] = selfCopy2;
+  v8 = completionCopy;
   v49 = v8;
   v9 = _Block_copy(aBlock);
-  v47 = &v52;
-  if ([(REPHASESoundEvent *)v52 isGroupPlaybackEvent])
+  v47 = &selfCopy2;
+  if ([(REPHASESoundEvent *)selfCopy2 isGroupPlaybackEvent])
   {
-    [(REPHASESoundEvent *)v52 prepareStates];
+    [(REPHASESoundEvent *)selfCopy2 prepareStates];
     epoch = buf.epoch;
     if (buf.epoch)
     {
@@ -1971,7 +1971,7 @@ LABEL_15:
 
   else
   {
-    [(REPHASESoundEvent *)v52 prepareState];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
     [REPHASESoundEvent prepareWithCompletion:]::$_0::operator()(&v47, v45);
     if (v46)
     {
@@ -1979,23 +1979,23 @@ LABEL_15:
     }
   }
 
-  [(REPHASESoundEvent *)v52 prepareState];
+  [(REPHASESoundEvent *)selfCopy2 prepareState];
   v12 = *(buf.value + 102);
   if (*&buf.timescale)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](*&buf.timescale);
   }
 
-  v13 = [(REPHASESoundEvent *)v52 soundEvent];
-  v14 = v13 == 0;
+  soundEvent = [(REPHASESoundEvent *)selfCopy2 soundEvent];
+  v14 = soundEvent == 0;
 
   if (!v14)
   {
-    [(REPHASESoundEvent *)v52 changeToState:10];
-    v15 = [(REPHASESoundEvent *)v52 soundEvent];
-    [v15 prepareWithCompletion:v9];
+    [(REPHASESoundEvent *)selfCopy2 changeToState:10];
+    soundEvent2 = [(REPHASESoundEvent *)selfCopy2 soundEvent];
+    [soundEvent2 prepareWithCompletion:v9];
 
-    [(REPHASESoundEvent *)v52 prepareState];
+    [(REPHASESoundEvent *)selfCopy2 prepareState];
     v56 = *(buf.value + 216);
     v16 = *(buf.value + 228);
     LODWORD(v57) = *(buf.value + 224);
@@ -2032,8 +2032,8 @@ LABEL_53:
     }
 
 LABEL_42:
-    v26 = v52;
-    std::recursive_mutex::lock(&v52->_commandQueueMutex);
+    v26 = selfCopy2;
+    std::recursive_mutex::lock(&selfCopy2->_commandQueueMutex);
     if (v18)
     {
       buf.value = v56;
@@ -2045,29 +2045,29 @@ LABEL_42:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf.value) = 138412546;
-        *(&buf.value + 4) = v52;
+        *(&buf.value + 4) = selfCopy2;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = Seconds;
         _os_log_impl(&dword_1E1C61000, v29, OS_LOG_TYPE_DEFAULT, "%@ seeking to initial target %0.2f", &buf, 0x16u);
       }
 
-      v30 = v52;
-      atomic_store(*&Seconds, &v52->_latestSeekTarget);
-      v31 = [(REPHASESoundEvent *)v30 soundEvent];
+      v30 = selfCopy2;
+      atomic_store(*&Seconds, &selfCopy2->_latestSeekTarget);
+      soundEvent3 = [(REPHASESoundEvent *)v30 soundEvent];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __43__REPHASESoundEvent_prepareWithCompletion___block_invoke_44;
       v41[3] = &unk_1E871B7B0;
       objc_copyWeak(v42, &location);
       v42[1] = *&Seconds;
-      [v31 seekToTime:v41 completion:Seconds];
+      [soundEvent3 seekToTime:v41 completion:Seconds];
 
       objc_destroyWeak(v42);
     }
 
     if (v12)
     {
-      [(REPHASESoundEvent *)v52 prepareState];
+      [(REPHASESoundEvent *)selfCopy2 prepareState];
       v32 = *&buf.timescale;
       *(buf.value + 102) = 0;
       if (v32)
@@ -2079,24 +2079,24 @@ LABEL_42:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf.value) = 138412290;
-        *(&buf.value + 4) = v52;
+        *(&buf.value + 4) = selfCopy2;
         _os_log_impl(&dword_1E1C61000, v33, OS_LOG_TYPE_DEFAULT, "%@ force start", &buf, 0xCu);
       }
 
-      [(REPHASESoundEvent *)v52 _start];
+      [(REPHASESoundEvent *)selfCopy2 _start];
     }
 
     std::recursive_mutex::unlock(&v26->_commandQueueMutex);
     goto LABEL_53;
   }
 
-  v19 = [(REPHASESoundEvent *)v52 externalStreamController];
+  externalStreamController = [(REPHASESoundEvent *)selfCopy2 externalStreamController];
 
-  if (v19)
+  if (externalStreamController)
   {
-    v20 = [(REPHASESoundEvent *)v52 externalStreamController];
+    externalStreamController2 = [(REPHASESoundEvent *)selfCopy2 externalStreamController];
     v40 = 0;
-    v21 = [v20 prepareAndReturnError:&v40];
+    v21 = [externalStreamController2 prepareAndReturnError:&v40];
     v22 = v40;
 
     if (!v21)
@@ -2104,7 +2104,7 @@ LABEL_42:
       v36 = *re::audioLogObjects(v23);
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        [(REPHASESoundEvent *)v52 prepareState];
+        [(REPHASESoundEvent *)selfCopy2 prepareState];
         v39 = *(time2.value + 24);
         LODWORD(buf.value) = 134218242;
         *(&buf.value + 4) = v39;
@@ -2123,7 +2123,7 @@ LABEL_42:
 
     if (v12)
     {
-      [(REPHASESoundEvent *)v52 prepareState];
+      [(REPHASESoundEvent *)selfCopy2 prepareState];
       v24 = *&buf.timescale;
       *(buf.value + 102) = 0;
       if (v24)
@@ -2135,11 +2135,11 @@ LABEL_42:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf.value) = 138412290;
-        *(&buf.value + 4) = v52;
+        *(&buf.value + 4) = selfCopy2;
         _os_log_impl(&dword_1E1C61000, v25, OS_LOG_TYPE_DEFAULT, "%@ force start", &buf, 0xCu);
       }
 
-      [(REPHASESoundEvent *)v52 _start];
+      [(REPHASESoundEvent *)selfCopy2 _start];
     }
   }
 
@@ -2148,21 +2148,21 @@ LABEL_42:
     v22 = 0;
   }
 
-  v34 = [(REPHASESoundEvent *)v52 externalStream];
-  v35 = v34 == 0;
+  externalStream = [(REPHASESoundEvent *)selfCopy2 externalStream];
+  v35 = externalStream == 0;
 
   if (!v35)
   {
-    [(REPHASESoundEvent *)v52 changeToState:4];
-    [(REPHASESoundEvent *)v52 updateCommandQueue];
+    [(REPHASESoundEvent *)selfCopy2 changeToState:4];
+    [(REPHASESoundEvent *)selfCopy2 updateCommandQueue];
 LABEL_60:
-    [(REPHASESoundEvent *)v52 changeToState:4];
-    [(REPHASESoundEvent *)v52 updateCommandQueue];
+    [(REPHASESoundEvent *)selfCopy2 changeToState:4];
+    [(REPHASESoundEvent *)selfCopy2 updateCommandQueue];
     (*(v8 + 2))(v8, 0);
     goto LABEL_61;
   }
 
-  if (v19)
+  if (externalStreamController)
   {
     goto LABEL_60;
   }
@@ -2301,14 +2301,14 @@ LABEL_28:
 - (void)prepareWithCompletion:
 {
   v30 = *MEMORY[0x1E69E9840];
-  [**a1 prepareState];
+  [**self prepareState];
   v4 = __exp10f(*(*v21 + 180) / 20.0);
   if (*&v21[8])
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](*&v21[8]);
   }
 
-  [**a1 prepareState];
+  [**self prepareState];
   v5 = __exp10f(*(*v21 + 184) / 20.0);
   v6 = *&v21[8];
   if (*&v21[8])
@@ -2339,31 +2339,31 @@ LABEL_28:
     _os_log_impl(&dword_1E1C61000, v7, OS_LOG_TYPE_DEFAULT, "[RE/PHASE] [Prepare] REPHASESoundEvent preparing with gain=%.2f, reverb=%.2f, direct=%.2f, rate=%.2f for token=%llu, assetID=%llu", v21, 0x3Eu);
   }
 
-  v13 = [**a1 paramForKey:*(*a2 + 336)];
+  v13 = [**self paramForKey:*(*a2 + 336)];
   if (v13)
   {
     LODWORD(v14) = *(*a2 + 180);
-    [**a1 setCachedReverbSendLevel:v14];
+    [**self setCachedReverbSendLevel:v14];
     [v13 fadeToValue:v8 duration:0.0];
   }
 
-  v15 = [**a1 paramForKey:*(*a2 + 344)];
+  v15 = [**self paramForKey:*(*a2 + 344)];
   if (v15)
   {
     LODWORD(v16) = *(*a2 + 184);
-    [**a1 setCachedDirectSendLevel:v16];
+    [**self setCachedDirectSendLevel:v16];
     [v15 fadeToValue:v5 duration:0.0];
   }
 
-  v17 = [**a1 paramForKey:@"rate"];
+  v17 = [**self paramForKey:@"rate"];
   if (v17)
   {
     LODWORD(v18) = *(*a2 + 188);
-    [**a1 setCachedPlaybackSpeed:v18];
+    [**self setCachedPlaybackSpeed:v18];
     [v17 fadeToValue:*(*a2 + 188) duration:0.0];
   }
 
-  v19 = [**a1 paramForKey:*(*a2 + 352)];
+  v19 = [**self paramForKey:*(*a2 + 352)];
   v20 = v19;
   if (v19)
   {
@@ -2437,13 +2437,13 @@ void __43__REPHASESoundEvent_prepareWithCompletion___block_invoke_44(uint64_t a1
   std::recursive_mutex::unlock(&self->_commandQueueMutex);
 }
 
-- (BOOL)seekToTime:(double)a3
+- (BOOL)seekToTime:(double)time
 {
-  v3 = a3;
-  if (a3 < 0.0)
+  timeCopy = time;
+  if (time < 0.0)
   {
     v5 = *re::audioLogObjects(self);
-    v3 = 0.0;
+    timeCopy = 0.0;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -2482,19 +2482,19 @@ void __43__REPHASESoundEvent_prepareWithCompletion___block_invoke_44(uint64_t a1
 
   v11 = *(begin + ((v10 >> 5) & 0x7FFFFFFFFFFFFF8)) + 16 * v10;
   *v11 = 2;
-  *(v11 + 8) = v3;
+  *(v11 + 8) = timeCopy;
   self->_commandQueue.c.__size_ = size + 1;
   [(REPHASESoundEvent *)self _updateCommandQueue];
   std::recursive_mutex::unlock(&self->_commandQueueMutex);
   return 1;
 }
 
-- (id)paramForKey:(id)a3
+- (id)paramForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REPHASESoundEvent *)self soundEvent];
+  keyCopy = key;
+  soundEvent = [(REPHASESoundEvent *)self soundEvent];
 
-  if (v5)
+  if (soundEvent)
   {
     [(REPHASESoundEvent *)self soundEvent];
   }
@@ -2504,29 +2504,29 @@ void __43__REPHASESoundEvent_prepareWithCompletion___block_invoke_44(uint64_t a1
     [(REPHASESoundEvent *)self externalStreamController];
   }
   v6 = ;
-  v7 = [v6 metaParameters];
-  v8 = [v7 objectForKey:v4];
+  metaParameters = [v6 metaParameters];
+  v8 = [metaParameters objectForKey:keyCopy];
 
   return v8;
 }
 
 - (id)description
 {
-  v3 = [(REPHASESoundEvent *)self externalStream];
-  if (v3)
+  externalStream = [(REPHASESoundEvent *)self externalStream];
+  if (externalStream)
   {
-    v4 = v3;
-    v5 = [(REPHASESoundEvent *)self externalStreamController];
+    v4 = externalStream;
+    externalStreamController = [(REPHASESoundEvent *)self externalStreamController];
 
-    if (v5)
+    if (externalStreamController)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(REPHASESoundEvent *)self externalStream];
-      v8 = [(REPHASESoundEvent *)self externalStreamController];
+      externalStream2 = [(REPHASESoundEvent *)self externalStream];
+      externalStreamController2 = [(REPHASESoundEvent *)self externalStreamController];
       [(REPHASESoundEvent *)self prepareState];
       v9 = *(v19 + 24);
       [(REPHASESoundEvent *)self prepareState];
-      v10 = [v6 stringWithFormat:@"<REPHASESoundEvent: %p, stream=%@, controller=%@, token=%llu, assetID=%llu>", self, v7, v8, v9, *(v17 + 64)];
+      v10 = [v6 stringWithFormat:@"<REPHASESoundEvent: %p, stream=%@, controller=%@, token=%llu, assetID=%llu>", self, externalStream2, externalStreamController2, v9, *(v17 + 64)];
       if (v18)
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](v18);
@@ -2541,29 +2541,29 @@ void __43__REPHASESoundEvent_prepareWithCompletion___block_invoke_44(uint64_t a1
     }
   }
 
-  v11 = [(REPHASESoundEvent *)self soundEvent];
+  soundEvent = [(REPHASESoundEvent *)self soundEvent];
 
-  if (v11)
+  if (soundEvent)
   {
-    v12 = [(REPHASESoundEvent *)self soundEvent];
+    soundEvent2 = [(REPHASESoundEvent *)self soundEvent];
 LABEL_14:
-    v7 = v12;
+    externalStream2 = soundEvent2;
     goto LABEL_15;
   }
 
-  v13 = [(REPHASESoundEvent *)self externalStreamController];
+  externalStreamController3 = [(REPHASESoundEvent *)self externalStreamController];
 
-  if (v13)
+  if (externalStreamController3)
   {
-    v12 = [(REPHASESoundEvent *)self externalStreamController];
+    soundEvent2 = [(REPHASESoundEvent *)self externalStreamController];
     goto LABEL_14;
   }
 
-  v7 = [(REPHASESoundEvent *)self externalStream];
+  externalStream2 = [(REPHASESoundEvent *)self externalStream];
 
-  if (v7)
+  if (externalStream2)
   {
-    v12 = [(REPHASESoundEvent *)self externalStream];
+    soundEvent2 = [(REPHASESoundEvent *)self externalStream];
     goto LABEL_14;
   }
 
@@ -2572,7 +2572,7 @@ LABEL_15:
   [(REPHASESoundEvent *)self prepareState];
   v15 = *(v19 + 24);
   [(REPHASESoundEvent *)self prepareState];
-  v10 = [v14 stringWithFormat:@"<REPHASESoundEvent: %p, object=%@, token=%llu, assetID=%llu>", self, v7, v15, *(v17 + 64)];
+  v10 = [v14 stringWithFormat:@"<REPHASESoundEvent: %p, object=%@, token=%llu, assetID=%llu>", self, externalStream2, v15, *(v17 + 64)];
   if (v18)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v18);
@@ -2590,7 +2590,7 @@ LABEL_19:
 
 - (double)sourcePose
 {
-  v1 = *(a1 + 80);
+  v1 = *(self + 80);
   if (!v1)
   {
     return 0.0;
@@ -2643,10 +2643,10 @@ LABEL_19:
   return result;
 }
 
-- (void)setPrepareState:(shared_ptr<re::audio::REPHASESoundPrepareState>)a3
+- (void)setPrepareState:(shared_ptr<re::audio::REPHASESoundPrepareState>)state
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *state.__ptr_;
+  v3 = *(state.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

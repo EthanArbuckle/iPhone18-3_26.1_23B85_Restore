@@ -1,23 +1,23 @@
 @interface CDMLVCRequestCommand
-- (CDMLVCRequestCommand)initWithParserRequest:(id)a3 rewriteMsg:(id)a4 overridesInputs:(id)a5;
+- (CDMLVCRequestCommand)initWithParserRequest:(id)request rewriteMsg:(id)msg overridesInputs:(id)inputs;
 @end
 
 @implementation CDMLVCRequestCommand
 
-- (CDMLVCRequestCommand)initWithParserRequest:(id)a3 rewriteMsg:(id)a4 overridesInputs:(id)a5
+- (CDMLVCRequestCommand)initWithParserRequest:(id)request rewriteMsg:(id)msg overridesInputs:(id)inputs
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  msgCopy = msg;
+  inputsCopy = inputs;
   v15.receiver = self;
   v15.super_class = CDMLVCRequestCommand;
   v12 = [(CDMBaseCommand *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_parserRequest, a3);
-    objc_storeStrong(&v13->_rewriteMsg, a4);
-    objc_storeStrong(&v13->_overridesInputs, a5);
+    objc_storeStrong(&v12->_parserRequest, request);
+    objc_storeStrong(&v13->_rewriteMsg, msg);
+    objc_storeStrong(&v13->_overridesInputs, inputs);
   }
 
   return v13;

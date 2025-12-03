@@ -1,6 +1,6 @@
 @interface FriendsFeedPresenter
-- (_TtC12GameCenterUI20FriendsFeedPresenter)initWithPlayerId:(id)a3;
-- (void)loadMoreActivityFeedWithContinuationToken:(id)a3;
+- (_TtC12GameCenterUI20FriendsFeedPresenter)initWithPlayerId:(id)id;
+- (void)loadMoreActivityFeedWithContinuationToken:(id)token;
 - (void)updateSnapshot;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)updateSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E063D54();
 }
 
-- (void)loadMoreActivityFeedWithContinuationToken:(id)a3
+- (void)loadMoreActivityFeedWithContinuationToken:(id)token
 {
   sub_24E347CF8();
-  v4 = self;
+  selfCopy = self;
   sub_24E064158();
 }
 
-- (_TtC12GameCenterUI20FriendsFeedPresenter)initWithPlayerId:(id)a3
+- (_TtC12GameCenterUI20FriendsFeedPresenter)initWithPlayerId:(id)id
 {
-  if (a3)
+  if (id)
   {
     sub_24E347CF8();
   }

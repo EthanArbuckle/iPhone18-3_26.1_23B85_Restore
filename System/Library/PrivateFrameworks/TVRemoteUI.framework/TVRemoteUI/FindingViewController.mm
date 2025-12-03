@@ -1,100 +1,100 @@
 @interface FindingViewController
 - (void)dealloc;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4;
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6;
-- (void)sessionDidStartRunning:(id)a3;
-- (void)sessionSuspensionEnded:(id)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects;
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
+- (void)sessionDidStartRunning:(id)running;
+- (void)sessionSuspensionEnded:(id)ended;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation FindingViewController
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FindingViewController.findingView.getter();
   FMPFView.tearDown()();
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for FindingViewController();
   [(FindingViewController *)&v4 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   FindingViewController.viewDidLoad()();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  FindingViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  FindingViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  FindingViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  FindingViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   FMFindingSleepPreventer.disableSleepingForAWhileWhileFinding()();
 }
 
-- (void)sessionDidStartRunning:(id)a3
+- (void)sessionDidStartRunning:(id)running
 {
-  v4 = a3;
-  v5 = self;
+  runningCopy = running;
+  selfCopy = self;
   specialized FindingViewController.sessionDidStartRunning(_:)();
 }
 
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects
 {
   type metadata accessor for SKConstraint(0, &lazy cache variable for type metadata for NINearbyObject);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   specialized FindingViewController.session(_:didUpdate:)(v6);
 }
 
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  specialized FindingViewController.session(_:object:didUpdateRegion:previousRegion:)(a5, a6);
+  sessionCopy = session;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
+  selfCopy = self;
+  specialized FindingViewController.session(_:object:didUpdateRegion:previousRegion:)(region, previousRegion);
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  specialized FindingViewController.session(_:didInvalidateWith:)(v8, "NISession was invalidated (%@)");
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  specialized FindingViewController.session(_:didInvalidateWith:)(errorCopy, "NISession was invalidated (%@)");
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  specialized FindingViewController.session(_:didInvalidateWith:)(v8, "NISession failed with error (%@)");
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  specialized FindingViewController.session(_:didInvalidateWith:)(errorCopy, "NISession failed with error (%@)");
 }
 
-- (void)sessionSuspensionEnded:(id)a3
+- (void)sessionSuspensionEnded:(id)ended
 {
-  v4 = a3;
-  v5 = self;
+  endedCopy = ended;
+  selfCopy = self;
   specialized FindingViewController.sessionSuspensionEnded(_:)();
 }
 

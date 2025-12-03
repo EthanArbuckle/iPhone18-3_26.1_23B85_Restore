@@ -1,9 +1,9 @@
 @interface _MKLabelMarkerItem
-+ (id)labelMarkerItemWithLabelMarker:(id)a3;
++ (id)labelMarkerItemWithLabelMarker:(id)marker;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
 - (BOOL)_hasVenueFeatureType;
 - (BOOL)_isTransitDisplayFeature;
-- (_MKLabelMarkerItem)initWithLabelMarker:(id)a3;
+- (_MKLabelMarkerItem)initWithLabelMarker:(id)marker;
 - (id)_identifier;
 - (id)_place;
 - (id)_venueInfo;
@@ -17,12 +17,12 @@
 {
   [(_MKLabelMarkerItem *)self coordinate];
   v5 = [objc_alloc(MEMORY[0x1E69A2348]) initWithLatitude:v3 longitude:v4];
-  v6 = [(_MKLabelMarkerItem *)self name];
-  [v5 setName:v6];
+  name = [(_MKLabelMarkerItem *)self name];
+  [v5 setName:name];
 
   v7 = objc_alloc_init(MEMORY[0x1E69A1BA8]);
-  v8 = [(_MKLabelMarkerItem *)self name];
-  [v7 setName:v8];
+  name2 = [(_MKLabelMarkerItem *)self name];
+  [v7 setName:name2];
 
   [v7 setUID:{-[_MKLabelMarkerItem _muid](self, "_muid")}];
   [v5 addBusiness:v7];
@@ -32,23 +32,23 @@
 
 - (int)_venueFeatureType
 {
-  v3 = [(_MKLabelMarkerItem *)self _venueInfo];
+  _venueInfo = [(_MKLabelMarkerItem *)self _venueInfo];
 
-  if (!v3)
+  if (!_venueInfo)
   {
     return 0;
   }
 
-  v4 = [(_MKLabelMarkerItem *)self _venueInfo];
-  v5 = [v4 venueFeatureType];
+  _venueInfo2 = [(_MKLabelMarkerItem *)self _venueInfo];
+  venueFeatureType = [_venueInfo2 venueFeatureType];
 
-  return v5;
+  return venueFeatureType;
 }
 
 - (BOOL)_hasVenueFeatureType
 {
-  v2 = [(_MKLabelMarkerItem *)self _venueInfo];
-  v3 = v2 != 0;
+  _venueInfo = [(_MKLabelMarkerItem *)self _venueInfo];
+  v3 = _venueInfo != 0;
 
   return v3;
 }
@@ -63,12 +63,12 @@
       if ([(VKLabelMarker *)self->_labelMarker venueLevelID])
       {
         v3 = [objc_alloc(MEMORY[0x1E69A2750]) initWithOrdinal:-[VKLabelMarker venueFloorOrdinal](self->_labelMarker levelID:{"venueFloorOrdinal"), -[VKLabelMarker venueLevelID](self->_labelMarker, "venueLevelID")}];
-        v4 = [(VKLabelMarker *)self->_labelMarker venueComponentID];
+        venueComponentID = [(VKLabelMarker *)self->_labelMarker venueComponentID];
         v5 = objc_alloc(MEMORY[0x1E69A2748]);
-        v6 = [(VKLabelMarker *)self->_labelMarker venueBuildingID];
-        if (v4)
+        venueBuildingID = [(VKLabelMarker *)self->_labelMarker venueBuildingID];
+        if (venueComponentID)
         {
-          v7 = [v5 initWithBuildingID:v6 floorInfo:v3 unitID:{-[VKLabelMarker venueComponentID](self->_labelMarker, "venueComponentID")}];
+          v7 = [v5 initWithBuildingID:venueBuildingID floorInfo:v3 unitID:{-[VKLabelMarker venueComponentID](self->_labelMarker, "venueComponentID")}];
           v17[0] = v7;
           v8 = 4;
           v9 = v17;
@@ -76,7 +76,7 @@
 
         else
         {
-          v7 = [v5 initWithBuildingID:v6 floorInfo:v3];
+          v7 = [v5 initWithBuildingID:venueBuildingID floorInfo:v3];
           v16 = v7;
           v8 = 3;
           v9 = &v16;
@@ -188,26 +188,26 @@
   }
 }
 
-- (_MKLabelMarkerItem)initWithLabelMarker:(id)a3
+- (_MKLabelMarkerItem)initWithLabelMarker:(id)marker
 {
-  v5 = a3;
+  markerCopy = marker;
   v10.receiver = self;
   v10.super_class = _MKLabelMarkerItem;
   v6 = [(_MKLabelMarkerItem *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_labelMarker, a3);
+    objc_storeStrong(&v6->_labelMarker, marker);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)labelMarkerItemWithLabelMarker:(id)a3
++ (id)labelMarkerItemWithLabelMarker:(id)marker
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithLabelMarker:v3];
+  markerCopy = marker;
+  v4 = [objc_alloc(objc_opt_class()) initWithLabelMarker:markerCopy];
 
   return v4;
 }

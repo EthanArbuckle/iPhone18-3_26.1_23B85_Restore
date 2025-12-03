@@ -1,19 +1,19 @@
 @interface SAPAStyleFanSpeed
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
 @end
 
 @implementation SAPAStyleFanSpeed
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleFanSpeed" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleFanSpeed" userInfo:0];
   objc_exception_throw(v3);
@@ -25,15 +25,15 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (!a3)
+  if (!buffer)
   {
     v9 = @"NULL serializedFanSpeed";
     goto LABEL_6;
   }
 
-  if (*a3 != 4205488804)
+  if (*buffer != 4205488804)
   {
     v9 = @"Bad PAFanSpeed magic";
 LABEL_6:
@@ -42,7 +42,7 @@ LABEL_6:
   }
 
   v5 = objc_alloc_init(SAPAStyleFanSpeed);
-  v6 = [SAFanSpeed fanSpeedWithPAStyleSerializedFanSpeed:a3];
+  v6 = [SAFanSpeed fanSpeedWithPAStyleSerializedFanSpeed:buffer];
   fanSpeed = v5->_fanSpeed;
   v5->_fanSpeed = v6;
 

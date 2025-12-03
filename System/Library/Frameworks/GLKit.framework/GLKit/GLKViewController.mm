@@ -1,22 +1,22 @@
 @interface GLKViewController
 - (GLKViewController)init;
-- (GLKViewController)initWithCoder:(id)a3;
-- (GLKViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (GLKViewController)initWithCoder:(id)coder;
+- (GLKViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSTimeInterval)timeSinceFirstResume;
 - (NSTimeInterval)timeSinceLastResume;
-- (int64_t)_calculateScreenFramesPerSecond:(id)a3;
+- (int64_t)_calculateScreenFramesPerSecond:(id)second;
 - (void)_configureNotifications;
-- (void)_createDisplayLinkForScreen:(id)a3;
+- (void)_createDisplayLinkForScreen:(id)screen;
 - (void)_initCommon;
 - (void)_pauseByNotification;
 - (void)_resumeByNotification;
 - (void)_updateAndDraw;
 - (void)_updateScreenIfChanged;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadView;
 - (void)setPreferredFramesPerSecond:(NSInteger)preferredFramesPerSecond;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 - (void)viewDidUnload;
 @end
 
@@ -24,10 +24,10 @@
 
 - (void)_initCommon
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__updateScreenIfChanged name:*MEMORY[0x277D77290] object:0];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__updateScreenIfChanged name:*MEMORY[0x277D76EA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateScreenIfChanged name:*MEMORY[0x277D77290] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__updateScreenIfChanged name:*MEMORY[0x277D76EA8] object:0];
   self->_pauseOnWillResignActive = 1;
   self->_resumeOnDidBecomeActive = 1;
   self->_screenFramesPerSecond = -[GLKViewController _calculateScreenFramesPerSecond:](self, "_calculateScreenFramesPerSecond:", [MEMORY[0x277D759A0] mainScreen]);
@@ -56,11 +56,11 @@
   return v3;
 }
 
-- (GLKViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GLKViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = GLKViewController;
-  v4 = [(GLKViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(GLKViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -71,7 +71,7 @@
   return v5;
 }
 
-- (GLKViewController)initWithCoder:(id)a3
+- (GLKViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GLKViewController;
@@ -80,19 +80,19 @@
   if (v4)
   {
     [(GLKViewController *)v4 _initCommon];
-    if ([a3 containsValueForKey:@"GLKViewControllerPreferredFramesPerSecondCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewControllerPreferredFramesPerSecondCoderKey"])
     {
-      -[GLKViewController setPreferredFramesPerSecond:](v5, "setPreferredFramesPerSecond:", [a3 decodeIntegerForKey:@"GLKViewControllerPreferredFramesPerSecondCoderKey"]);
+      -[GLKViewController setPreferredFramesPerSecond:](v5, "setPreferredFramesPerSecond:", [coder decodeIntegerForKey:@"GLKViewControllerPreferredFramesPerSecondCoderKey"]);
     }
 
-    if ([a3 containsValueForKey:@"GLKViewControllerPauseOnWillResignActiveCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewControllerPauseOnWillResignActiveCoderKey"])
     {
-      v5->_pauseOnWillResignActive = [a3 decodeBoolForKey:@"GLKViewControllerPauseOnWillResignActiveCoderKey"];
+      v5->_pauseOnWillResignActive = [coder decodeBoolForKey:@"GLKViewControllerPauseOnWillResignActiveCoderKey"];
     }
 
-    if ([a3 containsValueForKey:@"GLKViewControllerResumeOnDidBecomeActiveCoderKey"])
+    if ([coder containsValueForKey:@"GLKViewControllerResumeOnDidBecomeActiveCoderKey"])
     {
-      v5->_resumeOnDidBecomeActive = [a3 decodeBoolForKey:@"GLKViewControllerResumeOnDidBecomeActiveCoderKey"];
+      v5->_resumeOnDidBecomeActive = [coder decodeBoolForKey:@"GLKViewControllerResumeOnDidBecomeActiveCoderKey"];
     }
 
     [(GLKViewController *)v5 _configureNotifications];
@@ -101,14 +101,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GLKViewController;
   [(GLKViewController *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:self->_preferredFramesPerSecond forKey:@"GLKViewControllerPreferredFramesPerSecondCoderKey"];
-  [a3 encodeBool:self->_pauseOnWillResignActive forKey:@"GLKViewControllerPauseOnWillResignActiveCoderKey"];
-  [a3 encodeBool:self->_resumeOnDidBecomeActive forKey:@"GLKViewControllerResumeOnDidBecomeActiveCoderKey"];
+  [coder encodeInteger:self->_preferredFramesPerSecond forKey:@"GLKViewControllerPreferredFramesPerSecondCoderKey"];
+  [coder encodeBool:self->_pauseOnWillResignActive forKey:@"GLKViewControllerPauseOnWillResignActiveCoderKey"];
+  [coder encodeBool:self->_resumeOnDidBecomeActive forKey:@"GLKViewControllerResumeOnDidBecomeActiveCoderKey"];
 }
 
 - (void)dealloc
@@ -129,16 +129,16 @@
 
 - (void)_configureNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   if (self->_pauseOnWillResignActive)
   {
-    [v3 addObserver:self selector:sel__pauseByNotification name:*MEMORY[0x277D76768] object:0];
+    [defaultCenter addObserver:self selector:sel__pauseByNotification name:*MEMORY[0x277D76768] object:0];
   }
 
   else
   {
-    [v3 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
   }
 
   if (self->_resumeOnDidBecomeActive)
@@ -156,9 +156,9 @@
   }
 }
 
-- (int64_t)_calculateScreenFramesPerSecond:(id)a3
+- (int64_t)_calculateScreenFramesPerSecond:(id)second
 {
-  [a3 _refreshRate];
+  [second _refreshRate];
   if (v3 == 0.0)
   {
     return 60;
@@ -170,26 +170,26 @@
   }
 }
 
-- (void)_createDisplayLinkForScreen:(id)a3
+- (void)_createDisplayLinkForScreen:(id)screen
 {
   [(CADisplayLink *)self->_displayLink invalidate];
 
-  v5 = [a3 displayLinkWithTarget:self->_displayLinkMessenger selector:sel_message];
+  v5 = [screen displayLinkWithTarget:self->_displayLinkMessenger selector:sel_message];
   self->_displayLink = v5;
   [(CADisplayLink *)v5 setPaused:self->_displayLinkPaused];
   [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:self->_preferredFramesPerSecond];
-  LODWORD(a3) = glkLinkedOSVersion();
+  LODWORD(screen) = glkLinkedOSVersion();
   displayLink = self->_displayLink;
-  v7 = [MEMORY[0x277CBEB88] currentRunLoop];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
   v8 = MEMORY[0x277CBE738];
-  if (a3 <= 0x90000)
+  if (screen <= 0x90000)
   {
     v8 = MEMORY[0x277CBE640];
   }
 
   v9 = *v8;
 
-  [(CADisplayLink *)displayLink addToRunLoop:v7 forMode:v9];
+  [(CADisplayLink *)displayLink addToRunLoop:currentRunLoop forMode:v9];
 }
 
 - (void)_updateAndDraw
@@ -265,12 +265,12 @@
 - (void)_pauseByNotification
 {
   [(GLKViewController *)self setPaused:1];
-  v3 = [(GLKViewController *)self _existingView];
+  _existingView = [(GLKViewController *)self _existingView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    [v3 deleteDrawable];
+    [_existingView deleteDrawable];
   }
 }
 
@@ -306,13 +306,13 @@
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  if ([(GLKViewController *)self _existingView]!= a3)
+  if ([(GLKViewController *)self _existingView]!= view)
   {
     v5.receiver = self;
     v5.super_class = GLKViewController;
-    [(GLKViewController *)&v5 setView:a3];
+    [(GLKViewController *)&v5 setView:view];
     [(GLKViewController *)self _existingView];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ![-[GLKViewController _existingView](self "_existingView")])

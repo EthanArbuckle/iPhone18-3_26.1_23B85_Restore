@@ -1,21 +1,21 @@
 @interface ENRegionVisit
-- (BOOL)isEqual:(id)a3;
-- (ENRegionVisit)initWithCoder:(id)a3;
-- (ENRegionVisit)initWithRegion:(id)a3 date:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (ENRegionVisit)initWithCoder:(id)coder;
+- (ENRegionVisit)initWithRegion:(id)region date:(id)date;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionVisit
 
-- (ENRegionVisit)initWithRegion:(id)a3 date:(id)a4
+- (ENRegionVisit)initWithRegion:(id)region date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  regionCopy = region;
+  dateCopy = date;
+  v9 = dateCopy;
+  if (regionCopy)
   {
-    if (v8)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -37,7 +37,7 @@ LABEL_3:
   v10 = [(ENRegionVisit *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [regionCopy copy];
     region = v10->_region;
     v10->_region = v11;
 
@@ -49,54 +49,54 @@ LABEL_3:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   region = self->_region;
-  v5 = a3;
-  [v5 encodeObject:region forKey:@"reg"];
-  [v5 encodeObject:self->_date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:region forKey:@"reg"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ENRegion *)self->_region countryCode];
-  v5 = [(ENRegion *)self->_region subdivisionCode];
-  v6 = [v3 stringWithFormat:@"countryCode, %@, subdivisionCode, %@, date, %@", v4, v5, self->_date];
+  countryCode = [(ENRegion *)self->_region countryCode];
+  subdivisionCode = [(ENRegion *)self->_region subdivisionCode];
+  v6 = [v3 stringWithFormat:@"countryCode, %@, subdivisionCode, %@, date, %@", countryCode, subdivisionCode, self->_date];
 
   return v6;
 }
 
-- (ENRegionVisit)initWithCoder:(id)a3
+- (ENRegionVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     if (v6)
     {
       self = [(ENRegionVisit *)self initWithRegion:v5 date:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -104,7 +104,7 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5[1];
   v7 = self->_region;
   v8 = v6;

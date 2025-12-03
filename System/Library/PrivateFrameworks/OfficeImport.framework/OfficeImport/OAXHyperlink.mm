@@ -1,40 +1,40 @@
 @interface OAXHyperlink
-+ (id)readHyperlink:(_xmlNode *)a3 state:(id)a4;
++ (id)readHyperlink:(_xmlNode *)hyperlink state:(id)state;
 @end
 
 @implementation OAXHyperlink
 
-+ (id)readHyperlink:(_xmlNode *)a3 state:(id)a4
++ (id)readHyperlink:(_xmlNode *)hyperlink state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADHyperlink);
-  v8 = CXDefaultStringAttribute(a3, CXNoNamespace, "tooltip", 0);
+  v8 = CXDefaultStringAttribute(hyperlink, CXNoNamespace, "tooltip", 0);
   [(OADHyperlink *)v7 setTooltip:v8];
 
-  v9 = CXDefaultStringAttribute(a3, CXNoNamespace, "action", 0);
+  v9 = CXDefaultStringAttribute(hyperlink, CXNoNamespace, "action", 0);
   [(OADHyperlink *)v7 setAction:v9];
 
-  [(OADHyperlink *)v7 setDoEndSound:CXDefaultBoolAttribute(a3, CXNoNamespace, "endSnd", 0)];
-  [(OADHyperlink *)v7 setIsVisited:CXDefaultBoolAttribute(a3, CXNoNamespace, "highlightClick", 0)];
-  [(OADHyperlink *)v7 setDoAddToHistory:CXDefaultBoolAttribute(a3, CXNoNamespace, "history", 1)];
-  v10 = CXDefaultStringAttribute(a3, CXNoNamespace, "invalidUrl", 0);
+  [(OADHyperlink *)v7 setDoEndSound:CXDefaultBoolAttribute(hyperlink, CXNoNamespace, "endSnd", 0)];
+  [(OADHyperlink *)v7 setIsVisited:CXDefaultBoolAttribute(hyperlink, CXNoNamespace, "highlightClick", 0)];
+  [(OADHyperlink *)v7 setDoAddToHistory:CXDefaultBoolAttribute(hyperlink, CXNoNamespace, "history", 1)];
+  v10 = CXDefaultStringAttribute(hyperlink, CXNoNamespace, "invalidUrl", 0);
   [(OADHyperlink *)v7 setInvalidUrl:v10];
 
-  v11 = CXDefaultStringAttribute(a3, CXNoNamespace, "tgtFrame", 0);
+  v11 = CXDefaultStringAttribute(hyperlink, CXNoNamespace, "tgtFrame", 0);
   [(OADHyperlink *)v7 setTargetFrame:v11];
 
-  v12 = [v6 packagePart];
-  v13 = [v6 OCXReadRelationshipForNode:a3 packagePart:v12];
+  packagePart = [stateCopy packagePart];
+  v13 = [stateCopy OCXReadRelationshipForNode:hyperlink packagePart:packagePart];
 
   if (v13)
   {
-    v14 = [v13 targetLocation];
-    v25 = [v14 scheme];
-    v15 = [v14 relativePath];
-    v16 = [v14 host];
-    if (v15 && [v15 length] >= 3)
+    targetLocation = [v13 targetLocation];
+    scheme = [targetLocation scheme];
+    relativePath = [targetLocation relativePath];
+    host = [targetLocation host];
+    if (relativePath && [relativePath length] >= 3)
     {
-      v4 = [v15 substringToIndex:3];
+      v4 = [relativePath substringToIndex:3];
       v17 = 1;
       v18 = 1;
       if ([v4 isEqualToString:@"www"])
@@ -42,7 +42,7 @@
         goto LABEL_13;
       }
 
-      if (!v16)
+      if (!host)
       {
         goto LABEL_11;
       }
@@ -51,31 +51,31 @@
     else
     {
       v17 = 0;
-      if (!v16)
+      if (!host)
       {
         goto LABEL_11;
       }
     }
 
-    if ([v16 length] >= 3)
+    if ([host length] >= 3)
     {
-      v19 = [v16 substringToIndex:3];
+      v19 = [host substringToIndex:3];
       v18 = [v19 isEqualToString:@"www"];
 
       if (!v17)
       {
 LABEL_14:
-        if (!v25 && v18)
+        if (!scheme && v18)
         {
           v20 = objc_alloc(MEMORY[0x277CBEBC0]);
-          if (v16)
+          if (host)
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"http://%@%@", v16, v15];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"http://%@%@", host, relativePath];
           }
 
           else
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"http://%@", v15];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"http://%@", relativePath];
           }
           v21 = ;
           v22 = [v20 initWithString:v21];
@@ -85,11 +85,11 @@ LABEL_14:
         }
 
 LABEL_18:
-        [(OADHyperlink *)v7 setTargetLocation:v14];
+        [(OADHyperlink *)v7 setTargetLocation:targetLocation];
 LABEL_21:
         -[OADHyperlink setTargetMode:](v7, "setTargetMode:", [v13 targetMode]);
-        v23 = [v6 client];
-        [v23 postprocessHyperlink:v7 relationship:v13 state:v6];
+        client = [stateCopy client];
+        [client postprocessHyperlink:v7 relationship:v13 state:stateCopy];
 
         goto LABEL_22;
       }

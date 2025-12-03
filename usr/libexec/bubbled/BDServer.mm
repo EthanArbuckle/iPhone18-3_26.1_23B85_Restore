@@ -3,10 +3,10 @@
 + (id)sharedServer;
 + (id)sharedXPCInterface;
 - (BDServer)init;
-- (void)addBubbleClient:(id)a3;
-- (void)addClient:(id)a3;
-- (void)removeBubbleClient:(id)a3;
-- (void)removeClient:(id)a3;
+- (void)addBubbleClient:(id)client;
+- (void)addClient:(id)client;
+- (void)removeBubbleClient:(id)client;
+- (void)removeClient:(id)client;
 @end
 
 @implementation BDServer
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002F5C;
   block[3] = &unk_10000C458;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000119A0 != -1)
   {
     dispatch_once(&qword_1000119A0, block);
@@ -67,13 +67,13 @@
   return v2;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v9 = a3;
-  v4 = [v9 pid];
+  clientCopy = client;
+  v4 = [clientCopy pid];
   v5 = [NSNumber numberWithInt:v4];
-  v6 = [(BDServer *)self pidsToClients];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  pidsToClients = [(BDServer *)self pidsToClients];
+  v7 = [pidsToClients objectForKeyedSubscript:v5];
 
   if (v7)
   {
@@ -82,31 +82,31 @@
 
   else
   {
-    v8 = [(BDServer *)self pidsToClients];
-    [v8 setObject:v9 forKeyedSubscript:v5];
+    pidsToClients2 = [(BDServer *)self pidsToClients];
+    [pidsToClients2 setObject:clientCopy forKeyedSubscript:v5];
   }
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = [a3 pid];
+  v4 = [client pid];
   v5 = [(BDServer *)self _clientForPID:v4];
 
   if (v5)
   {
-    v7 = [(BDServer *)self pidsToClients];
+    pidsToClients = [(BDServer *)self pidsToClients];
     v6 = [NSNumber numberWithInt:v4];
-    [v7 setObject:0 forKeyedSubscript:v6];
+    [pidsToClients setObject:0 forKeyedSubscript:v6];
   }
 }
 
-- (void)addBubbleClient:(id)a3
+- (void)addBubbleClient:(id)client
 {
-  v9 = a3;
-  v4 = [v9 pid];
+  clientCopy = client;
+  v4 = [clientCopy pid];
   v5 = [NSNumber numberWithInt:v4];
-  v6 = [(BDServer *)self pidsToClients];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  pidsToClients = [(BDServer *)self pidsToClients];
+  v7 = [pidsToClients objectForKeyedSubscript:v5];
 
   if (v7)
   {
@@ -115,21 +115,21 @@
 
   else
   {
-    v8 = [(BDServer *)self pidsToClients];
-    [v8 setObject:v9 forKeyedSubscript:v5];
+    pidsToClients2 = [(BDServer *)self pidsToClients];
+    [pidsToClients2 setObject:clientCopy forKeyedSubscript:v5];
   }
 }
 
-- (void)removeBubbleClient:(id)a3
+- (void)removeBubbleClient:(id)client
 {
-  v4 = [a3 pid];
+  v4 = [client pid];
   v5 = [(BDServer *)self _clientForPID:v4];
 
   if (v5)
   {
-    v7 = [(BDServer *)self pidsToClients];
+    pidsToClients = [(BDServer *)self pidsToClients];
     v6 = [NSNumber numberWithInt:v4];
-    [v7 setObject:0 forKeyedSubscript:v6];
+    [pidsToClients setObject:0 forKeyedSubscript:v6];
   }
 }
 

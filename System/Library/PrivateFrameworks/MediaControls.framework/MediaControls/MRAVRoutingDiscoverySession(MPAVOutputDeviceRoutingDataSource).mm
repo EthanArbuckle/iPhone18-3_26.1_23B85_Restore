@@ -8,10 +8,10 @@
 - (id)availableOutputDevicesForEndpoint:()MPAVOutputDeviceRoutingDataSource
 {
   v4 = a3;
-  v5 = [a1 availableOutputDevices];
-  v6 = [v4 resolvedOutputDevices];
+  availableOutputDevices = [self availableOutputDevices];
+  resolvedOutputDevices = [v4 resolvedOutputDevices];
 
-  v7 = [a1 _replaceOutputDevices:v5 withOutputDevices:v6];
+  v7 = [self _replaceOutputDevices:availableOutputDevices withOutputDevices:resolvedOutputDevices];
 
   return v7;
 }
@@ -50,17 +50,17 @@
         v11 = [v22 msv_firstWhere:v23];
         if ([v10 isGroupable] && (objc_msgSend(v11, "isGroupable") & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v12 = [v11 groupableOutputDevice];
+          groupableOutputDevice = [v11 groupableOutputDevice];
 
-          v11 = v12;
+          v11 = groupableOutputDevice;
         }
 
-        v13 = [v10 sourceInfo];
-        v14 = [v13 multipleBuiltInDevices];
-        v15 = [v11 sourceInfo];
-        v16 = [v15 multipleBuiltInDevices];
+        sourceInfo = [v10 sourceInfo];
+        multipleBuiltInDevices = [sourceInfo multipleBuiltInDevices];
+        sourceInfo2 = [v11 sourceInfo];
+        multipleBuiltInDevices2 = [sourceInfo2 multipleBuiltInDevices];
 
-        if (v14 != v16)
+        if (multipleBuiltInDevices != multipleBuiltInDevices2)
         {
           v17 = [v11 outputDeviceWithSourceInfoFrom:v10];
 

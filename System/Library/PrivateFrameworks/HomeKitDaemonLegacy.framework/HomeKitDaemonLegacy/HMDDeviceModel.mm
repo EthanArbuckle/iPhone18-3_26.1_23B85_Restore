@@ -1,24 +1,24 @@
 @interface HMDDeviceModel
 + (id)properties;
 + (id)schemaHashRoot;
-- (BOOL)diff:(id)a3 differingFields:(id *)a4;
+- (BOOL)diff:(id)diff differingFields:(id *)fields;
 - (NSArray)deviceHandles;
 @end
 
 @implementation HMDDeviceModel
 
-- (BOOL)diff:(id)a3 differingFields:(id *)a4
+- (BOOL)diff:(id)diff differingFields:(id *)fields
 {
-  v6 = a3;
+  diffCopy = diff;
   v21.receiver = self;
   v21.super_class = HMDDeviceModel;
   v22 = 0;
-  v7 = [(HMDBackingStoreModelObject *)&v21 diff:v6 differingFields:&v22];
+  v7 = [(HMDBackingStoreModelObject *)&v21 diff:diffCopy differingFields:&v22];
   v8 = v22;
   v9 = v8;
   if (v7 && [v8 containsObject:@"handles"])
   {
-    v10 = v6;
+    v10 = diffCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,9 +34,9 @@
 
     if (v12)
     {
-      v13 = [(HMDDeviceModel *)self deviceHandles];
-      v14 = [v12 deviceHandles];
-      v15 = isEqualDeepCompare(v13, v14);
+      deviceHandles = [(HMDDeviceModel *)self deviceHandles];
+      deviceHandles2 = [v12 deviceHandles];
+      v15 = isEqualDeepCompare(deviceHandles, deviceHandles2);
 
       if (v15)
       {
@@ -49,10 +49,10 @@
     }
   }
 
-  if (a4)
+  if (fields)
   {
     v18 = v9;
-    *a4 = v9;
+    *fields = v9;
   }
 
   v19 = [v9 count] != 0;
@@ -63,8 +63,8 @@
 - (NSArray)deviceHandles
 {
   v38 = *MEMORY[0x277D85DE8];
-  v2 = [(HMDDeviceModel *)self handles];
-  v3 = [v2 copy];
+  handles = [(HMDDeviceModel *)self handles];
+  v3 = [handles copy];
 
   v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v29 = 0u;
@@ -117,7 +117,7 @@
           v16 = v6;
           v17 = v5;
           v18 = objc_autoreleasePoolPush();
-          v19 = self;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {

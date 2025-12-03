@@ -1,8 +1,8 @@
 @interface STKCarrierSubscriptionMonitor
 - (STKCarrierSubscriptionMonitor)init;
-- (id)subscriptionContextForSlot:(int64_t)a3;
-- (id)subscriptionInfoForSlot:(int64_t)a3;
-- (void)carrierBundleChange:(id)a3;
+- (id)subscriptionContextForSlot:(int64_t)slot;
+- (id)subscriptionInfoForSlot:(int64_t)slot;
+- (void)carrierBundleChange:(id)change;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (id)subscriptionInfoForSlot:(int64_t)a3
+- (id)subscriptionInfoForSlot:(int64_t)slot
 {
   v7 = 0;
   v8 = &v7;
@@ -59,7 +59,7 @@
   block[3] = &unk_279B4C6C0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -77,7 +77,7 @@ void __57__STKCarrierSubscriptionMonitor_subscriptionInfoForSlot___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (id)subscriptionContextForSlot:(int64_t)a3
+- (id)subscriptionContextForSlot:(int64_t)slot
 {
   v7 = 0;
   v8 = &v7;
@@ -92,7 +92,7 @@ void __57__STKCarrierSubscriptionMonitor_subscriptionInfoForSlot___block_invoke(
   block[3] = &unk_279B4C6C0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -118,24 +118,24 @@ void __60__STKCarrierSubscriptionMonitor_subscriptionContextForSlot___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   BSDispatchQueueAssert();
   v6 = STKCommonLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v44 = v4;
+    v44 = changeCopy;
     _os_log_impl(&dword_262BB4000, v6, OS_LOG_TYPE_DEFAULT, "Carrier bundle did change: %@", buf, 0xCu);
   }
 
   v7 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:1];
   telephonyClient = self->_telephonyClient;
   v42 = 0;
-  v9 = [(CoreTelephonyClient *)telephonyClient copyCarrierBundleValueWithDefault:v4 keyHierarchy:&unk_28758C0F8 bundleType:v7 error:&v42];
+  v9 = [(CoreTelephonyClient *)telephonyClient copyCarrierBundleValueWithDefault:changeCopy keyHierarchy:&unk_28758C0F8 bundleType:v7 error:&v42];
   v10 = v42;
   if (v10)
   {
@@ -149,25 +149,25 @@ void __60__STKCarrierSubscriptionMonitor_subscriptionContextForSlot___block_invo
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
   v14 = STKClass0SMSLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v44) = v13;
+    LODWORD(v44) = bOOLValue;
     _os_log_impl(&dword_262BB4000, v14, OS_LOG_TYPE_DEFAULT, "Carrier bundle value changed: showClass0SMSOverInCallAlerts = %d", buf, 8u);
   }
 
   v15 = self->_telephonyClient;
   v41 = 0;
-  v16 = [(CoreTelephonyClient *)v15 copyCarrierBundleValueWithDefault:v4 key:@"ShowClass0SMSFromField" bundleType:v7 error:&v41];
+  v16 = [(CoreTelephonyClient *)v15 copyCarrierBundleValueWithDefault:changeCopy key:@"ShowClass0SMSFromField" bundleType:v7 error:&v41];
   v17 = v41;
   if (v17)
   {
@@ -181,17 +181,17 @@ void __60__STKCarrierSubscriptionMonitor_subscriptionContextForSlot___block_invo
 
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v16 BOOLValue];
+    bOOLValue2 = [v16 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue2 = 0;
   }
 
   v21 = self->_telephonyClient;
   v40 = 0;
-  v22 = [(CoreTelephonyClient *)v21 copyCarrierBundleValueWithDefault:v4 key:@"USSDFilterPatterns" bundleType:v7 error:&v40];
+  v22 = [(CoreTelephonyClient *)v21 copyCarrierBundleValueWithDefault:changeCopy key:@"USSDFilterPatterns" bundleType:v7 error:&v40];
   v23 = v40;
   if (v23)
   {
@@ -225,7 +225,7 @@ void __60__STKCarrierSubscriptionMonitor_subscriptionContextForSlot___block_invo
 
   v28 = self->_telephonyClient;
   v39 = 0;
-  v29 = [(CoreTelephonyClient *)v28 copyCarrierBundleValueWithDefault:v4 key:@"USSDFilterSometimesPatterns" bundleType:v7 error:&v39];
+  v29 = [(CoreTelephonyClient *)v28 copyCarrierBundleValueWithDefault:changeCopy key:@"USSDFilterSometimesPatterns" bundleType:v7 error:&v39];
   v30 = v39;
   if (v30)
   {
@@ -257,9 +257,9 @@ void __60__STKCarrierSubscriptionMonitor_subscriptionContextForSlot___block_invo
     v34 = MEMORY[0x277CBEBF8];
   }
 
-  v35 = [[STKCarrierSubscriptionInfo alloc] initWithShowClass0SMSFromField:v20 canShowClass0SMSOverInCallAlerts:v13 ussdAlwaysFilteredPatterns:v27 ussdSometimesFilteredPatterns:v34];
+  v35 = [[STKCarrierSubscriptionInfo alloc] initWithShowClass0SMSFromField:bOOLValue2 canShowClass0SMSOverInCallAlerts:bOOLValue ussdAlwaysFilteredPatterns:v27 ussdSometimesFilteredPatterns:v34];
   subscriptionInfo = self->_subscriptionInfo;
-  v37 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
+  v37 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(changeCopy, "slotID")}];
   [(NSMutableDictionary *)subscriptionInfo setObject:v35 forKeyedSubscript:v37];
 
   v38 = *MEMORY[0x277D85DE8];

@@ -7,15 +7,15 @@
 - (CGPoint)offset;
 - (CGPoint)terminalPoint;
 - (TSWPTextMagnifierCaret)initWithDefaultFrame;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
 - (void)dealloc;
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context;
 - (void)remove;
-- (void)setFrame:(CGRect)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setMagnificationPoint:(CGPoint)point;
 - (void)setNeedsDisplay;
-- (void)setTarget:(id)a3;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)setTarget:(id)target;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrameAndOffset;
 - (void)zoomDownAnimation;
 - (void)zoomUpAnimation;
@@ -35,15 +35,15 @@
   return result;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   target = self->_target;
-  if (target != a3)
+  if (target != target)
   {
     [(TSWPRep *)target enableCaretAnimation];
 
-    self->_target = a3;
-    v6 = a3;
+    self->_target = target;
+    targetCopy = target;
     v7 = self->_target;
 
     [(TSWPRep *)v7 disableCaretAnimation];
@@ -78,11 +78,11 @@
   [(TSWPTextMagnifierCaret *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = TSWPTextMagnifierCaret;
-  [(TSWPTextMagnifierCaret *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSWPTextMagnifierCaret *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   magnifierRenderer = self->_magnifierRenderer;
   [(TSWPTextMagnifierCaret *)self bounds];
   [(TSWPTextMagnifierRenderer *)magnifierRenderer setFrame:?];
@@ -105,10 +105,10 @@
   return result;
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TSWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint addPoint:?];
   if (x != self->_magnificationPoint.x || y != self->_magnificationPoint.y)
   {
@@ -266,9 +266,9 @@ uint64_t __43__TSWPTextMagnifierCaret_zoomDownAnimation__block_invoke_2(uint64_t
 
 - (void)updateFrameAndOffset
 {
-  v3 = [(TSWPTextMagnifierCaret *)self superview];
+  superview = [(TSWPTextMagnifierCaret *)self superview];
   [(TSWPTextMagnifierCaret *)self magnificationPoint];
-  [v3 convertPoint:-[TSDCanvasLayerHosting canvasView](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](-[TSWPTextMagnifierCaret target](self fromView:{"target"), "interactiveCanvasController"), "layerHost"), "canvasView"), v4, v5}];
+  [superview convertPoint:-[TSDCanvasLayerHosting canvasView](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](-[TSWPTextMagnifierCaret target](self fromView:{"target"), "interactiveCanvasController"), "layerHost"), "canvasView"), v4, v5}];
   v7 = v6;
   v9 = v8;
   [(TSWPTextMagnifierCaret *)self bounds];
@@ -296,37 +296,37 @@ uint64_t __43__TSWPTextMagnifierCaret_zoomDownAnimation__block_invoke_2(uint64_t
   [(TSWPTextMagnifierCaret *)self setFrame:v20.origin.x, v20.origin.y, v20.size.width, v20.size.height];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v9 = point.y;
+  v10 = point.x;
   [+[TSWPTextMagnifierHorizontalRanged sharedRangedMagnifier](TSWPTextMagnifierHorizontalRanged "sharedRangedMagnifier")];
   [+[TSWPTextMagnifierVerticalRanged sharedRangedMagnifier](TSWPTextMagnifierVerticalRanged "sharedRangedMagnifier")];
-  [(TSWPTextMagnifierCaret *)self setTarget:a3];
+  [(TSWPTextMagnifierCaret *)self setTarget:target];
   [(TSWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint clearHistory];
   [(TSWPTextMagnifierCaret *)self setAutoscrollDirections:0];
   [(TSWPTextMagnifierCaret *)self setNeedsLayout];
   [(TSWPTextMagnifierCaret *)self setNeedsDisplay];
   if (![(TSWPTextMagnifierCaret *)self window])
   {
-    [+[TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:](TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:{objc_msgSend(objc_msgSend(a3, "interactiveCanvasController"), "canvasView")), "addSubview:", self}];
+    [+[TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:](TSWPEffectsWindow sharedEffectsWindowAboveStatusBarForView:{objc_msgSend(objc_msgSend(target, "interactiveCanvasController"), "canvasView")), "addSubview:", self}];
   }
 
   [(TSWPTextMagnifierCaret *)self setMagnificationPoint:v10, v9];
   [(TSWPTextMagnifierCaret *)self setOffset:x, y];
-  if (v6)
+  if (animatedCopy)
   {
 
     [(TSWPTextMagnifierCaret *)self zoomUpAnimation];
   }
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  if (a3)
+  if (magnifying)
   {
     [(TSWPTextMagnifierCaret *)self zoomDownAnimation];
   }
@@ -362,12 +362,12 @@ uint64_t __43__TSWPTextMagnifierCaret_zoomDownAnimation__block_invoke_2(uint64_t
   return [v4 shouldHideCanvasLayerInMagnifier];
 }
 
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = [(TSDRep *)[(TSWPTextMagnifierCaret *)self target] interactiveCanvasController];
-  v7 = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)v6 layerHost] canvasView];
+  interactiveCanvasController = [(TSDRep *)[(TSWPTextMagnifierCaret *)self target] interactiveCanvasController];
+  canvasView = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)interactiveCanvasController layerHost] canvasView];
   [(TSWPTextMagnifierCaret *)self frame];
-  [v7 convertRect:-[TSWPTextMagnifierCaret superview](self fromView:{"superview"), v8, v9, v10, v11}];
+  [canvasView convertRect:-[TSWPTextMagnifierCaret superview](self fromView:{"superview"), v8, v9, v10, v11}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -385,10 +385,10 @@ uint64_t __43__TSWPTextMagnifierCaret_zoomDownAnimation__block_invoke_2(uint64_t
     v24 = v23;
     objc_opt_class();
     [v24 layerHost];
-    v25 = [TSUDynamicCast() backgroundColorForMagnifier];
-    if (v25)
+    backgroundColorForMagnifier = [TSUDynamicCast() backgroundColorForMagnifier];
+    if (backgroundColorForMagnifier)
     {
-      CGContextSetFillColorWithColor(CurrentContext, [v25 CGColor]);
+      CGContextSetFillColorWithColor(CurrentContext, [backgroundColorForMagnifier CGColor]);
       v36.origin.x = 0.0;
       v36.origin.y = 0.0;
       v36.size.width = v17;
@@ -402,30 +402,30 @@ uint64_t __43__TSWPTextMagnifierCaret_zoomDownAnimation__block_invoke_2(uint64_t
   [(TSWPTextMagnifierCaret *)self yOffset];
   CGContextTranslateCTM(CurrentContext, -v13, -v15 - v26);
   CGContextTranslateCTM(CurrentContext, v17 * -0.100000001, v19 * -0.899999999);
-  v27 = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)v6 layerHost] canvasLayer];
-  [v27 shadowOpacity];
+  canvasLayer = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)interactiveCanvasController layerHost] canvasLayer];
+  [canvasLayer shadowOpacity];
   v29 = v28;
-  [v27 setShadowOpacity:0.0];
-  [v27 renderInContext:CurrentContext];
+  [canvasLayer setShadowOpacity:0.0];
+  [canvasLayer renderInContext:CurrentContext];
   LODWORD(v30) = v29;
-  [v27 setShadowOpacity:v30];
+  [canvasLayer setShadowOpacity:v30];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   v32 = [objc_msgSend(MEMORY[0x277D755B8] imageNamed:-[TSWPTextMagnifierCaret maskImageName](self inBundle:"maskImageName") compatibleWithTraitCollection:{TSWPBundle(), 0), "CGImage"}];
   v37.origin.x = 0.0;
   v37.origin.y = 0.0;
   v37.size.width = v17;
   v37.size.height = v19;
-  CGContextClipToMask(a4, v37, v32);
-  v33 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+  CGContextClipToMask(context, v37, v32);
+  cGImage = [(UIImage *)ImageFromCurrentImageContext CGImage];
   v38.origin.x = 0.0;
   v38.origin.y = 0.0;
   v38.size.width = v17;
   v38.size.height = v19;
-  CGContextDrawImage(a4, v38, v33);
+  CGContextDrawImage(context, v38, cGImage);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (CGPoint)offset

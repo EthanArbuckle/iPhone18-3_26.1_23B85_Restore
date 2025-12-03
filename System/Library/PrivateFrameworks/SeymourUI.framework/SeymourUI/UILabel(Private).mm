@@ -6,9 +6,9 @@
 
 - (uint64_t)setSmu_marqueeEnabled:()Private
 {
-  [a1 setMarqueeEnabled:?];
+  [self setMarqueeEnabled:?];
 
-  return [a1 setMarqueeRunning:a3];
+  return [self setMarqueeRunning:a3];
 }
 
 @end

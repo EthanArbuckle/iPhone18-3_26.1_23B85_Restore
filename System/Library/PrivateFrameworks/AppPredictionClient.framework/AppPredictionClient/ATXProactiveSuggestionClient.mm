@@ -1,10 +1,10 @@
 @interface ATXProactiveSuggestionClient
-- (ATXProactiveSuggestionClient)initWithConsumerSubType:(unsigned __int8)a3;
-- (id)layoutForRequest:(id)a3;
+- (ATXProactiveSuggestionClient)initWithConsumerSubType:(unsigned __int8)type;
+- (id)layoutForRequest:(id)request;
 - (id)remoteSyncBlendingLayerServer;
 - (id)spotlightSuggestionLayoutFromCache;
 - (id)suggestionLayoutFromCache;
-- (id)suggestionsForRequest:(id)a3 limit:(id)a4;
+- (id)suggestionsForRequest:(id)request limit:(id)limit;
 - (void)dealloc;
 - (void)remoteSyncBlendingLayerServer;
 - (void)setupRemoteClientXPCConnection;
@@ -90,7 +90,7 @@
   return v8;
 }
 
-- (ATXProactiveSuggestionClient)initWithConsumerSubType:(unsigned __int8)a3
+- (ATXProactiveSuggestionClient)initWithConsumerSubType:(unsigned __int8)type
 {
   v9.receiver = self;
   v9.super_class = ATXProactiveSuggestionClient;
@@ -98,7 +98,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_consumer = a3;
+    v4->_consumer = type;
     v6 = objc_opt_new();
     cacheManager = v5->_cacheManager;
     v5->_cacheManager = v6;
@@ -107,9 +107,9 @@
   return v5;
 }
 
-- (id)layoutForRequest:(id)a3
+- (id)layoutForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (!self->_xpcConnection)
   {
     [(ATXProactiveSuggestionClient *)self setupRemoteClientXPCConnection];
@@ -121,13 +121,13 @@
   v12 = __Block_byref_object_copy__20;
   v13 = __Block_byref_object_dispose__20;
   v14 = 0;
-  v5 = [(ATXProactiveSuggestionClient *)self remoteSyncBlendingLayerServer];
+  remoteSyncBlendingLayerServer = [(ATXProactiveSuggestionClient *)self remoteSyncBlendingLayerServer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__ATXProactiveSuggestionClient_layoutForRequest___block_invoke;
   v8[3] = &unk_1E80C61B0;
   v8[4] = &v9;
-  [v5 generateLayoutForRequest:v4 reply:v8];
+  [remoteSyncBlendingLayerServer generateLayoutForRequest:requestCopy reply:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -135,10 +135,10 @@
   return v6;
 }
 
-- (id)suggestionsForRequest:(id)a3 limit:(id)a4
+- (id)suggestionsForRequest:(id)request limit:(id)limit
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  limitCopy = limit;
   if (!self->_xpcConnection)
   {
     [(ATXProactiveSuggestionClient *)self setupRemoteClientXPCConnection];
@@ -150,13 +150,13 @@
   v15 = __Block_byref_object_copy__20;
   v16 = __Block_byref_object_dispose__20;
   v17 = 0;
-  v8 = [(ATXProactiveSuggestionClient *)self remoteSyncBlendingLayerServer];
+  remoteSyncBlendingLayerServer = [(ATXProactiveSuggestionClient *)self remoteSyncBlendingLayerServer];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__ATXProactiveSuggestionClient_suggestionsForRequest_limit___block_invoke;
   v11[3] = &unk_1E80C61D8;
   v11[4] = &v12;
-  [v8 generateRankedSuggestionsForRequest:v6 limit:v7 reply:v11];
+  [remoteSyncBlendingLayerServer generateRankedSuggestionsForRequest:requestCopy limit:limitCopy reply:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -217,20 +217,20 @@ void __62__ATXProactiveSuggestionClient_setupRemoteClientXPCConnection__block_in
 
 - (void)suggestionLayoutFromCache
 {
-  v1 = [MEMORY[0x1E698B028] stringForConsumerSubtype:*a1];
+  v1 = [MEMORY[0x1E698B028] stringForConsumerSubtype:*self];
   OUTLINED_FUNCTION_0(&dword_1BF549000, v2, v3, "A suggestion client tried to access cached suggestions for consumerSubType: %@, but the object type wasn't an ATXSuggestionLayout.", v4, v5, v6, v7, 2u);
 }
 
 - (void)spotlightSuggestionLayoutFromCache
 {
-  v1 = [MEMORY[0x1E698B028] stringForConsumerSubtype:*a1];
+  v1 = [MEMORY[0x1E698B028] stringForConsumerSubtype:*self];
   OUTLINED_FUNCTION_0(&dword_1BF549000, v2, v3, "A suggestion client tried to access cached suggestions for consumerSubType: %@, but the object type wasn't an ATXSpotlightSuggestionLayout.", v4, v5, v6, v7, 2u);
 }
 
 - (void)remoteSyncBlendingLayerServer
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"ATXProactiveSuggestionClient.m" lineNumber:91 description:@"Blending: XPC Connection was not initialized when Proactive Suggestion Client Model tried to acquire a remote object proxy."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ATXProactiveSuggestionClient.m" lineNumber:91 description:@"Blending: XPC Connection was not initialized when Proactive Suggestion Client Model tried to acquire a remote object proxy."];
 
   *a4 = *a3;
 }

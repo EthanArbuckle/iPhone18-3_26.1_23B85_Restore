@@ -1,36 +1,36 @@
 @interface HMDApplicationVendorIDStore
 + (HMDApplicationVendorIDStore)sharedStore;
 - (HMDApplicationVendorIDStore)init;
-- (HMDApplicationVendorIDStore)initWithCoder:(id)a3;
-- (id)_machOUUIDsForApplicationBundleID:(id)a3;
-- (id)_vendorIDForApplicationBundleID:(id)a3;
-- (id)machOUUIDForApplicationBundleID:(id)a3;
-- (id)vendorIDForApplicationBundleID:(id)a3;
-- (void)_extractVendorIDForApplicationBundleID:(id)a3;
-- (void)_handleApplicationUninstalledNotification:(id)a3;
+- (HMDApplicationVendorIDStore)initWithCoder:(id)coder;
+- (id)_machOUUIDsForApplicationBundleID:(id)d;
+- (id)_vendorIDForApplicationBundleID:(id)d;
+- (id)machOUUIDForApplicationBundleID:(id)d;
+- (id)vendorIDForApplicationBundleID:(id)d;
+- (void)_extractVendorIDForApplicationBundleID:(id)d;
+- (void)_handleApplicationUninstalledNotification:(id)notification;
 - (void)_save;
-- (void)addVendorID:(id)a3 applicationBundleID:(id)a4;
-- (void)addVendorID:(id)a3 applicationBundleID:(id)a4 companionAppBundleID:(id)a5;
-- (void)addVendorID:(id)a3 applicationBundleID:(id)a4 isSPIClient:(BOOL)a5;
+- (void)addVendorID:(id)d applicationBundleID:(id)iD;
+- (void)addVendorID:(id)d applicationBundleID:(id)iD companionAppBundleID:(id)bundleID;
+- (void)addVendorID:(id)d applicationBundleID:(id)iD isSPIClient:(BOOL)client;
 - (void)checkCorrectness;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeVendorIDForApplicationBundleID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeVendorIDForApplicationBundleID:(id)d;
 @end
 
 @implementation HMDApplicationVendorIDStore
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(HMDApplicationVendorIDStore *)self applicationVendorIDMapping];
-  v5 = [v6 copy];
-  [v4 encodeObject:v5 forKey:@"HM.vendorIDStore"];
+  coderCopy = coder;
+  applicationVendorIDMapping = [(HMDApplicationVendorIDStore *)self applicationVendorIDMapping];
+  v5 = [applicationVendorIDMapping copy];
+  [coderCopy encodeObject:v5 forKey:@"HM.vendorIDStore"];
 }
 
-- (HMDApplicationVendorIDStore)initWithCoder:(id)a3
+- (HMDApplicationVendorIDStore)initWithCoder:(id)coder
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDApplicationVendorIDStore *)self init];
   if (v5)
   {
@@ -40,7 +40,7 @@
     v22[2] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HM.vendorIDStore"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HM.vendorIDStore"];
 
     if (v9)
     {
@@ -68,17 +68,17 @@
   return v5;
 }
 
-- (void)_handleApplicationUninstalledNotification:(id)a3
+- (void)_handleApplicationUninstalledNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   clientQueue = self->_clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__HMDApplicationVendorIDStore__handleApplicationUninstalledNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -108,22 +108,22 @@ void __73__HMDApplicationVendorIDStore__handleApplicationUninstalledNotification
   }
 }
 
-- (id)_machOUUIDsForApplicationBundleID:(id)a3
+- (id)_machOUUIDsForApplicationBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDApplicationVendorIDStore *)self applicationMachUUIDMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  applicationMachUUIDMapping = [(HMDApplicationVendorIDStore *)self applicationMachUUIDMapping];
+  machOUUIDs = [applicationMachUUIDMapping objectForKeyedSubscript:dCopy];
 
-  if (!v6)
+  if (!machOUUIDs)
   {
-    v7 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v4];
+    v7 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy];
     v8 = v7;
     if (v7)
     {
-      v6 = [v7 machOUUIDs];
+      machOUUIDs = [v7 machOUUIDs];
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -131,47 +131,47 @@ void __73__HMDApplicationVendorIDStore__handleApplicationUninstalledNotification
         v16 = 138543874;
         v17 = v12;
         v18 = 2112;
-        v19 = v4;
+        v19 = dCopy;
         v20 = 2112;
-        v21 = v6;
+        v21 = machOUUIDs;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Updating Mach UUID mapping with application bundle ID %@ and %@", &v16, 0x20u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v13 = [(HMDApplicationVendorIDStore *)v10 applicationMachUUIDMapping];
-      [v13 setObject:v6 forKeyedSubscript:v4];
+      applicationMachUUIDMapping2 = [(HMDApplicationVendorIDStore *)selfCopy applicationMachUUIDMapping];
+      [applicationMachUUIDMapping2 setObject:machOUUIDs forKeyedSubscript:dCopy];
     }
 
     else
     {
-      v6 = 0;
+      machOUUIDs = 0;
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return machOUUIDs;
 }
 
-- (id)machOUUIDForApplicationBundleID:(id)a3
+- (id)machOUUIDForApplicationBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__138770;
   v16 = __Block_byref_object_dispose__138771;
   v17 = 0;
-  v5 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDApplicationVendorIDStore_machOUUIDForApplicationBundleID___block_invoke;
   block[3] = &unk_27868A4D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(clientQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -192,36 +192,36 @@ void __63__HMDApplicationVendorIDStore_machOUUIDForApplicationBundleID___block_i
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDApplicationVendorIDStore *)v4 applicationVendorIDMapping];
+    applicationVendorIDMapping = [(HMDApplicationVendorIDStore *)selfCopy applicationVendorIDMapping];
     v9 = 138543618;
     v10 = v6;
     v11 = 2112;
-    v12 = v7;
+    v12 = applicationVendorIDMapping;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_DEBUG, "%{public}@Archiving vendor id store %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  [HMDPersistentStore archiveVendorStore:v4];
+  [HMDPersistentStore archiveVendorStore:selfCopy];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeVendorIDForApplicationBundleID:(id)a3
+- (void)removeVendorIDForApplicationBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  dCopy = d;
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HMDApplicationVendorIDStore_removeVendorIDForApplicationBundleID___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __68__HMDApplicationVendorIDStore_removeVendorIDForApplicationBundleID___block_invoke(uint64_t a1)
@@ -322,81 +322,81 @@ LABEL_17:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addVendorID:(id)a3 applicationBundleID:(id)a4 companionAppBundleID:(id)a5
+- (void)addVendorID:(id)d applicationBundleID:(id)iD companionAppBundleID:(id)bundleID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__HMDApplicationVendorIDStore_addVendorID_applicationBundleID_companionAppBundleID___block_invoke;
   v15[3] = &unk_2786891E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = iDCopy;
+  v18 = bundleIDCopy;
+  v12 = bundleIDCopy;
+  v13 = iDCopy;
+  v14 = dCopy;
+  dispatch_async(clientQueue, v15);
 }
 
-- (void)addVendorID:(id)a3 applicationBundleID:(id)a4
+- (void)addVendorID:(id)d applicationBundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  dCopy = d;
+  iDCopy = iD;
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDApplicationVendorIDStore_addVendorID_applicationBundleID___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)addVendorID:(id)a3 applicationBundleID:(id)a4 isSPIClient:(BOOL)a5
+- (void)addVendorID:(id)d applicationBundleID:(id)iD isSPIClient:(BOOL)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  dCopy = d;
+  iDCopy = iD;
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__HMDApplicationVendorIDStore_addVendorID_applicationBundleID_isSPIClient___block_invoke;
   v13[3] = &unk_278685AA8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dCopy;
+  v15 = iDCopy;
+  clientCopy = client;
+  v11 = iDCopy;
+  v12 = dCopy;
+  dispatch_async(clientQueue, v13);
 }
 
-- (void)_extractVendorIDForApplicationBundleID:(id)a3
+- (void)_extractVendorIDForApplicationBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v15 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v15];
+  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v15];
   v6 = v15;
   if (v5)
   {
-    v7 = [v5 deviceIdentifierForVendor];
-    v8 = [v7 UUIDString];
-    v9 = [v8 hm_generateSHA1];
+    deviceIdentifierForVendor = [v5 deviceIdentifierForVendor];
+    uUIDString = [deviceIdentifierForVendor UUIDString];
+    hm_generateSHA1 = [uUIDString hm_generateSHA1];
 
-    [(HMDApplicationVendorIDStore *)self _setAndSaveVendorID:v9 applicationBundleID:v4 companionAppBundleID:0 isSPIClient:0];
+    [(HMDApplicationVendorIDStore *)self _setAndSaveVendorID:hm_generateSHA1 applicationBundleID:dCopy companionAppBundleID:0 isSPIClient:0];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -404,7 +404,7 @@ LABEL_17:
       *buf = 138543874;
       v17 = v13;
       v18 = 2112;
-      v19 = v4;
+      v19 = dCopy;
       v20 = 2112;
       v21 = v6;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Bundle ID: %@ cannot be extracted (or cannot determine): %@", buf, 0x20u);
@@ -416,12 +416,12 @@ LABEL_17:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_vendorIDForApplicationBundleID:(id)a3
+- (id)_vendorIDForApplicationBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDApplicationVendorIDStore *)self applicationVendorIDMapping];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  applicationVendorIDMapping = [(HMDApplicationVendorIDStore *)self applicationVendorIDMapping];
+  v6 = [applicationVendorIDMapping objectForKey:dCopy];
 
   if (!v6)
   {
@@ -432,23 +432,23 @@ LABEL_17:
 
     else
     {
-      [(HMDApplicationVendorIDStore *)self _extractVendorIDForApplicationBundleID:v4];
-      v7 = [(HMDApplicationVendorIDStore *)self applicationVendorIDMapping];
-      v6 = [v7 objectForKey:v4];
+      [(HMDApplicationVendorIDStore *)self _extractVendorIDForApplicationBundleID:dCopy];
+      applicationVendorIDMapping2 = [(HMDApplicationVendorIDStore *)self applicationVendorIDMapping];
+      v6 = [applicationVendorIDMapping2 objectForKey:dCopy];
 
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = HMFGetLogIdentifier();
-        v12 = [v6 vendorIDSHA1];
+        vendorIDSHA1 = [v6 vendorIDSHA1];
         v16 = 138543874;
         v17 = v11;
         v18 = 2112;
-        v19 = v4;
+        v19 = dCopy;
         v20 = 2112;
-        v21 = v12;
+        v21 = vendorIDSHA1;
         _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@There is no vendor id for %@, newly extracted vendor id is %@", &v16, 0x20u);
       }
 
@@ -456,32 +456,32 @@ LABEL_17:
     }
   }
 
-  v13 = [v6 vendorIDSHA1];
+  vendorIDSHA12 = [v6 vendorIDSHA1];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return vendorIDSHA12;
 }
 
-- (id)vendorIDForApplicationBundleID:(id)a3
+- (id)vendorIDForApplicationBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__138770;
   v16 = __Block_byref_object_dispose__138771;
   v17 = 0;
-  v5 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__HMDApplicationVendorIDStore_vendorIDForApplicationBundleID___block_invoke;
   block[3] = &unk_27868A4D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(clientQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -499,13 +499,13 @@ void __62__HMDApplicationVendorIDStore_vendorIDForApplicationBundleID___block_in
 
 - (void)checkCorrectness
 {
-  v3 = [(HMDApplicationVendorIDStore *)self clientQueue];
+  clientQueue = [(HMDApplicationVendorIDStore *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HMDApplicationVendorIDStore_checkCorrectness__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __47__HMDApplicationVendorIDStore_checkCorrectness__block_invoke(uint64_t a1)
@@ -678,22 +678,22 @@ LABEL_20:
   if (v2)
   {
     v3 = HMDispatchQueueNameString();
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     clientQueue = v2->_clientQueue;
     v2->_clientQueue = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     applicationVendorIDMapping = v2->_applicationVendorIDMapping;
-    v2->_applicationVendorIDMapping = v8;
+    v2->_applicationVendorIDMapping = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     applicationMachUUIDMapping = v2->_applicationMachUUIDMapping;
-    v2->_applicationMachUUIDMapping = v10;
+    v2->_applicationMachUUIDMapping = dictionary2;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel__handleApplicationUninstalledNotification_ name:@"HMDApplicationUninstalledNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleApplicationUninstalledNotification_ name:@"HMDApplicationUninstalledNotification" object:0];
   }
 
   return v2;
@@ -705,7 +705,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __42__HMDApplicationVendorIDStore_sharedStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStore_onceToken != -1)
   {
     dispatch_once(&sharedStore_onceToken, block);

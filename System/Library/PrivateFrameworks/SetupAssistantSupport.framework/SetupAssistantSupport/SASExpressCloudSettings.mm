@@ -1,35 +1,35 @@
 @interface SASExpressCloudSettings
-+ (BOOL)_isCloudKitError:(id)a3;
++ (BOOL)_isCloudKitError:(id)error;
 + (id)_displayZoomOption;
 + (id)_iPadMultitaskingMode;
 + (id)_isFindMyEnabled;
 + (id)_isScreenTimeEnabled;
 + (id)_predicateForRecordsModifiedInPastMonth;
-+ (id)_queryForSettingsForDeviceID:(id)a3;
++ (id)_queryForSettingsForDeviceID:(id)d;
 + (id)_queryForSettingsFromPastMonth;
-+ (id)_queryForSettingsFromPastMonthForDeviceClass:(id)a3;
-+ (id)_queryForSettingsFromPastMonthForPlatform:(unint64_t)a3;
++ (id)_queryForSettingsFromPastMonthForDeviceClass:(id)class;
++ (id)_queryForSettingsFromPastMonthForPlatform:(unint64_t)platform;
 + (id)_zoneForSettings;
-+ (id)createExpressSettingsWithQueue:(id)a3;
-+ (id)privacyBundleForIdentifier:(id)a3;
++ (id)createExpressSettingsWithQueue:(id)queue;
++ (id)privacyBundleForIdentifier:(id)identifier;
 + (int)_appearanceValue;
-+ (void)fetchSettingsWithCompletion:(id)a3;
-+ (void)updateSettings:(id)a3 withCompletion:(id)a4;
-- (SASExpressCloudSettings)initWithContainerIdentifier:(id)a3;
-- (id)_createSettingsRecordInZoneID:(id)a3 forDeviceID:(id)a4;
-- (void)_fetchAppropriateSettingsWithCompletion:(id)a3;
-- (void)_setupRecordZoneWithName:(id)a3 completion:(id)a4;
-- (void)fetchSettingsWithCompletion:(id)a3;
-- (void)setXpcActivity:(id)a3;
-- (void)updateSettings:(id)a3 withCompletion:(id)a4;
++ (void)fetchSettingsWithCompletion:(id)completion;
++ (void)updateSettings:(id)settings withCompletion:(id)completion;
+- (SASExpressCloudSettings)initWithContainerIdentifier:(id)identifier;
+- (id)_createSettingsRecordInZoneID:(id)d forDeviceID:(id)iD;
+- (void)_fetchAppropriateSettingsWithCompletion:(id)completion;
+- (void)_setupRecordZoneWithName:(id)name completion:(id)completion;
+- (void)fetchSettingsWithCompletion:(id)completion;
+- (void)setXpcActivity:(id)activity;
+- (void)updateSettings:(id)settings withCompletion:(id)completion;
 @end
 
 @implementation SASExpressCloudSettings
 
-+ (id)createExpressSettingsWithQueue:(id)a3
++ (id)createExpressSettingsWithQueue:(id)queue
 {
-  v3 = a3;
-  dispatch_assert_queue_V2(v3);
+  queueCopy = queue;
+  dispatch_assert_queue_V2(queueCopy);
   v4 = objc_alloc_init(SASExpressSettings);
   [(SASExpressSettings *)v4 setVersion:1];
   v5 = +[SASSystemInformation productType];
@@ -38,14 +38,14 @@
   v6 = +[SASSystemInformation deviceClass];
   [(SASExpressSettings *)v4 setDeviceClass:v6];
 
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  -[SASExpressSettings setDeviceAnalyticsOptIn:](v4, "setDeviceAnalyticsOptIn:", [v7 userBoolValueForSetting:*MEMORY[0x277D25E58]] == 1);
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  -[SASExpressSettings setDeviceAnalyticsOptIn:](v4, "setDeviceAnalyticsOptIn:", [mEMORY[0x277D262A0] userBoolValueForSetting:*MEMORY[0x277D25E58]] == 1);
 
   v8 = [SASExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.analyticsdevice"];
   [(SASExpressSettings *)v4 setDeviceAnalyticsPrivacyBundle:v8];
 
-  v9 = [MEMORY[0x277D262A0] sharedConnection];
-  -[SASExpressSettings setAppAnalyticsOptIn:](v4, "setAppAnalyticsOptIn:", [v9 userBoolValueForSetting:*MEMORY[0x277D25D00]] == 1);
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  -[SASExpressSettings setAppAnalyticsOptIn:](v4, "setAppAnalyticsOptIn:", [mEMORY[0x277D262A0]2 userBoolValueForSetting:*MEMORY[0x277D25D00]] == 1);
 
   v10 = [SASExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.analyticsapp"];
   [(SASExpressSettings *)v4 setAppAnalyticsPrivacyBundle:v10];
@@ -72,17 +72,17 @@
 
   v13 = v12;
   _Block_object_dispose(&v48, 8);
-  v14 = [v12 sharedPreferences];
-  -[SASExpressSettings setSiriOptIn:](v4, "setSiriOptIn:", [v14 assistantIsEnabled]);
+  sharedPreferences = [v12 sharedPreferences];
+  -[SASExpressSettings setSiriOptIn:](v4, "setSiriOptIn:", [sharedPreferences assistantIsEnabled]);
 
   v15 = [SASExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.siri"];
   [(SASExpressSettings *)v4 setSiriPrivacyBundle:v15];
 
-  v16 = [objc_opt_class() _isFindMyEnabled];
-  v17 = v16;
-  if (v16)
+  _isFindMyEnabled = [objc_opt_class() _isFindMyEnabled];
+  v17 = _isFindMyEnabled;
+  if (_isFindMyEnabled)
   {
-    -[SASExpressSettings setFindMyOptIn:](v4, "setFindMyOptIn:", [v16 BOOLValue]);
+    -[SASExpressSettings setFindMyOptIn:](v4, "setFindMyOptIn:", [_isFindMyEnabled BOOLValue]);
     v18 = [SASExpressCloudSettings privacyBundleForIdentifier:@"com.apple.onboarding.findmy"];
     [(SASExpressSettings *)v4 setFindMyPrivacyBundle:v18];
   }
@@ -105,14 +105,14 @@
 
   v20 = v19;
   _Block_object_dispose(&v48, 8);
-  v21 = [[v19 alloc] initWithDelegate:0 queue:v3 clientType:0];
+  v21 = [[v19 alloc] initWithDelegate:0 queue:queueCopy clientType:0];
   -[SASExpressSettings setSoftwareUpdateAutoUpdateEnabled:](v4, "setSoftwareUpdateAutoUpdateEnabled:", [v21 isAutomaticUpdateV2Enabled]);
   -[SASExpressSettings setSoftwareUpdateAutoDownloadEnabled:](v4, "setSoftwareUpdateAutoDownloadEnabled:", [v21 isAutomaticDownloadEnabled]);
-  v22 = [objc_opt_class() _isScreenTimeEnabled];
-  v23 = v22;
-  if (v22)
+  _isScreenTimeEnabled = [objc_opt_class() _isScreenTimeEnabled];
+  v23 = _isScreenTimeEnabled;
+  if (_isScreenTimeEnabled)
   {
-    -[SASExpressSettings setScreenTimeEnabled:](v4, "setScreenTimeEnabled:", [v22 BOOLValue]);
+    -[SASExpressSettings setScreenTimeEnabled:](v4, "setScreenTimeEnabled:", [_isScreenTimeEnabled BOOLValue]);
   }
 
   v48 = 0;
@@ -133,9 +133,9 @@
 
   v25 = v24;
   _Block_object_dispose(&v48, 8);
-  v26 = [v24 sharedInstance];
-  v27 = [v26 backupMetadata];
-  [(SASExpressSettings *)v4 setWalletData:v27];
+  sharedInstance = [v24 sharedInstance];
+  backupMetadata = [sharedInstance backupMetadata];
+  [(SASExpressSettings *)v4 setWalletData:backupMetadata];
 
   v48 = 0;
   v49 = &v48;
@@ -155,16 +155,16 @@
 
   v29 = v28;
   _Block_object_dispose(&v48, 8);
-  v30 = [v28 sharedMigrator];
-  v31 = [v30 migrationConsentRequestData];
-  [(SASExpressSettings *)v4 setWatchMigrationData:v31];
+  sharedMigrator = [v28 sharedMigrator];
+  migrationConsentRequestData = [sharedMigrator migrationConsentRequestData];
+  [(SASExpressSettings *)v4 setWatchMigrationData:migrationConsentRequestData];
 
   -[SASExpressSettings setAppearanceMode:](v4, "setAppearanceMode:", [objc_opt_class() _appearanceValue]);
-  v32 = [objc_opt_class() _displayZoomOption];
-  v33 = v32;
-  if (v32)
+  _displayZoomOption = [objc_opt_class() _displayZoomOption];
+  v33 = _displayZoomOption;
+  if (_displayZoomOption)
   {
-    -[SASExpressSettings setDisplayZoomOption:](v4, "setDisplayZoomOption:", [v32 intValue]);
+    -[SASExpressSettings setDisplayZoomOption:](v4, "setDisplayZoomOption:", [_displayZoomOption intValue]);
   }
 
   v48 = 0;
@@ -185,46 +185,46 @@
 
   v35 = v34;
   _Block_object_dispose(&v48, 8);
-  v36 = [v34 currentDevice];
-  v37 = [v36 userInterfaceIdiom];
+  currentDevice = [v34 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v37 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v38 = [objc_opt_class() _iPadMultitaskingMode];
-    v39 = v38;
-    if (v38)
+    _iPadMultitaskingMode = [objc_opt_class() _iPadMultitaskingMode];
+    v39 = _iPadMultitaskingMode;
+    if (_iPadMultitaskingMode)
     {
-      -[SASExpressSettings setIPadMultitaskingMode:](v4, "setIPadMultitaskingMode:", [v38 intValue]);
+      -[SASExpressSettings setIPadMultitaskingMode:](v4, "setIPadMultitaskingMode:", [_iPadMultitaskingMode intValue]);
     }
   }
 
-  v40 = [MEMORY[0x277CD47B0] sharedInstance];
-  -[SASExpressSettings setStolenDeviceProtectionEnabled:](v4, "setStolenDeviceProtectionEnabled:", [v40 isFeatureEnabled]);
+  mEMORY[0x277CD47B0] = [MEMORY[0x277CD47B0] sharedInstance];
+  -[SASExpressSettings setStolenDeviceProtectionEnabled:](v4, "setStolenDeviceProtectionEnabled:", [mEMORY[0x277CD47B0] isFeatureEnabled]);
 
-  v41 = [MEMORY[0x277CD47B0] sharedInstance];
-  -[SASExpressSettings setStolenDeviceProtectionStrictModeEnabled:](v4, "setStolenDeviceProtectionStrictModeEnabled:", [v41 isFeatureStrictModeEnabled]);
+  mEMORY[0x277CD47B0]2 = [MEMORY[0x277CD47B0] sharedInstance];
+  -[SASExpressSettings setStolenDeviceProtectionStrictModeEnabled:](v4, "setStolenDeviceProtectionStrictModeEnabled:", [mEMORY[0x277CD47B0]2 isFeatureStrictModeEnabled]);
 
   return v4;
 }
 
-+ (void)updateSettings:(id)a3 withCompletion:(id)a4
++ (void)updateSettings:(id)settings withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
   v7 = objc_alloc_init(SASExpressCloudSettings);
-  [(SASExpressCloudSettings *)v7 updateSettings:v6 withCompletion:v5];
+  [(SASExpressCloudSettings *)v7 updateSettings:settingsCopy withCompletion:completionCopy];
 }
 
-+ (void)fetchSettingsWithCompletion:(id)a3
++ (void)fetchSettingsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(SASExpressCloudSettings);
-  [(SASExpressCloudSettings *)v4 fetchSettingsWithCompletion:v3];
+  [(SASExpressCloudSettings *)v4 fetchSettingsWithCompletion:completionCopy];
 }
 
-- (SASExpressCloudSettings)initWithContainerIdentifier:(id)a3
+- (SASExpressCloudSettings)initWithContainerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SASExpressCloudSettings;
   v5 = [(SASExpressCloudSettings *)&v11 init];
@@ -234,7 +234,7 @@
     queue = v5->_queue;
     v5->_queue = v6;
 
-    v8 = [[SASCloudKitClient alloc] initWithContainerIdentifier:v4 callbackQueue:v5->_queue];
+    v8 = [[SASCloudKitClient alloc] initWithContainerIdentifier:identifierCopy callbackQueue:v5->_queue];
     cloudKitClient = v5->_cloudKitClient;
     v5->_cloudKitClient = v8;
   }
@@ -242,31 +242,31 @@
   return v5;
 }
 
-- (void)setXpcActivity:(id)a3
+- (void)setXpcActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(SASExpressCloudSettings *)self cloudKitClient];
-  [v5 setXpcActivity:v4];
+  activityCopy = activity;
+  cloudKitClient = [(SASExpressCloudSettings *)self cloudKitClient];
+  [cloudKitClient setXpcActivity:activityCopy];
 }
 
-- (void)updateSettings:(id)a3 withCompletion:(id)a4
+- (void)updateSettings:(id)settings withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CB8F48] defaultStore];
-  v9 = [v8 aa_primaryAppleAccount];
+  settingsCopy = settings;
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v9)
+  if (aa_primaryAppleAccount)
   {
-    v10 = [(SASExpressCloudSettings *)self cloudKitClient];
+    cloudKitClient = [(SASExpressCloudSettings *)self cloudKitClient];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __57__SASExpressCloudSettings_updateSettings_withCompletion___block_invoke;
     v19[3] = &unk_278845DB0;
-    v21 = v7;
+    v21 = completionCopy;
     v19[4] = self;
-    v20 = v6;
-    [v10 fetchCurrentDeviceIDWithCompletion:v19];
+    v20 = settingsCopy;
+    [cloudKitClient fetchCurrentDeviceIDWithCompletion:v19];
   }
 
   else
@@ -277,7 +277,7 @@
       [(SASExpressCloudSettings *)v11 updateSettings:v12 withCompletion:v13, v14, v15, v16, v17, v18];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -420,19 +420,19 @@ void __57__SASExpressCloudSettings_updateSettings_withCompletion___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchSettingsWithCompletion:(id)a3
+- (void)fetchSettingsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CB8F48] defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  completionCopy = completion;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  if (v6)
+  if (aa_primaryAppleAccount)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__SASExpressCloudSettings_fetchSettingsWithCompletion___block_invoke;
     v8[3] = &unk_278845DD8;
-    v9 = v4;
+    v9 = completionCopy;
     [(SASExpressCloudSettings *)self _fetchAppropriateSettingsWithCompletion:v8];
   }
 
@@ -445,7 +445,7 @@ void __57__SASExpressCloudSettings_updateSettings_withCompletion___block_invoke_
       _os_log_impl(&dword_22E4D7000, v7, OS_LOG_TYPE_DEFAULT, "Unable to fetch settings as there's no account", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -504,25 +504,25 @@ LABEL_4:
 LABEL_15:
 }
 
-- (void)_setupRecordZoneWithName:(id)a3 completion:(id)a4
+- (void)_setupRecordZoneWithName:(id)name completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CBC5F8];
-  v8 = a3;
+  nameCopy = name;
   v9 = [v7 alloc];
-  v10 = [v9 initWithZoneName:v8 ownerName:*MEMORY[0x277CBBF28]];
+  v10 = [v9 initWithZoneName:nameCopy ownerName:*MEMORY[0x277CBBF28]];
 
-  v11 = [(SASExpressCloudSettings *)self cloudKitClient];
+  cloudKitClient = [(SASExpressCloudSettings *)self cloudKitClient];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__SASExpressCloudSettings__setupRecordZoneWithName_completion___block_invoke;
   v14[3] = &unk_278845E00;
   v15 = v10;
-  v16 = self;
-  v17 = v6;
-  v12 = v6;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
-  [v11 fetchRecordZone:v13 group:0 completion:v14];
+  [cloudKitClient fetchRecordZone:v13 group:0 completion:v14];
 }
 
 void __63__SASExpressCloudSettings__setupRecordZoneWithName_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -556,14 +556,14 @@ void __63__SASExpressCloudSettings__setupRecordZoneWithName_completion___block_i
 LABEL_10:
 }
 
-- (id)_createSettingsRecordInZoneID:(id)a3 forDeviceID:(id)a4
+- (id)_createSettingsRecordInZoneID:(id)d forDeviceID:(id)iD
 {
   v5 = MEMORY[0x277CBC5A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithRecordType:@"Settings" zoneID:v7];
+  iDCopy = iD;
+  dCopy = d;
+  v8 = [[v5 alloc] initWithRecordType:@"Settings" zoneID:dCopy];
 
-  [v8 setObject:v6 forKeyedSubscript:@"deviceUUID"];
+  [v8 setObject:iDCopy forKeyedSubscript:@"deviceUUID"];
   v9 = +[SASSystemInformation deviceClass];
   [v8 setObject:v9 forKeyedSubscript:@"deviceClass"];
 
@@ -572,16 +572,16 @@ LABEL_10:
   return v8;
 }
 
-- (void)_fetchAppropriateSettingsWithCompletion:(id)a3
+- (void)_fetchAppropriateSettingsWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SASSystemInformation deviceClass];
   v6 = [objc_opt_class() _queryForSettingsFromPastMonthForDeviceClass:v5];
-  v7 = [objc_opt_class() _zoneForSettings];
+  _zoneForSettings = [objc_opt_class() _zoneForSettings];
   v8 = objc_alloc_init(MEMORY[0x277CBC4F8]);
-  v9 = [v8 defaultConfiguration];
-  [v9 setQualityOfService:25];
+  defaultConfiguration = [v8 defaultConfiguration];
+  [defaultConfiguration setQualityOfService:25];
 
   v10 = +[SASLogging facility];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -591,19 +591,19 @@ LABEL_10:
     _os_log_impl(&dword_22E4D7000, v10, OS_LOG_TYPE_DEFAULT, "Fetching a settings record for device class %@...", buf, 0xCu);
   }
 
-  v11 = [(SASExpressCloudSettings *)self cloudKitClient];
+  cloudKitClient = [(SASExpressCloudSettings *)self cloudKitClient];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___block_invoke;
   v16[3] = &unk_278845E50;
   v16[4] = self;
-  v17 = v7;
+  v17 = _zoneForSettings;
   v18 = v8;
-  v19 = v4;
+  v19 = completionCopy;
   v12 = v8;
-  v13 = v7;
-  v14 = v4;
-  [v11 fetchRecords:v6 inZone:v13 group:v12 completion:v16];
+  v13 = _zoneForSettings;
+  v14 = completionCopy;
+  [cloudKitClient fetchRecords:v6 inZone:v13 group:v12 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -745,28 +745,28 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_isCloudKitError:(id)a3
++ (BOOL)_isCloudKitError:(id)error
 {
-  v3 = [a3 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CBBF50]];
+  domain = [error domain];
+  v4 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   return v4;
 }
 
-+ (id)_queryForSettingsForDeviceID:(id)a3
++ (id)_queryForSettingsForDeviceID:(id)d
 {
-  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceUUID == %@", a3];
+  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceUUID == %@", d];
   v4 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:@"Settings" predicate:v3];
 
   return v4;
 }
 
-+ (id)_queryForSettingsFromPastMonthForPlatform:(unint64_t)a3
++ (id)_queryForSettingsFromPastMonthForPlatform:(unint64_t)platform
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"platform == %ld", a3];
+  platform = [MEMORY[0x277CCAC30] predicateWithFormat:@"platform == %ld", platform];
   v4 = MEMORY[0x277CCA920];
-  v14[0] = v3;
+  v14[0] = platform;
   v5 = +[SASExpressCloudSettings _predicateForRecordsModifiedInPastMonth];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
@@ -783,10 +783,10 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
   return v8;
 }
 
-+ (id)_queryForSettingsFromPastMonthForDeviceClass:(id)a3
++ (id)_queryForSettingsFromPastMonthForDeviceClass:(id)class
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceClass == %@", a3];
+  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceClass == %@", class];
   v4 = MEMORY[0x277CCA920];
   v14[0] = v3;
   v5 = +[SASExpressCloudSettings _predicateForRecordsModifiedInPastMonth];
@@ -824,11 +824,11 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
 
 + (id)_predicateForRecordsModifiedInPastMonth
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v3 setMonth:-1];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v2 dateByAddingComponents:v3 toDate:v4 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [currentCalendar dateByAddingComponents:v3 toDate:date options:0];
 
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"modificationDate >= %@", v5];
 
@@ -842,9 +842,9 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
   return v2;
 }
 
-+ (id)privacyBundleForIdentifier:(id)a3
++ (id)privacyBundleForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -863,13 +863,13 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
 
   v5 = v4;
   _Block_object_dispose(&v11, 8);
-  v6 = [v4 bundleWithIdentifier:v3];
-  v7 = [v6 privacyFlow];
-  if (v7)
+  v6 = [v4 bundleWithIdentifier:identifierCopy];
+  privacyFlow = [v6 privacyFlow];
+  if (privacyFlow)
   {
     v8 = objc_alloc_init(SASExpressSettingsPrivacyBundle);
-    [(SASExpressSettingsPrivacyBundle *)v8 setIdentifier:v3];
-    -[SASExpressSettingsPrivacyBundle setContentVersion:](v8, "setContentVersion:", [v7 contentVersion]);
+    [(SASExpressSettingsPrivacyBundle *)v8 setIdentifier:identifierCopy];
+    -[SASExpressSettingsPrivacyBundle setContentVersion:](v8, "setContentVersion:", [privacyFlow contentVersion]);
   }
 
   else
@@ -907,7 +907,7 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
 
   v4 = v3;
   _Block_object_dispose(&v19, 8);
-  v5 = [v3 sharedInstance];
+  sharedInstance = [v3 sharedInstance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__SASExpressCloudSettings__isFindMyEnabled__block_invoke;
@@ -915,7 +915,7 @@ void __67__SASExpressCloudSettings__fetchAppropriateSettingsWithCompletion___blo
   v11 = &v12;
   v6 = v2;
   v10 = v6;
-  [v5 fmipStateWithCompletion:v9];
+  [sharedInstance fmipStateWithCompletion:v9];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
@@ -1033,8 +1033,8 @@ void __47__SASExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a
   v3 = v2;
   _Block_object_dispose(&v10, 8);
   v4 = [[v2 alloc] initWithDelegate:0];
-  v5 = [v4 modeValue];
-  if (v5 == 1)
+  modeValue = [v4 modeValue];
+  if (modeValue == 1)
   {
     v6 = 1;
   }
@@ -1044,7 +1044,7 @@ void __47__SASExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a
     v6 = 3;
   }
 
-  if (v5 == 2)
+  if (modeValue == 2)
   {
     v7 = 2;
   }
@@ -1098,12 +1098,12 @@ void __47__SASExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a
 
     v18 = v17;
     _Block_object_dispose(&v25, 8);
-    v19 = [v17 mainDisplay];
-    v20 = [v19 currentMode];
+    mainDisplay = [v17 mainDisplay];
+    currentMode = [mainDisplay currentMode];
 
-    v21 = [v20 height];
+    height = [currentMode height];
     v22 = v13 * v16;
-    if (v22 == v21 && v7 * v10 == [v20 width])
+    if (v22 == height && v7 * v10 == [currentMode width])
     {
       v4 = &unk_2842FCF10;
     }
@@ -1138,15 +1138,15 @@ void __47__SASExpressCloudSettings__isScreenTimeEnabled__block_invoke(uint64_t a
   v3 = v2;
   _Block_object_dispose(&v9, 8);
   v4 = objc_alloc_init(v2);
-  v5 = [v4 currentMultitaskingOption];
+  currentMultitaskingOption = [v4 currentMultitaskingOption];
 
   v6 = &unk_2842FCF40;
-  if (v5)
+  if (currentMultitaskingOption)
   {
     v6 = 0;
   }
 
-  if (v5 == 1)
+  if (currentMultitaskingOption == 1)
   {
     return &unk_2842FCF28;
   }

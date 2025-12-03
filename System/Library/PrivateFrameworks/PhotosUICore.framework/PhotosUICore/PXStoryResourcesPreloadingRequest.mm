@@ -1,22 +1,22 @@
 @interface PXStoryResourcesPreloadingRequest
-- (PXStoryResourcesPreloadingRequest)initWithTimeline:(id)a3 timelineAttributes:(unint64_t)a4 startingSegmentIdentifier:(int64_t)a5 shouldIgnoreStartingSegmentIdentifier:(BOOL)a6;
+- (PXStoryResourcesPreloadingRequest)initWithTimeline:(id)timeline timelineAttributes:(unint64_t)attributes startingSegmentIdentifier:(int64_t)identifier shouldIgnoreStartingSegmentIdentifier:(BOOL)segmentIdentifier;
 @end
 
 @implementation PXStoryResourcesPreloadingRequest
 
-- (PXStoryResourcesPreloadingRequest)initWithTimeline:(id)a3 timelineAttributes:(unint64_t)a4 startingSegmentIdentifier:(int64_t)a5 shouldIgnoreStartingSegmentIdentifier:(BOOL)a6
+- (PXStoryResourcesPreloadingRequest)initWithTimeline:(id)timeline timelineAttributes:(unint64_t)attributes startingSegmentIdentifier:(int64_t)identifier shouldIgnoreStartingSegmentIdentifier:(BOOL)segmentIdentifier
 {
-  v11 = a3;
+  timelineCopy = timeline;
   v15.receiver = self;
   v15.super_class = PXStoryResourcesPreloadingRequest;
   v12 = [(PXStoryResourcesPreloadingRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_timeline, a3);
-    v13->_timelineAttributes = a4;
-    v13->_startingSegmentIdentifier = a5;
-    v13->_shouldIgnoreStartingSegmentIdentifier = a6;
+    objc_storeStrong(&v12->_timeline, timeline);
+    v13->_timelineAttributes = attributes;
+    v13->_startingSegmentIdentifier = identifier;
+    v13->_shouldIgnoreStartingSegmentIdentifier = segmentIdentifier;
   }
 
   return v13;

@@ -1,11 +1,11 @@
 @interface PUReviewAsset
-+ (BOOL)_shouldShowConfidentialityWarningForAdjustments:(id)a3;
-+ (BOOL)_shouldShowConfidentialityWarningForMetadata:(id)a3 creationDate:(id)a4;
-+ (id)createUniqueMediaDirectoryForAssetWithIdentifier:(id)a3;
-+ (id)fileURLForFullsizeImageInDirectory:(id)a3 extension:(id)a4;
-+ (id)fileURLForFullsizeRenderImageInDirectory:(id)a3 extension:(id)a4;
-+ (id)fileURLForFullsizeVideoInDirectory:(id)a3 extension:(id)a4;
-- (BOOL)_linkFileAtURL:(id)a3 toURL:(id)a4;
++ (BOOL)_shouldShowConfidentialityWarningForAdjustments:(id)adjustments;
++ (BOOL)_shouldShowConfidentialityWarningForMetadata:(id)metadata creationDate:(id)date;
++ (id)createUniqueMediaDirectoryForAssetWithIdentifier:(id)identifier;
++ (id)fileURLForFullsizeImageInDirectory:(id)directory extension:(id)extension;
++ (id)fileURLForFullsizeRenderImageInDirectory:(id)directory extension:(id)extension;
++ (id)fileURLForFullsizeVideoInDirectory:(id)directory extension:(id)extension;
+- (BOOL)_linkFileAtURL:(id)l toURL:(id)rL;
 - (BOOL)isAdjusted;
 - (BOOL)isAnimatedImage;
 - (NSString)pathForOriginalImageFile;
@@ -13,31 +13,31 @@
 - (NSString)pathForTrimmedVideoFile;
 - (NSString)uniformTypeIdentifier;
 - (PFVideoAVObjectBuilder)videoObjectBuilder;
-- (PUReviewAsset)initWithAVAsset:(id)a3 audioMix:(id)a4 width:(unint64_t)a5 height:(unint64_t)a6 captureDate:(id)a7 duration:(double)a8 previewImage:(id)a9 videoURL:(id)a10 unadjustedVideoURL:(id)a11 adjustments:(id)a12 identifier:(id)a13;
-- (PUReviewAsset)initWithConformingAsset:(id)a3;
-- (PUReviewAsset)initWithLivePhoto:(id)a3 fullsizeUnadjustedImageURL:(id)a4 fullsizeUnadjustedVideoURL:(id)a5 assetAdjustments:(id)a6 width:(unint64_t)a7 height:(unint64_t)a8 captureDate:(id)a9 metadata:(id)a10 duration:(double)a11 previewImage:(id)a12 identifier:(id)a13;
-- (PUReviewAsset)initWithPhoto:(id)a3 mediaSubtypes:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 captureDate:(id)a7 metadata:(id)a8 burstIdentifier:(id)a9 representedCount:(unint64_t)a10 fullsizeImageURL:(id)a11 fullsizeUnadjustedImageURL:(id)a12 assetAdjustments:(id)a13 identifier:(id)a14;
-- (PUReviewAsset)initWithReviewAsset:(id)a3;
-- (PUReviewAsset)initWithReviewAsset:(id)a3 baseImageURL:(id)a4 renderedImageURL:(id)a5 baseVideoURL:(id)a6 renderedVideoURL:(id)a7 previewImage:(id)a8 pixelWidth:(unint64_t)a9 pixelHeight:(unint64_t)a10 assetAdjustments:(id)a11 duration:(double)a12;
-- (PUReviewAsset)initWithReviewAsset:(id)a3 linkFileURLsToUniquePathsInDirectory:(id)a4;
-- (PUReviewAsset)initWithReviewAsset:(id)a3 linkFileURLsToUniquePathsInDirectory:(id)a4 canPlayPhotoIris:(BOOL)a5;
-- (PUReviewAsset)initWithReviewAsset:(id)a3 primaryResourceURL:(id)a4;
-- (PUReviewAsset)reviewAssetWithAdjustmentOutput:(id)a3 adjustmentData:(id)a4 formatIdentifier:(id)a5 version:(id)a6;
+- (PUReviewAsset)initWithAVAsset:(id)asset audioMix:(id)mix width:(unint64_t)width height:(unint64_t)height captureDate:(id)date duration:(double)duration previewImage:(id)image videoURL:(id)self0 unadjustedVideoURL:(id)self1 adjustments:(id)self2 identifier:(id)self3;
+- (PUReviewAsset)initWithConformingAsset:(id)asset;
+- (PUReviewAsset)initWithLivePhoto:(id)photo fullsizeUnadjustedImageURL:(id)l fullsizeUnadjustedVideoURL:(id)rL assetAdjustments:(id)adjustments width:(unint64_t)width height:(unint64_t)height captureDate:(id)date metadata:(id)self0 duration:(double)self1 previewImage:(id)self2 identifier:(id)self3;
+- (PUReviewAsset)initWithPhoto:(id)photo mediaSubtypes:(unint64_t)subtypes width:(unint64_t)width height:(unint64_t)height captureDate:(id)date metadata:(id)metadata burstIdentifier:(id)identifier representedCount:(unint64_t)self0 fullsizeImageURL:(id)self1 fullsizeUnadjustedImageURL:(id)self2 assetAdjustments:(id)self3 identifier:(id)self4;
+- (PUReviewAsset)initWithReviewAsset:(id)asset;
+- (PUReviewAsset)initWithReviewAsset:(id)asset baseImageURL:(id)l renderedImageURL:(id)rL baseVideoURL:(id)uRL renderedVideoURL:(id)videoURL previewImage:(id)image pixelWidth:(unint64_t)width pixelHeight:(unint64_t)self0 assetAdjustments:(id)self1 duration:(double)self2;
+- (PUReviewAsset)initWithReviewAsset:(id)asset linkFileURLsToUniquePathsInDirectory:(id)directory;
+- (PUReviewAsset)initWithReviewAsset:(id)asset linkFileURLsToUniquePathsInDirectory:(id)directory canPlayPhotoIris:(BOOL)iris;
+- (PUReviewAsset)initWithReviewAsset:(id)asset primaryResourceURL:(id)l;
+- (PUReviewAsset)reviewAssetWithAdjustmentOutput:(id)output adjustmentData:(id)data formatIdentifier:(id)identifier version:(id)version;
 - (double)aspectRatio;
-- (id)_ensureLinkDestinationDirectoryFromBaseDirectory:(id)a3;
-- (id)_uniqueDestinationURLForFileURL:(id)a3 inDirectory:(id)a4;
-- (id)adjustmentOutputForInputBaseVersion:(int64_t)a3 withLivePhotoSupport:(BOOL)a4;
-- (id)inputForAdjustmentWithMediaProvider:(id)a3 canHandleAdjustments:(id)a4;
+- (id)_ensureLinkDestinationDirectoryFromBaseDirectory:(id)directory;
+- (id)_uniqueDestinationURLForFileURL:(id)l inDirectory:(id)directory;
+- (id)adjustmentOutputForInputBaseVersion:(int64_t)version withLivePhotoSupport:(BOOL)support;
+- (id)inputForAdjustmentWithMediaProvider:(id)provider canHandleAdjustments:(id)adjustments;
 - (id)primaryRenderedMediaURL;
-- (id)providedImageURLForImageVersion:(int64_t)a3;
-- (id)providedVideoURLForImageVersion:(int64_t)a3;
-- (id)providedVideoURLForVideoVersion:(int64_t)a3;
+- (id)providedImageURLForImageVersion:(int64_t)version;
+- (id)providedVideoURLForImageVersion:(int64_t)version;
+- (id)providedVideoURLForVideoVersion:(int64_t)version;
 - (id)reviewAssetRevertingAdjustments;
-- (int)exifOrientationForImageVersion:(int64_t)a3;
+- (int)exifOrientationForImageVersion:(int64_t)version;
 - (int)originalEXIFOrientation;
 - (unint64_t)livePhotoVisibilityState;
-- (unint64_t)requestContentEditingInputWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)_removeFileAtURL:(id)a3;
+- (unint64_t)requestContentEditingInputWithOptions:(id)options completionHandler:(id)handler;
+- (void)_removeFileAtURL:(id)l;
 - (void)removeAllFilesAtReferencedURLs;
 @end
 
@@ -45,52 +45,52 @@
 
 - (id)primaryRenderedMediaURL
 {
-  v3 = [(PUReviewAsset *)self mediaType];
-  if (v3 == 2)
+  mediaType = [(PUReviewAsset *)self mediaType];
+  if (mediaType == 2)
   {
-    v4 = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
+    providedFullsizeRenderVideoURL = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
   }
 
-  else if (v3 == 1)
+  else if (mediaType == 1)
   {
-    v4 = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
+    providedFullsizeRenderVideoURL = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
   }
 
   else
   {
-    v4 = 0;
+    providedFullsizeRenderVideoURL = 0;
   }
 
-  return v4;
+  return providedFullsizeRenderVideoURL;
 }
 
 - (id)reviewAssetRevertingAdjustments
 {
   v3 = [(PUReviewAsset *)self adjustmentOutputForInputBaseVersion:0 withLivePhotoSupport:1];
-  v4 = [v3 _baseVideoURL];
-  v5 = [v3 _baseImageURL];
+  _baseVideoURL = [v3 _baseVideoURL];
+  _baseImageURL = [v3 _baseImageURL];
   v6 = [PUReviewAsset alloc];
-  v7 = [(PUReviewAsset *)self pixelWidth];
-  v8 = [(PUReviewAsset *)self pixelHeight];
+  pixelWidth = [(PUReviewAsset *)self pixelWidth];
+  pixelHeight = [(PUReviewAsset *)self pixelHeight];
   [(PUReviewAsset *)self duration];
-  v9 = [(PUReviewAsset *)v6 initWithReviewAsset:self baseImageURL:v5 renderedImageURL:0 baseVideoURL:v4 renderedVideoURL:0 pixelWidth:v7 pixelHeight:v8 assetAdjustments:0 duration:?];
+  v9 = [(PUReviewAsset *)v6 initWithReviewAsset:self baseImageURL:_baseImageURL renderedImageURL:0 baseVideoURL:_baseVideoURL renderedVideoURL:0 pixelWidth:pixelWidth pixelHeight:pixelHeight assetAdjustments:0 duration:?];
 
   return v9;
 }
 
-- (PUReviewAsset)reviewAssetWithAdjustmentOutput:(id)a3 adjustmentData:(id)a4 formatIdentifier:(id)a5 version:(id)a6
+- (PUReviewAsset)reviewAssetWithAdjustmentOutput:(id)output adjustmentData:(id)data formatIdentifier:(id)identifier version:(id)version
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 _baseVideoURL];
-  v15 = [v13 _baseImageURL];
-  v16 = [v13 renderedImageFileURL];
-  v17 = [v13 renderedVideoFileURL];
-  v18 = [v13 _adjustmentInputBaseVersion];
+  versionCopy = version;
+  identifierCopy = identifier;
+  dataCopy = data;
+  outputCopy = output;
+  _baseVideoURL = [outputCopy _baseVideoURL];
+  _baseImageURL = [outputCopy _baseImageURL];
+  renderedImageFileURL = [outputCopy renderedImageFileURL];
+  renderedVideoFileURL = [outputCopy renderedVideoFileURL];
+  _adjustmentInputBaseVersion = [outputCopy _adjustmentInputBaseVersion];
 
-  if (v18 == 1)
+  if (_adjustmentInputBaseVersion == 1)
   {
     v19 = PLAssetExplorerGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -100,31 +100,31 @@
     }
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E69C0660]) initWithFormatIdentifier:v11 formatVersion:v10 data:v12 baseVersion:0 editorBundleID:0 renderTypes:0];
+  v20 = [objc_alloc(MEMORY[0x1E69C0660]) initWithFormatIdentifier:identifierCopy formatVersion:versionCopy data:dataCopy baseVersion:0 editorBundleID:0 renderTypes:0];
 
   v21 = [PUReviewAsset alloc];
-  v22 = [(PUReviewAsset *)self pixelWidth];
-  v23 = [(PUReviewAsset *)self pixelHeight];
+  pixelWidth = [(PUReviewAsset *)self pixelWidth];
+  pixelHeight = [(PUReviewAsset *)self pixelHeight];
   [(PUReviewAsset *)self duration];
-  v24 = [(PUReviewAsset *)v21 initWithReviewAsset:self baseImageURL:v15 renderedImageURL:v16 baseVideoURL:v14 renderedVideoURL:v17 pixelWidth:v22 pixelHeight:v23 assetAdjustments:v20 duration:?];
+  v24 = [(PUReviewAsset *)v21 initWithReviewAsset:self baseImageURL:_baseImageURL renderedImageURL:renderedImageFileURL baseVideoURL:_baseVideoURL renderedVideoURL:renderedVideoFileURL pixelWidth:pixelWidth pixelHeight:pixelHeight assetAdjustments:v20 duration:?];
 
   return v24;
 }
 
-- (id)adjustmentOutputForInputBaseVersion:(int64_t)a3 withLivePhotoSupport:(BOOL)a4
+- (id)adjustmentOutputForInputBaseVersion:(int64_t)version withLivePhotoSupport:(BOOL)support
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = [(PUReviewAsset *)self identifier];
-  v33 = a3;
-  v7 = a3 != 2;
-  v8 = [PUReviewAsset createUniqueMediaDirectoryForAssetWithIdentifier:v6];
+  identifier = [(PUReviewAsset *)self identifier];
+  versionCopy = version;
+  v7 = version != 2;
+  v8 = [PUReviewAsset createUniqueMediaDirectoryForAssetWithIdentifier:identifier];
   v9 = [(PUReviewAsset *)self providedImageURLForImageVersion:v7];
   v10 = [(PUReviewAsset *)self providedVideoURLForImageVersion:v7];
   if ([(PUReviewAsset *)self mediaType]== 1 && v9)
   {
-    v11 = [v9 pathExtension];
-    v12 = [PUReviewAsset fileURLForFullsizeImageInDirectory:v8 extension:v11];
-    v35 = [PUReviewAsset fileURLForFullsizeRenderImageInDirectory:v8 extension:v11];
+    pathExtension = [v9 pathExtension];
+    v12 = [PUReviewAsset fileURLForFullsizeImageInDirectory:v8 extension:pathExtension];
+    v35 = [PUReviewAsset fileURLForFullsizeRenderImageInDirectory:v8 extension:pathExtension];
     v13 = 0;
     if ([(PUReviewAsset *)self isLivePhoto]&& v10)
     {
@@ -153,8 +153,8 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v11 = [v10 pathExtension];
-    v14 = [PUReviewAsset fileURLForFullsizeVideoInDirectory:v8 extension:v11];
+    pathExtension = [v10 pathExtension];
+    v14 = [PUReviewAsset fileURLForFullsizeVideoInDirectory:v8 extension:pathExtension];
     v13 = [PUReviewAsset fileURLForFullsizeRenderVideoInDirectory:v8];
     v35 = 0;
     v12 = 0;
@@ -165,13 +165,13 @@ LABEL_10:
   v14 = 0;
   v12 = 0;
 LABEL_11:
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v36 = v15;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v36 = defaultManager;
   v34 = v12;
   if (v12)
   {
     v39 = 0;
-    v16 = [v15 copyItemAtURL:v9 toURL:v12 error:&v39];
+    v16 = [defaultManager copyItemAtURL:v9 toURL:v12 error:&v39];
     v12 = v39;
     if ((v16 & 1) == 0)
     {
@@ -188,16 +188,16 @@ LABEL_11:
       }
     }
 
-    v15 = v36;
+    defaultManager = v36;
   }
 
   if (v14)
   {
     v18 = v9;
     v19 = v8;
-    v20 = v6;
+    v20 = identifier;
     v38 = v12;
-    v21 = [v15 copyItemAtURL:v10 toURL:v14 error:&v38];
+    v21 = [defaultManager copyItemAtURL:v10 toURL:v14 error:&v38];
     v22 = v38;
 
     if ((v21 & 1) == 0)
@@ -215,7 +215,7 @@ LABEL_11:
       }
     }
 
-    v6 = v20;
+    identifier = v20;
     v8 = v19;
     v9 = v18;
   }
@@ -225,11 +225,11 @@ LABEL_11:
     v22 = v12;
   }
 
-  if (v13 && [(PUReviewAsset *)self isLivePhoto]&& !a4)
+  if (v13 && [(PUReviewAsset *)self isLivePhoto]&& !support)
   {
     v24 = v9;
     v25 = v8;
-    v26 = v6;
+    v26 = identifier;
     v37 = v22;
     v27 = [v36 copyItemAtURL:v10 toURL:v13 error:&v37];
     v28 = v37;
@@ -249,7 +249,7 @@ LABEL_11:
       }
     }
 
-    v6 = v26;
+    identifier = v26;
     v8 = v25;
     v9 = v24;
   }
@@ -260,7 +260,7 @@ LABEL_11:
   }
 
   v30 = objc_alloc_init(PUReviewAdjustmentOutput);
-  [(PUReviewAdjustmentOutput *)v30 _setAdjustmentInputBaseVersion:v33];
+  [(PUReviewAdjustmentOutput *)v30 _setAdjustmentInputBaseVersion:versionCopy];
   [(PUReviewAdjustmentOutput *)v30 _setRenderedImageFileURL:v35];
   [(PUReviewAdjustmentOutput *)v30 _setRenderedVideoFileURL:v13];
   [(PUReviewAdjustmentOutput *)v30 _setBaseImageURL:v34];
@@ -269,37 +269,37 @@ LABEL_11:
   return v30;
 }
 
-- (id)inputForAdjustmentWithMediaProvider:(id)a3 canHandleAdjustments:(id)a4
+- (id)inputForAdjustmentWithMediaProvider:(id)provider canHandleAdjustments:(id)adjustments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUReviewAsset *)self isAdjusted];
-  v9 = [(PUReviewAsset *)self assetAdjustments];
-  v25 = v7;
-  if (v8)
+  providerCopy = provider;
+  adjustmentsCopy = adjustments;
+  isAdjusted = [(PUReviewAsset *)self isAdjusted];
+  assetAdjustments = [(PUReviewAsset *)self assetAdjustments];
+  v25 = adjustmentsCopy;
+  if (isAdjusted)
   {
-    if (v7[2](v7, v9))
+    if (adjustmentsCopy[2](adjustmentsCopy, assetAdjustments))
     {
-      v10 = [v9 adjustmentBaseVersion];
+      adjustmentBaseVersion = [assetAdjustments adjustmentBaseVersion];
       v11 = 1;
     }
 
     else
     {
       v11 = 0;
-      v10 = 2;
+      adjustmentBaseVersion = 2;
     }
   }
 
   else
   {
     v11 = 0;
-    v10 = 0;
+    adjustmentBaseVersion = 0;
   }
 
-  v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v12 scale];
-  [v12 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  [mainScreen _referenceBounds];
   [(PUReviewAsset *)self pixelWidth];
   [(PUReviewAsset *)self pixelHeight];
   PLScaledSizeToFitSize();
@@ -321,28 +321,28 @@ LABEL_11:
   v27[2] = __91__PUReviewAsset_AdjustmentInput__inputForAdjustmentWithMediaProvider_canHandleAdjustments___block_invoke;
   v27[3] = &unk_1E7B7D678;
   v27[4] = &v28;
-  v18 = v6;
-  [v6 requestImageForAsset:self targetSize:0 contentMode:v17 options:v27 resultHandler:{v14, v16}];
-  v19 = v10 != 2;
+  v18 = providerCopy;
+  [providerCopy requestImageForAsset:self targetSize:0 contentMode:v17 options:v27 resultHandler:{v14, v16}];
+  v19 = adjustmentBaseVersion != 2;
   v20 = objc_alloc_init(PUReviewAdjustmentInput);
   if (v11)
   {
-    v21 = [v9 adjustmentData];
+    adjustmentData = [assetAdjustments adjustmentData];
   }
 
   else
   {
-    v21 = 0;
+    adjustmentData = 0;
   }
 
-  [(PUReviewAdjustmentInput *)v20 _setKnownAdjustmentData:v21];
+  [(PUReviewAdjustmentInput *)v20 _setKnownAdjustmentData:adjustmentData];
   if (v11)
   {
   }
 
-  [(PUReviewAdjustmentInput *)v20 _setBaseImageVersion:v10];
+  [(PUReviewAdjustmentInput *)v20 _setBaseImageVersion:adjustmentBaseVersion];
   [(PUReviewAdjustmentInput *)v20 _setCurrentPreviewImage:v29[5]];
-  v22 = [(PUReviewAsset *)self providedImageURLForImageVersion:v10 != 2];
+  v22 = [(PUReviewAsset *)self providedImageURLForImageVersion:adjustmentBaseVersion != 2];
   [(PUReviewAdjustmentInput *)v20 _setBaseImageFileURL:v22];
 
   v23 = [(PUReviewAsset *)self providedVideoURLForImageVersion:v19];
@@ -353,28 +353,28 @@ LABEL_11:
   return v20;
 }
 
-- (id)providedVideoURLForVideoVersion:(int64_t)a3
+- (id)providedVideoURLForVideoVersion:(int64_t)version
 {
-  v5 = [(PUReviewAsset *)self providedVideoURL];
-  v6 = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
-  v7 = v6;
-  v8 = v5;
-  if (a3 != 1)
+  providedVideoURL = [(PUReviewAsset *)self providedVideoURL];
+  providedFullsizeRenderVideoURL = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
+  v7 = providedFullsizeRenderVideoURL;
+  v8 = providedVideoURL;
+  if (version != 1)
   {
-    if (a3)
+    if (version)
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    if (v6)
+    if (providedFullsizeRenderVideoURL)
     {
-      v8 = v6;
+      v8 = providedFullsizeRenderVideoURL;
     }
 
     else
     {
-      v8 = v5;
+      v8 = providedVideoURL;
     }
   }
 
@@ -385,28 +385,28 @@ LABEL_8:
   return v9;
 }
 
-- (id)providedVideoURLForImageVersion:(int64_t)a3
+- (id)providedVideoURLForImageVersion:(int64_t)version
 {
-  v5 = [(PUReviewAsset *)self providedVideoURL];
-  v6 = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
-  v7 = v6;
-  v8 = v5;
-  if ((a3 - 1) >= 2)
+  providedVideoURL = [(PUReviewAsset *)self providedVideoURL];
+  providedFullsizeRenderVideoURL = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
+  v7 = providedFullsizeRenderVideoURL;
+  v8 = providedVideoURL;
+  if ((version - 1) >= 2)
   {
-    if (a3)
+    if (version)
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    if (v6)
+    if (providedFullsizeRenderVideoURL)
     {
-      v8 = v6;
+      v8 = providedFullsizeRenderVideoURL;
     }
 
     else
     {
-      v8 = v5;
+      v8 = providedVideoURL;
     }
   }
 
@@ -417,45 +417,45 @@ LABEL_8:
   return v9;
 }
 
-- (int)exifOrientationForImageVersion:(int64_t)a3
+- (int)exifOrientationForImageVersion:(int64_t)version
 {
-  v5 = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
-  v6 = v5;
-  if ((a3 - 1) >= 2 && (a3 || v5))
+  providedFullsizeRenderImageURL = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
+  v6 = providedFullsizeRenderImageURL;
+  if ((version - 1) >= 2 && (version || providedFullsizeRenderImageURL))
   {
-    v7 = 1;
+    originalEXIFOrientation = 1;
   }
 
   else
   {
-    v7 = [(PUReviewAsset *)self originalEXIFOrientation];
+    originalEXIFOrientation = [(PUReviewAsset *)self originalEXIFOrientation];
   }
 
-  return v7;
+  return originalEXIFOrientation;
 }
 
-- (id)providedImageURLForImageVersion:(int64_t)a3
+- (id)providedImageURLForImageVersion:(int64_t)version
 {
-  v5 = [(PUReviewAsset *)self providedFullsizeImageURL];
-  v6 = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
-  v7 = v6;
-  v8 = v5;
-  if ((a3 - 1) >= 2)
+  providedFullsizeImageURL = [(PUReviewAsset *)self providedFullsizeImageURL];
+  providedFullsizeRenderImageURL = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
+  v7 = providedFullsizeRenderImageURL;
+  v8 = providedFullsizeImageURL;
+  if ((version - 1) >= 2)
   {
-    if (a3)
+    if (version)
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    if (v6)
+    if (providedFullsizeRenderImageURL)
     {
-      v8 = v6;
+      v8 = providedFullsizeRenderImageURL;
     }
 
     else
     {
-      v8 = v5;
+      v8 = providedFullsizeImageURL;
     }
   }
 
@@ -466,14 +466,14 @@ LABEL_8:
   return v9;
 }
 
-- (void)_removeFileAtURL:(id)a3
+- (void)_removeFileAtURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v3 path];
-    v6 = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    v6 = [defaultManager fileExistsAtPath:path];
 
     if (v6)
     {
@@ -482,7 +482,7 @@ LABEL_8:
       v8[1] = 3221225472;
       v8[2] = __34__PUReviewAsset__removeFileAtURL___block_invoke;
       v8[3] = &unk_1E7B80280;
-      v9 = v3;
+      v9 = lCopy;
       [v7 removeItemAtURL:v9 completion:v8];
     }
   }
@@ -509,40 +509,40 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 
 - (void)removeAllFilesAtReferencedURLs
 {
-  v3 = [(PUReviewAsset *)self providedFullsizeImageURL];
-  [(PUReviewAsset *)self _removeFileAtURL:v3];
+  providedFullsizeImageURL = [(PUReviewAsset *)self providedFullsizeImageURL];
+  [(PUReviewAsset *)self _removeFileAtURL:providedFullsizeImageURL];
 
-  v4 = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
-  [(PUReviewAsset *)self _removeFileAtURL:v4];
+  providedFullsizeRenderImageURL = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
+  [(PUReviewAsset *)self _removeFileAtURL:providedFullsizeRenderImageURL];
 
-  v5 = [(PUReviewAsset *)self providedVideoURL];
-  [(PUReviewAsset *)self _removeFileAtURL:v5];
+  providedVideoURL = [(PUReviewAsset *)self providedVideoURL];
+  [(PUReviewAsset *)self _removeFileAtURL:providedVideoURL];
 
-  v6 = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
-  [(PUReviewAsset *)self _removeFileAtURL:v6];
+  providedFullsizeRenderVideoURL = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
+  [(PUReviewAsset *)self _removeFileAtURL:providedFullsizeRenderVideoURL];
 }
 
-- (BOOL)_linkFileAtURL:(id)a3 toURL:(id)a4
+- (BOOL)_linkFileAtURL:(id)l toURL:(id)rL
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqual:v6])
+  lCopy = l;
+  rLCopy = rL;
+  if ([lCopy isEqual:rLCopy])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v6 path];
-    v10 = [v8 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [rLCopy path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
       v11 = +[PUReviewFileManager defaultManager];
       v19 = 0;
-      v12 = [v11 removeItemAtURL:v6 error:&v19];
+      v12 = [v11 removeItemAtURL:rLCopy error:&v19];
       v13 = v19;
 
       if ((v12 & 1) == 0)
@@ -551,7 +551,7 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v21 = v6;
+          v21 = rLCopy;
           v22 = 2114;
           v23 = v13;
           _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_ERROR, "Failed to remove existing file at %{public}@: %{public}@", buf, 0x16u);
@@ -560,7 +560,7 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     }
 
     v18 = 0;
-    v7 = [v8 copyItemAtURL:v5 toURL:v6 error:&v18];
+    v7 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:&v18];
     v15 = v18;
     if ((v7 & 1) == 0)
     {
@@ -568,9 +568,9 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v21 = v5;
+        v21 = lCopy;
         v22 = 2114;
-        v23 = v6;
+        v23 = rLCopy;
         v24 = 2114;
         v25 = v15;
         _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_ERROR, "Failed to link %{public}@ to %{public}@: %{public}@", buf, 0x20u);
@@ -581,32 +581,32 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
   return v7;
 }
 
-- (id)_uniqueDestinationURLForFileURL:(id)a3 inDirectory:(id)a4
+- (id)_uniqueDestinationURLForFileURL:(id)l inDirectory:(id)directory
 {
-  v5 = a4;
-  v6 = [a3 pathExtension];
-  v7 = [MEMORY[0x1E69BF320] UUIDString];
-  v8 = [v7 stringByAppendingPathExtension:v6];
+  directoryCopy = directory;
+  pathExtension = [l pathExtension];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  v8 = [uUIDString stringByAppendingPathExtension:pathExtension];
 
-  v9 = [v5 stringByAppendingPathComponent:v8];
+  v9 = [directoryCopy stringByAppendingPathComponent:v8];
 
   v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
 
   return v10;
 }
 
-- (id)_ensureLinkDestinationDirectoryFromBaseDirectory:(id)a3
+- (id)_ensureLinkDestinationDirectoryFromBaseDirectory:(id)directory
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUReviewAsset *)self identifier];
-  v6 = [v4 stringByAppendingPathComponent:@"ReviewLinkedFiles"];
+  directoryCopy = directory;
+  identifier = [(PUReviewAsset *)self identifier];
+  v6 = [directoryCopy stringByAppendingPathComponent:@"ReviewLinkedFiles"];
 
-  v7 = [v6 stringByAppendingPathComponent:v5];
+  v7 = [v6 stringByAppendingPathComponent:identifier];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v12];
+  [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -627,12 +627,12 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 
 - (NSString)pathForTrimmedVideoFile
 {
-  v2 = [(PUReviewAsset *)self pathForOriginalVideoFile];
-  v3 = v2;
-  if (v2)
+  pathForOriginalVideoFile = [(PUReviewAsset *)self pathForOriginalVideoFile];
+  v3 = pathForOriginalVideoFile;
+  if (pathForOriginalVideoFile)
   {
-    v4 = [v2 stringByDeletingPathExtension];
-    v5 = [v4 stringByAppendingPathExtension:@"TRIM.MOV"];
+    stringByDeletingPathExtension = [pathForOriginalVideoFile stringByDeletingPathExtension];
+    v5 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"TRIM.MOV"];
   }
 
   else
@@ -645,97 +645,97 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 
 - (NSString)pathForOriginalVideoFile
 {
-  v2 = [(PUReviewAsset *)self providedVideoURL];
-  v3 = [v2 path];
+  providedVideoURL = [(PUReviewAsset *)self providedVideoURL];
+  path = [providedVideoURL path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)pathForOriginalImageFile
 {
-  v2 = [(PUReviewAsset *)self providedFullsizeImageURL];
-  v3 = [v2 path];
+  providedFullsizeImageURL = [(PUReviewAsset *)self providedFullsizeImageURL];
+  path = [providedFullsizeImageURL path];
 
-  return v3;
+  return path;
 }
 
 - (int)originalEXIFOrientation
 {
-  v2 = [(PUReviewAsset *)self providedImageMetadata];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
+  providedImageMetadata = [(PUReviewAsset *)self providedImageMetadata];
+  v3 = [providedImageMetadata objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  return v5;
+  return intValue;
 }
 
-- (unint64_t)requestContentEditingInputWithOptions:(id)a3 completionHandler:(id)a4
+- (unint64_t)requestContentEditingInputWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  if (a4)
+  optionsCopy = options;
+  if (handler)
   {
-    v7 = a4;
-    v8 = [(PUReviewAsset *)self assetAdjustments];
-    v9 = [v8 phAdjustmentData];
+    handlerCopy = handler;
+    assetAdjustments = [(PUReviewAsset *)self assetAdjustments];
+    phAdjustmentData = [assetAdjustments phAdjustmentData];
 
     v10 = objc_alloc(MEMORY[0x1E6978790]);
-    v11 = [(PUReviewAsset *)self providedFullsizeImageURL];
-    if (v11)
+    providedFullsizeImageURL = [(PUReviewAsset *)self providedFullsizeImageURL];
+    if (providedFullsizeImageURL)
     {
-      v12 = [v10 initWithAppropriateURL:v11];
+      v12 = [v10 initWithAppropriateURL:providedFullsizeImageURL];
     }
 
     else
     {
-      v13 = [(PUReviewAsset *)self providedVideoURL];
-      v12 = [v10 initWithAppropriateURL:v13];
+      providedVideoURL = [(PUReviewAsset *)self providedVideoURL];
+      v12 = [v10 initWithAppropriateURL:providedVideoURL];
     }
 
     [v12 setMediaType:{-[PUReviewAsset mediaType](self, "mediaType")}];
     [v12 setMediaSubtypes:{-[PUReviewAsset mediaSubtypes](self, "mediaSubtypes")}];
     [v12 setPlaybackStyle:{-[PUReviewAsset playbackStyle](self, "playbackStyle")}];
-    v14 = [(PUReviewAsset *)self creationDate];
-    [v12 setCreationDate:v14];
+    creationDate = [(PUReviewAsset *)self creationDate];
+    [v12 setCreationDate:creationDate];
 
-    v15 = [(PUReviewAsset *)self location];
-    [v12 setLocation:v15];
+    location = [(PUReviewAsset *)self location];
+    [v12 setLocation:location];
 
-    if (!-[PUReviewAsset isAdjusted](self, "isAdjusted") || ([v6 canHandleAdjustmentData], (v16 = objc_claimAutoreleasedReturnValue()) != 0) && (v17 = v16, objc_msgSend(v6, "canHandleAdjustmentData"), v18 = objc_claimAutoreleasedReturnValue(), v19 = (v18)[2](v18, v9), v18, v17, v19))
+    if (!-[PUReviewAsset isAdjusted](self, "isAdjusted") || ([optionsCopy canHandleAdjustmentData], (v16 = objc_claimAutoreleasedReturnValue()) != 0) && (v17 = v16, objc_msgSend(optionsCopy, "canHandleAdjustmentData"), v18 = objc_claimAutoreleasedReturnValue(), v19 = (v18)[2](v18, phAdjustmentData), v18, v17, v19))
     {
       [v12 setBaseVersion:0];
-      [v12 setAdjustmentData:v9];
-      v20 = [(PUReviewAsset *)self providedFullsizeImageURL];
-      [v12 setFullSizeImageURL:v20];
+      [v12 setAdjustmentData:phAdjustmentData];
+      providedFullsizeImageURL2 = [(PUReviewAsset *)self providedFullsizeImageURL];
+      [v12 setFullSizeImageURL:providedFullsizeImageURL2];
 
-      v21 = [(PUReviewAsset *)self providedVideoURL];
-      [v12 setVideoURL:v21];
+      providedVideoURL2 = [(PUReviewAsset *)self providedVideoURL];
+      [v12 setVideoURL:providedVideoURL2];
 
-      v22 = [(PUReviewAsset *)self originalEXIFOrientation];
+      originalEXIFOrientation = [(PUReviewAsset *)self originalEXIFOrientation];
     }
 
     else
     {
       [v12 setBaseVersion:2];
-      [v12 setAdjustmentData:v9];
-      v23 = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
-      [v12 setFullSizeImageURL:v23];
+      [v12 setAdjustmentData:phAdjustmentData];
+      providedFullsizeRenderImageURL = [(PUReviewAsset *)self providedFullsizeRenderImageURL];
+      [v12 setFullSizeImageURL:providedFullsizeRenderImageURL];
 
-      v24 = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
-      [v12 setVideoURL:v24];
+      providedFullsizeRenderVideoURL = [(PUReviewAsset *)self providedFullsizeRenderVideoURL];
+      [v12 setVideoURL:providedFullsizeRenderVideoURL];
 
-      v22 = 1;
+      originalEXIFOrientation = 1;
     }
 
-    [v12 setFullSizeImageOrientation:v22];
-    v7[2](v7, v12, 0);
+    [v12 setFullSizeImageOrientation:originalEXIFOrientation];
+    handlerCopy[2](handlerCopy, v12, 0);
   }
 
   return 0;
@@ -744,20 +744,20 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 - (PFVideoAVObjectBuilder)videoObjectBuilder
 {
   v3 = MEMORY[0x1E6988168];
-  v4 = [(PUReviewAsset *)self providedVideoURL];
-  v5 = [v3 assetWithURL:v4];
+  providedVideoURL = [(PUReviewAsset *)self providedVideoURL];
+  v5 = [v3 assetWithURL:providedVideoURL];
 
   if ([(PUReviewAsset *)self isHighFramerateVideo])
   {
-    v6 = 0;
+    assetAdjustments = 0;
   }
 
   else
   {
-    v6 = [(PUReviewAsset *)self assetAdjustments];
+    assetAdjustments = [(PUReviewAsset *)self assetAdjustments];
   }
 
-  v7 = [MEMORY[0x1E69C0910] videoAdjustmentsFromAssetAdjustmentsIfRecognized:v6];
+  v7 = [MEMORY[0x1E69C0910] videoAdjustmentsFromAssetAdjustmentsIfRecognized:assetAdjustments];
   v8 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v5 videoAdjustments:v7];
 
   return v8;
@@ -770,43 +770,43 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     return 0;
   }
 
-  v3 = [(PUReviewAsset *)self isAdjusted];
-  v4 = [(PUReviewAsset *)self canPlayPhotoIris];
+  isAdjusted = [(PUReviewAsset *)self isAdjusted];
+  canPlayPhotoIris = [(PUReviewAsset *)self canPlayPhotoIris];
   v5 = 4;
-  if (v4)
+  if (canPlayPhotoIris)
   {
     v5 = 0;
   }
 
   v6 = 2;
-  if (!v3)
+  if (!isAdjusted)
   {
     v6 = 0;
   }
 
   v7 = 8;
-  if (!v4 || !v3)
+  if (!canPlayPhotoIris || !isAdjusted)
   {
     v7 = 0;
   }
 
-  return v6 | v5 | !v4 | v7;
+  return v6 | v5 | !canPlayPhotoIris | v7;
 }
 
 - (BOOL)isAdjusted
 {
-  v2 = [(PUReviewAsset *)self assetAdjustments];
-  v3 = v2 != 0;
+  assetAdjustments = [(PUReviewAsset *)self assetAdjustments];
+  v3 = assetAdjustments != 0;
 
   return v3;
 }
 
 - (BOOL)isAnimatedImage
 {
-  v2 = [(PUReviewAsset *)self uniformTypeIdentifier];
-  if (v2)
+  uniformTypeIdentifier = [(PUReviewAsset *)self uniformTypeIdentifier];
+  if (uniformTypeIdentifier)
   {
-    v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:v2];
+    v3 = [MEMORY[0x1E6982C40] typeWithIdentifier:uniformTypeIdentifier];
     v4 = [v3 conformsToType:*MEMORY[0x1E6982DE8]];
   }
 
@@ -821,12 +821,12 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 - (NSString)uniformTypeIdentifier
 {
   v2 = MEMORY[0x1E69C08F0];
-  v3 = [(PUReviewAsset *)self providedFullsizeImageURL];
-  v4 = [v3 pathExtension];
-  v5 = [v2 typeWithFilenameExtension:v4];
-  v6 = [v5 identifier];
+  providedFullsizeImageURL = [(PUReviewAsset *)self providedFullsizeImageURL];
+  pathExtension = [providedFullsizeImageURL pathExtension];
+  v5 = [v2 typeWithFilenameExtension:pathExtension];
+  identifier = [v5 identifier];
 
-  return v6;
+  return identifier;
 }
 
 - (double)aspectRatio
@@ -836,35 +836,35 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     return 1.0;
   }
 
-  v3 = [(PUReviewAsset *)self pixelWidth];
-  return v3 / [(PUReviewAsset *)self pixelHeight];
+  pixelWidth = [(PUReviewAsset *)self pixelWidth];
+  return pixelWidth / [(PUReviewAsset *)self pixelHeight];
 }
 
-- (PUReviewAsset)initWithAVAsset:(id)a3 audioMix:(id)a4 width:(unint64_t)a5 height:(unint64_t)a6 captureDate:(id)a7 duration:(double)a8 previewImage:(id)a9 videoURL:(id)a10 unadjustedVideoURL:(id)a11 adjustments:(id)a12 identifier:(id)a13
+- (PUReviewAsset)initWithAVAsset:(id)asset audioMix:(id)mix width:(unint64_t)width height:(unint64_t)height captureDate:(id)date duration:(double)duration previewImage:(id)image videoURL:(id)self0 unadjustedVideoURL:(id)self1 adjustments:(id)self2 identifier:(id)self3
 {
-  v38 = a7;
-  v37 = a9;
-  v36 = a10;
-  v18 = a11;
-  v19 = a12;
-  v20 = a13;
+  dateCopy = date;
+  imageCopy = image;
+  lCopy = l;
+  rLCopy = rL;
+  adjustmentsCopy = adjustments;
+  identifierCopy = identifier;
   v39.receiver = self;
   v39.super_class = PUReviewAsset;
   v21 = [(PUReviewAsset *)&v39 init];
   if (v21)
   {
-    v22 = [v20 copy];
+    v22 = [identifierCopy copy];
     v23 = *(v21 + 5);
     *(v21 + 5) = v22;
 
     *(v21 + 6) = 2;
     *(v21 + 7) = 0;
     *(v21 + 8) = 4;
-    *(v21 + 9) = a5;
-    *(v21 + 10) = a6;
-    *(v21 + 15) = a8;
-    objc_storeStrong(v21 + 12, a7);
-    objc_storeStrong(v21 + 14, a7);
+    *(v21 + 9) = width;
+    *(v21 + 10) = height;
+    *(v21 + 15) = duration;
+    objc_storeStrong(v21 + 12, date);
+    objc_storeStrong(v21 + 14, date);
     *(v21 + 5) = 0;
     v24 = MEMORY[0x1E6960C70];
     v25 = *MEMORY[0x1E6960C70];
@@ -878,24 +878,24 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     *(v21 + 16) = 0;
 
     *(v21 + 17) = 0;
-    objc_storeStrong(v21 + 18, a9);
+    objc_storeStrong(v21 + 18, image);
     v28 = (v21 + 176);
-    v29 = v18;
-    if (v18)
+    v29 = rLCopy;
+    if (rLCopy)
     {
-      objc_storeStrong(v28, a11);
+      objc_storeStrong(v28, rL);
       v28 = (v21 + 184);
     }
 
-    objc_storeStrong(v28, a10);
-    objc_storeStrong(v21 + 24, a12);
+    objc_storeStrong(v28, l);
+    objc_storeStrong(v21 + 24, adjustments);
     v21[8] = [objc_opt_class() _shouldShowConfidentialityWarningForAdjustments:*(v21 + 24)];
-    if (v19)
+    if (adjustmentsCopy)
     {
       v30 = MEMORY[0x1E69C0910];
-      v31 = [v19 adjustmentFormatIdentifier];
-      v32 = [v19 adjustmentFormatVersion];
-      LODWORD(v30) = [v30 isRecognizedSlowMotionFormatWithIdentifier:v31 version:v32];
+      adjustmentFormatIdentifier = [adjustmentsCopy adjustmentFormatIdentifier];
+      adjustmentFormatVersion = [adjustmentsCopy adjustmentFormatVersion];
+      LODWORD(v30) = [v30 isRecognizedSlowMotionFormatWithIdentifier:adjustmentFormatIdentifier version:adjustmentFormatVersion];
 
       if (v30)
       {
@@ -904,47 +904,47 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     }
 
     v33 = v21;
-    v18 = v29;
+    rLCopy = v29;
   }
 
   return v21;
 }
 
-- (PUReviewAsset)initWithLivePhoto:(id)a3 fullsizeUnadjustedImageURL:(id)a4 fullsizeUnadjustedVideoURL:(id)a5 assetAdjustments:(id)a6 width:(unint64_t)a7 height:(unint64_t)a8 captureDate:(id)a9 metadata:(id)a10 duration:(double)a11 previewImage:(id)a12 identifier:(id)a13
+- (PUReviewAsset)initWithLivePhoto:(id)photo fullsizeUnadjustedImageURL:(id)l fullsizeUnadjustedVideoURL:(id)rL assetAdjustments:(id)adjustments width:(unint64_t)width height:(unint64_t)height captureDate:(id)date metadata:(id)self0 duration:(double)self1 previewImage:(id)self2 identifier:(id)self3
 {
-  v19 = a3;
-  obj = a4;
-  v20 = a4;
-  v21 = a5;
-  v41 = a6;
-  v42 = a6;
-  v44 = a9;
-  v43 = a10;
-  v22 = a12;
-  v23 = a13;
+  photoCopy = photo;
+  obj = l;
+  lCopy = l;
+  rLCopy = rL;
+  adjustmentsCopy = adjustments;
+  adjustmentsCopy2 = adjustments;
+  dateCopy = date;
+  metadataCopy = metadata;
+  imageCopy = image;
+  identifierCopy = identifier;
   v46.receiver = self;
   v46.super_class = PUReviewAsset;
-  v24 = v21;
+  v24 = rLCopy;
   v25 = [(PUReviewAsset *)&v46 init];
   if (v25)
   {
-    v26 = [v23 copy];
+    v26 = [identifierCopy copy];
     v27 = *(v25 + 5);
     *(v25 + 5) = v26;
 
     *(v25 + 3) = xmmword_1B3CFCEC0;
     *(v25 + 7) = 0;
     *(v25 + 8) = 3;
-    *(v25 + 9) = a7;
-    *(v25 + 10) = a8;
-    objc_storeStrong(v25 + 12, a9);
-    objc_storeStrong(v25 + 14, a9);
-    v25[10] = v19 != 0;
-    v25[12] = v19 != 0;
-    v25[11] = v19 == 0;
-    if (v19)
+    *(v25 + 9) = width;
+    *(v25 + 10) = height;
+    objc_storeStrong(v25 + 12, date);
+    objc_storeStrong(v25 + 14, date);
+    v25[10] = photoCopy != 0;
+    v25[12] = photoCopy != 0;
+    v25[11] = photoCopy == 0;
+    if (photoCopy)
     {
-      [v19 photoTime];
+      [photoCopy photoTime];
     }
 
     else
@@ -953,41 +953,41 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     }
 
     *(v25 + 200) = v45;
-    CMTimeMakeWithSeconds(&v45, a11, 600);
+    CMTimeMakeWithSeconds(&v45, duration, 600);
     *(v25 + 224) = v45;
     v25[13] = 0;
     v28 = *(v25 + 16);
     *(v25 + 16) = 0;
 
     *(v25 + 17) = 0;
-    objc_storeStrong(v25 + 18, a12);
-    v29 = [v19 imageURL];
-    if (v20 && v24)
+    objc_storeStrong(v25 + 18, image);
+    imageURL = [photoCopy imageURL];
+    if (lCopy && v24)
     {
       v30 = *(v25 + 21);
-      *(v25 + 21) = v29;
+      *(v25 + 21) = imageURL;
 
-      v31 = [v19 videoURL];
+      videoURL = [photoCopy videoURL];
       v32 = *(v25 + 23);
-      *(v25 + 23) = v31;
+      *(v25 + 23) = videoURL;
 
       objc_storeStrong(v25 + 20, obj);
-      v33 = v24;
+      videoURL2 = v24;
     }
 
     else
     {
       v34 = *(v25 + 20);
-      *(v25 + 20) = v29;
+      *(v25 + 20) = imageURL;
 
-      v33 = [v19 videoURL];
+      videoURL2 = [photoCopy videoURL];
     }
 
     v35 = *(v25 + 22);
-    *(v25 + 22) = v33;
+    *(v25 + 22) = videoURL2;
 
-    objc_storeStrong(v25 + 19, a10);
-    objc_storeStrong(v25 + 24, v41);
+    objc_storeStrong(v25 + 19, metadata);
+    objc_storeStrong(v25 + 24, adjustmentsCopy);
     if ([objc_opt_class() _shouldShowConfidentialityWarningForAdjustments:*(v25 + 24)])
     {
       v36 = 1;
@@ -995,7 +995,7 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 
     else
     {
-      v36 = [objc_opt_class() _shouldShowConfidentialityWarningForMetadata:v43 creationDate:v44];
+      v36 = [objc_opt_class() _shouldShowConfidentialityWarningForMetadata:metadataCopy creationDate:dateCopy];
     }
 
     v25[8] = v36;
@@ -1005,15 +1005,15 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
   return v25;
 }
 
-- (PUReviewAsset)initWithPhoto:(id)a3 mediaSubtypes:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 captureDate:(id)a7 metadata:(id)a8 burstIdentifier:(id)a9 representedCount:(unint64_t)a10 fullsizeImageURL:(id)a11 fullsizeUnadjustedImageURL:(id)a12 assetAdjustments:(id)a13 identifier:(id)a14
+- (PUReviewAsset)initWithPhoto:(id)photo mediaSubtypes:(unint64_t)subtypes width:(unint64_t)width height:(unint64_t)height captureDate:(id)date metadata:(id)metadata burstIdentifier:(id)identifier representedCount:(unint64_t)self0 fullsizeImageURL:(id)self1 fullsizeUnadjustedImageURL:(id)self2 assetAdjustments:(id)self3 identifier:(id)self4
 {
-  v40 = a3;
-  v42 = a7;
-  v41 = a8;
-  v18 = a9;
-  v19 = a11;
-  v20 = a12;
-  v39 = a13;
+  photoCopy = photo;
+  dateCopy = date;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  adjustmentsCopy = adjustments;
   v21 = a14;
   v43.receiver = self;
   v43.super_class = PUReviewAsset;
@@ -1025,14 +1025,14 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     *(v22 + 5) = v23;
 
     *(v22 + 6) = 1;
-    *(v22 + 7) = a4;
+    *(v22 + 7) = subtypes;
     *(v22 + 7) = 0;
     *(v22 + 8) = 1;
-    *(v22 + 9) = a5;
-    *(v22 + 10) = a6;
-    objc_storeStrong(v22 + 12, a7);
-    objc_storeStrong(v22 + 13, a7);
-    objc_storeStrong(v22 + 14, a7);
+    *(v22 + 9) = width;
+    *(v22 + 10) = height;
+    objc_storeStrong(v22 + 12, date);
+    objc_storeStrong(v22 + 13, date);
+    objc_storeStrong(v22 + 14, date);
     *(v22 + 5) = 0;
     v25 = MEMORY[0x1E6960C70];
     v26 = *MEMORY[0x1E6960C70];
@@ -1041,27 +1041,27 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     *(v22 + 27) = v27;
     *(v22 + 14) = v26;
     *(v22 + 30) = v27;
-    v22[13] = v18 != 0;
-    v28 = [v18 copy];
+    v22[13] = identifierCopy != 0;
+    v28 = [identifierCopy copy];
     v29 = *(v22 + 16);
     *(v22 + 16) = v28;
 
-    *(v22 + 17) = a10;
-    objc_storeStrong(v22 + 18, a3);
-    objc_storeStrong(v22 + 19, a8);
-    v30 = v19;
-    if (v20)
+    *(v22 + 17) = count;
+    objc_storeStrong(v22 + 18, photo);
+    objc_storeStrong(v22 + 19, metadata);
+    v30 = lCopy;
+    if (rLCopy)
     {
       v31 = *(v22 + 21);
       *(v22 + 21) = v30;
 
-      v30 = v20;
+      v30 = rLCopy;
     }
 
     v32 = *(v22 + 20);
     *(v22 + 20) = v30;
 
-    objc_storeStrong(v22 + 24, a13);
+    objc_storeStrong(v22 + 24, adjustments);
     if ([objc_opt_class() _shouldShowConfidentialityWarningForAdjustments:*(v22 + 24)])
     {
       v33 = 1;
@@ -1069,7 +1069,7 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 
     else
     {
-      v33 = [objc_opt_class() _shouldShowConfidentialityWarningForMetadata:v41 creationDate:v42];
+      v33 = [objc_opt_class() _shouldShowConfidentialityWarningForMetadata:metadataCopy creationDate:dateCopy];
     }
 
     v22[8] = v33;
@@ -1079,47 +1079,47 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
   return v22;
 }
 
-- (PUReviewAsset)initWithReviewAsset:(id)a3 baseImageURL:(id)a4 renderedImageURL:(id)a5 baseVideoURL:(id)a6 renderedVideoURL:(id)a7 previewImage:(id)a8 pixelWidth:(unint64_t)a9 pixelHeight:(unint64_t)a10 assetAdjustments:(id)a11 duration:(double)a12
+- (PUReviewAsset)initWithReviewAsset:(id)asset baseImageURL:(id)l renderedImageURL:(id)rL baseVideoURL:(id)uRL renderedVideoURL:(id)videoURL previewImage:(id)image pixelWidth:(unint64_t)width pixelHeight:(unint64_t)self0 assetAdjustments:(id)self1 duration:(double)self2
 {
-  v19 = a3;
-  v54 = a4;
-  v53 = a5;
-  obj = a6;
-  v55 = a6;
-  v52 = a7;
-  v20 = a8;
-  v21 = a11;
-  v22 = [(PUReviewAsset *)self initWithReviewAsset:v19];
+  assetCopy = asset;
+  lCopy = l;
+  rLCopy = rL;
+  obj = uRL;
+  uRLCopy = uRL;
+  videoURLCopy = videoURL;
+  imageCopy = image;
+  adjustmentsCopy = adjustments;
+  v22 = [(PUReviewAsset *)self initWithReviewAsset:assetCopy];
   v23 = v22;
   if (!v22)
   {
     goto LABEL_12;
   }
 
-  v22->_pixelWidth = a9;
-  v22->_pixelHeight = a10;
-  v22->_duration = a12;
-  if (v21)
+  v22->_pixelWidth = width;
+  v22->_pixelHeight = height;
+  v22->_duration = duration;
+  if (adjustmentsCopy)
   {
-    v47 = [v21 adjustmentBaseVersion] != 0;
-    v48 = a4;
-    v24 = v20;
+    v47 = [adjustmentsCopy adjustmentBaseVersion] != 0;
+    lCopy2 = l;
+    v24 = imageCopy;
     v25 = objc_alloc(MEMORY[0x1E69C0660]);
-    [v21 adjustmentFormatIdentifier];
-    v26 = v49 = a7;
-    [v21 adjustmentFormatVersion];
-    v27 = v50 = v19;
-    v28 = [v21 adjustmentData];
-    v29 = [v21 editorBundleID];
+    [adjustmentsCopy adjustmentFormatIdentifier];
+    v26 = v49 = videoURL;
+    [adjustmentsCopy adjustmentFormatVersion];
+    v27 = v50 = assetCopy;
+    adjustmentData = [adjustmentsCopy adjustmentData];
+    editorBundleID = [adjustmentsCopy editorBundleID];
     v30 = v25;
-    v20 = v24;
-    a4 = v48;
-    v31 = [v30 initWithFormatIdentifier:v26 formatVersion:v27 data:v28 baseVersion:0 editorBundleID:v29 renderTypes:0];
+    imageCopy = v24;
+    l = lCopy2;
+    v31 = [v30 initWithFormatIdentifier:v26 formatVersion:v27 data:adjustmentData baseVersion:0 editorBundleID:editorBundleID renderTypes:0];
 
     v32 = v47;
-    v19 = v50;
+    assetCopy = v50;
 
-    a7 = v49;
+    videoURL = v49;
   }
 
   else
@@ -1130,8 +1130,8 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
 
   objc_storeStrong(&v23->_assetAdjustments, v31);
   v33 = [objc_opt_class() _shouldShowConfidentialityWarningForAdjustments:v23->_assetAdjustments];
-  v23->_requiresConfidentiality = (v33 | [v19 requiresConfidentiality]) & 1;
-  if (v20)
+  v23->_requiresConfidentiality = (v33 | [assetCopy requiresConfidentiality]) & 1;
+  if (imageCopy)
   {
     if (!v32)
     {
@@ -1151,32 +1151,32 @@ void __34__PUReviewAsset__removeFileAtURL___block_invoke(uint64_t a1, char a2, v
     providedPreviewImage = v23->_providedPreviewImage;
   }
 
-  v20 = providedPreviewImage;
+  imageCopy = providedPreviewImage;
   if (v32)
   {
 LABEL_7:
-    v34 = [(PUReviewAsset *)v23 providedImageMetadata];
+    providedImageMetadata = [(PUReviewAsset *)v23 providedImageMetadata];
     v35 = v31;
-    v36 = v20;
-    v37 = a7;
-    v38 = [v34 mutableCopy];
+    v36 = imageCopy;
+    videoURLCopy2 = videoURL;
+    v38 = [providedImageMetadata mutableCopy];
 
     [v38 setObject:&unk_1F2B7EA38 forKeyedSubscript:*MEMORY[0x1E696DE78]];
     v39 = [v38 copy];
     providedImageMetadata = v23->_providedImageMetadata;
     v23->_providedImageMetadata = v39;
 
-    a7 = v37;
-    v20 = v36;
+    videoURL = videoURLCopy2;
+    imageCopy = v36;
     v31 = v35;
   }
 
 LABEL_8:
-  objc_storeStrong(&v23->_providedFullsizeImageURL, a4);
-  objc_storeStrong(&v23->_providedFullsizeRenderImageURL, a5);
+  objc_storeStrong(&v23->_providedFullsizeImageURL, l);
+  objc_storeStrong(&v23->_providedFullsizeRenderImageURL, rL);
   objc_storeStrong(&v23->_providedVideoURL, obj);
-  objc_storeStrong(&v23->_providedFullsizeRenderVideoURL, a7);
-  objc_storeStrong(&v23->_providedPreviewImage, v20);
+  objc_storeStrong(&v23->_providedFullsizeRenderVideoURL, videoURL);
+  objc_storeStrong(&v23->_providedPreviewImage, imageCopy);
   if ([(PUReviewAsset *)v23 isLivePhoto]&& !v23->_providedVideoURL)
   {
     v23->_mediaSubtypes = [(PUReviewAsset *)v23 mediaSubtypes]& 0xFFFFFFFFFFFFFFF7;
@@ -1197,22 +1197,22 @@ LABEL_12:
   return v23;
 }
 
-- (PUReviewAsset)initWithReviewAsset:(id)a3 primaryResourceURL:(id)a4
+- (PUReviewAsset)initWithReviewAsset:(id)asset primaryResourceURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUReviewAsset *)self initWithReviewAsset:v6];
+  assetCopy = asset;
+  lCopy = l;
+  v8 = [(PUReviewAsset *)self initWithReviewAsset:assetCopy];
   if (v8)
   {
-    v9 = [v6 mediaType];
-    if (v9 == 1)
+    mediaType = [assetCopy mediaType];
+    if (mediaType == 1)
     {
       v10 = 160;
     }
 
     else
     {
-      if (v9 != 2)
+      if (mediaType != 2)
       {
 LABEL_7:
         v13 = v8;
@@ -1222,7 +1222,7 @@ LABEL_7:
       v10 = 176;
     }
 
-    v11 = [v7 copy];
+    v11 = [lCopy copy];
     v12 = *(&v8->super.isa + v10);
     *(&v8->super.isa + v10) = v11;
 
@@ -1234,30 +1234,30 @@ LABEL_8:
   return v8;
 }
 
-- (PUReviewAsset)initWithReviewAsset:(id)a3 linkFileURLsToUniquePathsInDirectory:(id)a4 canPlayPhotoIris:(BOOL)a5
+- (PUReviewAsset)initWithReviewAsset:(id)asset linkFileURLsToUniquePathsInDirectory:(id)directory canPlayPhotoIris:(BOOL)iris
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PUReviewAsset *)self initWithConformingAsset:v8];
+  irisCopy = iris;
+  assetCopy = asset;
+  directoryCopy = directory;
+  v10 = [(PUReviewAsset *)self initWithConformingAsset:assetCopy];
   v11 = v10;
   if (v10)
   {
-    v10->_canPlayPhotoIris = v5;
-    if (v5)
+    v10->_canPlayPhotoIris = irisCopy;
+    if (irisCopy)
     {
       v10->_playbackStyle = 3;
     }
 
-    v12 = [(PUReviewAsset *)v10 _ensureLinkDestinationDirectoryFromBaseDirectory:v9];
-    v13 = [v8 providedFullsizeImageURL];
-    if (v13)
+    v12 = [(PUReviewAsset *)v10 _ensureLinkDestinationDirectoryFromBaseDirectory:directoryCopy];
+    providedFullsizeImageURL = [assetCopy providedFullsizeImageURL];
+    if (providedFullsizeImageURL)
     {
-      v14 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:v13 inDirectory:v12];
+      v14 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:providedFullsizeImageURL inDirectory:v12];
       providedFullsizeImageURL = v11->_providedFullsizeImageURL;
       v11->_providedFullsizeImageURL = v14;
 
-      v16 = [(PUReviewAsset *)v11 _linkFileAtURL:v13 toURL:v11->_providedFullsizeImageURL];
+      v16 = [(PUReviewAsset *)v11 _linkFileAtURL:providedFullsizeImageURL toURL:v11->_providedFullsizeImageURL];
     }
 
     else
@@ -1265,42 +1265,42 @@ LABEL_8:
       v16 = 1;
     }
 
-    v18 = [v8 providedFullsizeRenderImageURL];
-    if (v18)
+    providedFullsizeRenderImageURL = [assetCopy providedFullsizeRenderImageURL];
+    if (providedFullsizeRenderImageURL)
     {
-      v19 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:v18 inDirectory:v12];
+      v19 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:providedFullsizeRenderImageURL inDirectory:v12];
       providedFullsizeRenderImageURL = v11->_providedFullsizeRenderImageURL;
       v11->_providedFullsizeRenderImageURL = v19;
 
       if (v16)
       {
-        v16 = [(PUReviewAsset *)v11 _linkFileAtURL:v18 toURL:v11->_providedFullsizeRenderImageURL];
+        v16 = [(PUReviewAsset *)v11 _linkFileAtURL:providedFullsizeRenderImageURL toURL:v11->_providedFullsizeRenderImageURL];
       }
     }
 
-    v21 = [v8 providedVideoURL];
-    if (v21)
+    providedVideoURL = [assetCopy providedVideoURL];
+    if (providedVideoURL)
     {
-      v22 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:v21 inDirectory:v12];
+      v22 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:providedVideoURL inDirectory:v12];
       providedVideoURL = v11->_providedVideoURL;
       v11->_providedVideoURL = v22;
 
       if (v16)
       {
-        v16 = [(PUReviewAsset *)v11 _linkFileAtURL:v21 toURL:v11->_providedVideoURL];
+        v16 = [(PUReviewAsset *)v11 _linkFileAtURL:providedVideoURL toURL:v11->_providedVideoURL];
       }
     }
 
-    v24 = [v8 providedFullsizeRenderVideoURL];
-    if (v24)
+    providedFullsizeRenderVideoURL = [assetCopy providedFullsizeRenderVideoURL];
+    if (providedFullsizeRenderVideoURL)
     {
-      v25 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:v24 inDirectory:v12];
+      v25 = [(PUReviewAsset *)v11 _uniqueDestinationURLForFileURL:providedFullsizeRenderVideoURL inDirectory:v12];
       providedFullsizeRenderVideoURL = v11->_providedFullsizeRenderVideoURL;
       v11->_providedFullsizeRenderVideoURL = v25;
 
       if (v16)
       {
-        v27 = [(PUReviewAsset *)v11 _linkFileAtURL:v24 toURL:v11->_providedFullsizeRenderVideoURL];
+        v27 = [(PUReviewAsset *)v11 _linkFileAtURL:providedFullsizeRenderVideoURL toURL:v11->_providedFullsizeRenderVideoURL];
         v28 = v11;
         if (v27)
         {
@@ -1332,57 +1332,57 @@ LABEL_21:
   return v17;
 }
 
-- (PUReviewAsset)initWithReviewAsset:(id)a3 linkFileURLsToUniquePathsInDirectory:(id)a4
+- (PUReviewAsset)initWithReviewAsset:(id)asset linkFileURLsToUniquePathsInDirectory:(id)directory
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[PUReviewAsset initWithReviewAsset:linkFileURLsToUniquePathsInDirectory:canPlayPhotoIris:](self, "initWithReviewAsset:linkFileURLsToUniquePathsInDirectory:canPlayPhotoIris:", v7, v6, [v7 canPlayPhotoIris]);
+  directoryCopy = directory;
+  assetCopy = asset;
+  v8 = -[PUReviewAsset initWithReviewAsset:linkFileURLsToUniquePathsInDirectory:canPlayPhotoIris:](self, "initWithReviewAsset:linkFileURLsToUniquePathsInDirectory:canPlayPhotoIris:", assetCopy, directoryCopy, [assetCopy canPlayPhotoIris]);
 
   return v8;
 }
 
-- (PUReviewAsset)initWithConformingAsset:(id)a3
+- (PUReviewAsset)initWithConformingAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v38.receiver = self;
   v38.super_class = PUReviewAsset;
   v5 = [(PUReviewAsset *)&v38 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [assetCopy identifier];
     v7 = *(v5 + 5);
-    *(v5 + 5) = v6;
+    *(v5 + 5) = identifier;
 
-    *(v5 + 6) = [v4 mediaType];
-    *(v5 + 7) = [v4 mediaSubtypes];
-    *(v5 + 8) = [v4 playbackStyle];
-    *(v5 + 7) = [v4 playbackVariation];
-    *(v5 + 9) = [v4 pixelWidth];
-    *(v5 + 10) = [v4 pixelHeight];
-    v8 = [v4 location];
+    *(v5 + 6) = [assetCopy mediaType];
+    *(v5 + 7) = [assetCopy mediaSubtypes];
+    *(v5 + 8) = [assetCopy playbackStyle];
+    *(v5 + 7) = [assetCopy playbackVariation];
+    *(v5 + 9) = [assetCopy pixelWidth];
+    *(v5 + 10) = [assetCopy pixelHeight];
+    location = [assetCopy location];
     v9 = *(v5 + 11);
-    *(v5 + 11) = v8;
+    *(v5 + 11) = location;
 
-    v10 = [v4 creationDate];
+    creationDate = [assetCopy creationDate];
     v11 = *(v5 + 12);
-    *(v5 + 12) = v10;
+    *(v5 + 12) = creationDate;
 
-    v12 = [v4 modificationDate];
+    modificationDate = [assetCopy modificationDate];
     v13 = *(v5 + 14);
-    *(v5 + 14) = v12;
+    *(v5 + 14) = modificationDate;
 
-    v5[9] = [v4 isHDR];
-    [v4 duration];
+    v5[9] = [assetCopy isHDR];
+    [assetCopy duration];
     *(v5 + 15) = v14;
-    v5[10] = [v4 isLivePhoto];
-    v5[12] = [v4 canPlayPhotoIris];
-    v5[11] = [v4 isLivePhotoPlaceholder];
-    if (v4)
+    v5[10] = [assetCopy isLivePhoto];
+    v5[12] = [assetCopy canPlayPhotoIris];
+    v5[11] = [assetCopy isLivePhotoPlaceholder];
+    if (assetCopy)
     {
-      [v4 livePhotoSynchronizedDisplayTime];
+      [assetCopy livePhotoSynchronizedDisplayTime];
       *(v5 + 200) = v36;
       *(v5 + 27) = v37;
-      [v4 livePhotoDuration];
+      [assetCopy livePhotoDuration];
     }
 
     else
@@ -1396,23 +1396,23 @@ LABEL_21:
 
     *(v5 + 14) = v36;
     *(v5 + 30) = v37;
-    v5[13] = [v4 representsBurst];
-    v15 = [v4 burstIdentifier];
+    v5[13] = [assetCopy representsBurst];
+    burstIdentifier = [assetCopy burstIdentifier];
     v16 = *(v5 + 16);
-    *(v5 + 16) = v15;
+    *(v5 + 16) = burstIdentifier;
 
-    *(v5 + 17) = [v4 numberOfRepresentedAssets];
-    v17 = [v4 providedPreviewImage];
+    *(v5 + 17) = [assetCopy numberOfRepresentedAssets];
+    providedPreviewImage = [assetCopy providedPreviewImage];
     v18 = *(v5 + 18);
-    *(v5 + 18) = v17;
+    *(v5 + 18) = providedPreviewImage;
 
-    v19 = [v4 providedImageMetadata];
+    providedImageMetadata = [assetCopy providedImageMetadata];
     v20 = *(v5 + 19);
-    *(v5 + 19) = v19;
+    *(v5 + 19) = providedImageMetadata;
 
-    v21 = [v4 assetAdjustments];
+    assetAdjustments = [assetCopy assetAdjustments];
     v22 = *(v5 + 24);
-    *(v5 + 24) = v21;
+    *(v5 + 24) = assetAdjustments;
 
     if ([objc_opt_class() _shouldShowConfidentialityWarningForAdjustments:*(v5 + 24)])
     {
@@ -1422,26 +1422,26 @@ LABEL_21:
     else
     {
       v23 = objc_opt_class();
-      v24 = [v5 providedImageMetadata];
-      v25 = [v5 creationDate];
-      v5[8] = [v23 _shouldShowConfidentialityWarningForMetadata:v24 creationDate:v25];
+      providedImageMetadata2 = [v5 providedImageMetadata];
+      creationDate2 = [v5 creationDate];
+      v5[8] = [v23 _shouldShowConfidentialityWarningForMetadata:providedImageMetadata2 creationDate:creationDate2];
     }
 
-    v26 = [v4 providedFullsizeImageURL];
+    providedFullsizeImageURL = [assetCopy providedFullsizeImageURL];
     v27 = *(v5 + 20);
-    *(v5 + 20) = v26;
+    *(v5 + 20) = providedFullsizeImageURL;
 
-    v28 = [v4 providedFullsizeRenderImageURL];
+    providedFullsizeRenderImageURL = [assetCopy providedFullsizeRenderImageURL];
     v29 = *(v5 + 21);
-    *(v5 + 21) = v28;
+    *(v5 + 21) = providedFullsizeRenderImageURL;
 
-    v30 = [v4 providedVideoURL];
+    providedVideoURL = [assetCopy providedVideoURL];
     v31 = *(v5 + 22);
-    *(v5 + 22) = v30;
+    *(v5 + 22) = providedVideoURL;
 
-    v32 = [v4 providedFullsizeRenderVideoURL];
+    providedFullsizeRenderVideoURL = [assetCopy providedFullsizeRenderVideoURL];
     v33 = *(v5 + 23);
-    *(v5 + 23) = v32;
+    *(v5 + 23) = providedFullsizeRenderVideoURL;
 
     v34 = v5;
   }
@@ -1449,48 +1449,48 @@ LABEL_21:
   return v5;
 }
 
-- (PUReviewAsset)initWithReviewAsset:(id)a3
+- (PUReviewAsset)initWithReviewAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v35.receiver = self;
   v35.super_class = PUReviewAsset;
   v5 = [(PUReviewAsset *)&v35 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [assetCopy identifier];
     v7 = *(v5 + 5);
-    *(v5 + 5) = v6;
+    *(v5 + 5) = identifier;
 
-    *(v5 + 6) = [v4 mediaType];
-    *(v5 + 7) = [v4 mediaSubtypes];
-    *(v5 + 8) = [v4 playbackStyle];
-    *(v5 + 7) = [v4 playbackVariation];
-    *(v5 + 9) = [v4 pixelWidth];
-    *(v5 + 10) = [v4 pixelHeight];
-    v8 = [v4 location];
+    *(v5 + 6) = [assetCopy mediaType];
+    *(v5 + 7) = [assetCopy mediaSubtypes];
+    *(v5 + 8) = [assetCopy playbackStyle];
+    *(v5 + 7) = [assetCopy playbackVariation];
+    *(v5 + 9) = [assetCopy pixelWidth];
+    *(v5 + 10) = [assetCopy pixelHeight];
+    location = [assetCopy location];
     v9 = *(v5 + 11);
-    *(v5 + 11) = v8;
+    *(v5 + 11) = location;
 
-    v10 = [v4 creationDate];
+    creationDate = [assetCopy creationDate];
     v11 = *(v5 + 12);
-    *(v5 + 12) = v10;
+    *(v5 + 12) = creationDate;
 
-    v12 = [v4 modificationDate];
+    modificationDate = [assetCopy modificationDate];
     v13 = *(v5 + 14);
-    *(v5 + 14) = v12;
+    *(v5 + 14) = modificationDate;
 
-    v5[9] = [v4 isHDR];
-    [v4 duration];
+    v5[9] = [assetCopy isHDR];
+    [assetCopy duration];
     *(v5 + 15) = v14;
-    v5[10] = [v4 isLivePhoto];
-    v5[12] = [v4 canPlayPhotoIris];
-    v5[11] = [v4 isLivePhotoPlaceholder];
-    if (v4)
+    v5[10] = [assetCopy isLivePhoto];
+    v5[12] = [assetCopy canPlayPhotoIris];
+    v5[11] = [assetCopy isLivePhotoPlaceholder];
+    if (assetCopy)
     {
-      [v4 livePhotoSynchronizedDisplayTime];
+      [assetCopy livePhotoSynchronizedDisplayTime];
       *(v5 + 200) = v33;
       *(v5 + 27) = v34;
-      [v4 livePhotoDuration];
+      [assetCopy livePhotoDuration];
     }
 
     else
@@ -1504,91 +1504,91 @@ LABEL_21:
 
     *(v5 + 14) = v33;
     *(v5 + 30) = v34;
-    v5[13] = [v4 representsBurst];
-    v15 = [v4 burstIdentifier];
+    v5[13] = [assetCopy representsBurst];
+    burstIdentifier = [assetCopy burstIdentifier];
     v16 = *(v5 + 16);
-    *(v5 + 16) = v15;
+    *(v5 + 16) = burstIdentifier;
 
-    *(v5 + 17) = [v4 numberOfRepresentedAssets];
-    v17 = [v4 providedPreviewImage];
+    *(v5 + 17) = [assetCopy numberOfRepresentedAssets];
+    providedPreviewImage = [assetCopy providedPreviewImage];
     v18 = *(v5 + 18);
-    *(v5 + 18) = v17;
+    *(v5 + 18) = providedPreviewImage;
 
-    v19 = [v4 providedImageMetadata];
+    providedImageMetadata = [assetCopy providedImageMetadata];
     v20 = *(v5 + 19);
-    *(v5 + 19) = v19;
+    *(v5 + 19) = providedImageMetadata;
 
-    v21 = [v4 assetAdjustments];
+    assetAdjustments = [assetCopy assetAdjustments];
     v22 = *(v5 + 24);
-    *(v5 + 24) = v21;
+    *(v5 + 24) = assetAdjustments;
 
-    v23 = [v4 providedFullsizeImageURL];
+    providedFullsizeImageURL = [assetCopy providedFullsizeImageURL];
     v24 = *(v5 + 20);
-    *(v5 + 20) = v23;
+    *(v5 + 20) = providedFullsizeImageURL;
 
-    v25 = [v4 providedFullsizeRenderImageURL];
+    providedFullsizeRenderImageURL = [assetCopy providedFullsizeRenderImageURL];
     v26 = *(v5 + 21);
-    *(v5 + 21) = v25;
+    *(v5 + 21) = providedFullsizeRenderImageURL;
 
-    v27 = [v4 providedVideoURL];
+    providedVideoURL = [assetCopy providedVideoURL];
     v28 = *(v5 + 22);
-    *(v5 + 22) = v27;
+    *(v5 + 22) = providedVideoURL;
 
-    v29 = [v4 providedFullsizeRenderVideoURL];
+    providedFullsizeRenderVideoURL = [assetCopy providedFullsizeRenderVideoURL];
     v30 = *(v5 + 23);
-    *(v5 + 23) = v29;
+    *(v5 + 23) = providedFullsizeRenderVideoURL;
 
-    v5[8] = [v4 requiresConfidentiality];
+    v5[8] = [assetCopy requiresConfidentiality];
     v31 = v5;
   }
 
   return v5;
 }
 
-+ (id)fileURLForFullsizeVideoInDirectory:(id)a3 extension:(id)a4
++ (id)fileURLForFullsizeVideoInDirectory:(id)directory extension:(id)extension
 {
-  v5 = a3;
-  v6 = [@"Video" stringByAppendingPathExtension:a4];
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  directoryCopy = directory;
+  v6 = [@"Video" stringByAppendingPathExtension:extension];
+  v7 = [directoryCopy URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-+ (id)fileURLForFullsizeRenderImageInDirectory:(id)a3 extension:(id)a4
++ (id)fileURLForFullsizeRenderImageInDirectory:(id)directory extension:(id)extension
 {
-  v5 = a3;
-  v6 = [@"RenderedImage" stringByAppendingPathExtension:a4];
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  directoryCopy = directory;
+  v6 = [@"RenderedImage" stringByAppendingPathExtension:extension];
+  v7 = [directoryCopy URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-+ (id)fileURLForFullsizeImageInDirectory:(id)a3 extension:(id)a4
++ (id)fileURLForFullsizeImageInDirectory:(id)directory extension:(id)extension
 {
-  v5 = a3;
-  v6 = [@"Image" stringByAppendingPathExtension:a4];
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  directoryCopy = directory;
+  v6 = [@"Image" stringByAppendingPathExtension:extension];
+  v7 = [directoryCopy URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-+ (id)createUniqueMediaDirectoryForAssetWithIdentifier:(id)a3
++ (id)createUniqueMediaDirectoryForAssetWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"ReviewData"];
 
-  v6 = [v5 stringByAppendingPathComponent:v3];
+  v6 = [v5 stringByAppendingPathComponent:identifierCopy];
 
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v9 = [v6 stringByAppendingPathComponent:v8];
+  v9 = [v6 stringByAppendingPathComponent:uUIDString];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v15 = 0;
-  [v10 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v15];
+  [defaultManager createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v15];
   v11 = v15;
 
   if (v11)
@@ -1609,27 +1609,27 @@ LABEL_21:
   return v13;
 }
 
-+ (BOOL)_shouldShowConfidentialityWarningForMetadata:(id)a3 creationDate:(id)a4
++ (BOOL)_shouldShowConfidentialityWarningForMetadata:(id)metadata creationDate:(id)date
 {
-  v5 = a3;
-  if ([a1 _shouldCheckConfidentiality])
+  metadataCopy = metadata;
+  if ([self _shouldCheckConfidentiality])
   {
-    [v5 count];
+    [metadataCopy count];
   }
 
   return 0;
 }
 
-+ (BOOL)_shouldShowConfidentialityWarningForAdjustments:(id)a3
++ (BOOL)_shouldShowConfidentialityWarningForAdjustments:(id)adjustments
 {
-  v4 = a3;
-  if ([a1 _shouldCheckConfidentiality])
+  adjustmentsCopy = adjustments;
+  if ([self _shouldCheckConfidentiality])
   {
-    v5 = [a1 _confidentialityWarningsVersionForAdjustments:v4];
+    v5 = [self _confidentialityWarningsVersionForAdjustments:adjustmentsCopy];
     if (v5)
     {
-      v6 = [MEMORY[0x1E69C3A18] sharedInstance];
-      LOBYTE(v5) = v5 >= [v6 confidentialityWarningsVersion];
+      mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+      LOBYTE(v5) = v5 >= [mEMORY[0x1E69C3A18] confidentialityWarningsVersion];
     }
   }
 

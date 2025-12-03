@@ -1,31 +1,31 @@
 @interface SFScene
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFScene)initWithCoder:(id)a3;
-- (SFScene)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFScene)initWithCoder:(id)coder;
+- (SFScene)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFScene
 
-- (SFScene)initWithProtobuf:(id)a3
+- (SFScene)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = SFScene;
   v5 = [(SFScene *)&v8 init];
   if (v5)
   {
-    if ([v4 sceneIdentifier])
+    if ([protobufCopy sceneIdentifier])
     {
-      -[SFScene setSceneIdentifier:](v5, "setSceneIdentifier:", [v4 sceneIdentifier]);
+      -[SFScene setSceneIdentifier:](v5, "setSceneIdentifier:", [protobufCopy sceneIdentifier]);
     }
 
-    if ([v4 sceneType])
+    if ([protobufCopy sceneType])
     {
-      -[SFScene setSceneType:](v5, "setSceneType:", [v4 sceneType]);
+      -[SFScene setSceneType:](v5, "setSceneType:", [protobufCopy sceneType]);
     }
 
     v6 = v5;
@@ -34,22 +34,22 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(SFScene *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFScene *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFScene *)self sceneIdentifier];
-    if (v6 == [(SFScene *)v5 sceneIdentifier])
+    v5 = equalCopy;
+    sceneIdentifier = [(SFScene *)self sceneIdentifier];
+    if (sceneIdentifier == [(SFScene *)v5 sceneIdentifier])
     {
-      v7 = [(SFScene *)self sceneType];
-      v8 = v7 == [(SFScene *)v5 sceneType];
+      sceneType = [(SFScene *)self sceneType];
+      v8 = sceneType == [(SFScene *)v5 sceneType];
     }
 
     else
@@ -66,9 +66,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSceneIdentifier:{-[SFScene sceneIdentifier](self, "sceneIdentifier")}];
   [v4 setSceneType:{-[SFScene sceneType](self, "sceneType")}];
   return v4;
@@ -77,31 +77,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBScene alloc] initWithFacade:self];
-  v3 = [(_SFPBScene *)v2 jsonData];
+  jsonData = [(_SFPBScene *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBScene alloc] initWithFacade:self];
-  v3 = [(_SFPBScene *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBScene *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBScene alloc] initWithFacade:self];
-  v5 = [(_SFPBScene *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBScene *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFScene)initWithCoder:(id)a3
+- (SFScene)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBScene alloc] initWithData:v5];
   v7 = [(SFScene *)self initWithProtobuf:v6];

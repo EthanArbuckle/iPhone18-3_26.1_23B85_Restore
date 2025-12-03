@@ -1,15 +1,15 @@
 @interface NTKSnapshotQueue
-- (NTKSnapshotQueue)initWithRequestHandler:(id)a3;
+- (NTKSnapshotQueue)initWithRequestHandler:(id)handler;
 - (id)_queue_pullHighestPriorityRequestFromQueue;
 - (void)_queue_processQueue;
-- (void)queueRequest:(id)a3;
+- (void)queueRequest:(id)request;
 @end
 
 @implementation NTKSnapshotQueue
 
-- (NTKSnapshotQueue)initWithRequestHandler:(id)a3
+- (NTKSnapshotQueue)initWithRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = NTKSnapshotQueue;
   v5 = [(NTKSnapshotQueue *)&v13 init];
@@ -19,12 +19,12 @@
     queue = v5->_queue;
     v5->_queue = v6;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queue_requests = v5->_queue_requests;
-    v5->_queue_requests = v8;
+    v5->_queue_requests = array;
 
     v5->_queue_isProcessingQueue = 0;
-    v10 = _Block_copy(v4);
+    v10 = _Block_copy(handlerCopy);
     requestHandler = v5->_requestHandler;
     v5->_requestHandler = v10;
   }
@@ -32,9 +32,9 @@
   return v5;
 }
 
-- (void)queueRequest:(id)a3
+- (void)queueRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -42,8 +42,8 @@
   block[2] = __33__NTKSnapshotQueue_queueRequest___block_invoke;
   block[3] = &unk_27877F610;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -120,8 +120,8 @@ unint64_t __62__NTKSnapshotQueue__queue_pullHighestPriorityRequestFromQueue__blo
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_queue_isProcessingQueue)
   {
-    v3 = [(NTKSnapshotQueue *)self _queue_pullHighestPriorityRequestFromQueue];
-    if (v3)
+    _queue_pullHighestPriorityRequestFromQueue = [(NTKSnapshotQueue *)self _queue_pullHighestPriorityRequestFromQueue];
+    if (_queue_pullHighestPriorityRequestFromQueue)
     {
       self->_queue_isProcessingQueue = 1;
       v4 = self->_queue;
@@ -141,7 +141,7 @@ unint64_t __62__NTKSnapshotQueue__queue_pullHighestPriorityRequestFromQueue__blo
       objc_copyWeak(&v14, &location);
       v7 = v5;
       v11 = v7;
-      v12 = v3;
+      v12 = _queue_pullHighestPriorityRequestFromQueue;
       v8 = v6;
       v13 = v8;
       v9 = _Block_copy(v10);

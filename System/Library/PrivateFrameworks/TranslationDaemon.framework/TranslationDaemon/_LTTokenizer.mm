@@ -1,18 +1,18 @@
 @interface _LTTokenizer
-+ (unint64_t)_wordCount:(id)a3 inLocale:(id)a4;
-- (id)_tokenizeString:(id)a3 inLocale:(id)a4;
-- (id)tokenize:(id)a3 forLocale:(id)a4;
++ (unint64_t)_wordCount:(id)count inLocale:(id)locale;
+- (id)_tokenizeString:(id)string inLocale:(id)locale;
+- (id)tokenize:(id)tokenize forLocale:(id)locale;
 @end
 
 @implementation _LTTokenizer
 
-- (id)tokenize:(id)a3 forLocale:(id)a4
+- (id)tokenize:(id)tokenize forLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 localeIdentifier];
-  v8 = [v7 UTF8String];
-  v9 = strlen(v8);
+  tokenizeCopy = tokenize;
+  localeCopy = locale;
+  localeIdentifier = [localeCopy localeIdentifier];
+  uTF8String = [localeIdentifier UTF8String];
+  v9 = strlen(uTF8String);
   if (v9 > 0x7FFFFFFFFFFFFFF7)
   {
     std::basic_string<char16_t>::__throw_length_error[abi:ne200100]();
@@ -27,13 +27,13 @@
   v41 = v9;
   if (v9)
   {
-    memmove(&__dst, v8, v9);
+    memmove(&__dst, uTF8String, v9);
   }
 
   *(&__dst + v10) = 0;
 
-  std::vector<unsigned short>::vector[abi:ne200100](&v38, [v5 length]);
-  [v5 getCharacters:? range:?];
+  std::vector<unsigned short>::vector[abi:ne200100](&v38, [tokenizeCopy length]);
+  [tokenizeCopy getCharacters:? range:?];
   v11 = v39 - v38;
   v12 = (v39 - v38) >> 1;
   if (v12 > 0x7FFFFFFFFFFFFFF7)
@@ -63,16 +63,16 @@
   }
 
   *(&v36 + v12) = 0;
-  v14 = [v6 languageCode];
-  v15 = [v14 isEqualToString:@"de"];
+  languageCode = [localeCopy languageCode];
+  v15 = [languageCode isEqualToString:@"de"];
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v17 = [v5 componentsSeparatedByCharactersInSet:v16];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v17 = [tokenizeCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
     v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF != ''"];
-    v19 = [v17 filteredArrayUsingPredicate:v18];
+    array = [v17 filteredArrayUsingPredicate:v18];
   }
 
   else
@@ -84,7 +84,7 @@
     Tokenizer = morphun::TokenizerFactory::createTokenizer();
     morphun::util::ULocale::~ULocale(v35);
     v21 = (*(*Tokenizer + 24))(Tokenizer, &v36);
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = *(v21 + 1);
     v23 = *(v21 + 2);
     morphun::TokenIterator::TokenIterator();
@@ -118,7 +118,7 @@
         }
 
         v30 = [MEMORY[0x277CCACA8] stringWithCharacters:v28 length:{v29, __p, v33, v34}];
-        [v19 addObject:v30];
+        [array addObject:v30];
       }
 
       morphun::TokenIterator::operator++();
@@ -148,27 +148,27 @@
     operator delete(__dst);
   }
 
-  return v19;
+  return array;
 }
 
-- (id)_tokenizeString:(id)a3 inLocale:(id)a4
+- (id)_tokenizeString:(id)string inLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  localeCopy = locale;
   v7 = [objc_alloc(MEMORY[0x277CD89E0]) initWithUnit:0];
-  v8 = [v6 languageCode];
-  [v7 setLanguage:v8];
+  languageCode = [localeCopy languageCode];
+  [v7 setLanguage:languageCode];
 
-  [v7 setString:v5];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [v5 length];
+  [v7 setString:stringCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [stringCopy length];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __41___LTTokenizer__tokenizeString_inLocale___block_invoke;
   v16[3] = &unk_2789B7D50;
-  v11 = v5;
+  v11 = stringCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = array;
   v18 = v12;
   [v7 enumerateTokensInRange:0 usingBlock:{v10, v16}];
   v13 = v18;
@@ -177,16 +177,16 @@
   return v12;
 }
 
-+ (unint64_t)_wordCount:(id)a3 inLocale:(id)a4
++ (unint64_t)_wordCount:(id)count inLocale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
+  countCopy = count;
+  localeCopy = locale;
   v7 = [objc_alloc(MEMORY[0x277CD89E0]) initWithUnit:0];
-  v8 = [v6 languageCode];
-  [v7 setLanguage:v8];
+  languageCode = [localeCopy languageCode];
+  [v7 setLanguage:languageCode];
 
-  [v7 setString:v5];
-  v9 = [v7 tokensForRange:{0, objc_msgSend(v5, "length")}];
+  [v7 setString:countCopy];
+  v9 = [v7 tokensForRange:{0, objc_msgSend(countCopy, "length")}];
   v10 = [v9 count];
 
   return v10;

@@ -8,7 +8,7 @@
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
 
-  return [a1 addObject:v2];
+  return [self addObject:v2];
 }
 
 @end

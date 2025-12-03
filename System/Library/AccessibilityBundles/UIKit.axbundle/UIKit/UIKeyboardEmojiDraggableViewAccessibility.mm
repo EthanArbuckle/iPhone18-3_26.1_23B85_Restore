@@ -1,22 +1,22 @@
 @interface UIKeyboardEmojiDraggableViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation UIKeyboardEmojiDraggableViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
 - (id)accessibilityLabel
 {
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   v11 = 0;
   objc_opt_class();
@@ -33,17 +33,17 @@
 
   else
   {
-    v8.receiver = v13;
+    v8.receiver = selfCopy;
     v8.super_class = UIKeyboardEmojiDraggableViewAccessibility;
-    v7 = [(UIKeyboardEmojiDraggableViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(UIKeyboardEmojiDraggableViewAccessibility *)&v8 accessibilityLabel];
     v6 = 1;
-    v3 = MEMORY[0x29EDC9748](v7);
+    v3 = MEMORY[0x29EDC9748](accessibilityLabel);
   }
 
   v14 = v3;
   if (v6)
   {
-    MEMORY[0x29EDC9740](v7);
+    MEMORY[0x29EDC9740](accessibilityLabel);
   }
 
   objc_storeStrong(v12, 0);

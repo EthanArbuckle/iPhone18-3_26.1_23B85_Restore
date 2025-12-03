@@ -7,14 +7,14 @@
 
 + (uint64_t)pkui_cameraEdgeForScreen:()PKAdditions
 {
-  v3 = a3;
-  if (!v3)
+  mainScreen = a3;
+  if (!mainScreen)
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
   v17 = 0;
-  v4 = PKUIFrontCameraCurrentPosition(v3, &v17);
+  v4 = PKUIFrontCameraCurrentPosition(mainScreen, &v17);
   v6 = v5;
   [v17 bounds];
   if (v4 <= v7)
@@ -61,45 +61,45 @@
 
 - (uint64_t)pkui_updateFrame
 {
-  v2 = [a1 superview];
-  v3 = v2;
-  if (v2)
+  superview = [self superview];
+  v3 = superview;
+  if (superview)
   {
-    v4 = [v2 window];
-    v5 = [v4 screen];
-    if (v5)
+    window = [superview window];
+    screen = [window screen];
+    if (screen)
     {
-      v6 = v5;
+      mainScreen = screen;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DCEB0] mainScreen];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
 
-      if (!v6)
+      if (!mainScreen)
       {
         goto LABEL_7;
       }
     }
 
-    v8 = [objc_opt_class() pkui_cameraEdgeForScreen:v6];
+    v8 = [objc_opt_class() pkui_cameraEdgeForScreen:mainScreen];
     if ((v8 & 0xFFFFFFFD) != 1)
     {
       v9 = v8;
-      [a1 frame];
+      [self frame];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [v6 coordinateSpace];
-      [v18 bounds];
-      [v3 convertRect:v18 fromCoordinateSpace:{0, 0, 0, 0}];
+      coordinateSpace = [mainScreen coordinateSpace];
+      [coordinateSpace bounds];
+      [v3 convertRect:coordinateSpace fromCoordinateSpace:{0, 0, 0, 0}];
       remainder = v30;
       CGRectDivide(v30, &v28, &remainder, 80.0, v9);
       CGRectDivide(remainder, &v28, &remainder, v15, v9);
-      [a1 setDirection:v9 != CGRectMinXEdge];
+      [self setDirection:v9 != CGRectMinXEdge];
       PKFloatRoundToPixel();
-      [a1 setDisplacement:?];
+      [self setDisplacement:?];
       PKSizeAlignedInRect();
       v20 = v19;
       v22 = v21;
@@ -115,7 +115,7 @@
       v32.size.height = v26;
       if (!CGRectEqualToRect(v31, v32))
       {
-        [a1 setFrame:{v20, v22, v24, v26}];
+        [self setFrame:{v20, v22, v24, v26}];
       }
 
       v7 = 1;

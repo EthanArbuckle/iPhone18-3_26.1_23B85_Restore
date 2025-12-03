@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (NSUnitAngle == a1)
+  if (NSUnitAngle == self)
   {
     objc_opt_class();
   }

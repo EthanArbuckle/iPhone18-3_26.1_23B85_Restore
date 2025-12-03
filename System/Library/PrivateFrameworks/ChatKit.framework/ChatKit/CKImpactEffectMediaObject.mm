@@ -1,19 +1,19 @@
 @interface CKImpactEffectMediaObject
-- (CKImpactEffectMediaObject)initWithImpactEffectAudioFileURL:(id)a3;
+- (CKImpactEffectMediaObject)initWithImpactEffectAudioFileURL:(id)l;
 @end
 
 @implementation CKImpactEffectMediaObject
 
-- (CKImpactEffectMediaObject)initWithImpactEffectAudioFileURL:(id)a3
+- (CKImpactEffectMediaObject)initWithImpactEffectAudioFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = CKImpactEffectMediaObject;
   v6 = [(CKImpactEffectMediaObject *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioFileURL, a3);
+    objc_storeStrong(&v6->_audioFileURL, l);
     v8 = v7;
   }
 

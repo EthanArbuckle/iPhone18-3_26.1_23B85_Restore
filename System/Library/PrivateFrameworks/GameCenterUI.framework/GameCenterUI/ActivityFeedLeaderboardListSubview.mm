@@ -1,14 +1,14 @@
 @interface ActivityFeedLeaderboardListSubview
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)didTap;
 - (void)layoutSubviews;
 @end
 
 @implementation ActivityFeedLeaderboardListSubview
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E21DB90();
   v5 = v4;
   v7 = v6;
@@ -22,13 +22,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E21DD08();
 }
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E21EE18();
 }
 

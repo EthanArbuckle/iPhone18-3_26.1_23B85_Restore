@@ -12,24 +12,24 @@
     return 0;
   }
 
-  v3 = [(JavaNioChannelsFileLock *)self channel];
-  if (!v3)
+  channel = [(JavaNioChannelsFileLock *)self channel];
+  if (!channel)
   {
     JreThrowNullPointerException();
   }
 
-  return [v3 isOpen];
+  return [channel isOpen];
 }
 
 - (void)release__
 {
-  v3 = [(JavaNioChannelsFileLock *)self channel];
-  if (!v3)
+  channel = [(JavaNioChannelsFileLock *)self channel];
+  if (!channel)
   {
     goto LABEL_8;
   }
 
-  if (([v3 isOpen] & 1) == 0)
+  if (([channel isOpen] & 1) == 0)
   {
     v5 = new_JavaNioChannelsClosedChannelException_init();
     objc_exception_throw(v5);
@@ -37,16 +37,16 @@
 
   if (!*(&self->super.shared_ + 1))
   {
-    v4 = [(JavaNioChannelsFileLock *)self channel];
+    channel2 = [(JavaNioChannelsFileLock *)self channel];
     objc_opt_class();
-    if (v4)
+    if (channel2)
     {
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
-      [v4 release__WithJavaNioChannelsFileLock:self];
+      [channel2 release__WithJavaNioChannelsFileLock:self];
       *(&self->super.shared_ + 1) = 1;
       return;
     }

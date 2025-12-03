@@ -1,25 +1,25 @@
 @interface VCPModelR2D2
 - (id).cxx_construct;
-- (int)allocateCorreleationBuffer:(__CVBuffer *)a3 forLevel:(unsigned int)a4;
+- (int)allocateCorreleationBuffer:(__CVBuffer *)buffer forLevel:(unsigned int)level;
 - (int)allocateFeatures;
 - (int)allocateInputAndOutputBuffers;
 - (int)allocateStorages;
-- (int)analyzeImages:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 cancel:(id)a5;
-- (int)configForAspectRatio:(id)a3;
-- (int)copyImage:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4 withChannels:(int)a5;
-- (int)createInput:(__CVBuffer *)a3 withImage:(__CVBuffer *)a4 modelInputHeight:(int)a5 modelInputWidth:(int)a6;
-- (int)createModules:(id)a3;
-- (int)estimateFlowForLevel:(int)a3 upperFlow:(__CVBuffer *)a4 outputFlow:(__CVBuffer *)a5;
-- (int)estimateMotionFlow:(__CVBuffer *)a3;
-- (int)extractFeatureFromImage:(__CVBuffer *)a3 toFeature:(id *)a4;
-- (int)extractFeaturesFromFirst:(__CVBuffer *)a3 andSecond:(__CVBuffer *)a4;
-- (int)flowScalingTo:(__CVBuffer *)a3 flowBufferY:(__CVBuffer *)a4 scalerX:(float)a5 scalerY:(float)a6;
-- (int)flowScalingTo:(__CVBuffer *)a3 scalerX:(float)a4 scalerY:(float)a5;
-- (int)getFlowToBuffer:(__CVBuffer *)a3;
-- (int)prepareWithLightweightOption:(BOOL)a3 aspectRatio:(id)a4 numLevels:(int)a5 startLevel:(int)a6 cancel:(id)a7;
+- (int)analyzeImages:(__CVBuffer *)images secondImage:(__CVBuffer *)image cancel:(id)cancel;
+- (int)configForAspectRatio:(id)ratio;
+- (int)copyImage:(__CVBuffer *)image toBuffer:(__CVBuffer *)buffer withChannels:(int)channels;
+- (int)createInput:(__CVBuffer *)input withImage:(__CVBuffer *)image modelInputHeight:(int)height modelInputWidth:(int)width;
+- (int)createModules:(id)modules;
+- (int)estimateFlowForLevel:(int)level upperFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow;
+- (int)estimateMotionFlow:(__CVBuffer *)flow;
+- (int)extractFeatureFromImage:(__CVBuffer *)image toFeature:(id *)feature;
+- (int)extractFeaturesFromFirst:(__CVBuffer *)first andSecond:(__CVBuffer *)second;
+- (int)flowScalingTo:(__CVBuffer *)to flowBufferY:(__CVBuffer *)y scalerX:(float)x scalerY:(float)scalerY;
+- (int)flowScalingTo:(__CVBuffer *)to scalerX:(float)x scalerY:(float)y;
+- (int)getFlowToBuffer:(__CVBuffer *)buffer;
+- (int)prepareWithLightweightOption:(BOOL)option aspectRatio:(id)ratio numLevels:(int)levels startLevel:(int)level cancel:(id)cancel;
 - (int)releaseInputAndOutputBuffers;
-- (int)updateModelForAspectRatio:(id)a3 computationAccuracy:(unsigned int)a4;
-- (int)updateModulesWithConfig:(id)a3;
+- (int)updateModelForAspectRatio:(id)ratio computationAccuracy:(unsigned int)accuracy;
+- (int)updateModulesWithConfig:(id)config;
 - (void)dealloc;
 - (void)releaseFeatureBuffers;
 - (void)releaseMemory;
@@ -28,17 +28,17 @@
 
 @implementation VCPModelR2D2
 
-- (int)prepareWithLightweightOption:(BOOL)a3 aspectRatio:(id)a4 numLevels:(int)a5 startLevel:(int)a6 cancel:(id)a7
+- (int)prepareWithLightweightOption:(BOOL)option aspectRatio:(id)ratio numLevels:(int)levels startLevel:(int)level cancel:(id)cancel
 {
-  v10 = a3;
-  v12 = a4;
-  v13 = a7;
+  optionCopy = option;
+  ratioCopy = ratio;
+  cancelCopy = cancel;
   resConfig = self->_resConfig;
   self->_resConfig = @"landscape_1024x432";
 
   self->super._cnnInputWidth = 1024;
   self->super._cnnInputHeight = 432;
-  if (v10)
+  if (optionCopy)
   {
     v15 = self->_resConfig;
     self->_resConfig = @"square_320x320";
@@ -47,30 +47,30 @@
     self->super._cnnInputHeight = 320;
   }
 
-  else if (v12)
+  else if (ratioCopy)
   {
-    v16 = [(VCPModelR2D2 *)self configForAspectRatio:v12];
-    if (v16)
+    allocateInputAndOutputBuffers = [(VCPModelR2D2 *)self configForAspectRatio:ratioCopy];
+    if (allocateInputAndOutputBuffers)
     {
       goto LABEL_7;
     }
   }
 
-  self->_numLevels = a5;
-  self->_startLevel = a6;
-  v16 = [(VCPModelR2D2 *)self createModules:v13];
-  if (!v16)
+  self->_numLevels = levels;
+  self->_startLevel = level;
+  allocateInputAndOutputBuffers = [(VCPModelR2D2 *)self createModules:cancelCopy];
+  if (!allocateInputAndOutputBuffers)
   {
     v17 = dispatch_semaphore_create(0);
     flowDecoderSemaphore = self->_flowDecoderSemaphore;
     self->_flowDecoderSemaphore = v17;
 
-    v16 = [(VCPModelR2D2 *)self allocateInputAndOutputBuffers];
+    allocateInputAndOutputBuffers = [(VCPModelR2D2 *)self allocateInputAndOutputBuffers];
   }
 
 LABEL_7:
 
-  return v16;
+  return allocateInputAndOutputBuffers;
 }
 
 - (int)allocateInputAndOutputBuffers
@@ -131,13 +131,13 @@ LABEL_7:
   return 0;
 }
 
-- (int)configForAspectRatio:(id)a3
+- (int)configForAspectRatio:(id)ratio
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  ratioCopy = ratio;
+  v5 = ratioCopy;
+  if (ratioCopy)
   {
-    [v4 floatValue];
+    [ratioCopy floatValue];
     if (v6 <= 1.16)
     {
       [v5 floatValue];
@@ -193,10 +193,10 @@ LABEL_13:
   return v11;
 }
 
-- (int)createModules:(id)a3
+- (int)createModules:(id)modules
 {
-  v4 = a3;
-  v5 = [[VCPFlowFeatureExtractor alloc] initModule:self->_numLevels config:self->_resConfig cancel:v4];
+  modulesCopy = modules;
+  v5 = [[VCPFlowFeatureExtractor alloc] initModule:self->_numLevels config:self->_resConfig cancel:modulesCopy];
   featureExtractor = self->_featureExtractor;
   self->_featureExtractor = v5;
 
@@ -211,7 +211,7 @@ LABEL_13:
     v8 = &self->super.super.super.isa + startLevel;
     do
     {
-      v9 = [[VCPFlowDecoder alloc] initModule:startLevel config:self->_resConfig cancel:v4];
+      v9 = [[VCPFlowDecoder alloc] initModule:startLevel config:self->_resConfig cancel:modulesCopy];
       v10 = v8[18];
       v8[18] = v9;
 
@@ -234,24 +234,24 @@ LABEL_13:
   if (!self->_correlation || (v13 = [[VCPBackwarp alloc] initWithDevice:self->super._device], backwarp = self->_backwarp, self->_backwarp = v13, backwarp, !self->_backwarp))
   {
 LABEL_10:
-    v15 = -108;
+    allocateFeatures = -108;
     goto LABEL_11;
   }
 
-  v15 = [(VCPModelR2D2 *)self allocateFeatures];
-  if (!v15)
+  allocateFeatures = [(VCPModelR2D2 *)self allocateFeatures];
+  if (!allocateFeatures)
   {
-    v15 = [(VCPModelR2D2 *)self allocateStorages];
+    allocateFeatures = [(VCPModelR2D2 *)self allocateStorages];
   }
 
 LABEL_11:
 
-  return v15;
+  return allocateFeatures;
 }
 
-- (int)updateModulesWithConfig:(id)a3
+- (int)updateModulesWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   featureExtractor = self->_featureExtractor;
   if (!featureExtractor)
   {
@@ -260,13 +260,13 @@ LABEL_11:
   }
 
   v16 = 0;
-  v6 = [(VCPEspressoModel *)featureExtractor updateModelWithConfig:v4 error:&v16];
+  v6 = [(VCPEspressoModel *)featureExtractor updateModelWithConfig:configCopy error:&v16];
   v7 = v16;
   v8 = v7;
   if (!v6)
   {
 LABEL_9:
-    v13 = -18;
+    allocateFeatures = -18;
     goto LABEL_16;
   }
 
@@ -282,12 +282,12 @@ LABEL_9:
       }
 
       v15 = v8;
-      v11 = [(VCPEspressoModel *)v10 updateModelWithConfig:v4 error:&v15];
+      v11 = [(VCPEspressoModel *)v10 updateModelWithConfig:configCopy error:&v15];
       v12 = v15;
 
       if (!v11)
       {
-        v13 = -18;
+        allocateFeatures = -18;
         goto LABEL_15;
       }
 
@@ -303,13 +303,13 @@ LABEL_9:
   v12 = v7;
 LABEL_11:
   [(VCPModelR2D2 *)self releaseMemory];
-  v13 = [(VCPModelR2D2 *)self allocateFeatures];
-  if (!v13)
+  allocateFeatures = [(VCPModelR2D2 *)self allocateFeatures];
+  if (!allocateFeatures)
   {
-    v13 = [(VCPModelR2D2 *)self allocateStorages];
-    if (!v13)
+    allocateFeatures = [(VCPModelR2D2 *)self allocateStorages];
+    if (!allocateFeatures)
     {
-      v13 = [(VCPModelR2D2 *)self allocateInputAndOutputBuffers];
+      allocateFeatures = [(VCPModelR2D2 *)self allocateInputAndOutputBuffers];
     }
   }
 
@@ -317,7 +317,7 @@ LABEL_15:
   v8 = v12;
 LABEL_16:
 
-  return v13;
+  return allocateFeatures;
 }
 
 - (int)allocateStorages
@@ -419,10 +419,10 @@ LABEL_16:
   }
 }
 
-- (int)allocateCorreleationBuffer:(__CVBuffer *)a3 forLevel:(unsigned int)a4
+- (int)allocateCorreleationBuffer:(__CVBuffer *)buffer forLevel:(unsigned int)level
 {
-  PixelBuffer = VCPFlowCreatePixelBuffer(self->_imageFeature[0].featureShape[a4].width, (81 * self->_imageFeature[0].featureShape[a4].height), 0x4C303068u, 0);
-  *a3 = PixelBuffer;
+  PixelBuffer = VCPFlowCreatePixelBuffer(self->_imageFeature[0].featureShape[level].width, (81 * self->_imageFeature[0].featureShape[level].height), 0x4C303068u, 0);
+  *buffer = PixelBuffer;
   if (PixelBuffer)
   {
     return 0;
@@ -526,20 +526,20 @@ LABEL_8:
   while ((v7 & 1) != 0);
 }
 
-- (int)extractFeaturesFromFirst:(__CVBuffer *)a3 andSecond:(__CVBuffer *)a4
+- (int)extractFeaturesFromFirst:(__CVBuffer *)first andSecond:(__CVBuffer *)second
 {
   imageFeature = self->_imageFeature;
-  result = [(VCPModelR2D2 *)self extractFeatureFromImage:a3 toFeature:self->_imageFeature];
+  result = [(VCPModelR2D2 *)self extractFeatureFromImage:first toFeature:self->_imageFeature];
   if (!result)
   {
 
-    return [(VCPModelR2D2 *)self extractFeatureFromImage:a4 toFeature:&imageFeature[1]];
+    return [(VCPModelR2D2 *)self extractFeatureFromImage:second toFeature:&imageFeature[1]];
   }
 
   return result;
 }
 
-- (int)extractFeatureFromImage:(__CVBuffer *)a3 toFeature:(id *)a4
+- (int)extractFeatureFromImage:(__CVBuffer *)image toFeature:(id *)feature
 {
   v7 = dispatch_semaphore_create(0);
   featureExtractor = self->_featureExtractor;
@@ -549,13 +549,13 @@ LABEL_8:
   v11[3] = &unk_1E834BDC0;
   v12 = v7;
   v9 = v7;
-  LODWORD(a4) = [(VCPFlowFeatureExtractor *)featureExtractor extractFeatureFromImage:a3 toFeature:a4 callback:v11];
+  LODWORD(feature) = [(VCPFlowFeatureExtractor *)featureExtractor extractFeatureFromImage:image toFeature:feature callback:v11];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
 
-  return a4;
+  return feature;
 }
 
-- (int)estimateMotionFlow:(__CVBuffer *)a3
+- (int)estimateMotionFlow:(__CVBuffer *)flow
 {
   numLevels = self->_numLevels;
   if (numLevels - 1 < self->_startLevel)
@@ -585,13 +585,13 @@ LABEL_8:
       v11 = flows[numLevels];
     }
 
-    v12 = a3;
+    flowCopy = flow;
     if (v8 != self->_startLevel)
     {
-      v12 = flows[v8];
+      flowCopy = flows[v8];
     }
 
-    result = [(VCPModelR2D2 *)self estimateFlowForLevel:v8 upperFlow:v11 outputFlow:v12];
+    result = [(VCPModelR2D2 *)self estimateFlowForLevel:v8 upperFlow:v11 outputFlow:flowCopy];
     if (result)
     {
       break;
@@ -613,17 +613,17 @@ LABEL_8:
   return result;
 }
 
-- (int)estimateFlowForLevel:(int)a3 upperFlow:(__CVBuffer *)a4 outputFlow:(__CVBuffer *)a5
+- (int)estimateFlowForLevel:(int)level upperFlow:(__CVBuffer *)flow outputFlow:(__CVBuffer *)outputFlow
 {
   imageFeature = self->_imageFeature;
-  channels = self->_imageFeature[0].featureShape[a3].channels;
-  v37 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v38 = createTextureFromBuffer(imageFeature->feature[a3], self->super._device, 0, channels);
+  channels = self->_imageFeature[0].featureShape[level].channels;
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  v38 = createTextureFromBuffer(imageFeature->feature[level], self->super._device, 0, channels);
   feature = imageFeature->feature;
-  v11 = a3;
-  v12 = createTextureFromBuffer(imageFeature[1].feature[a3], self->super._device, 0, channels);
+  levelCopy = level;
+  v12 = createTextureFromBuffer(imageFeature[1].feature[level], self->super._device, 0, channels);
   p_storage = &self->_storage;
-  v13 = createTextureFromBuffer(self->_storage.correlations[a3], self->super._device, 0, 0x51uLL);
+  v13 = createTextureFromBuffer(self->_storage.correlations[level], self->super._device, 0, 0x51uLL);
   v14 = v13;
   if (v38)
   {
@@ -636,7 +636,7 @@ LABEL_8:
   }
 
   v16 = v15 || v13 == 0;
-  v32 = a5;
+  outputFlowCopy = outputFlow;
   if (v16)
   {
     v17 = 0;
@@ -645,10 +645,10 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (self->_numLevels - 1 != a3)
+  if (self->_numLevels - 1 != level)
   {
-    v19 = createTextureFromBuffer(a4, self->super._device, 0, 2uLL);
-    v22 = &p_storage->correlations[a3];
+    v19 = createTextureFromBuffer(flow, self->super._device, 0, 2uLL);
+    v22 = &p_storage->correlations[level];
     v17 = createTextureFromBuffer(v22[14], self->super._device, 0, 2uLL);
     v23 = createTextureFromBuffer(v22[21], self->super._device, 0, channels);
     v18 = v23;
@@ -667,8 +667,8 @@ LABEL_8:
       v21 = v17;
       v34 = v19;
       v35 = v23;
-      [(VCPBackwarp *)self->_backwarp encodeToCommandBuffer:v37 input:v12 output:v23 flow:v19 upscaledFlow:v17];
-      [(VCPCorrelation *)self->_correlation encodeToCommandBuffer:v37 firstInput:v38 secondInput:v18 correlation:v14, v32];
+      [(VCPBackwarp *)self->_backwarp encodeToCommandBuffer:commandBuffer input:v12 output:v23 flow:v19 upscaledFlow:v17];
+      [(VCPCorrelation *)self->_correlation encodeToCommandBuffer:commandBuffer firstInput:v38 secondInput:v18 correlation:v14, outputFlowCopy];
       goto LABEL_21;
     }
 
@@ -680,13 +680,13 @@ LABEL_10:
   v34 = 0;
   v35 = v12;
   v21 = 0;
-  [(VCPCorrelation *)self->_correlation encodeToCommandBuffer:v37 firstInput:v38 secondInput:v35 correlation:v14, a5];
+  [(VCPCorrelation *)self->_correlation encodeToCommandBuffer:commandBuffer firstInput:v38 secondInput:v35 correlation:v14, outputFlow];
 LABEL_21:
-  [v37 commit];
-  [v37 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   if (needDeepCopy([v14 width], objc_msgSend(v14, "arrayLength")))
   {
-    v20 = copyTextureToBuffer(v14, p_storage->correlations[v11]);
+    v20 = copyTextureToBuffer(v14, p_storage->correlations[levelCopy]);
   }
 
   else
@@ -696,7 +696,7 @@ LABEL_21:
 
   if (needDeepCopy([v21 width], objc_msgSend(v21, "arrayLength")))
   {
-    v20 = copyTextureToBuffer(v21, p_storage->upscaledFlows[v11]);
+    v20 = copyTextureToBuffer(v21, p_storage->upscaledFlows[levelCopy]);
   }
 
   v17 = v21;
@@ -706,9 +706,9 @@ LABEL_27:
 
   if (!v20)
   {
-    v26 = self->_flowDecoder[v11];
-    v27 = feature[v11];
-    v28 = &p_storage->correlations[v11];
+    v26 = self->_flowDecoder[levelCopy];
+    v27 = feature[levelCopy];
+    v28 = &p_storage->correlations[levelCopy];
     v29 = *v28;
     v30 = v28[14];
     v39[0] = MEMORY[0x1E69E9820];
@@ -716,27 +716,27 @@ LABEL_27:
     v39[2] = __58__VCPModelR2D2_estimateFlowForLevel_upperFlow_outputFlow___block_invoke;
     v39[3] = &unk_1E834BDC0;
     v39[4] = self;
-    v20 = [(VCPFlowDecoder *)v26 estimateFlow:v27 correlation:v29 flow:v30 outputFlow:v32 callback:v39];
+    v20 = [(VCPFlowDecoder *)v26 estimateFlow:v27 correlation:v29 flow:v30 outputFlow:outputFlowCopy callback:v39];
     dispatch_semaphore_wait(self->_flowDecoderSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   return v20;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4 withChannels:(int)a5
+- (int)copyImage:(__CVBuffer *)image toBuffer:(__CVBuffer *)buffer withChannels:(int)channels
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a5 != 3 || CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (channels != 3 || CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   v31 = 0;
-  v32 = a3;
+  imageCopy = image;
   v33 = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -747,22 +747,22 @@ LABEL_27:
   }
 
   v9 = Height;
-  v10 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v10 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v31 = v10;
-  if (!v10 || (v11 = v10, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, pixelBuffer[0] = a3, LOWORD(pixelBuffer[1]) = 1024, *(&pixelBuffer[1] + 2) = v11, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v11 = v31) == 0))
+  if (!v10 || (v11 = v10, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, pixelBuffer[0] = image, LOWORD(pixelBuffer[1]) = 1024, *(&pixelBuffer[1] + 2) = v11, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v11 = v31) == 0))
   {
     *buf = 0;
-    *(pixelBuffer + 4) = a4;
-    if (a4)
+    *(pixelBuffer + 4) = buffer;
+    if (buffer)
     {
-      v11 = CVPixelBufferLockBaseAddress(a4, 0);
+      v11 = CVPixelBufferLockBaseAddress(buffer, 0);
       *buf = v11;
       if (!v11 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v36 = 134218240, v37 = *(pixelBuffer + 4), v38 = 1024, v39 = v11, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v36, 0x12u), (v11 = *buf) == 0))
       {
-        BaseAddress = CVPixelBufferGetBaseAddress(a3);
-        BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-        v14 = CVPixelBufferGetBytesPerRow(a4);
-        v15 = CVPixelBufferGetBaseAddress(a4);
+        BaseAddress = CVPixelBufferGetBaseAddress(image);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+        v14 = CVPixelBufferGetBytesPerRow(buffer);
+        v15 = CVPixelBufferGetBaseAddress(buffer);
         if (v9 >= 1)
         {
           v17 = 0;
@@ -833,7 +833,7 @@ LABEL_27:
       [VCPMoFlowSingleEspresso copyImage:toData:withChannels:];
     }
 
-    if (v32 && !v31 && CVPixelBufferUnlockBaseAddress(v32, v33) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (imageCopy && !v31 && CVPixelBufferUnlockBaseAddress(imageCopy, v33) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [VCPMoFlowSingleEspresso copyImage:toData:withChannels:];
     }
@@ -842,25 +842,25 @@ LABEL_27:
   return v11;
 }
 
-- (int)createInput:(__CVBuffer *)a3 withImage:(__CVBuffer *)a4 modelInputHeight:(int)a5 modelInputWidth:(int)a6
+- (int)createInput:(__CVBuffer *)input withImage:(__CVBuffer *)image modelInputHeight:(int)height modelInputWidth:(int)width
 {
-  if (a3)
+  if (input)
   {
-    v6 = *&a6;
-    v7 = *&a5;
+    v6 = *&width;
+    v7 = *&height;
     cf = 0;
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
-    if (CVPixelBufferGetPixelFormatType(a4) == 1111970369 && Width == v6 && Height == v7)
+    Width = CVPixelBufferGetWidth(image);
+    Height = CVPixelBufferGetHeight(image);
+    if (CVPixelBufferGetPixelFormatType(image) == 1111970369 && Width == v6 && Height == v7)
     {
       v16 = 0;
-      cf = CFRetain(a4);
+      cf = CFRetain(image);
       CF<__CVBuffer *>::~CF(&v16);
     }
 
     else
     {
-      Scaler::Scale(&self->_scaler, a4, &cf, v6, v7, 1111970369);
+      Scaler::Scale(&self->_scaler, image, &cf, v6, v7, 1111970369);
       v13 = v14;
       if (v14)
       {
@@ -870,19 +870,19 @@ LABEL_9:
       }
     }
 
-    v13 = [(VCPModelR2D2 *)self copyImage:cf toBuffer:a3 withChannels:3];
+    v13 = [(VCPModelR2D2 *)self copyImage:cf toBuffer:input withChannels:3];
     goto LABEL_9;
   }
 
   return -108;
 }
 
-- (int)analyzeImages:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 cancel:(id)a5
+- (int)analyzeImages:(__CVBuffer *)images secondImage:(__CVBuffer *)image cancel:(id)cancel
 {
-  result = [(VCPModelR2D2 *)self createInput:self->_firstBuffer withImage:a3 modelInputHeight:self->super._cnnInputHeight modelInputWidth:self->super._cnnInputWidth];
+  result = [(VCPModelR2D2 *)self createInput:self->_firstBuffer withImage:images modelInputHeight:self->super._cnnInputHeight modelInputWidth:self->super._cnnInputWidth];
   if (!result)
   {
-    result = [(VCPModelR2D2 *)self createInput:self->_secondBuffer withImage:a4 modelInputHeight:self->super._cnnInputHeight modelInputWidth:self->super._cnnInputWidth];
+    result = [(VCPModelR2D2 *)self createInput:self->_secondBuffer withImage:image modelInputHeight:self->super._cnnInputHeight modelInputWidth:self->super._cnnInputWidth];
     if (!result)
     {
       result = [(VCPModelR2D2 *)self extractFeaturesFromFirst:self->_firstBuffer andSecond:self->_secondBuffer];
@@ -898,19 +898,19 @@ LABEL_9:
   return result;
 }
 
-- (int)getFlowToBuffer:(__CVBuffer *)a3
+- (int)getFlowToBuffer:(__CVBuffer *)buffer
 {
   LODWORD(v3) = 1.0;
   LODWORD(v4) = 1.0;
-  [(VCPModelR2D2 *)self flowScalingTo:a3 scalerX:v3 scalerY:v4];
+  [(VCPModelR2D2 *)self flowScalingTo:buffer scalerX:v3 scalerY:v4];
   return 0;
 }
 
-- (int)flowScalingTo:(__CVBuffer *)a3 scalerX:(float)a4 scalerY:(float)a5
+- (int)flowScalingTo:(__CVBuffer *)to scalerX:(float)x scalerY:(float)y
 {
   v45 = *MEMORY[0x1E69E9840];
   BytesPerRow = CVPixelBufferGetBytesPerRow(self->_outputFlow);
-  v10 = CVPixelBufferGetBytesPerRow(a3);
+  v10 = CVPixelBufferGetBytesPerRow(to);
   outputFlow = self->_outputFlow;
   v36 = 0;
   v37 = outputFlow;
@@ -922,15 +922,15 @@ LABEL_9:
     v36 = v13;
     if (!v13 || (v14 = v13, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, pixelBuffer[0] = outputFlow, LOWORD(pixelBuffer[1]) = 1024, *(&pixelBuffer[1] + 2) = v14, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v14 = v36) == 0))
     {
-      *(pixelBuffer + 4) = a3;
-      if (a3)
+      *(pixelBuffer + 4) = to;
+      if (to)
       {
-        v14 = CVPixelBufferLockBaseAddress(a3, 0);
+        v14 = CVPixelBufferLockBaseAddress(to, 0);
         *buf = v14;
         if (!v14 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v41 = 134218240, v42 = *(pixelBuffer + 4), v43 = 1024, v44 = v14, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v41, 0x12u), (v14 = *buf) == 0))
         {
           BaseAddress = CVPixelBufferGetBaseAddress(self->_outputFlow);
-          v16 = CVPixelBufferGetBaseAddress(a3);
+          v16 = CVPixelBufferGetBaseAddress(to);
           cnnOutputHeight = self->super._cnnOutputHeight;
           if (cnnOutputHeight >= 1)
           {
@@ -951,14 +951,14 @@ LABEL_9:
                   _H0 = *&BaseAddress[v25];
                   __asm { FCVT            S0, H0 }
 
-                  _S0 = _S0 * a4;
+                  _S0 = _S0 * x;
                   __asm { FCVT            H0, S0 }
 
                   *&v16[v24 >> 31] = LOWORD(_S0);
                   LOWORD(_S0) = *&v22[v25];
                   __asm { FCVT            S0, H0 }
 
-                  _S0 = _S0 * a5;
+                  _S0 = _S0 * y;
                   __asm { FCVT            H0, S0 }
 
                   *&v16[2 * v25 + 2] = LOWORD(_S0);
@@ -1022,12 +1022,12 @@ LABEL_9:
   return v14;
 }
 
-- (int)flowScalingTo:(__CVBuffer *)a3 flowBufferY:(__CVBuffer *)a4 scalerX:(float)a5 scalerY:(float)a6
+- (int)flowScalingTo:(__CVBuffer *)to flowBufferY:(__CVBuffer *)y scalerX:(float)x scalerY:(float)scalerY
 {
   v50 = *MEMORY[0x1E69E9840];
   BytesPerRow = CVPixelBufferGetBytesPerRow(self->_outputFlow);
-  v12 = CVPixelBufferGetBytesPerRow(a3);
-  v13 = CVPixelBufferGetBytesPerRow(a4);
+  v12 = CVPixelBufferGetBytesPerRow(to);
+  v13 = CVPixelBufferGetBytesPerRow(y);
   outputFlow = self->_outputFlow;
   v39 = 0;
   pixelBuffer = outputFlow;
@@ -1040,24 +1040,24 @@ LABEL_9:
     if (!v16 || (v17 = v16, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v45[0] = outputFlow, LOWORD(v45[1]) = 1024, *(&v45[1] + 2) = v17, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v17 = v39) == 0))
     {
       *buf = 0;
-      *(v45 + 4) = a3;
-      if (a3)
+      *(v45 + 4) = to;
+      if (to)
       {
-        v17 = CVPixelBufferLockBaseAddress(a3, 0);
+        v17 = CVPixelBufferLockBaseAddress(to, 0);
         *buf = v17;
         if (!v17 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v42 = 134218240, v43[0] = *(v45 + 4), LOWORD(v43[1]) = 1024, *(&v43[1] + 2) = v17, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v42, 0x12u), (v17 = *buf) == 0))
         {
           *v42 = 0;
-          *(v43 + 4) = a4;
-          if (a4)
+          *(v43 + 4) = y;
+          if (y)
           {
-            v17 = CVPixelBufferLockBaseAddress(a4, 0);
+            v17 = CVPixelBufferLockBaseAddress(y, 0);
             *v42 = v17;
             if (!v17 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (*v46 = 134218240, v47 = *(v43 + 4), v48 = 1024, v49 = v17, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v46, 0x12u), (v17 = *v42) == 0))
             {
               BaseAddress = CVPixelBufferGetBaseAddress(self->_outputFlow);
-              v19 = CVPixelBufferGetBaseAddress(a3);
-              v20 = CVPixelBufferGetBaseAddress(a4);
+              v19 = CVPixelBufferGetBaseAddress(to);
+              v20 = CVPixelBufferGetBaseAddress(y);
               cnnOutputHeight = self->super._cnnOutputHeight;
               if (cnnOutputHeight >= 1)
               {
@@ -1077,14 +1077,14 @@ LABEL_9:
                       _H0 = *&BaseAddress[v28];
                       __asm { FCVT            S0, H0 }
 
-                      _S0 = _S0 * a5;
+                      _S0 = _S0 * x;
                       __asm { FCVT            H0, S0 }
 
                       *&v19[v28] = LOWORD(_S0);
                       LOWORD(_S0) = *&v26[v28];
                       __asm { FCVT            S0, H0 }
 
-                      _S0 = _S0 * a6;
+                      _S0 = _S0 * scalerY;
                       __asm { FCVT            H0, S0 }
 
                       *&v20[v28] = LOWORD(_S0);
@@ -1169,11 +1169,11 @@ LABEL_9:
   return v17;
 }
 
-- (int)updateModelForAspectRatio:(id)a3 computationAccuracy:(unsigned int)a4
+- (int)updateModelForAspectRatio:(id)ratio computationAccuracy:(unsigned int)accuracy
 {
   v7 = self->_resConfig;
-  self->super._computationAccuracy = a4;
-  v8 = [(VCPModelR2D2 *)self configForAspectRatio:a3];
+  self->super._computationAccuracy = accuracy;
+  v8 = [(VCPModelR2D2 *)self configForAspectRatio:ratio];
   if (!v8)
   {
     if (v7 == self->_resConfig)

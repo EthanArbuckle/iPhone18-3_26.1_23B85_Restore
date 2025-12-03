@@ -1,15 +1,15 @@
 @interface IMGridViewCell
-+ (CGRect)imageRectForBounds:(CGRect)a3 image:(id)a4 gravity:(int)a5;
-+ (CGSize)scaledImageSizeForBounds:(CGRect)a3 image:(id)a4;
++ (CGRect)imageRectForBounds:(CGRect)bounds image:(id)image gravity:(int)gravity;
++ (CGSize)scaledImageSizeForBounds:(CGRect)bounds image:(id)image;
 + (id)_jitterPositionAnimation;
 + (id)_jitterTransformAnimation;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)imageRectForBounds:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)imageRectForBounds:(CGRect)bounds;
 - (CGRect)selectionFrame;
-- (CGRect)titleRectForBounds:(CGRect)a3;
-- (CGSize)scaledImageSizeForBounds:(CGRect)a3;
+- (CGRect)titleRectForBounds:(CGRect)bounds;
+- (CGSize)scaledImageSizeForBounds:(CGRect)bounds;
 - (IMGridView)gridView;
-- (IMGridViewCell)initWithFrame:(CGRect)a3;
+- (IMGridViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)snapshotEdgeInsets;
 - (UIImageView)badgeView;
 - (UIImageView)imageView;
@@ -28,36 +28,36 @@
 - (void)_removeSelectedBadgeView;
 - (void)_removeWorkingView;
 - (void)dealloc;
-- (void)deleteConfirmationControlWasClicked:(id)a3;
+- (void)deleteConfirmationControlWasClicked:(id)clicked;
 - (void)layoutSubviews;
 - (void)loadImageView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setBadgeLabelNumber:(id)a3;
-- (void)setBadgeText:(id)a3;
-- (void)setCanDelete:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGrabbed:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHidesWhitewash:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setJiggleWhenEditing:(BOOL)a3;
-- (void)setJiggling:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowCloseBox:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseMaskForHighlightView:(BOOL)a3;
-- (void)setWorking:(BOOL)a3;
+- (void)setBadgeLabelNumber:(id)number;
+- (void)setBadgeText:(id)text;
+- (void)setCanDelete:(BOOL)delete;
+- (void)setEditing:(BOOL)editing;
+- (void)setFrame:(CGRect)frame;
+- (void)setGrabbed:(BOOL)grabbed;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHidesWhitewash:(BOOL)whitewash;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setJiggleWhenEditing:(BOOL)editing;
+- (void)setJiggling:(BOOL)jiggling;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowCloseBox:(BOOL)box;
+- (void)setTitle:(id)title;
+- (void)setUseMaskForHighlightView:(BOOL)view;
+- (void)setWorking:(BOOL)working;
 @end
 
 @implementation IMGridViewCell
 
-- (IMGridViewCell)initWithFrame:(CGRect)a3
+- (IMGridViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = IMGridViewCell;
-  v3 = [(IMGridViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IMGridViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -77,7 +77,7 @@
   [(IMGridViewCell *)&v3 dealloc];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   if (!self->_ignoreChangesToHidden)
   {
@@ -85,7 +85,7 @@
     v7 = v4;
     v5.receiver = self;
     v5.super_class = IMGridViewCell;
-    [(IMGridViewCell *)&v5 setHidden:a3];
+    [(IMGridViewCell *)&v5 setHidden:hidden];
   }
 }
 
@@ -94,18 +94,18 @@
   v7.receiver = self;
   v7.super_class = IMGridViewCell;
   v3 = [(IMGridViewCell *)&v7 description];
-  v4 = [(IMGridViewCell *)self title];
-  v5 = [NSString stringWithFormat:@"%@ Title:%@", v3, v4];
+  title = [(IMGridViewCell *)self title];
+  v5 = [NSString stringWithFormat:@"%@ Title:%@", v3, title];
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_imageView == a6)
+  if (self->_imageView == context)
   {
 
-    [(IMGridViewCell *)self setNeedsLayout:a3];
+    [(IMGridViewCell *)self setNeedsLayout:path];
   }
 
   else
@@ -114,7 +114,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = IMGridViewCell;
-    [(IMGridViewCell *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(IMGridViewCell *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -125,16 +125,16 @@
   {
     v4 = [UIImageView alloc];
     v5 = IMCommonCoreBundle();
-    v6 = [(IMGridViewCell *)self traitCollection];
-    v7 = [UIImage imageNamed:@"TVBadge" inBundle:v5 compatibleWithTraitCollection:v6];
+    traitCollection = [(IMGridViewCell *)self traitCollection];
+    v7 = [UIImage imageNamed:@"TVBadge" inBundle:v5 compatibleWithTraitCollection:traitCollection];
     v8 = [v7 stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     v9 = [v4 initWithImage:v8];
     v10 = self->_badgeView;
     self->_badgeView = v9;
 
     [(UIImageView *)self->_badgeView setFrame:0.0, 0.0, 31.0, 31.0];
-    v11 = [(IMGridViewCell *)self contentView];
-    [v11 addSubview:self->_badgeView];
+    contentView = [(IMGridViewCell *)self contentView];
+    [contentView addSubview:self->_badgeView];
 
     badgeView = self->_badgeView;
   }
@@ -147,8 +147,8 @@
   badgeLabel = self->_badgeLabel;
   if (!badgeLabel)
   {
-    v4 = [(IMGridViewCell *)self badgeView];
-    [v4 bounds];
+    badgeView = [(IMGridViewCell *)self badgeView];
+    [badgeView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -170,8 +170,8 @@
 
     [(UILabel *)self->_badgeLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_badgeLabel setMinimumScaleFactor:0.47];
-    v18 = [(IMGridViewCell *)self badgeView];
-    [v18 addSubview:self->_badgeLabel];
+    badgeView2 = [(IMGridViewCell *)self badgeView];
+    [badgeView2 addSubview:self->_badgeLabel];
 
     badgeLabel = self->_badgeLabel;
   }
@@ -179,52 +179,52 @@
   return badgeLabel;
 }
 
-- (void)setBadgeLabelNumber:(id)a3
+- (void)setBadgeLabelNumber:(id)number
 {
-  v8 = a3;
-  if ([v8 intValue])
+  numberCopy = number;
+  if ([numberCopy intValue])
   {
     v4 = [NSString alloc];
     v5 = IMCommonCoreBundle();
     v6 = [v5 localizedStringForKey:@"%@" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
-    v7 = [v4 initWithFormat:v6, v8];
+    numberCopy = [v4 initWithFormat:v6, numberCopy];
   }
 
   else
   {
-    v7 = 0;
+    numberCopy = 0;
   }
 
-  [(IMGridViewCell *)self setBadgeText:v7];
+  [(IMGridViewCell *)self setBadgeText:numberCopy];
 }
 
-- (void)setBadgeText:(id)a3
+- (void)setBadgeText:(id)text
 {
-  if (a3)
+  if (text)
   {
-    v5 = a3;
-    v6 = [(IMGridViewCell *)self badgeLabel];
-    [v6 setText:v5];
+    textCopy = text;
+    badgeLabel = [(IMGridViewCell *)self badgeLabel];
+    [badgeLabel setText:textCopy];
 
     [(IMGridViewCell *)self badgeView];
     [(IMGridViewCell *)self setNeedsLayout];
   }
 
-  v7 = a3 == 0;
+  v7 = text == 0;
   [(UIImageView *)self->_badgeView setHidden:v7];
   badgeLabel = self->_badgeLabel;
 
   [(UILabel *)badgeLabel setHidden:v7];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   closeBox = self->_closeBox;
   [(UIButton *)closeBox convertPoint:self fromView:x, y];
-  if (([(UIButton *)closeBox pointInside:v7 withEvent:?]& 1) != 0)
+  if (([(UIButton *)closeBox pointInside:eventCopy withEvent:?]& 1) != 0)
   {
     v9 = 1;
   }
@@ -233,7 +233,7 @@
   {
     v11.receiver = self;
     v11.super_class = IMGridViewCell;
-    v9 = [(IMGridViewCell *)&v11 pointInside:v7 withEvent:x, y];
+    v9 = [(IMGridViewCell *)&v11 pointInside:eventCopy withEvent:x, y];
   }
 
   return v9;
@@ -259,27 +259,27 @@
   return contentView;
 }
 
-- (void)setUseMaskForHighlightView:(BOOL)a3
+- (void)setUseMaskForHighlightView:(BOOL)view
 {
-  if ([(IMGridViewCell *)self useMaskForHighlightView]!= a3)
+  if ([(IMGridViewCell *)self useMaskForHighlightView]!= view)
   {
-    self->_useMaskForHighlightView = a3;
+    self->_useMaskForHighlightView = view;
 
     [(IMGridViewCell *)self _removeHighlightView];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  self->_highlighted = a3;
+  highlightedCopy = highlighted;
+  self->_highlighted = highlighted;
   [(UIImageView *)self->_imageView setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     if (self->_showSelectionView)
     {
-      v5 = [(IMGridViewCell *)self highlightView];
-      [v5 setHidden:0];
+      highlightView = [(IMGridViewCell *)self highlightView];
+      [highlightView setHidden:0];
     }
   }
 
@@ -291,13 +291,13 @@
   [(IMGridViewCell *)self setNeedsLayout];
 }
 
-- (void)setWorking:(BOOL)a3
+- (void)setWorking:(BOOL)working
 {
-  self->_working = a3;
-  if (a3)
+  self->_working = working;
+  if (working)
   {
-    v4 = [(IMGridViewCell *)self workingView];
-    [v4 startAnimating];
+    workingView = [(IMGridViewCell *)self workingView];
+    [workingView startAnimating];
   }
 
   else
@@ -313,16 +313,16 @@
   [(IMGridViewCell *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v6 = a3;
-    v4 = [v6 copy];
+    titleCopy = title;
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
-    [(UILabel *)self->_textLabel setText:v6];
+    [(UILabel *)self->_textLabel setText:titleCopy];
   }
 }
 
@@ -358,8 +358,8 @@
   [(UIImageView *)self->_imageView setClipsToBounds:0];
   [(UIImageView *)self->_imageView setOpaque:1];
   [(UIImageView *)self->_imageView setClearsContextBeforeDrawing:0];
-  v6 = [(IMGridViewCell *)self contentView];
-  [v6 insertSubview:self->_imageView atIndex:0];
+  contentView = [(IMGridViewCell *)self contentView];
+  [contentView insertSubview:self->_imageView atIndex:0];
 
   v7 = self->_imageView;
 
@@ -372,9 +372,9 @@
   {
     if ([(IMGridViewCell *)self useMaskForHighlightView]&& ([(UIImageView *)self->_imageView image], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
     {
-      v4 = [(UIImageView *)self->_imageView image];
+      image = [(UIImageView *)self->_imageView image];
       v5 = [UIColor colorWithWhite:0.0 alpha:0.3];
-      v6 = [v4 imageMaskWithColor:v5];
+      v6 = [image imageMaskWithColor:v5];
 
       v7 = [[UIImageView alloc] initWithImage:v6];
       highlightView = self->_highlightView;
@@ -399,14 +399,14 @@
       [(UIView *)self->_highlightView setBackgroundColor:v6];
     }
 
-    v12 = [(IMGridViewCell *)self contentView];
-    [v12 addSubview:self->_highlightView];
+    contentView = [(IMGridViewCell *)self contentView];
+    [contentView addSubview:self->_highlightView];
 
     if (self->_badgeView)
     {
-      v13 = [(IMGridViewCell *)self contentView];
-      v14 = [(IMGridViewCell *)self badgeView];
-      [v13 bringSubviewToFront:v14];
+      contentView2 = [(IMGridViewCell *)self contentView];
+      badgeView = [(IMGridViewCell *)self badgeView];
+      [contentView2 bringSubviewToFront:badgeView];
     }
   }
 
@@ -425,8 +425,8 @@
     self->_workingView = v4;
 
     [(UIActivityIndicatorView *)self->_workingView setHidesWhenStopped:1];
-    v6 = [(IMGridViewCell *)self contentView];
-    [v6 addSubview:self->_workingView];
+    contentView = [(IMGridViewCell *)self contentView];
+    [contentView addSubview:self->_workingView];
 
     workingView = self->_workingView;
   }
@@ -452,11 +452,11 @@
     [(UILabel *)self->_textLabel setBackgroundColor:v7];
 
     [(UILabel *)self->_textLabel setTextAlignment:1];
-    v8 = [(IMGridViewCell *)self title];
-    [(UILabel *)self->_textLabel setText:v8];
+    title = [(IMGridViewCell *)self title];
+    [(UILabel *)self->_textLabel setText:title];
 
-    v9 = [(IMGridViewCell *)self contentView];
-    [v9 addSubview:self->_textLabel];
+    contentView = [(IMGridViewCell *)self contentView];
+    [contentView addSubview:self->_textLabel];
 
     textLabel = self->_textLabel;
   }
@@ -485,15 +485,15 @@
   [(IMGridViewCell *)self _removeCloseBox];
 }
 
-+ (CGSize)scaledImageSizeForBounds:(CGRect)a3 image:(id)a4
++ (CGSize)scaledImageSizeForBounds:(CGRect)bounds image:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  imageCopy = image;
+  v7 = imageCopy;
+  if (imageCopy)
   {
-    [v6 size];
+    [imageCopy size];
     v10 = v8 / v9;
     v11 = width / height;
     if (v10 <= width / height)
@@ -519,15 +519,15 @@
   return result;
 }
 
-- (CGSize)scaledImageSizeForBounds:(CGRect)a3
+- (CGSize)scaledImageSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = objc_opt_class();
-  v9 = [(UIImageView *)self->_imageView image];
-  [v8 scaledImageSizeForBounds:v9 image:{x, y, width, height}];
+  image = [(UIImageView *)self->_imageView image];
+  [v8 scaledImageSizeForBounds:image image:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
 
@@ -538,17 +538,17 @@
   return result;
 }
 
-+ (CGRect)imageRectForBounds:(CGRect)a3 image:(id)a4 gravity:(int)a5
++ (CGRect)imageRectForBounds:(CGRect)bounds image:(id)image gravity:(int)gravity
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [a1 scaledImageSizeForBounds:a4 image:{a3.origin.x, a3.origin.y}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [self scaledImageSizeForBounds:image image:{bounds.origin.x, bounds.origin.y}];
   v10 = CGRectZero.size.width;
   v11 = CGRectZero.size.height;
   v12 = ceil((width - v8) * 0.5);
   y = height - v9;
   v14 = ceil((height - v9) * 0.5);
-  if (a5)
+  if (gravity)
   {
     y = CGRectZero.origin.y;
     x = CGRectZero.origin.x;
@@ -561,7 +561,7 @@
     x = v12;
   }
 
-  if (a5 == 1)
+  if (gravity == 1)
   {
     v16 = v9;
   }
@@ -571,7 +571,7 @@
     v16 = v11;
   }
 
-  if (a5 == 1)
+  if (gravity == 1)
   {
     v17 = v8;
   }
@@ -581,7 +581,7 @@
     v17 = v10;
   }
 
-  if (a5 == 1)
+  if (gravity == 1)
   {
     v18 = v14;
   }
@@ -591,7 +591,7 @@
     v18 = y;
   }
 
-  if (a5 == 1)
+  if (gravity == 1)
   {
     v19 = v12;
   }
@@ -608,15 +608,15 @@
   return result;
 }
 
-- (CGRect)imageRectForBounds:(CGRect)a3
+- (CGRect)imageRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = objc_opt_class();
-  v9 = [(UIImageView *)self->_imageView image];
-  [v8 imageRectForBounds:v9 image:self->_imageGravity gravity:{x, y, width, height}];
+  image = [(UIImageView *)self->_imageView image];
+  [v8 imageRectForBounds:image image:self->_imageGravity gravity:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -633,12 +633,12 @@
   return result;
 }
 
-- (CGRect)titleRectForBounds:(CGRect)a3
+- (CGRect)titleRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(IMGridViewCell *)self contentRectForBounds:?];
   v8 = CGRectGetMaxY(v17) + 5.0;
   v18.origin.x = x;
@@ -646,8 +646,8 @@
   v18.size.width = width;
   v18.size.height = height;
   v9 = CGRectGetWidth(v18);
-  v10 = [(UILabel *)self->_textLabel font];
-  [v10 leading];
+  font = [(UILabel *)self->_textLabel font];
+  [font leading];
   v12 = ceil(v11);
 
   v13 = 0.0;
@@ -668,8 +668,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UILabel *)self->_textLabel text];
-  v12 = [v11 length];
+  text = [(UILabel *)self->_textLabel text];
+  v12 = [text length];
 
   if (v12)
   {
@@ -702,8 +702,8 @@
 
   if (self->_badgeView)
   {
-    v26 = [(IMGridViewCell *)self badgeView];
-    [v26 bounds];
+    badgeView = [(IMGridViewCell *)self badgeView];
+    [badgeView bounds];
     v28 = v27;
     v30 = v29;
 
@@ -723,9 +723,9 @@
     }
 
     [(UILabel *)self->_badgeLabel setFrame:v34, v35, v36, v37];
-    v38 = [(IMGridViewCell *)self contentView];
-    v39 = [(IMGridViewCell *)self badgeView];
-    [v38 bringSubviewToFront:v39];
+    contentView = [(IMGridViewCell *)self contentView];
+    badgeView2 = [(IMGridViewCell *)self badgeView];
+    [contentView bringSubviewToFront:badgeView2];
   }
 
   if ([(IMGridViewCell *)self isSelected])
@@ -740,17 +740,17 @@
         v44 = v43;
         v46 = v45;
         v48 = v47;
-        v49 = [(IMGridViewCell *)self selectedWhitewashView];
-        [v49 setFrame:{v42, v44, v46, v48}];
+        selectedWhitewashView = [(IMGridViewCell *)self selectedWhitewashView];
+        [selectedWhitewashView setFrame:{v42, v44, v46, v48}];
 
-        v50 = [(IMGridViewCell *)self contentView];
-        v51 = [(IMGridViewCell *)self selectedWhitewashView];
-        [v50 addSubview:v51];
+        contentView2 = [(IMGridViewCell *)self contentView];
+        selectedWhitewashView2 = [(IMGridViewCell *)self selectedWhitewashView];
+        [contentView2 addSubview:selectedWhitewashView2];
       }
     }
 
-    v52 = [(IMGridViewCell *)self selectedBadgeView];
-    [v52 bounds];
+    selectedBadgeView = [(IMGridViewCell *)self selectedBadgeView];
+    [selectedBadgeView bounds];
     v54 = v53;
     v56 = v55;
 
@@ -764,18 +764,18 @@
     v73.size.width = v18;
     v73.size.height = v20;
     v58 = CGRectGetMaxY(v73) - v56 + -2.0;
-    v59 = [(IMGridViewCell *)self selectedBadgeView];
-    [v59 setFrame:{v57, v58, v54, v56}];
+    selectedBadgeView2 = [(IMGridViewCell *)self selectedBadgeView];
+    [selectedBadgeView2 setFrame:{v57, v58, v54, v56}];
 
-    v60 = [(IMGridViewCell *)self contentView];
-    v61 = [(IMGridViewCell *)self selectedBadgeView];
-    [v60 bringSubviewToFront:v61];
+    contentView3 = [(IMGridViewCell *)self contentView];
+    selectedBadgeView3 = [(IMGridViewCell *)self selectedBadgeView];
+    [contentView3 bringSubviewToFront:selectedBadgeView3];
   }
 
   if ([(IMGridViewCell *)self isWorking])
   {
-    v62 = [(IMGridViewCell *)self workingView];
-    [v62 bounds];
+    workingView = [(IMGridViewCell *)self workingView];
+    [workingView bounds];
     v64 = v63;
     v66 = v65;
 
@@ -817,11 +817,11 @@
 
 - (id)_gridView
 {
-  v2 = [(IMGridViewCell *)self superview];
+  superview = [(IMGridViewCell *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = superview;
   }
 
   else
@@ -834,15 +834,15 @@
   return v3;
 }
 
-- (void)setGrabbed:(BOOL)a3
+- (void)setGrabbed:(BOOL)grabbed
 {
   v3 = *(self + 132);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != grabbed)
   {
-    *(self + 132) = v3 & 0xFE | a3;
+    *(self + 132) = v3 & 0xFE | grabbed;
     highlightView = self->_highlightView;
     v5 = 1.0;
-    if (a3)
+    if (grabbed)
     {
       v5 = 0.0;
     }
@@ -851,15 +851,15 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v3 = *(self + 132);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ editing) & 1) == 0)
   {
-    v4 = a3;
-    if ((*(self + 132) & 1) == 0 || !a3)
+    editingCopy = editing;
+    if ((*(self + 132) & 1) == 0 || !editing)
     {
-      if (a3)
+      if (editing)
       {
         v6 = 2;
       }
@@ -872,30 +872,30 @@
       *(self + 132) = v3 & 0xFD | v6;
       v7 = *(self + 132);
       v8 = (v7 >> 2) & 1;
-      if ((v7 & 4) != 0 && !v4)
+      if ((v7 & 4) != 0 && !editingCopy)
       {
         v8 = *(self + 132) & 1;
       }
 
       [(IMGridViewCell *)self setShowCloseBox:v8];
-      if (v4)
+      if (editingCopy)
       {
         [(IMGridViewCell *)self setHighlighted:0];
       }
 
-      [(IMGridViewCell *)self setJiggling:[(IMGridViewCell *)self jiggleWhenEditing]& v4];
+      [(IMGridViewCell *)self setJiggling:[(IMGridViewCell *)self jiggleWhenEditing]& editingCopy];
 
       [(IMGridViewCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setCanDelete:(BOOL)a3
+- (void)setCanDelete:(BOOL)delete
 {
   v3 = *(self + 132);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ delete) & 1) == 0)
   {
-    if (a3)
+    if (delete)
     {
       v4 = 4;
     }
@@ -913,12 +913,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
@@ -937,8 +937,8 @@
   [(IMGridViewCell *)&v12 setFrame:x, y, width, height];
   if ((*(self + 132) & 1) == 0)
   {
-    v9 = [(IMGridViewCell *)self layer];
-    [v9 position];
+    layer = [(IMGridViewCell *)self layer];
+    [layer position];
     self->_unjitterPoint.x = v10;
     self->_unjitterPoint.y = v11;
 
@@ -949,9 +949,9 @@
   }
 }
 
-- (void)setHidesWhitewash:(BOOL)a3
+- (void)setHidesWhitewash:(BOOL)whitewash
 {
-  if (a3)
+  if (whitewash)
   {
     v3 = 32;
   }
@@ -964,14 +964,14 @@
   *(self + 132) = *(self + 132) & 0xDF | v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v7 = *(self + 132);
-  if (((((v7 & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((v7 & 0x10) == 0) ^ selected) & 1) == 0)
   {
     v11 = v4;
     v12 = v3;
-    if (a3)
+    if (selected)
     {
       v10 = 16;
     }
@@ -982,7 +982,7 @@
     }
 
     *(self + 132) = v7 & 0xEF | v10;
-    if ([(IMGridViewCell *)self highlighted:v11]&& !a3)
+    if ([(IMGridViewCell *)self highlighted:v11]&& !selected)
     {
       [(IMGridViewCell *)self setHighlighted:0];
     }
@@ -1021,16 +1021,16 @@
   if (!selectedBadgeView)
   {
     v4 = IMCommonCoreBundle();
-    v5 = [(IMGridViewCell *)self traitCollection];
-    v6 = [UIImage imageNamed:@"blue_circle_checkmark" inBundle:v4 compatibleWithTraitCollection:v5];
+    traitCollection = [(IMGridViewCell *)self traitCollection];
+    v6 = [UIImage imageNamed:@"blue_circle_checkmark" inBundle:v4 compatibleWithTraitCollection:traitCollection];
 
     v7 = [[UIImageView alloc] initWithImage:v6];
     v8 = self->_selectedBadgeView;
     self->_selectedBadgeView = v7;
 
     [(UIImageView *)self->_selectedBadgeView setFrame:0.0, 0.0, 29.0, 29.0];
-    v9 = [(IMGridViewCell *)self contentView];
-    [v9 addSubview:self->_selectedBadgeView];
+    contentView = [(IMGridViewCell *)self contentView];
+    [contentView addSubview:self->_selectedBadgeView];
 
     selectedBadgeView = self->_selectedBadgeView;
   }
@@ -1038,13 +1038,13 @@
   return selectedBadgeView;
 }
 
-- (void)setJiggleWhenEditing:(BOOL)a3
+- (void)setJiggleWhenEditing:(BOOL)editing
 {
   v4 = *(self + 132);
-  if (((((v4 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 8) == 0) ^ editing) & 1) == 0)
   {
-    v6 = 0;
-    if (a3)
+    isEditing = 0;
+    if (editing)
     {
       v7 = 8;
     }
@@ -1055,25 +1055,25 @@
     }
 
     *(self + 132) = v4 & 0xF7 | v7;
-    if (a3)
+    if (editing)
     {
-      v6 = [(IMGridViewCell *)self isEditing];
+      isEditing = [(IMGridViewCell *)self isEditing];
     }
 
-    [(IMGridViewCell *)self setJiggling:v6];
+    [(IMGridViewCell *)self setJiggling:isEditing];
   }
 }
 
-- (void)setJiggling:(BOOL)a3
+- (void)setJiggling:(BOOL)jiggling
 {
-  v3 = a3;
-  v5 = [(IMGridViewCell *)self layer];
-  v14 = [v5 animationForKey:@"JitterPosition"];
+  jigglingCopy = jiggling;
+  layer = [(IMGridViewCell *)self layer];
+  v14 = [layer animationForKey:@"JitterPosition"];
 
-  v6 = [(IMGridViewCell *)self layer];
-  v7 = [v6 animationForKey:@"JitterTransform"];
+  layer2 = [(IMGridViewCell *)self layer];
+  v7 = [layer2 animationForKey:@"JitterTransform"];
 
-  if (v3)
+  if (jigglingCopy)
   {
     if (v14)
     {
@@ -1085,9 +1085,9 @@
 
     else
     {
-      v11 = [(IMGridViewCell *)self layer];
-      v12 = [objc_opt_class() _jitterPositionAnimation];
-      [v11 addAnimation:v12 forKey:@"JitterPosition"];
+      layer3 = [(IMGridViewCell *)self layer];
+      _jitterPositionAnimation = [objc_opt_class() _jitterPositionAnimation];
+      [layer3 addAnimation:_jitterPositionAnimation forKey:@"JitterPosition"];
 
       if (v7)
       {
@@ -1095,9 +1095,9 @@
       }
     }
 
-    v10 = [(IMGridViewCell *)self layer];
-    v13 = [objc_opt_class() _jitterTransformAnimation];
-    [v10 addAnimation:v13 forKey:@"JitterTransform"];
+    layer4 = [(IMGridViewCell *)self layer];
+    _jitterTransformAnimation = [objc_opt_class() _jitterTransformAnimation];
+    [layer4 addAnimation:_jitterTransformAnimation forKey:@"JitterTransform"];
   }
 
   else
@@ -1107,14 +1107,14 @@
       goto LABEL_10;
     }
 
-    v8 = [(IMGridViewCell *)self layer];
-    [v8 removeAnimationForKey:@"JitterPosition"];
+    layer5 = [(IMGridViewCell *)self layer];
+    [layer5 removeAnimationForKey:@"JitterPosition"];
 
-    v9 = [(IMGridViewCell *)self layer];
-    [v9 removeAnimationForKey:@"JitterTransform"];
+    layer6 = [(IMGridViewCell *)self layer];
+    [layer6 removeAnimationForKey:@"JitterTransform"];
 
-    v10 = [(IMGridViewCell *)self layer];
-    [v10 setPosition:{self->_unjitterPoint.x, self->_unjitterPoint.y}];
+    layer4 = [(IMGridViewCell *)self layer];
+    [layer4 setPosition:{self->_unjitterPoint.x, self->_unjitterPoint.y}];
   }
 
 LABEL_10:
@@ -1207,10 +1207,10 @@ LABEL_10:
   return v2;
 }
 
-- (void)deleteConfirmationControlWasClicked:(id)a3
+- (void)deleteConfirmationControlWasClicked:(id)clicked
 {
-  v4 = [(IMGridViewCell *)self _gridView];
-  [v4 animateDeletionOfCell:self];
+  _gridView = [(IMGridViewCell *)self _gridView];
+  [_gridView animateDeletionOfCell:self];
 }
 
 - (id)closeBox
@@ -1227,8 +1227,8 @@ LABEL_10:
     [(UIButton *)self->_closeBox sizeToFit];
     [(UIButton *)self->_closeBox setAlpha:0.0];
     [(UIButton *)self->_closeBox addTarget:self action:"deleteConfirmationControlWasClicked:" forControlEvents:64];
-    v7 = [(IMGridViewCell *)self contentView];
-    [v7 addSubview:self->_closeBox];
+    contentView = [(IMGridViewCell *)self contentView];
+    [contentView addSubview:self->_closeBox];
 
     closeBox = self->_closeBox;
   }
@@ -1272,25 +1272,25 @@ LABEL_10:
   self->_closeBox = 0;
 }
 
-- (void)setShowCloseBox:(BOOL)a3
+- (void)setShowCloseBox:(BOOL)box
 {
-  if (a3)
+  if (box)
   {
-    v4 = [(IMGridViewCell *)self closeBox];
+    closeBox = [(IMGridViewCell *)self closeBox];
   }
 
   else
   {
-    v4 = self->_closeBox;
+    closeBox = self->_closeBox;
   }
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_BF2C8;
   v6[3] = &unk_2C9330;
-  v7 = v4;
-  v8 = a3;
-  v5 = v4;
+  v7 = closeBox;
+  boxCopy = box;
+  v5 = closeBox;
   [UIView animateWithDuration:v6 animations:0 completion:0.2];
 }
 
@@ -1305,8 +1305,8 @@ LABEL_10:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = [(IMGridViewCell *)self subviews];
-  v12 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  subviews = [(IMGridViewCell *)self subviews];
+  v12 = [subviews countByEnumeratingWithState:&v35 objects:v39 count:16];
   v32 = y;
   v33 = x;
   rect1 = width;
@@ -1322,7 +1322,7 @@ LABEL_10:
       {
         if (*v36 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v35 + 1) + 8 * i) frame];
@@ -1341,7 +1341,7 @@ LABEL_10:
         height = v41.size.height;
       }
 
-      v14 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v14 = [subviews countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v14);

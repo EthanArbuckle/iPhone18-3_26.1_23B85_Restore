@@ -1,12 +1,12 @@
 @interface WKTextAnimationManager
 - (WKTextAnimationManager)init;
-- (WKTextAnimationManager)initWithDelegate:(id)a3;
+- (WKTextAnimationManager)initWithDelegate:(id)delegate;
 - (WKTextAnimationSourceDelegate)delegate;
-- (void)addTextAnimationForAnimationID:(id)a3 withStyleType:(int64_t)a4;
-- (void)removeTextAnimationForAnimationID:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4;
-- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)a3 visible:(BOOL)a4 completionHandler:(id)a5;
+- (void)addTextAnimationForAnimationID:(id)d withStyleType:(int64_t)type;
+- (void)removeTextAnimationForAnimationID:(id)d;
+- (void)setDelegate:(id)delegate;
+- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler;
+- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)animation visible:(BOOL)visible completionHandler:(id)handler;
 @end
 
 @implementation WKTextAnimationManager
@@ -26,7 +26,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   sub_23B59D8F0();
   sub_23B59D8E0();
@@ -39,7 +39,7 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (WKTextAnimationManager)initWithDelegate:(id)a3
+- (WKTextAnimationManager)initWithDelegate:(id)delegate
 {
   sub_23B59D8F0();
   sub_23B59D8E0();
@@ -55,7 +55,7 @@
   return v4;
 }
 
-- (void)addTextAnimationForAnimationID:(id)a3 withStyleType:(int64_t)a4
+- (void)addTextAnimationForAnimationID:(id)d withStyleType:(int64_t)type
 {
   v6 = sub_23B59D350();
   v7 = *(v6 - 8);
@@ -71,13 +71,13 @@
   }
 
   sub_23B59D320();
-  v11 = self;
-  sub_23B597EB4(v10, a4);
+  selfCopy = self;
+  sub_23B597EB4(v10, type);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)removeTextAnimationForAnimationID:(id)a3
+- (void)removeTextAnimationForAnimationID:(id)d
 {
   v4 = sub_23B59D350();
   v5 = *(v4 - 8);
@@ -93,7 +93,7 @@
   }
 
   sub_23B59D320();
-  v9 = self;
+  selfCopy = self;
   sub_23B598880(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -114,15 +114,15 @@
   return result;
 }
 
-- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4
+- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E15A970, &qword_23B59F4E0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23B59D910();
@@ -137,21 +137,21 @@
   v15[3] = 0;
   v15[4] = &unk_23B5A01B0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_23B56B930(0, 0, v10, &unk_23B5A01B8, v15);
 }
 
-- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)a3 visible:(BOOL)a4 completionHandler:(id)a5
+- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)animation visible:(BOOL)visible completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E15A970, &qword_23B59F4E0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = animation;
+  *(v14 + 24) = visible;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_23B59D910();
@@ -166,8 +166,8 @@
   v17[3] = 0;
   v17[4] = &unk_23B5A0180;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_23B56B930(0, 0, v12, &unk_23B5A0190, v17);
 }
 

@@ -1,49 +1,49 @@
 @interface StockAccessibility
-- (id)_accessibilityLabelWithMarketCap:(BOOL)a3;
+- (id)_accessibilityLabelWithMarketCap:(BOOL)cap;
 - (id)_accessibilitySpeakThisString;
 @end
 
 @implementation StockAccessibility
 
-- (id)_accessibilityLabelWithMarketCap:(BOOL)a3
+- (id)_accessibilityLabelWithMarketCap:(BOOL)cap
 {
-  v3 = a3;
+  capCopy = cap;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 companyName];
-    v7 = [v5 formattedPrice];
-    v8 = [v5 formattedChange];
-    v9 = [v5 formattedChangePercent];
-    v10 = [v5 marketcap];
-    v11 = [MEMORY[0x29EDC6D20] BlankValueString];
-    if (([v10 isEqualToString:v11] & 1) == 0)
+    companyName = [v4 companyName];
+    formattedPrice = [v5 formattedPrice];
+    formattedChange = [v5 formattedChange];
+    formattedChangePercent = [v5 formattedChangePercent];
+    marketcap = [v5 marketcap];
+    blankValueString = [MEMORY[0x29EDC6D20] BlankValueString];
+    if (([marketcap isEqualToString:blankValueString] & 1) == 0)
     {
       v12 = MEMORY[0x29EDBA078];
-      v13 = [MEMORY[0x29EDBA070] numberWithLongLong:{objc_msgSend(v10, "longLongValue")}];
+      v13 = [MEMORY[0x29EDBA070] numberWithLongLong:{objc_msgSend(marketcap, "longLongValue")}];
       v14 = [v12 localizedStringFromNumber:v13 numberStyle:5];
 
-      v10 = v14;
+      marketcap = v14;
     }
 
-    v15 = [v5 changeIsNegative];
-    if (v15)
+    changeIsNegative = [v5 changeIsNegative];
+    if (changeIsNegative)
     {
-      v16 = [@"-" stringByAppendingString:v9];
+      v16 = [@"-" stringByAppendingString:formattedChangePercent];
 
-      v9 = v16;
+      formattedChangePercent = v16;
     }
 
-    if (v6)
+    if (companyName)
     {
-      v35 = v3;
-      v41 = v6;
-      v42 = v7;
-      if (v7)
+      v35 = capCopy;
+      v41 = companyName;
+      v42 = formattedPrice;
+      if (formattedPrice)
       {
-        v17 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v7];
+        v17 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:formattedPrice];
         [v17 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD948]];
       }
 
@@ -53,7 +53,7 @@
       }
 
       v39 = v17;
-      if (v15)
+      if (changeIsNegative)
       {
         v19 = @"down";
       }
@@ -64,11 +64,11 @@
       }
 
       v38 = accessibilityLocalizedString(v19);
-      v20 = [MEMORY[0x29EDBA0F8] stringWithFormat:v8];
+      v20 = [MEMORY[0x29EDBA0F8] stringWithFormat:formattedChange];
       v21 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v20];
-      if (v8)
+      if (formattedChange)
       {
-        v22 = [v20 rangeOfString:v8];
+        v22 = [v20 rangeOfString:formattedChange];
         if (v22 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [v21 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD948] withRange:{v22, v23}];
@@ -77,15 +77,15 @@
 
       v36 = v20;
       v37 = v21;
-      v40 = v8;
+      v40 = formattedChange;
       v24 = MEMORY[0x29EDBA0F8];
       v25 = accessibilityLocalizedString(@"change.of");
-      v26 = [v24 stringWithFormat:v25, v9];
+      v26 = [v24 stringWithFormat:v25, formattedChangePercent];
 
       v27 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v26];
-      if (v9)
+      if (formattedChangePercent)
       {
-        v28 = [v26 rangeOfString:v9];
+        v28 = [v26 rangeOfString:formattedChangePercent];
         if (v28 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [v27 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD948] withRange:{v28, v29}];
@@ -93,29 +93,29 @@
       }
 
       v30 = 0;
-      if (([v10 isEqualToString:v11] & 1) == 0 && v35)
+      if (([marketcap isEqualToString:blankValueString] & 1) == 0 && v35)
       {
         v31 = MEMORY[0x29EDBA0F8];
         v32 = accessibilityLocalizedString(@"market.cap");
-        v30 = [v31 stringWithFormat:v32, v10];
+        v30 = [v31 stringWithFormat:v32, marketcap];
       }
 
-      if ([v7 integerValue] < 0)
+      if ([formattedPrice integerValue] < 0)
       {
         v18 = 0;
-        v6 = v41;
+        companyName = v41;
         v33 = v37;
       }
 
       else
       {
         v33 = v37;
-        v6 = v41;
+        companyName = v41;
         v18 = __UIAXStringForVariables();
       }
 
-      v7 = v42;
-      v8 = v40;
+      formattedPrice = v42;
+      formattedChange = v40;
     }
 
     else
@@ -139,9 +139,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 companyName];
-    v5 = [v3 formattedPrice];
-    v6 = [v3 formattedChange];
+    companyName = [v2 companyName];
+    formattedPrice = [v3 formattedPrice];
+    formattedChange = [v3 formattedChange];
     if ([v3 changeIsNegative])
     {
       v7 = @"ticker.cell.format.down.short";
@@ -153,7 +153,7 @@
     }
 
     v8 = accessibilityLocalizedString(v7);
-    v9 = [MEMORY[0x29EDBA0F8] stringWithFormat:v8, v4, v5, v6];
+    v9 = [MEMORY[0x29EDBA0F8] stringWithFormat:v8, companyName, formattedPrice, formattedChange];
   }
 
   else

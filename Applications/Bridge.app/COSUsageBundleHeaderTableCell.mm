@@ -1,39 +1,39 @@
 @interface COSUsageBundleHeaderTableCell
-+ (id)specifierForAppBundle:(id)a3;
-- (COSUsageBundleHeaderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (id)specifierForAppBundle:(id)bundle;
+- (COSUsageBundleHeaderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (NSString)info;
 - (NSString)title;
 - (NSString)vendor;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
 @implementation COSUsageBundleHeaderTableCell
 
-+ (id)specifierForAppBundle:(id)a3
++ (id)specifierForAppBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = [PSSpecifier preferenceSpecifierNamed:&stru_10026E598 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  [v4 setUserInfo:v3];
+  [v4 setUserInfo:bundleCopy];
 
   return v4;
 }
 
-- (COSUsageBundleHeaderTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSUsageBundleHeaderTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v30.receiver = self;
   v30.super_class = COSUsageBundleHeaderTableCell;
-  v9 = [(COSUsageBundleHeaderTableCell *)&v30 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(COSUsageBundleHeaderTableCell *)&v30 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(COSUsageBundleHeaderTableCell *)v9 contentView];
+    contentView = [(COSUsageBundleHeaderTableCell *)v9 contentView];
     v12 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    v10->_infoHidden = [v8 versionLabelEnabled] ^ 1;
+    v10->_infoHidden = [specifierCopy versionLabelEnabled] ^ 1;
     v14 = [UILabel alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -48,7 +48,7 @@
     [(UILabel *)v10->_titleLabel setNumberOfLines:1];
     [(UILabel *)v10->_titleLabel setLineBreakMode:4];
     [(UILabel *)v10->_titleLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_titleLabel];
+    [contentView addSubview:v10->_titleLabel];
     v20 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     infoLabel = v10->_infoLabel;
     v10->_infoLabel = v20;
@@ -60,7 +60,7 @@
     [(UILabel *)v10->_infoLabel setNumberOfLines:1];
     [(UILabel *)v10->_infoLabel setLineBreakMode:4];
     [(UILabel *)v10->_infoLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_infoLabel];
+    [contentView addSubview:v10->_infoLabel];
     v22 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     vendorLabel = v10->_vendorLabel;
     v10->_vendorLabel = v22;
@@ -72,7 +72,7 @@
     [(UILabel *)v10->_vendorLabel setNumberOfLines:1];
     [(UILabel *)v10->_vendorLabel setLineBreakMode:4];
     [(UILabel *)v10->_vendorLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_vendorLabel];
+    [contentView addSubview:v10->_vendorLabel];
     v24 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     appIconView = v10->_appIconView;
     v10->_appIconView = v24;
@@ -80,7 +80,7 @@
     [(UIImageView *)v10->_appIconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v10->_appIconView setAccessibilityIdentifier:@"Icon"];
     [(UIImageView *)v10->_appIconView setContentMode:1];
-    [v11 addSubview:v10->_appIconView];
+    [contentView addSubview:v10->_appIconView];
     if (v10->_infoHidden)
     {
       v31[0] = v10->_titleLabel;
@@ -101,10 +101,10 @@
     }
 
     v28 = [NSArray arrayWithObjects:v26 count:v27];
-    [v11 setAccessibilityElements:v28];
+    [contentView setAccessibilityElements:v28];
 
     [(COSUsageBundleHeaderTableCell *)v10 setNeedsUpdateConstraints];
-    [(COSUsageBundleHeaderTableCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(COSUsageBundleHeaderTableCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   return v10;
@@ -175,24 +175,24 @@
   [(COSUsageBundleHeaderTableCell *)&v20 updateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v27.receiver = self;
   v27.super_class = COSUsageBundleHeaderTableCell;
-  [(COSUsageBundleHeaderTableCell *)&v27 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  [(COSUsageBundleHeaderTableCell *)&v27 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
   v6 = PSBlankIconImage();
   [(COSUsageBundleHeaderTableCell *)self setIcon:v6];
 
   v7 = +[UIScreen mainScreen];
-  v8 = [v7 traitCollection];
-  [v8 displayScale];
+  traitCollection = [v7 traitCollection];
+  [traitCollection displayScale];
   v10 = v9;
 
   v11 = +[NanoResourceGrabber sharedInstance];
   objc_initWeak(&location, self);
-  v12 = [v5 bundleIdentifier];
+  bundleIdentifier = [userInfo bundleIdentifier];
   if (v10 <= 2.0)
   {
     v13 = 47;
@@ -209,40 +209,40 @@
   v23 = sub_10010ACD0;
   v24 = &unk_10026C000;
   objc_copyWeak(&v25, &location);
-  [v11 getIconForBundleID:v12 iconVariant:v13 queue:&_dispatch_main_q block:&v21 timeout:-1.0];
+  [v11 getIconForBundleID:bundleIdentifier iconVariant:v13 queue:&_dispatch_main_q block:&v21 timeout:-1.0];
 
-  v15 = [v5 name];
-  [(COSUsageBundleHeaderTableCell *)self setTitle:v15];
+  name = [userInfo name];
+  [(COSUsageBundleHeaderTableCell *)self setTitle:name];
 
-  v16 = [v4 versionLabelEnabled];
-  if (v16)
+  versionLabelEnabled = [specifierCopy versionLabelEnabled];
+  if (versionLabelEnabled)
   {
-    v17 = [v5 bundleVersion];
+    bundleVersion = [userInfo bundleVersion];
   }
 
   else
   {
-    v17 = 0;
+    bundleVersion = 0;
   }
 
-  [(COSUsageBundleHeaderTableCell *)self setInfo:v17];
-  if (v16)
+  [(COSUsageBundleHeaderTableCell *)self setInfo:bundleVersion];
+  if (versionLabelEnabled)
   {
   }
 
-  v18 = [v5 bundleIdentifier];
-  v19 = [v18 hasPrefix:@"com.apple."];
+  bundleIdentifier2 = [userInfo bundleIdentifier];
+  v19 = [bundleIdentifier2 hasPrefix:@"com.apple."];
   if (v19)
   {
-    v20 = @"Apple Inc.";
+    vendor = @"Apple Inc.";
   }
 
   else
   {
-    v20 = [v5 vendor];
+    vendor = [userInfo vendor];
   }
 
-  [(COSUsageBundleHeaderTableCell *)self setVendor:v20];
+  [(COSUsageBundleHeaderTableCell *)self setVendor:vendor];
   if ((v19 & 1) == 0)
   {
   }
@@ -252,12 +252,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if ([v5 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
-    v4 = v5;
+    v4 = titleCopy;
   }
 
   else
@@ -270,11 +270,11 @@
 
 - (NSString)title
 {
-  v2 = [(UILabel *)self->_titleLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_titleLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -289,11 +289,11 @@
 
 - (NSString)vendor
 {
-  v2 = [(UILabel *)self->_vendorLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_vendorLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -308,11 +308,11 @@
 
 - (NSString)info
 {
-  v2 = [(UILabel *)self->_infoLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_infoLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else

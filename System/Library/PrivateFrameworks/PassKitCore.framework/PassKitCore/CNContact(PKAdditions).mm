@@ -59,10 +59,10 @@
 + (id)contactWithABRecordRef:()PKAdditions
 {
   v4 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v5 = [MEMORY[0x1E695CD58] pkPassbookRequiredKeys];
+  pkPassbookRequiredKeys = [MEMORY[0x1E695CD58] pkPassbookRequiredKeys];
   if (a3)
   {
-    a3 = [v4 contactFromPublicABPerson:a3 keysToFetch:v5];
+    a3 = [v4 contactFromPublicABPerson:a3 keysToFetch:pkPassbookRequiredKeys];
   }
 
   return a3;
@@ -153,118 +153,118 @@ LABEL_9:
 - (id)pkDictionaryForProperty:()PKAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C240]])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([self isKeyAvailable:*MEMORY[0x1E695C240]])
   {
-    v6 = [a1 givenName];
-    if (v6)
+    givenName = [self givenName];
+    if (givenName)
     {
-      [v5 setObject:v6 forKey:@"givenName"];
+      [dictionary setObject:givenName forKey:@"givenName"];
     }
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C230]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C230]])
   {
-    v7 = [a1 familyName];
-    if (v7)
+    familyName = [self familyName];
+    if (familyName)
     {
-      [v5 setObject:v7 forKey:@"familyName"];
+      [dictionary setObject:familyName forKey:@"familyName"];
     }
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C348]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C348]])
   {
-    v8 = [a1 phoneticGivenName];
-    if (v8)
+    phoneticGivenName = [self phoneticGivenName];
+    if (phoneticGivenName)
     {
-      [v5 setObject:v8 forKey:@"phoneticGivenName"];
+      [dictionary setObject:phoneticGivenName forKey:@"phoneticGivenName"];
     }
   }
 
-  if ([a1 isKeyAvailable:@"phoneticFamilyName"])
+  if ([self isKeyAvailable:@"phoneticFamilyName"])
   {
-    v9 = [a1 phoneticFamilyName];
-    if (v9)
+    phoneticFamilyName = [self phoneticFamilyName];
+    if (phoneticFamilyName)
     {
-      [v5 setObject:v9 forKey:@"phoneticFamilyName"];
+      [dictionary setObject:phoneticFamilyName forKey:@"phoneticFamilyName"];
     }
   }
 
   v10 = *MEMORY[0x1E695C360];
-  if ([v4 isEqualToString:*MEMORY[0x1E695C360]] && objc_msgSend(a1, "isKeyAvailable:", v10))
+  if ([v4 isEqualToString:*MEMORY[0x1E695C360]] && objc_msgSend(self, "isKeyAvailable:", v10))
   {
-    v11 = [a1 postalAddresses];
-    v12 = [v11 firstObject];
+    postalAddresses = [self postalAddresses];
+    firstObject = [postalAddresses firstObject];
 
-    v13 = [v12 label];
-    if (v13)
+    label = [firstObject label];
+    if (label)
     {
-      [v5 setObject:v13 forKey:@"label"];
+      [dictionary setObject:label forKey:@"label"];
     }
 
-    v14 = [v12 value];
-    v15 = v14;
-    if (!v14)
+    value = [firstObject value];
+    value2 = value;
+    if (!value)
     {
       goto LABEL_36;
     }
 
-    v16 = [v14 backwardsCompatibleDictionaryRepresentation];
+    backwardsCompatibleDictionaryRepresentation = [value backwardsCompatibleDictionaryRepresentation];
     v17 = @"address";
 LABEL_35:
-    [v5 setObject:v16 forKey:v17];
+    [dictionary setObject:backwardsCompatibleDictionaryRepresentation forKey:v17];
 
 LABEL_36:
     goto LABEL_37;
   }
 
   v18 = *MEMORY[0x1E695C208];
-  if ([v4 isEqualToString:*MEMORY[0x1E695C208]] && objc_msgSend(a1, "isKeyAvailable:", v18))
+  if ([v4 isEqualToString:*MEMORY[0x1E695C208]] && objc_msgSend(self, "isKeyAvailable:", v18))
   {
-    v19 = [a1 emailAddresses];
-    v12 = [v19 firstObject];
+    emailAddresses = [self emailAddresses];
+    firstObject = [emailAddresses firstObject];
 
-    v13 = [v12 label];
-    if (v13)
+    label = [firstObject label];
+    if (label)
     {
-      [v5 setObject:v13 forKey:@"label"];
+      [dictionary setObject:label forKey:@"label"];
     }
 
-    v15 = [v12 value];
-    if (v15)
+    value2 = [firstObject value];
+    if (value2)
     {
-      [v5 setObject:v15 forKey:@"email"];
+      [dictionary setObject:value2 forKey:@"email"];
     }
 
     goto LABEL_36;
   }
 
   v20 = *MEMORY[0x1E695C330];
-  if ([v4 isEqualToString:*MEMORY[0x1E695C330]] && objc_msgSend(a1, "isKeyAvailable:", v20))
+  if ([v4 isEqualToString:*MEMORY[0x1E695C330]] && objc_msgSend(self, "isKeyAvailable:", v20))
   {
-    v21 = [a1 phoneNumbers];
-    v12 = [v21 firstObject];
+    phoneNumbers = [self phoneNumbers];
+    firstObject = [phoneNumbers firstObject];
 
-    v13 = [v12 label];
-    if (v13)
+    label = [firstObject label];
+    if (label)
     {
-      [v5 setObject:v13 forKey:@"label"];
+      [dictionary setObject:label forKey:@"label"];
     }
 
-    v22 = [v12 value];
-    v15 = v22;
-    if (!v22)
+    value3 = [firstObject value];
+    value2 = value3;
+    if (!value3)
     {
       goto LABEL_36;
     }
 
-    v16 = [v22 stringValue];
+    backwardsCompatibleDictionaryRepresentation = [value3 stringValue];
     v17 = @"phone";
     goto LABEL_35;
   }
 
 LABEL_37:
-  v23 = [v5 copy];
+  v23 = [dictionary copy];
 
   return v23;
 }
@@ -308,8 +308,8 @@ LABEL_37:
   }
 
   v12 = MEMORY[0x1E695CD58];
-  v13 = [v7 nameComponents];
-  v14 = [v12 pkContactWithNameComponents:v13 labeledValues:v11];
+  nameComponents = [v7 nameComponents];
+  v14 = [v12 pkContactWithNameComponents:nameComponents labeledValues:v11];
 
   return v14;
 }
@@ -335,45 +335,45 @@ LABEL_37:
 
 - (id)pkFormattedContactAddressIncludingPhoneticName:()PKAdditions showName:
 {
-  v7 = [a1 postalAddresses];
-  v8 = [v7 firstObject];
-  v9 = [v8 value];
+  postalAddresses = [self postalAddresses];
+  firstObject = [postalAddresses firstObject];
+  value = [firstObject value];
 
   if (a3)
   {
-    [a1 pkFullAndPhoneticName];
+    [self pkFullAndPhoneticName];
   }
 
   else
   {
-    [a1 pkFullName];
+    [self pkFullName];
   }
   v10 = ;
-  v11 = [v9 country];
-  v12 = [v11 length];
+  country = [value country];
+  v12 = [country length];
 
   if (!v12)
   {
-    v13 = [v9 mutableCopy];
-    v14 = [MEMORY[0x1E695DF58] currentLocale];
-    v15 = [v9 ISOCountryCode];
-    v16 = PKLocalizedStringForCountryCode(v14, v15);
+    v13 = [value mutableCopy];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    iSOCountryCode = [value ISOCountryCode];
+    v16 = PKLocalizedStringForCountryCode(currentLocale, iSOCountryCode);
     [v13 setCountry:v16];
 
     v17 = [v13 copy];
-    v9 = v17;
+    value = v17;
   }
 
   if ([v10 length] && a4)
   {
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [MEMORY[0x1E695CF68] stringFromPostalAddress:v9 style:0];
+    v19 = [MEMORY[0x1E695CF68] stringFromPostalAddress:value style:0];
     v20 = [v18 stringWithFormat:@"%@\n%@", v10, v19];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E695CF68] stringFromPostalAddress:v9 style:0];
+    v20 = [MEMORY[0x1E695CF68] stringFromPostalAddress:value style:0];
   }
 
   return v20;
@@ -381,20 +381,20 @@ LABEL_37:
 
 - (id)pkSingleLineFormattedContactAddressIncludingCountryName:()PKAdditions
 {
-  v4 = [a1 postalAddresses];
-  v5 = [v4 firstObject];
-  v6 = [v5 value];
+  postalAddresses = [self postalAddresses];
+  firstObject = [postalAddresses firstObject];
+  value = [firstObject value];
 
   if ((a3 & 1) == 0)
   {
-    v7 = [v6 mutableCopy];
+    v7 = [value mutableCopy];
     [v7 setCountry:&stru_1F227FD28];
     v8 = [v7 copy];
 
-    v6 = v8;
+    value = v8;
   }
 
-  v9 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:v6 addCountryName:a3];
+  v9 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:value addCountryName:a3];
 
   return v9;
 }
@@ -402,17 +402,17 @@ LABEL_37:
 - (void)setContactSource:()PKAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, sel_contactSource, v2, 1);
+  objc_setAssociatedObject(self, sel_contactSource, v2, 1);
 }
 
 - (uint64_t)contactSource
 {
-  v2 = objc_getAssociatedObject(a1, sel_contactSource);
-  v3 = [v2 unsignedIntegerValue];
+  v2 = objc_getAssociatedObject(self, sel_contactSource);
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  if (v3 == 3)
+  if (unsignedIntegerValue == 3)
   {
-    if ([a1 isSubsetOfMeCard])
+    if ([self isSubsetOfMeCard])
     {
       return 1;
     }
@@ -423,29 +423,29 @@ LABEL_37:
     }
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)isSubsetOfMeCard
 {
-  v1 = a1;
+  selfCopy = self;
   v44[3] = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, sel_contactSource);
-  v3 = [v2 unsignedIntegerValue];
+  v2 = objc_getAssociatedObject(self, sel_contactSource);
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  if (v3 != 1)
+  if (unsignedIntegerValue != 1)
   {
     v5 = +[PKPaymentOptionsRecents defaultInstance];
-    v6 = [v5 meCard];
+    meCard = [v5 meCard];
 
-    if (v6)
+    if (meCard)
     {
-      v7 = [v1 pkFullName];
-      if ([v7 length])
+      pkFullName = [selfCopy pkFullName];
+      if ([pkFullName length])
       {
-        v8 = [v1 pkFullName];
-        v9 = [v6 pkFullName];
-        v4 = [v8 isEqualToString:v9];
+        pkFullName2 = [selfCopy pkFullName];
+        pkFullName3 = [meCard pkFullName];
+        v4 = [pkFullName2 isEqualToString:pkFullName3];
 
         if (!v4)
         {
@@ -469,15 +469,15 @@ LABEL_37:
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v12 = [v11 allKeys];
-      v13 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      allKeys = [v11 allKeys];
+      v13 = [allKeys countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v13)
       {
         v14 = v13;
         v15 = *v38;
         v27 = *v38;
-        v28 = v1;
-        v30 = v12;
+        v28 = selfCopy;
+        v30 = allKeys;
         v31 = v11;
         do
         {
@@ -487,18 +487,18 @@ LABEL_37:
           {
             if (*v38 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(allKeys);
             }
 
             v17 = *(*(&v37 + 1) + 8 * v16);
-            if ([v1 isKeyAvailable:{v17, v27, v28}])
+            if ([selfCopy isKeyAvailable:{v17, v27, v28}])
             {
               v18 = [v11 objectForKey:v17];
               v33 = 0u;
               v34 = 0u;
               v35 = 0u;
               v36 = 0u;
-              v19 = [v1 valueForKey:v18];
+              v19 = [selfCopy valueForKey:v18];
               v20 = [v19 countByEnumeratingWithState:&v33 objects:v41 count:16];
               if (v20)
               {
@@ -514,7 +514,7 @@ LABEL_37:
                     }
 
                     v24 = *(*(&v33 + 1) + 8 * i);
-                    v25 = [v6 valueForKey:v18];
+                    v25 = [meCard valueForKey:v18];
                     v32[0] = MEMORY[0x1E69E9820];
                     v32[1] = 3221225472;
                     v32[2] = __42__CNContact_PKAdditions__isSubsetOfMeCard__block_invoke;
@@ -526,7 +526,7 @@ LABEL_37:
                     {
 
                       v4 = 1;
-                      v12 = v30;
+                      allKeys = v30;
                       v11 = v31;
                       goto LABEL_29;
                     }
@@ -543,8 +543,8 @@ LABEL_37:
               }
 
               v15 = v27;
-              v1 = v28;
-              v12 = v30;
+              selfCopy = v28;
+              allKeys = v30;
               v11 = v31;
               v14 = v29;
             }
@@ -553,7 +553,7 @@ LABEL_37:
           }
 
           while (v16 != v14);
-          v14 = [v12 countByEnumeratingWithState:&v37 objects:v42 count:16];
+          v14 = [allKeys countByEnumeratingWithState:&v37 objects:v42 count:16];
           v4 = 0;
         }
 
@@ -582,92 +582,92 @@ LABEL_30:
 - (void)setRecentFromContactInformation:()PKAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, sel_recentFromContactInformation, v2, 1);
+  objc_setAssociatedObject(self, sel_recentFromContactInformation, v2, 1);
 }
 
 - (uint64_t)recentFromContactInformation
 {
-  v1 = objc_getAssociatedObject(a1, sel_recentFromContactInformation);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, sel_recentFromContactInformation);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setFormattingConstrained:()PKAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, sel_formattingConstrained, v2, 1);
+  objc_setAssociatedObject(self, sel_formattingConstrained, v2, 1);
 }
 
 - (uint64_t)formattingConstrained
 {
-  v1 = objc_getAssociatedObject(a1, sel_formattingConstrained);
-  v2 = [v1 unsignedIntegerValue];
+  v1 = objc_getAssociatedObject(self, sel_formattingConstrained);
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (void)setIsHideMyEmail:()PKAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, sel_isHideMyEmail, v2, 1);
+  objc_setAssociatedObject(self, sel_isHideMyEmail, v2, 1);
 }
 
 - (uint64_t)isHideMyEmail
 {
-  v1 = objc_getAssociatedObject(a1, sel_isHideMyEmail);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, sel_isHideMyEmail);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)pkFullyQualifiedName
 {
-  v2 = [a1 nameComponents];
-  v3 = [a1 _fullNameFromComponents:v2 style:3];
+  nameComponents = [self nameComponents];
+  v3 = [self _fullNameFromComponents:nameComponents style:3];
 
   return v3;
 }
 
 - (id)pkFullName
 {
-  v2 = [a1 nameComponents];
-  v3 = [a1 _fullNameFromComponents:v2 style:2];
+  nameComponents = [self nameComponents];
+  v3 = [self _fullNameFromComponents:nameComponents style:2];
 
   return v3;
 }
 
 - (id)pkPhoneticName
 {
-  v2 = [a1 nameComponents];
-  v3 = [a1 _phoneticNameFromComponents:v2 style:2];
+  nameComponents = [self nameComponents];
+  v3 = [self _phoneticNameFromComponents:nameComponents style:2];
 
   return v3;
 }
 
 - (id)pkFullAndPhoneticName
 {
-  v2 = [a1 pkPhoneticName];
-  v3 = [a1 pkFullName];
-  if (![v2 length])
+  pkPhoneticName = [self pkPhoneticName];
+  pkFullName = [self pkFullName];
+  if (![pkPhoneticName length])
   {
-    v8 = v3;
+    v8 = pkFullName;
     goto LABEL_13;
   }
 
-  if (![v3 length])
+  if (![pkFullName length])
   {
     goto LABEL_10;
   }
 
-  v4 = v3;
-  v5 = v2;
+  v4 = pkFullName;
+  v5 = pkPhoneticName;
   v6 = v5;
   if (v4 == v5)
   {
 
 LABEL_10:
-    v8 = v2;
+    v8 = pkPhoneticName;
     goto LABEL_13;
   }
 
@@ -695,8 +695,8 @@ LABEL_13:
 - (id)_fullNameFromComponents:()PKAdditions style:
 {
   v5 = a3;
-  v6 = [v5 givenName];
-  if (v6)
+  givenName = [v5 givenName];
+  if (givenName)
   {
 
 LABEL_4:
@@ -707,9 +707,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [v5 familyName];
+  familyName = [v5 familyName];
 
-  if (v7)
+  if (familyName)
   {
     goto LABEL_4;
   }
@@ -723,9 +723,9 @@ LABEL_5:
 - (id)_phoneticNameFromComponents:()PKAdditions style:
 {
   v5 = a3;
-  v6 = [v5 phoneticRepresentation];
-  v7 = [v6 givenName];
-  if (v7)
+  phoneticRepresentation = [v5 phoneticRepresentation];
+  givenName = [phoneticRepresentation givenName];
+  if (givenName)
   {
 
 LABEL_4:
@@ -737,9 +737,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [v6 familyName];
+  familyName = [phoneticRepresentation familyName];
 
-  if (v8)
+  if (familyName)
   {
     goto LABEL_4;
   }
@@ -754,62 +754,62 @@ LABEL_5:
 {
   v2 = objc_alloc_init(MEMORY[0x1E696ADF0]);
   v3 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C300]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C300]])
   {
-    v4 = [a1 namePrefix];
-    [v2 setNamePrefix:v4];
+    namePrefix = [self namePrefix];
+    [v2 setNamePrefix:namePrefix];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C240]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C240]])
   {
-    v5 = [a1 givenName];
-    [v2 setGivenName:v5];
+    givenName = [self givenName];
+    [v2 setGivenName:givenName];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C2F0]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C2F0]])
   {
-    v6 = [a1 middleName];
-    [v2 setMiddleName:v6];
+    middleName = [self middleName];
+    [v2 setMiddleName:middleName];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C230]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C230]])
   {
-    v7 = [a1 familyName];
-    [v2 setFamilyName:v7];
+    familyName = [self familyName];
+    [v2 setFamilyName:familyName];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C308]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C308]])
   {
-    v8 = [a1 nameSuffix];
-    [v2 setNameSuffix:v8];
+    nameSuffix = [self nameSuffix];
+    [v2 setNameSuffix:nameSuffix];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C310]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C310]])
   {
-    v9 = [a1 nickname];
-    [v2 setNickname:v9];
+    nickname = [self nickname];
+    [v2 setNickname:nickname];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C348]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C348]])
   {
-    v10 = [a1 phoneticGivenName];
-    [v3 setGivenName:v10];
+    phoneticGivenName = [self phoneticGivenName];
+    [v3 setGivenName:phoneticGivenName];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C350]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C350]])
   {
-    v11 = [a1 phoneticMiddleName];
-    [v3 setMiddleName:v11];
+    phoneticMiddleName = [self phoneticMiddleName];
+    [v3 setMiddleName:phoneticMiddleName];
   }
 
-  if ([a1 isKeyAvailable:*MEMORY[0x1E695C340]])
+  if ([self isKeyAvailable:*MEMORY[0x1E695C340]])
   {
-    v12 = [a1 phoneticFamilyName];
-    [v3 setFamilyName:v12];
+    phoneticFamilyName = [self phoneticFamilyName];
+    [v3 setFamilyName:phoneticFamilyName];
   }
 
-  v13 = [v3 givenName];
-  if (v13 || ([v3 familyName], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  givenName2 = [v3 givenName];
+  if (givenName2 || ([v3 familyName], (givenName2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_22:
@@ -817,9 +817,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v15 = [v3 middleName];
+  middleName2 = [v3 middleName];
 
-  if (v15)
+  if (middleName2)
   {
     goto LABEL_22;
   }
@@ -832,14 +832,14 @@ LABEL_23:
 - (id)sanitizedContact
 {
   v40 = *MEMORY[0x1E69E9840];
-  v25 = [a1 mutableCopy];
-  v1 = [v25 postalAddresses];
-  v27 = [MEMORY[0x1E695DF58] ISOCountryCodes];
+  v25 = [self mutableCopy];
+  postalAddresses = [v25 postalAddresses];
+  iSOCountryCodes = [MEMORY[0x1E695DF58] ISOCountryCodes];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v1;
+  obj = postalAddresses;
   v2 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v2)
   {
@@ -854,15 +854,15 @@ LABEL_23:
           objc_enumerationMutation(obj);
         }
 
-        v6 = [*(*(&v34 + 1) + 8 * i) value];
-        v7 = [v6 ISOCountryCode];
-        if (![v7 length] || (v32[0] = MEMORY[0x1E69E9820], v32[1] = 3221225472, v32[2] = __42__CNContact_PKAdditions__sanitizedContact__block_invoke, v32[3] = &unk_1E79C4340, v8 = v7, v33 = v8, v9 = objc_msgSend(v27, "indexOfObjectPassingTest:", v32), v33, v9 == 0x7FFFFFFFFFFFFFFFLL))
+        value = [*(*(&v34 + 1) + 8 * i) value];
+        iSOCountryCode = [value ISOCountryCode];
+        if (![iSOCountryCode length] || (v32[0] = MEMORY[0x1E69E9820], v32[1] = 3221225472, v32[2] = __42__CNContact_PKAdditions__sanitizedContact__block_invoke, v32[3] = &unk_1E79C4340, suggestedCountryCode = iSOCountryCode, v33 = suggestedCountryCode, v9 = objc_msgSend(iSOCountryCodes, "indexOfObjectPassingTest:", v32), v33, v9 == 0x7FFFFFFFFFFFFFFFLL))
         {
-          v8 = [v6 suggestedCountryCode];
+          suggestedCountryCode = [value suggestedCountryCode];
 
-          if (v8)
+          if (suggestedCountryCode)
           {
-            [v6 setISOCountryCode:v8];
+            [value setISOCountryCode:suggestedCountryCode];
           }
         }
       }
@@ -873,13 +873,13 @@ LABEL_23:
     while (v3);
   }
 
-  v10 = [v25 phoneNumbers];
+  phoneNumbers = [v25 phoneNumbers];
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v10;
+  v12 = phoneNumbers;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v13)
   {
@@ -895,9 +895,9 @@ LABEL_23:
         }
 
         v17 = *(*(&v28 + 1) + 8 * j);
-        v18 = [v17 value];
-        v19 = [v18 digits];
-        v20 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v19];
+        value2 = [v17 value];
+        digits = [value2 digits];
+        v20 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:digits];
         v21 = [v17 labeledValueBySettingValue:v20];
         [v11 addObject:v21];
       }
@@ -918,13 +918,13 @@ LABEL_23:
 
 - (id)contactWithCleanedUpDistrict
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   if ([v1 isKeyAvailable:*MEMORY[0x1E695C360]])
   {
-    v2 = [v1 postalAddresses];
-    v3 = [v2 firstObject];
-    v4 = [v3 value];
-    v5 = [v4 mutableCopy];
+    postalAddresses = [v1 postalAddresses];
+    firstObject = [postalAddresses firstObject];
+    value = [firstObject value];
+    v5 = [value mutableCopy];
 
     if ([v1 isKeyAvailable:*MEMORY[0x1E695C320]])
     {
@@ -938,8 +938,8 @@ LABEL_23:
 
     if (!v6)
     {
-      v7 = [v1 note];
-      [v5 setSubLocality:v7];
+      note = [v1 note];
+      [v5 setSubLocality:note];
 
       [v1 setNote:&stru_1F227FD28];
     }
@@ -951,39 +951,39 @@ LABEL_23:
 - (id)pkContactWithCleanedUpCountryCode
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 mutableCopy];
-  v2 = [v1 postalAddresses];
-  v3 = [v2 firstObject];
+  v1 = [self mutableCopy];
+  postalAddresses = [v1 postalAddresses];
+  firstObject = [postalAddresses firstObject];
 
-  v4 = [v3 value];
-  v5 = [v4 ISOCountryCode];
-  if ([v5 length] == 2)
+  value = [firstObject value];
+  iSOCountryCode = [value ISOCountryCode];
+  if ([iSOCountryCode length] == 2)
   {
-    v6 = [v5 uppercaseString];
-    v7 = [v5 isEqualToString:v6];
+    uppercaseString = [iSOCountryCode uppercaseString];
+    v7 = [iSOCountryCode isEqualToString:uppercaseString];
 
     if (v7)
     {
       goto LABEL_7;
     }
 
-    v8 = [v5 uppercaseString];
+    uppercaseString2 = [iSOCountryCode uppercaseString];
   }
 
   else
   {
-    v8 = [v4 suggestedCountryCode];
+    uppercaseString2 = [value suggestedCountryCode];
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = uppercaseString2;
+  if (uppercaseString2)
   {
-    v10 = [v4 mutableCopy];
+    v10 = [value mutableCopy];
     [v10 setISOCountryCode:v9];
     v11 = objc_alloc(MEMORY[0x1E695CEE0]);
-    v12 = [v3 label];
+    label = [firstObject label];
     v13 = [v10 copy];
-    v14 = [v11 initWithLabel:v12 value:v13];
+    v14 = [v11 initWithLabel:label value:v13];
     v18[0] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     [v1 setPostalAddresses:v15];
@@ -997,21 +997,21 @@ LABEL_7:
 
 - (id)pk_displayName
 {
-  v2 = [a1 pkFullName];
-  if (![v2 length])
+  pkFullName = [self pkFullName];
+  if (![pkFullName length])
   {
-    v3 = [a1 organizationName];
+    organizationName = [self organizationName];
 
-    v2 = v3;
+    pkFullName = organizationName;
   }
 
-  if (![v2 length])
+  if (![pkFullName length])
   {
 
-    v2 = 0;
+    pkFullName = 0;
   }
 
-  return v2;
+  return pkFullName;
 }
 
 - (id)pkDeconstructContactUsingKey:()PKAdditions
@@ -1019,14 +1019,14 @@ LABEL_7:
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([a1 isKeyAvailable:v4])
+  if ([self isKeyAvailable:v4])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a1 postalAddresses];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    postalAddresses = [self postalAddresses];
+    v7 = [postalAddresses countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1037,11 +1037,11 @@ LABEL_7:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(postalAddresses);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [a1 mutableCopy];
+          v12 = [self mutableCopy];
           v20 = v11;
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
           [v12 setValue:v13 forKey:v4];
@@ -1049,7 +1049,7 @@ LABEL_7:
           [v5 addObject:v12];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v8 = [postalAddresses countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v8);
@@ -1067,12 +1067,12 @@ LABEL_7:
   v6 = a3;
   v7 = a4;
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (![a1 isKeyAvailable:v6])
+  if (![self isKeyAvailable:v6])
   {
     goto LABEL_37;
   }
 
-  v8 = [a1 valueForKey:v6];
+  v8 = [self valueForKey:v6];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1106,66 +1106,66 @@ LABEL_7:
       }
 
       v12 = *(*(&v42 + 1) + 8 * v11);
-      v13 = [v12 value];
+      value = [v12 value];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v14 = v10;
         v15 = v9;
-        v16 = a1;
-        v17 = v13;
-        v18 = [v17 street];
-        if ([v18 localizedStandardContainsString:v40])
+        selfCopy = self;
+        v17 = value;
+        street = [v17 street];
+        if ([street localizedStandardContainsString:v40])
         {
           goto LABEL_20;
         }
 
-        v19 = [v17 subLocality];
-        if ([v19 localizedStandardContainsString:v40])
+        subLocality = [v17 subLocality];
+        if ([subLocality localizedStandardContainsString:v40])
         {
           goto LABEL_19;
         }
 
-        v20 = [v17 city];
-        if ([v20 localizedStandardContainsString:v40])
+        city = [v17 city];
+        if ([city localizedStandardContainsString:v40])
         {
           goto LABEL_18;
         }
 
-        v35 = v19;
-        v21 = [v17 subAdministrativeArea];
-        if ([v21 localizedStandardContainsString:v40])
+        v35 = subLocality;
+        subAdministrativeArea = [v17 subAdministrativeArea];
+        if ([subAdministrativeArea localizedStandardContainsString:v40])
         {
           goto LABEL_17;
         }
 
-        v34 = v21;
-        v22 = [v17 state];
-        if ([v22 localizedStandardContainsString:v40])
+        v34 = subAdministrativeArea;
+        state = [v17 state];
+        if ([state localizedStandardContainsString:v40])
         {
           goto LABEL_16;
         }
 
-        v33 = [v17 postalCode];
-        if ([v33 localizedStandardContainsString:?])
+        postalCode = [v17 postalCode];
+        if ([postalCode localizedStandardContainsString:?])
         {
 
 LABEL_16:
-          v21 = v34;
+          subAdministrativeArea = v34;
 LABEL_17:
 
-          v19 = v35;
+          subLocality = v35;
 LABEL_18:
 
 LABEL_19:
           v6 = v36;
 LABEL_20:
 
-          a1 = v16;
+          self = selfCopy;
           v9 = v15;
           v10 = v14;
 LABEL_26:
-          v25 = [a1 mutableCopy];
+          v25 = [self mutableCopy];
           v46 = v12;
           v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
           [v25 setValue:v26 forKey:v6];
@@ -1174,11 +1174,11 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v31 = [v17 country];
-        v32 = [v31 localizedStandardContainsString:v40];
+        country = [v17 country];
+        v32 = [country localizedStandardContainsString:v40];
 
         v6 = v36;
-        a1 = v16;
+        self = selfCopy;
         v9 = v15;
         v10 = v14;
         if (v32)
@@ -1195,8 +1195,8 @@ LABEL_26:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [v13 stringValue];
-            v24 = [v23 localizedStandardContainsString:v40];
+            stringValue = [value stringValue];
+            v24 = [stringValue localizedStandardContainsString:v40];
 
             if ((v24 & 1) == 0)
             {
@@ -1218,7 +1218,7 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        if ([v13 localizedStandardContainsString:v40])
+        if ([value localizedStandardContainsString:v40])
         {
           goto LABEL_26;
         }
@@ -1252,18 +1252,18 @@ LABEL_37:
   v48 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 pkFullName];
-  v9 = [v8 length];
+  pkFullName = [v6 pkFullName];
+  v9 = [pkFullName length];
 
   if (!v9)
   {
     goto LABEL_15;
   }
 
-  v10 = [a1 givenName];
-  v11 = [v6 givenName];
-  v12 = v10;
-  v13 = v11;
+  givenName = [self givenName];
+  givenName2 = [v6 givenName];
+  v12 = givenName;
+  v13 = givenName2;
   v14 = v13;
   if (v12 == v13)
   {
@@ -1288,10 +1288,10 @@ LABEL_39:
     }
   }
 
-  v16 = [a1 familyName];
-  v17 = [v6 familyName];
-  v18 = v16;
-  v19 = v17;
+  familyName = [self familyName];
+  familyName2 = [v6 familyName];
+  v18 = familyName;
+  v19 = familyName2;
   v20 = v19;
   if (v18 == v19)
   {
@@ -1335,25 +1335,25 @@ LABEL_15:
         }
 
         v27 = *(*(&v43 + 1) + 8 * i);
-        v28 = [a1 valueForKey:{v27, v41}];
+        v28 = [self valueForKey:{v27, v41}];
         v29 = [v6 valueForKey:v27];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v30 = [v28 firstObject];
-          [v30 value];
-          v31 = a1;
+          firstObject = [v28 firstObject];
+          [firstObject value];
+          selfCopy = self;
           v32 = v6;
           v34 = v33 = v25;
 
-          v35 = [v29 firstObject];
-          v36 = [v35 value];
+          firstObject2 = [v29 firstObject];
+          value = [firstObject2 value];
 
           v28 = v34;
           v25 = v33;
           v6 = v32;
-          a1 = v31;
-          v29 = v36;
+          self = selfCopy;
+          v29 = value;
         }
 
         if (v28)
@@ -1414,7 +1414,7 @@ LABEL_40:
 - (uint64_t)ABPerson
 {
   v2 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v3 = [v2 publicABPersonFromContact:a1 publicAddressBook:0];
+  v3 = [v2 publicABPersonFromContact:self publicAddressBook:0];
 
   return v3;
 }

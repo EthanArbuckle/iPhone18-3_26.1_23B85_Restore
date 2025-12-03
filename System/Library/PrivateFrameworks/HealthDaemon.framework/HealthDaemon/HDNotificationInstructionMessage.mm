@@ -1,51 +1,51 @@
 @interface HDNotificationInstructionMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDCodableNotificationInstructionMessage)codableMessage;
-- (HDNotificationInstructionMessage)initWithCodableNotificationInstructionMessage:(id)a3 criteriaClasses:(id)a4;
-- (HDNotificationInstructionMessage)initWithCreationDate:(id)a3 sendingDeviceInfo:(id)a4 action:(int64_t)a5 clientIdentifier:(id)a6 categoryIdentifier:(id)a7 expirationDate:(id)a8 criteria:(id)a9;
-- (HDNotificationInstructionMessage)initWithMessageDictionary:(id)a3 criteriaClasses:(id)a4;
+- (HDNotificationInstructionMessage)initWithCodableNotificationInstructionMessage:(id)message criteriaClasses:(id)classes;
+- (HDNotificationInstructionMessage)initWithCreationDate:(id)date sendingDeviceInfo:(id)info action:(int64_t)action clientIdentifier:(id)identifier categoryIdentifier:(id)categoryIdentifier expirationDate:(id)expirationDate criteria:(id)criteria;
+- (HDNotificationInstructionMessage)initWithMessageDictionary:(id)dictionary criteriaClasses:(id)classes;
 - (NSDictionary)messageDictionary;
-- (id)_initWithMinimumCompatibleVersion:(void *)a3 creationDateTimeIntervalNumber:(void *)a4 sendingDeviceInfo:(void *)a5 actionNumber:(void *)a6 clientIdentifier:(void *)a7 categoryIdentifier:(void *)a8 expirationDateTimeIntervalNumber:(void *)a9 criteria:;
+- (id)_initWithMinimumCompatibleVersion:(void *)version creationDateTimeIntervalNumber:(void *)number sendingDeviceInfo:(void *)info actionNumber:(void *)actionNumber clientIdentifier:(void *)identifier categoryIdentifier:(void *)categoryIdentifier expirationDateTimeIntervalNumber:(void *)intervalNumber criteria:;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HDNotificationInstructionMessage
 
-- (id)_initWithMinimumCompatibleVersion:(void *)a3 creationDateTimeIntervalNumber:(void *)a4 sendingDeviceInfo:(void *)a5 actionNumber:(void *)a6 clientIdentifier:(void *)a7 categoryIdentifier:(void *)a8 expirationDateTimeIntervalNumber:(void *)a9 criteria:
+- (id)_initWithMinimumCompatibleVersion:(void *)version creationDateTimeIntervalNumber:(void *)number sendingDeviceInfo:(void *)info actionNumber:(void *)actionNumber clientIdentifier:(void *)identifier categoryIdentifier:(void *)categoryIdentifier expirationDateTimeIntervalNumber:(void *)intervalNumber criteria:
 {
   v16 = a2;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  if (a1 && v16 && [v16 integerValue] <= 1)
+  versionCopy = version;
+  numberCopy = number;
+  infoCopy = info;
+  actionNumberCopy = actionNumber;
+  identifierCopy = identifier;
+  categoryIdentifierCopy = categoryIdentifier;
+  intervalNumberCopy = intervalNumber;
+  if (self && v16 && [v16 integerValue] <= 1)
   {
     v24 = 0;
-    if (v17 && v18 && v19 && v20 && v21 && v22)
+    if (versionCopy && numberCopy && infoCopy && actionNumberCopy && identifierCopy && categoryIdentifierCopy)
     {
       v26 = MEMORY[0x277CBEAA8];
-      [v17 doubleValue];
+      [versionCopy doubleValue];
       v33 = [v26 dateWithTimeIntervalSinceReferenceDate:?];
-      v32 = [v19 integerValue];
+      integerValue = [infoCopy integerValue];
       v27 = MEMORY[0x277CBEAA8];
-      [v22 doubleValue];
+      [categoryIdentifierCopy doubleValue];
       v28 = [v27 dateWithTimeIntervalSinceReferenceDate:?];
-      if ((v32 - 1) > 2)
+      if ((integerValue - 1) > 2)
       {
         v24 = 0;
       }
 
       else
       {
-        v29 = a1;
+        selfCopy = self;
         v30 = v28;
-        v31 = [v29 initWithCreationDate:v33 sendingDeviceInfo:v18 action:v23 clientIdentifier:? categoryIdentifier:? expirationDate:? criteria:?];
+        v31 = [selfCopy initWithCreationDate:v33 sendingDeviceInfo:numberCopy action:intervalNumberCopy clientIdentifier:? categoryIdentifier:? expirationDate:? criteria:?];
         v28 = v30;
-        a1 = v31;
+        self = v31;
         v24 = v31;
       }
     }
@@ -59,41 +59,41 @@
   return v24;
 }
 
-- (HDNotificationInstructionMessage)initWithCreationDate:(id)a3 sendingDeviceInfo:(id)a4 action:(int64_t)a5 clientIdentifier:(id)a6 categoryIdentifier:(id)a7 expirationDate:(id)a8 criteria:(id)a9
+- (HDNotificationInstructionMessage)initWithCreationDate:(id)date sendingDeviceInfo:(id)info action:(int64_t)action clientIdentifier:(id)identifier categoryIdentifier:(id)categoryIdentifier expirationDate:(id)expirationDate criteria:(id)criteria
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dateCopy = date;
+  infoCopy = info;
+  identifierCopy = identifier;
+  categoryIdentifierCopy = categoryIdentifier;
+  expirationDateCopy = expirationDate;
+  criteriaCopy = criteria;
   v35.receiver = self;
   v35.super_class = HDNotificationInstructionMessage;
   v21 = [(HDNotificationInstructionMessage *)&v35 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [infoCopy copy];
     sendingDeviceInfo = v21->_sendingDeviceInfo;
     v21->_sendingDeviceInfo = v22;
 
-    v21->_action = a5;
-    v24 = [v17 copy];
+    v21->_action = action;
+    v24 = [identifierCopy copy];
     clientIdentifier = v21->_clientIdentifier;
     v21->_clientIdentifier = v24;
 
-    v26 = [v18 copy];
+    v26 = [categoryIdentifierCopy copy];
     categoryIdentifier = v21->_categoryIdentifier;
     v21->_categoryIdentifier = v26;
 
-    v28 = [v15 copy];
+    v28 = [dateCopy copy];
     creationDate = v21->_creationDate;
     v21->_creationDate = v28;
 
-    v30 = [v19 copy];
+    v30 = [expirationDateCopy copy];
     expirationDate = v21->_expirationDate;
     v21->_expirationDate = v30;
 
-    v32 = [v20 copy];
+    v32 = [criteriaCopy copy];
     criteria = v21->_criteria;
     v21->_criteria = v32;
   }
@@ -101,10 +101,10 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -114,7 +114,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_action != v5->_action)
       {
         goto LABEL_24;
@@ -210,14 +210,14 @@ LABEL_26:
   return v8;
 }
 
-- (HDNotificationInstructionMessage)initWithMessageDictionary:(id)a3 criteriaClasses:(id)a4
+- (HDNotificationInstructionMessage)initWithMessageDictionary:(id)dictionary criteriaClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hk_safeStringForKeyPath:@"criteriaIdentifier" error:0];
+  dictionaryCopy = dictionary;
+  classesCopy = classes;
+  v8 = [dictionaryCopy hk_safeStringForKeyPath:@"criteriaIdentifier" error:0];
   if (v8)
   {
-    v9 = [v6 hk_safeDictionaryForKeyPath:@"criteria" error:0];
+    v9 = [dictionaryCopy hk_safeDictionaryForKeyPath:@"criteria" error:0];
     if (v9)
     {
       v21[0] = MEMORY[0x277D85DD0];
@@ -225,9 +225,9 @@ LABEL_26:
       v21[2] = __78__HDNotificationInstructionMessage_initWithMessageDictionary_criteriaClasses___block_invoke;
       v21[3] = &unk_278623A30;
       v22 = v8;
-      v10 = [objc_alloc(objc_msgSend(v7 hk_firstObjectPassingTest:{v21)), "initWithMessageDictionary:", v9}];
+      selfCopy = [objc_alloc(objc_msgSend(classesCopy hk_firstObjectPassingTest:{v21)), "initWithMessageDictionary:", v9}];
 
-      if (!v10)
+      if (!selfCopy)
       {
         goto LABEL_9;
       }
@@ -235,36 +235,36 @@ LABEL_26:
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     v19 = v8;
-    v20 = v7;
+    v20 = classesCopy;
   }
 
   else
   {
     v19 = 0;
-    v20 = v7;
-    v10 = 0;
+    v20 = classesCopy;
+    selfCopy = 0;
   }
 
-  v11 = [v6 hk_safeNumberForKeyPath:@"minimumCompatibleVersion" error:0];
-  v12 = [v6 hk_safeNumberForKeyPath:@"creationDate" error:0];
-  v13 = [v6 hk_safeStringForKeyPath:@"sendingDeviceInfo" error:0];
-  v14 = [v6 hk_safeNumberForKeyPath:@"action" error:0];
-  v15 = [v6 hk_safeStringForKeyPath:@"clientIdentifier" error:0];
-  v16 = [v6 hk_safeStringForKeyPath:@"categoryIdentifier" error:0];
-  v17 = [v6 hk_safeNumberForKeyPath:@"expirationDate" error:0];
-  self = [(HDNotificationInstructionMessage *)self _initWithMinimumCompatibleVersion:v11 creationDateTimeIntervalNumber:v12 sendingDeviceInfo:v13 actionNumber:v14 clientIdentifier:v15 categoryIdentifier:v16 expirationDateTimeIntervalNumber:v17 criteria:v10];
+  v11 = [dictionaryCopy hk_safeNumberForKeyPath:@"minimumCompatibleVersion" error:0];
+  v12 = [dictionaryCopy hk_safeNumberForKeyPath:@"creationDate" error:0];
+  v13 = [dictionaryCopy hk_safeStringForKeyPath:@"sendingDeviceInfo" error:0];
+  v14 = [dictionaryCopy hk_safeNumberForKeyPath:@"action" error:0];
+  v15 = [dictionaryCopy hk_safeStringForKeyPath:@"clientIdentifier" error:0];
+  v16 = [dictionaryCopy hk_safeStringForKeyPath:@"categoryIdentifier" error:0];
+  v17 = [dictionaryCopy hk_safeNumberForKeyPath:@"expirationDate" error:0];
+  self = [(HDNotificationInstructionMessage *)self _initWithMinimumCompatibleVersion:v11 creationDateTimeIntervalNumber:v12 sendingDeviceInfo:v13 actionNumber:v14 clientIdentifier:v15 categoryIdentifier:v16 expirationDateTimeIntervalNumber:v17 criteria:selfCopy];
 
-  v9 = v10;
-  v10 = self;
+  v9 = selfCopy;
+  selfCopy = self;
   v8 = v19;
-  v7 = v20;
+  classesCopy = v20;
 LABEL_9:
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __78__HDNotificationInstructionMessage_initWithMessageDictionary_criteriaClasses___block_invoke(uint64_t a1, void *a2)
@@ -310,11 +310,11 @@ uint64_t __78__HDNotificationInstructionMessage_initWithMessageDictionary_criter
 
   if (self->_criteria)
   {
-    v14 = [objc_opt_class() criteriaIdentifier];
-    [v13 setObject:v14 forKeyedSubscript:@"criteriaIdentifier"];
+    criteriaIdentifier = [objc_opt_class() criteriaIdentifier];
+    [v13 setObject:criteriaIdentifier forKeyedSubscript:@"criteriaIdentifier"];
 
-    v15 = [(HDNotificationInstructionCriteria *)self->_criteria messageDictionary];
-    [v13 setObject:v15 forKeyedSubscript:@"criteria"];
+    messageDictionary = [(HDNotificationInstructionCriteria *)self->_criteria messageDictionary];
+    [v13 setObject:messageDictionary forKeyedSubscript:@"criteria"];
   }
 
   v16 = [v13 copy];
@@ -324,19 +324,19 @@ uint64_t __78__HDNotificationInstructionMessage_initWithMessageDictionary_criter
   return v16;
 }
 
-- (HDNotificationInstructionMessage)initWithCodableNotificationInstructionMessage:(id)a3 criteriaClasses:(id)a4
+- (HDNotificationInstructionMessage)initWithCodableNotificationInstructionMessage:(id)message criteriaClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasCriteria])
+  messageCopy = message;
+  classesCopy = classes;
+  if ([messageCopy hasCriteria])
   {
-    v8 = [v6 criteria];
-    if (([v8 hasIdentifier] & 1) == 0)
+    criteria = [messageCopy criteria];
+    if (([criteria hasIdentifier] & 1) == 0)
     {
 
       v10 = 0;
 LABEL_42:
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_43;
     }
 
@@ -344,9 +344,9 @@ LABEL_42:
     v29[1] = 3221225472;
     v29[2] = __98__HDNotificationInstructionMessage_initWithCodableNotificationInstructionMessage_criteriaClasses___block_invoke;
     v29[3] = &unk_278623A30;
-    v30 = v8;
-    v9 = v8;
-    v10 = [objc_alloc(objc_msgSend(v7 hk_firstObjectPassingTest:{v29)), "initWithCodableNotificationInstructionCriteria:", v9}];
+    v30 = criteria;
+    v9 = criteria;
+    v10 = [objc_alloc(objc_msgSend(classesCopy hk_firstObjectPassingTest:{v29)), "initWithCodableNotificationInstructionCriteria:", v9}];
 
     if (!v10)
     {
@@ -359,11 +359,11 @@ LABEL_42:
     v10 = 0;
   }
 
-  v25 = v7;
-  v24 = [v6 hasMinimumCompatibleVersion];
-  if (v24)
+  v25 = classesCopy;
+  hasMinimumCompatibleVersion = [messageCopy hasMinimumCompatibleVersion];
+  if (hasMinimumCompatibleVersion)
   {
-    v28 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "minimumCompatibleVersion")}];
+    v28 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(messageCopy, "minimumCompatibleVersion")}];
   }
 
   else
@@ -371,11 +371,11 @@ LABEL_42:
     v28 = 0;
   }
 
-  v23 = [v6 hasCreationDateTimeInterval];
-  if (v23)
+  hasCreationDateTimeInterval = [messageCopy hasCreationDateTimeInterval];
+  if (hasCreationDateTimeInterval)
   {
     v11 = MEMORY[0x277CCABB0];
-    [v6 creationDateTimeInterval];
+    [messageCopy creationDateTimeInterval];
     v27 = [v11 numberWithDouble:?];
   }
 
@@ -384,21 +384,21 @@ LABEL_42:
     v27 = 0;
   }
 
-  v22 = [v6 hasSendingDeviceInfo];
-  if (v22)
+  hasSendingDeviceInfo = [messageCopy hasSendingDeviceInfo];
+  if (hasSendingDeviceInfo)
   {
-    v26 = [v6 sendingDeviceInfo];
+    sendingDeviceInfo = [messageCopy sendingDeviceInfo];
   }
 
   else
   {
-    v26 = 0;
+    sendingDeviceInfo = 0;
   }
 
-  v12 = [v6 hasAction];
-  if (v12)
+  hasAction = [messageCopy hasAction];
+  if (hasAction)
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "action")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(messageCopy, "action")}];
   }
 
   else
@@ -406,52 +406,52 @@ LABEL_42:
     v13 = 0;
   }
 
-  v14 = [v6 hasClientIdentifier];
-  if (v14)
+  hasClientIdentifier = [messageCopy hasClientIdentifier];
+  if (hasClientIdentifier)
   {
-    v15 = [v6 clientIdentifier];
+    clientIdentifier = [messageCopy clientIdentifier];
   }
 
   else
   {
-    v15 = 0;
+    clientIdentifier = 0;
   }
 
-  v16 = [v6 hasCategoryIdentifier];
-  if (v16)
+  hasCategoryIdentifier = [messageCopy hasCategoryIdentifier];
+  if (hasCategoryIdentifier)
   {
-    v17 = [v6 categoryIdentifier];
+    categoryIdentifier = [messageCopy categoryIdentifier];
   }
 
   else
   {
-    v17 = 0;
+    categoryIdentifier = 0;
   }
 
-  if ([v6 hasExpirationDateTimeInterval])
+  if ([messageCopy hasExpirationDateTimeInterval])
   {
     v18 = MEMORY[0x277CCABB0];
-    [v6 expirationDateTimeInterval];
+    [messageCopy expirationDateTimeInterval];
     v19 = [v18 numberWithDouble:?];
-    self = [(HDNotificationInstructionMessage *)self _initWithMinimumCompatibleVersion:v28 creationDateTimeIntervalNumber:v27 sendingDeviceInfo:v26 actionNumber:v13 clientIdentifier:v15 categoryIdentifier:v17 expirationDateTimeIntervalNumber:v19 criteria:v10];
+    self = [(HDNotificationInstructionMessage *)self _initWithMinimumCompatibleVersion:v28 creationDateTimeIntervalNumber:v27 sendingDeviceInfo:sendingDeviceInfo actionNumber:v13 clientIdentifier:clientIdentifier categoryIdentifier:categoryIdentifier expirationDateTimeIntervalNumber:v19 criteria:v10];
   }
 
   else
   {
-    self = [(HDNotificationInstructionMessage *)self _initWithMinimumCompatibleVersion:v28 creationDateTimeIntervalNumber:v27 sendingDeviceInfo:v26 actionNumber:v13 clientIdentifier:v15 categoryIdentifier:v17 expirationDateTimeIntervalNumber:0 criteria:v10];
+    self = [(HDNotificationInstructionMessage *)self _initWithMinimumCompatibleVersion:v28 creationDateTimeIntervalNumber:v27 sendingDeviceInfo:sendingDeviceInfo actionNumber:v13 clientIdentifier:clientIdentifier categoryIdentifier:categoryIdentifier expirationDateTimeIntervalNumber:0 criteria:v10];
   }
 
-  v7 = v25;
-  if (!v16)
+  classesCopy = v25;
+  if (!hasCategoryIdentifier)
   {
-    if (!v14)
+    if (!hasClientIdentifier)
     {
       goto LABEL_29;
     }
 
 LABEL_39:
 
-    if (!v12)
+    if (!hasAction)
     {
       goto LABEL_31;
     }
@@ -459,34 +459,34 @@ LABEL_39:
     goto LABEL_30;
   }
 
-  if (v14)
+  if (hasClientIdentifier)
   {
     goto LABEL_39;
   }
 
 LABEL_29:
-  if (v12)
+  if (hasAction)
   {
 LABEL_30:
   }
 
 LABEL_31:
-  if (v22)
+  if (hasSendingDeviceInfo)
   {
   }
 
-  if (v23)
+  if (hasCreationDateTimeInterval)
   {
   }
 
-  if (v24)
+  if (hasMinimumCompatibleVersion)
   {
   }
 
-  v20 = self;
+  selfCopy = self;
 LABEL_43:
 
-  return v20;
+  return selfCopy;
 }
 
 uint64_t __98__HDNotificationInstructionMessage_initWithCodableNotificationInstructionMessage_criteriaClasses___block_invoke(uint64_t a1, void *a2)
@@ -514,8 +514,8 @@ uint64_t __98__HDNotificationInstructionMessage_initWithCodableNotificationInstr
   criteria = self->_criteria;
   if (criteria)
   {
-    v5 = [(HDNotificationInstructionCriteria *)criteria codableCriteria];
-    [(HDCodableNotificationInstructionMessage *)v3 setCriteria:v5];
+    codableCriteria = [(HDNotificationInstructionCriteria *)criteria codableCriteria];
+    [(HDCodableNotificationInstructionMessage *)v3 setCriteria:codableCriteria];
   }
 
   return v3;

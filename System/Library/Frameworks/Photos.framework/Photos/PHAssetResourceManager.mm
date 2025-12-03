@@ -1,52 +1,52 @@
 @interface PHAssetResourceManager
 + (PHAssetResourceManager)defaultManager;
-- (BOOL)retryAssetResourceRequest:(id)a3 afterFailureWithError:(id)a4;
+- (BOOL)retryAssetResourceRequest:(id)request afterFailureWithError:(id)error;
 - (PHAssetResourceDataRequestID)requestDataForAssetResource:(PHAssetResource *)resource options:(PHAssetResourceRequestOptions *)options dataReceivedHandler:(void *)handler completionHandler:(void *)completionHandler;
 - (PHAssetResourceManager)init;
-- (id)consolidateAssets:(id)a3 completionHandler:(id)a4;
-- (id)infoForRequest:(int)a3;
-- (id)reconnectAssets:(id)a3 urlResolvingHandler:(id)a4 completionHandler:(id)a5;
-- (int)_requestForAssetResource:(id)a3 loadURLOnly:(BOOL)a4 options:(id)a5 urlReceivedHandler:(id)a6 dataReceivedHandler:(id)a7 completionHandler:(id)a8;
-- (int)requestFileURLForAssetResource:(id)a3 options:(id)a4 urlReceivedHandler:(id)a5 completionHandler:(id)a6;
-- (int)requestWriteDataForAssetResource:(id)a3 toFile:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)_autoResolveReferencedResources:(id)a3 folderURL:(id)a4 resourceClient:(id)a5;
-- (void)assetResourceRequest:(id)a3 didFinishWithError:(id)a4;
+- (id)consolidateAssets:(id)assets completionHandler:(id)handler;
+- (id)infoForRequest:(int)request;
+- (id)reconnectAssets:(id)assets urlResolvingHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)_requestForAssetResource:(id)resource loadURLOnly:(BOOL)only options:(id)options urlReceivedHandler:(id)handler dataReceivedHandler:(id)receivedHandler completionHandler:(id)completionHandler;
+- (int)requestFileURLForAssetResource:(id)resource options:(id)options urlReceivedHandler:(id)handler completionHandler:(id)completionHandler;
+- (int)requestWriteDataForAssetResource:(id)resource toFile:(id)file options:(id)options completionHandler:(id)handler;
+- (void)_autoResolveReferencedResources:(id)resources folderURL:(id)l resourceClient:(id)client;
+- (void)assetResourceRequest:(id)request didFinishWithError:(id)error;
 - (void)cancelDataRequest:(PHAssetResourceDataRequestID)requestID;
 @end
 
 @implementation PHAssetResourceManager
 
-- (BOOL)retryAssetResourceRequest:(id)a3 afterFailureWithError:(id)a4
+- (BOOL)retryAssetResourceRequest:(id)request afterFailureWithError:(id)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = PHRequestRetryTypeForRequest(v6, v7);
+  requestCopy = request;
+  errorCopy = error;
+  v8 = PHRequestRetryTypeForRequest(requestCopy, errorCopy);
   if ((v8 - 2) < 2)
   {
     v11 = PLImageManagerGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v6 taskIdentifier];
-      [v6 retryInterval];
+      taskIdentifier = [requestCopy taskIdentifier];
+      [requestCopy retryInterval];
       *buf = 138543874;
-      v45 = v12;
+      v45 = taskIdentifier;
       v46 = 2048;
       v47 = v13;
       v48 = 2112;
-      v49 = v7;
+      v49 = errorCopy;
       _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_ERROR, "[RM] %{public}@ asset resource request retrying after %f due to error: %@", buf, 0x20u);
     }
 
-    v9 = dispatch_queue_create("PHAssetResourceManager.retryRequest", 0);
-    [v6 retryInterval];
+    asset2 = dispatch_queue_create("PHAssetResourceManager.retryRequest", 0);
+    [requestCopy retryInterval];
     v15 = dispatch_time(0, (v14 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__PHAssetResourceManager_retryAssetResourceRequest_afterFailureWithError___block_invoke;
     block[3] = &unk_1E75AB270;
-    v41 = v6;
-    dispatch_after(v15, v9, block);
+    v41 = requestCopy;
+    dispatch_after(v15, asset2, block);
     v16 = v41;
     goto LABEL_9;
   }
@@ -56,14 +56,14 @@
     v18 = PLImageManagerGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v6 taskIdentifier];
+      taskIdentifier2 = [requestCopy taskIdentifier];
       *buf = 138543362;
-      v45 = v19;
+      v45 = taskIdentifier2;
       _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ asset resource request requires additional resources to generate adjustment on demand", buf, 0xCu);
     }
 
-    v20 = [v6 assetResource];
-    v21 = [v20 asset];
+    assetResource = [requestCopy assetResource];
+    asset = [assetResource asset];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -73,32 +73,32 @@
       v42 = *MEMORY[0x1E696A278];
       v43 = @"Unable to start content editing request on behalf of asset resource request that is not backed by PHAsset";
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      v9 = [v31 errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v32];
+      asset2 = [v31 errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v32];
 
-      [v6 configureWithError:v9];
-      [v6 startRequest];
+      [requestCopy configureWithError:asset2];
+      [requestCopy startRequest];
 LABEL_16:
       v17 = 0;
       goto LABEL_17;
     }
 
-    v23 = [v6 assetResource];
-    v9 = [v23 asset];
+    assetResource2 = [requestCopy assetResource];
+    asset2 = [assetResource2 asset];
 
-    v35 = [v6 requestID];
+    requestID = [requestCopy requestID];
     managerID = self->_managerID;
-    v24 = [v6 options];
-    v25 = [v24 isNetworkAccessAllowed];
-    v26 = [v6 options];
-    v27 = [v26 downloadIntent];
+    options = [requestCopy options];
+    isNetworkAccessAllowed = [options isNetworkAccessAllowed];
+    options2 = [requestCopy options];
+    downloadIntent = [options2 downloadIntent];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __74__PHAssetResourceManager_retryAssetResourceRequest_afterFailureWithError___block_invoke_2;
     v37[3] = &unk_1E75A9288;
-    v28 = v6;
+    v28 = requestCopy;
     v38 = v28;
-    v39 = self;
-    v29 = [PHContentEditingInputRequestContext contentEditingInputRequestContextForAsset:v9 requestID:v35 managerID:managerID networkAccessAllowed:v25 downloadIntent:v27 progressHandler:&__block_literal_global_146_38953 resultHandler:v37];
+    selfCopy = self;
+    v29 = [PHContentEditingInputRequestContext contentEditingInputRequestContextForAsset:asset2 requestID:requestID managerID:managerID networkAccessAllowed:isNetworkAccessAllowed downloadIntent:downloadIntent progressHandler:&__block_literal_global_146_38953 resultHandler:v37];
 
     v36 = v28;
     v30 = v29;
@@ -116,15 +116,15 @@ LABEL_17:
 
   if (v8 == 1)
   {
-    v9 = PLImageManagerGetLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    asset2 = PLImageManagerGetLog();
+    if (os_log_type_enabled(asset2, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v6 taskIdentifier];
+      taskIdentifier3 = [requestCopy taskIdentifier];
       *buf = 138543618;
-      v45 = v10;
+      v45 = taskIdentifier3;
       v46 = 2112;
-      v47 = v7;
-      _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "[RM] %{public}@ asset resource request exceeded retry limit, failing with error: %@", buf, 0x16u);
+      v47 = errorCopy;
+      _os_log_impl(&dword_19C86F000, asset2, OS_LOG_TYPE_ERROR, "[RM] %{public}@ asset resource request exceeded retry limit, failing with error: %@", buf, 0x16u);
     }
 
     goto LABEL_16;
@@ -175,10 +175,10 @@ void __74__PHAssetResourceManager_retryAssetResourceRequest_afterFailureWithErro
   [v1 setObject:0 forKeyedSubscript:v2];
 }
 
-- (void)assetResourceRequest:(id)a3 didFinishWithError:(id)a4
+- (void)assetResourceRequest:(id)request didFinishWithError:(id)error
 {
-  v5 = a3;
-  v4 = v5;
+  requestCopy = request;
+  v4 = requestCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -189,29 +189,29 @@ void __66__PHAssetResourceManager_assetResourceRequest_didFinishWithError___bloc
   [v1 setObject:0 forKeyedSubscript:v2];
 }
 
-- (int)_requestForAssetResource:(id)a3 loadURLOnly:(BOOL)a4 options:(id)a5 urlReceivedHandler:(id)a6 dataReceivedHandler:(id)a7 completionHandler:(id)a8
+- (int)_requestForAssetResource:(id)resource loadURLOnly:(BOOL)only options:(id)options urlReceivedHandler:(id)handler dataReceivedHandler:(id)receivedHandler completionHandler:(id)completionHandler
 {
-  v12 = a4;
+  onlyCopy = only;
   v37 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
+  receivedHandlerCopy = receivedHandler;
+  if (resourceCopy)
   {
-    v18 = a8;
-    v19 = [v15 copy];
+    completionHandlerCopy = completionHandler;
+    v19 = [optionsCopy copy];
 
-    v20 = [(PHAssetResourceManager *)self _nextRequestID];
-    v21 = [[PHAssetResourceRequest alloc] initWithAssetResource:v14 options:v19 requestID:v20 managerID:self->_managerID delegate:self urlReceivedHandler:v16 dataReceivedHandler:v17 completionHandler:v18];
+    completionHandlerCopy2 = [(PHAssetResourceManager *)self _nextRequestID];
+    v21 = [[PHAssetResourceRequest alloc] initWithAssetResource:resourceCopy options:v19 requestID:completionHandlerCopy2 managerID:self->_managerID delegate:self urlReceivedHandler:handlerCopy dataReceivedHandler:receivedHandlerCopy completionHandler:completionHandlerCopy];
 
-    [(PHAssetResourceRequest *)v21 setLoadURLOnly:v12];
+    [(PHAssetResourceRequest *)v21 setLoadURLOnly:onlyCopy];
     v22 = v21;
     PLSafeRunWithUnfairLock();
     v23 = PLImageManagerGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [(PHAssetResourceRequest *)v22 taskIdentifier];
+      taskIdentifier = [(PHAssetResourceRequest *)v22 taskIdentifier];
       if ([v19 isNetworkAccessAllowed])
       {
         v25 = @"Y";
@@ -222,15 +222,15 @@ void __66__PHAssetResourceManager_assetResourceRequest_didFinishWithError___bloc
         v25 = @"N";
       }
 
-      v26 = [v19 progressHandler];
+      progressHandler = [v19 progressHandler];
       *buf = 138412802;
       v27 = @"Y";
-      if (!v26)
+      if (!progressHandler)
       {
         v27 = @"N";
       }
 
-      v32 = v24;
+      v32 = taskIdentifier;
       v33 = 2112;
       v34 = v25;
       v35 = 2112;
@@ -244,15 +244,15 @@ void __66__PHAssetResourceManager_assetResourceRequest_didFinishWithError___bloc
   else
   {
     v28 = MEMORY[0x1E696ABC0];
-    v20 = a8;
+    completionHandlerCopy2 = completionHandler;
     v29 = [v28 ph_genericErrorWithLocalizedDescription:@"Cannot perform resource request for nil asset resource"];
-    (*(v20 + 2))(v20, v29);
+    (*(completionHandlerCopy2 + 2))(completionHandlerCopy2, v29);
 
-    LODWORD(v20) = 0;
-    v19 = v15;
+    LODWORD(completionHandlerCopy2) = 0;
+    v19 = optionsCopy;
   }
 
-  return v20;
+  return completionHandlerCopy2;
 }
 
 void __128__PHAssetResourceManager__requestForAssetResource_loadURLOnly_options_urlReceivedHandler_dataReceivedHandler_completionHandler___block_invoke(uint64_t a1)
@@ -263,17 +263,17 @@ void __128__PHAssetResourceManager__requestForAssetResource_loadURLOnly_options_
   [v2 setObject:v1 forKeyedSubscript:v3];
 }
 
-- (void)_autoResolveReferencedResources:(id)a3 folderURL:(id)a4 resourceClient:(id)a5
+- (void)_autoResolveReferencedResources:(id)resources folderURL:(id)l resourceClient:(id)client
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v39 = a4;
-  v38 = a5;
+  resourcesCopy = resources;
+  lCopy = l;
+  clientCopy = client;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v7;
+  obj = resourcesCopy;
   v8 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v8)
   {
@@ -294,25 +294,25 @@ void __128__PHAssetResourceManager__requestForAssetResource_loadURLOnly_options_
 
         v13 = *(*(&v42 + 1) + 8 * v12);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 fileURL];
-        if (!v15)
+        fileURL = [v13 fileURL];
+        if (!fileURL)
         {
-          v16 = [v13 fileSystemBookmark];
-          v17 = [v13 fileSystemVolume];
+          fileSystemBookmark = [v13 fileSystemBookmark];
+          fileSystemVolume = [v13 fileSystemVolume];
           v18 = PLPrimaryResourceDataStoreReferenceFileURL();
-          v15 = 0;
+          fileURL = 0;
 
           if (v18 == 3)
           {
             v19 = PLImageManagerGetLog();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v13 asset];
-              v21 = [v20 uuid];
+              asset = [v13 asset];
+              uuid = [asset uuid];
               *buf = 138543618;
-              v47 = v21;
+              v47 = uuid;
               v48 = 2112;
-              v49 = v15;
+              v49 = fileURL;
               v22 = v19;
               v23 = OS_LOG_TYPE_DEFAULT;
               v24 = "No volume URL for referenced resource for asset %{public}@, using artificial volume for URL %@";
@@ -329,10 +329,10 @@ LABEL_14:
             v19 = PLImageManagerGetLog();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v20 = [v13 asset];
-              v21 = [v20 uuid];
+              asset = [v13 asset];
+              uuid = [asset uuid];
               *buf = v37;
-              v47 = v21;
+              v47 = uuid;
               v22 = v19;
               v23 = OS_LOG_TYPE_ERROR;
               v24 = "Failed to resolve bookmark URL for asset %{public}@";
@@ -343,31 +343,31 @@ LABEL_14:
             goto LABEL_14;
           }
 
-          if (!v15)
+          if (!fileURL)
           {
             goto LABEL_22;
           }
         }
 
         v26 = MEMORY[0x1E69BF238];
-        v27 = [v15 path];
-        v28 = [v26 realPathForPath:v27 error:0];
+        path = [fileURL path];
+        v28 = [v26 realPathForPath:path error:0];
 
         if (!v28)
         {
           v29 = v11;
-          v30 = [v15 lastPathComponent];
-          v31 = [v13 objectID];
-          v32 = [v31 URIRepresentation];
+          lastPathComponent = [fileURL lastPathComponent];
+          objectID = [v13 objectID];
+          uRIRepresentation = [objectID URIRepresentation];
 
-          v33 = [v39 URLByAppendingPathComponent:v30 isDirectory:0];
+          v33 = [lCopy URLByAppendingPathComponent:lastPathComponent isDirectory:0];
           v34 = MEMORY[0x1E69BF238];
-          v35 = [v33 path];
-          v36 = [v34 realPathForPath:v35 error:0];
+          path2 = [v33 path];
+          v36 = [v34 realPathForPath:path2 error:0];
 
           if (v36 && [MEMORY[0x1E69BF2E0] processCanReadSandboxForPath:v36])
           {
-            [v38 updateInternalResourcePath:v36 objectURI:v32 error:0];
+            [clientCopy updateInternalResourcePath:v36 objectURI:uRIRepresentation error:0];
           }
 
           v11 = v29;
@@ -387,15 +387,15 @@ LABEL_22:
   }
 }
 
-- (id)reconnectAssets:(id)a3 urlResolvingHandler:(id)a4 completionHandler:(id)a5
+- (id)reconnectAssets:(id)assets urlResolvingHandler:(id)handler completionHandler:(id)completionHandler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 count];
+    v11 = [assetsCopy count];
   }
 
   else
@@ -404,7 +404,7 @@ LABEL_22:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = v8;
+    v12 = assetsCopy;
     v13 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v13)
     {
@@ -445,17 +445,17 @@ LABEL_22:
   v28[1] = 3221225472;
   v28[2] = __80__PHAssetResourceManager_reconnectAssets_urlResolvingHandler_completionHandler___block_invoke;
   v28[3] = &unk_1E75A9260;
-  v29 = v8;
+  v29 = assetsCopy;
   v30 = v19;
-  v33 = v9;
-  v31 = self;
+  v33 = handlerCopy;
+  selfCopy = self;
   v20 = v17;
   v32 = v20;
-  v34 = v10;
-  v21 = v10;
-  v22 = v9;
+  v34 = completionHandlerCopy;
+  v21 = completionHandlerCopy;
+  v22 = handlerCopy;
   v23 = v19;
-  v24 = v8;
+  v24 = assetsCopy;
   dispatch_async(v18, v28);
   v25 = v34;
   v26 = v20;
@@ -892,22 +892,22 @@ uint64_t __80__PHAssetResourceManager_reconnectAssets_urlResolvingHandler_comple
   return v3 & (v4 ^ 1u);
 }
 
-- (id)consolidateAssets:(id)a3 completionHandler:(id)a4
+- (id)consolidateAssets:(id)assets completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
-    v11 = 0;
+    photoLibrary = 0;
     v12 = *v23;
     do
     {
@@ -921,12 +921,12 @@ uint64_t __80__PHAssetResourceManager_reconnectAssets_urlResolvingHandler_comple
         v14 = *(*(&v22 + 1) + 8 * i);
         if ([v14 isReferencedAsset])
         {
-          v15 = [v14 uuid];
-          [v7 addObject:v15];
+          uuid = [v14 uuid];
+          [v7 addObject:uuid];
 
-          if (!v11)
+          if (!photoLibrary)
           {
-            v11 = [v14 photoLibrary];
+            photoLibrary = [v14 photoLibrary];
           }
         }
       }
@@ -939,20 +939,20 @@ uint64_t __80__PHAssetResourceManager_reconnectAssets_urlResolvingHandler_comple
 
   else
   {
-    v11 = 0;
+    photoLibrary = 0;
   }
 
-  v16 = [v11 assetsdClient];
-  v17 = [v16 resourceClient];
+  assetsdClient = [photoLibrary assetsdClient];
+  resourceClient = [assetsdClient resourceClient];
 
-  if (v17)
+  if (resourceClient)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __62__PHAssetResourceManager_consolidateAssets_completionHandler___block_invoke;
     v20[3] = &unk_1E75A91F0;
-    v21 = v6;
-    v18 = [v17 consolidateAssets:v7 completionHandler:v20];
+    v21 = handlerCopy;
+    v18 = [resourceClient consolidateAssets:v7 completionHandler:v20];
   }
 
   else
@@ -963,7 +963,7 @@ uint64_t __80__PHAssetResourceManager_reconnectAssets_urlResolvingHandler_comple
   return v18;
 }
 
-- (id)infoForRequest:(int)a3
+- (id)infoForRequest:(int)request
 {
   v3 = PLSafeResultWithUnfairLock();
 
@@ -981,17 +981,17 @@ id __41__PHAssetResourceManager_infoForRequest___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (int)requestFileURLForAssetResource:(id)a3 options:(id)a4 urlReceivedHandler:(id)a5 completionHandler:(id)a6
+- (int)requestFileURLForAssetResource:(id)resource options:(id)options urlReceivedHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v13)
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v15 = completionHandlerCopy;
+  if (!handlerCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"urlReceivedHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"urlReceivedHandler"}];
 
     if (v15)
     {
@@ -999,19 +999,19 @@ id __41__PHAssetResourceManager_infoForRequest___block_invoke(uint64_t a1)
     }
 
 LABEL_5:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v14)
+  if (!completionHandlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v16 = [(PHAssetResourceManager *)self _requestForAssetResource:v11 loadURLOnly:1 options:v12 urlReceivedHandler:v13 dataReceivedHandler:0 completionHandler:v15];
+  v16 = [(PHAssetResourceManager *)self _requestForAssetResource:resourceCopy loadURLOnly:1 options:optionsCopy urlReceivedHandler:handlerCopy dataReceivedHandler:0 completionHandler:v15];
 
   return v16;
 }
@@ -1033,36 +1033,36 @@ id __44__PHAssetResourceManager_cancelDataRequest___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (int)requestWriteDataForAssetResource:(id)a3 toFile:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (int)requestWriteDataForAssetResource:(id)resource toFile:(id)file options:(id)options completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  resourceCopy = resource;
+  fileCopy = file;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  if ([v12 isFileURL])
+  if ([fileCopy isFileURL])
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"Invalid file url at '%@' for resource %@", v12, v11}];
+    v15 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"Invalid file url at '%@' for resource %@", fileCopy, resourceCopy}];
   }
 
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v12 path];
-  v18 = [v16 fileExistsAtPath:v17 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [fileCopy path];
+  v18 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (!v18)
   {
-    if (v11)
+    if (resourceCopy)
     {
       goto LABEL_8;
     }
@@ -1079,10 +1079,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v21 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"File already exists at '%@' for resource %@", v12, v11}];
+  v21 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{@"File already exists at '%@' for resource %@", fileCopy, resourceCopy}];
 
   v15 = v21;
-  if (!v11)
+  if (!resourceCopy)
   {
     goto LABEL_11;
   }
@@ -1091,39 +1091,39 @@ LABEL_8:
   if (v15)
   {
 LABEL_9:
-    v14[2](v14, v15);
-    LODWORD(v19) = 0;
-    v20 = v13;
+    handlerCopy[2](handlerCopy, v15);
+    LODWORD(_nextRequestID) = 0;
+    v20 = optionsCopy;
     goto LABEL_19;
   }
 
 LABEL_12:
-  v20 = [v13 copy];
+  v20 = [optionsCopy copy];
 
-  v19 = [(PHAssetResourceManager *)self _nextRequestID];
-  v23 = [[PHAssetResourceWriteRequest alloc] initWithAssetResource:v11 destinationFileURL:v12 options:v20 requestID:v19 managerID:self->_managerID delegate:self completionHandler:v14];
+  _nextRequestID = [(PHAssetResourceManager *)self _nextRequestID];
+  v23 = [[PHAssetResourceWriteRequest alloc] initWithAssetResource:resourceCopy destinationFileURL:fileCopy options:v20 requestID:_nextRequestID managerID:self->_managerID delegate:self completionHandler:handlerCopy];
   PLSafeRunWithUnfairLock();
   v24 = PLImageManagerGetLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [(PHAssetResourceWriteRequest *)v23 taskIdentifier];
-    v26 = [v20 isNetworkAccessAllowed];
+    taskIdentifier = [(PHAssetResourceWriteRequest *)v23 taskIdentifier];
+    isNetworkAccessAllowed = [v20 isNetworkAccessAllowed];
     v27 = @"N";
-    if (v26)
+    if (isNetworkAccessAllowed)
     {
       v27 = @"Y";
     }
 
     v32 = v27;
-    v28 = [v20 progressHandler];
+    progressHandler = [v20 progressHandler];
     *buf = 138412802;
     v29 = @"N";
-    if (v28)
+    if (progressHandler)
     {
       v29 = @"Y";
     }
 
-    v34 = v25;
+    v34 = taskIdentifier;
     v35 = 2112;
     v36 = v32;
     v37 = 2112;
@@ -1134,7 +1134,7 @@ LABEL_12:
   [(PHAssetResourceWriteRequest *)v23 startRequest];
 LABEL_19:
 
-  return v19;
+  return _nextRequestID;
 }
 
 void __92__PHAssetResourceManager_requestWriteDataForAssetResource_toFile_options_completionHandler___block_invoke(uint64_t a1)
@@ -1154,8 +1154,8 @@ void __92__PHAssetResourceManager_requestWriteDataForAssetResource_toFile_option
   v15 = v14;
   if (!v13)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
     if (v15)
     {
@@ -1163,8 +1163,8 @@ void __92__PHAssetResourceManager_requestWriteDataForAssetResource_toFile_option
     }
 
 LABEL_5:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetResourceManager.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }

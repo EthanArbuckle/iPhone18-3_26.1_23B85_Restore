@@ -1,29 +1,29 @@
 @interface HUUserAccessoryAccessItemManager
-- (HUUserAccessoryAccessItemManager)initWithHome:(id)a3 user:(id)a4 accessoryCategoryType:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUUserAccessoryAccessItemManager)initWithHome:(id)home user:(id)user accessoryCategoryType:(id)type;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 @end
 
 @implementation HUUserAccessoryAccessItemManager
 
-- (HUUserAccessoryAccessItemManager)initWithHome:(id)a3 user:(id)a4 accessoryCategoryType:(id)a5
+- (HUUserAccessoryAccessItemManager)initWithHome:(id)home user:(id)user accessoryCategoryType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  homeCopy = home;
+  userCopy = user;
+  typeCopy = type;
+  if (homeCopy)
   {
-    if (v11)
+    if (userCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessItemManager.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"user"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessItemManager.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"user"}];
 
-    if (v12)
+    if (typeCopy)
     {
       goto LABEL_4;
     }
@@ -31,23 +31,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessItemManager.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessItemManager.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
-  if (!v11)
+  if (!userCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (typeCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessItemManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"accessoryCategoryType"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessItemManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"accessoryCategoryType"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -56,56 +56,56 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_overrideHome, a3);
-    objc_storeStrong(&v14->_user, a4);
-    objc_storeStrong(&v14->_accessoryCategoryType, a5);
+    objc_storeStrong(&v13->_overrideHome, home);
+    objc_storeStrong(&v14->_user, user);
+    objc_storeStrong(&v14->_accessoryCategoryType, type);
   }
 
   return v14;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  itemsCopy = items;
+  array = [v4 array];
   v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"AccessoriesSection"];
-  v8 = [(HUUserAccessoryAccessItemManager *)self transformedAllowedAccessoryItemProvider];
-  v9 = [v8 items];
-  v10 = [v9 allObjects];
-  v11 = [MEMORY[0x277D14778] defaultItemComparator];
-  v12 = [v10 sortedArrayUsingComparator:v11];
+  transformedAllowedAccessoryItemProvider = [(HUUserAccessoryAccessItemManager *)self transformedAllowedAccessoryItemProvider];
+  items = [transformedAllowedAccessoryItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v12 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   v13 = [v12 mutableCopy];
 
   [v7 setItems:v13];
   v14 = _HULocalizedStringWithDefaultValue(@"HUUserAccessoryAccess_AllowedAccessoriesSection_Header", @"HUUserAccessoryAccess_AllowedAccessoriesSection_Header", 1);
   [v7 setHeaderTitle:v14];
 
-  [v6 addObject:v7];
-  v15 = [MEMORY[0x277D14778] filterSections:v6 toDisplayedItems:v5];
+  [array addObject:v7];
+  v15 = [MEMORY[0x277D14778] filterSections:array toDisplayedItems:itemsCopy];
 
   return v15;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hf_allUsersIncludingCurrentUser];
-  v6 = [(HUUserAccessoryAccessItemManager *)self user];
-  v7 = [v5 containsObject:v6];
+  homeCopy = home;
+  hf_allUsersIncludingCurrentUser = [homeCopy hf_allUsersIncludingCurrentUser];
+  user = [(HUUserAccessoryAccessItemManager *)self user];
+  v7 = [hf_allUsersIncludingCurrentUser containsObject:user];
 
   if (v7)
   {
-    v8 = [(HFItemManager *)self home];
-    v9 = [(HUUserAccessoryAccessItemManager *)self user];
-    v10 = [v8 homeAccessControlForUser:v9];
+    home = [(HFItemManager *)self home];
+    user2 = [(HUUserAccessoryAccessItemManager *)self user];
+    v10 = [home homeAccessControlForUser:user2];
 
-    v11 = [v10 restrictedGuestAccessSettings];
-    v12 = [v11 accessAllowedToAccessories];
+    restrictedGuestAccessSettings = [v10 restrictedGuestAccessSettings];
+    accessAllowedToAccessories = [restrictedGuestAccessSettings accessAllowedToAccessories];
     v13 = objc_alloc(MEMORY[0x277D142F0]);
-    v14 = [(HFItemManager *)self home];
-    v15 = [v13 initWithHome:v14];
+    home2 = [(HFItemManager *)self home];
+    v15 = [v13 initWithHome:home2];
 
     [v15 setIncludesMatterOnlyAccessoryItems:1];
     if ([MEMORY[0x277D14CE8] isInternalTest])
@@ -120,7 +120,7 @@ LABEL_4:
     v35[2] = __63__HUUserAccessoryAccessItemManager__buildItemProvidersForHome___block_invoke;
     v35[3] = &unk_277DBDC50;
     objc_copyWeak(&v37, location);
-    v17 = v12;
+    v17 = accessAllowedToAccessories;
     v36 = v17;
     [v15 setFilter:v35];
     v18 = objc_alloc(MEMORY[0x277D14C38]);
@@ -131,12 +131,12 @@ LABEL_4:
     objc_copyWeak(&v34, location);
     v19 = v17;
     v32 = v19;
-    v33 = v4;
+    v33 = homeCopy;
     v20 = [v18 initWithSourceProvider:v15 transformationBlock:&v28];
     [(HUUserAccessoryAccessItemManager *)self setTransformedAllowedAccessoryItemProvider:v20, v28, v29, v30, v31];
 
-    v21 = [(HUUserAccessoryAccessItemManager *)self transformedAllowedAccessoryItemProvider];
-    v38 = v21;
+    transformedAllowedAccessoryItemProvider = [(HUUserAccessoryAccessItemManager *)self transformedAllowedAccessoryItemProvider];
+    v38 = transformedAllowedAccessoryItemProvider;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
 
     objc_destroyWeak(&v34);
@@ -149,18 +149,18 @@ LABEL_4:
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v4 name];
-      v24 = [v4 uniqueIdentifier];
-      v25 = [(HUUserAccessoryAccessItemManager *)self user];
-      v26 = [v25 hf_prettyDescription];
+      name = [homeCopy name];
+      uniqueIdentifier = [homeCopy uniqueIdentifier];
+      user3 = [(HUUserAccessoryAccessItemManager *)self user];
+      hf_prettyDescription = [user3 hf_prettyDescription];
       *location = 136315906;
       *&location[4] = "[HUUserAccessoryAccessItemManager _buildItemProvidersForHome:]";
       v40 = 2112;
-      v41 = v23;
+      v41 = name;
       v42 = 2112;
-      v43 = v24;
+      v43 = uniqueIdentifier;
       v44 = 2112;
-      v45 = v26;
+      v45 = hf_prettyDescription;
       _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "(%s) Not creating itemProviders for Home <Name:%@, uniqueIdentifier:%@> becuase it does NOT contain user %@", location, 0x2Au);
     }
 
@@ -324,8 +324,8 @@ id __63__HUUserAccessoryAccessItemManager__buildItemProvidersForHome___block_inv
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUUserAccessoryAccessItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUUserAccessoryAccessItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }

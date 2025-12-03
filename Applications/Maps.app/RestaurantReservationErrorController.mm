@@ -1,25 +1,25 @@
 @interface RestaurantReservationErrorController
-- (RestaurantReservationErrorController)initWithAppName:(id)a3 restaurantName:(id)a4 cancelAction:(id)a5 activityAction:(id)a6;
-- (id)alertActionsForAvailableBookingsIntentResponse:(id)a3 error:(id)a4;
-- (id)alertActionsForBookReservationIntentResponse:(id)a3 error:(id)a4;
-- (id)alertControllerForAvailableBookingsResponse:(id)a3 error:(id)a4;
-- (id)alertControllerForBookReservationResponse:(id)a3 error:(id)a4;
+- (RestaurantReservationErrorController)initWithAppName:(id)name restaurantName:(id)restaurantName cancelAction:(id)action activityAction:(id)activityAction;
+- (id)alertActionsForAvailableBookingsIntentResponse:(id)response error:(id)error;
+- (id)alertActionsForBookReservationIntentResponse:(id)response error:(id)error;
+- (id)alertControllerForAvailableBookingsResponse:(id)response error:(id)error;
+- (id)alertControllerForBookReservationResponse:(id)response error:(id)error;
 - (id)cancelAlertAction;
-- (id)errorBodyForAvailableBookingsIntentCode:(int64_t)a3;
-- (id)errorBodyForBookReservationIntentCode:(int64_t)a3;
-- (id)punchOutAlertActionForIntentResponse:(id)a3;
+- (id)errorBodyForAvailableBookingsIntentCode:(int64_t)code;
+- (id)errorBodyForBookReservationIntentCode:(int64_t)code;
+- (id)punchOutAlertActionForIntentResponse:(id)response;
 @end
 
 @implementation RestaurantReservationErrorController
 
-- (id)errorBodyForBookReservationIntentCode:(int64_t)a3
+- (id)errorBodyForBookReservationIntentCode:(int64_t)code
 {
   v4 = 0;
-  if (a3 > 2)
+  if (code > 2)
   {
-    if (a3 != 3)
+    if (code != 3)
     {
-      if (a3 == 4)
+      if (code == 4)
       {
         v5 = +[NSBundle mainBundle];
         v6 = v5;
@@ -27,7 +27,7 @@
         goto LABEL_10;
       }
 
-      if (a3 != 5)
+      if (code != 5)
       {
         goto LABEL_14;
       }
@@ -40,14 +40,14 @@ LABEL_10:
     v11 = [v5 localizedStringForKey:v7 value:@"localized string not found" table:0];
 
     v12 = [NSString alloc];
-    v13 = [(RestaurantReservationErrorController *)self restaurantName];
-    v14 = [(RestaurantReservationErrorController *)self appName];
-    v4 = [v12 initWithFormat:v11, v13, v14];
+    restaurantName = [(RestaurantReservationErrorController *)self restaurantName];
+    appName = [(RestaurantReservationErrorController *)self appName];
+    v4 = [v12 initWithFormat:v11, restaurantName, appName];
 
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (code == 1)
   {
     v8 = +[NSBundle mainBundle];
     v9 = v8;
@@ -56,7 +56,7 @@ LABEL_10:
 
   else
   {
-    if (a3 != 2)
+    if (code != 2)
     {
       goto LABEL_14;
     }
@@ -69,8 +69,8 @@ LABEL_10:
   v11 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:0];
 
   v15 = [NSString alloc];
-  v13 = [(RestaurantReservationErrorController *)self restaurantName];
-  v4 = [v15 initWithFormat:v11, v13];
+  restaurantName = [(RestaurantReservationErrorController *)self restaurantName];
+  v4 = [v15 initWithFormat:v11, restaurantName];
 LABEL_13:
 
 LABEL_14:
@@ -78,9 +78,9 @@ LABEL_14:
   return v4;
 }
 
-- (id)errorBodyForAvailableBookingsIntentCode:(int64_t)a3
+- (id)errorBodyForAvailableBookingsIntentCode:(int64_t)code
 {
-  if ((a3 - 1) > 2)
+  if ((code - 1) > 2)
   {
     v9 = 0;
   }
@@ -91,23 +91,23 @@ LABEL_14:
     v5 = [v4 localizedStringForKey:@"reservation_get_available_bookings_alert_body_error_failure_key" value:@"localized string not found" table:0];
 
     v6 = [NSString alloc];
-    v7 = [(RestaurantReservationErrorController *)self restaurantName];
-    v8 = [(RestaurantReservationErrorController *)self appName];
-    v9 = [v6 initWithFormat:v5, v7, v8];
+    restaurantName = [(RestaurantReservationErrorController *)self restaurantName];
+    appName = [(RestaurantReservationErrorController *)self appName];
+    v9 = [v6 initWithFormat:v5, restaurantName, appName];
   }
 
   return v9;
 }
 
-- (id)alertActionsForBookReservationIntentResponse:(id)a3 error:(id)a4
+- (id)alertActionsForBookReservationIntentResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = [(RestaurantReservationErrorController *)self punchOutAlertActionForIntentResponse:v6];
-  v8 = [(RestaurantReservationErrorController *)self cancelAlertAction];
-  if (!v6 || a4 || (v9 = [v6 code], (v9 - 3) < 3))
+  responseCopy = response;
+  v7 = [(RestaurantReservationErrorController *)self punchOutAlertActionForIntentResponse:responseCopy];
+  cancelAlertAction = [(RestaurantReservationErrorController *)self cancelAlertAction];
+  if (!responseCopy || error || (v9 = [responseCopy code], (v9 - 3) < 3))
   {
     v14 = v7;
-    v15 = v8;
+    v15 = cancelAlertAction;
     v10 = &v14;
     v11 = 2;
 LABEL_5:
@@ -117,7 +117,7 @@ LABEL_5:
 
   if ((v9 - 1) <= 1)
   {
-    v16 = v8;
+    v16 = cancelAlertAction;
     v10 = &v16;
     v11 = 1;
     goto LABEL_5;
@@ -129,12 +129,12 @@ LABEL_6:
   return v12;
 }
 
-- (id)alertActionsForAvailableBookingsIntentResponse:(id)a3 error:(id)a4
+- (id)alertActionsForAvailableBookingsIntentResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = [(RestaurantReservationErrorController *)self punchOutAlertActionForIntentResponse:v6];
-  v8 = [(RestaurantReservationErrorController *)self cancelAlertAction];
-  if (v6 && !a4 && [v6 code] - 1 > 2)
+  responseCopy = response;
+  v7 = [(RestaurantReservationErrorController *)self punchOutAlertActionForIntentResponse:responseCopy];
+  cancelAlertAction = [(RestaurantReservationErrorController *)self cancelAlertAction];
+  if (responseCopy && !error && [responseCopy code] - 1 > 2)
   {
     v9 = &__NSArray0__struct;
   }
@@ -142,7 +142,7 @@ LABEL_6:
   else
   {
     v11[0] = v7;
-    v11[1] = v8;
+    v11[1] = cancelAlertAction;
     v9 = [NSArray arrayWithObjects:v11 count:2];
   }
 
@@ -164,48 +164,48 @@ LABEL_6:
   return v5;
 }
 
-- (id)punchOutAlertActionForIntentResponse:(id)a3
+- (id)punchOutAlertActionForIntentResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"reservation_error_continue_in_key" value:@"localized string not found" table:0];
 
   v7 = [NSString alloc];
-  v8 = [(RestaurantReservationErrorController *)self appName];
-  v9 = [v7 initWithFormat:v6, v8];
+  appName = [(RestaurantReservationErrorController *)self appName];
+  v9 = [v7 initWithFormat:v6, appName];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100A606C4;
   v13[3] = &unk_1016383E0;
   v13[4] = self;
-  v14 = v4;
-  v10 = v4;
+  v14 = responseCopy;
+  v10 = responseCopy;
   v11 = [UIAlertAction actionWithTitle:v9 style:0 handler:v13];
 
   return v11;
 }
 
-- (id)alertControllerForBookReservationResponse:(id)a3 error:(id)a4
+- (id)alertControllerForBookReservationResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 3;
-  if (v6 && !v7)
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
+  code = 3;
+  if (responseCopy && !errorCopy)
   {
-    v9 = [v6 code];
+    code = [responseCopy code];
   }
 
-  if ([RestaurantReservationErrorController shouldDisplayAlertForResponseWithBookReservationIntentCode:v9])
+  if ([RestaurantReservationErrorController shouldDisplayAlertForResponseWithBookReservationIntentCode:code])
   {
-    v10 = [(RestaurantReservationErrorController *)self errorBodyForBookReservationIntentCode:v9];
+    v10 = [(RestaurantReservationErrorController *)self errorBodyForBookReservationIntentCode:code];
     v11 = [UIAlertController alertControllerWithTitle:0 message:v10 preferredStyle:1];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [(RestaurantReservationErrorController *)self alertActionsForBookReservationIntentResponse:v6 error:v8, 0];
+    v12 = [(RestaurantReservationErrorController *)self alertActionsForBookReservationIntentResponse:responseCopy error:v8, 0];
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -238,26 +238,26 @@ LABEL_6:
   return v11;
 }
 
-- (id)alertControllerForAvailableBookingsResponse:(id)a3 error:(id)a4
+- (id)alertControllerForAvailableBookingsResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 3;
-  if (v6 && !v7)
+  responseCopy = response;
+  errorCopy = error;
+  v8 = errorCopy;
+  code = 3;
+  if (responseCopy && !errorCopy)
   {
-    v9 = [v6 code];
+    code = [responseCopy code];
   }
 
-  if ([RestaurantReservationErrorController shouldDisplayAlertForResponseWithAvailableBookingsIntentCode:v9])
+  if ([RestaurantReservationErrorController shouldDisplayAlertForResponseWithAvailableBookingsIntentCode:code])
   {
-    v10 = [(RestaurantReservationErrorController *)self errorBodyForAvailableBookingsIntentCode:v9];
+    v10 = [(RestaurantReservationErrorController *)self errorBodyForAvailableBookingsIntentCode:code];
     v11 = [UIAlertController alertControllerWithTitle:0 message:v10 preferredStyle:1];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [(RestaurantReservationErrorController *)self alertActionsForAvailableBookingsIntentResponse:v6 error:v8, 0];
+    v12 = [(RestaurantReservationErrorController *)self alertActionsForAvailableBookingsIntentResponse:responseCopy error:v8, 0];
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -290,30 +290,30 @@ LABEL_6:
   return v11;
 }
 
-- (RestaurantReservationErrorController)initWithAppName:(id)a3 restaurantName:(id)a4 cancelAction:(id)a5 activityAction:(id)a6
+- (RestaurantReservationErrorController)initWithAppName:(id)name restaurantName:(id)restaurantName cancelAction:(id)action activityAction:(id)activityAction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  restaurantNameCopy = restaurantName;
+  actionCopy = action;
+  activityActionCopy = activityAction;
   v24.receiver = self;
   v24.super_class = RestaurantReservationErrorController;
   v14 = [(RestaurantReservationErrorController *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     appName = v14->_appName;
     v14->_appName = v15;
 
-    v17 = [v11 copy];
+    v17 = [restaurantNameCopy copy];
     restaurantName = v14->_restaurantName;
     v14->_restaurantName = v17;
 
-    v19 = objc_retainBlock(v12);
+    v19 = objc_retainBlock(actionCopy);
     cancelAction = v14->_cancelAction;
     v14->_cancelAction = v19;
 
-    v21 = objc_retainBlock(v13);
+    v21 = objc_retainBlock(activityActionCopy);
     activityAction = v14->_activityAction;
     v14->_activityAction = v21;
   }

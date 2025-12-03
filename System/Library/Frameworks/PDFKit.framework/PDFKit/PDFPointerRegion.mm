@@ -1,17 +1,17 @@
 @interface PDFPointerRegion
 - (CGRect)rect;
-- (PDFPointerRegion)initWithRect:(CGRect)a3 identifier:(id)a4;
+- (PDFPointerRegion)initWithRect:(CGRect)rect identifier:(id)identifier;
 @end
 
 @implementation PDFPointerRegion
 
-- (PDFPointerRegion)initWithRect:(CGRect)a3 identifier:(id)a4
+- (PDFPointerRegion)initWithRect:(CGRect)rect identifier:(id)identifier
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PDFPointerRegion;
   v11 = [(PDFPointerRegion *)&v16 init];
@@ -26,7 +26,7 @@
     v14->rect.origin.y = y;
     v14->rect.size.width = width;
     v14->rect.size.height = height;
-    objc_storeStrong(&v11->_private->identifier, a4);
+    objc_storeStrong(&v11->_private->identifier, identifier);
   }
 
   return v11;

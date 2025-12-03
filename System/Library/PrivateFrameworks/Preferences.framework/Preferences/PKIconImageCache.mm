@@ -1,8 +1,8 @@
 @interface PKIconImageCache
 + (id)settingsIconCache;
-- (PKIconImageCache)initWithPath:(id)a3 scale:(double)a4;
+- (PKIconImageCache)initWithPath:(id)path scale:(double)scale;
 - (id)allImageIconKeys;
-- (id)imageForKey:(id)a3;
+- (id)imageForKey:(id)key;
 @end
 
 @implementation PKIconImageCache
@@ -30,11 +30,11 @@ void __37__PKIconImageCache_settingsIconCache__block_invoke()
   settingsIconCache_settingsIconCache = v3;
 }
 
-- (PKIconImageCache)initWithPath:(id)a3 scale:(double)a4
+- (PKIconImageCache)initWithPath:(id)path scale:(double)scale
 {
   v7.receiver = self;
   v7.super_class = PKIconImageCache;
-  v4 = [(PKIconImageCache *)&v7 init:a3];
+  v4 = [(PKIconImageCache *)&v7 init:path];
   v5 = PKLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -44,17 +44,17 @@ void __37__PKIconImageCache_settingsIconCache__block_invoke()
   return v4;
 }
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  _cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation = [objc_opt_class() _cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation];
+  v6 = [_cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation objectForKey:keyCopy];
 
   if (v6)
   {
     v7 = MEMORY[0x1E69DCAB8];
-    v8 = [objc_opt_class() _cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation];
-    v9 = [v8 objectForKey:v4];
+    _cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation2 = [objc_opt_class() _cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation];
+    v9 = [_cacheKeysForApplicationIconsThatNeedJustInTimeEvaluation2 objectForKey:keyCopy];
     v10 = [v7 ps_synchronousIconWithApplicationBundleIdentifier:v9];
   }
 
@@ -67,15 +67,15 @@ void __37__PKIconImageCache_settingsIconCache__block_invoke()
     v22 = __Block_byref_object_dispose__4;
     v23 = 0;
     objc_initWeak(&location, self);
-    v11 = [(PKIconImageCache *)self cacheAccessQueue];
+    cacheAccessQueue = [(PKIconImageCache *)self cacheAccessQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __32__PKIconImageCache_imageForKey___block_invoke;
     v13[3] = &unk_1E71DCCF0;
     objc_copyWeak(&v16, &location);
     v15 = &v18;
-    v14 = v4;
-    dispatch_sync(v11, v13);
+    v14 = keyCopy;
+    dispatch_sync(cacheAccessQueue, v13);
 
     v10 = v19[5];
     objc_destroyWeak(&v16);
@@ -105,14 +105,14 @@ void __32__PKIconImageCache_imageForKey___block_invoke(uint64_t a1)
   v13 = __Block_byref_object_dispose__4;
   v14 = 0;
   objc_initWeak(&location, self);
-  v3 = [(PKIconImageCache *)self cacheAccessQueue];
+  cacheAccessQueue = [(PKIconImageCache *)self cacheAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__PKIconImageCache_allImageIconKeys__block_invoke;
   block[3] = &unk_1E71DCD18;
   objc_copyWeak(&v7, &location);
   block[4] = &v9;
-  dispatch_sync(v3, block);
+  dispatch_sync(cacheAccessQueue, block);
 
   v4 = v10[5];
   objc_destroyWeak(&v7);

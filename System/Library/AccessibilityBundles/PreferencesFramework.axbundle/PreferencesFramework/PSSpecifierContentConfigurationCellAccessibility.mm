@@ -1,5 +1,5 @@
 @interface PSSpecifierContentConfigurationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_accessorySwitchView;
 - (id)accessibilityLabel;
@@ -9,30 +9,30 @@
 
 @implementation PSSpecifierContentConfigurationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Preferences.PSSpecifierContentConfigurationCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"UITableViewCellReorderControl"];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"specifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"isChecked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PSSpecifier" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSTableCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceVariable:@"_accessoryView" withType:"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Preferences.PSSpecifierContentConfigurationCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"UITableViewCellReorderControl"];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"specifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"isChecked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PSSpecifier" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSTableCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceVariable:@"_accessoryView" withType:"UIControl"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v13.receiver = self;
   v13.super_class = PSSpecifierContentConfigurationCellAccessibility;
-  v3 = [(PSSpecifierContentConfigurationCellAccessibility *)&v13 accessibilityTraits];
+  accessibilityTraits = [(PSSpecifierContentConfigurationCellAccessibility *)&v13 accessibilityTraits];
   objc_opt_class();
   v4 = [(PSSpecifierContentConfigurationCellAccessibility *)self safeValueForKey:@"specifier"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 cellType];
+  cellType = [v5 cellType];
   v7 = [v5 propertyForKey:*MEMORY[0x29EDC62C8]];
-  if ((v6 - 1) >= 2)
+  if ((cellType - 1) >= 2)
   {
     v8 = 0;
   }
@@ -49,7 +49,7 @@
     v10 = 0;
   }
 
-  v11 = v8 | v3 | v10;
+  v11 = v8 | accessibilityTraits | v10;
   if (v5 && v7 && ([v7 BOOLValue] & 1) == 0)
   {
     v11 |= *MEMORY[0x29EDC7FA8];
@@ -61,19 +61,19 @@
 - (id)accessibilityLabel
 {
   v3 = UIAXStringForAllChildrenWithFilter();
-  v4 = [(PSSpecifierContentConfigurationCellAccessibility *)self _accessorySwitchView];
+  _accessorySwitchView = [(PSSpecifierContentConfigurationCellAccessibility *)self _accessorySwitchView];
   v5 = [v3 componentsSeparatedByString:{@", "}];
   v6 = [v5 axMapObjectsUsingBlock:&__block_literal_global_321];
 
-  v7 = [v6 ax_arrayByRemovingDuplicates];
+  ax_arrayByRemovingDuplicates = [v6 ax_arrayByRemovingDuplicates];
 
   v13[0] = MEMORY[0x29EDCA5F8];
   v13[1] = 3221225472;
   v13[2] = __70__PSSpecifierContentConfigurationCellAccessibility_accessibilityLabel__block_invoke_3;
   v13[3] = &unk_29F2ED208;
-  v8 = v4;
+  v8 = _accessorySwitchView;
   v14 = v8;
-  v9 = [v7 ax_filteredArrayUsingBlock:v13];
+  v9 = [ax_arrayByRemovingDuplicates ax_filteredArrayUsingBlock:v13];
 
   if ([v9 count])
   {
@@ -137,20 +137,20 @@ uint64_t __70__PSSpecifierContentConfigurationCellAccessibility_accessibilityLab
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(PSSpecifierContentConfigurationCellAccessibility *)self safeValueForKey:@"specifier"];
   v5 = [v4 safeStringForKey:@"name"];
   if ([v5 length])
   {
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
   v8.receiver = self;
   v8.super_class = PSSpecifierContentConfigurationCellAccessibility;
-  v6 = [(PSSpecifierContentConfigurationCellAccessibility *)&v8 accessibilityUserInputLabels];
-  [v3 axSafelyAddObjectsFromArray:v6];
+  accessibilityUserInputLabels = [(PSSpecifierContentConfigurationCellAccessibility *)&v8 accessibilityUserInputLabels];
+  [array axSafelyAddObjectsFromArray:accessibilityUserInputLabels];
 
-  return v3;
+  return array;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
@@ -161,17 +161,17 @@ uint64_t __70__PSSpecifierContentConfigurationCellAccessibility_accessibilityLab
   if (v3)
   {
     v10[0] = v3;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PSSpecifierContentConfigurationCellAccessibility;
-    v5 = [(PSSpecifierContentConfigurationCellAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(PSSpecifierContentConfigurationCellAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryFooterViews;
 
   v7 = *MEMORY[0x29EDCA608];
 

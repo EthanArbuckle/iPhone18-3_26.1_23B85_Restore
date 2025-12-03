@@ -3,19 +3,19 @@
 - (BOOL)isEAPShareBlockedByManagedDefault;
 - (BOOL)isMegaWiFiProfileInstalled;
 - (BOOL)isSupervisedDevice;
-- (BOOL)isWiFiNetworkMDMNetwork:(__WiFiNetwork *)a3;
-- (BOOL)isWiFiNetworkSubjectToMDM:(__WiFiNetwork *)a3;
+- (BOOL)isWiFiNetworkMDMNetwork:(__WiFiNetwork *)network;
+- (BOOL)isWiFiNetworkSubjectToMDM:(__WiFiNetwork *)m;
 - (BOOL)isWiFiPowerModificationDisabled;
 - (void)MCInitialize;
-- (void)MCSettingsDidChange:(id)a3;
+- (void)MCSettingsDidChange:(id)change;
 - (void)dealloc;
-- (void)initializeWithHandler:(__WiFiManager *)a3;
+- (void)initializeWithHandler:(__WiFiManager *)handler;
 - (void)installMegaWiFiProfile;
-- (void)scheduleWithQueue:(id)a3;
+- (void)scheduleWithQueue:(id)queue;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 - (void)uninstallMegaWiFiProfile;
-- (void)unscheduleFromQueue:(id)a3;
+- (void)unscheduleFromQueue:(id)queue;
 @end
 
 @implementation ManagedConfigWrapper
@@ -30,7 +30,7 @@
   return qword_100298490;
 }
 
-- (void)initializeWithHandler:(__WiFiManager *)a3
+- (void)initializeWithHandler:(__WiFiManager *)handler
 {
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -39,7 +39,7 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  [(ManagedConfigWrapper *)self setManager:a3];
+  [(ManagedConfigWrapper *)self setManager:handler];
   [(ManagedConfigWrapper *)self setMcInitialized:0];
   [(ManagedConfigWrapper *)self setMonitoring:0];
   [(ManagedConfigWrapper *)self setMcConnection:+[MCProfileConnection sharedConnection]];
@@ -60,23 +60,23 @@
   [(ManagedConfigWrapper *)&v3 dealloc];
 }
 
-- (void)MCSettingsDidChange:(id)a3
+- (void)MCSettingsDidChange:(id)change
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MCProfileConnection *)[(ManagedConfigWrapper *)self mcConnection] isWiFiWithAllowedNetworksOnlyEnforced];
-  v6 = [(MCProfileConnection *)[(ManagedConfigWrapper *)self mcConnection] isWiFiPowerModificationAllowed];
-  v7 = [(MCProfileConnection *)[(ManagedConfigWrapper *)self mcConnection] isPersonalHotspotModificationAllowed];
+  isWiFiWithAllowedNetworksOnlyEnforced = [(MCProfileConnection *)[(ManagedConfigWrapper *)self mcConnection] isWiFiWithAllowedNetworksOnlyEnforced];
+  isWiFiPowerModificationAllowed = [(MCProfileConnection *)[(ManagedConfigWrapper *)self mcConnection] isWiFiPowerModificationAllowed];
+  isPersonalHotspotModificationAllowed = [(MCProfileConnection *)[(ManagedConfigWrapper *)self mcConnection] isPersonalHotspotModificationAllowed];
   v8 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
     v9 = "FALSE";
-    if (v5)
+    if (isWiFiWithAllowedNetworksOnlyEnforced)
     {
       v9 = "TRUE";
     }
 
     v10 = "Disabled";
-    if (v6)
+    if (isWiFiPowerModificationAllowed)
     {
       v11 = "Enabled";
     }
@@ -86,7 +86,7 @@
       v11 = "Disabled";
     }
 
-    if (v7)
+    if (isPersonalHotspotModificationAllowed)
     {
       v10 = "Enabled";
     }
@@ -102,9 +102,9 @@
     block[2] = sub_100040F60;
     block[3] = &unk_10025ED18;
     block[4] = self;
-    v14 = v6 ^ 1;
-    v15 = v7 ^ 1;
-    v16 = v5;
+    v14 = isWiFiPowerModificationAllowed ^ 1;
+    v15 = isPersonalHotspotModificationAllowed ^ 1;
+    v16 = isWiFiWithAllowedNetworksOnlyEnforced;
     dispatch_async([(ManagedConfigWrapper *)self queue], block);
   }
 
@@ -146,10 +146,10 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)scheduleWithQueue:(id)a3
+- (void)scheduleWithQueue:(id)queue
 {
   v5 = objc_autoreleasePoolPush();
-  [(ManagedConfigWrapper *)self setQueue:a3];
+  [(ManagedConfigWrapper *)self setQueue:queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041204;
@@ -159,7 +159,7 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)unscheduleFromQueue:(id)a3
+- (void)unscheduleFromQueue:(id)queue
 {
   v4 = objc_autoreleasePoolPush();
   [(ManagedConfigWrapper *)self stopMonitoring];
@@ -303,7 +303,7 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)isWiFiNetworkSubjectToMDM:(__WiFiNetwork *)a3
+- (BOOL)isWiFiNetworkSubjectToMDM:(__WiFiNetwork *)m
 {
   v5 = objc_autoreleasePoolPush();
   if (![(ManagedConfigWrapper *)self mcInitialized])
@@ -318,7 +318,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v6 = sub_10000A540(a3, @"PayloadUUID");
+  v6 = sub_10000A540(m, @"PayloadUUID");
   if (!v6)
   {
 LABEL_9:
@@ -338,7 +338,7 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)isWiFiNetworkMDMNetwork:(__WiFiNetwork *)a3
+- (BOOL)isWiFiNetworkMDMNetwork:(__WiFiNetwork *)network
 {
   v5 = objc_autoreleasePoolPush();
   if (![(ManagedConfigWrapper *)self mcInitialized])
@@ -353,7 +353,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v6 = sub_10000A540(a3, @"PayloadUUID");
+  v6 = sub_10000A540(network, @"PayloadUUID");
   if (!v6)
   {
 LABEL_9:

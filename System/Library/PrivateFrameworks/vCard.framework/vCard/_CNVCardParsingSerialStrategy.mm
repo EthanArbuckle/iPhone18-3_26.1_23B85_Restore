@@ -1,19 +1,19 @@
 @interface _CNVCardParsingSerialStrategy
-- (id)parseData:(id)a3 options:(id)a4 resultFactory:(id)a5;
+- (id)parseData:(id)data options:(id)options resultFactory:(id)factory;
 @end
 
 @implementation _CNVCardParsingSerialStrategy
 
-- (id)parseData:(id)a3 options:(id)a4 resultFactory:(id)a5
+- (id)parseData:(id)data options:(id)options resultFactory:(id)factory
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CNVCardParser alloc] initWithData:v9 options:v8];
+  factoryCopy = factory;
+  optionsCopy = options;
+  dataCopy = data;
+  v10 = [[CNVCardParser alloc] initWithData:dataCopy options:optionsCopy];
 
   if (v10)
   {
-    v11 = [(CNVCardParser *)v10 resultsWithFactory:v7];
+    v11 = [(CNVCardParser *)v10 resultsWithFactory:factoryCopy];
   }
 
   else

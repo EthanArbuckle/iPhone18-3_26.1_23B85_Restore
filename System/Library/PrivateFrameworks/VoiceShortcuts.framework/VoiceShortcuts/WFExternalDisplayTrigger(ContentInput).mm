@@ -31,35 +31,35 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = a4;
-  v6 = [a3 eventBody];
-  if (v6)
+  eventBody = [a3 eventBody];
+  if (eventBody)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 deviceName];
-      v8 = [v6 productName];
-      v9 = [v6 uniqueId];
-      v10 = v9;
+      deviceName = [eventBody deviceName];
+      productName = [eventBody productName];
+      uniqueId = [eventBody uniqueId];
+      v10 = uniqueId;
       v11 = 0;
-      if (v7 && v8 && v9)
+      if (deviceName && productName && uniqueId)
       {
         v18[0] = @"WFDeviceName";
         v18[1] = @"ProductName";
-        v19[0] = v7;
-        v19[1] = v8;
+        v19[0] = deviceName;
+        v19[1] = productName;
         v18[2] = @"UniqueId";
-        v19[2] = v9;
+        v19[2] = uniqueId;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
         v11 = v12;
-        v13 = v6;
+        v13 = eventBody;
 LABEL_16:
         v5[2](v5, v12);
 
         goto LABEL_17;
       }
 
-      v13 = v6;
+      v13 = eventBody;
 LABEL_13:
       v16 = getWFTriggersLogObject();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -67,11 +67,11 @@ LABEL_13:
         *buf = 136316162;
         v21 = "[WFExternalDisplayTrigger(ContentInput) eventInfoForEvent:completion:]";
         v22 = 2112;
-        v23 = v6;
+        v23 = eventBody;
         v24 = 2112;
-        v25 = v7;
+        v25 = deviceName;
         v26 = 2112;
-        v27 = v8;
+        v27 = productName;
         v28 = 2112;
         v29 = v10;
         _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_ERROR, "%s Failed to create event info for display event due to nil property. Event:<%@>, deviceName: %@, productName: %@, uniqueId: %@", buf, 0x34u);
@@ -81,15 +81,15 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    v14 = v6;
+    v14 = eventBody;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v11 = v14;
 
       v10 = 0;
-      v8 = 0;
-      v7 = 0;
+      productName = 0;
+      deviceName = 0;
       v13 = 0;
       goto LABEL_13;
     }

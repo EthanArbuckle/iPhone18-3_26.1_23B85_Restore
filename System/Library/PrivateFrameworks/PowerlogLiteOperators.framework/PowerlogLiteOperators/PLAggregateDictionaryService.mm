@@ -3,13 +3,13 @@
 + (id)entryEventNoneDefinitions;
 + (void)load;
 - (PLAggregateDictionaryService)init;
-- (unint64_t)abstimeToNanosec:(unint64_t)a3;
-- (unint64_t)bucketWakeTime:(unint64_t)a3;
-- (void)addToDurationScalarKey:(id)a3 withDuration:(double)a4;
+- (unint64_t)abstimeToNanosec:(unint64_t)nanosec;
+- (unint64_t)bucketWakeTime:(unint64_t)time;
+- (void)addToDurationScalarKey:(id)key withDuration:(double)duration;
 - (void)initOperatorDependancies;
 - (void)initValidReasonsDictionary;
-- (void)logAggregateUIKitActivityKey:(id)a3 withInfo:(id)a4 AggDKey:(id)a5;
-- (void)logAggregateUIKitKeyboardActivityKey:(id)a3 withInfo:(id)a4 AggDKey:(id)a5;
+- (void)logAggregateUIKitActivityKey:(id)key withInfo:(id)info AggDKey:(id)dKey;
+- (void)logAggregateUIKitKeyboardActivityKey:(id)key withInfo:(id)info AggDKey:(id)dKey;
 - (void)registerForApplicationNotifications;
 - (void)registerForAudioNotifications;
 - (void)registerForBacklightLatencyNotifications;
@@ -24,7 +24,7 @@
 - (void)registerForSpringboardNotifications;
 - (void)registerForUIKitNotifications;
 - (void)registerForVideoNotifications;
-- (void)updateAggregateStateWithEntry:(id)a3;
+- (void)updateAggregateStateWithEntry:(id)entry;
 @end
 
 @implementation PLAggregateDictionaryService
@@ -522,7 +522,7 @@ LABEL_28:
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAggregateDictionaryService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -531,8 +531,8 @@ LABEL_28:
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"SessionsFile";
-  v2 = [a1 entryEventNoneDefinitionSessionsFile];
-  v7[0] = v2;
+  entryEventNoneDefinitionSessionsFile = [self entryEventNoneDefinitionSessionsFile];
+  v7[0] = entryEventNoneDefinitionSessionsFile;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -555,9 +555,9 @@ LABEL_28:
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"SessionsFileData";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v11 = commonTypeDict_StringFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -571,7 +571,7 @@ LABEL_28:
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -601,18 +601,18 @@ LABEL_28:
       wakeReasonString = v4->_wakeReasonString;
       v4->_wakeReasonString = 0;
 
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       localCache = v4->_localCache;
-      v4->_localCache = v11;
+      v4->_localCache = dictionary;
 
       [(PLAggregateDictionaryService *)v4 initValidReasonsDictionary];
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -638,9 +638,9 @@ LABEL_28:
 - (void)initValidReasonsDictionary
 {
   v63[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   validReasonsDictionary = self->_validReasonsDictionary;
-  self->_validReasonsDictionary = v3;
+  self->_validReasonsDictionary = dictionary;
 
   v5 = self->_validReasonsDictionary;
   v62[0] = @"aggdKey";
@@ -759,10 +759,10 @@ LABEL_28:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addToDurationScalarKey:(id)a3 withDuration:(double)a4
+- (void)addToDurationScalarKey:(id)key withDuration:(double)duration
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v6 = objc_opt_class();
@@ -778,12 +778,12 @@ LABEL_28:
 
     if (_MergedGlobals_1_70 == 1)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"AGGD DURATION: %@ += %f", v5, *&a4];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"AGGD DURATION: %@ += %f", keyCopy, *&duration];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateDictionaryService.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAggregateDictionaryService addToDurationScalarKey:withDuration:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:219];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:219];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -795,7 +795,7 @@ LABEL_28:
     }
   }
 
-  MEMORY[0x21CEDCD40](v5, a4);
+  MEMORY[0x21CEDCD40](keyCopy, duration);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -810,17 +810,17 @@ uint64_t __68__PLAggregateDictionaryService_addToDurationScalarKey_withDuration_
 - (void)registerForAudioNotifications
 {
   v3 = [(PLOperator *)PLAudioAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Routing"];
-  v4 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__PLAggregateDictionaryService_registerForAudioNotifications__block_invoke;
   v11 = &unk_2782633D8;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v6 = v3;
   v7 = [v5 initWithOperator:self forEntryKey:v6 withBlock:&v8];
-  [v4 addObject:{v7, v8, v9, v10, v11, v12}];
+  [registeredNotifications addObject:{v7, v8, v9, v10, v11, selfCopy}];
 }
 
 uint64_t __61__PLAggregateDictionaryService_registerForAudioNotifications__block_invoke_2(uint64_t a1)
@@ -835,7 +835,7 @@ uint64_t __61__PLAggregateDictionaryService_registerForAudioNotifications__block
   v3 = *MEMORY[0x277D3F5D0];
   v4 = [(PLOperator *)PLCameraAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Camera"];
   v5 = [(PLOperator *)PLCameraAgent entryKeyForType:v3 andName:@"Torch"];
-  v6 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v7 = objc_alloc(MEMORY[0x277D3F1A8]);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -843,9 +843,9 @@ uint64_t __61__PLAggregateDictionaryService_registerForAudioNotifications__block
   v15[3] = &unk_2782597E8;
   v15[4] = self;
   v8 = [v7 initWithOperator:self forEntryKey:v4 withBlock:v15];
-  [v6 addObject:v8];
+  [registeredNotifications addObject:v8];
 
-  v9 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications2 = [(PLAggregateDictionaryService *)self registeredNotifications];
   v10 = objc_alloc(MEMORY[0x277D3F1A8]);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -855,7 +855,7 @@ uint64_t __61__PLAggregateDictionaryService_registerForAudioNotifications__block
   v14 = v5;
   v11 = v5;
   v12 = [v10 initWithOperator:self forEntryKey:v11 withBlock:v13];
-  [v9 addObject:v12];
+  [registeredNotifications2 addObject:v12];
 }
 
 void __62__PLAggregateDictionaryService_registerForCameraNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1006,27 +1006,27 @@ id __62__PLAggregateDictionaryService_registerForCameraNotifications__block_invo
   return v2;
 }
 
-- (void)logAggregateUIKitKeyboardActivityKey:(id)a3 withInfo:(id)a4 AggDKey:(id)a5
+- (void)logAggregateUIKitKeyboardActivityKey:(id)key withInfo:(id)info AggDKey:(id)dKey
 {
-  v26 = a3;
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:@"entry"];
+  keyCopy = key;
+  dKeyCopy = dKey;
+  v9 = [info objectForKeyedSubscript:@"entry"];
   v10 = v9;
   if (v9)
   {
     v11 = [v9 objectForKeyedSubscript:@"Process-ID"];
-    v12 = [(PLAggregateDictionaryService *)self localCache];
-    v13 = [v12 objectForKeyedSubscript:v26];
+    localCache = [(PLAggregateDictionaryService *)self localCache];
+    v13 = [localCache objectForKeyedSubscript:keyCopy];
 
     if (!v13)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
-      v15 = [(PLAggregateDictionaryService *)self localCache];
-      [v15 setObject:v14 forKeyedSubscript:v26];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      localCache2 = [(PLAggregateDictionaryService *)self localCache];
+      [localCache2 setObject:dictionary forKeyedSubscript:keyCopy];
     }
 
-    v16 = [(PLAggregateDictionaryService *)self localCache];
-    v17 = [v16 objectForKeyedSubscript:v26];
+    localCache3 = [(PLAggregateDictionaryService *)self localCache];
+    v17 = [localCache3 objectForKeyedSubscript:keyCopy];
     v18 = [v17 objectForKeyedSubscript:v11];
 
     v19 = [v10 objectForKeyedSubscript:@"Status"];
@@ -1036,39 +1036,39 @@ id __62__PLAggregateDictionaryService_registerForCameraNotifications__block_invo
     {
       if (!v18)
       {
-        v20 = [v10 entryDate];
-        v21 = [(PLAggregateDictionaryService *)self localCache];
-        v22 = [v21 objectForKeyedSubscript:v26];
-        [v22 setObject:v20 forKeyedSubscript:v11];
+        entryDate = [v10 entryDate];
+        localCache4 = [(PLAggregateDictionaryService *)self localCache];
+        v22 = [localCache4 objectForKeyedSubscript:keyCopy];
+        [v22 setObject:entryDate forKeyedSubscript:v11];
 LABEL_9:
       }
     }
 
     else if (v18)
     {
-      v23 = [v10 entryDate];
-      [v23 timeIntervalSinceDate:v18];
+      entryDate2 = [v10 entryDate];
+      [entryDate2 timeIntervalSinceDate:v18];
       v25 = v24;
 
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.UIKit.%@.screenOnTime", v8];
-      [(PLAggregateDictionaryService *)self logDuration:v20 asDistribution:v25];
-      v21 = [(PLAggregateDictionaryService *)self localCache];
-      v22 = [v21 objectForKeyedSubscript:v26];
+      entryDate = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.UIKit.%@.screenOnTime", dKeyCopy];
+      [(PLAggregateDictionaryService *)self logDuration:entryDate asDistribution:v25];
+      localCache4 = [(PLAggregateDictionaryService *)self localCache];
+      v22 = [localCache4 objectForKeyedSubscript:keyCopy];
       [v22 removeObjectForKey:v11];
       goto LABEL_9;
     }
   }
 }
 
-- (void)logAggregateUIKitActivityKey:(id)a3 withInfo:(id)a4 AggDKey:(id)a5
+- (void)logAggregateUIKitActivityKey:(id)key withInfo:(id)info AggDKey:(id)dKey
 {
-  v23 = a3;
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:@"entry"];
+  keyCopy = key;
+  dKeyCopy = dKey;
+  v9 = [info objectForKeyedSubscript:@"entry"];
   if (v9)
   {
-    v10 = [(PLAggregateDictionaryService *)self localCache];
-    v11 = [v10 objectForKeyedSubscript:v23];
+    localCache = [(PLAggregateDictionaryService *)self localCache];
+    v11 = [localCache objectForKeyedSubscript:keyCopy];
 
     if (v11)
     {
@@ -1088,18 +1088,18 @@ LABEL_7:
 
       if (v16)
       {
-        v17 = [v9 entryDate];
-        v18 = [v11 entryDate];
-        [v17 timeIntervalSinceDate:v18];
+        entryDate = [v9 entryDate];
+        entryDate2 = [v11 entryDate];
+        [entryDate timeIntervalSinceDate:entryDate2];
         v20 = v19;
 
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.UIKit.%@.screenOnTime", v8];
-        [(PLAggregateDictionaryService *)self logDuration:v21 asDistribution:v20];
+        dKeyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.UIKit.%@.screenOnTime", dKeyCopy];
+        [(PLAggregateDictionaryService *)self logDuration:dKeyCopy asDistribution:v20];
       }
     }
 
-    v22 = [(PLAggregateDictionaryService *)self localCache];
-    [v22 setObject:v9 forKeyedSubscript:v23];
+    localCache2 = [(PLAggregateDictionaryService *)self localCache];
+    [localCache2 setObject:v9 forKeyedSubscript:keyCopy];
 
     goto LABEL_7;
   }
@@ -1115,7 +1115,7 @@ LABEL_8:
     v4 = [(PLOperator *)PLXPCAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"UIKitKeyboard"];
     v5 = [(PLOperator *)PLXPCAgent entryKeyForType:v3 andName:@"UIKitAlert"];
     v6 = [(PLOperator *)PLXPCAgent entryKeyForType:v3 andName:@"UIKitActivity"];
-    v7 = [(PLAggregateDictionaryService *)self registeredNotifications];
+    registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
     v8 = objc_alloc(MEMORY[0x277D3F1A8]);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -1125,9 +1125,9 @@ LABEL_8:
     v28 = v4;
     v9 = v4;
     v10 = [v8 initWithOperator:self forEntryKey:v9 withBlock:v27];
-    [v7 addObject:v10];
+    [registeredNotifications addObject:v10];
 
-    v11 = [(PLAggregateDictionaryService *)self registeredNotifications];
+    registeredNotifications2 = [(PLAggregateDictionaryService *)self registeredNotifications];
     v12 = objc_alloc(MEMORY[0x277D3F1A8]);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -1137,19 +1137,19 @@ LABEL_8:
     v26 = v5;
     v13 = v5;
     v14 = [v12 initWithOperator:self forEntryKey:v13 withBlock:v25];
-    [v11 addObject:v14];
+    [registeredNotifications2 addObject:v14];
 
-    v15 = [(PLAggregateDictionaryService *)self registeredNotifications];
+    registeredNotifications3 = [(PLAggregateDictionaryService *)self registeredNotifications];
     v16 = objc_alloc(MEMORY[0x277D3F1A8]);
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __61__PLAggregateDictionaryService_registerForUIKitNotifications__block_invoke_3;
     v22 = &unk_2782633D8;
-    v23 = self;
+    selfCopy = self;
     v24 = v6;
     v17 = v6;
     v18 = [v16 initWithOperator:self forEntryKey:v17 withBlock:&v19];
-    [v15 addObject:{v18, v19, v20, v21, v22, v23}];
+    [registeredNotifications3 addObject:{v18, v19, v20, v21, v22, selfCopy}];
   }
 }
 
@@ -1158,13 +1158,13 @@ LABEL_8:
   v3 = *MEMORY[0x277D3F5E8];
   v9 = [(PLOperator *)PLSpringBoardAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"SBAutoLock"];
   v4 = [(PLOperator *)PLSpringBoardAgent entryKeyForType:v3 andName:@"SBNotifications"];
-  v5 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v6 = [objc_alloc(MEMORY[0x277D3F1A8]) initWithOperator:self forNotification:v9 withBlock:&__block_literal_global_68];
-  [v5 addObject:v6];
+  [registeredNotifications addObject:v6];
 
-  v7 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications2 = [(PLAggregateDictionaryService *)self registeredNotifications];
   v8 = [objc_alloc(MEMORY[0x277D3F1A8]) initWithOperator:self forEntryKey:v4 withBlock:&__block_literal_global_245];
-  [v7 addObject:v8];
+  [registeredNotifications2 addObject:v8];
 }
 
 void __67__PLAggregateDictionaryService_registerForSpringboardNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1231,17 +1231,17 @@ LABEL_6:
 - (void)registerForBluetoothNotifications
 {
   v3 = [(PLOperator *)PLBluetoothAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"DeviceState"];
-  v4 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __65__PLAggregateDictionaryService_registerForBluetoothNotifications__block_invoke;
   v11 = &unk_2782633D8;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v6 = v3;
   v7 = [v5 initWithOperator:self forEntryKey:v6 withBlock:&v8];
-  [v4 addObject:{v7, v8, v9, v10, v11, v12}];
+  [registeredNotifications addObject:{v7, v8, v9, v10, v11, selfCopy}];
 }
 
 void __65__PLAggregateDictionaryService_registerForBluetoothNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1310,17 +1310,17 @@ id __65__PLAggregateDictionaryService_registerForBluetoothNotifications__block_i
 - (void)registerForVideoNotifications
 {
   v3 = [(PLOperator *)PLVideoAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Video"];
-  v4 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__PLAggregateDictionaryService_registerForVideoNotifications__block_invoke;
   v11 = &unk_2782633D8;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v6 = v3;
   v7 = [v5 initWithOperator:self forEntryKey:v6 withBlock:&v8];
-  [v4 addObject:{v7, v8, v9, v10, v11, v12}];
+  [registeredNotifications addObject:{v7, v8, v9, v10, v11, selfCopy}];
 }
 
 void __61__PLAggregateDictionaryService_registerForVideoNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1367,7 +1367,7 @@ id __61__PLAggregateDictionaryService_registerForVideoNotifications__block_invok
 - (void)registerForMailNotifications
 {
   v3 = [(PLOperator *)PLXPCAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"MailFetch"];
-  v4 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1375,7 +1375,7 @@ id __61__PLAggregateDictionaryService_registerForVideoNotifications__block_invok
   v7[3] = &unk_2782597E8;
   v7[4] = self;
   v6 = [v5 initWithOperator:self forEntryKey:v3 withBlock:v7];
-  [v4 addObject:v6];
+  [registeredNotifications addObject:v6];
 }
 
 void __60__PLAggregateDictionaryService_registerForMailNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1616,7 +1616,7 @@ uint64_t __60__PLAggregateDictionaryService_registerForMailNotifications__block_
   v3 = *MEMORY[0x277D3F5E8];
   v4 = [(PLOperator *)PLXPCAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"DACalendarItemsDownloaded"];
   v5 = [(PLOperator *)PLXPCAgent entryKeyForType:v3 andName:@"DACalendarItemsUploaded"];
-  v6 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v7 = objc_alloc(MEMORY[0x277D3F1A8]);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -1624,9 +1624,9 @@ uint64_t __60__PLAggregateDictionaryService_registerForMailNotifications__block_
   v14[3] = &unk_2782597E8;
   v15 = @"com.apple.power.calendar";
   v8 = [v7 initWithOperator:self forEntryKey:v4 withBlock:v14];
-  [v6 addObject:v8];
+  [registeredNotifications addObject:v8];
 
-  v9 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications2 = [(PLAggregateDictionaryService *)self registeredNotifications];
   v10 = objc_alloc(MEMORY[0x277D3F1A8]);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1634,7 +1634,7 @@ uint64_t __60__PLAggregateDictionaryService_registerForMailNotifications__block_
   v12[3] = &unk_2782597E8;
   v13 = @"com.apple.power.calendar";
   v11 = [v10 initWithOperator:self forEntryKey:v5 withBlock:v12];
-  [v9 addObject:v11];
+  [registeredNotifications2 addObject:v11];
 }
 
 void __64__PLAggregateDictionaryService_registerForCalendarNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1691,7 +1691,7 @@ id __64__PLAggregateDictionaryService_registerForCalendarNotifications__block_in
 - (void)registerForApplicationNotifications
 {
   v3 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Application"];
-  v4 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1699,7 +1699,7 @@ id __64__PLAggregateDictionaryService_registerForCalendarNotifications__block_in
   v7[3] = &unk_2782597E8;
   v7[4] = self;
   v6 = [v5 initWithOperator:self forNotification:v3 withBlock:v7];
-  [v4 addObject:v6];
+  [registeredNotifications addObject:v6];
 }
 
 uint64_t __67__PLAggregateDictionaryService_registerForApplicationNotifications__block_invoke_2(uint64_t a1)
@@ -1711,16 +1711,16 @@ uint64_t __67__PLAggregateDictionaryService_registerForApplicationNotifications_
 
 - (void)registerForLocationNotifications
 {
-  v3 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v4 = objc_alloc(MEMORY[0x277D3F1A8]);
   v6 = @"PLLocationAgent_EventForward_TechStatus";
   v5 = [v4 initWithOperator:self forEntryKey:MEMORY[0x277D85DD0] withBlock:{3221225472, __64__PLAggregateDictionaryService_registerForLocationNotifications__block_invoke, &unk_2782633D8, self}];
-  [v3 addObject:v5];
+  [registeredNotifications addObject:v5];
 }
 
 - (void)registerForBatteryNotifications
 {
-  v3 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v4 = objc_alloc(MEMORY[0x277D3F1A8]);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -1728,7 +1728,7 @@ uint64_t __67__PLAggregateDictionaryService_registerForApplicationNotifications_
   v6[3] = &unk_2782597E8;
   v6[4] = self;
   v5 = [v4 initWithOperator:self forEntryKey:@"PLBatteryAgent_EventBackward_Battery" withBlock:v6];
-  [v3 addObject:v5];
+  [registeredNotifications addObject:v5];
 }
 
 - (void)registerForSCDynamicStoreNotifications
@@ -1737,7 +1737,7 @@ uint64_t __67__PLAggregateDictionaryService_registerForApplicationNotifications_
   v4 = [(PLOperator *)PLSCDynamicStoreAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"CellularActive"];
   v5 = [(PLOperator *)PLSCDynamicStoreAgent entryKeyForType:v3 andName:@"WifiActive"];
   v6 = [(PLOperator *)PLSCDynamicStoreAgent entryKeyForType:v3 andName:@"HotspotActive"];
-  v7 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v8 = objc_alloc(MEMORY[0x277D3F1A8]);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -1747,9 +1747,9 @@ uint64_t __67__PLAggregateDictionaryService_registerForApplicationNotifications_
   v28 = v4;
   v9 = v4;
   v10 = [v8 initWithOperator:self forEntryKey:v9 withBlock:v27];
-  [v7 addObject:v10];
+  [registeredNotifications addObject:v10];
 
-  v11 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications2 = [(PLAggregateDictionaryService *)self registeredNotifications];
   v12 = objc_alloc(MEMORY[0x277D3F1A8]);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -1759,19 +1759,19 @@ uint64_t __67__PLAggregateDictionaryService_registerForApplicationNotifications_
   v26 = v5;
   v13 = v5;
   v14 = [v12 initWithOperator:self forEntryKey:v13 withBlock:v25];
-  [v11 addObject:v14];
+  [registeredNotifications2 addObject:v14];
 
-  v15 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications3 = [(PLAggregateDictionaryService *)self registeredNotifications];
   v16 = objc_alloc(MEMORY[0x277D3F1A8]);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __70__PLAggregateDictionaryService_registerForSCDynamicStoreNotifications__block_invoke_2;
   v22 = &unk_2782633D8;
-  v23 = self;
+  selfCopy = self;
   v24 = v6;
   v17 = v6;
   v18 = [v16 initWithOperator:self forEntryKey:v17 withBlock:&v19];
-  [v15 addObject:{v18, v19, v20, v21, v22, v23}];
+  [registeredNotifications3 addObject:{v18, v19, v20, v21, v22, selfCopy}];
 }
 
 void __70__PLAggregateDictionaryService_registerForSCDynamicStoreNotifications__block_invoke(uint64_t a1, void *a2)
@@ -1937,7 +1937,7 @@ void __70__PLAggregateDictionaryService_registerForSCDynamicStoreNotifications__
 - (void)registerForSafariNotifications
 {
   v3 = [(PLOperator *)PLXPCAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"SafariFetcher"];
-  v4 = [(PLAggregateDictionaryService *)self registeredNotifications];
+  registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1945,7 +1945,7 @@ void __70__PLAggregateDictionaryService_registerForSCDynamicStoreNotifications__
   v7[3] = &unk_2782597E8;
   v7[4] = self;
   v6 = [v5 initWithOperator:self forEntryKey:v3 withBlock:v7];
-  [v4 addObject:v6];
+  [registeredNotifications addObject:v6];
 }
 
 void __62__PLAggregateDictionaryService_registerForSafariNotifications__block_invoke(uint64_t a1, void *a2)
@@ -2009,7 +2009,7 @@ uint64_t __62__PLAggregateDictionaryService_registerForSafariNotifications__bloc
   {
     v3 = *MEMORY[0x277D3F5E8];
     v4 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"BacklightControl"];
-    v5 = [(PLAggregateDictionaryService *)self registeredNotifications];
+    registeredNotifications = [(PLAggregateDictionaryService *)self registeredNotifications];
     v6 = objc_alloc(MEMORY[0x277D3F1A8]);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -2017,10 +2017,10 @@ uint64_t __62__PLAggregateDictionaryService_registerForSafariNotifications__bloc
     v14[3] = &unk_2782597E8;
     v14[4] = self;
     v7 = [v6 initWithOperator:self forEntryKey:v4 withBlock:v14];
-    [v5 addObject:v7];
+    [registeredNotifications addObject:v7];
 
     v8 = [(PLOperator *)PLSleepWakeAgent entryKeyForType:v3 andName:@"CurrentMachWakeTime"];
-    v9 = [(PLAggregateDictionaryService *)self registeredNotifications];
+    registeredNotifications2 = [(PLAggregateDictionaryService *)self registeredNotifications];
     v10 = objc_alloc(MEMORY[0x277D3F1A8]);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -2029,11 +2029,11 @@ uint64_t __62__PLAggregateDictionaryService_registerForSafariNotifications__bloc
     v12[4] = self;
     v13 = @"CurrentMachWakeTime";
     v11 = [v10 initWithOperator:self forEntryKey:v8 withBlock:v12];
-    [v9 addObject:v11];
+    [registeredNotifications2 addObject:v11];
   }
 }
 
-- (unint64_t)abstimeToNanosec:(unint64_t)a3
+- (unint64_t)abstimeToNanosec:(unint64_t)nanosec
 {
   v4 = *&abstimeToNanosec__tmScale;
   if (*&abstimeToNanosec__tmScale < 0.0)
@@ -2046,45 +2046,45 @@ uint64_t __62__PLAggregateDictionaryService_registerForSafariNotifications__bloc
     abstimeToNanosec__tmScale = *&v4;
   }
 
-  return (v4 * a3);
+  return (v4 * nanosec);
 }
 
-- (unint64_t)bucketWakeTime:(unint64_t)a3
+- (unint64_t)bucketWakeTime:(unint64_t)time
 {
-  if (a3 < 0x3E8)
+  if (time < 0x3E8)
   {
     v3 = 10;
-    return a3 - a3 % v3;
+    return time - time % v3;
   }
 
-  if (a3 >> 3 < 0x271)
+  if (time >> 3 < 0x271)
   {
     v3 = 100;
-    return a3 - a3 % v3;
+    return time - time % v3;
   }
 
-  if (a3 >> 4 <= 0x270)
+  if (time >> 4 <= 0x270)
   {
     v3 = 500;
-    return a3 - a3 % v3;
+    return time - time % v3;
   }
 
   return 10000;
 }
 
-- (void)updateAggregateStateWithEntry:(id)a3
+- (void)updateAggregateStateWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"AdapterInfo"];
-  v6 = [v5 longValue];
-  v7 = v6 != 0;
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"AdapterInfo"];
+  longValue = [v5 longValue];
+  v7 = longValue != 0;
 
-  v8 = [v4 objectForKeyedSubscript:@"RawLevel"];
+  v8 = [entryCopy objectForKeyedSubscript:@"RawLevel"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 entryDate];
-  [v11 timeIntervalSince1970];
+  entryDate = [entryCopy entryDate];
+  [entryDate timeIntervalSince1970];
   v13 = v12;
 
   [(PLAggregateDictionaryService *)self last_state];
@@ -2101,7 +2101,7 @@ uint64_t __62__PLAggregateDictionaryService_registerForSafariNotifications__bloc
   v27 = v13 - v26;
   [(PLAggregateDictionaryService *)self last_state];
   [(PLAggregateDictionaryService *)self last_state];
-  if (!v24 && !v6)
+  if (!v24 && !longValue)
   {
     if (fabs(v14) <= 1.0)
     {
@@ -2109,7 +2109,7 @@ uint64_t __62__PLAggregateDictionaryService_registerForSafariNotifications__bloc
     }
 
 LABEL_9:
-    v16 = [v4 objectForKeyedSubscript:@"NominalChargeCapacity"];
+    v16 = [entryCopy objectForKeyedSubscript:@"NominalChargeCapacity"];
     if (v16)
     {
       v17 = @"NominalChargeCapacity";
@@ -2120,10 +2120,10 @@ LABEL_9:
       v17 = @"AppleRawMaxCapacity";
     }
 
-    v18 = [v4 objectForKeyedSubscript:v17];
-    v19 = [v18 longValue];
+    v18 = [entryCopy objectForKeyedSubscript:v17];
+    longValue2 = [v18 longValue];
 
-    self->remainderUnpluggedEnergy = modf(v14 / 100.0 * v19, &__y) + self->remainderUnpluggedEnergy;
+    self->remainderUnpluggedEnergy = modf(v14 / 100.0 * longValue2, &__y) + self->remainderUnpluggedEnergy;
     remainderUnpluggedTime = modf(v15, &v27) + self->remainderUnpluggedTime;
     self->remainderUnpluggedTime = remainderUnpluggedTime;
     v23 = 0.0;
@@ -2147,7 +2147,7 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (!v25 && v6)
+  if (!v25 && longValue)
   {
     MEMORY[0x21CEDCD40](@"com.apple.power.state.t_unplugged.count", 1);
     AnalyticsSendEventLazy();

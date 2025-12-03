@@ -7,7 +7,7 @@
 
 - (id)userActivity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = EmbeddedPickerSceneSpecification.userActivity()();
 
   return v3;

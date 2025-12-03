@@ -60,9 +60,9 @@
     v30 = v20;
     v21 = -[CIImage imageByUnpremultiplyingAlpha](-[CIImage imageByClampingToExtent](-[CIImage imageByApplyingFilter:withInputParameters:](v19, "imageByApplyingFilter:withInputParameters:", @"CIAreaMaximum", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1]), "imageByClampingToExtent"), "imageByUnpremultiplyingAlpha");
     v22 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_minMaxNormalize];
-    v23 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-    [(CIImage *)v23 extent];
-    v28[0] = v23;
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    [(CIImage *)imageByUnpremultiplyingAlpha extent];
+    v28[0] = imageByUnpremultiplyingAlpha;
     v28[1] = v18;
     v28[2] = v21;
     return -[CIImage imageByPremultiplyingAlpha](-[CIColorKernel applyWithExtent:arguments:](v22, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3], v24, v25, v26, v27), "imageByPremultiplyingAlpha");

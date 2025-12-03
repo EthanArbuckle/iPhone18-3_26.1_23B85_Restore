@@ -1,32 +1,32 @@
 @interface SHAudioUtilities
-+ (BOOL)isAudioFormatSupported:(id)a3;
-+ (BOOL)willAudioFormatCauseBufferMutation:(id)a3;
-+ (double)durationOfBuffer:(id)a3;
-+ (id)appendBuffer:(id)a3 toBuffer:(id)a4;
-+ (id)audioBufferFromData:(void *)a3 byteSize:(unint64_t)a4 inFormat:(id)a5;
-+ (id)bufferHead:(id)a3 duration:(double)a4;
-+ (id)bufferTail:(id)a3 duration:(double)a4;
-+ (id)extractFromBuffer:(id)a3 atPosition:(unsigned int)a4 length:(unsigned int)a5;
++ (BOOL)isAudioFormatSupported:(id)supported;
++ (BOOL)willAudioFormatCauseBufferMutation:(id)mutation;
++ (double)durationOfBuffer:(id)buffer;
++ (id)appendBuffer:(id)buffer toBuffer:(id)toBuffer;
++ (id)audioBufferFromData:(void *)data byteSize:(unint64_t)size inFormat:(id)format;
++ (id)bufferHead:(id)head duration:(double)duration;
++ (id)bufferTail:(id)tail duration:(double)duration;
++ (id)extractFromBuffer:(id)buffer atPosition:(unsigned int)position length:(unsigned int)length;
 @end
 
 @implementation SHAudioUtilities
 
-+ (id)bufferHead:(id)a3 duration:(double)a4
++ (id)bufferHead:(id)head duration:(double)duration
 {
-  v7 = a3;
-  [a1 durationOfBuffer:v7];
-  if (v8 <= a4)
+  headCopy = head;
+  [self durationOfBuffer:headCopy];
+  if (v8 <= duration)
   {
-    v11 = v7;
+    v11 = headCopy;
   }
 
   else
   {
-    v9 = [v7 format];
-    [v9 sampleRate];
-    LODWORD(v4) = vcvtad_u64_f64(v10 * a4);
+    format = [headCopy format];
+    [format sampleRate];
+    LODWORD(v4) = vcvtad_u64_f64(v10 * duration);
 
-    v11 = [a1 extractFromBuffer:v7 atPosition:0 length:v4];
+    v11 = [self extractFromBuffer:headCopy atPosition:0 length:v4];
   }
 
   v12 = v11;
@@ -34,27 +34,27 @@
   return v12;
 }
 
-+ (id)bufferTail:(id)a3 duration:(double)a4
++ (id)bufferTail:(id)tail duration:(double)duration
 {
-  v7 = a3;
-  [a1 durationOfBuffer:v7];
-  if (v8 <= a4)
+  tailCopy = tail;
+  [self durationOfBuffer:tailCopy];
+  if (v8 <= duration)
   {
-    v15 = v7;
+    v15 = tailCopy;
   }
 
   else
   {
-    v9 = v8 - a4;
-    v10 = [v7 format];
-    [v10 sampleRate];
+    v9 = v8 - duration;
+    format = [tailCopy format];
+    [format sampleRate];
     v12 = (v9 * v11);
 
-    v13 = [v7 format];
-    [v13 sampleRate];
-    LODWORD(v4) = vcvtad_u64_f64(v14 * a4);
+    format2 = [tailCopy format];
+    [format2 sampleRate];
+    LODWORD(v4) = vcvtad_u64_f64(v14 * duration);
 
-    v15 = [a1 extractFromBuffer:v7 atPosition:v12 length:v4];
+    v15 = [self extractFromBuffer:tailCopy atPosition:v12 length:v4];
   }
 
   v16 = v15;
@@ -62,79 +62,79 @@
   return v16;
 }
 
-+ (double)durationOfBuffer:(id)a3
++ (double)durationOfBuffer:(id)buffer
 {
-  v3 = a3;
-  v4 = [v3 frameLength];
-  v5 = [v3 format];
+  bufferCopy = buffer;
+  frameLength = [bufferCopy frameLength];
+  format = [bufferCopy format];
 
-  [v5 sampleRate];
-  v7 = v4 / v6;
+  [format sampleRate];
+  v7 = frameLength / v6;
 
   return v7;
 }
 
-+ (id)extractFromBuffer:(id)a3 atPosition:(unsigned int)a4 length:(unsigned int)a5
++ (id)extractFromBuffer:(id)buffer atPosition:(unsigned int)position length:(unsigned int)length
 {
-  v7 = a3;
-  if ([v7 frameLength] >= a4)
+  bufferCopy = buffer;
+  if ([bufferCopy frameLength] >= position)
   {
-    v9 = [v7 frameLength] - a4;
-    if (v9 >= a5)
+    v9 = [bufferCopy frameLength] - position;
+    if (v9 >= length)
     {
-      v10 = a5;
+      lengthCopy = length;
     }
 
     else
     {
-      v10 = v9;
+      lengthCopy = v9;
     }
 
     v11 = objc_alloc(MEMORY[0x277CB83C8]);
-    v12 = [v7 format];
-    v8 = [v11 initWithPCMFormat:v12 frameCapacity:v10];
+    format = [bufferCopy format];
+    v8 = [v11 initWithPCMFormat:format frameCapacity:lengthCopy];
 
-    [v8 setFrameLength:v10];
-    if (*[v7 audioBufferList])
+    [v8 setFrameLength:lengthCopy];
+    if (*[bufferCopy audioBufferList])
     {
       v13 = 0;
       v14 = 16;
       do
       {
-        v15 = [v8 format];
-        v16 = *([v15 streamDescription] + 24);
+        format2 = [v8 format];
+        v16 = *([format2 streamDescription] + 24);
 
-        memcpy(*([v8 audioBufferList] + v14), (*(objc_msgSend(v7, "audioBufferList") + v14) + v16 * a4), objc_msgSend(v8, "frameLength") * v16);
+        memcpy(*([v8 audioBufferList] + v14), (*(objc_msgSend(bufferCopy, "audioBufferList") + v14) + v16 * position), objc_msgSend(v8, "frameLength") * v16);
         ++v13;
         v14 += 16;
       }
 
-      while (v13 < *[v7 audioBufferList]);
+      while (v13 < *[bufferCopy audioBufferList]);
     }
   }
 
   else
   {
-    v8 = v7;
+    v8 = bufferCopy;
   }
 
   return v8;
 }
 
-+ (BOOL)willAudioFormatCauseBufferMutation:(id)a3
++ (BOOL)willAudioFormatCauseBufferMutation:(id)mutation
 {
-  v3 = a3;
-  v4 = [v3 commonFormat] != 3 || objc_msgSend(v3, "channelCount") != 1;
+  mutationCopy = mutation;
+  v4 = [mutationCopy commonFormat] != 3 || objc_msgSend(mutationCopy, "channelCount") != 1;
 
   return v4;
 }
 
-+ (BOOL)isAudioFormatSupported:(id)a3
++ (BOOL)isAudioFormatSupported:(id)supported
 {
-  v3 = a3;
-  if (*([v3 streamDescription] + 8) == 1819304813 && objc_msgSend(v3, "channelCount") <= 2 && objc_msgSend(v3, "commonFormat") != 4 && objc_msgSend(v3, "commonFormat") != 2 && ((objc_msgSend(v3, "isInterleaved") & 1) != 0 || objc_msgSend(v3, "channelCount") != 2))
+  supportedCopy = supported;
+  if (*([supportedCopy streamDescription] + 8) == 1819304813 && objc_msgSend(supportedCopy, "channelCount") <= 2 && objc_msgSend(supportedCopy, "commonFormat") != 4 && objc_msgSend(supportedCopy, "commonFormat") != 2 && ((objc_msgSend(supportedCopy, "isInterleaved") & 1) != 0 || objc_msgSend(supportedCopy, "channelCount") != 2))
   {
-    [v3 sampleRate];
+    [supportedCopy sampleRate];
     v7 = v6;
     v4 = 1;
     if (v6 > 44099)
@@ -169,34 +169,34 @@ LABEL_6:
   return v4;
 }
 
-+ (id)audioBufferFromData:(void *)a3 byteSize:(unint64_t)a4 inFormat:(id)a5
++ (id)audioBufferFromData:(void *)data byteSize:(unint64_t)size inFormat:(id)format
 {
-  v7 = a5;
-  v8 = a4 / *([v7 streamDescription] + 24);
-  v9 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v7 frameCapacity:v8];
+  formatCopy = format;
+  v8 = size / *([formatCopy streamDescription] + 24);
+  v9 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:formatCopy frameCapacity:v8];
 
   [v9 setFrameLength:v8];
-  memcpy(*([v9 audioBufferList] + 16), a3, a4);
+  memcpy(*([v9 audioBufferList] + 16), data, size);
 
   return v9;
 }
 
-+ (id)appendBuffer:(id)a3 toBuffer:(id)a4
++ (id)appendBuffer:(id)buffer toBuffer:(id)toBuffer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 format];
-  v8 = *([v7 streamDescription] + 8);
-  v9 = [v5 format];
-  v10 = *([v9 streamDescription] + 8);
+  bufferCopy = buffer;
+  toBufferCopy = toBuffer;
+  format = [toBufferCopy format];
+  v8 = *([format streamDescription] + 8);
+  format2 = [bufferCopy format];
+  v10 = *([format2 streamDescription] + 8);
 
   if (v8 == v10)
   {
-    v11 = [v6 frameLength];
-    v12 = [v5 frameLength] + v11;
-    if (v12 <= [v6 frameCapacity])
+    frameLength = [toBufferCopy frameLength];
+    v12 = [bufferCopy frameLength] + frameLength;
+    if (v12 <= [toBufferCopy frameCapacity])
     {
-      v15 = v6;
+      v15 = toBufferCopy;
       if (*[v15 audioBufferList])
       {
         v28 = v12;
@@ -204,15 +204,15 @@ LABEL_6:
         v20 = 16;
         do
         {
-          v21 = [v15 frameLength];
-          v22 = [v5 format];
-          v23 = (*([v22 streamDescription] + 24) * v21);
+          frameLength2 = [v15 frameLength];
+          format3 = [bufferCopy format];
+          v23 = (*([format3 streamDescription] + 24) * frameLength2);
 
           v24 = *([v15 audioBufferList] + v20);
-          v25 = *([v5 audioBufferList] + v20);
-          LODWORD(v22) = [v5 frameLength];
-          v26 = [v5 format];
-          memcpy((v24 + v23), v25, (*([v26 streamDescription] + 24) * v22));
+          v25 = *([bufferCopy audioBufferList] + v20);
+          LODWORD(format3) = [bufferCopy frameLength];
+          format4 = [bufferCopy format];
+          memcpy((v24 + v23), v25, (*([format4 streamDescription] + 24) * format3));
 
           ++v19;
           v20 += 16;
@@ -226,24 +226,24 @@ LABEL_6:
     else
     {
       v13 = objc_alloc(MEMORY[0x277CB83C8]);
-      v14 = [v6 format];
-      v15 = [v13 initWithPCMFormat:v14 frameCapacity:v12];
+      format5 = [toBufferCopy format];
+      v15 = [v13 initWithPCMFormat:format5 frameCapacity:v12];
 
-      if (*[v6 audioBufferList])
+      if (*[toBufferCopy audioBufferList])
       {
         v16 = 0;
         v17 = 0;
         do
         {
-          v18 = [MEMORY[0x277CBEB28] dataWithBytes:*(objc_msgSend(v6 length:{"audioBufferList") + v16 + 16), *(objc_msgSend(v6, "audioBufferList") + v16 + 12)}];
-          [v18 appendBytes:*(objc_msgSend(v5 length:{"audioBufferList") + v16 + 16), *(objc_msgSend(v5, "audioBufferList") + v16 + 12)}];
+          v18 = [MEMORY[0x277CBEB28] dataWithBytes:*(objc_msgSend(toBufferCopy length:{"audioBufferList") + v16 + 16), *(objc_msgSend(toBufferCopy, "audioBufferList") + v16 + 12)}];
+          [v18 appendBytes:*(objc_msgSend(bufferCopy length:{"audioBufferList") + v16 + 16), *(objc_msgSend(bufferCopy, "audioBufferList") + v16 + 12)}];
           [v18 getBytes:*(objc_msgSend(v15 length:{"audioBufferList") + v16 + 16), objc_msgSend(v18, "length")}];
 
           ++v17;
           v16 += 16;
         }
 
-        while (v17 < *[v6 audioBufferList]);
+        while (v17 < *[toBufferCopy audioBufferList]);
       }
     }
 
@@ -252,7 +252,7 @@ LABEL_6:
 
   else
   {
-    v15 = v6;
+    v15 = toBufferCopy;
   }
 
   return v15;

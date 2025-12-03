@@ -1,11 +1,11 @@
 @interface ArcadeRepair
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5;
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key;
 - (ApplicationRepairDelegate)delegate;
 - (NSArray)repairedBundleIDs;
 - (_TtC9appstored6LogKey)logKey;
 - (int)fairPlayStatus;
-- (void)repairApplication:(id)a3 completionHandler:(id)a4;
-- (void)setLogKey:(id)a3;
+- (void)repairApplication:(id)application completionHandler:(id)handler;
+- (void)setLogKey:(id)key;
 @end
 
 @implementation ArcadeRepair
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 prependingCategory:@"Arcade"];
+  v5 = [keyCopy prependingCategory:@"Arcade"];
 
   lock_logKey = self->lock_logKey;
   self->lock_logKey = v5;
@@ -57,20 +57,20 @@
   return v3;
 }
 
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  applicationCopy = application;
+  optionsCopy = options;
+  keyCopy = key;
   v10 = +[ACAccountStore ams_sharedAccountStore];
-  v11 = [v10 ams_activeiTunesAccount];
-  if (v11)
+  ams_activeiTunesAccount = [v10 ams_activeiTunesAccount];
+  if (ams_activeiTunesAccount)
   {
   }
 
   else
   {
-    v12 = sub_1003D2BDC(v7);
+    v12 = sub_1003D2BDC(applicationCopy);
 
     if (v12)
     {
@@ -78,7 +78,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v9;
+        v21 = keyCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Arcade/%@] Will start arcade recovery to sign in", &v20, 0xCu);
       }
 
@@ -87,14 +87,14 @@
     }
   }
 
-  if (!sub_1003D2BDC(v7))
+  if (!sub_1003D2BDC(applicationCopy))
   {
 LABEL_19:
     v14 = 0;
     goto LABEL_20;
   }
 
-  v15 = sub_100210B44(ArcadeRepair, v7, v8);
+  v15 = sub_100210B44(ArcadeRepair, applicationCopy, optionsCopy);
   v16 = v15;
   if (v15 + 42587 <= 3 && v15 != -42586 || v15 == -42110 || v15 == -42112)
   {
@@ -105,7 +105,7 @@ LABEL_19:
     }
 
     v20 = 138412546;
-    v21 = v9;
+    v21 = keyCopy;
     v22 = 1024;
     v23 = v16;
     v18 = "[Arcade/%@] Will start arcade fairplay recovery with fairplayStatus: %d";
@@ -116,7 +116,7 @@ LABEL_19:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412546;
-    v21 = v9;
+    v21 = keyCopy;
     v22 = 1024;
     v23 = v16;
     v18 = "[Arcade/%@] Will not attempt arcade recovery with fairplayStatus: %d";
@@ -137,9 +137,9 @@ LABEL_20:
   return v14;
 }
 
-- (void)repairApplication:(id)a3 completionHandler:(id)a4
+- (void)repairApplication:(id)application completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   if (-[ASDRepairOptions isBackground](self->_options, "isBackground") & 1) != 0 || (+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace, "defaultWorkspace"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 applicationIsInstalled:@"com.apple.AppStore"], v6, (v7))
   {
     v8 = +[NSDate date];
@@ -152,19 +152,19 @@ LABEL_20:
     v34[2] = sub_1002110D0;
     v34[3] = &unk_10051C6E8;
     v34[4] = self;
-    v35 = v5;
+    v35 = handlerCopy;
     [v10 recentBagWithCompletionHandler:v34];
   }
 
   else
   {
-    v11 = [(ArcadeRepair *)self logKey];
+    logKey = [(ArcadeRepair *)self logKey];
     v12 = ASDLocalizedString();
     v13 = [NSString localizedStringWithFormat:v12];
     v14 = ASDLocalizedString();
     v15 = [AMSDialogRequest requestWithTitle:v13 message:v14];
 
-    v16 = [v11 description];
+    v16 = [logKey description];
     [v15 setLogKey:v16];
 
     v17 = ASDLocalizedString();
@@ -182,9 +182,9 @@ LABEL_20:
 
     [v15 setDefaultAction:v19];
     v24 = sub_100312260(InteractiveRequestPresenter, v15, 0);
-    v25 = [v24 selectedActionIdentifier];
-    v26 = [v22 identifier];
-    v27 = [v25 isEqualToString:v26];
+    selectedActionIdentifier = [v24 selectedActionIdentifier];
+    identifier = [v22 identifier];
+    v27 = [selectedActionIdentifier isEqualToString:identifier];
 
     v28 = ASDLogHandleForCategory();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
@@ -193,7 +193,7 @@ LABEL_20:
       if (v29)
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v11;
+        *(&buf + 4) = logKey;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[%@] User selected to install distributor", &buf, 0xCu);
       }
 
@@ -206,20 +206,20 @@ LABEL_20:
       *(&buf + 1) = 3221225472;
       v37 = sub_1002138C8;
       v38 = &unk_10051D460;
-      v39 = v11;
+      v39 = logKey;
       [v30 installSystemApps:v31 onPairedDevice:0 withReplyHandler:&buf];
     }
 
     else if (v29)
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = logKey;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[%@] User selected cancel distributor install", &buf, 0xCu);
     }
 
     v32 = [NSError alloc];
     v33 = [v32 initWithDomain:ASDErrorDomain code:545 userInfo:0];
-    (*(v5 + 2))(v5, v33);
+    (*(handlerCopy + 2))(handlerCopy, v33);
   }
 }
 

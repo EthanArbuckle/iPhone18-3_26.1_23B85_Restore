@@ -4,8 +4,8 @@
 + (void)initialize;
 + (void)updateStatus;
 - (SpeakCorrections)init;
-- (void)_correctionDisplayed:(id)a3;
-- (void)_speakCorrection:(id)a3;
+- (void)_correctionDisplayed:(id)displayed;
+- (void)_speakCorrection:(id)correction;
 - (void)dealloc;
 - (void)loadUIAccessibilityIfNecessary;
 @end
@@ -98,9 +98,9 @@
 
     v8 = v7;
     _Block_object_dispose(&v25, 8);
-    v9 = [v7 availableLanguageCodes];
+    availableLanguageCodes = [v7 availableLanguageCodes];
     availableLanguageCodes = v4->_availableLanguageCodes;
-    v4->_availableLanguageCodes = v9;
+    v4->_availableLanguageCodes = availableLanguageCodes;
 
     v11 = objc_allocWithZone(MEMORY[0x29EDB8DC0]);
     v12 = [MEMORY[0x29EDB9F48] bundleWithIdentifier:@"com.apple.AccessibilitySettingsLoader"];
@@ -109,8 +109,8 @@
     keyboardToLanguage = v4->_keyboardToLanguage;
     v4->_keyboardToLanguage = v14;
 
-    v16 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v16 addObserver:v4 selector:sel__correctionDisplayed_ name:*MEMORY[0x29EDC8190] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__correctionDisplayed_ name:*MEMORY[0x29EDC8190] object:0];
 
     v17 = v4;
   }
@@ -122,18 +122,18 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SpeakCorrections;
   [(SpeakCorrections *)&v5 dealloc];
 }
 
-- (void)_correctionDisplayed:(id)a3
+- (void)_correctionDisplayed:(id)displayed
 {
-  v4 = [a3 userInfo];
-  v9 = [v4 objectForKey:@"correction"];
+  userInfo = [displayed userInfo];
+  v9 = [userInfo objectForKey:@"correction"];
 
   [MEMORY[0x29EDBA108] cancelPreviousPerformRequestsWithTarget:self];
   if (v9)
@@ -144,18 +144,18 @@
 
   else
   {
-    v5 = [MEMORY[0x29EDC7B08] activeInstance];
+    activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
 
-    if (v5)
+    if (activeInstance)
     {
-      v6 = [MEMORY[0x29EDC7B08] sharedInstance];
-      v7 = [v6 valueForKey:@"m_previousInputString"];
+      mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
+      v7 = [mEMORY[0x29EDC7B08] valueForKey:@"m_previousInputString"];
 
       if (([v7 isEqualToString:@" "] & 1) == 0)
       {
         self->_correctionCanceled = 1;
-        v8 = [getSpeakTypingServicesClass() sharedInstance];
-        [v8 notifySpeakServicesToStopSpeakingAutocorrections];
+        sharedInstance = [getSpeakTypingServicesClass() sharedInstance];
+        [sharedInstance notifySpeakServicesToStopSpeakingAutocorrections];
       }
     }
   }
@@ -177,19 +177,19 @@
   }
 }
 
-- (void)_speakCorrection:(id)a3
+- (void)_speakCorrection:(id)correction
 {
-  v4 = a3;
+  correctionCopy = correction;
   if (!self->_correctionCanceled)
   {
-    v5 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-    v6 = [v5 currentInputMode];
-    v7 = [v6 primaryLanguage];
+    mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+    currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+    primaryLanguage = [currentInputMode primaryLanguage];
 
-    v8 = [v7 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v8 = [primaryLanguage stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     if (![(NSArray *)self->_availableLanguageCodes containsObject:v8])
     {
-      v9 = [(NSDictionary *)self->_keyboardToLanguage objectForKey:v7];
+      v9 = [(NSDictionary *)self->_keyboardToLanguage objectForKey:primaryLanguage];
 
       v8 = v9;
     }
@@ -197,7 +197,7 @@
     if (UIAccessibilityIsVoiceOverRunning())
     {
       [(SpeakCorrections *)self loadUIAccessibilityIfNecessary];
-      v10 = v4;
+      v10 = correctionCopy;
       if (v8)
       {
         v23 = 0;
@@ -241,7 +241,7 @@
       block[1] = 3221225472;
       block[2] = __37__SpeakCorrections__speakCorrection___block_invoke;
       block[3] = &unk_29F29A688;
-      v16 = v4;
+      v16 = correctionCopy;
       v17 = v8;
       dispatch_async(speakingQueue, block);
 

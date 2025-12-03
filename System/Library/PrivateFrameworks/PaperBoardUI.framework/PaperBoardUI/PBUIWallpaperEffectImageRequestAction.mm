@@ -1,27 +1,27 @@
 @interface PBUIWallpaperEffectImageRequestAction
 - (NSString)slotIdentifier;
-- (PBUIWallpaperEffectImageRequestAction)initWithSlotIdentifier:(id)a3 forResponseOnQueue:(id)a4 withHandler:(id)a5;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (PBUIWallpaperEffectImageRequestAction)initWithSlotIdentifier:(id)identifier forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation PBUIWallpaperEffectImageRequestAction
 
-- (PBUIWallpaperEffectImageRequestAction)initWithSlotIdentifier:(id)a3 forResponseOnQueue:(id)a4 withHandler:(id)a5
+- (PBUIWallpaperEffectImageRequestAction)initWithSlotIdentifier:(id)identifier forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v10 = MEMORY[0x277CF0C80];
-  v11 = a3;
+  identifierCopy = identifier;
   v12 = objc_alloc_init(v10);
-  [v12 setObject:v11 forSetting:1];
+  [v12 setObject:identifierCopy forSetting:1];
 
-  if (v9)
+  if (handlerCopy)
   {
-    v13 = [MEMORY[0x277CF0B60] responderWithHandler:v9];
+    v13 = [MEMORY[0x277CF0B60] responderWithHandler:handlerCopy];
     v14 = v13;
-    if (v8)
+    if (queueCopy)
     {
-      [v13 setQueue:v8];
+      [v13 setQueue:queueCopy];
     }
   }
 
@@ -39,15 +39,15 @@
 
 - (NSString)slotIdentifier
 {
-  v2 = [(PBUIWallpaperEffectImageRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(PBUIWallpaperEffectImageRequestAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"slotIdentifier";
   }

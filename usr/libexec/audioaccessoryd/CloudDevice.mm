@@ -1,8 +1,8 @@
 @interface CloudDevice
-+ (CloudDevice)deviceWithIDSDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CloudDevice)initWithIDSDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (CloudDevice)deviceWithIDSDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (CloudDevice)initWithIDSDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)stateString;
 - (unint64_t)hash;
@@ -10,40 +10,40 @@
 
 @implementation CloudDevice
 
-+ (CloudDevice)deviceWithIDSDevice:(id)a3
++ (CloudDevice)deviceWithIDSDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[CloudDevice alloc] initWithIDSDevice:v3];
+  deviceCopy = device;
+  v4 = [[CloudDevice alloc] initWithIDSDevice:deviceCopy];
 
   return v4;
 }
 
-- (CloudDevice)initWithIDSDevice:(id)a3
+- (CloudDevice)initWithIDSDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = CloudDevice;
   v6 = [(CloudDevice *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsDevice, a3);
+    objc_storeStrong(&v6->_idsDevice, device);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 idsDevice];
-    v6 = [v5 uniqueID];
-    v7 = [(CloudDevice *)self idsDevice];
-    v8 = [v7 uniqueID];
-    v9 = [v6 isEqualToString:v8];
+    idsDevice = [equalCopy idsDevice];
+    uniqueID = [idsDevice uniqueID];
+    idsDevice2 = [(CloudDevice *)self idsDevice];
+    uniqueID2 = [idsDevice2 uniqueID];
+    v9 = [uniqueID isEqualToString:uniqueID2];
   }
 
   else
@@ -56,19 +56,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CloudDevice *)self idsDevice];
-  v3 = [v2 uniqueID];
-  v4 = [v3 hash];
+  idsDevice = [(CloudDevice *)self idsDevice];
+  uniqueID = [idsDevice uniqueID];
+  v4 = [uniqueID hash];
 
   return v4;
 }
 
 - (id)description
 {
-  v2 = [(CloudDevice *)self idsDevice];
-  v3 = [v2 cpDescription];
+  idsDevice = [(CloudDevice *)self idsDevice];
+  cpDescription = [idsDevice cpDescription];
 
-  return v3;
+  return cpDescription;
 }
 
 - (id)stateString
@@ -85,9 +85,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [CloudDevice allocWithZone:a3];
+  v3 = [CloudDevice allocWithZone:zone];
 
   return [(CloudDevice *)v3 init];
 }

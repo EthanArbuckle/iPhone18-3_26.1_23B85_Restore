@@ -4,11 +4,11 @@
 - (BOOL)isMathPaperSolvingAllowed;
 - (_TtC20USDRendererExtension38CRLDeviceManagementRestrictionsManager)init;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 - (void)registerObserver;
-- (void)setIsDefinitionLookupAllowed:(BOOL)a3;
-- (void)setIsKeyboardMathSolvingAllowed:(BOOL)a3;
-- (void)setIsMathPaperSolvingAllowed:(BOOL)a3;
+- (void)setIsDefinitionLookupAllowed:(BOOL)allowed;
+- (void)setIsKeyboardMathSolvingAllowed:(BOOL)allowed;
+- (void)setIsMathPaperSolvingAllowed:(BOOL)allowed;
 @end
 
 @implementation CRLDeviceManagementRestrictionsManager
@@ -20,11 +20,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsMathPaperSolvingAllowed:(BOOL)a3
+- (void)setIsMathPaperSolvingAllowed:(BOOL)allowed
 {
   v5 = OBJC_IVAR____TtC20USDRendererExtension38CRLDeviceManagementRestrictionsManager_isMathPaperSolvingAllowed;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = allowed;
 }
 
 - (BOOL)isKeyboardMathSolvingAllowed
@@ -34,11 +34,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsKeyboardMathSolvingAllowed:(BOOL)a3
+- (void)setIsKeyboardMathSolvingAllowed:(BOOL)allowed
 {
   v5 = OBJC_IVAR____TtC20USDRendererExtension38CRLDeviceManagementRestrictionsManager_isKeyboardMathSolvingAllowed;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = allowed;
 }
 
 - (BOOL)isDefinitionLookupAllowed
@@ -48,31 +48,31 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsDefinitionLookupAllowed:(BOOL)a3
+- (void)setIsDefinitionLookupAllowed:(BOOL)allowed
 {
   v5 = OBJC_IVAR____TtC20USDRendererExtension38CRLDeviceManagementRestrictionsManager_isDefinitionLookupAllowed;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = allowed;
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000690F0();
   if (v3)
   {
     v4 = v3;
-    [v3 unregisterObserver:v2];
+    [v3 unregisterObserver:selfCopy];
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for CRLDeviceManagementRestrictionsManager();
   [(CRLDeviceManagementRestrictionsManager *)&v5 dealloc];
 }
 
 - (void)registerObserver
 {
-  v2 = self;
+  selfCopy = self;
   CRLDeviceManagementRestrictionsManager.registerObserver()();
 }
 
@@ -87,16 +87,16 @@
   return [(CRLDeviceManagementRestrictionsManager *)&v3 init];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     sub_10008AAC8();
   }
 
-  v6 = a3;
-  v7 = self;
-  _s20USDRendererExtension38CRLDeviceManagementRestrictionsManagerC63profileConnectionDidReceiveEffectiveSettingsChangedNotification_8userInfoySo09MCProfileH0CSg_SDys11AnyHashableVypGSgtF_0(a3);
+  notificationCopy = notification;
+  selfCopy = self;
+  _s20USDRendererExtension38CRLDeviceManagementRestrictionsManagerC63profileConnectionDidReceiveEffectiveSettingsChangedNotification_8userInfoySo09MCProfileH0CSg_SDys11AnyHashableVypGSgtF_0(notification);
 }
 
 @end

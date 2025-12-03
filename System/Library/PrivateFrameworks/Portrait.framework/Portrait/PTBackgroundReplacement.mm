@@ -1,26 +1,26 @@
 @interface PTBackgroundReplacement
-- (PTBackgroundReplacement)initWithMetalContext:(id)a3 effectDescriptor:(id)a4 sharedSDOFRenderRequest:(id)a5 renderPipeline:(id)a6;
-- (float)transitionTimeNormalized:(id)a3;
-- (id)backgroundBufferCropAndResize:(id)a3 background:(__CVBuffer *)a4;
+- (PTBackgroundReplacement)initWithMetalContext:(id)context effectDescriptor:(id)descriptor sharedSDOFRenderRequest:(id)request renderPipeline:(id)pipeline;
+- (float)transitionTimeNormalized:(id)normalized;
+- (id)backgroundBufferCropAndResize:(id)resize background:(__CVBuffer *)background;
 - (id)bufferWithContent:(PTBackgroundReplacement *)self;
-- (id)lazyInitializeBackgroundForPresenterOverlaySmall:(__CVBuffer *)a3;
-- (int)applyPortraitBlur:(id)a3 inColorBuffer:(id)a4 inColorPyramid:(id)a5 inBackgroundBuffer:(id)a6 effectRenderRequest:(id)a7;
-- (int)replaceBackground:(id)a3 inColor:(id)a4 inColorPyramid:(id)a5 inSegmentation:(id)a6 effectRenderRequest:(id)a7 outColor:(id)a8 frameIndex:(int)a9;
-- (unint64_t)updateAndGetBackgroundState:(id)a3 frameIndex:(int)a4;
-- (void)copyInterruptedTransitionToTransitionPyramid:(id)a3;
+- (id)lazyInitializeBackgroundForPresenterOverlaySmall:(__CVBuffer *)small;
+- (int)applyPortraitBlur:(id)blur inColorBuffer:(id)buffer inColorPyramid:(id)pyramid inBackgroundBuffer:(id)backgroundBuffer effectRenderRequest:(id)request;
+- (int)replaceBackground:(id)background inColor:(id)color inColorPyramid:(id)pyramid inSegmentation:(id)segmentation effectRenderRequest:(id)request outColor:(id)outColor frameIndex:(int)index;
+- (unint64_t)updateAndGetBackgroundState:(id)state frameIndex:(int)index;
+- (void)copyInterruptedTransitionToTransitionPyramid:(id)pyramid;
 - (void)dealloc;
-- (void)studioLightBackgroundDimming:(id)a3 inCurrentBackground:(id)a4 effectRenderRequest:(id)a5 outColorBufferYUV:(id)a6;
+- (void)studioLightBackgroundDimming:(id)dimming inCurrentBackground:(id)background effectRenderRequest:(id)request outColorBufferYUV:(id)v;
 @end
 
 @implementation PTBackgroundReplacement
 
-- (PTBackgroundReplacement)initWithMetalContext:(id)a3 effectDescriptor:(id)a4 sharedSDOFRenderRequest:(id)a5 renderPipeline:(id)a6
+- (PTBackgroundReplacement)initWithMetalContext:(id)context effectDescriptor:(id)descriptor sharedSDOFRenderRequest:(id)request renderPipeline:(id)pipeline
 {
   v115[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  descriptorCopy = descriptor;
+  requestCopy = request;
+  pipelineCopy = pipeline;
   v109.receiver = self;
   v109.super_class = PTBackgroundReplacement;
   v15 = [(PTBackgroundReplacement *)&v109 init];
@@ -30,10 +30,10 @@
     goto LABEL_33;
   }
 
-  objc_storeStrong(&v15->_metalContext, a3);
-  objc_storeStrong(&v16->_sharedSDOFRenderRequest, a5);
-  objc_storeStrong(&v16->_renderPipeline, a6);
-  objc_storeStrong(&v16->_effectDescriptor, a4);
+  objc_storeStrong(&v15->_metalContext, context);
+  objc_storeStrong(&v16->_sharedSDOFRenderRequest, request);
+  objc_storeStrong(&v16->_renderPipeline, pipeline);
+  objc_storeStrong(&v16->_effectDescriptor, descriptor);
   v16->_backgroundTransisionCount = 0;
   v16->_transitionDuration = 0.8;
   v16->_currentState = 0;
@@ -119,9 +119,9 @@ LABEL_23:
     goto LABEL_32;
   }
 
-  v108 = v11;
-  v27 = [v12 activeEffectType];
-  if ((v27 & 4) == 0)
+  v108 = contextCopy;
+  activeEffectType = [descriptorCopy activeEffectType];
+  if ((activeEffectType & 4) == 0)
   {
     v28 = [[PTColorTemperatureCorrection alloc] initWithMetalContext:v16->_metalContext];
     colorTemperatureCorrection = v16->_colorTemperatureCorrection;
@@ -139,13 +139,13 @@ LABEL_23:
     v16->_colorTemperatureRGB[1] = v37;
   }
 
-  v105 = v14;
-  v107 = v13;
-  v39 = [v12 prewarmOnly];
-  if ((v39 & 1) == 0)
+  v105 = pipelineCopy;
+  v107 = requestCopy;
+  prewarmOnly = [descriptorCopy prewarmOnly];
+  if ((prewarmOnly & 1) == 0)
   {
-    v40 = [(PTMetalContext *)v16->_metalContext textureUtil];
-    v41 = [v40 createWithWidth:2 height:2 pixelFormat:25];
+    textureUtil = [(PTMetalContext *)v16->_metalContext textureUtil];
+    v41 = [textureUtil createWithWidth:2 height:2 pixelFormat:25];
     constantDisparity = v16->_constantDisparity;
     v16->_constantDisparity = v41;
 
@@ -157,30 +157,30 @@ LABEL_23:
     v114 = 1;
     v115[0] = 0x3C003C003C003C00;
     [(MTLTexture *)v43 replaceRegion:buf mipmapLevel:0 withBytes:v115 bytesPerRow:4];
-    v44 = [(PTMetalContext *)v16->_metalContext textureUtil];
-    [v12 colorSize];
+    textureUtil2 = [(PTMetalContext *)v16->_metalContext textureUtil];
+    [descriptorCopy colorSize];
     v46 = v45;
-    [v12 colorSize];
-    v48 = [v44 createWithWidth:v46 height:v47 pixelFormat:10];
-    v49 = [(PTMetalContext *)v16->_metalContext textureUtil];
-    [v12 colorSize];
+    [descriptorCopy colorSize];
+    v48 = [textureUtil2 createWithWidth:v46 height:v47 pixelFormat:10];
+    textureUtil3 = [(PTMetalContext *)v16->_metalContext textureUtil];
+    [descriptorCopy colorSize];
     v51 = (v50 * 0.5);
-    [v12 colorSize];
-    v53 = [v49 createWithWidth:v51 height:(v52 * 0.5) pixelFormat:30];
+    [descriptorCopy colorSize];
+    v53 = [textureUtil3 createWithWidth:v51 height:(v52 * 0.5) pixelFormat:30];
     v54 = [PTTexture createYUV420:v48 chroma:v53];
     backgroundWithSDOF = v16->_backgroundWithSDOF;
     v16->_backgroundWithSDOF = v54;
 
-    v56 = [(PTMetalContext *)v16->_metalContext textureUtil];
-    [v12 colorSize];
+    textureUtil4 = [(PTMetalContext *)v16->_metalContext textureUtil];
+    [descriptorCopy colorSize];
     v58 = v57;
-    [v12 colorSize];
-    v60 = [v56 createWithWidth:v58 height:v59 pixelFormat:10];
-    v61 = [(PTMetalContext *)v16->_metalContext textureUtil];
-    [v12 colorSize];
+    [descriptorCopy colorSize];
+    v60 = [textureUtil4 createWithWidth:v58 height:v59 pixelFormat:10];
+    textureUtil5 = [(PTMetalContext *)v16->_metalContext textureUtil];
+    [descriptorCopy colorSize];
     v63 = (v62 * 0.5);
-    [v12 colorSize];
-    v65 = [v61 createWithWidth:v63 height:(v64 * 0.5) pixelFormat:30];
+    [descriptorCopy colorSize];
+    v65 = [textureUtil5 createWithWidth:v63 height:(v64 * 0.5) pixelFormat:30];
     v66 = [PTTexture createYUV420:v60 chroma:v65];
     backgroundWithStudioLight = v16->_backgroundWithStudioLight;
     v16->_backgroundWithStudioLight = v66;
@@ -188,7 +188,7 @@ LABEL_23:
 
   v68 = 0;
   backgroundTransitionPyramidYUV = v16->_backgroundTransitionPyramidYUV;
-  v70 = (v27 >> 2) & 1 | v39;
+  v70 = (activeEffectType >> 2) & 1 | prewarmOnly;
   colorTemperatureCorrectionYUVCubes = v16->_colorTemperatureCorrectionYUVCubes;
   v72 = 1;
   do
@@ -196,9 +196,9 @@ LABEL_23:
     v73 = v72;
     v74 = [PTPyramid alloc];
     metalContext = v16->_metalContext;
-    [v12 colorSize];
+    [descriptorCopy colorSize];
     v77 = v76 * 0.5;
-    [v12 colorSize];
+    [descriptorCopy colorSize];
     v79 = [(PTPyramid *)v74 initWithMetalContext:metalContext colorSize:70 pixelFormat:0 skipFullSizeLayer:1 doFirstLevelGaussianDownsample:3 mipmapLevelCount:v77, v78 * 0.5];
     v80 = backgroundTransitionPyramidYUV[v68];
     backgroundTransitionPyramidYUV[v68] = v79;
@@ -221,8 +221,8 @@ LABEL_23:
       [v81 setDepth:16];
       [v81 setPixelFormat:70];
       [v81 setUsage:3];
-      v83 = [(PTMetalContext *)v16->_metalContext device];
-      v84 = [v83 newTextureWithDescriptor:v81];
+      device = [(PTMetalContext *)v16->_metalContext device];
+      v84 = [device newTextureWithDescriptor:v81];
       v85 = colorTemperatureCorrectionYUVCubes[v68];
       colorTemperatureCorrectionYUVCubes[v68] = v84;
     }
@@ -232,16 +232,16 @@ LABEL_23:
   }
 
   while ((v73 & 1) != 0);
-  [v12 colorSize];
+  [descriptorCopy colorSize];
   v88 = v87;
-  [v12 colorSize];
-  v11 = v108;
-  v13 = v107;
+  [descriptorCopy colorSize];
+  contextCopy = v108;
+  requestCopy = v107;
   if (v88 <= v89)
   {
-    [v12 colorSize];
+    [descriptorCopy colorSize];
     v94 = v93;
-    [v12 colorSize];
+    [descriptorCopy colorSize];
     v90 = vcvtd_n_u64_f64(v94 / v95, 8uLL);
   }
 
@@ -250,10 +250,10 @@ LABEL_23:
     v90 = 256;
   }
 
-  v14 = v105;
-  [v12 colorSize];
+  pipelineCopy = v105;
+  [descriptorCopy colorSize];
   v97 = v96;
-  [v12 colorSize];
+  [descriptorCopy colorSize];
   if (v97 <= v98)
   {
     v102 = 256;
@@ -261,9 +261,9 @@ LABEL_23:
 
   else
   {
-    [v12 colorSize];
+    [descriptorCopy colorSize];
     v100 = v99;
-    [v12 colorSize];
+    [descriptorCopy colorSize];
     v102 = vcvtd_n_u64_f64(v100 / v101, 8uLL);
   }
 
@@ -288,16 +288,16 @@ LABEL_34:
 
 - (id)bufferWithContent:(PTBackgroundReplacement *)self
 {
-  v3 = [(PTMetalContext *)self->_metalContext device];
-  v4 = [v3 newBufferWithBytes:&v6 length:16 options:0];
+  device = [(PTMetalContext *)self->_metalContext device];
+  v4 = [device newBufferWithBytes:&v6 length:16 options:0];
 
   return v4;
 }
 
-- (id)backgroundBufferCropAndResize:(id)a3 background:(__CVBuffer *)a4
+- (id)backgroundBufferCropAndResize:(id)resize background:(__CVBuffer *)background
 {
-  v6 = [(PTMetalContext *)self->_metalContext device];
-  v7 = [PTTexture createFromPixelbuffer:a4 device:v6 read:1 write:0];
+  device = [(PTMetalContext *)self->_metalContext device];
+  v7 = [PTTexture createFromPixelbuffer:background device:device read:1 write:0];
 
   [(PTEffectDescriptor *)self->_effectDescriptor colorSize];
   v9 = v8;
@@ -310,42 +310,42 @@ LABEL_34:
 
   else
   {
-    v13 = [(PTTextureYUV *)self->_backgroundCropped width];
-    if (v13 != [v7 width] || (v14 = -[PTTextureYUV height](self->_backgroundCropped, "height"), v14 != objc_msgSend(v7, "height")))
+    width = [(PTTextureYUV *)self->_backgroundCropped width];
+    if (width != [v7 width] || (v14 = -[PTTextureYUV height](self->_backgroundCropped, "height"), v14 != objc_msgSend(v7, "height")))
     {
-      v15 = [(PTMetalContext *)self->_metalContext textureUtil];
-      v16 = [v15 createWithWidth:v9 height:v11 pixelFormat:10];
-      v17 = [(PTMetalContext *)self->_metalContext textureUtil];
-      v18 = [v17 createWithWidth:(v9 * 0.5) height:(v11 * 0.5) pixelFormat:30];
+      textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+      v16 = [textureUtil createWithWidth:v9 height:v11 pixelFormat:10];
+      textureUtil2 = [(PTMetalContext *)self->_metalContext textureUtil];
+      v18 = [textureUtil2 createWithWidth:(v9 * 0.5) height:(v11 * 0.5) pixelFormat:30];
       v19 = [PTTexture createYUV420:v16 chroma:v18];
       backgroundCropped = self->_backgroundCropped;
       self->_backgroundCropped = v19;
     }
 
     [v7 copyMetadataTo:self->_backgroundCropped];
-    v21 = [(PTMetalContext *)self->_metalContext commandBuffer];
-    v22 = [v21 computeCommandEncoder];
+    commandBuffer = [(PTMetalContext *)self->_metalContext commandBuffer];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
 
-    [v22 setComputePipelineState:self->_backgroundCropAndResize];
-    v23 = [v7 texLuma];
-    [v22 setTexture:v23 atIndex:0];
+    [computeCommandEncoder setComputePipelineState:self->_backgroundCropAndResize];
+    texLuma = [v7 texLuma];
+    [computeCommandEncoder setTexture:texLuma atIndex:0];
 
-    v24 = [v7 texChroma];
-    [v22 setTexture:v24 atIndex:1];
+    texChroma = [v7 texChroma];
+    [computeCommandEncoder setTexture:texChroma atIndex:1];
 
-    v25 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
-    [v22 setTexture:v25 atIndex:2];
+    texLuma2 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
+    [computeCommandEncoder setTexture:texLuma2 atIndex:2];
 
-    v26 = [(PTTextureYUV *)self->_backgroundCropped texChroma];
-    [v22 setTexture:v26 atIndex:3];
+    texChroma2 = [(PTTextureYUV *)self->_backgroundCropped texChroma];
+    [computeCommandEncoder setTexture:texChroma2 atIndex:3];
 
-    v27 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
-    v28 = [(PTTextureYUV *)self->_backgroundCropped texChroma];
-    [PTColorConversion getChromaOffsetFromLuma:v27 texChroma:v28];
+    texLuma3 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
+    texChroma3 = [(PTTextureYUV *)self->_backgroundCropped texChroma];
+    [PTColorConversion getChromaOffsetFromLuma:texLuma3 texChroma:texChroma3];
     v30 = v29;
 
     v49 = v30;
-    [v22 setBytes:&v49 length:8 atIndex:0];
+    [computeCommandEncoder setBytes:&v49 length:8 atIndex:0];
     *&v30 = [v7 width];
     v31 = *&v30 / [v7 height];
     v32 = v11;
@@ -364,8 +364,8 @@ LABEL_34:
     else
     {
       v34 = v11 / [v7 height];
-      v35 = [v7 width];
-      *&v37 = ((v35 * v34) - v9) * 0.5 / (v35 * v34);
+      width2 = [v7 width];
+      *&v37 = ((width2 * v34) - v9) * 0.5 / (width2 * v34);
       DWORD1(v37) = 0;
       v36 = *&v37 * -2.0 + 1.0;
       *(&v37 + 2) = v36;
@@ -374,169 +374,169 @@ LABEL_34:
 
     *(&v37 + 3) = v38;
     v48 = v37;
-    [v22 setBytes:&v48 length:16 atIndex:1];
-    v41 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
-    v42 = [v41 width];
-    v43 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
-    v47[0] = v42;
-    v47[1] = [v43 height];
+    [computeCommandEncoder setBytes:&v48 length:16 atIndex:1];
+    texLuma4 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
+    width3 = [texLuma4 width];
+    texLuma5 = [(PTTextureYUV *)self->_backgroundCropped texLuma];
+    v47[0] = width3;
+    v47[1] = [texLuma5 height];
     v47[2] = 1;
     v45 = xmmword_2244A5230;
     v46 = 1;
-    [v22 dispatchThreads:v47 threadsPerThreadgroup:&v45];
+    [computeCommandEncoder dispatchThreads:v47 threadsPerThreadgroup:&v45];
 
-    [v22 endEncoding];
+    [computeCommandEncoder endEncoding];
     v12 = self->_backgroundCropped;
   }
 
   return v12;
 }
 
-- (int)applyPortraitBlur:(id)a3 inColorBuffer:(id)a4 inColorPyramid:(id)a5 inBackgroundBuffer:(id)a6 effectRenderRequest:(id)a7
+- (int)applyPortraitBlur:(id)blur inColorBuffer:(id)buffer inColorPyramid:(id)pyramid inBackgroundBuffer:(id)backgroundBuffer effectRenderRequest:(id)request
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  [a5 updatePyramid:v15 inPTTexture:v13];
-  [v14 copyMetadataTo:self->_backgroundWithSDOF];
+  requestCopy = request;
+  backgroundBufferCopy = backgroundBuffer;
+  bufferCopy = buffer;
+  blurCopy = blur;
+  [pyramid updatePyramid:blurCopy inPTTexture:backgroundBufferCopy];
+  [bufferCopy copyMetadataTo:self->_backgroundWithSDOF];
 
-  [(PTRenderRequest *)self->_sharedSDOFRenderRequest setSourceColor:v13];
+  [(PTRenderRequest *)self->_sharedSDOFRenderRequest setSourceColor:backgroundBufferCopy];
   [(PTRenderRequest *)self->_sharedSDOFRenderRequest setDestinationColor:self->_backgroundWithSDOF];
   [(PTRenderRequest *)self->_sharedSDOFRenderRequest setSourceDisparity:self->_constantDisparity];
-  [v12 remappedAperture];
+  [requestCopy remappedAperture];
   v17 = v16;
 
   LODWORD(v18) = v17;
   [(PTRenderRequest *)self->_sharedSDOFRenderRequest setFNumber:v18];
-  LODWORD(self) = [(PTRenderPipeline *)self->_renderPipeline encodeRenderTo:v15 withRenderRequest:self->_sharedSDOFRenderRequest];
+  LODWORD(self) = [(PTRenderPipeline *)self->_renderPipeline encodeRenderTo:blurCopy withRenderRequest:self->_sharedSDOFRenderRequest];
 
   return self;
 }
 
-- (void)studioLightBackgroundDimming:(id)a3 inCurrentBackground:(id)a4 effectRenderRequest:(id)a5 outColorBufferYUV:(id)a6
+- (void)studioLightBackgroundDimming:(id)dimming inCurrentBackground:(id)background effectRenderRequest:(id)request outColorBufferYUV:(id)v
 {
   backgroundWithStudioLight = self->_backgroundWithStudioLight;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PTTextureYUV *)backgroundWithStudioLight texLuma];
-  v12 = [(PTTextureYUV *)self->_backgroundWithStudioLight texChroma];
-  [PTColorConversion getChromaOffsetFromLuma:v11 texChroma:v12];
+  requestCopy = request;
+  backgroundCopy = background;
+  texLuma = [(PTTextureYUV *)backgroundWithStudioLight texLuma];
+  texChroma = [(PTTextureYUV *)self->_backgroundWithStudioLight texChroma];
+  [PTColorConversion getChromaOffsetFromLuma:texLuma texChroma:texChroma];
   v14 = v13;
 
   v29 = v14;
-  [v9 relightStrengthStudioLight];
+  [requestCopy relightStrengthStudioLight];
   LODWORD(v14) = v15;
 
   v28 = v14;
-  v16 = [(PTMetalContext *)self->_metalContext commandBuffer];
-  v17 = [v16 computeCommandEncoder];
+  commandBuffer = [(PTMetalContext *)self->_metalContext commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
 
-  [v17 setComputePipelineState:self->_studiolightBackgroundDimming];
-  v18 = [v10 texLuma];
-  [v17 setTexture:v18 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_studiolightBackgroundDimming];
+  texLuma2 = [backgroundCopy texLuma];
+  [computeCommandEncoder setTexture:texLuma2 atIndex:0];
 
-  v19 = [v10 texChroma];
+  texChroma2 = [backgroundCopy texChroma];
 
-  [v17 setTexture:v19 atIndex:1];
-  v20 = [(PTTextureYUV *)self->_backgroundWithStudioLight texLuma];
-  [v17 setTexture:v20 atIndex:2];
+  [computeCommandEncoder setTexture:texChroma2 atIndex:1];
+  texLuma3 = [(PTTextureYUV *)self->_backgroundWithStudioLight texLuma];
+  [computeCommandEncoder setTexture:texLuma3 atIndex:2];
 
-  v21 = [(PTTextureYUV *)self->_backgroundWithStudioLight texChroma];
-  [v17 setTexture:v21 atIndex:3];
+  texChroma3 = [(PTTextureYUV *)self->_backgroundWithStudioLight texChroma];
+  [computeCommandEncoder setTexture:texChroma3 atIndex:3];
 
-  [v17 setBytes:&v29 length:8 atIndex:0];
-  [v17 setBytes:&v28 length:4 atIndex:1];
-  v22 = [(PTTextureYUV *)self->_backgroundWithStudioLight texLuma];
-  v23 = [v22 width];
-  v24 = [(PTTextureYUV *)self->_backgroundWithStudioLight texLuma];
-  v27[0] = v23;
-  v27[1] = [v24 height];
+  [computeCommandEncoder setBytes:&v29 length:8 atIndex:0];
+  [computeCommandEncoder setBytes:&v28 length:4 atIndex:1];
+  texLuma4 = [(PTTextureYUV *)self->_backgroundWithStudioLight texLuma];
+  width = [texLuma4 width];
+  texLuma5 = [(PTTextureYUV *)self->_backgroundWithStudioLight texLuma];
+  v27[0] = width;
+  v27[1] = [texLuma5 height];
   v27[2] = 1;
   v25 = xmmword_2244A5230;
   v26 = 1;
-  [v17 dispatchThreads:v27 threadsPerThreadgroup:&v25];
+  [computeCommandEncoder dispatchThreads:v27 threadsPerThreadgroup:&v25];
 
-  [v17 endEncoding];
+  [computeCommandEncoder endEncoding];
 }
 
-- (int)replaceBackground:(id)a3 inColor:(id)a4 inColorPyramid:(id)a5 inSegmentation:(id)a6 effectRenderRequest:(id)a7 outColor:(id)a8 frameIndex:(int)a9
+- (int)replaceBackground:(id)background inColor:(id)color inColorPyramid:(id)pyramid inSegmentation:(id)segmentation effectRenderRequest:(id)request outColor:(id)outColor frameIndex:(int)index
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [a4 asYUV];
-  v21 = [v19 asYUV];
+  backgroundCopy = background;
+  pyramidCopy = pyramid;
+  segmentationCopy = segmentation;
+  requestCopy = request;
+  outColorCopy = outColor;
+  asYUV = [color asYUV];
+  asYUV2 = [outColorCopy asYUV];
 
-  v22 = [v18 inBackgroundReplacementBuffer];
+  inBackgroundReplacementBuffer = [requestCopy inBackgroundReplacementBuffer];
   backgroundPixelBuffer = self->_backgroundPixelBuffer;
   if (self->_currentState == 3)
   {
-    v22 = self->_backgroundPixelBuffer;
+    inBackgroundReplacementBuffer = self->_backgroundPixelBuffer;
   }
 
-  else if (backgroundPixelBuffer != v22)
+  else if (backgroundPixelBuffer != inBackgroundReplacementBuffer)
   {
     CVPixelBufferRelease(backgroundPixelBuffer);
-    self->_backgroundPixelBuffer = CVPixelBufferRetain(v22);
+    self->_backgroundPixelBuffer = CVPixelBufferRetain(inBackgroundReplacementBuffer);
   }
 
-  if (v22)
+  if (inBackgroundReplacementBuffer)
   {
-    v131 = v17;
-    v129 = v16;
-    v136 = v15;
-    v24 = v21;
-    v25 = [v18 effectType];
-    v26 = [v18 effectType];
-    v27 = [v20 texLuma];
-    v28 = [v24 texLuma];
-    v29 = v28;
+    v131 = segmentationCopy;
+    v129 = pyramidCopy;
+    v136 = backgroundCopy;
+    v24 = asYUV2;
+    effectType = [requestCopy effectType];
+    effectType2 = [requestCopy effectType];
+    texLuma = [asYUV texLuma];
+    texLuma2 = [v24 texLuma];
+    v29 = texLuma2;
     v135 = v24;
-    if (v27 == v28)
+    if (texLuma == texLuma2)
     {
     }
 
     else
     {
-      v30 = [v20 texChroma];
-      v31 = [v24 texChroma];
+      texChroma = [asYUV texChroma];
+      texChroma2 = [v24 texChroma];
 
-      if (v30 != v31)
+      if (texChroma != texChroma2)
       {
 LABEL_16:
         v41 = -1.0;
         v42 = -1.0;
-        if (v25)
+        if (effectType)
         {
-          [v18 apertureSDOF];
+          [requestCopy apertureSDOF];
           v42 = v43;
         }
 
-        if ((v26 & 2) != 0)
+        if ((effectType2 & 2) != 0)
         {
-          [v18 relightStrengthStudioLight];
+          [requestCopy relightStrengthStudioLight];
           v41 = v44;
         }
 
-        v45 = (*&self->_lastBackgroundCroppedKey.apertureSDOF & 0x7FFFFFFF7FFFFFFFLL) != 0 || self->_lastBackgroundCroppedKey.backgroundReplacementBuffer != v22;
+        v45 = (*&self->_lastBackgroundCroppedKey.apertureSDOF & 0x7FFFFFFF7FFFFFFFLL) != 0 || self->_lastBackgroundCroppedKey.backgroundReplacementBuffer != inBackgroundReplacementBuffer;
         v46 = *&self->_lastEffectUpdateKey.apertureSDOF;
-        v47 = v42 != *&v46 || v41 != *(&v46 + 1) || self->_lastEffectUpdateKey.backgroundReplacementBuffer != v22;
+        v47 = v42 != *&v46 || v41 != *(&v46 + 1) || self->_lastEffectUpdateKey.backgroundReplacementBuffer != inBackgroundReplacementBuffer;
         v134 = v47;
         *&self->_lastBackgroundCroppedKey.apertureSDOF = 0;
-        self->_lastBackgroundCroppedKey.backgroundReplacementBuffer = v22;
+        self->_lastBackgroundCroppedKey.backgroundReplacementBuffer = inBackgroundReplacementBuffer;
         self->_lastEffectUpdateKey.apertureSDOF = v42;
         self->_lastEffectUpdateKey.relightStrengthStudioLight = v41;
-        self->_lastEffectUpdateKey.backgroundReplacementBuffer = v22;
+        self->_lastEffectUpdateKey.backgroundReplacementBuffer = inBackgroundReplacementBuffer;
         v48 = self->_backgroundCropped;
-        [(PTBackgroundReplacement *)self updateAndGetBackgroundState:v18 frameIndex:a9];
-        [(PTBackgroundReplacement *)self transitionTimeNormalized:v18];
+        [(PTBackgroundReplacement *)self updateAndGetBackgroundState:requestCopy frameIndex:index];
+        [(PTBackgroundReplacement *)self transitionTimeNormalized:requestCopy];
         v50 = v49;
         if (v45)
         {
-          v36 = [(PTBackgroundReplacement *)self backgroundBufferCropAndResize:v136 background:v22];
+          textureUtil3 = [(PTBackgroundReplacement *)self backgroundBufferCropAndResize:v136 background:inBackgroundReplacementBuffer];
 
           ++self->_backgroundTransisionCount;
           if (v50 < 1.0 && v50 > 0.01 && self->_currentState == 4)
@@ -544,14 +544,14 @@ LABEL_16:
             [(PTBackgroundReplacement *)self copyInterruptedTransitionToTransitionPyramid:v136];
           }
 
-          if (a9)
+          if (index)
           {
             if (self->_currentState == 1)
             {
               self->_currentState = 4;
             }
 
-            [v18 frameTimeSeconds];
+            [requestCopy frameTimeSeconds];
             *&v51 = v51;
             self->_transitionStart = *&v51;
             v50 = 0.0;
@@ -559,7 +559,7 @@ LABEL_16:
 
           else
           {
-            [v18 frameTimeSeconds];
+            [requestCopy frameTimeSeconds];
             *&v52 = v52 + self->_transitionDuration * -2.0;
             self->_transitionStart = *&v52;
             self->_currentState = 1;
@@ -567,8 +567,8 @@ LABEL_16:
           }
 
           colorTemperatureCorrection = self->_colorTemperatureCorrection;
-          v54 = [v36 texLuma];
-          v55 = [v36 texChroma];
+          texLuma3 = [textureUtil3 texLuma];
+          texChroma3 = [textureUtil3 texChroma];
           if (self->_backgroundTransisionCount >= 0)
           {
             v56 = self->_backgroundTransisionCount & 1;
@@ -579,18 +579,18 @@ LABEL_16:
             v56 = -(self->_backgroundTransisionCount & 1);
           }
 
-          [(PTColorTemperatureCorrection *)colorTemperatureCorrection estimateColorTemperatureFromBackground:v136 inYUV:v20 inBackgroundLuma:v54 inBackgroundChroma:v55 outColorTemperatureBuffer:self->_colorTemperatureRGB[v56]];
+          [(PTColorTemperatureCorrection *)colorTemperatureCorrection estimateColorTemperatureFromBackground:v136 inYUV:asYUV inBackgroundLuma:texLuma3 inBackgroundChroma:texChroma3 outColorTemperatureBuffer:self->_colorTemperatureRGB[v56]];
         }
 
         else
         {
-          v36 = v48;
+          textureUtil3 = v48;
         }
 
         backgroundTransisionCount = self->_backgroundTransisionCount;
         if (backgroundTransisionCount == 1 || (self->_currentState & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          v132 = 0;
+          mipmapTexture = 0;
           v58 = 1;
         }
 
@@ -605,7 +605,7 @@ LABEL_16:
             v62 = -v62;
           }
 
-          v132 = [(PTPyramid *)self->_backgroundTransitionPyramidYUV[v62] mipmapTexture];
+          mipmapTexture = [(PTPyramid *)self->_backgroundTransitionPyramidYUV[v62] mipmapTexture];
           v58 = 0;
         }
 
@@ -620,7 +620,7 @@ LABEL_16:
           v64 = -(self->_backgroundTransisionCount & 1);
         }
 
-        v133 = [(PTPyramid *)backgroundTransitionPyramidYUV[v64] mipmapTexture];
+        mipmapTexture2 = [(PTPyramid *)backgroundTransitionPyramidYUV[v64] mipmapTexture];
         if (v58)
         {
           v65 = 0;
@@ -653,12 +653,12 @@ LABEL_16:
 
         colorTemperatureCorrectionYUVCubes = self->_colorTemperatureCorrectionYUVCubes;
         v130 = self->_colorTemperatureCorrectionYUVCubes[v69];
-        if (v25)
+        if (effectType)
         {
           if (v134)
           {
             v70 = v136;
-            v128 = [(PTBackgroundReplacement *)self applyPortraitBlur:v136 inColorBuffer:v20 inColorPyramid:v129 inBackgroundBuffer:v36 effectRenderRequest:v18];
+            v128 = [(PTBackgroundReplacement *)self applyPortraitBlur:v136 inColorBuffer:asYUV inColorPyramid:v129 inBackgroundBuffer:textureUtil3 effectRenderRequest:requestCopy];
           }
 
           else
@@ -669,7 +669,7 @@ LABEL_16:
 
           v71 = self->_backgroundWithSDOF;
 
-          v36 = v71;
+          textureUtil3 = v71;
         }
 
         else
@@ -679,24 +679,24 @@ LABEL_16:
         }
 
         v127 = v68;
-        if ((v26 & 2) != 0)
+        if ((effectType2 & 2) != 0)
         {
           if (v134)
           {
-            [(PTBackgroundReplacement *)self studioLightBackgroundDimming:v70 inCurrentBackground:v36 effectRenderRequest:v18 outColorBufferYUV:v135];
+            [(PTBackgroundReplacement *)self studioLightBackgroundDimming:v70 inCurrentBackground:textureUtil3 effectRenderRequest:requestCopy outColorBufferYUV:v135];
           }
 
           v72 = self->_backgroundWithStudioLight;
 
-          v36 = v72;
+          textureUtil3 = v72;
         }
 
         if (v134)
         {
-          v73 = [(PTMetalContext *)self->_metalContext textureUtil];
-          v74 = [v36 texLuma];
-          v75 = [v36 texChroma];
-          [v73 resample420To444:v136 inLuma:v74 inChroma:v75 outYUV:v133];
+          textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+          texLuma4 = [textureUtil3 texLuma];
+          texChroma4 = [textureUtil3 texChroma];
+          [textureUtil resample420To444:v136 inLuma:texLuma4 inChroma:texChroma4 outYUV:mipmapTexture2];
 
           v70 = v136;
           if (self->_backgroundTransisionCount >= 0)
@@ -712,9 +712,9 @@ LABEL_16:
           LODWORD(v76) = 1.5;
           [(PTPyramid *)backgroundTransitionPyramidYUV[v77] updatePyramid:v136 offset:0 samplingRadius:v76];
           LODWORD(v78) = 1.0;
-          if ((v26 & 2) != 0)
+          if ((effectType2 & 2) != 0)
           {
-            [v18 relightStrengthStudioLight];
+            [requestCopy relightStrengthStudioLight];
             v78 = v79 * -0.5 + 1.0;
             *&v78 = v78;
           }
@@ -732,26 +732,26 @@ LABEL_16:
           [(PTColorTemperatureCorrection *)self->_colorTemperatureCorrection colorTemperatureCorrectionYUVCube:v136 inYUV:v135 outColorTemperatureCorrectionCube:colorTemperatureCorrectionYUVCubes[v80] colorTemperatureRGB:self->_colorTemperatureRGB[v80] colorCorrectionIntensity:v78];
         }
 
-        v81 = [v20 texLuma];
-        v82 = [v20 texChroma];
-        [PTColorConversion getChromaOffsetFromLuma:v81 texChroma:v82];
+        texLuma5 = [asYUV texLuma];
+        texChroma5 = [asYUV texChroma];
+        [PTColorConversion getChromaOffsetFromLuma:texLuma5 texChroma:texChroma5];
         v84 = v83;
 
         *v143 = v84;
         spillCorrection = self->_spillCorrection;
-        v86 = [v20 texLuma];
-        v87 = [v20 texChroma];
-        v17 = v131;
-        [(PTSpillCorrection *)spillCorrection encodeToCommandBuffer:v70 lumaTexture:v86 chromaTexture:v87 normChromaOffset:v131 segmentationTexture:v84];
+        texLuma6 = [asYUV texLuma];
+        texChroma6 = [asYUV texChroma];
+        segmentationCopy = v131;
+        [(PTSpillCorrection *)spillCorrection encodeToCommandBuffer:v70 lumaTexture:texLuma6 chromaTexture:texChroma6 normChromaOffset:v131 segmentationTexture:v84];
 
-        if (([v18 effectType] & 4) != 0)
+        if (([requestCopy effectType] & 4) != 0)
         {
           v89 = v135;
-          if ([v18 presenterOverlayMode] == 3 || objc_msgSend(v18, "presenterOverlayMode") == 4)
+          if ([requestCopy presenterOverlayMode] == 3 || objc_msgSend(requestCopy, "presenterOverlayMode") == 4)
           {
-            v88 = [(PTBackgroundReplacement *)self lazyInitializeBackgroundForPresenterOverlaySmall:v22];
-            v90 = [v88 width];
-            if (v90 != [v135 width] || (v91 = objc_msgSend(v88, "height"), v91 != objc_msgSend(v135, "height")))
+            v88 = [(PTBackgroundReplacement *)self lazyInitializeBackgroundForPresenterOverlaySmall:inBackgroundReplacementBuffer];
+            width = [v88 width];
+            if (width != [v135 width] || (v91 = objc_msgSend(v88, "height"), v91 != objc_msgSend(v135, "height")))
             {
               v92 = _PTLogSystem();
               if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -762,8 +762,8 @@ LABEL_16:
               v88 = 0;
             }
 
-            [v18 setOutBackgroundReplacementPostProcessingBuffer:self->_backgroundForPresenterOverlaySmallPixelBuffer];
-            if (!v132)
+            [requestCopy setOutBackgroundReplacementPostProcessingBuffer:self->_backgroundForPresenterOverlaySmallPixelBuffer];
+            if (!mipmapTexture)
             {
               v50 = 1.0;
             }
@@ -781,7 +781,7 @@ LABEL_16:
           v89 = v135;
         }
 
-        v93 = [v18 presenterOverlayMode] != 3 && objc_msgSend(v18, "presenterOverlayMode") != 2;
+        v93 = [requestCopy presenterOverlayMode] != 3 && objc_msgSend(requestCopy, "presenterOverlayMode") != 2;
         v94 = v50 < 1.0 || v134;
         if (v94)
         {
@@ -791,62 +791,62 @@ LABEL_16:
         else
         {
           lastPresenterOverlayMode = self->_lastPresenterOverlayMode;
-          v95 = lastPresenterOverlayMode != [v18 presenterOverlayMode];
+          v95 = lastPresenterOverlayMode != [requestCopy presenterOverlayMode];
         }
 
-        [v18 setOutBackgroundReplacementPostProcessingBufferUpdated:v95];
-        if (([v18 outBackgroundReplacementPostProcessingBufferUpdated] & 1) == 0)
+        [requestCopy setOutBackgroundReplacementPostProcessingBufferUpdated:v95];
+        if (([requestCopy outBackgroundReplacementPostProcessingBufferUpdated] & 1) == 0)
         {
 
           v88 = 0;
         }
 
-        self->_lastPresenterOverlayMode = [v18 presenterOverlayMode];
+        self->_lastPresenterOverlayMode = [requestCopy presenterOverlayMode];
         v97 = [[PTImageblockConfig alloc] initWithPTTexture:v89];
         if (v50 >= 1.0)
         {
-          v106 = [(PTMetalContext *)self->_metalContext commandBuffer];
-          v101 = [v106 computeCommandEncoder];
+          commandBuffer = [(PTMetalContext *)self->_metalContext commandBuffer];
+          computeCommandEncoder = [commandBuffer computeCommandEncoder];
 
-          [v101 setComputePipelineState:self->_backgroundReplacement];
-          [v101 setImageblockWidth:-[PTImageblockConfig imageblockSize](v97 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v97, "imageblockSize")}];
-          v107 = [v20 texLuma];
-          [v101 setTexture:v107 atIndex:0];
+          [computeCommandEncoder setComputePipelineState:self->_backgroundReplacement];
+          [computeCommandEncoder setImageblockWidth:-[PTImageblockConfig imageblockSize](v97 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v97, "imageblockSize")}];
+          texLuma7 = [asYUV texLuma];
+          [computeCommandEncoder setTexture:texLuma7 atIndex:0];
 
-          v108 = [v20 texChroma];
-          [v101 setTexture:v108 atIndex:1];
+          texChroma7 = [asYUV texChroma];
+          [computeCommandEncoder setTexture:texChroma7 atIndex:1];
 
-          [v101 setTexture:v131 atIndex:2];
-          v109 = [v36 texLuma];
-          [v101 setTexture:v109 atIndex:3];
+          [computeCommandEncoder setTexture:v131 atIndex:2];
+          texLuma8 = [textureUtil3 texLuma];
+          [computeCommandEncoder setTexture:texLuma8 atIndex:3];
 
-          v110 = [v36 texChroma];
-          [v101 setTexture:v110 atIndex:4];
+          texChroma8 = [textureUtil3 texChroma];
+          [computeCommandEncoder setTexture:texChroma8 atIndex:4];
 
           if (v93)
           {
-            v111 = [v135 texLuma];
-            [v101 setTexture:v111 atIndex:5];
+            texLuma9 = [v135 texLuma];
+            [computeCommandEncoder setTexture:texLuma9 atIndex:5];
 
-            v112 = [v135 texChroma];
-            [v101 setTexture:v112 atIndex:6];
+            texChroma9 = [v135 texChroma];
+            [computeCommandEncoder setTexture:texChroma9 atIndex:6];
           }
 
           else
           {
-            [v101 setTexture:0 atIndex:5];
-            [v101 setTexture:0 atIndex:6];
+            [computeCommandEncoder setTexture:0 atIndex:5];
+            [computeCommandEncoder setTexture:0 atIndex:6];
           }
 
           v113 = v127;
-          v119 = [(PTSpillCorrection *)self->_spillCorrection coeffXTexture];
-          [v101 setTexture:v119 atIndex:7];
+          coeffXTexture = [(PTSpillCorrection *)self->_spillCorrection coeffXTexture];
+          [computeCommandEncoder setTexture:coeffXTexture atIndex:7];
 
-          v120 = [(PTSpillCorrection *)self->_spillCorrection coeffYTexture];
-          [v101 setTexture:v120 atIndex:8];
+          coeffYTexture = [(PTSpillCorrection *)self->_spillCorrection coeffYTexture];
+          [computeCommandEncoder setTexture:coeffYTexture atIndex:8];
 
-          v121 = [(PTSpillCorrection *)self->_spillCorrection coeffZTexture];
-          [v101 setTexture:v121 atIndex:9];
+          coeffZTexture = [(PTSpillCorrection *)self->_spillCorrection coeffZTexture];
+          [computeCommandEncoder setTexture:coeffZTexture atIndex:9];
 
           if (self->_colorTemperatureCorrectionYUVCubes[0])
           {
@@ -860,16 +860,16 @@ LABEL_16:
               v122 = -(self->_backgroundTransisionCount & 1);
             }
 
-            [v101 setTexture:colorTemperatureCorrectionYUVCubes[v122] atIndex:10];
+            [computeCommandEncoder setTexture:colorTemperatureCorrectionYUVCubes[v122] atIndex:10];
           }
 
-          v123 = [v88 texLuma];
-          [v101 setTexture:v123 atIndex:11];
+          texLuma10 = [v88 texLuma];
+          [computeCommandEncoder setTexture:texLuma10 atIndex:11];
 
-          v124 = [v88 texChroma];
-          [v101 setTexture:v124 atIndex:12];
+          texChroma10 = [v88 texChroma];
+          [computeCommandEncoder setTexture:texChroma10 atIndex:12];
 
-          [v101 setBytes:v143 length:8 atIndex:0];
+          [computeCommandEncoder setBytes:v143 length:8 atIndex:0];
           if (v97)
           {
             [(PTImageblockConfig *)v97 threads];
@@ -900,59 +900,59 @@ LABEL_16:
           v99 = fminf(fmaxf((v98 + -0.05) / 0.9, 0.0), 1.0);
           self->_interpolation.alphaBlend = (v99 * v99) * ((v99 * -2.0) + 3.0);
           self->_interpolation.lodLevel = 0.0;
-          v100 = [(PTMetalContext *)self->_metalContext commandBuffer];
-          v101 = [v100 computeCommandEncoder];
+          commandBuffer2 = [(PTMetalContext *)self->_metalContext commandBuffer];
+          computeCommandEncoder = [commandBuffer2 computeCommandEncoder];
 
-          [v101 setComputePipelineState:self->_backgroundReplacementTransition];
-          [v101 setImageblockWidth:-[PTImageblockConfig imageblockSize](v97 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v97, "imageblockSize")}];
-          v102 = [v20 texLuma];
-          [v101 setTexture:v102 atIndex:0];
+          [computeCommandEncoder setComputePipelineState:self->_backgroundReplacementTransition];
+          [computeCommandEncoder setImageblockWidth:-[PTImageblockConfig imageblockSize](v97 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v97, "imageblockSize")}];
+          texLuma11 = [asYUV texLuma];
+          [computeCommandEncoder setTexture:texLuma11 atIndex:0];
 
-          v103 = [v20 texChroma];
-          [v101 setTexture:v103 atIndex:1];
+          texChroma11 = [asYUV texChroma];
+          [computeCommandEncoder setTexture:texChroma11 atIndex:1];
 
-          [v101 setTexture:v131 atIndex:2];
-          [v101 setTexture:v132 atIndex:3];
-          [v101 setTexture:v133 atIndex:4];
+          [computeCommandEncoder setTexture:v131 atIndex:2];
+          [computeCommandEncoder setTexture:mipmapTexture atIndex:3];
+          [computeCommandEncoder setTexture:mipmapTexture2 atIndex:4];
           if (v93)
           {
-            v104 = [v135 texLuma];
-            [v101 setTexture:v104 atIndex:5];
+            texLuma12 = [v135 texLuma];
+            [computeCommandEncoder setTexture:texLuma12 atIndex:5];
 
-            v105 = [v135 texChroma];
-            [v101 setTexture:v105 atIndex:6];
+            texChroma12 = [v135 texChroma];
+            [computeCommandEncoder setTexture:texChroma12 atIndex:6];
           }
 
           else
           {
-            [v101 setTexture:0 atIndex:5];
-            [v101 setTexture:0 atIndex:6];
+            [computeCommandEncoder setTexture:0 atIndex:5];
+            [computeCommandEncoder setTexture:0 atIndex:6];
           }
 
           v113 = v127;
-          v114 = [(PTSpillCorrection *)self->_spillCorrection coeffXTexture];
-          [v101 setTexture:v114 atIndex:7];
+          coeffXTexture2 = [(PTSpillCorrection *)self->_spillCorrection coeffXTexture];
+          [computeCommandEncoder setTexture:coeffXTexture2 atIndex:7];
 
-          v115 = [(PTSpillCorrection *)self->_spillCorrection coeffYTexture];
-          [v101 setTexture:v115 atIndex:8];
+          coeffYTexture2 = [(PTSpillCorrection *)self->_spillCorrection coeffYTexture];
+          [computeCommandEncoder setTexture:coeffYTexture2 atIndex:8];
 
-          v116 = [(PTSpillCorrection *)self->_spillCorrection coeffZTexture];
-          [v101 setTexture:v116 atIndex:9];
+          coeffZTexture2 = [(PTSpillCorrection *)self->_spillCorrection coeffZTexture];
+          [computeCommandEncoder setTexture:coeffZTexture2 atIndex:9];
 
           if (self->_colorTemperatureCorrectionYUVCubes[0])
           {
-            [v101 setTexture:v127 atIndex:10];
-            [v101 setTexture:v130 atIndex:11];
+            [computeCommandEncoder setTexture:v127 atIndex:10];
+            [computeCommandEncoder setTexture:v130 atIndex:11];
           }
 
-          v117 = [v88 texLuma];
-          [v101 setTexture:v117 atIndex:12];
+          texLuma13 = [v88 texLuma];
+          [computeCommandEncoder setTexture:texLuma13 atIndex:12];
 
-          v118 = [v88 texChroma];
-          [v101 setTexture:v118 atIndex:13];
+          texChroma13 = [v88 texChroma];
+          [computeCommandEncoder setTexture:texChroma13 atIndex:13];
 
-          [v101 setBytes:v143 length:8 atIndex:0];
-          [v101 setBytes:&self->_interpolation length:8 atIndex:1];
+          [computeCommandEncoder setBytes:v143 length:8 atIndex:0];
+          [computeCommandEncoder setBytes:&self->_interpolation length:8 atIndex:1];
           v39 = v128;
           if (v97)
           {
@@ -970,17 +970,17 @@ LABEL_16:
             v139 = 0;
           }
 
-          v17 = v131;
+          segmentationCopy = v131;
         }
 
-        [v101 dispatchThreads:&v140 threadsPerThreadgroup:&v137];
-        [v101 endEncoding];
+        [computeCommandEncoder dispatchThreads:&v140 threadsPerThreadgroup:&v137];
+        [computeCommandEncoder endEncoding];
 
-        v21 = v135;
-        v15 = v136;
-        v16 = v129;
-        v37 = v132;
-        v38 = v133;
+        asYUV2 = v135;
+        backgroundCopy = v136;
+        pyramidCopy = v129;
+        texChroma14 = mipmapTexture;
+        texChroma15 = mipmapTexture2;
         goto LABEL_128;
       }
     }
@@ -1000,22 +1000,22 @@ LABEL_16:
     [PTBackgroundReplacement replaceBackground:inColor:inColorPyramid:inSegmentation:effectRenderRequest:outColor:frameIndex:];
   }
 
-  v33 = [(PTMetalContext *)self->_metalContext textureUtil];
-  v34 = [v20 texLuma];
-  v35 = [v21 texLuma];
-  [v33 copy:v15 inTex:v34 outTex:v35];
+  textureUtil2 = [(PTMetalContext *)self->_metalContext textureUtil];
+  texLuma14 = [asYUV texLuma];
+  texLuma15 = [asYUV2 texLuma];
+  [textureUtil2 copy:backgroundCopy inTex:texLuma14 outTex:texLuma15];
 
-  v36 = [(PTMetalContext *)self->_metalContext textureUtil];
-  v37 = [v20 texChroma];
-  v38 = [v21 texChroma];
-  [v36 copy:v15 inTex:v37 outTex:v38];
+  textureUtil3 = [(PTMetalContext *)self->_metalContext textureUtil];
+  texChroma14 = [asYUV texChroma];
+  texChroma15 = [asYUV2 texChroma];
+  [textureUtil3 copy:backgroundCopy inTex:texChroma14 outTex:texChroma15];
   v39 = 0;
 LABEL_128:
 
   return v39;
 }
 
-- (id)lazyInitializeBackgroundForPresenterOverlaySmall:(__CVBuffer *)a3
+- (id)lazyInitializeBackgroundForPresenterOverlaySmall:(__CVBuffer *)small
 {
   v19[1] = *MEMORY[0x277D85DE8];
   if (!self->_backgroundForPresenterOverlaySmall)
@@ -1027,35 +1027,35 @@ LABEL_128:
     v8 = v7;
     [(PTEffectDescriptor *)self->_effectDescriptor colorSize];
     v10 = v9;
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(small);
     v18 = *MEMORY[0x277CC4DE8];
     v19[0] = MEMORY[0x277CBEC10];
     CVPixelBufferCreate(v6, v8, v10, PixelFormatType, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1], &self->_backgroundForPresenterOverlaySmallPixelBuffer);
     v12 = *p_backgroundForPresenterOverlaySmallPixelBuffer;
-    v13 = [(PTMetalContext *)self->_metalContext device];
-    v14 = [PTTexture createFromPixelbuffer:v12 device:v13 read:0 write:1];
+    device = [(PTMetalContext *)self->_metalContext device];
+    v14 = [PTTexture createFromPixelbuffer:v12 device:device read:0 write:1];
     backgroundForPresenterOverlaySmall = self->_backgroundForPresenterOverlaySmall;
     self->_backgroundForPresenterOverlaySmall = v14;
   }
 
   CVBufferRemoveAllAttachments(self->_backgroundForPresenterOverlaySmallPixelBuffer);
-  CVBufferPropagateAttachments(a3, self->_backgroundForPresenterOverlaySmallPixelBuffer);
+  CVBufferPropagateAttachments(small, self->_backgroundForPresenterOverlaySmallPixelBuffer);
   v16 = self->_backgroundForPresenterOverlaySmall;
 
   return v16;
 }
 
-- (void)copyInterruptedTransitionToTransitionPyramid:(id)a3
+- (void)copyInterruptedTransitionToTransitionPyramid:(id)pyramid
 {
-  v4 = a3;
+  pyramidCopy = pyramid;
   v5 = [PTImageblockConfig alloc];
   backgroundTransitionPyramidYUV = self->_backgroundTransitionPyramidYUV;
-  v7 = [(PTPyramid *)self->_backgroundTransitionPyramidYUV[0] mipmapTexture];
-  v8 = [(PTImageblockConfig *)v5 initWithTexture:v7];
+  mipmapTexture = [(PTPyramid *)self->_backgroundTransitionPyramidYUV[0] mipmapTexture];
+  v8 = [(PTImageblockConfig *)v5 initWithTexture:mipmapTexture];
 
-  v9 = [v4 computeCommandEncoder];
-  [v9 setComputePipelineState:self->_backgroundReplacementCopyTransition];
-  [v9 setImageblockWidth:-[PTImageblockConfig imageblockSize](v8 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v8, "imageblockSize")}];
+  computeCommandEncoder = [pyramidCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_backgroundReplacementCopyTransition];
+  [computeCommandEncoder setImageblockWidth:-[PTImageblockConfig imageblockSize](v8 height:{"imageblockSize"), -[PTImageblockConfig imageblockSize](v8, "imageblockSize")}];
   if (self->_backgroundTransisionCount >= 0)
   {
     v10 = self->_backgroundTransisionCount & 1;
@@ -1066,8 +1066,8 @@ LABEL_128:
     v10 = -(self->_backgroundTransisionCount & 1);
   }
 
-  v11 = [(PTPyramid *)backgroundTransitionPyramidYUV[v10] mipmapTexture];
-  [v9 setTexture:v11 atIndex:0];
+  mipmapTexture2 = [(PTPyramid *)backgroundTransitionPyramidYUV[v10] mipmapTexture];
+  [computeCommandEncoder setTexture:mipmapTexture2 atIndex:0];
 
   backgroundTransisionCount = self->_backgroundTransisionCount;
   v13 = __OFADD__(backgroundTransisionCount++, 1);
@@ -1078,8 +1078,8 @@ LABEL_128:
     v15 = -v15;
   }
 
-  v16 = [(PTPyramid *)backgroundTransitionPyramidYUV[v15] mipmapTexture];
-  [v9 setTexture:v16 atIndex:1];
+  mipmapTexture3 = [(PTPyramid *)backgroundTransitionPyramidYUV[v15] mipmapTexture];
+  [computeCommandEncoder setTexture:mipmapTexture3 atIndex:1];
 
   v17 = self->_backgroundTransisionCount;
   v13 = __OFADD__(v17++, 1);
@@ -1090,10 +1090,10 @@ LABEL_128:
     v18 = -v18;
   }
 
-  v19 = [(PTPyramid *)backgroundTransitionPyramidYUV[v18] mipmapTexture];
-  [v9 setTexture:v19 atIndex:2];
+  mipmapTexture4 = [(PTPyramid *)backgroundTransitionPyramidYUV[v18] mipmapTexture];
+  [computeCommandEncoder setTexture:mipmapTexture4 atIndex:2];
 
-  [v9 setBytes:&self->_interpolation length:8 atIndex:0];
+  [computeCommandEncoder setBytes:&self->_interpolation length:8 atIndex:0];
   if (v8)
   {
     [(PTImageblockConfig *)v8 threads];
@@ -1110,8 +1110,8 @@ LABEL_128:
     v25 = 0;
   }
 
-  [v9 dispatchThreads:&v26 threadsPerThreadgroup:&v23];
-  [v9 endEncoding];
+  [computeCommandEncoder dispatchThreads:&v26 threadsPerThreadgroup:&v23];
+  [computeCommandEncoder endEncoding];
   v21 = self->_backgroundTransisionCount;
   v13 = __OFADD__(v21++, 1);
   v14 = (v21 < 0) ^ v13;
@@ -1122,21 +1122,21 @@ LABEL_128:
   }
 
   LODWORD(v20) = 1.5;
-  [(PTPyramid *)backgroundTransitionPyramidYUV[v22] updatePyramid:v4 offset:0 samplingRadius:v20, v23, v24, v25, v26, v27, v28];
+  [(PTPyramid *)backgroundTransitionPyramidYUV[v22] updatePyramid:pyramidCopy offset:0 samplingRadius:v20, v23, v24, v25, v26, v27, v28];
 }
 
-- (float)transitionTimeNormalized:(id)a3
+- (float)transitionTimeNormalized:(id)normalized
 {
-  [a3 frameTimeSeconds];
+  [normalized frameTimeSeconds];
   *&v4 = v4 - self->_transitionStart;
   return *&v4 / self->_transitionDuration;
 }
 
-- (unint64_t)updateAndGetBackgroundState:(id)a3 frameIndex:(int)a4
+- (unint64_t)updateAndGetBackgroundState:(id)state frameIndex:(int)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4 && ([v6 effectType] & 0x40) != 0)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (!index && ([stateCopy effectType] & 0x40) != 0)
   {
     if ([v7 inBackgroundReplacementBuffer])
     {
@@ -1159,7 +1159,7 @@ LABEL_128:
     goto LABEL_41;
   }
 
-  v8 = [v7 effectType];
+  effectType = [v7 effectType];
   [(PTBackgroundReplacement *)self transitionTimeNormalized:v7];
   v10 = 0.0;
   if (v9 < 1.0)
@@ -1176,7 +1176,7 @@ LABEL_128:
       goto LABEL_15;
     }
 
-    if (currentState != 1 || (v8 & 0x40) != 0)
+    if (currentState != 1 || (effectType & 0x40) != 0)
     {
       goto LABEL_35;
     }
@@ -1193,7 +1193,7 @@ LABEL_24:
 
   if (currentState == 2)
   {
-    if ((v8 & 0x40) != 0)
+    if ((effectType & 0x40) != 0)
     {
       goto LABEL_35;
     }
@@ -1205,7 +1205,7 @@ LABEL_24:
 
   if (currentState != 3)
   {
-    if (currentState == 4 && (v8 & 0x40) == 0)
+    if (currentState == 4 && (effectType & 0x40) == 0)
     {
       *p_currentState = 3;
     }
@@ -1214,7 +1214,7 @@ LABEL_24:
   }
 
 LABEL_15:
-  if ((v8 & 0x40) != 0)
+  if ((effectType & 0x40) != 0)
   {
     if (![v7 inBackgroundReplacementBuffer])
     {

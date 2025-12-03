@@ -1,14 +1,14 @@
 @interface VN6Ac6Cyl5O5oK19HboyMBR
-- (BOOL)isEqual:(id)a3;
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithCoder:(id)a3;
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 imageSignatureprintType:(unint64_t)a7 originatingRequestSpecifier:(id)a8;
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 imageSignatureprintType:(unint64_t)a7 requestRevision:(unint64_t)a8;
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5;
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithCoder:(id)coder;
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes imageSignatureprintType:(unint64_t)signatureprintType originatingRequestSpecifier:(id)specifier;
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes imageSignatureprintType:(unint64_t)signatureprintType requestRevision:(unint64_t)revision;
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error;
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)state error:(id *)error;
 - (unint64_t)hash;
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5;
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error;
 - (unint64_t)serializedLength;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VN6Ac6Cyl5O5oK19HboyMBR
@@ -20,10 +20,10 @@
   return COERCE_UNSIGNED_INT([(VN6Ac6Cyl5O5oK19HboyMBR *)self imageSignatureprintType]) ^ __ROR8__([(VNEspressoModelImageprint *)&v3 hash], 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -31,10 +31,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = VN6Ac6Cyl5O5oK19HboyMBR, [(VNEspressoModelImageprint *)&v8 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v8.receiver = self, v8.super_class = VN6Ac6Cyl5O5oK19HboyMBR, [(VNEspressoModelImageprint *)&v8 isEqual:equalCopy]))
     {
-      v5 = [(VN6Ac6Cyl5O5oK19HboyMBR *)self imageSignatureprintType];
-      v6 = v5 == [(VN6Ac6Cyl5O5oK19HboyMBR *)v4 imageSignatureprintType];
+      imageSignatureprintType = [(VN6Ac6Cyl5O5oK19HboyMBR *)self imageSignatureprintType];
+      v6 = imageSignatureprintType == [(VN6Ac6Cyl5O5oK19HboyMBR *)equalCopy imageSignatureprintType];
     }
 
     else
@@ -46,12 +46,12 @@
   return v6;
 }
 
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = VN6Ac6Cyl5O5oK19HboyMBR;
-  v9 = [(VNEspressoModelImageprint *)&v14 serializeStateIntoData:v8 startingAtByteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v14 serializeStateIntoData:dataCopy startingAtByteOffset:offset error:error];
   if (!v9)
   {
 LABEL_6:
@@ -59,21 +59,21 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v8 mutableBytes];
-  *&v9[v10 + a4] = self->_imageSignatureprintType;
+  mutableBytes = [dataCopy mutableBytes];
+  *&v9[mutableBytes + offset] = self->_imageSignatureprintType;
   v11 = (v9 + 4);
   if (v9 + 4 != [(VN6Ac6Cyl5O5oK19HboyMBR *)self serializedLength])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected size of serialized state of the object of type %@", objc_opt_class()];
-      *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v12];
     }
 
     goto LABEL_6;
   }
 
-  calculateChecksumMD5((v10 + a4 + 28), (v9 - 24), (v10 + a4 + 12));
+  calculateChecksumMD5((mutableBytes + offset + 28), (v9 - 24), (mutableBytes + offset + 12));
 LABEL_7:
 
   return v11;
@@ -86,135 +86,135 @@ LABEL_7:
   return [(VNEspressoModelImageprint *)&v3 serializedLength]+ 4;
 }
 
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error
 {
-  v8 = a3;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = VN6Ac6Cyl5O5oK19HboyMBR;
-  v9 = [(VNEspressoModelImageprint *)&v14 initWithState:v8 byteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v14 initWithState:stateCopy byteOffset:offset error:error];
   if (!v9)
   {
     goto LABEL_6;
   }
 
-  v10 = *([v8 bytes] + *a4);
-  *a4 += 4;
+  v10 = *([stateCopy bytes] + *offset);
+  *offset += 4;
   v9->_imageSignatureprintType = v10;
-  v11 = *a4;
+  v11 = *offset;
   if (v11 != [(VN6Ac6Cyl5O5oK19HboyMBR *)v9 serializedLength])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
 
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error deserializing object of type %@", objc_opt_class()];
-    *a5 = [VNError errorWithCode:14 message:v12];
+    *error = [VNError errorWithCode:14 message:v12];
 
 LABEL_6:
-    a5 = 0;
+    error = 0;
     goto LABEL_7;
   }
 
-  a5 = v9;
+  error = v9;
 LABEL_7:
 
-  return a5;
+  return error;
 }
 
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)a3 error:(id *)a4
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithState:(id)state error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = VN6Ac6Cyl5O5oK19HboyMBR;
-  return [(VNEspressoModelImageprint *)&v5 initWithState:a3 error:a4];
+  return [(VNEspressoModelImageprint *)&v5 initWithState:state error:error];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VN6Ac6Cyl5O5oK19HboyMBR;
-  [(VNEspressoModelImageprint *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_imageSignatureprintType forKey:@"sgnPrnt"];
+  [(VNEspressoModelImageprint *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_imageSignatureprintType forKey:@"sgnPrnt"];
 }
 
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithCoder:(id)a3
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VN6Ac6Cyl5O5oK19HboyMBR;
-  v5 = [(VNEspressoModelImageprint *)&v8 initWithCoder:v4];
+  v5 = [(VNEspressoModelImageprint *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_imageSignatureprintType = [v4 decodeIntegerForKey:@"sgnPrnt"];
+    v5->_imageSignatureprintType = [coderCopy decodeIntegerForKey:@"sgnPrnt"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 imageSignatureprintType:(unint64_t)a7 requestRevision:(unint64_t)a8
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes imageSignatureprintType:(unint64_t)signatureprintType requestRevision:(unint64_t)revision
 {
-  v14 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:a8 error:0];
+  v14 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:revision error:0];
   if (v14)
   {
-    self = [(VN6Ac6Cyl5O5oK19HboyMBR *)self initWithData:a3 elementCount:a4 elementType:a5 lengthInBytes:a6 imageSignatureprintType:a7 originatingRequestSpecifier:v14];
-    v15 = self;
+    self = [(VN6Ac6Cyl5O5oK19HboyMBR *)self initWithData:data elementCount:count elementType:type lengthInBytes:bytes imageSignatureprintType:signatureprintType originatingRequestSpecifier:v14];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 imageSignatureprintType:(unint64_t)a7 originatingRequestSpecifier:(id)a8
+- (VN6Ac6Cyl5O5oK19HboyMBR)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes imageSignatureprintType:(unint64_t)signatureprintType originatingRequestSpecifier:(id)specifier
 {
-  v14 = a8;
-  v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 length:a6];
+  specifierCopy = specifier;
+  v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:data length:bytes];
   v37 = 0;
-  v16 = [objc_opt_class() validateDescriptorData:v15 elementType:a5 elementCount:a4 error:&v37];
+  v16 = [objc_opt_class() validateDescriptorData:v15 elementType:type elementCount:count error:&v37];
   v17 = v37;
   v18 = v17;
   if ((v16 & 1) == 0)
   {
-    v27 = [v17 localizedDescription];
-    v28 = [v27 UTF8String];
-    VNValidatedLog(4, @"%s", v29, v30, v31, v32, v33, v34, v28);
+    localizedDescription = [v17 localizedDescription];
+    uTF8String = [localizedDescription UTF8String];
+    VNValidatedLog(4, @"%s", v29, v30, v31, v32, v33, v34, uTF8String);
 
 LABEL_7:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
   v36.receiver = self;
   v36.super_class = VN6Ac6Cyl5O5oK19HboyMBR;
-  v19 = [(VNEspressoModelImageprint *)&v36 initWithDescriptorData:v15 elementType:a5 elementCount:a4 originatingRequestSpecifier:v14];
+  v19 = [(VNEspressoModelImageprint *)&v36 initWithDescriptorData:v15 elementType:type elementCount:count originatingRequestSpecifier:specifierCopy];
   if (!v19)
   {
     self = 0;
     goto LABEL_7;
   }
 
-  if ([objc_opt_class() _signaturePrintTypeSupported:a7])
+  if ([objc_opt_class() _signaturePrintTypeSupported:signatureprintType])
   {
-    v19->_imageSignatureprintType = a7;
+    v19->_imageSignatureprintType = signatureprintType;
     self = v19;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    VNValidatedLog(4, @"unsupported signature print type %lu", v20, v21, v22, v23, v24, v25, a7);
-    v26 = 0;
+    VNValidatedLog(4, @"unsupported signature print type %lu", v20, v21, v22, v23, v24, v25, signatureprintType);
+    selfCopy = 0;
     self = v19;
   }
 
 LABEL_8:
 
-  return v26;
+  return selfCopy;
 }
 
 @end

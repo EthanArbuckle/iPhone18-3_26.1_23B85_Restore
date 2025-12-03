@@ -1,14 +1,14 @@
 @interface ICCloudKitSyncer
 - (ICCloudKitSyncerDelegate)delegate;
 - (void)saveUnsyncedObjects;
-- (void)saveUnsyncedObjectsWithRetryCount:(unint64_t)a3 completionBlock:(id)a4;
+- (void)saveUnsyncedObjectsWithRetryCount:(unint64_t)count completionBlock:(id)block;
 @end
 
 @implementation ICCloudKitSyncer
 
-- (void)saveUnsyncedObjectsWithRetryCount:(unint64_t)a3 completionBlock:(id)a4
+- (void)saveUnsyncedObjectsWithRetryCount:(unint64_t)count completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -22,8 +22,8 @@
   v10[2] = __70__ICCloudKitSyncer_saveUnsyncedObjectsWithRetryCount_completionBlock___block_invoke;
   v10[3] = &unk_278197990;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v9 = v6;
+  v12[1] = count;
+  v9 = blockCopy;
   v11 = v9;
   [v8 processAllCloudObjectsWithCompletionHandler:v10];
 

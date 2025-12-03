@@ -3,9 +3,9 @@
 - (id)bottomAnchoredButtons;
 - (id)titleImage;
 - (id)titleString;
-- (void)buttonAtIndexTapped:(int64_t)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)shareButtonTapped:(id)a3;
+- (void)buttonAtIndexTapped:(int64_t)tapped;
+- (void)doneButtonTapped:(id)tapped;
+- (void)shareButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -16,8 +16,8 @@
   v4.receiver = self;
   v4.super_class = HKOrganDonationThankYouViewController;
   [(HKTitledBuddyViewController *)&v4 viewDidLoad];
-  v3 = [(HKOrganDonationThankYouViewController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(HKOrganDonationThankYouViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
 - (id)titleImage
@@ -48,9 +48,9 @@
 - (id)bottomAnchoredButtons
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(HKOrganDonationBaseViewController *)self completionButtonTitle];
-  v4 = v3;
-  if (!v3)
+  completionButtonTitle = [(HKOrganDonationBaseViewController *)self completionButtonTitle];
+  v4 = completionButtonTitle;
+  if (!completionButtonTitle)
   {
     v2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v4 = [v2 localizedStringForKey:@"OD_DONE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -62,27 +62,27 @@
   v9[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
 
-  if (!v3)
+  if (!completionButtonTitle)
   {
   }
 
   return v7;
 }
 
-- (void)buttonAtIndexTapped:(int64_t)a3
+- (void)buttonAtIndexTapped:(int64_t)tapped
 {
-  if (a3 == 1)
+  if (tapped == 1)
   {
     [(HKOrganDonationThankYouViewController *)self shareButtonTapped:0];
   }
 
-  else if (!a3)
+  else if (!tapped)
   {
     [(HKOrganDonationThankYouViewController *)self doneButtonTapped:?];
   }
 }
 
-- (void)shareButtonTapped:(id)a3
+- (void)shareButtonTapped:(id)tapped
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v4 = [_HKActivityItemProvider alloc];
@@ -95,10 +95,10 @@
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v10 = [v8 initWithActivityItems:v9 applicationActivities:MEMORY[0x1E695E0F0]];
 
-  v11 = [v10 popoverPresentationController];
-  v12 = [(HKTitledBuddyViewController *)self buttons];
-  v13 = [v12 objectAtIndexedSubscript:1];
-  [v11 setSourceView:v13];
+  popoverPresentationController = [v10 popoverPresentationController];
+  buttons = [(HKTitledBuddyViewController *)self buttons];
+  v13 = [buttons objectAtIndexedSubscript:1];
+  [popoverPresentationController setSourceView:v13];
 
   v14 = *MEMORY[0x1E69CDAD8];
   v19[0] = *MEMORY[0x1E69CDAC0];
@@ -117,18 +117,18 @@
   [(HKOrganDonationThankYouViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v4 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
+  registrationCompletionHandler = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
 
-  if (v4)
+  if (registrationCompletionHandler)
   {
-    v5 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
-    v5[2](v5, 1);
+    registrationCompletionHandler2 = [(HKOrganDonationBaseViewController *)self registrationCompletionHandler];
+    registrationCompletionHandler2[2](registrationCompletionHandler2, 1);
   }
 
-  v6 = [(HKOrganDonationThankYouViewController *)self navigationController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(HKOrganDonationThankYouViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

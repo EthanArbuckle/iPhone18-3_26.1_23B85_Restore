@@ -1,29 +1,29 @@
 @interface SXTextTangierInteractiveCanvasController
 - (BOOL)p_currentlyScrolling;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (SXTextTangierInteractiveCanvasControllerDataSource)dataSource;
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
 - (id)i_topLevelLayersForTiling;
 - (id)topLevelRepsForHitTesting;
 - (void)endUISession;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setSelection:(id)a3 onModel:(id)a4 withFlags:(unint64_t)a5;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setSelection:(id)selection onModel:(id)model withFlags:(unint64_t)flags;
 - (void)teardown;
 - (void)willEndEditingText;
 @end
 
 @implementation SXTextTangierInteractiveCanvasController
 
-- (void)setSelection:(id)a3 onModel:(id)a4 withFlags:(unint64_t)a5
+- (void)setSelection:(id)selection onModel:(id)model withFlags:(unint64_t)flags
 {
-  v8 = a4;
-  v9 = a3;
+  modelCopy = model;
+  selectionCopy = selection;
   objc_opt_class();
   v10 = TSUDynamicCast();
   objc_opt_class();
@@ -33,7 +33,7 @@
 
   v13.receiver = self;
   v13.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v13 setSelection:v9 onModel:v8 withFlags:a5 & 0xFFFFFFFFFFFFFFAFLL];
+  [(TSDInteractiveCanvasController *)&v13 setSelection:selectionCopy onModel:modelCopy withFlags:flags & 0xFFFFFFFFFFFFFFAFLL];
 }
 
 - (void)willEndEditingText
@@ -44,151 +44,151 @@
   [(TSWPInteractiveCanvasController *)&v3 willEndEditingText];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v5.receiver = self;
   v5.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v5 scrollViewWillBeginDragging:a3];
-  v4 = [(TSDInteractiveCanvasController *)self delegate];
-  [v4 interactiveCanvasControllerWillStartInteraction:self];
+  [(TSDInteractiveCanvasController *)&v5 scrollViewWillBeginDragging:dragging];
+  delegate = [(TSDInteractiveCanvasController *)self delegate];
+  [delegate interactiveCanvasControllerWillStartInteraction:self];
 
   [(SXTextTangierInteractiveCanvasController *)self setIsScrolling:1];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v6.receiver = self;
   v6.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v6 scrollViewDidScroll:a3];
+  [(TSDInteractiveCanvasController *)&v6 scrollViewDidScroll:scroll];
   if ([(SXTextTangierInteractiveCanvasController *)self mightScrollToTop])
   {
     [(SXTextTangierInteractiveCanvasController *)self setIsScrolling:1];
     [(SXTextTangierInteractiveCanvasController *)self setMightScrollToTop:0];
-    v4 = [(TSDInteractiveCanvasController *)self delegate];
-    [v4 interactiveCanvasControllerWillStartInteraction:self];
+    delegate = [(TSDInteractiveCanvasController *)self delegate];
+    [delegate interactiveCanvasControllerWillStartInteraction:self];
   }
 
-  v5 = [(TSDInteractiveCanvasController *)self delegate];
-  [v5 interactiveCanvasControllerDidScroll:self];
+  delegate2 = [(TSDInteractiveCanvasController *)self delegate];
+  [delegate2 interactiveCanvasControllerDidScroll:self];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
   v10.receiver = self;
   v10.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v10 scrollViewDidEndDragging:v6 willDecelerate:v4];
-  if (!v4)
+  [(TSDInteractiveCanvasController *)&v10 scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
+  if (!decelerateCopy)
   {
     [(SXTextTangierInteractiveCanvasController *)self setIsScrolling:0];
   }
 
-  v7 = [(TSDInteractiveCanvasController *)self delegate];
+  delegate = [(TSDInteractiveCanvasController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(TSDInteractiveCanvasController *)self delegate];
-    [v9 interactiveCanvasController:self scrollViewDidEndDragging:v6 willDecelerate:v4];
+    delegate2 = [(TSDInteractiveCanvasController *)self delegate];
+    [delegate2 interactiveCanvasController:self scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = [a3 scrollsToTop];
-  if (v4)
+  scrollsToTop = [top scrollsToTop];
+  if (scrollsToTop)
   {
     [(SXTextTangierInteractiveCanvasController *)self setMightScrollToTop:1];
   }
 
-  return v4;
+  return scrollsToTop;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v5.receiver = self;
   v5.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v5 scrollViewDidEndDecelerating:a3];
+  [(TSDInteractiveCanvasController *)&v5 scrollViewDidEndDecelerating:decelerating];
   [(SXTextTangierInteractiveCanvasController *)self setIsScrolling:0];
-  v4 = [(TSDInteractiveCanvasController *)self delegate];
-  [v4 interactiveCanvasControllerDidStopScrolling:self];
+  delegate = [(TSDInteractiveCanvasController *)self delegate];
+  [delegate interactiveCanvasControllerDidStopScrolling:self];
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
   v5.receiver = self;
   v5.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v5 scrollViewDidScrollToTop:a3];
+  [(TSDInteractiveCanvasController *)&v5 scrollViewDidScrollToTop:top];
   [(SXTextTangierInteractiveCanvasController *)self setIsScrolling:0];
-  v4 = [(TSDInteractiveCanvasController *)self delegate];
-  [v4 interactiveCanvasControllerDidStopScrolling:self];
+  delegate = [(TSDInteractiveCanvasController *)self delegate];
+  [delegate interactiveCanvasControllerDidStopScrolling:self];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v5.receiver = self;
   v5.super_class = SXTextTangierInteractiveCanvasController;
-  [(TSDInteractiveCanvasController *)&v5 scrollViewDidEndScrollingAnimation:a3];
+  [(TSDInteractiveCanvasController *)&v5 scrollViewDidEndScrollingAnimation:animation];
   [(SXTextTangierInteractiveCanvasController *)self setIsScrolling:0];
-  v4 = [(TSDInteractiveCanvasController *)self delegate];
-  [v4 interactiveCanvasControllerDidStopScrolling:self];
+  delegate = [(TSDInteractiveCanvasController *)self delegate];
+  [delegate interactiveCanvasControllerDidStopScrolling:self];
 }
 
 - (id)topLevelRepsForHitTesting
 {
-  v3 = [(SXTextTangierInteractiveCanvasController *)self dataSource];
+  dataSource = [(SXTextTangierInteractiveCanvasController *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SXTextTangierInteractiveCanvasController *)self dataSource];
-    v6 = [v5 topLevelRepsForInteractiveCanvasController:self];
+    dataSource2 = [(SXTextTangierInteractiveCanvasController *)self dataSource];
+    topLevelRepsForHitTesting = [dataSource2 topLevelRepsForInteractiveCanvasController:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SXTextTangierInteractiveCanvasController;
-    v6 = [(TSDInteractiveCanvasController *)&v8 topLevelRepsForHitTesting];
+    topLevelRepsForHitTesting = [(TSDInteractiveCanvasController *)&v8 topLevelRepsForHitTesting];
   }
 
-  return v6;
+  return topLevelRepsForHitTesting;
 }
 
 - (id)i_topLevelLayersForTiling
 {
-  v3 = [(SXTextTangierInteractiveCanvasController *)self dataSource];
+  dataSource = [(SXTextTangierInteractiveCanvasController *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SXTextTangierInteractiveCanvasController *)self dataSource];
-    v6 = [v5 topLevelLayersForInteractiveCanvasController:self];
+    dataSource2 = [(SXTextTangierInteractiveCanvasController *)self dataSource];
+    i_topLevelLayersForTiling = [dataSource2 topLevelLayersForInteractiveCanvasController:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SXTextTangierInteractiveCanvasController;
-    v6 = [(TSDInteractiveCanvasController *)&v8 i_topLevelLayersForTiling];
+    i_topLevelLayersForTiling = [(TSDInteractiveCanvasController *)&v8 i_topLevelLayersForTiling];
   }
 
-  return v6;
+  return i_topLevelLayersForTiling;
 }
 
-- (id)closestRepToPoint:(CGPoint)a3 forStorage:(id)a4
+- (id)closestRepToPoint:(CGPoint)point forStorage:(id)storage
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  storageCopy = storage;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [(SXTextTangierInteractiveCanvasController *)self topLevelRepsForHitTesting];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  topLevelRepsForHitTesting = [(SXTextTangierInteractiveCanvasController *)self topLevelRepsForHitTesting];
+  v9 = [topLevelRepsForHitTesting countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -201,16 +201,16 @@
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(topLevelRepsForHitTesting);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 storage];
+          storage = [v15 storage];
 
-          if (v16 == v7)
+          if (storage == storageCopy)
           {
             [v15 frameInUnscaledCanvas];
             v17 = v34.origin.x;
@@ -250,7 +250,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v10 = [topLevelRepsForHitTesting countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v10)
       {
         continue;
@@ -270,16 +270,16 @@ LABEL_16:
   return v11;
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(TSDInteractiveCanvasController *)self canvas];
-  v12 = [(SXTextTangierInteractiveCanvasController *)self topLevelRepsForHitTesting];
+  y = rep.y;
+  x = rep.x;
+  testCopy = test;
+  gestureCopy = gesture;
+  canvas = [(TSDInteractiveCanvasController *)self canvas];
+  topLevelRepsForHitTesting = [(SXTextTangierInteractiveCanvasController *)self topLevelRepsForHitTesting];
   [objc_opt_class() smallRepOutsetForHitTesting];
-  v14 = [v11 hitRep:v12 inTopLevelReps:v10 smallRepOutset:v9 withGesture:x passingTest:{y, v13}];
+  v14 = [canvas hitRep:topLevelRepsForHitTesting inTopLevelReps:gestureCopy smallRepOutset:testCopy withGesture:x passingTest:{y, v13}];
 
   return v14;
 }
@@ -293,16 +293,16 @@ LABEL_16:
     return 1;
   }
 
-  v4 = [(SXTextTangierInteractiveCanvasController *)self scrollView];
-  v3 = [v4 _isAnimatingScrollTest];
+  scrollView = [(SXTextTangierInteractiveCanvasController *)self scrollView];
+  _isAnimatingScrollTest = [scrollView _isAnimatingScrollTest];
 
-  return v3;
+  return _isAnimatingScrollTest;
 }
 
 - (void)endUISession
 {
-  v2 = [MEMORY[0x1E69D56F0] sharedHyperlinkUIController];
-  [v2 endUISession];
+  mEMORY[0x1E69D56F0] = [MEMORY[0x1E69D56F0] sharedHyperlinkUIController];
+  [mEMORY[0x1E69D56F0] endUISession];
 }
 
 - (void)teardown

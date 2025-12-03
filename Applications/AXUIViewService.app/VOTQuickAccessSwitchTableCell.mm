@@ -28,9 +28,9 @@
 {
   v8.receiver = self;
   v8.super_class = VOTQuickAccessSwitchTableCell;
-  v3 = [(VOTQuickAccessSwitchTableCell *)&v8 accessibilityTraits];
-  v4 = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
-  v5 = [v4 accessibilityTraits] | v3;
+  accessibilityTraits = [(VOTQuickAccessSwitchTableCell *)&v8 accessibilityTraits];
+  cellAccessibility = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
+  v5 = [cellAccessibility accessibilityTraits] | accessibilityTraits;
   v6 = UIAccessibilityTraitAdjustable;
 
   return v5 & ~v6;
@@ -38,30 +38,30 @@
 
 - (void)accessibilityDecrement
 {
-  v2 = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
-  [v2 accessibilityDecrement];
+  cellAccessibility = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
+  [cellAccessibility accessibilityDecrement];
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
-  [v2 accessibilityIncrement];
+  cellAccessibility = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
+  [cellAccessibility accessibilityIncrement];
 }
 
 - (BOOL)_accessibilityShouldClearChildren
 {
-  v2 = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
-  v3 = [v2 _accessibilityShouldClearChildren];
+  cellAccessibility = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
+  _accessibilityShouldClearChildren = [cellAccessibility _accessibilityShouldClearChildren];
 
-  return v3;
+  return _accessibilityShouldClearChildren;
 }
 
 - (id)accessibilityCustomActions
 {
-  v2 = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
-  v3 = [v2 accessibilityCustomActions];
+  cellAccessibility = [(VOTQuickAccessSwitchTableCell *)self cellAccessibility];
+  accessibilityCustomActions = [cellAccessibility accessibilityCustomActions];
 
-  return v3;
+  return accessibilityCustomActions;
 }
 
 @end

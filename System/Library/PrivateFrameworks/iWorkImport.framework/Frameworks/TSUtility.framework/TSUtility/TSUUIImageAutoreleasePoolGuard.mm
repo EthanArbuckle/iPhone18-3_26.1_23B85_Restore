@@ -1,18 +1,18 @@
 @interface TSUUIImageAutoreleasePoolGuard
-- (TSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)a3;
+- (TSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)image;
 - (void)dealloc;
 @end
 
 @implementation TSUUIImageAutoreleasePoolGuard
 
-- (TSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)a3
+- (TSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = TSUUIImageAutoreleasePoolGuard;
   result = [(TSUUIImageAutoreleasePoolGuard *)&v5 init];
   if (result)
   {
-    result->mImage = a3;
+    result->mImage = image;
   }
 
   return result;

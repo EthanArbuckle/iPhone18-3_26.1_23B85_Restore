@@ -1,52 +1,52 @@
 @interface TNChartSelection
-- (BOOL)isEqual:(id)a3;
-- (TNChartSelection)initWithChartInfo:(id)a3;
-- (TNChartSelection)initWithChartInfo:(id)a3 reference:(TSCERangeRef *)a4;
+- (BOOL)isEqual:(id)equal;
+- (TNChartSelection)initWithChartInfo:(id)info;
+- (TNChartSelection)initWithChartInfo:(id)info reference:(TSCERangeRef *)reference;
 - (TSCERangeRef)reference;
 - (id).cxx_construct;
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TNChartSelection
 
-- (TNChartSelection)initWithChartInfo:(id)a3 reference:(TSCERangeRef *)a4
+- (TNChartSelection)initWithChartInfo:(id)info reference:(TSCERangeRef *)reference
 {
-  v7 = a3;
-  v9 = objc_msgSend_setWithObjects_(MEMORY[0x277CBEB98], v8, v7, 0);
+  infoCopy = info;
+  v9 = objc_msgSend_setWithObjects_(MEMORY[0x277CBEB98], v8, infoCopy, 0);
   v13.receiver = self;
   v13.super_class = TNChartSelection;
   v10 = [(TSDDrawableSelection *)&v13 initWithInfos:v9];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_chart, a3);
-    tableUID = a4->_tableUID;
-    v10->_reference.range = a4->range;
+    objc_storeStrong(&v10->_chart, info);
+    tableUID = reference->_tableUID;
+    v10->_reference.range = reference->range;
     v10->_reference._tableUID = tableUID;
   }
 
   return v10;
 }
 
-- (TNChartSelection)initWithChartInfo:(id)a3
+- (TNChartSelection)initWithChartInfo:(id)info
 {
   v4 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v5 = 0;
   v6 = 0;
-  return objc_msgSend_initWithChartInfo_reference_(self, a2, a3, &v4);
+  return objc_msgSend_initWithChartInfo_reference_(self, a2, info, &v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     v6 = TSUDynamicCast();
@@ -70,12 +70,12 @@
   return v8;
 }
 
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 6))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 6))
   {
-    v7 = *(a3 + 6);
+    v7 = *(archive + 6);
   }
 
   else
@@ -85,29 +85,29 @@
 
   v26.receiver = self;
   v26.super_class = TNChartSelection;
-  v8 = [(TSDDrawableSelection *)&v26 initWithArchive:v7 unarchiver:v6];
+  v8 = [(TSDDrawableSelection *)&v26 initWithArchive:v7 unarchiver:unarchiverCopy];
   if (v8)
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
     if (v9)
     {
       TSCERangeRefFromArchive();
       v10 = v25;
       *(v8 + 24) = v24;
       *(v8 + 40) = v10;
-      v9 = *(a3 + 4);
+      v9 = *(archive + 4);
     }
 
     if ((v9 & 4) != 0)
     {
-      v17 = *(a3 + 5);
+      v17 = *(archive + 5);
       v13 = v23;
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = sub_275F37750;
       v23[3] = &unk_27A6A32B8;
       v23[4] = v8;
-      v18 = v6;
+      v18 = unarchiverCopy;
       v19 = objc_opt_class();
       objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v18, v20, v17, v19, 0, v23);
       goto LABEL_12;
@@ -115,7 +115,7 @@
 
     if ((v9 & 2) != 0)
     {
-      v11 = *(a3 + 4);
+      v11 = *(archive + 4);
       if (*(v11 + 16))
       {
         v12 = *(v11 + 48);
@@ -125,7 +125,7 @@
         v22[2] = sub_275F37764;
         v22[3] = &unk_27A6A32B8;
         v22[4] = v8;
-        v14 = v6;
+        v14 = unarchiverCopy;
         v15 = objc_opt_class();
         objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v14, v16, v12, v15, 0, v22);
 LABEL_12:
@@ -136,63 +136,63 @@ LABEL_12:
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v7 = a4;
+  archiverCopy = archiver;
   chart = self->_chart;
   if (chart)
   {
-    *(a3 + 4) |= 4u;
-    v9 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v9 = *(archive + 5);
     if (!v9)
     {
-      v10 = *(a3 + 1);
+      v10 = *(archive + 1);
       if (v10)
       {
         v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v9 = MEMORY[0x277C90F90](v10);
-      *(a3 + 5) = v9;
+      *(archive + 5) = v9;
     }
 
-    objc_msgSend_setWeakReference_message_(v7, v6, chart, v9);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v6, chart, v9);
   }
 
   if (TSCERangeRef::isValid(&self->_reference))
   {
-    *(a3 + 4) |= 1u;
-    if (!*(a3 + 3))
+    *(archive + 4) |= 1u;
+    if (!*(archive + 3))
     {
-      v11 = *(a3 + 1);
+      v11 = *(archive + 1);
       if (v11)
       {
         v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      *(a3 + 3) = MEMORY[0x277C90FE0](v11);
+      *(archive + 3) = MEMORY[0x277C90FE0](v11);
     }
 
     TSCERangeRefEncodeToArchive();
   }
 
-  *(a3 + 4) |= 8u;
-  v12 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v12 = *(archive + 6);
   if (!v12)
   {
-    v13 = *(a3 + 1);
+    v13 = *(archive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v12 = MEMORY[0x277C90F30](v13);
-    *(a3 + 6) = v12;
+    *(archive + 6) = v12;
   }
 
   v14.receiver = self;
   v14.super_class = TNChartSelection;
-  [(TSDDrawableSelection *)&v14 saveToArchive:v12 archiver:v7];
+  [(TSDDrawableSelection *)&v14 saveToArchive:v12 archiver:archiverCopy];
 }
 
 - (TSCERangeRef)reference

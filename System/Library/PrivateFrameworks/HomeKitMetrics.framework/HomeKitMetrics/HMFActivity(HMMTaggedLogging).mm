@@ -17,9 +17,9 @@
   v3[1] = 3221225472;
   v3[2] = __49__HMFActivity_HMMTaggedLogging__tagProcessorList__block_invoke;
   v3[3] = &unk_2786F9010;
-  v3[4] = a1;
+  v3[4] = self;
   v3[5] = &v4;
-  [a1 synchronizeWithActivityLock:v3];
+  [self synchronizeWithActivityLock:v3];
   v1 = v5[5];
   _Block_object_dispose(&v4, 8);
 
@@ -28,10 +28,10 @@
 
 + (id)currentTagProcessorList
 {
-  v0 = [MEMORY[0x277D0F770] _currentActivity];
-  v1 = [v0 tagProcessorList];
+  _currentActivity = [MEMORY[0x277D0F770] _currentActivity];
+  tagProcessorList = [_currentActivity tagProcessorList];
 
-  return v1;
+  return tagProcessorList;
 }
 
 @end

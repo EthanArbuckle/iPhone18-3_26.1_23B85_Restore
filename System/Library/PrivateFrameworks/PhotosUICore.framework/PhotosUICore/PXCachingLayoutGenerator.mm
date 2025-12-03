@@ -2,43 +2,43 @@
 - (CGSize)size;
 - (void)_updateIfNeeded;
 - (void)dealloc;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 - (void)invalidate;
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4;
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5;
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5 zPositions:(float *)a6;
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects;
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds;
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds zPositions:(float *)positions;
 @end
 
 @implementation PXCachingLayoutGenerator
 
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5 zPositions:(float *)a6
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds zPositions:(float *)positions
 {
-  v11 = [(PXCachingLayoutGenerator *)self itemCount];
-  if (v11 >= 1)
+  itemCount = [(PXCachingLayoutGenerator *)self itemCount];
+  if (itemCount >= 1)
   {
-    bzero(a6, 4 * v11);
+    bzero(positions, 4 * itemCount);
   }
 
-  [(PXCachingLayoutGenerator *)self updateContentSize:a3 itemRects:a4 itemKinds:a5];
+  [(PXCachingLayoutGenerator *)self updateContentSize:size itemRects:rects itemKinds:kinds];
 }
 
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds
 {
-  v9 = [(PXCachingLayoutGenerator *)self itemCount];
-  if (v9 >= 1)
+  itemCount = [(PXCachingLayoutGenerator *)self itemCount];
+  if (itemCount >= 1)
   {
-    bzero(a5, 8 * v9);
+    bzero(kinds, 8 * itemCount);
   }
 
-  [(PXCachingLayoutGenerator *)self updateContentSize:a3 itemRects:a4];
+  [(PXCachingLayoutGenerator *)self updateContentSize:size itemRects:rects];
 }
 
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCachingLayoutGenerator.m" lineNumber:76 description:{@"Method %s is a responsibility of subclass %@", "-[PXCachingLayoutGenerator updateContentSize:itemRects:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCachingLayoutGenerator.m" lineNumber:76 description:{@"Method %s is a responsibility of subclass %@", "-[PXCachingLayoutGenerator updateContentSize:itemRects:]", v8}];
 
   abort();
 }
@@ -47,9 +47,9 @@
 {
   if (!self->_isValid)
   {
-    v3 = [(PXCachingLayoutGenerator *)self itemCount];
+    itemCount = [(PXCachingLayoutGenerator *)self itemCount];
     itemCapacity = self->_itemCapacity;
-    if (v3 > itemCapacity)
+    if (itemCount > itemCapacity)
     {
       if (itemCapacity)
       {
@@ -58,12 +58,12 @@
           itemCapacity *= 2;
         }
 
-        while (itemCapacity < v3);
+        while (itemCapacity < itemCount);
       }
 
       else
       {
-        itemCapacity = v3;
+        itemCapacity = itemCount;
       }
 
       self->_itemCapacity = itemCapacity;
@@ -83,13 +83,13 @@
   self->_isValid = 0;
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  length = a4.length;
-  v8 = [(PXCachingLayoutGenerator *)self geometryKinds];
-  LODWORD(a5) = [v8 containsIndex:a5];
+  length = range.length;
+  geometryKinds = [(PXCachingLayoutGenerator *)self geometryKinds];
+  LODWORD(kind) = [geometryKinds containsIndex:kind];
 
-  if (a5)
+  if (kind)
   {
     [(PXCachingLayoutGenerator *)self _updateIfNeeded];
     if (length)

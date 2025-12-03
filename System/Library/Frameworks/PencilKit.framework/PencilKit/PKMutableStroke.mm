@@ -1,35 +1,35 @@
 @interface PKMutableStroke
 - (UIColor)_color;
-- (void)_setColor:(id)a3;
-- (void)_setLocation:(CGPoint)a3 atIndex:(unint64_t)a4;
+- (void)_setColor:(id)color;
+- (void)_setLocation:(CGPoint)location atIndex:(unint64_t)index;
 @end
 
 @implementation PKMutableStroke
 
-- (void)_setLocation:(CGPoint)a3 atIndex:(unint64_t)a4
+- (void)_setLocation:(CGPoint)location atIndex:(unint64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(_PKStrokeConcrete *)self _transform];
   CGAffineTransformInvert(&v11, &v10);
   v9 = vaddq_f64(*&v11.tx, vmlaq_n_f64(vmulq_n_f64(*&v11.c, y), *&v11.a, x));
-  v6 = [(PKStroke *)self _strokeData];
-  [v6 setLocation:a4 atIndex:*&v9];
+  _strokeData = [(PKStroke *)self _strokeData];
+  [_strokeData setLocation:index atIndex:*&v9];
 }
 
 - (UIColor)_color
 {
   v2 = [(_PKStrokeConcrete *)self ink];
-  v3 = [v2 color];
+  color = [v2 color];
 
-  return v3;
+  return color;
 }
 
-- (void)_setColor:(id)a3
+- (void)_setColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   v4 = [(_PKStrokeConcrete *)self ink];
-  v5 = [PKInk inkFromInk:v4 color:v6];
+  v5 = [PKInk inkFromInk:v4 color:colorCopy];
   [(PKStroke *)self _setInk:v5];
 }
 

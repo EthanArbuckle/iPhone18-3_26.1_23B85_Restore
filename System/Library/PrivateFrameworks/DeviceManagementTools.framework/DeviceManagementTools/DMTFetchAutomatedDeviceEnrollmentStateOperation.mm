@@ -1,32 +1,32 @@
 @interface DMTFetchAutomatedDeviceEnrollmentStateOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
-- (DMTFetchAutomatedDeviceEnrollmentStateOperation)initWithRequest:(id)a3 enrollmentStateProvider:(id)a4;
-- (void)runWithRequest:(id)a3;
++ (BOOL)validateRequest:(id)request error:(id *)error;
+- (DMTFetchAutomatedDeviceEnrollmentStateOperation)initWithRequest:(id)request enrollmentStateProvider:(id)provider;
+- (void)runWithRequest:(id)request;
 @end
 
 @implementation DMTFetchAutomatedDeviceEnrollmentStateOperation
 
-- (DMTFetchAutomatedDeviceEnrollmentStateOperation)initWithRequest:(id)a3 enrollmentStateProvider:(id)a4
+- (DMTFetchAutomatedDeviceEnrollmentStateOperation)initWithRequest:(id)request enrollmentStateProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = DMTFetchAutomatedDeviceEnrollmentStateOperation;
-  v8 = [(CATTaskOperation *)&v11 initWithRequest:a3];
+  v8 = [(CATTaskOperation *)&v11 initWithRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_enrollmentStateProvider, a4);
+    objc_storeStrong(&v8->_enrollmentStateProvider, provider);
   }
 
   return v9;
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v9.receiver = a1;
+  requestCopy = request;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___DMTFetchAutomatedDeviceEnrollmentStateOperation;
-  if (!objc_msgSendSuper2(&v9, sel_validateRequest_error_, v6, a4))
+  if (!objc_msgSendSuper2(&v9, sel_validateRequest_error_, requestCopy, error))
   {
     goto LABEL_6;
   }
@@ -34,10 +34,10 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       DMTErrorWithCodeAndUserInfo(2, &unk_285B5BD48);
-      *a4 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_7;
     }
 
@@ -52,7 +52,7 @@ LABEL_7:
   return v7;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   if ([(DMTFetchAutomatedDeviceEnrollmentStateOperation *)self isExecuting])
   {
@@ -65,8 +65,8 @@ LABEL_7:
     else
     {
       v5 = objc_opt_new();
-      v4 = [(DMTFetchAutomatedDeviceEnrollmentStateOperation *)self enrollmentStateProvider];
-      [v5 setEnrollmentState:{objc_msgSend(v4, "enrollmentState")}];
+      enrollmentStateProvider = [(DMTFetchAutomatedDeviceEnrollmentStateOperation *)self enrollmentStateProvider];
+      [v5 setEnrollmentState:{objc_msgSend(enrollmentStateProvider, "enrollmentState")}];
 
       [(DMTFetchAutomatedDeviceEnrollmentStateOperation *)self endOperationWithResultObject:v5];
     }

@@ -1,39 +1,39 @@
 @interface FMStewieWelcomeViewController
-- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (double)_contentViewHeight;
-- (void)cancelActionWithSender:(id)a3;
+- (void)cancelActionWithSender:(id)sender;
 - (void)performAction;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMStewieWelcomeViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100427BD8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100427CC8(a3);
+  selfCopy = self;
+  sub_100427CC8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100428138(a3);
+  selfCopy = self;
+  sub_100428138(disappear);
 }
 
 - (double)_contentViewHeight
 {
   v11 = &type metadata for SolariumFeatureFlag;
   v12 = sub_10000BD04();
-  v3 = self;
+  selfCopy = self;
   v4 = isFeatureEnabled(_:)();
   sub_100006060(v10);
   if (v4)
@@ -42,11 +42,11 @@
     return 214.0;
   }
 
-  v6 = [(FMStewieWelcomeViewController *)v3 view];
-  if (v6)
+  view = [(FMStewieWelcomeViewController *)selfCopy view];
+  if (view)
   {
-    v8 = v6;
-    [v6 frame];
+    v8 = view;
+    [view frame];
     v5 = v9;
 
     return v5;
@@ -58,13 +58,13 @@
 
 - (void)performAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10042AE20();
 }
 
-- (void)cancelActionWithSender:(id)a3
+- (void)cancelActionWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100426ACC();
   v6 = v5;
   updated = type metadata accessor for FMFSatelliteLocationUpdateEvent();
@@ -74,17 +74,17 @@
   }
 
   (v4)(&v8, 0);
-  [(FMStewieWelcomeViewController *)v3 dismissViewControllerAnimated:1 completion:0];
+  [(FMStewieWelcomeViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -92,12 +92,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_10042BB04(v9, v11, a4, v13, v14, v16, a6);
+    return sub_10042BB04(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -105,16 +105,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_10042BB04(v9, v11, a4, v13, v14, v16, a6);
+  return sub_10042BB04(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy29FMStewieWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -123,8 +123,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_10042BEB8(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_10042BEB8(v9, v11, text, v13, icon, layout);
 }
 
 @end

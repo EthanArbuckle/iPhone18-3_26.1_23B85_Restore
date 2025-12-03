@@ -1,38 +1,38 @@
 @interface CMShapeRenderer
-+ (CGColor)_copyCGColorFromOADColor:(id)a3 andState:(id)a4;
-+ (CGColor)_copyCGColorFromOADFill:(id)a3 andState:(id)a4;
-+ (CGImage)copyImageFromOADImageFill:(id)a3 withContext:(id)a4;
-+ (CGImage)copyImageFromOADImageFill:(id)a3 withMapper:(id)a4;
-+ (void)_renderCGPath:(CGPath *)a3 stroke:(id)a4 fill:(id)a5 orientedBounds:(id)a6 state:(id)a7 drawingContext:(id)a8;
-+ (void)_setupDrawingStyleInDrawingContext:(id)a3 dash:(id)a4 state:(id)a5;
-+ (void)_setupDrawingStyleInDrawingContext:(id)a3 fill:(id)a4 stroke:(id)a5 state:(id)a6;
-+ (void)_setupDrawingStyleInDrawingContext:(id)a3 stroke:(id)a4 state:(id)a5;
-+ (void)renderCanonicalShape:(int)a3 fill:(id)a4 stroke:(id)a5 adjustValues:(id)a6 orientedBounds:(id)a7 state:(id)a8 drawingContext:(id)a9;
-+ (void)renderDiagramPath:(id)a3 fill:(id)a4 stroke:(id)a5 state:(id)a6 drawingContext:(id)a7;
-+ (void)renderFreeForm:(id)a3 fill:(id)a4 stroke:(id)a5 orientedBounds:(id)a6 state:(id)a7 drawingContext:(id)a8;
-+ (void)renderLine:(int)a3 stroke:(id)a4 adjustValues:(id)a5 orientedBounds:(id)a6 state:(id)a7 drawingContext:(id)a8;
++ (CGColor)_copyCGColorFromOADColor:(id)color andState:(id)state;
++ (CGColor)_copyCGColorFromOADFill:(id)fill andState:(id)state;
++ (CGImage)copyImageFromOADImageFill:(id)fill withContext:(id)context;
++ (CGImage)copyImageFromOADImageFill:(id)fill withMapper:(id)mapper;
++ (void)_renderCGPath:(CGPath *)path stroke:(id)stroke fill:(id)fill orientedBounds:(id)bounds state:(id)state drawingContext:(id)context;
++ (void)_setupDrawingStyleInDrawingContext:(id)context dash:(id)dash state:(id)state;
++ (void)_setupDrawingStyleInDrawingContext:(id)context fill:(id)fill stroke:(id)stroke state:(id)state;
++ (void)_setupDrawingStyleInDrawingContext:(id)context stroke:(id)stroke state:(id)state;
++ (void)renderCanonicalShape:(int)shape fill:(id)fill stroke:(id)stroke adjustValues:(id)values orientedBounds:(id)bounds state:(id)state drawingContext:(id)context;
++ (void)renderDiagramPath:(id)path fill:(id)fill stroke:(id)stroke state:(id)state drawingContext:(id)context;
++ (void)renderFreeForm:(id)form fill:(id)fill stroke:(id)stroke orientedBounds:(id)bounds state:(id)state drawingContext:(id)context;
++ (void)renderLine:(int)line stroke:(id)stroke adjustValues:(id)values orientedBounds:(id)bounds state:(id)state drawingContext:(id)context;
 @end
 
 @implementation CMShapeRenderer
 
-+ (void)renderFreeForm:(id)a3 fill:(id)a4 stroke:(id)a5 orientedBounds:(id)a6 state:(id)a7 drawingContext:(id)a8
++ (void)renderFreeForm:(id)form fill:(id)fill stroke:(id)stroke orientedBounds:(id)bounds state:(id)state drawingContext:(id)context
 {
-  v29 = a1;
-  v13 = a3;
-  v30 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v13 pathCount];
-  if (v18)
+  selfCopy = self;
+  formCopy = form;
+  fillCopy = fill;
+  strokeCopy = stroke;
+  boundsCopy = bounds;
+  stateCopy = state;
+  contextCopy = context;
+  pathCount = [formCopy pathCount];
+  if (pathCount)
   {
-    for (i = 0; v18 != i; ++i)
+    for (i = 0; pathCount != i; ++i)
     {
-      v20 = [v13 pathAtIndex:{i, v29}];
-      if (v13)
+      v20 = [formCopy pathAtIndex:{i, selfCopy}];
+      if (formCopy)
       {
-        [v13 geometryCoordSpace];
+        [formCopy geometryCoordSpace];
         v21 = v35;
         v22 = SHIDWORD(v35);
       }
@@ -45,7 +45,7 @@
         v21 = 0.0;
       }
 
-      [v15 bounds];
+      [boundsCopy bounds];
       v25 = v24;
       if (v24 == 0.0 || (v26 = v23, v23 == 0.0))
       {
@@ -54,16 +54,16 @@
       }
 
       v27 = objc_alloc_init(CMFreeFormShapeBuilder);
-      [(CMShapeBuilder *)v27 setOrientedBounds:v15];
+      [(CMShapeBuilder *)v27 setOrientedBounds:boundsCopy];
       [(CMFreeFormShapeBuilder *)v27 setPath:v20];
-      [(CMLineShapeBuilder *)v27 setStroke:v14];
-      -[CMShapeBuilder setFileFormat:](v27, "setFileFormat:", [v16 sourceFormat]);
+      [(CMLineShapeBuilder *)v27 setStroke:strokeCopy];
+      -[CMShapeBuilder setFileFormat:](v27, "setFileFormat:", [stateCopy sourceFormat]);
       [(CMFreeFormShapeBuilder *)v27 setSpace:v21 / v25, v22 / v26];
       memset(&v33, 0, sizeof(v33));
       if (v27)
       {
         [(CMFreeFormShapeBuilder *)v27 affineTransform];
-        if (!v17)
+        if (!contextCopy)
         {
           goto LABEL_12;
         }
@@ -72,7 +72,7 @@
       else
       {
         memset(&t1, 0, sizeof(t1));
-        if (!v17)
+        if (!contextCopy)
         {
 LABEL_12:
           memset(&t2, 0, sizeof(t2));
@@ -80,35 +80,35 @@ LABEL_12:
         }
       }
 
-      [v17 currentTransform];
+      [contextCopy currentTransform];
 LABEL_13:
       CGAffineTransformConcat(&v33, &t1, &t2);
       t1 = v33;
       v28 = [(CMFreeFormShapeBuilder *)v27 copyShapeWithTransform:&t1];
       if (v28)
       {
-        [v29 _renderCGPath:v28 stroke:v14 fill:v30 orientedBounds:v15 state:v16 drawingContext:v17];
+        [selfCopy _renderCGPath:v28 stroke:strokeCopy fill:fillCopy orientedBounds:boundsCopy state:stateCopy drawingContext:contextCopy];
         CGPathRelease(v28);
       }
     }
   }
 }
 
-+ (void)renderDiagramPath:(id)a3 fill:(id)a4 stroke:(id)a5 state:(id)a6 drawingContext:(id)a7
++ (void)renderDiagramPath:(id)path fill:(id)fill stroke:(id)stroke state:(id)state drawingContext:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  fillCopy = fill;
+  strokeCopy = stroke;
+  stateCopy = state;
+  contextCopy = context;
   v17 = objc_alloc_init(CMFreeFormShapeBuilder);
-  [(CMFreeFormShapeBuilder *)v17 setPath:v12];
-  [(CMLineShapeBuilder *)v17 setStroke:v14];
-  -[CMShapeBuilder setFileFormat:](v17, "setFileFormat:", [v15 sourceFormat]);
+  [(CMFreeFormShapeBuilder *)v17 setPath:pathCopy];
+  [(CMLineShapeBuilder *)v17 setStroke:strokeCopy];
+  -[CMShapeBuilder setFileFormat:](v17, "setFileFormat:", [stateCopy sourceFormat]);
   [(CMFreeFormShapeBuilder *)v17 setSpace:1.0, 1.0];
-  if (v16)
+  if (contextCopy)
   {
-    [v16 currentTransform];
+    [contextCopy currentTransform];
   }
 
   else
@@ -119,33 +119,33 @@ LABEL_13:
   v18 = [(CMFreeFormShapeBuilder *)v17 copyShapeWithTransform:v19];
   if (v18)
   {
-    [a1 _renderCGPath:v18 stroke:v14 fill:v13 orientedBounds:0 state:v15 drawingContext:v16];
+    [self _renderCGPath:v18 stroke:strokeCopy fill:fillCopy orientedBounds:0 state:stateCopy drawingContext:contextCopy];
     CGPathRelease(v18);
   }
 }
 
-+ (void)renderLine:(int)a3 stroke:(id)a4 adjustValues:(id)a5 orientedBounds:(id)a6 state:(id)a7 drawingContext:(id)a8
++ (void)renderLine:(int)line stroke:(id)stroke adjustValues:(id)values orientedBounds:(id)bounds state:(id)state drawingContext:(id)context
 {
-  v12 = *&a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  v12 = *&line;
+  strokeCopy = stroke;
+  valuesCopy = values;
+  boundsCopy = bounds;
+  stateCopy = state;
+  contextCopy = context;
   v19 = objc_alloc_init(CMLineShapeBuilder);
-  [(CMShapeBuilder *)v19 setOrientedBounds:v16];
+  [(CMShapeBuilder *)v19 setOrientedBounds:boundsCopy];
   [(CMShapeBuilder *)v19 setShapeType:v12];
-  [(CMLineShapeBuilder *)v19 setStroke:v14];
-  [(CMShapeBuilder *)v19 setAdjustValues:v15];
-  -[CMShapeBuilder setFileFormat:](v19, "setFileFormat:", [v17 sourceFormat]);
+  [(CMLineShapeBuilder *)v19 setStroke:strokeCopy];
+  [(CMShapeBuilder *)v19 setAdjustValues:valuesCopy];
+  -[CMShapeBuilder setFileFormat:](v19, "setFileFormat:", [stateCopy sourceFormat]);
   memset(&v23, 0, sizeof(v23));
   if (v19)
   {
     [(CMShapeBuilder *)v19 affineTransform];
-    if (v18)
+    if (contextCopy)
     {
 LABEL_3:
-      [v18 currentTransform];
+      [contextCopy currentTransform];
       goto LABEL_6;
     }
   }
@@ -153,7 +153,7 @@ LABEL_3:
   else
   {
     memset(&t1, 0, sizeof(t1));
-    if (v18)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -166,33 +166,33 @@ LABEL_6:
   v20 = [(CMLineShapeBuilder *)v19 copyShapeWithTransform:&t1];
   if (v20)
   {
-    [a1 _renderCGPath:v20 stroke:v14 fill:0 orientedBounds:v16 state:v17 drawingContext:v18];
+    [self _renderCGPath:v20 stroke:strokeCopy fill:0 orientedBounds:boundsCopy state:stateCopy drawingContext:contextCopy];
     CGPathRelease(v20);
   }
 }
 
-+ (void)renderCanonicalShape:(int)a3 fill:(id)a4 stroke:(id)a5 adjustValues:(id)a6 orientedBounds:(id)a7 state:(id)a8 drawingContext:(id)a9
++ (void)renderCanonicalShape:(int)shape fill:(id)fill stroke:(id)stroke adjustValues:(id)values orientedBounds:(id)bounds state:(id)state drawingContext:(id)context
 {
-  v13 = *&a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  v13 = *&shape;
+  fillCopy = fill;
+  strokeCopy = stroke;
+  valuesCopy = values;
+  boundsCopy = bounds;
+  stateCopy = state;
+  contextCopy = context;
   v21 = objc_alloc_init(CMCanonicalShapeBuilder);
-  [(CMShapeBuilder *)v21 setOrientedBounds:v18];
+  [(CMShapeBuilder *)v21 setOrientedBounds:boundsCopy];
   [(CMShapeBuilder *)v21 setShapeType:v13];
-  [(CMShapeBuilder *)v21 setAdjustValues:v17];
-  -[CMShapeBuilder setFileFormat:](v21, "setFileFormat:", [v19 sourceFormat]);
+  [(CMShapeBuilder *)v21 setAdjustValues:valuesCopy];
+  -[CMShapeBuilder setFileFormat:](v21, "setFileFormat:", [stateCopy sourceFormat]);
   memset(&v25, 0, sizeof(v25));
   if (v21)
   {
     [(CMCanonicalShapeBuilder *)v21 affineTransform];
-    if (v20)
+    if (contextCopy)
     {
 LABEL_3:
-      [v20 currentTransform];
+      [contextCopy currentTransform];
       goto LABEL_6;
     }
   }
@@ -200,7 +200,7 @@ LABEL_3:
   else
   {
     memset(&t1, 0, sizeof(t1));
-    if (v20)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -213,46 +213,46 @@ LABEL_6:
   v22 = [(CMCanonicalShapeBuilder *)v21 copyShapeWithTransform:&t1];
   if (v22)
   {
-    [a1 _renderCGPath:v22 stroke:v16 fill:v15 orientedBounds:v18 state:v19 drawingContext:v20];
+    [self _renderCGPath:v22 stroke:strokeCopy fill:fillCopy orientedBounds:boundsCopy state:stateCopy drawingContext:contextCopy];
     CGPathRelease(v22);
   }
 }
 
-+ (void)_renderCGPath:(CGPath *)a3 stroke:(id)a4 fill:(id)a5 orientedBounds:(id)a6 state:(id)a7 drawingContext:(id)a8
++ (void)_renderCGPath:(CGPath *)path stroke:(id)stroke fill:(id)fill orientedBounds:(id)bounds state:(id)state drawingContext:(id)context
 {
-  v17 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a8;
+  strokeCopy = stroke;
+  fillCopy = fill;
+  stateCopy = state;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [a1 copyImageFromOADImageFill:v13 withContext:v15];
+    v16 = [self copyImageFromOADImageFill:fillCopy withContext:contextCopy];
     if (v16)
     {
-      [v15 setFillImage:v16];
+      [contextCopy setFillImage:v16];
       CGImageRelease(v16);
     }
 
-    [a1 _setupDrawingStyleInDrawingContext:v15 fill:v13 stroke:v17 state:v14];
-    [v15 addPath:a3];
-    [v15 setFillImage:0];
+    [self _setupDrawingStyleInDrawingContext:contextCopy fill:fillCopy stroke:strokeCopy state:stateCopy];
+    [contextCopy addPath:path];
+    [contextCopy setFillImage:0];
   }
 
   else
   {
-    [a1 _setupDrawingStyleInDrawingContext:v15 fill:v13 stroke:v17 state:v14];
-    [v15 addPath:a3];
+    [self _setupDrawingStyleInDrawingContext:contextCopy fill:fillCopy stroke:strokeCopy state:stateCopy];
+    [contextCopy addPath:path];
   }
 }
 
-+ (CGColor)_copyCGColorFromOADColor:(id)a3 andState:(id)a4
++ (CGColor)_copyCGColorFromOADColor:(id)color andState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  colorCopy = color;
+  stateCopy = state;
+  if (colorCopy)
   {
-    v7 = [CMColorProperty nsColorFromOADColor:v5 state:v6];
+    v7 = [CMColorProperty nsColorFromOADColor:colorCopy state:stateCopy];
     [v7 redComponent];
     v9 = v8;
     [v7 greenComponent];
@@ -275,13 +275,13 @@ LABEL_6:
   return GenericRGBA;
 }
 
-+ (CGColor)_copyCGColorFromOADFill:(id)a3 andState:(id)a4
++ (CGColor)_copyCGColorFromOADFill:(id)fill andState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  fillCopy = fill;
+  stateCopy = state;
+  if (fillCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v8 = [CMColorProperty nsColorFromOADFill:v5 state:v6];
+    v8 = [CMColorProperty nsColorFromOADFill:fillCopy state:stateCopy];
     [v8 redComponent];
     v10 = v9;
     [v8 greenComponent];
@@ -304,33 +304,33 @@ LABEL_6:
   return GenericRGBA;
 }
 
-+ (CGImage)copyImageFromOADImageFill:(id)a3 withMapper:(id)a4
++ (CGImage)copyImageFromOADImageFill:(id)fill withMapper:(id)mapper
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 isBlipRefOverridden])
+  fillCopy = fill;
+  mapperCopy = mapper;
+  if (![fillCopy isBlipRefOverridden])
   {
-    v8 = 0;
+    blip = 0;
     goto LABEL_9;
   }
 
-  v7 = [v5 blipRef];
-  v8 = [v7 blip];
-  if (v8)
+  blipRef = [fillCopy blipRef];
+  blip = [blipRef blip];
+  if (blip)
   {
 
 LABEL_4:
-    v9 = [v8 mainSubBlip];
-    v10 = [v9 load];
+    mainSubBlip = [blip mainSubBlip];
+    load = [mainSubBlip load];
 
-    if (v10)
+    if (load)
     {
-      v11 = [v8 mainSubBlip];
-      v7 = [v11 data];
+      mainSubBlip2 = [blip mainSubBlip];
+      blipRef = [mainSubBlip2 data];
 
-      if (v7)
+      if (blipRef)
       {
-        v12 = CGImageSourceCreateWithData(v7, 0);
+        v12 = CGImageSourceCreateWithData(blipRef, 0);
         v13 = v12;
         if (v12)
         {
@@ -350,16 +350,16 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v15 = [v7 index];
-  if (v15 < 1)
+  index = [blipRef index];
+  if (index < 1)
   {
-    v8 = 0;
+    blip = 0;
     goto LABEL_14;
   }
 
-  v8 = [v6 blipAtIndex:v15];
+  blip = [mapperCopy blipAtIndex:index];
 
-  if (v8)
+  if (blip)
   {
     goto LABEL_4;
   }
@@ -371,51 +371,51 @@ LABEL_16:
   return ImageAtIndex;
 }
 
-+ (CGImage)copyImageFromOADImageFill:(id)a3 withContext:(id)a4
++ (CGImage)copyImageFromOADImageFill:(id)fill withContext:(id)context
 {
-  v6 = a3;
-  v7 = [a4 mapper];
-  v8 = [a1 copyImageFromOADImageFill:v6 withMapper:v7];
+  fillCopy = fill;
+  mapper = [context mapper];
+  v8 = [self copyImageFromOADImageFill:fillCopy withMapper:mapper];
 
   return v8;
 }
 
-+ (void)_setupDrawingStyleInDrawingContext:(id)a3 fill:(id)a4 stroke:(id)a5 state:(id)a6
++ (void)_setupDrawingStyleInDrawingContext:(id)context fill:(id)fill stroke:(id)stroke state:(id)state
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a6;
-  [a1 _setupDrawingStyleInDrawingContext:v13 stroke:a5 state:v11];
-  if (!v10 || (GenericRGBA = [a1 _copyCGColorFromOADFill:v10 andState:v11]) == 0)
+  contextCopy = context;
+  fillCopy = fill;
+  stateCopy = state;
+  [self _setupDrawingStyleInDrawingContext:contextCopy stroke:stroke state:stateCopy];
+  if (!fillCopy || (GenericRGBA = [self _copyCGColorFromOADFill:fillCopy andState:stateCopy]) == 0)
   {
     GenericRGBA = CMShapeRendererCreateGenericRGBA(0.0, 0.0, 0.0, 0.0);
   }
 
-  [v13 setFillColor:GenericRGBA];
+  [contextCopy setFillColor:GenericRGBA];
   CGColorRelease(GenericRGBA);
 }
 
-+ (void)_setupDrawingStyleInDrawingContext:(id)a3 stroke:(id)a4 state:(id)a5
++ (void)_setupDrawingStyleInDrawingContext:(id)context stroke:(id)stroke state:(id)state
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  contextCopy = context;
+  strokeCopy = stroke;
+  stateCopy = state;
+  if (strokeCopy)
   {
-    if (![v8 isFillOverridden] || (objc_msgSend(v8, "fill"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
+    if (![strokeCopy isFillOverridden] || (objc_msgSend(strokeCopy, "fill"), v10 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v10, (isKindOfClass & 1) == 0))
     {
       GenericRGBA = CMShapeRendererCreateGenericRGBA(0.0, 0.0, 0.0, 0.0);
-      [v17 setStrokeColor:GenericRGBA];
-      [v17 setFillColor:GenericRGBA];
+      [contextCopy setStrokeColor:GenericRGBA];
+      [contextCopy setFillColor:GenericRGBA];
       CGColorRelease(GenericRGBA);
       goto LABEL_16;
     }
 
-    v12 = [v8 color];
-    if (!v12)
+    color = [strokeCopy color];
+    if (!color)
     {
-      v12 = [v8 fill];
-      if (!v12)
+      color = [strokeCopy fill];
+      if (!color)
       {
         goto LABEL_10;
       }
@@ -430,30 +430,30 @@ LABEL_15:
 
       if (objc_opt_respondsToSelector())
       {
-        v13 = [v12 color];
+        v12Color = [color color];
       }
 
       else
       {
 LABEL_10:
-        v13 = 0;
+        v12Color = 0;
       }
 
-      v12 = v13;
+      color = v12Color;
     }
 
-    v15 = [a1 _copyCGColorFromOADColor:v12 andState:v9];
+    v15 = [self _copyCGColorFromOADColor:color andState:stateCopy];
     if (v15)
     {
-      [v17 setStrokeColor:v15];
-      [v17 setFillColor:v15];
+      [contextCopy setStrokeColor:v15];
+      [contextCopy setFillColor:v15];
       CGColorRelease(v15);
     }
 
-    [v8 width];
-    [v17 setLineWidth:?];
-    v16 = [v8 dash];
-    [a1 _setupDrawingStyleInDrawingContext:v17 dash:v16 state:v9];
+    [strokeCopy width];
+    [contextCopy setLineWidth:?];
+    dash = [strokeCopy dash];
+    [self _setupDrawingStyleInDrawingContext:contextCopy dash:dash state:stateCopy];
 
     goto LABEL_15;
   }
@@ -461,12 +461,12 @@ LABEL_10:
 LABEL_16:
 }
 
-+ (void)_setupDrawingStyleInDrawingContext:(id)a3 dash:(id)a4 state:(id)a5
++ (void)_setupDrawingStyleInDrawingContext:(id)context dash:(id)dash state:(id)state
 {
-  v28 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  contextCopy = context;
+  dashCopy = dash;
+  stateCopy = state;
+  if (dashCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -474,23 +474,23 @@ LABEL_16:
       goto LABEL_5;
     }
 
-    if ([v7 type])
+    if ([dashCopy type])
     {
-      v9 = [v7 equivalentCustomDash];
+      equivalentCustomDash = [dashCopy equivalentCustomDash];
 
-      v7 = v9;
+      dashCopy = equivalentCustomDash;
 LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v10 = objc_opt_new();
         v11 = MEMORY[0x277CCABB0];
-        [v7 dash];
+        [dashCopy dash];
         v12 = [v11 numberWithFloat:?];
         [v10 addObject:v12];
 
         v13 = MEMORY[0x277CCABB0];
-        [v7 space];
+        [dashCopy space];
         v14 = [v13 numberWithFloat:?];
         [v10 addObject:v14];
 
@@ -505,8 +505,8 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v7 stops];
-        v17 = [v16 count];
+        stops = [dashCopy stops];
+        v17 = [stops count];
         v18 = v17;
         if (v17 >= 3)
         {
@@ -526,13 +526,13 @@ LABEL_5:
           do
           {
             v22 = MEMORY[0x277CCABB0];
-            v23 = [v16 objectAtIndexedSubscript:v21];
+            v23 = [stops objectAtIndexedSubscript:v21];
             [v23 dash];
             v24 = [v22 numberWithFloat:?];
             [v20 addObject:v24];
 
             v25 = MEMORY[0x277CCABB0];
-            v26 = [v16 objectAtIndexedSubscript:v21];
+            v26 = [stops objectAtIndexedSubscript:v21];
             [v26 space];
             v27 = [v25 numberWithFloat:?];
             [v20 addObject:v27];
@@ -560,11 +560,11 @@ LABEL_19:
         }
       }
 
-      [v28 setLineDash:v20];
+      [contextCopy setLineDash:v20];
       goto LABEL_19;
     }
 
-    [v28 setLineDash:0];
+    [contextCopy setLineDash:0];
   }
 
 LABEL_20:

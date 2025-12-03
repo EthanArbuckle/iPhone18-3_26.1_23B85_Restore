@@ -1,20 +1,20 @@
 @interface TVStoreApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
 - (BOOL)shouldBeForcedLeftToRight;
 - (TVStoreApplicationDelegate)init;
 - (id)_bagBootURL;
 - (id)bagBootURLKey;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
-- (void)_controllerDidDisplay:(id)a3;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
+- (void)_controllerDidDisplay:(id)display;
 - (void)_launchApp;
-- (void)_loadWithBootURL:(id)a3;
-- (void)_presetDialogWithError:(int64_t)a3 appController:(id)a4;
-- (void)appController:(id)a3 didFailWithError:(id)a4;
-- (void)applicationDidEnterBackground:(id)a3;
+- (void)_loadWithBootURL:(id)l;
+- (void)_presetDialogWithError:(int64_t)error appController:(id)controller;
+- (void)appController:(id)controller didFailWithError:(id)error;
+- (void)applicationDidEnterBackground:(id)background;
 - (void)dealloc;
 - (void)reload;
-- (void)updateIdleModeVisualEffectsStatus:(BOOL)a3;
+- (void)updateIdleModeVisualEffectsStatus:(BOOL)status;
 @end
 
 @implementation TVStoreApplicationDelegate
@@ -28,8 +28,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVStoreApplicationDelegate;
@@ -53,13 +53,13 @@
 
 - (id)_bagBootURL
 {
-  v3 = [(TVStoreApplicationDelegate *)self bagBootURLKey];
-  if (v3)
+  bagBootURLKey = [(TVStoreApplicationDelegate *)self bagBootURLKey];
+  if (bagBootURLKey)
   {
     v4 = MEMORY[0x277CBEBC0];
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(TVStoreApplicationDelegate *)self bagBootURLKey];
-    v7 = [v5 stringWithFormat:@"com.apple.TVMLKit.bagBootURLKey://%@", v6];
+    bagBootURLKey2 = [(TVStoreApplicationDelegate *)self bagBootURLKey];
+    v7 = [v5 stringWithFormat:@"com.apple.TVMLKit.bagBootURLKey://%@", bagBootURLKey2];
     v8 = [v4 URLWithString:v7];
   }
 
@@ -73,47 +73,47 @@
 
 - (void)reload
 {
-  v2 = [(TVStoreApplicationDelegate *)self appController];
-  [v2 reload];
+  appController = [(TVStoreApplicationDelegate *)self appController];
+  [appController reload];
 }
 
-- (void)updateIdleModeVisualEffectsStatus:(BOOL)a3
+- (void)updateIdleModeVisualEffectsStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   if ([(TVStoreApplicationDelegate *)self supportsIdleModeVisualEffects])
   {
     v5 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
     {
-      [(TVStoreApplicationDelegate *)v3 updateIdleModeVisualEffectsStatus:v5];
+      [(TVStoreApplicationDelegate *)statusCopy updateIdleModeVisualEffectsStatus:v5];
     }
 
-    [*MEMORY[0x277D76620] _setIdleModeVisualEffectsEnabled:{-[TVStoreApplicationDelegate supportsIdleModeVisualEffects](self, "supportsIdleModeVisualEffects") & v3}];
+    [*MEMORY[0x277D76620] _setIdleModeVisualEffectsEnabled:{-[TVStoreApplicationDelegate supportsIdleModeVisualEffects](self, "supportsIdleModeVisualEffects") & statusCopy}];
   }
 }
 
 - (BOOL)shouldBeForcedLeftToRight
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:@"com.apple.TVShows"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.TVShows"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.TVMovies"];
+    v4 = [bundleIdentifier isEqualToString:@"com.apple.TVMovies"];
   }
 
   return v4;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = TVMLKitSignpostLogObject;
   if (os_signpost_enabled(TVMLKitSignpostLogObject))
   {
@@ -126,26 +126,26 @@
     [*MEMORY[0x277D76620] _setForcedUserInterfaceLayoutDirection:0];
   }
 
-  v9 = [MEMORY[0x277D1B110] sharedCache];
+  mEMORY[0x277D1B110] = [MEMORY[0x277D1B110] sharedCache];
   bagCache = self->_bagCache;
-  self->_bagCache = v9;
+  self->_bagCache = mEMORY[0x277D1B110];
 
   v11 = objc_alloc(MEMORY[0x277D75DA0]);
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v13 = [v11 initWithFrame:?];
   window = self->_window;
   self->_window = v13;
 
   v15 = self->_window;
-  v16 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-  [(UIWindow *)v15 setTintColor:v16];
+  tvmlkit_keyColor = [MEMORY[0x277D75348] tvmlkit_keyColor];
+  [(UIWindow *)v15 setTintColor:tvmlkit_keyColor];
 
   v17 = self->_window;
-  v18 = [MEMORY[0x277D75348] whiteColor];
-  [(UIWindow *)v17 setBackgroundColor:v18];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UIWindow *)v17 setBackgroundColor:whiteColor];
 
-  v19 = [v7 copy];
+  v19 = [optionsCopy copy];
   launchOptions = self->_launchOptions;
   self->_launchOptions = v19;
 
@@ -155,8 +155,8 @@
   v22 = +[_TVAppLoadingView loadingScreen];
   [v22 showOverKeyWindowWithSpinnerOnly:0];
 
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 addObserver:self selector:sel__controllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__controllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 
   [(TVStoreApplicationDelegate *)self _launchApp];
   return 1;
@@ -164,25 +164,25 @@
 
 - (void)_launchApp
 {
-  v8 = [(TVStoreApplicationDelegate *)self bootURL];
+  bootURL = [(TVStoreApplicationDelegate *)self bootURL];
   if ([MEMORY[0x277D1B028] isInFactoryMode])
   {
-    v3 = v8;
-    if (v8)
+    v3 = bootURL;
+    if (bootURL)
     {
       goto LABEL_6;
     }
 
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v8 = [v5 objectForKey:@"boot-url"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    bootURL = [standardUserDefaults objectForKey:@"boot-url"];
     v6 = [v4 URLWithString:?];
   }
 
   else
   {
-    v5 = [(TVStoreApplicationDelegate *)self _bagBootURL];
-    v6 = [TVStoreApplicationSetupHelper bootURLWithBagBootURL:v5 defaultBootURL:v8];
+    standardUserDefaults = [(TVStoreApplicationDelegate *)self _bagBootURL];
+    v6 = [TVStoreApplicationSetupHelper bootURLWithBagBootURL:standardUserDefaults defaultBootURL:bootURL];
   }
 
   v7 = v6;
@@ -193,37 +193,37 @@ LABEL_6:
   [(TVStoreApplicationDelegate *)self _loadWithBootURL:v3];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   if (self->_shouldTerminateOnEnterBackground)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    [v4 terminateWithSuccess];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] terminateWithSuccess];
   }
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TVStoreApplicationDelegate *)self appController];
+  lCopy = l;
+  optionsCopy = options;
+  appController = [(TVStoreApplicationDelegate *)self appController];
 
-  if (v10)
+  if (appController)
   {
     launchOpenURLOptions = [(TVStoreApplicationDelegate *)self appController];
-    v12 = [launchOpenURLOptions openURL:v8 options:v9];
+    v12 = [launchOpenURLOptions openURL:lCopy options:optionsCopy];
   }
 
   else
   {
-    if (!v8)
+    if (!lCopy)
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&self->_launchOpenURL, a4);
-    v13 = v9;
+    objc_storeStrong(&self->_launchOpenURL, l);
+    v13 = optionsCopy;
     launchOpenURLOptions = self->_launchOpenURLOptions;
     self->_launchOpenURLOptions = v13;
     v12 = 1;
@@ -233,18 +233,18 @@ LABEL_6:
   return v12;
 }
 
-- (void)appController:(id)a3 didFailWithError:(id)a4
+- (void)appController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  -[TVStoreApplicationDelegate _presetDialogWithError:appController:](self, "_presetDialogWithError:appController:", [a4 code], v6);
+  controllerCopy = controller;
+  -[TVStoreApplicationDelegate _presetDialogWithError:appController:](self, "_presetDialogWithError:appController:", [error code], controllerCopy);
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -257,63 +257,63 @@ LABEL_6:
   return 26;
 }
 
-- (void)_loadWithBootURL:(id)a3
+- (void)_loadWithBootURL:(id)l
 {
-  v4 = a3;
-  v5 = [(TVStoreApplicationDelegate *)self bagBootURLKey];
-  v6 = v4 | v5;
+  lCopy = l;
+  bagBootURLKey = [(TVStoreApplicationDelegate *)self bagBootURLKey];
+  v6 = lCopy | bagBootURLKey;
 
   if (v6)
   {
-    v8 = [(TVStoreApplicationDelegate *)self _bagBootURL];
-    if ([v4 isEqual:v8])
+    _bagBootURL = [(TVStoreApplicationDelegate *)self _bagBootURL];
+    if ([lCopy isEqual:_bagBootURL])
     {
-      v9 = [(TVStoreApplicationDelegate *)self bagBootURLKey];
+      bagBootURLKey2 = [(TVStoreApplicationDelegate *)self bagBootURLKey];
     }
 
     else
     {
-      v9 = 0;
+      bagBootURLKey2 = 0;
     }
 
-    if (v9)
+    if (bagBootURLKey2)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v4;
+      v10 = lCopy;
     }
 
     v11 = v10;
 
     [(TVStoreApplicationDelegate *)self setupWithBootURL:v11];
-    v12 = 0;
+    offlineJSURL = 0;
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(TVStoreApplicationDelegate *)self offlineJSURL];
+      offlineJSURL = [(TVStoreApplicationDelegate *)self offlineJSURL];
     }
 
-    v13 = [(TVStoreApplicationDelegate *)self appLocalBootURL];
-    v14 = [TVStoreApplicationSetupHelper launchContextWithLaunchOptions:self->_launchOptions bootURL:v11 bagBootURLKey:v9 useCache:v13 != 0];
+    appLocalBootURL = [(TVStoreApplicationDelegate *)self appLocalBootURL];
+    v14 = [TVStoreApplicationSetupHelper launchContextWithLaunchOptions:self->_launchOptions bootURL:v11 bagBootURLKey:bagBootURLKey2 useCache:appLocalBootURL != 0];
     v15 = v14;
-    if (v12)
+    if (offlineJSURL)
     {
-      [v14 setOfflineJSURL:v12];
+      [v14 setOfflineJSURL:offlineJSURL];
     }
 
     else
     {
-      [v14 setAppLocalJSURL:v13];
+      [v14 setAppLocalJSURL:appLocalBootURL];
     }
 
     v16 = [[TVApplicationController alloc] initWithContext:v15 window:self->_window delegate:self];
     objc_storeStrong(&self->_appController, v16);
     if (self->_launchOpenURL)
     {
-      v17 = [(TVStoreApplicationDelegate *)self appController];
-      [v17 openURL:self->_launchOpenURL options:self->_launchOpenURLOptions];
+      appController = [(TVStoreApplicationDelegate *)self appController];
+      [appController openURL:self->_launchOpenURL options:self->_launchOpenURLOptions];
 
       launchOpenURL = self->_launchOpenURL;
       self->_launchOpenURL = 0;
@@ -349,27 +349,27 @@ LABEL_6:
   }
 }
 
-- (void)_controllerDidDisplay:(id)a3
+- (void)_controllerDidDisplay:(id)display
 {
   v4 = +[_TVAppLoadingView loadingScreen];
   [v4 hide];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 
   [(TVStoreApplicationDelegate *)self didShowViewController];
 }
 
-- (void)_presetDialogWithError:(int64_t)a3 appController:(id)a4
+- (void)_presetDialogWithError:(int64_t)error appController:(id)controller
 {
-  v27 = a4;
+  controllerCopy = controller;
   if (self->_headLess)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    [v6 terminateWithSuccess];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] terminateWithSuccess];
   }
 
-  if (a3 == 2)
+  if (error == 2)
   {
     v7 = _TVMLLocString(@"TVAppInternetUnavailableTitle", @"Localizable");
     v8 = _TVMLLocString(@"TVAppInternetUnavailableError", @"Localizable");
@@ -377,15 +377,15 @@ LABEL_6:
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 localizedInfoDictionary];
-    v11 = [v10 objectForKey:@"CFBundleName"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    localizedInfoDictionary = [mainBundle localizedInfoDictionary];
+    v11 = [localizedInfoDictionary objectForKey:@"CFBundleName"];
 
     if (!v11)
     {
-      v12 = [MEMORY[0x277CCA8D8] mainBundle];
-      v13 = [v12 infoDictionary];
-      v11 = [v13 objectForKey:@"CFBundleName"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      infoDictionary = [mainBundle2 infoDictionary];
+      v11 = [infoDictionary objectForKey:@"CFBundleName"];
     }
 
     v14 = MEMORY[0x277CCACA8];
@@ -406,17 +406,17 @@ LABEL_6:
   [v20 hide];
 
   window = self->_window;
-  if (v27)
+  if (controllerCopy)
   {
     [(UIWindow *)window makeKeyAndVisible];
-    v22 = v27;
+    v22 = controllerCopy;
   }
 
   else
   {
-    v23 = [(UIWindow *)window rootViewController];
+    rootViewController = [(UIWindow *)window rootViewController];
 
-    if (!v23)
+    if (!rootViewController)
     {
       v24 = self->_window;
       v25 = [objc_alloc(MEMORY[0x277D75D28]) initWithNibName:0 bundle:0];
@@ -427,8 +427,8 @@ LABEL_6:
     v22 = self->_window;
   }
 
-  v26 = [(UIWindow *)v22 rootViewController];
-  [v26 presentViewController:v16 animated:1 completion:0];
+  rootViewController2 = [(UIWindow *)v22 rootViewController];
+  [rootViewController2 presentViewController:v16 animated:1 completion:0];
 }
 
 void __67__TVStoreApplicationDelegate__presetDialogWithError_appController___block_invoke()

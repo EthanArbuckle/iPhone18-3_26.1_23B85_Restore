@@ -1,9 +1,9 @@
 @interface _APRSRecommendationEngine
 + (id)sharedInstance;
-- (BOOL)isAppRunning:(id)a3;
-- (BOOL)wasAppForegrounded:(id)a3;
+- (BOOL)isAppRunning:(id)running;
+- (BOOL)wasAppForegrounded:(id)foregrounded;
 - (_APRSRecommendationEngine)init;
-- (void)handleStateTransitionForProcess:(id)a3 withUpdate:(id)a4;
+- (void)handleStateTransitionForProcess:(id)process withUpdate:(id)update;
 - (void)registerForTrial;
 - (void)updateCurrentRecommendations;
 - (void)updateTrialParameters;
@@ -64,86 +64,86 @@
   return v3;
 }
 
-- (BOOL)wasAppForegrounded:(id)a3
+- (BOOL)wasAppForegrounded:(id)foregrounded
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_foregroundedApps allKeys];
-  v7 = [v6 containsObject:v4];
+  foregroundedCopy = foregrounded;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_foregroundedApps allKeys];
+  v7 = [allKeys containsObject:foregroundedCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (BOOL)isAppRunning:(id)a3
+- (BOOL)isAppRunning:(id)running
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_runningApps allKeys];
-  v7 = [v6 containsObject:v4];
+  runningCopy = running;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_runningApps allKeys];
+  v7 = [allKeys containsObject:runningCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)handleStateTransitionForProcess:(id)a3 withUpdate:(id)a4
+- (void)handleStateTransitionForProcess:(id)process withUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v6 bundle];
-  v10 = [v9 identifier];
+  processCopy = process;
+  updateCopy = update;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bundle = [processCopy bundle];
+  identifier = [bundle identifier];
 
-  if (v10)
+  if (identifier)
   {
-    v11 = [v7 state];
-    v12 = [v11 isRunning];
+    state = [updateCopy state];
+    isRunning = [state isRunning];
 
-    runningApps = v8->_runningApps;
-    if ((v12 & 1) == 0)
+    runningApps = selfCopy->_runningApps;
+    if ((isRunning & 1) == 0)
     {
-      [(NSMutableDictionary *)runningApps removeObjectForKey:v10];
-      v20 = [LSApplicationProxy applicationProxyForIdentifier:v10];
-      v18 = [v20 bundleExecutable];
+      [(NSMutableDictionary *)runningApps removeObjectForKey:identifier];
+      v20 = [LSApplicationProxy applicationProxyForIdentifier:identifier];
+      bundleExecutable = [v20 bundleExecutable];
 
-      if (v18)
+      if (bundleExecutable)
       {
-        [(NSMutableDictionary *)v8->_foregroundedApps removeObjectForKey:v18];
+        [(NSMutableDictionary *)selfCopy->_foregroundedApps removeObjectForKey:bundleExecutable];
       }
 
       if (byte_10020B5F0 == 1)
       {
         v21 = +[_APRSPrewarmInterface sharedInstance];
-        v22 = [v21 prewarmLaunchAppFromBundleID:v10];
+        v22 = [v21 prewarmLaunchAppFromBundleID:identifier];
       }
 
       goto LABEL_14;
     }
 
-    [(NSMutableDictionary *)runningApps setObject:v6 forKey:v10];
-    v14 = [v7 state];
-    v15 = [v14 endowmentNamespaces];
-    v16 = [v15 containsObject:@"com.apple.frontboard.visibility"];
+    [(NSMutableDictionary *)runningApps setObject:processCopy forKey:identifier];
+    state2 = [updateCopy state];
+    endowmentNamespaces = [state2 endowmentNamespaces];
+    v16 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
     if (v16)
     {
-      v17 = [LSApplicationProxy applicationProxyForIdentifier:v10];
-      v18 = [v17 bundleExecutable];
+      v17 = [LSApplicationProxy applicationProxyForIdentifier:identifier];
+      bundleExecutable = [v17 bundleExecutable];
 
-      if (v18)
+      if (bundleExecutable)
       {
-        [(NSMutableDictionary *)v8->_foregroundedApps setObject:v6 forKey:v18];
+        [(NSMutableDictionary *)selfCopy->_foregroundedApps setObject:processCopy forKey:bundleExecutable];
       }
 
       else
       {
-        log = v8->_log;
+        log = selfCopy->_log;
         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
-          sub_10012461C(v10, log);
+          sub_10012461C(identifier, log);
         }
       }
 
@@ -153,7 +153,7 @@ LABEL_14:
 
   else
   {
-    v19 = v8->_log;
+    v19 = selfCopy->_log;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *v24 = 0;
@@ -161,7 +161,7 @@ LABEL_14:
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)sharedInstance
@@ -180,31 +180,31 @@ LABEL_14:
 {
   if (self->_freezerDisabled)
   {
-    v3 = &__NSArray0__struct;
+    freezerRecommendations = &__NSArray0__struct;
   }
 
   else
   {
-    v3 = [(_APRSFreezerRecommendation *)self->_freezerRecommender freezerRecommendations];
+    freezerRecommendations = [(_APRSFreezerRecommendation *)self->_freezerRecommender freezerRecommendations];
   }
 
   freezerRecommendations = self->_freezerRecommendations;
-  self->_freezerRecommendations = v3;
+  self->_freezerRecommendations = freezerRecommendations;
 
   if (self->_prewarmDisabled)
   {
-    v5 = &__NSArray0__struct;
+    recommendations = &__NSArray0__struct;
   }
 
   else
   {
-    v5 = [(_APRSPrewarmRecommendation *)self->_prewarmRecommender recommendations];
+    recommendations = [(_APRSPrewarmRecommendation *)self->_prewarmRecommender recommendations];
   }
 
   prewarmRecommendations = self->_prewarmRecommendations;
-  self->_prewarmRecommendations = v5;
+  self->_prewarmRecommendations = recommendations;
 
-  _objc_release_x1(v5, prewarmRecommendations);
+  _objc_release_x1(recommendations, prewarmRecommendations);
 }
 
 - (void)registerForTrial
@@ -225,7 +225,7 @@ LABEL_14:
     {
       v7 = log;
       v16 = 67109120;
-      v17 = [v4 BOOLeanValue];
+      bOOLeanValue = [v4 BOOLeanValue];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Trial: freezerDisabled set to %d", &v16, 8u);
     }
 
@@ -246,9 +246,9 @@ LABEL_14:
     if (v10)
     {
       v11 = v9;
-      v12 = [v8 BOOLeanValue];
+      bOOLeanValue2 = [v8 BOOLeanValue];
       v16 = 67109120;
-      v17 = v12;
+      bOOLeanValue = bOOLeanValue2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Trial: prewarmDisabled set to %d", &v16, 8u);
     }
 
@@ -267,7 +267,7 @@ LABEL_14:
     freezerDisabled = self->_freezerDisabled;
     prewarmDisabled = self->_prewarmDisabled;
     v16 = 67109376;
-    v17 = freezerDisabled;
+    bOOLeanValue = freezerDisabled;
     v18 = 1024;
     v19 = prewarmDisabled;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Freezer Disabled: %d, Prewarm Disabled: %d", &v16, 0xEu);

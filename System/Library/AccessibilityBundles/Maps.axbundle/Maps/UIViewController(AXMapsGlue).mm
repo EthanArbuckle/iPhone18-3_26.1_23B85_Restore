@@ -11,11 +11,11 @@
     [UIViewController(AXMapsGlue) _accessibilityFirstNonGrabberElement];
   }
 
-  v2 = [a1 view];
-  v3 = [v2 _accessibilityLeafDescendantsWithCount:1 options:_accessibilityFirstNonGrabberElement_Options];
-  v4 = [v3 firstObject];
+  view = [self view];
+  v3 = [view _accessibilityLeafDescendantsWithCount:1 options:_accessibilityFirstNonGrabberElement_Options];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

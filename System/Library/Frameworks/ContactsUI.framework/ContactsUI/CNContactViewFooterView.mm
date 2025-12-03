@@ -1,6 +1,6 @@
 @interface CNContactViewFooterView
 - (CNContactViewFooterView)init;
-- (void)setContact:(id)a3;
+- (void)setContact:(id)contact;
 - (void)setupSubviews;
 - (void)updateLabelText;
 @end
@@ -9,12 +9,12 @@
 
 - (void)updateLabelText
 {
-  v3 = [(CNContactViewFooterView *)self contact];
-  v4 = [v3 contactType];
+  contact = [(CNContactViewFooterView *)self contact];
+  contactType = [contact contactType];
 
   v5 = CNContactsUIBundle();
   v9 = v5;
-  if (v4 == 1)
+  if (contactType == 1)
   {
     v6 = @"ORGANIZATION_PRONUNCIATION_UPDATED_MESSAGE";
   }
@@ -25,16 +25,16 @@
   }
 
   v7 = [v5 localizedStringForKey:v6 value:&stru_1F0CE7398 table:@"Localized"];
-  v8 = [(CNContactViewFooterView *)self label];
-  [v8 setText:v7];
+  label = [(CNContactViewFooterView *)self label];
+  [label setText:v7];
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   if (([(CNContact *)self->_contact isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_contact, a3);
+    objc_storeStrong(&self->_contact, contact);
     [(CNContactViewFooterView *)self updateLabelText];
   }
 }
@@ -48,8 +48,8 @@
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [v3 setFont:v4];
 
-  v5 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [v3 setTextColor:v5];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [v3 setTextColor:tertiaryLabelColor];
 
   [v3 setTextAlignment:1];
   [v3 setNumberOfLines:0];
@@ -57,20 +57,20 @@
   [(CNContactViewFooterView *)self updateLabelText];
   [(CNContactViewFooterView *)self addSubview:v3];
   v15 = MEMORY[0x1E696ACD8];
-  v18 = [v3 leadingAnchor];
-  v19 = [(CNContactViewFooterView *)self layoutMarginsGuide];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  leadingAnchor = [v3 leadingAnchor];
+  layoutMarginsGuide = [(CNContactViewFooterView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v16;
-  v6 = [v3 trailingAnchor];
-  v7 = [(CNContactViewFooterView *)self layoutMarginsGuide];
-  v8 = [v7 trailingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  trailingAnchor = [v3 trailingAnchor];
+  layoutMarginsGuide2 = [(CNContactViewFooterView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v9;
-  v10 = [v3 topAnchor];
-  v11 = [(CNContactViewFooterView *)self layoutMarginsGuide];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:8.0];
+  topAnchor = [v3 topAnchor];
+  layoutMarginsGuide3 = [(CNContactViewFooterView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   v20[2] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   [v15 activateConstraints:v14];

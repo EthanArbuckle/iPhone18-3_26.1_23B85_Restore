@@ -1,37 +1,37 @@
 @interface PXSwipeSelectionManager
-- (BOOL)_shouldBeginMultiSelectAtLocation:(CGPoint)a3;
+- (BOOL)_shouldBeginMultiSelectAtLocation:(CGPoint)location;
 - (BOOL)isInMultiSelectMode;
-- (BOOL)shouldBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4 withVelocity:(CGPoint)a5;
+- (BOOL)shouldBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
 - (NSArray)gesturesForFailureRequirements;
 - (NSArray)keyCommandsForSelectionExtension;
 - (PXSimpleIndexPath)_currentIndexPath;
-- (PXSimpleIndexPath)_itemIndexPathAtLocation:(SEL)a3;
-- (PXSimpleIndexPath)_itemIndexPathClosestAboveLocation:(SEL)a3;
-- (PXSimpleIndexPath)_itemIndexPathClosestLeadingLocation:(SEL)a3;
+- (PXSimpleIndexPath)_itemIndexPathAtLocation:(SEL)location;
+- (PXSimpleIndexPath)_itemIndexPathClosestAboveLocation:(SEL)location;
+- (PXSimpleIndexPath)_itemIndexPathClosestLeadingLocation:(SEL)location;
 - (PXSimpleIndexPath)_startingIndexPath;
 - (PXSwipeSelectionManager)init;
-- (PXSwipeSelectionManager)initWithSelectionManager:(id)a3 scrollView:(id)a4;
+- (PXSwipeSelectionManager)initWithSelectionManager:(id)manager scrollView:(id)view;
 - (PXSwipeSelectionManagerDelegate)delegate;
 - (id)targetForKeyCommands;
-- (void)_beginSelectionFromIndexPath:(PXSimpleIndexPath *)a3;
+- (void)_beginSelectionFromIndexPath:(PXSimpleIndexPath *)path;
 - (void)_endSelection;
-- (void)_setCurrentIndexPath:(PXSimpleIndexPath *)a3;
-- (void)_setPausingChangesToken:(id)a3;
-- (void)_setStartingIndexPath:(PXSimpleIndexPath *)a3;
+- (void)_setCurrentIndexPath:(PXSimpleIndexPath *)path;
+- (void)_setPausingChangesToken:(id)token;
+- (void)_setStartingIndexPath:(PXSimpleIndexPath *)path;
 - (void)_updateSelectedIndexPaths;
-- (void)_updateSelectionWithHitIndexPath:(PXSimpleIndexPath *)a3 leadingClosestIndexPath:(PXSimpleIndexPath *)a4 aboveClosestIndexPath:(PXSimpleIndexPath *)a5;
-- (void)_updateWithDataSource:(id)a3 changeHistory:(id)a4;
-- (void)autoScroller:(id)a3 didAutoscrollWithTimestamp:(double)a4;
-- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)a3;
+- (void)_updateSelectionWithHitIndexPath:(PXSimpleIndexPath *)path leadingClosestIndexPath:(PXSimpleIndexPath *)indexPath aboveClosestIndexPath:(PXSimpleIndexPath *)closestIndexPath;
+- (void)_updateWithDataSource:(id)source changeHistory:(id)history;
+- (void)autoScroller:(id)scroller didAutoscrollWithTimestamp:(double)timestamp;
+- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)selection;
 - (void)dealloc;
-- (void)didCancelMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
-- (void)didEndMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
-- (void)multiSelectInteraction:(id)a3 extendSelectionInDirection:(unint64_t)a4;
-- (void)multiSelectInteraction:(id)a3 toggleSelectionStateUpToPoint:(CGPoint)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)didCancelMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
+- (void)didEndMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
+- (void)multiSelectInteraction:(id)interaction extendSelectionInDirection:(unint64_t)direction;
+- (void)multiSelectInteraction:(id)interaction toggleSelectionStateUpToPoint:(CGPoint)point;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)removeFromView;
-- (void)setDelegate:(id)a3;
-- (void)willBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
+- (void)setDelegate:(id)delegate;
+- (void)willBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
 @end
 
 @implementation PXSwipeSelectionManager
@@ -42,11 +42,11 @@
   v4 = MEMORY[0x277CBEBF8];
   if (v3)
   {
-    v5 = [(UIMultiSelectInteraction *)self->_multiSelectInteraction keyCommandsForSelectionExtension];
-    v6 = v5;
-    if (v5)
+    keyCommandsForSelectionExtension = [(UIMultiSelectInteraction *)self->_multiSelectInteraction keyCommandsForSelectionExtension];
+    v6 = keyCommandsForSelectionExtension;
+    if (keyCommandsForSelectionExtension)
     {
-      v7 = v5;
+      v7 = keyCommandsForSelectionExtension;
     }
 
     else
@@ -68,10 +68,10 @@
   return self;
 }
 
-- (void)_setStartingIndexPath:(PXSimpleIndexPath *)a3
+- (void)_setStartingIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  *&self->__startingIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  *&self->__startingIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
   *&self->__startingIndexPath.item = v3;
 }
 
@@ -90,50 +90,50 @@
   return WeakRetained;
 }
 
-- (void)multiSelectInteraction:(id)a3 extendSelectionInDirection:(unint64_t)a4
+- (void)multiSelectInteraction:(id)interaction extendSelectionInDirection:(unint64_t)direction
 {
   if (self->_delegateFlags.respondsToExtendSelectionInDirection)
   {
-    if (a4 > 3)
+    if (direction > 3)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = qword_21AC7D678[a4];
+      v6 = qword_21AC7D678[direction];
     }
 
-    v7 = [(PXSwipeSelectionManager *)self delegate];
-    [v7 swipeSelectionManager:self extendSelectionInDirection:v6];
+    delegate = [(PXSwipeSelectionManager *)self delegate];
+    [delegate swipeSelectionManager:self extendSelectionInDirection:v6];
   }
 }
 
-- (void)didCancelMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)didCancelMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  if ([(PXSwipeSelectionManager *)self _isSelecting:a3])
+  if ([(PXSwipeSelectionManager *)self _isSelecting:interaction])
   {
 
     [(PXSwipeSelectionManager *)self _endSelection];
   }
 }
 
-- (void)didEndMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)didEndMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  if ([(PXSwipeSelectionManager *)self _isSelecting:a3])
+  if ([(PXSwipeSelectionManager *)self _isSelecting:interaction])
   {
 
     [(PXSwipeSelectionManager *)self _endSelection];
   }
 }
 
-- (void)multiSelectInteraction:(id)a3 toggleSelectionStateUpToPoint:(CGPoint)a4
+- (void)multiSelectInteraction:(id)interaction toggleSelectionStateUpToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v18 = 0u;
   v19 = 0u;
-  [(PXSwipeSelectionManager *)self _itemIndexPathAtLocation:a3, a4.x];
+  [(PXSwipeSelectionManager *)self _itemIndexPathAtLocation:interaction, point.x];
   v16 = 0u;
   v17 = 0u;
   [(PXSwipeSelectionManager *)self _itemIndexPathClosestLeadingLocation:x, y];
@@ -190,15 +190,15 @@ LABEL_10:
   v11[0] = v14;
   v11[1] = v15;
   [(PXSwipeSelectionManager *)self _updateSelectionWithHitIndexPath:v13 leadingClosestIndexPath:v12 aboveClosestIndexPath:v11];
-  v9 = [(PXSwipeSelectionManager *)self _autoScroller];
-  v10 = [(PXSwipeSelectionManager *)self scrollView];
-  [v9 updateWithUserInteractionLocation:v10 inCoordinateSpace:{x, y}];
+  _autoScroller = [(PXSwipeSelectionManager *)self _autoScroller];
+  scrollView = [(PXSwipeSelectionManager *)self scrollView];
+  [_autoScroller updateWithUserInteractionLocation:scrollView inCoordinateSpace:{x, y}];
 }
 
-- (void)willBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)willBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   if (![(PXSwipeSelectionManager *)self _isSelecting])
   {
     if (PXPointIsValid())
@@ -213,49 +213,49 @@ LABEL_10:
   }
 }
 
-- (BOOL)shouldBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4 withVelocity:(CGPoint)a5
+- (BOOL)shouldBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v10 = [(PXSwipeSelectionManager *)self isInMultiSelectMode];
-  if (v10)
+  y = velocity.y;
+  x = velocity.x;
+  v7 = point.y;
+  v8 = point.x;
+  isInMultiSelectMode = [(PXSwipeSelectionManager *)self isInMultiSelectMode];
+  if (isInMultiSelectMode)
   {
     v11 = [(PXSwipeSelectionManager *)self _shouldBeginMultiSelectAtLocation:v8, v7];
     v12 = fabs(x) > fabs(y);
-    LOBYTE(v10) = v11 && v12;
+    LOBYTE(isInMultiSelectMode) = v11 && v12;
   }
 
-  return v10;
+  return isInMultiSelectMode;
 }
 
-- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)a3
+- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)selection
 {
   if (self->_delegateFlags.respondsToAutomaticallyTransitionToMultiSelectMode)
   {
-    v5 = [(PXSwipeSelectionManager *)self delegate];
-    [v5 swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:self];
+    delegate = [(PXSwipeSelectionManager *)self delegate];
+    [delegate swipeSelectionManagerAutomaticallyTransitionToMultiSelectMode:self];
   }
 }
 
 - (BOOL)isInMultiSelectMode
 {
-  v2 = self;
-  v3 = [(PXSwipeSelectionManager *)self delegate];
-  LOBYTE(v2) = [v3 swipeSelectionManagerIsInMultiSelectMode:v2];
+  selfCopy = self;
+  delegate = [(PXSwipeSelectionManager *)self delegate];
+  LOBYTE(selfCopy) = [delegate swipeSelectionManagerIsInMultiSelectMode:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_shouldBeginMultiSelectAtLocation:(CGPoint)a3
+- (BOOL)_shouldBeginMultiSelectAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if (self->_delegateFlags.respondsToShouldBeginSelectionAtLocation)
   {
-    v6 = [(PXSwipeSelectionManager *)self delegate];
-    v7 = [v6 swipeSelectionManager:self shouldBeginSelectionAtLocation:{x, y}];
+    delegate = [(PXSwipeSelectionManager *)self delegate];
+    v7 = [delegate swipeSelectionManager:self shouldBeginSelectionAtLocation:{x, y}];
 
     if (!v7)
     {
@@ -277,35 +277,35 @@ LABEL_10:
     return 1;
   }
 
-  v10 = [(PXSwipeSelectionManager *)self delegate];
+  delegate2 = [(PXSwipeSelectionManager *)self delegate];
   v12 = v8;
   v13 = v15;
   v14 = v16;
-  v9 = [v10 swipeSelectionManager:self shouldSelectItemAtIndexPath:&v12];
+  v9 = [delegate2 swipeSelectionManager:self shouldSelectItemAtIndexPath:&v12];
 
   return v9;
 }
 
-- (void)autoScroller:(id)a3 didAutoscrollWithTimestamp:(double)a4
+- (void)autoScroller:(id)scroller didAutoscrollWithTimestamp:(double)timestamp
 {
   if (self->_delegateFlags.respondsToDidAutoScroll)
   {
-    v6 = [(PXSwipeSelectionManager *)self delegate:a3];
+    v6 = [(PXSwipeSelectionManager *)self delegate:scroller];
     [v6 swipeSelectionManagerDidAutoScroll:self];
   }
 }
 
-- (void)_updateWithDataSource:(id)a3 changeHistory:(id)a4
+- (void)_updateWithDataSource:(id)source changeHistory:(id)history
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSwipeSelectionManager *)self _currentDataSourceIdentifier];
-  if (v8 != *MEMORY[0x277D3CF78])
+  sourceCopy = source;
+  historyCopy = history;
+  _currentDataSourceIdentifier = [(PXSwipeSelectionManager *)self _currentDataSourceIdentifier];
+  if (_currentDataSourceIdentifier != *MEMORY[0x277D3CF78])
   {
-    v9 = v8;
-    v10 = [v6 identifier];
-    v11 = [v7 changeDetailsFromDataSourceIdentifier:v9 toDataSourceIdentifier:v10];
+    v9 = _currentDataSourceIdentifier;
+    identifier = [sourceCopy identifier];
+    v11 = [historyCopy changeDetailsFromDataSourceIdentifier:v9 toDataSourceIdentifier:identifier];
     v29 = 0u;
     v30 = 0u;
     [(PXSwipeSelectionManager *)self _startingIndexPath];
@@ -317,21 +317,21 @@ LABEL_10:
     v25 = v27;
     v26 = v28;
     [(PXSwipeSelectionManager *)self _setStartingIndexPath:&v25];
-    v12 = [(PXSwipeSelectionManager *)self _selectedIndexPathsBeforeSwipe];
-    v13 = [MEMORY[0x277D3CDD0] indexPathSetAfterApplyingChanges:v11 toIndexPathSet:v12 hasIncrementalChanges:0];
+    _selectedIndexPathsBeforeSwipe = [(PXSwipeSelectionManager *)self _selectedIndexPathsBeforeSwipe];
+    v13 = [MEMORY[0x277D3CDD0] indexPathSetAfterApplyingChanges:v11 toIndexPathSet:_selectedIndexPathsBeforeSwipe hasIncrementalChanges:0];
     [(PXSwipeSelectionManager *)self _setSelectedIndexPathsBeforeSwipe:v13];
-    [(PXSwipeSelectionManager *)self _setCurrentDataSourceIdentifier:v10];
-    if (v10 != v27)
+    [(PXSwipeSelectionManager *)self _setCurrentDataSourceIdentifier:identifier];
+    if (identifier != v27)
     {
       [(PXSwipeSelectionManager *)self _endSelection];
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v14 = [(PXSwipeSelectionManager *)self multiSelectInteraction];
-      v15 = [v14 gesturesForFailureRequirements];
+      multiSelectInteraction = [(PXSwipeSelectionManager *)self multiSelectInteraction];
+      gesturesForFailureRequirements = [multiSelectInteraction gesturesForFailureRequirements];
 
-      v16 = [v15 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v16 = [gesturesForFailureRequirements countByEnumeratingWithState:&v21 objects:v31 count:16];
       if (v16)
       {
         v17 = v16;
@@ -342,7 +342,7 @@ LABEL_10:
           {
             if (*v22 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(gesturesForFailureRequirements);
             }
 
             v20 = *(*(&v21 + 1) + 8 * i);
@@ -350,7 +350,7 @@ LABEL_10:
             [v20 setEnabled:1];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v21 objects:v31 count:16];
+          v17 = [gesturesForFailureRequirements countByEnumeratingWithState:&v21 objects:v31 count:16];
         }
 
         while (v17);
@@ -359,18 +359,18 @@ LABEL_10:
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if ((v6 & 1) != 0 && PXSwipeSelectionManagerDataSourceObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if ((changeCopy & 1) != 0 && PXSwipeSelectionManagerDataSourceObserverContext == context)
   {
-    v11 = v8;
-    v9 = [v8 dataSource];
-    v10 = [v11 changeHistory];
-    [(PXSwipeSelectionManager *)self _updateWithDataSource:v9 changeHistory:v10];
+    v11 = observableCopy;
+    dataSource = [observableCopy dataSource];
+    changeHistory = [v11 changeHistory];
+    [(PXSwipeSelectionManager *)self _updateWithDataSource:dataSource changeHistory:changeHistory];
 
-    v8 = v11;
+    observableCopy = v11;
   }
 }
 
@@ -381,8 +381,8 @@ LABEL_10:
     v31 = v2;
     v32 = v3;
     self->_needsUpdateFlags.selectedIndexPaths = 0;
-    v5 = [(PXSwipeSelectionManager *)self _selectedIndexPathsBeforeSwipe];
-    if (!v5)
+    _selectedIndexPathsBeforeSwipe = [(PXSwipeSelectionManager *)self _selectedIndexPathsBeforeSwipe];
+    if (!_selectedIndexPathsBeforeSwipe)
     {
 LABEL_19:
 
@@ -395,9 +395,9 @@ LABEL_19:
     v27 = 0u;
     v28 = 0u;
     [(PXSwipeSelectionManager *)self _currentIndexPath];
-    v6 = [(PXSwipeSelectionManager *)self selectionManager];
-    v7 = [v6 dataSourceManager];
-    v8 = [v7 dataSource];
+    selectionManager = [(PXSwipeSelectionManager *)self selectionManager];
+    dataSourceManager = [selectionManager dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
 
     if (*MEMORY[0x277D3CF78])
     {
@@ -411,31 +411,31 @@ LABEL_19:
 
     if (v9)
     {
-      v10 = [MEMORY[0x277D3CD58] indexPathSet];
+      indexPathSet = [MEMORY[0x277D3CD58] indexPathSet];
     }
 
     else
     {
       if (self->_delegateFlags.respondsToIndexPathSetFromIndexPathToIndexPath)
       {
-        v11 = [(PXSwipeSelectionManager *)self delegate];
+        delegate = [(PXSwipeSelectionManager *)self delegate];
         v26 = v30;
         v23 = v27;
         v24 = v28;
         v25 = v29;
-        v12 = [v11 swipeSelectionManager:self indexPathSetFromIndexPath:&v25 toIndexPath:&v23];
+        v12 = [delegate swipeSelectionManager:self indexPathSetFromIndexPath:&v25 toIndexPath:&v23];
 
 LABEL_13:
         if (self->_delegateFlags.respondsToShouldSelectItemAtIndexPath)
         {
-          v13 = [MEMORY[0x277D3CD78] indexPathSet];
+          indexPathSet2 = [MEMORY[0x277D3CD78] indexPathSet];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __52__PXSwipeSelectionManager__updateSelectedIndexPaths__block_invoke;
           v21[3] = &unk_2782993B8;
           v21[4] = self;
-          v22 = v13;
-          v14 = v13;
+          v22 = indexPathSet2;
+          v14 = indexPathSet2;
           [v12 enumerateAllIndexPathsUsingBlock:v21];
           v15 = [v12 mutableCopy];
           [v15 minusIndexPathSet:v14];
@@ -443,7 +443,7 @@ LABEL_13:
           v12 = v15;
         }
 
-        v16 = [v5 mutableCopy];
+        v16 = [_selectedIndexPathsBeforeSwipe mutableCopy];
         if ([(PXSwipeSelectionManager *)self state]== 1)
         {
           [v16 unionIndexPathSet:v12];
@@ -454,14 +454,14 @@ LABEL_13:
           [v16 minusIndexPathSet:v12];
         }
 
-        v17 = [(PXSwipeSelectionManager *)self selectionManager];
+        selectionManager2 = [(PXSwipeSelectionManager *)self selectionManager];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __52__PXSwipeSelectionManager__updateSelectedIndexPaths__block_invoke_2;
         v19[3] = &unk_278297820;
         v20 = v16;
         v18 = v16;
-        [v17 performChanges:v19];
+        [selectionManager2 performChanges:v19];
 
         goto LABEL_19;
       }
@@ -470,10 +470,10 @@ LABEL_13:
       v23 = v27;
       v24 = v28;
       v25 = v29;
-      v10 = [v8 indexPathSetFromIndexPath:&v25 toIndexPath:&v23];
+      indexPathSet = [dataSource indexPathSetFromIndexPath:&v25 toIndexPath:&v23];
     }
 
-    v12 = v10;
+    v12 = indexPathSet;
     goto LABEL_13;
   }
 }
@@ -497,12 +497,12 @@ void __52__PXSwipeSelectionManager__updateSelectedIndexPaths__block_invoke(uint6
   }
 }
 
-- (void)_setCurrentIndexPath:(PXSimpleIndexPath *)a3
+- (void)_setCurrentIndexPath:(PXSimpleIndexPath *)path
 {
-  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&self->__currentIndexPath.dataSourceIdentifier, *&a3->dataSourceIdentifier), vceqq_s64(*&self->__currentIndexPath.item, *&a3->item)))) & 1) == 0)
+  if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(*&self->__currentIndexPath.dataSourceIdentifier, *&path->dataSourceIdentifier), vceqq_s64(*&self->__currentIndexPath.item, *&path->item)))) & 1) == 0)
   {
-    v4 = *&a3->item;
-    *&self->__currentIndexPath.dataSourceIdentifier = *&a3->dataSourceIdentifier;
+    v4 = *&path->item;
+    *&self->__currentIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
     *&self->__currentIndexPath.item = v4;
     [(PXSwipeSelectionManager *)self _invalidateSelectedIndexPaths];
 
@@ -510,25 +510,25 @@ void __52__PXSwipeSelectionManager__updateSelectedIndexPaths__block_invoke(uint6
   }
 }
 
-- (void)_setPausingChangesToken:(id)a3
+- (void)_setPausingChangesToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   p_pausingChangesToken = &self->__pausingChangesToken;
   pausingChangesToken = self->__pausingChangesToken;
-  if (pausingChangesToken != v5)
+  if (pausingChangesToken != tokenCopy)
   {
     v8 = pausingChangesToken;
     if (v8)
     {
-      v9 = [(PXSwipeSelectionManager *)self selectionManager];
-      v10 = [v9 dataSourceManager];
+      selectionManager = [(PXSwipeSelectionManager *)self selectionManager];
+      dataSourceManager = [selectionManager dataSourceManager];
 
       v12 = v8;
-      v11 = v10;
+      v11 = dataSourceManager;
       px_dispatch_on_main_queue();
     }
 
-    objc_storeStrong(p_pausingChangesToken, a3);
+    objc_storeStrong(p_pausingChangesToken, token);
   }
 }
 
@@ -556,25 +556,25 @@ void __51__PXSwipeSelectionManager__setPausingChangesToken___block_invoke(uint64
   v6 = v5;
   v7 = v4;
   [(PXSwipeSelectionManager *)self _setCurrentIndexPath:&v6];
-  v3 = [(PXSwipeSelectionManager *)self _autoScroller];
-  [v3 stop];
+  _autoScroller = [(PXSwipeSelectionManager *)self _autoScroller];
+  [_autoScroller stop];
 
   [(PXSwipeSelectionManager *)self _setPausingChangesToken:0];
 }
 
-- (void)_updateSelectionWithHitIndexPath:(PXSimpleIndexPath *)a3 leadingClosestIndexPath:(PXSimpleIndexPath *)a4 aboveClosestIndexPath:(PXSimpleIndexPath *)a5
+- (void)_updateSelectionWithHitIndexPath:(PXSimpleIndexPath *)path leadingClosestIndexPath:(PXSimpleIndexPath *)indexPath aboveClosestIndexPath:(PXSimpleIndexPath *)closestIndexPath
 {
   [(PXSwipeSelectionManager *)self _startingIndexPath];
   v10 = *MEMORY[0x277D3CF78];
   if (v21 == *MEMORY[0x277D3CF78])
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXSwipeSelectionManager.m" lineNumber:202 description:@"Starting indexPath should be set"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwipeSelectionManager.m" lineNumber:202 description:@"Starting indexPath should be set"];
   }
 
-  dataSourceIdentifier = a3->dataSourceIdentifier;
-  v12 = a4->dataSourceIdentifier;
-  v13 = a5->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
+  v12 = indexPath->dataSourceIdentifier;
+  v13 = closestIndexPath->dataSourceIdentifier;
   v21 = 0u;
   v22 = 0u;
   if ([(PXSwipeSelectionManager *)self _isSelecting])
@@ -593,21 +593,21 @@ void __51__PXSwipeSelectionManager__setPausingChangesToken___block_invoke(uint64
   {
     if (v12 == v10)
     {
-      v17 = a5;
+      pathCopy = closestIndexPath;
     }
 
     else
     {
-      v17 = a4;
+      pathCopy = indexPath;
     }
 
     if (dataSourceIdentifier != v10)
     {
-      v17 = a3;
+      pathCopy = path;
     }
 
-    v18 = *&v17->item;
-    v21 = *&v17->dataSourceIdentifier;
+    v18 = *&pathCopy->item;
+    v21 = *&pathCopy->dataSourceIdentifier;
     v22 = v18;
   }
 
@@ -616,36 +616,36 @@ void __51__PXSwipeSelectionManager__setPausingChangesToken___block_invoke(uint64
   [(PXSwipeSelectionManager *)self _setCurrentIndexPath:v20];
 }
 
-- (void)_beginSelectionFromIndexPath:(PXSimpleIndexPath *)a3
+- (void)_beginSelectionFromIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [(PXSwipeSelectionManager *)self selectionManager];
-  v6 = [v5 dataSourceManager];
+  selectionManager = [(PXSwipeSelectionManager *)self selectionManager];
+  dataSourceManager = [selectionManager dataSourceManager];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke;
   v18[3] = &unk_2782977D0;
   v18[4] = self;
   v18[5] = 0x404E000000000000;
-  [v6 performChanges:v18];
+  [dataSourceManager performChanges:v18];
 
-  v7 = [(PXSwipeSelectionManager *)self selectionManager];
-  v8 = [v7 selectionSnapshot];
-  v9 = [v8 selectedIndexPaths];
+  selectionManager2 = [(PXSwipeSelectionManager *)self selectionManager];
+  selectionSnapshot = [selectionManager2 selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
 
-  [(PXSwipeSelectionManager *)self _setSelectedIndexPathsBeforeSwipe:v9];
-  v10 = *&a3->item;
-  v16 = *&a3->dataSourceIdentifier;
+  [(PXSwipeSelectionManager *)self _setSelectedIndexPathsBeforeSwipe:selectedIndexPaths];
+  v10 = *&path->item;
+  v16 = *&path->dataSourceIdentifier;
   v17 = v10;
   [(PXSwipeSelectionManager *)self _setStartingIndexPath:&v16];
-  v11 = [(PXSwipeSelectionManager *)self selectionManager];
-  v12 = [v11 selectionSnapshot];
-  v13 = [v12 dataSource];
-  -[PXSwipeSelectionManager _setCurrentDataSourceIdentifier:](self, "_setCurrentDataSourceIdentifier:", [v13 identifier]);
+  selectionManager3 = [(PXSwipeSelectionManager *)self selectionManager];
+  selectionSnapshot2 = [selectionManager3 selectionSnapshot];
+  dataSource = [selectionSnapshot2 dataSource];
+  -[PXSwipeSelectionManager _setCurrentDataSourceIdentifier:](self, "_setCurrentDataSourceIdentifier:", [dataSource identifier]);
 
-  v14 = *&a3->item;
-  v16 = *&a3->dataSourceIdentifier;
+  v14 = *&path->item;
+  v16 = *&path->dataSourceIdentifier;
   v17 = v14;
-  if ([v9 containsIndexPath:&v16])
+  if ([selectedIndexPaths containsIndexPath:&v16])
   {
     v15 = 2;
   }
@@ -664,7 +664,7 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   [*(a1 + 32) _setPausingChangesToken:v3];
 }
 
-- (PXSimpleIndexPath)_itemIndexPathClosestAboveLocation:(SEL)a3
+- (PXSimpleIndexPath)_itemIndexPathClosestAboveLocation:(SEL)location
 {
   y = a4.y;
   x = a4.x;
@@ -673,12 +673,12 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   *&retstr->item = v7;
   if (BYTE3(self->section) == 1)
   {
-    v8 = self;
-    v9 = [(PXSimpleIndexPath *)self delegate];
-    v10 = v9;
-    if (v9)
+    selfCopy = self;
+    delegate = [(PXSimpleIndexPath *)self delegate];
+    v10 = delegate;
+    if (delegate)
     {
-      [v9 swipeSelectionManager:v8 itemIndexPathClosestAboveLocation:{x, y}];
+      [delegate swipeSelectionManager:selfCopy itemIndexPathClosestAboveLocation:{x, y}];
     }
 
     else
@@ -694,7 +694,7 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   return self;
 }
 
-- (PXSimpleIndexPath)_itemIndexPathClosestLeadingLocation:(SEL)a3
+- (PXSimpleIndexPath)_itemIndexPathClosestLeadingLocation:(SEL)location
 {
   y = a4.y;
   x = a4.x;
@@ -703,12 +703,12 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   *&retstr->item = v7;
   if (BYTE2(self->section) == 1)
   {
-    v8 = self;
-    v9 = [(PXSimpleIndexPath *)self delegate];
-    v10 = v9;
-    if (v9)
+    selfCopy = self;
+    delegate = [(PXSimpleIndexPath *)self delegate];
+    v10 = delegate;
+    if (delegate)
     {
-      [v9 swipeSelectionManager:v8 itemIndexPathClosestLeadingLocation:{x, y}];
+      [delegate swipeSelectionManager:selfCopy itemIndexPathClosestLeadingLocation:{x, y}];
     }
 
     else
@@ -724,7 +724,7 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   return self;
 }
 
-- (PXSimpleIndexPath)_itemIndexPathAtLocation:(SEL)a3
+- (PXSimpleIndexPath)_itemIndexPathAtLocation:(SEL)location
 {
   y = a4.y;
   x = a4.x;
@@ -733,12 +733,12 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   *&retstr->item = v7;
   if (BYTE1(self->section) == 1)
   {
-    v8 = self;
-    v9 = [(PXSimpleIndexPath *)self delegate];
-    v10 = v9;
-    if (v9)
+    selfCopy = self;
+    delegate = [(PXSimpleIndexPath *)self delegate];
+    v10 = delegate;
+    if (delegate)
     {
-      [v9 swipeSelectionManager:v8 itemIndexPathAtLocation:{x, y}];
+      [delegate swipeSelectionManager:selfCopy itemIndexPathAtLocation:{x, y}];
     }
 
     else
@@ -766,11 +766,11 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
 
 - (NSArray)gesturesForFailureRequirements
 {
-  v2 = [(UIMultiSelectInteraction *)self->_multiSelectInteraction gesturesForFailureRequirements];
-  v3 = v2;
-  if (v2)
+  gesturesForFailureRequirements = [(UIMultiSelectInteraction *)self->_multiSelectInteraction gesturesForFailureRequirements];
+  v3 = gesturesForFailureRequirements;
+  if (gesturesForFailureRequirements)
   {
-    v4 = v2;
+    v4 = gesturesForFailureRequirements;
   }
 
   else
@@ -783,9 +783,9 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -806,8 +806,8 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
 
 - (void)removeFromView
 {
-  v3 = [(UIMultiSelectInteraction *)self->_multiSelectInteraction view];
-  [v3 removeInteraction:self->_multiSelectInteraction];
+  view = [(UIMultiSelectInteraction *)self->_multiSelectInteraction view];
+  [view removeInteraction:self->_multiSelectInteraction];
 
   multiSelectInteraction = self->_multiSelectInteraction;
   self->_multiSelectInteraction = 0;
@@ -825,39 +825,39 @@ void __56__PXSwipeSelectionManager__beginSelectionFromIndexPath___block_invoke(u
 
 - (PXSwipeSelectionManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSwipeSelectionManager.m" lineNumber:91 description:@"Not supported"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwipeSelectionManager.m" lineNumber:91 description:@"Not supported"];
 
   abort();
 }
 
-- (PXSwipeSelectionManager)initWithSelectionManager:(id)a3 scrollView:(id)a4
+- (PXSwipeSelectionManager)initWithSelectionManager:(id)manager scrollView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = PXSwipeSelectionManager;
   v9 = [(PXSwipeSelectionManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_selectionManager, a3);
-    objc_storeStrong(&v10->_scrollView, a4);
+    objc_storeStrong(&v9->_selectionManager, manager);
+    objc_storeStrong(&v10->_scrollView, view);
     v11 = objc_alloc_init(MEMORY[0x277D75748]);
     multiSelectInteraction = v10->_multiSelectInteraction;
     v10->_multiSelectInteraction = v11;
 
     [(UIMultiSelectInteraction *)v10->_multiSelectInteraction setDelegate:v10];
     [(UIMultiSelectInteraction *)v10->_multiSelectInteraction setSingleTouchPanGestureHysteresis:5.0];
-    [v8 addInteraction:v10->_multiSelectInteraction];
-    v13 = [objc_alloc(MEMORY[0x277D3CE18]) initWithTargetScrollView:v8];
+    [viewCopy addInteraction:v10->_multiSelectInteraction];
+    v13 = [objc_alloc(MEMORY[0x277D3CE18]) initWithTargetScrollView:viewCopy];
     autoScroller = v10->__autoScroller;
     v10->__autoScroller = v13;
 
     [(PXUIAutoScroller *)v10->__autoScroller setDelegate:v10];
     v10->__currentDataSourceIdentifier = *MEMORY[0x277D3CF78];
-    v15 = [v7 dataSourceManager];
-    [v15 registerChangeObserver:v10 context:PXSwipeSelectionManagerDataSourceObserverContext];
+    dataSourceManager = [managerCopy dataSourceManager];
+    [dataSourceManager registerChangeObserver:v10 context:PXSwipeSelectionManagerDataSourceObserverContext];
   }
 
   return v10;

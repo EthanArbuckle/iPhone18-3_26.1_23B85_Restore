@@ -2,9 +2,9 @@
 - (BOOL)canUseNetwork;
 - (BOOL)isCellular;
 - (BOOL)isConstrained;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFunctionallyEqual:(id)a3;
-- (CPLNetworkState)initWithNetworkPath:(id)a3 cellularRestricted:(BOOL)a4 inAirplaneMode:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFunctionallyEqual:(id)equal;
+- (CPLNetworkState)initWithNetworkPath:(id)path cellularRestricted:(BOOL)restricted inAirplaneMode:(BOOL)mode;
 - (NSDictionary)plistDescription;
 - (id)description;
 @end
@@ -32,16 +32,16 @@
   return networkPath;
 }
 
-- (BOOL)isFunctionallyEqual:(id)a3
+- (BOOL)isFunctionallyEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   networkPath = self->_networkPath;
-  v6 = [v4 networkPath];
+  networkPath = [equalCopy networkPath];
 
-  LOBYTE(v7) = (networkPath | v6) == 0;
+  LOBYTE(v7) = (networkPath | networkPath) == 0;
   if (networkPath)
   {
-    v8 = v6 == 0;
+    v8 = networkPath == 0;
   }
 
   else
@@ -51,11 +51,11 @@
 
   if (!v8)
   {
-    v9 = [(CPLNetworkState *)self isCellular];
-    if (v9 == [v4 isCellular] && (!v9 || (v10 = -[CPLNetworkState isCellularRestricted](self, "isCellularRestricted"), v10 == objc_msgSend(v4, "isCellularRestricted"))) && (v11 = -[CPLNetworkState isConnected](self, "isConnected"), v11 == objc_msgSend(v4, "isConnected")) && (v12 = -[CPLNetworkState isConstrained](self, "isConstrained"), v12 == objc_msgSend(v4, "isConstrained")))
+    isCellular = [(CPLNetworkState *)self isCellular];
+    if (isCellular == [equalCopy isCellular] && (!isCellular || (v10 = -[CPLNetworkState isCellularRestricted](self, "isCellularRestricted"), v10 == objc_msgSend(equalCopy, "isCellularRestricted"))) && (v11 = -[CPLNetworkState isConnected](self, "isConnected"), v11 == objc_msgSend(equalCopy, "isConnected")) && (v12 = -[CPLNetworkState isConstrained](self, "isConstrained"), v12 == objc_msgSend(equalCopy, "isConstrained")))
     {
-      v14 = [(CPLNetworkState *)self isInAirplaneMode];
-      v7 = v14 ^ [v4 isInAirplaneMode] ^ 1;
+      isInAirplaneMode = [(CPLNetworkState *)self isInAirplaneMode];
+      v7 = isInAirplaneMode ^ [equalCopy isInAirplaneMode] ^ 1;
     }
 
     else
@@ -67,16 +67,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   networkPath = self->_networkPath;
-  v6 = [v4 networkPath];
-  v7 = v6;
-  LOBYTE(v8) = (networkPath | v6) == 0;
+  networkPath = [equalCopy networkPath];
+  v7 = networkPath;
+  LOBYTE(v8) = (networkPath | networkPath) == 0;
   if (networkPath)
   {
-    v9 = v6 == 0;
+    v9 = networkPath == 0;
   }
 
   else
@@ -86,11 +86,11 @@
 
   if (!v9)
   {
-    v10 = [(CPLNetworkState *)self isConnected];
-    if (v10 == [v4 isConnected] && (v11 = -[CPLNetworkState isCellular](self, "isCellular"), v11 == objc_msgSend(v4, "isCellular")) && (v12 = -[CPLNetworkState isConstrained](self, "isConstrained"), v12 == objc_msgSend(v4, "isConstrained")) && (v13 = -[CPLNetworkState isCellularRestricted](self, "isCellularRestricted"), v13 == objc_msgSend(v4, "isCellularRestricted")))
+    isConnected = [(CPLNetworkState *)self isConnected];
+    if (isConnected == [equalCopy isConnected] && (v11 = -[CPLNetworkState isCellular](self, "isCellular"), v11 == objc_msgSend(equalCopy, "isCellular")) && (v12 = -[CPLNetworkState isConstrained](self, "isConstrained"), v12 == objc_msgSend(equalCopy, "isConstrained")) && (v13 = -[CPLNetworkState isCellularRestricted](self, "isCellularRestricted"), v13 == objc_msgSend(equalCopy, "isCellularRestricted")))
     {
-      v15 = [(CPLNetworkState *)self isInAirplaneMode];
-      v8 = v15 ^ [v4 isInAirplaneMode] ^ 1;
+      isInAirplaneMode = [(CPLNetworkState *)self isInAirplaneMode];
+      v8 = isInAirplaneMode ^ [equalCopy isInAirplaneMode] ^ 1;
     }
 
     else
@@ -239,40 +239,40 @@ LABEL_22:
 
 - (BOOL)canUseNetwork
 {
-  v3 = [(CPLNetworkState *)self isConnected];
-  if (v3)
+  isConnected = [(CPLNetworkState *)self isConnected];
+  if (isConnected)
   {
     if ([(CPLNetworkState *)self isConstrained]|| [(CPLNetworkState *)self isInAirplaneMode])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isConnected) = 0;
     }
 
     else if ([(CPLNetworkState *)self isCellular])
     {
-      LOBYTE(v3) = ![(CPLNetworkState *)self isCellularRestricted];
+      LOBYTE(isConnected) = ![(CPLNetworkState *)self isCellularRestricted];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isConnected) = 1;
     }
   }
 
-  return v3;
+  return isConnected;
 }
 
-- (CPLNetworkState)initWithNetworkPath:(id)a3 cellularRestricted:(BOOL)a4 inAirplaneMode:(BOOL)a5
+- (CPLNetworkState)initWithNetworkPath:(id)path cellularRestricted:(BOOL)restricted inAirplaneMode:(BOOL)mode
 {
-  v9 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CPLNetworkState;
   v10 = [(CPLNetworkState *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_networkPath, a3);
-    v11->_cellularRestricted = a4;
-    v11->_inAirplaneMode = a5;
+    objc_storeStrong(&v10->_networkPath, path);
+    v11->_cellularRestricted = restricted;
+    v11->_inAirplaneMode = mode;
   }
 
   return v11;

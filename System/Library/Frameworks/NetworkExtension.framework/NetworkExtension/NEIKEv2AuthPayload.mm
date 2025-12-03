@@ -1,23 +1,23 @@
 @interface NEIKEv2AuthPayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 - (uint64_t)copyFullAuthenticationData;
-- (void)setAuthProtocol:(uint64_t)a1;
-- (void)setAuthenticationData:(uint64_t)a1;
+- (void)setAuthProtocol:(uint64_t)protocol;
+- (void)setAuthenticationData:(uint64_t)data;
 @end
 
 @implementation NEIKEv2AuthPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] > 3)
+  dataCopy = data;
+  if ([dataCopy length] > 3)
   {
     v48 = 0;
-    [v4 getBytes:&v48 length:4];
-    if ([v4 length] == 4)
+    [dataCopy getBytes:&v48 length:4];
+    if ([dataCopy length] == 4)
     {
       v5 = ne_log_obj();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@
       goto LABEL_5;
     }
 
-    v7 = [v4 length] - 4;
+    v7 = [dataCopy length] - 4;
     if (v48 == 12)
     {
       v24 = [[NEIKEv2AuthenticationProtocol alloc] initWithSecurePassword:-1];
@@ -42,12 +42,12 @@
       if (v48 == 14)
       {
         v47 = 0;
-        [v4 getBytes:&v47 range:{4, 1}];
+        [dataCopy getBytes:&v47 range:{4, 1}];
         v8 = v47;
         v9 = v47 + 1;
         if (v7 > v47)
         {
-          v10 = [v4 subdataWithRange:{4, v47 + 1}];
+          v10 = [dataCopy subdataWithRange:{4, v47 + 1}];
           v11 = [NEIKEv2AuthenticationProtocol alloc];
           v12 = v10;
           v13 = v12;
@@ -57,8 +57,8 @@
             {
               if ([v12 length] == 5)
               {
-                v14 = [v13 bytes];
-                if (*v14 == 1694695684 && *(v14 + 4) == 112)
+                bytes = [v13 bytes];
+                if (*bytes == 1694695684 && *(bytes + 4) == 112)
                 {
                   v11 = [(NEIKEv2AuthenticationProtocol *)v11 initWithNonStandardDigitalSignature:3];
                   v27 = v11;
@@ -69,7 +69,7 @@ LABEL_42:
                   {
                     if (v7 != v9)
                     {
-                      v29 = [v4 subdataWithRange:{v8 + 5, v7 - v9}];
+                      v29 = [dataCopy subdataWithRange:{v8 + 5, v7 - v9}];
                       [(NEIKEv2AuthPayload *)self setAuthenticationData:v29];
 
                       goto LABEL_46;
@@ -292,7 +292,7 @@ LABEL_70:
           *buf = 134218242;
           *&buf[4] = v9;
           *&buf[12] = 2112;
-          *&buf[14] = v4;
+          *&buf[14] = dataCopy;
           v34 = "AuthData too short for AlgorithmIdentifier len %zu, payload %@";
           v35 = v5;
           v36 = 22;
@@ -308,11 +308,11 @@ LABEL_70:
     v25 = v24;
     [(NEIKEv2AuthPayload *)self setAuthProtocol:v24];
 
-    v26 = [v4 subdataWithRange:{4, v7}];
+    v26 = [dataCopy subdataWithRange:{4, v7}];
     [(NEIKEv2AuthPayload *)self setAuthenticationData:v26];
 
 LABEL_46:
-    v6 = [(NEIKEv2AuthPayload *)self hasRequiredFields];
+    hasRequiredFields = [(NEIKEv2AuthPayload *)self hasRequiredFields];
     goto LABEL_47;
   }
 
@@ -331,26 +331,26 @@ LABEL_55:
 LABEL_5:
 
 LABEL_6:
-  v6 = 0;
+  hasRequiredFields = 0;
 LABEL_47:
 
   v30 = *MEMORY[0x1E69E9840];
-  return v6;
+  return hasRequiredFields;
 }
 
-- (void)setAuthProtocol:(uint64_t)a1
+- (void)setAuthProtocol:(uint64_t)protocol
 {
-  if (a1)
+  if (protocol)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((protocol + 32), a2);
   }
 }
 
-- (void)setAuthenticationData:(uint64_t)a1
+- (void)setAuthenticationData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((data + 40), a2);
   }
 }
 
@@ -361,11 +361,11 @@ LABEL_47:
   {
     if ([0 hasRequiredFields])
     {
-      v23 = [0 method];
+      method = [0 method];
 
-      v19 = [0 isDigitalSignature];
+      isDigitalSignature = [0 isDigitalSignature];
       v8 = 0;
-      if (v19)
+      if (isDigitalSignature)
       {
         goto LABEL_54;
       }
@@ -388,9 +388,9 @@ LABEL_51:
   {
     if ([(NEIKEv2AuthPayload *)self hasRequiredFields])
     {
-      v23 = 0;
-      LOBYTE(v23) = [(NEIKEv2AuthenticationProtocol *)self->_authProtocol method];
-      v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v23 length:4];
+      method = 0;
+      LOBYTE(method) = [(NEIKEv2AuthenticationProtocol *)self->_authProtocol method];
+      v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&method length:4];
       objc_storeStrong(&self->super._payloadSubHeader, v4);
 
       if ([(NEIKEv2AuthenticationProtocol *)self->_authProtocol isDigitalSignature])
@@ -415,14 +415,14 @@ LABEL_51:
           goto LABEL_45;
         }
 
-        v5 = [authProtocol digitalSignatureAlgorithm];
-        if (v5 > 5)
+        digitalSignatureAlgorithm = [authProtocol digitalSignatureAlgorithm];
+        if (digitalSignatureAlgorithm > 5)
         {
-          if (v5 <= 8)
+          if (digitalSignatureAlgorithm <= 8)
           {
-            if (v5 != 6)
+            if (digitalSignatureAlgorithm != 6)
             {
-              if (v5 == 7)
+              if (digitalSignatureAlgorithm == 7)
               {
                 v6 = objc_alloc(MEMORY[0x1E695DEF0]);
                 v7 = &NEIKEv2ASN1AlgorithmIdECDSA384;
@@ -442,7 +442,7 @@ LABEL_51:
             goto LABEL_34;
           }
 
-          switch(v5)
+          switch(digitalSignatureAlgorithm)
           {
             case 9:
               v6 = objc_alloc(MEMORY[0x1E695DEF0]);
@@ -463,13 +463,13 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        if (v5 > 2)
+        if (digitalSignatureAlgorithm > 2)
         {
-          if (v5 == 3)
+          if (digitalSignatureAlgorithm == 3)
           {
-            v13 = [authProtocol isNonStandard];
+            isNonStandard = [authProtocol isNonStandard];
             v6 = objc_alloc(MEMORY[0x1E695DEF0]);
-            if (v13)
+            if (isNonStandard)
             {
               v7 = &NEIKEv2ASN1AlgorithmIdED25519NonStandard;
               v12 = 5;
@@ -481,7 +481,7 @@ LABEL_36:
 
           else
           {
-            if (v5 != 4)
+            if (digitalSignatureAlgorithm != 4)
             {
               v6 = objc_alloc(MEMORY[0x1E695DEF0]);
               v7 = &NEIKEv2ASN1AlgorithmIdRSAPKCS384;
@@ -515,9 +515,9 @@ LABEL_54:
           goto LABEL_55;
         }
 
-        if (v5 != 1)
+        if (digitalSignatureAlgorithm != 1)
         {
-          if (v5 == 2)
+          if (digitalSignatureAlgorithm == 2)
           {
             v6 = objc_alloc(MEMORY[0x1E695DEF0]);
             v7 = &NEIKEv2ASN1AlgorithmIdECDSA256;
@@ -574,57 +574,57 @@ LABEL_55:
 
 - (BOOL)hasRequiredFields
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = self->_authenticationData;
     if (v3)
     {
       v4 = v3;
-      authProtocol = v2->_authProtocol;
+      authProtocol = selfCopy->_authProtocol;
       if (authProtocol)
       {
         v6 = authProtocol;
-        LOBYTE(v2) = [(NEIKEv2AuthenticationProtocol *)v6 method]!= 0;
+        LOBYTE(selfCopy) = [(NEIKEv2AuthenticationProtocol *)v6 method]!= 0;
       }
 
       else
       {
-        LOBYTE(v2) = 0;
+        LOBYTE(selfCopy) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)copyFullAuthenticationData
 {
-  if (!a1 || (*(a1 + 8) & 1) != 0)
+  if (!self || (*(self + 8) & 1) != 0)
   {
     return 0;
   }
 
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   if (v2)
   {
 
     goto LABEL_6;
   }
 
-  if (([a1 generatePayloadData] & 1) == 0)
+  if (([self generatePayloadData] & 1) == 0)
   {
     return 0;
   }
 
 LABEL_6:
-  v3 = [*(a1 + 24) count];
-  v4 = *(a1 + 24);
+  v3 = [*(self + 24) count];
+  v4 = *(self + 24);
   if (v3 == 1)
   {
     [v4 objectAtIndexedSubscript:0];
@@ -636,14 +636,14 @@ LABEL_6:
     v6 = v4;
     v7 = [v6 objectAtIndexedSubscript:0];
     v8 = [v7 length];
-    v9 = [*(a1 + 24) objectAtIndexedSubscript:1];
+    v9 = [*(self + 24) objectAtIndexedSubscript:1];
     v10 = [v9 length];
 
     v5 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:v10 + v8];
-    v11 = [*(a1 + 24) objectAtIndexedSubscript:0];
+    v11 = [*(self + 24) objectAtIndexedSubscript:0];
     [v5 appendData:v11];
 
-    v12 = [*(a1 + 24) objectAtIndexedSubscript:1];
+    v12 = [*(self + 24) objectAtIndexedSubscript:1];
     [v5 appendData:v12];
   }
 

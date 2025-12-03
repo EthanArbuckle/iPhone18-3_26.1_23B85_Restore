@@ -10,7 +10,7 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 objectForKeyedSubscript:v6];
+  v7 = [self objectForKeyedSubscript:v6];
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = AXSSLogForCategory(1);
@@ -42,7 +42,7 @@
 - (uint64_t)axssDecodeBoolForKey:()ClassChecking
 {
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v7 = AXSSLogForCategory(1);
@@ -51,22 +51,22 @@
       [NSDictionary(ClassChecking) axssDecodeBoolForKey:];
     }
 
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)axssDecodeArrayOfClass:()ClassChecking forKey:
 {
   v32 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 objectForKeyedSubscript:v6];
+  v7 = [self objectForKeyedSubscript:v6];
   if (!v7)
   {
 LABEL_12:

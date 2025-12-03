@@ -1,54 +1,54 @@
 @interface KTContextStore
 - (BOOL)shouldGossip;
-- (KTContextStore)initWithDataStore:(id)a3 staticKeyStore:(id)a4 keyStore:(id)a5 cloudRecords:(id)a6 accountKeyServer:(id)a7 settings:(id)a8 followup:(id)a9;
-- (KTContextStore)initWithDataStore:(id)a3 staticKeyStore:(id)a4 keyStore:(id)a5 cloudRecords:(id)a6 accountKeyServer:(id)a7 stateMachine:(id)a8 kvs:(id)a9 settings:(id)a10 followup:(id)a11;
+- (KTContextStore)initWithDataStore:(id)store staticKeyStore:(id)keyStore keyStore:(id)a5 cloudRecords:(id)records accountKeyServer:(id)server settings:(id)settings followup:(id)followup;
+- (KTContextStore)initWithDataStore:(id)store staticKeyStore:(id)keyStore keyStore:(id)a5 cloudRecords:(id)records accountKeyServer:(id)server stateMachine:(id)machine kvs:(id)kvs settings:(id)self0 followup:(id)self1;
 - (KTSMManager)stateMachine;
 - (NSDictionary)contexts;
-- (id)createContextForApplication:(id)a3 dataStore:(id)a4 staticKeyStore:(id)a5 logClient:(id)a6 stateMachine:(id)a7;
-- (id)createContextForTLT:(id)a3 staticKeyStore:(id)a4 logClient:(id)a5 stateMachine:(id)a6;
-- (id)getCachedValidatePeerResults:(id)a3 application:(id)a4;
+- (id)createContextForApplication:(id)application dataStore:(id)store staticKeyStore:(id)keyStore logClient:(id)client stateMachine:(id)machine;
+- (id)createContextForTLT:(id)t staticKeyStore:(id)store logClient:(id)client stateMachine:(id)machine;
+- (id)getCachedValidatePeerResults:(id)results application:(id)application;
 - (id)serializeTranscripts;
-- (void)changeOptInState:(unint64_t)a3 application:(id)a4 logClient:(id)a5 completionBlock:(id)a6;
-- (void)clearApplicationState:(id)a3 logClient:(id)a4 completionBlock:(id)a5;
-- (void)clearContextForApplication:(id)a3;
-- (void)contextForApplication:(id)a3 logClient:(id)a4 fetchState:(BOOL)a5 completionHandler:(id)a6;
+- (void)changeOptInState:(unint64_t)state application:(id)application logClient:(id)client completionBlock:(id)block;
+- (void)clearApplicationState:(id)state logClient:(id)client completionBlock:(id)block;
+- (void)clearContextForApplication:(id)application;
+- (void)contextForApplication:(id)application logClient:(id)client fetchState:(BOOL)state completionHandler:(id)handler;
 - (void)drainContextStore;
-- (void)failHeadDownload:(id)a3 application:(id)a4 failure:(id)a5 retry:(BOOL)a6 logClient:(id)a7;
-- (void)forcedConfigure:(BOOL)a3 logClient:(id)a4 applicationHandler:(id)a5 completionHandler:(id)a6;
-- (void)getKTOptInState:(id)a3 sync:(BOOL)a4 logClient:(id)a5 completionblock:(id)a6;
-- (void)handleBatchQueryResponse:(id)a3 queryRequest:(id)a4 receiptDate:(id)a5 fetchId:(id)a6 application:(id)a7 logClient:(id)a8 transparentDataHandler:(id)a9 completionHandler:(id)a10;
-- (void)handlePeerStateChange:(id)a3 application:(id)a4;
-- (void)ignoreFailure:(id)a3 error:(id *)a4;
-- (void)ignoreFailureForResults:(id)a3 application:(id)a4 completionBlock:(id)a5;
-- (void)queryForUris:(id)a3 application:(id)a4 logClient:(id)a5 userInitiated:(BOOL)a6 cachedYoungerThan:(id)a7 completionHandler:(id)a8;
-- (void)receivedSTHsFromPeers:(id)a3 logClient:(id)a4 verifier:(id)a5 block:(id)a6;
-- (void)replaySelfValidate:(id)a3 application:(id)a4 pcsAccountKey:(id)a5 queryRequest:(id)a6 queryResponse:(id)a7 responseTime:(id)a8 logClient:(id)a9 completionHandler:(id)a10;
-- (void)retrieveTLTSTH:(id)a3 block:(id)a4;
-- (void)rollKeyForApplication:(id)a3 logClient:(id)a4 completionBlock:(id)a5;
-- (void)setContext:(id)a3 forKey:(id)a4;
-- (void)signData:(id)a3 application:(id)a4 logClient:(id)a5 completionBlock:(id)a6;
-- (void)storeContext:(id)a3 application:(id)a4;
-- (void)validateEnrollmentRequestId:(id)a3 application:(id)a4 logClient:(id)a5 cloudOptIn:(id)a6 completionHandler:(id)a7;
-- (void)validateIDSPeerURI:(id)a3 application:(id)a4 idsData:(id)a5 ktData:(id)a6 logClient:(id)a7 complete:(id)a8;
-- (void)validatePeerRequestId:(id)a3 uri:(id)a4 application:(id)a5 logClient:(id)a6 revalidate:(BOOL)a7 fetchNow:(BOOL)a8 completionHandler:(id)a9;
-- (void)validatePeers:(id)a3 application:(id)a4 fetchNow:(BOOL)a5 logClient:(id)a6 completionBlock:(id)a7;
-- (void)verifyHeadConsistencyDownload:(id)a3 application:(id)a4 logClient:(id)a5;
-- (void)verifyHeadInclusionDownload:(id)a3 application:(id)a4 logClient:(id)a5;
+- (void)failHeadDownload:(id)download application:(id)application failure:(id)failure retry:(BOOL)retry logClient:(id)client;
+- (void)forcedConfigure:(BOOL)configure logClient:(id)client applicationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)getKTOptInState:(id)state sync:(BOOL)sync logClient:(id)client completionblock:(id)completionblock;
+- (void)handleBatchQueryResponse:(id)response queryRequest:(id)request receiptDate:(id)date fetchId:(id)id application:(id)application logClient:(id)client transparentDataHandler:(id)handler completionHandler:(id)self0;
+- (void)handlePeerStateChange:(id)change application:(id)application;
+- (void)ignoreFailure:(id)failure error:(id *)error;
+- (void)ignoreFailureForResults:(id)results application:(id)application completionBlock:(id)block;
+- (void)queryForUris:(id)uris application:(id)application logClient:(id)client userInitiated:(BOOL)initiated cachedYoungerThan:(id)than completionHandler:(id)handler;
+- (void)receivedSTHsFromPeers:(id)peers logClient:(id)client verifier:(id)verifier block:(id)block;
+- (void)replaySelfValidate:(id)validate application:(id)application pcsAccountKey:(id)key queryRequest:(id)request queryResponse:(id)response responseTime:(id)time logClient:(id)client completionHandler:(id)self0;
+- (void)retrieveTLTSTH:(id)h block:(id)block;
+- (void)rollKeyForApplication:(id)application logClient:(id)client completionBlock:(id)block;
+- (void)setContext:(id)context forKey:(id)key;
+- (void)signData:(id)data application:(id)application logClient:(id)client completionBlock:(id)block;
+- (void)storeContext:(id)context application:(id)application;
+- (void)validateEnrollmentRequestId:(id)id application:(id)application logClient:(id)client cloudOptIn:(id)in completionHandler:(id)handler;
+- (void)validateIDSPeerURI:(id)i application:(id)application idsData:(id)data ktData:(id)ktData logClient:(id)client complete:(id)complete;
+- (void)validatePeerRequestId:(id)id uri:(id)uri application:(id)application logClient:(id)client revalidate:(BOOL)revalidate fetchNow:(BOOL)now completionHandler:(id)handler;
+- (void)validatePeers:(id)peers application:(id)application fetchNow:(BOOL)now logClient:(id)client completionBlock:(id)block;
+- (void)verifyHeadConsistencyDownload:(id)download application:(id)application logClient:(id)client;
+- (void)verifyHeadInclusionDownload:(id)download application:(id)application logClient:(id)client;
 @end
 
 @implementation KTContextStore
 
-- (KTContextStore)initWithDataStore:(id)a3 staticKeyStore:(id)a4 keyStore:(id)a5 cloudRecords:(id)a6 accountKeyServer:(id)a7 stateMachine:(id)a8 kvs:(id)a9 settings:(id)a10 followup:(id)a11
+- (KTContextStore)initWithDataStore:(id)store staticKeyStore:(id)keyStore keyStore:(id)a5 cloudRecords:(id)records accountKeyServer:(id)server stateMachine:(id)machine kvs:(id)kvs settings:(id)self0 followup:(id)self1
 {
-  v29 = a3;
-  v17 = a4;
+  storeCopy = store;
+  keyStoreCopy = keyStore;
   v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  recordsCopy = records;
+  serverCopy = server;
+  machineCopy = machine;
+  kvsCopy = kvs;
+  settingsCopy = settings;
+  followupCopy = followup;
   v30.receiver = self;
   v30.super_class = KTContextStore;
   v25 = [(KTContextStore *)&v30 init];
@@ -56,14 +56,14 @@
   if (v25)
   {
     [(KTContextStore *)v25 setKeyStore:v18];
-    [(KTContextStore *)v26 setDataStore:v29];
-    [(KTContextStore *)v26 setStaticKeyStore:v17];
-    [(KTContextStore *)v26 setAccountKeyServer:v20];
-    [(KTContextStore *)v26 setStateMachine:v21];
-    [(KTContextStore *)v26 setKvs:v22];
-    [(KTContextStore *)v26 setCloudRecords:v19];
-    [(KTContextStore *)v26 setFollowup:v24];
-    [(KTContextStore *)v26 setSettings:v23];
+    [(KTContextStore *)v26 setDataStore:storeCopy];
+    [(KTContextStore *)v26 setStaticKeyStore:keyStoreCopy];
+    [(KTContextStore *)v26 setAccountKeyServer:serverCopy];
+    [(KTContextStore *)v26 setStateMachine:machineCopy];
+    [(KTContextStore *)v26 setKvs:kvsCopy];
+    [(KTContextStore *)v26 setCloudRecords:recordsCopy];
+    [(KTContextStore *)v26 setFollowup:followupCopy];
+    [(KTContextStore *)v26 setSettings:settingsCopy];
     v27 = +[NSMutableDictionary dictionary];
     [(KTContextStore *)v26 set_contexts:v27];
   }
@@ -71,55 +71,55 @@
   return v26;
 }
 
-- (KTContextStore)initWithDataStore:(id)a3 staticKeyStore:(id)a4 keyStore:(id)a5 cloudRecords:(id)a6 accountKeyServer:(id)a7 settings:(id)a8 followup:(id)a9
+- (KTContextStore)initWithDataStore:(id)store staticKeyStore:(id)keyStore keyStore:(id)a5 cloudRecords:(id)records accountKeyServer:(id)server settings:(id)settings followup:(id)followup
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
+  followupCopy = followup;
+  settingsCopy = settings;
+  serverCopy = server;
+  recordsCopy = records;
   v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  keyStoreCopy = keyStore;
+  storeCopy = store;
   v23 = +[KTKVSSoftStore sharedStore];
-  v24 = [(KTContextStore *)self initWithDataStore:v22 staticKeyStore:v21 keyStore:v20 cloudRecords:v19 accountKeyServer:v18 stateMachine:0 kvs:v23 settings:v17 followup:v16];
+  v24 = [(KTContextStore *)self initWithDataStore:storeCopy staticKeyStore:keyStoreCopy keyStore:v20 cloudRecords:recordsCopy accountKeyServer:serverCopy stateMachine:0 kvs:v23 settings:settingsCopy followup:followupCopy];
 
   return v24;
 }
 
 - (NSDictionary)contexts
 {
-  v3 = [(KTContextStore *)self _contexts];
-  objc_sync_enter(v3);
-  v4 = [(KTContextStore *)self _contexts];
-  v5 = [NSDictionary dictionaryWithDictionary:v4];
+  _contexts = [(KTContextStore *)self _contexts];
+  objc_sync_enter(_contexts);
+  _contexts2 = [(KTContextStore *)self _contexts];
+  v5 = [NSDictionary dictionaryWithDictionary:_contexts2];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(_contexts);
 
   return v5;
 }
 
-- (void)setContext:(id)a3 forKey:(id)a4
+- (void)setContext:(id)context forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(KTContextStore *)self _contexts];
-  objc_sync_enter(v7);
-  v8 = [(KTContextStore *)self _contexts];
-  [v8 setObject:v9 forKeyedSubscript:v6];
+  contextCopy = context;
+  keyCopy = key;
+  _contexts = [(KTContextStore *)self _contexts];
+  objc_sync_enter(_contexts);
+  _contexts2 = [(KTContextStore *)self _contexts];
+  [_contexts2 setObject:contextCopy forKeyedSubscript:keyCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(_contexts);
 }
 
-- (void)forcedConfigure:(BOOL)a3 logClient:(id)a4 applicationHandler:(id)a5 completionHandler:(id)a6
+- (void)forcedConfigure:(BOOL)configure logClient:(id)client applicationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(KTContextStore *)self keyStore];
-  v14 = [v13 ready];
+  configureCopy = configure;
+  clientCopy = client;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  keyStore = [(KTContextStore *)self keyStore];
+  ready = [keyStore ready];
 
-  if (!v14 || v8)
+  if (!ready || configureCopy)
   {
     if (qword_10038BDA0 != -1)
     {
@@ -130,17 +130,17 @@
     if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v32 = v10;
+      v32 = clientCopy;
       v33 = 1024;
-      v34 = v14;
+      v34 = ready;
       v35 = 1024;
-      v36 = v8;
+      v36 = configureCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Configuring key store with log client %@, ready = %d, forced = %d", buf, 0x18u);
     }
 
-    v24 = [(KTContextStore *)self keyStore];
-    v25 = [(KTContextStore *)self dataStore];
-    [v24 configureWithClient:v10 ignoreCachedKeys:1 dataStore:v25 contextStore:self applicationHandler:v11 completionHandler:v12];
+    keyStore2 = [(KTContextStore *)self keyStore];
+    dataStore = [(KTContextStore *)self dataStore];
+    [keyStore2 configureWithClient:clientCopy ignoreCachedKeys:1 dataStore:dataStore contextStore:self applicationHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
@@ -161,11 +161,11 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v16 = [(KTContextStore *)self keyStore];
-    v17 = [v16 applicationKeyStores];
-    v18 = [v17 allKeys];
+    keyStore3 = [(KTContextStore *)self keyStore];
+    applicationKeyStores = [keyStore3 applicationKeyStores];
+    allKeys = [applicationKeyStores allKeys];
 
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v19 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v19)
     {
       v20 = v19;
@@ -176,33 +176,33 @@
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys);
           }
 
-          if (v11)
+          if (handlerCopy)
           {
-            (*(v11 + 2))(v11, *(*(&v26 + 1) + 8 * i), 0);
+            (*(handlerCopy + 2))(handlerCopy, *(*(&v26 + 1) + 8 * i), 0);
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v20);
     }
 
-    if (v12)
+    if (completionHandlerCopy)
     {
-      v12[2](v12, 0);
+      completionHandlerCopy[2](completionHandlerCopy, 0);
     }
   }
 }
 
-- (void)storeContext:(id)a3 application:(id)a4
+- (void)storeContext:(id)context application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  contextCopy = context;
+  applicationCopy = application;
+  if (contextCopy)
   {
     if (qword_10038BDA0 != -1)
     {
@@ -213,100 +213,100 @@
     if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v7;
+      v12 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "KTContext initialization for application %{public}@ success", &v11, 0xCu);
     }
 
-    v9 = [(KTContextStore *)self _contexts];
-    objc_sync_enter(v9);
-    v10 = [(KTContextStore *)self _contexts];
-    [v10 setValue:v6 forKey:v7];
+    _contexts = [(KTContextStore *)self _contexts];
+    objc_sync_enter(_contexts);
+    _contexts2 = [(KTContextStore *)self _contexts];
+    [_contexts2 setValue:contextCopy forKey:applicationCopy];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(_contexts);
   }
 }
 
-- (id)createContextForApplication:(id)a3 dataStore:(id)a4 staticKeyStore:(id)a5 logClient:(id)a6 stateMachine:(id)a7
+- (id)createContextForApplication:(id)application dataStore:(id)store staticKeyStore:(id)keyStore logClient:(id)client stateMachine:(id)machine
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(KTContextStore *)self keyStore];
-  v18 = [v17 applicationKeyStores];
-  v19 = [v18 objectForKey:v12];
+  applicationCopy = application;
+  storeCopy = store;
+  keyStoreCopy = keyStore;
+  clientCopy = client;
+  machineCopy = machine;
+  keyStore = [(KTContextStore *)self keyStore];
+  applicationKeyStores = [keyStore applicationKeyStores];
+  v19 = [applicationKeyStores objectForKey:applicationCopy];
 
   if (v19)
   {
-    v20 = [(KTContextStore *)self keyStore];
-    v21 = [v20 applicationKeyStores];
-    v35 = [v21 objectForKeyedSubscript:v12];
+    keyStore2 = [(KTContextStore *)self keyStore];
+    applicationKeyStores2 = [keyStore2 applicationKeyStores];
+    v35 = [applicationKeyStores2 objectForKeyedSubscript:applicationCopy];
 
     v22 = objc_alloc_init(KTContextDependencies);
     [(KTContextDependencies *)v22 setApplicationKeyStore:v35];
-    [(KTContextDependencies *)v22 setDataStore:v13];
-    v23 = [(KTContextStore *)self stateMachine];
-    v24 = [v23 deps];
-    v25 = [v24 smDataStore];
-    [(KTContextDependencies *)v22 setSmDataStore:v25];
+    [(KTContextDependencies *)v22 setDataStore:storeCopy];
+    stateMachine = [(KTContextStore *)self stateMachine];
+    deps = [stateMachine deps];
+    smDataStore = [deps smDataStore];
+    [(KTContextDependencies *)v22 setSmDataStore:smDataStore];
 
-    [(KTContextDependencies *)v22 setLogClient:v15];
-    [(KTContextDependencies *)v22 setStateMachine:v16];
+    [(KTContextDependencies *)v22 setLogClient:clientCopy];
+    [(KTContextDependencies *)v22 setStateMachine:machineCopy];
     [(KTContextDependencies *)v22 setContextStore:self];
-    v26 = [(KTContextStore *)self accountKeyServer];
-    [(KTContextDependencies *)v22 setAccountKeyServer:v26];
+    accountKeyServer = [(KTContextStore *)self accountKeyServer];
+    [(KTContextDependencies *)v22 setAccountKeyServer:accountKeyServer];
 
-    [(KTContextDependencies *)v22 setStaticKeyStore:v14];
+    [(KTContextDependencies *)v22 setStaticKeyStore:keyStoreCopy];
     v27 = [(KTContextStore *)self kvs];
     [(KTContextDependencies *)v22 setKvs:v27];
 
-    v28 = [(KTContextStore *)self cloudRecords];
-    [(KTContextDependencies *)v22 setCloudRecords:v28];
+    cloudRecords = [(KTContextStore *)self cloudRecords];
+    [(KTContextDependencies *)v22 setCloudRecords:cloudRecords];
 
-    v29 = [(KTContextStore *)self followup];
-    [(KTContextDependencies *)v22 setFollowup:v29];
+    followup = [(KTContextStore *)self followup];
+    [(KTContextDependencies *)v22 setFollowup:followup];
 
-    v30 = [v16 statusReporting];
-    [(KTContextDependencies *)v22 setEligibilityStatusReporter:v30];
+    statusReporting = [machineCopy statusReporting];
+    [(KTContextDependencies *)v22 setEligibilityStatusReporter:statusReporting];
 
-    v31 = [v16 deps];
-    v32 = [v31 tapToRadar];
-    [(KTContextDependencies *)v22 setTapToRadar:v32];
+    deps2 = [machineCopy deps];
+    tapToRadar = [deps2 tapToRadar];
+    [(KTContextDependencies *)v22 setTapToRadar:tapToRadar];
 
-    v33 = [(KTContextStore *)self settings];
-    [(KTContextDependencies *)v22 setSettings:v33];
+    settings = [(KTContextStore *)self settings];
+    [(KTContextDependencies *)v22 setSettings:settings];
 
-    v19 = [[KTContext alloc] initWithApplicationID:v12 dependencies:v22];
-    [(KTContextStore *)self storeContext:v19 application:v12];
+    v19 = [[KTContext alloc] initWithApplicationID:applicationCopy dependencies:v22];
+    [(KTContextStore *)self storeContext:v19 application:applicationCopy];
   }
 
   return v19;
 }
 
-- (id)createContextForTLT:(id)a3 staticKeyStore:(id)a4 logClient:(id)a5 stateMachine:(id)a6
+- (id)createContextForTLT:(id)t staticKeyStore:(id)store logClient:(id)client stateMachine:(id)machine
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(KTContextStore *)self keyStore];
-  v15 = [v14 tltKeyStore];
+  machineCopy = machine;
+  clientCopy = client;
+  storeCopy = store;
+  tCopy = t;
+  keyStore = [(KTContextStore *)self keyStore];
+  tltKeyStore = [keyStore tltKeyStore];
 
   v16 = objc_alloc_init(KTContextDependencies);
-  [(KTContextDependencies *)v16 setApplicationKeyStore:v15];
-  [(KTContextDependencies *)v16 setDataStore:v13];
+  [(KTContextDependencies *)v16 setApplicationKeyStore:tltKeyStore];
+  [(KTContextDependencies *)v16 setDataStore:tCopy];
 
-  [(KTContextDependencies *)v16 setLogClient:v11];
-  [(KTContextDependencies *)v16 setStateMachine:v10];
+  [(KTContextDependencies *)v16 setLogClient:clientCopy];
+  [(KTContextDependencies *)v16 setStateMachine:machineCopy];
 
   [(KTContextDependencies *)v16 setContextStore:self];
-  v17 = [(KTContextStore *)self accountKeyServer];
-  [(KTContextDependencies *)v16 setAccountKeyServer:v17];
+  accountKeyServer = [(KTContextStore *)self accountKeyServer];
+  [(KTContextDependencies *)v16 setAccountKeyServer:accountKeyServer];
 
-  [(KTContextDependencies *)v16 setStaticKeyStore:v12];
-  v18 = [(KTContextStore *)self settings];
-  [(KTContextDependencies *)v16 setSettings:v18];
+  [(KTContextDependencies *)v16 setStaticKeyStore:storeCopy];
+  settings = [(KTContextStore *)self settings];
+  [(KTContextDependencies *)v16 setSettings:settings];
 
   v19 = [KTContext alloc];
   v20 = kKTApplicationIdentifierTLT;
@@ -316,21 +316,21 @@
   return v21;
 }
 
-- (void)contextForApplication:(id)a3 logClient:(id)a4 fetchState:(BOOL)a5 completionHandler:(id)a6
+- (void)contextForApplication:(id)application logClient:(id)client fetchState:(BOOL)state completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(KTContextStore *)self contexts];
-  v14 = [v13 objectForKeyedSubscript:v10];
+  stateCopy = state;
+  applicationCopy = application;
+  clientCopy = client;
+  handlerCopy = handler;
+  contexts = [(KTContextStore *)self contexts];
+  v14 = [contexts objectForKeyedSubscript:applicationCopy];
 
   if (v14 && [v14 ready:0])
   {
-    v12[2](v12, v14, 0);
+    handlerCopy[2](handlerCopy, v14, 0);
   }
 
-  else if (v7)
+  else if (stateCopy)
   {
     if (qword_10038BDA0 != -1)
     {
@@ -341,7 +341,7 @@
     if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v10;
+      *(&buf + 4) = applicationCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Fetching state needed for application %@", &buf, 0xCu);
     }
 
@@ -356,9 +356,9 @@
     v22[2] = sub_10006CD88;
     v22[3] = &unk_10031C8C8;
     p_buf = &buf;
-    v23 = v10;
-    v24 = self;
-    v25 = v11;
+    v23 = applicationCopy;
+    selfCopy = self;
+    v25 = clientCopy;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10006CF54;
@@ -366,7 +366,7 @@
     v17[4] = self;
     v18 = v25;
     v21 = &buf;
-    v20 = v12;
+    v20 = handlerCopy;
     v19 = v23;
     [(KTContextStore *)self configureWithClient:v18 applicationHandler:v22 completionHandler:v17];
 
@@ -384,74 +384,74 @@
     if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v10;
+      *(&buf + 4) = applicationCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Not fetching state needed for application %@", &buf, 0xCu);
     }
 
-    v12[2](v12, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)validatePeerRequestId:(id)a3 uri:(id)a4 application:(id)a5 logClient:(id)a6 revalidate:(BOOL)a7 fetchNow:(BOOL)a8 completionHandler:(id)a9
+- (void)validatePeerRequestId:(id)id uri:(id)uri application:(id)application logClient:(id)client revalidate:(BOOL)revalidate fetchNow:(BOOL)now completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  if ([v18 ready])
+  idCopy = id;
+  uriCopy = uri;
+  applicationCopy = application;
+  clientCopy = client;
+  handlerCopy = handler;
+  if ([clientCopy ready])
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10006D2E8;
     v22[3] = &unk_10031C938;
-    v26 = v19;
-    v23 = v16;
-    v24 = v17;
-    v25 = v15;
-    v27 = a7;
-    v28 = a8;
-    [(KTContextStore *)self contextForApplication:v24 logClient:v18 fetchState:1 completionHandler:v22];
+    v26 = handlerCopy;
+    v23 = uriCopy;
+    v24 = applicationCopy;
+    v25 = idCopy;
+    revalidateCopy = revalidate;
+    nowCopy = now;
+    [(KTContextStore *)self contextForApplication:v24 logClient:clientCopy fetchState:1 completionHandler:v22];
   }
 
   else
   {
     v20 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-229 description:@"log client not ready"];
-    v21 = [[KTVerifierResult alloc] initWithUri:v16 application:v17 ktResult:2];
-    (*(v19 + 2))(v19, v21, v20);
+    v21 = [[KTVerifierResult alloc] initWithUri:uriCopy application:applicationCopy ktResult:2];
+    (*(handlerCopy + 2))(handlerCopy, v21, v20);
   }
 }
 
-- (void)validateEnrollmentRequestId:(id)a3 application:(id)a4 logClient:(id)a5 cloudOptIn:(id)a6 completionHandler:(id)a7
+- (void)validateEnrollmentRequestId:(id)id application:(id)application logClient:(id)client cloudOptIn:(id)in completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v14 ready])
+  idCopy = id;
+  applicationCopy = application;
+  clientCopy = client;
+  inCopy = in;
+  handlerCopy = handler;
+  if ([clientCopy ready])
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10006D598;
     v18[3] = &unk_10031C960;
-    v22 = v16;
-    v19 = v13;
-    v20 = v12;
-    v21 = v15;
-    [(KTContextStore *)self contextForApplication:v19 logClient:v14 fetchState:1 completionHandler:v18];
+    v22 = handlerCopy;
+    v19 = applicationCopy;
+    v20 = idCopy;
+    v21 = inCopy;
+    [(KTContextStore *)self contextForApplication:v19 logClient:clientCopy fetchState:1 completionHandler:v18];
   }
 
   else
   {
     v17 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-229 description:@"log client not ready"];
-    (*(v16 + 2))(v16, 2, 0, 0, v17);
+    (*(handlerCopy + 2))(handlerCopy, 2, 0, 0, v17);
   }
 }
 
-- (void)ignoreFailure:(id)a3 error:(id *)a4
+- (void)ignoreFailure:(id)failure error:(id *)error
 {
-  v6 = a3;
+  failureCopy = failure;
   if (qword_10038BDA0 != -1)
   {
     sub_10024ACCC();
@@ -461,15 +461,15 @@
   if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 requestId];
+    requestId = [failureCopy requestId];
     v15 = 138543362;
-    v16 = v9;
+    v16 = requestId;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Saving ignored failure for requestId %{public}@", &v15, 0xCu);
   }
 
-  [v6 setVerificationResult:3];
-  v10 = [(KTContextStore *)self dataStore];
-  v11 = [v10 persistWithError:a4];
+  [failureCopy setVerificationResult:3];
+  dataStore = [(KTContextStore *)self dataStore];
+  v11 = [dataStore persistWithError:error];
 
   if ((v11 & 1) == 0)
   {
@@ -481,9 +481,9 @@
     v12 = qword_10038BDA8;
     if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (error)
       {
-        v13 = *a4;
+        v13 = *error;
       }
 
       else
@@ -496,19 +496,19 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "failed to save updated request: %@", &v15, 0xCu);
     }
 
-    if (a4 && *a4)
+    if (error && *error)
     {
-      v14 = [(KTContextStore *)self dataStore];
-      [v14 reportCoreDataPersistEventForLocation:@"updateRequest" underlyingError:*a4];
+      dataStore2 = [(KTContextStore *)self dataStore];
+      [dataStore2 reportCoreDataPersistEventForLocation:@"updateRequest" underlyingError:*error];
     }
   }
 }
 
-- (void)clearApplicationState:(id)a3 logClient:(id)a4 completionBlock:(id)a5
+- (void)clearApplicationState:(id)state logClient:(id)client completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  clientCopy = client;
+  blockCopy = block;
   if (qword_10038BDA0 != -1)
   {
     sub_10024AD08();
@@ -518,13 +518,13 @@
   if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = stateCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Clearing KT context for application '%@'", buf, 0xCu);
   }
 
-  v12 = [(KTContextStore *)self dataStore];
+  dataStore = [(KTContextStore *)self dataStore];
   v17 = 0;
-  [v12 clearStateForApplication:v8 error:&v17];
+  [dataStore clearStateForApplication:stateCopy error:&v17];
   v13 = v17;
 
   if (v13)
@@ -543,90 +543,90 @@
     }
   }
 
-  v15 = [(KTContextStore *)self keyStore];
+  keyStore = [(KTContextStore *)self keyStore];
   v16 = 0;
-  [v15 clearApplicationState:v8 error:&v16];
+  [keyStore clearApplicationState:stateCopy error:&v16];
 
-  [(KTContextStore *)self configureWithClient:v9 force:1 applicationHandler:&stru_10031CA20 completionHandler:v10];
+  [(KTContextStore *)self configureWithClient:clientCopy force:1 applicationHandler:&stru_10031CA20 completionHandler:blockCopy];
 }
 
-- (void)clearContextForApplication:(id)a3
+- (void)clearContextForApplication:(id)application
 {
-  v6 = a3;
-  v4 = [(KTContextStore *)self _contexts];
-  objc_sync_enter(v4);
-  v5 = [(KTContextStore *)self _contexts];
-  [v5 setObject:0 forKeyedSubscript:v6];
+  applicationCopy = application;
+  _contexts = [(KTContextStore *)self _contexts];
+  objc_sync_enter(_contexts);
+  _contexts2 = [(KTContextStore *)self _contexts];
+  [_contexts2 setObject:0 forKeyedSubscript:applicationCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(_contexts);
 }
 
-- (void)verifyHeadInclusionDownload:(id)a3 application:(id)a4 logClient:(id)a5
+- (void)verifyHeadInclusionDownload:(id)download application:(id)application logClient:(id)client
 {
-  v8 = a3;
+  downloadCopy = download;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10006DE0C;
   v11[3] = &unk_10031CA88;
-  v12 = a4;
-  v13 = v8;
-  v9 = v8;
-  v10 = v12;
-  [(KTContextStore *)self contextForApplication:v10 logClient:a5 fetchState:1 completionHandler:v11];
+  applicationCopy = application;
+  v13 = downloadCopy;
+  v9 = downloadCopy;
+  v10 = applicationCopy;
+  [(KTContextStore *)self contextForApplication:v10 logClient:client fetchState:1 completionHandler:v11];
 }
 
-- (void)verifyHeadConsistencyDownload:(id)a3 application:(id)a4 logClient:(id)a5
+- (void)verifyHeadConsistencyDownload:(id)download application:(id)application logClient:(id)client
 {
-  v8 = a3;
+  downloadCopy = download;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10006E078;
   v11[3] = &unk_10031CA88;
-  v12 = a4;
-  v13 = v8;
-  v9 = v8;
-  v10 = v12;
-  [(KTContextStore *)self contextForApplication:v10 logClient:a5 fetchState:1 completionHandler:v11];
+  applicationCopy = application;
+  v13 = downloadCopy;
+  v9 = downloadCopy;
+  v10 = applicationCopy;
+  [(KTContextStore *)self contextForApplication:v10 logClient:client fetchState:1 completionHandler:v11];
 }
 
-- (void)failHeadDownload:(id)a3 application:(id)a4 failure:(id)a5 retry:(BOOL)a6 logClient:(id)a7
+- (void)failHeadDownload:(id)download application:(id)application failure:(id)failure retry:(BOOL)retry logClient:(id)client
 {
-  v11 = a3;
+  downloadCopy = download;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10006E32C;
   v16[3] = &unk_10031CAD0;
-  v17 = a4;
-  v18 = self;
-  v19 = v11;
-  v20 = a5;
-  v21 = a7;
-  v12 = v21;
-  v13 = v20;
-  v14 = v11;
-  v15 = v17;
+  applicationCopy = application;
+  selfCopy = self;
+  v19 = downloadCopy;
+  failureCopy = failure;
+  clientCopy = client;
+  v12 = clientCopy;
+  v13 = failureCopy;
+  v14 = downloadCopy;
+  v15 = applicationCopy;
   [(KTContextStore *)self contextForApplication:v15 logClient:v12 fetchState:1 completionHandler:v16];
 }
 
 - (id)serializeTranscripts
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(KTContextStore *)self contexts];
+  contexts = [(KTContextStore *)self contexts];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006E4B4;
   v7[3] = &unk_10031CAF8;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [contexts enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (void)retrieveTLTSTH:(id)a3 block:(id)a4
+- (void)retrieveTLTSTH:(id)h block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  hCopy = h;
+  blockCopy = block;
   if (![(KTContextStore *)self shouldGossip])
   {
     if (qword_10038BDA0 != -1)
@@ -641,7 +641,7 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "All applications have exceeded 30 days since shutting down.", buf, 2u);
     }
 
-    v12 = [TransparencyAnalytics formatEventName:@"GossipAllApplicationsShutDownAfter30Days" application:kKTApplicationIdentifierTLT];
+    cachedGossip3 = [TransparencyAnalytics formatEventName:@"GossipAllApplicationsShutDownAfter30Days" application:kKTApplicationIdentifierTLT];
     v14 = kTransparencyErrorGossip;
     v25 = NSLocalizedDescriptionKey;
     v26 = @"All applications have exceeded 30 days since shutting down.";
@@ -649,20 +649,20 @@
     v16 = [NSError errorWithDomain:v14 code:-280 userInfo:v15];
 
     v17 = +[TransparencyAnalytics logger];
-    [v17 logResultForEvent:v12 hardFailure:0 result:v16];
+    [v17 logResultForEvent:cachedGossip3 hardFailure:0 result:v16];
 
-    v7[2](v7, 0, v16);
+    blockCopy[2](blockCopy, 0, v16);
     goto LABEL_14;
   }
 
-  v8 = [(KTContextStore *)self cachedGossip];
+  cachedGossip = [(KTContextStore *)self cachedGossip];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(KTContextStore *)self cachedGossip];
+    cachedGossip2 = [(KTContextStore *)self cachedGossip];
     v10 = +[NSData data];
 
-    if (v9 != v10)
+    if (cachedGossip2 != v10)
     {
       if (qword_10038BDA0 != -1)
       {
@@ -676,8 +676,8 @@
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Sending cached gossip", buf, 2u);
       }
 
-      v12 = [(KTContextStore *)self cachedGossip];
-      (v7)[2](v7, v12, 0);
+      cachedGossip3 = [(KTContextStore *)self cachedGossip];
+      (blockCopy)[2](blockCopy, cachedGossip3, 0);
 LABEL_14:
 
       goto LABEL_23;
@@ -688,10 +688,10 @@ LABEL_14:
   {
   }
 
-  v18 = [(KTContextStore *)self cachedGossip];
+  cachedGossip4 = [(KTContextStore *)self cachedGossip];
   v19 = +[NSData data];
 
-  if (v18 == v19)
+  if (cachedGossip4 == v19)
   {
     if (qword_10038BDA0 != -1)
     {
@@ -705,7 +705,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Sending empty cached gossip", buf, 2u);
     }
 
-    v7[2](v7, 0, 0);
+    blockCopy[2](blockCopy, 0, 0);
   }
 
   else
@@ -716,48 +716,48 @@ LABEL_14:
     v22[2] = sub_10006E9C0;
     v22[3] = &unk_10031CBC0;
     v22[4] = self;
-    v23 = v7;
-    [(KTContextStore *)self contextForApplication:v20 logClient:v6 fetchState:1 completionHandler:v22];
+    v23 = blockCopy;
+    [(KTContextStore *)self contextForApplication:v20 logClient:hCopy fetchState:1 completionHandler:v22];
   }
 
 LABEL_23:
 }
 
-- (void)receivedSTHsFromPeers:(id)a3 logClient:(id)a4 verifier:(id)a5 block:(id)a6
+- (void)receivedSTHsFromPeers:(id)peers logClient:(id)client verifier:(id)verifier block:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  peersCopy = peers;
+  verifierCopy = verifier;
+  blockCopy = block;
   v13 = kKTApplicationIdentifierTLT;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10006ED78;
   v17[3] = &unk_10031CBE8;
-  v19 = v11;
-  v20 = v12;
-  v18 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  [(KTContextStore *)self contextForApplication:v13 logClient:a4 fetchState:1 completionHandler:v17];
+  v19 = verifierCopy;
+  v20 = blockCopy;
+  v18 = peersCopy;
+  v14 = verifierCopy;
+  v15 = peersCopy;
+  v16 = blockCopy;
+  [(KTContextStore *)self contextForApplication:v13 logClient:client fetchState:1 completionHandler:v17];
 }
 
 - (BOOL)shouldGossip
 {
-  v3 = [(KTContextStore *)self contexts];
-  if (v3 && (v4 = v3, -[KTContextStore contexts](self, "contexts"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  contexts = [(KTContextStore *)self contexts];
+  if (contexts && (v4 = contexts, -[KTContextStore contexts](self, "contexts"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v7 = [(KTContextStore *)self contexts];
+    contexts2 = [(KTContextStore *)self contexts];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10006EF64;
     v10[3] = &unk_10031CC10;
     v10[4] = &v11;
-    [v7 enumerateKeysAndObjectsUsingBlock:v10];
+    [contexts2 enumerateKeysAndObjectsUsingBlock:v10];
 
     v8 = *(v12 + 24);
     _Block_object_dispose(&v11, 8);
@@ -771,186 +771,186 @@ LABEL_23:
   return v8 & 1;
 }
 
-- (void)signData:(id)a3 application:(id)a4 logClient:(id)a5 completionBlock:(id)a6
+- (void)signData:(id)data application:(id)application logClient:(id)client completionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a6;
+  dataCopy = data;
+  blockCopy = block;
   v11 = kKTApplicationIdentifierTLT;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10006F084;
   v14[3] = &unk_10031CBC0;
-  v15 = v9;
-  v16 = v10;
-  v12 = v9;
-  v13 = v10;
-  [(KTContextStore *)self contextForApplication:v11 logClient:a5 fetchState:1 completionHandler:v14];
+  v15 = dataCopy;
+  v16 = blockCopy;
+  v12 = dataCopy;
+  v13 = blockCopy;
+  [(KTContextStore *)self contextForApplication:v11 logClient:client fetchState:1 completionHandler:v14];
 }
 
-- (void)rollKeyForApplication:(id)a3 logClient:(id)a4 completionBlock:(id)a5
+- (void)rollKeyForApplication:(id)application logClient:(id)client completionBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   v8 = kKTApplicationIdentifierTLT;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006F1F8;
   v10[3] = &unk_10031CC38;
-  v11 = v7;
-  v9 = v7;
-  [(KTContextStore *)self contextForApplication:v8 logClient:a4 fetchState:1 completionHandler:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(KTContextStore *)self contextForApplication:v8 logClient:client fetchState:1 completionHandler:v10];
 }
 
-- (void)getKTOptInState:(id)a3 sync:(BOOL)a4 logClient:(id)a5 completionblock:(id)a6
+- (void)getKTOptInState:(id)state sync:(BOOL)sync logClient:(id)client completionblock:(id)completionblock
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10006F388;
   v12[3] = &unk_10031CC60;
-  v13 = a3;
-  v14 = a6;
-  v15 = a4;
-  v10 = v14;
-  v11 = v13;
-  [(KTContextStore *)self contextForApplication:v11 logClient:a5 fetchState:1 completionHandler:v12];
+  stateCopy = state;
+  completionblockCopy = completionblock;
+  syncCopy = sync;
+  v10 = completionblockCopy;
+  v11 = stateCopy;
+  [(KTContextStore *)self contextForApplication:v11 logClient:client fetchState:1 completionHandler:v12];
 }
 
-- (void)changeOptInState:(unint64_t)a3 application:(id)a4 logClient:(id)a5 completionBlock:(id)a6
+- (void)changeOptInState:(unint64_t)state application:(id)application logClient:(id)client completionBlock:(id)block
 {
-  v10 = a4;
+  applicationCopy = application;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10006F544;
   v13[3] = &unk_10031CC88;
-  v16 = a6;
-  v17 = a3;
-  v14 = v10;
-  v15 = self;
-  v11 = v16;
-  v12 = v10;
-  [(KTContextStore *)self contextForApplication:v12 logClient:a5 fetchState:1 completionHandler:v13];
+  blockCopy = block;
+  stateCopy = state;
+  v14 = applicationCopy;
+  selfCopy = self;
+  v11 = blockCopy;
+  v12 = applicationCopy;
+  [(KTContextStore *)self contextForApplication:v12 logClient:client fetchState:1 completionHandler:v13];
 }
 
-- (void)handleBatchQueryResponse:(id)a3 queryRequest:(id)a4 receiptDate:(id)a5 fetchId:(id)a6 application:(id)a7 logClient:(id)a8 transparentDataHandler:(id)a9 completionHandler:(id)a10
+- (void)handleBatchQueryResponse:(id)response queryRequest:(id)request receiptDate:(id)date fetchId:(id)id application:(id)application logClient:(id)client transparentDataHandler:(id)handler completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
+  responseCopy = response;
+  requestCopy = request;
+  dateCopy = date;
+  idCopy = id;
+  handlerCopy = handler;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10006F7B4;
   v27[3] = &unk_10031CCB0;
-  v28 = v16;
-  v29 = v17;
-  v30 = v18;
-  v31 = v19;
-  v32 = a10;
-  v33 = v20;
-  v21 = v20;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v32;
-  [(KTContextStore *)self contextForApplication:a7 logClient:a8 fetchState:1 completionHandler:v27];
+  v28 = responseCopy;
+  v29 = requestCopy;
+  v30 = dateCopy;
+  v31 = idCopy;
+  completionHandlerCopy = completionHandler;
+  v33 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = idCopy;
+  v23 = dateCopy;
+  v24 = requestCopy;
+  v25 = responseCopy;
+  v26 = completionHandlerCopy;
+  [(KTContextStore *)self contextForApplication:application logClient:client fetchState:1 completionHandler:v27];
 }
 
-- (void)queryForUris:(id)a3 application:(id)a4 logClient:(id)a5 userInitiated:(BOOL)a6 cachedYoungerThan:(id)a7 completionHandler:(id)a8
+- (void)queryForUris:(id)uris application:(id)application logClient:(id)client userInitiated:(BOOL)initiated cachedYoungerThan:(id)than completionHandler:(id)handler
 {
-  v14 = a3;
+  urisCopy = uris;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10006F994;
   v19[3] = &unk_10031CCF8;
-  v20 = a4;
-  v21 = v14;
-  v24 = a6;
-  v22 = a7;
-  v23 = a8;
-  v15 = v22;
-  v16 = v14;
-  v17 = v23;
-  v18 = v20;
-  [(KTContextStore *)self contextForApplication:v18 logClient:a5 fetchState:1 completionHandler:v19];
+  applicationCopy = application;
+  v21 = urisCopy;
+  initiatedCopy = initiated;
+  thanCopy = than;
+  handlerCopy = handler;
+  v15 = thanCopy;
+  v16 = urisCopy;
+  v17 = handlerCopy;
+  v18 = applicationCopy;
+  [(KTContextStore *)self contextForApplication:v18 logClient:client fetchState:1 completionHandler:v19];
 }
 
-- (void)replaySelfValidate:(id)a3 application:(id)a4 pcsAccountKey:(id)a5 queryRequest:(id)a6 queryResponse:(id)a7 responseTime:(id)a8 logClient:(id)a9 completionHandler:(id)a10
+- (void)replaySelfValidate:(id)validate application:(id)application pcsAccountKey:(id)key queryRequest:(id)request queryResponse:(id)response responseTime:(id)time logClient:(id)client completionHandler:(id)self0
 {
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10006FC98;
   v22[3] = &unk_10031CD20;
-  v23 = a3;
-  v24 = a5;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v28 = a10;
-  v16 = v27;
-  v17 = v26;
-  v18 = v25;
-  v19 = v24;
-  v20 = v23;
-  v21 = v28;
-  [(KTContextStore *)self contextForApplication:a4 logClient:a9 fetchState:1 completionHandler:v22];
+  validateCopy = validate;
+  keyCopy = key;
+  requestCopy = request;
+  responseCopy = response;
+  timeCopy = time;
+  handlerCopy = handler;
+  v16 = timeCopy;
+  v17 = responseCopy;
+  v18 = requestCopy;
+  v19 = keyCopy;
+  v20 = validateCopy;
+  v21 = handlerCopy;
+  [(KTContextStore *)self contextForApplication:application logClient:client fetchState:1 completionHandler:v22];
 }
 
-- (void)validatePeers:(id)a3 application:(id)a4 fetchNow:(BOOL)a5 logClient:(id)a6 completionBlock:(id)a7
+- (void)validatePeers:(id)peers application:(id)application fetchNow:(BOOL)now logClient:(id)client completionBlock:(id)block
 {
-  v12 = a3;
+  peersCopy = peers;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10006FDD4;
   v16[3] = &unk_10031CD48;
-  v18 = a4;
-  v19 = a7;
-  v17 = v12;
-  v20 = a5;
-  v13 = v18;
-  v14 = v12;
-  v15 = v19;
-  [(KTContextStore *)self contextForApplication:v13 logClient:a6 fetchState:1 completionHandler:v16];
+  applicationCopy = application;
+  blockCopy = block;
+  v17 = peersCopy;
+  nowCopy = now;
+  v13 = applicationCopy;
+  v14 = peersCopy;
+  v15 = blockCopy;
+  [(KTContextStore *)self contextForApplication:v13 logClient:client fetchState:1 completionHandler:v16];
 }
 
-- (void)validateIDSPeerURI:(id)a3 application:(id)a4 idsData:(id)a5 ktData:(id)a6 logClient:(id)a7 complete:(id)a8
+- (void)validateIDSPeerURI:(id)i application:(id)application idsData:(id)data ktData:(id)ktData logClient:(id)client complete:(id)complete
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  iCopy = i;
+  applicationCopy = application;
+  dataCopy = data;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10006FFE0;
   v22[3] = &unk_10031CD70;
-  v26 = a6;
-  v27 = a8;
-  v23 = v14;
-  v24 = v15;
-  v25 = v16;
-  v17 = v26;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v27;
-  [(KTContextStore *)self contextForApplication:v19 logClient:a7 fetchState:1 completionHandler:v22];
+  ktDataCopy = ktData;
+  completeCopy = complete;
+  v23 = iCopy;
+  v24 = applicationCopy;
+  v25 = dataCopy;
+  v17 = ktDataCopy;
+  v18 = dataCopy;
+  v19 = applicationCopy;
+  v20 = iCopy;
+  v21 = completeCopy;
+  [(KTContextStore *)self contextForApplication:v19 logClient:client fetchState:1 completionHandler:v22];
 }
 
-- (void)ignoreFailureForResults:(id)a3 application:(id)a4 completionBlock:(id)a5
+- (void)ignoreFailureForResults:(id)results application:(id)application completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(KTContextStore *)self dataStore];
+  blockCopy = block;
+  resultsCopy = results;
+  dataStore = [(KTContextStore *)self dataStore];
   v11 = 0;
-  [v9 ignoreFailureForResults:v8 error:&v11];
+  [dataStore ignoreFailureForResults:resultsCopy error:&v11];
 
   v10 = v11;
-  v7[2](v7, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-- (void)handlePeerStateChange:(id)a3 application:(id)a4
+- (void)handlePeerStateChange:(id)change application:(id)application
 {
-  v6 = a3;
-  v7 = [(KTContextStore *)self getCachedValidatePeerResults:v6 application:a4];
+  changeCopy = change;
+  v7 = [(KTContextStore *)self getCachedValidatePeerResults:changeCopy application:application];
   if (qword_10038BDA0 != -1)
   {
     sub_10024AE20();
@@ -960,26 +960,26 @@ LABEL_23:
   if (os_log_type_enabled(qword_10038BDA8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v6 componentsJoinedByString:{@", "}];
+    v10 = [changeCopy componentsJoinedByString:{@", "}];
     v12 = 138412290;
     v13 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "HandlePeerStateChange will update IDS cache for %@", &v12, 0xCu);
   }
 
-  v11 = [(KTContextStore *)self dataStore];
-  [v11 updateIDSCacheWithResults:v7];
+  dataStore = [(KTContextStore *)self dataStore];
+  [dataStore updateIDSCacheWithResults:v7];
 }
 
-- (id)getCachedValidatePeerResults:(id)a3 application:(id)a4
+- (id)getCachedValidatePeerResults:(id)results application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  resultsCopy = results;
+  applicationCopy = application;
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [resultsCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = resultsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -995,8 +995,8 @@ LABEL_23:
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [(KTContextStore *)self dataStore];
-        v16 = [v15 verifierResultForPeer:v14 application:v7];
+        dataStore = [(KTContextStore *)self dataStore];
+        v16 = [dataStore verifierResultForPeer:v14 application:applicationCopy];
 
         if (v16)
         {
@@ -1005,7 +1005,7 @@ LABEL_23:
 
         else
         {
-          v17 = [[KTVerifierResult alloc] initUnavailableForUri:v14 application:v7];
+          v17 = [[KTVerifierResult alloc] initUnavailableForUri:v14 application:applicationCopy];
           [v8 addObject:v17];
         }
       }
@@ -1025,10 +1025,10 @@ LABEL_23:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(KTContextStore *)self contexts];
-  v3 = [v2 allValues];
+  contexts = [(KTContextStore *)self contexts];
+  allValues = [contexts allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1040,7 +1040,7 @@ LABEL_23:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) drainContext];
@@ -1048,7 +1048,7 @@ LABEL_23:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

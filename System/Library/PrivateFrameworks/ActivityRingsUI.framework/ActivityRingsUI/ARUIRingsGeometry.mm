@@ -2,7 +2,7 @@
 - (ARUIRingsGeometry)init;
 - (unsigned)connectedIndiciesGeometry;
 - (unsigned)disconnectedIndiciesGeometry;
-- (void)enumerateVertexGeometryWithBlock:(id)a3;
+- (void)enumerateVertexGeometryWithBlock:(id)block;
 @end
 
 @implementation ARUIRingsGeometry
@@ -47,26 +47,26 @@
   return v3;
 }
 
-- (void)enumerateVertexGeometryWithBlock:(id)a3
+- (void)enumerateVertexGeometryWithBlock:(id)block
 {
-  v16 = a3;
+  blockCopy = block;
   [(ARUIRingsGeometry *)self endingRadian];
   v5 = v4;
   [(ARUIRingsGeometry *)self startingRadian];
   v7 = v6;
-  v8 = [(ARUIRingsGeometry *)self circleSegments];
+  circleSegments = [(ARUIRingsGeometry *)self circleSegments];
   if ([(ARUIRingsGeometry *)self circleSegments])
   {
     v9 = 0;
     v10 = 0;
-    v11 = (v5 - v7) / (v8 - 1);
+    v11 = (v5 - v7) / (circleSegments - 1);
     do
     {
       [(ARUIRingsGeometry *)self startingRadian];
       v13 = v12 + (v10 * v11);
       v14 = v13 / 6.28318531;
       v15 = __sincosf_stret(v13);
-      v16[2](v16, v10, v9, v13, v14, v15.__sinval, v15.__cosval);
+      blockCopy[2](blockCopy, v10, v9, v13, v14, v15.__sinval, v15.__cosval);
       v10 = (v10 + 1);
       v9 = (v9 + 2);
     }

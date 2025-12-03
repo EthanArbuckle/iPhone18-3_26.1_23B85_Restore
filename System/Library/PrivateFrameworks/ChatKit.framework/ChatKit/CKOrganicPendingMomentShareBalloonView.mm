@@ -22,8 +22,8 @@
   v9.receiver = self;
   v9.super_class = CKOrganicPendingMomentShareBalloonView;
   [(CKPendingMomentShareBalloonView *)&v9 prepareForDisplay];
-  v3 = [(CKOrganicPendingMomentShareBalloonView *)self layoutRecipe];
-  [v3 rotation];
+  layoutRecipe = [(CKOrganicPendingMomentShareBalloonView *)self layoutRecipe];
+  [layoutRecipe rotation];
   v5 = v4;
 
   memset(&v8, 0, sizeof(v8));

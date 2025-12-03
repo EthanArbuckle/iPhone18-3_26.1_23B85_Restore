@@ -1,60 +1,60 @@
 @interface SGSqliteDatabase
-+ (BOOL)isInMemoryPath:(id)a3;
-+ (SGSqliteDatabase)sqliteDatabaseWithFilename:(id)a3 error:(id *)a4;
-+ (id)randomlyNamedInMemoryPathWithBaseName:(id)a3;
-+ (id)sqliteDatabaseInMemoryWithError:(id *)a3;
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 double:(double)a5;
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 int64:(int64_t)a5;
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 int:(int)a5;
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 nsdata:(id)a5;
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 nsstring:(id)a5;
-+ (int)bindParamToNull:(sqlite3_stmt *)a3 name:(const char *)a4;
-- (BOOL)_prepQuery:(id)a3 onPrep:(id)a4 onError:(id)a5;
-- (BOOL)frailWriteTransaction:(id)a3;
-- (BOOL)prepAndRunNonDataQueries:(id)a3 onError:(id)a4;
-- (BOOL)prepAndRunQuery:(id)a3 onPrep:(id)a4 onRow:(id)a5 onError:(id)a6;
-- (BOOL)prepAndRunSQL:(id)a3 onPrep:(id)a4 onRow:(id)a5 onError:(id)a6;
-- (BOOL)runQuery:(id)a3 onRow:(id)a4 onError:(id)a5;
-- (SGSqliteDatabase)initWithFilename:(id)a3 withProtection:(BOOL)a4 sharedLock:(id)a5 error:(id *)a6;
++ (BOOL)isInMemoryPath:(id)path;
++ (SGSqliteDatabase)sqliteDatabaseWithFilename:(id)filename error:(id *)error;
++ (id)randomlyNamedInMemoryPathWithBaseName:(id)name;
++ (id)sqliteDatabaseInMemoryWithError:(id *)error;
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name double:(double)double;
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name int64:(int64_t)int64;
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name int:(int)int;
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name nsdata:(id)nsdata;
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name nsstring:(id)nsstring;
++ (int)bindParamToNull:(sqlite3_stmt *)null name:(const char *)name;
+- (BOOL)_prepQuery:(id)query onPrep:(id)prep onError:(id)error;
+- (BOOL)frailWriteTransaction:(id)transaction;
+- (BOOL)prepAndRunNonDataQueries:(id)queries onError:(id)error;
+- (BOOL)prepAndRunQuery:(id)query onPrep:(id)prep onRow:(id)row onError:(id)error;
+- (BOOL)prepAndRunSQL:(id)l onPrep:(id)prep onRow:(id)row onError:(id)error;
+- (BOOL)runQuery:(id)query onRow:(id)row onError:(id)error;
+- (SGSqliteDatabase)initWithFilename:(id)filename withProtection:(BOOL)protection sharedLock:(id)lock error:(id *)error;
 - (id)description;
-- (int64_t)maxIdForTable:(id)a3;
+- (int64_t)maxIdForTable:(id)table;
 - (sqlite3)handle;
 - (unint64_t)_pagesToVacuum;
 - (unint64_t)freelistCount;
 - (unint64_t)pageCount;
 - (unint64_t)vacuumMode;
-- (void)_prepAndRunQuery:(id)a3 columns:(id)a4 dictionary:(id)a5 onError:(id)a6;
-- (void)insertOrReplaceIntoTable:(id)a3 dictionary:(id)a4 onError:(id)a5;
-- (void)optimize:(unint64_t)a3;
+- (void)_prepAndRunQuery:(id)query columns:(id)columns dictionary:(id)dictionary onError:(id)error;
+- (void)insertOrReplaceIntoTable:(id)table dictionary:(id)dictionary onError:(id)error;
+- (void)optimize:(unint64_t)optimize;
 - (void)performIntegrityCheck;
-- (void)runWithWriteLockAcquired:(id)a3;
-- (void)updateTable:(id)a3 dictionary:(id)a4 whereClause:(id)a5 onError:(id)a6;
+- (void)runWithWriteLockAcquired:(id)acquired;
+- (void)updateTable:(id)table dictionary:(id)dictionary whereClause:(id)clause onError:(id)error;
 - (void)vacuum;
-- (void)writeTransaction:(id)a3;
+- (void)writeTransaction:(id)transaction;
 @end
 
 @implementation SGSqliteDatabase
 
 - (sqlite3)handle
 {
-  v4 = [(SGSqliteDatabaseImpl *)self->_impl handle];
-  if (!v4)
+  handle = [(SGSqliteDatabaseImpl *)self->_impl handle];
+  if (!handle)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:619 description:@"sqlite handle unexpected nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:619 description:@"sqlite handle unexpected nil"];
   }
 
-  return v4;
+  return handle;
 }
 
-- (void)optimize:(unint64_t)a3
+- (void)optimize:(unint64_t)optimize
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __29__SGSqliteDatabase_optimize___block_invoke;
   v3[3] = &unk_278955468;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = optimize;
   [(SGSqliteDatabase *)self runWithWriteLockAcquired:v3];
 }
 
@@ -83,20 +83,20 @@ void __29__SGSqliteDatabase_optimize___block_invoke(uint64_t a1)
     goto LABEL_35;
   }
 
-  v4 = [(SGSqliteDatabase *)self _pagesToVacuum];
+  _pagesToVacuum = [(SGSqliteDatabase *)self _pagesToVacuum];
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = _pagesToVacuum;
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "Called to vacuum %tu pages", &buf, 0xCu);
   }
 
-  if (v4)
+  if (_pagesToVacuum)
   {
-    v6 = [(SGSqliteDatabase *)self vacuumMode];
-    v7 = v6;
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    vacuumMode = [(SGSqliteDatabase *)self vacuumMode];
+    v7 = vacuumMode;
+    if (vacuumMode != 0x7FFFFFFFFFFFFFFFLL)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -104,7 +104,7 @@ void __29__SGSqliteDatabase_optimize___block_invoke(uint64_t a1)
       v40 = __Block_byref_object_copy__15822;
       v41 = __Block_byref_object_dispose__15823;
       v42 = 0;
-      if (v6 == 2)
+      if (vacuumMode == 2)
       {
         goto LABEL_11;
       }
@@ -122,12 +122,12 @@ void __29__SGSqliteDatabase_optimize___block_invoke(uint64_t a1)
         {
 LABEL_11:
           v8 = sgLogHandle();
-          v29 = (v4 + 499) / 0x1F4;
+          v29 = (_pagesToVacuum + 499) / 0x1F4;
           if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
           {
             v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v29];
             *v34 = 134218498;
-            v35 = v4;
+            selfCopy = _pagesToVacuum;
             v36 = 2112;
             *v37 = v9;
             *&v37[8] = 2112;
@@ -135,10 +135,10 @@ LABEL_11:
             _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "performing INCREMENTAL VACUUM to free %lu pages with %@ iterations for db: %@", v34, 0x20u);
           }
 
-          if (v4 + 499 >= 0x1F4)
+          if (_pagesToVacuum + 499 >= 0x1F4)
           {
             v10 = 0;
-            v11 = v4;
+            v11 = _pagesToVacuum;
             while (1)
             {
               if (v11 >= 0x1F4)
@@ -155,11 +155,11 @@ LABEL_11:
               if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
               {
                 *v34 = 134218496;
-                v35 = v12;
+                selfCopy = v12;
                 v36 = 1024;
                 *v37 = v10;
                 *&v37[4] = 2048;
-                *&v37[6] = v4;
+                *&v37[6] = _pagesToVacuum;
                 _os_log_impl(&dword_231E60000, v13, OS_LOG_TYPE_INFO, "Performing incremental vacuum for %tu pages on iteration %d for total pages to free %tu", v34, 0x1Cu);
               }
 
@@ -185,7 +185,7 @@ LABEL_11:
                   v20 = [MEMORY[0x277CCABB0] numberWithLong:state];
                   v21 = [MEMORY[0x277CCABB0] numberWithInt:v10];
                   *v34 = 138412802;
-                  v35 = v17;
+                  selfCopy = v17;
                   v36 = 2112;
                   *v37 = v20;
                   *&v37[8] = 2112;
@@ -210,10 +210,10 @@ LABEL_11:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               v25 = [MEMORY[0x277CCABB0] numberWithInt:v10];
-              v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4 - v11];
+              v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:_pagesToVacuum - v11];
               v27 = [MEMORY[0x277CCABB0] numberWithBool:v23];
               *v34 = 138412802;
-              v35 = v25;
+              selfCopy = v25;
               v36 = 2112;
               *v37 = v26;
               *&v37[8] = 2112;
@@ -229,7 +229,7 @@ LABEL_11:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *v34 = 138412290;
-          v35 = self;
+          selfCopy = self;
           _os_log_impl(&dword_231E60000, v22, OS_LOG_TYPE_INFO, "performing FULL VACUUM to make INCREMENTAL effected for db: %@", v34, 0xCu);
         }
 
@@ -386,31 +386,31 @@ uint64_t __30__SGSqliteDatabase_vacuumMode__block_invoke_2(uint64_t a1, void *a2
 - (unint64_t)_pagesToVacuum
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SGSqliteDatabase *)self pageCount];
-  v4 = [(SGSqliteDatabase *)self freelistCount];
+  pageCount = [(SGSqliteDatabase *)self pageCount];
+  freelistCount = [(SGSqliteDatabase *)self freelistCount];
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 134218240;
-    v10 = v3;
+    v10 = pageCount;
     v11 = 2048;
-    v12 = v4;
+    v12 = freelistCount;
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_INFO, "Calculating pages to vacuum -- pageCount %tu freeCount %tu", &v9, 0x16u);
   }
 
   result = 0;
-  if (v4)
+  if (freelistCount)
   {
-    if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (freelistCount != 0x7FFFFFFFFFFFFFFFLL)
     {
       result = 0;
-      if (v3)
+      if (pageCount)
       {
-        if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+        if (pageCount != 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ((v3 - v4) / v3 <= 0.85 || v4 > 0x3FF)
+          if ((pageCount - freelistCount) / pageCount <= 0.85 || freelistCount > 0x3FF)
           {
-            result = (v4 * 0.8);
+            result = (freelistCount * 0.8);
           }
 
           else
@@ -419,9 +419,9 @@ uint64_t __30__SGSqliteDatabase_vacuumMode__block_invoke_2(uint64_t a1, void *a2
             if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
             {
               v9 = 134218240;
-              v10 = v3;
+              v10 = pageCount;
               v11 = 2048;
-              v12 = v4;
+              v12 = freelistCount;
               _os_log_impl(&dword_231E60000, v7, OS_LOG_TYPE_INFO, "not enough pages to vacuum: pageCount: %lu; freeCount: %lu", &v9, 0x16u);
             }
 
@@ -552,9 +552,9 @@ uint64_t __41__SGSqliteDatabase_performIntegrityCheck__block_invoke(uint64_t a1,
   return *v4;
 }
 
-- (int64_t)maxIdForTable:(id)a3
+- (int64_t)maxIdForTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -563,7 +563,7 @@ uint64_t __41__SGSqliteDatabase_performIntegrityCheck__block_invoke(uint64_t a1,
   v9[1] = 3221225472;
   v9[2] = __34__SGSqliteDatabase_maxIdForTable___block_invoke;
   v9[3] = &unk_278955E30;
-  v5 = v4;
+  v5 = tableCopy;
   v10 = v5;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -582,15 +582,15 @@ uint64_t __41__SGSqliteDatabase_performIntegrityCheck__block_invoke(uint64_t a1,
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SGSqliteDatabaseImpl *)self->_impl filename];
-  v7 = [v3 initWithFormat:@"[%@: %@ <%p>]", v5, v6, -[SGSqliteDatabaseImpl handle](self->_impl, "handle")];
+  filename = [(SGSqliteDatabaseImpl *)self->_impl filename];
+  v7 = [v3 initWithFormat:@"[%@: %@ <%p>]", v5, filename, -[SGSqliteDatabaseImpl handle](self->_impl, "handle")];
 
   return v7;
 }
 
-- (BOOL)frailWriteTransaction:(id)a3
+- (BOOL)frailWriteTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -601,7 +601,7 @@ uint64_t __41__SGSqliteDatabase_performIntegrityCheck__block_invoke(uint64_t a1,
   v7[3] = &unk_27894E898;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = transactionCopy;
   v8 = v5;
   [(SGSqliteDatabase *)self runWithWriteLockAcquired:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -617,88 +617,88 @@ uint64_t __42__SGSqliteDatabase_frailWriteTransaction___block_invoke(void *a1)
   return result;
 }
 
-- (void)writeTransaction:(id)a3
+- (void)writeTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__SGSqliteDatabase_writeTransaction___block_invoke;
   v6[3] = &unk_278955EE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transactionCopy;
+  v5 = transactionCopy;
   [(SGSqliteDatabase *)self runWithWriteLockAcquired:v6];
 }
 
-- (void)insertOrReplaceIntoTable:(id)a3 dictionary:(id)a4 onError:(id)a5
+- (void)insertOrReplaceIntoTable:(id)table dictionary:(id)dictionary onError:(id)error
 {
-  v19 = a3;
-  v9 = a4;
-  v10 = a5;
+  tableCopy = table;
+  dictionaryCopy = dictionary;
+  errorCopy = error;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   objc_autoreleasePoolPop(v11);
-  if (![v12 count])
+  if (![allKeys count])
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:785 description:@"insertOrReplaceIntoTable:dictionary: requires nonempty dictionary"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:785 description:@"insertOrReplaceIntoTable:dictionary: requires nonempty dictionary"];
   }
 
   v13 = objc_autoreleasePoolPush();
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
-  v15 = [v12 _pas_componentsJoinedByString:{@", "}];
-  v16 = qmarksSeparatedByCommas([v12 count]);
-  v17 = [v14 initWithFormat:@"INSERT OR REPLACE INTO %@ (%@) VALUES (%@)", v19, v15, v16];
+  v15 = [allKeys _pas_componentsJoinedByString:{@", "}];
+  v16 = qmarksSeparatedByCommas([allKeys count]);
+  v17 = [v14 initWithFormat:@"INSERT OR REPLACE INTO %@ (%@) VALUES (%@)", tableCopy, v15, v16];
 
   objc_autoreleasePoolPop(v13);
-  [(SGSqliteDatabase *)self _prepAndRunQuery:v17 columns:v12 dictionary:v9 onError:v10];
+  [(SGSqliteDatabase *)self _prepAndRunQuery:v17 columns:allKeys dictionary:dictionaryCopy onError:errorCopy];
 }
 
-- (void)updateTable:(id)a3 dictionary:(id)a4 whereClause:(id)a5 onError:(id)a6
+- (void)updateTable:(id)table dictionary:(id)dictionary whereClause:(id)clause onError:(id)error
 {
-  v24 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tableCopy = table;
+  dictionaryCopy = dictionary;
+  clauseCopy = clause;
+  errorCopy = error;
   v14 = objc_autoreleasePoolPush();
-  v15 = [v11 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   objc_autoreleasePoolPop(v14);
-  if (![v15 count])
+  if (![allKeys count])
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:772 description:@"updateTable:dictionary:whereClause: requires nonempty dictionary"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:772 description:@"updateTable:dictionary:whereClause: requires nonempty dictionary"];
   }
 
   v16 = objc_autoreleasePoolPush();
   v17 = objc_alloc(MEMORY[0x277CCACA8]);
-  v18 = [v15 _pas_componentsJoinedByString:{@"=?, "}];
+  v18 = [allKeys _pas_componentsJoinedByString:{@"=?, "}];
   v19 = [v18 stringByAppendingString:@"=?"];
   v20 = v19;
-  if (v12)
+  if (clauseCopy)
   {
-    v21 = [@" WHERE " stringByAppendingString:v12];
-    v22 = [v17 initWithFormat:@"UPDATE %@ SET %@%@", v24, v20, v21];
+    v21 = [@" WHERE " stringByAppendingString:clauseCopy];
+    v22 = [v17 initWithFormat:@"UPDATE %@ SET %@%@", tableCopy, v20, v21];
   }
 
   else
   {
-    v22 = [v17 initWithFormat:@"UPDATE %@ SET %@%@", v24, v19, &stru_284703F00];
+    v22 = [v17 initWithFormat:@"UPDATE %@ SET %@%@", tableCopy, v19, &stru_284703F00];
   }
 
   objc_autoreleasePoolPop(v16);
-  [(SGSqliteDatabase *)self _prepAndRunQuery:v22 columns:v15 dictionary:v11 onError:v13];
+  [(SGSqliteDatabase *)self _prepAndRunQuery:v22 columns:allKeys dictionary:dictionaryCopy onError:errorCopy];
 }
 
-- (BOOL)prepAndRunNonDataQueries:(id)a3 onError:(id)a4
+- (BOOL)prepAndRunNonDataQueries:(id)queries onError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queriesCopy = queries;
+  errorCopy = error;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = queriesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -713,7 +713,7 @@ uint64_t __42__SGSqliteDatabase_frailWriteTransaction___block_invoke(void *a1)
           objc_enumerationMutation(v8);
         }
 
-        if (![(SGSqliteDatabase *)self prepAndRunSQL:*(*(&v16 + 1) + 8 * i) onPrep:0 onRow:0 onError:v7, v16])
+        if (![(SGSqliteDatabase *)self prepAndRunSQL:*(*(&v16 + 1) + 8 * i) onPrep:0 onRow:0 onError:errorCopy, v16])
         {
           v13 = 0;
           goto LABEL_11;
@@ -737,19 +737,19 @@ LABEL_11:
   return v13;
 }
 
-- (void)_prepAndRunQuery:(id)a3 columns:(id)a4 dictionary:(id)a5 onError:(id)a6
+- (void)_prepAndRunQuery:(id)query columns:(id)columns dictionary:(id)dictionary onError:(id)error
 {
-  v10 = a4;
-  v11 = a5;
+  columnsCopy = columns;
+  dictionaryCopy = dictionary;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__SGSqliteDatabase__prepAndRunQuery_columns_dictionary_onError___block_invoke;
   v14[3] = &unk_2789559D0;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
-  [(SGSqliteDatabase *)self prepAndRunSQL:a3 onPrep:v14 onRow:0 onError:a6];
+  v15 = columnsCopy;
+  v16 = dictionaryCopy;
+  v12 = dictionaryCopy;
+  v13 = columnsCopy;
+  [(SGSqliteDatabase *)self prepAndRunSQL:query onPrep:v14 onRow:0 onError:error];
 }
 
 void __64__SGSqliteDatabase__prepAndRunQuery_columns_dictionary_onError___block_invoke(uint64_t a1, void *a2)
@@ -855,12 +855,12 @@ LABEL_22:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)prepAndRunSQL:(id)a3 onPrep:(id)a4 onRow:(id)a5 onError:(id)a6
+- (BOOL)prepAndRunSQL:(id)l onPrep:(id)prep onRow:(id)row onError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  prepCopy = prep;
+  rowCopy = row;
+  errorCopy = error;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -870,15 +870,15 @@ LABEL_22:
   v19[1] = 3221225472;
   v19[2] = __55__SGSqliteDatabase_prepAndRunSQL_onPrep_onRow_onError___block_invoke;
   v19[3] = &unk_27894E268;
-  v15 = v11;
+  v15 = prepCopy;
   v23 = &v24;
   v19[4] = self;
   v20 = v15;
-  v16 = v12;
+  v16 = rowCopy;
   v21 = v16;
-  v17 = v13;
+  v17 = errorCopy;
   v22 = v17;
-  [(SGSqliteDatabase *)self _prepQuery:v10 onPrep:v19 onError:v17];
+  [(SGSqliteDatabase *)self _prepQuery:lCopy onPrep:v19 onError:v17];
 
   objc_autoreleasePoolPop(v14);
   LOBYTE(self) = *(v25 + 24);
@@ -901,25 +901,25 @@ void __55__SGSqliteDatabase_prepAndRunSQL_onPrep_onRow_onError___block_invoke(ui
   *(*(*(a1 + 64) + 8) + 24) = [*(a1 + 32) runQuery:v3 onRow:*(a1 + 48) onError:*(a1 + 56)];
 }
 
-- (BOOL)prepAndRunQuery:(id)a3 onPrep:(id)a4 onRow:(id)a5 onError:(id)a6
+- (BOOL)prepAndRunQuery:(id)query onPrep:(id)prep onRow:(id)row onError:(id)error
 {
-  v10 = a4;
-  v11 = a5;
+  prepCopy = prep;
+  rowCopy = row;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__SGSqliteDatabase_prepAndRunQuery_onPrep_onRow_onError___block_invoke;
   v17[3] = &unk_2789503B0;
-  v18 = v10;
+  v18 = prepCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__SGSqliteDatabase_prepAndRunQuery_onPrep_onRow_onError___block_invoke_2;
   v15[3] = &unk_27894E240;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
-  LOBYTE(a6) = [(SGSqliteDatabase *)self prepAndRunSQL:a3 onPrep:v17 onRow:v15 onError:a6];
+  v16 = rowCopy;
+  v12 = rowCopy;
+  v13 = prepCopy;
+  LOBYTE(error) = [(SGSqliteDatabase *)self prepAndRunSQL:query onPrep:v17 onRow:v15 onError:error];
 
-  return a6;
+  return error;
 }
 
 uint64_t __57__SGSqliteDatabase_prepAndRunQuery_onPrep_onRow_onError___block_invoke(uint64_t result, id a2)
@@ -950,54 +950,54 @@ uint64_t __57__SGSqliteDatabase_prepAndRunQuery_onPrep_onRow_onError___block_inv
   return v4(v2, v3);
 }
 
-- (BOOL)_prepQuery:(id)a3 onPrep:(id)a4 onError:(id)a5
+- (BOOL)_prepQuery:(id)query onPrep:(id)prep onError:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  queryCopy = query;
+  prepCopy = prep;
+  errorCopy = error;
+  if (!queryCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:668 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:668 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
-    if (v10)
+    if (prepCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:669 description:{@"Invalid parameter not satisfying: %@", @"onPrep"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:669 description:{@"Invalid parameter not satisfying: %@", @"onPrep"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!prepCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = [(SGSqliteDatabaseImpl *)self->_impl prepQuery:v9 onPrep:v10 onError:v11];
+  v12 = [(SGSqliteDatabaseImpl *)self->_impl prepQuery:queryCopy onPrep:prepCopy onError:errorCopy];
 
   return v12;
 }
 
-- (BOOL)runQuery:(id)a3 onRow:(id)a4 onError:(id)a5
+- (BOOL)runQuery:(id)query onRow:(id)row onError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  rowCopy = row;
+  errorCopy = error;
   v11 = mach_absolute_time();
   sharedWriterLock = self->_sharedWriterLock;
-  if (sharedWriterLock && !-[SGSqliteDatabaseSharedLock writeTransactionDepth](sharedWriterLock, "writeTransactionDepth") && !sqlite3_stmt_readonly([v8 stmt]))
+  if (sharedWriterLock && !-[SGSqliteDatabaseSharedLock writeTransactionDepth](sharedWriterLock, "writeTransactionDepth") && !sqlite3_stmt_readonly([queryCopy stmt]))
   {
     v13 = sgLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       v26 = 136315138;
-      v27 = COERCE_DOUBLE(sqlite3_sql([v8 stmt]));
+      v27 = COERCE_DOUBLE(sqlite3_sql([queryCopy stmt]));
       _os_log_fault_impl(&dword_231E60000, v13, OS_LOG_TYPE_FAULT, "Write statement should be run in a write transaction: %s", &v26, 0xCu);
     }
 
@@ -1007,7 +1007,7 @@ LABEL_3:
     }
   }
 
-  v14 = [(SGSqliteDatabaseImpl *)self->_impl runQuery:v8 onRow:v9 onError:v10];
+  v14 = [(SGSqliteDatabaseImpl *)self->_impl runQuery:queryCopy onRow:rowCopy onError:errorCopy];
   lastBusyWaitEnded = self->_lastBusyWaitEnded;
   if (runQuery_onRow_onError__onceToken != -1)
   {
@@ -1023,7 +1023,7 @@ LABEL_3:
   v17 = (v16 * runQuery_onRow_onError__machTimebaseInfo / *algn_280D9D8A4) / 1000000000.0;
   if (v17 > 0.5 && os_variant_has_internal_diagnostics())
   {
-    v18 = sqlite3_sql([v8 stmt]);
+    v18 = sqlite3_sql([queryCopy stmt]);
     v19 = sgLogHandle();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
     if (v18)
@@ -1057,30 +1057,30 @@ LABEL_18:
   return v14;
 }
 
-- (void)runWithWriteLockAcquired:(id)a3
+- (void)runWithWriteLockAcquired:(id)acquired
 {
   sharedWriterLock = self->_sharedWriterLock;
   if (sharedWriterLock)
   {
-    [(SGSqliteDatabaseSharedLock *)sharedWriterLock runWithLockAcquired:a3];
+    [(SGSqliteDatabaseSharedLock *)sharedWriterLock runWithLockAcquired:acquired];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(acquired + 2))(acquired);
   }
 }
 
-- (SGSqliteDatabase)initWithFilename:(id)a3 withProtection:(BOOL)a4 sharedLock:(id)a5 error:(id *)a6
+- (SGSqliteDatabase)initWithFilename:(id)filename withProtection:(BOOL)protection sharedLock:(id)lock error:(id *)error
 {
-  v8 = a4;
+  protectionCopy = protection;
   v70 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  if (!v11)
+  filenameCopy = filename;
+  lockCopy = lock;
+  if (!filenameCopy)
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
-    [v52 handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSqliteDatabase.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
   }
 
   v55.receiver = self;
@@ -1092,7 +1092,7 @@ LABEL_18:
     goto LABEL_46;
   }
 
-  if (v8)
+  if (protectionCopy)
   {
     v15 = 1376262;
   }
@@ -1102,8 +1102,8 @@ LABEL_18:
     v15 = 3473414;
   }
 
-  v13->_usesDataProtection = v8;
-  v16 = [[SGSqliteDatabaseImpl alloc] initWithFilename:v11 flags:v15 error:a6 sgDb:v13];
+  v13->_usesDataProtection = protectionCopy;
+  v16 = [[SGSqliteDatabaseImpl alloc] initWithFilename:filenameCopy flags:v15 error:error sgDb:v13];
   v17 = p_isa[1];
   p_isa[1] = v16;
 
@@ -1112,9 +1112,9 @@ LABEL_18:
     goto LABEL_34;
   }
 
-  objc_storeStrong(p_isa + 3, a5);
-  v18 = [p_isa[1] handle];
-  if (sqlite3_db_config(v18, 1001, 0, 96, 64) == 5)
+  objc_storeStrong(p_isa + 3, lock);
+  handle = [p_isa[1] handle];
+  if (sqlite3_db_config(handle, 1001, 0, 96, 64) == 5)
   {
     v19 = sgLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -1129,7 +1129,7 @@ LABEL_18:
     }
   }
 
-  function_v2 = sqlite3_create_function_v2(v18, "hasInhumanTag", 1, 2049, 0, hasInhumanTag, 0, 0, 0);
+  function_v2 = sqlite3_create_function_v2(handle, "hasInhumanTag", 1, 2049, 0, hasInhumanTag, 0, 0, 0);
   if (function_v2)
   {
     v21 = function_v2;
@@ -1141,7 +1141,7 @@ LABEL_18:
       _os_log_error_impl(&dword_231E60000, v22, OS_LOG_TYPE_ERROR, "Could not install hasInhumanTag() sqlite function (rc = %i)", buf, 8u);
     }
 
-    if (a6)
+    if (error)
     {
       v23 = MEMORY[0x277CCA9B8];
       v66 = @"sqliteCode";
@@ -1155,20 +1155,20 @@ LABEL_32:
       v38 = v23;
       v39 = 5;
 LABEL_33:
-      *a6 = [v38 errorWithDomain:@"SGSqliteDatabaseError" code:v39 userInfo:v37];
+      *error = [v38 errorWithDomain:@"SGSqliteDatabaseError" code:v39 userInfo:v37];
 
 LABEL_34:
-      a6 = 0;
+      error = 0;
       goto LABEL_47;
     }
 
     goto LABEL_47;
   }
 
-  v28 = sqlite3_create_function_v2(v18, "tagsHaveEscapedTag", 2, 2049, 0, tagsHaveEscapedTag, 0, 0, 0);
+  v28 = sqlite3_create_function_v2(handle, "tagsHaveEscapedTag", 2, 2049, 0, tagsHaveEscapedTag, 0, 0, 0);
   if (!v28)
   {
-    v31 = sqlite3_create_function_v2(v18, "delimitedString", 2, 2049, 0, delimitedString, 0, 0, 0);
+    v31 = sqlite3_create_function_v2(handle, "delimitedString", 2, 2049, 0, delimitedString, 0, 0, 0);
     if (v31)
     {
       v32 = v31;
@@ -1180,7 +1180,7 @@ LABEL_34:
         _os_log_error_impl(&dword_231E60000, v33, OS_LOG_TYPE_ERROR, "Could not install delimitedString() sqlite function (rc = %i)", buf, 8u);
       }
 
-      if (a6)
+      if (error)
       {
         v23 = MEMORY[0x277CCA9B8];
         v62 = @"sqliteCode";
@@ -1195,7 +1195,7 @@ LABEL_34:
       goto LABEL_47;
     }
 
-    v34 = sqlite3_create_function_v2(v18, "firstStringAfterPrefix", 1, 2049, 0, firstStringAfterPrefix, 0, 0, 0);
+    v34 = sqlite3_create_function_v2(handle, "firstStringAfterPrefix", 1, 2049, 0, firstStringAfterPrefix, 0, 0, 0);
     if (v34)
     {
       v35 = v34;
@@ -1207,7 +1207,7 @@ LABEL_34:
         _os_log_error_impl(&dword_231E60000, v36, OS_LOG_TYPE_ERROR, "Could not install firstStringAfterPrefix() sqlite function (rc = %i)", buf, 8u);
       }
 
-      if (a6)
+      if (error)
       {
         v23 = MEMORY[0x277CCA9B8];
         v60 = @"sqliteCode";
@@ -1222,7 +1222,7 @@ LABEL_34:
       goto LABEL_47;
     }
 
-    busy = sqlite3_busy_timeout(v18, 300000);
+    busy = sqlite3_busy_timeout(handle, 300000);
     if (busy)
     {
       v41 = busy;
@@ -1234,7 +1234,7 @@ LABEL_34:
         _os_log_error_impl(&dword_231E60000, v42, OS_LOG_TYPE_ERROR, "Sqlite could not install busy timeout. (rc = %i)", buf, 8u);
       }
 
-      if (a6)
+      if (error)
       {
         v43 = MEMORY[0x277CCA9B8];
         v58 = @"sqliteCode";
@@ -1249,7 +1249,7 @@ LABEL_34:
       goto LABEL_47;
     }
 
-    v44 = sqlite3_busy_handler(v18, wrappedBusyCallbackForTiming, p_isa);
+    v44 = sqlite3_busy_handler(handle, wrappedBusyCallbackForTiming, p_isa);
     if (v44)
     {
       v45 = v44;
@@ -1261,14 +1261,14 @@ LABEL_34:
         _os_log_error_impl(&dword_231E60000, v46, OS_LOG_TYPE_ERROR, "Sqlite could not install busy handler. (rc = %i)", buf, 8u);
       }
 
-      if (a6)
+      if (error)
       {
         v47 = MEMORY[0x277CCA9B8];
         v56 = @"sqliteCode";
         v48 = [MEMORY[0x277CCABB0] numberWithInt:v45];
         v57 = v48;
         v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-        *a6 = [v47 errorWithDomain:@"SGSqliteDatabaseError" code:6 userInfo:v49];
+        *error = [v47 errorWithDomain:@"SGSqliteDatabaseError" code:6 userInfo:v49];
 
         goto LABEL_34;
       }
@@ -1284,7 +1284,7 @@ LABEL_34:
     [v54 runWithWriteLockAcquired:v53];
 
 LABEL_46:
-    a6 = p_isa;
+    error = p_isa;
     goto LABEL_47;
   }
 
@@ -1297,7 +1297,7 @@ LABEL_46:
     _os_log_error_impl(&dword_231E60000, v30, OS_LOG_TYPE_ERROR, "Could not install tagsHaveEscapedTag() sqlite function (rc = %i)", buf, 8u);
   }
 
-  if (a6)
+  if (error)
   {
     v23 = MEMORY[0x277CCA9B8];
     v64 = @"sqliteCode";
@@ -1312,7 +1312,7 @@ LABEL_46:
 LABEL_47:
 
   v50 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 uint64_t __69__SGSqliteDatabase_initWithFilename_withProtection_sharedLock_error___block_invoke_2(uint64_t a1, void *a2)
@@ -1331,61 +1331,61 @@ uint64_t __69__SGSqliteDatabase_initWithFilename_withProtection_sharedLock_error
   return *MEMORY[0x277D42698];
 }
 
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 nsdata:(id)a5
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name nsdata:(id)nsdata
 {
-  v7 = a5;
-  v8 = _indexForBindParam(a3, a4);
-  LODWORD(a4) = sqlite3_bind_nsdata(a3, v8, v7);
+  nsdataCopy = nsdata;
+  v8 = _indexForBindParam(param, name);
+  LODWORD(name) = sqlite3_bind_nsdata(param, v8, nsdataCopy);
 
-  return a4;
+  return name;
 }
 
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 nsstring:(id)a5
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name nsstring:(id)nsstring
 {
-  v7 = a5;
-  v8 = _indexForBindParam(a3, a4);
-  v9 = [v7 UTF8String];
+  nsstringCopy = nsstring;
+  v8 = _indexForBindParam(param, name);
+  uTF8String = [nsstringCopy UTF8String];
 
-  return sqlite3_bind_text(a3, v8, v9, -1, 0xFFFFFFFFFFFFFFFFLL);
+  return sqlite3_bind_text(param, v8, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 double:(double)a5
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name double:(double)double
 {
-  v7 = _indexForBindParam(a3, a4);
+  v7 = _indexForBindParam(param, name);
 
-  return sqlite3_bind_double(a3, v7, a5);
+  return sqlite3_bind_double(param, v7, double);
 }
 
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 int64:(int64_t)a5
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name int64:(int64_t)int64
 {
-  v7 = _indexForBindParam(a3, a4);
+  v7 = _indexForBindParam(param, name);
 
-  return sqlite3_bind_int64(a3, v7, a5);
+  return sqlite3_bind_int64(param, v7, int64);
 }
 
-+ (int)bindParam:(sqlite3_stmt *)a3 name:(const char *)a4 int:(int)a5
++ (int)bindParam:(sqlite3_stmt *)param name:(const char *)name int:(int)int
 {
-  v7 = _indexForBindParam(a3, a4);
+  v7 = _indexForBindParam(param, name);
 
-  return sqlite3_bind_int(a3, v7, a5);
+  return sqlite3_bind_int(param, v7, int);
 }
 
-+ (int)bindParamToNull:(sqlite3_stmt *)a3 name:(const char *)a4
++ (int)bindParamToNull:(sqlite3_stmt *)null name:(const char *)name
 {
-  v5 = _indexForBindParam(a3, a4);
+  v5 = _indexForBindParam(null, name);
 
-  return sqlite3_bind_null(a3, v5);
+  return sqlite3_bind_null(null, v5);
 }
 
-+ (id)randomlyNamedInMemoryPathWithBaseName:(id)a3
++ (id)randomlyNamedInMemoryPathWithBaseName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [@"file:" stringByAppendingString:v3];
-  v8 = [v7 stringByAppendingString:v6];
+  v7 = [@"file:" stringByAppendingString:nameCopy];
+  v8 = [v7 stringByAppendingString:uUIDString];
   v9 = [v8 stringByAppendingString:@"?mode=memory&cache=shared"];
 
   objc_autoreleasePoolPop(v4);
@@ -1393,33 +1393,33 @@ uint64_t __69__SGSqliteDatabase_initWithFilename_withProtection_sharedLock_error
   return v9;
 }
 
-+ (BOOL)isInMemoryPath:(id)a3
++ (BOOL)isInMemoryPath:(id)path
 {
-  v3 = a3;
-  if ([v3 containsString:@":memory:"])
+  pathCopy = path;
+  if ([pathCopy containsString:@":memory:"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsString:@"mode=memory"];
+    v4 = [pathCopy containsString:@"mode=memory"];
   }
 
   return v4;
 }
 
-+ (id)sqliteDatabaseInMemoryWithError:(id *)a3
++ (id)sqliteDatabaseInMemoryWithError:(id *)error
 {
-  v3 = [[SGSqliteDatabase alloc] initWithFilename:@":memory:" withProtection:0 sharedLock:0 error:a3];
+  v3 = [[SGSqliteDatabase alloc] initWithFilename:@":memory:" withProtection:0 sharedLock:0 error:error];
 
   return v3;
 }
 
-+ (SGSqliteDatabase)sqliteDatabaseWithFilename:(id)a3 error:(id *)a4
++ (SGSqliteDatabase)sqliteDatabaseWithFilename:(id)filename error:(id *)error
 {
-  v5 = a3;
-  v6 = [[SGSqliteDatabase alloc] initWithFilename:v5 withProtection:0 sharedLock:0 error:a4];
+  filenameCopy = filename;
+  v6 = [[SGSqliteDatabase alloc] initWithFilename:filenameCopy withProtection:0 sharedLock:0 error:error];
 
   return v6;
 }

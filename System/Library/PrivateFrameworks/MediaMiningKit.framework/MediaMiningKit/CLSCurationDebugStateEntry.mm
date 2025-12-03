@@ -1,24 +1,24 @@
 @interface CLSCurationDebugStateEntry
-- (CLSCurationDebugStateEntry)initWithState:(unint64_t)a3 reason:(id)a4 agent:(id)a5 stage:(id)a6;
+- (CLSCurationDebugStateEntry)initWithState:(unint64_t)state reason:(id)reason agent:(id)agent stage:(id)stage;
 @end
 
 @implementation CLSCurationDebugStateEntry
 
-- (CLSCurationDebugStateEntry)initWithState:(unint64_t)a3 reason:(id)a4 agent:(id)a5 stage:(id)a6
+- (CLSCurationDebugStateEntry)initWithState:(unint64_t)state reason:(id)reason agent:(id)agent stage:(id)stage
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reasonCopy = reason;
+  agentCopy = agent;
+  stageCopy = stage;
   v17.receiver = self;
   v17.super_class = CLSCurationDebugStateEntry;
   v14 = [(CLSCurationDebugStateEntry *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_state = a3;
-    objc_storeStrong(&v14->_reason, a4);
-    objc_storeStrong(&v15->_agent, a5);
-    objc_storeStrong(&v15->_stage, a6);
+    v14->_state = state;
+    objc_storeStrong(&v14->_reason, reason);
+    objc_storeStrong(&v15->_agent, agent);
+    objc_storeStrong(&v15->_stage, stage);
   }
 
   return v15;

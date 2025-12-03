@@ -1,8 +1,8 @@
 @interface FCFeedResponse
 - (FCFeedRange)feedRange;
 - (FCFeedResponse)init;
-- (id)feedResponseByMergingWithResponse:(id)a3;
-- (int64_t)compareFeedItemCount:(id)a3;
+- (id)feedResponseByMergingWithResponse:(id)response;
+- (int64_t)compareFeedItemCount:(id)count;
 @end
 
 @implementation FCFeedResponse
@@ -22,55 +22,55 @@
   return v3;
 }
 
-- (id)feedResponseByMergingWithResponse:(id)a3
+- (id)feedResponseByMergingWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_alloc_init(FCFeedResponse);
-  v6 = [(FCFeedResponse *)self feedID];
-  [(FCFeedResponse *)v5 setFeedID:v6];
+  feedID = [(FCFeedResponse *)self feedID];
+  [(FCFeedResponse *)v5 setFeedID:feedID];
 
-  v7 = [(FCFeedResponse *)self error];
-  [(FCFeedResponse *)v5 setError:v7];
+  error = [(FCFeedResponse *)self error];
+  [(FCFeedResponse *)v5 setError:error];
 
-  v8 = [(FCFeedResponse *)self error];
-  if (v8)
+  error2 = [(FCFeedResponse *)self error];
+  if (error2)
   {
-    v9 = v8;
-    v10 = [v4 error];
+    v9 = error2;
+    error3 = [responseCopy error];
 
-    if (v10)
+    if (error3)
     {
       v11 = MEMORY[0x1E695DEC8];
-      v12 = [(FCFeedResponse *)self feedItems];
-      v13 = [v4 feedItems];
-      v14 = [v11 fc_arrayByAddingObjectsFromArray:v12 toArray:v13];
+      feedItems = [(FCFeedResponse *)self feedItems];
+      feedItems2 = [responseCopy feedItems];
+      v14 = [v11 fc_arrayByAddingObjectsFromArray:feedItems toArray:feedItems2];
       [(FCFeedResponse *)v5 setFeedItems:v14];
 
       if ([(FCFeedResponse *)self exhaustedRequestRange])
       {
-        v15 = [v4 exhaustedRequestRange];
+        exhaustedRequestRange = [responseCopy exhaustedRequestRange];
       }
 
       else
       {
-        v15 = 0;
+        exhaustedRequestRange = 0;
       }
 
-      [(FCFeedResponse *)v5 setExhaustedRequestRange:v15];
+      [(FCFeedResponse *)v5 setExhaustedRequestRange:exhaustedRequestRange];
     }
   }
 
   return v5;
 }
 
-- (int64_t)compareFeedItemCount:(id)a3
+- (int64_t)compareFeedItemCount:(id)count
 {
-  v4 = a3;
-  v5 = [(FCFeedResponse *)self feedItems];
-  v6 = [v5 count];
-  v7 = [v4 feedItems];
+  countCopy = count;
+  feedItems = [(FCFeedResponse *)self feedItems];
+  v6 = [feedItems count];
+  feedItems2 = [countCopy feedItems];
 
-  v8 = [v7 count];
+  v8 = [feedItems2 count];
   if (v6 < v8)
   {
     v9 = -1;
@@ -86,18 +86,18 @@
 
 - (FCFeedRange)feedRange
 {
-  v3 = [(FCFeedResponse *)self feedItems];
-  v4 = [v3 count];
+  feedItems = [(FCFeedResponse *)self feedItems];
+  v4 = [feedItems count];
 
   if (v4)
   {
-    v5 = [(FCFeedResponse *)self feedItems];
-    v6 = [v5 firstObject];
-    v7 = +[FCFeedCursor cursorForOrder:](FCFeedCursor, "cursorForOrder:", [v6 order]);
+    feedItems2 = [(FCFeedResponse *)self feedItems];
+    firstObject = [feedItems2 firstObject];
+    v7 = +[FCFeedCursor cursorForOrder:](FCFeedCursor, "cursorForOrder:", [firstObject order]);
 
-    v8 = [(FCFeedResponse *)self feedItems];
-    v9 = [v8 lastObject];
-    v10 = +[FCFeedCursor cursorForOrder:](FCFeedCursor, "cursorForOrder:", [v9 order] - 1);
+    feedItems3 = [(FCFeedResponse *)self feedItems];
+    lastObject = [feedItems3 lastObject];
+    v10 = +[FCFeedCursor cursorForOrder:](FCFeedCursor, "cursorForOrder:", [lastObject order] - 1);
 
     v11 = [FCFeedRange feedRangeWithTop:v7 bottom:v10];
   }

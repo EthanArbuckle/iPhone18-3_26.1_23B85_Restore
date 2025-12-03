@@ -1,6 +1,6 @@
 @interface MTRSwitchClusterLongReleaseEvent
 - (MTRSwitchClusterLongReleaseEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSwitchClusterLongReleaseEvent);
-  v5 = [(MTRSwitchClusterLongReleaseEvent *)self previousPosition];
-  [(MTRSwitchClusterLongReleaseEvent *)v4 setPreviousPosition:v5];
+  previousPosition = [(MTRSwitchClusterLongReleaseEvent *)self previousPosition];
+  [(MTRSwitchClusterLongReleaseEvent *)v4 setPreviousPosition:previousPosition];
 
   return v4;
 }

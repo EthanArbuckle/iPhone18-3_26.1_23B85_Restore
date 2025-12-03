@@ -1,24 +1,24 @@
 @interface MRDUIClientMessageForwarder
-+ (id)forwarderWithTarget:(id)a3;
-+ (id)forwarderWithXPCTarget:(id)a3;
++ (id)forwarderWithTarget:(id)target;
++ (id)forwarderWithXPCTarget:(id)target;
 @end
 
 @implementation MRDUIClientMessageForwarder
 
-+ (id)forwarderWithTarget:(id)a3
++ (id)forwarderWithTarget:(id)target
 {
-  v3 = a3;
+  targetCopy = target;
   v4 = objc_opt_new();
-  [v4 setTarget:v3];
+  [v4 setTarget:targetCopy];
 
   return v4;
 }
 
-+ (id)forwarderWithXPCTarget:(id)a3
++ (id)forwarderWithXPCTarget:(id)target
 {
-  v3 = a3;
+  targetCopy = target;
   v4 = objc_opt_new();
-  [v4 setTarget:v3];
+  [v4 setTarget:targetCopy];
 
   return v4;
 }

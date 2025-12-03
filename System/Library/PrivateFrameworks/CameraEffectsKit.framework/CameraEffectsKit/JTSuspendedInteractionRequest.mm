@@ -1,27 +1,27 @@
 @interface JTSuspendedInteractionRequest
-+ (id)requestWithTag:(id)a3 excludedViewControllers:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)requestWithTag:(id)tag excludedViewControllers:(id)controllers;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation JTSuspendedInteractionRequest
 
-+ (id)requestWithTag:(id)a3 excludedViewControllers:(id)a4
++ (id)requestWithTag:(id)tag excludedViewControllers:(id)controllers
 {
-  v5 = a4;
-  v6 = a3;
+  controllersCopy = controllers;
+  tagCopy = tag;
   v7 = objc_opt_new();
-  [v7 setTag:v6];
+  [v7 setTag:tagCopy];
 
-  [v7 setExcludedChildViewControllers:v5];
+  [v7 setExcludedChildViewControllers:controllersCopy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -32,7 +32,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [(JTSuspendedInteractionRequest *)self tag];
-      v6 = [(JTSuspendedInteractionRequest *)v4 tag];
+      v6 = [(JTSuspendedInteractionRequest *)equalCopy tag];
       v7 = [v5 isEqualToString:v6];
     }
 

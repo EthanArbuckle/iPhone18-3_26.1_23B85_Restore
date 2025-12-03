@@ -1,45 +1,45 @@
 @interface PFSQLiteKeyedArchiver
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)accessWithBlock:(id)a3 error:(id *)a4;
-- (BOOL)mutateWithBlock:(id)a3 error:(id *)a4;
-- (BOOL)setDouble:(double)a3 forKey:(id)a4;
-- (BOOL)setFloat:(float)a3 forKey:(id)a4;
-- (BOOL)setInteger:(int64_t)a3 forKey:(id)a4;
-- (BOOL)setObject:(id)a3 forKey:(id)a4;
-- (BOOL)setURL:(id)a3 forKey:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)accessWithBlock:(id)block error:(id *)error;
+- (BOOL)mutateWithBlock:(id)block error:(id *)error;
+- (BOOL)setDouble:(double)double forKey:(id)key;
+- (BOOL)setFloat:(float)float forKey:(id)key;
+- (BOOL)setInteger:(int64_t)integer forKey:(id)key;
+- (BOOL)setObject:(id)object forKey:(id)key;
+- (BOOL)setURL:(id)l forKey:(id)key;
 - (PFGenericValueTransformer)archiver;
 - (PFSQLiteKeyedArchiver)init;
-- (PFSQLiteKeyedArchiver)initWithDatabaseConnection:(id)a3 error:(id *)a4;
-- (PFSQLiteKeyedArchiver)initWithDatabaseURL:(id)a3 error:(id *)a4;
-- (double)doubleForKey:(id)a3;
-- (float)floatForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dateCreatedForKey:(id)a3;
-- (id)lastModifiedForKey:(id)a3;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
-- (id)objectForKey:(id)a3 ofClasses:(id)a4;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
+- (PFSQLiteKeyedArchiver)initWithDatabaseConnection:(id)connection error:(id *)error;
+- (PFSQLiteKeyedArchiver)initWithDatabaseURL:(id)l error:(id *)error;
+- (double)doubleForKey:(id)key;
+- (float)floatForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dateCreatedForKey:(id)key;
+- (id)lastModifiedForKey:(id)key;
+- (id)objectForKey:(id)key ofClass:(Class)class;
+- (id)objectForKey:(id)key ofClasses:(id)classes;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setArchiver:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setArchiver:(id)archiver;
 @end
 
 @implementation PFSQLiteKeyedArchiver
 
-- (PFSQLiteKeyedArchiver)initWithDatabaseConnection:(id)a3 error:(id *)a4
+- (PFSQLiteKeyedArchiver)initWithDatabaseConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = PFSQLiteKeyedArchiver;
   v7 = [(PFSQLiteKeyedArchiver *)&v15 init];
-  if (v7 && (v14 = 0, v8 = [[PFSQLiteArchiver alloc] initWithDatabaseConnection:v6 error:&v14], v9 = v14, sqliteArchiver = v7->_sqliteArchiver, v7->_sqliteArchiver = v8, sqliteArchiver, v9))
+  if (v7 && (v14 = 0, v8 = [[PFSQLiteArchiver alloc] initWithDatabaseConnection:connectionCopy error:&v14], v9 = v14, sqliteArchiver = v7->_sqliteArchiver, v7->_sqliteArchiver = v8, sqliteArchiver, v9))
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v12 = 0;
@@ -53,18 +53,18 @@
   return v12;
 }
 
-- (PFSQLiteKeyedArchiver)initWithDatabaseURL:(id)a3 error:(id *)a4
+- (PFSQLiteKeyedArchiver)initWithDatabaseURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = PFSQLiteKeyedArchiver;
   v7 = [(PFSQLiteKeyedArchiver *)&v15 init];
-  if (v7 && (v14 = 0, [PFSQLiteArchiver archiverForDatabaseAtURL:v6 sqliteOptions:6 dataProtectionClass:1 error:&v14], v8 = objc_claimAutoreleasedReturnValue(), v9 = v14, sqliteArchiver = v7->_sqliteArchiver, v7->_sqliteArchiver = v8, sqliteArchiver, v9))
+  if (v7 && (v14 = 0, [PFSQLiteArchiver archiverForDatabaseAtURL:lCopy sqliteOptions:6 dataProtectionClass:1 error:&v14], v8 = objc_claimAutoreleasedReturnValue(), v9 = v14, sqliteArchiver = v7->_sqliteArchiver, v7->_sqliteArchiver = v8, sqliteArchiver, v9))
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v12 = 0;
@@ -85,30 +85,30 @@
   return 0;
 }
 
-- (BOOL)accessWithBlock:(id)a3 error:(id *)a4
+- (BOOL)accessWithBlock:(id)block error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    sqliteArchiver = v7->_sqliteArchiver;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    sqliteArchiver = selfCopy->_sqliteArchiver;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __47__PFSQLiteKeyedArchiver_accessWithBlock_error___block_invoke;
     v14[3] = &unk_1E8189780;
-    v14[4] = v7;
-    v15 = v6;
+    v14[4] = selfCopy;
+    v15 = blockCopy;
     v13 = 0;
     [(PFSQLiteArchiver *)sqliteArchiver access:v14 error:&v13];
     v9 = v13;
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -130,25 +130,25 @@ void __47__PFSQLiteKeyedArchiver_accessWithBlock_error___block_invoke(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)mutateWithBlock:(id)a3 error:(id *)a4
+- (BOOL)mutateWithBlock:(id)block error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    sqliteArchiver = v8->_sqliteArchiver;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    sqliteArchiver = selfCopy->_sqliteArchiver;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __47__PFSQLiteKeyedArchiver_mutateWithBlock_error___block_invoke;
     v20[3] = &unk_1E81897A8;
-    v20[4] = v8;
-    v21 = v7;
+    v20[4] = selfCopy;
+    v21 = blockCopy;
     v19 = 0;
     LOBYTE(sqliteArchiver) = [(PFSQLiteArchiver *)sqliteArchiver mutate:v20 error:&v19];
     v10 = v19;
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
     v11 = (v10 == 0) & sqliteArchiver;
     if (v11)
     {
@@ -171,13 +171,13 @@ void __47__PFSQLiteKeyedArchiver_accessWithBlock_error___block_invoke(uint64_t a
           v16 = @"(Unknown Location)";
         }
 
-        v10 = PFGeneralErrorFromObjectWithLocalizedFailureReason(v8, v16, 0, 0, 0, @"mutation failed for unknown reason", v13, v14, 0);
+        v10 = PFGeneralErrorFromObjectWithLocalizedFailureReason(selfCopy, v16, 0, 0, 0, @"mutation failed for unknown reason", v13, v14, 0);
       }
 
-      if (a4)
+      if (error)
       {
         v17 = v10;
-        *a4 = v10;
+        *error = v10;
       }
     }
   }
@@ -203,81 +203,81 @@ uint64_t __47__PFSQLiteKeyedArchiver_mutateWithBlock_error___block_invoke(uint64
 
 - (PFGenericValueTransformer)archiver
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  archiver = v2->_archiver;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  archiver = selfCopy->_archiver;
   if (archiver)
   {
-    v4 = archiver;
+    pf_NSKeyedArchivingValueTransformer = archiver;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696B0A0] pf_NSKeyedArchivingValueTransformer];
+    pf_NSKeyedArchivingValueTransformer = [MEMORY[0x1E696B0A0] pf_NSKeyedArchivingValueTransformer];
   }
 
-  v5 = v4;
-  objc_sync_exit(v2);
+  v5 = pf_NSKeyedArchivingValueTransformer;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setArchiver:(id)a3
+- (void)setArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   obj = self;
   objc_sync_enter(obj);
   archiver = obj->_archiver;
-  obj->_archiver = v4;
+  obj->_archiver = archiverCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)objectForKey:(id)a3 ofClasses:(id)a4
+- (id)objectForKey:(id)key ofClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  keyCopy = key;
+  classesCopy = classes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v8->_sqliteArchiver;
-  v11 = [(PFSQLiteKeyedArchiver *)v8 archiver];
-  v12 = [(_PFSQLiteKeyedArchiverTransaction *)v9 initWithPFSQLiteMutator:sqliteArchiver archiver:v11];
-  v13 = [(_PFSQLiteKeyedArchiverTransaction *)v12 objectForKey:v6 ofClasses:v7];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v12 = [(_PFSQLiteKeyedArchiverTransaction *)v9 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v13 = [(_PFSQLiteKeyedArchiverTransaction *)v12 objectForKey:keyCopy ofClasses:classesCopy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v7->_sqliteArchiver;
-  v10 = [(PFSQLiteKeyedArchiver *)v7 archiver];
-  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:v10];
-  v12 = [(_PFSQLiteKeyedArchiverTransaction *)v11 objectForKey:v6 ofClass:a4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v12 = [(_PFSQLiteKeyedArchiverTransaction *)v11 objectForKey:keyCopy ofClass:class];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (BOOL)setObject:(id)a3 forKey:(id)a4
+- (BOOL)setObject:(id)object forKey:(id)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __42__PFSQLiteKeyedArchiver_setObject_forKey___block_invoke;
   v16[3] = &unk_1E81897D0;
-  v8 = v6;
+  v8 = objectCopy;
   v17 = v8;
-  v9 = v7;
+  v9 = keyCopy;
   v18 = v9;
   v15 = 0;
   v10 = [(PFSQLiteKeyedArchiver *)self mutateWithBlock:v16 error:&v15];
@@ -301,189 +301,189 @@ uint64_t __47__PFSQLiteKeyedArchiver_mutateWithBlock_error___block_invoke(uint64
   return v10;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v4->_sqliteArchiver;
-  v7 = [(PFSQLiteKeyedArchiver *)v4 archiver];
-  v8 = [(_PFSQLiteKeyedArchiverTransaction *)v5 initWithPFSQLiteMutator:sqliteArchiver archiver:v7];
-  [(_PFSQLiteKeyedArchiverTransaction *)v8 removeObjectForKey:v9];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v8 = [(_PFSQLiteKeyedArchiverTransaction *)v5 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  [(_PFSQLiteKeyedArchiverTransaction *)v8 removeObjectForKey:keyCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 stringForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 stringForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 dataForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 dataForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 integerForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 integerForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
-- (float)floatForKey:(id)a3
+- (float)floatForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  [(_PFSQLiteKeyedArchiverTransaction *)v9 floatForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  [(_PFSQLiteKeyedArchiverTransaction *)v9 floatForKey:keyCopy];
   v11 = v10;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v11;
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  [(_PFSQLiteKeyedArchiverTransaction *)v9 doubleForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  [(_PFSQLiteKeyedArchiverTransaction *)v9 doubleForKey:keyCopy];
   v11 = v10;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v11;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  LOBYTE(v6) = [(_PFSQLiteKeyedArchiverTransaction *)v9 BOOLForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  LOBYTE(v6) = [(_PFSQLiteKeyedArchiverTransaction *)v9 BOOLForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 URLForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 URLForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (BOOL)setInteger:(int64_t)a3 forKey:(id)a4
+- (BOOL)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v7->_sqliteArchiver;
-  v10 = [(PFSQLiteKeyedArchiver *)v7 archiver];
-  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:v10];
-  LOBYTE(a3) = [(_PFSQLiteKeyedArchiverTransaction *)v11 setInteger:a3 forKey:v6];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  LOBYTE(integer) = [(_PFSQLiteKeyedArchiverTransaction *)v11 setInteger:integer forKey:keyCopy];
 
-  objc_sync_exit(v7);
-  return a3;
+  objc_sync_exit(selfCopy);
+  return integer;
 }
 
-- (BOOL)setFloat:(float)a3 forKey:(id)a4
+- (BOOL)setFloat:(float)float forKey:(id)key
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v7->_sqliteArchiver;
-  v10 = [(PFSQLiteKeyedArchiver *)v7 archiver];
-  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:v10];
-  *&v12 = a3;
-  LOBYTE(v8) = [(_PFSQLiteKeyedArchiverTransaction *)v11 setFloat:v6 forKey:v12];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  *&v12 = float;
+  LOBYTE(v8) = [(_PFSQLiteKeyedArchiverTransaction *)v11 setFloat:keyCopy forKey:v12];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (BOOL)setDouble:(double)a3 forKey:(id)a4
+- (BOOL)setDouble:(double)double forKey:(id)key
 {
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v7->_sqliteArchiver;
-  v10 = [(PFSQLiteKeyedArchiver *)v7 archiver];
-  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:v10];
-  LOBYTE(v8) = [(_PFSQLiteKeyedArchiverTransaction *)v11 setDouble:v6 forKey:a3];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v11 = [(_PFSQLiteKeyedArchiverTransaction *)v8 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  LOBYTE(v8) = [(_PFSQLiteKeyedArchiverTransaction *)v11 setDouble:keyCopy forKey:double];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (BOOL)setURL:(id)a3 forKey:(id)a4
+- (BOOL)setURL:(id)l forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  lCopy = l;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v8->_sqliteArchiver;
-  v11 = [(PFSQLiteKeyedArchiver *)v8 archiver];
-  v12 = [(_PFSQLiteKeyedArchiverTransaction *)v9 initWithPFSQLiteMutator:sqliteArchiver archiver:v11];
-  LOBYTE(v9) = [(_PFSQLiteKeyedArchiverTransaction *)v12 setURL:v6 forKey:v7];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v12 = [(_PFSQLiteKeyedArchiverTransaction *)v9 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  LOBYTE(v9) = [(_PFSQLiteKeyedArchiverTransaction *)v12 setURL:lCopy forKey:keyCopy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
@@ -493,41 +493,41 @@ uint64_t __47__PFSQLiteKeyedArchiver_mutateWithBlock_error___block_invoke(uint64
   objc_sync_enter(obj);
   v2 = [_PFSQLiteKeyedArchiverTransaction alloc];
   sqliteArchiver = obj->_sqliteArchiver;
-  v4 = [(PFSQLiteKeyedArchiver *)obj archiver];
-  v5 = [(_PFSQLiteKeyedArchiverTransaction *)v2 initWithPFSQLiteMutator:sqliteArchiver archiver:v4];
+  archiver = [(PFSQLiteKeyedArchiver *)obj archiver];
+  v5 = [(_PFSQLiteKeyedArchiverTransaction *)v2 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
   [(_PFSQLiteKeyedArchiverTransaction *)v5 removeAllObjects];
 
   objc_sync_exit(obj);
 }
 
-- (id)dateCreatedForKey:(id)a3
+- (id)dateCreatedForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 dateCreatedForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 dateCreatedForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)lastModifiedForKey:(id)a3
+- (id)lastModifiedForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [_PFSQLiteKeyedArchiverTransaction alloc];
-  sqliteArchiver = v5->_sqliteArchiver;
-  v8 = [(PFSQLiteKeyedArchiver *)v5 archiver];
-  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:v8];
-  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 lastModifiedForKey:v4];
+  sqliteArchiver = selfCopy->_sqliteArchiver;
+  archiver = [(PFSQLiteKeyedArchiver *)selfCopy archiver];
+  v9 = [(_PFSQLiteKeyedArchiverTransaction *)v6 initWithPFSQLiteMutator:sqliteArchiver archiver:archiver];
+  v10 = [(_PFSQLiteKeyedArchiverTransaction *)v9 lastModifiedForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }

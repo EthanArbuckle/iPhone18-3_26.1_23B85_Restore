@@ -4,21 +4,21 @@
 - (NSString)applicationBundleID;
 - (id)didUpdateGainControl;
 - (id)didUpdateInputOptionsCount;
-- (id)makeViewControllerWithApplicationBundleID:(id)a3;
-- (void)setApplicationBundleID:(id)a3;
-- (void)setDidUpdateGainControl:(id)a3;
-- (void)setDidUpdateInputOptionsCount:(id)a3;
-- (void)setDiscovering:(BOOL)a3;
-- (void)setOnScreen:(BOOL)a3;
+- (id)makeViewControllerWithApplicationBundleID:(id)d;
+- (void)setApplicationBundleID:(id)d;
+- (void)setDidUpdateGainControl:(id)control;
+- (void)setDidUpdateInputOptionsCount:(id)count;
+- (void)setDiscovering:(BOOL)discovering;
+- (void)setOnScreen:(BOOL)screen;
 @end
 
 @implementation AVControlCenterMicrophonePickerWrapper
 
-- (id)makeViewControllerWithApplicationBundleID:(id)a3
+- (id)makeViewControllerWithApplicationBundleID:(id)d
 {
   v4 = sub_18B6C562C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_18B52C8F8(v4, v6);
 
   return v8;
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)setApplicationBundleID:(id)a3
+- (void)setApplicationBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_18B6C562C();
     v6 = v5;
@@ -68,7 +68,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_18B52CFD0(v4, v6);
 }
 
@@ -94,9 +94,9 @@
   return v3;
 }
 
-- (void)setDidUpdateInputOptionsCount:(id)a3
+- (void)setDidUpdateInputOptionsCount:(id)count
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(count);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -109,7 +109,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_18B52D2BC(v4, v5);
 }
 
@@ -135,9 +135,9 @@
   return v3;
 }
 
-- (void)setDidUpdateGainControl:(id)a3
+- (void)setDidUpdateGainControl:(id)control
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(control);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -150,31 +150,31 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_18B52D508(v4, v5);
 }
 
-- (void)setDiscovering:(BOOL)a3
+- (void)setDiscovering:(BOOL)discovering
 {
-  *(self + OBJC_IVAR___AVControlCenterMicrophonePickerWrapper_discovering) = a3;
+  *(self + OBJC_IVAR___AVControlCenterMicrophonePickerWrapper_discovering) = discovering;
   v3 = *(self + OBJC_IVAR___AVControlCenterMicrophonePickerWrapper_viewModel);
   if (v3)
   {
-    *(v3 + 105) = a3;
-    v4 = self;
+    *(v3 + 105) = discovering;
+    selfCopy = self;
 
     sub_18B508858();
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  *(self + OBJC_IVAR___AVControlCenterMicrophonePickerWrapper_onScreen) = a3;
+  *(self + OBJC_IVAR___AVControlCenterMicrophonePickerWrapper_onScreen) = screen;
   v3 = *(self + OBJC_IVAR___AVControlCenterMicrophonePickerWrapper_viewModel);
   if (v3)
   {
-    *(v3 + 104) = a3;
-    v4 = self;
+    *(v3 + 104) = screen;
+    selfCopy = self;
 
     sub_18B508648();
   }

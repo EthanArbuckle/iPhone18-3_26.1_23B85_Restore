@@ -1,9 +1,9 @@
 @interface IDSSemiActiveLinkQualityMonitorHandle
 - (IDSSemiActiveLinkQualityMonitorHandle)init;
 - (id)syntheticPacketSender;
-- (signed)readQualityBytesFromPacketReturingDeduplicationID:(void *)a3 packetEnd:(void *)a4;
-- (void)prependQualityBytesToPacketIfNeeded:(void *)a3 packetHeadroomStart:(void *)a4 deduplicationID:(signed __int16)a5;
-- (void)setSyntheticPacketSender:(id)a3;
+- (signed)readQualityBytesFromPacketReturingDeduplicationID:(void *)d packetEnd:(void *)end;
+- (void)prependQualityBytesToPacketIfNeeded:(void *)needed packetHeadroomStart:(void *)start deduplicationID:(signed __int16)d;
+- (void)setSyntheticPacketSender:(id)sender;
 @end
 
 @implementation IDSSemiActiveLinkQualityMonitorHandle
@@ -12,7 +12,7 @@
 {
   if (*(self + OBJC_IVAR___IDSSemiActiveLinkQualityMonitorHandle_monitor))
   {
-    v2 = self;
+    selfCopy = self;
 
     v3 = IDSSemiActiveLinkQualityMonitor.syntheticPacketSender.getter();
     v5 = v4;
@@ -39,9 +39,9 @@
   return self;
 }
 
-- (void)setSyntheticPacketSender:(id)a3
+- (void)setSyntheticPacketSender:(id)sender
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(sender);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -58,7 +58,7 @@
   v7 = *(&self->super.isa + OBJC_IVAR___IDSSemiActiveLinkQualityMonitorHandle_monitor);
   if (v7)
   {
-    v11 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v7 + 16));
     v8 = *(v7 + 24);
@@ -92,13 +92,13 @@
   }
 }
 
-- (signed)readQualityBytesFromPacketReturingDeduplicationID:(void *)a3 packetEnd:(void *)a4
+- (signed)readQualityBytesFromPacketReturingDeduplicationID:(void *)d packetEnd:(void *)end
 {
   if (*(&self->super.isa + OBJC_IVAR___IDSSemiActiveLinkQualityMonitorHandle_monitor))
   {
-    v6 = self;
+    selfCopy = self;
 
-    v7 = IDSSemiActiveLinkQualityMonitor.readQualityBytesFromPacketReturningDeduplicationID(_:packetEnd:time:)(a3, a4, 0, 1);
+    v7 = IDSSemiActiveLinkQualityMonitor.readQualityBytesFromPacketReturningDeduplicationID(_:packetEnd:time:)(d, end, 0, 1);
 
     if ((v7 & 0x10000) != 0)
     {
@@ -121,15 +121,15 @@
   return self;
 }
 
-- (void)prependQualityBytesToPacketIfNeeded:(void *)a3 packetHeadroomStart:(void *)a4 deduplicationID:(signed __int16)a5
+- (void)prependQualityBytesToPacketIfNeeded:(void *)needed packetHeadroomStart:(void *)start deduplicationID:(signed __int16)d
 {
   if (*(self + OBJC_IVAR___IDSSemiActiveLinkQualityMonitorHandle_monitor))
   {
-    v7 = a5 < 0;
-    v8 = a5 & ~(a5 >> 31);
-    v9 = self;
+    v7 = d < 0;
+    v8 = d & ~(d >> 31);
+    selfCopy = self;
 
-    v10 = IDSSemiActiveLinkQualityMonitor.prependQualityBytesToPacketIfNeeded(_:packetHeadroomStart:deduplicationID:time:)(a3, a4, v8 | (v7 << 16), 0, 1);
+    v10 = IDSSemiActiveLinkQualityMonitor.prependQualityBytesToPacketIfNeeded(_:packetHeadroomStart:deduplicationID:time:)(needed, start, v8 | (v7 << 16), 0, 1);
 
     return v10;
   }

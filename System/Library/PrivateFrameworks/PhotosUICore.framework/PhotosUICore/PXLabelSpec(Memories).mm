@@ -18,8 +18,8 @@
   v7 = [PXMemoriesFontsSpec textAttributesForFontSet:1 specSet:*(a3 + 2) labelKind:*a3 variant:*(a3 + 3) size:*(a3 + 64) shouldScale:a3[6], a3[7]];
   [v5 setFallbackTextAttributes:v7];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v5 setTextColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v5 setTextColor:whiteColor];
 
   [v5 setTextAlignment:{objc_msgSend(MEMORY[0x1E695DF58], "px_currentLeadingTextAlignment")}];
   [v5 setVerticalAlignment:1];
@@ -42,7 +42,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  _LabelContextMakeGadgetSpec(a7, a8, a9, &v13, a1, a2, a3, a4);
+  _LabelContextMakeGadgetSpec(a7, a8, a9, &v13, self, a2, a3, a4);
   v11[2] = v15;
   v11[3] = v16;
   v12 = v17;
@@ -60,7 +60,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  _LabelContextMakeFeatureSpec(a7, a8, a9, &v13, a1, a2, a3, a4);
+  _LabelContextMakeFeatureSpec(a7, a8, a9, &v13, self, a2, a3, a4);
   v11[2] = v15;
   v11[3] = v16;
   v12 = v17;
@@ -87,7 +87,7 @@
   v13[1] = a8;
   v13[2] = a9;
   v13[3] = a10;
-  *&v13[4] = a1;
+  *&v13[4] = self;
   *&v13[5] = a2;
   *&v13[6] = a3;
   *&v13[7] = a4;

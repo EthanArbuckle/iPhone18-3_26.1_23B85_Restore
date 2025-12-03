@@ -1,14 +1,14 @@
 @interface NLSessionActivityPowerZonesAccumulator
-- (void)updateTargetZone:(id)a3;
+- (void)updateTargetZone:(id)zone;
 @end
 
 @implementation NLSessionActivityPowerZonesAccumulator
 
-- (void)updateTargetZone:(id)a3
+- (void)updateTargetZone:(id)zone
 {
-  v4 = a3;
-  v5 = self;
-  PowerZonesAccumulator.updateTargetZone(_:)(v4);
+  zoneCopy = zone;
+  selfCopy = self;
+  PowerZonesAccumulator.updateTargetZone(_:)(zoneCopy);
 }
 
 @end

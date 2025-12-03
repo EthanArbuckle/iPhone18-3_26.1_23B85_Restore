@@ -11,42 +11,42 @@
 - (id)complicationWidgetFamily
 {
   v1 = MEMORY[0x277CCABB0];
-  v2 = [a1 widget];
-  v3 = [v1 numberWithInteger:{objc_msgSend(v2, "family")}];
+  widget = [self widget];
+  v3 = [v1 numberWithInteger:{objc_msgSend(widget, "family")}];
 
   return v3;
 }
 
 - (id)complicationExtensionBundleIdentifier
 {
-  v1 = [a1 widget];
-  v2 = [v1 extensionBundleIdentifier];
+  widget = [self widget];
+  extensionBundleIdentifier = [widget extensionBundleIdentifier];
 
-  return v2;
+  return extensionBundleIdentifier;
 }
 
 - (id)complicationContainingBundleIdentifier
 {
-  v1 = [a1 widget];
-  v2 = [v1 containerBundleIdentifier];
+  widget = [self widget];
+  containerBundleIdentifier = [widget containerBundleIdentifier];
 
-  return v2;
+  return containerBundleIdentifier;
 }
 
 - (id)complicationWidgetKind
 {
-  v1 = [a1 widget];
-  v2 = [v1 kind];
+  widget = [self widget];
+  kind = [widget kind];
 
-  return v2;
+  return kind;
 }
 
 - (id)complicationIntent
 {
-  v1 = [a1 widget];
-  v2 = [v1 intent];
+  widget = [self widget];
+  intent = [widget intent];
 
-  return v2;
+  return intent;
 }
 
 @end

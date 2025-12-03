@@ -1,22 +1,22 @@
 @interface BLM3U8Parser
-- (BLM3U8Parser)initWithData:(id)a3;
-- (BLM3U8Parser)initWithURL:(id)a3;
+- (BLM3U8Parser)initWithData:(id)data;
+- (BLM3U8Parser)initWithURL:(id)l;
 - (BLM3U8ParserDelegate)delegate;
-- (BOOL)parseWithError:(id *)a3;
-- (BOOL)rewriteWithURL:(id)a3;
-- (id)parseAttributeList:(id)a3;
-- (unint64_t)consumeBytes:(const void *)a3 length:(unint64_t)a4;
+- (BOOL)parseWithError:(id *)error;
+- (BOOL)rewriteWithURL:(id)l;
+- (id)parseAttributeList:(id)list;
+- (unint64_t)consumeBytes:(const void *)bytes length:(unint64_t)length;
 - (void)processLine;
-- (void)saveLine:(id)a3;
+- (void)saveLine:(id)line;
 @end
 
 @implementation BLM3U8Parser
 
-- (BLM3U8Parser)initWithURL:(id)a3
+- (BLM3U8Parser)initWithURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:8 error:&v14];
+  v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:8 error:&v14];
   v5 = v14;
   if (!v4)
   {
@@ -43,52 +43,52 @@
   return v11;
 }
 
-- (BLM3U8Parser)initWithData:(id)a3
+- (BLM3U8Parser)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = BLM3U8Parser;
   v6 = [(BLM3U8Parser *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
-    v8 = [MEMORY[0x277CBEB28] data];
+    objc_storeStrong(&v6->_data, data);
+    data = [MEMORY[0x277CBEB28] data];
     bytes = v7->_bytes;
-    v7->_bytes = v8;
+    v7->_bytes = data;
   }
 
   return v7;
 }
 
-- (BOOL)parseWithError:(id *)a3
+- (BOOL)parseWithError:(id *)error
 {
-  v5 = [(BLM3U8Parser *)self error];
+  error = [(BLM3U8Parser *)self error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(BLM3U8Parser *)self error];
-    v7 = v6 != 0;
-    if (a3 && v6)
+    error2 = [(BLM3U8Parser *)self error];
+    v7 = error2 != 0;
+    if (error && error2)
     {
-      v6 = v6;
-      *a3 = v6;
+      error2 = error2;
+      *error = error2;
       v7 = 1;
     }
   }
 
   else
   {
-    v8 = [(BLM3U8Parser *)self data];
+    data = [(BLM3U8Parser *)self data];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_241D6ECB8;
     v12[3] = &unk_278D189E0;
     v12[4] = self;
-    [v8 enumerateByteRangesUsingBlock:v12];
+    [data enumerateByteRangesUsingBlock:v12];
 
-    v9 = [(BLM3U8Parser *)self bytes];
-    v10 = [v9 length];
+    bytes = [(BLM3U8Parser *)self bytes];
+    v10 = [bytes length];
 
     if (v10)
     {
@@ -96,20 +96,20 @@
     }
 
     v7 = 0;
-    v6 = 0;
+    error2 = 0;
   }
 
   return !v7;
 }
 
-- (unint64_t)consumeBytes:(const void *)a3 length:(unint64_t)a4
+- (unint64_t)consumeBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
     v7 = 0;
     while (1)
     {
-      v8 = *(a3 + v7);
+      v8 = *(bytes + v7);
       if (v8 == 10)
       {
         v10 = 1;
@@ -121,60 +121,60 @@
         break;
       }
 
-      if (a4 == ++v7)
+      if (length == ++v7)
       {
         goto LABEL_6;
       }
     }
 
-    if (v7 + 1 < a4 && *(a3 + v7 + 1) == 10)
+    if (v7 + 1 < length && *(bytes + v7 + 1) == 10)
     {
       v10 = 2;
 LABEL_11:
-      v11 = [(BLM3U8Parser *)self bytes];
-      [v11 appendBytes:a3 length:v7];
+      bytes = [(BLM3U8Parser *)self bytes];
+      [bytes appendBytes:bytes length:v7];
 
       [(BLM3U8Parser *)self processLine];
       v7 += v10;
       return v7;
     }
 
-    v12 = [(BLM3U8Parser *)self bytes];
-    [v12 appendBytes:a3 length:v7 - 1];
+    bytes2 = [(BLM3U8Parser *)self bytes];
+    [bytes2 appendBytes:bytes length:v7 - 1];
   }
 
   else
   {
 LABEL_6:
-    v9 = [(BLM3U8Parser *)self bytes];
-    [v9 appendBytes:a3 length:a4];
+    bytes3 = [(BLM3U8Parser *)self bytes];
+    [bytes3 appendBytes:bytes length:length];
 
-    return a4;
+    return length;
   }
 
   return v7;
 }
 
-- (id)parseAttributeList:(id)a3
+- (id)parseAttributeList:(id)list
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v3 length])
+  listCopy = list;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([listCopy length])
   {
     v5 = 0;
     while (1)
     {
-      v6 = [v3 rangeOfString:@"=" options:0 range:{v5, objc_msgSend(v3, "length") - v5}];
+      v6 = [listCopy rangeOfString:@"=" options:0 range:{v5, objc_msgSend(listCopy, "length") - v5}];
       if (v6 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_20;
       }
 
       v7 = v6;
-      v8 = [v3 substringWithRange:{v5, v6 - v5}];
-      v9 = [v3 length];
-      v10 = [v3 rangeOfString:@"" options:0 range:{v7 + 1, v9 + ~v7}];
-      v11 = [v3 rangeOfString:@" options:" range:{0, v7 + 1, v9 + ~v7}];
+      v8 = [listCopy substringWithRange:{v5, v6 - v5}];
+      v9 = [listCopy length];
+      v10 = [listCopy rangeOfString:@"" options:0 range:{v7 + 1, v9 + ~v7}];
+      v11 = [listCopy rangeOfString:@" options:" range:{0, v7 + 1, v9 + ~v7}];
       v12 = v11;
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -186,17 +186,17 @@ LABEL_6:
         goto LABEL_9;
       }
 
-      v14 = [v3 rangeOfString:@" options:0 range:{v10 + 1, objc_msgSend(v3, "length"") - (v10 + 1)}];
+      v14 = [listCopy rangeOfString:@" options:0 range:{v10 + 1, objc_msgSend(listCopy, "length"") - (v10 + 1)}];
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [v3 substringFromIndex:v10 + 1];
+        v13 = [listCopy substringFromIndex:v10 + 1];
       }
 
       else
       {
         v15 = v14;
-        v13 = [v3 substringWithRange:{v10 + 1, v14 + ~v10}];
-        v12 = [v3 rangeOfString:@" options:" range:{0, v15 + 1, objc_msgSend(v3, "length") - (v15 + 1)}];
+        v13 = [listCopy substringWithRange:{v10 + 1, v14 + ~v10}];
+        v12 = [listCopy rangeOfString:@" options:" range:{0, v15 + 1, objc_msgSend(listCopy, "length") - (v15 + 1)}];
       }
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -213,7 +213,7 @@ LABEL_10:
 
 LABEL_12:
 
-      if (v5 >= [v3 length])
+      if (v5 >= [listCopy length])
       {
         goto LABEL_20;
       }
@@ -221,41 +221,41 @@ LABEL_12:
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [v3 substringFromIndex:v7 + 1];
+      v13 = [listCopy substringFromIndex:v7 + 1];
 LABEL_18:
-      v5 = [v3 length];
+      v5 = [listCopy length];
       if (!v8)
       {
         goto LABEL_12;
       }
 
 LABEL_11:
-      [v4 setObject:v13 forKeyedSubscript:v8];
+      [dictionary setObject:v13 forKeyedSubscript:v8];
       goto LABEL_12;
     }
 
 LABEL_9:
-    v13 = [v3 substringWithRange:{v7 + 1, v11 + ~v7}];
+    v13 = [listCopy substringWithRange:{v7 + 1, v11 + ~v7}];
     goto LABEL_10;
   }
 
 LABEL_20:
-  v16 = [v4 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
 - (void)processLine
 {
-  v17 = [(BLM3U8Parser *)self delegate];
-  v3 = [(BLM3U8Parser *)self bytes];
-  v4 = [v3 length];
+  delegate = [(BLM3U8Parser *)self delegate];
+  bytes = [(BLM3U8Parser *)self bytes];
+  v4 = [bytes length];
 
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCACA8]);
-    v6 = [(BLM3U8Parser *)self bytes];
-    v7 = [v5 initWithData:v6 encoding:4];
+    bytes2 = [(BLM3U8Parser *)self bytes];
+    v7 = [v5 initWithData:bytes2 encoding:4];
 
     if ([v7 length])
     {
@@ -287,8 +287,8 @@ LABEL_20:
           }
         }
 
-        [v17 parser:self lineIsTag:v12 value:v11 attributeList:v10];
-        if (-[BLM3U8Parser collectForRewrite](self, "collectForRewrite") && [v17 parserShouldCollectLine:self])
+        [delegate parser:self lineIsTag:v12 value:v11 attributeList:v10];
+        if (-[BLM3U8Parser collectForRewrite](self, "collectForRewrite") && [delegate parserShouldCollectLine:self])
         {
           [(BLM3U8Parser *)self saveLine:v8];
         }
@@ -296,8 +296,8 @@ LABEL_20:
 
       else if ([v7 hasPrefix:@"#"])
       {
-        [v17 parser:self lineIsComment:v7];
-        if (-[BLM3U8Parser collectForRewrite](self, "collectForRewrite") && [v17 parserShouldCollectLine:self])
+        [delegate parser:self lineIsComment:v7];
+        if (-[BLM3U8Parser collectForRewrite](self, "collectForRewrite") && [delegate parserShouldCollectLine:self])
         {
           [(BLM3U8Parser *)self saveLine:v7];
         }
@@ -305,19 +305,19 @@ LABEL_20:
 
       else
       {
-        if (-[BLM3U8Parser collectForRewrite](self, "collectForRewrite") && [v17 parserShouldCollectLine:self])
+        if (-[BLM3U8Parser collectForRewrite](self, "collectForRewrite") && [delegate parserShouldCollectLine:self])
         {
           [(BLM3U8Parser *)self saveLine:v7];
         }
 
         v14 = [MEMORY[0x277CBEBC0] URLWithString:v7];
-        [v17 parser:self lineIsURL:v14];
+        [delegate parser:self lineIsURL:v14];
       }
     }
 
-    v15 = [(BLM3U8Parser *)self bytes];
-    v16 = [(BLM3U8Parser *)self bytes];
-    [v15 replaceBytesInRange:0 withBytes:objc_msgSend(v16 length:{"length"), 0, 0}];
+    bytes3 = [(BLM3U8Parser *)self bytes];
+    bytes4 = [(BLM3U8Parser *)self bytes];
+    [bytes3 replaceBytesInRange:0 withBytes:objc_msgSend(bytes4 length:{"length"), 0, 0}];
   }
 
   else if ([(BLM3U8Parser *)self collectForRewrite])
@@ -326,31 +326,31 @@ LABEL_20:
   }
 }
 
-- (void)saveLine:(id)a3
+- (void)saveLine:(id)line
 {
-  v4 = a3;
-  v5 = [(BLM3U8Parser *)self collectedData];
+  lineCopy = line;
+  collectedData = [(BLM3U8Parser *)self collectedData];
 
-  if (!v5)
+  if (!collectedData)
   {
-    v6 = [MEMORY[0x277CBEB28] data];
-    [(BLM3U8Parser *)self setCollectedData:v6];
+    data = [MEMORY[0x277CBEB28] data];
+    [(BLM3U8Parser *)self setCollectedData:data];
   }
 
-  v7 = [(BLM3U8Parser *)self collectedData];
-  v8 = [v4 UTF8String];
-  v9 = [v4 UTF8String];
+  collectedData2 = [(BLM3U8Parser *)self collectedData];
+  uTF8String = [lineCopy UTF8String];
+  uTF8String2 = [lineCopy UTF8String];
 
-  [v7 appendBytes:v8 length:strlen(v9)];
-  v10 = [(BLM3U8Parser *)self collectedData];
-  [v10 appendBytes:"\n" length:1];
+  [collectedData2 appendBytes:uTF8String length:strlen(uTF8String2)];
+  collectedData3 = [(BLM3U8Parser *)self collectedData];
+  [collectedData3 appendBytes:"\n" length:1];
 }
 
-- (BOOL)rewriteWithURL:(id)a3
+- (BOOL)rewriteWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(BLM3U8Parser *)self collectedData];
-  v6 = [v5 writeToURL:v4 atomically:1];
+  lCopy = l;
+  collectedData = [(BLM3U8Parser *)self collectedData];
+  v6 = [collectedData writeToURL:lCopy atomically:1];
 
   return v6;
 }

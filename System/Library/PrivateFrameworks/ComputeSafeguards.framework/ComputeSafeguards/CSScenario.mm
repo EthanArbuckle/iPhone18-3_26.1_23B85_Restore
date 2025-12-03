@@ -1,45 +1,45 @@
 @interface CSScenario
-- (BOOL)isEqual:(id)a3;
-- (CSScenario)initWithIdentifier:(id)a3 andCriteria:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CSScenario)initWithIdentifier:(id)identifier andCriteria:(id)criteria;
 @end
 
 @implementation CSScenario
 
-- (CSScenario)initWithIdentifier:(id)a3 andCriteria:(id)a4
+- (CSScenario)initWithIdentifier:(id)identifier andCriteria:(id)criteria
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
   v12.receiver = self;
   v12.super_class = CSScenario;
   v9 = [(CSScenario *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_scenarioCriteria, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_scenarioCriteria, criteria);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if ([(CSScenario *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(CSScenario *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
-    v7 = [(CSScenario *)v5 identifier];
-    if ([(NSString *)identifier isEqualToString:v7])
+    identifier = [(CSScenario *)v5 identifier];
+    if ([(NSString *)identifier isEqualToString:identifier])
     {
       scenarioCriteria = self->_scenarioCriteria;
-      v9 = [(CSScenario *)v5 scenarioCriteria];
-      v10 = [(NSDictionary *)scenarioCriteria isEqualToDictionary:v9];
+      scenarioCriteria = [(CSScenario *)v5 scenarioCriteria];
+      v10 = [(NSDictionary *)scenarioCriteria isEqualToDictionary:scenarioCriteria];
     }
 
     else

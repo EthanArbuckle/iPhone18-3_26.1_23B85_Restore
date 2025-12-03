@@ -1,14 +1,14 @@
 @interface DTUVAgentPipeService
-- (id)createExternalService:(id)a3 error:(id *)a4;
+- (id)createExternalService:(id)service error:(id *)error;
 @end
 
 @implementation DTUVAgentPipeService
 
-- (id)createExternalService:(id)a3 error:(id *)a4
+- (id)createExternalService:(id)service error:(id *)error
 {
-  v5 = a3;
-  v6 = DTUVSharedServiceFactory(a4);
-  v7 = [v6 newAgentPipeService:v5 error:a4];
+  serviceCopy = service;
+  v6 = DTUVSharedServiceFactory(error);
+  v7 = [v6 newAgentPipeService:serviceCopy error:error];
 
   return v7;
 }

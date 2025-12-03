@@ -10,8 +10,8 @@
 - (void)_refreshAccessoryStringVisibility;
 - (void)_updateFonts;
 - (void)_updateForParentExpansionOrCollapse;
-- (void)_updateNavigationStateAlpha:(double)a3;
-- (void)configureWithItem:(id)a3;
+- (void)_updateNavigationStateAlpha:(double)alpha;
+- (void)configureWithItem:(id)item;
 - (void)prepareForReuse;
 @end
 
@@ -25,28 +25,28 @@
   [(TransitDirectionsStopStepView *)self _refreshAccessoryStringVisibility];
 }
 
-- (void)_updateNavigationStateAlpha:(double)a3
+- (void)_updateNavigationStateAlpha:(double)alpha
 {
   v6.receiver = self;
   v6.super_class = TransitDirectionsStopStepView;
   [(TransitDirectionsInstructionsStepView *)&v6 _updateNavigationStateAlpha:?];
-  v5 = [(TransitDirectionsStopStepView *)self stationArtworkImageView];
-  [v5 setAlpha:a3];
+  stationArtworkImageView = [(TransitDirectionsStopStepView *)self stationArtworkImageView];
+  [stationArtworkImageView setAlpha:alpha];
 }
 
 - (void)_refreshAccessoryStringVisibility
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
-  v4 = [v3 hideAccessoryStringsWhenCollapsed];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  hideAccessoryStringsWhenCollapsed = [transitListItem hideAccessoryStringsWhenCollapsed];
 
-  if (v4)
+  if (hideAccessoryStringsWhenCollapsed)
   {
-    v5 = [(TransitDirectionsStepView *)self transitListItem];
-    v6 = [v5 parentItem];
+    transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+    parentItem = [transitListItem2 parentItem];
 
-    if ([v6 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
+    if ([parentItem conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
     {
-      v7 = v6;
+      v7 = parentItem;
     }
 
     else
@@ -57,10 +57,10 @@
     v8 = v7;
     if (v8)
     {
-      v9 = v8;
-      v10 = [v8 expanded];
+      attributedText = v8;
+      expanded = [v8 expanded];
 
-      if (!v10)
+      if (!expanded)
       {
         v11 = 1;
         v12 = 1;
@@ -73,13 +73,13 @@
     }
   }
 
-  v6 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-  v9 = [v6 attributedText];
+  parentItem = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  attributedText = [parentItem attributedText];
   v11 = 0;
-  v12 = [v9 length] == 0;
+  v12 = [attributedText length] == 0;
 LABEL_10:
-  v13 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-  [v13 setHidden:v12];
+  primaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  [primaryAccessoryLabel setHidden:v12];
 
   if (v11)
   {
@@ -89,33 +89,33 @@ LABEL_10:
   else
   {
 
-    v16 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-    v6 = [v16 attributedText];
-    v14 = [v6 length] == 0;
+    secondaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+    parentItem = [secondaryAccessoryLabel attributedText];
+    v14 = [parentItem length] == 0;
   }
 
-  v15 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-  [v15 setHidden:v14];
+  secondaryAccessoryLabel2 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+  [secondaryAccessoryLabel2 setHidden:v14];
 
   if ((v11 & 1) == 0)
   {
   }
 }
 
-- (void)configureWithItem:(id)a3
+- (void)configureWithItem:(id)item
 {
   v16.receiver = self;
   v16.super_class = TransitDirectionsStopStepView;
-  v4 = a3;
-  [(TransitDirectionsInstructionsStepView *)&v16 configureWithItem:v4];
-  v5 = [v4 majorStringImage];
+  itemCopy = item;
+  [(TransitDirectionsInstructionsStepView *)&v16 configureWithItem:itemCopy];
+  majorStringImage = [itemCopy majorStringImage];
 
-  [(MKArtworkImageView *)self->_stationArtworkImageView setImageSource:v5];
-  [(MKArtworkImageView *)self->_stationArtworkImageView setHidden:v5 == 0];
-  [v5 size];
+  [(MKArtworkImageView *)self->_stationArtworkImageView setImageSource:majorStringImage];
+  [(MKArtworkImageView *)self->_stationArtworkImageView setHidden:majorStringImage == 0];
+  [majorStringImage size];
   v7 = v6;
-  v8 = [(TransitDirectionsStopStepView *)self traitCollection];
-  if ([v8 userInterfaceIdiom] == 5)
+  traitCollection = [(TransitDirectionsStopStepView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     v9 = 0.850000024;
   }
@@ -126,19 +126,19 @@ LABEL_10:
   }
 
   [(NSLayoutConstraint *)self->_stationArtworkScalingHeightConstraint setConstant:v9 * v7];
-  v10 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-  v11 = [v10 attributedText];
+  primaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  attributedText = [primaryAccessoryLabel attributedText];
 
-  v12 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-  v13 = [v12 attributedText];
+  secondaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+  attributedText2 = [secondaryAccessoryLabel attributedText];
 
-  if (v13 && !v11)
+  if (attributedText2 && !attributedText)
   {
-    v14 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-    [v14 setAttributedText:v13];
+    primaryAccessoryLabel2 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+    [primaryAccessoryLabel2 setAttributedText:attributedText2];
 
-    v15 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-    [v15 setAttributedText:0];
+    secondaryAccessoryLabel2 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+    [secondaryAccessoryLabel2 setAttributedText:0];
   }
 
   [(TransitDirectionsStopStepView *)self _refreshAccessoryStringVisibility];
@@ -146,30 +146,30 @@ LABEL_10:
 
 - (id)_platformArtworkHorizontalPositioningConstraint
 {
-  v4 = [(TransitDirectionsInstructionsStepView *)self cellStyle];
-  if (v4 != 2)
+  cellStyle = [(TransitDirectionsInstructionsStepView *)self cellStyle];
+  if (cellStyle != 2)
   {
-    if (v4 == 1)
+    if (cellStyle == 1)
     {
-      v5 = [(TransitDirectionsInstructionsStepView *)self platformArtworkImageView];
-      v6 = [v5 trailingAnchor];
-      v7 = [(MKArtworkImageView *)self->super.super._iconImageView trailingAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7];
+      platformArtworkImageView = [(TransitDirectionsInstructionsStepView *)self platformArtworkImageView];
+      trailingAnchor = [platformArtworkImageView trailingAnchor];
+      trailingAnchor2 = [(MKArtworkImageView *)self->super.super._iconImageView trailingAnchor];
+      v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v9 = v8;
       v10 = @"platformArtworkTrailingToIconTrailing";
       goto LABEL_6;
     }
 
-    if (v4)
+    if (cellStyle)
     {
       goto LABEL_7;
     }
   }
 
-  v5 = [(TransitDirectionsInstructionsStepView *)self platformArtworkImageView];
-  v6 = [v5 leadingAnchor];
-  v7 = [(MKArtworkImageView *)self->super.super._iconImageView leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  platformArtworkImageView = [(TransitDirectionsInstructionsStepView *)self platformArtworkImageView];
+  trailingAnchor = [platformArtworkImageView leadingAnchor];
+  trailingAnchor2 = [(MKArtworkImageView *)self->super.super._iconImageView leadingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v9 = v8;
   v10 = @"platformArtworkLeadingToIconLeading";
 LABEL_6:
@@ -186,43 +186,43 @@ LABEL_7:
   v5.super_class = TransitDirectionsStopStepView;
   [(TransitDirectionsInstructionsStepView *)&v5 _cellStyleDidChange];
   [(NSLayoutConstraint *)self->_iconToPrimaryLabelConstraint setActive:1];
-  v3 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-  [v3 setNumberOfLines:1];
+  primaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  [primaryAccessoryLabel setNumberOfLines:1];
 
-  v4 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-  [v4 setNumberOfLines:1];
+  secondaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+  [secondaryAccessoryLabel setNumberOfLines:1];
 }
 
 - (double)bottomSpacerHeight
 {
-  v3 = [(TransitDirectionsStepView *)self transitListItem];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
 
-  if (!v3)
+  if (!transitListItem)
   {
     [(TransitDirectionsStepView *)&v14 bottomSpacerHeight:v13.receiver];
     return v10;
   }
 
-  v4 = [(TransitDirectionsStepView *)self transitListItem];
-  v5 = [v4 type];
+  transitListItem2 = [(TransitDirectionsStepView *)self transitListItem];
+  type = [transitListItem2 type];
 
-  if (v5 == 11)
+  if (type == 11)
   {
-    v6 = [(TransitDirectionsStopStepView *)self traitCollection];
-    v7 = [v6 userInterfaceIdiom] == 5;
+    traitCollection = [(TransitDirectionsStopStepView *)self traitCollection];
+    v7 = [traitCollection userInterfaceIdiom] == 5;
     v8 = 32.0;
     v9 = 10.0;
     goto LABEL_7;
   }
 
-  if (v5 != 10)
+  if (type != 10)
   {
     [(TransitDirectionsStepView *)&v13 bottomSpacerHeight:self];
     return v10;
   }
 
-  v6 = [(TransitDirectionsStopStepView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom] == 5;
+  traitCollection = [(TransitDirectionsStopStepView *)self traitCollection];
+  v7 = [traitCollection userInterfaceIdiom] == 5;
   v8 = 11.0;
   v9 = 8.0;
 LABEL_7:
@@ -249,26 +249,26 @@ LABEL_7:
   v14.super_class = TransitDirectionsStopStepView;
   [($29727DC6989B69F22950FCD998EA20D4 *)&v14 _metrics];
   var0 = retstr->var0;
-  v6 = [(TransitDirectionsStepView *)self transitListItem];
-  v7 = [v6 type];
+  transitListItem = [(TransitDirectionsStepView *)self transitListItem];
+  type = [transitListItem type];
 
-  if (v7 == 11)
+  if (type == 11)
   {
-    v8 = [(TransitDirectionsStopStepView *)self traitCollection];
-    v9 = [v8 userInterfaceIdiom] == 5;
+    traitCollection = [(TransitDirectionsStopStepView *)self traitCollection];
+    v9 = [traitCollection userInterfaceIdiom] == 5;
     v10 = 11.0;
     v11 = 13.0;
   }
 
   else
   {
-    if (v7 != 10)
+    if (type != 10)
     {
       goto LABEL_9;
     }
 
-    v8 = [(TransitDirectionsStopStepView *)self traitCollection];
-    v9 = [v8 userInterfaceIdiom] == 5;
+    traitCollection = [(TransitDirectionsStopStepView *)self traitCollection];
+    v9 = [traitCollection userInterfaceIdiom] == 5;
     v10 = 16.0;
     v11 = 4.0;
   }
@@ -289,8 +289,8 @@ LABEL_9:
   result = [(TransitDirectionsIconStepView *)self _indentsLinkMap];
   if (result)
   {
-    v13 = [(TransitDirectionsStopStepView *)self traitCollection];
-    [v13 userInterfaceIdiom];
+    traitCollection2 = [(TransitDirectionsStopStepView *)self traitCollection];
+    [traitCollection2 userInterfaceIdiom];
 
     retstr->var1 = 24.0;
   }
@@ -302,103 +302,103 @@ LABEL_9:
 {
   if ([(TransitDirectionsIconStepView *)self _indentsLinkMap])
   {
-    v3 = [(MKArtworkImageView *)self->super.super._iconImageView centerYAnchor];
-    v4 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-    v5 = [v4 topAnchor];
-    v6 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-    v7 = [v6 font];
-    [v7 _mapkit_lineHeight];
-    v9 = [v3 constraintEqualToAnchor:v5 constant:v8 * 0.5];
+    centerYAnchor = [(MKArtworkImageView *)self->super.super._iconImageView centerYAnchor];
+    primaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+    topAnchor = [primaryLabel topAnchor];
+    primaryLabel2 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+    font = [primaryLabel2 font];
+    [font _mapkit_lineHeight];
+    v9 = [centerYAnchor constraintEqualToAnchor:topAnchor constant:v8 * 0.5];
     v10 = [v9 _maps_withIdentifier:@"iconCenterYToPrimaryLabelTop"];
     iconToPrimaryLabelConstraint = self->_iconToPrimaryLabelConstraint;
     self->_iconToPrimaryLabelConstraint = v10;
 
-    v25 = [(MKArtworkImageView *)self->super.super._iconImageView leadingAnchor];
-    v12 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-    v13 = [v12 leadingAnchor];
-    v14 = [v25 constraintGreaterThanOrEqualToAnchor:v13];
+    leadingAnchor = [(MKArtworkImageView *)self->super.super._iconImageView leadingAnchor];
+    contentLayoutGuide = [(TransitDirectionsStepView *)self contentLayoutGuide];
+    leadingAnchor2 = [contentLayoutGuide leadingAnchor];
+    v14 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v15 = [v14 _maps_withIdentifier:@"iconLeadingToContentLeading"];
     v27[0] = v15;
-    v16 = [(MKArtworkImageView *)self->super.super._iconImageView centerXAnchor];
-    v17 = [(TransitDirectionsStepView *)self contentLayoutGuide];
-    v18 = [v17 leadingAnchor];
-    v19 = [(TransitDirectionsStopStepView *)self traitCollection];
-    [v19 userInterfaceIdiom];
+    centerXAnchor = [(MKArtworkImageView *)self->super.super._iconImageView centerXAnchor];
+    contentLayoutGuide2 = [(TransitDirectionsStepView *)self contentLayoutGuide];
+    leadingAnchor3 = [contentLayoutGuide2 leadingAnchor];
+    traitCollection = [(TransitDirectionsStopStepView *)self traitCollection];
+    [traitCollection userInterfaceIdiom];
 
-    v20 = [v16 constraintEqualToAnchor:v18 constant:10.0];
+    v20 = [centerXAnchor constraintEqualToAnchor:leadingAnchor3 constant:10.0];
     v21 = [v20 _maps_withIdentifier:@"iconCenterXToContentLeading"];
     v22 = self->_iconToPrimaryLabelConstraint;
     v27[1] = v21;
     v27[2] = v22;
-    v23 = [NSArray arrayWithObjects:v27 count:3];
+    _imageViewPositionConstraints = [NSArray arrayWithObjects:v27 count:3];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = TransitDirectionsStopStepView;
-    v23 = [(TransitDirectionsInstructionsStepView *)&v26 _imageViewPositionConstraints];
+    _imageViewPositionConstraints = [(TransitDirectionsInstructionsStepView *)&v26 _imageViewPositionConstraints];
   }
 
-  return v23;
+  return _imageViewPositionConstraints;
 }
 
 - (id)_initialConstraints
 {
   v39.receiver = self;
   v39.super_class = TransitDirectionsStopStepView;
-  v3 = [(TransitDirectionsIconStepView *)&v39 _initialConstraints];
-  v4 = [(MKArtworkImageView *)self->_stationArtworkImageView heightAnchor];
-  v5 = [v4 constraintEqualToConstant:0.0];
+  _initialConstraints = [(TransitDirectionsIconStepView *)&v39 _initialConstraints];
+  heightAnchor = [(MKArtworkImageView *)self->_stationArtworkImageView heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:0.0];
   v6 = [v5 _maps_withIdentifier:@"stationArtworkScaledHeight"];
   stationArtworkScalingHeightConstraint = self->_stationArtworkScalingHeightConstraint;
   self->_stationArtworkScalingHeightConstraint = v6;
 
   LODWORD(v8) = 1148829696;
   [(NSLayoutConstraint *)self->_stationArtworkScalingHeightConstraint setPriority:v8];
-  [v3 addObject:self->_stationArtworkScalingHeightConstraint];
-  v9 = [(MKArtworkImageView *)self->_stationArtworkImageView centerYAnchor];
-  v10 = [(MKArtworkImageView *)self->super.super._iconImageView centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  [_initialConstraints addObject:self->_stationArtworkScalingHeightConstraint];
+  centerYAnchor = [(MKArtworkImageView *)self->_stationArtworkImageView centerYAnchor];
+  centerYAnchor2 = [(MKArtworkImageView *)self->super.super._iconImageView centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v12 = [v11 _maps_withIdentifier:@"stationArtworkCenterYToIconCenterY"];
-  [v3 addObject:v12];
+  [_initialConstraints addObject:v12];
 
-  v13 = [(MKArtworkImageView *)self->_stationArtworkImageView centerXAnchor];
-  v14 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
-  v15 = [v14 centerXAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  centerXAnchor = [(MKArtworkImageView *)self->_stationArtworkImageView centerXAnchor];
+  leadingAccessoryLayoutGuide = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
+  centerXAnchor2 = [leadingAccessoryLayoutGuide centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17 = [v16 _maps_withIdentifier:@"stationArtworkCenterXToLeadingLayoutCenterX"];
-  [v3 addObject:v17];
+  [_initialConstraints addObject:v17];
 
-  v18 = [(MKArtworkImageView *)self->_stationArtworkImageView topAnchor];
-  v19 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v18 constraintGreaterThanOrEqualToAnchor:v20];
+  topAnchor = [(MKArtworkImageView *)self->_stationArtworkImageView topAnchor];
+  leadingAccessoryLayoutGuide2 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
+  topAnchor2 = [leadingAccessoryLayoutGuide2 topAnchor];
+  v21 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v22 = [v21 _maps_withIdentifier:@"stationArtworkTopToLeadingLayoutTop"];
-  [v3 addObject:v22];
+  [_initialConstraints addObject:v22];
 
-  v23 = [(MKArtworkImageView *)self->_stationArtworkImageView leadingAnchor];
-  v24 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
-  v25 = [v24 leadingAnchor];
-  v26 = [v23 constraintGreaterThanOrEqualToAnchor:v25];
+  leadingAnchor = [(MKArtworkImageView *)self->_stationArtworkImageView leadingAnchor];
+  leadingAccessoryLayoutGuide3 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
+  leadingAnchor2 = [leadingAccessoryLayoutGuide3 leadingAnchor];
+  v26 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v27 = [v26 _maps_withIdentifier:@"stationArtworkLeadingToLeadingLayoutLeading"];
-  [v3 addObject:v27];
+  [_initialConstraints addObject:v27];
 
-  v28 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
-  v29 = [v28 trailingAnchor];
-  v30 = [(MKArtworkImageView *)self->_stationArtworkImageView trailingAnchor];
-  v31 = [v29 constraintGreaterThanOrEqualToAnchor:v30];
+  leadingAccessoryLayoutGuide4 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
+  trailingAnchor = [leadingAccessoryLayoutGuide4 trailingAnchor];
+  trailingAnchor2 = [(MKArtworkImageView *)self->_stationArtworkImageView trailingAnchor];
+  v31 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
   v32 = [v31 _maps_withIdentifier:@"leadingLayoutTrailingToStationArtworkTrailing"];
-  [v3 addObject:v32];
+  [_initialConstraints addObject:v32];
 
-  v33 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
-  v34 = [v33 bottomAnchor];
-  v35 = [(MKArtworkImageView *)self->_stationArtworkImageView bottomAnchor];
-  v36 = [v34 constraintGreaterThanOrEqualToAnchor:v35];
+  leadingAccessoryLayoutGuide5 = [(TransitDirectionsStepView *)self leadingAccessoryLayoutGuide];
+  bottomAnchor = [leadingAccessoryLayoutGuide5 bottomAnchor];
+  bottomAnchor2 = [(MKArtworkImageView *)self->_stationArtworkImageView bottomAnchor];
+  v36 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v37 = [v36 _maps_withIdentifier:@"leadingLayoutBottomToStationArtworkBottom"];
-  [v3 addObject:v37];
+  [_initialConstraints addObject:v37];
 
-  return v3;
+  return _initialConstraints;
 }
 
 - (void)_contentSizeCategoryDidChange
@@ -407,9 +407,9 @@ LABEL_9:
   v6.super_class = TransitDirectionsStopStepView;
   [(TransitDirectionsInstructionsStepView *)&v6 _contentSizeCategoryDidChange];
   [(TransitDirectionsStopStepView *)self _updateFonts];
-  v3 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-  v4 = [v3 font];
-  [v4 _mapkit_lineHeight];
+  primaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+  font = [primaryLabel font];
+  [font _mapkit_lineHeight];
   [(NSLayoutConstraint *)self->_iconToPrimaryLabelConstraint setConstant:v5 * 0.5];
 }
 
@@ -425,8 +425,8 @@ LABEL_9:
     +[UIFont system17SemiBold];
   }
   v3 = ;
-  v4 = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
-  [v4 setFont:v3];
+  primaryLabel = [(TransitDirectionsInstructionsStepView *)self primaryLabel];
+  [primaryLabel setFont:v3];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -438,14 +438,14 @@ LABEL_9:
     +[UIFont system15];
   }
   v5 = ;
-  v6 = [(TransitDirectionsInstructionsStepView *)self secondaryLabel];
-  [v6 setFont:v5];
+  secondaryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryLabel];
+  [secondaryLabel setFont:v5];
 
-  v7 = self;
-  if (sub_10000FA08(v7) == 5)
+  selfCopy = self;
+  if (sub_10000FA08(selfCopy) == 5)
   {
-    v8 = [(TransitDirectionsStopStepView *)v7 traitCollection];
-    if ([v8 userInterfaceIdiom] == 5)
+    traitCollection = [(TransitDirectionsStopStepView *)selfCopy traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 5)
     {
       v9 = &UIFontTextStyleBody;
     }
@@ -459,8 +459,8 @@ LABEL_9:
 
     v11 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:v10];
 
-    v12 = [v11 fontDescriptor];
-    v13 = [v12 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
+    fontDescriptor = [v11 fontDescriptor];
+    v13 = [fontDescriptor _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
 
     v14 = [UIFont fontWithDescriptor:v13 size:0.0];
   }
@@ -470,14 +470,14 @@ LABEL_9:
     v14 = +[UIFont system16];
   }
 
-  v15 = [(TransitDirectionsInstructionsStepView *)v7 primaryAccessoryLabel];
-  [v15 setFont:v14];
+  primaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)selfCopy primaryAccessoryLabel];
+  [primaryAccessoryLabel setFont:v14];
 
-  v16 = v7;
+  v16 = selfCopy;
   if (sub_10000FA08(v16) == 5)
   {
-    v17 = [(TransitDirectionsStopStepView *)v16 traitCollection];
-    if ([v17 userInterfaceIdiom] == 5)
+    traitCollection2 = [(TransitDirectionsStopStepView *)v16 traitCollection];
+    if ([traitCollection2 userInterfaceIdiom] == 5)
     {
       v18 = &UIFontTextStyleBody;
     }
@@ -491,8 +491,8 @@ LABEL_9:
 
     v20 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:v19];
 
-    v21 = [v20 fontDescriptor];
-    v22 = [v21 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
+    fontDescriptor2 = [v20 fontDescriptor];
+    v22 = [fontDescriptor2 _mapkit_fontDescriptorByAddingFeaturesForTimeDisplayUseMonospace:1];
 
     v24 = [UIFont fontWithDescriptor:v22 size:0.0];
   }
@@ -502,8 +502,8 @@ LABEL_9:
     v24 = +[UIFont system16];
   }
 
-  v23 = [(TransitDirectionsInstructionsStepView *)v16 secondaryAccessoryLabel];
-  [v23 setFont:v24];
+  secondaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)v16 secondaryAccessoryLabel];
+  [secondaryAccessoryLabel setFont:v24];
 }
 
 - (void)prepareForReuse
@@ -519,9 +519,9 @@ LABEL_9:
   v15.receiver = self;
   v15.super_class = TransitDirectionsStopStepView;
   [(TransitDirectionsInstructionsStepView *)&v15 _createSubviews];
-  v3 = [(TransitDirectionsIconStepView *)self _createImageView];
+  _createImageView = [(TransitDirectionsIconStepView *)self _createImageView];
   stationArtworkImageView = self->_stationArtworkImageView;
-  self->_stationArtworkImageView = v3;
+  self->_stationArtworkImageView = _createImageView;
 
   [(MKArtworkImageView *)self->_stationArtworkImageView setAccessibilityIdentifier:@"StationArtworkImageView"];
   LODWORD(v5) = 1132068864;
@@ -529,21 +529,21 @@ LABEL_9:
   LODWORD(v6) = 1132068864;
   [(MKArtworkImageView *)self->_stationArtworkImageView _mapkit_setContentCompressionResistancePriority:1 forAxis:v6];
   [(TransitDirectionsStopStepView *)self addSubview:self->_stationArtworkImageView];
-  v7 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  primaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
   LODWORD(v8) = 1148829696;
-  [v7 _mapkit_setContentHuggingPriority:0 forAxis:v8];
+  [primaryAccessoryLabel _mapkit_setContentHuggingPriority:0 forAxis:v8];
 
   v9 = +[UIColor secondaryLabelColor];
-  v10 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
-  [v10 setTextColor:v9];
+  primaryAccessoryLabel2 = [(TransitDirectionsInstructionsStepView *)self primaryAccessoryLabel];
+  [primaryAccessoryLabel2 setTextColor:v9];
 
-  v11 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+  secondaryAccessoryLabel = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
   LODWORD(v12) = 1148829696;
-  [v11 _mapkit_setContentHuggingPriority:0 forAxis:v12];
+  [secondaryAccessoryLabel _mapkit_setContentHuggingPriority:0 forAxis:v12];
 
   v13 = +[UIColor tertiaryLabelColor];
-  v14 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
-  [v14 setTextColor:v13];
+  secondaryAccessoryLabel2 = [(TransitDirectionsInstructionsStepView *)self secondaryAccessoryLabel];
+  [secondaryAccessoryLabel2 setTextColor:v13];
 
   [(TransitDirectionsStopStepView *)self _updateFonts];
 }

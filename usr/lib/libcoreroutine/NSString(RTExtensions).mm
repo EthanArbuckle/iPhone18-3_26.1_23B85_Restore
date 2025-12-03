@@ -11,33 +11,33 @@
 
 - (uint64_t)stringByRemovingAllWhitespaceAndPunctuation
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 stringByReplacingOccurrencesOfString:@"[:space:]|[:punct:]" withString:&stru_284528390 options:1024 range:{0, v2}];
+  return [self stringByReplacingOccurrencesOfString:@"[:space:]|[:punct:]" withString:&stru_284528390 options:1024 range:{0, v2}];
 }
 
 - (uint64_t)stringByRemovingAllWhitespace
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 stringByReplacingOccurrencesOfString:@"[:space:]" withString:&stru_284528390 options:1024 range:{0, v2}];
+  return [self stringByReplacingOccurrencesOfString:@"[:space:]" withString:&stru_284528390 options:1024 range:{0, v2}];
 }
 
 - (uint64_t)levenshteinDistanceFromString:()RTExtensions withMaxCutOffDistance:
 {
   v47 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = a1;
-  v8 = [v7 length];
-  if (v8 <= [v6 length] + a4 && (v9 = objc_msgSend(v6, "length"), v9 <= objc_msgSend(v7, "length") + a4))
+  selfCopy = self;
+  v8 = [selfCopy length];
+  if (v8 <= [v6 length] + a4 && (v9 = objc_msgSend(v6, "length"), v9 <= objc_msgSend(selfCopy, "length") + a4))
   {
-    v12 = [v7 length];
+    v12 = [selfCopy length];
     v10 = [v6 length];
     if (v12)
     {
       if (v10)
       {
-        if ([v7 isEqualToString:v6])
+        if ([selfCopy isEqualToString:v6])
         {
           v10 = 0;
         }
@@ -45,9 +45,9 @@
         else
         {
           v41[1] = v41;
-          v13 = (v41 - ((8 * [v7 length] + 23) & 0xFFFFFFFFFFFFFFF0));
-          v46 = v41 - ((8 * [v7 length] + 23) & 0xFFFFFFFFFFFFFFF0);
-          v14 = [v7 length];
+          v13 = (v41 - ((8 * [selfCopy length] + 23) & 0xFFFFFFFFFFFFFFF0));
+          v46 = v41 - ((8 * [selfCopy length] + 23) & 0xFFFFFFFFFFFFFFF0);
+          v14 = [selfCopy length];
           v15 = v14 + 1;
           if (v14 != -1)
           {
@@ -85,9 +85,9 @@
           {
             v40 = v13;
 LABEL_43:
-            if (v40[[v7 length]] <= a4)
+            if (v40[[selfCopy length]] <= a4)
             {
-              v10 = v40[[v7 length]];
+              v10 = v40[[selfCopy length]];
               goto LABEL_4;
             }
           }
@@ -116,11 +116,11 @@ LABEL_43:
 
               v44 = v25;
               v28 = v25 + a4;
-              v29 = [v7 length];
+              v29 = [selfCopy length];
               v45 = v26;
               if (v28 >= v29)
               {
-                v28 = [v7 length];
+                v28 = [selfCopy length];
               }
 
               else
@@ -139,7 +139,7 @@ LABEL_43:
                   v32 = &v45[v27];
                   do
                   {
-                    v33 = [v7 characterAtIndex:v27 - 1];
+                    v33 = [selfCopy characterAtIndex:v27 - 1];
                     v34 = [v6 characterAtIndex:v30];
                     v35 = *(v31 - 1);
                     if (v33 != v34)
@@ -202,7 +202,7 @@ LABEL_43:
 
       else
       {
-        v10 = [v7 length];
+        v10 = [selfCopy length];
       }
     }
   }
@@ -219,7 +219,7 @@ LABEL_4:
 
 - (id)base64EncodedString
 {
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   v2 = [v1 base64EncodedStringWithOptions:0];
 
   return v2;
@@ -228,7 +228,7 @@ LABEL_4:
 - (id)base64DecodedString
 {
   v2 = objc_alloc(MEMORY[0x277CCACA8]);
-  v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:a1 options:0];
+  v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:self options:0];
   v4 = [v2 initWithData:v3 encoding:4];
 
   return v4;
@@ -239,7 +239,7 @@ LABEL_4:
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 dataUsingEncoding:4];
+    v5 = [self dataUsingEncoding:4];
     v6 = [v5 hmacSha1WithKey:v4];
   }
 

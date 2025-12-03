@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFSelectSettingEntryList)selectSettingEntryListValue;
 - (id)formattedValue;
-- (void)setSelectSettingEntryListValue:(id)a3;
+- (void)setSelectSettingEntryListValue:(id)value;
 @end
 
 @implementation CAFSelectSettingEntryListCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSelectSettingEntryListCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFSelectSettingEntryList)selectSettingEntryListValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFSelectSettingEntryList selectSettingEntryListWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFSelectSettingEntryList selectSettingEntryListWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setSelectSettingEntryListValue:(id)a3
+- (void)setSelectSettingEntryListValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFSelectSettingEntryListCharacteristic *)self selectSettingEntryListValue];
-  v3 = [v2 formattedValue];
+  selectSettingEntryListValue = [(CAFSelectSettingEntryListCharacteristic *)self selectSettingEntryListValue];
+  formattedValue = [selectSettingEntryListValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

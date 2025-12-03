@@ -1,60 +1,60 @@
 @interface CMIOExtensionProvider
 + (CMIOExtensionProvider)providerWithSource:(id)source clientQueue:(dispatch_queue_t)clientQueue;
 + (id)internalProperties;
-+ (id)proprietaryDefaultsDomainForAuditToken:(id *)a3;
++ (id)proprietaryDefaultsDomainForAuditToken:(id *)token;
 + (id)sharedProvider;
 + (void)ignoreSIGTERM;
 + (void)startServiceWithProvider:(CMIOExtensionProvider *)provider;
-+ (void)stopServiceWithProvider:(id)a3;
++ (void)stopServiceWithProvider:(id)provider;
 - (BOOL)addDevice:(CMIOExtensionDevice *)device error:(NSError *)outError;
-- (BOOL)registerDevice:(id)a3 error:(id *)a4;
-- (BOOL)registerStream:(id)a3 withDeviceID:(id)a4 error:(id *)a5;
+- (BOOL)registerDevice:(id)device error:(id *)error;
+- (BOOL)registerStream:(id)stream withDeviceID:(id)d error:(id *)error;
 - (BOOL)removeDevice:(CMIOExtensionDevice *)device error:(NSError *)outError;
-- (BOOL)unregisterDevice:(id)a3 error:(id *)a4;
-- (BOOL)unregisterStream:(id)a3 withDeviceID:(id)a4 notify:(BOOL)a5 error:(id *)a6;
+- (BOOL)unregisterDevice:(id)device error:(id *)error;
+- (BOOL)unregisterStream:(id)stream withDeviceID:(id)d notify:(BOOL)notify error:(id *)error;
 - (CMIOExtensionProvider)initWithSource:(id)source clientQueue:(dispatch_queue_t)clientQueue;
 - (NSArray)connectedClients;
 - (NSArray)devices;
-- (id)_clientQueue_internalPropertyStatesForProperties:(id)a3;
+- (id)_clientQueue_internalPropertyStatesForProperties:(id)properties;
 - (id)description;
-- (int)_clientQueue_pendingStartStreamCountForClient:(id)a3 streamID:(id)a4;
-- (void)_addAvailablePropertyStatesForDevice:(id)a3 toDictionary:(id)a4;
-- (void)_clientQueue_decrementPendingStreamStartCountForClientID:(id)a3 streamID:(id)a4;
-- (void)_clientQueue_incrementPendingStartStreamCountForClientID:(id)a3 streamID:(id)a4;
-- (void)_clientQueue_notifyDevicePropertiesChangedWithDeviceID:(id)a3 propertyStates:(id)a4;
-- (void)_clientQueue_notifyIsRunningSomewhereForStream:(id)a3;
-- (void)_clientQueue_notifyStreamPropertiesChangedWithStreamID:(id)a3 propertyStates:(id)a4;
-- (void)_clientQueue_removePendingStartStreamCountForClient:(id)a3 streamID:(id)a4;
-- (void)_clientQueue_sendSampleForStream:(id)a3 sample:(id)a4;
-- (void)_clientQueue_startStreamForClientID:(id)a3 streamID:(id)a4 requestAudio:(BOOL)a5 requestVideo:(BOOL)a6 reply:(id)a7;
-- (void)_performDeferredStreamStartsForClient:(id)a3 streamID:(id)a4 requestVideo:(BOOL)a5 requestAudio:(BOOL)a6;
-- (void)availableDevicePropertiesForClientID:(id)a3 deviceID:(id)a4 reply:(id)a5;
-- (void)availablePluginPropertiesForClientID:(id)a3 reply:(id)a4;
-- (void)availableStreamPropertiesForClientID:(id)a3 streamID:(id)a4 reply:(id)a5;
-- (void)beginProviderContextRegistration:(id)a3;
-- (void)captureAsyncStillImageForClientID:(id)a3 streamID:(id)a4 uniqueID:(int64_t)a5 options:(id)a6 reply:(id)a7;
-- (void)consumeSampleBufferForStream:(id)a3 client:(id)a4 reply:(id)a5;
+- (int)_clientQueue_pendingStartStreamCountForClient:(id)client streamID:(id)d;
+- (void)_addAvailablePropertyStatesForDevice:(id)device toDictionary:(id)dictionary;
+- (void)_clientQueue_decrementPendingStreamStartCountForClientID:(id)d streamID:(id)iD;
+- (void)_clientQueue_incrementPendingStartStreamCountForClientID:(id)d streamID:(id)iD;
+- (void)_clientQueue_notifyDevicePropertiesChangedWithDeviceID:(id)d propertyStates:(id)states;
+- (void)_clientQueue_notifyIsRunningSomewhereForStream:(id)stream;
+- (void)_clientQueue_notifyStreamPropertiesChangedWithStreamID:(id)d propertyStates:(id)states;
+- (void)_clientQueue_removePendingStartStreamCountForClient:(id)client streamID:(id)d;
+- (void)_clientQueue_sendSampleForStream:(id)stream sample:(id)sample;
+- (void)_clientQueue_startStreamForClientID:(id)d streamID:(id)iD requestAudio:(BOOL)audio requestVideo:(BOOL)video reply:(id)reply;
+- (void)_performDeferredStreamStartsForClient:(id)client streamID:(id)d requestVideo:(BOOL)video requestAudio:(BOOL)audio;
+- (void)availableDevicePropertiesForClientID:(id)d deviceID:(id)iD reply:(id)reply;
+- (void)availablePluginPropertiesForClientID:(id)d reply:(id)reply;
+- (void)availableStreamPropertiesForClientID:(id)d streamID:(id)iD reply:(id)reply;
+- (void)beginProviderContextRegistration:(id)registration;
+- (void)captureAsyncStillImageForClientID:(id)d streamID:(id)iD uniqueID:(int64_t)uniqueID options:(id)options reply:(id)reply;
+- (void)consumeSampleBufferForStream:(id)stream client:(id)client reply:(id)reply;
 - (void)dealloc;
-- (void)devicePropertyStatesForClientID:(id)a3 deviceID:(id)a4 properties:(id)a5 reply:(id)a6;
-- (void)deviceStatesForClientID:(id)a3 deviceID:(id)a4 reply:(id)a5;
-- (void)enqueueReactionEffectForClientID:(id)a3 streamID:(id)a4 reactionType:(id)a5 reply:(id)a6;
-- (void)finishProviderContextRegistration:(id)a3;
-- (void)notifyAvailableDevicesChanged:(id)a3;
-- (void)notifyAvailableStreamsChangedWithDeviceID:(id)a3 streamIDs:(id)a4;
+- (void)devicePropertyStatesForClientID:(id)d deviceID:(id)iD properties:(id)properties reply:(id)reply;
+- (void)deviceStatesForClientID:(id)d deviceID:(id)iD reply:(id)reply;
+- (void)enqueueReactionEffectForClientID:(id)d streamID:(id)iD reactionType:(id)type reply:(id)reply;
+- (void)finishProviderContextRegistration:(id)registration;
+- (void)notifyAvailableDevicesChanged:(id)changed;
+- (void)notifyAvailableStreamsChangedWithDeviceID:(id)d streamIDs:(id)ds;
 - (void)notifyPropertiesChanged:(NSDictionary *)propertyStates;
-- (void)notifyScheduledOutputChangedForStream:(id)a3 scheduledOutput:(id)a4;
-- (void)pluginPropertyStatesForClientID:(id)a3 properties:(id)a4 reply:(id)a5;
-- (void)pluginStatesForClientID:(id)a3 reply:(id)a4;
+- (void)notifyScheduledOutputChangedForStream:(id)stream scheduledOutput:(id)output;
+- (void)pluginPropertyStatesForClientID:(id)d properties:(id)properties reply:(id)reply;
+- (void)pluginStatesForClientID:(id)d reply:(id)reply;
 - (void)removeAllProviderContexts;
-- (void)removeProviderContext:(id)a3;
-- (void)setConnectedClients:(id)a3;
-- (void)setDevicePropertyValuesForClientID:(id)a3 deviceID:(id)a4 propertyValues:(id)a5 reply:(id)a6;
-- (void)setPluginPropertyValuesForClientID:(id)a3 propertyValues:(id)a4 reply:(id)a5;
-- (void)setStreamPropertyValuesForClientID:(id)a3 streamID:(id)a4 propertyValues:(id)a5 reply:(id)a6;
-- (void)startStreamForClientID:(id)a3 streamID:(id)a4 reply:(id)a5;
-- (void)stopStreamForClientID:(id)a3 streamID:(id)a4 reply:(id)a5;
-- (void)streamPropertyStatesForClientID:(id)a3 streamID:(id)a4 properties:(id)a5 reply:(id)a6;
-- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)a3;
+- (void)removeProviderContext:(id)context;
+- (void)setConnectedClients:(id)clients;
+- (void)setDevicePropertyValuesForClientID:(id)d deviceID:(id)iD propertyValues:(id)values reply:(id)reply;
+- (void)setPluginPropertyValuesForClientID:(id)d propertyValues:(id)values reply:(id)reply;
+- (void)setStreamPropertyValuesForClientID:(id)d streamID:(id)iD propertyValues:(id)values reply:(id)reply;
+- (void)startStreamForClientID:(id)d streamID:(id)iD reply:(id)reply;
+- (void)stopStreamForClientID:(id)d streamID:(id)iD reply:(id)reply;
+- (void)streamPropertyStatesForClientID:(id)d streamID:(id)iD properties:(id)properties reply:(id)reply;
+- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)ds;
 @end
 
 @implementation CMIOExtensionProvider
@@ -305,7 +305,7 @@ uint64_t __43__CMIOExtensionProvider_internalProperties__block_invoke()
   v30 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
   v5 = +[CMIOExtensionProvider sharedProvider];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
   v7 = CMIOLog();
   if (v7)
   {
@@ -321,7 +321,7 @@ uint64_t __43__CMIOExtensionProvider_internalProperties__block_invoke()
       v22 = 2048;
       v23 = provider;
       v24 = 2112;
-      v25 = [v6 bundleIdentifier];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       v26 = 2048;
       v27 = v5;
       v28 = 1024;
@@ -336,7 +336,7 @@ uint64_t __43__CMIOExtensionProvider_internalProperties__block_invoke()
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Invalid provider."];
   }
 
-  v10 = [v6 objectForInfoDictionaryKey:@"CMIOExtension"];
+  v10 = [mainBundle objectForInfoDictionaryKey:@"CMIOExtension"];
   if (!v10 || (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![v11 count])
   {
     [MEMORY[0x277CBEAD8] raise:*v9 format:@"CMIOExtension information dictionary missing from the Info.plist."];
@@ -416,7 +416,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)stopServiceWithProvider:(id)a3
++ (void)stopServiceWithProvider:(id)provider
 {
   v42 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
@@ -434,7 +434,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v34 = 2080;
       v35 = "+[CMIOExtensionProvider stopServiceWithProvider:]";
       v36 = 2048;
-      v37 = a3;
+      providerCopy2 = provider;
       v38 = 2048;
       v39 = v5;
       v40 = 1024;
@@ -443,7 +443,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
     }
   }
 
-  if (v5 != a3)
+  if (v5 != provider)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Invalid provider."];
   }
@@ -462,12 +462,12 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v34 = 2080;
       v35 = "+[CMIOExtensionProvider stopServiceWithProvider:]";
       v36 = 2112;
-      v37 = a3;
+      providerCopy2 = provider;
       _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s removing all contexts from %@", &v30, 0x26u);
     }
   }
 
-  [a3 removeAllProviderContexts];
+  [provider removeAllProviderContexts];
   v11 = CMIOLog();
   if (v11)
   {
@@ -483,7 +483,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v34 = 2080;
       v35 = "+[CMIOExtensionProvider stopServiceWithProvider:]";
       v36 = 2112;
-      v37 = v14;
+      providerCopy2 = v14;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s stopping shared server %@", &v30, 0x26u);
     }
   }
@@ -504,7 +504,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v34 = 2080;
       v35 = "+[CMIOExtensionProvider stopServiceWithProvider:]";
       v36 = 2112;
-      v37 = v18;
+      providerCopy2 = v18;
       _os_log_impl(&dword_22EA08000, v16, OS_LOG_TYPE_DEFAULT, "%s:%d:%s shared server %@ has been stopped", &v30, 0x26u);
     }
   }
@@ -524,7 +524,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v34 = 2080;
       v35 = "+[CMIOExtensionProvider stopServiceWithProvider:]";
       v36 = 2048;
-      v37 = v5;
+      providerCopy2 = v5;
       v38 = 1024;
       LODWORD(v39) = v22;
       _os_log_impl(&dword_22EA08000, v20, OS_LOG_TYPE_DEFAULT, "%s:%d:%s releasing shared provider reference %p (its retain count is %d)", &v30, 0x2Cu);
@@ -605,11 +605,11 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
   return v3;
 }
 
-- (void)setConnectedClients:(id)a3
+- (void)setConnectedClients:(id)clients
 {
   os_unfair_lock_lock(&self->_connectedClientsLock);
   connectedClients = self->_connectedClients;
-  self->_connectedClients = a3;
+  self->_connectedClients = clients;
   os_unfair_lock_unlock(&self->_connectedClientsLock);
 }
 
@@ -629,7 +629,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v12 = 2080;
       v13 = "[CMIOExtensionProvider devices]";
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v8, 0x26u);
     }
   }
@@ -658,7 +658,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
       v30 = 2080;
       v31 = "[CMIOExtensionProvider addDevice:error:]";
       v32 = 2112;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = device;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
@@ -711,7 +711,7 @@ void __50__CMIOExtensionProvider_startServiceWithProvider___block_invoke_2()
         v30 = 2080;
         v31 = "[CMIOExtensionProvider addDevice:error:]";
         v32 = 2114;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2114;
         v35 = device;
         _os_log_impl(&dword_22EA08000, v19, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, %{public}@", buf, 0x30u);
@@ -784,7 +784,7 @@ LABEL_23:
       v30 = 2080;
       v31 = "[CMIOExtensionProvider removeDevice:error:]";
       v32 = 2112;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = device;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
@@ -870,7 +870,7 @@ LABEL_21:
       v30 = 2080;
       v31 = "[CMIOExtensionProvider removeDevice:error:]";
       v32 = 2114;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2114;
       v35 = device;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, %{public}@", buf, 0x30u);
@@ -900,7 +900,7 @@ LABEL_22:
       v14 = 2080;
       v15 = "[CMIOExtensionProvider notifyPropertiesChanged:]";
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = propertyStates;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, propertyStates %@", buf, 0x30u);
@@ -982,16 +982,16 @@ void __49__CMIOExtensionProvider_notifyPropertiesChanged___block_invoke(uint64_t
       v21 = 2080;
       v22 = "[CMIOExtensionProvider removeAllProviderContexts]";
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
     }
   }
 
   os_unfair_lock_lock(&self->_contextsMapLock);
-  v5 = [(NSMutableDictionary *)self->_contextsMap allValues];
-  if ([v5 count])
+  allValues = [(NSMutableDictionary *)self->_contextsMap allValues];
+  if ([allValues count])
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v5];
+    v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:allValues];
   }
 
   else
@@ -1032,7 +1032,7 @@ void __49__CMIOExtensionProvider_notifyPropertiesChanged___block_invoke(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)proprietaryDefaultsDomainForAuditToken:(id *)a3
++ (id)proprietaryDefaultsDomainForAuditToken:(id *)token
 {
   v93 = *MEMORY[0x277D85DE8];
   v76 = 0;
@@ -1047,8 +1047,8 @@ void __49__CMIOExtensionProvider_notifyPropertiesChanged___block_invoke(uint64_t
     +[CMIOExtensionProvider proprietaryDefaultsDomainForAuditToken:];
   }
 
-  v4 = *&a3->var0[4];
-  *atoken = *a3->var0;
+  v4 = *&token->var0[4];
+  *atoken = *token->var0;
   *&atoken[16] = v4;
   v71 = audit_token_to_pid(atoken);
   v72 = [MEMORY[0x277CCABB0] numberWithInt:v71];
@@ -1076,8 +1076,8 @@ void __49__CMIOExtensionProvider_notifyPropertiesChanged___block_invoke(uint64_t
           _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] client is a secure capture extension, looking up containing app", atoken, 0x22u);
         }
 
-        v14 = *&a3->var0[4];
-        *atoken = *a3->var0;
+        v14 = *&token->var0[4];
+        *atoken = *token->var0;
         *&atoken[16] = v14;
         v15 = [MEMORY[0x277CC1E90] bundleRecordForAuditToken:atoken error:&v76];
         if (v15)
@@ -1147,8 +1147,8 @@ void __49__CMIOExtensionProvider_notifyPropertiesChanged___block_invoke(uint64_t
     if (sResponsibleIdentityForAuditTokenIsSupported == 1)
     {
       STExecutableIdentityResolverClass = getSTExecutableIdentityResolverClass();
-      v21 = *&a3->var0[4];
-      *atoken = *a3->var0;
+      v21 = *&token->var0[4];
+      *atoken = *token->var0;
       *&atoken[16] = v21;
       v18 = [STExecutableIdentityResolverClass responsibleIdentityForAuditToken:atoken];
 LABEL_25:
@@ -1172,11 +1172,11 @@ LABEL_36:
         _os_log_impl(&dword_22EA08000, v29, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] resolvedIdentity: %{private}@", atoken, 0x2Cu);
       }
 
-      v31 = [v22 bundleIdentifier];
-      if (!v31)
+      bundleIdentifier = [v22 bundleIdentifier];
+      if (!bundleIdentifier)
       {
-        v32 = [v22 executablePath];
-        if (!v32)
+        executablePath = [v22 executablePath];
+        if (!executablePath)
         {
           goto LABEL_45;
         }
@@ -1195,12 +1195,12 @@ LABEL_36:
           *&atoken[28] = 1025;
           *&atoken[30] = v71;
           *&atoken[34] = 2113;
-          *&atoken[36] = v32;
+          *&atoken[36] = executablePath;
           _os_log_impl(&dword_22EA08000, v34, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] falling back to using last part of the executable's path %{private}@", atoken, 0x2Cu);
         }
 
-        v31 = [objc_msgSend(v32 componentsSeparatedByString:{@"/", "lastObject"}];
-        if (!v31)
+        bundleIdentifier = [objc_msgSend(executablePath componentsSeparatedByString:{@"/", "lastObject"}];
+        if (!bundleIdentifier)
         {
 LABEL_45:
           v36 = CMIOLog();
@@ -1209,11 +1209,11 @@ LABEL_45:
             +[CMIOExtensionProvider proprietaryDefaultsDomainForAuditToken:];
           }
 
-          v31 = @"unknown";
+          bundleIdentifier = @"unknown";
         }
       }
 
-      if (([(__CFString *)v31 isEqualToString:@"avconferenced"]& 1) != 0 || ([(__CFString *)v31 isEqualToString:@"com.apple.avconferenced"]& 1) != 0 || ([(__CFString *)v31 isEqualToString:@"com.apple.InCallService"]& 1) != 0 || ([(__CFString *)v31 isEqualToString:@"com.apple.FaceTime.FaceTimeNotificationCenterService"]& 1) != 0 || [(__CFString *)v31 isEqualToString:@"com.apple.TelephonyUtilities"])
+      if (([(__CFString *)bundleIdentifier isEqualToString:@"avconferenced"]& 1) != 0 || ([(__CFString *)bundleIdentifier isEqualToString:@"com.apple.avconferenced"]& 1) != 0 || ([(__CFString *)bundleIdentifier isEqualToString:@"com.apple.InCallService"]& 1) != 0 || ([(__CFString *)bundleIdentifier isEqualToString:@"com.apple.FaceTime.FaceTimeNotificationCenterService"]& 1) != 0 || [(__CFString *)bundleIdentifier isEqualToString:@"com.apple.TelephonyUtilities"])
       {
         v37 = CMIOLog();
         v38 = v37;
@@ -1235,7 +1235,7 @@ LABEL_45:
           *&atoken[28] = 1025;
           *&atoken[30] = v71;
           *&atoken[34] = 2113;
-          *&atoken[36] = v31;
+          *&atoken[36] = bundleIdentifier;
           *&atoken[44] = 2113;
           *&atoken[46] = @"com.apple.FaceTime";
           goto LABEL_57;
@@ -1245,7 +1245,7 @@ LABEL_45:
         goto LABEL_59;
       }
 
-      if (([(__CFString *)v31 isEqualToString:@"com.cisco.webexmeetingsapp"]& 1) != 0 || ([(__CFString *)v31 isEqualToString:@"Cisco-Systems-Spark"]& 1) != 0 || [(__CFString *)v31 isEqualToString:@"Cisco-Systems.Spark"])
+      if (([(__CFString *)bundleIdentifier isEqualToString:@"com.cisco.webexmeetingsapp"]& 1) != 0 || ([(__CFString *)bundleIdentifier isEqualToString:@"Cisco-Systems-Spark"]& 1) != 0 || [(__CFString *)bundleIdentifier isEqualToString:@"Cisco-Systems.Spark"])
       {
         v68 = CMIOLog();
         v38 = v68;
@@ -1270,7 +1270,7 @@ LABEL_59:
           *&atoken[28] = 1025;
           *&atoken[30] = v71;
           *&atoken[34] = 2113;
-          *&atoken[36] = v31;
+          *&atoken[36] = bundleIdentifier;
           *&atoken[44] = 2113;
           *&atoken[46] = @"com.webex.meetingmanager";
 LABEL_57:
@@ -1280,7 +1280,7 @@ LABEL_57:
 
       else
       {
-        v70 = v31;
+        v70 = bundleIdentifier;
       }
 
 LABEL_60:
@@ -1337,8 +1337,8 @@ LABEL_62:
         }
 
         v46 = *(*(&v77 + 1) + 8 * v45);
-        v47 = [v46 intValue];
-        if (v47 < 2)
+        intValue = [v46 intValue];
+        if (intValue < 2)
         {
 LABEL_68:
           if (!UpTimeNanoseconds)
@@ -1361,7 +1361,7 @@ LABEL_68:
               v87 = 2080;
               v88 = "cmioep_pruneStalePIDsFromDictionary";
               v89 = 1025;
-              v90 = v47;
+              v90 = intValue;
               v91 = 2048;
               v92 = v49;
               _os_log_impl(&dword_22EA08000, v51, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] keeping stale pid because it was accessed %lld seconds ago", buf, 0x2Cu);
@@ -1380,7 +1380,7 @@ LABEL_68:
               v87 = 2080;
               v88 = "cmioep_pruneStalePIDsFromDictionary";
               v89 = 1025;
-              v90 = v47;
+              v90 = intValue;
               v91 = 2048;
               v92 = v49;
               _os_log_impl(&dword_22EA08000, v51, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] dropping stale pid; last accessed %lld seconds ago", buf, 0x2Cu);
@@ -1394,7 +1394,7 @@ LABEL_68:
         }
 
         v81 = 0;
-        v48 = [MEMORY[0x277D46F48] handleForIdentifier:objc_msgSend(MEMORY[0x277D46F50] error:{"identifierWithPid:", v47), &v81}];
+        v48 = [MEMORY[0x277D46F48] handleForIdentifier:objc_msgSend(MEMORY[0x277D46F50] error:{"identifierWithPid:", intValue), &v81}];
         if (!v81)
         {
           break;
@@ -1417,7 +1417,7 @@ LABEL_68:
           v87 = 2080;
           v88 = "cmioep_pidIsValid";
           v89 = 1024;
-          v90 = v47;
+          v90 = intValue;
           v91 = 2112;
           v92 = v81;
           v57 = v60;
@@ -1460,7 +1460,7 @@ LABEL_84:
       v87 = 2080;
       v88 = "cmioep_pidIsValid";
       v89 = 1024;
-      v90 = v47;
+      v90 = intValue;
       v91 = 2112;
       v92 = v81;
       v57 = v55;
@@ -1556,7 +1556,7 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
   return result;
 }
 
-- (id)_clientQueue_internalPropertyStatesForProperties:(id)a3
+- (id)_clientQueue_internalPropertyStatesForProperties:(id)properties
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -1572,14 +1572,14 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
       v26 = 2080;
       v27 = "[CMIOExtensionProvider _clientQueue_internalPropertyStatesForProperties:]";
       v28 = 2112;
-      v29 = self;
+      selfCopy = self;
       v30 = 2112;
-      v31 = a3;
+      propertiesCopy = properties;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, properties %@", buf, 0x30u);
     }
   }
 
-  if (a3 && ![a3 containsObject:0x284358D78])
+  if (properties && ![properties containsObject:0x284358D78])
   {
     v14 = 0;
   }
@@ -1591,8 +1591,8 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(CMIOExtensionProvider *)self devices];
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    devices = [(CMIOExtensionProvider *)self devices];
+    v9 = [(NSArray *)devices countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1604,14 +1604,14 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(devices);
           }
 
           [v7 addObject:{objc_msgSend(objc_msgSend(*(*(&v17 + 1) + 8 * v12++), "deviceID"), "UUIDString")}];
         }
 
         while (v10 != v12);
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [(NSArray *)devices countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -1626,7 +1626,7 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
   return v14;
 }
 
-- (void)beginProviderContextRegistration:(id)a3
+- (void)beginProviderContextRegistration:(id)registration
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -1642,9 +1642,9 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
       v14 = 2080;
       v15 = "[CMIOExtensionProvider beginProviderContextRegistration:]";
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = a3;
+      registrationCopy = registration;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -1655,12 +1655,12 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
   v9[2] = __58__CMIOExtensionProvider_beginProviderContextRegistration___block_invoke;
   v9[3] = &unk_27885B938;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = registration;
   dispatch_async(clientQueue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishProviderContextRegistration:(id)a3
+- (void)finishProviderContextRegistration:(id)registration
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -1676,9 +1676,9 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
       v14 = 2080;
       v15 = "[CMIOExtensionProvider finishProviderContextRegistration:]";
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = a3;
+      registrationCopy = registration;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -1689,7 +1689,7 @@ uint64_t __64__CMIOExtensionProvider_proprietaryDefaultsDomainForAuditToken___bl
   v9[2] = __59__CMIOExtensionProvider_finishProviderContextRegistration___block_invoke;
   v9[3] = &unk_27885B938;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = registration;
   dispatch_async(clientQueue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1811,7 +1811,7 @@ uint64_t __59__CMIOExtensionProvider_finishProviderContextRegistration___block_i
   return result;
 }
 
-- (void)removeProviderContext:(id)a3
+- (void)removeProviderContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -1827,9 +1827,9 @@ uint64_t __59__CMIOExtensionProvider_finishProviderContextRegistration___block_i
       v14 = 2080;
       v15 = "[CMIOExtensionProvider removeProviderContext:]";
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = a3;
+      contextCopy = context;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -1840,7 +1840,7 @@ uint64_t __59__CMIOExtensionProvider_finishProviderContextRegistration___block_i
   v9[2] = __47__CMIOExtensionProvider_removeProviderContext___block_invoke;
   v9[3] = &unk_27885B938;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = context;
   dispatch_async_and_wait(clientQueue, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -2018,7 +2018,7 @@ uint64_t __47__CMIOExtensionProvider_removeProviderContext___block_invoke(uint64
   return result;
 }
 
-- (BOOL)registerDevice:(id)a3 error:(id *)a4
+- (BOOL)registerDevice:(id)device error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2034,28 +2034,28 @@ uint64_t __47__CMIOExtensionProvider_removeProviderContext___block_invoke(uint64
       v21 = 2080;
       v22 = "[CMIOExtensionProvider registerDevice:error:]";
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = a3;
+      deviceCopy = device;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_devicesMapLock);
-  if (!-[NSMutableDictionary objectForKey:](self->_devicesMap, "objectForKey:", [a3 deviceID]))
+  if (!-[NSMutableDictionary objectForKey:](self->_devicesMap, "objectForKey:", [device deviceID]))
   {
-    -[NSMutableDictionary setObject:forKey:](self->_devicesMap, "setObject:forKey:", a3, [a3 deviceID]);
-    v13 = [(NSMutableDictionary *)self->_devicesMap allKeys];
+    -[NSMutableDictionary setObject:forKey:](self->_devicesMap, "setObject:forKey:", device, [device deviceID]);
+    allKeys = [(NSMutableDictionary *)self->_devicesMap allKeys];
     os_unfair_lock_unlock(&self->_devicesMapLock);
-    if ([a3 didRegister:a4])
+    if ([device didRegister:error])
     {
-      [(CMIOExtensionProvider *)self notifyAvailableDevicesChanged:v13];
+      [(CMIOExtensionProvider *)self notifyAvailableDevicesChanged:allKeys];
       result = 1;
       goto LABEL_13;
     }
 
     os_unfair_lock_lock(&self->_devicesMapLock);
-    -[NSMutableDictionary removeObjectForKey:](self->_devicesMap, "removeObjectForKey:", [a3 deviceID]);
+    -[NSMutableDictionary removeObjectForKey:](self->_devicesMap, "removeObjectForKey:", [device deviceID]);
     os_unfair_lock_unlock(&self->_devicesMapLock);
     goto LABEL_12;
   }
@@ -2065,7 +2065,7 @@ uint64_t __47__CMIOExtensionProvider_removeProviderContext___block_invoke(uint64
   if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     [CMIOExtensionProvider registerDevice:error:];
-    if (a4)
+    if (error)
     {
       goto LABEL_8;
     }
@@ -2075,7 +2075,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -2086,13 +2086,13 @@ LABEL_8:
   v16 = @"deviceID already included";
   v11 = [MEMORY[0x277CCA9B8] errorWithDomain:v10 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}];
   result = 0;
-  *a4 = v11;
+  *error = v11;
 LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)unregisterDevice:(id)a3 error:(id *)a4
+- (BOOL)unregisterDevice:(id)device error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2108,15 +2108,15 @@ LABEL_13:
       v21 = 2080;
       v22 = "[CMIOExtensionProvider unregisterDevice:error:]";
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = a3;
+      deviceCopy = device;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_devicesMapLock);
-  v9 = -[NSMutableDictionary objectForKey:](self->_devicesMap, "objectForKey:", [a3 deviceID]);
+  v9 = -[NSMutableDictionary objectForKey:](self->_devicesMap, "objectForKey:", [device deviceID]);
   if (!v9)
   {
     os_unfair_lock_unlock(&self->_devicesMapLock);
@@ -2124,13 +2124,13 @@ LABEL_13:
     if (v11 && os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       [CMIOExtensionProvider unregisterDevice:error:];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
@@ -2138,22 +2138,22 @@ LABEL_13:
     v12 = *MEMORY[0x277CCA590];
     v15 = *MEMORY[0x277CCA450];
     v16 = @"deviceID not registered";
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:v12 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}];
     goto LABEL_10;
   }
 
-  -[NSMutableDictionary removeObjectForKey:](self->_devicesMap, "removeObjectForKey:", [a3 deviceID]);
-  v10 = [(NSMutableDictionary *)self->_devicesMap allKeys];
+  -[NSMutableDictionary removeObjectForKey:](self->_devicesMap, "removeObjectForKey:", [device deviceID]);
+  allKeys = [(NSMutableDictionary *)self->_devicesMap allKeys];
   os_unfair_lock_unlock(&self->_devicesMapLock);
-  [a3 didUnregister];
-  [(CMIOExtensionProvider *)self notifyAvailableDevicesChanged:v10];
+  [device didUnregister];
+  [(CMIOExtensionProvider *)self notifyAvailableDevicesChanged:allKeys];
 LABEL_10:
   result = v9 != 0;
   v14 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)registerStream:(id)a3 withDeviceID:(id)a4 error:(id *)a5
+- (BOOL)registerStream:(id)stream withDeviceID:(id)d error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(1);
@@ -2169,21 +2169,21 @@ LABEL_10:
       v23 = 2080;
       v24 = "[CMIOExtensionProvider registerStream:withDeviceID:error:]";
       v25 = 2112;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
-      v28 = a3;
+      streamCopy = stream;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_streamsMapLock);
-  v11 = -[NSMutableDictionary objectForKey:](self->_streamsMap, "objectForKey:", [a3 streamID]);
+  v11 = -[NSMutableDictionary objectForKey:](self->_streamsMap, "objectForKey:", [stream streamID]);
   if (!v11)
   {
-    -[NSMutableDictionary setObject:forKey:](self->_streamsMap, "setObject:forKey:", a3, [a3 streamID]);
-    v14 = [(NSMutableDictionary *)self->_streamsMap allKeys];
+    -[NSMutableDictionary setObject:forKey:](self->_streamsMap, "setObject:forKey:", stream, [stream streamID]);
+    allKeys = [(NSMutableDictionary *)self->_streamsMap allKeys];
     os_unfair_lock_unlock(&self->_streamsMapLock);
-    [(CMIOExtensionProvider *)self notifyAvailableStreamsChangedWithDeviceID:a4 streamIDs:v14];
+    [(CMIOExtensionProvider *)self notifyAvailableStreamsChangedWithDeviceID:d streamIDs:allKeys];
     goto LABEL_10;
   }
 
@@ -2192,7 +2192,7 @@ LABEL_10:
   if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     [CMIOExtensionProvider registerStream:withDeviceID:error:];
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -2200,13 +2200,13 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_8:
     v13 = *MEMORY[0x277CCA590];
     v17 = *MEMORY[0x277CCA450];
     v18 = @"streamID already included";
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:v13 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:v13 code:-50 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}];
   }
 
 LABEL_10:
@@ -2215,9 +2215,9 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)unregisterStream:(id)a3 withDeviceID:(id)a4 notify:(BOOL)a5 error:(id *)a6
+- (BOOL)unregisterStream:(id)stream withDeviceID:(id)d notify:(BOOL)notify error:(id *)error
 {
-  v37 = a5;
+  notifyCopy = notify;
   v64 = *MEMORY[0x277D85DE8];
   v8 = CMIOLogLevel(1);
   if (v8)
@@ -2232,9 +2232,9 @@ LABEL_10:
       v55 = 2080;
       v56 = "[CMIOExtensionProvider unregisterStream:withDeviceID:notify:error:]";
       v57 = 2112;
-      v58 = self;
+      selfCopy4 = self;
       v59 = 2112;
-      v60 = a3;
+      streamCopy3 = stream;
       _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -2254,10 +2254,10 @@ LABEL_10:
     v38 = objc_alloc_init(MEMORY[0x277CBEB58]);
   }
 
-  v39 = -[NSMutableDictionary objectForKey:](self->_streamsMap, "objectForKey:", [a3 streamID]);
+  v39 = -[NSMutableDictionary objectForKey:](self->_streamsMap, "objectForKey:", [stream streamID]);
   if (v39)
   {
-    v10 = [objc_msgSend(a3 "streamingClients")];
+    v10 = [objc_msgSend(stream "streamingClients")];
     v46[3] = v10;
     if (v10)
     {
@@ -2273,9 +2273,9 @@ LABEL_10:
         v55 = 2080;
         v56 = "[CMIOExtensionProvider unregisterStream:withDeviceID:notify:error:]";
         v57 = 2114;
-        v58 = self;
+        selfCopy4 = self;
         v59 = 2114;
-        v60 = a3;
+        streamCopy3 = stream;
         _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@ pending stream clients for %{public}@, wait for stream stop before removing it", buf, 0x30u);
       }
 
@@ -2283,8 +2283,8 @@ LABEL_10:
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v14 = [a3 streamingClients];
-      v15 = [v14 countByEnumeratingWithState:&v41 objects:v63 count:16];
+      streamingClients = [stream streamingClients];
+      v15 = [streamingClients countByEnumeratingWithState:&v41 objects:v63 count:16];
       if (v15)
       {
         v16 = *v42;
@@ -2294,7 +2294,7 @@ LABEL_10:
           {
             if (*v42 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(streamingClients);
             }
 
             v18 = *(*(&v41 + 1) + 8 * i);
@@ -2303,7 +2303,7 @@ LABEL_10:
             if (v19 && os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               v21 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProvider.m");
-              v22 = [objc_msgSend(a3 "streamID")];
+              v22 = [objc_msgSend(stream "streamID")];
               *buf = 136316419;
               v52 = v21;
               v53 = 1024;
@@ -2311,29 +2311,29 @@ LABEL_10:
               v55 = 2080;
               v56 = "[CMIOExtensionProvider unregisterStream:withDeviceID:notify:error:]";
               v57 = 2114;
-              v58 = self;
+              selfCopy4 = self;
               v59 = 2114;
-              v60 = v22;
+              streamCopy3 = v22;
               v61 = 2113;
               v62 = v18;
               _os_log_impl(&dword_22EA08000, v20, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, %{public}@, %{private}@", buf, 0x3Au);
             }
 
             v23 = +[CMIOExtensionProvider sharedProvider];
-            v24 = [v18 clientID];
-            v25 = [a3 streamID];
+            clientID = [v18 clientID];
+            streamID = [stream streamID];
             v40[0] = MEMORY[0x277D85DD0];
             v40[1] = 3221225472;
             v40[2] = __68__CMIOExtensionProvider_unregisterStream_withDeviceID_notify_error___block_invoke;
             v40[3] = &unk_27885B960;
-            v40[5] = a3;
+            v40[5] = stream;
             v40[6] = &v45;
             v40[4] = self;
-            [v23 stopStreamForClientID:v24 streamID:v25 reply:v40];
-            [(CMIOExtensionProvider *)self removeSystemStatusAttributionsForClient:v18 stream:a3];
+            [v23 stopStreamForClientID:clientID streamID:streamID reply:v40];
+            [(CMIOExtensionProvider *)self removeSystemStatusAttributionsForClient:v18 stream:stream];
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v41 objects:v63 count:16];
+          v15 = [streamingClients countByEnumeratingWithState:&v41 objects:v63 count:16];
         }
 
         while (v15);
@@ -2354,31 +2354,31 @@ LABEL_10:
         v55 = 2080;
         v56 = "[CMIOExtensionProvider unregisterStream:withDeviceID:notify:error:]";
         v57 = 2114;
-        v58 = self;
+        selfCopy4 = self;
         v59 = 2114;
-        v60 = a3;
+        streamCopy3 = stream;
         _os_log_impl(&dword_22EA08000, v28, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@ no active clients for %{public}@ removing it", buf, 0x30u);
       }
 
-      -[NSMutableDictionary removeObjectForKey:](self->_streamsMap, "removeObjectForKey:", [a3 streamID]);
+      -[NSMutableDictionary removeObjectForKey:](self->_streamsMap, "removeObjectForKey:", [stream streamID]);
     }
 
-    [v38 removeObject:{objc_msgSend(a3, "streamID")}];
-    v26 = [v38 allObjects];
+    [v38 removeObject:{objc_msgSend(stream, "streamID")}];
+    allObjects = [v38 allObjects];
   }
 
   else
   {
-    v26 = 0;
+    allObjects = 0;
   }
 
   os_unfair_lock_unlock(&self->_streamsMapLock);
 
   if (v39)
   {
-    if (v37)
+    if (notifyCopy)
     {
-      [(CMIOExtensionProvider *)self notifyAvailableStreamsChangedWithDeviceID:a4 streamIDs:v26];
+      [(CMIOExtensionProvider *)self notifyAvailableStreamsChangedWithDeviceID:d streamIDs:allObjects];
     }
   }
 
@@ -2388,17 +2388,17 @@ LABEL_10:
     if (v30 && os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProvider.m");
-      [a3 streamID];
+      [stream streamID];
       [CMIOExtensionProvider unregisterStream:withDeviceID:notify:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v31 = MEMORY[0x277CCA9B8];
       v49 = *MEMORY[0x277CCA450];
       v50 = @"streamID not register";
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-      *a6 = [v31 errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:v32];
+      *error = [v31 errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:v32];
     }
   }
 
@@ -2443,7 +2443,7 @@ uint64_t __68__CMIOExtensionProvider_unregisterStream_withDeviceID_notify_error_
   return result;
 }
 
-- (void)availablePluginPropertiesForClientID:(id)a3 reply:(id)a4
+- (void)availablePluginPropertiesForClientID:(id)d reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2459,9 +2459,9 @@ uint64_t __68__CMIOExtensionProvider_unregisterStream_withDeviceID_notify_error_
       v16 = 2080;
       v17 = "[CMIOExtensionProvider availablePluginPropertiesForClientID:reply:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -2472,7 +2472,7 @@ uint64_t __68__CMIOExtensionProvider_unregisterStream_withDeviceID_notify_error_
   v11[2] = __68__CMIOExtensionProvider_availablePluginPropertiesForClientID_reply___block_invoke;
   v11[3] = &unk_27885B988;
   v11[4] = self;
-  v11[5] = a4;
+  v11[5] = reply;
   dispatch_async(clientQueue, v11);
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -2485,7 +2485,7 @@ uint64_t __68__CMIOExtensionProvider_availablePluginPropertiesForClientID_reply_
   return v2();
 }
 
-- (void)pluginStatesForClientID:(id)a3 reply:(id)a4
+- (void)pluginStatesForClientID:(id)d reply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2501,9 +2501,9 @@ uint64_t __68__CMIOExtensionProvider_availablePluginPropertiesForClientID_reply_
       v16 = 2080;
       v17 = "[CMIOExtensionProvider pluginStatesForClientID:reply:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -2514,7 +2514,7 @@ uint64_t __68__CMIOExtensionProvider_availablePluginPropertiesForClientID_reply_
   v11[2] = __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invoke;
   v11[3] = &unk_27885B988;
   v11[4] = self;
-  v11[5] = a4;
+  v11[5] = reply;
   dispatch_async(clientQueue, v11);
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -2767,11 +2767,11 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
   return result;
 }
 
-- (void)_addAvailablePropertyStatesForDevice:(id)a3 toDictionary:(id)a4
+- (void)_addAvailablePropertyStatesForDevice:(id)device toDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x277D85DE8];
   v17[0] = 0;
-  v6 = [objc_msgSend(a3 "source")];
+  v6 = [objc_msgSend(device "source")];
   v7 = CMIOLog();
   if (v7)
   {
@@ -2785,7 +2785,7 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
       v22 = 2080;
       v23 = "[CMIOExtensionProvider _addAvailablePropertyStatesForDevice:toDictionary:]";
       v24 = 2114;
-      v25 = a3;
+      deviceCopy = device;
       v26 = 2114;
       v27 = v6;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, device availableProperties %{public}@", buf, 0x30u);
@@ -2794,7 +2794,7 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
 
   if ([v6 count])
   {
-    v9 = [objc_msgSend(objc_msgSend(a3 "source")];
+    v9 = [objc_msgSend(objc_msgSend(device "source")];
     if (v17[0])
     {
       v10 = CMIOLog();
@@ -2805,7 +2805,7 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
         {
           v14 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProvider.m");
           v15 = v17[0];
-          v16 = [v17[0] localizedDescription];
+          localizedDescription = [v17[0] localizedDescription];
           *buf = 136316162;
           v19 = v14;
           v20 = 1024;
@@ -2813,9 +2813,9 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
           v22 = 2080;
           v23 = "[CMIOExtensionProvider _addAvailablePropertyStatesForDevice:toDictionary:]";
           v24 = 2114;
-          v25 = v15;
+          deviceCopy = v15;
           v26 = 2114;
-          v27 = v16;
+          v27 = localizedDescription;
           _os_log_error_impl(&dword_22EA08000, v11, OS_LOG_TYPE_ERROR, "%s:%d:%s devicePropertiesForProperties error %{public}@ localizedDescription: %{public}@", buf, 0x30u);
         }
       }
@@ -2823,7 +2823,7 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
 
     if ([v9 count])
     {
-      [a4 addEntriesFromDictionary:v9];
+      [dictionary addEntriesFromDictionary:v9];
     }
 
     else
@@ -2839,7 +2839,7 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pluginPropertyStatesForClientID:(id)a3 properties:(id)a4 reply:(id)a5
+- (void)pluginPropertyStatesForClientID:(id)d properties:(id)properties reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(1);
@@ -2855,9 +2855,9 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
       v18 = 2080;
       v19 = "[CMIOExtensionProvider pluginPropertyStatesForClientID:properties:reply:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -2868,8 +2868,8 @@ uint64_t __55__CMIOExtensionProvider_pluginStatesForClientID_reply___block_invok
   block[2] = __74__CMIOExtensionProvider_pluginPropertyStatesForClientID_properties_reply___block_invoke;
   block[3] = &unk_27885B9B0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = properties;
+  block[6] = reply;
   dispatch_async(clientQueue, block);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -2970,7 +2970,7 @@ uint64_t __74__CMIOExtensionProvider_pluginPropertyStatesForClientID_properties_
   return result;
 }
 
-- (void)setPluginPropertyValuesForClientID:(id)a3 propertyValues:(id)a4 reply:(id)a5
+- (void)setPluginPropertyValuesForClientID:(id)d propertyValues:(id)values reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(1);
@@ -2986,11 +2986,11 @@ uint64_t __74__CMIOExtensionProvider_pluginPropertyStatesForClientID_properties_
       v18 = 2080;
       v19 = "[CMIOExtensionProvider setPluginPropertyValuesForClientID:propertyValues:reply:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = a3;
+      dCopy = d;
       v24 = 2112;
-      v25 = a4;
+      valuesCopy = values;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@, propertyValues %@", buf, 0x3Au);
     }
   }
@@ -3000,10 +3000,10 @@ uint64_t __74__CMIOExtensionProvider_pluginPropertyStatesForClientID_properties_
   v13[1] = 3221225472;
   v13[2] = __81__CMIOExtensionProvider_setPluginPropertyValuesForClientID_propertyValues_reply___block_invoke;
   v13[3] = &unk_27885BA00;
-  v13[4] = a4;
+  v13[4] = values;
   v13[5] = self;
-  v13[6] = a3;
-  v13[7] = a5;
+  v13[6] = d;
+  v13[7] = reply;
   dispatch_async(clientQueue, v13);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -3106,7 +3106,7 @@ void __81__CMIOExtensionProvider_setPluginPropertyValuesForClientID_propertyValu
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableDevicePropertiesForClientID:(id)a3 deviceID:(id)a4 reply:(id)a5
+- (void)availableDevicePropertiesForClientID:(id)d deviceID:(id)iD reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(1);
@@ -3122,9 +3122,9 @@ void __81__CMIOExtensionProvider_setPluginPropertyValuesForClientID_propertyValu
       v18 = 2080;
       v19 = "[CMIOExtensionProvider availableDevicePropertiesForClientID:deviceID:reply:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -3135,8 +3135,8 @@ void __81__CMIOExtensionProvider_setPluginPropertyValuesForClientID_propertyValu
   block[2] = __77__CMIOExtensionProvider_availableDevicePropertiesForClientID_deviceID_reply___block_invoke;
   block[3] = &unk_27885B9B0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = iD;
+  block[6] = reply;
   dispatch_async(clientQueue, block);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -3175,7 +3175,7 @@ uint64_t __77__CMIOExtensionProvider_availableDevicePropertiesForClientID_device
   return result;
 }
 
-- (void)deviceStatesForClientID:(id)a3 deviceID:(id)a4 reply:(id)a5
+- (void)deviceStatesForClientID:(id)d deviceID:(id)iD reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(1);
@@ -3191,9 +3191,9 @@ uint64_t __77__CMIOExtensionProvider_availableDevicePropertiesForClientID_device
       v18 = 2080;
       v19 = "[CMIOExtensionProvider deviceStatesForClientID:deviceID:reply:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -3204,8 +3204,8 @@ uint64_t __77__CMIOExtensionProvider_availableDevicePropertiesForClientID_device
   block[2] = __64__CMIOExtensionProvider_deviceStatesForClientID_deviceID_reply___block_invoke;
   block[3] = &unk_27885B9B0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = iD;
+  block[6] = reply;
   dispatch_async(clientQueue, block);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -3434,7 +3434,7 @@ uint64_t __64__CMIOExtensionProvider_deviceStatesForClientID_deviceID_reply___bl
   return result;
 }
 
-- (void)devicePropertyStatesForClientID:(id)a3 deviceID:(id)a4 properties:(id)a5 reply:(id)a6
+- (void)devicePropertyStatesForClientID:(id)d deviceID:(id)iD properties:(id)properties reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
   v11 = CMIOLogLevel(1);
@@ -3450,9 +3450,9 @@ uint64_t __64__CMIOExtensionProvider_deviceStatesForClientID_deviceID_reply___bl
       v20 = 2080;
       v21 = "[CMIOExtensionProvider devicePropertyStatesForClientID:deviceID:properties:reply:]";
       v22 = 2112;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
-      v25 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -3463,9 +3463,9 @@ uint64_t __64__CMIOExtensionProvider_deviceStatesForClientID_deviceID_reply___bl
   v15[2] = __83__CMIOExtensionProvider_devicePropertyStatesForClientID_deviceID_properties_reply___block_invoke;
   v15[3] = &unk_27885BA28;
   v15[4] = self;
-  v15[5] = a4;
-  v15[6] = a5;
-  v15[7] = a6;
+  v15[5] = iD;
+  v15[6] = properties;
+  v15[7] = reply;
   dispatch_async(clientQueue, v15);
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -3586,7 +3586,7 @@ uint64_t __83__CMIOExtensionProvider_devicePropertyStatesForClientID_deviceID_pr
   return result;
 }
 
-- (void)setDevicePropertyValuesForClientID:(id)a3 deviceID:(id)a4 propertyValues:(id)a5 reply:(id)a6
+- (void)setDevicePropertyValuesForClientID:(id)d deviceID:(id)iD propertyValues:(id)values reply:(id)reply
 {
   v48 = *MEMORY[0x277D85DE8];
   v9 = CMIOLog();
@@ -3602,20 +3602,20 @@ uint64_t __83__CMIOExtensionProvider_devicePropertyStatesForClientID_deviceID_pr
       v42 = 2080;
       v43 = "[CMIOExtensionProvider setDevicePropertyValuesForClientID:deviceID:propertyValues:reply:]";
       v44 = 2114;
-      v45 = self;
+      selfCopy = self;
       v46 = 2113;
-      v47 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_INFO, "%s:%d:%s %{public}@, %{private}@", buf, 0x30u);
     }
   }
 
-  v30 = a3;
+  dCopy2 = d;
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [a5 allKeys];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  allKeys = [values allKeys];
+  v12 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
@@ -3626,7 +3626,7 @@ uint64_t __83__CMIOExtensionProvider_devicePropertyStatesForClientID_deviceID_pr
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
@@ -3638,7 +3638,7 @@ uint64_t __83__CMIOExtensionProvider_devicePropertyStatesForClientID_deviceID_pr
           if (v18 && os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             v20 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProvider.m");
-            v21 = [a5 objectForKeyedSubscript:v16];
+            v21 = [values objectForKeyedSubscript:v16];
             *buf = 136316163;
             v39 = v20;
             v40 = 1024;
@@ -3646,9 +3646,9 @@ uint64_t __83__CMIOExtensionProvider_devicePropertyStatesForClientID_deviceID_pr
             v42 = 2080;
             v43 = "[CMIOExtensionProvider setDevicePropertyValuesForClientID:deviceID:propertyValues:reply:]";
             v44 = 2113;
-            v45 = v16;
+            selfCopy = v16;
             v46 = 2113;
-            v47 = v21;
+            dCopy = v21;
             v22 = v19;
             v23 = "%s:%d:%s %{private}@ : %{private}@";
 LABEL_16:
@@ -3660,7 +3660,7 @@ LABEL_16:
         else if (v18 && os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           v24 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProvider.m");
-          v25 = [a5 objectForKeyedSubscript:v16];
+          v25 = [values objectForKeyedSubscript:v16];
           *buf = 136316162;
           v39 = v24;
           v40 = 1024;
@@ -3668,16 +3668,16 @@ LABEL_16:
           v42 = 2080;
           v43 = "[CMIOExtensionProvider setDevicePropertyValuesForClientID:deviceID:propertyValues:reply:]";
           v44 = 2114;
-          v45 = v16;
+          selfCopy = v16;
           v46 = 2114;
-          v47 = v25;
+          dCopy = v25;
           v22 = v19;
           v23 = "%s:%d:%s %{public}@ : %{public}@";
           goto LABEL_16;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v13);
@@ -3689,10 +3689,10 @@ LABEL_16:
   block[2] = __90__CMIOExtensionProvider_setDevicePropertyValuesForClientID_deviceID_propertyValues_reply___block_invoke;
   block[3] = &unk_27885BA50;
   block[4] = v28;
-  block[5] = a4;
-  block[7] = v30;
-  block[8] = a6;
-  block[6] = a5;
+  block[5] = iD;
+  block[7] = dCopy2;
+  block[8] = reply;
+  block[6] = values;
   dispatch_async(v26, block);
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -3863,7 +3863,7 @@ void __90__CMIOExtensionProvider_setDevicePropertyValuesForClientID_deviceID_pro
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableStreamPropertiesForClientID:(id)a3 streamID:(id)a4 reply:(id)a5
+- (void)availableStreamPropertiesForClientID:(id)d streamID:(id)iD reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(1);
@@ -3879,9 +3879,9 @@ void __90__CMIOExtensionProvider_setDevicePropertyValuesForClientID_deviceID_pro
       v18 = 2080;
       v19 = "[CMIOExtensionProvider availableStreamPropertiesForClientID:streamID:reply:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -3892,8 +3892,8 @@ void __90__CMIOExtensionProvider_setDevicePropertyValuesForClientID_deviceID_pro
   block[2] = __77__CMIOExtensionProvider_availableStreamPropertiesForClientID_streamID_reply___block_invoke;
   block[3] = &unk_27885B9B0;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = iD;
+  block[6] = reply;
   dispatch_async(clientQueue, block);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -3932,7 +3932,7 @@ uint64_t __77__CMIOExtensionProvider_availableStreamPropertiesForClientID_stream
   return result;
 }
 
-- (void)streamPropertyStatesForClientID:(id)a3 streamID:(id)a4 properties:(id)a5 reply:(id)a6
+- (void)streamPropertyStatesForClientID:(id)d streamID:(id)iD properties:(id)properties reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
   v11 = CMIOLogLevel(1);
@@ -3948,9 +3948,9 @@ uint64_t __77__CMIOExtensionProvider_availableStreamPropertiesForClientID_stream
       v20 = 2080;
       v21 = "[CMIOExtensionProvider streamPropertyStatesForClientID:streamID:properties:reply:]";
       v22 = 2112;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
-      v25 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -3961,9 +3961,9 @@ uint64_t __77__CMIOExtensionProvider_availableStreamPropertiesForClientID_stream
   v15[2] = __83__CMIOExtensionProvider_streamPropertyStatesForClientID_streamID_properties_reply___block_invoke;
   v15[3] = &unk_27885BA28;
   v15[4] = self;
-  v15[5] = a4;
-  v15[6] = a5;
-  v15[7] = a6;
+  v15[5] = iD;
+  v15[6] = properties;
+  v15[7] = reply;
   dispatch_async(clientQueue, v15);
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -4084,7 +4084,7 @@ uint64_t __83__CMIOExtensionProvider_streamPropertyStatesForClientID_streamID_pr
   return result;
 }
 
-- (void)setStreamPropertyValuesForClientID:(id)a3 streamID:(id)a4 propertyValues:(id)a5 reply:(id)a6
+- (void)setStreamPropertyValuesForClientID:(id)d streamID:(id)iD propertyValues:(id)values reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
   v11 = CMIOLog();
@@ -4100,11 +4100,11 @@ uint64_t __83__CMIOExtensionProvider_streamPropertyStatesForClientID_streamID_pr
       v20 = 2080;
       v21 = "[CMIOExtensionProvider setStreamPropertyValuesForClientID:streamID:propertyValues:reply:]";
       v22 = 2114;
-      v23 = self;
+      selfCopy = self;
       v24 = 2113;
-      v25 = a3;
+      dCopy = d;
       v26 = 2114;
-      v27 = a5;
+      valuesCopy = values;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@, %{private}@, propertyValues %{public}@", buf, 0x3Au);
     }
   }
@@ -4115,10 +4115,10 @@ uint64_t __83__CMIOExtensionProvider_streamPropertyStatesForClientID_streamID_pr
   block[2] = __90__CMIOExtensionProvider_setStreamPropertyValuesForClientID_streamID_propertyValues_reply___block_invoke;
   block[3] = &unk_27885BA50;
   block[4] = self;
-  block[5] = a4;
-  block[7] = a3;
-  block[8] = a6;
-  block[6] = a5;
+  block[5] = iD;
+  block[7] = d;
+  block[8] = reply;
+  block[6] = values;
   dispatch_async(clientQueue, block);
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -4289,10 +4289,10 @@ void __90__CMIOExtensionProvider_setStreamPropertyValuesForClientID_streamID_pro
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_incrementPendingStartStreamCountForClientID:(id)a3 streamID:(id)a4
+- (void)_clientQueue_incrementPendingStartStreamCountForClientID:(id)d streamID:(id)iD
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(a3, "UUIDString"), objc_msgSend(a4, "UUIDString")];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(d, "UUIDString"), objc_msgSend(iD, "UUIDString")];
   v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_pendingCountMap objectForKeyedSubscript:{v5), "intValue"}];
   v7 = CMIOLog();
   if (v7)
@@ -4307,7 +4307,7 @@ void __90__CMIOExtensionProvider_setStreamPropertyValuesForClientID_streamID_pro
       v14 = 2080;
       v15 = "[CMIOExtensionProvider _clientQueue_incrementPendingStartStreamCountForClientID:streamID:]";
       v16 = 2114;
-      v17 = self;
+      selfCopy = self;
       v18 = 2113;
       v19 = v5;
       v20 = 1025;
@@ -4322,10 +4322,10 @@ void __90__CMIOExtensionProvider_setStreamPropertyValuesForClientID_streamID_pro
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_decrementPendingStreamStartCountForClientID:(id)a3 streamID:(id)a4
+- (void)_clientQueue_decrementPendingStreamStartCountForClientID:(id)d streamID:(id)iD
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(a3, "UUIDString"), objc_msgSend(a4, "UUIDString")];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(d, "UUIDString"), objc_msgSend(iD, "UUIDString")];
   v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_pendingCountMap objectForKeyedSubscript:{v5), "intValue"}];
   v7 = CMIOLog();
   if (v7)
@@ -4340,7 +4340,7 @@ void __90__CMIOExtensionProvider_setStreamPropertyValuesForClientID_streamID_pro
       v17 = 2080;
       v18 = "[CMIOExtensionProvider _clientQueue_decrementPendingStreamStartCountForClientID:streamID:]";
       v19 = 2114;
-      v20 = self;
+      selfCopy = self;
       v21 = 2113;
       v22 = v5;
       v23 = 1025;
@@ -4377,17 +4377,17 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_clientQueue_pendingStartStreamCountForClient:(id)a3 streamID:(id)a4
+- (int)_clientQueue_pendingStartStreamCountForClient:(id)client streamID:(id)d
 {
-  v4 = -[NSMutableDictionary objectForKeyedSubscript:](self->_pendingCountMap, "objectForKeyedSubscript:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(a3, "UUIDString"), objc_msgSend(a4, "UUIDString")]);
+  v4 = -[NSMutableDictionary objectForKeyedSubscript:](self->_pendingCountMap, "objectForKeyedSubscript:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(client, "UUIDString"), objc_msgSend(d, "UUIDString")]);
 
   return [v4 intValue];
 }
 
-- (void)_clientQueue_removePendingStartStreamCountForClient:(id)a3 streamID:(id)a4
+- (void)_clientQueue_removePendingStartStreamCountForClient:(id)client streamID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(a3, "UUIDString"), objc_msgSend(a4, "UUIDString")];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:start-stream", objc_msgSend(client, "UUIDString"), objc_msgSend(d, "UUIDString")];
   v6 = [(NSMutableDictionary *)self->_pendingCountMap objectForKeyedSubscript:v5];
   v7 = CMIOLog();
   v8 = v7;
@@ -4404,7 +4404,7 @@ LABEL_12:
       v16 = 2080;
       v17 = "[CMIOExtensionProvider _clientQueue_removePendingStartStreamCountForClient:streamID:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2113;
       v21 = v5;
       v22 = 1024;
@@ -4424,7 +4424,7 @@ LABEL_12:
     v16 = 2080;
     v17 = "[CMIOExtensionProvider _clientQueue_removePendingStartStreamCountForClient:streamID:]";
     v18 = 2112;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2113;
     v21 = v5;
     _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@{public}, %{private}@: no pending stream starts", buf, 0x30u);
@@ -4433,7 +4433,7 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startStreamForClientID:(id)a3 streamID:(id)a4 reply:(id)a5
+- (void)startStreamForClientID:(id)d streamID:(id)iD reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLog();
@@ -4449,9 +4449,9 @@ LABEL_12:
       v18 = 2080;
       v19 = "[CMIOExtensionProvider startStreamForClientID:streamID:reply:]";
       v20 = 2114;
-      v21 = self;
+      selfCopy = self;
       v22 = 2113;
-      v23 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@, %{private}@", buf, 0x30u);
     }
   }
@@ -4462,9 +4462,9 @@ LABEL_12:
   v13[2] = __63__CMIOExtensionProvider_startStreamForClientID_streamID_reply___block_invoke;
   v13[3] = &unk_27885BA28;
   v13[4] = self;
-  v13[5] = a4;
-  v13[6] = a3;
-  v13[7] = a5;
+  v13[5] = iD;
+  v13[6] = d;
+  v13[7] = reply;
   dispatch_async(clientQueue, v13);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -4887,7 +4887,7 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_startStreamForClientID:(id)a3 streamID:(id)a4 requestAudio:(BOOL)a5 requestVideo:(BOOL)a6 reply:(id)a7
+- (void)_clientQueue_startStreamForClientID:(id)d streamID:(id)iD requestAudio:(BOOL)audio requestVideo:(BOOL)video reply:(id)reply
 {
   v48[1] = *MEMORY[0x277D85DE8];
   v11 = CMIOLog();
@@ -4905,22 +4905,22 @@ LABEL_12:
       v42 = 2114;
       *v43 = self;
       *&v43[8] = 2113;
-      v44[0] = a3;
+      v44[0] = d;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@, %{private}@", buf, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_streamsMapLock);
-  v13 = [(NSMutableDictionary *)self->_streamsMap objectForKey:a4];
+  v13 = [(NSMutableDictionary *)self->_streamsMap objectForKey:iD];
   os_unfair_lock_unlock(&self->_streamsMapLock);
   if (v13)
   {
     os_unfair_lock_lock(&self->_contextsMapLock);
-    v14 = [(NSMutableDictionary *)self->_contextsMap objectForKey:a3];
+    v14 = [(NSMutableDictionary *)self->_contextsMap objectForKey:d];
     os_unfair_lock_unlock(&self->_contextsMapLock);
     if (v14)
     {
-      v15 = [v14 clientInfo];
+      clientInfo = [v14 clientInfo];
       v35[0] = 0;
       if ([objc_msgSend(v13 "_clientQueue_streamingClientsMap")])
       {
@@ -4938,25 +4938,25 @@ LABEL_12:
           v42 = 2114;
           *v43 = self;
           *&v43[8] = 2113;
-          v44[0] = v15;
+          v44[0] = clientInfo;
           _os_log_impl(&dword_22EA08000, v17, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@: add streaming client %{private}@", buf, 0x30u);
         }
 
-        [v13 _clientQueue_addStreamingClient:v15];
+        [v13 _clientQueue_addStreamingClient:clientInfo];
       }
 
       else
       {
-        [v14 setClientSourcedByNonStreamingProxyFrontedExtension:{-[NSArray containsObject:](self->_nonStreamingProxyFrontedExtensionPIDs, "containsObject:", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", objc_msgSend(v15, "pid")))}];
+        [v14 setClientSourcedByNonStreamingProxyFrontedExtension:{-[NSArray containsObject:](self->_nonStreamingProxyFrontedExtensionPIDs, "containsObject:", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", objc_msgSend(clientInfo, "pid")))}];
         v25 = CMIOLog();
         v26 = v25;
         if (v25 && os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v27 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProvider.m");
-          v28 = [v15 pid];
-          v29 = [v14 isClientSourcedByNonStreamingProxyFrontedExtension];
+          v28 = [clientInfo pid];
+          isClientSourcedByNonStreamingProxyFrontedExtension = [v14 isClientSourcedByNonStreamingProxyFrontedExtension];
           *buf = 136316419;
-          if (v29)
+          if (isClientSourcedByNonStreamingProxyFrontedExtension)
           {
             v30 = 84;
           }
@@ -4996,16 +4996,16 @@ LABEL_12:
             v42 = 2114;
             *v43 = self;
             *&v43[8] = 2113;
-            v44[0] = v15;
+            v44[0] = clientInfo;
             _os_log_impl(&dword_22EA08000, v32, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@: start streaming for client %{private}@", buf, 0x30u);
           }
 
-          [v13 _clientQueue_addStreamingClient:v15];
+          [v13 _clientQueue_addStreamingClient:clientInfo];
           [(CMIOExtensionProvider *)self _clientQueue_notifyIsRunningSomewhereForStream:v13];
         }
       }
 
-      (*(a7 + 2))(a7, v35[0]);
+      (*(reply + 2))(reply, v35[0]);
     }
 
     else
@@ -5020,7 +5020,7 @@ LABEL_12:
       v45 = *MEMORY[0x277CCA450];
       v46 = @"Invalid clientID";
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-      (*(a7 + 2))(a7, [v23 errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:v24]);
+      (*(reply + 2))(reply, [v23 errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:v24]);
     }
   }
 
@@ -5036,13 +5036,13 @@ LABEL_12:
     v47 = *MEMORY[0x277CCA450];
     v48[0] = @"Invalid streamID";
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
-    (*(a7 + 2))(a7, [v20 errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:v21]);
+    (*(reply + 2))(reply, [v20 errorWithDomain:*MEMORY[0x277CCA590] code:-50 userInfo:v21]);
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performDeferredStreamStartsForClient:(id)a3 streamID:(id)a4 requestVideo:(BOOL)a5 requestAudio:(BOOL)a6
+- (void)_performDeferredStreamStartsForClient:(id)client streamID:(id)d requestVideo:(BOOL)video requestAudio:(BOOL)audio
 {
   v26 = *MEMORY[0x277D85DE8];
   v11 = CMIOLog();
@@ -5058,7 +5058,7 @@ LABEL_12:
       v22 = 2080;
       v23 = "[CMIOExtensionProvider _performDeferredStreamStartsForClient:streamID:requestVideo:requestAudio:]";
       v24 = 2114;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@: dispatching pending stream starting to client queue", buf, 0x26u);
     }
   }
@@ -5069,10 +5069,10 @@ LABEL_12:
   v15[2] = __98__CMIOExtensionProvider__performDeferredStreamStartsForClient_streamID_requestVideo_requestAudio___block_invoke;
   v15[3] = &unk_27885BAC8;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
-  v16 = a6;
-  v17 = a5;
+  v15[5] = client;
+  v15[6] = d;
+  audioCopy = audio;
+  videoCopy = video;
   dispatch_async(clientQueue, v15);
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -5191,7 +5191,7 @@ void __98__CMIOExtensionProvider__performDeferredStreamStartsForClient_streamID_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopStreamForClientID:(id)a3 streamID:(id)a4 reply:(id)a5
+- (void)stopStreamForClientID:(id)d streamID:(id)iD reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLog();
@@ -5207,9 +5207,9 @@ void __98__CMIOExtensionProvider__performDeferredStreamStartsForClient_streamID_
       v18 = 2080;
       v19 = "[CMIOExtensionProvider stopStreamForClientID:streamID:reply:]";
       v20 = 2114;
-      v21 = self;
+      selfCopy = self;
       v22 = 2113;
-      v23 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{public}@, %{private}@", buf, 0x30u);
     }
   }
@@ -5220,9 +5220,9 @@ void __98__CMIOExtensionProvider__performDeferredStreamStartsForClient_streamID_
   v13[2] = __62__CMIOExtensionProvider_stopStreamForClientID_streamID_reply___block_invoke;
   v13[3] = &unk_27885BAF0;
   v13[4] = self;
-  v13[5] = a3;
-  v13[6] = a4;
-  v13[7] = a5;
+  v13[5] = d;
+  v13[6] = iD;
+  v13[7] = reply;
   dispatch_async(clientQueue, v13);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -5385,7 +5385,7 @@ uint64_t __62__CMIOExtensionProvider_stopStreamForClientID_streamID_reply___bloc
   return result;
 }
 
-- (void)notifyAvailableDevicesChanged:(id)a3
+- (void)notifyAvailableDevicesChanged:(id)changed
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -5401,9 +5401,9 @@ uint64_t __62__CMIOExtensionProvider_stopStreamForClientID_streamID_reply___bloc
       v25 = 2080;
       v26 = "[CMIOExtensionProvider notifyAvailableDevicesChanged:]";
       v27 = 2112;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = a3;
+      changedCopy = changed;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -5413,7 +5413,7 @@ uint64_t __62__CMIOExtensionProvider_stopStreamForClientID_streamID_reply___bloc
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [changed countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5425,14 +5425,14 @@ uint64_t __62__CMIOExtensionProvider_stopStreamForClientID_streamID_reply___bloc
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(changed);
         }
 
         -[NSArray addObject:](v7, "addObject:", [*(*(&v16 + 1) + 8 * v11++) UUIDString]);
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [changed countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -5499,7 +5499,7 @@ void __55__CMIOExtensionProvider_notifyAvailableDevicesChanged___block_invoke(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyAvailableStreamsChangedWithDeviceID:(id)a3 streamIDs:(id)a4
+- (void)notifyAvailableStreamsChangedWithDeviceID:(id)d streamIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -5515,11 +5515,11 @@ void __55__CMIOExtensionProvider_notifyAvailableDevicesChanged___block_invoke(ui
       v27 = 2080;
       v28 = "[CMIOExtensionProvider notifyAvailableStreamsChangedWithDeviceID:streamIDs:]";
       v29 = 2112;
-      v30 = self;
+      selfCopy = self;
       v31 = 2112;
-      v32 = a3;
+      dCopy = d;
       v33 = 2112;
-      v34 = a4;
+      dsCopy = ds;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@, %@", buf, 0x3Au);
     }
   }
@@ -5529,7 +5529,7 @@ void __55__CMIOExtensionProvider_notifyAvailableDevicesChanged___block_invoke(ui
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [a4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [ds countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -5541,14 +5541,14 @@ void __55__CMIOExtensionProvider_notifyAvailableDevicesChanged___block_invoke(ui
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(ds);
         }
 
         -[NSArray addObject:](v9, "addObject:", [*(*(&v18 + 1) + 8 * v13++) UUIDString]);
       }
 
       while (v11 != v13);
-      v11 = [a4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [ds countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -5565,7 +5565,7 @@ void __55__CMIOExtensionProvider_notifyAvailableDevicesChanged___block_invoke(ui
   v17[2] = __77__CMIOExtensionProvider_notifyAvailableStreamsChangedWithDeviceID_streamIDs___block_invoke;
   v17[3] = &unk_27885B938;
   v17[4] = self;
-  v17[5] = a3;
+  v17[5] = d;
   dispatch_async(clientQueue, v17);
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -5616,7 +5616,7 @@ void __77__CMIOExtensionProvider_notifyAvailableStreamsChangedWithDeviceID_strea
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureAsyncStillImageForClientID:(id)a3 streamID:(id)a4 uniqueID:(int64_t)a5 options:(id)a6 reply:(id)a7
+- (void)captureAsyncStillImageForClientID:(id)d streamID:(id)iD uniqueID:(int64_t)uniqueID options:(id)options reply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
   v13 = CMIOLogLevel(1);
@@ -5632,11 +5632,11 @@ void __77__CMIOExtensionProvider_notifyAvailableStreamsChangedWithDeviceID_strea
       v22 = 2080;
       v23 = "[CMIOExtensionProvider captureAsyncStillImageForClientID:streamID:uniqueID:options:reply:]";
       v24 = 2112;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = a3;
+      dCopy = d;
       v28 = 2112;
-      v29 = a4;
+      iDCopy = iD;
       _os_log_impl(&dword_22EA08000, v14, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@, %@", buf, 0x3Au);
     }
   }
@@ -5647,11 +5647,11 @@ void __77__CMIOExtensionProvider_notifyAvailableStreamsChangedWithDeviceID_strea
   v17[2] = __91__CMIOExtensionProvider_captureAsyncStillImageForClientID_streamID_uniqueID_options_reply___block_invoke;
   v17[3] = &unk_27885BB40;
   v17[4] = self;
-  v17[5] = a4;
-  v17[8] = a7;
-  v17[9] = a5;
-  v17[6] = a3;
-  v17[7] = a6;
+  v17[5] = iD;
+  v17[8] = reply;
+  v17[9] = uniqueID;
+  v17[6] = d;
+  v17[7] = options;
   dispatch_async(clientQueue, v17);
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -5748,7 +5748,7 @@ uint64_t __91__CMIOExtensionProvider_captureAsyncStillImageForClientID_streamID_
   return v4();
 }
 
-- (void)enqueueReactionEffectForClientID:(id)a3 streamID:(id)a4 reactionType:(id)a5 reply:(id)a6
+- (void)enqueueReactionEffectForClientID:(id)d streamID:(id)iD reactionType:(id)type reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
   v11 = CMIOLogLevel(1);
@@ -5764,11 +5764,11 @@ uint64_t __91__CMIOExtensionProvider_captureAsyncStillImageForClientID_streamID_
       v20 = 2080;
       v21 = "[CMIOExtensionProvider enqueueReactionEffectForClientID:streamID:reactionType:reply:]";
       v22 = 2112;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
-      v25 = a3;
+      dCopy = d;
       v26 = 2112;
-      v27 = a4;
+      iDCopy = iD;
       _os_log_impl(&dword_22EA08000, v12, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@, %@", buf, 0x3Au);
     }
   }
@@ -5779,10 +5779,10 @@ uint64_t __91__CMIOExtensionProvider_captureAsyncStillImageForClientID_streamID_
   block[2] = __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_reactionType_reply___block_invoke;
   block[3] = &unk_27885BA50;
   block[4] = self;
-  block[5] = a4;
-  block[7] = a5;
-  block[8] = a6;
-  block[6] = a3;
+  block[5] = iD;
+  block[7] = type;
+  block[8] = reply;
+  block[6] = d;
   dispatch_async(clientQueue, block);
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -5858,7 +5858,7 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
   return v3();
 }
 
-- (void)_clientQueue_notifyDevicePropertiesChangedWithDeviceID:(id)a3 propertyStates:(id)a4
+- (void)_clientQueue_notifyDevicePropertiesChangedWithDeviceID:(id)d propertyStates:(id)states
 {
   v30 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -5874,21 +5874,21 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
       v24 = 2080;
       v25 = "[CMIOExtensionProvider _clientQueue_notifyDevicePropertiesChangedWithDeviceID:propertyStates:]";
       v26 = 2112;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_contextsMapLock);
-  v9 = [(NSMutableDictionary *)self->_contextsMap allValues];
+  allValues = [(NSMutableDictionary *)self->_contextsMap allValues];
   os_unfair_lock_unlock(&self->_contextsMapLock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -5900,14 +5900,14 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) devicePropertiesChangedWithDeviceID:objc_msgSend(a3 propertyStates:{"UUIDString"), a4}];
+        [*(*(&v15 + 1) + 8 * v13++) devicePropertiesChangedWithDeviceID:objc_msgSend(d propertyStates:{"UUIDString"), states}];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -5916,7 +5916,7 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_notifyStreamPropertiesChangedWithStreamID:(id)a3 propertyStates:(id)a4
+- (void)_clientQueue_notifyStreamPropertiesChangedWithStreamID:(id)d propertyStates:(id)states
 {
   v30 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -5932,21 +5932,21 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
       v24 = 2080;
       v25 = "[CMIOExtensionProvider _clientQueue_notifyStreamPropertiesChangedWithStreamID:propertyStates:]";
       v26 = 2112;
-      v27 = self;
+      selfCopy = self;
       v28 = 2112;
-      v29 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_contextsMapLock);
-  v9 = [(NSMutableDictionary *)self->_contextsMap allValues];
+  allValues = [(NSMutableDictionary *)self->_contextsMap allValues];
   os_unfair_lock_unlock(&self->_contextsMapLock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -5958,14 +5958,14 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) streamPropertiesChangedWithStreamID:objc_msgSend(a3 propertyStates:{"UUIDString"), a4}];
+        [*(*(&v15 + 1) + 8 * v13++) streamPropertiesChangedWithStreamID:objc_msgSend(d propertyStates:{"UUIDString"), states}];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -5974,7 +5974,7 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_notifyIsRunningSomewhereForStream:(id)a3
+- (void)_clientQueue_notifyIsRunningSomewhereForStream:(id)stream
 {
   v37 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -5990,21 +5990,21 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
       v33 = 2080;
       v34 = "[CMIOExtensionProvider _clientQueue_notifyIsRunningSomewhereForStream:]";
       v35 = 2112;
-      v36 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", buf, 0x26u);
     }
   }
 
-  v7 = [a3 parent];
+  parent = [stream parent];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [v7 streams];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  streams = [parent streams];
+  v9 = [streams countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (!v9)
   {
-    if (([v7 isRunningSomewhere] & 1) == 0)
+    if (([parent isRunningSomewhere] & 1) == 0)
     {
       goto LABEL_22;
     }
@@ -6022,27 +6022,27 @@ uint64_t __86__CMIOExtensionProvider_enqueueReactionEffectForClientID_streamID_r
     {
       if (*v23 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(streams);
       }
 
       v11 |= [objc_msgSend(*(*(&v22 + 1) + 8 * i) "_clientQueue_streamingClientsMap")] != 0;
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    v10 = [streams countByEnumeratingWithState:&v22 objects:v28 count:16];
   }
 
   while (v10);
-  if ((v11 & 1) != [v7 isRunningSomewhere])
+  if ((v11 & 1) != [parent isRunningSomewhere])
   {
 LABEL_15:
-    [v7 setRunningSomewhere:v11 & 1];
+    [parent setRunningSomewhere:v11 & 1];
     v14 = [CMIOExtensionPropertyState alloc];
     v15 = -[CMIOExtensionPropertyState initWithValue:attributes:](v14, "initWithValue:attributes:", [MEMORY[0x277CCABB0] numberWithBool:v11 & 1], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
-    v16 = -[CMIOExtensionPropertyState initWithValue:attributes:]([CMIOExtensionPropertyState alloc], "initWithValue:attributes:", [objc_msgSend(a3 "streamID")], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
-    v17 = -[CMIOExtensionPropertyState initWithValue:attributes:]([CMIOExtensionPropertyState alloc], "initWithValue:attributes:", [objc_msgSend(v7 "deviceID")], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
-    if ([v7 legacyDeviceID] && (objc_msgSend(objc_msgSend(v7, "legacyDeviceID"), "isEqualToString:", objc_msgSend(objc_msgSend(v7, "deviceID"), "UUIDString")) & 1) == 0)
+    v16 = -[CMIOExtensionPropertyState initWithValue:attributes:]([CMIOExtensionPropertyState alloc], "initWithValue:attributes:", [objc_msgSend(stream "streamID")], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
+    v17 = -[CMIOExtensionPropertyState initWithValue:attributes:]([CMIOExtensionPropertyState alloc], "initWithValue:attributes:", [objc_msgSend(parent "deviceID")], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
+    if ([parent legacyDeviceID] && (objc_msgSend(objc_msgSend(parent, "legacyDeviceID"), "isEqualToString:", objc_msgSend(objc_msgSend(parent, "deviceID"), "UUIDString")) & 1) == 0)
     {
-      v18 = -[CMIOExtensionPropertyState initWithValue:attributes:]([CMIOExtensionPropertyState alloc], "initWithValue:attributes:", [v7 legacyDeviceID], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
+      v18 = -[CMIOExtensionPropertyState initWithValue:attributes:]([CMIOExtensionPropertyState alloc], "initWithValue:attributes:", [parent legacyDeviceID], +[CMIOExtensionPropertyAttributes readOnlyPropertyAttribute](CMIOExtensionPropertyAttributes, "readOnlyPropertyAttribute"));
     }
 
     else
@@ -6063,18 +6063,18 @@ LABEL_15:
       [v19 setObject:v18 forKeyedSubscript:0x284358DD8];
     }
 
-    [v7 notifyPropertiesChanged:v20];
+    [parent notifyPropertiesChanged:v20];
   }
 
 LABEL_22:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientQueue_sendSampleForStream:(id)a3 sample:(id)a4
+- (void)_clientQueue_sendSampleForStream:(id)stream sample:(id)sample
 {
-  v4 = a4;
+  sampleCopy = sample;
   v64 = *MEMORY[0x277D85DE8];
-  FormatDescription = CMSampleBufferGetFormatDescription([a4 sampleBuffer]);
+  FormatDescription = CMSampleBufferGetFormatDescription([sample sampleBuffer]);
   MediaType = CMFormatDescriptionGetMediaType(FormatDescription);
   v8 = CMIOLogLevel(3);
   if (v8)
@@ -6090,9 +6090,9 @@ LABEL_22:
       v50 = 2080;
       v51 = "[CMIOExtensionProvider _clientQueue_sendSampleForStream:sample:]";
       v52 = 2112;
-      v53 = self;
+      selfCopy = self;
       v54 = 2112;
-      v55 = a3;
+      streamCopy2 = stream;
       v56 = 1024;
       v57 = HIBYTE(MediaType);
       v58 = 1024;
@@ -6106,17 +6106,17 @@ LABEL_22:
   }
 
   os_unfair_lock_lock(&self->_contextsMapLock);
-  v11 = [(NSMutableDictionary *)self->_contextsMap allValues];
-  v12 = v11;
+  allValues = [(NSMutableDictionary *)self->_contextsMap allValues];
+  v12 = allValues;
   if (self->_nonStreamingProxyFrontedExtensionPIDsHasChanged)
   {
-    v13 = self;
-    v33 = v4;
+    selfCopy2 = self;
+    v33 = sampleCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v14 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    v14 = [allValues countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v14)
     {
       v15 = v14;
@@ -6130,7 +6130,7 @@ LABEL_22:
             objc_enumerationMutation(v12);
           }
 
-          [*(*(&v40 + 1) + 8 * i) setClientSourcedByNonStreamingProxyFrontedExtension:{-[NSArray containsObject:](v13->_nonStreamingProxyFrontedExtensionPIDs, "containsObject:", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", objc_msgSend(objc_msgSend(*(*(&v40 + 1) + 8 * i), "clientInfo"), "pid")))}];
+          [*(*(&v40 + 1) + 8 * i) setClientSourcedByNonStreamingProxyFrontedExtension:{-[NSArray containsObject:](selfCopy2->_nonStreamingProxyFrontedExtensionPIDs, "containsObject:", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", objc_msgSend(objc_msgSend(*(*(&v40 + 1) + 8 * i), "clientInfo"), "pid")))}];
         }
 
         v15 = [v12 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -6139,12 +6139,12 @@ LABEL_22:
       while (v15);
     }
 
-    self = v13;
-    v13->_nonStreamingProxyFrontedExtensionPIDsHasChanged = 0;
-    v4 = v33;
+    self = selfCopy2;
+    selfCopy2->_nonStreamingProxyFrontedExtensionPIDsHasChanged = 0;
+    sampleCopy = v33;
   }
 
-  v34 = self;
+  selfCopy3 = self;
   os_unfair_lock_unlock(&self->_contextsMapLock);
   v38 = 0u;
   v39 = 0u;
@@ -6171,24 +6171,24 @@ LABEL_22:
         }
 
         v23 = *(*(&v36 + 1) + 8 * j);
-        if ([objc_msgSend(a3 _clientQueue_streamingClientsMap])
+        if ([objc_msgSend(stream _clientQueue_streamingClientsMap])
         {
-          v24 = [v23 clientInfo];
+          clientInfo = [v23 clientInfo];
           if (MediaType == 1936684398)
           {
-            v25 = [v24 microphoneAuthorizationStatus];
+            microphoneAuthorizationStatus = [clientInfo microphoneAuthorizationStatus];
           }
 
           else
           {
-            v25 = [v24 cameraAuthorizationStatus];
+            microphoneAuthorizationStatus = [clientInfo cameraAuthorizationStatus];
           }
 
-          if (v25 == 3)
+          if (microphoneAuthorizationStatus == 3)
           {
             if (([v23 isClientSourcedByNonStreamingProxyFrontedExtension] & 1) == 0)
             {
-              [v23 receivedSampleWithStreamID:objc_msgSend(objc_msgSend(a3 sample:{"streamID"), "UUIDString"), v4}];
+              [v23 receivedSampleWithStreamID:objc_msgSend(objc_msgSend(stream sample:{"streamID"), "UUIDString"), sampleCopy}];
             }
           }
 
@@ -6208,9 +6208,9 @@ LABEL_22:
                 v50 = 2080;
                 v51 = "[CMIOExtensionProvider _clientQueue_sendSampleForStream:sample:]";
                 v52 = 2112;
-                v53 = v34;
+                selfCopy = selfCopy3;
                 v54 = 2112;
-                v55 = a3;
+                streamCopy2 = stream;
                 v56 = 1024;
                 v57 = HIDWORD(v32);
                 v58 = 1024;
@@ -6235,7 +6235,7 @@ LABEL_22:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)consumeSampleBufferForStream:(id)a3 client:(id)a4 reply:(id)a5
+- (void)consumeSampleBufferForStream:(id)stream client:(id)client reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(3);
@@ -6251,9 +6251,9 @@ LABEL_22:
       v18 = 2080;
       v19 = "[CMIOExtensionProvider consumeSampleBufferForStream:client:reply:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = a3;
+      streamCopy = stream;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -6263,10 +6263,10 @@ LABEL_22:
   v13[1] = 3221225472;
   v13[2] = __67__CMIOExtensionProvider_consumeSampleBufferForStream_client_reply___block_invoke;
   v13[3] = &unk_27885BA28;
-  v13[4] = a3;
-  v13[5] = a4;
+  v13[4] = stream;
+  v13[5] = client;
   v13[6] = self;
-  v13[7] = a5;
+  v13[7] = reply;
   dispatch_async(clientQueue, v13);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -6374,7 +6374,7 @@ uint64_t __67__CMIOExtensionProvider_consumeSampleBufferForStream_client_reply__
   }
 }
 
-- (void)notifyScheduledOutputChangedForStream:(id)a3 scheduledOutput:(id)a4
+- (void)notifyScheduledOutputChangedForStream:(id)stream scheduledOutput:(id)output
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(2);
@@ -6390,9 +6390,9 @@ uint64_t __67__CMIOExtensionProvider_consumeSampleBufferForStream_client_reply__
       v16 = 2080;
       v17 = "[CMIOExtensionProvider notifyScheduledOutputChangedForStream:scheduledOutput:]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = a3;
+      streamCopy = stream;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %@", buf, 0x30u);
     }
   }
@@ -6403,8 +6403,8 @@ uint64_t __67__CMIOExtensionProvider_consumeSampleBufferForStream_client_reply__
   block[2] = __79__CMIOExtensionProvider_notifyScheduledOutputChangedForStream_scheduledOutput___block_invoke;
   block[3] = &unk_27885BBB8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = stream;
+  block[6] = output;
   dispatch_async(clientQueue, block);
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -6455,7 +6455,7 @@ uint64_t __79__CMIOExtensionProvider_notifyScheduledOutputChangedForStream_sched
   return result;
 }
 
-- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)a3
+- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)ds
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = CMIOLog();
@@ -6475,14 +6475,14 @@ uint64_t __79__CMIOExtensionProvider_notifyScheduledOutputChangedForStream_sched
       v17 = 2113;
       v18 = nonStreamingProxyFrontedExtensionPIDs;
       v19 = 2113;
-      v20 = a3;
+      dsCopy = ds;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s updating %{private}@ to %{private}@", &v11, 0x30u);
     }
   }
 
   os_unfair_lock_lock(&self->_contextsMapLock);
   v9 = self->_nonStreamingProxyFrontedExtensionPIDs;
-  self->_nonStreamingProxyFrontedExtensionPIDs = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:a3];
+  self->_nonStreamingProxyFrontedExtensionPIDs = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:ds];
 
   self->_nonStreamingProxyFrontedExtensionPIDsHasChanged = 1;
   os_unfair_lock_unlock(&self->_contextsMapLock);

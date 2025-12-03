@@ -1,17 +1,17 @@
 @interface GKAchievementThatAFriendHasCacheObject
 - (id)internalRepresentation;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKAchievementThatAFriendHasCacheObject
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"friend"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"friend"];
   [(GKAchievementThatAFriendHasCacheObject *)self setFriend:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"timestamp"];
+  v6 = [representationCopy objectForKeyedSubscript:@"timestamp"];
 
   [(GKAchievementThatAFriendHasCacheObject *)self setTimestamp:v6];
 }
@@ -19,12 +19,12 @@
 - (id)internalRepresentation
 {
   v3 = +[GKAchievementThatAFriendHasInternal internalRepresentation];
-  v4 = [(GKAchievementThatAFriendHasCacheObject *)self friend];
-  v5 = [v4 internalRepresentation];
-  [v3 setFriendPlayer:v5];
+  friend = [(GKAchievementThatAFriendHasCacheObject *)self friend];
+  internalRepresentation = [friend internalRepresentation];
+  [v3 setFriendPlayer:internalRepresentation];
 
-  v6 = [(GKAchievementThatAFriendHasCacheObject *)self timestamp];
-  [v3 setTimestamp:v6];
+  timestamp = [(GKAchievementThatAFriendHasCacheObject *)self timestamp];
+  [v3 setTimestamp:timestamp];
 
   return v3;
 }

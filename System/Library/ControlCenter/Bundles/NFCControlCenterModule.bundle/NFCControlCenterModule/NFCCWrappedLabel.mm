@@ -1,14 +1,14 @@
 @interface NFCCWrappedLabel
-- (NFCCWrappedLabel)initWithFrame:(CGRect)a3;
+- (NFCCWrappedLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NFCCWrappedLabel
 
-- (NFCCWrappedLabel)initWithFrame:(CGRect)a3
+- (NFCCWrappedLabel)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = NFCCWrappedLabel;
-  v3 = [(NFCCWrappedLabel *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NFCCWrappedLabel *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -17,21 +17,21 @@
 
     [(UILabel *)v3->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(NFCCWrappedLabel *)v3 addSubview:v3->_label];
-    v20 = [(UILabel *)v3->_label leadingAnchor];
-    v19 = [(NFCCWrappedLabel *)v3 leadingAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    leadingAnchor = [(UILabel *)v3->_label leadingAnchor];
+    leadingAnchor2 = [(NFCCWrappedLabel *)v3 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[0] = v18;
-    v17 = [(UILabel *)v3->_label firstBaselineAnchor];
-    v6 = [(NFCCWrappedLabel *)v3 topAnchor];
-    v7 = [v17 constraintEqualToAnchor:v6];
+    firstBaselineAnchor = [(UILabel *)v3->_label firstBaselineAnchor];
+    topAnchor = [(NFCCWrappedLabel *)v3 topAnchor];
+    v7 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
     v22[1] = v7;
-    v8 = [(NFCCWrappedLabel *)v3 trailingAnchor];
-    v9 = [(UILabel *)v3->_label trailingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    trailingAnchor = [(NFCCWrappedLabel *)v3 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v3->_label trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[2] = v10;
-    v11 = [(NFCCWrappedLabel *)v3 bottomAnchor];
-    v12 = [(UILabel *)v3->_label lastBaselineAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [(NFCCWrappedLabel *)v3 bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v3->_label lastBaselineAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor];
     v22[3] = v13;
     v14 = [NSArray arrayWithObjects:v22 count:4];
     [NSLayoutConstraint activateConstraints:v14];

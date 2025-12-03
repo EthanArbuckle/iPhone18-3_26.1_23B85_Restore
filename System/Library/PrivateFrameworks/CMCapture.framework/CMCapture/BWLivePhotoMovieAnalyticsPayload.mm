@@ -62,74 +62,74 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", +[BWCoreAnalyticsReporter clientApplicationIDType:](BWCoreAnalyticsReporter, "clientApplicationIDType:", self->_clientApplicationID)), @"clientIDType"}];
-  [v3 setObject:+[BWCoreAnalyticsReporter commonClientApplicationID:](BWCoreAnalyticsReporter forKeyedSubscript:{self->_clientApplicationID), @"commonClientApplicationID"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_recordingSucceeded), @"recordingSucceeded"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_errorStatus), @"errorStatus"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_sessionStatus), @"sessionStatus"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_longPressMovie), @"longPressMovie"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_originalRecording), @"originalRecording"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_hasStillImagePTS), @"hasStillImagePTS"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_movieDurationInSeconds), @"movieDurationInSeconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetInSeconds), @"stillTimeOffsetInSeconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToVideoPrerollStartInMilliseconds), @"stillTimeOffsetToVideoPrerollStartInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToVideoPrerollStopInMilliseconds), @"stillTimeOffsetToVideoPrerollStopInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToAudioPrerollStartInMilliseconds), @"stillTimeOffsetToAudioPrerollStartInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToAudioPrerollStopInMilliseconds), @"stillTimeOffsetToAudioPrerollStopInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_overlappingCapture), @"overlappingCapture"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_stagingNodeOverallNumberOfVideoFramesReceived), @"stagingNodeOverallNumberOfVideoFramesReceived"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallAverageTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallAverageTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallStandardDeviationOfTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallStandardDeviationOfTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallMinimumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallMinimumTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallMaximumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallMaximumTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_stagingNodeValveActiveNumberOfVideoFramesReceived), @"stagingNodeValveActiveNumberOfVideoFramesReceived"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveAverageTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveAverageTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveStandardDeviationOfTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveStandardDeviationOfTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveMinimumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveMinimumTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveMaximumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveMaximumTimeBetweenVideoFramesInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_fileCoordinatorToWriterMovingWindowLatencyNumberOfSamples), @"fileCoordinatorToWriterMovingWindowLatencyNumberOfSamples"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyAverageInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyAverageInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyStandardDeviationInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyStandardDeviationInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyMinimumInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyMinimumInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyMaximumInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyMaximumInMilliseconds"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", +[BWCoreAnalyticsReporter clientApplicationIDType:](BWCoreAnalyticsReporter, "clientApplicationIDType:", self->_clientApplicationID)), @"clientIDType"}];
+  [dictionary setObject:+[BWCoreAnalyticsReporter commonClientApplicationID:](BWCoreAnalyticsReporter forKeyedSubscript:{self->_clientApplicationID), @"commonClientApplicationID"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_recordingSucceeded), @"recordingSucceeded"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_errorStatus), @"errorStatus"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_sessionStatus), @"sessionStatus"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_longPressMovie), @"longPressMovie"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_originalRecording), @"originalRecording"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_hasStillImagePTS), @"hasStillImagePTS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_movieDurationInSeconds), @"movieDurationInSeconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetInSeconds), @"stillTimeOffsetInSeconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToVideoPrerollStartInMilliseconds), @"stillTimeOffsetToVideoPrerollStartInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToVideoPrerollStopInMilliseconds), @"stillTimeOffsetToVideoPrerollStopInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToAudioPrerollStartInMilliseconds), @"stillTimeOffsetToAudioPrerollStartInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stillTimeOffsetToAudioPrerollStopInMilliseconds), @"stillTimeOffsetToAudioPrerollStopInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_overlappingCapture), @"overlappingCapture"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_stagingNodeOverallNumberOfVideoFramesReceived), @"stagingNodeOverallNumberOfVideoFramesReceived"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallAverageTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallAverageTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallStandardDeviationOfTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallStandardDeviationOfTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallMinimumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallMinimumTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeOverallMaximumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeOverallMaximumTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_stagingNodeValveActiveNumberOfVideoFramesReceived), @"stagingNodeValveActiveNumberOfVideoFramesReceived"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveAverageTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveAverageTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveStandardDeviationOfTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveStandardDeviationOfTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveMinimumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveMinimumTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_stagingNodeValveActiveMaximumTimeBetweenVideoFramesInMilliseconds), @"stagingNodeValveActiveMaximumTimeBetweenVideoFramesInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", self->_fileCoordinatorToWriterMovingWindowLatencyNumberOfSamples), @"fileCoordinatorToWriterMovingWindowLatencyNumberOfSamples"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyAverageInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyAverageInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyStandardDeviationInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyStandardDeviationInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyMinimumInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyMinimumInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_fileCoordinatorToWriterMovingWindowLatencyMaximumInMilliseconds), @"fileCoordinatorToWriterMovingWindowLatencyMaximumInMilliseconds"}];
   if (self->_transitionVitalityScoreV1 >= 0.0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"transitionVitalityScoreV1"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:"), @"transitionVitalityScoreV1"}];
   }
 
   transitionVitalityFeatures = self->_transitionVitalityFeatures;
   if (transitionVitalityFeatures)
   {
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](transitionVitalityFeatures forKeyedSubscript:{"objectForKeyedSubscript:", @"deltaF", @"transitionVitalityDeltaF"}];
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](self->_transitionVitalityFeatures forKeyedSubscript:{"objectForKeyedSubscript:", @"thetaMax", @"transitionVitalityThetaMax"}];
-    [v3 setObject:-[NSDictionary objectForKeyedSubscript:](self->_transitionVitalityFeatures forKeyedSubscript:{"objectForKeyedSubscript:", @"motionAnalysisRMS", @"transitionVitalitySubjectMotionRMS"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](transitionVitalityFeatures forKeyedSubscript:{"objectForKeyedSubscript:", @"deltaF", @"transitionVitalityDeltaF"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](self->_transitionVitalityFeatures forKeyedSubscript:{"objectForKeyedSubscript:", @"thetaMax", @"transitionVitalityThetaMax"}];
+    [dictionary setObject:-[NSDictionary objectForKeyedSubscript:](self->_transitionVitalityFeatures forKeyedSubscript:{"objectForKeyedSubscript:", @"motionAnalysisRMS", @"transitionVitalitySubjectMotionRMS"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_stillCaptureLuxLevel), @"stillCaptureLuxLevel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_stillCaptureLuxLevel), @"stillCaptureLuxLevel"}];
   stillCapturePortType = self->_stillCapturePortType;
   if (stillCapturePortType)
   {
-    [v3 setObject:stillCapturePortType forKeyedSubscript:@"stillCapturePortType"];
+    [dictionary setObject:stillCapturePortType forKeyedSubscript:@"stillCapturePortType"];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stillCaptureType), @"stillCaptureType"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stillCaptureResolutionFlavor), @"stillCaptureResolutionFlavor"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSystemPressureLevel), @"maxSystemPressureLevel"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_targetFrameRate), @"targetFrameRate"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_numberOfFramesDropped), @"numberOfFramesDropped"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stillCaptureType), @"stillCaptureType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_stillCaptureResolutionFlavor), @"stillCaptureResolutionFlavor"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_maxSystemPressureLevel), @"maxSystemPressureLevel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_targetFrameRate), @"targetFrameRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_numberOfFramesDropped), @"numberOfFramesDropped"}];
   retimingRecipeIdentifier = self->_retimingRecipeIdentifier;
   if (retimingRecipeIdentifier)
   {
-    [v3 setObject:retimingRecipeIdentifier forKeyedSubscript:@"retimingRecipeIdentifier"];
+    [dictionary setObject:retimingRecipeIdentifier forKeyedSubscript:@"retimingRecipeIdentifier"];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_minVideoFrameDurationInMilliseconds), @"videoFrameDurationMinInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_maxVideoFrameDurationInMilliseconds), @"videoFrameDurationMaxInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_averageVideoFrameDurationInMilliseconds), @"videoFrameDurationAverageInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_medianVideoFrameDurationInMilliseconds), @"videoFrameDurationMedianInMilliseconds"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_videoFrameDurationStandardDeviationInMilliseconds), @"videoFrameDurationStandardDeviationInMilliseconds"}];
-  return v3;
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_minVideoFrameDurationInMilliseconds), @"videoFrameDurationMinInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_maxVideoFrameDurationInMilliseconds), @"videoFrameDurationMaxInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_averageVideoFrameDurationInMilliseconds), @"videoFrameDurationAverageInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_medianVideoFrameDurationInMilliseconds), @"videoFrameDurationMedianInMilliseconds"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithDouble:", self->_videoFrameDurationStandardDeviationInMilliseconds), @"videoFrameDurationStandardDeviationInMilliseconds"}];
+  return dictionary;
 }
 
 @end

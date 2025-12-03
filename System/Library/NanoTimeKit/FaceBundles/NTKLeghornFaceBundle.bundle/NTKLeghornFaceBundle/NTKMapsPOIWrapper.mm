@@ -1,26 +1,26 @@
 @interface NTKMapsPOIWrapper
-- (NTKMapsPOIWrapper)initWithmapsPOI:(id)a3 image:(id)a4 glyphColor:(id)a5 fillColor:(id)a6;
+- (NTKMapsPOIWrapper)initWithmapsPOI:(id)i image:(id)image glyphColor:(id)color fillColor:(id)fillColor;
 - (void)showInfo;
 @end
 
 @implementation NTKMapsPOIWrapper
 
-- (NTKMapsPOIWrapper)initWithmapsPOI:(id)a3 image:(id)a4 glyphColor:(id)a5 fillColor:(id)a6
+- (NTKMapsPOIWrapper)initWithmapsPOI:(id)i image:(id)image glyphColor:(id)color fillColor:(id)fillColor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  iCopy = i;
+  imageCopy = image;
+  colorCopy = color;
+  fillColorCopy = fillColor;
   v18.receiver = self;
   v18.super_class = NTKMapsPOIWrapper;
   v15 = [(NTKMapsPOIWrapper *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_poi, a3);
-    objc_storeStrong(&v16->_image, a4);
-    objc_storeStrong(&v16->_glyphColor, a5);
-    objc_storeStrong(&v16->_fillColor, a6);
+    objc_storeStrong(&v15->_poi, i);
+    objc_storeStrong(&v16->_image, image);
+    objc_storeStrong(&v16->_glyphColor, color);
+    objc_storeStrong(&v16->_fillColor, fillColor);
   }
 
   return v16;

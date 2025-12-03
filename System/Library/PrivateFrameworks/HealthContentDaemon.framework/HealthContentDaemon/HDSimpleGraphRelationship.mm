@@ -1,8 +1,8 @@
 @interface HDSimpleGraphRelationship
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDSimpleGraphRelationship)init;
-- (HDSimpleGraphRelationship)initWithRowID:(int64_t)a3 subjectID:(int64_t)a4 type:(int64_t)a5 objectID:(int64_t)a6 version:(int64_t)a7 slots:(unint64_t)a8;
-- (HDSimpleGraphRelationship)initWithRowID:(int64_t)a3 version:(int64_t)a4 slots:(unint64_t)a5 deleted:(BOOL)a6;
+- (HDSimpleGraphRelationship)initWithRowID:(int64_t)d subjectID:(int64_t)iD type:(int64_t)type objectID:(int64_t)objectID version:(int64_t)version slots:(unint64_t)slots;
+- (HDSimpleGraphRelationship)initWithRowID:(int64_t)d version:(int64_t)version slots:(unint64_t)slots deleted:(BOOL)deleted;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (HDSimpleGraphRelationship)initWithRowID:(int64_t)a3 version:(int64_t)a4 slots:(unint64_t)a5 deleted:(BOOL)a6
+- (HDSimpleGraphRelationship)initWithRowID:(int64_t)d version:(int64_t)version slots:(unint64_t)slots deleted:(BOOL)deleted
 {
   v7 = MEMORY[0x277CBEAD8];
   v8 = *MEMORY[0x277CBE660];
@@ -29,16 +29,16 @@
   return 0;
 }
 
-- (HDSimpleGraphRelationship)initWithRowID:(int64_t)a3 subjectID:(int64_t)a4 type:(int64_t)a5 objectID:(int64_t)a6 version:(int64_t)a7 slots:(unint64_t)a8
+- (HDSimpleGraphRelationship)initWithRowID:(int64_t)d subjectID:(int64_t)iD type:(int64_t)type objectID:(int64_t)objectID version:(int64_t)version slots:(unint64_t)slots
 {
   v12.receiver = self;
   v12.super_class = HDSimpleGraphRelationship;
-  result = [(HDSimpleGraphObject *)&v12 initWithRowID:a3 version:a7 slots:a8 deleted:a6 == 204];
+  result = [(HDSimpleGraphObject *)&v12 initWithRowID:d version:version slots:slots deleted:objectID == 204];
   if (result)
   {
-    result->_subjectID = a4;
-    result->_type = a5;
-    result->_objectID = a6;
+    result->_subjectID = iD;
+    result->_type = type;
+    result->_objectID = objectID;
   }
 
   return result;
@@ -59,15 +59,15 @@
 - (unint64_t)hash
 {
   v3 = [objc_opt_class() hash];
-  v4 = [(HDSimpleGraphRelationship *)self type];
-  v5 = v4 ^ [(HDSimpleGraphRelationship *)self subjectID]^ v3;
+  type = [(HDSimpleGraphRelationship *)self type];
+  v5 = type ^ [(HDSimpleGraphRelationship *)self subjectID]^ v3;
   return v5 ^ [(HDSimpleGraphRelationship *)self objectID];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -77,7 +77,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_type == v5->_type && self->_subjectID == v5->_subjectID && self->_objectID == v5->_objectID;
     }
 

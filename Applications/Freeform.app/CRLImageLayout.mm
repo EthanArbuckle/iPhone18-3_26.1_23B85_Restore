@@ -12,22 +12,22 @@
 - (BOOL)shouldSnapWhileResizing;
 - (CGAffineTransform)layoutToImageTransform;
 - (CGAffineTransform)layoutToMaskTransform;
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3;
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space;
 - (CGPoint)centerForConnecting;
 - (CGPoint)centerForRotation;
 - (CGPoint)centerForRotationInMaskMode;
 - (CGRect)alignmentFrameForProvidingGuidesInRoot;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
 - (CGRect)pathBoundsWithoutStroke;
 - (CGSize)sizeOfFrameRectIncludingCoverage;
 - (CRLCanvasInfoGeometry)currentInfoGeometry;
 - (CRLCanvasLayoutGeometry)imageGeometryInRoot;
-- (CRLImageLayout)initWithInfo:(id)a3;
+- (CRLImageLayout)initWithInfo:(id)info;
 - (CRLSmartPathSource)smartPathSource;
 - (_TtC8Freeform12CRLImageItem)imageInfo;
 - (id)childInfosForChildLayouts;
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3;
-- (id)commandToResetToSize:(CGSize)a3;
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform;
+- (id)commandToResetToSize:(CGSize)size;
 - (id)computeLayoutGeometry;
 - (id)computeWrapPath;
 - (id)geometryForTransforming;
@@ -41,13 +41,13 @@
 - (int64_t)maskEditModeForResizing;
 - (int64_t)maskEditModeForRotating;
 - (void)beginDrag;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
-- (void)beginEditingMaskInMaskEditMode:(int64_t)a3;
-- (void)beginFreeTransformWithTracker:(id)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
+- (void)beginEditingMaskInMaskEditMode:(int64_t)mode;
+- (void)beginFreeTransformWithTracker:(id)tracker;
 - (void)beginResize;
 - (void)beginRotate;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)endDrag;
 - (void)endDynamicOperation;
 - (void)endFreeTransform;
@@ -56,38 +56,38 @@
 - (void)endRotate;
 - (void)maskWasApplied;
 - (void)maskWasReset;
-- (void)offsetGeometryBy:(CGPoint)a3;
-- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)a3 andPerformBlock:(id)a4;
+- (void)offsetGeometryBy:(CGPoint)by;
+- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)transform andPerformBlock:(id)block;
 - (void)p_createDynamicCopiesIfNeeded;
 - (void)p_destroyDynamicCopiesIfNeeded;
-- (void)p_setDynamicInfoGeometry:(id)a3;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)resizeWithTransform:(CGAffineTransform *)a3;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
-- (void)takeScaledImageGeometry:(id)a3 maskGeometry:(id)a4;
-- (void)takeSizeFromTracker:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)p_setDynamicInfoGeometry:(id)geometry;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)resizeWithTransform:(CGAffineTransform *)transform;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeRotationFromTracker:(id)tracker;
+- (void)takeScaledImageGeometry:(id)geometry maskGeometry:(id)maskGeometry;
+- (void)takeSizeFromTracker:(id)tracker;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)updateChildrenFromInfo;
 @end
 
 @implementation CRLImageLayout
 
-- (CRLImageLayout)initWithInfo:(id)a3
+- (CRLImageLayout)initWithInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = CRLImageLayout;
-  v3 = [(CRLMediaLayout *)&v9 initWithInfo:a3];
+  v3 = [(CRLMediaLayout *)&v9 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CRLImageLayout *)v3 imageInfo];
-    if (v5)
+    imageInfo = [(CRLImageLayout *)v3 imageInfo];
+    if (imageInfo)
     {
-      v6 = v5;
-      v7 = [(CRLImageLayout *)v5 maskInfo];
+      v6 = imageInfo;
+      maskInfo = [(CRLImageLayout *)imageInfo maskInfo];
 
-      if (v7)
+      if (maskInfo)
       {
         *(&v4->mDynamicInfoGeometry + 3) = 1;
       }
@@ -131,16 +131,16 @@
 {
   v7.receiver = self;
   v7.super_class = CRLImageLayout;
-  v3 = [(CRLCanvasAbstractLayout *)&v7 visibleGeometries];
+  visibleGeometries = [(CRLCanvasAbstractLayout *)&v7 visibleGeometries];
   if ([(CRLImageLayout *)self isInMaskEditMode])
   {
-    v4 = [(CRLImageLayout *)self imageGeometry];
-    v5 = [v3 arrayByAddingObject:v4];
+    imageGeometry = [(CRLImageLayout *)self imageGeometry];
+    v5 = [visibleGeometries arrayByAddingObject:imageGeometry];
 
-    v3 = v5;
+    visibleGeometries = v5;
   }
 
-  return v3;
+  return visibleGeometries;
 }
 
 - (CRLCanvasInfoGeometry)currentInfoGeometry
@@ -148,28 +148,28 @@
   v2 = *(&self->mHasAlpha + 3);
   if (v2)
   {
-    v3 = v2;
+    geometry = v2;
   }
 
   else
   {
-    v4 = [(CRLCanvasLayout *)self info];
-    v3 = [v4 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
   }
 
-  return v3;
+  return geometry;
 }
 
 - (id)layoutGeometryFromInfo
 {
-  v2 = [(CRLImageLayout *)self currentInfoGeometry];
+  currentInfoGeometry = [(CRLImageLayout *)self currentInfoGeometry];
   v3 = [CRLCanvasLayoutGeometry alloc];
-  [v2 size];
+  [currentInfoGeometry size];
   v5 = v4;
   v7 = v6;
-  if (v2)
+  if (currentInfoGeometry)
   {
-    [v2 transform];
+    [currentInfoGeometry transform];
   }
 
   else
@@ -185,8 +185,8 @@
 - (id)computeLayoutGeometry
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100014370(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100014370(v3, parent);
 
   if (v5)
   {
@@ -205,76 +205,76 @@
     *(&self->mMaskIntersectsImage + 3) = v7;
   }
 
-  v9 = [(CRLImageLayout *)self maskLayout];
-  if (v9)
+  maskLayout = [(CRLImageLayout *)self maskLayout];
+  if (maskLayout)
   {
-    v10 = [(CRLImageLayout *)self layoutGeometryFromInfo];
+    layoutGeometryFromInfo = [(CRLImageLayout *)self layoutGeometryFromInfo];
   }
 
   else
   {
     v75.receiver = self;
     v75.super_class = CRLImageLayout;
-    v10 = [(CRLCanvasLayout *)&v75 computeLayoutGeometry];
+    layoutGeometryFromInfo = [(CRLCanvasLayout *)&v75 computeLayoutGeometry];
   }
 
-  v11 = v10;
-  objc_storeStrong((&self->super._boundsForStandardKnobs.size.width + 3), v10);
+  v11 = layoutGeometryFromInfo;
+  objc_storeStrong((&self->super._boundsForStandardKnobs.size.width + 3), layoutGeometryFromInfo);
   v12 = objc_opt_class();
-  v13 = [(CRLMediaLayout *)self stroke];
-  v14 = sub_100014370(v12, v13);
+  stroke = [(CRLMediaLayout *)self stroke];
+  v14 = sub_100014370(v12, stroke);
 
   CGPathRelease(*(&self->mImageGeometry + 3));
   *(&self->mImageGeometry + 3) = 0;
-  v15 = [(CRLImageLayout *)self imageInfo];
-  if (v9)
+  imageInfo = [(CRLImageLayout *)self imageInfo];
+  if (maskLayout)
   {
-    [v9 setPathScale:1.0];
-    v16 = [v9 computeLayoutGeometry];
+    [maskLayout setPathScale:1.0];
+    computeLayoutGeometry = [maskLayout computeLayoutGeometry];
     v70 = v5;
     v71 = v14;
     if ([(CRLCanvasLayout *)self layoutState]!= 3)
     {
-      v17 = [v15 geometry];
-      [v17 angle];
+      geometry = [imageInfo geometry];
+      [geometry angle];
       v19 = v18;
-      v20 = [v15 maskInfo];
-      v21 = [v20 geometry];
-      [v21 angle];
+      maskInfo = [imageInfo maskInfo];
+      geometry2 = [maskInfo geometry];
+      [geometry2 angle];
       v23 = v19 + v22;
 
-      [v16 size];
+      [computeLayoutGeometry size];
       v25 = v24;
       v27 = v26;
       CGAffineTransformMakeRotation(&v74, v23 * 0.0174532925);
       [(CRLCanvasLayout *)self scaleForInlineClampingUnrotatedSize:&v74 withTransform:v25, v27];
       v29 = v28;
       CGAffineTransformMakeScale(&v74, v28, v28);
-      v30 = [v16 geometryByTransformingBy:&v74];
+      v30 = [computeLayoutGeometry geometryByTransformingBy:&v74];
 
       CGAffineTransformMakeScale(&v74, v29, v29);
       v31 = [(CRLCanvasLayoutGeometry *)v11 geometryByTransformingBy:&v74];
 
-      v32 = [(CRLImageLayout *)self maskLayout];
-      [v32 setPathScale:v29];
+      maskLayout2 = [(CRLImageLayout *)self maskLayout];
+      [maskLayout2 setPathScale:v29];
 
-      v33 = [(CRLImageLayout *)self maskLayout];
-      [v33 setGeometry:v30];
+      maskLayout3 = [(CRLImageLayout *)self maskLayout];
+      [maskLayout3 setGeometry:v30];
 
       objc_storeStrong((&self->super._boundsForStandardKnobs.size.width + 3), v31);
-      v16 = v30;
+      computeLayoutGeometry = v30;
       v11 = v31;
     }
 
-    v34 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [v9 path]);
-    [v9 pathBounds];
+    v34 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [maskLayout path]);
+    [maskLayout pathBounds];
     CGAffineTransformMakeTranslation(&v74, -v35, -v36);
     [v34 transformUsingAffineTransform:&v74];
     [(CRLCanvasLayoutGeometry *)v11 size];
     v37 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
-    if (v16)
+    if (computeLayoutGeometry)
     {
-      [v16 transform];
+      [computeLayoutGeometry transform];
     }
 
     else
@@ -297,9 +297,9 @@
     v43 = v42;
     if (v42)
     {
-      v44 = [v42 elementCount];
-      BYTE3(self->mLayoutToMaskTransform.tx) = v44 > 1;
-      if (v44 >= 2)
+      elementCount = [v42 elementCount];
+      BYTE3(self->mLayoutToMaskTransform.tx) = elementCount > 1;
+      if (elementCount >= 2)
       {
         v45 = CGPathRetain([v43 CGPath]);
         *(&self->mImageGeometry + 3) = v45;
@@ -310,7 +310,7 @@
         v52 = v51;
         v54 = v53;
 
-        [v16 size];
+        [computeLayoutGeometry size];
         v78.origin.x = sub_10011ECB4();
         width = v78.size.width;
         height = v78.size.height;
@@ -322,9 +322,9 @@
         x = v79.origin.x;
         y = v79.origin.y;
         v40 = [(CRLCanvasLayoutGeometry *)[CRLCanvasMutableLayoutGeometry alloc] initWithFrame:v79.origin.x, v79.origin.y, v79.size.width, v79.size.height];
-        if (v16)
+        if (computeLayoutGeometry)
         {
-          [v16 transform];
+          [computeLayoutGeometry transform];
         }
 
         else
@@ -353,9 +353,9 @@
         *(&self->mLayoutToMaskTransform.a + 3) = v62;
         *(&self->mLayoutToMaskTransform.c + 3) = *&v74.tx;
 LABEL_39:
-        if (v16)
+        if (computeLayoutGeometry)
         {
-          [v16 transform];
+          [computeLayoutGeometry transform];
         }
 
         else
@@ -395,8 +395,8 @@ LABEL_39:
       memset(&v74, 0, sizeof(v74));
     }
 
-    v40 = [v16 geometryByTransformingBy:&v74];
-    [v16 size];
+    v40 = [computeLayoutGeometry geometryByTransformingBy:&v74];
+    [computeLayoutGeometry size];
     [(CRLMediaLayout *)self setBoundsForStandardKnobs:sub_10011ECB4()];
     v59 = *&CGAffineTransformIdentity.c;
     *(&self->mLayoutToImageTransform.tx + 3) = *&CGAffineTransformIdentity.a;
@@ -445,49 +445,49 @@ LABEL_43:
   return v40;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v8.receiver = self;
   v8.super_class = CRLImageLayout;
   [(CRLMediaLayout *)&v8 processChangedProperty:?];
-  if (a3 <= 39)
+  if (property <= 39)
   {
-    if (a3 == 16)
+    if (property == 16)
     {
       [(CRLCanvasLayout *)self invalidateFrame];
       [(CRLMediaLayout *)self invalidateAlignmentFrame];
       return;
     }
 
-    if (a3 != 19)
+    if (property != 19)
     {
       goto LABEL_13;
     }
   }
 
-  else if (a3 != 40)
+  else if (property != 40)
   {
-    if (a3 == 41)
+    if (property == 41)
     {
-      v5 = [(CRLImageLayout *)self maskLayout];
-      v6 = v5;
+      maskLayout = [(CRLImageLayout *)self maskLayout];
+      v6 = maskLayout;
       v7 = 7;
       goto LABEL_11;
     }
 
-    if (a3 == 42)
+    if (property == 42)
     {
-      v5 = [(CRLImageLayout *)self maskLayout];
-      v6 = v5;
+      maskLayout = [(CRLImageLayout *)self maskLayout];
+      v6 = maskLayout;
       v7 = 21;
 LABEL_11:
-      [v5 processChangedProperty:v7];
+      [maskLayout processChangedProperty:v7];
 
       return;
     }
 
 LABEL_13:
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 6)
+    if ((property & 0xFFFFFFFFFFFFFFFELL) == 6)
     {
       [(CRLMediaLayout *)self invalidateAlignmentFrame];
       [(CRLBoardItemLayout *)self invalidateExteriorWrap];
@@ -499,7 +499,7 @@ LABEL_13:
   [(CRLCanvasLayout *)self invalidateFrame];
   [(CRLMediaLayout *)self invalidateAlignmentFrame];
   [(CRLCanvasLayout *)self invalidateChildren];
-  if (a3 == 19)
+  if (property == 19)
   {
     *(&self->mLastParentLimitedSize.width + 3) = 0.0;
   }
@@ -509,18 +509,18 @@ LABEL_13:
 {
   v8.receiver = self;
   v8.super_class = CRLImageLayout;
-  v3 = [(CRLCanvasLayout *)&v8 childInfosForChildLayouts];
-  v4 = [(CRLImageLayout *)self imageInfo];
-  v5 = [v4 maskInfo];
+  childInfosForChildLayouts = [(CRLCanvasLayout *)&v8 childInfosForChildLayouts];
+  imageInfo = [(CRLImageLayout *)self imageInfo];
+  maskInfo = [imageInfo maskInfo];
 
-  if (v5)
+  if (maskInfo)
   {
-    v6 = [v3 arrayByAddingObject:v5];
+    v6 = [childInfosForChildLayouts arrayByAddingObject:maskInfo];
 
-    v3 = v6;
+    childInfosForChildLayouts = v6;
   }
 
-  return v3;
+  return childInfosForChildLayouts;
 }
 
 - (void)updateChildrenFromInfo
@@ -528,11 +528,11 @@ LABEL_13:
   v26.receiver = self;
   v26.super_class = CRLImageLayout;
   [(CRLCanvasLayout *)&v26 updateChildrenFromInfo];
-  v3 = [(CRLImageLayout *)self imageInfo];
-  v4 = [v3 maskInfo];
+  imageInfo = [(CRLImageLayout *)self imageInfo];
+  maskInfo = [imageInfo maskInfo];
 
   v5 = *(&self->super._boundsForStandardKnobs.size.height + 3);
-  if (!v4)
+  if (!maskInfo)
   {
     *(&self->super._boundsForStandardKnobs.size.height + 3) = 0.0;
 LABEL_27:
@@ -542,13 +542,13 @@ LABEL_27:
 
   if (v5)
   {
-    v6 = [*(&self->super._boundsForStandardKnobs.size.height + 3) maskInfo];
-    v7 = v6;
-    if (v6 == v4)
+    maskInfo2 = [*(&self->super._boundsForStandardKnobs.size.height + 3) maskInfo];
+    v7 = maskInfo2;
+    if (maskInfo2 == maskInfo)
     {
-      v8 = [*(&self->super._boundsForStandardKnobs.size.height + 3) parent];
+      parent = [*(&self->super._boundsForStandardKnobs.size.height + 3) parent];
 
-      if (v8 == self)
+      if (parent == self)
       {
         goto LABEL_28;
       }
@@ -566,8 +566,8 @@ LABEL_27:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(CRLCanvasAbstractLayout *)self children];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v11 = [children countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -578,13 +578,13 @@ LABEL_27:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(children);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 info];
+        info = [v15 info];
 
-        if (v16 == v4)
+        if (info == maskInfo)
         {
           v17 = objc_opt_class();
           v18 = sub_100013F00(v17, v15);
@@ -595,7 +595,7 @@ LABEL_27:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v12 = [children countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v12)
       {
         continue;
@@ -641,19 +641,19 @@ LABEL_17:
 LABEL_28:
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = a3;
+  rootCopy = root;
   if (*(&self->super._boundsForStandardKnobs.size.height + 3) && *(&self->mImageGeometry + 3))
   {
     v5 = objc_opt_class();
-    v6 = [(CRLMediaLayout *)self stroke];
-    v7 = sub_100014370(v5, v6);
+    stroke = [(CRLMediaLayout *)self stroke];
+    v7 = sub_100014370(v5, stroke);
 
     v8 = [CRLBezierPath bezierPathWithCGPath:*(&self->mImageGeometry + 3)];
     memset(&v29, 0, sizeof(v29));
     [(CRLImageLayout *)self layoutToMaskTransform];
-    if (v3)
+    if (rootCopy)
     {
       [(CRLCanvasAbstractLayout *)self transformInRoot];
     }
@@ -686,11 +686,11 @@ LABEL_28:
   else
   {
     memset(&v29, 0, sizeof(v29));
-    v9 = [(CRLCanvasAbstractLayout *)self geometry];
-    v10 = v9;
-    if (v9)
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    v10 = geometry;
+    if (geometry)
     {
-      [v9 fullTransform];
+      [geometry fullTransform];
     }
 
     else
@@ -698,17 +698,17 @@ LABEL_28:
       memset(&v29, 0, sizeof(v29));
     }
 
-    if (v3)
+    if (rootCopy)
     {
-      v11 = [(CRLCanvasAbstractLayout *)self parent];
+      parent = [(CRLCanvasAbstractLayout *)self parent];
 
-      if (v11)
+      if (parent)
       {
-        v12 = [(CRLCanvasAbstractLayout *)self parent];
-        v13 = v12;
-        if (v12)
+        parent2 = [(CRLCanvasAbstractLayout *)self parent];
+        v13 = parent2;
+        if (parent2)
         {
-          [v12 transformInRoot];
+          [parent2 transformInRoot];
         }
 
         else
@@ -752,8 +752,8 @@ LABEL_28:
     if ([(CRLImageLayout *)self maskEditModeForResizing]== 2)
     {
 LABEL_3:
-      v3 = [(CRLImageLayout *)self imageGeometry];
-      [v3 size];
+      imageGeometry = [(CRLImageLayout *)self imageGeometry];
+      [imageGeometry size];
       v4 = sub_10011ECB4();
       v6 = v5;
       v8 = v7;
@@ -773,9 +773,9 @@ LABEL_7:
     }
 
 LABEL_6:
-    v11 = [(CRLImageLayout *)self maskLayout];
-    v12 = [v11 geometry];
-    [v12 size];
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    geometry = [maskLayout geometry];
+    [geometry size];
     v4 = sub_10011ECB4();
     v6 = v13;
     v8 = v14;
@@ -802,13 +802,13 @@ LABEL_6:
   return result;
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != CGPointZero.x || a3.y != CGPointZero.y)
+  y = by.y;
+  x = by.x;
+  if (by.x != CGPointZero.x || by.y != CGPointZero.y)
   {
-    v7 = [*(&self->super._boundsForStandardKnobs.size.width + 3) geometryByTranslatingBy:{a3.x, a3.y}];
+    v7 = [*(&self->super._boundsForStandardKnobs.size.width + 3) geometryByTranslatingBy:{by.x, by.y}];
     v8 = *(&self->super._boundsForStandardKnobs.size.width + 3);
     *(&self->super._boundsForStandardKnobs.size.width + 3) = v7;
   }
@@ -825,9 +825,9 @@ LABEL_6:
   {
     *(&self->mLastParentLimitedSize.width + 3) = 1;
     v4 = +[CRLImageProviderPool sharedPool];
-    v5 = [(CRLImageLayout *)self imageInfo];
-    v6 = [v5 imageAssetPayload];
-    v7 = [v4 providerForAsset:v6 shouldValidate:0];
+    imageInfo = [(CRLImageLayout *)self imageInfo];
+    imageAssetPayload = [imageInfo imageAssetPayload];
+    v7 = [v4 providerForAsset:imageAssetPayload shouldValidate:0];
 
     v8 = objc_opt_class();
     v9 = sub_100014370(v8, v7);
@@ -845,10 +845,10 @@ LABEL_6:
 
 - (BOOL)isInvisible
 {
-  v3 = [(CRLImageLayout *)self pathToStroke];
-  if (v3)
+  pathToStroke = [(CRLImageLayout *)self pathToStroke];
+  if (pathToStroke)
   {
-    BoundingBox = CGPathGetBoundingBox(v3);
+    BoundingBox = CGPathGetBoundingBox(pathToStroke);
     x = BoundingBox.origin.x;
     y = BoundingBox.origin.y;
     width = BoundingBox.size.width;
@@ -857,8 +857,8 @@ LABEL_6:
 
   else
   {
-    v8 = [(CRLImageLayout *)self imageGeometry];
-    [v8 size];
+    imageGeometry = [(CRLImageLayout *)self imageGeometry];
+    [imageGeometry size];
     x = sub_10011ECB4();
     y = v9;
     width = v10;
@@ -890,17 +890,17 @@ LABEL_6:
   return [(CRLCanvasLayout *)&v4 shouldDisplayGuides];
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v9.receiver = self;
   v9.super_class = CRLImageLayout;
   [(CRLBoardItemLayout *)&v9 beginDynamicOperationWithRealTimeCommands:?];
-  v5 = [(CRLImageLayout *)self maskLayout];
-  [v5 beginDynamicOperationWithRealTimeCommands:v3];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
+  [maskLayout beginDynamicOperationWithRealTimeCommands:commandsCopy];
 
-  v6 = [(CRLImageLayout *)self imageGeometry];
-  v7 = [v6 copy];
+  imageGeometry = [(CRLImageLayout *)self imageGeometry];
+  v7 = [imageGeometry copy];
   v8 = *(&self->mLastParentLimitedSize.height + 3);
   *(&self->mLastParentLimitedSize.height + 3) = v7;
 }
@@ -910,8 +910,8 @@ LABEL_6:
   v3 = *(&self->mLastParentLimitedSize.height + 3);
   *(&self->mLastParentLimitedSize.height + 3) = 0.0;
 
-  v4 = [(CRLImageLayout *)self maskLayout];
-  [v4 endDynamicOperation];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
+  [maskLayout endDynamicOperation];
 
   v5.receiver = self;
   v5.super_class = CRLImageLayout;
@@ -926,12 +926,12 @@ LABEL_6:
   [(CRLImageLayout *)self p_createDynamicCopiesIfNeeded];
   if ([(CRLImageLayout *)self maskEditMode]== 3)
   {
-    v3 = [(CRLImageLayout *)self imageGeometry];
-    [v3 size];
+    imageGeometry = [(CRLImageLayout *)self imageGeometry];
+    [imageGeometry size];
     [(CRLCanvasLayout *)self setInitialBoundsForStandardKnobs:sub_10011ECB4()];
 
-    v4 = [(CRLImageLayout *)self imageGeometry];
-    v5 = [v4 copy];
+    imageGeometry2 = [(CRLImageLayout *)self imageGeometry];
+    v5 = [imageGeometry2 copy];
     [(CRLCanvasLayout *)self setOriginalGeometry:v5];
   }
 }
@@ -944,23 +944,23 @@ LABEL_6:
   [(CRLCanvasLayout *)&v3 endResize];
 }
 
-- (id)commandToResetToSize:(CGSize)a3
+- (id)commandToResetToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CRLImageLayout *)self imageInfo];
+  height = size.height;
+  width = size.width;
+  imageInfo = [(CRLImageLayout *)self imageInfo];
   v7 = objc_alloc_init(_TtC8Freeform15CRLCommandGroup);
   v14.receiver = self;
   v14.super_class = CRLImageLayout;
-  v8 = [(CRLMediaLayout *)&v14 commandToResetToSize:width, height];
-  [(CRLCommandGroup *)v7 addCommand:v8];
+  height = [(CRLMediaLayout *)&v14 commandToResetToSize:width, height];
+  [(CRLCommandGroup *)v7 addCommand:height];
   if (![(CRLImageLayout *)self isInMaskEditMode])
   {
     v9 = objc_alloc_init(CRLBezierPath);
     [(CRLBezierPath *)v9 appendBezierPathWithRect:sub_10011ECB4()];
     v10 = [[CRLBezierPathSource alloc] initWithBezierPath:v9];
-    v11 = [[CRLCanvasInfoGeometry alloc] initWithSize:width, height];
-    v12 = [[_TtC8Freeform17CRLCommandSetMask alloc] initWithImageItem:v6 maskGeometry:v11 maskPath:v10];
+    height2 = [[CRLCanvasInfoGeometry alloc] initWithSize:width, height];
+    v12 = [[_TtC8Freeform17CRLCommandSetMask alloc] initWithImageItem:imageInfo maskGeometry:height2 maskPath:v10];
     [(CRLCommandGroup *)v7 addCommand:v12];
   }
 
@@ -985,23 +985,23 @@ LABEL_6:
   }
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x == CGPointZero.x && a3.y == CGPointZero.y)
+  y = by.y;
+  x = by.x;
+  if (by.x == CGPointZero.x && by.y == CGPointZero.y)
   {
     return;
   }
 
   if ([(CRLImageLayout *)self maskEditModeForDragging]== 3)
   {
-    v15 = [*(&self->mHasAlpha + 3) mutableCopy];
-    [v15 position];
-    [v15 setPosition:{sub_10011F334(v7, v8, x)}];
-    [(CRLImageLayout *)self p_setDynamicInfoGeometry:v15];
-    v9 = [(CRLImageLayout *)self maskLayout];
-    [v9 dragBy:{x, y}];
+    maskLayout2 = [*(&self->mHasAlpha + 3) mutableCopy];
+    [maskLayout2 position];
+    [maskLayout2 setPosition:{sub_10011F334(v7, v8, x)}];
+    [(CRLImageLayout *)self p_setDynamicInfoGeometry:maskLayout2];
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    [maskLayout dragBy:{x, y}];
 
 LABEL_9:
 
@@ -1010,8 +1010,8 @@ LABEL_9:
 
   if ([(CRLImageLayout *)self maskEditModeForDragging]== 2)
   {
-    v15 = [(CRLImageLayout *)self maskLayout];
-    [v15 dragBy:{x, y}];
+    maskLayout2 = [(CRLImageLayout *)self maskLayout];
+    [maskLayout2 dragBy:{x, y}];
     goto LABEL_9;
   }
 
@@ -1081,7 +1081,7 @@ LABEL_9:
   [(CRLCanvasLayout *)&v3 endRotate];
 }
 
-- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)a3
+- (CGAffineTransform)layoutTransformInInfoSpace:(SEL)space
 {
   memset(&v15, 0, sizeof(v15));
   v7 = *(&self->mLastParentLimitedSize.height + 3);
@@ -1096,11 +1096,11 @@ LABEL_9:
   }
 
   CGAffineTransformInvert(&t1, &t2);
-  v8 = [(CRLCanvasLayout *)self infoGeometryBeforeDynamicOperation];
-  v9 = v8;
-  if (v8)
+  infoGeometryBeforeDynamicOperation = [(CRLCanvasLayout *)self infoGeometryBeforeDynamicOperation];
+  v9 = infoGeometryBeforeDynamicOperation;
+  if (infoGeometryBeforeDynamicOperation)
   {
-    [v8 fullTransform];
+    [infoGeometryBeforeDynamicOperation fullTransform];
   }
 
   else
@@ -1121,15 +1121,15 @@ LABEL_9:
   return CGAffineTransformConcat(retstr, &t1, &t2);
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v7.receiver = self;
   v7.super_class = CRLImageLayout;
-  [(CRLBoardItemLayout *)&v7 takeRotationFromTracker:v4];
-  if (v4)
+  [(CRLBoardItemLayout *)&v7 takeRotationFromTracker:trackerCopy];
+  if (trackerCopy)
   {
-    [v4 rotateTransform];
+    [trackerCopy rotateTransform];
   }
 
   else
@@ -1165,8 +1165,8 @@ LABEL_9:
 {
   if ([(CRLImageLayout *)self maskEditModeForRotating]== 3)
   {
-    v3 = [(CRLImageLayout *)self imageGeometry];
-    [v3 size];
+    imageGeometry = [(CRLImageLayout *)self imageGeometry];
+    [imageGeometry size];
     v4 = sub_10011ECB4();
     v8 = sub_100120414(v4, v5, v6, v7);
     v10 = v9;
@@ -1180,9 +1180,9 @@ LABEL_5:
 
   if ([(CRLImageLayout *)self maskEditModeForRotating]== 2)
   {
-    v11 = [(CRLImageLayout *)self maskLayout];
-    v12 = [v11 geometry];
-    [v12 size];
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    geometry = [maskLayout geometry];
+    [geometry size];
     v13 = sub_10011ECB4();
     v8 = sub_100120414(v13, v14, v15, v16);
     v10 = v17;
@@ -1229,8 +1229,8 @@ LABEL_15:
 
 - (CGPoint)centerForConnecting
 {
-  v3 = [(CRLBoardItemLayout *)self i_wrapPath];
-  if ([v3 elementCount] < 2)
+  i_wrapPath = [(CRLBoardItemLayout *)self i_wrapPath];
+  if ([i_wrapPath elementCount] < 2)
   {
     v24.receiver = self;
     v24.super_class = CRLImageLayout;
@@ -1241,16 +1241,16 @@ LABEL_15:
 
   else
   {
-    v4 = [(CRLBoardItemLayout *)self i_wrapPath];
-    [v4 bounds];
+    i_wrapPath2 = [(CRLBoardItemLayout *)self i_wrapPath];
+    [i_wrapPath2 bounds];
     v9 = sub_100120414(v5, v6, v7, v8);
     v21 = v10;
     v22 = v9;
-    v11 = [(CRLCanvasAbstractLayout *)self geometry];
-    v12 = v11;
-    if (v11)
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    v12 = geometry;
+    if (geometry)
     {
-      [v11 transform];
+      [geometry transform];
       v13 = v25;
       v14 = v26;
       v15 = v27;
@@ -1283,12 +1283,12 @@ LABEL_15:
 
   if ([(CRLImageLayout *)self maskEditModeForResizing]== 1)
   {
-    v4 = [(CRLImageLayout *)self maskLayout];
-    v5 = [v4 geometry];
-    v6 = v5;
-    if (v5)
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    geometry = [maskLayout geometry];
+    v6 = geometry;
+    if (geometry)
     {
-      [v5 transform];
+      [geometry transform];
     }
 
     else
@@ -1318,12 +1318,12 @@ LABEL_15:
 
   if ([(CRLImageLayout *)self maskEditModeForResizing]== 1)
   {
-    v4 = [(CRLImageLayout *)self maskLayout];
-    v5 = [v4 geometry];
-    v6 = v5;
-    if (v5)
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    geometry = [maskLayout geometry];
+    v6 = geometry;
+    if (geometry)
     {
-      [v5 transform];
+      [geometry transform];
     }
 
     else
@@ -1356,7 +1356,7 @@ LABEL_15:
   return [(CRLCanvasAbstractLayout *)&v4 shouldSnapWhileResizing];
 }
 
-- (void)resizeWithTransform:(CGAffineTransform *)a3
+- (void)resizeWithTransform:(CGAffineTransform *)transform
 {
   if ([(CRLImageLayout *)self isInMaskEditMode]&& [(CRLImageLayout *)self maskEditModeForLayoutState]!= 3)
   {
@@ -1365,22 +1365,22 @@ LABEL_15:
       return;
     }
 
-    v11 = [(CRLImageLayout *)self maskLayout];
-    v12 = v11;
-    v15 = *&a3->c;
-    *&v20.a = *&a3->a;
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    maskLayout2 = maskLayout;
+    v15 = *&transform->c;
+    *&v20.a = *&transform->a;
     *&v20.c = v15;
-    *&v20.tx = *&a3->tx;
+    *&v20.tx = *&transform->tx;
     p_t2 = &v20;
     goto LABEL_20;
   }
 
   memset(&v20, 0, sizeof(v20));
-  v5 = [(CRLImageLayout *)self originalImageGeometry];
-  v6 = v5;
-  if (v5)
+  originalImageGeometry = [(CRLImageLayout *)self originalImageGeometry];
+  v6 = originalImageGeometry;
+  if (originalImageGeometry)
   {
-    [v5 fullTransform];
+    [originalImageGeometry fullTransform];
   }
 
   else
@@ -1388,10 +1388,10 @@ LABEL_15:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v7 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v7 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v7;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v20, &t1, &t2);
 
   t1 = v20;
@@ -1401,11 +1401,11 @@ LABEL_15:
   if ([(CRLImageLayout *)self maskEditModeForLayoutState]== 3)
   {
     memset(&t1, 0, sizeof(t1));
-    v9 = [(CRLImageLayout *)self originalImageGeometry];
-    v10 = v9;
-    if (v9)
+    originalImageGeometry2 = [(CRLImageLayout *)self originalImageGeometry];
+    v10 = originalImageGeometry2;
+    if (originalImageGeometry2)
     {
-      [v9 transform];
+      [originalImageGeometry2 transform];
     }
 
     else
@@ -1427,40 +1427,40 @@ LABEL_15:
 
     CGAffineTransformConcat(&t1, &t2, &v17);
 
-    v12 = [(CRLImageLayout *)self maskLayout];
+    maskLayout2 = [(CRLImageLayout *)self maskLayout];
     v17 = t1;
     CGAffineTransformInvert(&t2, &v17);
     p_t2 = &t2;
-    v11 = v12;
+    maskLayout = maskLayout2;
     goto LABEL_20;
   }
 
   if (![(CRLImageLayout *)self isInMaskEditMode]&& ([(CRLCanvasLayout *)self layoutState]== 4 || [(CRLCanvasLayout *)self layoutState]== 5))
   {
-    v11 = [(CRLImageLayout *)self maskLayout];
-    v12 = v11;
-    v13 = *&a3->c;
-    *&t1.a = *&a3->a;
+    maskLayout = [(CRLImageLayout *)self maskLayout];
+    maskLayout2 = maskLayout;
+    v13 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v13;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     p_t2 = &t1;
 LABEL_20:
-    [v11 resizeWithTransform:p_t2];
+    [maskLayout resizeWithTransform:p_t2];
   }
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLImageLayout;
-  [(CRLBoardItemLayout *)&v4 takeSizeFromTracker:a3];
+  [(CRLBoardItemLayout *)&v4 takeSizeFromTracker:tracker];
   [(CRLBoardItemLayout *)self invalidateExteriorWrap];
 }
 
-- (void)takeScaledImageGeometry:(id)a3 maskGeometry:(id)a4
+- (void)takeScaledImageGeometry:(id)geometry maskGeometry:(id)maskGeometry
 {
-  v6 = a3;
-  v7 = a4;
+  geometryCopy = geometry;
+  maskGeometryCopy = maskGeometry;
   if ((BYTE3(self->mBaseInfoGeometry) & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1490,18 +1490,18 @@ LABEL_20:
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:767 isFatal:0 description:"wrong mode"];
   }
 
-  [(CRLImageLayout *)self p_setDynamicInfoGeometry:v6];
-  v11 = [(CRLImageLayout *)self maskLayout];
-  [v11 takeScaledMaskGeometry:v7];
+  [(CRLImageLayout *)self p_setDynamicInfoGeometry:geometryCopy];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
+  [maskLayout takeScaledMaskGeometry:maskGeometryCopy];
 
   [(CRLBoardItemLayout *)self invalidateExteriorWrap];
 }
 
-- (void)beginFreeTransformWithTracker:(id)a3
+- (void)beginFreeTransformWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLImageLayout;
-  [(CRLCanvasLayout *)&v4 beginFreeTransformWithTracker:a3];
+  [(CRLCanvasLayout *)&v4 beginFreeTransformWithTracker:tracker];
   [(CRLImageLayout *)self p_createDynamicCopiesIfNeeded];
 }
 
@@ -1513,39 +1513,39 @@ LABEL_20:
   [(CRLCanvasLayout *)&v3 endFreeTransform];
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
   v6.receiver = self;
   v6.super_class = CRLImageLayout;
-  v4 = a3;
-  [(CRLBoardItemLayout *)&v6 takeFreeTransformFromTracker:v4];
-  v5 = [v4 isResizing];
+  trackerCopy = tracker;
+  [(CRLBoardItemLayout *)&v6 takeFreeTransformFromTracker:trackerCopy];
+  isResizing = [trackerCopy isResizing];
 
-  if (v5)
+  if (isResizing)
   {
     [(CRLBoardItemLayout *)self invalidateExteriorWrap];
   }
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v7 = a3;
+  infoCopy = info;
   v8 = objc_opt_class();
-  v9 = sub_100013F00(v8, v7);
+  v9 = sub_100013F00(v8, infoCopy);
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100336400;
   v12[3] = &unk_101856C00;
   v12[4] = v9;
-  v10 = *&a4->c;
-  v11[0] = *&a4->a;
+  v10 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v10;
-  v11[2] = *&a4->tx;
+  v11[2] = *&transform->tx;
   [(CRLImageLayout *)self p_calculateClampModelValuesWithAdditionalTransform:v11 andPerformBlock:v12];
 }
 
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform
 {
   v8 = 0;
   v9 = &v8;
@@ -1559,10 +1559,10 @@ LABEL_20:
   v7[3] = &unk_101856C28;
   v7[4] = self;
   v7[5] = &v8;
-  v3 = *&a3->c;
-  v6[0] = *&a3->a;
+  v3 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v3;
-  v6[2] = *&a3->tx;
+  v6[2] = *&transform->tx;
   [(CRLImageLayout *)self p_calculateClampModelValuesWithAdditionalTransform:v6 andPerformBlock:v7];
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1570,15 +1570,15 @@ LABEL_20:
   return v4;
 }
 
-- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)a3 andPerformBlock:(id)a4
+- (void)p_calculateClampModelValuesWithAdditionalTransform:(CGAffineTransform *)transform andPerformBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CRLImageLayout *)self imageGeometry];
-  v8 = *&a3->c;
-  v19 = *&a3->a;
+  blockCopy = block;
+  imageGeometry = [(CRLImageLayout *)self imageGeometry];
+  v8 = *&transform->c;
+  v19 = *&transform->a;
   v20 = v8;
-  v21 = *&a3->tx;
-  v9 = [v7 geometryByTransformingBy:&v19];
+  v21 = *&transform->tx;
+  v9 = [imageGeometry geometryByTransformingBy:&v19];
 
   if (v9)
   {
@@ -1593,46 +1593,46 @@ LABEL_20:
   }
 
   v10 = [CRLCanvasInfoGeometry geometryFromFullTransform:&v19];
-  v11 = [(CRLImageLayout *)self maskLayout];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
 
-  if (v11)
+  if (maskLayout)
   {
-    v12 = [(CRLImageLayout *)self maskLayout];
-    v13 = [v12 pureGeometry];
+    maskLayout2 = [(CRLImageLayout *)self maskLayout];
+    pureGeometry = [maskLayout2 pureGeometry];
 
-    v14 = [(CRLImageLayout *)self maskLayout];
-    v15 = [v14 computeInfoGeometryFromPureLayoutGeometry:v13];
+    maskLayout3 = [(CRLImageLayout *)self maskLayout];
+    v15 = [maskLayout3 computeInfoGeometryFromPureLayoutGeometry:pureGeometry];
 
-    v16 = [(CRLImageLayout *)self maskLayout];
-    v17 = [v16 pathSource];
-    v18 = [v17 copy];
+    maskLayout4 = [(CRLImageLayout *)self maskLayout];
+    pathSource = [maskLayout4 pathSource];
+    v18 = [pathSource copy];
 
     [v15 size];
     [v18 scaleToNaturalSize:?];
-    v6[2](v6, v10, v15, v18);
+    blockCopy[2](blockCopy, v10, v15, v18);
   }
 
   else
   {
-    v6[2](v6, v10, 0, 0);
+    blockCopy[2](blockCopy, v10, 0, 0);
   }
 }
 
 - (CRLSmartPathSource)smartPathSource
 {
-  v2 = [(CRLImageLayout *)self maskLayout];
-  v3 = [v2 pathSource];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
+  pathSource = [maskLayout pathSource];
   v4 = objc_opt_class();
-  v10 = sub_1003038E0(v3, v4, 1, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLSmartPathSource);
+  v10 = sub_1003038E0(pathSource, v4, 1, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLSmartPathSource);
 
   return v10;
 }
 
 - (CGRect)pathBoundsWithoutStroke
 {
-  v2 = [(CRLImageLayout *)self smartPathSource];
-  v3 = [v2 bezierPath];
-  [v3 bounds];
+  smartPathSource = [(CRLImageLayout *)self smartPathSource];
+  bezierPath = [smartPathSource bezierPath];
+  [bezierPath bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1717,9 +1717,9 @@ LABEL_20:
   *(&self->mDynamicInfoGeometry + 3) = 1;
 }
 
-- (void)beginEditingMaskInMaskEditMode:(int64_t)a3
+- (void)beginEditingMaskInMaskEditMode:(int64_t)mode
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1748,7 +1748,7 @@ LABEL_20:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:892 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "(maskEditMode == CRLMaskEditModeEditingImage) || (maskEditMode == CRLMaskEditModeEditingMask)"];
   }
 
-  if ([(CRLImageLayout *)self maskEditMode]== a3)
+  if ([(CRLImageLayout *)self maskEditMode]== mode)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1774,10 +1774,10 @@ LABEL_20:
 
     v9 = [NSString stringWithUTF8String:"[CRLImageLayout beginEditingMaskInMaskEditMode:]"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLImageLayout.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:893 isFatal:0 description:"already editing mask in mode %ld", a3];
+    [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:893 isFatal:0 description:"already editing mask in mode %ld", mode];
   }
 
-  *(&self->mDynamicInfoGeometry + 3) = a3;
+  *(&self->mDynamicInfoGeometry + 3) = mode;
   v11 = +[NSNotificationCenter defaultCenter];
   [v11 postNotificationName:@"CRLImageLayoutMaskEditModeDidChangeNotification" object:self];
 }
@@ -1820,35 +1820,35 @@ LABEL_20:
 
 - (BOOL)isDraggingInMaskEditMode
 {
-  v3 = [(CRLImageLayout *)self isInMaskEditMode];
-  if (v3)
+  isInMaskEditMode = [(CRLImageLayout *)self isInMaskEditMode];
+  if (isInMaskEditMode)
   {
-    LOBYTE(v3) = [(CRLCanvasLayout *)self layoutState]== 2 || [(CRLCanvasLayout *)self layoutState]== 5;
+    LOBYTE(isInMaskEditMode) = [(CRLCanvasLayout *)self layoutState]== 2 || [(CRLCanvasLayout *)self layoutState]== 5;
   }
 
-  return v3;
+  return isInMaskEditMode;
 }
 
 - (BOOL)isRotatingInMaskEditMode
 {
-  v3 = [(CRLImageLayout *)self isInMaskEditMode];
-  if (v3)
+  isInMaskEditMode = [(CRLImageLayout *)self isInMaskEditMode];
+  if (isInMaskEditMode)
   {
-    LOBYTE(v3) = [(CRLCanvasLayout *)self layoutState]== 3 || [(CRLCanvasLayout *)self layoutState]== 5;
+    LOBYTE(isInMaskEditMode) = [(CRLCanvasLayout *)self layoutState]== 3 || [(CRLCanvasLayout *)self layoutState]== 5;
   }
 
-  return v3;
+  return isInMaskEditMode;
 }
 
 - (BOOL)isResizingInMaskEditMode
 {
-  v3 = [(CRLImageLayout *)self isInMaskEditMode];
-  if (v3)
+  isInMaskEditMode = [(CRLImageLayout *)self isInMaskEditMode];
+  if (isInMaskEditMode)
   {
-    LOBYTE(v3) = [(CRLCanvasLayout *)self layoutState]== 4 || [(CRLCanvasLayout *)self layoutState]== 5;
+    LOBYTE(isInMaskEditMode) = [(CRLCanvasLayout *)self layoutState]== 4 || [(CRLCanvasLayout *)self layoutState]== 5;
   }
 
-  return v3;
+  return isInMaskEditMode;
 }
 
 - (int64_t)maskEditModeForDragging
@@ -1896,8 +1896,8 @@ LABEL_20:
 
 - (int64_t)maskEditModeForLayoutState
 {
-  v3 = [(CRLCanvasLayout *)self layoutState];
-  switch(v3)
+  layoutState = [(CRLCanvasLayout *)self layoutState];
+  switch(layoutState)
   {
     case 5u:
 
@@ -1917,8 +1917,8 @@ LABEL_20:
 - (_TtC8Freeform12CRLImageItem)imageInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -1926,17 +1926,17 @@ LABEL_20:
 - (CRLCanvasLayoutGeometry)imageGeometryInRoot
 {
   v3 = [*(&self->super._boundsForStandardKnobs.size.width + 3) mutableCopy];
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  if (v4)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if (parent)
   {
-    v5 = v4;
+    v5 = parent;
     do
     {
-      v6 = [v5 geometry];
-      v7 = v6;
-      if (v6)
+      geometry = [v5 geometry];
+      v7 = geometry;
+      if (geometry)
       {
-        [v6 transform];
+        [geometry transform];
       }
 
       else
@@ -1948,12 +1948,12 @@ LABEL_20:
 
       [v3 transformBy:&v10];
 
-      v8 = [v5 parent];
+      parent2 = [v5 parent];
 
-      v5 = v8;
+      v5 = parent2;
     }
 
-    while (v8);
+    while (parent2);
   }
 
   return v3;
@@ -1963,37 +1963,37 @@ LABEL_20:
 {
   if ([(CRLImageLayout *)self maskEditMode]== 3 || [(CRLImageLayout *)self maskEditMode]== 2)
   {
-    v3 = [(CRLImageLayout *)self p_inspectorGeometryForUnmaskedImage];
-    v4 = [v3 mutableCopy];
+    p_inspectorGeometryForUnmaskedImage = [(CRLImageLayout *)self p_inspectorGeometryForUnmaskedImage];
+    inspectorGeometry2 = [p_inspectorGeometryForUnmaskedImage mutableCopy];
 
     v8.receiver = self;
     v8.super_class = CRLImageLayout;
-    v5 = [(CRLCanvasLayout *)&v8 inspectorGeometry];
-    [v5 size];
-    [v4 setSize:?];
+    inspectorGeometry = [(CRLCanvasLayout *)&v8 inspectorGeometry];
+    [inspectorGeometry size];
+    [inspectorGeometry2 setSize:?];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CRLImageLayout;
-    v4 = [(CRLCanvasLayout *)&v7 inspectorGeometry];
+    inspectorGeometry2 = [(CRLCanvasLayout *)&v7 inspectorGeometry];
   }
 
-  return v4;
+  return inspectorGeometry2;
 }
 
 - (id)p_inspectorGeometryForUnmaskedImage
 {
-  v3 = [(CRLImageLayout *)self imageGeometry];
+  imageGeometry = [(CRLImageLayout *)self imageGeometry];
   v4 = *&CGAffineTransformIdentity.c;
   v16 = *&CGAffineTransformIdentity.a;
   v17 = v4;
   v18 = *&CGAffineTransformIdentity.tx;
-  v5 = [(CRLCanvasAbstractLayout *)self parent];
-  if (v5)
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  if (parent)
   {
-    v6 = v5;
+    v6 = parent;
     do
     {
       if ([v6 isRootLayoutForInspectorGeometry])
@@ -2001,14 +2001,14 @@ LABEL_20:
         break;
       }
 
-      v7 = [v6 geometry];
-      v8 = v7;
-      if (v7)
+      geometry = [v6 geometry];
+      v8 = geometry;
+      if (geometry)
       {
         v12[0] = v16;
         v12[1] = v17;
         v12[2] = v18;
-        [v7 transformByConcatenatingTransformTo:v12];
+        [geometry transformByConcatenatingTransformTo:v12];
       }
 
       else
@@ -2022,27 +2022,27 @@ LABEL_20:
       v17 = v14;
       v18 = v15;
 
-      v9 = [v6 parent];
+      parent2 = [v6 parent];
 
-      v6 = v9;
+      v6 = parent2;
     }
 
-    while (v9);
+    while (parent2);
   }
 
   v13 = v16;
   v14 = v17;
   v15 = v18;
-  v10 = [v3 geometryByTransformingBy:&v13];
+  v10 = [imageGeometry geometryByTransformingBy:&v13];
 
   return v10;
 }
 
 - (BOOL)hasMaskingPath
 {
-  v3 = [(CRLImageLayout *)self maskLayout];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
 
-  if (v3 && !*(&self->mImageGeometry + 3))
+  if (maskLayout && !*(&self->mImageGeometry + 3))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2071,24 +2071,24 @@ LABEL_20:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:1043 isFatal:0 description:"If image has masking path it must specify a path to stroke"];
   }
 
-  return v3 != 0;
+  return maskLayout != 0;
 }
 
 - (CGSize)sizeOfFrameRectIncludingCoverage
 {
   if (*(&self->mImageGeometry + 3))
   {
-    v3 = [CRLBezierPath bezierPathWithCGPath:?];
-    v4 = [(CRLMediaLayout *)self stroke];
-    [v3 boundsIncludingCRLStroke:v4];
+    geometry = [CRLBezierPath bezierPathWithCGPath:?];
+    stroke = [(CRLMediaLayout *)self stroke];
+    [geometry boundsIncludingCRLStroke:stroke];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v3 = [(CRLCanvasAbstractLayout *)self geometry];
-    [v3 size];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    [geometry size];
     v6 = v9;
     v8 = v10;
   }
@@ -2120,32 +2120,32 @@ LABEL_20:
 
 - (id)computeWrapPath
 {
-  v3 = [(CRLImageLayout *)self imageInfo];
+  imageInfo = [(CRLImageLayout *)self imageInfo];
   v4 = objc_opt_class();
-  v5 = [(CRLMediaLayout *)self stroke];
-  v6 = sub_100014370(v4, v5);
+  stroke = [(CRLMediaLayout *)self stroke];
+  v6 = sub_100014370(v4, stroke);
 
   if (v6)
   {
-    v7 = [v6 shouldRender];
+    shouldRender = [v6 shouldRender];
   }
 
   else
   {
-    v7 = 0;
+    shouldRender = 0;
   }
 
-  v8 = [(CRLImageLayout *)self maskLayout];
+  maskLayout = [(CRLImageLayout *)self maskLayout];
 
-  v9 = [(CRLImageLayout *)self maskLayout];
-  v10 = [v9 computeLayoutGeometry];
+  maskLayout2 = [(CRLImageLayout *)self maskLayout];
+  computeLayoutGeometry = [maskLayout2 computeLayoutGeometry];
 
   memset(&v41, 0, sizeof(v41));
-  if (v8)
+  if (maskLayout)
   {
-    if (v10)
+    if (computeLayoutGeometry)
     {
-      [v10 transform];
+      [computeLayoutGeometry transform];
     }
 
     else
@@ -2165,10 +2165,10 @@ LABEL_20:
   }
 
   v12 = +[CRLImageProviderPool sharedPool];
-  v13 = [v3 imageAssetPayload];
-  v14 = [v12 providerForAsset:v13 shouldValidate:1];
+  imageAssetPayload = [imageInfo imageAssetPayload];
+  v14 = [v12 providerForAsset:imageAssetPayload shouldValidate:1];
 
-  if (v7 && -[CRLImageLayout hasAlpha](self, "hasAlpha") && ([v14 isError] & 1) == 0)
+  if (shouldRender && -[CRLImageLayout hasAlpha](self, "hasAlpha") && ([v14 isError] & 1) == 0)
   {
     [v14 naturalSize];
     v16 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
@@ -2176,15 +2176,15 @@ LABEL_20:
 
   else
   {
-    v15 = [v3 tracedPath];
-    v16 = [v15 copy];
+    tracedPath = [imageInfo tracedPath];
+    v16 = [tracedPath copy];
   }
 
   [v16 bounds];
   if (!CGRectIsEmpty(v43))
   {
-    v19 = [(CRLImageLayout *)self imageGeometry];
-    [v19 size];
+    imageGeometry = [(CRLImageLayout *)self imageGeometry];
+    [imageGeometry size];
     v21 = v20;
     v23 = v22;
 
@@ -2200,18 +2200,18 @@ LABEL_20:
       [v16 transformUsingAffineTransform:&v39];
     }
 
-    if (v8)
+    if (maskLayout)
     {
-      v27 = [(CRLImageLayout *)self maskLayout];
+      maskLayout3 = [(CRLImageLayout *)self maskLayout];
       v39 = v41;
       [v16 transformUsingAffineTransform:&v39];
-      v28 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [v27 path]);
-      [v27 pathBounds];
+      v28 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [maskLayout3 path]);
+      [maskLayout3 pathBounds];
       CGAffineTransformMakeTranslation(&v39, -v29, -v30);
       [v28 transformUsingAffineTransform:&v39];
       v18 = [v16 intersectBezierPath:v28];
 
-      if (!v7)
+      if (!shouldRender)
       {
         goto LABEL_21;
       }
@@ -2220,22 +2220,22 @@ LABEL_20:
     else
     {
       v18 = v16;
-      if (!v7)
+      if (!shouldRender)
       {
         goto LABEL_21;
       }
     }
 
     [v18 takeAttributesFromStroke:v6];
-    v31 = [v18 strokedCopy];
-    v32 = [v18 uniteWithBezierPath:v31];
+    strokedCopy = [v18 strokedCopy];
+    v32 = [v18 uniteWithBezierPath:strokedCopy];
 
     v18 = v32;
     goto LABEL_21;
   }
 
-  v17 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v17 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v18 = [CRLBezierPath bezierPathWithRect:sub_10011ECB4()];
 
 LABEL_21:
@@ -2289,11 +2289,11 @@ LABEL_21:
 
   if ([(CRLImageLayout *)self p_shouldUseDynamicInfoGeometryForOperation])
   {
-    v6 = [(CRLImageLayout *)self imageGeometry];
-    v7 = v6;
-    if (v6)
+    imageGeometry = [(CRLImageLayout *)self imageGeometry];
+    v7 = imageGeometry;
+    if (imageGeometry)
     {
-      [v6 fullTransform];
+      [imageGeometry fullTransform];
     }
 
     else
@@ -2370,9 +2370,9 @@ LABEL_21:
   return [(CRLImageLayout *)self maskEditModeForLayoutState]== 3 || ![(CRLImageLayout *)self isInMaskEditMode]&& ([(CRLCanvasLayout *)self layoutState]== 4 || [(CRLCanvasLayout *)self layoutState]== 3 || [(CRLCanvasLayout *)self layoutState]== 5);
 }
 
-- (void)p_setDynamicInfoGeometry:(id)a3
+- (void)p_setDynamicInfoGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   if (!*(&self->mHasAlpha + 3))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -2402,7 +2402,7 @@ LABEL_21:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:1195 isFatal:0 description:"invalid nil value for '%{public}s'", "mDynamicInfoGeometry"];
   }
 
-  v8 = [v4 copy];
+  v8 = [geometryCopy copy];
   v9 = *(&self->mHasAlpha + 3);
   *(&self->mHasAlpha + 3) = v8;
 
@@ -2412,9 +2412,9 @@ LABEL_21:
 
 - (void)p_destroyDynamicCopiesIfNeeded
 {
-  v3 = [(CRLImageLayout *)self p_shouldUseDynamicInfoGeometryForOperation];
+  p_shouldUseDynamicInfoGeometryForOperation = [(CRLImageLayout *)self p_shouldUseDynamicInfoGeometryForOperation];
   v4 = *(&self->mHasAlpha + 3);
-  if (v3)
+  if (p_shouldUseDynamicInfoGeometryForOperation)
   {
     if (!v4)
     {

@@ -1,23 +1,23 @@
 @interface PKExternalElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
-- (PKExternalElement)initWithIdentifier:(id)a3 path:(CGPath *)a4;
+- (PKExternalElement)initWithIdentifier:(id)identifier path:(CGPath *)path;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation PKExternalElement
 
-- (PKExternalElement)initWithIdentifier:(id)a3 path:(CGPath *)a4
+- (PKExternalElement)initWithIdentifier:(id)identifier path:(CGPath *)path
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(PKExternalElement *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_path = MEMORY[0x1CCA6DFB0](a4);
-    v9->_boundingBox = CGPathGetBoundingBox(a4);
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_path = MEMORY[0x1CCA6DFB0](path);
+    v9->_boundingBox = CGPathGetBoundingBox(path);
   }
 
   return v9;
@@ -46,16 +46,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PKExternalElement *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PKExternalElement *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -65,9 +65,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKExternalElement *)self identifier];
-      v6 = [(PKExternalElement *)v4 identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(PKExternalElement *)self identifier];
+      identifier2 = [(PKExternalElement *)equalCopy identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else

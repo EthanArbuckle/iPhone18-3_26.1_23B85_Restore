@@ -1,8 +1,8 @@
 @interface JavaUtilCollections_CheckedMap_CheckedEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)getKey;
 - (id)getValue;
-- (id)setValueWithId:(id)a3;
+- (id)setValueWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -31,7 +31,7 @@
   return [(JavaUtilMap_Entry *)e getValue];
 }
 
-- (id)setValueWithId:(id)a3
+- (id)setValueWithId:(id)id
 {
   e = self->e_;
   if (!e)
@@ -39,12 +39,12 @@
     JreThrowNullPointerException();
   }
 
-  JavaUtilCollections_checkTypeWithId_withIOSClass_(a3, self->valueType_);
+  JavaUtilCollections_checkTypeWithId_withIOSClass_(id, self->valueType_);
 
-  return [(JavaUtilMap_Entry *)e setValueWithId:a3];
+  return [(JavaUtilMap_Entry *)e setValueWithId:id];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   e = self->e_;
   if (!e)
@@ -52,7 +52,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap_Entry *)e isEqual:a3];
+  return [(JavaUtilMap_Entry *)e isEqual:equal];
 }
 
 - (unint64_t)hash

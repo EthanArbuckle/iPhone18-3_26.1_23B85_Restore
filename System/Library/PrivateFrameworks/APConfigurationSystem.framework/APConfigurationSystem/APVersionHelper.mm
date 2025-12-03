@@ -1,16 +1,16 @@
 @interface APVersionHelper
-+ (id)versionNumberFromJSONFileAtPath:(id)a3;
-- (APVersionHelper)initWithDatasource:(id)a3;
-- (id)_versionInDirectoryWithURLs:(id)a3;
-- (int64_t)_getVersionForNodesAtDirectoryPath:(id)a3;
++ (id)versionNumberFromJSONFileAtPath:(id)path;
+- (APVersionHelper)initWithDatasource:(id)datasource;
+- (id)_versionInDirectoryWithURLs:(id)ls;
+- (int64_t)_getVersionForNodesAtDirectoryPath:(id)path;
 - (int64_t)systemVersion;
 @end
 
 @implementation APVersionHelper
 
-+ (id)versionNumberFromJSONFileAtPath:(id)a3
++ (id)versionNumberFromJSONFileAtPath:(id)path
 {
-  v4 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, a3);
+  v4 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, path);
   if (v4)
   {
     v5 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x1E696ACB0], v3, v4, 0, 0);
@@ -66,16 +66,16 @@
   return v10;
 }
 
-- (APVersionHelper)initWithDatasource:(id)a3
+- (APVersionHelper)initWithDatasource:(id)datasource
 {
-  v5 = a3;
+  datasourceCopy = datasource;
   v9.receiver = self;
   v9.super_class = APVersionHelper;
   v6 = [(APVersionHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_datasource, a3);
+    objc_storeStrong(&v6->_datasource, datasource);
   }
 
   return v7;
@@ -89,11 +89,11 @@
   return VersionForNodesAtDirectoryPath;
 }
 
-- (int64_t)_getVersionForNodesAtDirectoryPath:(id)a3
+- (int64_t)_getVersionForNodesAtDirectoryPath:(id)path
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v5, v4);
+  pathCopy = path;
+  v6 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v5, pathCopy);
   if (v6)
   {
     v14 = 0;
@@ -141,15 +141,15 @@
   return v8;
 }
 
-- (id)_versionInDirectoryWithURLs:(id)a3
+- (id)_versionInDirectoryWithURLs:(id)ls
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a3;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v20, v24, 16);
+  lsCopy = ls;
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(lsCopy, v4, &v20, v24, 16);
   if (v5)
   {
     v8 = v5;
@@ -160,7 +160,7 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lsCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -176,7 +176,7 @@
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v20, v24, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(lsCopy, v6, &v20, v24, 16);
       if (v8)
       {
         continue;

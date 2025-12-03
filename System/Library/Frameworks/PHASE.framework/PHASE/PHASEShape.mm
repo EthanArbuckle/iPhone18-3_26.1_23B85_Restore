@@ -3,17 +3,17 @@
 - (PHASEShape)init;
 - (PHASEShape)initWithEngine:(PHASEEngine *)engine mesh:(MDLMesh *)mesh;
 - (PHASEShape)initWithEngine:(PHASEEngine *)engine mesh:(MDLMesh *)mesh materials:(NSArray *)materials;
-- (PHASEShape)initWithEngine:(id)a3 mesh:(id)a4 materials:(id)a5 options:(id)a6;
-- (PHASEShape)initWithEngine:(id)a3 mesh:(id)a4 options:(id)a5;
-- (PHASEShape)initWithShape:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHASEShape)initWithEngine:(id)engine mesh:(id)mesh materials:(id)materials options:(id)options;
+- (PHASEShape)initWithEngine:(id)engine mesh:(id)mesh options:(id)options;
+- (PHASEShape)initWithShape:(id)shape;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dumpState;
-- (id)geoShapeHandlesForEntityType:(unsigned int)a3;
-- (void)applyOptions:(id)a3;
+- (id)geoShapeHandlesForEntityType:(unsigned int)type;
+- (void)applyOptions:(id)options;
 - (void)buildLocalizedGeometryPermutations;
 - (void)dealloc;
-- (void)updateMaterialForElement:(id)a3;
-- (void)updateMaterialForShape:(Handle64)a3 fromElementIndex:(unint64_t)a4;
+- (void)updateMaterialForElement:(id)element;
+- (void)updateMaterialForShape:(Handle64)shape fromElementIndex:(unint64_t)index;
 @end
 
 @implementation PHASEShape
@@ -25,31 +25,31 @@
   return 0;
 }
 
-- (PHASEShape)initWithShape:(id)a3
+- (PHASEShape)initWithShape:(id)shape
 {
-  v4 = a3;
+  shapeCopy = shape;
   v43.receiver = self;
   v43.super_class = PHASEShape;
   v5 = [(PHASEShape *)&v43 init];
   v6 = v5;
   if (v5)
   {
-    WeakRetained = objc_loadWeakRetained(v4 + 10);
+    WeakRetained = objc_loadWeakRetained(shapeCopy + 10);
     objc_storeWeak(v5 + 10, WeakRetained);
 
-    v8 = *(v4 + 2);
+    v8 = *(shapeCopy + 2);
     if (v8 && *v8)
     {
       Phase::MdlMeshAsset::Initialize((v5 + 8), *v8);
     }
 
-    *(v5 + 8) = *(v4 + 8);
-    *(v5 + 5) = *(v4 + 5);
-    v5[48] = v4[48];
-    if (v5 != v4)
+    *(v5 + 8) = *(shapeCopy + 8);
+    *(v5 + 5) = *(shapeCopy + 5);
+    v5[48] = shapeCopy[48];
+    if (v5 != shapeCopy)
     {
-      v10 = *(v4 + 7);
-      v9 = *(v4 + 8);
+      v10 = *(shapeCopy + 7);
+      v9 = *(shapeCopy + 8);
       v11 = v9 - v10;
       v12 = *(v5 + 9);
       v13 = *(v5 + 7);
@@ -111,7 +111,7 @@
       v20 = *(v5 + 8) - v13;
       if (v20 >= v11)
       {
-        v21 = std::__copy_impl::operator()[abi:ne200100]<Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *>(*(v4 + 7), *(v4 + 8), *(v5 + 7));
+        v21 = std::__copy_impl::operator()[abi:ne200100]<Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *>(*(shapeCopy + 7), *(shapeCopy + 8), *(v5 + 7));
         for (i = *(v5 + 8); i != v21; std::__destroy_at[abi:ne200100]<Phase::Controller::GeometryPermutation,0>(i))
         {
           i -= 88;
@@ -122,13 +122,13 @@
 
       else
       {
-        std::__copy_impl::operator()[abi:ne200100]<Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *>(*(v4 + 7), v10 + v20, *(v5 + 7));
+        std::__copy_impl::operator()[abi:ne200100]<Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *,Phase::LocalizedGeometryPermutation *>(*(shapeCopy + 7), v10 + v20, *(v5 + 7));
         *(v5 + 8) = std::__uninitialized_allocator_copy_impl[abi:ne200100]<std::allocator<Phase::LocalizedGeometryPermutation>,Phase::LocalizedGeometryPermutation*,Phase::LocalizedGeometryPermutation*,Phase::LocalizedGeometryPermutation*>(v10 + v20, v9, *(v5 + 8));
       }
     }
 
-    v23 = [v4 elements];
-    v24 = [v23 count];
+    elements = [shapeCopy elements];
+    v24 = [elements count];
 
     if (v24)
     {
@@ -137,10 +137,10 @@
       for (j = 0; j != v24; ++j)
       {
         v27 = [PHASEShapeElement alloc];
-        v28 = [v4 elements];
-        v29 = [v28 objectAtIndexedSubscript:j];
-        v30 = [v29 material];
-        v31 = [(PHASEShapeElement *)v27 initWithOwner:v6 material:v30];
+        elements2 = [shapeCopy elements];
+        v29 = [elements2 objectAtIndexedSubscript:j];
+        material = [v29 material];
+        v31 = [(PHASEShapeElement *)v27 initWithOwner:v6 material:material];
         [v25 setObject:v31 atIndexedSubscript:j];
       }
 
@@ -166,8 +166,8 @@
       if (*(begin + 10))
       {
         v37 = objc_loadWeakRetained(v5 + 10);
-        v38 = [v37 implementation];
-        v39 = (*(**(v38 + 368) + 64))(*(v38 + 368), *(begin + 10), __p);
+        implementation = [v37 implementation];
+        v39 = (*(**(implementation + 368) + 64))(*(implementation + 368), *(begin + 10), __p);
 
         if (!v39)
         {
@@ -263,30 +263,30 @@ LABEL_36:
     }
 
     self = v12;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"initWithEngine:mesh:materials - the materials array cannot be nil or empty"];
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (PHASEShape)initWithEngine:(id)a3 mesh:(id)a4 options:(id)a5
+- (PHASEShape)initWithEngine:(id)engine mesh:(id)mesh options:(id)options
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v29 = a4;
-  v30 = a5;
-  v32 = v8;
-  v9 = [(PHASEShape *)self initWithEngine:v8 mesh:v29];
+  engineCopy = engine;
+  meshCopy = mesh;
+  optionsCopy = options;
+  v32 = engineCopy;
+  v9 = [(PHASEShape *)self initWithEngine:engineCopy mesh:meshCopy];
   v10 = v9;
   if (v9)
   {
-    [(PHASEShape *)v9 applyOptions:v30];
+    [(PHASEShape *)v9 applyOptions:optionsCopy];
     [(PHASEShape *)v10 buildLocalizedGeometryPermutations];
   }
 
@@ -297,7 +297,7 @@ LABEL_36:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = [v29 submeshes];
+    obj = [meshCopy submeshes];
     v11 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v11)
     {
@@ -313,11 +313,11 @@ LABEL_36:
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 material];
-          v17 = [v16 propertyNamed:@"ARMeshGeometryClassification"];
+          material = [v15 material];
+          v17 = [material propertyNamed:@"ARMeshGeometryClassification"];
 
-          v18 = [v15 material];
-          v19 = [v18 propertyNamed:@"ARMeshGeometryMaterial"];
+          material2 = [v15 material];
+          v19 = [material2 propertyNamed:@"ARMeshGeometryMaterial"];
 
           if (v17)
           {
@@ -361,30 +361,30 @@ LABEL_36:
   return v31;
 }
 
-- (PHASEShape)initWithEngine:(id)a3 mesh:(id)a4 materials:(id)a5 options:(id)a6
+- (PHASEShape)initWithEngine:(id)engine mesh:(id)mesh materials:(id)materials options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PHASEShape *)self initWithEngine:v10 mesh:v11 materials:v12];
+  engineCopy = engine;
+  meshCopy = mesh;
+  materialsCopy = materials;
+  optionsCopy = options;
+  v14 = [(PHASEShape *)self initWithEngine:engineCopy mesh:meshCopy materials:materialsCopy];
   v15 = v14;
   if (v14)
   {
-    [(PHASEShape *)v14 applyOptions:v13];
+    [(PHASEShape *)v14 applyOptions:optionsCopy];
     [(PHASEShape *)v15 buildLocalizedGeometryPermutations];
   }
 
   return v15;
 }
 
-- (id)geoShapeHandlesForEntityType:(unsigned int)a3
+- (id)geoShapeHandlesForEntityType:(unsigned int)type
 {
   v47 = *MEMORY[0x277D85DE8];
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   begin = self->_localizedGeometryPermutations.__begin_;
   end = self->_localizedGeometryPermutations.__end_;
-  v36 = self;
+  selfCopy = self;
   v32 = end;
 LABEL_2:
   if (begin != end)
@@ -400,7 +400,7 @@ LABEL_2:
         goto LABEL_2;
       }
 
-      if (*v7 == a3)
+      if (*v7 == type)
       {
         v8 = *(begin + 10);
         if (v8)
@@ -408,9 +408,9 @@ LABEL_2:
           goto LABEL_25;
         }
 
-        if ([(NSArray *)v36->_elements count])
+        if ([(NSArray *)selfCopy->_elements count])
         {
-          v33 = v36->_elements;
+          v33 = selfCopy->_elements;
           std::vector<unsigned long long>::vector[abi:ne200100](&__p, -[NSArray count](v33, "count"));
           v9 = __p;
           v39 = 0u;
@@ -432,21 +432,21 @@ LABEL_2:
                 }
 
                 v14 = *(*(&v39 + 1) + 8 * i);
-                v15 = [v14 material];
-                v16 = v15 == 0;
+                material = [v14 material];
+                v16 = material == 0;
 
                 if (v16)
                 {
-                  v18 = 0;
+                  geoMaterialHandle = 0;
                 }
 
                 else
                 {
-                  v17 = [v14 material];
-                  v18 = [v17 geoMaterialHandle];
+                  material2 = [v14 material];
+                  geoMaterialHandle = [material2 geoMaterialHandle];
                 }
 
-                *v9++ = v18;
+                *v9++ = geoMaterialHandle;
               }
 
               v11 = [(NSArray *)v10 countByEnumeratingWithState:&v39 objects:buf count:16];
@@ -467,7 +467,7 @@ LABEL_2:
           }
         }
 
-        if (a3 == 4)
+        if (type == 4)
         {
           *buf = *(begin + 18) & 7;
           v46 = 2;
@@ -477,21 +477,21 @@ LABEL_2:
 
         if (*begin == 2)
         {
-          *buf = v36->_voxelDensity;
+          *buf = selfCopy->_voxelDensity;
           v46 = 1;
           Phase::UnorderedStringMap<Phase::OptionsValue>::Set(begin + 1, &Phase::Geometry::VoxelTreeOptions::Resolution, buf);
           std::__variant_detail::__dtor<std::__variant_detail::__traits<BOOL,int,unsigned int,float,double,Phase::Vector<float,2ul>,Phase::Vector<float,3ul>,Phase::Vector<float,4ul>,std::string,std::vector<unsigned int>,std::vector<unsigned long long>,Phase::UnorderedStringMap<Phase::OptionsValue>>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](buf);
         }
 
-        WeakRetained = objc_loadWeakRetained(&v36->_engine);
-        v20 = [WeakRetained implementation];
-        v8 = (*(**(v20 + 368) + 40))(*(v20 + 368), *begin, &v36->_meshAsset, begin + 8);
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_engine);
+        implementation = [WeakRetained implementation];
+        v8 = (*(**(implementation + 368) + 40))(*(implementation + 368), *begin, &selfCopy->_meshAsset, begin + 8);
         *(begin + 10) = v8;
 
         if (v8)
         {
 LABEL_25:
-          v21 = objc_loadWeakRetained(&v36->_engine);
+          v21 = objc_loadWeakRetained(&selfCopy->_engine);
           v22 = *([v21 implementation] + 368);
           memset(buf, 0, sizeof(buf));
           v23 = (*(*v22 + 64))(v22, v8, buf);
@@ -506,15 +506,15 @@ LABEL_25:
             v26 = **(Phase::Logger::GetInstance(v24) + 448);
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
-              v27 = [(PHASEShape *)v36 dumpState];
+              dumpState = [(PHASEShape *)selfCopy dumpState];
               *buf = 136315906;
               *&buf[4] = "PHASEShape.mm";
               *&buf[12] = 1024;
               *&buf[14] = 403;
               *&buf[18] = 1024;
-              *&buf[20] = a3;
+              *&buf[20] = type;
               v44 = 2112;
-              v45 = v27;
+              v45 = dumpState;
               _os_log_impl(&dword_23A302000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEShape geoShapeHandlesForEntityType] - Failed to copy shapetype: %u.\n%@", buf, 0x22u);
             }
 
@@ -531,20 +531,20 @@ LABEL_25:
     }
   }
 
-  if (a3 - 3 <= 2 && ![v34 count])
+  if (type - 3 <= 2 && ![v34 count])
   {
     v29 = **(Phase::Logger::GetInstance(0) + 448);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(PHASEShape *)v36 dumpState];
+      dumpState2 = [(PHASEShape *)selfCopy dumpState];
       *buf = 136315906;
       *&buf[4] = "PHASEShape.mm";
       *&buf[12] = 1024;
       *&buf[14] = 428;
       *&buf[18] = 1024;
-      *&buf[20] = a3;
+      *&buf[20] = type;
       v44 = 2112;
-      v45 = v30;
+      v45 = dumpState2;
       _os_log_impl(&dword_23A302000, v29, OS_LOG_TYPE_DEFAULT, "%25s:%-5d [PHASEShape geoShapeHandlesForEntityType] - Expected to find at least one geometry permutation with a matching entity type: %u.\n%@", buf, 0x22u);
     }
   }
@@ -555,9 +555,9 @@ LABEL_40:
   return v28;
 }
 
-- (void)updateMaterialForElement:(id)a3
+- (void)updateMaterialForElement:(id)element
 {
-  v8 = a3;
+  elementCopy = element;
   v4 = [(NSArray *)self->_elements indexOfObject:?];
   if (v4 >= [(NSArray *)self->_elements count])
   {
@@ -578,30 +578,30 @@ LABEL_40:
   }
 }
 
-- (void)updateMaterialForShape:(Handle64)a3 fromElementIndex:(unint64_t)a4
+- (void)updateMaterialForShape:(Handle64)shape fromElementIndex:(unint64_t)index
 {
-  if (!a3.mData)
+  if (!shape.mData)
   {
     std::terminate();
   }
 
-  v11 = [(NSArray *)self->_elements objectAtIndexedSubscript:a4];
-  v7 = [v11 material];
+  v11 = [(NSArray *)self->_elements objectAtIndexedSubscript:index];
+  material = [v11 material];
 
-  if (v7)
+  if (material)
   {
-    v8 = [v11 material];
-    v7 = [v8 geoMaterialHandle];
+    material2 = [v11 material];
+    material = [material2 geoMaterialHandle];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v10 = [WeakRetained implementation];
-  (*(**(v10 + 368) + 120))(*(v10 + 368), a3.mData, a4, v7);
+  implementation = [WeakRetained implementation];
+  (*(**(implementation + 368) + 120))(*(implementation + 368), shape.mData, index, material);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithShape:self];
 }
@@ -619,8 +619,8 @@ LABEL_40:
       if (*(begin + 10))
       {
         v6 = objc_loadWeakRetained(&self->_engine);
-        v7 = [v6 implementation];
-        (*(**(v7 + 368) + 344))(*(v7 + 368), *(begin + 10));
+        implementation = [v6 implementation];
+        (*(**(implementation + 368) + 344))(*(implementation + 368), *(begin + 10));
 
         *(begin + 10) = 0;
       }
@@ -634,15 +634,15 @@ LABEL_40:
   [(PHASEShape *)&v8 dealloc];
 }
 
-- (void)applyOptions:(id)a3
+- (void)applyOptions:(id)options
 {
   v44 = *MEMORY[0x277D85DE8];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v33 objects:v43 count:16];
+  optionsCopy = options;
+  v5 = [optionsCopy countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v5)
   {
     v6 = *v34;
@@ -652,11 +652,11 @@ LABEL_40:
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(optionsCopy);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
-        v9 = [v4 objectForKey:{v8, v33}];
+        v9 = [optionsCopy objectForKey:{v8, v33}];
         if ([v8 isEqualToString:@"PHASEVoxelDensityKey"])
         {
           objc_opt_class();
@@ -679,19 +679,19 @@ LABEL_40:
           }
 
           v11 = v9;
-          v12 = [v11 intValue];
-          if ((v12 ^ (v12 - 1)) <= v12 - 1 || (v12 & 0xAAAAAAAA) != 0)
+          intValue = [v11 intValue];
+          if ((intValue ^ (intValue - 1)) <= intValue - 1 || (intValue & 0xAAAAAAAA) != 0)
           {
-            v22 = **(Phase::Logger::GetInstance(v12) + 448);
+            v22 = **(Phase::Logger::GetInstance(intValue) + 448);
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v24 = [v11 intValue];
+              intValue2 = [v11 intValue];
               *buf = 136315650;
               v38 = "PHASEShape.mm";
               v39 = 1024;
               v40 = 506;
               v41 = 1024;
-              LODWORD(v42) = v24;
+              LODWORD(v42) = intValue2;
               _os_log_impl(&dword_23A302000, v22, OS_LOG_TYPE_ERROR, "%25s:%-5d EXCEPTION (std::invalid_argument): [PHASEShape initWithEngine:mesh:materials:options] - The value for option PHASEVoxelDensityKey must be a  power of four. The value passed in == %d", buf, 0x18u);
             }
 
@@ -724,11 +724,11 @@ LABEL_40:
             goto LABEL_41;
           }
 
-          v15 = [v9 unsignedIntegerValue];
-          v16 = v15;
-          if ((v15 & 7) == 0)
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
+          v16 = unsignedIntegerValue;
+          if ((unsignedIntegerValue & 7) == 0)
           {
-            v27 = **(Phase::Logger::GetInstance(v15) + 448);
+            v27 = **(Phase::Logger::GetInstance(unsignedIntegerValue) + 448);
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
             {
               *buf = 136315650;
@@ -745,7 +745,7 @@ LABEL_40:
             v28->__vftable = (MEMORY[0x277D828F8] + 16);
           }
 
-          self->_flags = v15;
+          self->_flags = unsignedIntegerValue;
         }
 
         else if ([v8 isEqualToString:@"PHASEShapeIsRealKey"])
@@ -773,19 +773,19 @@ LABEL_41:
           v18 = v9;
           if ([v18 intValue])
           {
-            v19 = [v18 intValue];
-            if (v19 != 1)
+            intValue3 = [v18 intValue];
+            if (intValue3 != 1)
             {
-              v30 = **(Phase::Logger::GetInstance(v19) + 448);
+              v30 = **(Phase::Logger::GetInstance(intValue3) + 448);
               if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
               {
-                v31 = [v18 intValue];
+                intValue4 = [v18 intValue];
                 *buf = 136315650;
                 v38 = "PHASEShape.mm";
                 v39 = 1024;
                 v40 = 556;
                 v41 = 1024;
-                LODWORD(v42) = v31;
+                LODWORD(v42) = intValue4;
                 _os_log_impl(&dword_23A302000, v30, OS_LOG_TYPE_ERROR, "%25s:%-5d EXCEPTION (std::invalid_argument): [PHASEShape initWithEngine:mesh:materials:options] - The value for option PHASEShapeIsRealKey be either  YES, NO, 1 (integer) or 0 (integer). The value passed in == %d", buf, 0x18u);
               }
 
@@ -799,7 +799,7 @@ LABEL_41:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v33 objects:v43 count:16];
+      v5 = [optionsCopy countByEnumeratingWithState:&v33 objects:v43 count:16];
     }
 
     while (v5);
@@ -819,11 +819,11 @@ LABEL_41:
 
   self->_localizedGeometryPermutations.__end_ = begin;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v7 = [WeakRetained implementation];
+  implementation = [WeakRetained implementation];
   v40 = 0;
   v41 = 0;
   v42 = 0;
-  std::vector<Phase::Controller::GeometryPermutation>::__init_with_size[abi:ne200100]<Phase::Controller::GeometryPermutation*,Phase::Controller::GeometryPermutation*>(&v40, *(v7 + 552), *(v7 + 560), 0xCCCCCCCCCCCCCCCDLL * ((*(v7 + 560) - *(v7 + 552)) >> 4));
+  std::vector<Phase::Controller::GeometryPermutation>::__init_with_size[abi:ne200100]<Phase::Controller::GeometryPermutation*,Phase::Controller::GeometryPermutation*>(&v40, *(implementation + 552), *(implementation + 560), 0xCCCCCCCCCCCCCCCDLL * ((*(implementation + 560) - *(implementation + 552)) >> 4));
 
   v8 = objc_loadWeakRetained(&self->_engine);
   if ([v8 engineMode] == 2)
@@ -833,9 +833,9 @@ LABEL_41:
   else
   {
     v9 = objc_loadWeakRetained(&self->_engine);
-    v10 = [v9 engineMode];
+    engineMode = [v9 engineMode];
 
-    if (v10 != 1)
+    if (engineMode != 1)
     {
       goto LABEL_11;
     }
@@ -994,14 +994,14 @@ LABEL_11:
 
 - (id)dumpState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"PHASEShape:%p: --- State ---", self];
-  WeakRetained = objc_loadWeakRetained(&v2->_engine);
-  v5 = [WeakRetained implementation];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_engine);
+  implementation = [WeakRetained implementation];
   v23 = 0;
   v24 = 0;
   v25 = 0;
-  std::vector<Phase::Controller::GeometryPermutation>::__init_with_size[abi:ne200100]<Phase::Controller::GeometryPermutation*,Phase::Controller::GeometryPermutation*>(&v23, *(v5 + 552), *(v5 + 560), 0xCCCCCCCCCCCCCCCDLL * ((*(v5 + 560) - *(v5 + 552)) >> 4));
+  std::vector<Phase::Controller::GeometryPermutation>::__init_with_size[abi:ne200100]<Phase::Controller::GeometryPermutation*,Phase::Controller::GeometryPermutation*>(&v23, *(implementation + 552), *(implementation + 560), 0xCCCCCCCCCCCCCCCDLL * ((*(implementation + 560) - *(implementation + 552)) >> 4));
 
   [v3 appendFormat:@"\nGeometryPermutations (%lu):", 0xCCCCCCCCCCCCCCCDLL * ((v24 - v23) >> 4)];
   v6 = v23;
@@ -1029,7 +1029,7 @@ LABEL_11:
       }
 
       [v3 appendFormat:@"\n\t\tPrimitiveSortType = %d", *v10];
-      v11 = v2;
+      v11 = selfCopy;
       v12 = *(v6 + 6);
       v13 = *(v6 + 7);
       while (v12 != v13)
@@ -1038,7 +1038,7 @@ LABEL_11:
       }
 
       [v3 appendFormat:@"\n\t\tSpatialPipelineFlags = %lu", *(v6 + 9)];
-      v2 = v11;
+      selfCopy = v11;
       v8 = (v8 + 1);
       v6 += 20;
     }
@@ -1046,9 +1046,9 @@ LABEL_11:
     while (v6 != v7);
   }
 
-  [v3 appendFormat:@"\nLocalizedGeometryPermutations (%lu):", 0x2E8BA2E8BA2E8BA3 * ((v2->_localizedGeometryPermutations.__end_ - v2->_localizedGeometryPermutations.__begin_) >> 3)];
-  begin = v2->_localizedGeometryPermutations.__begin_;
-  end = v2->_localizedGeometryPermutations.__end_;
+  [v3 appendFormat:@"\nLocalizedGeometryPermutations (%lu):", 0x2E8BA2E8BA2E8BA3 * ((selfCopy->_localizedGeometryPermutations.__end_ - selfCopy->_localizedGeometryPermutations.__begin_) >> 3)];
+  begin = selfCopy->_localizedGeometryPermutations.__begin_;
+  end = selfCopy->_localizedGeometryPermutations.__end_;
   if (begin != end)
   {
     v16 = 0;

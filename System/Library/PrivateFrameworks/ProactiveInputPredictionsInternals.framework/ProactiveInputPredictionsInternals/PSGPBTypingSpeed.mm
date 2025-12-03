@@ -1,70 +1,70 @@
 @interface PSGPBTypingSpeed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMessageLength:(BOOL)a3;
-- (void)setHasMessageWords:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMessageLength:(BOOL)length;
+- (void)setHasMessageWords:(BOOL)words;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSGPBTypingSpeed
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(PSGPBTypingSpeed *)self setZkwExperimentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PSGPBTypingSpeed *)self setZkwTreatmentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PSGPBTypingSpeed *)self setZkwTreatmentName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PSGPBTypingSpeed *)self setWbExperimentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PSGPBTypingSpeed *)self setWbTreatmentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PSGPBTypingSpeed *)self setWbTreatmentName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PSGPBTypingSpeed *)self setLocaleIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(fromCopy + 80);
   if (v5)
   {
-    self->_messageDurationMilliseconds = v4[4];
+    self->_messageDurationMilliseconds = fromCopy[4];
     *&self->_has |= 1u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
     if ((v5 & 2) == 0)
     {
 LABEL_17:
@@ -77,17 +77,17 @@ LABEL_17:
     }
   }
 
-  else if ((v4[20] & 2) == 0)
+  else if ((fromCopy[20] & 2) == 0)
   {
     goto LABEL_17;
   }
 
-  self->_messageLength = v4[5];
+  self->_messageLength = fromCopy[5];
   *&self->_has |= 2u;
-  if ((v4[20] & 4) != 0)
+  if ((fromCopy[20] & 4) != 0)
   {
 LABEL_18:
-    self->_messageWords = v4[6];
+    self->_messageWords = fromCopy[6];
     *&self->_has |= 4u;
   }
 
@@ -141,16 +141,16 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   zkwExperimentId = self->_zkwExperimentId;
-  if (zkwExperimentId | *(v4 + 7))
+  if (zkwExperimentId | *(equalCopy + 7))
   {
     if (![(NSString *)zkwExperimentId isEqual:?])
     {
@@ -159,7 +159,7 @@ LABEL_4:
   }
 
   zkwTreatmentId = self->_zkwTreatmentId;
-  if (zkwTreatmentId | *(v4 + 8))
+  if (zkwTreatmentId | *(equalCopy + 8))
   {
     if (![(NSString *)zkwTreatmentId isEqual:?])
     {
@@ -168,7 +168,7 @@ LABEL_4:
   }
 
   zkwTreatmentName = self->_zkwTreatmentName;
-  if (zkwTreatmentName | *(v4 + 9))
+  if (zkwTreatmentName | *(equalCopy + 9))
   {
     if (![(NSString *)zkwTreatmentName isEqual:?])
     {
@@ -177,7 +177,7 @@ LABEL_4:
   }
 
   wbExperimentId = self->_wbExperimentId;
-  if (wbExperimentId | *(v4 + 4))
+  if (wbExperimentId | *(equalCopy + 4))
   {
     if (![(NSString *)wbExperimentId isEqual:?])
     {
@@ -186,7 +186,7 @@ LABEL_4:
   }
 
   wbTreatmentId = self->_wbTreatmentId;
-  if (wbTreatmentId | *(v4 + 5))
+  if (wbTreatmentId | *(equalCopy + 5))
   {
     if (![(NSString *)wbTreatmentId isEqual:?])
     {
@@ -195,7 +195,7 @@ LABEL_4:
   }
 
   wbTreatmentName = self->_wbTreatmentName;
-  if (wbTreatmentName | *(v4 + 6))
+  if (wbTreatmentName | *(equalCopy + 6))
   {
     if (![(NSString *)wbTreatmentName isEqual:?])
     {
@@ -204,7 +204,7 @@ LABEL_4:
   }
 
   localeIdentifier = self->_localeIdentifier;
-  if (localeIdentifier | *(v4 + 1))
+  if (localeIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)localeIdentifier isEqual:?])
     {
@@ -214,13 +214,13 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_messageDurationMilliseconds != *(v4 + 4))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_messageDurationMilliseconds != *(equalCopy + 4))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_30:
     v12 = 0;
@@ -229,21 +229,21 @@ LABEL_30:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_messageLength != *(v4 + 5))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_messageLength != *(equalCopy + 5))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_30;
   }
 
-  v12 = (*(v4 + 80) & 4) == 0;
+  v12 = (*(equalCopy + 80) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_messageWords != *(v4 + 6))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_messageWords != *(equalCopy + 6))
     {
       goto LABEL_30;
     }
@@ -256,34 +256,34 @@ LABEL_31:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_zkwExperimentId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_zkwExperimentId copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_zkwTreatmentId copyWithZone:a3];
+  v8 = [(NSString *)self->_zkwTreatmentId copyWithZone:zone];
   v9 = *(v5 + 64);
   *(v5 + 64) = v8;
 
-  v10 = [(NSString *)self->_zkwTreatmentName copyWithZone:a3];
+  v10 = [(NSString *)self->_zkwTreatmentName copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(NSString *)self->_wbExperimentId copyWithZone:a3];
+  v12 = [(NSString *)self->_wbExperimentId copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NSString *)self->_wbTreatmentId copyWithZone:a3];
+  v14 = [(NSString *)self->_wbTreatmentId copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
-  v16 = [(NSString *)self->_wbTreatmentName copyWithZone:a3];
+  v16 = [(NSString *)self->_wbTreatmentName copyWithZone:zone];
   v17 = *(v5 + 48);
   *(v5 + 48) = v16;
 
-  v18 = [(NSString *)self->_localeIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_localeIdentifier copyWithZone:zone];
   v19 = *(v5 + 8);
   *(v5 + 8) = v18;
 
@@ -325,57 +325,57 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_zkwExperimentId)
   {
-    [v4 setZkwExperimentId:?];
-    v4 = v6;
+    [toCopy setZkwExperimentId:?];
+    toCopy = v6;
   }
 
   if (self->_zkwTreatmentId)
   {
     [v6 setZkwTreatmentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_zkwTreatmentName)
   {
     [v6 setZkwTreatmentName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_wbExperimentId)
   {
     [v6 setWbExperimentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_wbTreatmentId)
   {
     [v6 setWbTreatmentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_wbTreatmentName)
   {
     [v6 setWbTreatmentName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_localeIdentifier)
   {
     [v6 setLocaleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_messageDurationMilliseconds;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 4) = self->_messageDurationMilliseconds;
+    *(toCopy + 80) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -394,62 +394,62 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 5) = self->_messageLength;
-  *(v4 + 80) |= 2u;
+  *(toCopy + 5) = self->_messageLength;
+  *(toCopy + 80) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_18:
-    *(v4 + 6) = self->_messageWords;
-    *(v4 + 80) |= 4u;
+    *(toCopy + 6) = self->_messageWords;
+    *(toCopy + 80) |= 4u;
   }
 
 LABEL_19:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_zkwExperimentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_zkwTreatmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_zkwTreatmentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_wbExperimentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_wbTreatmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_wbTreatmentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_localeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -457,7 +457,7 @@ LABEL_19:
   {
     messageDurationMilliseconds = self->_messageDurationMilliseconds;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -478,13 +478,13 @@ LABEL_17:
 
   messageLength = self->_messageLength;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_18:
     messageWords = self->_messageWords;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_19:
@@ -492,12 +492,12 @@ LABEL_19:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   zkwExperimentId = self->_zkwExperimentId;
   if (zkwExperimentId)
   {
-    [v3 setObject:zkwExperimentId forKey:@"zkw_experiment_id"];
+    [dictionary setObject:zkwExperimentId forKey:@"zkw_experiment_id"];
   }
 
   zkwTreatmentId = self->_zkwTreatmentId;
@@ -581,15 +581,15 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = PSGPBTypingSpeed;
   v4 = [(PSGPBTypingSpeed *)&v8 description];
-  v5 = [(PSGPBTypingSpeed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PSGPBTypingSpeed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMessageWords:(BOOL)a3
+- (void)setHasMessageWords:(BOOL)words
 {
-  if (a3)
+  if (words)
   {
     v3 = 4;
   }
@@ -602,9 +602,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMessageLength:(BOOL)a3
+- (void)setHasMessageLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }

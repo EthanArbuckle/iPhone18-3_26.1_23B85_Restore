@@ -1,16 +1,16 @@
 @interface tmb8686d62322e302fccf2995e45c72b1d
-- (id)initProduct:(id)a3;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (id)initProduct:(id)product;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tmb8686d62322e302fccf2995e45c72b1d
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tmb8686d62322e302fccf2995e45c72b1d;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   v4 = dword_1000AB850;
   v5 = qword_1000AB824;

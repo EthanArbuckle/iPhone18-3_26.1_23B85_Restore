@@ -1,22 +1,22 @@
 @interface IMCoalescedAction
 - (IMCoalescedAction)init;
-- (IMCoalescedAction)initWithAction:(id)a3;
+- (IMCoalescedAction)initWithAction:(id)action;
 - (void)_performActions;
-- (void)addAction:(id)a3;
+- (void)addAction:(id)action;
 - (void)dealloc;
 - (void)increaseCount;
 @end
 
 @implementation IMCoalescedAction
 
-- (IMCoalescedAction)initWithAction:(id)a3
+- (IMCoalescedAction)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [(IMCoalescedAction *)self init];
   v6 = v5;
   if (v5)
   {
-    [(IMCoalescedAction *)v5 addAction:v4];
+    [(IMCoalescedAction *)v5 addAction:actionCopy];
   }
 
   return v6;
@@ -59,12 +59,12 @@
   }
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v6 = [a3 copy];
-  v4 = [(IMCoalescedAction *)self actions];
+  v6 = [action copy];
+  actions = [(IMCoalescedAction *)self actions];
   v5 = objc_retainBlock(v6);
-  [v4 addObject:v5];
+  [actions addObject:v5];
 }
 
 - (void)_performActions
@@ -75,8 +75,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(IMCoalescedAction *)self actions];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    actions = [(IMCoalescedAction *)self actions];
+    v4 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -88,7 +88,7 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(actions);
           }
 
           (*(*(*(&v8 + 1) + 8 * v7) + 16))();
@@ -96,7 +96,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [actions countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);

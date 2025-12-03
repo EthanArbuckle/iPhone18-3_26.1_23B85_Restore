@@ -1,17 +1,17 @@
 @interface WFWorkflowQuarantine
-- (BOOL)isEqual:(id)a3;
-- (WFWorkflowQuarantine)initWithSerializedData:(id)a3;
-- (WFWorkflowQuarantine)initWithSourceAppIdentifier:(id)a3 importDate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFWorkflowQuarantine)initWithSerializedData:(id)data;
+- (WFWorkflowQuarantine)initWithSourceAppIdentifier:(id)identifier importDate:(id)date;
 - (id)serializedData;
 - (id)serializedRepresentation;
 @end
 
 @implementation WFWorkflowQuarantine
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -21,14 +21,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFWorkflowQuarantine *)self sourceAppIdentifier];
-      v7 = [(WFWorkflowQuarantine *)v5 sourceAppIdentifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      sourceAppIdentifier = [(WFWorkflowQuarantine *)self sourceAppIdentifier];
+      sourceAppIdentifier2 = [(WFWorkflowQuarantine *)v5 sourceAppIdentifier];
+      if ([sourceAppIdentifier isEqualToString:sourceAppIdentifier2])
       {
-        v8 = [(WFWorkflowQuarantine *)self importDate];
-        v9 = [(WFWorkflowQuarantine *)v5 importDate];
-        v10 = [v8 isEqualToDate:v9];
+        importDate = [(WFWorkflowQuarantine *)self importDate];
+        importDate2 = [(WFWorkflowQuarantine *)v5 importDate];
+        v10 = [importDate isEqualToDate:importDate2];
       }
 
       else
@@ -50,11 +50,11 @@
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"WFWorkflowQuarantineSourceApp";
-  v3 = [(WFWorkflowQuarantine *)self sourceAppIdentifier];
+  sourceAppIdentifier = [(WFWorkflowQuarantine *)self sourceAppIdentifier];
   v8[1] = @"WFWorkflowQuarantineImportDate";
-  v9[0] = v3;
-  v4 = [(WFWorkflowQuarantine *)self importDate];
-  v9[1] = v4;
+  v9[0] = sourceAppIdentifier;
+  importDate = [(WFWorkflowQuarantine *)self importDate];
+  v9[1] = importDate;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -66,9 +66,9 @@
 {
   v14 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696ACC8];
-  v3 = [(WFWorkflowQuarantine *)self serializedRepresentation];
+  serializedRepresentation = [(WFWorkflowQuarantine *)self serializedRepresentation];
   v9 = 0;
-  v4 = [v2 archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
+  v4 = [v2 archivedDataWithRootObject:serializedRepresentation requiringSecureCoding:1 error:&v9];
   v5 = v9;
 
   if (!v4)
@@ -89,15 +89,15 @@
   return v4;
 }
 
-- (WFWorkflowQuarantine)initWithSerializedData:(id)a3
+- (WFWorkflowQuarantine)initWithSerializedData:(id)data
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
   v21 = 0;
-  v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v8 fromData:v5 error:&v21];
+  v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v8 fromData:dataCopy error:&v21];
 
   v10 = [v9 objectForKey:@"WFWorkflowQuarantineSourceApp"];
   v11 = objc_opt_class();
@@ -109,38 +109,38 @@
   v16 = v15;
   if (v15)
   {
-    v17 = v15;
+    date = v15;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v18 = v17;
+  v18 = date;
 
   if (v12)
   {
     self = [(WFWorkflowQuarantine *)self initWithSourceAppIdentifier:v12 importDate:v18];
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (WFWorkflowQuarantine)initWithSourceAppIdentifier:(id)a3 importDate:(id)a4
+- (WFWorkflowQuarantine)initWithSourceAppIdentifier:(id)identifier importDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  dateCopy = date;
+  v9 = dateCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -148,8 +148,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFWorkflowQuarantine.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"sourceAppIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowQuarantine.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"sourceAppIdentifier"}];
 
     if (v9)
     {
@@ -157,8 +157,8 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFWorkflowQuarantine.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"importDate"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFWorkflowQuarantine.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"importDate"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -166,11 +166,11 @@ LABEL_3:
   v10 = [(WFWorkflowQuarantine *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     sourceAppIdentifier = v10->_sourceAppIdentifier;
     v10->_sourceAppIdentifier = v11;
 
-    objc_storeStrong(&v10->_importDate, a4);
+    objc_storeStrong(&v10->_importDate, date);
     v13 = v10;
   }
 

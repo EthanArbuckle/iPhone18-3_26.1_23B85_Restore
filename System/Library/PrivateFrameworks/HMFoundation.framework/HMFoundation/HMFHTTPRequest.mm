@@ -1,13 +1,13 @@
 @interface HMFHTTPRequest
 - (HMFHTTPRequest)init;
-- (HMFHTTPRequest)initWithInternalRequest:(id)a3;
+- (HMFHTTPRequest)initWithInternalRequest:(id)request;
 - (NSData)body;
 - (NSDictionary)headerFields;
 - (NSString)method;
 - (NSURL)URL;
 - (NSURLRequest)urlRequest;
 - (id)attributeDescriptions;
-- (id)responseWithStatusCode:(int64_t)a3;
+- (id)responseWithStatusCode:(int64_t)code;
 @end
 
 @implementation HMFHTTPRequest
@@ -25,16 +25,16 @@
   objc_exception_throw(v7);
 }
 
-- (HMFHTTPRequest)initWithInternalRequest:(id)a3
+- (HMFHTTPRequest)initWithInternalRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = HMFHTTPRequest;
   v6 = [(HMFHTTPRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internal, a3);
+    objc_storeStrong(&v6->_internal, request);
     v7->_timeoutInterval = 60.0;
   }
 
@@ -46,20 +46,20 @@
   v19[4] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
   v4 = [(HMFHTTPRequest *)self URL];
-  v5 = [v4 absoluteString];
-  v6 = [(HMFAttributeDescription *)v3 initWithName:@"URL" value:v5];
+  absoluteString = [v4 absoluteString];
+  v6 = [(HMFAttributeDescription *)v3 initWithName:@"URL" value:absoluteString];
   v19[0] = v6;
   v7 = [HMFAttributeDescription alloc];
-  v8 = [(HMFHTTPRequest *)self method];
-  v9 = [(HMFAttributeDescription *)v7 initWithName:@"Method" value:v8];
+  method = [(HMFHTTPRequest *)self method];
+  v9 = [(HMFAttributeDescription *)v7 initWithName:@"Method" value:method];
   v19[1] = v9;
   v10 = [HMFAttributeDescription alloc];
-  v11 = [(HMFHTTPRequest *)self headerFields];
-  v12 = [(HMFAttributeDescription *)v10 initWithName:@"Headers" value:v11];
+  headerFields = [(HMFHTTPRequest *)self headerFields];
+  v12 = [(HMFAttributeDescription *)v10 initWithName:@"Headers" value:headerFields];
   v19[2] = v12;
   v13 = [HMFAttributeDescription alloc];
-  v14 = [(HMFHTTPRequest *)self body];
-  v15 = [(HMFAttributeDescription *)v13 initWithName:@"Body" value:v14 options:1 formatter:0];
+  body = [(HMFHTTPRequest *)self body];
+  v15 = [(HMFAttributeDescription *)v13 initWithName:@"Body" value:body options:1 formatter:0];
   v19[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:4];
 
@@ -68,10 +68,10 @@
   return v16;
 }
 
-- (id)responseWithStatusCode:(int64_t)a3
+- (id)responseWithStatusCode:(int64_t)code
 {
-  v5 = [(HMFHTTPRequest *)self internal];
-  v6 = [v5 responseWithStatusCode:a3];
+  internal = [(HMFHTTPRequest *)self internal];
+  v6 = [internal responseWithStatusCode:code];
 
   v7 = [[HMFHTTPResponse alloc] initWithRequest:self internalResponse:v6];
 
@@ -80,34 +80,34 @@
 
 - (NSURL)URL
 {
-  v2 = [(HMFHTTPRequest *)self internal];
-  v3 = [v2 URL];
+  internal = [(HMFHTTPRequest *)self internal];
+  v3 = [internal URL];
 
   return v3;
 }
 
 - (NSString)method
 {
-  v2 = [(HMFHTTPRequest *)self internal];
-  v3 = [v2 method];
+  internal = [(HMFHTTPRequest *)self internal];
+  method = [internal method];
 
-  return v3;
+  return method;
 }
 
 - (NSDictionary)headerFields
 {
-  v2 = [(HMFHTTPRequest *)self internal];
-  v3 = [v2 headerFields];
+  internal = [(HMFHTTPRequest *)self internal];
+  headerFields = [internal headerFields];
 
-  return v3;
+  return headerFields;
 }
 
 - (NSData)body
 {
-  v2 = [(HMFHTTPRequest *)self internal];
-  v3 = [v2 body];
+  internal = [(HMFHTTPRequest *)self internal];
+  body = [internal body];
 
-  return v3;
+  return body;
 }
 
 - (NSURLRequest)urlRequest
@@ -117,14 +117,14 @@
   [(HMFHTTPRequest *)self timeoutInterval];
   v5 = [v3 initWithURL:v4 cachePolicy:1 timeoutInterval:?];
 
-  v6 = [(HMFHTTPRequest *)self body];
-  [v5 setHTTPBody:v6];
+  body = [(HMFHTTPRequest *)self body];
+  [v5 setHTTPBody:body];
 
-  v7 = [(HMFHTTPRequest *)self method];
-  [v5 setHTTPMethod:v7];
+  method = [(HMFHTTPRequest *)self method];
+  [v5 setHTTPMethod:method];
 
-  v8 = [(HMFHTTPRequest *)self headerFields];
-  [v5 setAllHTTPHeaderFields:v8];
+  headerFields = [(HMFHTTPRequest *)self headerFields];
+  [v5 setAllHTTPHeaderFields:headerFields];
 
   v9 = [v5 copy];
 

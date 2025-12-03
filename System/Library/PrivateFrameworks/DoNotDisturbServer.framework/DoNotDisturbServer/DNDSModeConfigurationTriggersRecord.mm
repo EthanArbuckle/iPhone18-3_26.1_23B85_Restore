@@ -1,25 +1,25 @@
 @interface DNDSModeConfigurationTriggersRecord
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-+ (id)newWithDictionaryRepresentation:(id)a3 partitionedDictionaryRepresentation:(id)a4 context:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
++ (id)newWithDictionaryRepresentation:(id)representation partitionedDictionaryRepresentation:(id)dictionaryRepresentation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithRecord:(id)a3;
-- (id)_initWithTriggers:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithRecord:(id)record;
+- (id)_initWithTriggers:(id)triggers;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DNDSModeConfigurationTriggersRecord
 
-- (id)_initWithTriggers:(id)a3
+- (id)_initWithTriggers:(id)triggers
 {
-  v4 = a3;
+  triggersCopy = triggers;
   v9.receiver = self;
   v9.super_class = DNDSModeConfigurationTriggersRecord;
   v5 = [(DNDSModeConfigurationTriggersRecord *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [triggersCopy copy];
     triggers = v5->_triggers;
     v5->_triggers = v6;
   }
@@ -27,18 +27,18 @@
   return v5;
 }
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = [a3 triggers];
-  v5 = [(DNDSModeConfigurationTriggersRecord *)self _initWithTriggers:v4];
+  triggers = [record triggers];
+  v5 = [(DNDSModeConfigurationTriggersRecord *)self _initWithTriggers:triggers];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -48,25 +48,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
-      v7 = [(DNDSModeConfigurationTriggersRecord *)v5 triggers];
-      if (v6 == v7)
+      v5 = equalCopy;
+      triggers = [(DNDSModeConfigurationTriggersRecord *)self triggers];
+      triggers2 = [(DNDSModeConfigurationTriggersRecord *)v5 triggers];
+      if (triggers == triggers2)
       {
         v12 = 1;
       }
 
       else
       {
-        v8 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
-        if (v8)
+        triggers3 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
+        if (triggers3)
         {
-          v9 = [(DNDSModeConfigurationTriggersRecord *)v5 triggers];
-          if (v9)
+          triggers4 = [(DNDSModeConfigurationTriggersRecord *)v5 triggers];
+          if (triggers4)
           {
-            v10 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
-            v11 = [(DNDSModeConfigurationTriggersRecord *)v5 triggers];
-            v12 = [v10 isEqual:v11];
+            triggers5 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
+            triggers6 = [(DNDSModeConfigurationTriggersRecord *)v5 triggers];
+            v12 = [triggers5 isEqual:triggers6];
           }
 
           else
@@ -95,25 +95,25 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSModeConfigurationTriggersRecord *)self triggers];
-  v6 = [v3 stringWithFormat:@"<%@: %p triggers: %@>", v4, self, v5];;
+  triggers = [(DNDSModeConfigurationTriggersRecord *)self triggers];
+  v6 = [v3 stringWithFormat:@"<%@: %p triggers: %@>", v4, self, triggers];;
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableModeConfigurationTriggersRecord alloc];
 
   return [(DNDSModeConfigurationTriggersRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 bs_safeArrayForKey:@"triggers"];
-  v7 = [MEMORY[0x277CBEB18] array];
+  contextCopy = context;
+  v6 = [representation bs_safeArrayForKey:@"triggers"];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -137,8 +137,8 @@
         v14 = [v13 bs_safeStringForKey:@"class"];
         if (([&unk_285C53B40 containsObject:v14] & 1) != 0 || objc_msgSend(&unk_285C53B58, "containsObject:", v14))
         {
-          v15 = [NSClassFromString(v14) newWithDictionaryRepresentation:v13 context:v5];
-          [v7 addObject:v15];
+          v15 = [NSClassFromString(v14) newWithDictionaryRepresentation:v13 context:contextCopy];
+          [array addObject:v15];
         }
       }
 
@@ -148,18 +148,18 @@
     while (v10);
   }
 
-  v16 = [[a1 alloc] initWithTriggers:v7];
+  v16 = [[self alloc] initWithTriggers:array];
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 partitionedDictionaryRepresentation:(id)a4 context:(id)a5
++ (id)newWithDictionaryRepresentation:(id)representation partitionedDictionaryRepresentation:(id)dictionaryRepresentation context:(id)context
 {
   v41 = *MEMORY[0x277D85DE8];
-  v29 = a4;
-  v7 = a5;
-  v8 = [a3 bs_safeArrayForKey:@"triggers"];
-  v9 = [MEMORY[0x277CBEB18] array];
+  dictionaryRepresentationCopy = dictionaryRepresentation;
+  contextCopy = context;
+  v8 = [representation bs_safeArrayForKey:@"triggers"];
+  array = [MEMORY[0x277CBEB18] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -183,8 +183,8 @@
         v15 = [v14 bs_safeStringForKey:@"class"];
         if (([&unk_285C53B70 containsObject:v15] & 1) != 0 || objc_msgSend(&unk_285C53B88, "containsObject:", v15))
         {
-          v16 = [NSClassFromString(v15) newWithDictionaryRepresentation:v14 context:v7];
-          [v9 addObject:v16];
+          v16 = [NSClassFromString(v15) newWithDictionaryRepresentation:v14 context:contextCopy];
+          [array addObject:v16];
         }
       }
 
@@ -194,7 +194,7 @@
     while (v11);
   }
 
-  v17 = [v29 bs_safeArrayForKey:@"triggers"];
+  v17 = [dictionaryRepresentationCopy bs_safeArrayForKey:@"triggers"];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -217,8 +217,8 @@
         v23 = [v22 bs_safeStringForKey:@"class"];
         if ([&unk_285C53BA0 containsObject:v23])
         {
-          v24 = [NSClassFromString(v23) newWithDictionaryRepresentation:v22 context:v7];
-          [v9 addObject:v24];
+          v24 = [NSClassFromString(v23) newWithDictionaryRepresentation:v22 context:contextCopy];
+          [array addObject:v24];
         }
       }
 
@@ -228,17 +228,17 @@
     while (v19);
   }
 
-  v25 = [[a1 alloc] initWithTriggers:v9];
+  v25 = [[self alloc] initWithTriggers:array];
 
   v26 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -261,10 +261,10 @@
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        if ([v4 partitionType])
+        if ([contextCopy partitionType])
         {
           v14 = [&unk_285C53BB8 containsObject:v13];
-          if (([v4 partitionType] & 2) != 0)
+          if (([contextCopy partitionType] & 2) != 0)
           {
 LABEL_12:
             if (([&unk_285C53BD0 containsObject:v13] & 1) == 0)
@@ -273,8 +273,8 @@ LABEL_12:
             }
 
 LABEL_13:
-            v15 = [v11 dictionaryRepresentationWithContext:v4];
-            [v5 addObject:v15];
+            v15 = [v11 dictionaryRepresentationWithContext:contextCopy];
+            [array addObject:v15];
 
             goto LABEL_14;
           }
@@ -285,7 +285,7 @@ LABEL_13:
           }
         }
 
-        else if (([v4 partitionType] & 2) != 0)
+        else if (([contextCopy partitionType] & 2) != 0)
         {
           goto LABEL_12;
         }
@@ -300,7 +300,7 @@ LABEL_14:
   }
 
   v23 = @"triggers";
-  v24 = v5;
+  v24 = array;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
   v17 = *MEMORY[0x277D85DE8];

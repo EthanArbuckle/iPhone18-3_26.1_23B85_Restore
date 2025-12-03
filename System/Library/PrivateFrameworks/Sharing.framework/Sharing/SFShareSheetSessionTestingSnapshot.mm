@@ -1,35 +1,35 @@
 @interface SFShareSheetSessionTestingSnapshot
-+ (id)_jsonifyItems:(id)a3;
++ (id)_jsonifyItems:(id)items;
 + (id)dateFormatter;
-+ (id)descriptionForItem:(id)a3;
-+ (id)loadSnapshotFromURL:(id)a3 error:(id *)a4;
++ (id)descriptionForItem:(id)item;
++ (id)loadSnapshotFromURL:(id)l error:(id *)error;
 + (id)snapshotsDirectory;
 - (BOOL)currentProcessHasAppRecordEntitlement;
 - (BOOL)currentProcessHasExtensionDiscoveryEntitlements;
-- (BOOL)hasSamePreconditions:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SFShareSheetSessionTestingSnapshot)initWithCoder:(id)a3;
-- (SFShareSheetSessionTestingSnapshot)initWithItems:(id)a3 applicationBundleID:(id)a4 pid:(int)a5;
-- (SFShareSheetSessionTestingSnapshot)initWithJSONInfo:(id)a3;
+- (BOOL)hasSamePreconditions:(id)preconditions;
+- (BOOL)isEqual:(id)equal;
+- (SFShareSheetSessionTestingSnapshot)initWithCoder:(id)coder;
+- (SFShareSheetSessionTestingSnapshot)initWithItems:(id)items applicationBundleID:(id)d pid:(int)pid;
+- (SFShareSheetSessionTestingSnapshot)initWithJSONInfo:(id)info;
 - (id)checkSystemAppsAvailability;
 - (id)defaultURL;
 - (id)discoverInstalledExtensions;
 - (id)filename;
 - (id)jsonInfo;
-- (id)modeKeyForCollaboration:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateFromSnapshot:(id)a3;
-- (void)updatePreconditionsIfNeededWithReferenceSnapshot:(id)a3;
-- (void)updateWithPlaceholderItems:(id)a3 collaborationItem:(id)a4 supportsCollaboration:(BOOL)a5 supportsSendCopy:(BOOL)a6;
-- (void)writeSnapshotWithCompletionHandler:(id)a3;
+- (id)modeKeyForCollaboration:(BOOL)collaboration;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateFromSnapshot:(id)snapshot;
+- (void)updatePreconditionsIfNeededWithReferenceSnapshot:(id)snapshot;
+- (void)updateWithPlaceholderItems:(id)items collaborationItem:(id)item supportsCollaboration:(BOOL)collaboration supportsSendCopy:(BOOL)copy;
+- (void)writeSnapshotWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFShareSheetSessionTestingSnapshot
 
-- (SFShareSheetSessionTestingSnapshot)initWithItems:(id)a3 applicationBundleID:(id)a4 pid:(int)a5
+- (SFShareSheetSessionTestingSnapshot)initWithItems:(id)items applicationBundleID:(id)d pid:(int)pid
 {
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = SFShareSheetSessionTestingSnapshot;
   v10 = [(SFShareSheetSessionTestingSnapshot *)&v17 init];
@@ -39,9 +39,9 @@
     timestamp = v10->_timestamp;
     v10->_timestamp = v11;
 
-    objc_storeStrong(&v10->_applicationBundleID, a4);
-    v10->_pid = a5;
-    v13 = [objc_opt_class() _jsonifyItems:v8];
+    objc_storeStrong(&v10->_applicationBundleID, d);
+    v10->_pid = pid;
+    v13 = [objc_opt_class() _jsonifyItems:itemsCopy];
     itemDescriptions = v10->_itemDescriptions;
     v10->_itemDescriptions = v13;
 
@@ -51,29 +51,29 @@
   return v10;
 }
 
-- (void)updateWithPlaceholderItems:(id)a3 collaborationItem:(id)a4 supportsCollaboration:(BOOL)a5 supportsSendCopy:(BOOL)a6
+- (void)updateWithPlaceholderItems:(id)items collaborationItem:(id)item supportsCollaboration:(BOOL)collaboration supportsSendCopy:(BOOL)copy
 {
-  v6 = a6;
-  v7 = a5;
+  copyCopy = copy;
+  collaborationCopy = collaboration;
   v23[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  itemsCopy = items;
+  itemCopy = item;
   v12 = objc_opt_new();
-  if (v11 && v7)
+  if (itemCopy && collaborationCopy)
   {
-    v13 = [v11 placeholderActivityItem];
-    v14 = v13;
-    if (v13)
+    placeholderActivityItem = [itemCopy placeholderActivityItem];
+    v14 = placeholderActivityItem;
+    if (placeholderActivityItem)
     {
-      v15 = v13;
+      activityItem = placeholderActivityItem;
     }
 
     else
     {
-      v15 = [v11 activityItem];
+      activityItem = [itemCopy activityItem];
     }
 
-    v16 = v15;
+    v16 = activityItem;
 
     v17 = [SFShareSheetSessionModeTestingSnapshot alloc];
     v23[0] = v16;
@@ -83,9 +83,9 @@
     [v12 setObject:v19 forKey:@"collaborate"];
   }
 
-  if (v6)
+  if (copyCopy)
   {
-    v20 = [[SFShareSheetSessionModeTestingSnapshot alloc] initWithPlaceholderItems:v10];
+    v20 = [[SFShareSheetSessionModeTestingSnapshot alloc] initWithPlaceholderItems:itemsCopy];
     [v12 setObject:v20 forKey:@"sendCopy"];
   }
 
@@ -95,70 +95,70 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePreconditionsIfNeededWithReferenceSnapshot:(id)a3
+- (void)updatePreconditionsIfNeededWithReferenceSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  snapshotCopy = snapshot;
+  v9 = snapshotCopy;
+  if (snapshotCopy)
   {
-    v5 = [v4 installedExtensions];
-    [(SFShareSheetSessionTestingSnapshot *)self setInstalledExtensions:v5];
+    installedExtensions = [snapshotCopy installedExtensions];
+    [(SFShareSheetSessionTestingSnapshot *)self setInstalledExtensions:installedExtensions];
 
-    v6 = [v9 systemAppsAvailable];
+    systemAppsAvailable = [v9 systemAppsAvailable];
 LABEL_3:
-    v7 = v6;
-    [(SFShareSheetSessionTestingSnapshot *)self setSystemAppsAvailable:v6];
+    systemAppsAvailable2 = systemAppsAvailable;
+    [(SFShareSheetSessionTestingSnapshot *)self setSystemAppsAvailable:systemAppsAvailable];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v8 = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
-  if (!v8)
+  installedExtensions2 = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
+  if (!installedExtensions2)
   {
     if (![(SFShareSheetSessionTestingSnapshot *)self currentProcessHasExtensionDiscoveryEntitlements])
     {
       goto LABEL_8;
     }
 
-    v8 = [(SFShareSheetSessionTestingSnapshot *)self discoverInstalledExtensions];
-    [(SFShareSheetSessionTestingSnapshot *)self setInstalledExtensions:v8];
+    installedExtensions2 = [(SFShareSheetSessionTestingSnapshot *)self discoverInstalledExtensions];
+    [(SFShareSheetSessionTestingSnapshot *)self setInstalledExtensions:installedExtensions2];
   }
 
 LABEL_8:
-  v7 = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
-  if (v7)
+  systemAppsAvailable2 = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
+  if (systemAppsAvailable2)
   {
     goto LABEL_9;
   }
 
   if ([(SFShareSheetSessionTestingSnapshot *)self currentProcessHasAppRecordEntitlement])
   {
-    v6 = [(SFShareSheetSessionTestingSnapshot *)self checkSystemAppsAvailability];
+    systemAppsAvailable = [(SFShareSheetSessionTestingSnapshot *)self checkSystemAppsAvailability];
     goto LABEL_3;
   }
 
 LABEL_10:
 }
 
-- (void)updateFromSnapshot:(id)a3
+- (void)updateFromSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
-  v6 = [v4 timestamp];
-  if ([v5 isEqualToDate:v6])
+  snapshotCopy = snapshot;
+  timestamp = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
+  timestamp2 = [snapshotCopy timestamp];
+  if ([timestamp isEqualToDate:timestamp2])
   {
-    v7 = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
-    v8 = [v4 applicationBundleID];
-    if ([v7 isEqualToString:v8])
+    applicationBundleID = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
+    applicationBundleID2 = [snapshotCopy applicationBundleID];
+    if ([applicationBundleID isEqualToString:applicationBundleID2])
     {
       v9 = [(SFShareSheetSessionTestingSnapshot *)self pid];
-      if (v9 == [v4 pid])
+      if (v9 == [snapshotCopy pid])
       {
-        v10 = [(SFShareSheetSessionTestingSnapshot *)self itemDescriptions];
-        v11 = [v4 itemDescriptions];
-        v12 = v10;
-        v13 = v11;
+        itemDescriptions = [(SFShareSheetSessionTestingSnapshot *)self itemDescriptions];
+        itemDescriptions2 = [snapshotCopy itemDescriptions];
+        v12 = itemDescriptions;
+        v13 = itemDescriptions2;
         v14 = v13;
         if (v12 == v13)
         {
@@ -176,26 +176,26 @@ LABEL_10:
           }
 
 LABEL_9:
-          v16 = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
+          installedExtensions = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
 
-          if (!v16)
+          if (!installedExtensions)
           {
-            v17 = [v4 installedExtensions];
-            [(SFShareSheetSessionTestingSnapshot *)self setInstalledExtensions:v17];
+            installedExtensions2 = [snapshotCopy installedExtensions];
+            [(SFShareSheetSessionTestingSnapshot *)self setInstalledExtensions:installedExtensions2];
           }
 
-          v18 = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
+          systemAppsAvailable = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
 
-          if (!v18)
+          if (!systemAppsAvailable)
           {
-            v19 = [v4 systemAppsAvailable];
-            [(SFShareSheetSessionTestingSnapshot *)self setSystemAppsAvailable:v19];
+            systemAppsAvailable2 = [snapshotCopy systemAppsAvailable];
+            [(SFShareSheetSessionTestingSnapshot *)self setSystemAppsAvailable:systemAppsAvailable2];
           }
 
-          v20 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
-          v21 = [v4 modeSnapshots];
-          v22 = v20;
-          v23 = v21;
+          modeSnapshots = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
+          modeSnapshots2 = [snapshotCopy modeSnapshots];
+          v22 = modeSnapshots;
+          v23 = modeSnapshots2;
           v24 = v23;
           if (v22 == v23)
           {
@@ -217,18 +217,18 @@ LABEL_9:
             }
           }
 
-          v27 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
-          v28 = [v27 mutableCopy];
+          modeSnapshots3 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
+          v28 = [modeSnapshots3 mutableCopy];
 
-          v29 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
+          modeSnapshots4 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
           v31 = MEMORY[0x1E69E9820];
           v32 = 3221225472;
           v33 = __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke;
           v34 = &unk_1E788C850;
-          v35 = v4;
+          v35 = snapshotCopy;
           v36 = v28;
           v30 = v28;
-          [v29 enumerateKeysAndObjectsUsingBlock:&v31];
+          [modeSnapshots4 enumerateKeysAndObjectsUsingBlock:&v31];
 
           [(SFShareSheetSessionTestingSnapshot *)self setModeSnapshots:v30, v31, v32, v33, v34];
           goto LABEL_23;
@@ -260,20 +260,20 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
   [*(a1 + 40) setObject:v6 forKey:v9];
 }
 
-- (void)writeSnapshotWithCompletionHandler:(id)a3
+- (void)writeSnapshotWithCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFShareSheetSessionTestingSnapshot *)self jsonInfo];
-  v6 = [(SFShareSheetSessionTestingSnapshot *)self defaultURL];
+  handlerCopy = handler;
+  jsonInfo = [(SFShareSheetSessionTestingSnapshot *)self jsonInfo];
+  defaultURL = [(SFShareSheetSessionTestingSnapshot *)self defaultURL];
   v30 = 0;
-  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:0 error:&v30];
+  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jsonInfo options:0 error:&v30];
   v8 = v30;
   v9 = v8;
   if (v7)
   {
     v29 = v8;
-    v10 = [v7 writeToURL:v6 options:1 error:&v29];
+    v10 = [v7 writeToURL:defaultURL options:1 error:&v29];
     v11 = v29;
 
     v12 = share_sheet_log();
@@ -283,12 +283,12 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v32 = v6;
+        v32 = defaultURL;
         _os_log_impl(&dword_1A9662000, v13, OS_LOG_TYPE_DEFAULT, "Write Share Sheet snapshot SUCCESS {url: %@}", buf, 0xCu);
       }
 
-      v14 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:v6 readonly:1];
-      v4[2](v4, v14, 0);
+      v14 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:defaultURL readonly:1];
+      handlerCopy[2](handlerCopy, v14, 0);
     }
 
     else
@@ -298,7 +298,7 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
         [(SFShareSheetSessionTestingSnapshot *)v11 writeSnapshotWithCompletionHandler:v13, v22, v23, v24, v25, v26, v27];
       }
 
-      (v4)[2](v4, 0, v11);
+      (handlerCopy)[2](handlerCopy, 0, v11);
     }
 
     v9 = v11;
@@ -312,23 +312,23 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
       [(SFShareSheetSessionTestingSnapshot *)v9 writeSnapshotWithCompletionHandler:v15, v16, v17, v18, v19, v20, v21];
     }
 
-    (v4)[2](v4, 0, v9);
+    (handlerCopy)[2](handlerCopy, 0, v9);
   }
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)loadSnapshotFromURL:(id)a3 error:(id *)a4
++ (id)loadSnapshotFromURL:(id)l error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v7 = [v5 url];
+  v7 = [lCopy url];
   v8 = [v6 initWithContentsOfURL:v7];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:a4];
+    v9 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:error];
     if (v9)
     {
       v10 = [[SFShareSheetSessionTestingSnapshot alloc] initWithJSONInfo:v9];
@@ -336,22 +336,22 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138412290;
-        v27 = v5;
+        v27 = lCopy;
         _os_log_impl(&dword_1A9662000, v11, OS_LOG_TYPE_DEFAULT, "Read Share Sheet snapshot SUCCESS {url: %@}", &v26, 0xCu);
       }
     }
 
     else
     {
-      if (a4 && !*a4)
+      if (error && !*error)
       {
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:79 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:79 userInfo:0];
       }
 
       v11 = share_sheet_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(SFShareSheetSessionTestingSnapshot *)a4 loadSnapshotFromURL:v11 error:v18, v19, v20, v21, v22, v23];
+        [(SFShareSheetSessionTestingSnapshot *)error loadSnapshotFromURL:v11 error:v18, v19, v20, v21, v22, v23];
       }
 
       v10 = 0;
@@ -360,15 +360,15 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:0];
     }
 
     v9 = share_sheet_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(SFShareSheetSessionTestingSnapshot *)a4 loadSnapshotFromURL:v9 error:v12, v13, v14, v15, v16, v17];
+      [(SFShareSheetSessionTestingSnapshot *)error loadSnapshotFromURL:v9 error:v12, v13, v14, v15, v16, v17];
     }
 
     v10 = 0;
@@ -379,23 +379,23 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
   return v10;
 }
 
-- (SFShareSheetSessionTestingSnapshot)initWithJSONInfo:(id)a3
+- (SFShareSheetSessionTestingSnapshot)initWithJSONInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v38.receiver = self;
   v38.super_class = SFShareSheetSessionTestingSnapshot;
   v5 = [(SFShareSheetSessionTestingSnapshot *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"testName"];
+    v6 = [infoCopy objectForKeyedSubscript:@"testName"];
     testName = v5->_testName;
     v5->_testName = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"testSuiteName"];
+    v8 = [infoCopy objectForKeyedSubscript:@"testSuiteName"];
     testSuiteName = v5->_testSuiteName;
     v5->_testSuiteName = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v10 = [infoCopy objectForKeyedSubscript:@"timestamp"];
     if (v10)
     {
       v11 = +[SFShareSheetSessionTestingSnapshot dateFormatter];
@@ -422,7 +422,7 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
       v5->_timestamp = v15;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"applicationBundleID"];
+    v17 = [infoCopy objectForKeyedSubscript:@"applicationBundleID"];
     v18 = v17;
     if (v17)
     {
@@ -436,33 +436,33 @@ void __57__SFShareSheetSessionTestingSnapshot_updateFromSnapshot___block_invoke(
 
     objc_storeStrong(&v5->_applicationBundleID, v19);
 
-    v20 = [v4 objectForKeyedSubscript:@"pid"];
-    v21 = [v20 longValue];
-    if (v21)
+    v20 = [infoCopy objectForKeyedSubscript:@"pid"];
+    longValue = [v20 longValue];
+    if (longValue)
     {
-      v5->_pid = v21;
+      v5->_pid = longValue;
     }
 
     else
     {
-      v22 = [MEMORY[0x1E696AE30] processInfo];
-      v5->_pid = [v22 processIdentifier];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      v5->_pid = [processInfo processIdentifier];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"itemDescriptions"];
+    v23 = [infoCopy objectForKeyedSubscript:@"itemDescriptions"];
     itemDescriptions = v5->_itemDescriptions;
     v5->_itemDescriptions = v23;
 
-    v25 = [v4 objectForKeyedSubscript:@"installedExtensions"];
+    v25 = [infoCopy objectForKeyedSubscript:@"installedExtensions"];
     installedExtensions = v5->_installedExtensions;
     v5->_installedExtensions = v25;
 
-    v27 = [v4 objectForKeyedSubscript:@"systemAppsAvailable"];
+    v27 = [infoCopy objectForKeyedSubscript:@"systemAppsAvailable"];
     systemAppsAvailable = v5->_systemAppsAvailable;
     v5->_systemAppsAvailable = v27;
 
     v29 = objc_opt_new();
-    v30 = [v4 objectForKeyedSubscript:@"modeSnapshots"];
+    v30 = [infoCopy objectForKeyedSubscript:@"modeSnapshots"];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __55__SFShareSheetSessionTestingSnapshot_initWithJSONInfo___block_invoke;
@@ -493,51 +493,51 @@ void __55__SFShareSheetSessionTestingSnapshot_initWithJSONInfo___block_invoke(ui
 - (id)jsonInfo
 {
   v3 = objc_opt_new();
-  v4 = [(SFShareSheetSessionTestingSnapshot *)self testName];
+  testName = [(SFShareSheetSessionTestingSnapshot *)self testName];
 
-  if (v4)
+  if (testName)
   {
-    v5 = [(SFShareSheetSessionTestingSnapshot *)self testName];
-    [v3 setObject:v5 forKeyedSubscript:@"testName"];
+    testName2 = [(SFShareSheetSessionTestingSnapshot *)self testName];
+    [v3 setObject:testName2 forKeyedSubscript:@"testName"];
   }
 
-  v6 = [(SFShareSheetSessionTestingSnapshot *)self testSuiteName];
+  testSuiteName = [(SFShareSheetSessionTestingSnapshot *)self testSuiteName];
 
-  if (v6)
+  if (testSuiteName)
   {
-    v7 = [(SFShareSheetSessionTestingSnapshot *)self testSuiteName];
-    [v3 setObject:v7 forKeyedSubscript:@"testSuiteName"];
+    testSuiteName2 = [(SFShareSheetSessionTestingSnapshot *)self testSuiteName];
+    [v3 setObject:testSuiteName2 forKeyedSubscript:@"testSuiteName"];
   }
 
   v8 = +[SFShareSheetSessionTestingSnapshot dateFormatter];
-  v9 = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
-  v10 = [v8 stringFromDate:v9];
+  timestamp = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
+  v10 = [v8 stringFromDate:timestamp];
   [v3 setObject:v10 forKeyedSubscript:@"timestamp"];
 
-  v11 = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
-  [v3 setObject:v11 forKeyedSubscript:@"applicationBundleID"];
+  applicationBundleID = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
+  [v3 setObject:applicationBundleID forKeyedSubscript:@"applicationBundleID"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithLong:{-[SFShareSheetSessionTestingSnapshot pid](self, "pid")}];
   [v3 setObject:v12 forKeyedSubscript:@"pid"];
 
-  v13 = [(SFShareSheetSessionTestingSnapshot *)self itemDescriptions];
-  [v3 setObject:v13 forKeyedSubscript:@"itemDescriptions"];
+  itemDescriptions = [(SFShareSheetSessionTestingSnapshot *)self itemDescriptions];
+  [v3 setObject:itemDescriptions forKeyedSubscript:@"itemDescriptions"];
 
-  v14 = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
-  [v3 setObject:v14 forKeyedSubscript:@"installedExtensions"];
+  installedExtensions = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
+  [v3 setObject:installedExtensions forKeyedSubscript:@"installedExtensions"];
 
-  v15 = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
-  [v3 setObject:v15 forKeyedSubscript:@"systemAppsAvailable"];
+  systemAppsAvailable = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
+  [v3 setObject:systemAppsAvailable forKeyedSubscript:@"systemAppsAvailable"];
 
   v16 = objc_opt_new();
-  v17 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
+  modeSnapshots = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke;
   v21[3] = &unk_1E788C8A0;
   v22 = v16;
   v18 = v16;
-  [v17 enumerateKeysAndObjectsUsingBlock:v21];
+  [modeSnapshots enumerateKeysAndObjectsUsingBlock:v21];
 
   v19 = [v18 copy];
   [v3 setObject:v19 forKeyedSubscript:@"modeSnapshots"];
@@ -552,42 +552,42 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
   [*(a1 + 32) setObject:v6 forKey:v5];
 }
 
-- (SFShareSheetSessionTestingSnapshot)initWithCoder:(id)a3
+- (SFShareSheetSessionTestingSnapshot)initWithCoder:(id)coder
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = SFShareSheetSessionTestingSnapshot;
   v5 = [(SFShareSheetSessionTestingSnapshot *)&v40 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testName"];
     testName = v5->_testName;
     v5->_testName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testSuiteName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testSuiteName"];
     testSuiteName = v5->_testSuiteName;
     v5->_testSuiteName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleID"];
     applicationBundleID = v5->_applicationBundleID;
     v5->_applicationBundleID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
-    v15 = [v14 longValue];
-    if (v15)
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
+    longValue = [v14 longValue];
+    if (longValue)
     {
-      v5->_pid = v15;
+      v5->_pid = longValue;
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696AE30] processInfo];
-      v5->_pid = [v16 processIdentifier];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      v5->_pid = [processInfo processIdentifier];
     }
 
     v17 = MEMORY[0x1E695DFD8];
@@ -596,7 +596,7 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
     v44[2] = objc_opt_class();
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
     v19 = [v17 setWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"itemDescriptions"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"itemDescriptions"];
     itemDescriptions = v5->_itemDescriptions;
     v5->_itemDescriptions = v20;
 
@@ -606,7 +606,7 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
     v43[2] = objc_opt_class();
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:3];
     v24 = [v22 setWithArray:v23];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"installedExtensions"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"installedExtensions"];
     installedExtensions = v5->_installedExtensions;
     v5->_installedExtensions = v25;
 
@@ -616,7 +616,7 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
     v42[2] = objc_opt_class();
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:3];
     v29 = [v27 setWithArray:v28];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"systemAppsAvailable"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"systemAppsAvailable"];
     systemAppsAvailable = v5->_systemAppsAvailable;
     v5->_systemAppsAvailable = v30;
 
@@ -626,7 +626,7 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
     v41[2] = objc_opt_class();
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
     v34 = [v32 setWithArray:v33];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"modeSnapshots"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"modeSnapshots"];
     modeSnapshots = v5->_modeSnapshots;
     v5->_modeSnapshots = v35;
 
@@ -637,38 +637,38 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(SFShareSheetSessionTestingSnapshot *)self testName];
+  coderCopy = coder;
+  testName = [(SFShareSheetSessionTestingSnapshot *)self testName];
 
-  if (v4)
+  if (testName)
   {
-    [v7 encodeObject:self->_testName forKey:@"testName"];
+    [coderCopy encodeObject:self->_testName forKey:@"testName"];
   }
 
-  v5 = [(SFShareSheetSessionTestingSnapshot *)self testSuiteName];
+  testSuiteName = [(SFShareSheetSessionTestingSnapshot *)self testSuiteName];
 
-  if (v5)
+  if (testSuiteName)
   {
-    [v7 encodeObject:self->_testSuiteName forKey:@"testSuiteName"];
+    [coderCopy encodeObject:self->_testSuiteName forKey:@"testSuiteName"];
   }
 
-  [v7 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v7 encodeObject:self->_applicationBundleID forKey:@"applicationBundleID"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_applicationBundleID forKey:@"applicationBundleID"];
   v6 = [MEMORY[0x1E696AD98] numberWithLong:{-[SFShareSheetSessionTestingSnapshot pid](self, "pid")}];
-  [v7 encodeObject:v6 forKey:@"pid"];
+  [coderCopy encodeObject:v6 forKey:@"pid"];
 
-  [v7 encodeObject:self->_itemDescriptions forKey:@"itemDescriptions"];
-  [v7 encodeObject:self->_installedExtensions forKey:@"installedExtensions"];
-  [v7 encodeObject:self->_systemAppsAvailable forKey:@"systemAppsAvailable"];
-  [v7 encodeObject:self->_modeSnapshots forKey:@"modeSnapshots"];
+  [coderCopy encodeObject:self->_itemDescriptions forKey:@"itemDescriptions"];
+  [coderCopy encodeObject:self->_installedExtensions forKey:@"installedExtensions"];
+  [coderCopy encodeObject:self->_systemAppsAvailable forKey:@"systemAppsAvailable"];
+  [coderCopy encodeObject:self->_modeSnapshots forKey:@"modeSnapshots"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -678,11 +678,11 @@ void __46__SFShareSheetSessionTestingSnapshot_jsonInfo__block_invoke(uint64_t a1
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFShareSheetSessionTestingSnapshot *)v5 timestamp];
-      v7 = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      timestamp = [(SFShareSheetSessionTestingSnapshot *)v5 timestamp];
+      timestamp2 = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
+      v8 = timestamp;
+      v9 = timestamp2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -711,10 +711,10 @@ LABEL_28:
         }
       }
 
-      v13 = [(SFShareSheetSessionTestingSnapshot *)v5 applicationBundleID];
-      v14 = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
-      v15 = v13;
-      v16 = v14;
+      applicationBundleID = [(SFShareSheetSessionTestingSnapshot *)v5 applicationBundleID];
+      applicationBundleID2 = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
+      v15 = applicationBundleID;
+      v16 = applicationBundleID2;
       v17 = v16;
       if (v15 == v16)
       {
@@ -746,10 +746,10 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      v20 = [(SFShareSheetSessionTestingSnapshot *)v5 modeSnapshots];
-      v21 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
-      v22 = v20;
-      v23 = v21;
+      modeSnapshots = [(SFShareSheetSessionTestingSnapshot *)v5 modeSnapshots];
+      modeSnapshots2 = [(SFShareSheetSessionTestingSnapshot *)self modeSnapshots];
+      v22 = modeSnapshots;
+      v23 = modeSnapshots2;
       v24 = v23;
       if (v22 == v23)
       {
@@ -778,13 +778,13 @@ LABEL_29:
   return v12;
 }
 
-- (BOOL)hasSamePreconditions:(id)a3
+- (BOOL)hasSamePreconditions:(id)preconditions
 {
-  v4 = a3;
-  v5 = [v4 itemDescriptions];
-  v6 = [(SFShareSheetSessionTestingSnapshot *)self itemDescriptions];
-  v7 = v5;
-  v8 = v6;
+  preconditionsCopy = preconditions;
+  itemDescriptions = [preconditionsCopy itemDescriptions];
+  itemDescriptions2 = [(SFShareSheetSessionTestingSnapshot *)self itemDescriptions];
+  v7 = itemDescriptions;
+  v8 = itemDescriptions2;
   v9 = v8;
   if (v7 == v8)
   {
@@ -796,7 +796,7 @@ LABEL_29:
   {
     v11 = 0;
     v14 = v8;
-    v13 = v7;
+    installedExtensions = v7;
 LABEL_16:
 
     goto LABEL_17;
@@ -808,17 +808,17 @@ LABEL_16:
   {
 LABEL_6:
     v12 = MEMORY[0x1E695DFD8];
-    v13 = [v4 installedExtensions];
-    v14 = [v12 setWithArray:v13];
+    installedExtensions = [preconditionsCopy installedExtensions];
+    v14 = [v12 setWithArray:installedExtensions];
     v15 = MEMORY[0x1E695DFD8];
-    v16 = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
-    v17 = [v15 setWithArray:v16];
+    installedExtensions2 = [(SFShareSheetSessionTestingSnapshot *)self installedExtensions];
+    v17 = [v15 setWithArray:installedExtensions2];
     if ([v14 isEqualToSet:v17])
     {
-      v18 = [v4 systemAppsAvailable];
-      v19 = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
-      v20 = v18;
-      v21 = v19;
+      systemAppsAvailable = [preconditionsCopy systemAppsAvailable];
+      systemAppsAvailable2 = [(SFShareSheetSessionTestingSnapshot *)self systemAppsAvailable];
+      v20 = systemAppsAvailable;
+      v21 = systemAppsAvailable2;
       v22 = v21;
       if (v20 == v21)
       {
@@ -852,36 +852,36 @@ LABEL_17:
 
 + (id)snapshotsDirectory
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 temporaryDirectory];
-  v4 = [v3 URLByAppendingPathComponent:@"ShareSheetTestingSnapshots" isDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v4 = [temporaryDirectory URLByAppendingPathComponent:@"ShareSheetTestingSnapshots" isDirectory:1];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager2 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v4;
 }
 
 - (id)filename
 {
-  v3 = [(SFShareSheetSessionTestingSnapshot *)self testName];
+  testName = [(SFShareSheetSessionTestingSnapshot *)self testName];
 
-  if (v3)
+  if (testName)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(SFShareSheetSessionTestingSnapshot *)self testName];
-    v6 = [v4 stringWithFormat:@"ShareSheetSnapshot-%@", v5];
+    testName2 = [(SFShareSheetSessionTestingSnapshot *)self testName];
+    v6 = [v4 stringWithFormat:@"ShareSheetSnapshot-%@", testName2];
   }
 
   else
   {
     v7 = +[SFShareSheetSessionTestingSnapshot dateFormatter];
-    v8 = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
-    v5 = [v7 stringFromDate:v8];
+    timestamp = [(SFShareSheetSessionTestingSnapshot *)self timestamp];
+    testName2 = [v7 stringFromDate:timestamp];
 
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
-    v6 = [v9 stringWithFormat:@"ShareSheetSnapshot-%@-%@", v10, v5];
+    applicationBundleID = [(SFShareSheetSessionTestingSnapshot *)self applicationBundleID];
+    v6 = [v9 stringWithFormat:@"ShareSheetSnapshot-%@-%@", applicationBundleID, testName2];
   }
 
   return v6;
@@ -889,27 +889,27 @@ LABEL_17:
 
 - (id)defaultURL
 {
-  v3 = [objc_opt_class() snapshotsDirectory];
-  v4 = [(SFShareSheetSessionTestingSnapshot *)self filename];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  snapshotsDirectory = [objc_opt_class() snapshotsDirectory];
+  filename = [(SFShareSheetSessionTestingSnapshot *)self filename];
+  v5 = [snapshotsDirectory URLByAppendingPathComponent:filename];
   v6 = [v5 URLByAppendingPathExtension:@"json"];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
     v10 = 1;
     do
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%d", v4, v10];
-      v12 = [v3 URLByAppendingPathComponent:v11];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%d", filename, v10];
+      v12 = [snapshotsDirectory URLByAppendingPathComponent:v11];
       v13 = [v12 URLByAppendingPathExtension:@"json"];
 
-      v14 = [MEMORY[0x1E696AC08] defaultManager];
-      v15 = [v13 path];
-      v16 = [v14 fileExistsAtPath:v15];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      path2 = [v13 path];
+      v16 = [defaultManager2 fileExistsAtPath:path2];
 
       v10 = (v10 + 1);
       v6 = v13;
@@ -952,21 +952,21 @@ void __51__SFShareSheetSessionTestingSnapshot_dateFormatter__block_invoke()
   [dateFormatter_formatter setTimeZone:v3];
 }
 
-+ (id)descriptionForItem:(id)a3
++ (id)descriptionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    if ([(__CFString *)v4 isFileURL])
+    registeredTypeIdentifiers = itemCopy;
+    if ([(__CFString *)registeredTypeIdentifiers isFileURL])
     {
-      [(__CFString *)v4 lastPathComponent];
+      [(__CFString *)registeredTypeIdentifiers lastPathComponent];
     }
 
     else
     {
-      [(__CFString *)v4 absoluteString];
+      [(__CFString *)registeredTypeIdentifiers absoluteString];
     }
     v5 = ;
     v10 = v5;
@@ -984,13 +984,13 @@ void __51__SFShareSheetSessionTestingSnapshot_dateFormatter__block_invoke()
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(__CFString *)v3 string];
+    string = [(__CFString *)itemCopy string];
 LABEL_6:
-    v4 = v6;
+    registeredTypeIdentifiers = string;
     v7 = &stru_1F1D30528;
-    if (v6)
+    if (string)
     {
-      v7 = v6;
+      v7 = string;
     }
 
     v8 = v7;
@@ -1001,9 +1001,9 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v13 = &stru_1F1D30528;
-    if (v3)
+    if (itemCopy)
     {
-      v13 = v3;
+      v13 = itemCopy;
     }
 
     v9 = v13;
@@ -1014,14 +1014,14 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(__CFString *)v3 registeredTypeIdentifiers];
-      if (![(__CFString *)v4 count])
+      registeredTypeIdentifiers = [(__CFString *)itemCopy registeredTypeIdentifiers];
+      if (![(__CFString *)registeredTypeIdentifiers count])
       {
         v9 = &stru_1F1D30528;
         goto LABEL_14;
       }
 
-      v8 = [(__CFString *)v4 componentsJoinedByString:@", "];
+      v8 = [(__CFString *)registeredTypeIdentifiers componentsJoinedByString:@", "];
 LABEL_9:
       v9 = v8;
 LABEL_14:
@@ -1052,7 +1052,7 @@ LABEL_14:
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         v14 = objc_opt_class();
-        v6 = NSStringFromClass(v14);
+        string = NSStringFromClass(v14);
         goto LABEL_6;
       }
     }
@@ -1065,16 +1065,16 @@ LABEL_15:
   return v9;
 }
 
-+ (id)_jsonifyItems:(id)a3
++ (id)_jsonifyItems:(id)items
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v7)
   {
@@ -1104,7 +1104,7 @@ LABEL_15:
 
           v17 = v16;
 
-          v18 = [a1 descriptionForItem:{v11, v23}];
+          v18 = [self descriptionForItem:{v11, v23}];
           v27[0] = @"type";
           v27[1] = @"description";
           v28[0] = v17;
@@ -1127,9 +1127,9 @@ LABEL_15:
   return v20;
 }
 
-- (id)modeKeyForCollaboration:(BOOL)a3
+- (id)modeKeyForCollaboration:(BOOL)collaboration
 {
-  if (a3)
+  if (collaboration)
   {
     return @"collaborate";
   }
@@ -1189,17 +1189,17 @@ LABEL_15:
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 nsExtensionAttributes];
-        v12 = [v11 objectForKeyedSubscript:@"NSExtensionActivationRule"];
+        nsExtensionAttributes = [v10 nsExtensionAttributes];
+        v12 = [nsExtensionAttributes objectForKeyedSubscript:@"NSExtensionActivationRule"];
 
         if (v12)
         {
           v32[0] = @"bundleIdentifier";
-          v13 = [v10 bundleIdentifier];
+          bundleIdentifier = [v10 bundleIdentifier];
           v32[1] = @"extensionPointIdentifier";
-          v33[0] = v13;
-          v14 = [v10 extensionPointIdentifier];
-          v33[1] = v14;
+          v33[0] = bundleIdentifier;
+          extensionPointIdentifier = [v10 extensionPointIdentifier];
+          v33[1] = extensionPointIdentifier;
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
 
           [v5 addObject:v15];
@@ -1251,8 +1251,8 @@ LABEL_15:
         v26 = 0;
         v12 = [v11 initWithBundleIdentifier:v10 allowPlaceholder:1 error:&v26];
         v25 = v26;
-        v13 = [v12 applicationState];
-        if ([v13 isInstalled])
+        applicationState = [v12 applicationState];
+        if ([applicationState isInstalled])
         {
           [v12 applicationState];
           v14 = v5;

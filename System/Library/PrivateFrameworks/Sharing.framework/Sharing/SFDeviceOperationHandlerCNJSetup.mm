@@ -1,7 +1,7 @@
 @interface SFDeviceOperationHandlerCNJSetup
 - (SFDeviceOperationHandlerCNJSetup)init;
-- (void)_handleCaptiveJoinRequestWithResponseHandler:(id)a3 reachabilityError:(id)a4;
-- (void)_runReachability:(id)a3 responseHandler:(id)a4;
+- (void)_handleCaptiveJoinRequestWithResponseHandler:(id)handler reachabilityError:(id)error;
+- (void)_runReachability:(id)reachability responseHandler:(id)handler;
 - (void)_updateCaptiveState;
 - (void)activate;
 - (void)invalidate;
@@ -164,10 +164,10 @@ void __46__SFDeviceOperationHandlerCNJSetup_invalidate__block_invoke(uint64_t a1
   }
 }
 
-- (void)_runReachability:(id)a3 responseHandler:(id)a4
+- (void)_runReachability:(id)reachability responseHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  reachabilityCopy = reachability;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceOperationCNJ <= 30 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCNJSetup _runReachability:responseHandler:];
@@ -180,7 +180,7 @@ void __46__SFDeviceOperationHandlerCNJSetup_invalidate__block_invoke(uint64_t a1
       [SFDeviceOperationHandlerCNJSetup _runReachability:responseHandler:];
     }
 
-    [(SFDeviceOperationHandlerCNJSetup *)self _handleCaptiveJoinRequestWithResponseHandler:v6];
+    [(SFDeviceOperationHandlerCNJSetup *)self _handleCaptiveJoinRequestWithResponseHandler:handlerCopy];
   }
 
   else
@@ -190,7 +190,7 @@ void __46__SFDeviceOperationHandlerCNJSetup_invalidate__block_invoke(uint64_t a1
       [SFDeviceOperationHandlerCNJSetup _runReachability:responseHandler:];
     }
 
-    v7 = _Block_copy(v6);
+    v7 = _Block_copy(handlerCopy);
     responseHandler = self->_responseHandler;
     self->_responseHandler = v7;
 
@@ -199,14 +199,14 @@ void __46__SFDeviceOperationHandlerCNJSetup_invalidate__block_invoke(uint64_t a1
       [SFDeviceOperationHandlerCNJSetup _runReachability:responseHandler:];
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
-- (void)_handleCaptiveJoinRequestWithResponseHandler:(id)a3 reachabilityError:(id)a4
+- (void)_handleCaptiveJoinRequestWithResponseHandler:(id)handler reachabilityError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  errorCopy = error;
   if (gLogCategory_SFDeviceOperationCNJ <= 30 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCNJSetup _handleCaptiveJoinRequestWithResponseHandler:reachabilityError:];
@@ -228,7 +228,7 @@ void __46__SFDeviceOperationHandlerCNJSetup_invalidate__block_invoke(uint64_t a1
   v15 = __99__SFDeviceOperationHandlerCNJSetup__handleCaptiveJoinRequestWithResponseHandler_reachabilityError___block_invoke_2;
   v16 = &unk_1E788FDC0;
   objc_copyWeak(&v18, &location);
-  v17 = self;
+  selfCopy = self;
   [(SKSetupCaptiveNetworkJoinServer *)self->_cnjServer setEventHandler:&v13];
   v10 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"A2A772B2-84C1-447A-B978-5793FF08E513" keyLength:32, v13, v14, v15, v16];
   if (v10)
@@ -237,19 +237,19 @@ void __46__SFDeviceOperationHandlerCNJSetup_invalidate__block_invoke(uint64_t a1
     [(SFSession *)self->_sfSession registerForExternalIO:self->_cnjServer];
     [(SKSetupCaptiveNetworkJoinServer *)self->_cnjServer activate];
     v11 = objc_opt_new();
-    if (v7)
+    if (errorCopy)
     {
-      v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+      v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
       [v11 setObject:v12 forKeyedSubscript:@"re"];
     }
 
-    (*(v6 + 2))(v6, 0, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
   }
 
   else
   {
     v11 = NSErrorWithOSStatusF();
-    (*(v6 + 2))(v6, v11, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v11, 0, 0);
   }
 
   objc_destroyWeak(&v18);

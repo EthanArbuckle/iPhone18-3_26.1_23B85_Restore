@@ -2,32 +2,32 @@
 - (void)fidelitySegmentChanged;
 - (void)handleAction;
 - (void)setupSubviews;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation FMPISDebugLocationPlatter
 
 - (void)setupSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100501360();
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v3 = self;
+  selfCopy = self;
   sub_10050182C();
 }
 
 - (void)fidelitySegmentChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100501568();
 }
 
 - (void)handleAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050172C();
 }
 

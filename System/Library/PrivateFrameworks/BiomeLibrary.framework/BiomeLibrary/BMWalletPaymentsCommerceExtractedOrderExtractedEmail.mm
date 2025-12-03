@@ -1,38 +1,38 @@
 @interface BMWalletPaymentsCommerceExtractedOrderExtractedEmail
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithEmailMetadata:(id)a3 emailType:(int)a4 spotlightUniqueIdentifier:(id)a5 spotlightDomainIdentifier:(id)a6;
-- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithEmailMetadata:(id)metadata emailType:(int)type spotlightUniqueIdentifier:(id)identifier spotlightDomainIdentifier:(id)domainIdentifier;
+- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWalletPaymentsCommerceExtractedOrderExtractedEmail
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
-    v7 = [v5 emailMetadata];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    emailMetadata = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
+    emailMetadata2 = [v5 emailMetadata];
+    v8 = emailMetadata2;
+    if (emailMetadata == emailMetadata2)
     {
     }
 
     else
     {
-      v9 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
-      v10 = [v5 emailMetadata];
-      v11 = [v9 isEqual:v10];
+      emailMetadata3 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
+      emailMetadata4 = [v5 emailMetadata];
+      v11 = [emailMetadata3 isEqual:emailMetadata4];
 
       if (!v11)
       {
@@ -40,21 +40,21 @@
       }
     }
 
-    v13 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailType];
-    if (v13 == [v5 emailType])
+    emailType = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailType];
+    if (emailType == [v5 emailType])
     {
-      v14 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
-      v15 = [v5 spotlightUniqueIdentifier];
-      v16 = v15;
-      if (v14 == v15)
+      spotlightUniqueIdentifier = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
+      spotlightUniqueIdentifier2 = [v5 spotlightUniqueIdentifier];
+      v16 = spotlightUniqueIdentifier2;
+      if (spotlightUniqueIdentifier == spotlightUniqueIdentifier2)
       {
       }
 
       else
       {
-        v17 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
-        v18 = [v5 spotlightUniqueIdentifier];
-        v19 = [v17 isEqual:v18];
+        spotlightUniqueIdentifier3 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
+        spotlightUniqueIdentifier4 = [v5 spotlightUniqueIdentifier];
+        v19 = [spotlightUniqueIdentifier3 isEqual:spotlightUniqueIdentifier4];
 
         if (!v19)
         {
@@ -62,18 +62,18 @@
         }
       }
 
-      v20 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
-      v21 = [v5 spotlightDomainIdentifier];
-      if (v20 == v21)
+      spotlightDomainIdentifier = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
+      spotlightDomainIdentifier2 = [v5 spotlightDomainIdentifier];
+      if (spotlightDomainIdentifier == spotlightDomainIdentifier2)
       {
         v12 = 1;
       }
 
       else
       {
-        v22 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
-        v23 = [v5 spotlightDomainIdentifier];
-        v12 = [v22 isEqual:v23];
+        spotlightDomainIdentifier3 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
+        spotlightDomainIdentifier4 = [v5 spotlightDomainIdentifier];
+        v12 = [spotlightDomainIdentifier3 isEqual:spotlightDomainIdentifier4];
       }
 
       goto LABEL_16;
@@ -95,48 +95,48 @@ LABEL_17:
 - (id)jsonDictionary
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
-  v4 = [v3 jsonDictionary];
+  emailMetadata = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
+  jsonDictionary = [emailMetadata jsonDictionary];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWalletPaymentsCommerceExtractedOrderExtractedEmail emailType](self, "emailType")}];
-  v6 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
-  v7 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
+  spotlightUniqueIdentifier = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
+  spotlightDomainIdentifier = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
   v15[0] = @"emailMetadata";
-  v8 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v8;
+  v16[0] = null;
   v15[1] = @"emailType";
-  v9 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v9;
+  v16[1] = null2;
   v15[2] = @"spotlightUniqueIdentifier";
-  v10 = v6;
-  if (!v6)
+  null3 = spotlightUniqueIdentifier;
+  if (!spotlightUniqueIdentifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v10;
+  v16[2] = null3;
   v15[3] = @"spotlightDomainIdentifier";
-  v11 = v7;
-  if (!v7)
+  null4 = spotlightDomainIdentifier;
+  if (!spotlightDomainIdentifier)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v11;
+  v16[3] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
-  if (v7)
+  if (spotlightDomainIdentifier)
   {
-    if (v6)
+    if (spotlightUniqueIdentifier)
     {
       goto LABEL_11;
     }
@@ -145,7 +145,7 @@ LABEL_17:
   else
   {
 
-    if (v6)
+    if (spotlightUniqueIdentifier)
     {
 LABEL_11:
       if (v5)
@@ -155,7 +155,7 @@ LABEL_11:
 
 LABEL_18:
 
-      if (v4)
+      if (jsonDictionary)
       {
         goto LABEL_13;
       }
@@ -170,7 +170,7 @@ LABEL_18:
   }
 
 LABEL_12:
-  if (v4)
+  if (jsonDictionary)
   {
     goto LABEL_13;
   }
@@ -183,11 +183,11 @@ LABEL_13:
   return v12;
 }
 
-- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"emailMetadata"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"emailMetadata"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -204,19 +204,19 @@ LABEL_13:
     if (v11)
     {
       v12 = v10;
-      if (a4)
+      if (error)
       {
         v11 = v11;
-        *a4 = v11;
+        *error = v11;
       }
 
       v13 = 0;
-      a4 = v12;
+      error = v12;
       goto LABEL_29;
     }
 
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"emailType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"emailType"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -230,7 +230,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v13 = 0;
             goto LABEL_28;
@@ -243,8 +243,8 @@ LABEL_4:
           v43 = v20;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
           v13 = 0;
-          *a4 = [v36 initWithDomain:v30 code:2 userInfo:v18];
-          a4 = 0;
+          *error = [v36 initWithDomain:v30 code:2 userInfo:v18];
+          error = 0;
 LABEL_27:
 
 LABEL_28:
@@ -263,24 +263,24 @@ LABEL_28:
     }
 
     v35 = v7;
-    v18 = [v6 objectForKeyedSubscript:@"spotlightUniqueIdentifier"];
-    v19 = self;
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"spotlightUniqueIdentifier"];
+    selfCopy = self;
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v20 = 0;
           v13 = 0;
-          a4 = v34;
+          error = v34;
           v7 = v35;
           goto LABEL_27;
         }
 
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v32 = a4;
+        errorCopy = error;
         v26 = *MEMORY[0x1E698F240];
         v40 = *MEMORY[0x1E696A578];
         v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"spotlightUniqueIdentifier"];
@@ -289,8 +289,8 @@ LABEL_28:
         v27 = [v25 initWithDomain:v26 code:2 userInfo:v21];
         v20 = 0;
         v13 = 0;
-        a4 = v34;
-        *v32 = v27;
+        error = v34;
+        *errorCopy = v27;
         goto LABEL_26;
       }
 
@@ -302,13 +302,13 @@ LABEL_28:
       v20 = 0;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"spotlightDomainIdentifier"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"spotlightDomainIdentifier"];
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v33 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -316,12 +316,12 @@ LABEL_28:
           v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"spotlightDomainIdentifier"];
           v39 = v28;
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-          *a4 = [v33 initWithDomain:v31 code:2 userInfo:v29];
+          *error = [v33 initWithDomain:v31 code:2 userInfo:v29];
         }
 
         v22 = 0;
         v13 = 0;
-        a4 = v34;
+        error = v34;
         goto LABEL_26;
       }
 
@@ -333,17 +333,17 @@ LABEL_28:
       v22 = 0;
     }
 
-    a4 = v34;
-    v13 = -[BMWalletPaymentsCommerceExtractedOrderExtractedEmail initWithEmailMetadata:emailType:spotlightUniqueIdentifier:spotlightDomainIdentifier:](v19, "initWithEmailMetadata:emailType:spotlightUniqueIdentifier:spotlightDomainIdentifier:", v8, [v34 intValue], v20, v22);
-    v19 = v13;
+    error = v34;
+    v13 = -[BMWalletPaymentsCommerceExtractedOrderExtractedEmail initWithEmailMetadata:emailType:spotlightUniqueIdentifier:spotlightDomainIdentifier:](selfCopy, "initWithEmailMetadata:emailType:spotlightUniqueIdentifier:spotlightDomainIdentifier:", v8, [v34 intValue], v20, v22);
+    selfCopy = v13;
 LABEL_26:
 
-    self = v19;
+    self = selfCopy;
     v7 = v35;
     goto LABEL_27;
   }
 
-  if (!a4)
+  if (!error)
   {
     v13 = 0;
     goto LABEL_30;
@@ -356,8 +356,8 @@ LABEL_26:
   v45[0] = v8;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
   v13 = 0;
-  *a4 = [v15 initWithDomain:v16 code:2 userInfo:v17];
-  a4 = v17;
+  *error = [v15 initWithDomain:v16 code:2 userInfo:v17];
+  error = v17;
 LABEL_29:
 
 LABEL_30:
@@ -369,18 +369,18 @@ LABEL_30:
 {
   v3 = objc_opt_new();
   [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_emailMetadata)
   {
     PBDataWriterPlaceMark();
-    [(BMWalletPaymentsCommerceOrderEmailEmailMetadata *)self->_emailMetadata writeTo:v4];
+    [(BMWalletPaymentsCommerceOrderEmailEmailMetadata *)self->_emailMetadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -397,9 +397,9 @@ LABEL_30:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMWalletPaymentsCommerceExtractedOrderExtractedEmail;
   v5 = [(BMEventBase *)&v31 init];
@@ -408,12 +408,12 @@ LABEL_30:
     goto LABEL_47;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -424,18 +424,18 @@ LABEL_30:
       while (1)
       {
         LOBYTE(v32[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v32[0] & 0x7F) << v7;
@@ -452,9 +452,9 @@ LABEL_30:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -498,7 +498,7 @@ LABEL_33:
           goto LABEL_46;
         }
 
-        v25 = [[BMWalletPaymentsCommerceOrderEmailEmailMetadata alloc] initByReadFrom:v4];
+        v25 = [[BMWalletPaymentsCommerceOrderEmailEmailMetadata alloc] initByReadFrom:fromCopy];
         if (!v25)
         {
           goto LABEL_46;
@@ -523,18 +523,18 @@ LABEL_33:
         while (1)
         {
           LOBYTE(v32[0]) = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v32[0] & 0x7F) << v16;
@@ -550,7 +550,7 @@ LABEL_33:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 8)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 8)
         {
 LABEL_42:
           LODWORD(v18) = 0;
@@ -560,13 +560,13 @@ LABEL_42:
       }
 
 LABEL_44:
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_46:
     v29 = 0;
@@ -584,30 +584,30 @@ LABEL_47:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
+  emailMetadata = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailMetadata];
   v5 = BMWalletPaymentsCommerceOrderEmailEmailTypeAsString([(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self emailType]);
-  v6 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
-  v7 = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
-  v8 = [v3 initWithFormat:@"BMWalletPaymentsCommerceExtractedOrderExtractedEmail with emailMetadata: %@, emailType: %@, spotlightUniqueIdentifier: %@, spotlightDomainIdentifier: %@", v4, v5, v6, v7];
+  spotlightUniqueIdentifier = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightUniqueIdentifier];
+  spotlightDomainIdentifier = [(BMWalletPaymentsCommerceExtractedOrderExtractedEmail *)self spotlightDomainIdentifier];
+  v8 = [v3 initWithFormat:@"BMWalletPaymentsCommerceExtractedOrderExtractedEmail with emailMetadata: %@, emailType: %@, spotlightUniqueIdentifier: %@, spotlightDomainIdentifier: %@", emailMetadata, v5, spotlightUniqueIdentifier, spotlightDomainIdentifier];
 
   return v8;
 }
 
-- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithEmailMetadata:(id)a3 emailType:(int)a4 spotlightUniqueIdentifier:(id)a5 spotlightDomainIdentifier:(id)a6
+- (BMWalletPaymentsCommerceExtractedOrderExtractedEmail)initWithEmailMetadata:(id)metadata emailType:(int)type spotlightUniqueIdentifier:(id)identifier spotlightDomainIdentifier:(id)domainIdentifier
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
   v16.receiver = self;
   v16.super_class = BMWalletPaymentsCommerceExtractedOrderExtractedEmail;
   v14 = [(BMEventBase *)&v16 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v14->_emailMetadata, a3);
-    v14->_emailType = a4;
-    objc_storeStrong(&v14->_spotlightUniqueIdentifier, a5);
-    objc_storeStrong(&v14->_spotlightDomainIdentifier, a6);
+    objc_storeStrong(&v14->_emailMetadata, metadata);
+    v14->_emailType = type;
+    objc_storeStrong(&v14->_spotlightUniqueIdentifier, identifier);
+    objc_storeStrong(&v14->_spotlightDomainIdentifier, domainIdentifier);
   }
 
   return v14;
@@ -659,9 +659,9 @@ id __63__BMWalletPaymentsCommerceExtractedOrderExtractedEmail_columns__block_inv
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -669,8 +669,8 @@ id __63__BMWalletPaymentsCommerceExtractedOrderExtractedEmail_columns__block_inv
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWalletPaymentsCommerceExtractedOrderExtractedEmail alloc] initByReadFrom:v7];
     v4 = v8;

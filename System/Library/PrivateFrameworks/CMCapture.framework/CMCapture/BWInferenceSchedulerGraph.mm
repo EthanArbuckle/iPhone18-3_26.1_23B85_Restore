@@ -1,22 +1,22 @@
 @interface BWInferenceSchedulerGraph
-- (BWInferenceSchedulerGraph)initWithHeadNode:(id)a3 directedEdges:(id)a4;
-- (void)_visitJob:(void *)a3 withEnRouteAccumulation:(uint64_t)a4 block:;
+- (BWInferenceSchedulerGraph)initWithHeadNode:(id)node directedEdges:(id)edges;
+- (void)_visitJob:(void *)job withEnRouteAccumulation:(uint64_t)accumulation block:;
 - (void)dealloc;
-- (void)enumerateVideoDestinationsFromJob:(id)a3 withBlock:(id)a4;
-- (void)visitProvidersWithBlock:(id)a3;
+- (void)enumerateVideoDestinationsFromJob:(id)job withBlock:(id)block;
+- (void)visitProvidersWithBlock:(id)block;
 @end
 
 @implementation BWInferenceSchedulerGraph
 
-- (BWInferenceSchedulerGraph)initWithHeadNode:(id)a3 directedEdges:(id)a4
+- (BWInferenceSchedulerGraph)initWithHeadNode:(id)node directedEdges:(id)edges
 {
   v8.receiver = self;
   v8.super_class = BWInferenceSchedulerGraph;
   v6 = [(BWInferenceSchedulerGraph *)&v8 init];
   if (v6)
   {
-    v6->_head = a3;
-    v6->_directedEdgesByNode = a4;
+    v6->_head = node;
+    v6->_directedEdgesByNode = edges;
   }
 
   return v6;
@@ -29,9 +29,9 @@
   [(BWInferenceSchedulerGraph *)&v3 dealloc];
 }
 
-- (void)enumerateVideoDestinationsFromJob:(id)a3 withBlock:(id)a4
+- (void)enumerateVideoDestinationsFromJob:(id)job withBlock:(id)block
 {
-  v5 = [(NSMapTable *)self->_directedEdgesByNode objectForKey:a3];
+  v5 = [(NSMapTable *)self->_directedEdgesByNode objectForKey:job];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -51,7 +51,7 @@
           objc_enumerationMutation(v5);
         }
 
-        (*(a4 + 2))(a4, **(*(&v11 + 1) + 8 * v9), *(*(*(&v11 + 1) + 8 * v9) + 16), *(*(*(&v11 + 1) + 8 * v9) + 24), *(*(*(&v11 + 1) + 8 * v9) + 8));
+        (*(block + 2))(block, **(*(&v11 + 1) + 8 * v9), *(*(*(&v11 + 1) + 8 * v9) + 16), *(*(*(&v11 + 1) + 8 * v9) + 24), *(*(*(&v11 + 1) + 8 * v9) + 8));
         ++v9;
       }
 
@@ -63,12 +63,12 @@
   }
 }
 
-- (void)_visitJob:(void *)a3 withEnRouteAccumulation:(uint64_t)a4 block:
+- (void)_visitJob:(void *)job withEnRouteAccumulation:(uint64_t)accumulation block:
 {
-  if (a1)
+  if (self)
   {
-    v17 = [a3 objectForKey:a2];
-    (*(a4 + 16))(a4, a2);
+    v17 = [job objectForKey:a2];
+    (*(accumulation + 16))(accumulation, a2);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -76,7 +76,7 @@
     v23[3] = &unk_1E7998908;
     v23[4] = v8;
     v9 = a2;
-    [a1 enumerateVideoDestinationsFromJob:a2 withBlock:v23];
+    [self enumerateVideoDestinationsFromJob:a2 withBlock:v23];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -97,16 +97,16 @@
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [a3 objectForKey:v15];
+          v16 = [job objectForKey:v15];
           if (!v16)
           {
             v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-            [a3 setObject:v16 forKey:v15];
+            [job setObject:v16 forKey:v15];
           }
 
           [v16 addObject:v9];
           [v16 addObjectsFromArray:{objc_msgSend(v17, "allObjects")}];
-          [(BWInferenceSchedulerGraph *)a1 _visitJob:v15 withEnRouteAccumulation:a3 block:a4];
+          [(BWInferenceSchedulerGraph *)self _visitJob:v15 withEnRouteAccumulation:job block:accumulation];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v19 objects:v18 count:16];
@@ -117,10 +117,10 @@
   }
 }
 
-- (void)visitProvidersWithBlock:(id)a3
+- (void)visitProvidersWithBlock:(id)block
 {
   v5 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:{-[NSMapTable count](self->_directedEdgesByNode, "count")}];
-  [(BWInferenceSchedulerGraph *)self _visitJob:v5 withEnRouteAccumulation:a3 block:?];
+  [(BWInferenceSchedulerGraph *)self _visitJob:v5 withEnRouteAccumulation:block block:?];
 }
 
 @end

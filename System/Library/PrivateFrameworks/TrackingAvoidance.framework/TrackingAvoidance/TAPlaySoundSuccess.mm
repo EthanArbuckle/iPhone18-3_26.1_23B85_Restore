@@ -1,21 +1,21 @@
 @interface TAPlaySoundSuccess
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TAPlaySoundSuccess)initWithCoder:(id)a3;
-- (TAPlaySoundSuccess)initWithUUID:(id)a3 address:(id)a4 successType:(unint64_t)a5 date:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TAPlaySoundSuccess)initWithCoder:(id)coder;
+- (TAPlaySoundSuccess)initWithUUID:(id)d address:(id)address successType:(unint64_t)type date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TAPlaySoundSuccess
 
-- (TAPlaySoundSuccess)initWithUUID:(id)a3 address:(id)a4 successType:(unint64_t)a5 date:(id)a6
+- (TAPlaySoundSuccess)initWithUUID:(id)d address:(id)address successType:(unint64_t)type date:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  addressCopy = address;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = TAPlaySoundSuccess;
   v14 = [(TAPlaySoundSuccess *)&v18 init];
@@ -26,12 +26,12 @@
   }
 
   v16 = 0;
-  if (v11 && v12 && v13)
+  if (dCopy && addressCopy && dateCopy)
   {
-    objc_storeStrong(&v14->_uuid, a3);
-    objc_storeStrong(&v15->_address, a4);
-    v15->_successType = a5;
-    objc_storeStrong(&v15->_date, a6);
+    objc_storeStrong(&v14->_uuid, d);
+    objc_storeStrong(&v15->_address, address);
+    v15->_successType = type;
+    objc_storeStrong(&v15->_date, date);
 LABEL_6:
     v16 = v15;
   }
@@ -39,10 +39,10 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -52,43 +52,43 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(TAPlaySoundSuccess *)self uuid];
-      v9 = [(TAPlaySoundSuccess *)v7 uuid];
-      if (v8 != v9)
+      v7 = equalCopy;
+      uuid = [(TAPlaySoundSuccess *)self uuid];
+      uuid2 = [(TAPlaySoundSuccess *)v7 uuid];
+      if (uuid != uuid2)
       {
-        v3 = [(TAPlaySoundSuccess *)self uuid];
-        v4 = [(TAPlaySoundSuccess *)v7 uuid];
-        if (![v3 isEqual:v4])
+        uuid3 = [(TAPlaySoundSuccess *)self uuid];
+        uuid4 = [(TAPlaySoundSuccess *)v7 uuid];
+        if (![uuid3 isEqual:uuid4])
         {
           v10 = 0;
           goto LABEL_21;
         }
       }
 
-      v11 = [(TAPlaySoundSuccess *)self address];
-      v12 = [(TAPlaySoundSuccess *)v7 address];
-      if (v11 != v12)
+      address = [(TAPlaySoundSuccess *)self address];
+      address2 = [(TAPlaySoundSuccess *)v7 address];
+      if (address != address2)
       {
-        v13 = [(TAPlaySoundSuccess *)self address];
-        v26 = [(TAPlaySoundSuccess *)v7 address];
-        if (![v13 isEqual:?])
+        address3 = [(TAPlaySoundSuccess *)self address];
+        address4 = [(TAPlaySoundSuccess *)v7 address];
+        if (![address3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_19;
         }
 
-        v25 = v13;
+        v25 = address3;
       }
 
-      v14 = [(TAPlaySoundSuccess *)self successType];
-      if (v14 == [(TAPlaySoundSuccess *)v7 successType])
+      successType = [(TAPlaySoundSuccess *)self successType];
+      if (successType == [(TAPlaySoundSuccess *)v7 successType])
       {
-        v24 = v4;
-        v15 = [(TAPlaySoundSuccess *)self date];
-        v16 = [(TAPlaySoundSuccess *)v7 date];
-        v17 = v16;
-        if (v15 == v16)
+        v24 = uuid4;
+        date = [(TAPlaySoundSuccess *)self date];
+        date2 = [(TAPlaySoundSuccess *)v7 date];
+        v17 = date2;
+        if (date == date2)
         {
 
           v10 = 1;
@@ -97,30 +97,30 @@ LABEL_6:
         else
         {
           [(TAPlaySoundSuccess *)self date];
-          v18 = v23 = v3;
+          v18 = v23 = uuid3;
           [(TAPlaySoundSuccess *)v7 date];
-          v19 = v22 = v15;
+          v19 = v22 = date;
           v10 = [v18 isEqual:v19];
 
-          v3 = v23;
+          uuid3 = v23;
         }
 
-        v20 = v11 == v12;
-        v4 = v24;
+        v20 = address == address2;
+        uuid4 = v24;
       }
 
       else
       {
         v10 = 0;
-        v20 = v11 == v12;
+        v20 = address == address2;
       }
 
-      v13 = v25;
+      address3 = v25;
       if (v20)
       {
 LABEL_20:
 
-        if (v8 == v9)
+        if (uuid == uuid2)
         {
 LABEL_22:
 
@@ -153,20 +153,20 @@ LABEL_23:
   v4 = NSStringFromClass(v3);
   v16[0] = v4;
   v15[1] = @"uuid";
-  v5 = [(TAPlaySoundSuccess *)self uuid];
-  v6 = [v5 UUIDString];
-  v16[1] = v6;
+  uuid = [(TAPlaySoundSuccess *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v16[1] = uUIDString;
   v15[2] = @"add";
-  v7 = [(TAPlaySoundSuccess *)self address];
-  v8 = [v7 hexString];
-  v16[2] = v8;
+  address = [(TAPlaySoundSuccess *)self address];
+  hexString = [address hexString];
+  v16[2] = hexString;
   v15[3] = @"type";
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TAPlaySoundSuccess successType](self, "successType")}];
   v16[3] = v9;
   v15[4] = @"date";
-  v10 = [(TAPlaySoundSuccess *)self date];
-  v11 = [v10 getDateString];
-  v16[4] = v11;
+  date = [(TAPlaySoundSuccess *)self date];
+  getDateString = [date getDateString];
+  v16[4] = getDateString;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:5];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -176,9 +176,9 @@ LABEL_23:
 
 - (NSString)description
 {
-  v3 = [(TAPlaySoundSuccess *)self descriptionDictionary];
+  descriptionDictionary = [(TAPlaySoundSuccess *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -188,20 +188,20 @@ LABEL_23:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TAPlaySoundSuccess alloc];
   uuid = self->_uuid;
@@ -212,34 +212,34 @@ LABEL_23:
   return [(TAPlaySoundSuccess *)v4 initWithUUID:uuid address:address successType:successType date:date];
 }
 
-- (TAPlaySoundSuccess)initWithCoder:(id)a3
+- (TAPlaySoundSuccess)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"add"];
-  v7 = [v4 decodeIntegerForKey:@"type"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"add"];
+  v7 = [coderCopy decodeIntegerForKey:@"type"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
 
   v9 = [(TAPlaySoundSuccess *)self initWithUUID:v5 address:v6 successType:v7 date:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_address forKey:@"add"];
-  [v5 encodeInteger:self->_successType forKey:@"type"];
-  [v5 encodeObject:self->_date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_address forKey:@"add"];
+  [coderCopy encodeInteger:self->_successType forKey:@"type"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }

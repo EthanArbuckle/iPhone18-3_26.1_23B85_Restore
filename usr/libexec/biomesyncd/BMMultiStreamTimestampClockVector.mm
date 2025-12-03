@@ -1,12 +1,12 @@
 @interface BMMultiStreamTimestampClockVector
-+ (id)deserialize:(id)a3 error:(id *)a4;
++ (id)deserialize:(id)deserialize error:(id *)error;
 - (BMMultiStreamTimestampClockVector)init;
-- (BMMultiStreamTimestampClockVector)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMMultiStreamTimestampClockVector)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)timestampClockVectorForStreamIdentifier:(id)a3;
+- (id)timestampClockVectorForStreamIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)setVectorClockTo:(id)a3 forStreamIdentifier:(id)a4;
+- (void)setVectorClockTo:(id)to forStreamIdentifier:(id)identifier;
 @end
 
 @implementation BMMultiStreamTimestampClockVector
@@ -26,20 +26,20 @@
   return v2;
 }
 
-- (void)setVectorClockTo:(id)a3 forStreamIdentifier:(id)a4
+- (void)setVectorClockTo:(id)to forStreamIdentifier:(id)identifier
 {
-  if (a3)
+  if (to)
   {
-    if (a4)
+    if (identifier)
     {
       [NSMutableDictionary setValue:"setValue:forKey:" forKey:?];
     }
   }
 }
 
-- (id)timestampClockVectorForStreamIdentifier:(id)a3
+- (id)timestampClockVectorForStreamIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSMutableDictionary *)self->_vectorClock objectForKey:?];
   }
@@ -64,8 +64,8 @@
 - (unint64_t)hash
 {
   v3 = [NSOrderedSet alloc];
-  v4 = [(BMMultiStreamTimestampClockVector *)self allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(BMMultiStreamTimestampClockVector *)self allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   v18 = 0u;
   v19 = 0u;
@@ -107,19 +107,19 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [NSSet alloc];
-    v6 = [(BMMultiStreamTimestampClockVector *)self allKeys];
-    v7 = [v5 initWithArray:v6];
+    allKeys = [(BMMultiStreamTimestampClockVector *)self allKeys];
+    v7 = [v5 initWithArray:allKeys];
 
     v8 = [NSSet alloc];
-    v9 = [v4 allKeys];
-    v10 = [v8 initWithArray:v9];
+    allKeys2 = [equalCopy allKeys];
+    v10 = [v8 initWithArray:allKeys2];
 
     if ([v7 isEqual:v10])
     {
@@ -145,7 +145,7 @@
 
             v16 = *(*(&v23 + 1) + 8 * i);
             v17 = [(BMMultiStreamTimestampClockVector *)self timestampClockVectorForStreamIdentifier:v16];
-            v18 = [v4 timestampClockVectorForStreamIdentifier:v16];
+            v18 = [equalCopy timestampClockVectorForStreamIdentifier:v16];
             v19 = [v17 compareToVector:v18];
 
             if (v19)
@@ -189,9 +189,9 @@ LABEL_15:
   return v20;
 }
 
-- (BMMultiStreamTimestampClockVector)initWithCoder:(id)a3
+- (BMMultiStreamTimestampClockVector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = BMMultiStreamTimestampClockVector;
   v5 = [(BMMultiStreamTimestampClockVector *)&v12 init];
@@ -202,7 +202,7 @@ LABEL_15:
     v13[2] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v13 count:3];
     v7 = [NSSet setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"vectorClock"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"vectorClock"];
     v9 = [v8 mutableCopy];
     vectorClock = v5->_vectorClock;
     v5->_vectorClock = v9;
@@ -211,12 +211,12 @@ LABEL_15:
   return v5;
 }
 
-+ (id)deserialize:(id)a3 error:(id *)a4
++ (id)deserialize:(id)deserialize error:(id *)error
 {
-  if (a3)
+  if (deserialize)
   {
-    v5 = a3;
-    v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:a4];
+    deserializeCopy = deserialize;
+    v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:deserializeCopy error:error];
   }
 
   else

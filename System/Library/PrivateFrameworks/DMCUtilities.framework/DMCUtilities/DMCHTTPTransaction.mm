@@ -1,26 +1,26 @@
 @interface DMCHTTPTransaction
-- (BOOL)_shouldAllowTrust:(__SecTrust *)a3 forHost:(id)a4;
-- (BOOL)_shouldAllowTrustWithPinning:(__SecTrust *)a3 forHost:(id)a4;
-- (DMCHTTPTransaction)initWithURL:(id)a3 method:(id)a4;
-- (DMCHTTPTransaction)initWithURL:(id)a3 method:(id)a4 downloadURL:(id)a5;
+- (BOOL)_shouldAllowTrust:(__SecTrust *)trust forHost:(id)host;
+- (BOOL)_shouldAllowTrustWithPinning:(__SecTrust *)pinning forHost:(id)host;
+- (DMCHTTPTransaction)initWithURL:(id)l method:(id)method;
+- (DMCHTTPTransaction)initWithURL:(id)l method:(id)method downloadURL:(id)rL;
 - (__SecIdentity)copyIdentity;
-- (id)_constructRequestOutError:(id *)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)_beginDataTaskWithSessionConfiguration:(id)a3 request:(id)a4;
-- (void)_beginDownloadTaskWithSessionConfiguration:(id)a3 request:(id)a4;
+- (id)_constructRequestOutError:(id *)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)_beginDataTaskWithSessionConfiguration:(id)configuration request:(id)request;
+- (void)_beginDownloadTaskWithSessionConfiguration:(id)configuration request:(id)request;
 - (void)_beginTransaction;
 - (void)_completeTransaction;
 - (void)_simulateTransaction;
-- (void)addHeaderKey:(id)a3 value:(id)a4;
+- (void)addHeaderKey:(id)key value:(id)value;
 - (void)dealloc;
-- (void)performCompletionBlock:(id)a3;
+- (void)performCompletionBlock:(id)block;
 - (void)performSynchronously;
-- (void)setIdentity:(__SecIdentity *)a3;
+- (void)setIdentity:(__SecIdentity *)identity;
 @end
 
 @implementation DMCHTTPTransaction
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (void)setIdentity:(__SecIdentity *)a3
+- (void)setIdentity:(__SecIdentity *)identity
 {
   identity = self->_identity;
   if (identity)
@@ -45,26 +45,26 @@
     CFRelease(identity);
   }
 
-  self->_identity = a3;
-  if (a3)
+  self->_identity = identity;
+  if (identity)
   {
 
-    CFRetain(a3);
+    CFRetain(identity);
   }
 }
 
-- (DMCHTTPTransaction)initWithURL:(id)a3 method:(id)a4
+- (DMCHTTPTransaction)initWithURL:(id)l method:(id)method
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  methodCopy = method;
   v14.receiver = self;
   v14.super_class = DMCHTTPTransaction;
   v9 = [(DMCHTTPTransaction *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestURL, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_requestURL, l);
+    v11 = [methodCopy copy];
     method = v10->_method;
     v10->_method = v11;
 
@@ -75,14 +75,14 @@
   return v10;
 }
 
-- (DMCHTTPTransaction)initWithURL:(id)a3 method:(id)a4 downloadURL:(id)a5
+- (DMCHTTPTransaction)initWithURL:(id)l method:(id)method downloadURL:(id)rL
 {
-  v9 = a5;
-  v10 = [(DMCHTTPTransaction *)self initWithURL:a3 method:a4];
+  rLCopy = rL;
+  v10 = [(DMCHTTPTransaction *)self initWithURL:l method:method];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_downloadURL, a5);
+    objc_storeStrong(&v10->_downloadURL, rL);
   }
 
   return v11;
@@ -101,10 +101,10 @@
   [(DMCHTTPTransaction *)&v4 dealloc];
 }
 
-- (void)addHeaderKey:(id)a3 value:(id)a4
+- (void)addHeaderKey:(id)key value:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  keyCopy = key;
+  valueCopy = value;
   headers = self->_headers;
   if (!headers)
   {
@@ -115,10 +115,10 @@
     headers = self->_headers;
   }
 
-  [(NSMutableDictionary *)headers setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)headers setObject:valueCopy forKeyedSubscript:keyCopy];
 }
 
-- (id)_constructRequestOutError:(id *)a3
+- (id)_constructRequestOutError:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AD68] requestWithURL:self->_requestURL cachePolicy:4 timeoutInterval:self->_timeout];
@@ -145,7 +145,7 @@
     v41 = *MEMORY[0x1E697AFB0];
     v42[0] = MEMORY[0x1E695E118];
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-    v9 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     identity = self->_identity;
     data = self->_data;
     v12 = SecCMSCreateSignedData();
@@ -163,7 +163,7 @@
 
     else
     {
-      v15 = [v9 base64EncodedStringWithOptions:0];
+      v15 = [data base64EncodedStringWithOptions:0];
       [v5 addValue:v15 forHTTPHeaderField:self->_CMSSignatureHeaderName];
     }
   }
@@ -202,16 +202,16 @@
     }
   }
 
-  v24 = [(DMCHTTPTransaction *)self authenticator];
+  authenticator = [(DMCHTTPTransaction *)self authenticator];
 
-  if (!v24)
+  if (!authenticator)
   {
     goto LABEL_29;
   }
 
-  v25 = [(DMCHTTPTransaction *)self authenticator];
+  authenticator2 = [(DMCHTTPTransaction *)self authenticator];
   v33 = 0;
-  v26 = [v25 authenticateRequest:v5 error:&v33];
+  v26 = [authenticator2 authenticateRequest:v5 error:&v33];
   v27 = v33;
 
   if (v26)
@@ -236,10 +236,10 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (a3)
+  if (error)
   {
     v32 = v27;
-    *a3 = v27;
+    *error = v27;
   }
 
   v29 = 0;
@@ -259,18 +259,18 @@ LABEL_30:
   if (v3)
   {
     self->_rememberData = 0;
-    v6 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-    [v6 setTLSMinimumSupportedProtocolVersion:771];
-    v7 = [(DMCHTTPTransaction *)self downloadURL];
+    ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration setTLSMinimumSupportedProtocolVersion:771];
+    downloadURL = [(DMCHTTPTransaction *)self downloadURL];
 
-    if (v7)
+    if (downloadURL)
     {
-      [(DMCHTTPTransaction *)self _beginDownloadTaskWithSessionConfiguration:v6 request:v3];
+      [(DMCHTTPTransaction *)self _beginDownloadTaskWithSessionConfiguration:ephemeralSessionConfiguration request:v3];
     }
 
     else
     {
-      [(DMCHTTPTransaction *)self _beginDataTaskWithSessionConfiguration:v6 request:v3];
+      [(DMCHTTPTransaction *)self _beginDataTaskWithSessionConfiguration:ephemeralSessionConfiguration request:v3];
     }
   }
 
@@ -281,22 +281,22 @@ LABEL_30:
   }
 }
 
-- (void)_beginDataTaskWithSessionConfiguration:(id)a3 request:(id)a4
+- (void)_beginDataTaskWithSessionConfiguration:(id)configuration request:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AF78];
-  v7 = a4;
-  v8 = [v6 sessionWithConfiguration:a3 delegate:self delegateQueue:0];
+  requestCopy = request;
+  v8 = [v6 sessionWithConfiguration:configuration delegate:self delegateQueue:0];
   session = self->_session;
   self->_session = v8;
 
-  v10 = [(NSURLSession *)self->_session dataTaskWithRequest:v7];
+  v10 = [(NSURLSession *)self->_session dataTaskWithRequest:requestCopy];
 
-  v11 = [(DMCHTTPTransaction *)self authenticator];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  authenticator = [(DMCHTTPTransaction *)self authenticator];
+  LOBYTE(requestCopy) = objc_opt_respondsToSelector();
 
   v12 = 0;
-  if ((v7 & 1) != 0 && (-[DMCHTTPTransaction authenticator](self, "authenticator"), v13 = objc_claimAutoreleasedReturnValue(), v18 = 0, v14 = [v13 prepareTask:v10 error:&v18], v15 = v18, v12 = v18, v13, (v14 & 1) == 0))
+  if ((requestCopy & 1) != 0 && (-[DMCHTTPTransaction authenticator](self, "authenticator"), v13 = objc_claimAutoreleasedReturnValue(), v18 = 0, v14 = [v13 prepareTask:v10 error:&v18], v15 = v18, v12 = v18, v13, (v14 & 1) == 0))
   {
     v16 = *DMCLogObjects();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -319,22 +319,22 @@ LABEL_30:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_beginDownloadTaskWithSessionConfiguration:(id)a3 request:(id)a4
+- (void)_beginDownloadTaskWithSessionConfiguration:(id)configuration request:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AF78];
-  v7 = a4;
-  v8 = [v6 sessionWithConfiguration:a3 delegate:self delegateQueue:0];
+  requestCopy = request;
+  v8 = [v6 sessionWithConfiguration:configuration delegate:self delegateQueue:0];
   session = self->_session;
   self->_session = v8;
 
-  v10 = [(NSURLSession *)self->_session downloadTaskWithRequest:v7];
+  v10 = [(NSURLSession *)self->_session downloadTaskWithRequest:requestCopy];
 
-  v11 = [(DMCHTTPTransaction *)self authenticator];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  authenticator = [(DMCHTTPTransaction *)self authenticator];
+  LOBYTE(requestCopy) = objc_opt_respondsToSelector();
 
   v12 = 0;
-  if ((v7 & 1) != 0 && (-[DMCHTTPTransaction authenticator](self, "authenticator"), v13 = objc_claimAutoreleasedReturnValue(), v18 = 0, v14 = [v13 prepareTask:v10 error:&v18], v15 = v18, v12 = v18, v13, (v14 & 1) == 0))
+  if ((requestCopy & 1) != 0 && (-[DMCHTTPTransaction authenticator](self, "authenticator"), v13 = objc_claimAutoreleasedReturnValue(), v18 = 0, v14 = [v13 prepareTask:v10 error:&v18], v15 = v18, v12 = v18, v13, (v14 & 1) == 0))
   {
     v16 = *DMCLogObjects();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -367,10 +367,10 @@ LABEL_30:
     _os_log_impl(&dword_1B1630000, v3, OS_LOG_TYPE_INFO, "Simulating transaction with transaction block", buf, 2u);
   }
 
-  v4 = [(DMCHTTPTransaction *)self simulatedTransactionBlock];
+  simulatedTransactionBlock = [(DMCHTTPTransaction *)self simulatedTransactionBlock];
   v11 = 0;
   v12 = 0;
-  (v4)[2](v4, &v14, &v12, &v11);
+  (simulatedTransactionBlock)[2](simulatedTransactionBlock, &v14, &v12, &v11);
   v5 = v12;
   v6 = v11;
 
@@ -419,10 +419,10 @@ LABEL_30:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performCompletionBlock:(id)a3
+- (void)performCompletionBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -445,8 +445,8 @@ LABEL_30:
   v16[2] = __45__DMCHTTPTransaction_performCompletionBlock___block_invoke;
   v16[3] = &unk_1E7ADC950;
   v16[4] = self;
-  v17 = v4;
-  v10 = v4;
+  v17 = blockCopy;
+  v10 = blockCopy;
   v11 = MEMORY[0x1B2731A20](v16);
   transactionCompletionBlock = self->_transactionCompletionBlock;
   self->_transactionCompletionBlock = v11;
@@ -511,30 +511,30 @@ uint64_t __45__DMCHTTPTransaction_performCompletionBlock___block_invoke_14(uint6
 
 - (void)_completeTransaction
 {
-  v3 = [(DMCHTTPTransaction *)self transactionCompletionBlock];
+  transactionCompletionBlock = [(DMCHTTPTransaction *)self transactionCompletionBlock];
 
-  if (v3)
+  if (transactionCompletionBlock)
   {
-    v4 = [(DMCHTTPTransaction *)self transactionCompletionBlock];
-    v4[2]();
+    transactionCompletionBlock2 = [(DMCHTTPTransaction *)self transactionCompletionBlock];
+    transactionCompletionBlock2[2]();
 
     [(DMCHTTPTransaction *)self setTransactionCompletionBlock:0];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a7;
-  v12 = a5;
-  self->_statusCode = [v12 statusCode];
-  v13 = [v12 allHeaderFields];
+  requestCopy = request;
+  handlerCopy = handler;
+  redirectionCopy = redirection;
+  self->_statusCode = [redirectionCopy statusCode];
+  allHeaderFields = [redirectionCopy allHeaderFields];
 
   responseHeaders = self->_responseHeaders;
-  self->_responseHeaders = v13;
+  self->_responseHeaders = allHeaderFields;
 
-  v15 = [v10 URL];
+  v15 = [requestCopy URL];
   v16 = [v15 copy];
   currentURL = self->_currentURL;
   self->_currentURL = v16;
@@ -565,32 +565,32 @@ uint64_t __45__DMCHTTPTransaction_performCompletionBlock___block_invoke_14(uint6
     _os_log_impl(&dword_1B1630000, v19, OS_LOG_TYPE_DEFAULT, "Redirected to URL: %{public}@", &v26, 0xCu);
   }
 
-  v11[2](v11, v10);
+  handlerCopy[2](handlerCopy, requestCopy);
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldAllowTrust:(__SecTrust *)a3 forHost:(id)a4
+- (BOOL)_shouldAllowTrust:(__SecTrust *)trust forHost:(id)host
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  hostCopy = host;
+  if (trust)
   {
-    if (SecTrustGetCertificateCount(a3) < 1)
+    if (SecTrustGetCertificateCount(trust) < 1)
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(trust) = 0;
     }
 
     else if ([(NSArray *)self->_pinnedSecCertificateRefs count])
     {
-      LOBYTE(a3) = [(DMCHTTPTransaction *)self _shouldAllowTrustWithPinning:a3 forHost:v6];
+      LOBYTE(trust) = [(DMCHTTPTransaction *)self _shouldAllowTrustWithPinning:trust forHost:hostCopy];
     }
 
     else
     {
       error = 0;
-      LODWORD(a3) = SecTrustEvaluateWithError(a3, &error);
-      if ((a3 & 1) == 0)
+      LODWORD(trust) = SecTrustEvaluateWithError(trust, &error);
+      if ((trust & 1) == 0)
       {
         CFRelease(error);
       }
@@ -599,9 +599,9 @@ uint64_t __45__DMCHTTPTransaction_performCompletionBlock___block_invoke_14(uint6
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v8 = v7;
-        v9 = DMCStringForBool(a3);
+        v9 = DMCStringForBool(trust);
         *buf = 138543618;
-        v14 = v6;
+        v14 = hostCopy;
         v15 = 2114;
         v16 = v9;
         _os_log_impl(&dword_1B1630000, v8, OS_LOG_TYPE_DEBUG, "Evaluating trust for host: %{public}@ result: %{public}@", buf, 0x16u);
@@ -610,16 +610,16 @@ uint64_t __45__DMCHTTPTransaction_performCompletionBlock___block_invoke_14(uint6
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return a3;
+  return trust;
 }
 
-- (BOOL)_shouldAllowTrustWithPinning:(__SecTrust *)a3 forHost:(id)a4
+- (BOOL)_shouldAllowTrustWithPinning:(__SecTrust *)pinning forHost:(id)host
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  hostCopy = host;
   cf = 0;
   *v26 = 0;
-  if (!a3)
+  if (!pinning)
   {
     goto LABEL_18;
   }
@@ -645,7 +645,7 @@ uint64_t __45__DMCHTTPTransaction_performCompletionBlock___block_invoke_14(uint6
     {
       v10 = v9;
       CFRelease(v8);
-      SSL = SecPolicyCreateSSL(1u, v6);
+      SSL = SecPolicyCreateSSL(1u, hostCopy);
       v12 = [MEMORY[0x1E695DF70] arrayWithObject:SSL];
 
       if (self->_pinningRevocationCheckRequired)
@@ -660,7 +660,7 @@ uint64_t __45__DMCHTTPTransaction_performCompletionBlock___block_invoke_14(uint6
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *v26 = 138543362;
-          *&v26[4] = v6;
+          *&v26[4] = hostCopy;
           v15 = "Failed to set policies when evaluating pinning trust for host %{public}@";
 LABEL_25:
           _os_log_impl(&dword_1B1630000, v14, OS_LOG_TYPE_ERROR, v15, v26, 0xCu);
@@ -679,7 +679,7 @@ LABEL_25:
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
               *v26 = 138543618;
-              *&v26[4] = v6;
+              *&v26[4] = hostCopy;
               v27 = 2114;
               v28 = cf;
               _os_log_impl(&dword_1B1630000, v23, OS_LOG_TYPE_ERROR, "Evaluating pinned trust for host %{public}@ failed with error %{public}@", v26, 0x16u);
@@ -693,7 +693,7 @@ LABEL_25:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *v26 = 138543362;
-          *&v26[4] = v6;
+          *&v26[4] = hostCopy;
           v15 = "Failed to set anchors when evaluating pinning trust for host %{public}@";
           goto LABEL_25;
         }
@@ -738,7 +738,7 @@ LABEL_18:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     *v26 = 138543362;
-    *&v26[4] = v6;
+    *&v26[4] = hostCopy;
     _os_log_impl(&dword_1B1630000, v19, OS_LOG_TYPE_ERROR, "Failed to copy trust when evaluating pinning trust for host %{public}@", v26, 0xCu);
   }
 
@@ -749,27 +749,27 @@ LABEL_21:
   return v20;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = [a5 protectionSpace];
-  v10 = [v9 authenticationMethod];
+  handlerCopy = handler;
+  protectionSpace = [challenge protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
   v11 = *DMCLogObjects();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    *&buf[4] = v10;
+    *&buf[4] = authenticationMethod;
     _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_DEBUG, "Handling challenge: %{public}@", buf, 0xCu);
   }
 
-  if ([v10 isEqualToString:*MEMORY[0x1E696A968]])
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E696A968]])
   {
-    v12 = [v9 serverTrust];
-    v13 = [v9 host];
-    LOBYTE(v12) = [(DMCHTTPTransaction *)self _shouldAllowTrust:v12 forHost:v13];
+    serverTrust = [protectionSpace serverTrust];
+    host = [protectionSpace host];
+    LOBYTE(serverTrust) = [(DMCHTTPTransaction *)self _shouldAllowTrust:serverTrust forHost:host];
 
-    if ((v12 & 1) == 0)
+    if ((serverTrust & 1) == 0)
     {
       if (!self->_error)
       {
@@ -787,14 +787,14 @@ LABEL_21:
         _os_log_impl(&dword_1B1630000, v25, OS_LOG_TYPE_DEBUG, "NOT sending client identity certificate", buf, 2u);
       }
 
-      v8[2](v8, 2, 0);
+      handlerCopy[2](handlerCopy, 2, 0);
       goto LABEL_22;
     }
   }
 
-  else if (([v10 isEqualToString:*MEMORY[0x1E696A940]] & 1) == 0)
+  else if (([authenticationMethod isEqualToString:*MEMORY[0x1E696A940]] & 1) == 0)
   {
-    v8[2](v8, 3, 0);
+    handlerCopy[2](handlerCopy, 3, 0);
     goto LABEL_22;
   }
 
@@ -820,7 +820,7 @@ LABEL_21:
           _os_log_impl(&dword_1B1630000, v40, OS_LOG_TYPE_ERROR, "Ignoring request for client identity and performing default handling", v42, 2u);
         }
 
-        v8[2](v8, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
       }
 
       else
@@ -832,7 +832,7 @@ LABEL_21:
         }
 
         v41 = [MEMORY[0x1E696AF30] credentialWithIdentity:self->_identity certificates:0 persistence:1];
-        (v8)[2](v8, 0, v41);
+        (handlerCopy)[2](handlerCopy, 0, v41);
       }
     }
 
@@ -847,7 +847,7 @@ LABEL_21:
         self->_error = v36;
       }
 
-      v8[2](v8, 2, 0);
+      handlerCopy[2](handlerCopy, 2, 0);
     }
 
     if (*buf)
@@ -858,7 +858,7 @@ LABEL_21:
 
   else
   {
-    v8[2](v8, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
 LABEL_22:
@@ -866,26 +866,26 @@ LABEL_22:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 originalRequest];
-  v10 = [v8 response];
+  errorCopy = error;
+  taskCopy = task;
+  originalRequest = [taskCopy originalRequest];
+  response = [taskCopy response];
 
-  [DMCHTTPLog logHTTPDetailsForIdentifier:@"Logs" request:v9 response:v10 responseData:self->_responseData responseError:v7];
-  if (v7)
+  [DMCHTTPLog logHTTPDetailsForIdentifier:@"Logs" request:originalRequest response:response responseData:self->_responseData responseError:errorCopy];
+  if (errorCopy)
   {
     if (!self->_error)
     {
       v11 = MEMORY[0x1E696ABC0];
-      v12 = [v7 domain];
-      v13 = [v7 code];
-      v14 = [v7 localizedDescription];
-      v50[0] = v14;
+      domain = [errorCopy domain];
+      code = [errorCopy code];
+      localizedDescription = [errorCopy localizedDescription];
+      v50[0] = localizedDescription;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
-      v16 = [v11 DMCErrorWithDomain:v12 code:v13 descriptionArray:v15 errorType:@"DMCRetryableError"];
+      v16 = [v11 DMCErrorWithDomain:domain code:code descriptionArray:v15 errorType:@"DMCRetryableError"];
       error = self->_error;
       self->_error = v16;
     }
@@ -896,11 +896,11 @@ LABEL_22:
       currentURL = self->_currentURL;
       v20 = self->_error;
       v21 = v18;
-      v22 = [(NSError *)v20 DMCVerboseDescription];
+      dMCVerboseDescription = [(NSError *)v20 DMCVerboseDescription];
       *buf = 138543618;
       v47 = currentURL;
       v48 = 2114;
-      v49 = v22;
+      v49 = dMCVerboseDescription;
       _os_log_impl(&dword_1B1630000, v21, OS_LOG_TYPE_ERROR, "Connection to %{public}@ failed with error: %{public}@", buf, 0x16u);
     }
 
@@ -967,16 +967,16 @@ LABEL_17:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = a5;
-  self->_statusCode = [v9 statusCode];
-  v10 = [v9 allHeaderFields];
+  handlerCopy = handler;
+  responseCopy = response;
+  self->_statusCode = [responseCopy statusCode];
+  allHeaderFields = [responseCopy allHeaderFields];
 
   responseHeaders = self->_responseHeaders;
-  self->_responseHeaders = v10;
+  self->_responseHeaders = allHeaderFields;
 
   v12 = *DMCLogObjects();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1004,28 +1004,28 @@ LABEL_17:
     self->_error = v25;
   }
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   if (self->_rememberData)
   {
-    [(NSMutableData *)self->_responseData appendData:a5, a4];
+    [(NSMutableData *)self->_responseData appendData:data, task];
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a4 response];
-  self->_statusCode = [v8 statusCode];
-  v9 = [v8 allHeaderFields];
+  lCopy = l;
+  response = [task response];
+  self->_statusCode = [response statusCode];
+  allHeaderFields = [response allHeaderFields];
   responseHeaders = self->_responseHeaders;
-  self->_responseHeaders = v9;
+  self->_responseHeaders = allHeaderFields;
 
   v11 = *DMCLogObjects();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1036,10 +1036,10 @@ LABEL_17:
     _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_DEBUG, "Received response status code: %d", buf, 8u);
   }
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [(DMCHTTPTransaction *)self downloadURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  downloadURL = [(DMCHTTPTransaction *)self downloadURL];
   v44 = 0;
-  v15 = [v13 removeItemAtURL:v14 error:&v44];
+  v15 = [defaultManager removeItemAtURL:downloadURL error:&v44];
   v16 = v44;
   v17 = v44;
 
@@ -1049,28 +1049,28 @@ LABEL_17:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       v19 = v18;
-      v20 = [(DMCHTTPTransaction *)self downloadURL];
-      v21 = [v20 path];
+      downloadURL2 = [(DMCHTTPTransaction *)self downloadURL];
+      path = [downloadURL2 path];
       *buf = 138543362;
-      v46 = v21;
+      v46 = path;
       _os_log_impl(&dword_1B1630000, v19, OS_LOG_TYPE_DEBUG, "Removed existing downloaded data file at %{public}@", buf, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v22 = [v17 domain];
-  if ([v22 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [v17 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v23 = [v17 code];
+    code = [v17 code];
 
-    if (v23 == 4)
+    if (code == 4)
     {
 LABEL_8:
-      v24 = [MEMORY[0x1E696AC08] defaultManager];
-      v25 = [(DMCHTTPTransaction *)self downloadURL];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      downloadURL3 = [(DMCHTTPTransaction *)self downloadURL];
       v43 = v17;
-      v26 = [v24 moveItemAtURL:v7 toURL:v25 error:&v43];
+      v26 = [defaultManager2 moveItemAtURL:lCopy toURL:downloadURL3 error:&v43];
       v27 = v43;
       v28 = v43;
 
@@ -1080,13 +1080,13 @@ LABEL_8:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
           v30 = v29;
-          v31 = [v7 path];
-          v32 = [(DMCHTTPTransaction *)self downloadURL];
-          v33 = [v32 path];
+          path2 = [lCopy path];
+          downloadURL4 = [(DMCHTTPTransaction *)self downloadURL];
+          path3 = [downloadURL4 path];
           *buf = 138543618;
-          v46 = v31;
+          v46 = path2;
           v47 = 2114;
-          v48 = v33;
+          v48 = path3;
           _os_log_impl(&dword_1B1630000, v30, OS_LOG_TYPE_DEBUG, "Moved downloaded data file at %{public}@, to %{public}@", buf, 0x16u);
         }
       }
@@ -1096,13 +1096,13 @@ LABEL_8:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
           v34 = v29;
-          v35 = [v7 path];
-          v36 = [(DMCHTTPTransaction *)self downloadURL];
-          v37 = [v36 path];
+          path4 = [lCopy path];
+          downloadURL5 = [(DMCHTTPTransaction *)self downloadURL];
+          path5 = [downloadURL5 path];
           *buf = 138543874;
-          v46 = v35;
+          v46 = path4;
           v47 = 2114;
-          v48 = v37;
+          v48 = path5;
           v49 = 2114;
           v50 = v28;
           _os_log_impl(&dword_1B1630000, v34, OS_LOG_TYPE_ERROR, "Could not move downloaded data file at %{public}@, to %{public}@: %{public}@", buf, 0x20u);
@@ -1124,10 +1124,10 @@ LABEL_8:
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
     v39 = v38;
-    v40 = [(DMCHTTPTransaction *)self downloadURL];
-    v41 = [v40 path];
+    downloadURL6 = [(DMCHTTPTransaction *)self downloadURL];
+    path6 = [downloadURL6 path];
     *buf = 138543618;
-    v46 = v41;
+    v46 = path6;
     v47 = 2114;
     v48 = v17;
     _os_log_impl(&dword_1B1630000, v39, OS_LOG_TYPE_ERROR, "Failed to remove existing downloaded data file at %{public}@: %{public}@", buf, 0x16u);

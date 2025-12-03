@@ -5,15 +5,15 @@
 - (NSArray)cachedInvitations;
 - (NSString)currentUserParticipantID;
 - (WBSOngoingSharingGroupProvider)init;
-- (id)cachedGroupWithID:(id)a3;
-- (void)_addNewGroupToCachedGroups:(id)a3;
-- (void)_contactsUpdatedNotification:(id)a3;
-- (void)_fetchCurrentUserParticipantIDWithCompletion:(id)a3;
-- (void)_fetchGroupsWithCompletion:(id)a3;
+- (id)cachedGroupWithID:(id)d;
+- (void)_addNewGroupToCachedGroups:(id)groups;
+- (void)_contactsUpdatedNotification:(id)notification;
+- (void)_fetchCurrentUserParticipantIDWithCompletion:(id)completion;
+- (void)_fetchGroupsWithCompletion:(id)completion;
 - (void)_notifySubscribers;
-- (void)_performTaskEnsuringGroupsAreLoadedOnQueue:(id)a3 shouldForceUpdate:(BOOL)a4 task:(id)a5;
+- (void)_performTaskEnsuringGroupsAreLoadedOnQueue:(id)queue shouldForceUpdate:(BOOL)update task:(id)task;
 - (void)accountChanged;
-- (void)addSubscriber:(id)a3;
+- (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
 - (void)groupsUpdated;
 @end
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __48__WBSOngoingSharingGroupProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedProvider_onceToken != -1)
   {
     dispatch_once(&sharedProvider_onceToken, block);
@@ -51,9 +51,9 @@ void __48__WBSOngoingSharingGroupProvider_sharedProvider__block_invoke(uint64_t 
   v2 = [(WBSOngoingSharingGroupProvider *)&v23 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     subscribers = v2->_subscribers;
-    v2->_subscribers = v3;
+    v2->_subscribers = weakObjectsHashTable;
 
     v5 = MEMORY[0x1E696AEC0];
     v6 = objc_opt_class();
@@ -63,19 +63,19 @@ void __48__WBSOngoingSharingGroupProvider_sharedProvider__block_invoke(uint64_t 
     queue = v2->_queue;
     v2->_queue = v9;
 
-    v11 = [MEMORY[0x1E697AA68] sharedInstance];
-    [v11 addSubscriber:v2];
+    mEMORY[0x1E697AA68] = [MEMORY[0x1E697AA68] sharedInstance];
+    [mEMORY[0x1E697AA68] addSubscriber:v2];
 
     [(WBSOngoingSharingGroupProvider *)v2 _fetchCurrentUserParticipantIDWithCompletion:0];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v2 selector:sel__fetchGroups name:WBSKeychainSyncStatusMayHaveChangedNotification object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__fetchGroups name:WBSKeychainSyncStatusMayHaveChangedNotification object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v2 selector:sel__contactsUpdatedNotification_ name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__contactsUpdatedNotification_ name:*MEMORY[0x1E695C3D8] object:0];
 
     [(WBSOngoingSharingGroupProvider *)v2 _fetchGroups];
-    v14 = [MEMORY[0x1E697AA68] sharedInstance];
-    [v14 provisionWithReply:&__block_literal_global_34];
+    mEMORY[0x1E697AA68]2 = [MEMORY[0x1E697AA68] sharedInstance];
+    [mEMORY[0x1E697AA68]2 provisionWithReply:&__block_literal_global_34];
 
     objc_initWeak(&location, v2);
     v15 = +[WBSKeyBagLockStatusManager sharedManager];
@@ -114,7 +114,7 @@ void __38__WBSOngoingSharingGroupProvider_init__block_invoke_cold_1(void *a1, vo
   v5[2] = __52__WBSOngoingSharingGroupProvider__notifySubscribers__block_invoke;
   v5[3] = &unk_1E7CF1708;
   v6 = v3;
-  v7 = self;
+  selfCopy = self;
   v4 = v3;
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
@@ -286,9 +286,9 @@ void __38__WBSOngoingSharingGroupProvider_init__block_invoke_18(uint64_t a1)
   [(WBSOngoingSharingGroupProvider *)&v4 dealloc];
 }
 
-- (id)cachedGroupWithID:(id)a3
+- (id)cachedGroupWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -300,10 +300,10 @@ void __38__WBSOngoingSharingGroupProvider_init__block_invoke_18(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __52__WBSOngoingSharingGroupProvider_cachedGroupWithID___block_invoke;
   block[3] = &unk_1E7CF1730;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -334,35 +334,35 @@ uint64_t __52__WBSOngoingSharingGroupProvider_cachedGroupWithID___block_invoke_2
   return v4;
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__WBSOngoingSharingGroupProvider_addSubscriber___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = subscriberCopy;
+  v6 = subscriberCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_performTaskEnsuringGroupsAreLoadedOnQueue:(id)a3 shouldForceUpdate:(BOOL)a4 task:(id)a5
+- (void)_performTaskEnsuringGroupsAreLoadedOnQueue:(id)queue shouldForceUpdate:(BOOL)update task:(id)task
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  taskCopy = task;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__WBSOngoingSharingGroupProvider__performTaskEnsuringGroupsAreLoadedOnQueue_shouldForceUpdate_task___block_invoke;
   v13[3] = &unk_1E7CF2D70;
-  v16 = a4;
+  updateCopy = update;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = taskCopy;
+  v11 = taskCopy;
+  v12 = queueCopy;
   dispatch_async(queue, v13);
 }
 
@@ -489,30 +489,30 @@ void __58__WBSOngoingSharingGroupProvider_currentUserParticipantID__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (void)_fetchCurrentUserParticipantIDWithCompletion:(id)a3
+- (void)_fetchCurrentUserParticipantIDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WBSScopeExitHandler);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__WBSOngoingSharingGroupProvider__fetchCurrentUserParticipantIDWithCompletion___block_invoke;
   v15[3] = &unk_1E7CF1630;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   [(WBSScopeExitHandler *)v5 setHandler:v15];
-  v7 = [MEMORY[0x1E697AA68] sharedInstance];
+  mEMORY[0x1E697AA68] = [MEMORY[0x1E697AA68] sharedInstance];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E697AA68] sharedInstance];
+    mEMORY[0x1E697AA68]2 = [MEMORY[0x1E697AA68] sharedInstance];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __79__WBSOngoingSharingGroupProvider__fetchCurrentUserParticipantIDWithCompletion___block_invoke_25;
     v11[3] = &unk_1E7CF2DC0;
     v12 = v5;
-    v13 = self;
-    [v9 fetchCurrentUserIdentifierWithReply:v11];
+    selfCopy = self;
+    [mEMORY[0x1E697AA68]2 fetchCurrentUserIdentifierWithReply:v11];
   }
 
   else
@@ -570,9 +570,9 @@ void __79__WBSOngoingSharingGroupProvider__fetchCurrentUserParticipantIDWithComp
   *(v3 + 40) = v2;
 }
 
-- (void)_fetchGroupsWithCompletion:(id)a3
+- (void)_fetchGroupsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = +[WBSKeychainSyncingMonitor sharedMonitor];
   queue = self->_queue;
@@ -581,7 +581,7 @@ void __79__WBSOngoingSharingGroupProvider__fetchCurrentUserParticipantIDWithComp
   v8[2] = __61__WBSOngoingSharingGroupProvider__fetchGroupsWithCompletion___block_invoke;
   v8[3] = &unk_1E7CF2E78;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   [v5 performTaskOnceKeychainSyncValueHasBeenFetchedOnQueue:queue task:v8];
 
@@ -823,7 +823,7 @@ BOOL __61__WBSOngoingSharingGroupProvider__fetchGroupsWithCompletion___block_inv
   return v3;
 }
 
-- (void)_contactsUpdatedNotification:(id)a3
+- (void)_contactsUpdatedNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -834,17 +834,17 @@ BOOL __61__WBSOngoingSharingGroupProvider__fetchGroupsWithCompletion___block_inv
   dispatch_async(queue, block);
 }
 
-- (void)_addNewGroupToCachedGroups:(id)a3
+- (void)_addNewGroupToCachedGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__WBSOngoingSharingGroupProvider__addNewGroupToCachedGroups___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupsCopy;
+  v6 = groupsCopy;
   dispatch_sync(queue, v7);
 }
 

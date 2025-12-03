@@ -1,12 +1,12 @@
 @interface PKPaymentDocumentSubmissionController
-- (PKPaymentDocumentSubmissionController)initWithSetupDelegate:(id)a3 context:(int64_t)a4 acceptableDocuments:(id)a5 featureIdentifier:(unint64_t)a6 localizationBundle:(id)a7 preferredLanguage:(id)a8;
+- (PKPaymentDocumentSubmissionController)initWithSetupDelegate:(id)delegate context:(int64_t)context acceptableDocuments:(id)documents featureIdentifier:(unint64_t)identifier localizationBundle:(id)bundle preferredLanguage:(id)language;
 - (PKPaymentDocumentSubmissionControllerDelegate)delegate;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
 - (id)nextViewController;
-- (void)captureFailedWithError:(id)a3;
-- (void)capturedImage:(id)a3;
+- (void)captureFailedWithError:(id)error;
+- (void)capturedImage:(id)image;
 - (void)scanAgain;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)stateChanged;
 - (void)terminateSetupFlow;
 - (void)tryUploadAgain;
@@ -18,26 +18,26 @@
 
 @implementation PKPaymentDocumentSubmissionController
 
-- (PKPaymentDocumentSubmissionController)initWithSetupDelegate:(id)a3 context:(int64_t)a4 acceptableDocuments:(id)a5 featureIdentifier:(unint64_t)a6 localizationBundle:(id)a7 preferredLanguage:(id)a8
+- (PKPaymentDocumentSubmissionController)initWithSetupDelegate:(id)delegate context:(int64_t)context acceptableDocuments:(id)documents featureIdentifier:(unint64_t)identifier localizationBundle:(id)bundle preferredLanguage:(id)language
 {
   v45 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  delegateCopy = delegate;
+  documentsCopy = documents;
+  bundleCopy = bundle;
+  languageCopy = language;
   v18 = [(PKPaymentDocumentSubmissionController *)self init];
   v19 = v18;
   if (v18)
   {
-    v18->_context = a4;
-    v18->_featureIdentifier = a6;
-    objc_storeWeak(&v18->_setupDelegate, v14);
-    v39 = v14;
-    v36 = v17;
-    v37 = v16;
-    if (v16)
+    v18->_context = context;
+    v18->_featureIdentifier = identifier;
+    objc_storeWeak(&v18->_setupDelegate, delegateCopy);
+    v39 = delegateCopy;
+    v36 = languageCopy;
+    v37 = bundleCopy;
+    if (bundleCopy)
     {
-      v20 = v16;
+      v20 = bundleCopy;
     }
 
     else
@@ -48,13 +48,13 @@
     localizationBundle = v19->_localizationBundle;
     v19->_localizationBundle = v20;
 
-    objc_storeStrong(&v19->_preferredLanguage, a8);
+    objc_storeStrong(&v19->_preferredLanguage, language);
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v38 = v15;
-    v22 = v15;
+    v38 = documentsCopy;
+    v22 = documentsCopy;
     v23 = [v22 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v23)
     {
@@ -70,9 +70,9 @@ LABEL_7:
         }
 
         v27 = *(*(&v40 + 1) + 8 * v26);
-        v28 = [v27 countryCode];
-        v29 = v28;
-        if (v28 == @"USA" || v28 && ((v30 = [@"USA" isEqualToString:v28], v29, (v30 & 1) != 0) || (v31 = v29, v31 == @"US") || (v32 = v31, v33 = objc_msgSend(@"US", "isEqualToString:", v31), v32, v33)))
+        countryCode = [v27 countryCode];
+        v29 = countryCode;
+        if (countryCode == @"USA" || countryCode && ((v30 = [@"USA" isEqualToString:countryCode], v29, (v30 & 1) != 0) || (v31 = v29, v31 == @"US") || (v32 = v31, v33 = objc_msgSend(@"US", "isEqualToString:", v31), v32, v33)))
         {
           if (([v27 documentType] - 1) <= 1)
           {
@@ -100,10 +100,10 @@ LABEL_7:
       }
     }
 
-    v15 = v38;
-    v14 = v39;
-    v17 = v36;
-    v16 = v37;
+    documentsCopy = v38;
+    delegateCopy = v39;
+    languageCopy = v36;
+    bundleCopy = v37;
     if (!v19->_selectedDocument)
     {
       [(PKPaymentDocumentSubmissionController *)v19 setState:1];
@@ -113,10 +113,10 @@ LABEL_7:
   return v19;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  self->_state = a3;
-  if (!a3)
+  self->_state = state;
+  if (!state)
   {
     [(PKPaymentDocumentSubmissionController *)self setFrontID:?];
     [(PKPaymentDocumentSubmissionController *)self setBackID:0];
@@ -141,18 +141,18 @@ LABEL_7:
   return v4;
 }
 
-- (void)capturedImage:(id)a3
+- (void)capturedImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
+  imageCopy = image;
+  v5 = imageCopy;
   if (self->_state == 2)
   {
     self->_state = 3;
     side = self->_side;
-    v7 = v4;
+    v7 = imageCopy;
     if (side == 1)
     {
-      [(PKPaymentDocumentSubmissionController *)self setBackID:v4];
+      [(PKPaymentDocumentSubmissionController *)self setBackID:imageCopy];
     }
 
     else
@@ -165,7 +165,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      [(PKPaymentDocumentSubmissionController *)self setFrontID:v4];
+      [(PKPaymentDocumentSubmissionController *)self setFrontID:imageCopy];
     }
 
     v5 = v7;
@@ -215,10 +215,10 @@ LABEL_8:
     return;
   }
 
-  v4 = [(PKDocumentRequest *)self->_selectedDocument documentType];
-  if ((v4 - 1) >= 2)
+  documentType = [(PKDocumentRequest *)self->_selectedDocument documentType];
+  if ((documentType - 1) >= 2)
   {
-    if (v4)
+    if (documentType)
     {
       goto LABEL_8;
     }
@@ -265,7 +265,7 @@ LABEL_8:
   [(PKPaymentDocumentSubmissionController *)self stateChanged];
 }
 
-- (void)captureFailedWithError:(id)a3
+- (void)captureFailedWithError:(id)error
 {
   state = self->_state;
   self->_state = 4;
@@ -364,7 +364,7 @@ void __59__PKPaymentDocumentSubmissionController_terminateSetupFlow__block_invok
     v4[2] = __53__PKPaymentDocumentSubmissionController_stateChanged__block_invoke;
     v4[3] = &unk_1E8010A10;
     v5 = WeakRetained;
-    v6 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v4);
   }
 }

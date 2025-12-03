@@ -1,8 +1,8 @@
 @interface HomeUtilNotificationViewController
 - (id)_fontForTimeCodeLabel;
-- (void)_presentNotificationExtensionForNotification:(id)a3;
-- (void)didReceiveNotification:(id)a3;
-- (void)didSendAnnouncementReplyforNotificationPayload:(id)a3;
+- (void)_presentNotificationExtensionForNotification:(id)notification;
+- (void)didReceiveNotification:(id)notification;
+- (void)didSendAnnouncementReplyforNotificationPayload:(id)payload;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 @end
@@ -18,33 +18,33 @@
 
 - (void)updateViewConstraints
 {
-  v3 = [(HomeUtilNotificationViewController *)self staticConstraintSet];
-  [v3 activateIfNeeded];
+  staticConstraintSet = [(HomeUtilNotificationViewController *)self staticConstraintSet];
+  [staticConstraintSet activateIfNeeded];
 
   v4.receiver = self;
   v4.super_class = HomeUtilNotificationViewController;
   [(HomeUtilNotificationViewController *)&v4 updateViewConstraints];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:ANUserInfoOldestUnreadAnnouncementKey];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
+  request3 = [userInfo objectForKeyedSubscript:ANUserInfoOldestUnreadAnnouncementKey];
 
-  v9 = [v4 request];
-  v10 = [v9 content];
-  v11 = [v10 userInfo];
-  v12 = [v11 objectForKeyedSubscript:ANUserInfoFailedDeliveryAnnouncementKey];
+  request2 = [notificationCopy request];
+  content2 = [request2 content];
+  userInfo2 = [content2 userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:ANUserInfoFailedDeliveryAnnouncementKey];
 
-  if (!(v8 | v12))
+  if (!(request3 | v12))
   {
-    v8 = [v4 request];
-    v14 = [v8 content];
-    v15 = [v14 userInfo];
-    v13 = [v15 objectForKeyedSubscript:ANUserInfoOldestAnnouncementKey];
+    request3 = [notificationCopy request];
+    content3 = [request3 content];
+    userInfo3 = [content3 userInfo];
+    v13 = [userInfo3 objectForKeyedSubscript:ANUserInfoOldestAnnouncementKey];
 
     goto LABEL_5;
   }
@@ -54,14 +54,14 @@
     v13 = v12;
 LABEL_5:
 
-    v8 = v13;
+    request3 = v13;
   }
 
   v16 = ANAnnouncementIDKey;
-  v17 = [v8 objectForKeyedSubscript:ANAnnouncementIDKey];
-  v18 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
-  v19 = [v18 notificationPayload];
-  v20 = [v19 objectForKeyedSubscript:v16];
+  v17 = [request3 objectForKeyedSubscript:ANAnnouncementIDKey];
+  announcementsBrowserViewController = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
+  notificationPayload = [announcementsBrowserViewController notificationPayload];
+  v20 = [notificationPayload objectForKeyedSubscript:v16];
 
   if (v20 || (-[HomeUtilNotificationViewController announcementsBrowserViewController](self, "announcementsBrowserViewController"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isTearingDown], v21, v22))
   {
@@ -81,57 +81,57 @@ LABEL_5:
     v24 = HFLogForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
-      v26 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
-      v27 = [v26 notificationPayload];
+      announcementsBrowserViewController2 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
+      announcementsBrowserViewController3 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
+      notificationPayload2 = [announcementsBrowserViewController3 notificationPayload];
       v28 = 138412546;
-      v29 = v25;
+      v29 = announcementsBrowserViewController2;
       v30 = 2112;
-      v31 = v27;
+      v31 = notificationPayload2;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "self.announcementsBrowserViewController = [%@] AND notificationPayload %@", &v28, 0x16u);
     }
 
-    [(HomeUtilNotificationViewController *)self _presentNotificationExtensionForNotification:v4];
+    [(HomeUtilNotificationViewController *)self _presentNotificationExtensionForNotification:notificationCopy];
   }
 }
 
-- (void)_presentNotificationExtensionForNotification:(id)a3
+- (void)_presentNotificationExtensionForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 request];
-    v7 = [v6 content];
-    v8 = [v7 userInfo];
+    request = [notificationCopy request];
+    content = [request content];
+    userInfo = [content userInfo];
     *buf = 138412290;
-    v46 = v8;
+    v46 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received announcment userinfo = [%@]", buf, 0xCu);
   }
 
   v9 = objc_opt_new();
-  v10 = [v4 request];
-  v11 = [v10 content];
-  v12 = [v11 userInfo];
-  v13 = [v12 objectForKeyedSubscript:ANUserInfoOldestUnreadAnnouncementKey];
+  request2 = [notificationCopy request];
+  content2 = [request2 content];
+  userInfo2 = [content2 userInfo];
+  request5 = [userInfo2 objectForKeyedSubscript:ANUserInfoOldestUnreadAnnouncementKey];
 
-  v14 = [v4 request];
-  v15 = [v14 content];
-  v16 = [v15 userInfo];
-  v17 = [v16 objectForKeyedSubscript:ANUserInfoFailedDeliveryAnnouncementKey];
+  request3 = [notificationCopy request];
+  content3 = [request3 content];
+  userInfo3 = [content3 userInfo];
+  v17 = [userInfo3 objectForKeyedSubscript:ANUserInfoFailedDeliveryAnnouncementKey];
 
-  v18 = [v4 request];
-  v19 = [v18 content];
-  v20 = [v19 userInfo];
+  request4 = [notificationCopy request];
+  content4 = [request4 content];
+  userInfo4 = [content4 userInfo];
   v21 = ANUserInfoNotificationTypeKey;
-  v22 = [v20 objectForKeyedSubscript:ANUserInfoNotificationTypeKey];
+  v22 = [userInfo4 objectForKeyedSubscript:ANUserInfoNotificationTypeKey];
 
-  if (!(v13 | v17))
+  if (!(request5 | v17))
   {
-    v13 = [v4 request];
-    v24 = [v13 content];
-    v25 = [v24 userInfo];
-    v23 = [v25 objectForKeyedSubscript:ANUserInfoOldestAnnouncementKey];
+    request5 = [notificationCopy request];
+    content5 = [request5 content];
+    userInfo5 = [content5 userInfo];
+    v23 = [userInfo5 objectForKeyedSubscript:ANUserInfoOldestAnnouncementKey];
 
     goto LABEL_7;
   }
@@ -144,7 +144,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v23 = v13;
+  v23 = request5;
 LABEL_8:
   [v9 setObject:v22 forKey:v21];
   [v9 addEntriesFromDictionary:v23];
@@ -153,24 +153,24 @@ LABEL_8:
   v28 = [v26 initWithNotificationPayload:v27 delegate:self];
   [(HomeUtilNotificationViewController *)self setAnnouncementsBrowserViewController:v28];
 
-  v29 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
-  v30 = [v29 view];
-  [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+  announcementsBrowserViewController = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
+  view = [announcementsBrowserViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(HomeUtilNotificationViewController *)self addChildViewController:self->_announcementsBrowserViewController];
-  v31 = [(HomeUtilNotificationViewController *)self view];
-  v32 = [(HUAnnouncementsBrowserViewController *)self->_announcementsBrowserViewController view];
-  [v31 addSubview:v32];
+  view2 = [(HomeUtilNotificationViewController *)self view];
+  view3 = [(HUAnnouncementsBrowserViewController *)self->_announcementsBrowserViewController view];
+  [view2 addSubview:view3];
 
   objc_initWeak(&location, self);
   v33 = [NAUILayoutConstraintSet alloc];
-  v34 = [(HomeUtilNotificationViewController *)self view];
+  view4 = [(HomeUtilNotificationViewController *)self view];
   v39 = _NSConcreteStackBlock;
   v40 = 3221225472;
   v41 = sub_10000186C;
   v42 = &unk_100004198;
   objc_copyWeak(&v43, &location);
-  v35 = [v33 initWithOwningView:v34 constraintBuilder:&v39];
+  v35 = [v33 initWithOwningView:view4 constraintBuilder:&v39];
   [(HomeUtilNotificationViewController *)self setStaticConstraintSet:v35, v39, v40, v41, v42];
 
   v36 = HFLogForCategory();
@@ -181,11 +181,11 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Launching Notification Long Look with oldest Unread Announcement Info = [%@]", buf, 0xCu);
   }
 
-  v37 = [(HomeUtilNotificationViewController *)self staticConstraintSet];
-  [v37 activateIfNeeded];
+  staticConstraintSet = [(HomeUtilNotificationViewController *)self staticConstraintSet];
+  [staticConstraintSet activateIfNeeded];
 
-  v38 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
-  [v38 didMoveToParentViewController:self];
+  announcementsBrowserViewController2 = [(HomeUtilNotificationViewController *)self announcementsBrowserViewController];
+  [announcementsBrowserViewController2 didMoveToParentViewController:self];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(&location);
@@ -212,10 +212,10 @@ LABEL_8:
   return v7;
 }
 
-- (void)didSendAnnouncementReplyforNotificationPayload:(id)a3
+- (void)didSendAnnouncementReplyforNotificationPayload:(id)payload
 {
-  v3 = [(HomeUtilNotificationViewController *)self extensionContext];
-  [v3 dismissNotificationContentExtension];
+  extensionContext = [(HomeUtilNotificationViewController *)self extensionContext];
+  [extensionContext dismissNotificationContentExtension];
 }
 
 @end

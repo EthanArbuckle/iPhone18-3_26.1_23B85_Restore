@@ -1,21 +1,21 @@
 @interface PLBatteryUIMoveableGraphView
 - (CGSize)displaySize;
 - (PLBatteryUIMoveableGraphView)init;
-- (PLBatteryUIMoveableGraphView)initWithFrame:(CGRect)a3;
-- (double)setGridRange:(double)a3;
-- (void)drawDayLines:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawErrorText:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawFill:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawGrid:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawLine:(CGContext *)a3 andRect:(CGRect)a4;
-- (void)drawRect:(CGRect)a3;
+- (PLBatteryUIMoveableGraphView)initWithFrame:(CGRect)frame;
+- (double)setGridRange:(double)range;
+- (void)drawDayLines:(CGContext *)lines andRect:(CGRect)rect;
+- (void)drawErrorText:(CGContext *)text andRect:(CGRect)rect;
+- (void)drawFill:(CGContext *)fill andRect:(CGRect)rect;
+- (void)drawGrid:(CGContext *)grid andRect:(CGRect)rect;
+- (void)drawLine:(CGContext *)line andRect:(CGRect)rect;
+- (void)drawRect:(CGRect)rect;
 - (void)initGraphAttributes;
 - (void)setDefaultRange;
-- (void)setDisplayRange:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setInputData:(id)a3;
-- (void)setLabelColor:(id)a3;
-- (void)setRangesFromArray:(id)a3;
+- (void)setDisplayRange:(double)range;
+- (void)setFrame:(CGRect)frame;
+- (void)setInputData:(id)data;
+- (void)setLabelColor:(id)color;
+- (void)setRangesFromArray:(id)array;
 @end
 
 @implementation PLBatteryUIMoveableGraphView
@@ -53,17 +53,17 @@
   self->defaultTextAttributes = v16;
 
   [(NSMutableDictionary *)self->defaultTextAttributes setObject:v21 forKeyedSubscript:NSFontAttributeName];
-  v18 = [(PLBatteryUIMoveableGraphView *)self labelColor];
-  [(NSMutableDictionary *)self->defaultTextAttributes setObject:v18 forKeyedSubscript:NSForegroundColorAttributeName];
+  labelColor = [(PLBatteryUIMoveableGraphView *)self labelColor];
+  [(NSMutableDictionary *)self->defaultTextAttributes setObject:labelColor forKeyedSubscript:NSForegroundColorAttributeName];
 
   v19 = +[NSMutableArray array];
   dateChangeArray = self->_dateChangeArray;
   self->_dateChangeArray = v19;
 }
 
-- (void)setLabelColor:(id)a3
+- (void)setLabelColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   labelColor = self->_labelColor;
   self->_labelColor = v4;
 
@@ -87,13 +87,13 @@
   return v3;
 }
 
-- (PLBatteryUIMoveableGraphView)initWithFrame:(CGRect)a3
+- (PLBatteryUIMoveableGraphView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v8.receiver = self;
   v8.super_class = PLBatteryUIMoveableGraphView;
-  v5 = [(PLBatteryUIMoveableGraphView *)&v8 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PLBatteryUIMoveableGraphView *)&v8 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -105,13 +105,13 @@
   return v6;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v7.receiver = self;
   v7.super_class = PLBatteryUIMoveableGraphView;
-  [(PLBatteryUIMoveableGraphView *)&v7 setFrame:a3.origin.x, a3.origin.y];
+  [(PLBatteryUIMoveableGraphView *)&v7 setFrame:frame.origin.x, frame.origin.y];
   [(PLBatteryUIMoveableGraphView *)self displaySize];
   if (v6 == -1.0)
   {
@@ -134,28 +134,28 @@
   _objc_release_x1();
 }
 
-- (void)setDisplayRange:(double)a3
+- (void)setDisplayRange:(double)range
 {
-  v3 = a3;
-  if (a3 >= 3600.0)
+  rangeCopy = range;
+  if (range >= 3600.0)
   {
-    v5 = [(PLBatteryUIMoveableGraphView *)self endDate];
-    v6 = [(PLBatteryUIMoveableGraphView *)self startDate];
-    [v5 timeIntervalSinceDate:v6];
+    endDate = [(PLBatteryUIMoveableGraphView *)self endDate];
+    startDate = [(PLBatteryUIMoveableGraphView *)self startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v8 = v7;
 
-    if (v8 < v3)
+    if (v8 < rangeCopy)
     {
-      v9 = [(PLBatteryUIMoveableGraphView *)self endDate];
-      v10 = [(PLBatteryUIMoveableGraphView *)self startDate];
-      [v9 timeIntervalSinceDate:v10];
-      v3 = v11;
+      endDate2 = [(PLBatteryUIMoveableGraphView *)self endDate];
+      startDate2 = [(PLBatteryUIMoveableGraphView *)self startDate];
+      [endDate2 timeIntervalSinceDate:startDate2];
+      rangeCopy = v11;
     }
 
     displayRange = self->_displayRange;
-    if (v3 != displayRange)
+    if (rangeCopy != displayRange)
     {
-      v13 = displayRange / v3;
+      v13 = displayRange / rangeCopy;
       [(PLBatteryUIMoveableGraphView *)self frame];
       v15 = v14 * v13;
       v16 = v15;
@@ -168,7 +168,7 @@
         v21 = v20;
         [(PLBatteryUIMoveableGraphView *)self frame];
         [(PLBatteryUIMoveableGraphView *)self setFrame:v19, v21, v16];
-        self->_displayRange = v3;
+        self->_displayRange = rangeCopy;
 
         [(PLBatteryUIMoveableGraphView *)self setNeedsDisplay];
       }
@@ -176,9 +176,9 @@
   }
 }
 
-- (void)setRangesFromArray:(id)a3
+- (void)setRangesFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   p_startDate = &self->_startDate;
   startDate = self->_startDate;
   self->_startDate = 0;
@@ -191,7 +191,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v4;
+  v9 = arrayCopy;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
@@ -268,10 +268,10 @@
   [(PLBatteryUIMoveableGraphView *)self setNeedsDisplay];
 }
 
-- (void)setInputData:(id)a3
+- (void)setInputData:(id)data
 {
   self->_errValue = 0;
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   inputData = self->_inputData;
   self->_inputData = v4;
 
@@ -282,8 +282,8 @@
     if (self->_MaxDataRange != -1.0)
     {
       v7 = [(NSMutableArray *)self->_inputData mutableCopy];
-      v8 = [(NSMutableArray *)self->_inputData lastObject];
-      v9 = [v8 objectAtIndexedSubscript:0];
+      lastObject = [(NSMutableArray *)self->_inputData lastObject];
+      v9 = [lastObject objectAtIndexedSubscript:0];
       v10 = [v9 dateByAddingTimeInterval:-self->_MaxDataRange];
       if ([(NSMutableArray *)self->_inputData count])
       {
@@ -325,44 +325,44 @@ LABEL_11:
   }
 }
 
-- (double)setGridRange:(double)a3
+- (double)setGridRange:(double)range
 {
-  if (a3 >= 259200.0)
+  if (range >= 259200.0)
   {
     return 43200.0;
   }
 
-  if (a3 >= 86400.0)
+  if (range >= 86400.0)
   {
     return 14400.0;
   }
 
-  if (a3 >= 57600.0)
+  if (range >= 57600.0)
   {
     return 7200.0;
   }
 
-  if (a3 >= 28800.0)
+  if (range >= 28800.0)
   {
     return 3600.0;
   }
 
-  if (a3 >= 14400.0)
+  if (range >= 14400.0)
   {
     return 1800.0;
   }
 
-  if (a3 >= 7200.0)
+  if (range >= 7200.0)
   {
     return 900.0;
   }
 
-  if (a3 >= 3600.0)
+  if (range >= 3600.0)
   {
     return 600.0;
   }
 
-  v3 = a3 < 1800.0;
+  v3 = range < 1800.0;
   result = 300.0;
   if (v3)
   {
@@ -372,17 +372,17 @@ LABEL_11:
   return result;
 }
 
-- (void)drawGrid:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawGrid:(CGContext *)grid andRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   v8 = objc_alloc_init(NSDateFormatter);
   [v8 setDateFormat:@"MM/dd"];
-  v9 = [(PLBatteryUIMoveableGraphView *)self startDate];
+  startDate = [(PLBatteryUIMoveableGraphView *)self startDate];
   v10 = v8;
-  v11 = [v8 stringFromDate:v9];
+  v11 = [v8 stringFromDate:startDate];
 
   v12 = 72;
   v60 = v11;
@@ -390,9 +390,9 @@ LABEL_11:
   v14 = v13;
   v16 = v15;
   self->vertical_label_offset = v15 + v15;
-  v17 = [(PLBatteryUIMoveableGraphView *)self endDate];
-  v18 = [(PLBatteryUIMoveableGraphView *)self startDate];
-  [v17 timeIntervalSinceDate:v18];
+  endDate = [(PLBatteryUIMoveableGraphView *)self endDate];
+  startDate2 = [(PLBatteryUIMoveableGraphView *)self startDate];
+  [endDate timeIntervalSinceDate:startDate2];
   v20 = v19;
 
   v63 = width;
@@ -401,32 +401,32 @@ LABEL_11:
   self->rectHeight = height - self->vertical_label_offset;
   self->xInterval = self->rectWidth / v20;
   self->yInterval = self->rectHeight / ((self->maxPower - self->minPower) + 1.0);
-  v21 = [(PLBatteryUIMoveableGraphView *)self graphBackgroundColor];
-  CGContextSetFillColorWithColor(a3, [v21 CGColor]);
+  graphBackgroundColor = [(PLBatteryUIMoveableGraphView *)self graphBackgroundColor];
+  CGContextSetFillColorWithColor(grid, [graphBackgroundColor CGColor]);
 
   v67.origin.x = self->horizontal_label_offset;
   v67.size.width = self->rectWidth;
   v67.size.height = self->rectHeight;
   v67.origin.y = 0.0;
-  CGContextFillRect(a3, v67);
-  CGContextSetLineWidth(a3, 0.6);
-  v22 = [(PLBatteryUIMoveableGraphView *)self gridColor];
-  CGContextSetStrokeColorWithColor(a3, [v22 CGColor]);
+  CGContextFillRect(grid, v67);
+  CGContextSetLineWidth(grid, 0.6);
+  gridColor = [(PLBatteryUIMoveableGraphView *)self gridColor];
+  CGContextSetStrokeColorWithColor(grid, [gridColor CGColor]);
 
   *lengths = xmmword_124510;
-  CGContextSetLineDash(a3, 0.0, lengths, 2uLL);
+  CGContextSetLineDash(grid, 0.0, lengths, 2uLL);
   [(PLBatteryUIMoveableGraphView *)self displayRange];
   [(PLBatteryUIMoveableGraphView *)self setGridRange:?];
   v24 = v23;
   v25 = +[NSCalendar currentCalendar];
-  v26 = [(PLBatteryUIMoveableGraphView *)self endDate];
-  v27 = [v25 components:192 fromDate:v26];
+  endDate2 = [(PLBatteryUIMoveableGraphView *)self endDate];
+  v27 = [v25 components:192 fromDate:endDate2];
 
   LODWORD(v25) = [v27 minute];
   v59 = v27;
-  v28 = [v27 second];
+  second = [v27 second];
   xInterval = self->xInterval;
-  v30 = xInterval * ((v28 + 60 * v25) % v24);
+  v30 = xInterval * ((second + 60 * v25) % v24);
   v31 = v24 * xInterval;
   rectHeight = self->rectHeight;
   horizontal_label_offset = self->horizontal_label_offset;
@@ -437,8 +437,8 @@ LABEL_11:
   {
     do
     {
-      CGContextMoveToPoint(a3, v34, 0.0);
-      CGContextAddLineToPoint(a3, v34, self->rectHeight);
+      CGContextMoveToPoint(grid, v34, 0.0);
+      CGContextAddLineToPoint(grid, v34, self->rectHeight);
       v34 = v34 - v31;
     }
 
@@ -452,8 +452,8 @@ LABEL_11:
     v38 = rectHeight / 10.0;
     do
     {
-      CGContextMoveToPoint(a3, self->horizontal_label_offset, v36 - v37);
-      CGContextAddLineToPoint(a3, self->horizontal_label_offset + self->rectWidth, self->rectHeight - v37);
+      CGContextMoveToPoint(grid, self->horizontal_label_offset, v36 - v37);
+      CGContextAddLineToPoint(grid, self->horizontal_label_offset + self->rectWidth, self->rectHeight - v37);
       v37 = v38 + v37;
       v36 = self->rectHeight;
     }
@@ -461,11 +461,11 @@ LABEL_11:
     while (v37 <= v36);
   }
 
-  CGContextStrokePath(a3);
-  CGContextSetLineDash(a3, 0.0, 0, 0);
-  CGContextSetLineWidth(a3, 1.0);
-  v39 = [(PLBatteryUIMoveableGraphView *)self lineColor];
-  CGContextSetStrokeColorWithColor(a3, [v39 CGColor]);
+  CGContextStrokePath(grid);
+  CGContextSetLineDash(grid, 0.0, 0, 0);
+  CGContextSetLineWidth(grid, 1.0);
+  lineColor = [(PLBatteryUIMoveableGraphView *)self lineColor];
+  CGContextSetStrokeColorWithColor(grid, [lineColor CGColor]);
 
   [(PLBatteryUIMoveableGraphView *)self displayRange];
   v41 = self->horizontal_label_offset;
@@ -481,15 +481,15 @@ LABEL_11:
     {
       [v10 setDateFormat:@"MM/dd"];
       v47 = (v42 - self->horizontal_label_offset) / self->xInterval;
-      v48 = [(PLBatteryUIMoveableGraphView *)self startDate];
-      [NSDate dateWithTimeInterval:v48 sinceDate:v47];
+      startDate3 = [(PLBatteryUIMoveableGraphView *)self startDate];
+      [NSDate dateWithTimeInterval:startDate3 sinceDate:v47];
       v50 = v49 = v12;
       v51 = [v10 stringFromDate:v50];
 
       [v10 setDateFormat:@"HH:mm"];
       v52 = (v42 - self->horizontal_label_offset) / self->xInterval;
-      v53 = [(PLBatteryUIMoveableGraphView *)self startDate];
-      v54 = [NSDate dateWithTimeInterval:v53 sinceDate:v52];
+      startDate4 = [(PLBatteryUIMoveableGraphView *)self startDate];
+      v54 = [NSDate dateWithTimeInterval:startDate4 sinceDate:v52];
       v55 = [v10 stringFromDate:v54];
 
       v12 = v49;
@@ -512,8 +512,8 @@ LABEL_11:
 
       [v55 drawInRect:*(&self->super.super.super.isa + v49) withAttributes:{v58, v44, v14, v43}];
       [v51 drawInRect:*(&self->super.super.super.isa + v49) withAttributes:{v58, v45, v14, v43}];
-      CGContextMoveToPoint(a3, v42, self->rectHeight + -2.0);
-      CGContextAddLineToPoint(a3, v42, self->rectHeight + 2.0);
+      CGContextMoveToPoint(grid, v42, self->rectHeight + -2.0);
+      CGContextAddLineToPoint(grid, v42, self->rectHeight + 2.0);
 
       v42 = v42 + v46 * v31;
     }
@@ -521,32 +521,32 @@ LABEL_11:
     while (v42 >= self->horizontal_label_offset);
   }
 
-  CGContextStrokePath(a3);
-  [(PLBatteryUIMoveableGraphView *)self drawDayLines:a3 andRect:x, y, v63, v64];
+  CGContextStrokePath(grid);
+  [(PLBatteryUIMoveableGraphView *)self drawDayLines:grid andRect:x, y, v63, v64];
 }
 
-- (void)drawDayLines:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawDayLines:(CGContext *)lines andRect:(CGRect)rect
 {
-  [(NSMutableArray *)self->_dateChangeArray removeAllObjects:a4.origin.x];
+  [(NSMutableArray *)self->_dateChangeArray removeAllObjects:rect.origin.x];
   v6 = +[NSCalendar currentCalendar];
-  v7 = [(PLBatteryUIMoveableGraphView *)self endDate];
-  v8 = [v6 components:224 fromDate:v7];
+  endDate = [(PLBatteryUIMoveableGraphView *)self endDate];
+  v8 = [v6 components:224 fromDate:endDate];
 
   v9 = 3600 * [v8 hour];
   v10 = v9 + 60 * [v8 minute];
   v29 = v8;
   v11 = -([v8 second] + v10);
-  v12 = [(PLBatteryUIMoveableGraphView *)self endDate];
-  v13 = [NSDate dateWithTimeInterval:v12 sinceDate:v11];
+  endDate2 = [(PLBatteryUIMoveableGraphView *)self endDate];
+  v13 = [NSDate dateWithTimeInterval:endDate2 sinceDate:v11];
 
   v14 = objc_alloc_init(NSDateFormatter);
   [v14 setDateFormat:@"MM/dd"];
-  CGContextSetLineWidth(a3, 1.5);
-  v15 = [(PLBatteryUIMoveableGraphView *)self gridColor];
-  CGContextSetStrokeColorWithColor(a3, [v15 CGColor]);
+  CGContextSetLineWidth(lines, 1.5);
+  gridColor = [(PLBatteryUIMoveableGraphView *)self gridColor];
+  CGContextSetStrokeColorWithColor(lines, [gridColor CGColor]);
 
-  v16 = [(PLBatteryUIMoveableGraphView *)self startDate];
-  [v16 timeIntervalSinceDate:v13];
+  startDate = [(PLBatteryUIMoveableGraphView *)self startDate];
+  [startDate timeIntervalSinceDate:v13];
   v18 = v17;
 
   if (v18 >= 0.0)
@@ -558,12 +558,12 @@ LABEL_11:
   {
     do
     {
-      v19 = [(PLBatteryUIMoveableGraphView *)self startDate];
-      [v13 timeIntervalSinceDate:v19];
+      startDate2 = [(PLBatteryUIMoveableGraphView *)self startDate];
+      [v13 timeIntervalSinceDate:startDate2];
       v21 = v20 * self->xInterval;
 
-      CGContextMoveToPoint(a3, v21 + self->horizontal_label_offset, 0.0);
-      CGContextAddLineToPoint(a3, v21 + self->horizontal_label_offset, self->rectHeight);
+      CGContextMoveToPoint(lines, v21 + self->horizontal_label_offset, 0.0);
+      CGContextAddLineToPoint(lines, v21 + self->horizontal_label_offset, self->rectHeight);
       v22 = [NSNumber numberWithDouble:v21 + self->horizontal_label_offset];
       v30[0] = v22;
       v23 = [v14 stringFromDate:v13];
@@ -573,8 +573,8 @@ LABEL_11:
       [(NSMutableArray *)self->_dateChangeArray addObject:v24];
       v25 = [NSDate dateWithTimeInterval:v13 sinceDate:-86400.0];
 
-      v26 = [(PLBatteryUIMoveableGraphView *)self startDate];
-      [v26 timeIntervalSinceDate:v25];
+      startDate3 = [(PLBatteryUIMoveableGraphView *)self startDate];
+      [startDate3 timeIntervalSinceDate:v25];
       v28 = v27;
 
       v13 = v25;
@@ -583,26 +583,26 @@ LABEL_11:
     while (v28 < 0.0);
   }
 
-  CGContextStrokePath(a3);
+  CGContextStrokePath(lines);
 }
 
-- (void)drawLine:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawLine:(CGContext *)line andRect:(CGRect)rect
 {
   if (self->_inputData)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    CGContextSetLineWidth(a3, 1.0);
-    v8 = [(PLBatteryUIMoveableGraphView *)self lineColor];
-    CGContextSetStrokeColorWithColor(a3, [v8 CGColor]);
+    height = rect.size.height;
+    width = rect.size.width;
+    CGContextSetLineWidth(line, 1.0);
+    lineColor = [(PLBatteryUIMoveableGraphView *)self lineColor];
+    CGContextSetStrokeColorWithColor(line, [lineColor CGColor]);
 
     vertical_label_offset = self->vertical_label_offset;
     maxPower = self->maxPower;
     minPower = self->minPower;
     horizontal_label_offset = self->horizontal_label_offset;
-    v13 = [(PLBatteryUIMoveableGraphView *)self endDate];
-    v14 = [(PLBatteryUIMoveableGraphView *)self startDate];
-    [v13 timeIntervalSinceDate:v14];
+    endDate = [(PLBatteryUIMoveableGraphView *)self endDate];
+    startDate = [(PLBatteryUIMoveableGraphView *)self startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v16 = v15;
 
     v43 = 0u;
@@ -640,8 +640,8 @@ LABEL_11:
 
         v30 = [v26 objectAtIndexedSubscript:0];
         v31 = v20 * (v29 - self->minPower);
-        v32 = [(PLBatteryUIMoveableGraphView *)self startDate];
-        [v30 timeIntervalSinceDate:v32];
+        startDate2 = [(PLBatteryUIMoveableGraphView *)self startDate];
+        [v30 timeIntervalSinceDate:startDate2];
         v34 = v23 * v33;
 
         v35 = height - self->vertical_label_offset - v31;
@@ -649,30 +649,30 @@ LABEL_11:
         v22 = v34 + v36;
         if ((v19 & 1) == 0)
         {
-          CGContextMoveToPoint(a3, v34 + v36, v35);
+          CGContextMoveToPoint(line, v34 + v36, v35);
           goto LABEL_15;
         }
 
         if ([(PLBatteryUIMoveableGraphView *)self graphType]== 2)
         {
-          v37 = a3;
+          lineCopy2 = line;
           v38 = v25;
           v39 = v35;
 LABEL_13:
-          CGContextAddLineToPoint(v37, v38, v39);
+          CGContextAddLineToPoint(lineCopy2, v38, v39);
           goto LABEL_14;
         }
 
         if ([(PLBatteryUIMoveableGraphView *)self graphType]== 1)
         {
-          v37 = a3;
+          lineCopy2 = line;
           v38 = v22;
           v39 = v25;
           goto LABEL_13;
         }
 
 LABEL_14:
-        CGContextAddLineToPoint(a3, v22, v35);
+        CGContextAddLineToPoint(line, v22, v35);
 LABEL_15:
         if ([(PLBatteryUIMoveableGraphView *)self graphType]!= 2)
         {
@@ -698,23 +698,23 @@ LABEL_15:
       {
 LABEL_21:
 
-        CGContextStrokePath(a3);
+        CGContextStrokePath(line);
         return;
       }
     }
   }
 }
 
-- (void)drawFill:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawFill:(CGContext *)fill andRect:(CGRect)rect
 {
   if (self->_inputData)
   {
-    CGContextSetLineWidth(a3, 0.5);
-    v6 = [(PLBatteryUIMoveableGraphView *)self lineColor];
-    CGContextSetStrokeColorWithColor(a3, [v6 CGColor]);
+    CGContextSetLineWidth(fill, 0.5);
+    lineColor = [(PLBatteryUIMoveableGraphView *)self lineColor];
+    CGContextSetStrokeColorWithColor(fill, [lineColor CGColor]);
 
-    CGContextBeginPath(a3);
-    CGContextMoveToPoint(a3, self->horizontal_label_offset, self->rectHeight);
+    CGContextBeginPath(fill);
+    CGContextMoveToPoint(fill, self->horizontal_label_offset, self->rectHeight);
     if ([(PLBatteryUIMoveableGraphView *)self graphType]== 2)
     {
       v7 = 24;
@@ -755,15 +755,15 @@ LABEL_21:
 
           v19 = [v15 objectAtIndexedSubscript:0];
           v20 = (v18 - self->minPower) * self->yInterval;
-          v21 = [(PLBatteryUIMoveableGraphView *)self startDate];
-          [v19 timeIntervalSinceDate:v21];
+          startDate = [(PLBatteryUIMoveableGraphView *)self startDate];
+          [v19 timeIntervalSinceDate:startDate];
           v23 = v22 * self->xInterval;
 
           v24 = self->rectHeight - v20;
           horizontal_label_offset = v23 + self->horizontal_label_offset;
           if ([(PLBatteryUIMoveableGraphView *)self graphType]== 2)
           {
-            v25 = a3;
+            fillCopy2 = fill;
             v26 = v14;
             v27 = v24;
           }
@@ -775,14 +775,14 @@ LABEL_21:
               goto LABEL_15;
             }
 
-            v25 = a3;
+            fillCopy2 = fill;
             v26 = horizontal_label_offset;
             v27 = v14;
           }
 
-          CGContextAddLineToPoint(v25, v26, v27);
+          CGContextAddLineToPoint(fillCopy2, v26, v27);
 LABEL_15:
-          CGContextAddLineToPoint(a3, horizontal_label_offset, v24);
+          CGContextAddLineToPoint(fill, horizontal_label_offset, v24);
           v8 = horizontal_label_offset;
           if ([(PLBatteryUIMoveableGraphView *)self graphType]!= 2)
           {
@@ -808,12 +808,12 @@ LABEL_15:
       while (v11);
     }
 
-    CGContextAddLineToPoint(a3, horizontal_label_offset, self->rectHeight);
-    CGContextClosePath(a3);
-    v28 = [(PLBatteryUIMoveableGraphView *)self lineColor];
-    v29 = [v28 CGColor];
+    CGContextAddLineToPoint(fill, horizontal_label_offset, self->rectHeight);
+    CGContextClosePath(fill);
+    lineColor2 = [(PLBatteryUIMoveableGraphView *)self lineColor];
+    cGColor = [lineColor2 CGColor];
 
-    v30 = CGColorGetComponents(v29);
+    v30 = CGColorGetComponents(cGColor);
     *locations = xmmword_124680;
     v31 = v30[1];
     components[0] = *v30;
@@ -828,23 +828,23 @@ LABEL_15:
     v33 = CGGradientCreateWithColorComponents(DeviceRGB, components, locations, 2uLL);
     v34 = self->horizontal_label_offset;
     rectHeight = self->rectHeight;
-    CGContextSaveGState(a3);
-    CGContextClip(a3);
+    CGContextSaveGState(fill);
+    CGContextClip(fill);
     v51.y = 0.0;
     v50.x = v34;
     v50.y = rectHeight;
     v51.x = v34;
-    CGContextDrawLinearGradient(a3, v33, v50, v51, 0);
-    CGContextRestoreGState(a3);
+    CGContextDrawLinearGradient(fill, v33, v50, v51, 0);
+    CGContextRestoreGState(fill);
     CGColorSpaceRelease(DeviceRGB);
     CGGradientRelease(v33);
   }
 }
 
-- (void)drawErrorText:(CGContext *)a3 andRect:(CGRect)a4
+- (void)drawErrorText:(CGContext *)text andRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   errValue = self->_errValue;
   v8 = @"Not Enough Data Points";
   if (errValue != 2)
@@ -868,12 +868,12 @@ LABEL_15:
   [(__CFString *)v13 drawInRect:self->defaultTextAttributes withAttributes:(width - v11) * 0.5, (height - v12) * 0.5, v11];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   v9 = +[UIColor clearColor];
   CGContextSetFillColorWithColor(CurrentContext, [v9 CGColor]);

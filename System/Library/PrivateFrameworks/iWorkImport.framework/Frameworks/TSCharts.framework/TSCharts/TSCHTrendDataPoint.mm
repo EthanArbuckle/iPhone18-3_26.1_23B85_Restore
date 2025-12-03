@@ -1,32 +1,32 @@
 @interface TSCHTrendDataPoint
-- (TSCHTrendDataPoint)initWithPointX:(double)a3 pointY:(double)a4 forValueIndex:(unint64_t)a5;
-- (int64_t)xValueCompare:(id)a3;
+- (TSCHTrendDataPoint)initWithPointX:(double)x pointY:(double)y forValueIndex:(unint64_t)index;
+- (int64_t)xValueCompare:(id)compare;
 @end
 
 @implementation TSCHTrendDataPoint
 
-- (TSCHTrendDataPoint)initWithPointX:(double)a3 pointY:(double)a4 forValueIndex:(unint64_t)a5
+- (TSCHTrendDataPoint)initWithPointX:(double)x pointY:(double)y forValueIndex:(unint64_t)index
 {
   v9.receiver = self;
   v9.super_class = TSCHTrendDataPoint;
   result = [(TSCHTrendDataPoint *)&v9 init];
   if (result)
   {
-    result->_dataPointX = a3;
-    result->_dataPointY = a4;
-    result->_valueIndex = a5;
+    result->_dataPointX = x;
+    result->_dataPointY = y;
+    result->_valueIndex = index;
   }
 
   return result;
 }
 
-- (int64_t)xValueCompare:(id)a3
+- (int64_t)xValueCompare:(id)compare
 {
-  v4 = a3;
-  v9 = v4;
+  compareCopy = compare;
+  v9 = compareCopy;
   if ((*&self->_dataPointX & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_dataPointX(v4, v5, v6, v7, v8);
+    objc_msgSend_dataPointX(compareCopy, v5, v6, v7, v8);
     if ((*&v12 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
     {
       v10 = 1;

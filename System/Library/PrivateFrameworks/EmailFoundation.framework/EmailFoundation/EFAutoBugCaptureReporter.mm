@@ -2,7 +2,7 @@
 + (EFAutoBugCaptureReporter)sharedReporter;
 + (OS_os_log)log;
 - (EFAutoBugCaptureReporter)init;
-- (void)reportIssueType:(id)a3 description:(id)a4;
+- (void)reportIssueType:(id)type description:(id)description;
 @end
 
 @implementation EFAutoBugCaptureReporter
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __31__EFAutoBugCaptureReporter_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -66,10 +66,10 @@ void __42__EFAutoBugCaptureReporter_sharedReporter__block_invoke()
   return v2;
 }
 
-- (void)reportIssueType:(id)a3 description:(id)a4
+- (void)reportIssueType:(id)type description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  descriptionCopy = description;
   v8 = +[EFDevice currentDevice];
   if ([v8 isInternal])
   {
@@ -88,23 +88,23 @@ void __42__EFAutoBugCaptureReporter_sharedReporter__block_invoke()
   v10 = +[EFAutoBugCaptureReporter log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
-    [EFAutoBugCaptureReporter reportIssueType:v7 description:v10];
+    [EFAutoBugCaptureReporter reportIssueType:descriptionCopy description:v10];
   }
 
 LABEL_7:
-  v11 = [(EFAutoBugCaptureReporter *)self diagnosticReporter];
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
-  v14 = [v11 signatureWithDomain:@"MobileMail" type:v6 subType:v7 detectedProcess:v13 triggerThresholdValues:0];
+  diagnosticReporter = [(EFAutoBugCaptureReporter *)self diagnosticReporter];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v14 = [diagnosticReporter signatureWithDomain:@"MobileMail" type:typeCopy subType:descriptionCopy detectedProcess:bundleIdentifier triggerThresholdValues:0];
 
-  v15 = [(EFAutoBugCaptureReporter *)self diagnosticReporter];
+  diagnosticReporter2 = [(EFAutoBugCaptureReporter *)self diagnosticReporter];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __56__EFAutoBugCaptureReporter_reportIssueType_description___block_invoke;
   v17[3] = &unk_1E8248780;
-  v16 = v7;
+  v16 = descriptionCopy;
   v18 = v16;
-  [v15 snapshotWithSignature:v14 duration:0 event:0 payload:v17 reply:0.0];
+  [diagnosticReporter2 snapshotWithSignature:v14 duration:0 event:0 payload:v17 reply:0.0];
 }
 
 void __56__EFAutoBugCaptureReporter_reportIssueType_description___block_invoke(uint64_t a1, void *a2)

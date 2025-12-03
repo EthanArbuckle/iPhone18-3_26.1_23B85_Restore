@@ -1,26 +1,26 @@
 @interface PKPaymentAuthorizationServiceProxy
 - (PKEntitlementWhitelist)entitlementWhitelist;
 - (PKPaymentAuthorizationServiceProtocol)delegate;
-- (PKPaymentAuthorizationServiceProxy)initWithConnection:(id)a3 paymentRequest:(id)a4;
-- (id)_sanitizeMerchantSessionUpdate:(id)a3;
-- (void)authorizationDidAuthorizeApplePayTrustSignatureCompleteWithResult:(id)a3;
-- (void)authorizationDidAuthorizeContextCompleteWithResult:(id)a3;
-- (void)authorizationDidAuthorizePaymentCompleteWithResult:(id)a3;
-- (void)authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:(id)a3;
-- (void)authorizationDidAuthorizePurchaseCompleteWithStatus:(int64_t)a3;
-- (void)authorizationDidChangeCouponCodeCompleteWithUpdate:(id)a3;
-- (void)authorizationDidRequestMerchantSessionCompleteWithUpdate:(id)a3;
-- (void)authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems:(id)a3;
-- (void)authorizationDidSelectPaymentMethodCompleteWithUpdate:(id)a3;
-- (void)authorizationDidSelectShippingAddressCompleteWithUpdate:(id)a3;
-- (void)authorizationDidSelectShippingMethodCompleteWithUpdate:(id)a3;
-- (void)authorizationDidUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)a3 signatureRequest:(id)a4;
-- (void)fulfillRemotePaymentRequestPromise:(id)a3 completion:(id)a4;
-- (void)handleDismissWithCompletion:(id)a3;
+- (PKPaymentAuthorizationServiceProxy)initWithConnection:(id)connection paymentRequest:(id)request;
+- (id)_sanitizeMerchantSessionUpdate:(id)update;
+- (void)authorizationDidAuthorizeApplePayTrustSignatureCompleteWithResult:(id)result;
+- (void)authorizationDidAuthorizeContextCompleteWithResult:(id)result;
+- (void)authorizationDidAuthorizePaymentCompleteWithResult:(id)result;
+- (void)authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:(id)result;
+- (void)authorizationDidAuthorizePurchaseCompleteWithStatus:(int64_t)status;
+- (void)authorizationDidChangeCouponCodeCompleteWithUpdate:(id)update;
+- (void)authorizationDidRequestMerchantSessionCompleteWithUpdate:(id)update;
+- (void)authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems:(id)items;
+- (void)authorizationDidSelectPaymentMethodCompleteWithUpdate:(id)update;
+- (void)authorizationDidSelectShippingAddressCompleteWithUpdate:(id)update;
+- (void)authorizationDidSelectShippingMethodCompleteWithUpdate:(id)update;
+- (void)authorizationDidUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)update signatureRequest:(id)request;
+- (void)fulfillRemotePaymentRequestPromise:(id)promise completion:(id)completion;
+- (void)handleDismissWithCompletion:(id)completion;
 - (void)handleHostApplicationDidBecomeActive;
 - (void)handleHostApplicationDidCancel;
-- (void)handleHostApplicationWillResignActive:(BOOL)a3;
-- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)a3;
+- (void)handleHostApplicationWillResignActive:(BOOL)active;
+- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)failure;
 @end
 
 @implementation PKPaymentAuthorizationServiceProxy
@@ -40,18 +40,18 @@
   return entitlementWhitelist;
 }
 
-- (PKPaymentAuthorizationServiceProxy)initWithConnection:(id)a3 paymentRequest:(id)a4
+- (PKPaymentAuthorizationServiceProxy)initWithConnection:(id)connection paymentRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = PKPaymentAuthorizationServiceProxy;
   v9 = [(PKPaymentAuthorizationServiceProxy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_paymentRequest, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_paymentRequest, request);
   }
 
   return v10;
@@ -73,14 +73,14 @@ void __68__PKPaymentAuthorizationServiceProxy_handleHostApplicationDidCancel__bl
   [WeakRetained handleHostApplicationDidCancel];
 }
 
-- (void)handleHostApplicationWillResignActive:(BOOL)a3
+- (void)handleHostApplicationWillResignActive:(BOOL)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __76__PKPaymentAuthorizationServiceProxy_handleHostApplicationWillResignActive___block_invoke;
   v3[3] = &unk_1E8013F80;
   v3[4] = self;
-  v4 = a3;
+  activeCopy = active;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -106,16 +106,16 @@ void __74__PKPaymentAuthorizationServiceProxy_handleHostApplicationDidBecomeActi
   [WeakRetained handleHostApplicationDidBecomeActive];
 }
 
-- (void)handleDismissWithCompletion:(id)a3
+- (void)handleDismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__PKPaymentAuthorizationServiceProxy_handleDismissWithCompletion___block_invoke;
   v6[3] = &unk_1E8010DD0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -125,19 +125,19 @@ void __66__PKPaymentAuthorizationServiceProxy_handleDismissWithCompletion___bloc
   [WeakRetained handleDismissWithCompletion:*(a1 + 40)];
 }
 
-- (void)fulfillRemotePaymentRequestPromise:(id)a3 completion:(id)a4
+- (void)fulfillRemotePaymentRequestPromise:(id)promise completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  promiseCopy = promise;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__PKPaymentAuthorizationServiceProxy_fulfillRemotePaymentRequestPromise_completion___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = promiseCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = promiseCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -147,14 +147,14 @@ void __84__PKPaymentAuthorizationServiceProxy_fulfillRemotePaymentRequestPromise
   [WeakRetained fulfillRemotePaymentRequestPromise:a1[5] completion:a1[6]];
 }
 
-- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)a3
+- (void)rejectRemotePaymentRequestPromiseWithFailure:(unint64_t)failure
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __83__PKPaymentAuthorizationServiceProxy_rejectRemotePaymentRequestPromiseWithFailure___block_invoke;
   v3[3] = &unk_1E80119C8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = failure;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -164,16 +164,16 @@ void __83__PKPaymentAuthorizationServiceProxy_rejectRemotePaymentRequestPromiseW
   [WeakRetained rejectRemotePaymentRequestPromiseWithFailure:*(a1 + 40)];
 }
 
-- (void)authorizationDidRequestMerchantSessionCompleteWithUpdate:(id)a3
+- (void)authorizationDidRequestMerchantSessionCompleteWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __95__PKPaymentAuthorizationServiceProxy_authorizationDidRequestMerchantSessionCompleteWithUpdate___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -184,17 +184,17 @@ void __95__PKPaymentAuthorizationServiceProxy_authorizationDidRequestMerchantSes
   [WeakRetained authorizationDidRequestMerchantSessionCompleteWithUpdate:v3];
 }
 
-- (id)_sanitizeMerchantSessionUpdate:(id)a3
+- (id)_sanitizeMerchantSessionUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 status] || (-[PKPaymentAuthorizationServiceProxy entitlementWhitelist](self, "entitlementWhitelist"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "session"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEntitledForMerchantSession:", v6), v6, v5, (v7 & 1) == 0))
+  updateCopy = update;
+  if ([updateCopy status] || (-[PKPaymentAuthorizationServiceProxy entitlementWhitelist](self, "entitlementWhitelist"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(updateCopy, "session"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEntitledForMerchantSession:", v6), v6, v5, (v7 & 1) == 0))
   {
     v8 = [objc_alloc(MEMORY[0x1E69B8D80]) initWithStatus:1 merchantSession:0];
   }
 
   else
   {
-    v8 = v4;
+    v8 = updateCopy;
   }
 
   v9 = v8;
@@ -202,16 +202,16 @@ void __95__PKPaymentAuthorizationServiceProxy_authorizationDidRequestMerchantSes
   return v9;
 }
 
-- (void)authorizationDidAuthorizeContextCompleteWithResult:(id)a3
+- (void)authorizationDidAuthorizeContextCompleteWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __89__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizeContextCompleteWithResult___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = resultCopy;
+  selfCopy = self;
+  v5 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -245,16 +245,16 @@ void __89__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizeContextCo
   }
 }
 
-- (void)authorizationDidAuthorizePaymentCompleteWithResult:(id)a3
+- (void)authorizationDidAuthorizePaymentCompleteWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __89__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizePaymentCompleteWithResult___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = resultCopy;
+  selfCopy = self;
+  v5 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -288,14 +288,14 @@ void __89__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizePaymentCo
   }
 }
 
-- (void)authorizationDidAuthorizePurchaseCompleteWithStatus:(int64_t)a3
+- (void)authorizationDidAuthorizePurchaseCompleteWithStatus:(int64_t)status
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __90__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizePurchaseCompleteWithStatus___block_invoke;
   v3[3] = &unk_1E80119C8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = status;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -305,16 +305,16 @@ void __90__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizePurchaseC
   [WeakRetained authorizationDidAuthorizePurchaseCompleteWithStatus:*(a1 + 40)];
 }
 
-- (void)authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:(id)a3
+- (void)authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __98__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -324,16 +324,16 @@ void __98__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizePeerPayme
   [WeakRetained authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:*(a1 + 40)];
 }
 
-- (void)authorizationDidAuthorizeApplePayTrustSignatureCompleteWithResult:(id)a3
+- (void)authorizationDidAuthorizeApplePayTrustSignatureCompleteWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __104__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizeApplePayTrustSignatureCompleteWithResult___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -343,19 +343,19 @@ void __104__PKPaymentAuthorizationServiceProxy_authorizationDidAuthorizeApplePay
   [WeakRetained authorizationDidAuthorizeApplePayTrustSignatureCompleteWithResult:*(a1 + 40)];
 }
 
-- (void)authorizationDidUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)a3 signatureRequest:(id)a4
+- (void)authorizationDidUpdateAccountServicePaymentMethodCompleteWithUpdate:(id)update signatureRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  requestCopy = request;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __123__PKPaymentAuthorizationServiceProxy_authorizationDidUpdateAccountServicePaymentMethodCompleteWithUpdate_signatureRequest___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = updateCopy;
+  v12 = requestCopy;
+  v8 = requestCopy;
+  v9 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -365,16 +365,16 @@ void __123__PKPaymentAuthorizationServiceProxy_authorizationDidUpdateAccountServ
   [WeakRetained authorizationDidUpdateAccountServicePaymentMethodCompleteWithUpdate:a1[5] signatureRequest:a1[6]];
 }
 
-- (void)authorizationDidSelectShippingMethodCompleteWithUpdate:(id)a3
+- (void)authorizationDidSelectShippingMethodCompleteWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __93__PKPaymentAuthorizationServiceProxy_authorizationDidSelectShippingMethodCompleteWithUpdate___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -384,16 +384,16 @@ void __93__PKPaymentAuthorizationServiceProxy_authorizationDidSelectShippingMeth
   [WeakRetained authorizationDidSelectShippingMethodCompleteWithUpdate:*(a1 + 40)];
 }
 
-- (void)authorizationDidSelectShippingAddressCompleteWithUpdate:(id)a3
+- (void)authorizationDidSelectShippingAddressCompleteWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __94__PKPaymentAuthorizationServiceProxy_authorizationDidSelectShippingAddressCompleteWithUpdate___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -403,16 +403,16 @@ void __94__PKPaymentAuthorizationServiceProxy_authorizationDidSelectShippingAddr
   [WeakRetained authorizationDidSelectShippingAddressCompleteWithUpdate:*(a1 + 40)];
 }
 
-- (void)authorizationDidSelectPaymentMethodCompleteWithUpdate:(id)a3
+- (void)authorizationDidSelectPaymentMethodCompleteWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __92__PKPaymentAuthorizationServiceProxy_authorizationDidSelectPaymentMethodCompleteWithUpdate___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -422,7 +422,7 @@ void __92__PKPaymentAuthorizationServiceProxy_authorizationDidSelectPaymentMetho
   [WeakRetained authorizationDidSelectPaymentMethodCompleteWithUpdate:*(a1 + 40)];
 }
 
-- (void)authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems:(id)a3
+- (void)authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems:(id)items
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -438,16 +438,16 @@ void __105__PKPaymentAuthorizationServiceProxy_authorizationDidSelectPaymentMeth
   [WeakRetained authorizationDidSelectPaymentMethodCompleteWithUpdate:0];
 }
 
-- (void)authorizationDidChangeCouponCodeCompleteWithUpdate:(id)a3
+- (void)authorizationDidChangeCouponCodeCompleteWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __89__PKPaymentAuthorizationServiceProxy_authorizationDidChangeCouponCodeCompleteWithUpdate___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

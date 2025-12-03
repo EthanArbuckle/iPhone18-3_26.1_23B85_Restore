@@ -1,13 +1,13 @@
 @interface NEPerApp
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)removeAppRuleByID:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)removeAppRuleByID:(id)d;
 - (NEPerApp)init;
-- (NEPerApp)initWithCoder:(id)a3;
-- (id)copyAppRuleByID:(id)a3;
+- (NEPerApp)initWithCoder:(id)coder;
+- (id)copyAppRuleByID:(id)d;
 - (id)copyAppRuleIDs;
 - (id)copyCachedMachOUUIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEPerApp
@@ -20,8 +20,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(NEPerApp *)self appRules];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  appRules = [(NEPerApp *)self appRules];
+  v5 = [appRules countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -32,21 +32,21 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(appRules);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 cachedMachOUUIDs];
-        v11 = [v10 count];
+        cachedMachOUUIDs = [v9 cachedMachOUUIDs];
+        v11 = [cachedMachOUUIDs count];
 
         if (v11)
         {
-          v12 = [v9 cachedMachOUUIDs];
-          [v3 addObjectsFromArray:v12];
+          cachedMachOUUIDs2 = [v9 cachedMachOUUIDs];
+          [v3 addObjectsFromArray:cachedMachOUUIDs2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [appRules countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -92,8 +92,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) matchSigningIdentifier];
-        [v3 addObject:v9];
+        matchSigningIdentifier = [*(*(&v13 + 1) + 8 * v8) matchSigningIdentifier];
+        [v3 addObject:matchSigningIdentifier];
 
         ++v8;
       }
@@ -110,9 +110,9 @@
   return v10;
 }
 
-- (BOOL)removeAppRuleByID:(id)a3
+- (BOOL)removeAppRuleByID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
   appRules = self->_appRules;
   p_appRules = &self->_appRules;
@@ -123,8 +123,8 @@
     while (1)
     {
       v10 = [v8 objectAtIndex:v9];
-      v11 = [v10 matchSigningIdentifier];
-      v12 = [v11 isEqualToString:v4];
+      matchSigningIdentifier = [v10 matchSigningIdentifier];
+      v12 = [matchSigningIdentifier isEqualToString:dCopy];
 
       if (v12)
       {
@@ -152,17 +152,17 @@ LABEL_5:
   return v13;
 }
 
-- (id)copyAppRuleByID:(id)a3
+- (id)copyAppRuleByID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5->_appRules;
+  v6 = selfCopy->_appRules;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -177,8 +177,8 @@ LABEL_5:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 matchSigningIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        matchSigningIdentifier = [v10 matchSigningIdentifier];
+        v12 = [matchSigningIdentifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -199,25 +199,25 @@ LABEL_5:
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEPerApp *)self appRules];
+  errorsCopy = errors;
+  appRules = [(NEPerApp *)self appRules];
 
-  if (v5)
+  if (appRules)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(NEPerApp *)self appRules];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    appRules2 = [(NEPerApp *)self appRules];
+    v7 = [appRules2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -229,24 +229,24 @@ LABEL_11:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(appRules2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 &= [v12 checkValidityAndCollectErrors:v4];
+            v10 &= [v12 checkValidityAndCollectErrors:errorsCopy];
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v10 = 0;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [appRules2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -267,54 +267,54 @@ LABEL_11:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NEPerApp *)self appRules];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  appRules = [(NEPerApp *)self appRules];
 
-  if (v5)
+  if (appRules)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v7 = [(NEPerApp *)self appRules];
-    v8 = [v6 initWithArray:v7 copyItems:1];
+    appRules2 = [(NEPerApp *)self appRules];
+    v8 = [v6 initWithArray:appRules2 copyItems:1];
     [v4 setAppRules:v8];
   }
 
   v9 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v10 = [(NEPerApp *)self excludedDomains];
-  v11 = [v9 initWithArray:v10 copyItems:1];
+  excludedDomains = [(NEPerApp *)self excludedDomains];
+  v11 = [v9 initWithArray:excludedDomains copyItems:1];
   [v4 setExcludedDomains:v11];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEPerApp *)self appRules];
-  [v4 encodeObject:v5 forKey:@"Rules"];
+  coderCopy = coder;
+  appRules = [(NEPerApp *)self appRules];
+  [coderCopy encodeObject:appRules forKey:@"Rules"];
 
-  v6 = [(NEPerApp *)self excludedDomains];
-  [v4 encodeObject:v6 forKey:@"ExcludedDomains"];
+  excludedDomains = [(NEPerApp *)self excludedDomains];
+  [coderCopy encodeObject:excludedDomains forKey:@"ExcludedDomains"];
 }
 
-- (NEPerApp)initWithCoder:(id)a3
+- (NEPerApp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEPerApp *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Rules"];
     appRules = v5->_appRules;
     v5->_appRules = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"ExcludedDomains"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ExcludedDomains"];
     excludedDomains = v5->_excludedDomains;
     v5->_excludedDomains = v14;
   }

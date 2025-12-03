@@ -1,10 +1,10 @@
 @interface CSPhraseNDEAPIScorer
-- (CSPhraseNDEAPIScorer)initWithAsset:(id)a3 assetConfig:(id)a4 firstPassSource:(unint64_t)a5 activeChannel:(unint64_t)a6 siriLanguage:(id)a7 shouldEnableShadowMicScore:(BOOL)a8 rtmodelRequestOptions:(id)a9;
+- (CSPhraseNDEAPIScorer)initWithAsset:(id)asset assetConfig:(id)config firstPassSource:(unint64_t)source activeChannel:(unint64_t)channel siriLanguage:(id)language shouldEnableShadowMicScore:(BOOL)score rtmodelRequestOptions:(id)options;
 - (CSPhraseNDEAPIScorerDelegate)delegate;
 - (double)currentShadowMicScore;
-- (id)_rtModelFromAsset:(id)a3 requestOptions:(id)a4 forSiriLanguage:(id)a5 withPhraseCount:(unint64_t)a6;
-- (void)keywordAnalyzerNDEAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5;
-- (void)processAudioChunk:(id)a3 activeChannel:(unint64_t)a4;
+- (id)_rtModelFromAsset:(id)asset requestOptions:(id)options forSiriLanguage:(id)language withPhraseCount:(unint64_t)count;
+- (void)keywordAnalyzerNDEAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel;
+- (void)processAudioChunk:(id)chunk activeChannel:(unint64_t)channel;
 @end
 
 @implementation CSPhraseNDEAPIScorer
@@ -16,60 +16,60 @@
   return WeakRetained;
 }
 
-- (id)_rtModelFromAsset:(id)a3 requestOptions:(id)a4 forSiriLanguage:(id)a5 withPhraseCount:(unint64_t)a6
+- (id)_rtModelFromAsset:(id)asset requestOptions:(id)options forSiriLanguage:(id)language withPhraseCount:(unint64_t)count
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  optionsCopy = options;
+  languageCopy = language;
+  assetCopy = asset;
   v12 = [CSVoiceTriggerRTModelRequestOptions alloc];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10015FA58;
   v18[3] = &unk_100253470;
-  v19 = v9;
-  v20 = v10;
-  v21 = a6;
-  v13 = v10;
-  v14 = v9;
+  v19 = optionsCopy;
+  v20 = languageCopy;
+  countCopy = count;
+  v13 = languageCopy;
+  v14 = optionsCopy;
   v15 = [(CSVoiceTriggerRTModelRequestOptions *)v12 initWithCSRTModelRequestOptions:v14 builder:v18];
-  v16 = [v11 latestHearstRTModelWithRequestOptions:v15];
+  v16 = [assetCopy latestHearstRTModelWithRequestOptions:v15];
 
   return v16;
 }
 
-- (void)keywordAnalyzerNDEAPI:(id)a3 hasResultAvailable:(id)a4 forChannel:(unint64_t)a5
+- (void)keywordAnalyzerNDEAPI:(id)i hasResultAvailable:(id)available forChannel:(unint64_t)channel
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 isEarlyDetect] && !self->_hasReceivedEarlyDetectNDEAPIResult)
+  iCopy = i;
+  availableCopy = available;
+  if ([availableCopy isEarlyDetect] && !self->_hasReceivedEarlyDetectNDEAPIResult)
   {
-    v13 = [v8 samplesFed];
+    samplesFed = [availableCopy samplesFed];
     v14 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 136315394;
       v16 = "[CSPhraseNDEAPIScorer keywordAnalyzerNDEAPI:hasResultAvailable:forChannel:]";
       v17 = 1026;
-      v18 = v13;
+      v18 = samplesFed;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s EarlyDetectSample = %{public}d", &v15, 0x12u);
     }
 
-    [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator setBestEarlyDetectSample:v13];
+    [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator setBestEarlyDetectSample:samplesFed];
     self->_hasReceivedEarlyDetectNDEAPIResult = 1;
   }
 
   else if (!self->_hasReceivedNDEAPIResult)
   {
     self->_hasReceivedNDEAPIResult = 1;
-    v9 = [v8 bestStart];
-    v10 = [v8 bestEnd];
+    bestStart = [availableCopy bestStart];
+    bestEnd = [availableCopy bestEnd];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained voiceTriggerPhraseNDEAPIScorerDidDetectedKeyword:self bestStartSampleCount:v9 bestEndSampleCount:v10];
+    [WeakRetained voiceTriggerPhraseNDEAPIScorerDidDetectedKeyword:self bestStartSampleCount:bestStart bestEndSampleCount:bestEnd];
 
-    v12 = [v8 samplesFed];
-    [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator setBestStartDetectSample:v9];
-    [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator setBestEndDetectSample:v12];
-    [v7 reset];
+    samplesFed2 = [availableCopy samplesFed];
+    [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator setBestStartDetectSample:bestStart];
+    [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator setBestEndDetectSample:samplesFed2];
+    [iCopy reset];
   }
 }
 
@@ -82,10 +82,10 @@
   return result;
 }
 
-- (void)processAudioChunk:(id)a3 activeChannel:(unint64_t)a4
+- (void)processAudioChunk:(id)chunk activeChannel:(unint64_t)channel
 {
-  v6 = a3;
-  v7 = [v6 dataForChannel:a4];
+  chunkCopy = chunk;
+  v7 = [chunkCopy dataForChannel:channel];
   [(CSShadowMicScoreCreator *)self->_shadowMicScoreCreator addDataToBuffer:v7];
   if (self->_shadowMicScoreCreator)
   {
@@ -125,32 +125,32 @@
 
   else
   {
-    v9 = [(CSKeywordAnalyzerNDEAPI *)self->_keywordAnalyzerNDEAPI processAudioChunk:v6];
+    v9 = [(CSKeywordAnalyzerNDEAPI *)self->_keywordAnalyzerNDEAPI processAudioChunk:chunkCopy];
   }
 }
 
-- (CSPhraseNDEAPIScorer)initWithAsset:(id)a3 assetConfig:(id)a4 firstPassSource:(unint64_t)a5 activeChannel:(unint64_t)a6 siriLanguage:(id)a7 shouldEnableShadowMicScore:(BOOL)a8 rtmodelRequestOptions:(id)a9
+- (CSPhraseNDEAPIScorer)initWithAsset:(id)asset assetConfig:(id)config firstPassSource:(unint64_t)source activeChannel:(unint64_t)channel siriLanguage:(id)language shouldEnableShadowMicScore:(BOOL)score rtmodelRequestOptions:(id)options
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a9;
+  scoreCopy = score;
+  assetCopy = asset;
+  configCopy = config;
+  languageCopy = language;
+  optionsCopy = options;
   v35.receiver = self;
   v35.super_class = CSPhraseNDEAPIScorer;
   v18 = [(CSPhraseNDEAPIScorer *)&v35 init];
   v19 = v18;
   if (v18)
   {
-    if (v9 && v18->_shadowMicScoreThresholdForVAD != -1.0)
+    if (scoreCopy && v18->_shadowMicScoreThresholdForVAD != -1.0)
     {
-      v20 = [v17 accessoryInfo];
-      v21 = [v20 supportsAlwaysOnAccelerometer];
+      accessoryInfo = [optionsCopy accessoryInfo];
+      supportsAlwaysOnAccelerometer = [accessoryInfo supportsAlwaysOnAccelerometer];
 
-      if ((v21 & 1) == 0)
+      if ((supportsAlwaysOnAccelerometer & 1) == 0)
       {
-        v22 = [v15 wearerDetectionConfig];
-        [v22 shadowMicScoreThreshold];
+        wearerDetectionConfig = [configCopy wearerDetectionConfig];
+        [wearerDetectionConfig shadowMicScoreThreshold];
         v19->_shadowMicScoreThresholdForVAD = v23;
 
         v24 = objc_alloc_init(CSShadowMicScoreCreator);
@@ -167,16 +167,16 @@
     v19->_hasReceivedEarlyDetectNDEAPIResult = 0;
     v19->_hearstNumberOfBytesPerChunk = +[CSConfig hearstNumberOfBytesPerChunk];
     v19->_hearstNumberOfSamplesPerChunk = +[CSConfig hearstNumberOfSamplesPerChunk];
-    v28 = [v15 phraseConfigs];
-    v29 = -[CSPhraseNDEAPIScorer _rtModelFromAsset:requestOptions:forSiriLanguage:withPhraseCount:](v19, "_rtModelFromAsset:requestOptions:forSiriLanguage:withPhraseCount:", v14, v17, v16, [v28 count]);
+    phraseConfigs = [configCopy phraseConfigs];
+    v29 = -[CSPhraseNDEAPIScorer _rtModelFromAsset:requestOptions:forSiriLanguage:withPhraseCount:](v19, "_rtModelFromAsset:requestOptions:forSiriLanguage:withPhraseCount:", assetCopy, optionsCopy, languageCopy, [phraseConfigs count]);
 
     v30 = [CSKeywordAnalyzerNDEAPI alloc];
-    v31 = [v29 modelData];
-    v32 = [v30 initWithBlob:v31];
+    modelData = [v29 modelData];
+    v32 = [v30 initWithBlob:modelData];
     keywordAnalyzerNDEAPI = v19->_keywordAnalyzerNDEAPI;
     v19->_keywordAnalyzerNDEAPI = v32;
 
-    [(CSKeywordAnalyzerNDEAPI *)v19->_keywordAnalyzerNDEAPI setActiveChannel:a6];
+    [(CSKeywordAnalyzerNDEAPI *)v19->_keywordAnalyzerNDEAPI setActiveChannel:channel];
     [(CSKeywordAnalyzerNDEAPI *)v19->_keywordAnalyzerNDEAPI setDelegate:v19];
   }
 

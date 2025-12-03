@@ -1,12 +1,12 @@
 @interface HDCloudSyncCodableRegisteredStore
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableRegisteredStore
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableRegisteredStore;
   v4 = [(HDCloudSyncCodableRegisteredStore *)&v8 description];
-  v5 = [(HDCloudSyncCodableRegisteredStore *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableRegisteredStore *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   ownerIdentifier = self->_ownerIdentifier;
   if (ownerIdentifier)
   {
-    [v3 setObject:ownerIdentifier forKey:@"ownerIdentifier"];
+    [dictionary setObject:ownerIdentifier forKey:@"ownerIdentifier"];
   }
 
   storeIdentifier = self->_storeIdentifier;
@@ -42,84 +42,84 @@
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v8 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ownerIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_storeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_ownerIdentifier)
   {
-    [v4 setOwnerIdentifier:?];
-    v4 = v5;
+    [toCopy setOwnerIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_storeIdentifier)
   {
     [v5 setStoreIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncIdentity)
   {
     [v5 setSyncIdentity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_ownerIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_ownerIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_storeIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_storeIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v10 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ownerIdentifier = self->_ownerIdentifier, !(ownerIdentifier | v4[1])) || -[NSString isEqual:](ownerIdentifier, "isEqual:")) && ((storeIdentifier = self->_storeIdentifier, !(storeIdentifier | v4[2])) || -[NSString isEqual:](storeIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ownerIdentifier = self->_ownerIdentifier, !(ownerIdentifier | equalCopy[1])) || -[NSString isEqual:](ownerIdentifier, "isEqual:")) && ((storeIdentifier = self->_storeIdentifier, !(storeIdentifier | equalCopy[2])) || -[NSString isEqual:](storeIdentifier, "isEqual:")))
   {
     syncIdentity = self->_syncIdentity;
-    if (syncIdentity | v4[3])
+    if (syncIdentity | equalCopy[3])
     {
       v8 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
     }
@@ -145,24 +145,24 @@
   return v4 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[1])
   {
     [(HDCloudSyncCodableRegisteredStore *)self setOwnerIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HDCloudSyncCodableRegisteredStore *)self setStoreIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   syncIdentity = self->_syncIdentity;
-  v6 = v4[3];
+  v6 = fromCopy[3];
   if (syncIdentity)
   {
     if (v6)

@@ -1,5 +1,5 @@
 @interface ZWCancelButtonTouchesScrollView
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
 - (id)panGestureRecognizer;
 @end
 
@@ -9,15 +9,15 @@
 {
   v4.receiver = self;
   v4.super_class = ZWCancelButtonTouchesScrollView;
-  v2 = [(ZWCancelButtonTouchesScrollView *)&v4 panGestureRecognizer];
-  [v2 setAllowedScrollTypesMask:0];
+  panGestureRecognizer = [(ZWCancelButtonTouchesScrollView *)&v4 panGestureRecognizer];
+  [panGestureRecognizer setAllowedScrollTypesMask:0];
 
-  return v2;
+  return panGestureRecognizer;
 }
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,7 +28,7 @@
   {
     v7.receiver = self;
     v7.super_class = ZWCancelButtonTouchesScrollView;
-    v5 = [(ZWCancelButtonTouchesScrollView *)&v7 touchesShouldCancelInContentView:v4];
+    v5 = [(ZWCancelButtonTouchesScrollView *)&v7 touchesShouldCancelInContentView:viewCopy];
   }
 
   return v5;

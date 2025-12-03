@@ -1,38 +1,38 @@
 @interface WBSHistoryService
-- (BOOL)_connectionIsEntitledToUseUserDatabase:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (WBSHistoryService)initWithListener:(id)a3;
-- (id)_copyAndRedactHistoryDatabaseWithURL:(id)a3 databaseDestinationFileURL:(id)a4;
+- (BOOL)_connectionIsEntitledToUseUserDatabase:(id)database;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (WBSHistoryService)initWithListener:(id)listener;
+- (id)_copyAndRedactHistoryDatabaseWithURL:(id)l databaseDestinationFileURL:(id)rL;
 - (id)_createListener;
-- (id)_openOrReuseExistingDatabaseWithOptions:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5;
-- (void)connectWithOptions:(id)a3 connection:(id)a4 completionHandler:(id)a5;
-- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)a3 completionHandler:(id)a4;
-- (void)listDatabaseURLsWithCompletionHandler:(id)a3;
-- (void)openDatabaseWithID:(id)a3 createIfNeeded:(BOOL)a4 completionHandler:(id)a5;
+- (id)_openOrReuseExistingDatabaseWithOptions:(id)options createIfNeeded:(BOOL)needed error:(id *)error;
+- (void)connectWithOptions:(id)options connection:(id)connection completionHandler:(id)handler;
+- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)profiles completionHandler:(id)handler;
+- (void)listDatabaseURLsWithCompletionHandler:(id)handler;
+- (void)openDatabaseWithID:(id)d createIfNeeded:(BOOL)needed completionHandler:(id)handler;
 - (void)resume;
-- (void)setCompletionListVendorEndpoint:(id)a3 completionHandler:(id)a4;
+- (void)setCompletionListVendorEndpoint:(id)endpoint completionHandler:(id)handler;
 - (void)shutdown;
 @end
 
 @implementation WBSHistoryService
 
-- (WBSHistoryService)initWithListener:(id)a3
+- (WBSHistoryService)initWithListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v22.receiver = self;
   v22.super_class = WBSHistoryService;
   v6 = [(WBSHistoryService *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listener, a3);
-    v8 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v6->_listener, listener);
+    date = [MEMORY[0x1E695DF00] date];
     initDate = v7->_initDate;
-    v7->_initDate = v8;
+    v7->_initDate = date;
 
     v10 = [WBSHistoryDatabaseAccessBroker alloc];
-    v11 = [(WBSHistoryService *)v7 databaseURL];
-    v12 = [(WBSHistoryDatabaseAccessBroker *)v10 initWithHistoryDatabaseURL:v11];
+    databaseURL = [(WBSHistoryService *)v7 databaseURL];
+    v12 = [(WBSHistoryDatabaseAccessBroker *)v10 initWithHistoryDatabaseURL:databaseURL];
     databaseAccessBroker = v7->_databaseAccessBroker;
     v7->_databaseAccessBroker = v12;
 
@@ -44,9 +44,9 @@
     fileOperationGroup = v7->_fileOperationGroup;
     v7->_fileOperationGroup = v16;
 
-    v18 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     databases = v7->_databases;
-    v7->_databases = v18;
+    v7->_databases = strongToWeakObjectsMapTable;
 
     v20 = v7;
   }
@@ -67,9 +67,9 @@
   listener = self->_listener;
   if (!listener)
   {
-    v5 = [(WBSHistoryService *)self _createListener];
+    _createListener = [(WBSHistoryService *)self _createListener];
     v6 = self->_listener;
-    self->_listener = v5;
+    self->_listener = _createListener;
 
     listener = self->_listener;
   }
@@ -141,18 +141,18 @@ uint64_t __29__WBSHistoryService_shutdown__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 32) removeAllObjects];
 }
 
-- (BOOL)_connectionIsEntitledToUseUserDatabase:(id)a3
+- (BOOL)_connectionIsEntitledToUseUserDatabase:(id)database
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.private.Safari.History"];
+  databaseCopy = database;
+  v4 = [databaseCopy valueForEntitlement:@"com.apple.private.Safari.History"];
   if (!v4)
   {
     v6 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109120;
-      v8[1] = [v3 processIdentifier];
+      v8[1] = [databaseCopy processIdentifier];
       _os_log_impl(&dword_1BB6F3000, v6, OS_LOG_TYPE_DEFAULT, "Process %d is missing history entitlement. Process will be restricted to private in-memory database", v8, 8u);
     }
 
@@ -165,34 +165,34 @@ uint64_t __29__WBSHistoryService_shutdown__block_invoke(uint64_t a1)
     v6 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      -[WBSHistoryService _connectionIsEntitledToUseUserDatabase:].cold.1(v8, [v3 processIdentifier], v6);
+      -[WBSHistoryService _connectionIsEntitledToUseUserDatabase:].cold.1(v8, [databaseCopy processIdentifier], v6);
     }
 
 LABEL_8:
 
-    v5 = 0;
+    bOOLValue = 0;
     goto LABEL_9;
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 LABEL_9:
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = WBSHistoryConnectionInterface();
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = [[WBSHistoryConnection alloc] initWithHistoryService:self];
-  [v5 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
 
-  [v5 setInvalidationHandler:&__block_literal_global_63];
-  [v5 setInterruptionHandler:&__block_literal_global_13];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:&__block_literal_global_63];
+  [connectionCopy setInterruptionHandler:&__block_literal_global_13];
+  [connectionCopy resume];
   if (self->_initDate)
   {
     v8 = WBS_LOG_CHANNEL_PREFIXHistory();
@@ -227,10 +227,10 @@ void __56__WBSHistoryService_listener_shouldAcceptNewConnection___block_invoke_1
   }
 }
 
-- (void)listDatabaseURLsWithCompletionHandler:(id)a3
+- (void)listDatabaseURLsWithCompletionHandler:(id)handler
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  handlerCopy = handler;
   v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v3 = +[WBSHistory historyDatabaseURL];
   [v22 setObject:v3 forKeyedSubscript:*MEMORY[0x1E69C8B58]];
@@ -242,15 +242,15 @@ void __56__WBSHistoryService_listener_shouldAcceptNewConnection___block_invoke_1
   v21 = v5;
   v30[2] = *MEMORY[0x1E695DC40];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v23 safari_profilesDirectoryURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_profilesDirectoryURL = [defaultManager safari_profilesDirectoryURL];
   v28 = 0;
-  v18 = [v23 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v6 options:4 error:&v28];
+  v18 = [defaultManager contentsOfDirectoryAtURL:safari_profilesDirectoryURL includingPropertiesForKeys:v6 options:4 error:&v28];
   v20 = v28;
 
   if (v20 && ([v20 safari_matchesErrorDomain:*MEMORY[0x1E696A250] andCode:{260, v18}] & 1) == 0)
   {
-    v19[2](v19, 0, v20);
+    handlerCopy[2](handlerCopy, 0, v20);
   }
 
   else
@@ -278,8 +278,8 @@ void __56__WBSHistoryService_listener_shouldAcceptNewConnection___block_invoke_1
           if ([v13 safari_BOOLForKey:v4])
           {
             v14 = [v12 URLByAppendingPathComponent:@"History.db"];
-            v15 = [v14 path];
-            v16 = [v23 fileExistsAtPath:v15];
+            path = [v14 path];
+            v16 = [defaultManager fileExistsAtPath:path];
 
             if (v16)
             {
@@ -295,26 +295,26 @@ void __56__WBSHistoryService_listener_shouldAcceptNewConnection___block_invoke_1
       while (v9);
     }
 
-    (v19)[2](v19, v22, 0);
+    (handlerCopy)[2](handlerCopy, v22, 0);
   }
 }
 
-- (void)openDatabaseWithID:(id)a3 createIfNeeded:(BOOL)a4 completionHandler:(id)a5
+- (void)openDatabaseWithID:(id)d createIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   historyServiceQueue = self->_historyServiceQueue;
   fileOperationGroup = self->_fileOperationGroup;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__WBSHistoryService_openDatabaseWithID_createIfNeeded_completionHandler___block_invoke;
   v14[3] = &unk_1E7FC7058;
-  v15 = v8;
-  v16 = self;
-  v18 = a4;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  selfCopy = self;
+  neededCopy = needed;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
   dispatch_group_async(fileOperationGroup, historyServiceQueue, v14);
 }
 
@@ -340,17 +340,17 @@ void __73__WBSHistoryService_openDatabaseWithID_createIfNeeded_completionHandler
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_openOrReuseExistingDatabaseWithOptions:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5
+- (id)_openOrReuseExistingDatabaseWithOptions:(id)options createIfNeeded:(BOOL)needed error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v57 = a3;
-  v7 = [v57 safari_stringForKey:@"WBSHistoryConnectionOptionDatabaseID"];
+  optionsCopy = options;
+  v7 = [optionsCopy safari_stringForKey:@"WBSHistoryConnectionOptionDatabaseID"];
   if (!v7)
   {
     v7 = *MEMORY[0x1E69C8B58];
   }
 
-  v56 = [v57 safari_URLForKey:@"WBSHistoryConnectionOptionDatabaseURL"];
+  v56 = [optionsCopy safari_URLForKey:@"WBSHistoryConnectionOptionDatabaseURL"];
   if (v56)
   {
 LABEL_10:
@@ -359,21 +359,21 @@ LABEL_10:
     if (v56)
     {
       [v12 addObject:?];
-      if (!a4)
+      if (!needed)
       {
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
-        v15 = [v56 path];
-        v16 = [v14 fileExistsAtPath:v15];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path = [v56 path];
+        v16 = [defaultManager fileExistsAtPath:path];
 
         if ((v16 & 1) == 0)
         {
-          if (a5)
+          if (error)
           {
             v17 = MEMORY[0x1E696ABC0];
             v63 = *MEMORY[0x1E696A998];
             v64[0] = v56;
             v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
-            *a5 = [v17 errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:v18];
+            *error = [v17 errorWithDomain:*MEMORY[0x1E696A798] code:2 userInfo:v18];
           }
 
           v19 = 0;
@@ -393,32 +393,32 @@ LABEL_44:
       }
     }
 
-    if (([v57 safari_BOOLForKey:@"WBSHistoryConnectionOptionNoMemoryFallback"] & 1) == 0)
+    if (([optionsCopy safari_BOOLForKey:@"WBSHistoryConnectionOptionNoMemoryFallback"] & 1) == 0)
     {
       v21 = WBSHistoryInMemoryDatabaseURL();
       [v13 addObject:v21];
     }
 
-    if ([v57 safari_BOOLForKey:@"WBSHistoryConnectionOptionTruncate"])
+    if ([optionsCopy safari_BOOLForKey:@"WBSHistoryConnectionOptionTruncate"])
     {
       v22 = v56;
-      v23 = [MEMORY[0x1E696AC08] defaultManager];
-      v24 = [v22 absoluteString];
-      [v23 removeItemAtURL:v22 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      absoluteString = [v22 absoluteString];
+      [defaultManager2 removeItemAtURL:v22 error:0];
       v25 = MEMORY[0x1E695DFF8];
-      v26 = [v24 stringByAppendingString:@"-lock"];
+      v26 = [absoluteString stringByAppendingString:@"-lock"];
       v27 = [v25 URLWithString:v26];
-      [v23 removeItemAtURL:v27 error:0];
+      [defaultManager2 removeItemAtURL:v27 error:0];
 
       v28 = MEMORY[0x1E695DFF8];
-      v29 = [v24 stringByAppendingString:@"-shm"];
+      v29 = [absoluteString stringByAppendingString:@"-shm"];
       v30 = [v28 URLWithString:v29];
-      [v23 removeItemAtURL:v30 error:0];
+      [defaultManager2 removeItemAtURL:v30 error:0];
 
       v31 = MEMORY[0x1E695DFF8];
-      v32 = [v24 stringByAppendingString:@"-wal"];
+      v32 = [absoluteString stringByAppendingString:@"-wal"];
       v33 = [v31 URLWithString:v32];
-      [v23 removeItemAtURL:v33 error:0];
+      [defaultManager2 removeItemAtURL:v33 error:0];
     }
 
     v19 = [(NSMapTable *)self->_databases objectForKey:v7];
@@ -443,13 +443,13 @@ LABEL_44:
           goto LABEL_40;
         }
 
-        v37 = [v13 firstObject];
+        firstObject = [v13 firstObject];
         [v13 removeObjectAtIndex:0];
-        v38 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         v39 = [WBSHistoryServiceDatabase alloc];
         fileOperationGroup = self->_fileOperationGroup;
         v58 = 0;
-        v19 = [(WBSHistoryServiceDatabase *)v39 initWithID:v7 url:v37 options:v57 fileOperationGroup:fileOperationGroup error:&v58];
+        v19 = [(WBSHistoryServiceDatabase *)v39 initWithID:v7 url:firstObject options:optionsCopy fileOperationGroup:fileOperationGroup error:&v58];
         v41 = v58;
         if (v19)
         {
@@ -459,11 +459,11 @@ LABEL_44:
         v42 = WBS_LOG_CHANNEL_PREFIXHistory();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
-          v44 = [v41 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription = [v41 safari_privacyPreservingDescription];
           *buf = v54;
-          v60 = v37;
+          v60 = firstObject;
           v61 = 2114;
-          v62 = *&v44;
+          v62 = *&safari_privacyPreservingDescription;
           _os_log_error_impl(&dword_1BB6F3000, v42, OS_LOG_TYPE_ERROR, "Failed to open database %{private}@: %{public}@", buf, 0x16u);
         }
 
@@ -483,11 +483,11 @@ LABEL_44:
           }
 
 LABEL_40:
-          if (a5)
+          if (error)
           {
             v48 = v36;
             v19 = 0;
-            *a5 = v36;
+            *error = v36;
           }
 
           else
@@ -502,7 +502,7 @@ LABEL_40:
       v45 = WBS_LOG_CHANNEL_PREFIXHistory();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
-        [v38 timeIntervalSinceNow];
+        [date timeIntervalSinceNow];
         *buf = 136446466;
         v60 = "open_or_reuse_opening_database";
         v61 = 2048;
@@ -539,9 +539,9 @@ LABEL_9:
   v56 = [WBSHistory profileDirectoryURLForProfileID:v7];
   if (v56)
   {
-    v50 = [MEMORY[0x1E696AC08] defaultManager];
-    v51 = [v56 path];
-    v52 = [v50 fileExistsAtPath:v51];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v56 path];
+    v52 = [defaultManager3 fileExistsAtPath:path2];
 
     if (v52)
     {
@@ -562,26 +562,26 @@ LABEL_45:
   return v19;
 }
 
-- (void)connectWithOptions:(id)a3 connection:(id)a4 completionHandler:(id)a5
+- (void)connectWithOptions:(id)options connection:(id)connection completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  optionsCopy = options;
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v11 = optionsCopy;
   v12 = v11;
-  if (![(WBSHistoryService *)self _connectionIsEntitledToUseUserDatabase:v9])
+  if (![(WBSHistoryService *)self _connectionIsEntitledToUseUserDatabase:connectionCopy])
   {
     if (v11)
     {
-      v13 = [v11 mutableCopy];
+      dictionary = [v11 mutableCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v14 = v13;
+    v14 = dictionary;
     v15 = [v11 safari_stringForKey:@"WBSHistoryConnectionOptionDatabaseID"];
     v16 = v15;
     v17 = *MEMORY[0x1E69C8B58];
@@ -592,7 +592,7 @@ LABEL_45:
 
     v18 = v17;
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?pid=%i", v18, objc_msgSend(v9, "processIdentifier")];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@?pid=%i", v18, objc_msgSend(connectionCopy, "processIdentifier")];
     [v14 setObject:v19 forKeyedSubscript:@"WBSHistoryConnectionOptionDatabaseID"];
 
     v20 = WBSHistoryInMemoryDatabaseURL();
@@ -609,9 +609,9 @@ LABEL_45:
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
   v26 = v12;
-  v27 = v10;
+  v27 = handlerCopy;
   v23 = v12;
-  v24 = v10;
+  v24 = handlerCopy;
   dispatch_group_notify(fileOperationGroup, historyServiceQueue, block);
 }
 
@@ -634,11 +634,11 @@ void __69__WBSHistoryService_connectWithOptions_connection_completionHandler___b
   (*(a1[6] + 16))();
 }
 
-- (void)setCompletionListVendorEndpoint:(id)a3 completionHandler:(id)a4
+- (void)setCompletionListVendorEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v10];
+  endpointCopy = endpoint;
+  handlerCopy = handler;
+  v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
   completionListProviderConnection = self->_completionListProviderConnection;
   self->_completionListProviderConnection = v7;
 
@@ -646,22 +646,22 @@ void __69__WBSHistoryService_connectWithOptions_connection_completionHandler___b
   [(NSXPCConnection *)self->_completionListProviderConnection setRemoteObjectInterface:v9];
 
   [(NSXPCConnection *)self->_completionListProviderConnection resume];
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)a3 completionHandler:(id)a4
+- (void)copyAndRedactHistoryDatabasesForAllProfiles:(id)profiles completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  profilesCopy = profiles;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__WBSHistoryService_copyAndRedactHistoryDatabasesForAllProfiles_completionHandler___block_invoke;
   v10[3] = &unk_1E7FC7080;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = profilesCopy;
+  v8 = profilesCopy;
+  v9 = handlerCopy;
   [(WBSHistoryService *)self listDatabaseURLsWithCompletionHandler:v10];
 }
 
@@ -760,17 +760,17 @@ void __83__WBSHistoryService_copyAndRedactHistoryDatabasesForAllProfiles_complet
 LABEL_21:
 }
 
-- (id)_copyAndRedactHistoryDatabaseWithURL:(id)a3 databaseDestinationFileURL:(id)a4
+- (id)_copyAndRedactHistoryDatabaseWithURL:(id)l databaseDestinationFileURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v33 = 0;
-  v9 = [v8 copyItemAtURL:v6 toURL:v7 error:&v33];
+  v9 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:&v33];
   v10 = v33;
   if (v9)
   {
-    v11 = [objc_alloc(MEMORY[0x1E69C89E8]) initWithURL:v7 queue:self->_historyServiceQueue];
+    v11 = [objc_alloc(MEMORY[0x1E69C89E8]) initWithURL:rLCopy queue:self->_historyServiceQueue];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -793,7 +793,7 @@ LABEL_21:
     dispatch_sync(historyServiceQueue, &v16);
     if (v28[5] || (v24[3] & 1) == 0)
     {
-      [v8 safari_removeFileAtURL:v7 error:{0, v16, v17, v18, v19}];
+      [defaultManager safari_removeFileAtURL:rLCopy error:{0, v16, v17, v18, v19}];
       v14 = v28[5];
     }
 

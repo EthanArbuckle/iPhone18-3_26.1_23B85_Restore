@@ -1,41 +1,41 @@
 @interface RTIInputSystemUIClient
-- (RTIInputSystemUIClient)initWithUIHostMachName:(id)a3;
-- (RTIInputSystemUIClient)initWithUIHostMachName:(id)a3 serviceName:(id)a4;
-- (void)_initializeConnectionWithMachName:(id)a3 serviceName:(id)a4;
+- (RTIInputSystemUIClient)initWithUIHostMachName:(id)name;
+- (RTIInputSystemUIClient)initWithUIHostMachName:(id)name serviceName:(id)serviceName;
+- (void)_initializeConnectionWithMachName:(id)name serviceName:(id)serviceName;
 @end
 
 @implementation RTIInputSystemUIClient
 
-- (RTIInputSystemUIClient)initWithUIHostMachName:(id)a3 serviceName:(id)a4
+- (RTIInputSystemUIClient)initWithUIHostMachName:(id)name serviceName:(id)serviceName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   v11.receiver = self;
   v11.super_class = RTIInputSystemUIClient;
   v8 = [(RTIInputSystemClient *)&v11 initWithMachNames:MEMORY[0x1E695E0F0]];
   v9 = v8;
   if (v8)
   {
-    [(RTIInputSystemUIClient *)v8 _initializeConnectionWithMachName:v6 serviceName:v7];
+    [(RTIInputSystemUIClient *)v8 _initializeConnectionWithMachName:nameCopy serviceName:serviceNameCopy];
   }
 
   return v9;
 }
 
-- (RTIInputSystemUIClient)initWithUIHostMachName:(id)a3
+- (RTIInputSystemUIClient)initWithUIHostMachName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _serviceName];
-  v6 = [(RTIInputSystemUIClient *)self initWithUIHostMachName:v4 serviceName:v5];
+  nameCopy = name;
+  _serviceName = [objc_opt_class() _serviceName];
+  v6 = [(RTIInputSystemUIClient *)self initWithUIHostMachName:nameCopy serviceName:_serviceName];
 
   return v6;
 }
 
-- (void)_initializeConnectionWithMachName:(id)a3 serviceName:(id)a4
+- (void)_initializeConnectionWithMachName:(id)name serviceName:(id)serviceName
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   v8 = RTILogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -44,12 +44,12 @@
     _os_log_impl(&dword_19A2A6000, v8, OS_LOG_TYPE_INFO, "%s  Starting InputUI connection", &v12, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E698F498] endpointForMachName:v6 service:v7 instance:0];
+  v9 = [MEMORY[0x1E698F498] endpointForMachName:nameCopy service:serviceNameCopy instance:0];
 
   if (v9)
   {
     v10 = [MEMORY[0x1E698F490] NSXPCConnectionWithEndpoint:v9 configurator:&__block_literal_global_1];
-    [(RTIInputSystemClient *)self _didIntializeConnection:v10 withMachName:v6];
+    [(RTIInputSystemClient *)self _didIntializeConnection:v10 withMachName:nameCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];

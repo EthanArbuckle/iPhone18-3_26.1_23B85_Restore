@@ -7,8 +7,8 @@
 - (id)modelObject
 {
   v3 = objc_alloc_init(REMStructuredLocation);
-  v4 = [(REMCDAlarmLocationTrigger *)self title];
-  [v3 setTitle:v4];
+  title = [(REMCDAlarmLocationTrigger *)self title];
+  [v3 setTitle:title];
 
   [(REMCDAlarmLocationTrigger *)self latitude];
   [v3 setLatitude:?];
@@ -16,8 +16,8 @@
   [v3 setLongitude:?];
   [(REMCDAlarmLocationTrigger *)self radius];
   [v3 setRadius:?];
-  v5 = [(REMCDAlarmLocationTrigger *)self referenceFrameString];
-  [v3 setReferenceFrameString:v5];
+  referenceFrameString = [(REMCDAlarmLocationTrigger *)self referenceFrameString];
+  [v3 setReferenceFrameString:referenceFrameString];
 
   v6 = [[REMAlarmLocationTrigger alloc] initWithStructuredLocation:v3 proximity:{-[REMCDAlarmLocationTrigger proximity](self, "proximity")}];
 

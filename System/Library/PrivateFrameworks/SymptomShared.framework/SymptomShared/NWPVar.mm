@@ -1,35 +1,35 @@
 @interface NWPVar
 + (id)_backgroundQueue;
-+ (id)_fetchCheckpoint:(id)a3 isPrefix:(BOOL)a4;
++ (id)_fetchCheckpoint:(id)checkpoint isPrefix:(BOOL)prefix;
 + (id)_serviceQueue;
-- (BOOL)selectModel:(unint64_t)a3;
-- (BOOL)setInitialValue:(id)a3;
-- (BOOL)setReward:(float)a3 onValue:(id)a4 forPredictionGenerationId:(id)a5;
-- (NWPVar)initWithCoder:(id)a3;
+- (BOOL)selectModel:(unint64_t)model;
+- (BOOL)setInitialValue:(id)value;
+- (BOOL)setReward:(float)reward onValue:(id)value forPredictionGenerationId:(id)id;
+- (NWPVar)initWithCoder:(id)coder;
 - (id)_initToCopy;
 - (id)_pullCounts;
 - (id)checkpoint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromCheckpoint:(id)a3 forLabel:(id)a4;
-- (id)initFromLastCheckpointForLabel:(id)a3;
-- (id)initInValueSpace:(id)a3 withLabel:(id)a4;
-- (id)predictValueGivenContext:(id)a3 generationId:(id *)a4;
+- (id)initFromCheckpoint:(id)checkpoint forLabel:(id)label;
+- (id)initFromLastCheckpointForLabel:(id)label;
+- (id)initInValueSpace:(id)space withLabel:(id)label;
+- (id)predictValueGivenContext:(id)context generationId:(id *)id;
 - (int64_t)_pruneOldCheckpoints;
-- (void)_mirrorFrom:(id)a3;
+- (void)_mirrorFrom:(id)from;
 - (void)_setToCleanSlate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHyperParams:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHyperParams:(id)params;
 @end
 
 @implementation NWPVar
 
-- (id)initInValueSpace:(id)a3 withLabel:(id)a4
+- (id)initInValueSpace:(id)space withLabel:(id)label
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = [v6 count], v7) && v8)
+  spaceCopy = space;
+  labelCopy = label;
+  if (spaceCopy && (v8 = [spaceCopy count], labelCopy) && v8)
   {
     v17.receiver = self;
     v17.super_class = NWPVar;
@@ -37,8 +37,8 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_label, a4);
-      v11 = [v6 copy];
+      objc_storeStrong(&v9->_label, label);
+      v11 = [spaceCopy copy];
       referenceValues = v10->_referenceValues;
       v10->_referenceValues = v11;
 
@@ -46,7 +46,7 @@
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -55,30 +55,30 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v6;
+      v19 = spaceCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = labelCopy;
       _os_log_impl(&dword_2324A0000, v14, OS_LOG_TYPE_ERROR, "wrong argument: allValues %@, label %@", buf, 0x16u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
-- (id)initFromCheckpoint:(id)a3 forLabel:(id)a4
+- (id)initFromCheckpoint:(id)checkpoint forLabel:(id)label
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  checkpointCopy = checkpoint;
+  labelCopy = label;
+  v8 = labelCopy;
+  if (checkpointCopy && labelCopy)
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [v6 UUIDString];
-    v11 = [v9 initWithFormat:@"%s-%@-%@", "NWPVar", v8, v10];
+    uUIDString = [checkpointCopy UUIDString];
+    v11 = [v9 initWithFormat:@"%s-%@-%@", "NWPVar", v8, uUIDString];
 
     v12 = [NWPVar _fetchCheckpoint:v11 isPrefix:0];
     if (v12)
@@ -93,7 +93,7 @@
       }
 
       self = v14;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
@@ -102,13 +102,13 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v21 = v6;
+        v21 = checkpointCopy;
         v22 = 2112;
         v23 = v8;
         _os_log_impl(&dword_2324A0000, v16, OS_LOG_TYPE_ERROR, "identifier failed to recover valid object for: %@ and label: %@", buf, 0x16u);
       }
 
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -118,27 +118,27 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v6;
+      v21 = checkpointCopy;
       v22 = 2112;
       v23 = v8;
       _os_log_impl(&dword_2324A0000, v11, OS_LOG_TYPE_ERROR, "wrong identifier: %@ or label: %@", buf, 0x16u);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
-- (id)initFromLastCheckpointForLabel:(id)a3
+- (id)initFromLastCheckpointForLabel:(id)label
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  labelCopy = label;
+  if (labelCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%s-%@", "NWPVar", v4];
-    v6 = [NWPVar _fetchCheckpoint:v5 isPrefix:1];
+    labelCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%s-%@", "NWPVar", labelCopy];
+    v6 = [NWPVar _fetchCheckpoint:labelCopy isPrefix:1];
     if (v6)
     {
       v13.receiver = self;
@@ -151,7 +151,7 @@
       }
 
       self = v8;
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -160,29 +160,29 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v15 = v4;
+        v15 = labelCopy;
         _os_log_impl(&dword_2324A0000, v10, OS_LOG_TYPE_ERROR, "identifier failed to recover last valid object for label: %@", buf, 0xCu);
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v5 = nwpvarLogHandle();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    labelCopy = nwpvarLogHandle();
+    if (os_log_type_enabled(labelCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v15 = 0;
-      _os_log_impl(&dword_2324A0000, v5, OS_LOG_TYPE_ERROR, "wrong label: %@", buf, 0xCu);
+      _os_log_impl(&dword_2324A0000, labelCopy, OS_LOG_TYPE_ERROR, "wrong label: %@", buf, 0xCu);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return selfCopy;
 }
 
 - (id)_initToCopy
@@ -192,25 +192,25 @@
   return [(NWPVar *)&v3 init];
 }
 
-- (BOOL)setInitialValue:(id)a3
+- (BOOL)setInitialValue:(id)value
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:178 description:{@"Subclasses must provide an impl for %s", "-[NWPVar setInitialValue:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:178 description:{@"Subclasses must provide an impl for %s", "-[NWPVar setInitialValue:]"}];
 
   return 0;
 }
 
-- (BOOL)selectModel:(unint64_t)a3
+- (BOOL)selectModel:(unint64_t)model
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:184 description:{@"Subclasses must provide an impl for %s", "-[NWPVar selectModel:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:184 description:{@"Subclasses must provide an impl for %s", "-[NWPVar selectModel:]"}];
 
   return 0;
 }
 
-- (void)setHyperParams:(id)a3
+- (void)setHyperParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   if (self->_hyperParams)
   {
     v6 = [(NSDictionary *)self->_hyperParams mutableCopy];
@@ -218,10 +218,10 @@
     v11 = 3221225472;
     v12 = __25__NWPVar_setHyperParams___block_invoke;
     v13 = &unk_278986900;
-    v14 = self;
+    selfCopy = self;
     v15 = v6;
     v7 = v6;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+    [paramsCopy enumerateKeysAndObjectsUsingBlock:&v10];
     v8 = [v7 copy];
     hyperParams = self->_hyperParams;
     self->_hyperParams = v8;
@@ -229,7 +229,7 @@
 
   else
   {
-    objc_storeStrong(&self->_hyperParams, a3);
+    objc_storeStrong(&self->_hyperParams, params);
   }
 }
 
@@ -253,89 +253,89 @@ void __25__NWPVar_setHyperParams___block_invoke(uint64_t a1, void *a2, void *a3)
   }
 }
 
-- (id)predictValueGivenContext:(id)a3 generationId:(id *)a4
+- (id)predictValueGivenContext:(id)context generationId:(id *)id
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:209 description:{@"Subclasses must provide an impl for %s", "-[NWPVar predictValueGivenContext:generationId:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:209 description:{@"Subclasses must provide an impl for %s", "-[NWPVar predictValueGivenContext:generationId:]"}];
 
   return 0;
 }
 
-- (BOOL)setReward:(float)a3 onValue:(id)a4 forPredictionGenerationId:(id)a5
+- (BOOL)setReward:(float)reward onValue:(id)value forPredictionGenerationId:(id)id
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:215 description:{@"Subclasses must provide an impl for %s", "-[NWPVar setReward:onValue:forPredictionGenerationId:]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NWPVar.m" lineNumber:215 description:{@"Subclasses must provide an impl for %s", "-[NWPVar setReward:onValue:forPredictionGenerationId:]"}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [[NWPVar alloc] _initToCopy];
-  v5 = [(NWPVar *)self label];
-  [v4 setLabel:v5];
+  _initToCopy = [[NWPVar alloc] _initToCopy];
+  label = [(NWPVar *)self label];
+  [_initToCopy setLabel:label];
 
-  v6 = [(NWPVar *)self exportLabel];
-  [v4 setExportLabel:v6];
+  exportLabel = [(NWPVar *)self exportLabel];
+  [_initToCopy setExportLabel:exportLabel];
 
-  [v4 setModel:{-[NWPVar model](self, "model")}];
-  [v4 setPullCount:{-[NWPVar pullCount](self, "pullCount")}];
-  v7 = [(NWPVar *)self hyperParams];
-  [v4 setHyperParams:v7];
+  [_initToCopy setModel:{-[NWPVar model](self, "model")}];
+  [_initToCopy setPullCount:{-[NWPVar pullCount](self, "pullCount")}];
+  hyperParams = [(NWPVar *)self hyperParams];
+  [_initToCopy setHyperParams:hyperParams];
 
-  v8 = [(NWPVar *)self allState];
-  [v4 setAllState:v8];
+  allState = [(NWPVar *)self allState];
+  [_initToCopy setAllState:allState];
 
-  v9 = [(NWPVar *)self referenceValues];
-  [v4 setReferenceValues:v9];
+  referenceValues = [(NWPVar *)self referenceValues];
+  [_initToCopy setReferenceValues:referenceValues];
 
-  v10 = [(NWPVar *)self firstValue];
-  [v4 setFirstValue:v10];
+  firstValue = [(NWPVar *)self firstValue];
+  [_initToCopy setFirstValue:firstValue];
 
-  v11 = [(NWPVar *)self expectingRewardOn];
-  [v4 setExpectingRewardOn:v11];
+  expectingRewardOn = [(NWPVar *)self expectingRewardOn];
+  [_initToCopy setExpectingRewardOn:expectingRewardOn];
 
-  [v4 setLogicalClock:{-[NWPVar logicalClock](self, "logicalClock")}];
-  v12 = [(NWPVar *)self durableId];
-  [v4 setDurableId:v12];
+  [_initToCopy setLogicalClock:{-[NWPVar logicalClock](self, "logicalClock")}];
+  durableId = [(NWPVar *)self durableId];
+  [_initToCopy setDurableId:durableId];
 
-  [v4 setUseScalarRange:{-[NWPVar useScalarRange](self, "useScalarRange")}];
-  return v4;
+  [_initToCopy setUseScalarRange:{-[NWPVar useScalarRange](self, "useScalarRange")}];
+  return _initToCopy;
 }
 
-- (void)_mirrorFrom:(id)a3
+- (void)_mirrorFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 label];
-  [(NWPVar *)self setLabel:v5];
+  fromCopy = from;
+  label = [fromCopy label];
+  [(NWPVar *)self setLabel:label];
 
-  v6 = [v4 exportLabel];
-  [(NWPVar *)self setExportLabel:v6];
+  exportLabel = [fromCopy exportLabel];
+  [(NWPVar *)self setExportLabel:exportLabel];
 
-  -[NWPVar setModel:](self, "setModel:", [v4 model]);
-  -[NWPVar setPullCount:](self, "setPullCount:", [v4 pullCount]);
-  v7 = [v4 hyperParams];
-  [(NWPVar *)self setHyperParams:v7];
+  -[NWPVar setModel:](self, "setModel:", [fromCopy model]);
+  -[NWPVar setPullCount:](self, "setPullCount:", [fromCopy pullCount]);
+  hyperParams = [fromCopy hyperParams];
+  [(NWPVar *)self setHyperParams:hyperParams];
 
-  v8 = [v4 allState];
-  [(NWPVar *)self setAllState:v8];
+  allState = [fromCopy allState];
+  [(NWPVar *)self setAllState:allState];
 
-  v9 = [v4 referenceValues];
-  [(NWPVar *)self setReferenceValues:v9];
+  referenceValues = [fromCopy referenceValues];
+  [(NWPVar *)self setReferenceValues:referenceValues];
 
-  v10 = [v4 firstValue];
-  [(NWPVar *)self setFirstValue:v10];
+  firstValue = [fromCopy firstValue];
+  [(NWPVar *)self setFirstValue:firstValue];
 
-  v11 = [v4 expectingRewardOn];
-  [(NWPVar *)self setExpectingRewardOn:v11];
+  expectingRewardOn = [fromCopy expectingRewardOn];
+  [(NWPVar *)self setExpectingRewardOn:expectingRewardOn];
 
-  -[NWPVar setLogicalClock:](self, "setLogicalClock:", [v4 logicalClock]);
-  v12 = [v4 durableId];
-  [(NWPVar *)self setDurableId:v12];
+  -[NWPVar setLogicalClock:](self, "setLogicalClock:", [fromCopy logicalClock]);
+  durableId = [fromCopy durableId];
+  [(NWPVar *)self setDurableId:durableId];
 
-  v13 = [v4 useScalarRange];
+  useScalarRange = [fromCopy useScalarRange];
 
-  [(NWPVar *)self setUseScalarRange:v13];
+  [(NWPVar *)self setUseScalarRange:useScalarRange];
 }
 
 - (void)_setToCleanSlate
@@ -347,8 +347,8 @@ void __25__NWPVar_setHyperParams___block_invoke(uint64_t a1, void *a2, void *a3)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NWPVar *)self referenceValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  referenceValues = [(NWPVar *)self referenceValues];
+  v6 = [referenceValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -360,7 +360,7 @@ void __25__NWPVar_setHyperParams___block_invoke(uint64_t a1, void *a2, void *a3)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(referenceValues);
         }
 
         [v3 addObject:*(*(&v13 + 1) + 8 * v9)];
@@ -371,7 +371,7 @@ void __25__NWPVar_setHyperParams___block_invoke(uint64_t a1, void *a2, void *a3)
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [referenceValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -426,9 +426,9 @@ void __26__NWPVar__backgroundQueue__block_invoke()
   _backgroundQueue_background_queue = v0;
 }
 
-+ (id)_fetchCheckpoint:(id)a3 isPrefix:(BOOL)a4
++ (id)_fetchCheckpoint:(id)checkpoint isPrefix:(BOOL)prefix
 {
-  v5 = a3;
+  checkpointCopy = checkpoint;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -440,10 +440,10 @@ void __26__NWPVar__backgroundQueue__block_invoke()
   block[1] = 3221225472;
   block[2] = __36__NWPVar__fetchCheckpoint_isPrefix___block_invoke;
   block[3] = &unk_278986928;
-  v13 = a4;
-  v11 = v5;
+  prefixCopy = prefix;
+  v11 = checkpointCopy;
   v12 = &v14;
-  v7 = v5;
+  v7 = checkpointCopy;
   dispatch_sync(v6, block);
 
   v8 = v15[5];
@@ -687,89 +687,89 @@ void __20__NWPVar_checkpoint__block_invoke_108(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (NWPVar)initWithCoder:(id)a3
+- (NWPVar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = NWPVar;
   v5 = [(NWPVar *)&v24 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"label"];
+    v7 = [coderCopy decodeObjectForKey:@"label"];
     label = v5->_label;
     v5->_label = v7;
 
-    v9 = [v4 decodeObjectForKey:@"exportLabel"];
+    v9 = [coderCopy decodeObjectForKey:@"exportLabel"];
     exportLabel = v5->_exportLabel;
     v5->_exportLabel = v9;
 
-    v5->_model = [v4 decodeIntegerForKey:@"model"];
-    v5->_pullCount = [v4 decodeIntegerForKey:@"pullCount"];
-    v11 = [v4 decodeObjectForKey:@"hyperParams"];
+    v5->_model = [coderCopy decodeIntegerForKey:@"model"];
+    v5->_pullCount = [coderCopy decodeIntegerForKey:@"pullCount"];
+    v11 = [coderCopy decodeObjectForKey:@"hyperParams"];
     hyperParams = v5->_hyperParams;
     v5->_hyperParams = v11;
 
-    v13 = [v4 decodeObjectForKey:@"allState"];
+    v13 = [coderCopy decodeObjectForKey:@"allState"];
     allState = v5->_allState;
     v5->_allState = v13;
 
-    v15 = [v4 decodeObjectForKey:@"referenceValues"];
+    v15 = [coderCopy decodeObjectForKey:@"referenceValues"];
     referenceValues = v5->_referenceValues;
     v5->_referenceValues = v15;
 
-    v17 = [v4 decodeObjectForKey:@"firstValue"];
+    v17 = [coderCopy decodeObjectForKey:@"firstValue"];
     firstValue = v5->_firstValue;
     v5->_firstValue = v17;
 
-    v19 = [v4 decodeObjectForKey:@"expectingRewardOn"];
+    v19 = [coderCopy decodeObjectForKey:@"expectingRewardOn"];
     expectingRewardOn = v5->_expectingRewardOn;
     v5->_expectingRewardOn = v19;
 
-    v5->_logicalClock = [v4 decodeInt64ForKey:@"logicalClock"];
-    v21 = [v4 decodeObjectForKey:@"durableId"];
+    v5->_logicalClock = [coderCopy decodeInt64ForKey:@"logicalClock"];
+    v21 = [coderCopy decodeObjectForKey:@"durableId"];
     durableId = v5->_durableId;
     v5->_durableId = v21;
 
-    v5->_useScalarRange = [v4 decodeBoolForKey:@"useScalarRange"];
+    v5->_useScalarRange = [coderCopy decodeBoolForKey:@"useScalarRange"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NWPVar *)self label];
-  [v13 encodeObject:v5 forKey:@"label"];
+  label = [(NWPVar *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  v6 = [(NWPVar *)self exportLabel];
-  [v13 encodeObject:v6 forKey:@"exportLabel"];
+  exportLabel = [(NWPVar *)self exportLabel];
+  [coderCopy encodeObject:exportLabel forKey:@"exportLabel"];
 
-  [v13 encodeInteger:-[NWPVar model](self forKey:{"model"), @"model"}];
-  [v13 encodeInteger:-[NWPVar pullCount](self forKey:{"pullCount"), @"pullCount"}];
-  v7 = [(NWPVar *)self hyperParams];
-  [v13 encodeObject:v7 forKey:@"hyperParams"];
+  [coderCopy encodeInteger:-[NWPVar model](self forKey:{"model"), @"model"}];
+  [coderCopy encodeInteger:-[NWPVar pullCount](self forKey:{"pullCount"), @"pullCount"}];
+  hyperParams = [(NWPVar *)self hyperParams];
+  [coderCopy encodeObject:hyperParams forKey:@"hyperParams"];
 
-  v8 = [(NWPVar *)self allState];
-  [v13 encodeObject:v8 forKey:@"allState"];
+  allState = [(NWPVar *)self allState];
+  [coderCopy encodeObject:allState forKey:@"allState"];
 
-  v9 = [(NWPVar *)self referenceValues];
-  [v13 encodeObject:v9 forKey:@"referenceValues"];
+  referenceValues = [(NWPVar *)self referenceValues];
+  [coderCopy encodeObject:referenceValues forKey:@"referenceValues"];
 
-  v10 = [(NWPVar *)self firstValue];
-  [v13 encodeObject:v10 forKey:@"firstValue"];
+  firstValue = [(NWPVar *)self firstValue];
+  [coderCopy encodeObject:firstValue forKey:@"firstValue"];
 
-  v11 = [(NWPVar *)self expectingRewardOn];
-  [v13 encodeObject:v11 forKey:@"expectingRewardOn"];
+  expectingRewardOn = [(NWPVar *)self expectingRewardOn];
+  [coderCopy encodeObject:expectingRewardOn forKey:@"expectingRewardOn"];
 
-  [v13 encodeInt64:-[NWPVar logicalClock](self forKey:{"logicalClock"), @"logicalClock"}];
-  v12 = [(NWPVar *)self durableId];
-  [v13 encodeObject:v12 forKey:@"durableId"];
+  [coderCopy encodeInt64:-[NWPVar logicalClock](self forKey:{"logicalClock"), @"logicalClock"}];
+  durableId = [(NWPVar *)self durableId];
+  [coderCopy encodeObject:durableId forKey:@"durableId"];
 
-  [v13 encodeBool:-[NWPVar useScalarRange](self forKey:{"useScalarRange"), @"useScalarRange"}];
+  [coderCopy encodeBool:-[NWPVar useScalarRange](self forKey:{"useScalarRange"), @"useScalarRange"}];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -796,8 +796,8 @@ void __20__NWPVar_checkpoint__block_invoke_108(uint64_t a1)
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(NWPVar *)self allState];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allState = [(NWPVar *)self allState];
+  v5 = [allState countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -808,18 +808,18 @@ void __20__NWPVar_checkpoint__block_invoke_108(uint64_t a1)
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allState);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(NWPVar *)self allState];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        allState2 = [(NWPVar *)self allState];
+        v11 = [allState2 objectForKeyedSubscript:v9];
 
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "armPullCount")}];
         [v3 setObject:v12 forKeyedSubscript:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [allState countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

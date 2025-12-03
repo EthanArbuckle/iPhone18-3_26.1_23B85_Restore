@@ -1,29 +1,29 @@
 @interface TSDMutableCalligraphyStroke
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setWidth:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setWidth:(double)width;
 @end
 
 @implementation TSDMutableCalligraphyStroke
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   [(TSDStroke *)self setI_width:?];
 
-  [(TSDStroke *)self setI_actualWidth:a3];
+  [(TSDStroke *)self setI_actualWidth:width];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDCalligraphyStroke allocWithZone:a3];
-  v5 = [(TSDMutableCalligraphyStroke *)self color];
+  v4 = [TSDCalligraphyStroke allocWithZone:zone];
+  color = [(TSDMutableCalligraphyStroke *)self color];
   [(TSDMutableCalligraphyStroke *)self width];
   v7 = v6;
   v8 = [(TSDMutableCalligraphyStroke *)self cap];
-  v9 = [(TSDMutableCalligraphyStroke *)self join];
-  v10 = [(TSDMutableCalligraphyStroke *)self pattern];
+  join = [(TSDMutableCalligraphyStroke *)self join];
+  pattern = [(TSDMutableCalligraphyStroke *)self pattern];
   [(TSDMutableCalligraphyStroke *)self miterLimit];
 
-  return [(TSDCalligraphyStroke *)v4 initWithColor:v5 width:v8 cap:v9 join:v10 pattern:v7 miterLimit:v11];
+  return [(TSDCalligraphyStroke *)v4 initWithColor:color width:v8 cap:join join:pattern pattern:v7 miterLimit:v11];
 }
 
 @end

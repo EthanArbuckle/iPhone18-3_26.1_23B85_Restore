@@ -1,5 +1,5 @@
 @interface PXLivePhotoRequestOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)photoKitRequestOptions;
 @end
 
@@ -13,13 +13,13 @@
   [v3 setDownloadPriority:{-[PXLivePhotoRequestOptions downloadPriority](self, "downloadPriority")}];
   [v3 setDownloadIntent:{-[PXLivePhotoRequestOptions downloadIntent](self, "downloadIntent")}];
   [v3 setPreferHDR:{-[PXLivePhotoRequestOptions preferHDR](self, "preferHDR")}];
-  v4 = [(PXLivePhotoRequestOptions *)self progressHandler];
-  [v3 setProgressHandler:v4];
+  progressHandler = [(PXLivePhotoRequestOptions *)self progressHandler];
+  [v3 setProgressHandler:progressHandler];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setDeliveryMode:self->_deliveryMode];

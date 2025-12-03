@@ -1,11 +1,11 @@
 @interface PKVehicleConnectionSession
 + (void)sessionForPass:(PKSecureElementPass *)pass delegate:(id)delegate completion:(void *)completion;
 - (BOOL)sendData:(NSData *)message error:(NSError *)error;
-- (id)_initWithDelegate:(id)a3 sessionIdentifier:(id)a4 passLibrary:(id)a5 assertion:(id)a6;
+- (id)_initWithDelegate:(id)delegate sessionIdentifier:(id)identifier passLibrary:(id)library assertion:(id)assertion;
 - (id)delegate;
-- (void)_updateConnectionState:(int64_t)a3;
+- (void)_updateConnectionState:(int64_t)state;
 - (void)dealloc;
-- (void)vehicleConnectionDidRecievePassthroughData:(id)a3;
+- (void)vehicleConnectionDidRecievePassthroughData:(id)data;
 @end
 
 @implementation PKVehicleConnectionSession
@@ -80,24 +80,24 @@ void __65__PKVehicleConnectionSession_sessionForPass_delegate_completion___block
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)_initWithDelegate:(id)a3 sessionIdentifier:(id)a4 passLibrary:(id)a5 assertion:(id)a6
+- (id)_initWithDelegate:(id)delegate sessionIdentifier:(id)identifier passLibrary:(id)library assertion:(id)assertion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  libraryCopy = library;
+  assertionCopy = assertion;
   v21.receiver = self;
   v21.super_class = PKVehicleConnectionSession;
   v14 = [(PKVehicleConnectionSession *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v10);
-    objc_storeStrong(&v15->_passLibrary, a5);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_passLibrary, library);
     [(PKPassLibrary *)v15->_passLibrary addDelegate:v15];
     v15->_connectionStatus = 2;
-    objc_storeStrong(&v15->_sessionIdentifier, a4);
-    objc_storeStrong(&v15->_assertion, a6);
+    objc_storeStrong(&v15->_sessionIdentifier, identifier);
+    objc_storeStrong(&v15->_assertion, assertion);
     objc_initWeak(&location, v15);
     assertion = v15->_assertion;
     v18[0] = MEMORY[0x1E69E9820];
@@ -170,29 +170,29 @@ void __88__PKVehicleConnectionSession__initWithDelegate_sessionIdentifier_passLi
   return v8;
 }
 
-- (void)vehicleConnectionDidRecievePassthroughData:(id)a3
+- (void)vehicleConnectionDidRecievePassthroughData:(id)data
 {
-  v7 = a3;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 sessionDidReceiveData:v7];
+    [v6 sessionDidReceiveData:dataCopy];
   }
 }
 
-- (void)_updateConnectionState:(int64_t)a3
+- (void)_updateConnectionState:(int64_t)state
 {
-  self->_connectionStatus = a3;
+  self->_connectionStatus = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 sessionDidChangeConnectionState:a3];
+    [v7 sessionDidChangeConnectionState:state];
   }
 }
 

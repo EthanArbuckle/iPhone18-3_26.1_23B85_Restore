@@ -1,8 +1,8 @@
 @interface CATConcreteTimerSource
 - (CATConcreteTimerSource)init;
-- (id)scheduleInfiniteTimerWithIdentifier:(id)a3 timeInterval:(double)a4 queue:(id)a5 fireHandler:(id)a6;
-- (id)scheduleOneShotTimerWithIdentifier:(id)a3 timeInterval:(double)a4 queue:(id)a5 fireHandler:(id)a6;
-- (id)scheduleRepeatTimerWithIdentifier:(id)a3 timeInterval:(double)a4 queue:(id)a5 totalFires:(unint64_t)a6 fireHandler:(id)a7;
+- (id)scheduleInfiniteTimerWithIdentifier:(id)identifier timeInterval:(double)interval queue:(id)queue fireHandler:(id)handler;
+- (id)scheduleOneShotTimerWithIdentifier:(id)identifier timeInterval:(double)interval queue:(id)queue fireHandler:(id)handler;
+- (id)scheduleRepeatTimerWithIdentifier:(id)identifier timeInterval:(double)interval queue:(id)queue totalFires:(unint64_t)fires fireHandler:(id)handler;
 @end
 
 @implementation CATConcreteTimerSource
@@ -22,47 +22,47 @@
   return v2;
 }
 
-- (id)scheduleOneShotTimerWithIdentifier:(id)a3 timeInterval:(double)a4 queue:(id)a5 fireHandler:(id)a6
+- (id)scheduleOneShotTimerWithIdentifier:(id)identifier timeInterval:(double)interval queue:(id)queue fireHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   mWorkQueue = self->mWorkQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__CATConcreteTimerSource_scheduleOneShotTimerWithIdentifier_timeInterval_queue_fireHandler___block_invoke;
   v15[3] = &unk_278DA7C10;
-  v16 = v10;
-  v12 = v10;
-  v13 = [CATDispatchTimer scheduledTimerWithIdentifier:a3 workQueue:mWorkQueue delegateQueue:a5 timeInterval:1 totalFires:0 firesForever:v15 fireHandler:a4];
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [CATDispatchTimer scheduledTimerWithIdentifier:identifier workQueue:mWorkQueue delegateQueue:queue timeInterval:1 totalFires:0 firesForever:v15 fireHandler:interval];
 
   return v13;
 }
 
-- (id)scheduleRepeatTimerWithIdentifier:(id)a3 timeInterval:(double)a4 queue:(id)a5 totalFires:(unint64_t)a6 fireHandler:(id)a7
+- (id)scheduleRepeatTimerWithIdentifier:(id)identifier timeInterval:(double)interval queue:(id)queue totalFires:(unint64_t)fires fireHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   mWorkQueue = self->mWorkQueue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __102__CATConcreteTimerSource_scheduleRepeatTimerWithIdentifier_timeInterval_queue_totalFires_fireHandler___block_invoke;
   v17[3] = &unk_278DA7C10;
-  v18 = v12;
-  v14 = v12;
-  v15 = [CATDispatchTimer scheduledTimerWithIdentifier:a3 workQueue:mWorkQueue delegateQueue:a5 timeInterval:a6 totalFires:0 firesForever:v17 fireHandler:a4];
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = [CATDispatchTimer scheduledTimerWithIdentifier:identifier workQueue:mWorkQueue delegateQueue:queue timeInterval:fires totalFires:0 firesForever:v17 fireHandler:interval];
 
   return v15;
 }
 
-- (id)scheduleInfiniteTimerWithIdentifier:(id)a3 timeInterval:(double)a4 queue:(id)a5 fireHandler:(id)a6
+- (id)scheduleInfiniteTimerWithIdentifier:(id)identifier timeInterval:(double)interval queue:(id)queue fireHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   mWorkQueue = self->mWorkQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __93__CATConcreteTimerSource_scheduleInfiniteTimerWithIdentifier_timeInterval_queue_fireHandler___block_invoke;
   v15[3] = &unk_278DA7C10;
-  v16 = v10;
-  v12 = v10;
-  v13 = [CATDispatchTimer scheduledTimerWithIdentifier:a3 workQueue:mWorkQueue delegateQueue:a5 timeInterval:0 totalFires:1 firesForever:v15 fireHandler:a4];
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [CATDispatchTimer scheduledTimerWithIdentifier:identifier workQueue:mWorkQueue delegateQueue:queue timeInterval:0 totalFires:1 firesForever:v15 fireHandler:interval];
 
   return v13;
 }

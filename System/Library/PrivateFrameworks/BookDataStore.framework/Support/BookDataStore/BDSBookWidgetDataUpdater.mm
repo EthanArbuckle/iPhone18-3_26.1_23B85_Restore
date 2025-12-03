@@ -1,42 +1,42 @@
 @interface BDSBookWidgetDataUpdater
-- (BDSBookWidgetDataUpdater)initWithWidgetCenterManager:(id)a3 managedObjectContext:(id)a4;
-- (BOOL)_moc_updateAndMonitorProgressForWidgetDatas:(id)a3;
-- (BOOL)_moc_updateWidgetDataFromWidgetInfo:(id)a3;
-- (BOOL)_moc_updateWidgetDatas:(id)a3 fromAssetDetails:(id)a4;
+- (BDSBookWidgetDataUpdater)initWithWidgetCenterManager:(id)manager managedObjectContext:(id)context;
+- (BOOL)_moc_updateAndMonitorProgressForWidgetDatas:(id)datas;
+- (BOOL)_moc_updateWidgetDataFromWidgetInfo:(id)info;
+- (BOOL)_moc_updateWidgetDatas:(id)datas fromAssetDetails:(id)details;
 - (BOOL)isExplicitMaterialAllowed;
 - (NSArray)currentWidgetDatas;
 - (NSDictionary)currentWidgetDatasByAssetID;
-- (float)_roundReadingProgressLikeBooksApp:(float)a3 isFinished:(BOOL)a4;
+- (float)_roundReadingProgressLikeBooksApp:(float)app isFinished:(BOOL)finished;
 - (id)_newWidgetInfoFetchRequest;
-- (void)_handleSignificantTimeChangeNotification:(id)a3;
+- (void)_handleSignificantTimeChangeNotification:(id)notification;
 - (void)_moc_updateAndMonitorBookWidgetInfo;
 - (void)_readCurrentWidgetDatas;
 - (void)_saveCurrentWidgetDatas;
-- (void)_saveWidgetDatasWithWidgetDatasHaveChanged:(BOOL)a3;
+- (void)_saveWidgetDatasWithWidgetDatasHaveChanged:(BOOL)changed;
 - (void)_startObserving;
 - (void)_stopObserving;
-- (void)controller:(id)a3 didChangeContentWithDifference:(id)a4;
+- (void)controller:(id)controller didChangeContentWithDifference:(id)difference;
 - (void)dealloc;
 - (void)reloadWidgetTimelines;
-- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)a3;
+- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)changed;
 - (void)resume;
-- (void)setCurrentWidgetDatas:(id)a3;
-- (void)setCurrentWidgetDatas:(id)a3 currentWidgetDatasByAssetID:(id)a4;
+- (void)setCurrentWidgetDatas:(id)datas;
+- (void)setCurrentWidgetDatas:(id)datas currentWidgetDatasByAssetID:(id)d;
 @end
 
 @implementation BDSBookWidgetDataUpdater
 
-- (BDSBookWidgetDataUpdater)initWithWidgetCenterManager:(id)a3 managedObjectContext:(id)a4
+- (BDSBookWidgetDataUpdater)initWithWidgetCenterManager:(id)manager managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = BDSBookWidgetDataUpdater;
   v9 = [(BDSBookWidgetDataUpdater *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_moc, a4);
+    objc_storeStrong(&v9->_moc, context);
     currentWidgetDatas = v10->_currentWidgetDatas;
     v10->_currentWidgetDatas = &__NSArray0__struct;
 
@@ -49,7 +49,7 @@
 
     v10->_dataFileDataIsNil = 0;
     v10->_dataLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_widgetCenterManager, a3);
+    objc_storeStrong(&v10->_widgetCenterManager, manager);
   }
 
   return v10;
@@ -85,7 +85,7 @@
   v6[1] = 3221225472;
   v7 = sub_100019838;
   v8 = &unk_10023F910;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_dataLock);
@@ -110,7 +110,7 @@
   v6[1] = 3221225472;
   v7 = sub_100019978;
   v8 = &unk_10023F910;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_dataLock);
@@ -123,15 +123,15 @@
   return v4;
 }
 
-- (void)setCurrentWidgetDatas:(id)a3
+- (void)setCurrentWidgetDatas:(id)datas
 {
-  v4 = a3;
+  datasCopy = datas;
   v5 = +[NSMutableDictionary dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = datasCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -147,8 +147,8 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v11 assetID];
-        [v5 setObject:v11 forKeyedSubscript:v12];
+        assetID = [v11 assetID];
+        [v5 setObject:v11 forKeyedSubscript:assetID];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -160,18 +160,18 @@
   [(BDSBookWidgetDataUpdater *)self setCurrentWidgetDatas:v6 currentWidgetDatasByAssetID:v5];
 }
 
-- (void)setCurrentWidgetDatas:(id)a3 currentWidgetDatasByAssetID:(id)a4
+- (void)setCurrentWidgetDatas:(id)datas currentWidgetDatasByAssetID:(id)d
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100019BAC;
   v8[3] = &unk_10023F720;
-  v9 = self;
-  v10 = a3;
-  v11 = a4;
-  v6 = v11;
-  v7 = v10;
-  os_unfair_lock_lock(&v9->_dataLock);
+  selfCopy = self;
+  datasCopy = datas;
+  dCopy = d;
+  v6 = dCopy;
+  v7 = datasCopy;
+  os_unfair_lock_lock(&selfCopy->_dataLock);
   sub_100019BAC(v8);
   os_unfair_lock_unlock(&self->_dataLock);
 }
@@ -186,7 +186,7 @@
   v8 = sub_100019D64;
   v9 = &unk_10023F938;
   v10 = v3;
-  v11 = self;
+  selfCopy = self;
   v5 = v3;
   [v4 performBlock:&v6];
   [(BDSBookWidgetDataUpdater *)self _startObserving:v6];
@@ -204,9 +204,9 @@
 {
   v3 = os_transaction_create();
   v4 = [NSFetchedResultsController alloc];
-  v5 = [(BDSBookWidgetDataUpdater *)self _newWidgetInfoFetchRequest];
+  _newWidgetInfoFetchRequest = [(BDSBookWidgetDataUpdater *)self _newWidgetInfoFetchRequest];
   v6 = [(BDSBookWidgetDataUpdater *)self moc];
-  v7 = [v4 initWithFetchRequest:v5 managedObjectContext:v6 sectionNameKeyPath:0 cacheName:0];
+  v7 = [v4 initWithFetchRequest:_newWidgetInfoFetchRequest managedObjectContext:v6 sectionNameKeyPath:0 cacheName:0];
 
   [v7 setDelegate:self];
   [(BDSBookWidgetDataUpdater *)self setFetchedResultsController:v7];
@@ -229,8 +229,8 @@
     sub_1001BDDF8(v9, v11);
   }
 
-  v12 = [v7 fetchedObjects];
-  v13 = [v12 count];
+  fetchedObjects = [v7 fetchedObjects];
+  v13 = [fetchedObjects count];
   if (v13 >= 3)
   {
     v14 = 3;
@@ -241,7 +241,7 @@
     v14 = v13;
   }
 
-  v15 = [v12 subarrayWithRange:{0, v14}];
+  v15 = [fetchedObjects subarrayWithRange:{0, v14}];
   v16 = [(BDSBookWidgetDataUpdater *)self _moc_updateWidgetDataFromWidgetInfo:v15];
   if (v16 || [(BDSBookWidgetDataUpdater *)self dataFileDataIsNil])
   {
@@ -276,8 +276,8 @@
   [v7 setSortDescriptors:v10];
 
   v11 = [NSPredicate predicateWithFormat:@"readingNowDetail.isTrackedAsRecent == YES and readingNowDetail.lastEngagedDate >= %@", v6];
-  v12 = [(BDSBookWidgetDataUpdater *)self isExplicitMaterialAllowed];
-  if (v12)
+  isExplicitMaterialAllowed = [(BDSBookWidgetDataUpdater *)self isExplicitMaterialAllowed];
+  if (isExplicitMaterialAllowed)
   {
     v13 = v11;
   }
@@ -295,7 +295,7 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v19 = v12 ^ 1;
+    v19 = isExplicitMaterialAllowed ^ 1;
     v20 = 2112;
     v21 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "WidgetDataUpdater: explicitContentRestricted %{BOOL}d predicate:%@", buf, 0x12u);
@@ -308,46 +308,46 @@
 - (BOOL)isExplicitMaterialAllowed
 {
   v2 = +[BURestrictionsProvider sharedInstance];
-  v3 = [v2 isExplicitContentAllowed];
+  isExplicitContentAllowed = [v2 isExplicitContentAllowed];
 
-  return v3;
+  return isExplicitContentAllowed;
 }
 
-- (BOOL)_moc_updateWidgetDataFromWidgetInfo:(id)a3
+- (BOOL)_moc_updateWidgetDataFromWidgetInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v27 = +[NSMutableArray array];
-  v5 = [(BDSBookWidgetDataUpdater *)self currentWidgetDatas];
-  v6 = [v4 count];
-  v23 = v5;
-  v31 = v6 != [v5 count];
-  v22 = self;
-  v26 = [(BDSBookWidgetDataUpdater *)self currentWidgetDatasByAssetID];
+  currentWidgetDatas = [(BDSBookWidgetDataUpdater *)self currentWidgetDatas];
+  v6 = [infoCopy count];
+  v23 = currentWidgetDatas;
+  v31 = v6 != [currentWidgetDatas count];
+  selfCopy = self;
+  currentWidgetDatasByAssetID = [(BDSBookWidgetDataUpdater *)self currentWidgetDatasByAssetID];
   v7 = +[NSMutableDictionary dictionary];
-  if ([v4 count])
+  if ([infoCopy count])
   {
     v8 = 0;
     v24 = v7;
-    v25 = v4;
+    v25 = infoCopy;
     do
     {
-      v9 = [v4 objectAtIndexedSubscript:v8];
-      v10 = [v9 assetID];
-      v11 = [v26 objectForKeyedSubscript:v10];
+      v9 = [infoCopy objectAtIndexedSubscript:v8];
+      assetID = [v9 assetID];
+      v11 = [currentWidgetDatasByAssetID objectForKeyedSubscript:assetID];
       v29 = [BDSBookWidgetData alloc];
-      v28 = [v9 title];
-      v12 = [v9 pageProgressionDirection];
-      v13 = [v9 coverURL];
+      title = [v9 title];
+      pageProgressionDirection = [v9 pageProgressionDirection];
+      coverURL = [v9 coverURL];
       v30 = v11;
-      v14 = [v11 readingProgress];
-      v15 = [v9 totalDuration];
-      v16 = [v9 cloudAssetType];
-      v17 = [v9 libraryContentAssetType];
-      v18 = [(BDSBookWidgetData *)v29 initWithAssetID:v10 title:v28 pageProgressionDirection:v12 coverURL:v13 readingProgress:v14 totalDuration:v15 cloudAssetType:v16 libraryAssetType:v17];
+      readingProgress = [v11 readingProgress];
+      totalDuration = [v9 totalDuration];
+      cloudAssetType = [v9 cloudAssetType];
+      libraryContentAssetType = [v9 libraryContentAssetType];
+      v18 = [(BDSBookWidgetData *)v29 initWithAssetID:assetID title:title pageProgressionDirection:pageProgressionDirection coverURL:coverURL readingProgress:readingProgress totalDuration:totalDuration cloudAssetType:cloudAssetType libraryAssetType:libraryContentAssetType];
 
       v7 = v24;
       [v27 addObject:v18];
-      [v24 setObject:v18 forKeyedSubscript:v10];
+      [v24 setObject:v18 forKeyedSubscript:assetID];
       if ((v31 & 1) != 0 || v8 >= [v23 count])
       {
         v31 = 1;
@@ -359,7 +359,7 @@
         v31 = [(BDSBookWidgetData *)v18 hasSignificantDifferenceWith:v19];
       }
 
-      v4 = v25;
+      infoCopy = v25;
 
       ++v8;
     }
@@ -367,20 +367,20 @@
     while (v8 < [v25 count]);
   }
 
-  v20 = [(BDSBookWidgetDataUpdater *)v22 _moc_updateAndMonitorProgressForWidgetDatas:v7]| v31;
+  v20 = [(BDSBookWidgetDataUpdater *)selfCopy _moc_updateAndMonitorProgressForWidgetDatas:v7]| v31;
   if (v20)
   {
-    [(BDSBookWidgetDataUpdater *)v22 setCurrentWidgetDatas:v27 currentWidgetDatasByAssetID:v7];
+    [(BDSBookWidgetDataUpdater *)selfCopy setCurrentWidgetDatas:v27 currentWidgetDatasByAssetID:v7];
   }
 
   return v20 & 1;
 }
 
-- (void)_saveWidgetDatasWithWidgetDatasHaveChanged:(BOOL)a3
+- (void)_saveWidgetDatasWithWidgetDatasHaveChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   [(BDSBookWidgetDataUpdater *)self _saveCurrentWidgetDatas];
-  if (v3)
+  if (changedCopy)
   {
     v5 = sub_10000DE28();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -395,19 +395,19 @@
 
 - (void)reloadWidgetTimelines
 {
-  v4 = [(BDSBookWidgetDataUpdater *)self widgetCenterManager];
-  v3 = [(BDSBookWidgetDataUpdater *)self currentWidgetDatas];
-  [v4 reloadWidgetTimelinesWithShouldDonateRelevance:{objc_msgSend(v3, "count") != 0}];
+  widgetCenterManager = [(BDSBookWidgetDataUpdater *)self widgetCenterManager];
+  currentWidgetDatas = [(BDSBookWidgetDataUpdater *)self currentWidgetDatas];
+  [widgetCenterManager reloadWidgetTimelinesWithShouldDonateRelevance:{objc_msgSend(currentWidgetDatas, "count") != 0}];
 }
 
 - (void)_readCurrentWidgetDatas
 {
-  v3 = [(BDSBookWidgetDataUpdater *)self dataFile];
-  v4 = [v3 load];
+  dataFile = [(BDSBookWidgetDataUpdater *)self dataFile];
+  load = [dataFile load];
 
-  if (v4)
+  if (load)
   {
-    [(BDSBookWidgetDataUpdater *)self setCurrentWidgetDatas:v4];
+    [(BDSBookWidgetDataUpdater *)self setCurrentWidgetDatas:load];
   }
 
   else
@@ -418,47 +418,47 @@
 
 - (void)_saveCurrentWidgetDatas
 {
-  v3 = [(BDSBookWidgetDataUpdater *)self dataFile];
-  v4 = [(BDSBookWidgetDataUpdater *)self currentWidgetDatas];
-  [v3 save:v4];
+  dataFile = [(BDSBookWidgetDataUpdater *)self dataFile];
+  currentWidgetDatas = [(BDSBookWidgetDataUpdater *)self currentWidgetDatas];
+  [dataFile save:currentWidgetDatas];
 
   [(BDSBookWidgetDataUpdater *)self setDataFileDataIsNil:0];
 }
 
-- (float)_roundReadingProgressLikeBooksApp:(float)a3 isFinished:(BOOL)a4
+- (float)_roundReadingProgressLikeBooksApp:(float)app isFinished:(BOOL)finished
 {
   v4 = 0.0;
-  if (a3 > 0.0)
+  if (app > 0.0)
   {
-    v5 = 0.99;
-    if (a4)
+    appCopy = 0.99;
+    if (finished)
     {
-      v5 = 1.0;
+      appCopy = 1.0;
     }
 
-    if (v5 >= a3)
+    if (appCopy >= app)
     {
-      v5 = a3;
-      if (a3 < 0.01)
+      appCopy = app;
+      if (app < 0.01)
       {
-        v5 = 0.01;
+        appCopy = 0.01;
       }
     }
 
-    return llround((v5 * 100.0)) / 100.0;
+    return llround((appCopy * 100.0)) / 100.0;
   }
 
   return v4;
 }
 
-- (BOOL)_moc_updateWidgetDatas:(id)a3 fromAssetDetails:(id)a4
+- (BOOL)_moc_updateWidgetDatas:(id)datas fromAssetDetails:(id)details
 {
-  v6 = a3;
+  datasCopy = datas;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a4;
+  obj = details;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v7)
   {
@@ -475,16 +475,16 @@
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 assetID];
-        v13 = [v6 objectForKeyedSubscript:v12];
+        assetID = [v11 assetID];
+        v13 = [datasCopy objectForKeyedSubscript:assetID];
 
         v14 = sub_10000DE28();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v13 title];
+          title = [v13 title];
           [v11 readingProgress];
           *buf = 138412546;
-          v32 = v15;
+          v32 = title;
           v33 = 2048;
           v34 = v16;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Reading progress for %@ is %f", buf, 0x16u);
@@ -492,14 +492,14 @@
 
         [v11 readingProgress];
         v18 = v17;
-        v19 = [v11 isFinished];
+        isFinished = [v11 isFinished];
         LODWORD(v20) = v18;
-        [(BDSBookWidgetDataUpdater *)self _roundReadingProgressLikeBooksApp:v19 isFinished:v20];
+        [(BDSBookWidgetDataUpdater *)self _roundReadingProgressLikeBooksApp:isFinished isFinished:v20];
         v21 = [NSNumber numberWithFloat:?];
         if (v21)
         {
-          v22 = [v13 readingProgress];
-          v23 = [v22 isEqualToNumber:v21];
+          readingProgress = [v13 readingProgress];
+          v23 = [readingProgress isEqualToNumber:v21];
 
           if ((v23 & 1) == 0)
           {
@@ -523,12 +523,12 @@
   return v25 & 1;
 }
 
-- (BOOL)_moc_updateAndMonitorProgressForWidgetDatas:(id)a3
+- (BOOL)_moc_updateAndMonitorProgressForWidgetDatas:(id)datas
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
+  datasCopy = datas;
+  allKeys = [datasCopy allKeys];
   v6 = +[BCAssetDetail fetchRequest];
-  v7 = [NSPredicate predicateWithFormat:@"%K in %@", @"assetID", v5];
+  v7 = [NSPredicate predicateWithFormat:@"%K in %@", @"assetID", allKeys];
   [v6 setPredicate:v7];
 
   v24[0] = @"assetID";
@@ -550,19 +550,19 @@
   v20 = 0;
   v14 = [v13 performFetch:&v20];
   v15 = v20;
-  v16 = sub_10000DE28();
-  v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
+  fetchedObjects = sub_10000DE28();
+  v17 = os_log_type_enabled(fetchedObjects, OS_LOG_TYPE_DEFAULT);
   if (v14)
   {
     if (v17)
     {
       *buf = 138412290;
-      v22 = v5;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Started monitoring reading progress for assetIDs %@", buf, 0xCu);
+      v22 = allKeys;
+      _os_log_impl(&_mh_execute_header, fetchedObjects, OS_LOG_TYPE_DEFAULT, "Started monitoring reading progress for assetIDs %@", buf, 0xCu);
     }
 
-    v16 = [v13 fetchedObjects];
-    v18 = [(BDSBookWidgetDataUpdater *)self _moc_updateWidgetDatas:v4 fromAssetDetails:v16];
+    fetchedObjects = [v13 fetchedObjects];
+    v18 = [(BDSBookWidgetDataUpdater *)self _moc_updateWidgetDatas:datasCopy fromAssetDetails:fetchedObjects];
   }
 
   else
@@ -571,7 +571,7 @@
     {
       *buf = 138412290;
       v22 = v15;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Error starting FRC to monitor reading progress: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, fetchedObjects, OS_LOG_TYPE_DEFAULT, "Error starting FRC to monitor reading progress: %@", buf, 0xCu);
     }
 
     v18 = 0;
@@ -580,22 +580,22 @@
   return v18;
 }
 
-- (void)controller:(id)a3 didChangeContentWithDifference:(id)a4
+- (void)controller:(id)controller didChangeContentWithDifference:(id)difference
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = os_transaction_create();
   v7 = [(BDSBookWidgetDataUpdater *)self moc];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001ADB8;
   v9[3] = &unk_10023F938;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
+  v10 = controllerCopy;
+  selfCopy = self;
+  v8 = controllerCopy;
   [v7 performBlockAndWait:v9];
 }
 
-- (void)_handleSignificantTimeChangeNotification:(id)a3
+- (void)_handleSignificantTimeChangeNotification:(id)notification
 {
   v4 = os_transaction_create();
   v5 = sub_10000DE28();
@@ -611,20 +611,20 @@
   v8[2] = sub_10001B0F4;
   v8[3] = &unk_10023F938;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v7 = v4;
   [v6 performBlock:v8];
 }
 
-- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)a3
+- (void)restrictionsForExplicitContentAllowedChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v5 = os_transaction_create();
   v6 = sub_10000DE28();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v13 = v3;
+    v13 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received explicit content change:%{BOOL}d. Refreshing book widget info", buf, 8u);
   }
 
@@ -634,7 +634,7 @@
   v9[2] = sub_10001B27C;
   v9[3] = &unk_10023F938;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v8 = v5;
   [v7 performBlock:v9];
 }

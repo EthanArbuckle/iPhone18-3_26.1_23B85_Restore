@@ -1,24 +1,24 @@
 @interface TransparencyResponse
-- (TransparencyResponse)initWithRequest:(id)a3 responseData:(id)a4 metadata:(id)a5;
+- (TransparencyResponse)initWithRequest:(id)request responseData:(id)data metadata:(id)metadata;
 - (id)serverHint;
 @end
 
 @implementation TransparencyResponse
 
-- (TransparencyResponse)initWithRequest:(id)a3 responseData:(id)a4 metadata:(id)a5
+- (TransparencyResponse)initWithRequest:(id)request responseData:(id)data metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dataCopy = data;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = TransparencyResponse;
   v11 = [(TransparencyResponse *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(TransparencyResponse *)v11 setRequest:v8];
-    [(TransparencyResponse *)v12 setData:v9];
-    [(TransparencyResponse *)v12 setMetadata:v10];
+    [(TransparencyResponse *)v11 setRequest:requestCopy];
+    [(TransparencyResponse *)v12 setData:dataCopy];
+    [(TransparencyResponse *)v12 setMetadata:metadataCopy];
   }
 
   return v12;
@@ -26,12 +26,12 @@
 
 - (id)serverHint
 {
-  v3 = [(TransparencyResponse *)self metadata];
+  metadata = [(TransparencyResponse *)self metadata];
 
-  if (v3)
+  if (metadata)
   {
-    v4 = [(TransparencyResponse *)self metadata];
-    v5 = [v4 objectForKey:kTransparencyResponseMetadataKeyServerHint];
+    metadata2 = [(TransparencyResponse *)self metadata];
+    v5 = [metadata2 objectForKey:kTransparencyResponseMetadataKeyServerHint];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface CLKUIAtlas
-- (CLKUIAtlas)initWithUuid:(id)a3;
+- (CLKUIAtlas)initWithUuid:(id)uuid;
 - (id)backing;
 @end
 
 @implementation CLKUIAtlas
 
-- (CLKUIAtlas)initWithUuid:(id)a3
+- (CLKUIAtlas)initWithUuid:(id)uuid
 {
-  v5 = a3;
+  uuidCopy = uuid;
   v9.receiver = self;
   v9.super_class = CLKUIAtlas;
   v6 = [(CLKUIAtlas *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, uuid);
     v7->_status = 0;
   }
 

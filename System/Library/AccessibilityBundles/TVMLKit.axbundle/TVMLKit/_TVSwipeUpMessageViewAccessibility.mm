@@ -1,24 +1,24 @@
 @interface _TVSwipeUpMessageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation _TVSwipeUpMessageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVSwipeUpMessageView" hasInstanceMethod:@"messageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVSwipeUpMessageView" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVSwipeUpMessageView" hasInstanceMethod:@"messageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVSwipeUpMessageView" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 @end

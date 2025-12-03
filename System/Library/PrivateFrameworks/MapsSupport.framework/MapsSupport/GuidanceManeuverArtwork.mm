@@ -1,27 +1,27 @@
 @interface GuidanceManeuverArtwork
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isStartRouteManeuver;
-- (BOOL)isValue:(id)a3 equalTo:(id)a4;
-- (GuidanceManeuverArtwork)initWithManeuver:(int)a3 junction:(id)a4 drivingSide:(int)a5 artworkDataSource:(id)a6;
+- (BOOL)isValue:(id)value equalTo:(id)to;
+- (GuidanceManeuverArtwork)initWithManeuver:(int)maneuver junction:(id)junction drivingSide:(int)side artworkDataSource:(id)source;
 - (unint64_t)hash;
 @end
 
 @implementation GuidanceManeuverArtwork
 
-- (BOOL)isValue:(id)a3 equalTo:(id)a4
+- (BOOL)isValue:(id)value equalTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  valueCopy = value;
+  toCopy = to;
+  v7 = toCopy;
+  if (!(valueCopy | toCopy))
   {
     goto LABEL_2;
   }
 
   v8 = 0;
-  if (v5 && v6)
+  if (valueCopy && toCopy)
   {
-    if (v5 == v6)
+    if (valueCopy == toCopy)
     {
 LABEL_2:
       v8 = 1;
@@ -31,7 +31,7 @@ LABEL_2:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v5 isEqual:v7];
+      v8 = [valueCopy isEqual:v7];
     }
 
     else
@@ -45,20 +45,20 @@ LABEL_3:
   return v8;
 }
 
-- (GuidanceManeuverArtwork)initWithManeuver:(int)a3 junction:(id)a4 drivingSide:(int)a5 artworkDataSource:(id)a6
+- (GuidanceManeuverArtwork)initWithManeuver:(int)maneuver junction:(id)junction drivingSide:(int)side artworkDataSource:(id)source
 {
-  v11 = a4;
-  v12 = a6;
+  junctionCopy = junction;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = GuidanceManeuverArtwork;
   v13 = [(GuidanceManeuverArtwork *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_maneuver = a3;
-    objc_storeStrong(&v13->_junction, a4);
-    v14->_drivingSide = a5;
-    objc_storeStrong(&v14->_artworkDataSource, a6);
+    v13->_maneuver = maneuver;
+    objc_storeStrong(&v13->_junction, junction);
+    v14->_drivingSide = side;
+    objc_storeStrong(&v14->_artworkDataSource, source);
   }
 
   return v14;
@@ -66,11 +66,11 @@ LABEL_3:
 
 - (BOOL)isStartRouteManeuver
 {
-  v2 = [(GuidanceManeuverArtwork *)self maneuver];
+  maneuver = [(GuidanceManeuverArtwork *)self maneuver];
   result = 1;
-  if (v2 - 25 > 0x3D || ((1 << (v2 - 25)) & 0x3000000000000001) == 0)
+  if (maneuver - 25 > 0x3D || ((1 << (maneuver - 25)) & 0x3000000000000001) == 0)
   {
-    return v2 == 17;
+    return maneuver == 17;
   }
 
   return result;
@@ -84,19 +84,19 @@ LABEL_3:
   return v4 ^ v5 ^ [(GEOTransitArtworkDataSource *)self->_artworkDataSource hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(GuidanceManeuverArtwork *)v4 isMemberOfClass:objc_opt_class()]&& (maneuver = self->_maneuver, maneuver == [(GuidanceManeuverArtwork *)v4 maneuver]) && (drivingSide = self->_drivingSide, drivingSide == [(GuidanceManeuverArtwork *)v4 drivingSide]) && (junction = self->_junction, [(GuidanceManeuverArtwork *)v4 junction], v8 = objc_claimAutoreleasedReturnValue(), LODWORD(junction) = [(GuidanceManeuverArtwork *)self isValue:junction equalTo:v8], v8, junction))
+  else if ([(GuidanceManeuverArtwork *)equalCopy isMemberOfClass:objc_opt_class()]&& (maneuver = self->_maneuver, maneuver == [(GuidanceManeuverArtwork *)equalCopy maneuver]) && (drivingSide = self->_drivingSide, drivingSide == [(GuidanceManeuverArtwork *)equalCopy drivingSide]) && (junction = self->_junction, [(GuidanceManeuverArtwork *)equalCopy junction], v8 = objc_claimAutoreleasedReturnValue(), LODWORD(junction) = [(GuidanceManeuverArtwork *)self isValue:junction equalTo:v8], v8, junction))
   {
     artworkDataSource = self->_artworkDataSource;
-    v10 = [(GuidanceManeuverArtwork *)v4 artworkDataSource];
-    v11 = [(GuidanceManeuverArtwork *)self isValue:artworkDataSource equalTo:v10];
+    artworkDataSource = [(GuidanceManeuverArtwork *)equalCopy artworkDataSource];
+    v11 = [(GuidanceManeuverArtwork *)self isValue:artworkDataSource equalTo:artworkDataSource];
   }
 
   else

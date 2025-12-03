@@ -1,20 +1,20 @@
 @interface RTLearnedLocationManagerNotificationDidUpdate
-- (RTLearnedLocationManagerNotificationDidUpdate)initWithIntervalSinceLastUpdate:(double)a3 trainMode:(unint64_t)a4 trainResult:(unint64_t)a5;
+- (RTLearnedLocationManagerNotificationDidUpdate)initWithIntervalSinceLastUpdate:(double)update trainMode:(unint64_t)mode trainResult:(unint64_t)result;
 - (id)description;
 @end
 
 @implementation RTLearnedLocationManagerNotificationDidUpdate
 
-- (RTLearnedLocationManagerNotificationDidUpdate)initWithIntervalSinceLastUpdate:(double)a3 trainMode:(unint64_t)a4 trainResult:(unint64_t)a5
+- (RTLearnedLocationManagerNotificationDidUpdate)initWithIntervalSinceLastUpdate:(double)update trainMode:(unint64_t)mode trainResult:(unint64_t)result
 {
   v9.receiver = self;
   v9.super_class = RTLearnedLocationManagerNotificationDidUpdate;
   result = [(RTNotification *)&v9 init];
   if (result)
   {
-    result->_intervalSinceLastUpdate = a3;
-    result->_trainMode = a4;
-    result->_trainResult = a5;
+    result->_intervalSinceLastUpdate = update;
+    result->_trainMode = mode;
+    result->_trainResult = result;
   }
 
   return result;

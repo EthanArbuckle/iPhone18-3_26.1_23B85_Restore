@@ -2,7 +2,7 @@
 - (CGSize)intrinsicContentSize;
 - (NSLayoutYAxisAnchor)firstBaselineAnchor;
 - (NSLayoutYAxisAnchor)lastBaselineAnchor;
-- (_TtC9SeymourUI15RecencyIconView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI15RecencyIconView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
@@ -11,26 +11,26 @@
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_label) firstBaselineAnchor];
+  firstBaselineAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_label) firstBaselineAnchor];
 
-  return v2;
+  return firstBaselineAnchor;
 }
 
 - (NSLayoutYAxisAnchor)lastBaselineAnchor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_label) lastBaselineAnchor];
+  lastBaselineAnchor = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_label) lastBaselineAnchor];
 
-  return v2;
+  return lastBaselineAnchor;
 }
 
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_label);
-  v3 = self;
+  selfCopy = self;
   [v2 intrinsicContentSize];
-  v5 = *(&v3->super._cachedTraitCollection + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout);
-  v6 = v4 + *(&v3->super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout) + *(&v3->super._swiftAnimationInfo + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout);
-  v8 = v7 + *(&v3->super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout);
+  v5 = *(&selfCopy->super._cachedTraitCollection + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout);
+  v6 = v4 + *(&selfCopy->super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout) + *(&selfCopy->super._swiftAnimationInfo + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout);
+  v8 = v7 + *(&selfCopy->super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI15RecencyIconView_layout);
 
   v9 = v8 + v5;
   v10 = v6;
@@ -41,17 +41,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7220C8();
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B72224C();
 }
 
-- (_TtC9SeymourUI15RecencyIconView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI15RecencyIconView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

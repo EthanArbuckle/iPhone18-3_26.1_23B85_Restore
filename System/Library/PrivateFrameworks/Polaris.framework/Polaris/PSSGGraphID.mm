@@ -1,13 +1,13 @@
 @interface PSSGGraphID
 - (NSString)description;
 - (PSSGGraphID)init;
-- (PSSGGraphID)initWithName:(id)a3 session:(id)a4;
+- (PSSGGraphID)initWithName:(id)name session:(id)session;
 - (int64_t)hash;
 @end
 
 @implementation PSSGGraphID
 
-- (PSSGGraphID)initWithName:(id)a3 session:(id)a4
+- (PSSGGraphID)initWithName:(id)name session:(id)session
 {
   v5 = sub_25EB6E268();
   v7 = v6;
@@ -25,7 +25,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PSSGGraphID.hash.getter();
 
   return v3;
@@ -33,13 +33,13 @@
 
 - (NSString)description
 {
-  v2 = self;
-  v3 = [(PSSGGraphID *)v2 session];
+  selfCopy = self;
+  session = [(PSSGGraphID *)selfCopy session];
   sub_25EB6E268();
 
   MEMORY[0x25F8C69B0](8250, 0xE200000000000000);
 
-  v4 = [(PSSGGraphID *)v2 name];
+  name = [(PSSGGraphID *)selfCopy name];
   v5 = sub_25EB6E268();
   v7 = v6;
 

@@ -1,8 +1,8 @@
 @interface CDMAssetSetToFactorsConfig
 - (CDMAssetSetToFactorsConfig)init;
 - (id)getAllFactors;
-- (id)getCDMFactorConfigForAssetSet:(int64_t)a3;
-- (void)setCDMAssetsFactorConfig:(id)a3 forAssetSet:(int64_t)a4;
+- (id)getCDMFactorConfigForAssetSet:(int64_t)set;
+- (void)setCDMAssetsFactorConfig:(id)config forAssetSet:(int64_t)set;
 @end
 
 @implementation CDMAssetSetToFactorsConfig
@@ -26,15 +26,15 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(NSMutableDictionary *)self->_assetSetToFactorsMapping allValues];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  allValues = [(NSMutableDictionary *)self->_assetSetToFactorsMapping allValues];
+  v5 = [v3 initWithCapacity:{objc_msgSend(allValues, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)self->_assetSetToFactorsMapping allValues];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_assetSetToFactorsMapping allValues];
+  v7 = [allValues2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -45,15 +45,15 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) getFactorToFoldersMapping];
-        v12 = [v11 allKeys];
-        [v5 addObjectsFromArray:v12];
+        getFactorToFoldersMapping = [*(*(&v15 + 1) + 8 * i) getFactorToFoldersMapping];
+        allKeys = [getFactorToFoldersMapping allKeys];
+        [v5 addObjectsFromArray:allKeys];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (void)setCDMAssetsFactorConfig:(id)a3 forAssetSet:(int64_t)a4
+- (void)setCDMAssetsFactorConfig:(id)config forAssetSet:(int64_t)set
 {
   assetSetToFactorsMapping = self->_assetSetToFactorsMapping;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  [(NSMutableDictionary *)assetSetToFactorsMapping setObject:v7 forKey:v8];
+  configCopy = config;
+  v8 = [v6 numberWithInteger:set];
+  [(NSMutableDictionary *)assetSetToFactorsMapping setObject:configCopy forKey:v8];
 }
 
-- (id)getCDMFactorConfigForAssetSet:(int64_t)a3
+- (id)getCDMFactorConfigForAssetSet:(int64_t)set
 {
   assetSetToFactorsMapping = self->_assetSetToFactorsMapping;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -82,7 +82,7 @@
   if (v7)
   {
     v8 = self->_assetSetToFactorsMapping;
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:set];
     v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v9];
   }
 

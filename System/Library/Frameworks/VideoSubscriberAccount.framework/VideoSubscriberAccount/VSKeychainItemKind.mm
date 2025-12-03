@@ -2,10 +2,10 @@
 - (NSDictionary)attributesByName;
 - (NSDictionary)attributesBySecItemAttributeKey;
 - (VSKeychainItemKind)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setItemClassName:(id)a3;
-- (void)setSecItemClass:(__CFString *)a3;
+- (void)setItemClassName:(id)name;
+- (void)setSecItemClass:(__CFString *)class;
 @end
 
 @implementation VSKeychainItemKind
@@ -42,37 +42,37 @@
   [(VSKeychainItemKind *)&v4 dealloc];
 }
 
-- (void)setItemClassName:(id)a3
+- (void)setItemClassName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v5 = objc_opt_class();
-    v4 = NSStringFromClass(v5);
+    nameCopy = NSStringFromClass(v5);
   }
 
-  if (v4 != self->_itemClassName)
+  if (nameCopy != self->_itemClassName)
   {
-    v8 = v4;
-    v6 = [(NSString *)v4 copy];
+    v8 = nameCopy;
+    v6 = [(NSString *)nameCopy copy];
     itemClassName = self->_itemClassName;
     self->_itemClassName = v6;
 
-    v4 = v8;
+    nameCopy = v8;
   }
 }
 
-- (void)setSecItemClass:(__CFString *)a3
+- (void)setSecItemClass:(__CFString *)class
 {
   secItemClass = self->_secItemClass;
-  if (secItemClass != a3)
+  if (secItemClass != class)
   {
     if (secItemClass)
     {
       CFRelease(secItemClass);
     }
 
-    self->_secItemClass = CFStringCreateCopy(*MEMORY[0x277CBECE8], a3);
+    self->_secItemClass = CFStringCreateCopy(*MEMORY[0x277CBECE8], class);
   }
 }
 
@@ -84,8 +84,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VSKeychainItemKind *)self properties];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  properties = [(VSKeychainItemKind *)self properties];
+  v5 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -96,19 +96,19 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(properties);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 name];
-          [v3 setObject:v9 forKey:v10];
+          name = [v9 name];
+          [v3 setObject:v9 forKey:name];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -125,8 +125,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(VSKeychainItemKind *)self properties];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  properties = [(VSKeychainItemKind *)self properties];
+  v5 = [properties countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,7 +137,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(properties);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -148,7 +148,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [properties countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -157,15 +157,15 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VSKeychainItemKind allocWithZone:?]];
-  v5 = [(VSKeychainItemKind *)self itemClassName];
-  [(VSKeychainItemKind *)v4 setItemClassName:v5];
+  itemClassName = [(VSKeychainItemKind *)self itemClassName];
+  [(VSKeychainItemKind *)v4 setItemClassName:itemClassName];
 
   [(VSKeychainItemKind *)v4 setSecItemClass:[(VSKeychainItemKind *)self secItemClass]];
-  v6 = [(VSKeychainItemKind *)self properties];
-  [(VSKeychainItemKind *)v4 setProperties:v6];
+  properties = [(VSKeychainItemKind *)self properties];
+  [(VSKeychainItemKind *)v4 setProperties:properties];
 
   return v4;
 }

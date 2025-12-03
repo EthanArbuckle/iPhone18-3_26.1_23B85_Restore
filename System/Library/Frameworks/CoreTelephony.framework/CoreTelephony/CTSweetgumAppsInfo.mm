@@ -1,9 +1,9 @@
 @interface CTSweetgumAppsInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumAppsInfo)init;
-- (CTSweetgumAppsInfo)initWithCoder:(id)a3;
+- (CTSweetgumAppsInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSweetgumAppsInfo
@@ -29,21 +29,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSweetgumAppsInfo *)self appsList];
-  [v3 appendFormat:@" appIdList=%@", v4];
+  appsList = [(CTSweetgumAppsInfo *)self appsList];
+  [v3 appendFormat:@" appIdList=%@", appsList];
 
-  v5 = [(CTSweetgumAppsInfo *)self appsURL];
-  [v3 appendFormat:@" appsURL=%@", v5];
+  appsURL = [(CTSweetgumAppsInfo *)self appsURL];
+  [v3 appendFormat:@" appsURL=%@", appsURL];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTSweetgumAppsInfo *)self appsList];
-      v8 = [(CTSweetgumAppsInfo *)v6 appsList];
-      if (v7 == v8 || (-[CTSweetgumAppsInfo appsList](self, "appsList"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumAppsInfo appsList](v6, "appsList"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToArray:v4]))
+      appsList = [(CTSweetgumAppsInfo *)self appsList];
+      appsList2 = [(CTSweetgumAppsInfo *)equalCopy appsList];
+      if (appsList == appsList2 || (-[CTSweetgumAppsInfo appsList](self, "appsList"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumAppsInfo appsList](equalCopy, "appsList"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToArray:v4]))
       {
-        v10 = [(CTSweetgumAppsInfo *)self appsURL];
-        v11 = [(CTSweetgumAppsInfo *)v6 appsURL];
-        if (v10 == v11)
+        appsURL = [(CTSweetgumAppsInfo *)self appsURL];
+        appsURL2 = [(CTSweetgumAppsInfo *)equalCopy appsURL];
+        if (appsURL == appsURL2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(CTSweetgumAppsInfo *)self appsURL];
-          v13 = [(CTSweetgumAppsInfo *)v6 appsURL];
-          v9 = [v12 isEqualToString:v13];
+          appsURL3 = [(CTSweetgumAppsInfo *)self appsURL];
+          appsURL4 = [(CTSweetgumAppsInfo *)equalCopy appsURL];
+          v9 = [appsURL3 isEqualToString:appsURL4];
         }
 
-        if (v7 == v8)
+        if (appsList == appsList2)
         {
           goto LABEL_13;
         }
@@ -94,17 +94,17 @@ LABEL_14:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appsList = self->_appsList;
-  v5 = a3;
-  [v5 encodeObject:appsList forKey:@"appsList"];
-  [v5 encodeObject:self->_appsURL forKey:@"appsURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appsList forKey:@"appsList"];
+  [coderCopy encodeObject:self->_appsURL forKey:@"appsURL"];
 }
 
-- (CTSweetgumAppsInfo)initWithCoder:(id)a3
+- (CTSweetgumAppsInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CTSweetgumAppsInfo;
   v5 = [(CTSweetgumAppsInfo *)&v14 init];
@@ -113,11 +113,11 @@ LABEL_14:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"appsList"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"appsList"];
     appsList = v5->_appsList;
     v5->_appsList = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appsURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appsURL"];
     appsURL = v5->_appsURL;
     v5->_appsURL = v11;
   }

@@ -1,24 +1,24 @@
 @interface GuidesHomeViewController
 - (CGPoint)contentOffset;
-- (GuidesHomeViewController)initWithGuideLocation:(id)a3 withTraits:(id)a4;
+- (GuidesHomeViewController)initWithGuideLocation:(id)location withTraits:(id)traits;
 - (GuidesHomeViewControllerDelegate)actionDelegate;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)backgroundViewForCitySelector;
-- (id)createLayoutUsingWidth:(double)a3;
-- (void)activateConstraintsForViewAligningHeader:(id)a3;
-- (void)activateConstraintsForViewPinnedBelowHeader:(id)a3 headerView:(id)a4;
+- (id)createLayoutUsingWidth:(double)width;
+- (void)activateConstraintsForViewAligningHeader:(id)header;
+- (void)activateConstraintsForViewPinnedBelowHeader:(id)header headerView:(id)view;
 - (void)activateHeaderConstraints;
 - (void)addDefaultHeaderView;
 - (void)addGuidesHomeCollectionsView;
 - (void)addLoadingView;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didDismissByGesture;
-- (void)didSelectGuide:(id)a3;
-- (void)didTapCitySelectorButton:(id)a3;
+- (void)didSelectGuide:(id)guide;
+- (void)didTapCitySelectorButton:(id)button;
 - (void)dismissGuidesHome;
-- (void)handleDismissAction:(id)a3;
+- (void)handleDismissAction:(id)action;
 - (void)initializeDataSource;
-- (void)onTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
+- (void)onTransitionFromState:(int64_t)state toState:(int64_t)toState;
 - (void)removeCitySelectionUI;
 - (void)removeCollectionView;
 - (void)removeDefaultHeaderView;
@@ -26,18 +26,18 @@
 - (void)resetCollectionViewLayout;
 - (void)resetDefaultHeaderConstraints;
 - (void)routeToCitySelector;
-- (void)routeToCuratedCollection:(id)a3;
-- (void)routeToGuideLocation:(id)a3;
-- (void)routeToPublisher:(id)a3;
-- (void)routeToSingleCuratedCollection:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setGuideLocation:(id)a3;
+- (void)routeToCuratedCollection:(id)collection;
+- (void)routeToGuideLocation:(id)location;
+- (void)routeToPublisher:(id)publisher;
+- (void)routeToSingleCuratedCollection:(id)collection;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setGuideLocation:(id)location;
 - (void)setupCitySelectionUI;
 - (void)setupCitySelectionUIGradientView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GuidesHomeViewController
@@ -58,81 +58,81 @@
   return WeakRetained;
 }
 
-- (void)didSelectGuide:(id)a3
+- (void)didSelectGuide:(id)guide
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self actionDelegate];
-  [v5 guidesHomeViewController:self showCuratedGuide:v4];
+  guideCopy = guide;
+  actionDelegate = [(GuidesHomeViewController *)self actionDelegate];
+  [actionDelegate guidesHomeViewController:self showCuratedGuide:guideCopy];
 
-  v11 = [(GuidesHomeViewController *)self analyticsManager];
-  v6 = [v4 collectionIdentifier];
-  v7 = [v4 publisher];
-  v8 = [v7 identifier];
+  analyticsManager = [(GuidesHomeViewController *)self analyticsManager];
+  collectionIdentifier = [guideCopy collectionIdentifier];
+  publisher = [guideCopy publisher];
+  identifier = [publisher identifier];
   v9 = +[CuratedCollectionSyncManager sharedManager];
-  v10 = [v9 collectionIsSaved:v4];
+  v10 = [v9 collectionIsSaved:guideCopy];
 
-  [v11 guidesHomeTappedFeaturedGuide:v6 publisherId:v8 isCurrentlySaved:v10];
+  [analyticsManager guidesHomeTappedFeaturedGuide:collectionIdentifier publisherId:identifier isCurrentlySaved:v10];
 }
 
-- (void)didTapCitySelectorButton:(id)a3
+- (void)didTapCitySelectorButton:(id)button
 {
   [(GuidesHomeViewController *)self routeToCitySelector];
-  v4 = [(GuidesHomeViewController *)self analyticsManager];
-  [v4 guidesHomeCitySelectorTapped];
+  analyticsManager = [(GuidesHomeViewController *)self analyticsManager];
+  [analyticsManager guidesHomeCitySelectorTapped];
 }
 
 - (void)routeToCitySelector
 {
-  v4 = [(GuidesHomeViewController *)self actionDelegate];
-  v3 = [(GuidesHomeViewController *)self guideLocation];
-  [v4 guidesHomeViewController:self showCitySelectorWithLocation:v3];
+  actionDelegate = [(GuidesHomeViewController *)self actionDelegate];
+  guideLocation = [(GuidesHomeViewController *)self guideLocation];
+  [actionDelegate guidesHomeViewController:self showCitySelectorWithLocation:guideLocation];
 }
 
-- (void)routeToPublisher:(id)a3
+- (void)routeToPublisher:(id)publisher
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self actionDelegate];
-  [v5 guidesHomeViewController:self showPublisher:v4];
+  publisherCopy = publisher;
+  actionDelegate = [(GuidesHomeViewController *)self actionDelegate];
+  [actionDelegate guidesHomeViewController:self showPublisher:publisherCopy];
 }
 
-- (void)routeToGuideLocation:(id)a3
+- (void)routeToGuideLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self actionDelegate];
-  [v5 guidesHomeViewController:self showGuidesHomeWithLocation:v4];
+  locationCopy = location;
+  actionDelegate = [(GuidesHomeViewController *)self actionDelegate];
+  [actionDelegate guidesHomeViewController:self showGuidesHomeWithLocation:locationCopy];
 }
 
-- (void)routeToCuratedCollection:(id)a3
+- (void)routeToCuratedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self actionDelegate];
-  [v5 guidesHomeViewController:self showCuratedGuide:v4];
+  collectionCopy = collection;
+  actionDelegate = [(GuidesHomeViewController *)self actionDelegate];
+  [actionDelegate guidesHomeViewController:self showCuratedGuide:collectionCopy];
 }
 
 - (void)dismissGuidesHome
 {
-  v3 = [(GuidesHomeViewController *)self apiController];
-  [v3 cancelFetchingGuideHome];
+  apiController = [(GuidesHomeViewController *)self apiController];
+  [apiController cancelFetchingGuideHome];
 
-  v4 = [(GuidesHomeViewController *)self analyticsManager];
-  [v4 guidesHomeClosed];
+  analyticsManager = [(GuidesHomeViewController *)self analyticsManager];
+  [analyticsManager guidesHomeClosed];
 }
 
-- (void)routeToSingleCuratedCollection:(id)a3
+- (void)routeToSingleCuratedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self actionDelegate];
-  [v5 guidesHomeViewController:self showCuratedGuideWithIdentifier:v4];
+  collectionCopy = collection;
+  actionDelegate = [(GuidesHomeViewController *)self actionDelegate];
+  [actionDelegate guidesHomeViewController:self showCuratedGuideWithIdentifier:collectionCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = GuidesHomeViewController;
-  v7 = a4;
-  [(ContaineeViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ContaineeViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -143,17 +143,17 @@
   v8[1] = 3221225472;
   v8[2] = sub_1008D2CDC;
   v8[3] = &unk_101661710;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 - (void)removeLoadingView
 {
-  v3 = [(GuidesHomeViewController *)self loadingView];
+  loadingView = [(GuidesHomeViewController *)self loadingView];
 
-  if (v3)
+  if (loadingView)
   {
-    v4 = [(GuidesHomeViewController *)self loadingView];
-    [v4 removeFromSuperview];
+    loadingView2 = [(GuidesHomeViewController *)self loadingView];
+    [loadingView2 removeFromSuperview];
 
     [(GuidesHomeViewController *)self setLoadingView:0];
   }
@@ -175,49 +175,49 @@
 
 - (void)resetCollectionViewLayout
 {
-  v3 = [(GuidesHomeViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionView = [(GuidesHomeViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  v5 = [(GuidesHomeViewController *)self collectionView];
-  v6 = [(ContaineeViewController *)self contentView];
-  [v6 frame];
+  collectionView2 = [(GuidesHomeViewController *)self collectionView];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView frame];
   v8 = [(GuidesHomeViewController *)self createLayoutUsingWidth:v7];
-  [v5 setCollectionViewLayout:v8];
+  [collectionView2 setCollectionViewLayout:v8];
 
-  v9 = [(GuidesHomeViewController *)self collectionView];
+  collectionView3 = [(GuidesHomeViewController *)self collectionView];
   [(GuidesHomeViewController *)self contentOffset];
-  [v9 setContentOffset:?];
+  [collectionView3 setContentOffset:?];
 }
 
-- (void)activateConstraintsForViewAligningHeader:(id)a3
+- (void)activateConstraintsForViewAligningHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self apiController];
-  v6 = [v5 isCuratedGuidesHome];
+  headerCopy = header;
+  apiController = [(GuidesHomeViewController *)self apiController];
+  isCuratedGuidesHome = [apiController isCuratedGuidesHome];
 
-  if (v6)
+  if (isCuratedGuidesHome)
   {
-    v22 = [v4 leadingAnchor];
-    v23 = [(ContaineeViewController *)self contentView];
-    v21 = [v23 leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [headerCopy leadingAnchor];
+    contentView = [(ContaineeViewController *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v20;
-    v18 = [v4 trailingAnchor];
-    v19 = [(ContaineeViewController *)self contentView];
-    v17 = [v19 trailingAnchor];
-    v7 = [v18 constraintEqualToAnchor:v17];
+    trailingAnchor = [headerCopy trailingAnchor];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v7;
-    v8 = [v4 topAnchor];
-    v9 = [(GuidesHomeViewController *)self citySelectionView];
-    v10 = [v9 topAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    topAnchor = [headerCopy topAnchor];
+    citySelectionView = [(GuidesHomeViewController *)self citySelectionView];
+    topAnchor2 = [citySelectionView topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[2] = v11;
-    v12 = [v4 bottomAnchor];
+    bottomAnchor = [headerCopy bottomAnchor];
 
-    v13 = [(ContaineeViewController *)self contentView];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v25[3] = v15;
     v16 = [NSArray arrayWithObjects:v25 count:4];
     [NSLayoutConstraint activateConstraints:v16];
@@ -225,41 +225,41 @@
 
   else
   {
-    v24 = [(GuidesHomeViewController *)self citySelectionView];
-    [(GuidesHomeViewController *)self activateConstraintsForViewPinnedBelowHeader:v4 headerView:?];
+    citySelectionView2 = [(GuidesHomeViewController *)self citySelectionView];
+    [(GuidesHomeViewController *)self activateConstraintsForViewPinnedBelowHeader:headerCopy headerView:?];
   }
 }
 
-- (void)activateConstraintsForViewPinnedBelowHeader:(id)a3 headerView:(id)a4
+- (void)activateConstraintsForViewPinnedBelowHeader:(id)header headerView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v22 = [v7 leadingAnchor];
-  v23 = [(ContaineeViewController *)self contentView];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  viewCopy = view;
+  headerCopy = header;
+  leadingAnchor = [headerCopy leadingAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[0] = v20;
-  v18 = [v7 trailingAnchor];
-  v19 = [(ContaineeViewController *)self contentView];
-  v8 = [v19 trailingAnchor];
-  v9 = [v18 constraintEqualToAnchor:v8];
+  trailingAnchor = [headerCopy trailingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[1] = v9;
-  v10 = [v7 topAnchor];
-  v11 = [v6 bottomAnchor];
+  topAnchor = [headerCopy topAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11];
+  v12 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v24[2] = v12;
-  v13 = [v7 bottomAnchor];
+  bottomAnchor2 = [headerCopy bottomAnchor];
 
-  v14 = [(ContaineeViewController *)self contentView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  v16 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v24[3] = v16;
   v17 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (id)createLayoutUsingWidth:(double)a3
+- (id)createLayoutUsingWidth:(double)width
 {
   objc_initWeak(&location, self);
   v5 = [GuideHomeCompositionalLayout alloc];
@@ -268,9 +268,9 @@
   v9[2] = sub_1008D36CC;
   v9[3] = &unk_10162DB30;
   objc_copyWeak(v10, &location);
-  v10[1] = *&a3;
-  v6 = [(GuidesHomeViewController *)self apiController];
-  v7 = [(GuideHomeCompositionalLayout *)v5 initWithSectionProvider:v9 dataProvider:v6];
+  v10[1] = *&width;
+  apiController = [(GuidesHomeViewController *)self apiController];
+  v7 = [(GuideHomeCompositionalLayout *)v5 initWithSectionProvider:v9 dataProvider:apiController];
 
   [(GuidesHomeViewController *)self setLayout:v7];
   objc_destroyWeak(v10);
@@ -281,12 +281,12 @@
 
 - (void)removeCitySelectionUI
 {
-  v3 = [(GuidesHomeViewController *)self citySelectionView];
+  citySelectionView = [(GuidesHomeViewController *)self citySelectionView];
 
-  if (v3)
+  if (citySelectionView)
   {
-    v4 = [(GuidesHomeViewController *)self citySelectionView];
-    [v4 removeFromSuperview];
+    citySelectionView2 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView2 removeFromSuperview];
 
     [(GuidesHomeViewController *)self setCitySelectionView:0];
     [(GuidesHomeViewController *)self setCitySelectionBackgroundView:0];
@@ -297,12 +297,12 @@
 
 - (void)removeCollectionView
 {
-  v3 = [(GuidesHomeViewController *)self collectionView];
+  collectionView = [(GuidesHomeViewController *)self collectionView];
 
-  if (v3)
+  if (collectionView)
   {
-    v4 = [(GuidesHomeViewController *)self collectionView];
-    [v4 removeFromSuperview];
+    collectionView2 = [(GuidesHomeViewController *)self collectionView];
+    [collectionView2 removeFromSuperview];
 
     [(GuidesHomeViewController *)self setCollectionView:0];
 
@@ -312,13 +312,13 @@
 
 - (void)addGuidesHomeCollectionsView
 {
-  v3 = [(GuidesHomeViewController *)self collectionView];
+  collectionView = [(GuidesHomeViewController *)self collectionView];
 
-  if (!v3)
+  if (!collectionView)
   {
     v4 = [UICollectionView alloc];
-    v5 = [(ContaineeViewController *)self contentView];
-    [v5 frame];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -327,30 +327,30 @@
     v15 = [v4 initWithFrame:v14 collectionViewLayout:{v7, v9, v11, v13}];
     [(GuidesHomeViewController *)self setCollectionView:v15];
 
-    v16 = [(GuidesHomeViewController *)self collectionView];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    collectionView2 = [(GuidesHomeViewController *)self collectionView];
+    [collectionView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v17 = +[UIColor clearColor];
-    v18 = [(GuidesHomeViewController *)self collectionView];
-    [v18 setBackgroundColor:v17];
+    collectionView3 = [(GuidesHomeViewController *)self collectionView];
+    [collectionView3 setBackgroundColor:v17];
 
-    v19 = [(ContaineeViewController *)self contentView];
-    v20 = [(GuidesHomeViewController *)self collectionView];
-    [v19 addSubview:v20];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    collectionView4 = [(GuidesHomeViewController *)self collectionView];
+    [contentView2 addSubview:collectionView4];
 
-    v21 = [(GuidesHomeViewController *)self collectionView];
-    v22 = [(ContaineeViewController *)self contentView];
-    [v22 frame];
+    collectionView5 = [(GuidesHomeViewController *)self collectionView];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    [contentView3 frame];
     v24 = [(GuidesHomeViewController *)self createLayoutUsingWidth:v23];
-    [v21 setCollectionViewLayout:v24];
+    [collectionView5 setCollectionViewLayout:v24];
 
-    v25 = [(GuidesHomeViewController *)self collectionView];
-    [v25 setAlpha:0.0];
+    collectionView6 = [(GuidesHomeViewController *)self collectionView];
+    [collectionView6 setAlpha:0.0];
   }
 
   [(GuidesHomeViewController *)self initializeDataSource];
-  v26 = [(GuidesHomeViewController *)self dataSource];
-  [v26 displayGuidesHomeByReloadingData];
+  dataSource = [(GuidesHomeViewController *)self dataSource];
+  [dataSource displayGuidesHomeByReloadingData];
 
   objc_initWeak(&location, self);
   v27[0] = _NSConcreteStackBlock;
@@ -365,34 +365,34 @@
 
 - (void)resetDefaultHeaderConstraints
 {
-  v27 = [(ContaineeViewController *)self headerView];
-  v25 = [v27 topAnchor];
-  v26 = [(GuidesHomeViewController *)self view];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor = [headerView topAnchor];
+  view = [(GuidesHomeViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[0] = v23;
-  v22 = [(ContaineeViewController *)self headerView];
-  v20 = [v22 leadingAnchor];
-  v21 = [(GuidesHomeViewController *)self view];
-  v19 = [v21 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor = [headerView2 leadingAnchor];
+  view2 = [(GuidesHomeViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[1] = v18;
-  v17 = [(ContaineeViewController *)self headerView];
-  v15 = [v17 trailingAnchor];
-  v16 = [(GuidesHomeViewController *)self view];
-  v14 = [v16 trailingAnchor];
-  v3 = [v15 constraintEqualToAnchor:v14];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor = [headerView3 trailingAnchor];
+  view3 = [(GuidesHomeViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[2] = v3;
-  v4 = [(ContaineeViewController *)self headerView];
-  v5 = [v4 bottomAnchor];
-  v6 = [(GuidesHomeViewController *)self view];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintLessThanOrEqualToAnchor:v7];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  bottomAnchor = [headerView4 bottomAnchor];
+  view4 = [(GuidesHomeViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v8 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v28[3] = v8;
-  v9 = [(ContaineeViewController *)self headerView];
-  v10 = [v9 heightAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  heightAnchor = [headerView5 heightAnchor];
   LODWORD(v11) = 1148846080;
-  v12 = [v10 constraintEqualToConstant:60.0 priority:v11];
+  v12 = [heightAnchor constraintEqualToConstant:60.0 priority:v11];
   v28[4] = v12;
   v13 = [NSArray arrayWithObjects:v28 count:5];
   [NSLayoutConstraint activateConstraints:v13];
@@ -400,29 +400,29 @@
 
 - (void)activateHeaderConstraints
 {
-  v23 = [(GuidesHomeViewController *)self titleHeaderView];
-  v21 = [v23 topAnchor];
-  v22 = [(ContaineeViewController *)self headerView];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  titleHeaderView = [(GuidesHomeViewController *)self titleHeaderView];
+  topAnchor = [titleHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v19;
-  v18 = [(GuidesHomeViewController *)self titleHeaderView];
-  v16 = [v18 leadingAnchor];
-  v17 = [(ContaineeViewController *)self headerView];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  titleHeaderView2 = [(GuidesHomeViewController *)self titleHeaderView];
+  leadingAnchor = [titleHeaderView2 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[1] = v14;
-  v13 = [(GuidesHomeViewController *)self titleHeaderView];
-  v3 = [v13 trailingAnchor];
-  v4 = [(ContaineeViewController *)self headerView];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  titleHeaderView3 = [(GuidesHomeViewController *)self titleHeaderView];
+  trailingAnchor = [titleHeaderView3 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[2] = v6;
-  v7 = [(GuidesHomeViewController *)self titleHeaderView];
-  v8 = [v7 bottomAnchor];
-  v9 = [(ContaineeViewController *)self headerView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  titleHeaderView4 = [(GuidesHomeViewController *)self titleHeaderView];
+  bottomAnchor = [titleHeaderView4 bottomAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView4 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v11;
   v12 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -430,32 +430,32 @@
 
 - (void)removeDefaultHeaderView
 {
-  v3 = [(ContaineeViewController *)self headerView];
-  [v3 removeFromSuperview];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView removeFromSuperview];
 
-  v24 = [(ContaineeViewController *)self contentView];
-  v22 = [v24 topAnchor];
-  v23 = [(GuidesHomeViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor = [contentView topAnchor];
+  view = [(GuidesHomeViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[0] = v20;
-  v19 = [(ContaineeViewController *)self contentView];
-  v17 = [v19 leadingAnchor];
-  v18 = [(GuidesHomeViewController *)self view];
-  v16 = [v18 leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor = [contentView2 leadingAnchor];
+  view2 = [(GuidesHomeViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[1] = v15;
-  v14 = [(ContaineeViewController *)self contentView];
-  v4 = [v14 trailingAnchor];
-  v5 = [(GuidesHomeViewController *)self view];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  view3 = [(GuidesHomeViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[2] = v7;
-  v8 = [(ContaineeViewController *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(GuidesHomeViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  view4 = [(GuidesHomeViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v12;
   v13 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v13];
@@ -463,43 +463,43 @@
 
 - (void)addDefaultHeaderView
 {
-  v3 = [(GuidesHomeViewController *)self titleHeaderView];
+  titleHeaderView = [(GuidesHomeViewController *)self titleHeaderView];
 
-  if (!v3)
+  if (!titleHeaderView)
   {
     v4 = [[ContainerHeaderView alloc] initWithCardButtonType:1 cardButtonBlurred:0];
     [(GuidesHomeViewController *)self setTitleHeaderView:v4];
 
-    v5 = [(GuidesHomeViewController *)self titleHeaderView];
-    v6 = sub_10000FA08(v5);
+    titleHeaderView2 = [(GuidesHomeViewController *)self titleHeaderView];
+    v6 = sub_10000FA08(titleHeaderView2);
 
     if (v6 == 5)
     {
-      v7 = [(GuidesHomeViewController *)self titleHeaderView];
+      titleHeaderView3 = [(GuidesHomeViewController *)self titleHeaderView];
       v8 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle3 variant:1024];
-      [v7 setCustomTitleFont:v8];
+      [titleHeaderView3 setCustomTitleFont:v8];
     }
 
-    v9 = [(GuidesHomeViewController *)self titleHeaderView];
-    v10 = [v9 _headerTapGesture];
-    [v10 setCancelsTouchesInView:0];
+    titleHeaderView4 = [(GuidesHomeViewController *)self titleHeaderView];
+    _headerTapGesture = [titleHeaderView4 _headerTapGesture];
+    [_headerTapGesture setCancelsTouchesInView:0];
 
-    v11 = [(GuidesHomeViewController *)self titleHeaderView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleHeaderView5 = [(GuidesHomeViewController *)self titleHeaderView];
+    [titleHeaderView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(GuidesHomeViewController *)self titleHeaderView];
+    titleHeaderView6 = [(GuidesHomeViewController *)self titleHeaderView];
     LODWORD(v13) = 1148846080;
-    [v12 setContentCompressionResistancePriority:1 forAxis:v13];
+    [titleHeaderView6 setContentCompressionResistancePriority:1 forAxis:v13];
 
-    v14 = [(GuidesHomeViewController *)self titleHeaderView];
-    [v14 setDelegate:self];
+    titleHeaderView7 = [(GuidesHomeViewController *)self titleHeaderView];
+    [titleHeaderView7 setDelegate:self];
 
-    v15 = [(GuidesHomeViewController *)self titleHeaderView];
-    [v15 setHairLineAlpha:0.0];
+    titleHeaderView8 = [(GuidesHomeViewController *)self titleHeaderView];
+    [titleHeaderView8 setHairLineAlpha:0.0];
 
     v16 = +[UIColor clearColor];
-    v17 = [(GuidesHomeViewController *)self titleHeaderView];
-    [v17 setBackgroundColor:v16];
+    titleHeaderView9 = [(GuidesHomeViewController *)self titleHeaderView];
+    [titleHeaderView9 setBackgroundColor:v16];
 
     if (sub_10000FA08(self) == 5)
     {
@@ -511,65 +511,65 @@
       v18 = 2;
     }
 
-    v19 = [(GuidesHomeViewController *)self titleHeaderView];
-    [v19 setHeaderSize:v18];
+    titleHeaderView10 = [(GuidesHomeViewController *)self titleHeaderView];
+    [titleHeaderView10 setHeaderSize:v18];
 
-    v21 = [(ContaineeViewController *)self headerView];
-    v20 = [(GuidesHomeViewController *)self titleHeaderView];
-    [v21 addSubview:v20];
+    headerView = [(ContaineeViewController *)self headerView];
+    titleHeaderView11 = [(GuidesHomeViewController *)self titleHeaderView];
+    [headerView addSubview:titleHeaderView11];
   }
 }
 
 - (void)initializeDataSource
 {
-  v3 = [(GuidesHomeViewController *)self dataSource];
+  dataSource = [(GuidesHomeViewController *)self dataSource];
 
-  if (!v3)
+  if (!dataSource)
   {
-    v4 = [(GuidesHomeViewController *)self analyticsManager];
+    analyticsManager = [(GuidesHomeViewController *)self analyticsManager];
 
-    if (v4)
+    if (analyticsManager)
     {
-      v5 = [(GuidesHomeViewController *)self analyticsManager];
-      v6 = [(GuidesHomeViewController *)self guideLocation];
-      v7 = [v6 guideLocationIdentifier];
-      v8 = [(GuidesHomeViewController *)self apiController];
-      [v5 updateAnalyticsManagerWithGuideLocationId:v7 isCuratedGuidesHome:{-[GuidesHomeAnalyticsManager isCuratedGuidesHome](v8, "isCuratedGuidesHome")}];
+      analyticsManager2 = [(GuidesHomeViewController *)self analyticsManager];
+      guideLocation = [(GuidesHomeViewController *)self guideLocation];
+      guideLocationIdentifier = [guideLocation guideLocationIdentifier];
+      apiController = [(GuidesHomeViewController *)self apiController];
+      [analyticsManager2 updateAnalyticsManagerWithGuideLocationId:guideLocationIdentifier isCuratedGuidesHome:{-[GuidesHomeAnalyticsManager isCuratedGuidesHome](apiController, "isCuratedGuidesHome")}];
     }
 
     else
     {
       v9 = [GuidesHomeAnalyticsManager alloc];
-      v5 = [(GuidesHomeViewController *)self guideLocation];
-      v6 = [v5 guideLocationIdentifier];
-      v7 = [(GuidesHomeViewController *)self apiController];
-      v8 = -[GuidesHomeAnalyticsManager initWithGuideLocationId:isCuratedGuidesHome:](v9, "initWithGuideLocationId:isCuratedGuidesHome:", v6, [v7 isCuratedGuidesHome]);
-      [(GuidesHomeViewController *)self setAnalyticsManager:v8];
+      analyticsManager2 = [(GuidesHomeViewController *)self guideLocation];
+      guideLocation = [analyticsManager2 guideLocationIdentifier];
+      guideLocationIdentifier = [(GuidesHomeViewController *)self apiController];
+      apiController = -[GuidesHomeAnalyticsManager initWithGuideLocationId:isCuratedGuidesHome:](v9, "initWithGuideLocationId:isCuratedGuidesHome:", guideLocation, [guideLocationIdentifier isCuratedGuidesHome]);
+      [(GuidesHomeViewController *)self setAnalyticsManager:apiController];
     }
 
     v10 = [GuidesHomeDataSource alloc];
-    v11 = [(GuidesHomeViewController *)self collectionView];
-    v12 = [(GuidesHomeViewController *)self apiController];
-    v13 = [v12 guideHomeViewResult];
-    v14 = [(GuidesHomeViewController *)self apiController];
-    v15 = [(GuidesHomeViewController *)self analyticsManager];
-    v16 = [(GuidesHomeDataSource *)v10 initWithCollectionView:v11 result:v13 routingDelegate:self apiController:v14 analyticsManager:v15];
+    collectionView = [(GuidesHomeViewController *)self collectionView];
+    apiController2 = [(GuidesHomeViewController *)self apiController];
+    guideHomeViewResult = [apiController2 guideHomeViewResult];
+    apiController3 = [(GuidesHomeViewController *)self apiController];
+    analyticsManager3 = [(GuidesHomeViewController *)self analyticsManager];
+    v16 = [(GuidesHomeDataSource *)v10 initWithCollectionView:collectionView result:guideHomeViewResult routingDelegate:self apiController:apiController3 analyticsManager:analyticsManager3];
     [(GuidesHomeViewController *)self setDataSource:v16];
 
-    v17 = [(GuidesHomeViewController *)self dataSource];
-    [v17 setDelegate:self];
+    dataSource2 = [(GuidesHomeViewController *)self dataSource];
+    [dataSource2 setDelegate:self];
 
-    v18 = [(GuidesHomeViewController *)self analyticsManager];
-    [v18 guidesHomeRevealed];
+    analyticsManager4 = [(GuidesHomeViewController *)self analyticsManager];
+    [analyticsManager4 guidesHomeRevealed];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
+  y = velocity.y;
   v8.receiver = self;
   v8.super_class = GuidesHomeViewController;
-  [(ContaineeViewController *)&v8 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x];
+  [(ContaineeViewController *)&v8 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x];
   if (y >= 0.0)
   {
     if (y <= 0.0)
@@ -577,65 +577,65 @@
       return;
     }
 
-    v7 = [(GuidesHomeViewController *)self analyticsManager];
-    [v7 guidesHomeScrolledDown];
+    analyticsManager = [(GuidesHomeViewController *)self analyticsManager];
+    [analyticsManager guidesHomeScrolledDown];
   }
 
   else
   {
-    v7 = [(GuidesHomeViewController *)self analyticsManager];
-    [v7 guidesHomeScrolledUp];
+    analyticsManager = [(GuidesHomeViewController *)self analyticsManager];
+    [analyticsManager guidesHomeScrolledUp];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(GuidesHomeViewController *)self apiController];
-  v6 = [v5 isCuratedGuidesHome];
+  scrollCopy = scroll;
+  apiController = [(GuidesHomeViewController *)self apiController];
+  isCuratedGuidesHome = [apiController isCuratedGuidesHome];
 
-  if ((v6 & 1) == 0)
+  if ((isCuratedGuidesHome & 1) == 0)
   {
     v26.receiver = self;
     v26.super_class = GuidesHomeViewController;
-    [(ContaineeViewController *)&v26 scrollViewDidScroll:v4];
+    [(ContaineeViewController *)&v26 scrollViewDidScroll:scrollCopy];
     goto LABEL_13;
   }
 
-  v7 = [(GuidesHomeViewController *)self dataSource];
-  if ([v7 currentState] == 1)
+  dataSource = [(GuidesHomeViewController *)self dataSource];
+  if ([dataSource currentState] == 1)
   {
     goto LABEL_11;
   }
 
-  v8 = [(GuidesHomeViewController *)self layout];
-  v9 = [(GuidesHomeViewController *)self collectionView];
-  v10 = [v9 collectionViewLayout];
+  layout = [(GuidesHomeViewController *)self layout];
+  collectionView = [(GuidesHomeViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  if (v8 == v10)
+  if (layout == collectionViewLayout)
   {
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     [(GuidesHomeViewController *)self setContentOffset:?];
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v12 = v11;
-    v13 = [(GuidesHomeViewController *)self dataSource];
-    v7 = [v13 featuredGuideViewModel];
+    dataSource2 = [(GuidesHomeViewController *)self dataSource];
+    dataSource = [dataSource2 featuredGuideViewModel];
 
-    v14 = [v7 collectionLongTitle];
-    v15 = v14;
-    if (!v14)
+    collectionLongTitle = [dataSource collectionLongTitle];
+    collectionTitle = collectionLongTitle;
+    if (!collectionLongTitle)
     {
-      v15 = [v7 collectionTitle];
+      collectionTitle = [dataSource collectionTitle];
     }
 
-    v16 = [(ContaineeViewController *)self contentView];
-    [v16 frame];
-    [GuideHomeHeaderView maximumRequiredHeightWithFeaturedGuideTitle:v15 maxWidth:v17];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView frame];
+    [GuideHomeHeaderView maximumRequiredHeightWithFeaturedGuideTitle:collectionTitle maxWidth:v17];
     v19 = v18;
     +[GuideHomeHeaderView minimumRequiredHeight];
     v21 = v20;
 
-    if (!v14)
+    if (!collectionLongTitle)
     {
     }
 
@@ -645,15 +645,15 @@
       v22 = fmin(fmax(v12 / (v19 - v21), 0.0), 1.0);
     }
 
-    v23 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-    [v23 setAlpha:v22];
+    citySelectionBackgroundView = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+    [citySelectionBackgroundView setAlpha:v22];
 
-    v24 = [(GuidesHomeViewController *)self dataSource];
-    [v24 didChangeContentYOffset:v12];
+    dataSource3 = [(GuidesHomeViewController *)self dataSource];
+    [dataSource3 didChangeContentYOffset:v12];
 
     v25.receiver = self;
     v25.super_class = GuidesHomeViewController;
-    [(ContaineeViewController *)&v25 scrollViewDidScroll:v4];
+    [(ContaineeViewController *)&v25 scrollViewDidScroll:scrollCopy];
 LABEL_11:
   }
 
@@ -664,10 +664,10 @@ LABEL_13:
 {
   v3 = [[GradientView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(GradientView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(GuidesHomeViewController *)self dataSource];
-  v5 = [v4 featuredGuideViewModel];
-  v6 = [v5 backgroundColor];
-  [(GradientView *)v3 setBackgroundColor:v6];
+  dataSource = [(GuidesHomeViewController *)self dataSource];
+  featuredGuideViewModel = [dataSource featuredGuideViewModel];
+  backgroundColor = [featuredGuideViewModel backgroundColor];
+  [(GradientView *)v3 setBackgroundColor:backgroundColor];
 
   [(GradientView *)v3 setAlpha:0.0];
 
@@ -676,54 +676,54 @@ LABEL_13:
 
 - (void)setupCitySelectionUIGradientView
 {
-  v3 = [(GuidesHomeViewController *)self citySelectionView];
+  citySelectionView = [(GuidesHomeViewController *)self citySelectionView];
 
-  if (v3)
+  if (citySelectionView)
   {
-    v31 = [(GuidesHomeViewController *)self apiController];
-    if ([v31 isCuratedGuidesHome])
+    apiController = [(GuidesHomeViewController *)self apiController];
+    if ([apiController isCuratedGuidesHome])
     {
-      v4 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+      citySelectionBackgroundView = [(GuidesHomeViewController *)self citySelectionBackgroundView];
 
-      if (!v4)
+      if (!citySelectionBackgroundView)
       {
-        v5 = [(GuidesHomeViewController *)self backgroundViewForCitySelector];
-        [(GuidesHomeViewController *)self setCitySelectionBackgroundView:v5];
+        backgroundViewForCitySelector = [(GuidesHomeViewController *)self backgroundViewForCitySelector];
+        [(GuidesHomeViewController *)self setCitySelectionBackgroundView:backgroundViewForCitySelector];
 
-        v6 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        [v6 setAlpha:0.0];
+        citySelectionBackgroundView2 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        [citySelectionBackgroundView2 setAlpha:0.0];
 
-        v7 = [(GuidesHomeViewController *)self citySelectionView];
-        v8 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        [v7 addSubview:v8];
+        citySelectionView2 = [(GuidesHomeViewController *)self citySelectionView];
+        citySelectionBackgroundView3 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        [citySelectionView2 addSubview:citySelectionBackgroundView3];
 
-        v9 = [(GuidesHomeViewController *)self citySelectionView];
-        v10 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        [v9 sendSubviewToBack:v10];
+        citySelectionView3 = [(GuidesHomeViewController *)self citySelectionView];
+        citySelectionBackgroundView4 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        [citySelectionView3 sendSubviewToBack:citySelectionBackgroundView4];
 
-        v32 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        v29 = [v32 topAnchor];
-        v30 = [(GuidesHomeViewController *)self citySelectionView];
-        v28 = [v30 topAnchor];
-        v27 = [v29 constraintEqualToAnchor:v28];
+        citySelectionBackgroundView5 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        topAnchor = [citySelectionBackgroundView5 topAnchor];
+        citySelectionView4 = [(GuidesHomeViewController *)self citySelectionView];
+        topAnchor2 = [citySelectionView4 topAnchor];
+        v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v33[0] = v27;
-        v26 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        v24 = [v26 leadingAnchor];
-        v25 = [(GuidesHomeViewController *)self citySelectionView];
-        v23 = [v25 leadingAnchor];
-        v22 = [v24 constraintEqualToAnchor:v23];
+        citySelectionBackgroundView6 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        leadingAnchor = [citySelectionBackgroundView6 leadingAnchor];
+        citySelectionView5 = [(GuidesHomeViewController *)self citySelectionView];
+        leadingAnchor2 = [citySelectionView5 leadingAnchor];
+        v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v33[1] = v22;
-        v21 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        v11 = [v21 trailingAnchor];
-        v12 = [(GuidesHomeViewController *)self citySelectionView];
-        v13 = [v12 trailingAnchor];
-        v14 = [v11 constraintEqualToAnchor:v13];
+        citySelectionBackgroundView7 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        trailingAnchor = [citySelectionBackgroundView7 trailingAnchor];
+        citySelectionView6 = [(GuidesHomeViewController *)self citySelectionView];
+        trailingAnchor2 = [citySelectionView6 trailingAnchor];
+        v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v33[2] = v14;
-        v15 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
-        v16 = [v15 bottomAnchor];
-        v17 = [(GuidesHomeViewController *)self citySelectionView];
-        v18 = [v17 bottomAnchor];
-        v19 = [v16 constraintEqualToAnchor:v18];
+        citySelectionBackgroundView8 = [(GuidesHomeViewController *)self citySelectionBackgroundView];
+        bottomAnchor = [citySelectionBackgroundView8 bottomAnchor];
+        citySelectionView7 = [(GuidesHomeViewController *)self citySelectionView];
+        bottomAnchor2 = [citySelectionView7 bottomAnchor];
+        v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v33[3] = v19;
         v20 = [NSArray arrayWithObjects:v33 count:4];
         [NSLayoutConstraint activateConstraints:v20];
@@ -738,33 +738,33 @@ LABEL_13:
 
 - (void)setupCitySelectionUI
 {
-  v3 = [(GuidesHomeViewController *)self citySelectionView];
+  citySelectionView = [(GuidesHomeViewController *)self citySelectionView];
 
-  if (!v3)
+  if (!citySelectionView)
   {
     v4 = objc_alloc_init(UIView);
     [(GuidesHomeViewController *)self setCitySelectionView:v4];
 
-    v5 = [(GuidesHomeViewController *)self citySelectionView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    citySelectionView2 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v6 = +[UIColor clearColor];
-    v7 = [(GuidesHomeViewController *)self citySelectionView];
-    [v7 setBackgroundColor:v6];
+    citySelectionView3 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView3 setBackgroundColor:v6];
 
-    v8 = [(GuidesHomeViewController *)self citySelectionView];
-    [v8 setUserInteractionEnabled:1];
+    citySelectionView4 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView4 setUserInteractionEnabled:1];
 
-    v9 = [(GuidesHomeViewController *)self citySelectionView];
-    [v9 setAccessibilityIdentifier:@"GuidesHomeCitySelectionView"];
+    citySelectionView5 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView5 setAccessibilityIdentifier:@"GuidesHomeCitySelectionView"];
 
-    v10 = [(GuidesHomeViewController *)self apiController];
-    LOBYTE(v7) = [v10 isCuratedGuidesHome];
+    apiController = [(GuidesHomeViewController *)self apiController];
+    LOBYTE(citySelectionView3) = [apiController isCuratedGuidesHome];
 
-    if ((v7 & 1) == 0)
+    if ((citySelectionView3 & 1) == 0)
     {
-      v11 = [(GuidesHomeViewController *)self citySelectionView];
-      v12 = [v11 _maps_addHairlineAtBottomWithLeadingMargin:16.0 trailingMargin:0.0];
+      citySelectionView6 = [(GuidesHomeViewController *)self citySelectionView];
+      v12 = [citySelectionView6 _maps_addHairlineAtBottomWithLeadingMargin:16.0 trailingMargin:0.0];
     }
 
     v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -772,8 +772,8 @@ LABEL_13:
     v14 = +[UIFont system17Bold];
     [v13 setFont:v14];
 
-    v15 = [(GuidesHomeViewController *)self apiController];
-    if ([v15 isCuratedGuidesHome])
+    apiController2 = [(GuidesHomeViewController *)self apiController];
+    if ([apiController2 isCuratedGuidesHome])
     {
       v16 = +[UIColor whiteColor];
       v17 = [v16 colorWithAlphaComponent:0.8];
@@ -792,16 +792,16 @@ LABEL_13:
     v19 = [v18 localizedStringForKey:@"[Guide Home View] Guide Home" value:@"localized string not found" table:0];
     [v13 setText:v19];
 
-    v20 = [(GuidesHomeViewController *)self citySelectionView];
-    [v20 addSubview:v13];
+    citySelectionView7 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView7 addSubview:v13];
 
     v21 = +[UIButtonConfiguration plainButtonConfiguration];
     v22 = +[UIColor clearColor];
-    v23 = [v21 background];
-    [v23 setBackgroundColor:v22];
+    background = [v21 background];
+    [background setBackgroundColor:v22];
 
-    v24 = [v21 background];
-    [v24 setCornerRadius:0.0];
+    background2 = [v21 background];
+    [background2 setCornerRadius:0.0];
 
     [v21 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
     v201[0] = _NSConcreteStackBlock;
@@ -810,44 +810,44 @@ LABEL_13:
     v201[3] = &unk_101652B60;
     v201[4] = self;
     [v21 setTitleTextAttributesTransformer:v201];
-    v25 = [(GuidesHomeViewController *)self apiController];
-    v26 = [v25 guideLocationName];
+    apiController3 = [(GuidesHomeViewController *)self apiController];
+    guideLocationName = [apiController3 guideLocationName];
 
-    if (v26)
+    if (guideLocationName)
     {
-      [v21 setTitle:v26];
+      [v21 setTitle:guideLocationName];
     }
 
-    v196 = v26;
+    v196 = guideLocationName;
     v197 = v21;
     v27 = [UIButton buttonWithConfiguration:v21 primaryAction:0];
     [(GuidesHomeViewController *)self setCitySelectorButton:v27];
 
-    v28 = [(GuidesHomeViewController *)self citySelectorButton];
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+    citySelectorButton = [(GuidesHomeViewController *)self citySelectorButton];
+    [citySelectorButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v29 = [(GuidesHomeViewController *)self citySelectorButton];
-    [v29 setAccessibilityIdentifier:@"CitySelectorButton"];
+    citySelectorButton2 = [(GuidesHomeViewController *)self citySelectorButton];
+    [citySelectorButton2 setAccessibilityIdentifier:@"CitySelectorButton"];
 
-    v30 = [(GuidesHomeViewController *)self apiController];
-    v31 = [v30 isCuratedGuidesHome];
+    apiController4 = [(GuidesHomeViewController *)self apiController];
+    isCuratedGuidesHome = [apiController4 isCuratedGuidesHome];
 
-    v32 = [(GuidesHomeViewController *)self citySelectorButton];
-    v33 = v32;
+    citySelectorButton3 = [(GuidesHomeViewController *)self citySelectorButton];
+    v33 = citySelectorButton3;
     v200 = v13;
-    if (v31)
+    if (isCuratedGuidesHome)
     {
-      [v32 addTarget:self action:"didTapCitySelectorButton:" forControlEvents:64];
+      [citySelectorButton3 addTarget:self action:"didTapCitySelectorButton:" forControlEvents:64];
     }
 
     else
     {
-      [v32 setUserInteractionEnabled:0];
+      [citySelectorButton3 setUserInteractionEnabled:0];
     }
 
-    v34 = [(GuidesHomeViewController *)self citySelectionView];
-    v35 = [(GuidesHomeViewController *)self citySelectorButton];
-    [v34 addSubview:v35];
+    citySelectionView8 = [(GuidesHomeViewController *)self citySelectionView];
+    citySelectorButton4 = [(GuidesHomeViewController *)self citySelectorButton];
+    [citySelectionView8 addSubview:citySelectorButton4];
 
     v36 = objc_alloc_init(UIView);
     [v36 setAccessibilityIdentifier:@"ChevronView"];
@@ -878,9 +878,9 @@ LABEL_13:
     [v36 addSubview:v39];
     [v36 _setContinuousCornerRadius:12.0];
     [v36 setClipsToBounds:1];
-    v44 = [(GuidesHomeViewController *)self citySelectionView];
+    citySelectionView9 = [(GuidesHomeViewController *)self citySelectionView];
     v45 = v36;
-    [v44 addSubview:v36];
+    [citySelectionView9 addSubview:v36];
 
     v46 = objc_alloc_init(UIView);
     [v46 setAccessibilityIdentifier:@"CloseButton"];
@@ -892,8 +892,8 @@ LABEL_13:
 
     [v49 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v46 addSubview:v49];
-    v50 = [(GuidesHomeViewController *)self apiController];
-    LODWORD(v48) = [v50 isCuratedGuidesHome];
+    apiController5 = [(GuidesHomeViewController *)self apiController];
+    LODWORD(v48) = [apiController5 isCuratedGuidesHome];
 
     if (v48)
     {
@@ -921,204 +921,204 @@ LABEL_13:
     [v46 _setContinuousCornerRadius:15.0];
     [v46 setClipsToBounds:1];
     [v46 addSubview:v52];
-    v56 = [(GuidesHomeViewController *)self citySelectionView];
-    [v56 addSubview:v46];
+    citySelectionView10 = [(GuidesHomeViewController *)self citySelectionView];
+    [citySelectionView10 addSubview:v46];
 
-    v57 = [(ContaineeViewController *)self contentView];
-    v58 = [(GuidesHomeViewController *)self citySelectionView];
-    [v57 addSubview:v58];
+    contentView = [(ContaineeViewController *)self contentView];
+    citySelectionView11 = [(GuidesHomeViewController *)self citySelectionView];
+    [contentView addSubview:citySelectionView11];
 
-    v59 = [v200 text];
+    text = [v200 text];
     v203 = NSFontAttributeName;
-    v60 = [v200 font];
-    v204 = v60;
+    font = [v200 font];
+    v204 = font;
     [NSDictionary dictionaryWithObjects:&v204 forKeys:&v203 count:1];
     v62 = v61 = v46;
-    [v59 sizeWithAttributes:v62];
+    [text sizeWithAttributes:v62];
     v64 = v63;
 
-    v192 = [v45 heightAnchor];
-    v191 = [v192 constraintEqualToConstant:24.0];
+    heightAnchor = [v45 heightAnchor];
+    v191 = [heightAnchor constraintEqualToConstant:24.0];
     v202[0] = v191;
-    v190 = [v45 widthAnchor];
-    v189 = [v190 constraintEqualToConstant:24.0];
+    widthAnchor = [v45 widthAnchor];
+    v189 = [widthAnchor constraintEqualToConstant:24.0];
     v202[1] = v189;
-    v188 = [v199 topAnchor];
-    v187 = [v45 topAnchor];
-    v186 = [v188 constraintEqualToAnchor:v187];
+    topAnchor = [v199 topAnchor];
+    topAnchor2 = [v45 topAnchor];
+    v186 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v202[2] = v186;
-    v185 = [v199 leadingAnchor];
-    v184 = [v45 leadingAnchor];
-    v183 = [v185 constraintEqualToAnchor:v184];
+    leadingAnchor = [v199 leadingAnchor];
+    leadingAnchor2 = [v45 leadingAnchor];
+    v183 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v202[3] = v183;
-    v182 = [v199 trailingAnchor];
-    v181 = [v45 trailingAnchor];
-    v180 = [v182 constraintEqualToAnchor:v181];
+    trailingAnchor = [v199 trailingAnchor];
+    trailingAnchor2 = [v45 trailingAnchor];
+    v180 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v202[4] = v180;
-    v179 = [v199 bottomAnchor];
-    v178 = [v45 bottomAnchor];
-    v177 = [v179 constraintEqualToAnchor:v178];
+    bottomAnchor = [v199 bottomAnchor];
+    bottomAnchor2 = [v45 bottomAnchor];
+    v177 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v202[5] = v177;
-    v176 = [v198 topAnchor];
-    v175 = [v199 topAnchor];
-    v174 = [v176 constraintEqualToAnchor:v175 constant:2.0];
+    topAnchor3 = [v198 topAnchor];
+    topAnchor4 = [v199 topAnchor];
+    v174 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:2.0];
     v202[6] = v174;
-    v173 = [v198 leadingAnchor];
-    v172 = [v199 leadingAnchor];
-    v171 = [v173 constraintEqualToAnchor:v172 constant:0.5];
+    leadingAnchor3 = [v198 leadingAnchor];
+    leadingAnchor4 = [v199 leadingAnchor];
+    v171 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:0.5];
     v202[7] = v171;
-    v170 = [v198 trailingAnchor];
-    v169 = [v199 trailingAnchor];
-    v168 = [v170 constraintEqualToAnchor:v169];
+    trailingAnchor3 = [v198 trailingAnchor];
+    trailingAnchor4 = [v199 trailingAnchor];
+    v168 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v202[8] = v168;
-    v167 = [v198 bottomAnchor];
-    v165 = [v199 bottomAnchor];
-    v164 = [v167 constraintEqualToAnchor:v165];
+    bottomAnchor3 = [v198 bottomAnchor];
+    bottomAnchor4 = [v199 bottomAnchor];
+    v164 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v202[9] = v164;
-    v162 = [v61 topAnchor];
-    v163 = [(GuidesHomeViewController *)self citySelectionView];
-    v161 = [v163 topAnchor];
-    v160 = [v162 constraintEqualToAnchor:v161 constant:16.0];
+    topAnchor5 = [v61 topAnchor];
+    citySelectionView12 = [(GuidesHomeViewController *)self citySelectionView];
+    topAnchor6 = [citySelectionView12 topAnchor];
+    v160 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:16.0];
     v202[10] = v160;
-    v157 = [v61 trailingAnchor];
-    v158 = [(GuidesHomeViewController *)self citySelectionView];
-    v156 = [v158 trailingAnchor];
-    v155 = [v157 constraintEqualToAnchor:v156 constant:-16.0];
+    trailingAnchor5 = [v61 trailingAnchor];
+    citySelectionView13 = [(GuidesHomeViewController *)self citySelectionView];
+    trailingAnchor6 = [citySelectionView13 trailingAnchor];
+    v155 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
     v202[11] = v155;
-    v154 = [v61 heightAnchor];
-    v153 = [v154 constraintEqualToConstant:30.0];
+    heightAnchor2 = [v61 heightAnchor];
+    v153 = [heightAnchor2 constraintEqualToConstant:30.0];
     v202[12] = v153;
-    v152 = [v61 widthAnchor];
-    v151 = [v152 constraintEqualToConstant:30.0];
+    widthAnchor2 = [v61 widthAnchor];
+    v151 = [widthAnchor2 constraintEqualToConstant:30.0];
     v202[13] = v151;
-    v150 = [v49 topAnchor];
-    v149 = [v61 topAnchor];
-    v148 = [v150 constraintEqualToAnchor:v149];
+    topAnchor7 = [v49 topAnchor];
+    topAnchor8 = [v61 topAnchor];
+    v148 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v202[14] = v148;
-    v147 = [v49 leadingAnchor];
-    v146 = [v61 leadingAnchor];
-    v145 = [v147 constraintEqualToAnchor:v146];
+    leadingAnchor5 = [v49 leadingAnchor];
+    leadingAnchor6 = [v61 leadingAnchor];
+    v145 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v202[15] = v145;
-    v144 = [v49 trailingAnchor];
+    trailingAnchor7 = [v49 trailingAnchor];
     v166 = v61;
-    v143 = [v61 trailingAnchor];
-    v142 = [v144 constraintEqualToAnchor:v143];
+    trailingAnchor8 = [v61 trailingAnchor];
+    v142 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v202[16] = v142;
-    v141 = [v49 bottomAnchor];
-    v140 = [v61 bottomAnchor];
-    v139 = [v141 constraintEqualToAnchor:v140];
+    bottomAnchor5 = [v49 bottomAnchor];
+    bottomAnchor6 = [v61 bottomAnchor];
+    v139 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v202[17] = v139;
-    v138 = [v52 topAnchor];
-    v137 = [v49 topAnchor];
-    v136 = [v138 constraintEqualToAnchor:v137];
+    topAnchor9 = [v52 topAnchor];
+    topAnchor10 = [v49 topAnchor];
+    v136 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v202[18] = v136;
-    v134 = [v52 leadingAnchor];
-    v133 = [v49 leadingAnchor];
-    v132 = [v134 constraintEqualToAnchor:v133];
+    leadingAnchor7 = [v52 leadingAnchor];
+    leadingAnchor8 = [v49 leadingAnchor];
+    v132 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v202[19] = v132;
     v159 = v52;
-    v131 = [v52 trailingAnchor];
-    v130 = [v49 trailingAnchor];
-    v129 = [v131 constraintEqualToAnchor:v130];
+    trailingAnchor9 = [v52 trailingAnchor];
+    trailingAnchor10 = [v49 trailingAnchor];
+    v129 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v202[20] = v129;
-    v128 = [v52 bottomAnchor];
-    v127 = [v49 bottomAnchor];
-    v126 = [v128 constraintEqualToAnchor:v127];
+    bottomAnchor7 = [v52 bottomAnchor];
+    bottomAnchor8 = [v49 bottomAnchor];
+    v126 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v202[21] = v126;
-    v123 = [v200 leadingAnchor];
-    v125 = [(GuidesHomeViewController *)self citySelectionView];
-    v122 = [v125 leadingAnchor];
-    v121 = [v123 constraintEqualToAnchor:v122 constant:16.0];
+    leadingAnchor9 = [v200 leadingAnchor];
+    citySelectionView14 = [(GuidesHomeViewController *)self citySelectionView];
+    leadingAnchor10 = [citySelectionView14 leadingAnchor];
+    v121 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:16.0];
     v202[22] = v121;
-    v119 = [v200 trailingAnchor];
-    v120 = [(GuidesHomeViewController *)self citySelectionView];
-    v118 = [v120 trailingAnchor];
-    v117 = [v119 constraintEqualToAnchor:v118];
+    trailingAnchor11 = [v200 trailingAnchor];
+    citySelectionView15 = [(GuidesHomeViewController *)self citySelectionView];
+    trailingAnchor12 = [citySelectionView15 trailingAnchor];
+    v117 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     v202[23] = v117;
-    v115 = [v200 topAnchor];
-    v116 = [(GuidesHomeViewController *)self citySelectionView];
-    v114 = [v116 topAnchor];
-    v113 = [v115 constraintEqualToAnchor:v114 constant:26.0];
+    topAnchor11 = [v200 topAnchor];
+    citySelectionView16 = [(GuidesHomeViewController *)self citySelectionView];
+    topAnchor12 = [citySelectionView16 topAnchor];
+    v113 = [topAnchor11 constraintEqualToAnchor:topAnchor12 constant:26.0];
     v202[24] = v113;
-    v112 = [v200 heightAnchor];
-    v111 = [v112 constraintEqualToConstant:v64];
+    heightAnchor3 = [v200 heightAnchor];
+    v111 = [heightAnchor3 constraintEqualToConstant:v64];
     v202[25] = v111;
-    v110 = [(GuidesHomeViewController *)self citySelectorButton];
-    v109 = [v110 leadingAnchor];
-    v108 = [v200 leadingAnchor];
-    v107 = [v109 constraintEqualToAnchor:v108];
+    citySelectorButton5 = [(GuidesHomeViewController *)self citySelectorButton];
+    leadingAnchor11 = [citySelectorButton5 leadingAnchor];
+    leadingAnchor12 = [v200 leadingAnchor];
+    v107 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v202[26] = v107;
-    v106 = [(GuidesHomeViewController *)self citySelectorButton];
-    v104 = [v106 trailingAnchor];
-    v105 = [(GuidesHomeViewController *)self citySelectionView];
-    v103 = [v105 trailingAnchor];
-    v102 = [v104 constraintLessThanOrEqualToAnchor:v103 constant:-16.0];
+    citySelectorButton6 = [(GuidesHomeViewController *)self citySelectorButton];
+    trailingAnchor13 = [citySelectorButton6 trailingAnchor];
+    citySelectionView17 = [(GuidesHomeViewController *)self citySelectionView];
+    trailingAnchor14 = [citySelectionView17 trailingAnchor];
+    v102 = [trailingAnchor13 constraintLessThanOrEqualToAnchor:trailingAnchor14 constant:-16.0];
     v202[27] = v102;
-    v101 = [(GuidesHomeViewController *)self citySelectorButton];
-    v100 = [v101 topAnchor];
-    v99 = [v200 bottomAnchor];
-    v98 = [v100 constraintEqualToAnchor:v99];
+    citySelectorButton7 = [(GuidesHomeViewController *)self citySelectorButton];
+    topAnchor13 = [citySelectorButton7 topAnchor];
+    bottomAnchor9 = [v200 bottomAnchor];
+    v98 = [topAnchor13 constraintEqualToAnchor:bottomAnchor9];
     v202[28] = v98;
     v135 = v45;
-    v96 = [v45 leadingAnchor];
-    v97 = [(GuidesHomeViewController *)self citySelectorButton];
-    v95 = [v97 trailingAnchor];
-    v94 = [v96 constraintEqualToAnchor:v95 constant:8.0];
+    leadingAnchor13 = [v45 leadingAnchor];
+    citySelectorButton8 = [(GuidesHomeViewController *)self citySelectorButton];
+    trailingAnchor15 = [citySelectorButton8 trailingAnchor];
+    v94 = [leadingAnchor13 constraintEqualToAnchor:trailingAnchor15 constant:8.0];
     v202[29] = v94;
-    v92 = [v45 centerYAnchor];
-    v93 = [(GuidesHomeViewController *)self citySelectorButton];
-    v91 = [v93 centerYAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91];
+    centerYAnchor = [v45 centerYAnchor];
+    citySelectorButton9 = [(GuidesHomeViewController *)self citySelectorButton];
+    centerYAnchor2 = [citySelectorButton9 centerYAnchor];
+    v90 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v202[30] = v90;
-    v89 = [(GuidesHomeViewController *)self citySelectionView];
-    v87 = [v89 topAnchor];
-    v88 = [(ContaineeViewController *)self contentView];
-    v86 = [v88 topAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    citySelectionView18 = [(GuidesHomeViewController *)self citySelectionView];
+    topAnchor14 = [citySelectionView18 topAnchor];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    topAnchor15 = [contentView2 topAnchor];
+    v85 = [topAnchor14 constraintEqualToAnchor:topAnchor15];
     v202[31] = v85;
-    v84 = [(GuidesHomeViewController *)self citySelectionView];
-    v82 = [v84 leadingAnchor];
-    v83 = [(ContaineeViewController *)self contentView];
-    v81 = [v83 leadingAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    citySelectionView19 = [(GuidesHomeViewController *)self citySelectionView];
+    leadingAnchor14 = [citySelectionView19 leadingAnchor];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    leadingAnchor15 = [contentView3 leadingAnchor];
+    v80 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
     v202[32] = v80;
-    v79 = [(GuidesHomeViewController *)self citySelectionView];
-    v77 = [v79 trailingAnchor];
-    v78 = [(ContaineeViewController *)self contentView];
-    v76 = [v78 trailingAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    citySelectionView20 = [(GuidesHomeViewController *)self citySelectionView];
+    trailingAnchor16 = [citySelectionView20 trailingAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    trailingAnchor17 = [contentView4 trailingAnchor];
+    v75 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17];
     v202[33] = v75;
-    v65 = [(GuidesHomeViewController *)self citySelectionView];
-    v66 = [v65 heightAnchor];
+    citySelectionView21 = [(GuidesHomeViewController *)self citySelectionView];
+    heightAnchor4 = [citySelectionView21 heightAnchor];
     +[GuideHomeHeaderView minimumRequiredHeight];
-    [v66 constraintGreaterThanOrEqualToConstant:?];
+    [heightAnchor4 constraintGreaterThanOrEqualToConstant:?];
     v67 = v124 = v49;
     v202[34] = v67;
-    v68 = [(GuidesHomeViewController *)self citySelectionView];
-    v69 = [v68 bottomAnchor];
-    v70 = [(GuidesHomeViewController *)self citySelectorButton];
-    v71 = [v70 bottomAnchor];
-    v72 = [v69 constraintEqualToAnchor:v71 constant:15.0];
+    citySelectionView22 = [(GuidesHomeViewController *)self citySelectionView];
+    bottomAnchor10 = [citySelectionView22 bottomAnchor];
+    citySelectorButton10 = [(GuidesHomeViewController *)self citySelectorButton];
+    bottomAnchor11 = [citySelectorButton10 bottomAnchor];
+    v72 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:15.0];
     v202[35] = v72;
     v73 = [NSArray arrayWithObjects:v202 count:36];
     [NSLayoutConstraint activateConstraints:v73];
 
-    v74 = [(GuidesHomeViewController *)self apiController];
-    [v135 setHidden:{objc_msgSend(v74, "isCuratedGuidesHome") ^ 1}];
+    apiController6 = [(GuidesHomeViewController *)self apiController];
+    [v135 setHidden:{objc_msgSend(apiController6, "isCuratedGuidesHome") ^ 1}];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = GuidesHomeViewController;
-  [(GuidesHomeViewController *)&v5 viewDidAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 cardHeight];
+  [(GuidesHomeViewController *)&v5 viewDidAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController cardHeight];
   [(GuidesHomeViewController *)self setActualCardHeight:?];
 }
 
-- (void)onTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (void)onTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
   v7 = sub_1008D6B88();
   v8 = os_signpost_id_generate(v7);
@@ -1131,11 +1131,11 @@ LABEL_13:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "DisplayingGuideHomeView", "", buf, 2u);
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 3 || a4 != 1)
+      if (state != 3 || toState != 1)
       {
         goto LABEL_24;
       }
@@ -1146,24 +1146,24 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    if (a4 != 1)
+    if (toState != 1)
     {
       goto LABEL_24;
     }
 
-    v13 = [(GuidesHomeViewController *)self apiController];
-    v14 = [v13 isFilteredGuidesHome];
+    apiController = [(GuidesHomeViewController *)self apiController];
+    isFilteredGuidesHome = [apiController isFilteredGuidesHome];
 
-    if (v14)
+    if (isFilteredGuidesHome)
     {
       goto LABEL_24;
     }
 
     [(GuidesHomeViewController *)self removeCollectionView];
     [(GuidesHomeViewController *)self removeCitySelectionUI];
-    v15 = [(GuidesHomeViewController *)self view];
-    v16 = [(ContaineeViewController *)self headerView];
-    [v15 addSubview:v16];
+    view = [(GuidesHomeViewController *)self view];
+    headerView = [(ContaineeViewController *)self headerView];
+    [view addSubview:headerView];
 
     [(GuidesHomeViewController *)self resetDefaultHeaderConstraints];
 LABEL_20:
@@ -1172,9 +1172,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!state)
   {
-    if (a4 != 1)
+    if (toState != 1)
     {
       goto LABEL_24;
     }
@@ -1182,23 +1182,23 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    if (a4 == 3)
+    if (toState == 3)
     {
       [(GuidesHomeViewController *)self removeLoadingView];
       [(GuidesHomeViewController *)self removeCollectionView];
       [(GuidesHomeViewController *)self addErrorView];
     }
 
-    else if (a4 == 2)
+    else if (toState == 2)
     {
-      v11 = [(GuidesHomeViewController *)self apiController];
-      v12 = [v11 guideHomeSingleCollectionIdentifier];
+      apiController2 = [(GuidesHomeViewController *)self apiController];
+      guideHomeSingleCollectionIdentifier = [apiController2 guideHomeSingleCollectionIdentifier];
 
-      if (v12)
+      if (guideHomeSingleCollectionIdentifier)
       {
-        [(GuidesHomeViewController *)self routeToSingleCuratedCollection:v12];
+        [(GuidesHomeViewController *)self routeToSingleCuratedCollection:guideHomeSingleCollectionIdentifier];
         goto LABEL_27;
       }
 
@@ -1206,23 +1206,23 @@ LABEL_20:
       [(GuidesHomeViewController *)self removeDefaultHeaderView];
       [(GuidesHomeViewController *)self setupCitySelectionUI];
       [(GuidesHomeViewController *)self addGuidesHomeCollectionsView];
-      v17 = [(GuidesHomeViewController *)self collectionView];
-      [(GuidesHomeViewController *)self activateConstraintsForViewAligningHeader:v17];
+      collectionView = [(GuidesHomeViewController *)self collectionView];
+      [(GuidesHomeViewController *)self activateConstraintsForViewAligningHeader:collectionView];
 
       [(GuidesHomeViewController *)self setupCitySelectionUIGradientView];
-      v18 = [(ContaineeViewController *)self contentView];
-      v19 = [(GuidesHomeViewController *)self citySelectionView];
-      [v18 bringSubviewToFront:v19];
+      contentView = [(ContaineeViewController *)self contentView];
+      citySelectionView = [(GuidesHomeViewController *)self citySelectionView];
+      [contentView bringSubviewToFront:citySelectionView];
     }
   }
 
 LABEL_24:
   v20 = sub_1008D6B88();
-  v12 = v20;
+  guideHomeSingleCollectionIdentifier = v20;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
   {
     *v21 = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, v8, "DisplayingGuideHomeView", "", v21, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, guideHomeSingleCollectionIdentifier, OS_SIGNPOST_INTERVAL_END, v8, "DisplayingGuideHomeView", "", v21, 2u);
   }
 
 LABEL_27:
@@ -1236,49 +1236,49 @@ LABEL_27:
   [(ContaineeViewController *)&v3 didDismissByGesture];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v5 = sub_10000FA08(self);
-  if (a3 != 1 || (result = -1.0, v5 != 5))
+  if (layout != 1 || (result = -1.0, v5 != 5))
   {
     v7.receiver = self;
     v7.super_class = GuidesHomeViewController;
-    [(ContaineeViewController *)&v7 heightForLayout:a3];
+    [(ContaineeViewController *)&v7 heightForLayout:layout];
   }
 
   return result;
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v8.receiver = self;
   v8.super_class = GuidesHomeViewController;
   [(ContaineeViewController *)&v8 didChangeLayout:?];
-  v5 = [(GuidesHomeViewController *)self collectionView];
-  if (v5)
+  collectionView = [(GuidesHomeViewController *)self collectionView];
+  if (collectionView)
   {
-    v6 = v5;
-    v7 = [(GuidesHomeViewController *)self containeeLayout];
+    v6 = collectionView;
+    containeeLayout = [(GuidesHomeViewController *)self containeeLayout];
 
-    if (v7 != a3)
+    if (containeeLayout != layout)
     {
-      [(GuidesHomeViewController *)self setContaineeLayout:a3];
+      [(GuidesHomeViewController *)self setContaineeLayout:layout];
       [(GuidesHomeViewController *)self resetCollectionViewLayout];
     }
   }
 }
 
-- (void)setGuideLocation:(id)a3
+- (void)setGuideLocation:(id)location
 {
-  v5 = a3;
-  if (self->_guideLocation != v5)
+  locationCopy = location;
+  if (self->_guideLocation != locationCopy)
   {
-    objc_storeStrong(&self->_guideLocation, a3);
-    v6 = [(GuidesHomeViewController *)self apiController];
-    [v6 refreshWithGuideLocation:self->_guideLocation];
+    objc_storeStrong(&self->_guideLocation, location);
+    apiController = [(GuidesHomeViewController *)self apiController];
+    [apiController refreshWithGuideLocation:self->_guideLocation];
 
-    v7 = [(GuidesHomeViewController *)self dataSource];
-    [v7 refreshedGuideLocation];
+    dataSource = [(GuidesHomeViewController *)self dataSource];
+    [dataSource refreshedGuideLocation];
 
     objc_initWeak(&location, self);
     v10[0] = _NSConcreteStackBlock;
@@ -1305,61 +1305,61 @@ LABEL_27:
   [(ContaineeViewController *)&v12 viewDidLoad];
   objc_initWeak(&location, self);
   v3 = [GuidesHomeAPIController alloc];
-  v4 = [(GuidesHomeViewController *)self guideLocation];
+  guideLocation = [(GuidesHomeViewController *)self guideLocation];
   objc_copyWeak(&v10, &location);
   v5 = [(GuidesHomeViewController *)self traits:_NSConcreteStackBlock];
-  v6 = [(GuidesHomeAPIController *)v3 initWithGuideLocation:v4 onStateChangeHandler:&v9 traits:v5];
+  v6 = [(GuidesHomeAPIController *)v3 initWithGuideLocation:guideLocation onStateChangeHandler:&v9 traits:v5];
   [(GuidesHomeViewController *)self setApiController:v6];
 
-  v7 = [(GuidesHomeViewController *)self apiController];
-  [v7 fetchGuidesHomeViewFilteredBy:0 onCompletion:&stru_10162DAE8];
+  apiController = [(GuidesHomeViewController *)self apiController];
+  [apiController fetchGuidesHomeViewFilteredBy:0 onCompletion:&stru_10162DAE8];
 
-  v8 = [(GuidesHomeViewController *)self view];
-  [v8 setAccessibilityIdentifier:@"GuidesHomeView"];
+  view = [(GuidesHomeViewController *)self view];
+  [view setAccessibilityIdentifier:@"GuidesHomeView"];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(GuidesHomeViewController *)self dismissGuidesHome];
   v5.receiver = self;
   v5.super_class = GuidesHomeViewController;
-  [(ContaineeViewController *)&v5 handleDismissAction:v4];
+  [(ContaineeViewController *)&v5 handleDismissAction:actionCopy];
 }
 
-- (GuidesHomeViewController)initWithGuideLocation:(id)a3 withTraits:(id)a4
+- (GuidesHomeViewController)initWithGuideLocation:(id)location withTraits:(id)traits
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  traitsCopy = traits;
   v16.receiver = self;
   v16.super_class = GuidesHomeViewController;
   v9 = [(GuidesHomeViewController *)&v16 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_guideLocation, a3);
-    objc_storeStrong(&v10->_traits, a4);
+    objc_storeStrong(&v9->_guideLocation, location);
+    objc_storeStrong(&v10->_traits, traits);
     v10->_contentOffset = CGPointZero;
     v11 = sub_10000FA08(v10);
-    v12 = [(ContaineeViewController *)v10 cardPresentationController];
-    v13 = v12;
+    cardPresentationController = [(ContaineeViewController *)v10 cardPresentationController];
+    v13 = cardPresentationController;
     if (v11 == 5)
     {
-      [v12 setAllowResizeInFloatingStyle:1];
+      [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-      v14 = [(ContaineeViewController *)v10 cardPresentationController];
-      [v14 setDefaultContaineeLayout:3];
+      cardPresentationController2 = [(ContaineeViewController *)v10 cardPresentationController];
+      [cardPresentationController2 setDefaultContaineeLayout:3];
     }
 
     else
     {
-      [v12 setPresentedModally:1];
+      [cardPresentationController setPresentedModally:1];
 
-      v14 = [(ContaineeViewController *)v10 cardPresentationController];
-      [v14 setTakesAvailableHeight:1];
+      cardPresentationController2 = [(ContaineeViewController *)v10 cardPresentationController];
+      [cardPresentationController2 setTakesAvailableHeight:1];
     }
   }
 

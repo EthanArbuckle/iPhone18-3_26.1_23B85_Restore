@@ -1,31 +1,31 @@
 @interface SBIdleTimerBehavior
 + (id)autoLockBehavior;
-+ (id)behaviorForBehaviorProvider:(id)a3;
-+ (id)behaviorWithDuration:(int64_t)a3 mode:(int64_t)a4 warnMode:(int64_t)a5;
++ (id)behaviorForBehaviorProvider:(id)provider;
++ (id)behaviorWithDuration:(int64_t)duration mode:(int64_t)mode warnMode:(int64_t)warnMode;
 + (id)defaultBehavior;
 + (id)disabledBehavior;
 + (id)lockScreenBehavior;
-- (id)_initWithBehaviorProvider:(id)a3;
-- (id)_initWithDuration:(int64_t)a3 mode:(int64_t)a4 warnMode:(int64_t)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithBehaviorProvider:(id)provider;
+- (id)_initWithDuration:(int64_t)duration mode:(int64_t)mode warnMode:(int64_t)warnMode;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_appendInnerDescriptionToFormatter:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_appendInnerDescriptionToFormatter:(id)formatter;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBIdleTimerBehavior
 
 + (id)autoLockBehavior
 {
-  v2 = [[a1 alloc] _initWithDuration:16 mode:1 warnMode:2];
+  v2 = [[self alloc] _initWithDuration:16 mode:1 warnMode:2];
 
   return v2;
 }
 
 + (id)disabledBehavior
 {
-  v2 = [[a1 alloc] _initWithDuration:18 mode:3 warnMode:1];
+  v2 = [[self alloc] _initWithDuration:18 mode:3 warnMode:1];
 
   return v2;
 }
@@ -37,90 +37,90 @@
   {
 
 LABEL_4:
-    v6 = [a1 lockScreenBehavior];
+    lockScreenBehavior = [self lockScreenBehavior];
     goto LABEL_6;
   }
 
   v4 = +[SBCoverSheetPresentationManager sharedInstance];
-  v5 = [v4 isVisible];
+  isVisible = [v4 isVisible];
 
-  if (v5)
+  if (isVisible)
   {
     goto LABEL_4;
   }
 
-  v6 = [a1 autoLockBehavior];
+  lockScreenBehavior = [self autoLockBehavior];
 LABEL_6:
 
-  return v6;
+  return lockScreenBehavior;
 }
 
 + (id)lockScreenBehavior
 {
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 lockScreenEnvironment];
-  v5 = [v4 idleTimerController];
+  lockScreenEnvironment = [v3 lockScreenEnvironment];
+  idleTimerController = [lockScreenEnvironment idleTimerController];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 requestIdleTimerBehaviorForReason:@"lockScreenIdleTimerDescriptor"];
-    v7 = [a1 behaviorForBehaviorProvider:v6];
+    v6 = [idleTimerController requestIdleTimerBehaviorForReason:@"lockScreenIdleTimerDescriptor"];
+    v7 = [self behaviorForBehaviorProvider:v6];
   }
 
   else
   {
-    v7 = [[a1 alloc] _initWithDuration:1 mode:1 warnMode:2];
+    v7 = [[self alloc] _initWithDuration:1 mode:1 warnMode:2];
   }
 
   return v7;
 }
 
-+ (id)behaviorForBehaviorProvider:(id)a3
++ (id)behaviorForBehaviorProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithBehaviorProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] _initWithBehaviorProvider:providerCopy];
 
   return v5;
 }
 
-+ (id)behaviorWithDuration:(int64_t)a3 mode:(int64_t)a4 warnMode:(int64_t)a5
++ (id)behaviorWithDuration:(int64_t)duration mode:(int64_t)mode warnMode:(int64_t)warnMode
 {
-  v5 = [[a1 alloc] _initWithDuration:a3 mode:a4 warnMode:a5];
+  v5 = [[self alloc] _initWithDuration:duration mode:mode warnMode:warnMode];
 
   return v5;
 }
 
-- (id)_initWithDuration:(int64_t)a3 mode:(int64_t)a4 warnMode:(int64_t)a5
+- (id)_initWithDuration:(int64_t)duration mode:(int64_t)mode warnMode:(int64_t)warnMode
 {
   v9.receiver = self;
   v9.super_class = SBIdleTimerBehavior;
   result = [(SBIdleTimerBehavior *)&v9 init];
   if (result)
   {
-    *(result + 2) = a4;
-    *(result + 3) = a3;
-    *(result + 1) = a5;
+    *(result + 2) = mode;
+    *(result + 3) = duration;
+    *(result + 1) = warnMode;
   }
 
   return result;
 }
 
-- (id)_initWithBehaviorProvider:(id)a3
+- (id)_initWithBehaviorProvider:(id)provider
 {
-  v4 = a3;
-  v5 = -[SBIdleTimerBehavior _initWithDuration:mode:warnMode:](self, "_initWithDuration:mode:warnMode:", [v4 idleTimerDuration], objc_msgSend(v4, "idleTimerMode"), objc_msgSend(v4, "idleWarnMode"));
+  providerCopy = provider;
+  v5 = -[SBIdleTimerBehavior _initWithDuration:mode:warnMode:](self, "_initWithDuration:mode:warnMode:", [providerCopy idleTimerDuration], objc_msgSend(providerCopy, "idleTimerMode"), objc_msgSend(providerCopy, "idleWarnMode"));
   v6 = objc_opt_respondsToSelector();
   v7 = 0;
   v8 = 0;
   if (v6)
   {
-    [v4 customIdleWarningTimeout];
+    [providerCopy customIdleWarningTimeout];
   }
 
   v5[4] = v8;
   if (objc_opt_respondsToSelector())
   {
-    [v4 customIdleExpirationTimeout];
+    [providerCopy customIdleExpirationTimeout];
     v7 = v9;
   }
 
@@ -131,55 +131,55 @@ LABEL_6:
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerBehavior *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerBehavior *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerBehavior *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerBehavior *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)_appendInnerDescriptionToFormatter:(id)a3
+- (void)_appendInnerDescriptionToFormatter:(id)formatter
 {
-  v9 = a3;
+  formatterCopy = formatter;
   v4 = NSStringFromIdleTimerDuration();
-  [v9 appendString:v4 withName:@"duration"];
+  [formatterCopy appendString:v4 withName:@"duration"];
 
   v5 = NSStringFromSBFIdleTimerMode();
-  [v9 appendString:v5 withName:@"mode"];
+  [formatterCopy appendString:v5 withName:@"mode"];
 
   v6 = NSStringFromIdleWarnMode();
-  [v9 appendString:v6 withName:@"warnMode"];
+  [formatterCopy appendString:v6 withName:@"warnMode"];
 
   if ((BSFloatIsZero() & 1) == 0)
   {
-    v7 = [v9 appendTimeInterval:@"customIdleExpirationTimeout" withName:0 decomposeUnits:self->_customIdleExpirationTimeout];
+    v7 = [formatterCopy appendTimeInterval:@"customIdleExpirationTimeout" withName:0 decomposeUnits:self->_customIdleExpirationTimeout];
   }
 
   if ((BSFloatIsZero() & 1) == 0)
   {
-    v8 = [v9 appendTimeInterval:@"customIdleWarningTimeout" withName:0 decomposeUnits:self->_customIdleWarningTimeout];
+    v8 = [formatterCopy appendTimeInterval:@"customIdleWarningTimeout" withName:0 decomposeUnits:self->_customIdleWarningTimeout];
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerBehavior *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBIdleTimerBehavior *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__SBIdleTimerBehavior_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_2783A92D8;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -187,16 +187,16 @@ LABEL_6:
   return v6;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__SBIdleTimerBehavior_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2783A92D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = formatterCopy;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 

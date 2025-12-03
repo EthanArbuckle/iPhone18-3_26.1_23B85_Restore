@@ -1,8 +1,8 @@
 @interface MRNowPlayingControllerDestination
-- (MRNowPlayingControllerDestination)initWithConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MRNowPlayingControllerDestination)initWithConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setEndpoint:(id)a3;
+- (void)setEndpoint:(id)endpoint;
 @end
 
 @implementation MRNowPlayingControllerDestination
@@ -12,8 +12,8 @@
   v8.receiver = self;
   v8.super_class = MRNowPlayingControllerDestination;
   v3 = [(MRDestination *)&v8 description];
-  v4 = [(MRDestination *)self endpoint];
-  if (v4 || ![(MRNowPlayingControllerDestination *)self isEndpointSet])
+  endpoint = [(MRDestination *)self endpoint];
+  if (endpoint || ![(MRNowPlayingControllerDestination *)self isEndpointSet])
   {
     v6 = v3;
   }
@@ -27,44 +27,44 @@
   return v6;
 }
 
-- (void)setEndpoint:(id)a3
+- (void)setEndpoint:(id)endpoint
 {
   v5.receiver = self;
   v5.super_class = MRNowPlayingControllerDestination;
   [(MRDestination *)&v5 setEndpoint:?];
-  if (!a3)
+  if (!endpoint)
   {
     self->_isEndpointSet = 0;
   }
 }
 
-- (MRNowPlayingControllerDestination)initWithConfiguration:(id)a3
+- (MRNowPlayingControllerDestination)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = MRNowPlayingControllerDestination;
-  v5 = [(MRDestination *)&v11 _init];
-  if (v5)
+  _init = [(MRDestination *)&v11 _init];
+  if (_init)
   {
-    v6 = [v4 destination];
-    v7 = [v6 outputDeviceUID];
-    [(MRDestination *)v5 setOutputDeviceUID:v7];
+    destination = [configurationCopy destination];
+    outputDeviceUID = [destination outputDeviceUID];
+    [(MRDestination *)_init setOutputDeviceUID:outputDeviceUID];
 
-    v8 = [v4 destination];
-    v9 = [v8 endpoint];
-    [(MRNowPlayingControllerDestination *)v5 setEndpoint:v9];
+    destination2 = [configurationCopy destination];
+    endpoint = [destination2 endpoint];
+    [(MRNowPlayingControllerDestination *)_init setEndpoint:endpoint];
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MRNowPlayingControllerDestination;
-  v4 = [(MRDestination *)&v7 copyWithZone:a3];
-  v5 = [(MRNowPlayingControllerDestination *)self unresolvedPlayerPath];
-  [v4 setUnresolvedPlayerPath:v5];
+  v4 = [(MRDestination *)&v7 copyWithZone:zone];
+  unresolvedPlayerPath = [(MRNowPlayingControllerDestination *)self unresolvedPlayerPath];
+  [v4 setUnresolvedPlayerPath:unresolvedPlayerPath];
 
   [v4 setIsEndpointSet:{-[MRNowPlayingControllerDestination isEndpointSet](self, "isEndpointSet")}];
   return v4;

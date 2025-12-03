@@ -1,19 +1,19 @@
 @interface ICNoteSnippetUtilities
-+ (_NSRange)rangeForTitleInContent:(id)a3 truncated:(BOOL *)a4;
-+ (id)attributedStringByRemovingTitle:(id)a3 fromAttributedString:(id)a4;
-+ (id)snippetForContent:(id)a3;
-+ (id)stringByRemovingTitle:(id)a3 fromString:(id)a4;
-+ (id)widgetSnippetForContent:(id)a3;
++ (_NSRange)rangeForTitleInContent:(id)content truncated:(BOOL *)truncated;
++ (id)attributedStringByRemovingTitle:(id)title fromAttributedString:(id)string;
++ (id)snippetForContent:(id)content;
++ (id)stringByRemovingTitle:(id)title fromString:(id)string;
++ (id)widgetSnippetForContent:(id)content;
 @end
 
 @implementation ICNoteSnippetUtilities
 
-+ (_NSRange)rangeForTitleInContent:(id)a3 truncated:(BOOL *)a4
++ (_NSRange)rangeForTitleInContent:(id)content truncated:(BOOL *)truncated
 {
-  v5 = a3;
+  contentCopy = content;
   v6 = +[ICNoteSnippetUtilities snippetAndTitleTrimCharacterSet];
-  v7 = [v6 invertedSet];
-  v8 = [v5 rangeOfCharacterFromSet:v7];
+  invertedSet = [v6 invertedSet];
+  v8 = [contentCopy rangeOfCharacterFromSet:invertedSet];
 
   v9 = v8 != 0x7FFFFFFFFFFFFFFFLL;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -26,7 +26,7 @@
     v10 = v8;
   }
 
-  v11 = [v5 paragraphRangeForRange:{v10, 0}];
+  v11 = [contentCopy paragraphRangeForRange:{v10, 0}];
   v13 = v11 < v8;
   v14 = !v9 || !v13;
   if (v9 && v13)
@@ -62,7 +62,7 @@
     v29[2] = __59__ICNoteSnippetUtilities_rangeForTitleInContent_truncated___block_invoke;
     v29[3] = &unk_1E8484F38;
     v29[4] = &v30;
-    [v5 enumerateSubstringsInRange:v16 options:v15 usingBlock:{3, v29}];
+    [contentCopy enumerateSubstringsInRange:v16 options:v15 usingBlock:{3, v29}];
     v17 = v31;
     v18 = v31[5];
     if (v18 <= 0x64)
@@ -70,16 +70,16 @@
       if (v18)
       {
 LABEL_20:
-        v20 = [v5 rangeOfComposedCharacterSequencesForRange:v17[4]];
+        v20 = [contentCopy rangeOfComposedCharacterSequencesForRange:v17[4]];
         v22 = v20;
         v23 = v21;
         v24 = v31;
         v31[4] = v20;
         v24[5] = v21;
-        if (a4)
+        if (truncated)
         {
           v26 = v16 != v20 || v15 != v21;
-          *a4 = v26;
+          *truncated = v26;
         }
 
         _Block_object_dispose(&v30, 8);
@@ -109,9 +109,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (truncated)
   {
-    *a4 = 0;
+    *truncated = 0;
   }
 
 LABEL_29:
@@ -136,33 +136,33 @@ NSUInteger __59__ICNoteSnippetUtilities_rangeForTitleInContent_truncated___block
   return result;
 }
 
-+ (id)snippetForContent:(id)a3
++ (id)snippetForContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 length] >= 0x100)
+  contentCopy = content;
+  v5 = contentCopy;
+  if ([contentCopy length] >= 0x100)
   {
-    v5 = [v4 ic_substringToIndex:255];
+    v5 = [contentCopy ic_substringToIndex:255];
   }
 
-  v6 = [a1 snippetAndTitleTrimCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  snippetAndTitleTrimCharacterSet = [self snippetAndTitleTrimCharacterSet];
+  v7 = [v5 stringByTrimmingCharactersInSet:snippetAndTitleTrimCharacterSet];
 
-  v8 = [v7 ic_whitespaceAndNewlineCoalescedString];
+  ic_whitespaceAndNewlineCoalescedString = [v7 ic_whitespaceAndNewlineCoalescedString];
 
-  return v8;
+  return ic_whitespaceAndNewlineCoalescedString;
 }
 
-+ (id)widgetSnippetForContent:(id)a3
++ (id)widgetSnippetForContent:(id)content
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 length] >= 0x100)
+  contentCopy = content;
+  v4 = contentCopy;
+  if ([contentCopy length] >= 0x100)
   {
-    v4 = [v3 ic_substringToIndex:255];
+    v4 = [contentCopy ic_substringToIndex:255];
   }
 
-  v5 = [v4 ic_stringByRemovingAttachmentCharacters];
+  ic_stringByRemovingAttachmentCharacters = [v4 ic_stringByRemovingAttachmentCharacters];
 
   v9 = 0;
   v10 = &v9;
@@ -175,10 +175,10 @@ NSUInteger __59__ICNoteSnippetUtilities_rangeForTitleInContent_truncated___block
   v8[2] = __50__ICNoteSnippetUtilities_widgetSnippetForContent___block_invoke;
   v8[3] = &unk_1E8484F60;
   v8[4] = &v9;
-  [v5 enumerateLinesUsingBlock:v8];
+  [ic_stringByRemovingAttachmentCharacters enumerateLinesUsingBlock:v8];
   if (![v10[5] length])
   {
-    objc_storeStrong(v10 + 5, v5);
+    objc_storeStrong(v10 + 5, ic_stringByRemovingAttachmentCharacters);
   }
 
   v6 = v10[5];
@@ -207,13 +207,13 @@ void __50__ICNoteSnippetUtilities_widgetSnippetForContent___block_invoke(uint64_
   }
 }
 
-+ (id)stringByRemovingTitle:(id)a3 fromString:(id)a4
++ (id)stringByRemovingTitle:(id)title fromString:(id)string
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (title)
   {
-    v7 = [v5 rangeOfString:a3];
+    v7 = [stringCopy rangeOfString:title];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = 0;
@@ -239,7 +239,7 @@ void __50__ICNoteSnippetUtilities_widgetSnippetForContent___block_invoke(uint64_
 
   else
   {
-    v11 = v5;
+    v11 = stringCopy;
   }
 
   v12 = v11;
@@ -247,21 +247,21 @@ void __50__ICNoteSnippetUtilities_widgetSnippetForContent___block_invoke(uint64_
   return v12;
 }
 
-+ (id)attributedStringByRemovingTitle:(id)a3 fromAttributedString:(id)a4
++ (id)attributedStringByRemovingTitle:(id)title fromAttributedString:(id)string
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (title)
   {
-    v7 = a3;
-    v8 = [v6 string];
-    v9 = [v8 rangeOfString:v7];
+    titleCopy = title;
+    string = [v6 string];
+    v9 = [string rangeOfString:titleCopy];
     v11 = v10;
 
-    v12 = [v6 ic_range];
+    ic_range = [v6 ic_range];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = v12;
+      v14 = ic_range;
     }
 
     else
@@ -284,7 +284,7 @@ void __50__ICNoteSnippetUtilities_widgetSnippetForContent___block_invoke(uint64_
 
   else
   {
-    v16 = v5;
+    v16 = stringCopy;
   }
 
   v17 = v16;

@@ -1,64 +1,64 @@
 @interface SFSectionRankingFeedback
-- (SFSectionRankingFeedback)initWithCoder:(id)a3;
-- (SFSectionRankingFeedback)initWithResults:(id)a3 section:(id)a4 localSectionPosition:(unint64_t)a5 personalizationScore:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFSectionRankingFeedback)initWithCoder:(id)coder;
+- (SFSectionRankingFeedback)initWithResults:(id)results section:(id)section localSectionPosition:(unint64_t)position personalizationScore:(double)score;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSectionRankingFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFSectionRankingFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_localSectionPosition forKey:{@"local_section_position", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_section forKey:@"section"];
-  [v4 encodeObject:self->_results forKey:@"results"];
-  [v4 encodeDouble:@"client_score" forKey:self->_personalizationScore];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_localSectionPosition forKey:{@"local_section_position", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_section forKey:@"section"];
+  [coderCopy encodeObject:self->_results forKey:@"results"];
+  [coderCopy encodeDouble:@"client_score" forKey:self->_personalizationScore];
 }
 
-- (SFSectionRankingFeedback)initWithCoder:(id)a3
+- (SFSectionRankingFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SFSectionRankingFeedback;
-  v5 = [(SFFeedback *)&v16 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v5->_localSectionPosition = [v4 decodeIntegerForKey:@"local_section_position"];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"section"];
+    v5->_localSectionPosition = [coderCopy decodeIntegerForKey:@"local_section_position"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"section"];
     section = v5->_section;
     v5->_section = v10;
 
-    v12 = [v4 decodeObjectOfClasses:v9 forKey:@"results"];
+    v12 = [coderCopy decodeObjectOfClasses:v9 forKey:@"results"];
     results = v5->_results;
     v5->_results = v12;
 
-    [v4 decodeDoubleForKey:@"client_score"];
+    [coderCopy decodeDoubleForKey:@"client_score"];
     v5->_personalizationScore = v14;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = SFSectionRankingFeedback;
-  v4 = [(SFFeedback *)&v13 copyWithZone:a3];
-  v5 = [(SFSectionRankingFeedback *)self results];
-  v6 = [v5 copy];
+  v4 = [(SFFeedback *)&v13 copyWithZone:zone];
+  results = [(SFSectionRankingFeedback *)self results];
+  v6 = [results copy];
   v7 = v4[3];
   v4[3] = v6;
 
-  v8 = [(SFSectionRankingFeedback *)self section];
-  v9 = [v8 copy];
+  section = [(SFSectionRankingFeedback *)self section];
+  v9 = [section copy];
   v10 = v4[4];
   v4[4] = v9;
 
@@ -68,25 +68,25 @@
   return v4;
 }
 
-- (SFSectionRankingFeedback)initWithResults:(id)a3 section:(id)a4 localSectionPosition:(unint64_t)a5 personalizationScore:(double)a6
+- (SFSectionRankingFeedback)initWithResults:(id)results section:(id)section localSectionPosition:(unint64_t)position personalizationScore:(double)score
 {
-  v10 = a3;
-  v11 = a4;
+  resultsCopy = results;
+  sectionCopy = section;
   v18.receiver = self;
   v18.super_class = SFSectionRankingFeedback;
   v12 = [(SFFeedback *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [resultsCopy copy];
     results = v12->_results;
     v12->_results = v13;
 
-    v15 = [v11 copy];
+    v15 = [sectionCopy copy];
     section = v12->_section;
     v12->_section = v15;
 
-    v12->_localSectionPosition = a5;
-    v12->_personalizationScore = a6;
+    v12->_localSectionPosition = position;
+    v12->_personalizationScore = score;
   }
 
   return v12;

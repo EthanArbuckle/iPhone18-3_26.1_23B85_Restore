@@ -1,7 +1,7 @@
 @interface CLSBusinessGeoServiceQuery
-- (CLSBusinessGeoServiceQuery)initWithMUIDs:(id)a3;
+- (CLSBusinessGeoServiceQuery)initWithMUIDs:(id)ds;
 - (void)prepareForRetry;
-- (void)submitWithHandler:(id)a3;
+- (void)submitWithHandler:(id)handler;
 @end
 
 @implementation CLSBusinessGeoServiceQuery
@@ -9,19 +9,19 @@
 - (void)prepareForRetry
 {
   self->_isCancelled = 0;
-  v5 = [MEMORY[0x277D0EBD0] sharedService];
-  v3 = [v5 ticketForMUIDs:self->_muids traits:0];
+  mEMORY[0x277D0EBD0] = [MEMORY[0x277D0EBD0] sharedService];
+  v3 = [mEMORY[0x277D0EBD0] ticketForMUIDs:self->_muids traits:0];
   ticket = self->_ticket;
   self->_ticket = v3;
 }
 
-- (void)submitWithHandler:(id)a3
+- (void)submitWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   ticket = self->_ticket;
   v8 = MEMORY[0x277D85DD0];
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [CLSGeoMapQueryHelper auditToken:v8];
   [(GEOMapServiceTicket *)ticket submitWithHandler:&v8 auditToken:v7 timeout:20 networkActivity:0];
 }
@@ -34,9 +34,9 @@ void __48__CLSBusinessGeoServiceQuery_submitWithHandler___block_invoke(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (CLSBusinessGeoServiceQuery)initWithMUIDs:(id)a3
+- (CLSBusinessGeoServiceQuery)initWithMUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = CLSBusinessGeoServiceQuery;
   v5 = [(CLSBusinessGeoServiceQuery *)&v13 init];
@@ -44,12 +44,12 @@ void __48__CLSBusinessGeoServiceQuery_submitWithHandler___block_invoke(uint64_t 
   if (v5)
   {
     v5->_isCancelled = 0;
-    v7 = [v4 copy];
+    v7 = [dsCopy copy];
     muids = v6->_muids;
     v6->_muids = v7;
 
-    v9 = [MEMORY[0x277D0EBD0] sharedService];
-    v10 = [v9 ticketForMUIDs:v6->_muids traits:0];
+    mEMORY[0x277D0EBD0] = [MEMORY[0x277D0EBD0] sharedService];
+    v10 = [mEMORY[0x277D0EBD0] ticketForMUIDs:v6->_muids traits:0];
     ticket = v6->_ticket;
     v6->_ticket = v10;
   }

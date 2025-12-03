@@ -1,31 +1,31 @@
 @interface NEKStatTracker
 - (BOOL)load;
 - (NEKEnvironment)environment;
-- (NEKStatTracker)initWithEnvironment:(id)a3 name:(id)a4 defaultMean:(double)a5 defaultStddev:(double)a6;
-- (double)_clip:(double)a3;
+- (NEKStatTracker)initWithEnvironment:(id)environment name:(id)name defaultMean:(double)mean defaultStddev:(double)stddev;
+- (double)_clip:(double)_clip;
 - (double)nextTimeout;
 - (double)stddev;
 - (void)save;
 - (void)updateFailure;
-- (void)updateSuccess:(double)a3;
+- (void)updateSuccess:(double)success;
 @end
 
 @implementation NEKStatTracker
 
-- (NEKStatTracker)initWithEnvironment:(id)a3 name:(id)a4 defaultMean:(double)a5 defaultStddev:(double)a6
+- (NEKStatTracker)initWithEnvironment:(id)environment name:(id)name defaultMean:(double)mean defaultStddev:(double)stddev
 {
-  v10 = a3;
-  v11 = a4;
+  environmentCopy = environment;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = NEKStatTracker;
   v12 = [(NEKStatTracker *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(NEKStatTracker *)v12 setName:v11];
-    [(NEKStatTracker *)v13 setEnvironment:v10];
-    [(NEKStatTracker *)v13 setMean:a5];
-    [(NEKStatTracker *)v13 setStddev:a6];
+    [(NEKStatTracker *)v12 setName:nameCopy];
+    [(NEKStatTracker *)v13 setEnvironment:environmentCopy];
+    [(NEKStatTracker *)v13 setMean:mean];
+    [(NEKStatTracker *)v13 setStddev:stddev];
     [(NEKStatTracker *)v13 setAlpha:0.4];
     [(NEKStatTracker *)v13 setFailureScaling:2.0];
     [(NEKStatTracker *)v13 setSigmaSpan:3.0];
@@ -46,26 +46,26 @@
 
 - (BOOL)load
 {
-  v3 = [(NEKStatTracker *)self name];
-  v4 = [NSString stringWithFormat:@"%@.mean", v3];
+  name = [(NEKStatTracker *)self name];
+  v4 = [NSString stringWithFormat:@"%@.mean", name];
 
-  v5 = [(NEKStatTracker *)self name];
-  v6 = [NSString stringWithFormat:@"%@.variance", v5];
+  name2 = [(NEKStatTracker *)self name];
+  v6 = [NSString stringWithFormat:@"%@.variance", name2];
 
-  v7 = [(NEKStatTracker *)self name];
-  v8 = [NSString stringWithFormat:@"%@.failureTimeout", v7];
+  name3 = [(NEKStatTracker *)self name];
+  v8 = [NSString stringWithFormat:@"%@.failureTimeout", name3];
 
-  v9 = [(NEKStatTracker *)self environment];
-  v10 = [v9 tinyStore];
+  environment = [(NEKStatTracker *)self environment];
+  tinyStore = [environment tinyStore];
 
-  [v10 getDoubleValueForKey:v4 default:-1.0];
+  [tinyStore getDoubleValueForKey:v4 default:-1.0];
   v12 = v11;
-  [v10 getDoubleValueForKey:v6 default:-1.0];
+  [tinyStore getDoubleValueForKey:v6 default:-1.0];
   v14 = v13;
   v15 = 0.0;
-  [v10 getDoubleValueForKey:v8 default:0.0];
+  [tinyStore getDoubleValueForKey:v8 default:0.0];
   v17 = v14 != -1.0 && v12 != -1.0;
-  if (v10)
+  if (tinyStore)
   {
     v18 = v17;
   }
@@ -95,32 +95,32 @@
 
 - (void)save
 {
-  v3 = [(NEKStatTracker *)self name];
-  v10 = [NSString stringWithFormat:@"%@.mean", v3];
+  name = [(NEKStatTracker *)self name];
+  v10 = [NSString stringWithFormat:@"%@.mean", name];
 
-  v4 = [(NEKStatTracker *)self name];
-  v5 = [NSString stringWithFormat:@"%@.variance", v4];
+  name2 = [(NEKStatTracker *)self name];
+  v5 = [NSString stringWithFormat:@"%@.variance", name2];
 
-  v6 = [(NEKStatTracker *)self name];
-  v7 = [NSString stringWithFormat:@"%@.failureTimeout", v6];
+  name3 = [(NEKStatTracker *)self name];
+  v7 = [NSString stringWithFormat:@"%@.failureTimeout", name3];
 
-  v8 = [(NEKStatTracker *)self environment];
-  v9 = [v8 tinyStore];
+  environment = [(NEKStatTracker *)self environment];
+  tinyStore = [environment tinyStore];
 
   [(NEKStatTracker *)self mean];
-  [v9 setDoubleValue:v10 forKey:?];
+  [tinyStore setDoubleValue:v10 forKey:?];
   [(NEKStatTracker *)self variance];
-  [v9 setDoubleValue:v5 forKey:?];
+  [tinyStore setDoubleValue:v5 forKey:?];
   [(NEKStatTracker *)self failTimeout];
-  [v9 setDoubleValue:v7 forKey:?];
+  [tinyStore setDoubleValue:v7 forKey:?];
 }
 
-- (void)updateSuccess:(double)a3
+- (void)updateSuccess:(double)success
 {
   if ([(NEKStatTracker *)self firstTimeEver])
   {
-    [(NEKStatTracker *)self setMean:a3];
-    [(NEKStatTracker *)self setStddev:a3 * 0.15];
+    [(NEKStatTracker *)self setMean:success];
+    [(NEKStatTracker *)self setStddev:success * 0.15];
     [(NEKStatTracker *)self setFailTimeout:0.0];
 
     [(NEKStatTracker *)self setFirstTimeEver:0];
@@ -131,11 +131,11 @@
     [(NEKStatTracker *)self mean];
     v6 = v5;
     [(NEKStatTracker *)self mean];
-    v8 = a3 - v7;
+    v8 = success - v7;
     [(NEKStatTracker *)self alpha];
     v10 = v6 + v8 * v9;
     [(NEKStatTracker *)self mean];
-    v12 = (a3 - v11) * (a3 - v10);
+    v12 = (success - v11) * (success - v10);
     [(NEKStatTracker *)self variance];
     v14 = v13;
     [(NEKStatTracker *)self variance];
@@ -206,19 +206,19 @@
   return sqrt(v4);
 }
 
-- (double)_clip:(double)a3
+- (double)_clip:(double)_clip
 {
   [(NEKStatTracker *)self maxTimeout];
-  if (v5 < a3)
+  if (v5 < _clip)
   {
     [(NEKStatTracker *)self maxTimeout];
-    a3 = v6;
+    _clip = v6;
   }
 
   [(NEKStatTracker *)self minTimeout];
-  if (a3 >= v7)
+  if (_clip >= v7)
   {
-    return a3;
+    return _clip;
   }
 
   [(NEKStatTracker *)self minTimeout];

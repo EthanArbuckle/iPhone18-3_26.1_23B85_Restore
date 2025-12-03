@@ -1,13 +1,13 @@
 @interface BuddyLanguageLocaleDataSource
-- (BOOL)userSelectedLanguageWithLocale:(id)a3 countryCode:(id)a4 localePaneScrollOffset:(double)a5;
+- (BOOL)userSelectedLanguageWithLocale:(id)locale countryCode:(id)code localePaneScrollOffset:(double)offset;
 - (BuddyLanguageLocaleDataSource)init;
 - (BuddyLanguageLocaleDataSourceDelegate)delegate;
 - (BuddyLocaleComposite)localeComposite;
 - (NSString)language;
-- (void)_didBecomeActive:(id)a3;
+- (void)_didBecomeActive:(id)active;
 - (void)dealloc;
 - (void)updateLanguageCompositer;
-- (void)userSelectedLanguage:(id)a3;
+- (void)userSelectedLanguage:(id)language;
 @end
 
 @implementation BuddyLanguageLocaleDataSource
@@ -41,12 +41,12 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyLanguageLocaleDataSource;
   [(BuddyLanguageLocaleDataSource *)&v3 dealloc];
 }
@@ -55,62 +55,62 @@
 {
   if (self->_language)
   {
-    v4 = self->_language;
+    firstObject = self->_language;
   }
 
   else
   {
     v2 = +[NSLocale preferredLanguages];
-    v4 = [(NSArray *)v2 firstObject];
+    firstObject = [(NSArray *)v2 firstObject];
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (BuddyLocaleComposite)localeComposite
 {
-  v2 = [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
+  backingLocaleComposite = [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
 
-  if (!v2)
+  if (!backingLocaleComposite)
   {
     v3 = objc_alloc_init(BuddyLocaleComposite);
     [(BuddyLanguageLocaleDataSource *)self setBackingLocaleComposite:v3];
 
-    v4 = [(BuddyLanguageLocaleDataSource *)self buddyPreferencesExcludedFromBackup];
-    v5 = [(BYPreferencesController *)v4 objectForKey:@"localeScrollOffset"];
+    buddyPreferencesExcludedFromBackup = [(BuddyLanguageLocaleDataSource *)self buddyPreferencesExcludedFromBackup];
+    v5 = [(BYPreferencesController *)buddyPreferencesExcludedFromBackup objectForKey:@"localeScrollOffset"];
     [v5 floatValue];
     v7 = v6;
-    v8 = [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
-    [(BuddyLocaleComposite *)v8 setScrollOffset:v7];
+    backingLocaleComposite2 = [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
+    [(BuddyLocaleComposite *)backingLocaleComposite2 setScrollOffset:v7];
 
-    v9 = [(BuddyLanguageLocaleDataSource *)self buddyPreferencesExcludedFromBackup];
-    [(BYPreferencesController *)v9 removeObjectForKey:@"localeScrollOffset"];
+    buddyPreferencesExcludedFromBackup2 = [(BuddyLanguageLocaleDataSource *)self buddyPreferencesExcludedFromBackup];
+    [(BYPreferencesController *)buddyPreferencesExcludedFromBackup2 removeObjectForKey:@"localeScrollOffset"];
   }
 
-  v10 = [(BuddyLanguageLocaleDataSource *)self language];
-  v11 = [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
-  [(BuddyLocaleComposite *)v11 setLanguage:v10];
+  language = [(BuddyLanguageLocaleDataSource *)self language];
+  backingLocaleComposite3 = [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
+  [(BuddyLocaleComposite *)backingLocaleComposite3 setLanguage:language];
 
   return [(BuddyLanguageLocaleDataSource *)self backingLocaleComposite];
 }
 
-- (void)_didBecomeActive:(id)a3
+- (void)_didBecomeActive:(id)active
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   v3 = +[BYLocationController sharedBuddyLocationController];
-  v4 = [v3 guessedCountryFromTelephony];
+  guessedCountryFromTelephony = [v3 guessedCountryFromTelephony];
 
-  if (!v4)
+  if (!guessedCountryFromTelephony)
   {
     v5 = +[BYLocationController sharedBuddyLocationController];
-    v6 = [v5 getCountryFromTelephony];
+    getCountryFromTelephony = [v5 getCountryFromTelephony];
 
-    if (v6)
+    if (getCountryFromTelephony)
     {
-      [(BuddyLanguageLocaleDataSource *)v8 updateLanguageCompositer];
+      [(BuddyLanguageLocaleDataSource *)selfCopy updateLanguageCompositer];
     }
   }
 
@@ -119,7 +119,7 @@
 
 - (void)updateLanguageCompositer
 {
-  v28 = self;
+  selfCopy = self;
   v27[1] = a2;
   v27[0] = +[IntlUtility baseSystemLanguages];
   v26 = objc_alloc_init(NSMutableDictionary);
@@ -158,11 +158,11 @@
   }
 
   v7 = +[BYLocationController sharedBuddyLocationController];
-  v22 = [v7 guessedLanguages];
+  guessedLanguages = [v7 guessedLanguages];
 
   v21 = +[NSMutableOrderedSet orderedSet];
   memset(v19, 0, sizeof(v19));
-  v8 = v22;
+  v8 = guessedLanguages;
   v9 = [v8 countByEnumeratingWithState:v19 objects:v29 count:16];
   if (v9)
   {
@@ -195,41 +195,41 @@
   }
 
   [v21 addObjectsFromArray:v27[0]];
-  v13 = [v21 array];
-  v14 = [(BuddyLanguageLocaleDataSource *)v28 backingLanguageComposite];
-  [(BuddyLanguageComposite *)v14 setLanguageCodes:v13];
+  array = [v21 array];
+  backingLanguageComposite = [(BuddyLanguageLocaleDataSource *)selfCopy backingLanguageComposite];
+  [(BuddyLanguageComposite *)backingLanguageComposite setLanguageCodes:array];
 
   v15 = v26;
-  v16 = [(BuddyLanguageLocaleDataSource *)v28 backingLanguageComposite];
-  [(BuddyLanguageComposite *)v16 setLanguageStrings:v15];
+  backingLanguageComposite2 = [(BuddyLanguageLocaleDataSource *)selfCopy backingLanguageComposite];
+  [(BuddyLanguageComposite *)backingLanguageComposite2 setLanguageStrings:v15];
 
-  v17 = [(BuddyLanguageLocaleDataSource *)v28 delegate];
-  [(BuddyLanguageLocaleDataSourceDelegate *)v17 languageCompositeUpdated];
+  delegate = [(BuddyLanguageLocaleDataSource *)selfCopy delegate];
+  [(BuddyLanguageLocaleDataSourceDelegate *)delegate languageCompositeUpdated];
 
   objc_storeStrong(&v21, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&guessedLanguages, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(v27, 0);
 }
 
-- (void)userSelectedLanguage:(id)a3
+- (void)userSelectedLanguage:(id)language
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyLanguageLocaleDataSource *)v4 setLanguage:location[0]];
+  objc_storeStrong(location, language);
+  [(BuddyLanguageLocaleDataSource *)selfCopy setLanguage:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)userSelectedLanguageWithLocale:(id)a3 countryCode:(id)a4 localePaneScrollOffset:(double)a5
+- (BOOL)userSelectedLanguageWithLocale:(id)locale countryCode:(id)code localePaneScrollOffset:(double)offset
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, locale);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, code);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return v9 & 1;

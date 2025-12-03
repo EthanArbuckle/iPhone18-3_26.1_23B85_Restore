@@ -1,41 +1,41 @@
 @interface SBHardwareButtonZStackClient
 - (SBFZStackResolver)zStackResolver;
 - (SBHardwareButtonService)hardwareButtonService;
-- (SBHardwareButtonZStackClient)initWithZStackResolver:(id)a3 hardwareButtonService:(id)a4;
+- (SBHardwareButtonZStackClient)initWithZStackResolver:(id)resolver hardwareButtonService:(id)service;
 - (void)_updateZStackParticipant;
 - (void)dealloc;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBHardwareButtonZStackClient
 
 - (void)_updateZStackParticipant
 {
-  v3 = [(SBHardwareButtonZStackClient *)self zStackParticipant];
+  zStackParticipant = [(SBHardwareButtonZStackClient *)self zStackParticipant];
 
-  v4 = [(SBHardwareButtonZStackClient *)self hardwareButtonService];
-  v5 = [v4 hasConsumersForHomeButtonSinglePress];
+  hardwareButtonService = [(SBHardwareButtonZStackClient *)self hardwareButtonService];
+  hasConsumersForHomeButtonSinglePress = [hardwareButtonService hasConsumersForHomeButtonSinglePress];
 
-  if (!v3 || (v5 & 1) != 0)
+  if (!zStackParticipant || (hasConsumersForHomeButtonSinglePress & 1) != 0)
   {
-    if (((v3 == 0) & v5) == 1)
+    if (((zStackParticipant == 0) & hasConsumersForHomeButtonSinglePress) == 1)
     {
-      v7 = [(SBHardwareButtonZStackClient *)self zStackResolver];
-      if (v7)
+      zStackResolver = [(SBHardwareButtonZStackClient *)self zStackResolver];
+      if (zStackResolver)
       {
-        v9 = v7;
-        v8 = [v7 acquireParticipantWithIdentifier:5 delegate:self];
+        v9 = zStackResolver;
+        v8 = [zStackResolver acquireParticipantWithIdentifier:5 delegate:self];
         [(SBHardwareButtonZStackClient *)self setZStackParticipant:v8];
 
-        v7 = v9;
+        zStackResolver = v9;
       }
     }
   }
 
   else
   {
-    v6 = [(SBHardwareButtonZStackClient *)self zStackParticipant];
-    [v6 invalidate];
+    zStackParticipant2 = [(SBHardwareButtonZStackClient *)self zStackParticipant];
+    [zStackParticipant2 invalidate];
 
     [(SBHardwareButtonZStackClient *)self setZStackParticipant:0];
   }
@@ -48,20 +48,20 @@
   return WeakRetained;
 }
 
-- (SBHardwareButtonZStackClient)initWithZStackResolver:(id)a3 hardwareButtonService:(id)a4
+- (SBHardwareButtonZStackClient)initWithZStackResolver:(id)resolver hardwareButtonService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  resolverCopy = resolver;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = SBHardwareButtonZStackClient;
   v8 = [(SBHardwareButtonZStackClient *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_zStackResolver, v6);
-    objc_storeWeak(&v9->_hardwareButtonService, v7);
+    objc_storeWeak(&v8->_zStackResolver, resolverCopy);
+    objc_storeWeak(&v9->_hardwareButtonService, serviceCopy);
     [(SBHardwareButtonZStackClient *)v9 _updateZStackParticipant];
-    v10 = [v7 addObserver:v9];
+    v10 = [serviceCopy addObserver:v9];
     hardwareButtonObserverAssertion = v9->_hardwareButtonObserverAssertion;
     v9->_hardwareButtonObserverAssertion = v10;
   }
@@ -77,11 +77,11 @@
   [(SBHardwareButtonZStackClient *)&v3 dealloc];
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v4 = a4;
-  [v4 setActivationPolicyForParticipantsBelow:0];
-  [v4 setHomeGestureConsumption:1];
+  preferencesCopy = preferences;
+  [preferencesCopy setActivationPolicyForParticipantsBelow:0];
+  [preferencesCopy setHomeGestureConsumption:1];
 }
 
 - (SBFZStackResolver)zStackResolver

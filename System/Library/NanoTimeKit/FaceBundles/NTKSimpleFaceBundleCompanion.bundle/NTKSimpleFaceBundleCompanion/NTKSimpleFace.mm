@@ -1,41 +1,41 @@
 @interface NTKSimpleFace
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKSimpleFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKSimpleFace *)self _faceDescriptionKey];
-  v3 = [NTKSimpleFaceBundle localizedStringForKey:v2 comment:v2];
+  _faceDescriptionKey = [(NTKSimpleFace *)self _faceDescriptionKey];
+  v3 = [NTKSimpleFaceBundle localizedStringForKey:_faceDescriptionKey comment:_faceDescriptionKey];
 
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 11)
+  slotCopy = slot;
+  if (mode == 11)
   {
-    v9 = [(NTKSimpleFace *)self device];
-    v10 = [NTKDensityEditOption optionWithDensity:3 forDevice:v9];
+    device = [(NTKSimpleFace *)self device];
+    v10 = [NTKDensityEditOption optionWithDensity:3 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKSimpleFace *)self device];
+    device2 = [(NTKSimpleFace *)self device];
     v8 = NTKDefaultFaceColorForDeviceCollection();
 
-    v9 = [(NTKSimpleFace *)self device];
-    v10 = [NTKFaceColorUtilitarianEditOption optionWithFaceColor:v8 forDevice:v9];
+    device = [(NTKSimpleFace *)self device];
+    v10 = [NTKFaceColorUtilitarianEditOption optionWithFaceColor:v8 forDevice:device];
 LABEL_5:
     v11 = v10;
 
@@ -48,37 +48,37 @@ LABEL_7:
   return v11;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKSimpleFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKSimpleFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKSimpleFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKSimpleFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKSimpleFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKSimpleFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKSimpleFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSimpleFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKSimpleFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKSimpleFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKSimpleFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSimpleFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     v4 = NTKFaceColorUtilitarianEditOption_ptr;
 LABEL_5:
@@ -88,7 +88,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = NTKDensityEditOption_ptr;
     goto LABEL_5;

@@ -1,5 +1,5 @@
 @interface DataConnectionNetworkAgentIPSec
-+ (id)agentFromData:(id)a3;
++ (id)agentFromData:(id)data;
 - (DataConnectionNetworkAgentIPSec)init;
 @end
 
@@ -12,8 +12,8 @@
   v2 = [(DataConnectionNetworkAgentIPSec *)&v7 init];
   if (v2)
   {
-    v3 = [objc_opt_class() agentType];
-    v4 = [NSString stringWithFormat:@"%@: %@", @"CommCenter", v3];
+    agentType = [objc_opt_class() agentType];
+    v4 = [NSString stringWithFormat:@"%@: %@", @"CommCenter", agentType];
     [(DataConnectionNetworkAgentIPSec *)v2 setAgentDescription:v4];
 
     [(DataConnectionNetworkAgentIPSec *)v2 setActive:1];
@@ -30,7 +30,7 @@
   return v2;
 }
 
-+ (id)agentFromData:(id)a3
++ (id)agentFromData:(id)data
 {
   v3 = objc_opt_new();
 

@@ -1,11 +1,11 @@
 @interface CTCarrierSpacePlanGroupOptionInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpacePlanGroupOptionInfo)init;
-- (CTCarrierSpacePlanGroupOptionInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTCarrierSpacePlanGroupOptionInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)planStatus;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpacePlanGroupOptionInfo
@@ -46,25 +46,25 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpacePlanGroupOptionInfo *)self planId];
-  [v3 appendFormat:@", planId=%@", v4];
+  planId = [(CTCarrierSpacePlanGroupOptionInfo *)self planId];
+  [v3 appendFormat:@", planId=%@", planId];
 
-  v5 = [(CTCarrierSpacePlanGroupOptionInfo *)self planLabel];
-  [v3 appendFormat:@", planLabel=%@", v5];
+  planLabel = [(CTCarrierSpacePlanGroupOptionInfo *)self planLabel];
+  [v3 appendFormat:@", planLabel=%@", planLabel];
 
-  v6 = [(CTCarrierSpacePlanGroupOptionInfo *)self planValue];
-  [v3 appendFormat:@", planValue=%@", v6];
+  planValue = [(CTCarrierSpacePlanGroupOptionInfo *)self planValue];
+  [v3 appendFormat:@", planValue=%@", planValue];
 
   [v3 appendFormat:@", planStatus=%s", CTCarrierSpacePlanStatusAsString(-[CTCarrierSpacePlanGroupOptionInfo planStatus](self, "planStatus"))];
   [v3 appendFormat:@", planPurchasable=%d", -[CTCarrierSpacePlanGroupOptionInfo planPurchasable](self, "planPurchasable")];
-  v7 = [(CTCarrierSpacePlanGroupOptionInfo *)self planDetailsURL];
-  [v3 appendFormat:@", planDetailsURL=%@", v7];
+  planDetailsURL = [(CTCarrierSpacePlanGroupOptionInfo *)self planDetailsURL];
+  [v3 appendFormat:@", planDetailsURL=%@", planDetailsURL];
 
-  v8 = [(CTCarrierSpacePlanGroupOptionInfo *)self planTermsURL];
-  [v3 appendFormat:@", planTermsURL=%@", v8];
+  planTermsURL = [(CTCarrierSpacePlanGroupOptionInfo *)self planTermsURL];
+  [v3 appendFormat:@", planTermsURL=%@", planTermsURL];
 
-  v9 = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchaseURL];
-  [v3 appendFormat:@", planPurchaseURL=%@", v9];
+  planPurchaseURL = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchaseURL];
+  [v3 appendFormat:@", planPurchaseURL=%@", planPurchaseURL];
 
   [v3 appendFormat:@", planType=%ld", -[CTCarrierSpacePlanGroupOptionInfo planType](self, "planType")];
   [v3 appendString:@">"];
@@ -72,10 +72,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -85,32 +85,32 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CTCarrierSpacePlanGroupOptionInfo *)self planId];
-      v7 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planId];
-      if (v6 != v7)
+      planId = [(CTCarrierSpacePlanGroupOptionInfo *)self planId];
+      planId2 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planId];
+      if (planId != planId2)
       {
-        v39 = [(CTCarrierSpacePlanGroupOptionInfo *)self planId];
-        v3 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planId];
-        if (![v39 isEqualToString:v3])
+        planId3 = [(CTCarrierSpacePlanGroupOptionInfo *)self planId];
+        planId4 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planId];
+        if (![planId3 isEqualToString:planId4])
         {
           v8 = 0;
           goto LABEL_21;
         }
       }
 
-      v9 = [(CTCarrierSpacePlanGroupOptionInfo *)self planLabel];
-      v10 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planLabel];
-      if (v9 != v10)
+      planLabel = [(CTCarrierSpacePlanGroupOptionInfo *)self planLabel];
+      planLabel2 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planLabel];
+      if (planLabel != planLabel2)
       {
-        v38 = [(CTCarrierSpacePlanGroupOptionInfo *)self planLabel];
-        v36 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planLabel];
-        if (![v38 isEqualToString:?])
+        planLabel3 = [(CTCarrierSpacePlanGroupOptionInfo *)self planLabel];
+        planLabel4 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planLabel];
+        if (![planLabel3 isEqualToString:?])
         {
           v8 = 0;
 LABEL_19:
 
 LABEL_20:
-          if (v6 == v7)
+          if (planId == planId2)
           {
 LABEL_22:
 
@@ -123,24 +123,24 @@ LABEL_21:
         }
       }
 
-      v11 = [(CTCarrierSpacePlanGroupOptionInfo *)self planValue];
-      v12 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planValue];
-      if (v11 != v12)
+      planValue = [(CTCarrierSpacePlanGroupOptionInfo *)self planValue];
+      planValue2 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planValue];
+      if (planValue != planValue2)
       {
-        v37 = [(CTCarrierSpacePlanGroupOptionInfo *)self planValue];
-        v35 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planValue];
-        if (![v37 isEqualToString:?])
+        planValue3 = [(CTCarrierSpacePlanGroupOptionInfo *)self planValue];
+        planValue4 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planValue];
+        if (![planValue3 isEqualToString:?])
         {
           v8 = 0;
           goto LABEL_17;
         }
       }
 
-      v13 = [(CTCarrierSpacePlanGroupOptionInfo *)self planSubscriptionStatus];
-      if (v13 != [(CTCarrierSpacePlanGroupOptionInfo *)v5 planSubscriptionStatus]|| (v14 = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchasable], v14 != [(CTCarrierSpacePlanGroupOptionInfo *)v5 planPurchasable]))
+      planSubscriptionStatus = [(CTCarrierSpacePlanGroupOptionInfo *)self planSubscriptionStatus];
+      if (planSubscriptionStatus != [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planSubscriptionStatus]|| (v14 = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchasable], v14 != [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planPurchasable]))
       {
         v8 = 0;
-        if (v11 == v12)
+        if (planValue == planValue2)
         {
           goto LABEL_18;
         }
@@ -148,27 +148,27 @@ LABEL_21:
         goto LABEL_17;
       }
 
-      v16 = [(CTCarrierSpacePlanGroupOptionInfo *)self planDetailsURL];
-      [(CTCarrierSpacePlanGroupOptionInfo *)v5 planDetailsURL];
-      v33 = v32 = v3;
-      if (v16 != v33)
+      planDetailsURL = [(CTCarrierSpacePlanGroupOptionInfo *)self planDetailsURL];
+      [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planDetailsURL];
+      v33 = v32 = planId4;
+      if (planDetailsURL != v33)
       {
-        v31 = [(CTCarrierSpacePlanGroupOptionInfo *)self planDetailsURL];
-        v27 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planDetailsURL];
-        if (![v31 isEqualToString:?])
+        planDetailsURL2 = [(CTCarrierSpacePlanGroupOptionInfo *)self planDetailsURL];
+        planDetailsURL3 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planDetailsURL];
+        if (![planDetailsURL2 isEqualToString:?])
         {
           v8 = 0;
-          v17 = v16;
+          v17 = planDetailsURL;
           v18 = v33;
 LABEL_36:
 
 LABEL_37:
-          v3 = v32;
-          if (v11 == v12)
+          planId4 = v32;
+          if (planValue == planValue2)
           {
 LABEL_18:
 
-            if (v9 == v10)
+            if (planLabel == planLabel2)
             {
               goto LABEL_20;
             }
@@ -182,14 +182,14 @@ LABEL_17:
         }
       }
 
-      v30 = v16;
-      v34 = [(CTCarrierSpacePlanGroupOptionInfo *)self planTermsURL];
-      v29 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planTermsURL];
-      if (v34 == v29 || (-[CTCarrierSpacePlanGroupOptionInfo planTermsURL](self, "planTermsURL"), v28 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpacePlanGroupOptionInfo planTermsURL](v5, "planTermsURL"), v25 = objc_claimAutoreleasedReturnValue(), [v28 isEqualToString:?]))
+      v30 = planDetailsURL;
+      planTermsURL = [(CTCarrierSpacePlanGroupOptionInfo *)self planTermsURL];
+      planTermsURL2 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planTermsURL];
+      if (planTermsURL == planTermsURL2 || (-[CTCarrierSpacePlanGroupOptionInfo planTermsURL](self, "planTermsURL"), v28 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpacePlanGroupOptionInfo planTermsURL](equalCopy, "planTermsURL"), v25 = objc_claimAutoreleasedReturnValue(), [v28 isEqualToString:?]))
       {
-        v26 = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchaseURL];
-        v21 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planPurchaseURL];
-        if (v26 == v21)
+        planPurchaseURL = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchaseURL];
+        planPurchaseURL2 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planPurchaseURL];
+        if (planPurchaseURL == planPurchaseURL2)
         {
 
           v8 = 1;
@@ -197,15 +197,15 @@ LABEL_17:
 
         else
         {
-          v24 = v21;
-          v23 = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchaseURL];
-          v22 = [(CTCarrierSpacePlanGroupOptionInfo *)v5 planPurchaseURL];
-          v8 = [v23 isEqualToString:v22];
+          v24 = planPurchaseURL2;
+          planPurchaseURL3 = [(CTCarrierSpacePlanGroupOptionInfo *)self planPurchaseURL];
+          planPurchaseURL4 = [(CTCarrierSpacePlanGroupOptionInfo *)equalCopy planPurchaseURL];
+          v8 = [planPurchaseURL3 isEqualToString:planPurchaseURL4];
         }
 
-        v19 = v34;
-        v20 = v29;
-        if (v34 == v29)
+        v19 = planTermsURL;
+        v20 = planTermsURL2;
+        if (planTermsURL == planTermsURL2)
         {
 LABEL_35:
 
@@ -223,8 +223,8 @@ LABEL_35:
       else
       {
         v8 = 0;
-        v19 = v34;
-        v20 = v29;
+        v19 = planTermsURL;
+        v20 = planTermsURL2;
       }
 
       goto LABEL_35;
@@ -252,82 +252,82 @@ LABEL_23:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_planId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_planId copyWithZone:zone];
   [v5 setPlanId:v6];
 
-  v7 = [(NSString *)self->_planLabel copyWithZone:a3];
+  v7 = [(NSString *)self->_planLabel copyWithZone:zone];
   [v5 setPlanLabel:v7];
 
-  v8 = [(NSString *)self->_planValue copyWithZone:a3];
+  v8 = [(NSString *)self->_planValue copyWithZone:zone];
   [v5 setPlanValue:v8];
 
   [v5 setPlanSubscriptionStatus:self->_planSubscriptionStatus];
   [v5 setPlanPurchasable:self->_planPurchasable];
-  v9 = [(NSString *)self->_planDetailsURL copyWithZone:a3];
+  v9 = [(NSString *)self->_planDetailsURL copyWithZone:zone];
   [v5 setPlanDetailsURL:v9];
 
-  v10 = [(NSString *)self->_planTermsURL copyWithZone:a3];
+  v10 = [(NSString *)self->_planTermsURL copyWithZone:zone];
   [v5 setPlanTermsURL:v10];
 
-  v11 = [(NSString *)self->_planPurchaseURL copyWithZone:a3];
+  v11 = [(NSString *)self->_planPurchaseURL copyWithZone:zone];
   [v5 setPlanPurchaseURL:v11];
 
   [v5 setPlanType:{-[CTCarrierSpacePlanGroupOptionInfo planType](self, "planType")}];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_planId forKey:@"planId"];
-  [v4 encodeObject:self->_planLabel forKey:@"planLabel"];
-  [v4 encodeObject:self->_planValue forKey:@"planValue"];
-  [v4 encodeInt:self->_planSubscriptionStatus forKey:@"planSubscriptionStatus"];
-  [v4 encodeBool:self->_planPurchasable forKey:@"planPurchasable"];
-  [v4 encodeObject:self->_planDetailsURL forKey:@"planDetailsURL"];
-  [v4 encodeObject:self->_planTermsURL forKey:@"planTermsURL"];
-  [v4 encodeObject:self->_planPurchaseURL forKey:@"planPurchaseURL"];
-  [v4 encodeInteger:self->_planType forKey:@"planType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_planId forKey:@"planId"];
+  [coderCopy encodeObject:self->_planLabel forKey:@"planLabel"];
+  [coderCopy encodeObject:self->_planValue forKey:@"planValue"];
+  [coderCopy encodeInt:self->_planSubscriptionStatus forKey:@"planSubscriptionStatus"];
+  [coderCopy encodeBool:self->_planPurchasable forKey:@"planPurchasable"];
+  [coderCopy encodeObject:self->_planDetailsURL forKey:@"planDetailsURL"];
+  [coderCopy encodeObject:self->_planTermsURL forKey:@"planTermsURL"];
+  [coderCopy encodeObject:self->_planPurchaseURL forKey:@"planPurchaseURL"];
+  [coderCopy encodeInteger:self->_planType forKey:@"planType"];
 }
 
-- (CTCarrierSpacePlanGroupOptionInfo)initWithCoder:(id)a3
+- (CTCarrierSpacePlanGroupOptionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTCarrierSpacePlanGroupOptionInfo;
   v5 = [(CTCarrierSpacePlanGroupOptionInfo *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planId"];
     planId = v5->_planId;
     v5->_planId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planLabel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planLabel"];
     planLabel = v5->_planLabel;
     v5->_planLabel = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planValue"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planValue"];
     planValue = v5->_planValue;
     v5->_planValue = v10;
 
-    v5->_planSubscriptionStatus = [v4 decodeIntForKey:@"planSubscriptionStatus"];
-    v5->_planPurchasable = [v4 decodeBoolForKey:@"planPurchasable"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planDetailsURL"];
+    v5->_planSubscriptionStatus = [coderCopy decodeIntForKey:@"planSubscriptionStatus"];
+    v5->_planPurchasable = [coderCopy decodeBoolForKey:@"planPurchasable"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planDetailsURL"];
     planDetailsURL = v5->_planDetailsURL;
     v5->_planDetailsURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planTermsURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planTermsURL"];
     planTermsURL = v5->_planTermsURL;
     v5->_planTermsURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planPurchaseURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planPurchaseURL"];
     planPurchaseURL = v5->_planPurchaseURL;
     v5->_planPurchaseURL = v16;
 
-    v5->_planType = [v4 decodeIntegerForKey:@"planType"];
+    v5->_planType = [coderCopy decodeIntegerForKey:@"planType"];
   }
 
   return v5;

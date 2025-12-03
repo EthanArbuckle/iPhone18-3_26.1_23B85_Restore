@@ -3,19 +3,19 @@
 - (CGRect)frame;
 - (NSAttributedString)accessibilityAttributedValue;
 - (NSString)accessibilityHint;
-- (_TtC9Reminders29TTRIAccountsListsViewListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC9Reminders29TTRIAccountsListsViewListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (unint64_t)accessibilityTraits;
-- (void)setFrame:(CGRect)a3;
-- (void)toggleSmartListVisibility:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)toggleSmartListVisibility:(id)visibility;
 @end
 
 @implementation TTRIAccountsListsViewListCell
 
-- (_TtC9Reminders29TTRIAccountsListsViewListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders29TTRIAccountsListsViewListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -24,7 +24,7 @@
     v6 = 0;
   }
 
-  return sub_1005E7500(a3, a4, v6);
+  return sub_1005E7500(style, identifier, v6);
 }
 
 - (CGRect)frame
@@ -39,21 +39,21 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_1005E79D0(x, y, width, height);
 }
 
-- (void)toggleSmartListVisibility:(id)a3
+- (void)toggleSmartListVisibility:(id)visibility
 {
-  if (a3)
+  if (visibility)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -62,7 +62,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1005E94AC();
@@ -72,27 +72,27 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
-  if (-[TTRIAccountsListsViewListCell isEditing](v2, "isEditing") && (v3 = OBJC_IVAR____TtC9Reminders29TTRIAccountsListsViewListCell_checkmarkButton, ([*&v2->super.NUITableViewContainerCell_opaque[OBJC_IVAR____TtC9Reminders29TTRIAccountsListsViewListCell_checkmarkButton] isHidden] & 1) == 0))
+  selfCopy = self;
+  if (-[TTRIAccountsListsViewListCell isEditing](selfCopy, "isEditing") && (v3 = OBJC_IVAR____TtC9Reminders29TTRIAccountsListsViewListCell_checkmarkButton, ([*&selfCopy->super.NUITableViewContainerCell_opaque[OBJC_IVAR____TtC9Reminders29TTRIAccountsListsViewListCell_checkmarkButton] isHidden] & 1) == 0))
   {
-    [*&v2->super.NUITableViewContainerCell_opaque[v3] sendActionsForControlEvents:64];
+    [*&selfCopy->super.NUITableViewContainerCell_opaque[v3] sendActionsForControlEvents:64];
 
     return 1;
   }
 
   else
   {
-    v6.receiver = v2;
+    v6.receiver = selfCopy;
     v6.super_class = type metadata accessor for TTRIAccountsListsViewListCell(0);
-    v4 = [(TTRIAccountsListsBaseCell *)&v6 accessibilityActivate];
+    accessibilityActivate = [(TTRIAccountsListsBaseCell *)&v6 accessibilityActivate];
   }
 
-  return v4;
+  return accessibilityActivate;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005E999C();
 
   return v3;
@@ -100,7 +100,7 @@
 
 - (NSString)accessibilityHint
 {
-  v2 = self;
+  selfCopy = self;
   sub_100328ED4();
   v4 = v3;
 
@@ -119,7 +119,7 @@
 
 - (NSAttributedString)accessibilityAttributedValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005E9B0C();
 
   return v3;

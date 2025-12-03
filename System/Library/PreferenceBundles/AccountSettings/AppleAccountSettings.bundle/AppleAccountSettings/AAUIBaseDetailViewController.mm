@@ -23,15 +23,15 @@
 
 - (void)_setupNavigationBarButtons
 {
-  v3 = [(AAUIBaseDetailViewController *)self navigationItem];
+  navigationItem = [(AAUIBaseDetailViewController *)self navigationItem];
   if (([(AAUIBaseDetailViewController *)self isPresentedAsModalSheet]& 1) == 0)
   {
-    [v3 setRightBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
   }
 
   [(AAUIBaseDetailViewController *)self setCancelButton:0];
-  [v3 setLeftBarButtonItem:0];
-  [v3 setHidesBackButton:0];
+  [navigationItem setLeftBarButtonItem:0];
+  [navigationItem setHidesBackButton:0];
 }
 
 @end

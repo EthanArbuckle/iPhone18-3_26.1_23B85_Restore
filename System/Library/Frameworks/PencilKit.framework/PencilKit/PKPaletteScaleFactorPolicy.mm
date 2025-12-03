@@ -1,21 +1,21 @@
 @interface PKPaletteScaleFactorPolicy
-- (double)scaleFactorForWindowBounds:(CGRect)a3 paletteView:(id)a4;
+- (double)scaleFactorForWindowBounds:(CGRect)bounds paletteView:(id)view;
 @end
 
 @implementation PKPaletteScaleFactorPolicy
 
-- (double)scaleFactorForWindowBounds:(CGRect)a3 paletteView:(id)a4
+- (double)scaleFactorForWindowBounds:(CGRect)bounds paletteView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [v6 paletteScaleFactor];
+  viewCopy = view;
+  [viewCopy paletteScaleFactor];
   v8 = v7;
-  [v6 paletteSizeForEdge:4];
+  [viewCopy paletteSizeForEdge:4];
   v10 = v9;
-  [v6 paletteSizeForEdge:2];
-  if (!v6 || ((v12 = 1.0 / v8 * v10, v13 = 1.0 / v8 * v11, v14 = height + -80.0, v12 <= width + -80.0) ? (v15 = v13 <= v14) : (v15 = 0), v15))
+  [viewCopy paletteSizeForEdge:2];
+  if (!viewCopy || ((v12 = 1.0 / v8 * v10, v13 = 1.0 / v8 * v11, v14 = height + -80.0, v12 <= width + -80.0) ? (v15 = v13 <= v14) : (v15 = 0), v15))
   {
     v19 = 0;
     if (width >= height)

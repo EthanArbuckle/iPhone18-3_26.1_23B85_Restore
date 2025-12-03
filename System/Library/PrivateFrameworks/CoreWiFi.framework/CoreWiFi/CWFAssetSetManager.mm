@@ -1,9 +1,9 @@
 @interface CWFAssetSetManager
 - (BOOL)isMobileAssetDaemonReady;
 - (CWFAssetSetManager)init;
-- (id)checkAssetsWithReason:(id)a3 CanBlock:(BOOL)a4 forAtomicInstance:(id)a5;
-- (id)makeAutoAssetSetWithEntry:(id)a3;
-- (id)makeAutoAssetWithSelector:(id)a3;
+- (id)checkAssetsWithReason:(id)reason CanBlock:(BOOL)block forAtomicInstance:(id)instance;
+- (id)makeAutoAssetSetWithEntry:(id)entry;
+- (id)makeAutoAssetWithSelector:(id)selector;
 - (void)__periodicCheckA11;
 - (void)__startAssetTracking;
 - (void)__stopPeriodicCheckA11;
@@ -12,15 +12,15 @@
 - (void)_handleAssetDiscoveredNotification;
 - (void)_handleAssetDownloadedNotification;
 - (void)_periodicCheckForDownloaded;
-- (void)_registerForAssetDiscoveredNotification:(id)a3;
-- (void)_registerForAssetDownloadedNotification:(id)a3;
+- (void)_registerForAssetDiscoveredNotification:(id)notification;
+- (void)_registerForAssetDownloadedNotification:(id)notification;
 - (void)activate;
 - (void)forTestingEnablePeriodicCheck;
 - (void)invalidate;
-- (void)processQueryResults:(id)a3 withError:(id)a4;
-- (void)rootMonitorDetectedAdd:(id)a3 deleted:(id)a4 updated:(id)a5;
+- (void)processQueryResults:(id)results withError:(id)error;
+- (void)rootMonitorDetectedAdd:(id)add deleted:(id)deleted updated:(id)updated;
 - (void)scheduleReadinessRetry;
-- (void)unlockAssetWithReason:(id)a3;
+- (void)unlockAssetWithReason:(id)reason;
 @end
 
 @implementation CWFAssetSetManager
@@ -172,20 +172,20 @@ LABEL_28:
   v14 = +[CWFAssetPowerTableTelemetry sharedObj];
   [v14 setIsSupportedChipset:{+[CWFAssetPowerTable isChipsetFullySupported](CWFAssetPowerTable, "isChipsetFullySupported")}];
 
-  v15 = [@"com.apple.corewifi.AutoAssetNotifyAndOpsQueue" UTF8String];
+  uTF8String = [@"com.apple.corewifi.AutoAssetNotifyAndOpsQueue" UTF8String];
   v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v17 = dispatch_queue_create(v15, v16);
+  v17 = dispatch_queue_create(uTF8String, v16);
   eventQueue = v9->_eventQueue;
   v9->_eventQueue = v17;
 
   v19 = MGCopyAnswer();
-  LODWORD(v15) = [v19 BOOLValue];
+  LODWORD(uTF8String) = [v19 BOOLValue];
 
-  if (v15)
+  if (uTF8String)
   {
     v20 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 2uLL, 1);
-    v21 = [v20 firstObject];
-    v22 = [v21 stringByAppendingPathComponent:@"CoreWiFiAssetRootDropoff"];
+    firstObject = [v20 firstObject];
+    v22 = [firstObject stringByAppendingPathComponent:@"CoreWiFiAssetRootDropoff"];
     v9->_assetRootToProcess = 0;
     v23 = [[CWFAssetRootMonitor alloc] initMonitorWithPath:v22];
     assetRootMonitor = v9->_assetRootMonitor;
@@ -221,12 +221,12 @@ LABEL_21:
   return v9;
 }
 
-- (void)rootMonitorDetectedAdd:(id)a3 deleted:(id)a4 updated:(id)a5
+- (void)rootMonitorDetectedAdd:(id)add deleted:(id)deleted updated:(id)updated
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addCopy = add;
+  deletedCopy = deleted;
+  updatedCopy = updated;
   v11 = CWFGetOTAOSLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -237,43 +237,43 @@ LABEL_21:
     v23 = 2080;
     v24 = "[CWFAssetSetManager rootMonitorDetectedAdd:deleted:updated:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = addCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = deletedCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = updatedCopy;
     _os_log_impl(&dword_1E0BBF000, v11, OS_LOG_TYPE_INFO, "%{public}s::%d:%s:  addedPaths ---\n %@\n deletedPaths ---\n %@\n updatedPaths ---\n %@", buf, 0x3Au);
   }
 
-  if ([v8 count] || objc_msgSend(v10, "count"))
+  if ([addCopy count] || objc_msgSend(updatedCopy, "count"))
   {
-    v12 = [(CWFAssetSetManager *)self eventQueue];
+    eventQueue = [(CWFAssetSetManager *)self eventQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0BF43A0;
     block[3] = &unk_1E86E6060;
     block[4] = self;
-    v17 = v8;
-    v18 = v10;
-    dispatch_async(v12, block);
+    v17 = addCopy;
+    v18 = updatedCopy;
+    dispatch_async(eventQueue, block);
 
-    v13 = v17;
+    eventQueue2 = v17;
   }
 
   else
   {
-    if (![v9 count])
+    if (![deletedCopy count])
     {
       goto LABEL_7;
     }
 
-    v13 = [(CWFAssetSetManager *)self eventQueue];
+    eventQueue2 = [(CWFAssetSetManager *)self eventQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = sub_1E0BF461C;
     v15[3] = &unk_1E86E6010;
     v15[4] = self;
-    dispatch_async(v13, v15);
+    dispatch_async(eventQueue2, v15);
   }
 
 LABEL_7:
@@ -283,7 +283,7 @@ LABEL_7:
 - (void)forTestingEnablePeriodicCheck
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = CWFGetOTAOSLog();
   if (v4)
   {
@@ -306,11 +306,11 @@ LABEL_7:
   }
 
   self->_forTestingPeriodicCheckEnabled = 0;
-  v7 = [v3 objectForKey:@"OTAPeriodicCheckEnabled"];
+  v7 = [standardUserDefaults objectForKey:@"OTAPeriodicCheckEnabled"];
 
   if (v7)
   {
-    self->_forTestingPeriodicCheckEnabled = [v3 BOOLForKey:@"OTAPeriodicCheckEnabled"];
+    self->_forTestingPeriodicCheckEnabled = [standardUserDefaults BOOLForKey:@"OTAPeriodicCheckEnabled"];
     v8 = CWFGetOTAOSLog();
     if (v8)
     {
@@ -342,11 +342,11 @@ LABEL_7:
   }
 
   self->_forTestingPeriodicityInSecs = -1;
-  v12 = [v3 objectForKey:{@"OTAPeriodicCheckIntervalInSecs", v29, v30}];
+  v12 = [standardUserDefaults objectForKey:{@"OTAPeriodicCheckIntervalInSecs", v29, v30}];
 
   if (v12)
   {
-    self->_forTestingPeriodicityInSecs = [v3 integerForKey:@"OTAPeriodicCheckIntervalInSecs"];
+    self->_forTestingPeriodicityInSecs = [standardUserDefaults integerForKey:@"OTAPeriodicCheckIntervalInSecs"];
     v13 = CWFGetOTAOSLog();
     if (v13)
     {
@@ -497,22 +497,22 @@ LABEL_25:
 - (void)__periodicCheckA11
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(CWFAssetSetManager *)self eventHandler];
+  eventHandler = [(CWFAssetSetManager *)self eventHandler];
 
-  if (v4)
+  if (eventHandler)
   {
-    v5 = [(CWFAssetSetManager *)self eventHandler];
-    v5[2]();
+    eventHandler2 = [(CWFAssetSetManager *)self eventHandler];
+    eventHandler2[2]();
   }
 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)processQueryResults:(id)a3 withError:(id)a4
+- (void)processQueryResults:(id)results withError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   v8 = CWFGetOTAOSLog();
   if (v8)
   {
@@ -537,11 +537,11 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = sub_1E0BF4FB0;
   block[3] = &unk_1E86E6060;
-  v16 = v7;
-  v17 = self;
-  v18 = v6;
-  v12 = v6;
-  v13 = v7;
+  v16 = errorCopy;
+  selfCopy = self;
+  v18 = resultsCopy;
+  v12 = resultsCopy;
+  v13 = errorCopy;
   dispatch_async(eventQueue, block);
 
   v14 = *MEMORY[0x1E69E9840];
@@ -581,10 +581,10 @@ LABEL_25:
 - (BOOL)isMobileAssetDaemonReady
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [sub_1E0BF3F68() hasStartupActivatedCompletedOnce];
+  hasStartupActivatedCompletedOnce = [sub_1E0BF3F68() hasStartupActivatedCompletedOnce];
   v4 = CWFGetOTAOSLog();
   v5 = v4;
-  if (v3)
+  if (hasStartupActivatedCompletedOnce)
   {
     if (v4)
     {
@@ -626,7 +626,7 @@ LABEL_25:
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v3;
+  return hasStartupActivatedCompletedOnce;
 }
 
 - (void)scheduleReadinessRetry
@@ -645,13 +645,13 @@ LABEL_25:
 - (void)__startAssetTracking
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(CWFAssetSetManager *)self eventQueue];
+  eventQueue = [(CWFAssetSetManager *)self eventQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0BF5934;
   block[3] = &unk_1E86E6010;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(eventQueue, block);
 
   objc_autoreleasePoolPop(v3);
 }
@@ -663,34 +663,34 @@ LABEL_25:
     notify_cancel([(CWFAssetSetManager *)self notifyTokenVersionDownloaded]);
   }
 
-  v3 = [(CWFAssetSetManager *)self forTestingPeriodicCheckTimer];
+  forTestingPeriodicCheckTimer = [(CWFAssetSetManager *)self forTestingPeriodicCheckTimer];
 
-  if (v3)
+  if (forTestingPeriodicCheckTimer)
   {
-    v4 = [(CWFAssetSetManager *)self forTestingPeriodicCheckTimer];
-    dispatch_source_cancel(v4);
+    forTestingPeriodicCheckTimer2 = [(CWFAssetSetManager *)self forTestingPeriodicCheckTimer];
+    dispatch_source_cancel(forTestingPeriodicCheckTimer2);
   }
 }
 
-- (void)_registerForAssetDiscoveredNotification:(id)a3
+- (void)_registerForAssetDiscoveredNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    [(CWFAssetSetManager *)self setAssetDiscoveredHandler:v4];
+    [(CWFAssetSetManager *)self setAssetDiscoveredHandler:notificationCopy];
   }
 
   v5 = [sub_1E0BF67F0() notifyRegistrationName:@"ATOMIC_INSTANCE_DISCOVERED" forAssetSetIdentifier:@"WiFi_SetOfPowerTables"];
   out_token[0] = -1;
-  v6 = [v5 UTF8String];
-  v7 = [(CWFAssetSetManager *)self eventQueue];
+  uTF8String = [v5 UTF8String];
+  eventQueue = [(CWFAssetSetManager *)self eventQueue];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = sub_1E0BF68F4;
   handler[3] = &unk_1E86E60B0;
   handler[4] = self;
-  notify_register_dispatch(v6, out_token, v7, handler);
+  notify_register_dispatch(uTF8String, out_token, eventQueue, handler);
 
   [(CWFAssetSetManager *)self setNotifyTokenVersionDiscovered:out_token[0]];
   v8 = CWFGetOTAOSLog();
@@ -717,27 +717,27 @@ LABEL_25:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerForAssetDownloadedNotification:(id)a3
+- (void)_registerForAssetDownloadedNotification:(id)notification
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
-    [(CWFAssetSetManager *)self setAssetDownloadedHandler:v4];
+    [(CWFAssetSetManager *)self setAssetDownloadedHandler:notificationCopy];
   }
 
   v5 = [sub_1E0BF67F0() notifyRegistrationName:@"ATOMIC_INSTANCE_DOWNLOADED" forAssetSetIdentifier:@"WiFi_SetOfPowerTables"];
   out_token[0] = -1;
-  v6 = [v5 UTF8String];
-  v7 = [(CWFAssetSetManager *)self eventQueue];
+  uTF8String = [v5 UTF8String];
+  eventQueue = [(CWFAssetSetManager *)self eventQueue];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = sub_1E0BF6C90;
   handler[3] = &unk_1E86E60D8;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   v8 = v5;
-  notify_register_dispatch(v6, out_token, v7, handler);
+  notify_register_dispatch(uTF8String, out_token, eventQueue, handler);
 
   [(CWFAssetSetManager *)self setNotifyTokenVersionDownloaded:out_token[0]];
   v9 = CWFGetOTAOSLog();
@@ -824,10 +824,10 @@ LABEL_25:
 
     else
     {
-      v15 = [v11 code];
+      code = [v11 code];
       v16 = CWFGetOTAOSLog();
       v17 = v16;
-      if (v15 == 6205)
+      if (code == 6205)
       {
         if (v16)
         {
@@ -954,12 +954,12 @@ LABEL_29:
     _os_log_send_and_compose_impl();
   }
 
-  v8 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
-  v9 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+  periodicCheckForDownloadCounts = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
+  atomicInstanceTrackedForDownloaded = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
 
-  if (!v8)
+  if (!periodicCheckForDownloadCounts)
   {
-    if (v9)
+    if (atomicInstanceTrackedForDownloaded)
     {
       v43 = CWFGetOTAOSLog();
       if (v43)
@@ -1003,14 +1003,14 @@ LABEL_44:
 
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v25 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
-      v26 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+      periodicCheckForDownloadCounts2 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
+      atomicInstanceTrackedForDownloaded2 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
       v48 = 136315650;
       v49 = "[CWFAssetSetManager _periodicCheckForDownloaded]";
       v50 = 2048;
-      v51 = v25;
+      v51 = periodicCheckForDownloadCounts2;
       v52 = 2112;
-      v53 = v26;
+      v53 = atomicInstanceTrackedForDownloaded2;
       LODWORD(v46) = 32;
       v45 = &v48;
       _os_log_send_and_compose_impl();
@@ -1019,25 +1019,25 @@ LABEL_44:
     goto LABEL_28;
   }
 
-  if (v9)
+  if (atomicInstanceTrackedForDownloaded)
   {
-    v10 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
-    v11 = [(CWFAssetSetManager *)self checkAssetsWithReason:@"reason-expedite-discovery" CanBlock:0 forAtomicInstance:v10];
+    atomicInstanceTrackedForDownloaded3 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+    v11 = [(CWFAssetSetManager *)self checkAssetsWithReason:@"reason-expedite-discovery" CanBlock:0 forAtomicInstance:atomicInstanceTrackedForDownloaded3];
 
     if (!v11)
     {
       goto LABEL_16;
     }
 
-    v12 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
-    if (!v12)
+    atomicInstanceTrackedForDownloaded4 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+    if (!atomicInstanceTrackedForDownloaded4)
     {
       goto LABEL_16;
     }
 
-    v13 = v12;
-    v14 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
-    v15 = [v11 isEqualToString:v14];
+    v13 = atomicInstanceTrackedForDownloaded4;
+    atomicInstanceTrackedForDownloaded5 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+    v15 = [v11 isEqualToString:atomicInstanceTrackedForDownloaded5];
 
     if (v15)
     {
@@ -1055,14 +1055,14 @@ LABEL_44:
 
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
-        v42 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+        periodicCheckForDownloadCounts3 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
+        atomicInstanceTrackedForDownloaded6 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
         v48 = 136315650;
         v49 = "[CWFAssetSetManager _periodicCheckForDownloaded]";
         v50 = 2048;
-        v51 = v41;
+        v51 = periodicCheckForDownloadCounts3;
         v52 = 2112;
-        v53 = v42;
+        v53 = atomicInstanceTrackedForDownloaded6;
         LODWORD(v46) = 32;
         v45 = &v48;
         _os_log_send_and_compose_impl();
@@ -1088,14 +1088,14 @@ LABEL_16:
 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
-        v29 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
+        periodicCheckForDownloadCounts4 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
+        atomicInstanceTrackedForDownloaded7 = [(CWFAssetSetManager *)self atomicInstanceTrackedForDownloaded];
         v48 = 136315650;
         v49 = "[CWFAssetSetManager _periodicCheckForDownloaded]";
         v50 = 2048;
-        v51 = v28;
+        v51 = periodicCheckForDownloadCounts4;
         v52 = 2112;
-        v53 = v29;
+        v53 = atomicInstanceTrackedForDownloaded7;
         LODWORD(v46) = 32;
         v45 = &v48;
         _os_log_send_and_compose_impl();
@@ -1134,8 +1134,8 @@ LABEL_28:
 LABEL_33:
   if ([(CWFAssetSetManager *)self periodicCheckForDownloadEnabled:v45])
   {
-    v32 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
-    if (v32 < [&unk_1F5BB9AC0 count])
+    periodicCheckForDownloadCounts5 = [(CWFAssetSetManager *)self periodicCheckForDownloadCounts];
+    if (periodicCheckForDownloadCounts5 < [&unk_1F5BB9AC0 count])
     {
       if (!forTestingPeriodicCheckForDownloadEnabled)
       {
@@ -1184,19 +1184,19 @@ LABEL_45:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (id)checkAssetsWithReason:(id)a3 CanBlock:(BOOL)a4 forAtomicInstance:(id)a5
+- (id)checkAssetsWithReason:(id)reason CanBlock:(BOOL)block forAtomicInstance:(id)instance
 {
-  v5 = a4;
+  blockCopy = block;
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  instanceCopy = instance;
+  reasonCopy = reason;
   v10 = objc_alloc_init(sub_1E0BF730C());
   [v10 setAllowCheckDownloadOverCellular:1];
   [v10 setAllowCheckDownloadOnBattery:1];
   [v10 setAllowCheckDownloadOverExpensive:1];
   v11 = [(CWFAssetSetManager *)self makeAutoAssetSetWithEntry:0];
   v12 = v11;
-  if (v5)
+  if (blockCopy)
   {
     v13 = -2;
   }
@@ -1208,7 +1208,7 @@ LABEL_45:
 
   v30 = 0;
   v31 = 0;
-  v14 = [v11 checkAtomicSync:v9 forAtomicInstance:v8 withNeedPolicy:v10 withTimeout:v13 discoveredAtomicEntries:&v31 error:&v30];
+  v14 = [v11 checkAtomicSync:reasonCopy forAtomicInstance:instanceCopy withNeedPolicy:v10 withTimeout:v13 discoveredAtomicEntries:&v31 error:&v30];
 
   v15 = v31;
   v16 = v30;
@@ -1240,10 +1240,10 @@ LABEL_45:
 
     else
     {
-      v21 = [v17 code];
+      code = [v17 code];
       v22 = CWFGetOTAOSLog();
       v23 = v22;
-      if (v21 == 6205)
+      if (code == 6205)
       {
         if (v22)
         {
@@ -1351,12 +1351,12 @@ LABEL_27:
       _os_log_send_and_compose_impl();
     }
 
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [v6 objectForKey:@"OTAPeriodicCheckForDownloadEnabled"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7 = [standardUserDefaults objectForKey:@"OTAPeriodicCheckForDownloadEnabled"];
 
     if (v7)
     {
-      self->_forTestingPeriodicCheckForDownloadEnabled = [v6 BOOLForKey:@"OTAPeriodicCheckForDownloadEnabled"];
+      self->_forTestingPeriodicCheckForDownloadEnabled = [standardUserDefaults BOOLForKey:@"OTAPeriodicCheckForDownloadEnabled"];
       v8 = CWFGetOTAOSLog();
       if (v8)
       {
@@ -1378,11 +1378,11 @@ LABEL_27:
 
     if (self->_forTestingPeriodicCheckForDownloadEnabled)
     {
-      v11 = [v6 objectForKey:@"OTAPeriodicCheckForDownloadIntervalInSecs"];
+      v11 = [standardUserDefaults objectForKey:@"OTAPeriodicCheckForDownloadIntervalInSecs"];
 
       if (v11)
       {
-        self->_forTestingPeriodicityForDownloadInSecs = [v6 integerForKey:@"OTAPeriodicCheckForDownloadIntervalInSecs"];
+        self->_forTestingPeriodicityForDownloadInSecs = [standardUserDefaults integerForKey:@"OTAPeriodicCheckForDownloadIntervalInSecs"];
         v12 = CWFGetOTAOSLog();
         if (v12)
         {
@@ -1510,8 +1510,8 @@ LABEL_38:
 
   if (v8)
   {
-    v9 = [(CWFAssetSetManager *)self assetDiscoveredHandler];
-    v9[2]();
+    assetDiscoveredHandler = [(CWFAssetSetManager *)self assetDiscoveredHandler];
+    assetDiscoveredHandler[2]();
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -1520,21 +1520,21 @@ LABEL_38:
 - (void)_handleAssetDownloadedNotification
 {
   [(CWFAssetSetManager *)self lockAndHandOffCanBlock:1 forcedFetch:0];
-  v3 = [(CWFAssetSetManager *)self assetDownloadedHandler];
+  assetDownloadedHandler = [(CWFAssetSetManager *)self assetDownloadedHandler];
 
-  if (v3)
+  if (assetDownloadedHandler)
   {
-    v4 = [(CWFAssetSetManager *)self assetDownloadedHandler];
-    v4[2]();
+    assetDownloadedHandler2 = [(CWFAssetSetManager *)self assetDownloadedHandler];
+    assetDownloadedHandler2[2]();
   }
 }
 
-- (id)makeAutoAssetWithSelector:(id)a3
+- (id)makeAutoAssetWithSelector:(id)selector
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  selectorCopy = selector;
+  v5 = selectorCopy;
+  if (!selectorCopy)
   {
     v20 = 0;
     v21 = &v20;
@@ -1558,8 +1558,8 @@ LABEL_38:
     v8 = v6;
     _Block_object_dispose(&v20, 8);
     v9 = [v6 alloc];
-    v10 = [(CWFAssetSetManager *)self assetSpecifier];
-    v5 = [v9 initForAssetType:@"com.apple.MobileAsset.CoreWiFi" withAssetSpecifier:v10];
+    assetSpecifier = [(CWFAssetSetManager *)self assetSpecifier];
+    v5 = [v9 initForAssetType:@"com.apple.MobileAsset.CoreWiFi" withAssetSpecifier:assetSpecifier];
   }
 
   v19 = 0;
@@ -1584,7 +1584,7 @@ LABEL_38:
       *v24 = 136315650;
       *&v24[4] = "[CWFAssetSetManager makeAutoAssetWithSelector:]";
       *&v24[12] = 2112;
-      *&v24[14] = v4;
+      *&v24[14] = selectorCopy;
       *&v24[22] = 2112;
       v25 = v12;
       _os_log_send_and_compose_impl();
@@ -1603,10 +1603,10 @@ LABEL_38:
   return v13;
 }
 
-- (void)unlockAssetWithReason:(id)a3
+- (void)unlockAssetWithReason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = CWFGetOTAOSLog();
   if (v5)
   {
@@ -1624,12 +1624,12 @@ LABEL_38:
     _os_log_send_and_compose_impl();
   }
 
-  v8 = [(CWFAssetSetManager *)self currentLockedAutoAsset];
+  currentLockedAutoAsset = [(CWFAssetSetManager *)self currentLockedAutoAsset];
 
-  if (v8)
+  if (currentLockedAutoAsset)
   {
-    v9 = [(CWFAssetSetManager *)self currentLockedAutoAsset];
-    v10 = [v9 endLockUsageSync:v4];
+    currentLockedAutoAsset2 = [(CWFAssetSetManager *)self currentLockedAutoAsset];
+    v10 = [currentLockedAutoAsset2 endLockUsageSync:reasonCopy];
 
     v11 = CWFGetOTAOSLog();
     v12 = v11;
@@ -1716,12 +1716,12 @@ LABEL_38:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)makeAutoAssetSetWithEntry:(id)a3
+- (id)makeAutoAssetSetWithEntry:(id)entry
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v6 = v4, ![v4 count]))
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy || (v6 = entryCopy, ![entryCopy count]))
   {
     v23 = 0;
     v24 = &v23;
@@ -1745,8 +1745,8 @@ LABEL_38:
     v9 = v7;
     _Block_object_dispose(&v23, 8);
     v10 = [v7 alloc];
-    v11 = [(CWFAssetSetManager *)self assetSpecifier];
-    v12 = [v10 initForAssetType:@"com.apple.MobileAsset.CoreWiFi" withAssetSpecifier:v11];
+    assetSpecifier = [(CWFAssetSetManager *)self assetSpecifier];
+    v12 = [v10 initForAssetType:@"com.apple.MobileAsset.CoreWiFi" withAssetSpecifier:assetSpecifier];
 
     v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v12, 0}];
   }

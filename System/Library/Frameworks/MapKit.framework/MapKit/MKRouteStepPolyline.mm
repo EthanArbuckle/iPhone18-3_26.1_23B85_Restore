@@ -1,6 +1,6 @@
 @interface MKRouteStepPolyline
 - (CLLocationCoordinate2D)coordinate;
-- (id)_initWithRoute:(id)a3 range:(_NSRange)a4;
+- (id)_initWithRoute:(id)route range:(_NSRange)range;
 - (void)dealloc;
 @end
 
@@ -34,11 +34,11 @@
   [(MKMultiPoint *)&v3 dealloc];
 }
 
-- (id)_initWithRoute:(id)a3 range:(_NSRange)a4
+- (id)_initWithRoute:(id)route range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  routeCopy = route;
   v12.receiver = self;
   v12.super_class = MKRouteStepPolyline;
   v9 = [(MKRouteStepPolyline *)&v12 init];
@@ -47,9 +47,9 @@
     goto LABEL_5;
   }
 
-  if (location + length <= [v8 pointCount])
+  if (location + length <= [routeCopy pointCount])
   {
-    objc_storeStrong(v9 + 14, a3);
+    objc_storeStrong(v9 + 14, route);
     [v9 _assignPoints:objc_msgSend(*(v9 + 14) count:{"points") + 16 * location, length}];
 LABEL_5:
     v10 = v9;

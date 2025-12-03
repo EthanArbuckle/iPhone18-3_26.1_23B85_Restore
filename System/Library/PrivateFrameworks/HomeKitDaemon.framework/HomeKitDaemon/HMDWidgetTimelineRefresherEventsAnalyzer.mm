@@ -1,8 +1,8 @@
 @interface HMDWidgetTimelineRefresherEventsAnalyzer
-- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5;
-- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)a3 logEventSubmitter:(id)a4 widgetKinds:(id)a5 dailyScheduler:(id)a6;
-- (void)observeEvent:(id)a3;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
+- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)manager logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler;
+- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)manager logEventSubmitter:(id)submitter widgetKinds:(id)kinds dailyScheduler:(id)scheduler;
+- (void)observeEvent:(id)event;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
 - (void)resetAggregationAnalysisContext;
 - (void)runDailyTask;
 @end
@@ -11,29 +11,29 @@
 
 - (void)resetAggregationAnalysisContext
 {
-  v2 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
-  [v2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_42833];
+  widgetRefreshReasonCounterGroupByKind = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
+  [widgetRefreshReasonCounterGroupByKind enumerateKeysAndObjectsUsingBlock:&__block_literal_global_42833];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
+  widgetRefreshReasonCounterGroupByKind = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __88__HMDWidgetTimelineRefresherEventsAnalyzer_populateAggregationAnalysisLogEvent_forDate___block_invoke;
   v13 = &unk_278672F70;
   v15 = &v16;
-  v9 = v7;
+  v9 = dateCopy;
   v14 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v10];
+  [widgetRefreshReasonCounterGroupByKind enumerateKeysAndObjectsUsingBlock:&v10];
 
-  [v6 setWidgetMaxRefreshCountForKind:{v17[3], v10, v11, v12, v13}];
+  [eventCopy setWidgetMaxRefreshCountForKind:{v17[3], v10, v11, v12, v13}];
   _Block_object_dispose(&v16, 8);
 }
 
@@ -57,13 +57,13 @@ unint64_t __88__HMDWidgetTimelineRefresherEventsAnalyzer_populateAggregationAnal
 
 - (void)runDailyTask
 {
-  v3 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
+  widgetRefreshReasonCounterGroupByKind = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__HMDWidgetTimelineRefresherEventsAnalyzer_runDailyTask__block_invoke;
   v4[3] = &unk_278672F48;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [widgetRefreshReasonCounterGroupByKind enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 void __56__HMDWidgetTimelineRefresherEventsAnalyzer_runDailyTask__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -94,13 +94,13 @@ void __56__HMDWidgetTimelineRefresherEventsAnalyzer_runDailyTask__block_invoke_2
   [v12 submitLogEvent:v11];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v14 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v14;
+    v4 = eventCopy;
   }
 
   else
@@ -111,49 +111,49 @@ void __56__HMDWidgetTimelineRefresherEventsAnalyzer_runDailyTask__block_invoke_2
   v5 = v4;
   if (v5)
   {
-    v6 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
-    v7 = [v5 kind];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    widgetRefreshReasonCounterGroupByKind = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
+    kind = [v5 kind];
+    v8 = [widgetRefreshReasonCounterGroupByKind objectForKeyedSubscript:kind];
 
     if (!v8)
     {
-      v9 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self eventCountersManager];
-      v10 = [v5 kind];
-      v8 = [v9 counterGroupForName:v10];
+      eventCountersManager = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self eventCountersManager];
+      kind2 = [v5 kind];
+      v8 = [eventCountersManager counterGroupForName:kind2];
 
-      v11 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
-      v12 = [v5 kind];
-      [v11 setObject:v8 forKeyedSubscript:v12];
+      widgetRefreshReasonCounterGroupByKind2 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self widgetRefreshReasonCounterGroupByKind];
+      kind3 = [v5 kind];
+      [widgetRefreshReasonCounterGroupByKind2 setObject:v8 forKeyedSubscript:kind3];
     }
 
-    v13 = [v5 reason];
-    [v8 incrementEventCounterForEventName:v13];
+    reason = [v5 reason];
+    [v8 incrementEventCounterForEventName:reason];
   }
 }
 
-- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)a3 logEventSubmitter:(id)a4 widgetKinds:(id)a5 dailyScheduler:(id)a6
+- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)manager logEventSubmitter:(id)submitter widgetKinds:(id)kinds dailyScheduler:(id)scheduler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  submitterCopy = submitter;
+  kindsCopy = kinds;
+  schedulerCopy = scheduler;
   v34.receiver = self;
   v34.super_class = HMDWidgetTimelineRefresherEventsAnalyzer;
   v15 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)&v34 init];
   v16 = v15;
   if (v15)
   {
-    v29 = v12;
-    objc_storeStrong(&v15->_logEventSubmitter, a4);
-    objc_storeStrong(&v16->_eventCountersManager, a3);
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    v29 = submitterCopy;
+    objc_storeStrong(&v15->_logEventSubmitter, submitter);
+    objc_storeStrong(&v16->_eventCountersManager, manager);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v28 = v13;
-    v18 = v13;
+    v28 = kindsCopy;
+    v18 = kindsCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v19)
     {
@@ -169,8 +169,8 @@ void __56__HMDWidgetTimelineRefresherEventsAnalyzer_runDailyTask__block_invoke_2
           }
 
           v23 = *(*(&v30 + 1) + 8 * i);
-          v24 = [v11 counterGroupForName:{v23, v28}];
-          [(NSMutableDictionary *)v17 setObject:v24 forKeyedSubscript:v23];
+          v24 = [managerCopy counterGroupForName:{v23, v28}];
+          [(NSMutableDictionary *)dictionary setObject:v24 forKeyedSubscript:v23];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -180,29 +180,29 @@ void __56__HMDWidgetTimelineRefresherEventsAnalyzer_runDailyTask__block_invoke_2
     }
 
     widgetRefreshReasonCounterGroupByKind = v16->_widgetRefreshReasonCounterGroupByKind;
-    v16->_widgetRefreshReasonCounterGroupByKind = v17;
+    v16->_widgetRefreshReasonCounterGroupByKind = dictionary;
 
-    [v14 registerDailyTaskRunner:v16];
-    v13 = v28;
-    v12 = v29;
+    [schedulerCopy registerDailyTaskRunner:v16];
+    kindsCopy = v28;
+    submitterCopy = v29;
   }
 
   v26 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5
+- (HMDWidgetTimelineRefresherEventsAnalyzer)initWithEventCountersManager:(id)manager logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  schedulerCopy = scheduler;
+  submitterCopy = submitter;
+  managerCopy = manager;
   v11 = +[HMDWidgetFetchSpecification allHomeLockScreenWidgetKinds];
   v17[0] = @"com.apple.Home.widget.interactive";
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v13 = [v11 setByAddingObjectsFromArray:v12];
 
-  v14 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self initWithEventCountersManager:v10 logEventSubmitter:v9 widgetKinds:v13 dailyScheduler:v8];
+  v14 = [(HMDWidgetTimelineRefresherEventsAnalyzer *)self initWithEventCountersManager:managerCopy logEventSubmitter:submitterCopy widgetKinds:v13 dailyScheduler:schedulerCopy];
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }

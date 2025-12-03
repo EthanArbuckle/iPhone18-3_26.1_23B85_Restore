@@ -1,5 +1,5 @@
 @interface WiFiUsageWatchdogDetails
-- (WiFiUsageWatchdogDetails)initWithInterfaceName:(id)a3 andConnectedBss:(id)a4;
+- (WiFiUsageWatchdogDetails)initWithInterfaceName:(id)name andConnectedBss:(id)bss;
 - (id)reportedReasonString;
 - (id)reportedSubreasonString;
 - (int)reportedReason;
@@ -8,31 +8,31 @@
 
 @implementation WiFiUsageWatchdogDetails
 
-- (WiFiUsageWatchdogDetails)initWithInterfaceName:(id)a3 andConnectedBss:(id)a4
+- (WiFiUsageWatchdogDetails)initWithInterfaceName:(id)name andConnectedBss:(id)bss
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  nameCopy = name;
+  bssCopy = bss;
+  if (nameCopy)
   {
     v12.receiver = self;
     v12.super_class = WiFiUsageWatchdogDetails;
     v8 = [(WiFiUsageWatchdogDetails *)&v12 init];
-    [(WiFiUsageWatchdogDetails *)v8 setInterfaceName:v6];
-    [(WiFiUsageWatchdogDetails *)v8 setConnectedBss:v7];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(WiFiUsageWatchdogDetails *)v8 setCreatedAt:v9];
+    [(WiFiUsageWatchdogDetails *)v8 setInterfaceName:nameCopy];
+    [(WiFiUsageWatchdogDetails *)v8 setConnectedBss:bssCopy];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(WiFiUsageWatchdogDetails *)v8 setCreatedAt:date];
 
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_SNullInterface.isa, "[WiFiUsageWatchdogDetails initWithInterfaceName:andConnectedBss:]");
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (int)reportedReason
@@ -61,15 +61,15 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   memset(v12, 0, sizeof(v12));
-  v3 = [(WiFiUsageWatchdogDetails *)self availableReasonString];
-  v4 = v3;
-  if (!v3 || ![v3 length])
+  availableReasonString = [(WiFiUsageWatchdogDetails *)self availableReasonString];
+  v4 = availableReasonString;
+  if (!availableReasonString || ![availableReasonString length])
   {
     Apple80211Open();
     [(WiFiUsageWatchdogDetails *)self availableReason];
     if (LOBYTE(v12[0]))
     {
-      v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:v12];
+      unavailableReasonString = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:v12];
     }
 
     else
@@ -85,10 +85,10 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v5 = [(WiFiUsageWatchdogDetails *)self unavailableReasonString];
+      unavailableReasonString = [(WiFiUsageWatchdogDetails *)self unavailableReasonString];
     }
 
-    v6 = v5;
+    v6 = unavailableReasonString;
 
     v4 = v6;
     goto LABEL_6;
@@ -156,9 +156,9 @@ LABEL_15:
   memset(v10, 0, sizeof(v10));
   Apple80211Open();
   [(WiFiUsageWatchdogDetails *)self availableSubreason];
-  v3 = [(WiFiUsageWatchdogDetails *)self unavailableReasonString];
+  unavailableReasonString = [(WiFiUsageWatchdogDetails *)self unavailableReasonString];
 
-  if (!v3 || (-[WiFiUsageWatchdogDetails unavailableReasonString](self, "unavailableReasonString"), v4 = objc_claimAutoreleasedReturnValue(), (v3 = v4) == 0) || ![v4 length])
+  if (!unavailableReasonString || (-[WiFiUsageWatchdogDetails unavailableReasonString](self, "unavailableReasonString"), v4 = objc_claimAutoreleasedReturnValue(), (unavailableReasonString = v4) == 0) || ![v4 length])
   {
     [(WiFiUsageWatchdogDetails *)self unavailableReason];
     if (LOBYTE(v10[0]))
@@ -181,13 +181,13 @@ LABEL_6:
 LABEL_7:
       v7 = v6;
 
-      v3 = v7;
+      unavailableReasonString = v7;
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return unavailableReasonString;
 }
 
 @end

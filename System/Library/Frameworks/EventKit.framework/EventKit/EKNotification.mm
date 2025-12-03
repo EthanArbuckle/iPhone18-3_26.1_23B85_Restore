@@ -1,7 +1,7 @@
 @interface EKNotification
 + (id)knownRelationshipSingleValueKeys;
 + (id)knownRelationshipWeakKeys;
-- (BOOL)save:(id *)a3;
+- (BOOL)save:(id *)save;
 - (EKObjectID)objectID;
 @end
 
@@ -57,23 +57,23 @@ void __43__EKNotification_knownRelationshipWeakKeys__block_invoke()
 
 - (EKObjectID)objectID
 {
-  v2 = [(EKObject *)self persistentObject];
-  v3 = [v2 objectID];
+  persistentObject = [(EKObject *)self persistentObject];
+  objectID = [persistentObject objectID];
 
-  return v3;
+  return objectID;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  if (a3)
+  if (save)
   {
-    *a3 = 0;
+    *save = 0;
     if ([(EKObject *)self isNew])
     {
       v5 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:35 description:{@"In order to save a new notification, add it to a NotificationCollection, save, and commit the collection instead."}];
       v6 = v5;
       result = 0;
-      *a3 = v5;
+      *save = v5;
       return result;
     }
   }

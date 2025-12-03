@@ -1,20 +1,20 @@
 @interface IMPerformSelectorProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IMPerformSelectorProxy)initWithTarget:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IMPerformSelectorProxy)initWithTarget:(id)target;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)target;
 - (id)weakTarget;
-- (void)forwardInvocation:(id)a3;
-- (void)performSelector:(SEL)a3 withObject:(id)a4 afterDelay:(double)a5;
-- (void)performSelector:(SEL)a3 withObject:(id)a4 afterDelay:(double)a5 inModes:(id)a6;
+- (void)forwardInvocation:(id)invocation;
+- (void)performSelector:(SEL)selector withObject:(id)object afterDelay:(double)delay;
+- (void)performSelector:(SEL)selector withObject:(id)object afterDelay:(double)delay inModes:(id)modes;
 - (void)teardown;
 @end
 
 @implementation IMPerformSelectorProxy
 
-- (IMPerformSelectorProxy)initWithTarget:(id)a3
+- (IMPerformSelectorProxy)initWithTarget:(id)target
 {
-  objc_storeWeak(&self->_weakTarget, a3);
+  objc_storeWeak(&self->_weakTarget, target);
   v4 = objc_alloc_init(NSMutableDictionary);
   signatures = self->_signatures;
   self->_signatures = v4;
@@ -22,29 +22,29 @@
   return self;
 }
 
-- (void)performSelector:(SEL)a3 withObject:(id)a4 afterDelay:(double)a5
+- (void)performSelector:(SEL)selector withObject:(id)object afterDelay:(double)delay
 {
-  v8 = a4;
+  objectCopy = object;
   v9 = [NSArray arrayWithObject:NSDefaultRunLoopMode];
-  [(IMPerformSelectorProxy *)self performSelector:a3 withObject:v8 afterDelay:v9 inModes:a5];
+  [(IMPerformSelectorProxy *)self performSelector:selector withObject:objectCopy afterDelay:v9 inModes:delay];
 }
 
-- (void)performSelector:(SEL)a3 withObject:(id)a4 afterDelay:(double)a5 inModes:(id)a6
+- (void)performSelector:(SEL)selector withObject:(id)object afterDelay:(double)delay inModes:(id)modes
 {
-  v11 = a6;
-  v12 = a4;
-  v16 = [NSString stringWithUTF8String:sel_getName(a3)];
+  modesCopy = modes;
+  objectCopy = object;
+  v16 = [NSString stringWithUTF8String:sel_getName(selector)];
   v13 = [(NSMutableDictionary *)self->_signatures objectForKey:?];
 
   if (!v13)
   {
-    v14 = [(IMPerformSelectorProxy *)self target];
-    v15 = [v14 methodSignatureForSelector:a3];
+    target = [(IMPerformSelectorProxy *)self target];
+    v15 = [target methodSignatureForSelector:selector];
 
     [(NSMutableDictionary *)self->_signatures setObject:v15 forKey:v16];
   }
 
-  ([NSObject instanceMethodForSelector:a2])(self, a2, a3, v12, v11, a5);
+  ([NSObject instanceMethodForSelector:a2])(self, a2, selector, objectCopy, modesCopy, delay);
 }
 
 - (void)teardown
@@ -54,7 +54,7 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -63,15 +63,15 @@
 
   else
   {
-    v6 = [(IMPerformSelectorProxy *)self target];
-    if (v6)
+    target = [(IMPerformSelectorProxy *)self target];
+    if (target)
     {
       v5 = objc_opt_respondsToSelector();
     }
 
     else
     {
-      v7 = [NSString stringWithUTF8String:sel_getName(a3)];
+      v7 = [NSString stringWithUTF8String:sel_getName(selector)];
       v8 = [(NSMutableDictionary *)self->_signatures objectForKey:v7];
       v5 = v8 != 0;
     }
@@ -80,27 +80,27 @@
   return v5 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [NSString stringWithUTF8String:sel_getName(a3)];
+  v4 = [NSString stringWithUTF8String:sel_getName(selector)];
   v5 = [(NSMutableDictionary *)self->_signatures objectForKey:v4];
 
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v3 = a3;
-  v4 = [v3 methodSignature];
-  v5 = [v4 methodReturnType];
-  if (*v5 == 64)
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  methodReturnType = [methodSignature methodReturnType];
+  if (*methodReturnType == 64)
   {
-    v6 = v5[1];
+    v6 = methodReturnType[1];
 
     if (!v6)
     {
       v7 = 0;
-      [v3 setReturnValue:&v7];
+      [invocationCopy setReturnValue:&v7];
     }
   }
 

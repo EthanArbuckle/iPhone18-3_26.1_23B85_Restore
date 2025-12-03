@@ -1,39 +1,39 @@
 @interface UICornerConfiguration
-+ (UICornerConfiguration)configurationWithRadius:(id)a3;
-+ (UICornerConfiguration)configurationWithTopLeftRadius:(id)a3 topRightRadius:(id)a4 bottomLeftRadius:(id)a5 bottomRightRadius:(id)a6;
-+ (UICornerConfiguration)configurationWithUniformRadius:(id)a3;
-+ (id)_configurationWithRadius:(id)a3 mask:(unint64_t)a4;
++ (UICornerConfiguration)configurationWithRadius:(id)radius;
++ (UICornerConfiguration)configurationWithTopLeftRadius:(id)radius topRightRadius:(id)rightRadius bottomLeftRadius:(id)leftRadius bottomRightRadius:(id)bottomRightRadius;
++ (UICornerConfiguration)configurationWithUniformRadius:(id)radius;
++ (id)_configurationWithRadius:(id)radius mask:(unint64_t)mask;
 + (id)capsuleConfiguration;
-+ (id)capsuleConfigurationWithMaximumRadius:(double)a3;
++ (id)capsuleConfigurationWithMaximumRadius:(double)radius;
 + (id)unspecifiedConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (UICornerConfiguration)init;
-- (UICornerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (UICornerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICornerConfiguration
 
-+ (UICornerConfiguration)configurationWithRadius:(id)a3
++ (UICornerConfiguration)configurationWithRadius:(id)radius
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_18904C408(v4, MEMORY[0x1E69E7CC0]);
+  radiusCopy = radius;
+  v5 = sub_18904C408(radiusCopy, MEMORY[0x1E69E7CC0]);
 
   return v5;
 }
 
-+ (UICornerConfiguration)configurationWithTopLeftRadius:(id)a3 topRightRadius:(id)a4 bottomLeftRadius:(id)a5 bottomRightRadius:(id)a6
++ (UICornerConfiguration)configurationWithTopLeftRadius:(id)radius topRightRadius:(id)rightRadius bottomLeftRadius:(id)leftRadius bottomRightRadius:(id)bottomRightRadius
 {
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = sub_18904C098(a3, a4, a5, a6);
+  radiusCopy = radius;
+  rightRadiusCopy = rightRadius;
+  leftRadiusCopy = leftRadius;
+  bottomRightRadiusCopy = bottomRightRadius;
+  v14 = sub_18904C098(radius, rightRadius, leftRadius, bottomRightRadius);
 
   return v14;
 }
@@ -46,19 +46,19 @@
   return v2;
 }
 
-+ (id)capsuleConfigurationWithMaximumRadius:(double)a3
++ (id)capsuleConfigurationWithMaximumRadius:(double)radius
 {
   swift_getObjCClassMetadata();
-  v4 = sub_18904C2F4(a3);
+  v4 = sub_18904C2F4(radius);
 
   return v4;
 }
 
-+ (UICornerConfiguration)configurationWithUniformRadius:(id)a3
++ (UICornerConfiguration)configurationWithUniformRadius:(id)radius
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_18904C408(v4, &unk_1EFAB8E80);
+  radiusCopy = radius;
+  v5 = sub_18904C408(radiusCopy, &unk_1EFAB8E80);
 
   return v5;
 }
@@ -71,11 +71,11 @@
   return v2;
 }
 
-+ (id)_configurationWithRadius:(id)a3 mask:(unint64_t)a4
++ (id)_configurationWithRadius:(id)radius mask:(unint64_t)mask
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = sub_18904CE88(v6, a4);
+  radiusCopy = radius;
+  v7 = sub_18904CE88(radiusCopy, mask);
 
   return v7;
 }
@@ -97,7 +97,7 @@
   return [(UICornerConfiguration *)&v4 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *&self->impl[OBJC_IVAR___UICornerConfiguration_impl + 40];
   v18 = *&self->impl[OBJC_IVAR___UICornerConfiguration_impl + 24];
@@ -132,19 +132,19 @@
   return v14;
 }
 
-- (UICornerConfiguration)initWithCoder:(id)a3
+- (UICornerConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_18904DD58();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_18904D1AC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_18904D1AC(coderCopy);
 }
 
 - (int64_t)hash
@@ -154,11 +154,11 @@
   return sub_18A4A88E8();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -167,7 +167,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UICornerConfiguration.isEqual(_:)(v8);
@@ -178,7 +178,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   UICornerConfiguration.description.getter();
 
   v3 = sub_18A4A7258();

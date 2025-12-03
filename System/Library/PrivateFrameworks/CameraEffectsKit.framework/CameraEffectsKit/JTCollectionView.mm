@@ -19,13 +19,13 @@
   [(JTCollectionView *)self lastCollectionViewSize];
   if (v4 != v8 || v6 != v7)
   {
-    v10 = [(JTCollectionView *)self delegate];
+    delegate = [(JTCollectionView *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(JTCollectionView *)self delegate];
-      [v12 collectionView:self didResize:{v4, v6}];
+      delegate2 = [(JTCollectionView *)self delegate];
+      [delegate2 collectionView:self didResize:{v4, v6}];
     }
 
     [(JTCollectionView *)self setLastCollectionViewSize:v4, v6];
@@ -39,26 +39,26 @@
 
 - (int64_t)selectedItem
 {
-  v2 = [(JTCollectionView *)self indexPathsForSelectedItems];
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  indexPathsForSelectedItems = [(JTCollectionView *)self indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [v3 item];
+    item = [firstObject item];
   }
 
   else
   {
-    v5 = 0;
+    item = 0;
   }
 
-  return v5;
+  return item;
 }
 
 - (id)sortedIndexPathsForVisibleItems
 {
-  v2 = [(JTCollectionView *)self indexPathsForVisibleItems];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_37];
+  indexPathsForVisibleItems = [(JTCollectionView *)self indexPathsForVisibleItems];
+  v3 = [indexPathsForVisibleItems sortedArrayUsingComparator:&__block_literal_global_37];
 
   return v3;
 }
@@ -102,9 +102,9 @@ LABEL_9:
 - (id)firstVisibleIndexPath
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(JTCollectionView *)self superview];
+  superview = [(JTCollectionView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(JTCollectionView *)self sortedIndexPathsForVisibleItems];
     v25 = 0u;
@@ -132,8 +132,8 @@ LABEL_9:
           v14 = v13;
           v16 = v15;
           v18 = v17;
-          v19 = [(JTCollectionView *)self superview];
-          [(JTCollectionView *)self convertRect:v19 toView:v12, v14, v16, v18];
+          superview2 = [(JTCollectionView *)self superview];
+          [(JTCollectionView *)self convertRect:superview2 toView:v12, v14, v16, v18];
           v21 = v20;
 
           if (v21 >= 0.0)
@@ -171,13 +171,13 @@ LABEL_12:
 - (id)visibleSections
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(JTCollectionView *)self indexPathsForVisibleItems];
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexPathsForVisibleItems = [(JTCollectionView *)self indexPathsForVisibleItems];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2;
+  v4 = indexPathsForVisibleItems;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -192,7 +192,7 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        [v3 addIndex:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "section", v10)}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v10 + 1) + 8 * i), "section", v10)}];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -201,7 +201,7 @@ LABEL_12:
     while (v6);
   }
 
-  return v3;
+  return indexSet;
 }
 
 - (void)layoutIfNeeded

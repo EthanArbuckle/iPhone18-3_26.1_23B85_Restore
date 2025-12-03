@@ -1,6 +1,6 @@
 @interface _UILegibilitySettingsProvider
-+ (int64_t)styleForContentColor:(id)a3 contrast:(double)a4;
-- (BOOL)accumulateChangesToContentColor:(id)a3 contrast:(double)a4;
++ (int64_t)styleForContentColor:(id)color contrast:(double)contrast;
+- (BOOL)accumulateChangesToContentColor:(id)color contrast:(double)contrast;
 - (id)settings;
 - (void)clearContentColorAccumulator;
 - (void)dealloc;
@@ -28,7 +28,7 @@
   [(_UILegibilitySettingsProvider *)self setNextChangeBarrier:0.0];
 }
 
-+ (int64_t)styleForContentColor:(id)a3 contrast:(double)a4
++ (int64_t)styleForContentColor:(id)color contrast:(double)contrast
 {
   if (_MergedGlobals_12_0 != -1)
   {
@@ -36,13 +36,13 @@
   }
 
   [qword_1EA963BE8 clearContentColorAccumulator];
-  [qword_1EA963BE8 accumulateChangesToContentColor:a3 contrast:a4];
+  [qword_1EA963BE8 accumulateChangesToContentColor:color contrast:contrast];
   [qword_1EA963BE8 accumulatedBrightness];
   v7 = v6;
   [qword_1EA963BE8 accumulatedLuminance];
   v9 = v8;
   [qword_1EA963BE8 accumulatedSaturation];
-  v12 = v7 <= 0.8 || a4 >= 0.09 || a4 == -1.0;
+  v12 = v7 <= 0.8 || contrast >= 0.09 || contrast == -1.0;
   result = 2;
   if (v12 && v9 <= 0.86)
   {
@@ -68,13 +68,13 @@
   [(_UILegibilitySettingsProvider *)&v3 dealloc];
 }
 
-- (BOOL)accumulateChangesToContentColor:(id)a3 contrast:(double)a4
+- (BOOL)accumulateChangesToContentColor:(id)color contrast:(double)contrast
 {
   [(_UILegibilitySettingsProvider *)self setContentColor:?];
-  if (CGColorGetNumberOfComponents([a3 CGColor]) == 2)
+  if (CGColorGetNumberOfComponents([color CGColor]) == 2)
   {
     v44 = 0.0;
-    v7 = [a3 getWhite:&v44 alpha:0];
+    v7 = [color getWhite:&v44 alpha:0];
     v8 = v7;
     v9 = 0.0;
     if (v7)
@@ -96,7 +96,7 @@
     v44 = 0.0;
     v42 = 0.0;
     v10 = 0.0;
-    if ([a3 getHue:&v44 saturation:&v43 brightness:&v42 alpha:0])
+    if ([color getHue:&v44 saturation:&v43 brightness:&v42 alpha:0])
     {
       v11 = v42;
       v9 = v43;
@@ -113,7 +113,7 @@
     v40 = 0.0;
     v41 = 0.0;
     v39 = 0.0;
-    if ([a3 getRed:&v41 green:&v40 blue:&v39 alpha:0])
+    if ([color getRed:&v41 green:&v40 blue:&v39 alpha:0])
     {
       v10 = v41 * 0.2126 + v40 * 0.7152 + v39 * 0.0722;
       v8 |= fmax(fmax(v41, v40), v39) > 0.00000011920929;
@@ -121,18 +121,18 @@
   }
 
   [(_UILegibilitySettingsProvider *)self setMostRecentBrightness:v11];
-  [(_UILegibilitySettingsProvider *)self setMostRecentContrast:a4];
+  [(_UILegibilitySettingsProvider *)self setMostRecentContrast:contrast];
   [(_UILegibilitySettingsProvider *)self setMostRecentLuminance:v10];
   [(_UILegibilitySettingsProvider *)self setMostRecentSaturation:v9];
   v12 = CACurrentMediaTime();
   v13 = -1.0;
-  if (a4 == -1.0 || (v14 = [(_UILegibilitySettingsProvider *)self hasContrast], v13 = a4, !v14))
+  if (contrast == -1.0 || (v14 = [(_UILegibilitySettingsProvider *)self hasContrast], v13 = contrast, !v14))
   {
     [(_UILegibilitySettingsProvider *)self setAccumulatedContrast:v13];
   }
 
   v15 = -1.0;
-  [(_UILegibilitySettingsProvider *)self setHasContrast:a4 != -1.0, v13];
+  [(_UILegibilitySettingsProvider *)self setHasContrast:contrast != -1.0, v13];
   if ([(_UILegibilitySettingsProvider *)self accumulatorIsPrimed])
   {
     [(_UILegibilitySettingsProvider *)self accumulatedBrightness];
@@ -140,7 +140,7 @@
     if ([(_UILegibilitySettingsProvider *)self hasContrast])
     {
       [(_UILegibilitySettingsProvider *)self accumulatedContrast];
-      v15 = a4 * 0.4 + v17 * 0.6;
+      v15 = contrast * 0.4 + v17 * 0.6;
     }
 
     [(_UILegibilitySettingsProvider *)self setAccumulatedContrast:v15];

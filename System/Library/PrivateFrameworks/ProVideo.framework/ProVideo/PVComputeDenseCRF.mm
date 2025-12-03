@@ -1,36 +1,36 @@
 @interface PVComputeDenseCRF
-- (PVComputeDenseCRF)initWithColor:(id)a3 proximity:(id)a4;
-- (void)generateMatte:(id)a3;
+- (PVComputeDenseCRF)initWithColor:(id)color proximity:(id)proximity;
+- (void)generateMatte:(id)matte;
 @end
 
 @implementation PVComputeDenseCRF
 
-- (PVComputeDenseCRF)initWithColor:(id)a3 proximity:(id)a4
+- (PVComputeDenseCRF)initWithColor:(id)color proximity:(id)proximity
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  proximityCopy = proximity;
   v12.receiver = self;
   v12.super_class = PVComputeDenseCRF;
   v9 = [(PVComputeDenseCRF *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_color, a3);
-    objc_storeStrong(&v10->_proxy, a4);
+    objc_storeStrong(&v9->_color, color);
+    objc_storeStrong(&v10->_proxy, proximity);
   }
 
   return v10;
 }
 
-- (void)generateMatte:(id)a3
+- (void)generateMatte:(id)matte
 {
-  v4 = a3;
-  v5 = [(PVImageBuffer *)self->_color cvPixelBuffer];
-  v6 = [(PVImageBuffer *)self->_proxy cvPixelBuffer];
-  v7 = [v4 cvPixelBuffer];
-  HGCVBitmap::create(v5, 21, 0, &v87);
-  HGCVBitmap::create(v6, 21, 0, &v86);
-  HGCVBitmap::create(v7, 28, 0, &v85);
+  matteCopy = matte;
+  cvPixelBuffer = [(PVImageBuffer *)self->_color cvPixelBuffer];
+  cvPixelBuffer2 = [(PVImageBuffer *)self->_proxy cvPixelBuffer];
+  cvPixelBuffer3 = [matteCopy cvPixelBuffer];
+  HGCVBitmap::create(cvPixelBuffer, 21, 0, &v87);
+  HGCVBitmap::create(cvPixelBuffer2, 21, 0, &v86);
+  HGCVBitmap::create(cvPixelBuffer3, 28, 0, &v85);
   v8 = v86;
   v9 = *(v87 + 7);
   v10 = *(v87 + 5);

@@ -1,34 +1,34 @@
 @interface PHHandsetDialerNameLabelView
 - (CGSize)intrinsicContentSize;
-- (PHHandsetDialerNameLabelView)initWithFrame:(CGRect)a3;
-- (void)setFontSize:(double)a3;
-- (void)showName:(id)a3 label:(id)a4 animated:(BOOL)a5;
+- (PHHandsetDialerNameLabelView)initWithFrame:(CGRect)frame;
+- (void)setFontSize:(double)size;
+- (void)showName:(id)name label:(id)label animated:(BOOL)animated;
 @end
 
 @implementation PHHandsetDialerNameLabelView
 
-- (PHHandsetDialerNameLabelView)initWithFrame:(CGRect)a3
+- (PHHandsetDialerNameLabelView)initWithFrame:(CGRect)frame
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = PHHandsetDialerNameLabelView;
-  v3 = [(PHHandsetDialerNameLabelView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHHandsetDialerNameLabelView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PHHandsetDialerNameLabelView *)v3 setFontSize:11.0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(PHHandsetDialerNameLabelView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(PHHandsetDialerNameLabelView *)v4 setBackgroundColor:clearColor];
 
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v6 setText:&stru_285532CB8];
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [v6 setBackgroundColor:v7];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v6 setBackgroundColor:clearColor2];
 
     [v6 setOpaque:0];
-    v8 = [(PHHandsetDialerNameLabelView *)v4 textColor];
-    [v6 setTextColor:v8];
+    textColor = [(PHHandsetDialerNameLabelView *)v4 textColor];
+    [v6 setTextColor:textColor];
 
     [v6 setTextAlignment:1];
     v9 = MEMORY[0x277D74300];
@@ -42,8 +42,8 @@
     [(PHHandsetDialerNameLabelView *)v4 addSubview:v6];
     [(PHHandsetDialerNameLabelView *)v4 setNameAndLabelLabel:v6];
     v19 = @"nameAndLabelLabel";
-    v12 = [(PHHandsetDialerNameLabelView *)v4 nameAndLabelLabel];
-    v20[0] = v12;
+    nameAndLabelLabel = [(PHHandsetDialerNameLabelView *)v4 nameAndLabelLabel];
+    v20[0] = nameAndLabelLabel;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
     v14 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"|[nameAndLabelLabel]|" options:0 metrics:0 views:v13];
@@ -59,12 +59,12 @@
   return v4;
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  self->_fontSize = a3;
-  v5 = [(PHHandsetDialerNameLabelView *)self displayedName];
-  v4 = [(PHHandsetDialerNameLabelView *)self displayedLabel];
-  [(PHHandsetDialerNameLabelView *)self showName:v5 label:v4 animated:0];
+  self->_fontSize = size;
+  displayedName = [(PHHandsetDialerNameLabelView *)self displayedName];
+  displayedLabel = [(PHHandsetDialerNameLabelView *)self displayedLabel];
+  [(PHHandsetDialerNameLabelView *)self showName:displayedName label:displayedLabel animated:0];
 }
 
 - (CGSize)intrinsicContentSize
@@ -76,26 +76,26 @@
   return result;
 }
 
-- (void)showName:(id)a3 label:(id)a4 animated:(BOOL)a5
+- (void)showName:(id)name label:(id)label animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  animatedCopy = animated;
+  nameCopy = name;
+  labelCopy = label;
+  if (labelCopy)
   {
-    v10 = v9;
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@" %@", v9];
+    v10 = labelCopy;
+    labelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@" %@", labelCopy];
   }
 
   else
   {
-    v11 = &stru_285532CB8;
+    labelCopy = &stru_285532CB8;
   }
 
-  [(PHHandsetDialerNameLabelView *)self setDisplayedName:v8];
-  [(PHHandsetDialerNameLabelView *)self setDisplayedLabel:v11];
+  [(PHHandsetDialerNameLabelView *)self setDisplayedName:nameCopy];
+  [(PHHandsetDialerNameLabelView *)self setDisplayedLabel:labelCopy];
   v12 = objc_alloc(MEMORY[0x277CCAB48]);
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, v11];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", nameCopy, labelCopy];
   v14 = [v12 initWithString:v13];
 
   v15 = MEMORY[0x277D74300];
@@ -105,9 +105,9 @@
   [(PHHandsetDialerNameLabelView *)self fontSize];
   v18 = [v17 boldSystemFontOfSize:?];
   v19 = *MEMORY[0x277D740A8];
-  [v14 addAttribute:*MEMORY[0x277D740A8] value:v16 range:{0, objc_msgSend(v8, "length")}];
-  [v14 addAttribute:v19 value:v18 range:{objc_msgSend(v14, "length") - -[__CFString length](v11, "length"), -[__CFString length](v11, "length")}];
-  if (![v8 length])
+  [v14 addAttribute:*MEMORY[0x277D740A8] value:v16 range:{0, objc_msgSend(nameCopy, "length")}];
+  [v14 addAttribute:v19 value:v18 range:{objc_msgSend(v14, "length") - -[__CFString length](labelCopy, "length"), -[__CFString length](labelCopy, "length")}];
+  if (![nameCopy length])
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -123,7 +123,7 @@
     v24 = v14;
     v22 = _Block_copy(v23);
 
-    if (v5)
+    if (animatedCopy)
     {
       goto LABEL_6;
     }
@@ -133,8 +133,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [(PHHandsetDialerNameLabelView *)self nameAndLabelLabel];
-  [v20 setAttributedText:v14];
+  nameAndLabelLabel = [(PHHandsetDialerNameLabelView *)self nameAndLabelLabel];
+  [nameAndLabelLabel setAttributedText:v14];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -143,7 +143,7 @@ LABEL_8:
   aBlock[4] = self;
   v21 = _Block_copy(aBlock);
   v22 = 0;
-  if (!v5)
+  if (!animatedCopy)
   {
     goto LABEL_8;
   }

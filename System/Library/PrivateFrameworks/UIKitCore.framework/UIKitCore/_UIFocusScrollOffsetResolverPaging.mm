@@ -1,26 +1,26 @@
 @interface _UIFocusScrollOffsetResolverPaging
-- (CGPoint)contentOffsetForScrollRequest:(id)a3;
+- (CGPoint)contentOffsetForScrollRequest:(id)request;
 @end
 
 @implementation _UIFocusScrollOffsetResolverPaging
 
-- (CGPoint)contentOffsetForScrollRequest:(id)a3
+- (CGPoint)contentOffsetForScrollRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 environmentScrollableContainer];
-  v5 = [v4 scrollableContainer];
+  requestCopy = request;
+  environmentScrollableContainer = [requestCopy environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
 
-  [v3 focusItemFrame];
+  [requestCopy focusItemFrame];
   v47 = v7;
   v48 = v6;
   v45 = v9;
   v46 = v8;
-  CanScrollX = _UIFocusItemScrollableContainerCanScrollX(v5);
-  CanScrollY = _UIFocusItemScrollableContainerCanScrollY(v5);
-  v12 = [v5 __isKindOfUIScrollView];
-  if (v12)
+  CanScrollX = _UIFocusItemScrollableContainerCanScrollX(scrollableContainer);
+  CanScrollY = _UIFocusItemScrollableContainerCanScrollY(scrollableContainer);
+  __isKindOfUIScrollView = [scrollableContainer __isKindOfUIScrollView];
+  if (__isKindOfUIScrollView)
   {
-    v13 = v5;
+    v13 = scrollableContainer;
   }
 
   else
@@ -29,9 +29,9 @@
   }
 
   v14 = v13;
-  if (v12)
+  if (__isKindOfUIScrollView)
   {
-    [v5 _interpageSpacing];
+    [scrollableContainer _interpageSpacing];
     v16 = v15;
     v44 = v17;
   }
@@ -42,16 +42,16 @@
     v44 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  [v5 visibleSize];
+  [scrollableContainer visibleSize];
   v19 = v18;
-  [v5 visibleSize];
+  [scrollableContainer visibleSize];
   v42 = v20;
-  if (v12)
+  if (__isKindOfUIScrollView)
   {
-    [v5 _pagingOrigin];
+    [scrollableContainer _pagingOrigin];
     v22 = v21;
     v24 = v23;
-    [v5 _firstPageOffset];
+    [scrollableContainer _firstPageOffset];
     v26 = v25;
     v28 = v27;
   }
@@ -64,7 +64,7 @@
     v28 = 0.0;
   }
 
-  [v3 targetContentOffset];
+  [requestCopy targetContentOffset];
   v31 = v30;
   if (!CanScrollX)
   {

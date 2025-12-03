@@ -1,14 +1,14 @@
 @interface APCarPlayPolicyMonitor
-- (APCarPlayPolicyMonitor)initWithEndpoint:(OpaqueFigEndpoint *)a3;
+- (APCarPlayPolicyMonitor)initWithEndpoint:(OpaqueFigEndpoint *)endpoint;
 - (void)dealloc;
 - (void)endpointAuthenticationSucceeded;
-- (void)willDisableVehicleTrackedByMonitor:(id)a3;
-- (void)willEnableVehicleTrackedByMonitor:(id)a3;
+- (void)willDisableVehicleTrackedByMonitor:(id)monitor;
+- (void)willEnableVehicleTrackedByMonitor:(id)monitor;
 @end
 
 @implementation APCarPlayPolicyMonitor
 
-- (APCarPlayPolicyMonitor)initWithEndpoint:(OpaqueFigEndpoint *)a3
+- (APCarPlayPolicyMonitor)initWithEndpoint:(OpaqueFigEndpoint *)endpoint
 {
   v8.receiver = self;
   v8.super_class = APCarPlayPolicyMonitor;
@@ -17,7 +17,7 @@
   {
     v4->_queue = dispatch_queue_create("com.apple.APCarPlayPolicyMonitor", 0);
     v4->_weakEndpoint = FigCFWeakReferenceHolderCreateWithReferencedObject();
-    v4->_observedEndpoint = a3;
+    v4->_observedEndpoint = endpoint;
     CMNotificationCenterGetDefaultLocalCenter();
     FigNotificationCenterAddWeakListener();
     queue = v4->_queue;
@@ -116,7 +116,7 @@
   }
 }
 
-- (void)willDisableVehicleTrackedByMonitor:(id)a3
+- (void)willDisableVehicleTrackedByMonitor:(id)monitor
 {
   if (gLogCategory_APCarPlayPolicyMonitor <= 40 && (gLogCategory_APCarPlayPolicyMonitor != -1 || _LogCategory_Initialize()))
   {
@@ -160,7 +160,7 @@
   }
 }
 
-- (void)willEnableVehicleTrackedByMonitor:(id)a3
+- (void)willEnableVehicleTrackedByMonitor:(id)monitor
 {
   if (gLogCategory_APCarPlayPolicyMonitor <= 40 && (gLogCategory_APCarPlayPolicyMonitor != -1 || _LogCategory_Initialize()))
   {

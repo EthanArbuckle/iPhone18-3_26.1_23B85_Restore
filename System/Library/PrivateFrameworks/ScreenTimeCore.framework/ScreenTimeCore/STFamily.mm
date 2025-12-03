@@ -1,16 +1,16 @@
 @interface STFamily
-- (STFamily)initWithFamilyCircle:(id)a3;
-- (STFamily)initWithMembers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STFamily)initWithFamilyCircle:(id)circle;
+- (STFamily)initWithMembers:(id)members;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation STFamily
 
-- (STFamily)initWithFamilyCircle:(id)a3
+- (STFamily)initWithFamilyCircle:(id)circle
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  circleCopy = circle;
   v33.receiver = self;
   v33.super_class = STFamily;
   v23 = [(STFamily *)&v33 init];
@@ -21,8 +21,8 @@
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = v4;
-    obj = [v4 members];
+    v22 = circleCopy;
+    obj = [circleCopy members];
     v27 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v27)
     {
@@ -56,17 +56,17 @@
           }
 
           v28 = [STFamilyMember alloc];
-          v8 = [v6 dsid];
-          v9 = [v6 altDSID];
-          v10 = [v6 appleID];
-          v11 = [v6 firstName];
-          v12 = [v6 lastName];
-          v13 = [v6 isMe];
-          v14 = [v6 isParent];
+          dsid = [v6 dsid];
+          altDSID = [v6 altDSID];
+          appleID = [v6 appleID];
+          firstName = [v6 firstName];
+          lastName = [v6 lastName];
+          isMe = [v6 isMe];
+          isParent = [v6 isParent];
           BYTE2(v21) = [v6 isOrganizer];
-          BYTE1(v21) = v14;
-          LOBYTE(v21) = v13;
-          v15 = [STFamilyMember initWithDSID:v28 altDSID:"initWithDSID:altDSID:appleID:memberType:firstName:lastName:isMe:isParent:isOrganizer:" appleID:v8 memberType:v9 firstName:v10 lastName:v7 isMe:v11 isParent:v12 isOrganizer:v21];
+          BYTE1(v21) = isParent;
+          LOBYTE(v21) = isMe;
+          v15 = [STFamilyMember initWithDSID:v28 altDSID:"initWithDSID:altDSID:appleID:memberType:firstName:lastName:isMe:isParent:isOrganizer:" appleID:dsid memberType:altDSID firstName:appleID lastName:v7 isMe:firstName isParent:lastName isOrganizer:v21];
 
           if ([v6 isMe])
           {
@@ -89,28 +89,28 @@
     members = v23->_members;
     v23->_members = v17;
 
-    v4 = v22;
+    circleCopy = v22;
   }
 
   v19 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (STFamily)initWithMembers:(id)a3
+- (STFamily)initWithMembers:(id)members
 {
-  v5 = a3;
+  membersCopy = members;
   v13.receiver = self;
   v13.super_class = STFamily;
   v6 = [(STFamily *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_members, a3);
+    objc_storeStrong(&v6->_members, members);
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == YES", @"isMe"];
-    v9 = [v5 filteredArrayUsingPredicate:v8];
-    v10 = [v9 firstObject];
+    v9 = [membersCopy filteredArrayUsingPredicate:v8];
+    firstObject = [v9 firstObject];
     me = v7->_me;
-    v7->_me = v10;
+    v7->_me = firstObject;
   }
 
   return v7;
@@ -141,20 +141,20 @@
 
         v8 = *(*(&v25 + 1) + 8 * i);
         v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:8];
-        v10 = [v8 DSID];
-        [v9 setObject:v10 forKeyedSubscript:@"dsid"];
+        dSID = [v8 DSID];
+        [v9 setObject:dSID forKeyedSubscript:@"dsid"];
 
-        v11 = [v8 appleID];
-        [v9 setObject:v11 forKeyedSubscript:@"appleID"];
+        appleID = [v8 appleID];
+        [v9 setObject:appleID forKeyedSubscript:@"appleID"];
 
-        v12 = [v8 memberType];
-        [v9 setObject:v12 forKeyedSubscript:@"memberType"];
+        memberType = [v8 memberType];
+        [v9 setObject:memberType forKeyedSubscript:@"memberType"];
 
-        v13 = [v8 firstName];
-        [v9 setObject:v13 forKeyedSubscript:@"firstName"];
+        firstName = [v8 firstName];
+        [v9 setObject:firstName forKeyedSubscript:@"firstName"];
 
-        v14 = [v8 lastName];
-        [v9 setObject:v14 forKeyedSubscript:@"lastName"];
+        lastName = [v8 lastName];
+        [v9 setObject:lastName forKeyedSubscript:@"lastName"];
 
         v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isMe")}];
         [v9 setObject:v15 forKeyedSubscript:@"isMe"];
@@ -176,9 +176,9 @@
   }
 
   v29[0] = @"dataSource";
-  v19 = [(STFamily *)self dataSource];
+  dataSource = [(STFamily *)self dataSource];
   v29[1] = @"members";
-  v30[0] = v19;
+  v30[0] = dataSource;
   v20 = [v3 copy];
   v30[1] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -188,7 +188,7 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(NSArray *)self->_members copy];

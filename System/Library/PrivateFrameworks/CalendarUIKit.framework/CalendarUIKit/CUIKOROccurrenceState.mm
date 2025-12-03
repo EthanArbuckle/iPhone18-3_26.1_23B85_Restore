@@ -2,7 +2,7 @@
 + (UIEdgeInsets)defaultMarginFromEKDayOccurrenceView;
 + (UIEdgeInsets)defaultPadding;
 + (UIEdgeInsets)defaultPaddingFromEKDayOccurrenceView;
-+ (double)enoughHeightForOneLineForEvent:(id)a3 usingSmallText:(BOOL)a4 sizeClass:(int64_t)a5;
++ (double)enoughHeightForOneLineForEvent:(id)event usingSmallText:(BOOL)text sizeClass:(int64_t)class;
 + (id)languageAwareInsetsCache;
 + (id)locationCache;
 + (id)tallCharacterSetCache;
@@ -10,14 +10,14 @@
 - (BOOL)hidesTime;
 - (BOOL)isAllDay;
 - (BOOL)isBirthday;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (BOOL)requiresLanguageAwarePadding;
 - (CGRect)backgroundRect;
 - (CGRect)estimatedTextFrame;
 - (CGSize)textSpace;
 - (CUIKOROccurrenceState)init;
-- (CUIKOROccurrenceState)initWithState:(id)a3;
+- (CUIKOROccurrenceState)initWithState:(id)state;
 - (NSArray)trailingIcons;
 - (NSAttributedString)location;
 - (NSString)description;
@@ -37,8 +37,8 @@
 - (double)enoughHeightForOneLine;
 - (double)minimumNaturalHeightAllText;
 - (double)totalLanguageAwareHeightPadding;
-- (id)_leadingSymbolSizeConfigurationForReminder:(BOOL)a3;
-- (id)primaryTextFontBold:(BOOL)a3;
+- (id)_leadingSymbolSizeConfigurationForReminder:(BOOL)reminder;
+- (id)primaryTextFontBold:(BOOL)bold;
 - (id)reminderIcon;
 - (id)secondaryTitleTextColor;
 - (id)status;
@@ -46,7 +46,7 @@
 - (int)reminderStackDepth;
 - (unint64_t)fontCompressionDegree;
 - (unint64_t)hash;
-- (void)_location:(id *)a3 locationImageName:(id *)a4;
+- (void)_location:(id *)_location locationImageName:(id *)name;
 @end
 
 @implementation CUIKOROccurrenceState
@@ -73,8 +73,8 @@
     occurrence = self->_occurrence;
     if (occurrence)
     {
-      v11 = [(EKEvent *)occurrence title];
-      if ([v11 length])
+      title = [(EKEvent *)occurrence title];
+      if ([title length])
       {
         v12 = CUIKDisplayedTitleForEvent(self->_occurrence);
 
@@ -107,7 +107,7 @@
 
 - (unint64_t)fontCompressionDegree
 {
-  v3 = [(CUIKOROccurrenceState *)self horizontalSizeClass];
+  horizontalSizeClass = [(CUIKOROccurrenceState *)self horizontalSizeClass];
   [(CUIKOROccurrenceState *)self textSpace];
   v5 = v4;
   if ([(CUIKOROccurrenceState *)self isAllDay]|| [(CUIKOROccurrenceState *)self isBirthday])
@@ -117,19 +117,19 @@
 
   if ([(CUIKOROccurrenceState *)self usesSmallText])
   {
-    [CUIKORFontUtils defaultOccurrenceSmallPrimaryTextFontForSizeClass:v3];
+    [CUIKORFontUtils defaultOccurrenceSmallPrimaryTextFontForSizeClass:horizontalSizeClass];
   }
 
   else
   {
-    [CUIKORFontUtils defaultOccurrencePrimaryTextFontForSizeClass:v3];
+    [CUIKORFontUtils defaultOccurrencePrimaryTextFontForSizeClass:horizontalSizeClass];
   }
   v7 = ;
-  v9 = [(UIFont *)v7 cuik_lineHeight];
+  cuik_lineHeight = [(UIFont *)v7 cuik_lineHeight];
 
-  if (v5 >= v9 * 0.75)
+  if (v5 >= cuik_lineHeight * 0.75)
   {
-    return v5 < v9;
+    return v5 < cuik_lineHeight;
   }
 
   else
@@ -153,10 +153,10 @@
 
 - (UIEdgeInsets)languageAwareInsets
 {
-  v3 = [objc_opt_class() languageAwareInsetsCache];
-  v4 = [(CUIKOROccurrenceState *)self horizontalSizeClass];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-  v6 = [v3 objectForKey:v5];
+  languageAwareInsetsCache = [objc_opt_class() languageAwareInsetsCache];
+  horizontalSizeClass = [(CUIKOROccurrenceState *)self horizontalSizeClass];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:horizontalSizeClass];
+  v6 = [languageAwareInsetsCache objectForKey:v5];
   if (v6)
   {
     v7 = v6;
@@ -172,7 +172,7 @@
     v16 = MEMORY[0x1E69DDCE0];
     v11 = *(MEMORY[0x1E69DDCE0] + 8);
     v15 = *(MEMORY[0x1E69DDCE0] + 24);
-    v17 = [CUIKORFontUtils defaultOccurrencePrimaryTextFontForSizeClass:v4];
+    v17 = [CUIKORFontUtils defaultOccurrencePrimaryTextFontForSizeClass:horizontalSizeClass];
     if (CTFontGetLanguageAwareOutsets())
     {
       v9 = CUIKCeilToScreenScale(0.0);
@@ -186,12 +186,12 @@
     }
 
     v7 = [MEMORY[0x1E696B098] valueWithCUIKEdgeInsets:{v9, v11, v13, v15, 0}];
-    [v3 setObject:v7 forKey:v5];
+    [languageAwareInsetsCache setObject:v7 forKey:v5];
   }
 
-  v18 = [(CUIKOROccurrenceState *)self title];
-  v19 = [objc_opt_class() tallCharacterSetCache];
-  v20 = [v18 rangeOfCharacterFromSet:v19];
+  title = [(CUIKOROccurrenceState *)self title];
+  tallCharacterSetCache = [objc_opt_class() tallCharacterSetCache];
+  v20 = [title rangeOfCharacterFromSet:tallCharacterSetCache];
 
   if (v20 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -236,39 +236,39 @@
 
 - (CGRect)estimatedTextFrame
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  x = v2->_estimatedTextFrame.origin.x;
-  y = v2->_estimatedTextFrame.origin.y;
-  width = v2->_estimatedTextFrame.size.width;
-  height = v2->_estimatedTextFrame.size.height;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  x = selfCopy->_estimatedTextFrame.origin.x;
+  y = selfCopy->_estimatedTextFrame.origin.y;
+  width = selfCopy->_estimatedTextFrame.size.width;
+  height = selfCopy->_estimatedTextFrame.size.height;
   v48.origin.x = x;
   v48.origin.y = y;
   v48.size.width = width;
   v48.size.height = height;
   if (CGRectEqualToRect(v48, *MEMORY[0x1E695F050]))
   {
-    [(CUIKOROccurrenceState *)v2 backgroundRect];
+    [(CUIKOROccurrenceState *)selfCopy backgroundRect];
     v47 = v7;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [(CUIKOROccurrenceState *)v2 travelTime];
-    if (!((v14 <= 0.0) | [(CUIKOROccurrenceState *)v2 isAllDay]))
+    [(CUIKOROccurrenceState *)selfCopy travelTime];
+    if (!((v14 <= 0.0) | [(CUIKOROccurrenceState *)selfCopy isAllDay]))
     {
-      [(CUIKOROccurrenceState *)v2 travelTimeHeight];
+      [(CUIKOROccurrenceState *)selfCopy travelTimeHeight];
       v11 = v15;
       v13 = v13 - v15;
     }
 
-    [(CUIKOROccurrenceState *)v2 padding];
+    [(CUIKOROccurrenceState *)selfCopy padding];
     v17 = v16;
     v19 = v18;
     v21 = v11 + v20;
     v23 = v13 - (v20 + v22);
-    if ([(CUIKOROccurrenceState *)v2 isReminder])
+    if ([(CUIKOROccurrenceState *)selfCopy isReminder])
     {
-      [CUIKORStringGenerator naturalHeightForPrimaryTextUsingSmallText:v2->_usesSmallText sizeClass:v2->_horizontalSizeClass];
+      [CUIKORStringGenerator naturalHeightForPrimaryTextUsingSmallText:selfCopy->_usesSmallText sizeClass:selfCopy->_horizontalSizeClass];
       v25 = v23 - v24;
       if (v25 > 0.0)
       {
@@ -278,7 +278,7 @@
     }
 
     v26 = 0.0;
-    if (![(CUIKOROccurrenceState *)v2 isAllDay]&& ![(CUIKOROccurrenceState *)v2 isReminder])
+    if (![(CUIKOROccurrenceState *)selfCopy isAllDay]&& ![(CUIKOROccurrenceState *)selfCopy isReminder])
     {
       +[CUIKORImageUtils occurrencePadding];
       v28 = v27;
@@ -287,12 +287,12 @@
     }
 
     v30 = +[CUIKInterface shared];
-    v31 = [v30 interfaceIsLeftToRight];
+    interfaceIsLeftToRight = [v30 interfaceIsLeftToRight];
     v32 = MEMORY[0x1E69DDCE0];
     v33 = *(MEMORY[0x1E69DDCE0] + 8);
     v34 = *(MEMORY[0x1E69DDCE0] + 24);
 
-    if (v31)
+    if (interfaceIsLeftToRight)
     {
       v33 = v26;
     }
@@ -302,9 +302,9 @@
       v34 = v26;
     }
 
-    [(CUIKOROccurrenceState *)v2 visibleHeight];
+    [(CUIKOROccurrenceState *)selfCopy visibleHeight];
     v36 = v35;
-    [(CUIKOROccurrenceState *)v2 languageAwareInsets];
+    [(CUIKOROccurrenceState *)selfCopy languageAwareInsets];
     v39 = v23 - (*v32 + v32[2]);
     if (v36 < v39)
     {
@@ -315,13 +315,13 @@
     y = v40;
     height = v41;
     width = fmax(v42, 0.0);
-    v2->_estimatedTextFrame.origin.x = x;
-    v2->_estimatedTextFrame.origin.y = v40;
-    v2->_estimatedTextFrame.size.width = width;
-    v2->_estimatedTextFrame.size.height = v41;
+    selfCopy->_estimatedTextFrame.origin.x = x;
+    selfCopy->_estimatedTextFrame.origin.y = v40;
+    selfCopy->_estimatedTextFrame.size.width = width;
+    selfCopy->_estimatedTextFrame.size.height = v41;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v43 = x;
   v44 = y;
@@ -336,14 +336,14 @@
 
 - (BOOL)isAllDay
 {
-  v3 = [(CUIKOROccurrenceState *)self allDayOverride];
+  allDayOverride = [(CUIKOROccurrenceState *)self allDayOverride];
 
-  if (v3)
+  if (allDayOverride)
   {
-    v4 = [(CUIKOROccurrenceState *)self allDayOverride];
-    v5 = [v4 BOOLValue];
+    allDayOverride2 = [(CUIKOROccurrenceState *)self allDayOverride];
+    bOOLValue = [allDayOverride2 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -356,18 +356,18 @@
 
 - (BOOL)isBirthday
 {
-  v3 = [(EKEvent *)self->_occurrence calendar];
-  v4 = [v3 type] == 4 || -[CUIKOROccurrenceState birthdayCount](self, "birthdayCount") > 0;
+  calendar = [(EKEvent *)self->_occurrence calendar];
+  v4 = [calendar type] == 4 || -[CUIKOROccurrenceState birthdayCount](self, "birthdayCount") > 0;
 
   return v4;
 }
 
 - (UIColor)titleTextColor
 {
-  v7 = [(CUIKOROccurrenceState *)self occurrence];
-  v3 = [v7 calendar];
-  v4 = [v3 displayColor];
-  v5 = CUIKOccurrenceTextColor(v4, [(CUIKOROccurrenceState *)self isCancelled], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isSelected], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isReminder], [(CUIKOROccurrenceState *)self isCompleted], [(CUIKOROccurrenceState *)self drawReminderAsEditable], [(CUIKOROccurrenceState *)self isBirthday], [(CUIKOROccurrenceState *)self userInterfaceStyle]);
+  occurrence = [(CUIKOROccurrenceState *)self occurrence];
+  calendar = [occurrence calendar];
+  displayColor = [calendar displayColor];
+  v5 = CUIKOccurrenceTextColor(displayColor, [(CUIKOROccurrenceState *)self isCancelled], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isSelected], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isReminder], [(CUIKOROccurrenceState *)self isCompleted], [(CUIKOROccurrenceState *)self drawReminderAsEditable], [(CUIKOROccurrenceState *)self isBirthday], [(CUIKOROccurrenceState *)self userInterfaceStyle]);
 
   return v5;
 }
@@ -390,17 +390,17 @@
 
 - (UIFont)secondaryTextFont
 {
-  v2 = [(CUIKOROccurrenceState *)self fontCompressionDegree];
+  fontCompressionDegree = [(CUIKOROccurrenceState *)self fontCompressionDegree];
   v3 = 0.0;
-  if (v2 <= 2)
+  if (fontCompressionDegree <= 2)
   {
-    v3 = dbl_1CAD581E0[v2];
+    v3 = dbl_1CAD581E0[fontCompressionDegree];
   }
 
   v4 = v3 / 11.0;
   v5 = [MEMORY[0x1E69DB878] cuik_preferredTightLeadingFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v6 = [v5 fontDescriptor];
-  [v6 pointSize];
+  fontDescriptor = [v5 fontDescriptor];
+  [fontDescriptor pointSize];
   v8 = v7;
 
   CUIKRoundToScreenScale(v4 * v8);
@@ -456,9 +456,9 @@
   if ([(CUIKOROccurrenceState *)self usesSmallText]&& ![(CUIKOROccurrenceState *)self isMiniPreviewInEventDetail])
   {
     v11 = +[CUIKInterface shared];
-    v12 = [v11 interfaceIsLeftToRight];
+    interfaceIsLeftToRight = [v11 interfaceIsLeftToRight];
 
-    if (v12)
+    if (interfaceIsLeftToRight)
     {
       v10 = 0.0;
     }
@@ -468,7 +468,7 @@
       v10 = 2.0;
     }
 
-    if (v12)
+    if (interfaceIsLeftToRight)
     {
       v6 = 2.0;
     }
@@ -501,10 +501,10 @@
 + (UIEdgeInsets)defaultPadding
 {
   v2 = +[CUIKInterface shared];
-  v3 = [v2 interfaceIsLeftToRight];
+  interfaceIsLeftToRight = [v2 interfaceIsLeftToRight];
 
   v4 = 4.0;
-  if (v3)
+  if (interfaceIsLeftToRight)
   {
     v5 = 4.0;
   }
@@ -514,7 +514,7 @@
     v5 = 6.0;
   }
 
-  if (v3)
+  if (interfaceIsLeftToRight)
   {
     v6 = 6.0;
   }
@@ -567,10 +567,10 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
 
 - (id)secondaryTitleTextColor
 {
-  v7 = [(CUIKOROccurrenceState *)self occurrence];
-  v3 = [v7 calendar];
-  v4 = [v3 displayColor];
-  v5 = CUIKOccurrenceSecondaryTextColor(v4, [(CUIKOROccurrenceState *)self isCancelled], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isSelected], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isReminder], [(CUIKOROccurrenceState *)self isCompleted], [(CUIKOROccurrenceState *)self drawReminderAsEditable], [(CUIKOROccurrenceState *)self isBirthday], [(CUIKOROccurrenceState *)self userInterfaceStyle]);
+  occurrence = [(CUIKOROccurrenceState *)self occurrence];
+  calendar = [occurrence calendar];
+  displayColor = [calendar displayColor];
+  v5 = CUIKOccurrenceSecondaryTextColor(displayColor, [(CUIKOROccurrenceState *)self isCancelled], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isSelected], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isReminder], [(CUIKOROccurrenceState *)self isCompleted], [(CUIKOROccurrenceState *)self drawReminderAsEditable], [(CUIKOROccurrenceState *)self isBirthday], [(CUIKOROccurrenceState *)self userInterfaceStyle]);
 
   return v5;
 }
@@ -588,8 +588,8 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
 
 - (UIColor)baseColor
 {
-  v3 = [(CUIKOROccurrenceState *)self displayColor];
-  v4 = CUIKBaseColor(v3, [(CUIKOROccurrenceState *)self userInterfaceStyle], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isReminder]);
+  displayColor = [(CUIKOROccurrenceState *)self displayColor];
+  v4 = CUIKBaseColor(displayColor, [(CUIKOROccurrenceState *)self userInterfaceStyle], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isReminder]);
 
   return v4;
 }
@@ -618,10 +618,10 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
 
 - (UIColor)displayColor
 {
-  v2 = [(EKEvent *)self->_occurrence calendar];
-  v3 = [v2 displayColor];
+  calendar = [(EKEvent *)self->_occurrence calendar];
+  displayColor = [calendar displayColor];
 
-  return v3;
+  return displayColor;
 }
 
 - (UIImage)leadingIcon
@@ -629,7 +629,7 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
   v15[2] = *MEMORY[0x1E69E9840];
   if ([(CUIKOROccurrenceState *)self isReminder])
   {
-    v3 = [(CUIKOROccurrenceState *)self reminderIcon];
+    reminderIcon = [(CUIKOROccurrenceState *)self reminderIcon];
   }
 
   else
@@ -646,17 +646,17 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
     v4 = ;
     v5 = MEMORY[0x1E69DCAD8];
     v15[0] = v4;
-    v6 = [(CUIKOROccurrenceState *)self colorBarColor];
-    v15[1] = v6;
+    colorBarColor = [(CUIKOROccurrenceState *)self colorBarColor];
+    v15[1] = colorBarColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v8 = [v5 configurationWithPaletteColors:v7];
 
     v9 = [(CUIKOROccurrenceState *)self _leadingSymbolSizeConfigurationForReminder:0];
     v10 = [v8 configurationByApplyingConfiguration:v9];
 
-    v11 = [(CUIKOROccurrenceState *)self occurrence];
-    v12 = [(CUIKOROccurrenceState *)self occurrence];
-    v13 = [v11 CUIK_symbolName:{objc_msgSend(v12, "isAllDay")}];
+    occurrence = [(CUIKOROccurrenceState *)self occurrence];
+    occurrence2 = [(CUIKOROccurrenceState *)self occurrence];
+    v13 = [occurrence CUIK_symbolName:{objc_msgSend(occurrence2, "isAllDay")}];
 
     if (v13 || ![(CUIKOROccurrenceState *)self isAllDay])
     {
@@ -672,10 +672,10 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
       v13 = @"calendar.circle.fill";
     }
 
-    v3 = [MEMORY[0x1E69DCAB8] cuik_systemImageNamed:v13 withConfiguration:v10];
+    reminderIcon = [MEMORY[0x1E69DCAB8] cuik_systemImageNamed:v13 withConfiguration:v10];
   }
 
-  return v3;
+  return reminderIcon;
 }
 
 - (NSString)locationImageName
@@ -700,61 +700,61 @@ void __46__CUIKOROccurrenceState_tallCharacterSetCache__block_invoke()
 
 - (UIColor)colorBarColor
 {
-  v3 = [(CUIKOROccurrenceState *)self displayColor];
-  v4 = CUIKColorBarColor(v3, [(CUIKOROccurrenceState *)self userInterfaceStyle], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isReminder], [(CUIKOROccurrenceState *)self isSelected], [(CUIKOROccurrenceState *)self isCancelled]);
+  displayColor = [(CUIKOROccurrenceState *)self displayColor];
+  v4 = CUIKColorBarColor(displayColor, [(CUIKOROccurrenceState *)self userInterfaceStyle], [(CUIKOROccurrenceState *)self needsReply], [(CUIKOROccurrenceState *)self isDeclined], [(CUIKOROccurrenceState *)self isReminder], [(CUIKOROccurrenceState *)self isSelected], [(CUIKOROccurrenceState *)self isCancelled]);
 
   return v4;
 }
 
 - (NSArray)trailingIcons
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (![(CUIKOROccurrenceState *)self isReminderStack]&& ![(CUIKOROccurrenceState *)self fontCompressionDegree])
   {
-    v4 = [(CUIKOROccurrenceState *)self occurrence];
-    v5 = [(CUIKOROccurrenceState *)self trailingIconsColor];
+    occurrence = [(CUIKOROccurrenceState *)self occurrence];
+    trailingIconsColor = [(CUIKOROccurrenceState *)self trailingIconsColor];
     v6 = MEMORY[0x1E69DCAD8];
-    v7 = [(CUIKOROccurrenceState *)self secondaryTextFont];
-    v8 = [v6 cuik_configurationWithFont:v7 scale:1];
+    secondaryTextFont = [(CUIKOROccurrenceState *)self secondaryTextFont];
+    v8 = [v6 cuik_configurationWithFont:secondaryTextFont scale:1];
 
-    v9 = [v4 CUIK_attendeesIconSymbolWithAttendeesIconState:objc_msgSend(v4 myParticipantStatus:{"CUIK_attendeesIconState"), objc_msgSend(v4, "selfParticipantStatus")}];
+    v9 = [occurrence CUIK_attendeesIconSymbolWithAttendeesIconState:objc_msgSend(occurrence myParticipantStatus:{"CUIK_attendeesIconState"), objc_msgSend(occurrence, "selfParticipantStatus")}];
     v10 = v9;
     if (v9)
     {
       goto LABEL_11;
     }
 
-    v11 = [(CUIKOROccurrenceState *)self occurrence];
-    if ([v11 isOrWasPartOfRecurringSeries])
+    occurrence2 = [(CUIKOROccurrenceState *)self occurrence];
+    if ([occurrence2 isOrWasPartOfRecurringSeries])
     {
-      v12 = [(CUIKOROccurrenceState *)self occurrence];
-      if (([v12 isOriginalItemPhantom] & 1) != 0 || -[CUIKOROccurrenceState isBirthday](self, "isBirthday"))
+      occurrence3 = [(CUIKOROccurrenceState *)self occurrence];
+      if (([occurrence3 isOriginalItemPhantom] & 1) != 0 || -[CUIKOROccurrenceState isBirthday](self, "isBirthday"))
       {
       }
 
       else
       {
-        v18 = [(CUIKOROccurrenceState *)self occurrence];
-        v19 = [v18 calendar];
-        v21 = [v19 isHolidayCalendar];
+        occurrence4 = [(CUIKOROccurrenceState *)self occurrence];
+        calendar = [occurrence4 calendar];
+        isHolidayCalendar = [calendar isHolidayCalendar];
 
-        if (v21)
+        if (isHolidayCalendar)
         {
           goto LABEL_9;
         }
 
         v20 = [MEMORY[0x1E69DCAB8] cuik_systemImageNamed:@"repeat" withConfiguration:v8];
-        v11 = [v20 cuik_imageWithTintColor:v5];
+        occurrence2 = [v20 cuik_imageWithTintColor:trailingIconsColor];
 
-        [v3 addObject:v11];
+        [array addObject:occurrence2];
       }
     }
 
 LABEL_9:
-    v13 = [(CUIKOROccurrenceState *)self occurrence];
-    v14 = [v13 hasAttachment];
+    occurrence5 = [(CUIKOROccurrenceState *)self occurrence];
+    hasAttachment = [occurrence5 hasAttachment];
 
-    if (!v14)
+    if (!hasAttachment)
     {
 LABEL_12:
 
@@ -764,15 +764,15 @@ LABEL_12:
     v10 = @"paperclip";
 LABEL_11:
     v15 = [MEMORY[0x1E69DCAB8] cuik_systemImageNamed:v10 withConfiguration:v8];
-    v16 = [v15 cuik_imageWithTintColor:v5];
+    v16 = [v15 cuik_imageWithTintColor:trailingIconsColor];
 
-    [v3 addObject:v16];
+    [array addObject:v16];
     goto LABEL_12;
   }
 
 LABEL_13:
 
-  return v3;
+  return array;
 }
 
 - (id)trailingIconsColor
@@ -788,15 +788,15 @@ LABEL_13:
     {
       [MEMORY[0x1E69DC888] systemGrayColor];
     }
-    v3 = ;
+    locationTextColor = ;
   }
 
   else
   {
-    v3 = [(CUIKOROccurrenceState *)self locationTextColor];
+    locationTextColor = [(CUIKOROccurrenceState *)self locationTextColor];
   }
 
-  return v3;
+  return locationTextColor;
 }
 
 uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
@@ -814,8 +814,8 @@ uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
 
 - (NSString)moreText
 {
-  v3 = [(CUIKOROccurrenceState *)self occurrences];
-  v4 = [v3 count];
+  occurrences = [(CUIKOROccurrenceState *)self occurrences];
+  v4 = [occurrences count];
 
   if (v4 < 2)
   {
@@ -827,8 +827,8 @@ uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
     v5 = MEMORY[0x1E696AEC0];
     v6 = CUIKBundle();
     v7 = [v6 localizedStringForKey:@"ReminderStackMoreFormat" value:@"%lu more" table:0];
-    v8 = [(CUIKOROccurrenceState *)self occurrences];
-    v9 = [v5 localizedStringWithFormat:v7, objc_msgSend(v8, "count") - 1];
+    occurrences2 = [(CUIKOROccurrenceState *)self occurrences];
+    v9 = [v5 localizedStringWithFormat:v7, objc_msgSend(occurrences2, "count") - 1];
   }
 
   return v9;
@@ -847,46 +847,46 @@ uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
   }
 }
 
-- (CUIKOROccurrenceState)initWithState:(id)a3
+- (CUIKOROccurrenceState)initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(CUIKOROccurrenceState *)self init];
   if (v5)
   {
-    v6 = [v4 occurrences];
+    occurrences = [stateCopy occurrences];
     occurrences = v5->_occurrences;
-    v5->_occurrences = v6;
+    v5->_occurrences = occurrences;
 
-    v8 = [(NSArray *)v5->_occurrences firstObject];
+    firstObject = [(NSArray *)v5->_occurrences firstObject];
     occurrence = v5->_occurrence;
-    v5->_occurrence = v8;
+    v5->_occurrence = firstObject;
 
-    v5->_occurrenceIsFirstVisibleDayOfEvent = [v4 occurrenceIsFirstVisibleDayOfEvent];
-    v5->_isProposedTime = [v4 isProposedTime];
-    v5->_isSelected = [v4 isSelected];
-    v5->_isDimmed = [v4 isDimmed];
-    v5->_usesSmallText = [v4 usesSmallText];
-    [v4 travelTime];
+    v5->_occurrenceIsFirstVisibleDayOfEvent = [stateCopy occurrenceIsFirstVisibleDayOfEvent];
+    v5->_isProposedTime = [stateCopy isProposedTime];
+    v5->_isSelected = [stateCopy isSelected];
+    v5->_isDimmed = [stateCopy isDimmed];
+    v5->_usesSmallText = [stateCopy usesSmallText];
+    [stateCopy travelTime];
     v5->_travelTime = v10;
-    [v4 backgroundRect];
+    [stateCopy backgroundRect];
     v5->_backgroundRect.origin.x = v11;
     v5->_backgroundRect.origin.y = v12;
     v5->_backgroundRect.size.width = v13;
     v5->_backgroundRect.size.height = v14;
-    [v4 travelTimeHeight];
+    [stateCopy travelTimeHeight];
     v5->_travelTimeHeight = v15;
-    [v4 visibleHeight];
+    [stateCopy visibleHeight];
     v5->_visibleHeight = v16;
-    v5->_userInterfaceStyle = [v4 userInterfaceStyle];
-    v5->_horizontalSizeClass = [v4 horizontalSizeClass];
-    v5->_birthdayCount = [v4 birthdayCount];
-    v5->_isMiniPreviewInEventDetail = [v4 isMiniPreviewInEventDetail];
-    v17 = [v4 allDayOverride];
+    v5->_userInterfaceStyle = [stateCopy userInterfaceStyle];
+    v5->_horizontalSizeClass = [stateCopy horizontalSizeClass];
+    v5->_birthdayCount = [stateCopy birthdayCount];
+    v5->_isMiniPreviewInEventDetail = [stateCopy isMiniPreviewInEventDetail];
+    allDayOverride = [stateCopy allDayOverride];
     allDayOverride = v5->_allDayOverride;
-    v5->_allDayOverride = v17;
+    v5->_allDayOverride = allDayOverride;
 
-    v19 = [v4 traitCollection];
-    v20 = [v19 copy];
+    traitCollection = [stateCopy traitCollection];
+    v20 = [traitCollection copy];
     traitCollection = v5->_traitCollection;
     v5->_traitCollection = v20;
   }
@@ -896,11 +896,11 @@ uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
 
 + (void)clearLocationCache
 {
-  v2 = [a1 locationCache];
-  [v2 removeAllObjects];
+  locationCache = [self locationCache];
+  [locationCache removeAllObjects];
 }
 
-- (void)_location:(id *)a3 locationImageName:(id *)a4
+- (void)_location:(id *)_location locationImageName:(id *)name
 {
   check = 0;
   notify_check(apHiddenAppsNotifyToken, &check);
@@ -909,52 +909,52 @@ uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
     [objc_opt_class() clearLocationCache];
   }
 
-  v7 = [objc_opt_class() locationCache];
-  v8 = [(EKEvent *)self->_occurrence eventIdentifier];
-  v9 = [v7 objectForKey:v8];
+  locationCache = [objc_opt_class() locationCache];
+  eventIdentifier = [(EKEvent *)self->_occurrence eventIdentifier];
+  v9 = [locationCache objectForKey:eventIdentifier];
 
-  *a3 = [v9 generatedLocationString];
-  *a4 = [v9 locationImageName];
-  v10 = [(EKEvent *)self->_occurrence location];
-  v11 = [(EKEvent *)self->_occurrence locationWithoutPrediction];
-  v12 = [(EKEvent *)self->_occurrence preferredLocation];
-  v39 = [v12 isPrediction];
+  *_location = [v9 generatedLocationString];
+  *name = [v9 locationImageName];
+  location = [(EKEvent *)self->_occurrence location];
+  locationWithoutPrediction = [(EKEvent *)self->_occurrence locationWithoutPrediction];
+  preferredLocation = [(EKEvent *)self->_occurrence preferredLocation];
+  isPrediction = [preferredLocation isPrediction];
 
-  v13 = [(EKEvent *)self->_occurrence virtualConference];
-  v14 = [v13 joinMethods];
-  v15 = [v14 firstObject];
-  v16 = [v15 URL];
+  virtualConference = [(EKEvent *)self->_occurrence virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
+  conferenceURLForDisplay = [firstObject URL];
 
-  if (!v16)
+  if (!conferenceURLForDisplay)
   {
     if ((-[EKEvent conferenceURLForDisplayCached](self->_occurrence, "conferenceURLForDisplayCached") & 1) != 0 || ([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
-      v16 = [(EKEvent *)self->_occurrence conferenceURLForDisplay];
+      conferenceURLForDisplay = [(EKEvent *)self->_occurrence conferenceURLForDisplay];
     }
 
     else
     {
-      v16 = 0;
+      conferenceURLForDisplay = 0;
     }
   }
 
-  v37 = a3;
-  v38 = a4;
-  v17 = [v9 originalOccurrenceLocationIsPrediction];
-  v18 = [v9 originalOccurrenceLocation];
-  v41 = v10;
+  _locationCopy = _location;
+  nameCopy = name;
+  originalOccurrenceLocationIsPrediction = [v9 originalOccurrenceLocationIsPrediction];
+  originalOccurrenceLocation = [v9 originalOccurrenceLocation];
+  v41 = location;
   v19 = CalEqualStrings();
 
-  v20 = [v9 originalOccurrenceLocationWithoutPrediction];
-  v40 = v11;
+  originalOccurrenceLocationWithoutPrediction = [v9 originalOccurrenceLocationWithoutPrediction];
+  v40 = locationWithoutPrediction;
   v21 = CalEqualStrings();
 
-  v22 = [(CUIKOROccurrenceState *)self hasNewTimeProposed];
-  v23 = [v9 originalHasNewTimeProposed];
-  v24 = [v9 originalConferenceURL];
+  hasNewTimeProposed = [(CUIKOROccurrenceState *)self hasNewTimeProposed];
+  originalHasNewTimeProposed = [v9 originalHasNewTimeProposed];
+  originalConferenceURL = [v9 originalConferenceURL];
   v25 = CalEqualObjects();
 
-  if (v19 && v21 && ((v39 ^ v17) & 1) == 0 && ((v22 ^ v23) & 1) == 0 && v25 || (v42 = 0, [CUIKLocationDescriptionGenerator locationStringForEvent:self->_occurrence options:422 incomplete:&v42 leadingImageName:v38], *v37 = objc_claimAutoreleasedReturnValue(), (v42 & 1) != 0))
+  if (v19 && v21 && ((isPrediction ^ originalOccurrenceLocationIsPrediction) & 1) == 0 && ((hasNewTimeProposed ^ originalHasNewTimeProposed) & 1) == 0 && v25 || (v42 = 0, [CUIKLocationDescriptionGenerator locationStringForEvent:self->_occurrence options:422 incomplete:&v42 leadingImageName:nameCopy], *_locationCopy = objc_claimAutoreleasedReturnValue(), (v42 & 1) != 0))
   {
     v27 = v40;
     v26 = v41;
@@ -963,18 +963,18 @@ uint64_t __38__CUIKOROccurrenceState_locationCache__block_invoke()
   else
   {
     v28 = [CUIKOROccurrenceStateCachedLocation alloc];
-    v29 = *v37;
-    v30 = *v38;
-    v31 = [(CUIKOROccurrenceState *)self hasNewTimeProposed];
+    v29 = *_locationCopy;
+    v30 = *nameCopy;
+    hasNewTimeProposed2 = [(CUIKOROccurrenceState *)self hasNewTimeProposed];
     v32 = v29;
     v33 = v30;
     v27 = v40;
     v26 = v41;
-    v34 = [(CUIKOROccurrenceStateCachedLocation *)v28 initWithGeneratedLocationString:v32 locationImageName:v33 originalOccurrenceLocation:v41 originalOccurrenceLocationWithoutPrediction:v40 originalOccurrenceLocationIsPrediction:v39 originalHasNewTimeProposed:v31 originalConferenceURL:v16];
+    v34 = [(CUIKOROccurrenceStateCachedLocation *)v28 initWithGeneratedLocationString:v32 locationImageName:v33 originalOccurrenceLocation:v41 originalOccurrenceLocationWithoutPrediction:v40 originalOccurrenceLocationIsPrediction:isPrediction originalHasNewTimeProposed:hasNewTimeProposed2 originalConferenceURL:conferenceURLForDisplay];
 
-    v35 = [objc_opt_class() locationCache];
-    v36 = [(EKEvent *)self->_occurrence eventIdentifier];
-    [v35 setObject:v34 forKey:v36];
+    locationCache2 = [objc_opt_class() locationCache];
+    eventIdentifier2 = [(EKEvent *)self->_occurrence eventIdentifier];
+    [locationCache2 setObject:v34 forKey:eventIdentifier2];
 
     v9 = v34;
   }
@@ -1007,16 +1007,16 @@ LABEL_7:
 - (UIColor)moreTextColor
 {
   [(CUIKOROccurrenceState *)self isSelected];
-  v2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
 
-  return v2;
+  return secondaryLabelColor;
 }
 
 - (UIColor)strikethroughColor
 {
-  v2 = [(CUIKOROccurrenceState *)self isSelected];
+  isSelected = [(CUIKOROccurrenceState *)self isSelected];
 
-  return CUIKStrikethroughColor(v2);
+  return CUIKStrikethroughColor(isSelected);
 }
 
 - (double)totalLanguageAwareHeightPadding
@@ -1027,20 +1027,20 @@ LABEL_7:
   return (v4 + v5) * 0.5;
 }
 
-- (id)_leadingSymbolSizeConfigurationForReminder:(BOOL)a3
+- (id)_leadingSymbolSizeConfigurationForReminder:(BOOL)reminder
 {
-  v3 = a3;
+  reminderCopy = reminder;
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [(CUIKOROccurrenceState *)self primaryTextFont];
-  [v5 pointSize];
+  primaryTextFont = [(CUIKOROccurrenceState *)self primaryTextFont];
+  [primaryTextFont pointSize];
   v7 = 3.0;
-  if (v3)
+  if (reminderCopy)
   {
     v7 = 2.0;
   }
 
   v8 = v7 + v6;
-  if (v3)
+  if (reminderCopy)
   {
     v9 = 7;
   }
@@ -1057,43 +1057,43 @@ LABEL_7:
 
 - (id)reminderIcon
 {
-  v3 = [(CUIKOROccurrenceState *)self occurrence];
-  v4 = [(CUIKOROccurrenceState *)self occurrence];
-  v5 = [v3 CUIK_symbolName:{objc_msgSend(v4, "isAllDay")}];
+  occurrence = [(CUIKOROccurrenceState *)self occurrence];
+  occurrence2 = [(CUIKOROccurrenceState *)self occurrence];
+  v5 = [occurrence CUIK_symbolName:{objc_msgSend(occurrence2, "isAllDay")}];
 
   if ([(CUIKOROccurrenceState *)self isSelected])
   {
-    v6 = [(CUIKOROccurrenceState *)self titleTextColor];
+    titleTextColor = [(CUIKOROccurrenceState *)self titleTextColor];
   }
 
   else
   {
-    v7 = [(CUIKOROccurrenceState *)self drawReminderAsEditable];
-    v8 = [(CUIKOROccurrenceState *)self occurrence];
-    v9 = v8;
-    if (v7)
+    drawReminderAsEditable = [(CUIKOROccurrenceState *)self drawReminderAsEditable];
+    occurrence3 = [(CUIKOROccurrenceState *)self occurrence];
+    v9 = occurrence3;
+    if (drawReminderAsEditable)
     {
-      [v8 CUIK_symbolColor];
+      [occurrence3 CUIK_symbolColor];
     }
 
     else
     {
-      [v8 CUIK_disabledSymbolColor];
+      [occurrence3 CUIK_disabledSymbolColor];
     }
-    v6 = ;
+    titleTextColor = ;
   }
 
   if ([(CUIKOROccurrenceState *)self isReminderStack])
   {
-    [v6 cuik_alphaComponent];
-    v11 = [v6 colorWithAlphaComponent:v10 * 0.2];
+    [titleTextColor cuik_alphaComponent];
+    v11 = [titleTextColor colorWithAlphaComponent:v10 * 0.2];
 
-    v6 = v11;
+    titleTextColor = v11;
   }
 
   v12 = [(CUIKOROccurrenceState *)self _leadingSymbolSizeConfigurationForReminder:1];
   v13 = [MEMORY[0x1E69DCAB8] cuik_systemImageNamed:v5 withConfiguration:v12];
-  v14 = [v13 cuik_imageWithTintColor:v6];
+  v14 = [v13 cuik_imageWithTintColor:titleTextColor];
 
   return v14;
 }
@@ -1102,17 +1102,17 @@ LABEL_7:
 {
   [CUIKORFontUtils minimumNaturalHeightForPrimaryTextUsingSmallText:self->_usesSmallText sizeClass:[(CUIKOROccurrenceState *)self horizontalSizeClass]];
   v4 = v3;
-  v5 = [(CUIKOROccurrenceState *)self hidesTime];
-  v6 = [(CUIKOROccurrenceState *)self location];
-  v7 = [v6 length];
+  hidesTime = [(CUIKOROccurrenceState *)self hidesTime];
+  location = [(CUIKOROccurrenceState *)self location];
+  v7 = [location length];
 
-  if (!v7 && v5)
+  if (!v7 && hidesTime)
   {
     return v4;
   }
 
   v9 = 1;
-  if (!v5)
+  if (!hidesTime)
   {
     v9 = 2;
   }
@@ -1124,37 +1124,37 @@ LABEL_7:
 
   else
   {
-    v10 = !v5;
+    v10 = !hidesTime;
   }
 
-  v11 = [(CUIKOROccurrenceState *)self secondaryTextFont];
-  v13 = [(UIFont *)v11 cuik_lineHeight];
+  secondaryTextFont = [(CUIKOROccurrenceState *)self secondaryTextFont];
+  cuik_lineHeight = [(UIFont *)secondaryTextFont cuik_lineHeight];
 
-  return v4 + v13 * v10;
+  return v4 + cuik_lineHeight * v10;
 }
 
 - (double)enoughHeightForOneLine
 {
   v3 = objc_opt_class();
-  v4 = [(CUIKOROccurrenceState *)self occurrence];
-  [v3 enoughHeightForOneLineForEvent:v4 usingSmallText:-[CUIKOROccurrenceState usesSmallText](self sizeClass:{"usesSmallText"), -[CUIKOROccurrenceState horizontalSizeClass](self, "horizontalSizeClass")}];
+  occurrence = [(CUIKOROccurrenceState *)self occurrence];
+  [v3 enoughHeightForOneLineForEvent:occurrence usingSmallText:-[CUIKOROccurrenceState usesSmallText](self sizeClass:{"usesSmallText"), -[CUIKOROccurrenceState horizontalSizeClass](self, "horizontalSizeClass")}];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)enoughHeightForOneLineForEvent:(id)a3 usingSmallText:(BOOL)a4 sizeClass:(int64_t)a5
++ (double)enoughHeightForOneLineForEvent:(id)event usingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  v6 = a4;
-  v7 = a3;
-  [CUIKORFontUtils minimumNaturalHeightForPrimaryTextUsingSmallText:v6 sizeClass:a5];
+  textCopy = text;
+  eventCopy = event;
+  [CUIKORFontUtils minimumNaturalHeightForPrimaryTextUsingSmallText:textCopy sizeClass:class];
   v9 = v8;
-  if (([v7 isAllDay] & 1) == 0)
+  if (([eventCopy isAllDay] & 1) == 0)
   {
-    v10 = [v7 startCalendarDate];
-    v11 = [v10 minute];
+    startCalendarDate = [eventCopy startCalendarDate];
+    minute = [startCalendarDate minute];
 
-    if (v11)
+    if (minute)
     {
       CUIKRoundToScreenScale(0.5);
       v9 = v9 - v12;
@@ -1197,14 +1197,14 @@ LABEL_7:
   return result;
 }
 
-- (id)primaryTextFontBold:(BOOL)a3
+- (id)primaryTextFontBold:(BOOL)bold
 {
-  v3 = a3;
-  v5 = [(CUIKOROccurrenceState *)self fontCompressionDegree];
-  v6 = [(CUIKOROccurrenceState *)self horizontalSizeClass];
-  v7 = [(CUIKOROccurrenceState *)self usesSmallText];
-  v8 = v7;
-  if (v6 == 2)
+  boldCopy = bold;
+  fontCompressionDegree = [(CUIKOROccurrenceState *)self fontCompressionDegree];
+  horizontalSizeClass = [(CUIKOROccurrenceState *)self horizontalSizeClass];
+  usesSmallText = [(CUIKOROccurrenceState *)self usesSmallText];
+  v8 = usesSmallText;
+  if (horizontalSizeClass == 2)
   {
     v9 = *MEMORY[0x1E69DDD28];
     v10 = 0.0;
@@ -1214,7 +1214,7 @@ LABEL_7:
 
   else
   {
-    if (v7)
+    if (usesSmallText)
     {
       v9 = *MEMORY[0x1E69DDD10];
       v10 = 0.0;
@@ -1232,17 +1232,17 @@ LABEL_7:
 
   v13 = 13.0;
 LABEL_7:
-  if (!v5)
+  if (!fontCompressionDegree)
   {
     v10 = v13;
   }
 
-  if (v5 == 1)
+  if (fontCompressionDegree == 1)
   {
     v10 = v12;
   }
 
-  if (v5 == 2)
+  if (fontCompressionDegree == 2)
   {
     v14 = v11;
   }
@@ -1252,7 +1252,7 @@ LABEL_7:
     v14 = v10;
   }
 
-  if (v3)
+  if (boldCopy)
   {
     [MEMORY[0x1E69DB878] cuik_preferredTightLeadingBoldFontForTextStyle:{v9, v10}];
   }
@@ -1264,14 +1264,14 @@ LABEL_7:
   v15 = ;
   v16 = v15;
   v17 = 13.0;
-  if (v6 == 1 && v8)
+  if (horizontalSizeClass == 1 && v8)
   {
     v17 = 11.0;
   }
 
   v18 = v14 / v17;
-  v19 = [v15 fontDescriptor];
-  [v19 pointSize];
+  fontDescriptor = [v15 fontDescriptor];
+  [fontDescriptor pointSize];
   v21 = v20;
 
   CUIKRoundToScreenScale(v18 * v21);
@@ -1286,27 +1286,27 @@ LABEL_7:
   v10.receiver = self;
   v10.super_class = CUIKOROccurrenceState;
   v4 = [(CUIKOROccurrenceState *)&v10 description];
-  v5 = [(CUIKOROccurrenceState *)self title];
+  title = [(CUIKOROccurrenceState *)self title];
   [(CUIKOROccurrenceState *)self backgroundRect];
   v6 = CUIKStringFromCGRect(v12);
   [(CUIKOROccurrenceState *)self estimatedTextFrame];
   v7 = CUIKStringFromCGRect(v13);
-  v8 = [v3 stringWithFormat:@"%@ <title: %@, backgroundRect: %@, estimatedTextFrame: %@>", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@ <title: %@, backgroundRect: %@, estimatedTextFrame: %@>", v4, title, v6, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v36 = self->_isSelected == *(v4 + 9);
-    v30 = *(v4 + 10);
+    v36 = self->_isSelected == *(equalCopy + 9);
+    v30 = *(equalCopy + 10);
     isDimmed = self->_isDimmed;
     occurrence = self->_occurrence;
-    v6 = v4[2];
-    v7 = v4;
+    v6 = equalCopy[2];
+    v7 = equalCopy;
     v8 = [(EKEvent *)occurrence isEqual:v6];
     occurrenceIsFirstVisibleDayOfEvent = self->_occurrenceIsFirstVisibleDayOfEvent;
     v35 = v8;

@@ -1,15 +1,15 @@
 @interface SHSignatureGenerator
 + (void)generateSignatureFromAsset:(AVAsset *)asset completionHandler:(void *)completionHandler;
 - (BOOL)appendBuffer:(AVAudioPCMBuffer *)buffer atTime:(AVAudioTime *)time error:(NSError *)error;
-- (BOOL)updateRingBufferDuration:(double)a3 error:(id *)a4;
+- (BOOL)updateRingBufferDuration:(double)duration error:(id *)error;
 - (SHMusicalFeaturesConfiguration)musicalFeaturesConfiguration;
 - (SHSignature)signature;
 - (SHSignatureGenerator)init;
-- (SHSignatureGenerator)initWithMaximumSignatureDuration:(double)a3;
-- (SHSignatureGenerator)initWithMutableSignature:(id)a3;
+- (SHSignatureGenerator)initWithMaximumSignatureDuration:(double)duration;
+- (SHSignatureGenerator)initWithMutableSignature:(id)signature;
 - (double)duration;
 - (double)maximumDuration;
-- (id)initSignatureRingBufferWithDuration:(double)a3;
+- (id)initSignatureRingBufferWithDuration:(double)duration;
 - (int64_t)clipStyle;
 - (void)disableSpectralOutput;
 - (void)enableSpectralOutput;
@@ -18,14 +18,14 @@
 
 @implementation SHSignatureGenerator
 
-- (SHSignatureGenerator)initWithMaximumSignatureDuration:(double)a3
+- (SHSignatureGenerator)initWithMaximumSignatureDuration:(double)duration
 {
   v8.receiver = self;
   v8.super_class = SHSignatureGenerator;
   v4 = [(SHSignatureGenerator *)&v8 init];
   if (v4)
   {
-    v5 = [[SHMutableSignature alloc] initWithMaximumSeconds:0 clipStyle:a3];
+    v5 = [[SHMutableSignature alloc] initWithMaximumSeconds:0 clipStyle:duration];
     mutableSignature = v4->_mutableSignature;
     v4->_mutableSignature = v5;
   }
@@ -33,14 +33,14 @@
   return v4;
 }
 
-- (id)initSignatureRingBufferWithDuration:(double)a3
+- (id)initSignatureRingBufferWithDuration:(double)duration
 {
   v8.receiver = self;
   v8.super_class = SHSignatureGenerator;
   v4 = [(SHSignatureGenerator *)&v8 init];
   if (v4)
   {
-    v5 = [[SHMutableSignature alloc] initWithMaximumSeconds:1 clipStyle:a3];
+    v5 = [[SHMutableSignature alloc] initWithMaximumSeconds:1 clipStyle:duration];
     mutableSignature = v4->_mutableSignature;
     v4->_mutableSignature = v5;
   }
@@ -56,16 +56,16 @@
   return v4;
 }
 
-- (SHSignatureGenerator)initWithMutableSignature:(id)a3
+- (SHSignatureGenerator)initWithMutableSignature:(id)signature
 {
-  v5 = a3;
+  signatureCopy = signature;
   v9.receiver = self;
   v9.super_class = SHSignatureGenerator;
   v6 = [(SHSignatureGenerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mutableSignature, a3);
+    objc_storeStrong(&v6->_mutableSignature, signature);
   }
 
   return v7;
@@ -75,8 +75,8 @@
 {
   v8 = time;
   v9 = buffer;
-  v10 = [(SHSignatureGenerator *)self mutableSignature];
-  v11 = [v10 appendBuffer:v9 atTime:v8 error:error];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  v11 = [mutableSignature appendBuffer:v9 atTime:v8 error:error];
 
   [SHError remapErrorToClientErrorPointer:error];
   return v11;
@@ -84,16 +84,16 @@
 
 - (SHSignature)signature
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  v3 = [v2 copy];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  v3 = [mutableSignature copy];
 
   return v3;
 }
 
 - (double)duration
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  [v2 duration];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  [mutableSignature duration];
   v4 = v3;
 
   return v4;
@@ -101,55 +101,55 @@
 
 - (SHMusicalFeaturesConfiguration)musicalFeaturesConfiguration
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  v3 = [v2 musicalFeaturesConfiguration];
-  v4 = [v3 copy];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  musicalFeaturesConfiguration = [mutableSignature musicalFeaturesConfiguration];
+  v4 = [musicalFeaturesConfiguration copy];
 
   return v4;
 }
 
 - (int64_t)clipStyle
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  v3 = [v2 clipStyle];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  clipStyle = [mutableSignature clipStyle];
 
-  return v3;
+  return clipStyle;
 }
 
 - (double)maximumDuration
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  [v2 maximumSeconds];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  [mutableSignature maximumSeconds];
   v4 = v3;
 
   return v4;
 }
 
-- (BOOL)updateRingBufferDuration:(double)a3 error:(id *)a4
+- (BOOL)updateRingBufferDuration:(double)duration error:(id *)error
 {
-  v6 = [(SHSignatureGenerator *)self mutableSignature];
-  LOBYTE(a4) = [v6 updateRingBufferDuration:a4 error:a3];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  LOBYTE(error) = [mutableSignature updateRingBufferDuration:error error:duration];
 
-  return a4;
+  return error;
 }
 
 - (void)enableSpectralOutput
 {
-  v3 = [(SHSignatureGenerator *)self mutableSignature];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
   v2 = [[SHSpectralOutputConfiguration alloc] initWithNumberOfBins:8 callbackFrequency:8];
-  [v3 setSpectralOutputConfiguration:v2];
+  [mutableSignature setSpectralOutputConfiguration:v2];
 }
 
 - (void)disableSpectralOutput
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  [v2 disableSpectralOutput];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  [mutableSignature disableSpectralOutput];
 }
 
 - (void)reset
 {
-  v2 = [(SHSignatureGenerator *)self mutableSignature];
-  [v2 reset];
+  mutableSignature = [(SHSignatureGenerator *)self mutableSignature];
+  [mutableSignature reset];
 }
 
 + (void)generateSignatureFromAsset:(AVAsset *)asset completionHandler:(void *)completionHandler

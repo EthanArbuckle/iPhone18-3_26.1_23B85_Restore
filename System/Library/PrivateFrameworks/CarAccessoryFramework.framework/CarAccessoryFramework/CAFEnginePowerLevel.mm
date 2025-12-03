@@ -22,25 +22,25 @@
 - (NSMeasurement)powerLevelMarkerAvailableMax;
 - (NSMeasurement)powerLevelMarkerAvailableMin;
 - (unsigned)powerState;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFEnginePowerLevel
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFEnginePowerLevel;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -53,12 +53,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -74,13 +74,13 @@
 - (CAFMeasurementCharacteristic)powerLevelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000022"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000022"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000022"];
@@ -99,49 +99,49 @@
 
 - (NSMeasurement)powerLevel
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelCharacteristic];
-  v3 = [v2 measurementValue];
+  powerLevelCharacteristic = [(CAFEnginePowerLevel *)self powerLevelCharacteristic];
+  measurementValue = [powerLevelCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFFloatRange)powerLevelRange
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 floatRange];
+  powerLevelCharacteristic = [(CAFEnginePowerLevel *)self powerLevelCharacteristic];
+  range = [powerLevelCharacteristic range];
+  floatRange = [range floatRange];
 
-  return v4;
+  return floatRange;
 }
 
 - (CAFMeasurementRange)powerLevelMeasurementRange
 {
-  v3 = [(CAFEnginePowerLevel *)self powerLevelRange];
-  v4 = [(CAFEnginePowerLevel *)self powerLevel];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  powerLevelRange = [(CAFEnginePowerLevel *)self powerLevelRange];
+  powerLevel = [(CAFEnginePowerLevel *)self powerLevel];
+  unit = [powerLevel unit];
+  v6 = [powerLevelRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)powerLevelInvalid
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelCharacteristic];
-  v3 = [v2 isInvalid];
+  powerLevelCharacteristic = [(CAFEnginePowerLevel *)self powerLevelCharacteristic];
+  isInvalid = [powerLevelCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFMeasurementCharacteristic)powerLevelMarkerAvailableMinCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000023"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000023"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000023"];
@@ -160,35 +160,35 @@
 
 - (NSMeasurement)powerLevelMarkerAvailableMin
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinCharacteristic];
-  v3 = [v2 measurementValue];
+  powerLevelMarkerAvailableMinCharacteristic = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinCharacteristic];
+  measurementValue = [powerLevelMarkerAvailableMinCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFFloatRange)powerLevelMarkerAvailableMinRange
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 floatRange];
+  powerLevelMarkerAvailableMinCharacteristic = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinCharacteristic];
+  range = [powerLevelMarkerAvailableMinCharacteristic range];
+  floatRange = [range floatRange];
 
-  return v4;
+  return floatRange;
 }
 
 - (CAFMeasurementRange)powerLevelMarkerAvailableMinMeasurementRange
 {
-  v3 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinRange];
-  v4 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMin];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  powerLevelMarkerAvailableMinRange = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinRange];
+  powerLevelMarkerAvailableMin = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMin];
+  unit = [powerLevelMarkerAvailableMin unit];
+  v6 = [powerLevelMarkerAvailableMinRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasPowerLevelMarkerAvailableMin
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinCharacteristic];
-  v3 = v2 != 0;
+  powerLevelMarkerAvailableMinCharacteristic = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMinCharacteristic];
+  v3 = powerLevelMarkerAvailableMinCharacteristic != 0;
 
   return v3;
 }
@@ -196,13 +196,13 @@
 - (CAFMeasurementCharacteristic)powerLevelMarkerAvailableMaxCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000024"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000024"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000024"];
@@ -221,35 +221,35 @@
 
 - (NSMeasurement)powerLevelMarkerAvailableMax
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxCharacteristic];
-  v3 = [v2 measurementValue];
+  powerLevelMarkerAvailableMaxCharacteristic = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxCharacteristic];
+  measurementValue = [powerLevelMarkerAvailableMaxCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFFloatRange)powerLevelMarkerAvailableMaxRange
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 floatRange];
+  powerLevelMarkerAvailableMaxCharacteristic = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxCharacteristic];
+  range = [powerLevelMarkerAvailableMaxCharacteristic range];
+  floatRange = [range floatRange];
 
-  return v4;
+  return floatRange;
 }
 
 - (CAFMeasurementRange)powerLevelMarkerAvailableMaxMeasurementRange
 {
-  v3 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxRange];
-  v4 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMax];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  powerLevelMarkerAvailableMaxRange = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxRange];
+  powerLevelMarkerAvailableMax = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMax];
+  unit = [powerLevelMarkerAvailableMax unit];
+  v6 = [powerLevelMarkerAvailableMaxRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasPowerLevelMarkerAvailableMax
 {
-  v2 = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxCharacteristic];
-  v3 = v2 != 0;
+  powerLevelMarkerAvailableMaxCharacteristic = [(CAFEnginePowerLevel *)self powerLevelMarkerAvailableMaxCharacteristic];
+  v3 = powerLevelMarkerAvailableMaxCharacteristic != 0;
 
   return v3;
 }
@@ -257,13 +257,13 @@
 - (CAFPowerStateCharacteristic)powerStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000036000067"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000067"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000036000067"];
@@ -282,16 +282,16 @@
 
 - (unsigned)powerState
 {
-  v2 = [(CAFEnginePowerLevel *)self powerStateCharacteristic];
-  v3 = [v2 powerStateValue];
+  powerStateCharacteristic = [(CAFEnginePowerLevel *)self powerStateCharacteristic];
+  powerStateValue = [powerStateCharacteristic powerStateValue];
 
-  return v3;
+  return powerStateValue;
 }
 
 - (BOOL)hasPowerState
 {
-  v2 = [(CAFEnginePowerLevel *)self powerStateCharacteristic];
-  v3 = v2 != 0;
+  powerStateCharacteristic = [(CAFEnginePowerLevel *)self powerStateCharacteristic];
+  v3 = powerStateCharacteristic != 0;
 
   return v3;
 }
@@ -299,13 +299,13 @@
 - (BOOL)registeredForPowerLevel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000022"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000022"];
 
   return v10;
 }
@@ -313,13 +313,13 @@
 - (BOOL)registeredForPowerLevelMarkerAvailableMin
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000023"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000023"];
 
   return v10;
 }
@@ -327,13 +327,13 @@
 - (BOOL)registeredForPowerLevelMarkerAvailableMax
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000024"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000024"];
 
   return v10;
 }
@@ -341,13 +341,13 @@
 - (BOOL)registeredForPowerState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000036000067"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000067"];
 
   return v10;
 }

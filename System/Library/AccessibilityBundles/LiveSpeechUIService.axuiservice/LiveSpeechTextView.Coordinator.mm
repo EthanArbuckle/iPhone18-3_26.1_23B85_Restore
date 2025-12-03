@@ -1,36 +1,36 @@
 @interface LiveSpeechTextView.Coordinator
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (_TtCV19LiveSpeechUIService18LiveSpeechTextView11Coordinator)init;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation LiveSpeechTextView.Coordinator
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_33BA0(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_33BA0(editingCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v7 = sub_BAFD0();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  sub_350D0(v10, v7, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_350D0(viewCopy, v7, v9);
   LOBYTE(v7) = v12;
 
   return v7 & 1;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_33E18(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_33E18(changeCopy);
 }
 
 - (_TtCV19LiveSpeechUIService18LiveSpeechTextView11Coordinator)init

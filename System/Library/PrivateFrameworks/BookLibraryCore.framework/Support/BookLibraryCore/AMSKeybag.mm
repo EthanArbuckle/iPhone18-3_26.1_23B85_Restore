@@ -1,16 +1,16 @@
 @interface AMSKeybag
-+ (id)bl_keybagSyncDataForAccount:(id)a3 withTransactionType:(unsigned int)a4;
-+ (void)bl_importKeybagData:(id)a3;
++ (id)bl_keybagSyncDataForAccount:(id)account withTransactionType:(unsigned int)type;
++ (void)bl_importKeybagData:(id)data;
 @end
 
 @implementation AMSKeybag
 
-+ (void)bl_importKeybagData:(id)a3
++ (void)bl_importKeybagData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[AMSKeybag sharedInstance];
   v8 = 0;
-  v5 = [v4 importKeybagWithData:v3 error:&v8];
+  v5 = [v4 importKeybagWithData:dataCopy error:&v8];
 
   v6 = v8;
   if ((v5 & 1) == 0)
@@ -25,16 +25,16 @@
   }
 }
 
-+ (id)bl_keybagSyncDataForAccount:(id)a3 withTransactionType:(unsigned int)a4
++ (id)bl_keybagSyncDataForAccount:(id)account withTransactionType:(unsigned int)type
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&type;
+  accountCopy = account;
   v6 = +[AMSKeybag sharedInstance];
-  v7 = [v5 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  if (v7)
+  if (ams_DSID)
   {
-    v8 = v7;
+    v8 = ams_DSID;
   }
 
   else

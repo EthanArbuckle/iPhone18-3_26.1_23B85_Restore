@@ -1,20 +1,20 @@
 @interface APDeviceCapabilityEngine
-- (APDeviceCapabilityEngine)initWithBuilder:(id)a3;
+- (APDeviceCapabilityEngine)initWithBuilder:(id)builder;
 - (unsigned)build;
 @end
 
 @implementation APDeviceCapabilityEngine
 
-- (APDeviceCapabilityEngine)initWithBuilder:(id)a3
+- (APDeviceCapabilityEngine)initWithBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = APDeviceCapabilityEngine;
   v6 = [(APDeviceCapabilityEngine *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_capabilityEngine, a3);
+    objc_storeStrong(&v6->_capabilityEngine, builder);
   }
 
   return v7;

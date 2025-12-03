@@ -1,79 +1,79 @@
 @interface PUErrorPresentationController
-+ (BOOL)errorIsAuthenticationRelatedCPLError:(id)a3;
-+ (BOOL)errorIsLowDiskSpaceRelatedCPLError:(id)a3;
-+ (BOOL)isNetworkRelatedError:(id)a3;
-+ (id)alertActionForNavigatingToDestination:(int64_t)a3 withTitle:(id)a4 completion:(id)a5;
-- (PUErrorPresentationController)initWithErrors:(id)a3 forAssets:(id)a4;
-- (id)alertControllerWithCompletion:(id)a3;
-- (id)assetsDescriptionFromAssets:(id)a3;
-- (void)setRadarComponentID:(id)a3 name:(id)a4 version:(id)a5;
++ (BOOL)errorIsAuthenticationRelatedCPLError:(id)error;
++ (BOOL)errorIsLowDiskSpaceRelatedCPLError:(id)error;
++ (BOOL)isNetworkRelatedError:(id)error;
++ (id)alertActionForNavigatingToDestination:(int64_t)destination withTitle:(id)title completion:(id)completion;
+- (PUErrorPresentationController)initWithErrors:(id)errors forAssets:(id)assets;
+- (id)alertControllerWithCompletion:(id)completion;
+- (id)assetsDescriptionFromAssets:(id)assets;
+- (void)setRadarComponentID:(id)d name:(id)name version:(id)version;
 @end
 
 @implementation PUErrorPresentationController
 
-- (id)alertControllerWithCompletion:(id)a3
+- (id)alertControllerWithCompletion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUErrorPresentationController *)self errors];
-  v6 = [v5 firstObject];
+  completionCopy = completion;
+  errors = [(PUErrorPresentationController *)self errors];
+  firstObject = [errors firstObject];
 
   if (!PFOSVariantHasInternalUI())
   {
     goto LABEL_8;
   }
 
-  v7 = [(PUErrorPresentationController *)self radarComponentID];
-  if (![v7 length])
+  radarComponentID = [(PUErrorPresentationController *)self radarComponentID];
+  if (![radarComponentID length])
   {
     goto LABEL_7;
   }
 
-  v8 = [(PUErrorPresentationController *)self radarComponentName];
-  if (![v8 length])
+  radarComponentName = [(PUErrorPresentationController *)self radarComponentName];
+  if (![radarComponentName length])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(PUErrorPresentationController *)self radarComponentVersion];
-  v10 = [v9 length];
+  radarComponentVersion = [(PUErrorPresentationController *)self radarComponentVersion];
+  v10 = [radarComponentVersion length];
 
   if (v10)
   {
-    v11 = [(PUErrorPresentationController *)self shouldShowFileRadarAction];
+    shouldShowFileRadarAction = [(PUErrorPresentationController *)self shouldShowFileRadarAction];
     goto LABEL_9;
   }
 
 LABEL_8:
-  v11 = 0;
+  shouldShowFileRadarAction = 0;
 LABEL_9:
-  v12 = [(PUErrorPresentationController *)self assets];
-  [(PUErrorPresentationController *)self configureAlertPropertiesFromError:v6 withAssets:v12 willShowFileRadarButton:v11 alertCompletion:v4];
+  assets = [(PUErrorPresentationController *)self assets];
+  [(PUErrorPresentationController *)self configureAlertPropertiesFromError:firstObject withAssets:assets willShowFileRadarButton:shouldShowFileRadarAction alertCompletion:completionCopy];
 
   v13 = MEMORY[0x1E69DC650];
-  v14 = [(PUErrorPresentationController *)self alertTitle];
-  v15 = [(PUErrorPresentationController *)self alertMessage];
-  v16 = [v13 alertControllerWithTitle:v14 message:v15 preferredStyle:1];
+  alertTitle = [(PUErrorPresentationController *)self alertTitle];
+  alertMessage = [(PUErrorPresentationController *)self alertMessage];
+  v16 = [v13 alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:1];
 
   v17 = MEMORY[0x1E69DC648];
-  v18 = [(PUErrorPresentationController *)self dismissButtonTitle];
+  dismissButtonTitle = [(PUErrorPresentationController *)self dismissButtonTitle];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __63__PUErrorPresentationController_alertControllerWithCompletion___block_invoke;
   v37[3] = &unk_1E7B80980;
-  v19 = v4;
+  v19 = completionCopy;
   v38 = v19;
-  v20 = [v17 actionWithTitle:v18 style:0 handler:v37];
+  v20 = [v17 actionWithTitle:dismissButtonTitle style:0 handler:v37];
   [v16 addAction:v20];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v21 = [(PUErrorPresentationController *)self additionalAlertActions];
-  v22 = [v21 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  additionalAlertActions = [(PUErrorPresentationController *)self additionalAlertActions];
+  v22 = [additionalAlertActions countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v22)
   {
     v23 = v22;
@@ -84,22 +84,22 @@ LABEL_9:
       {
         if (*v34 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(additionalAlertActions);
         }
 
         [v16 addAction:*(*(&v33 + 1) + 8 * i)];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v23 = [additionalAlertActions countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v23);
   }
 
-  if (v11)
+  if (shouldShowFileRadarAction)
   {
-    v26 = [(PUErrorPresentationController *)self assets];
-    [(PUErrorPresentationController *)self configureRadarPropertiesFromError:v6 withAssets:v26];
+    assets2 = [(PUErrorPresentationController *)self assets];
+    [(PUErrorPresentationController *)self configureRadarPropertiesFromError:firstObject withAssets:assets2];
 
     v27 = MEMORY[0x1E69DC648];
     v30[0] = MEMORY[0x1E69E9820];
@@ -107,7 +107,7 @@ LABEL_9:
     v30[2] = __63__PUErrorPresentationController_alertControllerWithCompletion___block_invoke_2;
     v30[3] = &unk_1E7B7DE00;
     v30[4] = self;
-    v31 = v6;
+    v31 = firstObject;
     v32 = v19;
     v28 = [v27 actionWithTitle:@"File Radar" style:0 handler:v30];
     [v16 addAction:v28];
@@ -274,16 +274,16 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
   return result;
 }
 
-- (id)assetsDescriptionFromAssets:(id)a3
+- (id)assetsDescriptionFromAssets:(id)assets
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  assetsCopy = assets;
+  v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v4;
+  obj = assetsCopy;
   v5 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v5)
   {
@@ -309,19 +309,19 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
           v11 = [MEMORY[0x1E6978630] descriptionForMediaSubtypes:{objc_msgSend(v9, "mediaSubtypes")}];
           v12 = [MEMORY[0x1E6978630] descriptionForPlaybackStyle:{objc_msgSend(v9, "playbackStyle")}];
           v30 = MEMORY[0x1E696AD60];
-          v13 = [v9 uuid];
-          v14 = [v9 isGuestAsset];
+          uuid = [v9 uuid];
+          isGuestAsset = [v9 isGuestAsset];
           v15 = @"NO";
-          if (v14)
+          if (isGuestAsset)
           {
             v15 = @"YES";
           }
 
           v16 = v15;
-          v17 = [v9 creationDate];
+          creationDate = [v9 creationDate];
           v31 = v12;
           v32 = v10;
-          v18 = [v30 stringWithFormat:@"#%lu: Asset ID: %@\n\tType: %@ (Subtypes: %@) (Playback Style: %@)\n\tIs Guest/Shared with You: %@\n\tCreation Date: %@", v33, v13, v10, v11, v12, v16, v17];
+          v18 = [v30 stringWithFormat:@"#%lu: Asset ID: %@\n\tType: %@ (Subtypes: %@) (Playback Style: %@)\n\tIs Guest/Shared with You: %@\n\tCreation Date: %@", v33, uuid, v10, v11, v12, v16, creationDate];
 
           v19 = [(PUErrorPresentationController *)self additionalRadarDescriptionLinesForAsset:v9];
           v34 = 0u;
@@ -373,37 +373,37 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
   return v24;
 }
 
-- (void)setRadarComponentID:(id)a3 name:(id)a4 version:(id)a5
+- (void)setRadarComponentID:(id)d name:(id)name version:(id)version
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 copy];
+  versionCopy = version;
+  nameCopy = name;
+  v10 = [d copy];
   radarComponentID = self->_radarComponentID;
   self->_radarComponentID = v10;
 
-  v12 = [v9 copy];
+  v12 = [nameCopy copy];
   radarComponentName = self->_radarComponentName;
   self->_radarComponentName = v12;
 
-  v14 = [v8 copy];
+  v14 = [versionCopy copy];
   radarComponentVersion = self->_radarComponentVersion;
   self->_radarComponentVersion = v14;
 }
 
-- (PUErrorPresentationController)initWithErrors:(id)a3 forAssets:(id)a4
+- (PUErrorPresentationController)initWithErrors:(id)errors forAssets:(id)assets
 {
-  v6 = a3;
-  v7 = a4;
+  errorsCopy = errors;
+  assetsCopy = assets;
   v16.receiver = self;
   v16.super_class = PUErrorPresentationController;
   v8 = [(PUErrorPresentationController *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [errorsCopy copy];
     errors = v8->_errors;
     v8->_errors = v9;
 
-    v11 = [v7 copy];
+    v11 = [assetsCopy copy];
     assets = v8->_assets;
     v8->_assets = v11;
 
@@ -415,14 +415,14 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
   return v8;
 }
 
-+ (BOOL)errorIsAuthenticationRelatedCPLError:(id)a3
++ (BOOL)errorIsAuthenticationRelatedCPLError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = getCPLErrorDomain();
-  if ([v4 isEqualToString:v5])
+  if ([domain isEqualToString:v5])
   {
-    v6 = [v3 code] == 1006;
+    v6 = [errorCopy code] == 1006;
   }
 
   else
@@ -433,14 +433,14 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
   return v6;
 }
 
-+ (BOOL)errorIsLowDiskSpaceRelatedCPLError:(id)a3
++ (BOOL)errorIsLowDiskSpaceRelatedCPLError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = getCPLErrorDomain();
-  if ([v4 isEqualToString:v5])
+  if ([domain isEqualToString:v5])
   {
-    v6 = [v3 code] == 1005;
+    v6 = [errorCopy code] == 1005;
   }
 
   else
@@ -451,21 +451,21 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
   return v6;
 }
 
-+ (BOOL)isNetworkRelatedError:(id)a3
++ (BOOL)isNetworkRelatedError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E6978F50]] && objc_msgSend(v3, "code") == 3169)
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E6978F50]] && objc_msgSend(errorCopy, "code") == 3169)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 domain];
-    if ([v6 isEqualToString:*MEMORY[0x1E696A978]])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:*MEMORY[0x1E696A978]])
     {
-      v5 = [v3 code] == -1009;
+      v5 = [errorCopy code] == -1009;
     }
 
     else
@@ -477,18 +477,18 @@ uint64_t __63__PUErrorPresentationController_alertControllerWithCompletion___blo
   return v5;
 }
 
-+ (id)alertActionForNavigatingToDestination:(int64_t)a3 withTitle:(id)a4 completion:(id)a5
++ (id)alertActionForNavigatingToDestination:(int64_t)destination withTitle:(id)title completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E69DC648];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__PUErrorPresentationController_alertActionForNavigatingToDestination_withTitle_completion___block_invoke;
   v12[3] = &unk_1E7B74660;
-  v13 = v7;
-  v14 = a3;
-  v9 = v7;
-  v10 = [v8 actionWithTitle:a4 style:0 handler:v12];
+  v13 = completionCopy;
+  destinationCopy = destination;
+  v9 = completionCopy;
+  v10 = [v8 actionWithTitle:title style:0 handler:v12];
 
   return v10;
 }

@@ -1,17 +1,17 @@
 @interface MUFixedToTopCollectionViewFlowLayout
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 @end
 
 @implementation MUFixedToTopCollectionViewFlowLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v38 = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = MUFixedToTopCollectionViewFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v36 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [v3 firstObject];
-  [v4 frame];
+  v3 = [(UICollectionViewFlowLayout *)&v36 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  firstObject = [v3 firstObject];
+  [firstObject frame];
   MidY = CGRectGetMidY(v40);
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -65,10 +65,10 @@
             v13 = v23;
           }
 
-          v24 = [v7 lastObject];
+          lastObject = [v7 lastObject];
 
           v15 = 1.0;
-          if (v17 == v24)
+          if (v17 == lastObject)
           {
 LABEL_11:
             v31[0] = MEMORY[0x1E69E9820];

@@ -1,53 +1,53 @@
 @interface PKPeerPaymentActionAddMoneyViewController
 - (BOOL)_isCurrentAmountValid;
-- (BOOL)_shouldShakeCard:(id)a3;
+- (BOOL)_shouldShakeCard:(id)card;
 - (BOOL)_showSignageWithinKeypad;
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5;
-- (PKPeerPaymentActionAddMoneyViewController)initWithPaymentPass:(id)a3 webService:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6;
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to;
+- (PKPeerPaymentActionAddMoneyViewController)initWithPaymentPass:(id)pass webService:(id)service passLibraryDataProvider:(id)provider context:(int64_t)context;
 - (id)_addBarButton;
 - (id)_spinnerBarButton;
-- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)a3;
-- (id)presentationSceneIdentifierForTopUpController:(id)a3;
+- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)controller;
+- (id)presentationSceneIdentifierForTopUpController:(id)controller;
 - (void)_addAction;
-- (void)_currentAmountDidChangeTo:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4;
-- (void)_showNavigationBarSpinner:(BOOL)a3;
+- (void)_currentAmountDidChangeTo:(id)to shouldGenerateNewSuggestions:(BOOL)suggestions;
+- (void)_showNavigationBarSpinner:(BOOL)spinner;
 - (void)_updateBarButtonEnabledState;
-- (void)_updateCurrentAmount:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_updateCurrentAmount:(id)amount shouldGenerateNewSuggestions:(BOOL)suggestions;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)dealloc;
-- (void)didSelectSuggestion:(id)a3;
-- (void)enterCurrencyAmountPassViewDidLoadPassSnapshot:(id)a3;
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3;
-- (void)keyboardWillChange:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)didSelectSuggestion:(id)suggestion;
+- (void)enterCurrencyAmountPassViewDidLoadPassSnapshot:(id)snapshot;
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount;
+- (void)keyboardWillChange:(id)change;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
-- (void)peerPaymentActionController:(id)a3 hasChangedState:(unint64_t)a4;
-- (void)setCardBalance:(id)a3;
-- (void)setMaxBalance:(id)a3;
-- (void)setMaxLoadAmount:(id)a3;
-- (void)setMinBalance:(id)a3;
-- (void)setMinLoadAmount:(id)a3;
-- (void)thresholdTopUpController:(id)a3 requestsPushViewController:(id)a4;
-- (void)thresholdTopUpControllerCompletedSetup:(id)a3;
+- (void)peerPaymentActionController:(id)controller hasChangedState:(unint64_t)state;
+- (void)setCardBalance:(id)balance;
+- (void)setMaxBalance:(id)balance;
+- (void)setMaxLoadAmount:(id)amount;
+- (void)setMinBalance:(id)balance;
+- (void)setMinLoadAmount:(id)amount;
+- (void)thresholdTopUpController:(id)controller requestsPushViewController:(id)viewController;
+- (void)thresholdTopUpControllerCompletedSetup:(id)setup;
 - (void)updateAccountValues;
 - (void)updateFirstResponder;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 - (void)willDismissViewController;
 @end
 
 @implementation PKPeerPaymentActionAddMoneyViewController
 
-- (PKPeerPaymentActionAddMoneyViewController)initWithPaymentPass:(id)a3 webService:(id)a4 passLibraryDataProvider:(id)a5 context:(int64_t)a6
+- (PKPeerPaymentActionAddMoneyViewController)initWithPaymentPass:(id)pass webService:(id)service passLibraryDataProvider:(id)provider context:(int64_t)context
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  passCopy = pass;
+  serviceCopy = service;
+  providerCopy = provider;
   v33.receiver = self;
   v33.super_class = PKPeerPaymentActionAddMoneyViewController;
-  v13 = [(PKPeerPaymentActionViewController *)&v33 initWithPaymentPass:v10 webService:v11 passLibraryDataProvider:v12 context:a6];
+  v13 = [(PKPeerPaymentActionViewController *)&v33 initWithPaymentPass:passCopy webService:serviceCopy passLibraryDataProvider:providerCopy context:context];
   if (v13)
   {
     v14 = objc_alloc_init(MEMORY[0x1E69B89F0]);
@@ -58,21 +58,21 @@
     v16 = *(MEMORY[0x1E695F050] + 16);
     *(v13 + 1144) = *MEMORY[0x1E695F050];
     *(v13 + 1160) = v16;
-    v17 = [v13 navigationItem];
+    navigationItem = [v13 navigationItem];
     v18 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPer_6.isa);
-    [v17 setTitle:v18];
+    [navigationItem setTitle:v18];
 
-    v19 = [v13 cancelButton];
-    [v17 setLeftBarButtonItem:v19];
+    cancelButton = [v13 cancelButton];
+    [navigationItem setLeftBarButtonItem:cancelButton];
 
-    v20 = [v13 _addBarButton];
-    [v17 setRightBarButtonItem:v20];
+    _addBarButton = [v13 _addBarButton];
+    [navigationItem setRightBarButtonItem:_addBarButton];
 
     [v13 _updateBarButtonEnabledState];
     objc_initWeak(&location, v13);
-    v21 = [v13 account];
-    v22 = [v13 account];
-    if ([v22 supportsThresholdTopUp])
+    account = [v13 account];
+    account2 = [v13 account];
+    if ([account2 supportsThresholdTopUp])
     {
       v23 = PKIsVision();
 
@@ -86,21 +86,21 @@ LABEL_6:
         v26 = objc_alloc_init(MEMORY[0x1E69B8F40]);
         [v26 setEndpoint:3];
         [v26 setQuoteRequestDestination:3];
-        v27 = [v13 webService];
-        [v27 prewarmDeviceScoreForAttributes:v26];
+        webService = [v13 webService];
+        [webService prewarmDeviceScoreForAttributes:v26];
 
         objc_destroyWeak(&location);
         goto LABEL_7;
       }
 
-      v22 = [MEMORY[0x1E69B8DB8] paymentService];
+      account2 = [MEMORY[0x1E69B8DB8] paymentService];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __108__PKPeerPaymentActionAddMoneyViewController_initWithPaymentPass_webService_passLibraryDataProvider_context___block_invoke;
       v29[3] = &unk_1E801CA90;
-      v30 = v21;
+      v30 = account;
       objc_copyWeak(&v31, &location);
-      [v22 familyMembersWithCompletion:v29];
+      [account2 familyMembersWithCompletion:v29];
       objc_destroyWeak(&v31);
     }
 
@@ -216,8 +216,8 @@ void __108__PKPeerPaymentActionAddMoneyViewController_initWithPaymentPass_webSer
   v3 = objc_alloc_init(MEMORY[0x1E69B8F40]);
   [v3 setEndpoint:3];
   [v3 setQuoteRequestDestination:3];
-  v4 = [(PKPeerPaymentActionViewController *)self webService];
-  [v4 unloadDeviceScoreForAttributes:v3];
+  webService = [(PKPeerPaymentActionViewController *)self webService];
+  [webService unloadDeviceScoreForAttributes:v3];
 
   v5.receiver = self;
   v5.super_class = PKPeerPaymentActionAddMoneyViewController;
@@ -229,8 +229,8 @@ void __108__PKPeerPaymentActionAddMoneyViewController_initWithPaymentPass_webSer
   v36.receiver = self;
   v36.super_class = PKPeerPaymentActionAddMoneyViewController;
   [(PKPeerPaymentActionViewController *)&v36 loadView];
-  v3 = [(PKPeerPaymentActionViewController *)self account];
-  v4 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  account = [(PKPeerPaymentActionViewController *)self account];
+  view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
   if (PKPeerPaymentFDICSignageEnabled() && ([(PKPeerPaymentActionViewController *)self account], v5 = objc_claimAutoreleasedReturnValue(), IsFDICInsured = PKPeerPaymentAccountIsFDICInsured(), v5, IsFDICInsured))
   {
     v7 = [[PKFDICSignageView alloc] initWithFeature:1 displayingBankName:1];
@@ -247,51 +247,51 @@ void __108__PKPeerPaymentActionAddMoneyViewController_initWithPaymentPass_webSer
     v9 = 0;
   }
 
-  v10 = [(PKPeerPaymentActionViewController *)self currentAmount];
-  v11 = [v3 currentBalance];
-  v12 = [v11 currency];
-  v13 = PKCurrencyAmountCreate(v10, v12);
+  currentAmount = [(PKPeerPaymentActionViewController *)self currentAmount];
+  currentBalance = [account currentBalance];
+  currency = [currentBalance currency];
+  v13 = PKCurrencyAmountCreate(currentAmount, currency);
 
-  v14 = [(PKPeerPaymentActionViewController *)self pass];
-  LODWORD(v11) = [(PKPeerPaymentActionAddMoneyViewController *)self _showSignageWithinKeypad];
+  pass = [(PKPeerPaymentActionViewController *)self pass];
+  LODWORD(currentBalance) = [(PKPeerPaymentActionAddMoneyViewController *)self _showSignageWithinKeypad];
   v15 = [PKEnterCurrencyAmountPassView alloc];
-  if (v11)
+  if (currentBalance)
   {
-    v16 = [(PKEnterCurrencyAmountPassView *)v15 initWithCurrenyAmount:v13 pass:v14 withdrawal:0 keypadBottomView:v9];
+    v16 = [(PKEnterCurrencyAmountPassView *)v15 initWithCurrenyAmount:v13 pass:pass withdrawal:0 keypadBottomView:v9];
     amountPassView = self->_amountPassView;
     self->_amountPassView = v16;
   }
 
   else
   {
-    v18 = [(PKEnterCurrencyAmountPassView *)v15 initWithCurrenyAmount:v13 pass:v14 withdrawal:0];
+    v18 = [(PKEnterCurrencyAmountPassView *)v15 initWithCurrenyAmount:v13 pass:pass withdrawal:0];
     v19 = self->_amountPassView;
     self->_amountPassView = v18;
 
     objc_storeStrong(&self->_footerContainer, v9);
     if (self->_footerContainer)
     {
-      [v4 addSubview:?];
+      [view addSubview:?];
     }
   }
 
-  v20 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
-  [v20 setDelegate:self];
+  enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+  [enterCurrencyAmountView setDelegate:self];
   [(PKEnterCurrencyAmountPassView *)self->_amountPassView setDelegate:self];
   if (PKUIKeyboardIsHardwareKeyboardActive() & 1) != 0 || (_UISolariumFeatureFlagEnabled())
   {
-    v21 = [v20 amountTextField];
-    [v21 setDisablePrediction:1];
+    amountTextField = [enterCurrencyAmountView amountTextField];
+    [amountTextField setDisablePrediction:1];
   }
 
   else
   {
-    v22 = [[PKNumberPadSuggestionsView alloc] initWithDefaultFrame];
+    initWithDefaultFrame = [[PKNumberPadSuggestionsView alloc] initWithDefaultFrame];
     suggestionView = self->_suggestionView;
-    self->_suggestionView = v22;
+    self->_suggestionView = initWithDefaultFrame;
 
     [(PKNumberPadSuggestionsView *)self->_suggestionView setDelegate:self];
-    [v20 setInputAccessoryView:self->_suggestionView];
+    [enterCurrencyAmountView setInputAccessoryView:self->_suggestionView];
   }
 
   v32 = v13;
@@ -303,25 +303,25 @@ void __108__PKPeerPaymentActionAddMoneyViewController_initWithPaymentPass_webSer
   v33[3] = &unk_1E8010A60;
   objc_copyWeak(&v34, &location);
   v25 = [v24 actionWithHandler:v33];
-  v26 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v27 = PKLocalizedPeerPaymentRecurringString(&cfstr_AutoReloadSetu.isa);
-  [v26 setTitle:v27];
+  [plainButtonConfiguration setTitle:v27];
 
-  [v26 setTitleTextAttributesTransformer:&__block_literal_global_42_0];
-  v28 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v26 primaryAction:v25];
+  [plainButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_42_0];
+  v28 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v25];
   actionButton = self->_actionButton;
   self->_actionButton = v28;
 
   [(UIButton *)self->_actionButton setHidden:!self->_offerThresholdTopUp];
   [(UIButton *)self->_actionButton setAccessibilityIdentifier:*MEMORY[0x1E69B94A8]];
-  [v4 addSubview:self->_actionButton];
-  [v4 addSubview:self->_amountPassView];
-  v30 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v30 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-  [v30 addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
-  [v30 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
-  v31 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-  [v31 setAccessibilityIdentifier:*MEMORY[0x1E69B93F0]];
+  [view addSubview:self->_actionButton];
+  [view addSubview:self->_amountPassView];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardWillChange_ name:*MEMORY[0x1E69DE068] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  view2 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  [view2 setAccessibilityIdentifier:*MEMORY[0x1E69B93F0]];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(&location);
@@ -356,13 +356,13 @@ id __53__PKPeerPaymentActionAddMoneyViewController_loadView__block_invoke_2(uint
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionAddMoneyViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-  [v4 layoutIfNeeded];
+  [(PKPeerPaymentActionAddMoneyViewController *)&v5 viewWillAppear:appear];
+  view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  [view layoutIfNeeded];
 
   [(PKPeerPaymentActionAddMoneyViewController *)self updateFirstResponder];
 }
@@ -372,13 +372,13 @@ id __53__PKPeerPaymentActionAddMoneyViewController_loadView__block_invoke_2(uint
   v49.receiver = self;
   v49.super_class = PKPeerPaymentActionAddMoneyViewController;
   [(PKPeerPaymentActionAddMoneyViewController *)&v49 viewWillLayoutSubviews];
-  v3 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 bounds];
+  [view bounds];
   v13 = v12;
   rect = v5 + v14;
   v16 = v15 - (v7 + v11);
@@ -395,12 +395,12 @@ id __53__PKPeerPaymentActionAddMoneyViewController_loadView__block_invoke_2(uint
 
     else
     {
-      v20 = [v3 window];
-      v21 = v20;
-      if (v20)
+      window = [view window];
+      v21 = window;
+      if (window)
       {
-        [v20 convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
-        [v3 convertRect:0 fromView:?];
+        [window convertRect:0 fromWindow:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+        [view convertRect:0 fromView:?];
         v19 = fmax(rect + v18 - v22, 0.0);
       }
     }
@@ -463,34 +463,34 @@ id __53__PKPeerPaymentActionAddMoneyViewController_loadView__block_invoke_2(uint
   [(PKEnterCurrencyAmountPassView *)self->_amountPassView setFrame:v23, rect, v45, v46];
 }
 
-- (void)peerPaymentActionController:(id)a3 hasChangedState:(unint64_t)a4
+- (void)peerPaymentActionController:(id)controller hasChangedState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionViewController *)&v7 peerPaymentActionController:a3 hasChangedState:?];
-  if (a4 != 2)
+  [(PKPeerPaymentActionViewController *)&v7 peerPaymentActionController:controller hasChangedState:?];
+  if (state != 2)
   {
-    if (a4 != 1)
+    if (state != 1)
     {
       return;
     }
 
-    v6 = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 
   [(PKPeerPaymentActionAddMoneyViewController *)self updateFirstResponder];
   [(PKPeerPaymentActionAddMoneyViewController *)self _showNavigationBarSpinner:0];
 }
 
-- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)a3
+- (id)presentationSceneIdentifierForPeerPaymentActionController:(id)controller
 {
-  v3 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
 - (void)willDismissViewController
@@ -498,19 +498,19 @@ id __53__PKPeerPaymentActionAddMoneyViewController_loadView__block_invoke_2(uint
   v4.receiver = self;
   v4.super_class = PKPeerPaymentActionAddMoneyViewController;
   [(PKPeerPaymentActionViewController *)&v4 willDismissViewController];
-  v3 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
-  [v3 dismissKeyboard];
+  enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+  [enterCurrencyAmountView dismissKeyboard];
 }
 
 - (void)updateFirstResponder
 {
-  v3 = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
-  v4 = [v3 presentedViewController];
+  navigationController = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
+  presentedViewController = [navigationController presentedViewController];
 
-  if (!v4)
+  if (!presentedViewController)
   {
-    v5 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
-    [v5 showKeyboard];
+    enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+    [enterCurrencyAmountView showKeyboard];
   }
 }
 
@@ -519,78 +519,78 @@ id __53__PKPeerPaymentActionAddMoneyViewController_loadView__block_invoke_2(uint
   v30.receiver = self;
   v30.super_class = PKPeerPaymentActionAddMoneyViewController;
   [(PKPeerPaymentActionViewController *)&v30 updateAccountValues];
-  v3 = [(PKPeerPaymentActionViewController *)self account];
+  account = [(PKPeerPaymentActionViewController *)self account];
   [(PKPeerPaymentActionAddMoneyViewController *)self _updateBarButtonEnabledState];
-  if (v3)
+  if (account)
   {
-    v4 = [v3 currentBalance];
-    v5 = [v3 maximumBalance];
-    v6 = [v4 currency];
+    currentBalance = [account currentBalance];
+    maximumBalance = [account maximumBalance];
+    currency = [currentBalance currency];
     v7 = PKMaximumFractionDigitsForCurrencyCode();
 
     suggestionGenerator = self->_suggestionGenerator;
-    v9 = [v4 amount];
-    [(PKNumericSuggestionsEnterValueAlgorithm *)suggestionGenerator setCardBalance:v9];
+    amount = [currentBalance amount];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)suggestionGenerator setCardBalance:amount];
 
     v10 = self->_suggestionGenerator;
-    v11 = [v4 currency];
-    [(PKNumericSuggestionsEnterValueAlgorithm *)v10 setCurrencyCode:v11];
+    currency2 = [currentBalance currency];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)v10 setCurrencyCode:currency2];
 
     [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setPowerOfTenFactor:3 - v7];
     [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setDecimalPrecision:v7];
     v12 = self->_suggestionGenerator;
-    v13 = [v3 defaultSuggestions];
-    [(PKNumericSuggestionsEnterValueAlgorithm *)v12 setDefaultValues:v13];
+    defaultSuggestions = [account defaultSuggestions];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)v12 setDefaultValues:defaultSuggestions];
 
     v14 = self->_suggestionGenerator;
-    v15 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
-    [(PKNumericSuggestionsEnterValueAlgorithm *)v14 setMaxLoadAmount:v15];
+    maxLoadAmount = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)v14 setMaxLoadAmount:maxLoadAmount];
 
     v16 = self->_suggestionGenerator;
-    v17 = [(PKPeerPaymentActionViewController *)self minLoadAmount];
-    [(PKNumericSuggestionsEnterValueAlgorithm *)v16 setMinLoadAmount:v17];
+    minLoadAmount = [(PKPeerPaymentActionViewController *)self minLoadAmount];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)v16 setMinLoadAmount:minLoadAmount];
 
-    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxBalance:v5];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxBalance:maximumBalance];
     v18 = self->_suggestionGenerator;
-    v19 = [(PKPeerPaymentActionViewController *)self minBalance];
-    [(PKNumericSuggestionsEnterValueAlgorithm *)v18 setMinBalance:v19];
+    minBalance = [(PKPeerPaymentActionViewController *)self minBalance];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)v18 setMinBalance:minBalance];
 
-    v20 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
-    v21 = [v4 currency];
-    [v20 setCurrency:v21];
+    enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+    currency3 = [currentBalance currency];
+    [enterCurrencyAmountView setCurrency:currency3];
 
-    [v20 sizeToFit];
-    v22 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-    v23 = [v4 currency];
-    [v22 setCurrencyCode:v23];
+    [enterCurrencyAmountView sizeToFit];
+    balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+    currency4 = [currentBalance currency];
+    [balanceView setCurrencyCode:currency4];
 
-    v24 = [(PKPeerPaymentActionViewController *)self minBalance];
-    [v22 setMinBalance:v24];
+    minBalance2 = [(PKPeerPaymentActionViewController *)self minBalance];
+    [balanceView setMinBalance:minBalance2];
 
-    [v22 setMaxBalance:v5];
-    v25 = [(PKPeerPaymentActionViewController *)self minLoadAmount];
-    [v22 setMinLoadAmount:v25];
+    [balanceView setMaxBalance:maximumBalance];
+    minLoadAmount2 = [(PKPeerPaymentActionViewController *)self minLoadAmount];
+    [balanceView setMinLoadAmount:minLoadAmount2];
 
-    v26 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
-    [v22 setMaxLoadAmount:v26];
+    maxLoadAmount2 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
+    [balanceView setMaxLoadAmount:maxLoadAmount2];
 
-    v27 = [v4 amount];
-    [v22 setCardBalance:v27];
+    amount2 = [currentBalance amount];
+    [balanceView setCardBalance:amount2];
 
-    [v22 sizeToFit];
-    [(PKPeerPaymentActionAddMoneyViewController *)self setMaxBalance:v5];
-    v28 = [(PKPeerPaymentActionViewController *)self currentAmount];
-    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:v28 shouldGenerateNewSuggestions:1];
+    [balanceView sizeToFit];
+    [(PKPeerPaymentActionAddMoneyViewController *)self setMaxBalance:maximumBalance];
+    currentAmount = [(PKPeerPaymentActionViewController *)self currentAmount];
+    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:currentAmount shouldGenerateNewSuggestions:1];
 
-    v29 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-    [v29 setNeedsLayout];
+    view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -636,14 +636,14 @@ BOOL __62__PKPeerPaymentActionAddMoneyViewController_keyboardWillShow___block_in
   return !CGRectEqualToRect(*(*(a1 + 32) + 1144), v16);
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
     if (v7)
     {
@@ -678,7 +678,7 @@ BOOL __64__PKPeerPaymentActionAddMoneyViewController_keyboardWillChange___block_
   return !CGRectEqualToRect(*(*(a1 + 32) + 1144), v13);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   if (self->_keyboardVisible)
   {
@@ -709,17 +709,17 @@ BOOL __62__PKPeerPaymentActionAddMoneyViewController_keyboardWillHide___block_in
   return !CGRectEqualToRect(*&v3, v8);
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(PKPeerPaymentActionAddMoneyViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(PKPeerPaymentActionAddMoneyViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      if (v4[2](v4))
+      [viewIfLoaded layoutIfNeeded];
+      if (actionCopy[2](actionCopy))
       {
         [v6 setNeedsLayout];
         v7 = MEMORY[0x1E69DD250];
@@ -740,7 +740,7 @@ BOOL __62__PKPeerPaymentActionAddMoneyViewController_keyboardWillHide___block_in
 
     else
     {
-      v4[2](v4);
+      actionCopy[2](actionCopy);
     }
   }
 }
@@ -782,22 +782,22 @@ void __76__PKPeerPaymentActionAddMoneyViewController__updateLayoutForKeyboardAct
   return v2;
 }
 
-- (void)enterCurrencyAmountPassViewDidLoadPassSnapshot:(id)a3
+- (void)enterCurrencyAmountPassViewDidLoadPassSnapshot:(id)snapshot
 {
-  v3 = [(PKPeerPaymentActionAddMoneyViewController *)self viewIfLoaded];
-  [v3 setNeedsLayout];
+  viewIfLoaded = [(PKPeerPaymentActionAddMoneyViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)didSelectSuggestion:(id)a3
+- (void)didSelectSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 value];
-  -[PKPeerPaymentActionAddMoneyViewController _updateCurrentAmount:shouldGenerateNewSuggestions:](self, "_updateCurrentAmount:shouldGenerateNewSuggestions:", v5, [v4 usedMaximumSuggestion]);
+  suggestionCopy = suggestion;
+  value = [suggestionCopy value];
+  -[PKPeerPaymentActionAddMoneyViewController _updateCurrentAmount:shouldGenerateNewSuggestions:](self, "_updateCurrentAmount:shouldGenerateNewSuggestions:", value, [suggestionCopy usedMaximumSuggestion]);
 
-  v6 = [v4 value];
+  value2 = [suggestionCopy value];
 
-  LODWORD(v4) = [(PKPeerPaymentActionAddMoneyViewController *)self _shouldShakeCard:v6];
-  if (v4)
+  LODWORD(suggestionCopy) = [(PKPeerPaymentActionAddMoneyViewController *)self _shouldShakeCard:value2];
+  if (suggestionCopy)
   {
     amountPassView = self->_amountPassView;
 
@@ -805,126 +805,126 @@ void __76__PKPeerPaymentActionAddMoneyViewController__updateLayoutForKeyboardAct
   }
 }
 
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(PKPeerPaymentActionAddMoneyViewController *)self _shouldShakeCard:v8])
+  fromCopy = from;
+  toCopy = to;
+  if ([(PKPeerPaymentActionAddMoneyViewController *)self _shouldShakeCard:toCopy])
   {
     [(PKEnterCurrencyAmountPassView *)self->_amountPassView shakePassView];
   }
 
-  v9 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
-  v10 = [(PKPeerPaymentActionViewController *)self cardBalance];
-  v11 = [(PKPeerPaymentActionViewController *)self maxBalance];
-  v12 = !v9 || [v9 compare:v7] != -1 || objc_msgSend(v9, "compare:", v8) != -1;
-  v13 = [v8 decimalNumberByAdding:v10];
-  v14 = [v7 decimalNumberByAdding:v10];
-  if (v11 && [v11 compare:v13] == -1)
+  maxLoadAmount = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
+  cardBalance = [(PKPeerPaymentActionViewController *)self cardBalance];
+  maxBalance = [(PKPeerPaymentActionViewController *)self maxBalance];
+  v12 = !maxLoadAmount || [maxLoadAmount compare:fromCopy] != -1 || objc_msgSend(maxLoadAmount, "compare:", toCopy) != -1;
+  v13 = [toCopy decimalNumberByAdding:cardBalance];
+  v14 = [fromCopy decimalNumberByAdding:cardBalance];
+  if (maxBalance && [maxBalance compare:v13] == -1)
   {
-    v12 &= [v11 compare:v14] != -1;
+    v12 &= [maxBalance compare:v14] != -1;
   }
 
   return v12;
 }
 
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount
 {
-  v5 = [a3 currentAmount];
-  [(PKPeerPaymentActionViewController *)self setCurrentAmount:v5];
-  v4 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-  [v4 addAmountToBalance:v5];
+  currentAmount = [amount currentAmount];
+  [(PKPeerPaymentActionViewController *)self setCurrentAmount:currentAmount];
+  balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+  [balanceView addAmountToBalance:currentAmount];
 
-  [(PKPeerPaymentActionAddMoneyViewController *)self _currentAmountDidChangeTo:v5 shouldGenerateNewSuggestions:1];
+  [(PKPeerPaymentActionAddMoneyViewController *)self _currentAmountDidChangeTo:currentAmount shouldGenerateNewSuggestions:1];
 }
 
-- (void)setCardBalance:(id)a3
+- (void)setCardBalance:(id)balance
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentActionViewController *)self cardBalance];
+  balanceCopy = balance;
+  cardBalance = [(PKPeerPaymentActionViewController *)self cardBalance];
   v8.receiver = self;
   v8.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionViewController *)&v8 setCardBalance:v4];
-  if (v5 != v4 && ([v4 isEqualToNumber:v5] & 1) == 0)
+  [(PKPeerPaymentActionViewController *)&v8 setCardBalance:balanceCopy];
+  if (cardBalance != balanceCopy && ([balanceCopy isEqualToNumber:cardBalance] & 1) == 0)
   {
-    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setCardBalance:v4];
-    v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-    [v6 setCardBalance:v4];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setCardBalance:balanceCopy];
+    balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+    [balanceView setCardBalance:balanceCopy];
 
-    v7 = [MEMORY[0x1E696AB90] zero];
-    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:v7 shouldGenerateNewSuggestions:1];
+    zero = [MEMORY[0x1E696AB90] zero];
+    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
   }
 }
 
-- (void)setMaxBalance:(id)a3
+- (void)setMaxBalance:(id)balance
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentActionViewController *)self maxBalance];
+  balanceCopy = balance;
+  maxBalance = [(PKPeerPaymentActionViewController *)self maxBalance];
   v8.receiver = self;
   v8.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionViewController *)&v8 setMaxBalance:v4];
-  if (v5 != v4 && ([v4 isEqualToNumber:v5] & 1) == 0)
+  [(PKPeerPaymentActionViewController *)&v8 setMaxBalance:balanceCopy];
+  if (maxBalance != balanceCopy && ([balanceCopy isEqualToNumber:maxBalance] & 1) == 0)
   {
-    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxBalance:v4];
-    v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-    [v6 setMaxBalance:v4];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxBalance:balanceCopy];
+    balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+    [balanceView setMaxBalance:balanceCopy];
 
-    v7 = [MEMORY[0x1E696AB90] zero];
-    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:v7 shouldGenerateNewSuggestions:1];
+    zero = [MEMORY[0x1E696AB90] zero];
+    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
   }
 }
 
-- (void)setMinBalance:(id)a3
+- (void)setMinBalance:(id)balance
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentActionViewController *)self minBalance];
+  balanceCopy = balance;
+  minBalance = [(PKPeerPaymentActionViewController *)self minBalance];
   v8.receiver = self;
   v8.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionViewController *)&v8 setMinBalance:v4];
-  if (v5 != v4 && ([v4 isEqualToNumber:v5] & 1) == 0)
+  [(PKPeerPaymentActionViewController *)&v8 setMinBalance:balanceCopy];
+  if (minBalance != balanceCopy && ([balanceCopy isEqualToNumber:minBalance] & 1) == 0)
   {
-    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMinBalance:v4];
-    v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-    [v6 setMinBalance:v4];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMinBalance:balanceCopy];
+    balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+    [balanceView setMinBalance:balanceCopy];
 
-    v7 = [MEMORY[0x1E696AB90] zero];
-    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:v7 shouldGenerateNewSuggestions:1];
+    zero = [MEMORY[0x1E696AB90] zero];
+    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
   }
 }
 
-- (void)setMaxLoadAmount:(id)a3
+- (void)setMaxLoadAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
+  amountCopy = amount;
+  maxLoadAmount = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
   v8.receiver = self;
   v8.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionViewController *)&v8 setMaxLoadAmount:v4];
-  if (v5 != v4 && ([v4 isEqualToNumber:v5] & 1) == 0)
+  [(PKPeerPaymentActionViewController *)&v8 setMaxLoadAmount:amountCopy];
+  if (maxLoadAmount != amountCopy && ([amountCopy isEqualToNumber:maxLoadAmount] & 1) == 0)
   {
-    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxLoadAmount:v4];
-    v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-    [v6 setMaxLoadAmount:v4];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMaxLoadAmount:amountCopy];
+    balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+    [balanceView setMaxLoadAmount:amountCopy];
 
-    v7 = [MEMORY[0x1E696AB90] zero];
-    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:v7 shouldGenerateNewSuggestions:1];
+    zero = [MEMORY[0x1E696AB90] zero];
+    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
   }
 }
 
-- (void)setMinLoadAmount:(id)a3
+- (void)setMinLoadAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentActionViewController *)self minLoadAmount];
+  amountCopy = amount;
+  minLoadAmount = [(PKPeerPaymentActionViewController *)self minLoadAmount];
   v8.receiver = self;
   v8.super_class = PKPeerPaymentActionAddMoneyViewController;
-  [(PKPeerPaymentActionViewController *)&v8 setMinLoadAmount:v4];
-  if (v5 != v4 && ([v4 isEqualToNumber:v5] & 1) == 0)
+  [(PKPeerPaymentActionViewController *)&v8 setMinLoadAmount:amountCopy];
+  if (minLoadAmount != amountCopy && ([amountCopy isEqualToNumber:minLoadAmount] & 1) == 0)
   {
-    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMinLoadAmount:v4];
-    v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-    [v6 setMinLoadAmount:v4];
+    [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator setMinLoadAmount:amountCopy];
+    balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+    [balanceView setMinLoadAmount:amountCopy];
 
-    v7 = [MEMORY[0x1E696AB90] zero];
-    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:v7 shouldGenerateNewSuggestions:1];
+    zero = [MEMORY[0x1E696AB90] zero];
+    [(PKPeerPaymentActionAddMoneyViewController *)self _updateCurrentAmount:zero shouldGenerateNewSuggestions:1];
   }
 }
 
@@ -965,65 +965,65 @@ void __58__PKPeerPaymentActionAddMoneyViewController__addBarButton__block_invoke
 
 - (void)_updateBarButtonEnabledState
 {
-  v3 = [(PKPeerPaymentActionAddMoneyViewController *)self navigationItem];
-  v6 = [v3 rightBarButtonItem];
+  navigationItem = [(PKPeerPaymentActionAddMoneyViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  v4 = [(PKPeerPaymentActionViewController *)self account];
+  account = [(PKPeerPaymentActionViewController *)self account];
 
-  if (v4)
+  if (account)
   {
-    v5 = [(PKPeerPaymentActionAddMoneyViewController *)self _isCurrentAmountValid];
+    _isCurrentAmountValid = [(PKPeerPaymentActionAddMoneyViewController *)self _isCurrentAmountValid];
   }
 
   else
   {
-    v5 = 0;
+    _isCurrentAmountValid = 0;
   }
 
-  [v6 setEnabled:v5];
+  [rightBarButtonItem setEnabled:_isCurrentAmountValid];
 }
 
 - (void)_addAction
 {
   [(PKPeerPaymentActionAddMoneyViewController *)self _showNavigationBarSpinner:1];
-  v8 = [(PKPeerPaymentActionViewController *)self currentAmount];
-  v3 = [(PKPeerPaymentActionViewController *)self account];
-  v4 = [v3 currentBalance];
-  v5 = [v4 currency];
+  currentAmount = [(PKPeerPaymentActionViewController *)self currentAmount];
+  account = [(PKPeerPaymentActionViewController *)self account];
+  currentBalance = [account currentBalance];
+  currency = [currentBalance currency];
 
-  v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:v8 currency:v5 exponent:0];
-  v7 = [(PKPeerPaymentActionViewController *)self actionController];
-  [v7 performActionWithCurrencyAmount:v6];
+  v6 = [objc_alloc(MEMORY[0x1E69B8780]) initWithAmount:currentAmount currency:currency exponent:0];
+  actionController = [(PKPeerPaymentActionViewController *)self actionController];
+  [actionController performActionWithCurrencyAmount:v6];
 }
 
-- (void)_updateCurrentAmount:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4
+- (void)_updateCurrentAmount:(id)amount shouldGenerateNewSuggestions:(BOOL)suggestions
 {
-  v4 = a4;
-  v8 = a3;
-  [(PKPeerPaymentActionViewController *)self setCurrentAmount:v8];
-  v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
-  [v6 addAmountToBalance:v8];
+  suggestionsCopy = suggestions;
+  amountCopy = amount;
+  [(PKPeerPaymentActionViewController *)self setCurrentAmount:amountCopy];
+  balanceView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView balanceView];
+  [balanceView addAmountToBalance:amountCopy];
 
-  v7 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
-  [v7 setCurrentAmount:v8];
+  enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+  [enterCurrencyAmountView setCurrentAmount:amountCopy];
 
-  [(PKPeerPaymentActionAddMoneyViewController *)self _currentAmountDidChangeTo:v8 shouldGenerateNewSuggestions:v4];
+  [(PKPeerPaymentActionAddMoneyViewController *)self _currentAmountDidChangeTo:amountCopy shouldGenerateNewSuggestions:suggestionsCopy];
 }
 
-- (void)_currentAmountDidChangeTo:(id)a3 shouldGenerateNewSuggestions:(BOOL)a4
+- (void)_currentAmountDidChangeTo:(id)to shouldGenerateNewSuggestions:(BOOL)suggestions
 {
-  v4 = a4;
+  suggestionsCopy = suggestions;
   v38 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  if (v4)
+  toCopy = to;
+  if (suggestionsCopy)
   {
     val = self;
-    v25 = [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator suggestionsWithAmount:v27];
+    v25 = [(PKNumericSuggestionsEnterValueAlgorithm *)self->_suggestionGenerator suggestionsWithAmount:toCopy];
     if ((PKIsVision() & 1) != 0 || _UISolariumFeatureFlagEnabled())
     {
-      v6 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+      enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
       v7 = v25;
-      [v6 setAmountSuggestions:v25];
+      [enterCurrencyAmountView setAmountSuggestions:v25];
     }
 
     else
@@ -1062,18 +1062,18 @@ void __58__PKPeerPaymentActionAddMoneyViewController__addBarButton__block_invoke
 
                 v14 = *(*(&v31 + 1) + 8 * i);
                 v15 = MEMORY[0x1E69DC628];
-                v16 = [v14 displayValue];
+                displayValue = [v14 displayValue];
                 v29[0] = MEMORY[0x1E69E9820];
                 v29[1] = 3221225472;
                 v29[2] = __100__PKPeerPaymentActionAddMoneyViewController__currentAmountDidChangeTo_shouldGenerateNewSuggestions___block_invoke;
                 v29[3] = &unk_1E8012328;
                 objc_copyWeak(&v30, &location);
                 v29[4] = v14;
-                v17 = [v15 actionWithTitle:v16 image:0 identifier:0 handler:v29];
+                v17 = [v15 actionWithTitle:displayValue image:0 identifier:0 handler:v29];
 
                 v18 = [objc_alloc(MEMORY[0x1E69DC708]) initWithPrimaryAction:v17];
-                v19 = [MEMORY[0x1E69DC888] labelColor];
-                [v18 setTintColor:v19];
+                labelColor = [MEMORY[0x1E69DC888] labelColor];
+                [v18 setTintColor:labelColor];
 
                 [v10 addObject:v18];
                 objc_destroyWeak(&v30);
@@ -1085,14 +1085,14 @@ void __58__PKPeerPaymentActionAddMoneyViewController__addBarButton__block_invoke
             while (v11);
           }
 
-          v20 = [(PKEnterCurrencyAmountPassView *)val->_amountPassView enterCurrencyAmountView];
-          v21 = [v20 amountTextField];
-          v22 = [v21 inputAssistantItem];
+          enterCurrencyAmountView2 = [(PKEnterCurrencyAmountPassView *)val->_amountPassView enterCurrencyAmountView];
+          amountTextField = [enterCurrencyAmountView2 amountTextField];
+          inputAssistantItem = [amountTextField inputAssistantItem];
 
           v23 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v10 representativeItem:0];
           v36 = v23;
           v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
-          [v22 setTrailingBarButtonGroups:v24];
+          [inputAssistantItem setTrailingBarButtonGroups:v24];
 
           objc_destroyWeak(&location);
           v7 = v25;
@@ -1104,8 +1104,8 @@ void __58__PKPeerPaymentActionAddMoneyViewController__addBarButton__block_invoke
   }
 
   [(PKPeerPaymentActionAddMoneyViewController *)self _updateBarButtonEnabledState];
-  v8 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  [view setNeedsLayout];
 }
 
 void __100__PKPeerPaymentActionAddMoneyViewController__currentAmountDidChangeTo_shouldGenerateNewSuggestions___block_invoke(uint64_t a1)
@@ -1116,20 +1116,20 @@ void __100__PKPeerPaymentActionAddMoneyViewController__currentAmountDidChangeTo_
 
 - (BOOL)_isCurrentAmountValid
 {
-  v3 = [(PKPeerPaymentActionViewController *)self currentAmount];
-  v4 = [(PKPeerPaymentActionViewController *)self cardBalance];
-  v5 = [(PKPeerPaymentActionViewController *)self minBalance];
-  v6 = [(PKPeerPaymentActionViewController *)self maxBalance];
-  v7 = [(PKPeerPaymentActionViewController *)self minLoadAmount];
-  v8 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
-  v9 = [v4 decimalNumberByAdding:v3];
-  v10 = [MEMORY[0x1E696AB90] notANumber];
-  v11 = [v3 isEqualToNumber:v10];
+  currentAmount = [(PKPeerPaymentActionViewController *)self currentAmount];
+  cardBalance = [(PKPeerPaymentActionViewController *)self cardBalance];
+  minBalance = [(PKPeerPaymentActionViewController *)self minBalance];
+  maxBalance = [(PKPeerPaymentActionViewController *)self maxBalance];
+  minLoadAmount = [(PKPeerPaymentActionViewController *)self minLoadAmount];
+  maxLoadAmount = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
+  v9 = [cardBalance decimalNumberByAdding:currentAmount];
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  v11 = [currentAmount isEqualToNumber:notANumber];
 
-  v12 = [MEMORY[0x1E696AB90] zero];
-  v13 = [v3 compare:v12];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v13 = [currentAmount compare:zero];
 
-  if (!v13 || v8 && [v8 compare:v3] == -1 || v7 && objc_msgSend(v7, "compare:", v3) == 1 || v5 && objc_msgSend(v5, "compare:", v9) == 1)
+  if (!v13 || maxLoadAmount && [maxLoadAmount compare:currentAmount] == -1 || minLoadAmount && objc_msgSend(minLoadAmount, "compare:", currentAmount) == 1 || minBalance && objc_msgSend(minBalance, "compare:", v9) == 1)
   {
     v14 = 0;
   }
@@ -1137,30 +1137,30 @@ void __100__PKPeerPaymentActionAddMoneyViewController__currentAmountDidChangeTo_
   else
   {
     v14 = v11 ^ 1;
-    if (v6)
+    if (maxBalance)
     {
-      v14 &= [v6 compare:v9] != -1;
+      v14 &= [maxBalance compare:v9] != -1;
     }
   }
 
   return v14;
 }
 
-- (BOOL)_shouldShakeCard:(id)a3
+- (BOOL)_shouldShakeCard:(id)card
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentActionViewController *)self cardBalance];
-  v6 = [(PKPeerPaymentActionViewController *)self maxBalance];
-  v7 = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
-  if (v4)
+  cardCopy = card;
+  cardBalance = [(PKPeerPaymentActionViewController *)self cardBalance];
+  maxBalance = [(PKPeerPaymentActionViewController *)self maxBalance];
+  maxLoadAmount = [(PKPeerPaymentActionViewController *)self maxLoadAmount];
+  if (cardCopy)
   {
-    v8 = [MEMORY[0x1E696AB90] notANumber];
-    v9 = [v4 compare:v8];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v9 = [cardCopy compare:notANumber];
 
     if (v9)
     {
-      v10 = [v4 decimalNumberByAdding:v5];
-      LOBYTE(v9) = v7 && [v7 compare:v4] == -1 || v6 && objc_msgSend(v6, "compare:", v10) == -1;
+      v10 = [cardCopy decimalNumberByAdding:cardBalance];
+      LOBYTE(v9) = maxLoadAmount && [maxLoadAmount compare:cardCopy] == -1 || maxBalance && objc_msgSend(maxBalance, "compare:", v10) == -1;
     }
   }
 
@@ -1172,14 +1172,14 @@ void __100__PKPeerPaymentActionAddMoneyViewController__currentAmountDidChangeTo_
   return v9;
 }
 
-- (void)_showNavigationBarSpinner:(BOOL)a3
+- (void)_showNavigationBarSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
-  v6 = !v3;
-  [v5 setEnabled:v6];
+  spinnerCopy = spinner;
+  enterCurrencyAmountView = [(PKEnterCurrencyAmountPassView *)self->_amountPassView enterCurrencyAmountView];
+  v6 = !spinnerCopy;
+  [enterCurrencyAmountView setEnabled:v6];
 
-  v8 = [(PKPeerPaymentActionAddMoneyViewController *)self navigationItem];
+  navigationItem = [(PKPeerPaymentActionAddMoneyViewController *)self navigationItem];
   if (v6)
   {
     [(PKPeerPaymentActionAddMoneyViewController *)self _addBarButton];
@@ -1190,31 +1190,31 @@ void __100__PKPeerPaymentActionAddMoneyViewController__currentAmountDidChangeTo_
     [(PKPeerPaymentActionAddMoneyViewController *)self _spinnerBarButton];
   }
   v7 = ;
-  [v8 setRightBarButtonItem:v7];
+  [navigationItem setRightBarButtonItem:v7];
 }
 
-- (void)thresholdTopUpController:(id)a3 requestsPushViewController:(id)a4
+- (void)thresholdTopUpController:(id)controller requestsPushViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  viewControllerCopy = viewController;
+  navigationController = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
+  [navigationController pushViewController:viewControllerCopy animated:1];
 }
 
-- (id)presentationSceneIdentifierForTopUpController:(id)a3
+- (id)presentationSceneIdentifierForTopUpController:(id)controller
 {
-  v3 = [(PKPeerPaymentActionAddMoneyViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKPeerPaymentActionAddMoneyViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)thresholdTopUpControllerCompletedSetup:(id)a3
+- (void)thresholdTopUpControllerCompletedSetup:(id)setup
 {
-  v4 = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
-  v3 = [v4 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PKPeerPaymentActionAddMoneyViewController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

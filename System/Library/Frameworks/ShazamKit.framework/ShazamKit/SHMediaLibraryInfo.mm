@@ -1,50 +1,50 @@
 @interface SHMediaLibraryInfo
-- (SHMediaLibraryInfo)initWithCoder:(id)a3;
-- (SHMediaLibraryInfo)initWithStatus:(int64_t)a3 encrypted:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SHMediaLibraryInfo)initWithCoder:(id)coder;
+- (SHMediaLibraryInfo)initWithStatus:(int64_t)status encrypted:(BOOL)encrypted;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMediaLibraryInfo
 
-- (SHMediaLibraryInfo)initWithStatus:(int64_t)a3 encrypted:(BOOL)a4
+- (SHMediaLibraryInfo)initWithStatus:(int64_t)status encrypted:(BOOL)encrypted
 {
   v7.receiver = self;
   v7.super_class = SHMediaLibraryInfo;
   result = [(SHMediaLibraryInfo *)&v7 init];
   if (result)
   {
-    result->_status = a3;
-    result->_isEncrypted = a4;
+    result->_status = status;
+    result->_isEncrypted = encrypted;
   }
 
   return result;
 }
 
-- (SHMediaLibraryInfo)initWithCoder:(id)a3
+- (SHMediaLibraryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[SHMediaLibraryInfo initWithStatus:encrypted:](self, "initWithStatus:encrypted:", [v4 decodeIntegerForKey:@"SHMediaLibraryInfoStatus"], objc_msgSend(v4, "decodeBoolForKey:", @"SHMediaLibraryInfoEncrypted"));
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryInfoIdentifier"];
+  coderCopy = coder;
+  v5 = -[SHMediaLibraryInfo initWithStatus:encrypted:](self, "initWithStatus:encrypted:", [coderCopy decodeIntegerForKey:@"SHMediaLibraryInfoStatus"], objc_msgSend(coderCopy, "decodeBoolForKey:", @"SHMediaLibraryInfoEncrypted"));
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMediaLibraryInfoIdentifier"];
 
   [(SHMediaLibraryInfo *)v5 setIdentityToken:v6];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identityToken = self->_identityToken;
-  v5 = a3;
-  [v5 encodeObject:identityToken forKey:@"SHMediaLibraryInfoIdentifier"];
-  [v5 encodeInteger:self->_status forKey:@"SHMediaLibraryInfoStatus"];
-  [v5 encodeBool:self->_isEncrypted forKey:@"SHMediaLibraryInfoEncrypted"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identityToken forKey:@"SHMediaLibraryInfoIdentifier"];
+  [coderCopy encodeInteger:self->_status forKey:@"SHMediaLibraryInfoStatus"];
+  [coderCopy encodeBool:self->_isEncrypted forKey:@"SHMediaLibraryInfoEncrypted"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[SHMediaLibraryInfo allocWithZone:](SHMediaLibraryInfo initWithStatus:"initWithStatus:encrypted:" encrypted:[(SHMediaLibraryInfo *)self status], [(SHMediaLibraryInfo *)self isEncrypted]];
-  v6 = [(SHMediaLibraryInfo *)self identityToken];
-  v7 = [v6 copyWithZone:a3];
+  identityToken = [(SHMediaLibraryInfo *)self identityToken];
+  v7 = [identityToken copyWithZone:zone];
   [(SHMediaLibraryInfo *)v5 setIdentityToken:v7];
 
   return v5;

@@ -1,7 +1,7 @@
 @interface _UIViewServiceNSXPCConnectionDelegate
 - (_UIViewServiceNSXPCConnectionDelegate)init;
-- (_UIViewServiceNSXPCConnectionDelegate)initWithCallOutQueue:(id)a3 replyHandler:(id)a4;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (_UIViewServiceNSXPCConnectionDelegate)initWithCallOutQueue:(id)queue replyHandler:(id)handler;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 @end
 
 @implementation _UIViewServiceNSXPCConnectionDelegate
@@ -19,7 +19,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIViewServiceNSXPCConnectionDelegate.m";
     v17 = 1024;
@@ -35,18 +35,18 @@
   return result;
 }
 
-- (_UIViewServiceNSXPCConnectionDelegate)initWithCallOutQueue:(id)a3 replyHandler:(id)a4
+- (_UIViewServiceNSXPCConnectionDelegate)initWithCallOutQueue:(id)queue replyHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = _UIViewServiceNSXPCConnectionDelegate;
   v10 = [(_UIViewServiceNSXPCConnectionDelegate *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    if (!v8)
+    if (!queueCopy)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"callOutQueue"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -75,8 +75,8 @@
       JUMPOUT(0x189A82DE4);
     }
 
-    objc_storeStrong(&v10->_callOutQueue, a3);
-    v12 = _Block_copy(v9);
+    objc_storeStrong(&v10->_callOutQueue, queue);
+    v12 = _Block_copy(handlerCopy);
     replyHandler = v11->_replyHandler;
     v11->_replyHandler = v12;
   }
@@ -84,20 +84,20 @@
   return v11;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (!v5 || (replyHandler = self->_replyHandler) == 0 || (replyHandler[2](replyHandler, v9) & 1) == 0)
+  replyCopy = reply;
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  if (!replyCopy || (replyHandler = self->_replyHandler) == 0 || (replyHandler[2](replyHandler, invocationCopy) & 1) == 0)
   {
-    [v9 retainArguments];
+    [invocationCopy retainArguments];
     callOutQueue = self->_callOutQueue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77___UIViewServiceNSXPCConnectionDelegate_connection_handleInvocation_isReply___block_invoke;
     v12[3] = &unk_1E70F3590;
-    v13 = v9;
+    v13 = invocationCopy;
     [(BSServiceQueue *)callOutQueue performAsync:v12];
   }
 }

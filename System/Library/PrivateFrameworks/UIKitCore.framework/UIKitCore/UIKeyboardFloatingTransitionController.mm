@@ -1,44 +1,44 @@
 @interface UIKeyboardFloatingTransitionController
-+ (BOOL)isPointWithinDockingRegion:(CGPoint)a3;
++ (BOOL)isPointWithinDockingRegion:(CGPoint)region;
 + (CGRect)dockingRegion;
-+ (id)snapshotOfKeyplaneView:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
++ (id)snapshotOfKeyplaneView:(id)view;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)useStateBasedAnimations;
 - (CGPoint)lastGestureCenter;
 - (NSMapTable)activeKeyboardLayoutGuideTransitionAssertions;
 - (UIInputWindowController)inputWindowController;
 - (UIKeyboardFloatingTransitionControllerDelegate)delegate;
-- (void)addGestureRecognizersToView:(id)a3;
-- (void)beginPanGesture:(id)a3;
-- (void)beginPinchGesture:(id)a3;
-- (void)beginTransitionAtPoint:(CGPoint)a3 withScale:(double)a4 recognizer:(id)a5;
-- (void)beginTransitionFromPanGestureRecognizer:(id)a3;
-- (void)captureStateForStart:(BOOL)a3;
-- (void)endPanGesture:(id)a3;
-- (void)endPinchGesture:(id)a3;
-- (void)endTransitionAtPoint:(CGPoint)a3 withScale:(double)a4;
+- (void)addGestureRecognizersToView:(id)view;
+- (void)beginPanGesture:(id)gesture;
+- (void)beginPinchGesture:(id)gesture;
+- (void)beginTransitionAtPoint:(CGPoint)point withScale:(double)scale recognizer:(id)recognizer;
+- (void)beginTransitionFromPanGestureRecognizer:(id)recognizer;
+- (void)captureStateForStart:(BOOL)start;
+- (void)endPanGesture:(id)gesture;
+- (void)endPinchGesture:(id)gesture;
+- (void)endTransitionAtPoint:(CGPoint)point withScale:(double)scale;
 - (void)finalizeTransition;
-- (void)handlePanGestureRecognizerAction:(id)a3;
-- (void)handlePinchGestureRecognizerAction:(id)a3;
-- (void)initializeContextAtPoint:(CGPoint)a3 recognizer:(id)a4;
-- (void)inputViewSnapshot:(id *)a3 withPlatterInsets:(UIEdgeInsets *)a4;
+- (void)handlePanGestureRecognizerAction:(id)action;
+- (void)handlePinchGestureRecognizerAction:(id)action;
+- (void)initializeContextAtPoint:(CGPoint)point recognizer:(id)recognizer;
+- (void)inputViewSnapshot:(id *)snapshot withPlatterInsets:(UIEdgeInsets *)insets;
 - (void)removeGestureRecognizers;
-- (void)setKeyboardLayoutGuideInTransition:(BOOL)a3 forWindow:(id)a4;
-- (void)updateAnimationAtScale:(double)a3;
+- (void)setKeyboardLayoutGuideInTransition:(BOOL)transition forWindow:(id)window;
+- (void)updateAnimationAtScale:(double)scale;
 - (void)updateHysteresisForCurrentFloatingState;
-- (void)updateLayoutGuideForTransitionStart:(BOOL)a3;
-- (void)updateLayoutGuideFromFrame:(CGRect)a3;
-- (void)updatePanGesture:(id)a3;
-- (void)updatePinchGesture:(id)a3;
-- (void)updateTransitionAtPoint:(CGPoint)a3 withScale:(double)a4 interactive:(BOOL)a5;
+- (void)updateLayoutGuideForTransitionStart:(BOOL)start;
+- (void)updateLayoutGuideFromFrame:(CGRect)frame;
+- (void)updatePanGesture:(id)gesture;
+- (void)updatePinchGesture:(id)gesture;
+- (void)updateTransitionAtPoint:(CGPoint)point withScale:(double)scale interactive:(BOOL)interactive;
 @end
 
 @implementation UIKeyboardFloatingTransitionController
 
 + (CGRect)dockingRegion
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -53,19 +53,19 @@
   return result;
 }
 
-+ (BOOL)isPointWithinDockingRegion:(CGPoint)a3
++ (BOOL)isPointWithinDockingRegion:(CGPoint)region
 {
-  y = a3.y;
-  x = a3.x;
+  y = region.y;
+  x = region.x;
   if (+[UIKeyboardImpl isFloatingForced])
   {
     return 0;
   }
 
-  v6 = [objc_opt_self() mainScreen];
-  [v6 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
 
-  [a1 dockingRegion];
+  [self dockingRegion];
   v7 = v12.origin.x;
   v8 = v12.origin.y;
   width = v12.size.width;
@@ -91,15 +91,15 @@
   return y >= CGRectGetMinY(v14);
 }
 
-+ (id)snapshotOfKeyplaneView:(id)a3
++ (id)snapshotOfKeyplaneView:(id)view
 {
-  v3 = a3;
-  v4 = [[UIKeyboardKeyplaneSnapshotView alloc] initWithKeyplaneView:v3];
+  viewCopy = view;
+  v4 = [[UIKeyboardKeyplaneSnapshotView alloc] initWithKeyplaneView:viewCopy];
   [(UIView *)v4 setUserInteractionEnabled:0];
-  v5 = [v3 window];
+  window = [viewCopy window];
 
-  v6 = [v5 screen];
-  [v6 scale];
+  screen = [window screen];
+  [screen scale];
   [(UIView *)v4 setContentScaleFactor:?];
 
   return v4;
@@ -108,8 +108,8 @@
 - (BOOL)useStateBasedAnimations
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  if ([v3 currentInputModeSupportsCrescendo])
+  preferencesActions = [v2 preferencesActions];
+  if ([preferencesActions currentInputModeSupportsCrescendo])
   {
     v4 = +[UIInputWindowController supportsStateBasedAnimations];
   }
@@ -122,19 +122,19 @@
   return v4;
 }
 
-- (void)beginTransitionFromPanGestureRecognizer:(id)a3
+- (void)beginTransitionFromPanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v5 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:sel_handlePanGestureRecognizerAction_];
   [(UIKeyboardFloatingTransitionController *)self setPanGestureRecognizer:v5];
 
-  v6 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-  v7 = [v6 view];
-  v8 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
-  [v7 addGestureRecognizer:v8];
+  pinchGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+  view = [pinchGestureRecognizer view];
+  panGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
+  [view addGestureRecognizer:panGestureRecognizer];
 
-  v9 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
-  [(UIGestureRecognizer *)v9 transferTouchesFromGestureRecognizer:v4];
+  panGestureRecognizer2 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
+  [(UIGestureRecognizer *)panGestureRecognizer2 transferTouchesFromGestureRecognizer:recognizerCopy];
 }
 
 - (void)updateHysteresisForCurrentFloatingState
@@ -149,30 +149,30 @@
     v3 = 68.0;
   }
 
-  v4 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-  [v4 _setHysteresis:v3];
+  pinchGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer _setHysteresis:v3];
 }
 
-- (void)addGestureRecognizersToView:(id)a3
+- (void)addGestureRecognizersToView:(id)view
 {
-  v10 = a3;
-  v4 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-  v5 = [v4 view];
+  viewCopy = view;
+  pinchGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+  view = [pinchGestureRecognizer view];
 
-  if (v5 != v10)
+  if (view != viewCopy)
   {
     [(UIKeyboardFloatingTransitionController *)self removeGestureRecognizers];
     v6 = [[UIKeyboardFloatingPinchGestureRecognizer alloc] initWithTarget:self action:sel_handlePinchGestureRecognizerAction_];
     [(UIKeyboardFloatingTransitionController *)self setPinchGestureRecognizer:v6];
 
-    v7 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-    [v7 _setEndsOnSingleTouch:1];
+    pinchGestureRecognizer2 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+    [pinchGestureRecognizer2 _setEndsOnSingleTouch:1];
 
-    v8 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-    [v8 setDelegate:self];
+    pinchGestureRecognizer3 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+    [pinchGestureRecognizer3 setDelegate:self];
 
-    v9 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-    [v10 addGestureRecognizer:v9];
+    pinchGestureRecognizer4 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+    [viewCopy addGestureRecognizer:pinchGestureRecognizer4];
   }
 
   [(UIKeyboardFloatingTransitionController *)self updateHysteresisForCurrentFloatingState];
@@ -180,222 +180,222 @@
 
 - (void)removeGestureRecognizers
 {
-  v3 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-  v4 = [v3 view];
-  v5 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  pinchGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+  view = [pinchGestureRecognizer view];
+  pinchGestureRecognizer2 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+  [view removeGestureRecognizer:pinchGestureRecognizer2];
 
   [(UIKeyboardFloatingTransitionController *)self setPinchGestureRecognizer:0];
 }
 
-- (void)handlePanGestureRecognizerAction:(id)a3
+- (void)handlePanGestureRecognizerAction:(id)action
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if (v4 <= 2)
+  actionCopy = action;
+  state = [actionCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [(UIKeyboardFloatingTransitionController *)self beginPanGesture:v7];
+      [(UIKeyboardFloatingTransitionController *)self beginPanGesture:actionCopy];
     }
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v7;
+      v5 = state == 2;
+      v6 = actionCopy;
       if (!v5)
       {
         goto LABEL_12;
       }
 
-      [(UIKeyboardFloatingTransitionController *)self updatePanGesture:v7];
+      [(UIKeyboardFloatingTransitionController *)self updatePanGesture:actionCopy];
     }
 
 LABEL_11:
-    v6 = v7;
+    v6 = actionCopy;
     goto LABEL_12;
   }
 
-  if (v4 == 3 || (v5 = v4 == 4, v6 = v7, v5))
+  if (state == 3 || (v5 = state == 4, v6 = actionCopy, v5))
   {
-    [(UIKeyboardFloatingTransitionController *)self endPanGesture:v7];
+    [(UIKeyboardFloatingTransitionController *)self endPanGesture:actionCopy];
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)beginPanGesture:(id)a3
+- (void)beginPanGesture:(id)gesture
 {
-  v4 = a3;
-  [v4 locationOfTouch:0 inView:0];
-  [UIKeyboardFloatingTransitionController beginTransitionAtPoint:"beginTransitionAtPoint:withScale:recognizer:" withScale:v4 recognizer:?];
+  gestureCopy = gesture;
+  [gestureCopy locationOfTouch:0 inView:0];
+  [UIKeyboardFloatingTransitionController beginTransitionAtPoint:"beginTransitionAtPoint:withScale:recognizer:" withScale:gestureCopy recognizer:?];
 
   [(UIKeyboardFloatingTransitionController *)self setWithinDockingRegion:0];
 }
 
-- (void)updatePanGesture:(id)a3
+- (void)updatePanGesture:(id)gesture
 {
-  [a3 locationOfTouch:0 inView:0];
+  [gesture locationOfTouch:0 inView:0];
 
   [UIKeyboardFloatingTransitionController updateTransitionAtPoint:"updateTransitionAtPoint:withScale:interactive:" withScale:1 interactive:?];
 }
 
-- (void)endPanGesture:(id)a3
+- (void)endPanGesture:(id)gesture
 {
-  v14 = a3;
-  v4 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v4 center];
+  gestureCopy = gesture;
+  platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView center];
   v6 = v5;
   v8 = v7;
 
-  if ([v14 numberOfTouches] == 1)
+  if ([gestureCopy numberOfTouches] == 1)
   {
-    [v14 locationOfTouch:0 inView:0];
+    [gestureCopy locationOfTouch:0 inView:0];
     v6 = v9;
     v8 = v10;
   }
 
   [(UIKeyboardFloatingTransitionController *)self endTransitionAtPoint:v6 withScale:v8, 1.0];
-  v11 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
-  v12 = [v11 view];
-  v13 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
-  [v12 removeGestureRecognizer:v13];
+  panGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
+  view = [panGestureRecognizer view];
+  panGestureRecognizer2 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
+  [view removeGestureRecognizer:panGestureRecognizer2];
 
   [(UIKeyboardFloatingTransitionController *)self setPanGestureRecognizer:0];
 }
 
-- (void)handlePinchGestureRecognizerAction:(id)a3
+- (void)handlePinchGestureRecognizerAction:(id)action
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if (v4 <= 2)
+  actionCopy = action;
+  state = [actionCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [(UIKeyboardFloatingTransitionController *)self beginPinchGesture:v7];
+      [(UIKeyboardFloatingTransitionController *)self beginPinchGesture:actionCopy];
     }
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v7;
+      v5 = state == 2;
+      v6 = actionCopy;
       if (!v5)
       {
         goto LABEL_12;
       }
 
-      [(UIKeyboardFloatingTransitionController *)self updatePinchGesture:v7];
+      [(UIKeyboardFloatingTransitionController *)self updatePinchGesture:actionCopy];
     }
 
 LABEL_11:
-    v6 = v7;
+    v6 = actionCopy;
     goto LABEL_12;
   }
 
-  if (v4 == 3 || (v5 = v4 == 4, v6 = v7, v5))
+  if (state == 3 || (v5 = state == 4, v6 = actionCopy, v5))
   {
-    [(UIKeyboardFloatingTransitionController *)self endPinchGesture:v7];
+    [(UIKeyboardFloatingTransitionController *)self endPinchGesture:actionCopy];
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)beginPinchGesture:(id)a3
+- (void)beginPinchGesture:(id)gesture
 {
-  v12 = a3;
-  if ([v12 numberOfTouches])
+  gestureCopy = gesture;
+  if ([gestureCopy numberOfTouches])
   {
-    [v12 locationInView:0];
+    [gestureCopy locationInView:0];
     v5 = v4;
     v7 = v6;
   }
 
   else
   {
-    v8 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v8 center];
+    platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView center];
     v5 = v9;
     v7 = v10;
   }
 
-  [v12 scale];
-  [(UIKeyboardFloatingTransitionController *)self beginTransitionAtPoint:v12 withScale:v5 recognizer:v7, v11];
+  [gestureCopy scale];
+  [(UIKeyboardFloatingTransitionController *)self beginTransitionAtPoint:gestureCopy withScale:v5 recognizer:v7, v11];
 }
 
-- (void)updatePinchGesture:(id)a3
+- (void)updatePinchGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 numberOfTouches])
+  gestureCopy = gesture;
+  if ([gestureCopy numberOfTouches])
   {
-    [v4 locationInView:0];
+    [gestureCopy locationInView:0];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v9 center];
+    platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView center];
     v6 = v10;
     v8 = v11;
   }
 
-  [v4 scale];
+  [gestureCopy scale];
   v13 = v12;
 
   [(UIKeyboardFloatingTransitionController *)self updateTransitionAtPoint:1 withScale:v6 interactive:v8, v13];
 }
 
-- (void)endPinchGesture:(id)a3
+- (void)endPinchGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 numberOfTouches])
+  gestureCopy = gesture;
+  if ([gestureCopy numberOfTouches])
   {
-    [v4 locationInView:0];
+    [gestureCopy locationInView:0];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    v9 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v9 center];
+    platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView center];
     v6 = v10;
     v8 = v11;
   }
 
-  [v4 scale];
+  [gestureCopy scale];
   v13 = v12;
 
   [(UIKeyboardFloatingTransitionController *)self endTransitionAtPoint:v6 withScale:v8, v13];
 }
 
-- (void)beginTransitionAtPoint:(CGPoint)a3 withScale:(double)a4 recognizer:(id)a5
+- (void)beginTransitionAtPoint:(CGPoint)point withScale:(double)scale recognizer:(id)recognizer
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  recognizerCopy = recognizer;
   [(UIKeyboardFloatingTransitionController *)self setIsTransitioning:1];
   [(UIKeyboardFloatingTransitionController *)self updateLayoutGuideForTransitionStart:1];
-  v10 = [(UIKeyboardFloatingTransitionController *)self delegate];
-  [v10 willBeginTransitionWithController:self];
+  delegate = [(UIKeyboardFloatingTransitionController *)self delegate];
+  [delegate willBeginTransitionWithController:self];
 
-  [(UIKeyboardFloatingTransitionController *)self initializeContextAtPoint:v9 recognizer:x, y];
+  [(UIKeyboardFloatingTransitionController *)self initializeContextAtPoint:recognizerCopy recognizer:x, y];
 
-  [(UIKeyboardFloatingTransitionController *)self updateTransitionAtPoint:0 withScale:x interactive:y, a4];
+  [(UIKeyboardFloatingTransitionController *)self updateTransitionAtPoint:0 withScale:x interactive:y, scale];
 }
 
-- (void)updateTransitionAtPoint:(CGPoint)a3 withScale:(double)a4 interactive:(BOOL)a5
+- (void)updateTransitionAtPoint:(CGPoint)point withScale:(double)scale interactive:(BOOL)interactive
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v10 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v11 = [v10 inputView];
+  interactiveCopy = interactive;
+  y = point.y;
+  x = point.x;
+  endState = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView = [endState inputView];
 
-  if (v11)
+  if (inputView)
   {
     [(UIKeyboardFloatingTransitionController *)self lastGestureCenter];
     v13 = x - v12;
@@ -409,8 +409,8 @@ LABEL_12:
     *&aBlock[6] = y;
     *&aBlock[7] = x - v12;
     *&aBlock[8] = y - v14;
-    *&aBlock[9] = a4;
-    v26 = v5;
+    *&aBlock[9] = scale;
+    v26 = interactiveCopy;
     v16 = _Block_copy(aBlock);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -421,27 +421,27 @@ LABEL_12:
     *&v23[6] = y;
     *&v23[7] = v13;
     *&v23[8] = v15;
-    v24 = v5;
-    *&v23[9] = a4;
+    v24 = interactiveCopy;
+    *&v23[9] = scale;
     v17 = _Block_copy(v23);
-    v18 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    if (v18 && ![(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations])
+    lightEffectsTransitionBackdrop = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    if (lightEffectsTransitionBackdrop && ![(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations])
     {
 
-      if (!v5)
+      if (!interactiveCopy)
       {
         [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
         goto LABEL_11;
       }
 
-      [(UIKeyboardFloatingTransitionController *)self updateAnimationAtScale:a4];
+      [(UIKeyboardFloatingTransitionController *)self updateAnimationAtScale:scale];
     }
 
     else
     {
     }
 
-    if ([(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations]&& v5)
+    if ([(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations]&& interactiveCopy)
     {
       v16[2](v16);
 LABEL_12:
@@ -450,7 +450,7 @@ LABEL_12:
     }
 
 LABEL_11:
-    v19 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
+    animationBehavior = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_withScale_interactive___block_invoke_4;
@@ -458,7 +458,7 @@ LABEL_11:
     v20[4] = self;
     v21 = v16;
     v22 = v17;
-    [UIView _animateUsingSpringBehavior:v19 tracking:v5 animations:v20 completion:0];
+    [UIView _animateUsingSpringBehavior:animationBehavior tracking:interactiveCopy animations:v20 completion:0];
 
     goto LABEL_12;
   }
@@ -610,10 +610,10 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
   return v4();
 }
 
-- (void)endTransitionAtPoint:(CGPoint)a3 withScale:(double)a4
+- (void)endTransitionAtPoint:(CGPoint)point withScale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v130 = *MEMORY[0x1E69E9840];
   v8 = CACurrentMediaTime();
   [(UIKeyboardFloatingTransitionController *)self gestureBeginTime];
@@ -629,8 +629,8 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
 
     else
     {
-      v13 = [(UIKeyboardFloatingTransitionController *)self platterView];
-      v14 = [v13 _projectedTargetForKey:@"transform" decelerationFactor:0.995];
+      platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+      v14 = [platterView _projectedTargetForKey:@"transform" decelerationFactor:0.995];
 
       memset(&v128, 0, sizeof(v128));
       objc_opt_class();
@@ -649,19 +649,19 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
 
       else
       {
-        CATransform3DMakeScale(&v128, a4, a4, 1.0);
+        CATransform3DMakeScale(&v128, scale, scale, 1.0);
       }
 
       CATransform3DGetDecomposition_();
       v15 = round(v129 + -1.0);
-      v16 = [(UIKeyboardFloatingTransitionController *)self endState];
-      [v16 scale];
+      endState = [(UIKeyboardFloatingTransitionController *)self endState];
+      [endState scale];
       v11 = v15 / (v17 + -1.0);
     }
   }
 
-  v18 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v19 = [v18 _projectedTargetForKey:@"position" decelerationFactor:0.995];
+  platterView2 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  v19 = [platterView2 _projectedTargetForKey:@"position" decelerationFactor:0.995];
 
   objc_opt_class();
   v118 = y;
@@ -680,21 +680,21 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
 
   else
   {
-    v25 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+    startedFromFloating = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
     v23 = 0.5;
-    v24 = (v11 >= 0.5) & ~v25;
+    v24 = (v11 >= 0.5) & ~startedFromFloating;
   }
 
   v117 = x;
   if (v11 >= v23)
   {
-    v26 = [(UIKeyboardFloatingTransitionController *)self endState];
+    endState2 = [(UIKeyboardFloatingTransitionController *)self endState];
     [(UIKeyboardFloatingTransitionController *)self endState];
   }
 
   else
   {
-    v26 = [(UIKeyboardFloatingTransitionController *)self startState];
+    endState2 = [(UIKeyboardFloatingTransitionController *)self startState];
     [(UIKeyboardFloatingTransitionController *)self startState];
   }
   v27 = ;
@@ -702,10 +702,10 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
   v116 = v28;
 
   v29 = @"NotOnEdge";
-  v30 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v31 = [v30 superview];
+  platterView3 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  superview = [platterView3 superview];
 
-  [v31 bounds];
+  [superview bounds];
   v113 = v33;
   rect = v34;
   v36 = v35;
@@ -713,8 +713,8 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
   if (v24)
   {
     v108 = v32;
-    v38 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v38 anchorPoint];
+    platterView4 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView4 anchorPoint];
     v40 = v39;
     v42 = v41;
 
@@ -724,7 +724,7 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
       +[UIKeyboardImpl floatingPersistentOffset];
       v20 = v44;
       v111 = v45;
-      [v26 platterViewFrame];
+      [endState2 platterViewFrame];
       v109 = v46;
       v48 = v47;
       +[UIKeyboardPopoverContainer contentInsets];
@@ -743,7 +743,7 @@ uint64_t __88__UIKeyboardFloatingTransitionController_updateTransitionAtPoint_wi
       }
     }
 
-    [v26 platterViewFrame];
+    [endState2 platterViewFrame];
     v73 = v72;
     v75 = v74;
     v110 = v40;
@@ -817,11 +817,11 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  [v26 platterViewFrame];
+  [endState2 platterViewFrame];
   v55 = v54;
   v57 = v56;
-  v58 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v58 anchorPoint];
+  platterView5 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView5 anchorPoint];
   v60 = v55 * v59;
   v61 = v55 * (1.0 - v59);
   v63 = v57 * v62;
@@ -849,15 +849,15 @@ LABEL_33:
 
   v71 = v117;
 LABEL_34:
-  v99 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v99 center];
+  platterView6 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView6 center];
   v101 = v68 - v100;
 
-  v102 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v102 center];
+  platterView7 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView7 center];
   v104 = MaxY - v103;
 
-  v105 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
+  animationBehavior = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
   v126[0] = MEMORY[0x1E69E9820];
   v126[1] = 3221225472;
   v126[2] = __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withScale___block_invoke;
@@ -881,7 +881,7 @@ LABEL_34:
   v123 = v71;
   v124 = v118;
   v106 = v70;
-  [UIView _animateUsingSpringBehavior:v105 tracking:0 animations:v126 completion:v119];
+  [UIView _animateUsingSpringBehavior:animationBehavior tracking:0 animations:v126 completion:v119];
 }
 
 void __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withScale___block_invoke(uint64_t a1)
@@ -991,16 +991,16 @@ uint64_t __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withS
   return result;
 }
 
-- (void)initializeContextAtPoint:(CGPoint)a3 recognizer:(id)a4
+- (void)initializeContextAtPoint:(CGPoint)point recognizer:(id)recognizer
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v384[4] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  recognizerCopy = recognizer;
   [(UIKeyboardFloatingTransitionController *)self setProgress:0.0];
   [(UIKeyboardFloatingTransitionController *)self setStartedFromFloating:+[UIKeyboardImpl isFloating]];
-  v8 = [(UIKeyboardFloatingTransitionController *)self delegate];
-  v9 = [v8 inputWindowControllerForController:self];
+  delegate = [(UIKeyboardFloatingTransitionController *)self delegate];
+  v9 = [delegate inputWindowControllerForController:self];
   [(UIKeyboardFloatingTransitionController *)self setInputWindowController:v9];
 
   v10 = objc_alloc_init(UIKeyboardFloatingTransitionState);
@@ -1010,14 +1010,14 @@ uint64_t __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withS
   [(UIKeyboardFloatingTransitionController *)self setEndState:v11];
 
   [(UIKeyboardFloatingTransitionController *)self captureStateForStart:1];
-  v12 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v13 = [v12 inputView];
-  _UIViewSetAnchorPointToTouchPoint(v13, x, y);
+  startState = [(UIKeyboardFloatingTransitionController *)self startState];
+  inputView = [startState inputView];
+  _UIViewSetAnchorPointToTouchPoint(inputView, x, y);
 
-  v14 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v15 = [v14 view];
+  inputWindowController = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  view = [inputWindowController view];
 
-  v16 = [v15 window];
+  window = [view window];
   v17 = [UIView alloc];
   v18 = *MEMORY[0x1E695F058];
   v19 = *(MEMORY[0x1E695F058] + 8);
@@ -1026,34 +1026,34 @@ uint64_t __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withS
   v22 = [(UIView *)v17 initWithFrame:*MEMORY[0x1E695F058], v19, v20, v21];
   [(UIKeyboardFloatingTransitionController *)self setPlatterView:v22];
 
-  v23 = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
-  self->_initWithStateBasedAnimations = v23;
-  v376 = v16;
-  if (v23)
+  useStateBasedAnimations = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
+  self->_initWithStateBasedAnimations = useStateBasedAnimations;
+  v376 = window;
+  if (useStateBasedAnimations)
   {
-    v24 = [(UIKeyboardFloatingTransitionController *)self startState];
-    [v24 platterViewFrame];
+    startState2 = [(UIKeyboardFloatingTransitionController *)self startState];
+    [startState2 platterViewFrame];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v33 setFrame:{v26, v28, v30, v32}];
+    platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView setFrame:{v26, v28, v30, v32}];
 
-    v34 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    _UIViewSetAnchorPointToTouchPoint(v34, x, y);
+    platterView2 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    _UIViewSetAnchorPointToTouchPoint(platterView2, x, y);
 
-    v35 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v16 addSubview:v35];
+    platterView3 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [window addSubview:platterView3];
 
-    v36 = [(UIKeyboardFloatingTransitionController *)self startState];
-    [v36 setScale:{1.0, 1.0}];
+    startState3 = [(UIKeyboardFloatingTransitionController *)self startState];
+    [startState3 setScale:{1.0, 1.0}];
 
     +[UIKeyboardImpl floatingWidth];
     v38 = v37;
-    v39 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v40 = [v39 view];
-    [v40 bounds];
+    inputWindowController2 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    view2 = [inputWindowController2 view];
+    [view2 bounds];
     v42 = v41;
 
     if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
@@ -1066,17 +1066,17 @@ uint64_t __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withS
       v43 = v38 / v42;
     }
 
-    v44 = [(UIKeyboardFloatingTransitionController *)self endState];
-    [v44 setScale:{v43, v43}];
+    endState = [(UIKeyboardFloatingTransitionController *)self endState];
+    [endState setScale:{v43, v43}];
 
     v45 = objc_alloc_init(UIViewSpringAnimationBehavior);
     [(UIKeyboardFloatingTransitionController *)self setAnimationBehavior:v45];
 
-    v46 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
-    [v46 setDampingRatio:0.9 response:0.2];
+    animationBehavior = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
+    [animationBehavior setDampingRatio:0.9 response:0.2];
 
-    v47 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
-    [v47 setTrackingDampingRatio:1.0 response:0.12 dampingRatioSmoothing:0.08 responseSmoothing:0.08];
+    animationBehavior2 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
+    [animationBehavior2 setTrackingDampingRatio:1.0 response:0.12 dampingRatioSmoothing:0.08 responseSmoothing:0.08];
 
     [(UIKeyboardFloatingTransitionController *)self setLastGestureCenter:x, y];
     if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
@@ -1099,24 +1099,24 @@ uint64_t __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withS
       v49 = 7;
     }
 
-    v50 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v51 = [v50 hostForAnimatedElements];
-    [v51 prepareForTransitionToState:v48 animationType:v49 interactiveTransition:1];
+    inputWindowController3 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    hostForAnimatedElements = [inputWindowController3 hostForAnimatedElements];
+    [hostForAnimatedElements prepareForTransitionToState:v48 animationType:v49 interactiveTransition:1];
 
     [UIKeyboardImpl setFloating:[(UIKeyboardFloatingTransitionController *)self startedFromFloating]^ 1 positionedAtDefaultOffsetAnimated:0];
-    v52 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v53 = [v52 inputViewSet];
-    v54 = [v53 keyboard];
-    v365 = v15;
-    v367 = v7;
-    if (v54)
+    inputWindowController4 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet = [inputWindowController4 inputViewSet];
+    keyboard = [inputViewSet keyboard];
+    v365 = view;
+    v367 = recognizerCopy;
+    if (keyboard)
     {
-      v55 = v54;
-      v56 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-      v57 = [v56 inputViewSet];
-      v58 = [v57 isCustomInputView];
+      v55 = keyboard;
+      inputWindowController5 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+      inputViewSet2 = [inputWindowController5 inputViewSet];
+      isCustomInputView = [inputViewSet2 isCustomInputView];
 
-      if (!v58)
+      if (!isCustomInputView)
       {
         goto LABEL_36;
       }
@@ -1126,43 +1126,43 @@ uint64_t __73__UIKeyboardFloatingTransitionController_endTransitionAtPoint_withS
     {
     }
 
-    v184 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v185 = [v184 inputViewSet];
-    v186 = [v185 inputView];
-    [v186 setAlpha:0.0];
+    inputWindowController6 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet3 = [inputWindowController6 inputViewSet];
+    inputView2 = [inputViewSet3 inputView];
+    [inputView2 setAlpha:0.0];
 
-    v187 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    [v187 updateViewSizingConstraints];
+    inputWindowController7 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    [inputWindowController7 updateViewSizingConstraints];
 
 LABEL_36:
-    v188 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v189 = [v188 hostForAnimatedElements];
-    v190 = [v189 hostView];
+    inputWindowController8 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    hostForAnimatedElements2 = [inputWindowController8 hostForAnimatedElements];
+    hostView = [hostForAnimatedElements2 hostView];
 
-    v191 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v191 setTranslatesAutoresizingMaskIntoConstraints:0];
+    platterView4 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v347 = MEMORY[0x1E69977A0];
-    v374 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v370 = [v374 centerXAnchor];
-    v362 = [v190 centerXAnchor];
-    v358 = [v370 constraintEqualToAnchor:v362];
+    platterView5 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    centerXAnchor = [platterView5 centerXAnchor];
+    centerXAnchor2 = [hostView centerXAnchor];
+    v358 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v384[0] = v358;
-    v355 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v351 = [v355 centerYAnchor];
-    v349 = [v190 centerYAnchor];
-    v345 = [v351 constraintEqualToAnchor:v349];
+    platterView6 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    centerYAnchor = [platterView6 centerYAnchor];
+    centerYAnchor2 = [hostView centerYAnchor];
+    v345 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v384[1] = v345;
-    v192 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v193 = [v192 heightAnchor];
-    v353 = v190;
-    v194 = [v190 heightAnchor];
-    v195 = [v193 constraintEqualToAnchor:v194];
+    platterView7 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    heightAnchor = [platterView7 heightAnchor];
+    v353 = hostView;
+    heightAnchor2 = [hostView heightAnchor];
+    v195 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v384[2] = v195;
-    v196 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v197 = [v196 widthAnchor];
-    v198 = [v190 widthAnchor];
-    v199 = [v197 constraintEqualToAnchor:v198];
+    platterView8 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    widthAnchor = [platterView8 widthAnchor];
+    widthAnchor2 = [hostView widthAnchor];
+    v199 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v384[3] = v199;
     v200 = [MEMORY[0x1E695DEC8] arrayWithObjects:v384 count:4];
     [v347 activateConstraints:v200];
@@ -1172,8 +1172,8 @@ LABEL_36:
     [(UIKeyboardFloatingTransitionController *)self setExpandedForDocking:0];
     [(UIKeyboardFloatingTransitionController *)self setGestureBeginTime:CACurrentMediaTime()];
 
-    v15 = v365;
-    v7 = v367;
+    view = v365;
+    recognizerCopy = v367;
     v171 = v376;
     goto LABEL_54;
   }
@@ -1184,76 +1184,76 @@ LABEL_36:
     +[UIKeyboardPopoverContainer shadowOffset];
     v60 = v59;
     v62 = v61;
-    v63 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v64 = [v63 layer];
-    [v64 setShadowOffset:{v60, v62}];
+    platterView9 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    layer = [platterView9 layer];
+    [layer setShadowOffset:{v60, v62}];
 
     v65 = +[UIKeyboardPopoverContainer shadowColor];
-    v66 = [v65 CGColor];
-    v67 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v68 = [v67 layer];
-    [v68 setShadowColor:v66];
+    cGColor = [v65 CGColor];
+    platterView10 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    layer2 = [platterView10 layer];
+    [layer2 setShadowColor:cGColor];
 
     +[UIKeyboardPopoverContainer shadowOpacity];
     *&v60 = v69;
-    v70 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v71 = [v70 layer];
+    platterView11 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    layer3 = [platterView11 layer];
     LODWORD(v72) = LODWORD(v60);
-    [v71 setShadowOpacity:v72];
+    [layer3 setShadowOpacity:v72];
 
     +[UIKeyboardPopoverContainer shadowRadius];
     v74 = v73;
-    v75 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v76 = [v75 layer];
-    [v76 setShadowRadius:v74];
+    platterView12 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    layer4 = [platterView12 layer];
+    [layer4 setShadowRadius:v74];
   }
 
   v77 = [[UIView alloc] initWithFrame:v18, v19, v20, v21];
   [(UIKeyboardFloatingTransitionController *)self setPlatterCornerRadiusView:v77];
 
-  v78 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  [v78 setAutoresizingMask:18];
+  platterCornerRadiusView = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  [platterCornerRadiusView setAutoresizingMask:18];
 
-  v79 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v80 = [v79 layer];
-  [v80 setMasksToBounds:1];
+  platterCornerRadiusView2 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer5 = [platterCornerRadiusView2 layer];
+  [layer5 setMasksToBounds:1];
 
-  v81 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v81 cornerRadius];
+  startState4 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState4 cornerRadius];
   v83 = v82;
-  v84 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v85 = [v84 layer];
-  [v85 setCornerRadius:v83];
+  platterCornerRadiusView3 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer6 = [platterCornerRadiusView3 layer];
+  [layer6 setCornerRadius:v83];
 
-  v86 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v87 = [v86 borderColor];
-  v88 = [v87 CGColor];
-  v89 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v90 = [v89 layer];
-  [v90 setBorderColor:v88];
+  startState5 = [(UIKeyboardFloatingTransitionController *)self startState];
+  borderColor = [startState5 borderColor];
+  cGColor2 = [borderColor CGColor];
+  platterCornerRadiusView4 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer7 = [platterCornerRadiusView4 layer];
+  [layer7 setBorderColor:cGColor2];
 
-  v91 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v91 borderWidth];
+  startState6 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState6 borderWidth];
   v93 = v92;
-  v94 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v95 = [v94 layer];
-  [v95 setBorderWidth:v93];
+  platterCornerRadiusView5 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer8 = [platterCornerRadiusView5 layer];
+  [layer8 setBorderWidth:v93];
 
-  v96 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v97 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  [v96 addSubview:v97];
+  platterView13 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  platterCornerRadiusView6 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  [platterView13 addSubview:platterCornerRadiusView6];
 
   v98 = [objc_alloc(+[_UIPopoverStandardChromeView standardChromeViewClass](_UIPopoverStandardChromeView "standardChromeViewClass"))];
   [(UIKeyboardFloatingTransitionController *)self setPlatterPopoverBackgroundView:v98];
 
-  v99 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-  [v99 setAutoresizingMask:18];
+  platterPopoverBackgroundView = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+  [platterPopoverBackgroundView setAutoresizingMask:18];
 
-  v100 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-  [v100 setBackgroundStyle:6];
+  platterPopoverBackgroundView2 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+  [platterPopoverBackgroundView2 setBackgroundStyle:6];
 
-  v101 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-  [v101 setArrowDirection:0];
+  platterPopoverBackgroundView3 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+  [platterPopoverBackgroundView3 setArrowDirection:0];
 
   if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
   {
@@ -1265,89 +1265,89 @@ LABEL_36:
     v102 = 0.0;
   }
 
-  v103 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-  [v103 setAlpha:v102];
+  platterPopoverBackgroundView4 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+  [platterPopoverBackgroundView4 setAlpha:v102];
 
-  v104 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v105 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-  [v104 addSubview:v105];
+  platterCornerRadiusView7 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  platterPopoverBackgroundView5 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+  [platterCornerRadiusView7 addSubview:platterPopoverBackgroundView5];
 
   v106 = +[UIKBRenderConfig defaultConfig];
-  v107 = [v106 backdropStyle];
+  backdropStyle = [v106 backdropStyle];
 
-  v108 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v109 = [v108 hosting];
-  v110 = [v109 itemForPurpose:0];
+  inputWindowController9 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  hosting = [inputWindowController9 hosting];
+  v110 = [hosting itemForPurpose:0];
 
   if ([v110 conformsToProtocol:&unk_1F003A010])
   {
-    v107 = [v110 inputViewBackdropStyle];
+    backdropStyle = [v110 inputViewBackdropStyle];
   }
 
   v372 = x;
-  if (v107 == 3904)
+  if (backdropStyle == 3904)
   {
     v111 = [[_UIKBLightEffectsBackground alloc] initWithFrame:v18, v19, v20, v21];
     [(UIKeyboardFloatingTransitionController *)self setLightEffectsTransitionBackdrop:v111];
 
-    v112 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    [v112 setTranslatesAutoresizingMaskIntoConstraints:0];
+    lightEffectsTransitionBackdrop = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    [lightEffectsTransitionBackdrop setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v113 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v114 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    [v113 addSubview:v114];
+    platterCornerRadiusView8 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    lightEffectsTransitionBackdrop2 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    [platterCornerRadiusView8 addSubview:lightEffectsTransitionBackdrop2];
 
-    v115 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-    [v115 setAlpha:0.0];
+    platterPopoverBackgroundView6 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+    [platterPopoverBackgroundView6 setAlpha:0.0];
 
-    v116 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v117 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v118 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    v119 = [v118 _inheritedRenderConfig];
-    [v117 _setRenderConfig:v119];
+    lightEffectsTransitionBackdrop3 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    lightEffectsTransitionBackdrop4 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    platterView14 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    _inheritedRenderConfig = [platterView14 _inheritedRenderConfig];
+    [lightEffectsTransitionBackdrop4 _setRenderConfig:_inheritedRenderConfig];
   }
 
   else
   {
     [(UIKeyboardFloatingTransitionController *)self setLightEffectsTransitionBackdrop:0];
-    v120 = [(UIKBBackdropView *)[UIKBVisualEffectView alloc] initWithFrame:v107 style:v18, v19, v20, v21];
+    v120 = [(UIKBBackdropView *)[UIKBVisualEffectView alloc] initWithFrame:backdropStyle style:v18, v19, v20, v21];
     [(UIKeyboardFloatingTransitionController *)self setPlatterVisualEffectView:v120];
 
-    v121 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
-    [v121 setAutoresizingMask:18];
+    platterVisualEffectView = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
+    [platterVisualEffectView setAutoresizingMask:18];
 
-    v122 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v123 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
-    [v122 addSubview:v123];
+    platterCornerRadiusView9 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    platterVisualEffectView2 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
+    [platterCornerRadiusView9 addSubview:platterVisualEffectView2];
 
-    v117 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
-    v116 = [v117 contentView];
+    lightEffectsTransitionBackdrop4 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
+    lightEffectsTransitionBackdrop3 = [lightEffectsTransitionBackdrop4 contentView];
   }
 
-  v124 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v124 platterViewFrame];
+  startState7 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState7 platterViewFrame];
   v126 = v125;
   v128 = v127;
   v130 = v129;
   v132 = v131;
-  v133 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v133 setFrame:{v126, v128, v130, v132}];
+  platterView15 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView15 setFrame:{v126, v128, v130, v132}];
 
-  v134 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  platterView16 = [(UIKeyboardFloatingTransitionController *)self platterView];
   v135 = v372;
-  _UIViewSetAnchorPointToTouchPoint(v134, v372, v369);
+  _UIViewSetAnchorPointToTouchPoint(platterView16, v372, v369);
 
   if (!+[UIInputWindowController keyboardDotDotDotEnabled])
   {
     v136 = [[UIView alloc] initWithFrame:v18, v19, v20, v21];
     [(UIKeyboardFloatingTransitionController *)self setPillView:v136];
 
-    v137 = [(UIKeyboardFloatingTransitionController *)self pillView];
-    [v137 setAutoresizingMask:13];
+    pillView = [(UIKeyboardFloatingTransitionController *)self pillView];
+    [pillView setAutoresizingMask:13];
 
     v138 = +[UIKeyboardPopoverContainer pillColor];
-    v139 = [(UIKeyboardFloatingTransitionController *)self pillView];
-    [v139 setBackgroundColor:v138];
+    pillView2 = [(UIKeyboardFloatingTransitionController *)self pillView];
+    [pillView2 setBackgroundColor:v138];
 
     if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
     {
@@ -1359,95 +1359,95 @@ LABEL_36:
       v140 = 0.0;
     }
 
-    v141 = [(UIKeyboardFloatingTransitionController *)self pillView];
-    [v141 setAlpha:v140];
+    pillView3 = [(UIKeyboardFloatingTransitionController *)self pillView];
+    [pillView3 setAlpha:v140];
 
     +[UIKeyboardPopoverContainer pillCornerRadius];
     v143 = v142;
-    v144 = [(UIKeyboardFloatingTransitionController *)self pillView];
-    v145 = [v144 layer];
-    [v145 setCornerRadius:v143];
+    pillView4 = [(UIKeyboardFloatingTransitionController *)self pillView];
+    layer9 = [pillView4 layer];
+    [layer9 setCornerRadius:v143];
 
-    v146 = [(UIKeyboardFloatingTransitionController *)self pillView];
-    [v116 addSubview:v146];
+    pillView5 = [(UIKeyboardFloatingTransitionController *)self pillView];
+    [lightEffectsTransitionBackdrop3 addSubview:pillView5];
 
     +[UIKeyboardPopoverContainer pillSize];
     v148 = v147;
     v150 = v149;
     +[UIKeyboardPopoverContainer dragAreaHeight];
-    v151 = [(UIKeyboardFloatingTransitionController *)self startState];
-    [v151 platterViewFrame];
+    startState8 = [(UIKeyboardFloatingTransitionController *)self startState];
+    [startState8 platterViewFrame];
     v152 = CGRectGetWidth(v385) * 0.5 - v148 * 0.5;
-    v153 = [(UIKeyboardFloatingTransitionController *)self startState];
-    [v153 platterViewFrame];
+    startState9 = [(UIKeyboardFloatingTransitionController *)self startState];
+    [startState9 platterViewFrame];
     v154 = CGRectGetHeight(v386) - v150;
     +[UIKeyboardPopoverContainer pillDistanceToEdge];
     v156 = v154 - v155;
-    v157 = [(UIKeyboardFloatingTransitionController *)self pillView];
+    pillView6 = [(UIKeyboardFloatingTransitionController *)self pillView];
     v158 = v156;
     v135 = v372;
-    [v157 setFrame:{v152, v158, v148, v150}];
+    [pillView6 setFrame:{v152, v158, v148, v150}];
   }
 
-  v159 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v159 frame];
+  platterView17 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView17 frame];
   MidX = CGRectGetMidX(v387);
-  v161 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v161 frame];
+  platterView18 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView18 frame];
   [(UIKeyboardFloatingTransitionController *)self setWithinDockingRegion:[UIKeyboardFloatingTransitionController isPointWithinDockingRegion:MidX, CGRectGetMaxY(v388)]];
 
   [(UIKeyboardFloatingTransitionController *)self setExpandedForDocking:0];
-  v162 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v163 = [v162 layer];
-  [v163 setAllowsGroupBlending:0];
+  platterView19 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  layer10 = [platterView19 layer];
+  [layer10 setAllowsGroupBlending:0];
 
-  v164 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v165 = [v164 layer];
-  [v165 setAllowsGroupBlending:0];
+  platterCornerRadiusView10 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer11 = [platterCornerRadiusView10 layer];
+  [layer11 setAllowsGroupBlending:0];
 
-  v166 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
-  v167 = [v166 layer];
-  [v167 setAllowsGroupBlending:0];
+  platterVisualEffectView3 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
+  layer12 = [platterVisualEffectView3 layer];
+  [layer12 setAllowsGroupBlending:0];
 
-  v168 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-  v169 = [v168 layer];
-  [v169 setAllowsGroupBlending:0];
+  lightEffectsTransitionBackdrop5 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+  layer13 = [lightEffectsTransitionBackdrop5 layer];
+  [layer13 setAllowsGroupBlending:0];
 
-  v170 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  platterView20 = [(UIKeyboardFloatingTransitionController *)self platterView];
   v171 = v376;
-  [v376 addSubview:v170];
+  [v376 addSubview:platterView20];
 
-  v172 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v173 = [v172 inputView];
-  [v376 addSubview:v173];
+  startState10 = [(UIKeyboardFloatingTransitionController *)self startState];
+  inputView3 = [startState10 inputView];
+  [v376 addSubview:inputView3];
 
   if ([(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations])
   {
-    v174 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v174 setHidden:1];
+    platterView21 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView21 setHidden:1];
   }
 
-  v175 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+  lightEffectsTransitionBackdrop6 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
 
-  if (v175)
+  if (lightEffectsTransitionBackdrop6)
   {
-    v176 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v177 = [v176 inputViewSet];
+    inputWindowController10 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet4 = [inputWindowController10 inputViewSet];
 
-    v178 = [v177 assistantViewController];
+    assistantViewController = [inputViewSet4 assistantViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v366 = v15;
-    v368 = v7;
-    v357 = v116;
+    v366 = view;
+    v368 = recognizerCopy;
+    v357 = lightEffectsTransitionBackdrop3;
     v361 = v110;
-    v373 = v177;
+    v373 = inputViewSet4;
     if (isKindOfClass)
     {
-      v180 = [v177 assistantViewController];
+      assistantViewController2 = [inputViewSet4 assistantViewController];
       v181 = [UITraitCollection traitCollectionWithUserInterfaceIdiom:1];
-      [v180 preferredHeightForTraitCollection:v181];
+      [assistantViewController2 preferredHeightForTraitCollection:v181];
       v183 = v182;
     }
 
@@ -1457,101 +1457,101 @@ LABEL_36:
     }
 
     v328 = MEMORY[0x1E69977A0];
-    v356 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v352 = [v356 topAnchor];
-    v354 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v350 = [v354 topAnchor];
-    v348 = [v352 constraintEqualToAnchor:v350];
+    lightEffectsTransitionBackdrop7 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    topAnchor = [lightEffectsTransitionBackdrop7 topAnchor];
+    platterCornerRadiusView11 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    topAnchor2 = [platterCornerRadiusView11 topAnchor];
+    v348 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v383[0] = v348;
-    v346 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v343 = [v346 leadingAnchor];
-    v344 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v342 = [v344 leadingAnchor];
-    v341 = [v343 constraintEqualToAnchor:v342];
+    lightEffectsTransitionBackdrop8 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    leadingAnchor = [lightEffectsTransitionBackdrop8 leadingAnchor];
+    platterCornerRadiusView12 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    leadingAnchor2 = [platterCornerRadiusView12 leadingAnchor];
+    v341 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v383[1] = v341;
-    v340 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v338 = [v340 bottomAnchor];
-    v339 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v337 = [v339 bottomAnchor];
-    v336 = [v338 constraintEqualToAnchor:v337];
+    platterCornerRadiusView13 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    bottomAnchor = [platterCornerRadiusView13 bottomAnchor];
+    lightEffectsTransitionBackdrop9 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    bottomAnchor2 = [lightEffectsTransitionBackdrop9 bottomAnchor];
+    v336 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v383[2] = v336;
-    v335 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v333 = [v335 trailingAnchor];
-    v334 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v332 = [v334 trailingAnchor];
-    v331 = [v333 constraintEqualToAnchor:v332];
+    platterCornerRadiusView14 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    trailingAnchor = [platterCornerRadiusView14 trailingAnchor];
+    lightEffectsTransitionBackdrop10 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    trailingAnchor2 = [lightEffectsTransitionBackdrop10 trailingAnchor];
+    v331 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v383[3] = v331;
-    v330 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v329 = [v330 fullBackdropLayoutGuide];
-    v326 = [v329 topAnchor];
-    v327 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v325 = [v327 topAnchor];
-    v324 = [v326 constraintEqualToAnchor:v325];
+    lightEffectsTransitionBackdrop11 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    fullBackdropLayoutGuide = [lightEffectsTransitionBackdrop11 fullBackdropLayoutGuide];
+    topAnchor3 = [fullBackdropLayoutGuide topAnchor];
+    platterCornerRadiusView15 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    topAnchor4 = [platterCornerRadiusView15 topAnchor];
+    v324 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v383[4] = v324;
-    v323 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v322 = [v323 fullBackdropLayoutGuide];
-    v320 = [v322 leadingAnchor];
-    v321 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v319 = [v321 leadingAnchor];
-    v318 = [v320 constraintEqualToAnchor:v319];
+    lightEffectsTransitionBackdrop12 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    fullBackdropLayoutGuide2 = [lightEffectsTransitionBackdrop12 fullBackdropLayoutGuide];
+    leadingAnchor3 = [fullBackdropLayoutGuide2 leadingAnchor];
+    platterCornerRadiusView16 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    leadingAnchor4 = [platterCornerRadiusView16 leadingAnchor];
+    v318 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v383[5] = v318;
-    v317 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v315 = [v317 bottomAnchor];
-    v316 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v314 = [v316 fullBackdropLayoutGuide];
-    v313 = [v314 bottomAnchor];
-    v312 = [v315 constraintEqualToAnchor:v313];
+    platterCornerRadiusView17 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    bottomAnchor3 = [platterCornerRadiusView17 bottomAnchor];
+    lightEffectsTransitionBackdrop13 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    fullBackdropLayoutGuide3 = [lightEffectsTransitionBackdrop13 fullBackdropLayoutGuide];
+    bottomAnchor4 = [fullBackdropLayoutGuide3 bottomAnchor];
+    v312 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v383[6] = v312;
-    v311 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v309 = [v311 trailingAnchor];
-    v310 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v308 = [v310 fullBackdropLayoutGuide];
-    v307 = [v308 trailingAnchor];
-    v306 = [v309 constraintEqualToAnchor:v307];
+    platterCornerRadiusView18 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    trailingAnchor3 = [platterCornerRadiusView18 trailingAnchor];
+    lightEffectsTransitionBackdrop14 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    fullBackdropLayoutGuide4 = [lightEffectsTransitionBackdrop14 fullBackdropLayoutGuide];
+    trailingAnchor4 = [fullBackdropLayoutGuide4 trailingAnchor];
+    v306 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v383[7] = v306;
-    v305 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v304 = [v305 assistantLayoutGuide];
-    v201 = [v304 topAnchor];
-    v202 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-    v203 = [v202 topAnchor];
-    v204 = [v201 constraintEqualToAnchor:v203];
+    lightEffectsTransitionBackdrop15 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    assistantLayoutGuide = [lightEffectsTransitionBackdrop15 assistantLayoutGuide];
+    topAnchor5 = [assistantLayoutGuide topAnchor];
+    platterCornerRadiusView19 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+    topAnchor6 = [platterCornerRadiusView19 topAnchor];
+    v204 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v383[8] = v204;
-    v205 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
-    v206 = [v205 assistantLayoutGuide];
-    v207 = [v206 heightAnchor];
-    v208 = [v207 constraintEqualToConstant:v183];
+    lightEffectsTransitionBackdrop16 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    assistantLayoutGuide2 = [lightEffectsTransitionBackdrop16 assistantLayoutGuide];
+    heightAnchor3 = [assistantLayoutGuide2 heightAnchor];
+    v208 = [heightAnchor3 constraintEqualToConstant:v183];
     v383[9] = v208;
     v209 = [MEMORY[0x1E695DEC8] arrayWithObjects:v383 count:10];
     [v328 activateConstraints:v209];
 
-    v15 = v366;
-    v7 = v368;
+    view = v366;
+    recognizerCopy = v368;
     v171 = v376;
-    v116 = v357;
+    lightEffectsTransitionBackdrop3 = v357;
     v110 = v361;
   }
 
-  v210 = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
-  if (!v210)
+  useStateBasedAnimations2 = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
+  if (!useStateBasedAnimations2)
   {
-    v211 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    [v211 setInputViewsHidden:1];
+    inputWindowController11 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    [inputWindowController11 setInputViewsHidden:1];
   }
 
   [(UIKeyboardFloatingTransitionController *)self constrainAccessoryViewToBottom];
   [UIKeyboardImpl setFloating:[(UIKeyboardFloatingTransitionController *)self startedFromFloating]^ 1 positionedAtDefaultOffsetAnimated:0];
-  v212 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v213 = [v212 inputViewSet];
-  v214 = [v213 keyboard];
-  if (v214)
+  inputWindowController12 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet5 = [inputWindowController12 inputViewSet];
+  keyboard2 = [inputViewSet5 keyboard];
+  if (keyboard2)
   {
-    v215 = v214;
-    v216 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v217 = [v216 inputViewSet];
-    v218 = [v217 isCustomInputView];
+    v215 = keyboard2;
+    inputWindowController13 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet6 = [inputWindowController13 inputViewSet];
+    isCustomInputView2 = [inputViewSet6 isCustomInputView];
 
     v171 = v376;
-    if (!v218)
+    if (!isCustomInputView2)
     {
       goto LABEL_46;
     }
@@ -1561,68 +1561,68 @@ LABEL_36:
   {
   }
 
-  v219 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v220 = [v219 inputViewSet];
-  v221 = [v220 inputView];
-  [v221 setAlpha:0.0];
+  inputWindowController14 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet7 = [inputWindowController14 inputViewSet];
+  inputView4 = [inputViewSet7 inputView];
+  [inputView4 setAlpha:0.0];
 
-  v222 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  [v222 updateViewSizingConstraints];
+  inputWindowController15 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  [inputWindowController15 updateViewSizingConstraints];
 
 LABEL_46:
   [MEMORY[0x1E6979518] flush];
   [(UIKeyboardFloatingTransitionController *)self captureStateForStart:0];
-  v223 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v224 = [v223 inputView];
-  _UIViewSetAnchorPointToTouchPoint(v224, v135, v369);
+  endState2 = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView5 = [endState2 inputView];
+  _UIViewSetAnchorPointToTouchPoint(inputView5, v135, v369);
 
-  if (!v210)
+  if (!useStateBasedAnimations2)
   {
-    if ([v7 state] != 4)
+    if ([recognizerCopy state] != 4)
     {
-      [v15 setAlpha:0.0];
+      [view setAlpha:0.0];
     }
 
-    v225 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    [v225 setInputViewsHidden:0];
+    inputWindowController16 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    [inputWindowController16 setInputViewsHidden:0];
   }
 
-  v226 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v226 setScale:{1.0, 1.0}];
+  startState11 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState11 setScale:{1.0, 1.0}];
 
-  v227 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v227 platterViewFrame];
+  endState3 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState3 platterViewFrame];
   v229 = v228;
-  v230 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v230 platterViewFrame];
+  startState12 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState12 platterViewFrame];
   v232 = v229 / v231;
-  v233 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v233 platterViewFrame];
+  endState4 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState4 platterViewFrame];
   v235 = v234;
-  v236 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v236 platterViewFrame];
+  startState13 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState13 platterViewFrame];
   v238 = v235 / v237;
-  v239 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v239 setScale:{v232, v238}];
+  endState5 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState5 setScale:{v232, v238}];
 
-  v240 = [(UIKeyboardFloatingTransitionController *)self startState];
+  startState14 = [(UIKeyboardFloatingTransitionController *)self startState];
   v375 = *(MEMORY[0x1E695EFD0] + 16);
   *&v382.a = *MEMORY[0x1E695EFD0];
   v377 = *&v382.a;
   *&v382.c = v375;
   *&v382.tx = *(MEMORY[0x1E695EFD0] + 32);
   v371 = *&v382.tx;
-  [v240 setInitialInputViewTransform:&v382];
+  [startState14 setInitialInputViewTransform:&v382];
 
-  v241 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v242 = [v241 inputView];
-  v243 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v243 inputViewFrame];
+  startState15 = [(UIKeyboardFloatingTransitionController *)self startState];
+  inputView6 = [startState15 inputView];
+  endState6 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState6 inputViewFrame];
   v245 = v244;
   v247 = v246;
   v249 = v248;
   v251 = v250;
-  v252 = v242;
+  v252 = inputView6;
   [v252 frame];
   v254 = v253;
   v256 = v255;
@@ -1645,19 +1645,19 @@ LABEL_46:
   v381 = v380;
   CGAffineTransformScale(&v382, &v381, v363, v359);
   v380 = v382;
-  v265 = [(UIKeyboardFloatingTransitionController *)self startState];
+  startState16 = [(UIKeyboardFloatingTransitionController *)self startState];
   v382 = v380;
-  [v265 setFinalInputViewTransform:&v382];
+  [startState16 setFinalInputViewTransform:&v382];
 
-  v266 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v267 = [v266 inputView];
-  v268 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v268 inputViewFrame];
+  endState7 = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView7 = [endState7 inputView];
+  startState17 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState17 inputViewFrame];
   v270 = v269;
   v272 = v271;
   v274 = v273;
   v276 = v275;
-  v277 = v267;
+  v277 = inputView7;
   [v277 frame];
   v279 = v278;
   v281 = v280;
@@ -1680,25 +1680,25 @@ LABEL_46:
   v381 = v379;
   CGAffineTransformScale(&v382, &v381, v364, v360);
   v379 = v382;
-  v290 = [(UIKeyboardFloatingTransitionController *)self endState];
+  endState8 = [(UIKeyboardFloatingTransitionController *)self endState];
   v382 = v379;
-  [v290 setInitialInputViewTransform:&v382];
+  [endState8 setInitialInputViewTransform:&v382];
 
-  v291 = [(UIKeyboardFloatingTransitionController *)self endState];
+  endState9 = [(UIKeyboardFloatingTransitionController *)self endState];
   *&v382.a = v377;
   *&v382.c = v375;
   *&v382.tx = v371;
-  [v291 setFinalInputViewTransform:&v382];
+  [endState9 setFinalInputViewTransform:&v382];
 
-  v292 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v293 = [v292 inputView];
-  [v293 setAlpha:0.0];
+  endState10 = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView8 = [endState10 inputView];
+  [inputView8 setAlpha:0.0];
 
-  v294 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v295 = v294;
-  if (v294)
+  endState11 = [(UIKeyboardFloatingTransitionController *)self endState];
+  v295 = endState11;
+  if (endState11)
   {
-    [v294 initialInputViewTransform];
+    [endState11 initialInputViewTransform];
   }
 
   else
@@ -1706,26 +1706,26 @@ LABEL_46:
     memset(&v378, 0, sizeof(v378));
   }
 
-  v296 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v297 = [v296 inputView];
+  endState12 = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView9 = [endState12 inputView];
   v382 = v378;
-  [v297 setTransform:&v382];
+  [inputView9 setTransform:&v382];
 
-  v298 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v299 = [v298 inputView];
-  [v171 addSubview:v299];
+  endState13 = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView10 = [endState13 inputView];
+  [v171 addSubview:inputView10];
 
   v300 = objc_alloc_init(UIViewSpringAnimationBehavior);
   [(UIKeyboardFloatingTransitionController *)self setAnimationBehavior:v300];
 
-  v301 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
-  [v301 setDampingRatio:0.9 response:0.2];
+  animationBehavior3 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
+  [animationBehavior3 setDampingRatio:0.9 response:0.2];
 
-  v302 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
-  [v302 setTrackingDampingRatio:1.0 response:0.12 dampingRatioSmoothing:0.08 responseSmoothing:0.08];
+  animationBehavior4 = [(UIKeyboardFloatingTransitionController *)self animationBehavior];
+  [animationBehavior4 setTrackingDampingRatio:1.0 response:0.12 dampingRatioSmoothing:0.08 responseSmoothing:0.08];
 
-  v303 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v303 center];
+  platterView22 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView22 center];
   [(UIKeyboardFloatingTransitionController *)self setLastGestureCenter:?];
 
   [(UIKeyboardFloatingTransitionController *)self setGestureBeginTime:CACurrentMediaTime()];
@@ -1761,8 +1761,8 @@ void __73__UIKeyboardFloatingTransitionController_restoreAccessoryViewConstraint
 
 - (void)finalizeTransition
 {
-  v3 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v3 frame];
+  platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1784,9 +1784,9 @@ void __73__UIKeyboardFloatingTransitionController_restoreAccessoryViewConstraint
   v17 = v16;
   v19 = v18;
 
-  v20 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v21 = [v20 view];
-  v22 = [v21 superview];
+  inputWindowController = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  view = [inputWindowController view];
+  superview = [view superview];
 
   v23 = off_1E70EA000;
   if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating]&& ([(UIKeyboardFloatingTransitionController *)self progress], v24 < 0.5) || ![(UIKeyboardFloatingTransitionController *)self startedFromFloating]&& ([(UIKeyboardFloatingTransitionController *)self progress], v25 >= 0.5))
@@ -1794,30 +1794,30 @@ void __73__UIKeyboardFloatingTransitionController_restoreAccessoryViewConstraint
     v26 = v5 + v17;
     v29 = v7 + v15;
     v30 = v11 - (v15 + v19);
-    v31 = [objc_opt_self() mainScreen];
-    [v31 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v33 = v32;
 
     v27 = v33 - (v29 + v30);
-    v28 = 1;
+    inputViewSet3 = 1;
     if (+[UIKeyboardImpl isFloating])
     {
       goto LABEL_24;
     }
 
 LABEL_11:
-    [UIKeyboardImpl setFloating:v28];
-    v34 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v35 = [v34 inputViewSet];
-    v36 = [v35 keyboard];
-    if (v36)
+    [UIKeyboardImpl setFloating:inputViewSet3];
+    inputWindowController2 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet = [inputWindowController2 inputViewSet];
+    keyboard = [inputViewSet keyboard];
+    if (keyboard)
     {
-      v37 = v36;
-      v38 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-      v39 = [v38 inputViewSet];
-      v40 = [v39 isCustomInputView];
+      v37 = keyboard;
+      inputWindowController3 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+      inputViewSet2 = [inputWindowController3 inputViewSet];
+      isCustomInputView = [inputViewSet2 isCustomInputView];
 
-      if (!v40)
+      if (!isCustomInputView)
       {
         goto LABEL_16;
       }
@@ -1827,13 +1827,13 @@ LABEL_11:
     {
     }
 
-    v41 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    [v41 updateViewSizingConstraints];
+    inputWindowController4 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    [inputWindowController4 updateViewSizingConstraints];
 
 LABEL_16:
-    if (v28)
+    if (inputViewSet3)
     {
-      LODWORD(v28) = 1;
+      LODWORD(inputViewSet3) = 1;
       v23 = off_1E70EA000;
       goto LABEL_24;
     }
@@ -1846,39 +1846,39 @@ LABEL_16:
   v27 = *(MEMORY[0x1E695EFF8] + 8);
   if (+[UIKeyboardImpl isFloating])
   {
-    v28 = 0;
+    inputViewSet3 = 0;
     goto LABEL_11;
   }
 
 LABEL_19:
-  v42 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v28 = [v42 inputViewSet];
+  inputWindowController5 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet3 = [inputWindowController5 inputViewSet];
 
-  v43 = [v28 assistantViewController];
+  assistantViewController = [inputViewSet3 assistantViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v45 = [v28 assistantViewController];
-    if ([v45 shouldBeShownForInputDelegate:0 inputViews:v28])
+    assistantViewController2 = [inputViewSet3 assistantViewController];
+    if ([assistantViewController2 shouldBeShownForInputDelegate:0 inputViews:inputViewSet3])
     {
       v46 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v47 = [v46 responder];
+      responder = [v46 responder];
 
-      [v45 setInputAssistantButtonItemsForResponder:v47];
+      [assistantViewController2 setInputAssistantButtonItemsForResponder:responder];
     }
   }
 
-  LODWORD(v28) = 0;
+  LODWORD(inputViewSet3) = 0;
 LABEL_24:
   v48 = +[UIPeripheralHost sharedInstance];
   [v48 setUndockedWithOffset:0 animated:{v26, v27}];
 
   if ([(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations]|| self->_initWithStateBasedAnimations)
   {
-    v49 = v28 == 0;
-    if (v28)
+    v49 = inputViewSet3 == 0;
+    if (inputViewSet3)
     {
       v50 = 3;
     }
@@ -1898,25 +1898,25 @@ LABEL_24:
       v51 = 7;
     }
 
-    v52 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v53 = [v52 hostForAnimatedElements];
-    [v53 finishedTransitionToState:v50 animationType:v51 interactiveTransition:1];
+    inputWindowController6 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    hostForAnimatedElements = [inputWindowController6 hostForAnimatedElements];
+    [hostForAnimatedElements finishedTransitionToState:v50 animationType:v51 interactiveTransition:1];
   }
 
-  v54 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v55 = [v54 view];
-  [v55 setAlpha:1.0];
+  inputWindowController7 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  view2 = [inputWindowController7 view];
+  [view2 setAlpha:1.0];
 
-  v56 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v56 removeFromSuperview];
+  platterView2 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView2 removeFromSuperview];
 
-  v57 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v58 = [v57 inputView];
-  [v58 removeFromSuperview];
+  startState = [(UIKeyboardFloatingTransitionController *)self startState];
+  inputView = [startState inputView];
+  [inputView removeFromSuperview];
 
-  v59 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v60 = [v59 inputView];
-  [v60 removeFromSuperview];
+  endState = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView2 = [endState inputView];
+  [inputView2 removeFromSuperview];
 
   [(UIKeyboardFloatingTransitionController *)self setPlatterView:0];
   [(UIKeyboardFloatingTransitionController *)self setStartState:0];
@@ -1925,77 +1925,77 @@ LABEL_24:
   [(UIKeyboardFloatingTransitionController *)self updateLayoutGuideForTransitionStart:0];
   [(UIKeyboardFloatingTransitionController *)self updateLayoutGuideFromFrame:v5, v7, v9, v11];
   [(UIKeyboardFloatingTransitionController *)self restoreAccessoryViewConstraints];
-  v61 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v62 = [v61 inputViewSet];
-  v63 = [v62 keyboard];
-  if (!v63)
+  inputWindowController8 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet4 = [inputWindowController8 inputViewSet];
+  keyboard2 = [inputViewSet4 keyboard];
+  if (!keyboard2)
   {
 
     goto LABEL_39;
   }
 
-  v64 = v63;
+  v64 = keyboard2;
   v65 = v23;
-  v66 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v67 = [v66 inputViewSet];
-  v68 = [v67 isCustomInputView];
+  inputWindowController9 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet5 = [inputWindowController9 inputViewSet];
+  isCustomInputView2 = [inputViewSet5 isCustomInputView];
 
-  if (v68)
+  if (isCustomInputView2)
   {
 LABEL_39:
-    v70 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v71 = [v70 inputViewSet];
-    v73 = [v71 inputView];
-    [v73 setAlpha:1.0];
+    inputWindowController10 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet6 = [inputWindowController10 inputViewSet];
+    inputView3 = [inputViewSet6 inputView];
+    [inputView3 setAlpha:1.0];
 
     goto LABEL_40;
   }
 
-  v69 = [(__objc2_class *)v65[11] activeInstance];
-  v70 = [v69 keyplaneView];
+  activeInstance = [(__objc2_class *)v65[11] activeInstance];
+  inputWindowController10 = [activeInstance keyplaneView];
 
-  v71 = [v70 keyplane];
-  if (([v71 visualStyling] & 0xFF0000) == 0x260000)
+  inputViewSet6 = [inputWindowController10 keyplane];
+  if (([inputViewSet6 visualStyling] & 0xFF0000) == 0x260000)
   {
 LABEL_40:
 
     goto LABEL_41;
   }
 
-  v72 = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
+  useStateBasedAnimations = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
 
-  if (!v72)
+  if (!useStateBasedAnimations)
   {
     v84[0] = MEMORY[0x1E69E9820];
     v84[1] = 3221225472;
     v84[2] = __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invoke;
     v84[3] = &unk_1E70F3590;
-    v85 = v70;
+    v85 = inputWindowController10;
     [UIView performWithoutAnimation:v84];
   }
 
 LABEL_41:
 
-  v74 = [(UIKeyboardFloatingTransitionController *)self delegate];
-  [v74 didEndTransitionWithController:self];
+  delegate = [(UIKeyboardFloatingTransitionController *)self delegate];
+  [delegate didEndTransitionWithController:self];
 
   v75 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v76 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v77 = [v76 inputViewSet];
+  inputWindowController11 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet7 = [inputWindowController11 inputViewSet];
   v78 = +[UIInputViewAnimationStyle animationStyleDefault];
-  [v75 prepareToMoveKeyboardForInputViewSet:v77 animationStyle:v78];
+  [v75 prepareToMoveKeyboardForInputViewSet:inputViewSet7 animationStyle:v78];
 
   v79 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v80 = [v79 containerRootController];
+  containerRootController = [v79 containerRootController];
 
-  v81 = [v80 inputViewSet];
-  LODWORD(v77) = [v81 isInputViewPlaceholder];
+  inputViewSet8 = [containerRootController inputViewSet];
+  LODWORD(inputViewSet7) = [inputViewSet8 isInputViewPlaceholder];
 
-  if (v77)
+  if (inputViewSet7)
   {
-    v82 = [v80 inputViewSet];
-    v83 = [v82 inputView];
-    [v83 refreshPlaceholder];
+    inputViewSet9 = [containerRootController inputViewSet];
+    inputView4 = [inputViewSet9 inputView];
+    [inputView4 refreshPlaceholder];
   }
 }
 
@@ -2010,24 +2010,24 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
   [v2 dimKeys:v3];
 }
 
-- (void)updateAnimationAtScale:(double)a3
+- (void)updateAnimationAtScale:(double)scale
 {
   v202[1] = *MEMORY[0x1E69E9840];
-  v4 = a3 + -1.0;
-  v5 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v5 scale];
+  v4 = scale + -1.0;
+  endState = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState scale];
   v7 = v4 / (v6 + -1.0);
 
-  LODWORD(v5) = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
-  v8 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+  LODWORD(endState) = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+  startedFromFloating = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
   v9 = -0.1;
-  if (v5)
+  if (endState)
   {
     v9 = 0.0;
   }
 
   v10 = 1.1;
-  if (!v8)
+  if (!startedFromFloating)
   {
     v10 = 1.0;
   }
@@ -2036,18 +2036,18 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
   [(UIKeyboardFloatingTransitionController *)self progress];
   if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
   {
-    v12 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v12 center];
+    platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView center];
     v14 = v13;
     v16 = v15;
 
-    v17 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v17 bounds];
+    platterView2 = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView2 bounds];
     v18 = v16 + CGRectGetHeight(v203) * 0.5;
 
-    LODWORD(v17) = [(UIKeyboardFloatingTransitionController *)self withinDockingRegion];
+    LODWORD(platterView2) = [(UIKeyboardFloatingTransitionController *)self withinDockingRegion];
     [(UIKeyboardFloatingTransitionController *)self setWithinDockingRegion:[UIKeyboardFloatingTransitionController isPointWithinDockingRegion:v14, v18]];
-    if (v17 == [(UIKeyboardFloatingTransitionController *)self withinDockingRegion])
+    if (platterView2 == [(UIKeyboardFloatingTransitionController *)self withinDockingRegion])
     {
       if ([(UIKeyboardFloatingTransitionController *)self expandedForDocking])
       {
@@ -2057,8 +2057,8 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
 
     else
     {
-      v19 = [(UIKeyboardFloatingTransitionController *)self withinDockingRegion];
-      if (v19)
+      withinDockingRegion = [(UIKeyboardFloatingTransitionController *)self withinDockingRegion];
+      if (withinDockingRegion)
       {
         if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
         {
@@ -2070,10 +2070,10 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
           v20 = 0.34;
         }
 
-        v21 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+        startedFromFloating2 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
         v22 = fmax(v20, v11);
         v23 = fmin(v20, v11);
-        if (v21)
+        if (startedFromFloating2)
         {
           v11 = v22;
         }
@@ -2084,46 +2084,46 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
         }
       }
 
-      [(UIKeyboardFloatingTransitionController *)self setExpandedForDocking:v19];
+      [(UIKeyboardFloatingTransitionController *)self setExpandedForDocking:withinDockingRegion];
     }
   }
 
   [(UIKeyboardFloatingTransitionController *)self setProgress:v11];
-  v24 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v24 scale];
+  startState = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState scale];
   v26 = v25;
-  v27 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v27 scale];
+  endState2 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState2 scale];
   v29 = v28;
   [(UIKeyboardFloatingTransitionController *)self progress];
   v31 = v29 * v30 + v26 * (1.0 - v30);
 
-  v32 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v32 scale];
+  startState2 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState2 scale];
   v34 = v33;
-  v35 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v35 scale];
+  endState3 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState3 scale];
   v37 = v36;
   [(UIKeyboardFloatingTransitionController *)self progress];
   v39 = v37 * v38 + v34 * (1.0 - v38);
 
-  v40 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v40 platterViewFrame];
+  startState3 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState3 platterViewFrame];
   v42 = v31 * v41;
 
-  v43 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v43 platterViewFrame];
+  startState4 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState4 platterViewFrame];
   v45 = v39 * v44;
 
-  v46 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v46 setBounds:{0.0, 0.0, v42, v45}];
+  platterView3 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView3 setBounds:{0.0, 0.0, v42, v45}];
 
-  LODWORD(v35) = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
-  v47 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
-  v48 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
-  if (v35)
+  LODWORD(endState3) = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
+  startedFromFloating3 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+  startedFromFloating4 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+  if (endState3)
   {
-    if (v47)
+    if (startedFromFloating3)
     {
       v49 = 8;
     }
@@ -2133,7 +2133,7 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
       v49 = 7;
     }
 
-    if (!v48)
+    if (!startedFromFloating4)
     {
       v11 = 1.0 - v11;
     }
@@ -2146,17 +2146,17 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
 
     else
     {
-      v63 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-      v64 = [v63 _window];
-      [v64 bounds];
+      inputWindowController = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+      _window = [inputWindowController _window];
+      [_window bounds];
       v51 = v65;
     }
 
     if ([(UIKeyboardFloatingTransitionController *)self startedFromFloating])
     {
-      v66 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-      v67 = [v66 _window];
-      [v67 bounds];
+      inputWindowController2 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+      _window2 = [inputWindowController2 _window];
+      [_window2 bounds];
       v69 = v68;
     }
 
@@ -2170,24 +2170,24 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
     v74 = (v69 * v73 + v51 * (1.0 - v73)) * 0.5;
     [(UIKeyboardFloatingTransitionController *)self lastGestureCenter];
     v76 = v75 - v74;
-    v77 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v78 = [v77 _window];
-    [v78 bounds];
+    inputWindowController3 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    _window3 = [inputWindowController3 _window];
+    [_window3 bounds];
     v80 = fmax(fmin(v76, v79 - v74), 0.0);
 
-    v81 = [(UIKeyboardFloatingTransitionController *)self startState];
-    [v81 platterViewFrame];
+    startState5 = [(UIKeyboardFloatingTransitionController *)self startState];
+    [startState5 platterViewFrame];
     v83 = v82 * 0.5;
 
-    v84 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v85 = [v84 _window];
-    [v85 bounds];
+    inputWindowController4 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    _window4 = [inputWindowController4 _window];
+    [_window4 bounds];
     v87 = v86;
     [(UIKeyboardFloatingTransitionController *)self lastGestureCenter];
     v89 = v87 - ceil(v83 + v88);
 
-    v90 = [(UIKeyboardFloatingTransitionController *)self expandedForDocking];
-    if (v89 < 0.0 || v90)
+    expandedForDocking = [(UIKeyboardFloatingTransitionController *)self expandedForDocking];
+    if (v89 < 0.0 || expandedForDocking)
     {
       v92 = 0.0;
     }
@@ -2197,9 +2197,9 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
       v92 = v89;
     }
 
-    v93 = [MEMORY[0x1E696B098] valueWithUIOffset:{v80, v92}];
+    v195 = [MEMORY[0x1E696B098] valueWithUIOffset:{v80, v92}];
     v201 = @"Offset";
-    v202[0] = v93;
+    v202[0] = v195;
     v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v202 forKeys:&v201 count:1];
     v95 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
     v193[0] = MEMORY[0x1E69E9820];
@@ -2207,17 +2207,17 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
     v193[2] = __65__UIKeyboardFloatingTransitionController_updateAnimationAtScale___block_invoke;
     v193[3] = &unk_1E7116848;
     v194 = v94;
-    v96 = v94;
+    platterView7 = v94;
     [v95 performOnDistributedControllers:v193];
 
-    v97 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v98 = [v97 hostForAnimatedElements];
-    [v98 transitioningToState:3 animationType:v49 completionPercentage:v11];
+    inputWindowController5 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    hostForAnimatedElements = [inputWindowController5 hostForAnimatedElements];
+    [hostForAnimatedElements transitioningToState:3 animationType:v49 completionPercentage:v11];
 
     goto LABEL_83;
   }
 
-  if (v47)
+  if (startedFromFloating3)
   {
     v52 = 1.0;
   }
@@ -2227,7 +2227,7 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
     v52 = 0.0;
   }
 
-  if (v48)
+  if (startedFromFloating4)
   {
     v53 = 0.0;
   }
@@ -2239,12 +2239,12 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
 
   [(UIKeyboardFloatingTransitionController *)self progress];
   v55 = v53 * v54 + v52 * (1.0 - v54);
-  v56 = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
-  [v56 setAlpha:v55];
+  platterPopoverBackgroundView = [(UIKeyboardFloatingTransitionController *)self platterPopoverBackgroundView];
+  [platterPopoverBackgroundView setAlpha:v55];
 
-  v57 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
+  startedFromFloating5 = [(UIKeyboardFloatingTransitionController *)self startedFromFloating];
   v58 = MEMORY[0x1E695F060];
-  if (v57)
+  if (startedFromFloating5)
   {
     +[UIKeyboardPopoverContainer shadowOffset];
     v60 = v59;
@@ -2273,9 +2273,9 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
   [(UIKeyboardFloatingTransitionController *)self progress];
   v102 = v71 * v101 + v60 * (1.0 - v101);
   v103 = v70 * v101 + v62 * (1.0 - v101);
-  v104 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v105 = [v104 layer];
-  [v105 setShadowOffset:{v102, v103}];
+  platterView4 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  layer = [platterView4 layer];
+  [layer setShadowOffset:{v102, v103}];
 
   v106 = 0.0;
   v107 = 0.0;
@@ -2293,10 +2293,10 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
 
   [(UIKeyboardFloatingTransitionController *)self progress];
   v111 = v106 * v110 + v107 * (1.0 - v110);
-  v112 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v113 = [v112 layer];
+  platterView5 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  layer2 = [platterView5 layer];
   *&v114 = v111;
-  [v113 setShadowOpacity:v114];
+  [layer2 setShadowOpacity:v114];
 
   v115 = 0.0;
   v116 = 0.0;
@@ -2314,74 +2314,74 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
 
   [(UIKeyboardFloatingTransitionController *)self progress];
   v120 = v115 * v119 + v116 * (1.0 - v119);
-  v121 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  v122 = [v121 layer];
-  [v122 setShadowRadius:v120];
+  platterView6 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  layer3 = [platterView6 layer];
+  [layer3 setShadowRadius:v120];
 
-  v123 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v123 cornerRadius];
+  startState6 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState6 cornerRadius];
   v125 = v124;
-  v126 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v126 cornerRadius];
+  endState4 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState4 cornerRadius];
   v128 = v127;
   [(UIKeyboardFloatingTransitionController *)self progress];
   v130 = v128 * v129 + v125 * (1.0 - v129);
-  v131 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v132 = [v131 layer];
-  [v132 setCornerRadius:v130];
+  platterCornerRadiusView = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer4 = [platterCornerRadiusView layer];
+  [layer4 setCornerRadius:v130];
 
-  v133 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v134 = [v133 borderColor];
-  v135 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v136 = [v135 borderColor];
+  startState7 = [(UIKeyboardFloatingTransitionController *)self startState];
+  borderColor = [startState7 borderColor];
+  endState5 = [(UIKeyboardFloatingTransitionController *)self endState];
+  borderColor2 = [endState5 borderColor];
   [(UIKeyboardFloatingTransitionController *)self progress];
   v138 = v137;
   v190.f64[0] = 0.0;
   v187.f64[0] = 0.0;
   v199 = 0.0;
   v200 = 0.0;
-  v139 = v136;
-  [v134 getRed:&v190 green:&v187 blue:&v200 alpha:&v199];
+  v139 = borderColor2;
+  [borderColor getRed:&v190 green:&v187 blue:&v200 alpha:&v199];
   v197 = 0.0;
   v198 = 0.0;
   v195 = 0.0;
   v196 = 0.0;
   [v139 getRed:&v198 green:&v197 blue:&v196 alpha:&v195];
 
-  v93 = [UIColor colorWithRed:(1.0 - v138) * v190.f64[0] + v138 * v198 green:(1.0 - v138) * v187.f64[0] + v138 * v197 blue:(1.0 - v138) * v200 + v138 * v196 alpha:(1.0 - v138) * v199 + v138 * v195];
+  v195 = [UIColor colorWithRed:(1.0 - v138) * v190.f64[0] + v138 * v198 green:(1.0 - v138) * v187.f64[0] + v138 * v197 blue:(1.0 - v138) * v200 + v138 * v196 alpha:(1.0 - v138) * v199 + v138 * v195];
 
-  v140 = [v93 CGColor];
-  v141 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v142 = [v141 layer];
-  [v142 setBorderColor:v140];
+  cGColor = [v195 CGColor];
+  platterCornerRadiusView2 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer5 = [platterCornerRadiusView2 layer];
+  [layer5 setBorderColor:cGColor];
 
-  v143 = [(UIKeyboardFloatingTransitionController *)self startState];
-  [v143 borderWidth];
-  v144 = [(UIKeyboardFloatingTransitionController *)self endState];
-  [v144 borderWidth];
+  startState8 = [(UIKeyboardFloatingTransitionController *)self startState];
+  [startState8 borderWidth];
+  endState6 = [(UIKeyboardFloatingTransitionController *)self endState];
+  [endState6 borderWidth];
   [(UIKeyboardFloatingTransitionController *)self progress];
-  v145 = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
-  v146 = v145;
-  if (!v145)
+  platterVisualEffectView = [(UIKeyboardFloatingTransitionController *)self platterVisualEffectView];
+  lightEffectsTransitionBackdrop = platterVisualEffectView;
+  if (!platterVisualEffectView)
   {
-    v146 = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
+    lightEffectsTransitionBackdrop = [(UIKeyboardFloatingTransitionController *)self lightEffectsTransitionBackdrop];
   }
 
-  UIRoundToViewScale(v146);
+  UIRoundToViewScale(lightEffectsTransitionBackdrop);
   v148 = v147;
-  v149 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
-  v150 = [v149 layer];
-  [v150 setBorderWidth:v148];
+  platterCornerRadiusView3 = [(UIKeyboardFloatingTransitionController *)self platterCornerRadiusView];
+  layer6 = [platterCornerRadiusView3 layer];
+  [layer6 setBorderWidth:v148];
 
-  if (!v145)
+  if (!platterVisualEffectView)
   {
   }
 
-  v151 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v152 = v151;
-  if (v151)
+  startState9 = [(UIKeyboardFloatingTransitionController *)self startState];
+  v152 = startState9;
+  if (startState9)
   {
-    [v151 initialInputViewTransform];
+    [startState9 initialInputViewTransform];
   }
 
   else
@@ -2391,11 +2391,11 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
     v190 = 0u;
   }
 
-  v153 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v154 = v153;
-  if (v153)
+  startState10 = [(UIKeyboardFloatingTransitionController *)self startState];
+  v154 = startState10;
+  if (startState10)
   {
-    [v153 finalInputViewTransform];
+    [startState10 finalInputViewTransform];
   }
 
   else
@@ -2409,18 +2409,18 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
   v180 = vaddq_f64(vmulq_n_f64(v191, 1.0 - v155), vmulq_n_f64(v188, v155));
   v182 = vaddq_f64(vmulq_n_f64(v190, 1.0 - v155), vmulq_n_f64(v187, v155));
   v178 = vaddq_f64(vmulq_n_f64(v192, 1.0 - v155), vmulq_n_f64(v189, v155));
-  v156 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v157 = [v156 inputView];
+  startState11 = [(UIKeyboardFloatingTransitionController *)self startState];
+  inputView = [startState11 inputView];
   v190 = v182;
   v191 = v180;
   v192 = v178;
-  [v157 setTransform:&v190];
+  [inputView setTransform:&v190];
 
-  v158 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v159 = v158;
-  if (v158)
+  endState7 = [(UIKeyboardFloatingTransitionController *)self endState];
+  v159 = endState7;
+  if (endState7)
   {
-    [v158 initialInputViewTransform];
+    [endState7 initialInputViewTransform];
   }
 
   else
@@ -2430,11 +2430,11 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
     v190 = 0u;
   }
 
-  v160 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v161 = v160;
-  if (v160)
+  endState8 = [(UIKeyboardFloatingTransitionController *)self endState];
+  v161 = endState8;
+  if (endState8)
   {
-    [v160 finalInputViewTransform];
+    [endState8 finalInputViewTransform];
   }
 
   else
@@ -2448,40 +2448,40 @@ void __60__UIKeyboardFloatingTransitionController_finalizeTransition__block_invo
   v181 = vaddq_f64(vmulq_n_f64(v191, 1.0 - v162), vmulq_n_f64(v188, v162));
   v183 = vaddq_f64(vmulq_n_f64(v190, 1.0 - v162), vmulq_n_f64(v187, v162));
   v179 = vaddq_f64(vmulq_n_f64(v192, 1.0 - v162), vmulq_n_f64(v189, v162));
-  v163 = [(UIKeyboardFloatingTransitionController *)self endState];
-  v164 = [v163 inputView];
+  endState9 = [(UIKeyboardFloatingTransitionController *)self endState];
+  inputView2 = [endState9 inputView];
   v190 = v183;
   v191 = v181;
   v192 = v179;
-  [v164 setTransform:&v190];
+  [inputView2 setTransform:&v190];
 
-  v165 = [(UIKeyboardFloatingTransitionController *)self startState];
-  if (!v165)
+  startState12 = [(UIKeyboardFloatingTransitionController *)self startState];
+  if (!startState12)
   {
     goto LABEL_82;
   }
 
-  v166 = v165;
-  v167 = [(UIKeyboardFloatingTransitionController *)self endState];
+  v166 = startState12;
+  endState10 = [(UIKeyboardFloatingTransitionController *)self endState];
 
-  if (!v167)
+  if (!endState10)
   {
     goto LABEL_82;
   }
 
-  v168 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-  if ([v168 state] != 1)
+  pinchGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+  if ([pinchGestureRecognizer state] != 1)
   {
-    v169 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
-    if ([v169 state] != 2)
+    pinchGestureRecognizer2 = [(UIKeyboardFloatingTransitionController *)self pinchGestureRecognizer];
+    if ([pinchGestureRecognizer2 state] != 2)
     {
-      v170 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
-      if ([v170 state] != 1)
+      panGestureRecognizer = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
+      if ([panGestureRecognizer state] != 1)
       {
-        v174 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
-        v175 = [v174 state];
+        panGestureRecognizer2 = [(UIKeyboardFloatingTransitionController *)self panGestureRecognizer];
+        state = [panGestureRecognizer2 state];
 
-        if (v175 != 2)
+        if (state != 2)
         {
           [(UIKeyboardFloatingTransitionController *)self progress];
           if (v176 >= 0.2)
@@ -2536,8 +2536,8 @@ LABEL_81:
   }
 
 LABEL_82:
-  v96 = [(UIKeyboardFloatingTransitionController *)self platterView];
-  [v96 frame];
+  platterView7 = [(UIKeyboardFloatingTransitionController *)self platterView];
+  [platterView7 frame];
   [(UIKeyboardFloatingTransitionController *)self updateLayoutGuideFromFrame:?];
 LABEL_83:
 }
@@ -2584,19 +2584,19 @@ void __65__UIKeyboardFloatingTransitionController_updateAnimationAtScale___block
   [v5 setAlpha:v4];
 }
 
-- (void)updateLayoutGuideForTransitionStart:(BOOL)a3
+- (void)updateLayoutGuideForTransitionStart:(BOOL)start
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__UIKeyboardFloatingTransitionController_updateLayoutGuideForTransitionStart___block_invoke;
   v6[3] = &unk_1E7117988;
-  v7 = a3;
+  startCopy = start;
   v6[4] = self;
   [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v6];
-  if (!a3)
+  if (!start)
   {
-    v5 = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
-    [v5 removeAllObjects];
+    activeKeyboardLayoutGuideTransitionAssertions = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
+    [activeKeyboardLayoutGuideTransitionAssertions removeAllObjects];
   }
 }
 
@@ -2624,13 +2624,13 @@ void __78__UIKeyboardFloatingTransitionController_updateLayoutGuideForTransition
   }
 }
 
-- (void)updateLayoutGuideFromFrame:(CGRect)a3
+- (void)updateLayoutGuideFromFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(*MEMORY[0x1E695F058], a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(*MEMORY[0x1E695F058], frame))
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -2716,9 +2716,9 @@ void __69__UIKeyboardFloatingTransitionController_updateLayoutGuideFromFrame___b
   activeKeyboardLayoutGuideTransitionAssertions = self->_activeKeyboardLayoutGuideTransitionAssertions;
   if (!activeKeyboardLayoutGuideTransitionAssertions)
   {
-    v4 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v5 = self->_activeKeyboardLayoutGuideTransitionAssertions;
-    self->_activeKeyboardLayoutGuideTransitionAssertions = v4;
+    self->_activeKeyboardLayoutGuideTransitionAssertions = weakToStrongObjectsMapTable;
 
     activeKeyboardLayoutGuideTransitionAssertions = self->_activeKeyboardLayoutGuideTransitionAssertions;
   }
@@ -2726,25 +2726,25 @@ void __69__UIKeyboardFloatingTransitionController_updateLayoutGuideFromFrame___b
   return activeKeyboardLayoutGuideTransitionAssertions;
 }
 
-- (void)setKeyboardLayoutGuideInTransition:(BOOL)a3 forWindow:(id)a4
+- (void)setKeyboardLayoutGuideInTransition:(BOOL)transition forWindow:(id)window
 {
-  v4 = a3;
-  v10 = a4;
-  v6 = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
-  v7 = [v6 objectForKey:v10];
+  transitionCopy = transition;
+  windowCopy = window;
+  activeKeyboardLayoutGuideTransitionAssertions = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
+  v7 = [activeKeyboardLayoutGuideTransitionAssertions objectForKey:windowCopy];
 
-  if (v4)
+  if (transitionCopy)
   {
     if (v7)
     {
       goto LABEL_8;
     }
 
-    v8 = [v10 _obtainKeyboardLayoutGuideTransitionAssertionForReason:@"Floating keyboard transition"];
-    if (v8)
+    activeKeyboardLayoutGuideTransitionAssertions3 = [windowCopy _obtainKeyboardLayoutGuideTransitionAssertionForReason:@"Floating keyboard transition"];
+    if (activeKeyboardLayoutGuideTransitionAssertions3)
     {
-      v9 = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
-      [v9 setObject:v8 forKey:v10];
+      activeKeyboardLayoutGuideTransitionAssertions2 = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
+      [activeKeyboardLayoutGuideTransitionAssertions2 setObject:activeKeyboardLayoutGuideTransitionAssertions3 forKey:windowCopy];
     }
   }
 
@@ -2756,115 +2756,115 @@ void __69__UIKeyboardFloatingTransitionController_updateLayoutGuideFromFrame___b
     }
 
     [v7 _invalidate];
-    v8 = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
-    [v8 removeObjectForKey:v10];
+    activeKeyboardLayoutGuideTransitionAssertions3 = [(UIKeyboardFloatingTransitionController *)self activeKeyboardLayoutGuideTransitionAssertions];
+    [activeKeyboardLayoutGuideTransitionAssertions3 removeObjectForKey:windowCopy];
   }
 
 LABEL_8:
 }
 
-- (void)inputViewSnapshot:(id *)a3 withPlatterInsets:(UIEdgeInsets *)a4
+- (void)inputViewSnapshot:(id *)snapshot withPlatterInsets:(UIEdgeInsets *)insets
 {
-  v7 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v8 = [v7 inputViewSet];
-  v9 = [v8 keyboard];
-  if (!v9)
+  inputWindowController = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet = [inputWindowController inputViewSet];
+  keyboard = [inputViewSet keyboard];
+  if (!keyboard)
   {
     goto LABEL_4;
   }
 
-  v10 = v9;
-  v11 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v12 = [v11 inputViewSet];
-  if ([v12 isCustomInputView])
+  v10 = keyboard;
+  inputWindowController2 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  inputViewSet2 = [inputWindowController2 inputViewSet];
+  if ([inputViewSet2 isCustomInputView])
   {
 
 LABEL_4:
 LABEL_5:
-    v13 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v14 = [v13 inputViewSet];
-    v15 = [v14 inputView];
+    inputWindowController3 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet3 = [inputWindowController3 inputViewSet];
+    inputView = [inputViewSet3 inputView];
 
-    *a3 = [v15 snapshotViewAfterScreenUpdates:0];
+    *snapshot = [inputView snapshotViewAfterScreenUpdates:0];
     goto LABEL_6;
   }
 
   v55 = +[UIKeyboardImpl activeInstance];
-  v56 = [v55 isUsingDictationLayout];
+  isUsingDictationLayout = [v55 isUsingDictationLayout];
 
-  if (v56)
+  if (isUsingDictationLayout)
   {
     goto LABEL_5;
   }
 
   v57 = +[UIKeyboardImpl activeInstance];
-  v58 = [v57 keyplaneView];
+  keyplaneView = [v57 keyplaneView];
 
-  v59 = [v58 keyplane];
-  if (([v59 visualStyling] & 0xFF0000) == 0x260000)
+  keyplane = [keyplaneView keyplane];
+  if (([keyplane visualStyling] & 0xFF0000) == 0x260000)
   {
   }
 
   else
   {
-    v60 = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
+    useStateBasedAnimations = [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations];
 
-    if (!v60)
+    if (!useStateBasedAnimations)
     {
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterInsets___block_invoke;
       v68[3] = &unk_1E70F3590;
-      v69 = v58;
+      v69 = keyplaneView;
       [UIView performWithoutAnimation:v68];
     }
   }
 
-  *a3 = [UIKeyboardFloatingTransitionController snapshotOfKeyplaneView:v58];
-  v61 = v58;
-  if (!v61 || (v15 = v61, [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations]))
+  *snapshot = [UIKeyboardFloatingTransitionController snapshotOfKeyplaneView:keyplaneView];
+  v61 = keyplaneView;
+  if (!v61 || (inputView = v61, [(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations]))
   {
-    v62 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v63 = [v62 inputViewSet];
-    v15 = [v63 inputView];
+    inputWindowController4 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet4 = [inputWindowController4 inputViewSet];
+    inputView = [inputViewSet4 inputView];
   }
 
 LABEL_6:
-  v16 = [v15 window];
-  v17 = v16;
-  if (v16)
+  window = [inputView window];
+  v17 = window;
+  if (window)
   {
-    v18 = v16;
+    _window = window;
   }
 
   else
   {
-    v19 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v18 = [v19 _window];
+    inputWindowController5 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    _window = [inputWindowController5 _window];
   }
 
-  [v15 bounds];
-  [v18 convertRect:v15 fromView:?];
-  [*a3 setFrame:?];
-  [*a3 setUserInteractionEnabled:0];
-  v20 = *a3;
-  v21 = [v18 screen];
-  [v21 scale];
+  [inputView bounds];
+  [_window convertRect:inputView fromView:?];
+  [*snapshot setFrame:?];
+  [*snapshot setUserInteractionEnabled:0];
+  v20 = *snapshot;
+  screen = [_window screen];
+  [screen scale];
   [v20 setContentScaleFactor:?];
 
-  v22 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-  v23 = [v22 hosting];
-  v24 = [v23 itemForPurpose:0];
-  v25 = [v24 hostView];
+  inputWindowController6 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+  hosting = [inputWindowController6 hosting];
+  v24 = [hosting itemForPurpose:0];
+  hostView = [v24 hostView];
 
-  [v25 frame];
+  [hostView frame];
   v27 = v26;
   rect = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  [v15 bounds];
-  [v25 convertRect:v15 fromView:?];
+  [inputView bounds];
+  [hostView convertRect:inputView fromView:?];
   v35 = v34;
   v37 = v36;
   v39 = v38;
@@ -2910,21 +2910,21 @@ LABEL_6:
 
   else
   {
-    v52 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v53 = [v52 inputViewSet];
-    v54 = [v53 inputAccessoryView];
+    inputWindowController7 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    inputViewSet5 = [inputWindowController7 inputViewSet];
+    inputAccessoryView = [inputViewSet5 inputAccessoryView];
 
-    [v54 frame];
+    [inputAccessoryView frame];
     v46 = rect_8 - CGRectGetHeight(v76);
 
     v48 = rect_16;
     v50 = rect_24;
   }
 
-  a4->top = v46;
-  a4->left = v48;
-  a4->bottom = v50;
-  a4->right = v44;
+  insets->top = v46;
+  insets->left = v48;
+  insets->bottom = v50;
+  insets->right = v44;
 }
 
 void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterInsets___block_invoke(uint64_t a1)
@@ -2938,7 +2938,7 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
   [v2 dimKeys:v3];
 }
 
-- (void)captureStateForStart:(BOOL)a3
+- (void)captureStateForStart:(BOOL)start
 {
   v78 = 0u;
   v79 = 0u;
@@ -2977,9 +2977,9 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
   v23 = v79;
   if ([(UIKeyboardFloatingTransitionController *)self useStateBasedAnimations])
   {
-    v24 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v25 = [v24 hosting];
-    v26 = [v25 itemForPurpose:0];
+    inputWindowController = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    hosting = [inputWindowController hosting];
+    v26 = [hosting itemForPurpose:0];
     [v26 visibleFrame];
     v28 = v27;
     v30 = v29;
@@ -2996,9 +2996,9 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
       v35 = 2;
     }
 
-    v36 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
-    v37 = [v36 hostForAnimatedElements];
-    [v37 sizeForVisualState:v35];
+    inputWindowController2 = [(UIKeyboardFloatingTransitionController *)self inputWindowController];
+    hostForAnimatedElements = [inputWindowController2 hostForAnimatedElements];
+    [hostForAnimatedElements sizeForVisualState:v35];
     v39 = v38;
     v41 = v40;
 
@@ -3036,15 +3036,15 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
     v47 = v21 - (-*&v23 - *&v22);
   }
 
-  v48 = [(UIKeyboardFloatingTransitionController *)self startState];
-  v49 = v48;
+  startState = [(UIKeyboardFloatingTransitionController *)self startState];
+  endState = startState;
   v51 = v73;
   v50 = v74;
   v53 = v71;
   v52 = v72;
-  if (!a3)
+  if (!start)
   {
-    [v48 platterViewFrame];
+    [startState platterViewFrame];
     v55 = v54;
     v57 = v56;
     v59 = v58;
@@ -3052,8 +3052,8 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
 
     v62 = v46 - v59;
     v63 = v47 - v61;
-    v64 = [(UIKeyboardFloatingTransitionController *)self platterView];
-    [v64 anchorPoint];
+    platterView = [(UIKeyboardFloatingTransitionController *)self platterView];
+    [platterView anchorPoint];
     v66 = v65;
     v68 = v67;
 
@@ -3068,21 +3068,21 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
     v52 = v46 - (*(&v78 + 1) + *(&v79 + 1));
     v53 = v47 - (*&v78 + *&v79);
     [v5 setFrame:{v44 + *(&v78 + 1), *&v78 + v45, v52, v53}];
-    v49 = [(UIKeyboardFloatingTransitionController *)self endState];
+    endState = [(UIKeyboardFloatingTransitionController *)self endState];
   }
 
-  [v49 setInputView:v5];
-  [v49 setInputViewFrame:{v50, v51, v52, v53}];
-  [v49 setPlatterViewFrame:{v44, v45, v46, v47}];
-  [v49 setPlatterInsets:{v78, v79}];
-  [v49 setCornerRadius:v75];
-  [v49 setBorderWidth:v76];
-  [v49 setBorderColor:v6];
+  [endState setInputView:v5];
+  [endState setInputViewFrame:{v50, v51, v52, v53}];
+  [endState setPlatterViewFrame:{v44, v45, v46, v47}];
+  [endState setPlatterInsets:{v78, v79}];
+  [endState setCornerRadius:v75];
+  [endState setBorderWidth:v76];
+  [endState setBorderColor:v6];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if (+[UIKeyboardImpl isSplit])
   {
     goto LABEL_2;
@@ -3090,7 +3090,7 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
 
   if (+[UIKeyboardImpl isFloating](UIKeyboardImpl, "isFloating") && !+[UIKeyboardImpl isFloatingForced])
   {
-    [v4 scale];
+    [beginCopy scale];
     v6 = v8 >= 1.0;
   }
 
@@ -3101,18 +3101,18 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
 
   else
   {
-    [v4 scale];
+    [beginCopy scale];
     v6 = v7 < 1.0;
   }
 
   v9 = +[UIKeyboardImpl activeInstance];
-  v10 = [v9 usesCandidateSelection];
+  usesCandidateSelection = [v9 usesCandidateSelection];
 
-  if (v10)
+  if (usesCandidateSelection)
   {
     v11 = +[UIKeyboardImpl activeInstance];
-    v12 = [v11 candidateList];
-    v13 = v6 & ([v12 isExtendedList] ^ 1);
+    candidateList = [v11 candidateList];
+    v13 = v6 & ([candidateList isExtendedList] ^ 1);
 
     if (v13)
     {
@@ -3123,8 +3123,8 @@ void __78__UIKeyboardFloatingTransitionController_inputViewSnapshot_withPlatterI
   else if (v6)
   {
 LABEL_13:
-    v14 = [(UIKeyboardFloatingTransitionController *)self delegate];
-    v5 = [v14 shouldBeginTransitionForController:self];
+    delegate = [(UIKeyboardFloatingTransitionController *)self delegate];
+    v5 = [delegate shouldBeginTransitionForController:self];
 
     goto LABEL_14;
   }

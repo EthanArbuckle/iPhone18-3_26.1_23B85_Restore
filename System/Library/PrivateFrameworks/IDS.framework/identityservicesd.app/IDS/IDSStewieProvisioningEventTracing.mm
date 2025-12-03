@@ -1,6 +1,6 @@
 @interface IDSStewieProvisioningEventTracing
 + (IDSStewieProvisioningEventTracing)sharedInstance;
-- (void)trackProvisioningChangesWithEventType:(int64_t)a3;
+- (void)trackProvisioningChangesWithEventType:(int64_t)type;
 - (void)trackProvisioningEnd;
 - (void)trackProvisioningStart;
 @end
@@ -30,7 +30,7 @@
 - (void)trackProvisioningStart
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x68);
-  v8 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -41,21 +41,21 @@
   {
     v4 = objc_allocWithZone(sub_100936268());
     v5 = sub_100936228();
-    v6 = *((swift_isaMask & v8->super.isa) + 0x70);
+    v6 = *((swift_isaMask & selfCopy->super.isa) + 0x70);
     v7 = v5;
     v6(v5);
   }
 }
 
-- (void)trackProvisioningChangesWithEventType:(int64_t)a3
+- (void)trackProvisioningChangesWithEventType:(int64_t)type
 {
-  v4 = self;
-  sub_10086D844(a3);
+  selfCopy = self;
+  sub_10086D844(type);
 }
 
 - (void)trackProvisioningEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_10086DA28();
 }
 

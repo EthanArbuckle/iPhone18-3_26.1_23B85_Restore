@@ -1,19 +1,19 @@
 @interface SBKeyboardFocusResolutionPipeline
-- (SBKeyboardFocusResolutionPipeline)initWithResolutionStages:(id)a3;
-- (void)generateKeyboardFocusPolicy:(id)a3 resolutionContext:(id)a4;
+- (SBKeyboardFocusResolutionPipeline)initWithResolutionStages:(id)stages;
+- (void)generateKeyboardFocusPolicy:(id)policy resolutionContext:(id)context;
 @end
 
 @implementation SBKeyboardFocusResolutionPipeline
 
-- (SBKeyboardFocusResolutionPipeline)initWithResolutionStages:(id)a3
+- (SBKeyboardFocusResolutionPipeline)initWithResolutionStages:(id)stages
 {
-  v4 = a3;
+  stagesCopy = stages;
   v9.receiver = self;
   v9.super_class = SBKeyboardFocusResolutionPipeline;
   v5 = [(SBKeyboardFocusResolutionPipeline *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stagesCopy copy];
     stages = v5->_stages;
     v5->_stages = v6;
   }
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (void)generateKeyboardFocusPolicy:(id)a3 resolutionContext:(id)a4
+- (void)generateKeyboardFocusPolicy:(id)policy resolutionContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  contextCopy = context;
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
@@ -46,7 +46,7 @@ LABEL_3:
         objc_enumerationMutation(v8);
       }
 
-      [*(*(&v13 + 1) + 8 * v12) resolveKeyboardFocusPolicy:v6 context:v7 stop:{&v17, v13}];
+      [*(*(&v13 + 1) + 8 * v12) resolveKeyboardFocusPolicy:policyCopy context:contextCopy stop:{&v17, v13}];
       if (v17)
       {
         break;

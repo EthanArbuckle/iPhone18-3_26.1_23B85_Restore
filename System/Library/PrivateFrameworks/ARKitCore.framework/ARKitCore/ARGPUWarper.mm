@@ -1,8 +1,8 @@
 @interface ARGPUWarper
 - (ARGPUWarper)init;
 - (id)description;
-- (void)warpCameraImage:(simd_float3)a3 withExposureOffset:(simd_float3)a4 withCameraIntrinsics:(simd_float3)a5 withCameraTransform:(simd_float4)a6 toPlane:(simd_float4)a7 withLoadAction:(simd_float4)a8 synchronous:(simd_float4)a9;
-- (void)warpPlane:(ARTexturedPlane *)a3 toPlane:(ARTexturedPlane *)a4 withLoadAction:(unint64_t)a5 synchronous:(BOOL)a6;
+- (void)warpCameraImage:(simd_float3)image withExposureOffset:(simd_float3)offset withCameraIntrinsics:(simd_float3)intrinsics withCameraTransform:(simd_float4)transform toPlane:(simd_float4)plane withLoadAction:(simd_float4)action synchronous:(simd_float4)synchronous;
+- (void)warpPlane:(ARTexturedPlane *)plane toPlane:(ARTexturedPlane *)toPlane withLoadAction:(unint64_t)action synchronous:(BOOL)synchronous;
 @end
 
 @implementation ARGPUWarper
@@ -14,13 +14,13 @@
   v48.super_class = ARGPUWarper;
   v2 = [(ARGPUWarper *)&v48 init];
   v3 = +[ARSharedGPUDevice sharedInstance];
-  v4 = [v3 device];
+  device = [v3 device];
   device = v2->_device;
-  v2->_device = v4;
+  v2->_device = device;
 
-  v6 = [(MTLDevice *)v2->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
   commandQueue = v2->_commandQueue;
-  v2->_commandQueue = v6;
+  v2->_commandQueue = newCommandQueue;
 
   [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.arkit.gpuwarper.queue"];
   v46 = ARKitCoreBundle();
@@ -32,40 +32,40 @@
 
   v9 = [(MTLDevice *)v2->_device newLibraryWithURL:v8 error:0];
   v10 = objc_alloc_init(MEMORY[0x1E69741E0]);
-  v11 = [v10 attributes];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  attributes = [v10 attributes];
+  v12 = [attributes objectAtIndexedSubscript:0];
   [v12 setFormat:29];
 
-  v13 = [v10 attributes];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  attributes2 = [v10 attributes];
+  v14 = [attributes2 objectAtIndexedSubscript:0];
   [v14 setOffset:0];
 
-  v15 = [v10 attributes];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  attributes3 = [v10 attributes];
+  v16 = [attributes3 objectAtIndexedSubscript:0];
   [v16 setBufferIndex:1];
 
-  v17 = [v10 attributes];
-  v18 = [v17 objectAtIndexedSubscript:1];
+  attributes4 = [v10 attributes];
+  v18 = [attributes4 objectAtIndexedSubscript:1];
   [v18 setFormat:29];
 
-  v19 = [v10 attributes];
-  v20 = [v19 objectAtIndexedSubscript:1];
+  attributes5 = [v10 attributes];
+  v20 = [attributes5 objectAtIndexedSubscript:1];
   [v20 setOffset:8];
 
-  v21 = [v10 attributes];
-  v22 = [v21 objectAtIndexedSubscript:1];
+  attributes6 = [v10 attributes];
+  v22 = [attributes6 objectAtIndexedSubscript:1];
   [v22 setBufferIndex:1];
 
-  v23 = [v10 layouts];
-  v24 = [v23 objectAtIndexedSubscript:1];
+  layouts = [v10 layouts];
+  v24 = [layouts objectAtIndexedSubscript:1];
   [v24 setStride:16];
 
-  v25 = [v10 layouts];
-  v26 = [v25 objectAtIndexedSubscript:1];
+  layouts2 = [v10 layouts];
+  v26 = [layouts2 objectAtIndexedSubscript:1];
   [v26 setStepRate:1];
 
-  v27 = [v10 layouts];
-  v28 = [v27 objectAtIndexedSubscript:1];
+  layouts3 = [v10 layouts];
+  v28 = [layouts3 objectAtIndexedSubscript:1];
   [v28 setStepFunction:1];
 
   v29 = [v9 newFunctionWithName:@"homgraphyVertexShader"];
@@ -75,8 +75,8 @@
   [v31 setVertexFunction:v29];
   [v31 setVertexDescriptor:v10];
   [v31 setFragmentFunction:v30];
-  v32 = [v31 colorAttachments];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  colorAttachments = [v31 colorAttachments];
+  v33 = [colorAttachments objectAtIndexedSubscript:0];
   [v33 setPixelFormat:81];
 
   v34 = v2->_device;
@@ -134,51 +134,51 @@
   return v2;
 }
 
-- (void)warpCameraImage:(simd_float3)a3 withExposureOffset:(simd_float3)a4 withCameraIntrinsics:(simd_float3)a5 withCameraTransform:(simd_float4)a6 toPlane:(simd_float4)a7 withLoadAction:(simd_float4)a8 synchronous:(simd_float4)a9
+- (void)warpCameraImage:(simd_float3)image withExposureOffset:(simd_float3)offset withCameraIntrinsics:(simd_float3)intrinsics withCameraTransform:(simd_float4)transform toPlane:(simd_float4)plane withLoadAction:(simd_float4)action synchronous:(simd_float4)synchronous
 {
-  v59.columns[2] = a8;
-  v59.columns[3] = a9;
-  v59.columns[0] = a6;
-  v59.columns[1] = a7;
+  v59.columns[2] = action;
+  v59.columns[3] = synchronous;
+  v59.columns[0] = transform;
+  v59.columns[1] = plane;
   v81[8] = *MEMORY[0x1E69E9840];
-  v78.columns[0] = a3;
-  v78.columns[1] = a4;
-  v78.columns[2] = a5;
+  v78.columns[0] = image;
+  v78.columns[1] = offset;
+  v78.columns[2] = intrinsics;
   kdebug_trace();
-  v20 = [MEMORY[0x1E6974128] renderPassDescriptor];
-  v21 = [v20 colorAttachments];
-  v22 = [v21 objectAtIndexedSubscript:0];
+  renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v22 = [colorAttachments objectAtIndexedSubscript:0];
   [v22 setTexture:*(a12 + 216)];
 
-  v23 = [v20 colorAttachments];
-  v24 = [v23 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v24 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v24 setLoadAction:a13];
 
-  v25 = [v20 colorAttachments];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v26 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v26 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  v27 = [v20 colorAttachments];
-  v28 = [v27 objectAtIndexedSubscript:0];
+  colorAttachments4 = [renderPassDescriptor colorAttachments];
+  v28 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v28 setStoreAction:1];
 
   v29 = MEMORY[0x1E69741C0];
   Width = CVPixelBufferGetWidth(a11);
   v31 = [v29 texture2DDescriptorWithPixelFormat:520 width:Width height:CVPixelBufferGetHeight(a11) mipmapped:0];
-  v32 = [*(a1 + 8) newTextureWithDescriptor:v31 iosurface:CVPixelBufferGetIOSurface(a11) plane:0];
-  v33 = [*(a1 + 16) commandBuffer];
-  [v33 setLabel:@"com.apple.arkit.gpuwarper.cameratoplanecommandbuffer"];
+  v32 = [*(self + 8) newTextureWithDescriptor:v31 iosurface:CVPixelBufferGetIOSurface(a11) plane:0];
+  commandBuffer = [*(self + 16) commandBuffer];
+  [commandBuffer setLabel:@"com.apple.arkit.gpuwarper.cameratoplanecommandbuffer"];
   v34 = CVBufferRetain(a11);
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __126__ARGPUWarper_warpCameraImage_withExposureOffset_withCameraIntrinsics_withCameraTransform_toPlane_withLoadAction_synchronous___block_invoke;
   v77[3] = &__block_descriptor_40_e28_v16__0___MTLCommandBuffer__8l;
   v77[4] = v34;
-  [v33 addCompletedHandler:v77];
-  v35 = [v33 renderCommandEncoderWithDescriptor:v20];
+  [commandBuffer addCompletedHandler:v77];
+  v35 = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v35 setLabel:@"com.apple.arkit.gpuwarper.cameratoplanerenderencoder"];
   [v35 setCullMode:0];
-  [v35 setRenderPipelineState:*(a1 + 24)];
+  [v35 setRenderPipelineState:*(self + 24)];
   v36 = CVPixelBufferGetWidth(a11);
   Height = CVPixelBufferGetHeight(a11);
   *&v38 = v36;
@@ -306,45 +306,45 @@
   [v35 setFragmentTexture:v32 atIndex:0];
   [v35 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v35 endEncoding];
-  [v33 commit];
+  [commandBuffer commit];
   if (a14)
   {
-    [v33 waitUntilCompleted];
+    [commandBuffer waitUntilCompleted];
   }
 
   kdebug_trace();
 }
 
-- (void)warpPlane:(ARTexturedPlane *)a3 toPlane:(ARTexturedPlane *)a4 withLoadAction:(unint64_t)a5 synchronous:(BOOL)a6
+- (void)warpPlane:(ARTexturedPlane *)plane toPlane:(ARTexturedPlane *)toPlane withLoadAction:(unint64_t)action synchronous:(BOOL)synchronous
 {
-  v6 = a6;
+  synchronousCopy = synchronous;
   v93 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E6974128] renderPassDescriptor];
-  v12 = [v11 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
-  [v13 setTexture:a4[3].var5];
+  renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v13 = [colorAttachments objectAtIndexedSubscript:0];
+  [v13 setTexture:toPlane[3].var5];
 
-  v14 = [v11 colorAttachments];
-  v15 = [v14 objectAtIndexedSubscript:0];
-  [v15 setLoadAction:a5];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v15 = [colorAttachments2 objectAtIndexedSubscript:0];
+  [v15 setLoadAction:action];
 
-  v16 = [v11 colorAttachments];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v17 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v17 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  v18 = [v11 colorAttachments];
-  v19 = [v18 objectAtIndexedSubscript:0];
+  colorAttachments4 = [renderPassDescriptor colorAttachments];
+  v19 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v19 setStoreAction:1];
 
-  v20 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v20 setLabel:@"com.apple.arkit.gpuwarper.planetoplanecommandbuffer"];
-  v21 = [v20 renderCommandEncoderWithDescriptor:v11];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"com.apple.arkit.gpuwarper.planetoplanecommandbuffer"];
+  v21 = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v21 setLabel:@"com.apple.arkit.gpuwarper.planetoplanerenderencoder"];
   [v21 setCullMode:0];
   [v21 setRenderPipelineState:self->_homographyPipelineState];
   v22 = 0;
-  v23 = *&a3[1].var4.__tree_.__size_;
-  var0 = a3[2].var0;
+  v23 = *&plane[1].var4.__tree_.__size_;
+  var0 = plane[2].var0;
   v25.i64[0] = 0x3F0000003F000000;
   v25.i64[1] = 0x3F0000003F000000;
   v26 = vmulq_f32(vaddq_f32(v23, var0), v25);
@@ -353,10 +353,10 @@
   v29 = *(MEMORY[0x1E69E9B18] + 32);
   v30 = *(MEMORY[0x1E69E9B18] + 48);
   v26.i32[3] = HIDWORD(v30);
-  v31 = *&a3->var4.__tree_.__end_node_.__left_;
-  v32 = *&a3->var5;
-  v33 = *(&a3[1].var0 + 8);
-  v34 = *&a3[1].var4.__tree_.__begin_node_;
+  v31 = *&plane->var4.__tree_.__end_node_.__left_;
+  v32 = *&plane->var5;
+  v33 = *(&plane[1].var0 + 8);
+  v34 = *&plane[1].var4.__tree_.__begin_node_;
   v88 = *MEMORY[0x1E69E9B18];
   v89 = v28;
   v90 = v29;
@@ -373,16 +373,16 @@
   v65 = v92.columns[0];
   v62 = v92.columns[3];
   v63 = v92.columns[2];
-  v60 = a4[2].var0;
-  v61 = *&a4[1].var4.__tree_.__size_;
+  v60 = toPlane[2].var0;
+  v61 = *&toPlane[1].var4.__tree_.__size_;
   v36.i64[0] = 0x3F0000003F000000;
   v36.i64[1] = 0x3F0000003F000000;
   v37 = vmulq_f32(vaddq_f32(v61, v60), v36);
   v37.i32[3] = HIDWORD(v30);
-  v38 = *&a4->var4.__tree_.__end_node_.__left_;
-  v39 = *&a4->var5;
-  v40 = *(&a4[1].var0 + 8);
-  v41 = *&a4[1].var4.__tree_.__begin_node_;
+  v38 = *&toPlane->var4.__tree_.__end_node_.__left_;
+  v39 = *&toPlane->var5;
+  v40 = *(&toPlane[1].var0 + 8);
+  v41 = *&toPlane[1].var4.__tree_.__begin_node_;
   v88 = v27;
   v89 = v28;
   v90 = v29;
@@ -508,13 +508,13 @@
   [v21 setFragmentBytes:&v66 length:1 atIndex:0];
   LODWORD(v72) = 1065353216;
   [v21 setFragmentBytes:&v72 length:4 atIndex:2];
-  [v21 setFragmentTexture:a3[3].var5 atIndex:0];
+  [v21 setFragmentTexture:plane[3].var5 atIndex:0];
   [v21 drawPrimitives:4 vertexStart:0 vertexCount:4];
   [v21 endEncoding];
-  [v20 commit];
-  if (v6)
+  [commandBuffer commit];
+  if (synchronousCopy)
   {
-    [v20 waitUntilCompleted];
+    [commandBuffer waitUntilCompleted];
   }
 }
 
@@ -525,16 +525,16 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p\n", v5, self];
 
-  v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v8 = [v7 status];
-  if (v8 > 5)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  status = [commandBuffer status];
+  if (status > 5)
   {
     v9 = @"Unknown";
   }
 
   else
   {
-    v9 = off_1E817D8D0[v8];
+    v9 = off_1E817D8D0[status];
   }
 
   [v6 appendFormat:@"CommandBuffer Status: %@", v9];

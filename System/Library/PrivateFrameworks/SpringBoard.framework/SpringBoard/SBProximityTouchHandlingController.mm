@@ -1,25 +1,25 @@
 @interface SBProximityTouchHandlingController
-- (SBProximityTouchHandlingController)initWithSettings:(id)a3 touchHandlingDelegate:(id)a4;
+- (SBProximityTouchHandlingController)initWithSettings:(id)settings touchHandlingDelegate:(id)delegate;
 - (void)_createNewWindow;
 - (void)invalidate;
-- (void)setAbsorbTouchesBelowStatusBar:(BOOL)a3;
-- (void)setStatusBarHeight:(double)a3;
-- (void)windowSceneDidConnect:(id)a3;
+- (void)setAbsorbTouchesBelowStatusBar:(BOOL)bar;
+- (void)setStatusBarHeight:(double)height;
+- (void)windowSceneDidConnect:(id)connect;
 @end
 
 @implementation SBProximityTouchHandlingController
 
-- (SBProximityTouchHandlingController)initWithSettings:(id)a3 touchHandlingDelegate:(id)a4
+- (SBProximityTouchHandlingController)initWithSettings:(id)settings touchHandlingDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = SBProximityTouchHandlingController;
   v8 = [(SBProximityTouchHandlingController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(SBProximityTouchHandlingController *)v8 initWithSettings:v7 touchHandlingDelegate:v6];
+    [(SBProximityTouchHandlingController *)v8 initWithSettings:delegateCopy touchHandlingDelegate:settingsCopy];
   }
 
   return v9;
@@ -32,36 +32,36 @@
   self->_proxTouchHandlingWindow = 0;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v7 = a3;
-  objc_storeStrong(&self->_windowScene, a3);
+  connectCopy = connect;
+  objc_storeStrong(&self->_windowScene, connect);
   proxTouchHandlingWindow = self->_proxTouchHandlingWindow;
   if (proxTouchHandlingWindow)
   {
-    v6 = [(UIWindow *)proxTouchHandlingWindow windowScene];
+    windowScene = [(UIWindow *)proxTouchHandlingWindow windowScene];
 
-    if (v6 != v7)
+    if (windowScene != connectCopy)
     {
-      [(UIWindow *)self->_proxTouchHandlingWindow setWindowScene:v7];
+      [(UIWindow *)self->_proxTouchHandlingWindow setWindowScene:connectCopy];
     }
   }
 }
 
-- (void)setAbsorbTouchesBelowStatusBar:(BOOL)a3
+- (void)setAbsorbTouchesBelowStatusBar:(BOOL)bar
 {
-  v3 = a3;
+  barCopy = bar;
   v16 = *MEMORY[0x277D85DE8];
   if (!self->_proxTouchHandlingWindow)
   {
-    v12 = [(SBProximityTouchHandlingController *)self _createNewWindow];
+    _createNewWindow = [(SBProximityTouchHandlingController *)self _createNewWindow];
     proxTouchHandlingWindow = self->_proxTouchHandlingWindow;
-    self->_proxTouchHandlingWindow = v12;
+    self->_proxTouchHandlingWindow = _createNewWindow;
   }
 
   v5 = SBLogProximitySensor();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (!v3)
+  if (!barCopy)
   {
     if (v6)
     {
@@ -98,21 +98,21 @@ LABEL_12:
   }
 }
 
-- (void)setStatusBarHeight:(double)a3
+- (void)setStatusBarHeight:(double)height
 {
-  if (self->_statusBarHeight != a3)
+  if (self->_statusBarHeight != height)
   {
-    self->_statusBarHeight = a3;
-    [(_SBProximityTouchHandlingViewController *)self->_proxTouchHandlingViewController setStatusBarHeight:a3];
+    self->_statusBarHeight = height;
+    [(_SBProximityTouchHandlingViewController *)self->_proxTouchHandlingViewController setStatusBarHeight:height];
   }
 }
 
 - (void)_createNewWindow
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (!a1[4])
+    selfCopy = self;
+    if (!self[4])
     {
       v3 = SBLogCommon();
       v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
@@ -123,11 +123,11 @@ LABEL_12:
       }
     }
 
-    a1 = [_SBProximityTouchHandlingWindow proximityTouchHandlingWindowWithScene:v2[6] viewController:?];
+    self = [_SBProximityTouchHandlingWindow proximityTouchHandlingWindowWithScene:selfCopy[6] viewController:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)initWithSettings:(void *)a3 touchHandlingDelegate:.cold.1(uint64_t a1, void *a2, void *a3)

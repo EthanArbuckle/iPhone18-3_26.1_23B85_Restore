@@ -1,19 +1,19 @@
 @interface PESpatialAudioMixMode
-+ (id)audioMixModeForRenderingStyle:(id)a3;
++ (id)audioMixModeForRenderingStyle:(id)style;
 + (id)audioMixModes;
 - (NSString)localizedTitle;
 - (NSString)renderingStyle;
-- (PESpatialAudioMixMode)initWithType:(unint64_t)a3;
+- (PESpatialAudioMixMode)initWithType:(unint64_t)type;
 @end
 
 @implementation PESpatialAudioMixMode
 
 - (NSString)renderingStyle
 {
-  v2 = [(PESpatialAudioMixMode *)self type];
-  if (v2 <= 3)
+  type = [(PESpatialAudioMixMode *)self type];
+  if (type <= 3)
   {
-    v3 = **(&unk_279A300E0 + v2);
+    v3 = **(&unk_279A300E0 + type);
   }
 
   return v3;
@@ -21,39 +21,39 @@
 
 - (NSString)localizedTitle
 {
-  v2 = [(PESpatialAudioMixMode *)self type];
-  if (v2 > 3)
+  type = [(PESpatialAudioMixMode *)self type];
+  if (type > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A300C0[v2];
+    v3 = off_279A300C0[type];
   }
 
   return PELocalizedString(v3);
 }
 
-- (PESpatialAudioMixMode)initWithType:(unint64_t)a3
+- (PESpatialAudioMixMode)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PESpatialAudioMixMode;
   result = [(PESpatialAudioMixMode *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-+ (id)audioMixModeForRenderingStyle:(id)a3
++ (id)audioMixModeForRenderingStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = +[PESpatialAudioMixMode audioMixModes];
-  v8 = v3;
-  v5 = v3;
+  v8 = styleCopy;
+  v5 = styleCopy;
   v6 = PFFind();
 
   return v6;

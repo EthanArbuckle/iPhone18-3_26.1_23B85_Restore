@@ -1,27 +1,27 @@
 @interface PLAssetSharingUtilities
-+ (CGImage)_thumbnailForAssetURL:(id)a3 library:(id)a4 useAspect:(BOOL)a5;
-+ (double)_durationForVideoAssetURL:(id)a3 library:(id)a4;
-+ (double)_durationForVideoFilePath:(id)a3;
-+ (id)_objectBuilderFromVideoFilePath:(id)a3 metadata:(id)a4;
-+ (id)_playerItemForVideoAssetURL:(id)a3 library:(id)a4;
-+ (id)assetForVideoURL:(id)a3 metadata:(id)a4 library:(id)a5 outAudioMix:(id *)a6 outVideoComposition:(id *)a7;
-+ (id)exportSessionForVideoFilePath:(id)a3 metadata:(id)a4 exportPreset:(id)a5;
-+ (id)exportSessionForVideoURL:(id)a3 library:(id)a4 fallbackFilePath:(id)a5 exportPreset:(id)a6;
-+ (id)filePathForVideoURL:(id)a3 library:(id)a4 outMetadata:(id *)a5;
-+ (id)playerItemForVideoFilePath:(id)a3 metadata:(id)a4;
-+ (id)playerItemForVideoURL:(id)a3 fallbackFilePath:(id)a4 library:(id)a5;
-+ (int64_t)_estimatedOutputFileLengthForDuration:(double)a3 exportPreset:(id)a4 exportProperties:(id)a5;
-+ (int64_t)estimatedOutputFileLengthForVideoFilePath:(id)a3 metadata:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6;
-+ (int64_t)estimatedOutputFileLengthForVideoURL:(id)a3 library:(id)a4 fallbackFilePath:(id)a5 exportPreset:(id)a6 exportProperties:(id)a7;
++ (CGImage)_thumbnailForAssetURL:(id)l library:(id)library useAspect:(BOOL)aspect;
++ (double)_durationForVideoAssetURL:(id)l library:(id)library;
++ (double)_durationForVideoFilePath:(id)path;
++ (id)_objectBuilderFromVideoFilePath:(id)path metadata:(id)metadata;
++ (id)_playerItemForVideoAssetURL:(id)l library:(id)library;
++ (id)assetForVideoURL:(id)l metadata:(id)metadata library:(id)library outAudioMix:(id *)mix outVideoComposition:(id *)composition;
++ (id)exportSessionForVideoFilePath:(id)path metadata:(id)metadata exportPreset:(id)preset;
++ (id)exportSessionForVideoURL:(id)l library:(id)library fallbackFilePath:(id)path exportPreset:(id)preset;
++ (id)filePathForVideoURL:(id)l library:(id)library outMetadata:(id *)metadata;
++ (id)playerItemForVideoFilePath:(id)path metadata:(id)metadata;
++ (id)playerItemForVideoURL:(id)l fallbackFilePath:(id)path library:(id)library;
++ (int64_t)_estimatedOutputFileLengthForDuration:(double)duration exportPreset:(id)preset exportProperties:(id)properties;
++ (int64_t)estimatedOutputFileLengthForVideoFilePath:(id)path metadata:(id)metadata exportPreset:(id)preset exportProperties:(id)properties;
++ (int64_t)estimatedOutputFileLengthForVideoURL:(id)l library:(id)library fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties;
 @end
 
 @implementation PLAssetSharingUtilities
 
-+ (id)assetForVideoURL:(id)a3 metadata:(id)a4 library:(id)a5 outAudioMix:(id *)a6 outVideoComposition:(id *)a7
++ (id)assetForVideoURL:(id)l metadata:(id)metadata library:(id)library outAudioMix:(id *)mix outVideoComposition:(id *)composition
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  lCopy = l;
+  metadataCopy = metadata;
+  libraryCopy = library;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -40,24 +40,24 @@
   v29 = __Block_byref_object_copy__34750;
   v30 = __Block_byref_object_dispose__34751;
   v31 = 0;
-  if (([v12 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __93__PLAssetSharingUtilities_assetForVideoURL_metadata_library_outAudioMix_outVideoComposition___block_invoke;
     v20[3] = &unk_1E756F910;
-    v21 = v14;
-    v22 = v12;
+    v21 = libraryCopy;
+    v22 = lCopy;
     v23 = &v38;
     v24 = &v32;
     v25 = &v26;
     [v21 performBlockAndWait:v20 completionHandler:0];
   }
 
-  if (!v39[5] && [v12 isFileURL])
+  if (!v39[5] && [lCopy isFileURL])
   {
-    v15 = [v12 path];
-    v16 = [a1 _objectBuilderFromVideoFilePath:v15 metadata:v13];
+    path = [lCopy path];
+    v16 = [self _objectBuilderFromVideoFilePath:path metadata:metadataCopy];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -69,14 +69,14 @@
     [v16 requestAVAssetWithResultHandler:v19];
   }
 
-  if (a6)
+  if (mix)
   {
-    *a6 = v33[5];
+    *mix = v33[5];
   }
 
-  if (a7)
+  if (composition)
   {
-    *a7 = v27[5];
+    *composition = v27[5];
   }
 
   v17 = v39[5];
@@ -144,22 +144,22 @@ void __93__PLAssetSharingUtilities_assetForVideoURL_metadata_library_outAudioMix
   *(v15 + 40) = v9;
 }
 
-+ (id)playerItemForVideoFilePath:(id)a3 metadata:(id)a4
++ (id)playerItemForVideoFilePath:(id)path metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  metadataCopy = metadata;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__34750;
   v18 = __Block_byref_object_dispose__34751;
   v19 = 0;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v9)
   {
-    v10 = [a1 _objectBuilderFromVideoFilePath:v6 metadata:v7];
+    v10 = [self _objectBuilderFromVideoFilePath:pathCopy metadata:metadataCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__PLAssetSharingUtilities_playerItemForVideoFilePath_metadata___block_invoke;
@@ -174,10 +174,10 @@ void __93__PLAssetSharingUtilities_assetForVideoURL_metadata_library_outAudioMix
   return v11;
 }
 
-+ (id)_playerItemForVideoAssetURL:(id)a3 library:(id)a4
++ (id)_playerItemForVideoAssetURL:(id)l library:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -188,9 +188,9 @@ void __93__PLAssetSharingUtilities_assetForVideoURL_metadata_library_outAudioMix
   v11[1] = 3221225472;
   v11[2] = __63__PLAssetSharingUtilities__playerItemForVideoAssetURL_library___block_invoke;
   v11[3] = &unk_1E7578820;
-  v7 = v6;
+  v7 = libraryCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = lCopy;
   v13 = v8;
   v14 = &v15;
   [v7 performBlockAndWait:v11 completionHandler:0];
@@ -216,45 +216,45 @@ void __63__PLAssetSharingUtilities__playerItemForVideoAssetURL_library___block_i
   }
 }
 
-+ (id)playerItemForVideoURL:(id)a3 fallbackFilePath:(id)a4 library:(id)a5
++ (id)playerItemForVideoURL:(id)l fallbackFilePath:(id)path library:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 isFileURL] & 1) != 0 || (!v10 ? (+[PLPhotoLibrary assetsLibraryPhotoLibrary](PLPhotoLibrary, "assetsLibraryPhotoLibrary"), v11 = objc_claimAutoreleasedReturnValue()) : (v11 = v10), v12 = v11, objc_msgSend(a1, "_playerItemForVideoAssetURL:library:", v8, v11), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  lCopy = l;
+  pathCopy = path;
+  libraryCopy = library;
+  if (([lCopy isFileURL] & 1) != 0 || (!libraryCopy ? (+[PLPhotoLibrary assetsLibraryPhotoLibrary](PLPhotoLibrary, "assetsLibraryPhotoLibrary"), v11 = objc_claimAutoreleasedReturnValue()) : (v11 = libraryCopy), v12 = v11, objc_msgSend(self, "_playerItemForVideoAssetURL:library:", lCopy, v11), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
-    if (![v8 isFileURL] || (objc_msgSend(v8, "path"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "playerItemForVideoFilePath:metadata:", v14, 0), v13 = objc_claimAutoreleasedReturnValue(), v14, !v13))
+    if (![lCopy isFileURL] || (objc_msgSend(lCopy, "path"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "playerItemForVideoFilePath:metadata:", v14, 0), v13 = objc_claimAutoreleasedReturnValue(), v14, !v13))
     {
-      v13 = [a1 playerItemForVideoFilePath:v9 metadata:0];
+      v13 = [self playerItemForVideoFilePath:pathCopy metadata:0];
     }
   }
 
   return v13;
 }
 
-+ (id)exportSessionForVideoFilePath:(id)a3 metadata:(id)a4 exportPreset:(id)a5
++ (id)exportSessionForVideoFilePath:(id)path metadata:(id)metadata exportPreset:(id)preset
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  metadataCopy = metadata;
+  presetCopy = preset;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__34750;
   v21 = __Block_byref_object_dispose__34751;
   v22 = 0;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v12)
   {
-    v13 = [a1 _objectBuilderFromVideoFilePath:v8 metadata:v9];
+    v13 = [self _objectBuilderFromVideoFilePath:pathCopy metadata:metadataCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __79__PLAssetSharingUtilities_exportSessionForVideoFilePath_metadata_exportPreset___block_invoke;
     v16[3] = &unk_1E75778F0;
     v16[4] = &v17;
-    [v13 requestExportSessionWithExportPreset:v10 resultHandler:v16];
+    [v13 requestExportSessionWithExportPreset:presetCopy resultHandler:v16];
   }
 
   v14 = v18[5];
@@ -263,35 +263,35 @@ void __63__PLAssetSharingUtilities__playerItemForVideoAssetURL_library___block_i
   return v14;
 }
 
-+ (id)exportSessionForVideoURL:(id)a3 library:(id)a4 fallbackFilePath:(id)a5 exportPreset:(id)a6
++ (id)exportSessionForVideoURL:(id)l library:(id)library fallbackFilePath:(id)path exportPreset:(id)preset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  libraryCopy = library;
+  pathCopy = path;
+  presetCopy = preset;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__34750;
   v31 = __Block_byref_object_dispose__34751;
   v32 = 0;
-  if (([v10 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __90__PLAssetSharingUtilities_exportSessionForVideoURL_library_fallbackFilePath_exportPreset___block_invoke;
     v22[3] = &unk_1E75778C0;
-    v23 = v11;
-    v24 = v10;
-    v25 = v13;
+    v23 = libraryCopy;
+    v24 = lCopy;
+    v25 = presetCopy;
     v26 = &v27;
     [v23 performBlockAndWait:v22 completionHandler:0];
   }
 
-  if (!v28[5] && [v10 isFileURL])
+  if (!v28[5] && [lCopy isFileURL])
   {
-    v14 = [v10 path];
-    v15 = [a1 exportSessionForVideoFilePath:v14 metadata:0 exportPreset:v13];
+    path = [lCopy path];
+    v15 = [self exportSessionForVideoFilePath:path metadata:0 exportPreset:presetCopy];
     v16 = v28[5];
     v28[5] = v15;
   }
@@ -299,7 +299,7 @@ void __63__PLAssetSharingUtilities__playerItemForVideoAssetURL_library___block_i
   v17 = v28[5];
   if (!v17)
   {
-    v18 = [a1 exportSessionForVideoFilePath:v12 metadata:0 exportPreset:v13];
+    v18 = [self exportSessionForVideoFilePath:pathCopy metadata:0 exportPreset:presetCopy];
     v19 = v28[5];
     v28[5] = v18;
 
@@ -328,49 +328,49 @@ void __90__PLAssetSharingUtilities_exportSessionForVideoURL_library_fallbackFile
   }
 }
 
-+ (id)_objectBuilderFromVideoFilePath:(id)a3 metadata:(id)a4
++ (id)_objectBuilderFromVideoFilePath:(id)path metadata:(id)metadata
 {
-  v5 = a4;
-  if (a3)
+  metadataCopy = metadata;
+  if (path)
   {
-    a3 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3 isDirectory:0];
+    path = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
   }
 
-  v6 = [MEMORY[0x1E6988168] assetWithURL:a3];
-  v7 = [objc_alloc(MEMORY[0x1E69C0910]) initWithPropertyListDictionary:v5];
+  v6 = [MEMORY[0x1E6988168] assetWithURL:path];
+  v7 = [objc_alloc(MEMORY[0x1E69C0910]) initWithPropertyListDictionary:metadataCopy];
   v8 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v6 videoAdjustments:v7];
 
   return v8;
 }
 
-+ (int64_t)_estimatedOutputFileLengthForDuration:(double)a3 exportPreset:(id)a4 exportProperties:(id)a5
++ (int64_t)_estimatedOutputFileLengthForDuration:(double)duration exportPreset:(id)preset exportProperties:(id)properties
 {
-  if (a3 <= 0.0)
+  if (duration <= 0.0)
   {
     return 0;
   }
 
   v7 = MEMORY[0x1E69C0890];
-  v8 = a5;
-  v9 = a4;
+  propertiesCopy = properties;
+  presetCopy = preset;
   memset(&v13, 0, sizeof(v13));
-  CMTimeMakeWithSeconds(&v13, a3, [v7 preferredTimeScale]);
+  CMTimeMakeWithSeconds(&v13, duration, [v7 preferredTimeScale]);
   v12 = v13;
-  v10 = [MEMORY[0x1E6987E60] estimatedOutputFileLengthForPreset:v9 duration:&v12 properties:v8];
+  v10 = [MEMORY[0x1E6987E60] estimatedOutputFileLengthForPreset:presetCopy duration:&v12 properties:propertiesCopy];
 
   return v10;
 }
 
-+ (double)_durationForVideoFilePath:(id)a3
++ (double)_durationForVideoFilePath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:pathCopy];
 
   Seconds = 0.0;
   if (v5)
   {
-    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:0];
+    v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     v8 = [MEMORY[0x1E6988168] assetWithURL:v7];
     v9 = v8;
     if (v8)
@@ -389,10 +389,10 @@ void __90__PLAssetSharingUtilities_exportSessionForVideoURL_library_fallbackFile
   return Seconds;
 }
 
-+ (double)_durationForVideoAssetURL:(id)a3 library:(id)a4
++ (double)_durationForVideoAssetURL:(id)l library:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -401,9 +401,9 @@ void __90__PLAssetSharingUtilities_exportSessionForVideoURL_library_fallbackFile
   v11[1] = 3221225472;
   v11[2] = __61__PLAssetSharingUtilities__durationForVideoAssetURL_library___block_invoke;
   v11[3] = &unk_1E7578820;
-  v7 = v6;
+  v7 = libraryCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = lCopy;
   v13 = v8;
   v14 = &v15;
   [v7 performBlockAndWait:v11 completionHandler:0];
@@ -423,58 +423,58 @@ void __61__PLAssetSharingUtilities__durationForVideoAssetURL_library___block_inv
   }
 }
 
-+ (int64_t)estimatedOutputFileLengthForVideoFilePath:(id)a3 metadata:(id)a4 exportPreset:(id)a5 exportProperties:(id)a6
++ (int64_t)estimatedOutputFileLengthForVideoFilePath:(id)path metadata:(id)metadata exportPreset:(id)preset exportProperties:(id)properties
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [a1 _durationForVideoFilePath:a3];
+  metadataCopy = metadata;
+  presetCopy = preset;
+  propertiesCopy = properties;
+  [self _durationForVideoFilePath:path];
   v14 = v13;
   if (v13 > 0.0)
   {
-    v15 = [objc_alloc(MEMORY[0x1E69C0910]) initWithPropertyListDictionary:v10];
+    v15 = [objc_alloc(MEMORY[0x1E69C0910]) initWithPropertyListDictionary:metadataCopy];
     [PLSlalomUtilities durationForBaseDuration:v15 videoAdjustments:v14];
     v14 = v16;
   }
 
-  v17 = [a1 _estimatedOutputFileLengthForDuration:v11 exportPreset:v12 exportProperties:v14];
+  v17 = [self _estimatedOutputFileLengthForDuration:presetCopy exportPreset:propertiesCopy exportProperties:v14];
 
   return v17;
 }
 
-+ (int64_t)estimatedOutputFileLengthForVideoURL:(id)a3 library:(id)a4 fallbackFilePath:(id)a5 exportPreset:(id)a6 exportProperties:(id)a7
++ (int64_t)estimatedOutputFileLengthForVideoURL:(id)l library:(id)library fallbackFilePath:(id)path exportPreset:(id)preset exportProperties:(id)properties
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  libraryCopy = library;
+  pathCopy = path;
+  presetCopy = preset;
+  propertiesCopy = properties;
   v17 = 0.0;
-  if (([v12 isFileURL] & 1) != 0 || (objc_msgSend(a1, "_durationForVideoAssetURL:library:", v12, v13), v17 = v18, v18 == 0.0))
+  if (([lCopy isFileURL] & 1) != 0 || (objc_msgSend(self, "_durationForVideoAssetURL:library:", lCopy, libraryCopy), v17 = v18, v18 == 0.0))
   {
-    if ([v12 isFileURL])
+    if ([lCopy isFileURL])
     {
-      v19 = [v12 path];
-      [a1 _durationForVideoFilePath:v19];
+      path = [lCopy path];
+      [self _durationForVideoFilePath:path];
       v17 = v20;
     }
   }
 
   if (v17 == 0.0)
   {
-    [a1 _durationForVideoFilePath:v14];
+    [self _durationForVideoFilePath:pathCopy];
     v17 = v21;
   }
 
-  v22 = [a1 _estimatedOutputFileLengthForDuration:v15 exportPreset:v16 exportProperties:v17];
+  v22 = [self _estimatedOutputFileLengthForDuration:presetCopy exportPreset:propertiesCopy exportProperties:v17];
 
   return v22;
 }
 
-+ (id)filePathForVideoURL:(id)a3 library:(id)a4 outMetadata:(id *)a5
++ (id)filePathForVideoURL:(id)l library:(id)library outMetadata:(id *)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  libraryCopy = library;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -487,11 +487,11 @@ void __61__PLAssetSharingUtilities__durationForVideoAssetURL_library___block_inv
   v22 = __Block_byref_object_copy__34750;
   v23 = __Block_byref_object_dispose__34751;
   v24 = 0;
-  if ([v7 isFileURL])
+  if ([lCopy isFileURL])
   {
-    v9 = [v7 path];
+    path = [lCopy path];
     v10 = v26[5];
-    v26[5] = v9;
+    v26[5] = path;
   }
 
   else
@@ -500,19 +500,19 @@ void __61__PLAssetSharingUtilities__durationForVideoAssetURL_library___block_inv
     v13[1] = 3221225472;
     v13[2] = __67__PLAssetSharingUtilities_filePathForVideoURL_library_outMetadata___block_invoke;
     v13[3] = &unk_1E756E960;
-    v14 = v8;
-    v15 = v7;
+    v14 = libraryCopy;
+    v15 = lCopy;
     v16 = &v25;
     v17 = &v19;
-    v18 = a5;
+    metadataCopy = metadata;
     [v14 performBlockAndWait:v13 completionHandler:0];
 
     v10 = v14;
   }
 
-  if (a5)
+  if (metadata)
   {
-    *a5 = v20[5];
+    *metadata = v20[5];
   }
 
   v11 = v26[5];
@@ -547,10 +547,10 @@ void __67__PLAssetSharingUtilities_filePathForVideoURL_library_outMetadata___blo
   }
 }
 
-+ (CGImage)_thumbnailForAssetURL:(id)a3 library:(id)a4 useAspect:(BOOL)a5
++ (CGImage)_thumbnailForAssetURL:(id)l library:(id)library useAspect:(BOOL)aspect
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  libraryCopy = library;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -561,10 +561,10 @@ void __67__PLAssetSharingUtilities_filePathForVideoURL_library_outMetadata___blo
   v14[1] = 3221225472;
   v14[2] = __67__PLAssetSharingUtilities__thumbnailForAssetURL_library_useAspect___block_invoke;
   v14[3] = &unk_1E7577898;
-  v9 = v8;
+  v9 = libraryCopy;
   v15 = v9;
-  v10 = v7;
-  v18 = a5;
+  v10 = lCopy;
+  aspectCopy = aspect;
   v16 = v10;
   v17 = &v19;
   [v9 performBlockAndWait:v14 completionHandler:0];

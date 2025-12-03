@@ -1,8 +1,8 @@
 @interface SXComponentSizerEngine
 - (SXComponentSizerEngine)init;
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6;
-- (void)addFactory:(id)a3;
-- (void)removeFactory:(id)a3;
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider;
+- (void)addFactory:(id)factory;
+- (void)removeFactory:(id)factory;
 @end
 
 @implementation SXComponentSizerEngine
@@ -22,39 +22,39 @@
   return v2;
 }
 
-- (id)sizerForComponent:(id)a3 componentLayout:(id)a4 layoutOptions:(id)a5 DOMObjectProvider:(id)a6
+- (id)sizerForComponent:(id)component componentLayout:(id)layout layoutOptions:(id)options DOMObjectProvider:(id)provider
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(SXComponentSizerEngine *)self factoryMatching];
-  v15 = [v13 type];
-  v16 = +[SXComponentTypeDescribing descriptionWithType:role:](SXComponentTypeDescribing, "descriptionWithType:role:", v15, [v13 role]);
-  v17 = [v14 match:v16];
+  providerCopy = provider;
+  optionsCopy = options;
+  layoutCopy = layout;
+  componentCopy = component;
+  factoryMatching = [(SXComponentSizerEngine *)self factoryMatching];
+  type = [componentCopy type];
+  v16 = +[SXComponentTypeDescribing descriptionWithType:role:](SXComponentTypeDescribing, "descriptionWithType:role:", type, [componentCopy role]);
+  v17 = [factoryMatching match:v16];
 
-  v18 = [v17 sizerForComponent:v13 componentLayout:v12 layoutOptions:v11 DOMObjectProvider:v10];
+  v18 = [v17 sizerForComponent:componentCopy componentLayout:layoutCopy layoutOptions:optionsCopy DOMObjectProvider:providerCopy];
 
   return v18;
 }
 
-- (void)addFactory:(id)a3
+- (void)addFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
-    v4 = a3;
-    v5 = [(SXComponentSizerEngine *)self factoryMatching];
-    [v5 addDescription:v4];
+    factoryCopy = factory;
+    factoryMatching = [(SXComponentSizerEngine *)self factoryMatching];
+    [factoryMatching addDescription:factoryCopy];
   }
 }
 
-- (void)removeFactory:(id)a3
+- (void)removeFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
-    v4 = a3;
-    v5 = [(SXComponentSizerEngine *)self factoryMatching];
-    [v5 removeDescription:v4];
+    factoryCopy = factory;
+    factoryMatching = [(SXComponentSizerEngine *)self factoryMatching];
+    [factoryMatching removeDescription:factoryCopy];
   }
 }
 

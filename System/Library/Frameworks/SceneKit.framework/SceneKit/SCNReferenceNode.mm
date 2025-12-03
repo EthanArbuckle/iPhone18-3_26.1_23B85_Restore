@@ -1,27 +1,27 @@
 @interface SCNReferenceNode
 + (SCNReferenceNode)referenceNodeWithURL:(NSURL *)referenceURL;
-- (BOOL)_isNameUnique:(id)a3;
+- (BOOL)_isNameUnique:(id)unique;
 - (SCNReferenceNode)initWithCoder:(NSCoder *)aDecoder;
 - (SCNReferenceNode)initWithURL:(NSURL *)referenceURL;
 - (id)_catalog;
-- (id)_loadReferencedSceneWithURL:(id)a3 catalog:(id)a4;
+- (id)_loadReferencedSceneWithURL:(id)l catalog:(id)catalog;
 - (id)_resolveURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_applyOverrides;
-- (void)_applyUnsharing:(id)a3 alreadyShared:(id)a4;
-- (void)_diffNode:(id)a3 with:(id)a4 path:(id)a5;
-- (void)_diffObject:(id)a3 with:(id)a4 path:(id)a5;
-- (void)_loadWithCatalog:(id)a3;
-- (void)_loadWithURL:(id)a3 catalog:(id)a4;
-- (void)addOverride:(id)a3 forKeyPath:(id)a4;
+- (void)_applyUnsharing:(id)unsharing alreadyShared:(id)shared;
+- (void)_diffNode:(id)node with:(id)with path:(id)path;
+- (void)_diffObject:(id)object with:(id)with path:(id)path;
+- (void)_loadWithCatalog:(id)catalog;
+- (void)_loadWithURL:(id)l catalog:(id)catalog;
+- (void)addOverride:(id)override forKeyPath:(id)path;
 - (void)collectOverrides;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeAllOverrides;
-- (void)removeForKeyPath:(id)a3;
-- (void)setOverride:(id)a3 forKeyPath:(id)a4;
-- (void)setOverrides:(id)a3;
+- (void)removeForKeyPath:(id)path;
+- (void)setOverride:(id)override forKeyPath:(id)path;
+- (void)setOverrides:(id)overrides;
 - (void)setReferenceURL:(NSURL *)referenceURL;
 - (void)unload;
 @end
@@ -56,9 +56,9 @@
   return v3;
 }
 
-- (void)_diffObject:(id)a3 with:(id)a4 path:(id)a5
+- (void)_diffObject:(id)object with:(id)with path:(id)path
 {
-  v19 = a5;
+  pathCopy = path;
   v29 = *MEMORY[0x277D85DE8];
   if (_diffObject_with_path__onceToken != -1)
   {
@@ -68,7 +68,7 @@
   v5 = objc_opt_class();
   outCount = 0;
   v6 = class_copyPropertyList(v5, &outCount);
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (outCount)
   {
     for (i = 0; i < outCount; ++i)
@@ -80,7 +80,7 @@
         [objc_msgSend(MEMORY[0x277CCACA8] stringWithUTF8String:{Attributes), "rangeOfString:", @", R, "}];
         if (v11 != 3)
         {
-          [v7 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", property_getName(v9))}];
+          [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", property_getName(v9))}];
         }
       }
     }
@@ -92,7 +92,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v12 = [array countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v12)
   {
     v13 = *v24;
@@ -102,44 +102,44 @@
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(array);
         }
 
         v15 = *(*(&v23 + 1) + 8 * j);
-        if (([_diffObject_with_path__skippedProperies containsObject:{v15, v19}] & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"_") & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"ide_") & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"ske_") & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"simd") & 1) == 0)
+        if (([_diffObject_with_path__skippedProperies containsObject:{v15, pathCopy}] & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"_") & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"ide_") & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"ske_") & 1) == 0 && (objc_msgSend(v15, "hasPrefix:", @"simd") & 1) == 0)
         {
-          v16 = [a3 valueForKey:v15];
+          v16 = [object valueForKey:v15];
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v17 = [a4 valueForKey:v15];
+            lastPathComponent2 = [with valueForKey:v15];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v18 = [v16 lastPathComponent];
-              v17 = [v17 lastPathComponent];
+              lastPathComponent = [v16 lastPathComponent];
+              lastPathComponent2 = [lastPathComponent2 lastPathComponent];
             }
 
             else
             {
-              v18 = v16;
+              lastPathComponent = v16;
             }
 
-            if (([v18 isEqual:v17] & 1) == 0)
+            if (([lastPathComponent isEqual:lastPathComponent2] & 1) == 0)
             {
-              -[NSMutableDictionary setValue:forKey:](self->_overrides, "setValue:forKey:", v16, [objc_msgSend(v19 stringByAppendingString:{@".", "stringByAppendingString:", v15}]);
+              -[NSMutableDictionary setValue:forKey:](self->_overrides, "setValue:forKey:", v16, [objc_msgSend(pathCopy stringByAppendingString:{@".", "stringByAppendingString:", v15}]);
             }
           }
         }
       }
 
-      v12 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v12 = [array countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v12);
   }
 
-  [(SCNReferenceNode *)self didChangeValueForKey:@"overrides", v19];
+  [(SCNReferenceNode *)self didChangeValueForKey:@"overrides", pathCopy];
 }
 
 id __42__SCNReferenceNode__diffObject_with_path___block_invoke()
@@ -149,7 +149,7 @@ id __42__SCNReferenceNode__diffObject_with_path___block_invoke()
   return result;
 }
 
-- (BOOL)_isNameUnique:(id)a3
+- (BOOL)_isNameUnique:(id)unique
 {
   v6 = 0;
   v7 = &v6;
@@ -159,7 +159,7 @@ id __42__SCNReferenceNode__diffObject_with_path___block_invoke()
   v5[1] = 3221225472;
   v5[2] = __34__SCNReferenceNode__isNameUnique___block_invoke;
   v5[3] = &unk_2782FD1D8;
-  v5[4] = a3;
+  v5[4] = unique;
   v5[5] = &v6;
   [(SCNNode *)self enumerateHierarchyUsingBlock:v5];
   v3 = *(v7 + 6) == 1;
@@ -181,46 +181,46 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)_diffNode:(id)a3 with:(id)a4 path:(id)a5
+- (void)_diffNode:(id)node with:(id)with path:(id)path
 {
-  if ([a3 name] && (objc_msgSend(objc_msgSend(a3, "name"), "containsString:", @".") & 1) == 0 && -[SCNReferenceNode _isNameUnique:](self, "_isNameUnique:", objc_msgSend(a3, "name")))
+  if ([node name] && (objc_msgSend(objc_msgSend(node, "name"), "containsString:", @".") & 1) == 0 && -[SCNReferenceNode _isNameUnique:](self, "_isNameUnique:", objc_msgSend(node, "name")))
   {
-    a5 = [@"/" stringByAppendingString:{objc_msgSend(a3, "name")}];
+    path = [@"/" stringByAppendingString:{objc_msgSend(node, "name")}];
   }
 
-  v24 = a4;
-  [(SCNReferenceNode *)self _diffObject:a3 with:a4 path:a5];
-  v23 = a3;
-  if ([a3 geometry] && objc_msgSend(a4, "geometry"))
+  withCopy = with;
+  [(SCNReferenceNode *)self _diffObject:node with:with path:path];
+  nodeCopy = node;
+  if ([node geometry] && objc_msgSend(with, "geometry"))
   {
-    -[SCNReferenceNode _diffObject:with:path:](self, "_diffObject:with:path:", [a3 geometry], objc_msgSend(a4, "geometry"), objc_msgSend(objc_msgSend(a5, "stringByAppendingString:", @"."), "stringByAppendingString:", @"geometry"));
-    v9 = [objc_msgSend(objc_msgSend(a3 "geometry")];
-    if (v9 == [objc_msgSend(objc_msgSend(v24 "geometry")])
+    -[SCNReferenceNode _diffObject:with:path:](self, "_diffObject:with:path:", [node geometry], objc_msgSend(with, "geometry"), objc_msgSend(objc_msgSend(path, "stringByAppendingString:", @"."), "stringByAppendingString:", @"geometry"));
+    v9 = [objc_msgSend(objc_msgSend(node "geometry")];
+    if (v9 == [objc_msgSend(objc_msgSend(withCopy "geometry")])
     {
-      v28 = [objc_msgSend(a3 "geometry")];
-      v27 = [objc_msgSend(v24 "geometry")];
+      v28 = [objc_msgSend(node "geometry")];
+      v27 = [objc_msgSend(withCopy "geometry")];
       if (v9)
       {
         v10 = 0;
         v25 = v9;
-        v26 = a5;
+        pathCopy = path;
         do
         {
           v11 = [v28 objectAtIndexedSubscript:v10];
           v12 = [v27 objectAtIndexedSubscript:v10];
           v29 = v10;
-          v13 = [objc_msgSend(a5 stringByAppendingString:{@".", "stringByAppendingString:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"geometry.materials[%d]", v10)}];
+          v13 = [objc_msgSend(path stringByAppendingString:{@".", "stringByAppendingString:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"geometry.materials[%d]", v10)}];
           [(SCNReferenceNode *)self _diffObject:v11 with:v12 path:v13];
-          v14 = [v11 properties];
-          v15 = [v12 properties];
-          v16 = [v14 count];
-          if ([v15 count] == v16)
+          properties = [v11 properties];
+          properties2 = [v12 properties];
+          v16 = [properties count];
+          if ([properties2 count] == v16)
           {
             if (v16)
             {
               for (i = 0; i != v16; ++i)
               {
-                -[SCNReferenceNode _diffObject:with:path:](self, "_diffObject:with:path:", [v14 objectAtIndexedSubscript:i], objc_msgSend(v15, "objectAtIndexedSubscript:", i), objc_msgSend(objc_msgSend(v13, "stringByAppendingString:", @"."), "stringByAppendingString:", objc_msgSend(objc_msgSend(v14, "objectAtIndexedSubscript:", i), "slotName")));
+                -[SCNReferenceNode _diffObject:with:path:](self, "_diffObject:with:path:", [properties objectAtIndexedSubscript:i], objc_msgSend(properties2, "objectAtIndexedSubscript:", i), objc_msgSend(objc_msgSend(v13, "stringByAppendingString:", @"."), "stringByAppendingString:", objc_msgSend(objc_msgSend(properties, "objectAtIndexedSubscript:", i), "slotName")));
               }
             }
           }
@@ -235,7 +235,7 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
           }
 
           ++v10;
-          a5 = v26;
+          path = pathCopy;
         }
 
         while (v29 + 1 != v25);
@@ -252,20 +252,20 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
     }
   }
 
-  if ([objc_msgSend(v23 "particleSystems")] && objc_msgSend(objc_msgSend(v24, "particleSystems"), "count"))
+  if ([objc_msgSend(nodeCopy "particleSystems")] && objc_msgSend(objc_msgSend(withCopy, "particleSystems"), "count"))
   {
-    -[SCNReferenceNode _diffObject:with:path:](self, "_diffObject:with:path:", [objc_msgSend(v23 "particleSystems")], objc_msgSend(objc_msgSend(v24, "particleSystems"), "objectAtIndexedSubscript:", 0), objc_msgSend(objc_msgSend(a5, "stringByAppendingString:", @"."), "stringByAppendingString:", @"particleSystems[0]"));
+    -[SCNReferenceNode _diffObject:with:path:](self, "_diffObject:with:path:", [objc_msgSend(nodeCopy "particleSystems")], objc_msgSend(objc_msgSend(withCopy, "particleSystems"), "objectAtIndexedSubscript:", 0), objc_msgSend(objc_msgSend(path, "stringByAppendingString:", @"."), "stringByAppendingString:", @"particleSystems[0]"));
   }
 
-  v20 = [objc_msgSend(v23 "childNodes")];
-  if (v20 == [objc_msgSend(v24 "childNodes")])
+  v20 = [objc_msgSend(nodeCopy "childNodes")];
+  if (v20 == [objc_msgSend(withCopy "childNodes")])
   {
     if (v20)
     {
       for (j = 0; j != v20; ++j)
       {
-        a5 = [objc_msgSend(a5 stringByAppendingString:{@".", "stringByAppendingString:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"[%d]", j)}];
-        -[SCNReferenceNode _diffNode:with:path:](self, "_diffNode:with:path:", [objc_msgSend(v23 "childNodes")], objc_msgSend(objc_msgSend(v24, "childNodes"), "objectAtIndexedSubscript:", j), a5);
+        path = [objc_msgSend(path stringByAppendingString:{@".", "stringByAppendingString:", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"[%d]", j)}];
+        -[SCNReferenceNode _diffNode:with:path:](self, "_diffNode:with:path:", [objc_msgSend(nodeCopy "childNodes")], objc_msgSend(objc_msgSend(withCopy, "childNodes"), "objectAtIndexedSubscript:", j), path);
       }
     }
   }
@@ -287,7 +287,7 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)addOverride:(id)a3 forKeyPath:(id)a4
+- (void)addOverride:(id)override forKeyPath:(id)path
 {
   [(SCNReferenceNode *)self willChangeValueForKey:@"overrides"];
   overrides = self->_overrides;
@@ -297,15 +297,15 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
     self->_overrides = overrides;
   }
 
-  [(NSMutableDictionary *)overrides setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)overrides setObject:override forKey:path];
 
   [(SCNReferenceNode *)self didChangeValueForKey:@"overrides"];
 }
 
-- (void)removeForKeyPath:(id)a3
+- (void)removeForKeyPath:(id)path
 {
   [(SCNReferenceNode *)self willChangeValueForKey:@"overrides"];
-  [(NSMutableDictionary *)self->_overrides removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_overrides removeObjectForKey:path];
   if (![(NSMutableDictionary *)self->_overrides count])
   {
 
@@ -325,25 +325,25 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
   [(SCNReferenceNode *)self didChangeValueForKey:@"overrides"];
 }
 
-- (void)setOverrides:(id)a3
+- (void)setOverrides:(id)overrides
 {
   [(SCNReferenceNode *)self willChangeValueForKey:@"overrides"];
 
-  self->_overrides = [a3 mutableCopy];
+  self->_overrides = [overrides mutableCopy];
 
   [(SCNReferenceNode *)self didChangeValueForKey:@"overrides"];
 }
 
-- (void)_applyUnsharing:(id)a3 alreadyShared:(id)a4
+- (void)_applyUnsharing:(id)unsharing alreadyShared:(id)shared
 {
   v35 = *MEMORY[0x277D85DE8];
-  if ([a4 containsObject:?])
+  if ([shared containsObject:?])
   {
     return;
   }
 
-  [a4 addObject:a3];
-  v7 = [a3 rangeOfString:@"." options:4];
+  [shared addObject:unsharing];
+  v7 = [unsharing rangeOfString:@"." options:4];
   if (v8 != 1)
   {
     return;
@@ -351,13 +351,13 @@ uint64_t __34__SCNReferenceNode__isNameUnique___block_invoke(uint64_t a1, void *
 
   v9 = v7;
   v10 = v7 + 1;
-  if (v7 + 1 >= [a3 length])
+  if (v7 + 1 >= [unsharing length])
   {
     return;
   }
 
-  v11 = [a3 substringToIndex:v9];
-  v12 = [a3 substringFromIndex:v10];
+  v11 = [unsharing substringToIndex:v9];
+  v12 = [unsharing substringFromIndex:v10];
   v13 = [(SCNNode *)self valueForKeyPath:v11];
   if (!v13)
   {
@@ -398,9 +398,9 @@ LABEL_12:
     return;
   }
 
-  if (([a4 containsObject:v11] & 1) == 0)
+  if (([shared containsObject:v11] & 1) == 0)
   {
-    [(SCNReferenceNode *)self _applyUnsharing:v11 alreadyShared:a4];
+    [(SCNReferenceNode *)self _applyUnsharing:v11 alreadyShared:shared];
     v14 = [(SCNNode *)self valueForKeyPath:v11];
   }
 
@@ -434,7 +434,7 @@ LABEL_17:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v30 = a3;
+            unsharingCopy = unsharing;
             v31 = 1024;
             v32 = v18;
             v33 = 1024;
@@ -490,7 +490,7 @@ LABEL_17:
   [(NSMutableDictionary *)v5 enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)setOverride:(id)a3 forKeyPath:(id)a4
+- (void)setOverride:(id)override forKeyPath:(id)path
 {
   [(SCNReferenceNode *)self willChangeValueForKey:@"overrides"];
   if (!self->_overrides)
@@ -500,14 +500,14 @@ LABEL_17:
 
   [(SCNReferenceNode *)self didChangeValueForKey:@"overrides"];
 
-  [(SCNReferenceNode *)self _applyOverride:a3 forKeyPath:a4];
+  [(SCNReferenceNode *)self _applyOverride:override forKeyPath:path];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SCNReferenceNode;
-  v4 = [(SCNNode *)&v6 copyWithZone:a3];
+  v4 = [(SCNNode *)&v6 copyWithZone:zone];
   [v4 setReferenceURL:self->_referenceURL];
   [v4 setLoadingPolicy:self->_loadingPolicy];
   v4[37] = [(NSURL *)self->_catalogURL copy];
@@ -532,9 +532,9 @@ LABEL_17:
     result = SCNGetResourceBundle();
     if (result)
     {
-      v3 = [result bundleURL];
+      bundleURL = [result bundleURL];
 
-      return [SCNAssetCatalog assetCatalogWithURL:v3];
+      return [SCNAssetCatalog assetCatalogWithURL:bundleURL];
     }
   }
 
@@ -554,8 +554,8 @@ LABEL_17:
     return referenceURL;
   }
 
-  v4 = [(NSURL *)referenceURL relativePath];
-  if ([(NSString *)v4 isAbsolutePath])
+  relativePath = [(NSURL *)referenceURL relativePath];
+  if ([(NSString *)relativePath isAbsolutePath])
   {
     return referenceURL;
   }
@@ -563,7 +563,7 @@ LABEL_17:
   sourceDocumentURL = self->_sourceDocumentURL;
   if (sourceDocumentURL)
   {
-    v5 = [[(NSURL *)sourceDocumentURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:v4];
+    v5 = [[(NSURL *)sourceDocumentURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:relativePath];
     if (C3DFileMayExistAtURL(v5))
     {
       return v5;
@@ -577,7 +577,7 @@ LABEL_17:
     return v5;
   }
 
-  return [(NSURL *)catalogURL URLByAppendingPathComponent:v4];
+  return [(NSURL *)catalogURL URLByAppendingPathComponent:relativePath];
 }
 
 - (void)unload
@@ -587,8 +587,8 @@ LABEL_17:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(SCNNode *)self childNodes];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v4 = [(NSArray *)childNodes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -600,14 +600,14 @@ LABEL_17:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childNodes);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) removeFromParentNode];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSArray *)childNodes countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -616,20 +616,20 @@ LABEL_17:
   self->_loaded = 0;
 }
 
-- (id)_loadReferencedSceneWithURL:(id)a3 catalog:(id)a4
+- (id)_loadReferencedSceneWithURL:(id)l catalog:(id)catalog
 {
-  if (a3)
+  if (l)
   {
-    if (a4 || (a4 = [(SCNReferenceNode *)self _catalog]) != 0)
+    if (catalog || (catalog = [(SCNReferenceNode *)self _catalog]) != 0)
     {
 
-      return [a4 sceneWithURL:a3];
+      return [catalog sceneWithURL:l];
     }
 
     else
     {
 
-      return [SCNScene sceneWithURL:a3 options:0 error:0];
+      return [SCNScene sceneWithURL:l options:0 error:0];
     }
   }
 
@@ -645,20 +645,20 @@ LABEL_17:
   }
 }
 
-- (void)_loadWithCatalog:(id)a3
+- (void)_loadWithCatalog:(id)catalog
 {
   if (!self->_loaded)
   {
-    v6 = [(SCNReferenceNode *)self _resolveURL];
+    _resolveURL = [(SCNReferenceNode *)self _resolveURL];
 
-    [(SCNReferenceNode *)self _loadWithURL:v6 catalog:a3];
+    [(SCNReferenceNode *)self _loadWithURL:_resolveURL catalog:catalog];
   }
 }
 
-- (void)_loadWithURL:(id)a3 catalog:(id)a4
+- (void)_loadWithURL:(id)l catalog:(id)catalog
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (l)
   {
     v7 = [SCNTransaction valueForKey:@"SCNReferenceLoadingStack"];
     if (!v7)
@@ -667,7 +667,7 @@ LABEL_17:
       [SCNTransaction setValue:v7 forKey:@"SCNReferenceLoadingStack"];
     }
 
-    if ([v7 containsObject:a3])
+    if ([v7 containsObject:l])
     {
       v8 = scn_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -678,17 +678,17 @@ LABEL_17:
 
     else
     {
-      [v7 addObject:a3];
-      v10 = [(SCNReferenceNode *)self _loadReferencedSceneWithURL:a3 catalog:a4];
-      [v7 removeObject:a3];
+      [v7 addObject:l];
+      v10 = [(SCNReferenceNode *)self _loadReferencedSceneWithURL:l catalog:catalog];
+      [v7 removeObject:l];
       if (v10)
       {
         self->_loaded = 1;
-        v11 = self;
+        selfCopy = self;
         if (C3DWasLinkedBeforeMajorOSYear2017())
         {
-          v11 = +[SCNNode node];
-          [(SCNNode *)v11 setName:@"referenceRoot"];
+          selfCopy = +[SCNNode node];
+          [(SCNNode *)selfCopy setName:@"referenceRoot"];
         }
 
         v17 = 0u;
@@ -711,7 +711,7 @@ LABEL_17:
                 objc_enumerationMutation(v12);
               }
 
-              [(SCNNode *)v11 addChildNode:*(*(&v17 + 1) + 8 * v16++)];
+              [(SCNNode *)selfCopy addChildNode:*(*(&v17 + 1) + 8 * v16++)];
             }
 
             while (v14 != v16);
@@ -721,10 +721,10 @@ LABEL_17:
           while (v14);
         }
 
-        -[SCNNode _copyAnimationsFrom:](v11, "_copyAnimationsFrom:", [v10 rootNode]);
-        if (v11 != self)
+        -[SCNNode _copyAnimationsFrom:](selfCopy, "_copyAnimationsFrom:", [v10 rootNode]);
+        if (selfCopy != self)
         {
-          [(SCNNode *)self addChildNode:v11];
+          [(SCNNode *)self addChildNode:selfCopy];
         }
 
         [(SCNReferenceNode *)self _applyOverrides];
@@ -749,24 +749,24 @@ LABEL_17:
   return [v3 stringWithFormat:@"<%@: %p url=%@>", NSStringFromClass(v4), self, self->_referenceURL];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   referenceURL = self->_referenceURL;
   if (referenceURL)
   {
-    [a3 encodeObject:referenceURL forKey:@"referenceURL"];
+    [coder encodeObject:referenceURL forKey:@"referenceURL"];
   }
 
-  [a3 encodeInteger:self->_loadingPolicy forKey:@"loadingPolicy"];
+  [coder encodeInteger:self->_loadingPolicy forKey:@"loadingPolicy"];
   overrides = self->_overrides;
   if (overrides)
   {
-    [a3 encodeObject:overrides forKey:@"overrides"];
+    [coder encodeObject:overrides forKey:@"overrides"];
   }
 
   v7.receiver = self;
   v7.super_class = SCNReferenceNode;
-  [(SCNNode *)&v7 encodeWithCoder:a3];
+  [(SCNNode *)&v7 encodeWithCoder:coder];
 }
 
 - (SCNReferenceNode)initWithCoder:(NSCoder *)aDecoder
@@ -786,19 +786,19 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(NSCoder *)aDecoder assetCatalog];
-      v4->_catalogURL = [v6 catalogURL];
+      assetCatalog = [(NSCoder *)aDecoder assetCatalog];
+      v4->_catalogURL = [assetCatalog catalogURL];
       v4->_sourceDocumentURL = [(NSCoder *)aDecoder documentURL];
     }
 
     else
     {
-      v6 = 0;
+      assetCatalog = 0;
     }
 
     if (![(NSCoder *)aDecoder containsValueForKey:@"childNodes"]&& !v4->_loadingPolicy)
     {
-      [(SCNReferenceNode *)v4 _loadWithCatalog:v6];
+      [(SCNReferenceNode *)v4 _loadWithCatalog:assetCatalog];
     }
   }
 

@@ -1,54 +1,54 @@
 @interface SBStatusBarStateAggregator
-+ (int)_thermalColorForLevel:(int64_t)a3;
++ (int)_thermalColorForLevel:(int64_t)level;
 - (BOOL)_isInAirplaneMode;
-- (BOOL)_setItem:(int)a3 enabled:(BOOL)a4 inList:(BOOL *)a5 itemPostState:(unint64_t *)a6;
+- (BOOL)_setItem:(int)item enabled:(BOOL)enabled inList:(BOOL *)list itemPostState:(unint64_t *)state;
 - (BOOL)_shouldShowPersonName;
-- (BOOL)_systemApertureElementIsVisibleForStatusBarItem:(int)a3;
-- (SBStatusBarStateAggregator)initWithMainDisplayWindowScene:(id)a3 registerForNotifications:(BOOL)a4;
+- (BOOL)_systemApertureElementIsVisibleForStatusBarItem:(int)item;
+- (SBStatusBarStateAggregator)initWithMainDisplayWindowScene:(id)scene registerForNotifications:(BOOL)notifications;
 - (SBUserSessionController)_userSessionController;
 - (SBWindowScene)mainDisplayWindowScene;
-- (id)_backgroundActivityDescriptorsForCallDescriptors:(id)a3;
+- (id)_backgroundActivityDescriptorsForCallDescriptors:(id)descriptors;
 - (id)_batteryDomainData;
-- (id)_locationAttributionsForSensorActivityAttributions:(id)a3 includeRecent:(BOOL)a4;
-- (id)_systemApertureElementIdentifiersForStatusBarItem:(int)a3;
-- (int)_statusBarBatteryStateForSystemStatusChargingState:(unint64_t)a3;
+- (id)_locationAttributionsForSensorActivityAttributions:(id)attributions includeRecent:(BOOL)recent;
+- (id)_systemApertureElementIdentifiersForStatusBarItem:(int)item;
+- (int)_statusBarBatteryStateForSystemStatusChargingState:(unint64_t)state;
 - (void)_handleShowRSSIDefaultChange;
-- (void)_invalidateSystemApertureChargingElementAssertionForReason:(id)a3;
+- (void)_invalidateSystemApertureChargingElementAssertionForReason:(id)reason;
 - (void)_noteAirplaneModeChanged;
 - (void)_notifyNonItemDataChanged;
-- (void)_postItem:(int)a3 withState:(unint64_t)a4 inList:(unint64_t *)a5;
+- (void)_postItem:(int)item withState:(unint64_t)state inList:(unint64_t *)list;
 - (void)_registerForNotifications;
 - (void)_removePlaygroundsBackgroundActivityAssertion;
 - (void)_removeSatelliteSOSBackgroundActivityAssertion;
 - (void)_removeTetheringBackgroundActivityAssertion;
-- (void)_requestActions:(int)a3;
+- (void)_requestActions:(int)actions;
 - (void)_resetTimeItemFormatter;
 - (void)_restartTimeItemTimer;
 - (void)_stopTimeItemTimer;
 - (void)_temporarilyOverrideLocationItemForProminentIndication;
-- (void)_tickRefCount:(int64_t *)a3 up:(BOOL)a4 withTransitionBlock:(id)a5;
-- (void)_updateActiveAudioRecordingBackgroundActivityAssertionsForActiveSensorActivityAttributions:(id)a3;
+- (void)_tickRefCount:(int64_t *)count up:(BOOL)up withTransitionBlock:(id)block;
+- (void)_updateActiveAudioRecordingBackgroundActivityAssertionsForActiveSensorActivityAttributions:(id)attributions;
 - (void)_updateActivityItem;
 - (void)_updateAirplaneMode;
 - (void)_updateAirplayItem;
 - (void)_updateAlarmItem;
-- (void)_updateBackgroundActivityAssertionsForSystemStatusDomain:(unint64_t)a3 andData:(id)a4;
+- (void)_updateBackgroundActivityAssertionsForSystemStatusDomain:(unint64_t)domain andData:(id)data;
 - (void)_updateBatteryItems;
 - (void)_updateBluetoothBatteryItem;
 - (void)_updateBluetoothHeadphonesItem;
 - (void)_updateBluetoothItem;
 - (void)_updateCallForwardingItem;
-- (void)_updateCallForwardingItem:(int)a3 withInfo:(id)a4;
+- (void)_updateCallForwardingItem:(int)item withInfo:(id)info;
 - (void)_updateCallToActionItem;
-- (void)_updateCallingBackgroundActivityAssertionsForCallDescriptors:(id)a3;
+- (void)_updateCallingBackgroundActivityAssertionsForCallDescriptors:(id)descriptors;
 - (void)_updateCarPlayItem;
 - (void)_updateDataNetworkItem;
-- (void)_updateDataNetworkItem:(int)a3 withData:(id)a4 primary:(BOOL)a5 dataNetworkTypeGetter:(id)a6 dataNetworkTypeSetter:(id)a7;
+- (void)_updateDataNetworkItem:(int)item withData:(id)data primary:(BOOL)primary dataNetworkTypeGetter:(id)getter dataNetworkTypeSetter:(id)setter;
 - (void)_updateDataNetworkItemsForRSSIChange;
 - (void)_updateDisplayWarningItem;
 - (void)_updateLiquidDetectionItem;
 - (void)_updateLocationItem;
-- (void)_updateLocationItemForLocationAttributions:(id)a3;
+- (void)_updateLocationItemForLocationAttributions:(id)attributions;
 - (void)_updateLockItem;
 - (void)_updateOverrideDate;
 - (void)_updatePersonNameItem;
@@ -61,38 +61,38 @@
 - (void)_updateSecondarySignalStrengthItem;
 - (void)_updateSensorActivityItem;
 - (void)_updateServiceItem;
-- (void)_updateServiceItem:(int)a3 withData:(id)a4 SIMInfo:(id)a5 otherSIMInfo:(id)a6 serviceStringGetter:(id)a7 serviceStringSetter:(id)a8 serviceCrossfadeStringGetter:(id)a9 serviceCrossfadeStringSetter:(id)a10 serviceContentTypeGetter:(id)a11 serviceContentTypeSetter:(id)a12 serviceBadgeStringGetter:(id)a13 serviceBadgeStringSetter:(id)a14;
+- (void)_updateServiceItem:(int)item withData:(id)data SIMInfo:(id)info otherSIMInfo:(id)mInfo serviceStringGetter:(id)getter serviceStringSetter:(id)setter serviceCrossfadeStringGetter:(id)stringGetter serviceCrossfadeStringSetter:(id)self0 serviceContentTypeGetter:(id)self1 serviceContentTypeSetter:(id)self2 serviceBadgeStringGetter:(id)self3 serviceBadgeStringSetter:(id)self4;
 - (void)_updateSignalStrengthItem;
-- (void)_updateSignalStrengthItem:(int)a3 withData:(id)a4 SIMInfo:(id)a5 barsGetter:(id)a6 barsSetter:(id)a7;
-- (void)_updateStateAtomicallyWithoutAnimationUsingBlock:(id)a3;
-- (void)_updateStatusBarForSystemStatusDomainName:(unint64_t)a3 data:(id)a4;
-- (void)_updateStatusBarItemsForSystemStatusDomain:(unint64_t)a3 andData:(id)a4;
+- (void)_updateSignalStrengthItem:(int)item withData:(id)data SIMInfo:(id)info barsGetter:(id)getter barsSetter:(id)setter;
+- (void)_updateStateAtomicallyWithoutAnimationUsingBlock:(id)block;
+- (void)_updateStatusBarForSystemStatusDomainName:(unint64_t)name data:(id)data;
+- (void)_updateStatusBarItemsForSystemStatusDomain:(unint64_t)domain andData:(id)data;
 - (void)_updateStewieItem;
 - (void)_updateStudentItem;
 - (void)_updateTTYItem;
 - (void)_updateTetheringState;
 - (void)_updateThermalColorItem;
 - (void)_updateTimeItems;
-- (void)_updateTimeItemsWithDate:(id)a3;
+- (void)_updateTimeItemsWithDate:(id)date;
 - (void)_updateVPNItem;
 - (void)_updateVoiceControlItem;
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3;
-- (void)addPostingObserver:(id)a3;
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider;
+- (void)addPostingObserver:(id)observer;
 - (void)beginCoalescentBlock;
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)endCoalescentBlock;
-- (void)removePostingObserver:(id)a3;
-- (void)setAlarmEnabled:(BOOL)a3;
-- (void)setBatteryChargingState:(unint64_t)a3;
-- (void)setShouldShowBluetoothHeadphoneGlyph:(BOOL)a3 andShouldShowBluetoothHeadphoneBatteryPercent:(BOOL)a4;
-- (void)setShowsActivityIndicatorEverywhere:(BOOL)a3;
-- (void)setShowsOverridesForRecording:(BOOL)a3;
-- (void)setShowsSyncActivityIndicator:(BOOL)a3;
-- (void)setUserNameOverride:(id)a3;
-- (void)systemApertureLayoutDidChange:(id)a3;
-- (void)updateStatusBarItem:(int)a3;
+- (void)removePostingObserver:(id)observer;
+- (void)setAlarmEnabled:(BOOL)enabled;
+- (void)setBatteryChargingState:(unint64_t)state;
+- (void)setShouldShowBluetoothHeadphoneGlyph:(BOOL)glyph andShouldShowBluetoothHeadphoneBatteryPercent:(BOOL)percent;
+- (void)setShowsActivityIndicatorEverywhere:(BOOL)everywhere;
+- (void)setShowsOverridesForRecording:(BOOL)recording;
+- (void)setShowsSyncActivityIndicator:(BOOL)indicator;
+- (void)setUserNameOverride:(id)override;
+- (void)systemApertureLayoutDidChange:(id)change;
+- (void)updateStatusBarItem:(int)item;
 @end
 
 @implementation SBStatusBarStateAggregator
@@ -117,25 +117,25 @@
 
 - (void)_updateLocationItem
 {
-  v3 = [SBApp sensorActivityDataProvider];
-  v5 = [v3 activeAndRecentSensorActivityAttributions];
+  sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+  activeAndRecentSensorActivityAttributions = [sensorActivityDataProvider activeAndRecentSensorActivityAttributions];
 
-  v4 = [(SBStatusBarStateAggregator *)self _locationAttributionsForSensorActivityAttributions:v5 includeRecent:0];
+  v4 = [(SBStatusBarStateAggregator *)self _locationAttributionsForSensorActivityAttributions:activeAndRecentSensorActivityAttributions includeRecent:0];
   [(SBStatusBarStateAggregator *)self _updateLocationItemForLocationAttributions:v4];
 }
 
 - (void)beginCoalescentBlock
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:"-[SBStatusBarStateAggregator beginCoalescentBlock]" object:? file:? lineNumber:? description:?];
 }
 
 - (void)endCoalescentBlock
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBStatusBarStateAggregator.m" lineNumber:338 description:{@"unbalanced call to %s", "-[SBStatusBarStateAggregator endCoalescentBlock]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBStatusBarStateAggregator.m" lineNumber:338 description:{@"unbalanced call to %s", "-[SBStatusBarStateAggregator endCoalescentBlock]"}];
 
   *a4 = *a3;
 }
@@ -153,57 +153,57 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke(ui
 - (void)_updateActivityItem
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(SBStatusBarStateAggregator *)self _telephonyManager];
+  _telephonyManager = [(SBStatusBarStateAggregator *)self _telephonyManager];
   syncActivityIndicatorCount = self->_syncActivityIndicatorCount;
   if (syncActivityIndicatorCount > 0)
   {
-    v5 = 0;
+    bundleIdentifier = 0;
     v6 = 1;
     goto LABEL_14;
   }
 
-  v7 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v8 = [v7 data];
-  v9 = [v8 primarySIMInfo];
-  v10 = [v9 dataNetworkType];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
+  primarySIMInfo = [data primarySIMInfo];
+  dataNetworkType = [primarySIMInfo dataNetworkType];
 
-  if (v10 || ([v3 hasNonCellularNetworkConnection] & 1) != 0 || (BKSDisplayServicesDisplayIsTethered() & 1) != 0 || (-[SBStatusBarStateAggregator _userSessionController](self, "_userSessionController"), v11 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v11, "isLoginSession"), v11, v6))
+  if (dataNetworkType || ([_telephonyManager hasNonCellularNetworkConnection] & 1) != 0 || (BKSDisplayServicesDisplayIsTethered() & 1) != 0 || (-[SBStatusBarStateAggregator _userSessionController](self, "_userSessionController"), v11 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v11, "isLoginSession"), v11, v6))
   {
     v12 = +[SBWorkspace mainWorkspace];
-    v13 = [v12 transientOverlayPresentationManager];
+    transientOverlayPresentationManager = [v12 transientOverlayPresentationManager];
 
     v14 = +[SBMainSwitcherControllerCoordinator _shim_activeSwitcherController];
-    v15 = [v14 layoutStatePrimaryElement];
-    v16 = [v15 workspaceEntity];
-    v17 = [v16 applicationSceneEntity];
-    v18 = [v17 sceneHandle];
+    layoutStatePrimaryElement = [v14 layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
 
-    if (v18 && ([v13 hasActivePresentation] & 1) == 0)
+    if (sceneHandle && ([transientOverlayPresentationManager hasActivePresentation] & 1) == 0)
     {
-      v19 = [v18 application];
-      v5 = [v19 bundleIdentifier];
+      application = [sceneHandle application];
+      bundleIdentifier = [application bundleIdentifier];
     }
 
     else
     {
-      v5 = 0;
+      bundleIdentifier = 0;
     }
 
-    if (self->_activityIndicatorEverywhereCount <= 0 && (![v13 hasActivePresentation] || (objc_msgSend(v13, "prefersStatusBarActivityItemVisible") & 1) == 0))
+    if (self->_activityIndicatorEverywhereCount <= 0 && (![transientOverlayPresentationManager hasActivePresentation] || (objc_msgSend(transientOverlayPresentationManager, "prefersStatusBarActivityItemVisible") & 1) == 0))
     {
-      if (v18 && ([v13 hasActivePresentation] & 1) == 0)
+      if (sceneHandle && ([transientOverlayPresentationManager hasActivePresentation] & 1) == 0)
       {
-        v30 = [v18 application];
-        v31 = [v30 showsProgress];
+        application2 = [sceneHandle application];
+        showsProgress = [application2 showsProgress];
         goto LABEL_40;
       }
 
       if (!self->_showsActivityIndicatorOnHomeScreen)
       {
-        v30 = +[SBApplicationPlaceholderController sharedInstance];
-        v31 = [v30 isUsingNetwork];
+        application2 = +[SBApplicationPlaceholderController sharedInstance];
+        showsProgress = [application2 isUsingNetwork];
 LABEL_40:
-        v6 = v31;
+        v6 = showsProgress;
 
         goto LABEL_13;
       }
@@ -215,13 +215,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v5 = 0;
+  bundleIdentifier = 0;
 LABEL_14:
   v20 = [(SBStatusBarStateAggregator *)self _setItem:32 enabled:v6];
-  v21 = [v3 isUsingSlowDataConnection];
+  isUsingSlowDataConnection = [_telephonyManager isUsingSlowDataConnection];
   if (syncActivityIndicatorCount < 1)
   {
-    v22 = v21;
+    v22 = isUsingSlowDataConnection;
   }
 
   else
@@ -229,9 +229,9 @@ LABEL_14:
     v22 = 0;
   }
 
-  if (v5)
+  if (bundleIdentifier)
   {
-    v23 = v5;
+    v23 = bundleIdentifier;
   }
 
   else
@@ -346,27 +346,27 @@ LABEL_28:
     v19 = *&self->_data.quietModeName[48];
     __s1[2] = *&self->_data.quietModeName[32];
     __s1[3] = v19;
-    v24 = [(SBStatusBarStateAggregator *)self focusDomain];
-    v20 = [v24 data];
-    v21 = [v20 modeSymbol];
-    [v21 getCString:self->_data.quietModeImage maxLength:256 encoding:4];
-    v22 = [v20 modeName];
-    [v22 getCString:self->_data.quietModeName maxLength:256 encoding:4];
-    if (v3 != (v21 != 0) || (v23 = memcmp(__s1, self->_data.quietModeName, 0x100uLL), memcmp(v26, self->_data.quietModeImage, 0x100uLL) | v23))
+    focusDomain = [(SBStatusBarStateAggregator *)self focusDomain];
+    data = [focusDomain data];
+    modeSymbol = [data modeSymbol];
+    [modeSymbol getCString:self->_data.quietModeImage maxLength:256 encoding:4];
+    modeName = [data modeName];
+    [modeName getCString:self->_data.quietModeName maxLength:256 encoding:4];
+    if (v3 != (modeSymbol != 0) || (v23 = memcmp(__s1, self->_data.quietModeName, 0x100uLL), memcmp(v26, self->_data.quietModeImage, 0x100uLL) | v23))
     {
       [(SBStatusBarStateAggregator *)self _requestActions:16];
     }
 
-    [(SBStatusBarStateAggregator *)self _setItem:2 enabled:v21 != 0];
+    [(SBStatusBarStateAggregator *)self _setItem:2 enabled:modeSymbol != 0];
   }
 }
 
 - (void)_updateLockItem
 {
-  v3 = [SBApp authenticationController];
-  v4 = [v3 isAuthenticated];
+  authenticationController = [SBApp authenticationController];
+  isAuthenticated = [authenticationController isAuthenticated];
 
-  [(SBStatusBarStateAggregator *)self _setItem:39 enabled:v4 ^ 1u];
+  [(SBStatusBarStateAggregator *)self _setItem:39 enabled:isAuthenticated ^ 1u];
 }
 
 uint64_t __51__SBStatusBarStateAggregator__restartTimeItemTimer__block_invoke(uint64_t a1, void *a2)
@@ -408,8 +408,8 @@ uint64_t __51__SBStatusBarStateAggregator__restartTimeItemTimer__block_invoke(ui
 
 - (void)_updateTimeItems
 {
-  v3 = [(SBFOverridableDateProvider *)self->_dateTimeProvider date];
-  [(SBStatusBarStateAggregator *)self _updateTimeItemsWithDate:v3];
+  date = [(SBFOverridableDateProvider *)self->_dateTimeProvider date];
+  [(SBStatusBarStateAggregator *)self _updateTimeItemsWithDate:date];
 }
 
 void __60__SBStatusBarStateAggregator__updateBluetoothHeadphonesItem__block_invoke(uint64_t a1, void *a2)
@@ -565,39 +565,39 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (SBStatusBarStateAggregator)initWithMainDisplayWindowScene:(id)a3 registerForNotifications:(BOOL)a4
+- (SBStatusBarStateAggregator)initWithMainDisplayWindowScene:(id)scene registerForNotifications:(BOOL)notifications
 {
-  v4 = a4;
-  v6 = a3;
+  notificationsCopy = notifications;
+  sceneCopy = scene;
   v51.receiver = self;
   v51.super_class = SBStatusBarStateAggregator;
   v7 = [(SBStatusBarStateAggregator *)&v51 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_mainDisplayWindowScene, v6);
+    objc_storeWeak(&v7->_mainDisplayWindowScene, sceneCopy);
     v9 = +[SBDefaults localDefaults];
-    v10 = [v9 statusBarDefaults];
+    statusBarDefaults = [v9 statusBarDefaults];
     statusBarDefaults = v8->_statusBarDefaults;
-    v8->_statusBarDefaults = v10;
+    v8->_statusBarDefaults = statusBarDefaults;
 
     v8->_cachedShowRSSI = [(SBStatusBarDefaults *)v8->_statusBarDefaults showRSSI];
     v8->_cachedShowThermalWarning = [(SBStatusBarDefaults *)v8->_statusBarDefaults showThermalWarning];
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     postObservers = v8->_postObservers;
-    v8->_postObservers = v12;
+    v8->_postObservers = weakObjectsHashTable;
 
     *(&v8->_data + 2536) = *(&v8->_data + 2536) & 0xFD | (2 * ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1));
     v14 = objc_alloc(MEMORY[0x277D65EC8]);
-    v15 = [SBApp statusBarForEmbeddedDisplay];
-    v16 = [v14 initWithReferenceView:v15];
+    statusBarForEmbeddedDisplay = [SBApp statusBarForEmbeddedDisplay];
+    v16 = [v14 initWithReferenceView:statusBarForEmbeddedDisplay];
 
     v17 = [objc_alloc(MEMORY[0x277D65F08]) initWithDateProvider:v16];
     dateTimeProvider = v8->_dateTimeProvider;
     v8->_dateTimeProvider = v17;
 
-    v19 = [SBApp systemStatusServer];
-    if (!v19)
+    systemStatusServer = [SBApp systemStatusServer];
+    if (!systemStatusServer)
     {
       [SBStatusBarStateAggregator initWithMainDisplayWindowScene:registerForNotifications:];
     }
@@ -606,13 +606,13 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
     batteryDataProvider = v8->_batteryDataProvider;
     v8->_batteryDataProvider = v20;
 
-    v22 = [[SBSystemStatusStatusItemsDataProvider alloc] initWithMainDisplayWindowScene:v6];
+    v22 = [[SBSystemStatusStatusItemsDataProvider alloc] initWithMainDisplayWindowScene:sceneCopy];
     statusItemsDataProvider = v8->_statusItemsDataProvider;
     v8->_statusItemsDataProvider = v22;
 
     v24 = objc_alloc(MEMORY[0x277D6BFD0]);
-    v25 = [SBApp telephonyStateProvider];
-    v26 = [v24 initWithServerHandle:v19 stateProvider:v25];
+    telephonyStateProvider = [SBApp telephonyStateProvider];
+    v26 = [v24 initWithServerHandle:systemStatusServer stateProvider:telephonyStateProvider];
     telephonyDataProvider = v8->_telephonyDataProvider;
     v8->_telephonyDataProvider = v26;
 
@@ -624,43 +624,43 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
     statusBarOverridesObserver = v8->_statusBarOverridesObserver;
     v8->_statusBarOverridesObserver = v30;
 
-    v32 = [objc_alloc(MEMORY[0x277D6B928]) initWithServerHandle:v19];
+    v32 = [objc_alloc(MEMORY[0x277D6B928]) initWithServerHandle:systemStatusServer];
     batteryDomain = v8->_batteryDomain;
     v8->_batteryDomain = v32;
 
-    v34 = [objc_alloc(MEMORY[0x277D6B940]) initWithServerHandle:v19];
+    v34 = [objc_alloc(MEMORY[0x277D6B940]) initWithServerHandle:systemStatusServer];
     callingDomain = v8->_callingDomain;
     v8->_callingDomain = v34;
 
-    v36 = [objc_alloc(MEMORY[0x277D6B988]) initWithServerHandle:v19];
+    v36 = [objc_alloc(MEMORY[0x277D6B988]) initWithServerHandle:systemStatusServer];
     focusDomain = v8->_focusDomain;
     v8->_focusDomain = v36;
 
-    v38 = [objc_alloc(MEMORY[0x277D6BA38]) initWithServerHandle:v19];
+    v38 = [objc_alloc(MEMORY[0x277D6BA38]) initWithServerHandle:systemStatusServer];
     playgroundsDomain = v8->_playgroundsDomain;
     v8->_playgroundsDomain = v38;
 
-    v40 = [objc_alloc(MEMORY[0x277D6BB50]) initWithServerHandle:v19];
+    v40 = [objc_alloc(MEMORY[0x277D6BB50]) initWithServerHandle:systemStatusServer];
     statusItemsDomain = v8->_statusItemsDomain;
     v8->_statusItemsDomain = v40;
 
-    v42 = [objc_alloc(MEMORY[0x277D6BB70]) initWithServerHandle:v19];
+    v42 = [objc_alloc(MEMORY[0x277D6BB70]) initWithServerHandle:systemStatusServer];
     stewieDomain = v8->_stewieDomain;
     v8->_stewieDomain = v42;
 
-    v44 = [objc_alloc(MEMORY[0x277D6BB90]) initWithServerHandle:v19];
+    v44 = [objc_alloc(MEMORY[0x277D6BB90]) initWithServerHandle:systemStatusServer];
     telephonyDomain = v8->_telephonyDomain;
     v8->_telephonyDomain = v44;
 
-    v46 = [objc_alloc(MEMORY[0x277D6BBA0]) initWithServerHandle:v19];
+    v46 = [objc_alloc(MEMORY[0x277D6BBA0]) initWithServerHandle:systemStatusServer];
     voiceControlDomain = v8->_voiceControlDomain;
     v8->_voiceControlDomain = v46;
 
-    v48 = [objc_alloc(MEMORY[0x277D6BBB0]) initWithServerHandle:v19];
+    v48 = [objc_alloc(MEMORY[0x277D6BBB0]) initWithServerHandle:systemStatusServer];
     wifiDomain = v8->_wifiDomain;
     v8->_wifiDomain = v48;
 
-    if (v4)
+    if (notificationsCopy)
     {
       [(SBStatusBarStateAggregator *)v8 _registerForNotifications];
     }
@@ -671,11 +671,11 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
 
 - (void)dealloc
 {
-  v3 = [SBApp sensorActivityDataProvider];
-  [v3 removeObserver:self];
+  sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+  [sensorActivityDataProvider removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBSystemStatusBatteryDataProvider *)self->_batteryDataProvider invalidate];
   [(SBSystemStatusStatusItemsDataProvider *)self->_statusItemsDataProvider invalidate];
@@ -702,20 +702,20 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
   override_userSessionController = self->_override_userSessionController;
   if (override_userSessionController)
   {
-    v3 = override_userSessionController;
+    userSessionController = override_userSessionController;
   }
 
   else
   {
-    v3 = [SBApp userSessionController];
+    userSessionController = [SBApp userSessionController];
   }
 
-  return v3;
+  return userSessionController;
 }
 
-- (void)_updateStateAtomicallyWithoutAnimationUsingBlock:(id)a3
+- (void)_updateStateAtomicallyWithoutAnimationUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_performingAtomicUpdate)
   {
     [SBStatusBarStateAggregator _updateStateAtomicallyWithoutAnimationUsingBlock:];
@@ -733,25 +733,25 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
   v6[2] = __79__SBStatusBarStateAggregator__updateStateAtomicallyWithoutAnimationUsingBlock___block_invoke_2;
   v6[3] = &unk_2783C3458;
   v6[4] = self;
-  (*(v4 + 2))(v4, &self->_atomicUpdateData, v7, v6);
+  (*(blockCopy + 2))(blockCopy, &self->_atomicUpdateData, v7, v6);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __79__SBStatusBarStateAggregator__updateStateAtomicallyWithoutAnimationUsingBlock___block_invoke_4;
   v5[3] = &unk_2783C3458;
   v5[4] = self;
-  (*(v4 + 2))(v4, &self->_data, &__block_literal_global_419, v5);
+  (*(blockCopy + 2))(blockCopy, &self->_data, &__block_literal_global_419, v5);
   [(SBStatusBarStateAggregator *)self endCoalescentBlock];
   self->_performingAtomicUpdate = 0;
 }
 
-- (void)_tickRefCount:(int64_t *)a3 up:(BOOL)a4 withTransitionBlock:(id)a5
+- (void)_tickRefCount:(int64_t *)count up:(BOOL)up withTransitionBlock:(id)block
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = *a3;
-  if (v5)
+  upCopy = up;
+  blockCopy = block;
+  v8 = *count;
+  if (upCopy)
   {
-    *a3 = v8 + 1;
+    *count = v8 + 1;
     if (v8)
     {
       goto LABEL_8;
@@ -765,28 +765,28 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16
   v11 = v8 - 1;
   if (!v10)
   {
-    *a3 = v11;
+    *count = v11;
     if (v9)
     {
 LABEL_7:
-      v12 = v7;
-      (*(v7 + 2))(v7, v5);
-      v7 = v12;
+      v12 = blockCopy;
+      (*(blockCopy + 2))(blockCopy, upCopy);
+      blockCopy = v12;
     }
   }
 
 LABEL_8:
 }
 
-- (void)setShowsOverridesForRecording:(BOOL)a3
+- (void)setShowsOverridesForRecording:(BOOL)recording
 {
-  v3 = a3;
+  recordingCopy = recording;
   v9 = *MEMORY[0x277D85DE8];
   v5 = SBLogStatusBarish();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67240192;
-    v8 = v3;
+    v8 = recordingCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "set showing overrides for recording: %{public}d", buf, 8u);
   }
 
@@ -795,7 +795,7 @@ LABEL_8:
   v6[2] = __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_invoke;
   v6[3] = &unk_2783A9398;
   v6[4] = self;
-  [(SBStatusBarStateAggregator *)self _tickRefCount:&self->_showsRecordingOverrides up:v3 withTransitionBlock:v6];
+  [(SBStatusBarStateAggregator *)self _tickRefCount:&self->_showsRecordingOverrides up:recordingCopy withTransitionBlock:v6];
 }
 
 uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_invoke(uint64_t a1)
@@ -815,63 +815,63 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   return [v2 endCoalescentBlock];
 }
 
-- (void)setShouldShowBluetoothHeadphoneGlyph:(BOOL)a3 andShouldShowBluetoothHeadphoneBatteryPercent:(BOOL)a4
+- (void)setShouldShowBluetoothHeadphoneGlyph:(BOOL)glyph andShouldShowBluetoothHeadphoneBatteryPercent:(BOOL)percent
 {
-  if (self->_shouldShowBluetoothHeadphoneGlyph != a3 || self->_shouldShowBluetoothHeadphoneBatteryPercent != a4)
+  if (self->_shouldShowBluetoothHeadphoneGlyph != glyph || self->_shouldShowBluetoothHeadphoneBatteryPercent != percent)
   {
-    self->_shouldShowBluetoothHeadphoneGlyph = a3;
-    self->_shouldShowBluetoothHeadphoneBatteryPercent = a4;
+    self->_shouldShowBluetoothHeadphoneGlyph = glyph;
+    self->_shouldShowBluetoothHeadphoneBatteryPercent = percent;
     [(SBStatusBarStateAggregator *)self _updateBluetoothBatteryItem];
   }
 }
 
-- (void)setAlarmEnabled:(BOOL)a3
+- (void)setAlarmEnabled:(BOOL)enabled
 {
-  [(SBSystemStatusStatusItemsDataProvider *)self->_statusItemsDataProvider setAlarmEnabled:a3];
+  [(SBSystemStatusStatusItemsDataProvider *)self->_statusItemsDataProvider setAlarmEnabled:enabled];
 
   [(SBStatusBarStateAggregator *)self updateStatusBarItem:18];
 }
 
-- (void)setShowsActivityIndicatorEverywhere:(BOOL)a3
+- (void)setShowsActivityIndicatorEverywhere:(BOOL)everywhere
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __66__SBStatusBarStateAggregator_setShowsActivityIndicatorEverywhere___block_invoke;
   v3[3] = &unk_2783A9398;
   v3[4] = self;
-  [(SBStatusBarStateAggregator *)self _tickRefCount:&self->_activityIndicatorEverywhereCount up:a3 withTransitionBlock:v3];
+  [(SBStatusBarStateAggregator *)self _tickRefCount:&self->_activityIndicatorEverywhereCount up:everywhere withTransitionBlock:v3];
 }
 
-- (void)setShowsSyncActivityIndicator:(BOOL)a3
+- (void)setShowsSyncActivityIndicator:(BOOL)indicator
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __60__SBStatusBarStateAggregator_setShowsSyncActivityIndicator___block_invoke;
   v3[3] = &unk_2783A9398;
   v3[4] = self;
-  [(SBStatusBarStateAggregator *)self _tickRefCount:&self->_syncActivityIndicatorCount up:a3 withTransitionBlock:v3];
+  [(SBStatusBarStateAggregator *)self _tickRefCount:&self->_syncActivityIndicatorCount up:indicator withTransitionBlock:v3];
 }
 
-- (void)setUserNameOverride:(id)a3
+- (void)setUserNameOverride:(id)override
 {
-  v4 = [a3 copy];
+  v4 = [override copy];
   overridePersonName = self->_overridePersonName;
   self->_overridePersonName = v4;
 
   [(SBStatusBarStateAggregator *)self updateStatusBarItem:8];
 }
 
-- (void)addPostingObserver:(id)a3
+- (void)addPostingObserver:(id)observer
 {
-  v4 = a3;
-  v7 = v4;
+  observerCopy = observer;
+  v7 = observerCopy;
   if (self->_notifyingPostObservers)
   {
     [SBStatusBarStateAggregator addPostingObserver:];
-    v4 = v7;
+    observerCopy = v7;
   }
 
-  if (![(NSHashTable *)self->_postObservers containsObject:v4])
+  if (![(NSHashTable *)self->_postObservers containsObject:observerCopy])
   {
     [(NSHashTable *)self->_postObservers addObject:v7];
     if (self->_hasPostedOnce)
@@ -911,24 +911,24 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   }
 }
 
-- (void)removePostingObserver:(id)a3
+- (void)removePostingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
+  observerCopy = observer;
+  v5 = observerCopy;
   if (self->_notifyingPostObservers)
   {
     [SBStatusBarStateAggregator removePostingObserver:];
-    v4 = v5;
+    observerCopy = v5;
   }
 
-  [(NSHashTable *)self->_postObservers removeObject:v4];
+  [(NSHashTable *)self->_postObservers removeObject:observerCopy];
 }
 
 - (void)_registerForNotifications
 {
   v213[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   objc_initWeak(&location, self);
   v206[0] = MEMORY[0x277D85DD0];
   v206[1] = 3221225472;
@@ -942,23 +942,23 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v204[3] = &unk_2783B4BD8;
   v6 = v5;
   v205 = v6;
-  v7 = [v3 addObserverForName:@"SBBootCompleteNotification" object:0 queue:v4 usingBlock:v204];
+  v7 = [defaultCenter addObserverForName:@"SBBootCompleteNotification" object:0 queue:mainQueue usingBlock:v204];
   v202[0] = MEMORY[0x277D85DD0];
   v202[1] = 3221225472;
   v202[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_4;
   v202[3] = &unk_2783B4BD8;
   v8 = v6;
   v203 = v8;
-  v9 = [v3 addObserverForName:@"SBSignificantTimeChangedNotification" object:0 queue:v4 usingBlock:v202];
+  v9 = [defaultCenter addObserverForName:@"SBSignificantTimeChangedNotification" object:0 queue:mainQueue usingBlock:v202];
   v200[0] = MEMORY[0x277D85DD0];
   v200[1] = 3221225472;
   v200[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_6;
   v200[3] = &unk_2783B4BD8;
   v10 = v8;
   v201 = v10;
-  v11 = [v3 addObserverForName:@"SBCurrentLocaleDidChangeNotification" object:0 queue:v4 usingBlock:v200];
-  [v3 addObserver:self selector:sel__restartTimeItemTimer name:@"SBWorkspaceDidWakeFromSleepNotification" object:0];
-  [v3 addObserver:self selector:sel_systemApertureLayoutDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+  v11 = [defaultCenter addObserverForName:@"SBCurrentLocaleDidChangeNotification" object:0 queue:mainQueue usingBlock:v200];
+  [defaultCenter addObserver:self selector:sel__restartTimeItemTimer name:@"SBWorkspaceDidWakeFromSleepNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_systemApertureLayoutDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
   v199[0] = MEMORY[0x277D85DD0];
   v199[1] = 3221225472;
   v199[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_8;
@@ -987,22 +987,22 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v19 = v10;
   v197 = v19;
   v20 = MEMORY[0x223D6F7F0](v196);
-  v21 = [(SBStatusBarStateAggregator *)self batteryDomain];
+  batteryDomain = [(SBStatusBarStateAggregator *)self batteryDomain];
   v194[0] = MEMORY[0x277D85DD0];
   v194[1] = 3221225472;
   v194[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_12;
   v194[3] = &unk_2783C34F0;
   v126 = v20;
   v195 = v126;
-  [v21 observeDataWithBlock:v194];
+  [batteryDomain observeDataWithBlock:v194];
 
-  v22 = [(SBStatusBarStateAggregator *)self batteryDomain];
-  v23 = [v22 data];
-  LODWORD(v20) = v23 == 0;
+  batteryDomain2 = [(SBStatusBarStateAggregator *)self batteryDomain];
+  data = [batteryDomain2 data];
+  LODWORD(v20) = data == 0;
 
   if (v20)
   {
-    [v3 addObserver:self selector:sel__updateBatteryItems name:@"SBSystemStatusBatteryDataProviderDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__updateBatteryItems name:@"SBSystemStatusBatteryDataProviderDidChangeNotification" object:0];
   }
 
   v24 = MEMORY[0x277D85CD0];
@@ -1028,14 +1028,14 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v191[3] = &unk_2783C3518;
   v191[4] = self;
   v31 = MEMORY[0x223D6F7F0](v191);
-  v32 = [(SBStatusBarStateAggregator *)self callingDomain];
+  callingDomain = [(SBStatusBarStateAggregator *)self callingDomain];
   v189[0] = MEMORY[0x277D85DD0];
   v189[1] = 3221225472;
   v189[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_16;
   v189[3] = &unk_2783C3540;
   v33 = v31;
   v190 = v33;
-  [v32 observeDataWithBlock:v189];
+  [callingDomain observeDataWithBlock:v189];
 
   v186[0] = MEMORY[0x277D85DD0];
   v186[1] = 3221225472;
@@ -1055,14 +1055,14 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v35 = v29;
   v185 = v35;
   v36 = MEMORY[0x223D6F7F0](v184);
-  v37 = [(SBStatusBarStateAggregator *)self wifiDomain];
+  wifiDomain = [(SBStatusBarStateAggregator *)self wifiDomain];
   v182[0] = MEMORY[0x277D85DD0];
   v182[1] = 3221225472;
   v182[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_2_99;
   v182[3] = &unk_2783C3568;
   v125 = v36;
   v183 = v125;
-  [v37 observeDataWithBlock:v182];
+  [wifiDomain observeDataWithBlock:v182];
 
   v38 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v125);
@@ -1074,38 +1074,38 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v39 = v35;
   v181 = v39;
   v40 = MEMORY[0x223D6F7F0](v180);
-  v41 = [(SBStatusBarStateAggregator *)self focusDomain];
+  focusDomain = [(SBStatusBarStateAggregator *)self focusDomain];
   v178[0] = MEMORY[0x277D85DD0];
   v178[1] = 3221225472;
   v178[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_5_105;
   v178[3] = &unk_2783C3590;
   v124 = v40;
   v179 = v124;
-  [v41 observeDataWithBlock:v178];
+  [focusDomain observeDataWithBlock:v178];
 
   v42 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v124);
 
-  v43 = [SBApp sensorActivityDataProvider];
-  [v43 addObserver:self];
+  sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+  [sensorActivityDataProvider addObserver:self];
   v176[0] = MEMORY[0x277D85DD0];
   v176[1] = 3221225472;
   v176[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_6_107;
   v176[3] = &unk_2783A92D8;
   v176[4] = self;
-  v120 = v43;
+  v120 = sensorActivityDataProvider;
   v177 = v120;
   v44 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v176);
 
-  v45 = [(SBStatusBarStateAggregator *)self playgroundsDomain];
+  playgroundsDomain = [(SBStatusBarStateAggregator *)self playgroundsDomain];
   v174[0] = MEMORY[0x277D85DD0];
   v174[1] = 3221225472;
   v174[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_7_108;
   v174[3] = &unk_2783C35B8;
   v46 = v18;
   v175 = v46;
-  [v45 observeDataWithBlock:v174];
+  [playgroundsDomain observeDataWithBlock:v174];
 
   v171[0] = MEMORY[0x277D85DD0];
   v171[1] = 3221225472;
@@ -1117,14 +1117,14 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v48 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v171);
 
-  v49 = [(SBStatusBarStateAggregator *)self statusItemsDomain];
+  statusItemsDomain = [(SBStatusBarStateAggregator *)self statusItemsDomain];
   v169[0] = MEMORY[0x277D85DD0];
   v169[1] = 3221225472;
   v169[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_10_112;
   v169[3] = &unk_2783C35E0;
   v50 = v47;
   v170 = v50;
-  [v49 observeDataWithBlock:v169];
+  [statusItemsDomain observeDataWithBlock:v169];
 
   v166[0] = MEMORY[0x277D85DD0];
   v166[1] = 3221225472;
@@ -1136,14 +1136,14 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v52 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v166);
 
-  v53 = [(SBStatusBarStateAggregator *)self stewieDomain];
+  stewieDomain = [(SBStatusBarStateAggregator *)self stewieDomain];
   v164[0] = MEMORY[0x277D85DD0];
   v164[1] = 3221225472;
   v164[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_13_116;
   v164[3] = &unk_2783C3608;
   v54 = v51;
   v165 = v54;
-  [v53 observeDataWithBlock:v164];
+  [stewieDomain observeDataWithBlock:v164];
 
   v161[0] = MEMORY[0x277D85DD0];
   v161[1] = 3221225472;
@@ -1162,14 +1162,14 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v56 = v39;
   v160 = v56;
   v57 = MEMORY[0x223D6F7F0](v159);
-  v58 = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
   v157[0] = MEMORY[0x277D85DD0];
   v157[1] = 3221225472;
   v157[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_18_124;
   v157[3] = &unk_2783C3630;
   v123 = v57;
   v158 = v123;
-  [v58 observeDataWithBlock:v157];
+  [telephonyDomain observeDataWithBlock:v157];
 
   v59 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v123);
@@ -1181,14 +1181,14 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v60 = v56;
   v156 = v60;
   v61 = MEMORY[0x223D6F7F0](v155);
-  v62 = [(SBStatusBarStateAggregator *)self voiceControlDomain];
+  voiceControlDomain = [(SBStatusBarStateAggregator *)self voiceControlDomain];
   v153[0] = MEMORY[0x277D85DD0];
   v153[1] = 3221225472;
   v153[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_21;
   v153[3] = &unk_2783C3658;
   v122 = v61;
   v154 = v122;
-  [v62 observeDataWithBlock:v153];
+  [voiceControlDomain observeDataWithBlock:v153];
 
   v63 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], v122);
@@ -1219,10 +1219,10 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
 
   [(SBStatusBarStateAggregator *)self _handleShowRSSIDefaultChange];
   v73 = +[SBAirplaneModeController sharedInstance];
-  [v3 addObserver:self selector:sel_beginCoalescentBlock name:*MEMORY[0x277D679F8] object:0];
-  [v3 addObserver:self selector:sel__noteAirplaneModeChanged name:*MEMORY[0x277D679E8] object:0];
-  [v3 addObserver:self selector:sel_endCoalescentBlock name:*MEMORY[0x277D679F0] object:0];
-  v74 = [MEMORY[0x277CF3248] sharedInstance];
+  [defaultCenter addObserver:self selector:sel_beginCoalescentBlock name:*MEMORY[0x277D679F8] object:0];
+  [defaultCenter addObserver:self selector:sel__noteAirplaneModeChanged name:*MEMORY[0x277D679E8] object:0];
+  [defaultCenter addObserver:self selector:sel_endCoalescentBlock name:*MEMORY[0x277D679F0] object:0];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
   v75 = *MEMORY[0x277CF3190];
   v147[0] = MEMORY[0x277D85DD0];
   v147[1] = 3221225472;
@@ -1230,7 +1230,7 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v147[3] = &unk_2783B4BD8;
   v76 = v71;
   v148 = v76;
-  v77 = [v3 addObserverForName:v75 object:0 queue:v4 usingBlock:v147];
+  v77 = [defaultCenter addObserverForName:v75 object:0 queue:mainQueue usingBlock:v147];
   v78 = *MEMORY[0x277CF31A0];
   v145[0] = MEMORY[0x277D85DD0];
   v145[1] = 3221225472;
@@ -1238,11 +1238,11 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v145[3] = &unk_2783B4BD8;
   v79 = v76;
   v146 = v79;
-  v80 = [v3 addObserverForName:v78 object:0 queue:v4 usingBlock:v145];
-  v81 = [v74 connectedDevices];
-  if ([v81 count])
+  v80 = [defaultCenter addObserverForName:v78 object:0 queue:mainQueue usingBlock:v145];
+  connectedDevices = [mEMORY[0x277CF3248] connectedDevices];
+  if ([connectedDevices count])
   {
-    v82 = [v81 mutableCopy];
+    v82 = [connectedDevices mutableCopy];
     connectedClassicBluetoothDevices = self->_connectedClassicBluetoothDevices;
     self->_connectedClassicBluetoothDevices = v82;
   }
@@ -1265,7 +1265,7 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v143[3] = &unk_2783B4BD8;
   v90 = v79;
   v144 = v90;
-  v91 = [v3 addObserverForName:v89 object:0 queue:v4 usingBlock:v143];
+  v91 = [defaultCenter addObserverForName:v89 object:0 queue:mainQueue usingBlock:v143];
   v92 = SBBluetoothConnectionChangedNotification;
   v141[0] = MEMORY[0x277D85DD0];
   v141[1] = 3221225472;
@@ -1273,7 +1273,7 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v141[3] = &unk_2783B4BD8;
   v93 = v90;
   v142 = v93;
-  v94 = [v3 addObserverForName:v92 object:0 queue:v4 usingBlock:v141];
+  v94 = [defaultCenter addObserverForName:v92 object:0 queue:mainQueue usingBlock:v141];
   v95 = +[SBAVSystemControllerCache sharedInstance];
   [v95 addObserver:self];
 
@@ -1284,8 +1284,8 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v96 = v93;
   v140 = v96;
   v97 = MEMORY[0x223D6F7F0](v139);
-  v98 = [v3 addObserverForName:SBBluetoothBatteryAvailabilityChangedNotification object:0 queue:v4 usingBlock:v97];
-  v99 = [v3 addObserverForName:SBBluetoothBatteryLevelChangedNotification object:0 queue:v4 usingBlock:v97];
+  v98 = [defaultCenter addObserverForName:SBBluetoothBatteryAvailabilityChangedNotification object:0 queue:mainQueue usingBlock:v97];
+  v99 = [defaultCenter addObserverForName:SBBluetoothBatteryLevelChangedNotification object:0 queue:mainQueue usingBlock:v97];
   v137[0] = MEMORY[0x277D85DD0];
   v137[1] = 3221225472;
   v137[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_35;
@@ -1293,9 +1293,9 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v100 = v96;
   v138 = v100;
   v101 = MEMORY[0x223D6F7F0](v137);
-  v102 = [v3 addObserverForName:@"SBApplicationShowsProgressChangedNotification" object:0 queue:v4 usingBlock:v101];
-  v103 = [v3 addObserverForName:@"SBApplicationPlaceholdersNetworkUsageDidChangeNotification" object:0 queue:v4 usingBlock:v101];
-  v104 = [v3 addObserverForName:@"SBFrontmostDisplayChangedNotification" object:0 queue:v4 usingBlock:v101];
+  v102 = [defaultCenter addObserverForName:@"SBApplicationShowsProgressChangedNotification" object:0 queue:mainQueue usingBlock:v101];
+  v103 = [defaultCenter addObserverForName:@"SBApplicationPlaceholdersNetworkUsageDidChangeNotification" object:0 queue:mainQueue usingBlock:v101];
+  v104 = [defaultCenter addObserverForName:@"SBFrontmostDisplayChangedNotification" object:0 queue:mainQueue usingBlock:v101];
   v105 = *MEMORY[0x277D67A90];
   v135[0] = MEMORY[0x277D85DD0];
   v135[1] = 3221225472;
@@ -1303,7 +1303,7 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v135[3] = &unk_2783B4BD8;
   v106 = v100;
   v136 = v106;
-  v107 = [v3 addObserverForName:v105 object:0 queue:v4 usingBlock:v135];
+  v107 = [defaultCenter addObserverForName:v105 object:0 queue:mainQueue usingBlock:v135];
   v108 = *MEMORY[0x277D66078];
   v133[0] = MEMORY[0x277D85DD0];
   v133[1] = 3221225472;
@@ -1311,21 +1311,21 @@ uint64_t __60__SBStatusBarStateAggregator_setShowsOverridesForRecording___block_
   v133[3] = &unk_2783B4BD8;
   v109 = v106;
   v134 = v109;
-  v110 = [v3 addObserverForName:v108 object:0 queue:v4 usingBlock:v133];
+  v110 = [defaultCenter addObserverForName:v108 object:0 queue:mainQueue usingBlock:v133];
   v131[0] = MEMORY[0x277D85DD0];
   v131[1] = 3221225472;
   v131[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_41;
   v131[3] = &unk_2783B4BD8;
   v111 = v109;
   v132 = v111;
-  v112 = [v3 addObserverForName:@"SBThermalControllerStateDidChange" object:0 queue:v4 usingBlock:v131];
+  v112 = [defaultCenter addObserverForName:@"SBThermalControllerStateDidChange" object:0 queue:mainQueue usingBlock:v131];
   v129[0] = MEMORY[0x277D85DD0];
   v129[1] = 3221225472;
   v129[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_43;
   v129[3] = &unk_2783B4BD8;
   v113 = v111;
   v130 = v113;
-  v114 = [v3 addObserverForName:@"SBRingerChangedNotification" object:0 queue:v4 usingBlock:v129];
+  v114 = [defaultCenter addObserverForName:@"SBRingerChangedNotification" object:0 queue:mainQueue usingBlock:v129];
   v128[0] = MEMORY[0x277D85DD0];
   v128[1] = 3221225472;
   v128[2] = __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_45;
@@ -1625,11 +1625,11 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_32
   [v2 updateStatusBarItem:10];
 }
 
-- (void)_updateTimeItemsWithDate:(id)a3
+- (void)_updateTimeItemsWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NSDateFormatter *)self->_timeItemDateFormatter stringFromDate:v4];
-  v6 = [(NSDateFormatter *)self->_dateItemDateFormatter stringFromDate:v4];
+  dateCopy = date;
+  v5 = [(NSDateFormatter *)self->_timeItemDateFormatter stringFromDate:dateCopy];
+  v6 = [(NSDateFormatter *)self->_dateItemDateFormatter stringFromDate:dateCopy];
   [(SBStatusBarStateAggregator *)self _setItem:0 enabled:1];
   [(SBStatusBarStateAggregator *)self _setItem:1 enabled:1];
   v10[0] = MEMORY[0x277D85DD0];
@@ -1641,7 +1641,7 @@ void __55__SBStatusBarStateAggregator__registerForNotifications__block_invoke_32
   if (([v5 isEqualToString:self->_timeItemTimeString] & 1) == 0)
   {
     objc_storeStrong(&self->_timeItemTimeString, v5);
-    v8 = [(NSDateFormatter *)self->_shortTimeItemDateFormatter stringFromDate:v4];
+    v8 = [(NSDateFormatter *)self->_shortTimeItemDateFormatter stringFromDate:dateCopy];
     shortTimeItemTimeString = self->_shortTimeItemTimeString;
     self->_shortTimeItemTimeString = v8;
 
@@ -1681,26 +1681,26 @@ double __55__SBStatusBarStateAggregator__updateTimeItemsWithDate___block_invoke(
 - (BOOL)_isInAirplaneMode
 {
   v2 = +[SBAirplaneModeController sharedInstance];
-  v3 = [v2 isInAirplaneMode];
+  isInAirplaneMode = [v2 isInAirplaneMode];
 
-  return v3;
+  return isInAirplaneMode;
 }
 
 - (void)_updateAirplaneMode
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF48]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF48]];
 
   [(SBStatusBarStateAggregator *)self _setItem:3 enabled:v5];
 }
 
 - (void)_updateSignalStrengthItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
 
-  v5 = [v4 primarySIMInfo];
+  primarySIMInfo = [data primarySIMInfo];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SBStatusBarStateAggregator__updateSignalStrengthItem__block_invoke;
@@ -1711,16 +1711,16 @@ double __55__SBStatusBarStateAggregator__updateTimeItemsWithDate___block_invoke(
   v6[2] = __55__SBStatusBarStateAggregator__updateSignalStrengthItem__block_invoke_2;
   v6[3] = &unk_2783A95E8;
   v6[4] = self;
-  [(SBStatusBarStateAggregator *)self _updateSignalStrengthItem:4 withData:v4 SIMInfo:v5 barsGetter:v7 barsSetter:v6];
+  [(SBStatusBarStateAggregator *)self _updateSignalStrengthItem:4 withData:data SIMInfo:primarySIMInfo barsGetter:v7 barsSetter:v6];
 }
 
 - (void)_updateSecondarySignalStrengthItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
 
-  v5 = [v4 secondarySIMInfo];
-  *(&self->_data + 3160) = *(&self->_data + 3160) & 0xFB | (4 * (v5 != 0));
+  secondarySIMInfo = [data secondarySIMInfo];
+  *(&self->_data + 3160) = *(&self->_data + 3160) & 0xFB | (4 * (secondarySIMInfo != 0));
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SBStatusBarStateAggregator__updateSecondarySignalStrengthItem__block_invoke;
@@ -1731,25 +1731,25 @@ double __55__SBStatusBarStateAggregator__updateTimeItemsWithDate___block_invoke(
   v6[2] = __64__SBStatusBarStateAggregator__updateSecondarySignalStrengthItem__block_invoke_2;
   v6[3] = &unk_2783A95E8;
   v6[4] = self;
-  [(SBStatusBarStateAggregator *)self _updateSignalStrengthItem:5 withData:v4 SIMInfo:v5 barsGetter:v7 barsSetter:v6];
+  [(SBStatusBarStateAggregator *)self _updateSignalStrengthItem:5 withData:data SIMInfo:secondarySIMInfo barsGetter:v7 barsSetter:v6];
 }
 
-- (void)_updateSignalStrengthItem:(int)a3 withData:(id)a4 SIMInfo:(id)a5 barsGetter:(id)a6 barsSetter:(id)a7
+- (void)_updateSignalStrengthItem:(int)item withData:(id)data SIMInfo:(id)info barsGetter:(id)getter barsSetter:(id)setter
 {
-  v10 = *&a3;
+  v10 = *&item;
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(SBStatusBarStateAggregator *)self _telephonyManager];
-  v17 = [v16 containsCellularRadio];
-  if (self->_showsRecordingOverrides && v17)
+  dataCopy = data;
+  infoCopy = info;
+  getterCopy = getter;
+  setterCopy = setter;
+  _telephonyManager = [(SBStatusBarStateAggregator *)self _telephonyManager];
+  containsCellularRadio = [_telephonyManager containsCellularRadio];
+  if (self->_showsRecordingOverrides && containsCellularRadio)
   {
     [(SBStatusBarStateAggregator *)self _setItem:v10 enabled:v10 == 4];
-    if (v14[2](v14) != 4)
+    if (getterCopy[2](getterCopy) != 4)
     {
-      v15[2](v15, 4);
+      setterCopy[2](setterCopy, 4);
 LABEL_22:
       [(SBStatusBarStateAggregator *)self _notifyItemChanged:v10];
       goto LABEL_23;
@@ -1758,25 +1758,25 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v18 = [v12 isCellularRadioCapabilityEnabled];
-  v19 = [v13 cellularServiceState];
-  if (v13 && v18 && v19 == 2 && ![(SBStatusBarStateAggregator *)self _isInAirplaneMode])
+  isCellularRadioCapabilityEnabled = [dataCopy isCellularRadioCapabilityEnabled];
+  cellularServiceState = [infoCopy cellularServiceState];
+  if (infoCopy && isCellularRadioCapabilityEnabled && cellularServiceState == 2 && ![(SBStatusBarStateAggregator *)self _isInAirplaneMode])
   {
     [(SBStatusBarStateAggregator *)self _setItem:v10 enabled:1];
-    v21 = [v13 signalStrengthBars];
+    signalStrengthBars = [infoCopy signalStrengthBars];
   }
 
   else
   {
-    v20 = [v12 isRadioModuleDead];
-    [(SBStatusBarStateAggregator *)self _setItem:v10 enabled:v20];
-    if ((v20 & 1) == 0)
+    isRadioModuleDead = [dataCopy isRadioModuleDead];
+    [(SBStatusBarStateAggregator *)self _setItem:v10 enabled:isRadioModuleDead];
+    if ((isRadioModuleDead & 1) == 0)
     {
       goto LABEL_23;
     }
 
-    v21 = [v13 signalStrengthBars];
-    if (!v13)
+    signalStrengthBars = [infoCopy signalStrengthBars];
+    if (!infoCopy)
     {
       v22 = SBLogStatusBarish();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1789,7 +1789,7 @@ LABEL_22:
     }
   }
 
-  if (v21)
+  if (signalStrengthBars)
   {
     goto LABEL_18;
   }
@@ -1799,17 +1799,17 @@ LABEL_22:
   {
     *buf = 0;
     _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "Status bar data manager: telephony domain reports 0 signal strength bars", buf, 2u);
-    v21 = 0;
+    signalStrengthBars = 0;
   }
 
 LABEL_17:
 
 LABEL_18:
-  v23 = v14[2](v14);
-  if (v23 != v21)
+  v23 = getterCopy[2](getterCopy);
+  if (v23 != signalStrengthBars)
   {
     v24 = v23;
-    v15[2](v15, v21);
+    setterCopy[2](setterCopy, signalStrengthBars);
     v25 = SBLogStatusBarish();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -1819,7 +1819,7 @@ LABEL_18:
       v29 = 1026;
       v30 = v24;
       v31 = 1026;
-      v32 = v21;
+      v32 = signalStrengthBars;
       _os_log_impl(&dword_21ED4E000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ changing from '%{public}d' to '%{public}d'", buf, 0x18u);
     }
 
@@ -1831,11 +1831,11 @@ LABEL_23:
 
 - (void)_updateServiceItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
 
-  v5 = [v4 primarySIMInfo];
-  v6 = [v4 secondarySIMInfo];
+  primarySIMInfo = [data primarySIMInfo];
+  secondarySIMInfo = [data secondarySIMInfo];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__SBStatusBarStateAggregator__updateServiceItem__block_invoke;
@@ -1876,7 +1876,7 @@ LABEL_23:
   v7[1] = 3221225472;
   v7[2] = __48__SBStatusBarStateAggregator__updateServiceItem__block_invoke_8;
   v7[3] = &unk_2783B6F18;
-  [(SBStatusBarStateAggregator *)self _updateServiceItem:6 withData:v4 SIMInfo:v5 otherSIMInfo:v6 serviceStringGetter:v14 serviceStringSetter:v13 serviceCrossfadeStringGetter:v12 serviceCrossfadeStringSetter:v11 serviceContentTypeGetter:v10 serviceContentTypeSetter:v9 serviceBadgeStringGetter:v8 serviceBadgeStringSetter:v7];
+  [(SBStatusBarStateAggregator *)self _updateServiceItem:6 withData:data SIMInfo:primarySIMInfo otherSIMInfo:secondarySIMInfo serviceStringGetter:v14 serviceStringSetter:v13 serviceCrossfadeStringGetter:v12 serviceCrossfadeStringSetter:v11 serviceContentTypeGetter:v10 serviceContentTypeSetter:v9 serviceBadgeStringGetter:v8 serviceBadgeStringSetter:v7];
 }
 
 void __48__SBStatusBarStateAggregator__updateServiceItem__block_invoke_2(uint64_t a1, void *a2)
@@ -1902,12 +1902,12 @@ void __48__SBStatusBarStateAggregator__updateServiceItem__block_invoke_8(uint64_
 
 - (void)_updateSecondaryServiceItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
 
-  v5 = [v4 secondarySIMInfo];
+  secondarySIMInfo = [data secondarySIMInfo];
   v6 = *(&self->_data + 3160);
-  *(&self->_data + 3160) = v6 & 0xFB | (4 * (v5 != 0));
+  *(&self->_data + 3160) = v6 & 0xFB | (4 * (secondarySIMInfo != 0));
   if (self->_showsRecordingOverrides)
   {
     *(&self->_data + 3160) = v6 & 0xFB;
@@ -1915,7 +1915,7 @@ void __48__SBStatusBarStateAggregator__updateServiceItem__block_invoke_8(uint64_
 
   else
   {
-    v7 = [v4 primarySIMInfo];
+    primarySIMInfo = [data primarySIMInfo];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke;
@@ -1956,7 +1956,7 @@ void __48__SBStatusBarStateAggregator__updateServiceItem__block_invoke_8(uint64_
     v8[1] = 3221225472;
     v8[2] = __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_8;
     v8[3] = &unk_2783B6F18;
-    [(SBStatusBarStateAggregator *)self _updateServiceItem:7 withData:v4 SIMInfo:v5 otherSIMInfo:v7 serviceStringGetter:v15 serviceStringSetter:v14 serviceCrossfadeStringGetter:v13 serviceCrossfadeStringSetter:v12 serviceContentTypeGetter:v11 serviceContentTypeSetter:v10 serviceBadgeStringGetter:v9 serviceBadgeStringSetter:v8];
+    [(SBStatusBarStateAggregator *)self _updateServiceItem:7 withData:data SIMInfo:secondarySIMInfo otherSIMInfo:primarySIMInfo serviceStringGetter:v15 serviceStringSetter:v14 serviceCrossfadeStringGetter:v13 serviceCrossfadeStringSetter:v12 serviceContentTypeGetter:v11 serviceContentTypeSetter:v10 serviceBadgeStringGetter:v9 serviceBadgeStringSetter:v8];
   }
 }
 
@@ -1981,53 +1981,53 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
   [*(*(a1 + 32) + 8680) getCString:*(a1 + 32) + 3677 maxLength:100 encoding:4];
 }
 
-- (void)_updateServiceItem:(int)a3 withData:(id)a4 SIMInfo:(id)a5 otherSIMInfo:(id)a6 serviceStringGetter:(id)a7 serviceStringSetter:(id)a8 serviceCrossfadeStringGetter:(id)a9 serviceCrossfadeStringSetter:(id)a10 serviceContentTypeGetter:(id)a11 serviceContentTypeSetter:(id)a12 serviceBadgeStringGetter:(id)a13 serviceBadgeStringSetter:(id)a14
+- (void)_updateServiceItem:(int)item withData:(id)data SIMInfo:(id)info otherSIMInfo:(id)mInfo serviceStringGetter:(id)getter serviceStringSetter:(id)setter serviceCrossfadeStringGetter:(id)stringGetter serviceCrossfadeStringSetter:(id)self0 serviceContentTypeGetter:(id)self1 serviceContentTypeSetter:(id)self2 serviceBadgeStringGetter:(id)self3 serviceBadgeStringSetter:(id)self4
 {
   v91 = *MEMORY[0x277D85DE8];
-  v84 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v83 = a9;
-  v81 = a10;
-  v82 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
+  dataCopy = data;
+  infoCopy = info;
+  mInfoCopy = mInfo;
+  getterCopy = getter;
+  setterCopy = setter;
+  stringGetterCopy = stringGetter;
+  stringSetterCopy = stringSetter;
+  typeGetterCopy = typeGetter;
+  typeSetterCopy = typeSetter;
+  badgeStringGetterCopy = badgeStringGetter;
+  badgeStringSetterCopy = badgeStringSetter;
   if (self->_showsRecordingOverrides)
   {
-    [(SBStatusBarStateAggregator *)self _setItem:a3 enabled:1];
-    v21[2](v21, &stru_283094718);
-    v22[2](v22, 4);
-    v25 = v84;
-    v26 = v18;
-    v27 = v19;
+    [(SBStatusBarStateAggregator *)self _setItem:item enabled:1];
+    setterCopy[2](setterCopy, &stru_283094718);
+    typeSetterCopy[2](typeSetterCopy, 4);
+    v25 = dataCopy;
+    v26 = infoCopy;
+    v27 = mInfoCopy;
     v28 = v26;
     goto LABEL_77;
   }
 
-  v29 = v18;
-  if (!v18 || self->_suppressCellServiceForAirplaneModeTransition)
+  v29 = infoCopy;
+  if (!infoCopy || self->_suppressCellServiceForAirplaneModeTransition)
   {
-    [(SBStatusBarStateAggregator *)self _setItem:a3 enabled:0];
-    v25 = v84;
-    v27 = v19;
+    [(SBStatusBarStateAggregator *)self _setItem:item enabled:0];
+    v25 = dataCopy;
+    v27 = mInfoCopy;
     v28 = v29;
     goto LABEL_77;
   }
 
-  v25 = v84;
-  v27 = v19;
+  v25 = dataCopy;
+  v27 = mInfoCopy;
   if ([(SBStatusBarStateAggregator *)self _isInAirplaneMode])
   {
-    v77 = v21;
+    v77 = setterCopy;
     v30 = v29;
-    v31 = [v29 isRegisteredWithoutCellular];
-    [(SBStatusBarStateAggregator *)self _setItem:a3 enabled:v31];
+    isRegisteredWithoutCellular = [v29 isRegisteredWithoutCellular];
+    [(SBStatusBarStateAggregator *)self _setItem:item enabled:isRegisteredWithoutCellular];
     v28 = v30;
-    v21 = v77;
-    if ((v31 & 1) == 0)
+    setterCopy = v77;
+    if ((isRegisteredWithoutCellular & 1) == 0)
     {
       goto LABEL_77;
     }
@@ -2035,15 +2035,15 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
 
   else
   {
-    [(SBStatusBarStateAggregator *)self _setItem:a3 enabled:1];
+    [(SBStatusBarStateAggregator *)self _setItem:item enabled:1];
     v28 = v29;
   }
 
-  v80 = v20;
-  v78 = [v84 isCellularRadioCapabilityEnabled];
-  if ((v78 & 1) != 0 || [v28 isRegisteredWithoutCellular])
+  v80 = getterCopy;
+  isCellularRadioCapabilityEnabled = [dataCopy isCellularRadioCapabilityEnabled];
+  if ((isCellularRadioCapabilityEnabled & 1) != 0 || [v28 isRegisteredWithoutCellular])
   {
-    v75 = [v28 serviceDescription];
+    serviceDescription = [v28 serviceDescription];
   }
 
   else
@@ -2059,16 +2059,16 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
       v33 = 0;
     }
 
-    v75 = v33;
+    serviceDescription = v33;
   }
 
   v34 = [(SBStatusBarStateAggregator *)self _shouldShowEmergencyOnlyStatusForInfo:v28];
-  v35 = [v28 serviceState];
-  v36 = [v84 isInactiveSOSEnabled];
+  serviceState = [v28 serviceState];
+  isInactiveSOSEnabled = [dataCopy isInactiveSOSEnabled];
   if ([v28 isBootstrap])
   {
     v73 = 0;
-    if (((v34 | v36) & 1 & ((v35 & 0xFFFFFFFFFFFFFFFELL) == 2)) != 0)
+    if (((v34 | isInactiveSOSEnabled) & 1 & ((serviceState & 0xFFFFFFFFFFFFFFFELL) == 2)) != 0)
     {
       v37 = 2;
     }
@@ -2078,20 +2078,20 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
       v37 = 0;
     }
 
-    *(&self->_data + 3160) = *(&self->_data + 3160) & 0xFC | (v34 | v36) & 1 | v37;
+    *(&self->_data + 3160) = *(&self->_data + 3160) & 0xFC | (v34 | isInactiveSOSEnabled) & 1 | v37;
     v38 = 7;
     goto LABEL_27;
   }
 
-  if (v78)
+  if (isCellularRadioCapabilityEnabled)
   {
-    v39 = v35;
-    v40 = self;
-    if (v35 == 2)
+    v39 = serviceState;
+    selfCopy4 = self;
+    if (serviceState == 2)
     {
       v71 = 0;
       v73 = 0;
-      v41 = a3;
+      itemCopy3 = item;
       if (v34)
       {
         goto LABEL_43;
@@ -2103,9 +2103,9 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
       if (v34)
       {
         *(&self->_data + 3160) |= 1u;
-        v42 = [v28 secondaryServiceDescription];
-        v40 = self;
-        v73 = v42;
+        secondaryServiceDescription = [v28 secondaryServiceDescription];
+        selfCopy4 = self;
+        v73 = secondaryServiceDescription;
         v43 = v34;
       }
 
@@ -2115,7 +2115,7 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
         v73 = 0;
       }
 
-      v41 = a3;
+      itemCopy3 = item;
       if (v39 == 1)
       {
         v71 = 5;
@@ -2123,14 +2123,14 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
 
       else
       {
-        if ([v84 isUsingStewieConnection])
+        if ([dataCopy isUsingStewieConnection])
         {
           v71 = 0;
         }
 
         else
         {
-          if ([v84 isRadioModuleDead])
+          if ([dataCopy isRadioModuleDead])
           {
             v44 = 6;
           }
@@ -2143,7 +2143,7 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
           v71 = v44;
         }
 
-        v40 = self;
+        selfCopy4 = self;
         v43 = v34;
       }
 
@@ -2152,17 +2152,17 @@ void __57__SBStatusBarStateAggregator__updateSecondaryServiceItem__block_invoke_
         goto LABEL_43;
       }
 
-      v45 = [(SBStatusBarStateAggregator *)v40 _shouldShowEmergencyOnlyStatusForInfo:v27];
-      v40 = self;
+      v45 = [(SBStatusBarStateAggregator *)selfCopy4 _shouldShowEmergencyOnlyStatusForInfo:v27];
+      selfCopy4 = self;
       if (v45)
       {
         goto LABEL_43;
       }
     }
 
-    *(&v40->_data + 3160) = *(&v40->_data + 3160) & 0xFE | v36;
+    *(&selfCopy4->_data + 3160) = *(&selfCopy4->_data + 3160) & 0xFE | isInactiveSOSEnabled;
 LABEL_43:
-    if ((*(&v40->_data + 3160) & ((v39 & 0xFFFFFFFFFFFFFFFELL) == 2)) != 0)
+    if ((*(&selfCopy4->_data + 3160) & ((v39 & 0xFFFFFFFFFFFFFFFELL) == 2)) != 0)
     {
       v46 = 2;
     }
@@ -2172,7 +2172,7 @@ LABEL_43:
       v46 = 0;
     }
 
-    *(&v40->_data + 3160) = v46 | *(&v40->_data + 3160) & 0xFD;
+    *(&selfCopy4->_data + 3160) = v46 | *(&selfCopy4->_data + 3160) & 0xFD;
     goto LABEL_47;
   }
 
@@ -2181,10 +2181,10 @@ LABEL_43:
   v38 = 2;
 LABEL_27:
   v71 = v38;
-  v41 = a3;
+  itemCopy3 = item;
 LABEL_47:
   v47 = SBLogStatusBarish();
-  v25 = v84;
+  v25 = dataCopy;
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
     v48 = *(&self->_data + 3160);
@@ -2198,13 +2198,13 @@ LABEL_47:
   v69 = v27;
 
   v49 = @"secondary ";
-  if (v41 != 7)
+  if (itemCopy3 != 7)
   {
     v49 = &stru_283094718;
   }
 
   v79 = v49;
-  if (v71 != v82[2]())
+  if (v71 != typeGetterCopy[2]())
   {
     v50 = SBLogStatusBarish();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -2219,23 +2219,23 @@ LABEL_47:
       _os_log_impl(&dword_21ED4E000, v50, OS_LOG_TYPE_DEFAULT, "%{public}@serviceContent changing from %i to %i", buf, 0x18u);
     }
 
-    v22[2](v22, v71);
-    [(SBStatusBarStateAggregator *)self _notifyItemChanged:v41];
+    typeSetterCopy[2](typeSetterCopy, v71);
+    [(SBStatusBarStateAggregator *)self _notifyItemChanged:itemCopy3];
   }
 
   v52 = &stru_283094718;
-  if (v75)
+  if (serviceDescription)
   {
-    v52 = v75;
+    v52 = serviceDescription;
   }
 
-  v53 = v41;
+  v53 = itemCopy3;
   v54 = v52;
 
   v55 = v80[2]();
   v76 = v54;
   v56 = v54;
-  v57 = v53;
+  itemCopy4 = v53;
   v72 = v55;
   v27 = v69;
   if (([(__CFString *)v56 isEqualToString:?]& 1) == 0)
@@ -2243,7 +2243,7 @@ LABEL_47:
     v58 = SBLogStatusBarish();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
-      v59 = SBStatusBarItemDebugName(v57);
+      v59 = SBStatusBarItemDebugName(itemCopy4);
       *buf = 138543874;
       *v88 = v59;
       *&v88[8] = 2114;
@@ -2252,11 +2252,11 @@ LABEL_47:
       v90 = v76;
       _os_log_impl(&dword_21ED4E000, v58, OS_LOG_TYPE_DEFAULT, "%{public}@ changing from '%{public}@' to '%{public}@'", buf, 0x20u);
 
-      v57 = a3;
+      itemCopy4 = item;
     }
 
-    v21[2](v21, v76);
-    [(SBStatusBarStateAggregator *)self _notifyItemChanged:v57];
+    setterCopy[2](setterCopy, v76);
+    [(SBStatusBarStateAggregator *)self _notifyItemChanged:itemCopy4];
     [(SBStatusBarStateAggregator *)self _requestActions:1];
   }
 
@@ -2268,7 +2268,7 @@ LABEL_47:
 
   v61 = v60;
 
-  v83[2]();
+  stringGetterCopy[2]();
   v70 = v74 = v61;
   if (([(__CFString *)v61 isEqualToString:?]& 1) == 0)
   {
@@ -2284,19 +2284,19 @@ LABEL_47:
       _os_log_impl(&dword_21ED4E000, v62, OS_LOG_TYPE_DEFAULT, "%{public}@serviceCrossfade changing from '%{public}@' to '%{public}@'", buf, 0x20u);
     }
 
-    v81[2](v81, v61);
-    [(SBStatusBarStateAggregator *)self _notifyItemChanged:a3];
+    stringSetterCopy[2](stringSetterCopy, v61);
+    [(SBStatusBarStateAggregator *)self _notifyItemChanged:item];
     [(SBStatusBarStateAggregator *)self _requestActions:8];
   }
 
   v63 = &stru_283094718;
   if (v69)
   {
-    v64 = [v28 shortLabel];
-    v65 = v64;
-    if (v64)
+    shortLabel = [v28 shortLabel];
+    v65 = shortLabel;
+    if (shortLabel)
     {
-      v66 = v64;
+      v66 = shortLabel;
     }
 
     else
@@ -2307,7 +2307,7 @@ LABEL_47:
     v63 = v66;
   }
 
-  v67 = v23[2](v23);
+  v67 = badgeStringGetterCopy[2](badgeStringGetterCopy);
   if (([(__CFString *)v63 isEqualToString:v67]& 1) == 0)
   {
     v68 = SBLogStatusBarish();
@@ -2322,18 +2322,18 @@ LABEL_47:
       _os_log_impl(&dword_21ED4E000, v68, OS_LOG_TYPE_DEFAULT, "%{public}@serviceBadgeString changing from '%{public}@' to '%{public}@'", buf, 0x20u);
     }
 
-    v24[2](v24, v63);
-    [(SBStatusBarStateAggregator *)self _notifyItemChanged:a3];
+    badgeStringSetterCopy[2](badgeStringSetterCopy, v63);
+    [(SBStatusBarStateAggregator *)self _notifyItemChanged:item];
   }
 
-  v20 = v80;
+  getterCopy = v80;
 LABEL_77:
 }
 
 - (void)_updateDataNetworkItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__SBStatusBarStateAggregator__updateDataNetworkItem__block_invoke;
@@ -2344,16 +2344,16 @@ LABEL_77:
   v5[2] = __52__SBStatusBarStateAggregator__updateDataNetworkItem__block_invoke_2;
   v5[3] = &unk_2783A95E8;
   v5[4] = self;
-  [(SBStatusBarStateAggregator *)self _updateDataNetworkItem:9 withData:v4 primary:1 dataNetworkTypeGetter:v6 dataNetworkTypeSetter:v5];
+  [(SBStatusBarStateAggregator *)self _updateDataNetworkItem:9 withData:data primary:1 dataNetworkTypeGetter:v6 dataNetworkTypeSetter:v5];
 }
 
 - (void)_updateSecondaryDataNetworkItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
 
-  v5 = [v4 secondarySIMInfo];
-  *(&self->_data + 3160) = *(&self->_data + 3160) & 0xFB | (4 * (v5 != 0));
+  secondarySIMInfo = [data secondarySIMInfo];
+  *(&self->_data + 3160) = *(&self->_data + 3160) & 0xFB | (4 * (secondarySIMInfo != 0));
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__SBStatusBarStateAggregator__updateSecondaryDataNetworkItem__block_invoke;
@@ -2364,71 +2364,71 @@ LABEL_77:
   v6[2] = __61__SBStatusBarStateAggregator__updateSecondaryDataNetworkItem__block_invoke_2;
   v6[3] = &unk_2783A95E8;
   v6[4] = self;
-  [(SBStatusBarStateAggregator *)self _updateDataNetworkItem:10 withData:v4 primary:0 dataNetworkTypeGetter:v7 dataNetworkTypeSetter:v6];
+  [(SBStatusBarStateAggregator *)self _updateDataNetworkItem:10 withData:data primary:0 dataNetworkTypeGetter:v7 dataNetworkTypeSetter:v6];
 }
 
-- (void)_updateDataNetworkItem:(int)a3 withData:(id)a4 primary:(BOOL)a5 dataNetworkTypeGetter:(id)a6 dataNetworkTypeSetter:(id)a7
+- (void)_updateDataNetworkItem:(int)item withData:(id)data primary:(BOOL)primary dataNetworkTypeGetter:(id)getter dataNetworkTypeSetter:(id)setter
 {
-  v8 = a5;
+  primaryCopy = primary;
   v48 = *MEMORY[0x277D85DE8];
-  v42 = a7;
-  v12 = (a6 + 16);
-  v11 = *(a6 + 2);
-  v13 = a6;
-  v14 = a4;
-  v15 = v11(v13);
+  setterCopy = setter;
+  v12 = (getter + 16);
+  v11 = *(getter + 2);
+  getterCopy = getter;
+  dataCopy = data;
+  v15 = v11(getterCopy);
   cachedShowRSSI = self->_cachedShowRSSI;
-  v17 = [v14 primarySIMInfo];
-  v18 = [v14 secondarySIMInfo];
+  primarySIMInfo = [dataCopy primarySIMInfo];
+  secondarySIMInfo = [dataCopy secondarySIMInfo];
 
-  if (v8)
+  if (primaryCopy)
   {
-    v19 = v17;
+    v19 = primarySIMInfo;
   }
 
   else
   {
-    v19 = v18;
+    v19 = secondarySIMInfo;
   }
 
   v20 = v19;
   v40 = v20;
-  v41 = v18;
+  v41 = secondarySIMInfo;
   if (self->_showsRecordingOverrides)
   {
     v39 = 0;
     v15 = 5;
-    v21 = 3;
+    signalStrengthBars = 3;
 LABEL_11:
-    v25 = v8;
+    v25 = primaryCopy;
     goto LABEL_12;
   }
 
   v22 = v20;
   HIDWORD(v39) = cachedShowRSSI;
-  if (([v17 isProvidingDataConnection] & 1) != 0 || objc_msgSend(v18, "isProvidingDataConnection"))
+  if (([primarySIMInfo isProvidingDataConnection] & 1) != 0 || objc_msgSend(secondarySIMInfo, "isProvidingDataConnection"))
   {
-    v8 = [v22 isProvidingDataConnection];
+    primaryCopy = [v22 isProvidingDataConnection];
   }
 
   v23 = +[SBBluetoothController sharedInstance];
-  v24 = [v23 tetheringConnected];
+  tetheringConnected = [v23 tetheringConnected];
 
-  if (v24)
+  if (tetheringConnected)
   {
     LODWORD(v39) = 0;
-    v21 = 0;
+    signalStrengthBars = 0;
     v15 = 6;
     goto LABEL_11;
   }
 
-  v38 = v17;
-  v34 = [(SBStatusBarStateAggregator *)self wifiDomain];
-  v35 = [v34 data];
+  v38 = primarySIMInfo;
+  wifiDomain = [(SBStatusBarStateAggregator *)self wifiDomain];
+  data = [wifiDomain data];
 
-  if ([v35 isWifiActive])
+  if ([data isWifiActive])
   {
-    if ([v35 isAssociatedToIOSHotspot])
+    if ([data isAssociatedToIOSHotspot])
     {
       v15 = 6;
     }
@@ -2438,97 +2438,97 @@ LABEL_11:
       v15 = 5;
     }
 
-    v21 = [v35 signalStrengthBars];
+    signalStrengthBars = [data signalStrengthBars];
     v36 = +[SBWiFiManager sharedInstance];
     LODWORD(v39) = [v36 signalStrengthRSSI];
 
 LABEL_40:
-    v25 = v8;
+    v25 = primaryCopy;
   }
 
   else
   {
-    v8 = [v22 isProvidingDataConnection];
+    primaryCopy = [v22 isProvidingDataConnection];
     if (v22)
     {
-      v37 = [v22 dataNetworkType];
+      dataNetworkType = [v22 dataNetworkType];
       LODWORD(v39) = 0;
-      v21 = 0;
+      signalStrengthBars = 0;
       v15 = 7;
-      v25 = v8;
-      switch(v37)
+      v25 = primaryCopy;
+      switch(dataNetworkType)
       {
         case 1:
           break;
         case 2:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 0;
           goto LABEL_40;
         case 3:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 1;
           goto LABEL_40;
         case 4:
         case 5:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 2;
           goto LABEL_40;
         case 6:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 3;
           goto LABEL_40;
         case 7:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 4;
           goto LABEL_40;
         case 8:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 9;
           goto LABEL_40;
         case 9:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 10;
           goto LABEL_40;
         case 10:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 8;
           goto LABEL_40;
         case 11:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 11;
           goto LABEL_40;
         case 12:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 12;
           goto LABEL_40;
         case 13:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 13;
           goto LABEL_40;
         case 14:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 14;
           goto LABEL_40;
         case 15:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 15;
           goto LABEL_40;
         case 16:
           LODWORD(v39) = 0;
-          v21 = 0;
+          signalStrengthBars = 0;
           v15 = 16;
           goto LABEL_40;
         default:
@@ -2540,20 +2540,20 @@ LABEL_40:
     {
 LABEL_44:
       LODWORD(v39) = 0;
-      v21 = 0;
+      signalStrengthBars = 0;
       v25 = 0;
     }
   }
 
-  v17 = v38;
+  primarySIMInfo = v38;
 LABEL_12:
-  v26 = [(SBStatusBarStateAggregator *)self _setItem:a3 enabled:v25];
-  v27 = (*v12)(v13);
+  v26 = [(SBStatusBarStateAggregator *)self _setItem:item enabled:v25];
+  v27 = (*v12)(getterCopy);
 
   if (v15 == v27)
   {
-    v28 = v42;
-    if (!v8)
+    v28 = setterCopy;
+    if (!primaryCopy)
     {
       goto LABEL_30;
     }
@@ -2561,26 +2561,26 @@ LABEL_12:
 
   else
   {
-    v28 = v42;
-    (*(v42 + 2))(v42, v15);
+    v28 = setterCopy;
+    (*(setterCopy + 2))(setterCopy, v15);
     if (v25)
     {
-      [(SBStatusBarStateAggregator *)self _notifyItemChanged:a3];
+      [(SBStatusBarStateAggregator *)self _notifyItemChanged:item];
     }
 
     v26 = 1;
-    if (!v8)
+    if (!primaryCopy)
     {
       goto LABEL_30;
     }
   }
 
-  if (v21 != self->_data.wifiSignalStrengthBars)
+  if (signalStrengthBars != self->_data.wifiSignalStrengthBars)
   {
-    self->_data.wifiSignalStrengthBars = v21;
+    self->_data.wifiSignalStrengthBars = signalStrengthBars;
     if (v25)
     {
-      [(SBStatusBarStateAggregator *)self _notifyItemChanged:a3];
+      [(SBStatusBarStateAggregator *)self _notifyItemChanged:item];
     }
   }
 
@@ -2589,7 +2589,7 @@ LABEL_12:
     self->_data.wifiSignalStrengthRaw = v39;
     if ((v25 & HIDWORD(v39)) == 1)
     {
-      [(SBStatusBarStateAggregator *)self _notifyItemChanged:a3];
+      [(SBStatusBarStateAggregator *)self _notifyItemChanged:item];
     }
   }
 
@@ -2612,7 +2612,7 @@ LABEL_12:
       goto LABEL_34;
     }
 
-    [(SBStatusBarStateAggregator *)self _notifyItemChanged:a3];
+    [(SBStatusBarStateAggregator *)self _notifyItemChanged:item];
   }
 
 LABEL_30:
@@ -2621,7 +2621,7 @@ LABEL_30:
     v31 = SBLogStatusBarish();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = SBStatusBarItemDebugName(a3);
+      v32 = SBStatusBarItemDebugName(item);
       v33 = SBStatusBarDataNetworkDebugName(v15);
       *buf = 138543618;
       v45 = v32;
@@ -2636,16 +2636,16 @@ LABEL_34:
 
 - (void)_handleShowRSSIDefaultChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   if (self->_cachedShowRSSI)
   {
-    [v3 addObserver:self selector:sel__updateDataNetworkItemsForRSSIChange name:@"SBWifiManagerRSSIChangedNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__updateDataNetworkItemsForRSSIChange name:@"SBWifiManagerRSSIChangedNotification" object:0];
   }
 
   else
   {
-    [v3 removeObserver:self name:@"SBWifiManagerRSSIChangedNotification" object:0];
+    [defaultCenter removeObserver:self name:@"SBWifiManagerRSSIChangedNotification" object:0];
   }
 }
 
@@ -2660,23 +2660,23 @@ LABEL_34:
 
 - (void)_updateLiquidDetectionItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF68]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF68]];
 
   [(SBStatusBarStateAggregator *)self _setItem:40 enabled:v5];
 }
 
 - (void)_updateStewieItem
 {
-  v2 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v3 = [v2 data];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
 
-  LOBYTE(v2) = [v3 isUsingStewieForSOS];
-  v4 = [v3 isUsingStewieConnection];
-  if (v2)
+  LOBYTE(telephonyDomain) = [data isUsingStewieForSOS];
+  isUsingStewieConnection = [data isUsingStewieConnection];
+  if (telephonyDomain)
   {
-    [MEMORY[0x277D6BAE8] entryWithConnectionStatus:v4];
+    [MEMORY[0x277D6BAE8] entryWithConnectionStatus:isUsingStewieConnection];
   }
 
   else
@@ -2684,36 +2684,36 @@ LABEL_34:
     [MEMORY[0x277D6BAE8] disabledEntry];
   }
   v5 = ;
-  v6 = [MEMORY[0x277D6BFE0] sharedInstance];
+  mEMORY[0x277D6BFE0] = [MEMORY[0x277D6BFE0] sharedInstance];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__SBStatusBarStateAggregator__updateStewieItem__block_invoke;
   v8[3] = &unk_2783C36F8;
   v9 = v5;
   v7 = v5;
-  [v6 updateWithData:v8];
+  [mEMORY[0x277D6BFE0] updateWithData:v8];
 }
 
 - (void)_updateBatteryItems
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(SBStatusBarStateAggregator *)self _batteryDomainData];
-  v4 = [v3 chargingState];
-  [(SBStatusBarStateAggregator *)self setBatteryChargingState:v4];
+  _batteryDomainData = [(SBStatusBarStateAggregator *)self _batteryDomainData];
+  chargingState = [_batteryDomainData chargingState];
+  [(SBStatusBarStateAggregator *)self setBatteryChargingState:chargingState];
   if (self->_showsRecordingOverrides)
   {
-    v5 = 100;
+    percentCharge = 100;
   }
 
   else
   {
-    v5 = [v3 percentCharge];
+    percentCharge = [_batteryDomainData percentCharge];
   }
 
-  v6 = [(SBStatusBarStateAggregator *)self _statusBarBatteryStateForSystemStatusChargingState:v4];
-  v7 = [v3 chargingDescriptionType];
-  v8 = [v3 isBatterySaverModeActive];
-  if (v5 <= 0)
+  v6 = [(SBStatusBarStateAggregator *)self _statusBarBatteryStateForSystemStatusChargingState:chargingState];
+  chargingDescriptionType = [_batteryDomainData chargingDescriptionType];
+  isBatterySaverModeActive = [_batteryDomainData isBatterySaverModeActive];
+  if (percentCharge <= 0)
   {
     v9 = SBLogStatusBarish();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2722,19 +2722,19 @@ LABEL_34:
       v25 = 138543618;
       v26 = v10;
       v27 = 1024;
-      v28 = v5;
+      v28 = percentCharge;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "battery info changed to unpresentable (%{public}@ %i), resetting to capacity 1", &v25, 0x12u);
     }
 
-    v5 = 1;
+    percentCharge = 1;
   }
 
-  v11 = [v3 chargingDescription];
-  v12 = v11;
+  chargingDescription = [_batteryDomainData chargingDescription];
+  v12 = chargingDescription;
   v13 = &stru_283094718;
-  if (v11)
+  if (chargingDescription)
   {
-    v13 = v11;
+    v13 = chargingDescription;
   }
 
   v14 = v13;
@@ -2748,22 +2748,22 @@ LABEL_34:
 
   if (os_variant_has_internal_content() && ([(SBStatusBarDefaults *)self->_statusBarDefaults showBatteryLevel]& 1) != 0)
   {
-    v16 = 1;
+    showBatteryPercentage = 1;
   }
 
   else
   {
-    v17 = [MEMORY[0x277CF0CA8] sharedInstance];
-    v18 = [v17 hasGasGauge];
+    mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+    hasGasGauge = [mEMORY[0x277CF0CA8] hasGasGauge];
 
-    if (v18)
+    if (hasGasGauge)
     {
-      v16 = [(SBStatusBarDefaults *)self->_statusBarDefaults showBatteryPercentage];
+      showBatteryPercentage = [(SBStatusBarDefaults *)self->_statusBarDefaults showBatteryPercentage];
     }
 
     else
     {
-      v16 = 0;
+      showBatteryPercentage = 0;
     }
   }
 
@@ -2774,11 +2774,11 @@ LABEL_34:
     [(NSString *)self->_batteryDetailString getCString:self->_data.batteryDetailString maxLength:150 encoding:4];
   }
 
-  if (v5 == self->_data.batteryCapacity && v6 == self->_data.batteryState && v8 == (*(&self->_data + 2536) & 1))
+  if (percentCharge == self->_data.batteryCapacity && v6 == self->_data.batteryState && isBatterySaverModeActive == (*(&self->_data + 2536) & 1))
   {
     [(SBStatusBarStateAggregator *)self _setItem:12 enabled:1];
-    [(SBStatusBarStateAggregator *)self _setItem:13 enabled:v16];
-    [(SBStatusBarStateAggregator *)self _setItem:14 enabled:v7 == 2];
+    [(SBStatusBarStateAggregator *)self _setItem:13 enabled:showBatteryPercentage];
+    [(SBStatusBarStateAggregator *)self _setItem:14 enabled:chargingDescriptionType == 2];
     if (v19)
     {
       goto LABEL_27;
@@ -2787,12 +2787,12 @@ LABEL_34:
 
   else
   {
-    self->_data.batteryCapacity = v5;
+    self->_data.batteryCapacity = percentCharge;
     self->_data.batteryState = v6;
-    *(&self->_data + 2536) = *(&self->_data + 2536) & 0xFE | v8;
+    *(&self->_data + 2536) = *(&self->_data + 2536) & 0xFE | isBatterySaverModeActive;
     [(SBStatusBarStateAggregator *)self _setItem:12 enabled:1];
-    [(SBStatusBarStateAggregator *)self _setItem:13 enabled:v16];
-    [(SBStatusBarStateAggregator *)self _setItem:14 enabled:v7 == 2];
+    [(SBStatusBarStateAggregator *)self _setItem:13 enabled:showBatteryPercentage];
+    [(SBStatusBarStateAggregator *)self _setItem:14 enabled:chargingDescriptionType == 2];
   }
 
   v20 = SBLogStatusBarish();
@@ -2803,11 +2803,11 @@ LABEL_34:
     v25 = 138544130;
     v26 = v21;
     v27 = 1024;
-    v28 = v5;
+    v28 = percentCharge;
     v29 = 2114;
     v30 = batteryDetailString;
     v31 = 1024;
-    v32 = v8;
+    v32 = isBatterySaverModeActive;
     _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "battery info changed to (%{public}@ %i) with detail='%{public}@', low power mode='%i'", &v25, 0x22u);
   }
 
@@ -2818,21 +2818,21 @@ LABEL_27:
   if (self->_showsRecordingOverrides)
   {
     self->_data.batteryState = 0;
-    v23 = [MEMORY[0x277D75418] currentDevice];
-    v24 = [v23 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v24 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       [(SBStatusBarStateAggregator *)self _setItem:13 enabled:0];
     }
   }
 }
 
-- (int)_statusBarBatteryStateForSystemStatusChargingState:(unint64_t)a3
+- (int)_statusBarBatteryStateForSystemStatusChargingState:(unint64_t)state
 {
-  if (a3 - 1 < 3)
+  if (state - 1 < 3)
   {
-    return a3;
+    return state;
   }
 
   else
@@ -2841,13 +2841,13 @@ LABEL_27:
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v9 = a3;
-  v4 = [v9 state];
-  if (v4 == 10 || v4 == 5)
+  stateCopy = state;
+  state = [stateCopy state];
+  if (state == 10 || state == 5)
   {
-    v8 = [v9 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
+    v8 = [stateCopy retrieveConnectedPeripheralsWithServices:0 allowAll:1];
     if ([v8 count])
     {
       v6 = [v8 mutableCopy];
@@ -2865,12 +2865,12 @@ LABEL_27:
   [(SBStatusBarStateAggregator *)self updateStatusBarItem:16];
 }
 
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state
 {
-  v11 = a4;
-  v5 = [v11 isConnectedToSystem];
-  v6 = [(NSMutableArray *)self->_connectedLEBluetoothDevices containsObject:v11];
-  if (v5)
+  stateCopy = state;
+  isConnectedToSystem = [stateCopy isConnectedToSystem];
+  v6 = [(NSMutableArray *)self->_connectedLEBluetoothDevices containsObject:stateCopy];
+  if (isConnectedToSystem)
   {
     if (v6)
     {
@@ -2880,14 +2880,14 @@ LABEL_27:
     connectedLEBluetoothDevices = self->_connectedLEBluetoothDevices;
     if (!connectedLEBluetoothDevices)
     {
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v9 = self->_connectedLEBluetoothDevices;
-      self->_connectedLEBluetoothDevices = v8;
+      self->_connectedLEBluetoothDevices = array;
 
       connectedLEBluetoothDevices = self->_connectedLEBluetoothDevices;
     }
 
-    [(NSMutableArray *)connectedLEBluetoothDevices addObject:v11];
+    [(NSMutableArray *)connectedLEBluetoothDevices addObject:stateCopy];
   }
 
   else
@@ -2897,7 +2897,7 @@ LABEL_27:
       goto LABEL_10;
     }
 
-    [(NSMutableArray *)self->_connectedLEBluetoothDevices removeObject:v11];
+    [(NSMutableArray *)self->_connectedLEBluetoothDevices removeObject:stateCopy];
     if (![(NSMutableArray *)self->_connectedLEBluetoothDevices count])
     {
       v10 = self->_connectedLEBluetoothDevices;
@@ -2958,12 +2958,12 @@ LABEL_10:
     v3 = +[SBBluetoothController sharedInstance];
     if ([v3 canReportBatteryLevel] && self->_shouldShowBluetoothHeadphoneBatteryPercent)
     {
-      v4 = [v3 batteryLevel];
+      batteryLevel = [v3 batteryLevel];
 
       [(SBStatusBarStateAggregator *)self _setItem:15 enabled:1];
-      if (v4 != self->_data.bluetoothBatteryCapacity)
+      if (batteryLevel != self->_data.bluetoothBatteryCapacity)
       {
-        self->_data.bluetoothBatteryCapacity = v4;
+        self->_data.bluetoothBatteryCapacity = batteryLevel;
 
         [(SBStatusBarStateAggregator *)self _notifyItemChanged:15];
       }
@@ -2977,78 +2977,78 @@ LABEL_10:
 
 - (void)_updateTTYItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF80]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF80]];
 
   [(SBStatusBarStateAggregator *)self _setItem:17 enabled:v5];
 }
 
 - (void)_updateAlarmItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF50]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF50]];
 
   [(SBStatusBarStateAggregator *)self _setItem:18 enabled:v5];
 }
 
 - (void)_updateVPNItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF88]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF88]];
 
   [(SBStatusBarStateAggregator *)self _setItem:29 enabled:v5];
 }
 
 - (void)_updateStudentItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF78]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF78]];
 
   [(SBStatusBarStateAggregator *)self _setItem:27 enabled:v5];
 }
 
 - (void)_updateCallForwardingItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
-  v5 = [v4 primarySIMInfo];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
+  primarySIMInfo = [data primarySIMInfo];
 
-  [(SBStatusBarStateAggregator *)self _updateCallForwardingItem:30 withInfo:v5];
+  [(SBStatusBarStateAggregator *)self _updateCallForwardingItem:30 withInfo:primarySIMInfo];
 }
 
 - (void)_updateSecondaryCallForwardingItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self telephonyDomain];
-  v4 = [v3 data];
-  v5 = [v4 secondarySIMInfo];
+  telephonyDomain = [(SBStatusBarStateAggregator *)self telephonyDomain];
+  data = [telephonyDomain data];
+  secondarySIMInfo = [data secondarySIMInfo];
 
-  [(SBStatusBarStateAggregator *)self _updateCallForwardingItem:31 withInfo:v5];
+  [(SBStatusBarStateAggregator *)self _updateCallForwardingItem:31 withInfo:secondarySIMInfo];
 }
 
-- (void)_updateCallForwardingItem:(int)a3 withInfo:(id)a4
+- (void)_updateCallForwardingItem:(int)item withInfo:(id)info
 {
-  v4 = *&a3;
-  v6 = [a4 isCallForwardingEnabled];
+  v4 = *&item;
+  isCallForwardingEnabled = [info isCallForwardingEnabled];
 
-  [(SBStatusBarStateAggregator *)self _setItem:v4 enabled:v6];
+  [(SBStatusBarStateAggregator *)self _setItem:v4 enabled:isCallForwardingEnabled];
 }
 
 - (void)_updateVoiceControlItem
 {
-  v3 = [(SBStatusBarStateAggregator *)self voiceControlDomain];
-  v8 = [v3 data];
+  voiceControlDomain = [(SBStatusBarStateAggregator *)self voiceControlDomain];
+  data = [voiceControlDomain data];
 
-  v4 = [v8 isVoiceControlActive];
-  [(SBStatusBarStateAggregator *)self _setItem:41 enabled:v4];
-  if (v4)
+  isVoiceControlActive = [data isVoiceControlActive];
+  [(SBStatusBarStateAggregator *)self _setItem:41 enabled:isVoiceControlActive];
+  if (isVoiceControlActive)
   {
-    v5 = [v8 listeningState];
-    v6 = 2 * (v5 == 2);
-    if (v5 == 1)
+    listeningState = [data listeningState];
+    v6 = 2 * (listeningState == 2);
+    if (listeningState == 1)
     {
       v6 = 1;
     }
@@ -3062,10 +3062,10 @@ LABEL_10:
   }
 }
 
-- (void)_updateLocationItemForLocationAttributions:(id)a3
+- (void)_updateLocationItemForLocationAttributions:(id)attributions
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 count];
+  v4 = [attributions count];
   v5 = *(&self->_data + 2529);
   v6 = v5 & 0xE7;
   if (self->_prominentLocationOverride)
@@ -3105,9 +3105,9 @@ LABEL_10:
 
 - (void)_updateRotationLockItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF70]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF70]];
 
   [(SBStatusBarStateAggregator *)self _setItem:22 enabled:v5];
 }
@@ -3121,9 +3121,9 @@ LABEL_10:
 
   else
   {
-    v4 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-    v5 = [v4 activeStatusItems];
-    v3 = [v5 containsObject:*MEMORY[0x277D6BF40]];
+    data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+    activeStatusItems = [data activeStatusItems];
+    v3 = [activeStatusItems containsObject:*MEMORY[0x277D6BF40]];
   }
 
   [(SBStatusBarStateAggregator *)self _setItem:24 enabled:v3];
@@ -3138,28 +3138,28 @@ LABEL_10:
     v5 = v4 != 0;
     if (v4)
     {
-      v6 = [v3 isInSunlight];
+      isInSunlight = [v3 isInSunlight];
     }
 
     else
     {
-      v6 = 0;
+      isInSunlight = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    isInSunlight = 0;
     v4 = 0;
     v5 = 0;
   }
 
   [(SBStatusBarStateAggregator *)self _setItem:33 enabled:v5];
   v7 = *(&self->_data + 2272);
-  if (self->_data.thermalColor != v4 || v6 != (v7 & 1))
+  if (self->_data.thermalColor != v4 || isInSunlight != (v7 & 1))
   {
     self->_data.thermalColor = v4;
-    *(&self->_data + 2272) = v7 & 0xFE | v6;
+    *(&self->_data + 2272) = v7 & 0xFE | isInSunlight;
 
     [(SBStatusBarStateAggregator *)self _notifyItemChanged:33];
   }
@@ -3168,9 +3168,9 @@ LABEL_10:
 - (void)_updateDisplayWarningItem
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF60]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF60]];
 
   v6 = SBLogStatusBarish();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3191,9 +3191,9 @@ LABEL_10:
 
 - (void)_updateCarPlayItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 activeStatusItems];
-  v5 = [v4 containsObject:*MEMORY[0x277D6BF58]];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  activeStatusItems = [data activeStatusItems];
+  v5 = [activeStatusItems containsObject:*MEMORY[0x277D6BF58]];
 
   [(SBStatusBarStateAggregator *)self _setItem:26 enabled:v5];
 }
@@ -3205,14 +3205,14 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [connectedWindowScenes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
-    LOBYTE(v7) = 0;
+    LOBYTE(isIndicatorVisibleAtStatusBarLocation) = 0;
     v8 = *v13;
     do
     {
@@ -3220,23 +3220,23 @@ LABEL_10:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) recordingIndicatorManager];
-        v11 = v10;
-        if (v7)
+        recordingIndicatorManager = [*(*(&v12 + 1) + 8 * i) recordingIndicatorManager];
+        v11 = recordingIndicatorManager;
+        if (isIndicatorVisibleAtStatusBarLocation)
         {
-          v7 = 1;
+          isIndicatorVisibleAtStatusBarLocation = 1;
         }
 
         else
         {
-          v7 = [v10 isIndicatorVisibleAtStatusBarLocation];
+          isIndicatorVisibleAtStatusBarLocation = [recordingIndicatorManager isIndicatorVisibleAtStatusBarLocation];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [connectedWindowScenes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -3244,10 +3244,10 @@ LABEL_10:
 
   else
   {
-    v7 = 0;
+    isIndicatorVisibleAtStatusBarLocation = 0;
   }
 
-  [(SBStatusBarStateAggregator *)self _setItem:28 enabled:v7];
+  [(SBStatusBarStateAggregator *)self _setItem:28 enabled:isIndicatorVisibleAtStatusBarLocation];
 }
 
 - (void)_updatePersonNameItem
@@ -3258,23 +3258,23 @@ LABEL_10:
     overridePersonName = self->_overridePersonName;
     if (overridePersonName)
     {
-      v4 = overridePersonName;
+      displayName = overridePersonName;
     }
 
     else
     {
-      v5 = [(SBStatusBarStateAggregator *)self _userSessionController];
-      v6 = [v5 user];
-      v4 = [v6 displayName];
+      _userSessionController = [(SBStatusBarStateAggregator *)self _userSessionController];
+      user = [_userSessionController user];
+      displayName = [user displayName];
     }
   }
 
   else
   {
-    v4 = 0;
+    displayName = 0;
   }
 
-  if (![(NSString *)self->_personName isEqualToString:v4])
+  if (![(NSString *)self->_personName isEqualToString:displayName])
   {
     v7 = SBLogStatusBarish();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3283,13 +3283,13 @@ LABEL_10:
       v12 = 138543618;
       v13 = personName;
       v14 = 2114;
-      v15 = v4;
+      v15 = displayName;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "personName changing from '%{public}@' to '%{public}@'", &v12, 0x16u);
     }
 
     v9 = self->_personName;
-    self->_personName = v4;
-    v10 = v4;
+    self->_personName = displayName;
+    v10 = displayName;
 
     [(SBStatusBarStateAggregator *)self beginCoalescentBlock];
     [(SBStatusBarStateAggregator *)self _setItem:8 enabled:[(NSString *)self->_personName length]!= 0];
@@ -3299,9 +3299,9 @@ LABEL_10:
       v11 = v10;
     }
 
-    v4 = v11;
+    displayName = v11;
 
-    [(NSString *)v4 getCString:self->_data.personName maxLength:100 encoding:4];
+    [(NSString *)displayName getCString:self->_data.personName maxLength:100 encoding:4];
     [(SBStatusBarStateAggregator *)self _notifyItemChanged:8];
     [(SBStatusBarStateAggregator *)self _updateServiceItem];
     [(SBStatusBarStateAggregator *)self _updateSecondaryServiceItem];
@@ -3311,45 +3311,45 @@ LABEL_10:
 
 - (void)_updateCallToActionItem
 {
-  v3 = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
-  v4 = [v3 attributions];
+  data = [(STStatusItemsStatusDomain *)self->_statusItemsDomain data];
+  attributions = [data attributions];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __53__SBStatusBarStateAggregator__updateCallToActionItem__block_invoke;
   v22[3] = &unk_2783C3720;
-  v5 = v3;
+  v5 = data;
   v23 = v5;
-  v6 = [v4 bs_firstObjectPassingTest:v22];
+  v6 = [attributions bs_firstObjectPassingTest:v22];
 
-  v7 = [v6 statusItemIdentifier];
+  statusItemIdentifier = [v6 statusItemIdentifier];
   if ((BSEqualObjects() & 1) == 0)
   {
-    v8 = [v7 copy];
+    v8 = [statusItemIdentifier copy];
     callToActionIdentifier = self->_callToActionIdentifier;
     self->_callToActionIdentifier = v8;
 
     if (self->_callToActionIdentifier)
     {
-      v10 = [v5 visualDescriptorForStatusItemWithIdentifier:v7];
+      v10 = [v5 visualDescriptorForStatusItemWithIdentifier:statusItemIdentifier];
       v11 = MEMORY[0x277D6BAB0];
-      v12 = [v10 systemImageName];
-      v13 = [v11 entryWithImageNamed:v12];
+      systemImageName = [v10 systemImageName];
+      disabledEntry = [v11 entryWithImageNamed:systemImageName];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D6BAB0] disabledEntry];
+      disabledEntry = [MEMORY[0x277D6BAB0] disabledEntry];
     }
 
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __53__SBStatusBarStateAggregator__updateCallToActionItem__block_invoke_2;
     v20 = &unk_2783C36F8;
-    v21 = v13;
-    v14 = v13;
+    v21 = disabledEntry;
+    v14 = disabledEntry;
     v15 = MEMORY[0x223D6F7F0](&v17);
-    v16 = [MEMORY[0x277D6BFE0] sharedInstance];
-    [v16 updateWithData:v15];
+    mEMORY[0x277D6BFE0] = [MEMORY[0x277D6BFE0] sharedInstance];
+    [mEMORY[0x277D6BFE0] updateWithData:v15];
   }
 }
 
@@ -3364,12 +3364,12 @@ uint64_t __53__SBStatusBarStateAggregator__updateCallToActionItem__block_invoke(
 
 - (void)_updateRingerItem
 {
-  v3 = [SBApp ringerControl];
-  v4 = [(SBRingerControl *)v3 isRingerMuted];
+  ringerControl = [SBApp ringerControl];
+  isRingerMuted = [(SBRingerControl *)ringerControl isRingerMuted];
 
   if ([(SBStatusBarDefaults *)self->_statusBarDefaults showRingerState])
   {
-    [MEMORY[0x277D6BA70] entryWithBoolValue:v4];
+    [MEMORY[0x277D6BA70] entryWithBoolValue:isRingerMuted];
   }
 
   else
@@ -3384,27 +3384,27 @@ uint64_t __53__SBStatusBarStateAggregator__updateCallToActionItem__block_invoke(
   v10 = v5;
   v6 = v5;
   v7 = MEMORY[0x223D6F7F0](v9);
-  v8 = [MEMORY[0x277D6BFE0] sharedInstance];
-  [v8 updateWithData:v7];
+  mEMORY[0x277D6BFE0] = [MEMORY[0x277D6BFE0] sharedInstance];
+  [mEMORY[0x277D6BFE0] updateWithData:v7];
 }
 
-- (void)_updateStatusBarForSystemStatusDomainName:(unint64_t)a3 data:(id)a4
+- (void)_updateStatusBarForSystemStatusDomainName:(unint64_t)name data:(id)data
 {
-  v6 = a4;
-  switch(a3)
+  dataCopy = data;
+  switch(name)
   {
     case 0xFuLL:
-      [(SBStatusBarStateAggregator *)self _updateStatusBarItemsForSystemStatusDomain:15 andData:v6];
+      [(SBStatusBarStateAggregator *)self _updateStatusBarItemsForSystemStatusDomain:15 andData:dataCopy];
       goto LABEL_11;
     case 9uLL:
-      v7 = self;
+      selfCopy2 = self;
       v8 = 9;
       goto LABEL_6;
     case 8uLL:
-      v7 = self;
+      selfCopy2 = self;
       v8 = 8;
 LABEL_6:
-      [(SBStatusBarStateAggregator *)v7 _updateBackgroundActivityAssertionsForSystemStatusDomain:v8 andData:v6];
+      [(SBStatusBarStateAggregator *)selfCopy2 _updateBackgroundActivityAssertionsForSystemStatusDomain:v8 andData:dataCopy];
       goto LABEL_11;
   }
 
@@ -3417,13 +3417,13 @@ LABEL_6:
 LABEL_11:
 }
 
-- (void)_updateBackgroundActivityAssertionsForSystemStatusDomain:(unint64_t)a3 andData:(id)a4
+- (void)_updateBackgroundActivityAssertionsForSystemStatusDomain:(unint64_t)domain andData:(id)data
 {
-  v6 = a4;
-  if (a3 == 9)
+  dataCopy = data;
+  if (domain == 9)
   {
     v10 = objc_opt_class();
-    v11 = v6;
+    v11 = dataCopy;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -3473,10 +3473,10 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 == 8)
+  if (domain == 8)
   {
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = dataCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -3590,9 +3590,9 @@ void __95__SBStatusBarStateAggregator__updateBackgroundActivityAssertionsForSyst
   [WeakRetained _removeSatelliteSOSBackgroundActivityAssertion];
 }
 
-- (void)_updateStatusBarItemsForSystemStatusDomain:(unint64_t)a3 andData:(id)a4
+- (void)_updateStatusBarItemsForSystemStatusDomain:(unint64_t)domain andData:(id)data
 {
-  if (a3 == 15)
+  if (domain == 15)
   {
     [(SBStatusBarStateAggregator *)self _updateAirplaneMode:15];
     [(SBStatusBarStateAggregator *)self _updateAirplayItem];
@@ -3612,22 +3612,22 @@ void __95__SBStatusBarStateAggregator__updateBackgroundActivityAssertionsForSyst
     v6 = SBLogStatusBarish();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [SBStatusBarStateAggregator _updateStatusBarItemsForSystemStatusDomain:a3 andData:v6];
+      [SBStatusBarStateAggregator _updateStatusBarItemsForSystemStatusDomain:domain andData:v6];
     }
   }
 }
 
 - (id)_batteryDomainData
 {
-  v3 = [(SBStatusBarStateAggregator *)self batteryDomain];
-  v4 = [v3 data];
+  batteryDomain = [(SBStatusBarStateAggregator *)self batteryDomain];
+  data = [batteryDomain data];
 
   if (!self->_hasReceivedBatteryDataFromSystemStatus)
   {
-    if (v4)
+    if (data)
     {
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 removeObserver:self name:@"SBSystemStatusBatteryDataProviderDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:@"SBSystemStatusBatteryDataProviderDidChangeNotification" object:0];
 
       self->_hasReceivedBatteryDataFromSystemStatus = 1;
     }
@@ -3641,11 +3641,11 @@ void __95__SBStatusBarStateAggregator__updateBackgroundActivityAssertionsForSyst
         _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Using fallback battery data until first update from SystemStatus", v8, 2u);
       }
 
-      v4 = [(SBSystemStatusBatteryDataProvider *)self->_batteryDataProvider lastPublishedData];
+      data = [(SBSystemStatusBatteryDataProvider *)self->_batteryDataProvider lastPublishedData];
     }
   }
 
-  return v4;
+  return data;
 }
 
 - (void)_removePlaygroundsBackgroundActivityAssertion
@@ -3683,12 +3683,12 @@ void __95__SBStatusBarStateAggregator__updateBackgroundActivityAssertionsForSyst
 
 - (void)_updateTetheringState
 {
-  v3 = [(SBStatusBarStateAggregator *)self _telephonyManager];
-  if ([v3 isNetworkTethering])
+  _telephonyManager = [(SBStatusBarStateAggregator *)self _telephonyManager];
+  if ([_telephonyManager isNetworkTethering])
   {
-    v4 = [v3 numberOfNetworkTetheredDevices];
+    numberOfNetworkTetheredDevices = [_telephonyManager numberOfNetworkTetheredDevices];
     v5 = SBApp;
-    if (v4 == 1)
+    if (numberOfNetworkTetheredDevices == 1)
     {
       v6 = @"INTERNET_TETHERING_SINGLE_HOST";
     }
@@ -3698,12 +3698,12 @@ void __95__SBStatusBarStateAggregator__updateBackgroundActivityAssertionsForSyst
       v6 = @"INTERNET_TETHERING_MULTIPLE_HOSTS";
     }
 
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:v4];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:numberOfNetworkTetheredDevices];
     v8 = [v5 formattedDecimalStringForNumber:v7];
 
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:v6 value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:v6 value:&stru_283094718 table:@"SpringBoard"];
     v12 = [v9 stringWithFormat:v11, v8];
 
     if (!self->_tetheringBackgroundActivityAssertion)
@@ -3728,14 +3728,14 @@ void __95__SBStatusBarStateAggregator__updateBackgroundActivityAssertionsForSyst
   else
   {
     [(SBStatusBarStateAggregator *)self _removeTetheringBackgroundActivityAssertion];
-    LODWORD(v4) = 0;
+    LODWORD(numberOfNetworkTetheredDevices) = 0;
     v12 = &stru_283094718;
   }
 
   [(SBSBackgroundActivityAssertion *)self->_tetheringBackgroundActivityAssertion setStatusString:v12];
-  if (self->_data.tetheringConnectionCount != v4)
+  if (self->_data.tetheringConnectionCount != numberOfNetworkTetheredDevices)
   {
-    self->_data.tetheringConnectionCount = v4;
+    self->_data.tetheringConnectionCount = numberOfNetworkTetheredDevices;
     [(SBStatusBarStateAggregator *)self _notifyNonItemDataChanged];
   }
 }
@@ -3770,11 +3770,11 @@ void __51__SBStatusBarStateAggregator__updateTetheringState__block_invoke_2(uint
   [WeakRetained _removeTetheringBackgroundActivityAssertion];
 }
 
-- (id)_backgroundActivityDescriptorsForCallDescriptors:(id)a3
+- (id)_backgroundActivityDescriptorsForCallDescriptors:(id)descriptors
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  descriptorsCopy = descriptors;
+  if ([descriptorsCopy count])
   {
     v41 = [MEMORY[0x277CBEB58] set];
   }
@@ -3788,7 +3788,7 @@ void __51__SBStatusBarStateAggregator__updateTetheringState__block_invoke_2(uint
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v3;
+  obj = descriptorsCopy;
   v4 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v4)
   {
@@ -3816,31 +3816,31 @@ void __51__SBStatusBarStateAggregator__updateTetheringState__block_invoke_2(uint
         }
 
         v8 = *(*(&v42 + 1) + 8 * i);
-        v9 = [v8 callState];
-        v10 = [v8 callState];
-        v11 = [v8 callState];
-        v12 = [v8 callState];
-        v13 = [v8 callState];
+        callState = [v8 callState];
+        callState2 = [v8 callState];
+        callState3 = [v8 callState];
+        callState4 = [v8 callState];
+        callState5 = [v8 callState];
         v14 = v6;
-        v15 = [v8 callType];
-        if (v15 > 1)
+        callType = [v8 callType];
+        if (callType > 1)
         {
-          if (v15 == 2)
+          if (callType == 2)
           {
-            if (v9 == 1)
+            if (callState == 1)
             {
               v16 = v36;
             }
 
             else
             {
-              v20 = [v8 copresenceActivityType];
-              if (v20 > 5)
+              copresenceActivityType = [v8 copresenceActivityType];
+              if (copresenceActivityType > 5)
               {
                 goto LABEL_41;
               }
 
-              if (v20 == 3)
+              if (copresenceActivityType == 3)
               {
                 v16 = v28;
               }
@@ -3858,10 +3858,10 @@ LABEL_39:
 
           else
           {
-            if (v15 == 3)
+            if (callType == 3)
             {
               v16 = v38;
-              if (v11 != 2)
+              if (callState3 != 2)
               {
                 v16 = v37;
               }
@@ -3873,9 +3873,9 @@ LABEL_19:
             v17 = SBLogStatusBarish();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v8 callType];
+              callType2 = [v8 callType];
               *buf = 134217984;
-              *&buf[4] = v18;
+              *&buf[4] = callType2;
               _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[Call Type] Unhandled enum value: %lu", buf, 0xCu);
             }
 
@@ -3888,16 +3888,16 @@ LABEL_40:
           goto LABEL_41;
         }
 
-        if (v15)
+        if (callType)
         {
-          if (v15 == 1)
+          if (callType == 1)
           {
-            if (v9 == 1)
+            if (callState == 1)
             {
               v16 = v35;
             }
 
-            else if (v10 == 3)
+            else if (callState2 == 3)
             {
               v16 = v31;
             }
@@ -3913,19 +3913,19 @@ LABEL_40:
           goto LABEL_19;
         }
 
-        if (v9 == 1)
+        if (callState == 1)
         {
           v16 = v34;
           goto LABEL_39;
         }
 
-        if (v10 == 3)
+        if (callState2 == 3)
         {
           v16 = v30;
           goto LABEL_39;
         }
 
-        if (v12 == 4)
+        if (callState4 == 4)
         {
           v16 = v29;
           goto LABEL_39;
@@ -3933,24 +3933,24 @@ LABEL_40:
 
         v17 = v14;
         v19 = @"com.apple.systemstatus.background-activity.CallRecording";
-        if (v13 == 6)
+        if (callState5 == 6)
         {
           goto LABEL_40;
         }
 
 LABEL_41:
         v21 = getpid();
-        v22 = [v8 callProviderAttribution];
+        callProviderAttribution = [v8 callProviderAttribution];
 
-        if (v22)
+        if (callProviderAttribution)
         {
           *buf = 0u;
           v47 = 0u;
-          v23 = [v8 callProviderAttribution];
-          v24 = v23;
-          if (v23)
+          callProviderAttribution2 = [v8 callProviderAttribution];
+          v24 = callProviderAttribution2;
+          if (callProviderAttribution2)
           {
-            [v23 auditToken];
+            [callProviderAttribution2 auditToken];
           }
 
           else
@@ -3977,11 +3977,11 @@ LABEL_41:
   return v26;
 }
 
-- (void)_updateCallingBackgroundActivityAssertionsForCallDescriptors:(id)a3
+- (void)_updateCallingBackgroundActivityAssertionsForCallDescriptors:(id)descriptors
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [(SBStatusBarStateAggregator *)self _backgroundActivityDescriptorsForCallDescriptors:a3];
-  v5 = [(NSMutableDictionary *)self->_callingBackgroundActivityAssertionsByDescriptor allKeys];
+  v4 = [(SBStatusBarStateAggregator *)self _backgroundActivityDescriptorsForCallDescriptors:descriptors];
+  allKeys = [(NSMutableDictionary *)self->_callingBackgroundActivityAssertionsByDescriptor allKeys];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertionsForCallDescriptors___block_invoke;
@@ -3989,7 +3989,7 @@ LABEL_41:
   v25[4] = self;
   v6 = v4;
   v26 = v6;
-  v7 = [v5 bs_compactMap:v25];
+  v7 = [allKeys bs_compactMap:v25];
 
   if ([v6 count] && !self->_callingBackgroundActivityAssertionsByDescriptor)
   {
@@ -4182,10 +4182,10 @@ void __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertions
   }
 }
 
-- (id)_systemApertureElementIdentifiersForStatusBarItem:(int)a3
+- (id)_systemApertureElementIdentifiersForStatusBarItem:(int)item
 {
   v6[2] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (item == 2)
   {
     v3 = *MEMORY[0x277D67FE0];
     v6[0] = *MEMORY[0x277D67FD8];
@@ -4201,24 +4201,24 @@ void __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertions
   return v4;
 }
 
-- (BOOL)_systemApertureElementIsVisibleForStatusBarItem:(int)a3
+- (BOOL)_systemApertureElementIsVisibleForStatusBarItem:(int)item
 {
-  v4 = [(SBStatusBarStateAggregator *)self _systemApertureElementIdentifiersForStatusBarItem:*&a3];
-  v5 = [(SBStatusBarStateAggregator *)self systemApertureVisibleElementIdentifiers];
-  v6 = [v5 firstObjectCommonWithArray:v4];
+  v4 = [(SBStatusBarStateAggregator *)self _systemApertureElementIdentifiersForStatusBarItem:*&item];
+  systemApertureVisibleElementIdentifiers = [(SBStatusBarStateAggregator *)self systemApertureVisibleElementIdentifiers];
+  v6 = [systemApertureVisibleElementIdentifiers firstObjectCommonWithArray:v4];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (void)setBatteryChargingState:(unint64_t)a3
+- (void)setBatteryChargingState:(unint64_t)state
 {
   batteryChargingState = self->_batteryChargingState;
-  if (batteryChargingState != a3)
+  if (batteryChargingState != state)
   {
-    if (a3 - 1 >= 3)
+    if (state - 1 >= 3)
     {
-      if (!a3)
+      if (!state)
       {
         [(SBStatusBarStateAggregator *)self _invalidateSystemApertureChargingElementAssertionForReason:@"Charging ended"];
       }
@@ -4232,28 +4232,28 @@ void __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertions
         if (v6)
         {
           v7 = +[SBLockScreenManager sharedInstance];
-          v8 = [v7 isUILocked];
+          isUILocked = [v7 isUILocked];
 
           v9 = +[SBUIController sharedInstance];
-          v10 = [v9 isConnectedToWirelessInternalCharger];
+          isConnectedToWirelessInternalCharger = [v9 isConnectedToWirelessInternalCharger];
 
           v11 = +[SBUIController sharedInstance];
-          v12 = [v11 isConnectedToWirelessInternalChargingAccessory];
+          isConnectedToWirelessInternalChargingAccessory = [v11 isConnectedToWirelessInternalChargingAccessory];
 
-          if (!v8 || ((v10 | v12) & 1) == 0)
+          if (!isUILocked || ((isConnectedToWirelessInternalCharger | isConnectedToWirelessInternalChargingAccessory) & 1) == 0)
           {
-            v13 = [(SBStatusBarStateAggregator *)self _batteryDomainData];
-            v14 = v13;
+            _batteryDomainData = [(SBStatusBarStateAggregator *)self _batteryDomainData];
+            v14 = _batteryDomainData;
             v15 = 1.0;
             if (!self->_showsRecordingOverrides)
             {
-              v15 = [v13 percentCharge] / 100.0;
+              v15 = [_batteryDomainData percentCharge] / 100.0;
             }
 
             v16 = objc_alloc_init(SBChargingSystemApertureElementProvider);
             v17 = [(SBChargingSystemApertureElementProvider *)v16 powerElementWithBatteryCapacity:v15];
-            v18 = [SBApp systemApertureControllerForMainDisplay];
-            v19 = [v18 registerElement:v17];
+            systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+            v19 = [systemApertureControllerForMainDisplay registerElement:v17];
             systemApertureChargingElementAssertion = self->_systemApertureChargingElementAssertion;
             self->_systemApertureChargingElementAssertion = v19;
           }
@@ -4261,21 +4261,21 @@ void __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertions
       }
     }
 
-    self->_batteryChargingState = a3;
+    self->_batteryChargingState = state;
   }
 }
 
-- (void)_invalidateSystemApertureChargingElementAssertionForReason:(id)a3
+- (void)_invalidateSystemApertureChargingElementAssertionForReason:(id)reason
 {
-  [(SAInvalidatable *)self->_systemApertureChargingElementAssertion invalidateWithReason:a3];
+  [(SAInvalidatable *)self->_systemApertureChargingElementAssertion invalidateWithReason:reason];
   systemApertureChargingElementAssertion = self->_systemApertureChargingElementAssertion;
   self->_systemApertureChargingElementAssertion = 0;
 }
 
-- (void)updateStatusBarItem:(int)a3
+- (void)updateStatusBarItem:(int)item
 {
   [(SBStatusBarStateAggregator *)self beginCoalescentBlock];
-  switch(a3)
+  switch(item)
   {
     case 0:
     case 1:
@@ -4378,7 +4378,7 @@ void __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertions
       v5 = SBLogStatusBarish();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        [(SBStatusBarStateAggregator *)a3 updateStatusBarItem:v5];
+        [(SBStatusBarStateAggregator *)item updateStatusBarItem:v5];
       }
 
       break;
@@ -4387,38 +4387,38 @@ void __91__SBStatusBarStateAggregator__updateCallingBackgroundActivityAssertions
   [(SBStatusBarStateAggregator *)self endCoalescentBlock];
 }
 
-- (void)_postItem:(int)a3 withState:(unint64_t)a4 inList:(unint64_t *)a5
+- (void)_postItem:(int)item withState:(unint64_t)state inList:(unint64_t *)list
 {
-  if (a3 <= 0x2D && a5)
+  if (item <= 0x2D && list)
   {
     [(SBStatusBarStateAggregator *)self beginCoalescentBlock];
-    a5[a3] |= a4;
+    list[item] |= state;
 
     [(SBStatusBarStateAggregator *)self endCoalescentBlock];
   }
 }
 
-- (BOOL)_setItem:(int)a3 enabled:(BOOL)a4 inList:(BOOL *)a5 itemPostState:(unint64_t *)a6
+- (BOOL)_setItem:(int)item enabled:(BOOL)enabled inList:(BOOL *)list itemPostState:(unint64_t *)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 > 0x2D)
+  if (item > 0x2D)
   {
     return 0;
   }
 
-  v6 = a4;
-  v7 = *&a3;
-  v8 = a5[a3];
-  a5[a3] = a4;
+  enabledCopy = enabled;
+  v7 = *&item;
+  v8 = list[item];
+  list[item] = enabled;
   [SBStatusBarStateAggregator _postItem:"_postItem:withState:inList:" withState:? inList:?];
-  if (v8 == v6)
+  if (v8 == enabledCopy)
   {
     return 0;
   }
 
   v10 = SBLogStatusBarish();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (enabledCopy)
   {
     if (v11)
     {
@@ -4451,12 +4451,12 @@ LABEL_9:
   [(SBStatusBarStateAggregator *)self endCoalescentBlock];
 }
 
-- (void)_requestActions:(int)a3
+- (void)_requestActions:(int)actions
 {
-  if ((a3 & ~self->_actions) != 0)
+  if ((actions & ~self->_actions) != 0)
   {
     [(SBStatusBarStateAggregator *)self beginCoalescentBlock];
-    self->_actions |= a3;
+    self->_actions |= actions;
 
     [(SBStatusBarStateAggregator *)self endCoalescentBlock];
   }
@@ -4474,14 +4474,14 @@ LABEL_9:
 
 - (void)_resetTimeItemFormatter
 {
-  v19 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [(NSDateFormatter *)self->_timeItemDateFormatter locale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  locale = [(NSDateFormatter *)self->_timeItemDateFormatter locale];
 
-  if (v19 == v3)
+  if (currentLocale == locale)
   {
     timeItemDateFormatter = self->_timeItemDateFormatter;
-    v18 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [(NSDateFormatter *)timeItemDateFormatter setTimeZone:v18];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [(NSDateFormatter *)timeItemDateFormatter setTimeZone:systemTimeZone];
 
     [(SBStatusBarStateAggregator *)self _updateOverrideDate];
   }
@@ -4492,10 +4492,10 @@ LABEL_9:
     v5 = self->_timeItemDateFormatter;
     self->_timeItemDateFormatter = v4;
 
-    [(NSDateFormatter *)self->_timeItemDateFormatter setLocale:v19];
+    [(NSDateFormatter *)self->_timeItemDateFormatter setLocale:currentLocale];
     [(NSDateFormatter *)self->_timeItemDateFormatter setDateStyle:0];
     [(NSDateFormatter *)self->_timeItemDateFormatter setTimeStyle:1];
-    v6 = [MEMORY[0x277CF0BF0] formatterForDateAsTimeNoAMPMWithLocale:v19];
+    v6 = [MEMORY[0x277CF0BF0] formatterForDateAsTimeNoAMPMWithLocale:currentLocale];
     shortTimeItemDateFormatter = self->_shortTimeItemDateFormatter;
     self->_shortTimeItemDateFormatter = v6;
 
@@ -4505,12 +4505,12 @@ LABEL_9:
 
     [(NSDateFormatter *)self->_dateItemDateFormatter setFormattingContext:2];
     v10 = MEMORY[0x277CCA968];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"STATUS_BAR_DATE_FORMAT_STRING" value:&stru_283094718 table:@"SpringBoard"];
-    v13 = [v10 dateFormatFromTemplate:v12 options:0 locale:v19];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle localizedStringForKey:@"STATUS_BAR_DATE_FORMAT_STRING" value:&stru_283094718 table:@"SpringBoard"];
+    v13 = [v10 dateFormatFromTemplate:v12 options:0 locale:currentLocale];
 
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"STATUS_BAR_DATE_FORMAT_SEPARATOR_TO_STRIP" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle2 localizedStringForKey:@"STATUS_BAR_DATE_FORMAT_SEPARATOR_TO_STRIP" value:&stru_283094718 table:@"SpringBoard"];
 
     if ([v15 length])
     {
@@ -4530,8 +4530,8 @@ LABEL_9:
   if (self->_showsRecordingOverrides)
   {
     v2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1168335660.0];
-    v3 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    v4 = 1168335660.0 - [v3 secondsFromGMTForDate:v2];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    v4 = 1168335660.0 - [systemTimeZone secondsFromGMTForDate:v2];
 
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v4];
   }
@@ -4541,23 +4541,23 @@ LABEL_9:
     v6 = 0;
   }
 
-  v5 = [MEMORY[0x277D65E40] sharedInstance];
-  [v5 setOverrideDate:v6];
+  mEMORY[0x277D65E40] = [MEMORY[0x277D65E40] sharedInstance];
+  [mEMORY[0x277D65E40] setOverrideDate:v6];
 }
 
 - (BOOL)_shouldShowPersonName
 {
-  v3 = [(SBStatusBarStateAggregator *)self _userSessionController];
-  v4 = v3;
+  _userSessionController = [(SBStatusBarStateAggregator *)self _userSessionController];
+  v4 = _userSessionController;
   if (self->_overridePersonName)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if ([v3 isMultiUserSupported])
+  else if ([_userSessionController isMultiUserSupported])
   {
-    v6 = [v4 user];
-    v7 = v6 != 0;
+    user = [v4 user];
+    v7 = user != 0;
 
     v5 = v7 & ([v4 isLoginSession] ^ 1);
   }
@@ -4572,15 +4572,15 @@ LABEL_9:
 
 - (void)_noteAirplaneModeChanged
 {
-  v3 = [(SBStatusBarStateAggregator *)self _telephonyManager];
+  _telephonyManager = [(SBStatusBarStateAggregator *)self _telephonyManager];
 
-  if (v3)
+  if (_telephonyManager)
   {
-    v4 = [(SBStatusBarStateAggregator *)self _isInAirplaneMode];
+    _isInAirplaneMode = [(SBStatusBarStateAggregator *)self _isInAirplaneMode];
     [(SBStatusBarStateAggregator *)self beginCoalescentBlock];
-    [(SBStatusBarStateAggregator *)self _setItem:3 enabled:v4];
+    [(SBStatusBarStateAggregator *)self _setItem:3 enabled:_isInAirplaneMode];
     [(SBStatusBarStateAggregator *)self _requestActions:4];
-    if (v4)
+    if (_isInAirplaneMode)
     {
       [(SBStatusBarStateAggregator *)self _setItem:6 enabled:0];
       [(SBStatusBarStateAggregator *)self _setItem:7 enabled:0];
@@ -4625,27 +4625,27 @@ uint64_t __54__SBStatusBarStateAggregator__noteAirplaneModeChanged__block_invoke
   return result;
 }
 
-+ (int)_thermalColorForLevel:(int64_t)a3
++ (int)_thermalColorForLevel:(int64_t)level
 {
-  if ((a3 + 2) > 5)
+  if ((level + 2) > 5)
   {
     return 0;
   }
 
   else
   {
-    return dword_21F8A88A8[a3 + 2];
+    return dword_21F8A88A8[level + 2];
   }
 }
 
-- (id)_locationAttributionsForSensorActivityAttributions:(id)a3 includeRecent:(BOOL)a4
+- (id)_locationAttributionsForSensorActivityAttributions:(id)attributions includeRecent:(BOOL)recent
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __95__SBStatusBarStateAggregator__locationAttributionsForSensorActivityAttributions_includeRecent___block_invoke;
   v6[3] = &__block_descriptor_33_e37_B16__0__SBSensorActivityAttribution_8l;
-  v7 = a4;
-  v4 = [a3 bs_filter:v6];
+  recentCopy = recent;
+  v4 = [attributions bs_filter:v6];
 
   return v4;
 }
@@ -4673,28 +4673,28 @@ uint64_t __95__SBStatusBarStateAggregator__locationAttributionsForSensorActivity
   return v6;
 }
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
-  v5 = [a3 userInfo];
-  v4 = [v5 objectForKey:@"SBSystemApertureVisibleElementIdentifiers"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKey:@"SBSystemApertureVisibleElementIdentifiers"];
   [(SBStatusBarStateAggregator *)self setSystemApertureVisibleElementIdentifiers:v4];
   [(SBStatusBarStateAggregator *)self _updateStatusBarItemsWithRelatedSystemApertureElements];
 }
 
-- (void)activityDidChangeForSensorActivityDataProvider:(id)a3
+- (void)activityDidChangeForSensorActivityDataProvider:(id)provider
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [SBApp sensorActivityDataProvider];
-  v5 = [v4 activeSensorActivityAttributions];
+  sensorActivityDataProvider = [SBApp sensorActivityDataProvider];
+  activeSensorActivityAttributions = [sensorActivityDataProvider activeSensorActivityAttributions];
 
-  v23 = self;
-  v6 = [(SBStatusBarStateAggregator *)self _locationAttributionsForSensorActivityAttributions:v5 includeRecent:0];
+  selfCopy = self;
+  v6 = [(SBStatusBarStateAggregator *)self _locationAttributionsForSensorActivityAttributions:activeSensorActivityAttributions includeRecent:0];
   v7 = +[SBMainSwitcherControllerCoordinator _shim_activeSwitcherController];
-  v8 = [v7 layoutStatePrimaryElement];
-  v9 = [v8 workspaceEntity];
-  v10 = [v9 applicationSceneEntity];
-  v11 = [v10 sceneHandle];
-  v12 = [v11 application];
+  layoutStatePrimaryElement = [v7 layoutStatePrimaryElement];
+  workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+  applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  application = [sceneHandle application];
 
   v26 = 0u;
   v27 = 0u;
@@ -4718,14 +4718,14 @@ uint64_t __95__SBStatusBarStateAggregator__locationAttributionsForSensorActivity
 
         v18 = *(*(&v24 + 1) + 8 * v17);
         v19 = +[SBApplicationController sharedInstance];
-        v20 = [v18 bundleIdentifier];
-        v21 = [v19 applicationWithBundleIdentifier:v20];
+        bundleIdentifier = [v18 bundleIdentifier];
+        v21 = [v19 applicationWithBundleIdentifier:bundleIdentifier];
 
-        if ([v12 isSameExecutableAsApplication:v21] && (objc_msgSend(v21, "hasProminentlyIndicatedLocationUseWhileForeground") & 1) == 0)
+        if ([application isSameExecutableAsApplication:v21] && (objc_msgSend(v21, "hasProminentlyIndicatedLocationUseWhileForeground") & 1) == 0)
         {
           [v21 setHasProminentlyIndicatedLocationUseWhileForeground:1];
-          v22 = v23;
-          [(SBStatusBarStateAggregator *)v23 _temporarilyOverrideLocationItemForProminentIndication];
+          v22 = selfCopy;
+          [(SBStatusBarStateAggregator *)selfCopy _temporarilyOverrideLocationItemForProminentIndication];
 
           goto LABEL_12;
         }
@@ -4744,23 +4744,23 @@ uint64_t __95__SBStatusBarStateAggregator__locationAttributionsForSensorActivity
     }
   }
 
-  v22 = v23;
-  [(SBStatusBarStateAggregator *)v23 _updateLocationItem];
+  v22 = selfCopy;
+  [(SBStatusBarStateAggregator *)selfCopy _updateLocationItem];
 LABEL_12:
-  [(SBStatusBarStateAggregator *)v22 _updateActiveAudioRecordingBackgroundActivityAssertionsForActiveSensorActivityAttributions:v5];
+  [(SBStatusBarStateAggregator *)v22 _updateActiveAudioRecordingBackgroundActivityAssertionsForActiveSensorActivityAttributions:activeSensorActivityAttributions];
 }
 
-- (void)_updateActiveAudioRecordingBackgroundActivityAssertionsForActiveSensorActivityAttributions:(id)a3
+- (void)_updateActiveAudioRecordingBackgroundActivityAssertionsForActiveSensorActivityAttributions:(id)attributions
 {
   v4 = SBApp;
-  v5 = a3;
-  v9 = [v4 audioRecordingManager];
-  v6 = [(SBStatusBarStateAggregator *)self _activeAudioRecordingAttributionsForSensorActivityAttributions:v5];
+  attributionsCopy = attributions;
+  audioRecordingManager = [v4 audioRecordingManager];
+  v6 = [(SBStatusBarStateAggregator *)self _activeAudioRecordingAttributionsForSensorActivityAttributions:attributionsCopy];
 
-  v7 = [(STCallingStatusDomain *)self->_callingDomain data];
-  v8 = [v7 callDescriptors];
+  data = [(STCallingStatusDomain *)self->_callingDomain data];
+  callDescriptors = [data callDescriptors];
 
-  [v9 setNowRecordingAppForActiveAudioRecordingAttributions:v6 callDescriptors:v8];
+  [audioRecordingManager setNowRecordingAppForActiveAudioRecordingAttributions:v6 callDescriptors:callDescriptors];
 }
 
 uint64_t __93__SBStatusBarStateAggregator__activeAudioRecordingAttributionsForSensorActivityAttributions___block_invoke(uint64_t a1, void *a2)

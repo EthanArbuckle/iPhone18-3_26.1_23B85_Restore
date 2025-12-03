@@ -1,6 +1,6 @@
 @interface SymptomFilter
 - (SymptomFilter)init;
-- (int)configureItem:(id)a3;
+- (int)configureItem:(id)item;
 @end
 
 @implementation SymptomFilter
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (int)configureItem:(id)a3
+- (int)configureItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"START_OF_DAY_FILTER"];
+  itemCopy = item;
+  v5 = [itemCopy objectForKey:@"START_OF_DAY_FILTER"];
   if (v5)
   {
     v6 = [Filter initForSymptom:self->_targetSymptomId withParams:v5];
@@ -33,10 +33,10 @@
 
   else
   {
-    currentFilter = [v4 objectForKey:@"TRIGGERING_SYMPTOM"];
-    v8 = [v4 objectForKey:@"TRIGGERED_FILTER"];
-    v9 = [v4 objectForKey:@"FINAL_FILTER"];
-    v10 = [v4 objectForKey:@"DELAY_FOR_FINAL"];
+    currentFilter = [itemCopy objectForKey:@"TRIGGERING_SYMPTOM"];
+    v8 = [itemCopy objectForKey:@"TRIGGERED_FILTER"];
+    v9 = [itemCopy objectForKey:@"FINAL_FILTER"];
+    v10 = [itemCopy objectForKey:@"DELAY_FOR_FINAL"];
     v11 = [SymptomStore idFromSymptomName:currentFilter];
     v12 = +[FilterActions initForSymptom:trigger:triggering:finally:after:](FilterActions, "initForSymptom:trigger:triggering:finally:after:", self->_targetSymptomId, [v11 intValue], v8, v9, v10);
     [(NSMutableDictionary *)self->_potentialFilters setObject:v12 forKey:v11];

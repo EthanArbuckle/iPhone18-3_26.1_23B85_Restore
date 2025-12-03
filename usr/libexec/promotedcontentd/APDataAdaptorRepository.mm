@@ -1,11 +1,11 @@
 @interface APDataAdaptorRepository
 + (id)sharedRepository;
 - (APDataAdaptorRepository)init;
-- (APDataAdaptorRepository)initWithCoder:(id)a3;
-- (id)adaptorWithIdentifier:(id)a3;
-- (id)registerAdaptorClass:(Class)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)unregisterAdaptorClass:(Class)a3;
+- (APDataAdaptorRepository)initWithCoder:(id)coder;
+- (id)adaptorWithIdentifier:(id)identifier;
+- (id)registerAdaptorClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
+- (void)unregisterAdaptorClass:(Class)class;
 @end
 
 @implementation APDataAdaptorRepository
@@ -22,15 +22,15 @@
   return v3;
 }
 
-- (APDataAdaptorRepository)initWithCoder:(id)a3
+- (APDataAdaptorRepository)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = APDataAdaptorRepository;
   v5 = [(APDataAdaptorRepository *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registeredAdaptors"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registeredAdaptors"];
     registeredAdaptors = v5->_registeredAdaptors;
     v5->_registeredAdaptors = v6;
 
@@ -48,11 +48,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(APDataAdaptorRepository *)self registeredAdaptors];
-  [v4 encodeObject:v5 forKey:@"registeredAdaptors"];
+  coderCopy = coder;
+  registeredAdaptors = [(APDataAdaptorRepository *)self registeredAdaptors];
+  [coderCopy encodeObject:registeredAdaptors forKey:@"registeredAdaptors"];
 }
 
 - (APDataAdaptorRepository)init
@@ -80,22 +80,22 @@
   return v2;
 }
 
-- (id)adaptorWithIdentifier:(id)a3
+- (id)adaptorWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(APDataAdaptorRepository *)self lock];
-  [v5 lock];
+  identifierCopy = identifier;
+  lock = [(APDataAdaptorRepository *)self lock];
+  [lock lock];
 
-  v6 = [(NSMutableDictionary *)self->_adaptors valueForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_adaptors valueForKey:identifierCopy];
   if (!v6)
   {
-    v7 = [(NSMutableDictionary *)self->_registeredAdaptors valueForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_registeredAdaptors valueForKey:identifierCopy];
     if (v7 && (v8 = v7, [(objc_class *)v7 isSubclassOfClass:objc_opt_class()]))
     {
       v6 = objc_alloc_init(v8);
       if (v6)
       {
-        [(NSMutableDictionary *)self->_adaptors setValue:v6 forKey:v4];
+        [(NSMutableDictionary *)self->_adaptors setValue:v6 forKey:identifierCopy];
       }
     }
 
@@ -105,7 +105,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v12 = 138543362;
-        v13 = v4;
+        v13 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Adaptor %{public}@ is not a subclass of APDataAdaptor.", &v12, 0xCu);
       }
 
@@ -113,40 +113,40 @@
     }
   }
 
-  v10 = [(APDataAdaptorRepository *)self lock];
-  [v10 unlock];
+  lock2 = [(APDataAdaptorRepository *)self lock];
+  [lock2 unlock];
 
   return v6;
 }
 
-- (id)registerAdaptorClass:(Class)a3
+- (id)registerAdaptorClass:(Class)class
 {
-  if (!a3 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (!class || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v16 = NSStringFromClass(a3);
-    v6 = [NSString stringWithFormat:@"Adaptor is of type '%@' must be of type 'APDataAdaptor'", v16];;
+    v16 = NSStringFromClass(class);
+    identifier = [NSString stringWithFormat:@"Adaptor is of type '%@' must be of type 'APDataAdaptor'", v16];;
 
     v21 = NSLocalizedDescriptionKey;
-    v22 = v6;
-    v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    v15 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5203 userInfo:v17];
+    v22 = identifier;
+    lock2 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
+    v15 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5203 userInfo:lock2];
     goto LABEL_10;
   }
 
-  v5 = [(APDataAdaptorRepository *)self lock];
-  [v5 lock];
+  lock = [(APDataAdaptorRepository *)self lock];
+  [lock lock];
 
-  v6 = [(objc_class *)a3 identifier];
-  v7 = [(NSMutableDictionary *)self->_registeredAdaptors objectForKeyedSubscript:v6];
+  identifier = [(objc_class *)class identifier];
+  v7 = [(NSMutableDictionary *)self->_registeredAdaptors objectForKeyedSubscript:identifier];
   if (!v7)
   {
-    [(NSMutableDictionary *)self->_registeredAdaptors setObject:a3 forKey:v6];
+    [(NSMutableDictionary *)self->_registeredAdaptors setObject:class forKey:identifier];
     goto LABEL_8;
   }
 
   v8 = v7;
   v9 = NSStringFromClass(v7);
-  v10 = NSStringFromClass(a3);
+  v10 = NSStringFromClass(class);
   v11 = [v9 isEqualToString:v10];
 
   if (v11)
@@ -157,7 +157,7 @@ LABEL_8:
   }
 
   v12 = NSStringFromClass(v8);
-  v13 = [NSString stringWithFormat:@"Data adaptor '%@' is already registered for class %@", v6, v12];
+  v13 = [NSString stringWithFormat:@"Data adaptor '%@' is already registered for class %@", identifier, v12];
 
   v19 = NSLocalizedDescriptionKey;
   v20 = v13;
@@ -165,28 +165,28 @@ LABEL_8:
   v15 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5204 userInfo:v14];
 
 LABEL_9:
-  v17 = [(APDataAdaptorRepository *)self lock];
-  [v17 unlock];
+  lock2 = [(APDataAdaptorRepository *)self lock];
+  [lock2 unlock];
 LABEL_10:
 
   return v15;
 }
 
-- (void)unregisterAdaptorClass:(Class)a3
+- (void)unregisterAdaptorClass:(Class)class
 {
-  v5 = [(APDataAdaptorRepository *)self lock];
-  [v5 lock];
+  lock = [(APDataAdaptorRepository *)self lock];
+  [lock lock];
 
   registeredAdaptors = self->_registeredAdaptors;
-  v7 = [(objc_class *)a3 identifier];
-  [(NSMutableDictionary *)registeredAdaptors removeObjectForKey:v7];
+  identifier = [(objc_class *)class identifier];
+  [(NSMutableDictionary *)registeredAdaptors removeObjectForKey:identifier];
 
   adaptors = self->_adaptors;
-  v9 = [(objc_class *)a3 identifier];
-  [(NSMutableDictionary *)adaptors removeObjectForKey:v9];
+  identifier2 = [(objc_class *)class identifier];
+  [(NSMutableDictionary *)adaptors removeObjectForKey:identifier2];
 
-  v10 = [(APDataAdaptorRepository *)self lock];
-  [v10 unlock];
+  lock2 = [(APDataAdaptorRepository *)self lock];
+  [lock2 unlock];
 }
 
 @end

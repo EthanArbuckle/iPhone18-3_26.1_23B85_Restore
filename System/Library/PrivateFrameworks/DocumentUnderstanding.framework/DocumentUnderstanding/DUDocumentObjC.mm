@@ -2,30 +2,30 @@
 - (DUDocumentHTMLDataObjC)documentHTMLData;
 - (DUDocumentObjC)init;
 - (NSArray)documentUIElements;
-- (void)setAbstract:(id)a3;
-- (void)setComment:(id)a3;
-- (void)setCreator:(id)a3;
-- (void)setDateCreated:(id)a3;
-- (void)setDateModified:(id)a3;
-- (void)setDocumentHTMLData:(id)a3;
-- (void)setDocumentUIElements:(id)a3;
-- (void)setHeadline:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setInLanguage:(id)a3;
-- (void)setKeywords:(id)a3;
-- (void)setSignificantLink:(id)a3;
-- (void)setSubHeadline:(id)a3;
-- (void)setText:(id)a3;
-- (void)setThumbnailUrl:(id)a3;
-- (void)setUrl:(id)a3;
-- (void)setVersion:(id)a3;
+- (void)setAbstract:(id)abstract;
+- (void)setComment:(id)comment;
+- (void)setCreator:(id)creator;
+- (void)setDateCreated:(id)created;
+- (void)setDateModified:(id)modified;
+- (void)setDocumentHTMLData:(id)data;
+- (void)setDocumentUIElements:(id)elements;
+- (void)setHeadline:(id)headline;
+- (void)setIdentifier:(id)identifier;
+- (void)setInLanguage:(id)language;
+- (void)setKeywords:(id)keywords;
+- (void)setSignificantLink:(id)link;
+- (void)setSubHeadline:(id)headline;
+- (void)setText:(id)text;
+- (void)setThumbnailUrl:(id)url;
+- (void)setUrl:(id)url;
+- (void)setVersion:(id)version;
 @end
 
 @implementation DUDocumentObjC
 
-- (void)setDocumentHTMLData:(id)a3
+- (void)setDocumentHTMLData:(id)data
 {
-  v9 = objc_msgSend_htmlDataForObjCHTMLData_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_htmlDataForObjCHTMLData_(DUObjCCompatibilityUtils, a2, data, v3, v4);
   objc_msgSend_setDocumentHTMLData_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
@@ -47,16 +47,16 @@
   return v15;
 }
 
-- (void)setDocumentUIElements:(id)a3
+- (void)setDocumentUIElements:(id)elements
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v23, v27, 16);
   if (v8)
   {
@@ -142,93 +142,93 @@
   return v10;
 }
 
-- (void)setDateModified:(id)a3
+- (void)setDateModified:(id)modified
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(modified, a2, modified, v3, v4);
   objc_msgSend_setDateModified_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setDateCreated:(id)a3
+- (void)setDateCreated:(id)created
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(created, a2, created, v3, v4);
   objc_msgSend_setDateCreated_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setSignificantLink:(id)a3
+- (void)setSignificantLink:(id)link
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(link, a2, link, v3, v4);
   objc_msgSend_setSignificantLink_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setThumbnailUrl:(id)a3
+- (void)setThumbnailUrl:(id)url
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(url, a2, url, v3, v4);
   objc_msgSend_setThumbnailUrl_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(url, a2, url, v3, v4);
   objc_msgSend_setUrl_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(identifier, a2, identifier, v3, v4);
   objc_msgSend_setIdentifier_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setKeywords:(id)a3
+- (void)setKeywords:(id)keywords
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(keywords, a2, keywords, v3, v4);
   objc_msgSend_setKeywords_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setInLanguage:(id)a3
+- (void)setInLanguage:(id)language
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(language, a2, language, v3, v4);
   objc_msgSend_setInLanguage_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(text, a2, text, v3, v4);
   objc_msgSend_setText_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setComment:(id)a3
+- (void)setComment:(id)comment
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(comment, a2, comment, v3, v4);
   objc_msgSend_setComment_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setAbstract:(id)a3
+- (void)setAbstract:(id)abstract
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(abstract, a2, abstract, v3, v4);
   objc_msgSend_setAbstract_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setCreator:(id)a3
+- (void)setCreator:(id)creator
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(creator, a2, creator, v3, v4);
   objc_msgSend_setCreator_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(version, a2, version, v3, v4);
   objc_msgSend_setVersion_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setSubHeadline:(id)a3
+- (void)setSubHeadline:(id)headline
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(headline, a2, headline, v3, v4);
   objc_msgSend_setSubHeadline_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 
-- (void)setHeadline:(id)a3
+- (void)setHeadline:(id)headline
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(headline, a2, headline, v3, v4);
   objc_msgSend_setHeadline_(self->_underlyingDocument, v6, v9, v7, v8);
 }
 

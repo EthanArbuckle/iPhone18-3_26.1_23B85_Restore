@@ -1,8 +1,8 @@
 @interface SDAutoUnlockIconTransferStore
-- (BOOL)imageCachedForHash:(id)a3 device:(id)a4;
+- (BOOL)imageCachedForHash:(id)hash device:(id)device;
 - (SDAutoUnlockIconTransferStore)init;
 - (void)_loadTransferStore;
-- (void)storeCachedImageForHash:(id)a3 device:(id)a4 appName:(id)a5;
+- (void)storeCachedImageForHash:(id)hash device:(id)device appName:(id)name;
 @end
 
 @implementation SDAutoUnlockIconTransferStore
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (void)storeCachedImageForHash:(id)a3 device:(id)a4 appName:(id)a5
+- (void)storeCachedImageForHash:(id)hash device:(id)device appName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  deviceCopy = device;
+  nameCopy = name;
   v11 = SFHexStringForData();
-  v12 = [(NSMutableDictionary *)self->_transferStore objectForKeyedSubscript:v9];
+  v12 = [(NSMutableDictionary *)self->_transferStore objectForKeyedSubscript:deviceCopy];
   v13 = [v12 mutableCopy];
 
   if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -48,7 +48,7 @@
   v22[1] = 3221225472;
   v22[2] = sub_100136168;
   v22[3] = &unk_1008D1258;
-  v15 = v10;
+  v15 = nameCopy;
   v23 = v15;
   v24 = &v25;
   [v13 enumerateKeysAndObjectsUsingBlock:v22];
@@ -59,11 +59,11 @@
 
   [v13 setObject:v15 forKeyedSubscript:v11];
   v16 = [v13 copy];
-  [(NSMutableDictionary *)self->_transferStore setObject:v16 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_transferStore setObject:v16 forKeyedSubscript:deviceCopy];
 
   if (dword_100971278 <= 50 && (dword_100971278 != -1 || _LogCategory_Initialize()))
   {
-    v20 = v9;
+    v20 = deviceCopy;
     v21 = v11;
     v19 = v15;
     LogPrintF();
@@ -77,11 +77,11 @@
   _Block_object_dispose(&v25, 8);
 }
 
-- (BOOL)imageCachedForHash:(id)a3 device:(id)a4
+- (BOOL)imageCachedForHash:(id)hash device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_transferStore objectForKeyedSubscript:v7];
+  hashCopy = hash;
+  deviceCopy = device;
+  v8 = [(NSMutableDictionary *)self->_transferStore objectForKeyedSubscript:deviceCopy];
   v9 = [v8 mutableCopy];
 
   if (!v9)

@@ -1,18 +1,18 @@
 @interface CTXPCLoadCarrierStoreVisitStatusRequest
 + (id)allowedClassesForArguments;
-- (CTXPCLoadCarrierStoreVisitStatusRequest)initWithCarrier:(id)a3;
+- (CTXPCLoadCarrierStoreVisitStatusRequest)initWithCarrier:(id)carrier;
 - (id)carrier;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCLoadCarrierStoreVisitStatusRequest
 
-- (CTXPCLoadCarrierStoreVisitStatusRequest)initWithCarrier:(id)a3
+- (CTXPCLoadCarrierStoreVisitStatusRequest)initWithCarrier:(id)carrier
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  carrierCopy = carrier;
   v10 = @"carrier";
-  v11[0] = v4;
+  v11[0] = carrierCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCLoadCarrierStoreVisitStatusRequest;
@@ -22,18 +22,18 @@
   return v6;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCLoadCarrierStoreVisitStatusRequest *)self carrier];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  carrier = [(CTXPCLoadCarrierStoreVisitStatusRequest *)self carrier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__CTXPCLoadCarrierStoreVisitStatusRequest_performRequestWithHandler_completionHandler___block_invoke;
   v10[3] = &unk_1E6A46018;
-  v9 = v7;
+  v9 = completionHandlerCopy;
   v11 = v9;
-  [v6 loadCarrierStoreVisitStatusForCarrier:v8 completion:v10];
+  [handlerCopy loadCarrierStoreVisitStatusForCarrier:carrier completion:v10];
 }
 
 void __87__CTXPCLoadCarrierStoreVisitStatusRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -47,7 +47,7 @@ void __87__CTXPCLoadCarrierStoreVisitStatusRequest_performRequestWithHandler_com
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCLoadCarrierStoreVisitStatusRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -57,8 +57,8 @@ void __87__CTXPCLoadCarrierStoreVisitStatusRequest_performRequestWithHandler_com
 
 - (id)carrier
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"carrier"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"carrier"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

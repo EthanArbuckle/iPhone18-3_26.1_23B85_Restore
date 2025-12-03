@@ -1,5 +1,5 @@
 @interface ActionCellHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)removeAction;
 @end
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2744F6884();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_2744F7034(width);
   v7 = v6;
 
@@ -28,7 +28,7 @@
 
 - (void)removeAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_2744F7868();
 }
 

@@ -1,13 +1,13 @@
 @interface HMDNetworkActivityWrapperFactory
 + (HMDNetworkActivityWrapperFactory)sharedInstance;
-- (id)networkActivityWrapperWithLabel:(unint64_t)a3;
+- (id)networkActivityWrapperWithLabel:(unint64_t)label;
 @end
 
 @implementation HMDNetworkActivityWrapperFactory
 
-- (id)networkActivityWrapperWithLabel:(unint64_t)a3
+- (id)networkActivityWrapperWithLabel:(unint64_t)label
 {
-  v3 = [[HMDNetworkActivityWrapper alloc] initWithLabel:a3];
+  v3 = [[HMDNetworkActivityWrapper alloc] initWithLabel:label];
 
   return v3;
 }

@@ -1,40 +1,40 @@
 @interface DebugHierarchyRequestActionExecutor
-+ (DebugHierarchyRequestActionExecutor)actionExecutorWithContext:(id)a3;
-+ (id)finalActionsFromActions:(id)a3;
-+ (id)initialActionsFromActions:(id)a3;
-+ (id)objectTargetedActionsFromActions:(id)a3;
-+ (void)_executeObjectActions:(id)a3 withObject:(id)a4 inContext:(id)a5;
-+ (void)_executeStandaloneActions:(id)a3 inContext:(id)a4;
-- (BOOL)allObjectActionsTargetIdentifiers:(id *)a3;
-- (DebugHierarchyRequestActionExecutor)initWithContext:(id)a3;
++ (DebugHierarchyRequestActionExecutor)actionExecutorWithContext:(id)context;
++ (id)finalActionsFromActions:(id)actions;
++ (id)initialActionsFromActions:(id)actions;
++ (id)objectTargetedActionsFromActions:(id)actions;
++ (void)_executeObjectActions:(id)actions withObject:(id)object inContext:(id)context;
++ (void)_executeStandaloneActions:(id)actions inContext:(id)context;
+- (BOOL)allObjectActionsTargetIdentifiers:(id *)identifiers;
+- (DebugHierarchyRequestActionExecutor)initWithContext:(id)context;
 - (NSArray)finalActions;
 - (NSArray)initialActions;
 - (NSArray)objectActions;
-- (void)executeActionsWithObject:(id)a3;
+- (void)executeActionsWithObject:(id)object;
 - (void)executeFinalStandaloneActions;
 - (void)executeInitialStandaloneActions;
 @end
 
 @implementation DebugHierarchyRequestActionExecutor
 
-+ (DebugHierarchyRequestActionExecutor)actionExecutorWithContext:(id)a3
++ (DebugHierarchyRequestActionExecutor)actionExecutorWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithContext:contextCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRequestActionExecutor)initWithContext:(id)a3
+- (DebugHierarchyRequestActionExecutor)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = DebugHierarchyRequestActionExecutor;
   v6 = [(DebugHierarchyRequestActionExecutor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -45,10 +45,10 @@
   initialActions = self->_initialActions;
   if (!initialActions)
   {
-    v4 = [(DebugHierarchyRequestActionExecutor *)self context];
-    v5 = [v4 request];
-    v6 = [v5 actions];
-    v7 = [DebugHierarchyRequestActionExecutor initialActionsFromActions:v6];
+    context = [(DebugHierarchyRequestActionExecutor *)self context];
+    request = [context request];
+    actions = [request actions];
+    v7 = [DebugHierarchyRequestActionExecutor initialActionsFromActions:actions];
     v8 = self->_initialActions;
     self->_initialActions = v7;
 
@@ -63,10 +63,10 @@
   finalActions = self->_finalActions;
   if (!finalActions)
   {
-    v4 = [(DebugHierarchyRequestActionExecutor *)self context];
-    v5 = [v4 request];
-    v6 = [v5 actions];
-    v7 = [DebugHierarchyRequestActionExecutor finalActionsFromActions:v6];
+    context = [(DebugHierarchyRequestActionExecutor *)self context];
+    request = [context request];
+    actions = [request actions];
+    v7 = [DebugHierarchyRequestActionExecutor finalActionsFromActions:actions];
     v8 = self->_finalActions;
     self->_finalActions = v7;
 
@@ -81,10 +81,10 @@
   objectActions = self->_objectActions;
   if (!objectActions)
   {
-    v4 = [(DebugHierarchyRequestActionExecutor *)self context];
-    v5 = [v4 request];
-    v6 = [v5 actions];
-    v7 = [DebugHierarchyRequestActionExecutor objectTargetedActionsFromActions:v6];
+    context = [(DebugHierarchyRequestActionExecutor *)self context];
+    request = [context request];
+    actions = [request actions];
+    v7 = [DebugHierarchyRequestActionExecutor objectTargetedActionsFromActions:actions];
     v8 = self->_objectActions;
     self->_objectActions = v7;
 
@@ -94,10 +94,10 @@
   return objectActions;
 }
 
-+ (id)initialActionsFromActions:(id)a3
++ (id)initialActionsFromActions:(id)actions
 {
-  v3 = a3;
-  if (![v3 count])
+  actionsCopy = actions;
+  if (![actionsCopy count])
   {
     goto LABEL_7;
   }
@@ -105,26 +105,26 @@
   v4 = 0;
   while (1)
   {
-    v5 = [v3 objectAtIndexedSubscript:v4];
+    v5 = [actionsCopy objectAtIndexedSubscript:v4];
     if ([v5 conformsToProtocol:&OBJC_PROTOCOL___DebugHierarchyRequestObjectAction])
     {
       break;
     }
 
-    if ([v3 count] <= ++v4)
+    if ([actionsCopy count] <= ++v4)
     {
       goto LABEL_7;
     }
   }
 
-  v6 = [v3 subarrayWithRange:{0, v4}];
+  v6 = [actionsCopy subarrayWithRange:{0, v4}];
 
   if (!v6)
   {
 LABEL_7:
-    if ([v3 count])
+    if ([actionsCopy count])
     {
-      v6 = v3;
+      v6 = actionsCopy;
     }
 
     else
@@ -136,17 +136,17 @@ LABEL_7:
   return v6;
 }
 
-+ (id)finalActionsFromActions:(id)a3
++ (id)finalActionsFromActions:(id)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v4 = +[NSMutableArray array];
-  if ([v3 count])
+  if ([actionsCopy count])
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v5];
+      v7 = [actionsCopy objectAtIndexedSubscript:v5];
       v8 = v7;
       if (v6)
       {
@@ -166,7 +166,7 @@ LABEL_7:
       ++v5;
     }
 
-    while ([v3 count] > v5);
+    while ([actionsCopy count] > v5);
   }
 
   v9 = [v4 copy];
@@ -174,15 +174,15 @@ LABEL_7:
   return v9;
 }
 
-+ (id)objectTargetedActionsFromActions:(id)a3
++ (id)objectTargetedActionsFromActions:(id)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v4 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -217,35 +217,35 @@ LABEL_7:
 
 - (void)executeInitialStandaloneActions
 {
-  v4 = [(DebugHierarchyRequestActionExecutor *)self initialActions];
-  v3 = [(DebugHierarchyRequestActionExecutor *)self context];
-  [DebugHierarchyRequestActionExecutor _executeStandaloneActions:v4 inContext:v3];
+  initialActions = [(DebugHierarchyRequestActionExecutor *)self initialActions];
+  context = [(DebugHierarchyRequestActionExecutor *)self context];
+  [DebugHierarchyRequestActionExecutor _executeStandaloneActions:initialActions inContext:context];
 }
 
 - (void)executeFinalStandaloneActions
 {
-  v4 = [(DebugHierarchyRequestActionExecutor *)self finalActions];
-  v3 = [(DebugHierarchyRequestActionExecutor *)self context];
-  [DebugHierarchyRequestActionExecutor _executeStandaloneActions:v4 inContext:v3];
+  finalActions = [(DebugHierarchyRequestActionExecutor *)self finalActions];
+  context = [(DebugHierarchyRequestActionExecutor *)self context];
+  [DebugHierarchyRequestActionExecutor _executeStandaloneActions:finalActions inContext:context];
 }
 
-- (void)executeActionsWithObject:(id)a3
+- (void)executeActionsWithObject:(id)object
 {
-  v4 = a3;
-  v6 = [(DebugHierarchyRequestActionExecutor *)self objectActions];
-  v5 = [(DebugHierarchyRequestActionExecutor *)self context];
-  [DebugHierarchyRequestActionExecutor _executeObjectActions:v6 withObject:v4 inContext:v5];
+  objectCopy = object;
+  objectActions = [(DebugHierarchyRequestActionExecutor *)self objectActions];
+  context = [(DebugHierarchyRequestActionExecutor *)self context];
+  [DebugHierarchyRequestActionExecutor _executeObjectActions:objectActions withObject:objectCopy inContext:context];
 }
 
-+ (void)_executeStandaloneActions:(id)a3 inContext:(id)a4
++ (void)_executeStandaloneActions:(id)actions inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  actionsCopy = actions;
+  contextCopy = context;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [actionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -257,31 +257,31 @@ LABEL_7:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actionsCopy);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) performInContext:v6];
+        [*(*(&v11 + 1) + 8 * v10) performInContext:contextCopy];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [actionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (void)_executeObjectActions:(id)a3 withObject:(id)a4 inContext:(id)a5
++ (void)_executeObjectActions:(id)actions withObject:(id)object inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  actionsCopy = actions;
+  objectCopy = object;
+  contextCopy = context;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v10 = [actionsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -293,30 +293,30 @@ LABEL_7:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actionsCopy);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) performInContext:v9 withObject:v8];
+        [*(*(&v14 + 1) + 8 * v13) performInContext:contextCopy withObject:objectCopy];
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [actionsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (BOOL)allObjectActionsTargetIdentifiers:(id *)a3
+- (BOOL)allObjectActionsTargetIdentifiers:(id *)identifiers
 {
   v5 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(DebugHierarchyRequestActionExecutor *)self objectActions];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  objectActions = [(DebugHierarchyRequestActionExecutor *)self objectActions];
+  v7 = [objectActions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -327,7 +327,7 @@ LABEL_7:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectActions);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -345,7 +345,7 @@ LABEL_7:
         [v5 addObjectsFromArray:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [objectActions countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -355,7 +355,7 @@ LABEL_7:
     }
   }
 
-  *a3 = [v5 copy];
+  *identifiers = [v5 copy];
   v15 = 1;
 LABEL_11:
 

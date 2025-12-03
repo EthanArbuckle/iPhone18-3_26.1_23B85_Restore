@@ -1,33 +1,33 @@
 @interface CABTMIDICentralViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (CABTMIDICentralViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)centralTimerFired:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (CABTMIDICentralViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)centralTimerFired:(id)fired;
 - (void)cleanup;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)forgetAction:(id)a3;
+- (void)forgetAction:(id)action;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateButtonsToMatchTableState;
 - (void)updatePeripheralTable;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CABTMIDICentralViewController
 
-- (CABTMIDICentralViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CABTMIDICentralViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = CABTMIDICentralViewController;
-  return [(CABTMIDICentralViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(CABTMIDICentralViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
 - (void)dealloc
@@ -48,33 +48,33 @@
   self->connectionManager = [[AMSBTLEConnectionManager alloc] initWithUIController:self];
   [(CABTMIDICentralViewController *)self addObserver:self forKeyPath:@"parentViewController" options:0 context:0];
   self->peripheralList = [(AMSBTLEConnectionManager *)self->connectionManager peripheralList];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D76648];
-  v5 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __44__CABTMIDICentralViewController_viewDidLoad__block_invoke;
   v14[3] = &unk_278A25570;
   v14[4] = self;
-  [v3 addObserverForName:v4 object:self queue:v5 usingBlock:v14];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserverForName:v4 object:self queue:mainQueue usingBlock:v14];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v7 = *MEMORY[0x277D76768];
-  v8 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __44__CABTMIDICentralViewController_viewDidLoad__block_invoke_2;
   v13[3] = &unk_278A25570;
   v13[4] = self;
-  [v6 addObserverForName:v7 object:self queue:v8 usingBlock:v13];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserverForName:v7 object:self queue:mainQueue2 usingBlock:v13];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = *MEMORY[0x277D76810];
-  v11 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue3 = [MEMORY[0x277CCABD8] mainQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__CABTMIDICentralViewController_viewDidLoad__block_invoke_3;
   v12[3] = &unk_278A25570;
   v12[4] = self;
-  [v9 addObserverForName:v10 object:self queue:v11 usingBlock:v12];
+  [defaultCenter3 addObserverForName:v10 object:self queue:mainQueue3 usingBlock:v12];
   self->didRegisterObserver = 1;
 }
 
@@ -155,10 +155,10 @@ uint64_t __44__CABTMIDICentralViewController_viewDidLoad__block_invoke_3(uint64_
   self->didRegisterObserver = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = [@"parentViewController" isEqualToString:{a3, a4, a5, a6}];
-  if (a4 == self && v8 && ![(CABTMIDICentralViewController *)self parentViewController])
+  v8 = [@"parentViewController" isEqualToString:{path, object, change, context}];
+  if (object == self && v8 && ![(CABTMIDICentralViewController *)self parentViewController])
   {
 
     [(CABTMIDICentralViewController *)self cleanup];
@@ -183,9 +183,9 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
   return [v2 updateButtonsToMatchTableState];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  result = [(CABTMIDICentralViewController *)self peripheralCount:a3];
+  result = [(CABTMIDICentralViewController *)self peripheralCount:view];
   if (result <= 1)
   {
     return 1;
@@ -194,25 +194,25 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   if ([(CABTMIDICentralViewController *)self peripheralCount])
   {
-    v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell"];
-    v8 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [a4 row]);
+    v7 = [view dequeueReusableCellWithIdentifier:@"Cell"];
+    v8 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [path row]);
     if (!v7)
     {
       v7 = [[CACentralTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"Cell"];
     }
 
-    v9 = [v8 isOnline];
-    v10 = [v8 isAvailable];
+    isOnline = [v8 isOnline];
+    isAvailable = [v8 isAvailable];
     -[UILabel setText:](-[CACentralTableViewCell deviceNameLabel](v7, "deviceNameLabel"), "setText:", [v8 name]);
-    [(UILabel *)[(CACentralTableViewCell *)v7 connectionStatusLabel] setEnabled:v10];
-    [(UILabel *)[(CACentralTableViewCell *)v7 deviceNameLabel] setEnabled:v10];
+    [(UILabel *)[(CACentralTableViewCell *)v7 connectionStatusLabel] setEnabled:isAvailable];
+    [(UILabel *)[(CACentralTableViewCell *)v7 deviceNameLabel] setEnabled:isAvailable];
     if ([(UILabel *)[(CACentralTableViewCell *)v7 deviceNameLabel] isEnabled])
     {
-      if (v9)
+      if (isOnline)
       {
         v11 = @"Connected";
       }
@@ -224,17 +224,17 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
 
       [(UILabel *)[(CACentralTableViewCell *)v7 connectionStatusLabel] setText:priv_getBTLELocalizedString(v11, v11)];
       -[UILabel setEnabled:](-[CACentralTableViewCell inputLabel](v7, "inputLabel"), "setEnabled:", [v8 inputAvailable]);
-      v14 = [v8 outputAvailable];
+      outputAvailable = [v8 outputAvailable];
     }
 
     else
     {
       [(UILabel *)[(CACentralTableViewCell *)v7 connectionStatusLabel] setText:priv_getBTLELocalizedString(@"Offline", @"Offline")];
       [(UILabel *)[(CACentralTableViewCell *)v7 inputLabel] setEnabled:0];
-      v14 = 0;
+      outputAvailable = 0;
     }
 
-    [(UILabel *)[(CACentralTableViewCell *)v7 outputLabel] setEnabled:v14];
+    [(UILabel *)[(CACentralTableViewCell *)v7 outputLabel] setEnabled:outputAvailable];
     [(CACentralTableViewCell *)v7 stopIndicator];
     [(CACentralTableViewCell *)v7 setNeedsUpdateConstraints];
     [(CACentralTableViewCell *)v7 updateConstraintsIfNeeded];
@@ -242,7 +242,7 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
 
   else
   {
-    v7 = [a3 dequeueReusableCellWithIdentifier:@"NoItems"];
+    v7 = [view dequeueReusableCellWithIdentifier:@"NoItems"];
     if (!v7)
     {
       v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"NoItems"];
@@ -256,9 +256,9 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
       [(CACentralTableViewCell *)v7 setAccessoryView:self->indicator];
     }
 
-    v13 = [(CACentralTableViewCell *)v7 textLabel];
-    [v13 setText:{priv_getBTLELocalizedString(@"Searching", @"Searching for Bluetooth LE MIDI Devices..."}];
-    [v13 setEnabled:0];
+    textLabel = [(CACentralTableViewCell *)v7 textLabel];
+    [textLabel setText:{priv_getBTLELocalizedString(@"Searching", @"Searching for Bluetooth LE MIDI Devices..."}];
+    [textLabel setEnabled:0];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__CABTMIDICentralViewController_tableView_cellForRowAtIndexPath___block_invoke;
@@ -270,62 +270,62 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CABTMIDICentralViewController;
-  [(CABTMIDICentralViewController *)&v6 viewWillAppear:a3];
+  [(CABTMIDICentralViewController *)&v6 viewWillAppear:appear];
   [(CABTMIDICentralViewController *)self updatePeripheralTable];
   if (!self->connectionTimer)
   {
     v4 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel_centralTimerFired_ selector:0 userInfo:1 repeats:5.0];
     self->connectionTimer = v4;
     [(NSTimer *)v4 setTolerance:0.150000006];
-    v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v5 addTimer:self->connectionTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->connectionTimer forMode:*MEMORY[0x277CBE738]];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = [(CABTMIDICentralViewController *)self peripheralCount];
-  if (v6)
+  peripheralCount = [(CABTMIDICentralViewController *)self peripheralCount];
+  if (peripheralCount)
   {
     if (self->inEditingMode)
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(peripheralCount) = 1;
     }
 
     else
     {
-      v7 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [a4 row]);
+      v7 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [path row]);
 
-      LOBYTE(v6) = [v7 isAvailable];
+      LOBYTE(peripheralCount) = [v7 isAvailable];
     }
   }
 
-  return v6;
+  return peripheralCount;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  self->inEditingMode = a3;
+  self->inEditingMode = editing;
   v5.receiver = self;
   v5.super_class = CABTMIDICentralViewController;
   [CABTMIDICentralViewController setEditing:sel_setEditing_animated_ animated:?];
   [(CABTMIDICentralViewController *)self updateButtonsToMatchTableState];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = [a3 cellForRowAtIndexPath:a4];
+  v7 = [view cellForRowAtIndexPath:path];
   if (([v7 isEditing] & 1) == 0 && !self->inEditingMode)
   {
-    v8 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [a4 row]);
+    v8 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [path row]);
     if ([v8 isOnline])
     {
-      v9 = [v8 disconnect];
-      if (v7 && v9)
+      disconnect = [v8 disconnect];
+      if (v7 && disconnect)
       {
         [objc_msgSend(v7 "connectionStatusLabel")];
         [v7 startIndicator];
@@ -334,25 +334,25 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
 
     else
     {
-      v10 = [v8 connect];
-      if (v7 && v10)
+      connect = [v8 connect];
+      if (v7 && connect)
       {
         [v7 startIndicator];
         [objc_msgSend(v7 "connectionStatusLabel")];
       }
     }
 
-    [a3 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+    [view selectRowAtIndexPath:0 animated:1 scrollPosition:0];
 
     [(CABTMIDICentralViewController *)self updateButtonsToMatchTableState];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [a5 row]);
+    v6 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [path row]);
     v7 = MIDISetupRemoveDevice([MEMORY[0x277CBFD00] midiDeviceForUUID:objc_msgSend(v6 isLocalPeripheral:"uuid") isRemotePeripheral:{0, 1}]);
     if (v7)
     {
@@ -367,35 +367,35 @@ uint64_t __54__CABTMIDICentralViewController_updatePeripheralTable__block_invoke
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = [(CABTMIDICentralViewController *)self peripheralCount];
-  if (v6)
+  peripheralCount = [(CABTMIDICentralViewController *)self peripheralCount];
+  if (peripheralCount)
   {
     if (self->inEditingMode)
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(peripheralCount) = 1;
     }
 
     else
     {
-      LOBYTE(v6) = [-[CABTMIDICentralViewController peripheralAtIndex:](self peripheralAtIndex:{objc_msgSend(a4, "row")), "isAvailable"}] ^ 1;
+      LOBYTE(peripheralCount) = [-[CABTMIDICentralViewController peripheralAtIndex:](self peripheralAtIndex:{objc_msgSend(path, "row")), "isAvailable"}] ^ 1;
     }
   }
 
-  return v6;
+  return peripheralCount;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CABTMIDICentralViewController *)self cleanup];
   v5.receiver = self;
   v5.super_class = CABTMIDICentralViewController;
-  [(CABTMIDICentralViewController *)&v5 viewDidDisappear:v3];
+  [(CABTMIDICentralViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)centralTimerFired:(id)a3
+- (void)centralTimerFired:(id)fired
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -501,15 +501,15 @@ LABEL_18:
   }
 }
 
-- (void)forgetAction:(id)a3
+- (void)forgetAction:(id)action
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [-[CABTMIDICentralViewController view](self view];
+  view = [-[CABTMIDICentralViewController view](self view];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [view countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -521,7 +521,7 @@ LABEL_18:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(view);
         }
 
         v9 = -[CABTMIDICentralViewController peripheralAtIndex:](self, "peripheralAtIndex:", [*(*(&v11 + 1) + 8 * v8) row]);
@@ -535,13 +535,13 @@ LABEL_18:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [view countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  if ([v4 count])
+  if ([view count])
   {
     [(CABTMIDICentralViewController *)self updatePeripheralTable];
   }

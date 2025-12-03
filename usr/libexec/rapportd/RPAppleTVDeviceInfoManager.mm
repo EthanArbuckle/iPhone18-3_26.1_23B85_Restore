@@ -1,10 +1,10 @@
 @interface RPAppleTVDeviceInfoManager
-- (RPAppleTVDeviceInfoManager)initWithQueue:(id)a3;
+- (RPAppleTVDeviceInfoManager)initWithQueue:(id)queue;
 @end
 
 @implementation RPAppleTVDeviceInfoManager
 
-- (RPAppleTVDeviceInfoManager)initWithQueue:(id)a3
+- (RPAppleTVDeviceInfoManager)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = RPAppleTVDeviceInfoManager;

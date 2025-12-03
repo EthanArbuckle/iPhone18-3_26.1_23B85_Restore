@@ -1,60 +1,60 @@
 @interface TSSStyle
-+ (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4 min:(int)a5 max:(int)a6;
-+ (BOOL)validateIntValueAsBool:(int *)a3 forProperty:(int)a4;
-+ (BOOL)validateObjectValue:(id *)a3 withClass:(Class)a4 forProperty:(int)a5;
-+ (double)fontSizeForFontSize:(double)a3 scalingFactor:(double)a4;
-+ (id)boxedDefaultValueForProperty:(int)a3;
++ (BOOL)validateIntValue:(int *)value forProperty:(int)property min:(int)min max:(int)max;
++ (BOOL)validateIntValueAsBool:(int *)bool forProperty:(int)property;
++ (BOOL)validateObjectValue:(id *)value withClass:(Class)class forProperty:(int)property;
++ (double)fontSizeForFontSize:(double)size scalingFactor:(double)factor;
++ (id)boxedDefaultValueForProperty:(int)property;
 + (id)defaultPropertyMap;
-+ (id)defaultStyleWithContext:(id)a3;
++ (id)defaultStyleWithContext:(id)context;
 + (id)description;
 + (id)properties;
-- (BOOL)definesProperty:(int)a3;
-- (BOOL)hasEqualPropertyValues:(id)a3;
-- (BOOL)hasEqualValues:(id)a3 forProperties:(id)a4;
-- (BOOL)hasEqualValuesToPropertyMap:(id)a3 forProperties:(id)a4;
-- (BOOL)isAncestorOf:(id)a3;
-- (BOOL)isDescendentOf:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)definesProperty:(int)property;
+- (BOOL)hasEqualPropertyValues:(id)values;
+- (BOOL)hasEqualValues:(id)values forProperties:(id)properties;
+- (BOOL)hasEqualValuesToPropertyMap:(id)map forProperties:(id)properties;
+- (BOOL)isAncestorOf:(id)of;
+- (BOOL)isDescendentOf:(id)of;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)overridesAnyProperty;
-- (BOOL)p_hasEqualValuesTo:(id)a3 forProperty:(int)a4;
-- (BOOL)validateDoubleValue:(double *)a3 forProperty:(int)a4;
-- (BOOL)validateFloatValue:(float *)a3 forProperty:(int)a4;
-- (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4;
-- (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4 min:(int)a5 max:(int)a6;
-- (BOOL)validateIntValueAsBool:(int *)a3 forProperty:(int)a4;
-- (BOOL)validateObjectValue:(id *)a3 withClass:(Class)a4 forProperty:(int)a5;
+- (BOOL)p_hasEqualValuesTo:(id)to forProperty:(int)property;
+- (BOOL)validateDoubleValue:(double *)value forProperty:(int)property;
+- (BOOL)validateFloatValue:(float *)value forProperty:(int)property;
+- (BOOL)validateIntValue:(int *)value forProperty:(int)property;
+- (BOOL)validateIntValue:(int *)value forProperty:(int)property min:(int)min max:(int)max;
+- (BOOL)validateIntValueAsBool:(int *)bool forProperty:(int)property;
+- (BOOL)validateObjectValue:(id *)value withClass:(Class)class forProperty:(int)property;
 - (NSSet)children;
 - (TSSPropertyMap)overridePropertyMap;
 - (TSSStyle)baseStyleForVariation;
 - (TSSStyle)firstIdentifiedAncestor;
 - (TSSStyle)init;
-- (TSSStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6;
+- (TSSStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation;
 - (TSSStyle)rootAncestor;
 - (TSSStyle)rootIdentifiedAncestor;
-- (double)CGFloatValueForProperty:(int)a3;
-- (double)doubleValueForProperty:(int)a3;
-- (double)overrideCGFloatValueForProperty:(int)a3;
-- (double)overrideDoubleValueForProperty:(int)a3;
-- (float)floatValueForProperty:(int)a3;
-- (float)overrideFloatValueForProperty:(int)a3;
-- (id)boxedOverrideValueForProperty:(int)a3;
-- (id)boxedValueForProperty:(int)a3;
-- (id)boxedValueForProperty:(int)a3 oldBoxedValue:(id)a4 transformedByTransform:(CGAffineTransform *)a5;
-- (id)constrainShapeStyleForContext:(id)a3;
-- (id)copyFlattenedWithContext:(id)a3;
+- (double)CGFloatValueForProperty:(int)property;
+- (double)doubleValueForProperty:(int)property;
+- (double)overrideCGFloatValueForProperty:(int)property;
+- (double)overrideDoubleValueForProperty:(int)property;
+- (float)floatValueForProperty:(int)property;
+- (float)overrideFloatValueForProperty:(int)property;
+- (id)boxedOverrideValueForProperty:(int)property;
+- (id)boxedValueForProperty:(int)property;
+- (id)boxedValueForProperty:(int)property oldBoxedValue:(id)value transformedByTransform:(CGAffineTransform *)transform;
+- (id)constrainShapeStyleForContext:(id)context;
+- (id)copyFlattenedWithContext:(id)context;
 - (id)copyPropertyMap;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)copyWithZone:(_NSZone *)a3 context:(id)a4;
-- (id)newOverridePropertyMapWithPropertyMap:(id)a3;
-- (id)overridePropertyMapWithPropertyMap:(id)a3 overridePropertyMap:(id)a4 collapseSourceOverrides:(BOOL)a5;
-- (id)overrideValueForProperty:(int)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)copyWithZone:(_NSZone *)zone context:(id)context;
+- (id)newOverridePropertyMapWithPropertyMap:(id)map;
+- (id)overridePropertyMapWithPropertyMap:(id)map overridePropertyMap:(id)propertyMap collapseSourceOverrides:(BOOL)overrides;
+- (id)overrideValueForProperty:(int)property;
 - (id)propertyMap;
-- (id)propertyMapIgnoringStyle:(id)a3;
+- (id)propertyMapIgnoringStyle:(id)style;
 - (id)referencedStyles;
-- (id)valueForProperty:(int)a3;
-- (id)valuesForProperties:(id)a3;
-- (int)intValueForProperty:(int)a3;
-- (int)overrideIntValueForProperty:(int)a3;
+- (id)valueForProperty:(int)property;
+- (id)valuesForProperties:(id)properties;
+- (int)intValueForProperty:(int)property;
+- (int)overrideIntValueForProperty:(int)property;
 - (unint64_t)hash;
 - (unint64_t)overrideCount;
 - (void)constrainShadowForSwatchGeneration;
@@ -62,71 +62,71 @@
 - (void)dealloc;
 - (void)fadeReflectionForSwatchGeneration;
 - (void)removeAllValues;
-- (void)removeValueForProperty:(int)a3;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)setBoxedValue:(id)a3 forProperty:(int)a4;
-- (void)setCGFloatValue:(double)a3 forProperty:(int)a4;
-- (void)setDoubleValue:(double)a3 forProperty:(int)a4;
-- (void)setFloatValue:(float)a3 forProperty:(int)a4;
-- (void)setIntValue:(int)a3 forProperty:(int)a4;
-- (void)setName:(id)a3;
-- (void)setOverridePropertyMap:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setStyleIdentifier:(id)a3;
-- (void)setValue:(id)a3 forProperty:(int)a4;
-- (void)setValuesForProperties:(id)a3;
+- (void)removeValueForProperty:(int)property;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)setBoxedValue:(id)value forProperty:(int)property;
+- (void)setCGFloatValue:(double)value forProperty:(int)property;
+- (void)setDoubleValue:(double)value forProperty:(int)property;
+- (void)setFloatValue:(float)value forProperty:(int)property;
+- (void)setIntValue:(int)value forProperty:(int)property;
+- (void)setName:(id)name;
+- (void)setOverridePropertyMap:(id)map;
+- (void)setParent:(id)parent;
+- (void)setStyleIdentifier:(id)identifier;
+- (void)setValue:(id)value forProperty:(int)property;
+- (void)setValuesForProperties:(id)properties;
 @end
 
 @implementation TSSStyle
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(TSPObject *)self willModify];
-  v5 = [a3 copy];
+  v5 = [name copy];
 
   self->mName = v5;
 }
 
-- (void)setStyleIdentifier:(id)a3
+- (void)setStyleIdentifier:(id)identifier
 {
   [(TSPObject *)self willModify];
-  v5 = [a3 copy];
+  v5 = [identifier copy];
 
   self->mStyleIdentifier = v5;
 }
 
 + (id)properties
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSSStyle properties]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 372, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 372, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "+[TSSStyle properties]"), 0}]);
 }
 
 + (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@", NSStringFromClass(a1)];
-  for (i = [a1 superclass]; i != objc_opt_class(); i = objc_msgSend(i, "superclass"))
+  v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@", NSStringFromClass(self)];
+  for (i = [self superclass]; i != objc_opt_class(); i = objc_msgSend(i, "superclass"))
   {
     [v3 appendFormat:@" : %@", NSStringFromClass(i)];
   }
 
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3052000000;
   v10[3] = __Block_byref_object_copy__7;
   v10[4] = __Block_byref_object_dispose__7;
   v10[5] = &stru_287D36338;
-  v6 = [a1 properties];
+  properties = [self properties];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __23__TSSStyle_description__block_invoke;
   v9[3] = &unk_279D48008;
-  v9[4] = v5;
+  v9[4] = string;
   v9[5] = v10;
-  [v6 enumeratePropertiesUsingBlock:v9];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> = {\n%@\n}", v3, objc_msgSend(MEMORY[0x277CCACA8], "tsu_stringByIndentingString:", v5)];
+  [properties enumeratePropertiesUsingBlock:v9];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> = {\n%@\n}", v3, objc_msgSend(MEMORY[0x277CCACA8], "tsu_stringByIndentingString:", string)];
   _Block_object_dispose(v10, 8);
   return v7;
 }
@@ -138,15 +138,15 @@ uint64_t __23__TSSStyle_description__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-+ (id)boxedDefaultValueForProperty:(int)a3
++ (id)boxedDefaultValueForProperty:(int)property
 {
-  v3 = *&a3;
-  v5 = String(a3);
+  v3 = *&property;
+  v5 = String(property);
   if (v5 > 1)
   {
     if (v5 == 2)
     {
-      [a1 defaultFloatValueForProperty:v3];
+      [self defaultFloatValueForProperty:v3];
       if (v14 == INFINITY)
       {
         return 0;
@@ -164,7 +164,7 @@ uint64_t __23__TSSStyle_description__block_invoke(uint64_t a1, uint64_t a2)
         goto LABEL_14;
       }
 
-      [a1 defaultDoubleValueForProperty:v3];
+      [self defaultDoubleValueForProperty:v3];
       if (v10 == INFINITY)
       {
         return 0;
@@ -182,7 +182,7 @@ uint64_t __23__TSSStyle_description__block_invoke(uint64_t a1, uint64_t a2)
     {
       if (v5 == 1)
       {
-        v6 = [a1 defaultIntValueForProperty:v3];
+        v6 = [self defaultIntValueForProperty:v3];
         if (v6 != 0x80000000)
         {
           v7 = v6;
@@ -195,19 +195,19 @@ uint64_t __23__TSSStyle_description__block_invoke(uint64_t a1, uint64_t a2)
       }
 
 LABEL_14:
-      v12 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSSStyle boxedDefaultValueForProperty:]"];
-      [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 433, @"Unexpected property type"}];
+      [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 433, @"Unexpected property type"}];
       return 0;
     }
 
-    return [a1 defaultValueForProperty:v3];
+    return [self defaultValueForProperty:v3];
   }
 }
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithContext:a3 name:0 overridePropertyMap:0 isVariation:0];
+  v3 = [objc_alloc(objc_opt_class()) initWithContext:context name:0 overridePropertyMap:0 isVariation:0];
 
   return v3;
 }
@@ -215,14 +215,14 @@ LABEL_14:
 + (id)defaultPropertyMap
 {
   v3 = objc_alloc_init(TSSPropertyMap);
-  v4 = [a1 properties];
+  properties = [self properties];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__TSSStyle_defaultPropertyMap__block_invoke;
   v6[3] = &unk_279D47EE8;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = v3;
-  [v4 enumeratePropertiesUsingBlock:v6];
+  [properties enumeratePropertiesUsingBlock:v6];
   return v3;
 }
 
@@ -234,40 +234,40 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return [v5 setBoxedObject:v4 forProperty:a2];
 }
 
-- (TSSStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6
+- (TSSStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation
 {
   v18.receiver = self;
   v18.super_class = TSSStyle;
-  v9 = [(TSPObject *)&v18 initWithContext:a3];
+  v9 = [(TSPObject *)&v18 initWithContext:context];
   if (v9)
   {
     if ([objc_msgSend(objc_opt_class() "properties")])
     {
-      if ([a4 isEqual:&stru_287D36338])
+      if ([name isEqual:&stru_287D36338])
       {
-        v10 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle initWithContext:name:overridePropertyMap:isVariation:]"];
-        [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 502, @"Style name may not be the empty string."}];
-        a4 = 0;
+        [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 502, @"Style name may not be the empty string."}];
+        name = 0;
       }
 
-      v9->mName = [a4 copy];
-      if (a5)
+      v9->mName = [name copy];
+      if (map)
       {
-        v9->mOverridePropertyMap = [[TSSPropertyMap alloc] initWithPropertyMap:a5];
+        v9->mOverridePropertyMap = [[TSSPropertyMap alloc] initWithPropertyMap:map];
       }
 
-      v9->mIsVariation = a6;
+      v9->mIsVariation = variation;
     }
 
     else
     {
-      v12 = [objc_msgSend(a5 "allProperties")];
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      v12 = [objc_msgSend(map "allProperties")];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle initWithContext:name:overridePropertyMap:isVariation:]"];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
       v16 = objc_opt_class();
-      [v13 handleFailureInFunction:v14 file:v15 lineNumber:496 description:{@"Attempt to initialize a style of class %@ with an override of one or more unsupported properties : %@", NSStringFromClass(v16), v12}];
+      [currentHandler2 handleFailureInFunction:v14 file:v15 lineNumber:496 description:{@"Attempt to initialize a style of class %@ with an override of one or more unsupported properties : %@", NSStringFromClass(v16), v12}];
 
       return 0;
     }
@@ -278,9 +278,9 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
 
 - (TSSStyle)init
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle init]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 529, @"Must init with an object context."}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 529, @"Must init with an object context."}];
 
   return 0;
 }
@@ -299,14 +299,14 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
 
-  else if (a3 && (v5 = objc_opt_class(), v5 == objc_opt_class()) && ((v8 = *(a3 + 7), v8 == self->mName) ? (v6 = 1) : (v6 = [(NSString *)v8 isEqualToString:?]), ((v9 = *(a3 + 8), v9 == self->mStyleIdentifier) || [(NSString *)v9 isEqualToString:?]) && *(a3 + 80) == self->mIsVariation))
+  else if (equal && (v5 = objc_opt_class(), v5 == objc_opt_class()) && ((v8 = *(equal + 7), v8 == self->mName) ? (v6 = 1) : (v6 = [(NSString *)v8 isEqualToString:?]), ((v9 = *(equal + 8), v9 == self->mStyleIdentifier) || [(NSString *)v9 isEqualToString:?]) && *(equal + 80) == self->mIsVariation))
   {
     v10 = [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
     v11 = [v10 objectForKeyedSubscript:@"TSSStyleIsEqualStylesBeingCompared"];
@@ -316,16 +316,16 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       [v10 setObject:v11 forKeyedSubscript:@"TSSStyleIsEqualStylesBeingCompared"];
     }
 
-    v15 = self;
-    v16 = a3;
-    v12 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:&v15 objCType:"{?=@@}"];
-    if (([v11 containsObject:{v12, v15, v16}] & 1) == 0)
+    selfCopy = self;
+    equalCopy = equal;
+    v12 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:&selfCopy objCType:"{?=@@}"];
+    if (([v11 containsObject:{v12, selfCopy, equalCopy}] & 1) == 0)
     {
       [v11 addObject:v12];
-      v13 = *(a3 + 9);
+      v13 = *(equal + 9);
       if (v13 == self->mParent || [(TSSStyle *)v13 isEqual:?])
       {
-        v14 = *(a3 + 6);
+        v14 = *(equal + 6);
         if (v14 == self->mOverridePropertyMap)
         {
           LOBYTE(v6) = 1;
@@ -354,37 +354,37 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return v6;
 }
 
-- (id)copyFlattenedWithContext:(id)a3
+- (id)copyFlattenedWithContext:(id)context
 {
   v5 = objc_allocWithZone(objc_opt_class());
   mName = self->mName;
-  v7 = [(TSSStyle *)self propertyMap];
+  propertyMap = [(TSSStyle *)self propertyMap];
 
-  return [v5 initWithContext:a3 name:mName overridePropertyMap:v7 isVariation:0];
+  return [v5 initWithContext:context name:mName overridePropertyMap:propertyMap isVariation:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 context:(id)a4
+- (id)copyWithZone:(_NSZone *)zone context:(id)context
 {
-  v6 = [objc_opt_class() allocWithZone:a3];
+  v6 = [objc_opt_class() allocWithZone:zone];
   mName = self->mName;
   mOverridePropertyMap = self->mOverridePropertyMap;
   mIsVariation = self->mIsVariation;
 
-  return [v6 initWithContext:a4 name:mName overridePropertyMap:mOverridePropertyMap isVariation:mIsVariation];
+  return [v6 initWithContext:context name:mName overridePropertyMap:mOverridePropertyMap isVariation:mIsVariation];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(TSPObject *)self context];
+  context = [(TSPObject *)self context];
 
-  return [(TSSStyle *)self copyWithZone:a3 context:v5];
+  return [(TSSStyle *)self copyWithZone:zone context:context];
 }
 
-- (id)boxedValueForProperty:(int)a3
+- (id)boxedValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (!mOverridePropertyMap || (result = [(TSSPropertyMap *)mOverridePropertyMap boxedObjectForProperty:*&a3]) == 0)
+  if (!mOverridePropertyMap || (result = [(TSSPropertyMap *)mOverridePropertyMap boxedObjectForProperty:*&property]) == 0)
   {
     mParent = self->mParent;
     if (mParent)
@@ -404,11 +404,11 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (id)valueForProperty:(int)a3
+- (id)valueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (!mOverridePropertyMap || (result = [(TSSPropertyMap *)mOverridePropertyMap objectForProperty:*&a3]) == 0)
+  if (!mOverridePropertyMap || (result = [(TSSPropertyMap *)mOverridePropertyMap objectForProperty:*&property]) == 0)
   {
     mParent = self->mParent;
     if (mParent)
@@ -428,11 +428,11 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (!mOverridePropertyMap || (result = [(TSSPropertyMap *)mOverridePropertyMap intValueForProperty:*&a3], result == 0x80000000))
+  if (!mOverridePropertyMap || (result = [(TSSPropertyMap *)mOverridePropertyMap intValueForProperty:*&property], result == 0x80000000))
   {
     mParent = self->mParent;
     if (mParent)
@@ -452,11 +452,11 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (float)floatValueForProperty:(int)a3
+- (float)floatValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (!mOverridePropertyMap || ([(TSSPropertyMap *)mOverridePropertyMap floatValueForProperty:*&a3], result == INFINITY))
+  if (!mOverridePropertyMap || ([(TSSPropertyMap *)mOverridePropertyMap floatValueForProperty:*&property], result == INFINITY))
   {
     mParent = self->mParent;
     if (mParent)
@@ -476,11 +476,11 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (double)doubleValueForProperty:(int)a3
+- (double)doubleValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (!mOverridePropertyMap || ([(TSSPropertyMap *)mOverridePropertyMap doubleValueForProperty:*&a3], result == INFINITY))
+  if (!mOverridePropertyMap || ([(TSSPropertyMap *)mOverridePropertyMap doubleValueForProperty:*&property], result == INFINITY))
   {
     mParent = self->mParent;
     if (mParent)
@@ -500,11 +500,11 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (double)CGFloatValueForProperty:(int)a3
+- (double)CGFloatValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (!mOverridePropertyMap || ([(TSSPropertyMap *)mOverridePropertyMap CGFloatValueForProperty:*&a3], result == INFINITY))
+  if (!mOverridePropertyMap || ([(TSSPropertyMap *)mOverridePropertyMap CGFloatValueForProperty:*&property], result == INFINITY))
   {
     mParent = self->mParent;
     if (mParent)
@@ -539,19 +539,19 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (id)valuesForProperties:(id)a3
+- (id)valuesForProperties:(id)properties
 {
-  v4 = [(TSSStyle *)self copyPropertyMap];
-  [v4 filterWithProperties:a3];
+  copyPropertyMap = [(TSSStyle *)self copyPropertyMap];
+  [copyPropertyMap filterWithProperties:properties];
 
-  return v4;
+  return copyPropertyMap;
 }
 
-- (void)setBoxedValue:(id)a3 forProperty:(int)a4
+- (void)setBoxedValue:(id)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   [(TSPObject *)self willModify];
-  if (a3)
+  if (value)
   {
     mOverridePropertyMap = self->mOverridePropertyMap;
     if (!mOverridePropertyMap)
@@ -560,24 +560,24 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       self->mOverridePropertyMap = mOverridePropertyMap;
     }
 
-    [(TSSPropertyMap *)mOverridePropertyMap setBoxedObject:a3 forProperty:v4];
+    [(TSSPropertyMap *)mOverridePropertyMap setBoxedObject:value forProperty:v4];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle setBoxedValue:forProperty:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
     v11 = String(v4);
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:868 description:{@"Tried to set property %@ of style %@ to an undefined value.", v11, TSUObjectReferenceDescription()}];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:868 description:{@"Tried to set property %@ of style %@ to an undefined value.", v11, TSUObjectReferenceDescription()}];
   }
 }
 
-- (void)setValue:(id)a3 forProperty:(int)a4
+- (void)setValue:(id)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   [(TSPObject *)self willModify];
-  if (a3)
+  if (value)
   {
     mOverridePropertyMap = self->mOverridePropertyMap;
     if (!mOverridePropertyMap)
@@ -586,31 +586,31 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       self->mOverridePropertyMap = mOverridePropertyMap;
     }
 
-    [(TSSPropertyMap *)mOverridePropertyMap setObject:a3 forProperty:v4];
+    [(TSSPropertyMap *)mOverridePropertyMap setObject:value forProperty:v4];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle setValue:forProperty:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
     v11 = String(v4);
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:884 description:{@"Tried to set property %@ of style %@ to an undefined value.", v11, TSUObjectReferenceDescription()}];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:884 description:{@"Tried to set property %@ of style %@ to an undefined value.", v11, TSUObjectReferenceDescription()}];
   }
 }
 
-- (void)setIntValue:(int)a3 forProperty:(int)a4
+- (void)setIntValue:(int)value forProperty:(int)property
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&property;
+  v5 = *&value;
   [(TSPObject *)self willModify];
   if (v5 == 0x80000000)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle setIntValue:forProperty:]"];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
 
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:900 description:@"Int property value must be defined."];
+    [currentHandler handleFailureInFunction:v8 file:v9 lineNumber:900 description:@"Int property value must be defined."];
   }
 
   else
@@ -626,17 +626,17 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)setFloatValue:(float)a3 forProperty:(int)a4
+- (void)setFloatValue:(float)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   [(TSPObject *)self willModify];
-  if (a3 == INFINITY)
+  if (value == INFINITY)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle setFloatValue:forProperty:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
 
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:915 description:@"Float property value must be defined."];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:915 description:@"Float property value must be defined."];
   }
 
   else
@@ -648,23 +648,23 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       self->mOverridePropertyMap = mOverridePropertyMap;
     }
 
-    *&v7 = a3;
+    *&v7 = value;
 
     [(TSSPropertyMap *)mOverridePropertyMap setFloatValue:v4 forProperty:v7];
   }
 }
 
-- (void)setDoubleValue:(double)a3 forProperty:(int)a4
+- (void)setDoubleValue:(double)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   [(TSPObject *)self willModify];
-  if (a3 == INFINITY)
+  if (value == INFINITY)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle setDoubleValue:forProperty:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
 
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:930 description:@"Double property value must be defined."];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:930 description:@"Double property value must be defined."];
   }
 
   else
@@ -676,21 +676,21 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       self->mOverridePropertyMap = mOverridePropertyMap;
     }
 
-    [(TSSPropertyMap *)mOverridePropertyMap setDoubleValue:v4 forProperty:a3];
+    [(TSSPropertyMap *)mOverridePropertyMap setDoubleValue:v4 forProperty:value];
   }
 }
 
-- (void)setCGFloatValue:(double)a3 forProperty:(int)a4
+- (void)setCGFloatValue:(double)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   [(TSPObject *)self willModify];
-  if (a3 == INFINITY)
+  if (value == INFINITY)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle setCGFloatValue:forProperty:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"];
 
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:945 description:@"CGFloat property value must be defined."];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:945 description:@"CGFloat property value must be defined."];
   }
 
   else
@@ -702,38 +702,38 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       self->mOverridePropertyMap = mOverridePropertyMap;
     }
 
-    [(TSSPropertyMap *)mOverridePropertyMap setCGFloatValue:v4 forProperty:a3];
+    [(TSSPropertyMap *)mOverridePropertyMap setCGFloatValue:v4 forProperty:value];
   }
 }
 
-- (void)setValuesForProperties:(id)a3
+- (void)setValuesForProperties:(id)properties
 {
   [(TSPObject *)self willModify];
-  if (a3)
+  if (properties)
   {
     mOverridePropertyMap = self->mOverridePropertyMap;
     if (mOverridePropertyMap)
     {
 
-      [(TSSPropertyMap *)mOverridePropertyMap addValuesFromPropertyMap:a3];
+      [(TSSPropertyMap *)mOverridePropertyMap addValuesFromPropertyMap:properties];
     }
 
     else
     {
-      self->mOverridePropertyMap = [a3 copy];
+      self->mOverridePropertyMap = [properties copy];
     }
   }
 }
 
-- (void)removeValueForProperty:(int)a3
+- (void)removeValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   [(TSPObject *)self willModify];
   if (v3 >> 4 >= 0x121)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle removeValueForProperty:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 967, @"Property ID <%d> out of range.", v3}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 967, @"Property ID <%d> out of range.", v3}];
   }
 
   if ([(TSSStyle *)self overridesProperty:v3])
@@ -754,9 +754,9 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   self->mOverridePropertyMap = 0;
 }
 
-- (BOOL)definesProperty:(int)a3
+- (BOOL)definesProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   if ([(TSSPropertyMap *)self->mOverridePropertyMap containsProperty:?])
   {
     return 1;
@@ -789,10 +789,10 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
   return result;
 }
 
-- (id)boxedOverrideValueForProperty:(int)a3
+- (id)boxedOverrideValueForProperty:(int)property
 {
-  v3 = *&a3;
-  v5 = String(a3);
+  v3 = *&property;
+  v5 = String(property);
   if (v5 > 1)
   {
     if (v5 == 2)
@@ -846,9 +846,9 @@ uint64_t __30__TSSStyle_defaultPropertyMap__block_invoke(uint64_t a1, uint64_t a
       }
 
 LABEL_14:
-      v12 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle boxedOverrideValueForProperty:]"];
-      [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1064, @"Unexpected property type"}];
+      [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1064, @"Unexpected property type"}];
       return 0;
     }
 
@@ -856,23 +856,23 @@ LABEL_14:
   }
 }
 
-- (id)overrideValueForProperty:(int)a3
+- (id)overrideValueForProperty:(int)property
 {
   result = self->mOverridePropertyMap;
   if (result)
   {
-    return [result objectForProperty:*&a3];
+    return [result objectForProperty:*&property];
   }
 
   return result;
 }
 
-- (int)overrideIntValueForProperty:(int)a3
+- (int)overrideIntValueForProperty:(int)property
 {
   mOverridePropertyMap = self->mOverridePropertyMap;
   if (mOverridePropertyMap)
   {
-    return [(TSSPropertyMap *)mOverridePropertyMap intValueForProperty:*&a3];
+    return [(TSSPropertyMap *)mOverridePropertyMap intValueForProperty:*&property];
   }
 
   else
@@ -881,7 +881,7 @@ LABEL_14:
   }
 }
 
-- (float)overrideFloatValueForProperty:(int)a3
+- (float)overrideFloatValueForProperty:(int)property
 {
   mOverridePropertyMap = self->mOverridePropertyMap;
   if (!mOverridePropertyMap)
@@ -889,11 +889,11 @@ LABEL_14:
     return INFINITY;
   }
 
-  [(TSSPropertyMap *)mOverridePropertyMap floatValueForProperty:*&a3];
+  [(TSSPropertyMap *)mOverridePropertyMap floatValueForProperty:*&property];
   return result;
 }
 
-- (double)overrideDoubleValueForProperty:(int)a3
+- (double)overrideDoubleValueForProperty:(int)property
 {
   mOverridePropertyMap = self->mOverridePropertyMap;
   if (!mOverridePropertyMap)
@@ -901,11 +901,11 @@ LABEL_14:
     return INFINITY;
   }
 
-  [(TSSPropertyMap *)mOverridePropertyMap doubleValueForProperty:*&a3];
+  [(TSSPropertyMap *)mOverridePropertyMap doubleValueForProperty:*&property];
   return result;
 }
 
-- (double)overrideCGFloatValueForProperty:(int)a3
+- (double)overrideCGFloatValueForProperty:(int)property
 {
   mOverridePropertyMap = self->mOverridePropertyMap;
   if (!mOverridePropertyMap)
@@ -913,7 +913,7 @@ LABEL_14:
     return INFINITY;
   }
 
-  [(TSSPropertyMap *)mOverridePropertyMap CGFloatValueForProperty:*&a3];
+  [(TSSPropertyMap *)mOverridePropertyMap CGFloatValueForProperty:*&property];
   return result;
 }
 
@@ -922,23 +922,23 @@ LABEL_14:
   mParent = self->mParent;
   if (mParent)
   {
-    v4 = [(TSSStyle *)mParent propertyMap];
+    propertyMap = [(TSSStyle *)mParent propertyMap];
   }
 
   else
   {
-    v4 = 0;
+    propertyMap = 0;
   }
 
   if (![(TSSPropertyMap *)self->mOverridePropertyMap count])
   {
-    return v4;
+    return propertyMap;
   }
 
-  if (v4)
+  if (propertyMap)
   {
-    [v4 addValuesFromPropertyMap:self->mOverridePropertyMap];
-    return v4;
+    [propertyMap addValuesFromPropertyMap:self->mOverridePropertyMap];
+    return propertyMap;
   }
 
   v6 = [(TSSPropertyMap *)self->mOverridePropertyMap copy];
@@ -946,12 +946,12 @@ LABEL_14:
   return v6;
 }
 
-- (id)propertyMapIgnoringStyle:(id)a3
+- (id)propertyMapIgnoringStyle:(id)style
 {
   mParent = self->mParent;
   if (mParent)
   {
-    v6 = [(TSSStyle *)mParent propertyMapIgnoringStyle:a3];
+    v6 = [(TSSStyle *)mParent propertyMapIgnoringStyle:style];
   }
 
   else
@@ -959,7 +959,7 @@ LABEL_14:
     v6 = 0;
   }
 
-  if (self == a3 || ![(TSSPropertyMap *)self->mOverridePropertyMap count])
+  if (self == style || ![(TSSPropertyMap *)self->mOverridePropertyMap count])
   {
     return v6;
   }
@@ -980,24 +980,24 @@ LABEL_14:
   mParent = self->mParent;
   if (mParent)
   {
-    v4 = [(TSSStyle *)mParent copyPropertyMap];
+    copyPropertyMap = [(TSSStyle *)mParent copyPropertyMap];
   }
 
   else
   {
-    v4 = 0;
+    copyPropertyMap = 0;
   }
 
   if (![(TSSPropertyMap *)self->mOverridePropertyMap count])
   {
-    return v4;
+    return copyPropertyMap;
   }
 
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (v4)
+  if (copyPropertyMap)
   {
-    [v4 addValuesFromPropertyMap:mOverridePropertyMap];
-    return v4;
+    [copyPropertyMap addValuesFromPropertyMap:mOverridePropertyMap];
+    return copyPropertyMap;
   }
 
   v7 = self->mOverridePropertyMap;
@@ -1005,27 +1005,27 @@ LABEL_14:
   return [(TSSPropertyMap *)v7 copy];
 }
 
-- (id)overridePropertyMapWithPropertyMap:(id)a3 overridePropertyMap:(id)a4 collapseSourceOverrides:(BOOL)a5
+- (id)overridePropertyMapWithPropertyMap:(id)map overridePropertyMap:(id)propertyMap collapseSourceOverrides:(BOOL)overrides
 {
-  v5 = a5;
+  overridesCopy = overrides;
   mParent = self;
   if (self->mIsVariation)
   {
     mParent = self->mParent;
     if (!mParent)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle overridePropertyMapWithPropertyMap:overridePropertyMap:collapseSourceOverrides:]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1167, @"Can't create variation of a nil base style."}];
+      [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1167, @"Can't create variation of a nil base style."}];
       mParent = 0;
     }
   }
 
   if ([(TSSStyle *)mParent isVariation])
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle overridePropertyMapWithPropertyMap:overridePropertyMap:collapseSourceOverrides:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1168, @"Can't create variation of a variation base style."}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1168, @"Can't create variation of a variation base style."}];
   }
 
   v14 = objc_alloc_init(TSSPropertyMap);
@@ -1033,7 +1033,7 @@ LABEL_14:
   v16 = v15;
   if (self->mIsVariation)
   {
-    if (v5)
+    if (overridesCopy)
     {
       v15 = v14;
     }
@@ -1041,8 +1041,8 @@ LABEL_14:
     [(TSSPropertyMap *)v15 addValuesFromPropertyMap:self->mOverridePropertyMap];
   }
 
-  [(TSSPropertyMap *)v16 addValuesFromPropertyMap:a4];
-  [(TSSPropertyMap *)v14 addValuesFromPropertyMap:a3];
+  [(TSSPropertyMap *)v16 addValuesFromPropertyMap:propertyMap];
+  [(TSSPropertyMap *)v14 addValuesFromPropertyMap:map];
   [(TSSPropertyMap *)v14 removeValuesForProperties:[(TSSPropertyMap *)v16 allProperties]];
   [(TSSPropertyMap *)v14 removeValuesFromPropertyMap:[(TSSStyle *)mParent propertyMap]];
   [(TSSPropertyMap *)v16 addValuesFromPropertyMap:v14];
@@ -1050,7 +1050,7 @@ LABEL_14:
   return v16;
 }
 
-- (id)newOverridePropertyMapWithPropertyMap:(id)a3
+- (id)newOverridePropertyMapWithPropertyMap:(id)map
 {
   mParent = self;
   if (self->mIsVariation)
@@ -1058,55 +1058,55 @@ LABEL_14:
     mParent = self->mParent;
     if (!mParent)
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle newOverridePropertyMapWithPropertyMap:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1197, @"Can't create variation of a nil base style."}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1197, @"Can't create variation of a nil base style."}];
       mParent = 0;
     }
   }
 
   if ([(TSSStyle *)mParent isVariation])
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle newOverridePropertyMapWithPropertyMap:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1198, @"Can't create variation of a variation base style."}];
+    [currentHandler2 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1198, @"Can't create variation of a variation base style."}];
   }
 
   if (self->mIsVariation && (mOverridePropertyMap = self->mOverridePropertyMap) != 0)
   {
     v11 = [(TSSPropertyMap *)mOverridePropertyMap copy];
-    [v11 addValuesFromPropertyMap:a3];
+    [v11 addValuesFromPropertyMap:map];
   }
 
   else
   {
-    v11 = [a3 copy];
+    v11 = [map copy];
   }
 
-  v12 = [(TSSStyle *)mParent copyPropertyMap];
-  [v11 removeValuesFromPropertyMap:v12];
+  copyPropertyMap = [(TSSStyle *)mParent copyPropertyMap];
+  [v11 removeValuesFromPropertyMap:copyPropertyMap];
 
   return v11;
 }
 
-- (BOOL)hasEqualPropertyValues:(id)a3
+- (BOOL)hasEqualPropertyValues:(id)values
 {
-  v5 = [objc_opt_class() properties];
+  properties = [objc_opt_class() properties];
 
-  return [(TSSStyle *)self hasEqualValues:a3 forProperties:v5];
+  return [(TSSStyle *)self hasEqualValues:values forProperties:properties];
 }
 
-- (BOOL)p_hasEqualValuesTo:(id)a3 forProperty:(int)a4
+- (BOOL)p_hasEqualValuesTo:(id)to forProperty:(int)property
 {
-  v4 = *&a4;
-  v7 = String(a4);
+  v4 = *&property;
+  v7 = String(property);
   if (v7 > 1)
   {
     if (v7 == 2)
     {
       [(TSSStyle *)self floatValueForProperty:v4];
       v18 = v17;
-      [a3 floatValueForProperty:v4];
+      [to floatValueForProperty:v4];
       if (v18 != v19)
       {
         goto LABEL_17;
@@ -1118,15 +1118,15 @@ LABEL_14:
       if (v7 != 3)
       {
 LABEL_10:
-        v12 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStyle p_hasEqualValuesTo:forProperty:]"];
-        [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1257, @"Comparing property values for unknown property %@ (%d) of unknown type.", String(v4), v4}];
+        [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStyle.m"), 1257, @"Comparing property values for unknown property %@ (%d) of unknown type.", String(v4), v4}];
         goto LABEL_17;
       }
 
       [(TSSStyle *)self doubleValueForProperty:v4];
       v10 = v9;
-      [a3 doubleValueForProperty:v4];
+      [to doubleValueForProperty:v4];
       if (v10 != v11)
       {
 LABEL_17:
@@ -1145,7 +1145,7 @@ LABEL_15:
     if (v7 == 1)
     {
       v8 = [(TSSStyle *)self intValueForProperty:v4];
-      if (v8 != [a3 intValueForProperty:v4])
+      if (v8 != [to intValueForProperty:v4])
       {
         goto LABEL_17;
       }
@@ -1157,7 +1157,7 @@ LABEL_15:
   }
 
   v14 = [(TSSStyle *)self valueForProperty:v4];
-  v15 = [a3 objectForProperty:v4];
+  v15 = [to objectForProperty:v4];
   if (!v14 || (v16 = [v14 isEqual:v15]) != 0)
   {
     if (v15 && ([v15 isEqual:v14] & 1) == 0)
@@ -1171,9 +1171,9 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)hasEqualValuesToPropertyMap:(id)a3 forProperties:(id)a4
+- (BOOL)hasEqualValuesToPropertyMap:(id)map forProperties:(id)properties
 {
-  if ([objc_msgSend(objc_opt_class() "properties")] && objc_msgSend(objc_msgSend(a3, "allProperties"), "containsProperties:", a4))
+  if ([objc_msgSend(objc_opt_class() "properties")] && objc_msgSend(objc_msgSend(map, "allProperties"), "containsProperties:", properties))
   {
     v10 = 0;
     v11 = &v10;
@@ -1184,9 +1184,9 @@ LABEL_15:
     v9[2] = __54__TSSStyle_hasEqualValuesToPropertyMap_forProperties___block_invoke;
     v9[3] = &unk_279D48030;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = map;
     v9[6] = &v10;
-    [a4 enumeratePropertiesUsingBlock:v9];
+    [properties enumeratePropertiesUsingBlock:v9];
     v7 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
   }
@@ -1211,9 +1211,9 @@ uint64_t __54__TSSStyle_hasEqualValuesToPropertyMap_forProperties___block_invoke
   return result;
 }
 
-- (BOOL)hasEqualValues:(id)a3 forProperties:(id)a4
+- (BOOL)hasEqualValues:(id)values forProperties:(id)properties
 {
-  if ([objc_msgSend(objc_opt_class() "properties")] && objc_msgSend(objc_msgSend(objc_opt_class(), "properties"), "containsProperties:", a4))
+  if ([objc_msgSend(objc_opt_class() "properties")] && objc_msgSend(objc_msgSend(objc_opt_class(), "properties"), "containsProperties:", properties))
   {
     v10 = 0;
     v11 = &v10;
@@ -1224,9 +1224,9 @@ uint64_t __54__TSSStyle_hasEqualValuesToPropertyMap_forProperties___block_invoke
     v9[2] = __41__TSSStyle_hasEqualValues_forProperties___block_invoke;
     v9[3] = &unk_279D48030;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = values;
     v9[6] = &v10;
-    [a4 enumeratePropertiesUsingBlock:v9];
+    [properties enumeratePropertiesUsingBlock:v9];
     v7 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
   }
@@ -1258,10 +1258,10 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
   return v2;
 }
 
-- (void)setOverridePropertyMap:(id)a3
+- (void)setOverridePropertyMap:(id)map
 {
   [(TSPObject *)self willModify];
-  v5 = [a3 copy];
+  v5 = [map copy];
 
   self->mOverridePropertyMap = v5;
 }
@@ -1270,48 +1270,48 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
 {
   while (1)
   {
-    v2 = self;
+    selfCopy = self;
     if (![(TSSStyle *)self parent])
     {
       break;
     }
 
-    self = [(TSSStyle *)v2 parent];
+    self = [(TSSStyle *)selfCopy parent];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (TSSStyle)baseStyleForVariation
 {
-  v2 = self;
+  selfCopy = self;
   if ([(TSSStyle *)self isVariation])
   {
     do
     {
-      v2 = [(TSSStyle *)v2 parent];
+      selfCopy = [(TSSStyle *)selfCopy parent];
     }
 
-    while ([(TSSStyle *)v2 isVariation]);
+    while ([(TSSStyle *)selfCopy isVariation]);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (TSSStyle)firstIdentifiedAncestor
 {
   while (1)
   {
-    v2 = self;
+    selfCopy = self;
     if (!self || [(TSSStyle *)self styleIdentifier])
     {
       break;
     }
 
-    self = [(TSSStyle *)v2 parent];
+    self = [(TSSStyle *)selfCopy parent];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (TSSStyle)rootIdentifiedAncestor
@@ -1321,43 +1321,43 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = 0;
   do
   {
-    if ([(TSSStyle *)v2 isIdentified])
+    if ([(TSSStyle *)selfCopy isIdentified])
     {
-      v3 = v2;
+      v3 = selfCopy;
     }
 
-    v2 = [(TSSStyle *)v2 parent];
+    selfCopy = [(TSSStyle *)selfCopy parent];
   }
 
-  while (v2);
+  while (selfCopy);
   return v3;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (self->mParent != a3)
+  if (self->mParent != parent)
   {
     [(TSPObject *)self willModify];
-    v5 = a3;
+    parentCopy = parent;
 
-    self->mParent = a3;
+    self->mParent = parent;
   }
 }
 
 - (NSSet)children
 {
-  v3 = [(TSSStyle *)self stylesheet];
-  if (v3)
+  stylesheet = [(TSSStyle *)self stylesheet];
+  if (stylesheet)
   {
-    v4 = v3;
+    child = stylesheet;
     v5 = 0;
     do
     {
-      v6 = [(TSSStylesheet *)v4 childrenOfStyle:self];
+      v6 = [(TSSStylesheet *)child childrenOfStyle:self];
       if (v6)
       {
         v7 = v6;
@@ -1372,10 +1372,10 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
         }
       }
 
-      v4 = [(TSSStylesheet *)v4 child];
+      child = [(TSSStylesheet *)child child];
     }
 
-    while (v4);
+    while (child);
   }
 
   else
@@ -1386,81 +1386,81 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (BOOL)isDescendentOf:(id)a3
+- (BOOL)isDescendentOf:(id)of
 {
   mParent = self->mParent;
   if (mParent)
   {
-    LOBYTE(mParent) = mParent == a3 || [(TSSStyle *)mParent isDescendentOf:?];
+    LOBYTE(mParent) = mParent == of || [(TSSStyle *)mParent isDescendentOf:?];
   }
 
   return mParent;
 }
 
-- (BOOL)isAncestorOf:(id)a3
+- (BOOL)isAncestorOf:(id)of
 {
-  v5 = [a3 parent];
-  if (v5)
+  parent = [of parent];
+  if (parent)
   {
-    if ([a3 parent] == self)
+    if ([of parent] == self)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(parent) = 1;
     }
 
     else
     {
-      v6 = [a3 parent];
+      parent2 = [of parent];
 
-      LOBYTE(v5) = [(TSSStyle *)self isAncestorOf:v6];
+      LOBYTE(parent) = [(TSSStyle *)self isAncestorOf:parent2];
     }
   }
 
-  return v5;
+  return parent;
 }
 
-+ (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4 min:(int)a5 max:(int)a6
++ (BOOL)validateIntValue:(int *)value forProperty:(int)property min:(int)min max:(int)max
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
-  v6 = *a3;
-  if (*a3 == 0x80000000)
+  v6 = *value;
+  if (*value == 0x80000000)
   {
     return 0;
   }
 
-  if (v6 < a5 || (a5 = a6, v6 > a6))
+  if (v6 < min || (min = max, v6 > max))
   {
-    *a3 = a5;
+    *value = min;
   }
 
   return 1;
 }
 
-+ (BOOL)validateIntValueAsBool:(int *)a3 forProperty:(int)a4
++ (BOOL)validateIntValueAsBool:(int *)bool forProperty:(int)property
 {
-  if (!a3 || *a3 == 0x80000000)
+  if (!bool || *bool == 0x80000000)
   {
     return 0;
   }
 
   result = 1;
-  if (*a3 > 1)
+  if (*bool > 1)
   {
-    *a3 = 1;
+    *bool = 1;
   }
 
   return result;
 }
 
-+ (BOOL)validateObjectValue:(id *)a3 withClass:(Class)a4 forProperty:(int)a5
++ (BOOL)validateObjectValue:(id *)value withClass:(Class)class forProperty:(int)property
 {
-  if (a3)
+  if (value)
   {
-    v5 = *a3;
-    if (*a3)
+    v5 = *value;
+    if (*value)
     {
       LOBYTE(v5) = (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0);
     }
@@ -1474,59 +1474,59 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4
+- (BOOL)validateIntValue:(int *)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   v6 = objc_opt_class();
 
-  return [v6 validateIntValue:a3 forProperty:v4];
+  return [v6 validateIntValue:value forProperty:v4];
 }
 
-- (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4 min:(int)a5 max:(int)a6
+- (BOOL)validateIntValue:(int *)value forProperty:(int)property min:(int)min max:(int)max
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
+  v6 = *&max;
+  v7 = *&min;
+  v8 = *&property;
   v10 = objc_opt_class();
 
-  return [v10 validateIntValue:a3 forProperty:v8 min:v7 max:v6];
+  return [v10 validateIntValue:value forProperty:v8 min:v7 max:v6];
 }
 
-- (BOOL)validateIntValueAsBool:(int *)a3 forProperty:(int)a4
+- (BOOL)validateIntValueAsBool:(int *)bool forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   v6 = objc_opt_class();
 
-  return [v6 validateIntValueAsBool:a3 forProperty:v4];
+  return [v6 validateIntValueAsBool:bool forProperty:v4];
 }
 
-- (BOOL)validateFloatValue:(float *)a3 forProperty:(int)a4
+- (BOOL)validateFloatValue:(float *)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   v6 = objc_opt_class();
 
-  return [v6 validateFloatValue:a3 forProperty:v4];
+  return [v6 validateFloatValue:value forProperty:v4];
 }
 
-- (BOOL)validateDoubleValue:(double *)a3 forProperty:(int)a4
+- (BOOL)validateDoubleValue:(double *)value forProperty:(int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   v6 = objc_opt_class();
 
-  return [v6 validateDoubleValue:a3 forProperty:v4];
+  return [v6 validateDoubleValue:value forProperty:v4];
 }
 
-- (BOOL)validateObjectValue:(id *)a3 withClass:(Class)a4 forProperty:(int)a5
+- (BOOL)validateObjectValue:(id *)value withClass:(Class)class forProperty:(int)property
 {
-  v5 = *&a5;
+  v5 = *&property;
   v8 = objc_opt_class();
 
-  return [v8 validateObjectValue:a3 withClass:a4 forProperty:v5];
+  return [v8 validateObjectValue:value withClass:class forProperty:v5];
 }
 
-+ (double)fontSizeForFontSize:(double)a3 scalingFactor:(double)a4
++ (double)fontSizeForFontSize:(double)size scalingFactor:(double)factor
 {
-  v4 = a3 * a4;
+  v4 = size * factor;
   v5 = floor(v4);
   v6 = floor(v4 * 0.5);
   v7 = v6 + v6;
@@ -1541,13 +1541,13 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
   }
 }
 
-- (id)boxedValueForProperty:(int)a3 oldBoxedValue:(id)a4 transformedByTransform:(CGAffineTransform *)a5
+- (id)boxedValueForProperty:(int)property oldBoxedValue:(id)value transformedByTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3;
-  if (a3 == 17 && [(TSSStyle *)self transformsFontSizes])
+  v5 = *&property;
+  if (property == 17 && [(TSSStyle *)self transformsFontSizes])
   {
-    [a4 floatValue];
-    [TSSStyle fontSizeForFontSize:v9 scalingFactor:a5->d];
+    [value floatValue];
+    [TSSStyle fontSizeForFontSize:v9 scalingFactor:transform->d];
     *&v10 = v10;
     v11 = MEMORY[0x277CCABB0];
 
@@ -1564,13 +1564,13 @@ uint64_t __41__TSSStyle_hasEqualValues_forProperties___block_invoke(uint64_t a1,
 - (id)referencedStyles
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(TSSStyle *)self propertyMap];
+  propertyMap = [(TSSStyle *)self propertyMap];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__TSSStyle_referencedStyles__block_invoke;
   v6[3] = &unk_279D47E70;
   v6[4] = v3;
-  [v4 enumeratePropertiesAndObjectsUsingBlock:v6];
+  [propertyMap enumeratePropertiesAndObjectsUsingBlock:v6];
   return v3;
 }
 
@@ -1592,16 +1592,16 @@ uint64_t __28__TSSStyle_referencedStyles__block_invoke(uint64_t result, uint64_t
   return result;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v5 = [(TSSStyle *)self propertyMap];
+  propertyMap = [(TSSStyle *)self propertyMap];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__TSSStyle_replaceReferencedStylesUsingBlock___block_invoke;
   v6[3] = &unk_279D47FB8;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 enumeratePropertiesAndObjectsUsingBlock:v6];
+  v6[5] = block;
+  [propertyMap enumeratePropertiesAndObjectsUsingBlock:v6];
 }
 
 uint64_t __46__TSSStyle_replaceReferencedStylesUsingBlock___block_invoke(uint64_t result, uint64_t a2, int a3, void *a4)
@@ -1669,9 +1669,9 @@ uint64_t __46__TSSStyle_replaceReferencedStylesUsingBlock___block_invoke(uint64_
   [(TSSStyle *)self setBoxedValue:v8 forProperty:517];
 }
 
-- (id)constrainShapeStyleForContext:(id)a3
+- (id)constrainShapeStyleForContext:(id)context
 {
-  v3 = [(TSSStyle *)self copyWithContext:a3];
+  v3 = [(TSSStyle *)self copyWithContext:context];
   v4 = [v3 boxedValueForProperty:520];
   if (v4 && v4 != [MEMORY[0x277CBEB68] null])
   {

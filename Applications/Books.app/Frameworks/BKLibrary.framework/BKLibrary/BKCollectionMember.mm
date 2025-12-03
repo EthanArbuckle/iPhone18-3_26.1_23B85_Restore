@@ -1,17 +1,17 @@
 @interface BKCollectionMember
-+ (id)collectionMemberDictionariesWithAssetIDs:(id)a3;
-+ (id)collectionMemberDictionaryWithLibraryAsset:(id)a3 sortKey:(id)a4;
-+ (id)predicateForCollectionMembersWithAssetIDs:(id)a3;
++ (id)collectionMemberDictionariesWithAssetIDs:(id)ds;
++ (id)collectionMemberDictionaryWithLibraryAsset:(id)asset sortKey:(id)key;
++ (id)predicateForCollectionMembersWithAssetIDs:(id)ds;
 - (NSString)collectionID;
 - (id)collectionMemberRepresentation;
 - (id)shortDescription;
 - (void)awakeFromFetch;
-- (void)configureFromCollectionMember:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setAssetID:(id)a3;
-- (void)setCollection:(id)a3;
-- (void)setSortKey:(id)a3;
-- (void)setTemporaryAssetID:(id)a3;
+- (void)configureFromCollectionMember:(id)member;
+- (void)setAsset:(id)asset;
+- (void)setAssetID:(id)d;
+- (void)setCollection:(id)collection;
+- (void)setSortKey:(id)key;
+- (void)setTemporaryAssetID:(id)d;
 - (void)updateLastModification;
 @end
 
@@ -22,25 +22,25 @@
   v8.receiver = self;
   v8.super_class = BKCollectionMember;
   [(BKCollectionMember *)&v8 awakeFromFetch];
-  v3 = [(BKCollectionMember *)self collection];
+  collection = [(BKCollectionMember *)self collection];
 
-  if (v3)
+  if (collection)
   {
-    v4 = [(BKCollectionMember *)self collection];
-    v5 = [v4 collectionID];
-    v6 = [v5 copy];
+    collection2 = [(BKCollectionMember *)self collection];
+    collectionID = [collection2 collectionID];
+    v6 = [collectionID copy];
     collectionID = self->_collectionID;
     self->_collectionID = v6;
   }
 }
 
-+ (id)collectionMemberDictionaryWithLibraryAsset:(id)a3 sortKey:(id)a4
++ (id)collectionMemberDictionaryWithLibraryAsset:(id)asset sortKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 assetID];
-  if ([v6 length])
+  keyCopy = key;
+  assetID = [asset assetID];
+  if ([assetID length])
   {
-    v7 = [NSDictionary dictionaryWithObjectsAndKeys:v6, @"assetID", v5, @"sortKey", 0];
+    v7 = [NSDictionary dictionaryWithObjectsAndKeys:assetID, @"assetID", keyCopy, @"sortKey", 0];
   }
 
   else
@@ -51,15 +51,15 @@
   return v7;
 }
 
-+ (id)collectionMemberDictionariesWithAssetIDs:(id)a3
++ (id)collectionMemberDictionariesWithAssetIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -93,12 +93,12 @@
   return v4;
 }
 
-+ (id)predicateForCollectionMembersWithAssetIDs:(id)a3
++ (id)predicateForCollectionMembersWithAssetIDs:(id)ds
 {
-  v3 = a3;
-  if ([v3 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    [NSPredicate predicateWithFormat:@"assetID IN %@", v3];
+    [NSPredicate predicateWithFormat:@"assetID IN %@", dsCopy];
   }
 
   else
@@ -112,20 +112,20 @@
 
 - (id)collectionMemberRepresentation
 {
-  v3 = [(BKCollectionMember *)self collectionID];
-  if (v3 && (v4 = v3, [(BKCollectionMember *)self assetID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  collectionID = [(BKCollectionMember *)self collectionID];
+  if (collectionID && (v4 = collectionID, [(BKCollectionMember *)self assetID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(BKCollectionMember *)self collectionID];
-    v7 = [(BKCollectionMember *)self assetID];
-    v8 = [BCCollectionMember collectionMemberIDWithCollectionID:v6 assetID:v7];
+    collectionID2 = [(BKCollectionMember *)self collectionID];
+    assetID = [(BKCollectionMember *)self assetID];
+    v8 = [BCCollectionMember collectionMemberIDWithCollectionID:collectionID2 assetID:assetID];
 
     v9 = [[BCMutableCollectionMember alloc] initWithCollectionMemberID:v8];
-    v10 = [(BKCollectionMember *)self sortKey];
-    [v9 setSortOrder:{objc_msgSend(v10, "intValue")}];
+    sortKey = [(BKCollectionMember *)self sortKey];
+    [v9 setSortOrder:{objc_msgSend(sortKey, "intValue")}];
 
     [v9 setDeletedFlag:0];
-    v11 = [(BKCollectionMember *)self localModDate];
-    [v9 setModificationDate:v11];
+    localModDate = [(BKCollectionMember *)self localModDate];
+    [v9 setModificationDate:localModDate];
   }
 
   else
@@ -142,18 +142,18 @@
   return v9;
 }
 
-- (void)configureFromCollectionMember:(id)a3
+- (void)configureFromCollectionMember:(id)member
 {
-  v4 = a3;
-  v5 = [(BKCollectionMember *)self localModDate];
-  v6 = [v4 modificationDate];
-  v7 = v6;
-  if (!(v5 | v6))
+  memberCopy = member;
+  localModDate = [(BKCollectionMember *)self localModDate];
+  modificationDate = [memberCopy modificationDate];
+  v7 = modificationDate;
+  if (!(localModDate | modificationDate))
   {
     v18 = +[BULogUtilities shared];
-    v19 = [v18 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v18 verboseLoggingEnabled];
 
-    if (!v19)
+    if (!verboseLoggingEnabled)
     {
       goto LABEL_12;
     }
@@ -164,26 +164,26 @@
       goto LABEL_11;
     }
 
-    v11 = [(BKCollectionMember *)self collection];
-    v12 = [v11 title];
-    v13 = [(BKCollectionMember *)self asset];
-    v14 = [v13 title];
+    collection = [(BKCollectionMember *)self collection];
+    title = [collection title];
+    asset = [(BKCollectionMember *)self asset];
+    title2 = [asset title];
     *buf = 138412546;
-    v50 = v12;
+    v50 = title;
     v51 = 2112;
-    v52 = v14;
+    v52 = title2;
     v15 = "\\configureFromCollectionMember No local modDate, No collectionMember modDate for collectionMember %@ - %@\\"";
     v16 = v10;
     v17 = 22;
     goto LABEL_10;
   }
 
-  if (!v5 && v6)
+  if (!localModDate && modificationDate)
   {
     v8 = +[BULogUtilities shared];
-    v9 = [v8 verboseLoggingEnabled];
+    verboseLoggingEnabled2 = [v8 verboseLoggingEnabled];
 
-    if (!v9)
+    if (!verboseLoggingEnabled2)
     {
       goto LABEL_12;
     }
@@ -194,30 +194,30 @@
       goto LABEL_11;
     }
 
-    v11 = [(BKCollectionMember *)self collection];
-    v12 = [v11 title];
-    v13 = [(BKCollectionMember *)self asset];
-    v14 = [v13 title];
+    collection = [(BKCollectionMember *)self collection];
+    title = [collection title];
+    asset = [(BKCollectionMember *)self asset];
+    title2 = [asset title];
     *buf = 138412802;
     v50 = v7;
     v51 = 2112;
-    v52 = v12;
+    v52 = title;
     v53 = 2112;
-    v54 = v14;
+    v54 = title2;
     v15 = "\\No local modDate, collectionMember has modDate:%@  for collectionMember %@ - %@\\"";
     v16 = v10;
     v17 = 32;
     goto LABEL_10;
   }
 
-  if (v5)
+  if (localModDate)
   {
-    if (v6)
+    if (modificationDate)
     {
       v43 = +[BULogUtilities shared];
-      v44 = [v43 verboseLoggingEnabled];
+      verboseLoggingEnabled3 = [v43 verboseLoggingEnabled];
 
-      if (v44)
+      if (verboseLoggingEnabled3)
       {
         v10 = BKLibraryCollectionDevelopmentLog();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -225,18 +225,18 @@
           goto LABEL_11;
         }
 
-        v11 = [(BKCollectionMember *)self collection];
-        v12 = [v11 title];
-        v13 = [(BKCollectionMember *)self asset];
-        v14 = [v13 title];
+        collection = [(BKCollectionMember *)self collection];
+        title = [collection title];
+        asset = [(BKCollectionMember *)self asset];
+        title2 = [asset title];
         *buf = 138413058;
-        v50 = v5;
+        v50 = localModDate;
         v51 = 2112;
         v52 = v7;
         v53 = 2112;
-        v54 = v12;
+        v54 = title;
         v55 = 2112;
-        v56 = v14;
+        v56 = title2;
         v15 = "\\local has modDate:%@, collectionMember has modDate:%@ for collectionMember %@ - %@\\"";
         v16 = v10;
         v17 = 42;
@@ -249,13 +249,13 @@ LABEL_11:
   }
 
 LABEL_12:
-  v20 = [v4 collectionMemberID];
-  v21 = [BCCollectionMember collectionIDFromCollectionMemberID:v20];
+  collectionMemberID = [memberCopy collectionMemberID];
+  v21 = [BCCollectionMember collectionIDFromCollectionMemberID:collectionMemberID];
 
-  v22 = [v4 collectionMemberID];
-  v23 = [BCCollectionMember assetIDFromCollectionMemberID:v22];
+  collectionMemberID2 = [memberCopy collectionMemberID];
+  v23 = [BCCollectionMember assetIDFromCollectionMemberID:collectionMemberID2];
 
-  if ([v4 deletedFlag])
+  if ([memberCopy deletedFlag])
   {
     v24 = BKLibraryCollectionLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -264,12 +264,12 @@ LABEL_12:
     }
   }
 
-  v25 = [(BKCollectionMember *)self collectionID];
-  if (v25)
+  collectionID = [(BKCollectionMember *)self collectionID];
+  if (collectionID)
   {
-    v26 = v25;
-    v27 = [(BKCollectionMember *)self collectionID];
-    v28 = [v21 isEqualToString:v27];
+    v26 = collectionID;
+    collectionID2 = [(BKCollectionMember *)self collectionID];
+    v28 = [v21 isEqualToString:collectionID2];
 
     if ((v28 & 1) == 0)
     {
@@ -281,9 +281,9 @@ LABEL_12:
     }
   }
 
-  v30 = [(BKCollectionMember *)self assetID];
+  assetID = [(BKCollectionMember *)self assetID];
 
-  if (!v30)
+  if (!assetID)
   {
     [(BKCollectionMember *)self setAssetID:v23];
     v33 = BKLibraryCollectionLog();
@@ -295,8 +295,8 @@ LABEL_12:
     goto LABEL_27;
   }
 
-  v31 = [(BKCollectionMember *)self assetID];
-  v32 = [v23 isEqualToString:v31];
+  assetID2 = [(BKCollectionMember *)self assetID];
+  v32 = [v23 isEqualToString:assetID2];
 
   if ((v32 & 1) == 0)
   {
@@ -311,25 +311,25 @@ LABEL_27:
 
   if (v7)
   {
-    if (!v5 || ([v7 timeIntervalSinceReferenceDate], v35 = v34, objc_msgSend(v5, "timeIntervalSinceReferenceDate"), v35 > v36))
+    if (!localModDate || ([v7 timeIntervalSinceReferenceDate], v35 = v34, objc_msgSend(localModDate, "timeIntervalSinceReferenceDate"), v35 > v36))
     {
-      v37 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 sortOrder]);
+      v37 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [memberCopy sortOrder]);
       [(BKCollectionMember *)self setDifferentNumber:v37 forKey:@"sortKey"];
-      v38 = [(BKCollectionMember *)self hasChanges];
+      hasChanges = [(BKCollectionMember *)self hasChanges];
       [(BKCollectionMember *)self setDifferentDate:v7 forKey:@"localModDate"];
       v39 = +[BULogUtilities shared];
-      v40 = [v39 verboseLoggingEnabled];
+      verboseLoggingEnabled4 = [v39 verboseLoggingEnabled];
 
-      if (v38)
+      if (hasChanges)
       {
-        if (v40)
+        if (verboseLoggingEnabled4)
         {
           v41 = BKLibraryCollectionDevelopmentLog();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
-            v42 = [(BKCollectionMember *)self shortDescription];
+            shortDescription = [(BKCollectionMember *)self shortDescription];
             *buf = 138412290;
-            v50 = v42;
+            v50 = shortDescription;
             _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "\\BKCollectionMember Configured with changes: %@\\"", buf, 0xCu);
           }
 
@@ -337,19 +337,19 @@ LABEL_43:
         }
       }
 
-      else if (v40)
+      else if (verboseLoggingEnabled4)
       {
         v41 = BKLibraryCollectionDevelopmentLog();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [(BKCollectionMember *)self collection];
-          v45 = [v48 title];
-          v46 = [(BKCollectionMember *)self asset];
-          v47 = [v46 title];
+          collection2 = [(BKCollectionMember *)self collection];
+          title3 = [collection2 title];
+          asset2 = [(BKCollectionMember *)self asset];
+          title4 = [asset2 title];
           *buf = 138412546;
-          v50 = v45;
+          v50 = title3;
           v51 = 2112;
-          v52 = v47;
+          v52 = title4;
           _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "\\BKCollectionMember Configure - No changes besides date for collectionMember %@ - %@\\"", buf, 0x16u);
         }
 
@@ -361,13 +361,13 @@ LABEL_43:
 
 - (id)shortDescription
 {
-  v3 = [(BKCollectionMember *)self collection];
-  v4 = [v3 collectionID];
-  v5 = [(BKCollectionMember *)self assetID];
-  v6 = [(BKCollectionMember *)self asset];
-  v7 = [v6 title];
-  v8 = [(BKCollectionMember *)self sortKey];
-  v9 = [NSString stringWithFormat:@"BKCollectionMember collectionID: %@ assetID: %@ title: %@ sortKey:%@", v4, v5, v7, v8];
+  collection = [(BKCollectionMember *)self collection];
+  collectionID = [collection collectionID];
+  assetID = [(BKCollectionMember *)self assetID];
+  asset = [(BKCollectionMember *)self asset];
+  title = [asset title];
+  sortKey = [(BKCollectionMember *)self sortKey];
+  v9 = [NSString stringWithFormat:@"BKCollectionMember collectionID: %@ assetID: %@ title: %@ sortKey:%@", collectionID, assetID, title, sortKey];
 
   return v9;
 }
@@ -378,83 +378,83 @@ LABEL_43:
   [(BKCollectionMember *)self setLocalModDate:v3];
 }
 
-- (void)setAssetID:(id)a3
+- (void)setAssetID:(id)d
 {
-  v6 = a3;
-  v4 = [(BKCollectionMember *)self assetID];
-  v5 = [v4 isEqualToString:v6];
+  dCopy = d;
+  assetID = [(BKCollectionMember *)self assetID];
+  v5 = [assetID isEqualToString:dCopy];
 
   if ((v5 & 1) == 0)
   {
     [(BKCollectionMember *)self willChangeValueForKey:@"assetID"];
-    [(BKCollectionMember *)self setPrimitiveValue:v6 forKey:@"assetID"];
+    [(BKCollectionMember *)self setPrimitiveValue:dCopy forKey:@"assetID"];
     [(BKCollectionMember *)self updateLastModification];
     [(BKCollectionMember *)self didChangeValueForKey:@"assetID"];
   }
 }
 
-- (void)setTemporaryAssetID:(id)a3
+- (void)setTemporaryAssetID:(id)d
 {
-  v6 = a3;
-  v4 = [(BKCollectionMember *)self temporaryAssetID];
-  v5 = [v4 isEqualToString:v6];
+  dCopy = d;
+  temporaryAssetID = [(BKCollectionMember *)self temporaryAssetID];
+  v5 = [temporaryAssetID isEqualToString:dCopy];
 
   if ((v5 & 1) == 0)
   {
     [(BKCollectionMember *)self willChangeValueForKey:@"temporaryAssetID"];
-    [(BKCollectionMember *)self setPrimitiveValue:v6 forKey:@"temporaryAssetID"];
+    [(BKCollectionMember *)self setPrimitiveValue:dCopy forKey:@"temporaryAssetID"];
     [(BKCollectionMember *)self updateLastModification];
     [(BKCollectionMember *)self didChangeValueForKey:@"temporaryAssetID"];
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  v4 = [(BKCollectionMember *)self asset];
+  assetCopy = asset;
+  asset = [(BKCollectionMember *)self asset];
 
-  if (v4 != v5)
+  if (asset != assetCopy)
   {
     [(BKCollectionMember *)self willChangeValueForKey:@"asset"];
-    [(BKCollectionMember *)self setPrimitiveValue:v5 forKey:@"asset"];
+    [(BKCollectionMember *)self setPrimitiveValue:assetCopy forKey:@"asset"];
     [(BKCollectionMember *)self updateLastModification];
     [(BKCollectionMember *)self didChangeValueForKey:@"asset"];
   }
 }
 
-- (void)setSortKey:(id)a3
+- (void)setSortKey:(id)key
 {
-  v6 = a3;
-  v4 = [(BKCollectionMember *)self sortKey];
-  v5 = [v4 isEqual:v6];
+  keyCopy = key;
+  sortKey = [(BKCollectionMember *)self sortKey];
+  v5 = [sortKey isEqual:keyCopy];
 
   if ((v5 & 1) == 0)
   {
     [(BKCollectionMember *)self willChangeValueForKey:@"sortKey"];
-    [(BKCollectionMember *)self setPrimitiveValue:v6 forKey:@"sortKey"];
+    [(BKCollectionMember *)self setPrimitiveValue:keyCopy forKey:@"sortKey"];
     [(BKCollectionMember *)self updateLastModification];
     [(BKCollectionMember *)self didChangeValueForKey:@"sortKey"];
   }
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
-  v10 = a3;
-  v4 = [(BKCollectionMember *)self collection];
+  collectionCopy = collection;
+  collection = [(BKCollectionMember *)self collection];
 
-  if (v4 != v10)
+  if (collection != collectionCopy)
   {
     [(BKCollectionMember *)self willChangeValueForKey:@"collection"];
-    [(BKCollectionMember *)self setPrimitiveValue:v10 forKey:@"collection"];
+    [(BKCollectionMember *)self setPrimitiveValue:collectionCopy forKey:@"collection"];
     [(BKCollectionMember *)self updateLastModification];
     [(BKCollectionMember *)self didChangeValueForKey:@"collection"];
-    v5 = [(BKCollectionMember *)self collection];
+    collection2 = [(BKCollectionMember *)self collection];
 
-    if (v5)
+    if (collection2)
     {
-      v6 = [(BKCollectionMember *)self collection];
-      v7 = [v6 collectionID];
-      v8 = [v7 copy];
+      collection3 = [(BKCollectionMember *)self collection];
+      collectionID = [collection3 collectionID];
+      v8 = [collectionID copy];
       collectionID = self->_collectionID;
       self->_collectionID = v8;
     }
@@ -465,13 +465,13 @@ LABEL_43:
 {
   if (!self->_collectionID)
   {
-    v3 = [(BKCollectionMember *)self collection];
+    collection = [(BKCollectionMember *)self collection];
 
-    if (v3)
+    if (collection)
     {
-      v4 = [(BKCollectionMember *)self collection];
-      v5 = [v4 collectionID];
-      v6 = [v5 copy];
+      collection2 = [(BKCollectionMember *)self collection];
+      collectionID = [collection2 collectionID];
+      v6 = [collectionID copy];
       collectionID = self->_collectionID;
       self->_collectionID = v6;
     }

@@ -1,21 +1,21 @@
 @interface SearchUIImageGridRowModel
 - (Class)cardSectionViewClass;
-- (SearchUIImageGridRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7 builder:(id)a8;
-- (SearchUIImageGridRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4 builder:(id)a5;
+- (SearchUIImageGridRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier builder:(id)builder;
+- (SearchUIImageGridRowModel)initWithResults:(id)results itemIdentifier:(id)identifier builder:(id)builder;
 - (id)cardSection;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SearchUIImageGridRowModel
 
-- (SearchUIImageGridRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4 builder:(id)a5
+- (SearchUIImageGridRowModel)initWithResults:(id)results itemIdentifier:(id)identifier builder:(id)builder
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v28 = a5;
+  resultsCopy = results;
+  builderCopy = builder;
   v41.receiver = self;
   v41.super_class = SearchUIImageGridRowModel;
-  v9 = [(SearchUIRowModel *)&v41 initWithResults:v8 itemIdentifier:a4];
+  v9 = [(SearchUIRowModel *)&v41 initWithResults:resultsCopy itemIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
@@ -25,8 +25,8 @@
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v25 = v8;
-    obj = v8;
+    v25 = resultsCopy;
+    obj = resultsCopy;
     v11 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v11)
     {
@@ -49,7 +49,7 @@
           aBlock[3] = &unk_1E85B40C0;
           v16 = v27;
           v34 = v16;
-          v35 = v28;
+          v35 = builderCopy;
           v36 = v15;
           v17 = _Block_copy(aBlock);
           [v16 count];
@@ -96,7 +96,7 @@
     v10 = v24;
     [(SearchUIImageGridRowModel *)v24 setCardSectionRowModels:v27];
 
-    v8 = v25;
+    resultsCopy = v25;
   }
 
   return v10;
@@ -145,15 +145,15 @@ void __68__SearchUIImageGridRowModel_initWithResults_itemIdentifier_builder___bl
   }
 }
 
-- (SearchUIImageGridRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7 builder:(id)a8
+- (SearchUIImageGridRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier builder:(id)builder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  resultCopy = result;
+  sectionCopy = section;
+  builderCopy = builder;
   v29.receiver = self;
   v29.super_class = SearchUIImageGridRowModel;
-  v16 = [(SearchUIRowModel *)&v29 initWithResult:v13 cardSection:v14 queryId:a6 itemIdentifier:a7];
+  v16 = [(SearchUIRowModel *)&v29 initWithResult:resultCopy cardSection:sectionCopy queryId:id itemIdentifier:identifier];
   if (v16)
   {
     v17 = objc_opt_new();
@@ -161,8 +161,8 @@ void __68__SearchUIImageGridRowModel_initWithResults_itemIdentifier_builder___bl
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = [v14 cardSections];
-    v19 = [v18 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    cardSections = [sectionCopy cardSections];
+    v19 = [cardSections countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v19)
     {
       v20 = v19;
@@ -174,17 +174,17 @@ void __68__SearchUIImageGridRowModel_initWithResults_itemIdentifier_builder___bl
         {
           if (*v26 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(cardSections);
           }
 
-          v23 = [v15 buildRowModelFromCardSection:*(*(&v25 + 1) + 8 * v22) result:v13];
+          v23 = [builderCopy buildRowModelFromCardSection:*(*(&v25 + 1) + 8 * v22) result:resultCopy];
           [v17 addObject:v23];
 
           ++v22;
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v20 = [cardSections countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v20);
@@ -198,23 +198,23 @@ void __68__SearchUIImageGridRowModel_initWithResults_itemIdentifier_builder___bl
 
 - (id)cardSection
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [SearchUIUtilities cardSectionsForRenderingResult:v3];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  v4 = [SearchUIUtilities cardSectionsForRenderingResult:identifyingResult];
+  firstObject = [v4 firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    cardSection = firstObject;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SearchUIImageGridRowModel;
-    v7 = [(SearchUIRowModel *)&v10 cardSection];
+    cardSection = [(SearchUIRowModel *)&v10 cardSection];
   }
 
-  v8 = v7;
+  v8 = cardSection;
 
   return v8;
 }
@@ -227,13 +227,13 @@ void __68__SearchUIImageGridRowModel_initWithResults_itemIdentifier_builder___bl
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SearchUIImageGridRowModel;
-  v4 = [(SearchUICardSectionRowModel *)&v7 copyWithZone:a3];
-  v5 = [(SearchUIImageGridRowModel *)self cardSectionRowModels];
-  [v4 setCardSectionRowModels:v5];
+  v4 = [(SearchUICardSectionRowModel *)&v7 copyWithZone:zone];
+  cardSectionRowModels = [(SearchUIImageGridRowModel *)self cardSectionRowModels];
+  [v4 setCardSectionRowModels:cardSectionRowModels];
 
   return v4;
 }

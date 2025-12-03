@@ -1,12 +1,12 @@
 @interface W5DiagnosticsModeStore
-- (BOOL)_updateCachedDiagnosticsMode:(id)a3 error:(id)a4;
+- (BOOL)_updateCachedDiagnosticsMode:(id)mode error:(id)error;
 - (W5DiagnosticsModeStore)init;
-- (id)_diagnosticsModeFilteredWithPredicate:(id)a3;
-- (id)_getCachedDiagnosticsMode:(id)a3;
-- (id)diagnosticsModeMatchingPeerID:(id)a3 state:(int64_t)a4;
-- (id)diagnosticsModeMatchingPeerID:(id)a3 state:(int64_t)a4 role:(int64_t)a5;
-- (id)diagnosticsModeMatchingUUID:(id)a3;
-- (void)updateStoreWithDiagnosticsMode:(id)a3;
+- (id)_diagnosticsModeFilteredWithPredicate:(id)predicate;
+- (id)_getCachedDiagnosticsMode:(id)mode;
+- (id)diagnosticsModeMatchingPeerID:(id)d state:(int64_t)state;
+- (id)diagnosticsModeMatchingPeerID:(id)d state:(int64_t)state role:(int64_t)role;
+- (id)diagnosticsModeMatchingUUID:(id)d;
+- (void)updateStoreWithDiagnosticsMode:(id)mode;
 @end
 
 @implementation W5DiagnosticsModeStore
@@ -37,71 +37,71 @@
   return v2;
 }
 
-- (id)diagnosticsModeMatchingPeerID:(id)a3 state:(int64_t)a4 role:(int64_t)a5
+- (id)diagnosticsModeMatchingPeerID:(id)d state:(int64_t)state role:(int64_t)role
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000DB74;
   v12[3] = &unk_1000E12E8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v8 = v13;
+  dCopy = d;
+  stateCopy = state;
+  roleCopy = role;
+  v8 = dCopy;
   v9 = [NSPredicate predicateWithBlock:v12];
   v10 = [(W5DiagnosticsModeStore *)self _diagnosticsModeFilteredWithPredicate:v9];
 
   return v10;
 }
 
-- (id)diagnosticsModeMatchingPeerID:(id)a3 state:(int64_t)a4
+- (id)diagnosticsModeMatchingPeerID:(id)d state:(int64_t)state
 {
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_10000DDDC;
   v13 = &unk_1000E1310;
-  v14 = a3;
-  v15 = a4;
-  v6 = v14;
+  dCopy = d;
+  stateCopy = state;
+  v6 = dCopy;
   v7 = [NSPredicate predicateWithBlock:&v10];
   v8 = [(W5DiagnosticsModeStore *)self _diagnosticsModeFilteredWithPredicate:v7, v10, v11, v12, v13];
 
   return v8;
 }
 
-- (id)diagnosticsModeMatchingUUID:(id)a3
+- (id)diagnosticsModeMatchingUUID:(id)d
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000E04C;
   v9[3] = &unk_1000E1338;
-  v10 = a3;
-  v4 = v10;
+  dCopy = d;
+  v4 = dCopy;
   v5 = [NSPredicate predicateWithBlock:v9];
   v6 = [(W5DiagnosticsModeStore *)self _diagnosticsModeFilteredWithPredicate:v5];
 
   if (v6)
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_diagnosticsModeFilteredWithPredicate:(id)a3
+- (id)_diagnosticsModeFilteredWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(W5DiagnosticsModeStore *)self diagnostics];
+  predicateCopy = predicate;
+  diagnostics = [(W5DiagnosticsModeStore *)self diagnostics];
 
-  if (v5)
+  if (diagnostics)
   {
-    v6 = [(W5DiagnosticsModeStore *)self diagnostics];
-    v7 = [v6 allObjects];
-    v8 = [v7 filteredArrayUsingPredicate:v4];
+    diagnostics2 = [(W5DiagnosticsModeStore *)self diagnostics];
+    allObjects = [diagnostics2 allObjects];
+    v8 = [allObjects filteredArrayUsingPredicate:predicateCopy];
   }
 
   else
@@ -112,10 +112,10 @@
   return v8;
 }
 
-- (void)updateStoreWithDiagnosticsMode:(id)a3
+- (void)updateStoreWithDiagnosticsMode:(id)mode
 {
-  v4 = a3;
-  if (!v4)
+  modeCopy = mode;
+  if (!modeCopy)
   {
     activeTransaction = sub_100098A04();
     if (os_log_type_enabled(activeTransaction, OS_LOG_TYPE_DEFAULT))
@@ -134,13 +134,13 @@
     goto LABEL_26;
   }
 
-  v5 = [(W5DiagnosticsModeStore *)self diagnostics];
-  v6 = [v5 containsObject:v4];
+  diagnostics = [(W5DiagnosticsModeStore *)self diagnostics];
+  v6 = [diagnostics containsObject:modeCopy];
 
   if (v6)
   {
-    v7 = [(W5DiagnosticsModeStore *)self diagnostics];
-    [v7 removeObject:v4];
+    diagnostics2 = [(W5DiagnosticsModeStore *)self diagnostics];
+    [diagnostics2 removeObject:modeCopy];
   }
 
   v8 = sub_100098A04();
@@ -153,17 +153,17 @@
     v32 = 1024;
     v33 = 1537;
     v34 = 2112;
-    v35 = v4;
+    v35 = modeCopy;
     LODWORD(v21) = 38;
     v20 = &v28;
     _os_log_send_and_compose_impl();
   }
 
-  v9 = [(W5DiagnosticsModeStore *)self diagnostics];
-  [v9 addObject:v4];
+  diagnostics3 = [(W5DiagnosticsModeStore *)self diagnostics];
+  [diagnostics3 addObject:modeCopy];
 
-  v10 = [(W5DiagnosticsModeStore *)self diagnostics];
-  v11 = [(W5DiagnosticsModeStore *)self _updateCachedDiagnosticsMode:v10 error:0];
+  diagnostics4 = [(W5DiagnosticsModeStore *)self diagnostics];
+  v11 = [(W5DiagnosticsModeStore *)self _updateCachedDiagnosticsMode:diagnostics4 error:0];
 
   if ((v11 & 1) == 0)
   {
@@ -188,26 +188,26 @@
 
   if (sub_10000E5EC())
   {
-    v13 = [sub_10000E5EC() sharedDeviceAnalyticsClient];
+    sharedDeviceAnalyticsClient = [sub_10000E5EC() sharedDeviceAnalyticsClient];
 
-    if (v13)
+    if (sharedDeviceAnalyticsClient)
     {
-      v14 = [v4 state] == 3;
-      v15 = [sub_10000E5EC() sharedDeviceAnalyticsClient];
+      v14 = [modeCopy state] == 3;
+      sharedDeviceAnalyticsClient2 = [sub_10000E5EC() sharedDeviceAnalyticsClient];
       v16 = +[NSDate now];
       v22 = _NSConcreteStackBlock;
       v23 = 3221225472;
       v24 = sub_10000E6CC;
       v25 = &unk_1000E1360;
-      v26 = v4;
+      v26 = modeCopy;
       v27 = v14;
-      [v15 diagnosticEventAt:v16 with:&v22];
+      [sharedDeviceAnalyticsClient2 diagnosticEventAt:v16 with:&v22];
     }
   }
 
   if (!self->_activeTransaction)
   {
-    if ([v4 state] == 2 || objc_msgSend(v4, "state") == 3 || objc_msgSend(v4, "state") == 4 || objc_msgSend(v4, "state") == 5 || objc_msgSend(v4, "state") == 10)
+    if ([modeCopy state] == 2 || objc_msgSend(modeCopy, "state") == 3 || objc_msgSend(modeCopy, "state") == 4 || objc_msgSend(modeCopy, "state") == 5 || objc_msgSend(modeCopy, "state") == 10)
     {
       v18 = os_transaction_create();
       v17 = +[W5ActivityManager sharedActivityManager];
@@ -221,7 +221,7 @@
     }
   }
 
-  if ([v4 state] == 1 || objc_msgSend(v4, "state") == 11)
+  if ([modeCopy state] == 1 || objc_msgSend(modeCopy, "state") == 11)
   {
     v17 = +[W5ActivityManager sharedActivityManager];
     [v17 osTransactionComplete:self->_activeTransaction];
@@ -236,9 +236,9 @@ LABEL_26:
 LABEL_27:
 }
 
-- (id)_getCachedDiagnosticsMode:(id)a3
+- (id)_getCachedDiagnosticsMode:(id)mode
 {
-  v18 = a3;
+  modeCopy = mode;
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 persistentDomainForName:@"com.apple.wifi.diagnosticsMode"];
 
@@ -250,7 +250,7 @@ LABEL_27:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v6, v7, v8, v9, v10, v11, objc_opt_class(), 0];
-  v19 = v18;
+  v19 = modeCopy;
   v13 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v12 fromData:v5 error:&v19];
   v14 = v19;
 
@@ -281,9 +281,9 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)_updateCachedDiagnosticsMode:(id)a3 error:(id)a4
+- (BOOL)_updateCachedDiagnosticsMode:(id)mode error:(id)error
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 persistentDomainForName:@"com.apple.wifi.diagnosticsMode"];
   v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
@@ -300,13 +300,13 @@ LABEL_27:
     v23 = 2080;
     v24 = "[W5DiagnosticsModeStore _updateCachedDiagnosticsMode:error:]";
     v25 = 2114;
-    v26 = v4;
+    v26 = modeCopy;
     LODWORD(v15) = 48;
     v14 = &v17;
     _os_log_send_and_compose_impl();
   }
 
-  if (!v4)
+  if (!modeCopy)
   {
     v9 = 0;
     v10 = 0;
@@ -314,7 +314,7 @@ LABEL_27:
   }
 
   v16 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v16];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:modeCopy requiringSecureCoding:1 error:&v16];
   v10 = v16;
   if (v9)
   {

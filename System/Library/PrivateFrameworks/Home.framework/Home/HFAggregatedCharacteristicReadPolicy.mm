@@ -1,42 +1,42 @@
 @interface HFAggregatedCharacteristicReadPolicy
 - (HFAggregatedCharacteristicReadPolicy)init;
-- (HFAggregatedCharacteristicReadPolicy)initWithPolicies:(id)a3;
+- (HFAggregatedCharacteristicReadPolicy)initWithPolicies:(id)policies;
 - (NSString)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits;
 @end
 
 @implementation HFAggregatedCharacteristicReadPolicy
 
 - (HFAggregatedCharacteristicReadPolicy)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithPolicies_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicReadPolicy.m" lineNumber:66 description:{@"%s is unavailable; use %@ instead", "-[HFAggregatedCharacteristicReadPolicy init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicReadPolicy.m" lineNumber:66 description:{@"%s is unavailable; use %@ instead", "-[HFAggregatedCharacteristicReadPolicy init]", v5}];
 
   return 0;
 }
 
-- (HFAggregatedCharacteristicReadPolicy)initWithPolicies:(id)a3
+- (HFAggregatedCharacteristicReadPolicy)initWithPolicies:(id)policies
 {
-  v5 = a3;
+  policiesCopy = policies;
   v9.receiver = self;
   v9.super_class = HFAggregatedCharacteristicReadPolicy;
   v6 = [(HFAggregatedCharacteristicReadPolicy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_policies, a3);
+    objc_storeStrong(&v6->_policies, policies);
   }
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HFMutableAggregatedCharacteristicReadPolicy alloc];
-  v5 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
-  v6 = [(HFAggregatedCharacteristicReadPolicy *)v4 initWithPolicies:v5];
+  policies = [(HFAggregatedCharacteristicReadPolicy *)self policies];
+  v6 = [(HFAggregatedCharacteristicReadPolicy *)v4 initWithPolicies:policies];
 
   return v6;
 }
@@ -44,30 +44,30 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
-  [v3 appendArraySection:v4 withName:@"policies" skipIfEmpty:0];
+  policies = [(HFAggregatedCharacteristicReadPolicy *)self policies];
+  [v3 appendArraySection:policies withName:@"policies" skipIfEmpty:0];
 
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits
 {
-  v6 = a3;
-  v7 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
-  v8 = [v7 count];
+  characteristicCopy = characteristic;
+  policies = [(HFAggregatedCharacteristicReadPolicy *)self policies];
+  v8 = [policies count];
 
   if (v8)
   {
-    v9 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
-    v10 = [v9 count];
+    policies2 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
+    v10 = [policies2 count];
 
     if (v10 == 1)
     {
-      v11 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
-      v12 = [v11 firstObject];
-      v13 = [v12 evaluateWithCharacteristic:v6 traits:a4];
+      policies3 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
+      firstObject = [policies3 firstObject];
+      v13 = [firstObject evaluateWithCharacteristic:characteristicCopy traits:traits];
     }
 
     else
@@ -77,20 +77,20 @@
       v22 = &v21;
       v23 = 0x2020000000;
       v24 = 1;
-      v15 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
+      policies4 = [(HFAggregatedCharacteristicReadPolicy *)self policies];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __74__HFAggregatedCharacteristicReadPolicy_evaluateWithCharacteristic_traits___block_invoke;
       v17[3] = &unk_277DFB010;
-      v18 = v6;
-      v11 = v14;
-      v19 = v11;
+      v18 = characteristicCopy;
+      policies3 = v14;
+      v19 = policies3;
       v20 = &v21;
-      [v15 enumerateObjectsWithOptions:2 usingBlock:v17];
+      [policies4 enumerateObjectsWithOptions:2 usingBlock:v17];
 
-      if (a4)
+      if (traits)
       {
-        *a4 = [v11 copy];
+        *traits = [policies3 copy];
       }
 
       v13 = v22[3];
@@ -101,9 +101,9 @@
 
   else
   {
-    if (a4)
+    if (traits)
     {
-      *a4 = [MEMORY[0x277CBEB98] set];
+      *traits = [MEMORY[0x277CBEB98] set];
     }
 
     v13 = 1;

@@ -1,48 +1,48 @@
 @interface REImage
-+ (REImage)imageWithCGImage:(CGImage *)a3 scale:(double)a4;
-+ (REImage)imageWithContentsOfFileAtPath:(id)a3 scale:(double)a4;
-+ (REImage)imageWithData:(id)a3 scale:(double)a4;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4;
-- (REImage)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (REImage)imageWithCGImage:(CGImage *)image scale:(double)scale;
++ (REImage)imageWithContentsOfFileAtPath:(id)path scale:(double)scale;
++ (REImage)imageWithData:(id)data scale:(double)scale;
++ (id)imageNamed:(id)named inBundle:(id)bundle;
+- (REImage)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REImage
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4
++ (id)imageNamed:(id)named inBundle:(id)bundle
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RENamedImage alloc] initWithName:v6 inBundle:v5];
+  bundleCopy = bundle;
+  namedCopy = named;
+  v7 = [[RENamedImage alloc] initWithName:namedCopy inBundle:bundleCopy];
 
   return v7;
 }
 
-+ (REImage)imageWithContentsOfFileAtPath:(id)a3 scale:(double)a4
++ (REImage)imageWithContentsOfFileAtPath:(id)path scale:(double)scale
 {
-  v5 = a3;
-  v6 = [[REFileImage alloc] initWithPath:v5 scale:a4];
+  pathCopy = path;
+  v6 = [[REFileImage alloc] initWithPath:pathCopy scale:scale];
 
   return v6;
 }
 
-+ (REImage)imageWithData:(id)a3 scale:(double)a4
++ (REImage)imageWithData:(id)data scale:(double)scale
 {
-  v5 = a3;
-  v6 = [[REDataImage alloc] initWithData:v5 scale:a4];
+  dataCopy = data;
+  v6 = [[REDataImage alloc] initWithData:dataCopy scale:scale];
 
   return v6;
 }
 
-+ (REImage)imageWithCGImage:(CGImage *)a3 scale:(double)a4
++ (REImage)imageWithCGImage:(CGImage *)image scale:(double)scale
 {
-  v4 = [[RECGImageImage alloc] initWithImage:a3 scale:a4];
+  v4 = [[RECGImageImage alloc] initWithImage:image scale:scale];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -50,7 +50,7 @@
   return self;
 }
 
-- (REImage)initWithCoder:(id)a3
+- (REImage)initWithCoder:(id)coder
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -59,7 +59,7 @@
   return [(REImage *)&v5 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
 

@@ -1,6 +1,6 @@
 @interface FMSeparationWelcomeScreenViewController
-- (_TtC6FindMy39FMSeparationWelcomeScreenViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissPresentedVCWithSender:(id)a3;
+- (_TtC6FindMy39FMSeparationWelcomeScreenViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissPresentedVCWithSender:(id)sender;
 - (void)nextAction;
 - (void)secondaryAction;
 - (void)viewDidLayoutSubviews;
@@ -10,32 +10,32 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004E096C();
 }
 
 - (void)nextAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004E0AE8();
 }
 
 - (void)secondaryAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004E0D18();
 }
 
-- (void)dismissPresentedVCWithSender:(id)a3
+- (void)dismissPresentedVCWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v5 = [(FMSeparationWelcomeScreenViewController *)v4 presentedViewController];
-  if (v5)
+  presentedViewController = [(FMSeparationWelcomeScreenViewController *)selfCopy presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
+    v6 = presentedViewController;
     v7 = swift_allocObject();
     *(v7 + 16) = 0;
     *(v7 + 24) = 0;
@@ -58,7 +58,7 @@
   sub_100006060(v10);
 }
 
-- (_TtC6FindMy39FMSeparationWelcomeScreenViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy39FMSeparationWelcomeScreenViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

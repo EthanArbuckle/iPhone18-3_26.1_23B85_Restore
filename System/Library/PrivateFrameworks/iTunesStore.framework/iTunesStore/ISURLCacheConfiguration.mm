@@ -1,5 +1,5 @@
 @interface ISURLCacheConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -12,12 +12,12 @@
   [(ISURLCacheConfiguration *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_diskCapacity;
   v5[2] = self->_memoryCapacity;
-  v5[3] = [(NSString *)self->_persistentIdentifier copyWithZone:a3];
+  v5[3] = [(NSString *)self->_persistentIdentifier copyWithZone:zone];
   return v5;
 }
 

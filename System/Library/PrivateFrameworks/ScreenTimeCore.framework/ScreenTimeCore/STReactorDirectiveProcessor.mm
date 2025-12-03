@@ -1,75 +1,75 @@
 @interface STReactorDirectiveProcessor
-- (STReactorDirectiveProcessor)initWithQueue:(id)a3 transportEnvoy:(id)a4 transportEnvoyQueue:(id)a5 configurationStore:(id)a6 deviceStateStore:(id)a7 biomeEventWriter:(id)a8 backgroundActivityScheduler:(id)a9 familyProvider:(id)a10 eyeReliefStateWriter:(id)a11 userSafetyPolicyWriter:(id)a12 transportPrimitives:(id)a13;
-- (id)_sendRepairConfigurationChangeRelatedToChange:(id)a3;
-- (id)processDirective:(id)a3;
+- (STReactorDirectiveProcessor)initWithQueue:(id)queue transportEnvoy:(id)envoy transportEnvoyQueue:(id)envoyQueue configurationStore:(id)store deviceStateStore:(id)stateStore biomeEventWriter:(id)writer backgroundActivityScheduler:(id)scheduler familyProvider:(id)self0 eyeReliefStateWriter:(id)self1 userSafetyPolicyWriter:(id)self2 transportPrimitives:(id)self3;
+- (id)_sendRepairConfigurationChangeRelatedToChange:(id)change;
+- (id)processDirective:(id)directive;
 @end
 
 @implementation STReactorDirectiveProcessor
 
-- (STReactorDirectiveProcessor)initWithQueue:(id)a3 transportEnvoy:(id)a4 transportEnvoyQueue:(id)a5 configurationStore:(id)a6 deviceStateStore:(id)a7 biomeEventWriter:(id)a8 backgroundActivityScheduler:(id)a9 familyProvider:(id)a10 eyeReliefStateWriter:(id)a11 userSafetyPolicyWriter:(id)a12 transportPrimitives:(id)a13
+- (STReactorDirectiveProcessor)initWithQueue:(id)queue transportEnvoy:(id)envoy transportEnvoyQueue:(id)envoyQueue configurationStore:(id)store deviceStateStore:(id)stateStore biomeEventWriter:(id)writer backgroundActivityScheduler:(id)scheduler familyProvider:(id)self0 eyeReliefStateWriter:(id)self1 userSafetyPolicyWriter:(id)self2 transportPrimitives:(id)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v47 = a10;
-  v26 = a11;
-  v48 = a12;
-  v49 = a13;
+  queueCopy = queue;
+  envoyCopy = envoy;
+  envoyQueueCopy = envoyQueue;
+  storeCopy = store;
+  stateStoreCopy = stateStore;
+  writerCopy = writer;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
+  stateWriterCopy = stateWriter;
+  policyWriterCopy = policyWriter;
+  primitivesCopy = primitives;
   processingQueue = self->_processingQueue;
-  self->_processingQueue = v19;
-  v51 = v19;
+  self->_processingQueue = queueCopy;
+  v51 = queueCopy;
 
   transportEnvoy = self->_transportEnvoy;
-  self->_transportEnvoy = v20;
-  v50 = v20;
+  self->_transportEnvoy = envoyCopy;
+  v50 = envoyCopy;
 
   transportEnvoyQueue = self->_transportEnvoyQueue;
-  self->_transportEnvoyQueue = v21;
-  v30 = v21;
+  self->_transportEnvoyQueue = envoyQueueCopy;
+  v30 = envoyQueueCopy;
 
   configurationStore = self->_configurationStore;
-  self->_configurationStore = v22;
-  v32 = v22;
+  self->_configurationStore = storeCopy;
+  v32 = storeCopy;
 
   deviceStateStore = self->_deviceStateStore;
-  self->_deviceStateStore = v23;
-  v34 = v23;
+  self->_deviceStateStore = stateStoreCopy;
+  v34 = stateStoreCopy;
 
   biomeEventWriter = self->_biomeEventWriter;
-  self->_biomeEventWriter = v24;
-  v36 = v24;
+  self->_biomeEventWriter = writerCopy;
+  v36 = writerCopy;
 
   backgroundActivityScheduler = self->_backgroundActivityScheduler;
-  self->_backgroundActivityScheduler = v25;
-  v38 = v25;
+  self->_backgroundActivityScheduler = schedulerCopy;
+  v38 = schedulerCopy;
 
   familyProvider = self->_familyProvider;
-  self->_familyProvider = v47;
-  v40 = v47;
+  self->_familyProvider = providerCopy;
+  v40 = providerCopy;
 
   eyeReliefStateWriter = self->_eyeReliefStateWriter;
-  self->_eyeReliefStateWriter = v26;
-  v42 = v26;
+  self->_eyeReliefStateWriter = stateWriterCopy;
+  v42 = stateWriterCopy;
 
   userSafetyPolicyWriter = self->_userSafetyPolicyWriter;
-  self->_userSafetyPolicyWriter = v48;
-  v44 = v48;
+  self->_userSafetyPolicyWriter = policyWriterCopy;
+  v44 = policyWriterCopy;
 
   transportPrimitives = self->_transportPrimitives;
-  self->_transportPrimitives = v49;
+  self->_transportPrimitives = primitivesCopy;
 
   return self;
 }
 
-- (id)processDirective:(id)a3
+- (id)processDirective:(id)directive
 {
-  v138 = a3;
-  v137 = [v138 data];
-  switch([v138 type])
+  directiveCopy = directive;
+  data = [directiveCopy data];
+  switch([directiveCopy type])
   {
     case 0uLL:
       v4 = +[STLog reactorDirectiveProcessor];
@@ -79,7 +79,7 @@
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "processing do nothing directive", &buf, 2u);
       }
 
-      v5 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:0 processedDirective:v138];
+      v5 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:0 processedDirective:directiveCopy];
       obj = [STResult success:v5];
 
       v6 = [STPromise resolvedWith:obj];
@@ -98,7 +98,7 @@
         sub_10011B808();
       }
 
-      v50 = v137;
+      v50 = data;
       v51 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v50 count]);
       v169 = 0u;
       v170 = 0u;
@@ -128,15 +128,15 @@
         while (v52);
       }
 
-      v56 = [(STReactorDirectiveProcessor *)self processingQueue];
-      v57 = [STPromise onQueue:v56 all:v51];
-      v58 = [v57 then];
+      processingQueue = [(STReactorDirectiveProcessor *)self processingQueue];
+      v57 = [STPromise onQueue:processingQueue all:v51];
+      then = [v57 then];
       v165[0] = _NSConcreteStackBlock;
       v165[1] = 3221225472;
       v165[2] = sub_10006B588;
       v165[3] = &unk_1001A41E8;
-      v166 = v138;
-      v3 = (v58)[2](v58, v165);
+      v166 = directiveCopy;
+      v3 = (then)[2](then, v165);
 
       goto LABEL_120;
     case 2uLL:
@@ -153,15 +153,15 @@
       v245[2] = sub_10006AA1C;
       v245[3] = &unk_1001A4F20;
       v245[4] = self;
-      v246 = v137;
+      v246 = data;
       v39 = [STPromise onQueue:objd do:v245];
-      v40 = [v39 then];
+      then2 = [v39 then];
       v243[0] = _NSConcreteStackBlock;
       v243[1] = 3221225472;
       v243[2] = sub_10006AAAC;
       v243[3] = &unk_1001A4438;
-      v244 = v138;
-      v3 = (v40)[2](v40, v243);
+      v244 = directiveCopy;
+      v3 = (then2)[2](then2, v243);
 
       goto LABEL_121;
     case 3uLL:
@@ -172,20 +172,20 @@
         _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "processing read configuration directive", &buf, 2u);
       }
 
-      v91 = [(STReactorDirectiveProcessor *)self configurationStore];
+      configurationStore = [(STReactorDirectiveProcessor *)self configurationStore];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011BDB8();
       }
 
-      obji = [v91 readConfigurationRelatedToConfiguration:v137];
+      obji = [configurationStore readConfigurationRelatedToConfiguration:data];
 
       v241[0] = _NSConcreteStackBlock;
       v241[1] = 3221225472;
       v241[2] = sub_10006AAF4;
       v241[3] = &unk_1001A5390;
-      v242 = v138;
+      v242 = directiveCopy;
       v92 = [obji map:v241];
       v3 = [STPromise resolvedWith:v92];
 
@@ -198,24 +198,24 @@
         _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "processing write configuration directive", &buf, 2u);
       }
 
-      v94 = [(STReactorDirectiveProcessor *)self configurationStore];
+      configurationStore2 = [(STReactorDirectiveProcessor *)self configurationStore];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011BD08();
       }
 
-      objj = [v94 writeConfigurationChange:v137];
+      objj = [configurationStore2 writeConfigurationChange:data];
 
       v239[0] = _NSConcreteStackBlock;
       v239[1] = 3221225472;
       v239[2] = sub_10006AB5C;
       v239[3] = &unk_1001A53B8;
-      v240 = v138;
+      v240 = directiveCopy;
       v95 = [objj map:v239];
       v96 = [STPromise alloc];
-      v97 = [(STReactorDirectiveProcessor *)self processingQueue];
-      v3 = [(STPromise *)v96 initWithResolution:v95 onQueue:v97];
+      processingQueue2 = [(STReactorDirectiveProcessor *)self processingQueue];
+      v3 = [(STPromise *)v96 initWithResolution:v95 onQueue:processingQueue2];
 
       goto LABEL_121;
     case 5uLL:
@@ -232,18 +232,18 @@
         sub_10011BC58();
       }
 
-      v42 = v137;
+      v42 = data;
       obje = [(STReactorDirectiveProcessor *)self _sendRepairConfigurationChangeRelatedToChange:v42];
-      v43 = [obje then];
+      then3 = [obje then];
       v236[0] = _NSConcreteStackBlock;
       v236[1] = 3221225472;
       v236[2] = sub_10006ABC4;
       v236[3] = &unk_1001A50C8;
       v237 = v42;
-      v238 = v138;
-      v44 = v43[2];
+      v238 = directiveCopy;
+      v44 = then3[2];
       v45 = v42;
-      v3 = v44(v43, v236);
+      v3 = v44(then3, v236);
 
       goto LABEL_121;
     case 6uLL:
@@ -254,46 +254,46 @@
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "processing write device state directive", &buf, 2u);
       }
 
-      v60 = [(STReactorDirectiveProcessor *)self deviceStateStore];
+      deviceStateStore = [(STReactorDirectiveProcessor *)self deviceStateStore];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011BBA8();
       }
 
-      objg = [v60 writeDeviceStateChange:v137];
+      objg = [deviceStateStore writeDeviceStateChange:data];
 
       v234[0] = _NSConcreteStackBlock;
       v234[1] = 3221225472;
       v234[2] = sub_10006AC9C;
       v234[3] = &unk_1001A4438;
-      v235 = v138;
+      v235 = directiveCopy;
       v61 = [objg map:v234];
       v3 = [STPromise resolvedWith:v61];
 
       goto LABEL_121;
     case 7uLL:
       objc_opt_class();
-      v62 = v137;
+      v62 = data;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011BAE0();
-        v62 = v137;
+        v62 = data;
       }
 
       v63 = v62;
-      v64 = [v63 type];
+      type = [v63 type];
       v65 = +[STLog reactorDirectiveProcessor];
       if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
       {
-        if (v64 > 3)
+        if (type > 3)
         {
           v66 = &stru_1001AC900;
         }
 
         else
         {
-          v66 = *(&off_1001A5530 + v64);
+          v66 = *(&off_1001A5530 + type);
         }
 
         LODWORD(buf) = 138543362;
@@ -302,11 +302,11 @@
       }
 
       obj = 0;
-      if (v64 <= 1)
+      if (type <= 1)
       {
-        if (v64)
+        if (type)
         {
-          if (v64 != 1)
+          if (type != 1)
           {
             goto LABEL_119;
           }
@@ -317,14 +317,14 @@
         goto LABEL_118;
       }
 
-      if (v64 == 2)
+      if (type == 2)
       {
 LABEL_118:
         obj = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
         goto LABEL_119;
       }
 
-      if (v64 == 3)
+      if (type == 3)
       {
 LABEL_90:
         obj = [(STReactorDirectiveProcessor *)self processingQueue];
@@ -336,10 +336,10 @@ LABEL_119:
       v230[1] = 3221225472;
       v230[2] = sub_10006ACE4;
       v230[3] = &unk_1001A53E0;
-      v233 = v64;
+      v233 = type;
       v230[4] = self;
       v231 = v63;
-      v232 = v138;
+      v232 = directiveCopy;
       v128 = v127[2];
       v129 = v63;
       v3 = v128(v127, obj, v230);
@@ -350,25 +350,25 @@ LABEL_121:
       return v3;
     case 8uLL:
       objc_opt_class();
-      v98 = v137;
+      v98 = data;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011B968();
-        v98 = v137;
+        v98 = data;
       }
 
-      v99 = [v98 integerValue];
+      integerValue = [v98 integerValue];
       v100 = +[STLog reactorDirectiveProcessor];
       if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
       {
-        if (v99 > 3)
+        if (integerValue > 3)
         {
           v101 = &stru_1001AC900;
         }
 
         else
         {
-          v101 = *(&off_1001A5530 + v99);
+          v101 = *(&off_1001A5530 + integerValue);
         }
 
         LODWORD(buf) = 138543362;
@@ -376,30 +376,30 @@ LABEL_121:
         _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_DEFAULT, "processing perform background activity directive type:  %{public}@", &buf, 0xCu);
       }
 
-      if (v99 > 1)
+      if (integerValue > 1)
       {
-        if (v99 == 2)
+        if (integerValue == 2)
         {
           objm = +[STPromise doOn];
-          v134 = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
+          transportEnvoyQueue = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
           v223[0] = _NSConcreteStackBlock;
           v223[1] = 3221225472;
           v223[2] = sub_10006AF78;
           v223[3] = &unk_1001A4E90;
           v223[4] = self;
-          v135 = objm[2](objm, v134, v223);
-          v136 = [v135 then];
+          v135 = objm[2](objm, transportEnvoyQueue, v223);
+          then4 = [v135 then];
           v221[0] = _NSConcreteStackBlock;
           v221[1] = 3221225472;
           v221[2] = sub_10006AFDC;
           v221[3] = &unk_1001A53B8;
-          v222 = v138;
-          v3 = (v136)[2](v136, v221);
+          v222 = directiveCopy;
+          v3 = (then4)[2](then4, v221);
 
           goto LABEL_121;
         }
 
-        if (v99 == 3)
+        if (integerValue == 3)
         {
           v105 = +[STLog reactorDirectiveProcessor];
           if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
@@ -408,11 +408,11 @@ LABEL_121:
             _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_DEFAULT, "processing write downtime state biome event directive", &buf, 2u);
           }
 
-          v106 = [(STReactorDirectiveProcessor *)self familyProvider];
-          obj = [v106 fetchTargetableFamilyMembersWithError:0];
+          familyProvider = [(STReactorDirectiveProcessor *)self familyProvider];
+          obj = [familyProvider fetchTargetableFamilyMembersWithError:0];
 
-          v107 = [(STReactorDirectiveProcessor *)self configurationStore];
-          v108 = [v107 downtimeConfigurationOfChildrenByUserIDForTargetableFamilyMembers:obj];
+          configurationStore3 = [(STReactorDirectiveProcessor *)self configurationStore];
+          v108 = [configurationStore3 downtimeConfigurationOfChildrenByUserIDForTargetableFamilyMembers:obj];
 
           v219 = 0u;
           v220 = 0u;
@@ -439,13 +439,13 @@ LABEL_121:
                 v114 = [v141 objectForKeyedSubscript:v113];
                 v115 = [STDowntimeStateEvent alloc];
                 v116 = objc_opt_new();
-                v117 = [v116 UUIDString];
-                v118 = [v114 currentState];
-                v119 = [v114 currentDate];
-                v120 = [(STDowntimeStateEvent *)v115 initWithIdentifier:v117 downtimeConfigurationState:v118 downtimeDate:v119 userID:v113];
+                uUIDString = [v116 UUIDString];
+                currentState = [v114 currentState];
+                currentDate = [v114 currentDate];
+                v120 = [(STDowntimeStateEvent *)v115 initWithIdentifier:uUIDString downtimeConfigurationState:currentState downtimeDate:currentDate userID:v113];
 
-                v121 = [(STReactorDirectiveProcessor *)self biomeEventWriter];
-                v109 = [v121 writeDowntimeStateEvent:v120];
+                biomeEventWriter = [(STReactorDirectiveProcessor *)self biomeEventWriter];
+                v109 = [biomeEventWriter writeDowntimeStateEvent:v120];
 
                 v111 = v111 + 1;
                 v112 = v109;
@@ -462,7 +462,7 @@ LABEL_121:
           v215[1] = 3221225472;
           v215[2] = sub_10006B044;
           v215[3] = &unk_1001A4438;
-          v216 = v138;
+          v216 = directiveCopy;
           v122 = [v109 map:v215];
           v3 = [STPromise resolvedWith:v122];
 
@@ -472,44 +472,44 @@ LABEL_121:
 
       else
       {
-        if (!v99)
+        if (!integerValue)
         {
           objl = +[STPromise doOn];
-          v131 = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
+          transportEnvoyQueue2 = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
           v229[0] = _NSConcreteStackBlock;
           v229[1] = 3221225472;
           v229[2] = sub_10006ADF4;
           v229[3] = &unk_1001A4E90;
           v229[4] = self;
-          v132 = objl[2](objl, v131, v229);
-          v133 = [v132 then];
+          v132 = objl[2](objl, transportEnvoyQueue2, v229);
+          then5 = [v132 then];
           v227[0] = _NSConcreteStackBlock;
           v227[1] = 3221225472;
           v227[2] = sub_10006AE44;
           v227[3] = &unk_1001A53B8;
-          v228 = v138;
-          v3 = (v133)[2](v133, v227);
+          v228 = directiveCopy;
+          v3 = (then5)[2](then5, v227);
 
           goto LABEL_121;
         }
 
-        if (v99 == 1)
+        if (integerValue == 1)
         {
           objk = +[STPromise doOn];
-          v102 = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
+          transportEnvoyQueue3 = [(STReactorDirectiveProcessor *)self transportEnvoyQueue];
           v226[0] = _NSConcreteStackBlock;
           v226[1] = 3221225472;
           v226[2] = sub_10006AEAC;
           v226[3] = &unk_1001A4E90;
           v226[4] = self;
-          v103 = objk[2](objk, v102, v226);
-          v104 = [v103 then];
+          v103 = objk[2](objk, transportEnvoyQueue3, v226);
+          then6 = [v103 then];
           v224[0] = _NSConcreteStackBlock;
           v224[1] = 3221225472;
           v224[2] = sub_10006AF10;
           v224[3] = &unk_1001A53B8;
-          v225 = v138;
-          v3 = (v104)[2](v104, v224);
+          v225 = directiveCopy;
+          v3 = (then6)[2](then6, v224);
 
           goto LABEL_121;
         }
@@ -529,11 +529,11 @@ LABEL_112:
         sub_10011BA30();
       }
 
-      v124 = [v137 integerValue];
-      v125 = [(STReactorDirectiveProcessor *)self backgroundActivityScheduler];
-      [v125 invalidateBackgroundActivityOfType:v124];
+      integerValue2 = [data integerValue];
+      backgroundActivityScheduler = [(STReactorDirectiveProcessor *)self backgroundActivityScheduler];
+      [backgroundActivityScheduler invalidateBackgroundActivityOfType:integerValue2];
 
-      v126 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:0 processedDirective:v138];
+      v126 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:0 processedDirective:directiveCopy];
       obj = [STResult success:v126];
 
       v6 = [STPromise resolvedWith:obj];
@@ -556,13 +556,13 @@ LABEL_117:
         sub_10011B8B8();
       }
 
-      objb = v137;
-      v11 = [(STReactorDirectiveProcessor *)self familyProvider];
-      v12 = [v11 fetchTargetableFamilyMembersWithError:0];
+      objb = data;
+      familyProvider2 = [(STReactorDirectiveProcessor *)self familyProvider];
+      v12 = [familyProvider2 fetchTargetableFamilyMembersWithError:0];
 
       v13 = [STReactorCore userToRespondForGivenCheckingInUser:objb targetableFamilyMembers:v12];
-      v14 = [(STReactorDirectiveProcessor *)self deviceStateStore];
-      v15 = [v14 readDeviceStateChangeForLocalDevice];
+      deviceStateStore2 = [(STReactorDirectiveProcessor *)self deviceStateStore];
+      readDeviceStateChangeForLocalDevice = [deviceStateStore2 readDeviceStateChangeForLocalDevice];
 
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -570,8 +570,8 @@ LABEL_117:
       v251 = sub_10006B08C;
       v252 = sub_10006B09C;
       v253 = objc_opt_new();
-      v16 = [(STReactorDirectiveProcessor *)self configurationStore];
-      v17 = [v16 readConfigurationChangesOfType:1 userID:v13];
+      configurationStore4 = [(STReactorDirectiveProcessor *)self configurationStore];
+      v17 = [configurationStore4 readConfigurationChangesOfType:1 userID:v13];
       v214[0] = _NSConcreteStackBlock;
       v214[1] = 3221225472;
       v214[2] = sub_10006B0A4;
@@ -585,8 +585,8 @@ LABEL_117:
       v211 = sub_10006B08C;
       v212 = sub_10006B09C;
       v213 = objc_opt_new();
-      v18 = [(STReactorDirectiveProcessor *)self configurationStore];
-      v19 = [v18 readConfigurationChangesOfType:2 userID:v13];
+      configurationStore5 = [(STReactorDirectiveProcessor *)self configurationStore];
+      v19 = [configurationStore5 readConfigurationChangesOfType:2 userID:v13];
       v207[0] = _NSConcreteStackBlock;
       v207[1] = 3221225472;
       v207[2] = sub_10006B110;
@@ -600,8 +600,8 @@ LABEL_117:
       v204 = sub_10006B08C;
       v205 = sub_10006B09C;
       v206 = objc_opt_new();
-      v20 = [(STReactorDirectiveProcessor *)self configurationStore];
-      v21 = [v20 readConfigurationChangesOfType:3 userID:v13];
+      configurationStore6 = [(STReactorDirectiveProcessor *)self configurationStore];
+      v21 = [configurationStore6 readConfigurationChangesOfType:3 userID:v13];
       v200[0] = _NSConcreteStackBlock;
       v200[1] = 3221225472;
       v200[2] = sub_10006B17C;
@@ -615,8 +615,8 @@ LABEL_117:
       v197 = sub_10006B08C;
       v198 = sub_10006B09C;
       v199 = objc_opt_new();
-      v22 = [(STReactorDirectiveProcessor *)self configurationStore];
-      v23 = [v22 readConfigurationChangesOfType:4 userID:v13];
+      configurationStore7 = [(STReactorDirectiveProcessor *)self configurationStore];
+      v23 = [configurationStore7 readConfigurationChangesOfType:4 userID:v13];
       v193[0] = _NSConcreteStackBlock;
       v193[1] = 3221225472;
       v193[2] = sub_10006B1E8;
@@ -630,8 +630,8 @@ LABEL_117:
       v190 = sub_10006B08C;
       v191 = sub_10006B09C;
       v192 = objc_opt_new();
-      v24 = [(STReactorDirectiveProcessor *)self configurationStore];
-      v25 = [v24 readConfigurationChangesOfType:5 userID:v13];
+      configurationStore8 = [(STReactorDirectiveProcessor *)self configurationStore];
+      v25 = [configurationStore8 readConfigurationChangesOfType:5 userID:v13];
       v186[0] = _NSConcreteStackBlock;
       v186[1] = 3221225472;
       v186[2] = sub_10006B254;
@@ -645,8 +645,8 @@ LABEL_117:
       v183 = sub_10006B08C;
       v184 = sub_10006B09C;
       v185 = objc_opt_new();
-      v26 = [(STReactorDirectiveProcessor *)self configurationStore];
-      v27 = [v26 readConfigurationChangesOfType:6 userID:v13];
+      configurationStore9 = [(STReactorDirectiveProcessor *)self configurationStore];
+      v27 = [configurationStore9 readConfigurationChangesOfType:6 userID:v13];
       v179[0] = _NSConcreteStackBlock;
       v179[1] = 3221225472;
       v179[2] = sub_10006B2C0;
@@ -654,16 +654,16 @@ LABEL_117:
       v179[4] = &v180;
       [v27 evaluateWithSuccess:v179 failure:&stru_1001A54C8];
 
-      v28 = [v15 value];
+      value = [readDeviceStateChangeForLocalDevice value];
       v29 = v188[5];
-      v30 = [STMessageReactorCoreComponent buildCheckinResponseMessageEnvelopeForUser:objb targetableFamilyMembers:v12 localDeviceStateChange:v28 settingsChanges:*(*(&buf + 1) + 40) downtimeChanges:v209[5] communicationLimitsChanges:v202[5] alwaysAllowedChanges:v195[5] restrictionsChanges:v29 managedUserChanges:v181[5]];
+      v30 = [STMessageReactorCoreComponent buildCheckinResponseMessageEnvelopeForUser:objb targetableFamilyMembers:v12 localDeviceStateChange:value settingsChanges:*(*(&buf + 1) + 40) downtimeChanges:v209[5] communicationLimitsChanges:v202[5] alwaysAllowedChanges:v195[5] restrictionsChanges:v29 managedUserChanges:v181[5]];
 
-      v31 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:v30 processedDirective:v138];
+      v31 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:v30 processedDirective:directiveCopy];
       v32 = [STResult success:v31];
 
       v33 = [STPromise alloc];
-      v34 = [(STReactorDirectiveProcessor *)self processingQueue];
-      v3 = [(STPromise *)v33 initWithResolution:v32 onQueue:v34];
+      processingQueue3 = [(STReactorDirectiveProcessor *)self processingQueue];
+      v3 = [(STPromise *)v33 initWithResolution:v32 onQueue:processingQueue3];
 
       _Block_object_dispose(&v180, 8);
       _Block_object_dispose(&v187, 8);
@@ -683,20 +683,20 @@ LABEL_117:
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "processing write ask for time request biome event directive", &buf, 2u);
       }
 
-      v47 = [(STReactorDirectiveProcessor *)self biomeEventWriter];
+      biomeEventWriter2 = [(STReactorDirectiveProcessor *)self biomeEventWriter];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011B758();
       }
 
-      objf = [v47 writeAskForTimeRequestEvent:v137];
+      objf = [biomeEventWriter2 writeAskForTimeRequestEvent:data];
 
       v163[0] = _NSConcreteStackBlock;
       v163[1] = 3221225472;
       v163[2] = sub_10006B5F0;
       v163[3] = &unk_1001A4438;
-      v164 = v138;
+      v164 = directiveCopy;
       v48 = [objf map:v163];
       v3 = [STPromise resolvedWith:v48];
 
@@ -709,20 +709,20 @@ LABEL_117:
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "processing write ask for time response biome event directive", &buf, 2u);
       }
 
-      v36 = [(STReactorDirectiveProcessor *)self biomeEventWriter];
+      biomeEventWriter3 = [(STReactorDirectiveProcessor *)self biomeEventWriter];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011B6A8();
       }
 
-      objc = [v36 writeAskForTimeResponseEvent:v137];
+      objc = [biomeEventWriter3 writeAskForTimeResponseEvent:data];
 
       v161[0] = _NSConcreteStackBlock;
       v161[1] = 3221225472;
       v161[2] = sub_10006B638;
       v161[3] = &unk_1001A4438;
-      v162 = v138;
+      v162 = directiveCopy;
       v37 = [objc map:v161];
       v3 = [STPromise resolvedWith:v37];
 
@@ -735,20 +735,20 @@ LABEL_117:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "processing write eye relief state directive", &buf, 2u);
       }
 
-      v8 = [(STReactorDirectiveProcessor *)self eyeReliefStateWriter];
+      eyeReliefStateWriter = [(STReactorDirectiveProcessor *)self eyeReliefStateWriter];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011B5F8();
       }
 
-      obja = [v8 writeEyeReliefState:{objc_msgSend(v137, "BOOLValue")}];
+      obja = [eyeReliefStateWriter writeEyeReliefState:{objc_msgSend(data, "BOOLValue")}];
 
       v159[0] = _NSConcreteStackBlock;
       v159[1] = 3221225472;
       v159[2] = sub_10006B680;
       v159[3] = &unk_1001A4438;
-      v160 = v138;
+      v160 = directiveCopy;
       v9 = [obja map:v159];
       v3 = [STPromise resolvedWith:v9];
 
@@ -761,20 +761,20 @@ LABEL_117:
         _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "processing write user safety policy directive", &buf, 2u);
       }
 
-      v68 = [(STReactorDirectiveProcessor *)self userSafetyPolicyWriter];
+      userSafetyPolicyWriter = [(STReactorDirectiveProcessor *)self userSafetyPolicyWriter];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         sub_10011B548();
       }
 
-      objh = [v68 writeUserSafetyInterventionPolicy:{objc_msgSend(v137, "integerValue")}];
+      objh = [userSafetyPolicyWriter writeUserSafetyInterventionPolicy:{objc_msgSend(data, "integerValue")}];
 
       v157[0] = _NSConcreteStackBlock;
       v157[1] = 3221225472;
       v157[2] = sub_10006B6C8;
       v157[3] = &unk_1001A4438;
-      v158 = v138;
+      v158 = directiveCopy;
       v69 = [objh map:v157];
       v3 = [STPromise resolvedWith:v69];
 
@@ -787,8 +787,8 @@ LABEL_117:
         _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "processing setup directive", &buf, 2u);
       }
 
-      v71 = [(STReactorDirectiveProcessor *)self familyProvider];
-      v72 = [v71 fetchTargetableFamilyMembersWithError:0];
+      familyProvider3 = [(STReactorDirectiveProcessor *)self familyProvider];
+      v72 = [familyProvider3 fetchTargetableFamilyMembersWithError:0];
 
       v177 = 0u;
       v178 = 0u;
@@ -810,29 +810,29 @@ LABEL_117:
 
             v75 = *(*(&v175 + 1) + 8 * j);
             v76 = [STUserID alloc];
-            v77 = [v75 dsid];
-            v78 = [v76 initWithDSID:v77];
+            dsid = [v75 dsid];
+            v78 = [v76 initWithDSID:dsid];
 
             v79 = +[STPromise doOn];
-            v80 = [(STReactorDirectiveProcessor *)self processingQueue];
+            processingQueue4 = [(STReactorDirectiveProcessor *)self processingQueue];
             v172[0] = _NSConcreteStackBlock;
             v172[1] = 3221225472;
             v172[2] = sub_10006B32C;
             v172[3] = &unk_1001A4F20;
             v173 = v78;
-            v174 = self;
+            selfCopy = self;
             v81 = v79[2];
             v82 = v78;
-            v83 = v81(v79, v80, v172);
-            v84 = [v83 then];
+            v83 = v81(v79, processingQueue4, v172);
+            then7 = [v83 then];
             v171[0] = _NSConcreteStackBlock;
             v171[1] = 3221225472;
             v171[2] = sub_10006B424;
             v171[3] = &unk_1001A4F48;
             v171[4] = self;
-            v85 = (v84)[2](v84, v171);
-            v86 = [v85 catch];
-            v87 = (v86)[2](v86, &stru_1001A54E8);
+            v85 = (then7)[2](then7, v171);
+            catch = [v85 catch];
+            v87 = (catch)[2](catch, &stru_1001A54E8);
           }
 
           v73 = [obj countByEnumeratingWithState:&v175 objects:v248 count:16];
@@ -841,7 +841,7 @@ LABEL_117:
         while (v73);
       }
 
-      v88 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:0 processedDirective:v138];
+      v88 = [[STReactorDirectiveProcessorResult alloc] initWithOutput:0 processedDirective:directiveCopy];
       v89 = [STResult success:v88];
 
       v3 = [STPromise resolvedWith:v89];
@@ -852,34 +852,34 @@ LABEL_117:
   }
 }
 
-- (id)_sendRepairConfigurationChangeRelatedToChange:(id)a3
+- (id)_sendRepairConfigurationChangeRelatedToChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[STPromise doOn];
-  v6 = [(STReactorDirectiveProcessor *)self processingQueue];
+  processingQueue = [(STReactorDirectiveProcessor *)self processingQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10006B8F4;
   v17[3] = &unk_1001A4F20;
   v17[4] = self;
-  v18 = v4;
+  v18 = changeCopy;
   v7 = v5[2];
-  v8 = v4;
-  v9 = v7(v5, v6, v17);
-  v10 = [v9 then];
+  v8 = changeCopy;
+  v9 = v7(v5, processingQueue, v17);
+  then = [v9 then];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10006B94C;
   v16[3] = &unk_1001A5390;
   v16[4] = self;
-  v11 = (v10)[2](v10, v16);
-  v12 = [v11 then];
+  v11 = (then)[2](then, v16);
+  then2 = [v11 then];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10006BA20;
   v15[3] = &unk_1001A5510;
   v15[4] = self;
-  v13 = (v12)[2](v12, v15);
+  v13 = (then2)[2](then2, v15);
 
   return v13;
 }

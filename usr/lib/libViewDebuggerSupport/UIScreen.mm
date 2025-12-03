@@ -1,6 +1,6 @@
 @interface UIScreen
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 - (double)__dbg_traitCollectionDisplayCornerRadius;
 @end
 
@@ -93,27 +93,27 @@
   return v9;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"displayCornerRadius"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"displayCornerRadius"])
   {
-    [v9 __dbg_traitCollectionDisplayCornerRadius];
+    [objectCopy __dbg_traitCollectionDisplayCornerRadius];
 LABEL_3:
     v10 = [NSNumber numberWithDouble:?];
 LABEL_4:
-    a6 = v10;
+    error = v10;
     goto LABEL_5;
   }
 
-  if (![v8 isEqualToString:@"pointsPerInch"])
+  if (![nameCopy isEqualToString:@"pointsPerInch"])
   {
-    if ([v8 isEqualToString:@"nativeDisplayBounds"])
+    if ([nameCopy isEqualToString:@"nativeDisplayBounds"])
     {
       if (objc_opt_respondsToSelector())
       {
-        [v9 _nativeDisplayBounds];
+        [objectCopy _nativeDisplayBounds];
         v10 = [NSValue valueWithCGRect:?];
         goto LABEL_4;
       }
@@ -121,26 +121,26 @@ LABEL_4:
       goto LABEL_21;
     }
 
-    if ([v8 isEqualToString:@"isMainScreen"])
+    if ([nameCopy isEqualToString:@"isMainScreen"])
     {
       v12 = +[UIScreen mainScreen];
-      v13 = v12 == v9;
+      v13 = v12 == objectCopy;
 
       IsRectangular = v13;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"dbgScreenShapeIsRectangular"])
+      if (![nameCopy isEqualToString:@"dbgScreenShapeIsRectangular"])
       {
-        if ([v8 isEqualToString:@"dbgScreenShape"])
+        if ([nameCopy isEqualToString:@"dbgScreenShape"])
         {
           v10 = [NSNumber numberWithInteger:__dbg_ScreenShape()];
           goto LABEL_4;
         }
 
-        v15 = v9;
-        v16 = v8;
+        v15 = objectCopy;
+        v16 = nameCopy;
         if (![v16 length])
         {
           goto LABEL_36;
@@ -156,31 +156,31 @@ LABEL_4:
         {
           if ([v16 length] < 2)
           {
-            v21 = [v16 uppercaseString];
+            uppercaseString = [v16 uppercaseString];
           }
 
           else
           {
             v18 = [v16 substringToIndex:1];
-            v19 = [v18 uppercaseString];
+            uppercaseString2 = [v18 uppercaseString];
             v20 = [v16 substringFromIndex:1];
-            v21 = [v19 stringByAppendingString:v20];
+            uppercaseString = [uppercaseString2 stringByAppendingString:v20];
           }
 
-          v22 = [@"is" stringByAppendingString:v21];
+          v22 = [@"is" stringByAppendingString:uppercaseString];
           NSSelectorFromString(v22);
           v17 = (objc_opt_respondsToSelector() & 1) != 0 ? v22 : 0;
         }
 
         if (v17)
         {
-          a6 = [v15 valueForKey:v17];
+          error = [v15 valueForKey:v17];
         }
 
         else
         {
 LABEL_36:
-          if (a6)
+          if (error)
           {
             v23 = v16;
             if (v15)
@@ -214,10 +214,10 @@ LABEL_36:
             v28 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v27];
 
             v29 = v28;
-            *a6 = v28;
+            *error = v28;
 
             v17 = 0;
-            a6 = 0;
+            error = 0;
           }
 
           else
@@ -232,7 +232,7 @@ LABEL_36:
       if (_UIScreenTypePrivateForScreen() == -1)
       {
 LABEL_21:
-        a6 = 0;
+        error = 0;
         goto LABEL_5;
       }
 
@@ -246,19 +246,19 @@ LABEL_21:
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 _pointsPerInch];
+    [objectCopy _pointsPerInch];
     goto LABEL_3;
   }
 
-  a6 = &off_57B10;
+  error = &off_57B10;
 LABEL_5:
 
-  return a6;
+  return error;
 }
 
 - (double)__dbg_traitCollectionDisplayCornerRadius
 {
-  v3 = [(UIScreen *)self traitCollection];
+  traitCollection = [(UIScreen *)self traitCollection];
   NSSelectorFromString(&cfstr_Displaycornerr.isa);
   v4 = objc_opt_respondsToSelector();
 
@@ -267,8 +267,8 @@ LABEL_5:
     return 0.0;
   }
 
-  v5 = [(UIScreen *)self traitCollection];
-  [v5 displayCornerRadius];
+  traitCollection2 = [(UIScreen *)self traitCollection];
+  [traitCollection2 displayCornerRadius];
   v7 = v6;
 
   return v7;

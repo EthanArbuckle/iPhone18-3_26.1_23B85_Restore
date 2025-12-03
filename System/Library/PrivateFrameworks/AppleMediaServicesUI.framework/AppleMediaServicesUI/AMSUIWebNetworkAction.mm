@@ -1,36 +1,36 @@
 @interface AMSUIWebNetworkAction
-- (AMSUIWebNetworkAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebNetworkAction)initWithJSObject:(id)object context:(id)context;
 - (id)_createSession;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebNetworkAction
 
-- (AMSUIWebNetworkAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebNetworkAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v45.receiver = self;
   v45.super_class = AMSUIWebNetworkAction;
-  v7 = [(AMSUIWebAction *)&v45 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v45 initWithJSObject:objectCopy context:context];
   v8 = v7;
   if (v7)
   {
-    v9 = [(AMSUIWebAction *)v7 context];
-    v10 = [v6 objectForKeyedSubscript:@"account"];
-    v11 = [v9 iTunesAccountFromJSAccount:v10];
+    context = [(AMSUIWebAction *)v7 context];
+    v10 = [objectCopy objectForKeyedSubscript:@"account"];
+    v11 = [context iTunesAccountFromJSAccount:v10];
     account = v8->_account;
     v8->_account = v11;
 
     if (!v8->_account)
     {
-      v13 = [(AMSUIWebAction *)v8 context];
-      v14 = [v6 objectForKeyedSubscript:@"dsid"];
-      v15 = [v13 iTunesAccountFromJSDSID:v14];
+      context2 = [(AMSUIWebAction *)v8 context];
+      v14 = [objectCopy objectForKeyedSubscript:@"dsid"];
+      v15 = [context2 iTunesAccountFromJSDSID:v14];
       v16 = v8->_account;
       v8->_account = v15;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"body"];
+    v17 = [objectCopy objectForKeyedSubscript:@"body"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
     body = v8->_body;
     v8->_body = v18;
 
-    v20 = [v6 objectForKeyedSubscript:@"gsTokenIdentifier"];
+    v20 = [objectCopy objectForKeyedSubscript:@"gsTokenIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
     gsTokenIdentifier = v8->_gsTokenIdentifier;
     v8->_gsTokenIdentifier = v21;
 
-    v23 = [v6 objectForKeyedSubscript:@"headers"];
+    v23 = [objectCopy objectForKeyedSubscript:@"headers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,10 +75,10 @@
     headers = v8->_headers;
     v8->_headers = v24;
 
-    v26 = [v6 objectForKeyedSubscript:@"includeAuthKitTokens"];
+    v26 = [objectCopy objectForKeyedSubscript:@"includeAuthKitTokens"];
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v6 objectForKeyedSubscript:@"includeAuthKitTokens"];
+      v27 = [objectCopy objectForKeyedSubscript:@"includeAuthKitTokens"];
       v8->_includeAuthKitTokens = [v27 BOOLValue];
     }
 
@@ -87,10 +87,10 @@
       v8->_includeAuthKitTokens = 0;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"includeiCloudTokens"];
+    v28 = [objectCopy objectForKeyedSubscript:@"includeiCloudTokens"];
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v6 objectForKeyedSubscript:@"includeiCloudTokens"];
+      v29 = [objectCopy objectForKeyedSubscript:@"includeiCloudTokens"];
       v8->_includeiCloudTokens = [v29 BOOLValue];
     }
 
@@ -99,7 +99,7 @@
       v8->_includeiCloudTokens = 0;
     }
 
-    v30 = [v6 objectForKeyedSubscript:@"method"];
+    v30 = [objectCopy objectForKeyedSubscript:@"method"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,10 +114,10 @@
     method = v8->_method;
     v8->_method = v31;
 
-    v33 = [v6 objectForKeyedSubscript:@"requiresCellularAccess"];
+    v33 = [objectCopy objectForKeyedSubscript:@"requiresCellularAccess"];
     if (objc_opt_respondsToSelector())
     {
-      v34 = [v6 objectForKeyedSubscript:@"requiresCellularAccess"];
+      v34 = [objectCopy objectForKeyedSubscript:@"requiresCellularAccess"];
       v8->_requiresCellularAccess = [v34 BOOLValue];
     }
 
@@ -126,7 +126,7 @@
       v8->_requiresCellularAccess = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"signatureData"];
+    v35 = [objectCopy objectForKeyedSubscript:@"signatureData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,10 +141,10 @@
     signatureData = v8->_signatureData;
     v8->_signatureData = v36;
 
-    v38 = [v6 objectForKeyedSubscript:@"usePrimaryKeychain"];
+    v38 = [objectCopy objectForKeyedSubscript:@"usePrimaryKeychain"];
     if (objc_opt_respondsToSelector())
     {
-      v39 = [v6 objectForKeyedSubscript:@"usePrimaryKeychain"];
+      v39 = [objectCopy objectForKeyedSubscript:@"usePrimaryKeychain"];
       v8->_usePrimaryKeychain = [v39 BOOLValue];
     }
 
@@ -153,7 +153,7 @@
       v8->_usePrimaryKeychain = 0;
     }
 
-    v40 = [v6 objectForKeyedSubscript:@"url"];
+    v40 = [objectCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,15 +181,15 @@
   v82 = *MEMORY[0x1E69E9840];
   v74.receiver = self;
   v74.super_class = AMSUIWebNetworkAction;
-  v3 = [(AMSUIWebAction *)&v74 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v74 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -201,7 +201,7 @@
     *&buf[14] = v7;
     *&buf[22] = 2114;
     v80 = v9;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running network action for URL: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running network action for URL: %{public}@", buf, 0x20u);
   }
 
   v10 = [(AMSUIWebNetworkAction *)self URL];
@@ -220,15 +220,15 @@
     v13 = [(AMSUIWebNetworkAction *)self URL];
     v14 = [v12 initWithURL:v13];
 
-    v15 = [(AMSUIWebNetworkAction *)self body];
-    v16 = [v15 dataUsingEncoding:4];
+    body = [(AMSUIWebNetworkAction *)self body];
+    v16 = [body dataUsingEncoding:4];
     [v14 setHTTPBody:v16];
 
-    v17 = [(AMSUIWebNetworkAction *)self method];
-    v18 = v17;
-    if (v17)
+    method = [(AMSUIWebNetworkAction *)self method];
+    v18 = method;
+    if (method)
     {
-      v19 = v17;
+      v19 = method;
     }
 
     else
@@ -238,24 +238,24 @@
 
     [v14 setHTTPMethod:v19];
 
-    v20 = [(AMSUIWebNetworkAction *)self headers];
+    headers = [(AMSUIWebNetworkAction *)self headers];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __34__AMSUIWebNetworkAction_runAction__block_invoke;
     v72[3] = &unk_1E7F25730;
     v21 = v14;
     v73 = v21;
-    [v20 enumerateKeysAndObjectsUsingBlock:v72];
+    [headers enumerateKeysAndObjectsUsingBlock:v72];
 
-    v22 = [(AMSUIWebAction *)self context];
-    v23 = [v22 additionalHeaders];
+    context = [(AMSUIWebAction *)self context];
+    additionalHeaders = [context additionalHeaders];
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __34__AMSUIWebNetworkAction_runAction__block_invoke_2;
     v70[3] = &unk_1E7F25A18;
     v24 = v21;
     v71 = v24;
-    [v23 enumerateKeysAndObjectsUsingBlock:v70];
+    [additionalHeaders enumerateKeysAndObjectsUsingBlock:v70];
 
     if ([(AMSUIWebNetworkAction *)self includeAuthKitTokens])
     {
@@ -286,14 +286,14 @@
 
     if ([(AMSUIWebNetworkAction *)self includeiCloudTokens])
     {
-      v28 = [(AMSUIWebAction *)self context];
-      v29 = [v28 account];
-      v30 = [v29 accountStore];
-      v31 = [(AMSUIWebAction *)self context];
-      v32 = [v31 account];
-      v33 = [v30 ams_iCloudAccountForAccount:v32];
+      context2 = [(AMSUIWebAction *)self context];
+      account = [context2 account];
+      accountStore = [account accountStore];
+      context3 = [(AMSUIWebAction *)self context];
+      account2 = [context3 account];
+      v33 = [accountStore ams_iCloudAccountForAccount:account2];
 
-      v34 = [v33 accountStore];
+      accountStore2 = [v33 accountStore];
       v75 = 0;
       v76 = &v75;
       v77 = 0x2020000000;
@@ -320,19 +320,19 @@
       v36 = *v35;
       v69 = 0;
       v37 = v36;
-      v38 = [v34 ams_fetchGrandSlamTokenForAccount:v33 withIdentifier:v37 error:&v69];
+      v38 = [accountStore2 ams_fetchGrandSlamTokenForAccount:v33 withIdentifier:v37 error:&v69];
       v39 = v69;
 
       if (v39 || !v38)
       {
-        v42 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-        if (!v42)
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+        if (!mEMORY[0x1E698C968]2)
         {
-          v42 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v43 = [v42 OSLogObject];
-        if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v44 = objc_opt_class();
           v45 = AMSLogKey();
@@ -342,7 +342,7 @@
           *&buf[14] = v45;
           *&buf[22] = 2114;
           v80 = v39;
-          _os_log_impl(&dword_1BB036000, v43, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch GS token. %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to fetch GS token. %{public}@", buf, 0x20u);
         }
       }
 
@@ -353,34 +353,34 @@
     }
 
     v46 = objc_alloc(MEMORY[0x1E698CB88]);
-    v47 = [(AMSUIWebAction *)self context];
-    v48 = [v47 bag];
+    context4 = [(AMSUIWebAction *)self context];
+    v48 = [context4 bag];
     v49 = [v46 initWithBag:v48];
 
-    v50 = [(AMSUIWebNetworkAction *)self account];
-    [v49 setAccount:v50];
+    account3 = [(AMSUIWebNetworkAction *)self account];
+    [v49 setAccount:account3];
 
-    v51 = [(AMSUIWebAction *)self context];
-    v52 = [v51 clientInfo];
-    [v49 setClientInfo:v52];
+    context5 = [(AMSUIWebAction *)self context];
+    clientInfo = [context5 clientInfo];
+    [v49 setClientInfo:clientInfo];
 
     [v49 setEnableRemoteSecuritySigning:1];
     v53 = AMSLogKey();
     [v49 setLogUUID:v53];
 
-    v54 = [(AMSUIWebNetworkAction *)self gsTokenIdentifier];
-    [v49 setGsTokenIdentifier:v54];
+    gsTokenIdentifier = [(AMSUIWebNetworkAction *)self gsTokenIdentifier];
+    [v49 setGsTokenIdentifier:gsTokenIdentifier];
 
     v55 = objc_alloc_init(MEMORY[0x1E698C948]);
     [v55 setPurpose:{-[AMSUIWebNetworkAction usePrimaryKeychain](self, "usePrimaryKeychain") ^ 1}];
     [v55 setStyle:{objc_msgSend(MEMORY[0x1E698C948], "preferredAttestationStyle")}];
     [v49 setKeychainOptions:v55];
     v56 = [v49 requestByEncodingRequest:v24 parameters:0];
-    v57 = [(AMSUIWebNetworkAction *)self signatureData];
-    v58 = v57;
-    if (v57)
+    signatureData = [(AMSUIWebNetworkAction *)self signatureData];
+    v58 = signatureData;
+    if (signatureData)
     {
-      v59 = [v57 dataUsingEncoding:4];
+      v59 = [signatureData dataUsingEncoding:4];
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __34__AMSUIWebNetworkAction_runAction__block_invoke_56;
@@ -553,25 +553,25 @@ id __34__AMSUIWebNetworkAction_runAction__block_invoke_3_72(uint64_t a1, void *a
 
 - (id)_createSession
 {
-  v3 = [(AMSUIWebAction *)self context];
-  v4 = [v3 URLSession];
+  context = [(AMSUIWebAction *)self context];
+  uRLSession = [context URLSession];
 
   if ([(AMSUIWebNetworkAction *)self requiresCellularAccess])
   {
     v5 = MEMORY[0x1E696AF80];
-    v6 = [(AMSUIWebAction *)self context];
-    v7 = [v6 clientInfo];
-    v8 = [(AMSUIWebAction *)self context];
-    v9 = [v8 bag];
-    v10 = [v5 ams_configurationWithProcessInfo:v7 bag:v9];
+    context2 = [(AMSUIWebAction *)self context];
+    clientInfo = [context2 clientInfo];
+    context3 = [(AMSUIWebAction *)self context];
+    v9 = [context3 bag];
+    v10 = [v5 ams_configurationWithProcessInfo:clientInfo bag:v9];
 
     [v10 set_CTDataConnectionServiceType:*MEMORY[0x1E6965270]];
     v11 = [objc_alloc(MEMORY[0x1E698CBA8]) initWithConfiguration:v10];
 
-    v4 = v11;
+    uRLSession = v11;
   }
 
-  return v4;
+  return uRLSession;
 }
 
 @end

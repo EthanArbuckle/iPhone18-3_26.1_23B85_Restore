@@ -1,8 +1,8 @@
 @interface TSWPLineSpacing
 + (id)lineSpacing;
-- (BOOL)isEqual:(id)a3;
-- (TSWPLineSpacing)initWithMode:(int)a3 amount:(double)a4 baselineRule:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSWPLineSpacing)initWithMode:(int)mode amount:(double)amount baselineRule:(double)rule;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,24 +15,24 @@
   return v2;
 }
 
-- (TSWPLineSpacing)initWithMode:(int)a3 amount:(double)a4 baselineRule:(double)a5
+- (TSWPLineSpacing)initWithMode:(int)mode amount:(double)amount baselineRule:(double)rule
 {
   v9.receiver = self;
   v9.super_class = TSWPLineSpacing;
   result = [(TSWPLineSpacing *)&v9 init];
   if (result)
   {
-    result->_mode = a3;
-    result->_amount = a4;
-    result->_baselineRule = a5;
+    result->_mode = mode;
+    result->_amount = amount;
+    result->_baselineRule = rule;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mode = self->_mode;
   amount = self->_amount;
   baselineRule = self->_baselineRule;
@@ -40,7 +40,7 @@
   return [v4 initWithMode:mode amount:amount baselineRule:baselineRule];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

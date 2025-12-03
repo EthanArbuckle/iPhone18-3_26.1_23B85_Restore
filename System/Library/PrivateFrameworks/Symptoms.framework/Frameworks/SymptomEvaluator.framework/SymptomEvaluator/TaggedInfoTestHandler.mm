@@ -1,19 +1,19 @@
 @interface TaggedInfoTestHandler
 + (id)_sharedInstance;
-+ (id)configureClass:(id)a3;
-- (BOOL)noteSymptom:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
++ (id)configureClass:(id)class;
+- (BOOL)noteSymptom:(id)symptom;
+- (int)read:(id)read returnedValues:(id)values;
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
 @end
 
 @implementation TaggedInfoTestHandler
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventQualifiers];
-  v6 = [v5 objectForKeyedSubscript:@"1"];
+  symptomCopy = symptom;
+  eventQualifiers = [symptomCopy eventQualifiers];
+  v6 = [eventQualifiers objectForKeyedSubscript:@"1"];
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   setApparentTime(v7);
@@ -239,10 +239,10 @@ LABEL_48:
   return 1;
 }
 
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a6;
+  blockCopy = block;
   informer = self->_informer;
   if (!informer)
   {
@@ -254,12 +254,12 @@ LABEL_48:
   }
 
   v15 = @"state";
-  v11 = [(BasebandFlowInformer *)informer getState];
-  v16[0] = v11;
+  getState = [(BasebandFlowInformer *)informer getState];
+  v16[0] = getState;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-  v13 = [MEMORY[0x277CBEAA8] date];
-  (*(v7 + 2))(v7, 0, "Status", v13, 0, 0, v12);
+  date = [MEMORY[0x277CBEAA8] date];
+  (*(blockCopy + 2))(blockCopy, 0, "Status", date, 0, 0, v12);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -270,7 +270,7 @@ LABEL_48:
   block[1] = 3221225472;
   block[2] = __40__TaggedInfoTestHandler__sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedInstance_pred != -1)
   {
     dispatch_once(&_sharedInstance_pred, block);
@@ -305,21 +305,21 @@ void __40__TaggedInfoTestHandler__sharedInstance__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[TaggedInfoTestHandler _sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

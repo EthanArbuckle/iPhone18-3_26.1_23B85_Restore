@@ -1,18 +1,18 @@
 @interface BPSApproximateDistinctCount
 - (BOOL)countMapFull;
-- (BPSApproximateDistinctCount)initWithCoder:(id)a3;
-- (BPSApproximateDistinctCount)initWithHllState:(hll_state *)a3;
+- (BPSApproximateDistinctCount)initWithCoder:(id)coder;
+- (BPSApproximateDistinctCount)initWithHllState:(hll_state *)state;
 - (double)approximateDistinctCount;
-- (void)addData:(id)a3;
-- (void)addValue:(unsigned int)a3;
+- (void)addData:(id)data;
+- (void)addValue:(unsigned int)value;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)printState;
 @end
 
 @implementation BPSApproximateDistinctCount
 
-- (BPSApproximateDistinctCount)initWithHllState:(hll_state *)a3
+- (BPSApproximateDistinctCount)initWithHllState:(hll_state *)state
 {
   v8.receiver = self;
   v8.super_class = BPSApproximateDistinctCount;
@@ -26,10 +26,10 @@
       abort();
     }
 
-    if (a3)
+    if (state)
     {
-      v6 = *&a3->var0[16];
-      *v5->var0 = *a3->var0;
+      v6 = *&state->var0[16];
+      *v5->var0 = *state->var0;
       *&v5->var0[16] = v6;
     }
 
@@ -47,7 +47,7 @@
   [(BPSApproximateDistinctCount *)&v3 dealloc];
 }
 
-- (void)addValue:(unsigned int)a3
+- (void)addValue:(unsigned int)value
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = _PASMurmur3_x86_32();
@@ -63,12 +63,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_lock);
-  [v4 bytes];
-  [v4 length];
+  [dataCopy bytes];
+  [dataCopy length];
 
   v5 = _PASMurmur3_x86_32();
   hllState = self->_hllState;
@@ -160,21 +160,21 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeInt:5 forKey:@"hllRegisterBitWidth"];
-  [v4 encodeInt:32 forKey:@"hllRegisterCount"];
-  [v4 encodeBytes:self->_hllState length:32 forKey:@"hllData"];
+  [coderCopy encodeInt:5 forKey:@"hllRegisterBitWidth"];
+  [coderCopy encodeInt:32 forKey:@"hllRegisterCount"];
+  [coderCopy encodeBytes:self->_hllState length:32 forKey:@"hllData"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BPSApproximateDistinctCount)initWithCoder:(id)a3
+- (BPSApproximateDistinctCount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntForKey:@"hllRegisterBitWidth"] != 5)
+  coderCopy = coder;
+  if ([coderCopy decodeIntForKey:@"hllRegisterBitWidth"] != 5)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -185,7 +185,7 @@
     goto LABEL_9;
   }
 
-  if ([v4 decodeIntForKey:@"hllRegisterCount"] != 32)
+  if ([coderCopy decodeIntForKey:@"hllRegisterCount"] != 32)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -196,12 +196,12 @@
 LABEL_9:
 
 LABEL_10:
-    v6 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   v10 = 0;
-  v5 = [v4 decodeBytesForKey:@"hllData" returnedLength:&v10];
+  v5 = [coderCopy decodeBytesForKey:@"hllData" returnedLength:&v10];
   if (v10 != 32)
   {
     v9 = __biome_log_for_category();
@@ -214,10 +214,10 @@ LABEL_10:
   }
 
   self = [(BPSApproximateDistinctCount *)self initWithHllState:v5];
-  v6 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)initWithCoder:.cold.1()

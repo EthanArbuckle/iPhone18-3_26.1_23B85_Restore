@@ -1,45 +1,45 @@
 @interface TSAGalleryRep
-+ (CGAffineTransform)p_textureLayoutTransformInRootForLayout:(SEL)a3 isMagicMove:(id)a4;
-+ (CGAffineTransform)p_textureRenderTransformRelativeToTextureRect:(SEL)a3 forLayout:(CGRect)a4 viewScale:(id)a5 isMagicMove:(double)a6;
-+ (CGRect)p_textureRectForLayout:(id)a3 viewScale:(double)a4 isMagicMove:(BOOL)a5;
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5;
-- (BOOL)imageDrawingHelperImageHasAlpha:(id)a3;
++ (CGAffineTransform)p_textureLayoutTransformInRootForLayout:(SEL)layout isMagicMove:(id)move;
++ (CGAffineTransform)p_textureRenderTransformRelativeToTextureRect:(SEL)rect forLayout:(CGRect)layout viewScale:(id)scale isMagicMove:(double)move;
++ (CGRect)p_textureRectForLayout:(id)layout viewScale:(double)scale isMagicMove:(BOOL)move;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context;
+- (BOOL)imageDrawingHelperImageHasAlpha:(id)alpha;
 - (BOOL)p_isEmpty;
 - (BOOL)p_prefersHDRRendering;
-- (BOOL)p_shouldIncludeItemCaptionTextForStage:(unint64_t)a3 isIncoming:(BOOL)a4;
-- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)a3;
-- (CGRect)imageDrawingHelperImageRect:(id)a3;
-- (CGRect)p_imageContainerRectForContext:(CGContext *)a3;
+- (BOOL)p_shouldIncludeItemCaptionTextForStage:(unint64_t)stage isIncoming:(BOOL)incoming;
+- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)defeat;
+- (CGRect)imageDrawingHelperImageRect:(id)rect;
+- (CGRect)p_imageContainerRectForContext:(CGContext *)context;
 - (TSAGalleryLayout)galleryLayout;
-- (TSAGalleryRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSAGalleryRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)childReps;
 - (id)galleryInfo;
-- (id)imageDrawingHelperAdjustedImageData:(id)a3;
-- (id)imageDrawingHelperImageData:(id)a3;
-- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)a3;
-- (id)imageDrawingHelperThumbnailImageData:(id)a3;
+- (id)imageDrawingHelperAdjustedImageData:(id)data;
+- (id)imageDrawingHelperImageData:(id)data;
+- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)data;
+- (id)imageDrawingHelperThumbnailImageData:(id)data;
 - (id)layoutsForChildReps;
 - (id)p_emptyPlaceholderImage;
-- (id)p_galleryItemForTextureStage:(unint64_t)a3 isIncoming:(BOOL)a4;
-- (id)p_newTextureForStage:(unint64_t)a3 isIncoming:(BOOL)a4 includeImage:(BOOL)a5 includeCaption:(BOOL)a6 size:(CGSize)a7 offset:(CGPoint)a8 renderTransform:(CGAffineTransform *)a9;
-- (id)textureForDescription:(id)a3;
-- (void)addChildTexturesToTextureSet:(id)a3 forDescription:(id)a4 passingTest:(id)a5;
+- (id)p_galleryItemForTextureStage:(unint64_t)stage isIncoming:(BOOL)incoming;
+- (id)p_newTextureForStage:(unint64_t)stage isIncoming:(BOOL)incoming includeImage:(BOOL)image includeCaption:(BOOL)caption size:(CGSize)size offset:(CGPoint)offset renderTransform:(CGAffineTransform *)transform;
+- (id)textureForDescription:(id)description;
+- (void)addChildTexturesToTextureSet:(id)set forDescription:(id)description passingTest:(id)test;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)p_drawImageInContext:(CGContext *)a3 forLayer:(BOOL)a4;
-- (void)p_renderTextureInContext:(CGContext *)a3 includeImage:(BOOL)a4 includeCaption:(BOOL)a5 renderTransform:(CGAffineTransform *)a6;
+- (void)drawInContext:(CGContext *)context;
+- (void)p_drawImageInContext:(CGContext *)context forLayer:(BOOL)layer;
+- (void)p_renderTextureInContext:(CGContext *)context includeImage:(BOOL)image includeCaption:(BOOL)caption renderTransform:(CGAffineTransform *)transform;
 - (void)updateChildrenFromLayout;
-- (void)updateHitTestingForTextureStage:(unint64_t)a3 isAtEndOfBuild:(BOOL)a4;
+- (void)updateHitTestingForTextureStage:(unint64_t)stage isAtEndOfBuild:(BOOL)build;
 - (void)willBeRemoved;
 @end
 
 @implementation TSAGalleryRep
 
-- (TSAGalleryRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSAGalleryRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v11.receiver = self;
   v11.super_class = TSAGalleryRep;
-  v4 = [(TSDRep *)&v11 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v11 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D802B8]);
@@ -99,12 +99,12 @@
 {
   v10.receiver = self;
   v10.super_class = TSAGalleryRep;
-  v3 = [(TSDRep *)&v10 childReps];
-  v6 = v3;
+  childReps = [(TSDRep *)&v10 childReps];
+  v6 = childReps;
   captionRep = self->_captionRep;
   if (captionRep)
   {
-    v8 = objc_msgSend_arrayByAddingObject_(v3, v4, captionRep, v5);
+    v8 = objc_msgSend_arrayByAddingObject_(childReps, v4, captionRep, v5);
 
     v6 = v8;
   }
@@ -183,17 +183,17 @@ LABEL_9:
   objc_msgSend_updateChildrenFromLayout(self->_captionRep, v15, v16, v17);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  if (objc_msgSend_p_isEmpty(self, a2, a3, v3))
+  if (objc_msgSend_p_isEmpty(self, a2, context, v3))
   {
     v9 = objc_msgSend_canvas(self, v6, v7, v8);
     shouldRenderInvisibleContentForNonInteractiveCanvas = objc_msgSend_shouldRenderInvisibleContentForNonInteractiveCanvas(v9, v10, v11, v12);
 
     if (shouldRenderInvisibleContentForNonInteractiveCanvas)
     {
-      CGContextSaveGState(a3);
-      objc_msgSend_p_imageContainerRectForContext_(self, v14, a3, v15);
+      CGContextSaveGState(context);
+      objc_msgSend_p_imageContainerRectForContext_(self, v14, context, v15);
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -203,16 +203,16 @@ LABEL_9:
       v61.a = 1.0;
       *&v61.d = xmmword_276116D00;
       v61.ty = v22;
-      CGContextConcatCTM(a3, &v61);
+      CGContextConcatCTM(context, &v61);
       v27 = objc_msgSend_p_emptyPlaceholderBackgroundColor(self, v24, v25, v26);
       v31 = objc_msgSend_CGColor(v27, v28, v29, v30);
-      CGContextSetFillColorWithColor(a3, v31);
+      CGContextSetFillColorWithColor(context, v31);
 
       v63.origin.x = v17;
       v63.origin.y = v19;
       v63.size.width = v21;
       v63.size.height = v23;
-      CGContextFillRect(a3, v63);
+      CGContextFillRect(context, v63);
       v35 = objc_msgSend_p_emptyPlaceholderImage(self, v32, v33, v34);
       v39 = objc_msgSend_canvas(self, v36, v37, v38);
       objc_msgSend_viewScale(v39, v40, v41, v42);
@@ -244,20 +244,20 @@ LABEL_9:
       TSDCGContextAssociatedScreenScale();
       objc_msgSend_CGImageForContentsScale_(v35, v58, v59, v60);
       TSDCGContextDrawImageRecordingMaxHeadroom();
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 
   else
   {
 
-    MEMORY[0x2821F9670](self, sel_p_drawImageInContext_forLayer_, a3, 0);
+    MEMORY[0x2821F9670](self, sel_p_drawImageInContext_forLayer_, context, 0);
   }
 }
 
-- (CGRect)p_imageContainerRectForContext:(CGContext *)a3
+- (CGRect)p_imageContainerRectForContext:(CGContext *)context
 {
-  v5 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v5 = objc_msgSend_galleryLayout(self, a2, context, v3);
   objc_msgSend_imageContainerRect(v5, v6, v7, v8);
   x = v9;
   y = v11;
@@ -318,15 +318,15 @@ LABEL_9:
   return result;
 }
 
-- (void)p_drawImageInContext:(CGContext *)a3 forLayer:(BOOL)a4
+- (void)p_drawImageInContext:(CGContext *)context forLayer:(BOOL)layer
 {
-  v4 = a4;
-  CGContextSaveGState(a3);
-  objc_msgSend_p_imageContainerRectForContext_(self, v7, a3, v8);
+  layerCopy = layer;
+  CGContextSaveGState(context);
+  objc_msgSend_p_imageContainerRectForContext_(self, v7, context, v8);
   CGContextClipToRectSafe();
-  objc_msgSend_drawInContext_forLayer_forShadowOrHitTest_(self->_drawingHelper, v9, a3, v4, 0);
+  objc_msgSend_drawInContext_forLayer_forShadowOrHitTest_(self->_drawingHelper, v9, context, layerCopy, 0);
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - (BOOL)p_prefersHDRRendering
@@ -351,27 +351,27 @@ LABEL_9:
   return v22;
 }
 
-- (id)imageDrawingHelperImageData:(id)a3
+- (id)imageDrawingHelperImageData:(id)data
 {
-  v4 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v4 = objc_msgSend_galleryLayout(self, a2, data, v3);
   v8 = objc_msgSend_currentItem(v4, v5, v6, v7);
   v12 = objc_msgSend_imageData(v8, v9, v10, v11);
 
   return v12;
 }
 
-- (id)imageDrawingHelperThumbnailImageData:(id)a3
+- (id)imageDrawingHelperThumbnailImageData:(id)data
 {
-  v4 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v4 = objc_msgSend_galleryLayout(self, a2, data, v3);
   v8 = objc_msgSend_currentItem(v4, v5, v6, v7);
   v12 = objc_msgSend_thumbnailImageData(v8, v9, v10, v11);
 
   return v12;
 }
 
-- (CGRect)imageDrawingHelperImageRect:(id)a3
+- (CGRect)imageDrawingHelperImageRect:(id)rect
 {
-  v4 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v4 = objc_msgSend_galleryLayout(self, a2, rect, v3);
   objc_msgSend_imageRect(v4, v5, v6, v7);
   v9 = v8;
   v11 = v10;
@@ -389,9 +389,9 @@ LABEL_9:
   return result;
 }
 
-- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)a3
+- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)defeat
 {
-  v15 = objc_msgSend_galleryLayout(self, a3, a4, v4);
+  v15 = objc_msgSend_galleryLayout(self, defeat, a4, v4);
   v9 = objc_msgSend_imageGeometryInRoot(v15, v6, v7, v8);
   v13 = v9;
   if (v9)
@@ -409,9 +409,9 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)imageDrawingHelperImageHasAlpha:(id)a3
+- (BOOL)imageDrawingHelperImageHasAlpha:(id)alpha
 {
-  v16 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v16 = objc_msgSend_galleryLayout(self, a2, alpha, v3);
   v7 = objc_msgSend_currentItem(v16, v4, v5, v6);
   v11 = objc_msgSend_imageData(v7, v8, v9, v10);
 
@@ -429,18 +429,18 @@ LABEL_9:
   return v16;
 }
 
-- (id)imageDrawingHelperAdjustedImageData:(id)a3
+- (id)imageDrawingHelperAdjustedImageData:(id)data
 {
-  v4 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v4 = objc_msgSend_galleryLayout(self, a2, data, v3);
   v8 = objc_msgSend_currentItem(v4, v5, v6, v7);
   v12 = objc_msgSend_adjustedImageData(v8, v9, v10, v11);
 
   return v12;
 }
 
-- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)a3
+- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)data
 {
-  v4 = objc_msgSend_galleryLayout(self, a2, a3, v3);
+  v4 = objc_msgSend_galleryLayout(self, a2, data, v3);
   v8 = objc_msgSend_currentItem(v4, v5, v6, v7);
   v12 = objc_msgSend_thumbnailAdjustedImageData(v8, v9, v10, v11);
 
@@ -451,16 +451,16 @@ LABEL_9:
 {
   v14.receiver = self;
   v14.super_class = TSAGalleryRep;
-  v3 = [(TSDRep *)&v14 layoutsForChildReps];
+  layoutsForChildReps = [(TSDRep *)&v14 layoutsForChildReps];
   if ((objc_msgSend_p_isEmpty(self, v4, v5, v6) & 1) == 0)
   {
-    v9 = objc_msgSend_indexesOfObjectsPassingTest_(v3, v7, &unk_28850F6F0, v8);
-    v12 = objc_msgSend_tsu_arrayByRemovingObjectsAtIndexes_(v3, v10, v9, v11);
+    v9 = objc_msgSend_indexesOfObjectsPassingTest_(layoutsForChildReps, v7, &unk_28850F6F0, v8);
+    v12 = objc_msgSend_tsu_arrayByRemovingObjectsAtIndexes_(layoutsForChildReps, v10, v9, v11);
 
-    v3 = v12;
+    layoutsForChildReps = v12;
   }
 
-  return v3;
+  return layoutsForChildReps;
 }
 
 - (id)p_emptyPlaceholderImage
@@ -471,21 +471,21 @@ LABEL_9:
   return v6;
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  isMagicMove = objc_msgSend_isMagicMove(v4, v6, v7, v8);
+  descriptionCopy = description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isMagicMove = objc_msgSend_isMagicMove(descriptionCopy, v6, v7, v8);
   v10 = objc_alloc_init(MEMORY[0x277D803E0]);
-  objc_msgSend_setRep_(v10, v11, v5, v12);
+  objc_msgSend_setRep_(v10, v11, selfCopy, v12);
   objc_msgSend_setIsMagicMove_(v10, v13, isMagicMove, v14);
   objc_msgSend_setContainsContentBuildTextures_(v10, v15, 1, v16);
-  objc_msgSend_centerForRotation(v5, v17, v18, v19);
+  objc_msgSend_centerForRotation(selfCopy, v17, v18, v19);
   objc_msgSend_setCenter_(v10, v20, v21, v22);
   objc_msgSend_setObjectType_(v10, v23, 7, v24);
-  v140 = objc_msgSend_galleryLayout(v5, v25, v26, v27);
-  v31 = objc_msgSend_canvas(v5, v28, v29, v30);
+  v140 = objc_msgSend_galleryLayout(selfCopy, v25, v26, v27);
+  v31 = objc_msgSend_canvas(selfCopy, v28, v29, v30);
   objc_msgSend_viewScale(v31, v32, v33, v34);
   v36 = v35;
 
@@ -519,16 +519,16 @@ LABEL_9:
     v149 = 0u;
   }
 
-  v142 = objc_msgSend_stage(v4, v46, v47, v48);
-  shouldSeparateText = objc_msgSend_shouldSeparateText(v4, v49, v50, v51);
-  v53 = v4;
+  v142 = objc_msgSend_stage(descriptionCopy, v46, v47, v48);
+  shouldSeparateText = objc_msgSend_shouldSeparateText(descriptionCopy, v49, v50, v51);
+  v53 = descriptionCopy;
   v54 = shouldSeparateText;
   v132 = v53;
   shouldNotAddContainedReps = objc_msgSend_shouldNotAddContainedReps(v53, v55, v56, v57);
-  v131 = objc_msgSend_galleryInfo(v5, v59, v60, v61);
+  v131 = objc_msgSend_galleryInfo(selfCopy, v59, v60, v61);
   v139 = objc_msgSend_captionMode(v131, v62, v63, v64);
   v141 = objc_msgSend_currentCaptionLayout(v140, v65, v66, v67);
-  isEmpty = objc_msgSend_p_isEmpty(v5, v68, v69, v70);
+  isEmpty = objc_msgSend_p_isEmpty(selfCopy, v68, v69, v70);
   v74 = isEmpty;
   if (v139)
   {
@@ -637,20 +637,20 @@ LABEL_26:
 
   if (((shouldNotAddContainedReps | v74) & 1) == 0 && v139 == 1)
   {
-    LODWORD(isMagicMove) = objc_msgSend_p_shouldIncludeItemCaptionTextForStage_isIncoming_(v5, v72, v142, 1);
+    LODWORD(isMagicMove) = objc_msgSend_p_shouldIncludeItemCaptionTextForStage_isIncoming_(selfCopy, v72, v142, 1);
   }
 
   v143 = v149;
   v144 = v150;
   v145 = v151;
-  isIncoming_includeImage_includeCaption_size_offset_renderTransform = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(v5, v72, v142, 1, 1, isMagicMove & (v86 ^ 1), &v143, v138, v137, v136, v135);
+  isIncoming_includeImage_includeCaption_size_offset_renderTransform = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(selfCopy, v72, v142, 1, 1, isMagicMove & (v86 ^ 1), &v143, v138, v137, v136, v135);
   v106 = isIncoming_includeImage_includeCaption_size_offset_renderTransform;
   if ((isMagicMove & v86) == 1)
   {
     v143 = v146;
     v144 = v147;
     v145 = v148;
-    v107 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(v5, v105, v142, 1, 0, 1, &v143, v89, v88, v90, v91);
+    v107 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(selfCopy, v105, v142, 1, 0, 1, &v143, v89, v88, v90, v91);
     objc_msgSend_setTextureType_(v107, v108, 6, v109);
     if (!v106)
     {
@@ -677,13 +677,13 @@ LABEL_38:
   isIncoming = 0;
   if ((v103 & 1) == 0 && v139 == 1)
   {
-    isIncoming = objc_msgSend_p_shouldIncludeItemCaptionTextForStage_isIncoming_(v5, v72, v142, 0);
+    isIncoming = objc_msgSend_p_shouldIncludeItemCaptionTextForStage_isIncoming_(selfCopy, v72, v142, 0);
   }
 
   v143 = v149;
   v144 = v150;
   v145 = v151;
-  v111 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(v5, v72, v142, 0, 1, isIncoming & (v86 ^ 1u), &v143, v138, v137, v136, v135);
+  v111 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(selfCopy, v72, v142, 0, 1, isIncoming & (v86 ^ 1u), &v143, v138, v137, v136, v135);
   v114 = v111;
   if ((isIncoming & v86) != 1)
   {
@@ -701,7 +701,7 @@ LABEL_38:
   v144 = v147;
   v145 = v148;
   v115 = v132;
-  v116 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(v5, v112, v142, 0, 0, 1, &v143, v89, v88, v90, v91);
+  v116 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(selfCopy, v112, v142, 0, 0, 1, &v143, v89, v88, v90, v91);
   objc_msgSend_setTextureType_(v116, v117, 6, v118);
   if (v114)
   {
@@ -715,12 +715,12 @@ LABEL_46:
     objc_msgSend_addRenderable_forStage_(v10, v112, v116, v142);
   }
 
-  if (v87 && objc_msgSend_p_shouldIncludeItemCaptionTextForStage_isIncoming_(v5, v112, 0, 0))
+  if (v87 && objc_msgSend_p_shouldIncludeItemCaptionTextForStage_isIncoming_(selfCopy, v112, 0, 0))
   {
     v143 = v146;
     v144 = v147;
     v145 = v148;
-    v119 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(v5, v112, 0, 0, 0, 1, &v143, v89, v88, v90, v91);
+    v119 = objc_msgSend_p_newTextureForStage_isIncoming_includeImage_includeCaption_size_offset_renderTransform_(selfCopy, v112, 0, 0, 0, 1, &v143, v89, v88, v90, v91);
     objc_msgSend_setTextureType_(v119, v120, 6, v121);
     if (v119)
     {
@@ -728,18 +728,18 @@ LABEL_46:
     }
   }
 
-  objc_msgSend_setTextureAttributes_textureBounds_(v5, v112, v10, v113, v134, v133, v138, v137);
+  objc_msgSend_setTextureAttributes_textureBounds_(selfCopy, v112, v10, v113, v134, v133, v138, v137);
   if ((objc_msgSend_shouldNotAddContainedReps(v115, v123, v124, v125) & 1) == 0)
   {
-    objc_msgSend_addChildTexturesToTextureSet_forDescription_passingTest_(v5, v126, v10, v115, 0);
+    objc_msgSend_addChildTexturesToTextureSet_forDescription_passingTest_(selfCopy, v126, v10, v115, 0);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (void)addChildTexturesToTextureSet:(id)a3 forDescription:(id)a4 passingTest:(id)a5
+- (void)addChildTexturesToTextureSet:(id)set forDescription:(id)description passingTest:(id)test
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -748,13 +748,13 @@ LABEL_46:
   v6[4] = self;
   v5.receiver = self;
   v5.super_class = TSAGalleryRep;
-  [(TSDRep *)&v5 addChildTexturesToTextureSet:a3 forDescription:a4 passingTest:v6];
+  [(TSDRep *)&v5 addChildTexturesToTextureSet:set forDescription:description passingTest:v6];
 }
 
-- (BOOL)p_shouldIncludeItemCaptionTextForStage:(unint64_t)a3 isIncoming:(BOOL)a4
+- (BOOL)p_shouldIncludeItemCaptionTextForStage:(unint64_t)stage isIncoming:(BOOL)incoming
 {
-  v4 = a4;
-  v7 = objc_msgSend_galleryInfo(self, a2, a3, a4);
+  incomingCopy = incoming;
+  v7 = objc_msgSend_galleryInfo(self, a2, stage, incoming);
   v11 = objc_msgSend_captionMode(v7, v8, v9, v10);
 
   hasUserGeneratedVisibleText = v11 != 0;
@@ -773,7 +773,7 @@ LABEL_46:
 
     if (v11 == 1)
     {
-      v27 = objc_msgSend_p_galleryItemForTextureStage_isIncoming_(self, v24, a3, v4);
+      v27 = objc_msgSend_p_galleryItemForTextureStage_isIncoming_(self, v24, stage, incomingCopy);
       v31 = v27;
       if (!v27)
       {
@@ -792,17 +792,17 @@ LABEL_8:
   return hasUserGeneratedVisibleText;
 }
 
-+ (CGAffineTransform)p_textureLayoutTransformInRootForLayout:(SEL)a3 isMagicMove:(id)a4
++ (CGAffineTransform)p_textureLayoutTransformInRootForLayout:(SEL)layout isMagicMove:(id)move
 {
   v5 = a5;
-  v7 = a4;
-  v11 = v7;
+  moveCopy = move;
+  v11 = moveCopy;
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  if (v7)
+  if (moveCopy)
   {
-    objc_msgSend_transformInRoot(v7, v8, v9, v10);
+    objc_msgSend_transformInRoot(moveCopy, v8, v9, v10);
   }
 
   if (v5)
@@ -865,11 +865,11 @@ LABEL_8:
   return result;
 }
 
-+ (CGRect)p_textureRectForLayout:(id)a3 viewScale:(double)a4 isMagicMove:(BOOL)a5
++ (CGRect)p_textureRectForLayout:(id)layout viewScale:(double)scale isMagicMove:(BOOL)move
 {
-  v5 = a5;
-  v7 = a3;
-  v11 = objc_msgSend_geometry(v7, v8, v9, v10);
+  moveCopy = move;
+  layoutCopy = layout;
+  v11 = objc_msgSend_geometry(layoutCopy, v8, v9, v10);
   objc_msgSend_size(v11, v12, v13, v14);
   TSURectWithSize();
   v16 = v15;
@@ -878,7 +878,7 @@ LABEL_8:
   v22 = v21;
 
   memset(&v28[1], 0, sizeof(CGAffineTransform));
-  objc_msgSend_p_textureLayoutTransformInRootForLayout_isMagicMove_(a1, v23, v7, v5);
+  objc_msgSend_p_textureLayoutTransformInRootForLayout_isMagicMove_(self, v23, layoutCopy, moveCopy);
 
   v28[0] = v28[1];
   v29.origin.x = v16;
@@ -894,14 +894,14 @@ LABEL_8:
   return result;
 }
 
-+ (CGAffineTransform)p_textureRenderTransformRelativeToTextureRect:(SEL)a3 forLayout:(CGRect)a4 viewScale:(id)a5 isMagicMove:(double)a6
++ (CGAffineTransform)p_textureRenderTransformRelativeToTextureRect:(SEL)rect forLayout:(CGRect)layout viewScale:(id)scale isMagicMove:(double)move
 {
   v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a5;
+  height = layout.size.height;
+  width = layout.size.width;
+  y = layout.origin.y;
+  x = layout.origin.x;
+  scaleCopy = scale;
   v26.origin.x = x;
   v26.origin.y = y;
   v26.size.width = width;
@@ -915,13 +915,13 @@ LABEL_8:
   *&v24.a = *&retstr->a;
   *&v24.c = v16;
   *&v24.tx = *&retstr->tx;
-  CGAffineTransformScale(&v25, &v24, a6, a6);
+  CGAffineTransformScale(&v25, &v24, move, move);
   v17 = *&v25.c;
   *&retstr->a = *&v25.a;
   *&retstr->c = v17;
   *&retstr->tx = *&v25.tx;
   memset(&v25, 0, sizeof(v25));
-  objc_msgSend_p_textureLayoutTransformInRootForLayout_isMagicMove_(a2, v18, v15, v7);
+  objc_msgSend_p_textureLayoutTransformInRootForLayout_isMagicMove_(a2, v18, scaleCopy, v7);
 
   t1 = v25;
   v19 = *&retstr->c;
@@ -936,29 +936,29 @@ LABEL_8:
   return result;
 }
 
-- (id)p_galleryItemForTextureStage:(unint64_t)a3 isIncoming:(BOOL)a4
+- (id)p_galleryItemForTextureStage:(unint64_t)stage isIncoming:(BOOL)incoming
 {
-  v4 = a4;
-  v6 = objc_msgSend_galleryInfo(self, a2, a3, a4);
+  incomingCopy = incoming;
+  v6 = objc_msgSend_galleryInfo(self, a2, stage, incoming);
   v10 = objc_msgSend_items(v6, v7, v8, v9);
 
   v14 = objc_msgSend_count(v10, v11, v12, v13);
   v18 = v14;
-  v19 = v14 - 1;
+  stageCopy = v14 - 1;
   if (v14 == 1)
   {
-    if (a3 >= 2)
+    if (stage >= 2)
     {
       v29 = MEMORY[0x277D81150];
       v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSAGalleryRep p_galleryItemForTextureStage:isIncoming:]", v17);
       v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAGalleryRep.m", v32);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v29, v34, v30, v33, 3341, 0, "The texture stage %tu should be 0 or 1 for item count %tu.", a3, 1);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v29, v34, v30, v33, 3341, 0, "The texture stage %tu should be 0 or 1 for item count %tu.", stage, 1);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37);
     }
 
-    v19 = 0;
-    if (v4)
+    stageCopy = 0;
+    if (incomingCopy)
     {
       goto LABEL_17;
     }
@@ -968,12 +968,12 @@ LABEL_8:
 
   if (!v14)
   {
-    if (a3 >= 2)
+    if (stage >= 2)
     {
       v20 = MEMORY[0x277D81150];
       v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSAGalleryRep p_galleryItemForTextureStage:isIncoming:]", v17);
       v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAGalleryRep.m", v23);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v25, v21, v24, 3336, 0, "The texture stage %tu must be 0 or 1 if the item count is 0.", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v20, v25, v21, v24, 3336, 0, "The texture stage %tu must be 0 or 1 if the item count is 0.", stage);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28);
     }
@@ -981,45 +981,45 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if (a3 + 1 >= v14)
+  if (stage + 1 >= v14)
   {
-    if (a3 + 1 != v14)
+    if (stage + 1 != v14)
     {
       v38 = MEMORY[0x277D81150];
       v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSAGalleryRep p_galleryItemForTextureStage:isIncoming:]", v17);
       v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAGalleryRep.m", v41);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v38, v43, v39, v42, 3361, 0, "The texture stage %tu should be less than the item count %tu.", a3, v18);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v38, v43, v39, v42, 3361, 0, "The texture stage %tu should be less than the item count %tu.", stage, v18);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45, v46);
     }
 
-    if (v4)
+    if (incomingCopy)
     {
       goto LABEL_17;
     }
   }
 
-  else if (v4)
+  else if (incomingCopy)
   {
-    v19 = a3 + 1;
+    stageCopy = stage + 1;
   }
 
   else
   {
-    v19 = a3;
+    stageCopy = stage;
   }
 
-  if (v19 != 0x7FFFFFFFFFFFFFFFLL)
+  if (stageCopy != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_18:
-    if (v19 >= v18)
+    if (stageCopy >= v18)
     {
       objc_msgSend_lastObject(v10, v15, v16, v17);
     }
 
     else
     {
-      objc_msgSend_objectAtIndexedSubscript_(v10, v15, v19, v17);
+      objc_msgSend_objectAtIndexedSubscript_(v10, v15, stageCopy, v17);
     }
     v47 = ;
     goto LABEL_22;
@@ -1032,14 +1032,14 @@ LABEL_22:
   return v47;
 }
 
-- (id)p_newTextureForStage:(unint64_t)a3 isIncoming:(BOOL)a4 includeImage:(BOOL)a5 includeCaption:(BOOL)a6 size:(CGSize)a7 offset:(CGPoint)a8 renderTransform:(CGAffineTransform *)a9
+- (id)p_newTextureForStage:(unint64_t)stage isIncoming:(BOOL)incoming includeImage:(BOOL)image includeCaption:(BOOL)caption size:(CGSize)size offset:(CGPoint)offset renderTransform:(CGAffineTransform *)transform
 {
-  y = a8.y;
-  x = a8.x;
-  height = a7.height;
-  width = a7.width;
-  v16 = a4;
-  v21 = objc_msgSend_p_galleryItemForTextureStage_isIncoming_(self, a2, a3, a4);
+  y = offset.y;
+  x = offset.x;
+  height = size.height;
+  width = size.width;
+  incomingCopy = incoming;
+  v21 = objc_msgSend_p_galleryItemForTextureStage_isIncoming_(self, a2, stage, incoming);
   if (v21)
   {
     v22 = objc_msgSend_canvas(self, v18, v19, v20);
@@ -1060,18 +1060,18 @@ LABEL_22:
     v57[4] = v38;
     v57[5] = v42;
     v58 = v21;
-    v65 = a5;
-    v66 = a6;
-    v43 = *&a9->c;
-    v62 = *&a9->a;
+    imageCopy = image;
+    captionCopy = caption;
+    v43 = *&transform->c;
+    v62 = *&transform->a;
     v63 = v43;
-    v64 = *&a9->tx;
+    v64 = *&transform->tx;
     v44 = MEMORY[0x277C95D60](v57);
     v45 = objc_alloc(MEMORY[0x277D803E8]);
     v48 = objc_msgSend_initWithSize_offset_renderBlock_(v45, v46, v44, v47, width, height, x, y);
     objc_msgSend_setTextureType_(v48, v49, 5, v50);
     objc_msgSend_setTextureOpacity_(v48, v51, v52, v53, 1.0);
-    if (v16)
+    if (incomingCopy)
     {
       objc_msgSend_setIsIncomingContent_(v48, v54, 1, v55);
     }
@@ -1085,91 +1085,91 @@ LABEL_22:
   return v48;
 }
 
-- (void)p_renderTextureInContext:(CGContext *)a3 includeImage:(BOOL)a4 includeCaption:(BOOL)a5 renderTransform:(CGAffineTransform *)a6
+- (void)p_renderTextureInContext:(CGContext *)context includeImage:(BOOL)image includeCaption:(BOOL)caption renderTransform:(CGAffineTransform *)transform
 {
-  v7 = a5;
-  v8 = a4;
-  CGContextSetAllowsFontSubpixelQuantization(a3, 0);
-  v11 = *&a6->c;
-  *&v18.a = *&a6->a;
+  captionCopy = caption;
+  imageCopy = image;
+  CGContextSetAllowsFontSubpixelQuantization(context, 0);
+  v11 = *&transform->c;
+  *&v18.a = *&transform->a;
   *&v18.c = v11;
-  *&v18.tx = *&a6->tx;
-  CGContextConcatCTM(a3, &v18);
-  if (v8)
+  *&v18.tx = *&transform->tx;
+  CGContextConcatCTM(context, &v18);
+  if (imageCopy)
   {
-    CGContextSaveGState(a3);
-    objc_msgSend_drawInContext_(self, v12, a3, v13);
-    CGContextRestoreGState(a3);
-    if (!v7)
+    CGContextSaveGState(context);
+    objc_msgSend_drawInContext_(self, v12, context, v13);
+    CGContextRestoreGState(context);
+    if (!captionCopy)
     {
       return;
     }
 
-    CGContextSaveGState(a3);
-    objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(self->_captionRep, v14, a3, 0);
+    CGContextSaveGState(context);
+    objc_msgSend_recursivelyDrawInContext_keepingChildrenPassingTest_(self->_captionRep, v14, context, 0);
   }
 
   else
   {
-    if (!v7)
+    if (!captionCopy)
     {
       return;
     }
 
-    CGContextSaveGState(a3);
-    objc_msgSend_drawInContext_(self->_captionRep, v15, a3, v16);
-    objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self->_captionRep, v17, a3, 0);
+    CGContextSaveGState(context);
+    objc_msgSend_drawInContext_(self->_captionRep, v15, context, v16);
+    objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self->_captionRep, v17, context, 0);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)updateHitTestingForTextureStage:(unint64_t)a3 isAtEndOfBuild:(BOOL)a4
+- (void)updateHitTestingForTextureStage:(unint64_t)stage isAtEndOfBuild:(BOOL)build
 {
-  v4 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v10 = objc_msgSend_galleryInfo(v6, v7, v8, v9);
+  buildCopy = build;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = objc_msgSend_galleryInfo(selfCopy, v7, v8, v9);
   v14 = objc_msgSend_items(v10, v11, v12, v13);
 
   v18 = objc_msgSend_count(v14, v15, v16, v17);
-  if (v4 && a3 + 1 < v18)
+  if (buildCopy && stage + 1 < v18)
   {
-    v21 = a3 + 1;
+    stageCopy = stage + 1;
   }
 
   else
   {
-    v21 = a3;
+    stageCopy = stage;
   }
 
-  if (v21 >= v18)
+  if (stageCopy >= v18)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = objc_msgSend_objectAtIndexedSubscript_(v14, v19, v21, v20);
+    v22 = objc_msgSend_objectAtIndexedSubscript_(v14, v19, stageCopy, v20);
   }
 
-  v23 = objc_msgSend_galleryLayout(v6, v19, v21, v20);
+  v23 = objc_msgSend_galleryLayout(selfCopy, v19, stageCopy, v20);
   v27 = objc_msgSend_layoutController(v23, v24, v25, v26);
   objc_msgSend_setCurrentItem_(v23, v28, v22, v29);
   objc_msgSend_validateLayoutWithDependencies_(v27, v30, v23, v31);
-  objc_msgSend_updateChildrenFromLayout(v6, v32, v33, v34);
+  objc_msgSend_updateChildrenFromLayout(selfCopy, v32, v33, v34);
 
-  objc_sync_exit(v6);
-  v35.receiver = v6;
+  objc_sync_exit(selfCopy);
+  v35.receiver = selfCopy;
   v35.super_class = TSAGalleryRep;
-  [(TSDRep *)&v35 updateHitTestingForTextureStage:a3 isAtEndOfBuild:v4];
+  [(TSDRep *)&v35 updateHitTestingForTextureStage:stage isAtEndOfBuild:buildCopy];
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context
 {
-  v82 = a5;
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  incomingObjectCopy = incomingObject;
+  objectCopy = object;
   objc_opt_class();
   v9 = TSUDynamicCast();
 
@@ -1248,7 +1248,7 @@ LABEL_17:
     goto LABEL_22;
   }
 
-  if (objc_msgSend_shouldDisableMatchesOnText(v82, v70, v71, v72) & 1) == 0 && (objc_msgSend_isEqualToString_(v29, v73, v58, v75))
+  if (objc_msgSend_shouldDisableMatchesOnText(contextCopy, v70, v71, v72) & 1) == 0 && (objc_msgSend_isEqualToString_(v29, v73, v58, v75))
   {
 
 LABEL_25:

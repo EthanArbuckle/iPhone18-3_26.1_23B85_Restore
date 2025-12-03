@@ -11,36 +11,36 @@
 
 - (uint64_t)rc_shouldRetry
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"NSErrorRCAdditionsShouldRetry"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"NSErrorRCAdditionsShouldRetry"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)rc_isNetworkUnavailableError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"NSErrorRCAdditionsIsNetworkUnavailable"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"NSErrorRCAdditionsIsNetworkUnavailable"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)rc_isCancellationError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277CCA738]] && objc_msgSend(a1, "code") == -999)
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]] && objc_msgSend(self, "code") == -999)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 domain];
-    if ([v4 isEqualToString:@"RCErrorDomain"])
+    domain2 = [self domain];
+    if ([domain2 isEqualToString:@"RCErrorDomain"])
     {
-      v3 = [a1 code] == 1;
+      v3 = [self code] == 1;
     }
 
     else
@@ -54,11 +54,11 @@
 
 - (BOOL)rc_isServiceUnavailableError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"RCErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"RCErrorDomain"])
   {
-    v3 = [a1 userInfo];
-    v4 = [v3 objectForKeyedSubscript:@"RCErrorHTTPStatusCode"];
+    userInfo = [self userInfo];
+    v4 = [userInfo objectForKeyedSubscript:@"RCErrorHTTPStatusCode"];
     v5 = [v4 unsignedIntegerValue] == 503;
   }
 
@@ -72,10 +72,10 @@
 
 - (BOOL)rc_isOperationThrottledError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"RCErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"RCErrorDomain"])
   {
-    v3 = [a1 code] == 8;
+    v3 = [self code] == 8;
   }
 
   else
@@ -88,23 +88,23 @@
 
 - (uint64_t)rc_isOfflineErrorOfflineReason:()RCAdditions
 {
-  v5 = [a1 domain];
-  v6 = [a1 code];
-  v13 = 0;
-  if (![v5 isEqualToString:@"RCErrorDomain"])
+  domain = [self domain];
+  code = [self code];
+  unsignedIntegerValue = 0;
+  if (![domain isEqualToString:@"RCErrorDomain"])
   {
-    if ([v5 isEqualToString:*MEMORY[0x277CCA738]] && (v6 == -1018 || v6 == -1009))
+    if ([domain isEqualToString:*MEMORY[0x277CCA738]] && (code == -1018 || code == -1009))
     {
       goto LABEL_8;
     }
 
 LABEL_9:
-    v10 = [a1 userInfo];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [self userInfo];
+    v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
     if (v11)
     {
-      v9 = [v11 rc_isOfflineErrorOfflineReason:&v13];
+      v9 = [v11 rc_isOfflineErrorOfflineReason:&unsignedIntegerValue];
     }
 
     else
@@ -115,16 +115,16 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v6 != 7)
+  if (code != 7)
   {
     goto LABEL_9;
   }
 
-  v7 = [a1 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"RCErrorOfflineReasonKey"];
+  userInfo2 = [self userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"RCErrorOfflineReasonKey"];
 
-  v13 = [v8 unsignedIntegerValue];
-  if (v13)
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
     v9 = 1;
     goto LABEL_13;
@@ -132,11 +132,11 @@ LABEL_9:
 
 LABEL_8:
   v9 = 1;
-  v13 = 1;
+  unsignedIntegerValue = 1;
 LABEL_13:
   if (a3)
   {
-    *a3 = v13;
+    *a3 = unsignedIntegerValue;
   }
 
   return v9;

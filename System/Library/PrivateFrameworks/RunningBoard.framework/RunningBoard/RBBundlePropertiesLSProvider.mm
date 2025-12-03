@@ -2,10 +2,10 @@
 - (NSString)debugDescription;
 - (RBBundlePropertiesLSProvider)init;
 - (RBBundlePropertiesLSProviderDelegate)delegate;
-- (id)propertiesForIdentity:(id)a3;
-- (void)_removeCachedValuesForAppProxies:(uint64_t)a1;
+- (id)propertiesForIdentity:(id)identity;
+- (void)_removeCachedValuesForAppProxies:(uint64_t)proxies;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation RBBundlePropertiesLSProvider
@@ -52,69 +52,69 @@ void __36__RBBundlePropertiesLSProvider_init__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)propertiesForIdentity:(id)a3
+- (id)propertiesForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 embeddedApplicationIdentifier];
-  if (v5)
+  embeddedApplicationIdentifier = [identityCopy embeddedApplicationIdentifier];
+  if (embeddedApplicationIdentifier)
   {
   }
 
   else
   {
-    v6 = [v4 xpcServiceIdentifier];
+    xpcServiceIdentifier = [identityCopy xpcServiceIdentifier];
 
-    if (!v6)
+    if (!xpcServiceIdentifier)
     {
       goto LABEL_9;
     }
   }
 
-  v6 = [(NSCache *)self->_propertiesByIdentity objectForKey:v4];
-  if (!v6)
+  xpcServiceIdentifier = [(NSCache *)self->_propertiesByIdentity objectForKey:identityCopy];
+  if (!xpcServiceIdentifier)
   {
-    if ([v4 isEmbeddedApplication])
+    if ([identityCopy isEmbeddedApplication])
     {
-      [(RBBundlePropertiesLSProvider *)v4 propertiesForIdentity:?];
+      [(RBBundlePropertiesLSProvider *)identityCopy propertiesForIdentity:?];
     }
 
     else
     {
-      if (![v4 isXPCService])
+      if (![identityCopy isXPCService])
       {
-        v6 = objc_alloc_init(RBLSBundleProperties);
+        xpcServiceIdentifier = objc_alloc_init(RBLSBundleProperties);
 LABEL_8:
-        [(NSCache *)self->_propertiesByIdentity setObject:v6 forKey:v4];
+        [(NSCache *)self->_propertiesByIdentity setObject:xpcServiceIdentifier forKey:identityCopy];
         goto LABEL_9;
       }
 
-      [(RBBundlePropertiesLSProvider *)v4 propertiesForIdentity:?];
+      [(RBBundlePropertiesLSProvider *)identityCopy propertiesForIdentity:?];
     }
 
-    v6 = v8;
+    xpcServiceIdentifier = v8;
     goto LABEL_8;
   }
 
 LABEL_9:
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return xpcServiceIdentifier;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RBBundlePropertiesLSProvider;
@@ -126,12 +126,12 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSCache *)self->_propertiesByIdentity mapTableRepresentation];
+  mapTableRepresentation = [(NSCache *)self->_propertiesByIdentity mapTableRepresentation];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [mapTableRepresentation countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -142,16 +142,16 @@ LABEL_9:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mapTableRepresentation);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
+        v10 = [mapTableRepresentation objectForKey:v9];
         v11 = [v9 description];
         [v3 appendFormat:@"%@=%@\n\t\t", v11, v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [mapTableRepresentation countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -167,14 +167,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)_removeCachedValuesForAppProxies:(uint64_t)a1
+- (void)_removeCachedValuesForAppProxies:(uint64_t)proxies
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (proxies)
   {
     v4 = [MEMORY[0x277CBEB58] set];
-    os_unfair_lock_lock((a1 + 24));
+    os_unfair_lock_lock((proxies + 24));
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -196,10 +196,10 @@ LABEL_9:
           }
 
           v10 = MEMORY[0x277D46F60];
-          v11 = [*(*(&v15 + 1) + 8 * v9) bundleIdentifier];
-          v12 = [v10 identityForEmbeddedApplicationIdentifier:v11];
+          bundleIdentifier = [*(*(&v15 + 1) + 8 * v9) bundleIdentifier];
+          v12 = [v10 identityForEmbeddedApplicationIdentifier:bundleIdentifier];
 
-          [*(a1 + 8) removeObjectForKey:v12];
+          [*(proxies + 8) removeObjectForKey:v12];
           [v4 addObject:v12];
 
           ++v9;
@@ -212,9 +212,9 @@ LABEL_9:
       while (v7);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    os_unfair_lock_unlock((a1 + 24));
-    [WeakRetained bundlePropertiesProvider:a1 didChangePropertiesForProcessIdentities:v4];
+    WeakRetained = objc_loadWeakRetained((proxies + 16));
+    os_unfair_lock_unlock((proxies + 24));
+    [WeakRetained bundlePropertiesProvider:proxies didChangePropertiesForProcessIdentities:v4];
   }
 
   v14 = *MEMORY[0x277D85DE8];

@@ -1,17 +1,17 @@
 @interface NSError
-+ (NSError)errorWithZhuGeErrorCode:(unint64_t)a3 underlyingError:(id)a4;
-+ (id)descriptionFromZhuGeErrorCode:(unint64_t)a3;
-- (id)_ZhuGeDescriptionWithLayer:(unint64_t)a3;
++ (NSError)errorWithZhuGeErrorCode:(unint64_t)code underlyingError:(id)error;
++ (id)descriptionFromZhuGeErrorCode:(unint64_t)code;
+- (id)_ZhuGeDescriptionWithLayer:(unint64_t)layer;
 @end
 
 @implementation NSError
 
-+ (NSError)errorWithZhuGeErrorCode:(unint64_t)a3 underlyingError:(id)a4
++ (NSError)errorWithZhuGeErrorCode:(unint64_t)code underlyingError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = &MGCopyAnswerWithError_ptr;
   v7 = [NSError errorWithDomain:@"com.apple.zhuge" code:0 userInfo:0];
-  if (a3 == 1)
+  if (code == 1)
   {
     v8 = off_100019398[0];
     v9 = [NSNumber numberWithUnsignedInteger:1];
@@ -23,30 +23,30 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 >= 0x51)
+  if (code >= 0x51)
   {
     v8 = off_100019398[0];
-    v12 = [NSNumber numberWithUnsignedInteger:a3];
+    v12 = [NSNumber numberWithUnsignedInteger:code];
     v10 = [NSString stringWithFormat:@"ZhuGeErrorCode %@ exceed maximum", v12];
 LABEL_9:
 
     v11 = @"Please file a radar against ZhuGe|all";
-    a3 = 1;
+    code = 1;
     goto LABEL_10;
   }
 
-  v13 = (&ZhuGeErrorTable + 32 * a3);
-  if (*v13 != a3)
+  v13 = (&ZhuGeErrorTable + 32 * code);
+  if (*v13 != code)
   {
     v8 = off_100019398[0];
-    v12 = [NSNumber numberWithUnsignedInteger:a3];
+    v12 = [NSNumber numberWithUnsignedInteger:code];
     v15 = [NSNumber numberWithInteger:*v13];
     v10 = [NSString stringWithFormat:@"Index %@ of ZhuGeErrorCode table got a wrong code %@", v12, v15];
 
     goto LABEL_9;
   }
 
-  if (isObjectNilOrZhuGeNull(v5))
+  if (isObjectNilOrZhuGeNull(errorCopy))
   {
     v14 = v7;
 
@@ -54,7 +54,7 @@ LABEL_18:
     v8 = v13[1];
     v10 = v13[2];
     v11 = v13[3];
-    v5 = v14;
+    errorCopy = v14;
     v16 = v14;
     v6 = &MGCopyAnswerWithError_ptr;
     goto LABEL_11;
@@ -63,7 +63,7 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v5;
+    v14 = errorCopy;
     goto LABEL_18;
   }
 
@@ -72,7 +72,7 @@ LABEL_18:
   {
     v25[0] = NSLocalizedDescriptionKey;
     v25[1] = NSLocalizedFailureReasonErrorKey;
-    v26[0] = v5;
+    v26[0] = errorCopy;
     v26[1] = off_1000193C0[0];
     v25[2] = NSLocalizedRecoverySuggestionErrorKey;
     v25[3] = NSUnderlyingErrorKey;
@@ -86,7 +86,7 @@ LABEL_18:
 
   v8 = off_100019398[0];
   v11 = @"Please check latest code that using ZhuGe error API";
-  a3 = 1;
+  code = 1;
   v16 = v7;
   v10 = @"UnderlyingError can only be NSError, NSString, ZHUGE_NULL or nil";
 LABEL_11:
@@ -101,17 +101,17 @@ LABEL_11:
   v24[2] = v11;
   v24[3] = v17;
   v19 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:4];
-  v20 = [v18 errorWithDomain:@"com.apple.zhuge" code:a3 userInfo:v19];
+  v20 = [v18 errorWithDomain:@"com.apple.zhuge" code:code userInfo:v19];
 
   return v20;
 }
 
-+ (id)descriptionFromZhuGeErrorCode:(unint64_t)a3
++ (id)descriptionFromZhuGeErrorCode:(unint64_t)code
 {
-  if (a3 <= 0x50)
+  if (code <= 0x50)
   {
-    v6 = (&ZhuGeErrorTable + 32 * a3);
-    if (*v6 == a3)
+    v6 = (&ZhuGeErrorTable + 32 * code);
+    if (*v6 == code)
     {
       v4 = v6[1];
     }
@@ -130,40 +130,40 @@ LABEL_11:
   return v4;
 }
 
-- (id)_ZhuGeDescriptionWithLayer:(unint64_t)a3
+- (id)_ZhuGeDescriptionWithLayer:(unint64_t)layer
 {
-  v5 = 4 * a3;
-  v6 = [&stru_100014878 stringByPaddingToLength:4 * a3 withString:@" " startingAtIndex:0];
-  v7 = [&stru_100014878 stringByPaddingToLength:(4 * a3) | 2 withString:@" " startingAtIndex:0];
+  v5 = 4 * layer;
+  v6 = [&stru_100014878 stringByPaddingToLength:4 * layer withString:@" " startingAtIndex:0];
+  v7 = [&stru_100014878 stringByPaddingToLength:(4 * layer) | 2 withString:@" " startingAtIndex:0];
   v8 = [&stru_100014878 stringByPaddingToLength:v5 + 4 withString:@" " startingAtIndex:0];
-  v9 = [(NSError *)self domain];
-  v10 = [v9 isEqualToString:@"com.apple.zhuge"];
+  domain = [(NSError *)self domain];
+  v10 = [domain isEqualToString:@"com.apple.zhuge"];
 
   if (v10)
   {
-    v11 = [(NSError *)self userInfo];
-    v12 = [v11 objectForKey:NSLocalizedDescriptionKey];
+    userInfo = [(NSError *)self userInfo];
+    v12 = [userInfo objectForKey:NSLocalizedDescriptionKey];
 
-    v13 = [(NSError *)self userInfo];
-    v23 = [v13 objectForKey:NSLocalizedFailureReasonErrorKey];
+    userInfo2 = [(NSError *)self userInfo];
+    v23 = [userInfo2 objectForKey:NSLocalizedFailureReasonErrorKey];
 
-    v14 = [(NSError *)self userInfo];
-    v15 = [v14 objectForKey:NSLocalizedRecoverySuggestionErrorKey];
+    userInfo3 = [(NSError *)self userInfo];
+    v15 = [userInfo3 objectForKey:NSLocalizedRecoverySuggestionErrorKey];
 
-    v16 = [(NSError *)self userInfo];
-    v17 = [v16 objectForKey:NSUnderlyingErrorKey];
+    userInfo4 = [(NSError *)self userInfo];
+    v17 = [userInfo4 objectForKey:NSUnderlyingErrorKey];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v17 _ZhuGeDescriptionWithLayer:a3 + 1];
+      v18 = [v17 _ZhuGeDescriptionWithLayer:layer + 1];
 
       v17 = v18;
     }
 
-    v19 = [(NSError *)self domain];
+    domain2 = [(NSError *)self domain];
     v20 = [NSNumber numberWithInteger:[(NSError *)self code]];
-    v21 = [NSString stringWithFormat:@"\n%@{\n%@Domain   = %@\n%@Code     = %@\n%@UserInfo = {\n%@Description        = %@\n%@FailureReason      = %@\n%@RecoverySuggestion = %@\n%@UnderlyingError    = %@\n%@}", v6, v7, v19, v7, v20, v7, v8, v12, v8, v23, v8, v15, v8, v17, v6];
+    v21 = [NSString stringWithFormat:@"\n%@{\n%@Domain   = %@\n%@Code     = %@\n%@UserInfo = {\n%@Description        = %@\n%@FailureReason      = %@\n%@RecoverySuggestion = %@\n%@UnderlyingError    = %@\n%@}", v6, v7, domain2, v7, v20, v7, v8, v12, v8, v23, v8, v15, v8, v17, v6];
   }
 
   else

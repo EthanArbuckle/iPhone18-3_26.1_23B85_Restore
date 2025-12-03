@@ -1,15 +1,15 @@
 @interface ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest
-+ (id)newWithBuilder:(id)a3;
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithBuilder:(id)a3;
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithCoder:(id)a3;
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithDictionaryRepresentation:(id)a3;
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithExpirationDuration:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithBuilder:(id)builder;
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithCoder:(id)coder;
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithDictionaryRepresentation:(id)representation;
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithExpirationDuration:(double)duration;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithDictionaryRepresentation:(id)a3
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = [a3 objectForKey:@"expirationDuration"];
+    v4 = [representation objectForKey:@"expirationDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,29 +45,29 @@
     v8 = v7;
 
     self = [(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest *)self initWithExpirationDuration:v8];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   expirationDuration = self->_expirationDuration;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithDouble:expirationDuration];
-  [v4 encodeObject:v5 forKey:@"ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest::expirationDuration"];
+  [coderCopy encodeObject:v5 forKey:@"ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest::expirationDuration"];
 }
 
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithCoder:(id)a3
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest::expirationDuration"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest::expirationDuration"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -75,10 +75,10 @@
   return [(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest *)self initWithExpirationDuration:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -89,7 +89,7 @@
     if (objc_opt_isKindOfClass())
     {
       expirationDuration = self->_expirationDuration;
-      [(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest *)v4 expirationDuration];
+      [(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest *)equalCopy expirationDuration];
       v7 = expirationDuration == v6;
     }
 
@@ -110,7 +110,7 @@
   return v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -121,27 +121,27 @@
   return v6;
 }
 
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithExpirationDuration:(double)a3
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithExpirationDuration:(double)duration
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10022B900;
   v4[3] = &unk_1005172A0;
-  *&v4[4] = a3;
+  *&v4[4] = duration;
   return [(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest *)self initWithBuilder:v4];
 }
 
-- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithBuilder:(id)a3
+- (ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v10.receiver = self;
   v10.super_class = ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest;
   v5 = [(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest *)&v10 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation *)v7 isDirty])
     {
       [(_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation *)v7 getExpirationDuration];
@@ -152,21 +152,21 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequest);

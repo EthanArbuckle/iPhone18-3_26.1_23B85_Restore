@@ -1,32 +1,32 @@
 @interface FCShortcutCategoryList
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
-- (FCShortcutCategoryList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
+- (FCShortcutCategoryList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSArray)blockedShortcutCategories;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (id)recordsForRestoringZoneName:(id)a3;
-- (void)addShortcutCategory:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (id)recordsForRestoringZoneName:(id)name;
+- (void)addShortcutCategory:(id)category;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
 - (void)removeAllShortcutCategories;
-- (void)removeShortcutCategoryWithIdentifier:(id)a3;
+- (void)removeShortcutCategoryWithIdentifier:(id)identifier;
 @end
 
 @implementation FCShortcutCategoryList
 
-- (FCShortcutCategoryList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCShortcutCategoryList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
   v11.receiver = self;
   v11.super_class = FCShortcutCategoryList;
-  v5 = [(FCPrivateDataController *)&v11 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v5 = [(FCPrivateDataController *)&v11 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   if (v5)
   {
     v6 = objc_alloc_init(FCMTWriterLock);
     itemsLock = v5->_itemsLock;
     v5->_itemsLock = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     shortcutCategoriesByID = v5->_shortcutCategoriesByID;
-    v5->_shortcutCategoriesByID = v8;
+    v5->_shortcutCategoriesByID = dictionary;
   }
 
   return v5;
@@ -92,24 +92,24 @@ void __51__FCShortcutCategoryList_blockedShortcutCategories__block_invoke_2(uint
   }
 }
 
-- (void)addShortcutCategory:(id)a3
+- (void)addShortcutCategory:(id)category
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  categoryCopy = category;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (categoryCopy)
   {
     v24[0] = @"type";
-    v5 = NSStringFromShortcutCategoryType([v4 type]);
+    v5 = NSStringFromShortcutCategoryType([categoryCopy type]);
     *&buf = v5;
     v24[1] = @"categoryID";
-    v6 = [v4 identifier];
-    *(&buf + 1) = v6;
+    identifier = [categoryCopy identifier];
+    *(&buf + 1) = identifier;
     v24[2] = @"dateAdded";
-    v7 = [v4 dateAdded];
-    v26 = v7;
+    dateAdded = [categoryCopy dateAdded];
+    v26 = dateAdded;
     v24[3] = @"status";
-    v8 = NSStringFromShortcutCategoryStatus([v4 status]);
+    v8 = NSStringFromShortcutCategoryStatus([categoryCopy status]);
     v27 = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&buf forKeys:v24 count:4];
 
@@ -137,20 +137,20 @@ LABEL_4:
   v21[2] = __46__FCShortcutCategoryList_addShortcutCategory___block_invoke;
   v21[3] = &unk_1E7C36C58;
   v21[4] = self;
-  v11 = v4;
+  v11 = categoryCopy;
   v22 = v11;
   [(FCMTWriterLock *)itemsLock performWriteSync:v21];
-  v12 = [(FCPrivateDataController *)self localStore];
-  v13 = [v11 identifier];
-  [v12 setObject:v9 forKey:v13];
+  localStore = [(FCPrivateDataController *)self localStore];
+  identifier2 = [v11 identifier];
+  [localStore setObject:v9 forKey:identifier2];
 
   v14 = FCShortcutCategoryListLog;
   if (os_log_type_enabled(FCShortcutCategoryListLog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v11 identifier];
+    identifier3 = [v11 identifier];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v16;
+    *(&buf + 4) = identifier3;
     _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "Adding shortcut category, identifier=<%{public}@>", &buf, 0xCu);
   }
 
@@ -177,12 +177,12 @@ void __46__FCShortcutCategoryList_addShortcutCategory___block_invoke(uint64_t a1
   [v3 setObject:v2 forKey:v4];
 }
 
-- (void)removeShortcutCategoryWithIdentifier:(id)a3
+- (void)removeShortcutCategoryWithIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (identifierCopy)
   {
     if (self)
     {
@@ -195,7 +195,7 @@ void __46__FCShortcutCategoryList_addShortcutCategory___block_invoke(uint64_t a1
     }
 
     v6 = shortcutCategoriesByID;
-    v7 = [(NSMutableDictionary *)v6 objectForKey:v4];
+    v7 = [(NSMutableDictionary *)v6 objectForKey:identifierCopy];
 
     if (v7)
     {
@@ -214,11 +214,11 @@ void __46__FCShortcutCategoryList_addShortcutCategory___block_invoke(uint64_t a1
       v17[2] = __63__FCShortcutCategoryList_removeShortcutCategoryWithIdentifier___block_invoke;
       v17[3] = &unk_1E7C36C58;
       v17[4] = self;
-      v9 = v4;
+      v9 = identifierCopy;
       v18 = v9;
       [(FCMTWriterLock *)itemsLock performWriteSync:v17];
-      v10 = [(FCPrivateDataController *)self localStore];
-      [v10 removeObjectForKey:v9];
+      localStore = [(FCPrivateDataController *)self localStore];
+      [localStore removeObjectForKey:v9];
 
       v11 = FCShortcutCategoryListLog;
       if (os_log_type_enabled(FCShortcutCategoryListLog, OS_LOG_TYPE_DEFAULT))
@@ -383,17 +383,17 @@ void __53__FCShortcutCategoryList_removeAllShortcutCategories__block_invoke_3(ui
   [v4 removeObjectForKey:v3];
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allKeys = [cloudCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -404,19 +404,19 @@ void __53__FCShortcutCategoryList_removeAllShortcutCategories__block_invoke_3(ui
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        if (([a1 isLocalStoreKeyInternal:v12] & 1) == 0)
+        if (([self isLocalStoreKeyInternal:v12] & 1) == 0)
         {
-          v13 = [v5 objectForKey:v12];
+          v13 = [cloudCopy objectForKey:v12];
           v14 = [[FCShortcutCategory alloc] initWithIdentifier:v12 dictionaryRepresentation:v13];
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v9);
@@ -429,7 +429,7 @@ void __53__FCShortcutCategoryList_removeAllShortcutCategories__block_invoke_3(ui
     _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "Merging shortcut category list data to icloud", v20, 2u);
   }
 
-  v16 = [[FCModifyShortcutCategoryListCommand alloc] initWithShortcutCategories:v6 merge:1];
+  v16 = [[FCModifyShortcutCategoryListCommand alloc] initWithShortcutCategories:array merge:1];
   v25 = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
 
@@ -438,12 +438,12 @@ void __53__FCShortcutCategoryList_removeAllShortcutCategories__block_invoke_3(ui
   return v17;
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   [MEMORY[0x1E696AF00] isMainThread];
-  v8 = [(FCPrivateDataController *)self localStore];
+  localStore = [(FCPrivateDataController *)self localStore];
   v9 = objc_opt_new();
   v10 = v9;
   if (self)
@@ -460,15 +460,15 @@ void __53__FCShortcutCategoryList_removeAllShortcutCategories__block_invoke_3(ui
   v16[1] = 3221225472;
   v16[2] = __74__FCShortcutCategoryList_handleSyncWithChangedRecords_deletedRecordNames___block_invoke;
   v16[3] = &unk_1E7C376C8;
-  v17 = v6;
-  v18 = self;
+  v17 = recordsCopy;
+  selfCopy = self;
   v19 = v9;
-  v20 = v8;
-  v21 = v7;
-  v12 = v7;
-  v13 = v8;
+  v20 = localStore;
+  v21 = namesCopy;
+  v12 = namesCopy;
+  v13 = localStore;
   v14 = v10;
-  v15 = v6;
+  v15 = recordsCopy;
   [(FCMTWriterLock *)itemsLock performWriteSync:v16];
 }
 
@@ -758,7 +758,7 @@ LABEL_13:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
@@ -771,8 +771,8 @@ LABEL_13:
     shortcutCategoriesByID = 0;
   }
 
-  v5 = [(NSMutableDictionary *)shortcutCategoriesByID allValues];
-  v6 = [v5 fc_arrayByTransformingWithBlock:&__block_literal_global_24];
+  allValues = [(NSMutableDictionary *)shortcutCategoriesByID allValues];
+  v6 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_24];
 
   return v6;
 }
@@ -903,9 +903,9 @@ void __50__FCShortcutCategoryList_loadLocalCachesFromStore__block_invoke(uint64_
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     v8 = 0;
@@ -919,15 +919,15 @@ void __50__FCShortcutCategoryList_loadLocalCachesFromStore__block_invoke(uint64_
     v7[1] = 3221225472;
     v7[2] = __48__FCShortcutCategoryList__allShortcutCategories__block_invoke;
     v7[3] = &unk_1E7C37160;
-    v7[4] = v3;
+    v7[4] = selfCopy;
     v7[5] = &v8;
     [(FCMTWriterLock *)v4 performReadSync:v7];
 
-    v3 = v9[5];
+    selfCopy = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
-  v5 = [(FCShortcutCategoryList *)v3 fc_arrayByTransformingWithBlock:&__block_literal_global_25];
+  v5 = [(FCShortcutCategoryList *)selfCopy fc_arrayByTransformingWithBlock:&__block_literal_global_25];
 
   return v5;
 }

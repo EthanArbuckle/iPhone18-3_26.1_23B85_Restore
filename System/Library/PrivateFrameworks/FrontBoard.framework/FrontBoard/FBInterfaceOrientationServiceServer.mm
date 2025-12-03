@@ -1,19 +1,19 @@
 @interface FBInterfaceOrientationServiceServer
 - (FBInterfaceOrientationServiceServer)init;
-- (id)_initWithDomain:(id)a3 service:(id)a4;
+- (id)_initWithDomain:(id)domain service:(id)service;
 - (id)connections;
 - (id)interestedConnections;
 - (id)pendingConnections;
 - (id)requestActiveOrientation;
-- (void)_connectionInvalidated:(id)a3;
-- (void)_lock_noteInterfaceOrientationChanged:(int64_t)a3 animationSettings:(id)a4 direction:(int64_t)a5;
-- (void)_lock_registerOrientationInterest:(unsigned int)a3 connection:(id)a4 completion:(id)a5;
-- (void)_lock_sendMessageToInterestedClients:(id)a3;
+- (void)_connectionInvalidated:(id)invalidated;
+- (void)_lock_noteInterfaceOrientationChanged:(int64_t)changed animationSettings:(id)settings direction:(int64_t)direction;
+- (void)_lock_registerOrientationInterest:(unsigned int)interest connection:(id)connection completion:(id)completion;
+- (void)_lock_sendMessageToInterestedClients:(id)clients;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)noteInterfaceOrientationChanged:(int64_t)a3 animationSettings:(id)a4 direction:(int64_t)a5;
-- (void)registerOrientationInterest:(id)a3 completion:(id)a4;
-- (void)requestActiveOrientationCompletion:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)noteInterfaceOrientationChanged:(int64_t)changed animationSettings:(id)settings direction:(int64_t)direction;
+- (void)registerOrientationInterest:(id)interest completion:(id)completion;
+- (void)requestActiveOrientationCompletion:(id)completion;
 - (void)startService;
 @end
 
@@ -31,17 +31,17 @@
 - (FBInterfaceOrientationServiceServer)init
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698F508] bootstrapConfiguration];
-  v4 = [v3 domainForMachName:@"com.apple.frontboard.systemappservices"];
-  v5 = [MEMORY[0x1E699FB98] identifier];
-  v6 = [v4 serviceForIdentifier:v5];
+  bootstrapConfiguration = [MEMORY[0x1E698F508] bootstrapConfiguration];
+  v4 = [bootstrapConfiguration domainForMachName:@"com.apple.frontboard.systemappservices"];
+  identifier = [MEMORY[0x1E699FB98] identifier];
+  v6 = [v4 serviceForIdentifier:identifier];
 
   if (v6)
   {
-    v7 = [v4 identifier];
-    self = [(FBInterfaceOrientationServiceServer *)self _initWithDomain:v7 service:v5];
+    identifier2 = [v4 identifier];
+    self = [(FBInterfaceOrientationServiceServer *)self _initWithDomain:identifier2 service:identifier];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -50,21 +50,21 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v5;
+      v13 = identifier;
       _os_log_impl(&dword_1A89DD000, v9, OS_LOG_TYPE_INFO, "Domain is missing %@ service, not creating interface orientation server.", &v12, 0xCu);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
-- (id)_initWithDomain:(id)a3 service:(id)a4
+- (id)_initWithDomain:(id)domain service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  serviceCopy = service;
   v29.receiver = self;
   v29.super_class = FBInterfaceOrientationServiceServer;
   v8 = [(FBInterfaceOrientationServiceServer *)&v29 init];
@@ -73,8 +73,8 @@
   {
     v8->_lock._os_unfair_lock_opaque = 0;
     v10 = MEMORY[0x1E698F4D0];
-    v11 = [MEMORY[0x1E699FB98] serviceQuality];
-    v12 = [v10 queueWithName:@"FBInterfaceOrientationServiceServer" serviceQuality:v11];
+    serviceQuality = [MEMORY[0x1E699FB98] serviceQuality];
+    v12 = [v10 queueWithName:@"FBInterfaceOrientationServiceServer" serviceQuality:serviceQuality];
     queue = v9->_queue;
     v9->_queue = v12;
 
@@ -97,8 +97,8 @@
     v25[1] = 3221225472;
     v25[2] = __63__FBInterfaceOrientationServiceServer__initWithDomain_service___block_invoke;
     v25[3] = &unk_1E783B440;
-    v26 = v6;
-    v27 = v7;
+    v26 = domainCopy;
+    v27 = serviceCopy;
     v21 = v9;
     v28 = v21;
     v22 = [v20 listenerWithConfigurator:v25];
@@ -118,11 +118,11 @@ void __63__FBInterfaceOrientationServiceServer__initWithDomain_service___block_i
   [v4 setDelegate:a1[6]];
 }
 
-- (void)noteInterfaceOrientationChanged:(int64_t)a3 animationSettings:(id)a4 direction:(int64_t)a5
+- (void)noteInterfaceOrientationChanged:(int64_t)changed animationSettings:(id)settings direction:(int64_t)direction
 {
-  v8 = a4;
+  settingsCopy = settings;
   os_unfair_lock_lock(&self->_lock);
-  [(FBInterfaceOrientationServiceServer *)self _lock_noteInterfaceOrientationChanged:a3 animationSettings:v8 direction:a5];
+  [(FBInterfaceOrientationServiceServer *)self _lock_noteInterfaceOrientationChanged:changed animationSettings:settingsCopy direction:direction];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -221,15 +221,15 @@ void __63__FBInterfaceOrientationServiceServer__initWithDomain_service___block_i
   return v3;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v7 = +[FBProcessManager sharedInstance];
-  v8 = [v6 remoteToken];
-  v9 = v8;
-  if (v8)
+  remoteToken = [connectionCopy remoteToken];
+  v9 = remoteToken;
+  if (remoteToken)
   {
-    [v8 realToken];
+    [remoteToken realToken];
   }
 
   else
@@ -245,16 +245,16 @@ void __63__FBInterfaceOrientationServiceServer__initWithDomain_service___block_i
   v11[2] = __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_withContext___block_invoke;
   v11[3] = &unk_1E783B490;
   v11[4] = self;
-  [v6 configureConnection:v11];
-  [(NSMutableSet *)self->_lock_connections addObject:v6];
+  [connectionCopy configureConnection:v11];
+  [(NSMutableSet *)self->_lock_connections addObject:connectionCopy];
   if (self->_lock_serviceSuspended)
   {
-    [(NSMutableSet *)self->_lock_pendingConnections addObject:v6];
+    [(NSMutableSet *)self->_lock_pendingConnections addObject:connectionCopy];
   }
 
   else
   {
-    [v6 activate];
+    [connectionCopy activate];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -286,52 +286,52 @@ void __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_wit
   [WeakRetained _connectionInvalidated:v3];
 }
 
-- (void)requestActiveOrientationCompletion:(id)a3
+- (void)requestActiveOrientationCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v5 = [objc_alloc(MEMORY[0x1E699FBA0]) initWithOrientation:self->_lock_interfaceOrientation sequenceNumber:self->_lock_sequenceNumber duration:0 rotationDirection:0.0];
   os_unfair_lock_unlock(&self->_lock);
-  v4[2](v4, v5, 0);
+  completionCopy[2](completionCopy, v5, 0);
 }
 
-- (void)registerOrientationInterest:(id)a3 completion:(id)a4
+- (void)registerOrientationInterest:(id)interest completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 unsignedIntValue];
+  completionCopy = completion;
+  unsignedIntValue = [interest unsignedIntValue];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(FBInterfaceOrientationServiceServer *)self _currentConnection];
-  [(FBInterfaceOrientationServiceServer *)self _lock_registerOrientationInterest:v7 connection:v8 completion:v6];
+  _currentConnection = [(FBInterfaceOrientationServiceServer *)self _currentConnection];
+  [(FBInterfaceOrientationServiceServer *)self _lock_registerOrientationInterest:unsignedIntValue connection:_currentConnection completion:completionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_connectionInvalidated:(id)a3
+- (void)_connectionInvalidated:(id)invalidated
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = FBLogInterfaceOrientationObserver();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = invalidatedCopy;
     _os_log_impl(&dword_1A89DD000, v5, OS_LOG_TYPE_DEFAULT, "Connection invalidated %{public}@", &v7, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_pendingConnections removeObject:v4];
-  [(NSMutableSet *)self->_lock_interestedConnections removeObject:v4];
-  [(NSMutableSet *)self->_lock_connections removeObject:v4];
+  [(NSMutableSet *)self->_lock_pendingConnections removeObject:invalidatedCopy];
+  [(NSMutableSet *)self->_lock_interestedConnections removeObject:invalidatedCopy];
+  [(NSMutableSet *)self->_lock_connections removeObject:invalidatedCopy];
   os_unfair_lock_unlock(&self->_lock);
-  [v4 invalidate];
+  [invalidatedCopy invalidate];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_noteInterfaceOrientationChanged:(int64_t)a3 animationSettings:(id)a4 direction:(int64_t)a5
+- (void)_lock_noteInterfaceOrientationChanged:(int64_t)changed animationSettings:(id)settings direction:(int64_t)direction
 {
   v29 = *MEMORY[0x1E69E9840];
-  [a4 duration];
+  [settings duration];
   v9 = v8;
   v10 = FBLogInterfaceOrientationObserver();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -348,10 +348,10 @@ void __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_wit
     _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_DEFAULT, "Received active interface orientation did change from %{public}@ to %{public}@ with duration %.1f", buf, 0x20u);
   }
 
-  if (self->_lock_interfaceOrientation != a3)
+  if (self->_lock_interfaceOrientation != changed)
   {
     v14 = self->_lock_sequenceNumber + 1;
-    self->_lock_interfaceOrientation = a3;
+    self->_lock_interfaceOrientation = changed;
     self->_lock_sequenceNumber = v14;
   }
 
@@ -369,7 +369,7 @@ void __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_wit
       _os_log_impl(&dword_1A89DD000, v15, OS_LOG_TYPE_DEFAULT, "Broadcasting active interface orientation (%{public}@) change to registered clients with sequence #: %lu.", buf, 0x16u);
     }
 
-    v18 = [objc_alloc(MEMORY[0x1E699FBA0]) initWithOrientation:a3 sequenceNumber:self->_lock_sequenceNumber duration:a5 rotationDirection:v9];
+    v18 = [objc_alloc(MEMORY[0x1E699FBA0]) initWithOrientation:changed sequenceNumber:self->_lock_sequenceNumber duration:direction rotationDirection:v9];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __105__FBInterfaceOrientationServiceServer__lock_noteInterfaceOrientationChanged_animationSettings_direction___block_invoke;
@@ -382,29 +382,29 @@ void __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_wit
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_registerOrientationInterest:(unsigned int)a3 connection:(id)a4 completion:(id)a5
+- (void)_lock_registerOrientationInterest:(unsigned int)interest connection:(id)connection completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  connectionCopy = connection;
+  completionCopy = completion;
   v10 = FBLogInterfaceOrientationObserver();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (a3)
+  if (interest)
   {
     if (v11)
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = connectionCopy;
       _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_DEFAULT, "Registering orientation interest for %@ ", &v14, 0xCu);
     }
 
-    [(NSMutableSet *)self->_lock_interestedConnections addObject:v8];
+    [(NSMutableSet *)self->_lock_interestedConnections addObject:connectionCopy];
     v12 = objc_alloc_init(MEMORY[0x1E699FBA0]);
     [v12 setOrientation:self->_lock_interfaceOrientation];
     [v12 setSequenceNumber:self->_lock_sequenceNumber];
-    v9[2](v9, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
 
-    v9 = v12;
+    completionCopy = v12;
   }
 
   else
@@ -412,21 +412,21 @@ void __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_wit
     if (v11)
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = connectionCopy;
       _os_log_impl(&dword_1A89DD000, v10, OS_LOG_TYPE_DEFAULT, "Unregistering orientation interest for %@ ", &v14, 0xCu);
     }
 
-    [(NSMutableSet *)self->_lock_interestedConnections removeObject:v8];
-    v9[2](v9, 0, 0);
+    [(NSMutableSet *)self->_lock_interestedConnections removeObject:connectionCopy];
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_sendMessageToInterestedClients:(id)a3
+- (void)_lock_sendMessageToInterestedClients:(id)clients
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clientsCopy = clients;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -447,8 +447,8 @@ void __81__FBInterfaceOrientationServiceServer_listener_didReceiveConnection_wit
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) remoteTarget];
-        v4[2](v4, v10);
+        remoteTarget = [*(*(&v12 + 1) + 8 * v9) remoteTarget];
+        clientsCopy[2](clientsCopy, remoteTarget);
 
         ++v9;
       }

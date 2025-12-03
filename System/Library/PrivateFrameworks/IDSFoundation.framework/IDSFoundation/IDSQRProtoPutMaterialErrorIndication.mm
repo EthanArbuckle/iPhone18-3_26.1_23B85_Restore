@@ -1,10 +1,10 @@
 @interface IDSQRProtoPutMaterialErrorIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoPutMaterialErrorIndication
@@ -15,31 +15,31 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoPutMaterialErrorIndication;
   v4 = [(IDSQRProtoPutMaterialErrorIndication *)&v8 description];
-  v5 = [(IDSQRProtoPutMaterialErrorIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoPutMaterialErrorIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_receiverParticipantId];
-  [v3 setObject:v4 forKey:@"receiver_participant_id"];
+  [dictionary setObject:v4 forKey:@"receiver_participant_id"];
 
   materialOwner = self->_materialOwner;
   if (materialOwner)
   {
-    v6 = [(IDSQRProtoMaterialOwner *)materialOwner dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"material_owner"];
+    dictionaryRepresentation = [(IDSQRProtoMaterialOwner *)materialOwner dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"material_owner"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteUint64Field();
   if (!self->_materialOwner)
   {
@@ -49,24 +49,24 @@
   PBDataWriterWriteSubmessage();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_receiverParticipantId;
-  v6 = [(IDSQRProtoMaterialOwner *)self->_materialOwner copyWithZone:a3];
+  v6 = [(IDSQRProtoMaterialOwner *)self->_materialOwner copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_receiverParticipantId == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_receiverParticipantId == equalCopy[1])
   {
     materialOwner = self->_materialOwner;
-    if (materialOwner | v4[2])
+    if (materialOwner | equalCopy[2])
     {
       v6 = [(IDSQRProtoMaterialOwner *)materialOwner isEqual:?];
     }
@@ -85,12 +85,12 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_receiverParticipantId = v4[1];
+  fromCopy = from;
+  self->_receiverParticipantId = fromCopy[1];
   materialOwner = self->_materialOwner;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (materialOwner)
   {
     if (!v6)
@@ -98,7 +98,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(IDSQRProtoMaterialOwner *)materialOwner mergeFrom:?];
   }
 
@@ -109,11 +109,11 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(IDSQRProtoPutMaterialErrorIndication *)self setMaterialOwner:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 

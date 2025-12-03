@@ -1,7 +1,7 @@
 @interface DABehaviorOptions
 + (BOOL)CFNetworkLogging;
-+ (BOOL)_shouldForceCookies:(BOOL *)a3;
-+ (BOOL)addDAManagedDefaults:(id)a3;
++ (BOOL)_shouldForceCookies:(BOOL *)cookies;
++ (BOOL)addDAManagedDefaults:(id)defaults;
 + (BOOL)allIMAPServersSupportNotesSearch;
 + (BOOL)alwaysUseCalendarHomeSync;
 + (BOOL)babysitterEnabled;
@@ -27,16 +27,16 @@
 + (BOOL)useThunderhillBetaServers;
 + (BOOL)writeOutBrokenCancelationRequests;
 + (double)defaultDAVProbeTimeout;
-+ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)a3;
++ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)found;
 + (double)holidayCalendarRefreshInterval;
 + (id)APSEnv;
-+ (id)DAManagedDefaultForKey:(id)a3;
++ (id)DAManagedDefaultForKey:(id)key;
 + (id)holidayCalendarURL;
 + (id)whitelistedEASProtocols;
 + (int)numForgivable401s;
 + (int)refreshThrottleTime;
 + (void)_startListeningForNotifications;
-+ (void)removeDAManagedDefaults:(id)a3;
++ (void)removeDAManagedDefaults:(id)defaults;
 @end
 
 @implementation DABehaviorOptions
@@ -104,15 +104,15 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
     v5 = [v4 objectForKeyedSubscript:@"RefreshThrottleTime"];
     if (v5 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && ([v5 intValue] & 0x80000000) == 0)
     {
-      v6 = [v5 intValue];
+      intValue = [v5 intValue];
     }
 
     else
     {
-      v6 = 300;
+      intValue = 300;
     }
 
-    refreshThrottleTime___sThrottleTime = v6;
+    refreshThrottleTime___sThrottleTime = intValue;
 
     return refreshThrottleTime___sThrottleTime;
   }
@@ -138,7 +138,7 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
   return ignoreBadLDAPCerts___ignoreBadLDAPCerts;
 }
 
-+ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)a3
++ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)found
 {
   if (defaultEASTaskTimeoutOutWasFound____haveCheckedDefaultEASTaskTimeout != 1 || defaultEASTaskTimeoutOutWasFound____lastToken != sDABehaviorToken)
   {
@@ -159,9 +159,9 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
     }
   }
 
-  if (a3)
+  if (found)
   {
-    *a3 = defaultEASTaskTimeoutOutWasFound____defaultWasFound;
+    *found = defaultEASTaskTimeoutOutWasFound____defaultWasFound;
   }
 
   return *&defaultEASTaskTimeoutOutWasFound____defaultEASTaskTimeout;
@@ -214,7 +214,7 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
   return v7;
 }
 
-+ (BOOL)_shouldForceCookies:(BOOL *)a3
++ (BOOL)_shouldForceCookies:(BOOL *)cookies
 {
   if (_shouldForceCookies____haveCheckedEnableCookies != 1 || _shouldForceCookies____lastToken != sDABehaviorToken)
   {
@@ -232,9 +232,9 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
     }
   }
 
-  if (a3)
+  if (cookies)
   {
-    *a3 = _shouldForceCookies____isSet;
+    *cookies = _shouldForceCookies____isSet;
   }
 
   return _shouldForceCookies____enableCookies;
@@ -549,8 +549,8 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
   {
     isInHoldingPattern___lastToken = sDABehaviorToken;
     isInHoldingPattern___haveCheckedIsInHoldingPattern = 1;
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    isInHoldingPattern___isInHoldingPattern = [v3 BOOLForKey:@"DAInHoldingPattern"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    isInHoldingPattern___isInHoldingPattern = [standardUserDefaults BOOLForKey:@"DAInHoldingPattern"];
 
     if (isInHoldingPattern___isInHoldingPattern == 1)
     {
@@ -577,15 +577,15 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
     if (v3 && ([v3 objectForKeyedSubscript:@"EnableAutomaticAttachmentDownloads"], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = v5;
-      v7 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
 
-    enableAutomaticAttachmentDownloads___enableAutomaticAttachmentDownloads = v7;
+    enableAutomaticAttachmentDownloads___enableAutomaticAttachmentDownloads = bOOLValue;
   }
 
   return enableAutomaticAttachmentDownloads___enableAutomaticAttachmentDownloads;
@@ -896,22 +896,22 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
   return orphanCheckEnabled___orphanCheckEnabled;
 }
 
-+ (id)DAManagedDefaultForKey:(id)a3
++ (id)DAManagedDefaultForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.DataAccess.BehaviorOptions");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.DataAccess.BehaviorOptions");
 
   return v3;
 }
 
-+ (BOOL)addDAManagedDefaults:(id)a3
++ (BOOL)addDAManagedDefaults:(id)defaults
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  defaultsCopy = defaults;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [defaultsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -922,15 +922,15 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(defaultsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v3 objectForKeyedSubscript:v8];
+        v9 = [defaultsCopy objectForKeyedSubscript:v8];
         CFPreferencesSetAppValue(v8, v9, @"com.apple.DataAccess.BehaviorOptions");
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [defaultsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -940,15 +940,15 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
   return 1;
 }
 
-+ (void)removeDAManagedDefaults:(id)a3
++ (void)removeDAManagedDefaults:(id)defaults
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  defaultsCopy = defaults;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [defaultsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -960,14 +960,14 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_9(uin
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(defaultsCopy);
         }
 
         CFPreferencesSetAppValue(*(*(&v9 + 1) + 8 * v7++), 0, @"com.apple.DataAccess.BehaviorOptions");
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [defaultsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

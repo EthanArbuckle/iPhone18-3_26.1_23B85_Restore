@@ -1,44 +1,44 @@
 @interface CDPStateUIProviderProxy
-- (CDPStateUIProviderProxy)initWithUIProvider:(id)a3;
-- (void)cdpContext:(id)a3 createLocalSecretWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 presentRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 presentRemoteApprovalWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4;
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7;
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6;
-- (void)cdpContext:(id)a3 showError:(id)a4 withCompletion:(id)a5;
-- (void)cdpContext:(id)a3 showError:(id)a4 withDefaultIndex:(int64_t)a5 withCompletion:(id)a6;
-- (void)cdpContext:(id)a3 showResetCompletedAlertWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 showResetFailedAlertWithUnderlyingError:(id)a4 completion:(id)a5;
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5;
-- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)a3;
-- (void)presentQuotaScreenWithCompletion:(id)a3;
+- (CDPStateUIProviderProxy)initWithUIProvider:(id)provider;
+- (void)cdpContext:(id)context createLocalSecretWithCompletion:(id)completion;
+- (void)cdpContext:(id)context presentRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context presentRemoteApprovalWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c;
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator;
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator;
+- (void)cdpContext:(id)context showError:(id)error withCompletion:(id)completion;
+- (void)cdpContext:(id)context showError:(id)error withDefaultIndex:(int64_t)index withCompletion:(id)completion;
+- (void)cdpContext:(id)context showResetCompletedAlertWithCompletion:(id)completion;
+- (void)cdpContext:(id)context showResetFailedAlertWithUnderlyingError:(id)error completion:(id)completion;
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator;
+- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)action;
+- (void)presentQuotaScreenWithCompletion:(id)completion;
 @end
 
 @implementation CDPStateUIProviderProxy
 
-- (CDPStateUIProviderProxy)initWithUIProvider:(id)a3
+- (CDPStateUIProviderProxy)initWithUIProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = [(CDPStateUIProviderProxy *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uiProvider, a3);
+    objc_storeStrong(&v6->_uiProvider, provider);
   }
 
   return v7;
 }
 
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  cCopy = c;
   uiProvider = self->_uiProvider;
   if (objc_opt_respondsToSelector())
   {
@@ -46,9 +46,9 @@
     block[1] = 3221225472;
     block[2] = __70__CDPStateUIProviderProxy_cdpContext_promptForAdoptionOfMultipleICSC___block_invoke;
     block[3] = &unk_1E869D878;
-    v20 = v7;
+    v20 = cCopy;
     block[4] = self;
-    v19 = v6;
+    v19 = contextCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     v9 = v20;
@@ -63,10 +63,10 @@ LABEL_7:
     [(CDPStateUIProviderProxy *)v10 cdpContext:v11 promptForAdoptionOfMultipleICSC:v12, v13, v14, v15, v16, v17];
   }
 
-  if (v7)
+  if (cCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDPStateError" code:-5306 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(cCopy + 2))(cCopy, 0, v9);
     goto LABEL_7;
   }
 
@@ -95,11 +95,11 @@ uint64_t __70__CDPStateUIProviderProxy_cdpContext_promptForAdoptionOfMultipleICS
   return result;
 }
 
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  contextCopy = context;
+  lengthCopy = length;
+  validatorCopy = validator;
   uiProvider = self->_uiProvider;
   if (objc_opt_respondsToSelector())
   {
@@ -107,12 +107,12 @@ uint64_t __70__CDPStateUIProviderProxy_cdpContext_promptForAdoptionOfMultipleICS
     block[1] = 3221225472;
     block[2] = __98__CDPStateUIProviderProxy_cdpContext_promptForICSCWithIsNumeric_numericLength_isRandom_validator___block_invoke;
     block[3] = &unk_1E869D8A0;
-    v25 = v12;
-    v26 = v14;
-    v27 = self;
-    v29 = a4;
-    v28 = v13;
-    v30 = a6;
+    v25 = contextCopy;
+    v26 = validatorCopy;
+    selfCopy = self;
+    numericCopy = numeric;
+    v28 = lengthCopy;
+    randomCopy = random;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     v16 = v25;
@@ -134,11 +134,11 @@ void __98__CDPStateUIProviderProxy_cdpContext_promptForICSCWithIsNumeric_numeric
   [*(*(a1 + 48) + 8) cdpContext:*(a1 + 32) promptForICSCWithIsNumeric:*(a1 + 64) numericLength:*(a1 + 56) isRandom:*(a1 + 65) validator:v2];
 }
 
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E6985DB0] analyticsEventWithContext:v6 eventName:@"com.apple.corecdp.localSecretCollection" category:0x1F5A168E0];
+  contextCopy = context;
+  completionCopy = completion;
+  v8 = [MEMORY[0x1E6985DB0] analyticsEventWithContext:contextCopy eventName:@"com.apple.corecdp.localSecretCollection" category:0x1F5A168E0];
   uiProvider = self->_uiProvider;
   if (objc_opt_respondsToSelector())
   {
@@ -147,9 +147,9 @@ void __98__CDPStateUIProviderProxy_cdpContext_promptForICSCWithIsNumeric_numeric
     v20[2] = __73__CDPStateUIProviderProxy_cdpContext_promptForLocalSecretWithCompletion___block_invoke;
     v20[3] = &unk_1E869D8F0;
     v21 = v8;
-    v24 = v7;
-    v22 = self;
-    v23 = v6;
+    v24 = completionCopy;
+    selfCopy = self;
+    v23 = contextCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v20);
 
     v10 = v21;
@@ -169,9 +169,9 @@ void __98__CDPStateUIProviderProxy_cdpContext_promptForICSCWithIsNumeric_numeric
     v19 = +[CDPAnalyticsReporterRTC rtcAnalyticsReporter];
     [v19 sendEvent:v8];
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, v10);
     }
   }
 }
@@ -260,10 +260,10 @@ void __73__CDPStateUIProviderProxy_cdpContext_promptForLocalSecretWithCompletion
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpContext:(id)a3 presentRemoteApprovalWithCompletion:(id)a4
+- (void)cdpContext:(id)context presentRemoteApprovalWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   uiProvider = self->_uiProvider;
   if (objc_opt_respondsToSelector())
   {
@@ -272,8 +272,8 @@ void __73__CDPStateUIProviderProxy_cdpContext_promptForLocalSecretWithCompletion
     block[2] = __74__CDPStateUIProviderProxy_cdpContext_presentRemoteApprovalWithCompletion___block_invoke;
     block[3] = &unk_1E869D918;
     block[4] = self;
-    v19 = v6;
-    v20 = v7;
+    v19 = contextCopy;
+    v20 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -285,15 +285,15 @@ void __73__CDPStateUIProviderProxy_cdpContext_promptForLocalSecretWithCompletion
       [(CDPStateUIProviderProxy *)v9 cdpContext:v10 presentRemoteApprovalWithCompletion:v11, v12, v13, v14, v15, v16];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDPStateError" code:-5306 userInfo:0];
-      (*(v7 + 2))(v7, 0, v17);
+      (*(completionCopy + 2))(completionCopy, 0, v17);
     }
   }
 }
 
-- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)a3
+- (void)dismissRemoteApprovalWaitingScreenWithAction:(unint64_t)action
 {
   uiProvider = self->_uiProvider;
   if (objc_opt_respondsToSelector())
@@ -303,7 +303,7 @@ void __73__CDPStateUIProviderProxy_cdpContext_promptForLocalSecretWithCompletion
     v14[2] = __72__CDPStateUIProviderProxy_dismissRemoteApprovalWaitingScreenWithAction___block_invoke;
     v14[3] = &unk_1E869D940;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = action;
     dispatch_async(MEMORY[0x1E69E96A0], v14);
   }
 
@@ -317,23 +317,23 @@ void __73__CDPStateUIProviderProxy_cdpContext_promptForLocalSecretWithCompletion
   }
 }
 
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  contextCopy = context;
+  devicesCopy = devices;
+  validatorCopy = validator;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__CDPStateUIProviderProxy_cdpContext_promptForRemoteSecretWithDevices_offeringRemoteApproval_validator___block_invoke;
   block[3] = &unk_1E869D968;
   block[4] = self;
-  v17 = v10;
-  v18 = v12;
-  v19 = v11;
-  v20 = a5;
-  v13 = v11;
-  v14 = v12;
-  v15 = v10;
+  v17 = contextCopy;
+  v18 = validatorCopy;
+  v19 = devicesCopy;
+  approvalCopy = approval;
+  v13 = devicesCopy;
+  v14 = validatorCopy;
+  v15 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -357,22 +357,22 @@ void __104__CDPStateUIProviderProxy_cdpContext_promptForRemoteSecretWithDevices_
   }
 }
 
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  devicesCopy = devices;
+  validatorCopy = validator;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__CDPStateUIProviderProxy_cdpRecoveryFlowContext_promptForRemoteSecretWithDevices_validator___block_invoke;
   v14[3] = &unk_1E869D990;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = contextCopy;
+  v16 = validatorCopy;
+  v17 = devicesCopy;
+  v11 = devicesCopy;
+  v12 = validatorCopy;
+  v13 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -413,23 +413,23 @@ LABEL_5:
   }
 }
 
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   uiProvider = self->_uiProvider;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [MEMORY[0x1E69956D8] reachabilityForInternetConnection];
-    if ([v9 currentReachabilityStatus])
+    reachabilityForInternetConnection = [MEMORY[0x1E69956D8] reachabilityForInternetConnection];
+    if ([reachabilityForInternetConnection currentReachabilityStatus])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __87__CDPStateUIProviderProxy_cdpContext_promptForInteractiveAuthenticationWithCompletion___block_invoke;
       block[3] = &unk_1E869D878;
-      v22 = v7;
+      v22 = completionCopy;
       block[4] = self;
-      v21 = v6;
+      v21 = contextCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
       v10 = v22;
@@ -443,13 +443,13 @@ LABEL_5:
         [CDPStateUIProviderProxy cdpContext:v19 promptForInteractiveAuthenticationWithCompletion:?];
       }
 
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_13;
       }
 
       v10 = _CDPStateError(-5311, 0);
-      (*(v7 + 2))(v7, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, v10);
     }
 
 LABEL_13:
@@ -462,10 +462,10 @@ LABEL_13:
     [(CDPStateUIProviderProxy *)v11 cdpContext:v12 promptForInteractiveAuthenticationWithCompletion:v13, v14, v15, v16, v17, v18];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDPStateError" code:-5306 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    reachabilityForInternetConnection = [MEMORY[0x1E696ABC0] errorWithDomain:@"CDPStateError" code:-5306 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, reachabilityForInternetConnection);
     goto LABEL_13;
   }
 
@@ -494,15 +494,15 @@ uint64_t __87__CDPStateUIProviderProxy_cdpContext_promptForInteractiveAuthentica
   return result;
 }
 
-- (void)cdpContext:(id)a3 showError:(id)a4 withCompletion:(id)a5
+- (void)cdpContext:(id)context showError:(id)error withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [(CDPStateUIProviderProxy *)v9 cdpContext:v11 showError:v12 withCompletion:v13, v14, v15, v16, v17];
+    [(CDPStateUIProviderProxy *)errorCopy cdpContext:v11 showError:v12 withCompletion:v13, v14, v15, v16, v17];
   }
 
   v21[0] = MEMORY[0x1E69E9820];
@@ -510,12 +510,12 @@ uint64_t __87__CDPStateUIProviderProxy_cdpContext_promptForInteractiveAuthentica
   v21[2] = __63__CDPStateUIProviderProxy_cdpContext_showError_withCompletion___block_invoke;
   v21[3] = &unk_1E869D8F0;
   v21[4] = self;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
+  v22 = contextCopy;
+  v23 = errorCopy;
+  v24 = completionCopy;
+  v18 = errorCopy;
+  v19 = contextCopy;
+  v20 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v21);
 }
 
@@ -557,15 +557,15 @@ uint64_t __63__CDPStateUIProviderProxy_cdpContext_showError_withCompletion___blo
   return result;
 }
 
-- (void)cdpContext:(id)a3 showError:(id)a4 withDefaultIndex:(int64_t)a5 withCompletion:(id)a6
+- (void)cdpContext:(id)context showError:(id)error withDefaultIndex:(int64_t)index withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  contextCopy = context;
+  errorCopy = error;
+  completionCopy = completion;
   v13 = _CDPLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    [(CDPStateUIProviderProxy *)v11 cdpContext:v13 showError:v14 withCompletion:v15, v16, v17, v18, v19];
+    [(CDPStateUIProviderProxy *)errorCopy cdpContext:v13 showError:v14 withCompletion:v15, v16, v17, v18, v19];
   }
 
   block[0] = MEMORY[0x1E69E9820];
@@ -573,13 +573,13 @@ uint64_t __63__CDPStateUIProviderProxy_cdpContext_showError_withCompletion___blo
   block[2] = __80__CDPStateUIProviderProxy_cdpContext_showError_withDefaultIndex_withCompletion___block_invoke;
   block[3] = &unk_1E869D9E0;
   block[4] = self;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v27 = a5;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
+  v24 = contextCopy;
+  v25 = errorCopy;
+  v26 = completionCopy;
+  indexCopy = index;
+  v20 = errorCopy;
+  v21 = contextCopy;
+  v22 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -625,22 +625,22 @@ uint64_t __80__CDPStateUIProviderProxy_cdpContext_showError_withDefaultIndex_wit
   return result;
 }
 
-- (void)cdpContext:(id)a3 presentRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context presentRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  validatorCopy = validator;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__CDPStateUIProviderProxy_cdpContext_presentRecoveryKeyWithValidator_completion___block_invoke;
   v14[3] = &unk_1E869D8F0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = contextCopy;
+  v16 = validatorCopy;
+  v17 = completionCopy;
+  v11 = validatorCopy;
+  v12 = contextCopy;
+  v13 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -683,22 +683,22 @@ uint64_t __81__CDPStateUIProviderProxy_cdpContext_presentRecoveryKeyWithValidato
   return result;
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  validatorCopy = validator;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__CDPStateUIProviderProxy_cdpContext_promptForRecoveryKeyWithValidator_completion___block_invoke;
   v14[3] = &unk_1E869D8F0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = contextCopy;
+  v16 = validatorCopy;
+  v17 = completionCopy;
+  v11 = validatorCopy;
+  v12 = contextCopy;
+  v13 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -741,22 +741,22 @@ uint64_t __83__CDPStateUIProviderProxy_cdpContext_promptForRecoveryKeyWithValida
   return result;
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  validatorCopy = validator;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__CDPStateUIProviderProxy_cdpContext_promptForRecoveryKeyWithSecretValidator_completion___block_invoke;
   v14[3] = &unk_1E869DA08;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = contextCopy;
+  v16 = validatorCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = validatorCopy;
+  v13 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -786,19 +786,19 @@ void __89__CDPStateUIProviderProxy_cdpContext_promptForRecoveryKeyWithSecretVali
   }
 }
 
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__CDPStateUIProviderProxy_cdpContext_promptForBeneficiaryAccessKeyWithCompletion___block_invoke;
   block[3] = &unk_1E869D918;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = contextCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -825,11 +825,11 @@ void __82__CDPStateUIProviderProxy_cdpContext_promptForBeneficiaryAccessKeyWithC
   }
 }
 
-- (void)cdpContext:(id)a3 showResetCompletedAlertWithCompletion:(id)a4
+- (void)cdpContext:(id)context showResetCompletedAlertWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -845,10 +845,10 @@ void __82__CDPStateUIProviderProxy_cdpContext_promptForBeneficiaryAccessKeyWithC
   block[2] = __76__CDPStateUIProviderProxy_cdpContext_showResetCompletedAlertWithCompletion___block_invoke;
   block[3] = &unk_1E869D918;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = contextCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -877,11 +877,11 @@ void __76__CDPStateUIProviderProxy_cdpContext_showResetCompletedAlertWithComplet
   }
 }
 
-- (void)cdpContext:(id)a3 createLocalSecretWithCompletion:(id)a4
+- (void)cdpContext:(id)context createLocalSecretWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -897,10 +897,10 @@ void __76__CDPStateUIProviderProxy_cdpContext_showResetCompletedAlertWithComplet
   block[2] = __70__CDPStateUIProviderProxy_cdpContext_createLocalSecretWithCompletion___block_invoke;
   block[3] = &unk_1E869D918;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = contextCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v11 = *MEMORY[0x1E69E9840];
@@ -929,10 +929,10 @@ void __70__CDPStateUIProviderProxy_cdpContext_createLocalSecretWithCompletion___
   }
 }
 
-- (void)presentQuotaScreenWithCompletion:(id)a3
+- (void)presentQuotaScreenWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -948,8 +948,8 @@ void __70__CDPStateUIProviderProxy_cdpContext_createLocalSecretWithCompletion___
   v8[2] = __60__CDPStateUIProviderProxy_presentQuotaScreenWithCompletion___block_invoke;
   v8[3] = &unk_1E869DA30;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -984,12 +984,12 @@ uint64_t __60__CDPStateUIProviderProxy_presentQuotaScreenWithCompletion___block_
   return result;
 }
 
-- (void)cdpContext:(id)a3 showResetFailedAlertWithUnderlyingError:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context showResetFailedAlertWithUnderlyingError:(id)error completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  errorCopy = error;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1005,12 +1005,12 @@ uint64_t __60__CDPStateUIProviderProxy_presentQuotaScreenWithCompletion___block_
   v16[2] = __89__CDPStateUIProviderProxy_cdpContext_showResetFailedAlertWithUnderlyingError_completion___block_invoke;
   v16[3] = &unk_1E869DA08;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v17 = contextCopy;
+  v18 = errorCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = errorCopy;
+  v14 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v16);
 
   v15 = *MEMORY[0x1E69E9840];

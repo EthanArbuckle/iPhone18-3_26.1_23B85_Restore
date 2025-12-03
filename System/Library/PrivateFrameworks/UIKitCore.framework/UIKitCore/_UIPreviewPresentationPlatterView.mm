@@ -1,22 +1,22 @@
 @interface _UIPreviewPresentationPlatterView
 - (CGSize)contentClippingSize;
 - (CGSize)contentSize;
-- (_UIPreviewPresentationPlatterView)initWithContentView:(id)a3;
+- (_UIPreviewPresentationPlatterView)initWithContentView:(id)view;
 - (double)blurRadius;
 - (double)cornerRadius;
 - (void)layoutSubviews;
-- (void)setBlurRadius:(double)a3;
-- (void)setContentClippingSize:(CGSize)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDropShadowEnabled:(BOOL)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setContentClippingSize:(CGSize)size;
+- (void)setContentSize:(CGSize)size;
+- (void)setCornerRadius:(double)radius;
+- (void)setDropShadowEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIPreviewPresentationPlatterView
 
-- (_UIPreviewPresentationPlatterView)initWithContentView:(id)a3
+- (_UIPreviewPresentationPlatterView)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v26.receiver = self;
   v26.super_class = _UIPreviewPresentationPlatterView;
   v5 = *MEMORY[0x1E695F058];
@@ -27,7 +27,7 @@
   v10 = v9;
   if (v9)
   {
-    [(_UIPreviewPresentationPlatterView *)v9 setContentView:v4];
+    [(_UIPreviewPresentationPlatterView *)v9 setContentView:viewCopy];
     [(UIView *)v10 setClipsToBounds:0];
     v11 = objc_alloc_init(_UIPreviewPresentationEffectView);
     [(UIView *)v10 bounds];
@@ -49,23 +49,23 @@
     [(UIImageView *)v14 setImage:v15];
 
     [(_UIPreviewPresentationPlatterView *)v10 setContentShadowView:v14];
-    v16 = [(_UIPreviewPresentationPlatterView *)v10 contentTransformView];
-    [v16 addSubview:v4];
+    contentTransformView = [(_UIPreviewPresentationPlatterView *)v10 contentTransformView];
+    [contentTransformView addSubview:viewCopy];
 
-    v17 = [(_UIPreviewPresentationPlatterView *)v10 contentClipView];
-    v18 = [(_UIPreviewPresentationPlatterView *)v10 contentTransformView];
-    [v17 addSubview:v18];
+    contentClipView = [(_UIPreviewPresentationPlatterView *)v10 contentClipView];
+    contentTransformView2 = [(_UIPreviewPresentationPlatterView *)v10 contentTransformView];
+    [contentClipView addSubview:contentTransformView2];
 
-    v19 = [(_UIPreviewPresentationPlatterView *)v10 contentEffectView];
-    v20 = [(_UIPreviewPresentationPlatterView *)v10 contentClipView];
-    [v19 addSubview:v20];
+    contentEffectView = [(_UIPreviewPresentationPlatterView *)v10 contentEffectView];
+    contentClipView2 = [(_UIPreviewPresentationPlatterView *)v10 contentClipView];
+    [contentEffectView addSubview:contentClipView2];
 
-    v21 = [(_UIPreviewPresentationPlatterView *)v10 contentEffectView];
-    [(UIView *)v10 addSubview:v21];
+    contentEffectView2 = [(_UIPreviewPresentationPlatterView *)v10 contentEffectView];
+    [(UIView *)v10 addSubview:contentEffectView2];
 
-    v22 = [(_UIPreviewPresentationPlatterView *)v10 contentShadowView];
-    v23 = [(_UIPreviewPresentationPlatterView *)v10 contentEffectView];
-    [(UIView *)v10 insertSubview:v22 belowSubview:v23];
+    contentShadowView = [(_UIPreviewPresentationPlatterView *)v10 contentShadowView];
+    contentEffectView3 = [(_UIPreviewPresentationPlatterView *)v10 contentEffectView];
+    [(UIView *)v10 insertSubview:contentShadowView belowSubview:contentEffectView3];
 
     v24 = v10;
   }
@@ -73,10 +73,10 @@
   return v10;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UIPreviewPresentationPlatterView *)self contentSize];
   if (width != v7 || height != v6)
   {
@@ -87,10 +87,10 @@
   }
 }
 
-- (void)setContentClippingSize:(CGSize)a3
+- (void)setContentClippingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_UIPreviewPresentationPlatterView *)self contentClippingSize];
   if (width != v7 || height != v6)
   {
@@ -103,39 +103,39 @@
 
 - (double)blurRadius
 {
-  v2 = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
-  [v2 blurRadius];
+  contentEffectView = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
+  [contentEffectView blurRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v4 = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
-  [v4 setBlurRadius:a3];
+  contentEffectView = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
+  [contentEffectView setBlurRadius:radius];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(_UIPreviewPresentationPlatterView *)self contentClipView];
-  [v4 setCornerRadius:a3];
+  contentClipView = [(_UIPreviewPresentationPlatterView *)self contentClipView];
+  [contentClipView setCornerRadius:radius];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(_UIPreviewPresentationPlatterView *)self contentClipView];
-  [v2 cornerRadius];
+  contentClipView = [(_UIPreviewPresentationPlatterView *)self contentClipView];
+  [contentClipView cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDropShadowEnabled:(BOOL)a3
+- (void)setDropShadowEnabled:(BOOL)enabled
 {
-  if ([(_UIPreviewPresentationPlatterView *)self isDropShadowEnabled]!= a3)
+  if ([(_UIPreviewPresentationPlatterView *)self isDropShadowEnabled]!= enabled)
   {
-    self->_dropShadowEnabled = a3;
+    self->_dropShadowEnabled = enabled;
 
     [(UIView *)self setNeedsLayout];
   }
@@ -151,14 +151,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
+  contentEffectView = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
   v58 = v6;
   v59 = v8;
   v60 = v10;
-  [v11 setFrame:{v4, v6, v8, v10}];
+  [contentEffectView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
-  [v12 bounds];
+  contentEffectView2 = [(_UIPreviewPresentationPlatterView *)self contentEffectView];
+  [contentEffectView2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -180,11 +180,11 @@
     v18 = v21;
   }
 
-  v27 = [(_UIPreviewPresentationPlatterView *)self contentClipView];
-  [v27 setFrame:{v14, v16, v18, v26}];
+  contentClipView = [(_UIPreviewPresentationPlatterView *)self contentClipView];
+  [contentClipView setFrame:{v14, v16, v18, v26}];
 
-  v28 = [(_UIPreviewPresentationPlatterView *)self contentClipView];
-  [v28 convertRect:self fromView:{v4, v58, v59, v60}];
+  contentClipView2 = [(_UIPreviewPresentationPlatterView *)self contentClipView];
+  [contentClipView2 convertRect:self fromView:{v4, v58, v59, v60}];
   v30 = v29;
   v32 = v31;
   v34 = v33;
@@ -196,21 +196,21 @@
   v63[3] = &unk_1E70F3590;
   v63[4] = self;
   [UIView performWithoutAnimation:v63];
-  v37 = [(_UIPreviewPresentationPlatterView *)self contentTransformView];
-  [v37 setFrame:{v30, v32, v34, v36}];
+  contentTransformView = [(_UIPreviewPresentationPlatterView *)self contentTransformView];
+  [contentTransformView setFrame:{v30, v32, v34, v36}];
 
   [(_UIPreviewPresentationPlatterView *)self contentSize];
   v40 = v39;
   if (v39 == v24 && v38 == v23)
   {
-    v41 = [(_UIPreviewPresentationPlatterView *)self contentTransformView];
-    [v41 bounds];
+    contentTransformView2 = [(_UIPreviewPresentationPlatterView *)self contentTransformView];
+    [contentTransformView2 bounds];
     v43 = v42;
     v45 = v44;
     v47 = v46;
     v49 = v48;
-    v50 = [(_UIPreviewPresentationPlatterView *)self contentView];
-    [v50 setFrame:{v43, v45, v47, v49}];
+    contentView = [(_UIPreviewPresentationPlatterView *)self contentView];
+    [contentView setFrame:{v43, v45, v47, v49}];
   }
 
   else
@@ -225,8 +225,8 @@
     v66.size.width = v34;
     v66.size.height = v36;
     v52 = Height * (v40 / CGRectGetWidth(v66));
-    v53 = [(_UIPreviewPresentationPlatterView *)self contentView];
-    [v53 setFrame:{0.0, 0.0, v40, v52}];
+    contentView2 = [(_UIPreviewPresentationPlatterView *)self contentView];
+    [contentView2 setFrame:{0.0, 0.0, v40, v52}];
 
     v67.origin.x = v30;
     v67.origin.y = v32;
@@ -234,26 +234,26 @@
     v67.size.height = v36;
     Width = CGRectGetWidth(v67);
     CGAffineTransformMakeScale(&v62, Width / v40, Width / v40);
-    v41 = [(_UIPreviewPresentationPlatterView *)self contentTransformView];
+    contentTransformView2 = [(_UIPreviewPresentationPlatterView *)self contentTransformView];
     v61 = v62;
-    [v41 setTransform:&v61];
+    [contentTransformView2 setTransform:&v61];
   }
 
-  v55 = [(_UIPreviewPresentationPlatterView *)self contentShadowView];
+  contentShadowView = [(_UIPreviewPresentationPlatterView *)self contentShadowView];
   v68.origin.x = v4 + -13.0;
   v68.origin.y = v58 + -36.0;
   v68.size.width = v59 + 26.0;
   v68.size.height = v60 + 72.0;
   v69 = CGRectOffset(v68, 0.0, 4.0);
-  [v55 setFrame:{v69.origin.x, v69.origin.y, v69.size.width, v69.size.height}];
-  v56 = [(_UIPreviewPresentationPlatterView *)self isDropShadowEnabled];
+  [contentShadowView setFrame:{v69.origin.x, v69.origin.y, v69.size.width, v69.size.height}];
+  isDropShadowEnabled = [(_UIPreviewPresentationPlatterView *)self isDropShadowEnabled];
   v57 = 1.0;
-  if (!v56)
+  if (!isDropShadowEnabled)
   {
     v57 = 0.0;
   }
 
-  [v55 setAlpha:v57];
+  [contentShadowView setAlpha:v57];
 }
 
 - (CGSize)contentSize

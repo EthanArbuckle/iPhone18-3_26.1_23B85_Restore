@@ -1,12 +1,12 @@
 @interface GraphANESharedEventHandler
-- (GraphANESharedEventHandler)initWithDevice:(id)a3;
+- (GraphANESharedEventHandler)initWithDevice:(id)device;
 @end
 
 @implementation GraphANESharedEventHandler
 
-- (GraphANESharedEventHandler)initWithDevice:(id)a3
+- (GraphANESharedEventHandler)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = GraphANESharedEventHandler;
   v5 = [(GraphANESharedEventHandler *)&v11 init];
@@ -14,7 +14,7 @@
   ioSurfaceStartSharedEvent = v5->_ioSurfaceStartSharedEvent;
   v5->_ioSurfaceStartSharedEvent = v6;
 
-  v8 = [v4 newSharedEventWithMachPort:{-[IOSurfaceSharedEvent eventPort](v5->_ioSurfaceStartSharedEvent, "eventPort")}];
+  v8 = [deviceCopy newSharedEventWithMachPort:{-[IOSurfaceSharedEvent eventPort](v5->_ioSurfaceStartSharedEvent, "eventPort")}];
   sharedEvent = v5->_sharedEvent;
   v5->_sharedEvent = v8;
 

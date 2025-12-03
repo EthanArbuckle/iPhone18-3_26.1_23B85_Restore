@@ -11,7 +11,7 @@
   v6 = [v4 unitFromString:@"%"];
   [v5 isEqual:v6];
 
-  [a1 doubleValueForUnit:v5];
+  [self doubleValueForUnit:v5];
 }
 
 @end

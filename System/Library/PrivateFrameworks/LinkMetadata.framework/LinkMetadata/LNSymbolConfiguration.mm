@@ -1,24 +1,24 @@
 @interface LNSymbolConfiguration
-- (BOOL)isEqual:(id)a3;
-- (LNSymbolConfiguration)initWithCoder:(id)a3;
-- (LNSymbolConfiguration)initWithPointSize:(double)a3 scale:(int64_t)a4 weight:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNSymbolConfiguration)initWithCoder:(id)coder;
+- (LNSymbolConfiguration)initWithPointSize:(double)size scale:(int64_t)scale weight:(int64_t)weight;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSymbolConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_11;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -36,14 +36,14 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [(LNSymbolConfiguration *)self scale];
-  if (v10 != [(LNSymbolConfiguration *)v6 scale])
+  scale = [(LNSymbolConfiguration *)self scale];
+  if (scale != [(LNSymbolConfiguration *)v6 scale])
   {
     goto LABEL_8;
   }
 
-  v11 = [(LNSymbolConfiguration *)self weight];
-  v12 = v11 == [(LNSymbolConfiguration *)v6 weight];
+  weight = [(LNSymbolConfiguration *)self weight];
+  v12 = weight == [(LNSymbolConfiguration *)v6 weight];
 LABEL_9:
 
 LABEL_11:
@@ -56,34 +56,34 @@ LABEL_11:
   [(LNSymbolConfiguration *)self pointSize];
   v4 = [v3 numberWithDouble:?];
   v5 = [v4 hash];
-  v6 = [(LNSymbolConfiguration *)self scale];
-  v7 = v6 ^ [(LNSymbolConfiguration *)self weight];
+  scale = [(LNSymbolConfiguration *)self scale];
+  v7 = scale ^ [(LNSymbolConfiguration *)self weight];
 
   return v7 ^ v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(LNSymbolConfiguration *)self pointSize];
   *&v4 = v4;
-  [v5 encodeFloat:@"pointSize" forKey:v4];
-  [v5 encodeInteger:-[LNSymbolConfiguration scale](self forKey:{"scale"), @"scale"}];
-  [v5 encodeInteger:-[LNSymbolConfiguration weight](self forKey:{"weight"), @"weight"}];
+  [coderCopy encodeFloat:@"pointSize" forKey:v4];
+  [coderCopy encodeInteger:-[LNSymbolConfiguration scale](self forKey:{"scale"), @"scale"}];
+  [coderCopy encodeInteger:-[LNSymbolConfiguration weight](self forKey:{"weight"), @"weight"}];
 }
 
-- (LNSymbolConfiguration)initWithCoder:(id)a3
+- (LNSymbolConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"pointSize"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"pointSize"];
   v6 = v5;
-  v7 = [v4 decodeIntegerForKey:@"scale"];
-  v8 = [v4 decodeIntegerForKey:@"weight"];
+  v7 = [coderCopy decodeIntegerForKey:@"scale"];
+  v8 = [coderCopy decodeIntegerForKey:@"weight"];
 
   return [(LNSymbolConfiguration *)self initWithPointSize:v7 scale:v8 weight:v6];
 }
 
-- (LNSymbolConfiguration)initWithPointSize:(double)a3 scale:(int64_t)a4 weight:(int64_t)a5
+- (LNSymbolConfiguration)initWithPointSize:(double)size scale:(int64_t)scale weight:(int64_t)weight
 {
   v12.receiver = self;
   v12.super_class = LNSymbolConfiguration;
@@ -91,9 +91,9 @@ LABEL_11:
   v9 = v8;
   if (v8)
   {
-    v8->_pointSize = a3;
-    v8->_scale = a4;
-    v8->_weight = a5;
+    v8->_pointSize = size;
+    v8->_scale = scale;
+    v8->_weight = weight;
     v10 = v8;
   }
 

@@ -1,8 +1,8 @@
 @interface BAAppStoreClient
-+ (id)_errorWithCode:(void *)a3 errorObject:;
++ (id)_errorWithCode:(void *)code errorObject:;
 - (BAAppStoreClient)init;
-- (BOOL)performEventWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)prepareForAppInstallWithDescriptor:(id)a3 error:(id *)a4;
+- (BOOL)performEventWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)prepareForAppInstallWithDescriptor:(id)descriptor error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -23,34 +23,34 @@
   return v2;
 }
 
-- (BOOL)prepareForAppInstallWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)prepareForAppInstallWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
-      [BAAppStoreClient _errorWithCode:v6 errorObject:?];
-      *a4 = v13 = 0;
+      [BAAppStoreClient _errorWithCode:descriptorCopy errorObject:?];
+      *error = v13 = 0;
       goto LABEL_15;
     }
 
     goto LABEL_14;
   }
 
-  v7 = [v6 appBundleIdentifier];
+  appBundleIdentifier = [descriptorCopy appBundleIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_11:
-    if (a4)
+    if (error)
     {
-      v14 = [v6 appBundleIdentifier];
+      appBundleIdentifier2 = [descriptorCopy appBundleIdentifier];
       v15 = 2;
 LABEL_13:
-      *a4 = [BAAppStoreClient _errorWithCode:v15 errorObject:v14];
+      *error = [BAAppStoreClient _errorWithCode:v15 errorObject:appBundleIdentifier2];
     }
 
 LABEL_14:
@@ -58,26 +58,26 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = [v6 appBundleIdentifier];
-  v9 = [v8 length];
+  appBundleIdentifier3 = [descriptorCopy appBundleIdentifier];
+  v9 = [appBundleIdentifier3 length];
 
   if (!v9)
   {
     goto LABEL_11;
   }
 
-  v10 = [v6 appStoreMetadata];
+  appStoreMetadata = [descriptorCopy appStoreMetadata];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
 
-    v14 = [v6 appBundleIdentifier];
+    appBundleIdentifier2 = [descriptorCopy appBundleIdentifier];
     v15 = 3;
     goto LABEL_13;
   }
@@ -92,30 +92,30 @@ LABEL_14:
     systemProxy = 0;
   }
 
-  v13 = [(BAAgentSystemProxy *)systemProxy applicationPrepareWithDescriptor:v6 error:a4];
+  v13 = [(BAAgentSystemProxy *)systemProxy applicationPrepareWithDescriptor:descriptorCopy error:error];
 LABEL_15:
 
   return v13;
 }
 
-+ (id)_errorWithCode:(void *)a3 errorObject:
++ (id)_errorWithCode:(void *)code errorObject:
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   objc_opt_self();
   if ((a2 - 1) > 5)
   {
-    v5 = 0;
+    codeCopy = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:off_278A0D150[a2 - 1], v4];
+    codeCopy = [MEMORY[0x277CCACA8] stringWithFormat:off_278A0D150[a2 - 1], codeCopy];
   }
 
   v6 = MEMORY[0x277CCA9B8];
   v11 = *MEMORY[0x277CCA450];
-  v12[0] = v5;
+  v12[0] = codeCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v6 errorWithDomain:@"BAAppStoreClientErrorDomain" code:a2 userInfo:v7];
 
@@ -124,23 +124,23 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)performEventWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)performEventWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 appBundleIdentifier];
+    appBundleIdentifier = [descriptorCopy appBundleIdentifier];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v6 appBundleURL];
+      appBundleURL = [descriptorCopy appBundleURL];
       objc_opt_class();
-      if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 isFileURL])
+      if (objc_opt_isKindOfClass() & 1) != 0 && ([appBundleURL isFileURL])
       {
-        if ([v6 eventType] == 22)
+        if ([descriptorCopy eventType] == 22)
         {
 LABEL_8:
           if (self)
@@ -153,30 +153,30 @@ LABEL_8:
             systemProxy = 0;
           }
 
-          v12 = [(BAAgentSystemProxy *)systemProxy applicationEventPerformedWithDescriptor:v6 error:a4];
+          v12 = [(BAAgentSystemProxy *)systemProxy applicationEventPerformedWithDescriptor:descriptorCopy error:error];
           goto LABEL_22;
         }
 
-        v10 = [MEMORY[0x277CCA8D8] bundleWithURL:v9];
+        v10 = [MEMORY[0x277CCA8D8] bundleWithURL:appBundleURL];
         if (v10)
         {
 
           goto LABEL_8;
         }
 
-        if (a4)
+        if (error)
         {
           v14 = 4;
           goto LABEL_18;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v14 = 1;
 LABEL_18:
-        [BAAppStoreClient _errorWithCode:v14 errorObject:v9];
-        *a4 = v12 = 0;
+        [BAAppStoreClient _errorWithCode:v14 errorObject:appBundleURL];
+        *error = v12 = 0;
 LABEL_22:
 
         goto LABEL_23;
@@ -186,24 +186,24 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    if (a4)
+    if (error)
     {
-      v13 = [v6 appBundleIdentifier];
-      *a4 = [BAAppStoreClient _errorWithCode:v13 errorObject:?];
+      appBundleIdentifier2 = [descriptorCopy appBundleIdentifier];
+      *error = [BAAppStoreClient _errorWithCode:appBundleIdentifier2 errorObject:?];
     }
 
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_15:
     v12 = 0;
     goto LABEL_23;
   }
 
-  [BAAppStoreClient _errorWithCode:v6 errorObject:?];
-  *a4 = v12 = 0;
+  [BAAppStoreClient _errorWithCode:descriptorCopy errorObject:?];
+  *error = v12 = 0;
 LABEL_23:
 
   return v12;
@@ -211,14 +211,14 @@ LABEL_23:
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_systemProxy;
   }
 
   [(BAAppStoreClient *)self invalidate];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = BAAppStoreClient;
   [(BAAppStoreClient *)&v3 dealloc];
 }

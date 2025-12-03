@@ -1,24 +1,24 @@
 @interface SRUIFLocalization
 - (SRUIFLocalization)init;
-- (SRUIFLocalization)initWithBundle:(id)a3 tableName:(id)a4;
-- (id)localizedStringForLanguageCode:(id)a3 key:(id)a4;
-- (id)localizedStringWithSiriLanguageForKey:(id)a3;
+- (SRUIFLocalization)initWithBundle:(id)bundle tableName:(id)name;
+- (id)localizedStringForLanguageCode:(id)code key:(id)key;
+- (id)localizedStringWithSiriLanguageForKey:(id)key;
 @end
 
 @implementation SRUIFLocalization
 
-- (SRUIFLocalization)initWithBundle:(id)a3 tableName:(id)a4
+- (SRUIFLocalization)initWithBundle:(id)bundle tableName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SRUIFLocalization;
   v8 = [(SRUIFLocalization *)&v16 init];
   if (v8)
   {
-    if (v6)
+    if (bundleCopy)
     {
-      v9 = v6;
+      v9 = bundleCopy;
     }
 
     else
@@ -29,9 +29,9 @@
     bundle = v8->_bundle;
     v8->_bundle = v9;
 
-    if (v7)
+    if (nameCopy)
     {
-      v11 = v7;
+      v11 = nameCopy;
     }
 
     else
@@ -42,9 +42,9 @@
     tableName = v8->_tableName;
     v8->_tableName = &v11->isa;
 
-    v13 = [MEMORY[0x277CEF2D8] sharedInstance];
+    mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
     localization = v8->_localization;
-    v8->_localization = v13;
+    v8->_localization = mEMORY[0x277CEF2D8];
   }
 
   return v8;
@@ -58,25 +58,25 @@
   return v4;
 }
 
-- (id)localizedStringWithSiriLanguageForKey:(id)a3
+- (id)localizedStringWithSiriLanguageForKey:(id)key
 {
   v4 = MEMORY[0x277CEF368];
-  v5 = a3;
-  v6 = [v4 sharedPreferences];
-  v7 = [v6 languageCode];
+  keyCopy = key;
+  sharedPreferences = [v4 sharedPreferences];
+  languageCode = [sharedPreferences languageCode];
 
-  v8 = [(SRUIFLocalization *)self localizedStringForLanguageCode:v7 key:v5];
+  v8 = [(SRUIFLocalization *)self localizedStringForLanguageCode:languageCode key:keyCopy];
 
   return v8;
 }
 
-- (id)localizedStringForLanguageCode:(id)a3 key:(id)a4
+- (id)localizedStringForLanguageCode:(id)code key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  codeCopy = code;
+  keyCopy = key;
+  if (codeCopy)
   {
-    v8 = [(AFLocalization *)self->_localization localizedStringForKey:v7 table:self->_tableName bundle:self->_bundle languageCode:v6];
+    v8 = [(AFLocalization *)self->_localization localizedStringForKey:keyCopy table:self->_tableName bundle:self->_bundle languageCode:codeCopy];
     if (v8)
     {
       goto LABEL_7;
@@ -92,7 +92,7 @@
     }
   }
 
-  v8 = v7;
+  v8 = keyCopy;
 LABEL_7:
 
   return v8;

@@ -1,52 +1,52 @@
 @interface TDVectorGlyphReader
-+ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchor:(CGSVGNode *)a3 glyph:(CGSVGNode *)a4;
-+ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchorPoint:(CGPoint)a3 glyph:(CGSVGNode *)a4;
-+ (id)vectorGlyphReaderWithURL:(id)a3 error:(id *)a4;
-+ (id)vectorGlyphReaderWithURL:(id)a3 platform:(int64_t)a4 error:(id *)a5;
++ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchor:(CGSVGNode *)anchor glyph:(CGSVGNode *)glyph;
++ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchorPoint:(CGPoint)point glyph:(CGSVGNode *)glyph;
++ (id)vectorGlyphReaderWithURL:(id)l error:(id *)error;
++ (id)vectorGlyphReaderWithURL:(id)l platform:(int64_t)platform error:(id *)error;
 + (void)clearInstanceCache;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_fixedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4 foundExactMargins:(BOOL *)a5;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_interpolatedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentRectInsetsForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4;
-- (BOOL)_commonInitWithData:(id)a3 platform:(int64_t)a4 error:(id *)a5;
-- (BOOL)_readSVGNodesError:(id *)a3;
-- (BOOL)_validateVectorGlyphsWithError:(id *)a3;
-- (BOOL)canDrawWithWeight:(int64_t)a3 size:(int64_t)a4;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_fixedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size foundExactMargins:(BOOL *)margins;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_interpolatedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentRectInsetsForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size;
+- (BOOL)_commonInitWithData:(id)data platform:(int64_t)platform error:(id *)error;
+- (BOOL)_readSVGNodesError:(id *)error;
+- (BOOL)_validateVectorGlyphsWithError:(id *)error;
+- (BOOL)canDrawWithWeight:(int64_t)weight size:(int64_t)size;
 - (BOOL)containsWideGamutContent;
-- (BOOL)interpolatedRotateAnchorForWeight:(int64_t)a3 size:(int64_t)a4 scaleFactor:(double)a5 point:(CGPoint *)a6;
-- (BOOL)isInterpolatableForWeight:(int64_t)a3 size:(int64_t)a4;
-- (BOOL)vectorGlyphExistsWithWeight:(int64_t)a3 size:(int64_t)a4 error:(id *)a5;
-- (CGSVGAttributeMap)attributesForLayerNamed:(id)a3;
-- (CGSVGAttributeMap)styleForLayerName:(id)a3;
-- (CGSVGDocument)vectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4 error:(id *)a5;
-- (CGSVGNode)_createAnchorNodeFromPoint:(CGPoint)a3 withIdentifier:(__CFString *)a4;
-- (CGSVGNode)interpolatedSymbolForWeight:(int64_t)a3 size:(int64_t)a4;
-- (CGSize)canvasSizeForWeight:(int64_t)a3 size:(int64_t)a4;
+- (BOOL)interpolatedRotateAnchorForWeight:(int64_t)weight size:(int64_t)size scaleFactor:(double)factor point:(CGPoint *)point;
+- (BOOL)isInterpolatableForWeight:(int64_t)weight size:(int64_t)size;
+- (BOOL)vectorGlyphExistsWithWeight:(int64_t)weight size:(int64_t)size error:(id *)error;
+- (CGSVGAttributeMap)attributesForLayerNamed:(id)named;
+- (CGSVGAttributeMap)styleForLayerName:(id)name;
+- (CGSVGDocument)vectorGlyphWithWeight:(int64_t)weight size:(int64_t)size error:(id *)error;
+- (CGSVGNode)_createAnchorNodeFromPoint:(CGPoint)point withIdentifier:(__CFString *)identifier;
+- (CGSVGNode)interpolatedSymbolForWeight:(int64_t)weight size:(int64_t)size;
+- (CGSize)canvasSizeForWeight:(int64_t)weight size:(int64_t)size;
 - (CGSize)referenceCanvasSize;
-- (TDVectorGlyphReader)initWithData:(id)a3 error:(id *)a4;
-- (TDVectorGlyphReader)initWithData:(id)a3 platform:(int64_t)a4 error:(id *)a5;
-- (TDVectorGlyphReader)initWithURL:(id)a3 error:(id *)a4;
-- (TDVectorGlyphReader)initWithURL:(id)a3 platform:(int64_t)a4 error:(id *)a5;
+- (TDVectorGlyphReader)initWithData:(id)data error:(id *)error;
+- (TDVectorGlyphReader)initWithData:(id)data platform:(int64_t)platform error:(id *)error;
+- (TDVectorGlyphReader)initWithURL:(id)l error:(id *)error;
+- (TDVectorGlyphReader)initWithURL:(id)l platform:(int64_t)platform error:(id *)error;
 - (double)_requestedPointSizeRatio;
-- (double)baselineForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4;
-- (double)capHeightForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4;
-- (double)strokeWidthForLayerNamed:(id)a3;
-- (id)_baselineNodeIDForGlyphSize:(int64_t)a3;
-- (id)_caplineNodeIDForGlyphSize:(int64_t)a3;
-- (id)_glyphNodeIDForWeight:(int64_t)a3 size:(int64_t)a4;
-- (id)_layerNamesForRenderingMode:(id)a3;
-- (id)_marginNodeIDForWeight:(int64_t)a3 size:(int64_t)a4 direction:(int64_t)a5;
-- (id)_pathForLayerNamed:(id)a3 inDocument:(CGSVGDocument *)a4;
-- (id)createInterpolatedDrawAttachmentDataForWeight:(int64_t)a3 size:(int64_t)a4 scaleFactor:(double)a5;
-- (id)createMonochromeLayerGroupForSymbol:(CGSVGDocument *)a3 layerNames:(id)a4;
-- (id)pathForLayerNamed:(id)a3;
+- (double)baselineForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size;
+- (double)capHeightForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size;
+- (double)strokeWidthForLayerNamed:(id)named;
+- (id)_baselineNodeIDForGlyphSize:(int64_t)size;
+- (id)_caplineNodeIDForGlyphSize:(int64_t)size;
+- (id)_glyphNodeIDForWeight:(int64_t)weight size:(int64_t)size;
+- (id)_layerNamesForRenderingMode:(id)mode;
+- (id)_marginNodeIDForWeight:(int64_t)weight size:(int64_t)size direction:(int64_t)direction;
+- (id)_pathForLayerNamed:(id)named inDocument:(CGSVGDocument *)document;
+- (id)createInterpolatedDrawAttachmentDataForWeight:(int64_t)weight size:(int64_t)size scaleFactor:(double)factor;
+- (id)createMonochromeLayerGroupForSymbol:(CGSVGDocument *)symbol layerNames:(id)names;
+- (id)pathForLayerNamed:(id)named;
 - (id)unsafeDrawAttachmentAnchors;
 - (id)unsafeDrawAttachmentData;
 - (unint64_t)numberOfVectorGlyphs;
 - (void)_calcInterpolatability;
-- (void)_legacy_drawMonochromeLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 onFillColor:(CGColor *)a7 offFillColor:(CGColor *)a8;
-- (void)_writeDrawAttachmentDataToRootNode:(CGSVGNode *)a3 forWeight:(int64_t)a4 size:(int64_t)a5 glyphNode:(CGSVGNode *)a6 scaleFactor:(double)a7 transform:(CGAffineTransform *)a8;
+- (void)_legacy_drawMonochromeLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor;
+- (void)_writeDrawAttachmentDataToRootNode:(CGSVGNode *)node forWeight:(int64_t)weight size:(int64_t)size glyphNode:(CGSVGNode *)glyphNode scaleFactor:(double)factor transform:(CGAffineTransform *)transform;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPointSize:(double)a4 scaleFactor:(double)a5 weight:(int64_t)a6 size:(int64_t)a7;
+- (void)drawInContext:(CGContext *)context atPointSize:(double)size scaleFactor:(double)factor weight:(int64_t)weight size:(int64_t)a7;
 @end
 
 @implementation TDVectorGlyphReader
@@ -76,24 +76,24 @@
   [(TDVectorGlyphReader *)&v3 dealloc];
 }
 
-- (TDVectorGlyphReader)initWithURL:(id)a3 error:(id *)a4
+- (TDVectorGlyphReader)initWithURL:(id)l error:(id *)error
 {
   v7 = CUICurrentPlatform();
 
-  return [(TDVectorGlyphReader *)self initWithURL:a3 platform:v7 error:a4];
+  return [(TDVectorGlyphReader *)self initWithURL:l platform:v7 error:error];
 }
 
-- (TDVectorGlyphReader)initWithURL:(id)a3 platform:(int64_t)a4 error:(id *)a5
+- (TDVectorGlyphReader)initWithURL:(id)l platform:(int64_t)platform error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = TDVectorGlyphReader;
   v8 = [(TDVectorGlyphReader *)&v13 init];
   if (v8)
   {
-    v8->_fileURL = a3;
-    v8->_platform = a4;
-    v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:a3 options:8 error:a5];
-    if (!v9 || (v10 = v9, v11 = [(TDVectorGlyphReader *)v8 _commonInitWithData:v9 platform:a4 error:a5], v10, !v11))
+    v8->_fileURL = l;
+    v8->_platform = platform;
+    v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:l options:8 error:error];
+    if (!v9 || (v10 = v9, v11 = [(TDVectorGlyphReader *)v8 _commonInitWithData:v9 platform:platform error:error], v10, !v11))
     {
 
       return 0;
@@ -103,22 +103,22 @@
   return v8;
 }
 
-- (TDVectorGlyphReader)initWithData:(id)a3 error:(id *)a4
+- (TDVectorGlyphReader)initWithData:(id)data error:(id *)error
 {
   v7 = CUICurrentPlatform();
 
-  return [(TDVectorGlyphReader *)self initWithData:a3 platform:v7 error:a4];
+  return [(TDVectorGlyphReader *)self initWithData:data platform:v7 error:error];
 }
 
-- (TDVectorGlyphReader)initWithData:(id)a3 platform:(int64_t)a4 error:(id *)a5
+- (TDVectorGlyphReader)initWithData:(id)data platform:(int64_t)platform error:(id *)error
 {
-  v6 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!data)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"NULL data received by -[TDVectorGlyphReader initWithData:error:]", a4];
-    if (a5)
+    platform = [MEMORY[0x277CCACA8] stringWithFormat:@"NULL data received by -[TDVectorGlyphReader initWithData:error:]", platform];
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1010 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v10, *MEMORY[0x277CCA450], 0)}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1010 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", platform, *MEMORY[0x277CCA450], 0)}];
     }
 
     goto LABEL_7;
@@ -127,28 +127,28 @@
   v12.receiver = self;
   v12.super_class = TDVectorGlyphReader;
   v9 = [(TDVectorGlyphReader *)&v12 init];
-  v6 = v9;
-  if (v9 && ![(TDVectorGlyphReader *)v9 _commonInitWithData:a3 platform:a4 error:a5])
+  selfCopy = v9;
+  if (v9 && ![(TDVectorGlyphReader *)v9 _commonInitWithData:data platform:platform error:error])
   {
 LABEL_7:
 
     return 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)_commonInitWithData:(id)a3 platform:(int64_t)a4 error:(id *)a5
+- (BOOL)_commonInitWithData:(id)data platform:(int64_t)platform error:(id *)error
 {
   self->_lock._os_unfair_lock_opaque = 0;
   v7 = 0.0;
-  if (a4 <= 5)
+  if (platform <= 5)
   {
-    v7 = dbl_247A492E0[a4];
+    v7 = dbl_247A492E0[platform];
   }
 
   self->_defaultPointSize = v7;
-  if (!a3)
+  if (!data)
   {
     if (self->_svgDocument)
     {
@@ -157,9 +157,9 @@ LABEL_7:
 
 LABEL_17:
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to parse SVG Data from %@", self->_fileURL];
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1011 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v16, *MEMORY[0x277CCA450], 0)}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1011 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v16, *MEMORY[0x277CCA450], 0)}];
     }
 
     NSLog(&stru_28599C078.isa, v16);
@@ -174,8 +174,8 @@ LABEL_17:
   }
 
 LABEL_5:
-  [(TDVectorGlyphReader *)self _readSVGNodesError:a5];
-  if (!a5 || !*a5)
+  [(TDVectorGlyphReader *)self _readSVGNodesError:error];
+  if (!error || !*error)
   {
     v9 = [(NSDictionary *)self->_guideNodes objectForKey:@"Baseline-M"];
     v10 = [(NSDictionary *)self->_guideNodes objectForKey:@"Capline-M"];
@@ -202,9 +202,9 @@ LABEL_5:
       return 1;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1012 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Symbol image file has too small a point size", *MEMORY[0x277CCA450], 0)}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1012 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Symbol image file has too small a point size", *MEMORY[0x277CCA450], 0)}];
     }
 
     NSLog(&stru_28599C078.isa, @"Symbol image file has too small a point size");
@@ -213,7 +213,7 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)_readSVGNodesError:(id *)a3
+- (BOOL)_readSVGNodesError:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
   if (self->_vectorGlyphNodes && self->_vectorGlyphRotateAnchorNodes && self->_vectorGlyphDrawAttachmentDataNodes)
@@ -227,7 +227,7 @@ LABEL_5:
     [TDVectorGlyphReader _readSVGNodesError:];
   }
 
-  v5 = [v4 initWithCapacity:{objc_msgSend(__CUIVectorGlyphNodeIDs__CUIVectorGlyphNodeIDs, "count", a3)}];
+  v5 = [v4 initWithCapacity:{objc_msgSend(__CUIVectorGlyphNodeIDs__CUIVectorGlyphNodeIDs, "count", error)}];
   v6 = objc_alloc(MEMORY[0x277CBEB38]);
   if (__CUIVectorGlyphNodeIDs_onceToken != -1)
   {
@@ -428,7 +428,7 @@ uint64_t __42__TDVectorGlyphReader__readSVGNodesError___block_invoke(uint64_t re
   return result;
 }
 
-- (BOOL)_validateVectorGlyphsWithError:(id *)a3
+- (BOOL)_validateVectorGlyphsWithError:(id *)error
 {
   v71 = 0;
   v72 = &v71;
@@ -483,9 +483,9 @@ LABEL_11:
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Template format %.1f is newer than the version that this software supports (%.1f)", templateVersion, 0x401C000000000000];
+    0x401C000000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Template format %.1f is newer than the version that this software supports (%.1f)", templateVersion, 0x401C000000000000];
     v11 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v12 = [v11 initWithDomain:CoreThemeDefinitionErrorDomain[0] code:1015 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", v10, *MEMORY[0x277CCA450])}];
+    v12 = [v11 initWithDomain:CoreThemeDefinitionErrorDomain[0] code:1015 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", 0x401C000000000000, *MEMORY[0x277CCA450])}];
     v72[5] = v12;
   }
 
@@ -662,14 +662,14 @@ LABEL_79:
   v56 = v72[5];
   if (v56)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v56;
+      *error = v56;
       v56 = v55[5];
     }
 
-    v57 = [v56 userInfo];
-    NSLog(&stru_28599C078.isa, [v57 objectForKey:*MEMORY[0x277CCA450]]);
+    userInfo = [v56 userInfo];
+    NSLog(&stru_28599C078.isa, [userInfo objectForKey:*MEMORY[0x277CCA450]]);
     v58 = v72[5];
     v50 = 0;
   }
@@ -747,13 +747,13 @@ LABEL_11:
   return v4;
 }
 
-- (id)_glyphNodeIDForWeight:(int64_t)a3 size:(int64_t)a4
+- (id)_glyphNodeIDForWeight:(int64_t)weight size:(int64_t)size
 {
-  switch(a4)
+  switch(size)
   {
     case 3:
-      v4 = a3 - 1;
-      if ((a3 - 1) < 9)
+      v4 = weight - 1;
+      if ((weight - 1) < 9)
       {
         v5 = off_278EBAED0;
         return v5[v4];
@@ -761,8 +761,8 @@ LABEL_11:
 
       break;
     case 2:
-      v4 = a3 - 1;
-      if ((a3 - 1) < 9)
+      v4 = weight - 1;
+      if ((weight - 1) < 9)
       {
         v5 = off_278EBAE88;
         return v5[v4];
@@ -770,8 +770,8 @@ LABEL_11:
 
       break;
     case 1:
-      v4 = a3 - 1;
-      if ((a3 - 1) < 9)
+      v4 = weight - 1;
+      if ((weight - 1) < 9)
       {
         v5 = off_278EBAE40;
         return v5[v4];
@@ -783,47 +783,47 @@ LABEL_11:
   return 0;
 }
 
-- (id)_baselineNodeIDForGlyphSize:(int64_t)a3
+- (id)_baselineNodeIDForGlyphSize:(int64_t)size
 {
-  if ((a3 - 1) > 2)
+  if ((size - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278EBAF18[a3 - 1];
+    return off_278EBAF18[size - 1];
   }
 }
 
-- (id)_caplineNodeIDForGlyphSize:(int64_t)a3
+- (id)_caplineNodeIDForGlyphSize:(int64_t)size
 {
-  if ((a3 - 1) > 2)
+  if ((size - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278EBAF30[a3 - 1];
+    return off_278EBAF30[size - 1];
   }
 }
 
-- (id)_marginNodeIDForWeight:(int64_t)a3 size:(int64_t)a4 direction:(int64_t)a5
+- (id)_marginNodeIDForWeight:(int64_t)weight size:(int64_t)size direction:(int64_t)direction
 {
-  v6 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a3 size:a4];
+  v6 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size];
   if (!v6)
   {
     return 0;
   }
 
-  if (a5 == 4)
+  if (direction == 4)
   {
     v7 = @"left-margin";
     return [(__CFString *)v7 stringByAppendingFormat:@"-%@", v6];
   }
 
-  if (a5 != 5)
+  if (direction != 5)
   {
     return 0;
   }
@@ -832,10 +832,10 @@ LABEL_11:
   return [(__CFString *)v7 stringByAppendingFormat:@"-%@", v6];
 }
 
-- (CGSVGNode)_createAnchorNodeFromPoint:(CGPoint)a3 withIdentifier:(__CFString *)a4
+- (CGSVGNode)_createAnchorNodeFromPoint:(CGPoint)point withIdentifier:(__CFString *)identifier
 {
   v5 = CGSVGNodeCreate();
-  if (a4)
+  if (identifier)
   {
     CGSVGNodeSetStringIdentifier();
   }
@@ -849,12 +849,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)_writeDrawAttachmentDataToRootNode:(CGSVGNode *)a3 forWeight:(int64_t)a4 size:(int64_t)a5 glyphNode:(CGSVGNode *)a6 scaleFactor:(double)a7 transform:(CGAffineTransform *)a8
+- (void)_writeDrawAttachmentDataToRootNode:(CGSVGNode *)node forWeight:(int64_t)weight size:(int64_t)size glyphNode:(CGSVGNode *)glyphNode scaleFactor:(double)factor transform:(CGAffineTransform *)transform
 {
-  v13 = [(NSDictionary *)self->_vectorGlyphDrawAttachmentDataNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a4 size:a5]];
+  v13 = [(NSDictionary *)self->_vectorGlyphDrawAttachmentDataNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size]];
   if (!v13)
   {
-    v19 = [(TDVectorGlyphReader *)self createInterpolatedDrawAttachmentDataForWeight:a4 size:a5 scaleFactor:a7];
+    v19 = [(TDVectorGlyphReader *)self createInterpolatedDrawAttachmentDataForWeight:weight size:size scaleFactor:factor];
     v14 = v19;
     if (!v19)
     {
@@ -899,7 +899,7 @@ LABEL_11:
           v17 = 0.0;
         }
 
-        *(v15 + 16 * v16++) = vaddq_f64(*&a8->tx, vmlaq_n_f64(vmulq_n_f64(*&a8->c, v18), *&a8->a, v17));
+        *(v15 + 16 * v16++) = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v18), *&transform->a, v17));
       }
 
       while (v16 < [v14 count]);
@@ -922,42 +922,42 @@ LABEL_13:
 LABEL_15:
 }
 
-- (CGSVGDocument)vectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4 error:(id *)a5
+- (CGSVGDocument)vectorGlyphWithWeight:(int64_t)weight size:(int64_t)size error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
   templateVersion = self->_templateVersion;
   os_unfair_lock_lock(&self->_lock);
-  if ((a3 - 1) > 8 || (a4 - 1) > 2)
+  if ((weight - 1) > 8 || (size - 1) > 2)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s called with invalid weight %d or invalid size %d for file '%@'", "-[TDVectorGlyphReader vectorGlyphWithWeight:size:error:]", a3, a4, self->_fileURL];
-    if (a5)
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s called with invalid weight %d or invalid size %d for file '%@'", "-[TDVectorGlyphReader vectorGlyphWithWeight:size:error:]", weight, size, self->_fileURL];
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1024 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v13, *MEMORY[0x277CCA450], 0)}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1024 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v13, *MEMORY[0x277CCA450], 0)}];
     }
 
     NSLog(&stru_28599C078.isa, v13);
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d", a3, a4];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d", weight, size];
   v11 = [(NSMutableDictionary *)self->_vectorGlyphWithWeightSize objectForKey:v10];
   if (!v11)
   {
-    if (!self->_vectorGlyphNodes && ![(TDVectorGlyphReader *)self _readSVGNodesError:a5])
+    if (!self->_vectorGlyphNodes && ![(TDVectorGlyphReader *)self _readSVGNodesError:error])
     {
       os_unfair_lock_unlock(&self->_lock);
       v12 = 0;
       goto LABEL_10;
     }
 
-    if ([(NSDictionary *)self->_vectorGlyphNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a3 size:a4]])
+    if ([(NSDictionary *)self->_vectorGlyphNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size]])
     {
       goto LABEL_14;
     }
 
-    if ([(TDVectorGlyphReader *)self isInterpolatableForWeight:a3 size:a4])
+    if ([(TDVectorGlyphReader *)self isInterpolatableForWeight:weight size:size])
     {
-      v12 = [(TDVectorGlyphReader *)self interpolatedSymbolForWeight:a3 size:a4];
+      v12 = [(TDVectorGlyphReader *)self interpolatedSymbolForWeight:weight size:size];
       if (!v12)
       {
         goto LABEL_9;
@@ -1056,9 +1056,9 @@ LABEL_14:
       CGSVGNodeAddChild();
       CGSVGNodeRelease();
       v49 = v50;
-      [(TDVectorGlyphReader *)self _writeRotateAnchorToRootNode:RootNode forWeight:a3 size:a4 glyphNode:v35 scaleFactor:&v49 transform:v20];
+      [(TDVectorGlyphReader *)self _writeRotateAnchorToRootNode:RootNode forWeight:weight size:size glyphNode:v35 scaleFactor:&v49 transform:v20];
       v49 = v50;
-      [(TDVectorGlyphReader *)self _writeDrawAttachmentDataToRootNode:RootNode forWeight:a3 size:a4 glyphNode:v35 scaleFactor:&v49 transform:v20];
+      [(TDVectorGlyphReader *)self _writeDrawAttachmentDataToRootNode:RootNode forWeight:weight size:size glyphNode:v35 scaleFactor:&v49 transform:v20];
       if (self->_layerTreeNode && templateVersion >= 5.0)
       {
         CGSVGNodeCopy();
@@ -1195,15 +1195,15 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
   return result;
 }
 
-- (BOOL)vectorGlyphExistsWithWeight:(int64_t)a3 size:(int64_t)a4 error:(id *)a5
+- (BOOL)vectorGlyphExistsWithWeight:(int64_t)weight size:(int64_t)size error:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  if ((a3 - 1) > 8 || (a4 - 1) > 2)
+  if ((weight - 1) > 8 || (size - 1) > 2)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s called with invalid weight %d or invalid size %d for file '%@'", "-[TDVectorGlyphReader vectorGlyphExistsWithWeight:size:error:]", a3, a4, self->_fileURL];
-    if (a5)
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s called with invalid weight %d or invalid size %d for file '%@'", "-[TDVectorGlyphReader vectorGlyphExistsWithWeight:size:error:]", weight, size, self->_fileURL];
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1024 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v10, *MEMORY[0x277CCA450], 0)}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1024 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v10, *MEMORY[0x277CCA450], 0)}];
     }
 
     NSLog(&stru_28599C078.isa, v10);
@@ -1214,29 +1214,29 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
   {
     if (!self->_vectorGlyphNodes)
     {
-      [(TDVectorGlyphReader *)self _readSVGNodesError:a5];
+      [(TDVectorGlyphReader *)self _readSVGNodesError:error];
     }
 
-    v9 = [(NSDictionary *)self->_vectorGlyphNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a3 size:a4]]!= 0;
+    v9 = [(NSDictionary *)self->_vectorGlyphNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size]]!= 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
   return v9;
 }
 
-- (double)baselineForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4
+- (double)baselineForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size
 {
   os_unfair_lock_lock(&self->_lock);
-  if ((a3 - 1) > 8)
+  if ((weight - 1) > 8)
   {
-    NSLog(&cfstr_SCalledWithInv_0.isa, "[TDVectorGlyphReader baselineForVectorGlyphWithWeight:size:]", a3, a4, self->_fileURL);
+    NSLog(&cfstr_SCalledWithInv_0.isa, "[TDVectorGlyphReader baselineForVectorGlyphWithWeight:size:]", weight, size, self->_fileURL);
     v19 = 0.0;
   }
 
   else
   {
-    v7 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a3 size:a4];
-    v8 = [(TDVectorGlyphReader *)self _baselineNodeIDForGlyphSize:a4];
+    v7 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size];
+    v8 = [(TDVectorGlyphReader *)self _baselineNodeIDForGlyphSize:size];
     v9 = [(NSDictionary *)self->_vectorGlyphNodes objectForKey:v7];
     v10 = [(NSDictionary *)self->_guideNodes objectForKey:v8];
     [(TDVectorGlyphReader *)self defaultPointSize];
@@ -1279,10 +1279,10 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
             v37 = v12 * ((v25 + v27 - MidY) / v14);
             v38 = v12 * ((v29 + v31 - MidY) / v14);
             v39 = v12 * ((v33 + v35 - MidY) / v14);
-            [MEMORY[0x277D02718] scalarsForGlyphWeight:a3 glyphSize:a4];
+            [MEMORY[0x277D02718] scalarsForGlyphWeight:weight glyphSize:size];
             v41 = v40;
             v43 = v42;
-            [MEMORY[0x277D02718] transformForGlyphSize:a4];
+            [MEMORY[0x277D02718] transformForGlyphSize:size];
             v19 = v45 * (v38 + (v37 - v38) * v41 + (v39 - v38) * v43) - v12 * v44;
           }
         }
@@ -1300,19 +1300,19 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
   return result;
 }
 
-- (double)capHeightForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4
+- (double)capHeightForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size
 {
   os_unfair_lock_lock(&self->_lock);
-  if ((a3 - 1) > 8)
+  if ((weight - 1) > 8)
   {
-    NSLog(&cfstr_SCalledWithInv_1.isa, "[TDVectorGlyphReader capHeightForVectorGlyphWithWeight:size:]", a3, a4, self->_fileURL);
+    NSLog(&cfstr_SCalledWithInv_1.isa, "[TDVectorGlyphReader capHeightForVectorGlyphWithWeight:size:]", weight, size, self->_fileURL);
     v15 = 0.0;
   }
 
   else
   {
-    v7 = [(TDVectorGlyphReader *)self _caplineNodeIDForGlyphSize:a4];
-    v8 = [(NSDictionary *)self->_guideNodes objectForKey:[(TDVectorGlyphReader *)self _baselineNodeIDForGlyphSize:a4]];
+    v7 = [(TDVectorGlyphReader *)self _caplineNodeIDForGlyphSize:size];
+    v8 = [(NSDictionary *)self->_guideNodes objectForKey:[(TDVectorGlyphReader *)self _baselineNodeIDForGlyphSize:size]];
     v9 = [(NSDictionary *)self->_guideNodes objectForKey:v7];
     if (!v8 || (v10 = v9) == 0)
     {
@@ -1338,7 +1338,7 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
           CGSVGNodeGetBoundingBoxWithOptions();
           if ((*&v19 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v20 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
           {
-            NSLog(&cfstr_SGotInvalidBas.isa, "[TDVectorGlyphReader capHeightForVectorGlyphWithWeight:size:]", self->_fileURL, a3, a4);
+            NSLog(&cfstr_SGotInvalidBas.isa, "[TDVectorGlyphReader capHeightForVectorGlyphWithWeight:size:]", self->_fileURL, weight, size);
           }
 
           else
@@ -1360,10 +1360,10 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
   return result;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentRectInsetsForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4
+- ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentRectInsetsForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size
 {
   v25 = 0;
-  [(TDVectorGlyphReader *)self _fixedAlignmentRectInsetsForVectorGlyphWithWeight:a3 size:a4 foundExactMargins:&v25];
+  [(TDVectorGlyphReader *)self _fixedAlignmentRectInsetsForVectorGlyphWithWeight:weight size:size foundExactMargins:&v25];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1380,7 +1380,7 @@ uint64_t __56__TDVectorGlyphReader_vectorGlyphWithWeight_size_error___block_invo
     }
 
 LABEL_6:
-    [(TDVectorGlyphReader *)self _interpolatedAlignmentRectInsetsForVectorGlyphWithWeight:a3 size:a4];
+    [(TDVectorGlyphReader *)self _interpolatedAlignmentRectInsetsForVectorGlyphWithWeight:weight size:size];
 LABEL_8:
     v8 = v17;
     v10 = v18;
@@ -1414,7 +1414,7 @@ LABEL_9:
   return result;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_interpolatedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_interpolatedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size
 {
   v41 = 0;
   v40 = 0;
@@ -1435,10 +1435,10 @@ LABEL_9:
     v24 = v20;
     v25 = v21;
     v26 = v22;
-    [MEMORY[0x277D02718] scalarsForGlyphWeight:a3 glyphSize:a4];
+    [MEMORY[0x277D02718] scalarsForGlyphWeight:weight glyphSize:size];
     v34 = v27;
     v35 = v28;
-    [MEMORY[0x277D02718] transformForGlyphSize:a4];
+    [MEMORY[0x277D02718] transformForGlyphSize:size];
     v14 = (v14 + (v36 - v14) * v34 + (v24 - v14) * v35) * v29;
     v18 = (v18 + (v37 - v18) * v34 + (v26 - v18) * v35) * v29;
     v12 = (v12 + (v38 - v12) * v34 + (v23 - v12) * v35) * v29;
@@ -1456,18 +1456,18 @@ LABEL_9:
   return result;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)_fixedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)a3 size:(int64_t)a4 foundExactMargins:(BOOL *)a5
+- ($01BB1521EC52D44A8E7628F5261DCEC8)_fixedAlignmentRectInsetsForVectorGlyphWithWeight:(int64_t)weight size:(int64_t)size foundExactMargins:(BOOL *)margins
 {
   v9 = *MEMORY[0x277D02658];
   v10 = *(MEMORY[0x277D02658] + 8);
   v11 = *(MEMORY[0x277D02658] + 16);
   v12 = *(MEMORY[0x277D02658] + 24);
   os_unfair_lock_lock(&self->_lock);
-  if ((a3 - 1) <= 8)
+  if ((weight - 1) <= 8)
   {
-    v13 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a3 size:a4];
-    v14 = [(TDVectorGlyphReader *)self _marginNodeIDForWeight:a3 size:a4 direction:4];
-    v15 = [(TDVectorGlyphReader *)self _marginNodeIDForWeight:a3 size:a4 direction:5];
+    v13 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size];
+    v14 = [(TDVectorGlyphReader *)self _marginNodeIDForWeight:weight size:size direction:4];
+    v15 = [(TDVectorGlyphReader *)self _marginNodeIDForWeight:weight size:size direction:5];
     v16 = [(NSDictionary *)self->_guideNodes objectForKey:v14];
     v17 = [(NSDictionary *)self->_guideNodes objectForKey:v15];
     v18 = [(NSDictionary *)self->_vectorGlyphNodes objectForKey:v13];
@@ -1480,9 +1480,9 @@ LABEL_9:
 
     if (v17 && v18)
     {
-      if (a5)
+      if (margins)
       {
-        *a5 = 1;
+        *margins = 1;
       }
     }
 
@@ -1718,17 +1718,17 @@ LABEL_39:
   }
 }
 
-- (BOOL)isInterpolatableForWeight:(int64_t)a3 size:(int64_t)a4
+- (BOOL)isInterpolatableForWeight:(int64_t)weight size:(int64_t)size
 {
   if (!self->_vectorGlyphNodes)
   {
-    [(TDVectorGlyphReader *)self _readSVGNodesError:0, a4];
+    [(TDVectorGlyphReader *)self _readSVGNodesError:0, size];
   }
 
   return self->_isInterpolatable;
 }
 
-- (CGSVGNode)interpolatedSymbolForWeight:(int64_t)a3 size:(int64_t)a4
+- (CGSVGNode)interpolatedSymbolForWeight:(int64_t)weight size:(int64_t)size
 {
   if (![TDVectorGlyphReader isInterpolatableForWeight:"isInterpolatableForWeight:size:" size:?])
   {
@@ -1747,10 +1747,10 @@ LABEL_39:
       if (v9)
       {
         v10 = CGSVGNodeCopy();
-        [MEMORY[0x277D02718] scalarsForGlyphWeight:a3 glyphSize:a4];
+        [MEMORY[0x277D02718] scalarsForGlyphWeight:weight glyphSize:size];
         v13 = v12;
         v15 = v14;
-        [MEMORY[0x277D02718] transformForGlyphSize:a4];
+        [MEMORY[0x277D02718] transformForGlyphSize:size];
         v17 = v16;
         v19 = v18;
         [(TDVectorGlyphReader *)self defaultPointSize];
@@ -1765,7 +1765,7 @@ LABEL_39:
   return v10;
 }
 
-+ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchor:(CGSVGNode *)a3 glyph:(CGSVGNode *)a4
++ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchor:(CGSVGNode *)anchor glyph:(CGSVGNode *)glyph
 {
   CGSVGNodeGetBoundingBoxWithOptions();
   x = v16.origin.x;
@@ -1779,16 +1779,16 @@ LABEL_39:
   v17.size.height = height;
   MidY = CGRectGetMidY(v17);
 
-  [a1 _anchorInOutlineCoordinateSpaceForAnchorPoint:a4 glyph:{MidX, MidY}];
+  [self _anchorInOutlineCoordinateSpaceForAnchorPoint:glyph glyph:{MidX, MidY}];
   result.y = v13;
   result.x = v12;
   return result;
 }
 
-+ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchorPoint:(CGPoint)a3 glyph:(CGSVGNode *)a4
++ (CGPoint)_anchorInOutlineCoordinateSpaceForAnchorPoint:(CGPoint)point glyph:(CGSVGNode *)glyph
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   CGSVGNodeGetBoundingBoxWithOptions();
   v6 = v14.origin.x;
   v7 = v14.origin.y;
@@ -1806,7 +1806,7 @@ LABEL_39:
   return result;
 }
 
-- (BOOL)interpolatedRotateAnchorForWeight:(int64_t)a3 size:(int64_t)a4 scaleFactor:(double)a5 point:(CGPoint *)a6
+- (BOOL)interpolatedRotateAnchorForWeight:(int64_t)weight size:(int64_t)size scaleFactor:(double)factor point:(CGPoint *)point
 {
   v10 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:4 size:1];
   v11 = [(NSDictionary *)self->_vectorGlyphNodes objectForKey:v10];
@@ -1832,10 +1832,10 @@ LABEL_39:
   if (!v23)
   {
     v25 = v18;
-    [MEMORY[0x277D02718] scalarsForGlyphWeight:a3 glyphSize:a4];
+    [MEMORY[0x277D02718] scalarsForGlyphWeight:weight glyphSize:size];
     v42 = v26;
     v44 = v27;
-    [MEMORY[0x277D02718] transformForGlyphSize:a4];
+    [MEMORY[0x277D02718] transformForGlyphSize:size];
     v43 = v28;
     [TDVectorGlyphReader _anchorInOutlineCoordinateSpaceForAnchor:v15 glyph:v14];
     v40 = v30;
@@ -1849,13 +1849,13 @@ LABEL_39:
     v34.f64[0] = v39;
     v34.f64[1] = v38;
     v36.f64[1] = v35;
-    *a6 = vmulq_n_f64(vmulq_n_f64(vaddq_f64(vaddq_f64(v34, vmulq_n_f64(vsubq_f64(v33, v34), v42)), vmulq_n_f64(vsubq_f64(v36, v34), v44)), v43), a5);
+    *point = vmulq_n_f64(vmulq_n_f64(vaddq_f64(vaddq_f64(v34, vmulq_n_f64(vsubq_f64(v33, v34), v42)), vmulq_n_f64(vsubq_f64(v36, v34), v44)), v43), factor);
   }
 
   return v24;
 }
 
-- (id)createInterpolatedDrawAttachmentDataForWeight:(int64_t)a3 size:(int64_t)a4 scaleFactor:(double)a5
+- (id)createInterpolatedDrawAttachmentDataForWeight:(int64_t)weight size:(int64_t)size scaleFactor:(double)factor
 {
   v8 = [(TDVectorGlyphReader *)self _glyphNodeIDForWeight:4 size:1];
   v9 = [(NSDictionary *)self->_vectorGlyphNodes objectForKey:v8];
@@ -1880,7 +1880,7 @@ LABEL_39:
             v18 = v16;
             if (v16)
             {
-              v50 = a3;
+              weightCopy = weight;
               v19 = [objc_alloc(MEMORY[0x277D02700]) initWithSVGNode:v10];
               v20 = [objc_alloc(MEMORY[0x277D02700]) initWithSVGNode:v13];
               v21 = [objc_alloc(MEMORY[0x277D02700]) initWithSVGNode:v18];
@@ -1892,17 +1892,17 @@ LABEL_39:
                 v17 = 0;
                 if (v24 == [v21 count] && v22)
                 {
-                  [MEMORY[0x277D02718] scalarsForGlyphWeight:v50 glyphSize:a4];
+                  [MEMORY[0x277D02718] scalarsForGlyphWeight:weightCopy glyphSize:size];
                   v44 = v26;
                   v45 = v25;
-                  [MEMORY[0x277D02718] transformForGlyphSize:a4];
+                  [MEMORY[0x277D02718] transformForGlyphSize:size];
                   v43 = v27;
                   v28 = [MEMORY[0x277D02718] createFloatDeltasFrom:objc_msgSend(v19 to:{"data"), objc_msgSend(v20, "data")}];
                   v29 = [MEMORY[0x277D02718] createFloatDeltasFrom:objc_msgSend(v19 to:{"data"), objc_msgSend(v21, "data")}];
                   v42 = [MEMORY[0x277D02718] createInterpolatedFloatsFromFloats:objc_msgSend(v19 ultralightDeltas:"data") blackDeltas:v28 withScalars:{v29, v45, v44}];
 
                   v30 = [MEMORY[0x277D02710] createWithPointCount:{objc_msgSend(v19, "count")}];
-                  v31 = [v30 rawArray];
+                  rawArray = [v30 rawArray];
                   if ([v19 count])
                   {
                     v32 = 0;
@@ -1935,7 +1935,7 @@ LABEL_39:
                       v38.f64[0] = v48;
                       v38.f64[1] = v47;
                       v40.f64[1] = v39;
-                      *(v31 + 16 * v32++) = vmulq_n_f64(vmulq_n_f64(vaddq_f64(vaddq_f64(v38, vmulq_n_f64(vsubq_f64(v37, v38), v45)), vmulq_n_f64(vsubq_f64(v40, v38), v44)), v43), a5);
+                      *(rawArray + 16 * v32++) = vmulq_n_f64(vmulq_n_f64(vaddq_f64(vaddq_f64(v38, vmulq_n_f64(vsubq_f64(v37, v38), v45)), vmulq_n_f64(vsubq_f64(v40, v38), v44)), v43), factor);
                     }
 
                     while (v32 < [v19 count]);
@@ -1959,9 +1959,9 @@ LABEL_39:
   return v17;
 }
 
-- (CGSize)canvasSizeForWeight:(int64_t)a3 size:(int64_t)a4
+- (CGSize)canvasSizeForWeight:(int64_t)weight size:(int64_t)size
 {
-  if ([(TDVectorGlyphReader *)self vectorGlyphWithWeight:a3 size:a4 error:0])
+  if ([(TDVectorGlyphReader *)self vectorGlyphWithWeight:weight size:size error:0])
   {
     CGSVGDocumentGetCanvasSize();
     v5 = v4;
@@ -1996,7 +1996,7 @@ LABEL_39:
   return v4;
 }
 
-- (id)_layerNamesForRenderingMode:(id)a3
+- (id)_layerNamesForRenderingMode:(id)mode
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
   if (self->_svgDocument)
@@ -2010,7 +2010,7 @@ LABEL_39:
     v10[8] = __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke;
     v10[9] = &unk_278EBAD60;
     v11 = templateVersion >= 5.0;
-    v10[10] = a3;
+    v10[10] = mode;
     v10[11] = v5;
     CGSVGNodeEnumerate();
     v8 = [v5 count];
@@ -2018,7 +2018,7 @@ LABEL_39:
     v10[1] = 3221225472;
     v10[2] = __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke_2;
     v10[3] = &unk_278EBAD88;
-    v10[4] = a3;
+    v10[4] = mode;
     v10[5] = v8;
     [v5 sortUsingComparator:v10];
     os_unfair_lock_unlock(&self->_lock);
@@ -2104,9 +2104,9 @@ uint64_t __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke_2(
   }
 }
 
-- (id)_pathForLayerNamed:(id)a3 inDocument:(CGSVGDocument *)a4
+- (id)_pathForLayerNamed:(id)named inDocument:(CGSVGDocument *)document
 {
-  if (!a4)
+  if (!document)
   {
     return 0;
   }
@@ -2114,7 +2114,7 @@ uint64_t __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke_2(
   CGSVGDocumentGetRootNode();
   CGSVGNodeGetChildAtIndex();
   ChildCount = CGSVGNodeGetChildCount();
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (ChildCount)
   {
     v7 = 0;
@@ -2125,13 +2125,13 @@ uint64_t __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke_2(
       if (CGSVGNodeGetType() == 2 && CGSVGNodeFindAttribute())
       {
         v9 = CGSVGAttributeCopyString();
-        if ([objc_msgSend(v9 componentsSeparatedByString:{@" ", "containsObject:", a3}])
+        if ([objc_msgSend(v9 componentsSeparatedByString:{@" ", "containsObject:", named}])
         {
           v12 = *v8;
           v13 = v8[1];
           v14 = v8[2];
           v10 = CUICreatePathFromSVGNode();
-          [v6 addObject:{v10, v12, v13, v14}];
+          [array addObject:{v10, v12, v13, v14}];
         }
       }
 
@@ -2141,13 +2141,13 @@ uint64_t __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke_2(
     while (ChildCount != v7);
   }
 
-  return [MEMORY[0x277D02720] createConcatenatingPaths:v6];
+  return [MEMORY[0x277D02720] createConcatenatingPaths:array];
 }
 
-- (id)createMonochromeLayerGroupForSymbol:(CGSVGDocument *)a3 layerNames:(id)a4
+- (id)createMonochromeLayerGroupForSymbol:(CGSVGDocument *)symbol layerNames:(id)names
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!symbol)
   {
     v12 = 0;
     goto LABEL_14;
@@ -2169,14 +2169,14 @@ uint64_t __51__TDVectorGlyphReader__layerNamesForRenderingMode___block_invoke_2(
   if (!v7)
   {
     v11 = CUICreateSubpathsFromSVGNode();
-    v12 = [MEMORY[0x277D02708] createLayerGroupWithLayerTree:self->_layerTreeNode layerNames:a4 shapes:v11 delegate:self];
+    v12 = [MEMORY[0x277D02708] createLayerGroupWithLayerTree:self->_layerTreeNode layerNames:names shapes:v11 delegate:self];
 
 LABEL_14:
     v17 = *MEMORY[0x277D85DE8];
     return v12;
   }
 
-  if (templateVersion < 4.0 || ![a4 count])
+  if (templateVersion < 4.0 || ![names count])
   {
     v13 = [(TDVectorGlyphReader *)self pathForLayerNamed:0];
     [(TDVectorGlyphReader *)self strokeWidthForLayerNamed:0];
@@ -2191,34 +2191,34 @@ LABEL_14:
   v8 = MEMORY[0x277D02708];
   v9 = *MEMORY[0x277D85DE8];
 
-  return [v8 createLayerGroupWithLayerNames:a4 delegate:self];
+  return [v8 createLayerGroupWithLayerNames:names delegate:self];
 }
 
-- (void)drawInContext:(CGContext *)a3 atPointSize:(double)a4 scaleFactor:(double)a5 weight:(int64_t)a6 size:(int64_t)a7
+- (void)drawInContext:(CGContext *)context atPointSize:(double)size scaleFactor:(double)factor weight:(int64_t)weight size:(int64_t)a7
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a3 && a4 > 0.0)
+  if (context && size > 0.0)
   {
-    v11 = [(TDVectorGlyphReader *)self vectorGlyphWithWeight:a6 size:a7 error:0];
-    v12 = [(TDVectorGlyphReader *)self monochromeLayerNodeNames];
+    v11 = [(TDVectorGlyphReader *)self vectorGlyphWithWeight:weight size:a7 error:0];
+    monochromeLayerNodeNames = [(TDVectorGlyphReader *)self monochromeLayerNodeNames];
     os_unfair_lock_lock(&self->_lock);
     [(TDVectorGlyphReader *)self defaultPointSize];
-    self->_drawingPointSize = a4;
-    self->_drawingScale = a4 * a5 / v13;
+    self->_drawingPointSize = size;
+    self->_drawingScale = size * factor / v13;
     self->_drawingSymbol = v11;
     if (v11)
     {
       CGSVGDocumentGetCanvasSize();
       v15 = v14;
       v17 = v16;
-      v18 = [(TDVectorGlyphReader *)self createMonochromeLayerGroupForSymbol:v11 layerNames:v12];
+      v18 = [(TDVectorGlyphReader *)self createMonochromeLayerGroupForSymbol:v11 layerNames:monochromeLayerNodeNames];
       ConstantColor = CGColorGetConstantColor(*MEMORY[0x277CBF3B8]);
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v20 = [v18 sublayers];
-      v21 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      sublayers = [v18 sublayers];
+      v21 = [sublayers countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v21)
       {
         v22 = v21;
@@ -2230,14 +2230,14 @@ LABEL_14:
           {
             if (*v28 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(sublayers);
             }
 
-            [*(*(&v27 + 1) + 8 * v24++) drawInContext:a3 scaleFactor:ConstantColor targetSize:0 variableMinValue:self->_drawingScale variableMaxValue:v15 onFillColor:v17 offFillColor:{INFINITY, INFINITY}];
+            [*(*(&v27 + 1) + 8 * v24++) drawInContext:context scaleFactor:ConstantColor targetSize:0 variableMinValue:self->_drawingScale variableMaxValue:v15 onFillColor:v17 offFillColor:{INFINITY, INFINITY}];
           }
 
           while (v22 != v24);
-          v22 = [v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v22 = [sublayers countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v22);
@@ -2256,18 +2256,18 @@ LABEL_14:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canDrawWithWeight:(int64_t)a3 size:(int64_t)a4
+- (BOOL)canDrawWithWeight:(int64_t)weight size:(int64_t)size
 {
   os_unfair_lock_lock(&self->_lock);
   isInterpolatable = 0;
-  if ((a3 - 1) <= 8 && (a4 - 1) <= 2)
+  if ((weight - 1) <= 8 && (size - 1) <= 2)
   {
     if (!self->_vectorGlyphNodes)
     {
       [(TDVectorGlyphReader *)self _readSVGNodesError:0];
     }
 
-    if ([(NSDictionary *)self->_vectorGlyphNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:a3 size:a4]])
+    if ([(NSDictionary *)self->_vectorGlyphNodes objectForKey:[(TDVectorGlyphReader *)self _glyphNodeIDForWeight:weight size:size]])
     {
       isInterpolatable = 1;
     }
@@ -2282,14 +2282,14 @@ LABEL_14:
   return isInterpolatable;
 }
 
-+ (id)vectorGlyphReaderWithURL:(id)a3 error:(id *)a4
++ (id)vectorGlyphReaderWithURL:(id)l error:(id *)error
 {
   v7 = CUICurrentPlatform();
 
-  return [a1 vectorGlyphReaderWithURL:a3 platform:v7 error:a4];
+  return [self vectorGlyphReaderWithURL:l platform:v7 error:error];
 }
 
-+ (id)vectorGlyphReaderWithURL:(id)a3 platform:(int64_t)a4 error:(id *)a5
++ (id)vectorGlyphReaderWithURL:(id)l platform:(int64_t)platform error:(id *)error
 {
   if (__onceToken != -1)
   {
@@ -2297,7 +2297,7 @@ LABEL_14:
   }
 
   os_unfair_lock_lock(&__lock);
-  v8 = [__instanceCache objectForKey:a3];
+  v8 = [__instanceCache objectForKey:l];
   if (v8)
   {
     v9 = v8;
@@ -2306,10 +2306,10 @@ LABEL_14:
 
   else
   {
-    v9 = [[TDVectorGlyphReader alloc] initWithURL:a3 platform:a4 error:a5];
+    v9 = [[TDVectorGlyphReader alloc] initWithURL:l platform:platform error:error];
     if (v9)
     {
-      [__instanceCache setObject:v9 forKey:a3];
+      [__instanceCache setObject:v9 forKey:l];
     }
   }
 
@@ -2381,14 +2381,14 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
   return v2;
 }
 
-- (id)pathForLayerNamed:(id)a3
+- (id)pathForLayerNamed:(id)named
 {
   if (!self->_drawingSymbol || !self->_isInterpolatable)
   {
     return 0;
   }
 
-  if (!a3)
+  if (!named)
   {
     drawingSymbol = self->_drawingSymbol;
     CGSVGDocumentGetRootNode();
@@ -2404,9 +2404,9 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
   return [TDVectorGlyphReader _pathForLayerNamed:"_pathForLayerNamed:inDocument:" inDocument:?];
 }
 
-- (CGSVGAttributeMap)styleForLayerName:(id)a3
+- (CGSVGAttributeMap)styleForLayerName:(id)name
 {
-  if (!a3 || !self->_drawingSymbol)
+  if (!name || !self->_drawingSymbol)
   {
     return 0;
   }
@@ -2417,9 +2417,9 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
   return CGSVGDocumentGetNamedStyle();
 }
 
-- (double)strokeWidthForLayerNamed:(id)a3
+- (double)strokeWidthForLayerNamed:(id)named
 {
-  if ([(TDVectorGlyphReader *)self attributesForLayerNamed:a3]&& CGSVGAttributeMapGetAttribute())
+  if ([(TDVectorGlyphReader *)self attributesForLayerNamed:named]&& CGSVGAttributeMapGetAttribute())
   {
     CGSVGAttributeGetFloat();
   }
@@ -2427,10 +2427,10 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
   return 0.0;
 }
 
-- (CGSVGAttributeMap)attributesForLayerNamed:(id)a3
+- (CGSVGAttributeMap)attributesForLayerNamed:(id)named
 {
   drawingSymbol = self->_drawingSymbol;
-  if (a3)
+  if (named)
   {
     [(TDVectorGlyphReader *)self templateVersion];
     v6 = v5;
@@ -2447,7 +2447,7 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
           if (CGSVGNodeFindAttribute())
           {
             v10 = CGSVGAttributeCopyString();
-            if ([v10 containsString:a3])
+            if ([v10 containsString:named])
             {
               AttributeMap = CGSVGNodeGetAttributeMap();
 
@@ -2478,7 +2478,7 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
           if (CGSVGNodeFindAttribute())
           {
             v15 = CGSVGAttributeCopyString();
-            if ([v15 containsString:a3])
+            if ([v15 containsString:named])
             {
               AttributeMap = CGSVGNodeGetAttributeMap();
 
@@ -2509,21 +2509,21 @@ uint64_t __63__TDVectorGlyphReader_vectorGlyphReaderWithURL_platform_error___blo
   }
 }
 
-- (void)_legacy_drawMonochromeLayerNamed:(id)a3 inContext:(CGContext *)a4 scaleFactor:(double)a5 targetSize:(CGSize)a6 onFillColor:(CGColor *)a7 offFillColor:(CGColor *)a8
+- (void)_legacy_drawMonochromeLayerNamed:(id)named inContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size onFillColor:(CGColor *)color offFillColor:(CGColor *)fillColor
 {
   if (self->_drawingSymbol)
   {
-    v10 = a6.width * a5;
-    v11 = a6.height * a5;
-    [(TDVectorGlyphReader *)self referenceCanvasSize:a3];
+    v10 = size.width * factor;
+    v11 = size.height * factor;
+    [(TDVectorGlyphReader *)self referenceCanvasSize:named];
     v13 = v12;
     v15 = v14;
-    CGContextSaveGState(a4);
-    CGContextScaleCTM(a4, v10 / v13, v11 / v15);
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, v10 / v13, v11 / v15);
     drawingSymbol = self->_drawingSymbol;
     CGContextDrawSVGDocument();
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 

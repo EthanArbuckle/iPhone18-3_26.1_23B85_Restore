@@ -1,50 +1,50 @@
 @interface CHXPie3DType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXPie3DType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 chart];
-  v7 = [(CHDChartType *)CHDPie3DType chartTypeWithChart:v6];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v7 = [(CHDChartType *)CHDPie3DType chartTypeWithChart:chart];
 
-  [CHXPie2DType readFrom:a3 chartType:v7 state:v5];
-  v8 = [v5 chart];
-  v9 = [v8 plotArea];
-  v10 = [v9 graphicProperties];
+  [CHXPie2DType readFrom:element chartType:v7 state:stateCopy];
+  chart2 = [stateCopy chart];
+  plotArea = [chart2 plotArea];
+  graphicProperties = [plotArea graphicProperties];
 
-  if (!v10)
+  if (!graphicProperties)
   {
-    v11 = [v5 chart];
-    v12 = [v11 plotArea];
+    chart3 = [stateCopy chart];
+    plotArea2 = [chart3 plotArea];
     v13 = objc_alloc_init(OADGraphicProperties);
-    [v12 setGraphicProperties:v13];
+    [plotArea2 setGraphicProperties:v13];
   }
 
-  v14 = [v5 chart];
-  v15 = [v14 plotArea];
-  v16 = [v15 graphicProperties];
-  v17 = [v16 hasOrientedBounds];
+  chart4 = [stateCopy chart];
+  plotArea3 = [chart4 plotArea];
+  graphicProperties2 = [plotArea3 graphicProperties];
+  hasOrientedBounds = [graphicProperties2 hasOrientedBounds];
 
-  if (v17)
+  if (hasOrientedBounds)
   {
-    v18 = [v5 chart];
-    v19 = [v18 plotArea];
-    v20 = [v19 graphicProperties];
-    v21 = [v20 orientedBounds];
-    [v21 bounds];
+    chart5 = [stateCopy chart];
+    plotArea4 = [chart5 plotArea];
+    graphicProperties3 = [plotArea4 graphicProperties];
+    orientedBounds = [graphicProperties3 orientedBounds];
+    [orientedBounds bounds];
     v23 = v22;
     v25 = v24;
 
     if (v23 == 0.0 && v25 == 0.0)
     {
-      v26 = [v5 chart];
-      v27 = [v26 plotArea];
-      v28 = [v27 graphicProperties];
-      v29 = [v28 orientedBounds];
-      [v29 setBounds:{0.0305555556, 0.0509259259, 0.860964348, 0.898148148}];
+      chart6 = [stateCopy chart];
+      plotArea5 = [chart6 plotArea];
+      graphicProperties4 = [plotArea5 graphicProperties];
+      orientedBounds2 = [graphicProperties4 orientedBounds];
+      [orientedBounds2 setBounds:{0.0305555556, 0.0509259259, 0.860964348, 0.898148148}];
     }
   }
 

@@ -1,23 +1,23 @@
 @interface LiveFSFPUnlockServiceSource
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (LiveFSFPUnlockServiceSource)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4;
-- (id)makeListenerEndpointAndReturnError:(id *)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (LiveFSFPUnlockServiceSource)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier;
+- (id)makeListenerEndpointAndReturnError:(id *)error;
 @end
 
 @implementation LiveFSFPUnlockServiceSource
 
-- (LiveFSFPUnlockServiceSource)initWithFileProviderExtension:(id)a3 itemIdentifier:(id)a4
+- (LiveFSFPUnlockServiceSource)initWithFileProviderExtension:(id)extension itemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = LiveFSFPUnlockServiceSource;
   v9 = [(LiveFSFPUnlockServiceSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileProviderExtension, a3);
-    objc_storeStrong(&v10->_itemIdentifier, a4);
+    objc_storeStrong(&v9->_fileProviderExtension, extension);
+    objc_storeStrong(&v10->_itemIdentifier, identifier);
     v11 = [MEMORY[0x277CCAA50] hashTableWithOptions:0];
     listeners = v10->_listeners;
     v10->_listeners = v11;
@@ -26,48 +26,48 @@
   return v10;
 }
 
-- (id)makeListenerEndpointAndReturnError:(id *)a3
+- (id)makeListenerEndpointAndReturnError:(id *)error
 {
-  v4 = [MEMORY[0x277CCAE98] anonymousListener];
-  [v4 setDelegate:self];
-  v5 = [v4 endpoint];
-  [v4 resume];
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSHashTable *)v6->_listeners addObject:v4];
-  objc_sync_exit(v6);
+  anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+  [anonymousListener setDelegate:self];
+  endpoint = [anonymousListener endpoint];
+  [anonymousListener resume];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_listeners addObject:anonymousListener];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return endpoint;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28681BF40];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v7 setExportedObject:self];
-  v9 = self;
-  objc_sync_enter(v9);
-  [(NSHashTable *)v9->_listeners removeObject:v6];
-  objc_sync_exit(v9);
+  [connectionCopy setExportedObject:self];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_listeners removeObject:listenerCopy];
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, connectionCopy);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__LiveFSFPUnlockServiceSource_listener_shouldAcceptNewConnection___block_invoke;
   v14[3] = &unk_27981A880;
-  v10 = v6;
+  v10 = listenerCopy;
   v15 = v10;
-  [v7 setInvalidationHandler:v14];
+  [connectionCopy setInvalidationHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__LiveFSFPUnlockServiceSource_listener_shouldAcceptNewConnection___block_invoke_2;
   v12[3] = &unk_27981A8A8;
   objc_copyWeak(&v13, &location);
-  [v7 setInterruptionHandler:v12];
-  [v7 resume];
+  [connectionCopy setInterruptionHandler:v12];
+  [connectionCopy resume];
   objc_destroyWeak(&v13);
 
   objc_destroyWeak(&location);

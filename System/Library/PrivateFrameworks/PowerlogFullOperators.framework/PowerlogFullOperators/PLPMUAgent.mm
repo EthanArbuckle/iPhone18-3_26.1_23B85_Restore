@@ -11,7 +11,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLPMUAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -32,44 +32,44 @@
   v35[0] = v27;
   v34[1] = *MEMORY[0x277D3F540];
   v30[0] = @"C-ich";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_RealFormat];
-  v31[0] = v25;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v31[0] = commonTypeDict_RealFormat;
   v30[1] = @"C-vbus";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_RealFormat];
-  v31[1] = v23;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v31[1] = commonTypeDict_RealFormat2;
   v30[2] = @"C-ich_avg";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_RealFormat];
-  v31[2] = v21;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v31[2] = commonTypeDict_RealFormat3;
   v30[3] = @"V-vbus";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_RealFormat];
-  v31[3] = v19;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_RealFormat];
+  v31[3] = commonTypeDict_RealFormat4;
   v30[4] = @"V-adc_in7";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_RealFormat];
-  v31[4] = v17;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_RealFormat];
+  v31[4] = commonTypeDict_RealFormat5;
   v30[5] = @"V-vbat";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_RealFormat];
-  v31[5] = v15;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+  v31[5] = commonTypeDict_RealFormat6;
   v30[6] = @"V-vcc_main";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat];
-  v31[6] = v4;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+  v31[6] = commonTypeDict_RealFormat7;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:7];
   v35[1] = v5;
   v34[2] = *MEMORY[0x277D3F500];
   v28[0] = @"value";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat];
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat];
   v28[1] = @"unit";
-  v29[0] = v7;
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v29[1] = v9;
+  v29[0] = commonTypeDict_RealFormat8;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v29[1] = commonTypeDict_StringFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
   v35[2] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
@@ -93,7 +93,7 @@
     {
 LABEL_51:
       self = v3;
-      v24 = self;
+      selfCopy = self;
       goto LABEL_52;
     }
 
@@ -126,9 +126,9 @@ LABEL_51:
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"PMU: could not create HIDEventSystem"];
       v26 = MEMORY[0x277D3F178];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLPMUAgent.m"];
-      v28 = [v27 lastPathComponent];
+      lastPathComponent = [v27 lastPathComponent];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPMUAgent init]"];
-      [v26 logMessage:v10 fromFile:v28 fromFunction:v29 fromLineNumber:119];
+      [v26 logMessage:v10 fromFile:lastPathComponent fromFunction:v29 fromLineNumber:119];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -308,10 +308,10 @@ LABEL_30:
           v67 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: PMU: Could not find any current sensors"];
           v68 = MEMORY[0x277D3F178];
           v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLPMUAgent.m"];
-          v70 = [v69 lastPathComponent];
+          lastPathComponent2 = [v69 lastPathComponent];
           v71 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPMUAgent init]"];
           v56 = v67;
-          [v68 logMessage:v67 fromFile:v70 fromFunction:v71 fromLineNumber:149];
+          [v68 logMessage:v67 fromFile:lastPathComponent2 fromFunction:v71 fromLineNumber:149];
 
           v72 = PLLogCommon();
           if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
@@ -332,10 +332,10 @@ LABEL_50:
       v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: PMU: Could not find any voltage sensors"];
       v38 = MEMORY[0x277D3F178];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLPMUAgent.m"];
-      v40 = [v39 lastPathComponent];
+      lastPathComponent3 = [v39 lastPathComponent];
       v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLPMUAgent init]"];
       obj = v37;
-      [v38 logMessage:v37 fromFile:v40 fromFunction:v41 fromLineNumber:131];
+      [v38 logMessage:v37 fromFile:lastPathComponent3 fromFunction:v41 fromLineNumber:131];
 
       v42 = PLLogCommon();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -349,11 +349,11 @@ LABEL_50:
     goto LABEL_30;
   }
 
-  v24 = 0;
+  selfCopy = 0;
 LABEL_52:
 
   v79 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
 uint64_t __18__PLPMUAgent_init__block_invoke(uint64_t a1)
@@ -399,8 +399,8 @@ uint64_t __18__PLPMUAgent_init__block_invoke_75(uint64_t a1)
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(NSMutableDictionary *)self->matchingSensors allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allKeys = [(NSMutableDictionary *)self->matchingSensors allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -411,7 +411,7 @@ uint64_t __18__PLPMUAgent_init__block_invoke_75(uint64_t a1)
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
@@ -429,7 +429,7 @@ uint64_t __18__PLPMUAgent_init__block_invoke_75(uint64_t a1)
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);

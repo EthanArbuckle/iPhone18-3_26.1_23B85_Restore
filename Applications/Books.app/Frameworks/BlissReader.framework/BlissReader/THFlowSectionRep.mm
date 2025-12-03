@@ -36,10 +36,10 @@
       v23.size.height = v10;
       if (MinY < CGRectGetMaxY(v23))
       {
-        v16 = [(THFlowSectionRep *)self interactiveCanvasController];
-        v17 = [(THFlowSectionRep *)self layout];
+        interactiveCanvasController = [(THFlowSectionRep *)self interactiveCanvasController];
+        layout = [(THFlowSectionRep *)self layout];
 
-        [v16 invalidateLayoutInBackground:v17];
+        [interactiveCanvasController invalidateLayoutInBackground:layout];
       }
     }
   }

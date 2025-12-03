@@ -1,65 +1,65 @@
 @interface FPDMoveWriter
-+ (id)acquireDownloadSlotForItem:(id)a3;
++ (id)acquireDownloadSlotForItem:(id)item;
 + (void)initialize;
-+ (void)releaseDownloadSlot:(id)a3;
++ (void)releaseDownloadSlot:(id)slot;
 - (FPDMoveOperation)operation;
-- (FPDMoveWriter)initWithOperation:(id)a3 queue:(id)a4;
+- (FPDMoveWriter)initWithOperation:(id)operation queue:(id)queue;
 - (FPDMoveWriterExecutor)diskWriter;
 - (id)defaultExecutor;
-- (id)waitForResultOfSourceID:(id)a3 root:(id)a4 error:(id *)a5;
-- (void)_finishWithError:(id)a3;
-- (void)_handleCompletionOfAtom:(id)a3 source:(id)a4 result:(id)a5 error:(id)a6;
-- (void)_handleFolder:(id)a3 completion:(id)a4;
-- (void)_handleItem:(id)a3 completion:(id)a4;
-- (void)_handlePostFolder:(id)a3 completion:(id)a4;
-- (void)_performCopyOrMoveOfFolder:(id)a3 completion:(id)a4;
-- (void)_performCopyOrMoveOfItem:(id)a3 completion:(id)a4;
-- (void)_removeRoot:(id)a3;
+- (id)waitForResultOfSourceID:(id)d root:(id)root error:(id *)error;
+- (void)_finishWithError:(id)error;
+- (void)_handleCompletionOfAtom:(id)atom source:(id)source result:(id)result error:(id)error;
+- (void)_handleFolder:(id)folder completion:(id)completion;
+- (void)_handleItem:(id)item completion:(id)completion;
+- (void)_handlePostFolder:(id)folder completion:(id)completion;
+- (void)_performCopyOrMoveOfFolder:(id)folder completion:(id)completion;
+- (void)_performCopyOrMoveOfItem:(id)item completion:(id)completion;
+- (void)_removeRoot:(id)root;
 - (void)_step;
-- (void)_unblockWaiterForSourceID:(id)a3 withResult:(id)a4 error:(id)a5;
+- (void)_unblockWaiterForSourceID:(id)d withResult:(id)result error:(id)error;
 - (void)cancel;
-- (void)cancelRoot:(id)a3;
-- (void)dumpStateTo:(id)a3;
-- (void)failWithError:(id)a3;
-- (void)handleAtom:(id)a3 completion:(id)a4;
-- (void)handleCreationForAtom:(id)a3 result:(id)a4;
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8;
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 useDiskWriter:(BOOL)a8 completion:(id)a9;
-- (void)performCreateFolder:(id)a3 inside:(id)a4 as:(id)a5 useDiskWriter:(BOOL)a6 completion:(id)a7;
-- (void)performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 useDiskWriter:(BOOL)a8 completion:(id)a9;
-- (void)setProgress:(id)a3 forRoot:(id)a4;
+- (void)cancelRoot:(id)root;
+- (void)dumpStateTo:(id)to;
+- (void)failWithError:(id)error;
+- (void)handleAtom:(id)atom completion:(id)completion;
+- (void)handleCreationForAtom:(id)atom result:(id)result;
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion;
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption useDiskWriter:(BOOL)writer completion:(id)completion;
+- (void)performCreateFolder:(id)folder inside:(id)inside as:(id)as useDiskWriter:(BOOL)writer completion:(id)completion;
+- (void)performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption useDiskWriter:(BOOL)writer completion:(id)completion;
+- (void)setProgress:(id)progress forRoot:(id)root;
 - (void)start;
-- (void)startDownloadOfItem:(id)a3 shouldMaterializeRecursively:(BOOL)a4 completionHandler:(id)a5;
+- (void)startDownloadOfItem:(id)item shouldMaterializeRecursively:(BOOL)recursively completionHandler:(id)handler;
 @end
 
 @implementation FPDMoveWriter
 
-+ (id)acquireDownloadSlotForItem:(id)a3
++ (id)acquireDownloadSlotForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 providerID];
+  itemCopy = item;
+  providerID = [itemCopy providerID];
   v5 = _globalDownloadSlotsByProvider_0;
   objc_sync_enter(v5);
-  v6 = [_globalDownloadSlotsByProvider_0 objectForKeyedSubscript:v4];
+  v6 = [_globalDownloadSlotsByProvider_0 objectForKeyedSubscript:providerID];
   if (!v6)
   {
     v6 = dispatch_semaphore_create(256);
-    [_globalDownloadSlotsByProvider_0 setObject:v6 forKeyedSubscript:v4];
+    [_globalDownloadSlotsByProvider_0 setObject:v6 forKeyedSubscript:providerID];
   }
 
   objc_sync_exit(v5);
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 
-  return v4;
+  return providerID;
 }
 
-+ (void)releaseDownloadSlot:(id)a3
++ (void)releaseDownloadSlot:(id)slot
 {
-  v7 = a3;
+  slotCopy = slot;
   v3 = _globalDownloadSlotsByProvider_0;
   objc_sync_enter(v3);
-  v4 = [_globalDownloadSlotsByProvider_0 objectForKeyedSubscript:v7];
+  v4 = [_globalDownloadSlotsByProvider_0 objectForKeyedSubscript:slotCopy];
   objc_sync_exit(v3);
 
   if (!v4)
@@ -92,23 +92,23 @@ void __27__FPDMoveWriter_initialize__block_invoke()
   _globalDownloadSlotsByProvider_0 = v0;
 }
 
-- (FPDMoveWriter)initWithOperation:(id)a3 queue:(id)a4
+- (FPDMoveWriter)initWithOperation:(id)operation queue:(id)queue
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  queueCopy = queue;
   v67.receiver = self;
   v67.super_class = FPDMoveWriter;
   v8 = [(FPDMoveWriter *)&v67 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_operation, v6);
-    v10 = [v6 info];
+    objc_storeWeak(&v8->_operation, operationCopy);
+    info = [operationCopy info];
     info = v9->_info;
-    v9->_info = v10;
+    v9->_info = info;
 
-    objc_storeWeak(&v9->_moveQueue, v7);
+    objc_storeWeak(&v9->_moveQueue, queueCopy);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v12, [(FPMoveInfo *)v9->_info qos], 0);
     v14 = dispatch_queue_create("FileProvider.move-writer.async", v13);
@@ -141,15 +141,15 @@ void __27__FPDMoveWriter_initialize__block_invoke()
     v9->_depth = 0;
     v28 = [FPDCoordinator alloc];
     WeakRetained = objc_loadWeakRetained(&v9->_operation);
-    v30 = [WeakRetained manager];
-    v31 = [(FPDCoordinator *)v28 initWithExtensionManager:v30 callbackQueue:v9->_queue];
+    manager = [WeakRetained manager];
+    v31 = [(FPDCoordinator *)v28 initWithExtensionManager:manager callbackQueue:v9->_queue];
     coordinator = v9->_coordinator;
     v9->_coordinator = v31;
 
     v33 = [FPDCoordinator alloc];
     v34 = objc_loadWeakRetained(&v9->_operation);
-    v35 = [v34 manager];
-    v36 = [(FPDCoordinator *)v33 initWithExtensionManager:v35 callbackQueue:v9->_queue];
+    manager2 = [v34 manager];
+    v36 = [(FPDCoordinator *)v33 initWithExtensionManager:manager2 callbackQueue:v9->_queue];
     preemptiveDownloadCoordinator = v9->_preemptiveDownloadCoordinator;
     v9->_preemptiveDownloadCoordinator = v36;
 
@@ -161,11 +161,11 @@ void __27__FPDMoveWriter_initialize__block_invoke()
     }
 
     v9->_logSection = section;
-    v40 = [v6 info];
-    v41 = [v40 targetFolder];
-    v42 = [v41 isProviderItem];
+    info2 = [operationCopy info];
+    targetFolder = [info2 targetFolder];
+    isProviderItem = [targetFolder isProviderItem];
 
-    if (v42)
+    if (isProviderItem)
     {
       v43 = [[FPDMoveWriterToProvider alloc] initWithWriter:v9];
       providerWriter = v9->_providerWriter;
@@ -174,16 +174,16 @@ void __27__FPDMoveWriter_initialize__block_invoke()
 
     if ([(FPMoveInfo *)v9->_info _t_clearItemURLs])
     {
-      v45 = [(FPMoveInfo *)v9->_info targetFolder];
-      v46 = [v45 asFPItem];
-      [v46 setFileURL:0];
+      targetFolder2 = [(FPMoveInfo *)v9->_info targetFolder];
+      asFPItem = [targetFolder2 asFPItem];
+      [asFPItem setFileURL:0];
 
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v47 = [(FPMoveInfo *)v9->_info roots];
-      v48 = [v47 countByEnumeratingWithState:&v63 objects:v68 count:16];
+      roots = [(FPMoveInfo *)v9->_info roots];
+      v48 = [roots countByEnumeratingWithState:&v63 objects:v68 count:16];
       if (v48)
       {
         v49 = v48;
@@ -195,26 +195,26 @@ void __27__FPDMoveWriter_initialize__block_invoke()
           {
             if (*v64 != v50)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(roots);
             }
 
-            v52 = [*(*(&v63 + 1) + 8 * v51) asFPItem];
-            [v52 setFileURL:0];
+            asFPItem2 = [*(*(&v63 + 1) + 8 * v51) asFPItem];
+            [asFPItem2 setFileURL:0];
 
             ++v51;
           }
 
           while (v49 != v51);
-          v49 = [v47 countByEnumeratingWithState:&v63 objects:v68 count:16];
+          v49 = [roots countByEnumeratingWithState:&v63 objects:v68 count:16];
         }
 
         while (v49);
       }
     }
 
-    v53 = [(FPMoveInfo *)v9->_info roots];
-    v54 = [(FPMoveInfo *)v9->_info targetFolder];
-    v55 = [v53 arrayByAddingObject:v54];
+    roots2 = [(FPMoveInfo *)v9->_info roots];
+    targetFolder3 = [(FPMoveInfo *)v9->_info targetFolder];
+    v55 = [roots2 arrayByAddingObject:targetFolder3];
 
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
@@ -244,15 +244,15 @@ id __41__FPDMoveWriter_initWithOperation_queue___block_invoke(uint64_t a1, void 
   return v6;
 }
 
-- (void)_performCopyOrMoveOfItem:(id)a3 completion:(id)a4
+- (void)_performCopyOrMoveOfItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 source];
-  v9 = [v8 isFolder];
+  source = [itemCopy source];
+  isFolder = [source isFolder];
 
-  if (v9)
+  if (isFolder)
   {
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ unexpected folder"];
     v33 = fp_current_or_default_log();
@@ -269,44 +269,44 @@ id __41__FPDMoveWriter_initWithOperation_queue___block_invoke(uint64_t a1, void 
   aBlock[2] = __53__FPDMoveWriter__performCopyOrMoveOfItem_completion___block_invoke;
   aBlock[3] = &unk_1E83C1560;
   aBlock[4] = self;
-  v10 = v7;
+  v10 = completionCopy;
   v43 = v10;
   v11 = _Block_copy(aBlock);
   errorsByRoot = self->_errorsByRoot;
-  v13 = [v6 root];
-  v14 = [(NSMutableDictionary *)errorsByRoot objectForKeyedSubscript:v13];
+  root = [itemCopy root];
+  v14 = [(NSMutableDictionary *)errorsByRoot objectForKeyedSubscript:root];
 
   if (v14)
   {
-    v15 = [v6 source];
-    [(FPDMoveWriter *)self _handleCompletionOfAtom:v6 source:v15 result:0 error:v14];
+    source2 = [itemCopy source];
+    [(FPDMoveWriter *)self _handleCompletionOfAtom:itemCopy source:source2 result:0 error:v14];
 
     v11[2](v11, 0, v14);
   }
 
   else
   {
-    v16 = [(FPMoveInfo *)self->_info byCopy];
-    v17 = [v6 source];
-    v18 = v17;
-    if (!v16)
+    byCopy = [(FPMoveInfo *)self->_info byCopy];
+    source3 = [itemCopy source];
+    v18 = source3;
+    if (!byCopy)
     {
-      v22 = [v17 parentIdentifier];
-      v23 = [v6 targetFolder];
-      v24 = [v23 identifier];
-      if ([v22 isEqual:v24])
+      parentIdentifier = [source3 parentIdentifier];
+      targetFolder = [itemCopy targetFolder];
+      identifier = [targetFolder identifier];
+      if ([parentIdentifier isEqual:identifier])
       {
-        [v6 targetName];
+        [itemCopy targetName];
         v25 = v34 = v18;
-        v26 = [v6 source];
-        [v26 filename];
-        v27 = v38 = v22;
+        source4 = [itemCopy source];
+        [source4 filename];
+        v27 = v38 = parentIdentifier;
         v36 = [v25 isEqualToString:v27];
 
         if (v36)
         {
-          v28 = [v6 source];
-          (v11)[2](v11, v28, 0);
+          source5 = [itemCopy source];
+          (v11)[2](v11, source5, 0);
 
           goto LABEL_11;
         }
@@ -316,27 +316,27 @@ id __41__FPDMoveWriter_initWithOperation_queue___block_invoke(uint64_t a1, void 
       {
       }
 
-      v29 = [v6 source];
-      v30 = [v6 targetFolder];
-      v31 = [v6 targetName];
-      -[FPDMoveWriter performMoveOfItem:to:as:sourceMaterializeOption:targetMaterializeOption:useDiskWriter:completion:](self, "performMoveOfItem:to:as:sourceMaterializeOption:targetMaterializeOption:useDiskWriter:completion:", v29, v30, v31, [v6 materializeOption], objc_msgSend(v6, "targetMaterializeOption"), objc_msgSend(v6, "useDiskWriter"), v11);
+      source6 = [itemCopy source];
+      targetFolder2 = [itemCopy targetFolder];
+      targetName = [itemCopy targetName];
+      -[FPDMoveWriter performMoveOfItem:to:as:sourceMaterializeOption:targetMaterializeOption:useDiskWriter:completion:](self, "performMoveOfItem:to:as:sourceMaterializeOption:targetMaterializeOption:useDiskWriter:completion:", source6, targetFolder2, targetName, [itemCopy materializeOption], objc_msgSend(itemCopy, "targetMaterializeOption"), objc_msgSend(itemCopy, "useDiskWriter"), v11);
 
       goto LABEL_11;
     }
 
-    v19 = [v6 targetFolder];
-    v20 = [v6 targetName];
-    v37 = [v6 materializeOption];
-    v35 = [v6 targetMaterializeOption];
-    v21 = [v6 useDiskWriter];
+    targetFolder3 = [itemCopy targetFolder];
+    targetName2 = [itemCopy targetName];
+    materializeOption = [itemCopy materializeOption];
+    targetMaterializeOption = [itemCopy targetMaterializeOption];
+    useDiskWriter = [itemCopy useDiskWriter];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __53__FPDMoveWriter__performCopyOrMoveOfItem_completion___block_invoke_3;
     v39[3] = &unk_1E83C14C0;
     v39[4] = self;
-    v40 = v6;
+    v40 = itemCopy;
     v41 = v11;
-    [(FPDMoveWriter *)self performCopyOfItem:v18 to:v19 as:v20 sourceMaterializeOption:v37 targetMaterializeOption:v35 useDiskWriter:v21 completion:v39];
+    [(FPDMoveWriter *)self performCopyOfItem:v18 to:targetFolder3 as:targetName2 sourceMaterializeOption:materializeOption targetMaterializeOption:targetMaterializeOption useDiskWriter:useDiskWriter completion:v39];
   }
 
 LABEL_11:
@@ -392,20 +392,20 @@ uint64_t __53__FPDMoveWriter__performCopyOrMoveOfItem_completion___block_invoke_
   return v4();
 }
 
-- (void)_handleItem:(id)a3 completion:(id)a4
+- (void)_handleItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__FPDMoveWriter__handleItem_completion___block_invoke;
   v10[3] = &unk_1E83C14C0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = itemCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = itemCopy;
   [(FPDMoveWriter *)self _performCopyOrMoveOfItem:v9 completion:v10];
 }
 
@@ -425,48 +425,48 @@ uint64_t __40__FPDMoveWriter__handleItem_completion___block_invoke(void *a1, voi
   return v11();
 }
 
-- (void)_performCopyOrMoveOfFolder:(id)a3 completion:(id)a4
+- (void)_performCopyOrMoveOfFolder:(id)folder completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__FPDMoveWriter__performCopyOrMoveOfFolder_completion___block_invoke;
   aBlock[3] = &unk_1E83C1560;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v23 = v8;
   v9 = _Block_copy(aBlock);
   errorsByRoot = self->_errorsByRoot;
-  v11 = [v6 root];
-  v12 = [(NSMutableDictionary *)errorsByRoot objectForKeyedSubscript:v11];
+  root = [folderCopy root];
+  v12 = [(NSMutableDictionary *)errorsByRoot objectForKeyedSubscript:root];
 
   if (v12)
   {
-    v13 = [v6 source];
-    [(FPDMoveWriter *)self _handleCompletionOfAtom:v6 source:v13 result:0 error:v12];
+    source = [folderCopy source];
+    [(FPDMoveWriter *)self _handleCompletionOfAtom:folderCopy source:source result:0 error:v12];
 
     v9[2](v9, 0, v12);
   }
 
   else
   {
-    v14 = [(FPMoveInfo *)self->_info byCopy];
-    v15 = [v6 source];
-    v16 = [v6 targetFolder];
-    v17 = [v6 targetName];
-    if (v14)
+    byCopy = [(FPMoveInfo *)self->_info byCopy];
+    source2 = [folderCopy source];
+    targetFolder = [folderCopy targetFolder];
+    targetName = [folderCopy targetName];
+    if (byCopy)
     {
-      -[FPDMoveWriter performCreateFolder:inside:as:useDiskWriter:completion:](self, "performCreateFolder:inside:as:useDiskWriter:completion:", v15, v16, v17, [v6 useDiskWriter], v9);
+      -[FPDMoveWriter performCreateFolder:inside:as:useDiskWriter:completion:](self, "performCreateFolder:inside:as:useDiskWriter:completion:", source2, targetFolder, targetName, [folderCopy useDiskWriter], v9);
     }
 
     else
     {
-      v21 = [v6 materializeOption];
-      v18 = [v6 targetMaterializeOption];
-      v19 = [v6 useAtomicMove];
-      LOBYTE(v20) = [v6 useDiskWriter];
-      [(FPDMoveWriter *)self performMoveOfFolder:v15 to:v16 as:v17 sourceMaterializeOption:v21 targetMaterializeOption:v18 atomically:v19 useDiskWriter:v20 completion:v9];
+      materializeOption = [folderCopy materializeOption];
+      targetMaterializeOption = [folderCopy targetMaterializeOption];
+      useAtomicMove = [folderCopy useAtomicMove];
+      LOBYTE(v20) = [folderCopy useDiskWriter];
+      [(FPDMoveWriter *)self performMoveOfFolder:source2 to:targetFolder as:targetName sourceMaterializeOption:materializeOption targetMaterializeOption:targetMaterializeOption atomically:useAtomicMove useDiskWriter:v20 completion:v9];
     }
   }
 }
@@ -489,15 +489,15 @@ void __55__FPDMoveWriter__performCopyOrMoveOfFolder_completion___block_invoke(ui
   dispatch_async(v7, block);
 }
 
-- (void)_handleFolder:(id)a3 completion:(id)a4
+- (void)_handleFolder:(id)folder completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 source];
-  v9 = [v8 isFolder];
+  source = [folderCopy source];
+  isFolder = [source isFolder];
 
-  if ((v9 & 1) == 0)
+  if ((isFolder & 1) == 0)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ expected a folder"];
     v13 = fp_current_or_default_log();
@@ -514,10 +514,10 @@ void __55__FPDMoveWriter__performCopyOrMoveOfFolder_completion___block_invoke(ui
   v14[2] = __42__FPDMoveWriter__handleFolder_completion___block_invoke;
   v14[3] = &unk_1E83C14C0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = folderCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = folderCopy;
   [(FPDMoveWriter *)self _performCopyOrMoveOfFolder:v11 completion:v14];
 }
 
@@ -566,62 +566,62 @@ void __42__FPDMoveWriter__handleFolder_completion___block_invoke(uint64_t a1, vo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCompletionOfAtom:(id)a3 source:(id)a4 result:(id)a5 error:(id)a6
+- (void)_handleCompletionOfAtom:(id)atom source:(id)source result:(id)result error:(id)error
 {
-  v31 = a4;
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  resultCopy = result;
+  errorCopy = error;
   queue = self->_queue;
-  v13 = a3;
+  atomCopy = atom;
   dispatch_assert_queue_V2(queue);
-  v14 = [v13 source];
-  v15 = [v14 identifier];
-  [(FPDMoveWriter *)self _unblockWaiterForSourceID:v15 withResult:v10 error:v11];
+  source = [atomCopy source];
+  identifier = [source identifier];
+  [(FPDMoveWriter *)self _unblockWaiterForSourceID:identifier withResult:resultCopy error:errorCopy];
 
-  v16 = [v13 root];
-  v17 = [v13 kind];
+  root = [atomCopy root];
+  kind = [atomCopy kind];
   info = self->_info;
   WeakRetained = objc_loadWeakRetained(&self->_operation);
-  v20 = [WeakRetained manager];
-  v21 = [v13 shouldAccountForDownloadOfSourceItemForMoveInfo:info extensionManager:v20];
+  manager = [WeakRetained manager];
+  v21 = [atomCopy shouldAccountForDownloadOfSourceItemForMoveInfo:info extensionManager:manager];
 
-  v22 = [v13 useAtomicMove];
-  if (v11)
+  useAtomicMove = [atomCopy useAtomicMove];
+  if (errorCopy)
   {
-    v23 = [(NSMutableDictionary *)self->_errorsByRoot objectForKeyedSubscript:v16];
+    v23 = [(NSMutableDictionary *)self->_errorsByRoot objectForKeyedSubscript:root];
 
     if (!v23)
     {
-      [(NSMutableDictionary *)self->_errorsByRoot setObject:v11 forKeyedSubscript:v16];
+      [(NSMutableDictionary *)self->_errorsByRoot setObject:errorCopy forKeyedSubscript:root];
     }
   }
 
-  if (v17 != 1)
+  if (kind != 1)
   {
-    v24 = [(FPDMoveWriter *)self itemCompletionBlock];
-    (v24)[2](v24, v16, v31, v21);
+    itemCompletionBlock = [(FPDMoveWriter *)self itemCompletionBlock];
+    (itemCompletionBlock)[2](itemCompletionBlock, root, sourceCopy, v21);
   }
 
-  v25 = [(FPMoveInfo *)self->_info roots];
-  v26 = [v25 containsObject:v31];
+  roots = [(FPMoveInfo *)self->_info roots];
+  v26 = [roots containsObject:sourceCopy];
 
   if (v26)
   {
-    if (v10)
+    if (resultCopy)
     {
-      v27 = [(FPDMoveWriter *)self rootCreatedBlock];
-      (v27)[2](v27, v16, v10);
+      rootCreatedBlock = [(FPDMoveWriter *)self rootCreatedBlock];
+      (rootCreatedBlock)[2](rootCreatedBlock, root, resultCopy);
     }
 
-    v28 = [(NSMutableDictionary *)self->_errorsByRoot objectForKeyedSubscript:v16];
-    if (v17)
+    v28 = [(NSMutableDictionary *)self->_errorsByRoot objectForKeyedSubscript:root];
+    if (kind)
     {
-      if (-[FPMoveInfo byMoving](self->_info, "byMoving") && !(v22 & 1 | (([v31 isExternalURL] & 1) == 0)))
+      if (-[FPMoveInfo byMoving](self->_info, "byMoving") && !(useAtomicMove & 1 | (([sourceCopy isExternalURL] & 1) == 0)))
       {
-        [(FPDMoveWriter *)self _removeRoot:v16];
+        [(FPDMoveWriter *)self _removeRoot:root];
       }
 
-      if (v17 == 1)
+      if (kind == 1)
       {
         v29 = self->_depth - 1;
         self->_depth = v29;
@@ -631,8 +631,8 @@ void __42__FPDMoveWriter__handleFolder_completion___block_invoke(uint64_t a1, vo
         }
       }
 
-      v30 = [(FPDMoveWriter *)self rootCompletionBlock];
-      (v30)[2](v30, v16, v28);
+      rootCompletionBlock = [(FPDMoveWriter *)self rootCompletionBlock];
+      (rootCompletionBlock)[2](rootCompletionBlock, root, v28);
     }
 
     else
@@ -643,27 +643,27 @@ void __42__FPDMoveWriter__handleFolder_completion___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)handleCreationForAtom:(id)a3 result:(id)a4
+- (void)handleCreationForAtom:(id)atom result:(id)result
 {
-  v15 = a3;
-  v6 = a4;
+  atomCopy = atom;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v15 root];
-  v8 = [(FPMoveInfo *)self->_info roots];
-  v9 = [v15 source];
-  v10 = [v8 containsObject:v9];
+  root = [atomCopy root];
+  roots = [(FPMoveInfo *)self->_info roots];
+  source = [atomCopy source];
+  v10 = [roots containsObject:source];
 
   if (v10)
   {
-    if (v6)
+    if (resultCopy)
     {
-      v11 = [(FPDMoveWriter *)self rootCreatedBlock];
-      (v11)[2](v11, v7, v6);
+      rootCreatedBlock = [(FPDMoveWriter *)self rootCreatedBlock];
+      (rootCreatedBlock)[2](rootCreatedBlock, root, resultCopy);
     }
 
     progressByRoot = self->_progressByRoot;
-    v13 = [v15 root];
-    [(NSMutableDictionary *)progressByRoot removeObjectForKey:v13];
+    root2 = [atomCopy root];
+    [(NSMutableDictionary *)progressByRoot removeObjectForKey:root2];
   }
 
   [(NSObservation *)self->_importProgressObservation finishObserving];
@@ -671,10 +671,10 @@ void __42__FPDMoveWriter__handleFolder_completion___block_invoke(uint64_t a1, vo
   self->_importProgressObservation = 0;
 }
 
-- (void)_handlePostFolder:(id)a3 completion:(id)a4
+- (void)_handlePostFolder:(id)folder completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
+  folderCopy = folder;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (![(NSMutableArray *)self->_sourceFoldersStack count])
   {
@@ -700,43 +700,43 @@ void __42__FPDMoveWriter__handleFolder_completion___block_invoke(uint64_t a1, vo
     __assert_rtn("-[FPDMoveWriter _handlePostFolder:completion:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/action operation engine/move/FPDMoveWriter.m", 374, [v10 UTF8String]);
   }
 
-  v7 = [(NSMutableArray *)self->_sourceFoldersStack lastObject];
-  [(FPDMoveWriter *)self _handleCompletionOfAtom:v12 source:v7 result:0 error:0];
+  lastObject = [(NSMutableArray *)self->_sourceFoldersStack lastObject];
+  [(FPDMoveWriter *)self _handleCompletionOfAtom:folderCopy source:lastObject result:0 error:0];
   [(NSMutableArray *)self->_sourceFoldersStack removeLastObject];
   [(NSMutableArray *)self->_destinationFoldersStack removeLastObject];
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
-- (void)handleAtom:(id)a3 completion:(id)a4
+- (void)handleAtom:(id)atom completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  atomCopy = atom;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __39__FPDMoveWriter_handleAtom_completion___block_invoke;
   v14 = &unk_1E83BE310;
-  v15 = self;
-  v16 = v7;
-  v8 = v7;
+  selfCopy = self;
+  v16 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(&v11);
-  v10 = [v6 kind];
-  if (v10)
+  kind = [atomCopy kind];
+  if (kind)
   {
-    if (v10 == 1)
+    if (kind == 1)
     {
-      [(FPDMoveWriter *)self _handlePostFolder:v6 completion:v9];
+      [(FPDMoveWriter *)self _handlePostFolder:atomCopy completion:v9];
     }
 
-    else if (v10 == 2)
+    else if (kind == 2)
     {
-      [(FPDMoveWriter *)self _handleItem:v6 completion:v9];
+      [(FPDMoveWriter *)self _handleItem:atomCopy completion:v9];
     }
   }
 
   else
   {
-    [(FPDMoveWriter *)self _handleFolder:v6 completion:v9];
+    [(FPDMoveWriter *)self _handleFolder:atomCopy completion:v9];
   }
 }
 
@@ -755,16 +755,16 @@ uint64_t __39__FPDMoveWriter_handleAtom_completion___block_invoke(uint64_t a1)
   {
     dispatch_assert_queue_not_V2(self->_queue);
     WeakRetained = objc_loadWeakRetained(&self->_moveQueue);
-    v4 = [WeakRetained dequeue];
+    dequeue = [WeakRetained dequeue];
 
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __22__FPDMoveWriter__step__block_invoke;
     v7[3] = &unk_1E83BE158;
-    v8 = v4;
-    v9 = self;
-    v6 = v4;
+    v8 = dequeue;
+    selfCopy = self;
+    v6 = dequeue;
     dispatch_sync(queue, v7);
   }
 }
@@ -821,20 +821,20 @@ void __22__FPDMoveWriter__step__block_invoke_24(uint64_t a1)
   dispatch_async(asyncQueue, block);
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_cancelled)
   {
     v6 = fp_current_or_default_log();
     v7 = v6;
-    if (v5)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [FPDMoveWriter _finishWithError:v5];
+        [FPDMoveWriter _finishWithError:errorCopy];
       }
     }
 
@@ -878,7 +878,7 @@ void __22__FPDMoveWriter__step__block_invoke_24(uint64_t a1)
     waiterBlock = self->_waiterBlock;
     if (waiterBlock)
     {
-      waiterBlock[2](waiterBlock, 0, v5);
+      waiterBlock[2](waiterBlock, 0, errorCopy);
       v14 = self->_waiterBlock;
     }
 
@@ -893,12 +893,12 @@ void __22__FPDMoveWriter__step__block_invoke_24(uint64_t a1)
     self->_waitedOnID = 0;
 
     self->_cancelled = 1;
-    objc_storeStrong(&self->_error, a3);
-    v16 = [(FPDMoveWriter *)self completionBlock];
-    v17 = v16;
-    if (v16)
+    objc_storeStrong(&self->_error, error);
+    completionBlock = [(FPDMoveWriter *)self completionBlock];
+    v17 = completionBlock;
+    if (completionBlock)
     {
-      (*(v16 + 16))(v16, v5);
+      (*(completionBlock + 16))(completionBlock, errorCopy);
       [(FPDMoveWriter *)self setCompletionBlock:0];
     }
   }
@@ -906,31 +906,31 @@ void __22__FPDMoveWriter__step__block_invoke_24(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__FPDMoveWriter_failWithError___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)cancelRoot:(id)a3
+- (void)cancelRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__FPDMoveWriter_cancelRoot___block_invoke;
   v7[3] = &unk_1E83BE158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = rootCopy;
+  v6 = rootCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -966,32 +966,32 @@ void __23__FPDMoveWriter_cancel__block_invoke(uint64_t a1)
   [v1 _finishWithError:v2];
 }
 
-- (void)setProgress:(id)a3 forRoot:(id)a4
+- (void)setProgress:(id)progress forRoot:(id)root
 {
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  rootCopy = root;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(FPMoveInfo *)self->_info roots];
-  v9 = [v8 containsObject:v7];
+  roots = [(FPMoveInfo *)self->_info roots];
+  v9 = [roots containsObject:rootCopy];
 
   if (v9)
   {
-    [(NSMutableDictionary *)self->_progressByRoot setObject:v6 forKeyedSubscript:v7];
-    v10 = [(FPDMoveWriter *)self itemCopyProgressBlock];
+    [(NSMutableDictionary *)self->_progressByRoot setObject:progressCopy forKeyedSubscript:rootCopy];
+    itemCopyProgressBlock = [(FPDMoveWriter *)self itemCopyProgressBlock];
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
     v20[3] = 0;
-    v11 = [MEMORY[0x1E696ADA8] keyPathWithRootObject:v6 path:"fractionCompleted"];
+    v11 = [MEMORY[0x1E696ADA8] keyPathWithRootObject:progressCopy path:"fractionCompleted"];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __37__FPDMoveWriter_setProgress_forRoot___block_invoke;
     v15[3] = &unk_1E83C1588;
-    v16 = v6;
+    v16 = progressCopy;
     v19 = v20;
-    v12 = v10;
+    v12 = itemCopyProgressBlock;
     v18 = v12;
-    v17 = v7;
+    v17 = rootCopy;
     v13 = [v11 addObserverBlock:v15];
     importProgressObservation = self->_importProgressObservation;
     self->_importProgressObservation = v13;
@@ -1015,14 +1015,14 @@ uint64_t __37__FPDMoveWriter_setProgress_forRoot___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_unblockWaiterForSourceID:(id)a3 withResult:(id)a4 error:(id)a5
+- (void)_unblockWaiterForSourceID:(id)d withResult:(id)result error:(id)error
 {
-  v13 = a4;
-  v8 = a5;
+  resultCopy = result;
+  errorCopy = error;
   queue = self->_queue;
-  v10 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  LODWORD(queue) = [self->_waitedOnID isEqual:v10];
+  LODWORD(queue) = [self->_waitedOnID isEqual:dCopy];
 
   if (queue)
   {
@@ -1035,10 +1035,10 @@ uint64_t __37__FPDMoveWriter_setProgress_forRoot___block_invoke(uint64_t a1)
   }
 }
 
-- (id)waitForResultOfSourceID:(id)a3 root:(id)a4 error:(id *)a5
+- (id)waitForResultOfSourceID:(id)d root:(id)root error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  rootCopy = root;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1059,19 +1059,19 @@ uint64_t __37__FPDMoveWriter_setProgress_forRoot___block_invoke(uint64_t a1)
   block[3] = &unk_1E83C15D8;
   block[4] = self;
   v24 = a2;
-  v13 = v9;
+  v13 = dCopy;
   v19 = v13;
   v22 = &v31;
   v14 = v11;
   v20 = v14;
-  v15 = v10;
+  v15 = rootCopy;
   v21 = v15;
   v23 = &v25;
   dispatch_sync(queue, block);
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v26[5];
+    *error = v26[5];
   }
 
   v16 = v32[5];
@@ -1213,17 +1213,17 @@ void __52__FPDMoveWriter_waitForResultOfSourceID_root_error___block_invoke_2(uin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)startDownloadOfItem:(id)a3 shouldMaterializeRecursively:(BOOL)a4 completionHandler:(id)a5
+- (void)startDownloadOfItem:(id)item shouldMaterializeRecursively:(BOOL)recursively completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [FPDMoveWriter startDownloadOfItem:shouldMaterializeRecursively:completionHandler:];
   }
 
-  v11 = [objc_opt_class() acquireDownloadSlotForItem:v8];
+  v11 = [objc_opt_class() acquireDownloadSlotForItem:itemCopy];
   v12 = dispatch_group_create();
   dispatch_group_enter(v12);
   preemptiveDownloadCoordinator = self->_preemptiveDownloadCoordinator;
@@ -1231,16 +1231,16 @@ void __52__FPDMoveWriter_waitForResultOfSourceID_root_error___block_invoke_2(uin
   v18[1] = 3221225472;
   v18[2] = __84__FPDMoveWriter_startDownloadOfItem_shouldMaterializeRecursively_completionHandler___block_invoke;
   v18[3] = &unk_1E83C1420;
-  v19 = v8;
-  v20 = self;
+  v19 = itemCopy;
+  selfCopy = self;
   v21 = v11;
   v22 = v12;
-  v23 = v9;
-  v24 = a4;
-  v14 = v9;
+  v23 = handlerCopy;
+  recursivelyCopy = recursively;
+  v14 = handlerCopy;
   v15 = v12;
   v16 = v11;
-  v17 = v8;
+  v17 = itemCopy;
   [(FPDCoordinator *)preemptiveDownloadCoordinator resolveItem:v17 completion:v18];
   dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -1334,19 +1334,19 @@ void __84__FPDMoveWriter_startDownloadOfItem_shouldMaterializeRecursively_comple
   }
 }
 
-- (void)_removeRoot:(id)a3
+- (void)_removeRoot:(id)root
 {
-  v4 = a3;
-  if ([v4 isFolder])
+  rootCopy = root;
+  if ([rootCopy isFolder])
   {
-    v5 = [(FPDMoveWriter *)self coordinator];
-    v6 = [v4 asURL];
-    [v5 startAccessingURLForAtomDuration:v6];
+    coordinator = [(FPDMoveWriter *)self coordinator];
+    asURL = [rootCopy asURL];
+    [coordinator startAccessingURLForAtomDuration:asURL];
 
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v4 asURL];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    asURL2 = [rootCopy asURL];
     v12 = 0;
-    v9 = [v7 removeItemAtURL:v8 error:&v12];
+    v9 = [defaultManager removeItemAtURL:asURL2 error:&v12];
     v10 = v12;
 
     if ((v9 & 1) == 0)
@@ -1365,17 +1365,17 @@ void __84__FPDMoveWriter_startDownloadOfItem_shouldMaterializeRecursively_comple
   }
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__FPDMoveWriter_dumpStateTo___block_invoke;
   v7[3] = &unk_1E83BE158;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = toCopy;
+  selfCopy = self;
+  v6 = toCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1424,15 +1424,15 @@ uint64_t __29__FPDMoveWriter_dumpStateTo___block_invoke(uint64_t a1)
   providerWriter = self->_providerWriter;
   if (providerWriter)
   {
-    v3 = providerWriter;
+    diskWriter = providerWriter;
   }
 
   else
   {
-    v3 = [(FPDMoveWriter *)self diskWriter];
+    diskWriter = [(FPDMoveWriter *)self diskWriter];
   }
 
-  return v3;
+  return diskWriter;
 }
 
 - (FPDMoveWriterExecutor)diskWriter
@@ -1450,24 +1450,24 @@ uint64_t __29__FPDMoveWriter_dumpStateTo___block_invoke(uint64_t a1)
   return diskWriter;
 }
 
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion
 {
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(FPDMoveWriter *)self defaultExecutor];
-  [v18 performCopyOfItem:v17 to:v16 as:v15 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:v14];
+  completionCopy = completion;
+  asCopy = as;
+  toCopy = to;
+  itemCopy = item;
+  defaultExecutor = [(FPDMoveWriter *)self defaultExecutor];
+  [defaultExecutor performCopyOfItem:itemCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:completionCopy];
 }
 
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 useDiskWriter:(BOOL)a8 completion:(id)a9
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption useDiskWriter:(BOOL)writer completion:(id)completion
 {
-  v9 = a8;
-  v16 = a9;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  if (v9)
+  writerCopy = writer;
+  completionCopy = completion;
+  asCopy = as;
+  toCopy = to;
+  itemCopy = item;
+  if (writerCopy)
   {
     v20 = fp_current_or_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1475,34 +1475,34 @@ uint64_t __29__FPDMoveWriter_dumpStateTo___block_invoke(uint64_t a1)
       [FPDMoveWriter performCopyOfItem:? to:? as:? sourceMaterializeOption:? targetMaterializeOption:? useDiskWriter:? completion:?];
     }
 
-    v21 = [(FPDMoveWriter *)self diskWriter];
-    [v21 performCopyOfItem:v19 to:v18 as:v17 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:v16];
+    diskWriter = [(FPDMoveWriter *)self diskWriter];
+    [diskWriter performCopyOfItem:itemCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:completionCopy];
   }
 
   else
   {
-    v22 = [(FPDMoveWriter *)self defaultExecutor];
-    [v22 performCopyOfItem:v19 to:v18 as:v17 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:v16];
+    defaultExecutor = [(FPDMoveWriter *)self defaultExecutor];
+    [defaultExecutor performCopyOfItem:itemCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:completionCopy];
   }
 }
 
-- (void)performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 useDiskWriter:(BOOL)a8 completion:(id)a9
+- (void)performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption useDiskWriter:(BOOL)writer completion:(id)completion
 {
-  v9 = a8;
-  v16 = a9;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  writerCopy = writer;
+  completionCopy = completion;
+  asCopy = as;
+  toCopy = to;
+  itemCopy = item;
   v20 = fp_current_or_default_log();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
-  if (v9)
+  if (writerCopy)
   {
     if (v21)
     {
       [FPDMoveWriter performMoveOfItem:? to:? as:? sourceMaterializeOption:? targetMaterializeOption:? useDiskWriter:? completion:?];
     }
 
-    v22 = [(FPDMoveWriter *)self diskWriter];
+    diskWriter = [(FPDMoveWriter *)self diskWriter];
   }
 
   else
@@ -1512,30 +1512,30 @@ uint64_t __29__FPDMoveWriter_dumpStateTo___block_invoke(uint64_t a1)
       [FPDMoveWriter performMoveOfItem:to:as:sourceMaterializeOption:targetMaterializeOption:useDiskWriter:completion:];
     }
 
-    v22 = [(FPDMoveWriter *)self defaultExecutor];
+    diskWriter = [(FPDMoveWriter *)self defaultExecutor];
   }
 
-  v23 = v22;
-  [v22 performMoveOfItem:v19 to:v18 as:v17 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:v16];
+  v23 = diskWriter;
+  [diskWriter performMoveOfItem:itemCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:completionCopy];
 }
 
-- (void)performCreateFolder:(id)a3 inside:(id)a4 as:(id)a5 useDiskWriter:(BOOL)a6 completion:(id)a7
+- (void)performCreateFolder:(id)folder inside:(id)inside as:(id)as useDiskWriter:(BOOL)writer completion:(id)completion
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  writerCopy = writer;
+  completionCopy = completion;
+  asCopy = as;
+  insideCopy = inside;
+  folderCopy = folder;
   v16 = fp_current_or_default_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (writerCopy)
   {
     if (v17)
     {
       [FPDMoveWriter performCreateFolder:? inside:? as:? useDiskWriter:? completion:?];
     }
 
-    v18 = [(FPDMoveWriter *)self diskWriter];
+    diskWriter = [(FPDMoveWriter *)self diskWriter];
   }
 
   else
@@ -1545,11 +1545,11 @@ uint64_t __29__FPDMoveWriter_dumpStateTo___block_invoke(uint64_t a1)
       [FPDMoveWriter performCreateFolder:inside:as:useDiskWriter:completion:];
     }
 
-    v18 = [(FPDMoveWriter *)self defaultExecutor];
+    diskWriter = [(FPDMoveWriter *)self defaultExecutor];
   }
 
-  v19 = v18;
-  [v18 performCreateFolder:v15 inside:v14 as:v13 completion:v12];
+  v19 = diskWriter;
+  [diskWriter performCreateFolder:folderCopy inside:insideCopy as:asCopy completion:completionCopy];
 }
 
 - (FPDMoveOperation)operation

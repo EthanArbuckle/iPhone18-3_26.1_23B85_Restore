@@ -1,98 +1,98 @@
 @interface CDPInternalWalrusStateController
-- (BOOL)_shouldRetryForError:(id)a3;
-- (CDPInternalWalrusStateController)initWithAccount:(id)a3 cdpdAccount:(id)a4 securityProxy:(id)a5 pcsProxy:(id)a6 accountStore:(id)a7 sbProxy:(id)a8;
-- (CDPInternalWalrusStateController)initWithAccount:(id)a3 cdpdAccount:(id)a4 securityProxy:(id)a5 pcsProxy:(id)a6 sbProxy:(id)a7;
-- (CDPInternalWalrusStateController)initWithContext:(id)a3;
-- (id)_combinedWalrusStatusForPrimaryAccountWithError:(id *)a3;
-- (id)_combinedWalrusStatusWithContext:(id)a3 error:(id *)a4;
-- (id)_combinedWalrusStatusWithOptions:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)_eligibleAccountWithContext:(id)a3 checkWithServer:(BOOL)a4 requireCKAccount:(BOOL)a5 error:(id *)a6;
-- (id)_eligiblePrimaryAccountForFlow:(unint64_t)a3 error:(id *)a4;
-- (id)_fetchiCDPAccountInfoDictionaryWithContext:(id)a3 error:(id *)a4;
-- (unint64_t)_escrowedKeysStatusUsingICDP:(id)a3;
-- (unint64_t)_pcsAccountInfoStatusUsingICDP:(id)a3;
-- (unint64_t)_statusForError:(id)a3;
-- (unint64_t)_walrusStatusForPrimaryAccountWithError:(id *)a3;
-- (unint64_t)_walrusStatusWithContext:(id)a3 error:(id *)a4;
-- (unint64_t)_walrusStatusWithOptions:(id)a3 withError:(id *)a4;
-- (void)_reportWalrusRepairFinishEventWithCombinedWalrusStatus:(id)a3 error:(id)a4;
-- (void)_reportWalrusRepairStartEventWithCombinedWalrusStatus:(id)a3;
-- (void)_setAccountTelemetryOptInConfig:(BOOL)a3 altDSID:(id)a4 authController:(id)a5 accountManager:(id)a6 completion:(id)a7;
-- (void)repairWalrusStatusWithCompletion:(id)a3;
-- (void)walrusStatusWithContext:(id)a3 completion:(id)a4;
+- (BOOL)_shouldRetryForError:(id)error;
+- (CDPInternalWalrusStateController)initWithAccount:(id)account cdpdAccount:(id)cdpdAccount securityProxy:(id)proxy pcsProxy:(id)pcsProxy accountStore:(id)store sbProxy:(id)sbProxy;
+- (CDPInternalWalrusStateController)initWithAccount:(id)account cdpdAccount:(id)cdpdAccount securityProxy:(id)proxy pcsProxy:(id)pcsProxy sbProxy:(id)sbProxy;
+- (CDPInternalWalrusStateController)initWithContext:(id)context;
+- (id)_combinedWalrusStatusForPrimaryAccountWithError:(id *)error;
+- (id)_combinedWalrusStatusWithContext:(id)context error:(id *)error;
+- (id)_combinedWalrusStatusWithOptions:(id)options context:(id)context error:(id *)error;
+- (id)_eligibleAccountWithContext:(id)context checkWithServer:(BOOL)server requireCKAccount:(BOOL)account error:(id *)error;
+- (id)_eligiblePrimaryAccountForFlow:(unint64_t)flow error:(id *)error;
+- (id)_fetchiCDPAccountInfoDictionaryWithContext:(id)context error:(id *)error;
+- (unint64_t)_escrowedKeysStatusUsingICDP:(id)p;
+- (unint64_t)_pcsAccountInfoStatusUsingICDP:(id)p;
+- (unint64_t)_statusForError:(id)error;
+- (unint64_t)_walrusStatusForPrimaryAccountWithError:(id *)error;
+- (unint64_t)_walrusStatusWithContext:(id)context error:(id *)error;
+- (unint64_t)_walrusStatusWithOptions:(id)options withError:(id *)error;
+- (void)_reportWalrusRepairFinishEventWithCombinedWalrusStatus:(id)status error:(id)error;
+- (void)_reportWalrusRepairStartEventWithCombinedWalrusStatus:(id)status;
+- (void)_setAccountTelemetryOptInConfig:(BOOL)config altDSID:(id)d authController:(id)controller accountManager:(id)manager completion:(id)completion;
+- (void)repairWalrusStatusWithCompletion:(id)completion;
+- (void)walrusStatusWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation CDPInternalWalrusStateController
 
-- (CDPInternalWalrusStateController)initWithContext:(id)a3
+- (CDPInternalWalrusStateController)initWithContext:(id)context
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CFD480] sharedInstance];
-  v7 = [[CDPDAccount alloc] initWithContext:v5];
+  contextCopy = context;
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  v7 = [[CDPDAccount alloc] initWithContext:contextCopy];
   v8 = objc_alloc_init(CDPWalrusSecurityProxyImpl);
   v9 = objc_alloc_init(MEMORY[0x277CFD520]);
-  v10 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:v5];
-  v11 = [(CDPInternalWalrusStateController *)self initWithAccount:v6 cdpdAccount:v7 securityProxy:v8 pcsProxy:v9 sbProxy:v10];
+  v10 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:contextCopy];
+  v11 = [(CDPInternalWalrusStateController *)self initWithAccount:mEMORY[0x277CFD480] cdpdAccount:v7 securityProxy:v8 pcsProxy:v9 sbProxy:v10];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
+    objc_storeStrong(&v11->_context, context);
   }
 
   return v11;
 }
 
-- (CDPInternalWalrusStateController)initWithAccount:(id)a3 cdpdAccount:(id)a4 securityProxy:(id)a5 pcsProxy:(id)a6 sbProxy:(id)a7
+- (CDPInternalWalrusStateController)initWithAccount:(id)account cdpdAccount:(id)cdpdAccount securityProxy:(id)proxy pcsProxy:(id)pcsProxy sbProxy:(id)sbProxy
 {
   v12 = MEMORY[0x277CB8F48];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v12 defaultStore];
-  v19 = [(CDPInternalWalrusStateController *)self initWithAccount:v17 cdpdAccount:v16 securityProxy:v15 pcsProxy:v14 accountStore:v18 sbProxy:v13];
+  sbProxyCopy = sbProxy;
+  pcsProxyCopy = pcsProxy;
+  proxyCopy = proxy;
+  cdpdAccountCopy = cdpdAccount;
+  accountCopy = account;
+  defaultStore = [v12 defaultStore];
+  v19 = [(CDPInternalWalrusStateController *)self initWithAccount:accountCopy cdpdAccount:cdpdAccountCopy securityProxy:proxyCopy pcsProxy:pcsProxyCopy accountStore:defaultStore sbProxy:sbProxyCopy];
 
   return v19;
 }
 
-- (CDPInternalWalrusStateController)initWithAccount:(id)a3 cdpdAccount:(id)a4 securityProxy:(id)a5 pcsProxy:(id)a6 accountStore:(id)a7 sbProxy:(id)a8
+- (CDPInternalWalrusStateController)initWithAccount:(id)account cdpdAccount:(id)cdpdAccount securityProxy:(id)proxy pcsProxy:(id)pcsProxy accountStore:(id)store sbProxy:(id)sbProxy
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  accountCopy = account;
+  cdpdAccountCopy = cdpdAccount;
+  proxyCopy = proxy;
+  pcsProxyCopy = pcsProxy;
+  storeCopy = store;
+  sbProxyCopy = sbProxy;
   v24.receiver = self;
   v24.super_class = CDPInternalWalrusStateController;
   v18 = [(CDPInternalWalrusStateController *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_cdpAccount, a3);
-    objc_storeStrong(&v19->_securityProxy, a5);
-    objc_storeStrong(&v19->_pcsProxy, a6);
-    objc_storeStrong(&v19->_cdpDaemonAccount, a4);
-    objc_storeStrong(&v19->_accountStore, a7);
-    objc_storeStrong(&v19->_sbProxy, a8);
+    objc_storeStrong(&v18->_cdpAccount, account);
+    objc_storeStrong(&v19->_securityProxy, proxy);
+    objc_storeStrong(&v19->_pcsProxy, pcsProxy);
+    objc_storeStrong(&v19->_cdpDaemonAccount, cdpdAccount);
+    objc_storeStrong(&v19->_accountStore, store);
+    objc_storeStrong(&v19->_sbProxy, sbProxy);
   }
 
   return v19;
 }
 
-- (unint64_t)_walrusStatusWithContext:(id)a3 error:(id *)a4
+- (unint64_t)_walrusStatusWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     v14 = 0;
-    v7 = [(CDPInternalWalrusStateController *)self _eligibleAccountWithContext:v6 checkWithServer:0 requireCKAccount:1 error:&v14];
+    v7 = [(CDPInternalWalrusStateController *)self _eligibleAccountWithContext:contextCopy checkWithServer:0 requireCKAccount:1 error:&v14];
     v8 = v14;
     if (v7)
     {
-      v9 = [(CDPInternalWalrusStateController *)self _optionsWithContext:v6];
-      v10 = [(CDPInternalWalrusStateController *)self _walrusStatusWithOptions:v9 withError:a4];
+      v9 = [(CDPInternalWalrusStateController *)self _optionsWithContext:contextCopy];
+      v10 = [(CDPInternalWalrusStateController *)self _walrusStatusWithOptions:v9 withError:error];
     }
 
     else
@@ -103,10 +103,10 @@
         [CDPInternalWalrusStateController _walrusStatusWithContext:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v12 = v8;
-        *a4 = v8;
+        *error = v8;
       }
 
       v10 = [(CDPInternalWalrusStateController *)self _statusForError:v8];
@@ -115,23 +115,23 @@
 
   else
   {
-    v10 = [(CDPInternalWalrusStateController *)self _walrusStatusForPrimaryAccountWithError:a4];
+    v10 = [(CDPInternalWalrusStateController *)self _walrusStatusForPrimaryAccountWithError:error];
   }
 
   return v10;
 }
 
-- (unint64_t)_walrusStatusForPrimaryAccountWithError:(id *)a3
+- (unint64_t)_walrusStatusForPrimaryAccountWithError:(id *)error
 {
   v13 = 0;
   v5 = [(CDPInternalWalrusStateController *)self _eligiblePrimaryAccountForFlow:0 error:&v13];
   v6 = v13;
   if (v5)
   {
-    v7 = [(CDPAccount *)self->_cdpAccount contextForPrimaryAccount];
-    v8 = [(CDPInternalWalrusStateController *)self _optionsWithContext:v7];
+    contextForPrimaryAccount = [(CDPAccount *)self->_cdpAccount contextForPrimaryAccount];
+    v8 = [(CDPInternalWalrusStateController *)self _optionsWithContext:contextForPrimaryAccount];
 
-    v9 = [(CDPInternalWalrusStateController *)self _walrusStatusWithOptions:v8 withError:a3];
+    v9 = [(CDPInternalWalrusStateController *)self _walrusStatusWithOptions:v8 withError:error];
   }
 
   else
@@ -142,10 +142,10 @@
       [CDPInternalWalrusStateController _walrusStatusForPrimaryAccountWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     v9 = [(CDPInternalWalrusStateController *)self _statusForError:v6];
@@ -154,10 +154,10 @@
   return v9;
 }
 
-- (unint64_t)_walrusStatusWithOptions:(id)a3 withError:(id *)a4
+- (unint64_t)_walrusStatusWithOptions:(id)options withError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = _CDPSignpostLogSystem();
   v8 = _CDPSignpostCreate();
 
@@ -179,7 +179,7 @@
 
   pcsProxy = self->_pcsProxy;
   v27 = 0;
-  v13 = [(CDPProtectedCloudStorageProxy *)pcsProxy isWalrusEnabledWithOptions:v6 error:&v27];
+  v13 = [(CDPProtectedCloudStorageProxy *)pcsProxy isWalrusEnabledWithOptions:optionsCopy error:&v27];
 
   v14 = v27;
   Nanoseconds = _CDPSignpostGetNanoseconds();
@@ -187,22 +187,22 @@
   v17 = v16;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = [v14 code];
+    code = [v14 code];
     *buf = 67240192;
-    LODWORD(v29) = v18;
+    LODWORD(v29) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v17, OS_SIGNPOST_INTERVAL_END, v8, "FetchAccountCleanupStatus", " Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 8u);
   }
 
   v19 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v14 code];
+    code2 = [v14 code];
     *buf = 134218496;
     v29 = v8;
     v30 = 2048;
     v31 = Nanoseconds / 1000000000.0;
     v32 = 1026;
-    v33 = v20;
+    v33 = code2;
     _os_log_impl(&dword_24510B000, v19, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: FetchAccountCleanupStatus  Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 0x1Cu);
   }
 
@@ -215,11 +215,11 @@
       [CDPInternalWalrusStateController _walrusStatusWithOptions:withError:];
     }
 
-    if (a4)
+    if (error)
     {
       v23 = v14;
       v24 = 0;
-      *a4 = v14;
+      *error = v14;
     }
 
     else
@@ -252,25 +252,25 @@
   return v24;
 }
 
-- (void)walrusStatusWithContext:(id)a3 completion:(id)a4
+- (void)walrusStatusWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion___block_invoke;
   aBlock[3] = &unk_278E25D40;
   aBlock[4] = self;
-  v18 = v7;
-  v8 = v7;
+  v18 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion___block_invoke_2;
   v15[3] = &unk_278E25D68;
   v15[4] = self;
-  v16 = v6;
-  v10 = v6;
+  v16 = contextCopy;
+  v10 = contextCopy;
   v11 = _Block_copy(v15);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -308,18 +308,18 @@ void __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion__
   v4[2](v4, v7, v6);
 }
 
-- (id)_combinedWalrusStatusWithContext:(id)a3 error:(id *)a4
+- (id)_combinedWalrusStatusWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     v14 = 0;
-    v7 = [(CDPInternalWalrusStateController *)self _eligibleAccountWithContext:v6 checkWithServer:0 requireCKAccount:1 error:&v14];
+    v7 = [(CDPInternalWalrusStateController *)self _eligibleAccountWithContext:contextCopy checkWithServer:0 requireCKAccount:1 error:&v14];
     v8 = v14;
     if (v7)
     {
-      v9 = [(CDPInternalWalrusStateController *)self _optionsWithContext:v6];
-      v10 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusWithOptions:v9 context:v6 error:a4];
+      v9 = [(CDPInternalWalrusStateController *)self _optionsWithContext:contextCopy];
+      v10 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusWithOptions:v9 context:contextCopy error:error];
     }
 
     else
@@ -330,11 +330,11 @@ void __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion__
         [CDPInternalWalrusStateController _combinedWalrusStatusWithContext:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v12 = v8;
         v10 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -346,22 +346,22 @@ void __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion__
 
   else
   {
-    v10 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusForPrimaryAccountWithError:a4];
+    v10 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusForPrimaryAccountWithError:error];
   }
 
   return v10;
 }
 
-- (id)_combinedWalrusStatusForPrimaryAccountWithError:(id *)a3
+- (id)_combinedWalrusStatusForPrimaryAccountWithError:(id *)error
 {
   v13 = 0;
   v5 = [(CDPInternalWalrusStateController *)self _eligiblePrimaryAccountForFlow:0 error:&v13];
   v6 = v13;
   if (v5)
   {
-    v7 = [(CDPAccount *)self->_cdpAccount contextForPrimaryAccount];
-    v8 = [(CDPInternalWalrusStateController *)self _optionsWithContext:v7];
-    v9 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusWithOptions:v8 context:v7 error:a3];
+    contextForPrimaryAccount = [(CDPAccount *)self->_cdpAccount contextForPrimaryAccount];
+    v8 = [(CDPInternalWalrusStateController *)self _optionsWithContext:contextForPrimaryAccount];
+    v9 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusWithOptions:v8 context:contextForPrimaryAccount error:error];
   }
 
   else
@@ -372,11 +372,11 @@ void __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion__
       [CDPInternalWalrusStateController _combinedWalrusStatusForPrimaryAccountWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v6;
       v9 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -388,20 +388,20 @@ void __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion__
   return v9;
 }
 
-- (id)_combinedWalrusStatusWithOptions:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_combinedWalrusStatusWithOptions:(id)options context:(id)context error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  contextCopy = context;
   v9 = MEMORY[0x277CFD4A0];
-  v10 = a3;
+  optionsCopy = options;
   v11 = objc_alloc_init(v9);
   v36 = 0;
-  v12 = [(CDPInternalWalrusStateController *)self _walrusStatusWithOptions:v10 withError:&v36];
+  v12 = [(CDPInternalWalrusStateController *)self _walrusStatusWithOptions:optionsCopy withError:&v36];
 
   v13 = v36;
   [v11 setOctagonWalrusStatus:v12];
   v35 = 0;
-  v14 = [(CDPInternalWalrusStateController *)self _fetchiCDPAccountInfoDictionaryWithContext:v8 error:&v35];
+  v14 = [(CDPInternalWalrusStateController *)self _fetchiCDPAccountInfoDictionaryWithContext:contextCopy error:&v35];
   v15 = v35;
   if (v15)
   {
@@ -414,13 +414,13 @@ void __71__CDPInternalWalrusStateController_walrusStatusWithContext_completion__
       }
 
       v17 = v15;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_12;
       }
 
 LABEL_11:
-      *a5 = v17;
+      *error = v17;
       goto LABEL_12;
     }
   }
@@ -442,16 +442,16 @@ LABEL_11:
   }
 
   v17 = v13;
-  if (a5)
+  if (error)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  v19 = [v11 mismatchDetected];
+  mismatchDetected = [v11 mismatchDetected];
   v20 = _CDPLogSystem();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
-  if (v19)
+  if (mismatchDetected)
   {
     if (v21)
     {
@@ -478,13 +478,13 @@ LABEL_12:
         [CDPInternalWalrusStateController _combinedWalrusStatusWithOptions:context:error:];
       }
 
-      v25 = [MEMORY[0x277CFD4D8] contextForADPStateHealing];
-      v26 = [v8 telemetryFlowID];
-      [v25 setTelemetryFlowID:v26];
+      contextForADPStateHealing = [MEMORY[0x277CFD4D8] contextForADPStateHealing];
+      telemetryFlowID = [contextCopy telemetryFlowID];
+      [contextForADPStateHealing setTelemetryFlowID:telemetryFlowID];
 
       v27 = +[CDPDFollowUpController sharedInstance];
       v34 = 0;
-      v28 = [v27 clearFollowUpWithContext:v25 error:&v34];
+      v28 = [v27 clearFollowUpWithContext:contextForADPStateHealing error:&v34];
       v20 = v34;
 
       v29 = _CDPLogSystem();
@@ -513,10 +513,10 @@ LABEL_12:
   return v11;
 }
 
-- (void)repairWalrusStatusWithCompletion:(id)a3
+- (void)repairWalrusStatusWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v23 = 0;
   v5 = [(CDPInternalWalrusStateController *)self _combinedWalrusStatusForPrimaryAccountWithError:&v23];
   v6 = v23;
@@ -549,9 +549,9 @@ LABEL_12:
     v12 = v11;
     p_buf = &buf;
     v15 = v12;
-    v16 = self;
+    selfCopy = self;
     v17 = v5;
-    v20 = v4;
+    v20 = completionCopy;
     v18 = v7;
     v19 = v6;
     [CDPAuthenticationHelper silentAuthenticationForPrimaryAccountWithCompletion:v14];
@@ -567,9 +567,9 @@ LABEL_12:
     }
 
     [(CDPInternalWalrusStateController *)self _reportWalrusRepairFinishEventWithCombinedWalrusStatus:v5 error:v8];
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 
@@ -659,40 +659,40 @@ LABEL_17:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportWalrusRepairStartEventWithCombinedWalrusStatus:(id)a3
+- (void)_reportWalrusRepairStartEventWithCombinedWalrusStatus:(id)status
 {
   v3 = MEMORY[0x277CE44D8];
   context = self->_context;
   v5 = *MEMORY[0x277CFD8D8];
   v6 = *MEMORY[0x277CFD930];
-  v7 = a3;
+  statusCopy = status;
   v14 = [v3 analyticsEventWithContext:context eventName:v5 category:v6];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "octagonWalrusStatus")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(statusCopy, "octagonWalrusStatus")}];
   [v14 setObject:v8 forKeyedSubscript:*MEMORY[0x277CFD790]];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "pcsWalrusStatus")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(statusCopy, "pcsWalrusStatus")}];
   [v14 setObject:v9 forKeyedSubscript:*MEMORY[0x277CFD798]];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v7 escrowWalrusStatus];
+  escrowWalrusStatus = [statusCopy escrowWalrusStatus];
 
-  v12 = [v10 numberWithUnsignedInteger:v11];
+  v12 = [v10 numberWithUnsignedInteger:escrowWalrusStatus];
   [v14 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFD720]];
 
-  v13 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v13 sendEvent:v14];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v14];
 }
 
-- (void)_reportWalrusRepairFinishEventWithCombinedWalrusStatus:(id)a3 error:(id)a4
+- (void)_reportWalrusRepairFinishEventWithCombinedWalrusStatus:(id)status error:(id)error
 {
   v5 = MEMORY[0x277CE44D8];
   context = self->_context;
   v7 = *MEMORY[0x277CFD8D0];
   v8 = *MEMORY[0x277CFD930];
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  statusCopy = status;
   v18 = [v5 analyticsEventWithContext:context eventName:v7 category:v8];
-  if ([v9 code] == 159)
+  if ([errorCopy code] == 159)
   {
     v11 = MEMORY[0x277CBEC38];
   }
@@ -703,29 +703,29 @@ LABEL_17:
   }
 
   [v18 setObject:v11 forKeyedSubscript:*MEMORY[0x277CE4590]];
-  [v18 populateUnderlyingErrorsStartingWithRootError:v9];
+  [v18 populateUnderlyingErrorsStartingWithRootError:errorCopy];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "octagonWalrusStatus")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(statusCopy, "octagonWalrusStatus")}];
   [v18 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFD790]];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "pcsWalrusStatus")}];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(statusCopy, "pcsWalrusStatus")}];
   [v18 setObject:v13 forKeyedSubscript:*MEMORY[0x277CFD798]];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v10 escrowWalrusStatus];
+  escrowWalrusStatus = [statusCopy escrowWalrusStatus];
 
-  v16 = [v14 numberWithUnsignedInteger:v15];
+  v16 = [v14 numberWithUnsignedInteger:escrowWalrusStatus];
   [v18 setObject:v16 forKeyedSubscript:*MEMORY[0x277CFD720]];
 
-  v17 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v17 sendEvent:v18];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v18];
 }
 
-- (id)_fetchiCDPAccountInfoDictionaryWithContext:(id)a3 error:(id *)a4
+- (id)_fetchiCDPAccountInfoDictionaryWithContext:(id)context error:(id *)error
 {
-  v6 = [CDPDSecureBackupConfiguration configurationWithContext:a3];
-  v7 = [v6 accountInfoFetchSetupDictionary];
-  v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v7];
+  v6 = [CDPDSecureBackupConfiguration configurationWithContext:context];
+  accountInfoFetchSetupDictionary = [v6 accountInfoFetchSetupDictionary];
+  v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:accountInfoFetchSetupDictionary];
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -737,10 +737,10 @@ LABEL_17:
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [CDPInternalWalrusStateController _fetchiCDPAccountInfoDictionaryWithContext:v7 error:?];
+    [CDPInternalWalrusStateController _fetchiCDPAccountInfoDictionaryWithContext:accountInfoFetchSetupDictionary error:?];
   }
 
-  v11 = [(CDPDSecureBackupProxy *)self->_sbProxy accountInfoWithInfo:v8 error:a4];
+  v11 = [(CDPDSecureBackupProxy *)self->_sbProxy accountInfoWithInfo:v8 error:error];
   v12 = [v11 objectForKeyedSubscript:@"SecureBackupStingrayMetadata"];
   v13 = [v12 objectForKeyedSubscript:@"ClientMetadata"];
   v14 = [v13 objectForKeyedSubscript:@"SecureBackupiCloudDataProtection"];
@@ -754,9 +754,9 @@ LABEL_17:
   return v14;
 }
 
-- (unint64_t)_pcsAccountInfoStatusUsingICDP:(id)a3
+- (unint64_t)_pcsAccountInfoStatusUsingICDP:(id)p
 {
-  v3 = [a3 objectForKeyedSubscript:@"kPCSMetadataiCDPWalrus"];
+  v3 = [p objectForKeyedSubscript:@"kPCSMetadataiCDPWalrus"];
   if (v3)
   {
     if (objc_opt_respondsToSelector())
@@ -786,9 +786,9 @@ LABEL_17:
   return v4;
 }
 
-- (unint64_t)_escrowedKeysStatusUsingICDP:(id)a3
+- (unint64_t)_escrowedKeysStatusUsingICDP:(id)p
 {
-  v3 = [a3 objectForKeyedSubscript:@"kPCSMetadataEscrowedKeys"];
+  v3 = [p objectForKeyedSubscript:@"kPCSMetadataEscrowedKeys"];
   if (v3)
   {
     v4 = 2;
@@ -895,25 +895,25 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAccountTelemetryOptInConfig:(BOOL)a3 altDSID:(id)a4 authController:(id)a5 accountManager:(id)a6 completion:(id)a7
+- (void)_setAccountTelemetryOptInConfig:(BOOL)config altDSID:(id)d authController:(id)controller accountManager:(id)manager completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  controllerCopy = controller;
+  managerCopy = manager;
+  completionCopy = completion;
   v15 = os_transaction_create();
-  v16 = [v13 authKitAccountWithAltDSID:v11];
+  v16 = [managerCopy authKitAccountWithAltDSID:dCopy];
   if (!v16)
   {
-    v21 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5108];
-    v14[2](v14, 0, v21);
+    stringValue = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5108];
+    completionCopy[2](completionCopy, 0, stringValue);
     goto LABEL_12;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v13 accountAccessTelemetryOptInForAccount:v16];
+    v17 = [managerCopy accountAccessTelemetryOptInForAccount:v16];
     v18 = _CDPLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -922,7 +922,7 @@ LABEL_10:
       _os_log_impl(&dword_24510B000, v18, OS_LOG_TYPE_DEFAULT, "Is opted-in = %{BOOL}d", buf, 8u);
     }
 
-    if (a3)
+    if (config)
     {
       goto LABEL_10;
     }
@@ -934,13 +934,13 @@ LABEL_10:
       _os_log_impl(&dword_24510B000, v19, OS_LOG_TYPE_DEFAULT, "ADP was not enabled, so Telemetry collection was opted-out", buf, 2u);
     }
 
-    [v13 setAccountAccessTelemetryOptIn:0 forAccount:v16 error:0];
+    [managerCopy setAccountAccessTelemetryOptIn:0 forAccount:v16 error:0];
   }
 
   v17 = 0;
 LABEL_10:
   v20 = [MEMORY[0x277CCABB0] numberWithBool:v17];
-  v21 = [v20 stringValue];
+  stringValue = [v20 stringValue];
 
   v22 = *MEMORY[0x277CEFF60];
   v24[0] = MEMORY[0x277D85DD0];
@@ -949,8 +949,8 @@ LABEL_10:
   v24[3] = &unk_278E24B38;
   v25 = v15;
   v27 = v17;
-  v26 = v14;
-  [v12 setConfigurationInfo:v21 forIdentifier:v22 forAltDSID:v11 completion:v24];
+  v26 = completionCopy;
+  [controllerCopy setConfigurationInfo:stringValue forIdentifier:v22 forAltDSID:dCopy completion:v24];
 
 LABEL_12:
   v23 = *MEMORY[0x277D85DE8];
@@ -999,24 +999,24 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_eligibleAccountWithContext:(id)a3 checkWithServer:(BOOL)a4 requireCKAccount:(BOOL)a5 error:(id *)a6
+- (id)_eligibleAccountWithContext:(id)context checkWithServer:(BOOL)server requireCKAccount:(BOOL)account error:(id *)error
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 altDSID];
-  if (!v9)
+  accountCopy = account;
+  contextCopy = context;
+  altDSID = [contextCopy altDSID];
+  if (!altDSID)
   {
     v10 = MEMORY[0x277CFD480];
-    v11 = [v8 dsid];
-    v12 = [v11 stringValue];
-    v9 = [v10 altDSIDForPersonID:v12];
+    dsid = [contextCopy dsid];
+    stringValue = [dsid stringValue];
+    altDSID = [v10 altDSIDForPersonID:stringValue];
   }
 
-  v13 = [MEMORY[0x277CFD480] appleAccountForAltDSID:v9];
+  v13 = [MEMORY[0x277CFD480] appleAccountForAltDSID:altDSID];
   v14 = v13;
   if (v13)
   {
-    if (v7 && ([v13 aa_cloudKitAccount], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+    if (accountCopy && ([v13 aa_cloudKitAccount], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
       v19 = _CDPLogSystem();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1024,7 +1024,7 @@ LABEL_10:
         [CDPInternalWalrusStateController _eligibleAccountWithContext:checkWithServer:requireCKAccount:error:];
       }
 
-      if (a6)
+      if (error)
       {
         v17 = MEMORY[0x277CCA9B8];
         v18 = -5102;
@@ -1034,13 +1034,13 @@ LABEL_10:
 
     else
     {
-      if ([MEMORY[0x277CFD480] isHSA2Enabled:v9])
+      if ([MEMORY[0x277CFD480] isHSA2Enabled:altDSID])
       {
         v16 = v14;
         goto LABEL_18;
       }
 
-      if (a6)
+      if (error)
       {
         v17 = MEMORY[0x277CCA9B8];
         v18 = -5110;
@@ -1049,13 +1049,13 @@ LABEL_10:
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = -5108;
 LABEL_16:
     [v17 cdp_errorWithCode:v18];
-    *a6 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_18;
   }
 
@@ -1065,11 +1065,11 @@ LABEL_18:
   return v16;
 }
 
-- (id)_eligiblePrimaryAccountForFlow:(unint64_t)a3 error:(id *)a4
+- (id)_eligiblePrimaryAccountForFlow:(unint64_t)flow error:(id *)error
 {
-  v7 = [(CDPAccount *)self->_cdpAccount primaryAppleAccount];
-  v8 = v7;
-  if (!v7)
+  primaryAppleAccount = [(CDPAccount *)self->_cdpAccount primaryAppleAccount];
+  v8 = primaryAppleAccount;
+  if (!primaryAppleAccount)
   {
     v10 = _CDPLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1080,11 +1080,11 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (flow == 1)
   {
-    v13 = [(CDPAccount *)self->_cdpAccount primaryAuthKitAccount];
+    primaryAuthKitAccount = [(CDPAccount *)self->_cdpAccount primaryAuthKitAccount];
 
-    if (v13)
+    if (primaryAuthKitAccount)
     {
       goto LABEL_12;
     }
@@ -1097,24 +1097,24 @@ LABEL_18:
 
 LABEL_9:
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v12 = -5102;
 LABEL_19:
       [v11 cdp_errorWithCode:v12];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_21;
     }
 
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!flow)
   {
-    v9 = [v7 aa_cloudKitAccount];
+    aa_cloudKitAccount = [primaryAppleAccount aa_cloudKitAccount];
 
-    if (!v9)
+    if (!aa_cloudKitAccount)
     {
       v10 = _CDPLogSystem();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1130,8 +1130,8 @@ LABEL_12:
   if ([(CDPAccount *)self->_cdpAccount primaryAccountSecurityLevel]== 4)
   {
     cdpDaemonAccount = self->_cdpDaemonAccount;
-    v15 = [(CDPAccount *)self->_cdpAccount primaryAccountDSID];
-    LOBYTE(cdpDaemonAccount) = [(CDPDAccount *)cdpDaemonAccount isICDPEnabledForDSID:v15 checkWithServer:0];
+    primaryAccountDSID = [(CDPAccount *)self->_cdpAccount primaryAccountDSID];
+    LOBYTE(cdpDaemonAccount) = [(CDPDAccount *)cdpDaemonAccount isICDPEnabledForDSID:primaryAccountDSID checkWithServer:0];
 
     if (cdpDaemonAccount)
     {
@@ -1139,7 +1139,7 @@ LABEL_12:
       goto LABEL_21;
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v12 = -5304;
@@ -1147,7 +1147,7 @@ LABEL_12:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = -5110;
@@ -1161,17 +1161,17 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)_shouldRetryForError:(id)a3
+- (BOOL)_shouldRetryForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CFD418]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x277CFD418]];
 
   if (v5)
   {
-    v6 = [v3 code];
-    v7 = v6 != -5110 && v6 != -5102;
-    v8 = v6 != -5304 && v7;
+    code = [errorCopy code];
+    v7 = code != -5110 && code != -5102;
+    v8 = code != -5304 && v7;
   }
 
   else
@@ -1182,10 +1182,10 @@ LABEL_21:
   return v8;
 }
 
-- (unint64_t)_statusForError:(id)a3
+- (unint64_t)_statusForError:(id)error
 {
-  v3 = [a3 code];
-  if (v3 == -5304 || v3 == -5110)
+  code = [error code];
+  if (code == -5304 || code == -5110)
   {
     return 2;
   }

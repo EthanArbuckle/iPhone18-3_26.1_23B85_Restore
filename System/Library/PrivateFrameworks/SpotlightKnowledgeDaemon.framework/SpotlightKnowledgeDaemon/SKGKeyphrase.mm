@@ -1,45 +1,45 @@
 @interface SKGKeyphrase
-- (BOOL)isEqual:(id)a3;
-- (SKGKeyphrase)initWithKeyphrase:(id)a3 components:(id)a4 tokenCount:(unint64_t)a5 score:(double)a6;
+- (BOOL)isEqual:(id)equal;
+- (SKGKeyphrase)initWithKeyphrase:(id)keyphrase components:(id)components tokenCount:(unint64_t)count score:(double)score;
 - (id)description;
-- (int64_t)compareByRank:(id)a3;
+- (int64_t)compareByRank:(id)rank;
 @end
 
 @implementation SKGKeyphrase
 
-- (SKGKeyphrase)initWithKeyphrase:(id)a3 components:(id)a4 tokenCount:(unint64_t)a5 score:(double)a6
+- (SKGKeyphrase)initWithKeyphrase:(id)keyphrase components:(id)components tokenCount:(unint64_t)count score:(double)score
 {
-  v11 = a3;
-  v12 = a4;
+  keyphraseCopy = keyphrase;
+  componentsCopy = components;
   v18.receiver = self;
   v18.super_class = SKGKeyphrase;
-  v13 = [(SKGEntity *)&v18 initWithScore:a6];
+  v13 = [(SKGEntity *)&v18 initWithScore:score];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_keyphrase, a3);
+    objc_storeStrong(&v13->_keyphrase, keyphrase);
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
     components = v14->_components;
     v14->_components = v15;
 
-    [(NSMutableSet *)v14->_components addObjectsFromArray:v12];
-    v14->_tokenCount = a5;
+    [(NSMutableSet *)v14->_components addObjectsFromArray:componentsCopy];
+    v14->_tokenCount = count;
     v14->_count = 0;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKGKeyphrase *)self keyphrase];
-    v7 = [v5 keyphrase];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    keyphrase = [(SKGKeyphrase *)self keyphrase];
+    keyphrase2 = [v5 keyphrase];
+    if ([keyphrase isEqualToString:keyphrase2])
     {
       v10.receiver = self;
       v10.super_class = SKGKeyphrase;
@@ -60,19 +60,19 @@
   return v8;
 }
 
-- (int64_t)compareByRank:(id)a3
+- (int64_t)compareByRank:(id)rank
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v4;
-  v7 = [(SKGKeyphrase *)v5 count];
+  rankCopy = rank;
+  selfCopy = self;
+  v6 = rankCopy;
+  v7 = [(SKGKeyphrase *)selfCopy count];
   if (v7 == [v6 count])
   {
-    [(SKGEntity *)v5 score];
+    [(SKGEntity *)selfCopy score];
     v9 = fabs(v8);
     [v6 score];
     v11 = fabs(v10);
-    [(SKGEntity *)v5 score];
+    [(SKGEntity *)selfCopy score];
     if (v12 >= 0.0 && ([v6 score], v13 >= 0.0))
     {
       if (v9 >= v11)
@@ -88,7 +88,7 @@
 
     else
     {
-      [(SKGEntity *)v5 score];
+      [(SKGEntity *)selfCopy score];
       v14 = -1;
       if (v15 < 0.0)
       {
@@ -118,7 +118,7 @@
 
   else
   {
-    v18 = [(SKGKeyphrase *)v5 count];
+    v18 = [(SKGKeyphrase *)selfCopy count];
     if (v18 > [v6 count])
     {
       v14 = -1;
@@ -137,10 +137,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGKeyphrase *)self keyphrase];
-  v6 = [v5 lowercaseString];
+  keyphrase = [(SKGKeyphrase *)self keyphrase];
+  lowercaseString = [keyphrase lowercaseString];
   [(SKGEntity *)self score];
-  v8 = [v3 stringWithFormat:@"<%@: %@ %f %lu", v4, v6, v7, -[SKGKeyphrase count](self, "count")];
+  v8 = [v3 stringWithFormat:@"<%@: %@ %f %lu", v4, lowercaseString, v7, -[SKGKeyphrase count](self, "count")];
 
   return v8;
 }

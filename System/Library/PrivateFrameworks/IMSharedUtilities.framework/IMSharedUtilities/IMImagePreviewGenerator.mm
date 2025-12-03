@@ -1,32 +1,32 @@
 @interface IMImagePreviewGenerator
-+ (BOOL)_getUncroppedSizeForImageAtURL:(id)a3 scale:(double)a4 withImageSizeInPx:(CGSize)a5 maximumSizeInPx:(CGSize)a6 minimumSizeInPx:(CGSize)a7 previewSize:(CGSize *)a8 senderContext:(id)a9;
-+ (CGImage)_newBlastdoorPreviewForFileAtURL:(id)a3 senderContext:(id)a4 maxPxWidth:(double)a5 scale:(double)a6 isScreenshot:(BOOL *)a7 isMonoskiAsset:(BOOL *)a8 stickerEffect:(id *)a9 error:(id *)a10;
-+ (CGImage)_newCroppedAndScaledImageWithImageSource:(CGImageSource *)a3 withPreviewConstraints:(IMPreviewConstraints *)a4;
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6;
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8;
++ (BOOL)_getUncroppedSizeForImageAtURL:(id)l scale:(double)scale withImageSizeInPx:(CGSize)px maximumSizeInPx:(CGSize)inPx minimumSizeInPx:(CGSize)sizeInPx previewSize:(CGSize *)size senderContext:(id)context;
++ (CGImage)_newBlastdoorPreviewForFileAtURL:(id)l senderContext:(id)context maxPxWidth:(double)width scale:(double)scale isScreenshot:(BOOL *)screenshot isMonoskiAsset:(BOOL *)asset stickerEffect:(id *)effect error:(id *)self0;
++ (CGImage)_newCroppedAndScaledImageWithImageSource:(CGImageSource *)source withPreviewConstraints:(IMPreviewConstraints *)constraints;
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error;
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error;
 @end
 
 @implementation IMImagePreviewGenerator
 
-+ (CGImage)newPreviewFromSourceURL:(id)a3 senderContext:(id)a4 withPreviewConstraints:(IMPreviewConstraints *)a5 error:(id *)a6
++ (CGImage)newPreviewFromSourceURL:(id)l senderContext:(id)context withPreviewConstraints:(IMPreviewConstraints *)constraints error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *v20 = 138412546;
-      *&v20[4] = a1;
+      *&v20[4] = self;
       *&v20[12] = 2112;
-      *&v20[14] = v10;
+      *&v20[14] = lCopy;
       _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Generating preview for class %@ from sourceURL %@", v20, 0x16u);
     }
   }
 
-  if (!v10)
+  if (!lCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -38,7 +38,7 @@
       }
     }
 
-    if (a6)
+    if (error)
     {
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:5 userInfo:0];
       goto LABEL_20;
@@ -49,7 +49,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v13 = CGImageSourceCreateWithURL(v10, 0);
+  v13 = CGImageSourceCreateWithURL(lCopy, 0);
   if (!v13)
   {
     if (IMOSLoggingEnabled())
@@ -58,41 +58,41 @@ LABEL_21:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *v20 = 138412290;
-        *&v20[4] = v10;
+        *&v20[4] = lCopy;
         _os_log_impl(&dword_1A85E5000, v16, OS_LOG_TYPE_INFO, "IMImagePreviewGenerator - Unable to generate image ref for %@", v20, 0xCu);
       }
     }
 
-    if (a6)
+    if (error)
     {
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:3 userInfo:0];
 LABEL_20:
       v15 = 0;
-      *a6 = v17;
+      *error = v17;
       goto LABEL_22;
     }
 
     goto LABEL_21;
   }
 
-  v14 = *&a5->var1.height;
-  *v20 = *&a5->var0;
+  v14 = *&constraints->var1.height;
+  *v20 = *&constraints->var0;
   *&v20[16] = v14;
-  v21 = *&a5->var3;
-  v15 = [a1 _newCroppedAndScaledImageWithImageSource:v13 withPreviewConstraints:v20];
+  v21 = *&constraints->var3;
+  v15 = [self _newCroppedAndScaledImageWithImageSource:v13 withPreviewConstraints:v20];
   CFRelease(v13);
 LABEL_22:
 
   return v15;
 }
 
-+ (CGImage)_newCroppedAndScaledImageWithImageSource:(CGImageSource *)a3 withPreviewConstraints:(IMPreviewConstraints *)a4
++ (CGImage)_newCroppedAndScaledImageWithImageSource:(CGImageSource *)source withPreviewConstraints:(IMPreviewConstraints *)constraints
 {
   v25 = *MEMORY[0x1E69E9840];
   [IMImageUtilities imageSourcePxSize:?];
   v8 = v7;
   v10 = v9;
-  var0 = a4->var0;
+  var0 = constraints->var0;
   v12 = fmax(v8 / v9, 0.75);
   if (v12 > 1.77777778)
   {
@@ -107,7 +107,7 @@ LABEL_22:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = IMStringFromCGSize(v8, v10);
-      v17 = a4->var0;
+      v17 = constraints->var0;
       v18 = IMStringFromCGSize(v13, v14);
       *v23 = 138412802;
       *&v23[4] = v16;
@@ -119,12 +119,12 @@ LABEL_22:
     }
   }
 
-  v19 = [a1 newThumbnailFillToSize:a3 imagePxSize:v13 imageSource:v14 scale:{v8, v10, a4->var2}];
-  v20 = *&a4->var1.height;
-  *v23 = *&a4->var0;
+  v19 = [self newThumbnailFillToSize:source imagePxSize:v13 imageSource:v14 scale:{v8, v10, constraints->var2}];
+  v20 = *&constraints->var1.height;
+  *v23 = *&constraints->var0;
   *&v23[16] = v20;
-  v24 = *&a4->var3;
-  v21 = [a1 newCroppedAndRescaledImageFromImage:v19 constraints:v23 targetPxSize:{v13, v14}];
+  v24 = *&constraints->var3;
+  v21 = [self newCroppedAndRescaledImageFromImage:v19 constraints:v23 targetPxSize:{v13, v14}];
   if (v19)
   {
     CFRelease(v19);
@@ -133,28 +133,28 @@ LABEL_22:
   return v21;
 }
 
-+ (CGImage)_newBlastdoorPreviewForFileAtURL:(id)a3 senderContext:(id)a4 maxPxWidth:(double)a5 scale:(double)a6 isScreenshot:(BOOL *)a7 isMonoskiAsset:(BOOL *)a8 stickerEffect:(id *)a9 error:(id *)a10
++ (CGImage)_newBlastdoorPreviewForFileAtURL:(id)l senderContext:(id)context maxPxWidth:(double)width scale:(double)scale isScreenshot:(BOOL *)screenshot isMonoskiAsset:(BOOL *)asset stickerEffect:(id *)effect error:(id *)self0
 {
-  v43 = a8;
+  assetCopy = asset;
   v52 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  *&v17 = a5;
-  *&v18 = a6;
-  v19 = [IMAttachmentBlastdoor generateImagePreviewForFileURL:v15 senderContext:v16 maxPixelDimension:&v43 + 8 scale:v17 error:v18];
-  v20 = *(&v43 + 1);
+  lCopy = l;
+  contextCopy = context;
+  *&v17 = width;
+  *&v18 = scale;
+  v19 = [IMAttachmentBlastdoor generateImagePreviewForFileURL:lCopy senderContext:contextCopy maxPixelDimension:&assetCopy + 8 scale:v17 error:v18];
+  v20 = *(&assetCopy + 1);
   if (v19 && ([v19 utTypeString], (v21 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v19, "utTypeString"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "length") == 0, v22, v21, !v23))
   {
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v25 = [v19 utTypeString];
-    [v24 setValue:v25 forKey:@"uti_type"];
+    utTypeString = [v19 utTypeString];
+    [v24 setValue:utTypeString forKey:@"uti_type"];
 
-    v26 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v16, "isFromMe")}];
+    v26 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(contextCopy, "isFromMe")}];
     [v24 setValue:v26 forKey:@"is_from_me"];
-    v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v16, "isTrustedSender")}];
+    v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(contextCopy, "isTrustedSender")}];
     [v24 setValue:v27 forKey:@"is_trusted_sender"];
-    v28 = [v16 serviceName];
-    [v24 setValue:v28 forKey:@"service"];
+    serviceName = [contextCopy serviceName];
+    [v24 setValue:serviceName forKey:@"service"];
 
     v29 = +[IMMetricsCollector sharedInstance];
     [v29 trackEvent:@"com.apple.Messages.IMMetricsCollectorEventImagePreviewGenerationSuccess" withDictionary:v24];
@@ -202,74 +202,74 @@ LABEL_16:
     }
 
     v19 = 0;
-    v36 = 0;
+    isScreenshot = 0;
     v35 = 0;
     goto LABEL_19;
   }
 
-  v34 = [v19 image];
-  v35 = CGImageRetain([v34 cgImage]);
+  image = [v19 image];
+  v35 = CGImageRetain([image cgImage]);
 
   if (+[IMImageUtilities isCroppingAvoidanceEnabled]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v36 = [v19 isScreenshot];
+    isScreenshot = [v19 isScreenshot];
   }
 
   else
   {
-    v36 = 0;
+    isScreenshot = 0;
   }
 
-  *v43 = 0;
+  *assetCopy = 0;
   if (objc_opt_respondsToSelector())
   {
-    *v43 = [v19 isMonoskiAsset];
+    *assetCopy = [v19 isMonoskiAsset];
   }
 
   v39 = +[IMFeatureFlags sharedFeatureFlags];
-  v40 = [v39 isClingEnabled];
+  isClingEnabled = [v39 isClingEnabled];
 
-  v41 = v40 ^ 1;
-  if (!a9)
+  v41 = isClingEnabled ^ 1;
+  if (!effect)
   {
     v41 = 1;
   }
 
   if (v41 & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    *a9 = [v19 stickerEffect];
+    *effect = [v19 stickerEffect];
   }
 
 LABEL_19:
-  if (a10 && !v35)
+  if (error && !v35)
   {
     v37 = v20;
-    *a10 = v20;
+    *error = v20;
   }
 
-  if (a7)
+  if (screenshot)
   {
-    *a7 = v36;
+    *screenshot = isScreenshot;
   }
 
   return v35;
 }
 
-+ (BOOL)_getUncroppedSizeForImageAtURL:(id)a3 scale:(double)a4 withImageSizeInPx:(CGSize)a5 maximumSizeInPx:(CGSize)a6 minimumSizeInPx:(CGSize)a7 previewSize:(CGSize *)a8 senderContext:(id)a9
++ (BOOL)_getUncroppedSizeForImageAtURL:(id)l scale:(double)scale withImageSizeInPx:(CGSize)px maximumSizeInPx:(CGSize)inPx minimumSizeInPx:(CGSize)sizeInPx previewSize:(CGSize *)size senderContext:(id)context
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a6.height;
-  v14 = a6.width;
-  v15 = a5.height;
-  v16 = a5.width;
-  v19 = a3;
-  v20 = a9;
+  height = sizeInPx.height;
+  width = sizeInPx.width;
+  v13 = inPx.height;
+  v14 = inPx.width;
+  v15 = px.height;
+  v16 = px.width;
+  lCopy = l;
+  contextCopy = context;
   if (![IMImageUtilities shouldCropImageOfSize:v16 maximumSizeInPx:v15 minimumSizeInPx:v14, v13, width, height])
   {
     v31 = 0;
     v30 = 0;
-    v22 = [a1 _newBlastdoorPreviewForFileAtURL:v19 senderContext:v20 maxPxWidth:&v31 + 1 scale:&v31 isScreenshot:0 isMonoskiAsset:&v30 stickerEffect:v14 error:a4];
+    v22 = [self _newBlastdoorPreviewForFileAtURL:lCopy senderContext:contextCopy maxPxWidth:&v31 + 1 scale:&v31 isScreenshot:0 isMonoskiAsset:&v30 stickerEffect:v14 error:scale];
     v23 = v30;
     if (v22)
     {
@@ -278,8 +278,8 @@ LABEL_19:
       v27 = v26;
       if (HIBYTE(v31) == 1 || [IMImageUtilities imageIsSubjectLift:v22])
       {
-        a8->width = v25;
-        a8->height = v27;
+        size->width = v25;
+        size->height = v27;
         CGImageRelease(v22);
         v21 = 1;
 LABEL_12:
@@ -295,7 +295,7 @@ LABEL_12:
       v28 = IMLogHandleForCategory("IMImagePreviewGenerator");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        sub_1A88C5C04(v23, v19, v28);
+        sub_1A88C5C04(v23, lCopy, v28);
       }
     }
 
@@ -309,43 +309,43 @@ LABEL_13:
   return v21;
 }
 
-+ (id)generateAndPersistPreviewFromSourceURL:(id)a3 senderContext:(id)a4 balloonBundleID:(id)a5 withPreviewConstraints:(IMPreviewConstraints *)a6 outSize:(CGSize *)a7 error:(id *)a8
++ (id)generateAndPersistPreviewFromSourceURL:(id)l senderContext:(id)context balloonBundleID:(id)d withPreviewConstraints:(IMPreviewConstraints *)constraints outSize:(CGSize *)size error:(id *)error
 {
   v86[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v76 = a4;
-  v75 = a5;
+  lCopy = l;
+  contextCopy = context;
+  dCopy = d;
   v15 = _os_activity_create(&dword_1A85E5000, "com.apple.messages.AttachmentGeneratePreviewImage", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v15, &state);
-  if (v14 && a7 && a8)
+  if (lCopy && size && error)
   {
-    v74 = a8;
+    errorCopy = error;
     if (IMOSLoggingEnabled())
     {
       v16 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v14;
+        *&buf[4] = lCopy;
         _os_log_impl(&dword_1A85E5000, v16, OS_LOG_TYPE_INFO, "Invoking Blastdoor for image at source URL: %@", buf, 0xCu);
       }
     }
 
     v17 = MEMORY[0x1E695DFF8];
     v18 = IMSafeTemporaryDirectory();
-    v19 = [v18 path];
-    v86[0] = v19;
+    path = [v18 path];
+    v86[0] = path;
     v86[1] = @"ImagePreview";
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:2];
     v21 = [v17 fileURLWithPathComponents:v20];
 
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    [v22 createDirectoryAtURL:v21 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v21 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v23 = [MEMORY[0x1E696AEC0] stringGUID];
-    v24 = [v21 URLByAppendingPathComponent:v23 isDirectory:0];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    v24 = [v21 URLByAppendingPathComponent:stringGUID isDirectory:0];
     v25 = [v24 URLByAppendingPathExtension:@"ktx"];
 
     if (!v25)
@@ -356,18 +356,18 @@ LABEL_13:
         if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v14;
+          *&buf[4] = lCopy;
           _os_log_impl(&dword_1A85E5000, v61, OS_LOG_TYPE_INFO, "Failed to get a temporaryPreviewURL for sourceURL: %@", buf, 0xCu);
         }
       }
 
       [MEMORY[0x1E696ABC0] errorWithDomain:@"__kIMPreviewGenerationErrorDomain" code:6 userInfo:0];
       v25 = 0;
-      *a8 = v60 = 0;
+      *error = v60 = 0;
       goto LABEL_88;
     }
 
-    if (![a1 writesToDisk])
+    if (![self writesToDisk])
     {
       v60 = 0;
 LABEL_88:
@@ -376,16 +376,16 @@ LABEL_88:
     }
 
     v81 = 0;
-    var0 = a6->var0;
-    if (a6->var0 < *"")
+    var0 = constraints->var0;
+    if (constraints->var0 < *"")
     {
       var0 = *"";
     }
 
-    var2 = a6->var2;
+    var2 = constraints->var2;
     v79 = 0;
     v80 = 0;
-    v28 = [a1 _newBlastdoorPreviewForFileAtURL:v14 senderContext:v76 maxPxWidth:&v81 + 1 scale:&v81 isScreenshot:&v80 isMonoskiAsset:&v79 stickerEffect:var0 error:var2];
+    v28 = [self _newBlastdoorPreviewForFileAtURL:lCopy senderContext:contextCopy maxPxWidth:&v81 + 1 scale:&v81 isScreenshot:&v80 isMonoskiAsset:&v79 stickerEffect:var0 error:var2];
     v72 = v80;
     v29 = v79;
     v71 = v29;
@@ -419,7 +419,7 @@ LABEL_87:
     [IMImageUtilities imageRefPxSize:v28];
     v31 = v30;
     v33 = v32;
-    v34 = a6->var0;
+    v34 = constraints->var0;
     v35 = fmax(v30 / v32, 0.75);
     if (v35 <= 1.77777778)
     {
@@ -437,24 +437,24 @@ LABEL_87:
     v40 = round(v38);
     if (v37)
     {
-      if (a6->var3)
+      if (constraints->var3)
       {
         v40 = v33;
         v39 = v31;
       }
 
-      v41 = [IMImageUtilities newUncroppedPreviewImageFromImage:v28 isScreenshot:HIBYTE(v81) maximumSizeInPx:v39 minimumSizeInPx:v40, a6->var1.width, a6->var1.height];
+      v41 = [IMImageUtilities newUncroppedPreviewImageFromImage:v28 isScreenshot:HIBYTE(v81) maximumSizeInPx:v39 minimumSizeInPx:v40, constraints->var1.width, constraints->var1.height];
       if (v41)
       {
         goto LABEL_22;
       }
     }
 
-    v42 = *&a6->var1.height;
-    *buf = *&a6->var0;
+    v42 = *&constraints->var1.height;
+    *buf = *&constraints->var0;
     v84 = v42;
-    v85 = *&a6->var3;
-    v43 = [a1 newCroppedAndRescaledImageFromImage:v28 constraints:buf targetPxSize:{v39, v40}];
+    v85 = *&constraints->var3;
+    v43 = [self newCroppedAndRescaledImageFromImage:v28 constraints:buf targetPxSize:{v39, v40}];
     v41 = v43;
     if (v43)
     {
@@ -468,14 +468,14 @@ LABEL_22:
         [IMImageUtilities imageRefPxSize:v44];
         v31 = v46;
         v33 = v47;
-        v48 = [v25 URLByDeletingPathExtension];
-        v49 = [v48 URLByAppendingPathExtension:@"plist"];
+        uRLByDeletingPathExtension = [v25 URLByDeletingPathExtension];
+        v49 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"plist"];
 
-        v69 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v50 = +[IMFeatureFlags sharedFeatureFlags];
-        v51 = [v50 isClingEnabled];
+        isClingEnabled = [v50 isClingEnabled];
 
-        if (v51 && [v72 length] && (objc_msgSend(v72, "isEqualToString:", @"none") & 1) == 0)
+        if (isClingEnabled && [v72 length] && (objc_msgSend(v72, "isEqualToString:", @"none") & 1) == 0)
         {
           if (IMOSLoggingEnabled())
           {
@@ -488,7 +488,7 @@ LABEL_22:
             }
           }
 
-          [v69 setObject:v72 forKeyedSubscript:@"stickerEffectType"];
+          [dictionary setObject:v72 forKeyedSubscript:@"stickerEffectType"];
         }
 
         if (v81 == 1)
@@ -504,10 +504,10 @@ LABEL_22:
           }
 
           v54 = [MEMORY[0x1E696AD98] numberWithBool:v81];
-          [v69 setObject:v54 forKeyedSubscript:@"IMIsMonoskiAssetKey"];
+          [dictionary setObject:v54 forKeyedSubscript:@"IMIsMonoskiAssetKey"];
         }
 
-        if (![v69 count])
+        if (![dictionary count])
         {
           goto LABEL_79;
         }
@@ -523,7 +523,7 @@ LABEL_22:
         }
 
         v77 = 0;
-        v56 = [MEMORY[0x1E696AE40] dataWithPropertyList:v69 format:200 options:0 error:&v77];
+        v56 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v77];
         v57 = v77;
         if (v56)
         {
@@ -616,8 +616,8 @@ LABEL_80:
     if (v66 == 1)
     {
       v62 = 0;
-      a7->width = v31;
-      a7->height = v33;
+      size->width = v31;
+      size->height = v33;
       goto LABEL_87;
     }
 
@@ -626,7 +626,7 @@ LABEL_80:
 LABEL_86:
       v67 = v62;
       v25 = 0;
-      *v74 = v62;
+      *errorCopy = v62;
       goto LABEL_87;
     }
 

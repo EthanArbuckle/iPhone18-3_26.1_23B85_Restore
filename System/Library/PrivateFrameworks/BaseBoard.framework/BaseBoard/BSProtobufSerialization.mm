@@ -1,18 +1,18 @@
 @interface BSProtobufSerialization
-+ (id)buildSchemaForClass:(Class)a3 builder:(id)a4;
-+ (id)decodeObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5;
-+ (id)encodeObject:(id)a3 error:(id *)a4;
++ (id)buildSchemaForClass:(Class)class builder:(id)builder;
++ (id)decodeObjectOfClass:(Class)class fromData:(id)data error:(id *)error;
++ (id)encodeObject:(id)object error:(id *)error;
 @end
 
 @implementation BSProtobufSerialization
 
-+ (id)decodeObjectOfClass:(Class)a3 fromData:(id)a4 error:(id *)a5
++ (id)decodeObjectOfClass:(Class)class fromData:(id)data error:(id *)error
 {
-  v7 = _BSProtobufValidateClassForEncoding("<top level>", a3);
-  v8 = [(objc_class *)v7 protobufSchema];
-  if (v8)
+  v7 = _BSProtobufValidateClassForEncoding("<top level>", class);
+  protobufSchema = [(objc_class *)v7 protobufSchema];
+  if (protobufSchema)
   {
-    v9 = v8;
+    v9 = protobufSchema;
     while (1)
     {
       v9 = *(v9 + 16);
@@ -27,7 +27,7 @@
       }
     }
 
-    v9 = v8;
+    v9 = protobufSchema;
   }
 
   else
@@ -36,7 +36,7 @@
   }
 
 LABEL_7:
-  v10 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:a4];
+  v10 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:data];
   v18 = 0;
   v11 = *(v9 + 56);
   if (v11)
@@ -49,20 +49,20 @@ LABEL_7:
   {
     if (*(v9 + 73) == 1)
     {
-      v13 = [[v7 alloc] initForProtobufDecoding];
+      initForProtobufDecoding = [[v7 alloc] initForProtobufDecoding];
     }
 
     else
     {
-      v13 = objc_alloc_init(v7);
+      initForProtobufDecoding = objc_alloc_init(v7);
     }
 
-    v18 = v13;
+    v18 = initForProtobufDecoding;
     v12 = &v18;
     v11 = v9;
   }
 
-  v14 = _BSProtobufSchemaDecodeMessage(v11, v12, v10, a5);
+  v14 = _BSProtobufSchemaDecodeMessage(v11, v12, v10, error);
 
   v15 = v18;
   if (v14)
@@ -76,14 +76,14 @@ LABEL_7:
   }
 }
 
-+ (id)encodeObject:(id)a3 error:(id *)a4
++ (id)encodeObject:(id)object error:(id *)error
 {
-  v13 = a3;
+  objectCopy = object;
   v6 = objc_opt_class();
-  v7 = [(objc_class *)_BSProtobufValidateClassForEncoding("<top level>" protobufSchema];
-  if (v7)
+  protobufSchema = [(objc_class *)_BSProtobufValidateClassForEncoding("<top level>" protobufSchema];
+  if (protobufSchema)
   {
-    v8 = v7;
+    v8 = protobufSchema;
     while (1)
     {
       v8 = *(v8 + 16);
@@ -98,7 +98,7 @@ LABEL_7:
       }
     }
 
-    v8 = v7;
+    v8 = protobufSchema;
   }
 
   else
@@ -111,29 +111,29 @@ LABEL_7:
   v10 = *(v8 + 56);
   if (!v10)
   {
-    if (_BSProtobufSchemaEncodeMessage(v8, a3, v9, a4))
+    if (_BSProtobufSchemaEncodeMessage(v8, object, v9, error))
     {
       goto LABEL_9;
     }
 
 LABEL_11:
-    v11 = 0;
+    immutableData = 0;
     goto LABEL_12;
   }
 
-  if ((_BSProtobufSchemaEncodeMessageWithExplicitIvarBaseAddress(v10, &v13, v9, a4) & 1) == 0)
+  if ((_BSProtobufSchemaEncodeMessageWithExplicitIvarBaseAddress(v10, &objectCopy, v9, error) & 1) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_9:
-  v11 = [v9 immutableData];
+  immutableData = [v9 immutableData];
 LABEL_12:
 
-  return v11;
+  return immutableData;
 }
 
-+ (id)buildSchemaForClass:(Class)a3 builder:(id)a4
++ (id)buildSchemaForClass:(Class)class builder:(id)builder
 {
   v6 = [BSProtobufSchema alloc];
   if (v6)
@@ -144,10 +144,10 @@ LABEL_12:
     v8 = v7;
     if (v7)
     {
-      v7[1] = a3;
+      v7[1] = class;
       v7[3] = 0;
       v7[6] = objc_alloc_init(MEMORY[0x1E695DF88]);
-      Superclass = class_getSuperclass(a3);
+      Superclass = class_getSuperclass(class);
       if (Superclass)
       {
         v10 = Superclass;
@@ -164,9 +164,9 @@ LABEL_12:
       }
 
 LABEL_9:
-      *(v8 + 72) = class_getInstanceMethod(a3, sel_didFinishProtobufDecodingWithError_) != 0;
-      *(v8 + 73) = class_getInstanceMethod(a3, sel_initForProtobufDecoding) != 0;
-      *(v8 + 74) = class_getInstanceMethod(a3, sel_initProtobufTranslatorForObject_) != 0;
+      *(v8 + 72) = class_getInstanceMethod(class, sel_didFinishProtobufDecodingWithError_) != 0;
+      *(v8 + 73) = class_getInstanceMethod(class, sel_initForProtobufDecoding) != 0;
+      *(v8 + 74) = class_getInstanceMethod(class, sel_initProtobufTranslatorForObject_) != 0;
     }
   }
 
@@ -176,7 +176,7 @@ LABEL_9:
   }
 
   v11 = v8;
-  (*(a4 + 2))(a4, v11);
+  (*(builder + 2))(builder, v11);
   return v11;
 }
 

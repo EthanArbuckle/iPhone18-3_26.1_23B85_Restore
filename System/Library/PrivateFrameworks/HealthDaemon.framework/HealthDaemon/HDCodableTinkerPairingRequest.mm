@@ -1,15 +1,15 @@
 @interface HDCodableTinkerPairingRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSetupType:(id)a3;
+- (int)StringAsSetupType:(id)type;
 - (int)setupType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSetupType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSetupType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableTinkerPairingRequest
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasSetupType:(BOOL)a3
+- (void)setHasSetupType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,17 +42,17 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsSetupType:(id)a3
+- (int)StringAsSetupType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TinkerPairingInitialSetup"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"TinkerPairingInitialSetup"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"TinkerPairingMigrationSetup"];
+    v4 = [typeCopy isEqualToString:@"TinkerPairingMigrationSetup"];
   }
 
   return v4;
@@ -64,20 +64,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableTinkerPairingRequest;
   v4 = [(HDCodableTinkerPairingRequest *)&v8 description];
-  v5 = [(HDCodableTinkerPairingRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableTinkerPairingRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestIdentifier = self->_requestIdentifier;
   if (requestIdentifier)
   {
-    [v3 setObject:requestIdentifier forKey:@"requestIdentifier"];
+    [dictionary setObject:requestIdentifier forKey:@"requestIdentifier"];
   }
 
   guardianIcloudIdentifier = self->_guardianIcloudIdentifier;
@@ -149,134 +149,134 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_requestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_guardianIcloudIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     setupType = self->_setupType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_guardianFirstName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_guardianLastName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     guardianDSID = self->_guardianDSID;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_profileIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_tinkerFirstName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_tinkerLastName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestIdentifier)
   {
-    [v4 setRequestIdentifier:?];
-    v4 = v5;
+    [toCopy setRequestIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_guardianIcloudIdentifier)
   {
     [v5 setGuardianIcloudIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 14) = self->_setupType;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 14) = self->_setupType;
+    *(toCopy + 80) |= 2u;
   }
 
   if (self->_guardianFirstName)
   {
     [v5 setGuardianFirstName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_guardianLastName)
   {
     [v5 setGuardianLastName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_guardianDSID;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 1) = self->_guardianDSID;
+    *(toCopy + 80) |= 1u;
   }
 
   if (self->_profileIdentifier)
   {
     [v5 setProfileIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tinkerFirstName)
   {
     [v5 setTinkerFirstName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tinkerLastName)
   {
     [v5 setTinkerLastName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestIdentifier copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_guardianIcloudIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_guardianIcloudIdentifier copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -286,11 +286,11 @@
     *(v5 + 80) |= 2u;
   }
 
-  v10 = [(NSString *)self->_guardianFirstName copyWithZone:a3];
+  v10 = [(NSString *)self->_guardianFirstName copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSString *)self->_guardianLastName copyWithZone:a3];
+  v12 = [(NSString *)self->_guardianLastName copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -300,31 +300,31 @@
     *(v5 + 80) |= 1u;
   }
 
-  v14 = [(NSData *)self->_profileIdentifier copyWithZone:a3];
+  v14 = [(NSData *)self->_profileIdentifier copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
-  v16 = [(NSString *)self->_tinkerFirstName copyWithZone:a3];
+  v16 = [(NSString *)self->_tinkerFirstName copyWithZone:zone];
   v17 = *(v5 + 64);
   *(v5 + 64) = v16;
 
-  v18 = [(NSString *)self->_tinkerLastName copyWithZone:a3];
+  v18 = [(NSString *)self->_tinkerLastName copyWithZone:zone];
   v19 = *(v5 + 72);
   *(v5 + 72) = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   requestIdentifier = self->_requestIdentifier;
-  if (requestIdentifier | *(v4 + 6))
+  if (requestIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)requestIdentifier isEqual:?])
     {
@@ -333,7 +333,7 @@
   }
 
   guardianIcloudIdentifier = self->_guardianIcloudIdentifier;
-  if (guardianIcloudIdentifier | *(v4 + 3))
+  if (guardianIcloudIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)guardianIcloudIdentifier isEqual:?])
     {
@@ -341,16 +341,16 @@
     }
   }
 
-  v7 = *(v4 + 80);
+  v7 = *(equalCopy + 80);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_setupType != *(v4 + 14))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_setupType != *(equalCopy + 14))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
 LABEL_26:
     v14 = 0;
@@ -358,13 +358,13 @@ LABEL_26:
   }
 
   guardianFirstName = self->_guardianFirstName;
-  if (guardianFirstName | *(v4 + 2) && ![(NSString *)guardianFirstName isEqual:?])
+  if (guardianFirstName | *(equalCopy + 2) && ![(NSString *)guardianFirstName isEqual:?])
   {
     goto LABEL_26;
   }
 
   guardianLastName = self->_guardianLastName;
-  if (guardianLastName | *(v4 + 4))
+  if (guardianLastName | *(equalCopy + 4))
   {
     if (![(NSString *)guardianLastName isEqual:?])
     {
@@ -372,28 +372,28 @@ LABEL_26:
     }
   }
 
-  v10 = *(v4 + 80);
+  v10 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_guardianDSID != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_guardianDSID != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_26;
   }
 
   profileIdentifier = self->_profileIdentifier;
-  if (profileIdentifier | *(v4 + 5) && ![(NSData *)profileIdentifier isEqual:?])
+  if (profileIdentifier | *(equalCopy + 5) && ![(NSData *)profileIdentifier isEqual:?])
   {
     goto LABEL_26;
   }
 
   tinkerFirstName = self->_tinkerFirstName;
-  if (tinkerFirstName | *(v4 + 8))
+  if (tinkerFirstName | *(equalCopy + 8))
   {
     if (![(NSString *)tinkerFirstName isEqual:?])
     {
@@ -402,7 +402,7 @@ LABEL_26:
   }
 
   tinkerLastName = self->_tinkerLastName;
-  if (tinkerLastName | *(v4 + 9))
+  if (tinkerLastName | *(equalCopy + 9))
   {
     v14 = [(NSString *)tinkerLastName isEqual:?];
   }
@@ -448,62 +448,62 @@ LABEL_27:
   return v9 ^ v10 ^ [(NSString *)self->_tinkerLastName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(HDCodableTinkerPairingRequest *)self setRequestIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableTinkerPairingRequest *)self setGuardianIcloudIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 80) & 2) != 0)
+  if ((*(fromCopy + 80) & 2) != 0)
   {
-    self->_setupType = *(v4 + 14);
+    self->_setupType = *(fromCopy + 14);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCodableTinkerPairingRequest *)self setGuardianFirstName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCodableTinkerPairingRequest *)self setGuardianLastName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_guardianDSID = *(v4 + 1);
+    self->_guardianDSID = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCodableTinkerPairingRequest *)self setProfileIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableTinkerPairingRequest *)self setTinkerFirstName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HDCodableTinkerPairingRequest *)self setTinkerLastName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

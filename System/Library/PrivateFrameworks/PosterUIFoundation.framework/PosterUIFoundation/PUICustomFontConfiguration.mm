@@ -1,34 +1,34 @@
 @interface PUICustomFontConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PUICustomFontConfiguration)initWithBSXPCCoder:(id)a3;
-- (PUICustomFontConfiguration)initWithCoder:(id)a3;
-- (PUICustomFontConfiguration)initWithFont:(id)a3 extensionBundle:(id)a4;
-- (PUICustomFontConfiguration)initWithFont:(id)a3 extensionBundleURL:(id)a4;
-- (PUICustomFontConfiguration)initWithFontPostScriptName:(id)a3 extensionBundleRelativeFilePath:(id)a4;
-- (id)PUIFontWithExtensionBundleURL:(id)a3;
-- (id)fontWithExtensionBundleURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PUICustomFontConfiguration)initWithBSXPCCoder:(id)coder;
+- (PUICustomFontConfiguration)initWithCoder:(id)coder;
+- (PUICustomFontConfiguration)initWithFont:(id)font extensionBundle:(id)bundle;
+- (PUICustomFontConfiguration)initWithFont:(id)font extensionBundleURL:(id)l;
+- (PUICustomFontConfiguration)initWithFontPostScriptName:(id)name extensionBundleRelativeFilePath:(id)path;
+- (id)PUIFontWithExtensionBundleURL:(id)l;
+- (id)fontWithExtensionBundleURL:(id)l;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUICustomFontConfiguration
 
-- (PUICustomFontConfiguration)initWithFontPostScriptName:(id)a3 extensionBundleRelativeFilePath:(id)a4
+- (PUICustomFontConfiguration)initWithFontPostScriptName:(id)name extensionBundleRelativeFilePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = PUICustomFontConfiguration;
   v8 = [(PUIFontConfiguration *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     fontPostScriptName = v8->_fontPostScriptName;
     v8->_fontPostScriptName = v9;
 
-    v11 = [v7 copy];
+    v11 = [pathCopy copy];
     extensionBundleRelativeFilePath = v8->_extensionBundleRelativeFilePath;
     v8->_extensionBundleRelativeFilePath = v11;
   }
@@ -36,46 +36,46 @@
   return v8;
 }
 
-- (PUICustomFontConfiguration)initWithFont:(id)a3 extensionBundle:(id)a4
+- (PUICustomFontConfiguration)initWithFont:(id)font extensionBundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 pui_postScriptName];
-  v9 = [v7 pui_referencePathRelativeToBundle:v6];
+  bundleCopy = bundle;
+  fontCopy = font;
+  pui_postScriptName = [fontCopy pui_postScriptName];
+  v9 = [fontCopy pui_referencePathRelativeToBundle:bundleCopy];
 
-  v10 = 0;
-  if (v8 && v9)
+  selfCopy = 0;
+  if (pui_postScriptName && v9)
   {
-    self = [(PUICustomFontConfiguration *)self initWithFontPostScriptName:v8 extensionBundleRelativeFilePath:v9];
-    v10 = self;
+    self = [(PUICustomFontConfiguration *)self initWithFontPostScriptName:pui_postScriptName extensionBundleRelativeFilePath:v9];
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PUICustomFontConfiguration)initWithFont:(id)a3 extensionBundleURL:(id)a4
+- (PUICustomFontConfiguration)initWithFont:(id)font extensionBundleURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 pui_postScriptName];
-  v9 = [v7 pui_referencePathRelativeToDirectoryAtURL:v6];
+  lCopy = l;
+  fontCopy = font;
+  pui_postScriptName = [fontCopy pui_postScriptName];
+  v9 = [fontCopy pui_referencePathRelativeToDirectoryAtURL:lCopy];
 
-  v10 = 0;
-  if (v8 && v9)
+  selfCopy = 0;
+  if (pui_postScriptName && v9)
   {
-    self = [(PUICustomFontConfiguration *)self initWithFontPostScriptName:v8 extensionBundleRelativeFilePath:v9];
-    v10 = self;
+    self = [(PUICustomFontConfiguration *)self initWithFontPostScriptName:pui_postScriptName extensionBundleRelativeFilePath:v9];
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)PUIFontWithExtensionBundleURL:(id)a3
+- (id)PUIFontWithExtensionBundleURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-  v6 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-  v7 = [MEMORY[0x1E69DB878] pui_UIFontWithPostScriptName:v5 inBundleAtURL:v4 relativePath:v6];
+  lCopy = l;
+  fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+  extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+  v7 = [MEMORY[0x1E69DB878] pui_UIFontWithPostScriptName:fontPostScriptName inBundleAtURL:lCopy relativePath:extensionBundleRelativeFilePath];
 
   if (v7)
   {
@@ -90,25 +90,25 @@
   return v8;
 }
 
-- (id)fontWithExtensionBundleURL:(id)a3
+- (id)fontWithExtensionBundleURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-  v6 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-  v7 = v6;
+  lCopy = l;
+  fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+  extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+  v7 = extensionBundleRelativeFilePath;
   v8 = 0;
-  if (v5 && v6)
+  if (fontPostScriptName && extensionBundleRelativeFilePath)
   {
-    v8 = [MEMORY[0x1E69DB878] pui_UIFontWithPostScriptName:v5 inBundleAtURL:v4 relativePath:v6];
+    v8 = [MEMORY[0x1E69DB878] pui_UIFontWithPostScriptName:fontPostScriptName inBundleAtURL:lCopy relativePath:extensionBundleRelativeFilePath];
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -120,15 +120,15 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-      v9 = [(PUICustomFontConfiguration *)v7 fontPostScriptName];
+      v7 = equalCopy;
+      fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+      fontPostScriptName2 = [(PUICustomFontConfiguration *)v7 fontPostScriptName];
       v10 = BSEqualObjects();
 
       if (v10)
       {
-        v11 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-        v12 = [(PUICustomFontConfiguration *)v7 extensionBundleRelativeFilePath];
+        extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+        extensionBundleRelativeFilePath2 = [(PUICustomFontConfiguration *)v7 extensionBundleRelativeFilePath];
         v13 = BSEqualObjects();
       }
 
@@ -149,42 +149,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-  v4 = [v3 hash];
-  v5 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-  v6 = [v5 hash];
+  fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+  v4 = [fontPostScriptName hash];
+  extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+  v6 = [extensionBundleRelativeFilePath hash];
 
   return v6 ^ v4;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v7 = a3;
-  v4 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-  [v7 appendString:v4 withName:@"fontPostScriptName"];
+  formatterCopy = formatter;
+  fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+  [formatterCopy appendString:fontPostScriptName withName:@"fontPostScriptName"];
 
-  v5 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-  v6 = [v7 appendObject:v5 withName:@"extensionBundleRelativeFilePath"];
+  extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+  v6 = [formatterCopy appendObject:extensionBundleRelativeFilePath withName:@"extensionBundleRelativeFilePath"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-  [v4 encodeObject:v5 forKey:@"fontPostScriptName"];
+  coderCopy = coder;
+  fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+  [coderCopy encodeObject:fontPostScriptName forKey:@"fontPostScriptName"];
 
-  v6 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-  [v4 encodeObject:v6 forKey:@"extensionBundleRelativeFilePath"];
+  extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+  [coderCopy encodeObject:extensionBundleRelativeFilePath forKey:@"extensionBundleRelativeFilePath"];
 }
 
-- (PUICustomFontConfiguration)initWithCoder:(id)a3
+- (PUICustomFontConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
 
   if (v6)
   {
@@ -198,36 +198,36 @@
 
   if (v9)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PUICustomFontConfiguration *)self initWithFontPostScriptName:v6 extensionBundleRelativeFilePath:v8];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PUICustomFontConfiguration *)self fontPostScriptName];
-  [v4 encodeObject:v5 forKey:@"fontPostScriptName"];
+  coderCopy = coder;
+  fontPostScriptName = [(PUICustomFontConfiguration *)self fontPostScriptName];
+  [coderCopy encodeObject:fontPostScriptName forKey:@"fontPostScriptName"];
 
-  v6 = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
-  [v4 encodeObject:v6 forKey:@"extensionBundleRelativeFilePath"];
+  extensionBundleRelativeFilePath = [(PUICustomFontConfiguration *)self extensionBundleRelativeFilePath];
+  [coderCopy encodeObject:extensionBundleRelativeFilePath forKey:@"extensionBundleRelativeFilePath"];
 }
 
-- (PUICustomFontConfiguration)initWithBSXPCCoder:(id)a3
+- (PUICustomFontConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
 
   if (v6)
   {
@@ -241,16 +241,16 @@
 
   if (v9)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PUICustomFontConfiguration *)self initWithFontPostScriptName:v6 extensionBundleRelativeFilePath:v8];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface THNotesDetailTableViewHeaderView
 - (CGSize)editControlImageSize;
-- (THNotesDetailTableViewHeaderView)initWithReuseIdentifier:(id)a3;
+- (THNotesDetailTableViewHeaderView)initWithReuseIdentifier:(id)identifier;
 - (id)backgroundView;
-- (void)addChapterLabel:(id)a3;
-- (void)addSectionLabel:(id)a3;
+- (void)addChapterLabel:(id)label;
+- (void)addSectionLabel:(id)label;
 - (void)dealloc;
-- (void)p_positionViewsForEditing:(BOOL)a3;
+- (void)p_positionViewsForEditing:(BOOL)editing;
 - (void)prepareForReuse;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation THNotesDetailTableViewHeaderView
 
-- (THNotesDetailTableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (THNotesDetailTableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = THNotesDetailTableViewHeaderView;
-  v3 = [(THNotesDetailTableViewHeaderView *)&v8 initWithReuseIdentifier:a3];
+  v3 = [(THNotesDetailTableViewHeaderView *)&v8 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v3->_cellView = objc_alloc_init(UIView);
@@ -106,51 +106,51 @@
 {
   v6.receiver = self;
   v6.super_class = THNotesDetailTableViewHeaderView;
-  v3 = [(THNotesDetailTableViewHeaderView *)&v6 backgroundView];
-  if (!v3 || (NSClassFromString(@"_UITableViewHeaderFooterViewBackground"), (objc_opt_isKindOfClass() & 1) != 0))
+  backgroundView = [(THNotesDetailTableViewHeaderView *)&v6 backgroundView];
+  if (!backgroundView || (NSClassFromString(@"_UITableViewHeaderFooterViewBackground"), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [UIView alloc];
-    [v3 frame];
-    v3 = [v4 initWithFrame:?];
-    [(THNotesDetailTableViewHeaderView *)self setBackgroundView:v3];
+    [backgroundView frame];
+    backgroundView = [v4 initWithFrame:?];
+    [(THNotesDetailTableViewHeaderView *)self setBackgroundView:backgroundView];
   }
 
-  return v3;
+  return backgroundView;
 }
 
-- (void)addChapterLabel:(id)a3
+- (void)addChapterLabel:(id)label
 {
   [(UILabel *)[(THNotesDetailTableViewHeaderView *)self chapterLabel] removeFromSuperview];
-  [(THNotesDetailTableViewHeaderView *)self setChapterLabel:a3];
-  if (a3)
+  [(THNotesDetailTableViewHeaderView *)self setChapterLabel:label];
+  if (label)
   {
     cellView = self->_cellView;
 
-    [(UIView *)cellView addSubview:a3];
+    [(UIView *)cellView addSubview:label];
   }
 }
 
-- (void)addSectionLabel:(id)a3
+- (void)addSectionLabel:(id)label
 {
   [(UILabel *)[(THNotesDetailTableViewHeaderView *)self sectionLabel] removeFromSuperview];
-  [(THNotesDetailTableViewHeaderView *)self setSectionLabel:a3];
-  if (a3)
+  [(THNotesDetailTableViewHeaderView *)self setSectionLabel:label];
+  if (label)
   {
     cellView = self->_cellView;
 
-    [(UIView *)cellView addSubview:a3];
+    [(UIView *)cellView addSubview:label];
   }
 }
 
-- (void)p_positionViewsForEditing:(BOOL)a3
+- (void)p_positionViewsForEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   [(THNotesDetailTableViewHeaderView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v3)
+  if (editingCopy)
   {
     if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:[(THNotesDetailTableViewHeaderView *)self semanticContentAttribute]]== UIUserInterfaceLayoutDirectionLeftToRight)
     {
@@ -192,17 +192,17 @@
     v24 = v23;
     v26 = v25;
     v27 = Width - v21;
-    v28 = [(THNotesDetailTableViewHeaderView *)self sectionLabel];
+    sectionLabel = [(THNotesDetailTableViewHeaderView *)self sectionLabel];
 
-    [(UILabel *)v28 setFrame:v22, v24, v27, v26];
+    [(UILabel *)sectionLabel setFrame:v22, v24, v27, v26];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = THNotesDetailTableViewHeaderView;
-  [(THNotesDetailTableViewHeaderView *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(THNotesDetailTableViewHeaderView *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(THNotesDetailTableViewHeaderView *)self p_positionViewsForEditing:self->_editing];
   [(THNotesDetailTableViewHeaderView *)self bounds];
   v5 = v4;
@@ -214,14 +214,14 @@
   [(UIButton *)self->_selectionButton setFrame:v5, v7, v9, v11];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
     v7[7] = v4;
     v7[8] = v5;
-    self->_editing = a3;
-    if (a4)
+    self->_editing = editing;
+    if (animated)
     {
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
@@ -241,11 +241,11 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(UIImageView *)self->_editControlImage setHighlighted:?];
   }
 }

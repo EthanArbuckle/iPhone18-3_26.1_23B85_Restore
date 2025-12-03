@@ -12,8 +12,8 @@
   v8 = a4;
   v9 = a3;
   v10 = [v7 _quantityTypeWithCode:90];
-  v11 = [a1 hkmc_defaultMetadata];
-  v12 = [v6 quantitySampleWithType:v10 quantity:v9 startDate:v8 endDate:v8 metadata:v11];
+  hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+  v12 = [v6 quantitySampleWithType:v10 quantity:v9 startDate:v8 endDate:v8 metadata:hkmc_defaultMetadata];
 
   return v12;
 }

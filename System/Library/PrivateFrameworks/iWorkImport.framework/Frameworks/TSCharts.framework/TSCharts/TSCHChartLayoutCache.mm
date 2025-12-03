@@ -1,19 +1,19 @@
 @interface TSCHChartLayoutCache
-+ (TSCHChartLayoutCache)cacheWithCacheItem:(id)a3;
++ (TSCHChartLayoutCache)cacheWithCacheItem:(id)item;
 - (TSCHChartLayoutCache)init;
-- (TSCHChartLayoutCache)initWithCacheItem:(id)a3;
-- (void)accessWithCacheItemBlock:(id)a3 calculateBlock:(id)a4;
+- (TSCHChartLayoutCache)initWithCacheItem:(id)item;
+- (void)accessWithCacheItemBlock:(id)block calculateBlock:(id)calculateBlock;
 - (void)invalidate;
 - (void)printDebug;
 @end
 
 @implementation TSCHChartLayoutCache
 
-+ (TSCHChartLayoutCache)cacheWithCacheItem:(id)a3
++ (TSCHChartLayoutCache)cacheWithCacheItem:(id)item
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithCacheItem_(v5, v6, v7, v8, v9, v4);
+  itemCopy = item;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithCacheItem_(v5, v6, v7, v8, v9, itemCopy);
 
   return v10;
 }
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (TSCHChartLayoutCache)initWithCacheItem:(id)a3
+- (TSCHChartLayoutCache)initWithCacheItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = TSCHChartLayoutCache;
   v5 = [(TSCHChartLayoutCache *)&v13 init];
@@ -45,24 +45,24 @@
     cacheItems = v5->_cacheItems;
     v5->_cacheItems = v6;
 
-    objc_msgSend_addObject_(v5->_cacheItems, v8, v9, v10, v11, v4);
+    objc_msgSend_addObject_(v5->_cacheItems, v8, v9, v10, v11, itemCopy);
   }
 
   return v5;
 }
 
-- (void)accessWithCacheItemBlock:(id)a3 calculateBlock:(id)a4
+- (void)accessWithCacheItemBlock:(id)block calculateBlock:(id)calculateBlock
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  blockCopy = block;
+  calculateBlockCopy = calculateBlock;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v8->_cacheItems;
+  v9 = selfCopy->_cacheItems;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, v11, v12, v13, &v35, v39, 16);
   if (v14)
   {
@@ -77,7 +77,7 @@
           objc_enumerationMutation(v9);
         }
 
-        if (v6[2](v6, *(*(&v35 + 1) + 8 * v16)))
+        if (blockCopy[2](blockCopy, *(*(&v35 + 1) + 8 * v16)))
         {
 
           goto LABEL_13;
@@ -97,17 +97,17 @@
     }
   }
 
-  cacheItems = v8->_cacheItems;
-  v22 = v7[2](v7);
+  cacheItems = selfCopy->_cacheItems;
+  v22 = calculateBlockCopy[2](calculateBlockCopy);
   objc_msgSend_insertObject_atIndex_(cacheItems, v23, v24, v25, v26, v22, 0, v35);
 
-  while (objc_msgSend_count(v8->_cacheItems, v27, v28, v29, v30) >= 3)
+  while (objc_msgSend_count(selfCopy->_cacheItems, v27, v28, v29, v30) >= 3)
   {
-    objc_msgSend_removeLastObject(v8->_cacheItems, v31, v32, v33, v34);
+    objc_msgSend_removeLastObject(selfCopy->_cacheItems, v31, v32, v33, v34);
   }
 
 LABEL_13:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)invalidate

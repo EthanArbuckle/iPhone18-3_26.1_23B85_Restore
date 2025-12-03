@@ -1,41 +1,41 @@
 @interface SPAccessoryDiscoveryAndPairingSession
 + (id)exportedInterface;
 + (id)remoteInterface;
-- (SPAccessoryDiscoveryAndPairingSession)initWithPreviousState:(id)a3;
+- (SPAccessoryDiscoveryAndPairingSession)initWithPreviousState:(id)state;
 - (SPAccessoryDiscoveryXPCProtocol)proxy;
 - (void)accessoryDetectedForPairing;
-- (void)accessoryDiscoveryError:(id)a3;
-- (void)accessoryProximityPairingError:(id)a3;
-- (void)disableFindMyPairingWithIdentifier:(id)a3;
-- (void)discoveredAccessory:(id)a3;
-- (void)finalizePairingWith:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)finalizeProximityPairingForAccessoryIdentifier:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)initializeProximityPairingForAccessoryIdentifier:(id)a3 completion:(id)a4;
-- (void)initiatePairingAndLocateAccessoryWith:(id)a3 completion:(id)a4;
-- (void)initiatePairingForAccessoryWith:(id)a3 completion:(id)a4;
-- (void)initiatePairingWith:(id)a3 completion:(id)a4;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidatePairingWith:(id)a3 completion:(id)a4;
-- (void)invalidationHandler:(id)a3;
-- (void)lostAccessory:(id)a3;
-- (void)notifyPairingAccessoryChanged:(id)a3;
-- (void)pairingStatus:(id)a3 completion:(id)a4;
-- (void)pairingStatusWithRequest:(id)a3 completion:(id)a4;
-- (void)proximityPairingCompleted:(id)a3 beacons:(id)a4;
-- (void)startAccessoryDiscoveryWithCompletion:(id)a3;
-- (void)startLocalFindableAccessoryDiscoveryWithCompletion:(id)a3;
-- (void)startProximityAccessoryDiscoveryWithCompletion:(id)a3;
+- (void)accessoryDiscoveryError:(id)error;
+- (void)accessoryProximityPairingError:(id)error;
+- (void)disableFindMyPairingWithIdentifier:(id)identifier;
+- (void)discoveredAccessory:(id)accessory;
+- (void)finalizePairingWith:(id)with configuration:(id)configuration completion:(id)completion;
+- (void)finalizeProximityPairingForAccessoryIdentifier:(id)identifier configuration:(id)configuration completion:(id)completion;
+- (void)initializeProximityPairingForAccessoryIdentifier:(id)identifier completion:(id)completion;
+- (void)initiatePairingAndLocateAccessoryWith:(id)with completion:(id)completion;
+- (void)initiatePairingForAccessoryWith:(id)with completion:(id)completion;
+- (void)initiatePairingWith:(id)with completion:(id)completion;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidatePairingWith:(id)with completion:(id)completion;
+- (void)invalidationHandler:(id)handler;
+- (void)lostAccessory:(id)accessory;
+- (void)notifyPairingAccessoryChanged:(id)changed;
+- (void)pairingStatus:(id)status completion:(id)completion;
+- (void)pairingStatusWithRequest:(id)request completion:(id)completion;
+- (void)proximityPairingCompleted:(id)completed beacons:(id)beacons;
+- (void)startAccessoryDiscoveryWithCompletion:(id)completion;
+- (void)startLocalFindableAccessoryDiscoveryWithCompletion:(id)completion;
+- (void)startProximityAccessoryDiscoveryWithCompletion:(id)completion;
 - (void)stop;
-- (void)stopAccessoryDiscoveryWithCompletion:(id)a3;
-- (void)stopLocalFindableAccessoryDiscoveryWithCompletion:(id)a3;
-- (void)stopProximityAccessoryDiscoveryWithCompletion:(id)a3;
+- (void)stopAccessoryDiscoveryWithCompletion:(id)completion;
+- (void)stopLocalFindableAccessoryDiscoveryWithCompletion:(id)completion;
+- (void)stopProximityAccessoryDiscoveryWithCompletion:(id)completion;
 @end
 
 @implementation SPAccessoryDiscoveryAndPairingSession
 
-- (SPAccessoryDiscoveryAndPairingSession)initWithPreviousState:(id)a3
+- (SPAccessoryDiscoveryAndPairingSession)initWithPreviousState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = SPAccessoryDiscoveryAndPairingSession;
   v5 = [(SPAccessoryDiscoveryAndPairingSession *)&v18 init];
@@ -51,9 +51,9 @@
     callbackQueue = v5->_callbackQueue;
     v5->_callbackQueue = v10;
 
-    if (v4)
+    if (stateCopy)
     {
-      v12 = v4;
+      v12 = stateCopy;
       state = v5->_state;
       v5->_state = v12;
     }
@@ -71,29 +71,29 @@
   return v5;
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPAccessoryDiscoverySession: interruptionHandler %@", buf, 0xCu);
   }
 
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPAccessoryDiscoveryAndPairingSession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+    callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SPAccessoryDiscoveryAndPairingSession_interruptionHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -105,30 +105,30 @@ void __61__SPAccessoryDiscoveryAndPairingSession_interruptionHandler___block_inv
   v1[2]();
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPAccessoryDiscoverySession: invalidationHandler %@", buf, 0xCu);
   }
 
   [(SPAccessoryDiscoveryAndPairingSession *)self setSession:0];
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPAccessoryDiscoveryAndPairingSession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+    callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SPAccessoryDiscoveryAndPairingSession_invalidationHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -143,16 +143,16 @@ void __61__SPAccessoryDiscoveryAndPairingSession_invalidationHandler___block_inv
 - (SPAccessoryDiscoveryXPCProtocol)proxy
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPAccessoryDiscoveryAndPairingSession *)self session];
+  session = [(SPAccessoryDiscoveryAndPairingSession *)self session];
 
-  if (!v4)
+  if (!session)
   {
-    v5 = [(SPAccessoryDiscoveryAndPairingSession *)self serviceDescription];
+    serviceDescription = [(SPAccessoryDiscoveryAndPairingSession *)self serviceDescription];
 
-    if (!v5)
+    if (!serviceDescription)
     {
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -179,30 +179,30 @@ void __61__SPAccessoryDiscoveryAndPairingSession_invalidationHandler___block_inv
     }
 
     v12 = objc_alloc(MEMORY[0x277D07BA8]);
-    v13 = [(SPAccessoryDiscoveryAndPairingSession *)self serviceDescription];
-    v14 = [v12 initWithServiceDescription:v13];
+    serviceDescription2 = [(SPAccessoryDiscoveryAndPairingSession *)self serviceDescription];
+    v14 = [v12 initWithServiceDescription:serviceDescription2];
     [(SPAccessoryDiscoveryAndPairingSession *)self setSession:v14];
 
     v15 = LogCategory_AccessoryDiscovery();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SPAccessoryDiscoveryAndPairingSession *)self serviceDescription];
-      v17 = [v16 machService];
+      serviceDescription3 = [(SPAccessoryDiscoveryAndPairingSession *)self serviceDescription];
+      machService = [serviceDescription3 machService];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v17;
+      *(location + 4) = machService;
       _os_log_impl(&dword_2643D0000, v15, OS_LOG_TYPE_DEFAULT, "SPAccessoryDiscoverySession: Establishing XPC connection to %@", location, 0xCu);
     }
 
-    v18 = [(SPAccessoryDiscoveryAndPairingSession *)self session];
-    [v18 resume];
+    session2 = [(SPAccessoryDiscoveryAndPairingSession *)self session];
+    [session2 resume];
   }
 
-  v19 = [(SPAccessoryDiscoveryAndPairingSession *)self session];
-  v20 = [v19 proxy];
+  session3 = [(SPAccessoryDiscoveryAndPairingSession *)self session];
+  proxy = [session3 proxy];
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return proxy;
 }
 
 void __46__SPAccessoryDiscoveryAndPairingSession_proxy__block_invoke(uint64_t a1, void *a2)
@@ -270,16 +270,16 @@ uint64_t __56__SPAccessoryDiscoveryAndPairingSession_remoteInterface__block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startProximityAccessoryDiscoveryWithCompletion:(id)a3
+- (void)startProximityAccessoryDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __88__SPAccessoryDiscoveryAndPairingSession_startProximityAccessoryDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPAccessoryDiscoverySession.start", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -340,16 +340,16 @@ void __88__SPAccessoryDiscoveryAndPairingSession_startProximityAccessoryDiscover
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startAccessoryDiscoveryWithCompletion:(id)a3
+- (void)startAccessoryDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__SPAccessoryDiscoveryAndPairingSession_startAccessoryDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPAccessoryDiscoverySession.start", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -451,16 +451,16 @@ uint64_t __45__SPAccessoryDiscoveryAndPairingSession_stop__block_invoke_197(uint
   return [v3 setSession:0];
 }
 
-- (void)stopAccessoryDiscoveryWithCompletion:(id)a3
+- (void)stopAccessoryDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__SPAccessoryDiscoveryAndPairingSession_stopAccessoryDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPAccessoryDiscoverySession.stopAccessoryDiscovery", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -517,16 +517,16 @@ void __78__SPAccessoryDiscoveryAndPairingSession_stopAccessoryDiscoveryWithCompl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)stopProximityAccessoryDiscoveryWithCompletion:(id)a3
+- (void)stopProximityAccessoryDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __87__SPAccessoryDiscoveryAndPairingSession_stopProximityAccessoryDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPAccessoryDiscoverySession.stopProximityAccessoryDiscovery", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -583,9 +583,9 @@ void __87__SPAccessoryDiscoveryAndPairingSession_stopProximityAccessoryDiscovery
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)discoveredAccessory:(id)a3
+- (void)discoveredAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -593,15 +593,15 @@ void __87__SPAccessoryDiscoveryAndPairingSession_stopProximityAccessoryDiscovery
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "discoveredAccessory() called from daemon", buf, 2u);
   }
 
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SPAccessoryDiscoveryAndPairingSession_discoveredAccessory___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_sync(queue, v8);
 }
 
 void __61__SPAccessoryDiscoveryAndPairingSession_discoveredAccessory___block_invoke(uint64_t a1)
@@ -663,9 +663,9 @@ void __61__SPAccessoryDiscoveryAndPairingSession_discoveredAccessory___block_inv
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)lostAccessory:(id)a3
+- (void)lostAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -673,15 +673,15 @@ void __61__SPAccessoryDiscoveryAndPairingSession_discoveredAccessory___block_inv
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "lostAccessory() called from daemon", buf, 2u);
   }
 
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__SPAccessoryDiscoveryAndPairingSession_lostAccessory___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = accessoryCopy;
+  v7 = accessoryCopy;
+  dispatch_sync(queue, v8);
 }
 
 void __55__SPAccessoryDiscoveryAndPairingSession_lostAccessory___block_invoke(uint64_t a1)
@@ -719,27 +719,27 @@ void __55__SPAccessoryDiscoveryAndPairingSession_lostAccessory___block_invoke_2(
   v4[2](v4, v3);
 }
 
-- (void)accessoryDiscoveryError:(id)a3
+- (void)accessoryDiscoveryError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "[accessoryDiscoveryError called from client]. Error %@", buf, 0xCu);
   }
 
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+  callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__SPAccessoryDiscoveryAndPairingSession_accessoryDiscoveryError___block_invoke;
   v9[3] = &unk_279B58C78;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = errorCopy;
+  v7 = errorCopy;
+  dispatch_sync(callbackQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -773,13 +773,13 @@ void __65__SPAccessoryDiscoveryAndPairingSession_accessoryDiscoveryError___block
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "[accessoryDetectedForPairing called from client]", buf, 2u);
   }
 
-  v4 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+  callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SPAccessoryDiscoveryAndPairingSession_accessoryDetectedForPairing__block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(callbackQueue, block);
 }
 
 void __68__SPAccessoryDiscoveryAndPairingSession_accessoryDetectedForPairing__block_invoke(uint64_t a1)
@@ -802,31 +802,31 @@ void __68__SPAccessoryDiscoveryAndPairingSession_accessoryDetectedForPairing__bl
   }
 }
 
-- (void)initiatePairingWith:(id)a3 completion:(id)a4
+- (void)initiatePairingWith:(id)with completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = withCopy;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "[SPAccessoryDiscoverySession initiatePairingWith]. Accessory %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SPAccessoryDiscoveryAndPairingSession_initiatePairingWith_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v14 = withCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = withCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -840,16 +840,16 @@ void __72__SPAccessoryDiscoveryAndPairingSession_initiatePairingWith_completion_
   [v2 initiatePairingWith:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)startLocalFindableAccessoryDiscoveryWithCompletion:(id)a3
+- (void)startLocalFindableAccessoryDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __92__SPAccessoryDiscoveryAndPairingSession_startLocalFindableAccessoryDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPAccessoryDiscoverySession.start", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -910,16 +910,16 @@ void __92__SPAccessoryDiscoveryAndPairingSession_startLocalFindableAccessoryDisc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)stopLocalFindableAccessoryDiscoveryWithCompletion:(id)a3
+- (void)stopLocalFindableAccessoryDiscoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __91__SPAccessoryDiscoveryAndPairingSession_stopLocalFindableAccessoryDiscoveryWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPAccessoryDiscoverySession.stopAccessoryDiscovery", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -976,9 +976,9 @@ void __91__SPAccessoryDiscoveryAndPairingSession_stopLocalFindableAccessoryDisco
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)disableFindMyPairingWithIdentifier:(id)a3
+- (void)disableFindMyPairingWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -987,15 +987,15 @@ void __91__SPAccessoryDiscoveryAndPairingSession_stopLocalFindableAccessoryDisco
   }
 
   objc_initWeak(buf, self);
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SPAccessoryDiscoveryAndPairingSession_disableFindMyPairingWithIdentifier___block_invoke;
   v8[3] = &unk_279B59228;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -1008,10 +1008,10 @@ void __76__SPAccessoryDiscoveryAndPairingSession_disableFindMyPairingWithIdentif
   [v2 disableFindMyPairingWithIdentifier:*(a1 + 32)];
 }
 
-- (void)initiatePairingForAccessoryWith:(id)a3 completion:(id)a4
+- (void)initiatePairingForAccessoryWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1020,17 +1020,17 @@ void __76__SPAccessoryDiscoveryAndPairingSession_disableFindMyPairingWithIdentif
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__SPAccessoryDiscoveryAndPairingSession_initiatePairingForAccessoryWith_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = withCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = withCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -1071,10 +1071,10 @@ void __84__SPAccessoryDiscoveryAndPairingSession_initiatePairingForAccessoryWith
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)initiatePairingAndLocateAccessoryWith:(id)a3 completion:(id)a4
+- (void)initiatePairingAndLocateAccessoryWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1083,17 +1083,17 @@ void __84__SPAccessoryDiscoveryAndPairingSession_initiatePairingForAccessoryWith
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__SPAccessoryDiscoveryAndPairingSession_initiatePairingAndLocateAccessoryWith_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = withCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = withCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -1135,10 +1135,10 @@ void __90__SPAccessoryDiscoveryAndPairingSession_initiatePairingAndLocateAccesso
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)pairingStatus:(id)a3 completion:(id)a4
+- (void)pairingStatus:(id)status completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1147,17 +1147,17 @@ void __90__SPAccessoryDiscoveryAndPairingSession_initiatePairingAndLocateAccesso
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__SPAccessoryDiscoveryAndPairingSession_pairingStatus_completion___block_invoke;
   block[3] = &unk_279B59718;
-  v13 = v6;
-  v10 = v6;
+  v13 = statusCopy;
+  v10 = statusCopy;
   objc_copyWeak(&v15, buf);
-  v14 = v7;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v14 = completionCopy;
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -1186,10 +1186,10 @@ void __66__SPAccessoryDiscoveryAndPairingSession_pairingStatus_completion___bloc
   }
 }
 
-- (void)pairingStatusWithRequest:(id)a3 completion:(id)a4
+- (void)pairingStatusWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1198,17 +1198,17 @@ void __66__SPAccessoryDiscoveryAndPairingSession_pairingStatus_completion___bloc
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SPAccessoryDiscoveryAndPairingSession_pairingStatusWithRequest_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -1221,11 +1221,11 @@ void __77__SPAccessoryDiscoveryAndPairingSession_pairingStatusWithRequest_comple
   [v2 pairingStatusWithRequest:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)finalizePairingWith:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)finalizePairingWith:(id)with configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  withCopy = with;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1234,19 +1234,19 @@ void __77__SPAccessoryDiscoveryAndPairingSession_pairingStatusWithRequest_comple
   }
 
   objc_initWeak(buf, self);
-  v12 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __86__SPAccessoryDiscoveryAndPairingSession_finalizePairingWith_configuration_completion___block_invoke;
   v16[3] = &unk_279B59A20;
   objc_copyWeak(&v20, buf);
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = withCopy;
+  v18 = configurationCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = configurationCopy;
+  v15 = withCopy;
+  dispatch_async(queue, v16);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -1259,10 +1259,10 @@ void __86__SPAccessoryDiscoveryAndPairingSession_finalizePairingWith_configurati
   [v2 finalizePairingWith:*(a1 + 32) configuration:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)invalidatePairingWith:(id)a3 completion:(id)a4
+- (void)invalidatePairingWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1271,17 +1271,17 @@ void __86__SPAccessoryDiscoveryAndPairingSession_finalizePairingWith_configurati
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SPAccessoryDiscoveryAndPairingSession_invalidatePairingWith_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v15, buf);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = withCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = withCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -1294,32 +1294,32 @@ void __74__SPAccessoryDiscoveryAndPairingSession_invalidatePairingWith_completio
   [v2 invalidatePairingWith:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)proximityPairingCompleted:(id)a3 beacons:(id)a4
+- (void)proximityPairingCompleted:(id)completed beacons:(id)beacons
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  beaconsCopy = beacons;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v7;
+    v17 = beaconsCopy;
     v18 = 2112;
-    v19 = v6;
+    v19 = completedCopy;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "[proximityPairingCompleted called from client]. Beacons %@, Location %@", buf, 0x16u);
   }
 
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+  callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__SPAccessoryDiscoveryAndPairingSession_proximityPairingCompleted_beacons___block_invoke;
   block[3] = &unk_279B58BF8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v14 = completedCopy;
+  v15 = beaconsCopy;
+  v10 = beaconsCopy;
+  v11 = completedCopy;
+  dispatch_sync(callbackQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1349,27 +1349,27 @@ void __75__SPAccessoryDiscoveryAndPairingSession_proximityPairingCompleted_beaco
   }
 }
 
-- (void)accessoryProximityPairingError:(id)a3
+- (void)accessoryProximityPairingError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "[accessoryProximityPairingError called from client]. Error %@", buf, 0xCu);
   }
 
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+  callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__SPAccessoryDiscoveryAndPairingSession_accessoryProximityPairingError___block_invoke;
   v9[3] = &unk_279B58C78;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = errorCopy;
+  v7 = errorCopy;
+  dispatch_sync(callbackQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1393,9 +1393,9 @@ void __72__SPAccessoryDiscoveryAndPairingSession_accessoryProximityPairingError_
   }
 }
 
-- (void)notifyPairingAccessoryChanged:(id)a3
+- (void)notifyPairingAccessoryChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1403,15 +1403,15 @@ void __72__SPAccessoryDiscoveryAndPairingSession_accessoryProximityPairingError_
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "[notifyPairingAccessoryChanged called from client]", buf, 2u);
   }
 
-  v6 = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
+  callbackQueue = [(SPAccessoryDiscoveryAndPairingSession *)self callbackQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__SPAccessoryDiscoveryAndPairingSession_notifyPairingAccessoryChanged___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = changedCopy;
+  v7 = changedCopy;
+  dispatch_sync(callbackQueue, v8);
 }
 
 void __71__SPAccessoryDiscoveryAndPairingSession_notifyPairingAccessoryChanged___block_invoke(uint64_t a1)
@@ -1434,10 +1434,10 @@ void __71__SPAccessoryDiscoveryAndPairingSession_notifyPairingAccessoryChanged__
   }
 }
 
-- (void)initializeProximityPairingForAccessoryIdentifier:(id)a3 completion:(id)a4
+- (void)initializeProximityPairingForAccessoryIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1445,17 +1445,17 @@ void __71__SPAccessoryDiscoveryAndPairingSession_notifyPairingAccessoryChanged__
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "[SPAccessoryDiscoverySession initializeProximityPairingForAccessoryIdentifier]", buf, 2u);
   }
 
-  v9 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__SPAccessoryDiscoveryAndPairingSession_initializeProximityPairingForAccessoryIdentifier_completion___block_invoke;
   block[3] = &unk_279B58BD0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = identifierCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __101__SPAccessoryDiscoveryAndPairingSession_initializeProximityPairingForAccessoryIdentifier_completion___block_invoke(uint64_t a1)
@@ -1464,11 +1464,11 @@ void __101__SPAccessoryDiscoveryAndPairingSession_initializeProximityPairingForA
   [v2 initializeProximityPairingForAccessoryIdentifier:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)finalizeProximityPairingForAccessoryIdentifier:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)finalizeProximityPairingForAccessoryIdentifier:(id)identifier configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1476,19 +1476,19 @@ void __101__SPAccessoryDiscoveryAndPairingSession_initializeProximityPairingForA
     _os_log_impl(&dword_2643D0000, v11, OS_LOG_TYPE_DEFAULT, "[SPAccessoryDiscoverySession finalizeProximityPairingForAccessoryIdentifier]", buf, 2u);
   }
 
-  v12 = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
+  queue = [(SPAccessoryDiscoveryAndPairingSession *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __113__SPAccessoryDiscoveryAndPairingSession_finalizeProximityPairingForAccessoryIdentifier_configuration_completion___block_invoke;
   v16[3] = &unk_279B593C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = identifierCopy;
+  v18 = configurationCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = configurationCopy;
+  v15 = identifierCopy;
+  dispatch_async(queue, v16);
 }
 
 void __113__SPAccessoryDiscoveryAndPairingSession_finalizeProximityPairingForAccessoryIdentifier_configuration_completion___block_invoke(uint64_t a1)

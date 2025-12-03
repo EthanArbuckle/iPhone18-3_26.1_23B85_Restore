@@ -1,54 +1,54 @@
 @interface PLBackgroundJobWorkerTypesBuffer
-- (BOOL)containsBackgroundJobWorker:(id)a3 forBundle:(id)a4;
-- (BOOL)containsBackgroundJobWorkerTypes:(id)a3 forBundle:(id)a4;
+- (BOOL)containsBackgroundJobWorker:(id)worker forBundle:(id)bundle;
+- (BOOL)containsBackgroundJobWorkerTypes:(id)types forBundle:(id)bundle;
 - (PLBackgroundJobWorkerTypesBuffer)init;
 - (id)bundles;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)workerTypesForBundle:(id)a3;
-- (void)_addBackgroundJobWorkerTypes:(id)a3 forBundleURL:(id)a4;
-- (void)addBackgroundJobWorkerTypes:(id)a3 forBundle:(id)a4;
+- (id)workerTypesForBundle:(id)bundle;
+- (void)_addBackgroundJobWorkerTypes:(id)types forBundleURL:(id)l;
+- (void)addBackgroundJobWorkerTypes:(id)types forBundle:(id)bundle;
 - (void)removeAllObjects;
-- (void)unionBuffer:(id)a3;
+- (void)unionBuffer:(id)buffer;
 @end
 
 @implementation PLBackgroundJobWorkerTypesBuffer
 
-- (void)_addBackgroundJobWorkerTypes:(id)a3 forBundleURL:(id)a4
+- (void)_addBackgroundJobWorkerTypes:(id)types forBundleURL:(id)l
 {
-  v11 = a4;
+  lCopy = l;
   workerTypesByBundleURL = self->_workerTypesByBundleURL;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:v11];
+  typesCopy = types;
+  v8 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:lCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 typesMaskByUnioningWithTypes:v7];
+    v10 = [v8 typesMaskByUnioningWithTypes:typesCopy];
 
-    v7 = v10;
+    typesCopy = v10;
   }
 
-  [(NSMutableDictionary *)self->_workerTypesByBundleURL setObject:v7 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_workerTypesByBundleURL setObject:typesCopy forKeyedSubscript:lCopy];
 }
 
-- (BOOL)containsBackgroundJobWorker:(id)a3 forBundle:(id)a4
+- (BOOL)containsBackgroundJobWorker:(id)worker forBundle:(id)bundle
 {
   workerTypesByBundleURL = self->_workerTypesByBundleURL;
-  v6 = a3;
-  v7 = [a4 libraryURL];
-  v8 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:v7];
-  v9 = [v8 containsWorker:v6];
+  workerCopy = worker;
+  libraryURL = [bundle libraryURL];
+  v8 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:libraryURL];
+  v9 = [v8 containsWorker:workerCopy];
 
   return v9;
 }
 
-- (BOOL)containsBackgroundJobWorkerTypes:(id)a3 forBundle:(id)a4
+- (BOOL)containsBackgroundJobWorkerTypes:(id)types forBundle:(id)bundle
 {
   workerTypesByBundleURL = self->_workerTypesByBundleURL;
-  v6 = a3;
-  v7 = [a4 libraryURL];
-  v8 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:v7];
-  v9 = [v8 containsTypes:v6];
+  typesCopy = types;
+  libraryURL = [bundle libraryURL];
+  v8 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:libraryURL];
+  v9 = [v8 containsTypes:typesCopy];
 
   return v9;
 }
@@ -60,21 +60,21 @@
   return v2;
 }
 
-- (void)unionBuffer:(id)a3
+- (void)unionBuffer:(id)buffer
 {
   bundles = self->_bundles;
-  v5 = a3;
-  v6 = [v5 bundles];
-  [(NSMutableSet *)bundles unionSet:v6];
+  bufferCopy = buffer;
+  bundles = [bufferCopy bundles];
+  [(NSMutableSet *)bundles unionSet:bundles];
 
-  v7 = [v5 workerTypesByBundleURL];
+  workerTypesByBundleURL = [bufferCopy workerTypesByBundleURL];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__PLBackgroundJobWorkerTypesBuffer_unionBuffer___block_invoke;
   v8[3] = &unk_1E7578708;
   v8[4] = self;
-  [v7 enumerateKeysAndObjectsUsingBlock:v8];
+  [workerTypesByBundleURL enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 - (void)removeAllObjects
@@ -85,24 +85,24 @@
   [(NSMutableDictionary *)workerTypesByBundleURL removeAllObjects];
 }
 
-- (id)workerTypesForBundle:(id)a3
+- (id)workerTypesForBundle:(id)bundle
 {
   workerTypesByBundleURL = self->_workerTypesByBundleURL;
-  v4 = [a3 libraryURL];
-  v5 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:v4];
+  libraryURL = [bundle libraryURL];
+  v5 = [(NSMutableDictionary *)workerTypesByBundleURL objectForKeyedSubscript:libraryURL];
 
   return v5;
 }
 
-- (void)addBackgroundJobWorkerTypes:(id)a3 forBundle:(id)a4
+- (void)addBackgroundJobWorkerTypes:(id)types forBundle:(id)bundle
 {
   bundles = self->_bundles;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableSet *)bundles addObject:v7];
-  v9 = [v7 libraryURL];
+  bundleCopy = bundle;
+  typesCopy = types;
+  [(NSMutableSet *)bundles addObject:bundleCopy];
+  libraryURL = [bundleCopy libraryURL];
 
-  [(PLBackgroundJobWorkerTypesBuffer *)self _addBackgroundJobWorkerTypes:v8 forBundleURL:v9];
+  [(PLBackgroundJobWorkerTypesBuffer *)self _addBackgroundJobWorkerTypes:typesCopy forBundleURL:libraryURL];
 }
 
 - (id)description
@@ -124,7 +124,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PLBackgroundJobWorkerTypesBuffer);
   v5 = [(NSMutableSet *)self->_bundles copy];

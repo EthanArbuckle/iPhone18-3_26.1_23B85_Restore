@@ -1,6 +1,6 @@
 @interface WMPictureMapper
-- (WMPictureMapper)initWithWDPicture:(id)a3 parent:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (WMPictureMapper)initWithWDPicture:(id)picture parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
 - (void)mapBounds;
 - (void)setBoundingBox;
 @end
@@ -9,10 +9,10 @@
 
 - (void)setBoundingBox
 {
-  v7 = [(OADDrawable *)self->super.mDrawable clientData];
-  if ([v7 hasBounds])
+  clientData = [(OADDrawable *)self->super.mDrawable clientData];
+  if ([clientData hasBounds])
   {
-    [v7 bounds];
+    [clientData bounds];
     self->super.mBox.origin.x = v3;
     self->super.mBox.origin.y = v4;
     self->super.mBox.size.width = v5;
@@ -22,40 +22,40 @@
 
 - (void)mapBounds
 {
-  v7 = [(OADDrawable *)self->super.mDrawable clientData];
+  clientData = [(OADDrawable *)self->super.mDrawable clientData];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(OADDrawable *)self->super.mDrawable drawableProperties];
-    v4 = [v3 orientedBounds];
+    drawableProperties = [(OADDrawable *)self->super.mDrawable drawableProperties];
+    orientedBounds = [drawableProperties orientedBounds];
     mOrientedBounds = self->super.mOrientedBounds;
-    self->super.mOrientedBounds = v4;
+    self->super.mOrientedBounds = orientedBounds;
   }
 
   else
   {
-    if (![v7 hasBounds])
+    if (![clientData hasBounds])
     {
       goto LABEL_6;
     }
 
-    [v7 bounds];
+    [clientData bounds];
     v6 = [OADOrientedBounds orientedBoundsWithBounds:?];
-    v3 = self->super.mOrientedBounds;
+    drawableProperties = self->super.mOrientedBounds;
     self->super.mOrientedBounds = v6;
   }
 
 LABEL_6:
 }
 
-- (WMPictureMapper)initWithWDPicture:(id)a3 parent:(id)a4
+- (WMPictureMapper)initWithWDPicture:(id)picture parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 drawable];
+  pictureCopy = picture;
+  parentCopy = parent;
+  drawable = [pictureCopy drawable];
   v15.receiver = self;
   v15.super_class = WMPictureMapper;
-  v9 = [(CMDrawableMapper *)&v15 initWithOadDrawable:v8 parent:v7];
+  v9 = [(CMDrawableMapper *)&v15 initWithOadDrawable:drawable parent:parentCopy];
   v10 = v9;
   if (v9)
   {
@@ -75,9 +75,9 @@ LABEL_6:
   return v10;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v5 = a3;
+  atCopy = at;
   [(WMPictureMapper *)self mapBounds];
   [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
   v10 = v9;
@@ -87,7 +87,7 @@ LABEL_6:
     v12 = v7;
     v13 = v8;
     v14 = [OIXMLElement elementWithType:9];
-    [v5 addChild:v14];
+    [atCopy addChild:v14];
     [(CMStyle *)self->super.mStyle appendSizeInfoFromRect:v11, v12, v10, v13];
     [(CMDrawableStyle *)self->super.mStyle addRotationFromBounds:self->super.mOrientedBounds];
     if (self->super.mIsSupported && (mImageBinaryData = self->super.mImageBinaryData) != 0)

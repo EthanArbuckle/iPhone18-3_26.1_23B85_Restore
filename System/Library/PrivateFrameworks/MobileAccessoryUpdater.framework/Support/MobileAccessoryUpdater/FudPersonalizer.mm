@@ -1,19 +1,19 @@
 @interface FudPersonalizer
-- (BOOL)personalizeWithServer:(id)a3;
-- (FudPersonalizer)initWithDelegate:(id)a3;
-- (__CFDictionary)createPersonalizationManifestCFDict:(id)a3;
-- (__CFDictionary)createPersonalizationObjectCFDict:(id)a3;
+- (BOOL)personalizeWithServer:(id)server;
+- (FudPersonalizer)initWithDelegate:(id)delegate;
+- (__CFDictionary)createPersonalizationManifestCFDict:(id)dict;
+- (__CFDictionary)createPersonalizationObjectCFDict:(id)dict;
 - (void)dealloc;
-- (void)doPersonalization:(id)a3;
+- (void)doPersonalization:(id)personalization;
 - (void)freePersonalizationData;
-- (void)overrideServerURL:(id)a3;
+- (void)overrideServerURL:(id)l;
 @end
 
 @implementation FudPersonalizer
 
-- (FudPersonalizer)initWithDelegate:(id)a3
+- (FudPersonalizer)initWithDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v6 = dispatch_queue_create("com.apple.fud.personalizer", v5);
@@ -26,7 +26,7 @@
       self = v7;
       if (v7)
       {
-        v7->_delegate = a3;
+        v7->_delegate = delegate;
         *&v7->_manifestDict = 0u;
         *&v7->_serverRequestDict = 0u;
         *&v7->_responseData = 0u;
@@ -127,7 +127,7 @@
   [(FudPersonalizer *)&v5 dealloc];
 }
 
-- (void)overrideServerURL:(id)a3
+- (void)overrideServerURL:(id)l
 {
   serverURL = self->_serverURL;
   if (serverURL)
@@ -136,9 +136,9 @@
     self->_serverURL = 0;
   }
 
-  if (a3)
+  if (l)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(l);
   }
 
   else
@@ -149,7 +149,7 @@
   self->_serverURL = v6;
 }
 
-- (void)doPersonalization:(id)a3
+- (void)doPersonalization:(id)personalization
 {
   v11 = 0;
   v12 = &v11;
@@ -161,31 +161,31 @@
   {
     if (self->_personalizationQueue)
     {
-      if (a3)
+      if (personalization)
       {
-        if ([a3 responseFormat] > 2)
+        if ([personalization responseFormat] > 2)
         {
           v7 = @"Invalid response format";
         }
 
-        else if ([a3 responseFormat] && !objc_msgSend(a3, "payload"))
+        else if ([personalization responseFormat] && !objc_msgSend(personalization, "payload"))
         {
           v7 = @"Response format requires payload";
         }
 
         else
         {
-          if ([a3 responseFormat] == 1 || !objc_msgSend(a3, "responseAlignment"))
+          if ([personalization responseFormat] == 1 || !objc_msgSend(personalization, "responseAlignment"))
           {
             [(FudPersonalizer *)self freePersonalizationData];
-            v5 = a3;
-            v12[5] = v5;
+            personalizationCopy = personalization;
+            v12[5] = personalizationCopy;
             personalizationQueue = self->_personalizationQueue;
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_1000121DC;
             block[3] = &unk_100081760;
-            block[5] = a3;
+            block[5] = personalization;
             block[6] = &v11;
             block[4] = self;
             dispatch_async(personalizationQueue, block);
@@ -218,34 +218,34 @@
   delegate = self->_delegate;
   if (delegate)
   {
-    [(FudPersonalizerDelegate *)delegate personalizationDone:a3 response:0 error:v8, "[FudPersonalizer doPersonalization:]", v7];
+    [(FudPersonalizerDelegate *)delegate personalizationDone:personalization response:0 error:v8, "[FudPersonalizer doPersonalization:]", v7];
   }
 
 LABEL_10:
   _Block_object_dispose(&v11, 8);
 }
 
-- (__CFDictionary)createPersonalizationObjectCFDict:(id)a3
+- (__CFDictionary)createPersonalizationObjectCFDict:(id)dict
 {
-  if (![a3 objectTag])
+  if (![dict objectTag])
   {
     sub_10004AAF4();
     return 0;
   }
 
-  if (![a3 digest])
+  if (![dict digest])
   {
     sub_10004AABC();
     return 0;
   }
 
-  if (([a3 isEffectiveProductionModeSet] & 1) == 0)
+  if (([dict isEffectiveProductionModeSet] & 1) == 0)
   {
     sub_10004AA4C();
     return 0;
   }
 
-  if (([a3 isEffectiveSecurityModeSet] & 1) == 0)
+  if (([dict isEffectiveSecurityModeSet] & 1) == 0)
   {
     v12 = "[FudPersonalizer createPersonalizationObjectCFDict:]";
     FudLog();
@@ -254,11 +254,11 @@ LABEL_10:
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   if (Mutable)
   {
-    if ([a3 isEffectiveSecurityModeSet])
+    if ([dict isEffectiveSecurityModeSet])
     {
-      v5 = [a3 effectiveSecurityMode];
+      effectiveSecurityMode = [dict effectiveSecurityMode];
       v6 = &kCFBooleanTrue;
-      if (!v5)
+      if (!effectiveSecurityMode)
       {
         v6 = &kCFBooleanFalse;
       }
@@ -266,11 +266,11 @@ LABEL_10:
       CFDictionarySetValue(Mutable, @"ESEC", *v6);
     }
 
-    if ([a3 isEffectiveProductionModeSet])
+    if ([dict isEffectiveProductionModeSet])
     {
-      v7 = [a3 effectiveProductionMode];
+      effectiveProductionMode = [dict effectiveProductionMode];
       v8 = &kCFBooleanTrue;
-      if (!v7)
+      if (!effectiveProductionMode)
       {
         v8 = &kCFBooleanFalse;
       }
@@ -278,11 +278,11 @@ LABEL_10:
       CFDictionarySetValue(Mutable, @"EPRO", *v8);
     }
 
-    if ([a3 isTrustedSet])
+    if ([dict isTrustedSet])
     {
-      v9 = [a3 trusted];
+      trusted = [dict trusted];
       v10 = &kCFBooleanTrue;
-      if (!v9)
+      if (!trusted)
       {
         v10 = &kCFBooleanFalse;
       }
@@ -290,7 +290,7 @@ LABEL_10:
       CFDictionarySetValue(Mutable, @"Trusted", *v10);
     }
 
-    CFDictionarySetValue(Mutable, @"Digest", [a3 digest]);
+    CFDictionarySetValue(Mutable, @"Digest", [dict digest]);
   }
 
   else
@@ -301,36 +301,36 @@ LABEL_10:
   return Mutable;
 }
 
-- (__CFDictionary)createPersonalizationManifestCFDict:(id)a3
+- (__CFDictionary)createPersonalizationManifestCFDict:(id)dict
 {
-  if (![a3 requestName] || !objc_msgSend(a3, "chipID") || !objc_msgSend(a3, "ecID") && !objc_msgSend(a3, "extEcID") && !objc_msgSend(a3, "globalSigning") || !objc_msgSend(a3, "isProductionModeSet") || !objc_msgSend(a3, "nonceHash") || !objc_msgSend(a3, "objectList") || (Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks)) == 0)
+  if (![dict requestName] || !objc_msgSend(dict, "chipID") || !objc_msgSend(dict, "ecID") && !objc_msgSend(dict, "extEcID") && !objc_msgSend(dict, "globalSigning") || !objc_msgSend(dict, "isProductionModeSet") || !objc_msgSend(dict, "nonceHash") || !objc_msgSend(dict, "objectList") || (Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks)) == 0)
   {
     sub_10004AB2C();
     return 0;
   }
 
   v6 = Mutable;
-  if ([a3 requestPrefix])
+  if ([dict requestPrefix])
   {
     v7 = CFStringCreateMutable(kCFAllocatorDefault, 0);
     v8 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    sub_100011C90(v8, @"ApBoardID", [a3 requestPrefix], @"BoardID");
-    sub_100011C90(v8, @"ApChipID", [a3 requestPrefix], @"ChipID");
-    sub_100011C90(v8, @"ApECID", [a3 requestPrefix], @"ECID");
-    sub_100011C90(v8, @"ApSecurityDomain", [a3 requestPrefix], @"SecurityDomain");
-    sub_100011C90(v8, @"ApProductionMode", [a3 requestPrefix], @"ProductionMode");
-    sub_100011C90(v8, @"ApManifestEpoch", [a3 requestPrefix], @"ManifestEpoch");
-    if ([a3 isSecurityModeSet])
+    sub_100011C90(v8, @"ApBoardID", [dict requestPrefix], @"BoardID");
+    sub_100011C90(v8, @"ApChipID", [dict requestPrefix], @"ChipID");
+    sub_100011C90(v8, @"ApECID", [dict requestPrefix], @"ECID");
+    sub_100011C90(v8, @"ApSecurityDomain", [dict requestPrefix], @"SecurityDomain");
+    sub_100011C90(v8, @"ApProductionMode", [dict requestPrefix], @"ProductionMode");
+    sub_100011C90(v8, @"ApManifestEpoch", [dict requestPrefix], @"ManifestEpoch");
+    if ([dict isSecurityModeSet])
     {
-      sub_100011C90(v8, @"ApSecurityMode", [a3 requestPrefix], @"SecurityMode");
+      sub_100011C90(v8, @"ApSecurityMode", [dict requestPrefix], @"SecurityMode");
     }
 
-    sub_100011C90(v8, @"ApNonce", [a3 requestPrefix], @"Nonce");
+    sub_100011C90(v8, @"ApNonce", [dict requestPrefix], @"Nonce");
     v9 = CFStringCreateMutable(kCFAllocatorDefault, 0);
     CFStringAppendFormat(v9, 0, @"@%@", @"ApImg4Ticket");
-    sub_100011D2C(v8, v9, [a3 requestPrefix], @"Ticket");
+    sub_100011D2C(v8, v9, [dict requestPrefix], @"Ticket");
     CFRelease(v9);
-    CFStringAppendFormat(v7, 0, @"%@,%@", [a3 requestPrefix], @"Ticket");
+    CFStringAppendFormat(v7, 0, @"%@,%@", [dict requestPrefix], @"Ticket");
     self->_ticketName = v7;
     FudLog();
     CFDictionarySetValue(v6, @"APTagOverrides", v8);
@@ -346,42 +346,42 @@ LABEL_10:
   CFStringAppendFormat(v10, 0, @"@%@", @"ApImg4Ticket");
   CFDictionarySetValue(v6, v10, kCFBooleanTrue);
   CFRelease(v10);
-  sub_100011C24(v6, @"ApBoardID", [a3 boardID]);
-  sub_100011C24(v6, @"ApChipID", [a3 chipID]);
-  if ([a3 globalSigning])
+  sub_100011C24(v6, @"ApBoardID", [dict boardID]);
+  sub_100011C24(v6, @"ApChipID", [dict chipID]);
+  if ([dict globalSigning])
   {
     v11 = @"UseGlobalSigning";
     v12 = v6;
-    v13 = kCFBooleanTrue;
+    extEcID = kCFBooleanTrue;
   }
 
   else
   {
-    if (![a3 extEcID])
+    if (![dict extEcID])
     {
-      sub_100011BB8(v6, @"ApECID", [a3 ecID]);
+      sub_100011BB8(v6, @"ApECID", [dict ecID]);
       goto LABEL_20;
     }
 
-    v13 = [a3 extEcID];
+    extEcID = [dict extEcID];
     v11 = @"ApECID";
     v12 = v6;
   }
 
-  CFDictionarySetValue(v12, v11, v13);
+  CFDictionarySetValue(v12, v11, extEcID);
 LABEL_20:
   if (self->_overrideSecurityDomain)
   {
-    v14 = 1;
+    securityDomain = 1;
   }
 
   else
   {
-    v14 = [a3 securityDomain];
+    securityDomain = [dict securityDomain];
   }
 
-  sub_100011C24(v6, @"ApSecurityDomain", v14);
-  if ([a3 productionMode])
+  sub_100011C24(v6, @"ApSecurityDomain", securityDomain);
+  if ([dict productionMode])
   {
     v15 = kCFBooleanTrue;
   }
@@ -392,9 +392,9 @@ LABEL_20:
   }
 
   CFDictionarySetValue(v6, @"ApProductionMode", v15);
-  if ([a3 isSecurityModeSet])
+  if ([dict isSecurityModeSet])
   {
-    if ([a3 securityMode])
+    if ([dict securityMode])
     {
       v16 = kCFBooleanTrue;
     }
@@ -407,15 +407,15 @@ LABEL_20:
     CFDictionarySetValue(v6, @"ApSecurityMode", v16);
   }
 
-  CFDictionarySetValue(v6, @"ApNonce", [a3 nonceHash]);
-  if ([a3 isChipEpochSet])
+  CFDictionarySetValue(v6, @"ApNonce", [dict nonceHash]);
+  if ([dict isChipEpochSet])
   {
-    sub_100011C24(v6, @"ApManifestEpoch", [a3 chipEpoch]);
+    sub_100011C24(v6, @"ApManifestEpoch", [dict chipEpoch]);
   }
 
-  if ([a3 enableMixMatch])
+  if ([dict enableMixMatch])
   {
-    if ([a3 enableMixMatch])
+    if ([dict enableMixMatch])
     {
       v17 = kCFBooleanTrue;
     }
@@ -432,8 +432,8 @@ LABEL_20:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = [a3 objectList];
-  v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  objectList = [dict objectList];
+  v19 = [objectList countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v19)
   {
     v20 = v19;
@@ -444,7 +444,7 @@ LABEL_20:
       {
         if (*v27 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(objectList);
         }
 
         v23 = *(*(&v26 + 1) + 8 * i);
@@ -455,7 +455,7 @@ LABEL_20:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v20 = [objectList countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v20);
@@ -464,7 +464,7 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)personalizeWithServer:(id)a3
+- (BOOL)personalizeWithServer:(id)server
 {
   v5 = [(FudPersonalizer *)self createPersonalizationManifestCFDict:?];
   self->_manifestDict = v5;
@@ -488,7 +488,7 @@ LABEL_20:
       goto LABEL_37;
     }
 
-    if ([a3 useSSOCredentials])
+    if ([server useSSOCredentials])
     {
       if (AMAuthInstallSsoInitialize())
       {
@@ -566,9 +566,9 @@ LABEL_20:
   v20 = PersonalizedResponse;
   v42 = PersonalizedResponse;
   FudLog();
-  if (v20 == 3194 && ([a3 useSSOCredentials] & 1) == 0)
+  if (v20 == 3194 && ([server useSSOCredentials] & 1) == 0)
   {
-    [a3 setUseSSOCredentials:1];
+    [server setUseSSOCredentials:1];
     return 0;
   }
 
@@ -589,15 +589,15 @@ LABEL_20:
   }
 
   v23 = Value;
-  v24 = [a3 responseFormat];
-  if (v24)
+  responseFormat = [server responseFormat];
+  if (responseFormat)
   {
-    if (v24 == 2)
+    if (responseFormat == 2)
     {
-      v46 = [a3 responseFormat];
+      responseFormat2 = [server responseFormat];
       FudLog();
       CFGetAllocator(self->_amai);
-      [a3 payload];
+      [server payload];
       StitchTicket = AMAuthInstallApImg4CreateStitchTicket();
       self->_responseData = StitchTicket;
       if (!StitchTicket)
@@ -610,34 +610,34 @@ LABEL_20:
 
     else
     {
-      if (v24 != 1)
+      if (responseFormat != 1)
       {
         v36 = 2;
         v37 = @"Invalid response format";
         goto LABEL_37;
       }
 
-      v25 = [a3 payload];
-      Length = CFDataGetLength(v25);
+      payload = [server payload];
+      Length = CFDataGetLength(payload);
       v27 = CFDataGetLength(v23);
-      v28 = CFDataCreateMutableCopy(kCFAllocatorDefault, 0, v25);
-      v43 = [a3 responseFormat];
+      v28 = CFDataCreateMutableCopy(kCFAllocatorDefault, 0, payload);
+      responseFormat3 = [server responseFormat];
       FudLog();
       BytePtr = CFDataGetBytePtr(v23);
       CFDataAppendBytes(v28, BytePtr, v27);
       MutableBytePtr = CFDataGetMutableBytePtr(v28);
       *(MutableBytePtr + 4) = Length;
       *(MutableBytePtr + 5) = v27;
-      if ([a3 chipID] == 8194)
+      if ([server chipID] == 8194)
       {
         *(MutableBytePtr + 1) = 0x1234567898765432;
       }
 
-      if ([a3 responseAlignment])
+      if ([server responseAlignment])
       {
-        v31 = [a3 responseAlignment];
-        v32 = [a3 responseAlignment];
-        CFDataIncreaseLength(v28, (v31 + (v27 + Length) / v32 * v32 - (v27 + Length)) % [a3 responseAlignment]);
+        responseAlignment = [server responseAlignment];
+        responseAlignment2 = [server responseAlignment];
+        CFDataIncreaseLength(v28, (responseAlignment + (v27 + Length) / responseAlignment2 * responseAlignment2 - (v27 + Length)) % [server responseAlignment]);
       }
 
       v33 = CFDataGetBytePtr(v28);
@@ -649,21 +649,21 @@ LABEL_20:
         v36 = 4;
         v37 = @"Failed to stitch ftab response";
 LABEL_37:
-        sub_10004AB60(v36, v37, self, a3);
+        sub_10004AB60(v36, v37, self, server);
         return 1;
       }
     }
 
-    [(FudPersonalizerDelegate *)self->_delegate personalizationDone:a3 response:StitchTicket error:0, v40, v44];
+    [(FudPersonalizerDelegate *)self->_delegate personalizationDone:server response:StitchTicket error:0, v40, v44];
   }
 
   else
   {
-    v45 = [a3 responseFormat];
+    responseFormat4 = [server responseFormat];
     FudLog();
     v39 = CFRetain(v23);
     self->_responseData = v39;
-    [(FudPersonalizerDelegate *)self->_delegate personalizationDone:a3 response:v39 error:0, "[FudPersonalizer personalizeWithServer:]", v45];
+    [(FudPersonalizerDelegate *)self->_delegate personalizationDone:server response:v39 error:0, "[FudPersonalizer personalizeWithServer:]", responseFormat4];
   }
 
   return 1;

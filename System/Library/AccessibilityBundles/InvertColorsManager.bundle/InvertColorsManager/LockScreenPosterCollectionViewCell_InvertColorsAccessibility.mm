@@ -7,13 +7,13 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v2 = self;
+  selfCopy = self;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(LockScreenPosterCollectionViewCell_InvertColorsAccessibility *)v2 _accessibilityFindImageViews];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _accessibilityFindImageViews = [(LockScreenPosterCollectionViewCell_InvertColorsAccessibility *)selfCopy _accessibilityFindImageViews];
+  v4 = [_accessibilityFindImageViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,27 +25,27 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_accessibilityFindImageViews);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        if (_AXSInvertColorsEnabled() && (-[LockScreenPosterCollectionViewCell_InvertColorsAccessibility window](v2, "window"), v9 = objc_claimAutoreleasedReturnValue(), [v9 traitCollection], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "userInterfaceStyle"), v10, v9, v11 == &dword_0 + 2))
+        if (_AXSInvertColorsEnabled() && (-[LockScreenPosterCollectionViewCell_InvertColorsAccessibility window](selfCopy, "window"), v9 = objc_claimAutoreleasedReturnValue(), [v9 traitCollection], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "userInterfaceStyle"), v10, v9, v11 == &dword_0 + 2))
         {
-          v12 = [v8 layer];
-          [AXInvertColorsAppHelper applyInvertFilterToLayer:v12];
+          layer = [v8 layer];
+          [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
         }
 
         else
         {
-          v12 = [v8 layer];
-          [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v12];
+          layer = [v8 layer];
+          [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
         }
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [_accessibilityFindImageViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

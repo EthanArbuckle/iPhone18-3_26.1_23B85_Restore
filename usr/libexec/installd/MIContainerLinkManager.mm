@@ -1,20 +1,20 @@
 @interface MIContainerLinkManager
 + (id)_privateContainerManager;
 + (id)_sharedContainerManager;
-+ (id)sharedInstanceForDomain:(unint64_t)a3;
-- (BOOL)_onQueue_isValidLinkForParent:(id)a3 toChild:(id)a4 error:(id *)a5;
-- (BOOL)_onQueue_removeParent:(id)a3 error:(id *)a4;
-- (BOOL)_onQueue_setLinkedParentBundleIDList:(id)a3 error:(id *)a4;
-- (BOOL)_onQueue_updateLinkForParent:(id)a3 toChild:(id)a4 operationType:(unint64_t)a5 error:(id *)a6;
-- (BOOL)getLinkedParent:(id *)a3 forChild:(id)a4 error:(id *)a5;
-- (BOOL)linkChild:(id)a3 toParent:(id)a4 error:(id *)a5;
-- (BOOL)preflightLinkingChild:(id)a3 toParent:(id)a4 error:(id *)a5;
-- (BOOL)removeParent:(id)a3 error:(id *)a4;
-- (BOOL)unlinkChild:(id)a3 fromParent:(id)a4 error:(id *)a5;
-- (MIContainerLinkManager)initWithDomain:(unint64_t)a3;
-- (id)_onQueue_childrenForParentBundleID:(id)a3 error:(id *)a4;
-- (id)_onQueue_linkedParentBundleIDs:(id *)a3;
-- (id)childrenForParentBundleID:(id)a3 error:(id *)a4;
++ (id)sharedInstanceForDomain:(unint64_t)domain;
+- (BOOL)_onQueue_isValidLinkForParent:(id)parent toChild:(id)child error:(id *)error;
+- (BOOL)_onQueue_removeParent:(id)parent error:(id *)error;
+- (BOOL)_onQueue_setLinkedParentBundleIDList:(id)list error:(id *)error;
+- (BOOL)_onQueue_updateLinkForParent:(id)parent toChild:(id)child operationType:(unint64_t)type error:(id *)error;
+- (BOOL)getLinkedParent:(id *)parent forChild:(id)child error:(id *)error;
+- (BOOL)linkChild:(id)child toParent:(id)parent error:(id *)error;
+- (BOOL)preflightLinkingChild:(id)child toParent:(id)parent error:(id *)error;
+- (BOOL)removeParent:(id)parent error:(id *)error;
+- (BOOL)unlinkChild:(id)child fromParent:(id)parent error:(id *)error;
+- (MIContainerLinkManager)initWithDomain:(unint64_t)domain;
+- (id)_onQueue_childrenForParentBundleID:(id)d error:(id *)error;
+- (id)_onQueue_linkedParentBundleIDs:(id *)ds;
+- (id)childrenForParentBundleID:(id)d error:(id *)error;
 - (void)_onQueue_migratePlaygroundsBundleMetadata;
 @end
 
@@ -22,9 +22,9 @@
 
 - (void)_onQueue_migratePlaygroundsBundleMetadata
 {
-  v2 = self;
-  v3 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v4 = objc_opt_new();
   v54 = 0;
@@ -87,7 +87,7 @@
         v39 = v4;
         v40 = v13;
         v37 = v10;
-        v38 = v2;
+        v38 = selfCopy;
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
@@ -111,25 +111,25 @@
 
               v23 = *(*(&v46 + 1) + 8 * i);
               v24 = objc_autoreleasePoolPush();
-              v25 = [v23 identifier];
+              identifier = [v23 identifier];
               v45 = v20;
               v26 = [v23 bundleMetadataWithError:&v45];
               v20 = v45;
 
               if (v26)
               {
-                v27 = [v26 linkedParentBundleID];
-                v28 = [v27 isEqualToString:v42];
+                linkedParentBundleID = [v26 linkedParentBundleID];
+                v28 = [linkedParentBundleID isEqualToString:v42];
 
                 if (v28)
                 {
-                  [v41 addObject:v25];
+                  [v41 addObject:identifier];
                 }
               }
 
               else if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
               {
-                v35 = v25;
+                v35 = identifier;
                 v36 = v20;
                 MOLogWrite();
               }
@@ -157,7 +157,7 @@
           v32 = [v37 saveBundleMetadata:v40 withError:&v44];
           v12 = v44;
 
-          v2 = v38;
+          selfCopy = v38;
           v4 = v39;
           if ((v32 & 1) == 0)
           {
@@ -173,12 +173,12 @@
         else
         {
           v12 = v20;
-          v2 = v38;
+          selfCopy = v38;
           v4 = v39;
           v10 = v37;
         }
 
-        [(NSMutableDictionary *)v2->_parentToLinkedChildrenMap setObject:v31 forKeyedSubscript:v42, v35, v36];
+        [(NSMutableDictionary *)selfCopy->_parentToLinkedChildrenMap setObject:v31 forKeyedSubscript:v42, v35, v36];
 LABEL_48:
 
         goto LABEL_49;
@@ -203,12 +203,12 @@ LABEL_48:
 
   else
   {
-    v29 = [v11 domain];
-    if ([v29 isEqualToString:MIContainerManagerErrorDomain])
+    domain = [v11 domain];
+    if ([domain isEqualToString:MIContainerManagerErrorDomain])
     {
-      v30 = [v12 code];
+      code = [v12 code];
 
-      if (v30 == 21)
+      if (code == 21)
       {
         goto LABEL_49;
       }
@@ -226,7 +226,7 @@ LABEL_48:
 
 LABEL_49:
   v43 = v12;
-  v33 = [(MIContainerLinkManager *)v2 _onQueue_setLinkedParentBundleIDList:v4 error:&v43, v35];
+  v33 = [(MIContainerLinkManager *)selfCopy _onQueue_setLinkedParentBundleIDList:v4 error:&v43, v35];
   v34 = v43;
 
   if ((v33 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -235,7 +235,7 @@ LABEL_49:
   }
 }
 
-- (MIContainerLinkManager)initWithDomain:(unint64_t)a3
+- (MIContainerLinkManager)initWithDomain:(unint64_t)domain
 {
   v16.receiver = self;
   v16.super_class = MIContainerLinkManager;
@@ -250,22 +250,22 @@ LABEL_49:
     parentToLinkedChildrenMap = v4->_parentToLinkedChildrenMap;
     v4->_parentToLinkedChildrenMap = v7;
 
-    v4->_domain = a3;
+    v4->_domain = domain;
     v9 = +[MIFileManager defaultManager];
     v10 = sub_10002E0E4();
     v11 = [v9 itemDoesNotExistAtURL:v10];
 
-    if (a3 == 2)
+    if (domain == 2)
     {
       if (v11)
       {
-        v12 = [(MIContainerLinkManager *)v4 internalQueue];
+        internalQueue = [(MIContainerLinkManager *)v4 internalQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10002E15C;
         block[3] = &unk_100090D48;
         v15 = v4;
-        dispatch_sync(v12, block);
+        dispatch_sync(internalQueue, block);
       }
     }
   }
@@ -279,7 +279,7 @@ LABEL_49:
   block[1] = 3221225472;
   block[2] = sub_10002E204;
   block[3] = &unk_100090CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A9678 != -1)
   {
     dispatch_once(&qword_1000A9678, block);
@@ -296,7 +296,7 @@ LABEL_49:
   block[1] = 3221225472;
   block[2] = sub_10002E2E8;
   block[3] = &unk_100090CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A9688 != -1)
   {
     dispatch_once(&qword_1000A9688, block);
@@ -307,10 +307,10 @@ LABEL_49:
   return v2;
 }
 
-+ (id)sharedInstanceForDomain:(unint64_t)a3
++ (id)sharedInstanceForDomain:(unint64_t)domain
 {
   v4 = objc_opt_class();
-  if (a3 == 3)
+  if (domain == 3)
   {
     [v4 _privateContainerManager];
   }
@@ -324,10 +324,10 @@ LABEL_49:
   return v5;
 }
 
-- (id)_onQueue_linkedParentBundleIDs:(id *)a3
+- (id)_onQueue_linkedParentBundleIDs:(id *)ds
 {
-  v5 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v6 = self->_linkedParentBundleIDs;
   v7 = v6;
@@ -372,7 +372,7 @@ LABEL_10:
     if (v17)
     {
       v38 = v10;
-      v39 = a3;
+      dsCopy = ds;
       v40 = v9;
       v46 = 0u;
       v47 = 0u;
@@ -397,7 +397,7 @@ LABEL_18:
 
           v28 = *(*(&v44 + 1) + 8 * v26);
           v29 = objc_autoreleasePoolPush();
-          v30 = [v28 identifier];
+          identifier = [v28 identifier];
           v43 = v27;
           v31 = [v28 bundleMetadataWithError:&v43];
           v21 = v43;
@@ -407,10 +407,10 @@ LABEL_18:
             break;
           }
 
-          v32 = [v31 linkedParentBundleID];
-          if (v32)
+          linkedParentBundleID = [v31 linkedParentBundleID];
+          if (linkedParentBundleID)
           {
-            [v41 addObject:v32];
+            [v41 addObject:linkedParentBundleID];
           }
 
           objc_autoreleasePoolPop(v29);
@@ -439,8 +439,8 @@ LABEL_18:
         v9 = v40;
         v7 = 0;
         v10 = v38;
-        a3 = v39;
-        if (v39)
+        ds = dsCopy;
+        if (dsCopy)
         {
           goto LABEL_35;
         }
@@ -458,9 +458,9 @@ LABEL_26:
       v9 = v40;
       v7 = 0;
       v10 = v38;
-      a3 = v39;
+      ds = dsCopy;
       v17 = v37;
-      if (!v39)
+      if (!dsCopy)
       {
 LABEL_37:
         v11 = v21;
@@ -476,7 +476,7 @@ LABEL_37:
       }
 
       v33 = 0;
-      if (!a3)
+      if (!ds)
       {
         goto LABEL_37;
       }
@@ -486,7 +486,7 @@ LABEL_35:
     if ((v33 & 1) == 0)
     {
       v35 = v21;
-      *a3 = v21;
+      *ds = v21;
     }
 
     goto LABEL_37;
@@ -528,16 +528,16 @@ LABEL_39:
   return v8;
 }
 
-- (BOOL)_onQueue_setLinkedParentBundleIDList:(id)a3 error:(id *)a4
+- (BOOL)_onQueue_setLinkedParentBundleIDList:(id)list error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  listCopy = list;
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v9 = sub_10002E0E4();
-  if (v6)
+  if (listCopy)
   {
-    if (([(NSSet *)self->_linkedParentBundleIDs isEqual:v6]& 1) != 0)
+    if (([(NSSet *)self->_linkedParentBundleIDs isEqual:listCopy]& 1) != 0)
     {
       v10 = 0;
       v11 = 0;
@@ -547,8 +547,8 @@ LABEL_7:
     }
 
     v22 = @"linkedParentBundles";
-    v12 = [v6 allObjects];
-    v23 = v12;
+    allObjects = [listCopy allObjects];
+    v23 = allObjects;
     v10 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
     v21 = 0;
@@ -556,7 +556,7 @@ LABEL_7:
     v11 = v21;
     if (v13)
     {
-      v14 = [v6 copy];
+      v14 = [listCopy copy];
       linkedParentBundleIDs = self->_linkedParentBundleIDs;
       self->_linkedParentBundleIDs = v14;
 
@@ -565,7 +565,7 @@ LABEL_7:
 
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
     {
-      v20 = [v9 path];
+      path = [v9 path];
       MOLogWrite();
     }
   }
@@ -576,11 +576,11 @@ LABEL_7:
     v10 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = v11;
     v16 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -593,43 +593,43 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)_onQueue_isValidLinkForParent:(id)a3 toChild:(id)a4 error:(id *)a5
+- (BOOL)_onQueue_isValidLinkForParent:(id)parent toChild:(id)child error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v10);
+  parentCopy = parent;
+  childCopy = child;
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v19 = 0;
   v11 = [(MIContainerLinkManager *)self _onQueue_linkedParentBundleIDs:&v19];
   v12 = v19;
   if (v11)
   {
-    if ([v11 containsObject:v9])
+    if ([v11 containsObject:childCopy])
     {
-      sub_100010734("[MIContainerLinkManager _onQueue_isValidLinkForParent:toChild:error:]", 331, MIInstallerErrorDomain, 4, 0, 0, @"Existing parent app bundle ID %@ can't be added as a child of %@.", v13, v9);
+      sub_100010734("[MIContainerLinkManager _onQueue_isValidLinkForParent:toChild:error:]", 331, MIInstallerErrorDomain, 4, 0, 0, @"Existing parent app bundle ID %@ can't be added as a child of %@.", v13, childCopy);
     }
 
     else
     {
-      if (![v9 isEqualToString:v8])
+      if (![childCopy isEqualToString:parentCopy])
       {
         v17 = 1;
         goto LABEL_11;
       }
 
-      sub_100010734("[MIContainerLinkManager _onQueue_isValidLinkForParent:toChild:error:]", 336, MIInstallerErrorDomain, 4, 0, 0, @"Same bundle ID, %@, can't be passed as a parent and child for linkage creation", v14, v9);
+      sub_100010734("[MIContainerLinkManager _onQueue_isValidLinkForParent:toChild:error:]", 336, MIInstallerErrorDomain, 4, 0, 0, @"Same bundle ID, %@, can't be passed as a parent and child for linkage creation", v14, childCopy);
     }
     v15 = ;
 
     v12 = v15;
   }
 
-  if (a5)
+  if (error)
   {
     v16 = v12;
     v17 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -642,15 +642,15 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)_onQueue_updateLinkForParent:(id)a3 toChild:(id)a4 operationType:(unint64_t)a5 error:(id *)a6
+- (BOOL)_onQueue_updateLinkForParent:(id)parent toChild:(id)child operationType:(unint64_t)type error:(id *)error
 {
-  v10 = a3;
-  v43 = a4;
-  v11 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v11);
+  parentCopy = parent;
+  childCopy = child;
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v12 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
-  v42 = [v12 objectForKeyedSubscript:v10];
+  parentToLinkedChildrenMap = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
+  v42 = [parentToLinkedChildrenMap objectForKeyedSubscript:parentCopy];
 
   v50 = 0;
   v13 = [(MIContainerLinkManager *)self _onQueue_linkedParentBundleIDs:&v50];
@@ -661,12 +661,12 @@ LABEL_11:
     v18 = 0;
     v19 = 0;
     v20 = 0;
-    if (a6)
+    if (error)
     {
 LABEL_16:
       v28 = v14;
       v21 = 0;
-      *a6 = v14;
+      *error = v14;
       goto LABEL_17;
     }
 
@@ -680,14 +680,14 @@ LABEL_5:
   {
     v49 = v14;
     v15 = &v49;
-    v16 = [MIBundleContainer privateAppBundleContainerWithIdentifier:v10 createIfNeeded:0 created:0 error:&v49];
+    v16 = [MIBundleContainer privateAppBundleContainerWithIdentifier:parentCopy createIfNeeded:0 created:0 error:&v49];
   }
 
   else
   {
     v48 = v14;
     v15 = &v48;
-    v16 = [MIBundleContainer appBundleContainerWithIdentifier:v10 createIfNeeded:0 created:0 error:&v48];
+    v16 = [MIBundleContainer appBundleContainerWithIdentifier:parentCopy createIfNeeded:0 created:0 error:&v48];
   }
 
   v20 = v16;
@@ -695,7 +695,7 @@ LABEL_5:
 
   if (!v20)
   {
-    v14 = sub_100010734("[MIContainerLinkManager _onQueue_updateLinkForParent:toChild:operationType:error:]", 376, MIInstallerErrorDomain, 162, v22, 0, @"Failed to locate installed app for requested parent bundle %@", v23, v10);
+    v14 = sub_100010734("[MIContainerLinkManager _onQueue_updateLinkForParent:toChild:operationType:error:]", 376, MIInstallerErrorDomain, 162, v22, 0, @"Failed to locate installed app for requested parent bundle %@", v23, parentCopy);
 
     v17 = 0;
 LABEL_14:
@@ -709,13 +709,13 @@ LABEL_14:
 
   if (!v17)
   {
-    v14 = sub_100010734("[MIContainerLinkManager _onQueue_updateLinkForParent:toChild:operationType:error:]", 382, MIInstallerErrorDomain, 4, v24, 0, @"Failed to read bundle metadata for requested parent bundle %@", v25, v10);
+    v14 = sub_100010734("[MIContainerLinkManager _onQueue_updateLinkForParent:toChild:operationType:error:]", 382, MIInstallerErrorDomain, 4, v24, 0, @"Failed to read bundle metadata for requested parent bundle %@", v25, parentCopy);
 
     goto LABEL_14;
   }
 
-  v26 = [v17 linkedChildBundleIDs];
-  v18 = [v26 mutableCopy];
+  linkedChildBundleIDs = [v17 linkedChildBundleIDs];
+  v18 = [linkedChildBundleIDs mutableCopy];
 
   if (v42)
   {
@@ -733,24 +733,24 @@ LABEL_14:
 
   v40 = 1;
 LABEL_21:
-  if (a5 == 1)
+  if (type == 1)
   {
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
     {
-      v37 = v43;
-      v39 = v10;
+      v37 = childCopy;
+      v39 = parentCopy;
       MOLogWrite();
     }
 
-    if ([v18 containsObject:{v43, v37, v39}])
+    if ([v18 containsObject:{childCopy, v37, v39}])
     {
-      [v18 removeObject:v43];
+      [v18 removeObject:childCopy];
       v40 = 1;
     }
 
     if (![v18 count])
     {
-      [v41 removeObject:v10];
+      [v41 removeObject:parentCopy];
     }
 
     v31 = v24;
@@ -758,15 +758,15 @@ LABEL_21:
 
   else
   {
-    if (a5)
+    if (type)
     {
-      v14 = sub_100010734("[MIContainerLinkManager _onQueue_updateLinkForParent:toChild:operationType:error:]", 443, MIInstallerErrorDomain, 4, 0, 0, @"Container link manager invoked with invalid operation type %lu", v27, a5);
+      v14 = sub_100010734("[MIContainerLinkManager _onQueue_updateLinkForParent:toChild:operationType:error:]", 443, MIInstallerErrorDomain, 4, 0, 0, @"Container link manager invoked with invalid operation type %lu", v27, type);
 
       goto LABEL_15;
     }
 
     v46 = v24;
-    v30 = [(MIContainerLinkManager *)self _onQueue_isValidLinkForParent:v10 toChild:v43 error:&v46];
+    v30 = [(MIContainerLinkManager *)self _onQueue_isValidLinkForParent:parentCopy toChild:childCopy error:&v46];
     v31 = v46;
 
     if (!v30)
@@ -777,25 +777,25 @@ LABEL_21:
 
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
     {
-      v37 = v10;
-      v39 = v43;
+      v37 = parentCopy;
+      v39 = childCopy;
       MOLogWrite();
     }
 
-    if (([v18 containsObject:{v43, v37, v39}] & 1) == 0)
+    if (([v18 containsObject:{childCopy, v37, v39}] & 1) == 0)
     {
       if (!v18)
       {
         v18 = objc_opt_new();
       }
 
-      [v18 addObject:v43];
+      [v18 addObject:childCopy];
       v40 = 1;
     }
 
-    if (([v41 containsObject:v10] & 1) == 0)
+    if (([v41 containsObject:parentCopy] & 1) == 0)
     {
-      [v41 addObject:v10];
+      [v41 addObject:parentCopy];
     }
   }
 
@@ -827,7 +827,7 @@ LABEL_21:
 
 LABEL_15:
     v19 = v41;
-    if (a6)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -848,8 +848,8 @@ LABEL_47:
   if (v40)
   {
     v35 = [v18 copy];
-    v36 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
-    [v36 setObject:v35 forKeyedSubscript:v10];
+    parentToLinkedChildrenMap2 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
+    [parentToLinkedChildrenMap2 setObject:v35 forKeyedSubscript:parentCopy];
   }
 
   v21 = 1;
@@ -859,10 +859,10 @@ LABEL_17:
   return v21;
 }
 
-- (BOOL)preflightLinkingChild:(id)a3 toParent:(id)a4 error:(id *)a5
+- (BOOL)preflightLinkingChild:(id)child toParent:(id)parent error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  childCopy = child;
+  parentCopy = parent;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -873,24 +873,24 @@ LABEL_17:
   v23 = sub_10002F258;
   v24 = sub_10002F268;
   v25 = 0;
-  v10 = [(MIContainerLinkManager *)self internalQueue];
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002F270;
   block[3] = &unk_100091638;
   v18 = &v26;
   block[4] = self;
-  v11 = v9;
+  v11 = parentCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = childCopy;
   v17 = v12;
   v19 = &v20;
-  dispatch_sync(v10, block);
+  dispatch_sync(internalQueue, block);
 
   v13 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v13 = *(v27 + 24);
   }
 
@@ -900,10 +900,10 @@ LABEL_17:
   return v13 & 1;
 }
 
-- (BOOL)linkChild:(id)a3 toParent:(id)a4 error:(id *)a5
+- (BOOL)linkChild:(id)child toParent:(id)parent error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  childCopy = child;
+  parentCopy = parent;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -914,24 +914,24 @@ LABEL_17:
   v23 = sub_10002F258;
   v24 = sub_10002F268;
   v25 = 0;
-  v10 = [(MIContainerLinkManager *)self internalQueue];
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002F488;
   block[3] = &unk_100091638;
   v18 = &v26;
   block[4] = self;
-  v11 = v9;
+  v11 = parentCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = childCopy;
   v17 = v12;
   v19 = &v20;
-  dispatch_sync(v10, block);
+  dispatch_sync(internalQueue, block);
 
   v13 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v13 = *(v27 + 24);
   }
 
@@ -941,10 +941,10 @@ LABEL_17:
   return v13 & 1;
 }
 
-- (BOOL)unlinkChild:(id)a3 fromParent:(id)a4 error:(id *)a5
+- (BOOL)unlinkChild:(id)child fromParent:(id)parent error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  childCopy = child;
+  parentCopy = parent;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -955,24 +955,24 @@ LABEL_17:
   v23 = sub_10002F258;
   v24 = sub_10002F268;
   v25 = 0;
-  v10 = [(MIContainerLinkManager *)self internalQueue];
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002F6A4;
   block[3] = &unk_100091638;
   v18 = &v26;
   block[4] = self;
-  v11 = v9;
+  v11 = parentCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = childCopy;
   v17 = v12;
   v19 = &v20;
-  dispatch_sync(v10, block);
+  dispatch_sync(internalQueue, block);
 
   v13 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v13 = *(v27 + 24);
   }
 
@@ -982,21 +982,21 @@ LABEL_17:
   return v13 & 1;
 }
 
-- (BOOL)getLinkedParent:(id *)a3 forChild:(id)a4 error:(id *)a5
+- (BOOL)getLinkedParent:(id *)parent forChild:(id)child error:(id *)error
 {
-  v8 = a4;
+  childCopy = child;
   if ([(MIContainerLinkManager *)self domain]== 3)
   {
     v24 = 0;
     v9 = &v24;
-    v10 = [MIBundleContainer privateAppBundleContainerWithIdentifier:v8 createIfNeeded:0 created:0 error:&v24];
+    v10 = [MIBundleContainer privateAppBundleContainerWithIdentifier:childCopy createIfNeeded:0 created:0 error:&v24];
   }
 
   else
   {
     v23 = 0;
     v9 = &v23;
-    v10 = [MIBundleContainer appBundleContainerWithIdentifier:v8 createIfNeeded:0 created:0 error:&v23];
+    v10 = [MIBundleContainer appBundleContainerWithIdentifier:childCopy createIfNeeded:0 created:0 error:&v23];
   }
 
   v11 = v10;
@@ -1011,9 +1011,9 @@ LABEL_17:
 
     if (v14)
     {
-      v16 = [v14 linkedParentBundleID];
+      linkedParentBundleID = [v14 linkedParentBundleID];
       v17 = 1;
-      if (!a3)
+      if (!parent)
       {
         goto LABEL_19;
       }
@@ -1027,8 +1027,8 @@ LABEL_17:
 
   else
   {
-    v18 = [v12 domain];
-    if ([v18 isEqualToString:MIContainerManagerErrorDomain])
+    domain = [v12 domain];
+    if ([domain isEqualToString:MIContainerManagerErrorDomain])
     {
       v17 = [v13 code] == 21;
     }
@@ -1040,15 +1040,15 @@ LABEL_17:
   }
 
   v14 = 0;
-  if (a5 && !v17)
+  if (error && !v17)
   {
     v19 = v13;
     v17 = 0;
     v14 = 0;
-    v16 = 0;
-    *a5 = v13;
+    linkedParentBundleID = 0;
+    *error = v13;
     v15 = v13;
-    if (!a3)
+    if (!parent)
     {
       goto LABEL_19;
     }
@@ -1057,12 +1057,12 @@ LABEL_17:
   }
 
   v15 = v13;
-  v16 = 0;
-  if (a3)
+  linkedParentBundleID = 0;
+  if (parent)
   {
 LABEL_18:
-    v20 = v16;
-    *a3 = v16;
+    v20 = linkedParentBundleID;
+    *parent = linkedParentBundleID;
   }
 
 LABEL_19:
@@ -1070,11 +1070,11 @@ LABEL_19:
   return v17;
 }
 
-- (id)_onQueue_childrenForParentBundleID:(id)a3 error:(id *)a4
+- (id)_onQueue_childrenForParentBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v23 = 0;
   v8 = [(MIContainerLinkManager *)self _onQueue_linkedParentBundleIDs:&v23];
@@ -1089,16 +1089,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (([v8 containsObject:v6] & 1) == 0)
+  if (([v8 containsObject:dCopy] & 1) == 0)
   {
     v14 = objc_opt_new();
     goto LABEL_8;
   }
 
-  v10 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  parentToLinkedChildrenMap = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
+  linkedChildBundleIDs = [parentToLinkedChildrenMap objectForKeyedSubscript:dCopy];
 
-  if (v11)
+  if (linkedChildBundleIDs)
   {
     v12 = 0;
     v13 = 0;
@@ -1107,7 +1107,7 @@ LABEL_8:
   else
   {
     v22 = v9;
-    v13 = [MIBundleContainer appBundleContainerWithIdentifier:v6 createIfNeeded:0 created:0 error:&v22];
+    v13 = [MIBundleContainer appBundleContainerWithIdentifier:dCopy createIfNeeded:0 created:0 error:&v22];
     v19 = v22;
 
     if (!v13)
@@ -1130,23 +1130,23 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v11 = [v12 linkedChildBundleIDs];
-    if (!v11)
+    linkedChildBundleIDs = [v12 linkedChildBundleIDs];
+    if (!linkedChildBundleIDs)
     {
-      v11 = objc_opt_new();
+      linkedChildBundleIDs = objc_opt_new();
     }
 
-    v20 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
-    [v20 setObject:v11 forKeyedSubscript:v6];
+    parentToLinkedChildrenMap2 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
+    [parentToLinkedChildrenMap2 setObject:linkedChildBundleIDs forKeyedSubscript:dCopy];
   }
 
-  v14 = v11;
+  v14 = linkedChildBundleIDs;
   v15 = v14;
 LABEL_9:
-  if (a4 && !v14)
+  if (error && !v14)
   {
     v16 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   if (qword_1000A9720 && *(qword_1000A9720 + 44) >= 7)
@@ -1159,9 +1159,9 @@ LABEL_9:
   return v14;
 }
 
-- (id)childrenForParentBundleID:(id)a3 error:(id *)a4
+- (id)childrenForParentBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1174,22 +1174,22 @@ LABEL_9:
   v19 = sub_10002F258;
   v20 = sub_10002F268;
   v21 = 0;
-  v7 = [(MIContainerLinkManager *)self internalQueue];
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002FCD4;
   v12[3] = &unk_100090CD8;
   v14 = &v22;
   v12[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
   v15 = &v16;
-  dispatch_sync(v7, v12);
+  dispatch_sync(internalQueue, v12);
 
   v9 = v23[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v9 = v23[5];
   }
 
@@ -1201,11 +1201,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_onQueue_removeParent:(id)a3 error:(id *)a4
+- (BOOL)_onQueue_removeParent:(id)parent error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIContainerLinkManager *)self internalQueue];
-  dispatch_assert_queue_V2(v7);
+  parentCopy = parent;
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v18 = 0;
   v8 = [(MIContainerLinkManager *)self _onQueue_linkedParentBundleIDs:&v18];
@@ -1213,7 +1213,7 @@ LABEL_9:
   if (!v8)
   {
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
 LABEL_12:
       v14 = 0;
@@ -1223,11 +1223,11 @@ LABEL_12:
 LABEL_6:
     v15 = v9;
     v14 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_13;
   }
 
-  if (![v8 containsObject:v6])
+  if (![v8 containsObject:parentCopy])
   {
     v10 = 0;
     v14 = 1;
@@ -1235,7 +1235,7 @@ LABEL_6:
   }
 
   v10 = [v8 mutableCopy];
-  [v10 removeObject:v6];
+  [v10 removeObject:parentCopy];
   v17 = v9;
   v11 = [(MIContainerLinkManager *)self _onQueue_setLinkedParentBundleIDList:v10 error:&v17];
   v12 = v17;
@@ -1248,7 +1248,7 @@ LABEL_6:
     }
 
     v9 = v12;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -1256,8 +1256,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v13 = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
-  [v13 removeObjectForKey:v6];
+  parentToLinkedChildrenMap = [(MIContainerLinkManager *)self parentToLinkedChildrenMap];
+  [parentToLinkedChildrenMap removeObjectForKey:parentCopy];
 
   v14 = 1;
   v9 = v12;
@@ -1266,9 +1266,9 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)removeParent:(id)a3 error:(id *)a4
+- (BOOL)removeParent:(id)parent error:(id *)error
 {
-  v6 = a3;
+  parentCopy = parent;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1279,22 +1279,22 @@ LABEL_13:
   v18 = sub_10002F258;
   v19 = sub_10002F268;
   v20 = 0;
-  v7 = [(MIContainerLinkManager *)self internalQueue];
+  internalQueue = [(MIContainerLinkManager *)self internalQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100030068;
   v11[3] = &unk_100090CD8;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = parentCopy;
   v12 = v8;
   v14 = &v15;
-  dispatch_sync(v7, v11);
+  dispatch_sync(internalQueue, v11);
 
   v9 = *(v22 + 24);
-  if (a4 && (v22[3] & 1) == 0)
+  if (error && (v22[3] & 1) == 0)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v9 = *(v22 + 24);
   }
 

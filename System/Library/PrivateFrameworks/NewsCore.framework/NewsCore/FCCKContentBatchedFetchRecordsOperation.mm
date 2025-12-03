@@ -2,9 +2,9 @@
 - (BOOL)validateOperation;
 - (FCCKContentBatchedFetchRecordsOperation)init;
 - (void)_continueFetching;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)prepareOperation;
-- (void)setDatabase:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
 @end
 
 @implementation FCCKContentBatchedFetchRecordsOperation
@@ -36,7 +36,7 @@
 
 - (void)prepareOperation
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     if (self->_maxBatchSize - 401 <= 0xFFFFFFFFFFFFFE6FLL)
@@ -49,10 +49,10 @@
 
   if ([(FCCKContentBatchedFetchRecordsOperation *)self count])
   {
-    if (v2)
+    if (selfCopy)
     {
-      v3 = v2->_recordIDs;
-      maxBatchSize = v2->_maxBatchSize;
+      v3 = selfCopy->_recordIDs;
+      maxBatchSize = selfCopy->_maxBatchSize;
     }
 
     else
@@ -65,7 +65,7 @@
     v5[1] = 3221225472;
     v5[2] = __59__FCCKContentBatchedFetchRecordsOperation_prepareOperation__block_invoke;
     v5[3] = &unk_1E7C3C550;
-    v5[4] = v2;
+    v5[4] = selfCopy;
     [(NSArray *)v3 fc_visitSubarraysWithMaxCount:maxBatchSize block:v5];
   }
 }
@@ -88,7 +88,7 @@ uint64_t __59__FCCKContentBatchedFetchRecordsOperation_prepareOperation__block_i
 
 - (void)_continueFetching
 {
-  if (a1)
+  if (self)
   {
     v12 = 0;
     v13 = &v12;
@@ -96,12 +96,12 @@ uint64_t __59__FCCKContentBatchedFetchRecordsOperation_prepareOperation__block_i
     v15 = __Block_byref_object_copy__71;
     v16 = __Block_byref_object_dispose__71;
     v17 = 0;
-    v2 = a1[54];
+    v2 = self[54];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__FCCKContentBatchedFetchRecordsOperation__continueFetching__block_invoke;
     v11[3] = &unk_1E7C3C578;
-    v11[4] = a1;
+    v11[4] = self;
     v11[5] = &v12;
     [v2 readWriteWithAccessor:v11];
 
@@ -113,16 +113,16 @@ uint64_t __59__FCCKContentBatchedFetchRecordsOperation_prepareOperation__block_i
       v8[1] = 3221225472;
       v8[2] = __60__FCCKContentBatchedFetchRecordsOperation__continueFetching__block_invoke_3;
       v8[3] = &unk_1E7C3C5F0;
-      v8[4] = a1;
+      v8[4] = self;
       v5 = v3;
       v9 = v5;
       [v4 enumerateObjectsUsingBlock:v8];
-      v6 = FCDispatchQueueForQualityOfService([a1 qualityOfService]);
+      v6 = FCDispatchQueueForQualityOfService([self qualityOfService]);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __60__FCCKContentBatchedFetchRecordsOperation__continueFetching__block_invoke_7;
       v7[3] = &unk_1E7C36EA0;
-      v7[4] = a1;
+      v7[4] = self;
       dispatch_group_notify(v5, v6, v7);
     }
 
@@ -132,7 +132,7 @@ uint64_t __59__FCCKContentBatchedFetchRecordsOperation_prepareOperation__block_i
       v10[1] = 3221225472;
       v10[2] = __60__FCCKContentBatchedFetchRecordsOperation__continueFetching__block_invoke_2;
       v10[3] = &unk_1E7C36EA0;
-      v10[4] = a1;
+      v10[4] = self;
       __60__FCCKContentBatchedFetchRecordsOperation__continueFetching__block_invoke_2(v10);
     }
 
@@ -295,11 +295,11 @@ LABEL_6:
   return result;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v18 = 0u;
     v19 = 0u;
@@ -339,7 +339,7 @@ LABEL_6:
               perRecordCompletionBlock = self->_perRecordCompletionBlock;
               if (perRecordCompletionBlock)
               {
-                perRecordCompletionBlock[2](perRecordCompletionBlock, v11, 0, v4);
+                perRecordCompletionBlock[2](perRecordCompletionBlock, v11, 0, errorCopy);
               }
             }
           }
@@ -366,7 +366,7 @@ LABEL_6:
     fetchRecordsCompletionBlock = self->_fetchRecordsCompletionBlock;
     if (fetchRecordsCompletionBlock)
     {
-      fetchRecordsCompletionBlock[2](fetchRecordsCompletionBlock, v4);
+      fetchRecordsCompletionBlock[2](fetchRecordsCompletionBlock, errorCopy);
     }
   }
 
@@ -465,11 +465,11 @@ void __60__FCCKContentBatchedFetchRecordsOperation__continueFetching__block_invo
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 368), a2);
+    objc_storeStrong((database + 368), a2);
   }
 }
 

@@ -7,19 +7,19 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAffinityType:(int64_t)a3;
-- (void)setMediaItems:(id)a3;
-- (void)setMediaSearch:(id)a3;
-- (void)setPrivateUpdateMediaAffinityIntentData:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAffinityType:(int64_t)type;
+- (void)setMediaItems:(id)items;
+- (void)setMediaSearch:(id)search;
+- (void)setPrivateUpdateMediaAffinityIntentData:(id)data;
 @end
 
 @implementation INUpdateMediaAffinityIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore:a3];
+  v6 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -28,32 +28,32 @@
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"mediaItems";
-  v3 = [(INUpdateMediaAffinityIntent *)self mediaItems];
-  v4 = v3;
-  if (!v3)
+  mediaItems = [(INUpdateMediaAffinityIntent *)self mediaItems];
+  null = mediaItems;
+  if (!mediaItems)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"mediaSearch";
-  v5 = [(INUpdateMediaAffinityIntent *)self mediaSearch];
-  v6 = v5;
-  if (!v5)
+  mediaSearch = [(INUpdateMediaAffinityIntent *)self mediaSearch];
+  null2 = mediaSearch;
+  if (!mediaSearch)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v6;
+  v14[1] = null2;
   v13[2] = @"affinityType";
-  v7 = [(INUpdateMediaAffinityIntent *)self affinityType];
+  affinityType = [(INUpdateMediaAffinityIntent *)self affinityType];
   v8 = @"unknown";
-  if (v7 == INMediaAffinityTypeDislike)
+  if (affinityType == INMediaAffinityTypeDislike)
   {
     v8 = @"dislike";
   }
 
-  if (v7 == INMediaAffinityTypeLike)
+  if (affinityType == INMediaAffinityTypeLike)
   {
     v8 = @"like";
   }
@@ -62,11 +62,11 @@
   v14[2] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
-  if (!v5)
+  if (!mediaSearch)
   {
   }
 
-  if (!v3)
+  if (!mediaItems)
   {
   }
 
@@ -75,52 +75,52 @@
   return v10;
 }
 
-- (void)setPrivateUpdateMediaAffinityIntentData:(id)a3
+- (void)setPrivateUpdateMediaAffinityIntentData:(id)data
 {
-  v4 = a3;
-  v6 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToPrivateUpdateMediaAffinityIntentData(v4);
+  dataCopy = data;
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToPrivateUpdateMediaAffinityIntentData(dataCopy);
 
-  [v6 setPrivateUpdateMediaAffinityIntentData:v5];
+  [_typedBackingStore setPrivateUpdateMediaAffinityIntentData:v5];
 }
 
 - (INPrivateUpdateMediaAffinityIntentData)privateUpdateMediaAffinityIntentData
 {
-  v2 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v3 = [v2 privateUpdateMediaAffinityIntentData];
-  v4 = INIntentSlotValueTransformFromPrivateUpdateMediaAffinityIntentData(v3);
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  privateUpdateMediaAffinityIntentData = [_typedBackingStore privateUpdateMediaAffinityIntentData];
+  v4 = INIntentSlotValueTransformFromPrivateUpdateMediaAffinityIntentData(privateUpdateMediaAffinityIntentData);
 
   return v4;
 }
 
-- (void)setAffinityType:(int64_t)a3
+- (void)setAffinityType:(int64_t)type
 {
-  v4 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 2)
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (type > 2)
   {
-    [v4 setHasAffinityType:0];
+    [_typedBackingStore setHasAffinityType:0];
   }
 
   else
   {
-    [v4 setAffinityType:a3];
+    [_typedBackingStore setAffinityType:type];
   }
 }
 
 - (INMediaAffinityType)affinityType
 {
-  v3 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v4 = [v3 hasAffinityType];
-  v5 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v6 = [v5 affinityType];
-  v7 = v6 == 1;
-  if (v6 == 2)
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  hasAffinityType = [_typedBackingStore hasAffinityType];
+  _typedBackingStore2 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  affinityType = [_typedBackingStore2 affinityType];
+  v7 = affinityType == 1;
+  if (affinityType == 2)
   {
     v7 = 2;
   }
 
-  if (v4)
+  if (hasAffinityType)
   {
     v8 = v7;
   }
@@ -133,38 +133,38 @@
   return v8;
 }
 
-- (void)setMediaSearch:(id)a3
+- (void)setMediaSearch:(id)search
 {
-  v4 = a3;
-  v6 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaSearch(v4);
+  searchCopy = search;
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaSearch(searchCopy);
 
-  [v6 setMediaSearch:v5];
+  [_typedBackingStore setMediaSearch:v5];
 }
 
 - (INMediaSearch)mediaSearch
 {
-  v2 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v3 = [v2 mediaSearch];
-  v4 = INIntentSlotValueTransformFromMediaSearch(v3);
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  mediaSearch = [_typedBackingStore mediaSearch];
+  v4 = INIntentSlotValueTransformFromMediaSearch(mediaSearch);
 
   return v4;
 }
 
-- (void)setMediaItems:(id)a3
+- (void)setMediaItems:(id)items
 {
-  v4 = a3;
-  v6 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToMediaItemValues(v4);
+  itemsCopy = items;
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToMediaItemValues(itemsCopy);
 
-  [v6 setMediaItems:v5];
+  [_typedBackingStore setMediaItems:v5];
 }
 
 - (NSArray)mediaItems
 {
-  v2 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v3 = [v2 mediaItems];
-  v4 = INIntentSlotValueTransformFromMediaItemValues(v3);
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  mediaItems = [_typedBackingStore mediaItems];
+  v4 = INIntentSlotValueTransformFromMediaItemValues(mediaItems);
 
   return v4;
 }
@@ -187,28 +187,28 @@
   return v11;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INUpdateMediaAffinityIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

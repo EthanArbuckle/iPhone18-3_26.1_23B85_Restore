@@ -1,22 +1,22 @@
 @interface SUICKPCardViewControllerProvider
-- (BOOL)_askDelegateToPerformReferentialCommand:(id)a3 forCardSection:(id)a4;
-- (BOOL)performCommand:(id)a3 forCardSectionViewController:(id)a4;
-- (CGSize)boundingSizeForCardSectionViewController:(id)a3;
+- (BOOL)_askDelegateToPerformReferentialCommand:(id)command forCardSection:(id)section;
+- (BOOL)performCommand:(id)command forCardSectionViewController:(id)controller;
+- (CGSize)boundingSizeForCardSectionViewController:(id)controller;
 - (SUICKPCardViewControllerProvider)init;
-- (id)_cardViewControllerForCardSection:(id)a3;
-- (id)_createCardViewControllerForCard:(id)a3;
-- (id)cardViewControllerForCard:(id)a3;
-- (id)customViewControllerForCardSection:(id)a3;
-- (id)extractLinkID:(id)a3;
-- (void)cardSectionView:(id)a3 willProcessEngagementFeedback:(id)a4;
-- (void)cardSectionViewDidAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)cardSectionViewDidDisappearForCardSection:(id)a3 withDisappearanceFeedback:(id)a4;
-- (void)cardSectionViewWillAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5;
-- (void)presentViewController:(id)a3 forCardSectionViewController:(id)a4;
-- (void)presentation:(id)a3 didApplyCardSectionViewSource:(id)a4 toCardViewController:(id)a5;
-- (void)unregisterCardViewController:(id)a3;
-- (void)userDidEngageCardSection:(id)a3 withEngagementFeedback:(id)a4;
+- (id)_cardViewControllerForCardSection:(id)section;
+- (id)_createCardViewControllerForCard:(id)card;
+- (id)cardViewControllerForCard:(id)card;
+- (id)customViewControllerForCardSection:(id)section;
+- (id)extractLinkID:(id)d;
+- (void)cardSectionView:(id)view willProcessEngagementFeedback:(id)feedback;
+- (void)cardSectionViewDidAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback;
+- (void)cardSectionViewDidDisappearForCardSection:(id)section withDisappearanceFeedback:(id)feedback;
+- (void)cardSectionViewWillAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback;
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated;
+- (void)presentViewController:(id)controller forCardSectionViewController:(id)viewController;
+- (void)presentation:(id)presentation didApplyCardSectionViewSource:(id)source toCardViewController:(id)controller;
+- (void)unregisterCardViewController:(id)controller;
+- (void)userDidEngageCardSection:(id)section withEngagementFeedback:(id)feedback;
 @end
 
 @implementation SUICKPCardViewControllerProvider
@@ -44,14 +44,14 @@
   return v2;
 }
 
-- (id)cardViewControllerForCard:(id)a3
+- (id)cardViewControllerForCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   self->_preferredContentSize = *MEMORY[0x277CBF3A8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = cardCopy;
     v24 = 0;
     v25 = &v24;
     v26 = 0x3032000000;
@@ -178,27 +178,27 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterCardViewController:(id)a3
+- (void)unregisterCardViewController:(id)controller
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 card];
-  v6 = [v5 cardIdentifier];
+  controllerCopy = controller;
+  card = [controllerCopy card];
+  cardIdentifier = [card cardIdentifier];
 
-  if (v6)
+  if (cardIdentifier)
   {
-    v7 = [(NSMutableDictionary *)self->_cardViewControllersByCardIdentifiers objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_cardViewControllersByCardIdentifiers objectForKey:cardIdentifier];
     v8 = v7;
-    if (v7 == v4)
+    if (v7 == controllerCopy)
     {
-      v9 = [v7 card];
+      card2 = [v7 card];
       v10 = *MEMORY[0x277CF93F0];
       if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v26 = v9;
+        v26 = card2;
         v27 = 2112;
-        v28 = v4;
+        v28 = controllerCopy;
         _os_log_impl(&dword_264EDF000, v10, OS_LOG_TYPE_INFO, "Unregistering SearchUICardViewController\n    Card: %@\n    Card view controller: %@", buf, 0x16u);
       }
 
@@ -206,9 +206,9 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v19 = v9;
-      v11 = [v9 resolvedCardSections];
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v19 = card2;
+      resolvedCardSections = [card2 resolvedCardSections];
+      v12 = [resolvedCardSections countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -220,26 +220,26 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
           {
             if (*v21 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(resolvedCardSections);
             }
 
             cardsByCardSectionIdentifiers = self->_cardsByCardSectionIdentifiers;
-            v17 = [*(*(&v20 + 1) + 8 * v15) cardSectionIdentifier];
-            [(NSMutableDictionary *)cardsByCardSectionIdentifiers removeObjectForKey:v17];
+            cardSectionIdentifier = [*(*(&v20 + 1) + 8 * v15) cardSectionIdentifier];
+            [(NSMutableDictionary *)cardsByCardSectionIdentifiers removeObjectForKey:cardSectionIdentifier];
 
             ++v15;
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v13 = [resolvedCardSections countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v13);
       }
 
-      [(NSMutableDictionary *)self->_feedbackDelegateDemultiplexersByCardIdentifiers removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_feedbackDelegateDemultiplexersByCardIdentifiers removeObjectForKey:cardIdentifier];
       [v8 setDelegate:0];
-      [(NSMutableDictionary *)self->_cardViewControllersByCardIdentifiers removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_cardViewControllersByCardIdentifiers removeObjectForKey:cardIdentifier];
     }
 
     else if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
@@ -256,25 +256,25 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentation:(id)a3 didApplyCardSectionViewSource:(id)a4 toCardViewController:(id)a5
+- (void)presentation:(id)presentation didApplyCardSectionViewSource:(id)source toCardViewController:(id)controller
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v43 = a4;
-  v8 = a5;
+  presentationCopy = presentation;
+  sourceCopy = source;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 feedbackListener];
+    feedbackListener = [controllerCopy feedbackListener];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isMemberOfClass:objc_opt_class()])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [presentationCopy isMemberOfClass:objc_opt_class()])
     {
-      v10 = v9;
-      v11 = [v7 delegate];
-      if ([v11 conformsToProtocol:&unk_2876CC9F8])
+      v10 = feedbackListener;
+      delegate = [presentationCopy delegate];
+      if ([delegate conformsToProtocol:&unk_2876CC9F8])
       {
-        [v10 setSnippetUIDelegate:v11];
-        v41 = v11;
+        [v10 setSnippetUIDelegate:delegate];
+        v41 = delegate;
       }
 
       else
@@ -294,7 +294,7 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
     v41 = 0;
   }
 
-  v38 = v7;
+  v38 = presentationCopy;
   v12 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
@@ -302,14 +302,14 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
     _os_log_impl(&dword_264EDF000, v12, OS_LOG_TYPE_INFO, "Configuring demuxes and weeding out empty card section views", buf, 2u);
   }
 
-  v13 = [v8 card];
-  v14 = [v13 resolvedCardSections];
+  card = [controllerCopy card];
+  resolvedCardSections = [card resolvedCardSections];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v14;
+  obj = resolvedCardSections;
   v15 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v15)
   {
@@ -325,33 +325,33 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
         }
 
         v18 = *(*(&v44 + 1) + 8 * i);
-        v19 = [v43 viewConfigurationForCardSection:v18];
+        v19 = [sourceCopy viewConfigurationForCardSection:v18];
         if (v19)
         {
           cardsByCardSectionIdentifiers = self->_cardsByCardSectionIdentifiers;
-          v21 = [v18 cardSectionIdentifier];
-          v22 = [(NSMutableDictionary *)cardsByCardSectionIdentifiers objectForKey:v21];
-          v23 = [v22 cardIdentifier];
+          cardSectionIdentifier = [v18 cardSectionIdentifier];
+          v22 = [(NSMutableDictionary *)cardsByCardSectionIdentifiers objectForKey:cardSectionIdentifier];
+          cardIdentifier = [v22 cardIdentifier];
 
-          v24 = [(NSMutableDictionary *)self->_feedbackDelegateDemultiplexersByCardIdentifiers objectForKey:v23];
+          v24 = [(NSMutableDictionary *)self->_feedbackDelegateDemultiplexersByCardIdentifiers objectForKey:cardIdentifier];
           v25 = objc_alloc_init(SUICKPFeedbackAdapter);
-          v26 = [v19 _cardKitCardSectionViewController];
-          [v26 setDelegate:self];
-          [(SUICKPFeedbackAdapter *)v25 setFeedbackDelegate:v26];
-          v27 = [v24 feedbackDelegatesByCardSectionIdentifiers];
-          v28 = [v19 cardSection];
-          v29 = [v28 cardSectionIdentifier];
-          [v27 setObject:v25 forKey:v29];
+          _cardKitCardSectionViewController = [v19 _cardKitCardSectionViewController];
+          [_cardKitCardSectionViewController setDelegate:self];
+          [(SUICKPFeedbackAdapter *)v25 setFeedbackDelegate:_cardKitCardSectionViewController];
+          feedbackDelegatesByCardSectionIdentifiers = [v24 feedbackDelegatesByCardSectionIdentifiers];
+          cardSection = [v19 cardSection];
+          cardSectionIdentifier2 = [cardSection cardSectionIdentifier];
+          [feedbackDelegatesByCardSectionIdentifiers setObject:v25 forKey:cardSectionIdentifier2];
 
-          v30 = [v19 cardSectionView];
-          v31 = [v30 cardSectionViewIdentifier];
+          cardSectionView = [v19 cardSectionView];
+          cardSectionViewIdentifier = [cardSectionView cardSectionViewIdentifier];
 
-          if (v31)
+          if (cardSectionViewIdentifier)
           {
-            v32 = [v24 feedbackDelegatesByCardSectionViewIds];
-            v33 = [v19 cardSectionView];
-            v34 = [v33 cardSectionViewIdentifier];
-            [v32 setObject:v25 forKey:v34];
+            feedbackDelegatesByCardSectionViewIds = [v24 feedbackDelegatesByCardSectionViewIds];
+            cardSectionView2 = [v19 cardSectionView];
+            cardSectionViewIdentifier2 = [cardSectionView2 cardSectionViewIdentifier];
+            [feedbackDelegatesByCardSectionViewIds setObject:v25 forKey:cardSectionViewIdentifier2];
           }
 
           [v24 setSnippetUIDelegate:v41];
@@ -376,13 +376,13 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (id)customViewControllerForCardSection:(id)a3
+- (id)customViewControllerForCardSection:(id)section
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v4];
-  v6 = [v5 cardSectionViewSource];
-  v7 = [v6 viewConfigurationForCardSection:v4];
+  sectionCopy = section;
+  v5 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:sectionCopy];
+  cardSectionViewSource = [v5 cardSectionViewSource];
+  v7 = [cardSectionViewSource viewConfigurationForCardSection:sectionCopy];
 
   v8 = MEMORY[0x277CF93F0];
   v9 = *MEMORY[0x277CF93F0];
@@ -392,15 +392,15 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
     if (v10)
     {
       v11 = v9;
-      v12 = [v7 _providerIdentifier];
+      _providerIdentifier = [v7 _providerIdentifier];
       v23 = 138412290;
-      v24 = v12;
+      v24 = _providerIdentifier;
       _os_log_impl(&dword_264EDF000, v11, OS_LOG_TYPE_DEFAULT, "Found custom card section view configuration to provide to SearchUI from provider: %@", &v23, 0xCu);
     }
 
-    v13 = [v7 _cardKitCardSectionViewController];
-    v14 = [v7 _providerIdentifier];
-    v15 = [v14 isEqualToString:@"com.apple.cards.SearchUICardKitProvider"];
+    _cardKitCardSectionViewController = [v7 _cardKitCardSectionViewController];
+    _providerIdentifier2 = [v7 _providerIdentifier];
+    v15 = [_providerIdentifier2 isEqualToString:@"com.apple.cards.SearchUICardKitProvider"];
 
     v16 = *v8;
     v17 = os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT);
@@ -409,9 +409,9 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
       if (v17)
       {
         v23 = 138412802;
-        v24 = v4;
+        v24 = sectionCopy;
         v25 = 2112;
-        v26 = v13;
+        v26 = _cardKitCardSectionViewController;
         v27 = 2112;
         v28 = v5;
         _os_log_impl(&dword_264EDF000, v16, OS_LOG_TYPE_DEFAULT, "NOT providing custom view controller for card section to SearchUI because it originated from the SearchUI provider\n    Card section: %@\n    Card section view controller: %@\n    Card view controller: %@", &v23, 0x20u);
@@ -425,15 +425,15 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
       if (v17)
       {
         v23 = 138412802;
-        v24 = v4;
+        v24 = sectionCopy;
         v25 = 2112;
-        v26 = v13;
+        v26 = _cardKitCardSectionViewController;
         v27 = 2112;
         v28 = v5;
         _os_log_impl(&dword_264EDF000, v16, OS_LOG_TYPE_DEFAULT, "Providing custom view controller for card section to SearchUI\n    Card section: %@\n    Card section view controller: %@\n    Card view controller: %@", &v23, 0x20u);
       }
 
-      v18 = v13;
+      v18 = _cardKitCardSectionViewController;
     }
   }
 
@@ -442,11 +442,11 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
     if (v10)
     {
       v19 = v9;
-      v20 = [v5 cardSectionViewSource];
+      cardSectionViewSource2 = [v5 cardSectionViewSource];
       v23 = 138412802;
-      v24 = v4;
+      v24 = sectionCopy;
       v25 = 2112;
-      v26 = v20;
+      v26 = cardSectionViewSource2;
       v27 = 2112;
       v28 = v5;
       _os_log_impl(&dword_264EDF000, v19, OS_LOG_TYPE_DEFAULT, "NOT providing custom view controller for card section to SearchUI because card section view provider manager didn't vend a configuration\n    Card section: %@\n    Card section view provider manager: %@\n    Card view controller: %@", &v23, 0x20u);
@@ -460,35 +460,35 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
   return v18;
 }
 
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = change.height;
+  width = change.width;
+  controllerCopy = controller;
   if (self->_preferredContentSize.width != width || self->_preferredContentSize.height != height)
   {
     self->_preferredContentSize.width = width;
     self->_preferredContentSize.height = height;
-    v12 = v8;
+    v12 = controllerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = v12;
-      v11 = [v10 cardViewControllerDelegate];
-      [v11 cardViewControllerBoundsDidChange:v10];
+      cardViewControllerDelegate = [v10 cardViewControllerDelegate];
+      [cardViewControllerDelegate cardViewControllerBoundsDidChange:v10];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)extractLinkID:(id)a3
+- (id)extractLinkID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [a3 resultIdentifier];
+  resultIdentifier = [d resultIdentifier];
   v4 = MEMORY[0x277CF93F0];
   v5 = *MEMORY[0x277CF93F0];
-  if (v3)
+  if (resultIdentifier)
   {
     if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_DEFAULT))
     {
@@ -496,7 +496,7 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
       _os_log_impl(&dword_264EDF000, v5, OS_LOG_TYPE_DEFAULT, "ResultIdentifier on card section set, using that for Link Identifier", &v11, 2u);
     }
 
-    v6 = v3;
+    uUIDString = resultIdentifier;
   }
 
   else
@@ -506,49 +506,49 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
       [SUICKPCardViewControllerProvider extractLinkID:v5];
     }
 
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
   v8 = *v4;
   if (os_log_type_enabled(*v4, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = uUIDString;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_DEFAULT, "Using linkIdentifier: %@", &v11, 0xCu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return uUIDString;
 }
 
-- (id)_cardViewControllerForCardSection:(id)a3
+- (id)_cardViewControllerForCardSection:(id)section
 {
   cardsByCardSectionIdentifiers = self->_cardsByCardSectionIdentifiers;
   cardViewControllersByCardIdentifiers = self->_cardViewControllersByCardIdentifiers;
-  v5 = [a3 cardSectionIdentifier];
-  v6 = [(NSMutableDictionary *)cardsByCardSectionIdentifiers objectForKey:v5];
-  v7 = [v6 cardIdentifier];
-  v8 = [(NSMutableDictionary *)cardViewControllersByCardIdentifiers objectForKey:v7];
+  cardSectionIdentifier = [section cardSectionIdentifier];
+  v6 = [(NSMutableDictionary *)cardsByCardSectionIdentifiers objectForKey:cardSectionIdentifier];
+  cardIdentifier = [v6 cardIdentifier];
+  v8 = [(NSMutableDictionary *)cardViewControllersByCardIdentifiers objectForKey:cardIdentifier];
 
   return v8;
 }
 
-- (BOOL)_askDelegateToPerformReferentialCommand:(id)a3 forCardSection:(id)a4
+- (BOOL)_askDelegateToPerformReferentialCommand:(id)command forCardSection:(id)section
 {
-  v7 = a3;
-  v8 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:a4];
-  v9 = [v8 cardViewControllerDelegate];
+  commandCopy = command;
+  v8 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:section];
+  cardViewControllerDelegate = [v8 cardViewControllerDelegate];
   v10 = objc_opt_respondsToSelector();
-  if ((v10 & 1) != 0 && ([v8 cardViewControllerDelegate], v4 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v4, "canPerformReferentialCommand:forCardViewController:", v7, v8)))
+  if ((v10 & 1) != 0 && ([v8 cardViewControllerDelegate], v4 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v4, "canPerformReferentialCommand:forCardViewController:", commandCopy, v8)))
   {
     v12 = 0;
   }
 
   else
   {
-    v11 = [v8 cardViewControllerDelegate];
+    cardViewControllerDelegate2 = [v8 cardViewControllerDelegate];
     v12 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -559,21 +559,21 @@ void __62__SUICKPCardViewControllerProvider_cardViewControllerForCard___block_in
 
 LABEL_7:
   v13 = 0;
-  if (v7 && (v12 & 1) != 0)
+  if (commandCopy && (v12 & 1) != 0)
   {
-    v14 = [v8 cardViewControllerDelegate];
-    v13 = [v14 performReferentialCommand:v7 forCardViewController:v8];
+    cardViewControllerDelegate3 = [v8 cardViewControllerDelegate];
+    v13 = [cardViewControllerDelegate3 performReferentialCommand:commandCopy forCardViewController:v8];
   }
 
   return v13;
 }
 
-- (id)_createCardViewControllerForCard:(id)a3
+- (id)_createCardViewControllerForCard:(id)card
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cardCopy = card;
   v5 = objc_alloc_init(SUICKPFeedbackDelegateDemultiplexer);
-  v6 = [objc_alloc(MEMORY[0x277D4C840]) initWithCard:v4 feedbackListener:v5];
+  v6 = [objc_alloc(MEMORY[0x277D4C840]) initWithCard:cardCopy feedbackListener:v5];
   v7 = objc_alloc_init(SUICKPFeedbackAdapter);
   [(SUICKPFeedbackAdapter *)v7 setFeedbackDelegate:v6];
   v22 = v5;
@@ -586,7 +586,7 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v4;
+    v29 = cardCopy;
     v30 = 2112;
     v31 = v6;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Instantiating SearchUICardViewController\n    Card: %@\n    Card view controller: %@", buf, 0x16u);
@@ -596,8 +596,8 @@ LABEL_7:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v4 resolvedCardSections];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  resolvedCardSections = [cardCopy resolvedCardSections];
+  v10 = [resolvedCardSections countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -608,63 +608,63 @@ LABEL_7:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(resolvedCardSections);
         }
 
         cardsByCardSectionIdentifiers = self->_cardsByCardSectionIdentifiers;
-        v15 = [*(*(&v23 + 1) + 8 * i) cardSectionIdentifier];
-        [(NSMutableDictionary *)cardsByCardSectionIdentifiers setObject:v4 forKey:v15];
+        cardSectionIdentifier = [*(*(&v23 + 1) + 8 * i) cardSectionIdentifier];
+        [(NSMutableDictionary *)cardsByCardSectionIdentifiers setObject:cardCopy forKey:cardSectionIdentifier];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [resolvedCardSections countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
   }
 
   feedbackDelegateDemultiplexersByCardIdentifiers = self->_feedbackDelegateDemultiplexersByCardIdentifiers;
-  v17 = [v4 cardIdentifier];
-  [(NSMutableDictionary *)feedbackDelegateDemultiplexersByCardIdentifiers setObject:v22 forKey:v17];
+  cardIdentifier = [cardCopy cardIdentifier];
+  [(NSMutableDictionary *)feedbackDelegateDemultiplexersByCardIdentifiers setObject:v22 forKey:cardIdentifier];
 
   cardViewControllersByCardIdentifiers = self->_cardViewControllersByCardIdentifiers;
-  v19 = [v4 cardIdentifier];
-  [(NSMutableDictionary *)cardViewControllersByCardIdentifiers setObject:v6 forKey:v19];
+  cardIdentifier2 = [cardCopy cardIdentifier];
+  [(NSMutableDictionary *)cardViewControllersByCardIdentifiers setObject:v6 forKey:cardIdentifier2];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (BOOL)performCommand:(id)a3 forCardSectionViewController:(id)a4
+- (BOOL)performCommand:(id)command forCardSectionViewController:(id)controller
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  controllerCopy = controller;
   v8 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v49 = v6;
+    v49 = commandCopy;
     v50 = 2112;
-    v51 = v7;
+    v51 = controllerCopy;
     _os_log_impl(&dword_264EDF000, v8, OS_LOG_TYPE_INFO, "Got command %@ from card section view controller: %@", buf, 0x16u);
   }
 
-  if ([v6 conformsToProtocol:&unk_2876D4660])
+  if ([commandCopy conformsToProtocol:&unk_2876D4660])
   {
-    v9 = v6;
-    v36 = v7;
-    [v7 cardSection];
+    v9 = commandCopy;
+    v36 = controllerCopy;
+    [controllerCopy cardSection];
     v35 = v37 = self;
     [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:?];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v34 = v45 = 0u;
-    v10 = [v34 card];
-    v11 = [v10 dismissalCommands];
+    card = [v34 card];
+    dismissalCommands = [card dismissalCommands];
 
-    v12 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    v12 = [dismissalCommands countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v12)
     {
       v13 = v12;
@@ -675,15 +675,15 @@ LABEL_7:
         {
           if (*v43 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(dismissalCommands);
           }
 
           v16 = *(*(&v42 + 1) + 8 * i);
           if ([v16 conformsToProtocol:&unk_2876D4660])
           {
-            v17 = [v16 referenceIdentifier];
-            v18 = [v9 referenceIdentifier];
-            v19 = [v17 isEqualToString:v18];
+            referenceIdentifier = [v16 referenceIdentifier];
+            referenceIdentifier2 = [v9 referenceIdentifier];
+            v19 = [referenceIdentifier isEqualToString:referenceIdentifier2];
 
             if (v19)
             {
@@ -708,9 +708,9 @@ LABEL_7:
                     }
 
                     v28 = *(*(&v38 + 1) + 8 * j);
-                    v29 = [v28 referenceIdentifier];
-                    v30 = [v9 referenceIdentifier];
-                    v31 = [v29 isEqualToString:v30];
+                    referenceIdentifier3 = [v28 referenceIdentifier];
+                    referenceIdentifier4 = [v9 referenceIdentifier];
+                    v31 = [referenceIdentifier3 isEqualToString:referenceIdentifier4];
 
                     if (v31)
                     {
@@ -733,13 +733,13 @@ LABEL_28:
 
               [(NSMutableArray *)v37->_pendingDismissalCommands addObject:v9];
               v21 = 1;
-              v20 = v35;
+              cardViewControllerDelegate = v35;
               goto LABEL_29;
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v13 = [dismissalCommands countByEnumeratingWithState:&v42 objects:v47 count:16];
         if (v13)
         {
           continue;
@@ -749,24 +749,24 @@ LABEL_28:
       }
     }
 
-    v20 = v35;
+    cardViewControllerDelegate = v35;
     v21 = [(SUICKPCardViewControllerProvider *)v37 _askDelegateToPerformReferentialCommand:v9 forCardSection:v35];
 LABEL_29:
 
-    v7 = v36;
+    controllerCopy = v36;
     goto LABEL_30;
   }
 
-  if ([v6 conformsToProtocol:&unk_2876CCEE8])
+  if ([commandCopy conformsToProtocol:&unk_2876CCEE8])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v7 cardSection];
-      v9 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v22];
+      cardSection = [controllerCopy cardSection];
+      v9 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:cardSection];
 
-      v20 = [v9 cardViewControllerDelegate];
-      v21 = [v6 handleForCardViewController:v9 cardViewControllerDelegate:v20];
+      cardViewControllerDelegate = [v9 cardViewControllerDelegate];
+      v21 = [commandCopy handleForCardViewController:v9 cardViewControllerDelegate:cardViewControllerDelegate];
 LABEL_30:
 
       goto LABEL_31;
@@ -780,35 +780,35 @@ LABEL_31:
   return v21;
 }
 
-- (void)presentViewController:(id)a3 forCardSectionViewController:(id)a4
+- (void)presentViewController:(id)controller forCardSectionViewController:(id)viewController
 {
-  v10 = a3;
-  v6 = [a4 cardSection];
-  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v6];
+  controllerCopy = controller;
+  cardSection = [viewController cardSection];
+  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:cardSection];
 
-  v8 = [v7 cardViewControllerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  cardViewControllerDelegate = [v7 cardViewControllerDelegate];
+  LOBYTE(cardSection) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (cardSection)
   {
-    v9 = [v7 cardViewControllerDelegate];
-    [v9 presentViewController:v10 forCardViewController:v7];
+    cardViewControllerDelegate2 = [v7 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 presentViewController:controllerCopy forCardViewController:v7];
   }
 }
 
-- (CGSize)boundingSizeForCardSectionViewController:(id)a3
+- (CGSize)boundingSizeForCardSectionViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
-  v6 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v5];
+  controllerCopy = controller;
+  cardSection = [controllerCopy cardSection];
+  v6 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:cardSection];
 
-  v7 = [v6 cardViewControllerDelegate];
+  cardViewControllerDelegate = [v6 cardViewControllerDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [v6 cardViewControllerDelegate];
-    [v9 cardViewController:v6 boundingSizeForCardSectionViewController:v4];
+    cardViewControllerDelegate2 = [v6 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardViewController:v6 boundingSizeForCardSectionViewController:controllerCopy];
     v11 = v10;
     v13 = v12;
   }
@@ -826,78 +826,78 @@ LABEL_31:
   return result;
 }
 
-- (void)cardSectionView:(id)a3 willProcessEngagementFeedback:(id)a4
+- (void)cardSectionView:(id)view willProcessEngagementFeedback:(id)feedback
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v11];
-  v8 = [v7 cardViewControllerDelegate];
+  viewCopy = view;
+  feedbackCopy = feedback;
+  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:viewCopy];
+  cardViewControllerDelegate = [v7 cardViewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [v7 cardViewControllerDelegate];
-    [v10 cardSectionView:v11 willProcessEngagementFeedback:v6];
+    cardViewControllerDelegate2 = [v7 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionView:viewCopy willProcessEngagementFeedback:feedbackCopy];
   }
 }
 
-- (void)userDidEngageCardSection:(id)a3 withEngagementFeedback:(id)a4
+- (void)userDidEngageCardSection:(id)section withEngagementFeedback:(id)feedback
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v11];
-  v8 = [v7 cardViewControllerDelegate];
+  sectionCopy = section;
+  feedbackCopy = feedback;
+  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:sectionCopy];
+  cardViewControllerDelegate = [v7 cardViewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [v7 cardViewControllerDelegate];
-    [v10 userDidEngageCardSection:v11 withEngagementFeedback:v6];
+    cardViewControllerDelegate2 = [v7 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 userDidEngageCardSection:sectionCopy withEngagementFeedback:feedbackCopy];
   }
 }
 
-- (void)cardSectionViewWillAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardSectionViewWillAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v11];
-  v8 = [v7 cardViewControllerDelegate];
+  sectionCopy = section;
+  feedbackCopy = feedback;
+  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:sectionCopy];
+  cardViewControllerDelegate = [v7 cardViewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [v7 cardViewControllerDelegate];
-    [v10 cardSectionViewWillAppearForCardSection:v11 withAppearanceFeedback:v6];
+    cardViewControllerDelegate2 = [v7 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionViewWillAppearForCardSection:sectionCopy withAppearanceFeedback:feedbackCopy];
   }
 }
 
-- (void)cardSectionViewDidAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardSectionViewDidAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v11];
-  v8 = [v7 cardViewControllerDelegate];
+  sectionCopy = section;
+  feedbackCopy = feedback;
+  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:sectionCopy];
+  cardViewControllerDelegate = [v7 cardViewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [v7 cardViewControllerDelegate];
-    [v10 cardSectionViewDidAppearForCardSection:v11 withAppearanceFeedback:v6];
+    cardViewControllerDelegate2 = [v7 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionViewDidAppearForCardSection:sectionCopy withAppearanceFeedback:feedbackCopy];
   }
 }
 
-- (void)cardSectionViewDidDisappearForCardSection:(id)a3 withDisappearanceFeedback:(id)a4
+- (void)cardSectionViewDidDisappearForCardSection:(id)section withDisappearanceFeedback:(id)feedback
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:v11];
-  v8 = [v7 cardViewControllerDelegate];
+  sectionCopy = section;
+  feedbackCopy = feedback;
+  v7 = [(SUICKPCardViewControllerProvider *)self _cardViewControllerForCardSection:sectionCopy];
+  cardViewControllerDelegate = [v7 cardViewControllerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [v7 cardViewControllerDelegate];
-    [v10 cardSectionViewDidDisappearForCardSection:v11 withDisappearanceFeedback:v6];
+    cardViewControllerDelegate2 = [v7 cardViewControllerDelegate];
+    [cardViewControllerDelegate2 cardSectionViewDidDisappearForCardSection:sectionCopy withDisappearanceFeedback:feedbackCopy];
   }
 }
 

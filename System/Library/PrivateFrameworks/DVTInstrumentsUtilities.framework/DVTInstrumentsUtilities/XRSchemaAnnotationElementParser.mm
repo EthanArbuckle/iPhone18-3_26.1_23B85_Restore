@@ -1,7 +1,7 @@
 @interface XRSchemaAnnotationElementParser
 + (id)_elementNameToClassMap;
 - (XRSchemaAnnotationTextValuesDelegate)delegate;
-- (void)textParserCompletedParsing:(id)a3 elementName:(id)a4;
+- (void)textParserCompletedParsing:(id)parsing elementName:(id)name;
 @end
 
 @implementation XRSchemaAnnotationElementParser
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (void)textParserCompletedParsing:(id)a3 elementName:(id)a4
+- (void)textParserCompletedParsing:(id)parsing elementName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  parsingCopy = parsing;
   v14 = objc_msgSend_delegate(self, v8, v9, v10, v11);
-  objc_msgSend_textParserCompletedParsing_elementName_(v14, v12, v7, v6, v13);
+  objc_msgSend_textParserCompletedParsing_elementName_(v14, v12, parsingCopy, nameCopy, v13);
 }
 
 - (XRSchemaAnnotationTextValuesDelegate)delegate

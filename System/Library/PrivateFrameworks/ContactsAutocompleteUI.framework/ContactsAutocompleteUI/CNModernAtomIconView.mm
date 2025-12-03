@@ -1,18 +1,18 @@
 @interface CNModernAtomIconView
-- (BOOL)iconImagesChanged:(id)a3;
+- (BOOL)iconImagesChanged:(id)changed;
 - (CGPoint)drawingOffset;
-- (CNModernAtomIconView)initWithFrame:(CGRect)a3;
+- (CNModernAtomIconView)initWithFrame:(CGRect)frame;
 - (double)preferredWidth;
-- (void)setIconImages:(id)a3;
+- (void)setIconImages:(id)images;
 @end
 
 @implementation CNModernAtomIconView
 
-- (CNModernAtomIconView)initWithFrame:(CGRect)a3
+- (CNModernAtomIconView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CNModernAtomIconView;
-  v3 = [(CNModernAtomIconView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNModernAtomIconView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E698B730]);
@@ -30,21 +30,21 @@
   return v3;
 }
 
-- (BOOL)iconImagesChanged:(id)a3
+- (BOOL)iconImagesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
+  changedCopy = changed;
+  v5 = changedCopy;
   iconImages = self->_iconImages;
   if (iconImages)
   {
-    if (iconImages == v4)
+    if (iconImages == changedCopy)
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v7 = ![(NSArray *)v4 isEqualToArray:?];
+      v7 = ![(NSArray *)changedCopy isEqualToArray:?];
     }
   }
 
@@ -56,29 +56,29 @@
   return v7;
 }
 
-- (void)setIconImages:(id)a3
+- (void)setIconImages:(id)images
 {
-  v11 = a3;
+  imagesCopy = images;
   if ([(CNModernAtomIconView *)self iconImagesChanged:?])
   {
-    objc_storeStrong(&self->_iconImages, a3);
-    v5 = [(NUIContainerStackView *)self->_stackView subviews];
-    v6 = [v5 count];
-    v7 = [v11 count];
+    objc_storeStrong(&self->_iconImages, images);
+    subviews = [(NUIContainerStackView *)self->_stackView subviews];
+    v6 = [subviews count];
+    v7 = [imagesCopy count];
     if (v6 != v7)
     {
       [(NUIContainerStackView *)self->_stackView setArrangedSubviews:0];
     }
 
-    if ([v11 count])
+    if ([imagesCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v11 objectAtIndexedSubscript:v8];
+        v9 = [imagesCopy objectAtIndexedSubscript:v8];
         if (v6 == v7)
         {
-          v10 = [v5 objectAtIndexedSubscript:v8];
+          v10 = [subviews objectAtIndexedSubscript:v8];
           [v10 setImage:v9];
         }
 
@@ -92,7 +92,7 @@
         ++v8;
       }
 
-      while ([v11 count] > v8);
+      while ([imagesCopy count] > v8);
     }
   }
 }
@@ -103,14 +103,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(CNModernAtomIconView *)self iconImages];
+  iconImages = [(CNModernAtomIconView *)self iconImages];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__CNModernAtomIconView_preferredWidth__block_invoke;
   v6[3] = &unk_1E7CD2778;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [iconImages enumerateObjectsUsingBlock:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);

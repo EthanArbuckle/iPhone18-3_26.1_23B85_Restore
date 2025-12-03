@@ -3,20 +3,20 @@
 - (BKPageNavigationViewController)init;
 - (UIPageViewControllerDataSource)dataSource;
 - (_NSRange)visiblePages;
-- (id)_imageViewForPageContentImage:(id)a3;
+- (id)_imageViewForPageContentImage:(id)image;
 - (id)viewForLiveResize;
-- (int64_t)_leftPageNumberForOffset:(int64_t)a3 usingPageCount:(int64_t)a4;
-- (int64_t)_pageNumberForOffset:(int64_t)a3 onGreaterSide:(BOOL)a4 usingPageCount:(int64_t)a5;
-- (int64_t)_rightPageNumberForOffset:(int64_t)a3 usingPageCount:(int64_t)a4;
-- (int64_t)leftPageNumberForSinglePageOffset:(int64_t)a3;
-- (int64_t)leftPageNumberForSpreadPageOffset:(int64_t)a3;
-- (int64_t)rightPageNumberForSinglePageOffset:(int64_t)a3;
-- (int64_t)rightPageNumberForSpreadPageOffset:(int64_t)a3;
-- (void)adjustToNewSize:(CGSize)a3;
-- (void)contentViewImage:(BOOL)a3 afterScreenUpdates:(BOOL)a4 completion:(id)a5;
-- (void)contentViewImage:(BOOL)a3 completion:(id)a4;
-- (void)turnToNextPageWithDelta:(unint64_t)a3;
-- (void)turnToPreviousPageWithDelta:(unint64_t)a3;
+- (int64_t)_leftPageNumberForOffset:(int64_t)offset usingPageCount:(int64_t)count;
+- (int64_t)_pageNumberForOffset:(int64_t)offset onGreaterSide:(BOOL)side usingPageCount:(int64_t)count;
+- (int64_t)_rightPageNumberForOffset:(int64_t)offset usingPageCount:(int64_t)count;
+- (int64_t)leftPageNumberForSinglePageOffset:(int64_t)offset;
+- (int64_t)leftPageNumberForSpreadPageOffset:(int64_t)offset;
+- (int64_t)rightPageNumberForSinglePageOffset:(int64_t)offset;
+- (int64_t)rightPageNumberForSpreadPageOffset:(int64_t)offset;
+- (void)adjustToNewSize:(CGSize)size;
+- (void)contentViewImage:(BOOL)image afterScreenUpdates:(BOOL)updates completion:(id)completion;
+- (void)contentViewImage:(BOOL)image completion:(id)completion;
+- (void)turnToNextPageWithDelta:(unint64_t)delta;
+- (void)turnToPreviousPageWithDelta:(unint64_t)delta;
 @end
 
 @implementation BKPageNavigationViewController
@@ -43,71 +43,71 @@
   return result;
 }
 
-- (void)contentViewImage:(BOOL)a3 completion:(id)a4
+- (void)contentViewImage:(BOOL)image completion:(id)completion
 {
-  v5 = objc_retainBlock(a4);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v8 = v5;
-    v6 = [(BKPageNavigationViewController *)self contentView];
-    v7 = [v6 im_snapshotInContext];
-    v8[2](v8, v7);
+    contentView = [(BKPageNavigationViewController *)self contentView];
+    im_snapshotInContext = [contentView im_snapshotInContext];
+    v8[2](v8, im_snapshotInContext);
 
     v5 = v8;
   }
 }
 
-- (void)contentViewImage:(BOOL)a3 afterScreenUpdates:(BOOL)a4 completion:(id)a5
+- (void)contentViewImage:(BOOL)image afterScreenUpdates:(BOOL)updates completion:(id)completion
 {
-  v6 = objc_retainBlock(a5);
+  v6 = objc_retainBlock(completion);
   if (v6)
   {
     v9 = v6;
-    v7 = [(BKPageNavigationViewController *)self contentView];
-    v8 = [v7 im_snapshotInContext];
-    v9[2](v9, v8);
+    contentView = [(BKPageNavigationViewController *)self contentView];
+    im_snapshotInContext = [contentView im_snapshotInContext];
+    v9[2](v9, im_snapshotInContext);
 
     v6 = v9;
   }
 }
 
-- (void)turnToNextPageWithDelta:(unint64_t)a3
+- (void)turnToNextPageWithDelta:(unint64_t)delta
 {
-  v5 = [(BKViewController *)self layoutDirection];
-  v6 = [(BKPageNavigationViewController *)self pageOffset];
-  if (v5 == 1)
+  layoutDirection = [(BKViewController *)self layoutDirection];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  if (layoutDirection == 1)
   {
-    v7 = -a3;
+    deltaCopy = -delta;
   }
 
   else
   {
-    v7 = a3;
+    deltaCopy = delta;
   }
 
-  [(BKPageNavigationViewController *)self turnToPageNumber:v6 + v7 + 1 animated:1];
+  [(BKPageNavigationViewController *)self turnToPageNumber:pageOffset + deltaCopy + 1 animated:1];
 }
 
-- (void)turnToPreviousPageWithDelta:(unint64_t)a3
+- (void)turnToPreviousPageWithDelta:(unint64_t)delta
 {
-  v5 = [(BKViewController *)self layoutDirection];
-  v6 = [(BKPageNavigationViewController *)self pageOffset];
-  if (v5 == 1)
+  layoutDirection = [(BKViewController *)self layoutDirection];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  if (layoutDirection == 1)
   {
-    v7 = a3;
+    deltaCopy = delta;
   }
 
   else
   {
-    v7 = -a3;
+    deltaCopy = -delta;
   }
 
-  [(BKPageNavigationViewController *)self turnToPageNumber:v6 + v7 + 1 animated:1];
+  [(BKPageNavigationViewController *)self turnToPageNumber:pageOffset + deltaCopy + 1 animated:1];
 }
 
-- (void)adjustToNewSize:(CGSize)a3
+- (void)adjustToNewSize:(CGSize)size
 {
-  v3 = [NSString stringWithFormat:@"%@: %s", a3.width, a3.height, @"Do not call method", "[BKPageNavigationViewController adjustToNewSize:]"];
+  v3 = [NSString stringWithFormat:@"%@: %s", size.width, size.height, @"Do not call method", "[BKPageNavigationViewController adjustToNewSize:]"];
   v4 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v3 userInfo:0];
   v5 = v4;
 
@@ -137,49 +137,49 @@
   return WeakRetained;
 }
 
-- (id)_imageViewForPageContentImage:(id)a3
+- (id)_imageViewForPageContentImage:(id)image
 {
-  v3 = a3;
-  v4 = [[UIImageView alloc] initWithImage:v3];
+  imageCopy = image;
+  v4 = [[UIImageView alloc] initWithImage:imageCopy];
 
   [v4 setContentMode:1];
 
   return v4;
 }
 
-- (int64_t)_pageNumberForOffset:(int64_t)a3 onGreaterSide:(BOOL)a4 usingPageCount:(int64_t)a5
+- (int64_t)_pageNumberForOffset:(int64_t)offset onGreaterSide:(BOOL)side usingPageCount:(int64_t)count
 {
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  v6 = (a3 & 1) + a3;
-  if (a3 > a5)
+  v6 = (offset & 1) + offset;
+  if (offset > count)
   {
     v6 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 >= 1)
+  if (offset >= 1)
   {
     v5 = v6;
   }
 
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   v8 = 1;
-  if (a3)
+  if (offset)
   {
     v8 = 2;
   }
 
-  v9 = v8 + a3;
-  if (a3 > a5)
+  v9 = v8 + offset;
+  if (offset > count)
   {
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 >= 0)
+  if (offset >= 0)
   {
     v7 = v9;
   }
 
-  if (a4)
+  if (side)
   {
     return v7;
   }
@@ -190,46 +190,46 @@
   }
 }
 
-- (int64_t)_leftPageNumberForOffset:(int64_t)a3 usingPageCount:(int64_t)a4
+- (int64_t)_leftPageNumberForOffset:(int64_t)offset usingPageCount:(int64_t)count
 {
   v7 = [(BKViewController *)self layoutDirection]== &dword_0 + 1;
 
-  return [(BKPageNavigationViewController *)self _pageNumberForOffset:a3 onGreaterSide:v7 usingPageCount:a4];
+  return [(BKPageNavigationViewController *)self _pageNumberForOffset:offset onGreaterSide:v7 usingPageCount:count];
 }
 
-- (int64_t)_rightPageNumberForOffset:(int64_t)a3 usingPageCount:(int64_t)a4
+- (int64_t)_rightPageNumberForOffset:(int64_t)offset usingPageCount:(int64_t)count
 {
   v7 = [(BKViewController *)self layoutDirection]== 0;
 
-  return [(BKPageNavigationViewController *)self _pageNumberForOffset:a3 onGreaterSide:v7 usingPageCount:a4];
+  return [(BKPageNavigationViewController *)self _pageNumberForOffset:offset onGreaterSide:v7 usingPageCount:count];
 }
 
-- (int64_t)leftPageNumberForSpreadPageOffset:(int64_t)a3
+- (int64_t)leftPageNumberForSpreadPageOffset:(int64_t)offset
 {
   v5 = [(BKPageNavigationViewController *)self pageCount]- 1;
 
-  return [(BKPageNavigationViewController *)self _leftPageNumberForOffset:a3 usingPageCount:v5];
+  return [(BKPageNavigationViewController *)self _leftPageNumberForOffset:offset usingPageCount:v5];
 }
 
-- (int64_t)rightPageNumberForSpreadPageOffset:(int64_t)a3
+- (int64_t)rightPageNumberForSpreadPageOffset:(int64_t)offset
 {
   v5 = [(BKPageNavigationViewController *)self pageCount]- 1;
 
-  return [(BKPageNavigationViewController *)self _rightPageNumberForOffset:a3 usingPageCount:v5];
+  return [(BKPageNavigationViewController *)self _rightPageNumberForOffset:offset usingPageCount:v5];
 }
 
-- (int64_t)leftPageNumberForSinglePageOffset:(int64_t)a3
+- (int64_t)leftPageNumberForSinglePageOffset:(int64_t)offset
 {
-  v5 = [(BKPageNavigationViewController *)self pageCount];
+  pageCount = [(BKPageNavigationViewController *)self pageCount];
 
-  return [(BKPageNavigationViewController *)self _leftPageNumberForOffset:a3 usingPageCount:v5];
+  return [(BKPageNavigationViewController *)self _leftPageNumberForOffset:offset usingPageCount:pageCount];
 }
 
-- (int64_t)rightPageNumberForSinglePageOffset:(int64_t)a3
+- (int64_t)rightPageNumberForSinglePageOffset:(int64_t)offset
 {
-  v5 = [(BKPageNavigationViewController *)self pageCount];
+  pageCount = [(BKPageNavigationViewController *)self pageCount];
 
-  return [(BKPageNavigationViewController *)self _rightPageNumberForOffset:a3 usingPageCount:v5];
+  return [(BKPageNavigationViewController *)self _rightPageNumberForOffset:offset usingPageCount:pageCount];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface RidesharingContainerViewController
 - (ButtonsContainerViewController)recenterButtonContainer;
-- (CGPoint)mapView:(id)a3 focusPointForPoint:(CGPoint)a4 gesture:(int64_t)a5;
+- (CGPoint)mapView:(id)view focusPointForPoint:(CGPoint)point gesture:(int64_t)gesture;
 - (RidesharingConfirmedRideViewController)confirmedRideViewController;
 - (RidesharingDetailsPickingViewController)detailsPickingViewController;
 - (id)_topBannerViewHorizontalConstraints;
-- (void)_moveMapToNewStartWaypointIfNeededAnimated:(BOOL)a3;
-- (void)_moveToCenterCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_recenterTapped:(id)a3;
+- (void)_moveMapToNewStartWaypointIfNeededAnimated:(BOOL)animated;
+- (void)_moveToCenterCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_recenterTapped:(id)tapped;
 - (void)_setupRecenterButton;
 - (void)_updateETACalloutFromDetailsPickingProviderAndMapMoving;
-- (void)_updateForShowingDetailsPickingAnimated:(BOOL)a3;
-- (void)contentHeightUpdatedWithValue:(double)a3;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)requestRideStatusDidChange:(id)a3;
+- (void)_updateForShowingDetailsPickingAnimated:(BOOL)animated;
+- (void)contentHeightUpdatedWithValue:(double)value;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)requestRideStatusDidChange:(id)change;
 - (void)setNeedsUpdateForShowingDetailsPickingAnimated;
-- (void)updateForDismissingDetailsPickingAnimated:(BOOL)a3;
-- (void)updateTopBannerViewWithTopBannerItems:(id)a3;
+- (void)updateForDismissingDetailsPickingAnimated:(BOOL)animated;
+- (void)updateTopBannerViewWithTopBannerItems:(id)items;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RidesharingContainerViewController
@@ -38,21 +38,21 @@
   return WeakRetained;
 }
 
-- (CGPoint)mapView:(id)a3 focusPointForPoint:(CGPoint)a4 gesture:(int64_t)a5
+- (CGPoint)mapView:(id)view focusPointForPoint:(CGPoint)point gesture:(int64_t)gesture
 {
-  if (a5 == 1)
+  if (gesture == 1)
   {
-    v5 = a3;
-    [v5 centerCoordinate];
-    [v5 convertCoordinate:v5 toPointToView:?];
+    viewCopy = view;
+    [viewCopy centerCoordinate];
+    [viewCopy convertCoordinate:viewCopy toPointToView:?];
     x = v6;
     y = v8;
   }
 
   else
   {
-    y = a4.y;
-    x = a4.x;
+    y = point.y;
+    x = point.x;
   }
 
   v10 = x;
@@ -62,21 +62,21 @@
   return result;
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  v7 = a3;
-  v11 = v7;
-  if (self->_requestingRide || a4 == 1)
+  viewCopy = view;
+  v11 = viewCopy;
+  if (self->_requestingRide || gesture == 1)
   {
-    [v7 setScrollEnabled:0];
+    [viewCopy setScrollEnabled:0];
   }
 
   else
   {
     self->_isUserInitiatedMapChange = 1;
-    v8 = [(ContainerViewController *)self currentViewController];
-    v9 = [(RidesharingContainerViewController *)self detailsPickingViewController];
-    v10 = [v8 isEqual:v9];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    detailsPickingViewController = [(RidesharingContainerViewController *)self detailsPickingViewController];
+    v10 = [currentViewController isEqual:detailsPickingViewController];
 
     if (v10)
     {
@@ -85,13 +85,13 @@
   }
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v17 = a3;
-  [v17 setScrollEnabled:1];
-  v5 = [(ContainerViewController *)self currentViewController];
-  v6 = [(RidesharingContainerViewController *)self detailsPickingViewController];
-  if ([v5 isEqual:v6])
+  viewCopy = view;
+  [viewCopy setScrollEnabled:1];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  detailsPickingViewController = [(RidesharingContainerViewController *)self detailsPickingViewController];
+  if ([currentViewController isEqual:detailsPickingViewController])
   {
     isUserInitiatedMapChange = self->_isUserInitiatedMapChange;
 
@@ -103,13 +103,13 @@
     [(MKMarkerAnnotationView *)self->_ETACalloutView center];
     v9 = v8;
     v11 = v10;
-    v12 = [(MKMarkerAnnotationView *)self->_ETACalloutView superview];
-    [v17 convertPoint:v12 toCoordinateFromView:{v9, v11}];
+    superview = [(MKMarkerAnnotationView *)self->_ETACalloutView superview];
+    [viewCopy convertPoint:superview toCoordinateFromView:{v9, v11}];
     v14 = v13;
     v16 = v15;
 
-    v5 = [(RidesharingContainerViewController *)self requestRideOptionProxy];
-    [v5 updateStartingWaypointCoordinate:{v14, v16}];
+    currentViewController = [(RidesharingContainerViewController *)self requestRideOptionProxy];
+    [currentViewController updateStartingWaypointCoordinate:{v14, v16}];
   }
 
   else
@@ -127,18 +127,18 @@ LABEL_6:
 
 - (id)_topBannerViewHorizontalConstraints
 {
-  v15 = [(OverlayContainerViewController *)self topBannerView];
-  v14 = [v15 leadingAnchor];
-  v3 = [(OverlayContainerViewController *)self overlayView];
-  v4 = [v3 leadingAnchor];
-  v5 = [v14 constraintEqualToAnchor:v4 constant:sub_100019A44()];
+  topBannerView = [(OverlayContainerViewController *)self topBannerView];
+  leadingAnchor = [topBannerView leadingAnchor];
+  overlayView = [(OverlayContainerViewController *)self overlayView];
+  leadingAnchor2 = [overlayView leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:sub_100019A44()];
   v16[0] = v5;
-  v6 = [(OverlayContainerViewController *)self topBannerView];
-  v7 = [v6 trailingAnchor];
-  v8 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  v9 = [v8 view];
-  v10 = [v9 leadingAnchor];
-  v11 = [v7 constraintEqualToAnchor:v10 constant:-sub_100019A44()];
+  topBannerView2 = [(OverlayContainerViewController *)self topBannerView];
+  trailingAnchor = [topBannerView2 trailingAnchor];
+  recenterButtonContainer = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  view = [recenterButtonContainer view];
+  leadingAnchor3 = [view leadingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-sub_100019A44()];
   v16[1] = v11;
   v12 = [NSArray arrayWithObjects:v16 count:2];
 
@@ -147,50 +147,50 @@ LABEL_6:
 
 - (void)_setupRecenterButton
 {
-  v3 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  v4 = [v3 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  recenterButtonContainer = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  view = [recenterButtonContainer view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  [(ContainerViewController *)self addChildViewController:v5];
+  recenterButtonContainer2 = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  [(ContainerViewController *)self addChildViewController:recenterButtonContainer2];
 
-  v6 = [(OverlayContainerViewController *)self overlayView];
-  v7 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  v8 = [v7 view];
-  [v6 addSubview:v8];
+  overlayView = [(OverlayContainerViewController *)self overlayView];
+  recenterButtonContainer3 = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  view2 = [recenterButtonContainer3 view];
+  [overlayView addSubview:view2];
 
-  v24 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  v23 = [v24 view];
-  v21 = [v23 trailingAnchor];
-  v22 = [(OverlayContainerViewController *)self innerLayoutGuide];
-  v9 = [v22 trailingAnchor];
-  v10 = [v21 constraintEqualToAnchor:v9];
+  recenterButtonContainer4 = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  view3 = [recenterButtonContainer4 view];
+  trailingAnchor = [view3 trailingAnchor];
+  innerLayoutGuide = [(OverlayContainerViewController *)self innerLayoutGuide];
+  trailingAnchor2 = [innerLayoutGuide trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[0] = v10;
-  v11 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  v12 = [v11 view];
-  v13 = [v12 topAnchor];
-  v14 = [(OverlayContainerViewController *)self innerLayoutGuide];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  recenterButtonContainer5 = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  view4 = [recenterButtonContainer5 view];
+  topAnchor = [view4 topAnchor];
+  innerLayoutGuide2 = [(OverlayContainerViewController *)self innerLayoutGuide];
+  topAnchor2 = [innerLayoutGuide2 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[1] = v16;
   v17 = [NSArray arrayWithObjects:v25 count:2];
   [NSLayoutConstraint activateConstraints:v17];
 
-  v18 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  [v18 didMoveToParentViewController:self];
+  recenterButtonContainer6 = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  [recenterButtonContainer6 didMoveToParentViewController:self];
 
-  v19 = [(RidesharingContainerViewController *)self recenterButtonContainer];
-  v20 = [v19 view];
-  [v20 layoutIfNeeded];
+  recenterButtonContainer7 = [(RidesharingContainerViewController *)self recenterButtonContainer];
+  view5 = [recenterButtonContainer7 view];
+  [view5 layoutIfNeeded];
 }
 
-- (void)_recenterTapped:(id)a3
+- (void)_recenterTapped:(id)tapped
 {
-  v4 = [(ContainerViewController *)self chromeViewController];
-  v14 = [v4 mapView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  v5 = [v14 userLocation];
-  [v5 coordinate];
+  userLocation = [mapView userLocation];
+  [userLocation coordinate];
   v7 = v6;
   v9 = v8;
 
@@ -198,14 +198,14 @@ LABEL_6:
   v16.longitude = v9;
   if (CLLocationCoordinate2DIsValid(v16))
   {
-    v10 = [(ContainerViewController *)self currentViewController];
-    v11 = [(RidesharingContainerViewController *)self detailsPickingViewController];
-    v12 = [v10 isEqual:v11];
+    currentViewController = [(ContainerViewController *)self currentViewController];
+    detailsPickingViewController = [(RidesharingContainerViewController *)self detailsPickingViewController];
+    v12 = [currentViewController isEqual:detailsPickingViewController];
 
     if (v12)
     {
-      v13 = [(RidesharingContainerViewController *)self requestRideOptionProxy];
-      [v13 updateStartingWaypointCoordinate:{v7, v9}];
+      requestRideOptionProxy = [(RidesharingContainerViewController *)self requestRideOptionProxy];
+      [requestRideOptionProxy updateStartingWaypointCoordinate:{v7, v9}];
     }
 
     [(RidesharingContainerViewController *)self _moveToCenterCoordinate:v7, v9];
@@ -234,8 +234,8 @@ LABEL_6:
     v12 = self->_recenterButtonContainer;
     self->_recenterButtonContainer = v11;
 
-    v13 = [(ContainerViewController *)self blurGroupName];
-    [(ButtonsContainerViewController *)self->_recenterButtonContainer setBlurGroupName:v13];
+    blurGroupName = [(ContainerViewController *)self blurGroupName];
+    [(ButtonsContainerViewController *)self->_recenterButtonContainer setBlurGroupName:blurGroupName];
 
     recenterButtonContainer = self->_recenterButtonContainer;
   }
@@ -243,10 +243,10 @@ LABEL_6:
   return recenterButtonContainer;
 }
 
-- (void)_moveToCenterCoordinate:(CLLocationCoordinate2D)a3
+- (void)_moveToCenterCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -259,47 +259,47 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  v9 = [(ContainerViewController *)self chromeViewController];
-  v10 = [v9 mapView];
-  [v10 setCenterCoordinate:1 animated:{latitude, longitude}];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView setCenterCoordinate:1 animated:{latitude, longitude}];
 }
 
-- (void)_moveMapToNewStartWaypointIfNeededAnimated:(BOOL)a3
+- (void)_moveMapToNewStartWaypointIfNeededAnimated:(BOOL)animated
 {
   if (!self->_isUserInitiatedMapChange)
   {
-    v4 = a3;
-    v8 = [(RidesharingContainerViewController *)self requestRideStatus];
-    v6 = [(ContainerViewController *)self chromeViewController];
-    v7 = [v6 mapView];
-    [v8 startWaypointCoordinate];
-    [v7 setCenterCoordinate:v4 animated:?];
+    animatedCopy = animated;
+    requestRideStatus = [(RidesharingContainerViewController *)self requestRideStatus];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    mapView = [chromeViewController mapView];
+    [requestRideStatus startWaypointCoordinate];
+    [mapView setCenterCoordinate:animatedCopy animated:?];
   }
 }
 
 - (void)_updateETACalloutFromDetailsPickingProviderAndMapMoving
 {
-  v3 = [(ContainerViewController *)self currentViewController];
-  [v3 heightForLayout:2];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [currentViewController heightForLayout:2];
   v5 = v4;
 
-  v6 = [(ContainerViewController *)self currentViewController];
-  [v6 heightForLayout:3];
+  currentViewController2 = [(ContainerViewController *)self currentViewController];
+  [currentViewController2 heightForLayout:3];
   v8 = v7;
 
-  v9 = [(ContainerViewController *)self chromeViewController];
-  v10 = [v9 mapView];
-  [v10 _edgeInsets];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView _edgeInsets];
   v12 = v11;
 
-  v13 = [(ContainerViewController *)self containerStyle];
+  containerStyle = [(ContainerViewController *)self containerStyle];
   v14 = v8 + v5;
-  if (((1 << v13) & 0xA3) == 0)
+  if (((1 << containerStyle) & 0xA3) == 0)
   {
     v14 = v8;
   }
 
-  if (v13 > 7)
+  if (containerStyle > 7)
   {
     v14 = v8;
   }
@@ -308,36 +308,36 @@ LABEL_6:
   ETACalloutView = self->_ETACalloutView;
   if (ETACalloutView)
   {
-    v17 = [(MKMarkerAnnotationView *)ETACalloutView superview];
-    if (v17)
+    superview = [(MKMarkerAnnotationView *)ETACalloutView superview];
+    if (superview)
     {
     }
 
     else
     {
-      v18 = [(ContainerViewController *)self chromeViewController];
-      v19 = [v18 mapView];
+      chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+      mapView2 = [chromeViewController2 mapView];
 
-      if (v19)
+      if (mapView2)
       {
-        v20 = [(RidesharingContainerViewController *)self view];
+        view = [(RidesharingContainerViewController *)self view];
         v21 = self->_ETACalloutView;
-        v22 = [(OverlayContainerViewController *)self overlayView];
-        [v20 insertSubview:v21 belowSubview:v22];
+        overlayView = [(OverlayContainerViewController *)self overlayView];
+        [view insertSubview:v21 belowSubview:overlayView];
 
         [(MKMarkerAnnotationView *)self->_ETACalloutView setTranslatesAutoresizingMaskIntoConstraints:0];
-        v23 = [(MKMarkerAnnotationView *)self->_ETACalloutView centerXAnchor];
-        v24 = [(ContainerViewController *)self chromeViewController];
-        v25 = [v24 mapView];
-        v26 = [v25 _edgeInsetsLayoutGuide];
-        v27 = [v26 centerXAnchor];
-        v28 = [v23 constraintEqualToAnchor:v27];
+        centerXAnchor = [(MKMarkerAnnotationView *)self->_ETACalloutView centerXAnchor];
+        chromeViewController3 = [(ContainerViewController *)self chromeViewController];
+        mapView3 = [chromeViewController3 mapView];
+        _edgeInsetsLayoutGuide = [mapView3 _edgeInsetsLayoutGuide];
+        centerXAnchor2 = [_edgeInsetsLayoutGuide centerXAnchor];
+        v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-        v29 = [(MKMarkerAnnotationView *)self->_ETACalloutView selectedContentView];
-        v30 = [v29 bottomAnchor];
-        v31 = [(RidesharingContainerViewController *)self view];
-        v32 = [v31 bottomAnchor];
-        v33 = [v30 constraintEqualToAnchor:v32 constant:v15];
+        selectedContentView = [(MKMarkerAnnotationView *)self->_ETACalloutView selectedContentView];
+        bottomAnchor = [selectedContentView bottomAnchor];
+        view2 = [(RidesharingContainerViewController *)self view];
+        bottomAnchor2 = [view2 bottomAnchor];
+        v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v15];
         ETACalloutVerticalConstraint = self->_ETACalloutVerticalConstraint;
         self->_ETACalloutVerticalConstraint = v33;
 
@@ -351,14 +351,14 @@ LABEL_6:
   }
 
   [(NSLayoutConstraint *)self->_ETACalloutVerticalConstraint setConstant:v15];
-  v37 = [(RidesharingContainerViewController *)self requestRideStatus];
-  v38 = [v37 etaMinutesAtStartWaypoint];
-  v39 = [v37 loadingRequest];
+  requestRideStatus = [(RidesharingContainerViewController *)self requestRideStatus];
+  etaMinutesAtStartWaypoint = [requestRideStatus etaMinutesAtStartWaypoint];
+  loadingRequest = [requestRideStatus loadingRequest];
   v40 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
   {
     v41 = basename("/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Shared/RidesharingContainerViewController.m");
-    v42 = [[NSString alloc] initWithFormat:@"Updating ETA callout with minutes: %@, loading?:%d", v38, v39];
+    v42 = [[NSString alloc] initWithFormat:@"Updating ETA callout with minutes: %@, loading?:%d", etaMinutesAtStartWaypoint, loadingRequest];
     *buf = 136315394;
     v47 = v41;
     v48 = 2112;
@@ -366,7 +366,7 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "{RBInfo}{%s}: %@", buf, 0x16u);
   }
 
-  if (v39)
+  if (loadingRequest)
   {
     ETAView = self->_ETAView;
     v44 = 0;
@@ -384,10 +384,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v38)
+  if (etaMinutesAtStartWaypoint)
   {
     ETAView = self->_ETAView;
-    v44 = v38;
+    v44 = etaMinutesAtStartWaypoint;
     v45 = 0;
     goto LABEL_18;
   }
@@ -395,13 +395,13 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)requestRideStatusDidChange:(id)a3
+- (void)requestRideStatusDidChange:(id)change
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ![v5 requestRideStatusError] && !self->_isUserInitiatedMapChange)
+  changeCopy = change;
+  v6 = changeCopy;
+  if (changeCopy && ![changeCopy requestRideStatusError] && !self->_isUserInitiatedMapChange)
   {
-    objc_storeStrong(&self->_requestRideStatus, a3);
+    objc_storeStrong(&self->_requestRideStatus, change);
     [(RideBookingRequestRideStatus *)self->_requestRideStatus startWaypointCoordinate];
     objc_initWeak(&location, self);
     if (self->_loadedFirstRequestRide)
@@ -417,15 +417,15 @@ LABEL_19:
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [(ContainerViewController *)self chromeViewController];
-      v16 = [v15 mapView];
+      chromeViewController = [(ContainerViewController *)self chromeViewController];
+      mapView = [chromeViewController mapView];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10095FB3C;
       v17[3] = &unk_10165FC50;
       objc_copyWeak(&v18, &location);
       v17[4] = self;
-      [v16 _setVisibleMapRect:1 animated:v17 completionHandler:{v8, v10, v12, v14}];
+      [mapView _setVisibleMapRect:1 animated:v17 completionHandler:{v8, v10, v12, v14}];
 
       objc_destroyWeak(&v18);
     }
@@ -434,17 +434,17 @@ LABEL_19:
   }
 }
 
-- (void)updateForDismissingDetailsPickingAnimated:(BOOL)a3
+- (void)updateForDismissingDetailsPickingAnimated:(BOOL)animated
 {
-  [(MKMarkerAnnotationView *)self->_ETACalloutView setSelected:0 animated:a3];
+  [(MKMarkerAnnotationView *)self->_ETACalloutView setSelected:0 animated:animated];
   [(MKMarkerAnnotationView *)self->_ETACalloutView removeFromSuperview];
   requestRideOptionProxy = self->_requestRideOptionProxy;
   self->_requestRideOptionProxy = 0;
 }
 
-- (void)_updateForShowingDetailsPickingAnimated:(BOOL)a3
+- (void)_updateForShowingDetailsPickingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (!self->_ETACalloutView)
   {
     v5 = [[MKMarkerAnnotationView alloc] initWithAnnotation:0 reuseIdentifier:0];
@@ -473,21 +473,21 @@ LABEL_19:
 
   v13 = self->_ETACalloutView;
 
-  [(MKMarkerAnnotationView *)v13 setSelected:1 animated:v3];
+  [(MKMarkerAnnotationView *)v13 setSelected:1 animated:animatedCopy];
 }
 
 - (void)setNeedsUpdateForShowingDetailsPickingAnimated
 {
   self->_needsUpdateForShowingDetailsPicking = 1;
-  v2 = [(RidesharingContainerViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(RidesharingContainerViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)updateTopBannerViewWithTopBannerItems:(id)a3
+- (void)updateTopBannerViewWithTopBannerItems:(id)items
 {
   v5.receiver = self;
   v5.super_class = RidesharingContainerViewController;
-  [(OverlayContainerViewController *)&v5 updateTopBannerViewWithTopBannerItems:a3];
+  [(OverlayContainerViewController *)&v5 updateTopBannerViewWithTopBannerItems:items];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10095FF6C;
@@ -496,19 +496,19 @@ LABEL_19:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)contentHeightUpdatedWithValue:(double)a3
+- (void)contentHeightUpdatedWithValue:(double)value
 {
-  v5 = [(ContainerViewController *)self containerStyle];
+  containerStyle = [(ContainerViewController *)self containerStyle];
   v16.receiver = self;
   v16.super_class = RidesharingContainerViewController;
-  [(ContainerViewController *)&v16 contentHeightUpdatedWithValue:a3];
+  [(ContainerViewController *)&v16 contentHeightUpdatedWithValue:value];
   v6 = 1.0;
-  if ((v5 | 4) != 5)
+  if ((containerStyle | 4) != 5)
   {
     goto LABEL_8;
   }
 
-  if (v5 == 5)
+  if (containerStyle == 5)
   {
     v7 = 1;
   }
@@ -518,27 +518,27 @@ LABEL_19:
     v7 = 2;
   }
 
-  v8 = [(ContainerViewController *)self currentViewController];
-  [v8 heightForLayout:v7];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  [currentViewController heightForLayout:v7];
   v10 = v9;
 
-  v11 = [(ContainerViewController *)self currentViewController];
-  [v11 heightForLayout:3];
+  currentViewController2 = [(ContainerViewController *)self currentViewController];
+  [currentViewController2 heightForLayout:3];
   v13 = v12;
 
   if (v13 != v10)
   {
-    if (v10 < a3)
+    if (v10 < value)
     {
-      v6 = 1.0 - fmin(fmax((a3 - v10) / (v10 * 0.100000024), 0.0), 1.0);
+      v6 = 1.0 - fmin(fmax((value - v10) / (v10 * 0.100000024), 0.0), 1.0);
     }
 
 LABEL_8:
-    v14 = [(ButtonsContainerViewController *)self->_recenterButtonContainer view];
-    [v14 setAlpha:v6];
+    view = [(ButtonsContainerViewController *)self->_recenterButtonContainer view];
+    [view setAlpha:v6];
 
-    v15 = [(OverlayContainerViewController *)self topBannerView];
-    [v15 setAlpha:v6];
+    topBannerView = [(OverlayContainerViewController *)self topBannerView];
+    [topBannerView setAlpha:v6];
   }
 }
 
@@ -547,27 +547,27 @@ LABEL_8:
   v17.receiver = self;
   v17.super_class = RidesharingContainerViewController;
   [(OverlayContainerViewController *)&v17 viewDidLayoutSubviews];
-  v3 = [(ContainerViewController *)self chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  [v4 _edgeInsets];
+  [mapView _edgeInsets];
   v6 = v5;
-  v7 = [(ButtonsContainerViewController *)self->_recenterButtonContainer view];
-  [v7 frame];
+  view = [(ButtonsContainerViewController *)self->_recenterButtonContainer view];
+  [view frame];
   v9 = v8;
   [(ContainerViewController *)self edgePadding];
   v11 = v10;
   [(ContainerViewController *)self edgePadding];
   v13 = v11 + v6 + v12 + v9;
   [(ContainerViewController *)self edgePadding];
-  [v4 _setCompassInsets:{v13, 0.0, 0.0, v14}];
+  [mapView _setCompassInsets:{v13, 0.0, 0.0, v14}];
 
   if (self->_needsUpdateForShowingDetailsPicking)
   {
     if ([(ContainerViewController *)self containerStyle])
     {
       self->_needsUpdateForShowingDetailsPicking = 0;
-      v15 = [(ContainerViewController *)self currentViewController];
+      currentViewController = [(ContainerViewController *)self currentViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -579,17 +579,17 @@ LABEL_8:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = RidesharingContainerViewController;
-  [(ContainerViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(ContainerViewController *)self currentViewController];
-  v9 = [(RidesharingContainerViewController *)self detailsPickingViewController];
-  v10 = [v8 isEqual:v9];
+  [(ContainerViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  detailsPickingViewController = [(RidesharingContainerViewController *)self detailsPickingViewController];
+  v10 = [currentViewController isEqual:detailsPickingViewController];
 
   if (v10)
   {
@@ -598,7 +598,7 @@ LABEL_8:
     v11[2] = sub_100960380;
     v11[3] = &unk_101661710;
     v11[4] = self;
-    [v7 animateAlongsideTransition:v11 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v11 completion:0];
   }
 }
 

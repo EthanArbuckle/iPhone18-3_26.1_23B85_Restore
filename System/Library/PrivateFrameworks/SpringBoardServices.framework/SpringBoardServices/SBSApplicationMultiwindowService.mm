@@ -1,22 +1,22 @@
 @interface SBSApplicationMultiwindowService
-- (void)requestShelfPresentationForSceneWithIdentifier:(id)a3;
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3;
+- (void)requestShelfPresentationForSceneWithIdentifier:(id)identifier;
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation SBSApplicationMultiwindowService
 
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSAbstractApplicationService *)self client];
-  [v5 triggerShowAllWindowsForApplicationBundleIdentifier:v4];
+  identifierCopy = identifier;
+  client = [(SBSAbstractApplicationService *)self client];
+  [client triggerShowAllWindowsForApplicationBundleIdentifier:identifierCopy];
 }
 
-- (void)requestShelfPresentationForSceneWithIdentifier:(id)a3
+- (void)requestShelfPresentationForSceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSAbstractApplicationService *)self client];
-  [v5 requestShelfPresentationForSceneWithIdentifier:v4];
+  identifierCopy = identifier;
+  client = [(SBSAbstractApplicationService *)self client];
+  [client requestShelfPresentationForSceneWithIdentifier:identifierCopy];
 }
 
 @end

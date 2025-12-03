@@ -1,10 +1,10 @@
 @interface MSDLogModel
 + (id)sharedInstance;
-- (BOOL)enableLogToFile:(id)a3;
-- (BOOL)enableLogToFilesUnder:(id)a3 prefix:(id)a4 expireDays:(int64_t)a5;
-- (id)fileNameForTodayUnder:(id)a3 prefix:(id)a4;
-- (void)logMessage:(id)a3;
-- (void)logWithFormat:(id)a3 andArgs:(char *)a4;
+- (BOOL)enableLogToFile:(id)file;
+- (BOOL)enableLogToFilesUnder:(id)under prefix:(id)prefix expireDays:(int64_t)days;
+- (id)fileNameForTodayUnder:(id)under prefix:(id)prefix;
+- (void)logMessage:(id)message;
+- (void)logWithFormat:(id)format andArgs:(char *)args;
 @end
 
 @implementation MSDLogModel
@@ -28,46 +28,46 @@ uint64_t __29__MSDLogModel_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)logWithFormat:(id)a3 andArgs:(char *)a4
+- (void)logWithFormat:(id)format andArgs:(char *)args
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithFormat:v7 arguments:a4];
+  formatCopy = format;
+  v8 = [[v6 alloc] initWithFormat:formatCopy arguments:args];
 
   [(MSDLogModel *)self logMessage:v8];
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v9 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"dd-MM-yyyy HH:mm:ss:SSS"];
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = [v4 stringFromDate:v5];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@\n", v6, v9];
+  messageCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@\n", v6, messageCopy];
   if ([(MSDLogModel *)self logFP])
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    fputs([v7 UTF8String], -[MSDLogModel logFP](v8, "logFP"));
-    fflush([(MSDLogModel *)v8 logFP]);
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    fputs([messageCopy UTF8String], -[MSDLogModel logFP](selfCopy, "logFP"));
+    fflush([(MSDLogModel *)selfCopy logFP]);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)enableLogToFile:(id)a3
+- (BOOL)enableLogToFile:(id)file
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v5 stringByExpandingTildeInPath];
+  fileCopy = file;
+  defaultManager = [v4 defaultManager];
+  stringByExpandingTildeInPath = [fileCopy stringByExpandingTildeInPath];
 
-  v8 = [v7 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [stringByExpandingTildeInPath stringByDeletingLastPathComponent];
   v9 = 0;
-  if (([v6 fileExistsAtPath:v8] & 1) != 0 || objc_msgSend(v6, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v8, 1, 0, 0))
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) != 0 || objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", stringByDeletingLastPathComponent, 1, 0, 0))
   {
-    -[MSDLogModel setLogFP:](self, "setLogFP:", fopen([v7 fileSystemRepresentation], "a"));
+    -[MSDLogModel setLogFP:](self, "setLogFP:", fopen([stringByExpandingTildeInPath fileSystemRepresentation], "a"));
     if ([(MSDLogModel *)self logFP])
     {
       v9 = 1;
@@ -77,11 +77,11 @@ uint64_t __29__MSDLogModel_sharedInstance__block_invoke()
   return v9;
 }
 
-- (BOOL)enableLogToFilesUnder:(id)a3 prefix:(id)a4 expireDays:(int64_t)a5
+- (BOOL)enableLogToFilesUnder:(id)under prefix:(id)prefix expireDays:(int64_t)days
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  underCopy = under;
+  prefixCopy = prefix;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -89,10 +89,10 @@ uint64_t __29__MSDLogModel_sharedInstance__block_invoke()
   v30[4] = __Block_byref_object_dispose__0;
   v31 = 0;
   v29 = 97;
-  if (([v10 fileExistsAtPath:v8] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:underCopy] & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager2 createDirectoryAtPath:underCopy withIntermediateDirectories:1 attributes:0 error:0];
 
     if ((v12 & 1) == 0)
     {
@@ -103,9 +103,9 @@ uint64_t __29__MSDLogModel_sharedInstance__block_invoke()
     }
   }
 
-  v13 = [v8 stringByAppendingPathComponent:@"testWritability.log"];
+  v13 = [underCopy stringByAppendingPathComponent:@"testWritability.log"];
   v14 = [MEMORY[0x277CBEA90] dataWithBytes:&v29 length:1];
-  v15 = [v10 createFileAtPath:v13 contents:v14 attributes:0];
+  v15 = [defaultManager createFileAtPath:v13 contents:v14 attributes:0];
 
   if (!v15)
   {
@@ -116,13 +116,13 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  [v10 removeItemAtPath:v13 error:0];
+  [defaultManager removeItemAtPath:v13 error:0];
   v16 = MEMORY[0x277CBEAA8];
-  v17 = [MEMORY[0x277CBEAA8] date];
-  v18 = [v16 dateWithTimeInterval:v17 sinceDate:a5 * -86400.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v18 = [v16 dateWithTimeInterval:date sinceDate:days * -86400.0];
 
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
-  v20 = [v19 contentsOfDirectoryAtPath:v8 error:0];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  v20 = [defaultManager3 contentsOfDirectoryAtPath:underCopy error:0];
 
   if (v20)
   {
@@ -130,14 +130,14 @@ LABEL_10:
     v24[1] = 3221225472;
     v24[2] = __55__MSDLogModel_enableLogToFilesUnder_prefix_expireDays___block_invoke;
     v24[3] = &unk_2798EF418;
-    v25 = v8;
+    v25 = underCopy;
     v26 = v18;
     v28 = v30;
-    v27 = v10;
+    v27 = defaultManager;
     [v20 enumerateObjectsUsingBlock:v24];
   }
 
-  v21 = [(MSDLogModel *)self fileNameForTodayUnder:v8 prefix:v9];
+  v21 = [(MSDLogModel *)self fileNameForTodayUnder:underCopy prefix:prefixCopy];
   v22 = [(MSDLogModel *)self enableLogToFile:v21];
 
 LABEL_7:
@@ -172,19 +172,19 @@ void __55__MSDLogModel_enableLogToFilesUnder_prefix_expireDays___block_invoke(ui
   *a4 = 0;
 }
 
-- (id)fileNameForTodayUnder:(id)a3 prefix:(id)a4
+- (id)fileNameForTodayUnder:(id)under prefix:(id)prefix
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
+  prefixCopy = prefix;
+  underCopy = under;
   v8 = [v5 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v9 setLocale:v10];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v9 setLocale:currentLocale];
 
-  v11 = [MEMORY[0x277CBEAA8] date];
-  v12 = [v9 components:28 fromDate:v11];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@-%4ld%02ld%02ld.log", v7, v6, objc_msgSend(v12, "year"), objc_msgSend(v12, "month"), objc_msgSend(v12, "day")];
+  date = [MEMORY[0x277CBEAA8] date];
+  v12 = [v9 components:28 fromDate:date];
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@-%4ld%02ld%02ld.log", underCopy, prefixCopy, objc_msgSend(v12, "year"), objc_msgSend(v12, "month"), objc_msgSend(v12, "day")];
 
   return v13;
 }

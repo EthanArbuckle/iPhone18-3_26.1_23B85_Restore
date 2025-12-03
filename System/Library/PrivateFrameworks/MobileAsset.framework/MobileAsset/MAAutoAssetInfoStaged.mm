@@ -1,36 +1,36 @@
 @interface MAAutoAssetInfoStaged
-- (MAAutoAssetInfoStaged)initWithCoder:(id)a3;
-- (MAAutoAssetInfoStaged)initWithTotalStagedBytes:(int64_t)a3 withAssetsSuccessfullyStaged:(unint64_t)a4 withByGroupTotalStagedBytes:(id)a5 withByGroupAssetsSuccessfullyStaged:(id)a6;
+- (MAAutoAssetInfoStaged)initWithCoder:(id)coder;
+- (MAAutoAssetInfoStaged)initWithTotalStagedBytes:(int64_t)bytes withAssetsSuccessfullyStaged:(unint64_t)staged withByGroupTotalStagedBytes:(id)stagedBytes withByGroupAssetsSuccessfullyStaged:(id)successfullyStaged;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)fullDescription:(id)a3 usingLogger:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)fullDescription:(id)description usingLogger:(id)logger;
 @end
 
 @implementation MAAutoAssetInfoStaged
 
-- (MAAutoAssetInfoStaged)initWithTotalStagedBytes:(int64_t)a3 withAssetsSuccessfullyStaged:(unint64_t)a4 withByGroupTotalStagedBytes:(id)a5 withByGroupAssetsSuccessfullyStaged:(id)a6
+- (MAAutoAssetInfoStaged)initWithTotalStagedBytes:(int64_t)bytes withAssetsSuccessfullyStaged:(unint64_t)staged withByGroupTotalStagedBytes:(id)stagedBytes withByGroupAssetsSuccessfullyStaged:(id)successfullyStaged
 {
-  v11 = a5;
-  v12 = a6;
+  stagedBytesCopy = stagedBytes;
+  successfullyStagedCopy = successfullyStaged;
   v16.receiver = self;
   v16.super_class = MAAutoAssetInfoStaged;
   v13 = [(MAAutoAssetInfoStaged *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_totalStagedBytes = a3;
-    v13->_assetsSuccessfullyStaged = a4;
-    objc_storeStrong(&v13->_byGroupTotalStagedBytes, a5);
-    objc_storeStrong(&v14->_byGroupAssetsSuccessfullyStaged, a6);
+    v13->_totalStagedBytes = bytes;
+    v13->_assetsSuccessfullyStaged = staged;
+    objc_storeStrong(&v13->_byGroupTotalStagedBytes, stagedBytes);
+    objc_storeStrong(&v14->_byGroupAssetsSuccessfullyStaged, successfullyStaged);
   }
 
   return v14;
 }
 
-- (MAAutoAssetInfoStaged)initWithCoder:(id)a3
+- (MAAutoAssetInfoStaged)initWithCoder:(id)coder
 {
   v16[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MAAutoAssetInfoStaged;
   v5 = [(MAAutoAssetInfoStaged *)&v15 init];
@@ -45,13 +45,13 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:5];
     v8 = [v6 setWithArray:v7];
 
-    v5->_totalStagedBytes = [v4 decodeIntegerForKey:@"totalStagedBytes"];
-    v5->_assetsSuccessfullyStaged = [v4 decodeIntegerForKey:@"assetsSuccessfullyStaged"];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"byGroupTotalStagedBytes"];
+    v5->_totalStagedBytes = [coderCopy decodeIntegerForKey:@"totalStagedBytes"];
+    v5->_assetsSuccessfullyStaged = [coderCopy decodeIntegerForKey:@"assetsSuccessfullyStaged"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"byGroupTotalStagedBytes"];
     byGroupTotalStagedBytes = v5->_byGroupTotalStagedBytes;
     v5->_byGroupTotalStagedBytes = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"byGroupAssetsSuccessfullyStaged"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"byGroupAssetsSuccessfullyStaged"];
     byGroupAssetsSuccessfullyStaged = v5->_byGroupAssetsSuccessfullyStaged;
     v5->_byGroupAssetsSuccessfullyStaged = v11;
   }
@@ -60,24 +60,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[MAAutoAssetInfoStaged totalStagedBytes](self forKey:{"totalStagedBytes"), @"totalStagedBytes"}];
-  [v4 encodeInteger:-[MAAutoAssetInfoStaged assetsSuccessfullyStaged](self forKey:{"assetsSuccessfullyStaged"), @"assetsSuccessfullyStaged"}];
-  v5 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
-  [v4 encodeObject:v5 forKey:@"byGroupTotalStagedBytes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[MAAutoAssetInfoStaged totalStagedBytes](self forKey:{"totalStagedBytes"), @"totalStagedBytes"}];
+  [coderCopy encodeInteger:-[MAAutoAssetInfoStaged assetsSuccessfullyStaged](self forKey:{"assetsSuccessfullyStaged"), @"assetsSuccessfullyStaged"}];
+  byGroupTotalStagedBytes = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
+  [coderCopy encodeObject:byGroupTotalStagedBytes forKey:@"byGroupTotalStagedBytes"];
 
-  v6 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
-  [v4 encodeObject:v6 forKey:@"byGroupAssetsSuccessfullyStaged"];
+  byGroupAssetsSuccessfullyStaged = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
+  [coderCopy encodeObject:byGroupAssetsSuccessfullyStaged forKey:@"byGroupAssetsSuccessfullyStaged"];
 }
 
 - (id)summary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
+  byGroupTotalStagedBytes = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
 
-  if (v3)
+  if (byGroupTotalStagedBytes)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -101,11 +101,11 @@
           }
 
           v8 = *(*(&v21 + 1) + 8 * i);
-          v9 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
-          v10 = [v9 safeObjectForKey:v8 ofClass:objc_opt_class()];
+          byGroupTotalStagedBytes2 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
+          v10 = [byGroupTotalStagedBytes2 safeObjectForKey:v8 ofClass:objc_opt_class()];
 
-          v11 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
-          v12 = [v11 safeObjectForKey:v8 ofClass:objc_opt_class()];
+          byGroupAssetsSuccessfullyStaged = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
+          v12 = [byGroupAssetsSuccessfullyStaged safeObjectForKey:v8 ofClass:objc_opt_class()];
 
           v13 = v8;
           v14 = @"REQUIRED";
@@ -147,16 +147,16 @@
   return v15;
 }
 
-- (void)fullDescription:(id)a3 usingLogger:(id)a4
+- (void)fullDescription:(id)description usingLogger:(id)logger
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([MEMORY[0x1E69D3880] stringIsEqual:v5 to:@"MA-AUTO-STAGE(REPLY):DOWNLOAD_GROUPS"])
+  descriptionCopy = description;
+  if ([MEMORY[0x1E69D3880] stringIsEqual:descriptionCopy to:@"MA-AUTO-STAGE(REPLY):DOWNLOAD_GROUPS"])
   {
     v6 = @"DOWNLOAD-GROUPS-REPLY";
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v5 to:@"MA-AUTO-STAGE(REPLY):DOWNLOAD_ALL"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:descriptionCopy to:@"MA-AUTO-STAGE(REPLY):DOWNLOAD_ALL"])
   {
     v6 = @"DOWNLOAD-ALL-REPLY";
   }
@@ -172,52 +172,52 @@
     v22 = 138543874;
     v23 = v6;
     v24 = 2048;
-    v25 = [(MAAutoAssetInfoStaged *)self totalStagedBytes];
+    totalStagedBytes = [(MAAutoAssetInfoStaged *)self totalStagedBytes];
     v26 = 2048;
-    v27 = [(MAAutoAssetInfoStaged *)self assetsSuccessfullyStaged];
+    assetsSuccessfullyStaged = [(MAAutoAssetInfoStaged *)self assetsSuccessfullyStaged];
     _os_log_impl(&dword_197AD5000, v7, OS_LOG_TYPE_DEFAULT, "\n>%{public}@> totalStagedBytes:%llu | assetsSuccessfullyStaged:%llu", &v22, 0x20u);
   }
 
-  v8 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
-  if (v8)
+  byGroupTotalStagedBytes = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
+  if (byGroupTotalStagedBytes)
   {
-    v9 = v8;
-    v10 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
-    v11 = [v10 count];
+    v9 = byGroupTotalStagedBytes;
+    byGroupTotalStagedBytes2 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
+    v11 = [byGroupTotalStagedBytes2 count];
 
     if (v11)
     {
       v12 = _MAClientLog(@"AutoStager");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
+        byGroupTotalStagedBytes3 = [(MAAutoAssetInfoStaged *)self byGroupTotalStagedBytes];
         v22 = 138543618;
         v23 = v6;
         v24 = 2114;
-        v25 = v13;
+        totalStagedBytes = byGroupTotalStagedBytes3;
         _os_log_impl(&dword_197AD5000, v12, OS_LOG_TYPE_DEFAULT, "\n>%{public}@> byGroupTotalStagedBytes:\n%{public}@", &v22, 0x16u);
       }
     }
   }
 
-  v14 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
-  if (v14)
+  byGroupAssetsSuccessfullyStaged = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
+  if (byGroupAssetsSuccessfullyStaged)
   {
-    v15 = v14;
-    v16 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
-    v17 = [v16 count];
+    v15 = byGroupAssetsSuccessfullyStaged;
+    byGroupAssetsSuccessfullyStaged2 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
+    v17 = [byGroupAssetsSuccessfullyStaged2 count];
 
     if (v17)
     {
       v18 = _MAClientLog(@"AutoStager");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
-        v20 = [v19 safeSummary];
+        byGroupAssetsSuccessfullyStaged3 = [(MAAutoAssetInfoStaged *)self byGroupAssetsSuccessfullyStaged];
+        safeSummary = [byGroupAssetsSuccessfullyStaged3 safeSummary];
         v22 = 138543618;
         v23 = v6;
         v24 = 2114;
-        v25 = v20;
+        totalStagedBytes = safeSummary;
         _os_log_impl(&dword_197AD5000, v18, OS_LOG_TYPE_DEFAULT, "\n>%{public}@> byGroupAssetsSuccessfullyStaged:\n%{public}@", &v22, 0x16u);
       }
     }

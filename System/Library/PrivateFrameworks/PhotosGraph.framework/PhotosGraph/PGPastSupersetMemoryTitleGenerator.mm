@@ -1,8 +1,8 @@
 @interface PGPastSupersetMemoryTitleGenerator
-- (PGPastSupersetMemoryTitleGenerator)initWithMomentNodes:(id)a3 supersetLocationNode:(id)a4 supersetDateInterval:(id)a5 titleGenerationContext:(id)a6;
+- (PGPastSupersetMemoryTitleGenerator)initWithMomentNodes:(id)nodes supersetLocationNode:(id)node supersetDateInterval:(id)interval titleGenerationContext:(id)context;
 - (id)_locationTitle;
 - (id)_timeTitle;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGPastSupersetMemoryTitleGenerator
@@ -10,8 +10,8 @@
 - (id)_timeTitle
 {
   v3 = objc_opt_new();
-  v4 = [(PGTitleGenerator *)self momentNodes];
-  [v3 setMomentNodes:v4];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  [v3 setMomentNodes:momentNodes];
 
   [v3 setAllowedFormats:4];
   [v3 setFilterDates:0];
@@ -23,13 +23,13 @@
 - (id)_locationTitle
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PGTitleGenerator *)self titleGenerationContext];
-  v4 = [v3 locationHelper];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  locationHelper = [titleGenerationContext locationHelper];
 
-  v5 = [v4 densestCloseLocationNodeFromLocationNode:self->_supersetLocationNode withDateInterval:self->_supersetDateInterval locationMask:208];
+  v5 = [locationHelper densestCloseLocationNodeFromLocationNode:self->_supersetLocationNode withDateInterval:self->_supersetDateInterval locationMask:208];
   if (v5)
   {
-    v6 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v5 locationHelper:v4];
+    v6 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v5 locationHelper:locationHelper];
     v7 = v6;
     if (v6 && [v6 length])
     {
@@ -59,15 +59,15 @@
   return v13;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v9 = a3;
-  v4 = [(PGPastSupersetMemoryTitleGenerator *)self _locationTitle];
-  v5 = [(PGPastSupersetMemoryTitleGenerator *)self _timeTitle];
-  v6 = v5;
-  if (v4)
+  resultCopy = result;
+  _locationTitle = [(PGPastSupersetMemoryTitleGenerator *)self _locationTitle];
+  _timeTitle = [(PGPastSupersetMemoryTitleGenerator *)self _timeTitle];
+  v6 = _timeTitle;
+  if (_locationTitle)
   {
-    v7 = [PGTitle titleWithString:v4 category:4];
+    v7 = [PGTitle titleWithString:_locationTitle category:4];
     if (v6)
     {
 LABEL_3:
@@ -79,7 +79,7 @@ LABEL_3:
   else
   {
     v7 = 0;
-    if (v5)
+    if (_timeTitle)
     {
       goto LABEL_3;
     }
@@ -87,24 +87,24 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  if (v9)
+  if (resultCopy)
   {
-    v9[2](v9, v7, v8);
+    resultCopy[2](resultCopy, v7, v8);
   }
 }
 
-- (PGPastSupersetMemoryTitleGenerator)initWithMomentNodes:(id)a3 supersetLocationNode:(id)a4 supersetDateInterval:(id)a5 titleGenerationContext:(id)a6
+- (PGPastSupersetMemoryTitleGenerator)initWithMomentNodes:(id)nodes supersetLocationNode:(id)node supersetDateInterval:(id)interval titleGenerationContext:(id)context
 {
-  v11 = a4;
-  v12 = a5;
+  nodeCopy = node;
+  intervalCopy = interval;
   v16.receiver = self;
   v16.super_class = PGPastSupersetMemoryTitleGenerator;
-  v13 = [(PGTitleGenerator *)&v16 initWithMomentNodes:a3 type:0 titleGenerationContext:a6];
+  v13 = [(PGTitleGenerator *)&v16 initWithMomentNodes:nodes type:0 titleGenerationContext:context];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_supersetLocationNode, a4);
-    objc_storeStrong(&v14->_supersetDateInterval, a5);
+    objc_storeStrong(&v13->_supersetLocationNode, node);
+    objc_storeStrong(&v14->_supersetDateInterval, interval);
   }
 
   return v14;

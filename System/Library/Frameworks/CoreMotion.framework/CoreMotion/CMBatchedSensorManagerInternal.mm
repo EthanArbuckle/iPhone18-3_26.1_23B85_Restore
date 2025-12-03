@@ -1,10 +1,10 @@
 @interface CMBatchedSensorManagerInternal
-+ (id)_newArrayByUnpackingAccelerometerBatch:(shared_ptr<CLConnectionMessage>)a3;
-+ (id)_newArrayByUnpackingDeviceMotionBatch:(shared_ptr<CLConnectionMessage>)a3;
++ (id)_newArrayByUnpackingAccelerometerBatch:(shared_ptr<CLConnectionMessage>)batch;
++ (id)_newArrayByUnpackingDeviceMotionBatch:(shared_ptr<CLConnectionMessage>)batch;
 - (CMBatchedSensorManagerInternal)init;
 - (void)_connect;
-- (void)_startAccelerometerUpdatesWithHandler:(id)a3;
-- (void)_startDeviceMotionUpdatesWithHandler:(id)a3;
+- (void)_startAccelerometerUpdatesWithHandler:(id)handler;
+- (void)_startDeviceMotionUpdatesWithHandler:(id)handler;
 - (void)_stopAccelerometerUpdates;
 - (void)_stopDeviceMotionUpdates;
 - (void)_teardown;
@@ -101,7 +101,7 @@
   self->_dataQueue = 0;
 }
 
-- (void)_startAccelerometerUpdatesWithHandler:(id)a3
+- (void)_startAccelerometerUpdatesWithHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2AB8 != -1)
@@ -142,10 +142,10 @@
   if (objc_msgSend_areBatchedSensorsSupported(v14, v15, v16))
   {
     accelHandler = self->_accelHandler;
-    if (accelHandler != a3)
+    if (accelHandler != handler)
     {
 
-      self->_accelHandler = objc_msgSend_copy(a3, v18, v19);
+      self->_accelHandler = objc_msgSend_copy(handler, v18, v19);
     }
 
     if (self->_connection)
@@ -227,14 +227,14 @@
     self->_accelActive = 1;
   }
 
-  else if (a3)
+  else if (handler)
   {
     dataQueue = self->_dataQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_19B77E808;
     block[3] = &unk_1E7532B40;
-    block[4] = a3;
+    block[4] = handler;
     dispatch_async(dataQueue, block);
   }
 
@@ -303,10 +303,10 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_newArrayByUnpackingAccelerometerBatch:(shared_ptr<CLConnectionMessage>)a3
++ (id)_newArrayByUnpackingAccelerometerBatch:(shared_ptr<CLConnectionMessage>)batch
 {
   v155 = *MEMORY[0x1E69E9840];
-  v3 = CLConnectionMessage::getRawPayload(*a3.var0);
+  v3 = CLConnectionMessage::getRawPayload(*batch.var0);
   xpc_data_get_bytes_ptr(v3);
   length = xpc_data_get_length(v3);
   v5 = length / 20;
@@ -485,7 +485,7 @@
   return v9;
 }
 
-- (void)_startDeviceMotionUpdatesWithHandler:(id)a3
+- (void)_startDeviceMotionUpdatesWithHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2AB8 != -1)
@@ -526,10 +526,10 @@
   if (objc_msgSend_areBatchedSensorsSupported(v14, v15, v16))
   {
     deviceMotionHandler = self->_deviceMotionHandler;
-    if (deviceMotionHandler != a3)
+    if (deviceMotionHandler != handler)
     {
 
-      self->_deviceMotionHandler = objc_msgSend_copy(a3, v18, v19);
+      self->_deviceMotionHandler = objc_msgSend_copy(handler, v18, v19);
     }
 
     if (self->_connection)
@@ -611,14 +611,14 @@
     self->_deviceMotionActive = 1;
   }
 
-  else if (a3)
+  else if (handler)
   {
     dataQueue = self->_dataQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_19B77FA78;
     block[3] = &unk_1E7532B40;
-    block[4] = a3;
+    block[4] = handler;
     dispatch_async(dataQueue, block);
   }
 
@@ -687,10 +687,10 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_newArrayByUnpackingDeviceMotionBatch:(shared_ptr<CLConnectionMessage>)a3
++ (id)_newArrayByUnpackingDeviceMotionBatch:(shared_ptr<CLConnectionMessage>)batch
 {
   v178 = *MEMORY[0x1E69E9840];
-  v3 = CLConnectionMessage::getRawPayload(*a3.var0);
+  v3 = CLConnectionMessage::getRawPayload(*batch.var0);
   xpc_data_get_bytes_ptr(v3);
   length = xpc_data_get_length(v3);
   if (qword_1EAFE2AB8 != -1)

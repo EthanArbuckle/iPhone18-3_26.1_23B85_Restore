@@ -1,18 +1,18 @@
 @interface CLEmergencyLocationSelector
-- (CLEmergencyLocationSelector)initWithConfig:(id)a3 bundle:(id)a4 delegate:(id)a5 queue:(id)a6;
+- (CLEmergencyLocationSelector)initWithConfig:(id)config bundle:(id)bundle delegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)stopSession;
 @end
 
 @implementation CLEmergencyLocationSelector
 
-- (CLEmergencyLocationSelector)initWithConfig:(id)a3 bundle:(id)a4 delegate:(id)a5 queue:(id)a6
+- (CLEmergencyLocationSelector)initWithConfig:(id)config bundle:(id)bundle delegate:(id)delegate queue:(id)queue
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (config)
   {
-    if (a4)
+    if (bundle)
     {
       goto LABEL_3;
     }
@@ -21,17 +21,17 @@
   else
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (a4)
+    if (bundle)
     {
 LABEL_3:
-      if (a5)
+      if (delegate)
       {
         goto LABEL_4;
       }
 
 LABEL_22:
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-      if (a6)
+      if (queue)
       {
         goto LABEL_5;
       }
@@ -41,13 +41,13 @@ LABEL_22:
   }
 
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-  if (!a5)
+  if (!delegate)
   {
     goto LABEL_22;
   }
 
 LABEL_4:
-  if (a6)
+  if (queue)
   {
     goto LABEL_5;
   }
@@ -55,7 +55,7 @@ LABEL_4:
 LABEL_23:
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
 LABEL_5:
-  dispatch_assert_queue_V2(a6);
+  dispatch_assert_queue_V2(queue);
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6ED30);
@@ -91,10 +91,10 @@ LABEL_5:
   v15 = [(CLEmergencyLocationSelector *)&v18 init];
   if (v15)
   {
-    [a3 printConfiguration];
-    v15->_fCleeaAssertion = +[CLEmergencyEnablementAssertion newAssertionForBundle:withReason:](CLEmergencyEnablementAssertion, "newAssertionForBundle:withReason:", a4, [MEMORY[0x1E696AEC0] stringWithFormat:@"Emergency Location Session for %@", +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", objc_msgSend(a3, "feature"))]);
-    v15->_fLocManager = [[CLLocationManager alloc] initWithEffectiveBundle:a4 delegate:v15 onQueue:a6];
-    objc_storeWeak(&v15->_fDelegate, a5);
+    [config printConfiguration];
+    v15->_fCleeaAssertion = +[CLEmergencyEnablementAssertion newAssertionForBundle:withReason:](CLEmergencyEnablementAssertion, "newAssertionForBundle:withReason:", bundle, [MEMORY[0x1E696AEC0] stringWithFormat:@"Emergency Location Session for %@", +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", objc_msgSend(config, "feature"))]);
+    v15->_fLocManager = [[CLLocationManager alloc] initWithEffectiveBundle:bundle delegate:v15 onQueue:queue];
+    objc_storeWeak(&v15->_fDelegate, delegate);
     operator new();
   }
 
@@ -114,7 +114,7 @@ LABEL_5:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "#CLELS,CLEmergencyLocationSelector,dealloc,self:%{private}@,initiated", buf, 0xCu);
   }
 
@@ -128,7 +128,7 @@ LABEL_5:
     }
 
     v8 = 138477827;
-    v9 = self;
+    selfCopy2 = self;
     v5 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEmergencyLocationSelector dealloc]", "CoreLocation: %s\n", v5);
     if (v5 != buf)
@@ -160,9 +160,9 @@ LABEL_5:
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "#CLELS,CLEmergencyLocationSelector,stopSession,self:%{private}@,initiated", &buf, 0xCu);
   }
 
-  v115 = self;
+  selfCopy = self;
   v4 = sub_19B87DD40();
-  v5 = self;
+  selfCopy4 = self;
   if (*(v4 + 160) > 1 || *(v4 + 164) > 1 || *(v4 + 168) > 1 || *(v4 + 152))
   {
     bzero(&buf, 0x65CuLL);
@@ -180,19 +180,19 @@ LABEL_5:
       free(v6);
     }
 
-    v5 = self;
+    selfCopy4 = self;
   }
 
-  fLocManager = v5->_fLocManager;
+  fLocManager = selfCopy4->_fLocManager;
   if (fLocManager)
   {
     [(CLLocationManager *)fLocManager stopUpdatingLocation];
 
     self->_fLocManager = 0;
-    v5 = self;
+    selfCopy4 = self;
   }
 
-  fInstance = v5->_fInstance;
+  fInstance = selfCopy4->_fInstance;
   if (fInstance)
   {
     if (qword_1ED519088 != -1)
@@ -239,7 +239,7 @@ LABEL_5:
       if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
       {
         v114 = fInstance[208];
-        v112 = [*fInstance firstLocationEarlyReturnEnabled];
+        firstLocationEarlyReturnEnabled = [*fInstance firstLocationEarlyReturnEnabled];
         v110 = fInstance[209];
         [*fInstance firstLocationTimeout];
         v14 = v13;
@@ -248,7 +248,7 @@ LABEL_5:
         v104 = *(fInstance + 55);
         v106 = *(fInstance + 56);
         v108 = *(fInstance + 57);
-        v98 = [*fInstance firstUpdateEnabled];
+        firstUpdateEnabled = [*fInstance firstUpdateEnabled];
         v96 = fInstance[232];
         [*fInstance firstUpdateTimeout];
         v16 = v15;
@@ -257,7 +257,7 @@ LABEL_5:
         v90 = *(fInstance + 61);
         v92 = *(fInstance + 62);
         v94 = *(fInstance + 63);
-        v19 = [*fInstance periodicUpdatesEnabled];
+        periodicUpdatesEnabled = [*fInstance periodicUpdatesEnabled];
         v20 = *(fInstance + 64);
         v21 = *(fInstance + 65);
         v22 = *(fInstance + 66);
@@ -272,7 +272,7 @@ LABEL_5:
         LODWORD(buf) = 67115776;
         DWORD1(buf) = v114;
         WORD4(buf) = 1024;
-        *(&buf + 10) = v112;
+        *(&buf + 10) = firstLocationEarlyReturnEnabled;
         HIWORD(buf) = 1024;
         LODWORD(v134) = v110;
         WORD2(v134) = 2048;
@@ -288,7 +288,7 @@ LABEL_5:
         HIWORD(v136) = 1024;
         LODWORD(v137) = v108;
         WORD2(v137) = 1024;
-        *(&v137 + 6) = v98;
+        *(&v137 + 6) = firstUpdateEnabled;
         WORD5(v137) = 1024;
         HIDWORD(v137) = v96;
         LOWORD(v138) = 2048;
@@ -304,7 +304,7 @@ LABEL_5:
         WORD5(v140) = 1024;
         HIDWORD(v140) = v94;
         LOWORD(v141) = 1024;
-        *(&v141 + 2) = v19;
+        *(&v141 + 2) = periodicUpdatesEnabled;
         HIWORD(v141) = 1024;
         LODWORD(v142) = v20;
         WORD2(v142) = 1024;
@@ -336,7 +336,7 @@ LABEL_5:
         }
 
         v113 = fInstance[208];
-        v111 = [*fInstance firstLocationEarlyReturnEnabled];
+        firstLocationEarlyReturnEnabled2 = [*fInstance firstLocationEarlyReturnEnabled];
         v109 = fInstance[209];
         [*fInstance firstLocationTimeout];
         v31 = v30;
@@ -345,7 +345,7 @@ LABEL_5:
         v103 = *(fInstance + 55);
         v105 = *(fInstance + 56);
         v107 = *(fInstance + 57);
-        v97 = [*fInstance firstUpdateEnabled];
+        firstUpdateEnabled2 = [*fInstance firstUpdateEnabled];
         v95 = fInstance[232];
         [*fInstance firstUpdateTimeout];
         v33 = v32;
@@ -355,7 +355,7 @@ LABEL_5:
         v36 = *(fInstance + 62);
         v91 = *(fInstance + 62);
         v93 = *(fInstance + 63);
-        v38 = [*fInstance periodicUpdatesEnabled];
+        periodicUpdatesEnabled2 = [*fInstance periodicUpdatesEnabled];
         v39 = *(fInstance + 64);
         v40 = *(fInstance + 65);
         v41 = *(fInstance + 66);
@@ -370,7 +370,7 @@ LABEL_5:
         LODWORD(v116) = 67115776;
         DWORD1(v116) = v113;
         WORD4(v116) = 1024;
-        *(&v116 + 10) = v111;
+        *(&v116 + 10) = firstLocationEarlyReturnEnabled2;
         HIWORD(v116) = 1024;
         LODWORD(v117) = v109;
         WORD2(v117) = 2048;
@@ -386,7 +386,7 @@ LABEL_5:
         HIWORD(v119) = 1024;
         LODWORD(v120) = v107;
         WORD2(v120) = 1024;
-        *(&v120 + 6) = v97;
+        *(&v120 + 6) = firstUpdateEnabled2;
         WORD5(v120) = 1024;
         HIDWORD(v120) = v95;
         LOWORD(v121) = 2048;
@@ -402,7 +402,7 @@ LABEL_5:
         WORD5(v123) = 1024;
         HIDWORD(v123) = v93;
         LOWORD(v124) = 1024;
-        *(&v124 + 2) = v38;
+        *(&v124 + 2) = periodicUpdatesEnabled2;
         HIWORD(v124) = 1024;
         LODWORD(v125) = v39;
         WORD2(v125) = 1024;
@@ -444,41 +444,41 @@ LABEL_5:
       *(&v118 + 1) = @"horizontalAccOfFirstLocation";
       if ((*(fInstance + 54) & 0x80000000) != 0)
       {
-        v50 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v50 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      *(&v135 + 1) = v50;
+      *(&v135 + 1) = null;
       v119 = @"verticalAccOfFirstLocation";
       if ((*(fInstance + 55) & 0x80000000) != 0)
       {
-        v54 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v54 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null2 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      v136 = v54;
+      v136 = null2;
       *&v120 = @"integrityOfFirstLocation";
       *&v137 = [MEMORY[0x1E696AD98] numberWithInt:*(fInstance + 56)];
       *(&v120 + 1) = @"ageOfFirstLocation";
       if ((*(fInstance + 57) & 0x80000000) != 0)
       {
-        v55 = [MEMORY[0x1E695DFB0] null];
+        null3 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v55 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null3 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      *(&v137 + 1) = v55;
+      *(&v137 + 1) = null3;
       *&v121 = @"firstUpdateEnabled";
       *&v138 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(*fInstance, "firstUpdateEnabled")}];
       *(&v121 + 1) = @"firstUpdateLocAvailable";
@@ -492,41 +492,41 @@ LABEL_5:
       *(&v123 + 1) = @"horizontalAccOfLocInFirstUpdate";
       if ((*(fInstance + 60) & 0x80000000) != 0)
       {
-        v57 = [MEMORY[0x1E695DFB0] null];
+        null4 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v57 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null4 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      *(&v140 + 1) = v57;
+      *(&v140 + 1) = null4;
       v124 = @"verticalAccOfLocInFirstUpdate";
       if ((*(fInstance + 61) & 0x80000000) != 0)
       {
-        v58 = [MEMORY[0x1E695DFB0] null];
+        null5 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v58 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null5 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      v141 = v58;
+      v141 = null5;
       *&v125 = @"integrityOfLocInFirstUpdate";
       *&v142 = [MEMORY[0x1E696AD98] numberWithInt:*(fInstance + 62)];
       *(&v125 + 1) = @"ageOfLocInFirstUpdate";
       if ((*(fInstance + 63) & 0x80000000) != 0)
       {
-        v59 = [MEMORY[0x1E695DFB0] null];
+        null6 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v59 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null6 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      *(&v142 + 1) = v59;
+      *(&v142 + 1) = null6;
       v126 = @"periodicUpdatesEnabled";
       v143 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(*fInstance, "periodicUpdatesEnabled")}];
       *&v127 = @"periodicUpdatesCount";
@@ -536,41 +536,41 @@ LABEL_5:
       *v128 = @"horizontalAccOfLocInBestPeriodicUpdate";
       if ((*(fInstance + 66) & 0x80000000) != 0)
       {
-        v60 = [MEMORY[0x1E695DFB0] null];
+        null7 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v60 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null7 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      *v145 = v60;
+      *v145 = null7;
       *&v128[8] = @"verticalAccOfLocInBestPeriodicUpdate";
       if ((*(fInstance + 67) & 0x80000000) != 0)
       {
-        v61 = [MEMORY[0x1E695DFB0] null];
+        null8 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v61 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null8 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      *&v145[8] = v61;
+      *&v145[8] = null8;
       *&v128[16] = @"integrityOfLocInBestPeriodicUpdate";
       *&v145[16] = [MEMORY[0x1E696AD98] numberWithInt:*(fInstance + 68)];
       v129 = @"ageOfLocInBestPeriodicUpdate";
       if ((*(fInstance + 69) & 0x80000000) != 0)
       {
-        v62 = [MEMORY[0x1E695DFB0] null];
+        null9 = [MEMORY[0x1E695DFB0] null];
       }
 
       else
       {
-        v62 = [MEMORY[0x1E696AD98] numberWithInt:?];
+        null9 = [MEMORY[0x1E696AD98] numberWithInt:?];
       }
 
-      v146 = v62;
+      v146 = null9;
       v130 = @"locationTypeInBestPeriodicUpdate";
       v147 = [MEMORY[0x1E696AD98] numberWithInt:*(fInstance + 70)];
       v131 = @"locationUpdateTimeout";
@@ -643,7 +643,7 @@ LABEL_5:
     }
 
     v67 = sub_19B87DD40();
-    v5 = v115;
+    selfCopy4 = selfCopy;
     if (*(v67 + 160) > 1 || *(v67 + 164) > 1 || *(v67 + 168) > 1 || *(v67 + 152))
     {
       bzero(&buf, 0x65CuLL);
@@ -661,10 +661,10 @@ LABEL_5:
         free(v68);
       }
 
-      v5 = v115;
+      selfCopy4 = selfCopy;
     }
 
-    v69 = v5->_fInstance;
+    v69 = selfCopy4->_fInstance;
     if (v69)
     {
       if (qword_1ED519088 != -1)
@@ -765,16 +765,16 @@ LABEL_5:
       MEMORY[0x19EAE98C0](v69, 0x10B2C40AA91F4E7);
     }
 
-    v5->_fInstance = 0;
+    selfCopy4->_fInstance = 0;
   }
 
-  fCleeaAssertion = v5->_fCleeaAssertion;
+  fCleeaAssertion = selfCopy4->_fCleeaAssertion;
   if (fCleeaAssertion)
   {
     [(CLAssertion *)fCleeaAssertion invalidate];
 
-    v115->_fCleeaAssertion = 0;
-    v5 = v115;
+    selfCopy->_fCleeaAssertion = 0;
+    selfCopy4 = selfCopy;
   }
 
   if (qword_1ED519088 != -1)
@@ -786,7 +786,7 @@ LABEL_5:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = selfCopy4;
     _os_log_impl(&dword_19B873000, v82, OS_LOG_TYPE_DEFAULT, "#CLELS,CLEmergencyLocationSelector,stopSession,self:%{private}@,completed", &buf, 0xCu);
   }
 
@@ -800,7 +800,7 @@ LABEL_5:
     }
 
     LODWORD(v116) = 138477827;
-    *(&v116 + 4) = v115;
+    *(&v116 + 4) = selfCopy;
     v84 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEmergencyLocationSelector stopSession]", "CoreLocation: %s\n", v84);
     if (v84 != &buf)
@@ -812,7 +812,7 @@ LABEL_5:
   v85 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v103 = *MEMORY[0x1E69E9840];
   if (![(CLEmergencyLocationSelector *)self fInstance])
@@ -826,7 +826,7 @@ LABEL_5:
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v99 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_19B873000, v47, OS_LOG_TYPE_DEFAULT, "#CLELS,CLEmergencyLocationSelector,locationManager:didUpdateLocations,self:%{private}@,nil fInstance,early return", buf, 0xCu);
     }
 
@@ -843,18 +843,18 @@ LABEL_5:
     }
 
     *v57 = 138477827;
-    v58 = self;
+    selfCopy4 = self;
     v49 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEmergencyLocationSelector locationManager:didUpdateLocations:]", "CoreLocation: %s\n");
     goto LABEL_52;
   }
 
-  if (!a4 || ![a4 count])
+  if (!locations || ![locations count])
   {
     goto LABEL_54;
   }
 
-  v6 = [a4 lastObject];
+  lastObject = [locations lastObject];
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6ED30);
@@ -864,9 +864,9 @@ LABEL_5:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138478083;
-    v99 = self;
+    selfCopy3 = self;
     v100 = 2049;
-    v101 = [(CLEmergencyLocationSelector *)self fInstance];
+    fInstance = [(CLEmergencyLocationSelector *)self fInstance];
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#CLELS,CLEmergencyLocationSelector,locationManager:didUpdateLocations,self:%{private}@,fInstance:%{private}p", buf, 0x16u);
   }
 
@@ -880,9 +880,9 @@ LABEL_5:
     }
 
     *v57 = 138478083;
-    v58 = self;
+    selfCopy4 = self;
     v59 = 2049;
-    v60 = [(CLEmergencyLocationSelector *)self fInstance];
+    fInstance2 = [(CLEmergencyLocationSelector *)self fInstance];
     v9 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEmergencyLocationSelector locationManager:didUpdateLocations:]", "CoreLocation: %s\n", v9);
     if (v9 != buf)
@@ -891,8 +891,8 @@ LABEL_5:
     }
   }
 
-  v10 = [(CLEmergencyLocationSelector *)self fInstance];
-  if (!*v10)
+  fInstance3 = [(CLEmergencyLocationSelector *)self fInstance];
+  if (!*fInstance3)
   {
     if (qword_1ED519088 != -1)
     {
@@ -903,7 +903,7 @@ LABEL_5:
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_ERROR))
     {
       *buf = 134283521;
-      v99 = v10;
+      selfCopy3 = fInstance3;
       _os_log_impl(&dword_19B873000, v50, OS_LOG_TYPE_ERROR, "#CLELS,CLEmergencyLocationSelectorInternal,updateLocation,this:%{private}p,nil fConfig,early return", buf, 0xCu);
     }
 
@@ -920,7 +920,7 @@ LABEL_5:
     }
 
     *v57 = 134283521;
-    v58 = v10;
+    selfCopy4 = fInstance3;
     v49 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 0, "void CLEmergencyLocationSelectorInternal::updateLocation(CLLocation *)", "CoreLocation: %s\n");
 LABEL_52:
@@ -932,7 +932,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  if (v6)
+  if (lastObject)
   {
     if (qword_1ED519088 != -1)
     {
@@ -943,28 +943,28 @@ LABEL_52:
     v12 = 0x1E753C000;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", [*v10 feature]);
-      [v6 coordinate];
+      v13 = +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", [*fInstance3 feature]);
+      [lastObject coordinate];
       v15 = v14;
-      [v6 coordinate];
+      [lastObject coordinate];
       v17 = v16;
-      [v6 horizontalAccuracy];
+      [lastObject horizontalAccuracy];
       v19 = v18;
-      [v6 altitude];
+      [lastObject altitude];
       v21 = v20;
-      [v6 ellipsoidalAltitude];
+      [lastObject ellipsoidalAltitude];
       v23 = v22;
-      [v6 verticalAccuracy];
+      [lastObject verticalAccuracy];
       v25 = v24;
-      v26 = [v6 timestamp];
-      [v6 clientLocation];
+      timestamp = [lastObject timestamp];
+      [lastObject clientLocation];
       v27 = v102;
-      v28 = [v6 integrity];
+      integrity = [lastObject integrity];
       *v57 = 138545667;
-      v58 = v13;
+      selfCopy4 = v13;
       v12 = 0x1E753C000uLL;
       v59 = 2053;
-      v60 = v15;
+      fInstance2 = v15;
       v61 = 2053;
       v62 = v17;
       v63 = 2050;
@@ -976,11 +976,11 @@ LABEL_52:
       v69 = 2050;
       v70 = v25;
       v71 = 2114;
-      v72 = v26;
+      v72 = timestamp;
       v73 = 1026;
       v74 = v27;
       v75 = 1026;
-      v76 = v28;
+      v76 = integrity;
       _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "#CLELS,%{public}@,updateLocation,lat,%{sensitive}.7f,lon,%{sensitive}.7f,hunc,%{public}f,alt,%{sensitive}f,ellipsoidalAlt,%{sensitive}f,vunc,%{public}f,timestamp,%{public}@,locationType,%{public}d,integrity,%{public}d", v57, 0x5Eu);
     }
 
@@ -993,23 +993,23 @@ LABEL_52:
         dispatch_once(&qword_1ED519088, &unk_1F0E6ED30);
       }
 
-      v30 = [*(v12 + 1456) featureString:{objc_msgSend(*v10, "feature")}];
-      [v6 coordinate];
+      v30 = [*(v12 + 1456) featureString:{objc_msgSend(*fInstance3, "feature")}];
+      [lastObject coordinate];
       v32 = v31;
-      [v6 coordinate];
+      [lastObject coordinate];
       v34 = v33;
-      [v6 horizontalAccuracy];
+      [lastObject horizontalAccuracy];
       v36 = v35;
-      [v6 altitude];
+      [lastObject altitude];
       v38 = v37;
-      [v6 ellipsoidalAltitude];
+      [lastObject ellipsoidalAltitude];
       v40 = v39;
-      [v6 verticalAccuracy];
+      [lastObject verticalAccuracy];
       v42 = v41;
-      v43 = [v6 timestamp];
-      [v6 clientLocation];
+      timestamp2 = [lastObject timestamp];
+      [lastObject clientLocation];
       v44 = v77;
-      v45 = [v6 integrity];
+      integrity2 = [lastObject integrity];
       v78 = 138545667;
       v79 = v30;
       v80 = 2053;
@@ -1025,11 +1025,11 @@ LABEL_52:
       v90 = 2050;
       v91 = v42;
       v92 = 2114;
-      v93 = v43;
+      v93 = timestamp2;
       v94 = 1026;
       v95 = v44;
       v96 = 1026;
-      v97 = v45;
+      v97 = integrity2;
       v46 = _os_log_send_and_compose_impl();
       sub_19B885924("Generic", 1, 0, 2, "void CLEmergencyLocationSelectorInternal::updateLocation(CLLocation *)", "CoreLocation: %s\n", v46);
       if (v46 != buf)
@@ -1038,8 +1038,8 @@ LABEL_52:
       }
     }
 
-    v10[19] = [v6 copy];
-    sub_19BA44FC8((v10 + 3), 3);
+    fInstance3[19] = [lastObject copy];
+    sub_19BA44FC8((fInstance3 + 3), 3);
     goto LABEL_54;
   }
 
@@ -1051,9 +1051,9 @@ LABEL_52:
   v53 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_ERROR))
   {
-    v54 = +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", [*v10 feature]);
+    v54 = +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", [*fInstance3 feature]);
     *buf = 138543362;
-    v99 = v54;
+    selfCopy3 = v54;
     _os_log_impl(&dword_19B873000, v53, OS_LOG_TYPE_ERROR, "#CLELS,%{public}@,updateLocation,nil Location object", buf, 0xCu);
   }
 
@@ -1066,9 +1066,9 @@ LABEL_52:
       dispatch_once(&qword_1ED519088, &unk_1F0E6ED30);
     }
 
-    v56 = +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", [*v10 feature]);
+    v56 = +[CLEmergencyLocationSelectorConfig featureString:](CLEmergencyLocationSelectorConfig, "featureString:", [*fInstance3 feature]);
     *v57 = 138543362;
-    v58 = v56;
+    selfCopy4 = v56;
     v49 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 0, "void CLEmergencyLocationSelectorInternal::updateLocation(CLLocation *)", "CoreLocation: %s\n", v49);
     if (v49 != buf)

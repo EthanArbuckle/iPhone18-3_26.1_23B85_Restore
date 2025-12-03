@@ -1,41 +1,41 @@
 @interface VCPMADMLScalingTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADMLScalingTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADMLScalingTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (id).cxx_construct;
-- (int)convertPixelFormat:(__CVBuffer *)a3;
+- (int)convertPixelFormat:(__CVBuffer *)format;
 - (int)run;
 @end
 
 @implementation VCPMADMLScalingTask
 
-- (VCPMADMLScalingTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADMLScalingTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v15.receiver = self;
   v15.super_class = VCPMADMLScalingTask;
   v12 = [(VCPMADMLScalingTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
   }
 
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -59,10 +59,10 @@
   return v11;
 }
 
-- (int)convertPixelFormat:(__CVBuffer *)a3
+- (int)convertPixelFormat:(__CVBuffer *)format
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v5 = *a3;
+  v5 = *format;
   cf = 0;
   pixelBuffer = v5;
   p_pixelBufferPool = &self->_pixelBufferPool;
@@ -126,7 +126,7 @@ LABEL_2:
           }
 
           v10 = 0;
-          *a3 = v11;
+          *format = v11;
         }
       }
     }
@@ -141,8 +141,8 @@ LABEL_2:
 {
   v122[1] = *MEMORY[0x1E69E9840];
   cf = 0;
-  v3 = [(MADMLScalingRequest *)self->_request scaledImageWidth];
-  v4 = [(MADMLScalingRequest *)self->_request scaledImageHeight];
+  scaledImageWidth = [(MADMLScalingRequest *)self->_request scaledImageWidth];
+  scaledImageHeight = [(MADMLScalingRequest *)self->_request scaledImageHeight];
   v5 = VCPSignPostLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -198,8 +198,8 @@ LABEL_2:
 
   Width = CVPixelBufferGetWidth(texture);
   Height = CVPixelBufferGetHeight(texture);
-  v23 = v3;
-  v92 = v4;
+  v23 = scaledImageWidth;
+  v92 = scaledImageHeight;
   p_outputPixelBufferPool = &self->_outputPixelBufferPool;
   v25 = self->_outputPixelBufferPool.value_;
   if (!v25)
@@ -333,8 +333,8 @@ LABEL_20:
       v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
       v60 = [v56 imageByApplyingFilter:@"CILanczosScaleTransform" withInputParameters:v59];
 
-      v61 = [MEMORY[0x1E695F620] context];
-      [v61 render:v60 toCVPixelBuffer:cf];
+      context = [MEMORY[0x1E695F620] context];
+      [context render:v60 toCVPixelBuffer:cf];
 
       goto LABEL_86;
     }
@@ -353,8 +353,8 @@ LABEL_20:
       v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v110 forKeys:v109 count:3];
       v54 = [v50 imageByApplyingFilter:@"CIBicubicScaleTransform" withInputParameters:v53];
 
-      v55 = [MEMORY[0x1E695F620] context];
-      [v55 render:v54 toCVPixelBuffer:cf];
+      context2 = [MEMORY[0x1E695F620] context];
+      [context2 render:v54 toCVPixelBuffer:cf];
 
 LABEL_86:
       CVBufferPropagateAttachments(texture, cf);
@@ -400,10 +400,10 @@ LABEL_9:
 
   if (![(MADMLScalingRequest *)self->_request scalingModelIndex])
   {
-    v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"out_res_%dx%d", v23, v92];
-    v46 = [[CNNMLScalerEspresso alloc] initWithConfig:v44 modelIndex:[(MADMLScalingRequest *)self->_request scalingModelIndex] scalingFactor:(v23 / Width)];
-    v47 = v46;
-    if (!v46)
+    width = [MEMORY[0x1E696AEC0] stringWithFormat:@"out_res_%dx%d", v23, v92];
+    height = [[CNNMLScalerEspresso alloc] initWithConfig:width modelIndex:[(MADMLScalingRequest *)self->_request scalingModelIndex] scalingFactor:(v23 / Width)];
+    v47 = height;
+    if (!height)
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -424,7 +424,7 @@ LABEL_9:
     }
 
 LABEL_59:
-    v62 = [(CNNMLScalerEspresso *)v46 inferenceWithPixelBuffer:texture toDestinationPixelBuffer:cf];
+    v62 = [(CNNMLScalerEspresso *)height inferenceWithPixelBuffer:texture toDestinationPixelBuffer:cf];
     goto LABEL_60;
   }
 
@@ -433,11 +433,11 @@ LABEL_59:
     goto LABEL_87;
   }
 
-  v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"main_input_tensor_1_1_4_%d_%d_", Height, Width];
+  width = [MEMORY[0x1E696AEC0] stringWithFormat:@"main_input_tensor_1_1_4_%d_%d_", Height, Width];
   v45 = (v23 / Width);
-  v46 = [[CNNMLScalerEspressoV2 alloc] initWithConfig:v44 modelIndex:[(MADMLScalingRequest *)self->_request scalingModelIndex] inputSize:v45 scalingFactor:Width, Height];
-  v47 = v46;
-  if (v46)
+  height = [[CNNMLScalerEspressoV2 alloc] initWithConfig:width modelIndex:[(MADMLScalingRequest *)self->_request scalingModelIndex] inputSize:v45 scalingFactor:Width, Height];
+  v47 = height;
+  if (height)
   {
     goto LABEL_59;
   }

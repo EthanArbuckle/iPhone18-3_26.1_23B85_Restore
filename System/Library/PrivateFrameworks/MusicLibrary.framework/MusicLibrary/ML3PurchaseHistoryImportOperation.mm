@@ -1,20 +1,20 @@
 @interface ML3PurchaseHistoryImportOperation
-- (BOOL)_performPurchaseHistoryImportWithTransaction:(id)a3;
+- (BOOL)_performPurchaseHistoryImportWithTransaction:(id)transaction;
 - (void)main;
 @end
 
 @implementation ML3PurchaseHistoryImportOperation
 
-- (BOOL)_performPurchaseHistoryImportWithTransaction:(id)a3
+- (BOOL)_performPurchaseHistoryImportWithTransaction:(id)transaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 connection];
-  v5 = [(ML3ImportOperation *)self import];
+  connection = [transaction connection];
+  import = [(ML3ImportOperation *)self import];
   v6 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v5 preferredVideoQuality];
+    preferredVideoQuality = [import preferredVideoQuality];
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "importing purchased tracks. import.preferredVideoQuality=%lld", buf, 0xCu);
   }
 
@@ -23,7 +23,7 @@
     goto LABEL_8;
   }
 
-  v7 = [(ML3DAAPImportOperation *)self performImportOfSourceType:4 usingConnection:v4];
+  v7 = [(ML3DAAPImportOperation *)self performImportOfSourceType:4 usingConnection:connection];
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   v9 = v8;
   if (v7)
@@ -37,15 +37,15 @@
 LABEL_8:
     if (([(ML3PurchaseHistoryImportOperation *)self isCancelled]& 1) == 0)
     {
-      v10 = [v5 library];
-      objc_initWeak(buf, v10);
+      library = [import library];
+      objc_initWeak(buf, library);
 
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __82__ML3PurchaseHistoryImportOperation__performPurchaseHistoryImportWithTransaction___block_invoke;
       v13[3] = &unk_278760268;
       objc_copyWeak(&v14, buf);
-      [v4 enqueueBlockForTransactionCommit:v13];
+      [connection enqueueBlockForTransactionCommit:v13];
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
     }
@@ -78,13 +78,13 @@ void __82__ML3PurchaseHistoryImportOperation__performPurchaseHistoryImportWithTr
 - (void)main
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [(ML3ImportOperation *)self import];
-  v5 = [v4 trackData];
+  import = [(ML3ImportOperation *)self import];
+  trackData = [import trackData];
 
-  if (!v5)
+  if (!trackData)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ML3PurchaseHistoryImportOperation.mm" lineNumber:35 description:@"Attempted to start purchase history import operation without DAAP payload."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3PurchaseHistoryImportOperation.mm" lineNumber:35 description:@"Attempted to start purchase history import operation without DAAP payload."];
   }
 
   v15 = 0;
@@ -107,11 +107,11 @@ void __82__ML3PurchaseHistoryImportOperation__performPurchaseHistoryImportWithTr
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ML3PurchaseHistoryImportOperation *)self isCancelled];
+    isCancelled = [(ML3PurchaseHistoryImportOperation *)self isCancelled];
     v10 = *(v16 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v20 = v9;
+    v20 = isCancelled;
     v21 = 1024;
     v22 = v10;
     v23 = 2048;

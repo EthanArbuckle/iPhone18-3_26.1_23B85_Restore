@@ -2,8 +2,8 @@
 - (FCCKPrivateDatabaseCKOperationResults)init;
 - (NSArray)combinedResultItems;
 - (NSError)combinedError;
-- (void)notifyWhenFinishWithQoS:(int64_t)a3 completionHandler:(id)a4;
-- (void)operationDidFinishWithItemIDs:(id)a3 resultItems:(id)a4 error:(id)a5;
+- (void)notifyWhenFinishWithQoS:(int64_t)s completionHandler:(id)handler;
+- (void)operationDidFinishWithItemIDs:(id)ds resultItems:(id)items error:(id)error;
 - (void)operationWillStart;
 @end
 
@@ -34,17 +34,17 @@
 
 - (void)operationWillStart
 {
-  v2 = [(FCCKPrivateDatabaseCKOperationResults *)self group];
-  dispatch_group_enter(v2);
+  group = [(FCCKPrivateDatabaseCKOperationResults *)self group];
+  dispatch_group_enter(group);
 }
 
-- (void)operationDidFinishWithItemIDs:(id)a3 resultItems:(id)a4 error:(id)a5
+- (void)operationDidFinishWithItemIDs:(id)ds resultItems:(id)items error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  itemsCopy = items;
+  errorCopy = error;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "itemIDs"];
     *buf = 136315906;
@@ -58,35 +58,35 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if ([v9 count])
+  if ([itemsCopy count])
   {
-    v11 = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeItems];
-    [v11 addObjectsFromArray:v9];
+    threadSafeItems = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeItems];
+    [threadSafeItems addObjectsFromArray:itemsCopy];
   }
 
-  v12 = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeErrorsAndItemIDs];
-  v13 = [FCPair pairWithFirst:v8 second:v10];
-  [v12 addObject:v13];
+  threadSafeErrorsAndItemIDs = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeErrorsAndItemIDs];
+  v13 = [FCPair pairWithFirst:dsCopy second:errorCopy];
+  [threadSafeErrorsAndItemIDs addObject:v13];
 
-  v14 = [(FCCKPrivateDatabaseCKOperationResults *)self group];
-  dispatch_group_leave(v14);
+  group = [(FCCKPrivateDatabaseCKOperationResults *)self group];
+  dispatch_group_leave(group);
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyWhenFinishWithQoS:(int64_t)a3 completionHandler:(id)a4
+- (void)notifyWhenFinishWithQoS:(int64_t)s completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(FCCKPrivateDatabaseCKOperationResults *)self group];
-  v8 = FCDispatchQueueForQualityOfService(a3);
+  handlerCopy = handler;
+  group = [(FCCKPrivateDatabaseCKOperationResults *)self group];
+  v8 = FCDispatchQueueForQualityOfService(s);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__FCCKPrivateDatabaseCKOperationResults_notifyWhenFinishWithQoS_completionHandler___block_invoke;
   v10[3] = &unk_1E7C37778;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  dispatch_group_notify(v7, v8, v10);
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  dispatch_group_notify(group, v8, v10);
 }
 
 void __83__FCCKPrivateDatabaseCKOperationResults_notifyWhenFinishWithQoS_completionHandler___block_invoke(uint64_t a1)
@@ -99,37 +99,37 @@ void __83__FCCKPrivateDatabaseCKOperationResults_notifyWhenFinishWithQoS_complet
 
 - (NSArray)combinedResultItems
 {
-  v2 = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeItems];
-  v3 = [v2 readOnlyArray];
+  threadSafeItems = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeItems];
+  readOnlyArray = [threadSafeItems readOnlyArray];
 
-  return v3;
+  return readOnlyArray;
 }
 
 - (NSError)combinedError
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v2 = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeErrorsAndItemIDs];
-  v3 = [v2 readOnlyArray];
+  threadSafeErrorsAndItemIDs = [(FCCKPrivateDatabaseCKOperationResults *)self threadSafeErrorsAndItemIDs];
+  readOnlyArray = [threadSafeErrorsAndItemIDs readOnlyArray];
 
-  if ([v3 count] <= 1)
+  if ([readOnlyArray count] <= 1)
   {
     goto LABEL_2;
   }
 
-  if ([v3 fc_allObjectsPassTest:&__block_literal_global_5])
+  if ([readOnlyArray fc_allObjectsPassTest:&__block_literal_global_5])
   {
-    v5 = 0;
+    second = 0;
   }
 
   else
   {
-    v6 = [v3 fc_allObjectsPassTest:&__block_literal_global_54];
-    v7 = [v3 fc_allObjectsPassTest:&__block_literal_global_56];
+    v6 = [readOnlyArray fc_allObjectsPassTest:&__block_literal_global_54];
+    v7 = [readOnlyArray fc_allObjectsPassTest:&__block_literal_global_56];
     if (v6 && v7)
     {
 LABEL_2:
-      v4 = [v3 firstObject];
-      v5 = [v4 second];
+      firstObject = [readOnlyArray firstObject];
+      second = [firstObject second];
 
       goto LABEL_8;
     }
@@ -139,7 +139,7 @@ LABEL_2:
     v17 = 3221225472;
     v18 = __54__FCCKPrivateDatabaseCKOperationResults_combinedError__block_invoke_4;
     v19 = &unk_1E7C36EC8;
-    v20 = v3;
+    v20 = readOnlyArray;
     v9 = [v8 fc_dictionary:&v16];
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E695B740];
@@ -149,14 +149,14 @@ LABEL_2:
     v22[0] = v9;
     v22[1] = @"Some private database CK operations failed.";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:{2, v16, v17, v18, v19}];
-    v5 = [v10 errorWithDomain:v11 code:2 userInfo:v13];
+    second = [v10 errorWithDomain:v11 code:2 userInfo:v13];
   }
 
 LABEL_8:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return second;
 }
 
 BOOL __54__FCCKPrivateDatabaseCKOperationResults_combinedError__block_invoke(uint64_t a1, void *a2)

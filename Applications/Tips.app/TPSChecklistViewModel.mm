@@ -4,33 +4,33 @@
 - (NSArray)tips;
 - (NSString)selectedTipIdentifier;
 - (id)actionHandler;
-- (id)assetsBaseURLFor:(id)a3;
-- (id)bodyContentFor:(id)a3;
+- (id)assetsBaseURLFor:(id)for;
+- (id)bodyContentFor:(id)for;
 - (id)firstTip;
-- (id)subtitleFor:(id)a3;
-- (id)symbolIdentifierFor:(id)a3;
-- (id)tipWithIdentifier:(id)a3;
-- (id)titleFor:(id)a3;
+- (id)subtitleFor:(id)for;
+- (id)symbolIdentifierFor:(id)for;
+- (id)tipWithIdentifier:(id)identifier;
+- (id)titleFor:(id)for;
 - (int64_t)suggestedTipsCount;
 - (void)reset;
-- (void)setActionHandler:(id)a3;
-- (void)setCollection:(id)a3;
-- (void)setCurrentDisplayTips:(id)a3;
-- (void)setCurrentTip:(id)a3;
-- (void)setSelectedTipIdentifier:(id)a3;
+- (void)setActionHandler:(id)handler;
+- (void)setCollection:(id)collection;
+- (void)setCurrentDisplayTips:(id)tips;
+- (void)setCurrentTip:(id)tip;
+- (void)setSelectedTipIdentifier:(id)identifier;
 - (void)updateSelectionIfNeeded;
 - (void)updateTips;
 @end
 
 @implementation TPSChecklistViewModel
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
+  collectionCopy = collection;
+  selfCopy = self;
+  v7 = collectionCopy;
   static Published.subscript.setter();
   sub_100024904();
 }
@@ -39,7 +39,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   if (v6)
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (void)setSelectedTipIdentifier:(id)a3
+- (void)setSelectedTipIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -69,20 +69,20 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_100024DD8(v4, v6);
 }
 
-- (void)setCurrentTip:(id)a3
+- (void)setCurrentTip:(id)tip
 {
-  v5 = a3;
-  v6 = self;
-  sub_100025098(a3);
+  tipCopy = tip;
+  selfCopy = self;
+  sub_100025098(tip);
 }
 
 - (NSArray)tips
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000255F0();
 
   sub_10001AC14(0, &qword_1000B30C8, TPSTip_ptr);
@@ -108,9 +108,9 @@
   return v2.super.isa;
 }
 
-- (void)setCurrentDisplayTips:(id)a3
+- (void)setCurrentDisplayTips:(id)tips
 {
-  if (a3)
+  if (tips)
   {
     sub_10001AC14(0, &qword_1000B30C8, TPSTip_ptr);
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -147,9 +147,9 @@
   return v3;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -168,13 +168,13 @@
   v9 = *(self + OBJC_IVAR___TPSChecklistViewModel_actionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10001E970(v8);
 }
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100025978();
 
   return v3 & 1;
@@ -184,7 +184,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   if (v6)
@@ -210,13 +210,13 @@
 
 - (void)updateTips
 {
-  v2 = self;
+  selfCopy = self;
   sub_100025B08();
 }
 
-- (id)tipWithIdentifier:(id)a3
+- (id)tipWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -228,7 +228,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_100026408(v4, v6);
 
   return v8;
@@ -236,13 +236,13 @@
 
 - (void)updateSelectionIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000268CC();
 }
 
 - (id)firstTip
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100026BB0();
 
   return v3;
@@ -250,20 +250,20 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_100024DD8(0, 0);
   sub_100025098(0);
 }
 
-- (id)assetsBaseURLFor:(id)a3
+- (id)assetsBaseURLFor:(id)for
 {
   v5 = sub_10001B4A4(&unk_1000B3380, &qword_100079940);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v18 - v7;
-  v9 = a3;
-  v10 = self;
-  sub_100027A38(v9, v8);
+  forCopy = for;
+  selfCopy = self;
+  sub_100027A38(forCopy, v8);
 
   v11 = type metadata accessor for URL();
   v12 = *(v11 - 8);
@@ -280,12 +280,12 @@
   return v14;
 }
 
-- (id)titleFor:(id)a3
+- (id)titleFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 checklistContent];
-  if (v6 && (v7 = v6, v8 = [v6 title], v7, v8))
+  forCopy = for;
+  selfCopy = self;
+  checklistContent = [forCopy checklistContent];
+  if (checklistContent && (v7 = checklistContent, v8 = [checklistContent title], v7, v8))
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -299,22 +299,22 @@
   return v9;
 }
 
-- (id)subtitleFor:(id)a3
+- (id)subtitleFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_100027E1C(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_100027E1C(forCopy);
 
   v6 = String._bridgeToObjectiveC()();
 
   return v6;
 }
 
-- (id)bodyContentFor:(id)a3
+- (id)bodyContentFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_100029020(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_100029020(forCopy);
 
   sub_10001B4A4(&qword_1000B31C8, &qword_100078040);
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -322,12 +322,12 @@
   return v6.super.isa;
 }
 
-- (id)symbolIdentifierFor:(id)a3
+- (id)symbolIdentifierFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 checklistContent];
-  if (v6 && (v7 = v6, v8 = [v6 assets], v7, v8) && (v9 = objc_msgSend(v8, "symbolId"), v8, v9))
+  forCopy = for;
+  selfCopy = self;
+  checklistContent = [forCopy checklistContent];
+  if (checklistContent && (v7 = checklistContent, v8 = [checklistContent assets], v7, v8) && (v9 = objc_msgSend(v8, "symbolId"), v8, v9))
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

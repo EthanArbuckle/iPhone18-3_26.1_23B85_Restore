@@ -1,23 +1,23 @@
 @interface ATXUIFeedbackMetricsResult
-- (ATXUIFeedbackMetricsResult)initWithSpecification:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUIFeedbackMetricsResult:(id)a3;
+- (ATXUIFeedbackMetricsResult)initWithSpecification:(id)specification startDate:(id)date endDate:(id)endDate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUIFeedbackMetricsResult:(id)result;
 - (unint64_t)hash;
 @end
 
 @implementation ATXUIFeedbackMetricsResult
 
-- (ATXUIFeedbackMetricsResult)initWithSpecification:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (ATXUIFeedbackMetricsResult)initWithSpecification:(id)specification startDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  specificationCopy = specification;
+  dateCopy = date;
+  endDateCopy = endDate;
   v21.receiver = self;
   v21.super_class = ATXUIFeedbackMetricsResult;
   v11 = [(ATXUIFeedbackMetricsResult *)&v21 init];
   if (v11)
   {
-    v12 = -[ATXTrendPlot initWithStartDate:endDate:granularity:binInitialDataProvider:]([ATXTrendPlot alloc], "initWithStartDate:endDate:granularity:binInitialDataProvider:", v9, v10, [v8 trendPlotGranularity], &__block_literal_global_10);
+    v12 = -[ATXTrendPlot initWithStartDate:endDate:granularity:binInitialDataProvider:]([ATXTrendPlot alloc], "initWithStartDate:endDate:granularity:binInitialDataProvider:", dateCopy, endDateCopy, [specificationCopy trendPlotGranularity], &__block_literal_global_10);
     trendPlot = v11->_trendPlot;
     v11->_trendPlot = v12;
 
@@ -44,29 +44,29 @@ id __70__ATXUIFeedbackMetricsResult_initWithSpecification_startDate_endDate___bl
   return v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetricsResult *)self isEqualToATXUIFeedbackMetricsResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetricsResult *)self isEqualToATXUIFeedbackMetricsResult:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUIFeedbackMetricsResult:(id)a3
+- (BOOL)isEqualToATXUIFeedbackMetricsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = self->_trendPlot;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == resultCopy[1])
   {
   }
 
@@ -82,7 +82,7 @@ id __70__ATXUIFeedbackMetricsResult_initWithSpecification_startDate_endDate___bl
 
   v8 = self->_sectionForShownSuggestions;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == resultCopy[2])
   {
   }
 
@@ -98,7 +98,7 @@ id __70__ATXUIFeedbackMetricsResult_initWithSpecification_startDate_endDate___bl
 
   v11 = self->_sectionForEngagedSuggestions;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == resultCopy[3])
   {
   }
 
@@ -116,7 +116,7 @@ LABEL_11:
 
   v15 = self->_sectionForRejectedSuggestions;
   v16 = v15;
-  if (v15 == v4[4])
+  if (v15 == resultCopy[4])
   {
     v14 = 1;
   }

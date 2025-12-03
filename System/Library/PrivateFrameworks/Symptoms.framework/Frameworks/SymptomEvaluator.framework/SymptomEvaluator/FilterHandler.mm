@@ -1,11 +1,11 @@
 @interface FilterHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
+- (BOOL)noteSymptom:(id)symptom;
 - (FilterHandler)init;
-- (int)configureInstance:(id)a3;
-- (int)configureSubsystem:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (int)configureInstance:(id)instance;
+- (int)configureSubsystem:(id)subsystem;
+- (int)read:(id)read returnedValues:(id)values;
 @end
 
 @implementation FilterHandler
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __31__FilterHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_15 != -1)
   {
     dispatch_once(&sharedInstance_pred_15, block);
@@ -46,25 +46,25 @@ void __31__FilterHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[FilterHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)configureSubsystem:(id)a3
+- (int)configureSubsystem:(id)subsystem
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"SUBSYSTEM_SHORT_TEXT_ID"];
+  subsystemCopy = subsystem;
+  v4 = [subsystemCopy objectForKey:@"SUBSYSTEM_SHORT_TEXT_ID"];
   if (v4)
   {
     v5 = [SymptomStore idFromReporterName:v4];
     v6 = [ReporterFilter filterForName:v4 id:v5];
-    v7 = [v3 objectForKey:@"SUBSYSTEM_FILTERS"];
+    v7 = [subsystemCopy objectForKey:@"SUBSYSTEM_FILTERS"];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -111,10 +111,10 @@ void __31__FilterHandler_sharedInstance__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKey:@"SUBSYSTEM_CONFIGURATIONS"];
+  v4 = [instance objectForKey:@"SUBSYSTEM_CONFIGURATIONS"];
   v5 = v4;
   if (v4)
   {
@@ -164,22 +164,22 @@ void __31__FilterHandler_sharedInstance__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = *([v4 eventData] + 16);
+  symptomCopy = symptom;
+  v5 = *([symptomCopy eventData] + 16);
   v6 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v7 = v6;
-    v8 = [v4 description];
-    v9 = [v8 UTF8String];
+    v8 = [symptomCopy description];
+    uTF8String = [v8 UTF8String];
     v10 = [(FilterHandler *)self description];
     *buf = 136315394;
-    v16 = v9;
+    v16 = uTF8String;
     v17 = 2080;
-    v18 = [v10 UTF8String];
+    uTF8String2 = [v10 UTF8String];
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "noteSymptom %s, arriving at %s", buf, 0x16u);
   }
 
@@ -285,12 +285,12 @@ void __29__FilterHandler_noteSymptom___block_invoke(uint64_t a1, void *a2)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

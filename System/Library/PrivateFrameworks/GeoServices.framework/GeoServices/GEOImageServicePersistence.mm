@@ -1,29 +1,29 @@
 @interface GEOImageServicePersistence
 - (BOOL)_deleteAndRecreateDB;
-- (BOOL)_setup:(id)a3;
-- (GEOImageServicePersistence)initWithDBFileURL:(id)a3 maximumTotalDataSize:(unint64_t)UInteger maximumAge:(double)a5;
+- (BOOL)_setup:(id)_setup;
+- (GEOImageServicePersistence)initWithDBFileURL:(id)l maximumTotalDataSize:(unint64_t)UInteger maximumAge:(double)age;
 - (unint64_t)_evictAssetsOlderThanAllowedThreshold;
-- (unint64_t)_shrinkBySize:(unint64_t)a3;
-- (unint64_t)_shrinkToSize:(unint64_t)a3;
+- (unint64_t)_shrinkBySize:(unint64_t)size;
+- (unint64_t)_shrinkToSize:(unint64_t)size;
 - (unint64_t)calculateFreeableSize;
-- (unint64_t)shrinkBySize:(unint64_t)a3;
-- (unint64_t)shrinkToSize:(unint64_t)a3;
+- (unint64_t)shrinkBySize:(unint64_t)size;
+- (unint64_t)shrinkToSize:(unint64_t)size;
 - (void)_evictIfNecessary;
 - (void)_updateDataSizeOnDBQueue;
-- (void)addData:(id)a3 forIdentifier:(id)a4 width:(unsigned int)a5 height:(unsigned int)a6;
-- (void)getDataForIdentifier:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 callbackQueue:(id)a6 callback:(id)a7;
+- (void)addData:(id)data forIdentifier:(id)identifier width:(unsigned int)width height:(unsigned int)height;
+- (void)getDataForIdentifier:(id)identifier width:(unsigned int)width height:(unsigned int)height callbackQueue:(id)queue callback:(id)callback;
 - (void)tearDown;
 @end
 
 @implementation GEOImageServicePersistence
 
-- (void)getDataForIdentifier:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 callbackQueue:(id)a6 callback:(id)a7
+- (void)getDataForIdentifier:(id)identifier width:(unsigned int)width height:(unsigned int)height callbackQueue:(id)queue callback:(id)callback
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (v12 && v13 && v14)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  callbackCopy = callback;
+  v15 = callbackCopy;
+  if (identifierCopy && queueCopy && callbackCopy)
   {
     db = self->_db;
     v20[0] = _NSConcreteStackBlock;
@@ -31,10 +31,10 @@
     v20[2] = sub_10003B0B8;
     v20[3] = &unk_100082F98;
     v20[4] = self;
-    v21 = v12;
-    v24 = a4;
-    v25 = a5;
-    v22 = v13;
+    v21 = identifierCopy;
+    widthCopy = width;
+    heightCopy = height;
+    v22 = queueCopy;
     v23 = v15;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -46,26 +46,26 @@
   }
 }
 
-- (void)addData:(id)a3 forIdentifier:(id)a4 width:(unsigned int)a5 height:(unsigned int)a6
+- (void)addData:(id)data forIdentifier:(id)identifier width:(unsigned int)width height:(unsigned int)height
 {
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   db = self->_db;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10003B92C;
   v15[3] = &unk_100082F48;
   v15[4] = self;
-  v16 = v11;
-  v18 = a5;
-  v19 = a6;
-  v17 = v10;
-  v13 = v10;
-  v14 = v11;
+  v16 = identifierCopy;
+  widthCopy = width;
+  heightCopy = height;
+  v17 = dataCopy;
+  v13 = dataCopy;
+  v14 = identifierCopy;
   [(GEOSQLiteDB *)db executeAsync:v15];
 }
 
-- (unint64_t)shrinkBySize:(unint64_t)a3
+- (unint64_t)shrinkBySize:(unint64_t)size
 {
   v7 = 0;
   v8 = &v7;
@@ -78,14 +78,14 @@
   v6[3] = &unk_100082EF8;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = size;
   [(GEOSQLiteDB *)db executeSync:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (unint64_t)shrinkToSize:(unint64_t)a3
+- (unint64_t)shrinkToSize:(unint64_t)size
 {
   v7 = 0;
   v8 = &v7;
@@ -98,7 +98,7 @@
   v6[3] = &unk_100082EF8;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = size;
   [(GEOSQLiteDB *)db executeSync:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -124,7 +124,7 @@
   return v3;
 }
 
-- (unint64_t)_shrinkBySize:(unint64_t)a3
+- (unint64_t)_shrinkBySize:(unint64_t)size
 {
   v17 = 0;
   v18 = &v17;
@@ -143,7 +143,7 @@
   v12[5] = &v17;
   v12[6] = &v13;
   v12[7] = 0;
-  v12[8] = a3;
+  v12[8] = size;
   [(GEOSQLiteDB *)db statementForKey:@"enumerateDataSizeFromOldest" statementBlock:v12];
   if (!*(v18 + 6))
   {
@@ -185,16 +185,16 @@ LABEL_6:
   return v9;
 }
 
-- (unint64_t)_shrinkToSize:(unint64_t)a3
+- (unint64_t)_shrinkToSize:(unint64_t)size
 {
   totalDataSize = self->_totalDataSize;
-  if (!a3)
+  if (!size)
   {
     [(GEOImageServicePersistence *)self _deleteAndRecreateDB];
     return totalDataSize;
   }
 
-  if (totalDataSize <= a3)
+  if (totalDataSize <= size)
   {
     return 0;
   }
@@ -204,16 +204,16 @@ LABEL_6:
 
 - (BOOL)_deleteAndRecreateDB
 {
-  v3 = [(GEOSQLiteDB *)self->_db deleteAllDBFiles];
-  if (v3)
+  deleteAllDBFiles = [(GEOSQLiteDB *)self->_db deleteAllDBFiles];
+  if (deleteAllDBFiles)
   {
     self->_totalDataSize = 0;
     db = self->_db;
 
-    LOBYTE(v3) = [(GEOSQLiteDB *)db setup];
+    LOBYTE(deleteAllDBFiles) = [(GEOSQLiteDB *)db setup];
   }
 
-  return v3;
+  return deleteAllDBFiles;
 }
 
 - (unint64_t)_evictAssetsOlderThanAllowedThreshold
@@ -303,27 +303,27 @@ LABEL_6:
   db = self->_db;
   if (db)
   {
-    v4 = [(GEOSQLiteDB *)db isolationQueue];
+    isolationQueue = [(GEOSQLiteDB *)db isolationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10003C928;
     block[3] = &unk_1000838C8;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(isolationQueue, block);
   }
 }
 
-- (BOOL)_setup:(id)a3
+- (BOOL)_setup:(id)_setup
 {
-  v4 = a3;
-  if ([v4 user_version] != 1)
+  _setupCopy = _setup;
+  if ([_setupCopy user_version] != 1)
   {
-    [v4 dropAllTables];
+    [_setupCopy dropAllTables];
   }
 
-  [v4 setUser_version:1];
+  [_setupCopy setUser_version:1];
   v5 = sub_10003C314();
-  v6 = v4;
+  v6 = _setupCopy;
   if (![v6 createTable:"CREATE TABLE IF NOT EXISTS assets(   rowid INTEGER PRIMARY KEY NOT NULL withDrop:{identifier BLOB NOT NULL, width INT NOT NULL, height INT NOT NULL, data_size INT NOT NULL, data BLOB NOT NULL, UNIQUE(identifier, width, height)   );", 0}] || !objc_msgSend(v6, "createTable:withDrop:", "CREATE TABLE IF NOT EXISTS access_times(   asset_rowid INT NOT NULL REFERENCES assets(rowid) ON UPDATE CASCADE ON DELETE CASCADE,    timestamp INT,    UNIQUE(asset_rowid)   );", 0) || !objc_msgSend(v6, "createIndex:", "CREATE INDEX IF NOT EXISTS access_times_asset_rowid_idx ON access_times (asset_rowid);") || !objc_msgSend(v6, "prepareStatement:forKey:", "INSERT INTO assets    (rowid, identifier, width, height, data_size, data)    VALUES (NULL, @identifier, @width, @height, @data_size, @data);", @"AddAsset") || (objc_msgSend(v6, "prepareStatement:forKey:", "INSERT OR REPLACE INTO access_times    (asset_rowid, timestamp)    VALUES (@asset_rowid, @timestamp);", @"SetAccessTime") & 1) == 0)
   {
 
@@ -347,9 +347,9 @@ LABEL_14:
   return v8;
 }
 
-- (GEOImageServicePersistence)initWithDBFileURL:(id)a3 maximumTotalDataSize:(unint64_t)UInteger maximumAge:(double)a5
+- (GEOImageServicePersistence)initWithDBFileURL:(id)l maximumTotalDataSize:(unint64_t)UInteger maximumAge:(double)age
 {
-  v8 = a3;
+  lCopy = l;
   v29.receiver = self;
   v29.super_class = GEOImageServicePersistence;
   v9 = [(GEOImageServicePersistence *)&v29 init];
@@ -370,22 +370,22 @@ LABEL_14:
     }
 
     v9->_maxTotalDataSize = UInteger;
-    if (a5 <= 0.0)
+    if (age <= 0.0)
     {
       v11 = GeoServicesConfig_ImageServicePersistenceMaxAge[1];
       GEOConfigGetDouble();
-      a5 = 518400.0;
+      age = 518400.0;
       if (v12 < 518400.0)
       {
         GEOConfigGetDouble();
-        a5 = v13;
+        age = v13;
       }
     }
 
-    v9->_maximumAge = a5;
-    if (v8)
+    v9->_maximumAge = age;
+    if (lCopy)
     {
-      v14 = [v8 copy];
+      v14 = [lCopy copy];
       dbFileURL = v9->_dbFileURL;
       v9->_dbFileURL = v14;
     }
@@ -397,8 +397,8 @@ LABEL_14:
       v17 = v9->_dbFileURL;
       v9->_dbFileURL = v16;
 
-      v18 = [(NSURL *)v9->_dbFileURL path];
-      [GEOSQLiteDB migrateAllDBFilesFrom:dbFileURL to:v18];
+      path = [(NSURL *)v9->_dbFileURL path];
+      [GEOSQLiteDB migrateAllDBFilesFrom:dbFileURL to:path];
     }
 
     objc_initWeak(&location, v9);

@@ -1,57 +1,57 @@
 @interface MTURLActivityItemProvider
-- (MTURLActivityItemProvider)initWithDataSource:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (MTURLActivityItemProvider)initWithDataSource:(id)source;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation MTURLActivityItemProvider
 
-- (MTURLActivityItemProvider)initWithDataSource:(id)a3
+- (MTURLActivityItemProvider)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = MTURLActivityItemProvider;
   v6 = [(MTURLActivityItemProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v3 = [(MTURLActivityItemProvider *)self dataSource];
-  v4 = [v3 shareURL];
+  dataSource = [(MTURLActivityItemProvider *)self dataSource];
+  shareURL = [dataSource shareURL];
 
-  return v4;
+  return shareURL;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if ([a4 isEqualToString:UIActivityTypeMail])
+  if ([type isEqualToString:UIActivityTypeMail])
   {
-    v5 = 0;
+    shareURL = 0;
   }
 
   else
   {
-    v6 = [(MTURLActivityItemProvider *)self dataSource];
-    v5 = [v6 shareURL];
+    dataSource = [(MTURLActivityItemProvider *)self dataSource];
+    shareURL = [dataSource shareURL];
   }
 
-  return v5;
+  return shareURL;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  v5 = [(MTURLActivityItemProvider *)self dataSource:a3];
-  v6 = [v5 shareImage];
+  v5 = [(MTURLActivityItemProvider *)self dataSource:controller];
+  shareImage = [v5 shareImage];
 
-  return v6;
+  return shareImage;
 }
 
 @end

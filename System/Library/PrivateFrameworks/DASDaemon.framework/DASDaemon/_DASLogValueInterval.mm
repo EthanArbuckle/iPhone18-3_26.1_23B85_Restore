@@ -1,5 +1,5 @@
 @interface _DASLogValueInterval
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)duration;
 - (id)description;
 - (id)durationString;
@@ -8,11 +8,11 @@
 
 @implementation _DASLogValueInterval
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   value = self->_value;
-  v4 = [a3 value];
-  LOBYTE(value) = [value isEqual:v4];
+  value = [equal value];
+  LOBYTE(value) = [value isEqual:value];
 
   return value;
 }
@@ -32,8 +32,8 @@
   }
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(_DASLogValueInterval *)self startDate];
-  v8 = [v4 stringFromDate:v7];
+  startDate = [(_DASLogValueInterval *)self startDate];
+  v8 = [v4 stringFromDate:startDate];
   v9 = [v6 stringWithFormat:@"[%@ - %@]", v8, v5];
 
   return v9;
@@ -42,9 +42,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_DASLogValueInterval *)self intervalString];
+  intervalString = [(_DASLogValueInterval *)self intervalString];
   v5 = [self->_value description];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ %@", intervalString, v5];
 
   return v6;
 }
@@ -61,9 +61,9 @@
   result = 0.5;
   if (!v4)
   {
-    v6 = [(_DASLogValueInterval *)self endDate];
-    v7 = [(_DASLogValueInterval *)self startDate];
-    [v6 timeIntervalSinceDate:v7];
+    endDate = [(_DASLogValueInterval *)self endDate];
+    startDate = [(_DASLogValueInterval *)self startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v9 = v8;
 
     return v9;

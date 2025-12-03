@@ -1,33 +1,33 @@
 @interface TSSIMUnlockEntryView
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (TSSIMUnlockEntryView)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (TSSIMUnlockEntryView)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype;
 - (TSSIMUnlockEntryViewDelegate)delegate;
 - (void)_configureDetailLabelText;
-- (void)_configureOKButtonWithEnteredText:(id)a3;
-- (void)_okButtonPressed:(id)a3;
-- (void)resetEnteredTextWithShakeAnimation:(BOOL)a3;
-- (void)setAttemptsRemaining:(unint64_t)a3;
-- (void)setPinMismatch:(BOOL)a3;
-- (void)setUnlocking:(BOOL)a3;
+- (void)_configureOKButtonWithEnteredText:(id)text;
+- (void)_okButtonPressed:(id)pressed;
+- (void)resetEnteredTextWithShakeAnimation:(BOOL)animation;
+- (void)setAttemptsRemaining:(unint64_t)remaining;
+- (void)setPinMismatch:(BOOL)mismatch;
+- (void)setUnlocking:(BOOL)unlocking;
 @end
 
 @implementation TSSIMUnlockEntryView
 
-- (TSSIMUnlockEntryView)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4
+- (TSSIMUnlockEntryView)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype
 {
   v28.receiver = self;
   v28.super_class = TSSIMUnlockEntryView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(TSSIMUnlockEntryView *)&v28 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(TSSIMUnlockEntryView *)&v28 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    v9->_actionType = a3;
-    v9->_actionSubtype = a4;
+    height->_actionType = type;
+    height->_actionSubtype = subtype;
     v11 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     detailLabel = v10->_detailLabel;
     v10->_detailLabel = v11;
@@ -74,33 +74,33 @@
     [(OBTextAccessoryButton *)v10->_okButton setEnabled:0];
     [(OBTextAccessoryButton *)v10->_okButton sizeToFit];
     [(OBTextAccessoryButton *)v10->_okButton addTarget:v10 action:"_okButtonPressed:" forControlEvents:0x2000];
-    v26 = [(TSSIMUnlockEntryView *)v10 enteredText];
-    [(TSSIMUnlockEntryView *)v10 _configureOKButtonWithEnteredText:v26];
+    enteredText = [(TSSIMUnlockEntryView *)v10 enteredText];
+    [(TSSIMUnlockEntryView *)v10 _configureOKButtonWithEnteredText:enteredText];
   }
 
   return v10;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   if (self->_unlocking)
   {
     return 0;
   }
 
-  length = a4.length;
-  location = a4.location;
-  v10 = a5;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  fieldCopy = field;
   v12 = +[NSCharacterSet decimalDigitCharacterSet];
-  v13 = [v12 invertedSet];
+  invertedSet = [v12 invertedSet];
 
-  v14 = [v11 text];
+  text = [fieldCopy text];
 
-  v15 = [v14 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  v15 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
-  v16 = [v10 length];
-  v17 = [v10 rangeOfCharacterFromSet:v13];
+  v16 = [stringCopy length];
+  v17 = [stringCopy rangeOfCharacterFromSet:invertedSet];
 
   v18 = [v15 length];
   if (!v16 || (v5 = 0, v17 == 0x7FFFFFFFFFFFFFFFLL) && v18 <= 8)
@@ -112,14 +112,14 @@
   return v5;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [a3 text];
-  v5 = [v4 length];
+  text = [return text];
+  v5 = [text length];
   if (v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained entryView:self didEnterText:v4];
+    [WeakRetained entryView:self didEnterText:text];
   }
 
   return v5 != 0;
@@ -133,12 +133,12 @@
   return [(UITextField *)self->_entryField resignFirstResponder];
 }
 
-- (void)resetEnteredTextWithShakeAnimation:(BOOL)a3
+- (void)resetEnteredTextWithShakeAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   [(UITextField *)self->_entryField setText:0];
   [(TSSIMUnlockEntryView *)self _configureOKButtonWithEnteredText:0];
-  if (v3)
+  if (animationCopy)
   {
     v5 = [CASpringAnimation animationWithKeyPath:@"position"];
     [v5 setAdditive:1];
@@ -194,54 +194,54 @@
 
     [v20 setDuration:v24];
 
-    v25 = [(UITextField *)self->_entryField layer];
-    [v25 addAnimation:v20 forKey:0];
+    layer = [(UITextField *)self->_entryField layer];
+    [layer addAnimation:v20 forKey:0];
 
-    v26 = [(OBTextAccessoryButton *)self->_okButton layer];
-    [v26 addAnimation:v20 forKey:0];
+    layer2 = [(OBTextAccessoryButton *)self->_okButton layer];
+    [layer2 addAnimation:v20 forKey:0];
   }
 }
 
-- (void)setUnlocking:(BOOL)a3
+- (void)setUnlocking:(BOOL)unlocking
 {
-  if (self->_unlocking != a3)
+  if (self->_unlocking != unlocking)
   {
-    self->_unlocking = a3;
+    self->_unlocking = unlocking;
     [(TSSIMUnlockEntryView *)self _configureDetailLabelText];
-    v5 = [(TSSIMUnlockEntryView *)self enteredText];
-    [(TSSIMUnlockEntryView *)self _configureOKButtonWithEnteredText:v5];
+    enteredText = [(TSSIMUnlockEntryView *)self enteredText];
+    [(TSSIMUnlockEntryView *)self _configureOKButtonWithEnteredText:enteredText];
   }
 }
 
-- (void)setAttemptsRemaining:(unint64_t)a3
+- (void)setAttemptsRemaining:(unint64_t)remaining
 {
-  if (self->_attemptsRemaining != a3)
+  if (self->_attemptsRemaining != remaining)
   {
-    self->_attemptsRemaining = a3;
-    [(TSSIMUnlockEntryView *)self _configureDetailLabelText];
-  }
-}
-
-- (void)setPinMismatch:(BOOL)a3
-{
-  if (self->_pinMismatch != a3)
-  {
-    self->_pinMismatch = a3;
+    self->_attemptsRemaining = remaining;
     [(TSSIMUnlockEntryView *)self _configureDetailLabelText];
   }
 }
 
-- (void)_okButtonPressed:(id)a3
+- (void)setPinMismatch:(BOOL)mismatch
+{
+  if (self->_pinMismatch != mismatch)
+  {
+    self->_pinMismatch = mismatch;
+    [(TSSIMUnlockEntryView *)self _configureDetailLabelText];
+  }
+}
+
+- (void)_okButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(UITextField *)self->_entryField text];
-  [WeakRetained entryView:self didEnterText:v4];
+  text = [(UITextField *)self->_entryField text];
+  [WeakRetained entryView:self didEnterText:text];
 }
 
-- (void)_configureOKButtonWithEnteredText:(id)a3
+- (void)_configureOKButtonWithEnteredText:(id)text
 {
   okButton = self->_okButton;
-  v4 = !self->_unlocking && [a3 length] != 0;
+  v4 = !self->_unlocking && [text length] != 0;
 
   [(OBTextAccessoryButton *)okButton setEnabled:v4];
 }

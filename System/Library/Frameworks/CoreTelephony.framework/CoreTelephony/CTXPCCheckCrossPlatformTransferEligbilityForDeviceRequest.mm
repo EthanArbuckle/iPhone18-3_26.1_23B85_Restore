@@ -2,7 +2,7 @@
 + (id)allowedClassesForArguments;
 - (CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest)init;
 - (id)code;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest
@@ -14,16 +14,16 @@
   return [(CTXPCRequestMessage *)&v3 init];
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v5 = a4;
+  completionHandlerCopy = completionHandler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __105__CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest_performRequestWithHandler_completionHandler___block_invoke;
   v7[3] = &unk_1E6A45E38;
-  v8 = v5;
-  v6 = v5;
-  [a3 checkCrossPlatformTransferEligbilityForDevice:v7];
+  v8 = completionHandlerCopy;
+  v6 = completionHandlerCopy;
+  [handler checkCrossPlatformTransferEligbilityForDevice:v7];
 }
 
 void __105__CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -35,7 +35,7 @@ void __105__CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest_performReq
 
 + (id)allowedClassesForArguments
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest;
   v2 = objc_msgSendSuper2(&v4, sel_allowedClassesForArguments);
 
@@ -44,8 +44,8 @@ void __105__CTXPCCheckCrossPlatformTransferEligbilityForDeviceRequest_performReq
 
 - (id)code
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"IsEligible"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"IsEligible"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

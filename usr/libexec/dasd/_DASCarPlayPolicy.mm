@@ -1,10 +1,10 @@
 @interface _DASCarPlayPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASCarPlayPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASCarPlayPolicy
@@ -40,9 +40,9 @@
     policyName = v2->_policyName;
     v2->_policyName = @"Carplay Connected Policy";
 
-    v5 = [(_DASCarPlayPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASCarPlayPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v5;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004ABF0;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B0D8 != -1)
   {
     dispatch_once(&qword_10020B0D8, block);
@@ -65,51 +65,51 @@
   return v2;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"com.apple.duetactivityscheduler.carplaypolicy.carplayconnected"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.duetactivityscheduler.carplaypolicy.carplayconnected"])
   {
     v6 = +[_CDContextQueries keyPathForCarplayConnectedStatus];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    v8 = [v7 BOOLValue];
+    v7 = [stateCopy objectForKeyedSubscript:v6];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requestsImmediateRuntime])
+  activityCopy = activity;
+  if ([activityCopy requestsImmediateRuntime])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 schedulingPriority];
-    v4 = v5 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v4 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   return v4;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v7 = +[_CDContextQueries keyPathForCarplayConnectedStatus];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 BOOLValue];
+  v8 = [stateCopy objectForKeyedSubscript:v7];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Carplay Connected Policy"];
-  if (!v9)
+  if (!bOOLValue)
   {
     goto LABEL_5;
   }
@@ -118,7 +118,7 @@
   v12 = [NSPredicate predicateWithFormat:@"carplayConnected = %@", v11];
   [(_DASPolicyResponseRationale *)v10 addRationaleWithCondition:v12];
 
-  if (([v5 requiresDeviceInactivity] & 1) != 0 || (+[_DASThermalPolicy policyInstance](_DASThermalPolicy, "policyInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "thermalPressureWithState:", v6), v13, v14 >= 0x14))
+  if (([activityCopy requiresDeviceInactivity] & 1) != 0 || (+[_DASThermalPolicy policyInstance](_DASThermalPolicy, "policyInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "thermalPressureWithState:", stateCopy), v13, v14 >= 0x14))
   {
     v15 = 33;
   }

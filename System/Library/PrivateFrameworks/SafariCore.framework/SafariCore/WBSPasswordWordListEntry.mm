@@ -1,29 +1,29 @@
 @interface WBSPasswordWordListEntry
-- (WBSPasswordWordListEntry)initWithWord:(id)a3 isSensitive:(BOOL)a4 wordListIdentifier:(id)a5 guessesRequired:(unint64_t)a6;
+- (WBSPasswordWordListEntry)initWithWord:(id)word isSensitive:(BOOL)sensitive wordListIdentifier:(id)identifier guessesRequired:(unint64_t)required;
 - (id)description;
 @end
 
 @implementation WBSPasswordWordListEntry
 
-- (WBSPasswordWordListEntry)initWithWord:(id)a3 isSensitive:(BOOL)a4 wordListIdentifier:(id)a5 guessesRequired:(unint64_t)a6
+- (WBSPasswordWordListEntry)initWithWord:(id)word isSensitive:(BOOL)sensitive wordListIdentifier:(id)identifier guessesRequired:(unint64_t)required
 {
-  v10 = a3;
-  v11 = a5;
+  wordCopy = word;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = WBSPasswordWordListEntry;
   v12 = [(WBSPasswordWordListEntry *)&v19 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [wordCopy copy];
     word = v12->_word;
     v12->_word = v13;
 
-    v12->_sensitive = a4;
-    v15 = [v11 copy];
+    v12->_sensitive = sensitive;
+    v15 = [identifierCopy copy];
     wordListIdentifier = v12->_wordListIdentifier;
     v12->_wordListIdentifier = v15;
 
-    v12->_guessesRequired = a6;
+    v12->_guessesRequired = required;
     v17 = v12;
   }
 

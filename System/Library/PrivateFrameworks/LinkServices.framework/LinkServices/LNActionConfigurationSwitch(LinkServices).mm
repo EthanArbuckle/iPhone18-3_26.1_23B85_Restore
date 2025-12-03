@@ -9,17 +9,17 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 parameterIdentifier];
-  if ([v8 isEqualToString:*MEMORY[0x1E69AC180]])
+  parameterIdentifier = [self parameterIdentifier];
+  if ([parameterIdentifier isEqualToString:*MEMORY[0x1E69AC180]])
   {
-    v9 = [v7 widgetFamily];
+    widgetFamily = [v7 widgetFamily];
 
-    if (v9)
+    if (widgetFamily)
     {
       v10 = objc_alloc(MEMORY[0x1E69ACA88]);
-      v11 = [v7 widgetFamily];
-      v12 = [MEMORY[0x1E69AC940] stringValueType];
-      v13 = [v10 initWithValue:v11 valueType:v12];
+      widgetFamily2 = [v7 widgetFamily];
+      stringValueType = [MEMORY[0x1E69AC940] stringValueType];
+      value = [v10 initWithValue:widgetFamily2 valueType:stringValueType];
 
       goto LABEL_11;
     }
@@ -29,42 +29,42 @@
   {
   }
 
-  v14 = [a1 parameterIdentifier];
-  v15 = [v14 isEqualToString:*MEMORY[0x1E69AC148]];
+  parameterIdentifier2 = [self parameterIdentifier];
+  v15 = [parameterIdentifier2 isEqualToString:*MEMORY[0x1E69AC148]];
 
   if (v15)
   {
-    v16 = [v7 origin];
-    v17 = v16;
+    origin = [v7 origin];
+    v17 = origin;
     v18 = *MEMORY[0x1E69AC150];
-    if (v16)
+    if (origin)
     {
-      v18 = v16;
+      v18 = origin;
     }
 
     v19 = v18;
 
     v20 = objc_alloc(MEMORY[0x1E69ACA88]);
-    v21 = [MEMORY[0x1E69AC940] stringValueType];
-    v13 = [v20 initWithValue:v19 valueType:v21];
+    stringValueType2 = [MEMORY[0x1E69AC940] stringValueType];
+    value = [v20 initWithValue:v19 valueType:stringValueType2];
   }
 
   else
   {
-    v22 = [v6 parameters];
+    parameters = [v6 parameters];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __68__LNActionConfigurationSwitch_LinkServices__valueForAction_context___block_invoke;
     v24[3] = &unk_1E74B26A8;
-    v24[4] = a1;
-    v21 = [v22 if_firstObjectPassingTest:v24];
+    v24[4] = self;
+    stringValueType2 = [parameters if_firstObjectPassingTest:v24];
 
-    v13 = [v21 value];
+    value = [stringValueType2 value];
   }
 
 LABEL_11:
 
-  return v13;
+  return value;
 }
 
 - (id)actionConfigurationByEvaluatingAction:()LinkServices context:
@@ -73,13 +73,13 @@ LABEL_11:
   v6 = a3;
   v7 = a4;
   v37 = v6;
-  v8 = [a1 valueForAction:v6 context:v7];
+  v8 = [self valueForAction:v6 context:v7];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = [a1 cases];
-  v10 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  cases = [self cases];
+  v10 = [cases countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v10)
   {
     v11 = v10;
@@ -87,14 +87,14 @@ LABEL_11:
     v13 = *v43;
     v14 = 0x1E695D000uLL;
     v34 = v7;
-    v36 = v9;
+    v36 = cases;
 LABEL_3:
     v15 = 0;
     while (1)
     {
       if (*v43 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(cases);
       }
 
       v16 = *(*(&v42 + 1) + 8 * v15);
@@ -106,30 +106,30 @@ LABEL_3:
 
       else
       {
-        v18 = [v16 value];
-        v19 = [v18 value];
+        value = [v16 value];
+        v18Value = [value value];
 
-        if (!v19 || (v20 = *(v14 + 3784), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+        if (!v18Value || (v20 = *(v14 + 3784), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
 
           if (!v8)
           {
-            v35 = [v16 value];
-            if (!v35)
+            value2 = [v16 value];
+            if (!value2)
             {
 LABEL_36:
-              v19 = [v16 configuration];
+              v18Value = [v16 configuration];
               v29 = v37;
               v7 = v34;
-              v30 = [v19 actionConfigurationByEvaluatingAction:v37 context:v34];
+              v30 = [v18Value actionConfigurationByEvaluatingAction:v37 context:v34];
 LABEL_38:
 
               goto LABEL_39;
             }
           }
 
-          v26 = [v16 value];
-          v27 = [v8 isEqual:v26];
+          value3 = [v16 value];
+          v27 = [v8 isEqual:value3];
 
           if (v8)
           {
@@ -151,7 +151,7 @@ LABEL_38:
           goto LABEL_30;
         }
 
-        if ([v19 count])
+        if ([v18Value count])
         {
           v21 = 0;
         }
@@ -163,10 +163,10 @@ LABEL_38:
 
         if (v21)
         {
-          v31 = [v16 configuration];
+          configuration = [v16 configuration];
           v29 = v37;
           v7 = v34;
-          v30 = [v31 actionConfigurationByEvaluatingAction:v37 context:v34];
+          v30 = [configuration actionConfigurationByEvaluatingAction:v37 context:v34];
 
           goto LABEL_38;
         }
@@ -175,7 +175,7 @@ LABEL_38:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v17 = v19;
+        v17 = v18Value;
         v22 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v22)
         {
@@ -192,12 +192,12 @@ LABEL_38:
 
               if ([v8 isEqual:*(*(&v38 + 1) + 8 * i)])
               {
-                v28 = [v16 configuration];
+                configuration2 = [v16 configuration];
                 v29 = v37;
                 v7 = v34;
-                v30 = [v28 actionConfigurationByEvaluatingAction:v37 context:v34];
+                v30 = [configuration2 actionConfigurationByEvaluatingAction:v37 context:v34];
 
-                v9 = v36;
+                cases = v36;
                 goto LABEL_39;
               }
             }
@@ -212,14 +212,14 @@ LABEL_38:
           }
         }
 
-        v9 = v36;
+        cases = v36;
         v14 = 0x1E695D000;
       }
 
 LABEL_30:
       if (++v15 == v11)
       {
-        v11 = [v9 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v11 = [cases countByEnumeratingWithState:&v42 objects:v47 count:16];
         v7 = v34;
         if (v11)
         {
@@ -234,9 +234,9 @@ LABEL_30:
   v12 = 0;
 LABEL_35:
 
-  v9 = [v12 configuration];
+  cases = [v12 configuration];
   v29 = v37;
-  v30 = [v9 actionConfigurationByEvaluatingAction:v37 context:v7];
+  v30 = [cases actionConfigurationByEvaluatingAction:v37 context:v7];
 LABEL_39:
 
   v32 = *MEMORY[0x1E69E9840];

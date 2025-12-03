@@ -1,49 +1,49 @@
 @interface SCNShape
 + (SCNShape)shapeWithPath:(UIBezierPath *)path extrusionDepth:(CGFloat)extrusionDepth;
 - ($DB7092C30E680F051A254E3F9658D24C)params;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
 - (CGFloat)chamferRadius;
 - (CGFloat)extrusionDepth;
 - (SCNChamferMode)chamferMode;
 - (SCNShape)init;
-- (SCNShape)initWithCoder:(id)a3;
+- (SCNShape)initWithCoder:(id)coder;
 - (UIBezierPath)chamferProfile;
 - (UIBezierPath)path;
 - (double)discretizedStraightLineMaxLength;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__C3DShapeGeometry *)a3;
+- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__C3DShapeGeometry *)ref;
 - (id)presentationGeometry;
 - (int64_t)primitiveType;
-- (void)_customDecodingOfSCNShape:(id)a3;
-- (void)_customEncodingOfSCNShape:(id)a3;
-- (void)_syncObjCModel:(__C3DShapeGeometry *)a3;
+- (void)_customDecodingOfSCNShape:(id)shape;
+- (void)_customEncodingOfSCNShape:(id)shape;
+- (void)_syncObjCModel:(__C3DShapeGeometry *)model;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setChamferMode:(SCNChamferMode)chamferMode;
 - (void)setChamferProfile:(UIBezierPath *)chamferProfile;
 - (void)setChamferRadius:(CGFloat)chamferRadius;
-- (void)setDiscretizedStraightLineMaxLength:(double)a3;
+- (void)setDiscretizedStraightLineMaxLength:(double)length;
 - (void)setExtrusionDepth:(CGFloat)extrusionDepth;
 - (void)setPath:(UIBezierPath *)path;
-- (void)setPrimitiveType:(int64_t)a3;
+- (void)setPrimitiveType:(int64_t)type;
 @end
 
 @implementation SCNShape
 
-- (void)_syncObjCModel:(__C3DShapeGeometry *)a3
+- (void)_syncObjCModel:(__C3DShapeGeometry *)model
 {
-  self->_primitiveType = C3DShapeGeometryGetPrimitiveType(a3);
-  ChamferRadius = C3DShapeGeometryGetChamferRadius(a3);
+  self->_primitiveType = C3DShapeGeometryGetPrimitiveType(model);
+  ChamferRadius = C3DShapeGeometryGetChamferRadius(model);
   self->_chamferRadius = ChamferRadius;
-  ExtrusionDepth = C3DShapeGeometryGetExtrusionDepth(a3);
+  ExtrusionDepth = C3DShapeGeometryGetExtrusionDepth(model);
   self->_extrusionDepth = ExtrusionDepth;
-  self->_chamferProfile = C3DShapeGeometryGetObjCChamferProfile(a3);
-  DiscretizedStraightLineMaxLength = C3DShapeGeometryGetDiscretizedStraightLineMaxLength(a3);
+  self->_chamferProfile = C3DShapeGeometryGetObjCChamferProfile(model);
+  DiscretizedStraightLineMaxLength = C3DShapeGeometryGetDiscretizedStraightLineMaxLength(model);
   self->_discretizedStraightLineMaxLength = DiscretizedStraightLineMaxLength;
-  self->_path = C3DFloorGetReflectionCategoryBitMask(a3);
-  self->_chamferMode = C3DShapeGeometryGetChamferMode(a3);
+  self->_path = C3DFloorGetReflectionCategoryBitMask(model);
+  self->_chamferMode = C3DShapeGeometryGetChamferMode(model);
 }
 
 - (SCNShape)init
@@ -65,11 +65,11 @@
   return v5;
 }
 
-- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__C3DShapeGeometry *)a3
+- (id)initPresentationShapeGeometryWithShapeGeometryRef:(__C3DShapeGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = SCNShape;
-  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:a3];
+  return [(SCNGeometry *)&v4 initPresentationGeometryWithGeometryRef:ref];
 }
 
 - (id)presentationGeometry
@@ -81,7 +81,7 @@
 
 + (SCNShape)shapeWithPath:(UIBezierPath *)path extrusionDepth:(CGFloat)extrusionDepth
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [(SCNShape *)v6 setExtrusionDepth:extrusionDepth];
   [(SCNShape *)v6 setPath:path];
   return v6;
@@ -90,17 +90,17 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCNGeometry *)self geometryDescription];
-  v5 = [(SCNShape *)self path];
+  geometryDescription = [(SCNGeometry *)self geometryDescription];
+  path = [(SCNShape *)self path];
   [(SCNShape *)self extrusionDepth];
-  return [v3 stringWithFormat:@"<%@ | path=%@ extrusionDepth=%.3f> ", v4, v5, v6];
+  return [v3 stringWithFormat:@"<%@ | path=%@ extrusionDepth=%.3f> ", geometryDescription, path, v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(SCNShape *)self path];
+  path = [(SCNShape *)self path];
   [(SCNShape *)self extrusionDepth];
-  v6 = [SCNShape shapeWithPath:v4 extrusionDepth:?];
+  v6 = [SCNShape shapeWithPath:path extrusionDepth:?];
   [(SCNShape *)v6 setChamferMode:[(SCNShape *)self chamferMode]];
   [(SCNShape *)self chamferRadius];
   [(SCNShape *)v6 setChamferRadius:?];
@@ -117,11 +117,11 @@
     return self->_chamferMode;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   ChamferMode = C3DShapeGeometryGetChamferMode([(SCNGeometry *)self geometryRef]);
@@ -147,14 +147,14 @@
   else if (self->_chamferMode != chamferMode)
   {
     self->_chamferMode = chamferMode;
-    v6 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __27__SCNShape_setChamferMode___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = chamferMode;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -173,11 +173,11 @@ void __27__SCNShape_setChamferMode___block_invoke(uint64_t a1)
     return self->_chamferRadius;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   ChamferRadius = C3DShapeGeometryGetChamferRadius([(SCNGeometry *)self geometryRef]);
@@ -204,14 +204,14 @@ void __27__SCNShape_setChamferMode___block_invoke(uint64_t a1)
   {
     v6 = chamferRadius;
     self->_chamferRadius = v6;
-    v7 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __29__SCNShape_setChamferRadius___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     *&v8[5] = chamferRadius;
-    [SCNTransaction postCommandWithContext:v7 object:self key:@"chamferRadius" applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"chamferRadius" applyBlock:v8];
   }
 }
 
@@ -230,11 +230,11 @@ void __29__SCNShape_setChamferRadius___block_invoke(uint64_t a1)
     return self->_discretizedStraightLineMaxLength;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   DiscretizedStraightLineMaxLength = C3DShapeGeometryGetDiscretizedStraightLineMaxLength([(SCNGeometry *)self geometryRef]);
@@ -246,7 +246,7 @@ void __29__SCNShape_setChamferRadius___block_invoke(uint64_t a1)
   return DiscretizedStraightLineMaxLength;
 }
 
-- (void)setDiscretizedStraightLineMaxLength:(double)a3
+- (void)setDiscretizedStraightLineMaxLength:(double)length
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -257,18 +257,18 @@ void __29__SCNShape_setChamferRadius___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_discretizedStraightLineMaxLength != a3)
+  else if (self->_discretizedStraightLineMaxLength != length)
   {
-    v6 = a3;
-    self->_discretizedStraightLineMaxLength = v6;
-    v7 = [(SCNGeometry *)self sceneRef];
+    lengthCopy = length;
+    self->_discretizedStraightLineMaxLength = lengthCopy;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __48__SCNShape_setDiscretizedStraightLineMaxLength___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
-    *&v8[5] = a3;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    *&v8[5] = length;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
@@ -287,11 +287,11 @@ void __48__SCNShape_setDiscretizedStraightLineMaxLength___block_invoke(uint64_t 
     return self->_extrusionDepth;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   ExtrusionDepth = C3DShapeGeometryGetExtrusionDepth([(SCNGeometry *)self geometryRef]);
@@ -318,14 +318,14 @@ void __48__SCNShape_setDiscretizedStraightLineMaxLength___block_invoke(uint64_t 
   {
     v6 = extrusionDepth;
     self->_extrusionDepth = v6;
-    v7 = [(SCNGeometry *)self sceneRef];
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __30__SCNShape_setExtrusionDepth___block_invoke;
     v8[3] = &unk_2782FB7D0;
     v8[4] = self;
     *&v8[5] = extrusionDepth;
-    [SCNTransaction postCommandWithContext:v7 object:self key:@"extrusionDepth" applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"extrusionDepth" applyBlock:v8];
   }
 }
 
@@ -344,11 +344,11 @@ void __30__SCNShape_setExtrusionDepth___block_invoke(uint64_t a1)
     return self->_primitiveType;
   }
 
-  v3 = [(SCNGeometry *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   PrimitiveType = C3DShapeGeometryGetPrimitiveType([(SCNGeometry *)self geometryRef]);
@@ -360,7 +360,7 @@ void __30__SCNShape_setExtrusionDepth___block_invoke(uint64_t a1)
   return PrimitiveType;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
@@ -371,17 +371,17 @@ void __30__SCNShape_setExtrusionDepth___block_invoke(uint64_t a1)
     }
   }
 
-  else if (self->_primitiveType != a3)
+  else if (self->_primitiveType != type)
   {
-    self->_primitiveType = a3;
-    v6 = [(SCNGeometry *)self sceneRef];
+    self->_primitiveType = type;
+    sceneRef = [(SCNGeometry *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNShape_setPrimitiveType___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
-    v7[5] = a3;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    v7[5] = type;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -397,11 +397,11 @@ void __29__SCNShape_setPrimitiveType___block_invoke(uint64_t a1)
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v3 = [(SCNGeometry *)self sceneRef];
-    v4 = v3;
-    if (v3)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v4 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v3);
+      C3DSceneLock(sceneRef);
     }
 
     ReflectionCategoryBitMask = C3DFloorGetReflectionCategoryBitMask([(SCNGeometry *)self geometryRef]);
@@ -424,13 +424,13 @@ void __29__SCNShape_setPrimitiveType___block_invoke(uint64_t a1)
 - (void)setPath:(UIBezierPath *)path
 {
   self->_path = [(UIBezierPath *)path copy];
-  v5 = [(SCNGeometry *)self sceneRef];
+  sceneRef = [(SCNGeometry *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __20__SCNShape_setPath___block_invoke;
   v6[3] = &unk_2782FB820;
   v6[4] = self;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __20__SCNShape_setPath___block_invoke(uint64_t a1)
@@ -445,11 +445,11 @@ void __20__SCNShape_setPath___block_invoke(uint64_t a1)
 {
   if ([(SCNGeometry *)self isPresentationInstance])
   {
-    v3 = [(SCNGeometry *)self sceneRef];
-    v4 = v3;
-    if (v3)
+    sceneRef = [(SCNGeometry *)self sceneRef];
+    v4 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v3);
+      C3DSceneLock(sceneRef);
     }
 
     ObjCChamferProfile = C3DShapeGeometryGetObjCChamferProfile([(SCNGeometry *)self geometryRef]);
@@ -472,13 +472,13 @@ void __20__SCNShape_setPath___block_invoke(uint64_t a1)
 - (void)setChamferProfile:(UIBezierPath *)chamferProfile
 {
   self->_chamferProfile = [(UIBezierPath *)chamferProfile copy];
-  v5 = [(SCNGeometry *)self sceneRef];
+  sceneRef = [(SCNGeometry *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__SCNShape_setChamferProfile___block_invoke;
   v6[3] = &unk_2782FB820;
   v6[4] = self;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
@@ -498,9 +498,9 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
   result = [(SCNGeometry *)self isPresentationInstance];
   if (result)
   {
-    v6 = [(SCNGeometry *)self geometryRef];
+    geometryRef = [(SCNGeometry *)self geometryRef];
 
-    C3DShapeGeometryGetC3DKitParameters(v6, retstr);
+    C3DShapeGeometryGetC3DKitParameters(geometryRef, retstr);
   }
 
   else
@@ -522,20 +522,20 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
-  v7 = [(SCNGeometry *)self sceneRef];
-  v8 = v7;
-  if (v7)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v8 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v7);
+    C3DSceneLock(sceneRef);
   }
 
   DWORD2(v17) = 0;
   *&v17 = 0;
   DWORD2(v16) = 0;
   *&v16 = 0;
-  v9 = [(SCNGeometry *)self geometryRef];
+  geometryRef = [(SCNGeometry *)self geometryRef];
   if (self)
   {
     [(SCNShape *)self params];
@@ -547,21 +547,21 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
     memset(v14, 0, sizeof(v14));
   }
 
-  BoundingBox = C3DShapeGeometryGetBoundingBox(v9, &v17, &v16, v14);
+  BoundingBox = C3DShapeGeometryGetBoundingBox(geometryRef, &v17, &v16, v14);
   if (BoundingBox)
   {
-    if (a3)
+    if (min)
     {
       v11 = *(&v17 + 2);
-      *&a3->x = v17;
-      a3->z = v11;
+      *&min->x = v17;
+      min->z = v11;
     }
 
-    if (a4)
+    if (max)
     {
       v12 = *(&v16 + 2);
-      *&a4->x = v16;
-      a4->z = v12;
+      *&max->x = v16;
+      max->z = v12;
     }
   }
 
@@ -573,17 +573,17 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
   return BoundingBox;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
-  v7 = [(SCNGeometry *)self sceneRef];
-  v8 = v7;
-  if (v7)
+  sceneRef = [(SCNGeometry *)self sceneRef];
+  v8 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v7);
+    C3DSceneLock(sceneRef);
   }
 
   v15 = 0uLL;
-  v9 = [(SCNGeometry *)self geometryRef];
+  geometryRef = [(SCNGeometry *)self geometryRef];
   if (self)
   {
     [(SCNShape *)self params];
@@ -595,19 +595,19 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
     memset(v13, 0, sizeof(v13));
   }
 
-  BoundingSphere = C3DShapeGeometryGetBoundingSphere(v9, &v15, v13);
+  BoundingSphere = C3DShapeGeometryGetBoundingSphere(geometryRef, &v15, v13);
   if (BoundingSphere)
   {
-    if (a3)
+    if (center)
     {
       v11 = *(&v15 + 2);
-      *&a3->x = v15;
-      a3->z = v11;
+      *&center->x = v15;
+      center->z = v11;
     }
 
-    if (a4)
+    if (radius)
     {
-      *a4 = *(&v15 + 3);
+      *radius = *(&v15 + 3);
     }
   }
 
@@ -626,23 +626,23 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
   [(SCNGeometry *)&v3 dealloc];
 }
 
-- (void)_customDecodingOfSCNShape:(id)a3
+- (void)_customDecodingOfSCNShape:(id)shape
 {
-  [(SCNShape *)self setChamferProfile:SCNDecodeBezierPathForKey(a3, @"chamferProfile")];
-  v5 = SCNDecodeBezierPathForKey(a3, @"path");
+  [(SCNShape *)self setChamferProfile:SCNDecodeBezierPathForKey(shape, @"chamferProfile")];
+  v5 = SCNDecodeBezierPathForKey(shape, @"path");
 
   [(SCNShape *)self setPath:v5];
 }
 
-- (void)_customEncodingOfSCNShape:(id)a3
+- (void)_customEncodingOfSCNShape:(id)shape
 {
-  SCNEncodeBezierPathForKey(a3, self->_chamferProfile, @"chamferProfile");
+  SCNEncodeBezierPathForKey(shape, self->_chamferProfile, @"chamferProfile");
   path = self->_path;
 
-  SCNEncodeBezierPathForKey(a3, path, @"path");
+  SCNEncodeBezierPathForKey(shape, path, @"path");
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SCNShape;
@@ -652,18 +652,18 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
     [(SCNShape *)self _syncObjCModel:[(SCNGeometry *)self geometryRef]];
   }
 
-  [(SCNShape *)self _customEncodingOfSCNShape:a3];
+  [(SCNShape *)self _customEncodingOfSCNShape:coder];
   *&v5 = self->_chamferRadius;
-  [a3 encodeFloat:@"chamferRadius" forKey:v5];
+  [coder encodeFloat:@"chamferRadius" forKey:v5];
   *&v6 = self->_extrusionDepth;
-  [a3 encodeFloat:@"extrusionDepth" forKey:v6];
+  [coder encodeFloat:@"extrusionDepth" forKey:v6];
   *&v7 = self->_discretizedStraightLineMaxLength;
-  [a3 encodeFloat:@"discretizedStraightLineMaxLength" forKey:v7];
-  [a3 encodeInteger:self->_primitiveType forKey:@"primitiveType"];
-  [a3 encodeInteger:self->_chamferMode forKey:@"chamferMode"];
+  [coder encodeFloat:@"discretizedStraightLineMaxLength" forKey:v7];
+  [coder encodeInteger:self->_primitiveType forKey:@"primitiveType"];
+  [coder encodeInteger:self->_chamferMode forKey:@"chamferMode"];
 }
 
-- (SCNShape)initWithCoder:(id)a3
+- (SCNShape)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = SCNShape;
@@ -672,15 +672,15 @@ void __30__SCNShape_setChamferProfile___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNShape *)v4 _customDecodingOfSCNShape:a3];
-    [a3 decodeFloatForKey:@"chamferRadius"];
+    [(SCNShape *)v4 _customDecodingOfSCNShape:coder];
+    [coder decodeFloatForKey:@"chamferRadius"];
     [(SCNShape *)v4 setChamferRadius:v6];
-    [a3 decodeFloatForKey:@"extrusionDepth"];
+    [coder decodeFloatForKey:@"extrusionDepth"];
     [(SCNShape *)v4 setExtrusionDepth:v7];
-    [a3 decodeFloatForKey:@"discretizedStraightLineMaxLength"];
+    [coder decodeFloatForKey:@"discretizedStraightLineMaxLength"];
     [(SCNShape *)v4 setDiscretizedStraightLineMaxLength:v8];
-    -[SCNShape setPrimitiveType:](v4, "setPrimitiveType:", [a3 decodeIntegerForKey:@"primitiveType"]);
-    -[SCNShape setChamferMode:](v4, "setChamferMode:", [a3 decodeIntegerForKey:@"chamferMode"]);
+    -[SCNShape setPrimitiveType:](v4, "setPrimitiveType:", [coder decodeIntegerForKey:@"primitiveType"]);
+    -[SCNShape setChamferMode:](v4, "setChamferMode:", [coder decodeIntegerForKey:@"chamferMode"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

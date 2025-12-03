@@ -1,30 +1,30 @@
 @interface PUPhotoKitDuplicateActionPerformer
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
-- (void)setNewStillImageTime:(id *)a3;
+- (void)setNewStillImageTime:(id *)time;
 @end
 
 @implementation PUPhotoKitDuplicateActionPerformer
 
-- (void)setNewStillImageTime:(id *)a3
+- (void)setNewStillImageTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_newStillImageTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_newStillImageTime.value = *&time->var0;
   self->_newStillImageTime.epoch = var3;
 }
 
 - (void)performBackgroundTask
 {
   objc_initWeak(&location, self);
-  v3 = [(PUPhotoKitDuplicateActionPerformer *)self duplicateActionController];
-  v4 = [(PUPhotoKitDuplicateActionPerformer *)self action];
+  duplicateActionController = [(PUPhotoKitDuplicateActionPerformer *)self duplicateActionController];
+  action = [(PUPhotoKitDuplicateActionPerformer *)self action];
   [(PUPhotoKitDuplicateActionPerformer *)self newStillImageTime];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__PUPhotoKitDuplicateActionPerformer_performBackgroundTask__block_invoke;
   v5[3] = &unk_1E7B7F988;
   objc_copyWeak(&v6, &location);
-  [v3 performDuplicateAction:v4 newStillImageTime:v7 completionHandler:v5];
+  [duplicateActionController performDuplicateAction:action newStillImageTime:v7 completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -38,15 +38,15 @@ void __59__PUPhotoKitDuplicateActionPerformer_performBackgroundTask__block_invok
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+  assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
   v4 = MEMORY[0x1E69C37D0];
-  v5 = [v3 allKeys];
-  v6 = [v4 dataSourceWithAssetCollections:v5];
+  allKeys = [assetsByAssetCollection allKeys];
+  v6 = [v4 dataSourceWithAssetCollections:allKeys];
 
-  v7 = [v6 selectionSnapshotForAssetsByAssetCollection:v3];
+  v7 = [v6 selectionSnapshotForAssetsByAssetCollection:assetsByAssetCollection];
   v8 = objc_alloc(MEMORY[0x1E69C3808]);
-  v9 = [(PUAssetActionPerformer *)self undoManager];
-  v10 = [v8 initWithSelectionSnapshot:v7 undoManager:v9];
+  undoManager = [(PUAssetActionPerformer *)self undoManager];
+  v10 = [v8 initWithSelectionSnapshot:v7 undoManager:undoManager];
 
   [(PUPhotoKitDuplicateActionPerformer *)self setDuplicateActionController:v10];
   if ([v10 shouldUseAlertController])
@@ -58,8 +58,8 @@ void __59__PUPhotoKitDuplicateActionPerformer_performBackgroundTask__block_invok
     v15[4] = self;
     v11 = [v10 alertConfigurationForDuplicateActionWithUserConfirmationHandler:v15];
     v12 = [objc_alloc(MEMORY[0x1E69C4468]) initWithConfiguration:v11];
-    v13 = [v12 alertController];
-    v14 = [(PUAssetActionPerformer *)self presentViewController:v13];
+    alertController = [v12 alertController];
+    v14 = [(PUAssetActionPerformer *)self presentViewController:alertController];
 
     if (!v14)
     {

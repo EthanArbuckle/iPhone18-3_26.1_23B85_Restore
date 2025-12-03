@@ -1,17 +1,17 @@
 @interface STStorageSubtitleTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageSubtitleTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = STStorageSubtitleTableCell;
-  v4 = a3;
-  [(STStorageSubtitleTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(STStorageSubtitleTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(STStorageSubtitleTableCell *)self detailTextLabel:v7.receiver];
-  v6 = [v4 propertyForKey:PSTableCellSubtitleTextKey];
+  v6 = [specifierCopy propertyForKey:PSTableCellSubtitleTextKey];
 
   [v5 setText:v6];
   [(STStorageSubtitleTableCell *)self setNeedsLayout];

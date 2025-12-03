@@ -17,7 +17,7 @@
 {
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
-  [a1 setRestorationIdentifier:v3];
+  [self setRestorationIdentifier:v3];
 }
 
 - (id)_recursiveDescriptionWithLevel:()MTAdditions result:
@@ -27,11 +27,11 @@
   v7 = [@"\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t\t|\t" substringToIndex:3 * a3];
   [v6 appendFormat:@"%@", v7];
 
-  v8 = [a1 restorationIdentifier];
-  v9 = v8;
-  if (v8)
+  restorationIdentifier = [self restorationIdentifier];
+  v9 = restorationIdentifier;
+  if (restorationIdentifier)
   {
-    v10 = v8;
+    v10 = restorationIdentifier;
   }
 
   else
@@ -41,14 +41,14 @@
 
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  [v6 appendFormat:@"(%p) [SRI:%@] %@\n", a1, v10, v12];
+  [v6 appendFormat:@"(%p) [SRI:%@] %@\n", self, v10, v12];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [a1 childViewControllers];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  childViewControllers = [self childViewControllers];
+  v14 = [childViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
   {
     v15 = v14;
@@ -59,13 +59,13 @@
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v18 = [*(*(&v20 + 1) + 8 * i) _recursiveDescriptionWithLevel:a3 + 1 result:v6];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v15 = [childViewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v15);
@@ -76,8 +76,8 @@
 
 - (id)recursiveDescription
 {
-  v2 = [MEMORY[0x277CCAB68] string];
-  v3 = [a1 _recursiveDescriptionWithLevel:0 result:v2];
+  string = [MEMORY[0x277CCAB68] string];
+  v3 = [self _recursiveDescriptionWithLevel:0 result:string];
 
   return v3;
 }
@@ -90,8 +90,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childViewControllers = [self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -102,7 +102,7 @@ LABEL_3:
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(childViewControllers);
       }
 
       v10 = *(*(&v11 + 1) + 8 * v9);
@@ -114,7 +114,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -130,17 +130,17 @@ LABEL_3:
 {
   v9 = *MEMORY[0x277D85DE8];
   memset(v7, 0, sizeof(v7));
-  v4 = [a3 childViewControllers];
-  if ([v4 countByEnumeratingWithState:v7 objects:v8 count:16])
+  childViewControllers = [a3 childViewControllers];
+  if ([childViewControllers countByEnumeratingWithState:v7 objects:v8 count:16])
   {
-    if (**(&v7[0] + 1) == a1)
+    if (**(&v7[0] + 1) == self)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [a1 isADescendantOfParentViewController:?];
+      v5 = [self isADescendantOfParentViewController:?];
     }
   }
 
@@ -154,67 +154,67 @@ LABEL_3:
 
 - (BOOL)mt_isVisible
 {
-  if (![a1 isViewLoaded])
+  if (![self isViewLoaded])
   {
     return 0;
   }
 
-  v2 = [a1 view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [self view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }
 
 - (id)mt_topViewController
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
 
-  if (v2)
+  if (presentedViewController)
   {
     do
     {
-      v3 = [v1 presentedViewController];
+      presentedViewController2 = [selfCopy presentedViewController];
 
-      v4 = [v3 presentedViewController];
+      v3PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v1 = v3;
+      selfCopy = presentedViewController2;
     }
 
-    while (v4);
+    while (v3PresentedViewController);
   }
 
   else
   {
-    v3 = v1;
+    presentedViewController2 = selfCopy;
   }
 
-  return v3;
+  return presentedViewController2;
 }
 
 - (id)mt_topViewControllerExcludingPopovers
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
-  v3 = v2;
-  if (v2 && ([v2 popoverPresentationController], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
+  v3 = presentedViewController;
+  if (presentedViewController && ([presentedViewController popoverPresentationController], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     do
     {
       v5 = v3;
 
-      v6 = [v5 popoverPresentationController];
+      popoverPresentationController = [v5 popoverPresentationController];
 
-      v1 = v5;
+      selfCopy = v5;
     }
 
-    while (!v6);
+    while (!popoverPresentationController);
   }
 
   else
   {
-    v5 = v1;
+    v5 = selfCopy;
   }
 
   return v5;
@@ -222,25 +222,25 @@ LABEL_3:
 
 - (id)mt_topNavigationController
 {
-  v1 = a1;
-  v2 = [MEMORY[0x277D75D28] mt_rootViewController];
+  selfCopy = self;
+  mt_rootViewController = [MEMORY[0x277D75D28] mt_rootViewController];
   v3 = 0;
-  if (v1)
+  if (selfCopy)
   {
-    while (v1 != v2)
+    while (selfCopy != mt_rootViewController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = v1;
+        v4 = selfCopy;
 
         v3 = v4;
       }
 
-      v5 = [v1 parentViewController];
+      parentViewController = [selfCopy parentViewController];
 
-      v1 = v5;
-      if (!v5)
+      selfCopy = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_6;
       }
@@ -260,13 +260,13 @@ LABEL_6:
 
 + (id)mt_rootViewController
 {
-  v0 = [MEMORY[0x277D75128] sharedApplication];
-  v1 = [v0 delegate];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  delegate = [mEMORY[0x277D75128] delegate];
 
-  v2 = [v1 window];
-  v3 = [v2 rootViewController];
+  window = [delegate window];
+  rootViewController = [window rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface INSerializedCacheItem
-+ (void)deserializeCacheItem:(id)a3 completion:(id)a4;
-+ (void)deserializeCacheItems:(id)a3 completion:(id)a4;
-+ (void)serializeCacheableObjects:(id)a3 completion:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (INSerializedCacheItem)initWithCoder:(id)a3;
-- (INSerializedCacheItem)initWithType:(int64_t)a3 identifier:(id)a4 payload:(id)a5;
++ (void)deserializeCacheItem:(id)item completion:(id)completion;
++ (void)deserializeCacheItems:(id)items completion:(id)completion;
++ (void)serializeCacheableObjects:(id)objects completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (INSerializedCacheItem)initWithCoder:(id)coder;
+- (INSerializedCacheItem)initWithType:(int64_t)type identifier:(id)identifier payload:(id)payload;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSerializedCacheItem
@@ -23,11 +23,11 @@
   return v5;
 }
 
-- (INSerializedCacheItem)initWithCoder:(id)a3
+- (INSerializedCacheItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
@@ -35,25 +35,25 @@
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"payload"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"payload"];
 
   v15 = [(INSerializedCacheItem *)self initWithType:v5 identifier:v6 payload:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_payload forKey:@"payload"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_payload forKey:@"payload"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -63,7 +63,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = 0;
       if (self->_type == v5->_type)
       {
@@ -98,22 +98,22 @@
   return v6 ^ v4;
 }
 
-- (INSerializedCacheItem)initWithType:(int64_t)a3 identifier:(id)a4 payload:(id)a5
+- (INSerializedCacheItem)initWithType:(int64_t)type identifier:(id)identifier payload:(id)payload
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = INSerializedCacheItem;
   v10 = [(INSerializedCacheItem *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [payloadCopy copy];
     payload = v11->_payload;
     v11->_payload = v14;
   }
@@ -121,21 +121,21 @@
   return v11;
 }
 
-+ (void)deserializeCacheItem:(id)a3 completion:(id)a4
++ (void)deserializeCacheItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  itemCopy = item;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [v5 type];
-    if (v7 == 1)
+    type = [itemCopy type];
+    if (type == 1)
     {
       v8 = off_1E727B008;
     }
 
     else
     {
-      if (v7 != 2)
+      if (type != 2)
       {
         goto LABEL_8;
       }
@@ -148,20 +148,20 @@
     if (v10)
     {
       v11 = v10;
-      v12 = [v5 payload];
-      v13 = [v5 identifier];
+      payload = [itemCopy payload];
+      identifier = [itemCopy identifier];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __57__INSerializedCacheItem_deserializeCacheItem_completion___block_invoke;
       v14[3] = &unk_1E72812D0;
-      v15 = v6;
-      [v11 buildFromCachePayload:v12 identifier:v13 completion:v14];
+      v15 = completionCopy;
+      [v11 buildFromCachePayload:payload identifier:identifier completion:v14];
 
       goto LABEL_9;
     }
 
 LABEL_8:
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_9:
@@ -185,12 +185,12 @@ void __57__INSerializedCacheItem_deserializeCacheItem_completion___block_invoke(
   (*(*(a1 + 32) + 16))(*(a1 + 32), v5);
 }
 
-+ (void)deserializeCacheItems:(id)a3 completion:(id)a4
++ (void)deserializeCacheItems:(id)items completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  itemsCopy = items;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -199,7 +199,7 @@ void __57__INSerializedCacheItem_deserializeCacheItem_completion___block_invoke(
       *buf = 136315394;
       v23 = "+[INSerializedCacheItem deserializeCacheItems:completion:]";
       v24 = 2048;
-      v25 = [v5 count];
+      v25 = [itemsCopy count];
       _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s Deserializing %tu serialized cache items...", buf, 0x16u);
     }
 
@@ -210,11 +210,11 @@ void __57__INSerializedCacheItem_deserializeCacheItem_completion___block_invoke(
     block[1] = 3221225472;
     block[2] = __58__INSerializedCacheItem_deserializeCacheItems_completion___block_invoke;
     block[3] = &unk_1E7285658;
-    v17 = v5;
+    v17 = itemsCopy;
     v18 = v9;
     v19 = v11;
     v20 = v10;
-    v21 = v6;
+    v21 = completionCopy;
     v12 = v10;
     v13 = v11;
     v14 = v9;
@@ -334,11 +334,11 @@ void __58__INSerializedCacheItem_deserializeCacheItems_completion___block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)serializeCacheableObjects:(id)a3 completion:(id)a4
++ (void)serializeCacheableObjects:(id)objects completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  objectsCopy = objects;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = dispatch_group_create();
     v8 = INCacheableGetSerializationQueue();
@@ -347,11 +347,11 @@ void __58__INSerializedCacheItem_deserializeCacheItems_completion___block_invoke
     block[1] = 3221225472;
     block[2] = __62__INSerializedCacheItem_serializeCacheableObjects_completion___block_invoke;
     block[3] = &unk_1E7285658;
-    v14 = v5;
+    v14 = objectsCopy;
     v15 = v7;
     v16 = v9;
     v17 = v8;
-    v18 = v6;
+    v18 = completionCopy;
     v10 = v8;
     v11 = v9;
     v12 = v7;

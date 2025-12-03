@@ -1,10 +1,10 @@
 @interface IDSStunRelayInterfaceInfoController
 + (id)sharedInstance;
-- (id)candidatePairsFromRelayInterfaceInfo:(char *)a3 bufferLength:(int)a4 token:(id)a5 sessionID:(id)a6 error:(int *)a7;
-- (id)createRelayInterfaceInfoFromCandidatePairs:(id)a3 token:(id)a4;
-- (unint64_t)relayInterfaceInfoDeliveryStatus:(id)a3;
-- (void)removeCache:(id)a3;
-- (void)setRelayInterfaceInfoDeliveryStatus:(id)a3 status:(unint64_t)a4;
+- (id)candidatePairsFromRelayInterfaceInfo:(char *)info bufferLength:(int)length token:(id)token sessionID:(id)d error:(int *)error;
+- (id)createRelayInterfaceInfoFromCandidatePairs:(id)pairs token:(id)token;
+- (unint64_t)relayInterfaceInfoDeliveryStatus:(id)status;
+- (void)removeCache:(id)cache;
+- (void)setRelayInterfaceInfoDeliveryStatus:(id)status status:(unint64_t)a4;
 @end
 
 @implementation IDSStunRelayInterfaceInfoController
@@ -21,17 +21,17 @@
   return v3;
 }
 
-- (id)createRelayInterfaceInfoFromCandidatePairs:(id)a3 token:(id)a4
+- (id)createRelayInterfaceInfoFromCandidatePairs:(id)pairs token:(id)token
 {
   v72 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v44 = a4;
+  pairsCopy = pairs;
+  tokenCopy = token;
   memset(__b, 170, sizeof(__b));
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v5;
+  obj = pairsCopy;
   v6 = 0x1E77DB000uLL;
   v51 = [obj countByEnumeratingWithState:&v54 objects:v70 count:16];
   if (v51)
@@ -51,12 +51,12 @@
 
       v53 = v7;
       v13 = *(*(&v54 + 1) + 8 * v7);
-      v14 = [v13 local];
-      v15 = [v14 type];
+      local = [v13 local];
+      type = [local type];
 
-      v16 = [v13 local];
-      v17 = v16;
-      v18 = v15 ? [v16 external] : objc_msgSend(v16, "address");
+      local2 = [v13 local];
+      v17 = local2;
+      v18 = type ? [local2 external] : objc_msgSend(local2, "address");
       v19 = v18;
 
       if (v11 <= 11)
@@ -66,60 +66,60 @@
 
       v52 = v11;
       v20 = *(v19 + 1);
-      v21 = ((v20 != 2) << 15) | (v15 << 11);
-      v22 = [v13 local];
-      v23 = v21 & 0xFFFFF87F | (([v22 transport] & 0xF) << 7);
+      v21 = ((v20 != 2) << 15) | (type << 11);
+      local3 = [v13 local];
+      v23 = v21 & 0xFFFFF87F | (([local3 transport] & 0xF) << 7);
 
-      v24 = [v13 local];
-      v25 = v23 & 0xFFFFFF87 | (8 * ([v24 radioAccessTechnology] & 0xF));
+      local4 = [v13 local];
+      v25 = v23 & 0xFFFFFF87 | (8 * ([local4 radioAccessTechnology] & 0xF));
 
       *(v9 - 6) = bswap32(v25) >> 16;
       *(v9 - 5) = __rev16([v13 relayLinkID]);
-      v26 = [v13 local];
-      v27 = bswap32([v26 mtu]) >> 16;
+      local5 = [v13 local];
+      v27 = bswap32([local5 mtu]) >> 16;
 
       *(v9 - 4) = v27;
-      v28 = [v13 local];
-      LOWORD(v27) = __rev16([v28 linkFlags]);
+      local6 = [v13 local];
+      LOWORD(v27) = __rev16([local6 linkFlags]);
 
       *(v9 - 3) = v27;
       v29 = +[IDSCellularLinkMonitor sharedInstance];
-      v30 = [v29 dataSoMaskBits];
+      dataSoMaskBits = [v29 dataSoMaskBits];
 
-      *(v9 - 1) = bswap32(v30);
-      v31 = [*(v6 + 2592) Stun];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      *(v9 - 1) = bswap32(dataSoMaskBits);
+      stun = [*(v6 + 2592) Stun];
+      if (os_log_type_enabled(stun, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v13 local];
-        v46 = [v48 transport];
-        v47 = [v13 local];
-        v32 = [v47 radioAccessTechnology];
-        v45 = [v13 relayLinkID];
+        local7 = [v13 local];
+        transport = [local7 transport];
+        local8 = [v13 local];
+        radioAccessTechnology = [local8 radioAccessTechnology];
+        relayLinkID = [v13 relayLinkID];
         [v13 local];
         v33 = v49 = v10;
         v34 = [v33 mtu];
-        v35 = [v13 local];
+        local9 = [v13 local];
         v36 = v8;
-        v37 = [v35 linkFlags];
+        linkFlags = [local9 linkFlags];
         v38 = +[IDSCellularLinkMonitor sharedInstance];
-        v39 = [v38 dataSoMaskBits];
+        dataSoMaskBits2 = [v38 dataSoMaskBits];
         *buf = 67110656;
         *v59 = v20;
         *&v59[4] = 2048;
-        *&v59[6] = v46;
+        *&v59[6] = transport;
         v60 = 1024;
-        v61 = v32;
+        v61 = radioAccessTechnology;
         v6 = 0x1E77DB000;
         v62 = 1024;
-        v63 = v45;
+        v63 = relayLinkID;
         v64 = 1024;
         v65 = v34;
         v66 = 1024;
-        v67 = v37;
+        v67 = linkFlags;
         v8 = v36;
         v68 = 1024;
-        v69 = v39;
-        _os_log_impl(&dword_1A7AD9000, v31, OS_LOG_TYPE_DEFAULT, "createRelayInterfaceInfoFromCandidatePairs: family: %d, transport: %ld, RAT: %u, relay LinkID: %04x, MTU: %u, linkFlags: 0x%x, dataSoMasks: 0x%x", buf, 0x30u);
+        v69 = dataSoMaskBits2;
+        _os_log_impl(&dword_1A7AD9000, stun, OS_LOG_TYPE_DEFAULT, "createRelayInterfaceInfoFromCandidatePairs: family: %d, transport: %ld, RAT: %u, relay LinkID: %04x, MTU: %u, linkFlags: 0x%x, dataSoMasks: 0x%x", buf, 0x30u);
 
         v10 = v49;
       }
@@ -142,13 +142,13 @@
       v11 = v52 - 12;
     }
 
-    v40 = [*(v6 + 2592) Stun];
+    stun2 = [*(v6 + 2592) Stun];
     v9 -= 6;
-    if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(stun2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
       *v59 = 2;
-      _os_log_impl(&dword_1A7AD9000, v40, OS_LOG_TYPE_DEFAULT, "createRelayInterfaceInfoFromCandidatePairs: candidatePtrEnd - candidatePtr = %d < 12, break", buf, 8u);
+      _os_log_impl(&dword_1A7AD9000, stun2, OS_LOG_TYPE_DEFAULT, "createRelayInterfaceInfoFromCandidatePairs: candidatePtrEnd - candidatePtr = %d < 12, break", buf, 8u);
     }
 
     v10 = 85;
@@ -164,33 +164,33 @@ LABEL_20:
 
   __b[0] = bswap32(v10 | 0x2000) >> 16;
   v41 = [MEMORY[0x1E695DEF0] dataWithBytes:__b length:(v9 - __b)];
-  v42 = [*(v6 + 2592) Stun];
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+  stun3 = [*(v6 + 2592) Stun];
+  if (os_log_type_enabled(stun3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    *v59 = v44;
+    *v59 = tokenCopy;
     *&v59[8] = 1024;
     *&v59[10] = 1;
     v60 = 1024;
     v61 = v10;
     v62 = 1024;
     v63 = v9 - __b;
-    _os_log_impl(&dword_1A7AD9000, v42, OS_LOG_TYPE_DEFAULT, "new interfaceInformation for %@ (V:%1d #CAN:%d LEN:%dB).", buf, 0x1Eu);
+    _os_log_impl(&dword_1A7AD9000, stun3, OS_LOG_TYPE_DEFAULT, "new interfaceInformation for %@ (V:%1d #CAN:%d LEN:%dB).", buf, 0x1Eu);
   }
 
   return v41;
 }
 
-- (id)candidatePairsFromRelayInterfaceInfo:(char *)a3 bufferLength:(int)a4 token:(id)a5 sessionID:(id)a6 error:(int *)a7
+- (id)candidatePairsFromRelayInterfaceInfo:(char *)info bufferLength:(int)length token:(id)token sessionID:(id)d error:(int *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  *a7 = 0;
-  if (a4 > 1)
+  tokenCopy = token;
+  dCopy = d;
+  *error = 0;
+  if (length > 1)
   {
-    v15 = a3 + 2;
-    v16 = bswap32(*a3);
+    v15 = info + 2;
+    v16 = bswap32(*info);
     v17 = HIWORD(v16) & 0x1F;
     v18 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -200,21 +200,21 @@ LABEL_20:
       *&v50[4] = 1024;
       *&v50[6] = HIWORD(v16) & 0x1F;
       *v51 = 2112;
-      *&v51[2] = v11;
+      *&v51[2] = tokenCopy;
       _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_DEFAULT, "receive interfaceInfo (ver:%u numCandidate:%d) for %@", buf, 0x18u);
     }
 
     theArray = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (v17)
     {
-      v43 = a7;
-      v44 = v11;
-      v42 = a4;
-      v19 = a3;
-      v20 = a4 - 2;
-      v41 = v19;
-      v21 = (v19 + 6);
-      v45 = v12;
+      errorCopy = error;
+      v44 = tokenCopy;
+      lengthCopy = length;
+      infoCopy = info;
+      v20 = length - 2;
+      v41 = infoCopy;
+      v21 = (infoCopy + 6);
+      v45 = dCopy;
       while (1)
       {
         if (v20 <= 1)
@@ -281,7 +281,7 @@ LABEL_20:
           [v25 setDataSoMask:v29];
           [v25 setLinkFlags:v48];
           v33 = [IDSStunCandidate candidateWithType:3 transport:0 radioAccessTechnology:10 mtu:1280 index:0xFFFFFFFFLL address:0 external:0];
-          v12 = v45;
+          dCopy = v45;
           v34 = [IDSStunCandidatePair candidatePairWithLocalCandidate:v33 remoteCandidate:v25 sessionID:v45 delegate:0];
           [v34 setRelayLinkID:v32];
           if (theArray && v34)
@@ -306,10 +306,10 @@ LABEL_20:
         if (!--v17)
         {
           v15 = v21 - 4;
-          a7 = v43;
-          v11 = v44;
-          a4 = v42;
-          LODWORD(a3) = v41;
+          error = errorCopy;
+          tokenCopy = v44;
+          length = lengthCopy;
+          LODWORD(info) = v41;
           goto LABEL_30;
         }
       }
@@ -326,17 +326,17 @@ LABEL_20:
 LABEL_28:
       _os_log_impl(&dword_1A7AD9000, v35, OS_LOG_TYPE_DEFAULT, v36, buf, 8u);
 LABEL_29:
-      a7 = v43;
-      v11 = v44;
-      a4 = v42;
-      LODWORD(a3) = v41;
+      error = errorCopy;
+      tokenCopy = v44;
+      length = lengthCopy;
+      LODWORD(info) = v41;
 
       v15 = v21 - 4;
     }
 
 LABEL_30:
-    v37 = v15 - a3;
-    if (v37 == a4)
+    v37 = v15 - info;
+    if (v37 == length)
     {
       v38 = theArray;
       v14 = theArray;
@@ -350,12 +350,12 @@ LABEL_30:
         *buf = 67109376;
         *v50 = v37;
         *&v50[4] = 1024;
-        *&v50[6] = a4;
+        *&v50[6] = length;
         _os_log_impl(&dword_1A7AD9000, v39, OS_LOG_TYPE_DEFAULT, "invalid interfaceInfo data length: %d, not equal to InterfaceInfoLength: %d.", buf, 0xEu);
       }
 
       v14 = 0;
-      *a7 = 1;
+      *error = 1;
       v38 = theArray;
     }
   }
@@ -366,26 +366,26 @@ LABEL_30:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *v50 = a4;
+      *v50 = length;
       _os_log_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_DEFAULT, "candidatePairsFromInterfaceInfo: remainingInterfaceInfoLength = %d < 2, return nil", buf, 8u);
     }
 
     v14 = 0;
-    *a7 = 1;
+    *error = 1;
   }
 
   return v14;
 }
 
-- (unint64_t)relayInterfaceInfoDeliveryStatus:(id)a3
+- (unint64_t)relayInterfaceInfoDeliveryStatus:(id)status
 {
   Value = 0;
-  if (a3)
+  if (status)
   {
     tokenToRelayInterfaceInfoDeliveryStatus = self->_tokenToRelayInterfaceInfoDeliveryStatus;
     if (tokenToRelayInterfaceInfoDeliveryStatus)
     {
-      Value = CFDictionaryGetValue(tokenToRelayInterfaceInfoDeliveryStatus, a3);
+      Value = CFDictionaryGetValue(tokenToRelayInterfaceInfoDeliveryStatus, status);
       v3 = vars8;
     }
   }
@@ -393,11 +393,11 @@ LABEL_30:
   return [Value unsignedIntegerValue];
 }
 
-- (void)setRelayInterfaceInfoDeliveryStatus:(id)a3 status:(unint64_t)a4
+- (void)setRelayInterfaceInfoDeliveryStatus:(id)status status:(unint64_t)a4
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  statusCopy = status;
+  if (!statusCopy)
   {
     v13 = +[IDSFoundationLog Stun];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -419,13 +419,13 @@ LABEL_15:
   tokenToRelayInterfaceInfoDeliveryStatus = self->_tokenToRelayInterfaceInfoDeliveryStatus;
   if (tokenToRelayInterfaceInfoDeliveryStatus)
   {
-    tokenToRelayInterfaceInfoDeliveryStatus = CFDictionaryGetValue(tokenToRelayInterfaceInfoDeliveryStatus, v6);
+    tokenToRelayInterfaceInfoDeliveryStatus = CFDictionaryGetValue(tokenToRelayInterfaceInfoDeliveryStatus, statusCopy);
   }
 
-  v8 = [(__CFDictionary *)tokenToRelayInterfaceInfoDeliveryStatus unsignedIntegerValue];
-  if (v8 != a4)
+  unsignedIntegerValue = [(__CFDictionary *)tokenToRelayInterfaceInfoDeliveryStatus unsignedIntegerValue];
+  if (unsignedIntegerValue != a4)
   {
-    v9 = v8;
+    v9 = unsignedIntegerValue;
     if (!self->_tokenToRelayInterfaceInfoDeliveryStatus)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -436,12 +436,12 @@ LABEL_15:
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
     if (v12)
     {
-      CFDictionarySetValue(self->_tokenToRelayInterfaceInfoDeliveryStatus, v6, v12);
+      CFDictionarySetValue(self->_tokenToRelayInterfaceInfoDeliveryStatus, statusCopy, v12);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      sub_1A7E1D548(v6);
+      sub_1A7E1D548(statusCopy);
     }
 
     v13 = +[IDSFoundationLog Stun];
@@ -451,7 +451,7 @@ LABEL_15:
     }
 
     v17 = 138412802;
-    v18 = v6;
+    v18 = statusCopy;
     v19 = 2048;
     v20 = v9;
     v21 = 2048;
@@ -465,23 +465,23 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)removeCache:(id)a3
+- (void)removeCache:(id)cache
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
     tokenToRelayInterfaceInfoDeliveryStatus = self->_tokenToRelayInterfaceInfoDeliveryStatus;
     if (tokenToRelayInterfaceInfoDeliveryStatus)
     {
-      CFDictionaryRemoveValue(tokenToRelayInterfaceInfoDeliveryStatus, v4);
+      CFDictionaryRemoveValue(tokenToRelayInterfaceInfoDeliveryStatus, cacheCopy);
     }
 
     v6 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = cacheCopy;
       v7 = "removed relay interface information for %@.";
       v8 = v6;
       v9 = 12;

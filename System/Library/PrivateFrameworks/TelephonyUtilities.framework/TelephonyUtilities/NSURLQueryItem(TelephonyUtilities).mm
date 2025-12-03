@@ -8,7 +8,7 @@
 + (id)queryItemForHandleType:()TelephonyUtilities
 {
   v1 = MEMORY[0x1E696AF60];
-  v2 = [a1 queryItemValueForHandleType:?];
+  v2 = [self queryItemValueForHandleType:?];
   v3 = [v1 queryItemWithName:@"handleType" value:v2];
 
   return v3;

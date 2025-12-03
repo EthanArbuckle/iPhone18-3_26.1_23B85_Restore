@@ -1,15 +1,15 @@
 @interface ProductGradientView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation ProductGradientView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  sub_1E39E4488(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E39E4488(only, width, height);
   v9 = v8;
   v11 = v10;
 

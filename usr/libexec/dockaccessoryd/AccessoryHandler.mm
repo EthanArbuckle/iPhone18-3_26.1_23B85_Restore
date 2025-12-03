@@ -1,12 +1,12 @@
 @interface AccessoryHandler
-- (void)accessoryConnectionDetached:(id)a3;
+- (void)accessoryConnectionDetached:(id)detached;
 @end
 
 @implementation AccessoryHandler
 
-- (void)accessoryConnectionDetached:(id)a3
+- (void)accessoryConnectionDetached:(id)detached
 {
-  if (a3)
+  if (detached)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -18,7 +18,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1000A18F0(v4, v6);
 }
 

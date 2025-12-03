@@ -1,26 +1,26 @@
 @interface LACUserInterfaceController
-- (LACUserInterfaceController)initWithReplyQueue:(id)a3;
+- (LACUserInterfaceController)initWithReplyQueue:(id)queue;
 - (id)userInterface;
-- (id)userInterfaceWithUUID:(id)a3;
-- (void)terminateAllUserInterfacesWithReason:(id)a3;
-- (void)terminateUserInterfaceWithUUID:(id)a3 reason:(id)a4;
+- (id)userInterfaceWithUUID:(id)d;
+- (void)terminateAllUserInterfacesWithReason:(id)reason;
+- (void)terminateUserInterfaceWithUUID:(id)d reason:(id)reason;
 @end
 
 @implementation LACUserInterfaceController
 
-- (LACUserInterfaceController)initWithReplyQueue:(id)a3
+- (LACUserInterfaceController)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = LACUserInterfaceController;
   v6 = [(LACUserInterfaceController *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     activeUserInterfaces = v6->_activeUserInterfaces;
-    v6->_activeUserInterfaces = v7;
+    v6->_activeUserInterfaces = strongToWeakObjectsMapTable;
 
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
   }
 
   return v6;
@@ -28,22 +28,22 @@
 
 - (id)userInterface
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(LACUserInterfaceController *)self userInterfaceWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(LACUserInterfaceController *)self userInterfaceWithUUID:uUID];
 
   return v4;
 }
 
-- (id)userInterfaceWithUUID:(id)a3
+- (id)userInterfaceWithUUID:(id)d
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__LACUserInterfaceController_userInterfaceWithUUID___block_invoke;
   v7[3] = &unk_1E7A96608;
   v7[4] = self;
-  v4 = a3;
+  dCopy = d;
   v5 = __52__LACUserInterfaceController_userInterfaceWithUUID___block_invoke(v7);
-  [(NSMapTable *)self->_activeUserInterfaces setObject:v5 forKey:v4];
+  [(NSMapTable *)self->_activeUserInterfaces setObject:v5 forKey:dCopy];
 
   return v5;
 }
@@ -67,33 +67,33 @@ LACUserInterfaceRemoteUIAdapter *__52__LACUserInterfaceController_userInterfaceW
   return v5;
 }
 
-- (void)terminateAllUserInterfacesWithReason:(id)a3
+- (void)terminateAllUserInterfacesWithReason:(id)reason
 {
-  v8 = a3;
-  v4 = [(NSMapTable *)self->_activeUserInterfaces objectEnumerator];
-  v5 = [v4 nextObject];
+  reasonCopy = reason;
+  objectEnumerator = [(NSMapTable *)self->_activeUserInterfaces objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
 
-  if (v5)
+  if (nextObject)
   {
     do
     {
-      [v5 terminateWithReason:v8];
-      v6 = [(NSMapTable *)self->_activeUserInterfaces objectEnumerator];
-      v7 = [v6 nextObject];
+      [nextObject terminateWithReason:reasonCopy];
+      objectEnumerator2 = [(NSMapTable *)self->_activeUserInterfaces objectEnumerator];
+      nextObject2 = [objectEnumerator2 nextObject];
 
-      v5 = v7;
+      nextObject = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 }
 
-- (void)terminateUserInterfaceWithUUID:(id)a3 reason:(id)a4
+- (void)terminateUserInterfaceWithUUID:(id)d reason:(id)reason
 {
   activeUserInterfaces = self->_activeUserInterfaces;
-  v6 = a4;
-  v7 = [(NSMapTable *)activeUserInterfaces objectForKey:a3];
-  [v7 terminateWithReason:v6];
+  reasonCopy = reason;
+  v7 = [(NSMapTable *)activeUserInterfaces objectForKey:d];
+  [v7 terminateWithReason:reasonCopy];
 }
 
 @end

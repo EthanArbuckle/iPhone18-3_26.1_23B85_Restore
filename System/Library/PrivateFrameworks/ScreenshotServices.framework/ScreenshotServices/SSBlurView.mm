@@ -1,20 +1,20 @@
 @interface SSBlurView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (SSBlurView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (SSBlurView)initWithFrame:(CGRect)frame;
 - (double)blurRadius;
 - (double)scale;
-- (void)setBlurRadius:(double)a3;
-- (void)setScale:(double)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setScale:(double)scale;
 @end
 
 @implementation SSBlurView
 
-- (SSBlurView)initWithFrame:(CGRect)a3
+- (SSBlurView)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = SSBlurView;
-  v3 = [(SSBlurView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSBlurView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc(MEMORY[0x1E6979378]);
   v5 = [v4 initWithType:*MEMORY[0x1E6979928]];
   v6 = MEMORY[0x1E695E118];
@@ -24,59 +24,59 @@
   [v5 setValue:@"low" forKey:@"inputQuality"];
   [v5 setValue:@"low" forKey:@"inputIntermediateBitDepth"];
   [v5 setName:@"gaussianBlur"];
-  v7 = [(SSBlurView *)v3 layer];
+  layer = [(SSBlurView *)v3 layer];
   v11[0] = v5;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [v7 setFilters:v8];
+  [layer setFilters:v8];
 
   [(SSBlurView *)v3 setScale:1.0];
   return v3;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = SSBlurView;
-  if (-[SSBlurView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, v4) || ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"] & 1) != 0)
+  if (-[SSBlurView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, keyCopy) || ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"scale"];
+    v5 = [keyCopy isEqualToString:@"scale"];
   }
 
   return v5;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  v4 = [(SSBlurView *)self _backdropLayer];
-  [v4 setScale:a3];
+  _backdropLayer = [(SSBlurView *)self _backdropLayer];
+  [_backdropLayer setScale:scale];
 }
 
 - (double)scale
 {
-  v2 = [(SSBlurView *)self _backdropLayer];
-  [v2 scale];
+  _backdropLayer = [(SSBlurView *)self _backdropLayer];
+  [_backdropLayer scale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v5 = [(SSBlurView *)self layer];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(SSBlurView *)self layer];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+  [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
 - (double)blurRadius
 {
-  v2 = [(SSBlurView *)self layer];
-  v3 = [v2 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(SSBlurView *)self layer];
+  v3 = [layer valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
   [v3 doubleValue];
   v5 = v4;
 

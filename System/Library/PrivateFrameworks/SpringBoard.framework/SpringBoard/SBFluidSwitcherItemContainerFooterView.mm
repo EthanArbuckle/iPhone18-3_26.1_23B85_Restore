@@ -1,54 +1,54 @@
 @interface SBFluidSwitcherItemContainerFooterView
-- (BOOL)_isTextEffectivelyEmpty:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_isTextEffectivelyEmpty:(id)empty;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (SBFluidSwitcherItemContainerFooterView)initWithFrame:(CGRect)a3 delegate:(id)a4;
+- (SBFluidSwitcherItemContainerFooterView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (SBFluidSwitcherItemContainerFooterViewDelegate)delegate;
 - (double)_maximumTitleLabelHeight;
-- (id)_attributedTextFromText:(id)a3;
+- (id)_attributedTextFromText:(id)text;
 - (id)_makeIconView;
 - (id)_makeLabel;
 - (id)_makeSubtitleLabel;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_reloadVisibleTitleItems;
 - (void)_updateIconPointerInteractions;
-- (void)_updateIconViewShadow:(id)a3;
+- (void)_updateIconViewShadow:(id)shadow;
 - (void)_updateIconViewsAndLabels;
 - (void)_updateLabels;
 - (void)_updateSubtitleLabel;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFooterStyle:(unint64_t)a3;
-- (void)setIconAlignment:(unint64_t)a3;
-- (void)setIconAlpha:(double)a3;
-- (void)setIconHitTestOutset:(double)a3;
-- (void)setTextAlpha:(double)a3;
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4;
-- (void)setUniqueIconsOnly:(BOOL)a3;
-- (void)setWantsIconPointerInteractions:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setFooterStyle:(unint64_t)style;
+- (void)setIconAlignment:(unint64_t)alignment;
+- (void)setIconAlpha:(double)alpha;
+- (void)setIconHitTestOutset:(double)outset;
+- (void)setTextAlpha:(double)alpha;
+- (void)setTitleItems:(id)items animated:(BOOL)animated;
+- (void)setUniqueIconsOnly:(BOOL)only;
+- (void)setWantsIconPointerInteractions:(BOOL)interactions;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBFluidSwitcherItemContainerFooterView
 
-- (SBFluidSwitcherItemContainerFooterView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (SBFluidSwitcherItemContainerFooterView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = SBFluidSwitcherItemContainerFooterView;
-  v10 = [(SBFluidSwitcherItemContainerFooterView *)&v18 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SBFluidSwitcherItemContainerFooterView *)&v18 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_delegate, v9);
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v11 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    objc_storeWeak(&height->_delegate, delegateCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
     v13 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v11 action:sel__handleTapGestureRecognizer_];
     tapGestureRecognizer = v11->_tapGestureRecognizer;
@@ -68,30 +68,30 @@
 - (void)dealloc
 {
   [(PTSettings *)self->_settings removeKeyObserver:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = SBFluidSwitcherItemContainerFooterView;
   [(SBFluidSwitcherItemContainerFooterView *)&v4 dealloc];
 }
 
-- (void)setFooterStyle:(unint64_t)a3
+- (void)setFooterStyle:(unint64_t)style
 {
-  if (self->_footerStyle != a3)
+  if (self->_footerStyle != style)
   {
-    self->_footerStyle = a3;
+    self->_footerStyle = style;
     self->_subtitleStylingUserInterfaceStyle = 0;
     [(SBFluidSwitcherItemContainerFooterView *)self _updateIconViewsAndLabels];
   }
 }
 
-- (void)setTextAlpha:(double)a3
+- (void)setTextAlpha:(double)alpha
 {
   v15 = *MEMORY[0x277D85DE8];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_textAlpha = a3;
+    self->_textAlpha = alpha;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -112,7 +112,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setAlpha:{a3, v10}];
+          [*(*(&v10 + 1) + 8 * v9++) setAlpha:{alpha, v10}];
         }
 
         while (v7 != v9);
@@ -122,59 +122,59 @@
       while (v7);
     }
 
-    [(BSUIEmojiLabelView *)self->_subtitleLabel setAlpha:a3];
+    [(BSUIEmojiLabelView *)self->_subtitleLabel setAlpha:alpha];
   }
 }
 
-- (void)setIconAlpha:(double)a3
+- (void)setIconAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_iconAlpha = a3;
+    self->_iconAlpha = alpha;
 
     [(SBFluidSwitcherItemContainerFooterView *)self setNeedsLayout];
   }
 }
 
-- (void)setIconAlignment:(unint64_t)a3
+- (void)setIconAlignment:(unint64_t)alignment
 {
-  if (self->_iconAlignment != a3)
+  if (self->_iconAlignment != alignment)
   {
-    self->_iconAlignment = a3;
+    self->_iconAlignment = alignment;
     [(SBFluidSwitcherItemContainerFooterView *)self setNeedsLayout];
   }
 }
 
-- (void)setUniqueIconsOnly:(BOOL)a3
+- (void)setUniqueIconsOnly:(BOOL)only
 {
-  if (self->_uniqueIconsOnly != a3)
+  if (self->_uniqueIconsOnly != only)
   {
-    self->_uniqueIconsOnly = a3;
+    self->_uniqueIconsOnly = only;
     [(SBFluidSwitcherItemContainerFooterView *)self _reloadVisibleTitleItems];
   }
 }
 
-- (void)setWantsIconPointerInteractions:(BOOL)a3
+- (void)setWantsIconPointerInteractions:(BOOL)interactions
 {
-  if (self->_wantsIconPointerInteractions != a3)
+  if (self->_wantsIconPointerInteractions != interactions)
   {
-    self->_wantsIconPointerInteractions = a3;
+    self->_wantsIconPointerInteractions = interactions;
     [(SBFluidSwitcherItemContainerFooterView *)self _updateIconPointerInteractions];
   }
 }
 
-- (void)setIconHitTestOutset:(double)a3
+- (void)setIconHitTestOutset:(double)outset
 {
-  if (self->_iconHitTestOutset != a3)
+  if (self->_iconHitTestOutset != outset)
   {
-    self->_iconHitTestOutset = a3;
+    self->_iconHitTestOutset = outset;
     [(SBFluidSwitcherItemContainerFooterView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleItems:(id)a3 animated:(BOOL)a4
+- (void)setTitleItems:(id)items animated:(BOOL)animated
 {
-  v5 = [a3 copy];
+  v5 = [items copy];
   titleItems = self->_titleItems;
   self->_titleItems = v5;
 
@@ -184,9 +184,9 @@
 - (CGSize)intrinsicContentSize
 {
   v3 = MEMORY[0x277D76620];
-  v4 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   iconViews = self->_iconViews;
-  if (v4 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     [(NSMutableArray *)iconViews firstObject];
   }
@@ -200,9 +200,9 @@
   v8 = v7;
   v10 = v9;
 
-  v11 = [*v3 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection2 = [*v3 userInterfaceLayoutDirection];
   titleLabels = self->_titleLabels;
-  if (v11 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     [(NSMutableArray *)titleLabels firstObject];
   }
@@ -216,9 +216,9 @@
   v15 = v14;
   v17 = v16;
 
-  v18 = [*v3 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection3 = [*v3 userInterfaceLayoutDirection];
   v19 = self->_iconViews;
-  if (v18 == 1)
+  if (userInterfaceLayoutDirection3 == 1)
   {
     [(NSMutableArray *)v19 lastObject];
   }
@@ -231,9 +231,9 @@
   [v20 frame];
   v22 = v21;
 
-  v23 = [*v3 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection4 = [*v3 userInterfaceLayoutDirection];
   v24 = self->_titleLabels;
-  if (v23 == 1)
+  if (userInterfaceLayoutDirection4 == 1)
   {
     [(NSMutableArray *)v24 lastObject];
   }
@@ -330,12 +330,12 @@
   rect = v10;
   if (iconAlignment == 1)
   {
-    v29 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v30 = v4;
     v31 = v6;
     v32 = v8;
     v33 = v10;
-    if (v29 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       MinX = CGRectGetMaxX(*&v30) - v14;
     }
@@ -377,17 +377,17 @@
         v109.origin.y = v102;
         v109.size.height = v10;
         MidX = CGRectGetMidX(v109);
-        v24 = [*v20 userInterfaceLayoutDirection];
+        userInterfaceLayoutDirection2 = [*v20 userInterfaceLayoutDirection];
         v25 = 0.5;
-        if (v24 == 1)
+        if (userInterfaceLayoutDirection2 == 1)
         {
           v25 = -0.5;
         }
 
         v26 = MidX - v22 * v25;
-        v27 = [*v20 userInterfaceLayoutDirection];
+        userInterfaceLayoutDirection3 = [*v20 userInterfaceLayoutDirection];
         v28 = 0.0;
-        if (v27 == 1)
+        if (userInterfaceLayoutDirection3 == 1)
         {
           v28 = v14;
         }
@@ -430,7 +430,7 @@
       [(SBFluidSwitcherItemContainerFooterView *)self _updateIconViewShadow:v46];
       [v46 setFrame:{v38, v36, v14, v14}];
       [v46 setAlpha:self->_iconAlpha];
-      v47 = [*v20 userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection4 = [*v20 userInterfaceLayoutDirection];
       if (v43)
       {
         v112.origin.x = v38;
@@ -438,7 +438,7 @@
         v112.size.width = v14;
         v112.size.height = v14;
         v48 = v94 + CGRectGetWidth(v112);
-        if (v47 == 1)
+        if (userInterfaceLayoutDirection4 == 1)
         {
           v49 = -v48;
         }
@@ -495,7 +495,7 @@
         v113.origin.y = v102;
         v113.size.height = rect;
         Width = CGRectGetWidth(v113);
-        if (v47 == 1)
+        if (userInterfaceLayoutDirection4 == 1)
         {
           v57 = -Width;
         }
@@ -538,12 +538,12 @@
   v116.size.width = v101;
   v116.size.height = rect;
   Height = CGRectGetHeight(v116);
-  v61 = [*v20 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection5 = [*v20 userInterfaceLayoutDirection];
   v62 = v4;
   v63 = v102;
   v64 = v101;
   v65 = rect;
-  if (v61 == 1)
+  if (userInterfaceLayoutDirection5 == 1)
   {
     v66 = CGRectGetMaxX(*&v62) - v59;
   }
@@ -603,13 +603,13 @@
         }
 
         [v75 setFrame:{v66 + (v59 - v77) * 0.5, v68, v77, v79}];
-        v80 = [*v20 userInterfaceLayoutDirection];
+        userInterfaceLayoutDirection6 = [*v20 userInterfaceLayoutDirection];
         v118.origin.x = v99;
         v118.size.height = rect;
         v118.size.width = v101;
         v118.origin.y = v102;
         v81 = CGRectGetWidth(v118);
-        if (v80 == 1)
+        if (userInterfaceLayoutDirection6 == 1)
         {
           v81 = -v81;
         }
@@ -653,14 +653,14 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = SBFluidSwitcherItemContainerFooterView;
-  if ([(SBFluidSwitcherItemContainerFooterView *)&v14 pointInside:v7 withEvent:x, y])
+  if ([(SBFluidSwitcherItemContainerFooterView *)&v14 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -679,7 +679,7 @@
 
       v11 = [(NSMutableArray *)self->_iconViews objectAtIndex:v9];
       [v11 convertPoint:self fromView:{x, y}];
-      v12 = [v11 pointInside:v7 withEvent:?];
+      v12 = [v11 pointInside:eventCopy withEvent:?];
       ++v9;
     }
 
@@ -689,36 +689,36 @@
   return v8;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_settings == a3)
+  if (self->_settings == settings)
   {
     [(SBFluidSwitcherItemContainerFooterView *)self _updateLabels];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v6 = MEMORY[0x277D75880];
-  v7 = a3;
-  [a5 rect];
+  interactionCopy = interaction;
+  [region rect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 view];
+  view = [interactionCopy view];
 
-  [v16 hitTestInsets];
+  [view hitTestInsets];
   v21 = [v6 regionWithRect:0 identifier:{v9 + v20, v11 + v17, v13 - (v20 + v18), v15 - (v17 + v19)}];
 
   return v21;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [a3 view];
+  view = [interaction view];
   v5 = objc_alloc_init(MEMORY[0x277D758D8]);
-  v6 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v4 parameters:v5];
+  v6 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:view parameters:v5];
   v7 = [MEMORY[0x277D75878] effectWithPreview:v6];
   v8 = [MEMORY[0x277D75890] styleWithEffect:v7 shape:0];
 
@@ -752,13 +752,13 @@
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 displayItem];
-          v12 = [v11 bundleIdentifier];
+          displayItem = [v10 displayItem];
+          bundleIdentifier = [displayItem bundleIdentifier];
 
-          if (([v3 containsObject:v12] & 1) == 0)
+          if (([v3 containsObject:bundleIdentifier] & 1) == 0)
           {
             [(NSArray *)v4 addObject:v10];
-            [v3 addObject:v12];
+            [v3 addObject:bundleIdentifier];
           }
         }
 
@@ -817,9 +817,9 @@
 
       do
       {
-        v12 = [(SBFluidSwitcherItemContainerFooterView *)self _makeIconView];
-        [(SBFluidSwitcherItemContainerFooterView *)self addSubview:v12];
-        [(NSMutableArray *)self->_iconViews addObject:v12];
+        _makeIconView = [(SBFluidSwitcherItemContainerFooterView *)self _makeIconView];
+        [(SBFluidSwitcherItemContainerFooterView *)self addSubview:_makeIconView];
+        [(NSMutableArray *)self->_iconViews addObject:_makeIconView];
 
         --v11;
       }
@@ -875,9 +875,9 @@
 
       do
       {
-        v22 = [(SBFluidSwitcherItemContainerFooterView *)self _makeLabel];
-        [(SBFluidSwitcherItemContainerFooterView *)self addSubview:v22];
-        [(NSMutableArray *)self->_titleLabels addObject:v22];
+        _makeLabel = [(SBFluidSwitcherItemContainerFooterView *)self _makeLabel];
+        [(SBFluidSwitcherItemContainerFooterView *)self addSubview:_makeLabel];
+        [(NSMutableArray *)self->_titleLabels addObject:_makeLabel];
 
         --v21;
       }
@@ -911,35 +911,35 @@
     {
       v25 = [(NSArray *)self->_visibleTitleItems objectAtIndex:v24];
       v26 = [*(&self->super.super.super.super.isa + v3) objectAtIndex:v24];
-      v27 = [v25 image];
-      [v26 setImage:v27];
+      image = [v25 image];
+      [v26 setImage:image];
 
-      v28 = [v25 imageView];
-      [v26 setCustomImageView:v28];
+      imageView = [v25 imageView];
+      [v26 setCustomImageView:imageView];
 
       if (v23)
       {
-        v29 = [v25 titleText];
-        if (![(SBFluidSwitcherItemContainerFooterView *)self _isTextEffectivelyEmpty:v29])
+        titleText = [v25 titleText];
+        if (![(SBFluidSwitcherItemContainerFooterView *)self _isTextEffectivelyEmpty:titleText])
         {
-          [v42 addObject:v29];
+          [v42 addObject:titleText];
         }
       }
 
       else
       {
         v30 = v3;
-        v29 = [(NSMutableArray *)self->_titleLabels objectAtIndex:v24];
-        v31 = [v25 subtitleText];
-        if ([(SBFluidSwitcherItemContainerFooterView *)self _isTextEffectivelyEmpty:v31])
+        titleText = [(NSMutableArray *)self->_titleLabels objectAtIndex:v24];
+        subtitleText = [v25 subtitleText];
+        if ([(SBFluidSwitcherItemContainerFooterView *)self _isTextEffectivelyEmpty:subtitleText])
         {
-          v32 = [v25 titleText];
+          titleText2 = [v25 titleText];
 
-          v31 = v32;
+          subtitleText = titleText2;
         }
 
-        v33 = [(SBFluidSwitcherItemContainerFooterView *)self _attributedTextFromText:v31];
-        [v29 setAttributedText:v33];
+        v33 = [(SBFluidSwitcherItemContainerFooterView *)self _attributedTextFromText:subtitleText];
+        [titleText setAttributedText:v33];
 
         v3 = v30;
         v23 = footerStyle;
@@ -954,9 +954,9 @@
   if (v23)
   {
     v34 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:v42];
-    v35 = [(NSMutableArray *)self->_titleLabels firstObject];
+    firstObject = [(NSMutableArray *)self->_titleLabels firstObject];
     v36 = [(SBFluidSwitcherItemContainerFooterView *)self _attributedTextFromText:v34];
-    [v35 setAttributedText:v36];
+    [firstObject setAttributedText:v36];
   }
 
   [(SBFluidSwitcherItemContainerFooterView *)self _updateSubtitleLabel];
@@ -966,9 +966,9 @@
   v48[3] = &unk_2783A8C18;
   v48[4] = self;
   v37 = MEMORY[0x223D6F7F0](v48);
-  v38 = [MEMORY[0x277D75D18] _isInRetargetableAnimationBlock];
+  _isInRetargetableAnimationBlock = [MEMORY[0x277D75D18] _isInRetargetableAnimationBlock];
   v39 = MEMORY[0x277D75D18];
-  if (v38)
+  if (_isInRetargetableAnimationBlock)
   {
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
@@ -1031,10 +1031,10 @@ uint64_t __67__SBFluidSwitcherItemContainerFooterView__updateIconViewsAndLabels_
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * i) subtitleText];
-        if (![(SBFluidSwitcherItemContainerFooterView *)self _isTextEffectivelyEmpty:v9])
+        subtitleText = [*(*(&v20 + 1) + 8 * i) subtitleText];
+        if (![(SBFluidSwitcherItemContainerFooterView *)self _isTextEffectivelyEmpty:subtitleText])
         {
-          [v3 addObject:v9];
+          [v3 addObject:subtitleText];
         }
       }
 
@@ -1049,21 +1049,21 @@ uint64_t __67__SBFluidSwitcherItemContainerFooterView__updateIconViewsAndLabels_
   {
     if (!subtitleLabel)
     {
-      v11 = [(SBFluidSwitcherItemContainerFooterView *)self _makeSubtitleLabel];
+      _makeSubtitleLabel = [(SBFluidSwitcherItemContainerFooterView *)self _makeSubtitleLabel];
       v12 = self->_subtitleLabel;
-      self->_subtitleLabel = v11;
+      self->_subtitleLabel = _makeSubtitleLabel;
 
       [(SBFluidSwitcherItemContainerFooterView *)self addSubview:self->_subtitleLabel];
     }
 
     v13 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:{v3, v20}];
     [(BSUIEmojiLabelView *)self->_subtitleLabel setText:v13];
-    v14 = [(NSArray *)self->_titleItems firstObject];
-    v15 = [v14 subtitleInterfaceStyle];
+    firstObject = [(NSArray *)self->_titleItems firstObject];
+    subtitleInterfaceStyle = [firstObject subtitleInterfaceStyle];
 
-    if (v15)
+    if (subtitleInterfaceStyle)
     {
-      v16 = self->_subtitleStylingUserInterfaceStyle == v15;
+      v16 = self->_subtitleStylingUserInterfaceStyle == subtitleInterfaceStyle;
     }
 
     else
@@ -1073,14 +1073,14 @@ uint64_t __67__SBFluidSwitcherItemContainerFooterView__updateIconViewsAndLabels_
 
     if (!v16)
     {
-      self->_subtitleStylingUserInterfaceStyle = v15;
-      v17 = [MEMORY[0x277D26740] _visualStylingProviderForRecipe:53 category:2 andUserInterfaceStyle:v15];
+      self->_subtitleStylingUserInterfaceStyle = subtitleInterfaceStyle;
+      v17 = [MEMORY[0x277D26740] _visualStylingProviderForRecipe:53 category:2 andUserInterfaceStyle:subtitleInterfaceStyle];
       v18 = [v17 _visualStylingForStyle:0];
       [(BSUIEmojiLabelView *)self->_subtitleLabel mt_replaceVisualStyling:v18];
       [(BSUIEmojiLabelView *)self->_subtitleLabel setAlpha:self->_textAlpha];
-      v19 = [(BSUIEmojiLabelView *)self->_subtitleLabel contentLabel];
+      contentLabel = [(BSUIEmojiLabelView *)self->_subtitleLabel contentLabel];
       [v18 alpha];
-      [v19 setAlpha:?];
+      [contentLabel setAlpha:?];
     }
 
     [(SBFluidSwitcherItemContainerFooterView *)self setNeedsLayout];
@@ -1096,12 +1096,12 @@ LABEL_21:
   }
 }
 
-- (id)_attributedTextFromText:(id)a3
+- (id)_attributedTextFromText:(id)text
 {
   v4 = MEMORY[0x277D74300];
   v5 = *MEMORY[0x277D76940];
   v6 = *MEMORY[0x277D74420];
-  v7 = a3;
+  textCopy = text;
   v8 = [v4 _preferredFontForTextStyle:v5 addingSymbolicTraits:0x8000 weight:v6];
   [v8 pointSize];
   v10 = [v8 fontWithSize:{fmin(fmax(v9, 13.0), 16.0)}];
@@ -1119,8 +1119,8 @@ LABEL_21:
   if ([(SBFluidSwitcherItemContainerFooterView *)self _hasTitleShadow])
   {
     v13 = objc_alloc_init(MEMORY[0x277D74258]);
-    v14 = [MEMORY[0x277D75348] blackColor];
-    v15 = [v14 colorWithAlphaComponent:0.52];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v15 = [blackColor colorWithAlphaComponent:0.52];
     [v13 setShadowColor:v15];
 
     [v13 setShadowBlurRadius:3.0];
@@ -1128,15 +1128,15 @@ LABEL_21:
     [v12 setObject:v13 forKey:*MEMORY[0x277D74138]];
   }
 
-  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v12];
+  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy attributes:v12];
 
   return v16;
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
   footerStyle = self->_footerStyle;
-  [a3 locationInView:self];
+  [recognizer locationInView:self];
   v7 = v6;
   if (footerStyle)
   {
@@ -1196,11 +1196,11 @@ LABEL_14:
 - (id)_makeIconView
 {
   v3 = objc_alloc_init(SBFluidSwitcherIconImageContainerView);
-  v4 = [(SBFluidSwitcherIconImageContainerView *)v3 layer];
-  v5 = [MEMORY[0x277D75348] systemBlackColor];
-  [v4 setShadowColor:{objc_msgSend(v5, "CGColor")}];
+  layer = [(SBFluidSwitcherIconImageContainerView *)v3 layer];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  [layer setShadowColor:{objc_msgSend(systemBlackColor, "CGColor")}];
 
-  [v4 setShadowPathIsBounds:1];
+  [layer setShadowPathIsBounds:1];
   [(SBFluidSwitcherItemContainerFooterView *)self _updateIconViewShadow:v3];
   if (self->_wantsIconPointerInteractions)
   {
@@ -1211,21 +1211,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)_updateIconViewShadow:(id)a3
+- (void)_updateIconViewShadow:(id)shadow
 {
-  v4 = a3;
-  v5 = [v4 layer];
+  shadowCopy = shadow;
+  layer = [shadowCopy layer];
   v6 = 4.0;
   if (self->_footerStyle - 1 >= 2)
   {
     v6 = -1.0;
   }
 
-  v10 = v5;
-  [v5 setShadowOffset:{0.0, v6}];
-  v7 = [v4 image];
+  v10 = layer;
+  [layer setShadowOffset:{0.0, v6}];
+  image = [shadowCopy image];
 
-  if (v7)
+  if (image)
   {
     LODWORD(v8) = dword_21F8A67D0[self->_footerStyle - 1 < 2];
   }
@@ -1251,14 +1251,14 @@ LABEL_14:
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v3 setNumberOfLines:2];
   [v3 setText:&stru_283094718];
-  v4 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v3 setTextColor:v4];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v3 setTextColor:systemWhiteColor];
 
   [v3 setAlpha:self->_textAlpha];
   [v3 setSizingRule:1];
-  v5 = [v3 layer];
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [v5 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+  layer = [v3 layer];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
   return v3;
 }
@@ -1303,8 +1303,8 @@ LABEL_14:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 text];
-        v10 = [(SBFluidSwitcherItemContainerFooterView *)self _attributedTextFromText:v9];
+        text = [v8 text];
+        v10 = [(SBFluidSwitcherItemContainerFooterView *)self _attributedTextFromText:text];
 
         [v8 setAttributedText:v10];
       }
@@ -1318,18 +1318,18 @@ LABEL_14:
   subtitleLabel = self->_subtitleLabel;
   if (subtitleLabel)
   {
-    v12 = [(BSUIEmojiLabelView *)subtitleLabel text];
-    if (v12)
+    text2 = [(BSUIEmojiLabelView *)subtitleLabel text];
+    if (text2)
     {
-      v13 = [(BSUIEmojiLabelView *)self->_subtitleLabel text];
+      text3 = [(BSUIEmojiLabelView *)self->_subtitleLabel text];
     }
 
     else
     {
-      v13 = &stru_283094718;
+      text3 = &stru_283094718;
     }
 
-    [(BSUIEmojiLabelView *)self->_subtitleLabel setText:v13];
+    [(BSUIEmojiLabelView *)self->_subtitleLabel setText:text3];
   }
 
   [(SBFluidSwitcherItemContainerFooterView *)self setNeedsLayout];
@@ -1379,15 +1379,15 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)_isTextEffectivelyEmpty:(id)a3
+- (BOOL)_isTextEffectivelyEmpty:(id)empty
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  emptyCopy = empty;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [emptyCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  LOBYTE(v4) = [v6 length] == 0;
-  return v4;
+  LOBYTE(emptyCopy) = [v6 length] == 0;
+  return emptyCopy;
 }
 
 - (void)_updateIconPointerInteractions
@@ -1448,10 +1448,10 @@ LABEL_14:
           }
 
           v14 = *(*(&v17 + 1) + 8 * j);
-          v15 = [v14 interactions];
-          v16 = [v15 firstObject];
+          interactions = [v14 interactions];
+          firstObject = [interactions firstObject];
 
-          [v14 removeInteraction:v16];
+          [v14 removeInteraction:firstObject];
         }
 
         v11 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v17 objects:v25 count:16];

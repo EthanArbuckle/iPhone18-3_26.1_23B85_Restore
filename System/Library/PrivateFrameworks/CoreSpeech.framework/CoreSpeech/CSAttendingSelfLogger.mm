@@ -1,18 +1,18 @@
 @interface CSAttendingSelfLogger
-+ (void)emitAttendingContextEndedEventWithStopReason:(int64_t)a3 withMHUUID:(id)a4;
-+ (void)emitAttendingContextStartedEventWithAttendingOptions:(id)a3 withMHUUID:(id)a4;
++ (void)emitAttendingContextEndedEventWithStopReason:(int64_t)reason withMHUUID:(id)d;
++ (void)emitAttendingContextStartedEventWithAttendingOptions:(id)options withMHUUID:(id)d;
 @end
 
 @implementation CSAttendingSelfLogger
 
-+ (void)emitAttendingContextStartedEventWithAttendingOptions:(id)a3 withMHUUID:(id)a4
++ (void)emitAttendingContextStartedEventWithAttendingOptions:(id)options withMHUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  optionsCopy = options;
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = +[NSUUID UUID];
-    v6 = [v7 UUIDString];
+    dCopy = [v7 UUIDString];
 
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -25,7 +25,7 @@
 
   v9 = objc_alloc_init(MHSchemaMHAttendingContext);
   v10 = objc_alloc_init(MHSchemaMHAttendingStarted);
-  if ([v5 attendingType] == 1)
+  if ([optionsCopy attendingType] == 1)
   {
     v11 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -38,7 +38,7 @@
     v12 = 1;
   }
 
-  else if ([v5 attendingType] == 6 || objc_msgSend(v5, "attendingType") == 7)
+  else if ([optionsCopy attendingType] == 6 || objc_msgSend(optionsCopy, "attendingType") == 7)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -70,7 +70,7 @@
   v14 = objc_alloc_init(MHSchemaMHClientEvent);
   v15 = objc_alloc_init(MHSchemaMHClientEventMetadata);
   v16 = [SISchemaUUID alloc];
-  v17 = [[NSUUID alloc] initWithUUIDString:v6];
+  v17 = [[NSUUID alloc] initWithUUIDString:dCopy];
   v18 = [v16 initWithNSUUID:v17];
   [v15 setMhId:v18];
 
@@ -80,13 +80,13 @@
   [v19 emitMessage:v14];
 }
 
-+ (void)emitAttendingContextEndedEventWithStopReason:(int64_t)a3 withMHUUID:(id)a4
++ (void)emitAttendingContextEndedEventWithStopReason:(int64_t)reason withMHUUID:(id)d
 {
-  v5 = a4;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = +[NSUUID UUID];
-    v5 = [v6 UUIDString];
+    dCopy = [v6 UUIDString];
 
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -101,7 +101,7 @@
   v9 = objc_alloc_init(MHSchemaMHAttendingEnded);
   v10 = CSLogContextFacilityCoreSpeech;
   v11 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 1)
+  if (reason == 1)
   {
     if (v11)
     {
@@ -113,7 +113,7 @@
     v12 = 1;
   }
 
-  else if (a3 == 7)
+  else if (reason == 7)
   {
     if (v11)
     {
@@ -142,7 +142,7 @@
   v13 = objc_alloc_init(MHSchemaMHClientEvent);
   v14 = objc_alloc_init(MHSchemaMHClientEventMetadata);
   v15 = [SISchemaUUID alloc];
-  v16 = [[NSUUID alloc] initWithUUIDString:v5];
+  v16 = [[NSUUID alloc] initWithUUIDString:dCopy];
   v17 = [v15 initWithNSUUID:v16];
   [v14 setMhId:v17];
 

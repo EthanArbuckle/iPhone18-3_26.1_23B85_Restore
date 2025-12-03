@@ -6,8 +6,8 @@
 
 - (unint64_t)count
 {
-  v3 = [(CLHRequestArchive *)self->_homeArchive totalCountIncludingAllSubArchives];
-  v4 = [(CLHRequestArchive *)self->_workArchive totalCountIncludingAllSubArchives]+ v3;
+  totalCountIncludingAllSubArchives = [(CLHRequestArchive *)self->_homeArchive totalCountIncludingAllSubArchives];
+  v4 = [(CLHRequestArchive *)self->_workArchive totalCountIncludingAllSubArchives]+ totalCountIncludingAllSubArchives;
   return [(CLHRequestArchive *)self->_mainArchive totalCountIncludingAllSubArchives]+ v4;
 }
 

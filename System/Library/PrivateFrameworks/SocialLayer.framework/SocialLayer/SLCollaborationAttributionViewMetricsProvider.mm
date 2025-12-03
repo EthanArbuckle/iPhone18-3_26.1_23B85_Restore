@@ -1,7 +1,7 @@
 @interface SLCollaborationAttributionViewMetricsProvider
 - (CGSize)drawingSize;
 - (SLCollaborationAttributionViewMetricsProvider)init;
-- (SLCollaborationAttributionViewMetricsProvider)initWithSlotStyle:(id)a3 tag:(id)a4;
+- (SLCollaborationAttributionViewMetricsProvider)initWithSlotStyle:(id)style tag:(id)tag;
 - (double)avatarDiameter;
 - (double)avatarLabelSpace;
 - (double)titleSubtitleSpace;
@@ -9,15 +9,15 @@
 
 @implementation SLCollaborationAttributionViewMetricsProvider
 
-- (SLCollaborationAttributionViewMetricsProvider)initWithSlotStyle:(id)a3 tag:(id)a4
+- (SLCollaborationAttributionViewMetricsProvider)initWithSlotStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 variant];
-  [v7 maxWidth];
+  styleCopy = style;
+  tagCopy = tag;
+  variant = [tagCopy variant];
+  [tagCopy maxWidth];
   v10 = v9;
-  v11 = [v7 placeholderGlyphConfiguration];
-  v12 = [(SLCollaborationAttributionViewMetricsProvider *)self initWithVariant:v8 slotStyle:v6 maxWidth:v11 placeholderGlyphConfig:v10];
+  placeholderGlyphConfiguration = [tagCopy placeholderGlyphConfiguration];
+  v12 = [(SLCollaborationAttributionViewMetricsProvider *)self initWithVariant:variant slotStyle:styleCopy maxWidth:placeholderGlyphConfiguration placeholderGlyphConfig:v10];
 
   return v12;
 }
@@ -37,7 +37,7 @@
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 8);
   v7 = *(v6 + 24);
-  v8 = self;
+  selfCopy = self;
   v9 = v7(v4, v6);
   v11 = v10;
 
@@ -55,7 +55,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 32);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;
@@ -68,7 +68,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 48);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;
@@ -81,7 +81,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 56);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;

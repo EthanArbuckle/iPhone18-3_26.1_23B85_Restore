@@ -1,10 +1,10 @@
 @interface ENUserAlert
 - (ENUserAlert)init;
-- (void)_activateWithCompletionHandler:(id)a3;
+- (void)_activateWithCompletionHandler:(id)handler;
 - (void)_autoInvalidate;
 - (void)_invalidated;
-- (void)_responseCallback:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
-- (void)activateWithCompletionHandler:(id)a3;
+- (void)_responseCallback:(__CFUserNotification *)callback responseFlags:(unint64_t)flags;
+- (void)activateWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -42,17 +42,17 @@
   }
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ENUserAlert_activateWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -103,9 +103,9 @@ LABEL_11:
   [v4 _activateWithCompletionHandler:v5];
 }
 
-- (void)_activateWithCompletionHandler:(id)a3
+- (void)_activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -117,7 +117,7 @@ LABEL_11:
   v39[2] = __46__ENUserAlert__activateWithCompletionHandler___block_invoke;
   v39[3] = &unk_278A4B888;
   v41 = &v42;
-  v5 = v4;
+  v5 = handlerCopy;
   v39[4] = self;
   v40 = v5;
   v6 = MEMORY[0x2383EE560](v39);
@@ -379,7 +379,7 @@ uint64_t __25__ENUserAlert_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)_responseCallback:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_responseCallback:(__CFUserNotification *)callback responseFlags:(unint64_t)flags
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -387,8 +387,8 @@ uint64_t __25__ENUserAlert_invalidate__block_invoke(uint64_t result)
   block[2] = __47__ENUserAlert__responseCallback_responseFlags___block_invoke;
   block[3] = &unk_278A4BCA8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = flags;
   dispatch_async(dispatchQueue, block);
 }
 

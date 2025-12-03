@@ -1,9 +1,9 @@
 @interface PADFrame
-+ (id)cvPixelBufferFromData:(id)a3;
++ (id)cvPixelBufferFromData:(id)data;
 - (CGSize)size;
 - (PADFrame)init;
 - (void)dealloc;
-- (void)setTime:(id *)a3;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PADFrame
@@ -39,7 +39,7 @@
   return result;
 }
 
-+ (id)cvPixelBufferFromData:(id)a3
++ (id)cvPixelBufferFromData:(id)data
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CC4D68];
@@ -48,9 +48,9 @@
   v18[0] = MEMORY[0x277CBEC38];
   v18[1] = MEMORY[0x277CBEC38];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  dataCopy = data;
   v6 = [v4 dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v7 = [MEMORY[0x277CBF758] imageWithData:v5];
+  v7 = [MEMORY[0x277CBF758] imageWithData:dataCopy];
 
   v16 = 0;
   v8 = *MEMORY[0x277CBECE8];
@@ -61,18 +61,18 @@
   v13 = 0;
   if (!v12)
   {
-    v14 = [MEMORY[0x277CBF740] context];
-    [v14 render:v7 toCVPixelBuffer:v16];
+    context = [MEMORY[0x277CBF740] context];
+    [context render:v7 toCVPixelBuffer:v16];
     v13 = v16;
   }
 
   return v13;
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 

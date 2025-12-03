@@ -1,25 +1,25 @@
 @interface LTSchemaTask
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaTask)initWithDictionary:(id)a3;
-- (LTSchemaTask)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaTask)initWithDictionary:(id)dictionary;
+- (LTSchemaTask)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaTask
 
-- (LTSchemaTask)initWithDictionary:(id)a3
+- (LTSchemaTask)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = LTSchemaTask;
   v5 = [(LTSchemaTask *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"translationTask"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"translationTask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(LTSchemaTask *)v5 setTranslationTask:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sourceLanguage"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sourceLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(LTSchemaTask *)v5 setSourceLanguage:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"targetLanguage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"targetLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(LTSchemaTask *)v5 setTargetLanguage:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"deviceOS"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceOS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(LTSchemaTask *)v5 setDeviceOS:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(LTSchemaTask *)v5 setDeviceType:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"osVersion"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"osVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(LTSchemaTask *)v5 setOsVersion:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (LTSchemaTask)initWithJSON:(id)a3
+- (LTSchemaTask)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaTask *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaTask *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaTask *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,59 +117,59 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleIdentifier)
   {
-    v4 = [(LTSchemaTask *)self bundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(LTSchemaTask *)self bundleIdentifier];
+    v5 = [bundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_deviceOS)
   {
-    v6 = [(LTSchemaTask *)self deviceOS];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"deviceOS"];
+    deviceOS = [(LTSchemaTask *)self deviceOS];
+    v7 = [deviceOS copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"deviceOS"];
   }
 
   if (self->_deviceType)
   {
-    v8 = [(LTSchemaTask *)self deviceType];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"deviceType"];
+    deviceType = [(LTSchemaTask *)self deviceType];
+    v9 = [deviceType copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"deviceType"];
   }
 
   if (self->_osVersion)
   {
-    v10 = [(LTSchemaTask *)self osVersion];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"osVersion"];
+    osVersion = [(LTSchemaTask *)self osVersion];
+    v11 = [osVersion copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"osVersion"];
   }
 
   if (self->_sourceLanguage)
   {
-    v12 = [(LTSchemaTask *)self sourceLanguage];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"sourceLanguage"];
+    sourceLanguage = [(LTSchemaTask *)self sourceLanguage];
+    v13 = [sourceLanguage copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"sourceLanguage"];
   }
 
   if (self->_targetLanguage)
   {
-    v14 = [(LTSchemaTask *)self targetLanguage];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"targetLanguage"];
+    targetLanguage = [(LTSchemaTask *)self targetLanguage];
+    v15 = [targetLanguage copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"targetLanguage"];
   }
 
   if (self->_translationTask)
   {
-    v16 = [(LTSchemaTask *)self translationTask];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"translationTask"];
+    translationTask = [(LTSchemaTask *)self translationTask];
+    v17 = [translationTask copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"translationTask"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -183,28 +183,28 @@
   return v6 ^ v8 ^ [(NSString *)self->_bundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(LTSchemaTask *)self translationTask];
-  v6 = [v4 translationTask];
-  if ((v5 != 0) == (v6 == 0))
+  translationTask = [(LTSchemaTask *)self translationTask];
+  translationTask2 = [equalCopy translationTask];
+  if ((translationTask != 0) == (translationTask2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(LTSchemaTask *)self translationTask];
-  if (v7)
+  translationTask3 = [(LTSchemaTask *)self translationTask];
+  if (translationTask3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaTask *)self translationTask];
-    v10 = [v4 translationTask];
-    v11 = [v9 isEqual:v10];
+    v8 = translationTask3;
+    translationTask4 = [(LTSchemaTask *)self translationTask];
+    translationTask5 = [equalCopy translationTask];
+    v11 = [translationTask4 isEqual:translationTask5];
 
     if (!v11)
     {
@@ -216,20 +216,20 @@
   {
   }
 
-  v5 = [(LTSchemaTask *)self sourceLanguage];
-  v6 = [v4 sourceLanguage];
-  if ((v5 != 0) == (v6 == 0))
+  translationTask = [(LTSchemaTask *)self sourceLanguage];
+  translationTask2 = [equalCopy sourceLanguage];
+  if ((translationTask != 0) == (translationTask2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(LTSchemaTask *)self sourceLanguage];
-  if (v12)
+  sourceLanguage = [(LTSchemaTask *)self sourceLanguage];
+  if (sourceLanguage)
   {
-    v13 = v12;
-    v14 = [(LTSchemaTask *)self sourceLanguage];
-    v15 = [v4 sourceLanguage];
-    v16 = [v14 isEqual:v15];
+    v13 = sourceLanguage;
+    sourceLanguage2 = [(LTSchemaTask *)self sourceLanguage];
+    sourceLanguage3 = [equalCopy sourceLanguage];
+    v16 = [sourceLanguage2 isEqual:sourceLanguage3];
 
     if (!v16)
     {
@@ -241,20 +241,20 @@
   {
   }
 
-  v5 = [(LTSchemaTask *)self targetLanguage];
-  v6 = [v4 targetLanguage];
-  if ((v5 != 0) == (v6 == 0))
+  translationTask = [(LTSchemaTask *)self targetLanguage];
+  translationTask2 = [equalCopy targetLanguage];
+  if ((translationTask != 0) == (translationTask2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(LTSchemaTask *)self targetLanguage];
-  if (v17)
+  targetLanguage = [(LTSchemaTask *)self targetLanguage];
+  if (targetLanguage)
   {
-    v18 = v17;
-    v19 = [(LTSchemaTask *)self targetLanguage];
-    v20 = [v4 targetLanguage];
-    v21 = [v19 isEqual:v20];
+    v18 = targetLanguage;
+    targetLanguage2 = [(LTSchemaTask *)self targetLanguage];
+    targetLanguage3 = [equalCopy targetLanguage];
+    v21 = [targetLanguage2 isEqual:targetLanguage3];
 
     if (!v21)
     {
@@ -266,20 +266,20 @@
   {
   }
 
-  v5 = [(LTSchemaTask *)self deviceOS];
-  v6 = [v4 deviceOS];
-  if ((v5 != 0) == (v6 == 0))
+  translationTask = [(LTSchemaTask *)self deviceOS];
+  translationTask2 = [equalCopy deviceOS];
+  if ((translationTask != 0) == (translationTask2 == 0))
   {
     goto LABEL_36;
   }
 
-  v22 = [(LTSchemaTask *)self deviceOS];
-  if (v22)
+  deviceOS = [(LTSchemaTask *)self deviceOS];
+  if (deviceOS)
   {
-    v23 = v22;
-    v24 = [(LTSchemaTask *)self deviceOS];
-    v25 = [v4 deviceOS];
-    v26 = [v24 isEqual:v25];
+    v23 = deviceOS;
+    deviceOS2 = [(LTSchemaTask *)self deviceOS];
+    deviceOS3 = [equalCopy deviceOS];
+    v26 = [deviceOS2 isEqual:deviceOS3];
 
     if (!v26)
     {
@@ -291,20 +291,20 @@
   {
   }
 
-  v5 = [(LTSchemaTask *)self deviceType];
-  v6 = [v4 deviceType];
-  if ((v5 != 0) == (v6 == 0))
+  translationTask = [(LTSchemaTask *)self deviceType];
+  translationTask2 = [equalCopy deviceType];
+  if ((translationTask != 0) == (translationTask2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(LTSchemaTask *)self deviceType];
-  if (v27)
+  deviceType = [(LTSchemaTask *)self deviceType];
+  if (deviceType)
   {
-    v28 = v27;
-    v29 = [(LTSchemaTask *)self deviceType];
-    v30 = [v4 deviceType];
-    v31 = [v29 isEqual:v30];
+    v28 = deviceType;
+    deviceType2 = [(LTSchemaTask *)self deviceType];
+    deviceType3 = [equalCopy deviceType];
+    v31 = [deviceType2 isEqual:deviceType3];
 
     if (!v31)
     {
@@ -316,20 +316,20 @@
   {
   }
 
-  v5 = [(LTSchemaTask *)self osVersion];
-  v6 = [v4 osVersion];
-  if ((v5 != 0) == (v6 == 0))
+  translationTask = [(LTSchemaTask *)self osVersion];
+  translationTask2 = [equalCopy osVersion];
+  if ((translationTask != 0) == (translationTask2 == 0))
   {
     goto LABEL_36;
   }
 
-  v32 = [(LTSchemaTask *)self osVersion];
-  if (v32)
+  osVersion = [(LTSchemaTask *)self osVersion];
+  if (osVersion)
   {
-    v33 = v32;
-    v34 = [(LTSchemaTask *)self osVersion];
-    v35 = [v4 osVersion];
-    v36 = [v34 isEqual:v35];
+    v33 = osVersion;
+    osVersion2 = [(LTSchemaTask *)self osVersion];
+    osVersion3 = [equalCopy osVersion];
+    v36 = [osVersion2 isEqual:osVersion3];
 
     if (!v36)
     {
@@ -341,12 +341,12 @@
   {
   }
 
-  v5 = [(LTSchemaTask *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  translationTask = [(LTSchemaTask *)self bundleIdentifier];
+  translationTask2 = [equalCopy bundleIdentifier];
+  if ((translationTask != 0) != (translationTask2 == 0))
   {
-    v37 = [(LTSchemaTask *)self bundleIdentifier];
-    if (!v37)
+    bundleIdentifier = [(LTSchemaTask *)self bundleIdentifier];
+    if (!bundleIdentifier)
     {
 
 LABEL_40:
@@ -354,10 +354,10 @@ LABEL_40:
       goto LABEL_38;
     }
 
-    v38 = v37;
-    v39 = [(LTSchemaTask *)self bundleIdentifier];
-    v40 = [v4 bundleIdentifier];
-    v41 = [v39 isEqual:v40];
+    v38 = bundleIdentifier;
+    bundleIdentifier2 = [(LTSchemaTask *)self bundleIdentifier];
+    bundleIdentifier3 = [equalCopy bundleIdentifier];
+    v41 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
     if (v41)
     {
@@ -377,58 +377,58 @@ LABEL_38:
   return v42;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(LTSchemaTask *)self translationTask];
+  toCopy = to;
+  translationTask = [(LTSchemaTask *)self translationTask];
 
-  if (v4)
+  if (translationTask)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(LTSchemaTask *)self sourceLanguage];
+  sourceLanguage = [(LTSchemaTask *)self sourceLanguage];
 
-  if (v5)
+  if (sourceLanguage)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(LTSchemaTask *)self targetLanguage];
+  targetLanguage = [(LTSchemaTask *)self targetLanguage];
 
-  if (v6)
+  if (targetLanguage)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(LTSchemaTask *)self deviceOS];
+  deviceOS = [(LTSchemaTask *)self deviceOS];
 
-  if (v7)
+  if (deviceOS)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(LTSchemaTask *)self deviceType];
+  deviceType = [(LTSchemaTask *)self deviceType];
 
-  if (v8)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(LTSchemaTask *)self osVersion];
+  osVersion = [(LTSchemaTask *)self osVersion];
 
-  if (v9)
+  if (osVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(LTSchemaTask *)self bundleIdentifier];
+  bundleIdentifier = [(LTSchemaTask *)self bundleIdentifier];
 
-  v11 = v12;
-  if (v10)
+  v11 = toCopy;
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v11 = v12;
+    v11 = toCopy;
   }
 }
 

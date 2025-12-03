@@ -1,20 +1,20 @@
 @interface MUImageView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (MUImageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (MUImageView)initWithFrame:(CGRect)frame;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)layoutSubviews;
-- (void)setFallbackImage:(id)a3;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
+- (void)setFallbackImage:(id)image;
+- (void)setImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation MUImageView
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIImageView *)self->_contentImageView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UIImageView *)self->_contentImageView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
@@ -28,29 +28,29 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImageView *)self->_contentImageView sizeThatFits:a3.width, a3.height];
+  [(UIImageView *)self->_contentImageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setFallbackImage:(id)a3
+- (void)setFallbackImage:(id)image
 {
-  [(UIImageView *)self->_fallbackImageView setImage:a3];
+  [(UIImageView *)self->_fallbackImageView setImage:image];
 
   [(MUImageView *)self _updateAppearance];
 }
 
 - (void)_updateAppearance
 {
-  v3 = [(MUImageView *)self image];
+  image = [(MUImageView *)self image];
 
-  if (v3 || ([(MUImageView *)self fallbackImage], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  if (image || ([(MUImageView *)self fallbackImage], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = v3 == 0;
-    v6 = v3 == 0;
+    v5 = image == 0;
+    v6 = image == 0;
     v7 = !v5;
     [(UIImageView *)self->_fallbackImageView setHidden:v7];
     contentImageView = self->_contentImageView;
@@ -59,14 +59,14 @@
   }
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [(MUImageView *)self image];
+  imageCopy = image;
+  image = [(MUImageView *)self image];
 
-  if (v7 != v6)
+  if (image != imageCopy)
   {
-    if (a4)
+    if (animated)
     {
       objc_initWeak(&location, self);
       v10[0] = MEMORY[0x1E69E9820];
@@ -74,7 +74,7 @@
       v10[2] = __33__MUImageView_setImage_animated___block_invoke;
       v10[3] = &unk_1E8219F48;
       objc_copyWeak(&v12, &location);
-      v11 = v6;
+      v11 = imageCopy;
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __33__MUImageView_setImage_animated___block_invoke_2;
@@ -89,7 +89,7 @@
 
     else
     {
-      [(UIImageView *)self->_contentImageView setImage:v6];
+      [(UIImageView *)self->_contentImageView setImage:imageCopy];
       [(MUImageView *)self _updateAppearance];
     }
   }
@@ -159,11 +159,11 @@ void __33__MUImageView_setImage_animated___block_invoke_2(uint64_t a1)
   [(MUImageView *)self addSubview:v13];
 }
 
-- (MUImageView)initWithFrame:(CGRect)a3
+- (MUImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUImageView;
-  v3 = [(MUImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

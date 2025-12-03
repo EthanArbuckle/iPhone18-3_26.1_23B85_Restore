@@ -1,16 +1,16 @@
 @interface SYDocumentWorkflows
-+ (BOOL)isSupportedContentType:(id)a3;
++ (BOOL)isSupportedContentType:(id)type;
 + (id)localizedStringRemove;
-+ (id)localizedStringReply:(id)a3;
-+ (id)localizedStringShowInAppWithBundleIdentifier:(id)a3 error:(id *)a4;
++ (id)localizedStringReply:(id)reply;
++ (id)localizedStringShowInAppWithBundleIdentifier:(id)identifier error:(id *)error;
 + (id)localizedStringShowInMail;
 @end
 
 @implementation SYDocumentWorkflows
 
-+ (BOOL)isSupportedContentType:(id)a3
++ (BOOL)isSupportedContentType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -19,19 +19,19 @@
     }
   }
 
-  return a3 != 0;
+  return type != 0;
 }
 
-+ (id)localizedStringReply:(id)a3
++ (id)localizedStringReply:(id)reply
 {
-  v3 = a3;
-  if (v3)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = _SYBundle();
     v6 = [v5 localizedStringForKey:@"Reply to %@" value:@"Reply to %@" table:@"Localizable"];
-    v7 = [v3 preferredFormattedName];
-    v8 = [v4 stringWithFormat:v6, v7];
+    preferredFormattedName = [replyCopy preferredFormattedName];
+    v8 = [v4 stringWithFormat:v6, preferredFormattedName];
   }
 
   else
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)localizedStringShowInAppWithBundleIdentifier:(id)a3 error:(id *)a4
++ (id)localizedStringShowInAppWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16 = 0;
-  v6 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v5 allowPlaceholder:1 error:&v16];
+  v6 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v16];
   v7 = v16;
   if (v6)
   {
-    v8 = [v6 localizedName];
+    localizedName = [v6 localizedName];
     v9 = MEMORY[0x277CCACA8];
     v10 = _SYBundle();
     v11 = [v10 localizedStringForKey:@"Show in %@" value:@"Show in %@" table:@"Localizable"];
-    v12 = [v9 stringWithFormat:v11, v8];
+    v12 = [v9 stringWithFormat:v11, localizedName];
   }
 
   else
@@ -71,14 +71,14 @@
     v13 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(SYDocumentWorkflows *)v5 localizedStringShowInAppWithBundleIdentifier:v7 error:v13];
+      [(SYDocumentWorkflows *)identifierCopy localizedStringShowInAppWithBundleIdentifier:v7 error:v13];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v7;
       v12 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else

@@ -1,18 +1,18 @@
 @interface PKSearchTransactionPeerPaymentSubTypeResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchTransactionPeerPaymentSubTypeResult)initWithCoder:(id)a3;
+- (PKSearchTransactionPeerPaymentSubTypeResult)initWithCoder:(id)coder;
 @end
 
 @implementation PKSearchTransactionPeerPaymentSubTypeResult
 
-- (PKSearchTransactionPeerPaymentSubTypeResult)initWithCoder:(id)a3
+- (PKSearchTransactionPeerPaymentSubTypeResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchTransactionPeerPaymentSubTypeResult *)self init];
   if (v5)
   {
-    v5->_subType = [v4 decodeIntegerForKey:@"subType"];
+    v5->_subType = [coderCopy decodeIntegerForKey:@"subType"];
   }
 
   return v5;
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_subType == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_subType == equalCopy[1];
 
   return v5;
 }

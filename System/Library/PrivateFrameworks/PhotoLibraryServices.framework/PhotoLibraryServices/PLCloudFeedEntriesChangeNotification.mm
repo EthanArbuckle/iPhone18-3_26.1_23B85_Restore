@@ -1,39 +1,39 @@
 @interface PLCloudFeedEntriesChangeNotification
 + (id)notificationWithFullReload;
-+ (id)notificationWithInsertedEntries:(id)a3 updatedEntries:(id)a4 deletedEntries:(id)a5;
++ (id)notificationWithInsertedEntries:(id)entries updatedEntries:(id)updatedEntries deletedEntries:(id)deletedEntries;
 - (id)_initWithFullReload;
-- (id)_initWithInsertedEntries:(id)a3 updatedEntries:(id)a4 deletedEntries:(id)a5;
+- (id)_initWithInsertedEntries:(id)entries updatedEntries:(id)updatedEntries deletedEntries:(id)deletedEntries;
 @end
 
 @implementation PLCloudFeedEntriesChangeNotification
 
-+ (id)notificationWithInsertedEntries:(id)a3 updatedEntries:(id)a4 deletedEntries:(id)a5
++ (id)notificationWithInsertedEntries:(id)entries updatedEntries:(id)updatedEntries deletedEntries:(id)deletedEntries
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithInsertedEntries:v10 updatedEntries:v9 deletedEntries:v8];
+  deletedEntriesCopy = deletedEntries;
+  updatedEntriesCopy = updatedEntries;
+  entriesCopy = entries;
+  v11 = [[self alloc] _initWithInsertedEntries:entriesCopy updatedEntries:updatedEntriesCopy deletedEntries:deletedEntriesCopy];
 
   return v11;
 }
 
 + (id)notificationWithFullReload
 {
-  v2 = [[a1 alloc] _initWithFullReload];
+  _initWithFullReload = [[self alloc] _initWithFullReload];
 
-  return v2;
+  return _initWithFullReload;
 }
 
-- (id)_initWithInsertedEntries:(id)a3 updatedEntries:(id)a4 deletedEntries:(id)a5
+- (id)_initWithInsertedEntries:(id)entries updatedEntries:(id)updatedEntries deletedEntries:(id)deletedEntries
 {
   if (self)
   {
-    v8 = a5;
-    v9 = a4;
-    [(PLCloudFeedEntriesChangeNotification *)self setInsertedEntries:a3];
-    [(PLCloudFeedEntriesChangeNotification *)self setUpdatedEntries:v9];
+    deletedEntriesCopy = deletedEntries;
+    updatedEntriesCopy = updatedEntries;
+    [(PLCloudFeedEntriesChangeNotification *)self setInsertedEntries:entries];
+    [(PLCloudFeedEntriesChangeNotification *)self setUpdatedEntries:updatedEntriesCopy];
 
-    [(PLCloudFeedEntriesChangeNotification *)self setDeletedEntries:v8];
+    [(PLCloudFeedEntriesChangeNotification *)self setDeletedEntries:deletedEntriesCopy];
   }
 
   return self;

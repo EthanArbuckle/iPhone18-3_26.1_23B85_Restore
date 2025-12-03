@@ -1,17 +1,17 @@
 @interface PGFacesFromAssetAverageFeatureValidator
-- (int64_t)isValidEntity:(id)a3 error:(id *)a4;
+- (int64_t)isValidEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFacesFromAssetAverageFeatureValidator
 
-- (int64_t)isValidEntity:(id)a3 error:(id *)a4
+- (int64_t)isValidEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
+  entityCopy = entity;
   v7 = [PGFeatureExtractorFacesFromAssetAverage alloc];
-  v8 = [(PGFeatureValidator *)self featureExtractor];
-  v9 = [(PGFeatureExtractorFacesFromAssetAverage *)v7 initWithFaceFeatureExtractor:v8 name:@"FacesAverage"];
+  featureExtractor = [(PGFeatureValidator *)self featureExtractor];
+  v9 = [(PGFeatureExtractorFacesFromAssetAverage *)v7 initWithFaceFeatureExtractor:featureExtractor name:@"FacesAverage"];
 
-  v10 = [(PGFeatureValidator *)self _isValidEntity:v6 featureExtractor:v9 error:a4];
+  v10 = [(PGFeatureValidator *)self _isValidEntity:entityCopy featureExtractor:v9 error:error];
   return v10;
 }
 

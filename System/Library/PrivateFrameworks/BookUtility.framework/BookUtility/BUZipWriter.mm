@@ -1,46 +1,46 @@
 @interface BUZipWriter
 - (BOOL)isClosed;
-- (BUZipWriter)initWithOptions:(unint64_t)a3;
+- (BUZipWriter)initWithOptions:(unint64_t)options;
 - (NSArray)sortedEntries;
-- (id)entryWithName:(id)a3;
-- (id)localFileHeaderDataForEntry:(id)a3;
+- (id)entryWithName:(id)name;
+- (id)localFileHeaderDataForEntry:(id)entry;
 - (id)p_writeChannel;
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3;
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler;
 - (id)sortedEntriesImpl;
 - (unint64_t)archiveLength;
 - (unint64_t)entriesCount;
-- (void)addBarrier:(id)a3;
-- (void)addData:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)addDataImpl:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)addExistingEntry:(id)a3;
-- (void)addExistingEntryImpl:(id)a3;
-- (void)beginEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8;
-- (void)beginEntryWithNameImpl:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8;
-- (void)closeWithQueue:(id)a3 completion:(id)a4;
-- (void)enumerateEntriesUsingBlock:(id)a3;
+- (void)addBarrier:(id)barrier;
+- (void)addData:(id)data queue:(id)queue completion:(id)completion;
+- (void)addDataImpl:(id)impl queue:(id)queue completion:(id)completion;
+- (void)addExistingEntry:(id)entry;
+- (void)addExistingEntryImpl:(id)impl;
+- (void)beginEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate;
+- (void)beginEntryWithNameImpl:(id)impl force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate;
+- (void)closeWithQueue:(id)queue completion:(id)completion;
+- (void)enumerateEntriesUsingBlock:(id)block;
 - (void)finishEntry;
-- (void)flushCurrentEntryWithQueue:(id)a3 completion:(id)a4;
+- (void)flushCurrentEntryWithQueue:(id)queue completion:(id)completion;
 - (void)flushEntryData;
-- (void)handleWriteError:(id)a3;
-- (void)p_writeData:(id)a3 offset:(int64_t)a4 completion:(id)a5;
-- (void)setEntryInsertionOffset:(int64_t)a3;
-- (void)truncateToNumberOfEntries:(unint64_t)a3 completion:(id)a4;
-- (void)truncateToNumberOfEntriesImpl:(unint64_t)a3 completion:(id)a4;
-- (void)truncateToOffset:(int64_t)a3 completion:(id)a4;
-- (void)truncateToOffsetImpl:(int64_t)a3 completion:(id)a4;
+- (void)handleWriteError:(id)error;
+- (void)p_writeData:(id)data offset:(int64_t)offset completion:(id)completion;
+- (void)setEntryInsertionOffset:(int64_t)offset;
+- (void)truncateToNumberOfEntries:(unint64_t)entries completion:(id)completion;
+- (void)truncateToNumberOfEntriesImpl:(unint64_t)impl completion:(id)completion;
+- (void)truncateToOffset:(int64_t)offset completion:(id)completion;
+- (void)truncateToOffsetImpl:(int64_t)impl completion:(id)completion;
 - (void)writeCentralDirectory;
-- (void)writeCentralFileHeaderDataForEntry:(id)a3;
-- (void)writeData:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5;
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 completion:(id)a9;
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 writeHandler:(id)a9;
-- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)a3;
-- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5;
+- (void)writeCentralFileHeaderDataForEntry:(id)entry;
+- (void)writeData:(id)data queue:(id)queue completion:(id)completion;
+- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count;
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel completion:(id)completion;
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel writeHandler:(id)handler;
+- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)offset;
+- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count;
 @end
 
 @implementation BUZipWriter
 
-- (BUZipWriter)initWithOptions:(unint64_t)a3
+- (BUZipWriter)initWithOptions:(unint64_t)options
 {
   v19.receiver = self;
   v19.super_class = BUZipWriter;
@@ -48,7 +48,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v6 = objc_opt_new();
     entries = v5->_entries;
     v5->_entries = v6;
@@ -142,33 +142,33 @@
   return writeChannel;
 }
 
-- (void)beginEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8
+- (void)beginEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate
 {
-  v14 = a3;
-  v15 = a5;
+  nameCopy = name;
+  dateCopy = date;
   v18 = objc_msgSend_writeQueue(self, v16, v17);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241DADA80;
   block[3] = &unk_278D1CE50;
   block[4] = self;
-  v22 = v14;
-  v26 = a4;
-  v23 = v15;
+  v22 = nameCopy;
+  sizeCopy = size;
+  v23 = dateCopy;
   v24 = a6;
-  v25 = a7;
-  v27 = a8;
-  v19 = v15;
-  v20 = v14;
+  cCopy = c;
+  modificationDateCopy = modificationDate;
+  v19 = dateCopy;
+  v20 = nameCopy;
   dispatch_async(v18, block);
 }
 
-- (void)beginEntryWithNameImpl:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a8
+- (void)beginEntryWithNameImpl:(id)impl force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate
 {
-  v8 = a8;
-  v9 = *&a7;
-  v53 = a3;
-  v19 = a5;
+  modificationDateCopy = modificationDate;
+  v9 = *&c;
+  implCopy = impl;
+  dateCopy = date;
   if (self->_closed)
   {
     BUReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/AlderServices/frameworks/BookUtility/zip/BUZipWriter.m", 133, "[BUZipWriter beginEntryWithNameImpl:force32BitSize:lastModificationDate:size:CRC:forceCalculatingSizeAndCRCForPreservingLastModificationDate:]", "!self->_closed", @"Already closed.", v16, v17, v18, v51);
@@ -188,7 +188,7 @@
     if (!v27)
     {
       objc_msgSend_finishEntry(self, v28, v29);
-      v31 = objc_msgSend_objectForKeyedSubscript_(self->_entriesMap, v30, v53);
+      v31 = objc_msgSend_objectForKeyedSubscript_(self->_entriesMap, v30, implCopy);
 
       if (!v31)
       {
@@ -196,11 +196,11 @@
         currentEntry = self->_currentEntry;
         self->_currentEntry = v32;
 
-        objc_msgSend_setName_(self->_currentEntry, v34, v53);
+        objc_msgSend_setName_(self->_currentEntry, v34, implCopy);
         objc_msgSend_setOffset_(self->_currentEntry, v35, self->_currentOffset);
         if (a6)
         {
-          v37 = v8;
+          v37 = modificationDateCopy;
         }
 
         else
@@ -209,7 +209,7 @@
         }
 
         self->_calculateSize = v37;
-        if (v8)
+        if (modificationDateCopy)
         {
           objc_msgSend_setSize_(self->_currentEntry, v36, 0);
         }
@@ -219,10 +219,10 @@
           objc_msgSend_setSize_(self->_currentEntry, v36, a6);
         }
 
-        self->_force32BitSize = self->_calculateSize && a4;
+        self->_force32BitSize = self->_calculateSize && size;
         if (v9)
         {
-          v39 = v8;
+          v39 = modificationDateCopy;
         }
 
         else
@@ -238,20 +238,20 @@
         }
 
         objc_msgSend_setCRC_(self->_currentEntry, v38, v40);
-        if (v8)
+        if (modificationDateCopy)
         {
           objc_msgSend_setLastModificationDate_(self->_currentEntry, v41, self->_updatedEntryLastModificationDate);
           self->_sizeToMatch = a6;
           self->_CRCToMatch = v9;
-          v42 = v19;
+          v42 = dateCopy;
           lastModificationDateIfSizeAndCRCMatches = self->_lastModificationDateIfSizeAndCRCMatches;
           self->_lastModificationDateIfSizeAndCRCMatches = v42;
         }
 
         else
         {
-          updatedEntryLastModificationDate = v19;
-          if (!v19)
+          updatedEntryLastModificationDate = dateCopy;
+          if (!dateCopy)
           {
             updatedEntryLastModificationDate = self->_updatedEntryLastModificationDate;
           }
@@ -288,41 +288,41 @@
   }
 }
 
-- (void)addData:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)addData:(id)data queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = objc_msgSend_writeQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_241DADE00;
   v17[3] = &unk_278D1CE78;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = dataCopy;
+  v19 = queueCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
+  v16 = dataCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)addDataImpl:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)addDataImpl:(id)impl queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v15 = a5;
+  implCopy = impl;
+  queueCopy = queue;
+  completionCopy = completion;
   if (!self->_closed)
   {
     v23 = objc_msgSend_error(self, v10, v11);
     if (v23)
     {
-      v24 = MEMORY[0x245D00360](v15);
+      v24 = MEMORY[0x245D00360](completionCopy);
       v25 = v24;
       if (v24)
       {
-        if (v9)
+        if (queueCopy)
         {
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
@@ -330,7 +330,7 @@
           block[3] = &unk_278D1CEA0;
           v46 = v24;
           v45 = v23;
-          dispatch_async(v9, block);
+          dispatch_async(queueCopy, block);
         }
 
         else
@@ -343,27 +343,27 @@ LABEL_23:
       return;
     }
 
-    size = dispatch_data_get_size(v8);
+    size = dispatch_data_get_size(implCopy);
     entryDatas = self->_entryDatas;
     if (entryDatas)
     {
       localFileHeaderData = self->_localFileHeaderData;
       if (dispatch_data_get_size(localFileHeaderData) + size + self->_entryDataSize < 0x40000)
       {
-        objc_msgSend_addObject_(entryDatas, v30, v8);
+        objc_msgSend_addObject_(entryDatas, v30, implCopy);
         self->_entryDataSize += size;
-        v36 = MEMORY[0x245D00360](v15);
+        v36 = MEMORY[0x245D00360](completionCopy);
         v37 = v36;
         if (v36)
         {
-          if (v9)
+          if (queueCopy)
           {
             v42[0] = MEMORY[0x277D85DD0];
             v42[1] = 3221225472;
             v42[2] = sub_241DAE134;
             v42[3] = &unk_278D1CEC8;
             v43 = v36;
-            dispatch_async(v9, v42);
+            dispatch_async(queueCopy, v42);
           }
 
           else
@@ -382,7 +382,7 @@ LABEL_23:
       objc_msgSend_flushEntryData(self, v32, v33);
     }
 
-    objc_msgSend_writeData_queue_completion_(self, v26, v8, v9, v15);
+    objc_msgSend_writeData_queue_completion_(self, v26, implCopy, queueCopy, completionCopy);
 LABEL_19:
     if (self->_calculateSize)
     {
@@ -398,7 +398,7 @@ LABEL_19:
       v41[2] = sub_241DAE148;
       v41[3] = &unk_278D1CEF0;
       v41[4] = self;
-      dispatch_data_apply(v8, v41);
+      dispatch_data_apply(implCopy, v41);
     }
 
     goto LABEL_23;
@@ -453,20 +453,20 @@ LABEL_19:
   self->_entryDataSize = 0;
 }
 
-- (void)flushCurrentEntryWithQueue:(id)a3 completion:(id)a4
+- (void)flushCurrentEntryWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = objc_msgSend_writeQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241DAE3A8;
   block[3] = &unk_278D1CF68;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   dispatch_async(v10, block);
 }
 
@@ -547,110 +547,110 @@ LABEL_19:
   self->_currentEntry = 0;
 }
 
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 completion:(id)a9
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel completion:(id)completion
 {
-  v10 = *&a7;
-  v13 = a4;
-  v16 = a9;
+  v10 = *&c;
+  sizeCopy = size;
+  completionCopy = completion;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_241DAE9F4;
   v19[3] = &unk_278D1CF90;
-  v20 = v16;
-  v17 = v16;
-  objc_msgSend_writeEntryWithName_force32BitSize_lastModificationDate_size_CRC_fromReadChannel_writeHandler_(self, v18, a3, v13, a5, a6, v10, a8, v19);
+  v20 = completionCopy;
+  v17 = completionCopy;
+  objc_msgSend_writeEntryWithName_force32BitSize_lastModificationDate_size_CRC_fromReadChannel_writeHandler_(self, v18, name, sizeCopy, date, a6, v10, channel, v19);
 }
 
-- (void)writeEntryWithName:(id)a3 force32BitSize:(BOOL)a4 lastModificationDate:(id)a5 size:(unint64_t)a6 CRC:(unsigned int)a7 fromReadChannel:(id)a8 writeHandler:(id)a9
+- (void)writeEntryWithName:(id)name force32BitSize:(BOOL)size lastModificationDate:(id)date size:(unint64_t)a6 CRC:(unsigned int)c fromReadChannel:(id)channel writeHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
+  nameCopy = name;
+  dateCopy = date;
+  channelCopy = channel;
+  handlerCopy = handler;
   v21 = objc_msgSend_writeQueue(self, v19, v20);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241DAEBBC;
   block[3] = &unk_278D1CFE0;
   block[4] = self;
-  v27 = v15;
-  v33 = a4;
-  v32 = a7;
-  v28 = v16;
-  v29 = v17;
-  v30 = v18;
+  v27 = nameCopy;
+  sizeCopy = size;
+  cCopy = c;
+  v28 = dateCopy;
+  v29 = channelCopy;
+  v30 = handlerCopy;
   v31 = a6;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
+  v22 = handlerCopy;
+  v23 = channelCopy;
+  v24 = dateCopy;
+  v25 = nameCopy;
   dispatch_async(v21, block);
 }
 
-- (void)addExistingEntry:(id)a3
+- (void)addExistingEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v7 = objc_msgSend_writeQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_241DAEEEC;
   v9[3] = &unk_278D1D008;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = entryCopy;
+  v8 = entryCopy;
   dispatch_sync(v7, v9);
 }
 
-- (void)addExistingEntryImpl:(id)a3
+- (void)addExistingEntryImpl:(id)impl
 {
-  v34 = a3;
+  implCopy = impl;
   v4 = objc_alloc_init(BUZipWriterEntry);
-  v7 = objc_msgSend_name(v34, v5, v6);
+  v7 = objc_msgSend_name(implCopy, v5, v6);
   objc_msgSend_setName_(v4, v8, v7);
 
-  v11 = objc_msgSend_lastModificationDate(v34, v9, v10);
+  v11 = objc_msgSend_lastModificationDate(implCopy, v9, v10);
   objc_msgSend_setLastModificationDate_(v4, v12, v11);
 
-  if (objc_msgSend_isCompressed(v34, v13, v14))
+  if (objc_msgSend_isCompressed(implCopy, v13, v14))
   {
-    v17 = objc_msgSend_compressedSize(v34, v15, v16);
+    v17 = objc_msgSend_compressedSize(implCopy, v15, v16);
   }
 
   else
   {
-    v17 = objc_msgSend_size(v34, v15, v16);
+    v17 = objc_msgSend_size(implCopy, v15, v16);
   }
 
   objc_msgSend_setSize_(v4, v18, v17);
-  v21 = objc_msgSend_offset(v34, v19, v20);
+  v21 = objc_msgSend_offset(implCopy, v19, v20);
   objc_msgSend_setOffset_(v4, v22, v21);
-  v25 = objc_msgSend_CRC(v34, v23, v24);
+  v25 = objc_msgSend_CRC(implCopy, v23, v24);
   objc_msgSend_setCRC_(v4, v26, v25);
   objc_msgSend_addObject_(self->_entries, v27, v4);
   entriesMap = self->_entriesMap;
-  v31 = objc_msgSend_name(v34, v29, v30);
+  v31 = objc_msgSend_name(implCopy, v29, v30);
   objc_msgSend_setObject_forKeyedSubscript_(entriesMap, v32, v4, v31);
 
   sortedEntries = self->_sortedEntries;
   self->_sortedEntries = 0;
 }
 
-- (void)setEntryInsertionOffset:(int64_t)a3
+- (void)setEntryInsertionOffset:(int64_t)offset
 {
-  v5 = objc_msgSend_writeQueue(self, a2, a3);
+  v5 = objc_msgSend_writeQueue(self, a2, offset);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241DAF0C0;
   v6[3] = &unk_278D1D030;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = offset;
   dispatch_sync(v5, v6);
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  v6 = a3;
-  if (v6)
+  barrierCopy = barrier;
+  if (barrierCopy)
   {
     v7 = objc_msgSend_writeQueue(self, v4, v5);
     v8[0] = MEMORY[0x277D85DD0];
@@ -658,25 +658,25 @@ LABEL_19:
     v8[2] = sub_241DAF190;
     v8[3] = &unk_278D1D058;
     v8[4] = self;
-    v9 = v6;
+    v9 = barrierCopy;
     dispatch_async(v7, v8);
   }
 }
 
-- (void)closeWithQueue:(id)a3 completion:(id)a4
+- (void)closeWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = objc_msgSend_writeQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241DAF458;
   block[3] = &unk_278D1CF68;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   dispatch_async(v10, block);
 }
 
@@ -719,10 +719,10 @@ LABEL_19:
   objc_msgSend_writeEndOfCentralDirectoryDataWithOffset_size_entryCount_(self, v15, currentOffset, v11, v14);
 }
 
-- (id)localFileHeaderDataForEntry:(id)a3
+- (id)localFileHeaderDataForEntry:(id)entry
 {
-  v4 = a3;
-  v7 = objc_msgSend_name(v4, v5, v6);
+  entryCopy = entry;
+  v7 = objc_msgSend_name(entryCopy, v5, v6);
   v8 = v7;
   v11 = objc_msgSend_UTF8String(v8, v9, v10);
 
@@ -740,7 +740,7 @@ LABEL_19:
   }
 
   v23 = self->_options & 1;
-  v24 = v23 | (objc_msgSend_size(v4, v12, v13) >> 32);
+  v24 = v23 | (objc_msgSend_size(entryCopy, v12, v13) >> 32);
   v25 = v24 != 0;
   if (v24 || self->_calculateSize)
   {
@@ -768,24 +768,24 @@ LABEL_19:
   *v28 = 67324752;
   v28[1] = 20;
   *(v28 + 4) = 0;
-  v32 = objc_msgSend_lastModificationDate(v4, v30, v31);
+  v32 = objc_msgSend_lastModificationDate(entryCopy, v30, v31);
   v35 = objc_msgSend_bu_DOSTime(v32, v33, v34);
 
   HIDWORD(v36) = v35;
   LODWORD(v36) = v35;
   *(v28 + 10) = v36 >> 16;
-  *(v28 + 14) = objc_msgSend_CRC(v4, v37, v38);
+  *(v28 + 14) = objc_msgSend_CRC(entryCopy, v37, v38);
   if (!v25)
   {
-    *(v28 + 18) = objc_msgSend_size(v4, v39, v40);
+    *(v28 + 18) = objc_msgSend_size(entryCopy, v39, v40);
 LABEL_16:
-    v45 = objc_msgSend_size(v4, v42, v43);
+    v45 = objc_msgSend_size(entryCopy, v42, v43);
     goto LABEL_18;
   }
 
   if (self->_force32BitSize)
   {
-    v41 = objc_msgSend_size(v4, v39, v40);
+    v41 = objc_msgSend_size(entryCopy, v39, v40);
     force32BitSize = self->_force32BitSize;
     *(v28 + 18) = v41;
     if (!force32BitSize)
@@ -809,8 +809,8 @@ LABEL_18:
     v48 = &v29[v14];
     *v48 = BUZip64ExtraFieldSignature;
     *(v48 + 1) = 16;
-    *(v48 + 4) = objc_msgSend_size(v4, v46, v47);
-    *(v48 + 12) = objc_msgSend_size(v4, v49, v50);
+    *(v48 + 4) = objc_msgSend_size(entryCopy, v46, v47);
+    *(v48 + 12) = objc_msgSend_size(entryCopy, v49, v50);
   }
 
   v51 = dispatch_data_create(v28, v27 + 30, 0, *MEMORY[0x277D85CB0]);
@@ -818,10 +818,10 @@ LABEL_18:
   return v51;
 }
 
-- (void)writeCentralFileHeaderDataForEntry:(id)a3
+- (void)writeCentralFileHeaderDataForEntry:(id)entry
 {
-  v4 = a3;
-  v7 = objc_msgSend_name(v4, v5, v6);
+  entryCopy = entry;
+  v7 = objc_msgSend_name(entryCopy, v5, v6);
   v8 = v7;
   v11 = objc_msgSend_UTF8String(v8, v9, v10);
 
@@ -837,10 +837,10 @@ LABEL_18:
     v14 = 0xFFFFLL;
   }
 
-  v57 = self;
+  selfCopy = self;
   v23 = self->_options & 2;
-  v24 = v23 | (objc_msgSend_size(v4, v12, v13) >> 32);
-  v27 = v23 | (objc_msgSend_offset(v4, v25, v26) >> 32);
+  v24 = v23 | (objc_msgSend_size(entryCopy, v12, v13) >> 32);
+  v27 = v23 | (objc_msgSend_offset(entryCopy, v25, v26) >> 32);
   v28 = 4 * ((v24 | v27) != 0);
   if (v24)
   {
@@ -863,13 +863,13 @@ LABEL_18:
   v32 = v31 + 46;
   *v31 = 33639248;
   *(v31 + 4) = 1310782;
-  v35 = objc_msgSend_lastModificationDate(v4, v33, v34);
+  v35 = objc_msgSend_lastModificationDate(entryCopy, v33, v34);
   v38 = objc_msgSend_bu_DOSTime(v35, v36, v37);
 
   HIDWORD(v39) = v38;
   LODWORD(v39) = v38;
   *(v31 + 3) = v39 >> 16;
-  *(v31 + 4) = objc_msgSend_CRC(v4, v40, v41);
+  *(v31 + 4) = objc_msgSend_CRC(entryCopy, v40, v41);
   if (v24)
   {
     v44 = -1;
@@ -878,8 +878,8 @@ LABEL_18:
 
   else
   {
-    *(v31 + 5) = objc_msgSend_size(v4, v42, v43);
-    v44 = objc_msgSend_size(v4, v45, v46);
+    *(v31 + 5) = objc_msgSend_size(entryCopy, v42, v43);
+    v44 = objc_msgSend_size(entryCopy, v45, v46);
   }
 
   *(v31 + 6) = v44;
@@ -903,7 +903,7 @@ LABEL_18:
 
   else
   {
-    *(v31 + 42) = objc_msgSend_offset(v4, v42, v43);
+    *(v31 + 42) = objc_msgSend_offset(entryCopy, v42, v43);
     memcpy(v32, v11, v14);
     if (!v24)
     {
@@ -917,27 +917,27 @@ LABEL_18:
 
   v51 = &v32[v14];
   *v50 = 16;
-  *v49 = objc_msgSend_size(v4, v47, v48);
-  *(v51 + 12) = objc_msgSend_size(v4, v52, v53);
+  *v49 = objc_msgSend_size(entryCopy, v47, v48);
+  *(v51 + 12) = objc_msgSend_size(entryCopy, v52, v53);
   if (v29)
   {
     v49 = (v51 + 20);
 LABEL_20:
     *v50 += 8;
-    *v49 = objc_msgSend_offset(v4, v47, v48);
+    *v49 = objc_msgSend_offset(entryCopy, v47, v48);
   }
 
 LABEL_21:
   v54 = dispatch_data_create(v31, v56 + 46, 0, *MEMORY[0x277D85CB0]);
-  objc_msgSend_writeData_(v57, v55, v54);
+  objc_msgSend_writeData_(selfCopy, v55, v54);
 }
 
-- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5
+- (void)writeEndOfCentralDirectoryDataWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (a5 > 0xFFFE)
+  countCopy = count;
+  sizeCopy = size;
+  offsetCopy = offset;
+  if (count > 0xFFFE)
   {
     v9 = 1;
   }
@@ -947,7 +947,7 @@ LABEL_21:
     v9 = (LOBYTE(self->_options) >> 2) & 1;
   }
 
-  if (a4 > 4294967294)
+  if (size > 4294967294)
   {
     v10 = 1;
   }
@@ -957,7 +957,7 @@ LABEL_21:
     v10 = (LOBYTE(self->_options) >> 2) & 1;
   }
 
-  if (a3 > 4294967294)
+  if (offset > 4294967294)
   {
     v11 = 1;
   }
@@ -970,7 +970,7 @@ LABEL_21:
   if ((v9 & 1) != 0 || (v10 & 1) != 0 || v11)
   {
     currentOffset = self->_currentOffset;
-    objc_msgSend_writeZip64EndOfCentralDirectoryWithOffset_size_entryCount_(self, a2, a3, a4, a5);
+    objc_msgSend_writeZip64EndOfCentralDirectoryWithOffset_size_entryCount_(self, a2, offset, size, count);
     objc_msgSend_writeZip64EndOfCentralDirectoryLocatorWithOffset_(self, v13, currentOffset);
   }
 
@@ -983,7 +983,7 @@ LABEL_21:
 
   else
   {
-    v15 = v5;
+    v15 = countCopy;
   }
 
   v14[4] = v15;
@@ -995,7 +995,7 @@ LABEL_21:
 
   else
   {
-    v16 = v6;
+    v16 = sizeCopy;
   }
 
   if (v11)
@@ -1005,7 +1005,7 @@ LABEL_21:
 
   else
   {
-    v17 = v7;
+    v17 = offsetCopy;
   }
 
   *(v14 + 3) = v16;
@@ -1015,72 +1015,72 @@ LABEL_21:
   objc_msgSend_writeData_(self, v18, v19);
 }
 
-- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)a3 size:(int64_t)a4 entryCount:(unint64_t)a5
+- (void)writeZip64EndOfCentralDirectoryWithOffset:(int64_t)offset size:(int64_t)size entryCount:(unint64_t)count
 {
   v9 = malloc_type_malloc(0x38uLL, 0xC337CB57uLL);
   *v9 = 101075792;
   *(v9 + 4) = 44;
   v9[2] = 0;
-  v9[3] = a5;
+  v9[3] = count;
   *(v9 + 3) = 1310782;
-  v9[4] = a5;
-  v9[5] = a4;
-  v9[6] = a3;
+  v9[4] = count;
+  v9[5] = size;
+  v9[6] = offset;
   v11 = dispatch_data_create(v9, 0x38uLL, 0, *MEMORY[0x277D85CB0]);
   objc_msgSend_writeData_(self, v10, v11);
 }
 
-- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)a3
+- (void)writeZip64EndOfCentralDirectoryLocatorWithOffset:(int64_t)offset
 {
   v5 = malloc_type_malloc(0x14uLL, 0x8C30F117uLL);
   *v5 = 117853008;
   v5[1] = 0;
-  *(v5 + 1) = a3;
+  *(v5 + 1) = offset;
   v5[4] = 1;
   v7 = dispatch_data_create(v5, 0x14uLL, 0, *MEMORY[0x277D85CB0]);
   objc_msgSend_writeData_(self, v6, v7);
 }
 
-- (void)writeData:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)writeData:(id)data queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  size = dispatch_data_get_size(a3);
+  queueCopy = queue;
+  completionCopy = completion;
+  size = dispatch_data_get_size(data);
   self->_currentOffset += size;
   writtenOffset = self->_writtenOffset;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_241DB02E4;
   v15[3] = &unk_278D1D0A8;
-  v16 = v8;
-  v17 = v9;
-  v12 = v8;
-  v13 = v9;
-  objc_msgSend_p_writeData_offset_completion_(self, v14, a3, writtenOffset, v15);
+  v16 = queueCopy;
+  v17 = completionCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  objc_msgSend_p_writeData_offset_completion_(self, v14, data, writtenOffset, v15);
   self->_writtenOffset += size;
 }
 
-- (void)p_writeData:(id)a3 offset:(int64_t)a4 completion:(id)a5
+- (void)p_writeData:(id)data offset:(int64_t)offset completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v12 = objc_msgSend_channelQueue(self, v10, v11);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_241DB04D4;
   v15[3] = &unk_278D1D120;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a4;
-  v13 = v9;
-  v14 = v8;
+  v16 = dataCopy;
+  v17 = completionCopy;
+  offsetCopy = offset;
+  v13 = completionCopy;
+  v14 = dataCopy;
   dispatch_async(v12, v15);
 }
 
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
   v7 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"%@: %s", @"Abstract method", "[BUZipWriter prepareWriteChannelWithCloseCompletionHandler:]");
@@ -1110,13 +1110,13 @@ LABEL_21:
   return v5;
 }
 
-- (void)handleWriteError:(id)a3
+- (void)handleWriteError:(id)error
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    if (objc_msgSend_code(v4, v5, v6) != 3072 || (objc_msgSend_domain(v7, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x277CCA050]), v10, (isEqualToString & 1) == 0))
+    if (objc_msgSend_code(errorCopy, v5, v6) != 3072 || (objc_msgSend_domain(v7, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x277CCA050]), v10, (isEqualToString & 1) == 0))
     {
       v15 = BUZipLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1142,17 +1142,17 @@ LABEL_21:
   }
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_writeQueue(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_241DB0B30;
   v9[3] = &unk_278D1D058;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_sync(v7, v9);
 }
 
@@ -1196,7 +1196,7 @@ LABEL_21:
 
 - (BOOL)isClosed
 {
-  v3 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -1206,18 +1206,18 @@ LABEL_21:
   v6[1] = 3221225472;
   v6[2] = sub_241DB1018;
   v6[3] = &unk_278D1CE00;
-  v6[4] = v3;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   dispatch_sync(v4, v6);
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
-- (id)entryWithName:(id)a3
+- (id)entryWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1229,10 +1229,10 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = sub_241DB1170;
   block[3] = &unk_278D1D190;
-  v12 = v4;
+  v12 = nameCopy;
   v13 = &v14;
   block[4] = self;
-  v8 = v4;
+  v8 = nameCopy;
   dispatch_sync(v7, block);
 
   v9 = v15[5];
@@ -1241,27 +1241,27 @@ LABEL_21:
   return v9;
 }
 
-- (void)truncateToNumberOfEntries:(unint64_t)a3 completion:(id)a4
+- (void)truncateToNumberOfEntries:(unint64_t)entries completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9 = objc_msgSend_writeQueue(self, v7, v8);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241DB1298;
   block[3] = &unk_278D1D1B8;
-  v12 = v6;
-  v13 = a3;
+  v12 = completionCopy;
+  entriesCopy = entries;
   block[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   dispatch_async(v9, block);
 }
 
-- (void)truncateToNumberOfEntriesImpl:(unint64_t)a3 completion:(id)a4
+- (void)truncateToNumberOfEntriesImpl:(unint64_t)impl completion:(id)completion
 {
-  v34 = a4;
-  if (objc_msgSend_entriesCountImpl(self, v6, v7) <= a3)
+  completionCopy = completion;
+  if (objc_msgSend_entriesCountImpl(self, v6, v7) <= impl)
   {
-    v33 = MEMORY[0x245D00360](v34);
+    v33 = MEMORY[0x245D00360](completionCopy);
     v10 = v33;
     if (v33)
     {
@@ -1272,49 +1272,49 @@ LABEL_21:
   else
   {
     v10 = objc_msgSend_sortedEntriesImpl(self, v8, v9);
-    if (objc_msgSend_count(v10, v11, v12) > a3)
+    if (objc_msgSend_count(v10, v11, v12) > impl)
     {
-      v14 = a3;
+      implCopy = impl;
       do
       {
-        v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v13, v14);
+        v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v13, implCopy);
         objc_msgSend_removeObject_(self->_entries, v16, v15);
         entriesMap = self->_entriesMap;
         v20 = objc_msgSend_name(v15, v18, v19);
         objc_msgSend_removeObjectForKey_(entriesMap, v21, v20);
 
-        ++v14;
+        ++implCopy;
       }
 
-      while (v14 < objc_msgSend_count(v10, v22, v23));
+      while (implCopy < objc_msgSend_count(v10, v22, v23));
     }
 
-    v24 = objc_msgSend_objectAtIndexedSubscript_(v10, v13, a3);
+    v24 = objc_msgSend_objectAtIndexedSubscript_(v10, v13, impl);
     v27 = objc_msgSend_offset(v24, v25, v26);
     objc_msgSend_setEntryInsertionOffsetImpl_(self, v28, v27);
     v31 = objc_msgSend_offset(v24, v29, v30);
-    objc_msgSend_truncateToOffsetImpl_completion_(self, v32, v31, v34);
+    objc_msgSend_truncateToOffsetImpl_completion_(self, v32, v31, completionCopy);
   }
 }
 
-- (void)truncateToOffset:(int64_t)a3 completion:(id)a4
+- (void)truncateToOffset:(int64_t)offset completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9 = objc_msgSend_writeQueue(self, v7, v8);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241DB14BC;
   block[3] = &unk_278D1D1B8;
-  v12 = v6;
-  v13 = a3;
+  v12 = completionCopy;
+  offsetCopy = offset;
   block[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   dispatch_async(v9, block);
 }
 
-- (void)truncateToOffsetImpl:(int64_t)a3 completion:(id)a4
+- (void)truncateToOffsetImpl:(int64_t)impl completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@: %s", @"Abstract method", "[BUZipWriter truncateToOffsetImpl:completion:]");

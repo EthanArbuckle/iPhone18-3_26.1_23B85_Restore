@@ -8,18 +8,18 @@
 {
   v12.receiver = self;
   v12.super_class = WFLinkCreateEntityAction;
-  v3 = [(WFLinkEntityAction *)&v12 overrideTypeDescriptions];
-  if (!v3)
+  overrideTypeDescriptions = [(WFLinkEntityAction *)&v12 overrideTypeDescriptions];
+  if (!overrideTypeDescriptions)
   {
-    v4 = [(WFAppIntentExecutionAction *)self metadata];
-    v5 = [v4 outputType];
+    metadata = [(WFAppIntentExecutionAction *)self metadata];
+    outputType = [metadata outputType];
 
-    if (v5)
+    if (outputType)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
+        v6 = outputType;
       }
 
       else
@@ -35,14 +35,14 @@
 
     v7 = v6;
 
-    v8 = [v7 identifier];
+    identifier = [v7 identifier];
 
     v9 = MEMORY[0x1E69AC800];
-    v10 = [(WFAction *)self appBundleIdentifier];
-    v3 = [v9 wf_descriptionClassForEntityType:v8 appBundleIdentifier:v10];
+    appBundleIdentifier = [(WFAction *)self appBundleIdentifier];
+    overrideTypeDescriptions = [v9 wf_descriptionClassForEntityType:identifier appBundleIdentifier:appBundleIdentifier];
   }
 
-  return v3;
+  return overrideTypeDescriptions;
 }
 
 @end

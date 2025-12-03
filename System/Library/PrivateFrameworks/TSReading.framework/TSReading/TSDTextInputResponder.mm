@@ -1,6 +1,6 @@
 @interface TSDTextInputResponder
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canResignFirstResponder;
 - (BOOL)isSecureTextEntry;
 - (BOOL)p_currentEditorIsNotOnMyCanvas;
@@ -8,90 +8,90 @@
 - (BOOL)p_resignFirstResponder;
 - (BOOL)p_wantRawArrowKeys;
 - (BOOL)resignFirstResponder;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (TSDTextInputResponder)initWithNextResponder:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
+- (TSDTextInputResponder)initWithNextResponder:(id)responder;
 - (UITextInputTokenizer)tokenizer;
 - (UITextPosition)beginningOfDocument;
 - (UITextPosition)endOfDocument;
 - (UITextRange)markedTextRange;
 - (UITextRange)selectedTextRange;
 - (UIView)textInputView;
-- (_NSRange)_nsrangeForTextRange:(id)a3;
+- (_NSRange)_nsrangeForTextRange:(id)range;
 - (_NSRange)_selectedNSRange;
-- (id)_textRangeFromNSRange:(_NSRange)a3;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)closestPositionToPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
+- (id)_textRangeFromNSRange:(_NSRange)range;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
+- (id)closestPositionToPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
 - (id)editingTextRep;
 - (id)editingTextReps;
 - (id)inputAccessoryView;
 - (id)inputView;
 - (id)keyCommands;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)p_ICC;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
-- (id)selectionRectsForRange:(id)a3;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
+- (id)selectionRectsForRange:(id)range;
 - (id)superview;
-- (id)textInRange:(id)a3;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4;
-- (int64_t)_indexForTextPosition:(id)a3;
+- (id)textInRange:(id)range;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction;
+- (int64_t)_indexForTextPosition:(id)position;
 - (int64_t)autocorrectionType;
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
 - (void)acceptAutocorrection;
 - (void)cancelDelayedResponderChange;
 - (void)clearEditorAndResignFirstResponder;
 - (void)dealloc;
-- (void)delete:(id)a3;
-- (void)editorDidChangeSelection:(id)a3 withFlags:(unint64_t)a4;
+- (void)delete:(id)delete;
+- (void)editorDidChangeSelection:(id)selection withFlags:(unint64_t)flags;
 - (void)endIgnoringKeyboardInput;
 - (void)forceDelayedResponderChange;
-- (void)forwardInvocation:(id)a3;
-- (void)insertDictationResult:(id)a3;
-- (void)makeTextWritingDirectionLeftToRight:(id)a3;
-- (void)makeTextWritingDirectionRightToLeft:(id)a3;
-- (void)p_didUndoRedoChangeNotification:(id)a3;
-- (void)p_editorSelectionWasForciblyChangedNotification:(id)a3;
-- (void)p_editorWillClearSelectionNotification:(id)a3;
-- (void)p_editorWillHandleTapNotification:(id)a3;
-- (void)p_editorWillStyleTextNotification:(id)a3;
-- (void)p_finishDynamicOperation:(id)a3;
-- (void)p_setEditor:(id)a3;
-- (void)p_setFirstResponder:(id)a3;
-- (void)p_setFirstResponderAndEditor:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)insertDictationResult:(id)result;
+- (void)makeTextWritingDirectionLeftToRight:(id)right;
+- (void)makeTextWritingDirectionRightToLeft:(id)left;
+- (void)p_didUndoRedoChangeNotification:(id)notification;
+- (void)p_editorSelectionWasForciblyChangedNotification:(id)notification;
+- (void)p_editorWillClearSelectionNotification:(id)notification;
+- (void)p_editorWillHandleTapNotification:(id)notification;
+- (void)p_editorWillStyleTextNotification:(id)notification;
+- (void)p_finishDynamicOperation:(id)operation;
+- (void)p_setEditor:(id)editor;
+- (void)p_setFirstResponder:(id)responder;
+- (void)p_setFirstResponderAndEditor:(id)editor;
 - (void)p_setFirstResponderAndEditorAfterDelay;
-- (void)p_setSelectedTextRange:(id)a3;
-- (void)p_startDynamicOperation:(id)a3;
+- (void)p_setSelectedTextRange:(id)range;
+- (void)p_startDynamicOperation:(id)operation;
 - (void)p_textChanged;
 - (void)p_willExitUITextInput;
-- (void)p_willShowPopoverNotification:(id)a3;
-- (void)p_willUndoChangeNotification:(id)a3;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)selectAll:(id)a3;
-- (void)setEditor:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setSelectedTextRange:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
+- (void)p_willShowPopoverNotification:(id)notification;
+- (void)p_willUndoChangeNotification:(id)notification;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)selectAll:(id)all;
+- (void)setEditor:(id)editor;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setSelectedTextRange:(id)range;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
 - (void)unmarkText;
 @end
 
 @implementation TSDTextInputResponder
 
-- (TSDTextInputResponder)initWithNextResponder:(id)a3
+- (TSDTextInputResponder)initWithNextResponder:(id)responder
 {
   v9.receiver = self;
   v9.super_class = TSDTextInputResponder;
   v4 = [(TSDTextInputResponder *)&v9 init];
   if (v4)
   {
-    v4->_nextResponder = a3;
+    v4->_nextResponder = responder;
     v4->_preferredEndPosition = NAN;
     v4->_preferredStartPosition = NAN;
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
@@ -100,12 +100,12 @@
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel_p_willUndoChangeNotification_ name:*MEMORY[0x277CCA828] object:0];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v4 selector:sel_p_didUndoRedoChangeNotification_ name:*MEMORY[0x277CCA810] object:0];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v4 selector:sel_p_didUndoRedoChangeNotification_ name:*MEMORY[0x277CCA808] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_p_willUndoChangeNotification_ name:*MEMORY[0x277CCA828] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_p_didUndoRedoChangeNotification_ name:*MEMORY[0x277CCA810] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel_p_didUndoRedoChangeNotification_ name:*MEMORY[0x277CCA808] object:0];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   }
@@ -122,19 +122,19 @@
   [(TSDTextInputResponder *)&v3 dealloc];
 }
 
-- (void)p_setEditor:(id)a3
+- (void)p_setEditor:(id)editor
 {
-  if (a3 && self->_editor == a3)
+  if (editor && self->_editor == editor)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder p_setEditor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 241, @"Editor validation should have happened through the public setEditor method."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 241, @"Editor validation should have happened through the public setEditor method."}];
   }
 
-  v12 = [(TSDTextInputResponder *)self inputView];
+  inputView = [(TSDTextInputResponder *)self inputView];
   [(TSDTextInputResponder *)self willChangeValueForKey:@"inputView"];
   v7 = self->_editor;
-  self->_editor = a3;
+  self->_editor = editor;
   if (objc_opt_respondsToSelector())
   {
     v8 = objc_opt_respondsToSelector();
@@ -146,7 +146,7 @@
   }
 
   self->_editorRespondsToRawArrowKeySelectors = v8 & 1;
-  if (!a3)
+  if (!editor)
   {
     if (![(TSDTextInputResponder *)self p_isExecutingUITextInput])
     {
@@ -158,10 +158,10 @@
   }
 
   [(TSDTextInputResponder *)self didChangeValueForKey:@"inputView"];
-  v9 = [(TSDTextInputResponder *)self inputView];
+  inputView2 = [(TSDTextInputResponder *)self inputView];
   if (self->_editor)
   {
-    v10 = v9 == v12;
+    v10 = inputView2 == inputView;
   }
 
   else
@@ -171,7 +171,7 @@
 
   if (!v10)
   {
-    if (v9 && ([v9 frame], v11 == 0.0))
+    if (inputView2 && ([inputView2 frame], v11 == 0.0))
     {
       [(TSDTextInputResponder *)self performSelector:sel_reloadInputViews withObject:0 afterDelay:0.0];
     }
@@ -184,25 +184,25 @@
   }
 }
 
-- (void)p_setFirstResponder:(id)a3
+- (void)p_setFirstResponder:(id)responder
 {
   if (![(TSDTextInputResponder *)self p_requiresFirstResponderChangeForEditor:?])
   {
     return;
   }
 
-  v5 = [a3 wantsKeyboard];
-  v6 = [(TSDTextInputResponder *)self p_ICC];
-  if (v5)
+  wantsKeyboard = [responder wantsKeyboard];
+  p_ICC = [(TSDTextInputResponder *)self p_ICC];
+  if (wantsKeyboard)
   {
-    [v6 delegate];
+    [p_ICC delegate];
     v7 = TSUProtocolCast();
     if ((objc_opt_respondsToSelector() & 1) == 0 || [v7 allowTextEditingToBegin])
     {
-      v8 = self;
+      selfCopy = self;
 LABEL_14:
 
-      [(TSDTextInputResponder *)v8 becomeFirstResponder];
+      [(TSDTextInputResponder *)selfCopy becomeFirstResponder];
       return;
     }
   }
@@ -219,7 +219,7 @@ LABEL_14:
       }
     }
 
-    v8 = nextResponder;
+    selfCopy = nextResponder;
     goto LABEL_14;
   }
 
@@ -228,23 +228,23 @@ LABEL_10:
   [(TSDTextInputResponder *)self p_resignFirstResponder];
 }
 
-- (void)p_setFirstResponderAndEditor:(id)a3
+- (void)p_setFirstResponderAndEditor:(id)editor
 {
   self->_pendingEditorChange = 0;
 
   self->_pendingEditor = 0;
-  if (a3 && [a3 wantsKeyboard])
+  if (editor && [editor wantsKeyboard])
   {
-    [(TSDTextInputResponder *)self p_setEditor:a3];
+    [(TSDTextInputResponder *)self p_setEditor:editor];
 
-    [(TSDTextInputResponder *)self p_setFirstResponder:a3];
+    [(TSDTextInputResponder *)self p_setFirstResponder:editor];
   }
 
   else
   {
-    [(TSDTextInputResponder *)self p_setFirstResponder:a3];
+    [(TSDTextInputResponder *)self p_setFirstResponder:editor];
 
-    [(TSDTextInputResponder *)self p_setEditor:a3];
+    [(TSDTextInputResponder *)self p_setEditor:editor];
   }
 }
 
@@ -252,9 +252,9 @@ LABEL_10:
 {
   if (!self->_pendingEditorChange)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder p_setFirstResponderAndEditorAfterDelay]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 378, @"Unexpectedly being asked to update the first responder when there's nothing to switch to."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 378, @"Unexpectedly being asked to update the first responder when there's nothing to switch to."}];
   }
 
   self->_pendingEditorChange = 0;
@@ -262,23 +262,23 @@ LABEL_10:
   [(TSDTextInputResponder *)self p_setFirstResponderAndEditor:v5];
 }
 
-- (void)setEditor:(id)a3
+- (void)setEditor:(id)editor
 {
   [(TSDTextInputResponder *)self cancelDelayedResponderChange];
 
   self->_pendingEditor = 0;
   self->_pendingEditorChange = 0;
-  if (self->_editor != a3)
+  if (self->_editor != editor)
   {
-    if (self->_isResigning || ![(TSDTextInputResponder *)self p_requiresFirstResponderChangeForEditor:a3])
+    if (self->_isResigning || ![(TSDTextInputResponder *)self p_requiresFirstResponderChangeForEditor:editor])
     {
 
-      [(TSDTextInputResponder *)self p_setEditor:a3];
+      [(TSDTextInputResponder *)self p_setEditor:editor];
     }
 
-    else if (-[TSDTextInputResponder isFirstResponder](self, "isFirstResponder") && ([a3 wantsKeyboard] & 1) == 0)
+    else if (-[TSDTextInputResponder isFirstResponder](self, "isFirstResponder") && ([editor wantsKeyboard] & 1) == 0)
     {
-      self->_pendingEditor = a3;
+      self->_pendingEditor = editor;
       self->_pendingEditorChange = 1;
 
       [(TSDTextInputResponder *)self performSelector:sel_p_setFirstResponderAndEditorAfterDelay withObject:0 afterDelay:0.25];
@@ -287,7 +287,7 @@ LABEL_10:
     else
     {
 
-      [(TSDTextInputResponder *)self p_setFirstResponderAndEditor:a3];
+      [(TSDTextInputResponder *)self p_setFirstResponderAndEditor:editor];
     }
   }
 }
@@ -296,11 +296,11 @@ LABEL_10:
 {
   if (atomic_fetch_add(&self->_ignoreKeyboardInputCount, 0xFFFFFFFF) <= 0)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder endIgnoringKeyboardInput]"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"];
 
-    [v3 handleFailureInFunction:v4 file:v5 lineNumber:430 description:@"Unbalanced calls to -beginIgnoringKeyboardInput and -endIgnoringKeyboardInput"];
+    [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:430 description:@"Unbalanced calls to -beginIgnoringKeyboardInput and -endIgnoringKeyboardInput"];
   }
 }
 
@@ -343,19 +343,19 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(TSDTextInputResponder *)self nextResponder];
-  if (!v3)
+  nextResponder = [(TSDTextInputResponder *)self nextResponder];
+  if (!nextResponder)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = nextResponder;
   do
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
-    v6 = [v4 nextResponder];
-    v4 = v6;
+    nextResponder2 = [v4 nextResponder];
+    v4 = nextResponder2;
     if (v5)
     {
       v7 = 1;
@@ -363,7 +363,7 @@ LABEL_10:
 
     else
     {
-      v7 = v6 == 0;
+      v7 = nextResponder2 == 0;
     }
   }
 
@@ -377,8 +377,8 @@ LABEL_10:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [objc_msgSend(objc_msgSend(v5 controller];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  controller = [objc_msgSend(objc_msgSend(v5 controller];
+  v9 = [controller countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v9)
   {
     return 0;
@@ -393,7 +393,7 @@ LABEL_10:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(controller);
       }
 
       v13 = *(*(&v15 + 1) + 8 * i);
@@ -408,7 +408,7 @@ LABEL_10:
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v10 = [controller countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v10);
@@ -417,9 +417,9 @@ LABEL_10:
 
 - (id)editingTextRep
 {
-  v2 = [(TSDTextInputResponder *)self editingTextReps];
+  editingTextReps = [(TSDTextInputResponder *)self editingTextReps];
 
-  return [v2 anyObject];
+  return [editingTextReps anyObject];
 }
 
 - (void)acceptAutocorrection
@@ -442,13 +442,13 @@ LABEL_10:
 {
   v5.receiver = self;
   v5.super_class = TSDTextInputResponder;
-  v3 = [(TSDTextInputResponder *)&v5 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(TSDTextInputResponder *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
@@ -467,19 +467,19 @@ LABEL_10:
 {
   v5.receiver = self;
   v5.super_class = TSDTextInputResponder;
-  v3 = [(TSDTextInputResponder *)&v5 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(TSDTextInputResponder *)&v5 resignFirstResponder];
+  if (resignFirstResponder)
   {
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(TSDTextInputResponder *)self canResignFirstResponder];
-  if (v3)
+  canResignFirstResponder = [(TSDTextInputResponder *)self canResignFirstResponder];
+  if (canResignFirstResponder)
   {
     self->_isResigning = 1;
     if ([(TSDTextInput *)self->_editor wantsKeyboard])
@@ -490,18 +490,18 @@ LABEL_10:
 
     if ([(TSDTextInputResponder *)self isFirstResponder])
     {
-      LOBYTE(v3) = [(TSDTextInputResponder *)self p_resignFirstResponder];
+      LOBYTE(canResignFirstResponder) = [(TSDTextInputResponder *)self p_resignFirstResponder];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(canResignFirstResponder) = 1;
     }
 
     self->_isResigning = 0;
   }
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)p_didEnterUITextInput
@@ -520,9 +520,9 @@ LABEL_10:
   respondingToUITextInput = self->_respondingToUITextInput;
   if (respondingToUITextInput <= 0)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder p_willExitUITextInput]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 663, @"UITextInput counter is going negative"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 663, @"UITextInput counter is going negative"}];
     respondingToUITextInput = self->_respondingToUITextInput;
   }
 
@@ -533,36 +533,36 @@ LABEL_10:
 {
   if ([(TSDTextInputResponder *)self p_wantRawArrowKeys]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(TSDTextInput *)self->_editor selectionForArrowKeys];
+    selectionForArrowKeys = [(TSDTextInput *)self->_editor selectionForArrowKeys];
   }
 
   else
   {
-    v3 = [(TSDTextInput *)self->_editor textInputSelection];
+    selectionForArrowKeys = [(TSDTextInput *)self->_editor textInputSelection];
   }
 
-  v4 = v3;
-  if (v3)
+  v4 = selectionForArrowKeys;
+  if (selectionForArrowKeys)
   {
-    v5 = [(TSDTextRange *)v3 range];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    range = [(TSDTextRange *)selectionForArrowKeys range];
+    if (range == 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = 0;
     }
 
     else
     {
-      v7 = v5;
+      v7 = range;
       v8 = v6;
-      v9 = [(TSDTextRange *)v4 isAtEndOfLine];
+      isAtEndOfLine = [(TSDTextRange *)v4 isAtEndOfLine];
       *&v10 = self->_preferredStartPosition;
       *&v11 = self->_preferredEndPosition;
-      v4 = [TSDTextRange textRangeWithRange:v7 eolAffinity:v8 preferredStartPosition:v9 preferredEndPosition:v10, v11];
+      v4 = [TSDTextRange textRangeWithRange:v7 eolAffinity:v8 preferredStartPosition:isAtEndOfLine preferredEndPosition:v10, v11];
       if (v7 + v8 > [(TSDTextInput *)self->_editor textLength])
       {
-        v12 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder selectedTextRange]"];
-        [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 694, @"Bad selected text range"}];
+        [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 694, @"Bad selected text range"}];
       }
     }
   }
@@ -575,21 +575,21 @@ LABEL_10:
   return [(TSDTextInputResponder *)self arrow_augmentTextRange:v4];
 }
 
-- (void)p_setSelectedTextRange:(id)a3
+- (void)p_setSelectedTextRange:(id)range
 {
-  v5 = [(TSDTextInputResponder *)self p_ICC];
-  [v5 delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_msgSend(v5 "delegate")])
+  p_ICC = [(TSDTextInputResponder *)self p_ICC];
+  [p_ICC delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_msgSend(p_ICC "delegate")])
   {
-    v6 = [(TSDTextInputResponder *)self _nsrangeForTextRange:a3];
-    v8 = +[TSDRangeClamper clampSelectedRange:inFullString:toWordLimit:](TSDRangeClamper, "clampSelectedRange:inFullString:toWordLimit:", v6, v7, -[TSDTextInput unfilteredText](self->_editor, "unfilteredText"), [objc_msgSend(v5 "delegate")]);
-    a3 = [(TSDTextInputResponder *)self _textRangeFromNSRange:v8, v9];
+    v6 = [(TSDTextInputResponder *)self _nsrangeForTextRange:range];
+    v8 = +[TSDRangeClamper clampSelectedRange:inFullString:toWordLimit:](TSDRangeClamper, "clampSelectedRange:inFullString:toWordLimit:", v6, v7, -[TSDTextInput unfilteredText](self->_editor, "unfilteredText"), [objc_msgSend(p_ICC "delegate")]);
+    range = [(TSDTextInputResponder *)self _textRangeFromNSRange:v8, v9];
   }
 
   if ([(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
 
-    [(TSDTextInputResponder *)self arrow_setSelectedTextRange:a3];
+    [(TSDTextInputResponder *)self arrow_setSelectedTextRange:range];
   }
 
   else
@@ -628,22 +628,22 @@ LABEL_10:
 
     else
     {
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder p_setSelectedTextRange:]"];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"];
 
-      [v18 handleFailureInFunction:v19 file:v20 lineNumber:728 description:@"bad textRange"];
+      [currentHandler handleFailureInFunction:v19 file:v20 lineNumber:728 description:@"bad textRange"];
     }
   }
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
   if ([(TSDTextInputResponder *)self p_didEnterUITextInput])
   {
-    if (a3)
+    if (range)
     {
-      [(TSDTextInputResponder *)self p_setSelectedTextRange:a3];
+      [(TSDTextInputResponder *)self p_setSelectedTextRange:range];
       [(TSDTextInputResponder *)self p_willExitUITextInput];
     }
 
@@ -663,32 +663,32 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(TSDTextInput *)self->_editor markedRange];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  markedRange = [(TSDTextInput *)self->_editor markedRange];
+  if (markedRange == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v7 = v3;
+  v7 = markedRange;
   v8 = v4;
-  v5 = [TSDTextRange textRangeWithRange:v3, v4];
+  v5 = [TSDTextRange textRangeWithRange:markedRange, v4];
   if (v7 + v8 > [(TSDTextInput *)self->_editor textLength])
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder markedTextRange]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 797, @"Bad marked text range"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 797, @"Bad marked text range"}];
   }
 
   return &v5->super;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ([(TSDTextInputResponder *)self p_didEnterUITextInput])
   {
-    [(TSDTextInput *)self->_editor setMarkedText:a3 selectedRange:location, length];
+    [(TSDTextInput *)self->_editor setMarkedText:text selectedRange:location, length];
     [(TSDTextInputResponder *)self p_willExitUITextInput];
   }
 }
@@ -715,8 +715,8 @@ LABEL_10:
 
 - (UITextPosition)endOfDocument
 {
-  v3 = [(TSDTextInput *)self->_editor editRange];
-  v5 = [TSDTextPosition textPositionWithCharIndex:v3 + v4];
+  editRange = [(TSDTextInput *)self->_editor editRange];
+  v5 = [TSDTextPosition textPositionWithCharIndex:editRange + v4];
   if (![(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
     return &v5->super;
@@ -725,14 +725,14 @@ LABEL_10:
   return [(TSDTextInputResponder *)self arrow_augmentEndOfDocument:v5];
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
   v6 = v5;
-  if (!a3 || v5)
+  if (!range || v5)
   {
-    if (!a3)
+    if (!range)
     {
       return &stru_287D36338;
     }
@@ -740,24 +740,24 @@ LABEL_10:
 
   else
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder textInRange:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 874, @"bad textRange"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 874, @"bad textRange"}];
   }
 
   editor = self->_editor;
-  v11 = [v6 range];
+  range = [v6 range];
 
-  return [(TSDTextInput *)editor textInRange:v11, v10];
+  return [(TSDTextInput *)editor textInRange:range, v10];
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
   if ([(TSDTextInputResponder *)self p_didEnterUITextInput])
   {
     if ([(TSDTextInputResponder *)self p_wantRawArrowKeys])
     {
-      [(TSDTextInputResponder *)self insertText:a4];
+      [(TSDTextInputResponder *)self insertText:text];
     }
 
     else
@@ -766,27 +766,27 @@ LABEL_10:
       v6 = TSUDynamicCast();
       if (!v6)
       {
-        v7 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder replaceRange:withText:]"];
-        [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 892, @"bad textRange"}];
+        [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 892, @"bad textRange"}];
       }
 
-      v9 = [(TSDTextInput *)self->_editor editRange];
+      editRange = [(TSDTextInput *)self->_editor editRange];
       if (v6)
       {
-        v11 = v9;
+        v11 = editRange;
         v12 = v10;
-        v14 = [v6 range];
-        if (v11 <= v14 && v11 + v12 >= v14 + v13)
+        range = [v6 range];
+        if (v11 <= range && v11 + v12 >= range + v13)
         {
-          [(TSDTextInput *)self->_editor replaceRange:v14 withText:v13, a4];
+          [(TSDTextInput *)self->_editor replaceRange:range withText:v13, text];
         }
 
         else
         {
-          v16 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder replaceRange:withText:]"];
-          [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 900, @"Input range is bad."}];
+          [currentHandler2 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 900, @"Input range is bad."}];
         }
       }
     }
@@ -795,7 +795,7 @@ LABEL_10:
   }
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
   objc_opt_class();
   v7 = TSUDynamicCast();
@@ -804,18 +804,18 @@ LABEL_10:
   v9 = v8;
   if (!v7)
   {
-    v26 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder textRangeFromPosition:toPosition:]"];
-    [v26 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 930, @"bad textPosition"}];
+    [currentHandler handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 930, @"bad textPosition"}];
     if (v9)
     {
       return 0;
     }
 
 LABEL_15:
-    v28 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder textRangeFromPosition:toPosition:]"];
-    [v28 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 931, @"bad textPosition"}];
+    [currentHandler2 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 931, @"bad textPosition"}];
     return 0;
   }
 
@@ -824,9 +824,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v10 = [v8 charIndex];
-  v11 = [v7 charIndex];
-  if (v10 <= v11)
+  charIndex = [v8 charIndex];
+  charIndex2 = [v7 charIndex];
+  if (charIndex <= charIndex2)
   {
     v12 = v9;
   }
@@ -836,7 +836,7 @@ LABEL_15:
     v12 = v7;
   }
 
-  if (v10 <= v11)
+  if (charIndex <= charIndex2)
   {
     v13 = v7;
   }
@@ -846,36 +846,36 @@ LABEL_15:
     v13 = v9;
   }
 
-  v14 = [v12 charIndex];
-  v15 = [v13 charIndex];
-  v16 = [v12 charIndex];
-  if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+  charIndex3 = [v12 charIndex];
+  charIndex4 = [v13 charIndex];
+  charIndex5 = [v12 charIndex];
+  if (charIndex3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v17 = v15 - v16;
-  v18 = [v7 endOfLineAffinity];
+  v17 = charIndex4 - charIndex5;
+  endOfLineAffinity = [v7 endOfLineAffinity];
   [v7 preferredPosition];
   v20 = v19;
   [v9 preferredPosition];
   LODWORD(v22) = v21;
   LODWORD(v23) = v20;
-  v24 = [TSDTextRange textRangeWithRange:v14 eolAffinity:v17 preferredStartPosition:v18 preferredEndPosition:v23, v22];
+  v24 = [TSDTextRange textRangeWithRange:charIndex3 eolAffinity:v17 preferredStartPosition:endOfLineAffinity preferredEndPosition:v23, v22];
   if (![(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
     return v24;
   }
 
-  return [(TSDTextInputResponder *)self arrow_augmentTextRange:v24 fromPosition:a3 toPosition:a4];
+  return [(TSDTextInputResponder *)self arrow_augmentTextRange:v24 fromPosition:position toPosition:toPosition];
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
   if ([(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
 
-    return [(TSDTextInputResponder *)self arrow_comparePosition:a3 toPosition:a4];
+    return [(TSDTextInputResponder *)self arrow_comparePosition:position toPosition:toPosition];
   }
 
   objc_opt_class();
@@ -885,18 +885,18 @@ LABEL_15:
   v10 = v9;
   if (!v8)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder comparePosition:toPosition:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 962, @"bad textPosition"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 962, @"bad textPosition"}];
     if (v10)
     {
       goto LABEL_7;
     }
 
 LABEL_11:
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder comparePosition:toPosition:]"];
-    [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 963, @"bad textPosition"}];
+    [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 963, @"bad textPosition"}];
     goto LABEL_7;
   }
 
@@ -910,12 +910,12 @@ LABEL_7:
   return [v8 compare:v10];
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
   if ([(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
 
-    return [(TSDTextInputResponder *)self arrow_offsetFromPosition:a3 toPosition:a4];
+    return [(TSDTextInputResponder *)self arrow_offsetFromPosition:position toPosition:toPosition];
   }
 
   objc_opt_class();
@@ -925,18 +925,18 @@ LABEL_7:
   v10 = v9;
   if (!v8)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder offsetFromPosition:toPosition:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 983, @"bad textPosition"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 983, @"bad textPosition"}];
     if (v10)
     {
       goto LABEL_7;
     }
 
 LABEL_13:
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder offsetFromPosition:toPosition:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 984, @"bad textPosition"}];
+    [currentHandler2 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 984, @"bad textPosition"}];
     goto LABEL_7;
   }
 
@@ -946,14 +946,14 @@ LABEL_13:
   }
 
 LABEL_7:
-  v11 = [(TSDTextInput *)self->_editor textLength];
+  textLength = [(TSDTextInput *)self->_editor textLength];
   result = 0;
   if (v8 && v10)
   {
-    if ([v10 charIndex] <= v11 && objc_msgSend(v8, "charIndex") <= v11)
+    if ([v10 charIndex] <= textLength && objc_msgSend(v8, "charIndex") <= textLength)
     {
-      v16 = [v10 charIndex];
-      return v16 - [v8 charIndex];
+      charIndex = [v10 charIndex];
+      return charIndex - [v8 charIndex];
     }
 
     else
@@ -965,7 +965,7 @@ LABEL_7:
   return result;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
   if (![(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
@@ -973,60 +973,60 @@ LABEL_7:
     cachedPosition = TSUDynamicCast();
     if (cachedPosition)
     {
-      if ([[(TSDTextInputResponder *)self editor] textIsVerticalAtCharIndex:[(TSDTextPosition *)cachedPosition charIndex]]&& (a4 - 2) <= 3)
+      if ([[(TSDTextInputResponder *)self editor] textIsVerticalAtCharIndex:[(TSDTextPosition *)cachedPosition charIndex]]&& (direction - 2) <= 3)
       {
-        a4 = qword_26CA66048[a4 - 2];
+        direction = qword_26CA66048[direction - 2];
       }
 
-      if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+      if (offset != 0x7FFFFFFFFFFFFFFFLL)
       {
         if ([(TSDTextPosition *)cachedPosition charIndex]== 0x7FFFFFFFFFFFFFFFLL)
         {
-          v11 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder positionFromPosition:inDirection:offset:]"];
-          [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1054, @"bad charIndex"}];
+          [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1054, @"bad charIndex"}];
         }
 
-        v13 = (a4 & 0xFFFFFFFFFFFFFFFELL) == 4;
+        v13 = (direction & 0xFFFFFFFFFFFFFFFELL) == 4;
         if ([(TSDTextPosition *)cachedPosition charIndex]<= 0x7FFFFFFFFFFFFFFELL)
         {
-          v14 = [a3 isEqual:self->_referencePosition];
-          if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4 && v14)
+          v14 = [position isEqual:self->_referencePosition];
+          if ((direction & 0xFFFFFFFFFFFFFFFELL) == 4 && v14)
           {
-            if (a4 == 4)
+            if (direction == 4)
             {
-              v15 = -a5;
+              offsetCopy3 = -offset;
             }
 
             else
             {
-              v15 = a5;
+              offsetCopy3 = offset;
             }
 
-            v16 = v15 - self->_referenceOffset;
+            v16 = offsetCopy3 - self->_referenceOffset;
             v17 = v16;
             if (v16 < 0)
             {
-              v16 = self->_referenceOffset - v15;
+              v16 = self->_referenceOffset - offsetCopy3;
             }
 
-            if (a5 >= 0)
+            if (offset >= 0)
             {
-              v18 = a5;
+              offsetCopy2 = offset;
             }
 
             else
             {
-              v18 = -a5;
+              offsetCopy2 = -offset;
             }
 
-            if (v16 >= v18)
+            if (v16 >= offsetCopy2)
             {
 
               self->_referencePosition = 0;
               self->_cachedPosition = 0;
-              a4 = 5;
-              if (v15 < 0)
+              direction = 5;
+              if (offsetCopy3 < 0)
               {
                 goto LABEL_31;
               }
@@ -1035,8 +1035,8 @@ LABEL_7:
             else
             {
               cachedPosition = self->_cachedPosition;
-              a4 = 5;
-              v15 = v17;
+              direction = 5;
+              offsetCopy3 = v17;
               if (v17 < 0)
               {
                 goto LABEL_31;
@@ -1046,46 +1046,46 @@ LABEL_7:
 
           else
           {
-            v15 = a5;
-            if (a5 < 0)
+            offsetCopy3 = offset;
+            if (offset < 0)
             {
 LABEL_31:
-              v15 = -v15;
-              if (a4 > 3)
+              offsetCopy3 = -offsetCopy3;
+              if (direction > 3)
               {
-                if (a4 == 5)
+                if (direction == 5)
                 {
-                  a4 = 4;
+                  direction = 4;
                 }
 
-                else if (a4 == 4)
+                else if (direction == 4)
                 {
-                  a4 = 5;
+                  direction = 5;
                 }
               }
 
-              else if (a4 == 2)
+              else if (direction == 2)
               {
-                a4 = 3;
+                direction = 3;
               }
 
-              else if (a4 == 3)
+              else if (direction == 3)
               {
-                a4 = 2;
+                direction = 2;
               }
             }
           }
 
-          v33 = a3;
-          v34 = [(TSDTextPosition *)cachedPosition endOfLineAffinity];
+          positionCopy = position;
+          endOfLineAffinity = [(TSDTextPosition *)cachedPosition endOfLineAffinity];
           [(TSDTextPosition *)cachedPosition preferredPosition];
           v35 = v19;
-          v32 = v15;
-          if (v15)
+          v32 = offsetCopy3;
+          if (offsetCopy3)
           {
             v20 = 0;
             v21 = 4 * v13;
-            v22 = v15 + 1;
+            v22 = offsetCopy3 + 1;
             do
             {
               if (v20)
@@ -1098,13 +1098,13 @@ LABEL_31:
                 v23 = &v35;
               }
 
-              v24 = [(TSDTextInput *)self->_editor charIndexByMovingPosition:cachedPosition toBoundary:v21 inDirection:a4 preferPosition:v23, v32];
+              v24 = [(TSDTextInput *)self->_editor charIndexByMovingPosition:cachedPosition toBoundary:v21 inDirection:direction preferPosition:v23, v32];
               cachedPosition = 0;
               if (v24 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 HIDWORD(v25) = HIDWORD(v35);
                 *&v25 = v35;
-                cachedPosition = [TSDTextPosition textPositionWithCharIndex:v24 eolAffinity:((a4 & 0xFFFFFFFFFFFFFFFELL) == 4) & v34 preferredPosition:1 isPreferredStart:v25];
+                cachedPosition = [TSDTextPosition textPositionWithCharIndex:v24 eolAffinity:((direction & 0xFFFFFFFFFFFFFFFELL) == 4) & endOfLineAffinity preferredPosition:1 isPreferredStart:v25];
               }
 
               --v22;
@@ -1117,19 +1117,19 @@ LABEL_31:
           v26 = self->_cachedPosition;
           if (cachedPosition)
           {
-            if (![(TSDTextPosition *)cachedPosition isEqual:v26]|| ![(TSDTextPosition *)self->_referencePosition isEqual:v33])
+            if (![(TSDTextPosition *)cachedPosition isEqual:v26]|| ![(TSDTextPosition *)self->_referencePosition isEqual:positionCopy])
             {
-              v27 = v33;
+              v27 = positionCopy;
 
-              self->_referencePosition = v33;
-              v28 = a4 == 2 || a4 == 5;
-              v29 = a5;
+              self->_referencePosition = positionCopy;
+              v28 = direction == 2 || direction == 5;
+              offsetCopy4 = offset;
               if (!v28)
               {
-                v29 = -a5;
+                offsetCopy4 = -offset;
               }
 
-              self->_referenceOffset = v29;
+              self->_referenceOffset = offsetCopy4;
               v30 = cachedPosition;
 
               self->_cachedPosition = cachedPosition;
@@ -1138,7 +1138,7 @@ LABEL_31:
 
           else if (v32 != 1 || v26 == 0)
           {
-            return v33;
+            return positionCopy;
           }
 
           else
@@ -1156,15 +1156,15 @@ LABEL_31:
     return cachedPosition;
   }
 
-  return [(TSDTextInputResponder *)self arrow_positionFromPosition:a3 inDirection:a4 offset:a5];
+  return [(TSDTextInputResponder *)self arrow_positionFromPosition:position inDirection:direction offset:offset];
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
   if ([(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
 
-    return [(TSDTextInputResponder *)self arrow_positionFromPosition:a3 offset:a4];
+    return [(TSDTextInputResponder *)self arrow_positionFromPosition:position offset:offset];
   }
 
   objc_opt_class();
@@ -1185,22 +1185,22 @@ LABEL_31:
     return 0;
   }
 
-  v11 = [(TSDTextInput *)editor editRange];
+  editRange = [(TSDTextInput *)editor editRange];
   v13 = v12;
-  v14 = [v8 charIndex];
-  v16 = v14;
-  if (a4 < 0 && v14 < -a4)
+  charIndex = [v8 charIndex];
+  v16 = charIndex;
+  if (offset < 0 && charIndex < -offset)
   {
     return 0;
   }
 
-  if (!a4)
+  if (!offset)
   {
     goto LABEL_24;
   }
 
-  v16 = v14 + a4;
-  if (v14 + a4 > v11 + v13)
+  v16 = charIndex + offset;
+  if (charIndex + offset > editRange + v13)
   {
     return 0;
   }
@@ -1209,20 +1209,20 @@ LABEL_31:
   v18 = self->_editor;
   if (v17)
   {
-    v19 = [(TSDTextInput *)v18 unfilteredText];
+    unfilteredText = [(TSDTextInput *)v18 unfilteredText];
   }
 
   else
   {
-    v19 = [(TSDTextInput *)v18 textInRange:0, [(TSDTextInput *)v18 textLength]];
+    unfilteredText = [(TSDTextInput *)v18 textInRange:0, [(TSDTextInput *)v18 textLength]];
   }
 
-  if (v16 < v11 + v13)
+  if (v16 < editRange + v13)
   {
-    v20 = [v19 rangeOfComposedCharacterSequenceAtIndex:v16];
+    v20 = [unfilteredText rangeOfComposedCharacterSequenceAtIndex:v16];
     if (v16 != v20 && v16 >= v20)
     {
-      v22 = a4 <= 0 ? 0 : v21;
+      v22 = offset <= 0 ? 0 : v21;
       v23 = v22 + v20;
       if (v16 - v20 < v21)
       {
@@ -1237,10 +1237,10 @@ LABEL_24:
     return 0;
   }
 
-  if (v16 < v11 || (v11 += v13, v16 > v11))
+  if (v16 < editRange || (editRange += v13, v16 > editRange))
   {
-    v16 = v11;
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+    v16 = editRange;
+    if (editRange == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
@@ -1251,15 +1251,15 @@ LABEL_24:
   return [TSDTextPosition textPositionWithCharIndex:v16 eolAffinity:0 preferredPosition:1 isPreferredStart:v15];
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (v4)
   {
     editor = self->_editor;
-    v6 = [v4 range];
-    [(TSDTextInput *)editor firstRectForRange:v6, v7];
+    range = [v4 range];
+    [(TSDTextInput *)editor firstRectForRange:range, v7];
     v19 = CGRectIntegral(v18);
     x = v19.origin.x;
     y = v19.origin.y;
@@ -1273,9 +1273,9 @@ LABEL_24:
     y = *(MEMORY[0x277CBF398] + 8);
     width = *(MEMORY[0x277CBF398] + 16);
     height = *(MEMORY[0x277CBF398] + 24);
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder firstRectForRange:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1213, @"bad textRange"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1213, @"bad textRange"}];
   }
 
   v14 = x;
@@ -1289,24 +1289,24 @@ LABEL_24:
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (!v4)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder selectionRectsForRange:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1226, @"bad textRange"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1226, @"bad textRange"}];
   }
 
   editor = self->_editor;
-  v9 = [v4 range];
+  range = [v4 range];
 
-  return [(TSDTextInput *)editor selectionRectsForRange:v9, v8];
+  return [(TSDTextInput *)editor selectionRectsForRange:range, v8];
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   if (self->_editor)
   {
@@ -1314,9 +1314,9 @@ LABEL_24:
     v4 = TSUDynamicCast();
     if (!v4)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder caretRectForPosition:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1244, @"bad text position"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1244, @"bad text position"}];
     }
 
     -[TSDTextInput firstRectForRange:](self->_editor, "firstRectForRange:", [v4 charIndex], 0);
@@ -1361,37 +1361,37 @@ LABEL_24:
   return result;
 }
 
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction
 {
-  if (!a3)
+  if (!position)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (!v6)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder textStylingAtPosition:inDirection:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1272, @"bad text position"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 1272, @"bad text position"}];
   }
 
-  v9 = [v6 charIndex];
-  v10 = [(TSDTextInput *)self->_editor textFontAtCharIndex:v9];
+  charIndex = [v6 charIndex];
+  v10 = [(TSDTextInput *)self->_editor textFontAtCharIndex:charIndex];
   if (v10)
   {
-    [v5 setObject:v10 forKey:*MEMORY[0x277D740A8]];
+    [dictionary setObject:v10 forKey:*MEMORY[0x277D740A8]];
   }
 
-  v11 = [(TSDTextInput *)self->_editor textColorAtCharIndex:v9];
+  v11 = [(TSDTextInput *)self->_editor textColorAtCharIndex:charIndex];
   if (v11)
   {
-    [v5 setObject:v11 forKey:*MEMORY[0x277D740C0]];
+    [dictionary setObject:v11 forKey:*MEMORY[0x277D740C0]];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)keyCommands
@@ -1423,24 +1423,24 @@ id __36__TSDTextInputResponder_keyCommands__block_invoke()
   return keyCommands_s_globalKeyCommands;
 }
 
-- (void)insertDictationResult:(id)a3
+- (void)insertDictationResult:(id)result
 {
   v15 = *MEMORY[0x277D85DE8];
   if ([(TSDTextInputResponder *)self p_didEnterUITextInput])
   {
     if (objc_opt_respondsToSelector())
     {
-      [(TSDTextInput *)self->_editor insertDictationResult:a3];
+      [(TSDTextInput *)self->_editor insertDictationResult:result];
     }
 
     else
     {
-      v5 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       v12 = 0u;
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [result countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         v7 = *v11;
@@ -1451,28 +1451,28 @@ id __36__TSDTextInputResponder_keyCommands__block_invoke()
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(result);
             }
 
-            v9 = [*(*(&v10 + 1) + 8 * v8) text];
-            if (v9)
+            text = [*(*(&v10 + 1) + 8 * v8) text];
+            if (text)
             {
-              [v5 appendString:v9];
+              [string appendString:text];
             }
 
             ++v8;
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [result countByEnumeratingWithState:&v10 objects:v14 count:16];
         }
 
         while (v6);
       }
 
-      if ([v5 length])
+      if ([string length])
       {
-        [(TSDTextInputResponder *)self insertText:v5];
+        [(TSDTextInputResponder *)self insertText:string];
       }
     }
 
@@ -1494,11 +1494,11 @@ id __36__TSDTextInputResponder_keyCommands__block_invoke()
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   if ([(TSDTextInputResponder *)self p_currentEditorIsNotOnMyCanvas]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [(TSDTextInput *)self->_editor canPerformEditorAction:a3 withSender:a4];
+    v7 = [(TSDTextInput *)self->_editor canPerformEditorAction:action withSender:sender];
     if (v7 == 1)
     {
       return v7;
@@ -1511,73 +1511,73 @@ id __36__TSDTextInputResponder_keyCommands__block_invoke()
     return v7;
   }
 
-  v7 = [(TSDTextInputResponder *)self p_accessibilityShouldCheckAncestorCanPerformAction:a3 withSender:a4];
+  v7 = [(TSDTextInputResponder *)self p_accessibilityShouldCheckAncestorCanPerformAction:action withSender:sender];
   if (v7)
   {
     v9.receiver = self;
     v9.super_class = TSDTextInputResponder;
-    LOBYTE(v7) = [(TSDTextInputResponder *)&v9 canPerformAction:a3 withSender:a4];
+    LOBYTE(v7) = [(TSDTextInputResponder *)&v9 canPerformAction:action withSender:sender];
   }
 
   return v7;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:a3]== 1)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:all]== 1)
   {
     [(TSDTextInputResponder *)self acceptAutocorrection];
     [objc_msgSend(MEMORY[0x277D75718] "sharedMenuController")];
     editor = self->_editor;
 
-    [(TSDTextInput *)editor selectAll:a3];
+    [(TSDTextInput *)editor selectAll:all];
   }
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
   [(TSDTextInputResponder *)self acceptAutocorrection];
   if (objc_opt_respondsToSelector())
   {
-    [(TSDTextInput *)self->_editor delete:a3];
+    [(TSDTextInput *)self->_editor delete:delete];
   }
 
-  v5 = [MEMORY[0x277D75718] sharedMenuController];
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
 
-  [v5 hideMenu];
+  [mEMORY[0x277D75718] hideMenu];
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
-  if ([(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:a3]== 1)
+  if ([(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:boldface]== 1)
   {
     editor = self->_editor;
 
-    [(TSDTextInput *)editor toggleBoldface:a3];
+    [(TSDTextInput *)editor toggleBoldface:boldface];
   }
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
-  if ([(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:a3]== 1)
+  if ([(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:italics]== 1)
   {
     editor = self->_editor;
 
-    [(TSDTextInput *)editor toggleItalics:a3];
+    [(TSDTextInput *)editor toggleItalics:italics];
   }
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
-  if ([(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:a3]== 1)
+  if ([(TSDTextInput *)self->_editor canPerformEditorAction:a2 withSender:underline]== 1)
   {
     editor = self->_editor;
 
-    [(TSDTextInput *)editor toggleUnderline:a3];
+    [(TSDTextInput *)editor toggleUnderline:underline];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = TSDTextInputResponder;
@@ -1585,7 +1585,7 @@ id __36__TSDTextInputResponder_keyCommands__block_invoke()
   {
     v7.receiver = self;
     v7.super_class = TSDTextInputResponder;
-    return [(TSDTextInputResponder *)&v7 methodSignatureForSelector:a3];
+    return [(TSDTextInputResponder *)&v7 methodSignatureForSelector:selector];
   }
 
   else
@@ -1600,23 +1600,23 @@ id __36__TSDTextInputResponder_keyCommands__block_invoke()
       editor = [objc_msgSend(-[TSDTextInputResponder p_ICC](self "p_ICC")];
     }
 
-    return [(TSDTextInput *)editor methodSignatureForSelector:a3];
+    return [(TSDTextInput *)editor methodSignatureForSelector:selector];
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = [a3 selector];
+  selector = [invocation selector];
   v6 = [objc_msgSend(-[TSDTextInputResponder p_ICC](self "p_ICC")];
   if ([(TSDTextInputResponder *)self p_currentEditorIsNotOnMyCanvas]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(TSDTextInputResponder *)self acceptAutocorrection];
     [objc_msgSend(MEMORY[0x277D75718] "sharedMenuController")];
     editor = self->_editor;
-    v8 = a3;
+    invocationCopy2 = invocation;
 LABEL_6:
 
-    [v8 invokeWithTarget:editor];
+    [invocationCopy2 invokeWithTarget:editor];
     return;
   }
 
@@ -1624,12 +1624,12 @@ LABEL_6:
   {
     [(TSDTextInputResponder *)self acceptAutocorrection];
     [objc_msgSend(MEMORY[0x277D75718] "sharedMenuController")];
-    v8 = a3;
+    invocationCopy2 = invocation;
     editor = v6;
     goto LABEL_6;
   }
 
-  [(TSDTextInputResponder *)self doesNotRecognizeSelector:v5];
+  [(TSDTextInputResponder *)self doesNotRecognizeSelector:selector];
 }
 
 - (int64_t)autocorrectionType
@@ -1677,39 +1677,39 @@ LABEL_6:
   return result;
 }
 
-- (id)_textRangeFromNSRange:(_NSRange)a3
+- (id)_textRangeFromNSRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(TSDTextInputResponder *)self _selectableText];
-  v6 = [v5 positionFromPosition:objc_msgSend(v5 offset:{"beginningOfDocument"), location}];
-  if (!v6)
+  length = range.length;
+  location = range.location;
+  _selectableText = [(TSDTextInputResponder *)self _selectableText];
+  endOfDocument = [_selectableText positionFromPosition:objc_msgSend(_selectableText offset:{"beginningOfDocument"), location}];
+  if (!endOfDocument)
   {
-    v6 = [v5 endOfDocument];
+    endOfDocument = [_selectableText endOfDocument];
   }
 
-  v7 = [v5 positionFromPosition:v6 offset:length];
-  if (!v7)
+  endOfDocument2 = [_selectableText positionFromPosition:endOfDocument offset:length];
+  if (!endOfDocument2)
   {
-    v7 = [v5 endOfDocument];
+    endOfDocument2 = [_selectableText endOfDocument];
   }
 
-  return [v5 textRangeFromPosition:v6 toPosition:v7];
+  return [_selectableText textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
 }
 
-- (int64_t)_indexForTextPosition:(id)a3
+- (int64_t)_indexForTextPosition:(id)position
 {
-  v4 = [(TSDTextInputResponder *)self _selectableText];
-  v5 = [v4 beginningOfDocument];
+  _selectableText = [(TSDTextInputResponder *)self _selectableText];
+  beginningOfDocument = [_selectableText beginningOfDocument];
 
-  return [v4 offsetFromPosition:v5 toPosition:a3];
+  return [_selectableText offsetFromPosition:beginningOfDocument toPosition:position];
 }
 
-- (_NSRange)_nsrangeForTextRange:(id)a3
+- (_NSRange)_nsrangeForTextRange:(id)range
 {
-  v5 = [(TSDTextInputResponder *)self _selectableText];
-  v6 = -[TSDTextInputResponder _indexForTextPosition:](self, "_indexForTextPosition:", [a3 start]);
-  v7 = [v5 offsetFromPosition:objc_msgSend(a3 toPosition:{"start"), objc_msgSend(a3, "end")}];
+  _selectableText = [(TSDTextInputResponder *)self _selectableText];
+  v6 = -[TSDTextInputResponder _indexForTextPosition:](self, "_indexForTextPosition:", [range start]);
+  v7 = [_selectableText offsetFromPosition:objc_msgSend(range toPosition:{"start"), objc_msgSend(range, "end")}];
   v8 = v6;
   result.length = v7;
   result.location = v8;
@@ -1718,8 +1718,8 @@ LABEL_6:
 
 - (_NSRange)_selectedNSRange
 {
-  v3 = [(TSDTextInputResponder *)self _selectableText];
-  if (v3 && (v4 = [v3 selectedTextRange]) != 0)
+  _selectableText = [(TSDTextInputResponder *)self _selectableText];
+  if (_selectableText && (v4 = [_selectableText selectedTextRange]) != 0)
   {
     v5 = [(TSDTextInputResponder *)self _nsrangeForTextRange:v4];
   }
@@ -1743,9 +1743,9 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(TSDTextInputResponder *)self editor];
+  editor = [(TSDTextInputResponder *)self editor];
 
-  return [(TSDTextInput *)v3 inputView];
+  return [(TSDTextInput *)editor inputView];
 }
 
 - (id)inputAccessoryView
@@ -1756,9 +1756,9 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(TSDTextInputResponder *)self editor];
+  editor = [(TSDTextInputResponder *)self editor];
 
-  return [(TSDTextInput *)v3 inputAccessoryView];
+  return [(TSDTextInput *)editor inputAccessoryView];
 }
 
 - (id)p_ICC
@@ -1775,28 +1775,28 @@ LABEL_6:
     v3 = TSUDynamicCast();
     if (v3)
     {
-      v4 = [v3 controller];
+      controller = [v3 controller];
     }
 
     else
     {
-      v4 = 0;
+      controller = 0;
     }
 
-    v5 = [(UIResponder *)nextResponder nextResponder];
-    if (!v5)
+    nextResponder = [(UIResponder *)nextResponder nextResponder];
+    if (!nextResponder)
     {
       break;
     }
 
-    nextResponder = v5;
+    nextResponder = nextResponder;
   }
 
-  while (!v4);
-  return v4;
+  while (!controller);
+  return controller;
 }
 
-- (void)p_startDynamicOperation:(id)a3
+- (void)p_startDynamicOperation:(id)operation
 {
   if ([(TSDTextInputResponder *)self isFirstResponder])
   {
@@ -1805,7 +1805,7 @@ LABEL_6:
   }
 }
 
-- (void)p_finishDynamicOperation:(id)a3
+- (void)p_finishDynamicOperation:(id)operation
 {
   if ([(TSDTextInputResponder *)self isFirstResponder])
   {
@@ -1838,47 +1838,47 @@ LABEL_6:
   }
 }
 
-- (void)p_editorWillClearSelectionNotification:(id)a3
+- (void)p_editorWillClearSelectionNotification:(id)notification
 {
-  if ([objc_msgSend(a3 "userInfo")] == self->_editor)
+  if ([objc_msgSend(notification "userInfo")] == self->_editor)
   {
 
     [(TSDTextInputResponder *)self acceptAutocorrection];
   }
 }
 
-- (void)p_editorWillStyleTextNotification:(id)a3
+- (void)p_editorWillStyleTextNotification:(id)notification
 {
-  if ([objc_msgSend(a3 "userInfo")] == self->_editor)
+  if ([objc_msgSend(notification "userInfo")] == self->_editor)
   {
 
     [(TSDTextInputResponder *)self acceptAutocorrection];
   }
 }
 
-- (void)p_editorWillHandleTapNotification:(id)a3
+- (void)p_editorWillHandleTapNotification:(id)notification
 {
-  if ([objc_msgSend(a3 "userInfo")] == self->_editor)
+  if ([objc_msgSend(notification "userInfo")] == self->_editor)
   {
 
     [(TSDTextInputResponder *)self acceptAutocorrection];
   }
 }
 
-- (void)p_editorSelectionWasForciblyChangedNotification:(id)a3
+- (void)p_editorSelectionWasForciblyChangedNotification:(id)notification
 {
-  if ([objc_msgSend(a3 "userInfo")] == self->_editor)
+  if ([objc_msgSend(notification "userInfo")] == self->_editor)
   {
 
     [(TSDTextInputResponder *)self p_textChanged];
   }
 }
 
-- (void)editorDidChangeSelection:(id)a3 withFlags:(unint64_t)a4
+- (void)editorDidChangeSelection:(id)selection withFlags:(unint64_t)flags
 {
-  if (!self->_pendingEditorChange && self->_editor == a3)
+  if (!self->_pendingEditorChange && self->_editor == selection)
   {
-    v5 = a4;
+    flagsCopy = flags;
     [(TSDTextInputResponder *)self cancelDelayedResponderChange];
     self->_preferredEndPosition = NAN;
     self->_preferredStartPosition = NAN;
@@ -1903,7 +1903,7 @@ LABEL_6:
         [(TSDTextInputResponder *)self performSelector:sel_p_setFirstResponderAfterDelay withObject:0 afterDelay:0.25];
       }
 
-      else if ((v5 & 0x200000) == 0)
+      else if ((flagsCopy & 0x200000) == 0)
       {
         [(TSDTextInputResponder *)self p_setFirstResponder:self->_editor];
       }
@@ -1913,14 +1913,14 @@ LABEL_6:
   }
 }
 
-- (void)p_willShowPopoverNotification:(id)a3
+- (void)p_willShowPopoverNotification:(id)notification
 {
   [(TSDTextInputResponder *)self acceptAutocorrection];
 
   [(TSDTextInputResponder *)self p_unmarkText];
 }
 
-- (void)p_willUndoChangeNotification:(id)a3
+- (void)p_willUndoChangeNotification:(id)notification
 {
   if (![(TSDTextInputResponder *)self p_isExecutingUITextInput])
   {
@@ -1931,7 +1931,7 @@ LABEL_6:
   }
 }
 
-- (void)p_didUndoRedoChangeNotification:(id)a3
+- (void)p_didUndoRedoChangeNotification:(id)notification
 {
   if (![(TSDTextInputResponder *)self p_isExecutingUITextInput])
   {
@@ -1941,10 +1941,10 @@ LABEL_6:
   }
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3
+- (id)closestPositionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10 = 0;
   if (TSUSupportsTextInteraction() && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [(TSDTextInput *)self->_editor allowAutomaticTextEditingToBeginWithDifferentEditor])
   {
@@ -1956,9 +1956,9 @@ LABEL_6:
     return 0;
   }
 
-  v6 = [(TSDTextInput *)self->_editor textLength];
+  textLength = [(TSDTextInput *)self->_editor textLength];
   v7 = [(TSDTextInput *)self->_editor closestCharIndexToPoint:&v10 isAtEndOfLine:x, y];
-  if (v7 > v6)
+  if (v7 > textLength)
   {
     return 0;
   }
@@ -1967,24 +1967,24 @@ LABEL_6:
   return [TSDTextPosition textPositionWithCharIndex:v7 eolAffinity:v10 preferredPosition:0 isPreferredStart:v8];
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v18 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(TSDTextInput *)self->_editor textLength];
+    textLength = [(TSDTextInput *)self->_editor textLength];
     v8 = [(TSDTextInput *)self->_editor closestCharIndexToPoint:&v18 isAtEndOfLine:x, y];
-    if (v8 <= v7)
+    if (v8 <= textLength)
     {
       v9 = v8;
       objc_opt_class();
       v10 = TSUDynamicCast();
       if (v10)
       {
-        v11 = [v10 range];
-        if (v9 >= v11 && v9 <= v11 + v12)
+        range = [v10 range];
+        if (v9 >= range && v9 <= range + v12)
         {
           LODWORD(v13) = 2143289344;
           return [TSDTextPosition textPositionWithCharIndex:v9 eolAffinity:v18 preferredPosition:0 isPreferredStart:v13];
@@ -1993,9 +1993,9 @@ LABEL_6:
 
       else
       {
-        v16 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder closestPositionToPoint:withinRange:]"];
-        [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 2017, @"Bad range in -closestPositionToPoint:withinRange:"}];
+        [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 2017, @"Bad range in -closestPositionToPoint:withinRange:"}];
       }
     }
   }
@@ -2003,62 +2003,62 @@ LABEL_6:
   return 0;
 }
 
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
   if (![(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
     return 0;
   }
 
-  return [(TSDTextInputResponder *)self arrow_positionWithinRange:a3 farthestInDirection:a4];
+  return [(TSDTextInputResponder *)self arrow_positionWithinRange:range farthestInDirection:direction];
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
   if (![(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
     return 0;
   }
 
-  return [(TSDTextInputResponder *)self arrow_characterRangeByExtendingPosition:a3 inDirection:a4];
+  return [(TSDTextInputResponder *)self arrow_characterRangeByExtendingPosition:position inDirection:direction];
 }
 
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction
 {
   if ([(TSDTextInputResponder *)self p_wantRawArrowKeys])
   {
 
-    return [(TSDTextInputResponder *)self arrow_baseWritingDirectionForPosition:a3 inDirection:a4];
+    return [(TSDTextInputResponder *)self arrow_baseWritingDirectionForPosition:position inDirection:direction];
   }
 
   objc_opt_class();
   v8 = TSUDynamicCast();
   if (!v8)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder baseWritingDirectionForPosition:inDirection:]"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"];
     v14 = @"Bad text position.";
-    v15 = v11;
+    v15 = currentHandler;
     v16 = v12;
     v17 = 2073;
     goto LABEL_20;
   }
 
   v9 = v8;
-  if (a4 != 1)
+  if (direction != 1)
   {
-    if (!a4)
+    if (!direction)
     {
-      v10 = [v8 charIndex];
+      charIndex = [v8 charIndex];
       goto LABEL_14;
     }
 
-    v21 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder baseWritingDirectionForPosition:inDirection:]"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"];
     v14 = @"Unknown direction.";
-    v15 = v21;
+    v15 = currentHandler2;
     v16 = v22;
     v17 = 2095;
 LABEL_20:
@@ -2068,9 +2068,9 @@ LABEL_20:
 
   if (![v8 charIndex])
   {
-    v18 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextInputResponder baseWritingDirectionForPosition:inDirection:]"];
-    [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 2086, @"Bad text position for writing direction."}];
+    [currentHandler3 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextInputResponder.m"), 2086, @"Bad text position for writing direction."}];
   }
 
   if (![v9 charIndex])
@@ -2078,35 +2078,35 @@ LABEL_20:
     return -1;
   }
 
-  v10 = [v9 charIndex] - 1;
+  charIndex = [v9 charIndex] - 1;
 LABEL_14:
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
+  if (charIndex == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_respondsToSelector() & 1) == 0)
   {
     return -1;
   }
 
   editor = self->_editor;
 
-  return [(TSDTextInput *)editor writingDirectionForCharIndex:v10];
+  return [(TSDTextInput *)editor writingDirectionForCharIndex:charIndex];
 }
 
-- (void)makeTextWritingDirectionLeftToRight:(id)a3
+- (void)makeTextWritingDirectionLeftToRight:(id)right
 {
   if (objc_opt_respondsToSelector())
   {
     editor = self->_editor;
 
-    [(TSDTextInput *)editor reverseDirection:a3];
+    [(TSDTextInput *)editor reverseDirection:right];
   }
 }
 
-- (void)makeTextWritingDirectionRightToLeft:(id)a3
+- (void)makeTextWritingDirectionRightToLeft:(id)left
 {
   if (objc_opt_respondsToSelector())
   {
     editor = self->_editor;
 
-    [(TSDTextInput *)editor reverseDirection:a3];
+    [(TSDTextInput *)editor reverseDirection:left];
   }
 }
 
@@ -2121,20 +2121,20 @@ LABEL_14:
 
   else
   {
-    v5 = [(TSDTextInputResponder *)self nextResponder];
-    if (v5)
+    nextResponder = [(TSDTextInputResponder *)self nextResponder];
+    if (nextResponder)
     {
-      v6 = v5;
+      nextResponder2 = nextResponder;
       while (1)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          return v6;
+          return nextResponder2;
         }
 
-        v6 = [(UIView *)v6 nextResponder];
-        if (!v6)
+        nextResponder2 = [(UIView *)nextResponder2 nextResponder];
+        if (!nextResponder2)
         {
           goto LABEL_9;
         }
@@ -2144,18 +2144,18 @@ LABEL_14:
     else
     {
 LABEL_9:
-      v7 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
 
-      return [v7 keyWindow];
+      return [mEMORY[0x277D75128] keyWindow];
     }
   }
 }
 
 - (id)superview
 {
-  v2 = [(TSDTextInputResponder *)self textInputView];
+  textInputView = [(TSDTextInputResponder *)self textInputView];
 
-  return [(UIView *)v2 superview];
+  return [(UIView *)textInputView superview];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface NSSQLiteIndexTrackingModel
 + (id)newModelForFrameworkVersion:;
 + (void)initialize;
-+ (void)updateIndexStatistics:(uint64_t)a3 usingConnection:(void *)a4 model:;
++ (void)updateIndexStatistics:(uint64_t)statistics usingConnection:(void *)connection model:;
 @end
 
 @implementation NSSQLiteIndexTrackingModel
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     objc_opt_self();
@@ -52,21 +52,21 @@ uint64_t __58__NSSQLiteIndexTrackingModel_newModelForFrameworkVersion___block_in
   return result;
 }
 
-+ (void)updateIndexStatistics:(uint64_t)a3 usingConnection:(void *)a4 model:
++ (void)updateIndexStatistics:(uint64_t)statistics usingConnection:(void *)connection model:
 {
   v31 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (a4)
+  if (connection)
   {
-    a4 = a4[3];
+    connection = connection[3];
   }
 
   v6 = objc_opt_class();
-  v7 = [a4 objectForKeyedSubscript:NSStringFromClass(v6)];
+  v7 = [connection objectForKeyedSubscript:NSStringFromClass(v6)];
   v8 = v7;
   if (v7)
   {
-    v22 = [v7 tableName];
+    tableName = [v7 tableName];
     v9 = [objc_msgSend(v8[5] objectForKey:{@"executionCount", "columnName"}];
     v10 = [objc_msgSend(v8[5] objectForKey:{@"rowCount", "columnName"}];
     v11 = [objc_msgSend(v8[5] objectForKey:{@"instructionCount", "columnName"}];
@@ -75,11 +75,11 @@ uint64_t __58__NSSQLiteIndexTrackingModel_newModelForFrameworkVersion___block_in
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [a2 allValues];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    allValues = [a2 allValues];
+    v13 = [allValues countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v13)
     {
-      obj = v12;
+      obj = allValues;
       v20 = *v26;
       do
       {
@@ -91,8 +91,8 @@ uint64_t __58__NSSQLiteIndexTrackingModel_newModelForFrameworkVersion___block_in
             objc_enumerationMutation(obj);
           }
 
-          v15 = -[NSSQLiteStatement initWithEntity:sqlString:]([NSSQLiteStatement alloc], "initWithEntity:sqlString:", 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE OR IGNORE %@ SET %@ = %@ + %lld, %@ = %@ + %lld, %@ = %@ + %lld WHERE %@ = '%@'", v22, v9, v9, objc_msgSend(*(*(&v25 + 1) + 8 * i), "executionCount"), v10, v10, objc_msgSend(*(*(&v25 + 1) + 8 * i), "rowCount"), v11, v11, objc_msgSend(*(*(&v25 + 1) + 8 * i), "instructionCount"), v21, objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * i), "indexName"), "uppercaseString")]);
-          [(NSSQLiteConnection *)a3 prepareAndExecuteSQLStatement:v15];
+          v15 = -[NSSQLiteStatement initWithEntity:sqlString:]([NSSQLiteStatement alloc], "initWithEntity:sqlString:", 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE OR IGNORE %@ SET %@ = %@ + %lld, %@ = %@ + %lld, %@ = %@ + %lld WHERE %@ = '%@'", tableName, v9, v9, objc_msgSend(*(*(&v25 + 1) + 8 * i), "executionCount"), v10, v10, objc_msgSend(*(*(&v25 + 1) + 8 * i), "rowCount"), v11, v11, objc_msgSend(*(*(&v25 + 1) + 8 * i), "instructionCount"), v21, objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * i), "indexName"), "uppercaseString")]);
+          [(NSSQLiteConnection *)statistics prepareAndExecuteSQLStatement:v15];
         }
 
         v13 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];

@@ -1,24 +1,24 @@
 @interface HUEditOutgoingInvitationItemManager
 - (HMOutgoingHomeInvitation)outgoingInvitation;
-- (HUEditOutgoingInvitationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 home:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUEditOutgoingInvitationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item home:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)_removeTitleForInvitationState:(int64_t)a3;
+- (id)_removeTitleForInvitationState:(int64_t)state;
 @end
 
 @implementation HUEditOutgoingInvitationItemManager
 
-- (HUEditOutgoingInvitationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 home:(id)a5
+- (HUEditOutgoingInvitationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item home:(id)home
 {
-  v9 = a5;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HUEditOutgoingInvitationItemManager;
-  v10 = [(HFItemManager *)&v13 initWithDelegate:a3 sourceItem:a4];
+  v10 = [(HFItemManager *)&v13 initWithDelegate:delegate sourceItem:item];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_overrideHome, a5);
+    objc_storeStrong(&v10->_overrideHome, home);
   }
 
   return v11;
@@ -26,31 +26,31 @@
 
 - (HMOutgoingHomeInvitation)outgoingInvitation
 {
-  v2 = [(HFItemManager *)self sourceItem];
-  v3 = [v2 outgoingInvitation];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  outgoingInvitation = [sourceItem outgoingInvitation];
 
-  return v3;
+  return outgoingInvitation;
 }
 
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUEditOutgoingInvitationItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUEditOutgoingInvitationItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   objc_initWeak(&location, self);
-  v5 = [(HUEditOutgoingInvitationItemManager *)self outgoingInvitation];
-  if ([v5 invitationState] != 4)
+  outgoingInvitation = [(HUEditOutgoingInvitationItemManager *)self outgoingInvitation];
+  if ([outgoingInvitation invitationState] != 4)
   {
-    v6 = [(HUEditOutgoingInvitationItemManager *)self outgoingInvitation];
-    [v6 invitationState];
+    outgoingInvitation2 = [(HUEditOutgoingInvitationItemManager *)self outgoingInvitation];
+    [outgoingInvitation2 invitationState];
   }
 
   v7 = objc_alloc(MEMORY[0x277D14B38]);
@@ -73,10 +73,10 @@
   [(HUEditOutgoingInvitationItemManager *)self setRemoveItem:v10, v19, v20, v21, v22];
 
   v11 = objc_alloc(MEMORY[0x277CBEB98]);
-  v12 = [(HUEditOutgoingInvitationItemManager *)self inviteAgainItem];
-  v29[0] = v12;
-  v13 = [(HUEditOutgoingInvitationItemManager *)self removeItem];
-  v29[1] = v13;
+  inviteAgainItem = [(HUEditOutgoingInvitationItemManager *)self inviteAgainItem];
+  v29[0] = inviteAgainItem;
+  removeItem = [(HUEditOutgoingInvitationItemManager *)self removeItem];
+  v29[1] = removeItem;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
   v15 = [v11 initWithArray:v14];
 
@@ -142,27 +142,27 @@ id __66__HUEditOutgoingInvitationItemManager__buildItemProvidersForHome___block_
   return v13;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(HUEditOutgoingInvitationItemManager *)self inviteAgainItem];
-  v7 = [v4 containsObject:v6];
+  inviteAgainItem = [(HUEditOutgoingInvitationItemManager *)self inviteAgainItem];
+  v7 = [itemsCopy containsObject:inviteAgainItem];
 
   if (v7)
   {
-    v8 = [(HUEditOutgoingInvitationItemManager *)self inviteAgainItem];
-    [v5 addObject:v8];
+    inviteAgainItem2 = [(HUEditOutgoingInvitationItemManager *)self inviteAgainItem];
+    [v5 addObject:inviteAgainItem2];
   }
 
-  v9 = [(HUEditOutgoingInvitationItemManager *)self removeItem];
-  v10 = [v4 containsObject:v9];
+  removeItem = [(HUEditOutgoingInvitationItemManager *)self removeItem];
+  v10 = [itemsCopy containsObject:removeItem];
 
   if (v10)
   {
-    v11 = [(HUEditOutgoingInvitationItemManager *)self removeItem];
-    [v5 addObject:v11];
+    removeItem2 = [(HUEditOutgoingInvitationItemManager *)self removeItem];
+    [v5 addObject:removeItem2];
   }
 
   v12 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditOutgoingInvitationItemManagerButtonSectionIdentifier"];
@@ -173,9 +173,9 @@ id __66__HUEditOutgoingInvitationItemManager__buildItemProvidersForHome___block_
   return v13;
 }
 
-- (id)_removeTitleForInvitationState:(int64_t)a3
+- (id)_removeTitleForInvitationState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v3 = @"HUUsersCellCancelInvitation";
   }

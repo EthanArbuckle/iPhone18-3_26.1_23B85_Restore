@@ -1,27 +1,27 @@
 @interface UIDropInteraction
-- (BOOL)_canHandleDragEvent:(id)a3;
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveDragEvent:(id)a4;
+- (BOOL)_canHandleDragEvent:(id)event;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveDragEvent:(id)event;
 - (UIDropInteraction)initWithDelegate:(id)delegate;
 - (UIDropInteractionContextImpl)context;
 - (UIView)view;
 - (_UIDropInteractionOwning)owner;
-- (id)_dynamicGestureRecognizersForEvent:(id)a3;
-- (id)_initWithPasteConfiguration:(id)a3;
-- (id)_setDownAnimation:(id)a3 customSpringAnimationBehaviorForSetDownOfDragItem:(id)a4;
-- (id)_setDownAnimation:(id)a3 prepareForSetDownOfDragItem:(id)a4 visibleDroppedItem:(id)a5;
-- (id)_setDownAnimation:(id)a3 updatedSetDownOfDragItem:(id)a4 preview:(id)a5;
-- (id)_windowForSetDownOfDragItem:(id)a3;
+- (id)_dynamicGestureRecognizersForEvent:(id)event;
+- (id)_initWithPasteConfiguration:(id)configuration;
+- (id)_setDownAnimation:(id)animation customSpringAnimationBehaviorForSetDownOfDragItem:(id)item;
+- (id)_setDownAnimation:(id)animation prepareForSetDownOfDragItem:(id)item visibleDroppedItem:(id)droppedItem;
+- (id)_setDownAnimation:(id)animation updatedSetDownOfDragItem:(id)item preview:(id)preview;
+- (id)_windowForSetDownOfDragItem:(id)item;
 - (id)delegate;
-- (unint64_t)_setLastDragOperation:(unint64_t)a3 forbidden:(BOOL)a4 precise:(BOOL)a5 prefersFullSizePreview:(BOOL)a6 preferredBadgeStyle:(int64_t)a7 onSession:(id)a8;
-- (unint64_t)_validateDragOperation:(unint64_t)a3 forSelector:(SEL)a4 delegate:(id)a5 dropSession:(id)a6 onSession:(id)a7 forbidden:(BOOL *)a8;
-- (void)_dragDestinationGestureStateChanged:(id)a3;
-- (void)_dropSessionEntered:(id)a3 withSessionDestination:(id)a4;
-- (void)_prepareItemsInSessionForDrop:(id)a3;
-- (void)_sendSessionDidEnd:(id)a3;
-- (void)_setDownAnimation:(id)a3 willAnimateSetDownOfDragItem:(id)a4 withAnimator:(id)a5 preview:(id)a6;
-- (void)_setWantsDefaultVisualBehavior:(BOOL)a3;
-- (void)didMoveToOwner:(id)a3;
-- (void)willMoveToOwner:(id)a3;
+- (unint64_t)_setLastDragOperation:(unint64_t)operation forbidden:(BOOL)forbidden precise:(BOOL)precise prefersFullSizePreview:(BOOL)preview preferredBadgeStyle:(int64_t)style onSession:(id)session;
+- (unint64_t)_validateDragOperation:(unint64_t)operation forSelector:(SEL)selector delegate:(id)delegate dropSession:(id)session onSession:(id)onSession forbidden:(BOOL *)forbidden;
+- (void)_dragDestinationGestureStateChanged:(id)changed;
+- (void)_dropSessionEntered:(id)entered withSessionDestination:(id)destination;
+- (void)_prepareItemsInSessionForDrop:(id)drop;
+- (void)_sendSessionDidEnd:(id)end;
+- (void)_setDownAnimation:(id)animation willAnimateSetDownOfDragItem:(id)item withAnimator:(id)animator preview:(id)preview;
+- (void)_setWantsDefaultVisualBehavior:(BOOL)behavior;
+- (void)didMoveToOwner:(id)owner;
+- (void)willMoveToOwner:(id)owner;
 @end
 
 @implementation UIDropInteraction
@@ -182,22 +182,22 @@
   return v6;
 }
 
-- (id)_initWithPasteConfiguration:(id)a3
+- (id)_initWithPasteConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = UIDropInteraction;
   v6 = [(UIDropInteraction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pasteConfiguration, a3);
+    objc_storeStrong(&v6->_pasteConfiguration, configuration);
   }
 
   return v7;
 }
 
-- (id)_dynamicGestureRecognizersForEvent:(id)a3
+- (id)_dynamicGestureRecognizersForEvent:(id)event
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v4 = [(UIDragGestureRecognizer *)[UIDropInteractionGestureRecognizer alloc] initWithTarget:self action:sel__dragDestinationGestureStateChanged_];
@@ -208,27 +208,27 @@
   return v5;
 }
 
-- (void)willMoveToOwner:(id)a3
+- (void)willMoveToOwner:(id)owner
 {
   [(UIDropInteractionContextImpl *)self->_context setState:0];
-  v4 = [(UIDropInteraction *)self interactionEffect];
-  [v4 interaction:self didChangeWithContext:self->_context];
+  interactionEffect = [(UIDropInteraction *)self interactionEffect];
+  [interactionEffect interaction:self didChangeWithContext:self->_context];
 }
 
-- (void)didMoveToOwner:(id)a3
+- (void)didMoveToOwner:(id)owner
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  ownerCopy = owner;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
-  objc_storeWeak(&self->_owner, v4);
-  if (!v4 && WeakRetained)
+  objc_storeWeak(&self->_owner, ownerCopy);
+  if (!ownerCopy && WeakRetained)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [WeakRetained gestureRecognizers];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    gestureRecognizers = [WeakRetained gestureRecognizers];
+    v7 = [gestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -240,21 +240,21 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 delegate];
+            delegate = [v11 delegate];
 
-            if (v12 == self)
+            if (delegate == self)
             {
               [WeakRetained removeGestureRecognizer:v11];
-              v13 = [v11 sessionDestination];
-              v14 = [v13 activeDragEvent];
-              [v14 _removeQueriedOwnerForDynamicGesturesIfNeeded:WeakRetained];
+              sessionDestination = [v11 sessionDestination];
+              activeDragEvent = [sessionDestination activeDragEvent];
+              [activeDragEvent _removeQueriedOwnerForDynamicGesturesIfNeeded:WeakRetained];
             }
           }
 
@@ -262,7 +262,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [gestureRecognizers countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -285,12 +285,12 @@
   return context;
 }
 
-- (void)_setWantsDefaultVisualBehavior:(BOOL)a3
+- (void)_setWantsDefaultVisualBehavior:(BOOL)behavior
 {
-  if (self->_wantsDefaultVisualBehavior != a3)
+  if (self->_wantsDefaultVisualBehavior != behavior)
   {
-    self->_wantsDefaultVisualBehavior = a3;
-    if (a3)
+    self->_wantsDefaultVisualBehavior = behavior;
+    if (behavior)
     {
       v4 = objc_opt_new();
       [(UIDropInteraction *)self setInteractionEffect:v4];
@@ -304,11 +304,11 @@
   }
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveDragEvent:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveDragEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ((([(NSMutableSet *)self->_activeDragGestureRecognizers containsObject:v6]& 1) != 0 || ![(NSMutableSet *)self->_activeDragGestureRecognizers count]|| [(UIDropInteraction *)self _allowsSimultaneousDragWithEvent:v7]) && [(UIDropInteraction *)self _canHandleDragEvent:v7])
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  if ((([(NSMutableSet *)self->_activeDragGestureRecognizers containsObject:recognizerCopy]& 1) != 0 || ![(NSMutableSet *)self->_activeDragGestureRecognizers count]|| [(UIDropInteraction *)self _allowsSimultaneousDragWithEvent:eventCopy]) && [(UIDropInteraction *)self _canHandleDragEvent:eventCopy])
   {
     activeDragGestureRecognizers = self->_activeDragGestureRecognizers;
     if (!activeDragGestureRecognizers)
@@ -320,7 +320,7 @@
       activeDragGestureRecognizers = self->_activeDragGestureRecognizers;
     }
 
-    [(NSMutableSet *)activeDragGestureRecognizers addObject:v6];
+    [(NSMutableSet *)activeDragGestureRecognizers addObject:recognizerCopy];
     v11 = 1;
   }
 
@@ -332,25 +332,25 @@
   return v11;
 }
 
-- (void)_dragDestinationGestureStateChanged:(id)a3
+- (void)_dragDestinationGestureStateChanged:(id)changed
 {
-  v4 = a3;
-  v35 = [(UIDropInteraction *)self delegate];
-  v5 = [v4 sessionDestination];
-  v6 = [v4 dropSession];
-  v34 = [(UIDropInteraction *)self owner];
+  changedCopy = changed;
+  delegate = [(UIDropInteraction *)self delegate];
+  sessionDestination = [changedCopy sessionDestination];
+  dropSession = [changedCopy dropSession];
+  owner = [(UIDropInteraction *)self owner];
   v45[0] = 0;
-  v7 = [v4 state];
-  if (v7 > 2)
+  state = [changedCopy state];
+  if (state > 2)
   {
-    if (v7 == 3)
+    if (state == 3)
     {
-      v23 = [(UIDropInteraction *)self context];
-      [v23 setState:3];
+      context = [(UIDropInteraction *)self context];
+      [context setState:3];
 
-      v24 = [(UIDropInteraction *)self interactionEffect];
-      v25 = [(UIDropInteraction *)self context];
-      [v24 interaction:self didChangeWithContext:v25];
+      interactionEffect = [(UIDropInteraction *)self interactionEffect];
+      context2 = [(UIDropInteraction *)self context];
+      [interactionEffect interaction:self didChangeWithContext:context2];
 
       if (self->_potentialDragOperation)
       {
@@ -358,14 +358,14 @@
         aBlock[1] = 3221225472;
         aBlock[2] = __57__UIDropInteraction__dragDestinationGestureStateChanged___block_invoke;
         aBlock[3] = &unk_1E70F8868;
-        v26 = v35;
+        v26 = delegate;
         v40 = v26;
-        v41 = self;
-        v27 = v6;
+        selfCopy = self;
+        v27 = dropSession;
         v42 = v27;
-        v28 = v5;
+        v28 = sessionDestination;
         v43 = v28;
-        v29 = v34;
+        v29 = owner;
         v44 = v29;
         v30 = _Block_copy(aBlock);
         v36[0] = MEMORY[0x1E69E9820];
@@ -382,63 +382,63 @@
 
     else
     {
-      if (v7 != 4)
+      if (state != 4)
       {
         goto LABEL_26;
       }
 
-      v8 = [(UIDropInteraction *)self context];
-      [v8 setState:0];
+      context3 = [(UIDropInteraction *)self context];
+      [context3 setState:0];
 
-      v9 = [(UIDropInteraction *)self interactionEffect];
-      v10 = [(UIDropInteraction *)self context];
-      [v9 interaction:self didChangeWithContext:v10];
+      interactionEffect2 = [(UIDropInteraction *)self interactionEffect];
+      context4 = [(UIDropInteraction *)self context];
+      [interactionEffect2 interaction:self didChangeWithContext:context4];
 
       if ((*&self->_delegateImplements & 8) != 0)
       {
-        [v35 dropInteraction:self sessionDidExit:v6];
+        [delegate dropInteraction:self sessionDidExit:dropSession];
       }
     }
 
-    [(NSMutableSet *)self->_activeDragGestureRecognizers removeObject:v4];
+    [(NSMutableSet *)self->_activeDragGestureRecognizers removeObject:changedCopy];
     goto LABEL_26;
   }
 
-  if (v7 == 1)
+  if (state == 1)
   {
-    v11 = [(UIDropInteraction *)self context];
-    [v11 setState:1];
+    context5 = [(UIDropInteraction *)self context];
+    [context5 setState:1];
 
-    v12 = [(UIDropInteraction *)self interactionEffect];
-    v13 = [(UIDropInteraction *)self context];
-    [v12 interaction:self didChangeWithContext:v13];
+    interactionEffect3 = [(UIDropInteraction *)self interactionEffect];
+    context6 = [(UIDropInteraction *)self context];
+    [interactionEffect3 interaction:self didChangeWithContext:context6];
 
-    [(UIDropInteraction *)self _dropSessionEntered:v6 withSessionDestination:v5];
+    [(UIDropInteraction *)self _dropSessionEntered:dropSession withSessionDestination:sessionDestination];
     if ((*&self->_delegateImplements & 2) != 0)
     {
-      [v35 dropInteraction:self sessionDidEnter:v6];
+      [delegate dropInteraction:self sessionDidEnter:dropSession];
     }
   }
 
-  else if (v7 != 2)
+  else if (state != 2)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_delegateImplements & 4) != 0)
   {
-    v19 = [v35 dropInteraction:self sessionDidUpdate:v6];
+    v19 = [delegate dropInteraction:self sessionDidUpdate:dropSession];
     if (v19)
     {
       v20 = v19;
       delegateImplements = self->_delegateImplements;
-      v22 = [v19 operation];
-      if (v22 == 3)
+      operation = [v19 operation];
+      if (operation == 3)
       {
         v17 = 16;
       }
 
-      else if (v22 == 2)
+      else if (operation == 2)
       {
         v17 = 1;
       }
@@ -446,15 +446,15 @@
       else
       {
         v17 = 0;
-        if (v22 == 1)
+        if (operation == 1)
         {
           v45[0] = 1;
         }
       }
 
-      v15 = [v20 isPrecise];
-      v18 = [v20 prefersFullSizePreview];
-      v16 = [v20 _preferredBadgeStyle];
+      isPrecise = [v20 isPrecise];
+      prefersFullSizePreview = [v20 prefersFullSizePreview];
+      _preferredBadgeStyle = [v20 _preferredBadgeStyle];
 
       if ((delegateImplements & 0x10) != 0)
       {
@@ -465,19 +465,19 @@
 
   else
   {
-    v14 = [(UIDropInteraction *)self _pasteConfiguration];
+    _pasteConfiguration = [(UIDropInteraction *)self _pasteConfiguration];
 
-    if (v14)
+    if (_pasteConfiguration)
     {
-      v15 = 0;
-      v16 = 0;
-      v17 = [v5 sourceOperationMask] & 1;
-      v18 = 1;
+      isPrecise = 0;
+      _preferredBadgeStyle = 0;
+      v17 = [sessionDestination sourceOperationMask] & 1;
+      prefersFullSizePreview = 1;
 LABEL_25:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v33 = [(UIDropInteraction *)self _validateDragOperation:v17 forSelector:sel_dropInteraction_sessionDidUpdate_ delegate:WeakRetained dropSession:v6 onSession:v5 forbidden:v45];
+      v33 = [(UIDropInteraction *)self _validateDragOperation:v17 forSelector:sel_dropInteraction_sessionDidUpdate_ delegate:WeakRetained dropSession:dropSession onSession:sessionDestination forbidden:v45];
 
-      [(UIDropInteraction *)self _setLastDragOperation:v33 forbidden:v45[0] precise:v15 prefersFullSizePreview:v18 preferredBadgeStyle:v16 onSession:v5];
+      [(UIDropInteraction *)self _setLastDragOperation:v33 forbidden:v45[0] precise:isPrecise prefersFullSizePreview:prefersFullSizePreview preferredBadgeStyle:_preferredBadgeStyle onSession:sessionDestination];
     }
   }
 
@@ -576,15 +576,15 @@ uint64_t __57__UIDropInteraction__dragDestinationGestureStateChanged___block_inv
   return result;
 }
 
-- (void)_prepareItemsInSessionForDrop:(id)a3
+- (void)_prepareItemsInSessionForDrop:(id)drop
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 items];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [drop items];
+  v5 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -596,42 +596,42 @@ uint64_t __57__UIDropInteraction__dragDestinationGestureStateChanged___block_inv
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) _setDestinationVisualTarget:self];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)_windowForSetDownOfDragItem:(id)a3
+- (id)_windowForSetDownOfDragItem:(id)item
 {
-  v3 = [(UIDropInteraction *)self view];
-  v4 = [v3 _window];
+  view = [(UIDropInteraction *)self view];
+  _window = [view _window];
 
-  return v4;
+  return _window;
 }
 
-- (id)_setDownAnimation:(id)a3 updatedSetDownOfDragItem:(id)a4 preview:(id)a5
+- (id)_setDownAnimation:(id)animation updatedSetDownOfDragItem:(id)item preview:(id)preview
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(UIDropInteraction *)self delegate];
-  v10 = [v9 dropInteraction:self previewForDroppingItem:v8 withDefault:v7];
+  previewCopy = preview;
+  itemCopy = item;
+  delegate = [(UIDropInteraction *)self delegate];
+  v10 = [delegate dropInteraction:self previewForDroppingItem:itemCopy withDefault:previewCopy];
 
   if (v10)
   {
-    v11 = [v10 target];
-    v12 = [v11 container];
+    target = [v10 target];
+    container = [target container];
 
-    v13 = [v12 _window];
-    if (!v13 || (v14 = v13, v15 = [v12 isHiddenOrHasHiddenAncestor], v14, v15))
+    _window = [container _window];
+    if (!_window || (v14 = _window, v15 = [container isHiddenOrHasHiddenAncestor], v14, v15))
     {
 
       v10 = 0;
@@ -641,17 +641,17 @@ uint64_t __57__UIDropInteraction__dragDestinationGestureStateChanged___block_inv
   return v10;
 }
 
-- (id)_setDownAnimation:(id)a3 prepareForSetDownOfDragItem:(id)a4 visibleDroppedItem:(id)a5
+- (id)_setDownAnimation:(id)animation prepareForSetDownOfDragItem:(id)item visibleDroppedItem:(id)droppedItem
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v49 = [v8 containerView];
-  v11 = v9;
+  animationCopy = animation;
+  itemCopy = item;
+  droppedItemCopy = droppedItem;
+  containerView = [animationCopy containerView];
+  v11 = itemCopy;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v10)
+    if (!droppedItemCopy)
     {
       v42 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
@@ -665,7 +665,7 @@ uint64_t __57__UIDropInteraction__dragDestinationGestureStateChanged___block_inv
     }
   }
 
-  else if (!v10)
+  else if (!droppedItemCopy)
   {
     v43 = *(__UILogGetCategoryCachedImpl("Assert", &_setDownAnimation_prepareForSetDownOfDragItem_visibleDroppedItem____s_category) + 8);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -685,16 +685,16 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v12 = [(UIDropInteraction *)self delegate];
+  delegate = [(UIDropInteraction *)self delegate];
   if ((*&self->_delegateImplements & 0x80) != 0)
   {
-    v47 = [v10 createSnapshotView];
-    v48 = [v10 preview];
-    v14 = [v48 parameters];
-    v15 = v14;
-    if (v14)
+    createSnapshotView = [droppedItemCopy createSnapshotView];
+    preview = [droppedItemCopy preview];
+    parameters = [preview parameters];
+    v15 = parameters;
+    if (parameters)
     {
-      v16 = v14;
+      v16 = parameters;
     }
 
     else
@@ -704,22 +704,22 @@ LABEL_33:
 
     v46 = v16;
 
-    v17 = [(UIDropInteraction *)self view];
-    v18 = [v17 window];
-    if (v18 && (v19 = [v17 isHiddenOrHasHiddenAncestor], v18, !v19))
+    view = [(UIDropInteraction *)self view];
+    window = [view window];
+    if (window && (v19 = [view isHiddenOrHasHiddenAncestor], window, !v19))
     {
-      v23 = [v17 superview];
-      [v10 center];
+      superview = [view superview];
+      [droppedItemCopy center];
       v25 = v24;
       v27 = v26;
-      v28 = [v8 containerView];
-      [v23 convertPoint:v28 fromCoordinateSpace:{v25, v27}];
+      containerView2 = [animationCopy containerView];
+      [superview convertPoint:containerView2 fromCoordinateSpace:{v25, v27}];
       v30 = v29;
       v32 = v31;
 
       v33 = [UIDragPreviewTarget alloc];
-      v34 = [v17 superview];
-      v21 = [(UIPreviewTarget *)v33 initWithContainer:v34 center:v30, v32];
+      superview2 = [view superview];
+      v21 = [(UIPreviewTarget *)v33 initWithContainer:superview2 center:v30, v32];
 
       v22 = 1;
     }
@@ -727,15 +727,15 @@ LABEL_33:
     else
     {
       v20 = [UIDragPreviewTarget alloc];
-      [v10 center];
-      v21 = [(UIPreviewTarget *)v20 initWithContainer:v49 center:?];
+      [droppedItemCopy center];
+      v21 = [(UIPreviewTarget *)v20 initWithContainer:containerView center:?];
       v22 = 0;
     }
 
     v45 = v21;
-    v35 = [[UITargetedDragPreview alloc] initWithView:v47 parameters:v46 target:v21];
+    v35 = [[UITargetedDragPreview alloc] initWithView:createSnapshotView parameters:v46 target:v21];
     [(UITargetedPreview *)v35 _setDefaultPreview:1];
-    v36 = [v12 dropInteraction:self previewForDroppingItem:v11 withDefault:v35];
+    v36 = [delegate dropInteraction:self previewForDroppingItem:v11 withDefault:v35];
     v13 = v36;
     if (v36 == v35)
     {
@@ -764,20 +764,20 @@ LABEL_33:
       v50[2] = __86__UIDropInteraction__setDownAnimation_prepareForSetDownOfDragItem_visibleDroppedItem___block_invoke;
       v50[3] = &unk_1E71062D0;
       p_buf = &buf;
-      v51 = v8;
+      v51 = animationCopy;
       v52 = v11;
-      [v12 _dropInteraction:self delayedPreviewProviderForDroppingItem:v52 previewProvider:v50];
+      [delegate _dropInteraction:self delayedPreviewProviderForDroppingItem:v52 previewProvider:v50];
 
       _Block_object_dispose(&buf, 8);
     }
 
     if (v13)
     {
-      v38 = [(UITargetedPreview *)v13 target];
-      v39 = [v38 container];
+      target = [(UITargetedPreview *)v13 target];
+      container = [target container];
 
-      v40 = [v39 _window];
-      if (!v40 || (v41 = [v39 isHiddenOrHasHiddenAncestor], v40, v41))
+      _window = [container _window];
+      if (!_window || (v41 = [container isHiddenOrHasHiddenAncestor], _window, v41))
       {
 
         v13 = 0;
@@ -807,19 +807,19 @@ uint64_t __86__UIDropInteraction__setDownAnimation_prepareForSetDownOfDragItem_v
   return result;
 }
 
-- (void)_setDownAnimation:(id)a3 willAnimateSetDownOfDragItem:(id)a4 withAnimator:(id)a5 preview:(id)a6
+- (void)_setDownAnimation:(id)animation willAnimateSetDownOfDragItem:(id)item withAnimator:(id)animator preview:(id)preview
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  animationCopy = animation;
+  itemCopy = item;
+  animatorCopy = animator;
+  previewCopy = preview;
+  if (itemCopy)
   {
-    v14 = [(UIDropInteraction *)self delegate];
+    delegate = [(UIDropInteraction *)self delegate];
     if ((*&self->_delegateImplements & 0x100) != 0)
     {
-      v15 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:v12];
-      [v14 dropInteraction:self item:v11 willAnimateDropWithAnimator:v15];
+      v15 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:animatorCopy];
+      [delegate dropInteraction:self item:itemCopy willAnimateDropWithAnimator:v15];
     }
 
     else
@@ -827,35 +827,35 @@ uint64_t __86__UIDropInteraction__setDownAnimation_prepareForSetDownOfDragItem_v
       v15 = 0;
     }
 
-    v16 = [v13 _previewContainer];
+    _previewContainer = [previewCopy _previewContainer];
 
-    if (v16)
+    if (_previewContainer)
     {
       if (!v15)
       {
-        v15 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:v12];
+        v15 = [[_UIDragAnimatingWrapper alloc] initWithPropertyAnimator:animatorCopy];
       }
 
-      v17 = [v13 _previewContainer];
+      _previewContainer2 = [previewCopy _previewContainer];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __89__UIDropInteraction__setDownAnimation_willAnimateSetDownOfDragItem_withAnimator_preview___block_invoke;
       v18[3] = &unk_1E70F35B8;
-      v19 = v10;
-      v20 = v11;
-      [v17 _animateDropAlongsideAnimator:v15 completion:v18];
+      v19 = animationCopy;
+      v20 = itemCopy;
+      [_previewContainer2 _animateDropAlongsideAnimator:v15 completion:v18];
     }
   }
 }
 
-- (id)_setDownAnimation:(id)a3 customSpringAnimationBehaviorForSetDownOfDragItem:(id)a4
+- (id)_setDownAnimation:(id)animation customSpringAnimationBehaviorForSetDownOfDragItem:(id)item
 {
-  v5 = a4;
-  v6 = [(UIDropInteraction *)self delegate];
-  v7 = v6;
+  itemCopy = item;
+  delegate = [(UIDropInteraction *)self delegate];
+  v7 = delegate;
   if ((*&self->_delegateImplements & 0x800) != 0)
   {
-    v8 = [v6 _dropInteraction:self customSpringAnimationBehaviorForDroppingItem:v5];
+    v8 = [delegate _dropInteraction:self customSpringAnimationBehaviorForDroppingItem:itemCopy];
   }
 
   else
@@ -866,59 +866,59 @@ uint64_t __86__UIDropInteraction__setDownAnimation_prepareForSetDownOfDragItem_v
   return v8;
 }
 
-- (BOOL)_canHandleDragEvent:(id)a3
+- (BOOL)_canHandleDragEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIDropInteraction *)self delegate];
+  eventCopy = event;
+  delegate = [(UIDropInteraction *)self delegate];
   if (*&self->_delegateImplements)
   {
-    v8 = [v4 _dropSession];
-    CanPasteItemProvidersForOwner = [v5 dropInteraction:self canHandleSession:v8];
+    _dropSession = [eventCopy _dropSession];
+    CanPasteItemProvidersForOwner = [delegate dropInteraction:self canHandleSession:_dropSession];
   }
 
   else
   {
-    v6 = [(UIDropInteraction *)self _pasteConfiguration];
+    _pasteConfiguration = [(UIDropInteraction *)self _pasteConfiguration];
 
-    if (!v6)
+    if (!_pasteConfiguration)
     {
       CanPasteItemProvidersForOwner = 1;
       goto LABEL_6;
     }
 
-    v7 = [v4 _sessionDestination];
-    v8 = [v7 preDropItemProviders];
+    _sessionDestination = [eventCopy _sessionDestination];
+    _dropSession = [_sessionDestination preDropItemProviders];
 
-    v9 = [(UIDropInteraction *)self owner];
-    CanPasteItemProvidersForOwner = _UIDragEventCanPasteItemProvidersForOwner(v8, v9);
+    owner = [(UIDropInteraction *)self owner];
+    CanPasteItemProvidersForOwner = _UIDragEventCanPasteItemProvidersForOwner(_dropSession, owner);
   }
 
 LABEL_6:
   return CanPasteItemProvidersForOwner;
 }
 
-- (unint64_t)_validateDragOperation:(unint64_t)a3 forSelector:(SEL)a4 delegate:(id)a5 dropSession:(id)a6 onSession:(id)a7 forbidden:(BOOL *)a8
+- (unint64_t)_validateDragOperation:(unint64_t)operation forSelector:(SEL)selector delegate:(id)delegate dropSession:(id)session onSession:(id)onSession forbidden:(BOOL *)forbidden
 {
   v35 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (a3)
+  delegateCopy = delegate;
+  sessionCopy = session;
+  onSessionCopy = onSession;
+  v17 = onSessionCopy;
+  if (operation)
   {
-    v18 = [v16 sourceOperationMask];
-    if ((a3 & ~v18) != 0)
+    sourceOperationMask = [onSessionCopy sourceOperationMask];
+    if ((operation & ~sourceOperationMask) != 0)
     {
-      v19 = v18;
+      v19 = sourceOperationMask;
       v20 = *(__UILogGetCategoryCachedImpl("Dragging", &_MergedGlobals_1072) + 8);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = v20;
-        v22 = NSStringFromSelector(a4);
+        v22 = NSStringFromSelector(selector);
         v29 = 138412802;
         v30 = v22;
         v31 = 2048;
-        v32 = a3;
+        operationCopy2 = operation;
         v33 = 2048;
         v34 = v19;
         v23 = "Selector %@ returned a _UIDragOperation %lu that is outside of the sourceOperationMask %lu. Using _UIDragOperationNone instead.";
@@ -933,17 +933,17 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if ((a3 & (a3 - 1)) != 0)
+    if ((operation & (operation - 1)) != 0)
     {
       v27 = *(__UILogGetCategoryCachedImpl("Dragging", &qword_1ED49DAF0) + 8);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v21 = v27;
-        v22 = NSStringFromSelector(a4);
+        v22 = NSStringFromSelector(selector);
         v29 = 138412546;
         v30 = v22;
         v31 = 2048;
-        v32 = a3;
+        operationCopy2 = operation;
         v23 = "Selector  %@ returned a _UIDragOperation %lu that contains more than one operation. Using _UIDragOperationNone instead.";
         v24 = v21;
         v25 = 22;
@@ -951,13 +951,13 @@ LABEL_11:
       }
 
 LABEL_12:
-      a3 = 0;
+      operation = 0;
       goto LABEL_13;
     }
 
     if (_UIShouldEnforceOpenInRulesInAccountBasedApp() && (*&self->_delegateImplements & 0x200) != 0)
     {
-      v26 = [v14 _dropInteraction:self dataOwnerForSession:v15];
+      v26 = [delegateCopy _dropInteraction:self dataOwnerForSession:sessionCopy];
     }
 
     else
@@ -965,58 +965,58 @@ LABEL_12:
       v26 = 0;
     }
 
-    a3 = [v17 actualDragOperationForProposedDragOperation:a3 destinationDataOwner:v26 forbidden:a8];
+    operation = [v17 actualDragOperationForProposedDragOperation:operation destinationDataOwner:v26 forbidden:forbidden];
   }
 
 LABEL_13:
 
-  return a3;
+  return operation;
 }
 
-- (unint64_t)_setLastDragOperation:(unint64_t)a3 forbidden:(BOOL)a4 precise:(BOOL)a5 prefersFullSizePreview:(BOOL)a6 preferredBadgeStyle:(int64_t)a7 onSession:(id)a8
+- (unint64_t)_setLastDragOperation:(unint64_t)operation forbidden:(BOOL)forbidden precise:(BOOL)precise prefersFullSizePreview:(BOOL)preview preferredBadgeStyle:(int64_t)style onSession:(id)session
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v14 = a8;
-  v15 = [v14 sourceOperationMask] & a3;
+  previewCopy = preview;
+  preciseCopy = precise;
+  forbiddenCopy = forbidden;
+  sessionCopy = session;
+  v15 = [sessionCopy sourceOperationMask] & operation;
   self->_potentialDragOperation = v15;
   v16 = objc_opt_new();
   [v16 setOperation:self->_potentialDragOperation];
-  [v16 setForbidden:v11];
-  [v16 setPrecise:v10];
-  [v16 setPrefersFullSizePreview:v9];
-  [v16 setPreferredBadgeStyle:a7];
-  [v14 takePotentialDrop:v16];
+  [v16 setForbidden:forbiddenCopy];
+  [v16 setPrecise:preciseCopy];
+  [v16 setPrefersFullSizePreview:previewCopy];
+  [v16 setPreferredBadgeStyle:style];
+  [sessionCopy takePotentialDrop:v16];
 
   return v15;
 }
 
-- (void)_dropSessionEntered:(id)a3 withSessionDestination:(id)a4
+- (void)_dropSessionEntered:(id)entered withSessionDestination:(id)destination
 {
-  v10 = a3;
-  v6 = a4;
+  enteredCopy = entered;
+  destinationCopy = destination;
   enteredDropSessionByDraggingSession = self->_enteredDropSessionByDraggingSession;
   if (!enteredDropSessionByDraggingSession)
   {
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v9 = self->_enteredDropSessionByDraggingSession;
-    self->_enteredDropSessionByDraggingSession = v8;
+    self->_enteredDropSessionByDraggingSession = strongToStrongObjectsMapTable;
 
     enteredDropSessionByDraggingSession = self->_enteredDropSessionByDraggingSession;
   }
 
-  [(NSMapTable *)enteredDropSessionByDraggingSession setObject:v10 forKey:v6];
-  [v6 enteredDestination:self];
+  [(NSMapTable *)enteredDropSessionByDraggingSession setObject:enteredCopy forKey:destinationCopy];
+  [destinationCopy enteredDestination:self];
 }
 
-- (void)_sendSessionDidEnd:(id)a3
+- (void)_sendSessionDidEnd:(id)end
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIDropInteraction *)self delegate];
-  v6 = [(NSMapTable *)self->_enteredDropSessionByDraggingSession objectForKey:v4];
-  [(NSMapTable *)self->_enteredDropSessionByDraggingSession removeObjectForKey:v4];
+  endCopy = end;
+  delegate = [(UIDropInteraction *)self delegate];
+  v6 = [(NSMapTable *)self->_enteredDropSessionByDraggingSession objectForKey:endCopy];
+  [(NSMapTable *)self->_enteredDropSessionByDraggingSession removeObjectForKey:endCopy];
   if (os_variant_has_internal_diagnostics())
   {
     if (!v6)
@@ -1025,9 +1025,9 @@ LABEL_13:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
         v9 = 138412546;
-        v10 = self;
+        selfCopy2 = self;
         v11 = 2112;
-        v12 = v4;
+        v12 = endCopy;
         _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "dropInteraction (%@) unable to find entered drop session for dragging session (%@)", &v9, 0x16u);
       }
     }
@@ -1039,16 +1039,16 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = endCopy;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "dropInteraction (%@) unable to find entered drop session for dragging session (%@)", &v9, 0x16u);
     }
   }
 
   if ((*&self->_delegateImplements & 0x40) != 0)
   {
-    [v5 dropInteraction:self sessionDidEnd:v6];
+    [delegate dropInteraction:self sessionDidEnd:v6];
   }
 }
 

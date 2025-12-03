@@ -1,23 +1,23 @@
 @interface TSDMagicMoveTextureZOrderer
 - (NSArray)flattenableAnimationMatches;
 - (TSDMagicMoveTextureZOrderer)init;
-- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)a3;
+- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)matches;
 - (id)p_debugDescription;
-- (id)p_newArrayBySortingMatches:(id)a3 withInterpolatedPercent:(double)a4;
+- (id)p_newArrayBySortingMatches:(id)matches withInterpolatedPercent:(double)percent;
 - (id)p_outgoingTextureMatchesInZOrder;
-- (id)p_outgoingTextureMatchesInZOrderWithTextureSets:(id)a3;
+- (id)p_outgoingTextureMatchesInZOrderWithTextureSets:(id)sets;
 - (id)p_textureSetsInZOrderMatches;
 - (id)p_uniqueIntersections;
-- (id)p_zOrderMatchForTextureRectangle:(id)a3 withTextureSets:(id)a4;
-- (id)texturedRectanglesAtPercent:(double)a3;
-- (unint64_t)p_bestZIndexForUnassignedMatch:(id)a3 inMatchArray:(id)a4;
-- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)a3;
+- (id)p_zOrderMatchForTextureRectangle:(id)rectangle withTextureSets:(id)sets;
+- (id)texturedRectanglesAtPercent:(double)percent;
+- (unint64_t)p_bestZIndexForUnassignedMatch:(id)match inMatchArray:(id)array;
+- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)matches;
 - (void)dealloc;
-- (void)p_addFlattenableAnimationMatches:(id)a3 toArray:(id)a4;
-- (void)p_addVisibleTexturesFromMatches:(id)a3 toArray:(id)a4 interpolatedPercent:(double)a5;
-- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)a3;
+- (void)p_addFlattenableAnimationMatches:(id)matches toArray:(id)array;
+- (void)p_addVisibleTexturesFromMatches:(id)matches toArray:(id)array interpolatedPercent:(double)percent;
+- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)type;
 - (void)p_calculateTextureArraysFromIntersections;
-- (void)p_setupZOrderMatchesWithAnimationMatches:(id)a3;
+- (void)p_setupZOrderMatchesWithAnimationMatches:(id)matches;
 @end
 
 @implementation TSDMagicMoveTextureZOrderer
@@ -39,9 +39,9 @@
   objc_exception_throw(v14);
 }
 
-- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)a3
+- (TSDMagicMoveTextureZOrderer)initWithAnimationMatches:(id)matches
 {
-  v4 = a3;
+  matchesCopy = matches;
   v12.receiver = self;
   v12.super_class = TSDMagicMoveTextureZOrderer;
   v5 = [(TSDMagicMoveTextureZOrderer *)&v12 init];
@@ -51,7 +51,7 @@
     resultQueue = v5->_resultQueue;
     v5->_resultQueue = v6;
 
-    objc_msgSend_p_setupZOrderMatchesWithAnimationMatches_(v5, v8, v4);
+    objc_msgSend_p_setupZOrderMatchesWithAnimationMatches_(v5, v8, matchesCopy);
     objc_msgSend_p_calculateTextureArraysFromIntersections(v5, v9, v10);
   }
 
@@ -66,9 +66,9 @@
   [(TSDMagicMoveTextureZOrderer *)&v3 dealloc];
 }
 
-- (id)texturedRectanglesAtPercent:(double)a3
+- (id)texturedRectanglesAtPercent:(double)percent
 {
-  if (a3 == 0.0)
+  if (percent == 0.0)
   {
     outgoingTexturesInZOrder = self->_outgoingTexturesInZOrder;
 LABEL_5:
@@ -76,21 +76,21 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (a3 == 1.0)
+  if (percent == 1.0)
   {
     outgoingTexturesInZOrder = self->_incomingTexturesInZOrder;
     goto LABEL_5;
   }
 
   v9 = objc_msgSend_count(self->_percentTextures, a2, v3);
-  if (v9 && (percentTexturesTimes = self->_percentTexturesTimes, *percentTexturesTimes <= a3))
+  if (v9 && (percentTexturesTimes = self->_percentTexturesTimes, *percentTexturesTimes <= percent))
   {
     v12 = v9 - 1;
     v13 = 1;
     while (v9 != v13)
     {
       v14 = percentTexturesTimes[v13++];
-      if (v14 > a3)
+      if (v14 > percent)
       {
         objc_msgSend_objectAtIndexedSubscript_(self->_percentTextures, v10, v13 - 2);
         goto LABEL_13;
@@ -110,19 +110,19 @@ LABEL_6:
   return v7;
 }
 
-- (void)p_addVisibleTexturesFromMatches:(id)a3 toArray:(id)a4 interpolatedPercent:(double)a5
+- (void)p_addVisibleTexturesFromMatches:(id)matches toArray:(id)array interpolatedPercent:(double)percent
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  matchesCopy = matches;
+  arrayCopy = array;
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
-  v41 = v7;
-  v11 = objc_msgSend_initWithArray_(v9, v10, v7);
+  v41 = matchesCopy;
+  v11 = objc_msgSend_initWithArray_(v9, v10, matchesCopy);
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = sub_2766C81B4;
   v48[3] = &unk_27A6CCD68;
-  *&v48[4] = a5;
+  *&v48[4] = percent;
   objc_msgSend_sortUsingComparator_(v11, v12, v48);
   v46 = 0u;
   v47 = 0u;
@@ -153,7 +153,7 @@ LABEL_6:
 
           if (v23 || (objc_msgSend_incomingTexture(v20, v24, v25), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend_firstVisibleTextureForTextureType_(v26, v27, v19), v23 = objc_claimAutoreleasedReturnValue(), v26, v23))
           {
-            objc_msgSend_addObject_(v8, v24, v23);
+            objc_msgSend_addObject_(arrayCopy, v24, v23);
           }
 
           v29 = objc_msgSend_layer(v23, v24, v28);
@@ -167,7 +167,7 @@ LABEL_6:
 
             if (v39 && v39 != v23)
             {
-              objc_msgSend_addObject_(v8, v40, v39);
+              objc_msgSend_addObject_(arrayCopy, v40, v39);
             }
           }
 
@@ -186,17 +186,17 @@ LABEL_6:
   }
 }
 
-- (id)p_newArrayBySortingMatches:(id)a3 withInterpolatedPercent:(double)a4
+- (id)p_newArrayBySortingMatches:(id)matches withInterpolatedPercent:(double)percent
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  matchesCopy = matches;
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
-  v9 = objc_msgSend_initWithArray_(v7, v8, v6);
+  v9 = objc_msgSend_initWithArray_(v7, v8, matchesCopy);
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = sub_2766C84BC;
   v41[3] = &unk_27A6CCD68;
-  *&v41[4] = a4;
+  *&v41[4] = percent;
   objc_msgSend_sortUsingComparator_(v9, v10, v41);
   v11 = objc_opt_new();
   v12 = objc_opt_new();
@@ -224,14 +224,14 @@ LABEL_6:
         if (objc_msgSend_count(v12, v16, v17, v37))
         {
           v24 = objc_msgSend_lastObject(v12, v22, v23);
-          objc_msgSend_interpolatedZIndexAtPercent_(v24, v25, v26, a4);
+          objc_msgSend_interpolatedZIndexAtPercent_(v24, v25, v26, percent);
           v28 = v27;
-          objc_msgSend_interpolatedZIndexAtPercent_(v21, v29, v30, a4);
+          objc_msgSend_interpolatedZIndexAtPercent_(v21, v29, v30, percent);
           v32 = v31;
 
           if (v28 != v32 && vabdd_f64(v28, v32) >= 0.00999999978)
           {
-            objc_msgSend_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent_(self, v22, v12, v11, a4);
+            objc_msgSend_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent_(self, v22, v12, v11, percent);
             objc_msgSend_removeAllObjects(v12, v33, v34);
           }
         }
@@ -247,14 +247,14 @@ LABEL_6:
     while (v18);
   }
 
-  objc_msgSend_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent_(self, v35, v12, v11, a4);
+  objc_msgSend_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent_(self, v35, v12, v11, percent);
   return v11;
 }
 
-- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)a3
+- (void)p_adjustZOrdererMatchesZIndexByTextureType:(id)type
 {
   v136 = *MEMORY[0x277D85DE8];
-  v106 = a3;
+  typeCopy = type;
   v111 = objc_opt_new();
   v5 = 1;
   do
@@ -265,7 +265,7 @@ LABEL_6:
     v131 = 0u;
     v128 = 0u;
     v129 = 0u;
-    obj = v106;
+    obj = typeCopy;
     v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v128, v135, 16);
     if (v8)
     {
@@ -478,16 +478,16 @@ LABEL_6:
   while ((v6 & 1) != 0);
 }
 
-- (void)p_setupZOrderMatchesWithAnimationMatches:(id)a3
+- (void)p_setupZOrderMatchesWithAnimationMatches:(id)matches
 {
   v163 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  matchesCopy = matches;
   v4 = objc_opt_new();
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
   v154 = 0u;
-  obj = v3;
+  obj = matchesCopy;
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, &v151, v162, 16);
   if (v6)
   {
@@ -855,10 +855,10 @@ LABEL_6:
   self->_incomingTexturesInZOrder = v110;
 }
 
-- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)a3
+- (unint64_t)p_zIntersectionsBetweenZOrdererMatches:(id)matches
 {
-  v3 = a3;
-  v6 = objc_msgSend_count(v3, v4, v5);
+  matchesCopy = matches;
+  v6 = objc_msgSend_count(matchesCopy, v4, v5);
   if (v6)
   {
     v8 = v6;
@@ -866,13 +866,13 @@ LABEL_6:
     v10 = 0;
     do
     {
-      v12 = objc_msgSend_objectAtIndexedSubscript_(v3, v7, v10);
+      v12 = objc_msgSend_objectAtIndexedSubscript_(matchesCopy, v7, v10);
       v13 = ++v10;
       if (v10 < v8)
       {
         do
         {
-          v14 = objc_msgSend_objectAtIndexedSubscript_(v3, v11, v13);
+          v14 = objc_msgSend_objectAtIndexedSubscript_(matchesCopy, v11, v13);
           v16 = objc_msgSend_intersectsZOrdererMatch_(v12, v15, v14);
 
           v9 += v16;
@@ -1194,12 +1194,12 @@ LABEL_49:
   return v25;
 }
 
-- (unint64_t)p_bestZIndexForUnassignedMatch:(id)a3 inMatchArray:(id)a4
+- (unint64_t)p_bestZIndexForUnassignedMatch:(id)match inMatchArray:(id)array
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_outgoingZIndex(v5, v7, v8) != -1 && objc_msgSend_incomingZIndex(v5, v9, v10) != -1)
+  matchCopy = match;
+  arrayCopy = array;
+  if (objc_msgSend_outgoingZIndex(matchCopy, v7, v8) != -1 && objc_msgSend_incomingZIndex(matchCopy, v9, v10) != -1)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSDMagicMoveTextureZOrderer p_bestZIndexForUnassignedMatch:inMatchArray:]");
@@ -1209,12 +1209,12 @@ LABEL_49:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  v18 = objc_msgSend_outgoingZIndex(v5, v9, v10);
+  v18 = objc_msgSend_outgoingZIndex(matchCopy, v9, v10);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v19 = v6;
+  v19 = arrayCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v55, v60, 16);
   if (v21)
   {
@@ -1260,7 +1260,7 @@ LABEL_49:
   }
 
   v33 = objc_msgSend_count(v19, v31, v32);
-  v36 = objc_msgSend_outgoingTexture(v5, v34, v35);
+  v36 = objc_msgSend_outgoingTexture(matchCopy, v34, v35);
   v38 = objc_msgSend_firstVisibleTextureForTextureType_(v36, v37, 1);
   v50 = v38 == 0;
 
@@ -1287,7 +1287,7 @@ LABEL_49:
             objc_enumerationMutation(v40);
           }
 
-          v45 += objc_msgSend_intersectsZOrdererMatch_withAttemptedZIndex_(v5, v43, *(*(&v51 + 1) + 8 * j), v30);
+          v45 += objc_msgSend_intersectsZOrdererMatch_withAttemptedZIndex_(matchCopy, v43, *(*(&v51 + 1) + 8 * j), v30);
         }
 
         v44 = objc_msgSend_countByEnumeratingWithState_objects_count_(v40, v43, &v51, v59, 16);
@@ -1471,22 +1471,22 @@ LABEL_49:
   self->_zOrderIntersectionsCount = objc_msgSend_count(v10, v83, v84);
 }
 
-- (void)p_addFlattenableAnimationMatches:(id)a3 toArray:(id)a4
+- (void)p_addFlattenableAnimationMatches:(id)matches toArray:(id)array
 {
   v97 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_count(v6, v8, v9) >= 2)
+  matchesCopy = matches;
+  arrayCopy = array;
+  if (objc_msgSend_count(matchesCopy, v8, v9) >= 2)
   {
-    v71 = self;
-    v72 = v7;
+    selfCopy = self;
+    v72 = arrayCopy;
     v10 = objc_opt_new();
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v73 = v6;
-    v11 = v6;
+    v73 = matchesCopy;
+    v11 = matchesCopy;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v89, v96, 16);
     if (v13)
     {
@@ -1618,7 +1618,7 @@ LABEL_23:
             v76[1] = 3221225472;
             v76[2] = sub_2766CA85C;
             v76[3] = &unk_27A6CCDB8;
-            v76[4] = v71;
+            v76[4] = selfCopy;
             objc_msgSend_sortUsingComparator_(v37, v61, v76);
             v74[0] = MEMORY[0x277D85DD0];
             v74[1] = 3221225472;
@@ -1627,16 +1627,16 @@ LABEL_23:
             v30 = v37;
             v75 = v30;
             v62 = MEMORY[0x277C9C8B0](v74);
-            if (((v62)[2](v62, v71->_outgoingTexturesInZOrder) & 1) == 0)
+            if (((v62)[2](v62, selfCopy->_outgoingTexturesInZOrder) & 1) == 0)
             {
 
               goto LABEL_37;
             }
 
-            v63 = (v62)[2](v62, v71->_incomingTexturesInZOrder);
+            v63 = (v62)[2](v62, selfCopy->_incomingTexturesInZOrder);
 
-            v7 = v72;
-            v6 = v73;
+            arrayCopy = v72;
+            matchesCopy = v73;
             if (!v63)
             {
               goto LABEL_39;
@@ -1666,8 +1666,8 @@ LABEL_30:
     }
 
 LABEL_37:
-    v7 = v72;
-    v6 = v73;
+    arrayCopy = v72;
+    matchesCopy = v73;
 LABEL_38:
   }
 
@@ -1729,9 +1729,9 @@ LABEL_39:
   return v7;
 }
 
-- (id)p_outgoingTextureMatchesInZOrderWithTextureSets:(id)a3
+- (id)p_outgoingTextureMatchesInZOrderWithTextureSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   v5 = MEMORY[0x277CBEB18];
   v8 = objc_msgSend_count(self->_outgoingTexturesInZOrder, v6, v7);
   v10 = objc_msgSend_arrayWithCapacity_(v5, v9, v8);
@@ -1755,10 +1755,10 @@ LABEL_39:
   block[2] = sub_2766CAEAC;
   block[3] = &unk_27A6CCE30;
   block[4] = self;
-  v27 = v4;
+  v27 = setsCopy;
   v21 = v10;
   v28 = v21;
-  v22 = v4;
+  v22 = setsCopy;
   dispatch_apply(v20, 0, block);
   v23 = v28;
   v24 = v21;
@@ -1766,24 +1766,24 @@ LABEL_39:
   return v21;
 }
 
-- (id)p_zOrderMatchForTextureRectangle:(id)a3 withTextureSets:(id)a4
+- (id)p_zOrderMatchForTextureRectangle:(id)rectangle withTextureSets:(id)sets
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_count(v7, v8, v9))
+  rectangleCopy = rectangle;
+  setsCopy = sets;
+  if (objc_msgSend_count(setsCopy, v8, v9))
   {
     v11 = 0;
     while (1)
     {
-      v12 = objc_msgSend_objectAtIndexedSubscript_(v7, v10, v11);
-      v14 = objc_msgSend_containsObject_(v12, v13, v6);
+      v12 = objc_msgSend_objectAtIndexedSubscript_(setsCopy, v10, v11);
+      v14 = objc_msgSend_containsObject_(v12, v13, rectangleCopy);
 
       if (v14)
       {
         break;
       }
 
-      if (++v11 >= objc_msgSend_count(v7, v15, v16))
+      if (++v11 >= objc_msgSend_count(setsCopy, v15, v16))
       {
         goto LABEL_5;
       }
@@ -1806,7 +1806,7 @@ LABEL_5:
   v113 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v6 = objc_msgSend_orderedSet(MEMORY[0x277CBEB40], v4, v5);
-  v97 = self;
+  selfCopy = self;
   v9 = objc_msgSend_p_outgoingTextureMatchesInZOrder(self, v7, v8);
   v106 = 0u;
   v107 = 0u;
@@ -1837,7 +1837,7 @@ LABEL_5:
 
         if (isMatched)
         {
-          objc_msgSend_p_addFlattenableAnimationMatches_toArray_(v97, v22, v6, v3);
+          objc_msgSend_p_addFlattenableAnimationMatches_toArray_(selfCopy, v22, v6, v3);
           objc_msgSend_removeAllObjects(v6, v24, v25);
           goto LABEL_25;
         }
@@ -1861,7 +1861,7 @@ LABEL_5:
                 v15 = v90;
                 v3 = obj;
                 v14 = v95;
-                objc_msgSend_p_addFlattenableAnimationMatches_toArray_(v97, v48, v6, obj);
+                objc_msgSend_p_addFlattenableAnimationMatches_toArray_(selfCopy, v48, v6, obj);
                 goto LABEL_23;
               }
 
@@ -1887,7 +1887,7 @@ LABEL_5:
                 }
 
 LABEL_22:
-                objc_msgSend_p_addFlattenableAnimationMatches_toArray_(v97, v26, v6, v3);
+                objc_msgSend_p_addFlattenableAnimationMatches_toArray_(selfCopy, v26, v6, v3);
 LABEL_23:
                 objc_msgSend_removeAllObjects(v6, v49, v50);
                 goto LABEL_24;
@@ -1926,7 +1926,7 @@ LABEL_25:
     while (v14);
   }
 
-  objc_msgSend_p_addFlattenableAnimationMatches_toArray_(v97, v12, v6, v3, v87);
+  objc_msgSend_p_addFlattenableAnimationMatches_toArray_(selfCopy, v12, v6, v3, v87);
   v96 = objc_msgSend_array(MEMORY[0x277CBEB18], v55, v56);
   v102 = 0u;
   v103 = 0u;
@@ -1949,7 +1949,7 @@ LABEL_25:
 
         v63 = *(*(&v102 + 1) + 8 * i);
         v64 = objc_msgSend_array(MEMORY[0x277CBEB18], v59, v60);
-        objc_msgSend_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent_(v97, v65, v63, v64, 0.0);
+        objc_msgSend_p_addVisibleTexturesFromMatches_toArray_interpolatedPercent_(selfCopy, v65, v63, v64, 0.0);
         v66 = MEMORY[0x277CBEB18];
         v69 = objc_msgSend_count(v63, v67, v68);
         v71 = objc_msgSend_arrayWithCapacity_(v66, v70, v69);

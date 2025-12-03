@@ -1,24 +1,24 @@
 @interface CSAppEntityUpdater
 + (id)sharedInstance;
-- (BOOL)_handleJournalUpdateWithDonation:(id)a3 orDeletion:(id)a4 cancelBlock:(id)a5 completion:(id)a6;
-- (BOOL)handleDeletion:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4;
+- (BOOL)_handleJournalUpdateWithDonation:(id)donation orDeletion:(id)deletion cancelBlock:(id)block completion:(id)completion;
+- (BOOL)handleDeletion:(id)deletion turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d;
 - (CSAppEntityUpdater)init;
-- (CSAppEntityUpdater)initWithQueue:(id)a3 directory:(id)a4;
+- (CSAppEntityUpdater)initWithQueue:(id)queue directory:(id)directory;
 - (id)_allBundlesApplicableToCascade;
-- (id)_allExistentSetsNotContainedInSpotlightBundles:(id)a3;
-- (id)_countAppEntitiesFromBundle:(id)a3;
-- (id)_disabledTypeIdentifiersClause:(id)a3;
+- (id)_allExistentSetsNotContainedInSpotlightBundles:(id)bundles;
+- (id)_countAppEntitiesFromBundle:(id)bundle;
+- (id)_disabledTypeIdentifiersClause:(id)clause;
 - (id)description;
 - (void)_allBundlesApplicableToCascade;
-- (void)_donateJournalUpdateWithRecursiveRetry:(unint64_t)a3 donation:(id)a4 deletion:(id)a5 ledger:(id)a6 cancelBlock:(id)a7 completion:(id)a8;
-- (void)_donateToCascadeWithReason:(unsigned __int8)a3 ledger:(id)a4 donation:(id)a5 deletion:(id)a6 completion:(id)a7;
-- (void)_recursivelyCleanupDeletedSets:(id)a3 withIndex:(unint64_t)a4 cancelBlock:(id)a5 completion:(id)a6;
-- (void)_recursivelyDonateNowForAllBundles:(id)a3 withIndex:(unint64_t)a4 cancelBlock:(id)a5 completion:(id)a6;
-- (void)_recursivelyVerifyAllBundles:(id)a3 withIndex:(unint64_t)a4 cancelBlock:(id)a5 completion:(id)a6;
-- (void)handleDonateNowNotification:(id)a3 completionHandler:(id)a4;
-- (void)runNightlyVerification:(id)a3 completionHandler:(id)a4;
+- (void)_donateJournalUpdateWithRecursiveRetry:(unint64_t)retry donation:(id)donation deletion:(id)deletion ledger:(id)ledger cancelBlock:(id)block completion:(id)completion;
+- (void)_donateToCascadeWithReason:(unsigned __int8)reason ledger:(id)ledger donation:(id)donation deletion:(id)deletion completion:(id)completion;
+- (void)_recursivelyCleanupDeletedSets:(id)sets withIndex:(unint64_t)index cancelBlock:(id)block completion:(id)completion;
+- (void)_recursivelyDonateNowForAllBundles:(id)bundles withIndex:(unint64_t)index cancelBlock:(id)block completion:(id)completion;
+- (void)_recursivelyVerifyAllBundles:(id)bundles withIndex:(unint64_t)index cancelBlock:(id)block completion:(id)completion;
+- (void)handleDonateNowNotification:(id)notification completionHandler:(id)handler;
+- (void)runNightlyVerification:(id)verification completionHandler:(id)handler;
 @end
 
 @implementation CSAppEntityUpdater
@@ -55,22 +55,22 @@ void __36__CSAppEntityUpdater_sharedInstance__block_invoke()
   return v8;
 }
 
-- (CSAppEntityUpdater)initWithQueue:(id)a3 directory:(id)a4
+- (CSAppEntityUpdater)initWithQueue:(id)queue directory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  directoryCopy = directory;
   v14.receiver = self;
   v14.super_class = CSAppEntityUpdater;
   v9 = [(CSAppEntityUpdater *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v11 = objc_opt_new();
     translator = v10->_translator;
     v10->_translator = v11;
 
-    objc_storeStrong(&v10->_ledgerDirectory, a4);
+    objc_storeStrong(&v10->_ledgerDirectory, directory);
   }
 
   return v10;
@@ -80,27 +80,27 @@ void __36__CSAppEntityUpdater_sharedInstance__block_invoke()
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSAppEntityUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSAppEntityUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([(CSEventDonationJournalItem *)v4 flags]& 0x20) == 0)
+  itemCopy = item;
+  if (([(CSEventDonationJournalItem *)itemCopy flags]& 0x20) == 0)
   {
     goto LABEL_19;
   }
 
-  if (([(CSEventDonationJournalItem *)v4 flags]& 1) != 0)
+  if (([(CSEventDonationJournalItem *)itemCopy flags]& 1) != 0)
   {
     goto LABEL_19;
   }
 
-  [(CSEventDonationJournalItem *)v4 attrDictObj];
+  [(CSEventDonationJournalItem *)itemCopy attrDictObj];
   if (_MDPlistGetPlistObjectType() != 241)
   {
     goto LABEL_19;
@@ -108,7 +108,7 @@ void __36__CSAppEntityUpdater_sharedInstance__block_invoke()
 
   v12 = 0uLL;
   v13 = 0;
-  [(CSEventDonationJournalItem *)v4 attrDictObj];
+  [(CSEventDonationJournalItem *)itemCopy attrDictObj];
   if (!_MDPlistDictionaryGetPlistObjectForKey() || (*buf = v12, v15 = v13, _MDPlistGetPlistObjectType() != 244) && (*buf = v12, v15 = v13, _MDPlistGetPlistObjectType() != 245))
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -132,7 +132,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [(CSEventDonationJournalItem *)v4 attrDictObj];
+  [(CSEventDonationJournalItem *)itemCopy attrDictObj];
   if (!_MDPlistDictionaryGetPlistObjectForKey() || (*buf = v12, v15 = v13, _MDPlistGetPlistObjectType() != 244) && (*buf = v12, v15 = v13, _MDPlistGetPlistObjectType() != 245))
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -160,24 +160,24 @@ LABEL_20:
   return v5;
 }
 
-- (void)_donateToCascadeWithReason:(unsigned __int8)a3 ledger:(id)a4 donation:(id)a5 deletion:(id)a6 completion:(id)a7
+- (void)_donateToCascadeWithReason:(unsigned __int8)reason ledger:(id)ledger donation:(id)donation deletion:(id)deletion completion:(id)completion
 {
-  v10 = a3;
+  reasonCopy = reason;
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v34 = a5;
-  v13 = a6;
-  v14 = a7;
+  ledgerCopy = ledger;
+  donationCopy = donation;
+  deletionCopy = deletion;
+  completionCopy = completion;
   v15 = MEMORY[0x277CF9500];
-  v16 = [v12 bundleIdentifier];
+  bundleIdentifier = [ledgerCopy bundleIdentifier];
   v43 = 0;
-  v17 = [v15 sourceIdentifierWithValue:v16 error:&v43];
+  v17 = [v15 sourceIdentifierWithValue:bundleIdentifier error:&v43];
   v18 = v43;
 
   if (v17)
   {
-    v19 = [v12 version];
-    if (v10 == 2)
+    version = [ledgerCopy version];
+    if (reasonCopy == 2)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
       {
@@ -185,12 +185,12 @@ LABEL_20:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v33 = objc_opt_class();
-          v21 = [v12 bundleIdentifier];
+          bundleIdentifier2 = [ledgerCopy bundleIdentifier];
           v22 = _donationReasonDescription(2);
           *buf = 138412802;
           v46 = v33;
           v47 = 2112;
-          v48 = v21;
+          v48 = bundleIdentifier2;
           v49 = 2112;
           v50 = v22;
           _os_log_impl(&dword_231B25000, v20, OS_LOG_TYPE_DEFAULT, "### %@ Resetting version to force full Cascade donation for bundle: %@ with reason: %@", buf, 0x20u);
@@ -202,7 +202,7 @@ LABEL_20:
 
     else
     {
-      v23 = v19;
+      v23 = version;
     }
 
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -229,14 +229,14 @@ LABEL_20:
     v35[2] = __85__CSAppEntityUpdater__donateToCascadeWithReason_ledger_donation_deletion_completion___block_invoke;
     v35[3] = &unk_27893C668;
     v35[4] = self;
-    v42 = v10;
-    v36 = v12;
-    v25 = v34;
-    v37 = v34;
-    v38 = v13;
+    v42 = reasonCopy;
+    v36 = ledgerCopy;
+    v25 = donationCopy;
+    v37 = donationCopy;
+    v38 = deletionCopy;
     v39 = v17;
     v41 = v23;
-    v40 = v14;
+    v40 = completionCopy;
     [v28 incrementalSetDonationWithItemType:47341 descriptors:v29 version:v23 validity:@"Spotlight" completion:v35];
   }
 
@@ -248,19 +248,19 @@ LABEL_20:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v31 = objc_opt_class();
-        v32 = [v12 bundleIdentifier];
+        bundleIdentifier3 = [ledgerCopy bundleIdentifier];
         *buf = 138412802;
         v46 = v31;
         v47 = 2112;
-        v48 = v32;
+        v48 = bundleIdentifier3;
         v49 = 2112;
         v50 = v18;
         _os_log_error_impl(&dword_231B25000, v24, OS_LOG_TYPE_ERROR, "### %@ Failed to build descriptor from bundle: %@ with error %@", buf, 0x20u);
       }
     }
 
-    (*(v14 + 2))(v14, 7, v18);
-    v25 = v34;
+    (*(completionCopy + 2))(completionCopy, 7, v18);
+    v25 = donationCopy;
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -873,16 +873,16 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_disabledTypeIdentifiersClause:(id)a3
+- (id)_disabledTypeIdentifiersClause:(id)clause
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  clauseCopy = clause;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(clauseCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = clauseCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -915,18 +915,18 @@ LABEL_8:
   return v12;
 }
 
-- (id)_countAppEntitiesFromBundle:(id)a3
+- (id)_countAppEntitiesFromBundle:(id)bundle
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@=*)", _kMDItemAppEntityTypeIdentifier];
+  _kMDItemAppEntityTypeIdentifier = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@=*)", _kMDItemAppEntityTypeIdentifier];
   [v5 setCounting:1];
-  v47[0] = v4;
+  v47[0] = bundleCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:1];
   [v5 setBundleIDs:v7];
 
-  v8 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:v6 queryContext:v5];
+  v8 = [objc_alloc(MEMORY[0x277CC3498]) initWithQueryString:_kMDItemAppEntityTypeIdentifier queryContext:v5];
   v9 = dispatch_semaphore_create(0);
   v10 = [MEMORY[0x277CBEAA8] now];
   v39 = 0;
@@ -938,7 +938,7 @@ LABEL_8:
   v36[2] = __50__CSAppEntityUpdater__countAppEntitiesFromBundle___block_invoke;
   v36[3] = &unk_27893C780;
   v36[4] = self;
-  v11 = v4;
+  v11 = bundleCopy;
   v37 = v11;
   v38 = &v39;
   [v8 setCountChangedHandler:v36];
@@ -954,7 +954,7 @@ LABEL_8:
   v23[3] = &unk_27893C7A8;
   v12 = v10;
   v24 = v12;
-  v25 = self;
+  selfCopy = self;
   v13 = v11;
   v26 = v13;
   v28 = &v30;
@@ -1128,7 +1128,7 @@ LABEL_9:
 - (id)_allBundlesApplicableToCascade
 {
   v44 = *MEMORY[0x277D85DE8];
-  v25 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+  defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
   v3 = dispatch_semaphore_create(0);
   v33 = 0;
   v34 = &v33;
@@ -1144,7 +1144,7 @@ LABEL_9:
   v32 = &v33;
   v4 = v3;
   v31 = v4;
-  [v25 _fetchBundleIDsWithCompletionHandler:v30];
+  [defaultSearchableIndex _fetchBundleIDsWithCompletionHandler:v30];
   v24 = v4;
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
@@ -1336,10 +1336,10 @@ void __52__CSAppEntityUpdater__allBundlesApplicableToCascade__block_invoke(uint6
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_allExistentSetsNotContainedInSpotlightBundles:(id)a3
+- (id)_allExistentSetsNotContainedInSpotlightBundles:(id)bundles
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = [MEMORY[0x277CF94E8] setEnumeratorWithUseCase:@"AppEntityDonation"];
   v25 = 0;
   v5 = [v4 allSetsWithItemType:47341 error:&v25];
@@ -1372,9 +1372,9 @@ void __52__CSAppEntityUpdater__allBundlesApplicableToCascade__block_invoke(uint6
 
           v14 = *(*(&v21 + 1) + 8 * i);
           v15 = [v14 descriptorWithKey:{v12, v19, v20, v21}];
-          v16 = [v15 value];
+          value = [v15 value];
 
-          if (([v3 containsObject:v16] & 1) == 0)
+          if (([bundlesCopy containsObject:value] & 1) == 0)
           {
             [v7 addObject:v14];
           }
@@ -1413,17 +1413,17 @@ LABEL_17:
   return v7;
 }
 
-- (void)_donateJournalUpdateWithRecursiveRetry:(unint64_t)a3 donation:(id)a4 deletion:(id)a5 ledger:(id)a6 cancelBlock:(id)a7 completion:(id)a8
+- (void)_donateJournalUpdateWithRecursiveRetry:(unint64_t)retry donation:(id)donation deletion:(id)deletion ledger:(id)ledger cancelBlock:(id)block completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if ([v16 journalUpdateAttempts] < 3)
+  donationCopy = donation;
+  deletionCopy = deletion;
+  ledgerCopy = ledger;
+  blockCopy = block;
+  completionCopy = completion;
+  if ([ledgerCopy journalUpdateAttempts] < 3)
   {
-    if (v17[2](v17))
+    if (blockCopy[2](blockCopy))
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
       {
@@ -1431,34 +1431,34 @@ LABEL_17:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v23 = objc_opt_class();
-          v24 = [v16 bundleIdentifier];
+          bundleIdentifier = [ledgerCopy bundleIdentifier];
           *buf = 138412802;
           v34 = v23;
           v35 = 2048;
-          *v36 = a3;
+          *v36 = retry;
           *&v36[8] = 2112;
-          *&v36[10] = v24;
+          *&v36[10] = bundleIdentifier;
           _os_log_impl(&dword_231B25000, v22, OS_LOG_TYPE_DEFAULT, "### %@ Asked to cancel. Deferring journal update with serialNumber: %lld bundle: %@", buf, 0x20u);
         }
       }
 
-      v18[2](v18, 3);
+      completionCopy[2](completionCopy, 3);
     }
 
     else
     {
-      [v16 attemptJournalUpdate];
+      [ledgerCopy attemptJournalUpdate];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __109__CSAppEntityUpdater__donateJournalUpdateWithRecursiveRetry_donation_deletion_ledger_cancelBlock_completion___block_invoke;
       v26[3] = &unk_27893C7F8;
       v26[4] = self;
-      v32 = a3;
-      v27 = v16;
-      v30 = v18;
-      v28 = v14;
-      v29 = v15;
-      v31 = v17;
+      retryCopy = retry;
+      v27 = ledgerCopy;
+      v30 = completionCopy;
+      v28 = donationCopy;
+      v29 = deletionCopy;
+      v31 = blockCopy;
       [(CSAppEntityUpdater *)self _donateToCascadeWithReason:1 ledger:v27 donation:v28 deletion:v29 completion:v26];
     }
   }
@@ -1471,20 +1471,20 @@ LABEL_17:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = objc_opt_class();
-        v21 = [v16 bundleIdentifier];
+        bundleIdentifier2 = [ledgerCopy bundleIdentifier];
         *buf = 138413058;
         v34 = v20;
         v35 = 1024;
         *v36 = 3;
         *&v36[4] = 2048;
-        *&v36[6] = a3;
+        *&v36[6] = retry;
         *&v36[14] = 2112;
-        *&v36[16] = v21;
+        *&v36[16] = bundleIdentifier2;
         _os_log_impl(&dword_231B25000, v19, OS_LOG_TYPE_DEFAULT, "### %@ Retries exhausted (limit %u). Abandoning journal update with serialNumber: %lld for bundle: %@", buf, 0x26u);
       }
     }
 
-    v18[2](v18, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1567,28 +1567,28 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_handleJournalUpdateWithDonation:(id)a3 orDeletion:(id)a4 cancelBlock:(id)a5 completion:(id)a6
+- (BOOL)_handleJournalUpdateWithDonation:(id)donation orDeletion:(id)deletion cancelBlock:(id)block completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  donationCopy = donation;
+  deletionCopy = deletion;
+  blockCopy = block;
+  completionCopy = completion;
+  if (donationCopy)
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v10)];
-    v15 = [(CSEventListenerManager *)v10 totalJournalSize];
-    v16 = [(CSEventListenerDonation *)v10 indexTypeName];
+    v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](donationCopy)];
+    totalJournalSize = [(CSEventListenerManager *)donationCopy totalJournalSize];
+    indexTypeName = [(CSEventListenerDonation *)donationCopy indexTypeName];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v11)];
-    v15 = [(CSEventListenerManager *)v11 totalJournalSize];
-    v16 = [(CSEventListenerDonation *)v11 indexTypeName];
+    v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](deletionCopy)];
+    totalJournalSize = [(CSEventListenerManager *)deletionCopy totalJournalSize];
+    indexTypeName = [(CSEventListenerDonation *)deletionCopy indexTypeName];
   }
 
-  v17 = v16;
+  v17 = indexTypeName;
   v18 = [(LNSpotlightCascadeTranslator *)self->_translator isAllowedClientBundleIdentifier:v14];
   CurrentLoggingLevel = SKGLogGetCurrentLoggingLevel();
   if (v18)
@@ -1603,14 +1603,14 @@ LABEL_17:
         v22 = @"donation";
         v36 = v21;
         v37 = 2112;
-        if (!v10)
+        if (!donationCopy)
         {
           v22 = @"deletion";
         }
 
         v38 = v22;
         v39 = 2048;
-        v40 = v15;
+        v40 = totalJournalSize;
         v41 = 2112;
         v42 = v14;
         v43 = 2080;
@@ -1632,8 +1632,8 @@ LABEL_17:
       v31[2] = __89__CSAppEntityUpdater__handleJournalUpdateWithDonation_orDeletion_cancelBlock_completion___block_invoke;
       v31[3] = &unk_27893C820;
       v32 = v25;
-      v33 = v13;
-      [(CSAppEntityUpdater *)self _donateJournalUpdateWithRecursiveRetry:v15 donation:v10 deletion:v11 ledger:v32 cancelBlock:v12 completion:v31];
+      v33 = completionCopy;
+      [(CSAppEntityUpdater *)self _donateJournalUpdateWithRecursiveRetry:totalJournalSize donation:donationCopy deletion:deletionCopy ledger:v32 cancelBlock:blockCopy completion:v31];
     }
 
     else
@@ -1654,7 +1654,7 @@ LABEL_17:
         }
       }
 
-      (*(v13 + 2))(v13, v26);
+      (*(completionCopy + 2))(completionCopy, v26);
     }
 
 LABEL_22:
@@ -1700,11 +1700,11 @@ void __89__CSAppEntityUpdater__handleJournalUpdateWithDonation_orDeletion_cancel
   }
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   if ([objc_opt_class() isCascadeDonationEnabled])
   {
     v12 = SKGLogEventInit();
@@ -1723,13 +1723,13 @@ void __89__CSAppEntityUpdater__handleJournalUpdateWithDonation_orDeletion_cancel
     v18[2] = __80__CSAppEntityUpdater_handleDonation_turboEnabled_completionHandler_cancelBlock___block_invoke;
     v18[3] = &unk_27893C848;
     v20 = v13;
-    v19 = v10;
-    v16 = [(CSAppEntityUpdater *)self _handleJournalUpdateWithDonation:v9 orDeletion:0 cancelBlock:v11 completion:v18];
+    v19 = handlerCopy;
+    v16 = [(CSAppEntityUpdater *)self _handleJournalUpdateWithDonation:donationCopy orDeletion:0 cancelBlock:blockCopy completion:v18];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     v16 = 1;
   }
 
@@ -1751,11 +1751,11 @@ void __80__CSAppEntityUpdater_handleDonation_turboEnabled_completionHandler_canc
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)handleDeletion:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDeletion:(id)deletion turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  deletionCopy = deletion;
+  handlerCopy = handler;
+  blockCopy = block;
   if ([objc_opt_class() isCascadeDonationEnabled])
   {
     v12 = SKGLogEventInit();
@@ -1774,13 +1774,13 @@ void __80__CSAppEntityUpdater_handleDonation_turboEnabled_completionHandler_canc
     v18[2] = __80__CSAppEntityUpdater_handleDeletion_turboEnabled_completionHandler_cancelBlock___block_invoke;
     v18[3] = &unk_27893C848;
     v20 = v13;
-    v19 = v10;
-    v16 = [(CSAppEntityUpdater *)self _handleJournalUpdateWithDonation:0 orDeletion:v9 cancelBlock:v11 completion:v18];
+    v19 = handlerCopy;
+    v16 = [(CSAppEntityUpdater *)self _handleJournalUpdateWithDonation:0 orDeletion:deletionCopy cancelBlock:blockCopy completion:v18];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     v16 = 1;
   }
 
@@ -1802,15 +1802,15 @@ void __80__CSAppEntityUpdater_handleDeletion_turboEnabled_completionHandler_canc
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_recursivelyVerifyAllBundles:(id)a3 withIndex:(unint64_t)a4 cancelBlock:(id)a5 completion:(id)a6
+- (void)_recursivelyVerifyAllBundles:(id)bundles withIndex:(unint64_t)index cancelBlock:(id)block completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count] > a4)
+  bundlesCopy = bundles;
+  blockCopy = block;
+  completionCopy = completion;
+  if ([bundlesCopy count] > index)
   {
-    if (v11[2](v11))
+    if (blockCopy[2](blockCopy))
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
       {
@@ -1820,18 +1820,18 @@ void __80__CSAppEntityUpdater_handleDeletion_turboEnabled_completionHandler_canc
           *buf = 138412802;
           v48 = objc_opt_class();
           v49 = 2048;
-          *v50 = a4 + 1;
+          *v50 = index + 1;
           *&v50[8] = 2048;
-          *&v50[10] = [v10 count];
+          *&v50[10] = [bundlesCopy count];
           _os_log_impl(&dword_231B25000, v13, OS_LOG_TYPE_DEFAULT, "### %@ Asked to cancel verification at bundle %ld / %ld", buf, 0x20u);
         }
       }
 
-      v12[2](v12, 3);
+      completionCopy[2](completionCopy, 3);
       goto LABEL_39;
     }
 
-    v15 = [v10 objectAtIndex:a4];
+    v15 = [bundlesCopy objectAtIndex:index];
     v16 = [CSAppEntityCascadeLedger alloc];
     ledgerDirectory = self->_ledgerDirectory;
     v46 = 0;
@@ -1865,11 +1865,11 @@ LABEL_35:
           aBlock[3] = &unk_27893C870;
           v31 = v18;
           v40 = v31;
-          v41 = self;
-          v42 = v10;
-          v45 = a4;
-          v43 = v11;
-          v44 = v12;
+          selfCopy = self;
+          v42 = bundlesCopy;
+          indexCopy = index;
+          v43 = blockCopy;
+          v44 = completionCopy;
           v32 = _Block_copy(aBlock);
           v33 = v32;
           if (v28)
@@ -1922,12 +1922,12 @@ LABEL_28:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v35 = objc_opt_class();
-          v29 = [(CSAppEntityCascadeLedger *)v18 bundleIdentifier];
+          bundleIdentifier = [(CSAppEntityCascadeLedger *)v18 bundleIdentifier];
           *buf = 138412546;
           v48 = v35;
           v49 = 2112;
-          *v50 = v29;
-          v30 = v29;
+          *v50 = bundleIdentifier;
+          v30 = bundleIdentifier;
           _os_log_impl(&dword_231B25000, v22, OS_LOG_TYPE_DEFAULT, "### %@ No action is required for bundle: %@", buf, 0x16u);
         }
 
@@ -1968,12 +1968,12 @@ LABEL_33:
       *buf = 138412546;
       v48 = objc_opt_class();
       v49 = 2048;
-      *v50 = [v10 count];
+      *v50 = [bundlesCopy count];
       _os_log_impl(&dword_231B25000, v14, OS_LOG_TYPE_DEFAULT, "### %@ Finished verifying %ld bundles", buf, 0x16u);
     }
   }
 
-  v12[2](v12, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_39:
 
   v34 = *MEMORY[0x277D85DE8];
@@ -2015,13 +2015,13 @@ uint64_t __84__CSAppEntityUpdater__recursivelyVerifyAllBundles_withIndex_cancelB
   return result;
 }
 
-- (void)_recursivelyDonateNowForAllBundles:(id)a3 withIndex:(unint64_t)a4 cancelBlock:(id)a5 completion:(id)a6
+- (void)_recursivelyDonateNowForAllBundles:(id)bundles withIndex:(unint64_t)index cancelBlock:(id)block completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count] <= a4)
+  bundlesCopy = bundles;
+  blockCopy = block;
+  completionCopy = completion;
+  if ([bundlesCopy count] <= index)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
     {
@@ -2031,15 +2031,15 @@ uint64_t __84__CSAppEntityUpdater__recursivelyVerifyAllBundles_withIndex_cancelB
         *buf = 138412546;
         v36 = objc_opt_class();
         v37 = 2048;
-        v38 = [v10 count];
+        v38 = [bundlesCopy count];
         _os_log_impl(&dword_231B25000, v14, OS_LOG_TYPE_DEFAULT, "### %@ Finished DonateNow for %ld bundles", buf, 0x16u);
       }
     }
 
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
-  else if (v11[2](v11))
+  else if (blockCopy[2](blockCopy))
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
     {
@@ -2049,19 +2049,19 @@ uint64_t __84__CSAppEntityUpdater__recursivelyVerifyAllBundles_withIndex_cancelB
         *buf = 138412802;
         v36 = objc_opt_class();
         v37 = 2048;
-        v38 = a4 + 1;
+        v38 = index + 1;
         v39 = 2048;
-        v40 = [v10 count];
+        v40 = [bundlesCopy count];
         _os_log_impl(&dword_231B25000, v13, OS_LOG_TYPE_DEFAULT, "### %@ Asked to cancel DonateNow at bundle %ld / %ld", buf, 0x20u);
       }
     }
 
-    v12[2](v12, 3);
+    completionCopy[2](completionCopy, 3);
   }
 
   else
   {
-    v15 = [v10 objectAtIndex:a4];
+    v15 = [bundlesCopy objectAtIndex:index];
     v16 = [CSAppEntityCascadeLedger alloc];
     ledgerDirectory = self->_ledgerDirectory;
     v34 = 0;
@@ -2073,11 +2073,11 @@ uint64_t __84__CSAppEntityUpdater__recursivelyVerifyAllBundles_withIndex_cancelB
     aBlock[3] = &unk_27893C870;
     v20 = v18;
     v28 = v20;
-    v29 = self;
-    v30 = v10;
-    v33 = a4;
-    v31 = v11;
-    v32 = v12;
+    selfCopy = self;
+    v30 = bundlesCopy;
+    indexCopy = index;
+    v31 = blockCopy;
+    v32 = completionCopy;
     v21 = _Block_copy(aBlock);
     if (v20)
     {
@@ -2127,13 +2127,13 @@ uint64_t __90__CSAppEntityUpdater__recursivelyDonateNowForAllBundles_withIndex_c
   return [v2 _recursivelyDonateNowForAllBundles:v3 withIndex:v6 cancelBlock:v5 completion:v4];
 }
 
-- (void)_recursivelyCleanupDeletedSets:(id)a3 withIndex:(unint64_t)a4 cancelBlock:(id)a5 completion:(id)a6
+- (void)_recursivelyCleanupDeletedSets:(id)sets withIndex:(unint64_t)index cancelBlock:(id)block completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count] <= a4)
+  setsCopy = sets;
+  blockCopy = block;
+  completionCopy = completion;
+  if ([setsCopy count] <= index)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
     {
@@ -2143,15 +2143,15 @@ uint64_t __90__CSAppEntityUpdater__recursivelyDonateNowForAllBundles_withIndex_c
         *buf = 138412546;
         v28 = objc_opt_class();
         v29 = 2048;
-        v30 = [v10 count];
+        v30 = [setsCopy count];
         _os_log_impl(&dword_231B25000, v14, OS_LOG_TYPE_DEFAULT, "### %@ Finished cleaning up %ld sets", buf, 0x16u);
       }
     }
 
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
-  else if (v11[2](v11))
+  else if (blockCopy[2](blockCopy))
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
     {
@@ -2161,34 +2161,34 @@ uint64_t __90__CSAppEntityUpdater__recursivelyDonateNowForAllBundles_withIndex_c
         *buf = 138412802;
         v28 = objc_opt_class();
         v29 = 2048;
-        v30 = a4 + 1;
+        v30 = index + 1;
         v31 = 2048;
-        v32 = [v10 count];
+        v32 = [setsCopy count];
         _os_log_impl(&dword_231B25000, v13, OS_LOG_TYPE_DEFAULT, "### %@ Asked to cancel verification at set %ld / %ld", buf, 0x20u);
       }
     }
 
-    v12[2](v12, 3);
+    completionCopy[2](completionCopy, 3);
   }
 
   else
   {
-    v15 = [v10 objectAtIndex:a4];
+    v15 = [setsCopy objectAtIndex:index];
     v16 = MEMORY[0x277CF9508];
-    v17 = [v15 itemType];
-    v18 = [v15 descriptors];
+    itemType = [v15 itemType];
+    descriptors = [v15 descriptors];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlock_completion___block_invoke;
     v21[3] = &unk_27893C8E8;
     v21[4] = self;
     v22 = v15;
-    v23 = v10;
-    v26 = a4;
-    v24 = v11;
-    v25 = v12;
+    v23 = setsCopy;
+    indexCopy = index;
+    v24 = blockCopy;
+    v25 = completionCopy;
     v19 = v15;
-    [v16 deleteSetWithItemType:v17 descriptors:v18 completion:v21];
+    [v16 deleteSetWithItemType:itemType descriptors:descriptors completion:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -2227,11 +2227,11 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runNightlyVerification:(id)a3 completionHandler:(id)a4
+- (void)runNightlyVerification:(id)verification completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  verificationCopy = verification;
+  handlerCopy = handler;
   if ([objc_opt_class() isCascadeDonationEnabled])
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -2245,11 +2245,11 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
       }
     }
 
-    v9 = [(CSAppEntityUpdater *)self _allBundlesApplicableToCascade];
-    v10 = v9;
-    if (v9)
+    _allBundlesApplicableToCascade = [(CSAppEntityUpdater *)self _allBundlesApplicableToCascade];
+    v10 = _allBundlesApplicableToCascade;
+    if (_allBundlesApplicableToCascade)
     {
-      v11 = [v9 allObjects];
+      allObjects = [_allBundlesApplicableToCascade allObjects];
       if (SKGLogGetCurrentLoggingLevel() >= 4)
       {
         v12 = SKGLogInit();
@@ -2259,7 +2259,7 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
           *buf = 138412546;
           *&buf[4] = v13;
           *&buf[12] = 2112;
-          *&buf[14] = v11;
+          *&buf[14] = allObjects;
           _os_log_impl(&dword_231B25000, v12, OS_LOG_TYPE_DEFAULT, "### %@ Verifying all applicable bundles: %@", buf, 0x16u);
         }
       }
@@ -2277,7 +2277,7 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
       v33 = buf;
       v15 = v14;
       v32 = v15;
-      [(CSAppEntityUpdater *)self _recursivelyVerifyAllBundles:v11 withIndex:0 cancelBlock:v6 completion:v31];
+      [(CSAppEntityUpdater *)self _recursivelyVerifyAllBundles:allObjects withIndex:0 cancelBlock:verificationCopy completion:v31];
       v16 = dispatch_group_create();
       dispatch_group_enter(v16);
       queue = self->_queue;
@@ -2290,7 +2290,7 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
       v27 = v16;
       v18 = v10;
       v28 = v18;
-      v29 = v6;
+      v29 = verificationCopy;
       v19 = v16;
       dispatch_group_notify(v15, queue, block);
       v20 = self->_queue;
@@ -2300,7 +2300,7 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
       v22[3] = &unk_27893C960;
       v25 = buf;
       v22[4] = self;
-      v24 = v7;
+      v24 = handlerCopy;
       v23 = v18;
       dispatch_group_notify(v19, v20, v22);
 
@@ -2309,13 +2309,13 @@ void __86__CSAppEntityUpdater__recursivelyCleanupDeletedSets_withIndex_cancelBlo
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2479,11 +2479,11 @@ LABEL_13:
   return result;
 }
 
-- (void)handleDonateNowNotification:(id)a3 completionHandler:(id)a4
+- (void)handleDonateNowNotification:(id)notification completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if ([objc_opt_class() isCascadeDonationEnabled])
   {
     if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -2497,10 +2497,10 @@ LABEL_13:
       }
     }
 
-    v9 = [(CSAppEntityUpdater *)self _allBundlesApplicableToCascade];
-    v10 = [v9 allObjects];
+    _allBundlesApplicableToCascade = [(CSAppEntityUpdater *)self _allBundlesApplicableToCascade];
+    allObjects = [_allBundlesApplicableToCascade allObjects];
 
-    if (v10)
+    if (allObjects)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
       {
@@ -2511,7 +2511,7 @@ LABEL_13:
           *buf = 138412546;
           *&buf[4] = v12;
           *&buf[12] = 2112;
-          *&buf[14] = v10;
+          *&buf[14] = allObjects;
           _os_log_impl(&dword_231B25000, v11, OS_LOG_TYPE_DEFAULT, "### %@ Performing DonateNow for all allowed bundles: %@", buf, 0x16u);
         }
       }
@@ -2528,16 +2528,16 @@ LABEL_13:
       v20[3] = &unk_27893C988;
       v20[4] = self;
       v23 = buf;
-      v21 = v10;
+      v21 = allObjects;
       v14 = v13;
       v22 = v14;
-      [(CSAppEntityUpdater *)self _recursivelyDonateNowForAllBundles:v21 withIndex:0 cancelBlock:v6 completion:v20];
+      [(CSAppEntityUpdater *)self _recursivelyDonateNowForAllBundles:v21 withIndex:0 cancelBlock:notificationCopy completion:v20];
       queue = self->_queue;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __68__CSAppEntityUpdater_handleDonateNowNotification_completionHandler___block_invoke_227;
       v17[3] = &unk_27893C9B0;
-      v18 = v7;
+      v18 = handlerCopy;
       v19 = buf;
       dispatch_group_notify(v14, queue, v17);
 
@@ -2546,13 +2546,13 @@ LABEL_13:
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -2639,7 +2639,7 @@ void __50__CSAppEntityUpdater__countAppEntitiesFromBundle___block_invoke_cold_1(
 - (void)_allBundlesApplicableToCascade
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 1024;
   *(buf + 14) = 240;
   _os_log_error_impl(&dword_231B25000, log, OS_LOG_TYPE_ERROR, "### %@ Exceeded timeout for applicable bundle identifiers Spotlight query (%u seconds)", buf, 0x12u);

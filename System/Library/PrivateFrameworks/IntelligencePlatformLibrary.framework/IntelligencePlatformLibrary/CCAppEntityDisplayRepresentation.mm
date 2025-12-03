@@ -1,28 +1,28 @@
 @interface CCAppEntityDisplayRepresentation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppEntityDisplayRepresentation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppEntityDisplayRepresentation)initWithTitle:(id)a3 subtitle:(id)a4 synonyms:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppEntityDisplayRepresentation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppEntityDisplayRepresentation)initWithTitle:(id)title subtitle:(id)subtitle synonyms:(id)synonyms error:(id *)error;
 - (NSArray)synonyms;
 - (NSString)subtitle;
 - (NSString)title;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppEntityDisplayRepresentation
 
-- (CCAppEntityDisplayRepresentation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppEntityDisplayRepresentation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"title"];
-    v10 = [v6 objectForKeyedSubscript:@"subtitle"];
-    v11 = [v6 objectForKeyedSubscript:@"synonyms"];
-    v12 = [[CCAppEntityDisplayRepresentation alloc] initWithTitle:v9 subtitle:v10 synonyms:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"synonyms"];
+    v12 = [[CCAppEntityDisplayRepresentation alloc] initWithTitle:v9 subtitle:v10 synonyms:v11 error:error];
   }
 
   else
@@ -39,20 +39,20 @@
   v3 = objc_opt_new();
   if (self->_title)
   {
-    v4 = [(CCAppEntityDisplayRepresentation *)self title];
-    [v3 setObject:v4 forKeyedSubscript:@"title"];
+    title = [(CCAppEntityDisplayRepresentation *)self title];
+    [v3 setObject:title forKeyedSubscript:@"title"];
   }
 
   if (self->_subtitle)
   {
-    v5 = [(CCAppEntityDisplayRepresentation *)self subtitle];
-    [v3 setObject:v5 forKeyedSubscript:@"subtitle"];
+    subtitle = [(CCAppEntityDisplayRepresentation *)self subtitle];
+    [v3 setObject:subtitle forKeyedSubscript:@"subtitle"];
   }
 
   if (self->_synonyms)
   {
-    v6 = [(CCAppEntityDisplayRepresentation *)self synonyms];
-    [v3 setObject:v6 forKeyedSubscript:@"synonyms"];
+    synonyms = [(CCAppEntityDisplayRepresentation *)self synonyms];
+    [v3 setObject:synonyms forKeyedSubscript:@"synonyms"];
   }
 
   v7 = [v3 copy];
@@ -60,20 +60,20 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v4 = a4;
-  v12 = a3;
+  typeCopy = type;
+  blockCopy = block;
   if (self->_title)
   {
-    if (v4 == 47343)
+    if (typeCopy == 47343)
     {
       v6 = 47347;
     }
 
     else
     {
-      if (v4 != 39427)
+      if (typeCopy != 39427)
       {
         goto LABEL_7;
       }
@@ -82,7 +82,7 @@
     }
 
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_title];
-    v12[2](v12, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
 LABEL_7:
@@ -91,14 +91,14 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  if (v4 == 47343)
+  if (typeCopy == 47343)
   {
     v8 = 47348;
   }
 
   else
   {
-    if (v4 != 39427)
+    if (typeCopy != 39427)
     {
       goto LABEL_13;
     }
@@ -107,7 +107,7 @@ LABEL_7:
   }
 
   v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v8 stringValue:self->_subtitle];
-  v12[2](v12, v9);
+  blockCopy[2](blockCopy, v9);
 
 LABEL_13:
   if (!self->_synonyms)
@@ -115,14 +115,14 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (v4 == 47343)
+  if (typeCopy == 47343)
   {
     v10 = 47349;
   }
 
   else
   {
-    if (v4 != 39427)
+    if (typeCopy != 39427)
     {
       goto LABEL_19;
     }
@@ -131,7 +131,7 @@ LABEL_13:
   }
 
   v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v10 repeatedStringValue:self->_synonyms];
-  v12[2](v12, v11);
+  blockCopy[2](blockCopy, v11);
 
 LABEL_19:
 }
@@ -157,11 +157,11 @@ LABEL_19:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v40 = a4;
-  v41 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v41];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -309,7 +309,7 @@ LABEL_30:
       }
     }
 
-    [v9 addObject:{v26, v40}];
+    [v9 addObject:{v26, errorCopy}];
     goto LABEL_30;
   }
 
@@ -325,13 +325,13 @@ LABEL_41:
   {
     CCSetError();
     v32 = 0;
-    v33 = v41;
+    v33 = dataCopy;
   }
 
   else
   {
     v34 = MEMORY[0x1E6993AA8];
-    v33 = v41;
+    v33 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v35 = objc_opt_class();
@@ -352,14 +352,14 @@ LABEL_41:
   return v32;
 }
 
-- (CCAppEntityDisplayRepresentation)initWithTitle:(id)a3 subtitle:(id)a4 synonyms:(id)a5 error:(id *)a6
+- (CCAppEntityDisplayRepresentation)initWithTitle:(id)title subtitle:(id)subtitle synonyms:(id)synonyms error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  synonymsCopy = synonyms;
   v13 = objc_opt_new();
-  if (v10)
+  if (titleCopy)
   {
     objc_opt_class();
     v36 = 0;
@@ -371,11 +371,11 @@ LABEL_41:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!subtitleCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (synonymsCopy)
       {
         goto LABEL_5;
       }
@@ -383,10 +383,10 @@ LABEL_4:
 LABEL_18:
       v15 = v16;
 LABEL_19:
-      v26 = [v13 immutableData];
-      self = [(CCItemMessage *)self initWithData:v26 error:a6];
+      immutableData = [v13 immutableData];
+      self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-      v24 = self;
+      selfCopy = self;
       goto LABEL_21;
     }
   }
@@ -394,7 +394,7 @@ LABEL_19:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!subtitleCopy)
     {
       goto LABEL_4;
     }
@@ -408,13 +408,13 @@ LABEL_19:
   if (!v25)
   {
     CCSetError();
-    v24 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_21;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!synonymsCopy)
   {
     goto LABEL_18;
   }
@@ -427,12 +427,12 @@ LABEL_5:
 
   if (v17)
   {
-    v29 = a6;
+    errorCopy = error;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v12;
+    v18 = synonymsCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v37 count:16];
     if (v19)
     {
@@ -460,17 +460,17 @@ LABEL_5:
       while (v20);
     }
 
-    a6 = v29;
+    error = errorCopy;
     goto LABEL_19;
   }
 
 LABEL_14:
   CCSetError();
-  v24 = 0;
+  selfCopy = 0;
 LABEL_21:
 
   v27 = *MEMORY[0x1E69E9840];
-  return v24;
+  return selfCopy;
 }
 
 @end

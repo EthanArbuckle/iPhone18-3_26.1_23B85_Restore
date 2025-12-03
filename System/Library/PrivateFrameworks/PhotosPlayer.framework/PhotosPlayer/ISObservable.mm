@@ -4,12 +4,12 @@
 - (void)_didChange;
 - (void)_observersQueue_copyChangeObserversForWriteIfNeeded;
 - (void)_publishChanges;
-- (void)_setHasObservers:(BOOL)a3;
+- (void)_setHasObservers:(BOOL)observers;
 - (void)_willChange;
-- (void)enumerateObserversUsingBlock:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
+- (void)enumerateObserversUsingBlock:(id)block;
+- (void)performChanges:(id)changes;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
 @end
 
 @implementation ISObservable
@@ -19,13 +19,13 @@
   v19 = *MEMORY[0x277D85DE8];
   if (self->_observersQueue_shouldCopyChangeObserversOnWrite)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    keyEnumerator = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -36,24 +36,24 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
           v10 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts objectForKey:v9];
           v11 = [v10 copy];
 
-          [(NSMapTable *)v3 setObject:v11 forKey:v9];
+          [(NSMapTable *)weakToStrongObjectsMapTable setObject:v11 forKey:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
     }
 
     observersQueue_changeObserversWithContexts = self->_observersQueue_changeObserversWithContexts;
-    self->_observersQueue_changeObserversWithContexts = v3;
+    self->_observersQueue_changeObserversWithContexts = weakToStrongObjectsMapTable;
 
     self->_observersQueue_shouldCopyChangeObserversOnWrite = 0;
   }
@@ -197,19 +197,19 @@ void __36__ISObservable__applyPendingChanges__block_invoke_2(uint64_t a1, void *
   self->_nestedChanges = nestedChanges + 1;
 }
 
-- (void)_setHasObservers:(BOOL)a3
+- (void)_setHasObservers:(BOOL)observers
 {
-  if (self->_hasObservers != a3)
+  if (self->_hasObservers != observers)
   {
-    self->_hasObservers = a3;
+    self->_hasObservers = observers;
     [(ISObservable *)self hasObserversDidChange];
   }
 }
 
-- (void)enumerateObserversUsingBlock:(id)a3
+- (void)enumerateObserversUsingBlock:(id)block
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   isEnumeratingObservers = self->_isEnumeratingObservers;
   self->_isEnumeratingObservers = 1;
   v26 = 0;
@@ -231,8 +231,8 @@ void __36__ISObservable__applyPendingChanges__block_invoke_2(uint64_t a1, void *
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v27[5] keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  keyEnumerator = [v27[5] keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v32 count:16];
   v8 = v7;
   if (v7)
   {
@@ -244,7 +244,7 @@ LABEL_3:
     {
       if (*v21 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v11 = *(*(&v20 + 1) + 8 * v10);
@@ -252,7 +252,7 @@ LABEL_3:
       v13 = 0;
       while (v13 < [v12 count])
       {
-        v4[2](v4, v11, [v12 pointerAtIndex:v13++], &v24);
+        blockCopy[2](blockCopy, v11, [v12 pointerAtIndex:v13++], &v24);
         if (v24 == 1)
         {
 
@@ -269,7 +269,7 @@ LABEL_3:
 
       if (++v10 == v17)
       {
-        v17 = [v6 countByEnumeratingWithState:&v20 objects:v32 count:16];
+        v17 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v32 count:16];
         if (v17)
         {
           goto LABEL_3;
@@ -296,18 +296,18 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ISObservable_unregisterChangeObserver_context___block_invoke;
   block[3] = &unk_279A29F10;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
 }
 
@@ -356,18 +356,18 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__ISObservable_registerChangeObserver_context___block_invoke;
   block[3] = &unk_279A29F10;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
   if (v8)
   {
@@ -430,10 +430,10 @@ LABEL_14:
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = v4;
+  changesCopy = changes;
+  v5 = changesCopy;
   if (self->_isEnumeratingObservers)
   {
     pendingChangesQueue = self->_pendingChangesQueue;
@@ -442,15 +442,15 @@ LABEL_14:
     v8[2] = __31__ISObservable_performChanges___block_invoke;
     v8[3] = &unk_279A29EA8;
     v8[4] = self;
-    v9 = v4;
+    v9 = changesCopy;
     dispatch_async(pendingChangesQueue, v8);
   }
 
   else
   {
     [(ISObservable *)self _willChange];
-    v7 = [(ISObservable *)self mutableChangeObject];
-    (v5)[2](v5, v7);
+    mutableChangeObject = [(ISObservable *)self mutableChangeObject];
+    (v5)[2](v5, mutableChangeObject);
 
     [(ISObservable *)self _didChange];
   }

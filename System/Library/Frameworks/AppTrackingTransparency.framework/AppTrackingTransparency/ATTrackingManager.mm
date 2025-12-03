@@ -9,7 +9,7 @@
 + (id)_TCCServer;
 + (unint64_t)_performTCCPreflightRequest;
 + (unint64_t)_trackingAuthorizationStatus;
-+ (void)_performTCCAccessRequest:(id)a3;
++ (void)_performTCCAccessRequest:(id)request;
 + (void)requestTrackingAuthorizationWithCompletionHandler:(void *)completion;
 @end
 
@@ -46,32 +46,32 @@ void __60__ATTrackingManager__applicationHasDisqualifyingEntitlement__block_invo
 
 + (BOOL)_restrictionProfileInstalled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
 
   return v3;
 }
 
 + (BOOL)_userAllowedToChangeSettings
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 isSharedIPad];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  isSharedIPad = [mEMORY[0x277D77BF8] isSharedIPad];
 
-  if (v3)
+  if (isSharedIPad)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25F28]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F28]] == 1;
 
   return v4;
 }
 
 + (BOOL)_isCrossAppTrackingAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F40]] != 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F40]] != 1;
 
   return v3;
 }
@@ -106,7 +106,7 @@ uint64_t __31__ATTrackingManager__TCCServer__block_invoke()
     _os_log_impl(&dword_236A7E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[%@] Performing TCC Access Preflight Request.", &buf, 0xCu);
   }
 
-  v4 = [a1 _TCCServer];
+  _TCCServer = [self _TCCServer];
   v5 = *MEMORY[0x277D6C238];
   v6 = tcc_service_singleton_for_CF_name();
   v7 = tcc_message_options_create();
@@ -122,7 +122,7 @@ uint64_t __31__ATTrackingManager__TCCServer__block_invoke()
   v13[2] = __48__ATTrackingManager__performTCCPreflightRequest__block_invoke;
   v13[3] = &unk_278A07070;
   v13[4] = &buf;
-  v13[5] = a1;
+  v13[5] = self;
   v9 = MEMORY[0x2383B6A10](v13);
   tcc_server_message_request_authorization();
   v10 = *(*(&buf + 1) + 24);
@@ -156,10 +156,10 @@ void __48__ATTrackingManager__performTCCPreflightRequest__block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_performTCCAccessRequest:(id)a3
++ (void)_performTCCAccessRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
@@ -168,7 +168,7 @@ void __48__ATTrackingManager__performTCCPreflightRequest__block_invoke(uint64_t 
     _os_log_impl(&dword_236A7E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[%@] Performing TCC Access Request.", buf, 0xCu);
   }
 
-  v6 = [a1 _TCCServer];
+  _TCCServer = [self _TCCServer];
   v7 = *MEMORY[0x277D6C238];
   v8 = tcc_service_singleton_for_CF_name();
   v9 = tcc_message_options_create();
@@ -179,9 +179,9 @@ void __48__ATTrackingManager__performTCCPreflightRequest__block_invoke(uint64_t 
   v14[1] = 3221225472;
   v14[2] = __46__ATTrackingManager__performTCCAccessRequest___block_invoke;
   v14[3] = &unk_278A07098;
-  v15 = v4;
-  v16 = a1;
-  v11 = v4;
+  v15 = requestCopy;
+  selfCopy = self;
+  v11 = requestCopy;
   v12 = MEMORY[0x2383B6A10](v14);
   tcc_server_message_request_authorization();
 
@@ -217,27 +217,27 @@ void __46__ATTrackingManager__performTCCAccessRequest___block_invoke(uint64_t a1
 
 + (unint64_t)_trackingAuthorizationStatus
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [v2 _restrictionProfileInstalled];
-  if (v3 & 1 | (([v2 _userAllowedToChangeSettings] & 1) == 0) || (objc_msgSend(v2, "_applicationHasDisqualifyingEntitlement") & 1) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _restrictionProfileInstalled = [selfCopy _restrictionProfileInstalled];
+  if (_restrictionProfileInstalled & 1 | (([selfCopy _userAllowedToChangeSettings] & 1) == 0) || (objc_msgSend(selfCopy, "_applicationHasDisqualifyingEntitlement") & 1) != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v2 _performTCCPreflightRequest];
-    if (v6)
+    _performTCCPreflightRequest = [selfCopy _performTCCPreflightRequest];
+    if (_performTCCPreflightRequest)
     {
-      if (v6 == 2)
+      if (_performTCCPreflightRequest == 2)
       {
         v4 = 3;
       }
 
-      else if (v6 == 1)
+      else if (_performTCCPreflightRequest == 1)
       {
-        if ([v2 _isCrossAppTrackingAllowed])
+        if ([selfCopy _isCrossAppTrackingAllowed])
         {
           v4 = 0;
         }
@@ -260,7 +260,7 @@ void __46__ATTrackingManager__performTCCAccessRequest___block_invoke(uint64_t a1
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -300,18 +300,18 @@ void __46__ATTrackingManager__performTCCAccessRequest___block_invoke(uint64_t a1
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v25 = 0;
-    v10 = a1;
-    objc_sync_enter(v10);
-    v11 = [v10 _trackingAuthorizationStatus];
-    *(*&buf[8] + 24) = v11;
-    objc_sync_exit(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    _trackingAuthorizationStatus = [selfCopy _trackingAuthorizationStatus];
+    *(*&buf[8] + 24) = _trackingAuthorizationStatus;
+    objc_sync_exit(selfCopy);
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __48__ATTrackingManager_trackingAuthorizationStatus__block_invoke;
     v19[3] = &unk_278A070C0;
     v19[4] = buf;
-    v19[5] = v10;
+    v19[5] = selfCopy;
     if (trackingAuthorizationStatus_onceToken != -1)
     {
       dispatch_once(&trackingAuthorizationStatus_onceToken, v19);
@@ -374,9 +374,9 @@ void __43__ATTrackingManager_applicationStateActive__block_invoke()
 
 + (BOOL)isApplicationExtension
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundlePath];
-  v4 = [v3 hasSuffix:@".appex"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundlePath = [mainBundle bundlePath];
+  v4 = [bundlePath hasSuffix:@".appex"];
 
   return v4;
 }
@@ -415,11 +415,11 @@ void __43__ATTrackingManager_applicationStateActive__block_invoke()
 
     else
     {
-      v12 = [a1 _restrictionProfileInstalled];
-      v13 = [a1 _userAllowedToChangeSettings];
-      if (v12)
+      _restrictionProfileInstalled = [self _restrictionProfileInstalled];
+      _userAllowedToChangeSettings = [self _userAllowedToChangeSettings];
+      if (_restrictionProfileInstalled)
       {
-        [a1 _sendRequestTrackingAnalytic:1 prompted:0 deniedReason:2];
+        [self _sendRequestTrackingAnalytic:1 prompted:0 deniedReason:2];
         _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
         _lastAuthorizationStatus = 1;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -436,9 +436,9 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      if ((v13 & 1) == 0)
+      if ((_userAllowedToChangeSettings & 1) == 0)
       {
-        [a1 _sendRequestTrackingAnalytic:1 prompted:0 deniedReason:3];
+        [self _sendRequestTrackingAnalytic:1 prompted:0 deniedReason:3];
         _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
         _lastAuthorizationStatus = 1;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -453,9 +453,9 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      if ([a1 _applicationHasDisqualifyingEntitlement])
+      if ([self _applicationHasDisqualifyingEntitlement])
       {
-        [a1 _sendRequestTrackingAnalytic:1 prompted:0 deniedReason:4];
+        [self _sendRequestTrackingAnalytic:1 prompted:0 deniedReason:4];
         _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
         _lastAuthorizationStatus = 1;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -470,36 +470,36 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v21 = [a1 _performTCCPreflightRequest];
-      if (v21 != 2)
+      _performTCCPreflightRequest = [self _performTCCPreflightRequest];
+      if (_performTCCPreflightRequest != 2)
       {
-        if (v21 == 1)
+        if (_performTCCPreflightRequest == 1)
         {
-          if ([a1 _isCrossAppTrackingAllowed])
+          if ([self _isCrossAppTrackingAllowed])
           {
-            v22 = [a1 applicationStateActive];
-            if ([a1 isApplicationExtension] & 1 | ((v22 & 1) == 0))
+            applicationStateActive = [self applicationStateActive];
+            if ([self isApplicationExtension] & 1 | ((applicationStateActive & 1) == 0))
             {
-              v23 = a1;
-              objc_sync_enter(v23);
-              v24 = [v23 _trackingAuthorizationStatus];
-              objc_sync_exit(v23);
+              selfCopy = self;
+              objc_sync_enter(selfCopy);
+              _trackingAuthorizationStatus = [selfCopy _trackingAuthorizationStatus];
+              objc_sync_exit(selfCopy);
 
-              [v23 _sendRequestTrackingAnalytic:v24 prompted:0 deniedReason:0];
+              [selfCopy _sendRequestTrackingAnalytic:_trackingAuthorizationStatus prompted:0 deniedReason:0];
               _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
-              _lastAuthorizationStatus = v24;
+              _lastAuthorizationStatus = _trackingAuthorizationStatus;
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
               {
                 v25 = objc_opt_class();
                 *buf = 138412546;
                 v37 = v25;
                 v38 = 2048;
-                v39 = v24;
+                v39 = _trackingAuthorizationStatus;
                 v26 = v25;
                 _os_log_impl(&dword_236A7E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[%@] requestTrackingAuthorizationWithCompletionHandler returning %lu due to backgrounded app.", buf, 0x16u);
               }
 
-              v4[2](v4, v24);
+              v4[2](v4, _trackingAuthorizationStatus);
             }
 
             else
@@ -508,15 +508,15 @@ LABEL_26:
               v33[1] = 3221225472;
               v33[2] = __71__ATTrackingManager_requestTrackingAuthorizationWithCompletionHandler___block_invoke;
               v33[3] = &unk_278A070E8;
-              v35 = a1;
+              selfCopy2 = self;
               v34 = v4;
-              [a1 _performTCCAccessRequest:v33];
+              [self _performTCCAccessRequest:v33];
             }
 
             goto LABEL_27;
           }
 
-          [a1 _sendRequestTrackingAnalytic:2 prompted:0 deniedReason:1];
+          [self _sendRequestTrackingAnalytic:2 prompted:0 deniedReason:1];
           _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
           _lastAuthorizationStatus = 2;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -531,7 +531,7 @@ LABEL_26:
 
         else
         {
-          [a1 _sendRequestTrackingAnalytic:2 prompted:0 deniedReason:1];
+          [self _sendRequestTrackingAnalytic:2 prompted:0 deniedReason:1];
           _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
           _lastAuthorizationStatus = 2;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -548,7 +548,7 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      [a1 _sendRequestTrackingAnalytic:3 prompted:0 deniedReason:0];
+      [self _sendRequestTrackingAnalytic:3 prompted:0 deniedReason:0];
       _lastRequestTrackingAuthTimestamp = CFAbsoluteTimeGetCurrent();
       _lastAuthorizationStatus = 3;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))

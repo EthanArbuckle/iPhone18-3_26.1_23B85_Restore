@@ -1,33 +1,33 @@
 @interface KVProfileReaderFactory
-- (id)profileReaderForData:(id)a3 error:(id *)a4;
+- (id)profileReaderForData:(id)data error:(id *)error;
 @end
 
 @implementation KVProfileReaderFactory
 
-- (id)profileReaderForData:(id)a3 error:(id *)a4
+- (id)profileReaderForData:(id)data error:(id *)error
 {
   v137[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_length(v5, v6, v7, v8, v9, v10))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && objc_msgSend_length(dataCopy, v6, v7, v8, v9, v10))
   {
-    v11 = v5;
+    v11 = dataCopy;
     v17 = *(objc_msgSend_bytes(v11, v12, v13, v14, v15, v16) + 4);
-    v18 = v5;
+    v18 = dataCopy;
     if (v17 == 844517451)
     {
-      v24 = objc_msgSend_bytes(v5, v19, v20, v21, v22, v23);
+      v24 = objc_msgSend_bytes(dataCopy, v19, v20, v21, v22, v23);
     }
 
     else
     {
-      v24 = (objc_msgSend_bytes(v5, v19, v20, v21, v22, v23) + 4);
+      v24 = (objc_msgSend_bytes(dataCopy, v19, v20, v21, v22, v23) + 4);
     }
 
     v34 = *v24;
-    v35 = v5;
+    v35 = dataCopy;
     v131 = objc_msgSend_bytes(v35, v36, v37, v38, v39, v40);
-    v132 = objc_msgSend_length(v5, v41, v42, v43, v44, v45);
+    v132 = objc_msgSend_length(dataCopy, v41, v42, v43, v44, v45);
     v133 = xmmword_2559D02B0;
     v134 = 0;
     v135 = 1;
@@ -260,22 +260,22 @@ LABEL_80:
                 v97 = (v46 + *(v46 - v47 + 4));
                 v98 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x277CBEA90], v56, v97 + *v97 + 4, *(v97 + *v97), 0, v57);
                 v99 = [KVProfileInfo alloc];
-                v103 = objc_msgSend_initWithBuffer_error_(v99, v100, v98, a4, v101, v102);
+                v103 = objc_msgSend_initWithBuffer_error_(v99, v100, v98, error, v101, v102);
                 v109 = v103;
                 if (v103)
                 {
                   if (objc_msgSend_datasetCount(v103, v104, v105, v106, v107, v108) && ((v110 = (v46 - *v46), *v110 < 7u) || !v110[3]))
                   {
-                    v115 = v5;
+                    v115 = dataCopy;
                     v121 = *objc_msgSend_bytes(v115, v116, v117, v118, v119, v120);
                     v122 = [KVStreamProfileReader alloc];
-                    v114 = objc_msgSend_initWithData_profileInfo_offset_(v122, v123, v5, v109, (v121 + 4), v124);
+                    v114 = objc_msgSend_initWithData_profileInfo_offset_(v122, v123, dataCopy, v109, (v121 + 4), v124);
                   }
 
                   else
                   {
                     v111 = [KVEmbeddedProfileReader alloc];
-                    v114 = objc_msgSend_initWithData_profile_profileInfo_(v111, v112, v5, v46, v109, v113);
+                    v114 = objc_msgSend_initWithData_profile_profileInfo_(v111, v112, dataCopy, v46, v109, v113);
                   }
 
                   v33 = v114;
@@ -296,20 +296,20 @@ LABEL_80:
 
 LABEL_76:
     v91 = [KVJSONProfileReader alloc];
-    v33 = objc_msgSend_initWithData_error_(v91, v92, v5, a4, v93, v94);
+    v33 = objc_msgSend_initWithData_error_(v91, v92, dataCopy, error, v93, v94);
     goto LABEL_77;
   }
 
   v25 = MEMORY[0x277CCA9B8];
   v136 = *MEMORY[0x277CCA450];
-  v26 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"Unexpected profile data: %@", v8, v9, v10, v5);
+  v26 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"Unexpected profile data: %@", v8, v9, v10, dataCopy);
   v137[0] = v26;
   v29 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v27, v137, &v136, 1, v28);
   v32 = objc_msgSend_errorWithDomain_code_userInfo_(v25, v30, @"com.apple.koa.profile", 2, v29, v31);
-  if (a4 && v32)
+  if (error && v32)
   {
     v32 = v32;
-    *a4 = v32;
+    *error = v32;
   }
 
   v33 = 0;

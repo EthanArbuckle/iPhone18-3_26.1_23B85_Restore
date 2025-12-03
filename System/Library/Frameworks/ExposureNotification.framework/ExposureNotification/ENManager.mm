@@ -1,110 +1,110 @@
 @interface ENManager
 + (ENAuthorizationStatus)authorizationStatus;
-- (BOOL)_setActivationPropertiesOnRequest:(id)a3 error:(id *)a4;
+- (BOOL)_setActivationPropertiesOnRequest:(id)request error:(id *)error;
 - (ENManager)init;
 - (NSProgress)detectExposuresWithConfiguration:(ENExposureConfiguration *)configuration diagnosisKeyURLs:(NSArray *)diagnosisKeyURLs completionHandler:(ENDetectExposuresHandler)completionHandler;
 - (NSProgress)getExposureInfoFromSummary:(ENExposureDetectionSummary *)summary userExplanation:(NSString *)userExplanation completionHandler:(ENGetExposureInfoHandler)completionHandler;
 - (NSProgress)getExposureWindowsFromSummary:(ENExposureDetectionSummary *)summary completionHandler:(ENGetExposureWindowsHandler)completionHandler;
 - (id)_ensureXPCStarted;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateInitial:(BOOL)a3 completionHandler:(id)a4;
-- (void)_checkRemoteDialogueRequirementForRequestType:(int64_t)a3 completionHandler:(id)a4;
-- (void)_entitlementCheckUpdate:(id)a3;
-- (void)_entitlementCheckWithCompletion:(id)a3;
-- (void)_getDetectionHistoryFilesCompleted:(id)a3 completion:(id)a4;
-- (void)_getDetectionHistorySessionsCompleted:(id)a3 completion:(id)a4;
-- (void)_getDiagnosisKeysReply:(id)a3 completionHandler:(id)a4;
-- (void)_getExposureInfoCompleted:(id)a3 completionHandler:(id)a4;
-- (void)_getExposureWindowsCompleted:(id)a3 completionHandler:(id)a4;
-- (void)_getExposureWindowsFromIndex:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_handleRemotePresentationRequest:(id)a3 completionHandler:(id)a4;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateInitial:(BOOL)initial completionHandler:(id)handler;
+- (void)_checkRemoteDialogueRequirementForRequestType:(int64_t)type completionHandler:(id)handler;
+- (void)_entitlementCheckUpdate:(id)update;
+- (void)_entitlementCheckWithCompletion:(id)completion;
+- (void)_getDetectionHistoryFilesCompleted:(id)completed completion:(id)completion;
+- (void)_getDetectionHistorySessionsCompleted:(id)completed completion:(id)completion;
+- (void)_getDiagnosisKeysReply:(id)reply completionHandler:(id)handler;
+- (void)_getExposureInfoCompleted:(id)completed completionHandler:(id)handler;
+- (void)_getExposureWindowsCompleted:(id)completed completionHandler:(id)handler;
+- (void)_getExposureWindowsFromIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)_handleRemotePresentationRequest:(id)request completionHandler:(id)handler;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_populateDetectionHistoryChecks:(id)a3 forSessions:(id)a4 sessionIndex:(unint64_t)a5 completion:(id)a6;
-- (void)_preAuthorizeDiagnosisKeysWithSessionID:(id)a3 completionHandler:(id)a4;
+- (void)_populateDetectionHistoryChecks:(id)checks forSessions:(id)sessions sessionIndex:(unint64_t)index completion:(id)completion;
+- (void)_preAuthorizeDiagnosisKeysWithSessionID:(id)d completionHandler:(id)handler;
 - (void)_reactivate;
-- (void)_setPreAuthorizeDiagnosisKeysEnabled:(BOOL)a3 region:(id)a4 metadata:(id)a5 completionHandler:(id)a6;
-- (void)_tccCheckWithCompletion:(id)a3;
-- (void)_xpcHandleActivity:(id)a3;
-- (void)_xpcHandlePreAuthorizedDiagnosisKeysAvailable:(id)a3;
-- (void)_xpcHandleStatusChanged:(id)a3 initial:(BOOL)a4;
-- (void)_xpcReceivedEvent:(id)a3;
-- (void)_xpcReceivedMessage:(id)a3;
+- (void)_setPreAuthorizeDiagnosisKeysEnabled:(BOOL)enabled region:(id)region metadata:(id)metadata completionHandler:(id)handler;
+- (void)_tccCheckWithCompletion:(id)completion;
+- (void)_xpcHandleActivity:(id)activity;
+- (void)_xpcHandlePreAuthorizedDiagnosisKeysAvailable:(id)available;
+- (void)_xpcHandleStatusChanged:(id)changed initial:(BOOL)initial;
+- (void)_xpcReceivedEvent:(id)event;
+- (void)_xpcReceivedMessage:(id)message;
 - (void)activateWithCompletionHandler:(ENErrorHandler)completionHandler;
-- (void)activeRegionWithCompletion:(id)a3;
-- (void)agencyConfigurationForLocale:(id)a3 withCompletion:(id)a4;
-- (void)allAgencyConfigurationsForLocale:(id)a3 withCompletion:(id)a4;
-- (void)allRegionConfigurationsWithCompletion:(id)a3;
-- (void)allRegionServerConfigurationsWithCompletion:(id)a3;
-- (void)clearDeveloperServerConfigurationWithCompletionHandler:(id)a3;
+- (void)activeRegionWithCompletion:(id)completion;
+- (void)agencyConfigurationForLocale:(id)locale withCompletion:(id)completion;
+- (void)allAgencyConfigurationsForLocale:(id)locale withCompletion:(id)completion;
+- (void)allRegionConfigurationsWithCompletion:(id)completion;
+- (void)allRegionServerConfigurationsWithCompletion:(id)completion;
+- (void)clearDeveloperServerConfigurationWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)diagnosticControl:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 completion:(id)a4;
-- (void)didEnterLegalConsentPage:(id)a3 completionHandler:(id)a4;
-- (void)downloadAndDetectExposure:(BOOL)a3 completionHandler:(id)a4;
-- (void)exposureDetectionActivate:(id)a3 completion:(id)a4;
-- (void)exposureDetectionAddKeys:(id)a3 completion:(id)a4;
-- (void)exposureDetectionFileActivate:(id)a3 completion:(id)a4;
-- (void)exposureDetectionFileAdd:(id)a3 signatureURL:(id)a4 completion:(id)a5;
-- (void)exposureDetectionFileFinishWithCompletion:(id)a3;
-- (void)exposureDetectionFinishWithCompletion:(id)a3;
-- (void)exposureDetectionGetExposureInfoCompleted:(id)a3 completion:(id)a4;
-- (void)exposureDetectionGetExposureInfoWithMaximumCount:(unint64_t)a3 completion:(id)a4;
-- (void)exposureNotificationGetStatusForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchConfigurationsForRegion:(id)a3 fetchReason:(unsigned int)a4 completion:(id)a5;
-- (void)fetchConfigurationsForRegion:(id)a3 forceServerFetch:(BOOL)a4 completion:(id)a5;
-- (void)fetchSubdivisionsForCountry:(id)a3 completion:(id)a4;
-- (void)fetchTestMetadataForSession:(id)a3 completionHandler:(id)a4;
-- (void)finishTestVerificationForSession:(id)a3 userDidConsent:(BOOL)a4 metadata:(id)a5 completionHandler:(id)a6;
-- (void)getAllEntitiesWithCompletion:(id)a3;
-- (void)getDataVaultSizeWithCompletion:(id)a3;
-- (void)getDetectionHistoryChecksWithCompletion:(id)a3;
-- (void)getDetectionHistoryFilesForSession:(id)a3 completion:(id)a4;
-- (void)getDetectionHistorySessionsWithCompletion:(id)a3;
-- (void)getDiagnosisKeysForTesting:(BOOL)a3 forceRefresh:(BOOL)a4 completionHandler:(id)a5;
-- (void)getEntitiesWithCompletion:(id)a3;
-- (void)getInfoForKey:(id)a3 completion:(id)a4;
-- (void)getLastExposureNotificationWithCompletion:(id)a3;
-- (void)getPreAuthorizeDiagnosisKeysEnabledForRegion:(id)a3 completionHandler:(id)a4;
-- (void)getRegionHistoryEnabledWithCompletionHandler:(id)a3;
-- (void)getRegionMonitorEnabledWithCompletionHandler:(id)a3;
-- (void)getRegionVisitHistoryWithCompletion:(id)a3;
-- (void)getTravelStatusEnabledForRegion:(id)a3 completionHandler:(id)a4;
-- (void)getTravelStatusEnabledWithCompletionHandler:(id)a3;
+- (void)diagnosticControl:(id)control completion:(id)completion;
+- (void)diagnosticShow:(id)show completion:(id)completion;
+- (void)didEnterLegalConsentPage:(id)page completionHandler:(id)handler;
+- (void)downloadAndDetectExposure:(BOOL)exposure completionHandler:(id)handler;
+- (void)exposureDetectionActivate:(id)activate completion:(id)completion;
+- (void)exposureDetectionAddKeys:(id)keys completion:(id)completion;
+- (void)exposureDetectionFileActivate:(id)activate completion:(id)completion;
+- (void)exposureDetectionFileAdd:(id)add signatureURL:(id)l completion:(id)completion;
+- (void)exposureDetectionFileFinishWithCompletion:(id)completion;
+- (void)exposureDetectionFinishWithCompletion:(id)completion;
+- (void)exposureDetectionGetExposureInfoCompleted:(id)completed completion:(id)completion;
+- (void)exposureDetectionGetExposureInfoWithMaximumCount:(unint64_t)count completion:(id)completion;
+- (void)exposureNotificationGetStatusForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchConfigurationsForRegion:(id)region fetchReason:(unsigned int)reason completion:(id)completion;
+- (void)fetchConfigurationsForRegion:(id)region forceServerFetch:(BOOL)fetch completion:(id)completion;
+- (void)fetchSubdivisionsForCountry:(id)country completion:(id)completion;
+- (void)fetchTestMetadataForSession:(id)session completionHandler:(id)handler;
+- (void)finishTestVerificationForSession:(id)session userDidConsent:(BOOL)consent metadata:(id)metadata completionHandler:(id)handler;
+- (void)getAllEntitiesWithCompletion:(id)completion;
+- (void)getDataVaultSizeWithCompletion:(id)completion;
+- (void)getDetectionHistoryChecksWithCompletion:(id)completion;
+- (void)getDetectionHistoryFilesForSession:(id)session completion:(id)completion;
+- (void)getDetectionHistorySessionsWithCompletion:(id)completion;
+- (void)getDiagnosisKeysForTesting:(BOOL)testing forceRefresh:(BOOL)refresh completionHandler:(id)handler;
+- (void)getEntitiesWithCompletion:(id)completion;
+- (void)getInfoForKey:(id)key completion:(id)completion;
+- (void)getLastExposureNotificationWithCompletion:(id)completion;
+- (void)getPreAuthorizeDiagnosisKeysEnabledForRegion:(id)region completionHandler:(id)handler;
+- (void)getRegionHistoryEnabledWithCompletionHandler:(id)handler;
+- (void)getRegionMonitorEnabledWithCompletionHandler:(id)handler;
+- (void)getRegionVisitHistoryWithCompletion:(id)completion;
+- (void)getTravelStatusEnabledForRegion:(id)region completionHandler:(id)handler;
+- (void)getTravelStatusEnabledWithCompletionHandler:(id)handler;
 - (void)getUserTraveledWithCompletionHandler:(ENGetUserTraveledHandler)completionHandler;
 - (void)invalidate;
-- (void)onboardingDidStartForRegion:(id)a3 withSource:(id)a4 completion:(id)a5;
-- (void)pauseWithExpiration:(double)a3 completionHandler:(id)a4;
+- (void)onboardingDidStartForRegion:(id)region withSource:(id)source completion:(id)completion;
+- (void)pauseWithExpiration:(double)expiration completionHandler:(id)handler;
 - (void)preAuthorizeDiagnosisKeysWithCompletionHandler:(ENErrorHandler)completionHandler;
-- (void)regionConfigurationWithCompletion:(id)a3;
-- (void)regionHistoryWithCompletion:(id)a3;
-- (void)regionServerConfigurationWithCompletion:(id)a3;
-- (void)remotePresentationRequestDidComplete:(id)a3 completion:(id)a4;
+- (void)regionConfigurationWithCompletion:(id)completion;
+- (void)regionHistoryWithCompletion:(id)completion;
+- (void)regionServerConfigurationWithCompletion:(id)completion;
+- (void)remotePresentationRequestDidComplete:(id)complete completion:(id)completion;
 - (void)requestPreAuthorizedDiagnosisKeysWithCompletionHandler:(ENErrorHandler)completionHandler;
-- (void)resetDataWithFlags:(unsigned int)a3 completionHandler:(id)a4;
-- (void)sendChaffTestVerificationRequestForRegion:(id)a3 completionHandler:(id)a4;
-- (void)setActiveEntityWithAppBundleID:(id)a3 completion:(id)a4;
-- (void)setActiveEntityWithRegion:(id)a3 completion:(id)a4;
-- (void)setActiveRegion:(id)a3 completion:(id)a4;
-- (void)setAutomaticRegionSwitchEnabled:(BOOL)a3 completion:(id)a4;
-- (void)setAvailabilityAlertEnabled:(BOOL)a3 completion:(id)a4;
-- (void)setCurrentActiveApp:(id)a3 completion:(id)a4;
-- (void)setDeveloperServerConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)resetDataWithFlags:(unsigned int)flags completionHandler:(id)handler;
+- (void)sendChaffTestVerificationRequestForRegion:(id)region completionHandler:(id)handler;
+- (void)setActiveEntityWithAppBundleID:(id)d completion:(id)completion;
+- (void)setActiveEntityWithRegion:(id)region completion:(id)completion;
+- (void)setActiveRegion:(id)region completion:(id)completion;
+- (void)setAutomaticRegionSwitchEnabled:(BOOL)enabled completion:(id)completion;
+- (void)setAvailabilityAlertEnabled:(BOOL)enabled completion:(id)completion;
+- (void)setCurrentActiveApp:(id)app completion:(id)completion;
+- (void)setDeveloperServerConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)setExposureNotificationEnabled:(BOOL)enabled completionHandler:(ENErrorHandler)completionHandler;
-- (void)setPaused:(BOOL)a3 completionHandler:(id)a4;
-- (void)setRegionConsent:(int64_t)a3 completionHandler:(id)a4;
-- (void)setRegionConsent:(int64_t)a3 region:(id)a4 completionHandler:(id)a5;
-- (void)setRegionHistoryEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setRegionUserConsent:(id)a3 region:(id)a4 completionHandler:(id)a5;
-- (void)setTravelStatusEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setTravelStatusEnabled:(BOOL)a3 region:(id)a4 completionHandler:(id)a5;
-- (void)setWeeklySummaryAlertEnabled:(BOOL)a3 completion:(id)a4;
-- (void)showBuddyForRegion:(id)a3 completionHandler:(id)a4;
-- (void)startSelfReportWebSession:(id)a3 completionHandler:(id)a4;
-- (void)startTestVerificationSessionWithCode:(id)a3 region:(id)a4 completionHandler:(id)a5;
-- (void)triggerNotificationOfType:(int)a3 appBundleIdentifier:(id)a4 classificationName:(id)a5 interval:(id)a6 region:(id)a7 completion:(id)a8;
-- (void)verifyTextMessage:(id)a3 completionHandler:(id)a4;
+- (void)setPaused:(BOOL)paused completionHandler:(id)handler;
+- (void)setRegionConsent:(int64_t)consent completionHandler:(id)handler;
+- (void)setRegionConsent:(int64_t)consent region:(id)region completionHandler:(id)handler;
+- (void)setRegionHistoryEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setRegionUserConsent:(id)consent region:(id)region completionHandler:(id)handler;
+- (void)setTravelStatusEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setTravelStatusEnabled:(BOOL)enabled region:(id)region completionHandler:(id)handler;
+- (void)setWeeklySummaryAlertEnabled:(BOOL)enabled completion:(id)completion;
+- (void)showBuddyForRegion:(id)region completionHandler:(id)handler;
+- (void)startSelfReportWebSession:(id)session completionHandler:(id)handler;
+- (void)startTestVerificationSessionWithCode:(id)code region:(id)region completionHandler:(id)handler;
+- (void)triggerNotificationOfType:(int)type appBundleIdentifier:(id)identifier classificationName:(id)name interval:(id)interval region:(id)region completion:(id)completion;
+- (void)verifyTextMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation ENManager
@@ -289,7 +289,7 @@ void *__30__ENManager__ensureXPCStarted__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   clientID = self->_clientID;
   v3 = NSPrintF();
@@ -340,11 +340,11 @@ void __43__ENManager_activateWithCompletionHandler___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_activateInitial:(BOOL)a3 completionHandler:(id)a4
+- (void)_activateInitial:(BOOL)initial completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  initialCopy = initial;
+  handlerCopy = handler;
+  if (initialCopy)
   {
     v7 = xpc_copy_entitlement_for_self();
     if (v7)
@@ -364,16 +364,16 @@ void __43__ENManager_activateWithCompletionHandler___block_invoke(uint64_t a1)
   v10 = v16;
   if (v9)
   {
-    v11 = [(ENManager *)self _ensureXPCStarted];
+    _ensureXPCStarted = [(ENManager *)self _ensureXPCStarted];
     dispatchQueue = self->_dispatchQueue;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __48__ENManager__activateInitial_completionHandler___block_invoke;
     v13[3] = &unk_278A4B688;
-    v15 = v4;
+    v15 = initialCopy;
     v13[4] = self;
-    v14 = v6;
-    xpc_connection_send_message_with_reply(v11, v8, dispatchQueue, v13);
+    v14 = handlerCopy;
+    xpc_connection_send_message_with_reply(_ensureXPCStarted, v8, dispatchQueue, v13);
   }
 
   else
@@ -383,7 +383,7 @@ void __43__ENManager_activateWithCompletionHandler___block_invoke(uint64_t a1)
       [ENManager _activateInitial:completionHandler:];
     }
 
-    (*(v6 + 2))(v6, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 }
 
@@ -404,29 +404,29 @@ void __48__ENManager__activateInitial_completionHandler___block_invoke(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_setActivationPropertiesOnRequest:(id)a3 error:(id *)a4
+- (BOOL)_setActivationPropertiesOnRequest:(id)request error:(id *)error
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 infoDictionary];
+  requestCopy = request;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  if (v6)
+  if (infoDictionary)
   {
     CFStringGetTypeID();
     v7 = CFDictionaryGetTypedValue();
-    v8 = v4;
-    v9 = [v7 UTF8String];
-    if (v9)
+    v8 = requestCopy;
+    uTF8String = [v7 UTF8String];
+    if (uTF8String)
     {
-      xpc_dictionary_set_string(v8, "aiRegion", v9);
+      xpc_dictionary_set_string(v8, "aiRegion", uTF8String);
     }
 
     Int64Ranged = CFDictionaryGetInt64Ranged();
-    xpc_dictionary_set_int64(v4, "apiV", Int64Ranged);
+    xpc_dictionary_set_int64(requestCopy, "apiV", Int64Ranged);
   }
 
   v11 = dyld_program_sdk_at_least();
-  xpc_dictionary_set_BOOL(v4, "preV2", v11 != 1);
+  xpc_dictionary_set_BOOL(requestCopy, "preV2", v11 != 1);
 
   return 1;
 }
@@ -506,9 +506,9 @@ LABEL_13:
   [(ENManager *)self _invalidated];
 }
 
-- (void)_entitlementCheckWithCompletion:(id)a3
+- (void)_entitlementCheckWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_exposureNotificationStatus == 4 && !self->_isTestEntitlement)
   {
     goto LABEL_15;
@@ -520,14 +520,14 @@ LABEL_13:
   if (v5 == 5)
   {
     v9 = ENErrorF(3);
-    v4[2](v4, v9);
+    completionCopy[2](completionCopy, v9);
 
     goto LABEL_11;
   }
 
   if (v5 == 6)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -540,15 +540,15 @@ LABEL_15:
 
     v6 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v6, "mTyp", 13);
-    v7 = [(ENManager *)self _ensureXPCStarted];
+    _ensureXPCStarted = [(ENManager *)self _ensureXPCStarted];
     dispatchQueue = self->_dispatchQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __45__ENManager__entitlementCheckWithCompletion___block_invoke;
     handler[3] = &unk_278A4B6F8;
     handler[4] = self;
-    v11 = v4;
-    xpc_connection_send_message_with_reply(v7, v6, dispatchQueue, handler);
+    v11 = completionCopy;
+    xpc_connection_send_message_with_reply(_ensureXPCStarted, v6, dispatchQueue, handler);
   }
 
 LABEL_11:
@@ -561,18 +561,18 @@ void __45__ENManager__entitlementCheckWithCompletion___block_invoke(uint64_t a1)
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_entitlementCheckUpdate:(id)a3
+- (void)_entitlementCheckUpdate:(id)update
 {
-  v3 = a3;
-  v6 = v3;
-  if (v3)
+  updateCopy = update;
+  v6 = updateCopy;
+  if (updateCopy)
   {
-    v4 = [v3 domain];
-    if ([v4 isEqual:@"ENErrorDomain"])
+    domain = [updateCopy domain];
+    if ([domain isEqual:@"ENErrorDomain"])
     {
-      v5 = [v6 code];
+      code = [v6 code];
 
-      if (v5 == 3)
+      if (code == 3)
       {
         pthread_mutex_lock(&gENManagerLock);
         gENManagerEntitledState = 5;
@@ -679,16 +679,16 @@ void __50__ENManager_getUserTraveledWithCompletionHandler___block_invoke_3(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_tccCheckWithCompletion:(id)a3
+- (void)_tccCheckWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__ENManager__tccCheckWithCompletion___block_invoke;
   v6[3] = &unk_278A4B748;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(ENManager *)self _entitlementCheckWithCompletion:v6];
 }
 
@@ -726,20 +726,20 @@ void __37__ENManager__tccCheckWithCompletion___block_invoke_2(uint64_t a1)
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_xpcReceivedEvent:(id)a3
+- (void)_xpcReceivedEvent:(id)event
 {
-  v9 = a3;
+  eventCopy = event;
   if (MEMORY[0x2383EE9C0]() == MEMORY[0x277D86468])
   {
-    [(ENManager *)self _xpcReceivedMessage:v9];
+    [(ENManager *)self _xpcReceivedMessage:eventCopy];
   }
 
-  else if (v9 == MEMORY[0x277D863F0])
+  else if (eventCopy == MEMORY[0x277D863F0])
   {
     [(ENManager *)self _interrupted];
   }
 
-  else if (v9 == MEMORY[0x277D863F8])
+  else if (eventCopy == MEMORY[0x277D863F8])
   {
     if (!self->_invalidateCalled && gLogCategory__ENManager <= 90 && (gLogCategory__ENManager != -1 || _LogCategory_Initialize()))
     {
@@ -775,34 +775,34 @@ void __37__ENManager__tccCheckWithCompletion___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_xpcReceivedMessage:(id)a3
+- (void)_xpcReceivedMessage:(id)message
 {
-  v7 = a3;
-  int64 = xpc_dictionary_get_int64(v7, "mTyp");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "mTyp");
   if (int64 == 12)
   {
-    [(ENManager *)self _xpcHandleStatusChanged:v7 initial:0];
+    [(ENManager *)self _xpcHandleStatusChanged:messageCopy initial:0];
     goto LABEL_7;
   }
 
   if (int64 == 24)
   {
-    [(ENManager *)self _xpcHandlePreAuthorizedDiagnosisKeysAvailable:v7];
+    [(ENManager *)self _xpcHandlePreAuthorizedDiagnosisKeysAvailable:messageCopy];
     goto LABEL_7;
   }
 
-  v5 = v7;
+  v5 = messageCopy;
   if (int64 == 19)
   {
-    [(ENManager *)self _xpcHandleActivity:v7];
+    [(ENManager *)self _xpcHandleActivity:messageCopy];
 LABEL_7:
-    v5 = v7;
+    v5 = messageCopy;
     goto LABEL_8;
   }
 
   if (gLogCategory__ENManager <= 90)
   {
-    if (gLogCategory__ENManager != -1 || (v6 = _LogCategory_Initialize(), v5 = v7, v6))
+    if (gLogCategory__ENManager != -1 || (v6 = _LogCategory_Initialize(), v5 = messageCopy, v6))
     {
       [ENManager _xpcReceivedMessage:];
       goto LABEL_7;
@@ -812,9 +812,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_xpcHandleActivity:(id)a3
+- (void)_xpcHandleActivity:(id)activity
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "actF");
+  uint64 = xpc_dictionary_get_uint64(activity, "actF");
   v5 = MEMORY[0x2383EE560](self->_activityHandler);
   if (v5)
   {
@@ -824,9 +824,9 @@ LABEL_8:
   }
 }
 
-- (void)_xpcHandlePreAuthorizedDiagnosisKeysAvailable:(id)a3
+- (void)_xpcHandlePreAuthorizedDiagnosisKeysAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   v5 = MEMORY[0x2383EE560](self->_diagnosisKeysAvailableHandler);
   if (v5)
   {
@@ -842,7 +842,7 @@ LABEL_8:
     v12[3] = &unk_278A4AF10;
     v12[4] = &v13;
     v6 = MEMORY[0x2383EE560](v12);
-    v7 = xpc_dictionary_get_value(v4, "tekA");
+    v7 = xpc_dictionary_get_value(availableCopy, "tekA");
     v8 = v7;
     if (v7 && MEMORY[0x2383EE9C0](v7) == MEMORY[0x277D86440])
     {
@@ -928,12 +928,12 @@ BOOL __59__ENManager__xpcHandlePreAuthorizedDiagnosisKeysAvailable___block_invok
   return v8;
 }
 
-- (void)_xpcHandleStatusChanged:(id)a3 initial:(BOOL)a4
+- (void)_xpcHandleStatusChanged:(id)changed initial:(BOOL)initial
 {
-  v6 = a3;
+  changedCopy = changed;
   analyticsEnabled = self->_analyticsEnabled;
   v32 = self->_analyticsEnabled;
-  if (v6)
+  if (changedCopy)
   {
     CUXPCDecodeBool();
     v8 = 0;
@@ -1000,7 +1000,7 @@ LABEL_19:
   exposureNotificationEnabled = self->_exposureNotificationEnabled;
   v31 = self->_exposureNotificationEnabled;
 
-  if (v6)
+  if (changedCopy)
   {
     CUXPCDecodeBool();
     v14 = 0;
@@ -1067,7 +1067,7 @@ LABEL_38:
   exposureNotificationPaused = self->_exposureNotificationPaused;
   v30 = self->_exposureNotificationPaused;
 
-  if (v6)
+  if (changedCopy)
   {
     CUXPCDecodeBool();
     v19 = 0;
@@ -1133,7 +1133,7 @@ LABEL_57:
 
   exposureNotificationStatus = self->_exposureNotificationStatus;
 
-  if (v6)
+  if (changedCopy)
   {
     if (CUXPCDecodeSInt64RangedEx() == 6)
     {
@@ -1171,7 +1171,7 @@ LABEL_57:
     v10 = 1;
   }
 
-  if (v10 && !a4)
+  if (v10 && !initial)
   {
     v26 = MEMORY[0x2383EE560](self->_statusChangedHandler);
     v27 = v26;
@@ -1257,9 +1257,9 @@ void __62__ENManager_setExposureNotificationEnabled_completionHandler___block_in
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setPaused:(BOOL)a3 completionHandler:(id)a4
+- (void)setPaused:(BOOL)paused completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setPaused:completionHandler:];
@@ -1270,10 +1270,10 @@ void __62__ENManager_setExposureNotificationEnabled_completionHandler___block_in
   block[1] = 3221225472;
   block[2] = __41__ENManager_setPaused_completionHandler___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  pausedCopy = paused;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1307,9 +1307,9 @@ void __41__ENManager_setPaused_completionHandler___block_invoke_2(uint64_t a1, v
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pauseWithExpiration:(double)a3 completionHandler:(id)a4
+- (void)pauseWithExpiration:(double)expiration completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager pauseWithExpiration:completionHandler:];
@@ -1320,10 +1320,10 @@ void __41__ENManager_setPaused_completionHandler___block_invoke_2(uint64_t a1, v
   block[1] = 3221225472;
   block[2] = __51__ENManager_pauseWithExpiration_completionHandler___block_invoke;
   block[3] = &unk_278A4B0F8;
-  v11 = a3;
+  expirationCopy = expiration;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1358,10 +1358,10 @@ void __51__ENManager_pauseWithExpiration_completionHandler___block_invoke_2(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getPreAuthorizeDiagnosisKeysEnabledForRegion:(id)a3 completionHandler:(id)a4
+- (void)getPreAuthorizeDiagnosisKeysEnabledForRegion:(id)region completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager getPreAuthorizeDiagnosisKeysEnabledForRegion:completionHandler:];
@@ -1372,11 +1372,11 @@ void __51__ENManager_pauseWithExpiration_completionHandler___block_invoke_2(uint
   block[1] = 3221225472;
   block[2] = __76__ENManager_getPreAuthorizeDiagnosisKeysEnabledForRegion_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = regionCopy;
+  v9 = handlerCopy;
+  v10 = regionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1419,11 +1419,11 @@ void __76__ENManager_getPreAuthorizeDiagnosisKeysEnabledForRegion_completionHand
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_setPreAuthorizeDiagnosisKeysEnabled:(BOOL)a3 region:(id)a4 metadata:(id)a5 completionHandler:(id)a6
+- (void)_setPreAuthorizeDiagnosisKeysEnabled:(BOOL)enabled region:(id)region metadata:(id)metadata completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  regionCopy = region;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30)
   {
     if (gLogCategory_ENManager != -1 || _LogCategory_Initialize())
@@ -1442,14 +1442,14 @@ void __76__ENManager_getPreAuthorizeDiagnosisKeysEnabledForRegion_completionHand
   block[1] = 3221225472;
   block[2] = __84__ENManager__setPreAuthorizeDiagnosisKeysEnabled_region_metadata_completionHandler___block_invoke;
   block[3] = &unk_278A4B7E8;
-  v22 = a3;
-  v18 = v11;
-  v19 = v10;
-  v20 = self;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  enabledCopy = enabled;
+  v18 = metadataCopy;
+  v19 = regionCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = regionCopy;
+  v16 = metadataCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1492,9 +1492,9 @@ void __84__ENManager__setPreAuthorizeDiagnosisKeysEnabled_region_metadata_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getRegionHistoryEnabledWithCompletionHandler:(id)a3
+- (void)getRegionHistoryEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager getRegionHistoryEnabledWithCompletionHandler:];
@@ -1506,8 +1506,8 @@ void __84__ENManager__setPreAuthorizeDiagnosisKeysEnabled_region_metadata_comple
   v7[2] = __58__ENManager_getRegionHistoryEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1537,9 +1537,9 @@ void __58__ENManager_getRegionHistoryEnabledWithCompletionHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setRegionHistoryEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setRegionHistoryEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setRegionHistoryEnabled:completionHandler:];
@@ -1550,10 +1550,10 @@ void __58__ENManager_getRegionHistoryEnabledWithCompletionHandler___block_invoke
   block[1] = 3221225472;
   block[2] = __55__ENManager_setRegionHistoryEnabled_completionHandler___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1578,9 +1578,9 @@ void __55__ENManager_setRegionHistoryEnabled_completionHandler___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getRegionMonitorEnabledWithCompletionHandler:(id)a3
+- (void)getRegionMonitorEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager getRegionMonitorEnabledWithCompletionHandler:];
@@ -1592,8 +1592,8 @@ void __55__ENManager_setRegionHistoryEnabled_completionHandler___block_invoke_2(
   v7[2] = __58__ENManager_getRegionMonitorEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1623,9 +1623,9 @@ void __58__ENManager_getRegionMonitorEnabledWithCompletionHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getTravelStatusEnabledWithCompletionHandler:(id)a3
+- (void)getTravelStatusEnabledWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager getTravelStatusEnabledWithCompletionHandler:];
@@ -1637,8 +1637,8 @@ void __58__ENManager_getRegionMonitorEnabledWithCompletionHandler___block_invoke
   v7[2] = __57__ENManager_getTravelStatusEnabledWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1668,10 +1668,10 @@ void __57__ENManager_getTravelStatusEnabledWithCompletionHandler___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getTravelStatusEnabledForRegion:(id)a3 completionHandler:(id)a4
+- (void)getTravelStatusEnabledForRegion:(id)region completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager getTravelStatusEnabledForRegion:completionHandler:];
@@ -1682,11 +1682,11 @@ void __57__ENManager_getTravelStatusEnabledWithCompletionHandler___block_invoke_
   block[1] = 3221225472;
   block[2] = __63__ENManager_getTravelStatusEnabledForRegion_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = regionCopy;
+  v9 = handlerCopy;
+  v10 = regionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1728,9 +1728,9 @@ void __63__ENManager_getTravelStatusEnabledForRegion_completionHandler___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setTravelStatusEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setTravelStatusEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setTravelStatusEnabled:completionHandler:];
@@ -1741,10 +1741,10 @@ void __63__ENManager_getTravelStatusEnabledForRegion_completionHandler___block_i
   block[1] = 3221225472;
   block[2] = __54__ENManager_setTravelStatusEnabled_completionHandler___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1769,10 +1769,10 @@ void __54__ENManager_setTravelStatusEnabled_completionHandler___block_invoke_2(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setTravelStatusEnabled:(BOOL)a3 region:(id)a4 completionHandler:(id)a5
+- (void)setTravelStatusEnabled:(BOOL)enabled region:(id)region completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  regionCopy = region;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setTravelStatusEnabled:region:completionHandler:];
@@ -1783,12 +1783,12 @@ void __54__ENManager_setTravelStatusEnabled_completionHandler___block_invoke_2(u
   v13[1] = 3221225472;
   v13[2] = __61__ENManager_setTravelStatusEnabled_region_completionHandler___block_invoke;
   v13[3] = &unk_278A4B810;
-  v17 = a3;
-  v15 = self;
-  v16 = v9;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  enabledCopy = enabled;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v14 = regionCopy;
+  v11 = handlerCopy;
+  v12 = regionCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -1891,7 +1891,7 @@ uint64_t __81__ENManager_detectExposuresWithConfiguration_diagnosisKeyURLs_compl
   block[2] = __74__ENManager_getExposureInfoFromSummary_userExplanation_completionHandler___block_invoke;
   block[3] = &unk_278A4B0D0;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = v8;
   v10 = v8;
   v11 = v7;
@@ -1919,10 +1919,10 @@ void __74__ENManager_getExposureInfoFromSummary_userExplanation_completionHandle
   xpc_connection_send_message_with_reply(v3, v2, v6, v7);
 }
 
-- (void)_getExposureInfoCompleted:(id)a3 completionHandler:(id)a4
+- (void)_getExposureInfoCompleted:(id)completed completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1934,7 +1934,7 @@ void __74__ENManager_getExposureInfoFromSummary_userExplanation_completionHandle
   v17[2] = __57__ENManager__getExposureInfoCompleted_completionHandler___block_invoke;
   v17[3] = &unk_278A4B860;
   v19 = &v20;
-  v8 = v7;
+  v8 = handlerCopy;
   v18 = v8;
   v9 = MEMORY[0x2383EE560](v17);
   v10 = CUXPCDecodeNSErrorIfNeeded();
@@ -1944,7 +1944,7 @@ void __74__ENManager_getExposureInfoFromSummary_userExplanation_completionHandle
   if (!v21[5])
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = xpc_dictionary_get_array(v6, "exIA");
+    v13 = xpc_dictionary_get_array(completedCopy, "exIA");
     v14 = v13;
     if (!v13 || (v16[0] = MEMORY[0x277D85DD0], v16[1] = 3221225472, v16[2] = __57__ENManager__getExposureInfoCompleted_completionHandler___block_invoke_2, v16[3] = &unk_278A4B1E8, v16[4] = v12, v16[5] = &v20, xpc_array_apply(v13, v16), !v21[5]))
     {
@@ -2030,28 +2030,28 @@ uint64_t __61__ENManager_getExposureWindowsFromSummary_completionHandler___block
   return [v4 _getExposureWindowsFromIndex:0 completionHandler:v5];
 }
 
-- (void)_getExposureWindowsFromIndex:(unint64_t)a3 completionHandler:(id)a4
+- (void)_getExposureWindowsFromIndex:(unint64_t)index completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v7, "mTyp", 44);
-  xpc_dictionary_set_uint64(v7, "expWndIdx", a3);
-  v8 = [(ENManager *)self _ensureXPCStarted];
+  xpc_dictionary_set_uint64(v7, "expWndIdx", index);
+  _ensureXPCStarted = [(ENManager *)self _ensureXPCStarted];
   dispatchQueue = self->_dispatchQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__ENManager__getExposureWindowsFromIndex_completionHandler___block_invoke;
   v11[3] = &unk_278A4B6F8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  xpc_connection_send_message_with_reply(v8, v7, dispatchQueue, v11);
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  xpc_connection_send_message_with_reply(_ensureXPCStarted, v7, dispatchQueue, v11);
 }
 
-- (void)_getExposureWindowsCompleted:(id)a3 completionHandler:(id)a4
+- (void)_getExposureWindowsCompleted:(id)completed completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2063,7 +2063,7 @@ uint64_t __61__ENManager_getExposureWindowsFromSummary_completionHandler___block
   v23[2] = __60__ENManager__getExposureWindowsCompleted_completionHandler___block_invoke;
   v23[3] = &unk_278A4B888;
   v25 = &v26;
-  v8 = v7;
+  v8 = handlerCopy;
   v23[4] = self;
   v24 = v8;
   v9 = MEMORY[0x2383EE560](v23);
@@ -2093,7 +2093,7 @@ uint64_t __61__ENManager_getExposureWindowsFromSummary_completionHandler___block
         self->_exposureWindows = v12;
       }
 
-      v14 = xpc_dictionary_get_array(v6, "expWndA");
+      v14 = xpc_dictionary_get_array(completedCopy, "expWndA");
       v15 = v14;
       if (!v14)
       {
@@ -2111,7 +2111,7 @@ uint64_t __61__ENManager_getExposureWindowsFromSummary_completionHandler___block
       if (!v27[5])
       {
 LABEL_7:
-        uint64 = xpc_dictionary_get_uint64(v6, "expWndIdx");
+        uint64 = xpc_dictionary_get_uint64(completedCopy, "expWndIdx");
         if (uint64)
         {
           [(ENManager *)self _getExposureWindowsFromIndex:uint64 completionHandler:v8];
@@ -2248,20 +2248,20 @@ void __60__ENManager_preAuthorizeDiagnosisKeysWithCompletionHandler___block_invo
   }
 }
 
-- (void)_preAuthorizeDiagnosisKeysWithSessionID:(id)a3 completionHandler:(id)a4
+- (void)_preAuthorizeDiagnosisKeysWithSessionID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__ENManager__preAuthorizeDiagnosisKeysWithSessionID_completionHandler___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2292,18 +2292,18 @@ void __71__ENManager__preAuthorizeDiagnosisKeysWithSessionID_completionHandler__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_checkRemoteDialogueRequirementForRequestType:(int64_t)a3 completionHandler:(id)a4
+- (void)_checkRemoteDialogueRequirementForRequestType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__ENManager__checkRemoteDialogueRequirementForRequestType_completionHandler___block_invoke;
   block[3] = &unk_278A4B0F8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2392,20 +2392,20 @@ void __77__ENManager__checkRemoteDialogueRequirementForRequestType_completionHan
   }
 }
 
-- (void)didEnterLegalConsentPage:(id)a3 completionHandler:(id)a4
+- (void)didEnterLegalConsentPage:(id)page completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pageCopy = page;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__ENManager_didEnterLegalConsentPage_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = pageCopy;
+  v9 = handlerCopy;
+  v10 = pageCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2442,14 +2442,14 @@ void __56__ENManager_didEnterLegalConsentPage_completionHandler___block_invoke_2
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleRemotePresentationRequest:(id)a3 completionHandler:(id)a4
+- (void)_handleRemotePresentationRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   remotePresentationController = self->_remotePresentationController;
   if (remotePresentationController || (ENUICreateRemotePresentationController(), v8 = objc_claimAutoreleasedReturnValue(), v9 = self->_remotePresentationController, self->_remotePresentationController = v8, v9, (remotePresentationController = self->_remotePresentationController) != 0))
   {
-    [(ENUIRemotePresentationController *)remotePresentationController presentWithPresentationRequest:v11 completion:v6];
+    [(ENUIRemotePresentationController *)remotePresentationController presentWithPresentationRequest:requestCopy completion:handlerCopy];
   }
 
   else
@@ -2460,7 +2460,7 @@ void __56__ENManager_didEnterLegalConsentPage_completionHandler___block_invoke_2
       [ENManager _handleRemotePresentationRequest:completionHandler:];
     }
 
-    v6[2](v6, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
   }
 }
 
@@ -2522,18 +2522,18 @@ void __68__ENManager_requestPreAuthorizedDiagnosisKeysWithCompletionHandler___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getDiagnosisKeysForTesting:(BOOL)a3 forceRefresh:(BOOL)a4 completionHandler:(id)a5
+- (void)getDiagnosisKeysForTesting:(BOOL)testing forceRefresh:(BOOL)refresh completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__ENManager_getDiagnosisKeysForTesting_forceRefresh_completionHandler___block_invoke;
   v10[3] = &unk_278A4B9A0;
-  v12 = a3;
-  v13 = a4;
+  testingCopy = testing;
+  refreshCopy = refresh;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ENManager *)self _checkRemoteDialogueRequirementForRequestType:2 completionHandler:v10];
 }
 
@@ -2633,10 +2633,10 @@ uint64_t __71__ENManager_getDiagnosisKeysForTesting_forceRefresh_completionHandl
   return result;
 }
 
-- (void)_getDiagnosisKeysReply:(id)a3 completionHandler:(id)a4
+- (void)_getDiagnosisKeysReply:(id)reply completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  replyCopy = reply;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2648,7 +2648,7 @@ uint64_t __71__ENManager_getDiagnosisKeysForTesting_forceRefresh_completionHandl
   v16[2] = __54__ENManager__getDiagnosisKeysReply_completionHandler___block_invoke;
   v16[3] = &unk_278A4B860;
   v18 = &v19;
-  v7 = v6;
+  v7 = handlerCopy;
   v17 = v7;
   v8 = MEMORY[0x2383EE560](v16);
   v9 = CUXPCDecodeNSErrorIfNeeded();
@@ -2657,7 +2657,7 @@ uint64_t __71__ENManager_getDiagnosisKeysForTesting_forceRefresh_completionHandl
 
   if (!v20[5])
   {
-    v11 = xpc_dictionary_get_value(v5, "tekA");
+    v11 = xpc_dictionary_get_value(replyCopy, "tekA");
     v12 = v11;
     if (v11 && MEMORY[0x2383EE9C0](v11) == MEMORY[0x277D86440])
     {
@@ -2729,18 +2729,18 @@ BOOL __54__ENManager__getDiagnosisKeysReply_completionHandler___block_invoke_2(u
   return v8;
 }
 
-- (void)resetDataWithFlags:(unsigned int)a3 completionHandler:(id)a4
+- (void)resetDataWithFlags:(unsigned int)flags completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ENManager_resetDataWithFlags_completionHandler___block_invoke;
   block[3] = &unk_278A4B9C8;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2799,20 +2799,20 @@ void __50__ENManager_resetDataWithFlags_completionHandler___block_invoke_2(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)diagnosticControl:(id)a3 completion:(id)a4
+- (void)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__ENManager_diagnosticControl_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = controlCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2865,20 +2865,20 @@ void __42__ENManager_diagnosticControl_completion___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)diagnosticShow:(id)a3 completion:(id)a4
+- (void)diagnosticShow:(id)show completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  showCopy = show;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__ENManager_diagnosticShow_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = showCopy;
+  v9 = completionCopy;
+  v10 = showCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2936,30 +2936,30 @@ void __39__ENManager_diagnosticShow_completion___block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)triggerNotificationOfType:(int)a3 appBundleIdentifier:(id)a4 classificationName:(id)a5 interval:(id)a6 region:(id)a7 completion:(id)a8
+- (void)triggerNotificationOfType:(int)type appBundleIdentifier:(id)identifier classificationName:(id)name interval:(id)interval region:(id)region completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  nameCopy = name;
+  intervalCopy = interval;
+  regionCopy = region;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105__ENManager_triggerNotificationOfType_appBundleIdentifier_classificationName_interval_region_completion___block_invoke;
   block[3] = &unk_278A4B9F0;
-  v32 = a3;
-  v26 = v14;
-  v27 = v16;
-  v28 = v15;
-  v29 = v17;
-  v30 = self;
-  v31 = v18;
-  v20 = v18;
-  v21 = v17;
-  v22 = v15;
-  v23 = v16;
-  v24 = v14;
+  typeCopy = type;
+  v26 = identifierCopy;
+  v27 = intervalCopy;
+  v28 = nameCopy;
+  v29 = regionCopy;
+  selfCopy = self;
+  v31 = completionCopy;
+  v20 = completionCopy;
+  v21 = regionCopy;
+  v22 = nameCopy;
+  v23 = intervalCopy;
+  v24 = identifierCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3020,20 +3020,20 @@ void __105__ENManager_triggerNotificationOfType_appBundleIdentifier_classificati
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)exposureDetectionActivate:(id)a3 completion:(id)a4
+- (void)exposureDetectionActivate:(id)activate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ENManager_exposureDetectionActivate_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v12 = v6;
-  v13 = v7;
+  v12 = activateCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = activateCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3084,20 +3084,20 @@ void __50__ENManager_exposureDetectionActivate_completion___block_invoke_3(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)exposureDetectionAddKeys:(id)a3 completion:(id)a4
+- (void)exposureDetectionAddKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ENManager_exposureDetectionAddKeys_completion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keysCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = keysCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3161,17 +3161,17 @@ void __49__ENManager_exposureDetectionAddKeys_completion___block_invoke_2(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)exposureDetectionFinishWithCompletion:(id)a3
+- (void)exposureDetectionFinishWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ENManager_exposureDetectionFinishWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3208,18 +3208,18 @@ void __51__ENManager_exposureDetectionFinishWithCompletion___block_invoke_2(uint
   }
 }
 
-- (void)exposureDetectionGetExposureInfoWithMaximumCount:(unint64_t)a3 completion:(id)a4
+- (void)exposureDetectionGetExposureInfoWithMaximumCount:(unint64_t)count completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__ENManager_exposureDetectionGetExposureInfoWithMaximumCount_completion___block_invoke;
   block[3] = &unk_278A4B0F8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  countCopy = count;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3241,10 +3241,10 @@ void __73__ENManager_exposureDetectionGetExposureInfoWithMaximumCount_completion
   xpc_connection_send_message_with_reply(v3, v2, v6, v7);
 }
 
-- (void)exposureDetectionGetExposureInfoCompleted:(id)a3 completion:(id)a4
+- (void)exposureDetectionGetExposureInfoCompleted:(id)completed completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  completedCopy = completed;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -3256,7 +3256,7 @@ void __73__ENManager_exposureDetectionGetExposureInfoWithMaximumCount_completion
   v16[2] = __66__ENManager_exposureDetectionGetExposureInfoCompleted_completion___block_invoke;
   v16[3] = &unk_278A4B860;
   v18 = &v19;
-  v7 = v6;
+  v7 = completionCopy;
   v17 = v7;
   v8 = MEMORY[0x2383EE560](v16);
   v9 = CUXPCDecodeNSErrorIfNeeded();
@@ -3266,11 +3266,11 @@ void __73__ENManager_exposureDetectionGetExposureInfoWithMaximumCount_completion
   if (!v20[5])
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v12 = xpc_dictionary_get_array(v5, "exIA");
+    v12 = xpc_dictionary_get_array(completedCopy, "exIA");
     v13 = v12;
     if (!v12 || (v15[0] = MEMORY[0x277D85DD0], v15[1] = 3221225472, v15[2] = __66__ENManager_exposureDetectionGetExposureInfoCompleted_completion___block_invoke_2, v15[3] = &unk_278A4B1E8, v15[4] = v11, v15[5] = &v19, xpc_array_apply(v12, v15), !v20[5]))
     {
-      v14 = xpc_dictionary_get_BOOL(v5, "done");
+      v14 = xpc_dictionary_get_BOOL(completedCopy, "done");
       (*(v7 + 2))(v7, v11, v14, 0);
     }
   }
@@ -3321,20 +3321,20 @@ BOOL __66__ENManager_exposureDetectionGetExposureInfoCompleted_completion___bloc
   return v8;
 }
 
-- (void)exposureDetectionFileActivate:(id)a3 completion:(id)a4
+- (void)exposureDetectionFileActivate:(id)activate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__ENManager_exposureDetectionFileActivate_completion___block_invoke;
   v10[3] = &unk_278A4BA18;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = activateCopy;
+  v8 = activateCopy;
+  v9 = completionCopy;
   [(ENManager *)self _tccCheckWithCompletion:v10];
 }
 
@@ -3383,11 +3383,11 @@ void __54__ENManager_exposureDetectionFileActivate_completion___block_invoke_2(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)exposureDetectionFileAdd:(id)a3 signatureURL:(id)a4 completion:(id)a5
+- (void)exposureDetectionFileAdd:(id)add signatureURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v40 = a4;
-  v9 = a5;
+  addCopy = add;
+  lCopy = l;
+  completionCopy = completion;
   v55 = 0;
   v56 = &v55;
   v57 = 0x3032000000;
@@ -3399,12 +3399,12 @@ void __54__ENManager_exposureDetectionFileActivate_completion___block_invoke_2(u
   v52[2] = __62__ENManager_exposureDetectionFileAdd_signatureURL_completion___block_invoke;
   v52[3] = &unk_278A4B860;
   v54 = &v55;
-  v39 = v9;
+  v39 = completionCopy;
   v53 = v39;
   v10 = MEMORY[0x2383EE560](v52);
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v11 = [v8 fileSystemRepresentation];
-  if (!v11 || (v12 = realpath_DARWIN_EXTSN(v11, 0), (v13 = v12) == 0))
+  fileSystemRepresentation = [addCopy fileSystemRepresentation];
+  if (!fileSystemRepresentation || (v12 = realpath_DARWIN_EXTSN(fileSystemRepresentation, 0), (v13 = v12) == 0))
   {
     v33 = ENErrorF(2);
     v14 = v56[5];
@@ -3427,7 +3427,7 @@ void __54__ENManager_exposureDetectionFileActivate_completion___block_invoke_2(u
     goto LABEL_19;
   }
 
-  v38 = v8;
+  v38 = addCopy;
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __62__ENManager_exposureDetectionFileAdd_signatureURL_completion___block_invoke_3;
@@ -3439,12 +3439,12 @@ void __54__ENManager_exposureDetectionFileActivate_completion___block_invoke_2(u
   if (!v17)
   {
     v34 = ENErrorF(1);
-    v18 = v56[5];
+    _ensureXPCStarted = v56[5];
     v56[5] = v34;
     goto LABEL_18;
   }
 
-  v18 = [(ENManager *)self _ensureXPCStarted];
+  _ensureXPCStarted = [(ENManager *)self _ensureXPCStarted];
   v48 = 0u;
   v47 = 0u;
   xpcCnx = self->_xpcCnx;
@@ -3468,8 +3468,8 @@ void __54__ENManager_exposureDetectionFileActivate_completion___block_invoke_2(u
   v44[3] = &__block_descriptor_40_e5_v8__0l;
   v44[4] = v21;
   v23 = MEMORY[0x2383EE560](v44);
-  v24 = v40;
-  if (!v40)
+  v24 = lCopy;
+  if (!lCopy)
   {
     v29 = 0;
     goto LABEL_13;
@@ -3503,7 +3503,7 @@ LABEL_13:
       handler[2] = __62__ENManager_exposureDetectionFileAdd_signatureURL_completion___block_invoke_5;
       handler[3] = &unk_278A4B720;
       v42 = v39;
-      xpc_connection_send_message_with_reply(v18, v27, dispatchQueue, handler);
+      xpc_connection_send_message_with_reply(_ensureXPCStarted, v27, dispatchQueue, handler);
       v31 = v42;
       v24 = v29;
       goto LABEL_16;
@@ -3528,7 +3528,7 @@ LABEL_17:
 LABEL_18:
 
   v16[2](v16);
-  v8 = v38;
+  addCopy = v38;
 LABEL_19:
 
   v14[2](v14);
@@ -3554,17 +3554,17 @@ void __62__ENManager_exposureDetectionFileAdd_signatureURL_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)exposureDetectionFileFinishWithCompletion:(id)a3
+- (void)exposureDetectionFileFinishWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ENManager_exposureDetectionFileFinishWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3601,16 +3601,16 @@ void __55__ENManager_exposureDetectionFileFinishWithCompletion___block_invoke_2(
   }
 }
 
-- (void)getDetectionHistoryChecksWithCompletion:(id)a3
+- (void)getDetectionHistoryChecksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__ENManager_getDetectionHistoryChecksWithCompletion___block_invoke;
   v6[3] = &unk_278A4BA88;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(ENManager *)self getDetectionHistorySessionsWithCompletion:v6];
 }
 
@@ -3664,35 +3664,35 @@ uint64_t __53__ENManager_getDetectionHistoryChecksWithCompletion___block_invoke_
   return (*(v4 + 16))(v4, v5, a3);
 }
 
-- (void)_populateDetectionHistoryChecks:(id)a3 forSessions:(id)a4 sessionIndex:(unint64_t)a5 completion:(id)a6
+- (void)_populateDetectionHistoryChecks:(id)checks forSessions:(id)sessions sessionIndex:(unint64_t)index completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v11 count] <= a5)
+  checksCopy = checks;
+  sessionsCopy = sessions;
+  completionCopy = completion;
+  if ([sessionsCopy count] <= index)
   {
-    [ENManager _populateDetectionHistoryChecks:v12 forSessions:? sessionIndex:? completion:?];
+    [ENManager _populateDetectionHistoryChecks:completionCopy forSessions:? sessionIndex:? completion:?];
   }
 
   else
   {
     v13 = objc_alloc_init(ENExposureDetectionHistoryCheck);
-    v14 = [v11 objectAtIndexedSubscript:a5];
-    v15 = a5 + 1;
+    v14 = [sessionsCopy objectAtIndexedSubscript:index];
+    v15 = index + 1;
     [(ENExposureDetectionHistoryCheck *)v13 setSession:v14];
-    [v10 addObject:v13];
+    [checksCopy addObject:v13];
     if ([v14 fileCount])
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __81__ENManager__populateDetectionHistoryChecks_forSessions_sessionIndex_completion___block_invoke_2;
       v18[3] = &unk_278A4BAD8;
-      v21 = v12;
+      v21 = completionCopy;
       v18[4] = v13;
       v18[5] = self;
-      v19 = v10;
-      v20 = v11;
-      v22 = a5 + 1;
+      v19 = checksCopy;
+      v20 = sessionsCopy;
+      v22 = index + 1;
       [(ENManager *)self getDetectionHistoryFilesForSession:v14 completion:v18];
 
       v16 = v21;
@@ -3706,10 +3706,10 @@ uint64_t __53__ENManager_getDetectionHistoryChecksWithCompletion___block_invoke_
       block[2] = __81__ENManager__populateDetectionHistoryChecks_forSessions_sessionIndex_completion___block_invoke;
       block[3] = &unk_278A4BAB0;
       block[4] = self;
-      v24 = v10;
-      v25 = v11;
+      v24 = checksCopy;
+      v25 = sessionsCopy;
       v27 = v15;
-      v26 = v12;
+      v26 = completionCopy;
       dispatch_async(dispatchQueue, block);
 
       v16 = v24;
@@ -3750,20 +3750,20 @@ uint64_t __81__ENManager__populateDetectionHistoryChecks_forSessions_sessionInde
   }
 }
 
-- (void)getDetectionHistoryFilesForSession:(id)a3 completion:(id)a4
+- (void)getDetectionHistoryFilesForSession:(id)session completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ENManager_getDetectionHistoryFilesForSession_completion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = sessionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3797,10 +3797,10 @@ void __59__ENManager_getDetectionHistoryFilesForSession_completion___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getDetectionHistoryFilesCompleted:(id)a3 completion:(id)a4
+- (void)_getDetectionHistoryFilesCompleted:(id)completed completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  completedCopy = completed;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -3812,7 +3812,7 @@ void __59__ENManager_getDetectionHistoryFilesForSession_completion___block_invok
   v16[2] = __59__ENManager__getDetectionHistoryFilesCompleted_completion___block_invoke;
   v16[3] = &unk_278A4B860;
   v18 = &v19;
-  v7 = v6;
+  v7 = completionCopy;
   v17 = v7;
   v8 = MEMORY[0x2383EE560](v16);
   v9 = CUXPCDecodeNSErrorIfNeeded();
@@ -3821,7 +3821,7 @@ void __59__ENManager_getDetectionHistoryFilesForSession_completion___block_invok
 
   if (!v20[5])
   {
-    v11 = xpc_dictionary_get_value(v5, "detHF");
+    v11 = xpc_dictionary_get_value(completedCopy, "detHF");
     v12 = v11;
     if (v11 && MEMORY[0x2383EE9C0](v11) == MEMORY[0x277D86440])
     {
@@ -3919,17 +3919,17 @@ BOOL __59__ENManager__getDetectionHistoryFilesCompleted_completion___block_invok
   return v8;
 }
 
-- (void)getDetectionHistorySessionsWithCompletion:(id)a3
+- (void)getDetectionHistorySessionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ENManager_getDetectionHistorySessionsWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -3950,10 +3950,10 @@ void __55__ENManager_getDetectionHistorySessionsWithCompletion___block_invoke(ui
   xpc_connection_send_message_with_reply(v3, v2, v6, v7);
 }
 
-- (void)_getDetectionHistorySessionsCompleted:(id)a3 completion:(id)a4
+- (void)_getDetectionHistorySessionsCompleted:(id)completed completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  completedCopy = completed;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -3965,7 +3965,7 @@ void __55__ENManager_getDetectionHistorySessionsWithCompletion___block_invoke(ui
   v16[2] = __62__ENManager__getDetectionHistorySessionsCompleted_completion___block_invoke;
   v16[3] = &unk_278A4B860;
   v18 = &v19;
-  v7 = v6;
+  v7 = completionCopy;
   v17 = v7;
   v8 = MEMORY[0x2383EE560](v16);
   v9 = CUXPCDecodeNSErrorIfNeeded();
@@ -3974,7 +3974,7 @@ void __55__ENManager_getDetectionHistorySessionsWithCompletion___block_invoke(ui
 
   if (!v20[5])
   {
-    v11 = xpc_dictionary_get_value(v5, "detHS");
+    v11 = xpc_dictionary_get_value(completedCopy, "detHS");
     v12 = v11;
     if (v11 && MEMORY[0x2383EE9C0](v11) == MEMORY[0x277D86440])
     {
@@ -4072,20 +4072,20 @@ BOOL __62__ENManager__getDetectionHistorySessionsCompleted_completion___block_in
   return v8;
 }
 
-- (void)sendChaffTestVerificationRequestForRegion:(id)a3 completionHandler:(id)a4
+- (void)sendChaffTestVerificationRequestForRegion:(id)region completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__ENManager_sendChaffTestVerificationRequestForRegion_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = regionCopy;
+  v9 = handlerCopy;
+  v10 = regionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4126,20 +4126,20 @@ void __73__ENManager_sendChaffTestVerificationRequestForRegion_completionHandler
   (*(*(a1 + 32) + 16))(*(a1 + 32), v2 == 0);
 }
 
-- (void)startSelfReportWebSession:(id)a3 completionHandler:(id)a4
+- (void)startSelfReportWebSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ENManager_startSelfReportWebSession_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = sessionCopy;
+  v9 = handlerCopy;
+  v10 = sessionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4207,23 +4207,23 @@ void __57__ENManager_startSelfReportWebSession_completionHandler___block_invoke_
   }
 }
 
-- (void)startTestVerificationSessionWithCode:(id)a3 region:(id)a4 completionHandler:(id)a5
+- (void)startTestVerificationSessionWithCode:(id)code region:(id)region completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  regionCopy = region;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__ENManager_startTestVerificationSessionWithCode_region_completionHandler___block_invoke;
   v15[3] = &unk_278A4BB00;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = codeCopy;
+  v17 = regionCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = regionCopy;
+  v14 = codeCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -4293,20 +4293,20 @@ void __75__ENManager_startTestVerificationSessionWithCode_region_completionHandl
   }
 }
 
-- (void)fetchTestMetadataForSession:(id)a3 completionHandler:(id)a4
+- (void)fetchTestMetadataForSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ENManager_fetchTestMetadataForSession_completionHandler___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sessionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4362,24 +4362,24 @@ void __59__ENManager_fetchTestMetadataForSession_completionHandler___block_invok
   }
 }
 
-- (void)finishTestVerificationForSession:(id)a3 userDidConsent:(BOOL)a4 metadata:(id)a5 completionHandler:(id)a6
+- (void)finishTestVerificationForSession:(id)session userDidConsent:(BOOL)consent metadata:(id)metadata completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  sessionCopy = session;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__ENManager_finishTestVerificationForSession_userDidConsent_metadata_completionHandler___block_invoke;
   block[3] = &unk_278A4BB28;
-  v22 = a4;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  consentCopy = consent;
+  v18 = sessionCopy;
+  v19 = metadataCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = metadataCopy;
+  v16 = sessionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4419,17 +4419,17 @@ void __88__ENManager_finishTestVerificationForSession_userDidConsent_metadata_co
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)activeRegionWithCompletion:(id)a3
+- (void)activeRegionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ENManager_activeRegionWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4483,17 +4483,17 @@ void __40__ENManager_activeRegionWithCompletion___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)regionConfigurationWithCompletion:(id)a3
+- (void)regionConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__ENManager_regionConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4548,17 +4548,17 @@ void __47__ENManager_regionConfigurationWithCompletion___block_invoke_2(uint64_t
   }
 }
 
-- (void)allRegionConfigurationsWithCompletion:(id)a3
+- (void)allRegionConfigurationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ENManager_allRegionConfigurationsWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4635,17 +4635,17 @@ LABEL_16:
   }
 }
 
-- (void)allRegionServerConfigurationsWithCompletion:(id)a3
+- (void)allRegionServerConfigurationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ENManager_allRegionServerConfigurationsWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4723,17 +4723,17 @@ void __57__ENManager_allRegionServerConfigurationsWithCompletion___block_invoke_
   }
 }
 
-- (void)regionServerConfigurationWithCompletion:(id)a3
+- (void)regionServerConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ENManager_regionServerConfigurationWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -4801,20 +4801,20 @@ void __53__ENManager_regionServerConfigurationWithCompletion___block_invoke_2(ui
   }
 }
 
-- (void)agencyConfigurationForLocale:(id)a3 withCompletion:(id)a4
+- (void)agencyConfigurationForLocale:(id)locale withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ENManager_agencyConfigurationForLocale_withCompletion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = localeCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = localeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4897,20 +4897,20 @@ void __57__ENManager_agencyConfigurationForLocale_withCompletion___block_invoke_
   }
 }
 
-- (void)allAgencyConfigurationsForLocale:(id)a3 withCompletion:(id)a4
+- (void)allAgencyConfigurationsForLocale:(id)locale withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ENManager_allAgencyConfigurationsForLocale_withCompletion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = localeCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = localeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -4993,17 +4993,17 @@ void __61__ENManager_allAgencyConfigurationsForLocale_withCompletion___block_inv
   }
 }
 
-- (void)getRegionVisitHistoryWithCompletion:(id)a3
+- (void)getRegionVisitHistoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__ENManager_getRegionVisitHistoryWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5066,15 +5066,15 @@ void __49__ENManager_getRegionVisitHistoryWithCompletion___block_invoke_2(uint64
   }
 }
 
-- (void)regionHistoryWithCompletion:(id)a3
+- (void)regionHistoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__ENManager_regionHistoryWithCompletion___block_invoke;
   v6[3] = &unk_278A4BB50;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(ENManager *)self getRegionVisitHistoryWithCompletion:v6];
 }
 
@@ -5121,28 +5121,28 @@ void __41__ENManager_regionHistoryWithCompletion___block_invoke(uint64_t a1, voi
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRegionConsent:(int64_t)a3 completionHandler:(id)a4
+- (void)setRegionConsent:(int64_t)consent completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = ENErrorF(5);
-  (*(a4 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)setRegionConsent:(int64_t)a3 region:(id)a4 completionHandler:(id)a5
+- (void)setRegionConsent:(int64_t)consent region:(id)region completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = ENErrorF(5);
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)setRegionUserConsent:(id)a3 region:(id)a4 completionHandler:(id)a5
+- (void)setRegionUserConsent:(id)consent region:(id)region completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  consentCopy = consent;
+  regionCopy = region;
+  handlerCopy = handler;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
-    [ENManager setRegionUserConsent:v8 region:? completionHandler:?];
+    [ENManager setRegionUserConsent:consentCopy region:? completionHandler:?];
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -5150,13 +5150,13 @@ void __41__ENManager_regionHistoryWithCompletion___block_invoke(uint64_t a1, voi
   v15[1] = 3221225472;
   v15[2] = __59__ENManager_setRegionUserConsent_region_completionHandler___block_invoke;
   v15[3] = &unk_278A4BB78;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = consentCopy;
+  v17 = regionCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = regionCopy;
+  v13 = handlerCopy;
+  v14 = consentCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -5208,18 +5208,18 @@ void __59__ENManager_setRegionUserConsent_region_completionHandler___block_invok
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)downloadAndDetectExposure:(BOOL)a3 completionHandler:(id)a4
+- (void)downloadAndDetectExposure:(BOOL)exposure completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ENManager_downloadAndDetectExposure_completionHandler___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  exposureCopy = exposure;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5244,20 +5244,20 @@ void __57__ENManager_downloadAndDetectExposure_completionHandler___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)exposureNotificationGetStatusForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)exposureNotificationGetStatusForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__ENManager_exposureNotificationGetStatusForBundleIdentifier_completion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5293,17 +5293,17 @@ void __73__ENManager_exposureNotificationGetStatusForBundleIdentifier_completion
   }
 }
 
-- (void)getDataVaultSizeWithCompletion:(id)a3
+- (void)getDataVaultSizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ENManager_getDataVaultSizeWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5339,20 +5339,20 @@ void __44__ENManager_getDataVaultSizeWithCompletion___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)getInfoForKey:(id)a3 completion:(id)a4
+- (void)getInfoForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__ENManager_getInfoForKey_completion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = keyCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5412,17 +5412,17 @@ void __38__ENManager_getInfoForKey_completion___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)getEntitiesWithCompletion:(id)a3
+- (void)getEntitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__ENManager_getEntitiesWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5539,17 +5539,17 @@ void __39__ENManager_getEntitiesWithCompletion___block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)getAllEntitiesWithCompletion:(id)a3
+- (void)getAllEntitiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ENManager_getAllEntitiesWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5661,11 +5661,11 @@ void __42__ENManager_getAllEntitiesWithCompletion___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)onboardingDidStartForRegion:(id)a3 withSource:(id)a4 completion:(id)a5
+- (void)onboardingDidStartForRegion:(id)region withSource:(id)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionCopy = region;
+  sourceCopy = source;
+  completionCopy = completion;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager onboardingDidStartForRegion:withSource:completion:];
@@ -5676,13 +5676,13 @@ void __42__ENManager_getAllEntitiesWithCompletion___block_invoke_2(uint64_t a1, 
   v15[1] = 3221225472;
   v15[2] = __63__ENManager_onboardingDidStartForRegion_withSource_completion___block_invoke;
   v15[3] = &unk_278A4BB00;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = sourceCopy;
+  v17 = regionCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = regionCopy;
+  v14 = sourceCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -5727,17 +5727,17 @@ void __63__ENManager_onboardingDidStartForRegion_withSource_completion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getLastExposureNotificationWithCompletion:(id)a3
+- (void)getLastExposureNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ENManager_getLastExposureNotificationWithCompletion___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5775,9 +5775,9 @@ void __55__ENManager_getLastExposureNotificationWithCompletion___block_invoke_2(
   }
 }
 
-- (void)setAutomaticRegionSwitchEnabled:(BOOL)a3 completion:(id)a4
+- (void)setAutomaticRegionSwitchEnabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setAutomaticRegionSwitchEnabled:completion:];
@@ -5788,10 +5788,10 @@ void __55__ENManager_getLastExposureNotificationWithCompletion___block_invoke_2(
   block[1] = 3221225472;
   block[2] = __56__ENManager_setAutomaticRegionSwitchEnabled_completion___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5816,9 +5816,9 @@ void __56__ENManager_setAutomaticRegionSwitchEnabled_completion___block_invoke_2
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setAvailabilityAlertEnabled:(BOOL)a3 completion:(id)a4
+- (void)setAvailabilityAlertEnabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setAvailabilityAlertEnabled:completion:];
@@ -5829,10 +5829,10 @@ void __56__ENManager_setAutomaticRegionSwitchEnabled_completion___block_invoke_2
   block[1] = 3221225472;
   block[2] = __52__ENManager_setAvailabilityAlertEnabled_completion___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5857,20 +5857,20 @@ void __52__ENManager_setAvailabilityAlertEnabled_completion___block_invoke_2(uin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setCurrentActiveApp:(id)a3 completion:(id)a4
+- (void)setCurrentActiveApp:(id)app completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__ENManager_setCurrentActiveApp_completion___block_invoke;
   block[3] = &unk_278A4B0D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = appCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = appCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5895,20 +5895,20 @@ void __44__ENManager_setCurrentActiveApp_completion___block_invoke_2(uint64_t a1
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setActiveEntityWithAppBundleID:(id)a3 completion:(id)a4
+- (void)setActiveEntityWithAppBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__ENManager_setActiveEntityWithAppBundleID_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = dCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5941,20 +5941,20 @@ void __55__ENManager_setActiveEntityWithAppBundleID_completion___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setActiveEntityWithRegion:(id)a3 completion:(id)a4
+- (void)setActiveEntityWithRegion:(id)region completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ENManager_setActiveEntityWithRegion_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = regionCopy;
+  v9 = completionCopy;
+  v10 = regionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -5990,20 +5990,20 @@ void __50__ENManager_setActiveEntityWithRegion_completion___block_invoke_2(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setActiveRegion:(id)a3 completion:(id)a4
+- (void)setActiveRegion:(id)region completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ENManager_setActiveRegion_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = regionCopy;
+  v9 = completionCopy;
+  v10 = regionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -6039,20 +6039,20 @@ void __40__ENManager_setActiveRegion_completion___block_invoke_2(uint64_t a1)
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setDeveloperServerConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setDeveloperServerConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__ENManager_setDeveloperServerConfiguration_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = configurationCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -6094,9 +6094,9 @@ void __63__ENManager_setDeveloperServerConfiguration_completionHandler___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setWeeklySummaryAlertEnabled:(BOOL)a3 completion:(id)a4
+- (void)setWeeklySummaryAlertEnabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
     [ENManager setWeeklySummaryAlertEnabled:completion:];
@@ -6107,10 +6107,10 @@ void __63__ENManager_setDeveloperServerConfiguration_completionHandler___block_i
   block[1] = 3221225472;
   block[2] = __53__ENManager_setWeeklySummaryAlertEnabled_completion___block_invoke;
   block[3] = &unk_278A4B798;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -6135,17 +6135,17 @@ void __53__ENManager_setWeeklySummaryAlertEnabled_completion___block_invoke_2(ui
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)clearDeveloperServerConfigurationWithCompletionHandler:(id)a3
+- (void)clearDeveloperServerConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__ENManager_clearDeveloperServerConfigurationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278A4B030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -6169,20 +6169,20 @@ void __68__ENManager_clearDeveloperServerConfigurationWithCompletionHandler___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)remotePresentationRequestDidComplete:(id)a3 completion:(id)a4
+- (void)remotePresentationRequestDidComplete:(id)complete completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  completeCopy = complete;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ENManager_remotePresentationRequestDidComplete_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = completeCopy;
+  v9 = completionCopy;
+  v10 = completeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -6218,9 +6218,9 @@ void __61__ENManager_remotePresentationRequestDidComplete_completion___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchConfigurationsForRegion:(id)a3 forceServerFetch:(BOOL)a4 completion:(id)a5
+- (void)fetchConfigurationsForRegion:(id)region forceServerFetch:(BOOL)fetch completion:(id)completion
 {
-  if (a4)
+  if (fetch)
   {
     v5 = 2;
   }
@@ -6230,24 +6230,24 @@ void __61__ENManager_remotePresentationRequestDidComplete_completion___block_inv
     v5 = 0;
   }
 
-  [(ENManager *)self fetchConfigurationsForRegion:a3 fetchReason:v5 completion:a5];
+  [(ENManager *)self fetchConfigurationsForRegion:region fetchReason:v5 completion:completion];
 }
 
-- (void)fetchConfigurationsForRegion:(id)a3 fetchReason:(unsigned int)a4 completion:(id)a5
+- (void)fetchConfigurationsForRegion:(id)region fetchReason:(unsigned int)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  regionCopy = region;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__ENManager_fetchConfigurationsForRegion_fetchReason_completion___block_invoke;
   v13[3] = &unk_278A4BBA0;
-  v17 = a4;
-  v15 = self;
-  v16 = v9;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
+  reasonCopy = reason;
+  selfCopy = self;
+  v16 = completionCopy;
+  v14 = regionCopy;
+  v11 = completionCopy;
+  v12 = regionCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -6364,13 +6364,13 @@ void __65__ENManager_fetchConfigurationsForRegion_fetchReason_completion___block
   }
 }
 
-- (void)fetchSubdivisionsForCountry:(id)a3 completion:(id)a4
+- (void)fetchSubdivisionsForCountry:(id)country completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  countryCopy = country;
+  completionCopy = completion;
   if (gLogCategory_ENManager <= 30 && (gLogCategory_ENManager != -1 || _LogCategory_Initialize()))
   {
-    [ENManager fetchSubdivisionsForCountry:v6 completion:?];
+    [ENManager fetchSubdivisionsForCountry:countryCopy completion:?];
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -6378,11 +6378,11 @@ void __65__ENManager_fetchConfigurationsForRegion_fetchReason_completion___block
   block[1] = 3221225472;
   block[2] = __52__ENManager_fetchSubdivisionsForCountry_completion___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = countryCopy;
+  v9 = completionCopy;
+  v10 = countryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -6497,20 +6497,20 @@ LABEL_6:
   return v7;
 }
 
-- (void)showBuddyForRegion:(id)a3 completionHandler:(id)a4
+- (void)showBuddyForRegion:(id)region completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ENManager_showBuddyForRegion_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = regionCopy;
+  v9 = handlerCopy;
+  v10 = regionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -6546,20 +6546,20 @@ void __50__ENManager_showBuddyForRegion_completionHandler___block_invoke_2(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)verifyTextMessage:(id)a3 completionHandler:(id)a4
+- (void)verifyTextMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ENManager_verifyTextMessage_completionHandler___block_invoke;
   block[3] = &unk_278A4B7C0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = messageCopy;
+  v9 = handlerCopy;
+  v10 = messageCopy;
   dispatch_async(dispatchQueue, block);
 }
 

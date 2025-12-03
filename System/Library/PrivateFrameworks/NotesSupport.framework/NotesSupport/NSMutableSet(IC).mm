@@ -12,30 +12,30 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ic_removeNonNilObject:()IC
 {
   if (a3)
   {
-    return [a1 removeObject:?];
+    return [self removeObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ic_addObjectsFromNonNilArray:()IC
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ic_removeObjectsFromNonNilArray:()IC
@@ -61,7 +61,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeObject:*(*(&v9 + 1) + 8 * v8++)];
+        [self removeObject:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -80,7 +80,7 @@
     v6 = v4;
     if ([v4 length])
     {
-      [a1 addObject:v6];
+      [self addObject:v6];
     }
   }
 

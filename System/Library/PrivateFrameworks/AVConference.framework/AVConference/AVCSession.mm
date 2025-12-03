@@ -1,60 +1,60 @@
 @interface AVCSession
-+ (id)configurationWithSessionMode:(int64_t)a3;
-+ (int)mediaNegotiatorVersionWithNegotiationProtocolVersion:(unsigned int)a3;
++ (id)configurationWithSessionMode:(int64_t)mode;
++ (int)mediaNegotiatorVersionWithNegotiationProtocolVersion:(unsigned int)version;
 - (AVCSessionConfiguration)configuration;
 - (BOOL)isAudioMuted;
 - (BOOL)isOneToOneEnabled;
-- (BOOL)validateParticipantToAdd:(id)a3;
-- (BOOL)validateParticipantToRemove:(id)a3;
+- (BOOL)validateParticipantToAdd:(id)add;
+- (BOOL)validateParticipantToRemove:(id)remove;
 - (NSData)negotiationData;
 - (NSString)description;
 - (id)dispatchedConfiguration;
-- (id)initPrivateWithTransportToken:(id)a3 configuration:(id)a4 negotiationData:(id)a5 delegate:(id)a6 queue:(id)a7;
+- (id)initPrivateWithTransportToken:(id)token configuration:(id)configuration negotiationData:(id)data delegate:(id)delegate queue:(id)queue;
 - (id)negotiationDataForLoopbackParticipant;
-- (id)negotiationDataForProtocolVersion:(unsigned int)a3;
-- (id)newNSErrorWithErrorDictionary:(id)a3;
+- (id)negotiationDataForProtocolVersion:(unsigned int)version;
+- (id)newNSErrorWithErrorDictionary:(id)dictionary;
 - (tagAVCSessionPresentationInfo)presentationInfo;
-- (void)addParticipant:(id)a3;
-- (void)addParticipants:(id)a3;
-- (void)appendConfigurationToXPCArguments:(id)a3;
+- (void)addParticipant:(id)participant;
+- (void)addParticipants:(id)participants;
+- (void)appendConfigurationToXPCArguments:(id)arguments;
 - (void)beginParticipantConfiguration;
-- (void)completeAddParticipant:(id)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)completeRemoveParticipant:(id)a3 didSucceed:(BOOL)a4 error:(id)a5;
+- (void)completeAddParticipant:(id)participant didSucceed:(BOOL)succeed error:(id)error;
+- (void)completeRemoveParticipant:(id)participant didSucceed:(BOOL)succeed error:(id)error;
 - (void)dealloc;
 - (void)deregisterFromNotifications;
-- (void)didAddParticipantHandlerWithResult:(id)a3;
+- (void)didAddParticipantHandlerWithResult:(id)result;
 - (void)endParticipantConfiguration;
-- (void)handleEndConfigurationOnParticipantAdd:(id)a3;
-- (void)participant:(id)a3 audioEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)participant:(id)a3 audioPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)participant:(id)a3 didReact:(id)a4;
-- (void)participant:(id)a3 frequencyLevelsDidChange:(id)a4;
-- (void)participant:(id)a3 mediaPrioritiesDidChange:(id)a4;
-- (void)participant:(id)a3 mediaStateDidChange:(unsigned int)a4 forMediaType:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)participant:(id)a3 mixingDidStartForMediaType:(unsigned int)a4 mixingMediaType:(unsigned int)a5;
-- (void)participant:(id)a3 mixingDidStopForMediaType:(unsigned int)a4;
-- (void)participant:(id)a3 screenEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)participant:(id)a3 videoEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)participant:(id)a3 videoPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)participantDidStopReacting:(id)a3;
+- (void)handleEndConfigurationOnParticipantAdd:(id)add;
+- (void)participant:(id)participant audioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)participant:(id)participant audioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)participant:(id)participant didReact:(id)react;
+- (void)participant:(id)participant frequencyLevelsDidChange:(id)change;
+- (void)participant:(id)participant mediaPrioritiesDidChange:(id)change;
+- (void)participant:(id)participant mediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error;
+- (void)participant:(id)participant mixingDidStartForMediaType:(unsigned int)type mixingMediaType:(unsigned int)mediaType;
+- (void)participant:(id)participant mixingDidStopForMediaType:(unsigned int)type;
+- (void)participant:(id)participant screenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)participant:(id)participant videoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)participant:(id)participant videoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)participantDidStopReacting:(id)reacting;
 - (void)registerBlocksForNotifications;
-- (void)removeParticipant:(id)a3;
-- (void)removeParticipants:(id)a3;
-- (void)setAudioEnabled:(BOOL)a3;
-- (void)setAudioMuted:(BOOL)a3;
-- (void)setAudioPaused:(BOOL)a3;
-- (void)setMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4;
-- (void)setOneToOneEnabled:(BOOL)a3;
-- (void)setPresentationInfo:(tagAVCSessionPresentationInfo *)a3;
-- (void)setScreenEnabled:(BOOL)a3;
-- (void)setVideoEnabled:(BOOL)a3;
-- (void)setVideoPaused:(BOOL)a3;
-- (void)setVolume:(float)a3;
-- (void)setupNotificationQueue:(id)a3;
+- (void)removeParticipant:(id)participant;
+- (void)removeParticipants:(id)participants;
+- (void)setAudioEnabled:(BOOL)enabled;
+- (void)setAudioMuted:(BOOL)muted;
+- (void)setAudioPaused:(BOOL)paused;
+- (void)setMediaState:(unsigned int)state forMediaType:(unsigned int)type;
+- (void)setOneToOneEnabled:(BOOL)enabled;
+- (void)setPresentationInfo:(tagAVCSessionPresentationInfo *)info;
+- (void)setScreenEnabled:(BOOL)enabled;
+- (void)setVideoEnabled:(BOOL)enabled;
+- (void)setVideoPaused:(BOOL)paused;
+- (void)setVolume:(float)volume;
+- (void)setupNotificationQueue:(id)queue;
 - (void)start;
-- (void)stopWithError:(id)a3;
-- (void)updateConfiguration:(id)a3;
-- (void)updateOneToOneModeEnabled:(BOOL)a3;
+- (void)stopWithError:(id)error;
+- (void)updateConfiguration:(id)configuration;
+- (void)updateOneToOneModeEnabled:(BOOL)enabled;
 - (void)validateParticipantConfiguration;
 @end
 
@@ -78,7 +78,7 @@
         v22 = 1024;
         v23 = 79;
         v24 = 2112;
-        v25 = [(AVCSession *)self description];
+        selfCopy2 = [(AVCSession *)self description];
         v6 = " [%s] %s:%d %@";
         v7 = v5;
         v8 = 38;
@@ -113,9 +113,9 @@ LABEL_11:
         v22 = 1024;
         v23 = 79;
         v24 = 2112;
-        v25 = v3;
+        selfCopy2 = v3;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 2112;
         v29 = [(AVCSession *)self description];
         v6 = " [%s] %s:%d %@(%p) %@";
@@ -164,7 +164,7 @@ LABEL_11:
       v22 = 1024;
       v23 = 104;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCSession-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -218,9 +218,9 @@ uint64_t __27__AVCSession_configuration__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setAudioMuted:(BOOL)a3
+- (void)setAudioMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -237,7 +237,7 @@ uint64_t __27__AVCSession_configuration__block_invoke(uint64_t a1)
         *&v13[22] = 1024;
         LODWORD(v14) = 132;
         WORD2(v14) = 1024;
-        *(&v14 + 6) = v3;
+        *(&v14 + 6) = mutedCopy;
         v8 = " [%s] %s:%d Session change to muted[%d]";
         v9 = v7;
         v10 = 34;
@@ -274,9 +274,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
-        *(&v16 + 2) = v3;
+        *(&v16 + 2) = mutedCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to muted[%d]";
         v9 = v12;
         v10 = 54;
@@ -285,10 +285,10 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setAudioMuted:v3, *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVCSessionParticipant *)self->_localParticipant setAudioMuted:mutedCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v18 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -306,7 +306,7 @@ LABEL_11:
         *&v14[22] = 1024;
         LODWORD(v15) = 137;
         WORD2(v15) = 2048;
-        *(&v15 + 6) = a3;
+        *(&v15 + 6) = volume;
         v9 = " [%s] %s:%d Session change to volume[%f]";
         v10 = v8;
         v11 = 38;
@@ -343,9 +343,9 @@ LABEL_11:
         WORD2(v15) = 2112;
         *(&v15 + 6) = v5;
         HIWORD(v15) = 2048;
-        v16 = self;
+        selfCopy = self;
         LOWORD(v17) = 2048;
-        *(&v17 + 2) = a3;
+        *(&v17 + 2) = volume;
         v9 = " [%s] %s:%d %@(%p) Session change to volume[%f]";
         v10 = v13;
         v11 = 58;
@@ -354,13 +354,13 @@ LABEL_11:
     }
   }
 
-  *&v6 = a3;
-  [(AVCSessionParticipant *)self->_localParticipant setVolume:v6, *v14, *&v14[16], v15, v16, v17];
+  *&v6 = volume;
+  [(AVCSessionParticipant *)self->_localParticipant setVolume:v6, *v14, *&v14[16], v15, selfCopy, v17];
 }
 
-- (void)setOneToOneEnabled:(BOOL)a3
+- (void)setOneToOneEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v28 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -377,7 +377,7 @@ LABEL_11:
         v20 = 1024;
         v21 = 142;
         v22 = 1024;
-        LODWORD(v23) = v3;
+        LODWORD(v23) = enabledCopy;
         v8 = " [%s] %s:%d Session change to oneToOneEnabled[%d]";
         v9 = v7;
         v10 = 34;
@@ -414,9 +414,9 @@ LABEL_11:
         v22 = 2112;
         v23 = v5;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 1024;
-        v27 = v3;
+        v27 = enabledCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to oneToOneEnabled[%d]";
         v9 = v12;
         v10 = 54;
@@ -431,7 +431,7 @@ LABEL_11:
   v14[2] = __33__AVCSession_setOneToOneEnabled___block_invoke;
   v14[3] = &unk_1E85F37A0;
   v14[4] = self;
-  v15 = v3;
+  v15 = enabledCopy;
   dispatch_async(stateQueue, v14);
 }
 
@@ -622,7 +622,7 @@ uint64_t __33__AVCSession_setOneToOneEnabled___block_invoke_15(uint64_t a1)
   return result;
 }
 
-- (void)updateOneToOneModeEnabled:(BOOL)a3
+- (void)updateOneToOneModeEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -631,13 +631,13 @@ uint64_t __33__AVCSession_setOneToOneEnabled___block_invoke_15(uint64_t a1)
   block[2] = __40__AVCSession_updateOneToOneModeEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(stateQueue, block);
 }
 
-- (void)setAudioEnabled:(BOOL)a3
+- (void)setAudioEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -654,7 +654,7 @@ uint64_t __33__AVCSession_setOneToOneEnabled___block_invoke_15(uint64_t a1)
         *&v13[22] = 1024;
         LODWORD(v14) = 166;
         WORD2(v14) = 1024;
-        *(&v14 + 6) = v3;
+        *(&v14 + 6) = enabledCopy;
         v8 = " [%s] %s:%d Session change to audio enabled[%d]";
         v9 = v7;
         v10 = 34;
@@ -691,9 +691,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
-        *(&v16 + 2) = v3;
+        *(&v16 + 2) = enabledCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to audio enabled[%d]";
         v9 = v12;
         v10 = 54;
@@ -702,12 +702,12 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setAudioEnabled:v3, *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVCSessionParticipant *)self->_localParticipant setAudioEnabled:enabledCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
-- (void)setVideoEnabled:(BOOL)a3
+- (void)setVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -724,7 +724,7 @@ LABEL_11:
         *&v13[22] = 1024;
         LODWORD(v14) = 171;
         WORD2(v14) = 1024;
-        *(&v14 + 6) = v3;
+        *(&v14 + 6) = enabledCopy;
         v8 = " [%s] %s:%d Session change to video enabled[%d]";
         v9 = v7;
         v10 = 34;
@@ -761,9 +761,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
-        *(&v16 + 2) = v3;
+        *(&v16 + 2) = enabledCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to video enabled[%d]";
         v9 = v12;
         v10 = 54;
@@ -772,12 +772,12 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setVideoEnabled:v3, *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVCSessionParticipant *)self->_localParticipant setVideoEnabled:enabledCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
-- (void)setScreenEnabled:(BOOL)a3
+- (void)setScreenEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -794,7 +794,7 @@ LABEL_11:
         *&v13[22] = 1024;
         LODWORD(v14) = 176;
         WORD2(v14) = 1024;
-        *(&v14 + 6) = v3;
+        *(&v14 + 6) = enabledCopy;
         v8 = " [%s] %s:%d Session change to screen enabled[%d]";
         v9 = v7;
         v10 = 34;
@@ -831,9 +831,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
-        *(&v16 + 2) = v3;
+        *(&v16 + 2) = enabledCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to screen enabled[%d]";
         v9 = v12;
         v10 = 54;
@@ -842,12 +842,12 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setScreenEnabled:v3, *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVCSessionParticipant *)self->_localParticipant setScreenEnabled:enabledCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
-- (void)setAudioPaused:(BOOL)a3
+- (void)setAudioPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -864,7 +864,7 @@ LABEL_11:
         *&v13[22] = 1024;
         LODWORD(v14) = 181;
         WORD2(v14) = 1024;
-        *(&v14 + 6) = v3;
+        *(&v14 + 6) = pausedCopy;
         v8 = " [%s] %s:%d Session change to audio paused[%d]";
         v9 = v7;
         v10 = 34;
@@ -901,9 +901,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
-        *(&v16 + 2) = v3;
+        *(&v16 + 2) = pausedCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to audio paused[%d]";
         v9 = v12;
         v10 = 54;
@@ -912,12 +912,12 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setAudioPaused:v3, *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVCSessionParticipant *)self->_localParticipant setAudioPaused:pausedCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
-- (void)setVideoPaused:(BOOL)a3
+- (void)setVideoPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -934,7 +934,7 @@ LABEL_11:
         *&v13[22] = 1024;
         LODWORD(v14) = 186;
         WORD2(v14) = 1024;
-        *(&v14 + 6) = v3;
+        *(&v14 + 6) = pausedCopy;
         v8 = " [%s] %s:%d Session change to video paused[%d]";
         v9 = v7;
         v10 = 34;
@@ -971,9 +971,9 @@ LABEL_11:
         WORD2(v14) = 2112;
         *(&v14 + 6) = v5;
         HIWORD(v14) = 2048;
-        v15 = self;
+        selfCopy = self;
         LOWORD(v16) = 1024;
-        *(&v16 + 2) = v3;
+        *(&v16 + 2) = pausedCopy;
         v8 = " [%s] %s:%d %@(%p) Session change to video paused[%d]";
         v9 = v12;
         v10 = 54;
@@ -982,7 +982,7 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setVideoPaused:v3, *v13, *&v13[16], v14, v15, v16, v17];
+  [(AVCSessionParticipant *)self->_localParticipant setVideoPaused:pausedCopy, *v13, *&v13[16], v14, selfCopy, v16, v17];
 }
 
 - (NSData)negotiationData
@@ -997,13 +997,13 @@ LABEL_11:
   return result;
 }
 
-+ (int)mediaNegotiatorVersionWithNegotiationProtocolVersion:(unsigned int)a3
++ (int)mediaNegotiatorVersionWithNegotiationProtocolVersion:(unsigned int)version
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = [VCDefaults integerValueForKey:@"forceMediaNegotiatorVersion" defaultValue:-1];
   if (v4 > 1)
   {
-    if (a3 == 1)
+    if (version == 1)
     {
       v7 = 1;
     }
@@ -1013,7 +1013,7 @@ LABEL_11:
       v7 = -1;
     }
 
-    if (a3)
+    if (version)
     {
       return v7;
     }
@@ -1045,9 +1045,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)negotiationDataForProtocolVersion:(unsigned int)a3
+- (id)negotiationDataForProtocolVersion:(unsigned int)version
 {
-  v3 = *&a3;
+  v3 = *&version;
   v17 = *MEMORY[0x1E69E9840];
   v5 = [AVCSession mediaNegotiatorVersionWithNegotiationProtocolVersion:?];
   if (v5 == -1)
@@ -1183,7 +1183,7 @@ __n128 __30__AVCSession_presentationInfo__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPresentationInfo:(tagAVCSessionPresentationInfo *)a3
+- (void)setPresentationInfo:(tagAVCSessionPresentationInfo *)info
 {
   v40 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1192,13 +1192,13 @@ __n128 __30__AVCSession_presentationInfo__block_invoke(uint64_t a1)
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      x = a3->var0.origin.x;
-      y = a3->var0.origin.y;
-      width = a3->var0.size.width;
-      height = a3->var0.size.height;
-      var1 = a3->var1;
-      var2 = a3->var2;
-      var3 = a3->var3;
+      x = info->var0.origin.x;
+      y = info->var0.origin.y;
+      width = info->var0.size.width;
+      height = info->var0.size.height;
+      var1 = info->var1;
+      var2 = info->var2;
+      var3 = info->var3;
       *buf = 136317442;
       v21 = v5;
       v22 = 2080;
@@ -1223,22 +1223,22 @@ __n128 __30__AVCSession_presentationInfo__block_invoke(uint64_t a1)
     }
   }
 
-  if (a3->var2)
+  if (info->var2)
   {
     [AVCSession setPresentationInfo:];
   }
 
-  else if (a3->var0.size.width <= 0.0)
+  else if (info->var0.size.width <= 0.0)
   {
     [AVCSession setPresentationInfo:];
   }
 
-  else if (a3->var0.size.height <= 0.0)
+  else if (info->var0.size.height <= 0.0)
   {
     [AVCSession setPresentationInfo:];
   }
 
-  else if (a3->var3 >= 4u)
+  else if (info->var3 >= 4u)
   {
     [AVCSession setPresentationInfo:];
   }
@@ -1248,13 +1248,13 @@ __n128 __30__AVCSession_presentationInfo__block_invoke(uint64_t a1)
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
-    size = a3->var0.size;
-    origin = a3->var0.origin;
+    size = info->var0.size;
+    origin = info->var0.origin;
     v18 = size;
     block[2] = __34__AVCSession_setPresentationInfo___block_invoke;
     block[3] = &unk_1E85F7F08;
     block[4] = self;
-    v19 = *&a3->var1;
+    v19 = *&info->var1;
     dispatch_async(stateQueue, block);
   }
 }
@@ -1309,7 +1309,7 @@ void __34__AVCSession_setPresentationInfo___block_invoke(uint64_t a1)
   }
 }
 
-- (id)initPrivateWithTransportToken:(id)a3 configuration:(id)a4 negotiationData:(id)a5 delegate:(id)a6 queue:(id)a7
+- (id)initPrivateWithTransportToken:(id)token configuration:(id)configuration negotiationData:(id)data delegate:(id)delegate queue:(id)queue
 {
   v62 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -1327,9 +1327,9 @@ void __34__AVCSession_setPresentationInfo___block_invoke(uint64_t a1)
       v50 = 1024;
       v51 = 330;
       v52 = 2048;
-      v53 = self;
+      selfCopy = self;
       v54 = 2112;
-      v55 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCSession-initPrivateWithTransportToken (%p) transportToken[%@]", buf, 0x30u);
     }
   }
@@ -1341,44 +1341,44 @@ void __34__AVCSession_setPresentationInfo___block_invoke(uint64_t a1)
   {
     if (VCDefaults_GetBoolValueForKey(@"forceLoopback", 0))
     {
-      a3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", @"loopback:", arc4random()];
+      token = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", @"loopback:", arc4random()];
     }
 
-    if (a3)
+    if (token)
     {
-      if (a4 && [a4 parentNWActivity] && (objc_msgSend(a4, "parentNWActivity"), (nw_activity_is_activated() & 1) == 0))
+      if (configuration && [configuration parentNWActivity] && (objc_msgSend(configuration, "parentNWActivity"), (nw_activity_is_activated() & 1) == 0))
       {
         [AVCSession initPrivateWithTransportToken:v15 configuration:? negotiationData:? delegate:? queue:?];
       }
 
       else
       {
-        v15->_transportToken = a3;
-        v15->_configuration = a4;
+        v15->_transportToken = token;
+        v15->_configuration = configuration;
         v15->_connection = objc_alloc_init(VCXPCClientShared);
         v15->_remoteParticipants = objc_alloc_init(MEMORY[0x1E695DF90]);
         v15->_participantsToAdd = objc_alloc_init(MEMORY[0x1E695DF90]);
         CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
         v15->_stateQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.AVCSession.stateQueue", 0, CustomRootQueue);
         v15->_presentationInfo = objc_alloc_init(VCSessionPresentationInfo);
-        v15->_cachedNegotiationData = a5;
-        objc_storeWeak(&v15->_delegate, a6);
-        [(AVCSession *)v15 setupNotificationQueue:a7];
+        v15->_cachedNegotiationData = data;
+        objc_storeWeak(&v15->_delegate, delegate);
+        [(AVCSession *)v15 setupNotificationQueue:queue];
         [(AVCSession *)v15 registerBlocksForNotifications];
-        v17 = [MEMORY[0x1E695DF90] dictionary];
-        [v17 setObject:a3 forKeyedSubscript:@"vcSessionIDSDestination"];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:token forKeyedSubscript:@"vcSessionIDSDestination"];
         configuration = v15->_configuration;
         if (configuration)
         {
-          [v17 setObject:-[AVCSessionConfiguration dictionary](configuration forKeyedSubscript:{"dictionary"), @"vcSessionConfiguration"}];
+          [dictionary setObject:-[AVCSessionConfiguration dictionary](configuration forKeyedSubscript:{"dictionary"), @"vcSessionConfiguration"}];
         }
 
-        if (a5)
+        if (data)
         {
-          [v17 setObject:a5 forKeyedSubscript:@"vcSessionParticipantData"];
+          [dictionary setObject:data forKeyedSubscript:@"vcSessionParticipantData"];
         }
 
-        v19 = [(AVConferenceXPCClient *)v15->_connection sendMessageSync:"vcSessionInitialize" arguments:v17];
+        v19 = [(AVConferenceXPCClient *)v15->_connection sendMessageSync:"vcSessionInitialize" arguments:dictionary];
         v20 = [v19 objectForKeyedSubscript:@"vcSessionSucceeded"];
         v15->_uuid = [v19 objectForKeyedSubscript:@"vcSessionUUID"];
         if ([v20 BOOLValue])
@@ -1406,7 +1406,7 @@ LABEL_28:
                   v40 = *MEMORY[0x1E6986650];
                   if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                   {
-                    v41 = [(AVCSessionParticipant *)v15->_localParticipant uuid];
+                    uuid = [(AVCSessionParticipant *)v15->_localParticipant uuid];
                     *buf = 136316418;
                     v47 = v39;
                     v48 = 2080;
@@ -1414,11 +1414,11 @@ LABEL_28:
                     v50 = 1024;
                     v51 = 389;
                     v52 = 2048;
-                    v53 = v15;
+                    selfCopy = v15;
                     v54 = 2112;
-                    v55 = v41;
+                    tokenCopy = uuid;
                     v56 = 2112;
-                    v57 = a3;
+                    tokenCopy2 = token;
                     _os_log_impl(&dword_1DB56E000, v40, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCSession-init (%p) localParticipantID=%@, transportToken=%@", buf, 0x3Au);
                   }
                 }
@@ -1436,11 +1436,11 @@ LABEL_28:
               v50 = 1024;
               v51 = 378;
               v52 = 2048;
-              v53 = localParticipant;
+              selfCopy = localParticipant;
               v54 = 2048;
-              v55 = stateQueue;
+              tokenCopy = stateQueue;
               v56 = 2048;
-              v57 = connection;
+              tokenCopy2 = connection;
               v31 = " [%s] %s:%d localParticipant [%p] has been created and stateQueue [%p] and shared xpc connection [%p] have been set";
               v32 = v27;
               v33 = 58;
@@ -1480,11 +1480,11 @@ LABEL_28:
               v50 = 1024;
               v51 = 378;
               v52 = 2112;
-              v53 = v25;
+              selfCopy = v25;
               v54 = 2048;
-              v55 = v15;
+              tokenCopy = v15;
               v56 = 2048;
-              v57 = v36;
+              tokenCopy2 = v36;
               v58 = 2048;
               v59 = v37;
               v60 = 2048;
@@ -1527,7 +1527,7 @@ LABEL_28:
         v50 = 1024;
         v51 = 387;
         v52 = 2048;
-        v53 = 0;
+        selfCopy = 0;
         _os_log_impl(&dword_1DB56E000, v44, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCSession-init (%p)", buf, 0x26u);
       }
     }
@@ -1538,10 +1538,10 @@ LABEL_28:
   return v15;
 }
 
-- (void)setMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4
+- (void)setMediaState:(unsigned int)state forMediaType:(unsigned int)type
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&type;
+  v5 = *&state;
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -1597,7 +1597,7 @@ LABEL_11:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v7;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy = self;
         LOWORD(v18) = 1024;
         *(&v18 + 2) = v4;
         HIWORD(v18) = 1024;
@@ -1610,15 +1610,15 @@ LABEL_11:
     }
   }
 
-  [(AVCSessionParticipant *)self->_localParticipant setMediaState:v5 forMediaType:v4, *v15, *&v15[16], v16, v17, v18, v19];
+  [(AVCSessionParticipant *)self->_localParticipant setMediaState:v5 forMediaType:v4, *v15, *&v15[16], v16, selfCopy, v18, v19];
 }
 
-- (void)addParticipant:(id)a3
+- (void)addParticipant:(id)participant
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (participant)
   {
-    v18[0] = a3;
+    v18[0] = participant;
     -[AVCSession addParticipants:](self, "addParticipants:", [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1]);
   }
 
@@ -1661,14 +1661,14 @@ LABEL_11:
         v14 = 2112;
         v15 = v4;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to add nil participant", &v8, 0x30u);
       }
     }
   }
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -1677,7 +1677,7 @@ LABEL_11:
   block[2] = __30__AVCSession_addParticipants___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = participants;
   dispatch_async(stateQueue, block);
 }
 
@@ -1834,21 +1834,21 @@ LABEL_11:
   }
 }
 
-- (void)completeAddParticipant:(id)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeAddParticipant:(id)participant didSucceed:(BOOL)succeed error:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v9 = [(AVCSession *)self delegate];
+  delegate = [(AVCSession *)self delegate];
   delegateNotificationQueue = self->_delegateNotificationQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__AVCSession_completeAddParticipant_didSucceed_error___block_invoke;
   v11[3] = &unk_1E85F9E88;
   v11[4] = self;
-  v11[5] = a3;
-  v12 = a4;
-  v11[6] = a5;
-  v11[7] = v9;
+  v11[5] = participant;
+  succeedCopy = succeed;
+  v11[6] = error;
+  v11[7] = delegate;
   dispatch_async(delegateNotificationQueue, v11);
 }
 
@@ -1887,21 +1887,21 @@ uint64_t __54__AVCSession_completeAddParticipant_didSucceed_error___block_invoke
   return [*(a1 + 56) session:*(a1 + 32) addParticipant:*(a1 + 40) didSucceed:*(a1 + 64) error:*(a1 + 48)];
 }
 
-- (void)completeRemoveParticipant:(id)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeRemoveParticipant:(id)participant didSucceed:(BOOL)succeed error:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v9 = [(AVCSession *)self delegate];
+  delegate = [(AVCSession *)self delegate];
   delegateNotificationQueue = self->_delegateNotificationQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__AVCSession_completeRemoveParticipant_didSucceed_error___block_invoke;
   v11[3] = &unk_1E85F9E88;
   v11[4] = self;
-  v11[5] = a3;
-  v12 = a4;
-  v11[6] = a5;
-  v11[7] = v9;
+  v11[5] = participant;
+  succeedCopy = succeed;
+  v11[6] = error;
+  v11[7] = delegate;
   dispatch_async(delegateNotificationQueue, v11);
 }
 
@@ -1940,9 +1940,9 @@ uint64_t __57__AVCSession_completeRemoveParticipant_didSucceed_error___block_inv
   return [*(a1 + 56) session:*(a1 + 32) removeParticipant:*(a1 + 40) didSucceed:*(a1 + 64) error:*(a1 + 48)];
 }
 
-- (BOOL)validateParticipantToAdd:(id)a3
+- (BOOL)validateParticipantToAdd:(id)add
 {
-  if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipants, "objectForKeyedSubscript:", [a3 uuid]) && !-[NSMutableDictionary objectForKeyedSubscript:](self->_participantsToAdd, "objectForKeyedSubscript:", objc_msgSend(a3, "uuid")))
+  if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipants, "objectForKeyedSubscript:", [add uuid]) && !-[NSMutableDictionary objectForKeyedSubscript:](self->_participantsToAdd, "objectForKeyedSubscript:", objc_msgSend(add, "uuid")))
   {
     return 1;
   }
@@ -1951,32 +1951,32 @@ uint64_t __57__AVCSession_completeRemoveParticipant_didSucceed_error___block_inv
   v6 = +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 1, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCSession.m", 506], 0);
   if (v6)
   {
-    [(AVCSession *)self completeAddParticipant:a3 didSucceed:0 error:v6];
+    [(AVCSession *)self completeAddParticipant:add didSucceed:0 error:v6];
     return 0;
   }
 
   return v5;
 }
 
-- (BOOL)validateParticipantToRemove:(id)a3
+- (BOOL)validateParticipantToRemove:(id)remove
 {
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipants, "objectForKeyedSubscript:", [a3 uuid]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipants, "objectForKeyedSubscript:", [remove uuid]);
   if (!v5)
   {
-    -[AVCSession completeRemoveParticipant:didSucceed:error:](self, "completeRemoveParticipant:didSucceed:error:", a3, 0, +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCSession.m", 518], 0));
+    -[AVCSession completeRemoveParticipant:didSucceed:error:](self, "completeRemoveParticipant:didSucceed:error:", remove, 0, +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/AVCSession.m", 518], 0));
   }
 
   return v5 != 0;
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = participant;
   -[AVCSession removeParticipants:](self, "removeParticipants:", [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1]);
 }
 
-- (void)removeParticipants:(id)a3
+- (void)removeParticipants:(id)participants
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -1985,7 +1985,7 @@ uint64_t __57__AVCSession_completeRemoveParticipant_didSucceed_error___block_inv
   block[2] = __33__AVCSession_removeParticipants___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = participants;
   dispatch_async(stateQueue, block);
 }
 
@@ -2237,7 +2237,7 @@ LABEL_12:
   }
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -2246,7 +2246,7 @@ LABEL_12:
   block[2] = __28__AVCSession_stopWithError___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = error;
   dispatch_async(stateQueue, block);
 }
 
@@ -2365,7 +2365,7 @@ LABEL_12:
   }
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -2374,7 +2374,7 @@ LABEL_12:
   block[2] = __34__AVCSession_updateConfiguration___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = configuration;
   dispatch_async(stateQueue, block);
 }
 
@@ -2622,16 +2622,16 @@ LABEL_11:
   *(v13 + 120) = v14 + 1;
 }
 
-- (void)appendConfigurationToXPCArguments:(id)a3
+- (void)appendConfigurationToXPCArguments:(id)arguments
 {
   dispatch_assert_queue_V2(self->_stateQueue);
   if ([(VCSessionPresentationInfo *)self->_presentationInfo hasPendingChanges])
   {
-    v5 = [(VCSessionPresentationInfo *)self->_presentationInfo serialize];
-    if (v5)
+    serialize = [(VCSessionPresentationInfo *)self->_presentationInfo serialize];
+    if (serialize)
     {
 
-      [a3 setObject:v5 forKeyedSubscript:@"vcSessionPresentationInfo"];
+      [arguments setObject:serialize forKeyedSubscript:@"vcSessionPresentationInfo"];
     }
   }
 }
@@ -2772,10 +2772,10 @@ LABEL_11:
   }
 }
 
-- (void)handleEndConfigurationOnParticipantAdd:(id)a3
+- (void)handleEndConfigurationOnParticipantAdd:(id)add
 {
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-  [a3 appendConfigurationToXPCConfiguration:v5];
+  [add appendConfigurationToXPCConfiguration:v5];
   if ([v5 count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2800,38 +2800,38 @@ LABEL_11:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 688;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d Multiple participants are configured with the same prominence indices", &v2, 0x1Cu);
 }
 
-+ (id)configurationWithSessionMode:(int64_t)a3
++ (id)configurationWithSessionMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = 2 * (a3 == 0);
+    v3 = 2 * (mode == 0);
   }
 
   return [VCSessionMediaStreamPresenceConfigurationProvider publicSessionConfigurationForType:v3];
 }
 
-- (id)newNSErrorWithErrorDictionary:(id)a3
+- (id)newNSErrorWithErrorDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v5 = [a3 objectForKeyedSubscript:@"ERROR_DOMAIN"];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"ERROR_USERINFO"];
+  v5 = [dictionary objectForKeyedSubscript:@"ERROR_DOMAIN"];
+  v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
+  v7 = [dictionary objectForKeyedSubscript:@"ERROR_USERINFO"];
 
   return [v4 initWithDomain:v5 code:v6 userInfo:v7];
 }
@@ -4203,13 +4203,13 @@ uint64_t __44__AVCSession_registerBlocksForNotifications__block_invoke_189(uint6
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcSessionSetOneToOneEnabledDidChange"];
 }
 
-- (void)setupNotificationQueue:(id)a3
+- (void)setupNotificationQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    self->_delegateNotificationQueue = a3;
+    self->_delegateNotificationQueue = queue;
 
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   else
@@ -4219,7 +4219,7 @@ uint64_t __44__AVCSession_registerBlocksForNotifications__block_invoke_189(uint6
   }
 }
 
-- (void)participant:(id)a3 frequencyLevelsDidChange:(id)a4
+- (void)participant:(id)participant frequencyLevelsDidChange:(id)change
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateNotificationQueue = self->_delegateNotificationQueue;
@@ -4228,7 +4228,7 @@ uint64_t __44__AVCSession_registerBlocksForNotifications__block_invoke_189(uint6
   block[2] = __51__AVCSession_participant_frequencyLevelsDidChange___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = change;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -4248,10 +4248,10 @@ uint64_t __51__AVCSession_participant_frequencyLevelsDidChange___block_invoke(ui
   return result;
 }
 
-- (void)participant:(id)a3 audioEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)participant:(id)participant audioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v39 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4271,9 +4271,9 @@ uint64_t __51__AVCSession_participant_frequencyLevelsDidChange___block_invoke(ui
         v30 = 2112;
         v31 = uuid;
         v32 = 1024;
-        *v33 = v8;
+        *v33 = enabledCopy;
         *&v33[4] = 1024;
-        *&v33[6] = v7;
+        *&v33[6] = succeedCopy;
         v14 = " [%s] %s:%d AVCSession[%@] received callback for audio enabled[%d] did succeed[%d]";
         v15 = v12;
         v16 = 50;
@@ -4315,9 +4315,9 @@ LABEL_11:
         *&v33[8] = 2112;
         v34 = v19;
         v35 = 1024;
-        v36 = v8;
+        v36 = enabledCopy;
         v37 = 1024;
-        v38 = v7;
+        v38 = succeedCopy;
         v14 = " [%s] %s:%d %@(%p) AVCSession[%@] received callback for audio enabled[%d] did succeed[%d]";
         v15 = v18;
         v16 = 70;
@@ -4331,10 +4331,10 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __56__AVCSession_participant_audioEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F63F0;
-  v22 = v8;
-  v23 = v7;
+  v22 = enabledCopy;
+  v23 = succeedCopy;
   block[4] = self;
-  block[5] = a6;
+  block[5] = error;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -4356,10 +4356,10 @@ uint64_t __56__AVCSession_participant_audioEnabled_didSucceed_error___block_invo
   return result;
 }
 
-- (void)participant:(id)a3 videoEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)participant:(id)participant videoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v39 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4379,9 +4379,9 @@ uint64_t __56__AVCSession_participant_audioEnabled_didSucceed_error___block_invo
         v30 = 2112;
         v31 = uuid;
         v32 = 1024;
-        *v33 = v8;
+        *v33 = enabledCopy;
         *&v33[4] = 1024;
-        *&v33[6] = v7;
+        *&v33[6] = succeedCopy;
         v14 = " [%s] %s:%d AVCSession[%@] received callback for video enabled[%d] did succeed[%d]";
         v15 = v12;
         v16 = 50;
@@ -4423,9 +4423,9 @@ LABEL_11:
         *&v33[8] = 2112;
         v34 = v19;
         v35 = 1024;
-        v36 = v8;
+        v36 = enabledCopy;
         v37 = 1024;
-        v38 = v7;
+        v38 = succeedCopy;
         v14 = " [%s] %s:%d %@(%p) AVCSession[%@] received callback for video enabled[%d] did succeed[%d]";
         v15 = v18;
         v16 = 70;
@@ -4439,10 +4439,10 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __56__AVCSession_participant_videoEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F63F0;
-  v22 = v8;
-  v23 = v7;
+  v22 = enabledCopy;
+  v23 = succeedCopy;
   block[4] = self;
-  block[5] = a6;
+  block[5] = error;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -4464,10 +4464,10 @@ uint64_t __56__AVCSession_participant_videoEnabled_didSucceed_error___block_invo
   return result;
 }
 
-- (void)participant:(id)a3 screenEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)participant:(id)participant screenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v39 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4487,9 +4487,9 @@ uint64_t __56__AVCSession_participant_videoEnabled_didSucceed_error___block_invo
         v30 = 2112;
         v31 = uuid;
         v32 = 1024;
-        *v33 = v8;
+        *v33 = enabledCopy;
         *&v33[4] = 1024;
-        *&v33[6] = v7;
+        *&v33[6] = succeedCopy;
         v14 = " [%s] %s:%d AVCSession[%@] received callback for screen enabled[%d] did succeed[%d]";
         v15 = v12;
         v16 = 50;
@@ -4531,9 +4531,9 @@ LABEL_11:
         *&v33[8] = 2112;
         v34 = v19;
         v35 = 1024;
-        v36 = v8;
+        v36 = enabledCopy;
         v37 = 1024;
-        v38 = v7;
+        v38 = succeedCopy;
         v14 = " [%s] %s:%d %@(%p) AVCSession[%@] received callback for screen enabled[%d] did succeed[%d]";
         v15 = v18;
         v16 = 70;
@@ -4547,10 +4547,10 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __57__AVCSession_participant_screenEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F63F0;
-  v22 = v8;
-  v23 = v7;
+  v22 = enabledCopy;
+  v23 = succeedCopy;
   block[4] = self;
-  block[5] = a6;
+  block[5] = error;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -4572,10 +4572,10 @@ uint64_t __57__AVCSession_participant_screenEnabled_didSucceed_error___block_inv
   return result;
 }
 
-- (void)participant:(id)a3 audioPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)participant:(id)participant audioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  succeedCopy = succeed;
+  pausedCopy = paused;
   v39 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4595,9 +4595,9 @@ uint64_t __57__AVCSession_participant_screenEnabled_didSucceed_error___block_inv
         v30 = 2112;
         v31 = uuid;
         v32 = 1024;
-        *v33 = v8;
+        *v33 = pausedCopy;
         *&v33[4] = 1024;
-        *&v33[6] = v7;
+        *&v33[6] = succeedCopy;
         v14 = " [%s] %s:%d AVCSession[%@] received callback for audio paused[%d] did succeed[%d]";
         v15 = v12;
         v16 = 50;
@@ -4639,9 +4639,9 @@ LABEL_11:
         *&v33[8] = 2112;
         v34 = v19;
         v35 = 1024;
-        v36 = v8;
+        v36 = pausedCopy;
         v37 = 1024;
-        v38 = v7;
+        v38 = succeedCopy;
         v14 = " [%s] %s:%d %@(%p) AVCSession[%@] received callback for audio paused[%d] did succeed[%d]";
         v15 = v18;
         v16 = 70;
@@ -4655,10 +4655,10 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __55__AVCSession_participant_audioPaused_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F63F0;
-  v22 = v8;
-  v23 = v7;
+  v22 = pausedCopy;
+  v23 = succeedCopy;
   block[4] = self;
-  block[5] = a6;
+  block[5] = error;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -4680,10 +4680,10 @@ uint64_t __55__AVCSession_participant_audioPaused_didSucceed_error___block_invok
   return result;
 }
 
-- (void)participant:(id)a3 videoPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)participant:(id)participant videoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
+  succeedCopy = succeed;
+  pausedCopy = paused;
   v39 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4703,9 +4703,9 @@ uint64_t __55__AVCSession_participant_audioPaused_didSucceed_error___block_invok
         v30 = 2112;
         v31 = uuid;
         v32 = 1024;
-        *v33 = v8;
+        *v33 = pausedCopy;
         *&v33[4] = 1024;
-        *&v33[6] = v7;
+        *&v33[6] = succeedCopy;
         v14 = " [%s] %s:%d AVCSession[%@] received callback for video paused[%d] did succeed[%d]";
         v15 = v12;
         v16 = 50;
@@ -4747,9 +4747,9 @@ LABEL_11:
         *&v33[8] = 2112;
         v34 = v19;
         v35 = 1024;
-        v36 = v8;
+        v36 = pausedCopy;
         v37 = 1024;
-        v38 = v7;
+        v38 = succeedCopy;
         v14 = " [%s] %s:%d %@(%p) AVCSession[%@] received callback for video paused[%d] did succeed[%d]";
         v15 = v18;
         v16 = 70;
@@ -4763,10 +4763,10 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __55__AVCSession_participant_videoPaused_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F63F0;
-  v22 = v8;
-  v23 = v7;
+  v22 = pausedCopy;
+  v23 = succeedCopy;
   block[4] = self;
-  block[5] = a6;
+  block[5] = error;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -4788,10 +4788,10 @@ uint64_t __55__AVCSession_participant_videoPaused_didSucceed_error___block_invok
   return result;
 }
 
-- (void)participant:(id)a3 mediaStateDidChange:(unsigned int)a4 forMediaType:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)participant:(id)participant mediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
-  v10 = *&a4;
+  succeedCopy = succeed;
+  v10 = *&change;
   v51 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -4802,7 +4802,7 @@ uint64_t __55__AVCSession_participant_videoPaused_didSucceed_error___block_invok
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
         uuid = self->_uuid;
-        v16 = VCSessionMediaType_FromAVCSessionMediaType(a5);
+        v16 = VCSessionMediaType_FromAVCSessionMediaType(type);
         v17 = VCSessionMediaType_Name(v16);
         v18 = VCSessionMediaState_FromAVCSessionMediaState(v10);
         *buf = 136316674;
@@ -4814,11 +4814,11 @@ uint64_t __55__AVCSession_participant_videoPaused_didSucceed_error___block_invok
         v39 = 2112;
         v40 = uuid;
         v41 = 2112;
-        v42 = v17;
+        selfCopy = v17;
         v43 = 2112;
         v44 = VCSessionMediaState_Name(v18);
         v45 = 1024;
-        LODWORD(v46) = v8;
+        LODWORD(v46) = succeedCopy;
         v19 = " [%s] %s:%d AVCSession=%@ received mediaStateDidChange callback for mediaType=%@ mediaState=%@ did succeed[%d]";
         v20 = v14;
         v21 = 64;
@@ -4847,7 +4847,7 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
         v24 = self->_uuid;
-        v25 = VCSessionMediaType_FromAVCSessionMediaType(a5);
+        v25 = VCSessionMediaType_FromAVCSessionMediaType(type);
         v26 = VCSessionMediaType_Name(v25);
         v27 = VCSessionMediaState_FromAVCSessionMediaState(v10);
         *buf = 136317186;
@@ -4859,7 +4859,7 @@ LABEL_11:
         v39 = 2112;
         v40 = v12;
         v41 = 2048;
-        v42 = self;
+        selfCopy = self;
         v43 = 2112;
         v44 = v24;
         v45 = 2112;
@@ -4867,7 +4867,7 @@ LABEL_11:
         v47 = 2112;
         v48 = VCSessionMediaState_Name(v27);
         v49 = 1024;
-        v50 = v8;
+        v50 = succeedCopy;
         v19 = " [%s] %s:%d %@(%p) AVCSession=%@ received mediaStateDidChange callback for mediaType=%@ mediaState=%@ did succeed[%d]";
         v20 = v23;
         v21 = 84;
@@ -4882,10 +4882,10 @@ LABEL_11:
   v29[2] = __76__AVCSession_participant_mediaStateDidChange_forMediaType_didSucceed_error___block_invoke;
   v29[3] = &unk_1E85F63A0;
   v30 = v10;
-  v31 = a5;
-  v32 = v8;
+  typeCopy = type;
+  v32 = succeedCopy;
   v29[4] = self;
-  v29[5] = a7;
+  v29[5] = error;
   dispatch_async(delegateNotificationQueue, v29);
 }
 
@@ -4907,7 +4907,7 @@ uint64_t __76__AVCSession_participant_mediaStateDidChange_forMediaType_didSuccee
   return result;
 }
 
-- (void)participant:(id)a3 mediaPrioritiesDidChange:(id)a4
+- (void)participant:(id)participant mediaPrioritiesDidChange:(id)change
 {
   v30 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -4964,7 +4964,7 @@ LABEL_11:
         v24 = 2112;
         v25 = v6;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 2112;
         v29 = v15;
         v10 = " [%s] %s:%d %@(%p) AVCSession[%@] received callback.";
@@ -4981,7 +4981,7 @@ LABEL_11:
   v17[2] = __51__AVCSession_participant_mediaPrioritiesDidChange___block_invoke;
   v17[3] = &unk_1E85F37F0;
   v17[4] = self;
-  v17[5] = a4;
+  v17[5] = change;
   dispatch_async(delegateNotificationQueue, v17);
 }
 
@@ -5001,7 +5001,7 @@ uint64_t __51__AVCSession_participant_mediaPrioritiesDidChange___block_invoke(ui
   return result;
 }
 
-- (void)participant:(id)a3 mixingDidStartForMediaType:(unsigned int)a4 mixingMediaType:(unsigned int)a5
+- (void)participant:(id)participant mixingDidStartForMediaType:(unsigned int)type mixingMediaType:(unsigned int)mediaType
 {
   v9 = *MEMORY[0x1E69E9840];
   delegateNotificationQueue = self->_delegateNotificationQueue;
@@ -5010,8 +5010,8 @@ uint64_t __51__AVCSession_participant_mediaPrioritiesDidChange___block_invoke(ui
   block[2] = __69__AVCSession_participant_mixingDidStartForMediaType_mixingMediaType___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  v7 = a4;
-  v8 = a5;
+  typeCopy = type;
+  mediaTypeCopy = mediaType;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -5032,7 +5032,7 @@ uint64_t __69__AVCSession_participant_mixingDidStartForMediaType_mixingMediaType
   return result;
 }
 
-- (void)participant:(id)a3 mixingDidStopForMediaType:(unsigned int)a4
+- (void)participant:(id)participant mixingDidStopForMediaType:(unsigned int)type
 {
   v7 = *MEMORY[0x1E69E9840];
   delegateNotificationQueue = self->_delegateNotificationQueue;
@@ -5041,7 +5041,7 @@ uint64_t __69__AVCSession_participant_mixingDidStartForMediaType_mixingMediaType
   block[2] = __52__AVCSession_participant_mixingDidStopForMediaType___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v6 = a4;
+  typeCopy = type;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -5061,7 +5061,7 @@ uint64_t __52__AVCSession_participant_mixingDidStopForMediaType___block_invoke(u
   return result;
 }
 
-- (void)participant:(id)a3 didReact:(id)a4
+- (void)participant:(id)participant didReact:(id)react
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateNotificationQueue = self->_delegateNotificationQueue;
@@ -5070,7 +5070,7 @@ uint64_t __52__AVCSession_participant_mixingDidStopForMediaType___block_invoke(u
   block[2] = __35__AVCSession_participant_didReact___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = react;
   dispatch_async(delegateNotificationQueue, block);
 }
 
@@ -5090,7 +5090,7 @@ uint64_t __35__AVCSession_participant_didReact___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)participantDidStopReacting:(id)a3
+- (void)participantDidStopReacting:(id)reacting
 {
   v4[5] = *MEMORY[0x1E69E9840];
   delegateNotificationQueue = self->_delegateNotificationQueue;
@@ -5117,11 +5117,11 @@ uint64_t __41__AVCSession_participantDidStopReacting___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didAddParticipantHandlerWithResult:(id)a3
+- (void)didAddParticipantHandlerWithResult:(id)result
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionSucceeded", "BOOLValue"}];
-  v6 = [a3 objectForKeyedSubscript:@"vcSessionParticipantID"];
+  v5 = [objc_msgSend(result objectForKeyedSubscript:{@"vcSessionSucceeded", "BOOLValue"}];
+  v6 = [result objectForKeyedSubscript:@"vcSessionParticipantID"];
   v7 = objc_opt_class();
   v8 = MEMORY[0x1E6986650];
   if (v7 == self)
@@ -5207,11 +5207,11 @@ LABEL_11:
   {
     if (v19)
     {
-      v21 = -[AVConferenceXPCClient newNSDictionaryFromNSDictionary:](self->_connection, "newNSDictionaryFromNSDictionary:", [a3 objectForKeyedSubscript:@"vcSessionParameterStreamTokens"]);
+      v21 = -[AVConferenceXPCClient newNSDictionaryFromNSDictionary:](self->_connection, "newNSDictionaryFromNSDictionary:", [result objectForKeyedSubscript:@"vcSessionParameterStreamTokens"]);
       if (v21)
       {
         v22 = v21;
-        v23 = -[AVConferenceXPCClient newNSDictionaryFromNSDictionary:](self->_connection, "newNSDictionaryFromNSDictionary:", [a3 objectForKeyedSubscript:@"vcSessionSpatialSourceIDs"]);
+        v23 = -[AVConferenceXPCClient newNSDictionaryFromNSDictionary:](self->_connection, "newNSDictionaryFromNSDictionary:", [result objectForKeyedSubscript:@"vcSessionSpatialSourceIDs"]);
         if (v23)
         {
           v24 = v23;
@@ -5280,7 +5280,7 @@ LABEL_19:
   }
 
 LABEL_21:
-  v28 = -[AVCSession newNSErrorWithErrorDictionary:](self, "newNSErrorWithErrorDictionary:", [a3 objectForKeyedSubscript:{@"vcSessionError", *v32}]);
+  v28 = -[AVCSession newNSErrorWithErrorDictionary:](self, "newNSErrorWithErrorDictionary:", [result objectForKeyedSubscript:{@"vcSessionError", *v32}]);
 LABEL_22:
   if (v28)
   {

@@ -1,15 +1,15 @@
 @interface CHSGlassOptions
 + (id)withSubduedGlass;
 + (id)withWhitePointBoost;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSGlassOptions)init;
-- (CHSGlassOptions)initWithBSXPCCoder:(id)a3;
+- (CHSGlassOptions)initWithBSXPCCoder:(id)coder;
 - (NSString)description;
-- (id)_initWithGlassOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithGlassOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHSGlassOptions
@@ -32,19 +32,19 @@
   return v3;
 }
 
-- (id)_initWithGlassOptions:(id)a3
+- (id)_initWithGlassOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = CHSGlassOptions;
   v5 = [(CHSGlassOptions *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    v5->_wantsSubduedGlass = *(v4 + 8);
-    v5->_wantsWhitePointBoost = *(v4 + 9);
-    objc_storeStrong(&v5->_backdropGroupName, *(v4 + 2));
-    v6->_wantsHighlightsDisplayAngle = *(v4 + 24);
+    v5->_wantsSubduedGlass = *(optionsCopy + 8);
+    v5->_wantsWhitePointBoost = *(optionsCopy + 9);
+    objc_storeStrong(&v5->_backdropGroupName, *(optionsCopy + 2));
+    v6->_wantsHighlightsDisplayAngle = *(optionsCopy + 24);
   }
 
   return v6;
@@ -68,12 +68,12 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -133,12 +133,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:self->_wantsSubduedGlass];
-  v5 = [v3 appendBool:self->_wantsWhitePointBoost];
-  v6 = [v3 appendObject:self->_backdropGroupName];
-  v7 = [v3 appendBool:self->_wantsHighlightsDisplayAngle];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:self->_wantsSubduedGlass];
+  v5 = [builder appendBool:self->_wantsWhitePointBoost];
+  v6 = [builder appendObject:self->_backdropGroupName];
+  v7 = [builder appendBool:self->_wantsHighlightsDisplayAngle];
+  v8 = [builder hash];
 
   return v8;
 }
@@ -152,11 +152,11 @@
   v10 = &unk_1E7453000;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 id __30__CHSGlassOptions_description__block_invoke(uint64_t a1)
@@ -167,42 +167,42 @@ id __30__CHSGlassOptions_description__block_invoke(uint64_t a1)
   return [*(a1 + 32) appendBool:*(*(a1 + 40) + 24) withName:@"wantsHighlightsDisplayAngle" ifEqualTo:1];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSGlassOptions alloc];
 
   return [(CHSGlassOptions *)v4 _initWithGlassOptions:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSMutableGlassOptions allocWithZone:a3];
+  v4 = [CHSMutableGlassOptions allocWithZone:zone];
 
   return [(CHSGlassOptions *)v4 _initWithGlassOptions:self];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_wantsSubduedGlass forKey:@"wantsSubduedGlass"];
-  [v4 encodeBool:self->_wantsWhitePointBoost forKey:@"wantsWhitePointBoost"];
-  [v4 encodeObject:self->_backdropGroupName forKey:@"backdropGroupName"];
-  [v4 encodeBool:self->_wantsHighlightsDisplayAngle forKey:@"wantsHighlightsDisplayAngle"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_wantsSubduedGlass forKey:@"wantsSubduedGlass"];
+  [coderCopy encodeBool:self->_wantsWhitePointBoost forKey:@"wantsWhitePointBoost"];
+  [coderCopy encodeObject:self->_backdropGroupName forKey:@"backdropGroupName"];
+  [coderCopy encodeBool:self->_wantsHighlightsDisplayAngle forKey:@"wantsHighlightsDisplayAngle"];
 }
 
-- (CHSGlassOptions)initWithBSXPCCoder:(id)a3
+- (CHSGlassOptions)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CHSGlassOptions *)self init];
   if (v5)
   {
-    v5->_wantsSubduedGlass = [v4 decodeBoolForKey:@"wantsSubduedGlass"];
-    v5->_wantsWhitePointBoost = [v4 decodeBoolForKey:@"wantsWhitePointBoost"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backdropGroupName"];
+    v5->_wantsSubduedGlass = [coderCopy decodeBoolForKey:@"wantsSubduedGlass"];
+    v5->_wantsWhitePointBoost = [coderCopy decodeBoolForKey:@"wantsWhitePointBoost"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backdropGroupName"];
     backdropGroupName = v5->_backdropGroupName;
     v5->_backdropGroupName = v6;
 
-    v5->_wantsHighlightsDisplayAngle = [v4 decodeBoolForKey:@"wantsHighlightsDisplayAngle"];
+    v5->_wantsHighlightsDisplayAngle = [coderCopy decodeBoolForKey:@"wantsHighlightsDisplayAngle"];
   }
 
   return v5;

@@ -1,28 +1,28 @@
 @interface SFMinibarRegistration.TrailingToken
-- (id)viewForBarItem:(int64_t)a3;
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4;
-- (void)updateBarAnimated:(BOOL)a3;
+- (id)viewForBarItem:(int64_t)item;
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled;
+- (void)updateBarAnimated:(BOOL)animated;
 @end
 
 @implementation SFMinibarRegistration.TrailingToken
 
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled
 {
-  v6 = self;
-  sub_215A0A7C8(a3, a4);
+  selfCopy = self;
+  sub_215A0A7C8(item, enabled);
 }
 
-- (void)updateBarAnimated:(BOOL)a3
+- (void)updateBarAnimated:(BOOL)animated
 {
-  v5 = self;
+  selfCopy = self;
   v3 = sub_215A09BC4();
   v4 = sub_215A09EA0();
   [v3 setMenu_];
 }
 
-- (id)viewForBarItem:(int64_t)a3
+- (id)viewForBarItem:(int64_t)item
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_215A09BC4();
 
   return v4;

@@ -8,11 +8,11 @@
 + (id)preferredContentSizeCategory
 {
   v0 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
-  v1 = [v0 userInterfaceIdiom];
+  userInterfaceIdiom = [v0 userInterfaceIdiom];
 
   v2 = +[UIContentSizeCategoryPreference system];
   v3 = v2;
-  if (v1 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [v2 preferredContentSizeCategoryCarPlay];
   }
@@ -40,11 +40,11 @@
     else
     {
       v8 = +[UITraitCollection _currentTraitCollectionWithUnmarkedFallback];
-      v9 = [v8 userInterfaceIdiom];
+      userInterfaceIdiom = [v8 userInterfaceIdiom];
 
       v10 = +[UIContentSizeCategoryPreference system];
       v11 = v10;
-      if (v9 == 3)
+      if (userInterfaceIdiom == 3)
       {
         [v10 preferredContentSizeCategoryCarPlay];
       }
@@ -53,21 +53,21 @@
       {
         [v10 preferredContentSizeCategory];
       }
-      v12 = ;
+      _defaultContentSizeCategory = ;
 
-      if (![v12 isEqualToString:@"_UICTContentSizeCategoryUnspecified"])
+      if (![_defaultContentSizeCategory isEqualToString:@"_UICTContentSizeCategoryUnspecified"])
       {
         goto LABEL_11;
       }
 
       v7 = objc_opt_class();
-      v6 = v12;
+      v6 = _defaultContentSizeCategory;
     }
 
-    v12 = [v7 _defaultContentSizeCategory];
+    _defaultContentSizeCategory = [v7 _defaultContentSizeCategory];
 
 LABEL_11:
-    v6 = v12;
+    v6 = _defaultContentSizeCategory;
   }
 
   return v6;

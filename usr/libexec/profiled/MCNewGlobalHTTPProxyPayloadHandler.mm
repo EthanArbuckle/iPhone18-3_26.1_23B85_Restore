@@ -2,10 +2,10 @@
 - (BOOL)_install;
 - (BOOL)_remove;
 - (BOOL)_sendSystemConfigurationProxyChangeNotification;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error;
 - (id)userInputFields;
-- (void)_applyProxyCredential:(id)a3;
+- (void)_applyProxyCredential:(id)credential;
 - (void)_recoverProxyCredential;
 - (void)_removeProxyCredential;
 - (void)remove;
@@ -18,21 +18,21 @@
 - (id)userInputFields
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MCNewPayloadHandler *)self payload];
-  v5 = [v4 proxyUsername];
-  if ([v5 length])
+  payload = [(MCNewPayloadHandler *)self payload];
+  proxyUsername = [payload proxyUsername];
+  if ([proxyUsername length])
   {
-    v6 = [v4 proxyPassword];
-    v7 = [v6 length];
+    proxyPassword = [payload proxyPassword];
+    v7 = [proxyPassword length];
 
     if (v7)
     {
       goto LABEL_5;
     }
 
-    v5 = MCLocalizedFormat();
+    proxyUsername = MCLocalizedFormat();
     v8 = MCLocalizedFormat();
-    v9 = [MCNewPayloadHandler promptDictionaryForKey:@"password" title:v5 description:v8 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000003 flags:?];
+    v9 = [MCNewPayloadHandler promptDictionaryForKey:@"password" title:proxyUsername description:v8 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000003 flags:?];
     [v3 addObject:v9];
   }
 
@@ -41,15 +41,15 @@ LABEL_5:
   return v3;
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error
 {
-  v5 = a3;
-  v6 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = v5;
+  v7 = responsesCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v8)
   {
@@ -75,7 +75,7 @@ LABEL_5:
         v17 = [v15 objectForKey:v13];
         if ([v16 isEqualToString:@"password"])
         {
-          [v6 setProxyPassword:v17];
+          [payload setProxyPassword:v17];
         }
 
         else
@@ -93,11 +93,11 @@ LABEL_5:
             v22 = v12;
             v23 = v11;
             v24 = v7;
-            v25 = v6;
+            v25 = payload;
             v26 = v20;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ didn't ask for user input for key %{public}@", buf, 0x16u);
 
-            v6 = v25;
+            payload = v25;
             v7 = v24;
             v11 = v23;
             v12 = v22;
@@ -121,26 +121,26 @@ LABEL_5:
 
 - (BOOL)_install
 {
-  v2 = self;
-  v3 = [(MCNewPayloadHandler *)self payload];
+  selfCopy = self;
+  payload = [(MCNewPayloadHandler *)self payload];
   v4 = +[NSMutableDictionary dictionary];
-  if ([v3 proxyType] == 1)
+  if ([payload proxyType] == 1)
   {
-    v5 = [v3 proxyServer];
+    proxyServer = [payload proxyServer];
 
-    if (v5)
+    if (proxyServer)
     {
-      v6 = [v3 proxyServer];
-      [v4 setObject:v6 forKey:kSCPropNetProxiesHTTPProxy];
+      proxyServer2 = [payload proxyServer];
+      [v4 setObject:proxyServer2 forKey:kSCPropNetProxiesHTTPProxy];
 
-      v7 = [v3 proxyServer];
-      [v4 setObject:v7 forKey:kSCPropNetProxiesHTTPSProxy];
+      proxyServer3 = [payload proxyServer];
+      [v4 setObject:proxyServer3 forKey:kSCPropNetProxiesHTTPSProxy];
     }
 
-    v8 = [v3 proxyServerPort];
-    if (v8)
+    proxyServerPort = [payload proxyServerPort];
+    if (proxyServerPort)
     {
-      [v4 setObject:v8 forKey:kSCPropNetProxiesHTTPPort];
+      [v4 setObject:proxyServerPort forKey:kSCPropNetProxiesHTTPPort];
     }
 
     else
@@ -149,12 +149,12 @@ LABEL_5:
       [v4 setObject:v17 forKey:kSCPropNetProxiesHTTPPort];
     }
 
-    v28 = v2;
+    v28 = selfCopy;
 
-    v12 = [v3 proxyServerPort];
-    if (v12)
+    proxyServerPort2 = [payload proxyServerPort];
+    if (proxyServerPort2)
     {
-      [v4 setObject:v12 forKey:kSCPropNetProxiesHTTPSPort];
+      [v4 setObject:proxyServerPort2 forKey:kSCPropNetProxiesHTTPSPort];
     }
 
     else
@@ -171,21 +171,21 @@ LABEL_5:
 
   else
   {
-    if ([v3 proxyType])
+    if ([payload proxyType])
     {
       goto LABEL_19;
     }
 
-    v28 = v2;
-    v9 = [v3 proxyPACURLString];
+    v28 = selfCopy;
+    proxyPACURLString = [payload proxyPACURLString];
 
-    if (v9)
+    if (proxyPACURLString)
     {
-      v10 = [v3 proxyPACURLString];
-      [v4 setObject:v10 forKey:kSCPropNetProxiesProxyAutoConfigURLString];
+      proxyPACURLString2 = [payload proxyPACURLString];
+      [v4 setObject:proxyPACURLString2 forKey:kSCPropNetProxiesProxyAutoConfigURLString];
     }
 
-    if ([v3 proxyPACFallbackAllowed])
+    if ([payload proxyPACFallbackAllowed])
     {
       v11 = &off_100127270;
     }
@@ -196,8 +196,8 @@ LABEL_5:
     }
 
     [v4 setObject:v11 forKeyedSubscript:kSCPropNetProxiesFallBackAllowed];
-    v12 = [NSNumber numberWithInt:0];
-    [v4 setObject:v12 forKey:kSCPropNetProxiesHTTPEnable];
+    proxyServerPort2 = [NSNumber numberWithInt:0];
+    [v4 setObject:proxyServerPort2 forKey:kSCPropNetProxiesHTTPEnable];
     v13 = 0;
     v14 = 2;
     v15 = &kSCPropNetProxiesProxyAutoConfigEnable;
@@ -213,9 +213,9 @@ LABEL_5:
   v21 = [NSNumber numberWithInt:v14];
   [v4 setObject:v21 forKey:@"HTTPProxyType"];
 
-  v2 = v28;
+  selfCopy = v28;
 LABEL_19:
-  if ([v3 proxyCaptiveLoginAllowed])
+  if ([payload proxyCaptiveLoginAllowed])
   {
     v22 = &off_100127270;
   }
@@ -233,7 +233,7 @@ LABEL_19:
 
   if (v24)
   {
-    v25 = [(MCNewGlobalHTTPProxyPayloadHandler *)v2 _sendSystemConfigurationProxyChangeNotification];
+    _sendSystemConfigurationProxyChangeNotification = [(MCNewGlobalHTTPProxyPayloadHandler *)selfCopy _sendSystemConfigurationProxyChangeNotification];
   }
 
   else
@@ -245,10 +245,10 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "MCNewGlobalHTTPProxyPayloadHandler cannot install proxy settings.", buf, 2u);
     }
 
-    v25 = 0;
+    _sendSystemConfigurationProxyChangeNotification = 0;
   }
 
-  return v25;
+  return _sendSystemConfigurationProxyChangeNotification;
 }
 
 - (BOOL)_remove
@@ -272,51 +272,51 @@ LABEL_19:
   }
 }
 
-- (void)_applyProxyCredential:(id)a3
+- (void)_applyProxyCredential:(id)credential
 {
-  v4 = a3;
-  v17 = [(MCNewPayloadHandler *)self payload];
+  credentialCopy = credential;
+  payload = [(MCNewPayloadHandler *)self payload];
   v5 = +[NSURLCredentialStorage sharedCredentialStorage];
-  v6 = [(MCNewPayloadHandler *)self profileHandler];
-  v7 = [v6 profile];
-  [v5 set_useSystemKeychain:{objc_msgSend(v7, "isInstalledForSystem")}];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  [v5 set_useSystemKeychain:{objc_msgSend(profile, "isInstalledForSystem")}];
 
-  v8 = [v17 proxyServerPort];
-  if (v8)
+  proxyServerPort = [payload proxyServerPort];
+  if (proxyServerPort)
   {
-    v9 = [v17 proxyServerPort];
-    v10 = [v9 integerValue];
+    proxyServerPort2 = [payload proxyServerPort];
+    integerValue = [proxyServerPort2 integerValue];
   }
 
   else
   {
-    v10 = 80;
+    integerValue = 80;
   }
 
   v11 = [NSURLProtectionSpace alloc];
-  v12 = [v17 proxyServer];
-  v13 = [v11 initWithProxyHost:v12 port:v10 type:NSURLProtectionSpaceHTTP realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
+  proxyServer = [payload proxyServer];
+  v13 = [v11 initWithProxyHost:proxyServer port:integerValue type:NSURLProtectionSpaceHTTP realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
 
   v14 = [NSURLProtectionSpace alloc];
-  v15 = [v17 proxyServer];
-  v16 = [v14 initWithProxyHost:v15 port:v10 type:NSURLProtectionSpaceHTTPS realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
+  proxyServer2 = [payload proxyServer];
+  v16 = [v14 initWithProxyHost:proxyServer2 port:integerValue type:NSURLProtectionSpaceHTTPS realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
 
-  [v5 setDefaultCredential:v4 forProtectionSpace:v13];
-  [v5 setDefaultCredential:v4 forProtectionSpace:v16];
+  [v5 setDefaultCredential:credentialCopy forProtectionSpace:v13];
+  [v5 setDefaultCredential:credentialCopy forProtectionSpace:v16];
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = [(MCNewPayloadHandler *)self payload:a3];
+  v8 = [(MCNewPayloadHandler *)self payload:installer];
   if ([v8 proxyType] == 1)
   {
-    v9 = [v8 proxyUsername];
-    v10 = [v8 proxyPassword];
-    v11 = [NSURLCredential credentialWithUser:v9 password:v10 persistence:2];
+    proxyUsername = [v8 proxyUsername];
+    proxyPassword = [v8 proxyPassword];
+    v11 = [NSURLCredential credentialWithUser:proxyUsername password:proxyPassword persistence:2];
 
     [(MCNewGlobalHTTPProxyPayloadHandler *)self _applyProxyCredential:v11];
-    v12 = [v8 proxyUsername];
-    v13 = [v8 proxyPassword];
+    proxyUsername2 = [v8 proxyUsername];
+    proxyPassword2 = [v8 proxyPassword];
     v14 = CFURLCredentialCreate();
 
     if (v14)
@@ -329,9 +329,9 @@ LABEL_19:
         if (Data)
         {
           v18 = +[NSString MCMakeUUID];
-          v19 = [(MCNewPayloadHandler *)self profileHandler];
-          v20 = [v19 profile];
-          +[MCKeychain setData:forService:account:label:description:useSystemKeychain:outError:](MCKeychain, "setData:forService:account:label:description:useSystemKeychain:outError:", Data, @"MCGlobalProxy", v18, 0, 0, [v20 isInstalledForSystem], 0);
+          profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+          profile = [profileHandler profile];
+          +[MCKeychain setData:forService:account:label:description:useSystemKeychain:outError:](MCKeychain, "setData:forService:account:label:description:useSystemKeychain:outError:", Data, @"MCGlobalProxy", v18, 0, 0, [profile isInstalledForSystem], 0);
 
           [v8 setCredentialUUID:v18];
         }
@@ -372,11 +372,11 @@ LABEL_11:
     v22 = [NSError MCErrorWithDomain:v24 code:31001 descriptionArray:v25 errorType:MCErrorTypeFatal, 0];
 
     v23 = v22 == 0;
-    if (a6 && v22)
+    if (error && v22)
     {
       v26 = v22;
       v23 = 0;
-      *a6 = v22;
+      *error = v22;
     }
   }
 
@@ -385,29 +385,29 @@ LABEL_11:
 
 - (void)_removeProxyCredential
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  if ([v3 proxyType] == 1)
+  payload = [(MCNewPayloadHandler *)self payload];
+  if ([payload proxyType] == 1)
   {
-    v4 = [v3 proxyServerPort];
-    if (v4)
+    proxyServerPort = [payload proxyServerPort];
+    if (proxyServerPort)
     {
-      v5 = [v3 proxyServerPort];
-      v6 = [v5 intValue];
+      proxyServerPort2 = [payload proxyServerPort];
+      intValue = [proxyServerPort2 intValue];
     }
 
     else
     {
-      v6 = 80;
+      intValue = 80;
     }
 
     v7 = +[NSURLCredentialStorage sharedCredentialStorage];
-    v8 = [(MCNewPayloadHandler *)self profileHandler];
-    v9 = [v8 profile];
-    [v7 set_useSystemKeychain:{objc_msgSend(v9, "isInstalledForSystem")}];
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler profile];
+    [v7 set_useSystemKeychain:{objc_msgSend(profile, "isInstalledForSystem")}];
 
     v10 = [NSURLProtectionSpace alloc];
-    v11 = [v3 proxyServer];
-    v12 = [v10 initWithProxyHost:v11 port:v6 type:NSURLProtectionSpaceHTTP realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
+    proxyServer = [payload proxyServer];
+    v12 = [v10 initWithProxyHost:proxyServer port:intValue type:NSURLProtectionSpaceHTTP realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
 
     v13 = [v7 defaultCredentialForProtectionSpace:v12];
     if (v13)
@@ -419,8 +419,8 @@ LABEL_11:
     }
 
     v15 = [NSURLProtectionSpace alloc];
-    v16 = [v3 proxyServer];
-    v17 = [v15 initWithProxyHost:v16 port:v6 type:NSURLProtectionSpaceHTTPS realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
+    proxyServer2 = [payload proxyServer];
+    v17 = [v15 initWithProxyHost:proxyServer2 port:intValue type:NSURLProtectionSpaceHTTPS realm:0 authenticationMethod:NSURLAuthenticationMethodDefault];
 
     v18 = [v7 defaultCredentialForProtectionSpace:v17];
     if (v18)
@@ -435,17 +435,17 @@ LABEL_11:
 
 - (void)_recoverProxyCredential
 {
-  v16 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v16 proxyType] == 1;
-  v4 = v16;
+  payload = [(MCNewPayloadHandler *)self payload];
+  v3 = [payload proxyType] == 1;
+  v4 = payload;
   if (v3)
   {
-    v5 = [v16 credentialUUID];
-    if (v5)
+    credentialUUID = [payload credentialUUID];
+    if (credentialUUID)
     {
-      v6 = [(MCNewPayloadHandler *)self profileHandler];
-      v7 = [v6 profile];
-      v8 = +[MCKeychain dataFromService:account:label:description:useSystemKeychain:outError:](MCKeychain, "dataFromService:account:label:description:useSystemKeychain:outError:", @"MCGlobalProxy", v5, 0, 0, [v7 isInstalledForSystem], 0);
+      profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler profile];
+      v8 = +[MCKeychain dataFromService:account:label:description:useSystemKeychain:outError:](MCKeychain, "dataFromService:account:label:description:useSystemKeychain:outError:", @"MCGlobalProxy", credentialUUID, 0, 0, [profile isInstalledForSystem], 0);
 
       if (v8)
       {
@@ -469,7 +469,7 @@ LABEL_11:
       }
     }
 
-    v4 = v16;
+    v4 = payload;
   }
 }
 
@@ -489,22 +489,22 @@ LABEL_11:
 
 - (void)remove
 {
-  v8 = [(MCNewPayloadHandler *)self payload];
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  payload = [(MCNewPayloadHandler *)self payload];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
     [(MCNewGlobalHTTPProxyPayloadHandler *)self _remove];
     [(MCNewGlobalHTTPProxyPayloadHandler *)self _removeProxyCredential];
   }
 
-  v5 = [v8 credentialUUID];
-  if (v5)
+  credentialUUID = [payload credentialUUID];
+  if (credentialUUID)
   {
-    v6 = [(MCNewPayloadHandler *)self profileHandler];
-    v7 = [v6 profile];
-    +[MCKeychain removeItemForService:account:label:description:useSystemKeychain:group:](MCKeychain, "removeItemForService:account:label:description:useSystemKeychain:group:", @"MCGlobalProxy", v5, 0, 0, [v7 isInstalledForSystem], 0);
+    profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler2 profile];
+    +[MCKeychain removeItemForService:account:label:description:useSystemKeychain:group:](MCKeychain, "removeItemForService:account:label:description:useSystemKeychain:group:", @"MCGlobalProxy", credentialUUID, 0, 0, [profile isInstalledForSystem], 0);
   }
 }
 

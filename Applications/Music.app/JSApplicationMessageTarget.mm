@@ -1,7 +1,7 @@
 @interface JSApplicationMessageTarget
 - (NSString)targetIdentifier;
-- (void)messageCoordinator:(id)a3 didUpdatePriorityMessage:(id)a4 forTarget:(id)a5;
-- (void)setTargetIdentifier:(id)a3;
+- (void)messageCoordinator:(id)coordinator didUpdatePriorityMessage:(id)message forTarget:(id)target;
+- (void)setTargetIdentifier:(id)identifier;
 @end
 
 @implementation JSApplicationMessageTarget
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (void)setTargetIdentifier:(id)a3
+- (void)setTargetIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -25,16 +25,16 @@
   v9 = v7[1];
   *v7 = v4;
   v7[1] = v6;
-  v10 = self;
+  selfCopy = self;
   sub_100CE2574(v8, v9);
 }
 
-- (void)messageCoordinator:(id)a3 didUpdatePriorityMessage:(id)a4 forTarget:(id)a5
+- (void)messageCoordinator:(id)coordinator didUpdatePriorityMessage:(id)message forTarget:(id)target
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100CE5118(a4);
+  coordinatorCopy = coordinator;
+  messageCopy = message;
+  selfCopy = self;
+  sub_100CE5118(message);
 }
 
 @end

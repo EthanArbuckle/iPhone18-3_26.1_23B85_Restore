@@ -262,10 +262,10 @@
   v102[6] = v95;
   v101[6] = @"lookAtPoint";
   v101[7] = @"blendShapes";
-  v98 = [(ARFaceAnchor *)self blendShapes];
-  if (v98)
+  blendShapes = [(ARFaceAnchor *)self blendShapes];
+  if (blendShapes)
   {
-    v99 = v98;
+    v99 = blendShapes;
   }
 
   else

@@ -1,23 +1,23 @@
 @interface CDPDBackupInfoRecoveryFlowController
-- (id)_recoveryListFromDevices:(id)a3;
-- (void)beginRecoveryWithCompletion:(id)a3;
-- (void)retrieveInflatedDevices:(id)a3;
-- (void)secretValidator:(id)a3 didFailRecoveryWithErrors:(id)a4 completion:(id)a5;
-- (void)setRecoveryRecords:(id)a3;
+- (id)_recoveryListFromDevices:(id)devices;
+- (void)beginRecoveryWithCompletion:(id)completion;
+- (void)retrieveInflatedDevices:(id)devices;
+- (void)secretValidator:(id)validator didFailRecoveryWithErrors:(id)errors completion:(id)completion;
+- (void)setRecoveryRecords:(id)records;
 @end
 
 @implementation CDPDBackupInfoRecoveryFlowController
 
-- (void)beginRecoveryWithCompletion:(id)a3
+- (void)beginRecoveryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__CDPDBackupInfoRecoveryFlowController_beginRecoveryWithCompletion___block_invoke;
   v6[3] = &unk_278E24EA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CDPDRecoveryFlowController *)self beginRecovery:v6];
 }
 
@@ -70,28 +70,28 @@ void __68__CDPDBackupInfoRecoveryFlowController_beginRecoveryWithCompletion___bl
   }
 }
 
-- (void)setRecoveryRecords:(id)a3
+- (void)setRecoveryRecords:(id)records
 {
-  objc_storeStrong(&self->_recoveryRecords, a3);
-  v5 = a3;
-  v7 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
-  v6 = [v5 prevailingLocalSecretType];
+  objc_storeStrong(&self->_recoveryRecords, records);
+  recordsCopy = records;
+  errorProvider = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
+  prevailingLocalSecretType = [recordsCopy prevailingLocalSecretType];
 
-  [v7 setPrevailingSecret:v6];
+  [errorProvider setPrevailingSecret:prevailingLocalSecretType];
 }
 
-- (void)retrieveInflatedDevices:(id)a3
+- (void)retrieveInflatedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__CDPDBackupInfoRecoveryFlowController_retrieveInflatedDevices___block_invoke;
   v7[3] = &unk_278E24F18;
   v7[4] = self;
-  v8 = v4;
+  v8 = devicesCopy;
   v6.receiver = self;
   v6.super_class = CDPDBackupInfoRecoveryFlowController;
-  v5 = v4;
+  v5 = devicesCopy;
   [(CDPDRecoveryFlowController *)&v6 retrieveInflatedDevices:v7];
 }
 
@@ -224,20 +224,20 @@ uint64_t __64__CDPDBackupInfoRecoveryFlowController_retrieveInflatedDevices___bl
   return result;
 }
 
-- (id)_recoveryListFromDevices:(id)a3
+- (id)_recoveryListFromDevices:(id)devices
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v14[0] = &unk_2858221F8;
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  v15[0] = v5;
+  devicesCopy = devices;
+  array = [v3 array];
+  v15[0] = array;
   v14[1] = &unk_2858221E0;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v15[1] = v6;
+  array2 = [MEMORY[0x277CBEB18] array];
+  v15[1] = array2;
   v14[2] = &unk_285822210;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v15[2] = v7;
+  array3 = [MEMORY[0x277CBEB18] array];
+  v15[2] = array3;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -246,7 +246,7 @@ uint64_t __64__CDPDBackupInfoRecoveryFlowController_retrieveInflatedDevices___bl
   v12[3] = &unk_278E24F40;
   v9 = v8;
   v13 = v9;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [devicesCopy enumerateObjectsUsingBlock:v12];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -263,28 +263,28 @@ void __65__CDPDBackupInfoRecoveryFlowController__recoveryListFromDevices___block
   [v5 addObject:v4];
 }
 
-- (void)secretValidator:(id)a3 didFailRecoveryWithErrors:(id)a4 completion:(id)a5
+- (void)secretValidator:(id)validator didFailRecoveryWithErrors:(id)errors completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  [(CDPDBackupInfoRecoveryFlowController *)self _updateRecordRecoveryStatusForRecordDictionary:v7];
-  v9 = [v7 allKeys];
-  v10 = [(CDPDBackupInfoRecoveryFlowController *)self _recoveryListFromDevices:v9];
+  errorsCopy = errors;
+  completionCopy = completion;
+  [(CDPDBackupInfoRecoveryFlowController *)self _updateRecordRecoveryStatusForRecordDictionary:errorsCopy];
+  allKeys = [errorsCopy allKeys];
+  v10 = [(CDPDBackupInfoRecoveryFlowController *)self _recoveryListFromDevices:allKeys];
 
   v11 = [v10 objectForKeyedSubscript:&unk_2858221E0];
   v12 = [v11 count];
 
   if (v12)
   {
-    v13 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
-    v14 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
-    v15 = [v14 cooldownErrorWithUnderlyingError:0];
+    errorProvider = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
+    errorProvider2 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
+    v15 = [errorProvider2 cooldownErrorWithUnderlyingError:0];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __93__CDPDBackupInfoRecoveryFlowController_secretValidator_didFailRecoveryWithErrors_completion___block_invoke;
     v45[3] = &unk_278E24780;
-    v46 = v8;
-    [v13 handleSoftLimitError:v15 completion:v45];
+    v46 = completionCopy;
+    [errorProvider handleSoftLimitError:v15 completion:v45];
 
     v16 = v46;
   }
@@ -315,27 +315,27 @@ void __65__CDPDBackupInfoRecoveryFlowController__recoveryListFromDevices___block
       [(CDPDBackupInfoRecoveryFlowController *)self setRecoveryRecords:v23];
 
       v24 = [(NSArray *)self->_recoveryRecords count];
-      v25 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
+      errorProvider3 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
       if (v24)
       {
-        v26 = [v16 firstObject];
-        v27 = [v25 hardLimitErrorForRecord:v26];
+        firstObject = [v16 firstObject];
+        v27 = [errorProvider3 hardLimitErrorForRecord:firstObject];
 
-        v28 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
-        LODWORD(v26) = [v28 supportsErrorPresentation];
+        errorProvider4 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
+        LODWORD(firstObject) = [errorProvider4 supportsErrorPresentation];
 
-        if (v26)
+        if (firstObject)
         {
-          v29 = [(CDPDRecoveryFlowController *)self uiProvider];
-          v30 = [(CDPDRecoveryFlowController *)self recoveryContext];
-          v31 = [v30 context];
+          uiProvider = [(CDPDRecoveryFlowController *)self uiProvider];
+          recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+          context = [recoveryContext context];
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __93__CDPDBackupInfoRecoveryFlowController_secretValidator_didFailRecoveryWithErrors_completion___block_invoke_5;
           v36[3] = &unk_278E24EF0;
-          v38 = v8;
-          v37 = v7;
-          [v29 cdpContext:v31 showError:v27 withCompletion:v36];
+          v38 = completionCopy;
+          v37 = errorsCopy;
+          [uiProvider cdpContext:context showError:v27 withCompletion:v36];
 
           v32 = v38;
         }
@@ -343,21 +343,21 @@ void __65__CDPDBackupInfoRecoveryFlowController__recoveryListFromDevices___block
         else
         {
           v32 = _CDPStateError();
-          (*(v8 + 2))(v8, 0, v32);
+          (*(completionCopy + 2))(completionCopy, 0, v32);
         }
       }
 
       else
       {
-        v33 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
-        v34 = [v16 firstObject];
-        v35 = [v33 globalHardLimitErrorWithRecord:v34];
+        errorProvider5 = [(CDPDBackupInfoRecoveryFlowController *)self errorProvider];
+        firstObject2 = [v16 firstObject];
+        v35 = [errorProvider5 globalHardLimitErrorWithRecord:firstObject2];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __93__CDPDBackupInfoRecoveryFlowController_secretValidator_didFailRecoveryWithErrors_completion___block_invoke_4;
         v39[3] = &unk_278E24780;
-        v40 = v8;
-        [v25 handleHardLimitError:v35 completion:v39];
+        v40 = completionCopy;
+        [errorProvider3 handleHardLimitError:v35 completion:v39];
 
         v27 = v40;
       }
@@ -366,7 +366,7 @@ void __65__CDPDBackupInfoRecoveryFlowController__recoveryListFromDevices___block
     else
     {
       v21 = _CDPStateError();
-      (*(v8 + 2))(v8, 1, v21);
+      (*(completionCopy + 2))(completionCopy, 1, v21);
     }
   }
 }

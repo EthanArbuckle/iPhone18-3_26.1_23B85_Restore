@@ -1,35 +1,35 @@
 @interface PKPlaceholderPassGenerator
-+ (id)addManifestIfNecessaryToPass:(id)a3;
-+ (id)manifestForDirectory:(id)a3 error:(id *)a4;
-+ (id)manifestSignatureForDirectory:(id)a3 passCertificate:(id)a4 appleWWDRCertificate:(id)a5 certificatePassword:(id)a6 error:(id *)a7;
++ (id)addManifestIfNecessaryToPass:(id)pass;
++ (id)manifestForDirectory:(id)directory error:(id *)error;
++ (id)manifestSignatureForDirectory:(id)directory passCertificate:(id)certificate appleWWDRCertificate:(id)rCertificate certificatePassword:(id)password error:(id *)error;
 - (NSArray)associatedApplicationIdentifiers;
 - (NSMutableDictionary)passContent;
 - (NSString)primaryAccountIdentifier;
 - (NSString)serialNumber;
-- (PKPlaceholderPassGenerator)initWithPassTemplate:(id)a3 error:(id *)a4;
-- (id)generateAndSignPassWithPassCertificate:(id)a3 appleWWDRCertificate:(id)a4 certificatePassword:(id)a5 error:(id *)a6;
+- (PKPlaceholderPassGenerator)initWithPassTemplate:(id)template error:(id *)error;
+- (id)generateAndSignPassWithPassCertificate:(id)certificate appleWWDRCertificate:(id)rCertificate certificatePassword:(id)password error:(id *)error;
 - (id)passTypeIdentifier;
-- (int64_t)updatePassUpgradeRequestsWithBlock:(id)a3;
-- (int64_t)updatePaymentApplicationsWithBlock:(id)a3;
-- (void)_updatePassURLsConfigrationPassUrl:(id)a3;
-- (void)insertPassField:(id)a3;
-- (void)insertPaymentApplication:(id)a3;
-- (void)setAssociatedApplicationIdentifiers:(id)a3;
-- (void)setPassTypeIdentifier:(id)a3;
-- (void)setPrimaryAccountIdentifier:(id)a3;
-- (void)setSerialNumber:(id)a3;
-- (void)setUpdatePassRemoteAssetConfigrationsWithBlock:(id)a3;
+- (int64_t)updatePassUpgradeRequestsWithBlock:(id)block;
+- (int64_t)updatePaymentApplicationsWithBlock:(id)block;
+- (void)_updatePassURLsConfigrationPassUrl:(id)url;
+- (void)insertPassField:(id)field;
+- (void)insertPaymentApplication:(id)application;
+- (void)setAssociatedApplicationIdentifiers:(id)identifiers;
+- (void)setPassTypeIdentifier:(id)identifier;
+- (void)setPrimaryAccountIdentifier:(id)identifier;
+- (void)setSerialNumber:(id)number;
+- (void)setUpdatePassRemoteAssetConfigrationsWithBlock:(id)block;
 @end
 
 @implementation PKPlaceholderPassGenerator
 
-+ (id)manifestForDirectory:(id)a3 error:(id *)a4
++ (id)manifestForDirectory:(id)directory error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = [a3 URLByStandardizingPath];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v36 = v5;
-  v7 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:0 errorHandler:0];
+  uRLByStandardizingPath = [directory URLByStandardizingPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v36 = uRLByStandardizingPath;
+  v7 = [defaultManager enumeratorAtURL:uRLByStandardizingPath includingPropertiesForKeys:0 options:0 errorHandler:0];
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v43 = 0u;
   v44 = 0u;
@@ -44,8 +44,8 @@
   }
 
   v10 = v9;
-  v30 = a4;
-  v31 = v6;
+  errorCopy = error;
+  v31 = defaultManager;
   v11 = 0;
   v12 = *v44;
   v13 = *MEMORY[0x1E695DBB8];
@@ -70,16 +70,16 @@
         v11 = v41;
         if (v16 && [v17 BOOLValue])
         {
-          v18 = [v15 URLByStandardizingPath];
-          v38 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v18];
-          v19 = [v38 SHA1Hash];
-          v39 = [v19 hexEncoding];
+          uRLByStandardizingPath2 = [v15 URLByStandardizingPath];
+          v38 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:uRLByStandardizingPath2];
+          sHA1Hash = [v38 SHA1Hash];
+          hexEncoding = [sHA1Hash hexEncoding];
 
-          v20 = [v36 pathComponents];
-          v21 = [v18 pathComponents];
-          v37 = v20;
-          v22 = [v20 count];
-          v23 = [v21 subarrayWithRange:{v22, objc_msgSend(v21, "count") - v22}];
+          pathComponents = [v36 pathComponents];
+          pathComponents2 = [uRLByStandardizingPath2 pathComponents];
+          v37 = pathComponents;
+          v22 = [pathComponents count];
+          v23 = [pathComponents2 subarrayWithRange:{v22, objc_msgSend(pathComponents2, "count") - v22}];
           v24 = [MEMORY[0x1E696AEC0] pathWithComponents:v23];
           if (v24)
           {
@@ -94,7 +94,7 @@
 
               if ((v33 & 1) == 0)
               {
-                [v32 setObject:v39 forKeyedSubscript:v24];
+                [v32 setObject:hexEncoding forKeyedSubscript:v24];
               }
             }
           }
@@ -110,15 +110,15 @@
 
   while (v10);
 
-  a4 = v30;
-  v6 = v31;
+  error = errorCopy;
+  defaultManager = v31;
   if (!v11)
   {
 LABEL_22:
     v40 = 0;
     v26 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v32 options:1 error:&v40];
     v11 = v40;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -127,11 +127,11 @@ LABEL_22:
   }
 
   v26 = 0;
-  if (v30)
+  if (errorCopy)
   {
 LABEL_23:
     v27 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_24:
@@ -148,11 +148,11 @@ LABEL_24:
   return v28;
 }
 
-+ (id)addManifestIfNecessaryToPass:(id)a3
++ (id)addManifestIfNecessaryToPass:(id)pass
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 dataAccessor];
+  passCopy = pass;
+  dataAccessor = [passCopy dataAccessor];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -162,21 +162,21 @@ LABEL_24:
     goto LABEL_20;
   }
 
-  v6 = [v3 dataAccessor];
-  v7 = [v6 fileURL];
-  v8 = [v7 URLByAppendingPathComponent:@"signature" isDirectory:0];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v8 path];
-  v11 = [v9 fileExistsAtPath:v10];
+  dataAccessor2 = [passCopy dataAccessor];
+  fileURL = [dataAccessor2 fileURL];
+  v8 = [fileURL URLByAppendingPathComponent:@"signature" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v8 path];
+  v11 = [defaultManager fileExistsAtPath:path];
 
   if (v11)
   {
     v12 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v3 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412290;
-      v27 = v13;
+      v27 = uniqueID;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Pass with unique ID %@ already has a signature; we will not attempt to add a manifest.", buf, 0xCu);
     }
 
@@ -185,10 +185,10 @@ LABEL_24:
   }
 
   v15 = [@"manifest" stringByAppendingPathExtension:@"json"];
-  v12 = [v7 URLByAppendingPathComponent:v15 isDirectory:0];
+  v12 = [fileURL URLByAppendingPathComponent:v15 isDirectory:0];
 
-  v16 = [v12 path];
-  v17 = [v9 fileExistsAtPath:v16];
+  path2 = [v12 path];
+  v17 = [defaultManager fileExistsAtPath:path2];
 
   if (v17)
   {
@@ -200,9 +200,9 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v19 = [v3 uniqueID];
+    uniqueID2 = [passCopy uniqueID];
     *buf = 138412290;
-    v27 = v19;
+    v27 = uniqueID2;
     _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Pass with unique ID %@ already has a manifest; we will not generate a new one.", buf, 0xCu);
 LABEL_15:
 
@@ -210,7 +210,7 @@ LABEL_15:
   }
 
   v25 = 0;
-  v18 = [PKPlaceholderPassGenerator manifestForDirectory:v7 error:&v25];
+  v18 = [PKPlaceholderPassGenerator manifestForDirectory:fileURL error:&v25];
   v20 = v25;
   if (!v20)
   {
@@ -226,8 +226,8 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v19 = PKManifestHash(v7);
-    [v3 setManifestHash:v19];
+    uniqueID2 = PKManifestHash(fileURL);
+    [passCopy setManifestHash:uniqueID2];
     goto LABEL_15;
   }
 
@@ -241,22 +241,22 @@ LABEL_20:
   return v14;
 }
 
-+ (id)manifestSignatureForDirectory:(id)a3 passCertificate:(id)a4 appleWWDRCertificate:(id)a5 certificatePassword:(id)a6 error:(id *)a7
++ (id)manifestSignatureForDirectory:(id)directory passCertificate:(id)certificate appleWWDRCertificate:(id)rCertificate certificatePassword:(id)password error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12 && v13)
+  directoryCopy = directory;
+  certificateCopy = certificate;
+  rCertificateCopy = rCertificate;
+  passwordCopy = password;
+  if (certificateCopy && rCertificateCopy)
   {
     v15 = *MEMORY[0x1E695E480];
-    v16 = SecCertificateCreateWithData(*MEMORY[0x1E695E480], v13);
+    v16 = SecCertificateCreateWithData(*MEMORY[0x1E695E480], rCertificateCopy);
     items = 0;
-    if (v14)
+    if (passwordCopy)
     {
       v34 = *MEMORY[0x1E697B0B0];
-      v35[0] = v14;
+      v35[0] = passwordCopy;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     }
 
@@ -265,7 +265,7 @@ LABEL_20:
       v17 = MEMORY[0x1E695E0F8];
     }
 
-    v19 = SecPKCS12Import(v12, v17, &items);
+    v19 = SecPKCS12Import(certificateCopy, v17, &items);
     if (v16)
     {
       v20 = v19 == 0;
@@ -278,9 +278,9 @@ LABEL_20:
 
     if (!v20 || CFArrayGetCount(items) != 1)
     {
-      if (a7)
+      if (error)
       {
-        *a7 = ErrorWithCodeAndDescription(0, @"Error importing certificates.");
+        *error = ErrorWithCodeAndDescription(0, @"Error importing certificates.");
       }
 
       v28 = 0;
@@ -309,10 +309,10 @@ LABEL_20:
     v27 = SecCMSCreateSignedData();
     if (v27)
     {
-      if (a7)
+      if (error)
       {
         ErrorWithCodeAndDescription(v27, @"Error signing manifest.");
-        *a7 = v28 = 0;
+        *error = v28 = 0;
         if (!Mutable)
         {
           goto LABEL_25;
@@ -349,10 +349,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  if (a7)
+  if (error)
   {
     ErrorWithCodeAndDescription(0, @"No certificates provided.");
-    *a7 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -365,16 +365,16 @@ LABEL_28:
   return v18;
 }
 
-- (PKPlaceholderPassGenerator)initWithPassTemplate:(id)a3 error:(id *)a4
+- (PKPlaceholderPassGenerator)initWithPassTemplate:(id)template error:(id *)error
 {
-  v7 = a3;
+  templateCopy = template;
   v8 = [(PKPlaceholderPassGenerator *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_templateDirectory, a3);
+    objc_storeStrong(&v8->_templateDirectory, template);
     v20 = 0;
-    v10 = [[PKFileDataAccessor alloc] initWithFileURL:v7 error:&v20];
+    v10 = [[PKFileDataAccessor alloc] initWithFileURL:templateCopy error:&v20];
     v11 = v20;
     v12 = v11;
     if (v10)
@@ -396,7 +396,7 @@ LABEL_28:
       v9->_templatePass = v14;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_9;
     }
@@ -405,11 +405,11 @@ LABEL_28:
   else
   {
     v12 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_9:
       v16 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -431,9 +431,9 @@ LABEL_9:
   passContent = self->_passContent;
   if (!passContent)
   {
-    v4 = [(PKObject *)self->_templatePass dataAccessor];
-    v5 = [v4 dictionary];
-    v6 = [v5 mutableCopy];
+    dataAccessor = [(PKObject *)self->_templatePass dataAccessor];
+    dictionary = [dataAccessor dictionary];
+    v6 = [dictionary mutableCopy];
     v7 = self->_passContent;
     self->_passContent = v6;
 
@@ -445,56 +445,56 @@ LABEL_9:
 
 - (id)passTypeIdentifier
 {
-  v2 = [(PKPlaceholderPassGenerator *)self passContent];
-  v3 = [v2 objectForKeyedSubscript:@"passTypeIdentifier"];
+  passContent = [(PKPlaceholderPassGenerator *)self passContent];
+  v3 = [passContent objectForKeyedSubscript:@"passTypeIdentifier"];
 
   return v3;
 }
 
-- (void)setPassTypeIdentifier:(id)a3
+- (void)setPassTypeIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(PKPlaceholderPassGenerator *)self passContent];
-    [v5 setObject:v4 forKeyedSubscript:@"passTypeIdentifier"];
+    identifierCopy = identifier;
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    [passContent setObject:identifierCopy forKeyedSubscript:@"passTypeIdentifier"];
   }
 }
 
 - (NSString)serialNumber
 {
-  v2 = [(PKPlaceholderPassGenerator *)self passContent];
-  v3 = [v2 objectForKeyedSubscript:@"serialNumber"];
+  passContent = [(PKPlaceholderPassGenerator *)self passContent];
+  v3 = [passContent objectForKeyedSubscript:@"serialNumber"];
 
   return v3;
 }
 
-- (void)setSerialNumber:(id)a3
+- (void)setSerialNumber:(id)number
 {
-  if (a3)
+  if (number)
   {
-    v4 = a3;
-    v5 = [(PKPlaceholderPassGenerator *)self passContent];
-    [v5 setObject:v4 forKeyedSubscript:@"serialNumber"];
+    numberCopy = number;
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    [passContent setObject:numberCopy forKeyedSubscript:@"serialNumber"];
   }
 }
 
 - (NSString)primaryAccountIdentifier
 {
-  v2 = [(PKPlaceholderPassGenerator *)self passContent];
-  v3 = [v2 objectForKeyedSubscript:@"primaryAccountIdentifier"];
+  passContent = [(PKPlaceholderPassGenerator *)self passContent];
+  v3 = [passContent objectForKeyedSubscript:@"primaryAccountIdentifier"];
 
   return v3;
 }
 
-- (void)setPrimaryAccountIdentifier:(id)a3
+- (void)setPrimaryAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = v4;
-    v5 = [(PKPlaceholderPassGenerator *)self passContent];
-    [v5 setObject:v8 forKeyedSubscript:@"primaryAccountIdentifier"];
+    v8 = identifierCopy;
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    [passContent setObject:v8 forKeyedSubscript:@"primaryAccountIdentifier"];
     if ([v8 length] < 5)
     {
       v6 = v8;
@@ -506,37 +506,37 @@ LABEL_9:
     }
 
     v7 = v6;
-    [v5 setObject:v6 forKeyedSubscript:@"primaryAccountSuffix"];
+    [passContent setObject:v6 forKeyedSubscript:@"primaryAccountSuffix"];
 
-    v4 = v8;
+    identifierCopy = v8;
   }
 }
 
 - (NSArray)associatedApplicationIdentifiers
 {
-  v2 = [(PKPlaceholderPassGenerator *)self passContent];
-  v3 = [v2 objectForKeyedSubscript:@"associatedApplicationIdentifiers"];
+  passContent = [(PKPlaceholderPassGenerator *)self passContent];
+  v3 = [passContent objectForKeyedSubscript:@"associatedApplicationIdentifiers"];
 
   return v3;
 }
 
-- (void)setAssociatedApplicationIdentifiers:(id)a3
+- (void)setAssociatedApplicationIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifiers)
   {
-    v4 = a3;
-    v5 = [(PKPlaceholderPassGenerator *)self passContent];
-    [v5 setObject:v4 forKeyedSubscript:@"associatedApplicationIdentifiers"];
+    identifiersCopy = identifiers;
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    [passContent setObject:identifiersCopy forKeyedSubscript:@"associatedApplicationIdentifiers"];
   }
 }
 
-- (void)insertPassField:(id)a3
+- (void)insertPassField:(id)field
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  fieldCopy = field;
+  if (fieldCopy)
   {
-    v5 = [(PKPlaceholderPassGenerator *)self passContent];
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -560,13 +560,13 @@ LABEL_9:
 
           v8 = *(*(&v27 + 1) + 8 * v10);
 
-          v12 = [v5 objectForKey:v8];
+          v12 = [passContent objectForKey:v8];
           v13 = [v12 mutableCopy];
 
           if (v13)
           {
-            v14 = [v4 type];
-            v20 = _PKEnumValueToString(v14, @"PKPassFieldType", @"PKPassFieldTypeHeader, PKPassFieldTypePrimary, PKPassFieldTypeSecondary, PKPassFieldTypeAuxiliary, PKPassFieldTypeBack, PKPassFieldTypeAdditionalInfo", v15, v16, v17, v18, v19, 0);
+            type = [fieldCopy type];
+            v20 = _PKEnumValueToString(type, @"PKPassFieldType", @"PKPassFieldTypeHeader, PKPassFieldTypePrimary, PKPassFieldTypeSecondary, PKPassFieldTypeAuxiliary, PKPassFieldTypeBack, PKPassFieldTypeAdditionalInfo", v15, v16, v17, v18, v19, 0);
             if (v20)
             {
               v21 = [v13 objectForKey:v20];
@@ -584,11 +584,11 @@ LABEL_9:
 
               v25 = v24;
 
-              v26 = [v4 asDictionary];
-              [v25 addObject:v26];
+              asDictionary = [fieldCopy asDictionary];
+              [v25 addObject:asDictionary];
 
               [v13 setObject:v25 forKeyedSubscript:v20];
-              [v5 setObject:v13 forKeyedSubscript:v8];
+              [passContent setObject:v13 forKeyedSubscript:v8];
             }
 
             v8 = v13;
@@ -614,22 +614,22 @@ LABEL_17:
   }
 }
 
-- (void)insertPaymentApplication:(id)a3
+- (void)insertPaymentApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
-    v15 = v4;
-    v5 = [(PKPlaceholderPassGenerator *)self passContent];
-    v6 = [v15 isAuxiliary];
+    v15 = applicationCopy;
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    isAuxiliary = [v15 isAuxiliary];
     v7 = &PKPassKeyAuxiliaryPaymentApplications;
-    if (!v6)
+    if (!isAuxiliary)
     {
       v7 = &PKPassKeyPaymentApplications;
     }
 
     v8 = *v7;
-    v9 = [v5 objectForKey:v8];
+    v9 = [passContent objectForKey:v8];
     v10 = [v9 mutableCopy];
     v11 = v10;
     if (v10)
@@ -644,37 +644,37 @@ LABEL_17:
 
     v13 = v12;
 
-    v14 = [v15 asDictionary];
-    [v13 addObject:v14];
+    asDictionary = [v15 asDictionary];
+    [v13 addObject:asDictionary];
 
-    [v5 setObject:v13 forKeyedSubscript:v8];
-    v4 = v15;
+    [passContent setObject:v13 forKeyedSubscript:v8];
+    applicationCopy = v15;
   }
 }
 
-- (int64_t)updatePaymentApplicationsWithBlock:(id)a3
+- (int64_t)updatePaymentApplicationsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___block_invoke;
     aBlock[3] = &unk_1E79DFAB0;
-    v16 = v4;
+    v16 = blockCopy;
     v6 = _Block_copy(aBlock);
-    v7 = [(PKPlaceholderPassGenerator *)self passContent];
-    v8 = [v7 objectForKey:@"paymentApplications"];
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    v8 = [passContent objectForKey:@"paymentApplications"];
     v9 = [v8 mutableCopy];
 
-    v10 = [v7 objectForKey:@"auxiliaryPaymentApplications"];
+    v10 = [passContent objectForKey:@"auxiliaryPaymentApplications"];
     v11 = [v10 mutableCopy];
 
     v12 = v6[2](v6, v9, 0);
     v13 = v6[2](v6, v11, 1) + v12;
-    [v7 setObject:v9 forKeyedSubscript:@"paymentApplications"];
-    [v7 setObject:v11 forKeyedSubscript:@"auxiliaryPaymentApplications"];
+    [passContent setObject:v9 forKeyedSubscript:@"paymentApplications"];
+    [passContent setObject:v11 forKeyedSubscript:@"auxiliaryPaymentApplications"];
   }
 
   else
@@ -759,14 +759,14 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
   return v6;
 }
 
-- (int64_t)updatePassUpgradeRequestsWithBlock:(id)a3
+- (int64_t)updatePassUpgradeRequestsWithBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v23 = [(PKPlaceholderPassGenerator *)self passContent];
-    v5 = [v23 objectForKey:?];
+    passContent = [(PKPlaceholderPassGenerator *)self passContent];
+    v5 = [passContent objectForKey:?];
     v6 = [v5 mutableCopy];
 
     v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -782,7 +782,7 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
 
         if (v10)
         {
-          v11 = v4[2](v4, v10, &v29);
+          v11 = blockCopy[2](blockCopy, v10, &v29);
           v12 = v11;
           v13 = v11 != 0;
           v14 = v29;
@@ -830,8 +830,8 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v25 + 1) + 8 * i) asDictionary];
-          [v6 addObject:v21];
+          asDictionary = [*(*(&v25 + 1) + 8 * i) asDictionary];
+          [v6 addObject:asDictionary];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -840,7 +840,7 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
       while (v18);
     }
 
-    [v23 setObject:v6 forKeyedSubscript:@"passUpgrades"];
+    [passContent setObject:v6 forKeyedSubscript:@"passUpgrades"];
   }
 
   else
@@ -851,27 +851,27 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
   return v7;
 }
 
-- (void)setUpdatePassRemoteAssetConfigrationsWithBlock:(id)a3
+- (void)setUpdatePassRemoteAssetConfigrationsWithBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   updateUrlsBlock = self->_updateUrlsBlock;
   self->_updateUrlsBlock = v4;
 }
 
-- (void)_updatePassURLsConfigrationPassUrl:(id)a3
+- (void)_updatePassURLsConfigrationPassUrl:(id)url
 {
   v50[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  urlCopy = url;
   if (self->_updateUrlsBlock)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v6 = *MEMORY[0x1E695DB78];
     v50[0] = *MEMORY[0x1E695DB50];
     v50[1] = v6;
     v50[2] = *MEMORY[0x1E695DBC8];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:3];
-    v33 = v4;
-    v8 = [v5 enumeratorAtURL:v4 includingPropertiesForKeys:v7 options:0 errorHandler:0];
+    v33 = urlCopy;
+    v8 = [defaultManager enumeratorAtURL:urlCopy includingPropertiesForKeys:v7 options:0 errorHandler:0];
 
     v46 = 0u;
     v47 = 0u;
@@ -898,8 +898,8 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
           }
 
           v15 = *(*(&v44 + 1) + 8 * v14);
-          v16 = [v15 pathExtension];
-          v17 = [v16 isEqualToString:@"urls"];
+          pathExtension = [v15 pathExtension];
+          v17 = [pathExtension isEqualToString:@"urls"];
 
           if (v17)
           {
@@ -982,16 +982,16 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
       while (v11);
     }
 
-    v4 = v33;
+    urlCopy = v33;
   }
 }
 
-- (id)generateAndSignPassWithPassCertificate:(id)a3 appleWWDRCertificate:(id)a4 certificatePassword:(id)a5 error:(id *)a6
+- (id)generateAndSignPassWithPassCertificate:(id)certificate appleWWDRCertificate:(id)rCertificate certificatePassword:(id)password error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  certificateCopy = certificate;
+  rCertificateCopy = rCertificate;
+  passwordCopy = password;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v14 = PKTemporaryItemURLWithExtension(@"pkpass", 1);
   PKTemporaryItemPrepareDirectory();
   if (!v14)
@@ -1001,7 +1001,7 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
   }
 
   v50 = 0;
-  v15 = [v13 removeItemAtURL:v14 error:&v50];
+  v15 = [defaultManager removeItemAtURL:v14 error:&v50];
   v16 = v50;
   v17 = v16;
   if (v15)
@@ -1009,16 +1009,16 @@ uint64_t __65__PKPlaceholderPassGenerator_updatePaymentApplicationsWithBlock___b
     goto LABEL_3;
   }
 
-  v22 = [v16 domain];
-  if (([v22 isEqualToString:*MEMORY[0x1E696A250]] & 1) == 0)
+  domain = [v16 domain];
+  if (([domain isEqualToString:*MEMORY[0x1E696A250]] & 1) == 0)
   {
 
     goto LABEL_16;
   }
 
-  v23 = [v17 code];
+  code = [v17 code];
 
-  if (v23 != 4)
+  if (code != 4)
   {
 LABEL_16:
     v26 = 0;
@@ -1034,7 +1034,7 @@ LABEL_3:
 
   templateDirectory = self->_templateDirectory;
   v49 = 0;
-  v19 = [v13 copyItemAtURL:templateDirectory toURL:v14 error:&v49];
+  v19 = [defaultManager copyItemAtURL:templateDirectory toURL:v14 error:&v49];
   v20 = v49;
   if (v19)
   {
@@ -1052,8 +1052,8 @@ LABEL_3:
     goto LABEL_37;
   }
 
-  v24 = [(PKPlaceholderPassGenerator *)self passContent];
-  if (!v24)
+  passContent = [(PKPlaceholderPassGenerator *)self passContent];
+  if (!passContent)
   {
     v30 = ErrorWithCodeAndDescription(0, @"Missing pass.json");
     v31 = 0;
@@ -1061,7 +1061,7 @@ LABEL_3:
   }
 
   v48 = 0;
-  v41 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v24 options:1 error:&v48];
+  v41 = [MEMORY[0x1E696ACB0] dataWithJSONObject:passContent options:1 error:&v48];
   v25 = v48;
   if (!v25)
   {
@@ -1092,10 +1092,10 @@ LABEL_26:
           v17 = v45;
 
           v33 = v40;
-          if (!v17 && v10 && v11)
+          if (!v17 && certificateCopy && rCertificateCopy)
           {
             v44 = 0;
-            v36 = [objc_opt_class() manifestSignatureForDirectory:v40 passCertificate:v10 appleWWDRCertificate:v11 certificatePassword:v12 error:&v44];
+            v36 = [objc_opt_class() manifestSignatureForDirectory:v40 passCertificate:certificateCopy appleWWDRCertificate:rCertificateCopy certificatePassword:passwordCopy error:&v44];
             v17 = v44;
             if (!v17)
             {
@@ -1128,25 +1128,25 @@ LABEL_38:
     [(PKFileDataAccessor *)v38 setOwnsFileURL:1];
     v27 = [(PKObject *)PKPass createWithValidatedFileDataAccessor:v38];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
 
 LABEL_20:
     v28 = v17;
-    *a6 = v17;
+    *error = v17;
     goto LABEL_21;
   }
 
 LABEL_17:
   if (v26)
   {
-    [v13 removeItemAtURL:v14 error:0];
+    [defaultManager removeItemAtURL:v14 error:0];
   }
 
   v27 = 0;
-  if (a6)
+  if (error)
   {
     goto LABEL_20;
   }

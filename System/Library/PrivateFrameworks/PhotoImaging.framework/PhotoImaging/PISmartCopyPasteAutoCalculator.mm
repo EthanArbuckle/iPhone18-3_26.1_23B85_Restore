@@ -1,37 +1,37 @@
 @interface PISmartCopyPasteAutoCalculator
-+ (double)_clampedValueForValue:(double)a3 adjustmentKey:(id)a4 settingKey:(id)a5 fallbackMinValue:(double)a6 fallbackMaxValue:(double)a7;
-+ (id)adjustmentsToModifyBasedOnSourceCompositionController:(id)a3;
-+ (id)descriptionForAdjustmentDictionary:(id)a3;
-+ (void)applyAdjustmentDictionary:(id)a3 toCompositionController:(id)a4;
-- (PISmartCopyPasteAutoCalculator)initWithComposition:(id)a3;
-- (PISmartCopyPasteAutoCalculator)initWithSourceComposition:(id)a3 targetComposition:(id)a4;
-- (id)adjustedCompositionForNetwork:(id)a3 withSourceComposition:(id)a4;
-- (id)adjustmentsDictionaryWithNetworkOutput:(id)a3 similarity:(float)a4;
-- (void)submit:(id)a3;
++ (double)_clampedValueForValue:(double)value adjustmentKey:(id)key settingKey:(id)settingKey fallbackMinValue:(double)minValue fallbackMaxValue:(double)maxValue;
++ (id)adjustmentsToModifyBasedOnSourceCompositionController:(id)controller;
++ (id)descriptionForAdjustmentDictionary:(id)dictionary;
++ (void)applyAdjustmentDictionary:(id)dictionary toCompositionController:(id)controller;
+- (PISmartCopyPasteAutoCalculator)initWithComposition:(id)composition;
+- (PISmartCopyPasteAutoCalculator)initWithSourceComposition:(id)composition targetComposition:(id)targetComposition;
+- (id)adjustedCompositionForNetwork:(id)network withSourceComposition:(id)composition;
+- (id)adjustmentsDictionaryWithNetworkOutput:(id)output similarity:(float)similarity;
+- (void)submit:(id)submit;
 @end
 
 @implementation PISmartCopyPasteAutoCalculator
 
-- (id)adjustedCompositionForNetwork:(id)a3 withSourceComposition:(id)a4
+- (id)adjustedCompositionForNetwork:(id)network withSourceComposition:(id)composition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PICompositionController alloc] initWithComposition:v6];
+  compositionCopy = composition;
+  networkCopy = network;
+  v7 = [[PICompositionController alloc] initWithComposition:networkCopy];
 
-  v8 = [(PICompositionController *)v7 mediaType];
-  v9 = [(PICompositionController *)v7 source];
-  v10 = [[PICompositionController alloc] initWithComposition:v5];
+  mediaType = [(PICompositionController *)v7 mediaType];
+  source = [(PICompositionController *)v7 source];
+  v10 = [[PICompositionController alloc] initWithComposition:compositionCopy];
 
-  [(PICompositionController *)v10 setSource:v9 mediaType:v8];
+  [(PICompositionController *)v10 setSource:source mediaType:mediaType];
   [(PICompositionController *)v10 removeAdjustmentWithKey:@"depthEffect"];
   [(PICompositionController *)v10 removeAdjustmentWithKey:@"portraitEffect"];
   [(PICompositionController *)v10 removeAdjustmentWithKey:@"cropStraighten"];
   [(PICompositionController *)v7 applyChangesFromCompositionController:v10];
   [(PICompositionController *)v7 modifyAdjustmentWithKey:@"whiteBalance" modificationBlock:&__block_literal_global_12829];
   [(PICompositionController *)v7 modifyAdjustmentWithKey:@"smartTone" modificationBlock:&__block_literal_global_41_12830];
-  v11 = [(PICompositionController *)v7 composition];
+  composition = [(PICompositionController *)v7 composition];
 
-  return v11;
+  return composition;
 }
 
 void __86__PISmartCopyPasteAutoCalculator_adjustedCompositionForNetwork_withSourceComposition___block_invoke(uint64_t a1, void *a2)
@@ -42,38 +42,38 @@ void __86__PISmartCopyPasteAutoCalculator_adjustedCompositionForNetwork_withSour
   [v2 setWarmTint:0.0];
 }
 
-- (id)adjustmentsDictionaryWithNetworkOutput:(id)a3 similarity:(float)a4
+- (id)adjustmentsDictionaryWithNetworkOutput:(id)output similarity:(float)similarity
 {
-  v5 = a3;
+  outputCopy = output;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [v5 objectForKey:@"Exposure"];
+  v7 = [outputCopy objectForKey:@"Exposure"];
 
   if (v7)
   {
-    v8 = [v5 objectForKeyedSubscript:@"Exposure"];
+    v8 = [outputCopy objectForKeyedSubscript:@"Exposure"];
     v9 = +[PISmartToneAdjustmentController offsetExposureKey];
     [v6 setObject:v8 forKeyedSubscript:v9];
   }
 
-  v10 = [v5 objectForKey:@"Warm Temp"];
+  v10 = [outputCopy objectForKey:@"Warm Temp"];
 
   if (v10)
   {
-    v11 = [v5 objectForKeyedSubscript:@"Warm Temp"];
+    v11 = [outputCopy objectForKeyedSubscript:@"Warm Temp"];
     v12 = +[PIWhiteBalanceAdjustmentController warmTempKey];
     [v6 setObject:v11 forKeyedSubscript:v12];
   }
 
-  v13 = [v5 objectForKey:@"Warm Tint"];
+  v13 = [outputCopy objectForKey:@"Warm Tint"];
 
   if (v13)
   {
-    v15 = [v5 objectForKeyedSubscript:@"Warm Tint"];
+    v15 = [outputCopy objectForKeyedSubscript:@"Warm Tint"];
     v16 = +[PIWhiteBalanceAdjustmentController warmTintKey];
     [v6 setObject:v15 forKeyedSubscript:v16];
   }
 
-  *&v14 = a4;
+  *&v14 = similarity;
   v17 = [MEMORY[0x1E696AD98] numberWithFloat:v14];
   [v6 setObject:v17 forKeyedSubscript:@"sourceSimilarity"];
 
@@ -82,10 +82,10 @@ void __86__PISmartCopyPasteAutoCalculator_adjustedCompositionForNetwork_withSour
   return v18;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  submitCopy = submit;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -116,9 +116,9 @@ void __86__PISmartCopyPasteAutoCalculator_adjustedCompositionForNetwork_withSour
     _Block_object_dispose(&v44, 8);
     if (!v5)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkSliderNetGatingMethod(void)"];
-      [v26 handleFailureInFunction:v27 file:@"PISmartCopyPasteAutoCalculator.m" lineNumber:27 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v27 file:@"PISmartCopyPasteAutoCalculator.m" lineNumber:27 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -158,34 +158,34 @@ void __86__PISmartCopyPasteAutoCalculator_adjustedCompositionForNetwork_withSour
       v25 = v34[5];
       v34[5] = v24;
 
-      v4[2](v4, v34[5]);
+      submitCopy[2](submitCopy, v34[5]);
       goto LABEL_13;
     }
   }
 
   objc_initWeak(&location, self);
-  v15 = [(PISmartCopyPasteAutoCalculator *)self liftRequest];
-  v16 = v15 == 0;
+  liftRequest = [(PISmartCopyPasteAutoCalculator *)self liftRequest];
+  v16 = liftRequest == 0;
 
   if (v16)
   {
     v17 = [PISliderNetLiftRequest alloc];
-    v18 = [(NURenderRequest *)self composition];
-    v19 = [(PISliderNetBaseRequest *)v17 initWithComposition:v18 sliderNetModel:self->_sliderNetModel];
+    composition = [(NURenderRequest *)self composition];
+    v19 = [(PISliderNetBaseRequest *)v17 initWithComposition:composition sliderNetModel:self->_sliderNetModel];
     [(PISmartCopyPasteAutoCalculator *)self setLiftRequest:v19];
 
-    v20 = [(PISmartCopyPasteAutoCalculator *)self sourceAssetScenePrint];
-    LOBYTE(v18) = v20 == 0;
+    sourceAssetScenePrint = [(PISmartCopyPasteAutoCalculator *)self sourceAssetScenePrint];
+    LOBYTE(composition) = sourceAssetScenePrint == 0;
 
-    if ((v18 & 1) == 0)
+    if ((composition & 1) == 0)
     {
-      v21 = [(PISmartCopyPasteAutoCalculator *)self sourceAssetScenePrint];
-      v22 = [(PISmartCopyPasteAutoCalculator *)self liftRequest];
-      [v22 setAssetScenePrint:v21];
+      sourceAssetScenePrint2 = [(PISmartCopyPasteAutoCalculator *)self sourceAssetScenePrint];
+      liftRequest2 = [(PISmartCopyPasteAutoCalculator *)self liftRequest];
+      [liftRequest2 setAssetScenePrint:sourceAssetScenePrint2];
     }
   }
 
-  v23 = [(PISmartCopyPasteAutoCalculator *)self liftRequest];
+  liftRequest3 = [(PISmartCopyPasteAutoCalculator *)self liftRequest];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __41__PISmartCopyPasteAutoCalculator_submit___block_invoke;
@@ -193,8 +193,8 @@ void __86__PISmartCopyPasteAutoCalculator_adjustedCompositionForNetwork_withSour
   objc_copyWeak(&v31, &location);
   v30 = &v33;
   v28[4] = self;
-  v29 = v4;
-  [v23 submit:v28];
+  v29 = submitCopy;
+  [liftRequest3 submit:v28];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -298,23 +298,23 @@ void __41__PISmartCopyPasteAutoCalculator_submit___block_invoke_2(void *a1, void
   (*(a1[5] + 16))();
 }
 
-- (PISmartCopyPasteAutoCalculator)initWithSourceComposition:(id)a3 targetComposition:(id)a4
+- (PISmartCopyPasteAutoCalculator)initWithSourceComposition:(id)composition targetComposition:(id)targetComposition
 {
-  v6 = a4;
+  targetCompositionCopy = targetComposition;
   v10.receiver = self;
   v10.super_class = PISmartCopyPasteAutoCalculator;
-  v7 = [(NURenderRequest *)&v10 initWithComposition:a3];
+  v7 = [(NURenderRequest *)&v10 initWithComposition:composition];
   targetComposition = v7->_targetComposition;
-  v7->_targetComposition = v6;
+  v7->_targetComposition = targetCompositionCopy;
 
   v7->_similarityGatingThreshold = -1.0;
   return v7;
 }
 
-- (PISmartCopyPasteAutoCalculator)initWithComposition:(id)a3
+- (PISmartCopyPasteAutoCalculator)initWithComposition:(id)composition
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -353,8 +353,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -381,8 +381,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -400,21 +400,21 @@ LABEL_14:
   }
 }
 
-+ (id)descriptionForAdjustmentDictionary:(id)a3
++ (id)descriptionForAdjustmentDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[PISmartToneAdjustmentController offsetExposureKey];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [dictionaryCopy objectForKeyedSubscript:v4];
   [v5 doubleValue];
   v7 = v6;
 
   v8 = +[PIWhiteBalanceAdjustmentController warmTempKey];
-  v9 = [v3 objectForKeyedSubscript:v8];
+  v9 = [dictionaryCopy objectForKeyedSubscript:v8];
   [v9 doubleValue];
   v11 = v10;
 
   v12 = +[PIWhiteBalanceAdjustmentController warmTintKey];
-  v13 = [v3 objectForKeyedSubscript:v12];
+  v13 = [dictionaryCopy objectForKeyedSubscript:v12];
 
   [v13 doubleValue];
   v15 = v14;
@@ -422,16 +422,16 @@ LABEL_14:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Exp(%.2f), Warmth(%.2f), Tint(%.2f)", v7, v11, v15];
 }
 
-+ (id)adjustmentsToModifyBasedOnSourceCompositionController:(id)a3
++ (id)adjustmentsToModifyBasedOnSourceCompositionController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 smartToneAdjustmentController];
+  smartToneAdjustmentController = [controllerCopy smartToneAdjustmentController];
 
-  if (v5)
+  if (smartToneAdjustmentController)
   {
-    v6 = [v3 smartToneAdjustmentController];
-    [v6 offsetExposure];
+    smartToneAdjustmentController2 = [controllerCopy smartToneAdjustmentController];
+    [smartToneAdjustmentController2 offsetExposure];
     v8 = v7;
 
     if (v8 != 0.0)
@@ -441,16 +441,16 @@ LABEL_14:
     }
   }
 
-  v10 = [v3 whiteBalanceAdjustmentController];
+  whiteBalanceAdjustmentController = [controllerCopy whiteBalanceAdjustmentController];
 
-  if (v10)
+  if (whiteBalanceAdjustmentController)
   {
-    v11 = [v3 whiteBalanceAdjustmentController];
-    [v11 warmTemp];
+    whiteBalanceAdjustmentController2 = [controllerCopy whiteBalanceAdjustmentController];
+    [whiteBalanceAdjustmentController2 warmTemp];
     if (v12 == 0.0)
     {
-      v13 = [v3 whiteBalanceAdjustmentController];
-      [v13 warmTint];
+      whiteBalanceAdjustmentController3 = [controllerCopy whiteBalanceAdjustmentController];
+      [whiteBalanceAdjustmentController3 warmTint];
       v15 = v14;
 
       if (v15 == 0.0)
@@ -475,69 +475,69 @@ LABEL_10:
   return v4;
 }
 
-+ (double)_clampedValueForValue:(double)a3 adjustmentKey:(id)a4 settingKey:(id)a5 fallbackMinValue:(double)a6 fallbackMaxValue:(double)a7
++ (double)_clampedValueForValue:(double)value adjustmentKey:(id)key settingKey:(id)settingKey fallbackMinValue:(double)minValue fallbackMaxValue:(double)maxValue
 {
-  v10 = [PICompositionController settingForAdjustmentKey:a4 settingKey:a5];
-  v11 = [v10 ui_minimumValue];
-  if (v11)
+  v10 = [PICompositionController settingForAdjustmentKey:key settingKey:settingKey];
+  ui_minimumValue = [v10 ui_minimumValue];
+  if (ui_minimumValue)
   {
-    v12 = [v10 ui_minimumValue];
-    [v12 floatValue];
-    a6 = v13;
+    ui_minimumValue2 = [v10 ui_minimumValue];
+    [ui_minimumValue2 floatValue];
+    minValue = v13;
   }
 
-  v14 = [v10 ui_maximumValue];
-  if (v14)
+  ui_maximumValue = [v10 ui_maximumValue];
+  if (ui_maximumValue)
   {
-    v15 = [v10 ui_maximumValue];
-    [v15 floatValue];
-    a7 = v16;
+    ui_maximumValue2 = [v10 ui_maximumValue];
+    [ui_maximumValue2 floatValue];
+    maxValue = v16;
   }
 
-  if (a7 <= a3)
+  if (maxValue <= value)
   {
-    v17 = a7;
-  }
-
-  else
-  {
-    v17 = a3;
-  }
-
-  if (a6 >= v17)
-  {
-    v18 = a6;
+    valueCopy = maxValue;
   }
 
   else
   {
-    v18 = v17;
+    valueCopy = value;
   }
 
-  return v18;
+  if (minValue >= valueCopy)
+  {
+    minValueCopy = minValue;
+  }
+
+  else
+  {
+    minValueCopy = valueCopy;
+  }
+
+  return minValueCopy;
 }
 
-+ (void)applyAdjustmentDictionary:(id)a3 toCompositionController:(id)a4
++ (void)applyAdjustmentDictionary:(id)dictionary toCompositionController:(id)controller
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__PISmartCopyPasteAutoCalculator_applyAdjustmentDictionary_toCompositionController___block_invoke;
   v13[3] = &unk_1E82AAE60;
-  v7 = v6;
+  v7 = dictionaryCopy;
   v14 = v7;
-  v15 = a1;
-  v8 = a4;
-  [v8 modifyAdjustmentWithKey:@"whiteBalance" modificationBlock:v13];
+  selfCopy = self;
+  controllerCopy = controller;
+  [controllerCopy modifyAdjustmentWithKey:@"whiteBalance" modificationBlock:v13];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PISmartCopyPasteAutoCalculator_applyAdjustmentDictionary_toCompositionController___block_invoke_2;
   v10[3] = &unk_1E82AAE88;
   v11 = v7;
-  v12 = a1;
+  selfCopy2 = self;
   v9 = v7;
-  [v8 modifyAdjustmentWithKey:@"smartTone" modificationBlock:v10];
+  [controllerCopy modifyAdjustmentWithKey:@"smartTone" modificationBlock:v10];
 }
 
 void __84__PISmartCopyPasteAutoCalculator_applyAdjustmentDictionary_toCompositionController___block_invoke(uint64_t a1, void *a2)

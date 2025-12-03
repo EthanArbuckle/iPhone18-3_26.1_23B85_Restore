@@ -8,32 +8,32 @@
 - (NSString)graphicsFeatureSetClass;
 - (NSString)idiom;
 - (TDDeviceTraits)init;
-- (TDDeviceTraits)initWithPlatform:(int64_t)a3;
-- (id)_deploymentTargetToTraitString:(int64_t)a3;
-- (id)_displayGamutToTraitString:(int64_t)a3;
-- (id)_dynamicDisplayModeToTraitString:(int64_t)a3;
-- (id)_graphicsFeatureSetClassToTraitString:(int64_t)a3;
-- (id)_idiomToTraitString:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TDDeviceTraits)initWithPlatform:(int64_t)platform;
+- (id)_deploymentTargetToTraitString:(int64_t)string;
+- (id)_displayGamutToTraitString:(int64_t)string;
+- (id)_dynamicDisplayModeToTraitString:(int64_t)string;
+- (id)_graphicsFeatureSetClassToTraitString:(int64_t)string;
+- (id)_idiomToTraitString:(int64_t)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)_deploymentTargetFromTraitString:(id)a3;
-- (int64_t)_displayGamutFromTraitString:(id)a3;
-- (int64_t)_dynamicDisplayModeFromTraitString:(id)a3;
-- (int64_t)_graphicsFeatureSetClassFromTraitString:(id)a3;
-- (int64_t)_idiomFromTraitString:(id)a3;
+- (int64_t)_deploymentTargetFromTraitString:(id)string;
+- (int64_t)_displayGamutFromTraitString:(id)string;
+- (int64_t)_dynamicDisplayModeFromTraitString:(id)string;
+- (int64_t)_graphicsFeatureSetClassFromTraitString:(id)string;
+- (int64_t)_idiomFromTraitString:(id)string;
 - (void)dealloc;
-- (void)setDeploymentTarget:(id)a3;
-- (void)setDisplayGamut:(id)a3;
-- (void)setDynamicDisplayMode:(id)a3;
-- (void)setGraphicsFeatureSetClass:(id)a3;
-- (void)setGraphicsFeatureSetFallbacks:(id)a3;
-- (void)setHostedIdioms:(id)a3;
-- (void)setIdiom:(id)a3;
+- (void)setDeploymentTarget:(id)target;
+- (void)setDisplayGamut:(id)gamut;
+- (void)setDynamicDisplayMode:(id)mode;
+- (void)setGraphicsFeatureSetClass:(id)class;
+- (void)setGraphicsFeatureSetFallbacks:(id)fallbacks;
+- (void)setHostedIdioms:(id)idioms;
+- (void)setIdiom:(id)idiom;
 @end
 
 @implementation TDDeviceTraits
 
-- (TDDeviceTraits)initWithPlatform:(int64_t)a3
+- (TDDeviceTraits)initWithPlatform:(int64_t)platform
 {
   v4.receiver = self;
   v4.super_class = TDDeviceTraits;
@@ -63,9 +63,9 @@
   [(TDDeviceTraits *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(TDDeviceTraits *)self scale];
   [v4 setScale:?];
   [v4 setIdiomValue:{-[TDDeviceTraits idiomValue](self, "idiomValue")}];
@@ -90,12 +90,12 @@
   return [v7 stringWithFormat:@"<%@ %p scale:%f idiom:%d subtype:%d gamut:%d target:%d memPerclass:%d graphicsFeature:%d graphicsfallbackValues:%@ subtypefallbackValues:%@ displayMode:%d hostedIdioms:%@>", v6, self, v4, -[TDDeviceTraits idiomValue](self, "idiomValue"), -[TDDeviceTraits subtype](self, "subtype"), -[TDDeviceTraits displayGamutValue](self, "displayGamutValue"), -[TDDeviceTraits deploymentTargetValue](self, "deploymentTargetValue"), -[TDDeviceTraits memoryPerformanceClass](self, "memoryPerformanceClass"), -[TDDeviceTraits graphicsFeatureSetClassValue](self, "graphicsFeatureSetClassValue"), -[TDDeviceTraits graphicsFeatureSetFallbackValues](self, "graphicsFeatureSetFallbackValues"), -[TDDeviceTraits subtypeFallbackValues](self, "subtypeFallbackValues"), -[TDDeviceTraits dynamicDisplayModeValue](self, "dynamicDisplayModeValue"), -[TDDeviceTraits hostedIdioms](self, "hostedIdioms")];
 }
 
-- (id)_idiomToTraitString:(int64_t)a3
+- (id)_idiomToTraitString:(int64_t)string
 {
   v3 = *(MEMORY[0x277D027B0] + 16);
   if (v3)
   {
-    if (*MEMORY[0x277D027B0] == a3)
+    if (*MEMORY[0x277D027B0] == string)
     {
       return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
     }
@@ -109,7 +109,7 @@
       }
 
       v5 = *(i - 2);
-      if (v5 == a3)
+      if (v5 == string)
       {
         return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
       }
@@ -119,15 +119,15 @@
   return 0;
 }
 
-- (int64_t)_idiomFromTraitString:(id)a3
+- (int64_t)_idiomFromTraitString:(id)string
 {
-  v3 = [a3 UTF8String];
-  if (!v3)
+  uTF8String = [string UTF8String];
+  if (!uTF8String)
   {
     return -1;
   }
 
-  v4 = v3;
+  v4 = uTF8String;
   v5 = *(MEMORY[0x277D027B0] + 16);
   if (v5)
   {
@@ -165,21 +165,21 @@
   }
 }
 
-- (void)setIdiom:(id)a3
+- (void)setIdiom:(id)idiom
 {
-  v4 = [(TDDeviceTraits *)self _idiomFromTraitString:a3];
+  v4 = [(TDDeviceTraits *)self _idiomFromTraitString:idiom];
 
   [(TDDeviceTraits *)self setIdiomValue:v4];
 }
 
 - (NSString)idiom
 {
-  v3 = [(TDDeviceTraits *)self idiom];
+  idiom = [(TDDeviceTraits *)self idiom];
 
-  return [(TDDeviceTraits *)self _idiomToTraitString:v3];
+  return [(TDDeviceTraits *)self _idiomToTraitString:idiom];
 }
 
-- (void)setHostedIdioms:(id)a3
+- (void)setHostedIdioms:(id)idioms
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -187,7 +187,7 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [idioms countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -199,14 +199,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(idioms);
         }
 
         [v5 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", -[TDDeviceTraits _idiomFromTraitString:](self, "_idiomFromTraitString:", *(*(&v11 + 1) + 8 * v9++)))}];
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [idioms countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -225,8 +225,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TDDeviceTraits *)self hostedIdiomValues];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  hostedIdiomValues = [(TDDeviceTraits *)self hostedIdiomValues];
+  v5 = [(NSArray *)hostedIdiomValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -238,14 +238,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(hostedIdiomValues);
         }
 
         [v3 addObject:{-[TDDeviceTraits _idiomToTraitString:](self, "_idiomToTraitString:", objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "integerValue"))}];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)hostedIdiomValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -256,12 +256,12 @@
   return result;
 }
 
-- (id)_graphicsFeatureSetClassToTraitString:(int64_t)a3
+- (id)_graphicsFeatureSetClassToTraitString:(int64_t)string
 {
   v3 = *(MEMORY[0x277D027A0] + 16);
   if (v3)
   {
-    if (*MEMORY[0x277D027A0] == a3)
+    if (*MEMORY[0x277D027A0] == string)
     {
       return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
     }
@@ -275,7 +275,7 @@
       }
 
       v5 = *(i - 2);
-      if (v5 == a3)
+      if (v5 == string)
       {
         return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
       }
@@ -285,12 +285,12 @@
   return 0;
 }
 
-- (int64_t)_graphicsFeatureSetClassFromTraitString:(id)a3
+- (int64_t)_graphicsFeatureSetClassFromTraitString:(id)string
 {
-  v3 = [a3 UTF8String];
-  if (v3)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
+    v4 = uTF8String;
     v5 = *(MEMORY[0x277D027A8] + 16);
     if (v5)
     {
@@ -349,21 +349,21 @@
   return -1;
 }
 
-- (void)setGraphicsFeatureSetClass:(id)a3
+- (void)setGraphicsFeatureSetClass:(id)class
 {
-  v4 = [(TDDeviceTraits *)self _graphicsFeatureSetClassFromTraitString:a3];
+  v4 = [(TDDeviceTraits *)self _graphicsFeatureSetClassFromTraitString:class];
 
   [(TDDeviceTraits *)self setGraphicsFeatureSetClassValue:v4];
 }
 
 - (NSString)graphicsFeatureSetClass
 {
-  v3 = [(TDDeviceTraits *)self graphicsFeatureSetClassValue];
+  graphicsFeatureSetClassValue = [(TDDeviceTraits *)self graphicsFeatureSetClassValue];
 
-  return [(TDDeviceTraits *)self _graphicsFeatureSetClassToTraitString:v3];
+  return [(TDDeviceTraits *)self _graphicsFeatureSetClassToTraitString:graphicsFeatureSetClassValue];
 }
 
-- (void)setGraphicsFeatureSetFallbacks:(id)a3
+- (void)setGraphicsFeatureSetFallbacks:(id)fallbacks
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -371,7 +371,7 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [fallbacks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -383,14 +383,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(fallbacks);
         }
 
         [v5 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", -[TDDeviceTraits _graphicsFeatureSetClassFromTraitString:](self, "_graphicsFeatureSetClassFromTraitString:", *(*(&v11 + 1) + 8 * v9++)))}];
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [fallbacks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -409,8 +409,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TDDeviceTraits *)self graphicsFeatureSetFallbackValues];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  graphicsFeatureSetFallbackValues = [(TDDeviceTraits *)self graphicsFeatureSetFallbackValues];
+  v5 = [(NSArray *)graphicsFeatureSetFallbackValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -422,14 +422,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(graphicsFeatureSetFallbackValues);
         }
 
         [v3 addObject:{-[TDDeviceTraits _graphicsFeatureSetClassToTraitString:](self, "_graphicsFeatureSetClassToTraitString:", objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "integerValue"))}];
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)graphicsFeatureSetFallbackValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -440,12 +440,12 @@
   return result;
 }
 
-- (id)_displayGamutToTraitString:(int64_t)a3
+- (id)_displayGamutToTraitString:(int64_t)string
 {
   v3 = *(MEMORY[0x277D02780] + 16);
   if (v3)
   {
-    if (*MEMORY[0x277D02780] == a3)
+    if (*MEMORY[0x277D02780] == string)
     {
       return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
     }
@@ -459,7 +459,7 @@
       }
 
       v5 = *(i - 2);
-      if (v5 == a3)
+      if (v5 == string)
       {
         return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
       }
@@ -469,12 +469,12 @@
   return 0;
 }
 
-- (int64_t)_displayGamutFromTraitString:(id)a3
+- (int64_t)_displayGamutFromTraitString:(id)string
 {
-  v3 = [a3 UTF8String];
-  if (v3)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
+    v4 = uTF8String;
     v5 = *(MEMORY[0x277D02780] + 16);
     if (v5)
     {
@@ -505,26 +505,26 @@
   return -1;
 }
 
-- (void)setDisplayGamut:(id)a3
+- (void)setDisplayGamut:(id)gamut
 {
-  v4 = [(TDDeviceTraits *)self _displayGamutFromTraitString:a3];
+  v4 = [(TDDeviceTraits *)self _displayGamutFromTraitString:gamut];
 
   [(TDDeviceTraits *)self setDisplayGamutValue:v4];
 }
 
 - (NSString)displayGamut
 {
-  v3 = [(TDDeviceTraits *)self displayGamutValue];
+  displayGamutValue = [(TDDeviceTraits *)self displayGamutValue];
 
-  return [(TDDeviceTraits *)self _displayGamutToTraitString:v3];
+  return [(TDDeviceTraits *)self _displayGamutToTraitString:displayGamutValue];
 }
 
-- (id)_deploymentTargetToTraitString:(int64_t)a3
+- (id)_deploymentTargetToTraitString:(int64_t)string
 {
   v3 = *(MEMORY[0x277D02770] + 16);
   if (v3)
   {
-    if (*MEMORY[0x277D02770] == a3)
+    if (*MEMORY[0x277D02770] == string)
     {
       return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
     }
@@ -538,7 +538,7 @@
       }
 
       v5 = *(i - 2);
-      if (v5 == a3)
+      if (v5 == string)
       {
         return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
       }
@@ -548,7 +548,7 @@
   return 0;
 }
 
-- (int64_t)_deploymentTargetFromTraitString:(id)a3
+- (int64_t)_deploymentTargetFromTraitString:(id)string
 {
   if ([(TDDeviceTraits *)self idiomValue]&& [(TDDeviceTraits *)self idiomValue]!= 6)
   {
@@ -570,13 +570,13 @@
     }
   }
 
-  [a3 UTF8String];
+  [string UTF8String];
   return CUIParseDeploymentTarget();
 }
 
-- (void)setDeploymentTarget:(id)a3
+- (void)setDeploymentTarget:(id)target
 {
-  v4 = [(TDDeviceTraits *)self _deploymentTargetFromTraitString:a3];
+  v4 = [(TDDeviceTraits *)self _deploymentTargetFromTraitString:target];
   if ((v4 & 0x8000000000000000) == 0)
   {
 
@@ -586,17 +586,17 @@
 
 - (NSString)deploymentTarget
 {
-  v3 = [(TDDeviceTraits *)self deploymentTargetValue];
+  deploymentTargetValue = [(TDDeviceTraits *)self deploymentTargetValue];
 
-  return [(TDDeviceTraits *)self _deploymentTargetToTraitString:v3];
+  return [(TDDeviceTraits *)self _deploymentTargetToTraitString:deploymentTargetValue];
 }
 
-- (id)_dynamicDisplayModeToTraitString:(int64_t)a3
+- (id)_dynamicDisplayModeToTraitString:(int64_t)string
 {
   v3 = *(MEMORY[0x277D02790] + 16);
   if (v3)
   {
-    if (*MEMORY[0x277D02790] == a3)
+    if (*MEMORY[0x277D02790] == string)
     {
       return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
     }
@@ -610,7 +610,7 @@
       }
 
       v5 = *(i - 2);
-      if (v5 == a3)
+      if (v5 == string)
       {
         return [MEMORY[0x277CCACA8] stringWithUTF8String:v3];
       }
@@ -620,12 +620,12 @@
   return 0;
 }
 
-- (int64_t)_dynamicDisplayModeFromTraitString:(id)a3
+- (int64_t)_dynamicDisplayModeFromTraitString:(id)string
 {
-  v3 = [a3 UTF8String];
-  if (v3)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
+    v4 = uTF8String;
     v5 = *(MEMORY[0x277D02790] + 16);
     if (v5)
     {
@@ -658,14 +658,14 @@
 
 - (NSString)dynamicDisplayMode
 {
-  v3 = [(TDDeviceTraits *)self dynamicDisplayModeValue];
+  dynamicDisplayModeValue = [(TDDeviceTraits *)self dynamicDisplayModeValue];
 
-  return [(TDDeviceTraits *)self _dynamicDisplayModeFromTraitString:v3];
+  return [(TDDeviceTraits *)self _dynamicDisplayModeFromTraitString:dynamicDisplayModeValue];
 }
 
-- (void)setDynamicDisplayMode:(id)a3
+- (void)setDynamicDisplayMode:(id)mode
 {
-  v4 = [(TDDeviceTraits *)self _dynamicDisplayModeFromTraitString:a3];
+  v4 = [(TDDeviceTraits *)self _dynamicDisplayModeFromTraitString:mode];
   if ((v4 & 0x8000000000000000) == 0)
   {
 

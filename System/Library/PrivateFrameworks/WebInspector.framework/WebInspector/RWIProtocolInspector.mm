@@ -1,6 +1,6 @@
 @interface RWIProtocolInspector
 - (BOOL)connected;
-- (RWIProtocolInspector)initWithController:(AugmentableInspectorController *)a3;
+- (RWIProtocolInspector)initWithController:(AugmentableInspectorController *)controller;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)inspectorControllerDestroyed;
@@ -8,14 +8,14 @@
 
 @implementation RWIProtocolInspector
 
-- (RWIProtocolInspector)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolInspector)initWithController:(AugmentableInspectorController *)controller
 {
   v6.receiver = self;
   v6.super_class = RWIProtocolInspector;
   v4 = [(RWIProtocolInspector *)&v6 init];
   if (v4)
   {
-    v4->_inspectorController = a3;
+    v4->_inspectorController = controller;
     operator new();
   }
 

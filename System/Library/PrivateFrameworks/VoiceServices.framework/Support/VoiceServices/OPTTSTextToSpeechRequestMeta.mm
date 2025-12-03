@@ -1,7 +1,7 @@
 @interface OPTTSTextToSpeechRequestMeta
 - (NSString)app_id;
-- (OPTTSTextToSpeechRequestMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestMeta *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechRequestMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestMeta *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)channel_type;
 @end
@@ -37,28 +37,28 @@ flatbuffers::DetachedBuffer *__44__OPTTSTextToSpeechRequestMeta_flatbuffData__bl
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSTextToSpeechRequestMeta *)self channel_type];
-  v6 = [(OPTTSTextToSpeechRequestMeta *)self app_id];
-  v7 = v6;
-  if (!v6)
+  channel_type = [(OPTTSTextToSpeechRequestMeta *)self channel_type];
+  app_id = [(OPTTSTextToSpeechRequestMeta *)self app_id];
+  v7 = app_id;
+  if (!app_id)
   {
-    v6 = &stru_2881CBD18;
+    app_id = &stru_2881CBD18;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  LODWORD(v8) = flatbuffers::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)app_id UTF8String];
+  v9 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 10);
-  v11 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 6, v8);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 10);
+  v11 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, channel_type);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 6, uTF8String);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v11 + v10);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v11 + v10);
 }
 
 - (NSString)app_id
@@ -99,42 +99,42 @@ flatbuffers::DetachedBuffer *__44__OPTTSTextToSpeechRequestMeta_flatbuffData__bl
   }
 }
 
-- (OPTTSTextToSpeechRequestMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestMeta *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechRequestMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestMeta *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSTextToSpeechRequestMeta;
   v10 = [(OPTTSTextToSpeechRequestMeta *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -156,9 +156,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

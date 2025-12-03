@@ -1,33 +1,33 @@
 @interface UITextFormattingViewControllerFormattingStyle
-- (BOOL)isEqual:(id)a3;
-- (UITextFormattingViewControllerFormattingStyle)initWithCoder:(id)a3;
-- (UITextFormattingViewControllerFormattingStyle)initWithStyleKey:(id)a3 title:(id)a4 attributes:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UITextFormattingViewControllerFormattingStyle)initWithCoder:(id)coder;
+- (UITextFormattingViewControllerFormattingStyle)initWithStyleKey:(id)key title:(id)title attributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UITextFormattingViewControllerFormattingStyle
 
-- (UITextFormattingViewControllerFormattingStyle)initWithStyleKey:(id)a3 title:(id)a4 attributes:(id)a5
+- (UITextFormattingViewControllerFormattingStyle)initWithStyleKey:(id)key title:(id)title attributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  titleCopy = title;
+  attributesCopy = attributes;
   v19.receiver = self;
   v19.super_class = UITextFormattingViewControllerFormattingStyle;
   v11 = [(UITextFormattingViewControllerFormattingStyle *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [keyCopy copy];
     styleKey = v11->_styleKey;
     v11->_styleKey = v12;
 
-    v14 = [v9 copy];
+    v14 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v14;
 
-    v16 = [v10 copy];
+    v16 = [attributesCopy copy];
     attributes = v11->_attributes;
     v11->_attributes = v16;
   }
@@ -35,31 +35,31 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  styleKey = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
+  v6 = [styleKey copy];
   v7 = v4[1];
   v4[1] = v6;
 
-  v8 = [(UITextFormattingViewControllerFormattingStyle *)self title];
-  v9 = [v8 copy];
+  title = [(UITextFormattingViewControllerFormattingStyle *)self title];
+  v9 = [title copy];
   v10 = v4[2];
   v4[2] = v9;
 
-  v11 = [(UITextFormattingViewControllerFormattingStyle *)self attributes];
-  v12 = [v11 copy];
+  attributes = [(UITextFormattingViewControllerFormattingStyle *)self attributes];
+  v12 = [attributes copy];
   v13 = v4[3];
   v4[3] = v12;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -69,14 +69,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
-      v7 = [(UITextFormattingViewControllerFormattingStyle *)v5 styleKey];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      styleKey = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
+      styleKey2 = [(UITextFormattingViewControllerFormattingStyle *)v5 styleKey];
+      if ([styleKey isEqualToString:styleKey2])
       {
-        v8 = [(UITextFormattingViewControllerFormattingStyle *)self title];
-        v9 = [(UITextFormattingViewControllerFormattingStyle *)v5 title];
-        v10 = [v8 isEqualToString:v9];
+        title = [(UITextFormattingViewControllerFormattingStyle *)self title];
+        title2 = [(UITextFormattingViewControllerFormattingStyle *)v5 title];
+        v10 = [title isEqualToString:title2];
       }
 
       else
@@ -96,51 +96,51 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
-  v4 = [v3 hash];
-  v5 = [(UITextFormattingViewControllerFormattingStyle *)self title];
-  v6 = [v5 hash];
+  styleKey = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
+  v4 = [styleKey hash];
+  title = [(UITextFormattingViewControllerFormattingStyle *)self title];
+  v6 = [title hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
-  [v4 encodeObject:v5 forKey:@"_StyleKey"];
+  coderCopy = coder;
+  styleKey = [(UITextFormattingViewControllerFormattingStyle *)self styleKey];
+  [coderCopy encodeObject:styleKey forKey:@"_StyleKey"];
 
-  v6 = [(UITextFormattingViewControllerFormattingStyle *)self title];
-  [v4 encodeObject:v6 forKey:@"_Title"];
+  title = [(UITextFormattingViewControllerFormattingStyle *)self title];
+  [coderCopy encodeObject:title forKey:@"_Title"];
 
   v7 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  v8 = [(UITextFormattingViewControllerFormattingStyle *)self attributes];
-  [v7 encodeObject:v8 forKey:@"_AttributesData"];
+  attributes = [(UITextFormattingViewControllerFormattingStyle *)self attributes];
+  [v7 encodeObject:attributes forKey:@"_AttributesData"];
 
   [v7 finishEncoding];
-  v9 = [v7 encodedData];
-  if (!v9)
+  encodedData = [v7 encodedData];
+  if (!encodedData)
   {
-    v9 = objc_opt_new();
+    encodedData = objc_opt_new();
   }
 
-  [v4 encodeObject:v9 forKey:@"_AttributesData"];
+  [coderCopy encodeObject:encodedData forKey:@"_AttributesData"];
 }
 
-- (UITextFormattingViewControllerFormattingStyle)initWithCoder:(id)a3
+- (UITextFormattingViewControllerFormattingStyle)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(UITextFormattingViewControllerFormattingStyle *)self init];
   if (v5)
   {
     v6 = _UITextFormattingViewControllerFormattingStyleClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_StyleKey"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_StyleKey"];
     styleKey = v5->_styleKey;
     v5->_styleKey = v7;
 
     v9 = _UITextFormattingViewControllerFormattingStyleClasses();
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_Title"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_Title"];
     title = v5->_title;
     v5->_title = v10;
 
@@ -149,7 +149,7 @@
     v5->_attributes = MEMORY[0x1E695E0F8];
 
     v14 = _UITextFormattingViewControllerFormattingStyleClasses();
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_AttributesData"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_AttributesData"];
 
     v24 = 0;
     v16 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v15 error:&v24];

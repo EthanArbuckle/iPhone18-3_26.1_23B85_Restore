@@ -2,8 +2,8 @@
 - (COSTinkerHealthSharingOptInController)init;
 - (void)_cancelTaskTimeout;
 - (void)_fetchSharingStatus;
-- (void)_scheduleTaskTimeout:(double)a3 timeoutHandler:(id)a4;
-- (void)applyConfirmedOptin:(BOOL)a3;
+- (void)_scheduleTaskTimeout:(double)timeout timeoutHandler:(id)handler;
+- (void)applyConfirmedOptin:(BOOL)optin;
 - (void)dealloc;
 @end
 
@@ -42,9 +42,9 @@
   healthSyncAgent = self->_healthSyncAgent;
   self->_healthSyncAgent = v4;
 
-  v6 = [UIApp setupController];
-  v7 = [(COSTinkerHealthSharingSetupDelegate *)self->_setupDelegate tinkerMember];
-  if (v7)
+  setupController = [UIApp setupController];
+  tinkerMember = [(COSTinkerHealthSharingSetupDelegate *)self->_setupDelegate tinkerMember];
+  if (tinkerMember)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -53,15 +53,15 @@
     v15[4] = self;
     [(COSTinkerHealthSharingOptInController *)self _scheduleTaskTimeout:v15 timeoutHandler:30.0];
     v8 = self->_healthSyncAgent;
-    v9 = [v7 appleID];
+    appleID = [tinkerMember appleID];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10008A820;
     v12[3] = &unk_10026A1C0;
     v12[4] = self;
-    v13 = v7;
-    v14 = v6;
-    [(HKSecondaryDevicePairingAgent *)v8 fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:v9 completion:v12];
+    v13 = tinkerMember;
+    v14 = setupController;
+    [(HKSecondaryDevicePairingAgent *)v8 fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:appleID completion:v12];
   }
 
   else
@@ -74,28 +74,28 @@
     }
 
     self->_fetchingShareStatus = 0;
-    v11 = [(COSTinkerHealthSharingOptInController *)self delegate];
-    [v11 buddyControllerReleaseHold:self];
+    delegate = [(COSTinkerHealthSharingOptInController *)self delegate];
+    [delegate buddyControllerReleaseHold:self];
   }
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  v3 = a3;
-  v4 = [UIApp setupController];
-  [v4 companionDidFinishHealthSharingOptIn:v3];
+  optinCopy = optin;
+  setupController = [UIApp setupController];
+  [setupController companionDidFinishHealthSharingOptIn:optinCopy];
 }
 
-- (void)_scheduleTaskTimeout:(double)a3 timeoutHandler:(id)a4
+- (void)_scheduleTaskTimeout:(double)timeout timeoutHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   [(COSTinkerHealthSharingOptInController *)self _cancelTaskTimeout];
   v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   timeoutSource = self->_timeoutSource;
   self->_timeoutSource = v7;
 
   v9 = self->_timeoutSource;
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0);
   objc_initWeak(&location, self);
   v11 = self->_timeoutSource;
@@ -104,8 +104,8 @@
   handler[2] = sub_10008ABF8;
   handler[3] = &unk_100268FF0;
   objc_copyWeak(&v15, &location);
-  v14 = v6;
-  v12 = v6;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   dispatch_source_set_event_handler(v11, handler);
   dispatch_resume(self->_timeoutSource);
 

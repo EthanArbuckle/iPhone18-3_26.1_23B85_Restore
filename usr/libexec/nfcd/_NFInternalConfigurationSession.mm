@@ -1,24 +1,24 @@
 @interface _NFInternalConfigurationSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (void)cleanup;
-- (void)didStartSession:(id)a3;
-- (void)flashFirmware:(id)a3 completion:(id)a4;
-- (void)handlMFWNotification:(id)a3;
-- (void)readRegisters:(id)a3 operation:(unint64_t)a4 completion:(id)a5;
-- (void)sendMFGCommand:(unsigned __int8)a3 payload:(id)a4 completion:(id)a5;
-- (void)startContinuousWaveWithCompletion:(id)a3;
-- (void)startFieldDetectWithCompletion:(id)a3;
-- (void)startLPCDWithCompletion:(id)a3;
-- (void)startReaderWithCompletion:(id)a3;
-- (void)stopRFActivityWithCompletion:(id)a3;
-- (void)writeRegisters:(id)a3 payloads:(id)a4 operation:(unint64_t)a5 completion:(id)a6;
+- (void)didStartSession:(id)session;
+- (void)flashFirmware:(id)firmware completion:(id)completion;
+- (void)handlMFWNotification:(id)notification;
+- (void)readRegisters:(id)registers operation:(unint64_t)operation completion:(id)completion;
+- (void)sendMFGCommand:(unsigned __int8)command payload:(id)payload completion:(id)completion;
+- (void)startContinuousWaveWithCompletion:(id)completion;
+- (void)startFieldDetectWithCompletion:(id)completion;
+- (void)startLPCDWithCompletion:(id)completion;
+- (void)startReaderWithCompletion:(id)completion;
+- (void)stopRFActivityWithCompletion:(id)completion;
+- (void)writeRegisters:(id)registers payloads:(id)payloads operation:(unint64_t)operation completion:(id)completion;
 @end
 
 @implementation _NFInternalConfigurationSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 nfcHardwareRegistersAccess])
+  if ([entitlements nfcHardwareRegistersAccess])
   {
     v5 = 0;
   }
@@ -30,9 +30,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -47,7 +47,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -61,7 +61,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -96,192 +96,192 @@
   [(_NFSession *)&v2 cleanup];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = _NFInternalConfigurationSession;
-  v4 = a3;
-  [(_NFXPCSession *)&v6 didStartSession:v4];
+  sessionCopy = session;
+  [(_NFXPCSession *)&v6 didStartSession:sessionCopy];
   v5 = [(_NFXPCSession *)self remoteObject:v6.receiver];
-  [v5 didStartSession:v4];
+  [v5 didStartSession:sessionCopy];
 }
 
-- (void)readRegisters:(id)a3 operation:(unint64_t)a4 completion:(id)a5
+- (void)readRegisters:(id)registers operation:(unint64_t)operation completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  registersCopy = registers;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = _NFInternalConfigurationSession;
-  v11 = [(_NFSession *)&v20 workQueue];
+  workQueue = [(_NFSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001ECDB4;
   block[3] = &unk_1003187D8;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
+  v15 = registersCopy;
+  selfCopy = self;
+  v17 = completionCopy;
   v18 = a2;
-  v19 = a4;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  operationCopy = operation;
+  v12 = completionCopy;
+  v13 = registersCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)writeRegisters:(id)a3 payloads:(id)a4 operation:(unint64_t)a5 completion:(id)a6
+- (void)writeRegisters:(id)registers payloads:(id)payloads operation:(unint64_t)operation completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  registersCopy = registers;
+  payloadsCopy = payloads;
+  completionCopy = completion;
   v24.receiver = self;
   v24.super_class = _NFInternalConfigurationSession;
-  v14 = [(_NFSession *)&v24 workQueue];
+  workQueue = [(_NFSession *)&v24 workQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001ED304;
   v18[3] = &unk_10031B830;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
+  v19 = registersCopy;
+  v20 = payloadsCopy;
+  v21 = completionCopy;
   v22 = a2;
-  v23 = a5;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  operationCopy = operation;
+  v15 = payloadsCopy;
+  v16 = registersCopy;
+  v17 = completionCopy;
+  dispatch_async(workQueue, v18);
 }
 
-- (void)flashFirmware:(id)a3 completion:(id)a4
+- (void)flashFirmware:(id)firmware completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  firmwareCopy = firmware;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFInternalConfigurationSession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001EDB90;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = firmwareCopy;
+  v10 = firmwareCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)sendMFGCommand:(unsigned __int8)a3 payload:(id)a4 completion:(id)a5
+- (void)sendMFGCommand:(unsigned __int8)command payload:(id)payload completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _NFInternalConfigurationSession;
-  v11 = [(_NFSession *)&v19 workQueue];
+  workQueue = [(_NFSession *)&v19 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EE0D0;
   block[3] = &unk_100318AB8;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = a2;
-  v18 = a3;
+  commandCopy = command;
   block[4] = self;
-  v15 = v9;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = payloadCopy;
+  v12 = payloadCopy;
+  v13 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startLPCDWithCompletion:(id)a3
+- (void)startLPCDWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFInternalConfigurationSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EE4D0;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startReaderWithCompletion:(id)a3
+- (void)startReaderWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFInternalConfigurationSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EE8D8;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startFieldDetectWithCompletion:(id)a3
+- (void)startFieldDetectWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFInternalConfigurationSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EECE0;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)startContinuousWaveWithCompletion:(id)a3
+- (void)startContinuousWaveWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFInternalConfigurationSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EF0EC;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)stopRFActivityWithCompletion:(id)a3
+- (void)stopRFActivityWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFInternalConfigurationSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EF4EC;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)handlMFWNotification:(id)a3
+- (void)handlMFWNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(_NFXPCSession *)self remoteObject];
-  [v5 handlMFWNotification:v4];
+  notificationCopy = notification;
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject handlMFWNotification:notificationCopy];
 }
 
 @end

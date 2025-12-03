@@ -1,12 +1,12 @@
 @interface PSUICoreTelephonyCallCache
 + (PSUICoreTelephonyCallCache)sharedInstance;
-- (BOOL)isActiveCallSubtype:(const char *)a3;
+- (BOOL)isActiveCallSubtype:(const char *)subtype;
 - (BOOL)isAnyCallActive;
-- (BOOL)isAnyCallActiveForProviderIdentifier:(id)a3;
+- (BOOL)isAnyCallActiveForProviderIdentifier:(id)identifier;
 - (BOOL)isAnyVOIPCallActive;
 - (PSUICoreTelephonyCallCache)init;
-- (id)initPrivate:(id)a3;
-- (id)localizedPhoneNumber:(id)a3 context:(id)a4;
+- (id)initPrivate:(id)private;
+- (id)localizedPhoneNumber:(id)number context:(id)context;
 @end
 
 @implementation PSUICoreTelephonyCallCache
@@ -32,16 +32,16 @@ void __44__PSUICoreTelephonyCallCache_sharedInstance__block_invoke()
   _MergedGlobals_73 = v1;
 }
 
-- (id)initPrivate:(id)a3
+- (id)initPrivate:(id)private
 {
-  v5 = a3;
+  privateCopy = private;
   v9.receiver = self;
   v9.super_class = PSUICoreTelephonyCallCache;
   v6 = [(PSUICoreTelephonyCallCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callObserver, a3);
+    objc_storeStrong(&v6->_callObserver, private);
   }
 
   return v7;
@@ -49,11 +49,11 @@ void __44__PSUICoreTelephonyCallCache_sharedInstance__block_invoke()
 
 - (PSUICoreTelephonyCallCache)init
 {
-  v2 = [(PSUICoreTelephonyCallCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICoreTelephonyCallCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called", v3, 2u);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called", v3, 2u);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -61,36 +61,36 @@ void __44__PSUICoreTelephonyCallCache_sharedInstance__block_invoke()
 
 - (BOOL)isAnyCallActive
 {
-  v2 = [(PSUICoreTelephonyCallCache *)self callObserver];
-  v3 = [v2 calls];
-  v4 = [v3 count] != 0;
+  callObserver = [(PSUICoreTelephonyCallCache *)self callObserver];
+  calls = [callObserver calls];
+  v4 = [calls count] != 0;
 
   return v4;
 }
 
 - (BOOL)isAnyVOIPCallActive
 {
-  v3 = [(PSUICoreTelephonyCallCache *)self isAnyCallActive];
-  if (v3)
+  isAnyCallActive = [(PSUICoreTelephonyCallCache *)self isAnyCallActive];
+  if (isAnyCallActive)
   {
-    LOBYTE(v3) = ![(PSUICoreTelephonyCallCache *)self isAnyCallActiveForProviderIdentifier:@"com.apple.coretelephony"];
+    LOBYTE(isAnyCallActive) = ![(PSUICoreTelephonyCallCache *)self isAnyCallActiveForProviderIdentifier:@"com.apple.coretelephony"];
   }
 
-  return v3;
+  return isAnyCallActive;
 }
 
-- (BOOL)isAnyCallActiveForProviderIdentifier:(id)a3
+- (BOOL)isAnyCallActiveForProviderIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(PSUICoreTelephonyCallCache *)self callObserver];
-  v6 = [v5 calls];
+  callObserver = [(PSUICoreTelephonyCallCache *)self callObserver];
+  calls = [callObserver calls];
 
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v7 = [calls countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v7)
   {
     v9 = *v21;
@@ -102,21 +102,21 @@ void __44__PSUICoreTelephonyCallCache_sharedInstance__block_invoke()
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(calls);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [(PSUICoreTelephonyCallCache *)self getLogger];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+        getLogger = [(PSUICoreTelephonyCallCache *)self getLogger];
+        if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
         {
-          v13 = [v11 providerIdentifier];
+          providerIdentifier = [v11 providerIdentifier];
           *buf = v19;
-          v25 = v13;
-          _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_INFO, "Call provider identifier: %@", buf, 0xCu);
+          v25 = providerIdentifier;
+          _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "Call provider identifier: %@", buf, 0xCu);
         }
 
-        v14 = [v11 providerIdentifier];
-        v15 = [v14 isEqualToString:v4];
+        providerIdentifier2 = [v11 providerIdentifier];
+        v15 = [providerIdentifier2 isEqualToString:identifierCopy];
 
         if (v15)
         {
@@ -125,7 +125,7 @@ void __44__PSUICoreTelephonyCallCache_sharedInstance__block_invoke()
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v7 = [calls countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v7)
       {
         continue;
@@ -142,16 +142,16 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)isActiveCallSubtype:(const char *)a3
+- (BOOL)isActiveCallSubtype:(const char *)subtype
 {
-  v5 = [MEMORY[0x277D6EDF8] sharedInstance];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__PSUICoreTelephonyCallCache_isActiveCallSubtype___block_invoke;
   v8[3] = &unk_279BAA838;
   v8[4] = self;
-  v8[5] = a3;
-  v6 = [v5 callPassingTest:v8];
+  v8[5] = subtype;
+  v6 = [mEMORY[0x277D6EDF8] callPassingTest:v8];
 
   return v6 != 0;
 }
@@ -178,15 +178,15 @@ uint64_t __50__PSUICoreTelephonyCallCache_isActiveCallSubtype___block_invoke(uin
   return v8;
 }
 
-- (id)localizedPhoneNumber:(id)a3 context:(id)a4
+- (id)localizedPhoneNumber:(id)number context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  numberCopy = number;
+  contextCopy = context;
+  if (contextCopy)
   {
     v8 = +[PSUICoreTelephonySubscriberCache sharedInstance];
-    v9 = [v8 isoCountryCode:v7];
+    v9 = [v8 isoCountryCode:contextCopy];
   }
 
   else
@@ -201,14 +201,14 @@ uint64_t __50__PSUICoreTelephonyCallCache_isActiveCallSubtype___block_invoke(uin
     String = CFPhoneNumberCreateString();
     if (!String)
     {
-      v13 = [(PSUICoreTelephonyCallCache *)self getLogger];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      getLogger = [(PSUICoreTelephonyCallCache *)self getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412546;
-        v21 = v6;
+        v21 = numberCopy;
         v22 = 2112;
-        v23 = v7;
-        _os_log_error_impl(&dword_2658DE000, v13, OS_LOG_TYPE_ERROR, "Failed to localize CF phone number %@, %@", &v20, 0x16u);
+        v23 = contextCopy;
+        _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Failed to localize CF phone number %@, %@", &v20, 0x16u);
       }
     }
 
@@ -217,14 +217,14 @@ uint64_t __50__PSUICoreTelephonyCallCache_isActiveCallSubtype___block_invoke(uin
 
   else
   {
-    v14 = [(PSUICoreTelephonyCallCache *)self getLogger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUICoreTelephonyCallCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       v20 = 138412546;
-      v21 = v6;
+      v21 = numberCopy;
       v22 = 2112;
-      v23 = v7;
-      _os_log_error_impl(&dword_2658DE000, v14, OS_LOG_TYPE_ERROR, "Failed to allocate CF phone number for %@, %@", &v20, 0x16u);
+      v23 = contextCopy;
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Failed to allocate CF phone number for %@, %@", &v20, 0x16u);
     }
 
     String = 0;
@@ -232,9 +232,9 @@ uint64_t __50__PSUICoreTelephonyCallCache_isActiveCallSubtype___block_invoke(uin
 
   v15 = [(__CFString *)String length];
   v16 = &stru_287733598;
-  if (v6)
+  if (numberCopy)
   {
-    v16 = v6;
+    v16 = numberCopy;
   }
 
   if (v15)

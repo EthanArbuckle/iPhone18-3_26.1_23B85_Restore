@@ -1,17 +1,17 @@
 @interface OADBlipRef
-+ (id)blipRefWithIndex:(int)a3 name:(id)a4 blip:(id)a5;
-+ (id)blipRefWithIndex:(int)a3 name:(id)a4 blip:(id)a5 effects:(id)a6;
-+ (id)inflatedExtensionForGzippedExtension:(id)a3;
-+ (int)blipTypeForContentType:(id)a3;
-+ (int)blipTypeForExtension:(id)a3;
-+ (int)blipTypeForImageData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (OADBlipRef)initWithIndex:(int)a3 name:(id)a4 blip:(id)a5 effects:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)blipRefWithIndex:(int)index name:(id)name blip:(id)blip;
++ (id)blipRefWithIndex:(int)index name:(id)name blip:(id)blip effects:(id)effects;
++ (id)inflatedExtensionForGzippedExtension:(id)extension;
++ (int)blipTypeForContentType:(id)type;
++ (int)blipTypeForExtension:(id)extension;
++ (int)blipTypeForImageData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (OADBlipRef)initWithIndex:(int)index name:(id)name blip:(id)blip effects:(id)effects;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)addEffect:(id)a3;
-- (void)setEffects:(id)a3;
+- (void)addEffect:(id)effect;
+- (void)setEffects:(id)effects;
 @end
 
 @implementation OADBlipRef
@@ -39,26 +39,26 @@
   return v5;
 }
 
-- (OADBlipRef)initWithIndex:(int)a3 name:(id)a4 blip:(id)a5 effects:(id)a6
+- (OADBlipRef)initWithIndex:(int)index name:(id)name blip:(id)blip effects:(id)effects
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  blipCopy = blip;
+  effectsCopy = effects;
   v20.receiver = self;
   v20.super_class = OADBlipRef;
   v13 = [(OADBlipRef *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    v13->mIndex = a3;
-    v15 = [v10 copy];
+    v13->mIndex = index;
+    v15 = [nameCopy copy];
     mName = v14->mName;
     v14->mName = v15;
 
-    objc_storeStrong(&v14->mBlip, a5);
-    if ([v12 count])
+    objc_storeStrong(&v14->mBlip, blip);
+    if ([effectsCopy count])
     {
-      v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v12 copyItems:1];
+      v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:effectsCopy copyItems:1];
       mEffects = v14->mEffects;
       v14->mEffects = v17;
     }
@@ -67,27 +67,27 @@
   return v14;
 }
 
-+ (id)blipRefWithIndex:(int)a3 name:(id)a4 blip:(id)a5 effects:(id)a6
++ (id)blipRefWithIndex:(int)index name:(id)name blip:(id)blip effects:(id)effects
 {
-  v8 = *&a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [[OADBlipRef alloc] initWithIndex:v8 name:v9 blip:v10 effects:v11];
+  v8 = *&index;
+  nameCopy = name;
+  blipCopy = blip;
+  effectsCopy = effects;
+  v12 = [[OADBlipRef alloc] initWithIndex:v8 name:nameCopy blip:blipCopy effects:effectsCopy];
 
   return v12;
 }
 
-+ (id)blipRefWithIndex:(int)a3 name:(id)a4 blip:(id)a5
++ (id)blipRefWithIndex:(int)index name:(id)name blip:(id)blip
 {
-  v5 = [a1 blipRefWithIndex:*&a3 name:a4 blip:a5 effects:0];
+  v5 = [self blipRefWithIndex:*&index name:name blip:blip effects:0];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mIndex = self->mIndex;
   mEffects = self->mEffects;
   mBlip = self->mBlip;
@@ -96,11 +96,11 @@
   return [v4 initWithIndex:mIndex name:mName blip:mBlip effects:mEffects];
 }
 
-- (void)addEffect:(id)a3
+- (void)addEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   mEffects = self->mEffects;
-  v8 = v4;
+  v8 = effectCopy;
   if (!mEffects)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -108,27 +108,27 @@
     self->mEffects = v6;
 
     mEffects = self->mEffects;
-    v4 = v8;
+    effectCopy = v8;
   }
 
-  [(NSMutableArray *)mEffects addObject:v4];
+  [(NSMutableArray *)mEffects addObject:effectCopy];
 }
 
-- (void)setEffects:(id)a3
+- (void)setEffects:(id)effects
 {
-  v6 = a3;
-  v4 = [v6 mutableCopy];
+  effectsCopy = effects;
+  v4 = [effectsCopy mutableCopy];
   mEffects = self->mEffects;
   self->mEffects = v4;
 }
 
-+ (int)blipTypeForExtension:(id)a3
++ (int)blipTypeForExtension:(id)extension
 {
-  v3 = a3;
-  v4 = v3;
+  extensionCopy = extension;
+  v4 = extensionCopy;
   if (+[OADBlipRef blipTypeForExtension:]::extToBlipTypeMap)
   {
-    if (!v3)
+    if (!extensionCopy)
     {
       goto LABEL_7;
     }
@@ -159,7 +159,7 @@
     if (!v4)
     {
 LABEL_7:
-      v16 = 0;
+      intValue = 0;
       goto LABEL_8;
     }
   }
@@ -171,16 +171,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v16 = [v14 intValue];
+  intValue = [v14 intValue];
 
 LABEL_8:
-  return v16;
+  return intValue;
 }
 
-+ (int)blipTypeForContentType:(id)a3
++ (int)blipTypeForContentType:(id)type
 {
-  v3 = a3;
-  if (v3)
+  typeCopy = type;
+  if (typeCopy)
   {
     v4 = +[OADBlipRef blipTypeForContentType:]::contentTypeToBlipTypeMap;
     if (!+[OADBlipRef blipTypeForContentType:]::contentTypeToBlipTypeMap)
@@ -211,32 +211,32 @@ LABEL_8:
       v4 = +[OADBlipRef blipTypeForContentType:]::contentTypeToBlipTypeMap;
     }
 
-    v14 = [v4 objectForKey:v3];
+    v14 = [v4 objectForKey:typeCopy];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 intValue];
+      intValue = [v14 intValue];
     }
 
     else
     {
-      v16 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    intValue = 0;
   }
 
-  return v16;
+  return intValue;
 }
 
-+ (int)blipTypeForImageData:(id)a3
++ (int)blipTypeForImageData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
   v6 = v5;
   if (v5 < 4)
   {
@@ -245,7 +245,7 @@ LABEL_8:
 
   if (v5 >= 6)
   {
-    if (*v4 == 66 && *(v4 + 1) == 77 && v5 == *(v4 + 2))
+    if (*bytes == 66 && *(bytes + 1) == 77 && v5 == *(bytes + 2))
     {
       v7 = 1;
       goto LABEL_26;
@@ -253,42 +253,42 @@ LABEL_8:
 
     if (v5 >= 8)
     {
-      if (*v4 == 1196314761 && *(v4 + 4) == 169478669)
+      if (*bytes == 1196314761 && *(bytes + 4) == 169478669)
       {
         v7 = 3;
         goto LABEL_26;
       }
 
-      if (v5 >= 0xB && (*v4 == -520103681 && !strcmp("JFIF", (v4 + 6)) || *v4 == -503326465 && !strcmp("Exif", (v4 + 6)) || v6 != 11 && *v4 == -385885953 && !strcmp("SPIFF", (v4 + 6))))
+      if (v5 >= 0xB && (*bytes == -520103681 && !strcmp("JFIF", (bytes + 6)) || *bytes == -503326465 && !strcmp("Exif", (bytes + 6)) || v6 != 11 && *bytes == -385885953 && !strcmp("SPIFF", (bytes + 6))))
       {
         v7 = 2;
         goto LABEL_26;
       }
     }
 
-    if (!strncmp(v4, "GIF87a", 6uLL))
+    if (!strncmp(bytes, "GIF87a", 6uLL))
     {
       goto LABEL_25;
     }
   }
 
-  if (!strncmp(v4, "GIF89a", 6uLL))
+  if (!strncmp(bytes, "GIF89a", 6uLL))
   {
 LABEL_25:
     v7 = 7;
     goto LABEL_26;
   }
 
-  if (*v4 == 2771273 || (v8 = *v4, *v4 == 704662861))
+  if (*bytes == 2771273 || (v8 = *bytes, *bytes == 704662861))
   {
     v7 = 8;
     goto LABEL_26;
   }
 
-  if (v6 >= 0x16 && *v4 == -1698247209 && !*(v4 + 2))
+  if (v6 >= 0x16 && *bytes == -1698247209 && !*(bytes + 2))
   {
     v10 = 22;
-    if (*(v4 + 16))
+    if (*(bytes + 16))
     {
       v10 = 0;
     }
@@ -301,14 +301,14 @@ LABEL_25:
 
   if (v6 >= v10 + 18)
   {
-    v11 = v4 + v10;
+    v11 = bytes + v10;
     if ((*v11 == 1 || *v11 == 2) && *(v11 + 2) == 9 && v6 == *(v11 + 6) && !*(v11 + 16))
     {
       v7 = 4;
       goto LABEL_26;
     }
 
-    if (v6 >= 0x34 && *(v4 + 40) == 1179469088 && v6 == *(v4 + 48))
+    if (v6 >= 0x34 && *(bytes + 40) == 1179469088 && v6 == *(bytes + 48))
     {
       v7 = 5;
       goto LABEL_26;
@@ -320,8 +320,8 @@ LABEL_25:
     }
 
 LABEL_45:
-    v12 = v4 + v6;
-    v13 = *(v4 + v6 - 1);
+    v12 = bytes + v6;
+    v13 = *(bytes + v6 - 1);
     if (v13 == 10)
     {
       if (*(v12 - 2) == 13 && *(v12 - 8) == 10 && *(v12 - 9) == 13)
@@ -335,7 +335,7 @@ LABEL_45:
 LABEL_55:
         v14 = -6;
 LABEL_56:
-        if (!strncmp("%%EOF", (v4 + v14 + v6), 5uLL))
+        if (!strncmp("%%EOF", (bytes + v14 + v6), 5uLL))
         {
           v7 = 9;
           goto LABEL_26;
@@ -364,9 +364,9 @@ LABEL_26:
   return v7;
 }
 
-+ (id)inflatedExtensionForGzippedExtension:(id)a3
++ (id)inflatedExtensionForGzippedExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v4 = +[OADBlipRef inflatedExtensionForGzippedExtension:]::extMap;
   if (!+[OADBlipRef inflatedExtensionForGzippedExtension:]::extMap)
   {
@@ -377,14 +377,14 @@ LABEL_26:
     v4 = +[OADBlipRef inflatedExtensionForGzippedExtension:]::extMap;
   }
 
-  v7 = [v4 objectForKey:v3];
+  v7 = [v4 objectForKey:extensionCopy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -394,7 +394,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (!v5)
   {

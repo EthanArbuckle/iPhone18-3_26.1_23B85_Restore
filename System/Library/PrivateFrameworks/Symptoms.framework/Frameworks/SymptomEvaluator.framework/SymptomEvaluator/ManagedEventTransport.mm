@@ -1,18 +1,18 @@
 @interface ManagedEventTransport
-+ (BOOL)setInfoProvider:(id)a3 forId:(unint64_t)a4;
-+ (id)feedbackForEventId:(unint64_t)a3;
++ (BOOL)setInfoProvider:(id)provider forId:(unint64_t)id;
++ (id)feedbackForEventId:(unint64_t)id;
 + (id)sharedInstance;
-+ (unint64_t)obtainEventId:(id)a3;
-+ (void)retireEventId:(unint64_t)a3;
-+ (void)setListeningPort:(const char *)a3;
-- (BOOL)setInfoProvider:(id)a3 forId:(unint64_t)a4;
++ (unint64_t)obtainEventId:(id)id;
++ (void)retireEventId:(unint64_t)id;
++ (void)setListeningPort:(const char *)port;
+- (BOOL)setInfoProvider:(id)provider forId:(unint64_t)id;
 - (ManagedEventTransport)init;
-- (id)feedbackForEventId:(unint64_t)a3;
-- (unint64_t)obtainEventId:(id)a3;
-- (void)_createReply:(id)a3 forConnection:(id)a4;
-- (void)retireEventId:(unint64_t)a3;
-- (void)sendReplyInfo:(id)a3 onConnection:(id)a4 withErrCode:(unint64_t)a5 forId:(unint64_t)a6 name:(char *)a7 date:(id)a8 reason:(char *)a9 reasonCode:(unint64_t)a10 info:(id)a11;
-- (void)setListeningPort:(const char *)a3;
+- (id)feedbackForEventId:(unint64_t)id;
+- (unint64_t)obtainEventId:(id)id;
+- (void)_createReply:(id)reply forConnection:(id)connection;
+- (void)retireEventId:(unint64_t)id;
+- (void)sendReplyInfo:(id)info onConnection:(id)connection withErrCode:(unint64_t)code forId:(unint64_t)id name:(char *)name date:(id)date reason:(char *)reason reasonCode:(unint64_t)self0 info:(id)self1;
+- (void)setListeningPort:(const char *)port;
 @end
 
 @implementation ManagedEventTransport
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __39__ManagedEventTransport_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_24 != -1)
   {
     dispatch_once(&sharedInstance_pred_24, block);
@@ -71,27 +71,27 @@ uint64_t __39__ManagedEventTransport_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)sendReplyInfo:(id)a3 onConnection:(id)a4 withErrCode:(unint64_t)a5 forId:(unint64_t)a6 name:(char *)a7 date:(id)a8 reason:(char *)a9 reasonCode:(unint64_t)a10 info:(id)a11
+- (void)sendReplyInfo:(id)info onConnection:(id)connection withErrCode:(unint64_t)code forId:(unint64_t)id name:(char *)name date:(id)date reason:(char *)reason reasonCode:(unint64_t)self0 info:(id)self1
 {
-  v16 = a9;
+  reasonCopy = reason;
   v42 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
+  infoCopy = info;
+  connectionCopy = connection;
+  dateCopy = date;
   v20 = a11;
-  if (a7)
+  if (name)
   {
-    v21 = a7;
+    nameCopy = name;
   }
 
   else
   {
-    v21 = "nil-name";
+    nameCopy = "nil-name";
   }
 
-  if (!a9)
+  if (!reason)
   {
-    v16 = "nil-reason";
+    reasonCopy = "nil-reason";
   }
 
   if (v20)
@@ -104,9 +104,9 @@ uint64_t __39__ManagedEventTransport_sharedInstance__block_invoke(uint64_t a1)
     v22 = MEMORY[0x277CBEC10];
   }
 
-  if (!v19)
+  if (!dateCopy)
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
+    dateCopy = [MEMORY[0x277CBEAA8] date];
   }
 
   v23 = evaluationLogHandle;
@@ -115,17 +115,17 @@ uint64_t __39__ManagedEventTransport_sharedInstance__block_invoke(uint64_t a1)
     v24 = v23;
     v25 = [v22 description];
     v34 = 134218754;
-    v35 = a5;
+    codeCopy = code;
     v36 = 2080;
-    v37 = v21;
+    v37 = nameCopy;
     v38 = 2080;
-    v39 = v16;
+    v39 = reasonCopy;
     v40 = 2080;
-    v41 = [v25 UTF8String];
+    uTF8String = [v25 UTF8String];
     _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_INFO, "Reply with err %lld name %s reason %s info %s", &v34, 0x2Au);
   }
 
-  if (!a5)
+  if (!code)
   {
     v26 = xpc_array_create(0, 0);
     if (v26)
@@ -134,47 +134,47 @@ uint64_t __39__ManagedEventTransport_sharedInstance__block_invoke(uint64_t a1)
       v28 = v27;
       if (v27)
       {
-        xpc_dictionary_set_uint64(v27, managed_event_key_seqno, a6);
-        xpc_dictionary_set_string(v28, managed_event_key_event_type, v21);
+        xpc_dictionary_set_uint64(v27, managed_event_key_seqno, id);
+        xpc_dictionary_set_string(v28, managed_event_key_event_type, nameCopy);
         v29 = managed_event_key_timestamp;
-        [v19 timeIntervalSinceReferenceDate];
+        [dateCopy timeIntervalSinceReferenceDate];
         xpc_dictionary_set_double(v28, v29, v30);
-        xpc_dictionary_set_string(v28, managed_event_key_reason_string, v16);
-        xpc_dictionary_set_uint64(v28, managed_event_key_reason_code, a10);
+        xpc_dictionary_set_string(v28, managed_event_key_reason_string, reasonCopy);
+        xpc_dictionary_set_uint64(v28, managed_event_key_reason_code, reasonCode);
         v31 = managed_event_key_additional_info;
         v32 = _CFXPCCreateXPCMessageWithCFObject();
         xpc_dictionary_set_value(v28, v31, v32);
 
         xpc_array_append_value(v26, v28);
-        xpc_dictionary_set_value(v17, managed_event_key_event_data, v26);
-        a5 = 0;
+        xpc_dictionary_set_value(infoCopy, managed_event_key_event_data, v26);
+        code = 0;
       }
 
       else
       {
-        a5 = 12;
+        code = 12;
       }
     }
 
     else
     {
-      a5 = 12;
+      code = 12;
     }
   }
 
-  xpc_dictionary_set_uint64(v17, managed_event_key_error, a5);
-  xpc_connection_send_message(v18, v17);
+  xpc_dictionary_set_uint64(infoCopy, managed_event_key_error, code);
+  xpc_connection_send_message(connectionCopy, infoCopy);
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createReply:(id)a3 forConnection:(id)a4
+- (void)_createReply:(id)reply forConnection:(id)connection
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  reply = xpc_dictionary_create_reply(v6);
-  uint64 = xpc_dictionary_get_uint64(v6, managed_event_key_type);
+  replyCopy = reply;
+  connectionCopy = connection;
+  reply = xpc_dictionary_create_reply(replyCopy);
+  uint64 = xpc_dictionary_get_uint64(replyCopy, managed_event_key_type);
   v10 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -195,22 +195,22 @@ LABEL_27:
         *buf = 134218240;
         v33 = uint64;
         v34 = 2048;
-        v35 = reply;
+        replyCopy2 = reply;
         _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "processed request: %lld, reply at %p", buf, 0x16u);
       }
 
-      xpc_connection_send_message(v7, reply);
+      xpc_connection_send_message(connectionCopy, reply);
       goto LABEL_30;
     }
 
-    v11 = xpc_dictionary_get_uint64(v6, managed_event_key_seqno);
+    v11 = xpc_dictionary_get_uint64(replyCopy, managed_event_key_seqno);
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v11];
     if (v11 >= 0x3E9)
     {
       v13 = [(NSMutableDictionary *)self->_dynamicEventHandlers objectForKey:v12];
       if (v13)
       {
-        [v13 populateReply:reply ForId:v11 Count:{xpc_dictionary_get_uint64(v6, managed_event_key_howmany)}];
+        [v13 populateReply:reply ForId:v11 Count:{xpc_dictionary_get_uint64(replyCopy, managed_event_key_howmany)}];
       }
 
       else
@@ -228,7 +228,7 @@ LABEL_27:
       goto LABEL_26;
     }
 
-    if (xpc_dictionary_get_uint64(v6, managed_event_key_howmany) == 1)
+    if (xpc_dictionary_get_uint64(replyCopy, managed_event_key_howmany) == 1)
     {
       v15 = self->_staticEventHandlers;
       objc_sync_enter(v15);
@@ -237,8 +237,8 @@ LABEL_27:
 
       if (v16)
       {
-        string = xpc_dictionary_get_string(v6, managed_event_key_context);
-        uuid = xpc_dictionary_get_uuid(v6, managed_event_key_uuid);
+        string = xpc_dictionary_get_string(replyCopy, managed_event_key_context);
+        uuid = xpc_dictionary_get_uuid(replyCopy, managed_event_key_uuid);
         if (uuid)
         {
           uuid = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:uuid];
@@ -250,7 +250,7 @@ LABEL_27:
           *buf = 134218754;
           v33 = v16;
           v34 = 2048;
-          v35 = v11;
+          replyCopy2 = v11;
           v36 = 2080;
           v37 = string;
           v38 = 2112;
@@ -264,9 +264,9 @@ LABEL_27:
         v26[3] = &unk_27898D658;
         v31 = v11;
         v27 = v16;
-        v28 = self;
-        v29 = reply;
-        v30 = v7;
+        selfCopy = self;
+        replyCopy3 = reply;
+        v30 = connectionCopy;
         v20 = v16;
         [v20 generateInfoForId:v11 context:string uuid:uuid completionBlock:v26];
 
@@ -355,10 +355,10 @@ void __52__ManagedEventTransport__createReply_forConnection___block_invoke(uint6
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setListeningPort:(const char *)a3
+- (void)setListeningPort:(const char *)port
 {
   v16 = *MEMORY[0x277D85DE8];
-  mach_service = xpc_connection_create_mach_service(a3, MEMORY[0x277D85CD0], 1uLL);
+  mach_service = xpc_connection_create_mach_service(port, MEMORY[0x277D85CD0], 1uLL);
   listener = self->_listener;
   self->_listener = mach_service;
 
@@ -369,7 +369,7 @@ void __52__ManagedEventTransport__createReply_forConnection___block_invoke(uint6
     *buf = 134218242;
     v13 = v8;
     v14 = 2080;
-    v15 = a3;
+    portCopy = port;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "listener %p set for port %s", buf, 0x16u);
   }
 
@@ -452,7 +452,7 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
   return result;
 }
 
-- (unint64_t)obtainEventId:(id)a3
+- (unint64_t)obtainEventId:(id)id
 {
   event_id = self->_event_id;
   v5 = __CFADD__(event_id, 1);
@@ -469,28 +469,28 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
 
   self->_event_id = v7;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a3;
+  idCopy = id;
   v10 = [v8 stringWithFormat:@"%lld", v7];
-  [(NSMutableDictionary *)self->_dynamicEventHandlers setObject:v9 forKey:v10];
+  [(NSMutableDictionary *)self->_dynamicEventHandlers setObject:idCopy forKey:v10];
 
   v11 = self->_event_id;
   return v11;
 }
 
-- (void)retireEventId:(unint64_t)a3
+- (void)retireEventId:(unint64_t)id
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", id];
   [(NSMutableDictionary *)self->_dynamicEventHandlers removeObjectForKey:v4];
 }
 
-- (id)feedbackForEventId:(unint64_t)a3
+- (id)feedbackForEventId:(unint64_t)id
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", id];
   v6 = [(NSMutableDictionary *)self->_dynamicEventHandlers objectForKey:v5];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 feedbackForEventId:a3];
+    v8 = [v6 feedbackForEventId:id];
   }
 
   else
@@ -501,13 +501,13 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
   return v8;
 }
 
-- (BOOL)setInfoProvider:(id)a3 forId:(unint64_t)a4
+- (BOOL)setInfoProvider:(id)provider forId:(unint64_t)id
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 - 1001 > 0xFFFFFFFFFFFFFC17)
+  providerCopy = provider;
+  if (id - 1001 > 0xFFFFFFFFFFFFFC17)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", a4];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", id];
     v10 = self->_staticEventHandlers;
     objc_sync_enter(v10);
     v11 = [(NSMutableDictionary *)self->_staticEventHandlers objectForKey:v9];
@@ -519,7 +519,7 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
       if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v16 = a4;
+        idCopy3 = id;
         _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_ERROR, "duplicate request for managed event id %lld", buf, 0xCu);
       }
     }
@@ -529,13 +529,13 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
       if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218240;
-        v16 = v6;
+        idCopy3 = providerCopy;
         v17 = 2048;
-        v18 = a4;
+        idCopy2 = id;
         _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "Setting provider %p for key %lld", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_staticEventHandlers setObject:v6 forKey:v9];
+      [(NSMutableDictionary *)self->_staticEventHandlers setObject:providerCopy forKey:v9];
     }
 
     objc_sync_exit(v10);
@@ -547,7 +547,7 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v16 = a4;
+      idCopy3 = id;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "request for out of range managed event id %lld", buf, 0xCu);
     }
 
@@ -558,42 +558,42 @@ uint64_t __42__ManagedEventTransport_setListeningPort___block_invoke_2(uint64_t 
   return v8;
 }
 
-+ (unint64_t)obtainEventId:(id)a3
++ (unint64_t)obtainEventId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[ManagedEventTransport sharedInstance];
-  v5 = [v4 obtainEventId:v3];
+  v5 = [v4 obtainEventId:idCopy];
 
   return v5;
 }
 
-+ (void)retireEventId:(unint64_t)a3
++ (void)retireEventId:(unint64_t)id
 {
   v4 = +[ManagedEventTransport sharedInstance];
-  [v4 retireEventId:a3];
+  [v4 retireEventId:id];
 }
 
-+ (void)setListeningPort:(const char *)a3
++ (void)setListeningPort:(const char *)port
 {
   v4 = +[ManagedEventTransport sharedInstance];
-  [v4 setListeningPort:a3];
+  [v4 setListeningPort:port];
 }
 
-+ (id)feedbackForEventId:(unint64_t)a3
++ (id)feedbackForEventId:(unint64_t)id
 {
   v4 = +[ManagedEventTransport sharedInstance];
-  v5 = [v4 feedbackForEventId:a3];
+  v5 = [v4 feedbackForEventId:id];
 
   return v5;
 }
 
-+ (BOOL)setInfoProvider:(id)a3 forId:(unint64_t)a4
++ (BOOL)setInfoProvider:(id)provider forId:(unint64_t)id
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = +[ManagedEventTransport sharedInstance];
-  LOBYTE(a4) = [v6 setInfoProvider:v5 forId:a4];
+  LOBYTE(id) = [v6 setInfoProvider:providerCopy forId:id];
 
-  return a4;
+  return id;
 }
 
 @end

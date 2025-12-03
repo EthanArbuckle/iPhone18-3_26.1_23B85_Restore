@@ -1,33 +1,33 @@
 @interface NSCoder
-- (__n128)decodeDoubleVector3ForKey:(__n128 *)a3@<X8>;
-- (__n128)decodeMatrix4x4ForKey:(void *)a3;
-- (__n128)decodeQuatForKey:(void *)a3;
-- (__n128)decodeVector3ForKey:(void *)a3;
-- (void)encodeDoubleVector3:(id)a3 forKey:;
-- (void)encodeMatrix4x4:(__n128)a3 forKey:(__n128)a4;
-- (void)encodeQuat:(uint64_t)a3 forKey:(void *)a4;
-- (void)encodeVector3:(id)a3 forKey:;
+- (__n128)decodeDoubleVector3ForKey:(__n128 *)key@<X8>;
+- (__n128)decodeMatrix4x4ForKey:(void *)key;
+- (__n128)decodeQuatForKey:(void *)key;
+- (__n128)decodeVector3ForKey:(void *)key;
+- (void)encodeDoubleVector3:(id)vector3 forKey:;
+- (void)encodeMatrix4x4:(__n128)matrix4x4 forKey:(__n128)key;
+- (void)encodeQuat:(uint64_t)quat forKey:(void *)key;
+- (void)encodeVector3:(id)vector3 forKey:;
 @end
 
 @implementation NSCoder
 
-- (void)encodeMatrix4x4:(__n128)a3 forKey:(__n128)a4
+- (void)encodeMatrix4x4:(__n128)matrix4x4 forKey:(__n128)key
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
+  matrix4x4Copy = matrix4x4;
+  keyCopy = key;
   v13 = a5;
   v8 = a7;
   v9 = [NSData dataWithBytes:&v10 length:64];
-  [a1 encodeObject:v9 forKey:{v8, *&v10, *&v11, *&v12, *&v13}];
+  [self encodeObject:v9 forKey:{v8, *&v10, *&matrix4x4Copy, *&keyCopy, *&v13}];
 }
 
-- (__n128)decodeMatrix4x4ForKey:(void *)a3
+- (__n128)decodeMatrix4x4ForKey:(void *)key
 {
-  v4 = a3;
-  if ([a1 containsValueForKey:v4])
+  keyCopy = key;
+  if ([self containsValueForKey:keyCopy])
   {
-    v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+    v5 = [self decodeObjectOfClass:objc_opt_class() forKey:keyCopy];
     if ([v5 length] <= 0x3F)
     {
       v7 = +[NSAssertionHandler currentHandler];
@@ -51,18 +51,18 @@
   return v12;
 }
 
-- (void)encodeVector3:(id)a3 forKey:
+- (void)encodeVector3:(id)vector3 forKey:
 {
   v7 = v3;
-  v5 = a3;
+  vector3Copy = vector3;
   v6 = [NSData dataWithBytes:&v7 length:16];
-  [(NSCoder *)self encodeObject:v6 forKey:v5, v7];
+  [(NSCoder *)self encodeObject:v6 forKey:vector3Copy, v7];
 }
 
-- (__n128)decodeVector3ForKey:(void *)a3
+- (__n128)decodeVector3ForKey:(void *)key
 {
-  v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:keyCopy];
   if ([v5 length] <= 0xF)
   {
     v7 = +[NSAssertionHandler currentHandler];
@@ -78,18 +78,18 @@
   return v9;
 }
 
-- (void)encodeQuat:(uint64_t)a3 forKey:(void *)a4
+- (void)encodeQuat:(uint64_t)quat forKey:(void *)key
 {
   v7 = a2;
-  v5 = a4;
+  keyCopy = key;
   v6 = [NSData dataWithBytes:&v7 length:16];
-  [a1 encodeObject:v6 forKey:{v5, *&v7}];
+  [self encodeObject:v6 forKey:{keyCopy, *&v7}];
 }
 
-- (__n128)decodeQuatForKey:(void *)a3
+- (__n128)decodeQuatForKey:(void *)key
 {
-  v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:keyCopy];
   if ([v5 length] <= 0xF)
   {
     v7 = +[NSAssertionHandler currentHandler];
@@ -103,20 +103,20 @@
   return v9;
 }
 
-- (void)encodeDoubleVector3:(id)a3 forKey:
+- (void)encodeDoubleVector3:(id)vector3 forKey:
 {
-  v5 = *(a3 + 1);
-  v8 = *a3;
+  v5 = *(vector3 + 1);
+  v8 = *vector3;
   v9 = v5;
   v6 = v3;
   v7 = [NSData dataWithBytes:&v8 length:32];
   [(NSCoder *)self encodeObject:v7 forKey:v6, v8, v9];
 }
 
-- (__n128)decodeDoubleVector3ForKey:(__n128 *)a3@<X8>
+- (__n128)decodeDoubleVector3ForKey:(__n128 *)key@<X8>
 {
   v5 = a2;
-  v6 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v5];
+  v6 = [self decodeObjectOfClass:objc_opt_class() forKey:v5];
   if ([v6 length] <= 0x1F)
   {
     v8 = +[NSAssertionHandler currentHandler];
@@ -131,8 +131,8 @@
   v11 = v12;
 
   result = v11;
-  *a3 = v11;
-  a3[1] = v10;
+  *key = v11;
+  key[1] = v10;
   return result;
 }
 

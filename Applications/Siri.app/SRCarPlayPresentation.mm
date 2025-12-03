@@ -1,58 +1,58 @@
 @interface SRCarPlayPresentation
-- (BOOL)didReceiveUpdateVisualResponseCommand:(id)a3;
+- (BOOL)didReceiveUpdateVisualResponseCommand:(id)command;
 - (BOOL)shouldProceedToNextCommandAtSpeechSynthesisEnd;
-- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)a3;
+- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)state;
 - (SRCarPlayPresentation)init;
-- (SRCarPlayPresentation)initWithDelegate:(id)a3 dataSource:(id)a4;
+- (SRCarPlayPresentation)initWithDelegate:(id)delegate dataSource:(id)source;
 - (SiriUIPresentationDataSource)dataSource;
 - (SiriUIPresentationDelegate)delegate;
 - (id)viewController;
 - (void)autodismiss;
-- (void)configureForRequestOptions:(id)a3;
-- (void)conversation:(id)a3 didChangeWithTransaction:(id)a4;
+- (void)configureForRequestOptions:(id)options;
+- (void)conversation:(id)conversation didChangeWithTransaction:(id)transaction;
 - (void)dealloc;
-- (void)handleRequestEndBehavior:(id)a3 isAttending:(BOOL)a4;
+- (void)handleRequestEndBehavior:(id)behavior isAttending:(BOOL)attending;
 - (void)handleRequestToCeaseAttending;
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4;
-- (void)siriDidDeactivateWithCompletion:(id)a3;
-- (void)siriDidOpenURL:(id)a3 bundleId:(id)a4 inPlace:(BOOL)a5;
-- (void)siriDidStopSpeakingWithIdentifier:(id)a3 speechQueueIsEmpty:(BOOL)a4;
-- (void)siriDidTransitionFromState:(int64_t)a3 event:(int64_t)a4;
-- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)a3 isAttending:(BOOL)a4;
-- (void)siriRequestWillStartWithRequestOptions:(id)a3;
-- (void)siriWillBePresented:(int64_t)a3;
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion;
+- (void)siriDidDeactivateWithCompletion:(id)completion;
+- (void)siriDidOpenURL:(id)l bundleId:(id)id inPlace:(BOOL)place;
+- (void)siriDidStopSpeakingWithIdentifier:(id)identifier speechQueueIsEmpty:(BOOL)empty;
+- (void)siriDidTransitionFromState:(int64_t)state event:(int64_t)event;
+- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)change isAttending:(BOOL)attending;
+- (void)siriRequestWillStartWithRequestOptions:(id)options;
+- (void)siriWillBePresented:(int64_t)presented;
 @end
 
 @implementation SRCarPlayPresentation
 
 - (void)autodismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000077AC();
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  [v3 cancelPreviousPerformRequestsWithTarget:v4];
-  v5.receiver = v4;
+  selfCopy = self;
+  [v3 cancelPreviousPerformRequestsWithTarget:selfCopy];
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for SRCarPlayPresentation();
   [(SRCarPlayPresentation *)&v5 dealloc];
 }
 
-- (SRCarPlayPresentation)initWithDelegate:(id)a3 dataSource:(id)a4
+- (SRCarPlayPresentation)initWithDelegate:(id)delegate dataSource:(id)source
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   return sub_100007FAC();
 }
 
-- (void)configureForRequestOptions:(id)a3
+- (void)configureForRequestOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  sub_100008C90(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100008C90(optionsCopy);
 }
 
 - (id)viewController
@@ -67,9 +67,9 @@
   return result;
 }
 
-- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)a3
+- (BOOL)shouldResumeInterruptedAudioPlaybackForAttendingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return *(self + OBJC_IVAR___SRCarPlayPresentation_shouldResumeMediaOnIdle);
   }
@@ -80,24 +80,24 @@
   }
 }
 
-- (void)conversation:(id)a3 didChangeWithTransaction:(id)a4
+- (void)conversation:(id)conversation didChangeWithTransaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_10000BADC(a3, a4);
+  conversationCopy = conversation;
+  transactionCopy = transaction;
+  selfCopy = self;
+  sub_10000BADC(conversation, transaction);
 }
 
-- (void)siriRequestWillStartWithRequestOptions:(id)a3
+- (void)siriRequestWillStartWithRequestOptions:(id)options
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000E048(a3);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10000E048(options);
 }
 
-- (void)siriDidStopSpeakingWithIdentifier:(id)a3 speechQueueIsEmpty:(BOOL)a4
+- (void)siriDidStopSpeakingWithIdentifier:(id)identifier speechQueueIsEmpty:(BOOL)empty
 {
-  if (a3)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -112,9 +112,9 @@
   v9 = *(self + OBJC_IVAR___SRCarPlayPresentation_carPlayViewController);
   if (v9)
   {
-    v10 = self;
+    selfCopy = self;
     v11 = v9;
-    sub_10000E9A0(v6, v8, a4);
+    sub_10000E9A0(v6, v8, empty);
   }
 
   else
@@ -123,16 +123,16 @@
   }
 }
 
-- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)a3 isAttending:(BOOL)a4
+- (void)siriIsIdleAndQuietStatusDidChange:(BOOL)change isAttending:(BOOL)attending
 {
-  v6 = self;
-  sub_10000F39C(a3, a4);
+  selfCopy = self;
+  sub_10000F39C(change, attending);
 }
 
-- (void)siriDidTransitionFromState:(int64_t)a3 event:(int64_t)a4
+- (void)siriDidTransitionFromState:(int64_t)state event:(int64_t)event
 {
-  v6 = self;
-  sub_10000FB68(a3, a4);
+  selfCopy = self;
+  sub_10000FB68(state, event);
 }
 
 - (SiriUIPresentationDelegate)delegate
@@ -156,23 +156,23 @@
   return result;
 }
 
-- (BOOL)didReceiveUpdateVisualResponseCommand:(id)a3
+- (BOOL)didReceiveUpdateVisualResponseCommand:(id)command
 {
-  v5 = a3;
-  v6 = self;
-  sub_10009A604(a3);
+  commandCopy = command;
+  selfCopy = self;
+  sub_10009A604(command);
 
   return 1;
 }
 
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = sub_100093B6C(&qword_10018DFE0);
   __chkstk_darwin(v8 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   v12[2] = x;
   v12[3] = y;
@@ -190,29 +190,29 @@
   v15[3] = 0;
   v15[4] = &unk_1000F7160;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_1000A80AC(0, 0, v10, &unk_1000F7550, v15);
 }
 
 - (BOOL)shouldProceedToNextCommandAtSpeechSynthesisEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009A968();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)handleRequestEndBehavior:(id)a3 isAttending:(BOOL)a4
+- (void)handleRequestEndBehavior:(id)behavior isAttending:(BOOL)attending
 {
-  v6 = a3;
-  v7 = self;
-  sub_10009B384(v6, a4);
+  behaviorCopy = behavior;
+  selfCopy = self;
+  sub_10009B384(behaviorCopy, attending);
 }
 
-- (void)siriDidDeactivateWithCompletion:(id)a3
+- (void)siriDidDeactivateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -224,23 +224,23 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_10009B9C4(v5);
   sub_10009E660(v5);
 }
 
-- (void)siriWillBePresented:(int64_t)a3
+- (void)siriWillBePresented:(int64_t)presented
 {
-  v4 = self;
-  sub_10009BB3C(a3);
+  selfCopy = self;
+  sub_10009BB3C(presented);
 }
 
-- (void)siriDidOpenURL:(id)a3 bundleId:(id)a4 inPlace:(BOOL)a5
+- (void)siriDidOpenURL:(id)l bundleId:(id)id inPlace:(BOOL)place
 {
   v8 = sub_100093B6C(&unk_10018E310);
   __chkstk_darwin(v8 - 8);
   v10 = &v14 - v9;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = type metadata accessor for URL();
@@ -253,12 +253,12 @@
     (*(*(v12 - 8) + 56))(v10, 1, 1, v12);
   }
 
-  if (a4)
+  if (id)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v13 = self;
+  selfCopy = self;
   sub_10009E3C4(v10);
 
   sub_10009E588(v10);
@@ -266,7 +266,7 @@
 
 - (void)handleRequestToCeaseAttending
 {
-  v2 = self;
+  selfCopy = self;
   sub_10009C890();
 }
 

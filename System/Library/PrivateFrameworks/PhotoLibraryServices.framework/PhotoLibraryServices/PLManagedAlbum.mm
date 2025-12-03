@@ -1,39 +1,39 @@
 @interface PLManagedAlbum
 + (id)validKindsForPersistence;
 + (void)clearAssetOrderByAlbumUUIDs;
-- (BOOL)_shouldCopyAssetToCameraRollBeforeAdding:(id)a3;
-- (BOOL)canPerformEditOperation:(unint64_t)a3;
+- (BOOL)_shouldCopyAssetToCameraRollBeforeAdding:(id)adding;
+- (BOOL)canPerformEditOperation:(unint64_t)operation;
 - (BOOL)isEmpty;
 - (BOOL)isValidForPersistence;
 - (NSMutableOrderedSet)userEditableAssets;
 - (id)_assetOrderByAssetUUID;
 - (id)_keysToBeObserved;
-- (id)_orderComparisonValueForAsset:(id)a3 iTunesLookupOrder:(id)a4;
+- (id)_orderComparisonValueForAsset:(id)asset iTunesLookupOrder:(id)order;
 - (id)assetOrderByAbumUUIDs;
 - (id)descriptionOfAssetOrderValues;
-- (id)filteredIndexesForPredicate:(id)a3;
-- (id)internalUserEditableAssetsAtIndexes:(id)a3;
+- (id)filteredIndexesForPredicate:(id)predicate;
+- (id)internalUserEditableAssetsAtIndexes:(id)indexes;
 - (id)listOfLastModifiedDateChangeProperties;
-- (id)objectInInternalUserEditableAssetsAtIndex:(unint64_t)a3;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)objectInInternalUserEditableAssetsAtIndex:(unint64_t)index;
+- (id)payloadForChangedKeys:(id)keys;
 - (unint64_t)_albumStandInCount;
 - (unint64_t)approximateCount;
 - (unint64_t)assetsCount;
 - (unint64_t)countOfInternalUserEditableAssets;
-- (unint64_t)indexInInternalUserEditableAssetsOfObject:(id)a3;
-- (void)_insertInternalUserEditableAssets:(id)a3 atIndexes:(id)a4 assetsSharingInfos:(id)a5 customExportsInfo:(id)a6 trimmedVideoPathInfo:(id)a7 commentText:(id)a8;
-- (void)_removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:(id)a3;
-- (void)addAssetUsingiTunesAlbumOrder:(id)a3;
+- (unint64_t)indexInInternalUserEditableAssetsOfObject:(id)object;
+- (void)_insertInternalUserEditableAssets:(id)assets atIndexes:(id)indexes assetsSharingInfos:(id)infos customExportsInfo:(id)info trimmedVideoPathInfo:(id)pathInfo commentText:(id)text;
+- (void)_removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:(id)context;
+- (void)addAssetUsingiTunesAlbumOrder:(id)order;
 - (void)didSave;
-- (void)insertAssets:(id)a3 atIndexes:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3;
+- (void)insertAssets:(id)assets atIndexes:(id)indexes;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager;
 - (void)prepareForDeletion;
 - (void)registerForChanges;
-- (void)removeAssetsAtIndexes:(id)a3;
-- (void)removeInternalUserEditableAssetsAtIndexes:(id)a3;
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3;
-- (void)replaceAssetsAtIndexes:(id)a3 withAssets:(id)a4;
+- (void)removeAssetsAtIndexes:(id)indexes;
+- (void)removeInternalUserEditableAssetsAtIndexes:(id)indexes;
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager;
+- (void)replaceAssetsAtIndexes:(id)indexes withAssets:(id)assets;
 - (void)sortAssetsUsingiTunesAlbumOrder;
 - (void)unregisterForChanges;
 - (void)willSave;
@@ -41,21 +41,21 @@
 
 @implementation PLManagedAlbum
 
-- (id)filteredIndexesForPredicate:(id)a3
+- (id)filteredIndexesForPredicate:(id)predicate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLManagedAlbum *)self managedObjectContext];
+  predicateCopy = predicate;
+  managedObjectContext = [(PLManagedAlbum *)self managedObjectContext];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [(PLManagedAlbum *)self objectID];
-  v11 = [v9 predicateWithFormat:@"albums contains %@", v10];
+  objectID = [(PLManagedAlbum *)self objectID];
+  v11 = [v9 predicateWithFormat:@"albums contains %@", objectID];
 
   v12 = MEMORY[0x1E696AB28];
-  v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v11, v4, 0}];
+  v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v11, predicateCopy, 0}];
 
   v14 = [v12 andPredicateWithSubpredicates:v13];
 
@@ -67,22 +67,22 @@
   [v8 setResultType:1];
   [v8 setIncludesPropertyValues:0];
   v22 = 0;
-  v17 = [v5 executeFetchRequest:v8 error:&v22];
+  v17 = [managedObjectContext executeFetchRequest:v8 error:&v22];
   v18 = v22;
   if (v17)
   {
-    v19 = [(PLManagedAlbum *)self assets];
+    assets = [(PLManagedAlbum *)self assets];
     v20 = indexSetForManagedObjectsMatchingIDs();
   }
 
   else
   {
-    v19 = PLBackendGetLog();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    assets = PLBackendGetLog();
+    if (os_log_type_enabled(assets, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v24 = v18;
-      _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Failed to get assets in album: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, assets, OS_LOG_TYPE_ERROR, "Failed to get assets in album: %@", buf, 0xCu);
     }
 
     v20 = 0;
@@ -91,29 +91,29 @@
   return v20;
 }
 
-- (void)addAssetUsingiTunesAlbumOrder:(id)a3
+- (void)addAssetUsingiTunesAlbumOrder:(id)order
 {
-  v4 = a3;
-  if (!v4)
+  orderCopy = order;
+  if (!orderCopy)
   {
     goto LABEL_22;
   }
 
-  v22 = v4;
-  v5 = [(PLManagedAlbum *)self _assetOrderByAssetUUID];
-  v6 = [(PLManagedAlbum *)self mutableAssets];
-  v7 = [(PLManagedAlbum *)self _orderComparisonValueForAsset:v22 iTunesLookupOrder:v5];
-  v8 = [v6 count];
+  v22 = orderCopy;
+  _assetOrderByAssetUUID = [(PLManagedAlbum *)self _assetOrderByAssetUUID];
+  mutableAssets = [(PLManagedAlbum *)self mutableAssets];
+  v7 = [(PLManagedAlbum *)self _orderComparisonValueForAsset:v22 iTunesLookupOrder:_assetOrderByAssetUUID];
+  v8 = [mutableAssets count];
   if (!v8 || !v7)
   {
-    [v6 addObject:v22];
+    [mutableAssets addObject:v22];
     goto LABEL_21;
   }
 
   v9 = v8;
   v10 = v8 - 1;
-  v11 = [v6 objectAtIndex:v8 - 1];
-  v12 = [(PLManagedAlbum *)self _orderComparisonValueForAsset:v11 iTunesLookupOrder:v5];
+  v11 = [mutableAssets objectAtIndex:v8 - 1];
+  v12 = [(PLManagedAlbum *)self _orderComparisonValueForAsset:v11 iTunesLookupOrder:_assetOrderByAssetUUID];
   if ([v12 compare:v7] == -1)
   {
     goto LABEL_18;
@@ -134,9 +134,9 @@
   {
     v16 = v13;
     v17 = v14 + (v15 - v14) / 2;
-    v13 = [v6 objectAtIndex:v17];
+    v13 = [mutableAssets objectAtIndex:v17];
 
-    v18 = [(PLManagedAlbum *)self _orderComparisonValueForAsset:v13 iTunesLookupOrder:v5];
+    v18 = [(PLManagedAlbum *)self _orderComparisonValueForAsset:v13 iTunesLookupOrder:_assetOrderByAssetUUID];
     v19 = [v18 compare:v7];
     if (v19 == -1)
     {
@@ -164,35 +164,35 @@ LABEL_16:
 LABEL_17:
   if ((v17 & ~(v17 >> 63)) <= v10)
   {
-    [v6 insertObject:v22 atIndex:?];
+    [mutableAssets insertObject:v22 atIndex:?];
   }
 
   else
   {
 LABEL_18:
-    [v6 addObject:v22];
+    [mutableAssets addObject:v22];
   }
 
 LABEL_21:
-  v4 = v22;
+  orderCopy = v22;
 LABEL_22:
 }
 
 - (void)sortAssetsUsingiTunesAlbumOrder
 {
-  v3 = [(PLManagedAlbum *)self mutableAssets];
-  v4 = [(PLManagedAlbum *)self _assetOrderByAssetUUID];
+  mutableAssets = [(PLManagedAlbum *)self mutableAssets];
+  _assetOrderByAssetUUID = [(PLManagedAlbum *)self _assetOrderByAssetUUID];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke;
   v10 = &unk_1E7567600;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = _assetOrderByAssetUUID;
+  v5 = _assetOrderByAssetUUID;
   v6 = _Block_copy(&v7);
-  if (([v3 pl_isSortedUsingComparator:{v6, v7, v8, v9, v10, v11}] & 1) == 0)
+  if (([mutableAssets pl_isSortedUsingComparator:{v6, v7, v8, v9, v10, selfCopy}] & 1) == 0)
   {
-    [v3 sortUsingComparator:v6];
+    [mutableAssets sortUsingComparator:v6];
   }
 }
 
@@ -210,16 +210,16 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
 
 - (id)_assetOrderByAssetUUID
 {
-  v3 = [(PLManagedAlbum *)self uuid];
-  if (v3)
+  uuid = [(PLManagedAlbum *)self uuid];
+  if (uuid)
   {
-    v4 = [(PLManagedAlbum *)self assetOrderByAbumUUIDs];
-    v5 = [v4 objectForKey:v3];
+    assetOrderByAbumUUIDs = [(PLManagedAlbum *)self assetOrderByAbumUUIDs];
+    v5 = [assetOrderByAbumUUIDs objectForKey:uuid];
 
     if (!v5)
     {
-      v6 = [(PLManagedAlbum *)self title];
-      NSLog(&cfstr_WarningDidNotF.isa, v6, v3);
+      title = [(PLManagedAlbum *)self title];
+      NSLog(&cfstr_WarningDidNotF.isa, title, uuid);
     }
   }
 
@@ -231,30 +231,30 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
   return v5;
 }
 
-- (id)_orderComparisonValueForAsset:(id)a3 iTunesLookupOrder:(id)a4
+- (id)_orderComparisonValueForAsset:(id)asset iTunesLookupOrder:(id)order
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 uuid];
-  v8 = v7;
-  if (v5 && v7)
+  orderCopy = order;
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  v8 = uuid;
+  if (orderCopy && uuid)
   {
-    v9 = [v6 uuid];
+    uuid2 = [assetCopy uuid];
 
-    v10 = [v5 objectForKey:v9];
+    dateCreated = [orderCopy objectForKey:uuid2];
 
-    if (!v10)
+    if (!dateCreated)
     {
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+      dateCreated = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(orderCopy, "count")}];
     }
   }
 
   else
   {
-    v10 = [v6 dateCreated];
+    dateCreated = [assetCopy dateCreated];
   }
 
-  return v10;
+  return dateCreated;
 }
 
 - (id)assetOrderByAbumUUIDs
@@ -263,20 +263,20 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
   if (!_assetOrderByAlbumUUIDs)
   {
     v4 = MEMORY[0x1E695DF20];
-    v5 = [(PLGenericAlbum *)self photoLibrary];
-    v6 = [v5 pathManager];
-    v7 = [v6 pathToAssetAlbumOrderStructure];
-    v8 = [v4 dictionaryWithContentsOfFile:v7];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    pathToAssetAlbumOrderStructure = [pathManager pathToAssetAlbumOrderStructure];
+    v8 = [v4 dictionaryWithContentsOfFile:pathToAssetAlbumOrderStructure];
     v9 = _assetOrderByAlbumUUIDs;
     _assetOrderByAlbumUUIDs = v8;
 
     v3 = _assetOrderByAlbumUUIDs;
     if (!_assetOrderByAlbumUUIDs)
     {
-      v10 = [(PLGenericAlbum *)self photoLibrary];
-      v11 = [v10 pathManager];
-      v12 = [v11 pathToAssetAlbumOrderStructure];
-      NSLog(&cfstr_ErrorDidNotLoa.isa, v12);
+      photoLibrary2 = [(PLGenericAlbum *)self photoLibrary];
+      pathManager2 = [photoLibrary2 pathManager];
+      pathToAssetAlbumOrderStructure2 = [pathManager2 pathToAssetAlbumOrderStructure];
+      NSLog(&cfstr_ErrorDidNotLoa.isa, pathToAssetAlbumOrderStructure2);
 
       v3 = _assetOrderByAlbumUUIDs;
     }
@@ -285,38 +285,38 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
   return v3;
 }
 
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLManagedAlbum.m" lineNumber:651 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedAlbum.m" lineNumber:651 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedAlbumMetadata alloc] initWithPLGenericAlbum:self pathManager:v8];
     [(PLPersistedAlbumMetadata *)v6 removePersistedAlbumData];
   }
 }
 
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLManagedAlbum.m" lineNumber:643 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedAlbum.m" lineNumber:643 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedAlbumMetadata alloc] initWithPLGenericAlbum:self pathManager:v8];
     [(PLPersistedAlbumMetadata *)v6 persistAlbumData];
@@ -325,57 +325,57 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
 
 - (BOOL)isValidForPersistence
 {
-  v3 = [objc_opt_class() validKindsForPersistence];
-  v4 = [(PLManagedAlbum *)self kind];
-  v5 = [v3 containsObject:v4];
+  validKindsForPersistence = [objc_opt_class() validKindsForPersistence];
+  kind = [(PLManagedAlbum *)self kind];
+  v5 = [validKindsForPersistence containsObject:kind];
 
   return v5;
 }
 
-- (void)replaceAssetsAtIndexes:(id)a3 withAssets:(id)a4
+- (void)replaceAssetsAtIndexes:(id)indexes withAssets:(id)assets
 {
-  v6 = a4;
-  v8 = a3;
-  [(PLManagedAlbum *)self willChange:3 valuesAtIndexes:v8 forKey:@"assets"];
-  v7 = [(PLManagedAlbum *)self primitiveAssets];
-  [v7 replaceObjectsAtIndexes:v8 withObjects:v6];
+  assetsCopy = assets;
+  indexesCopy = indexes;
+  [(PLManagedAlbum *)self willChange:3 valuesAtIndexes:indexesCopy forKey:@"assets"];
+  primitiveAssets = [(PLManagedAlbum *)self primitiveAssets];
+  [primitiveAssets replaceObjectsAtIndexes:indexesCopy withObjects:assetsCopy];
 
-  [(PLManagedAlbum *)self didChange:3 valuesAtIndexes:v8 forKey:@"assets"];
+  [(PLManagedAlbum *)self didChange:3 valuesAtIndexes:indexesCopy forKey:@"assets"];
 }
 
-- (void)removeAssetsAtIndexes:(id)a3
+- (void)removeAssetsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  [(PLManagedAlbum *)self willChange:3 valuesAtIndexes:v5 forKey:@"assets"];
-  v4 = [(PLManagedAlbum *)self primitiveAssets];
-  [v4 removeObjectsAtIndexes:v5];
+  indexesCopy = indexes;
+  [(PLManagedAlbum *)self willChange:3 valuesAtIndexes:indexesCopy forKey:@"assets"];
+  primitiveAssets = [(PLManagedAlbum *)self primitiveAssets];
+  [primitiveAssets removeObjectsAtIndexes:indexesCopy];
 
-  [(PLManagedAlbum *)self didChange:3 valuesAtIndexes:v5 forKey:@"assets"];
+  [(PLManagedAlbum *)self didChange:3 valuesAtIndexes:indexesCopy forKey:@"assets"];
 }
 
-- (void)insertAssets:(id)a3 atIndexes:(id)a4
+- (void)insertAssets:(id)assets atIndexes:(id)indexes
 {
-  v8 = a4;
-  v6 = a3;
-  [(PLManagedAlbum *)self willChange:2 valuesAtIndexes:v8 forKey:@"assets"];
-  v7 = [(PLManagedAlbum *)self primitiveAssets];
-  [v7 insertObjects:v6 atIndexes:v8];
+  indexesCopy = indexes;
+  assetsCopy = assets;
+  [(PLManagedAlbum *)self willChange:2 valuesAtIndexes:indexesCopy forKey:@"assets"];
+  primitiveAssets = [(PLManagedAlbum *)self primitiveAssets];
+  [primitiveAssets insertObjects:assetsCopy atIndexes:indexesCopy];
 
-  [(PLManagedAlbum *)self didChange:2 valuesAtIndexes:v8 forKey:@"assets"];
+  [(PLManagedAlbum *)self didChange:2 valuesAtIndexes:indexesCopy forKey:@"assets"];
 }
 
 - (BOOL)isEmpty
 {
   if ([(PLGenericAlbum *)self kindValue]== 4001)
   {
-    v3 = [(PLGenericAlbum *)self photoLibrary];
-    v4 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:v3];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v4 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:photoLibrary];
   }
 
   else if ([(PLGenericAlbum *)self kindValue]== 4003)
   {
-    v3 = [(PLGenericAlbum *)self photoLibrary];
-    v4 = [PLManagedAlbumList importListInPhotoLibrary:v3];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v4 = [PLManagedAlbumList importListInPhotoLibrary:photoLibrary];
   }
 
   else
@@ -387,14 +387,14 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
       return [(PLGenericAlbum *)&v8 isEmpty];
     }
 
-    v3 = [(PLGenericAlbum *)self photoLibrary];
-    v4 = [PLManagedAlbumList eventListInPhotoLibrary:v3];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v4 = [PLManagedAlbumList eventListInPhotoLibrary:photoLibrary];
   }
 
   v5 = v4;
 
-  v6 = [v5 isEmpty];
-  return v6;
+  isEmpty = [v5 isEmpty];
+  return isEmpty;
 }
 
 - (unint64_t)assetsCount
@@ -408,8 +408,8 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
   else
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PLManagedAlbum *)self assets];
-    v6 = [v5 count];
+    assets = [(PLManagedAlbum *)self assets];
+    v6 = [assets count];
 
     objc_autoreleasePoolPop(v4);
     return v6;
@@ -430,26 +430,26 @@ uint64_t __49__PLManagedAlbum_sortAssetsUsingiTunesAlbumOrder__block_invoke(uint
 {
   if ([(PLGenericAlbum *)self kindValue]== 4001)
   {
-    v3 = [(PLGenericAlbum *)self photoLibrary];
-    v4 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:v3];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v4 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:photoLibrary];
 LABEL_7:
     v5 = v4;
 
-    v6 = [v5 albumsCount];
-    return v6;
+    albumsCount = [v5 albumsCount];
+    return albumsCount;
   }
 
   if ([(PLGenericAlbum *)self kindValue]== 4003)
   {
-    v3 = [(PLGenericAlbum *)self photoLibrary];
-    v4 = [PLManagedAlbumList importListInPhotoLibrary:v3];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v4 = [PLManagedAlbumList importListInPhotoLibrary:photoLibrary];
     goto LABEL_7;
   }
 
   if ([(PLGenericAlbum *)self kindValue]== 4002)
   {
-    v3 = [(PLGenericAlbum *)self photoLibrary];
-    v4 = [PLManagedAlbumList eventListInPhotoLibrary:v3];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v4 = [PLManagedAlbumList eventListInPhotoLibrary:photoLibrary];
     goto LABEL_7;
   }
 
@@ -476,8 +476,8 @@ LABEL_7:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(PLManagedAlbum *)self _keysToBeObserved];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _keysToBeObserved = [(PLManagedAlbum *)self _keysToBeObserved];
+    v6 = [_keysToBeObserved countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -489,14 +489,14 @@ LABEL_7:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_keysToBeObserved);
           }
 
           [(PLManagedAlbum *)self removeObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v9++) context:objc_opt_class()];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [_keysToBeObserved countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -517,8 +517,8 @@ LABEL_7:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(PLManagedAlbum *)self _keysToBeObserved];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _keysToBeObserved = [(PLManagedAlbum *)self _keysToBeObserved];
+    v4 = [_keysToBeObserved countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -530,14 +530,14 @@ LABEL_7:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_keysToBeObserved);
           }
 
           [(PLManagedAlbum *)self addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v7++) options:3 context:objc_opt_class()];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [_keysToBeObserved countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -569,48 +569,48 @@ LABEL_7:
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if (objc_opt_class() == a6)
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if (objc_opt_class() == context)
   {
 
-    if (v12 == self)
+    if (objectCopy == self)
     {
       if ([(PLManagedAlbum *)self faultingState])
       {
-        [v10 isEqualToString:@"assets"];
+        [pathCopy isEqualToString:@"assets"];
       }
 
       else
       {
-        v13 = [(PLManagedAlbum *)self managedObjectContext];
-        v14 = [v13 hasChanges];
+        managedObjectContext = [(PLManagedAlbum *)self managedObjectContext];
+        hasChanges = [managedObjectContext hasChanges];
 
-        v15 = [v10 isEqualToString:@"assets"];
-        if (v14)
+        v15 = [pathCopy isEqualToString:@"assets"];
+        if (hasChanges)
         {
           v16 = v15;
-          v17 = [(PLManagedAlbum *)self managedObjectContext];
+          managedObjectContext2 = [(PLManagedAlbum *)self managedObjectContext];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v17 mergingChanges];
+            mergingChanges = [managedObjectContext2 mergingChanges];
           }
 
           else
           {
-            v18 = 0;
+            mergingChanges = 0;
           }
 
           if (([(PLManagedAlbum *)self isDeleted]& 1) == 0 && ((v16 ^ 1) & 1) == 0)
           {
-            v19 = [v11 valueForKey:*MEMORY[0x1E696A4E8]];
-            v20 = [v19 unsignedIntegerValue];
+            v19 = [changeCopy valueForKey:*MEMORY[0x1E696A4E8]];
+            unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-            if (!(((v20 & 0xFFFFFFFFFFFFFFFDLL) != 1) | v18 & 1) && [(PLGenericAlbum *)self shouldDeleteWhenEmpty]&& ![(PLManagedAlbum *)self assetsCount])
+            if (!(((unsignedIntegerValue & 0xFFFFFFFFFFFFFFFDLL) != 1) | mergingChanges & 1) && [(PLGenericAlbum *)self shouldDeleteWhenEmpty]&& ![(PLManagedAlbum *)self assetsCount])
             {
               [(PLManagedAlbum *)self setAlbumShouldBeAutomaticallyDeleted:1];
             }
@@ -624,69 +624,69 @@ LABEL_7:
   {
     v21.receiver = self;
     v21.super_class = PLManagedAlbum;
-    [(PLManagedAlbum *)&v21 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(PLManagedAlbum *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)removeInternalUserEditableAssetsAtIndexes:(id)a3
+- (void)removeInternalUserEditableAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PLManagedAlbum *)self mutableAssets];
-  [v5 removeObjectsAtIndexes:v4];
+  indexesCopy = indexes;
+  mutableAssets = [(PLManagedAlbum *)self mutableAssets];
+  [mutableAssets removeObjectsAtIndexes:indexesCopy];
 }
 
-- (void)_insertInternalUserEditableAssets:(id)a3 atIndexes:(id)a4 assetsSharingInfos:(id)a5 customExportsInfo:(id)a6 trimmedVideoPathInfo:(id)a7 commentText:(id)a8
+- (void)_insertInternalUserEditableAssets:(id)assets atIndexes:(id)indexes assetsSharingInfos:(id)infos customExportsInfo:(id)info trimmedVideoPathInfo:(id)pathInfo commentText:(id)text
 {
   v69 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v48 = a8;
-  if (!v15)
+  assetsCopy = assets;
+  indexesCopy = indexes;
+  infosCopy = infos;
+  infoCopy = info;
+  pathInfoCopy = pathInfo;
+  textCopy = text;
+  if (!assetsCopy)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"PLManagedAlbum.m" lineNumber:341 description:{@"assets cannot be nil. Album: %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedAlbum.m" lineNumber:341 description:{@"assets cannot be nil. Album: %@", self}];
   }
 
   context = objc_autoreleasePoolPush();
   if ([(PLGenericAlbum *)self isCloudSharedAlbum])
   {
-    v20 = [(PLGenericAlbum *)self photoLibrary];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __132__PLManagedAlbum__insertInternalUserEditableAssets_atIndexes_assetsSharingInfos_customExportsInfo_trimmedVideoPathInfo_commentText___block_invoke;
     v60[3] = &unk_1E75768C8;
-    v61 = v15;
-    v62 = self;
-    v21 = v48;
-    v63 = v48;
-    v64 = v17;
-    v65 = v18;
-    v66 = v19;
-    [v20 addCompletionHandlerToCurrentTransaction:v60];
+    v61 = assetsCopy;
+    selfCopy = self;
+    v21 = textCopy;
+    v63 = textCopy;
+    v64 = infosCopy;
+    v65 = infoCopy;
+    v66 = pathInfoCopy;
+    [photoLibrary addCompletionHandlerToCurrentTransaction:v60];
 
-    v22 = v61;
+    array2 = v61;
   }
 
   else
   {
-    v43 = v19;
-    v44 = v18;
-    v45 = v17;
-    v20 = [(PLGenericAlbum *)self sortingComparator];
-    v23 = [(PLManagedAlbum *)self mutableAssets];
-    v24 = v23;
-    v46 = v16;
-    if (v20)
+    v43 = pathInfoCopy;
+    v44 = infoCopy;
+    v45 = infosCopy;
+    photoLibrary = [(PLGenericAlbum *)self sortingComparator];
+    mutableAssets = [(PLManagedAlbum *)self mutableAssets];
+    v24 = mutableAssets;
+    v46 = indexesCopy;
+    if (photoLibrary)
     {
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v42 = v15;
-      v25 = v15;
+      v42 = assetsCopy;
+      v25 = assetsCopy;
       v26 = [v25 countByEnumeratingWithState:&v56 objects:v68 count:16];
       if (v26)
       {
@@ -703,8 +703,8 @@ LABEL_7:
 
             v30 = *(*(&v56 + 1) + 8 * i);
             v31 = [v24 count];
-            v32 = [v24 array];
-            v33 = [v32 indexOfObject:v30 inSortedRange:0 options:v31 usingComparator:{1024, v20}];
+            array = [v24 array];
+            v33 = [array indexOfObject:v30 inSortedRange:0 options:v31 usingComparator:{1024, photoLibrary}];
 
             [v24 insertObject:v30 atIndex:v33];
           }
@@ -715,24 +715,24 @@ LABEL_7:
         while (v27);
       }
 
-      v15 = v42;
+      assetsCopy = v42;
     }
 
     else
     {
-      [v23 insertObjects:v15 atIndexes:v16];
+      [mutableAssets insertObjects:assetsCopy atIndexes:indexesCopy];
     }
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v34 = v15;
+    v34 = assetsCopy;
     v35 = [v34 countByEnumeratingWithState:&v52 objects:v67 count:16];
     if (v35)
     {
       v36 = v35;
-      v22 = 0;
+      array2 = 0;
       v37 = *v53;
       do
       {
@@ -746,12 +746,12 @@ LABEL_7:
           v39 = *(*(&v52 + 1) + 8 * j);
           if ([(PLManagedAlbum *)self _shouldCopyAssetToCameraRollBeforeAdding:v39])
           {
-            if (!v22)
+            if (!array2)
             {
-              v22 = [MEMORY[0x1E695DF70] array];
+              array2 = [MEMORY[0x1E695DF70] array];
             }
 
-            [v22 addObject:v39];
+            [array2 addObject:v39];
           }
         }
 
@@ -763,27 +763,27 @@ LABEL_7:
 
     else
     {
-      v22 = 0;
+      array2 = 0;
     }
 
-    if ([v22 count])
+    if ([array2 count])
     {
-      v40 = [(PLGenericAlbum *)self photoLibrary];
+      photoLibrary2 = [(PLGenericAlbum *)self photoLibrary];
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __132__PLManagedAlbum__insertInternalUserEditableAssets_atIndexes_assetsSharingInfos_customExportsInfo_trimmedVideoPathInfo_commentText___block_invoke_2;
       v49[3] = &unk_1E7578848;
-      v22 = v22;
-      v50 = v22;
-      v51 = self;
-      [v40 addCompletionHandlerToCurrentTransaction:v49];
+      array2 = array2;
+      v50 = array2;
+      selfCopy2 = self;
+      [photoLibrary2 addCompletionHandlerToCurrentTransaction:v49];
     }
 
-    v17 = v45;
-    v16 = v46;
-    v19 = v43;
-    v18 = v44;
-    v21 = v48;
+    infosCopy = v45;
+    indexesCopy = v46;
+    pathInfoCopy = v43;
+    infoCopy = v44;
+    v21 = textCopy;
   }
 
   objc_autoreleasePoolPop(context);
@@ -795,36 +795,36 @@ void __132__PLManagedAlbum__insertInternalUserEditableAssets_atIndexes_assetsSha
   [*(a1 + 40) publishBatchOfOriginalAssetUUIDs:v2 withBatchCommentText:*(a1 + 48) assetsSharingInfos:*(a1 + 56) customExportsInfo:*(a1 + 64) andTrimmedVideoPathInfo:*(a1 + 72) isNewAlbum:0];
 }
 
-- (id)internalUserEditableAssetsAtIndexes:(id)a3
+- (id)internalUserEditableAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PLManagedAlbum *)self assets];
-  v6 = [v5 objectsAtIndexes:v4];
+  indexesCopy = indexes;
+  assets = [(PLManagedAlbum *)self assets];
+  v6 = [assets objectsAtIndexes:indexesCopy];
 
   return v6;
 }
 
-- (id)objectInInternalUserEditableAssetsAtIndex:(unint64_t)a3
+- (id)objectInInternalUserEditableAssetsAtIndex:(unint64_t)index
 {
-  v4 = [(PLManagedAlbum *)self assets];
-  v5 = [v4 objectAtIndex:a3];
+  assets = [(PLManagedAlbum *)self assets];
+  v5 = [assets objectAtIndex:index];
 
   return v5;
 }
 
-- (unint64_t)indexInInternalUserEditableAssetsOfObject:(id)a3
+- (unint64_t)indexInInternalUserEditableAssetsOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PLManagedAlbum *)self assets];
-  v6 = [v5 indexOfObject:v4];
+  objectCopy = object;
+  assets = [(PLManagedAlbum *)self assets];
+  v6 = [assets indexOfObject:objectCopy];
 
   return v6;
 }
 
 - (unint64_t)countOfInternalUserEditableAssets
 {
-  v2 = [(PLManagedAlbum *)self assets];
-  v3 = [v2 count];
+  assets = [(PLManagedAlbum *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
@@ -841,8 +841,8 @@ void __132__PLManagedAlbum__insertInternalUserEditableAssets_atIndexes_assetsSha
   v2 = MEMORY[0x1E695DFA8];
   v6.receiver = self;
   v6.super_class = PLManagedAlbum;
-  v3 = [(PLGenericAlbum *)&v6 listOfLastModifiedDateChangeProperties];
-  v4 = [v2 setWithSet:v3];
+  listOfLastModifiedDateChangeProperties = [(PLGenericAlbum *)&v6 listOfLastModifiedDateChangeProperties];
+  v4 = [v2 setWithSet:listOfLastModifiedDateChangeProperties];
 
   [v4 addObject:@"assets"];
 
@@ -857,45 +857,45 @@ void __132__PLManagedAlbum__insertInternalUserEditableAssets_atIndexes_assetsSha
   if ([(PLManagedAlbum *)self albumShouldBeAutomaticallyDeleted])
   {
     v3 = PLIsAssetsd();
-    v4 = [(PLGenericAlbum *)self photoLibrary];
-    v5 = v4;
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    v5 = photoLibrary;
     if (v3)
     {
-      v6 = [v4 libraryServicesManager];
-      v7 = [v6 imageWriter];
-      v8 = [(PLManagedAlbum *)self objectID];
-      [v7 enqueueAutoDeleteEmptyAlbumJobWithAlbumID:v8];
+      libraryServicesManager = [photoLibrary libraryServicesManager];
+      imageWriter = [libraryServicesManager imageWriter];
+      objectID = [(PLManagedAlbum *)self objectID];
+      [imageWriter enqueueAutoDeleteEmptyAlbumJobWithAlbumID:objectID];
     }
 
     else
     {
-      v9 = [v4 assetsdClient];
+      assetsdClient = [photoLibrary assetsdClient];
 
-      v6 = [v9 libraryClient];
-      v7 = [(PLManagedAlbum *)self objectID];
-      [v6 automaticallyDeleteEmptyAlbumWithObjectID:v7 completionHandler:&__block_literal_global_13940];
-      v5 = v9;
+      libraryServicesManager = [assetsdClient libraryClient];
+      imageWriter = [(PLManagedAlbum *)self objectID];
+      [libraryServicesManager automaticallyDeleteEmptyAlbumWithObjectID:imageWriter completionHandler:&__block_literal_global_13940];
+      v5 = assetsdClient;
     }
 
     [(PLManagedAlbum *)self setAlbumShouldBeAutomaticallyDeleted:0];
   }
 
-  v10 = [(PLManagedAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLManagedAlbum *)self managedObjectContext];
   if ([(PLManagedAlbum *)self needsPersistenceUpdate])
   {
-    v11 = [(PLManagedAlbum *)self uuid];
-    if (!v11 || ([(PLManagedAlbum *)self isDeleted]& 1) != 0 || ![(PLManagedAlbum *)self isValidForPersistence])
+    uuid = [(PLManagedAlbum *)self uuid];
+    if (!uuid || ([(PLManagedAlbum *)self isDeleted]& 1) != 0 || ![(PLManagedAlbum *)self isValidForPersistence])
     {
       goto LABEL_12;
     }
 
-    v12 = [objc_opt_class() shouldHavePhotoLibrary];
+    shouldHavePhotoLibrary = [objc_opt_class() shouldHavePhotoLibrary];
 
-    if (v12)
+    if (shouldHavePhotoLibrary)
     {
-      v11 = [(PLGenericAlbum *)self photoLibrary];
-      v13 = [v11 pathManager];
-      [(PLManagedAlbum *)self persistMetadataToFileSystemWithPathManager:v13];
+      uuid = [(PLGenericAlbum *)self photoLibrary];
+      pathManager = [uuid pathManager];
+      [(PLManagedAlbum *)self persistMetadataToFileSystemWithPathManager:pathManager];
 
 LABEL_12:
     }
@@ -926,11 +926,11 @@ void __25__PLManagedAlbum_didSave__block_invoke(uint64_t a1, char a2, void *a3)
   v16.super_class = PLManagedAlbum;
   [(PLGenericAlbum *)&v16 willSave];
   [(PLManagedAlbum *)self setNeedsPersistenceUpdate:0];
-  v3 = [(PLManagedAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLManagedAlbum *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PLManagedAlbum *)self changedValues];
+    changedValues = [(PLManagedAlbum *)self changedValues];
     if (![(PLManagedAlbum *)self isValidForPersistence])
     {
       goto LABEL_10;
@@ -938,14 +938,14 @@ void __25__PLManagedAlbum_didSave__block_invoke(uint64_t a1, char a2, void *a3)
 
     if (([(PLManagedAlbum *)self isInserted]& 1) == 0)
     {
-      v5 = [v4 objectForKeyedSubscript:@"assets"];
-      if (v5 || ([v4 objectForKeyedSubscript:@"title"], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v4, "objectForKeyedSubscript:", @"trashedState"), (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v4, "objectForKeyedSubscript:", @"isPrototype"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+      v5 = [changedValues objectForKeyedSubscript:@"assets"];
+      if (v5 || ([changedValues objectForKeyedSubscript:@"title"], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"trashedState"), (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(changedValues, "objectForKeyedSubscript:", @"isPrototype"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v15 = [v4 objectForKeyedSubscript:@"lastModifiedDate"];
+        v15 = [changedValues objectForKeyedSubscript:@"lastModifiedDate"];
 
         if (!v15)
         {
@@ -964,11 +964,11 @@ LABEL_26:
 
           else
           {
-            v7 = [v4 objectForKeyedSubscript:@"assets"];
+            v7 = [changedValues objectForKeyedSubscript:@"assets"];
             v6 = v7 != 0;
           }
 
-          v8 = [v4 objectForKeyedSubscript:@"customKeyAsset"];
+          v8 = [changedValues objectForKeyedSubscript:@"customKeyAsset"];
           if (v8)
           {
 
@@ -980,7 +980,7 @@ LABEL_26:
 
           else
           {
-            v9 = [v4 objectForKeyedSubscript:@"customSortKey"];
+            v9 = [changedValues objectForKeyedSubscript:@"customSortKey"];
             if (v9)
             {
 
@@ -992,7 +992,7 @@ LABEL_26:
 
             else
             {
-              v10 = [v4 objectForKeyedSubscript:@"customSortAscending"];
+              v10 = [changedValues objectForKeyedSubscript:@"customSortAscending"];
 
               if (!v6)
               {
@@ -1006,25 +1006,25 @@ LABEL_26:
             }
           }
 
-          v11 = [v3 delayedSaveActions];
-          [v11 recordAlbumForCountsAndDateRangeUpdate:self];
+          delayedSaveActions = [managedObjectContext delayedSaveActions];
+          [delayedSaveActions recordAlbumForCountsAndDateRangeUpdate:self];
 
 LABEL_22:
-          v12 = [v3 delayedSaveActions];
-          [v12 recordAlbumForKeyAssetsUpdate:self];
+          delayedSaveActions2 = [managedObjectContext delayedSaveActions];
+          [delayedSaveActions2 recordAlbumForKeyAssetsUpdate:self];
 
 LABEL_23:
           [PLDelayedSearchIndexUpdates recordAlbumIfNeeded:self];
-          v13 = [v4 objectForKeyedSubscript:@"trashedState"];
+          v13 = [changedValues objectForKeyedSubscript:@"trashedState"];
 
           if (v13)
           {
-            v14 = [v3 delayedSaveActions];
-            [v14 recordAlbumForTrashUpdate:self];
+            delayedSaveActions3 = [managedObjectContext delayedSaveActions];
+            [delayedSaveActions3 recordAlbumForTrashUpdate:self];
 
             if ([(PLManagedAlbum *)self trashedState]>= 1)
             {
-              [(PLManagedAlbum *)self _removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:v3];
+              [(PLManagedAlbum *)self _removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:managedObjectContext];
             }
           }
 
@@ -1040,10 +1040,10 @@ LABEL_23:
 LABEL_27:
 }
 
-- (void)_removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:(id)a3
+- (void)_removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1065,11 +1065,11 @@ LABEL_27:
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [v4 delayedSaveActions];
-        [v11 recordAssetID:v10 forWidgetUserAlbumRemoval:self];
+        delayedSaveActions = [contextCopy delayedSaveActions];
+        [delayedSaveActions recordAssetID:v10 forWidgetUserAlbumRemoval:self];
 
-        v12 = [v4 delayedSaveActions];
-        [v12 recordAssetID:v10 forWallpaperUserAlbumRemoval:self];
+        delayedSaveActions2 = [contextCopy delayedSaveActions];
+        [delayedSaveActions2 recordAssetID:v10 forWallpaperUserAlbumRemoval:self];
 
         ++v9;
       }
@@ -1087,34 +1087,34 @@ LABEL_27:
   v8.receiver = self;
   v8.super_class = PLManagedAlbum;
   [(PLManagedAlbum *)&v8 prepareForDeletion];
-  v3 = [(PLManagedAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLManagedAlbum *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [PLDelayedSearchIndexUpdates recordAlbumIfNeeded:self];
-    if (([v3 mergingChanges] & 1) == 0)
+    if (([managedObjectContext mergingChanges] & 1) == 0)
     {
       if ([(PLGenericAlbum *)self kindValue]== 2 || [(PLGenericAlbum *)self kindValue]== 1508)
       {
-        [v3 recordCloudDeletionForObject:self];
+        [managedObjectContext recordCloudDeletionForObject:self];
       }
 
-      v4 = [(PLManagedAlbum *)self uuid];
-      if (v4 && ([(PLManagedAlbum *)self isValidForPersistence]|| [PLGenericAlbum is1WaySyncKind:[(PLGenericAlbum *)self kindValue]]))
+      uuid = [(PLManagedAlbum *)self uuid];
+      if (uuid && ([(PLManagedAlbum *)self isValidForPersistence]|| [PLGenericAlbum is1WaySyncKind:[(PLGenericAlbum *)self kindValue]]))
       {
-        v5 = [(PLManagedAlbum *)self managedObjectContext];
-        v6 = [v5 isReadOnly];
+        managedObjectContext2 = [(PLManagedAlbum *)self managedObjectContext];
+        isReadOnly = [managedObjectContext2 isReadOnly];
 
-        if (v6)
+        if (isReadOnly)
         {
 LABEL_12:
-          [(PLManagedAlbum *)self _removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:v3];
+          [(PLManagedAlbum *)self _removeAssetFromUserAlbumSuggestionIfNeededWithManagedObjectContext:managedObjectContext];
           goto LABEL_13;
         }
 
-        v4 = [(PLGenericAlbum *)self photoLibrary];
-        v7 = [v4 pathManager];
-        [(PLManagedAlbum *)self removePersistedFileSystemDataWithPathManager:v7];
+        uuid = [(PLGenericAlbum *)self photoLibrary];
+        pathManager = [uuid pathManager];
+        [(PLManagedAlbum *)self removePersistedFileSystemDataWithPathManager:pathManager];
       }
 
       goto LABEL_12;
@@ -1124,74 +1124,74 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)_shouldCopyAssetToCameraRollBeforeAdding:(id)a3
+- (BOOL)_shouldCopyAssetToCameraRollBeforeAdding:(id)adding
 {
-  v4 = a3;
+  addingCopy = adding;
   if ([(PLGenericAlbum *)self kindValue]== 2)
   {
-    v5 = [v4 isPhotoStreamPhoto];
+    isPhotoStreamPhoto = [addingCopy isPhotoStreamPhoto];
   }
 
   else
   {
-    v5 = 0;
+    isPhotoStreamPhoto = 0;
   }
 
-  return v5;
+  return isPhotoStreamPhoto;
 }
 
-- (BOOL)canPerformEditOperation:(unint64_t)a3
+- (BOOL)canPerformEditOperation:(unint64_t)operation
 {
-  v5 = [(PLGenericAlbum *)self kindValue];
-  if (v5 > 1499)
+  kindValue = [(PLGenericAlbum *)self kindValue];
+  if (kindValue > 1499)
   {
-    if ((v5 - 1600) <= 4 && ((1 << (v5 - 64)) & 0x19) != 0 || v5 == 1500)
+    if ((kindValue - 1600) <= 4 && ((1 << (kindValue - 64)) & 0x19) != 0 || kindValue == 1500)
     {
-      v6 = a3 < 2;
+      v6 = operation < 2;
       return v6 & 1;
     }
 
-    if (v5 != 1505)
+    if (kindValue != 1505)
     {
       v6 = 0;
       return v6 & 1;
     }
 
-    v10 = [(PLGenericAlbum *)self isFamilyCloudSharedAlbum];
-    v11 = [(PLGenericAlbum *)self isOwnedCloudSharedAlbum];
-    if (v10)
+    isFamilyCloudSharedAlbum = [(PLGenericAlbum *)self isFamilyCloudSharedAlbum];
+    isOwnedCloudSharedAlbum = [(PLGenericAlbum *)self isOwnedCloudSharedAlbum];
+    if (isFamilyCloudSharedAlbum)
     {
       v12 = -6;
     }
 
     else
     {
-      if (v11)
+      if (isOwnedCloudSharedAlbum)
       {
-        v6 = (a3 & 0xFFFFFFFFFFFFFFEFLL) != 0;
+        v6 = (operation & 0xFFFFFFFFFFFFFFEFLL) != 0;
         return v6 & 1;
       }
 
-      v11 = [(PLGenericAlbum *)self isMultipleContributorCloudSharedAlbum];
+      isOwnedCloudSharedAlbum = [(PLGenericAlbum *)self isMultipleContributorCloudSharedAlbum];
       v12 = -34;
     }
 
-    v6 = (a3 & v12) == 0;
-    v8 = (a3 & 0xFFFFFFFFFFFFFFDALL) == 0;
-    v9 = !v11;
+    v6 = (operation & v12) == 0;
+    v8 = (operation & 0xFFFFFFFFFFFFFFDALL) == 0;
+    v9 = !isOwnedCloudSharedAlbum;
   }
 
   else
   {
-    v6 = a3 ^ 1;
-    v7 = (a3 & 0xFFFFFFFFFFFFFFF6) == 0;
-    if (v5 != 1000)
+    v6 = operation ^ 1;
+    v7 = (operation & 0xFFFFFFFFFFFFFFF6) == 0;
+    if (kindValue != 1000)
     {
       v7 = 0;
     }
 
-    v8 = v5 == 12 || v7;
-    v9 = v5 == 2;
+    v8 = kindValue == 12 || v7;
+    v9 = kindValue == 2;
   }
 
   if (!v9)
@@ -1226,23 +1226,23 @@ void __42__PLManagedAlbum_validKindsForPersistence__block_invoke()
 - (id)descriptionOfAssetOrderValues
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(PLManagedAlbum *)self managedObjectContext];
-  v4 = [MEMORY[0x1E696AD60] string];
+  managedObjectContext = [(PLManagedAlbum *)self managedObjectContext];
+  string = [MEMORY[0x1E696AD60] string];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLManagedAlbum *)self objectID];
-  v7 = [v3 _orderKeysForRelationshipWithName__:@"assets" onObjectWithID:v6];
+  objectID = [(PLManagedAlbum *)self objectID];
+  v7 = [managedObjectContext _orderKeysForRelationshipWithName__:@"assets" onObjectWithID:objectID];
 
   if ([v7 count] == 2)
   {
     v24 = v5;
-    v25 = v3;
+    v25 = managedObjectContext;
     v8 = [v7 objectAtIndexedSubscript:1];
-    v9 = [v8 objectEnumerator];
+    objectEnumerator = [v8 objectEnumerator];
 
-    v10 = [(PLManagedAlbum *)self objectID];
-    v11 = [v10 URIRepresentation];
+    objectID2 = [(PLManagedAlbum *)self objectID];
+    uRIRepresentation = [objectID2 URIRepresentation];
     v12 = [v7 objectAtIndexedSubscript:0];
-    [v4 appendFormat:@"ALBUM %@ [%d]\n", v11, objc_msgSend(v12, "count")];
+    [string appendFormat:@"ALBUM %@ [%d]\n", uRIRepresentation, objc_msgSend(v12, "count")];
 
     v28 = 0u;
     v29 = 0u;
@@ -1264,9 +1264,9 @@ void __42__PLManagedAlbum_validKindsForPersistence__block_invoke()
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v9 nextObject];
-          v20 = [v18 URIRepresentation];
-          [v4 appendFormat:@"%@ -> %@\n", v19, v20];
+          nextObject = [objectEnumerator nextObject];
+          uRIRepresentation2 = [v18 URIRepresentation];
+          [string appendFormat:@"%@ -> %@\n", nextObject, uRIRepresentation2];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1276,27 +1276,27 @@ void __42__PLManagedAlbum_validKindsForPersistence__block_invoke()
     }
 
     v5 = v24;
-    v3 = v25;
+    managedObjectContext = v25;
   }
 
   else
   {
-    v21 = [(PLManagedAlbum *)self objectID];
-    v22 = [v21 URIRepresentation];
-    [v4 appendFormat:@"ALBUM %@ [0 assets]\n", v22];
+    objectID3 = [(PLManagedAlbum *)self objectID];
+    uRIRepresentation3 = [objectID3 URIRepresentation];
+    [string appendFormat:@"ALBUM %@ [0 assets]\n", uRIRepresentation3];
   }
 
   objc_autoreleasePoolPop(v5);
 
-  return v4;
+  return string;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLManagedAlbum *)self isValidForPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLAlbumJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLAlbumJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
   }
 
   else

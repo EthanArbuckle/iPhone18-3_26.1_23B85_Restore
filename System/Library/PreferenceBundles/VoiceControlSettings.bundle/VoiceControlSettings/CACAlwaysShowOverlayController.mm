@@ -2,16 +2,16 @@
 - (BOOL)didAddGridSpecifiers;
 - (BOOL)didAddOverlaySpecifiers;
 - (CACAlwaysShowOverlayController)init;
-- (id)gridOverlayColumnsSummary:(id)a3;
-- (id)gridOverlayMaxLevelSummary:(id)a3;
-- (id)gridOverlayPressOnFirstLevelEnabled:(id)a3;
-- (id)gridOverlayRowsSummary:(id)a3;
-- (id)overlayFadeDelaySummary:(id)a3;
-- (id)overlayFadeOpacitySummary:(id)a3;
+- (id)gridOverlayColumnsSummary:(id)summary;
+- (id)gridOverlayMaxLevelSummary:(id)summary;
+- (id)gridOverlayPressOnFirstLevelEnabled:(id)enabled;
+- (id)gridOverlayRowsSummary:(id)summary;
+- (id)overlayFadeDelaySummary:(id)summary;
+- (id)overlayFadeOpacitySummary:(id)summary;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setGridOverlayPressOnFirstLevel:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setGridOverlayPressOnFirstLevel:(id)level specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CACAlwaysShowOverlayController
@@ -67,16 +67,16 @@
 
     [v15 setProperty:@"OVERLAY_GRID" forKey:v8];
     v16 = +[VCSettingsObjC shared];
-    v17 = [v16 alwaysShowOverlayType];
+    alwaysShowOverlayType = [v16 alwaysShowOverlayType];
 
-    v18 = [v17 isEqualToString:@"None"];
+    v18 = [alwaysShowOverlayType isEqualToString:@"None"];
     v19 = v7;
-    if (v18 & 1) != 0 || (v20 = [v17 isEqualToString:@"NumberedElements"], v19 = v58, (v20) || (v21 = objc_msgSend(v17, "isEqualToString:", @"NamedElements"), v19 = v13, (v21) || (v22 = objc_msgSend(v17, "isEqualToString:", @"NumberedGrid"), v19 = v15, v22))
+    if (v18 & 1) != 0 || (v20 = [alwaysShowOverlayType isEqualToString:@"NumberedElements"], v19 = v58, (v20) || (v21 = objc_msgSend(alwaysShowOverlayType, "isEqualToString:", @"NamedElements"), v19 = v13, (v21) || (v22 = objc_msgSend(alwaysShowOverlayType, "isEqualToString:", @"NumberedGrid"), v19 = v15, v22))
     {
       [v5 setProperty:v19 forKey:PSRadioGroupCheckedSpecifierKey];
     }
 
-    v52 = v17;
+    v52 = alwaysShowOverlayType;
     v53 = v15;
     v55 = v7;
     v56 = v5;
@@ -104,8 +104,8 @@
     v60[2] = v29;
     v30 = [NSArray arrayWithObjects:v60 count:3];
     v31 = +[VCSettingsObjC shared];
-    v32 = [v31 alwaysShowOverlayType];
-    LOBYTE(v27) = [v32 isEqualToString:@"None"];
+    alwaysShowOverlayType2 = [v31 alwaysShowOverlayType];
+    LOBYTE(v27) = [alwaysShowOverlayType2 isEqualToString:@"None"];
 
     [(CACAlwaysShowOverlayController *)self setDimmingSpecifiers:v30];
     if ((v27 & 1) == 0)
@@ -137,8 +137,8 @@
     v42 = [NSArray arrayWithObjects:v59 count:4];
     [(CACAlwaysShowOverlayController *)self setGridSpecifiers:v42];
     v43 = +[VCSettingsObjC shared];
-    v44 = [v43 alwaysShowOverlayType];
-    v45 = [v44 isEqualToString:@"NumberedGrid"];
+    alwaysShowOverlayType3 = [v43 alwaysShowOverlayType];
+    v45 = [alwaysShowOverlayType3 isEqualToString:@"NumberedGrid"];
 
     if (v45 && ![(CACAlwaysShowOverlayController *)self didAddGridSpecifiers])
     {
@@ -154,15 +154,15 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v59.receiver = self;
   v59.super_class = CACAlwaysShowOverlayController;
-  [(CACAlwaysShowOverlayController *)&v59 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(CACAlwaysShowOverlayController *)self specifierAtIndexPath:v6];
+  [(CACAlwaysShowOverlayController *)&v59 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(CACAlwaysShowOverlayController *)self specifierAtIndexPath:pathCopy];
   v8 = [v7 propertyForKey:PSIDKey];
-  if (![v6 section])
+  if (![pathCopy section])
   {
     if ([v8 isEqualToString:@"OVERLAY_NONE"])
     {
@@ -200,8 +200,8 @@ LABEL_11:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v11 = [(CACAlwaysShowOverlayController *)self dimmingSpecifiers];
-    v12 = [v11 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    dimmingSpecifiers = [(CACAlwaysShowOverlayController *)self dimmingSpecifiers];
+    v12 = [dimmingSpecifiers countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v12)
     {
       v13 = v12;
@@ -213,12 +213,12 @@ LABEL_11:
         {
           if (*v56 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(dimmingSpecifiers);
           }
 
           v16 = *(*(&v55 + 1) + 8 * i);
-          v17 = [(CACAlwaysShowOverlayController *)self specifiers];
-          v18 = [v17 containsObject:v16];
+          specifiers = [(CACAlwaysShowOverlayController *)self specifiers];
+          v18 = [specifiers containsObject:v16];
 
           if (v18)
           {
@@ -226,7 +226,7 @@ LABEL_11:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v55 objects:v63 count:16];
+        v13 = [dimmingSpecifiers countByEnumeratingWithState:&v55 objects:v63 count:16];
       }
 
       while (v13);
@@ -246,8 +246,8 @@ LABEL_32:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v11 = [(CACAlwaysShowOverlayController *)self dimmingSpecifiers];
-    v19 = [v11 countByEnumeratingWithState:&v51 objects:v62 count:16];
+    dimmingSpecifiers = [(CACAlwaysShowOverlayController *)self dimmingSpecifiers];
+    v19 = [dimmingSpecifiers countByEnumeratingWithState:&v51 objects:v62 count:16];
     if (v19)
     {
       v20 = v19;
@@ -259,12 +259,12 @@ LABEL_32:
         {
           if (*v52 != v21)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(dimmingSpecifiers);
           }
 
           v23 = *(*(&v51 + 1) + 8 * j);
-          v24 = [(CACAlwaysShowOverlayController *)self specifiers];
-          v25 = [v24 containsObject:v23];
+          specifiers2 = [(CACAlwaysShowOverlayController *)self specifiers];
+          v25 = [specifiers2 containsObject:v23];
 
           if (v25)
           {
@@ -272,7 +272,7 @@ LABEL_32:
           }
         }
 
-        v20 = [v11 countByEnumeratingWithState:&v51 objects:v62 count:16];
+        v20 = [dimmingSpecifiers countByEnumeratingWithState:&v51 objects:v62 count:16];
       }
 
       while (v20);
@@ -282,8 +282,8 @@ LABEL_32:
 
 LABEL_34:
   v26 = +[VCSettingsObjC shared];
-  v27 = [v26 alwaysShowOverlayType];
-  v28 = [v27 isEqualToString:@"NumberedGrid"];
+  alwaysShowOverlayType = [v26 alwaysShowOverlayType];
+  v28 = [alwaysShowOverlayType isEqualToString:@"NumberedGrid"];
 
   if (!v28)
   {
@@ -291,8 +291,8 @@ LABEL_34:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v29 = [(CACAlwaysShowOverlayController *)self gridSpecifiers];
-    v34 = [v29 countByEnumeratingWithState:&v43 objects:v60 count:16];
+    gridSpecifiers = [(CACAlwaysShowOverlayController *)self gridSpecifiers];
+    v34 = [gridSpecifiers countByEnumeratingWithState:&v43 objects:v60 count:16];
     if (v34)
     {
       v35 = v34;
@@ -304,12 +304,12 @@ LABEL_34:
         {
           if (*v44 != v36)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(gridSpecifiers);
           }
 
           v38 = *(*(&v43 + 1) + 8 * k);
-          v39 = [(CACAlwaysShowOverlayController *)self specifiers];
-          v40 = [v39 containsObject:v38];
+          specifiers3 = [(CACAlwaysShowOverlayController *)self specifiers];
+          v40 = [specifiers3 containsObject:v38];
 
           if (v40)
           {
@@ -317,7 +317,7 @@ LABEL_34:
           }
         }
 
-        v35 = [v29 countByEnumeratingWithState:&v43 objects:v60 count:16];
+        v35 = [gridSpecifiers countByEnumeratingWithState:&v43 objects:v60 count:16];
       }
 
       while (v35);
@@ -333,8 +333,8 @@ LABEL_34:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v29 = [(CACAlwaysShowOverlayController *)self gridSpecifiers];
-    v30 = [v29 countByEnumeratingWithState:&v47 objects:v61 count:16];
+    gridSpecifiers = [(CACAlwaysShowOverlayController *)self gridSpecifiers];
+    v30 = [gridSpecifiers countByEnumeratingWithState:&v47 objects:v61 count:16];
     if (v30)
     {
       v31 = v30;
@@ -345,13 +345,13 @@ LABEL_34:
         {
           if (*v48 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(gridSpecifiers);
           }
 
           [(CACAlwaysShowOverlayController *)self addSpecifier:*(*(&v47 + 1) + 8 * m) animated:1];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v47 objects:v61 count:16];
+        v31 = [gridSpecifiers countByEnumeratingWithState:&v47 objects:v61 count:16];
       }
 
       while (v31);
@@ -364,9 +364,9 @@ LABEL_54:
 - (BOOL)didAddGridSpecifiers
 {
   v2 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  v3 = [(CACAlwaysShowOverlayController *)self gridSpecifiers];
-  v4 = [v3 firstObject];
-  LOBYTE(v2) = [v2 containsObject:v4];
+  gridSpecifiers = [(CACAlwaysShowOverlayController *)self gridSpecifiers];
+  firstObject = [gridSpecifiers firstObject];
+  LOBYTE(v2) = [v2 containsObject:firstObject];
 
   return v2;
 }
@@ -374,19 +374,19 @@ LABEL_54:
 - (BOOL)didAddOverlaySpecifiers
 {
   v2 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  v3 = [(CACAlwaysShowOverlayController *)self dimmingSpecifiers];
-  v4 = [v3 firstObject];
-  LOBYTE(v2) = [v2 containsObject:v4];
+  dimmingSpecifiers = [(CACAlwaysShowOverlayController *)self dimmingSpecifiers];
+  firstObject = [dimmingSpecifiers firstObject];
+  LOBYTE(v2) = [v2 containsObject:firstObject];
 
   return v2;
 }
 
-- (id)overlayFadeDelaySummary:(id)a3
+- (id)overlayFadeDelaySummary:(id)summary
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 overlayFadingEnabled];
+  overlayFadingEnabled = [v3 overlayFadingEnabled];
 
-  if (v4)
+  if (overlayFadingEnabled)
   {
     v5 = +[CACPreferences sharedPreferences];
     [v5 overlayFadeDelay];
@@ -401,7 +401,7 @@ LABEL_54:
   return v6;
 }
 
-- (id)overlayFadeOpacitySummary:(id)a3
+- (id)overlayFadeOpacitySummary:(id)summary
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeOpacity];
@@ -410,12 +410,12 @@ LABEL_54:
   return v4;
 }
 
-- (id)gridOverlayColumnsSummary:(id)a3
+- (id)gridOverlayColumnsSummary:(id)summary
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 gridOverlayCustomColumnsEnabled];
+  gridOverlayCustomColumnsEnabled = [v3 gridOverlayCustomColumnsEnabled];
 
-  if (v4)
+  if (gridOverlayCustomColumnsEnabled)
   {
     v5 = +[CACPreferences sharedPreferences];
     [v5 gridOverlayCustomColumnsCount];
@@ -431,12 +431,12 @@ LABEL_54:
   return v7;
 }
 
-- (id)gridOverlayRowsSummary:(id)a3
+- (id)gridOverlayRowsSummary:(id)summary
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 gridOverlayCustomRowsEnabled];
+  gridOverlayCustomRowsEnabled = [v3 gridOverlayCustomRowsEnabled];
 
-  if (v4)
+  if (gridOverlayCustomRowsEnabled)
   {
     v5 = +[CACPreferences sharedPreferences];
     [v5 gridOverlayCustomRowsCount];
@@ -452,16 +452,16 @@ LABEL_54:
   return v7;
 }
 
-- (void)setGridOverlayPressOnFirstLevel:(id)a3 specifier:(id)a4
+- (void)setGridOverlayPressOnFirstLevel:(id)level specifier:(id)specifier
 {
-  v4 = a3;
+  levelCopy = level;
   v6 = +[CACPreferences sharedPreferences];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [levelCopy BOOLValue];
 
-  [v6 setGridOverlayPressOnFirstLevelEnabled:v5];
+  [v6 setGridOverlayPressOnFirstLevelEnabled:bOOLValue];
 }
 
-- (id)gridOverlayPressOnFirstLevelEnabled:(id)a3
+- (id)gridOverlayPressOnFirstLevelEnabled:(id)enabled
 {
   v3 = +[CACPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 gridOverlayPressOnFirstLevelEnabled]);
@@ -469,7 +469,7 @@ LABEL_54:
   return v4;
 }
 
-- (id)gridOverlayMaxLevelSummary:(id)a3
+- (id)gridOverlayMaxLevelSummary:(id)summary
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 gridOverlayMaxLevel];

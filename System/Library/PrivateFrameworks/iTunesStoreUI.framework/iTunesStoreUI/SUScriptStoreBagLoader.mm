@@ -1,7 +1,7 @@
 @interface SUScriptStoreBagLoader
 - (SUScriptStoreBagLoader)init;
 - (id)scriptStoreBagDictionary;
-- (void)_updateWithBagDictionary:(id)a3 allowsPostingBagDidChangeNotification:(BOOL)a4;
+- (void)_updateWithBagDictionary:(id)dictionary allowsPostingBagDidChangeNotification:(BOOL)notification;
 - (void)dealloc;
 @end
 
@@ -18,11 +18,11 @@
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v3;
 
-    v5 = [MEMORY[0x1E69E4800] sharedBagLoadingController];
-    v6 = [v5 bagDictionary];
-    [(SUScriptStoreBagLoader *)v2 _updateWithBagDictionary:v6 allowsPostingBagDidChangeNotification:0];
+    mEMORY[0x1E69E4800] = [MEMORY[0x1E69E4800] sharedBagLoadingController];
+    bagDictionary = [mEMORY[0x1E69E4800] bagDictionary];
+    [(SUScriptStoreBagLoader *)v2 _updateWithBagDictionary:bagDictionary allowsPostingBagDidChangeNotification:0];
 
-    [v5 addBagObserver:v2];
+    [mEMORY[0x1E69E4800] addBagObserver:v2];
   }
 
   return v2;
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69E4800] sharedBagLoadingController];
-  [v3 removeBagObserver:self];
+  mEMORY[0x1E69E4800] = [MEMORY[0x1E69E4800] sharedBagLoadingController];
+  [mEMORY[0x1E69E4800] removeBagObserver:self];
 
   v4.receiver = self;
   v4.super_class = SUScriptStoreBagLoader;
@@ -87,25 +87,25 @@ void __50__SUScriptStoreBagLoader_scriptStoreBagDictionary__block_invoke(uint64_
   objc_storeStrong(v7, v3);
 }
 
-- (void)_updateWithBagDictionary:(id)a3 allowsPostingBagDidChangeNotification:(BOOL)a4
+- (void)_updateWithBagDictionary:(id)dictionary allowsPostingBagDidChangeNotification:(BOOL)notification
 {
-  v4 = a4;
-  v6 = a3;
+  notificationCopy = notification;
+  dictionaryCopy = dictionary;
   bagDictionary = self->_bagDictionary;
-  if (!v6 && bagDictionary || v6 && !bagDictionary || v6 && bagDictionary && ![(NSDictionary *)bagDictionary isEqualToDictionary:v6])
+  if (!dictionaryCopy && bagDictionary || dictionaryCopy && !bagDictionary || dictionaryCopy && bagDictionary && ![(NSDictionary *)bagDictionary isEqualToDictionary:dictionaryCopy])
   {
     accessQueue = self->_accessQueue;
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __89__SUScriptStoreBagLoader__updateWithBagDictionary_allowsPostingBagDidChangeNotification___block_invoke;
     v13 = &unk_1E81644A8;
-    v14 = self;
-    v15 = v6;
+    selfCopy = self;
+    v15 = dictionaryCopy;
     dispatch_sync(accessQueue, &v10);
-    if (v4)
+    if (notificationCopy)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"SUScriptStoreBagDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"SUScriptStoreBagDidChangeNotification" object:self];
     }
   }
 }

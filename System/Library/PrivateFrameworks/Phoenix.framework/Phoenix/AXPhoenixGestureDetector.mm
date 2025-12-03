@@ -1,6 +1,6 @@
 @interface AXPhoenixGestureDetector
-- (AXPhoenixGestureDetector)initWithDelegate:(id)a3;
-- (BOOL)_initializeAssetDrivenComponentsWithLocalURL:(id)a3 assetVersion:(unint64_t)a4;
+- (AXPhoenixGestureDetector)initWithDelegate:(id)delegate;
+- (BOOL)_initializeAssetDrivenComponentsWithLocalURL:(id)l assetVersion:(unint64_t)version;
 - (id)_createClassifierModelURL;
 - (id)_createConfiguration;
 - (id)_mobileAssetPathForConfigOrNil;
@@ -8,63 +8,63 @@
 - (id)_phoenixCompiledModelURL;
 - (id)urlOfModelInThisBundle;
 - (void)_resetAssetDrivenComponents;
-- (void)_setPolicyOption:(int)a3;
-- (void)_startClassifierWithCompletion:(id)a3;
-- (void)_startWithCompletion:(id)a3;
+- (void)_setPolicyOption:(int)option;
+- (void)_startClassifierWithCompletion:(id)completion;
+- (void)_startWithCompletion:(id)completion;
 - (void)_stopClassifier;
-- (void)_stopWithCompletion:(id)a3;
-- (void)modelDidUpdate:(id)a3 assetVersion:(unint64_t)a4;
-- (void)phoenixClassifier:(id)a3 failedWithError:(id)a4;
-- (void)phoenixClassifierDidDetectDoubleTap:(id)a3 data:(id)a4 context:(id)a5;
-- (void)phoenixClassifierDidDetectTripleTap:(id)a3 data:(id)a4 context:(id)a5;
-- (void)phoenixClassifierDidLogFile:(id)a3;
-- (void)phoenixMitigator:(id)a3 didFailWithError:(id)a4;
-- (void)phoenixMitigator:(id)a3 displayOnDidChange:(BOOL)a4;
-- (void)phoenixMitigator:(id)a3 touchOnDidChange:(BOOL)a4;
-- (void)reportFalsePositive:(id)a3;
-- (void)setFalsePositiveLoggingEnabled:(BOOL)a3;
-- (void)setRnnModelEnabled:(BOOL)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)stopWithCompletion:(id)a3;
+- (void)_stopWithCompletion:(id)completion;
+- (void)modelDidUpdate:(id)update assetVersion:(unint64_t)version;
+- (void)phoenixClassifier:(id)classifier failedWithError:(id)error;
+- (void)phoenixClassifierDidDetectDoubleTap:(id)tap data:(id)data context:(id)context;
+- (void)phoenixClassifierDidDetectTripleTap:(id)tap data:(id)data context:(id)context;
+- (void)phoenixClassifierDidLogFile:(id)file;
+- (void)phoenixMitigator:(id)mitigator didFailWithError:(id)error;
+- (void)phoenixMitigator:(id)mitigator displayOnDidChange:(BOOL)change;
+- (void)phoenixMitigator:(id)mitigator touchOnDidChange:(BOOL)change;
+- (void)reportFalsePositive:(id)positive;
+- (void)setFalsePositiveLoggingEnabled:(BOOL)enabled;
+- (void)setRnnModelEnabled:(BOOL)enabled;
+- (void)startWithCompletion:(id)completion;
+- (void)stopWithCompletion:(id)completion;
 @end
 
 @implementation AXPhoenixGestureDetector
 
-- (AXPhoenixGestureDetector)initWithDelegate:(id)a3
+- (AXPhoenixGestureDetector)initWithDelegate:(id)delegate
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v16;
-  v16 = 0;
+  objc_storeStrong(location, delegate);
+  v3 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v3;
   v14.super_class = AXPhoenixGestureDetector;
-  v16 = [(AXPhoenixGestureDetector *)&v14 init];
-  objc_storeStrong(&v16, v16);
-  if (!v16)
+  selfCopy = [(AXPhoenixGestureDetector *)&v14 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (!selfCopy)
   {
     goto LABEL_6;
   }
 
   attr = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
   v4 = dispatch_queue_create("com.apple.accessibility.phoenix.gesturedetector", attr);
-  v5 = *(v16 + 8);
-  *(v16 + 8) = v4;
+  v5 = *(selfCopy + 8);
+  *(selfCopy + 8) = v4;
   MEMORY[0x277D82BD8](v5);
   v6 = objc_alloc_init(MEMORY[0x277CCABD8]);
-  v7 = *(v16 + 2);
-  *(v16 + 2) = v6;
+  v7 = *(selfCopy + 2);
+  *(selfCopy + 2) = v6;
   MEMORY[0x277D82BD8](v7);
-  [*(v16 + 2) setMaxConcurrentOperationCount:1];
-  [*(v16 + 2) setQualityOfService:33];
-  objc_storeStrong(v16 + 4, location[0]);
-  if ([v16 _initializeAssetDrivenComponentsWithLocalURL:0 assetVersion:_currentAssetVersion])
+  [*(selfCopy + 2) setMaxConcurrentOperationCount:1];
+  [*(selfCopy + 2) setQualityOfService:33];
+  objc_storeStrong(selfCopy + 4, location[0]);
+  if ([selfCopy _initializeAssetDrivenComponentsWithLocalURL:0 assetVersion:_currentAssetVersion])
   {
     v8 = [AXPhoenixAssetMonitor alloc];
-    v9 = [(AXPhoenixAssetMonitor *)v8 initWithDelegate:v16];
-    v10 = *(v16 + 9);
-    *(v16 + 9) = v9;
+    v9 = [(AXPhoenixAssetMonitor *)v8 initWithDelegate:selfCopy];
+    v10 = *(selfCopy + 9);
+    *(selfCopy + 9) = v9;
     MEMORY[0x277D82BD8](v10);
     v12 = 0;
   }
@@ -79,11 +79,11 @@
   if (!v12)
   {
 LABEL_6:
-    v17 = MEMORY[0x277D82BE0](v16);
+    v17 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v17;
 }
 
@@ -97,70 +97,70 @@ LABEL_6:
   objc_storeStrong(&self->_analytics, 0);
 }
 
-- (BOOL)_initializeAssetDrivenComponentsWithLocalURL:(id)a3 assetVersion:(unint64_t)a4
+- (BOOL)_initializeAssetDrivenComponentsWithLocalURL:(id)l assetVersion:(unint64_t)version
 {
   v40 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34[1] = a4;
-  [(AXPhoenixGestureDetector *)v36 _resetAssetDrivenComponents];
-  objc_storeStrong(&v36->_localURL, location[0]);
-  v36->_assetVersion = a4;
-  v4 = [(AXPhoenixGestureDetector *)v36 _createConfiguration];
-  configuration = v36->_configuration;
-  v36->_configuration = v4;
+  objc_storeStrong(location, l);
+  v34[1] = version;
+  [(AXPhoenixGestureDetector *)selfCopy _resetAssetDrivenComponents];
+  objc_storeStrong(&selfCopy->_localURL, location[0]);
+  selfCopy->_assetVersion = version;
+  _createConfiguration = [(AXPhoenixGestureDetector *)selfCopy _createConfiguration];
+  configuration = selfCopy->_configuration;
+  selfCopy->_configuration = _createConfiguration;
   MEMORY[0x277D82BD8](configuration);
-  v34[0] = [(AXPhoenixGestureDetector *)v36 _createClassifierModelURL];
+  v34[0] = [(AXPhoenixGestureDetector *)selfCopy _createClassifierModelURL];
   if (v34[0])
   {
-    if (v36->_rnnModelEnabled)
+    if (selfCopy->_rnnModelEnabled)
     {
       v27 = [AXPhoenixClassifierRNN alloc];
-      v26 = v36;
-      v28 = [(AXPhoenixConfiguration *)v36->_configuration classifierConfiguration];
+      v26 = selfCopy;
+      classifierConfiguration = [(AXPhoenixConfiguration *)selfCopy->_configuration classifierConfiguration];
       v6 = [(AXPhoenixClassifierRNN *)v27 initWithDelegate:v26 modelURL:v34[0] configuration:?];
-      classifier = v36->_classifier;
-      v36->_classifier = v6;
+      classifier = selfCopy->_classifier;
+      selfCopy->_classifier = v6;
       MEMORY[0x277D82BD8](classifier);
-      MEMORY[0x277D82BD8](v28);
+      MEMORY[0x277D82BD8](classifierConfiguration);
     }
 
     else
     {
       v24 = [AXPhoenixClassifier alloc];
-      v23 = v36;
-      v25 = [(AXPhoenixConfiguration *)v36->_configuration classifierConfiguration];
+      v23 = selfCopy;
+      classifierConfiguration2 = [(AXPhoenixConfiguration *)selfCopy->_configuration classifierConfiguration];
       v8 = [(AXPhoenixClassifier *)v24 initWithDelegate:v23 modelURL:v34[0] configuration:?];
-      v9 = v36->_classifier;
-      v36->_classifier = v8;
+      v9 = selfCopy->_classifier;
+      selfCopy->_classifier = v8;
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](classifierConfiguration2);
     }
 
-    [(AXPhoenixClassifier *)v36->_classifier setFalsePositiveLoggingEnabled:v36->_falsePositiveLoggingEnabled];
-    *&v10 = v36->_tapSpeed;
-    [(AXPhoenixClassifier *)v36->_classifier setTapSpeed:v10];
-    if (v36->_classifier)
+    [(AXPhoenixClassifier *)selfCopy->_classifier setFalsePositiveLoggingEnabled:selfCopy->_falsePositiveLoggingEnabled];
+    *&v10 = selfCopy->_tapSpeed;
+    [(AXPhoenixClassifier *)selfCopy->_classifier setTapSpeed:v10];
+    if (selfCopy->_classifier)
     {
       v18 = [AXPhoenixMitigator alloc];
-      v17 = v36;
-      v19 = [(AXPhoenixConfiguration *)v36->_configuration mitigatorConfiguration];
+      v17 = selfCopy;
+      mitigatorConfiguration = [(AXPhoenixConfiguration *)selfCopy->_configuration mitigatorConfiguration];
       v11 = [(AXPhoenixMitigator *)v18 initWithDelegate:v17 configuration:?];
-      mitigator = v36->_mitigator;
-      v36->_mitigator = v11;
+      mitigator = selfCopy->_mitigator;
+      selfCopy->_mitigator = v11;
       MEMORY[0x277D82BD8](mitigator);
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](mitigatorConfiguration);
       v21 = [AXPhoenixAnalytics alloc];
-      v20 = v36->_configuration;
-      v22 = [(AXPhoenixClassifier *)v36->_classifier version];
-      assetVersion = v36->_assetVersion;
+      v20 = selfCopy->_configuration;
+      version = [(AXPhoenixClassifier *)selfCopy->_classifier version];
+      assetVersion = selfCopy->_assetVersion;
       v14 = [AXPhoenixAnalytics initWithConfiguration:v21 modelVersion:"initWithConfiguration:modelVersion:assetVersion:" assetVersion:v20];
-      analytics = v36->_analytics;
-      v36->_analytics = v14;
+      analytics = selfCopy->_analytics;
+      selfCopy->_analytics = v14;
       MEMORY[0x277D82BD8](analytics);
-      MEMORY[0x277D82BD8](v22);
+      MEMORY[0x277D82BD8](version);
       v37 = 1;
       v31 = 1;
     }
@@ -201,25 +201,25 @@ LABEL_6:
   return v37 & 1;
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4->_clientStartedMotion = 1;
-  [(AXPhoenixGestureDetector *)v4 _startWithCompletion:location[0]];
+  objc_storeStrong(location, completion);
+  selfCopy->_clientStartedMotion = 1;
+  [(AXPhoenixGestureDetector *)selfCopy _startWithCompletion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_startWithCompletion:(id)a3
+- (void)_startWithCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v11, v13);
-  queue = v13->_queue;
+  objc_storeStrong(location, completion);
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_queue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -325,24 +325,24 @@ void __49__AXPhoenixGestureDetector__startWithCompletion___block_invoke_2(NSObje
   *MEMORY[0x277D85DE8];
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4->_clientStartedMotion = 0;
-  [(AXPhoenixGestureDetector *)v4 _stopWithCompletion:location[0]];
+  objc_storeStrong(location, completion);
+  selfCopy->_clientStartedMotion = 0;
+  [(AXPhoenixGestureDetector *)selfCopy _stopWithCompletion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_stopWithCompletion:(id)a3
+- (void)_stopWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v13 = AXLogBackTap();
   v12 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -352,8 +352,8 @@ void __49__AXPhoenixGestureDetector__startWithCompletion___block_invoke_2(NSObje
   }
 
   objc_storeStrong(&v13, 0);
-  objc_initWeak(&v11, v15);
-  queue = v15->_queue;
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_queue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -403,19 +403,19 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPolicyOption:(int)a3
+- (void)_setPolicyOption:(int)option
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  optionCopy = option;
   v8 = AXLogBackTap();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     log = v8;
     type = v7;
-    v5 = PolicyOptionToString_0(v9);
+    v5 = PolicyOptionToString_0(optionCopy);
     v6 = MEMORY[0x277D82BE0](v5);
     __os_log_helper_16_2_2_8_32_8_64(v12, "[AXPhoenixGestureDetector _setPolicyOption:]", v6);
     _os_log_impl(&dword_25E4AC000, log, type, "[PHOENIX] %s Setting policy to %@", v12, 0x16u);
@@ -424,7 +424,7 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
   }
 
   objc_storeStrong(&v8, 0);
-  [(AXPhoenixClassifier *)v11->_classifier setPolicyOption:v9];
+  [(AXPhoenixClassifier *)selfCopy->_classifier setPolicyOption:optionCopy];
   *MEMORY[0x277D85DE8];
 }
 
@@ -445,13 +445,13 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
 
 - (id)urlOfModelInThisBundle
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   v4 = MEMORY[0x277CCACA8];
   v6 = AXAccessibilityPrivateFrameworksDirectory();
-  v5 = [(AXPhoenixGestureDetector *)v8 _phoenixCompiledModelURL];
-  location[0] = [v4 stringWithFormat:@"%@/Phoenix.framework/%@", v6, v5];
-  MEMORY[0x277D82BD8](v5);
+  _phoenixCompiledModelURL = [(AXPhoenixGestureDetector *)selfCopy _phoenixCompiledModelURL];
+  location[0] = [v4 stringWithFormat:@"%@/Phoenix.framework/%@", v6, _phoenixCompiledModelURL];
+  MEMORY[0x277D82BD8](_phoenixCompiledModelURL);
   MEMORY[0x277D82BD8](v6);
   if (location[0])
   {
@@ -472,9 +472,9 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
 - (id)_mobileAssetURLForModelOrNil
 {
   localURL = self->_localURL;
-  v4 = [(AXPhoenixGestureDetector *)self _phoenixCompiledModelURL];
+  _phoenixCompiledModelURL = [(AXPhoenixGestureDetector *)self _phoenixCompiledModelURL];
   v5 = [(NSURL *)localURL URLByAppendingPathComponent:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](_phoenixCompiledModelURL);
 
   return v5;
 }
@@ -482,16 +482,16 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
 - (id)_mobileAssetPathForConfigOrNil
 {
   v3 = [(NSURL *)self->_localURL URLByAppendingPathComponent:@"backtap.json"];
-  v4 = [(NSURL *)v3 path];
+  path = [(NSURL *)v3 path];
   MEMORY[0x277D82BD8](v3);
 
-  return v4;
+  return path;
 }
 
 - (id)_createConfiguration
 {
   v42 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33[1] = a2;
   v33[0] = [(AXPhoenixGestureDetector *)self _mobileAssetPathForConfigOrNil];
   if (v33[0])
@@ -499,7 +499,7 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
     v25 = [[AXPhoenixConfiguration alloc] initWithContentsOfFileAtPath:v33[0]];
     if (v25)
     {
-      [v25 setConfigurationAssetVersion:v34->_assetVersion];
+      [v25 setConfigurationAssetVersion:selfCopy->_assetVersion];
       v19 = AXLogBackTap();
       v18 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -515,11 +515,11 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
       {
         v6 = v17;
         v7 = v16;
-        v8 = [v25 toStringifiedJSON];
-        v15 = MEMORY[0x277D82BE0](v8);
+        toStringifiedJSON = [v25 toStringifiedJSON];
+        v15 = MEMORY[0x277D82BE0](toStringifiedJSON);
         __os_log_helper_16_2_2_8_32_8_64(v36, "[AXPhoenixGestureDetector _createConfiguration]", v15);
         _os_log_impl(&dword_25E4AC000, v6, v7, "[PHOENIX] %s %@", v36, 0x16u);
-        MEMORY[0x277D82BD8](v8);
+        MEMORY[0x277D82BD8](toStringifiedJSON);
         objc_storeStrong(&v15, 0);
       }
 
@@ -550,11 +550,11 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
       {
         v9 = v22;
         v10 = v21;
-        v11 = [v25 toStringifiedJSON];
-        v20 = MEMORY[0x277D82BE0](v11);
+        toStringifiedJSON2 = [v25 toStringifiedJSON];
+        v20 = MEMORY[0x277D82BE0](toStringifiedJSON2);
         __os_log_helper_16_2_2_8_32_8_64(v38, "[AXPhoenixGestureDetector _createConfiguration]", v20);
         _os_log_impl(&dword_25E4AC000, v9, v10, "[PHOENIX] %s %@", v38, 0x16u);
-        MEMORY[0x277D82BD8](v11);
+        MEMORY[0x277D82BD8](toStringifiedJSON2);
         objc_storeStrong(&v20, 0);
       }
 
@@ -584,11 +584,11 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
     {
       v12 = oslog;
       v13 = v28;
-      v14 = [(AXPhoenixConfiguration *)v30 toStringifiedJSON];
-      v27 = MEMORY[0x277D82BE0](v14);
+      toStringifiedJSON3 = [(AXPhoenixConfiguration *)v30 toStringifiedJSON];
+      v27 = MEMORY[0x277D82BE0](toStringifiedJSON3);
       __os_log_helper_16_2_2_8_32_8_64(v40, "[AXPhoenixGestureDetector _createConfiguration]", v27);
       _os_log_impl(&dword_25E4AC000, v12, v13, "[PHOENIX] %s %@", v40, 0x16u);
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](toStringifiedJSON3);
       objc_storeStrong(&v27, 0);
     }
 
@@ -608,7 +608,7 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
 - (id)_createClassifierModelURL
 {
   v21 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = [(AXPhoenixGestureDetector *)self _mobileAssetURLForModelOrNil];
   v15 = 0;
@@ -616,9 +616,9 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
   {
     if (!v16[0])
     {
-      v4 = [(AXPhoenixGestureDetector *)v17 urlOfModelInThisBundle];
+      urlOfModelInThisBundle = [(AXPhoenixGestureDetector *)selfCopy urlOfModelInThisBundle];
       v5 = v16[0];
-      v16[0] = v4;
+      v16[0] = urlOfModelInThisBundle;
       MEMORY[0x277D82BD8](v5);
       v13 = AXLogBackTap();
       v12 = OS_LOG_TYPE_INFO;
@@ -634,9 +634,9 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
 
   else
   {
-    v2 = [(AXPhoenixGestureDetector *)v17 urlOfModelInThisBundle];
+    urlOfModelInThisBundle2 = [(AXPhoenixGestureDetector *)selfCopy urlOfModelInThisBundle];
     v3 = v16[0];
-    v16[0] = v2;
+    v16[0] = urlOfModelInThisBundle2;
     MEMORY[0x277D82BD8](v3);
   }
 
@@ -669,13 +669,13 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)_startClassifierWithCompletion:(id)a3
+- (void)_startClassifierWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v24 = AXLogBackTap();
   v23 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -685,26 +685,26 @@ void __48__AXPhoenixGestureDetector__stopWithCompletion___block_invoke(uint64_t 
   }
 
   objc_storeStrong(&v24, 0);
-  dispatch_assert_queue_V2(v26->_queue);
-  [(AXPhoenixClassifier *)v26->_classifier reset];
+  dispatch_assert_queue_V2(selfCopy->_queue);
+  [(AXPhoenixClassifier *)selfCopy->_classifier reset];
   v8 = objc_alloc_init(MEMORY[0x277CC1CD8]);
-  cmMotionManager = v26->_cmMotionManager;
-  v26->_cmMotionManager = v8;
+  cmMotionManager = selfCopy->_cmMotionManager;
+  selfCopy->_cmMotionManager = v8;
   MEMORY[0x277D82BD8](cmMotionManager);
-  v6 = [(AXPhoenixClassifier *)v26->_classifier configuration];
-  v7 = [v6 accelerometerSampleRateInHz];
-  MEMORY[0x277D82BD8](v6);
-  v22 = v7;
-  v21 = 1.0 / v7;
+  configuration = [(AXPhoenixClassifier *)selfCopy->_classifier configuration];
+  accelerometerSampleRateInHz = [configuration accelerometerSampleRateInHz];
+  MEMORY[0x277D82BD8](configuration);
+  v22 = accelerometerSampleRateInHz;
+  v21 = 1.0 / accelerometerSampleRateInHz;
   v17[0] = 0;
   v17[1] = v17;
   v18 = 0x20000000;
   v19 = 32;
   v20 = 0;
-  objc_initWeak(&from, v26);
-  [(CMMotionManager *)v26->_cmMotionManager setDeviceMotionUpdateInterval:v21];
-  v4 = v26->_cmMotionManager;
-  motionInputQueue = v26->_motionInputQueue;
+  objc_initWeak(&from, selfCopy);
+  [(CMMotionManager *)selfCopy->_cmMotionManager setDeviceMotionUpdateInterval:v21];
+  v4 = selfCopy->_cmMotionManager;
+  motionInputQueue = selfCopy->_motionInputQueue;
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
@@ -843,7 +843,7 @@ void __59__AXPhoenixGestureDetector__startClassifierWithCompletion___block_invok
 - (void)_stopClassifier
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = AXLogBackTap();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
@@ -853,24 +853,24 @@ void __59__AXPhoenixGestureDetector__startClassifierWithCompletion___block_invok
   }
 
   objc_storeStrong(oslog, 0);
-  dispatch_assert_queue_V2(v3->_queue);
-  if (v3->_cmMotionManager)
+  dispatch_assert_queue_V2(selfCopy->_queue);
+  if (selfCopy->_cmMotionManager)
   {
-    [(CMMotionManager *)v3->_cmMotionManager stopDeviceMotionUpdates];
+    [(CMMotionManager *)selfCopy->_cmMotionManager stopDeviceMotionUpdates];
   }
 
-  [(AXPhoenixClassifier *)v3->_classifier reset];
-  objc_storeStrong(&v3->_cmMotionManager, 0);
+  [(AXPhoenixClassifier *)selfCopy->_classifier reset];
+  objc_storeStrong(&selfCopy->_cmMotionManager, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setFalsePositiveLoggingEnabled:(BOOL)a3
+- (void)setFalsePositiveLoggingEnabled:(BOOL)enabled
 {
-  self->_falsePositiveLoggingEnabled = a3;
-  [(AXPhoenixClassifier *)self->_classifier setFalsePositiveLoggingEnabled:a3];
+  self->_falsePositiveLoggingEnabled = enabled;
+  [(AXPhoenixClassifier *)self->_classifier setFalsePositiveLoggingEnabled:enabled];
   v6 = 0;
   LOBYTE(v5) = 0;
-  if (a3)
+  if (enabled)
   {
     v7 = +[AXPhoenixDataCollectionManager sharedInstance];
     v6 = 1;
@@ -889,7 +889,7 @@ void __59__AXPhoenixGestureDetector__startClassifierWithCompletion___block_invok
     MEMORY[0x277D82BD8](v4);
   }
 
-  else if (!a3)
+  else if (!enabled)
   {
     v3 = +[AXPhoenixDataCollectionManager sharedInstance];
     [(AXPhoenixDataCollectionManager *)v3 stop];
@@ -897,23 +897,23 @@ void __59__AXPhoenixGestureDetector__startClassifierWithCompletion___block_invok
   }
 }
 
-- (void)setRnnModelEnabled:(BOOL)a3
+- (void)setRnnModelEnabled:(BOOL)enabled
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  if (a3 != self->_rnnModelEnabled)
+  enabledCopy = enabled;
+  if (enabled != self->_rnnModelEnabled)
   {
-    v14->_rnnModelEnabled = v12;
-    objc_initWeak(&location, v14);
-    queue = v14->_queue;
+    selfCopy->_rnnModelEnabled = enabledCopy;
+    objc_initWeak(&location, selfCopy);
+    queue = selfCopy->_queue;
     v4 = MEMORY[0x277D85DD0];
     v5 = -1073741824;
     v6 = 0;
     v7 = __47__AXPhoenixGestureDetector_setRnnModelEnabled___block_invoke;
     v8 = &unk_279A20990;
     objc_copyWeak(&v10, &location);
-    v9 = MEMORY[0x277D82BE0](v14);
+    v9 = MEMORY[0x277D82BE0](selfCopy);
     dispatch_async(queue, &v4);
     objc_storeStrong(&v9, 0);
     objc_destroyWeak(&v10);
@@ -1053,28 +1053,28 @@ void __47__AXPhoenixGestureDetector_setRnnModelEnabled___block_invoke_53(void *a
   *MEMORY[0x277D85DE8];
 }
 
-- (void)reportFalsePositive:(id)a3
+- (void)reportFalsePositive:(id)positive
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, positive);
   v3 = +[AXPhoenixDataCollectionManager sharedInstance];
   [(AXPhoenixDataCollectionManager *)v3 reportFalsePositive:location[0]];
   MEMORY[0x277D82BD8](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)phoenixClassifier:(id)a3 failedWithError:(id)a4
+- (void)phoenixClassifier:(id)classifier failedWithError:(id)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, classifier);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  objc_initWeak(&v13, v16);
-  queue = v16->_queue;
+  objc_storeStrong(&v14, error);
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy->_queue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -1163,20 +1163,20 @@ void __62__AXPhoenixGestureDetector_phoenixClassifier_failedWithError___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (void)phoenixClassifierDidDetectDoubleTap:(id)a3 data:(id)a4 context:(id)a5
+- (void)phoenixClassifierDidDetectDoubleTap:(id)tap data:(id)data context:(id)context
 {
-  *&v20 = a4.var0;
-  *(&v20 + 1) = *&a4.var1;
-  *&v21 = a4.var2;
-  *(&v21 + 1) = *&a4.var3;
-  v19 = self;
+  *&v20 = data.var0;
+  *(&v20 + 1) = *&data.var1;
+  *&v21 = data.var2;
+  *(&v21 + 1) = *&data.var3;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tap);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  objc_initWeak(&v16, v19);
-  queue = v19->_queue;
+  objc_storeStrong(&v17, context);
+  objc_initWeak(&v16, selfCopy);
+  queue = selfCopy->_queue;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -1316,20 +1316,20 @@ void __77__AXPhoenixGestureDetector_phoenixClassifierDidDetectDoubleTap_data_con
   *MEMORY[0x277D85DE8];
 }
 
-- (void)phoenixClassifierDidDetectTripleTap:(id)a3 data:(id)a4 context:(id)a5
+- (void)phoenixClassifierDidDetectTripleTap:(id)tap data:(id)data context:(id)context
 {
-  *&v20 = a4.var0;
-  *(&v20 + 1) = *&a4.var1;
-  *&v21 = a4.var2;
-  *(&v21 + 1) = *&a4.var3;
-  v19 = self;
+  *&v20 = data.var0;
+  *(&v20 + 1) = *&data.var1;
+  *&v21 = data.var2;
+  *(&v21 + 1) = *&data.var3;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tap);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  objc_initWeak(&v16, v19);
-  queue = v19->_queue;
+  objc_storeStrong(&v17, context);
+  objc_initWeak(&v16, selfCopy);
+  queue = selfCopy->_queue;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -1469,29 +1469,29 @@ void __77__AXPhoenixGestureDetector_phoenixClassifierDidDetectTripleTap_data_con
   *MEMORY[0x277D85DE8];
 }
 
-- (void)phoenixClassifierDidLogFile:(id)a3
+- (void)phoenixClassifierDidLogFile:(id)file
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (([(AXPhoenixGestureDetectorDelegate *)v4->_delegate conformsToProtocol:&unk_28703E928]& 1) != 0)
+  objc_storeStrong(location, file);
+  if (([(AXPhoenixGestureDetectorDelegate *)selfCopy->_delegate conformsToProtocol:&unk_28703E928]& 1) != 0)
   {
-    [(AXPhoenixGestureDetectorDelegate *)v4->_delegate phoenixClassifierDidLogFile:location[0]];
+    [(AXPhoenixGestureDetectorDelegate *)selfCopy->_delegate phoenixClassifierDidLogFile:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)phoenixMitigator:(id)a3 didFailWithError:(id)a4
+- (void)phoenixMitigator:(id)mitigator didFailWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, mitigator);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, error);
   v15 = AXLogBackTap();
   v14 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1501,8 +1501,8 @@ void __77__AXPhoenixGestureDetector_phoenixClassifierDidDetectTripleTap_data_con
   }
 
   objc_storeStrong(&v15, 0);
-  objc_initWeak(&v13, v18);
-  queue = v18->_queue;
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy->_queue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -1528,23 +1528,23 @@ void __62__AXPhoenixGestureDetector_phoenixMitigator_didFailWithError___block_in
   objc_storeStrong(v2, 0);
 }
 
-- (void)phoenixMitigator:(id)a3 displayOnDidChange:(BOOL)a4
+- (void)phoenixMitigator:(id)mitigator displayOnDidChange:(BOOL)change
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
-  objc_initWeak(&v14, v17);
-  queue = v17->_queue;
+  objc_storeStrong(location, mitigator);
+  changeCopy = change;
+  objc_initWeak(&v14, selfCopy);
+  queue = selfCopy->_queue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __64__AXPhoenixGestureDetector_phoenixMitigator_displayOnDidChange___block_invoke;
   v10 = &unk_279A20A28;
   objc_copyWeak(&v12, &v14);
-  v13 = v15;
-  v11 = MEMORY[0x277D82BE0](v17);
+  v13 = changeCopy;
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   objc_storeStrong(&v11, 0);
   objc_destroyWeak(&v12);
@@ -1689,22 +1689,22 @@ void __64__AXPhoenixGestureDetector_phoenixMitigator_displayOnDidChange___block_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)phoenixMitigator:(id)a3 touchOnDidChange:(BOOL)a4
+- (void)phoenixMitigator:(id)mitigator touchOnDidChange:(BOOL)change
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
-  objc_initWeak(&v13, v16);
-  queue = v16->_queue;
+  objc_storeStrong(location, mitigator);
+  changeCopy = change;
+  objc_initWeak(&v13, selfCopy);
+  queue = selfCopy->_queue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __62__AXPhoenixGestureDetector_phoenixMitigator_touchOnDidChange___block_invoke;
   v10 = &unk_279A20A50;
   objc_copyWeak(&v11, &v13);
-  v12 = v14;
+  v12 = changeCopy;
   dispatch_async(queue, &v6);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -1734,15 +1734,15 @@ void __62__AXPhoenixGestureDetector_phoenixMitigator_touchOnDidChange___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (void)modelDidUpdate:(id)a3 assetVersion:(unint64_t)a4
+- (void)modelDidUpdate:(id)update assetVersion:(unint64_t)version
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
-  objc_initWeak(&v14, v17);
-  queue = v17->_queue;
+  objc_storeStrong(location, update);
+  versionCopy = version;
+  objc_initWeak(&v14, selfCopy);
+  queue = selfCopy->_queue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -1750,8 +1750,8 @@ void __62__AXPhoenixGestureDetector_phoenixMitigator_touchOnDidChange___block_in
   v10 = &unk_279A20AC8;
   objc_copyWeak(v13, &v14);
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v17);
-  v13[1] = v15;
+  v12 = MEMORY[0x277D82BE0](selfCopy);
+  v13[1] = versionCopy;
   dispatch_async(queue, &v6);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);

@@ -2,31 +2,31 @@
 - (CRSetupPromptPresenterSession)init;
 - (CRSetupPromptPresenterSessionDelegate)sessionDelegate;
 - (NSXPCConnection)connection;
-- (id)presenterRequestsAssetProgressWithCompletion:(id)a3;
+- (id)presenterRequestsAssetProgressWithCompletion:(id)completion;
 - (void)_cleanupAssetProgress;
 - (void)_handleAssetProgressFinished;
-- (void)_servicePerform:(id)a3;
+- (void)_servicePerform:(id)perform;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentAllowWhileLockedPromptForVehicleName:(id)a3 responseHandler:(id)a4;
-- (void)presentAssetProgressForVehicleName:(id)a3 progress:(id)a4 completionHandler:(id)a5 cancelHandler:(id)a6;
-- (void)presentAssetReadyForVehicleName:(id)a3 appClipIDs:(id)a4 confirmationHandler:(id)a5;
-- (void)presentAssetReadySoonForVehicleName:(id)a3 confirmationHandler:(id)a4;
-- (void)presentAssetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5;
-- (void)presentAssetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5;
-- (void)presentAssetUnavailableWithDescription:(id)a3 responseHandler:(id)a4;
-- (void)presentBluetoothConfirmationPromptForVehicleName:(id)a3 numericCode:(id)a4 responseHandler:(id)a5;
-- (void)presentBluetoothContactsSyncPromptWithResponseHandler:(id)a3;
-- (void)presentBluetoothFailedPromptForVehicleName:(id)a3 isTimeout:(BOOL)a4 responseHandler:(id)a5;
-- (void)presentCheckForSoftwareUpdatesWithCompletionHandler:(id)a3;
-- (void)presentConnectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5;
-- (void)presentEnhancedIntegrationPromptForVehicleName:(id)a3 responseHandler:(id)a4;
-- (void)presentSetupCarKeysPromptForVehicleName:(id)a3 carKeyInfo:(id)a4 cancelHandler:(id)a5;
-- (void)presentUseWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentAllowWhileLockedPromptForVehicleName:(id)name responseHandler:(id)handler;
+- (void)presentAssetProgressForVehicleName:(id)name progress:(id)progress completionHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)presentAssetReadyForVehicleName:(id)name appClipIDs:(id)ds confirmationHandler:(id)handler;
+- (void)presentAssetReadySoonForVehicleName:(id)name confirmationHandler:(id)handler;
+- (void)presentAssetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler;
+- (void)presentAssetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler;
+- (void)presentAssetUnavailableWithDescription:(id)description responseHandler:(id)handler;
+- (void)presentBluetoothConfirmationPromptForVehicleName:(id)name numericCode:(id)code responseHandler:(id)handler;
+- (void)presentBluetoothContactsSyncPromptWithResponseHandler:(id)handler;
+- (void)presentBluetoothFailedPromptForVehicleName:(id)name isTimeout:(BOOL)timeout responseHandler:(id)handler;
+- (void)presentCheckForSoftwareUpdatesWithCompletionHandler:(id)handler;
+- (void)presentConnectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler;
+- (void)presentEnhancedIntegrationPromptForVehicleName:(id)name responseHandler:(id)handler;
+- (void)presentSetupCarKeysPromptForVehicleName:(id)name carKeyInfo:(id)info cancelHandler:(id)handler;
+- (void)presentUseWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler;
 - (void)presentWaitingOnMessagingPrompt;
 - (void)presentWaitingOnStartSessionPrompt;
-- (void)presenterDidDismissWithCompletion:(id)a3;
-- (void)presenterIsReadyWithCompletion:(id)a3;
+- (void)presenterDidDismissWithCompletion:(id)completion;
+- (void)presenterIsReadyWithCompletion:(id)completion;
 @end
 
 @implementation CRSetupPromptPresenterSession
@@ -56,57 +56,57 @@
 
   [(CRSetupPromptPresenterSession *)self _cleanupAssetProgress];
   [(CRSetupPromptPresenterSession *)self setDismissHandler:0];
-  v4 = [(CRSetupPromptPresenterSession *)self connection];
-  [v4 invalidate];
+  connection = [(CRSetupPromptPresenterSession *)self connection];
+  [connection invalidate];
 
   [(CRSetupPromptPresenterSession *)self setConnection:0];
   [(CRSetupPromptPresenterSession *)self setSessionTransaction:0];
 }
 
-- (void)_servicePerform:(id)a3
+- (void)_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CRSetupPromptPresenterSession *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&stru_1000DDB18];
+  performCopy = perform;
+  connection = [(CRSetupPromptPresenterSession *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&stru_1000DDB18];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
-- (void)presenterIsReadyWithCompletion:(id)a3
+- (void)presenterIsReadyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BE0C;
   block[3] = &unk_1000DDAD8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)presenterDidDismissWithCompletion:(id)a3
+- (void)presenterDidDismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001BFAC;
   block[3] = &unk_1000DDAD8;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (id)presenterRequestsAssetProgressWithCompletion:(id)a3
+- (id)presenterRequestsAssetProgressWithCompletion:(id)completion
 {
   objc_initWeak(&location, self);
   v7 = 0;
@@ -131,52 +131,52 @@
   return v3;
 }
 
-- (void)presentBluetoothConfirmationPromptForVehicleName:(id)a3 numericCode:(id)a4 responseHandler:(id)a5
+- (void)presentBluetoothConfirmationPromptForVehicleName:(id)name numericCode:(id)code responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  codeCopy = code;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001C380;
   v14[3] = &unk_1000DDBB8;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = nameCopy;
+  v16 = codeCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = codeCopy;
+  v13 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v14];
 }
 
-- (void)presentBluetoothContactsSyncPromptWithResponseHandler:(id)a3
+- (void)presentBluetoothContactsSyncPromptWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001C624;
   v6[3] = &unk_1000DDBE0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v6];
 }
 
-- (void)presentBluetoothFailedPromptForVehicleName:(id)a3 isTimeout:(BOOL)a4 responseHandler:(id)a5
+- (void)presentBluetoothFailedPromptForVehicleName:(id)name isTimeout:(BOOL)timeout responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001C8E4;
   v12[3] = &unk_1000DDC08;
-  v15 = a4;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  timeoutCopy = timeout;
+  v13 = nameCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v12];
 }
 
@@ -187,49 +187,49 @@
   [(CRSetupPromptPresenterSession *)self _servicePerform:&stru_1000DDC48];
 }
 
-- (void)presentAllowWhileLockedPromptForVehicleName:(id)a3 responseHandler:(id)a4
+- (void)presentAllowWhileLockedPromptForVehicleName:(id)name responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001CBA4;
   v10[3] = &unk_1000DDC70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = nameCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentConnectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5
+- (void)presentConnectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001CE4C;
   v10[3] = &unk_1000DDC98;
-  v13 = a3;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
+  optionCopy = option;
+  v11 = handlerCopy;
+  enablementCopy = enablement;
+  v9 = handlerCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentUseWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5
+- (void)presentUseWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001D104;
   v10[3] = &unk_1000DDCC0;
-  v12 = a3;
-  v13 = a4;
-  v11 = v8;
-  v9 = v8;
+  enablementCopy = enablement;
+  variantCopy = variant;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
@@ -240,76 +240,76 @@
   [(CRSetupPromptPresenterSession *)self _servicePerform:&stru_1000DDCE0];
 }
 
-- (void)presentEnhancedIntegrationPromptForVehicleName:(id)a3 responseHandler:(id)a4
+- (void)presentEnhancedIntegrationPromptForVehicleName:(id)name responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001D420;
   v10[3] = &unk_1000DDC70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = nameCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentAssetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)a3 wirelessEnablement:(unint64_t)a4 responseHandler:(id)a5
+- (void)presentAssetSupportingConnectPromptWithBluetoothOnlyOption:(BOOL)option wirelessEnablement:(unint64_t)enablement responseHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001D6C8;
   v10[3] = &unk_1000DDC98;
-  v13 = a3;
-  v11 = v8;
-  v12 = a4;
-  v9 = v8;
+  optionCopy = option;
+  v11 = handlerCopy;
+  enablementCopy = enablement;
+  v9 = handlerCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentAssetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)a3 declineVariant:(unint64_t)a4 responseHandler:(id)a5
+- (void)presentAssetSupportingUseWirelessPromptWithWirelessEnablement:(unint64_t)enablement declineVariant:(unint64_t)variant responseHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001D980;
   v10[3] = &unk_1000DDCC0;
-  v12 = a3;
-  v13 = a4;
-  v11 = v8;
-  v9 = v8;
+  enablementCopy = enablement;
+  variantCopy = variant;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentAssetProgressForVehicleName:(id)a3 progress:(id)a4 completionHandler:(id)a5 cancelHandler:(id)a6
+- (void)presentAssetProgressForVehicleName:(id)name progress:(id)progress completionHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  nameCopy = name;
+  cancelHandlerCopy = cancelHandler;
+  handlerCopy = handler;
+  progressCopy = progress;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  [(CRSetupPromptPresenterSession *)self setAssetProgress:v13];
-  [(CRSetupPromptPresenterSession *)self setProgressPromptCompletion:v12];
+  [(CRSetupPromptPresenterSession *)self setAssetProgress:progressCopy];
+  [(CRSetupPromptPresenterSession *)self setProgressPromptCompletion:handlerCopy];
 
   v14 = NSStringFromSelector("fractionCompleted");
-  [v13 addObserver:self forKeyPath:v14 options:2 context:0];
+  [progressCopy addObserver:self forKeyPath:v14 options:2 context:0];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001DD1C;
   v19[3] = &unk_1000DDD58;
-  v21 = self;
-  v22 = v11;
-  v20 = v10;
-  v15 = v11;
-  v16 = v10;
+  selfCopy = self;
+  v22 = cancelHandlerCopy;
+  v20 = nameCopy;
+  v15 = cancelHandlerCopy;
+  v16 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v19];
-  LODWORD(v14) = [v13 isFinished];
+  LODWORD(v14) = [progressCopy isFinished];
 
   if (v14)
   {
@@ -333,11 +333,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "asset progress completed", v6, 2u);
   }
 
-  v4 = [(CRSetupPromptPresenterSession *)self progressPromptCompletion];
-  v5 = v4;
-  if (v4)
+  progressPromptCompletion = [(CRSetupPromptPresenterSession *)self progressPromptCompletion];
+  v5 = progressPromptCompletion;
+  if (progressPromptCompletion)
   {
-    (*(v4 + 16))(v4);
+    (*(progressPromptCompletion + 16))(progressPromptCompletion);
   }
 
   [(CRSetupPromptPresenterSession *)self setProgressPromptCompletion:0];
@@ -345,118 +345,118 @@
 
 - (void)_cleanupAssetProgress
 {
-  v3 = [(CRSetupPromptPresenterSession *)self assetProgress];
+  assetProgress = [(CRSetupPromptPresenterSession *)self assetProgress];
 
-  if (v3)
+  if (assetProgress)
   {
-    v4 = [(CRSetupPromptPresenterSession *)self assetProgress];
+    assetProgress2 = [(CRSetupPromptPresenterSession *)self assetProgress];
     v5 = NSStringFromSelector("fractionCompleted");
-    [v4 removeObserver:self forKeyPath:v5];
+    [assetProgress2 removeObserver:self forKeyPath:v5];
   }
 
   [(CRSetupPromptPresenterSession *)self setAssetProgress:0];
-  v6 = [(CRSetupPromptPresenterSession *)self remoteProgressCompletion];
-  if (v6)
+  remoteProgressCompletion = [(CRSetupPromptPresenterSession *)self remoteProgressCompletion];
+  if (remoteProgressCompletion)
   {
-    v6[2]();
+    remoteProgressCompletion[2]();
   }
 
   [(CRSetupPromptPresenterSession *)self setRemoteProgressCompletion:0];
   [(CRSetupPromptPresenterSession *)self setProgressPromptCompletion:0];
 }
 
-- (void)presentAssetReadyForVehicleName:(id)a3 appClipIDs:(id)a4 confirmationHandler:(id)a5
+- (void)presentAssetReadyForVehicleName:(id)name appClipIDs:(id)ds confirmationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dsCopy = ds;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001E154;
   v14[3] = &unk_1000DDBB8;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = nameCopy;
+  v16 = dsCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dsCopy;
+  v13 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v14];
 }
 
-- (void)presentAssetUnavailableWithDescription:(id)a3 responseHandler:(id)a4
+- (void)presentAssetUnavailableWithDescription:(id)description responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001E3C4;
   v10[3] = &unk_1000DDC70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = descriptionCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = descriptionCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentAssetReadySoonForVehicleName:(id)a3 confirmationHandler:(id)a4
+- (void)presentAssetReadySoonForVehicleName:(id)name confirmationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001E680;
   v10[3] = &unk_1000DDC70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = nameCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v10];
 }
 
-- (void)presentSetupCarKeysPromptForVehicleName:(id)a3 carKeyInfo:(id)a4 cancelHandler:(id)a5
+- (void)presentSetupCarKeysPromptForVehicleName:(id)name carKeyInfo:(id)info cancelHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  infoCopy = info;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001E904;
   v14[3] = &unk_1000DDBB8;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = nameCopy;
+  v16 = infoCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = infoCopy;
+  v13 = nameCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v14];
 }
 
-- (void)presentCheckForSoftwareUpdatesWithCompletionHandler:(id)a3
+- (void)presentCheckForSoftwareUpdatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001EB4C;
   v6[3] = &unk_1000DDBE0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(CRSetupPromptPresenterSession *)self _servicePerform:v6];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001ED74;
   v7[3] = &unk_1000DD580;
   v7[4] = self;
-  v8 = a5;
-  v6 = v8;
+  changeCopy = change;
+  v6 = changeCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 

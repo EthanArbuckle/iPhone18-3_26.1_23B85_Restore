@@ -1,17 +1,17 @@
 @interface MADProcessingGraph
-- (BOOL)_graphContainsNode:(id)a3;
-- (BOOL)_searchForNode:(id)a3 startingFromNode:(id)a4;
-- (BOOL)addChild:(id)a3 toParent:(id)a4 error:(id *)a5;
-- (BOOL)addInput:(id)a3 error:(id *)a4;
-- (BOOL)addRoot:(id)a3 error:(id *)a4;
-- (BOOL)connectChild:(id)a3 withParent:(id)a4 error:(id *)a5;
+- (BOOL)_graphContainsNode:(id)node;
+- (BOOL)_searchForNode:(id)node startingFromNode:(id)fromNode;
+- (BOOL)addChild:(id)child toParent:(id)parent error:(id *)error;
+- (BOOL)addInput:(id)input error:(id *)error;
+- (BOOL)addRoot:(id)root error:(id *)error;
+- (BOOL)connectChild:(id)child withParent:(id)parent error:(id *)error;
 - (BOOL)hasProcessingFailure;
 - (MADProcessingGraph)init;
-- (id)_bfsFromNode:(id)a3 conditionBlock:(id)a4 actionBlock:(id)a5;
-- (id)waitForResultsWithError:(id *)a3;
+- (id)_bfsFromNode:(id)node conditionBlock:(id)block actionBlock:(id)actionBlock;
+- (id)waitForResultsWithError:(id *)error;
 - (int)_setDispatchGroupOfNodesToMatch;
 - (void)cancelProcessing;
-- (void)setDispatchGroup:(id)a3;
+- (void)setDispatchGroup:(id)group;
 @end
 
 @implementation MADProcessingGraph
@@ -23,9 +23,9 @@
   v2 = [(MADProcessingGraph *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     roots = v2->_roots;
-    v2->_roots = v3;
+    v2->_roots = array;
 
     v2->_startedProcessing = 0;
     v5 = dispatch_group_create();
@@ -38,25 +38,25 @@
   return v2;
 }
 
-- (id)_bfsFromNode:(id)a3 conditionBlock:(id)a4 actionBlock:(id)a5
+- (id)_bfsFromNode:(id)node conditionBlock:(id)block actionBlock:(id)actionBlock
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v19 = v7;
-  v10 = [MEMORY[0x1E695DFA8] setWithObject:v7];
-  v11 = [MEMORY[0x1E695DF70] arrayWithObject:v7];
+  nodeCopy = node;
+  blockCopy = block;
+  actionBlockCopy = actionBlock;
+  v19 = nodeCopy;
+  v10 = [MEMORY[0x1E695DFA8] setWithObject:nodeCopy];
+  v11 = [MEMORY[0x1E695DF70] arrayWithObject:nodeCopy];
   while ([v11 count])
   {
     v12 = [v11 objectAtIndex:0];
     [v11 removeObjectAtIndex:0];
-    if (v9)
+    if (actionBlockCopy)
     {
-      v9[2](v9, v12);
+      actionBlockCopy[2](actionBlockCopy, v12);
     }
 
-    if (v8 && (v8[2](v8, v12) & 1) != 0)
+    if (blockCopy && (blockCopy[2](blockCopy, v12) & 1) != 0)
     {
       goto LABEL_18;
     }
@@ -65,8 +65,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [v12 children];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    children = [v12 children];
+    v14 = [children countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = *v21;
@@ -76,7 +76,7 @@
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(children);
           }
 
           v17 = *(*(&v20 + 1) + 8 * i);
@@ -87,7 +87,7 @@
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v14 = [children countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v14);
@@ -100,26 +100,26 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)_searchForNode:(id)a3 startingFromNode:(id)a4
+- (BOOL)_searchForNode:(id)node startingFromNode:(id)fromNode
 {
-  v6 = a3;
+  nodeCopy = node;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__MADProcessingGraph__searchForNode_startingFromNode___block_invoke;
   v10[3] = &unk_1E83505E8;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(MADProcessingGraph *)self _bfsFromNode:a4 conditionBlock:v10 actionBlock:0];
-  LOBYTE(a4) = v8 != 0;
+  v11 = nodeCopy;
+  v7 = nodeCopy;
+  v8 = [(MADProcessingGraph *)self _bfsFromNode:fromNode conditionBlock:v10 actionBlock:0];
+  LOBYTE(fromNode) = v8 != 0;
 
-  return a4;
+  return fromNode;
 }
 
-- (BOOL)_graphContainsNode:(id)a3
+- (BOOL)_graphContainsNode:(id)node
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -139,7 +139,7 @@ LABEL_18:
             objc_enumerationMutation(v5);
           }
 
-          if ([(MADProcessingGraph *)self _searchForNode:v4 startingFromNode:*(*(&v11 + 1) + 8 * i), v11])
+          if ([(MADProcessingGraph *)self _searchForNode:nodeCopy startingFromNode:*(*(&v11 + 1) + 8 * i), v11])
           {
             v9 = 1;
             goto LABEL_12;
@@ -231,9 +231,9 @@ void __53__MADProcessingGraph__setDispatchGroupOfNodesToMatch__block_invoke(uint
   [v4 setDispatchGroup:v3];
 }
 
-- (void)setDispatchGroup:(id)a3
+- (void)setDispatchGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   if (self->_startedProcessing)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -245,19 +245,19 @@ void __53__MADProcessingGraph__setDispatchGroupOfNodesToMatch__block_invoke(uint
 
   else
   {
-    objc_storeStrong(&self->_graphGroup, a3);
+    objc_storeStrong(&self->_graphGroup, group);
     [(MADProcessingGraph *)self _setDispatchGroupOfNodesToMatch];
   }
 }
 
-- (BOOL)addRoot:(id)a3 error:(id *)a4
+- (BOOL)addRoot:(id)root error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  rootCopy = root;
+  v7 = rootCopy;
   if (self->_startedProcessing)
   {
-    if (a4)
+    if (error)
     {
       v8 = MEMORY[0x1E696ABC0];
       v21 = *MEMORY[0x1E696A578];
@@ -266,19 +266,19 @@ void __53__MADProcessingGraph__setDispatchGroupOfNodesToMatch__block_invoke(uint
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v11 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v10];
 LABEL_16:
-      v14 = *a4;
-      *a4 = v11;
+      v14 = *error;
+      *error = v11;
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (v6)
+  else if (rootCopy)
   {
-    if (![(MADProcessingGraph *)self _graphContainsNode:v6])
+    if (![(MADProcessingGraph *)self _graphContainsNode:rootCopy])
     {
       [(NSMutableArray *)self->_roots addObject:v7];
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_18;
     }
 
@@ -288,7 +288,7 @@ LABEL_16:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Node already exists in graph, not adding as root", v16, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A578];
@@ -308,7 +308,7 @@ LABEL_16:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Cannot add nil as root", v16, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E696A578];
@@ -322,18 +322,18 @@ LABEL_16:
 
 LABEL_18:
 
-  return a4;
+  return error;
 }
 
-- (BOOL)addChild:(id)a3 toParent:(id)a4 error:(id *)a5
+- (BOOL)addChild:(id)child toParent:(id)parent error:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  childCopy = child;
+  parentCopy = parent;
+  v10 = parentCopy;
   if (self->_startedProcessing)
   {
-    if (a5)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v46 = *MEMORY[0x1E696A578];
@@ -341,24 +341,24 @@ LABEL_18:
       v47[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
       v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v13];
-      v15 = *a5;
-      *a5 = v14;
+      v15 = *error;
+      *error = v14;
 
 LABEL_22:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (v8)
+  else if (childCopy)
   {
-    if (v9)
+    if (parentCopy)
     {
-      if ([(MADProcessingGraph *)self _graphContainsNode:v9])
+      if ([(MADProcessingGraph *)self _graphContainsNode:parentCopy])
       {
-        if (![(MADProcessingGraph *)self _graphContainsNode:v8])
+        if (![(MADProcessingGraph *)self _graphContainsNode:childCopy])
         {
-          [v10 addChild:v8 error:a5];
-          LOBYTE(a5) = a5 == 0;
+          [v10 addChild:childCopy error:error];
+          LOBYTE(error) = error == 0;
           goto LABEL_23;
         }
 
@@ -368,7 +368,7 @@ LABEL_22:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Child already in graph, not attaching to parent", v37, 2u);
         }
 
-        if (a5)
+        if (error)
         {
           v16 = MEMORY[0x1E696ABC0];
           v38 = *MEMORY[0x1E696A578];
@@ -376,8 +376,8 @@ LABEL_22:
           v39 = v17;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
           v19 = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v18];
-          v20 = *a5;
-          *a5 = v19;
+          v20 = *error;
+          *error = v19;
 
           goto LABEL_22;
         }
@@ -391,7 +391,7 @@ LABEL_22:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Parent is not in graph, not adding child", v37, 2u);
         }
 
-        if (a5)
+        if (error)
         {
           v31 = MEMORY[0x1E696ABC0];
           v40 = *MEMORY[0x1E696A578];
@@ -399,15 +399,15 @@ LABEL_22:
           v41 = v32;
           v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
           v34 = [v31 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v33];
-          v35 = *a5;
-          *a5 = v34;
+          v35 = *error;
+          *error = v34;
 
           goto LABEL_22;
         }
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v26 = MEMORY[0x1E696ABC0];
       v42 = *MEMORY[0x1E696A578];
@@ -415,14 +415,14 @@ LABEL_22:
       v43 = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v29 = [v26 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v28];
-      v30 = *a5;
-      *a5 = v29;
+      v30 = *error;
+      *error = v29;
 
       goto LABEL_22;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
     v44 = *MEMORY[0x1E696A578];
@@ -430,26 +430,26 @@ LABEL_22:
     v45 = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
     v24 = [v21 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v23];
-    v25 = *a5;
-    *a5 = v24;
+    v25 = *error;
+    *error = v24;
 
     goto LABEL_22;
   }
 
 LABEL_23:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)connectChild:(id)a3 withParent:(id)a4 error:(id *)a5
+- (BOOL)connectChild:(id)child withParent:(id)parent error:(id *)error
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  childCopy = child;
+  parentCopy = parent;
+  v10 = parentCopy;
   if (self->_startedProcessing)
   {
-    if (a5)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v53 = *MEMORY[0x1E696A578];
@@ -457,26 +457,26 @@ LABEL_23:
       v54[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
       v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v13];
-      v15 = *a5;
-      *a5 = v14;
+      v15 = *error;
+      *error = v14;
 
 LABEL_28:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (v8)
+  else if (childCopy)
   {
-    if (v9)
+    if (parentCopy)
     {
-      if ([(MADProcessingGraph *)self _graphContainsNode:v9])
+      if ([(MADProcessingGraph *)self _graphContainsNode:parentCopy])
       {
-        if ([(MADProcessingGraph *)self _graphContainsNode:v8])
+        if ([(MADProcessingGraph *)self _graphContainsNode:childCopy])
         {
-          if (![(MADProcessingGraph *)self _searchForNode:v10 startingFromNode:v8])
+          if (![(MADProcessingGraph *)self _searchForNode:v10 startingFromNode:childCopy])
           {
-            [v10 addChild:v8 error:a5];
-            LOBYTE(a5) = a5 == 0;
+            [v10 addChild:childCopy error:error];
+            LOBYTE(error) = error == 0;
             goto LABEL_29;
           }
 
@@ -486,7 +486,7 @@ LABEL_28:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Connecting child with parent would create a cycle, not connecting", v42, 2u);
           }
 
-          if (a5)
+          if (error)
           {
             v16 = MEMORY[0x1E696ABC0];
             v43 = *MEMORY[0x1E696A578];
@@ -494,8 +494,8 @@ LABEL_28:
             v44 = v17;
             v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
             v19 = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v18];
-            v20 = *a5;
-            *a5 = v19;
+            v20 = *error;
+            *error = v19;
 
             goto LABEL_28;
           }
@@ -509,7 +509,7 @@ LABEL_28:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Child is not in graph, not connecting to parent", v42, 2u);
           }
 
-          if (a5)
+          if (error)
           {
             v36 = MEMORY[0x1E696ABC0];
             v45 = *MEMORY[0x1E696A578];
@@ -517,8 +517,8 @@ LABEL_28:
             v46 = v37;
             v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
             v39 = [v36 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v38];
-            v40 = *a5;
-            *a5 = v39;
+            v40 = *error;
+            *error = v39;
 
             goto LABEL_28;
           }
@@ -533,7 +533,7 @@ LABEL_28:
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] Parent is not in graph, not connecting to child", v42, 2u);
         }
 
-        if (a5)
+        if (error)
         {
           v31 = MEMORY[0x1E696ABC0];
           v47 = *MEMORY[0x1E696A578];
@@ -541,15 +541,15 @@ LABEL_28:
           v48 = v32;
           v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
           v34 = [v31 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v33];
-          v35 = *a5;
-          *a5 = v34;
+          v35 = *error;
+          *error = v34;
 
           goto LABEL_28;
         }
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v26 = MEMORY[0x1E696ABC0];
       v49 = *MEMORY[0x1E696A578];
@@ -557,14 +557,14 @@ LABEL_28:
       v50 = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
       v29 = [v26 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v28];
-      v30 = *a5;
-      *a5 = v29;
+      v30 = *error;
+      *error = v29;
 
       goto LABEL_28;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
     v51 = *MEMORY[0x1E696A578];
@@ -572,21 +572,21 @@ LABEL_28:
     v52 = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
     v24 = [v21 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v23];
-    v25 = *a5;
-    *a5 = v24;
+    v25 = *error;
+    *error = v24;
 
     goto LABEL_28;
   }
 
 LABEL_29:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)addInput:(id)a3 error:(id *)a4
+- (BOOL)addInput:(id)input error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  inputCopy = input;
   if (!self->_startedProcessing)
   {
     [(MADProcessingGraph *)self _setDispatchGroupOfNodesToMatch];
@@ -620,7 +620,7 @@ LABEL_29:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] processing canceled", buf, 2u);
           }
 
-          if (a4)
+          if (error)
           {
             v13 = MEMORY[0x1E696ABC0];
             v33 = *MEMORY[0x1E696A578];
@@ -628,8 +628,8 @@ LABEL_29:
             v34 = v14;
             v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
             v16 = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v15];
-            v17 = *a4;
-            *a4 = v16;
+            v17 = *error;
+            *error = v16;
           }
 
           goto LABEL_28;
@@ -644,7 +644,7 @@ LABEL_29:
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADProcessingGraph] processing had failed", buf, 2u);
           }
 
-          if (a4)
+          if (error)
           {
             v18 = MEMORY[0x1E696ABC0];
             v31 = *MEMORY[0x1E696A578];
@@ -652,19 +652,19 @@ LABEL_29:
             v32 = v19;
             v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
             v21 = [v18 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v20];
-            v22 = *a4;
-            *a4 = v21;
+            v22 = *error;
+            *error = v21;
           }
 
           goto LABEL_28;
         }
 
-        [v11 processInput:v6 error:a4];
-        if (a4 && *a4)
+        [v11 processInput:inputCopy error:error];
+        if (error && *error)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
-            v23 = [*a4 description];
+            v23 = [*error description];
             *buf = 138412290;
             v30 = v23;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADProcessingGraph] Error sending input to queue: %@", buf, 0xCu);
@@ -772,13 +772,13 @@ LABEL_11:
   }
 }
 
-- (id)waitForResultsWithError:(id *)a3
+- (id)waitForResultsWithError:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
   if (self->_startedProcessing)
   {
     dispatch_group_wait(self->_graphGroup, 0xFFFFFFFFFFFFFFFFLL);
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -791,7 +791,7 @@ LABEL_11:
       do
       {
         v9 = 0;
-        v10 = v5;
+        v10 = dictionary;
         do
         {
           if (*v20 != v8)
@@ -800,11 +800,11 @@ LABEL_11:
           }
 
           v11 = *(*(&v19 + 1) + 8 * v9);
-          v12 = [v11 waitForResultsWithError:{a3, v19}];
-          v5 = [v11 combineResults:v12 withOtherResults:v10];
+          v12 = [v11 waitForResultsWithError:{error, v19}];
+          dictionary = [v11 combineResults:v12 withOtherResults:v10];
 
           ++v9;
-          v10 = v5;
+          v10 = dictionary;
         }
 
         while (v7 != v9);
@@ -829,7 +829,7 @@ LABEL_11:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingGraph] WARNING: Waiting for processing before processing started", buf, 2u);
     }
 
-    if (a3)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
@@ -837,14 +837,14 @@ LABEL_11:
       v26[0] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v16 = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v15];
-      v17 = *a3;
-      *a3 = v16;
+      v17 = *error;
+      *error = v16;
     }
 
-    v5 = 0;
+    dictionary = 0;
   }
 
-  return v5;
+  return dictionary;
 }
 
 @end

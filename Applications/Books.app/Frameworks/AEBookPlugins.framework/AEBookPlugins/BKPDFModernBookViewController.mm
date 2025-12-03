@@ -1,36 +1,36 @@
 @interface BKPDFModernBookViewController
-+ (int64_t)pageNumberForPageIndex:(unint64_t)a3;
-+ (unint64_t)pageIndexForPageNumber:(int64_t)a3;
-+ (void)_minScaleFactorForPageBounds:(CGFloat)a3 viewBounds:(CGFloat)a4 safeAreaInsets:(double)a5 pageBreakMargins:(double)a6;
-- (BKPDFModernBookViewController)initWithBook:(id)a3 storeID:(id)a4;
-- (BKPDFModernBookViewController)initWithBook:(id)a3 storeID:(id)a4 pdfDocumentCache:(id)a5;
++ (int64_t)pageNumberForPageIndex:(unint64_t)index;
++ (unint64_t)pageIndexForPageNumber:(int64_t)number;
++ (void)_minScaleFactorForPageBounds:(CGFloat)bounds viewBounds:(CGFloat)viewBounds safeAreaInsets:(double)insets pageBreakMargins:(double)margins;
+- (BKPDFModernBookViewController)initWithBook:(id)book storeID:(id)d;
+- (BKPDFModernBookViewController)initWithBook:(id)book storeID:(id)d pdfDocumentCache:(id)cache;
 - (BOOL)_needToSaveChanges;
 - (BOOL)assetEditingEnabled;
 - (BOOL)canBeEdited;
 - (BOOL)canCopy;
 - (BOOL)canShowControlsDuringOpenClose;
-- (BOOL)dismissShouldBegin:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)isLocationOnCurrentPage:(id)a3;
+- (BOOL)dismissShouldBegin:(id)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)isLocationOnCurrentPage:(id)page;
 - (BOOL)isPageBookmarked;
 - (BOOL)isPageProgressionRTL;
 - (BOOL)prepareForContentScaling;
 - (BOOL)shouldShowHUDs;
 - (BOOL)shouldShowUndoControls;
 - (BOOL)supportsDocumentEditing;
-- (BOOL)turnPageInDirection:(int64_t)a3;
-- (BOOL)turnPages:(int64_t)a3 animated:(BOOL)a4;
+- (BOOL)turnPageInDirection:(int64_t)direction;
+- (BOOL)turnPages:(int64_t)pages animated:(BOOL)animated;
 - (IMPerformSelectorProxy)performSelectorProxy;
 - (PDFDocument)pdfDocument;
 - (UIEdgeInsets)pdfViewContentInset;
 - (UIScrollView)pdfScrollView;
 - (_NSRange)currentPages;
 - (double)_contentAspectRatio;
-- (id)_bookContentViewImageOfPage:(unint64_t)a3;
-- (id)_bookContentViewImageOfPage:(unint64_t)a3 boundingSize:(CGSize)a4;
+- (id)_bookContentViewImageOfPage:(unint64_t)page;
+- (id)_bookContentViewImageOfPage:(unint64_t)page boundingSize:(CGSize)size;
 - (id)_currentReadingProgress;
-- (id)_uniqueIDForOutline:(id)a3;
+- (id)_uniqueIDForOutline:(id)outline;
 - (id)actionController;
 - (id)analyticsContentSettingData;
 - (id)bookContentView;
@@ -38,94 +38,94 @@
 - (id)editRedoBarButtonItem;
 - (id)editUndoBarButtonItem;
 - (id)imageCache;
-- (id)menuItems:(id)a3 forPage:(id)a4;
-- (id)pageLocationForPageIndex:(unint64_t)a3;
-- (id)pageLocationForPageNumber:(int64_t)a3;
+- (id)menuItems:(id)items forPage:(id)page;
+- (id)pageLocationForPageIndex:(unint64_t)index;
+- (id)pageLocationForPageNumber:(int64_t)number;
 - (id)searchViewController;
-- (id)searchViewController:(id)a3 chapterNameForSearchResult:(id)a4 pageNumber:(int64_t)a5;
+- (id)searchViewController:(id)controller chapterNameForSearchResult:(id)result pageNumber:(int64_t)number;
 - (id)transitionContentHostingView;
 - (id)transitionContentView;
 - (id)transitionContentViewImage;
 - (id)visiblePageBookmarks;
 - (int64_t)pageCountIncludingUpsell;
-- (int64_t)pageNumberForLocation:(id)a3;
-- (int64_t)pageNumberFromRange:(_NSRange)a3;
-- (unint64_t)_pageIndexForOutline:(id)a3;
-- (unint64_t)_pageNumberForAnchor:(id)a3;
+- (int64_t)pageNumberForLocation:(id)location;
+- (int64_t)pageNumberFromRange:(_NSRange)range;
+- (unint64_t)_pageIndexForOutline:(id)outline;
+- (unint64_t)_pageNumberForAnchor:(id)anchor;
 - (unint64_t)currentPageIndex;
-- (unint64_t)pageIndexForLocation:(id)a3;
+- (unint64_t)pageIndexForLocation:(id)location;
 - (void)_didScrollPDFViewToPage;
-- (void)_enableMarkupMode:(BOOL)a3;
+- (void)_enableMarkupMode:(BOOL)mode;
 - (void)_evaluateUndoRedoEnabled;
-- (void)_jumpToLocationForVerticalScroll:(id)a3 animated:(BOOL)a4;
-- (void)_jumpToLocationPaged:(id)a3 animated:(BOOL)a4;
-- (void)_scrollToRect:(CGRect)a3 inPageAtIndex:(int64_t)a4;
+- (void)_jumpToLocationForVerticalScroll:(id)scroll animated:(BOOL)animated;
+- (void)_jumpToLocationPaged:(id)paged animated:(BOOL)animated;
+- (void)_scrollToRect:(CGRect)rect inPageAtIndex:(int64_t)index;
 - (void)_setupGestureRecognizers;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateToolbarVisibilityAnimated:(BOOL)a3;
-- (void)_willScrollPDFViewToPageNumber:(int64_t)a3;
-- (void)actionControllerWillShow:(id)a3;
-- (void)annotationsDidChange:(id)a3;
-- (void)bookContentViewImage:(id)a3;
-- (void)books_enableContinuousScroll:(id)a3;
-- (void)books_pageBackward:(id)a3;
-- (void)books_pageForward:(id)a3;
-- (void)books_pageLeft:(id)a3;
-- (void)books_pageRight:(id)a3;
-- (void)buildContextTree:(id)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateToolbarVisibilityAnimated:(BOOL)animated;
+- (void)_willScrollPDFViewToPageNumber:(int64_t)number;
+- (void)actionControllerWillShow:(id)show;
+- (void)annotationsDidChange:(id)change;
+- (void)bookContentViewImage:(id)image;
+- (void)books_enableContinuousScroll:(id)scroll;
+- (void)books_pageBackward:(id)backward;
+- (void)books_pageForward:(id)forward;
+- (void)books_pageLeft:(id)left;
+- (void)books_pageRight:(id)right;
+- (void)buildContextTree:(id)tree;
 - (void)clearSelection;
-- (void)close:(BOOL)a3;
+- (void)close:(BOOL)close;
 - (void)contentViewReady;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)dealloc;
 - (void)disableEditingAndSaveIfNecessary;
-- (void)dismissCurrentPopoverWithCompletion:(id)a3 animated:(BOOL)a4;
-- (void)endScroll:(id)a3;
-- (void)handleContentScaling:(BOOL)a3;
-- (void)handleSingleTap:(id)a3;
-- (void)highlightSearchResult:(id)a3;
-- (void)jumpToLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissCurrentPopoverWithCompletion:(id)completion animated:(BOOL)animated;
+- (void)endScroll:(id)scroll;
+- (void)handleContentScaling:(BOOL)scaling;
+- (void)handleSingleTap:(id)tap;
+- (void)highlightSearchResult:(id)result;
+- (void)jumpToLocation:(id)location animated:(BOOL)animated completion:(id)completion;
 - (void)loadAKToolbarView;
 - (void)loadView;
 - (void)makeContentVisible;
-- (void)open:(BOOL)a3;
-- (void)openToLocation:(id)a3 animated:(BOOL)a4;
-- (void)reloadPDFDocumentCompletion:(id)a3;
+- (void)open:(BOOL)open;
+- (void)openToLocation:(id)location animated:(BOOL)animated;
+- (void)reloadPDFDocumentCompletion:(id)completion;
 - (void)resetPDFDocument;
-- (void)saveStateClosing:(BOOL)a3 suspending:(BOOL)a4;
-- (void)scalePDFContent:(double)a3 locationInView:(CGPoint)a4 animated:(BOOL)a5;
-- (void)scrollToPageNumber:(int64_t)a3 animate:(BOOL)a4;
-- (void)scrollerViewPageDidChange:(id)a3;
-- (void)scrub:(id)a3 isScrubbing:(BOOL)a4;
-- (void)scrubValueChanged:(id)a3;
-- (void)searchPDFUsingSelection:(id)a3;
-- (void)setAssetEditingEnabled:(BOOL)a3;
+- (void)saveStateClosing:(BOOL)closing suspending:(BOOL)suspending;
+- (void)scalePDFContent:(double)content locationInView:(CGPoint)view animated:(BOOL)animated;
+- (void)scrollToPageNumber:(int64_t)number animate:(BOOL)animate;
+- (void)scrollerViewPageDidChange:(id)change;
+- (void)scrub:(id)scrub isScrubbing:(BOOL)scrubbing;
+- (void)scrubValueChanged:(id)changed;
+- (void)searchPDFUsingSelection:(id)selection;
+- (void)setAssetEditingEnabled:(BOOL)enabled;
 - (void)setDefaultMarkupTool;
-- (void)setLayout:(unint64_t)a3;
-- (void)setScrollMode:(id)a3;
-- (void)setSection:(int)a3 animated:(BOOL)a4 adjustScrollToReveal:(BOOL)a5;
+- (void)setLayout:(unint64_t)layout;
+- (void)setScrollMode:(id)mode;
+- (void)setSection:(int)section animated:(BOOL)animated adjustScrollToReveal:(BOOL)reveal;
 - (void)startCountingAnnotations;
-- (void)toggleBookmark:(id)a3;
-- (void)toggleEditAssetMode:(id)a3;
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4;
-- (void)updateBookmarkButton:(BOOL)a3;
-- (void)updateBottomToolbar:(BOOL)a3;
+- (void)toggleBookmark:(id)bookmark;
+- (void)toggleEditAssetMode:(id)mode;
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated;
+- (void)updateBookmarkButton:(BOOL)button;
+- (void)updateBottomToolbar:(BOOL)toolbar;
 - (void)updateContentInsets;
 - (void)updateContentScale;
-- (void)updateHUDVisibilityAnimated:(BOOL)a3;
+- (void)updateHUDVisibilityAnimated:(BOOL)animated;
 - (void)updateLayout;
 - (void)updateProgressKitForNewLocation;
-- (void)updateScrubber:(_NSRange)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateScrubber:(_NSRange)scrubber;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)visiblePageDidChange:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)visiblePageDidChange:(id)change;
 @end
 
 @implementation BKPDFModernBookViewController
@@ -144,10 +144,10 @@
 
 - (UIScrollView)pdfScrollView
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfView];
-  v3 = [v2 documentScrollView];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  documentScrollView = [pdfView documentScrollView];
 
-  return v3;
+  return documentScrollView;
 }
 
 - (void)loadAKToolbarView
@@ -160,59 +160,59 @@
     self->_akToolbarView = 0;
   }
 
-  v5 = [(BKPDFModernBookViewController *)self pdfView];
-  v6 = [v5 akToolbarView];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  akToolbarView = [pdfView akToolbarView];
   v7 = self->_akToolbarView;
-  self->_akToolbarView = v6;
+  self->_akToolbarView = akToolbarView;
 
   v8 = self->_akToolbarView;
   if (v8)
   {
     [(UIView *)v8 setAlpha:0.0];
-    v9 = [(BKPDFModernBookViewController *)self theme];
-    v10 = [v9 backgroundColorForTraitEnvironment:self];
-    v11 = [(BKPDFModernBookViewController *)self pdfView];
-    [v11 setAkToolbarViewTintColor:v10];
+    theme = [(BKPDFModernBookViewController *)self theme];
+    v10 = [theme backgroundColorForTraitEnvironment:self];
+    pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView2 setAkToolbarViewTintColor:v10];
 
-    v12 = [(BKPDFModernBookViewController *)self theme];
-    v13 = [v12 tintColorForNavbarButtons];
-    v14 = [(BKPDFModernBookViewController *)self pdfView];
-    [v14 setAkToolbarViewItemTintColor:v13];
+    theme2 = [(BKPDFModernBookViewController *)self theme];
+    tintColorForNavbarButtons = [theme2 tintColorForNavbarButtons];
+    pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView3 setAkToolbarViewItemTintColor:tintColorForNavbarButtons];
 
-    v15 = [(BKPDFModernBookViewController *)self pdfView];
-    v16 = [v15 tintColor];
-    v17 = [(BKPDFModernBookViewController *)self pdfView];
-    [v17 setInteractionTintColor:v16];
+    pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+    tintColor = [pdfView4 tintColor];
+    pdfView5 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView5 setInteractionTintColor:tintColor];
 
-    v18 = [(BKPDFModernBookViewController *)self view];
-    [v18 addSubview:self->_akToolbarView];
+    view = [(BKPDFModernBookViewController *)self view];
+    [view addSubview:self->_akToolbarView];
 
     [(UIView *)self->_akToolbarView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(UIView *)self->_akToolbarView leftAnchor];
-    v20 = [(BKPDFModernBookViewController *)self view];
-    v21 = [v20 leftAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    leftAnchor = [(UIView *)self->_akToolbarView leftAnchor];
+    view2 = [(BKPDFModernBookViewController *)self view];
+    leftAnchor2 = [view2 leftAnchor];
+    v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v22 setActive:1];
 
-    v23 = [(UIView *)self->_akToolbarView rightAnchor];
-    v24 = [(BKPDFModernBookViewController *)self view];
-    v25 = [v24 rightAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    rightAnchor = [(UIView *)self->_akToolbarView rightAnchor];
+    view3 = [(BKPDFModernBookViewController *)self view];
+    rightAnchor2 = [view3 rightAnchor];
+    v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v26 setActive:1];
 
-    v30 = [(UIView *)self->_akToolbarView bottomAnchor];
-    v27 = [(BKPDFModernBookViewController *)self view];
-    v28 = [v27 bottomAnchor];
-    v29 = [v30 constraintEqualToAnchor:v28];
+    bottomAnchor = [(UIView *)self->_akToolbarView bottomAnchor];
+    view4 = [(BKPDFModernBookViewController *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v29 setActive:1];
   }
 }
 
-- (void)reloadPDFDocumentCompletion:(id)a3
+- (void)reloadPDFDocumentCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKBookViewController *)self book];
-  v6 = [v5 url];
+  completionCopy = completion;
+  book = [(BKBookViewController *)self book];
+  v6 = [book url];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -221,7 +221,7 @@
   v13[4] = self;
   v7 = v6;
   v14 = v7;
-  v8 = v4;
+  v8 = completionCopy;
   v15 = v8;
   v9 = objc_retainBlock(v13);
   v10 = objc_retainBlock(v9);
@@ -244,28 +244,28 @@
   }
 }
 
-- (BKPDFModernBookViewController)initWithBook:(id)a3 storeID:(id)a4
+- (BKPDFModernBookViewController)initWithBook:(id)book storeID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  bookCopy = book;
   v8 = +[AEPdfCache sharedInstance];
-  v9 = [(BKPDFModernBookViewController *)self initWithBook:v7 storeID:v6 pdfDocumentCache:v8];
+  v9 = [(BKPDFModernBookViewController *)self initWithBook:bookCopy storeID:dCopy pdfDocumentCache:v8];
 
   return v9;
 }
 
-- (BKPDFModernBookViewController)initWithBook:(id)a3 storeID:(id)a4 pdfDocumentCache:(id)a5
+- (BKPDFModernBookViewController)initWithBook:(id)book storeID:(id)d pdfDocumentCache:(id)cache
 {
-  v8 = a3;
-  v9 = a5;
+  bookCopy = book;
+  cacheCopy = cache;
   v27.receiver = self;
   v27.super_class = BKPDFModernBookViewController;
-  v10 = [(BKThumbnailBookViewController *)&v27 initWithBook:v8 storeID:a4];
+  v10 = [(BKThumbnailBookViewController *)&v27 initWithBook:bookCopy storeID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pdfDocumentCache, a5);
-    v12 = [v8 url];
+    objc_storeStrong(&v10->_pdfDocumentCache, cache);
+    v12 = [bookCopy url];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_get_global_queue(0, 0);
     v15 = dispatch_queue_create_with_target_V2("com.apple.iBooks.pdfwrite", v13, v14);
@@ -274,10 +274,10 @@
 
     v11->_accessLock._os_unfair_lock_opaque = 0;
     v17 = [(AEPdfCache *)v11->_pdfDocumentCache copyCacheObjectForURL:v12];
-    v18 = [v17 document];
-    if (v18)
+    document = [v17 document];
+    if (document)
     {
-      objc_storeStrong(&v11->_pdfDocument, v18);
+      objc_storeStrong(&v11->_pdfDocument, document);
       [(BKPDFModernBookViewController *)v11 startCountingAnnotations];
     }
 
@@ -294,9 +294,9 @@
       }
     }
 
-    v22 = [v17 pdfUndoManager];
+    pdfUndoManager = [v17 pdfUndoManager];
     pdfUndoManager = v11->_pdfUndoManager;
-    v11->_pdfUndoManager = v22;
+    v11->_pdfUndoManager = pdfUndoManager;
 
     v11->_targetPageNumber = -1;
     v11->_initialZoomFactor = -1.0;
@@ -345,48 +345,48 @@
   return performSelectorProxy;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(BKPDFModernBookViewController *)self _enableMarkupMode:0];
   v5.receiver = self;
   v5.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v5 viewWillDisappear:v3];
+  [(BKThumbnailBookViewController *)&v5 viewWillDisappear:disappearCopy];
   [(BKPDFModernBookViewController *)self clearSelection];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = BKPDFModernBookViewController;
-  v7 = a4;
-  [(BKThumbnailBookViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BKThumbnailBookViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_EA55C;
   v8[3] = &unk_1E5BF8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&stru_1E5BD0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&stru_1E5BD0 completion:v8];
 }
 
 - (BOOL)prepareForContentScaling
 {
-  v2 = self;
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  [v3 scaleFactor];
+  selfCopy = self;
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView scaleFactor];
   v5 = v4;
-  [(BKPDFModernBookViewController *)v2 initialZoomFactor];
-  LOBYTE(v2) = v5 == v6;
+  [(BKPDFModernBookViewController *)selfCopy initialZoomFactor];
+  LOBYTE(selfCopy) = v5 == v6;
 
-  return v2;
+  return selfCopy;
 }
 
-+ (void)_minScaleFactorForPageBounds:(CGFloat)a3 viewBounds:(CGFloat)a4 safeAreaInsets:(double)a5 pageBreakMargins:(double)a6
++ (void)_minScaleFactorForPageBounds:(CGFloat)bounds viewBounds:(CGFloat)viewBounds safeAreaInsets:(double)insets pageBreakMargins:(double)margins
 {
-  v27 = a5 + a10 + a14;
-  v28 = a6 + a9 + a13;
+  v27 = insets + a10 + a14;
+  v28 = margins + a9 + a13;
   v29 = a7 - (a10 + a12) - (a14 + a16);
   v30 = a8 - (a9 + a11) - (a13 + a15);
   v33.origin.x = v27;
@@ -394,46 +394,46 @@
   v33.size.width = v29;
   v33.size.height = v30;
   CGRectGetWidth(v33);
-  v34.origin.x = a1;
+  v34.origin.x = self;
   v34.origin.y = a2;
-  v34.size.width = a3;
-  v34.size.height = a4;
+  v34.size.width = bounds;
+  v34.size.height = viewBounds;
   CGRectGetWidth(v34);
   v35.origin.x = v27;
   v35.origin.y = v28;
   v35.size.width = v29;
   v35.size.height = v30;
   CGRectGetHeight(v35);
-  v36.origin.x = a1;
+  v36.origin.x = self;
   v36.origin.y = a2;
-  v36.size.height = a4;
-  v36.size.width = a3;
+  v36.size.height = viewBounds;
+  v36.size.width = bounds;
   CGRectGetHeight(v36);
 }
 
-- (void)handleContentScaling:(BOOL)a3
+- (void)handleContentScaling:(BOOL)scaling
 {
-  v3 = a3;
-  v5 = [(BKPDFModernBookViewController *)self pdfView];
-  [v5 autoScaleFactor];
+  scalingCopy = scaling;
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView autoScaleFactor];
   v7 = v6;
 
   [(BKPDFModernBookViewController *)self setInitialZoomFactor:v7];
   if (![(BKPDFModernBookViewController *)self isScrolling])
   {
-    v8 = [(BKPDFModernBookViewController *)self pdfView];
-    [v8 setMinScaleFactor:v7];
+    pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView2 setMinScaleFactor:v7];
 
-    if (v3)
+    if (scalingCopy)
     {
-      v9 = [(BKPDFModernBookViewController *)self pdfView];
-      [v9 scaleFactor];
+      pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+      [pdfView3 scaleFactor];
       v11 = v10;
 
       if (v11 != v7)
       {
-        v12 = [(BKPDFModernBookViewController *)self pdfView];
-        [v12 setScaleFactor:v7];
+        pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+        [pdfView4 setScaleFactor:v7];
       }
     }
   }
@@ -441,17 +441,17 @@
 
 - (void)updateContentScale
 {
-  v3 = [(BKPDFModernBookViewController *)self prepareForContentScaling];
+  prepareForContentScaling = [(BKPDFModernBookViewController *)self prepareForContentScaling];
 
-  [(BKPDFModernBookViewController *)self handleContentScaling:v3];
+  [(BKPDFModernBookViewController *)self handleContentScaling:prepareForContentScaling];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfScrollView];
-  v4 = [v3 isZooming];
+  pdfScrollView = [(BKPDFModernBookViewController *)self pdfScrollView];
+  isZooming = [pdfScrollView isZooming];
 
-  if (v4)
+  if (isZooming)
   {
     v8.receiver = self;
     v8.super_class = BKPDFModernBookViewController;
@@ -482,62 +482,62 @@
   v26.receiver = self;
   v26.super_class = BKPDFModernBookViewController;
   [(BKThumbnailBookViewController *)&v26 viewDidLoad];
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BKPDFModernBookViewController *)self pdfView];
-    [v5 setShowsScrollIndicators:0];
+    pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView2 setShowsScrollIndicators:0];
   }
 
   v6 = +[UIColor bc_booksBackground];
-  v7 = [(BKThumbnailBookViewController *)self topToolbar];
-  [v7 setBarTintColor:v6];
+  topToolbar = [(BKThumbnailBookViewController *)self topToolbar];
+  [topToolbar setBarTintColor:v6];
 
   v27 = NSForegroundColorAttributeName;
   v8 = +[UIColor bc_booksLabelColor];
   v28 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-  v10 = [(BKThumbnailBookViewController *)self topToolbar];
-  [v10 setTitleTextAttributes:v9];
+  topToolbar2 = [(BKThumbnailBookViewController *)self topToolbar];
+  [topToolbar2 setTitleTextAttributes:v9];
 
   v11 = +[UIColor bc_booksLabelColor];
-  v12 = [(BKThumbnailBookViewController *)self topToolbar];
-  [v12 setTintColor:v11];
+  topToolbar3 = [(BKThumbnailBookViewController *)self topToolbar];
+  [topToolbar3 setTintColor:v11];
 
   [(BKPDFModernBookViewController *)self updateLayout];
   v13 = +[NSNotificationCenter defaultCenter];
-  v14 = [(BKPDFModernBookViewController *)self pdfView];
-  [v13 addObserver:self selector:"visiblePageDidChange:" name:PDFViewPageChangedNotification object:v14];
+  pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+  [v13 addObserver:self selector:"visiblePageDidChange:" name:PDFViewPageChangedNotification object:pdfView3];
 
   v15 = +[NSNotificationCenter defaultCenter];
-  v16 = [(BKPDFModernBookViewController *)self pdfView];
-  [v15 addObserver:self selector:"scrollerViewPageDidChange:" name:PDFViewVisiblePagesChangedNotification object:v16];
+  pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+  [v15 addObserver:self selector:"scrollerViewPageDidChange:" name:PDFViewVisiblePagesChangedNotification object:pdfView4];
 
   v17 = +[NSNotificationCenter defaultCenter];
   v18 = PDFViewAnnotationsDidChangeNotification;
-  v19 = [(BKPDFModernBookViewController *)self pdfView];
-  [v17 addObserver:self selector:"annotationsDidChange:" name:v18 object:v19];
+  pdfView5 = [(BKPDFModernBookViewController *)self pdfView];
+  [v17 addObserver:self selector:"annotationsDidChange:" name:v18 object:pdfView5];
 
   v20 = +[NSNotificationCenter defaultCenter];
   v21 = PDFTextSelectionMenuWillChangeScrollPosition;
-  v22 = [(BKPDFModernBookViewController *)self pdfView];
-  [v20 addObserver:self selector:"beginScroll:" name:v21 object:v22];
+  pdfView6 = [(BKPDFModernBookViewController *)self pdfView];
+  [v20 addObserver:self selector:"beginScroll:" name:v21 object:pdfView6];
 
   v23 = +[NSNotificationCenter defaultCenter];
   v24 = PDFTextSelectionMenuDidChangeScrollPosition;
-  v25 = [(BKPDFModernBookViewController *)self pdfView];
-  [v23 addObserver:self selector:"endScroll:" name:v24 object:v25];
+  pdfView7 = [(BKPDFModernBookViewController *)self pdfView];
+  [v23 addObserver:self selector:"endScroll:" name:v24 object:pdfView7];
 
   [(BKPDFModernBookViewController *)self setIgnoreKeyboardInteraction:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKPDFModernBookViewController;
-  [(BKBookViewController *)&v4 viewDidAppear:a3];
+  [(BKBookViewController *)&v4 viewDidAppear:appear];
   [(BKPDFModernBookViewController *)self updateContentInsets];
 }
 
@@ -556,33 +556,33 @@
   self->_pdfDocument = 0;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = BKPDFModernBookViewController;
-  [(BKBookViewController *)&v7 viewDidDisappear:a3];
+  [(BKBookViewController *)&v7 viewDidDisappear:disappear];
   if ([(BKPDFModernBookViewController *)self stateShouldClose])
   {
     v4 = +[BCProgressKitController sharedController];
-    v5 = [(BKPDFModernBookViewController *)self asset];
-    v6 = [v5 assetID];
-    [v4 didCloseBookWithAssetID:v6 completion:0];
+    asset = [(BKPDFModernBookViewController *)self asset];
+    assetID = [asset assetID];
+    [v4 didCloseBookWithAssetID:assetID completion:0];
 
     [(BKPDFModernBookViewController *)self resetPDFDocument];
     [(BKPDFModernBookViewController *)self setStateShouldClose:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = BKPDFModernBookViewController;
-  [(BKPDFModernBookViewController *)&v11 viewWillAppear:a3];
-  v4 = [(BKPDFModernBookViewController *)self pdfView];
-  v5 = [v4 currentPage];
+  [(BKPDFModernBookViewController *)&v11 viewWillAppear:appear];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  v6 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v7 = [v6 indexForPage:v5];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  v7 = [pdfDocument indexForPage:currentPage];
 
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -597,39 +597,39 @@
   objc_destroyWeak(&location);
 }
 
-- (void)open:(BOOL)a3
+- (void)open:(BOOL)open
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
+  openCopy = open;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v5)
+  if (assetViewControllerDelegate)
   {
-    v6 = [(BKBookViewController *)self assetViewControllerDelegate];
-    [v6 assetViewController:self willOpen:v3];
+    assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
+    [assetViewControllerDelegate2 assetViewController:self willOpen:openCopy];
   }
 }
 
-- (void)openToLocation:(id)a3 animated:(BOOL)a4
+- (void)openToLocation:(id)location animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
-  v6 = [(BKBookViewController *)self assetViewControllerDelegate];
+  animatedCopy = animated;
+  locationCopy = location;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
 
-  if (v6)
+  if (assetViewControllerDelegate)
   {
-    v7 = [(BKBookViewController *)self assetViewControllerDelegate];
-    [v7 assetViewController:self willOpen:v4];
+    assetViewControllerDelegate2 = [(BKBookViewController *)self assetViewControllerDelegate];
+    [assetViewControllerDelegate2 assetViewController:self willOpen:animatedCopy];
 
     objc_opt_class();
     v8 = BUDynamicCast();
-    v9 = [v8 anchor];
-    v10 = [(BKPDFModernBookViewController *)self _pageNumberForAnchor:v9];
+    anchor = [v8 anchor];
+    v10 = [(BKPDFModernBookViewController *)self _pageNumberForAnchor:anchor];
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(BKPDFModernBookViewController *)self pdfView];
+      pdfView = [(BKPDFModernBookViewController *)self pdfView];
 
-      if (v11)
+      if (pdfView)
       {
         [(BKPDFModernBookViewController *)self turnToPageNumber:v10 animated:0];
       }
@@ -643,43 +643,43 @@
   }
 }
 
-- (void)close:(BOOL)a3
+- (void)close:(BOOL)close
 {
-  v3 = a3;
-  v5 = [(BKBookViewController *)self assetViewControllerDelegate];
-  [v5 assetViewController:self willClose:v3];
+  closeCopy = close;
+  assetViewControllerDelegate = [(BKBookViewController *)self assetViewControllerDelegate];
+  [assetViewControllerDelegate assetViewController:self willClose:closeCopy];
 
   [(BKPDFModernBookViewController *)self setStateShouldClose:1];
 }
 
-- (unint64_t)_pageNumberForAnchor:(id)a3
+- (unint64_t)_pageNumberForAnchor:(id)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   v4 = +[NSCharacterSet whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  v5 = [anchorCopy stringByTrimmingCharactersInSet:v4];
 
   if ([v5 hasPrefix:{@"page(", "hasSuffix:", @")"}])
   {
     v6 = [v5 substringWithRange:{5, objc_msgSend(v5, "length") - 6}];
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (void)contentViewReady
 {
-  v3 = [(BKBookViewController *)self contentOpenAnimator];
+  contentOpenAnimator = [(BKBookViewController *)self contentOpenAnimator];
 
-  if (v3)
+  if (contentOpenAnimator)
   {
-    v4 = [(BKBookViewController *)self contentOpenAnimator];
-    [v4 bookContentDidLoad];
+    contentOpenAnimator2 = [(BKBookViewController *)self contentOpenAnimator];
+    [contentOpenAnimator2 bookContentDidLoad];
 
     [(BKBookViewController *)self setContentOpenAnimator:0];
     v5 = [(BKPDFModernBookViewController *)self assetReloading]|| UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning();
@@ -693,127 +693,127 @@
   v31.receiver = self;
   v31.super_class = BKPDFModernBookViewController;
   [(BKPDFModernBookViewController *)&v31 loadView];
-  v3 = [(BKPDFModernBookViewController *)self pdfDocument];
-  [v3 setShowsAnnotations:1];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  [pdfDocument setShowsAnnotations:1];
 
-  v4 = [(BKPDFModernBookViewController *)self view];
+  view = [(BKPDFModernBookViewController *)self view];
   v5 = [PDFView alloc];
-  [v4 bounds];
+  [view bounds];
   v6 = [v5 initWithFrame:?];
   [(BKPDFModernBookViewController *)self setPdfView:v6];
 
-  v7 = [(BKPDFModernBookViewController *)self pdfView];
-  [v7 setAutoresizingMask:18];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView setAutoresizingMask:18];
 
-  v8 = [(BKPDFModernBookViewController *)self pdfView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:1];
+  pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView2 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v9 = [(BKPDFModernBookViewController *)self pdfView];
-  [v9 setDelegate:self];
+  pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView3 setDelegate:self];
 
-  v10 = [(BKPDFModernBookViewController *)self pdfView];
-  [v10 setAutoScales:1];
+  pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView4 setAutoScales:1];
 
-  v11 = [(BKPDFModernBookViewController *)self pdfView];
-  [v11 setMaxScaleFactor:32.0];
+  pdfView5 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView5 setMaxScaleFactor:32.0];
 
-  v12 = [(BKPDFModernBookViewController *)self pdfView];
-  [v12 setDisplaysBookmarksForPages:1];
+  pdfView6 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView6 setDisplaysBookmarksForPages:1];
 
-  v13 = [(BKPDFModernBookViewController *)self pdfView];
-  [v13 setDisplayDirection:1];
+  pdfView7 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView7 setDisplayDirection:1];
 
-  v14 = [(BKPDFModernBookViewController *)self pdfView];
+  pdfView8 = [(BKPDFModernBookViewController *)self pdfView];
   v32 = UIPageViewControllerOptionInterPageSpacingKey;
   v33 = &off_1F18B0;
   v15 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-  [v14 usePageViewController:1 withViewOptions:v15];
+  [pdfView8 usePageViewController:1 withViewOptions:v15];
 
-  v16 = [(BKPDFModernBookViewController *)self pdfView];
-  v17 = [v16 documentViewController];
-  [(BKPDFModernBookViewController *)self addChildViewController:v17];
+  pdfView9 = [(BKPDFModernBookViewController *)self pdfView];
+  documentViewController = [pdfView9 documentViewController];
+  [(BKPDFModernBookViewController *)self addChildViewController:documentViewController];
 
-  v18 = [(BKPDFModernBookViewController *)self pdfView];
-  [v4 addSubview:v18];
+  pdfView10 = [(BKPDFModernBookViewController *)self pdfView];
+  [view addSubview:pdfView10];
 
-  v19 = [(BKPDFModernBookViewController *)self pdfView];
-  v20 = [v19 documentViewController];
-  [v20 didMoveToParentViewController:self];
+  pdfView11 = [(BKPDFModernBookViewController *)self pdfView];
+  documentViewController2 = [pdfView11 documentViewController];
+  [documentViewController2 didMoveToParentViewController:self];
 
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v24 = [(BKPDFModernBookViewController *)self pdfView];
-  [v24 setPageBreakMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
+  pdfView12 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView12 setPageBreakMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-  v25 = [(BKPDFModernBookViewController *)self pdfView];
-  v26 = [(BKPDFModernBookViewController *)self pdfDocument];
-  [v25 setDocument:v26];
+  pdfView13 = [(BKPDFModernBookViewController *)self pdfView];
+  pdfDocument2 = [(BKPDFModernBookViewController *)self pdfDocument];
+  [pdfView13 setDocument:pdfDocument2];
 
   [(BKPDFModernBookViewController *)self _setupGestureRecognizers];
-  v27 = [(BKPDFModernBookViewController *)self pdfView];
-  v28 = [(BKBookViewController *)self book];
-  [v27 setDisplaysRTL:{objc_msgSend(v28, "writingDirection") == &dword_0 + 1}];
+  pdfView14 = [(BKPDFModernBookViewController *)self pdfView];
+  book = [(BKBookViewController *)self book];
+  [pdfView14 setDisplaysRTL:{objc_msgSend(book, "writingDirection") == &dword_0 + 1}];
 
   v29 = [IMTheme themeWithIdentifier:kIMThemeIdentifierDynamicTheme];
   [(BKBookViewController *)self setTheme:v29];
 
-  v30 = [(BKPDFModernBookViewController *)self pdfView];
-  [v30 setAkAnnotationEditingEnabled:0];
+  pdfView15 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView15 setAkAnnotationEditingEnabled:0];
 
   [(BKPDFModernBookViewController *)self loadAKToolbarView];
 }
 
 - (BOOL)isPageProgressionRTL
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfView];
-  v3 = [v2 displaysRTL];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  displaysRTL = [pdfView displaysRTL];
 
-  return v3;
+  return displaysRTL;
 }
 
-- (void)setLayout:(unint64_t)a3
+- (void)setLayout:(unint64_t)layout
 {
   v4.receiver = self;
   v4.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v4 setLayout:a3];
+  [(BKThumbnailBookViewController *)&v4 setLayout:layout];
   [(BKPDFModernBookViewController *)self updateLayout];
 }
 
 - (void)updateLayout
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  v4 = [v3 currentPage];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  v5 = [(BKBookViewController *)self layout];
-  v6 = [(BKPDFModernBookViewController *)self pdfView];
-  v7 = v6;
-  if (v5 == 2)
+  layout = [(BKBookViewController *)self layout];
+  pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+  v7 = pdfView2;
+  if (layout == 2)
   {
-    v8 = [v6 documentViewController];
-    [v8 willMoveToParentViewController:0];
+    documentViewController = [pdfView2 documentViewController];
+    [documentViewController willMoveToParentViewController:0];
 
-    v9 = [(BKPDFModernBookViewController *)self pdfView];
-    v10 = [v9 documentViewController];
-    [v10 removeFromParentViewController];
+    pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+    documentViewController2 = [pdfView3 documentViewController];
+    [documentViewController2 removeFromParentViewController];
 
-    v11 = [(BKPDFModernBookViewController *)self pdfView];
-    [v11 usePageViewController:0 withViewOptions:0];
+    pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView4 usePageViewController:0 withViewOptions:0];
 
-    v12 = [(BKPDFModernBookViewController *)self pdfView];
-    [v12 setDisplayDirection:0];
+    pdfView5 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView5 setDisplayDirection:0];
 
-    v13 = [(BKPDFModernBookViewController *)self pdfView];
-    [v13 setDisplayMode:1];
+    pdfView6 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView6 setDisplayMode:1];
 
-    v14 = [(BKPDFModernBookViewController *)self pdfScrollView];
-    [v14 setContentInsetAdjustmentBehavior:2];
+    pdfScrollView = [(BKPDFModernBookViewController *)self pdfScrollView];
+    [pdfScrollView setContentInsetAdjustmentBehavior:2];
 
-    v15 = [(BKPDFModernBookViewController *)self pdfView];
-    [v15 setAutoScales:1];
+    pdfView7 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView7 setAutoScales:1];
 
-    v16 = [(BKPDFModernBookViewController *)self pdfView];
-    [v16 setPageBreakMargins:{4.75, 4.0, 4.75, 4.0}];
+    pdfView8 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView8 setPageBreakMargins:{4.75, 4.0, 4.75, 4.0}];
   }
 
   else
@@ -823,42 +823,42 @@
     v17 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     [v7 usePageViewController:1 withViewOptions:v17];
 
-    v18 = [(BKPDFModernBookViewController *)self pdfView];
-    [v18 setDisplayDirection:1];
+    pdfView9 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView9 setDisplayDirection:1];
 
     left = UIEdgeInsetsZero.left;
     bottom = UIEdgeInsetsZero.bottom;
     right = UIEdgeInsetsZero.right;
-    v22 = [(BKPDFModernBookViewController *)self pdfView];
-    [v22 setPageBreakMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
+    pdfView10 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView10 setPageBreakMargins:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-    v23 = [(BKPDFModernBookViewController *)self pdfView];
-    v24 = [v23 documentViewController];
-    [(BKPDFModernBookViewController *)self addChildViewController:v24];
+    pdfView11 = [(BKPDFModernBookViewController *)self pdfView];
+    documentViewController3 = [pdfView11 documentViewController];
+    [(BKPDFModernBookViewController *)self addChildViewController:documentViewController3];
 
-    v16 = [(BKPDFModernBookViewController *)self pdfView];
-    v25 = [v16 documentViewController];
-    [v25 didMoveToParentViewController:self];
+    pdfView8 = [(BKPDFModernBookViewController *)self pdfView];
+    documentViewController4 = [pdfView8 documentViewController];
+    [documentViewController4 didMoveToParentViewController:self];
   }
 
   [(BKPDFModernBookViewController *)self updateContentInsets];
-  v26 = [(BKPDFModernBookViewController *)self pdfView];
-  [v26 layoutDocumentView];
+  pdfView12 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView12 layoutDocumentView];
 
-  v27 = [(BKPDFModernBookViewController *)self pdfView];
-  v28 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v27 removeGestureRecognizer:v28];
+  pdfView13 = [(BKPDFModernBookViewController *)self pdfView];
+  controlsTapRecognizer = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [pdfView13 removeGestureRecognizer:controlsTapRecognizer];
 
   [(BKPDFModernBookViewController *)self _setupGestureRecognizers];
-  v29 = [(BKPDFModernBookViewController *)self pdfView];
-  [v29 goToPage:v4];
+  pdfView14 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView14 goToPage:currentPage];
 
   v30 = +[UIColor clearColor];
-  v31 = [(BKPDFModernBookViewController *)self pdfView];
-  [v31 setBackgroundColor:v30];
+  pdfView15 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView15 setBackgroundColor:v30];
 }
 
-- (void)setScrollMode:(id)a3
+- (void)setScrollMode:(id)mode
 {
   if ([(BKBookViewController *)self layout]== &dword_0 + 1)
   {
@@ -878,49 +878,49 @@
   v3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleSingleTap:"];
   [(BKPDFModernBookViewController *)self setControlsTapRecognizer:v3];
 
-  v4 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v4 setNumberOfTapsRequired:1];
+  controlsTapRecognizer = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [controlsTapRecognizer setNumberOfTapsRequired:1];
 
-  v5 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v5 setDelegate:self];
+  controlsTapRecognizer2 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [controlsTapRecognizer2 setDelegate:self];
 
-  v6 = [(BKPDFModernBookViewController *)self pdfView];
-  v7 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v6 addGestureRecognizer:v7];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  controlsTapRecognizer3 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [pdfView addGestureRecognizer:controlsTapRecognizer3];
 
-  v8 = [(BKPDFModernBookViewController *)self pdfView];
-  v16 = [v8 longPressGestureRecognizer];
+  pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+  longPressGestureRecognizer = [pdfView2 longPressGestureRecognizer];
 
-  v9 = [(BKPDFModernBookViewController *)self pdfView];
-  v10 = [v9 tapGestureRecognizer];
+  pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+  tapGestureRecognizer = [pdfView3 tapGestureRecognizer];
 
-  v11 = [(BKPDFModernBookViewController *)self pdfView];
-  v12 = [v11 doubleTapGestureRecognizer];
+  pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+  doubleTapGestureRecognizer = [pdfView4 doubleTapGestureRecognizer];
 
-  v13 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v13 requireGestureRecognizerToFail:v10];
+  controlsTapRecognizer4 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [controlsTapRecognizer4 requireGestureRecognizerToFail:tapGestureRecognizer];
 
-  v14 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v14 requireGestureRecognizerToFail:v16];
+  controlsTapRecognizer5 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [controlsTapRecognizer5 requireGestureRecognizerToFail:longPressGestureRecognizer];
 
-  v15 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-  [v15 requireGestureRecognizerToFail:v12];
+  controlsTapRecognizer6 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+  [controlsTapRecognizer6 requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 }
 
 - (int64_t)pageCountIncludingUpsell
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v3 = [v2 pageCount];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  pageCount = [pdfDocument pageCount];
 
-  return v3;
+  return pageCount;
 }
 
 - (id)actionController
 {
   if (!self->super.super._actionController)
   {
-    v3 = [(BKBookViewController *)self book];
-    if ([v3 isManagedBook])
+    book = [(BKBookViewController *)self book];
+    if ([book isManagedBook])
     {
       v4 = +[AEAnnotationSerializationManager managedBooksAllowedToSync];
 
@@ -940,8 +940,8 @@
     v7 = v5;
 
     [(BKActionController *)self->super.super._actionController setAncestorViewController:self];
-    v8 = [(BKBookViewController *)self book];
-    [(BKActionController *)self->super.super._actionController setBookInfo:v8];
+    book2 = [(BKBookViewController *)self book];
+    [(BKActionController *)self->super.super._actionController setBookInfo:book2];
 
     [(BKActionController *)self->super.super._actionController setDelegate:self];
   }
@@ -967,86 +967,86 @@ LABEL_7:
   }
 }
 
-- (void)actionControllerWillShow:(id)a3
+- (void)actionControllerWillShow:(id)show
 {
   v4.receiver = self;
   v4.super_class = BKPDFModernBookViewController;
-  [(BKBookViewController *)&v4 actionControllerWillShow:a3];
+  [(BKBookViewController *)&v4 actionControllerWillShow:show];
   [(BKPDFModernBookViewController *)self disableEditingAndSaveIfNecessary];
 }
 
-- (void)setSection:(int)a3 animated:(BOOL)a4 adjustScrollToReveal:(BOOL)a5
+- (void)setSection:(int)section animated:(BOOL)animated adjustScrollToReveal:(BOOL)reveal
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = *&a3;
-  if (a3 == 1 && [(BKPDFModernBookViewController *)self assetEditingEnabled])
+  revealCopy = reveal;
+  animatedCopy = animated;
+  v7 = *&section;
+  if (section == 1 && [(BKPDFModernBookViewController *)self assetEditingEnabled])
   {
     [(BKPDFModernBookViewController *)self _enableMarkupMode:0];
   }
 
   v9.receiver = self;
   v9.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v9 setSection:v7 animated:v6 adjustScrollToReveal:v5];
+  [(BKThumbnailBookViewController *)&v9 setSection:v7 animated:animatedCopy adjustScrollToReveal:revealCopy];
 }
 
-- (void)updateBottomToolbar:(BOOL)a3
+- (void)updateBottomToolbar:(BOOL)toolbar
 {
   v6.receiver = self;
   v6.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v6 updateBottomToolbar:a3];
-  v4 = 0.0;
+  [(BKThumbnailBookViewController *)&v6 updateBottomToolbar:toolbar];
+  controlsVisible = 0.0;
   if ([(BKPDFModernBookViewController *)self assetEditingEnabled])
   {
-    v4 = [(BKBookViewController *)self controlsVisible];
+    controlsVisible = [(BKBookViewController *)self controlsVisible];
   }
 
-  v5 = [(BKPDFModernBookViewController *)self akToolbarView];
-  [v5 setAlpha:v4];
+  akToolbarView = [(BKPDFModernBookViewController *)self akToolbarView];
+  [akToolbarView setAlpha:controlsVisible];
 }
 
 - (BOOL)supportsDocumentEditing
 {
-  v3 = [(BKPDFModernBookViewController *)self akToolbarView];
-  if (v3)
+  akToolbarView = [(BKPDFModernBookViewController *)self akToolbarView];
+  if (akToolbarView)
   {
-    v4 = [(BKPDFModernBookViewController *)self canBeEdited];
+    canBeEdited = [(BKPDFModernBookViewController *)self canBeEdited];
   }
 
   else
   {
-    v4 = 0;
+    canBeEdited = 0;
   }
 
-  return v4;
+  return canBeEdited;
 }
 
 - (BOOL)canBeEdited
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v3 = [v2 allowsDocumentChanges];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  allowsDocumentChanges = [pdfDocument allowsDocumentChanges];
 
-  return v3;
+  return allowsDocumentChanges;
 }
 
 - (BOOL)shouldShowUndoControls
 {
-  v3 = [(BKPDFModernBookViewController *)self assetEditingEnabled];
-  if (v3)
+  assetEditingEnabled = [(BKPDFModernBookViewController *)self assetEditingEnabled];
+  if (assetEditingEnabled)
   {
     if (isPhone())
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(assetEditingEnabled) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(BKPDFModernBookViewController *)self im_isCompactWidth];
+      LOBYTE(assetEditingEnabled) = [(BKPDFModernBookViewController *)self im_isCompactWidth];
     }
   }
 
-  return v3;
+  return assetEditingEnabled;
 }
 
 - (id)editUndoBarButtonItem
@@ -1054,19 +1054,19 @@ LABEL_7:
   editUndoBarButtonItem = self->super._editUndoBarButtonItem;
   if (!editUndoBarButtonItem)
   {
-    v4 = [(BKPDFModernBookViewController *)self pdfView];
-    v5 = [v4 akUndoToolbarItem];
+    pdfView = [(BKPDFModernBookViewController *)self pdfView];
+    akUndoToolbarItem = [pdfView akUndoToolbarItem];
 
     v10.receiver = self;
     v10.super_class = BKPDFModernBookViewController;
-    v6 = [(BKThumbnailBookViewController *)&v10 editUndoBarButtonItem];
+    editUndoBarButtonItem = [(BKThumbnailBookViewController *)&v10 editUndoBarButtonItem];
     v7 = self->super._editUndoBarButtonItem;
-    self->super._editUndoBarButtonItem = v6;
+    self->super._editUndoBarButtonItem = editUndoBarButtonItem;
 
-    v8 = [v5 target];
-    [(UIBarButtonItem *)self->super._editUndoBarButtonItem setTarget:v8];
+    target = [akUndoToolbarItem target];
+    [(UIBarButtonItem *)self->super._editUndoBarButtonItem setTarget:target];
 
-    -[UIBarButtonItem setAction:](self->super._editUndoBarButtonItem, "setAction:", [v5 action]);
+    -[UIBarButtonItem setAction:](self->super._editUndoBarButtonItem, "setAction:", [akUndoToolbarItem action]);
     [(UIBarButtonItem *)self->super._editUndoBarButtonItem setWidth:46.0];
 
     editUndoBarButtonItem = self->super._editUndoBarButtonItem;
@@ -1080,19 +1080,19 @@ LABEL_7:
   editRedoBarButtonItem = self->super._editRedoBarButtonItem;
   if (!editRedoBarButtonItem)
   {
-    v4 = [(BKPDFModernBookViewController *)self pdfView];
-    v5 = [v4 akRedoToolbarItem];
+    pdfView = [(BKPDFModernBookViewController *)self pdfView];
+    akRedoToolbarItem = [pdfView akRedoToolbarItem];
 
     v10.receiver = self;
     v10.super_class = BKPDFModernBookViewController;
-    v6 = [(BKThumbnailBookViewController *)&v10 editRedoBarButtonItem];
+    editRedoBarButtonItem = [(BKThumbnailBookViewController *)&v10 editRedoBarButtonItem];
     v7 = self->super._editRedoBarButtonItem;
-    self->super._editRedoBarButtonItem = v6;
+    self->super._editRedoBarButtonItem = editRedoBarButtonItem;
 
-    v8 = [v5 target];
-    [(UIBarButtonItem *)self->super._editRedoBarButtonItem setTarget:v8];
+    target = [akRedoToolbarItem target];
+    [(UIBarButtonItem *)self->super._editRedoBarButtonItem setTarget:target];
 
-    -[UIBarButtonItem setAction:](self->super._editRedoBarButtonItem, "setAction:", [v5 action]);
+    -[UIBarButtonItem setAction:](self->super._editRedoBarButtonItem, "setAction:", [akRedoToolbarItem action]);
     [(UIBarButtonItem *)self->super._editRedoBarButtonItem setWidth:46.0];
 
     editRedoBarButtonItem = self->super._editRedoBarButtonItem;
@@ -1103,55 +1103,55 @@ LABEL_7:
 
 - (void)_evaluateUndoRedoEnabled
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  v4 = [v3 akUndoToolbarItem];
-  v5 = [v4 isEnabled];
-  v6 = [(BKPDFModernBookViewController *)self editUndoBarButtonItem];
-  [v6 setEnabled:v5];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  akUndoToolbarItem = [pdfView akUndoToolbarItem];
+  isEnabled = [akUndoToolbarItem isEnabled];
+  editUndoBarButtonItem = [(BKPDFModernBookViewController *)self editUndoBarButtonItem];
+  [editUndoBarButtonItem setEnabled:isEnabled];
 
-  v10 = [(BKPDFModernBookViewController *)self pdfView];
-  v7 = [v10 akRedoToolbarItem];
-  v8 = [v7 isEnabled];
-  v9 = [(BKPDFModernBookViewController *)self editRedoBarButtonItem];
-  [v9 setEnabled:v8];
+  pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+  akRedoToolbarItem = [pdfView2 akRedoToolbarItem];
+  isEnabled2 = [akRedoToolbarItem isEnabled];
+  editRedoBarButtonItem = [(BKPDFModernBookViewController *)self editRedoBarButtonItem];
+  [editRedoBarButtonItem setEnabled:isEnabled2];
 }
 
 - (id)bookContentView
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  v4 = [v3 pageViewForPageAtIndex:{-[BKPDFModernBookViewController currentPageIndex](self, "currentPageIndex")}];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  v4 = [pdfView pageViewForPageAtIndex:{-[BKPDFModernBookViewController currentPageIndex](self, "currentPageIndex")}];
 
   return v4;
 }
 
-- (id)_bookContentViewImageOfPage:(unint64_t)a3
+- (id)_bookContentViewImageOfPage:(unint64_t)page
 {
-  v5 = [(BKPDFModernBookViewController *)self view];
-  v6 = [v5 window];
-  if (v6)
+  view = [(BKPDFModernBookViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v7 = [(BKPDFModernBookViewController *)self view];
-    v8 = [v7 window];
-    [v8 bounds];
+    view2 = [(BKPDFModernBookViewController *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     v10 = v9;
     v12 = v11;
   }
 
   else
   {
-    v7 = +[UIScreen mainScreen];
-    [v7 bounds];
+    view2 = +[UIScreen mainScreen];
+    [view2 bounds];
     v10 = v13;
     v12 = v14;
   }
 
-  return [(BKPDFModernBookViewController *)self _bookContentViewImageOfPage:a3 boundingSize:v10, v12];
+  return [(BKPDFModernBookViewController *)self _bookContentViewImageOfPage:page boundingSize:v10, v12];
 }
 
-- (id)_bookContentViewImageOfPage:(unint64_t)a3 boundingSize:(CGSize)a4
+- (id)_bookContentViewImageOfPage:(unint64_t)page boundingSize:(CGSize)size
 {
-  v5 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v6 = [v5 pageAtIndex:a3];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  v6 = [pdfDocument pageAtIndex:page];
 
   if (v6)
   {
@@ -1172,10 +1172,10 @@ LABEL_7:
     v13 = [v6 imageOfSize:1 forBox:v12 withOptions:{v9, v11}];
     v14 = BUDynamicCast();
 
-    v15 = [v14 CGImage];
+    cGImage = [v14 CGImage];
     v16 = +[UIScreen mainScreen];
     [v16 scale];
-    v18 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", v15, [v14 imageOrientation], v17);
+    v18 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", cGImage, [v14 imageOrientation], v17);
   }
 
   else
@@ -1186,11 +1186,11 @@ LABEL_7:
   return v18;
 }
 
-- (void)bookContentViewImage:(id)a3
+- (void)bookContentViewImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v6 = [(BKPDFModernBookViewController *)self _bookContentViewImageOfPage:[(BKPDFModernBookViewController *)self currentPageIndex]];
-  (*(a3 + 2))(v5, v6);
+  (*(image + 2))(imageCopy, v6);
 }
 
 - (void)makeContentVisible
@@ -1202,20 +1202,20 @@ LABEL_7:
   [(BKBookViewController *)self setControlsVisible:1 animated:1];
 }
 
-- (void)_updateToolbarVisibilityAnimated:(BOOL)a3
+- (void)_updateToolbarVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(UIBarButtonItem *)self->super._editToolboxBarButtonItem setSelected:[(BKPDFModernBookViewController *)self assetEditingEnabled]];
-  [(BKThumbnailBookViewController *)self updateTopToolbar:v3];
+  [(BKThumbnailBookViewController *)self updateTopToolbar:animatedCopy];
 
-  [(BKPDFModernBookViewController *)self updateBottomToolbar:v3];
+  [(BKPDFModernBookViewController *)self updateBottomToolbar:animatedCopy];
 }
 
-- (void)updateHUDVisibilityAnimated:(BOOL)a3
+- (void)updateHUDVisibilityAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v4 updateHUDVisibilityAnimated:a3];
+  [(BKThumbnailBookViewController *)&v4 updateHUDVisibilityAnimated:animated];
   [(BKPDFModernBookViewController *)self updateContentScale];
 }
 
@@ -1233,18 +1233,18 @@ LABEL_7:
 
 - (void)setDefaultMarkupTool
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v4 = [v2 akController];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  akController = [pdfDocument akController];
 
   v3 = objc_opt_new();
   [v3 setTag:764017];
-  [v4 performActionForSender:v3];
+  [akController performActionForSender:v3];
 }
 
-- (void)dismissCurrentPopoverWithCompletion:(id)a3 animated:(BOOL)a4
+- (void)dismissCurrentPopoverWithCompletion:(id)completion animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
   if ([(BKPDFModernBookViewController *)self assetEditingEnabled])
   {
     [(BKPDFModernBookViewController *)self _enableMarkupMode:0];
@@ -1252,19 +1252,19 @@ LABEL_7:
 
   v7.receiver = self;
   v7.super_class = BKPDFModernBookViewController;
-  [(BKBookViewController *)&v7 dismissCurrentPopoverWithCompletion:v6 animated:v4];
+  [(BKBookViewController *)&v7 dismissCurrentPopoverWithCompletion:completionCopy animated:animatedCopy];
 }
 
-- (void)_enableMarkupMode:(BOOL)a3
+- (void)_enableMarkupMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if ([(BKPDFModernBookViewController *)self canBeEdited])
   {
-    if ([(BKPDFModernBookViewController *)self assetEditingEnabled]!= v3)
+    if ([(BKPDFModernBookViewController *)self assetEditingEnabled]!= modeCopy)
     {
       v5 = +[UIView areAnimationsEnabled];
-      [(BKPDFModernBookViewController *)self setAssetEditingEnabled:v3];
-      if (v3)
+      [(BKPDFModernBookViewController *)self setAssetEditingEnabled:modeCopy];
+      if (modeCopy)
       {
         [(BKPDFModernBookViewController *)self setDefaultMarkupTool];
       }
@@ -1276,48 +1276,48 @@ LABEL_7:
         [(BKPDFModernBookViewController *)self saveStateClosing:0];
       }
 
-      if (v3)
+      if (modeCopy)
       {
         [(BKBookViewController *)self setControlsVisible:1 animated:1];
       }
     }
 
-    v6 = [(BKPDFModernBookViewController *)self assetEditingEnabled];
-    v7 = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
-    [v7 setEnabled:v6 ^ 1];
+    assetEditingEnabled = [(BKPDFModernBookViewController *)self assetEditingEnabled];
+    controlsTapRecognizer = [(BKPDFModernBookViewController *)self controlsTapRecognizer];
+    [controlsTapRecognizer setEnabled:assetEditingEnabled ^ 1];
   }
 }
 
-- (void)scalePDFContent:(double)a3 locationInView:(CGPoint)a4 animated:(BOOL)a5
+- (void)scalePDFContent:(double)content locationInView:(CGPoint)view animated:(BOOL)animated
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = [(BKPDFModernBookViewController *)self pdfView];
-  [v10 minScaleFactor];
-  v12 = v11;
+  animatedCopy = animated;
+  y = view.y;
+  x = view.x;
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView minScaleFactor];
+  contentCopy = v11;
 
-  if (v12 <= a3)
+  if (contentCopy <= content)
   {
-    v12 = a3;
+    contentCopy = content;
   }
 
-  v13 = [(BKPDFModernBookViewController *)self pdfView];
-  [v13 maxScaleFactor];
+  pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView2 maxScaleFactor];
   v15 = v14;
 
   v21 = 3221225472;
   v20 = _NSConcreteStackBlock;
   v22 = sub_ECC3C;
   v23 = &unk_1E5C48;
-  if (v12 < v15)
+  if (contentCopy < v15)
   {
-    v15 = v12;
+    v15 = contentCopy;
   }
 
   v25 = x;
   v26 = y;
-  v24 = self;
+  selfCopy = self;
   v27 = v15;
   v16 = objc_retainBlock(&v20);
   v17 = [(BKPDFModernBookViewController *)self pdfView:v20];
@@ -1326,7 +1326,7 @@ LABEL_7:
 
   if (v19 != v15)
   {
-    if (v5)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v16 animations:0.2];
     }
@@ -1338,35 +1338,35 @@ LABEL_7:
   }
 }
 
-- (void)handleSingleTap:(id)a3
+- (void)handleSingleTap:(id)tap
 {
-  v20 = a3;
+  tapCopy = tap;
   if (![(BKPDFModernBookViewController *)self assetEditingRequested])
   {
     if (-[BKPDFModernBookViewController assetEditingEnabled](self, "assetEditingEnabled") || -[BKBookViewController layout](self, "layout") != &dword_0 + 1 || ((-[BKPDFModernBookViewController view](self, "view"), v4 = objc_claimAutoreleasedReturnValue(), [v4 bounds], v6 = v5, v8 = v7, v10 = v9, v12 = v11, v4, -[BKPDFModernBookViewController controlsTapRecognizer](self, "controlsTapRecognizer"), v13 = objc_claimAutoreleasedReturnValue(), -[BKPDFModernBookViewController pdfView](self, "pdfView"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "locationInView:", v14), v16 = v15, v14, v13, v22.origin.x = v6, v22.origin.y = v8, v22.size.width = v10, v22.size.height = v12, v17 = CGRectGetWidth(v22) * 0.2, v18 = -[BKPDFModernBookViewController isPageProgressionRTL](self, "isPageProgressionRTL"), v16 <= v17) ? (v19 = v18 ^ 1) : v16 >= v10 - v17 ? (v19 = v18) : (v19 = -1), !-[BKPDFModernBookViewController turnPageInDirection:](self, "turnPageInDirection:", v19)))
     {
-      [(BKThumbnailBookViewController *)self toggleControls:v20];
+      [(BKThumbnailBookViewController *)self toggleControls:tapCopy];
     }
   }
 }
 
-- (void)books_enableContinuousScroll:(id)a3
+- (void)books_enableContinuousScroll:(id)scroll
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_ECEC0;
   v4[3] = &unk_1E3F50;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BKViewController *)v5 dismissCurrentPopoverWithCompletion:v4];
+  selfCopy = self;
+  scrollCopy = scroll;
+  v3 = scrollCopy;
+  [(BKViewController *)selfCopy dismissCurrentPopoverWithCompletion:v4];
 }
 
-- (void)toggleEditAssetMode:(id)a3
+- (void)toggleEditAssetMode:(id)mode
 {
   v5.receiver = self;
   v5.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v5 toggleEditAssetMode:a3];
+  [(BKThumbnailBookViewController *)&v5 toggleEditAssetMode:mode];
   v4 = BKModernPDFLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -1376,20 +1376,20 @@ LABEL_7:
   [(BKPDFModernBookViewController *)self _enableMarkupMode:[(BKPDFModernBookViewController *)self assetEditingRequested]^ 1];
 }
 
-- (void)setAssetEditingEnabled:(BOOL)a3
+- (void)setAssetEditingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = BKModernPDFLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_138EA8(v3, v5);
+    sub_138EA8(enabledCopy, v5);
   }
 
-  v6 = [(BKPDFModernBookViewController *)self pdfView];
-  [v6 setAkAnnotationEditingEnabled:v3];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView setAkAnnotationEditingEnabled:enabledCopy];
 
-  [(BKPDFModernBookViewController *)self setAssetEditingRequested:v3];
-  if (!v3)
+  [(BKPDFModernBookViewController *)self setAssetEditingRequested:enabledCopy];
+  if (!enabledCopy)
   {
     [(BKPDFModernBookViewController *)self becomeFirstResponder];
   }
@@ -1397,10 +1397,10 @@ LABEL_7:
 
 - (BOOL)assetEditingEnabled
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfView];
-  v3 = [v2 akAnnotationEditingEnabled];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  akAnnotationEditingEnabled = [pdfView akAnnotationEditingEnabled];
 
-  return v3;
+  return akAnnotationEditingEnabled;
 }
 
 - (BOOL)_needToSaveChanges
@@ -1417,7 +1417,7 @@ LABEL_7:
   v9[1] = 3221225472;
   v10 = sub_ED254;
   v11 = &unk_1E5C70;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   v3 = v9;
   os_unfair_lock_lock(&self->_accessLock);
@@ -1448,10 +1448,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)saveStateClosing:(BOOL)a3 suspending:(BOOL)a4
+- (void)saveStateClosing:(BOOL)closing suspending:(BOOL)suspending
 {
-  v4 = a4;
-  v5 = a3;
+  suspendingCopy = suspending;
+  closingCopy = closing;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_ED47C;
@@ -1460,36 +1460,36 @@ LABEL_7:
   os_unfair_lock_lock(&self->_accessLock);
   sub_ED47C(v14);
   os_unfair_lock_unlock(&self->_accessLock);
-  [(BKThumbnailBookViewController *)self didChangeLocationClosing:v5 suspending:v4];
+  [(BKThumbnailBookViewController *)self didChangeLocationClosing:closingCopy suspending:suspendingCopy];
   v13.receiver = self;
   v13.super_class = BKPDFModernBookViewController;
-  [(BKBookViewController *)&v13 saveStateClosing:v5 suspending:v4];
-  v7 = [(BKPDFModernBookViewController *)self pdfDocument];
+  [(BKBookViewController *)&v13 saveStateClosing:closingCopy suspending:suspendingCopy];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
   writeQueue = self->_writeQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_ED488;
   block[3] = &unk_1E3F50;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  v11 = pdfDocument;
+  selfCopy = self;
+  v9 = pdfDocument;
   dispatch_async(writeQueue, block);
 }
 
-- (BOOL)dismissShouldBegin:(id)a3
+- (BOOL)dismissShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (-[BKPDFModernBookViewController assetEditingEnabled](self, "assetEditingEnabled") || ([v4 velocity], v6 = v5, objc_msgSend(v4, "velocity"), v6 >= v7))
+  beginCopy = begin;
+  if (-[BKPDFModernBookViewController assetEditingEnabled](self, "assetEditingEnabled") || ([beginCopy velocity], v6 = v5, objc_msgSend(beginCopy, "velocity"), v6 >= v7))
   {
-    v8 = 0;
+    proposedBeginState = 0;
   }
 
   else
   {
-    v8 = [v4 proposedBeginState];
+    proposedBeginState = [beginCopy proposedBeginState];
   }
 
-  return v8;
+  return proposedBeginState;
 }
 
 - (double)_contentAspectRatio
@@ -1504,8 +1504,8 @@ LABEL_7:
   v12.super_class = BKPDFModernBookViewController;
   [(BKThumbnailBookViewController *)&v12 _contentAspectRatio];
   v5 = v4;
-  v6 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v7 = [v6 pageAtIndex:{-[BKPDFModernBookViewController pageCountIncludingUpsell](self, "pageCountIncludingUpsell") > 1}];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  v7 = [pdfDocument pageAtIndex:{-[BKPDFModernBookViewController pageCountIncludingUpsell](self, "pageCountIncludingUpsell") > 1}];
   v8 = v7;
   if (v7)
   {
@@ -1541,8 +1541,8 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = BKPDFModernBookViewController;
   [(BKBookViewController *)&v4 clearSelection];
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  [v3 clearSelection];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView clearSelection];
 }
 
 - (id)transitionContentView
@@ -1556,35 +1556,35 @@ LABEL_7:
   {
     [(BKPDFModernBookViewController *)self bookContentView];
   }
-  v3 = ;
-  if (!v3)
+  view = ;
+  if (!view)
   {
     [(BKPDFModernBookViewController *)self reloadPDFDocument];
-    v4 = [(BKPDFModernBookViewController *)self pdfView];
-    v3 = [v4 pageViewForPageAtIndex:{-[BKPDFModernBookViewController currentPageIndex](self, "currentPageIndex")}];
+    pdfView = [(BKPDFModernBookViewController *)self pdfView];
+    view = [pdfView pageViewForPageAtIndex:{-[BKPDFModernBookViewController currentPageIndex](self, "currentPageIndex")}];
 
-    if (!v3)
+    if (!view)
     {
-      v3 = [(BKPDFModernBookViewController *)self view];
+      view = [(BKPDFModernBookViewController *)self view];
     }
   }
 
-  return v3;
+  return view;
 }
 
 - (id)transitionContentHostingView
 {
   if ([(BKThumbnailBookViewController *)self directoryTOCIsVisible])
   {
-    v3 = 0;
+    pdfView = 0;
   }
 
   else
   {
-    v3 = [(BKPDFModernBookViewController *)self pdfView];
+    pdfView = [(BKPDFModernBookViewController *)self pdfView];
   }
 
-  return v3;
+  return pdfView;
 }
 
 - (id)transitionContentViewImage
@@ -1596,22 +1596,22 @@ LABEL_7:
 
   else
   {
-    v4 = [(BKPDFModernBookViewController *)self transitionContentView];
-    [v4 bounds];
-    [v4 convertRect:0 toView:?];
-    v5 = [(BKPDFModernBookViewController *)self view];
-    v6 = [v5 window];
-    if (v6)
+    transitionContentView = [(BKPDFModernBookViewController *)self transitionContentView];
+    [transitionContentView bounds];
+    [transitionContentView convertRect:0 toView:?];
+    view = [(BKPDFModernBookViewController *)self view];
+    window = [view window];
+    if (window)
     {
-      v7 = [(BKPDFModernBookViewController *)self view];
-      v8 = [v7 window];
-      [v8 bounds];
+      view2 = [(BKPDFModernBookViewController *)self view];
+      window2 = [view2 window];
+      [window2 bounds];
     }
 
     else
     {
-      v7 = +[UIScreen mainScreen];
-      [v7 bounds];
+      view2 = +[UIScreen mainScreen];
+      [view2 bounds];
     }
 
     CGSizeScaledToFitInSize();
@@ -1621,35 +1621,35 @@ LABEL_7:
   return v3;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v6 = [(BKPDFModernBookViewController *)self theme:a3];
-  v5 = [(BKBookViewController *)self searchViewControllerIfLoaded];
-  [v5 setTheme:v6];
+  v6 = [(BKPDFModernBookViewController *)self theme:change];
+  searchViewControllerIfLoaded = [(BKBookViewController *)self searchViewControllerIfLoaded];
+  [searchViewControllerIfLoaded setTheme:v6];
 }
 
-- (BOOL)turnPages:(int64_t)a3 animated:(BOOL)a4
+- (BOOL)turnPages:(int64_t)pages animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = +[AETestDriver shared];
   [v7 postEvent:kBETestDriverPageTurnStart sender:self];
 
   v8 = +[AETestDriver shared];
   [v8 postEvent:kBETestDriverPageTurnSetupStart sender:self];
 
-  [(BKPDFModernBookViewController *)self turnToPageNumber:[BKPDFModernBookViewController animated:"pageNumberForPageIndex:" pageNumberForPageIndex:?]+ a3, v4];
+  [(BKPDFModernBookViewController *)self turnToPageNumber:[BKPDFModernBookViewController animated:"pageNumberForPageIndex:" pageNumberForPageIndex:?]+ pages, animatedCopy];
   return 1;
 }
 
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 < 1 || (v6 = a3, [(BKPDFModernBookViewController *)self pageCountIncludingUpsell]< a3))
+  animatedCopy = animated;
+  if (number < 1 || (v6 = number, [(BKPDFModernBookViewController *)self pageCountIncludingUpsell]< number))
   {
     v6 = 1;
   }
 
-  v7 = [(BKPDFModernBookViewController *)self isVisible]& v4;
+  v7 = [(BKPDFModernBookViewController *)self isVisible]& animatedCopy;
 
   [(BKPDFModernBookViewController *)self scrollToPageNumber:v6 animate:v7];
 }
@@ -1661,9 +1661,9 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = BKPDFModernBookViewController;
-    v4 = [(BKBookViewController *)&v7 searchViewController];
-    v5 = [(BKSearchViewController *)self->super.super._searchViewController searchController];
-    [v5 setPageCount:{-[BKPDFModernBookViewController pageCountIncludingUpsell](self, "pageCountIncludingUpsell")}];
+    searchViewController = [(BKBookViewController *)&v7 searchViewController];
+    searchController = [(BKSearchViewController *)self->super.super._searchViewController searchController];
+    [searchController setPageCount:{-[BKPDFModernBookViewController pageCountIncludingUpsell](self, "pageCountIncludingUpsell")}];
 
     searchViewController = self->super.super._searchViewController;
   }
@@ -1671,9 +1671,9 @@ LABEL_7:
   return searchViewController;
 }
 
-- (void)highlightSearchResult:(id)a3
+- (void)highlightSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   [(BKPDFModernBookViewController *)self initialZoomFactor];
   [BKPDFModernBookViewController scalePDFContent:"scalePDFContent:locationInView:animated:" locationInView:1 animated:?];
   objc_opt_class();
@@ -1682,105 +1682,105 @@ LABEL_7:
   v5 = v9;
   if (v9)
   {
-    v6 = [v9 selection];
-    if (v6)
+    selection = [v9 selection];
+    if (selection)
     {
       v7 = +[UIColor yellowColor];
-      [v6 setColor:v7];
+      [selection setColor:v7];
 
-      v8 = [(BKPDFModernBookViewController *)self pdfView];
-      [v8 setCurrentSelection:v6 animate:1];
+      pdfView = [(BKPDFModernBookViewController *)self pdfView];
+      [pdfView setCurrentSelection:selection animate:1];
     }
 
     v5 = v9;
   }
 }
 
-- (id)searchViewController:(id)a3 chapterNameForSearchResult:(id)a4 pageNumber:(int64_t)a5
+- (id)searchViewController:(id)controller chapterNameForSearchResult:(id)result pageNumber:(int64_t)number
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  resultCopy = result;
   objc_opt_class();
   v9 = BUDynamicCast();
-  v10 = [v9 selection];
-  if (v10)
+  selection = [v9 selection];
+  if (selection)
   {
-    v11 = [(BKPDFModernBookViewController *)self pdfDocument];
-    v12 = [v11 outlineItemForSelection:v10];
+    pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+    v12 = [pdfDocument outlineItemForSelection:selection];
 
     v13 = -3;
     do
     {
-      v14 = [v12 parent];
+      parent = [v12 parent];
 
-      if (!v14)
+      if (!parent)
       {
         break;
       }
 
       if (!v13)
       {
-        v14 = 0;
+        parent = 0;
         break;
       }
 
-      v15 = [v12 label];
-      v16 = [v15 length];
+      label = [v12 label];
+      v16 = [label length];
 
       if (v16)
       {
-        v14 = [v12 label];
+        parent = [v12 label];
       }
 
       else
       {
-        v17 = [v12 parent];
+        parent2 = [v12 parent];
 
-        v14 = 0;
-        v12 = v17;
+        parent = 0;
+        v12 = parent2;
       }
 
       ++v13;
     }
 
-    while (!v14);
+    while (!parent);
   }
 
   else
   {
-    v14 = 0;
+    parent = 0;
   }
 
-  return v14;
+  return parent;
 }
 
-- (id)pageLocationForPageIndex:(unint64_t)a3
+- (id)pageLocationForPageIndex:(unint64_t)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
-    v3 = 0;
+    indexCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    indexCopy = index;
   }
 
-  v4 = [[BKPageLocation alloc] initWithOrdinal:0 andOffset:v3];
+  v4 = [[BKPageLocation alloc] initWithOrdinal:0 andOffset:indexCopy];
 
   return v4;
 }
 
-- (id)pageLocationForPageNumber:(int64_t)a3
+- (id)pageLocationForPageNumber:(int64_t)number
 {
-  v4 = [BKPDFModernBookViewController pageIndexForPageNumber:a3];
+  v4 = [BKPDFModernBookViewController pageIndexForPageNumber:number];
 
   return [(BKPDFModernBookViewController *)self pageLocationForPageIndex:v4];
 }
 
-- (int64_t)pageNumberFromRange:(_NSRange)a3
+- (int64_t)pageNumberFromRange:(_NSRange)range
 {
-  v4 = [BKPDFModernBookViewController pageNumberForPageIndex:a3.location, a3.length];
+  v4 = [BKPDFModernBookViewController pageNumberForPageIndex:range.location, range.length];
   result = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
   if (v4 < result)
   {
@@ -1790,9 +1790,9 @@ LABEL_7:
   return result;
 }
 
-- (void)_willScrollPDFViewToPageNumber:(int64_t)a3
+- (void)_willScrollPDFViewToPageNumber:(int64_t)number
 {
-  [(BKPDFModernBookViewController *)self setTargetPageNumber:a3];
+  [(BKPDFModernBookViewController *)self setTargetPageNumber:number];
   v4 = +[AETestDriver shared];
   [v4 postEvent:kBETestDriverPageTurnSetupEnd sender:self];
 
@@ -1807,17 +1807,17 @@ LABEL_7:
   [(BKBookViewController *)self setResumeLocation:0];
 }
 
-- (void)scrollToPageNumber:(int64_t)a3 animate:(BOOL)a4
+- (void)scrollToPageNumber:(int64_t)number animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   v7 = [BKPDFModernBookViewController pageIndexForPageNumber:?];
-  v8 = [(BKPDFModernBookViewController *)self pdfView];
-  v9 = [v8 currentPage];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  if (v9)
+  if (currentPage)
   {
-    v10 = [(BKPDFModernBookViewController *)self pdfDocument];
-    v11 = [v10 indexForPage:v9];
+    pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+    v11 = [pdfDocument indexForPage:currentPage];
   }
 
   else
@@ -1828,15 +1828,15 @@ LABEL_7:
   v12 = _AEBookPluginsLifeCycleLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    [NSNumber numberWithInteger:a3];
-    v13 = v23 = v9;
+    [NSNumber numberWithInteger:number];
+    v13 = v23 = currentPage;
     v14 = [NSNumber numberWithUnsignedInteger:v11];
     v15 = [NSNumber numberWithUnsignedInteger:v7];
-    v16 = [(BKBookViewController *)self book];
-    [v16 assetLogID];
+    book = [(BKBookViewController *)self book];
+    [book assetLogID];
     v24 = v7;
-    v17 = a3;
-    v19 = v18 = v4;
+    numberCopy = number;
+    v19 = v18 = animateCopy;
     *buf = 138544130;
     v26 = v13;
     v27 = 2114;
@@ -1847,21 +1847,21 @@ LABEL_7:
     v32 = v19;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Scroll to page number:%{public}@, currentIndex:%{public}@, targetIndex:%{public}@, culogID:%{public}@", buf, 0x2Au);
 
-    v4 = v18;
-    a3 = v17;
+    animateCopy = v18;
+    number = numberCopy;
     v7 = v24;
 
-    v9 = v23;
+    currentPage = v23;
   }
 
   if (v7 != v11)
   {
-    [(BKPDFModernBookViewController *)self _willScrollPDFViewToPageNumber:a3];
-    v20 = [(BKPDFModernBookViewController *)self pdfDocument];
-    v21 = [v20 pageAtIndex:v7];
+    [(BKPDFModernBookViewController *)self _willScrollPDFViewToPageNumber:number];
+    pdfDocument2 = [(BKPDFModernBookViewController *)self pdfDocument];
+    v21 = [pdfDocument2 pageAtIndex:v7];
 
-    v22 = [(BKPDFModernBookViewController *)self pdfView];
-    [v22 goToPage:v21 animated:v4];
+    pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+    [pdfView2 goToPage:v21 animated:animateCopy];
 
     [(BKPDFModernBookViewController *)self _didScrollPDFViewToPage];
   }
@@ -1876,32 +1876,32 @@ LABEL_7:
 
 - (unint64_t)currentPageIndex
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  v4 = [v3 currentPage];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  if (v4)
+  if (currentPage)
   {
-    v5 = [(BKPDFModernBookViewController *)self pdfDocument];
-    v6 = [v5 indexForPage:v4];
+    pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+    pageOffset = [pdfDocument indexForPage:currentPage];
   }
 
   else
   {
     objc_opt_class();
-    v7 = [(BKBookViewController *)self location];
-    v5 = BUDynamicCast();
+    location = [(BKBookViewController *)self location];
+    pdfDocument = BUDynamicCast();
 
-    v6 = [v5 pageOffset];
+    pageOffset = [pdfDocument pageOffset];
   }
 
-  v8 = v6;
+  v8 = pageOffset;
 
   return v8;
 }
 
-- (void)_scrollToRect:(CGRect)a3 inPageAtIndex:(int64_t)a4
+- (void)_scrollToRect:(CGRect)rect inPageAtIndex:(int64_t)index
 {
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = BKModernPDFLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1914,12 +1914,12 @@ LABEL_10:
     return;
   }
 
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(BKPDFModernBookViewController *)self pdfDocument:a3.origin.x];
-  v10 = [v9 pageCount];
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(BKPDFModernBookViewController *)self pdfDocument:rect.origin.x];
+  pageCount = [v9 pageCount];
 
-  if (v10 <= a4)
+  if (pageCount <= index)
   {
     v4 = BKModernPDFLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1930,30 +1930,30 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [(BKPDFModernBookViewController *)self _willScrollPDFViewToPageNumber:[BKPDFModernBookViewController pageNumberForPageIndex:a4]];
-  v11 = [(BKPDFModernBookViewController *)self pdfView];
-  [v11 constrainedScrollToPoint:{x, y}];
+  [(BKPDFModernBookViewController *)self _willScrollPDFViewToPageNumber:[BKPDFModernBookViewController pageNumberForPageIndex:index]];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView constrainedScrollToPoint:{x, y}];
 
   [(BKPDFModernBookViewController *)self _didScrollPDFViewToPage];
 }
 
-- (void)jumpToLocation:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)jumpToLocation:(id)location animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  locationCopy = location;
   [(BKPDFModernBookViewController *)self clearSelection];
   if ([(BKBookViewController *)self layout]== &dword_0 + 2)
   {
-    [(BKPDFModernBookViewController *)self _jumpToLocationForVerticalScroll:v9 animated:v5];
+    [(BKPDFModernBookViewController *)self _jumpToLocationForVerticalScroll:locationCopy animated:animatedCopy];
   }
 
   else
   {
-    [(BKPDFModernBookViewController *)self _jumpToLocationPaged:v9 animated:v5];
+    [(BKPDFModernBookViewController *)self _jumpToLocationPaged:locationCopy animated:animatedCopy];
   }
 
-  v11 = objc_retainBlock(v8);
+  v11 = objc_retainBlock(completionCopy);
   v10 = v11;
   if (v11)
   {
@@ -1962,33 +1962,33 @@ LABEL_10:
   }
 }
 
-- (void)_jumpToLocationPaged:(id)a3 animated:(BOOL)a4
+- (void)_jumpToLocationPaged:(id)paged animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  pagedCopy = paged;
   v6 = [(BKPDFModernBookViewController *)self pageNumberForLocation:?];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     objc_opt_class();
     v7 = BUDynamicCast();
-    v8 = [v7 ordinal];
-    v6 = [v7 pageOffset] + v8 + 1;
+    ordinal = [v7 ordinal];
+    v6 = [v7 pageOffset] + ordinal + 1;
   }
 
-  [(BKPDFModernBookViewController *)self scrollToPageNumber:v6 animate:v4];
+  [(BKPDFModernBookViewController *)self scrollToPageNumber:v6 animate:animatedCopy];
 }
 
-- (void)_jumpToLocationForVerticalScroll:(id)a3 animated:(BOOL)a4
+- (void)_jumpToLocationForVerticalScroll:(id)scroll animated:(BOOL)animated
 {
-  v4 = a4;
-  v41 = a3;
+  animatedCopy = animated;
+  scrollCopy = scroll;
   v6 = [(BKPDFModernBookViewController *)self pageIndexForLocation:?];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     objc_opt_class();
     v7 = BUDynamicCast();
-    v8 = [v7 ordinal];
-    v6 = &v8[[v7 pageOffset]];
+    ordinal = [v7 ordinal];
+    v6 = &ordinal[[v7 pageOffset]];
   }
 
   objc_opt_class();
@@ -1996,34 +1996,34 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 selection];
-    v12 = [v11 pages];
-    v13 = [v12 firstObject];
+    selection = [v9 selection];
+    pages = [selection pages];
+    firstObject = [pages firstObject];
 
-    v14 = [(BKPDFModernBookViewController *)self view];
-    [v14 frame];
+    view = [(BKPDFModernBookViewController *)self view];
+    [view frame];
     v16 = v15;
 
-    v17 = [(BKPDFModernBookViewController *)self pdfView];
-    [v11 boundsForPage:v13];
-    [v17 convertRect:v13 fromPage:?];
+    pdfView = [(BKPDFModernBookViewController *)self pdfView];
+    [selection boundsForPage:firstObject];
+    [pdfView convertRect:firstObject fromPage:?];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v26 = [(BKPDFModernBookViewController *)self pdfView];
-    v27 = [v26 documentView];
-    v28 = [(BKPDFModernBookViewController *)self pdfView];
-    [v27 convertRect:v28 fromView:{v19, v21 + (v16 - v25) * -0.5, v23, v16}];
+    pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+    documentView = [pdfView2 documentView];
+    pdfView3 = [(BKPDFModernBookViewController *)self pdfView];
+    [documentView convertRect:pdfView3 fromView:{v19, v21 + (v16 - v25) * -0.5, v23, v16}];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
 
-    v37 = [(BKPDFModernBookViewController *)self pdfView];
-    v38 = [v37 documentView];
-    [v38 bounds];
+    pdfView4 = [(BKPDFModernBookViewController *)self pdfView];
+    documentView2 = [pdfView4 documentView];
+    [documentView2 bounds];
     v40 = v39 - v32;
 
     [(BKPDFModernBookViewController *)self _scrollToRect:v6 inPageAtIndex:v30, v40, v34, v36];
@@ -2031,39 +2031,39 @@ LABEL_10:
 
   else
   {
-    [(BKPDFModernBookViewController *)self scrollToPageNumber:[BKPDFModernBookViewController animate:"pageNumberForPageIndex:" pageNumberForPageIndex:v6], v4];
+    [(BKPDFModernBookViewController *)self scrollToPageNumber:[BKPDFModernBookViewController animate:"pageNumberForPageIndex:" pageNumberForPageIndex:v6], animatedCopy];
   }
 }
 
-- (int64_t)pageNumberForLocation:(id)a3
+- (int64_t)pageNumberForLocation:(id)location
 {
-  v3 = [(BKPDFModernBookViewController *)self pageIndexForLocation:a3];
+  v3 = [(BKPDFModernBookViewController *)self pageIndexForLocation:location];
 
   return [BKPDFModernBookViewController pageNumberForPageIndex:v3];
 }
 
-- (unint64_t)pageIndexForLocation:(id)a3
+- (unint64_t)pageIndexForLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   objc_opt_class();
   v4 = BUDynamicCast();
 
-  v5 = [v4 pageOffset];
-  return v5;
+  pageOffset = [v4 pageOffset];
+  return pageOffset;
 }
 
 - (_NSRange)currentPages
 {
-  v3 = [(BKPDFModernBookViewController *)self currentPageIndex];
-  v4 = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
-  if (v3 >= v4 - 1)
+  currentPageIndex = [(BKPDFModernBookViewController *)self currentPageIndex];
+  pageCountIncludingUpsell = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
+  if (currentPageIndex >= pageCountIncludingUpsell - 1)
   {
-    v5 = v4 - 1;
+    v5 = pageCountIncludingUpsell - 1;
   }
 
   else
   {
-    v5 = v3;
+    v5 = currentPageIndex;
   }
 
   v6 = 1;
@@ -2074,27 +2074,27 @@ LABEL_10:
 
 - (id)_currentReadingProgress
 {
-  v3 = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCountIncludingUpsell = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
+  if (pageCountIncludingUpsell == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
-    if (v3 < 1)
+    v5 = pageCountIncludingUpsell;
+    if (pageCountIncludingUpsell < 1)
     {
       v4 = &off_1F18C0;
     }
 
     else
     {
-      v7 = [(BKPDFModernBookViewController *)self currentPages];
+      currentPages = [(BKPDFModernBookViewController *)self currentPages];
       v4 = 0;
-      if (v7 != 0x7FFFFFFFFFFFFFFFLL && v6)
+      if (currentPages != 0x7FFFFFFFFFFFFFFFLL && v6)
       {
-        *&v8 = (v7 + v6) / v5;
+        *&v8 = (currentPages + v6) / v5;
         v4 = [NSNumber numberWithFloat:v8];
       }
     }
@@ -2103,14 +2103,14 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)isLocationOnCurrentPage:(id)a3
+- (BOOL)isLocationOnCurrentPage:(id)page
 {
-  v4 = a3;
-  if (v4 && (![v4 isMemberOfClass:objc_opt_class()] || -[BKThumbnailBookViewController canOrdinalOnlyLocationsBeVisible](self, "canOrdinalOnlyLocationsBeVisible")) && (v5 = -[BKPDFModernBookViewController pageIndexForLocation:](self, "pageIndexForLocation:", v4), v5 != 0x7FFFFFFFFFFFFFFFLL))
+  pageCopy = page;
+  if (pageCopy && (![pageCopy isMemberOfClass:objc_opt_class()] || -[BKThumbnailBookViewController canOrdinalOnlyLocationsBeVisible](self, "canOrdinalOnlyLocationsBeVisible")) && (v5 = -[BKPDFModernBookViewController pageIndexForLocation:](self, "pageIndexForLocation:", pageCopy), v5 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = v5;
-    v8 = [(BKPDFModernBookViewController *)self currentPages];
-    v6 = v7 >= v8 && v7 - v8 < v9;
+    currentPages = [(BKPDFModernBookViewController *)self currentPages];
+    v6 = v7 >= currentPages && v7 - currentPages < v9;
   }
 
   else
@@ -2121,18 +2121,18 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)turnPageInDirection:(int64_t)a3
+- (BOOL)turnPageInDirection:(int64_t)direction
 {
-  v5 = [(BKPDFModernBookViewController *)self currentPageIndex];
-  v6 = [BKPDFModernBookViewController pageNumberForPageIndex:v5];
-  if (a3 == 1)
+  currentPageIndex = [(BKPDFModernBookViewController *)self currentPageIndex];
+  v6 = [BKPDFModernBookViewController pageNumberForPageIndex:currentPageIndex];
+  if (direction == 1)
   {
     v7 = -1;
   }
 
   else
   {
-    if (a3)
+    if (direction)
     {
       return 0;
     }
@@ -2140,12 +2140,12 @@ LABEL_10:
     v7 = 1;
   }
 
-  v8 = [BKPDFModernBookViewController pageNumberForPageIndex:v5 + v7];
+  v8 = [BKPDFModernBookViewController pageNumberForPageIndex:currentPageIndex + v7];
   if (v8 != v6)
   {
     v9 = v8;
-    v10 = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
-    if (v9 >= 1 && v9 <= v10)
+    pageCountIncludingUpsell = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
+    if (v9 >= 1 && v9 <= pageCountIncludingUpsell)
     {
       v12 = 1;
       [(BKPDFModernBookViewController *)self setIgnoreKeyboardInteraction:1];
@@ -2157,35 +2157,35 @@ LABEL_10:
   return 0;
 }
 
-- (void)books_pageRight:(id)a3
+- (void)books_pageRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   if ([(BKPDFModernBookViewController *)self isPageProgressionRTL])
   {
-    [(BKPDFModernBookViewController *)self books_pageBackward:v4];
+    [(BKPDFModernBookViewController *)self books_pageBackward:rightCopy];
   }
 
   else
   {
-    [(BKPDFModernBookViewController *)self books_pageForward:v4];
+    [(BKPDFModernBookViewController *)self books_pageForward:rightCopy];
   }
 }
 
-- (void)books_pageLeft:(id)a3
+- (void)books_pageLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   if ([(BKPDFModernBookViewController *)self isPageProgressionRTL])
   {
-    [(BKPDFModernBookViewController *)self books_pageForward:v4];
+    [(BKPDFModernBookViewController *)self books_pageForward:leftCopy];
   }
 
   else
   {
-    [(BKPDFModernBookViewController *)self books_pageBackward:v4];
+    [(BKPDFModernBookViewController *)self books_pageBackward:leftCopy];
   }
 }
 
-- (void)books_pageForward:(id)a3
+- (void)books_pageForward:(id)forward
 {
   if (![(BKPDFModernBookViewController *)self assetEditingEnabled]&& ![(BKPDFModernBookViewController *)self ignoreKeyboardInteraction])
   {
@@ -2194,7 +2194,7 @@ LABEL_10:
   }
 }
 
-- (void)books_pageBackward:(id)a3
+- (void)books_pageBackward:(id)backward
 {
   if (![(BKPDFModernBookViewController *)self assetEditingEnabled]&& ![(BKPDFModernBookViewController *)self ignoreKeyboardInteraction])
   {
@@ -2230,8 +2230,8 @@ LABEL_10:
   if ([(BKBookViewController *)self _inAnalyticsReadSession]&& self->_annotationCountResults)
   {
     v3 = [BAContentSettingsData alloc];
-    v4 = [(PDFDocument *)self->_pdfDocument bookmarkedPages];
-    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+    bookmarkedPages = [(PDFDocument *)self->_pdfDocument bookmarkedPages];
+    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bookmarkedPages count]);
     v6 = [NSNumber numberWithUnsignedInteger:[(BKPDFAnnotationCounterResult *)self->_annotationCountResults numberOfMarkupAnnotationsWithPopups]];
     v7 = [NSNumber numberWithUnsignedInteger:[(BKPDFAnnotationCounterResult *)self->_annotationCountResults numberOfMarkupAnnotations]];
     v8 = [v3 initWithBookmarkCount:v5 noteCount:v6 highlightCount:v7];
@@ -2247,20 +2247,20 @@ LABEL_10:
 
 - (BOOL)isPageBookmarked
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfView];
-  v3 = [v2 currentPage];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  if (v3)
+  if (currentPage)
   {
-    v4 = [v3 isBookmarked];
+    isBookmarked = [currentPage isBookmarked];
   }
 
   else
   {
-    v4 = 0;
+    isBookmarked = 0;
   }
 
-  return v4;
+  return isBookmarked;
 }
 
 - (id)visiblePageBookmarks
@@ -2274,14 +2274,14 @@ LABEL_10:
   return 0;
 }
 
-- (void)updateBookmarkButton:(BOOL)a3
+- (void)updateBookmarkButton:(BOOL)button
 {
-  v4 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v5 = [v4 allowsDocumentAssembly];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  allowsDocumentAssembly = [pdfDocument allowsDocumentAssembly];
 
-  v6 = [(BKPDFModernBookViewController *)self isPageBookmarked];
+  isPageBookmarked = [(BKPDFModernBookViewController *)self isPageBookmarked];
   v7 = @"bookmark";
-  if (v6)
+  if (isPageBookmarked)
   {
     v7 = @"bookmark.fill";
   }
@@ -2297,7 +2297,7 @@ LABEL_10:
     v9 = 3;
   }
 
-  [(UIButton *)self->super._bookmarkButton setEnabled:v5];
+  [(UIButton *)self->super._bookmarkButton setEnabled:allowsDocumentAssembly];
   bookmarkButton = self->super._bookmarkButton;
   v11 = [UIImage systemImageNamed:v8];
 
@@ -2319,7 +2319,7 @@ LABEL_10:
   }
 }
 
-- (void)toggleBookmark:(id)a3
+- (void)toggleBookmark:(id)bookmark
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -2332,39 +2332,39 @@ LABEL_10:
 
 - (BOOL)canCopy
 {
-  v2 = [(BKPDFModernBookViewController *)self pdfView];
-  v3 = [v2 currentSelection];
-  v4 = [v3 string];
-  v5 = [v4 length] != 0;
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentSelection = [pdfView currentSelection];
+  string = [currentSelection string];
+  v5 = [string length] != 0;
 
   return v5;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  v4 = [v3 currentSelection];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentSelection = [pdfView currentSelection];
 
-  v5 = [v4 string];
-  if ([v5 length])
+  string = [currentSelection string];
+  if ([string length])
   {
-    v6 = [UTTypeUTF8PlainText identifier];
-    v24 = v6;
-    v25 = v5;
+    identifier = [UTTypeUTF8PlainText identifier];
+    v24 = identifier;
+    v25 = string;
     v7 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
-    v8 = [v4 attributedString];
-    v9 = v8;
-    if (v8)
+    attributedString = [currentSelection attributedString];
+    v9 = attributedString;
+    if (attributedString)
     {
-      v10 = [v8 length];
+      v10 = [attributedString length];
       v22 = NSDocumentTypeDocumentAttribute;
       v23 = NSRTFTextDocumentType;
       v11 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v12 = [v9 dataFromRange:0 documentAttributes:v10 error:{v11, 0}];
 
-      v13 = [UTTypeRTF identifier];
-      v19 = v13;
+      identifier2 = [UTTypeRTF identifier];
+      v19 = identifier2;
       v14 = [[NSString alloc] initWithData:v12 encoding:4];
       v20 = v14;
       v15 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
@@ -2379,18 +2379,18 @@ LABEL_10:
     {
       v18 = v7;
       v12 = [NSArray arrayWithObjects:&v18 count:1];
-      v13 = +[UIPasteboard generalPasteboard];
-      [v13 setItems:v12];
+      identifier2 = +[UIPasteboard generalPasteboard];
+      [identifier2 setItems:v12];
     }
   }
 }
 
-- (void)scrubValueChanged:(id)a3
+- (void)scrubValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v11.receiver = self;
   v11.super_class = BKPDFModernBookViewController;
-  [(BKThumbnailBookViewController *)&v11 scrubValueChanged:v4];
+  [(BKThumbnailBookViewController *)&v11 scrubValueChanged:changedCopy];
   objc_initWeak(&location, self);
   v5 = dispatch_time(0, 100000000);
   block[0] = _NSConcreteStackBlock;
@@ -2398,51 +2398,51 @@ LABEL_10:
   block[2] = sub_EFB18;
   block[3] = &unk_1E36F8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_after(v5, &_dispatch_main_q, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)scrub:(id)a3 isScrubbing:(BOOL)a4
+- (void)scrub:(id)scrub isScrubbing:(BOOL)scrubbing
 {
-  v4 = a4;
-  v6 = a3;
+  scrubbingCopy = scrubbing;
+  scrubCopy = scrub;
   objc_opt_class();
   v9 = BUDynamicCast();
 
   v7 = v9;
   if (v9)
   {
-    v8 = [v9 pageNumber];
-    [(BKPDFModernBookViewController *)self setScrubbing:v4];
-    [(BKPDFModernBookViewController *)self turnToPageNumber:v8 animated:0];
+    pageNumber = [v9 pageNumber];
+    [(BKPDFModernBookViewController *)self setScrubbing:scrubbingCopy];
+    [(BKPDFModernBookViewController *)self turnToPageNumber:pageNumber animated:0];
     [(BKPDFModernBookViewController *)self setScrubbing:0];
     v7 = v9;
-    if (!v4)
+    if (!scrubbingCopy)
     {
-      [(BKBookViewController *)self emitScrubEventStartPosition:[(BKBookViewController *)self pageNumberBeforeScrubbing] endPosition:v8 totalLength:[(BKPDFModernBookViewController *)self pageCountIncludingUpsell]];
+      [(BKBookViewController *)self emitScrubEventStartPosition:[(BKBookViewController *)self pageNumberBeforeScrubbing] endPosition:pageNumber totalLength:[(BKPDFModernBookViewController *)self pageCountIncludingUpsell]];
       v7 = v9;
     }
   }
 }
 
-- (void)updateScrubber:(_NSRange)a3
+- (void)updateScrubber:(_NSRange)scrubber
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
-  if (v6)
+  length = scrubber.length;
+  location = scrubber.location;
+  pageCountIncludingUpsell = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
+  if (pageCountIncludingUpsell)
   {
-    v7 = v6;
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    v7 = pageCountIncludingUpsell;
+    if (pageCountIncludingUpsell != 0x7FFFFFFFFFFFFFFFLL)
     {
       if ([(BKBookViewController *)self controlsVisible])
       {
-        v8 = [(BKThumbnailBookViewController *)self scrubber];
-        [v8 setPageCount:v7];
+        scrubber = [(BKThumbnailBookViewController *)self scrubber];
+        [scrubber setPageCount:v7];
 
         v9 = [(BKPDFModernBookViewController *)self pageNumberFromRange:location, length];
         if (v9 >= v7)
@@ -2465,11 +2465,11 @@ LABEL_10:
           v11 = v10;
         }
 
-        v12 = [(BKThumbnailBookViewController *)self scrubber];
-        [v12 setPageNumber:v11];
+        scrubber2 = [(BKThumbnailBookViewController *)self scrubber];
+        [scrubber2 setPageNumber:v11];
 
-        v13 = [(BKThumbnailBookViewController *)self scrubber];
-        [v13 setProgress:1.0];
+        scrubber3 = [(BKThumbnailBookViewController *)self scrubber];
+        [scrubber3 setProgress:1.0];
       }
     }
   }
@@ -2479,14 +2479,14 @@ LABEL_10:
 {
   if (!self->super._imageCache)
   {
-    v3 = [(BKBookViewController *)self book];
+    book = [(BKBookViewController *)self book];
 
-    if (v3)
+    if (book)
     {
-      v4 = [(BKPDFModernBookViewController *)self pdfDocument];
-      v5 = [v4 isLocked];
+      pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+      isLocked = [pdfDocument isLocked];
 
-      if (v5)
+      if (isLocked)
       {
         v6 = 7340032;
       }
@@ -2497,26 +2497,26 @@ LABEL_10:
       }
 
       v7 = [AEPdfRenderingCache alloc];
-      v8 = [(BKBookViewController *)self book];
-      v9 = [v8 databaseKey];
-      v10 = [(AEPdfRenderingCache *)v7 initWithIdentifier:v9 memorySize:v6];
+      book2 = [(BKBookViewController *)self book];
+      databaseKey = [book2 databaseKey];
+      v10 = [(AEPdfRenderingCache *)v7 initWithIdentifier:databaseKey memorySize:v6];
 
       objc_storeStrong(&self->super._imageCache, v10);
       +[BKThumbnailDirectory defaultCellSize];
       [(IMThumbnailRenderingCache *)self->super._imageCache setPrimaryImageSize:?];
-      v11 = [(AEPdfRenderingCache *)v10 persistentCachePath];
-      v12 = [(BKBookViewController *)self book];
-      v13 = [v12 persistentCachePath];
-      v14 = [v11 isEqualToString:v13];
+      persistentCachePath = [(AEPdfRenderingCache *)v10 persistentCachePath];
+      book3 = [(BKBookViewController *)self book];
+      persistentCachePath2 = [book3 persistentCachePath];
+      v14 = [persistentCachePath isEqualToString:persistentCachePath2];
 
       if ((v14 & 1) == 0)
       {
-        v15 = [(BKBookViewController *)self book];
-        [v15 resetPersistentCache];
+        book4 = [(BKBookViewController *)self book];
+        [book4 resetPersistentCache];
 
-        v16 = [(BKBookViewController *)self book];
-        v17 = [(AEPdfRenderingCache *)v10 persistentCachePath];
-        [v16 setPersistentCachePath:v17];
+        book5 = [(BKBookViewController *)self book];
+        persistentCachePath3 = [(AEPdfRenderingCache *)v10 persistentCachePath];
+        [book5 setPersistentCachePath:persistentCachePath3];
 
         [(NSManagedObjectContext *)self->super.super._bookMoc save:0];
       }
@@ -2528,62 +2528,62 @@ LABEL_10:
   return imageCache;
 }
 
-+ (int64_t)pageNumberForPageIndex:(unint64_t)a3
++ (int64_t)pageNumberForPageIndex:(unint64_t)index
 {
-  if (a3 == -1)
+  if (index == -1)
   {
     return 1;
   }
 
   else
   {
-    return a3 + 1;
+    return index + 1;
   }
 }
 
-+ (unint64_t)pageIndexForPageNumber:(int64_t)a3
++ (unint64_t)pageIndexForPageNumber:(int64_t)number
 {
-  if (a3 <= 0)
+  if (number <= 0)
   {
     return 0;
   }
 
   else
   {
-    return a3 - 1;
+    return number - 1;
   }
 }
 
-- (void)endScroll:(id)a3
+- (void)endScroll:(id)scroll
 {
   [(BKPDFModernBookViewController *)self setScrolling:0];
 
   [(BKPDFModernBookViewController *)self updateContentScale];
 }
 
-- (void)visiblePageDidChange:(id)a3
+- (void)visiblePageDidChange:(id)change
 {
-  v4 = [(BKPDFModernBookViewController *)self pdfView];
-  v5 = [v4 currentPage];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  v6 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v7 = [v6 indexForPage:v5];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  v7 = [pdfDocument indexForPage:currentPage];
 
   v8 = BKModernPDFLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_139118(v7, v5);
+    sub_139118(v7, currentPage);
   }
 
   v9 = [BKPDFModernBookViewController pageNumberForPageIndex:v7];
-  v10 = [(BKThumbnailBookViewController *)self scrubber];
-  [v10 setPageNumber:v9];
+  scrubber = [(BKThumbnailBookViewController *)self scrubber];
+  [scrubber setPageNumber:v9];
 
-  v11 = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
+  pageCountIncludingUpsell = [(BKPDFModernBookViewController *)self pageCountIncludingUpsell];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = v11;
-    if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+    v12 = pageCountIncludingUpsell;
+    if (pageCountIncludingUpsell != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(BKPDFModernBookViewController *)self currentPages];
       [(BKThumbnailBookViewController *)self setPageNumberHudTextLabelForValidatedPageNumber:v9 visiblePageCount:v13 validatedPageCount:v12];
@@ -2595,13 +2595,13 @@ LABEL_10:
   [(BKPDFModernBookViewController *)self updateProgressKitForNewLocation];
 }
 
-- (void)scrollerViewPageDidChange:(id)a3
+- (void)scrollerViewPageDidChange:(id)change
 {
-  v4 = [(BKPDFModernBookViewController *)self pdfView];
-  v10 = [v4 currentPage];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentPage = [pdfView currentPage];
 
-  v5 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v6 = [v5 indexForPage:v10];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  v6 = [pdfDocument indexForPage:currentPage];
 
   v7 = [BKPDFModernBookViewController pageNumberForPageIndex:v6];
   if (v7 == [(BKPDFModernBookViewController *)self targetPageNumber])
@@ -2616,11 +2616,11 @@ LABEL_10:
   [(BKPDFModernBookViewController *)self setIgnoreKeyboardInteraction:0];
 }
 
-- (void)annotationsDidChange:(id)a3
+- (void)annotationsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
   v6 = BUDynamicCast();
 
@@ -2630,8 +2630,8 @@ LABEL_10:
 
   if (v8)
   {
-    v9 = [(BKPDFModernBookViewController *)self pdfDocument];
-    v10 = [v9 indexForPage:v8];
+    pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+    v10 = [pdfDocument indexForPage:v8];
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -2651,7 +2651,7 @@ LABEL_10:
   [(BKPDFModernBookViewController *)self _evaluateUndoRedoEnabled];
 }
 
-- (id)menuItems:(id)a3 forPage:(id)a4
+- (id)menuItems:(id)items forPage:(id)page
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -2670,18 +2670,18 @@ LABEL_10:
 
 - (UIEdgeInsets)pdfViewContentInset
 {
-  v3 = [(BKPDFModernBookViewController *)self pdfView];
-  [v3 safeAreaInsets];
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(BKThumbnailBookViewController *)self topToolbar];
-  [v12 alpha];
+  topToolbar = [(BKThumbnailBookViewController *)self topToolbar];
+  [topToolbar alpha];
   if (v13 > 0.0)
   {
-    [v12 frame];
+    [topToolbar frame];
     v5 = v5 + CGRectGetHeight(v18);
   }
 
@@ -2696,17 +2696,17 @@ LABEL_10:
   return result;
 }
 
-- (void)searchPDFUsingSelection:(id)a3
+- (void)searchPDFUsingSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(BKPDFModernBookViewController *)self pdfView];
-  v8 = [v5 currentSelection];
+  selectionCopy = selection;
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentSelection = [pdfView currentSelection];
 
-  v6 = [v8 string];
-  v7 = [(BKPDFModernBookViewController *)self pdfView];
-  [v7 clearSelection];
+  string = [currentSelection string];
+  pdfView2 = [(BKPDFModernBookViewController *)self pdfView];
+  [pdfView2 clearSelection];
 
-  [(BKBookViewController *)self showSearchWithString:v6 sender:v4];
+  [(BKBookViewController *)self showSearchWithString:string sender:selectionCopy];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -2719,33 +2719,33 @@ LABEL_10:
 
 - (void)updateContentInsets
 {
-  v7 = [(BKPDFModernBookViewController *)self pdfScrollView];
-  v3 = [(BKPDFModernBookViewController *)self view];
-  [v3 safeAreaInsets];
+  pdfScrollView = [(BKPDFModernBookViewController *)self pdfScrollView];
+  view = [(BKPDFModernBookViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
-  v6 = [(BKPDFModernBookViewController *)self view];
-  [v6 safeAreaInsets];
-  [v7 setContentInset:{v5, 0.0}];
+  view2 = [(BKPDFModernBookViewController *)self view];
+  [view2 safeAreaInsets];
+  [pdfScrollView setContentInset:{v5, 0.0}];
 }
 
-- (id)_uniqueIDForOutline:(id)a3
+- (id)_uniqueIDForOutline:(id)outline
 {
-  v3 = a3;
-  if (v3)
+  outlineCopy = outline;
+  if (outlineCopy)
   {
-    v4 = v3;
+    v4 = outlineCopy;
     v5 = &stru_1E7188;
     do
     {
       v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld/%@", [v4 index], v5);
 
-      v7 = [v4 parent];
+      parent = [v4 parent];
 
       v5 = v6;
-      v4 = v7;
+      v4 = parent;
     }
 
-    while (v7);
+    while (parent);
   }
 
   else
@@ -2756,13 +2756,13 @@ LABEL_10:
   return v6;
 }
 
-- (void)buildContextTree:(id)a3
+- (void)buildContextTree:(id)tree
 {
   v4 = objc_opt_new();
-  v5 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v6 = [v5 outlineRoot];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  outlineRoot = [pdfDocument outlineRoot];
 
-  if ([v6 numberOfChildren])
+  if ([outlineRoot numberOfChildren])
   {
     v7 = 0;
     v24 = BCProgressContextTreeKey_uniqueID;
@@ -2771,13 +2771,13 @@ LABEL_10:
     v21 = BCProgressContextTreeKey_cfi;
     do
     {
-      v8 = [v6 childAtIndex:v7];
-      v9 = [v8 label];
-      v10 = v9;
+      v8 = [outlineRoot childAtIndex:v7];
+      label = [v8 label];
+      v10 = label;
       v11 = &stru_1E7188;
-      if (v9)
+      if (label)
       {
-        v11 = v9;
+        v11 = label;
       }
 
       v12 = v11;
@@ -2800,37 +2800,37 @@ LABEL_10:
       ++v7;
     }
 
-    while (v7 < [v6 numberOfChildren]);
+    while (v7 < [outlineRoot numberOfChildren]);
   }
 
   if ([v4 count])
   {
     v18 = +[BCProgressKitController sharedController];
-    v19 = [(BKBookViewController *)self book];
-    v20 = [v19 assetID];
-    [v18 buildContextTree:v4 forBook:v20 completion:0];
+    book = [(BKBookViewController *)self book];
+    assetID = [book assetID];
+    [v18 buildContextTree:v4 forBook:assetID completion:0];
   }
 }
 
 - (void)updateProgressKitForNewLocation
 {
-  v3 = [(BKPDFModernBookViewController *)self currentPageIndex];
-  v4 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v26 = [v4 outlineRoot];
+  currentPageIndex = [(BKPDFModernBookViewController *)self currentPageIndex];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  outlineRoot = [pdfDocument outlineRoot];
 
-  v5 = [v26 numberOfChildren];
-  v6 = v5 - 1;
-  if (v5 >= 1)
+  numberOfChildren = [outlineRoot numberOfChildren];
+  v6 = numberOfChildren - 1;
+  if (numberOfChildren >= 1)
   {
-    v7 = v5;
+    v7 = numberOfChildren;
     v8 = 0;
     v9 = -1;
     do
     {
-      v10 = [v26 childAtIndex:v8];
+      v10 = [outlineRoot childAtIndex:v8];
       v11 = [(BKPDFModernBookViewController *)self _pageIndexForOutline:v10];
 
-      if (v11 > v3)
+      if (v11 > currentPageIndex)
       {
         if (v8 <= 1)
         {
@@ -2861,7 +2861,7 @@ LABEL_10:
     }
 
 LABEL_13:
-    v13 = [v26 childAtIndex:v9];
+    v13 = [outlineRoot childAtIndex:v9];
     if (v9 >= v6)
     {
       v14 = 0;
@@ -2869,67 +2869,67 @@ LABEL_13:
 
     else
     {
-      v14 = [v26 childAtIndex:v9 + 1];
+      v14 = [outlineRoot childAtIndex:v9 + 1];
     }
 
     v25 = [(BKPDFModernBookViewController *)self _uniqueIDForOutline:v13];
     v15 = [(BKPDFModernBookViewController *)self _pageIndexForOutline:v13];
     if (v14)
     {
-      v16 = [(BKPDFModernBookViewController *)self _pageIndexForOutline:v14];
+      pageCount = [(BKPDFModernBookViewController *)self _pageIndexForOutline:v14];
     }
 
     else
     {
-      v17 = [(BKPDFModernBookViewController *)self pdfDocument];
-      v16 = [v17 pageCount];
+      pdfDocument2 = [(BKPDFModernBookViewController *)self pdfDocument];
+      pageCount = [pdfDocument2 pageCount];
     }
 
     v18 = +[BCProgressKitController sharedController];
-    v19 = [(BKBookViewController *)self book];
-    v20 = [v19 assetID];
-    v21 = [v13 label];
-    [v18 activateChapterForBook:v20 chapterID:v25 title:v21 currentPage:v3 chapterRange:v15 completion:{&v16[-v15], 0}];
+    book = [(BKBookViewController *)self book];
+    assetID = [book assetID];
+    label = [v13 label];
+    [v18 activateChapterForBook:assetID chapterID:v25 title:label currentPage:currentPageIndex chapterRange:v15 completion:{&pageCount[-v15], 0}];
   }
 
 LABEL_20:
   v22 = +[BCProgressKitController sharedController];
-  v23 = [(BKBookViewController *)self book];
-  v24 = [v23 assetID];
-  [v22 updateBookProgress:v24 currentPage:-[BKPDFModernBookViewController currentPageIndex](self completion:{"currentPageIndex"), 0}];
+  book2 = [(BKBookViewController *)self book];
+  assetID2 = [book2 assetID];
+  [v22 updateBookProgress:assetID2 currentPage:-[BKPDFModernBookViewController currentPageIndex](self completion:{"currentPageIndex"), 0}];
 }
 
-- (unint64_t)_pageIndexForOutline:(id)a3
+- (unint64_t)_pageIndexForOutline:(id)outline
 {
-  v4 = [a3 destination];
-  v5 = [v4 page];
-  v6 = [(BKPDFModernBookViewController *)self pdfDocument];
-  v7 = [v6 indexForPage:v5];
+  destination = [outline destination];
+  page = [destination page];
+  pdfDocument = [(BKPDFModernBookViewController *)self pdfDocument];
+  v7 = [pdfDocument indexForPage:page];
 
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_controlsTapRecognizer != a3)
+  if (self->_controlsTapRecognizer != begin)
   {
     return 0;
   }
 
-  v4 = [(BKPDFModernBookViewController *)self pdfView];
-  v5 = [v4 currentSelection];
-  v3 = v5 == 0;
+  pdfView = [(BKPDFModernBookViewController *)self pdfView];
+  currentSelection = [pdfView currentSelection];
+  v3 = currentSelection == 0;
 
   return v3;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_controlsTapRecognizer == a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_controlsTapRecognizer == recognizer && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 name];
-    v8 = [v7 isEqualToString:@"UITextInteractionNameSingleTap"];
+    name = [gestureRecognizerCopy name];
+    v8 = [name isEqualToString:@"UITextInteractionNameSingleTap"];
   }
 
   else

@@ -1,37 +1,37 @@
 @interface ACXGizmoAppState
-- (ACXGizmoAppState)initWithCoder:(id)a3;
-- (ACXGizmoAppState)initWithWatchBundleID:(id)a3 companionBundleID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ACXGizmoAppState)initWithCoder:(id)coder;
+- (ACXGizmoAppState)initWithWatchBundleID:(id)d companionBundleID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)regenerateUniqueInstallID;
-- (void)setInstallStatus:(unint64_t)a3;
+- (void)setInstallStatus:(unint64_t)status;
 @end
 
 @implementation ACXGizmoAppState
 
-- (ACXGizmoAppState)initWithCoder:(id)a3
+- (ACXGizmoAppState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ACXGizmoAppState;
   v5 = [(ACXGizmoAppState *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchAppBundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchAppBundleID"];
     watchAppBundleID = v5->_watchAppBundleID;
     v5->_watchAppBundleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionAppBundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionAppBundleID"];
     companionAppBundleID = v5->_companionAppBundleID;
     v5->_companionAppBundleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueInstallID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueInstallID"];
     uniqueInstallID = v5->_uniqueInstallID;
     v5->_uniqueInstallID = v10;
 
-    v5->_installStatus = [v4 decodeIntegerForKey:@"installStatus"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchKitAppExecutableHash"];
+    v5->_installStatus = [coderCopy decodeIntegerForKey:@"installStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchKitAppExecutableHash"];
     watchKitAppExecutableHash = v5->_watchKitAppExecutableHash;
     v5->_watchKitAppExecutableHash = v12;
   }
@@ -39,80 +39,80 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(ACXGizmoAppState *)self watchAppBundleID];
-  [v11 encodeObject:v4 forKey:@"watchAppBundleID"];
+  coderCopy = coder;
+  watchAppBundleID = [(ACXGizmoAppState *)self watchAppBundleID];
+  [coderCopy encodeObject:watchAppBundleID forKey:@"watchAppBundleID"];
 
-  v5 = [(ACXGizmoAppState *)self companionAppBundleID];
+  companionAppBundleID = [(ACXGizmoAppState *)self companionAppBundleID];
 
-  if (v5)
+  if (companionAppBundleID)
   {
-    v6 = [(ACXGizmoAppState *)self companionAppBundleID];
-    [v11 encodeObject:v6 forKey:@"companionAppBundleID"];
+    companionAppBundleID2 = [(ACXGizmoAppState *)self companionAppBundleID];
+    [coderCopy encodeObject:companionAppBundleID2 forKey:@"companionAppBundleID"];
   }
 
-  v7 = [(ACXGizmoAppState *)self uniqueInstallID];
+  uniqueInstallID = [(ACXGizmoAppState *)self uniqueInstallID];
 
-  if (v7)
+  if (uniqueInstallID)
   {
-    v8 = [(ACXGizmoAppState *)self uniqueInstallID];
-    [v11 encodeObject:v8 forKey:@"uniqueInstallID"];
+    uniqueInstallID2 = [(ACXGizmoAppState *)self uniqueInstallID];
+    [coderCopy encodeObject:uniqueInstallID2 forKey:@"uniqueInstallID"];
   }
 
-  v9 = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
+  watchKitAppExecutableHash = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
 
-  if (v9)
+  if (watchKitAppExecutableHash)
   {
-    v10 = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
-    [v11 encodeObject:v10 forKey:@"watchKitAppExecutableHash"];
+    watchKitAppExecutableHash2 = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
+    [coderCopy encodeObject:watchKitAppExecutableHash2 forKey:@"watchKitAppExecutableHash"];
   }
 
-  [v11 encodeInteger:-[ACXGizmoAppState installStatus](self forKey:{"installStatus"), @"installStatus"}];
+  [coderCopy encodeInteger:-[ACXGizmoAppState installStatus](self forKey:{"installStatus"), @"installStatus"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ACXGizmoAppState *)self watchAppBundleID];
-  v6 = [(ACXGizmoAppState *)self companionAppBundleID];
-  v7 = [v4 initWithWatchBundleID:v5 companionBundleID:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  watchAppBundleID = [(ACXGizmoAppState *)self watchAppBundleID];
+  companionAppBundleID = [(ACXGizmoAppState *)self companionAppBundleID];
+  v7 = [v4 initWithWatchBundleID:watchAppBundleID companionBundleID:companionAppBundleID];
 
   v7[3] = [(ACXGizmoAppState *)self installStatus];
-  v8 = [(ACXGizmoAppState *)self uniqueInstallID];
+  uniqueInstallID = [(ACXGizmoAppState *)self uniqueInstallID];
   v9 = v7[4];
-  v7[4] = v8;
+  v7[4] = uniqueInstallID;
 
-  v10 = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
+  watchKitAppExecutableHash = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
   v11 = v7[5];
-  v7[5] = v10;
+  v7[5] = watchKitAppExecutableHash;
 
   return v7;
 }
 
-- (ACXGizmoAppState)initWithWatchBundleID:(id)a3 companionBundleID:(id)a4
+- (ACXGizmoAppState)initWithWatchBundleID:(id)d companionBundleID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = ACXGizmoAppState;
   v9 = [(ACXGizmoAppState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_watchAppBundleID, a3);
-    objc_storeStrong(&v10->_companionAppBundleID, a4);
+    objc_storeStrong(&v9->_watchAppBundleID, d);
+    objc_storeStrong(&v10->_companionAppBundleID, iD);
     v10->_installStatus = 0;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -122,36 +122,36 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ACXGizmoAppState *)self installStatus];
-      if (v6 == [(ACXGizmoAppState *)v5 installStatus])
+      v5 = equalCopy;
+      installStatus = [(ACXGizmoAppState *)self installStatus];
+      if (installStatus == [(ACXGizmoAppState *)v5 installStatus])
       {
-        v7 = [(ACXGizmoAppState *)self watchAppBundleID];
-        v8 = [(ACXGizmoAppState *)v5 watchAppBundleID];
-        v9 = v7;
-        v10 = v8;
-        v11 = v10;
-        if ((v9 != 0) != (v10 != 0) || v9 && v10 && ![v9 isEqual:v10])
+        watchAppBundleID = [(ACXGizmoAppState *)self watchAppBundleID];
+        watchAppBundleID2 = [(ACXGizmoAppState *)v5 watchAppBundleID];
+        watchKitAppExecutableHash = watchAppBundleID;
+        v10 = watchAppBundleID2;
+        watchKitAppExecutableHash2 = v10;
+        if ((watchKitAppExecutableHash != 0) != (v10 != 0) || watchKitAppExecutableHash && v10 && ![watchKitAppExecutableHash isEqual:v10])
         {
           goto LABEL_13;
         }
 
-        v12 = [(ACXGizmoAppState *)self companionAppBundleID];
-        v13 = [(ACXGizmoAppState *)v5 companionAppBundleID];
-        v9 = v12;
-        v14 = v13;
-        v11 = v14;
-        if ((v9 != 0) != (v14 != 0) || v9 && v14 && ![v9 isEqual:v14])
+        companionAppBundleID = [(ACXGizmoAppState *)self companionAppBundleID];
+        companionAppBundleID2 = [(ACXGizmoAppState *)v5 companionAppBundleID];
+        watchKitAppExecutableHash = companionAppBundleID;
+        v14 = companionAppBundleID2;
+        watchKitAppExecutableHash2 = v14;
+        if ((watchKitAppExecutableHash != 0) != (v14 != 0) || watchKitAppExecutableHash && v14 && ![watchKitAppExecutableHash isEqual:v14])
         {
           goto LABEL_13;
         }
 
-        v15 = [(ACXGizmoAppState *)self uniqueInstallID];
-        v16 = [(ACXGizmoAppState *)v5 uniqueInstallID];
-        v9 = v15;
-        v17 = v16;
-        v11 = v17;
-        if ((v9 != 0) != (v17 != 0) || v9 && v17 && ![v9 isEqual:v17])
+        uniqueInstallID = [(ACXGizmoAppState *)self uniqueInstallID];
+        uniqueInstallID2 = [(ACXGizmoAppState *)v5 uniqueInstallID];
+        watchKitAppExecutableHash = uniqueInstallID;
+        v17 = uniqueInstallID2;
+        watchKitAppExecutableHash2 = v17;
+        if ((watchKitAppExecutableHash != 0) != (v17 != 0) || watchKitAppExecutableHash && v17 && ![watchKitAppExecutableHash isEqual:v17])
         {
 LABEL_13:
 
@@ -161,9 +161,9 @@ LABEL_13:
         else
         {
 
-          v9 = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
-          v11 = [(ACXGizmoAppState *)v5 watchKitAppExecutableHash];
-          v18 = sub_100012414(v9, v11);
+          watchKitAppExecutableHash = [(ACXGizmoAppState *)self watchKitAppExecutableHash];
+          watchKitAppExecutableHash2 = [(ACXGizmoAppState *)v5 watchKitAppExecutableHash];
+          v18 = sub_100012414(watchKitAppExecutableHash, watchKitAppExecutableHash2);
         }
       }
 
@@ -182,14 +182,14 @@ LABEL_13:
   return v18;
 }
 
-- (void)setInstallStatus:(unint64_t)a3
+- (void)setInstallStatus:(unint64_t)status
 {
   installStatus = self->_installStatus;
-  if (installStatus != a3)
+  if (installStatus != status)
   {
-    if (a3 - 1 > 1 || installStatus - 3 > 0xFFFFFFFFFFFFFFFDLL)
+    if (status - 1 > 1 || installStatus - 3 > 0xFFFFFFFFFFFFFFFDLL)
     {
-      if (a3 != 5)
+      if (status != 5)
       {
         goto LABEL_14;
       }
@@ -210,7 +210,7 @@ LABEL_13:
         }
       }
 
-      v9 = [(ACXGizmoAppState *)self watchAppBundleID];
+      watchAppBundleID = [(ACXGizmoAppState *)self watchAppBundleID];
       MOLogWrite();
     }
 
@@ -221,8 +221,8 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v6 = [(ACXGizmoAppState *)self watchAppBundleID];
-      v7 = sub_1000125F8(v6);
+      watchAppBundleID2 = [(ACXGizmoAppState *)self watchAppBundleID];
+      v7 = sub_1000125F8(watchAppBundleID2);
       v8 = self->_uniqueInstallID;
       self->_uniqueInstallID = v7;
 
@@ -234,13 +234,13 @@ LABEL_13:
         }
       }
 
-      v9 = [(ACXGizmoAppState *)self watchAppBundleID];
-      v11 = [(ACXGizmoAppState *)self uniqueInstallID];
+      watchAppBundleID = [(ACXGizmoAppState *)self watchAppBundleID];
+      uniqueInstallID = [(ACXGizmoAppState *)self uniqueInstallID];
       MOLogWrite();
     }
 
 LABEL_14:
-    self->_installStatus = a3;
+    self->_installStatus = status;
   }
 }
 
@@ -248,8 +248,8 @@ LABEL_14:
 {
   if (self->_uniqueInstallID)
   {
-    v3 = [(ACXGizmoAppState *)self watchAppBundleID];
-    v4 = sub_1000125F8(v3);
+    watchAppBundleID = [(ACXGizmoAppState *)self watchAppBundleID];
+    v4 = sub_1000125F8(watchAppBundleID);
     uniqueInstallID = self->_uniqueInstallID;
     self->_uniqueInstallID = v4;
 
@@ -258,8 +258,8 @@ LABEL_14:
       return;
     }
 
-    v7 = [(ACXGizmoAppState *)self watchAppBundleID];
-    v6 = [(ACXGizmoAppState *)self uniqueInstallID];
+    watchAppBundleID2 = [(ACXGizmoAppState *)self watchAppBundleID];
+    uniqueInstallID = [(ACXGizmoAppState *)self uniqueInstallID];
     [(ACXGizmoAppState *)self installStatus];
   }
 
@@ -270,8 +270,8 @@ LABEL_14:
       return;
     }
 
-    v7 = [(ACXGizmoAppState *)self watchAppBundleID];
-    v6 = [(ACXGizmoAppState *)self uniqueInstallID];
+    watchAppBundleID2 = [(ACXGizmoAppState *)self watchAppBundleID];
+    uniqueInstallID = [(ACXGizmoAppState *)self uniqueInstallID];
     [(ACXGizmoAppState *)self installStatus];
   }
 

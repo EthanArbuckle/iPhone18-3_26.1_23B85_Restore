@@ -1,27 +1,27 @@
 @interface DeprecatedChapterCell
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
-- (void)setWantsNowPlayingIndicator:(BOOL)a3;
+- (void)setTitle:(id)title;
+- (void)setWantsNowPlayingIndicator:(BOOL)indicator;
 @end
 
 @implementation DeprecatedChapterCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = sub_1448DC();
   v5 = (self + OBJC_IVAR____TtC12NowPlayingUI21DeprecatedChapterCell_title);
   *v5 = v4;
   v5[1] = v6;
-  v7 = self;
+  selfCopy = self;
 
   sub_13EE40();
 }
 
-- (void)setWantsNowPlayingIndicator:(BOOL)a3
+- (void)setWantsNowPlayingIndicator:(BOOL)indicator
 {
   v3 = *(self + OBJC_IVAR____TtC12NowPlayingUI21DeprecatedChapterCell_wantsNowPlayingIndicator);
-  *(self + OBJC_IVAR____TtC12NowPlayingUI21DeprecatedChapterCell_wantsNowPlayingIndicator) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____TtC12NowPlayingUI21DeprecatedChapterCell_wantsNowPlayingIndicator) = indicator;
+  if (v3 != indicator)
   {
     [(DeprecatedChapterCell *)self setNeedsLayout];
   }
@@ -29,7 +29,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_13F140();
 }
 

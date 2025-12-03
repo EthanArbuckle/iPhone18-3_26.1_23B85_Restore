@@ -1,9 +1,9 @@
 @interface TVLatencyColorimeterSetupTryAgainViewController
 - (void)_handleDismissButton;
 - (void)_handleTryAgainButton;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVLatencyColorimeterSetupTryAgainViewController
@@ -15,8 +15,8 @@
     LogPrintF();
   }
 
-  v3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  [v3 dismiss:5];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  [mainController dismiss:5];
 }
 
 - (void)_handleTryAgainButton
@@ -26,13 +26,13 @@
     LogPrintF();
   }
 
-  v3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  v4 = [v3 testFlags];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  testFlags = [mainController testFlags];
 
-  v5 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  [v5 showProgressUI];
+  mainController2 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  [mainController2 showProgressUI];
 
-  if (!v4)
+  if (!testFlags)
   {
     v6 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -54,12 +54,12 @@
 
   v5.receiver = self;
   v5.super_class = TVLatencyColorimeterSetupTryAgainViewController;
-  [(TVLatencyColorimeterSetupTryAgainViewController *)&v5 viewDidDisappear:v3];
+  [(TVLatencyColorimeterSetupTryAgainViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -67,7 +67,7 @@
 
   v5.receiver = self;
   v5.super_class = TVLatencyColorimeterSetupTryAgainViewController;
-  [(TVLatencyColorimeterSetupTryAgainViewController *)&v5 viewWillAppear:v3];
+  [(TVLatencyColorimeterSetupTryAgainViewController *)&v5 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -110,8 +110,8 @@
 
   [v14 setContentMode:1];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(TVLatencyColorimeterSetupTryAgainViewController *)self contentView];
-  [v15 addSubview:v14];
+  contentView = [(TVLatencyColorimeterSetupTryAgainViewController *)self contentView];
+  [contentView addSubview:v14];
 
   v16 = [UIImageView alloc];
   v17 = [UIImage systemImageNamed:@"exclamationmark.circle"];
@@ -123,44 +123,44 @@
   [(UIImageView *)self->super._statusImageViewIcon setTintColor:v20];
 
   [(UIImageView *)self->super._statusImageViewIcon setTranslatesAutoresizingMaskIntoConstraints:0];
-  v21 = [(TVLatencyColorimeterSetupTryAgainViewController *)self contentView];
-  [v21 addSubview:self->super._statusImageViewIcon];
+  contentView2 = [(TVLatencyColorimeterSetupTryAgainViewController *)self contentView];
+  [contentView2 addSubview:self->super._statusImageViewIcon];
 
-  v22 = [(TVLatencyColorimeterSetupTryAgainViewController *)self contentView];
-  v50 = [v22 mainContentGuide];
+  contentView3 = [(TVLatencyColorimeterSetupTryAgainViewController *)self contentView];
+  mainContentGuide = [contentView3 mainContentGuide];
 
-  v47 = [v14 topAnchor];
-  v46 = [v50 topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  topAnchor = [v14 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v57[0] = v45;
-  v44 = [v14 bottomAnchor];
-  v43 = [v50 bottomAnchor];
-  v42 = [v44 constraintLessThanOrEqualToAnchor:v43];
+  bottomAnchor = [v14 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v42 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v57[1] = v42;
-  v41 = [v14 leadingAnchor];
-  v40 = [v50 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor = [v14 leadingAnchor];
+  leadingAnchor2 = [mainContentGuide leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v57[2] = v39;
-  v38 = [v14 trailingAnchor];
-  v37 = [v50 trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  trailingAnchor = [v14 trailingAnchor];
+  trailingAnchor2 = [mainContentGuide trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v57[3] = v36;
-  v35 = [v14 heightAnchor];
-  v34 = [v35 constraintEqualToConstant:150.0];
+  heightAnchor = [v14 heightAnchor];
+  v34 = [heightAnchor constraintEqualToConstant:150.0];
   v57[4] = v34;
-  v33 = [(UIImageView *)self->super._statusImageViewIcon centerXAnchor];
-  v32 = [v14 centerXAnchor];
-  v23 = [v33 constraintEqualToAnchor:v32];
+  centerXAnchor = [(UIImageView *)self->super._statusImageViewIcon centerXAnchor];
+  centerXAnchor2 = [v14 centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v57[5] = v23;
-  v24 = [(UIImageView *)self->super._statusImageViewIcon centerYAnchor];
-  v25 = [v14 centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:-6.0];
+  centerYAnchor = [(UIImageView *)self->super._statusImageViewIcon centerYAnchor];
+  centerYAnchor2 = [v14 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-6.0];
   v57[6] = v26;
-  v27 = [(UIImageView *)self->super._statusImageViewIcon widthAnchor];
-  v28 = [v27 constraintEqualToConstant:40.0];
+  widthAnchor = [(UIImageView *)self->super._statusImageViewIcon widthAnchor];
+  v28 = [widthAnchor constraintEqualToConstant:40.0];
   v57[7] = v28;
-  v29 = [(UIImageView *)self->super._statusImageViewIcon heightAnchor];
-  v30 = [v29 constraintEqualToConstant:40.0];
+  heightAnchor2 = [(UIImageView *)self->super._statusImageViewIcon heightAnchor];
+  v30 = [heightAnchor2 constraintEqualToConstant:40.0];
   v57[8] = v30;
   v31 = [NSArray arrayWithObjects:v57 count:9];
   [NSLayoutConstraint activateConstraints:v31];

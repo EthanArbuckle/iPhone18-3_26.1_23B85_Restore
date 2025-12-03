@@ -1,23 +1,23 @@
 @interface SilenceCallsSettingsBundleController
 - (PSListController)parentListController;
-- (SilenceCallsSettingsBundleController)initWithParentListController:(id)a3;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
-- (id)getSilenceLabel:(id)a3;
-- (id)getSilenceUnknownCallersEnabled:(id)a3;
-- (id)localizedStringForKey:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (SilenceCallsSettingsBundleController)initWithParentListController:(id)controller;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
+- (id)getSilenceLabel:(id)label;
+- (id)getSilenceUnknownCallersEnabled:(id)enabled;
+- (id)localizedStringForKey:(id)key;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)refreshView;
-- (void)setOnlyAllowContacts:(id)a3 specifier:(id)a4;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (void)setOnlyAllowContacts:(id)contacts specifier:(id)specifier;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 @end
 
 @implementation SilenceCallsSettingsBundleController
 
-- (SilenceCallsSettingsBundleController)initWithParentListController:(id)a3
+- (SilenceCallsSettingsBundleController)initWithParentListController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = SilenceCallsSettingsBundleController;
-  v3 = [(SilenceCallsSettingsBundleController *)&v10 initWithParentListController:a3];
+  v3 = [(SilenceCallsSettingsBundleController *)&v10 initWithParentListController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -40,12 +40,12 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
-  v5 = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
+  activeSpecifier = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
 
-  if (!v5)
+  if (!activeSpecifier)
   {
     v6 = [(SilenceCallsSettingsBundleController *)self localizedStringForKey:@"SILENCE_CALLS_TOGGLE_TITLE"];
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"setOnlyAllowContacts:specifier:" get:"getSilenceUnknownCallersEnabled:" detail:0 cell:6 edit:0];
@@ -68,12 +68,12 @@
   return v9;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [(SilenceCallsSettingsBundleController *)self localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_83F0 table:v6];
+  localizationTableName = [(SilenceCallsSettingsBundleController *)self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_83F0 table:localizationTableName];
 
   return v7;
 }
@@ -87,12 +87,12 @@
 
 - (void)refreshView
 {
-  v4 = [(SilenceCallsSettingsBundleController *)self parentListController];
-  v3 = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
-  [v4 reloadSpecifier:v3];
+  parentListController = [(SilenceCallsSettingsBundleController *)self parentListController];
+  activeSpecifier = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier];
 }
 
-- (id)getSilenceLabel:(id)a3
+- (id)getSilenceLabel:(id)label
 {
   v4 = [(SilenceCallsSettingsBundleController *)self getSilenceUnknownCallersEnabled:0];
   if ([v4 BOOLValue])
@@ -110,41 +110,41 @@
   return v6;
 }
 
-- (id)getSilenceUnknownCallersEnabled:(id)a3
+- (id)getSilenceUnknownCallersEnabled:(id)enabled
 {
-  v4 = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
-  v5 = [v4 target];
-  v6 = [v5 parentListController];
-  v7 = [v6 specifierID];
-  v8 = [v7 isEqualToString:@"com.apple.preferences.facetime"];
+  activeSpecifier = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
+  target = [activeSpecifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
+  v8 = [specifierID isEqualToString:@"com.apple.preferences.facetime"];
 
-  v9 = [(SilenceCallsSettingsBundleController *)self tuFeatureFlags];
-  v10 = [v9 deviceExpertMigrationEnabled];
+  tuFeatureFlags = [(SilenceCallsSettingsBundleController *)self tuFeatureFlags];
+  deviceExpertMigrationEnabled = [tuFeatureFlags deviceExpertMigrationEnabled];
 
   if (v8)
   {
-    if (!v10)
+    if (!deviceExpertMigrationEnabled)
     {
       v14 = TUCallFilteringPreferencesSilenceUnknownFaceTimeCallersKey;
-      v11 = [NSNumber numberWithBool:TUSilenceUnknownFaceTimeCallersDefaultValue()];
-      v13 = [(SilenceCallsSettingsBundleController *)self getBooleanFromUserDefaults:v14 default:v11];
+      configurationProvider = [NSNumber numberWithBool:TUSilenceUnknownFaceTimeCallersDefaultValue()];
+      v13 = [(SilenceCallsSettingsBundleController *)self getBooleanFromUserDefaults:v14 default:configurationProvider];
       goto LABEL_8;
     }
 
-    v11 = [(SilenceCallsSettingsBundleController *)self configurationProvider];
-    v12 = [v11 isSilenceUnknownCallersEnabledForFaceTime];
+    configurationProvider = [(SilenceCallsSettingsBundleController *)self configurationProvider];
+    isSilenceUnknownCallersEnabledForFaceTime = [configurationProvider isSilenceUnknownCallersEnabledForFaceTime];
 LABEL_6:
-    v13 = [NSNumber numberWithBool:v12];
+    v13 = [NSNumber numberWithBool:isSilenceUnknownCallersEnabledForFaceTime];
 LABEL_8:
     v15 = v13;
 
     goto LABEL_10;
   }
 
-  if (v10)
+  if (deviceExpertMigrationEnabled)
   {
-    v11 = [(SilenceCallsSettingsBundleController *)self configurationProvider];
-    v12 = [v11 isSilenceUnknownCallersEnabledForPhone];
+    configurationProvider = [(SilenceCallsSettingsBundleController *)self configurationProvider];
+    isSilenceUnknownCallersEnabledForFaceTime = [configurationProvider isSilenceUnknownCallersEnabledForPhone];
     goto LABEL_6;
   }
 
@@ -154,13 +154,13 @@ LABEL_10:
   return v15;
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
-  v5 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:defaultsCopy];
 
   if (v9)
   {
@@ -169,7 +169,7 @@ LABEL_10:
 
   else
   {
-    v10 = v5;
+    v10 = defaultCopy;
   }
 
   v11 = v10;
@@ -177,34 +177,34 @@ LABEL_10:
   return v10;
 }
 
-- (void)setOnlyAllowContacts:(id)a3 specifier:(id)a4
+- (void)setOnlyAllowContacts:(id)contacts specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(SilenceCallsSettingsBundleController *)self tuFeatureFlags];
-  v7 = [v6 deviceExpertMigrationEnabled];
+  contactsCopy = contacts;
+  tuFeatureFlags = [(SilenceCallsSettingsBundleController *)self tuFeatureFlags];
+  deviceExpertMigrationEnabled = [tuFeatureFlags deviceExpertMigrationEnabled];
 
-  v8 = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
-  v9 = [v8 target];
-  v10 = [v9 parentListController];
-  v11 = [v10 specifierID];
-  v12 = [v11 isEqualToString:@"com.apple.preferences.facetime"];
+  activeSpecifier = [(SilenceCallsSettingsBundleController *)self activeSpecifier];
+  target = [activeSpecifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
+  v12 = [specifierID isEqualToString:@"com.apple.preferences.facetime"];
 
   v13 = PHDefaultLog();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (deviceExpertMigrationEnabled)
   {
     if (v12)
     {
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers FaceTime switch to %@", &v19, 0xCu);
       }
 
-      v15 = [v5 BOOLValue];
-      v16 = [(SilenceCallsSettingsBundleController *)self configurationProvider];
-      [v16 setSilenceUnknownCallersEnabledForFaceTime:v15];
+      bOOLValue = [contactsCopy BOOLValue];
+      configurationProvider = [(SilenceCallsSettingsBundleController *)self configurationProvider];
+      [configurationProvider setSilenceUnknownCallersEnabledForFaceTime:bOOLValue];
     }
 
     else
@@ -212,13 +212,13 @@ LABEL_10:
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers switch to %@", &v19, 0xCu);
       }
 
-      v18 = [v5 BOOLValue];
-      v16 = [(SilenceCallsSettingsBundleController *)self configurationProvider];
-      [v16 setSilenceUnknownCallersEnabledForPhone:v18];
+      bOOLValue2 = [contactsCopy BOOLValue];
+      configurationProvider = [(SilenceCallsSettingsBundleController *)self configurationProvider];
+      [configurationProvider setSilenceUnknownCallersEnabledForPhone:bOOLValue2];
     }
   }
 
@@ -229,7 +229,7 @@ LABEL_10:
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers FaceTime switch to %@", &v19, 0xCu);
       }
 
@@ -241,31 +241,31 @@ LABEL_10:
       if (v14)
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = contactsCopy;
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "User toggled Silence Unknown Callers switch to %@", &v19, 0xCu);
       }
 
       v17 = &TUCallFilteringPreferencesContactsOnlyKey;
     }
 
-    [(SilenceCallsSettingsBundleController *)self setValueInUserDefaults:v5 forKey:*v17];
+    [(SilenceCallsSettingsBundleController *)self setValueInUserDefaults:contactsCopy forKey:*v17];
   }
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v7 = [NSUserDefaults alloc];
   v8 = TUBundleIdentifierTelephonyUtilitiesFramework;
   v9 = [v7 initWithSuiteName:TUBundleIdentifierTelephonyUtilitiesFramework];
-  [v9 setValue:v6 forKey:v5];
+  [v9 setValue:defaultsCopy forKey:keyCopy];
 
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 postNotificationName:@"SilenceCallsSettingsChangedNotification" object:0];
 
   v12 = objc_opt_new();
-  v11 = [NSSet setWithObject:v5];
+  v11 = [NSSet setWithObject:keyCopy];
 
   [v12 synchronizeUserDefaultsDomain:v8 keys:v11];
 }

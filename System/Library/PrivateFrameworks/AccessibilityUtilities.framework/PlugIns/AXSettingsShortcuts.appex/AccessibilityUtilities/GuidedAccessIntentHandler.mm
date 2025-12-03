@@ -1,18 +1,18 @@
 @interface GuidedAccessIntentHandler
-- (void)handleStartGuidedAccess:(id)a3 completion:(id)a4;
+- (void)handleStartGuidedAccess:(id)access completion:(id)completion;
 @end
 
 @implementation GuidedAccessIntentHandler
 
-- (void)handleStartGuidedAccess:(id)a3 completion:(id)a4
+- (void)handleStartGuidedAccess:(id)access completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  accessCopy = access;
+  completionCopy = completion;
   v7 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = accessCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "GuidedAccessIntentHandler: Handling intent %@", &v13, 0xCu);
   }
 
@@ -80,7 +80,7 @@ LABEL_18:
   v11 = 104;
 LABEL_15:
   v12 = [[AXStartGuidedAccessIntentResponse alloc] initWithCode:v11 userActivity:0];
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
 @end

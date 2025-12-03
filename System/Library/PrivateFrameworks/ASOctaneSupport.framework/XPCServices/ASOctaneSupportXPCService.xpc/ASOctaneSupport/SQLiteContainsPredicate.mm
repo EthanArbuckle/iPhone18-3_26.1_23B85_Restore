@@ -1,26 +1,26 @@
 @interface SQLiteContainsPredicate
-+ (id)containsPredicateWithProperty:(id)a3 query:(id)a4 queryProperty:(id)a5;
-+ (id)containsPredicateWithProperty:(id)a3 values:(id)a4;
-+ (id)doesNotContainPredicateWithProperty:(id)a3 values:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
-- (void)applyBinding:(id)a3 atIndex:(int *)a4;
++ (id)containsPredicateWithProperty:(id)property query:(id)query queryProperty:(id)queryProperty;
++ (id)containsPredicateWithProperty:(id)property values:(id)values;
++ (id)doesNotContainPredicateWithProperty:(id)property values:(id)values;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
+- (void)applyBinding:(id)binding atIndex:(int *)index;
 @end
 
 @implementation SQLiteContainsPredicate
 
-+ (id)containsPredicateWithProperty:(id)a3 values:(id)a4
++ (id)containsPredicateWithProperty:(id)property values:(id)values
 {
-  v5 = a4;
-  v6 = a3;
+  valuesCopy = values;
+  propertyCopy = property;
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [v6 copy];
+  v8 = [propertyCopy copy];
 
   v9 = v7[1];
   v7[1] = v8;
 
   *(v7 + 24) = 0;
-  v10 = [v5 copy];
+  v10 = [valuesCopy copy];
 
   v11 = v7[6];
   v7[6] = v10;
@@ -28,41 +28,41 @@
   return v7;
 }
 
-+ (id)containsPredicateWithProperty:(id)a3 query:(id)a4 queryProperty:(id)a5
++ (id)containsPredicateWithProperty:(id)property query:(id)query queryProperty:(id)queryProperty
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  queryCopy = query;
+  queryPropertyCopy = queryProperty;
+  propertyCopy = property;
   v10 = objc_alloc_init(objc_opt_class());
-  v11 = [v9 copy];
+  v11 = [propertyCopy copy];
 
   v12 = v10[1];
   v10[1] = v11;
 
   *(v10 + 24) = 0;
   v13 = v10[4];
-  v10[4] = v7;
-  v14 = v7;
+  v10[4] = queryCopy;
+  v14 = queryCopy;
 
-  v15 = [v8 copy];
+  v15 = [queryPropertyCopy copy];
   v16 = v10[5];
   v10[5] = v15;
 
   return v10;
 }
 
-+ (id)doesNotContainPredicateWithProperty:(id)a3 values:(id)a4
++ (id)doesNotContainPredicateWithProperty:(id)property values:(id)values
 {
-  v5 = a4;
-  v6 = a3;
+  valuesCopy = values;
+  propertyCopy = property;
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [v6 copy];
+  v8 = [propertyCopy copy];
 
   v9 = v7[1];
   v7[1] = v8;
 
   *(v7 + 24) = 1;
-  v10 = [v5 copy];
+  v10 = [valuesCopy copy];
 
   v11 = v7[6];
   v7[6] = v10;
@@ -70,16 +70,16 @@
   return v7;
 }
 
-- (void)applyBinding:(id)a3 atIndex:(int *)a4
+- (void)applyBinding:(id)binding atIndex:(int *)index
 {
-  v6 = a3;
+  bindingCopy = binding;
   v17.receiver = self;
   v17.super_class = SQLiteContainsPredicate;
-  [(SQLitePropertyPredicate *)&v17 applyBinding:v6 atIndex:a4];
+  [(SQLitePropertyPredicate *)&v17 applyBinding:bindingCopy atIndex:index];
   query = self->_query;
   if (query)
   {
-    [(SQLiteQuery *)query applyBinding:v6 atIndex:a4];
+    [(SQLiteQuery *)query applyBinding:bindingCopy atIndex:index];
   }
 
   else
@@ -103,8 +103,8 @@
             objc_enumerationMutation(v8);
           }
 
-          sub_100007A68(v6, *a4, *(*(&v13 + 1) + 8 * i));
-          ++*a4;
+          sub_100007A68(bindingCopy, *index, *(*(&v13 + 1) + 8 * i));
+          ++*index;
         }
 
         v10 = [v8 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -115,24 +115,24 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v17.receiver = self;
   v17.super_class = SQLiteContainsPredicate;
-  if ([(SQLitePropertyPredicate *)&v17 isEqual:v6])
+  if ([(SQLitePropertyPredicate *)&v17 isEqual:equalCopy])
   {
-    v7 = [(SQLiteContainsPredicate *)self isNegative];
-    if (v7 == [v6 isNegative])
+    isNegative = [(SQLiteContainsPredicate *)self isNegative];
+    if (isNegative == [equalCopy isNegative])
     {
-      v9 = [(SQLiteContainsPredicate *)self values];
-      v10 = [v6 values];
-      if (v9 == v10 || (-[SQLiteContainsPredicate values](self, "values"), v3 = objc_claimAutoreleasedReturnValue(), [v6 values], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+      values = [(SQLiteContainsPredicate *)self values];
+      values2 = [equalCopy values];
+      if (values == values2 || (-[SQLiteContainsPredicate values](self, "values"), v3 = objc_claimAutoreleasedReturnValue(), [equalCopy values], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
       {
-        v11 = [(SQLiteContainsPredicate *)self query];
-        v12 = [v6 query];
-        v13 = v12;
-        if (v11 == v12)
+        query = [(SQLiteContainsPredicate *)self query];
+        query2 = [equalCopy query];
+        v13 = query2;
+        if (query == query2)
         {
 
           v8 = 1;
@@ -140,12 +140,12 @@
 
         else
         {
-          v14 = [(SQLiteContainsPredicate *)self query];
-          v15 = [v6 query];
-          v8 = [v14 isEqual:v15];
+          query3 = [(SQLiteContainsPredicate *)self query];
+          query4 = [equalCopy query];
+          v8 = [query3 isEqual:query4];
         }
 
-        if (v9 == v10)
+        if (values == values2)
         {
           goto LABEL_12;
         }
@@ -167,9 +167,9 @@ LABEL_13:
   return v8;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
-  v4 = [(SQLitePropertyPredicate *)self _transformedSQLForEntityClass:a3];
+  v4 = [(SQLitePropertyPredicate *)self _transformedSQLForEntityClass:class];
   v5 = [NSMutableString stringWithString:v4];
   v6 = v5;
   if (self->_negative)

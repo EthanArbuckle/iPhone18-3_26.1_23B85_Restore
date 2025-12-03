@@ -1,27 +1,27 @@
 @interface HDVersionedMedicationScheduleSyncEntity
-+ (BOOL)enumerateCodableObjectsForPredicate:(id)a3 limit:(int64_t)a4 orderingTerms:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8 handler:(id)a9;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (BOOL)receiveCodableSchedules:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_pruningPredicateThroughAnchor:(void *)a3 nowDate:;
-+ (id)_syncPredicateForSyncSession:(uint64_t)a1;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)pruneSyncedObjectsThroughAnchor:(id)a3 limit:(unint64_t)a4 nowDate:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (uint64_t)_insertCodableMedicationSchedules:(int)a3 version:(void *)a4 syncStore:(void *)a5 profile:(uint64_t)a6 error:;
++ (BOOL)enumerateCodableObjectsForPredicate:(id)predicate limit:(int64_t)limit orderingTerms:(id)terms profile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (BOOL)receiveCodableSchedules:(id)schedules syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error;
++ (id)_pruningPredicateThroughAnchor:(void *)anchor nowDate:;
++ (id)_syncPredicateForSyncSession:(uint64_t)session;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)pruneSyncedObjectsThroughAnchor:(id)anchor limit:(unint64_t)limit nowDate:(id)date profile:(id)profile error:(id *)error;
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
++ (uint64_t)_insertCodableMedicationSchedules:(int)schedules version:(void *)version syncStore:(void *)store profile:(uint64_t)profile error:;
 @end
 
 @implementation HDVersionedMedicationScheduleSyncEntity
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v41 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v27 = a6;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v15 = HKLogMedication();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543874;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2050;
       *&buf[14] = var0;
       *&buf[22] = 2050;
@@ -50,16 +50,16 @@
   v38[1] = v38;
   v38[2] = 0x2020000000;
   v38[3] = 0;
-  v19 = [v13 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
-  v20 = [v14 database];
+  v19 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
+  database = [profileCopy database];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v28[3] = &unk_2796CD250;
-  v21 = v14;
+  v21 = profileCopy;
   v29 = v21;
-  v34 = a1;
-  v22 = v13;
+  selfCopy = self;
+  v22 = sessionCopy;
   v35 = var0;
   v36 = var1;
   v30 = v22;
@@ -68,11 +68,11 @@
   v31 = v23;
   v33 = v38;
   v37 = v19;
-  LOBYTE(v19) = [(HDHealthEntity *)HDMedicationScheduleEntity performReadTransactionWithHealthDatabase:v20 error:a7 block:v28];
+  LOBYTE(v19) = [(HDHealthEntity *)HDMedicationScheduleEntity performReadTransactionWithHealthDatabase:database error:error block:v28];
 
   if (v19)
   {
-    v24 = [v27 sendCodableChange:v23 version:0x200000000 resultAnchor:*(*&buf[8] + 24) sequence:0 done:1 error:a7];
+    v24 = [handlerCopy sendCodableChange:v23 version:0x200000000 resultAnchor:*(*&buf[8] + 24) sequence:0 done:1 error:error];
   }
 
   else
@@ -113,7 +113,7 @@ BOOL __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSessio
   return v15;
 }
 
-+ (id)_syncPredicateForSyncSession:(uint64_t)a1
++ (id)_syncPredicateForSyncSession:(uint64_t)session
 {
   v2 = a2;
   objc_opt_self();
@@ -147,31 +147,31 @@ BOOL __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSessio
   return v10 != 0;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(HDVersionedMedicationScheduleSyncEntity *)a1 _syncPredicateForSyncSession:v11];
-  v13 = [v10 database];
+  profileCopy = profile;
+  sessionCopy = session;
+  v12 = [(HDVersionedMedicationScheduleSyncEntity *)self _syncPredicateForSyncSession:sessionCopy];
+  database = [profileCopy database];
 
-  v14 = [(HDHealthEntity *)HDMedicationScheduleEntity nextSyncAnchorWithStartAnchor:a4 predicate:v12 session:v11 healthDatabase:v13 error:a6];
+  v14 = [(HDHealthEntity *)HDMedicationScheduleEntity nextSyncAnchorWithStartAnchor:anchor predicate:v12 session:sessionCopy healthDatabase:database error:error];
   return v14;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableMedicationSchedule alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableMedicationSchedule alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
   _HKInitializeLogging();
   v15 = HKLogMedication();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -181,35 +181,35 @@ BOOL __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSessio
     v17 = HKLogMedication();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectsCopy, "count")}];
       v22 = 138544130;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = v21;
       v26 = 1026;
-      var0 = a4.var0;
+      var0 = version.var0;
       v28 = 1026;
-      var1 = a4.var1;
+      var1 = version.var1;
       _os_log_debug_impl(&dword_25181C000, v17, OS_LOG_TYPE_DEBUG, "[%{public}@] Received %{public}@ sync objects for version: minimum=%{public}u, current=%{public}u", &v22, 0x22u);
     }
   }
 
-  v18 = [(HDVersionedMedicationScheduleSyncEntity *)a1 _insertCodableMedicationSchedules:v12 version:a4.var0 syncStore:v13 profile:v14 error:a7];
+  v18 = [(HDVersionedMedicationScheduleSyncEntity *)self _insertCodableMedicationSchedules:objectsCopy version:version.var0 syncStore:storeCopy profile:profileCopy error:error];
 
   v19 = *MEMORY[0x277D85DE8];
   return v18 ^ 1u;
 }
 
-+ (uint64_t)_insertCodableMedicationSchedules:(int)a3 version:(void *)a4 syncStore:(void *)a5 profile:(uint64_t)a6 error:
++ (uint64_t)_insertCodableMedicationSchedules:(int)schedules version:(void *)version syncStore:(void *)store profile:(uint64_t)profile error:
 {
   v31 = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a4;
-  v12 = a5;
+  versionCopy = version;
+  storeCopy = store;
   v13 = objc_opt_self();
-  if (a3 < 3)
+  if (schedules < 3)
   {
-    v18 = [v13 receiveCodableSchedules:v10 syncProvenance:objc_msgSend(v11 profile:"syncProvenance") error:{v12, a6}];
+    v18 = [v13 receiveCodableSchedules:v10 syncProvenance:objc_msgSend(versionCopy profile:"syncProvenance") error:{storeCopy, profile}];
   }
 
   else
@@ -226,7 +226,7 @@ BOOL __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSessio
       v23 = 2048;
       v24 = v15;
       v25 = 2114;
-      v26 = v11;
+      v26 = versionCopy;
       v27 = 2114;
       v28 = v16;
       v29 = 2114;
@@ -241,7 +241,7 @@ BOOL __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSessio
   return v18;
 }
 
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = objc_opt_class();
@@ -249,29 +249,29 @@ BOOL __118__HDVersionedMedicationScheduleSyncEntity_generateSyncObjectsForSessio
   return [v3 setWithObject:v4];
 }
 
-+ (BOOL)enumerateCodableObjectsForPredicate:(id)a3 limit:(int64_t)a4 orderingTerms:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8 handler:(id)a9
++ (BOOL)enumerateCodableObjectsForPredicate:(id)predicate limit:(int64_t)limit orderingTerms:(id)terms profile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v15 = a9;
-  v16 = a7;
-  v17 = a5;
-  v18 = a3;
-  v19 = [HDMedicationScheduleEntity entityEncoderForProfile:a6 transaction:v16 purpose:0 encodingOptions:0 authorizationFilter:0];
-  v20 = [v16 protectedDatabase];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  termsCopy = terms;
+  predicateCopy = predicate;
+  v19 = [HDMedicationScheduleEntity entityEncoderForProfile:profile transaction:transactionCopy purpose:0 encodingOptions:0 authorizationFilter:0];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v21 = [(HDSQLiteEntity *)HDMedicationScheduleEntity queryWithDatabase:v20 predicate:v18 limit:a4 orderingTerms:v17 groupBy:0];
+  v21 = [(HDSQLiteEntity *)HDMedicationScheduleEntity queryWithDatabase:protectedDatabase predicate:predicateCopy limit:limit orderingTerms:termsCopy groupBy:0];
 
-  v22 = [v19 orderedProperties];
+  orderedProperties = [v19 orderedProperties];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __133__HDVersionedMedicationScheduleSyncEntity_enumerateCodableObjectsForPredicate_limit_orderingTerms_profile_transaction_error_handler___block_invoke;
   v26[3] = &unk_2796CD278;
   v27 = v19;
-  v28 = v15;
-  v23 = v15;
+  v28 = handlerCopy;
+  v23 = handlerCopy;
   v24 = v19;
-  LOBYTE(a8) = [v21 enumeratePersistentIDsAndProperties:v22 error:a8 enumerationHandler:v26];
+  LOBYTE(error) = [v21 enumeratePersistentIDsAndProperties:orderedProperties error:error enumerationHandler:v26];
 
-  return a8;
+  return error;
 }
 
 uint64_t __133__HDVersionedMedicationScheduleSyncEntity_enumerateCodableObjectsForPredicate_limit_orderingTerms_profile_transaction_error_handler___block_invoke(uint64_t a1, uint64_t a2)
@@ -290,25 +290,25 @@ uint64_t __133__HDVersionedMedicationScheduleSyncEntity_enumerateCodableObjectsF
   return v4;
 }
 
-+ (BOOL)receiveCodableSchedules:(id)a3 syncProvenance:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)receiveCodableSchedules:(id)schedules syncProvenance:(int64_t)provenance profile:(id)profile error:(id *)error
 {
   v9 = MEMORY[0x277D11570];
-  v10 = a5;
-  v11 = [v9 hd_medicationSchedulesFromCodables:a3 profile:v10 ignoreDuplicates:0];
-  v12 = [v10 healthMedicationsProfileExtension];
-  v13 = [v12 medicationScheduleManager];
+  profileCopy = profile;
+  v11 = [v9 hd_medicationSchedulesFromCodables:schedules profile:profileCopy ignoreDuplicates:0];
+  healthMedicationsProfileExtension = [profileCopy healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __96__HDVersionedMedicationScheduleSyncEntity_receiveCodableSchedules_syncProvenance_profile_error___block_invoke;
   v24[3] = &unk_2796CD2A0;
   v25 = v11;
-  v26 = v13;
-  v27 = a4;
-  v14 = v13;
+  v26 = medicationScheduleManager;
+  provenanceCopy = provenance;
+  v14 = medicationScheduleManager;
   v15 = v11;
   v16 = MEMORY[0x253084B70](v24);
-  v17 = [v10 database];
+  database = [profileCopy database];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -321,9 +321,9 @@ uint64_t __133__HDVersionedMedicationScheduleSyncEntity_enumerateCodableObjectsF
   v20[3] = &unk_2796CD2F0;
   v21 = v23;
   v18 = v23;
-  LOBYTE(a6) = [(HDHealthEntity *)HDMedicationScheduleEntity performWriteTransactionWithHealthDatabase:v17 error:a6 block:v22 inaccessibilityHandler:v20];
+  LOBYTE(error) = [(HDHealthEntity *)HDMedicationScheduleEntity performWriteTransactionWithHealthDatabase:database error:error block:v22 inaccessibilityHandler:v20];
 
-  return a6;
+  return error;
 }
 
 uint64_t __96__HDVersionedMedicationScheduleSyncEntity_receiveCodableSchedules_syncProvenance_profile_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -379,12 +379,12 @@ LABEL_11:
   return v14;
 }
 
-+ (id)pruneSyncedObjectsThroughAnchor:(id)a3 limit:(unint64_t)a4 nowDate:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)pruneSyncedObjectsThroughAnchor:(id)anchor limit:(unint64_t)limit nowDate:(id)date profile:(id)profile error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  anchorCopy = anchor;
+  dateCopy = date;
+  profileCopy = profile;
   _HKInitializeLogging();
   v15 = HKLogMedication();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -394,36 +394,36 @@ LABEL_11:
     v17 = HKLogMedication();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
       *v37 = 138544130;
-      *&v37[4] = a1;
+      *&v37[4] = self;
       *&v37[12] = 2114;
-      *&v37[14] = v12;
+      *&v37[14] = anchorCopy;
       *&v37[22] = 2114;
       v38 = v28;
       LOWORD(v39) = 2114;
-      *(&v39 + 2) = v13;
+      *(&v39 + 2) = dateCopy;
       _os_log_debug_impl(&dword_25181C000, v17, OS_LOG_TYPE_DEBUG, "[%{public}@] Pruning sync objects through anchor limit: %{public}@, limit: %{public}@, now date: %{public}@", v37, 0x2Au);
     }
   }
 
-  v18 = [(HDVersionedMedicationScheduleSyncEntity *)a1 _pruningPredicateThroughAnchor:v12 nowDate:v13];
+  v18 = [(HDVersionedMedicationScheduleSyncEntity *)self _pruningPredicateThroughAnchor:anchorCopy nowDate:dateCopy];
   *v37 = 0;
   *&v37[8] = v37;
   *&v37[16] = 0x3032000000;
   v38 = __Block_byref_object_copy__0;
   *&v39 = __Block_byref_object_dispose__0;
   *(&v39 + 1) = &unk_2863C26F0;
-  v19 = [v14 database];
+  database = [profileCopy database];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __103__HDVersionedMedicationScheduleSyncEntity_pruneSyncedObjectsThroughAnchor_limit_nowDate_profile_error___block_invoke;
   v29[3] = &unk_2796CD318;
   v20 = v18;
   v31 = v37;
-  v32 = a4;
+  limitCopy = limit;
   v30 = v20;
-  v21 = [(HDHealthEntity *)HDMedicationScheduleEntity performWriteTransactionWithHealthDatabase:v19 error:a7 block:v29];
+  v21 = [(HDHealthEntity *)HDMedicationScheduleEntity performWriteTransactionWithHealthDatabase:database error:error block:v29];
 
   _HKInitializeLogging();
   v22 = HKLogMedication();
@@ -431,7 +431,7 @@ LABEL_11:
   {
     v23 = *(*&v37[8] + 40);
     *buf = 138543618;
-    v34 = a1;
+    selfCopy = self;
     v35 = 2112;
     v36 = v23;
     _os_log_impl(&dword_25181C000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deleted %@ schedules", buf, 0x16u);
@@ -455,13 +455,13 @@ LABEL_11:
   return v25;
 }
 
-+ (id)_pruningPredicateThroughAnchor:(void *)a3 nowDate:
++ (id)_pruningPredicateThroughAnchor:(void *)anchor nowDate:
 {
   v18[2] = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  anchorCopy = anchor;
   objc_opt_self();
-  v6 = [v5 dateByAddingTimeInterval:-31536000.0];
+  v6 = [anchorCopy dateByAddingTimeInterval:-31536000.0];
 
   v7 = [MEMORY[0x277D10B18] predicateWithProperty:@"creation_date" lessThanValue:v6];
   v8 = v7;

@@ -2,47 +2,47 @@
 - (CGSize)naturalSize;
 - (TUIImageResourceCacheKey)sizedKey;
 - (TUIImageResourceCacheKey)unsizedKey;
-- (_BKCoverResource)initWithQueue:(id)a3 notifyQueue:(id)a4 assetID:(id)a5 resourceOptions:(id)a6 naturalSize:(CGSize)a7 contentsScale:(double)a8;
-- (id)imageContentWithOptions:(unint64_t)a3;
+- (_BKCoverResource)initWithQueue:(id)queue notifyQueue:(id)notifyQueue assetID:(id)d resourceOptions:(id)options naturalSize:(CGSize)size contentsScale:(double)scale;
+- (id)imageContentWithOptions:(unint64_t)options;
 - (id)loadImage;
-- (id)newImageResourceWithSize:(CGSize)a3;
-- (void)_nq_loadedImage:(id)a3 withIntrinsicSize:(CGSize)a4;
+- (id)newImageResourceWithSize:(CGSize)size;
+- (void)_nq_loadedImage:(id)image withIntrinsicSize:(CGSize)size;
 - (void)_q_loadIfNeeded;
 - (void)_q_unload;
 - (void)addInterest;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)loadIntrinsicSize;
 - (void)removeInterest;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _BKCoverResource
 
-- (_BKCoverResource)initWithQueue:(id)a3 notifyQueue:(id)a4 assetID:(id)a5 resourceOptions:(id)a6 naturalSize:(CGSize)a7 contentsScale:(double)a8
+- (_BKCoverResource)initWithQueue:(id)queue notifyQueue:(id)notifyQueue assetID:(id)d resourceOptions:(id)options naturalSize:(CGSize)size contentsScale:(double)scale
 {
-  height = a7.height;
-  width = a7.width;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  height = size.height;
+  width = size.width;
+  queueCopy = queue;
+  notifyQueueCopy = notifyQueue;
+  dCopy = d;
+  optionsCopy = options;
   v37.receiver = self;
   v37.super_class = _BKCoverResource;
   v20 = [(_BKCoverResource *)&v37 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_queue, a3);
-    objc_storeStrong(&v21->_notifyQueue, a4);
-    v22 = [v18 copy];
+    objc_storeStrong(&v20->_queue, queue);
+    objc_storeStrong(&v21->_notifyQueue, notifyQueue);
+    v22 = [dCopy copy];
     assetID = v21->_assetID;
     v21->_assetID = v22;
 
-    objc_storeStrong(&v21->_resourceOptions, a6);
+    objc_storeStrong(&v21->_resourceOptions, options);
     v21->_naturalSize.width = width;
     v21->_naturalSize.height = height;
-    v21->_contentsScale = a8;
+    v21->_contentsScale = scale;
     v24 = [NSHashTable hashTableWithOptions:517];
     observers = v21->_observers;
     v21->_observers = v24;
@@ -52,26 +52,26 @@
     *&v21->_imageContextInsets.top = *&UIEdgeInsetsZero.top;
     *&v21->_imageContextInsets.bottom = v26;
     objc_opt_class();
-    v27 = [v19 objectForKeyedSubscript:@"prefersAsyncIntrinsicAspectRatio"];
+    v27 = [optionsCopy objectForKeyedSubscript:@"prefersAsyncIntrinsicAspectRatio"];
     v28 = BUDynamicCast();
 
     v29 = 156.0;
     if ([v28 BOOLValue])
     {
       v30 = 0;
-      v31 = 0;
+      intrinsicAspectRatio = 0;
     }
 
     else
     {
       v32 = +[BCCacheManager defaultCacheManager];
-      v33 = [v32 metadataForIdentifier:v18];
+      v33 = [v32 metadataForIdentifier:dCopy];
 
-      v31 = [v33 intrinsicAspectRatio];
+      intrinsicAspectRatio = [v33 intrinsicAspectRatio];
 
-      if (v31 && ([v31 doubleValue], v34 > 0.0))
+      if (intrinsicAspectRatio && ([intrinsicAspectRatio doubleValue], v34 > 0.0))
       {
-        [v31 doubleValue];
+        [intrinsicAspectRatio doubleValue];
         v29 = v35 * 100.0;
         v30 = 1;
       }
@@ -90,10 +90,10 @@
   return v21;
 }
 
-- (id)newImageResourceWithSize:(CGSize)a3
+- (id)newImageResourceWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [_BKCoverResource alloc];
   queue = self->_queue;
   notifyQueue = self->_notifyQueue;
@@ -109,8 +109,8 @@
   contentsScale = self->_contentsScale;
   v3 = self->_naturalSize.width * contentsScale;
   v4 = contentsScale * self->_naturalSize.height;
-  v5 = [(_BKCoverResource *)self unsizedKey];
-  v6 = [v5 cacheKeyWithSize:{v3, v4}];
+  unsizedKey = [(_BKCoverResource *)self unsizedKey];
+  v6 = [unsizedKey cacheKeyWithSize:{v3, v4}];
 
   return v6;
 }
@@ -136,7 +136,7 @@
   [(_BKCoverResource *)&v4 dealloc];
 }
 
-- (id)imageContentWithOptions:(unint64_t)a3
+- (id)imageContentWithOptions:(unint64_t)options
 {
   v7 = 0;
   v8 = &v7;
@@ -150,7 +150,7 @@
   block[2] = sub_100103B6C;
   block[3] = &unk_100A07588;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = options;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -192,11 +192,11 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -204,16 +204,16 @@
     v7[2] = sub_100103FAC;
     v7[3] = &unk_100A03440;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -221,7 +221,7 @@
     v7[2] = sub_100104060;
     v7[3] = &unk_100A03440;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_sync(queue, v7);
   }
 }
@@ -253,9 +253,9 @@
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_loading)
   {
-    v3 = [(_BKCoverResource *)self coverImage];
+    coverImage = [(_BKCoverResource *)self coverImage];
 
-    if (!v3)
+    if (!coverImage)
     {
       self->_loading = 1;
       objc_initWeak(&location, self);
@@ -317,11 +317,11 @@
   *&self->_imageContextInsets.bottom = v3;
 }
 
-- (void)_nq_loadedImage:(id)a3 withIntrinsicSize:(CGSize)a4
+- (void)_nq_loadedImage:(id)image withIntrinsicSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   dispatch_assert_queue_V2(self->_notifyQueue);
   v35 = 0;
   v36 = &v35;
@@ -363,7 +363,7 @@
   v27 = &v35;
   v29 = v9;
   v30 = v10;
-  v12 = v7;
+  v12 = imageCopy;
   v26 = v12;
   v28 = &v31;
   dispatch_sync(queue, block);

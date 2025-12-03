@@ -1,21 +1,21 @@
 @interface EventPreviewWrapper
 - (_TtC13EventKitTCCUI19EventPreviewWrapper)init;
-- (_TtC13EventKitTCCUI19EventPreviewWrapper)initWithEvent:(id)a3;
-- (id)getPreviewControllerForPrompt:(BOOL)a3;
+- (_TtC13EventKitTCCUI19EventPreviewWrapper)initWithEvent:(id)event;
+- (id)getPreviewControllerForPrompt:(BOOL)prompt;
 @end
 
 @implementation EventPreviewWrapper
 
-- (_TtC13EventKitTCCUI19EventPreviewWrapper)initWithEvent:(id)a3
+- (_TtC13EventKitTCCUI19EventPreviewWrapper)initWithEvent:(id)event
 {
-  *(&self->super.isa + OBJC_IVAR____TtC13EventKitTCCUI19EventPreviewWrapper_event) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13EventKitTCCUI19EventPreviewWrapper_event) = event;
   v6.receiver = self;
   v6.super_class = type metadata accessor for EventPreviewWrapper();
-  v4 = a3;
+  eventCopy = event;
   return [(EventPreviewWrapper *)&v6 init];
 }
 
-- (id)getPreviewControllerForPrompt:(BOOL)a3
+- (id)getPreviewControllerForPrompt:(BOOL)prompt
 {
   sub_24A093270();
   sub_24A093260();
@@ -25,8 +25,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  EventPreviewWrapper.getPreviewController(forPrompt:)(v6, a3);
+  selfCopy = self;
+  EventPreviewWrapper.getPreviewController(forPrompt:)(v6, prompt);
   v8 = v7;
 
   return v8;

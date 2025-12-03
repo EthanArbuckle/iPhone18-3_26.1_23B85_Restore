@@ -10,7 +10,7 @@
 - (float)contentScale;
 - (float)opacity;
 - (id).cxx_construct;
-- (id)init:(shared_ptr<grl::IconImage>)a3;
+- (id)init:(shared_ptr<grl::IconImage>)init;
 - (unsigned)calloutShape;
 @end
 
@@ -314,12 +314,12 @@
   return result;
 }
 
-- (id)init:(shared_ptr<grl::IconImage>)a3
+- (id)init:(shared_ptr<grl::IconImage>)init
 {
-  ptr = a3.__ptr_;
+  ptr = init.__ptr_;
   v10.receiver = self;
   v10.super_class = VKIconImage;
-  v4 = [(VKIconImage *)&v10 init:a3.__ptr_];
+  v4 = [(VKIconImage *)&v10 init:init.__ptr_];
   v5 = v4;
   if (v4)
   {

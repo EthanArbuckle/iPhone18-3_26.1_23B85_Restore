@@ -12,7 +12,7 @@
     v5 = 136315394;
     v6 = "[SADomainObject(ADMessageTransformer) ad_OTTModelRepresentation]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "%s No OTT-model representation for %@", &v5, 0x16u);
   }
 

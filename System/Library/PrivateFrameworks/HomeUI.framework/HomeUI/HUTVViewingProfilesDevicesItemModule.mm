@@ -1,31 +1,31 @@
 @interface HUTVViewingProfilesDevicesItemModule
-- (BOOL)isTVViewingProfileDevice:(id)a3;
+- (BOOL)isTVViewingProfileDevice:(id)device;
 - (HMMediaContentProfileAccessControl)accessControl;
-- (HUTVViewingProfilesDevicesItemModule)initWithItemUpdater:(id)a3 userItem:(id)a4;
+- (HUTVViewingProfilesDevicesItemModule)initWithItemUpdater:(id)updater userItem:(id)item;
 - (NSArray)viewingProfilesDevices;
-- (id)_commitUpdateToAccessControl:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)_commitUpdateToAccessControl:(id)control;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (void)_createItemProviders;
-- (void)setViewingProfilesDevices:(id)a3;
+- (void)setViewingProfilesDevices:(id)devices;
 - (void)turnOnTVViewingProfilesForAllDevices;
 @end
 
 @implementation HUTVViewingProfilesDevicesItemModule
 
-- (HUTVViewingProfilesDevicesItemModule)initWithItemUpdater:(id)a3 userItem:(id)a4
+- (HUTVViewingProfilesDevicesItemModule)initWithItemUpdater:(id)updater userItem:(id)item
 {
-  v7 = a4;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = HUTVViewingProfilesDevicesItemModule;
-  v8 = [(HFItemModule *)&v14 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v14 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sourceItem, a4);
-    v10 = [(HUTVViewingProfilesDevicesItemModule *)v9 sourceItem];
-    v11 = [v10 home];
+    objc_storeStrong(&v8->_sourceItem, item);
+    sourceItem = [(HUTVViewingProfilesDevicesItemModule *)v9 sourceItem];
+    home = [sourceItem home];
     home = v9->_home;
-    v9->_home = v11;
+    v9->_home = home;
 
     [(HUTVViewingProfilesDevicesItemModule *)v9 _createItemProviders];
   }
@@ -33,22 +33,22 @@
   return v9;
 }
 
-- (BOOL)isTVViewingProfileDevice:(id)a3
+- (BOOL)isTVViewingProfileDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  deviceCopy = device;
+  viewingProfileItemProvider = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
+  items = [viewingProfileItemProvider items];
+  v7 = [items containsObject:deviceCopy];
 
   return v7;
 }
 
 - (HMMediaContentProfileAccessControl)accessControl
 {
-  v3 = [(HUTVViewingProfilesDevicesItemModule *)self sourceItem];
-  v4 = [v3 user];
-  v5 = [(HUTVViewingProfilesDevicesItemModule *)self home];
-  v6 = [v4 mediaContentProfileAccessControlForHome:v5];
+  sourceItem = [(HUTVViewingProfilesDevicesItemModule *)self sourceItem];
+  user = [sourceItem user];
+  home = [(HUTVViewingProfilesDevicesItemModule *)self home];
+  v6 = [user mediaContentProfileAccessControlForHome:home];
 
   return v6;
 }
@@ -64,8 +64,8 @@
   {
     objc_initWeak(&location, self);
     v3 = objc_alloc(MEMORY[0x277D147F0]);
-    v4 = [(HUTVViewingProfilesDevicesItemModule *)self home];
-    v5 = [v3 initWithHome:v4];
+    home = [(HUTVViewingProfilesDevicesItemModule *)self home];
+    v5 = [v3 initWithHome:home];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -83,8 +83,8 @@
     [(HUTVViewingProfilesDevicesItemModule *)self setViewingProfileItemProvider:v7];
 
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
-    v10 = [v8 setWithObject:v9];
+    viewingProfileItemProvider = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
+    v10 = [v8 setWithObject:viewingProfileItemProvider];
     itemProviders = self->_itemProviders;
     self->_itemProviders = v10;
 
@@ -236,28 +236,28 @@ uint64_t __60__HUTVViewingProfilesDevicesItemModule__createItemProviders__block_
   return v5;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
-    v7 = [v6 items];
-    v8 = [v7 count];
+    viewingProfileItemProvider = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
+    items = [viewingProfileItemProvider items];
+    v8 = [items count];
 
     if (!v8)
     {
       NSLog(&cfstr_Buildsectionsw.isa);
     }
 
-    v9 = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
-    v10 = [v9 items];
-    v11 = [v10 allObjects];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_66];
+    viewingProfileItemProvider2 = [(HUTVViewingProfilesDevicesItemModule *)self viewingProfileItemProvider];
+    items2 = [viewingProfileItemProvider2 items];
+    allObjects = [items2 allObjects];
+    v12 = [allObjects sortedArrayUsingComparator:&__block_literal_global_66];
 
     v13 = [MEMORY[0x277CBEB98] setWithArray:v12];
-    v14 = [v4 na_setByIntersectingWithSet:v13];
+    v14 = [itemsCopy na_setByIntersectingWithSet:v13];
 
     v15 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"TV_VIEWING_PROFILES_DEVICES"];
     v16 = _HULocalizedStringWithDefaultValue(@"HUUsersTVViewingProfilesDevicesSectionTitle", @"HUUsersTVViewingProfilesDevicesSectionTitle", 1);
@@ -266,9 +266,9 @@ uint64_t __60__HUTVViewingProfilesDevicesItemModule__createItemProviders__block_
     v17 = HULocalizedModelString(@"HUUsersTVViewingProfilesDevicesFooterTitle");
     [v15 setFooterTitle:v17];
 
-    v18 = [v14 allObjects];
+    allObjects2 = [v14 allObjects];
     v19 = [MEMORY[0x277D14CE8] comparatorWithSortedObjects:v12];
-    v20 = [v18 sortedArrayUsingComparator:v19];
+    v20 = [allObjects2 sortedArrayUsingComparator:v19];
     [v15 setItems:v20];
 
     [v5 addObject:v15];
@@ -298,21 +298,21 @@ uint64_t __72__HUTVViewingProfilesDevicesItemModule_buildSectionsWithDisplayedIt
 
 - (NSArray)viewingProfilesDevices
 {
-  v2 = [(HUTVViewingProfilesDevicesItemModule *)self accessControl];
-  v3 = [v2 accessories];
+  accessControl = [(HUTVViewingProfilesDevicesItemModule *)self accessControl];
+  accessories = [accessControl accessories];
 
-  return v3;
+  return accessories;
 }
 
-- (void)setViewingProfilesDevices:(id)a3
+- (void)setViewingProfilesDevices:(id)devices
 {
-  v5 = a3;
-  v6 = [(HUTVViewingProfilesDevicesItemModule *)self accessControl];
-  v7 = [v6 mutableCopy];
+  devicesCopy = devices;
+  accessControl = [(HUTVViewingProfilesDevicesItemModule *)self accessControl];
+  v7 = [accessControl mutableCopy];
 
   if (v7)
   {
-    [v7 setAccessories:v5];
+    [v7 setAccessories:devicesCopy];
     v8 = [(HUTVViewingProfilesDevicesItemModule *)self _commitUpdateToAccessControl:v7];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -347,32 +347,32 @@ void __66__HUTVViewingProfilesDevicesItemModule_setViewingProfilesDevices___bloc
 
 - (void)turnOnTVViewingProfilesForAllDevices
 {
-  v4 = [(HUTVViewingProfilesDevicesItemModule *)self home];
-  v3 = [v4 hf_tvViewingProfilesAccessories];
-  [(HUTVViewingProfilesDevicesItemModule *)self setViewingProfilesDevices:v3];
+  home = [(HUTVViewingProfilesDevicesItemModule *)self home];
+  hf_tvViewingProfilesAccessories = [home hf_tvViewingProfilesAccessories];
+  [(HUTVViewingProfilesDevicesItemModule *)self setViewingProfilesDevices:hf_tvViewingProfilesAccessories];
 }
 
-- (id)_commitUpdateToAccessControl:(id)a3
+- (id)_commitUpdateToAccessControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v5 = MEMORY[0x277D2C900];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__HUTVViewingProfilesDevicesItemModule__commitUpdateToAccessControl___block_invoke;
   v18[3] = &unk_277DBB448;
-  v6 = v4;
+  v6 = controlCopy;
   v19 = v6;
-  v20 = self;
+  selfCopy = self;
   v7 = [v5 futureWithErrorOnlyHandlerAdapterBlock:v18];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __69__HUTVViewingProfilesDevicesItemModule__commitUpdateToAccessControl___block_invoke_33;
   v15 = &unk_277DB7E68;
-  v16 = self;
+  selfCopy2 = self;
   v17 = v6;
   v8 = v6;
   v9 = [v7 addSuccessBlock:&v12];
-  v10 = [v7 addFailureBlock:{&__block_literal_global_41_1, v12, v13, v14, v15, v16}];
+  v10 = [v7 addFailureBlock:{&__block_literal_global_41_1, v12, v13, v14, v15, selfCopy2}];
 
   return v7;
 }

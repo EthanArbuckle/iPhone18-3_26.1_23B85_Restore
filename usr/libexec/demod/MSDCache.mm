@@ -1,14 +1,14 @@
 @interface MSDCache
 + (id)sharedInstance;
-- (BOOL)checkIfFileIsInContainer:(id)a3 container:(id)a4;
-- (BOOL)containerExist:(id)a3;
-- (BOOL)createContainer:(id)a3;
-- (BOOL)deleteContainer:(id)a3;
-- (BOOL)deleteDataBlob:(id)a3;
-- (BOOL)moveFile:(id)a3 toLocation:(id)a4 fromContainer:(id)a5 error:(id)a6;
-- (BOOL)storeDataBlob:(id)a3 withContainerIdentifier:(id)a4;
+- (BOOL)checkIfFileIsInContainer:(id)container container:(id)a4;
+- (BOOL)containerExist:(id)exist;
+- (BOOL)createContainer:(id)container;
+- (BOOL)deleteContainer:(id)container;
+- (BOOL)deleteDataBlob:(id)blob;
+- (BOOL)moveFile:(id)file toLocation:(id)location fromContainer:(id)container error:(id)error;
+- (BOOL)storeDataBlob:(id)blob withContainerIdentifier:(id)identifier;
 - (MSDCache)init;
-- (id)retrieveDataBlob:(id)a3;
+- (id)retrieveDataBlob:(id)blob;
 @end
 
 @implementation MSDCache
@@ -44,13 +44,13 @@
   return v2;
 }
 
-- (BOOL)createContainer:(id)a3
+- (BOOL)createContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDCache *)v5 fileManager];
-  v7 = [v6 fileExistsAtPath:@"/private/var/mnt/com.apple.mobilestoredemo.storage"];
+  containerCopy = container;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v7 = [fileManager fileExistsAtPath:@"/private/var/mnt/com.apple.mobilestoredemo.storage"];
 
   if ((v7 & 1) == 0)
   {
@@ -58,17 +58,17 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v4;
+      v17 = containerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "creating container:%{public}@", &v16, 0xCu);
     }
 
-    v9 = [(MSDCache *)v5 device];
-    [v9 manageDemoVolume:@"Setup"];
+    device = [(MSDCache *)selfCopy device];
+    [device manageDemoVolume:@"Setup"];
   }
 
-  v10 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v4];
-  v11 = [(MSDCache *)v5 fileManager];
-  v12 = [v11 fileExistsAtPath:v10];
+  v10 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:containerCopy];
+  fileManager2 = [(MSDCache *)selfCopy fileManager];
+  v12 = [fileManager2 fileExistsAtPath:v10];
 
   if (v12)
   {
@@ -81,31 +81,31 @@
     v13 = [v14 prepareWorkDirectory:v10 writableByNonRoot:1];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v13;
 }
 
-- (BOOL)containerExist:(id)a3
+- (BOOL)containerExist:(id)exist
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSDCache *)v5 fileManager];
-  v7 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v4];
-  v8 = [v6 fileExistsAtPath:v7];
+  existCopy = exist;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v7 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:existCopy];
+  v8 = [fileManager fileExistsAtPath:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (BOOL)deleteContainer:(id)a3
+- (BOOL)deleteContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v4];
-  v7 = [(MSDCache *)v5 fileManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  containerCopy = container;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:containerCopy];
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v8 = [fileManager fileExistsAtPath:v6];
 
   if (v8)
   {
@@ -120,71 +120,71 @@
     v10 = [v9 removeWorkDirectory:v6];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
-- (BOOL)checkIfFileIsInContainer:(id)a3 container:(id)a4
+- (BOOL)checkIfFileIsInContainer:(id)container container:(id)a4
 {
-  v6 = a3;
+  containerCopy = container;
   v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v7];
-  v10 = [v9 stringByAppendingPathComponent:v6];
-  v11 = [(MSDCache *)v8 fileManager];
-  v12 = [v11 fileExistsAtPath:v10];
+  v10 = [v9 stringByAppendingPathComponent:containerCopy];
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v12 = [fileManager fileExistsAtPath:v10];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   return v12;
 }
 
-- (BOOL)moveFile:(id)a3 toLocation:(id)a4 fromContainer:(id)a5 error:(id)a6
+- (BOOL)moveFile:(id)file toLocation:(id)location fromContainer:(id)container error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v12];
-  v16 = [v15 stringByAppendingPathComponent:v10];
-  v17 = [(MSDCache *)v14 fileManager];
-  v21 = v13;
-  v18 = [v17 moveItemAtPath:v16 toPath:v11 error:&v21];
+  fileCopy = file;
+  locationCopy = location;
+  containerCopy = container;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v15 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:containerCopy];
+  v16 = [v15 stringByAppendingPathComponent:fileCopy];
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v21 = errorCopy;
+  v18 = [fileManager moveItemAtPath:v16 toPath:locationCopy error:&v21];
   v19 = v21;
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
   return v18;
 }
 
-- (BOOL)storeDataBlob:(id)a3 withContainerIdentifier:(id)a4
+- (BOOL)storeDataBlob:(id)blob withContainerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v7];
-  v10 = [(MSDCache *)v8 fileManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  blobCopy = blob;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:identifierCopy];
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v11 = [fileManager fileExistsAtPath:v9];
 
-  if ((v11 & 1) == 0 && ![(MSDCache *)v8 createContainer:v7])
+  if ((v11 & 1) == 0 && ![(MSDCache *)selfCopy createContainer:identifierCopy])
   {
     v15 = sub_100063B64();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CDB94(v7, v15);
+      sub_1000CDB94(identifierCopy, v15);
     }
 
     goto LABEL_10;
   }
 
-  if ([v6 length] >= 0x400000)
+  if ([blobCopy length] >= 0x400000)
   {
     v15 = sub_100063B64();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CDC0C(v16, [v6 length], v15);
+      sub_1000CDC0C(v16, [blobCopy length], v15);
     }
 
 LABEL_10:
@@ -195,27 +195,27 @@ LABEL_10:
   }
 
   v12 = [v9 stringByAppendingPathComponent:@"PersistentDataBlob"];
-  v13 = [v6 writeToFile:v12 atomically:1];
+  v13 = [blobCopy writeToFile:v12 atomically:1];
 LABEL_5:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   return v13;
 }
 
-- (id)retrieveDataBlob:(id)a3
+- (id)retrieveDataBlob:(id)blob
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v4];
-  v7 = [(MSDCache *)v5 fileManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  blobCopy = blob;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:blobCopy];
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v8 = [fileManager fileExistsAtPath:v6];
 
   if (v8)
   {
     v9 = [v6 stringByAppendingPathComponent:@"PersistentDataBlob"];
-    v10 = [(MSDCache *)v5 fileManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    fileManager2 = [(MSDCache *)selfCopy fileManager];
+    v11 = [fileManager2 fileExistsAtPath:v9];
 
     if (v11)
     {
@@ -242,25 +242,25 @@ LABEL_5:
   v12 = 0;
 LABEL_8:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (BOOL)deleteDataBlob:(id)a3
+- (BOOL)deleteDataBlob:(id)blob
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:v4];
-  v7 = [(MSDCache *)v5 fileManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  blobCopy = blob;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage" stringByAppendingPathComponent:blobCopy];
+  fileManager = [(MSDCache *)selfCopy fileManager];
+  v8 = [fileManager fileExistsAtPath:v6];
 
   if (v8)
   {
-    v9 = [(MSDCache *)v5 fileManager];
+    fileManager2 = [(MSDCache *)selfCopy fileManager];
     v13 = 0;
-    v10 = [v9 removeItemAtPath:v6 error:&v13];
+    v10 = [fileManager2 removeItemAtPath:v6 error:&v13];
     v11 = v13;
   }
 
@@ -275,7 +275,7 @@ LABEL_8:
     v10 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 

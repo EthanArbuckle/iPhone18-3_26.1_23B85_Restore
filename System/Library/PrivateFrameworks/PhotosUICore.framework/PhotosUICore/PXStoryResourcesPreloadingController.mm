@@ -1,8 +1,8 @@
 @interface PXStoryResourcesPreloadingController
 - (NSString)diagnosticDescription;
 - (PXStoryModel)model;
-- (PXStoryResourcesPreloadingController)initWithModel:(id)a3 mediaProvider:(id)a4;
-- (PXStoryResourcesPreloadingController)initWithObservableModel:(id)a3;
+- (PXStoryResourcesPreloadingController)initWithModel:(id)model mediaProvider:(id)provider;
+- (PXStoryResourcesPreloadingController)initWithObservableModel:(id)model;
 - (void)_invalidateCanStartPreloading;
 - (void)_invalidateCurrentPlaybackTimeOnPreloader;
 - (void)_invalidateCurrentSegmentIdentifierOnPreloader;
@@ -13,17 +13,17 @@
 - (void)_updateCurrentSegmentIdentifierOnPreloader;
 - (void)_updatePreloadingRequest;
 - (void)_updateReadinessStatus;
-- (void)configureUpdater:(id)a3;
+- (void)configureUpdater:(id)updater;
 - (void)dealloc;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setCanStartPreloading:(BOOL)a3;
-- (void)setError:(id)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setIsCompleted:(BOOL)a3;
-- (void)setIsPreloadingEnabled:(BOOL)a3;
-- (void)setIsSongResourcesPreloadingEnabled:(BOOL)a3;
-- (void)setShouldSkipInitialSegment:(BOOL)a3;
+- (void)handleModelChange:(unint64_t)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setCanStartPreloading:(BOOL)preloading;
+- (void)setError:(id)error;
+- (void)setIsActive:(BOOL)active;
+- (void)setIsCompleted:(BOOL)completed;
+- (void)setIsPreloadingEnabled:(BOOL)enabled;
+- (void)setIsSongResourcesPreloadingEnabled:(BOOL)enabled;
+- (void)setShouldSkipInitialSegment:(BOOL)segment;
 @end
 
 @implementation PXStoryResourcesPreloadingController
@@ -35,16 +35,16 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PreloaderObservationContext == a5)
+  if (PreloaderObservationContext == context)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __69__PXStoryResourcesPreloadingController_observable_didChange_context___block_invoke;
     v6[3] = &unk_1E774C428;
     v6[4] = self;
-    v6[5] = a4;
+    v6[5] = change;
     [(PXStoryController *)self performChanges:v6];
   }
 
@@ -52,7 +52,7 @@
   {
     v5.receiver = self;
     v5.super_class = PXStoryResourcesPreloadingController;
-    [(PXStoryController *)&v5 observable:a3 didChange:a4 context:?];
+    [(PXStoryController *)&v5 observable:observable didChange:change context:?];
   }
 }
 
@@ -66,7 +66,7 @@ uint64_t __69__PXStoryResourcesPreloadingController_observable_didChange_context
   return result;
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
   v6.receiver = self;
   v6.super_class = PXStoryResourcesPreloadingController;
@@ -76,7 +76,7 @@ uint64_t __69__PXStoryResourcesPreloadingController_observable_didChange_context
   v5[2] = __58__PXStoryResourcesPreloadingController_handleModelChange___block_invoke;
   v5[3] = &unk_1E774C428;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = change;
   [(PXStoryController *)self performChanges:v5];
 }
 
@@ -120,18 +120,18 @@ void __58__PXStoryResourcesPreloadingController_handleModelChange___block_invoke
   v46 = *MEMORY[0x1E69E9840];
   [(PXStoryResourcesPreloader *)self->_preloader loadingFractionComplete];
   v4 = v3;
-  v5 = [(PXStoryResourcesPreloadingController *)self model];
-  v6 = [v5 options] & 1;
+  model = [(PXStoryResourcesPreloadingController *)self model];
+  v6 = [model options] & 1;
 
   v7 = v4 >= 1.0;
   if (v4 < 1.0)
   {
-    v8 = 1;
+    canStartPreloading = 1;
   }
 
   else
   {
-    v8 = 3;
+    canStartPreloading = 3;
   }
 
   if (v4 < 1.0 && v6 == 0)
@@ -139,27 +139,27 @@ void __58__PXStoryResourcesPreloadingController_handleModelChange___block_invoke
     if (-[PXStoryResourcesPreloader isLoadingLikelyToKeepUpWithPlayback](self->_preloader, "isLoadingLikelyToKeepUpWithPlayback") && (-[PXStoryResourcesPreloader currentRequest](self->_preloader, "currentRequest"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 timelineAttributes], v10, (v11 & 2) != 0))
     {
       v7 = 0;
-      v8 = 3;
+      canStartPreloading = 3;
     }
 
     else
     {
       v7 = 0;
-      v8 = [(PXStoryResourcesPreloadingController *)self canStartPreloading];
+      canStartPreloading = [(PXStoryResourcesPreloadingController *)self canStartPreloading];
     }
   }
 
-  v12 = [(PXStoryResourcesPreloadingController *)self model];
-  v13 = [v12 desiredPlayState];
+  model2 = [(PXStoryResourcesPreloadingController *)self model];
+  desiredPlayState = [model2 desiredPlayState];
 
-  if (v13 == 1)
+  if (desiredPlayState == 1)
   {
-    v14 = [(PXStoryResourcesPreloadingController *)self model];
-    v15 = [v14 contentReadinessStatus];
+    model3 = [(PXStoryResourcesPreloadingController *)self model];
+    contentReadinessStatus = [model3 contentReadinessStatus];
 
-    if (v15 != v8)
+    if (contentReadinessStatus != canStartPreloading)
     {
-      if (v8 == 1)
+      if (canStartPreloading == 1)
       {
         [(PXStoryResourcesPreloadingController *)self setBufferingEvents:[(PXStoryResourcesPreloadingController *)self bufferingEvents]+ 1];
         v16 = [(PXStoryResourcesPreloadingController *)self log];
@@ -170,7 +170,7 @@ void __58__PXStoryResourcesPreloadingController_handleModelChange___block_invoke
           if (os_signpost_enabled(v16))
           {
             *buf = 134217984;
-            v41 = [(PXStoryResourcesPreloadingController *)self logContext];
+            logContext = [(PXStoryResourcesPreloadingController *)self logContext];
             _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PXStoryResourcesPreloadingController.Buffering", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
           }
         }
@@ -180,7 +180,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      if (v8 == 3 && v15 == 1)
+      if (canStartPreloading == 3 && contentReadinessStatus == 1)
       {
         v16 = [(PXStoryResourcesPreloadingController *)self log];
         v20 = os_signpost_id_make_with_pointer(v16, self);
@@ -189,14 +189,14 @@ LABEL_27:
           v21 = v20;
           if (os_signpost_enabled(v16))
           {
-            v22 = [(PXStoryResourcesPreloadingController *)self logContext];
+            logContext2 = [(PXStoryResourcesPreloadingController *)self logContext];
             v23 = +[PXNetworkStatusMonitor sharedInstance];
             *buf = 134218496;
-            v41 = v22;
+            logContext = logContext2;
             v42 = 2050;
-            v43 = [v23 bestAvailableNetworkType];
+            bestAvailableNetworkType = [v23 bestAvailableNetworkType];
             v44 = 2050;
-            v45 = [(PXStoryResourcesPreloadingController *)self bufferingEvents];
+            bufferingEvents = [(PXStoryResourcesPreloadingController *)self bufferingEvents];
             _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_END, v21, "PXStoryResourcesPreloadingController.Buffering", "Context=%{signpost.telemetry:string2}lu  enableTelemetry=YES networkType=%{signpost.telemetry:number1,public}lu bufferingEvents=%{signpost.telemetry:number2,public}lu", buf, 0x20u);
           }
         }
@@ -207,46 +207,46 @@ LABEL_27:
   }
 
 LABEL_28:
-  v24 = [(PXStoryResourcesPreloadingController *)self model];
+  model4 = [(PXStoryResourcesPreloadingController *)self model];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __62__PXStoryResourcesPreloadingController__updateReadinessStatus__block_invoke;
   v39[3] = &__block_descriptor_40_e31_v16__0___PXStoryMutableModel__8l;
-  v39[4] = v8;
-  [v24 performChanges:v39];
+  v39[4] = canStartPreloading;
+  [model4 performChanges:v39];
 
-  v25 = [(PXStoryResourcesPreloader *)self->_preloader error];
+  error = [(PXStoryResourcesPreloader *)self->_preloader error];
   v31 = MEMORY[0x1E69E9820];
   v32 = 3221225472;
   v33 = __62__PXStoryResourcesPreloadingController__updateReadinessStatus__block_invoke_2;
   v34 = &unk_1E774C3F8;
-  v35 = self;
+  selfCopy = self;
   v38 = v7;
-  v26 = v25;
+  v26 = error;
   v36 = v26;
   v37 = v4;
   [(PXStoryController *)self performChanges:&v31];
-  v27 = [v26 domain];
-  if (![v27 isEqualToString:@"PXStoryErrorDomain"])
+  domain = [v26 domain];
+  if (![domain isEqualToString:@"PXStoryErrorDomain"])
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v28 = [v26 code];
+  code = [v26 code];
 
-  if (v28 == 22)
+  if (code == 22)
   {
-    v27 = [(PXStoryResourcesPreloadingController *)self model];
-    [v27 reportNetworkRelatedPlaybackFailure];
+    domain = [(PXStoryResourcesPreloadingController *)self model];
+    [domain reportNetworkRelatedPlaybackFailure];
     goto LABEL_31;
   }
 
 LABEL_32:
-  v29 = [(PXStoryResourcesPreloadingController *)self model];
-  v30 = [v29 errorReporter];
-  [v30 setError:v26 forComponent:@"Assets preloading"];
+  model5 = [(PXStoryResourcesPreloadingController *)self model];
+  errorReporter = [model5 errorReporter];
+  [errorReporter setError:v26 forComponent:@"Assets preloading"];
 }
 
 uint64_t __62__PXStoryResourcesPreloadingController__updateReadinessStatus__block_invoke_2(uint64_t a1)
@@ -261,8 +261,8 @@ uint64_t __62__PXStoryResourcesPreloadingController__updateReadinessStatus__bloc
 
 - (void)_invalidateReadinessStatus
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateReadinessStatus];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateReadinessStatus];
 }
 
 - (void)_updateCurrentSegmentIdentifierOnPreloader
@@ -286,8 +286,8 @@ void __82__PXStoryResourcesPreloadingController__updateCurrentSegmentIdentifierO
 
 - (void)_invalidateCurrentSegmentIdentifierOnPreloader
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentSegmentIdentifierOnPreloader];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentSegmentIdentifierOnPreloader];
 }
 
 - (void)_updateCurrentPlaybackTimeOnPreloader
@@ -324,39 +324,39 @@ void __77__PXStoryResourcesPreloadingController__updateCurrentPlaybackTimeOnPrel
 
 - (void)_invalidateCurrentPlaybackTimeOnPreloader
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentPlaybackTimeOnPreloader];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentPlaybackTimeOnPreloader];
 }
 
 - (void)_updatePreloadingRequest
 {
   if ([(PXStoryResourcesPreloadingController *)self canStartPreloading])
   {
-    v3 = [(PXStoryResourcesPreloadingController *)self model];
-    v4 = [v3 timeline];
-    v5 = [(PXStoryResourcesPreloadingController *)self model];
-    v6 = [v5 options];
+    model = [(PXStoryResourcesPreloadingController *)self model];
+    timeline = [model timeline];
+    model2 = [(PXStoryResourcesPreloadingController *)self model];
+    options = [model2 options];
 
-    if (v6)
+    if (options)
     {
       v10 = [PXStoryResourcesPreloadingRequest alloc];
-      v11 = [v3 timelineAttributes];
-      v12 = [v4 firstSegmentIdentifier];
+      timelineAttributes = [model timelineAttributes];
+      firstSegmentIdentifier = [timeline firstSegmentIdentifier];
       v13 = v10;
-      v14 = v4;
-      v15 = v11;
-      v16 = 0;
+      v14 = timeline;
+      v15 = timelineAttributes;
+      shouldSkipInitialSegment = 0;
       goto LABEL_12;
     }
 
-    v7 = [(PXStoryResourcesPreloader *)self->_preloader currentRequest];
-    v8 = [v7 timeline];
-    v9 = v8;
-    if (v8 == v4)
+    currentRequest = [(PXStoryResourcesPreloader *)self->_preloader currentRequest];
+    timeline2 = [currentRequest timeline];
+    v9 = timeline2;
+    if (timeline2 == timeline)
     {
-      v17 = [v3 lastPlaybackTimeChangeSource];
+      lastPlaybackTimeChangeSource = [model lastPlaybackTimeChangeSource];
 
-      if (v17 != 2)
+      if (lastPlaybackTimeChangeSource != 2)
       {
         goto LABEL_16;
       }
@@ -366,34 +366,34 @@ void __77__PXStoryResourcesPreloadingController__updateCurrentPlaybackTimeOnPrel
     {
     }
 
-    if ([v4 numberOfSegments] >= 1)
+    if ([timeline numberOfSegments] >= 1)
     {
-      if ([v3 currentSegmentIdentifier])
+      if ([model currentSegmentIdentifier])
       {
-        v18 = [v3 currentSegmentIdentifier];
+        currentSegmentIdentifier = [model currentSegmentIdentifier];
       }
 
       else
       {
-        v18 = [v4 firstSegmentIdentifier];
+        currentSegmentIdentifier = [timeline firstSegmentIdentifier];
       }
 
-      v19 = v18;
+      v19 = currentSegmentIdentifier;
       v20 = [PXStoryResourcesPreloadingRequest alloc];
-      v21 = [v3 timelineAttributes];
-      v16 = [(PXStoryResourcesPreloadingController *)self shouldSkipInitialSegment];
+      timelineAttributes2 = [model timelineAttributes];
+      shouldSkipInitialSegment = [(PXStoryResourcesPreloadingController *)self shouldSkipInitialSegment];
       v13 = v20;
-      v14 = v4;
-      v15 = v21;
-      v12 = v19;
+      v14 = timeline;
+      v15 = timelineAttributes2;
+      firstSegmentIdentifier = v19;
 LABEL_12:
-      v22 = [(PXStoryResourcesPreloadingRequest *)v13 initWithTimeline:v14 timelineAttributes:v15 startingSegmentIdentifier:v12 shouldIgnoreStartingSegmentIdentifier:v16];
+      v22 = [(PXStoryResourcesPreloadingRequest *)v13 initWithTimeline:v14 timelineAttributes:v15 startingSegmentIdentifier:firstSegmentIdentifier shouldIgnoreStartingSegmentIdentifier:shouldSkipInitialSegment];
       if (v22)
       {
         if ([(PXStoryResourcesPreloadingController *)self isSongResourcesPreloadingEnabled])
         {
-          v23 = [v3 currentSongResource];
-          [(PXStoryResourcesPreloadingRequest *)v22 setSongResource:v23];
+          currentSongResource = [model currentSongResource];
+          [(PXStoryResourcesPreloadingRequest *)v22 setSongResource:currentSongResource];
         }
 
         preloader = self->_preloader;
@@ -413,50 +413,50 @@ LABEL_16:
 
 - (void)_invalidatePreloadingRequest
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePreloadingRequest];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePreloadingRequest];
 }
 
 - (void)_updateCanStartPreloading
 {
   if ([(PXStoryResourcesPreloadingController *)self isActive])
   {
-    v3 = [(PXStoryResourcesPreloadingController *)self isPreloadingEnabled];
+    isPreloadingEnabled = [(PXStoryResourcesPreloadingController *)self isPreloadingEnabled];
   }
 
   else
   {
-    v3 = 0;
+    isPreloadingEnabled = 0;
   }
 
-  v4 = [(PXStoryResourcesPreloadingController *)self model];
-  v5 = [v4 options];
+  model = [(PXStoryResourcesPreloadingController *)self model];
+  options = [model options];
 
-  if (v3)
+  if (isPreloadingEnabled)
   {
-    v6 = [(PXStoryResourcesPreloadingController *)self model];
-    v7 = [v6 timelineAttributes];
+    model2 = [(PXStoryResourcesPreloadingController *)self model];
+    timelineAttributes = [model2 timelineAttributes];
     v8 = -3;
-    if ((v5 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v8 = -2;
     }
 
-    v3 = (v7 | v8) == -1;
+    isPreloadingEnabled = (timelineAttributes | v8) == -1;
   }
 
-  [(PXStoryResourcesPreloadingController *)self setCanStartPreloading:v3];
+  [(PXStoryResourcesPreloadingController *)self setCanStartPreloading:isPreloadingEnabled];
 }
 
 - (void)_invalidateCanStartPreloading
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCanStartPreloading];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCanStartPreloading];
 }
 
-- (void)setIsPreloadingEnabled:(BOOL)a3
+- (void)setIsPreloadingEnabled:(BOOL)enabled
 {
-  if (self->_isPreloadingEnabled != a3)
+  if (self->_isPreloadingEnabled != enabled)
   {
     v7 = v3;
     v8 = v4;
@@ -465,70 +465,70 @@ LABEL_16:
     v5[2] = __63__PXStoryResourcesPreloadingController_setIsPreloadingEnabled___block_invoke;
     v5[3] = &unk_1E774C388;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [(PXStoryController *)self performChanges:v5];
   }
 }
 
-- (void)setIsCompleted:(BOOL)a3
+- (void)setIsCompleted:(BOOL)completed
 {
-  if (self->_isCompleted != a3)
+  if (self->_isCompleted != completed)
   {
-    self->_isCompleted = a3;
+    self->_isCompleted = completed;
     [(PXStoryResourcesPreloadingController *)self signalChange:1];
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_error != v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->_error != errorCopy)
   {
-    v8 = v5;
-    v7 = [(NSError *)v5 isEqual:?];
+    v8 = errorCopy;
+    v7 = [(NSError *)errorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_error, a3);
+      objc_storeStrong(&self->_error, error);
       [(PXStoryResourcesPreloadingController *)self signalChange:4];
       v6 = v8;
     }
   }
 }
 
-- (void)setCanStartPreloading:(BOOL)a3
+- (void)setCanStartPreloading:(BOOL)preloading
 {
-  if (self->_canStartPreloading != a3)
+  if (self->_canStartPreloading != preloading)
   {
-    self->_canStartPreloading = a3;
+    self->_canStartPreloading = preloading;
     [(PXStoryResourcesPreloadingController *)self _invalidatePreloadingRequest];
   }
 }
 
-- (void)setShouldSkipInitialSegment:(BOOL)a3
+- (void)setShouldSkipInitialSegment:(BOOL)segment
 {
-  if (self->_shouldSkipInitialSegment != a3)
+  if (self->_shouldSkipInitialSegment != segment)
   {
-    self->_shouldSkipInitialSegment = a3;
+    self->_shouldSkipInitialSegment = segment;
     [(PXStoryResourcesPreloadingController *)self _invalidatePreloadingRequest];
   }
 }
 
-- (void)setIsSongResourcesPreloadingEnabled:(BOOL)a3
+- (void)setIsSongResourcesPreloadingEnabled:(BOOL)enabled
 {
-  if (self->_isSongResourcesPreloadingEnabled != a3)
+  if (self->_isSongResourcesPreloadingEnabled != enabled)
   {
-    self->_isSongResourcesPreloadingEnabled = a3;
+    self->_isSongResourcesPreloadingEnabled = enabled;
     [(PXStoryResourcesPreloadingController *)self _invalidateCanStartPreloading];
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryResourcesPreloadingController *)self _invalidateCanStartPreloading];
 
     [(PXStoryResourcesPreloadingController *)self _invalidateReadinessStatus];
@@ -538,18 +538,18 @@ LABEL_16:
 - (NSString)diagnosticDescription
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryResourcesPreloadingController *)self model];
-  v4 = v3;
-  if (v3)
+  model = [(PXStoryResourcesPreloadingController *)self model];
+  v4 = model;
+  if (model)
   {
-    v5 = [v3 currentAssetCollection];
+    currentAssetCollection = [model currentAssetCollection];
     memset(v39, 0, sizeof(v39));
     v38 = 0u;
-    v6 = [v4 timeline];
-    v7 = v6;
-    if (v6)
+    timeline = [v4 timeline];
+    v7 = timeline;
+    if (timeline)
     {
-      [v6 timeRange];
+      [timeline timeRange];
     }
 
     else
@@ -599,17 +599,17 @@ LABEL_16:
 
     v12 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v13 = +[PXStorySettings sharedInstance];
-    v14 = [v13 simulateSlowResourcesBuffering];
+    simulateSlowResourcesBuffering = [v13 simulateSlowResourcesBuffering];
 
-    if (v14)
+    if (simulateSlowResourcesBuffering)
     {
       [v12 appendString:@"Simulating slow assets buffering!!!\n"];
     }
 
     [v12 appendFormat:@"State: %@\n", v11];
-    v15 = PXStoryDisplayAssetCollectionShortTitle(v5);
-    v16 = [v5 uuid];
-    [v12 appendFormat:@"Asset Collection: “%@”, UUID: %@\n", v15, v16];
+    v15 = PXStoryDisplayAssetCollectionShortTitle(currentAssetCollection);
+    uuid = [currentAssetCollection uuid];
+    [v12 appendFormat:@"Asset Collection: “%@”, UUID: %@\n", v15, uuid];
 
     [v12 appendString:@"["];
     for (i = 0; i != 30; ++i)
@@ -620,8 +620,8 @@ LABEL_16:
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v18 = [(PXStoryResourcesPreloader *)self->_preloader loadedTimeRanges];
-      v19 = [v18 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      loadedTimeRanges = [(PXStoryResourcesPreloader *)self->_preloader loadedTimeRanges];
+      v19 = [loadedTimeRanges countByEnumeratingWithState:&v33 objects:v42 count:16];
       if (v19)
       {
         v20 = v19;
@@ -632,7 +632,7 @@ LABEL_16:
           {
             if (*v34 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(loadedTimeRanges);
             }
 
             v23 = *(*(&v33 + 1) + 8 * j);
@@ -655,7 +655,7 @@ LABEL_16:
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v33 objects:v42 count:16];
+          v20 = [loadedTimeRanges countByEnumeratingWithState:&v33 objects:v42 count:16];
           if (v20)
           {
             continue;
@@ -679,8 +679,8 @@ LABEL_26:
     v27 = [&stru_1F1741150 stringByPaddingToLength:(v26 * 30.0) withString:@" " startingAtIndex:0];
     [v12 appendFormat:@" %@^\n", v27];
 
-    v28 = [(PXStoryResourcesPreloader *)self->_preloader diagnosticDescription];
-    [v12 appendFormat:@"%@\n", v28];
+    diagnosticDescription = [(PXStoryResourcesPreloader *)self->_preloader diagnosticDescription];
+    [v12 appendFormat:@"%@\n", diagnosticDescription];
 
     v8 = [v12 copy];
   }
@@ -693,59 +693,59 @@ LABEL_26:
   return v8;
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryResourcesPreloadingController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateCurrentPlaybackTimeOnPreloader, v4.receiver, v4.super_class}];
-  [v3 addUpdateSelector:sel__updateCurrentSegmentIdentifierOnPreloader];
-  [v3 addUpdateSelector:sel__updateCanStartPreloading];
-  [v3 addUpdateSelector:sel__updatePreloadingRequest];
-  [v3 addUpdateSelector:sel__updateReadinessStatus];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateCurrentPlaybackTimeOnPreloader, v4.receiver, v4.super_class}];
+  [updaterCopy addUpdateSelector:sel__updateCurrentSegmentIdentifierOnPreloader];
+  [updaterCopy addUpdateSelector:sel__updateCanStartPreloading];
+  [updaterCopy addUpdateSelector:sel__updatePreloadingRequest];
+  [updaterCopy addUpdateSelector:sel__updateReadinessStatus];
 }
 
 - (void)dealloc
 {
   v3 = self->_preloader;
-  v4 = [(PXStoryController *)self storyQueue];
+  storyQueue = [(PXStoryController *)self storyQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PXStoryResourcesPreloadingController_dealloc__block_invoke;
   block[3] = &unk_1E774C648;
   v8 = v3;
   v5 = v3;
-  dispatch_async(v4, block);
+  dispatch_async(storyQueue, block);
 
   v6.receiver = self;
   v6.super_class = PXStoryResourcesPreloadingController;
   [(PXStoryResourcesPreloadingController *)&v6 dealloc];
 }
 
-- (PXStoryResourcesPreloadingController)initWithModel:(id)a3 mediaProvider:(id)a4
+- (PXStoryResourcesPreloadingController)initWithModel:(id)model mediaProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = PXStoryResourcesPreloadingController;
-  v8 = [(PXStoryController *)&v26 initWithObservableModel:v6];
+  v8 = [(PXStoryController *)&v26 initWithObservableModel:modelCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_model, v6);
-    v10 = [v6 extendedTraitCollection];
-    [v10 displayScale];
+    objc_storeWeak(&v8->_model, modelCopy);
+    extendedTraitCollection = [modelCopy extendedTraitCollection];
+    [extendedTraitCollection displayScale];
     v12 = v11;
 
-    v13 = [v6 isExporting];
-    v14 = [v6 isInline];
+    isExporting = [modelCopy isExporting];
+    isInline = [modelCopy isInline];
     v15 = [PXStoryResourcesPreloader alloc];
-    v16 = [v6 videoSessionManager];
-    v17 = [v6 loadingStatusReporter];
-    v18 = [(PXStoryController *)v9 storyQueue];
-    LOBYTE(v23) = [v6 shouldLimitVideoDownloadQuality];
-    v19 = [(PXStoryResourcesPreloader *)v15 initWithMediaProvider:v7 displayScale:v16 videoSessionManager:v17 loadingStatusReporter:v18 storyQueue:v13 isExporting:v14 isInline:v12 limitVideoDownloadQuality:v23];
+    videoSessionManager = [modelCopy videoSessionManager];
+    loadingStatusReporter = [modelCopy loadingStatusReporter];
+    storyQueue = [(PXStoryController *)v9 storyQueue];
+    LOBYTE(v23) = [modelCopy shouldLimitVideoDownloadQuality];
+    v19 = [(PXStoryResourcesPreloader *)v15 initWithMediaProvider:providerCopy displayScale:videoSessionManager videoSessionManager:loadingStatusReporter loadingStatusReporter:storyQueue storyQueue:isExporting isExporting:isInline isInline:v12 limitVideoDownloadQuality:v23];
     preloader = v9->_preloader;
     v9->_preloader = v19;
 
@@ -773,11 +773,11 @@ uint64_t __68__PXStoryResourcesPreloadingController_initWithModel_mediaProvider_
   return [v2 _invalidateCurrentSegmentIdentifierOnPreloader];
 }
 
-- (PXStoryResourcesPreloadingController)initWithObservableModel:(id)a3
+- (PXStoryResourcesPreloadingController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloadingController.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXStoryResourcesPreloadingController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloadingController.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXStoryResourcesPreloadingController initWithObservableModel:]"}];
 
   abort();
 }

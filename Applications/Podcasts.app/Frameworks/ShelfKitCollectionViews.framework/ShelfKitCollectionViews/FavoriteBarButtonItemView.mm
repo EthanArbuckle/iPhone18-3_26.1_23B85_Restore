@@ -2,15 +2,15 @@
 - (NSString)accessibilityIdentifier;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithFrame:(CGRect)frame;
 - (void)primaryActionTriggered;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation FavoriteBarButtonItemView
 
-- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView_tipRequestID;
   *v3 = 0;
@@ -21,20 +21,20 @@
   return result;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  sub_B6F5C(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  sub_B6F5C(superview);
 }
 
 - (void)primaryActionTriggered
 {
-  v2 = self;
+  selfCopy = self;
   sub_B70A0();
 }
 
-- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews25FavoriteBarButtonItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -50,13 +50,13 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v6._countAndFlagsBits = 0xE000000000000000;
   v8._object = 0x8000000000339250;
   v8._countAndFlagsBits = 0xD00000000000001CLL;
   v9.value._countAndFlagsBits = 0;
   v9.value._object = 0;
-  v3.super.isa = v2;
+  v3.super.isa = mainBundle;
   v10._countAndFlagsBits = 0;
   v10._object = 0xE000000000000000;
   sub_301AB8(v8, v9, v3, v10, v6);
@@ -68,7 +68,7 @@
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_B84DC();
   v4 = v3;
 

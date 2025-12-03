@@ -1,12 +1,12 @@
 @interface VCMediaDevice
-- (BOOL)canEnterState:(unsigned int)a3;
+- (BOOL)canEnterState:(unsigned int)state;
 - (VCMediaDevice)init;
 - (id)pause;
 - (id)resume;
 - (id)run;
 - (id)runInternal;
 - (id)start;
-- (id)stateStringForState:(unsigned int)a3;
+- (id)stateStringForState:(unsigned int)state;
 - (id)stop;
 - (void)pause;
 - (void)resume;
@@ -52,7 +52,7 @@
       v22 = 2112;
       p_isa = [(VCObject *)self logPrefix];
       v24 = 2048;
-      v25 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ %@-start (%p)", buf, 0x30u);
     }
   }
@@ -60,10 +60,10 @@
   [(VCObject *)self lock];
   if ([(VCMediaDevice *)self canEnterState:1])
   {
-    v5 = [(VCMediaDevice *)self onStart];
-    if (v5)
+    onStart = [(VCMediaDevice *)self onStart];
+    if (onStart)
     {
-      v6 = v5;
+      runInternal = onStart;
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -103,9 +103,9 @@
             v22 = 2112;
             p_isa = &v7->isa;
             v24 = 2048;
-            v25 = self;
+            selfCopy3 = self;
             v26 = 2112;
-            v27 = v6;
+            v27 = runInternal;
             _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to start, error=%@", buf, 0x3Au);
           }
         }
@@ -117,12 +117,12 @@
       self->_state = 1;
       if ([(VCMediaDevice *)self autoRunOnStart])
       {
-        v6 = [(VCMediaDevice *)self runInternal];
+        runInternal = [(VCMediaDevice *)self runInternal];
       }
 
       else
       {
-        v6 = 0;
+        runInternal = 0;
       }
     }
 
@@ -171,7 +171,7 @@
           v22 = 2112;
           p_isa = &v8->isa;
           v24 = 2048;
-          v25 = self;
+          selfCopy3 = self;
           v26 = 2112;
           v27 = v15;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to start because of unexpected state=%@", buf, 0x3Au);
@@ -184,7 +184,7 @@
     return +[VCMediaDeviceErrorUtils mediaDeviceErrorEvent:errorPath:returnCode:reason:](VCMediaDeviceErrorUtils, "mediaDeviceErrorEvent:errorPath:returnCode:reason:", 1, v11, 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannnot Transition from %@ to %@", -[VCMediaDevice stateStringForState:](self, "stateStringForState:", self->_state), -[VCMediaDevice stateStringForState:](self, "stateStringForState:", 1)]);
   }
 
-  return v6;
+  return runInternal;
 }
 
 - (id)runInternal
@@ -192,8 +192,8 @@
   v25 = *MEMORY[0x1E69E9840];
   if ([(VCMediaDevice *)self canEnterState:2])
   {
-    v3 = [(VCMediaDevice *)self onRun];
-    if (v3)
+    onRun = [(VCMediaDevice *)self onRun];
+    if (onRun)
     {
       if (objc_opt_class() == self)
       {
@@ -234,9 +234,9 @@
             v19 = 2112;
             v20 = v4;
             v21 = 2048;
-            v22 = self;
+            selfCopy2 = self;
             v23 = 2112;
-            v24 = v3;
+            v24 = onRun;
             _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to run, error=%@", buf, 0x3Au);
           }
         }
@@ -291,7 +291,7 @@
           v19 = 2112;
           v20 = v5;
           v21 = 2048;
-          v22 = self;
+          selfCopy2 = self;
           v23 = 2112;
           v24 = v12;
           _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to run because of unexpected state=%@", buf, 0x3Au);
@@ -304,7 +304,7 @@
     return +[VCMediaDeviceErrorUtils mediaDeviceErrorEvent:errorPath:returnCode:reason:](VCMediaDeviceErrorUtils, "mediaDeviceErrorEvent:errorPath:returnCode:reason:", 1, v8, 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannnot Transition from %@ to %@", -[VCMediaDevice stateStringForState:](self, "stateStringForState:", self->_state), -[VCMediaDevice stateStringForState:](self, "stateStringForState:", 2)]);
   }
 
-  return v3;
+  return onRun;
 }
 
 - (id)run
@@ -324,17 +324,17 @@
       v11 = 1024;
       v12 = 85;
       v13 = 2112;
-      v14 = [(VCObject *)self logPrefix];
+      logPrefix = [(VCObject *)self logPrefix];
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ %@-run (%p)", &v7, 0x30u);
     }
   }
 
   [(VCObject *)self lock];
-  v5 = [(VCMediaDevice *)self runInternal];
+  runInternal = [(VCMediaDevice *)self runInternal];
   [(VCObject *)self unlock];
-  return v5;
+  return runInternal;
 }
 
 - (id)stop
@@ -356,7 +356,7 @@
       v27 = 2112;
       p_isa = [(VCObject *)self logPrefix];
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ %@-stop (%p)", buf, 0x30u);
     }
   }
@@ -427,7 +427,7 @@
       v27 = 2112;
       p_isa = &v7->isa;
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2112;
       v32 = v16;
       v11 = " [%s] %s:%d %@(%p) Unable to stop because of unexpected state=%@";
@@ -443,8 +443,8 @@ LABEL_21:
     return +[VCMediaDeviceErrorUtils mediaDeviceErrorEvent:errorPath:returnCode:reason:](VCMediaDeviceErrorUtils, "mediaDeviceErrorEvent:errorPath:returnCode:reason:", 1, v17, 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannnot Transition from %@ to %@", -[VCMediaDevice stateStringForState:](self, "stateStringForState:", self->_state), -[VCMediaDevice stateStringForState:](self, "stateStringForState:", 0)]);
   }
 
-  v5 = [(VCMediaDevice *)self onStop];
-  if (v5)
+  onStop = [(VCMediaDevice *)self onStop];
+  if (onStop)
   {
     if (objc_opt_class() == self)
     {
@@ -485,9 +485,9 @@ LABEL_21:
           v27 = 2112;
           p_isa = &v6->isa;
           v29 = 2048;
-          v30 = self;
+          selfCopy3 = self;
           v31 = 2112;
-          v32 = v5;
+          v32 = onStop;
           _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to stop, error=%@", buf, 0x3Au);
         }
       }
@@ -501,7 +501,7 @@ LABEL_21:
 
   [(VCObject *)self unlock];
   [(VCObject *)self stopTimeoutTimer];
-  return v5;
+  return onStop;
 }
 
 - (id)pause
@@ -523,7 +523,7 @@ LABEL_21:
       v21 = 2112;
       p_isa = [(VCObject *)self logPrefix];
       v23 = 2048;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ %@-pause (%p)", buf, 0x30u);
     }
   }
@@ -531,8 +531,8 @@ LABEL_21:
   [(VCObject *)self lock];
   if ([(VCMediaDevice *)self canEnterState:3])
   {
-    v5 = [(VCMediaDevice *)self onPause];
-    if (v5)
+    onPause = [(VCMediaDevice *)self onPause];
+    if (onPause)
     {
       if (objc_opt_class() == self)
       {
@@ -573,9 +573,9 @@ LABEL_21:
             v21 = 2112;
             p_isa = &v6->isa;
             v23 = 2048;
-            v24 = self;
+            selfCopy3 = self;
             v25 = 2112;
-            v26 = v5;
+            v26 = onPause;
             _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to pause, error=%@", buf, 0x3Au);
           }
         }
@@ -632,7 +632,7 @@ LABEL_21:
           v21 = 2112;
           p_isa = &v7->isa;
           v23 = 2048;
-          v24 = self;
+          selfCopy3 = self;
           v25 = 2112;
           v26 = v14;
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to pause because of unexpected state=%@", buf, 0x3Au);
@@ -645,7 +645,7 @@ LABEL_21:
     return +[VCMediaDeviceErrorUtils mediaDeviceErrorEvent:errorPath:returnCode:reason:](VCMediaDeviceErrorUtils, "mediaDeviceErrorEvent:errorPath:returnCode:reason:", 1, v10, 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannnot Transition from %@ to %@", -[VCMediaDevice stateStringForState:](self, "stateStringForState:", self->_state), -[VCMediaDevice stateStringForState:](self, "stateStringForState:", 3)]);
   }
 
-  return v5;
+  return onPause;
 }
 
 - (id)resume
@@ -667,7 +667,7 @@ LABEL_21:
       v21 = 2112;
       p_isa = [(VCObject *)self logPrefix];
       v23 = 2048;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ %@-resume (%p)", buf, 0x30u);
     }
   }
@@ -675,8 +675,8 @@ LABEL_21:
   [(VCObject *)self lock];
   if ([(VCMediaDevice *)self canEnterState:2])
   {
-    v5 = [(VCMediaDevice *)self onResume];
-    if (v5)
+    onResume = [(VCMediaDevice *)self onResume];
+    if (onResume)
     {
       if (objc_opt_class() == self)
       {
@@ -717,9 +717,9 @@ LABEL_21:
             v21 = 2112;
             p_isa = &v6->isa;
             v23 = 2048;
-            v24 = self;
+            selfCopy3 = self;
             v25 = 2112;
-            v26 = v5;
+            v26 = onResume;
             _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to resume, error=%@", buf, 0x3Au);
           }
         }
@@ -776,7 +776,7 @@ LABEL_21:
           v21 = 2112;
           p_isa = &v7->isa;
           v23 = 2048;
-          v24 = self;
+          selfCopy3 = self;
           v25 = 2112;
           v26 = v14;
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to resume because of unexpected state=%@", buf, 0x3Au);
@@ -789,22 +789,22 @@ LABEL_21:
     return +[VCMediaDeviceErrorUtils mediaDeviceErrorEvent:errorPath:returnCode:reason:](VCMediaDeviceErrorUtils, "mediaDeviceErrorEvent:errorPath:returnCode:reason:", 1, v10, 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannnot Transition from %@ to %@", -[VCMediaDevice stateStringForState:](self, "stateStringForState:", self->_state), -[VCMediaDevice stateStringForState:](self, "stateStringForState:", 2)]);
   }
 
-  return v5;
+  return onResume;
 }
 
-- (BOOL)canEnterState:(unsigned int)a3
+- (BOOL)canEnterState:(unsigned int)state
 {
   result = 0;
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       return (self->_state & 0xFFFFFFFD) == 1;
     }
 
     else
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         return result;
       }
@@ -815,12 +815,12 @@ LABEL_21:
 
   else
   {
-    if (!a3)
+    if (!state)
     {
       return self->_state - 1 < 3;
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
       return result;
     }
@@ -829,16 +829,16 @@ LABEL_21:
   }
 }
 
-- (id)stateStringForState:(unsigned int)a3
+- (id)stateStringForState:(unsigned int)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"INVALID";
   }
 
   else
   {
-    return off_1E85F8500[a3];
+    return off_1E85F8500[state];
   }
 }
 

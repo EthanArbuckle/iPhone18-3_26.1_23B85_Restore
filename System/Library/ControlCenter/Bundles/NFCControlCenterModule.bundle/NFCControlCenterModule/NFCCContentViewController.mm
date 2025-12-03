@@ -1,8 +1,8 @@
 @interface NFCCContentViewController
 - (void)_didCollapse;
 - (void)_moduleButtonTapped;
-- (void)_setModuleState:(int64_t)a3 animated:(BOOL)a4;
-- (void)_setTransientModuleState:(int64_t)a3;
+- (void)_setModuleState:(int64_t)state animated:(BOOL)animated;
+- (void)_setTransientModuleState:(int64_t)state;
 - (void)_startReader;
 - (void)_startReaderIfNeeded;
 - (void)_stopReader;
@@ -10,12 +10,12 @@
 - (void)_updateContentViewSize;
 - (void)_willExpand;
 - (void)nfcReaderDidDetectNonNDEFTag;
-- (void)nfcReaderStateDidChange:(int64_t)a3;
+- (void)nfcReaderStateDidChange:(int64_t)change;
 - (void)turnOnNFCButtonTapped;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation NFCCContentViewController
@@ -29,8 +29,8 @@
   v4 = [UIImage imageNamed:@"ModuleGlyph" inBundle:v3 withConfiguration:0];
   [(NFCCContentViewController *)self setGlyphImage:v4];
 
-  v5 = [(NFCCContentViewController *)self buttonView];
-  [v5 addTarget:self action:"_moduleButtonTapped" forControlEvents:64];
+  buttonView = [(NFCCContentViewController *)self buttonView];
+  [buttonView addTarget:self action:"_moduleButtonTapped" forControlEvents:64];
 
   v6 = _BCSLocalizedString();
   [(NFCCContentViewController *)self setTitle:v6];
@@ -54,14 +54,14 @@
   [(NFCCContentView *)self->_contentView updateOrientationIfNeeded];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = NFCCContentViewController;
-  [(NFCCContentViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(NFCCContentViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ([(NFCCContentViewController *)self isExpanded])
   {
     [(NFCCContentViewController *)self _willExpand];
@@ -72,7 +72,7 @@
   v8[2] = sub_25D8;
   v8[3] = &unk_C3E8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 - (void)_updateContentViewSize
@@ -146,9 +146,9 @@
   [(BCSNFCReaderConnection *)readerConnection stopReaderWithErrorHandler:0];
 }
 
-- (void)_setModuleState:(int64_t)a3 animated:(BOOL)a4
+- (void)_setModuleState:(int64_t)state animated:(BOOL)animated
 {
-  self->_moduleState = a3;
+  self->_moduleState = state;
   [NFCCContentView setModuleState:"setModuleState:animated:" animated:?];
   if ([(NFCCContentViewController *)self isExpanded])
   {
@@ -161,9 +161,9 @@
   }
 }
 
-- (void)_setTransientModuleState:(int64_t)a3
+- (void)_setTransientModuleState:(int64_t)state
 {
-  [(NFCCContentViewController *)self _setModuleState:a3 animated:1];
+  [(NFCCContentViewController *)self _setModuleState:state animated:1];
   [(NFCCContentViewController *)self _stopTransientModuleStateTimer];
   objc_initWeak(&location, self);
   v7 = _NSConcreteStackBlock;
@@ -191,17 +191,17 @@
 
 - (void)_moduleButtonTapped
 {
-  v2 = [(NFCCContentViewController *)self contentModuleContext];
-  [v2 requestExpandModule];
+  contentModuleContext = [(NFCCContentViewController *)self contentModuleContext];
+  [contentModuleContext requestExpandModule];
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v6.receiver = self;
   v6.super_class = NFCCContentViewController;
   [(NFCCContentViewController *)&v6 willTransitionToExpandedContentMode:?];
-  if (v3)
+  if (modeCopy)
   {
     v5 = +[BCSAnalyticsLogger sharedLogger];
     [v5 didActivateNFCReader];
@@ -229,14 +229,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)nfcReaderStateDidChange:(int64_t)a3
+- (void)nfcReaderStateDidChange:(int64_t)change
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_330C;
   v3[3] = &unk_C488;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = change;
   dispatch_async(&_dispatch_main_q, v3);
 }
 

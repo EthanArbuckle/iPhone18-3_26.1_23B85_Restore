@@ -1,5 +1,5 @@
 @interface RPBroadcastMP4ClipHandler
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)finishedProcessingMP4ClipWithUpdatedBroadcastConfiguration:(RPBroadcastConfiguration *)broadcastConfiguration error:(NSError *)error;
 @end
 
@@ -19,13 +19,13 @@
 
   if (v7)
   {
-    v8 = [(RPBroadcastHandler *)self extensionContext];
-    [v8 cancelRequestWithError:v7];
+    extensionContext = [(RPBroadcastHandler *)self extensionContext];
+    [extensionContext cancelRequestWithError:v7];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    extensionContext = [MEMORY[0x277CBEB18] array];
     if (v6)
     {
       v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6];
@@ -41,27 +41,27 @@
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
       [v10 setAttachments:v16];
 
-      [v8 addObject:v10];
+      [extensionContext addObject:v10];
     }
 
     v18.receiver = self;
     v18.super_class = RPBroadcastMP4ClipHandler;
-    [(RPBroadcastHandler *)&v18 _completeRequestWithReturnItems:v8];
+    [(RPBroadcastHandler *)&v18 _completeRequestWithReturnItems:extensionContext];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "beginRequestWithExtensionContext", buf, 2u);
   }
 
-  [(RPBroadcastHandler *)self setExtensionContext:v4];
+  [(RPBroadcastHandler *)self setExtensionContext:contextCopy];
   v5 = *MEMORY[0x277CC2050];
   *buf = 0;
   v29 = buf;
@@ -85,16 +85,16 @@
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
   v23 = 0;
-  v6 = [(RPBroadcastHandler *)self extensionContext];
-  v7 = [v6 inputItems];
-  v8 = [v7 count];
+  extensionContext = [(RPBroadcastHandler *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  v8 = [inputItems count];
 
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v21[3] = 0;
-  v9 = [(RPBroadcastHandler *)self extensionContext];
-  v10 = [v9 inputItems];
+  extensionContext2 = [(RPBroadcastHandler *)self extensionContext];
+  inputItems2 = [extensionContext2 inputItems];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__RPBroadcastMP4ClipHandler_beginRequestWithExtensionContext___block_invoke;
@@ -107,8 +107,8 @@
   v19 = v21;
   v20 = v8;
   v13 = v11;
-  v14 = self;
-  [v10 enumerateObjectsUsingBlock:v12];
+  selfCopy = self;
+  [inputItems2 enumerateObjectsUsingBlock:v12];
 
   _Block_object_dispose(v21, 8);
   _Block_object_dispose(v22, 8);

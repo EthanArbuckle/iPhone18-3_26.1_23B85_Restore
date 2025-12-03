@@ -2,9 +2,9 @@
 - (NTKCFaceDetailComplicationPickerViewController)pickerViewController;
 - (NTKCFaceDetailComplicationPickerViewControllerDelegate)delegate;
 - (NTKCompanionConfigurationEditorController)init;
-- (id)editorViewController:(id)a3 pickerViewController:(id)a4 delegate:(id)a5;
+- (id)editorViewController:(id)controller pickerViewController:(id)viewController delegate:(id)delegate;
 - (void)reset;
-- (void)widgetConfigurationViewController:(id)a3 didFinishWithIntent:(id)a4;
+- (void)widgetConfigurationViewController:(id)controller didFinishWithIntent:(id)intent;
 @end
 
 @implementation NTKCompanionConfigurationEditorController
@@ -25,88 +25,88 @@
   return v2;
 }
 
-- (id)editorViewController:(id)a3 pickerViewController:(id)a4 delegate:(id)a5
+- (id)editorViewController:(id)controller pickerViewController:(id)viewController delegate:(id)delegate
 {
   v99 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  delegateCopy = delegate;
+  if (!controllerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v27 = 0;
     goto LABEL_53;
   }
 
-  [(NTKCompanionConfigurationEditorController *)self setComplication:v8];
-  [(NTKCompanionConfigurationEditorController *)self setDelegate:v10];
-  [(NTKCompanionConfigurationEditorController *)self setPickerViewController:v9];
-  v11 = v8;
-  v12 = [v11 intent];
-  v13 = [v12 extensionBundleId];
+  [(NTKCompanionConfigurationEditorController *)self setComplication:controllerCopy];
+  [(NTKCompanionConfigurationEditorController *)self setDelegate:delegateCopy];
+  [(NTKCompanionConfigurationEditorController *)self setPickerViewController:viewControllerCopy];
+  v11 = controllerCopy;
+  intent = [v11 intent];
+  extensionBundleId = [intent extensionBundleId];
 
   v14 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (!v13)
+  if (!extensionBundleId)
   {
     if (v15)
     {
-      v28 = [v11 extensionBundleIdentifier];
+      extensionBundleIdentifier = [v11 extensionBundleIdentifier];
       *buf = 138412290;
-      v92 = v28;
+      v92 = extensionBundleIdentifier;
       _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "Intent extensionBundleId was not set.  Setting to: %@", buf, 0xCu);
     }
 
-    v24 = [v11 extensionBundleIdentifier];
-    v25 = [v11 intent];
-    [v25 _setExtensionBundleId:v24];
+    extensionBundleIdentifier2 = [v11 extensionBundleIdentifier];
+    intent2 = [v11 intent];
+    [intent2 _setExtensionBundleId:extensionBundleIdentifier2];
     goto LABEL_13;
   }
 
   if (v15)
   {
-    v16 = [v11 intent];
-    v17 = [v16 extensionBundleId];
+    intent3 = [v11 intent];
+    extensionBundleId2 = [intent3 extensionBundleId];
     *buf = 138412290;
-    v92 = v17;
+    v92 = extensionBundleId2;
     _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "Intent extensionBundleId is set to: %@", buf, 0xCu);
   }
 
-  v18 = [v11 intent];
-  v19 = [v18 extensionBundleId];
-  v20 = [v11 extensionBundleIdentifier];
-  v21 = [v19 isEqualToString:v20];
+  intent4 = [v11 intent];
+  extensionBundleId3 = [intent4 extensionBundleId];
+  extensionBundleIdentifier3 = [v11 extensionBundleIdentifier];
+  v21 = [extensionBundleId3 isEqualToString:extensionBundleIdentifier3];
 
   if (v21)
   {
     goto LABEL_15;
   }
 
-  v22 = [v11 extensionBundleIdentifier];
-  v23 = [v11 intent];
-  [v23 _setExtensionBundleId:v22];
+  extensionBundleIdentifier4 = [v11 extensionBundleIdentifier];
+  intent5 = [v11 intent];
+  [intent5 _setExtensionBundleId:extensionBundleIdentifier4];
 
-  v24 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+  extensionBundleIdentifier2 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
+  if (os_log_type_enabled(extensionBundleIdentifier2, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v11 intent];
-    v26 = [v25 extensionBundleId];
+    intent2 = [v11 intent];
+    extensionBundleId4 = [intent2 extensionBundleId];
     *buf = 138412290;
-    v92 = v26;
-    _os_log_impl(&dword_22D9C5000, v24, OS_LOG_TYPE_DEFAULT, "Intent extensionBundleId is now set to: %@", buf, 0xCu);
+    v92 = extensionBundleId4;
+    _os_log_impl(&dword_22D9C5000, extensionBundleIdentifier2, OS_LOG_TYPE_DEFAULT, "Intent extensionBundleId is now set to: %@", buf, 0xCu);
 
 LABEL_13:
   }
 
 LABEL_15:
-  v82 = self;
-  v29 = [(NTKCompanionConfigurationEditorController *)self service];
-  v30 = [v29 allPairedDevices];
+  selfCopy = self;
+  service = [(NTKCompanionConfigurationEditorController *)self service];
+  allPairedDevices = [service allPairedDevices];
 
   v89 = 0u;
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v31 = v30;
+  v31 = allPairedDevices;
   v32 = [v31 countByEnumeratingWithState:&v87 objects:v98 count:16];
   if (v32)
   {
@@ -147,34 +147,34 @@ LABEL_17:
     }
 
     v78 = v31;
-    v79 = v9;
-    v80 = v8;
+    v79 = viewControllerCopy;
+    v80 = controllerCopy;
     v38 = objc_alloc_init(MEMORY[0x277D7D7E8]);
-    v39 = [v11 intent];
-    [v38 setIntent:v39];
+    intent6 = [v11 intent];
+    [v38 setIntent:intent6];
 
     [v38 setFamily:CLKWidgetFamilyForComplicationFamily()];
     v77 = v37;
-    v40 = [v37 deviceID];
-    [v38 setRemoteDeviceIdentifier:v40];
+    deviceID = [v37 deviceID];
+    [v38 setRemoteDeviceIdentifier:deviceID];
 
-    v41 = [MEMORY[0x277CBBAE8] currentDevice];
-    v42 = NTKSharedWidgetComplicationProvider(v41);
-    v43 = [v11 descriptor];
-    v44 = [v42 infoForDescriptor:v43];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v42 = NTKSharedWidgetComplicationProvider(currentDevice);
+    descriptor = [v11 descriptor];
+    v44 = [v42 infoForDescriptor:descriptor];
 
     v76 = v44;
-    v45 = [v44 localizedAppName];
+    localizedAppName = [v44 localizedAppName];
     v81 = v38;
-    [v38 setRemoteAppLocalizedName:v45];
+    [v38 setRemoteAppLocalizedName:localizedAppName];
 
     +[NTKCompanionAppLibrary sharedAppLibrary];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
     v75 = v86 = 0u;
-    v46 = [v75 allApps];
-    v47 = [v46 countByEnumeratingWithState:&v83 objects:v97 count:16];
+    allApps = [v75 allApps];
+    v47 = [allApps countByEnumeratingWithState:&v83 objects:v97 count:16];
     if (v47)
     {
       v49 = v47;
@@ -187,21 +187,21 @@ LABEL_17:
         {
           if (*v84 != v50)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(allApps);
           }
 
           v52 = *(*(&v83 + 1) + 8 * i);
-          v53 = [v52 watchApplicationIdentifier];
-          v54 = [v11 containerBundleIdentifier];
-          v55 = [v53 isEqual:v54];
+          watchApplicationIdentifier = [v52 watchApplicationIdentifier];
+          containerBundleIdentifier = [v11 containerBundleIdentifier];
+          v55 = [watchApplicationIdentifier isEqual:containerBundleIdentifier];
 
           if (v55)
           {
-            v56 = [v52 icon];
-            v57 = v56;
-            if (v56)
+            icon = [v52 icon];
+            v57 = icon;
+            if (icon)
             {
-              [v56 size];
+              [icon size];
               v60 = v58;
               v61 = v59;
               if (v58 != 0.0 && v59 != 0.0)
@@ -234,11 +234,11 @@ LABEL_17:
                 v101.width = v60;
                 v101.height = v61;
                 v63 = NSStringFromCGSize(v101);
-                v64 = [v52 watchApplicationIdentifier];
+                watchApplicationIdentifier2 = [v52 watchApplicationIdentifier];
                 *buf = v74;
                 v92 = v63;
                 v93 = 2112;
-                v94 = v64;
+                v94 = watchApplicationIdentifier2;
                 _os_log_error_impl(&dword_22D9C5000, v62, OS_LOG_TYPE_ERROR, "Invalid icon size: %@ for app: %@", buf, 0x16u);
               }
             }
@@ -254,7 +254,7 @@ LABEL_17:
           }
         }
 
-        v49 = [v46 countByEnumeratingWithState:&v83 objects:v97 count:16];
+        v49 = [allApps countByEnumeratingWithState:&v83 objects:v97 count:16];
         if (v49)
         {
           continue;
@@ -269,9 +269,9 @@ LABEL_49:
     v70 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
-      v71 = [v77 deviceID];
+      deviceID2 = [v77 deviceID];
       *buf = 138412290;
-      v92 = v71;
+      v92 = deviceID2;
       _os_log_impl(&dword_22D9C5000, v70, OS_LOG_TYPE_DEFAULT, "Connecting to remoteDevice with ID: %@", buf, 0xCu);
     }
 
@@ -279,10 +279,10 @@ LABEL_49:
     [v81 setWidgetDisplayName:v72];
 
     v27 = [objc_alloc(MEMORY[0x277D7D7F0]) initWithOptions:v81];
-    [v27 setDelegate:v82];
+    [v27 setDelegate:selfCopy];
 
-    v9 = v79;
-    v8 = v80;
+    viewControllerCopy = v79;
+    controllerCopy = v80;
     v31 = v78;
   }
 
@@ -298,7 +298,7 @@ LABEL_42:
       _os_log_impl(&dword_22D9C5000, v65, OS_LOG_TYPE_DEFAULT, "No CHSRemoteDevices were found... aborting", buf, 2u);
     }
 
-    [(NTKCompanionConfigurationEditorController *)v82 reset];
+    [(NTKCompanionConfigurationEditorController *)selfCopy reset];
     v27 = 0;
   }
 
@@ -315,34 +315,34 @@ LABEL_53:
   [(NTKCompanionConfigurationEditorController *)self setPickerViewController:0];
 }
 
-- (void)widgetConfigurationViewController:(id)a3 didFinishWithIntent:(id)a4
+- (void)widgetConfigurationViewController:(id)controller didFinishWithIntent:(id)intent
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(NTKCompanionConfigurationEditorController *)self complication];
-  v7 = [v6 intent];
+  intentCopy = intent;
+  complication = [(NTKCompanionConfigurationEditorController *)self complication];
+  intent = [complication intent];
   v8 = objc_alloc(MEMORY[0x277CBBBD0]);
-  v9 = [v6 extensionBundleIdentifier];
-  v10 = [v6 containerBundleIdentifier];
-  v11 = [v6 kind];
-  v12 = [v8 initWithExtensionBundleIdentifier:v9 containerBundleIdentifier:v10 kind:v11 intent:v5];
+  extensionBundleIdentifier = [complication extensionBundleIdentifier];
+  containerBundleIdentifier = [complication containerBundleIdentifier];
+  kind = [complication kind];
+  v12 = [v8 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind intent:intentCopy];
 
   v13 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v6 kind];
+    kind2 = [complication kind];
     v19 = 138412290;
-    v20 = v14;
+    v20 = kind2;
     _os_log_impl(&dword_22D9C5000, v13, OS_LOG_TYPE_DEFAULT, "Widget Configuration did finish with widget kind: %@", &v19, 0xCu);
   }
 
   v15 = [NTKWidgetComplication complicationWithDescriptor:v12];
-  v16 = [(NTKCompanionConfigurationEditorController *)self pickerViewController];
-  [v16 dismissViewControllerAnimated:1 completion:0];
+  pickerViewController = [(NTKCompanionConfigurationEditorController *)self pickerViewController];
+  [pickerViewController dismissViewControllerAnimated:1 completion:0];
 
-  v17 = [(NTKCompanionConfigurationEditorController *)self delegate];
-  v18 = [(NTKCompanionConfigurationEditorController *)self pickerViewController];
-  [v17 faceDetailComplicationPickerViewController:v18 didSelectComplication:v15];
+  delegate = [(NTKCompanionConfigurationEditorController *)self delegate];
+  pickerViewController2 = [(NTKCompanionConfigurationEditorController *)self pickerViewController];
+  [delegate faceDetailComplicationPickerViewController:pickerViewController2 didSelectComplication:v15];
 
   [(NTKCompanionConfigurationEditorController *)self reset];
 }

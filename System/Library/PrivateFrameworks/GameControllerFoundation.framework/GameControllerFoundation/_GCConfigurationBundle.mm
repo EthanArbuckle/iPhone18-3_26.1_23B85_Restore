@@ -1,6 +1,6 @@
 @interface _GCConfigurationBundle
 - (_GCConfigurationBundle)init;
-- (_GCConfigurationBundle)initWithPath:(id)a3 error:(id *)a4;
+- (_GCConfigurationBundle)initWithPath:(id)path error:(id *)error;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
@@ -8,29 +8,29 @@
 
 @implementation _GCConfigurationBundle
 
-- (_GCConfigurationBundle)initWithPath:(id)a3 error:(id *)a4
+- (_GCConfigurationBundle)initWithPath:(id)path error:(id *)error
 {
   v117[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = objc_getAssociatedObject(v6, self);
+  pathCopy = path;
+  v7 = objc_getAssociatedObject(pathCopy, self);
 
   if (!v7)
   {
-    objc_setAssociatedObject(v6, self, self, 0);
+    objc_setAssociatedObject(pathCopy, self, self, 0);
     v100.receiver = self;
     v100.super_class = _GCConfigurationBundle;
-    v9 = [(_GCConfigurationBundle *)&v100 _initUniqueWithPath:v6];
-    objc_setAssociatedObject(v6, v9, 0, 0);
+    v9 = [(_GCConfigurationBundle *)&v100 _initUniqueWithPath:pathCopy];
+    objc_setAssociatedObject(pathCopy, v9, 0, 0);
     if (!v9)
     {
       v8 = 0;
       goto LABEL_22;
     }
 
-    v10 = [v9 infoDictionary];
-    if (!v10)
+    infoDictionary = [v9 infoDictionary];
+    if (!infoDictionary)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -42,29 +42,29 @@
       v117[0] = @"Invalid bundle.";
       v117[1] = @"Missing information property list.";
       v116[2] = *MEMORY[0x1E696A368];
-      v34 = [v9 bundleURL];
-      v48 = [v34 path];
-      v49 = v48;
+      bundleURL = [v9 bundleURL];
+      path = [bundleURL path];
+      localizedFailureReason2 = path;
       v50 = @"<missing path>";
-      if (v48)
+      if (path)
       {
-        v50 = v48;
+        v50 = path;
       }
 
       v117[2] = v50;
-      v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v117 forKeys:v116 count:3];
-      *a4 = [(NSError *)v46 gc_ConfigurationError:v51 userInfo:?];
+      bundleURL5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v117 forKeys:v116 count:3];
+      *error = [(NSError *)v46 gc_ConfigurationError:bundleURL5 userInfo:?];
       goto LABEL_54;
     }
 
-    v95 = a4;
+    errorCopy = error;
     v99 = 0;
-    v11 = [v10 gc_requiredObjectForKey:@"CompatibilityVersion" ofClass:objc_opt_class() error:&v99];
+    v11 = [infoDictionary gc_requiredObjectForKey:@"CompatibilityVersion" ofClass:objc_opt_class() error:&v99];
     v12 = v99;
     v13 = v12;
     if (!v11)
     {
-      if (a4)
+      if (error)
       {
         v52 = MEMORY[0x1E696ABC0];
         v53 = *MEMORY[0x1E696A578];
@@ -72,21 +72,21 @@
         v54 = *MEMORY[0x1E696A588];
         v114[0] = v53;
         v114[1] = v54;
-        v55 = [v12 localizedFailureReason];
-        v115[1] = v55;
+        localizedFailureReason = [v12 localizedFailureReason];
+        v115[1] = localizedFailureReason;
         v114[2] = *MEMORY[0x1E696A368];
-        v56 = [v9 bundleURL];
-        v57 = [v56 path];
-        v58 = v57;
+        bundleURL2 = [v9 bundleURL];
+        path2 = [bundleURL2 path];
+        v58 = path2;
         v59 = @"<missing path>";
-        if (v57)
+        if (path2)
         {
-          v59 = v57;
+          v59 = path2;
         }
 
         v115[2] = v59;
         v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v115 forKeys:v114 count:3];
-        *a4 = [(NSError *)v52 gc_ConfigurationError:v60 userInfo:?];
+        *error = [(NSError *)v52 gc_ConfigurationError:v60 userInfo:?];
       }
 
       goto LABEL_14;
@@ -96,13 +96,13 @@
     v15 = [[GCVersion alloc] initWithString:v11];
     if (!v15)
     {
-      if (!v95)
+      if (!errorCopy)
       {
         goto LABEL_13;
       }
 
       v92 = MEMORY[0x1E696ABC0];
-      v93 = v10;
+      v93 = infoDictionary;
       v61 = *MEMORY[0x1E696A578];
       v113[0] = @"Invalid bundle information property list.";
       v62 = *MEMORY[0x1E696A588];
@@ -111,13 +111,13 @@
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' format: '%@'", @"CompatibilityVersion", v11];
       v113[1] = v21;
       v112[2] = *MEMORY[0x1E696A368];
-      v22 = [v9 bundleURL];
-      v63 = [v22 path];
-      v24 = v63;
+      bundleURL3 = [v9 bundleURL];
+      path3 = [bundleURL3 path];
+      v24 = path3;
       v64 = @"<missing path>";
-      if (v63)
+      if (path3)
       {
-        v64 = v63;
+        v64 = path3;
       }
 
       v113[2] = v64;
@@ -132,7 +132,7 @@
 
     if (v17)
     {
-      if (!v95)
+      if (!errorCopy)
       {
 LABEL_13:
 
@@ -143,7 +143,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v93 = v10;
+      v93 = infoDictionary;
       v18 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E696A578];
       v111[0] = @"Failed to initialize Configuration DB Bundle.";
@@ -153,13 +153,13 @@ LABEL_21:
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bundle requires framework version '%@'.", v15];
       v111[1] = v21;
       v110[2] = *MEMORY[0x1E696A368];
-      v22 = [v9 bundleURL];
-      v23 = [v22 path];
-      v24 = v23;
+      bundleURL3 = [v9 bundleURL];
+      path4 = [bundleURL3 path];
+      v24 = path4;
       v25 = @"<missing path>";
-      if (v23)
+      if (path4)
       {
-        v25 = v23;
+        v25 = path4;
       }
 
       v111[2] = v25;
@@ -167,9 +167,9 @@ LABEL_21:
       v27 = v18;
       v28 = 2;
 LABEL_12:
-      *v95 = [(NSError *)v27 gc_ConfigurationError:v28 userInfo:v26];
+      *errorCopy = [(NSError *)v27 gc_ConfigurationError:v28 userInfo:v26];
 
-      v10 = v93;
+      infoDictionary = v93;
       goto LABEL_13;
     }
 
@@ -179,24 +179,24 @@ LABEL_12:
 
     v31 = *MEMORY[0x1E695E4F0];
     v98 = 0;
-    v32 = [v10 gc_requiredObjectForKey:v31 ofClass:objc_opt_class() error:&v98];
+    v32 = [infoDictionary gc_requiredObjectForKey:v31 ofClass:objc_opt_class() error:&v98];
     v33 = v98;
-    v34 = v33;
+    bundleURL = v33;
     if (v32)
     {
 
       v35 = *MEMORY[0x1E695E500];
       v97 = 0;
-      v36 = [v10 gc_requiredObjectForKey:v35 ofClass:objc_opt_class() error:&v97];
+      v36 = [infoDictionary gc_requiredObjectForKey:v35 ofClass:objc_opt_class() error:&v97];
       v37 = v97;
-      v34 = v37;
+      bundleURL = v37;
       if (v36)
       {
         v38 = [[GCVersion alloc] initWithString:v36];
         if (!v38)
         {
-          v94 = v10;
-          if (v95)
+          v94 = infoDictionary;
+          if (errorCopy)
           {
             v78 = MEMORY[0x1E696ABC0];
             v79 = *MEMORY[0x1E696A578];
@@ -207,22 +207,22 @@ LABEL_12:
             v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' is not a valid %@.", v36, v35];
             v105[1] = v81;
             v104[2] = *MEMORY[0x1E696A368];
-            v82 = [v9 bundleURL];
-            v83 = [v82 path];
-            v84 = v83;
+            bundleURL4 = [v9 bundleURL];
+            path5 = [bundleURL4 path];
+            v84 = path5;
             v85 = @"<missing path>";
-            if (v83)
+            if (path5)
             {
-              v85 = v83;
+              v85 = path5;
             }
 
             v105[2] = v85;
             v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:3];
-            *v95 = [(NSError *)v78 gc_ConfigurationError:v86 userInfo:?];
+            *errorCopy = [(NSError *)v78 gc_ConfigurationError:v86 userInfo:?];
           }
 
           v8 = 0;
-          v10 = v94;
+          infoDictionary = v94;
           goto LABEL_21;
         }
 
@@ -230,9 +230,9 @@ LABEL_12:
         v9[9] = v38;
 
         v96 = 0;
-        v40 = [v10 gc_requiredObjectForKey:@"ConfigurationType" ofClass:objc_opt_class() error:&v96];
+        v40 = [infoDictionary gc_requiredObjectForKey:@"ConfigurationType" ofClass:objc_opt_class() error:&v96];
         v41 = v96;
-        v34 = v41;
+        bundleURL = v41;
         if (v40)
         {
           v42 = [v40 copy];
@@ -243,7 +243,7 @@ LABEL_12:
           goto LABEL_21;
         }
 
-        if (!v95)
+        if (!errorCopy)
         {
           goto LABEL_55;
         }
@@ -254,16 +254,16 @@ LABEL_12:
         v88 = *MEMORY[0x1E696A588];
         v102[0] = v87;
         v102[1] = v88;
-        v49 = [v41 localizedFailureReason];
-        v103[1] = v49;
+        localizedFailureReason2 = [v41 localizedFailureReason];
+        v103[1] = localizedFailureReason2;
         v102[2] = *MEMORY[0x1E696A368];
-        v51 = [v9 bundleURL];
-        v89 = [v51 path];
-        v69 = v89;
+        bundleURL5 = [v9 bundleURL];
+        path6 = [bundleURL5 path];
+        v69 = path6;
         v90 = @"<missing path>";
-        if (v89)
+        if (path6)
         {
-          v90 = v89;
+          v90 = path6;
         }
 
         v103[2] = v90;
@@ -273,7 +273,7 @@ LABEL_12:
         goto LABEL_53;
       }
 
-      if (v95)
+      if (errorCopy)
       {
         v65 = MEMORY[0x1E696ABC0];
         v74 = *MEMORY[0x1E696A578];
@@ -281,16 +281,16 @@ LABEL_12:
         v75 = *MEMORY[0x1E696A588];
         v106[0] = v74;
         v106[1] = v75;
-        v49 = [v37 localizedFailureReason];
-        v107[1] = v49;
+        localizedFailureReason2 = [v37 localizedFailureReason];
+        v107[1] = localizedFailureReason2;
         v106[2] = *MEMORY[0x1E696A368];
-        v51 = [v9 bundleURL];
-        v76 = [v51 path];
-        v69 = v76;
+        bundleURL5 = [v9 bundleURL];
+        path7 = [bundleURL5 path];
+        v69 = path7;
         v77 = @"<missing path>";
-        if (v76)
+        if (path7)
         {
-          v77 = v76;
+          v77 = path7;
         }
 
         v107[2] = v77;
@@ -299,13 +299,13 @@ LABEL_12:
         v73 = v106;
 LABEL_53:
         v91 = [v71 dictionaryWithObjects:v72 forKeys:v73 count:3];
-        *v95 = [(NSError *)v65 gc_ConfigurationError:v91 userInfo:?];
+        *errorCopy = [(NSError *)v65 gc_ConfigurationError:v91 userInfo:?];
 
 LABEL_54:
       }
     }
 
-    else if (v95)
+    else if (errorCopy)
     {
       v65 = MEMORY[0x1E696ABC0];
       v66 = *MEMORY[0x1E696A578];
@@ -313,16 +313,16 @@ LABEL_54:
       v67 = *MEMORY[0x1E696A588];
       v108[0] = v66;
       v108[1] = v67;
-      v49 = [v33 localizedFailureReason];
-      v109[1] = v49;
+      localizedFailureReason2 = [v33 localizedFailureReason];
+      v109[1] = localizedFailureReason2;
       v108[2] = *MEMORY[0x1E696A368];
-      v51 = [v9 bundleURL];
-      v68 = [v51 path];
-      v69 = v68;
+      bundleURL5 = [v9 bundleURL];
+      path8 = [bundleURL5 path];
+      v69 = path8;
       v70 = @"<missing path>";
-      if (v68)
+      if (path8)
       {
-        v70 = v68;
+        v70 = path8;
       }
 
       v109[2] = v70;
@@ -339,7 +339,7 @@ LABEL_55:
 
   v101.receiver = self;
   v101.super_class = _GCConfigurationBundle;
-  v8 = [(_GCConfigurationBundle *)&v101 initWithPath:v6];
+  v8 = [(_GCConfigurationBundle *)&v101 initWithPath:pathCopy];
 LABEL_22:
 
   v44 = *MEMORY[0x1E69E9840];
@@ -356,9 +356,9 @@ LABEL_22:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCConfigurationBundle *)self identifier];
-  v5 = [(_GCConfigurationBundle *)self version];
-  v6 = [v3 stringWithFormat:@"%@ (v%@)", v4, v5];
+  identifier = [(_GCConfigurationBundle *)self identifier];
+  version = [(_GCConfigurationBundle *)self version];
+  v6 = [v3 stringWithFormat:@"%@ (v%@)", identifier, version];
 
   return v6;
 }
@@ -366,9 +366,9 @@ LABEL_22:
 - (id)redactedDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCConfigurationBundle *)self identifier];
-  v5 = [(_GCConfigurationBundle *)self version];
-  v6 = [v3 stringWithFormat:@"%@ (v%@)", v4, v5];
+  identifier = [(_GCConfigurationBundle *)self identifier];
+  version = [(_GCConfigurationBundle *)self version];
+  v6 = [v3 stringWithFormat:@"%@ (v%@)", identifier, version];
 
   return v6;
 }
@@ -378,9 +378,9 @@ LABEL_22:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_GCConfigurationBundle *)self identifier];
-  v7 = [(_GCConfigurationBundle *)self version];
-  v8 = [v3 stringWithFormat:@"<%@ %p> %@ (v%@)", v5, self, v6, v7];
+  identifier = [(_GCConfigurationBundle *)self identifier];
+  version = [(_GCConfigurationBundle *)self version];
+  v8 = [v3 stringWithFormat:@"<%@ %p> %@ (v%@)", v5, self, identifier, version];
 
   return v8;
 }

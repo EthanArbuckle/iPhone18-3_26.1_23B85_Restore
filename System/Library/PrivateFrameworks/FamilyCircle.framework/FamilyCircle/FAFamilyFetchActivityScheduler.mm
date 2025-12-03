@@ -1,15 +1,15 @@
 @interface FAFamilyFetchActivityScheduler
 - (FAFamilyFetchActivityScheduler)init;
-- (FAFamilyFetchActivityScheduler)initWithFamilyCircleFetchBlock:(id)a3 cacheLoadBlock:(id)a4;
+- (FAFamilyFetchActivityScheduler)initWithFamilyCircleFetchBlock:(id)block cacheLoadBlock:(id)loadBlock;
 - (void)reschedule;
 @end
 
 @implementation FAFamilyFetchActivityScheduler
 
-- (FAFamilyFetchActivityScheduler)initWithFamilyCircleFetchBlock:(id)a3 cacheLoadBlock:(id)a4
+- (FAFamilyFetchActivityScheduler)initWithFamilyCircleFetchBlock:(id)block cacheLoadBlock:(id)loadBlock
 {
-  v5 = _Block_copy(a3);
-  v6 = _Block_copy(a4);
+  v5 = _Block_copy(block);
+  v6 = _Block_copy(loadBlock);
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
   v8 = swift_allocObject();
@@ -29,7 +29,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_1B70FA434(0, 0, v6, &unk_1B7166C40, v8);
 }
 

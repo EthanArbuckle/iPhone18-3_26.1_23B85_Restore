@@ -1,40 +1,40 @@
 @interface TSCH3DSharegroup
-+ (id)uniqueSharegroupWithOwningThread:(id)a3 token:(id)a4;
++ (id)uniqueSharegroupWithOwningThread:(id)thread token:(id)token;
 - (BOOL)isCurrentThreadOwner;
 - (BOOL)isOneShot;
 - (BOOL)mustRunOnMainThread;
 - (BOOL)owningThreadIsNil;
 - (FlushResult)p_flushCacheIfNecessary;
 - (NSString)description;
-- (TSCH3DSharegroup)initWithOwningThread:(id)a3 token:(id)a4;
+- (TSCH3DSharegroup)initWithOwningThread:(id)thread token:(id)token;
 - (TSCH3DSharegroupToken)token;
 - (void)dealloc;
 - (void)flush;
 - (void)flushIfNecessary;
 - (void)flushInTargetThread;
-- (void)flushResourceSet:(id)a3;
+- (void)flushResourceSet:(id)set;
 - (void)nonThreadOwnedFlushCache;
 - (void)p_flushInTargetThread;
-- (void)setIfIsMoreDemandingPerformance:(int)a3;
-- (void)setOwningThread:(id)a3;
+- (void)setIfIsMoreDemandingPerformance:(int)performance;
+- (void)setOwningThread:(id)thread;
 @end
 
 @implementation TSCH3DSharegroup
 
-+ (id)uniqueSharegroupWithOwningThread:(id)a3 token:(id)a4
++ (id)uniqueSharegroupWithOwningThread:(id)thread token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithOwningThread_token_(v8, v9, v10, v11, v12, v6, v7);
+  threadCopy = thread;
+  tokenCopy = token;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithOwningThread_token_(v8, v9, v10, v11, v12, threadCopy, tokenCopy);
 
   return v13;
 }
 
-- (TSCH3DSharegroup)initWithOwningThread:(id)a3 token:(id)a4
+- (TSCH3DSharegroup)initWithOwningThread:(id)thread token:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  threadCopy = thread;
+  tokenCopy = token;
   v83.receiver = self;
   v83.super_class = TSCH3DSharegroup;
   v9 = [(TSCH3DSharegroup *)&v83 init];
@@ -42,8 +42,8 @@
   v11 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_token, v8);
-    if (!v7)
+    objc_storeWeak(&v9->_token, tokenCopy);
+    if (!threadCopy)
     {
       v16 = MEMORY[0x277D81150];
       v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "[TSCH3DSharegroup initWithOwningThread:token:]");
@@ -53,7 +53,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
     }
 
-    objc_storeStrong(&v10->_owningThread, a3);
+    objc_storeStrong(&v10->_owningThread, thread);
     v11->_performance = 0;
     v31 = objc_alloc_init(TSCH3DResourceCache);
     resourceCache = v11->_resourceCache;
@@ -156,57 +156,57 @@
   return v15;
 }
 
-- (void)setOwningThread:(id)a3
+- (void)setOwningThread:(id)thread
 {
-  v29 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  threadCopy = thread;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (byte_280A46430 == 1)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(a2);
-    NSLog(&cfstr_PCurrentOwning.isa, v11, v6, v12, v6->_owningThread, v29);
+    NSLog(&cfstr_PCurrentOwning.isa, v11, selfCopy, v12, selfCopy->_owningThread, threadCopy);
   }
 
-  owningThread = v6->_owningThread;
-  if (owningThread != v29)
+  owningThread = selfCopy->_owningThread;
+  if (owningThread != threadCopy)
   {
-    if (v29 && owningThread)
+    if (threadCopy && owningThread)
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v9, v10, "[TSCH3DSharegroup setOwningThread:]");
       v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DSharegroup.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v22, v23, v24, v15, v20, 535, 0, "at least one must be nil, owning thread %@ new %@", v6->_owningThread, v29);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v22, v23, v24, v15, v20, 535, 0, "at least one must be nil, owning thread %@ new %@", selfCopy->_owningThread, threadCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
     }
 
-    objc_msgSend_p_owningThreadWillChange(v6, v7, v8, v9, v10);
-    objc_storeStrong(&v6->_owningThread, a3);
+    objc_msgSend_p_owningThreadWillChange(selfCopy, v7, v8, v9, v10);
+    objc_storeStrong(&selfCopy->_owningThread, thread);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)owningThreadIsNil
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_owningThread == 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_owningThread == 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isCurrentThreadOwner
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  owningThread = v2->_owningThread;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  owningThread = selfCopy->_owningThread;
   v8 = objc_msgSend_currentThread(MEMORY[0x277CCACC8], v4, v5, v6, v7);
   LOBYTE(owningThread) = owningThread == v8;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return owningThread;
 }
 
@@ -246,23 +246,23 @@
 
 - (FlushResult)p_flushCacheIfNecessary
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (byte_280A46430 == 1)
   {
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(a2);
     v14 = objc_msgSend_currentThread(MEMORY[0x277CCACC8], v10, v11, v12, v13);
-    NSLog(&cfstr_PReceivedLd.isa, v8, v3, v9, v14, v3->_didReceiveFlush);
+    NSLog(&cfstr_PReceivedLd.isa, v8, selfCopy, v9, v14, selfCopy->_didReceiveFlush);
   }
 
-  didReceiveFlush = v3->_didReceiveFlush;
+  didReceiveFlush = selfCopy->_didReceiveFlush;
   if (didReceiveFlush)
   {
-    v3->_didReceiveFlush = 0;
-    objc_msgSend_p_flushCache(v3, v4, v5, v6, v7);
+    selfCopy->_didReceiveFlush = 0;
+    objc_msgSend_p_flushCache(selfCopy, v4, v5, v6, v7);
     v20 = objc_msgSend_sharedManager(MEMORY[0x277D811D8], v16, v17, v18, v19);
-    objc_msgSend_addObject_(v20, v21, v22, v23, v24, v3);
+    objc_msgSend_addObject_(v20, v21, v22, v23, v24, selfCopy);
 
     v25 = 1;
   }
@@ -272,7 +272,7 @@
     v25 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return (v25 | (didReceiveFlush << 8));
 }
@@ -321,9 +321,9 @@ LABEL_10:
   }
 }
 
-- (void)flushResourceSet:(id)a3
+- (void)flushResourceSet:(id)set
 {
-  v42 = a3;
+  setCopy = set;
   if (self->_owningThread)
   {
     v9 = objc_msgSend_currentThread(MEMORY[0x277CCACC8], v5, v6, v7, v8);
@@ -341,12 +341,12 @@ LABEL_10:
     }
   }
 
-  objc_msgSend_unionSet_(self->_purgeableResourceSet, v5, v6, v7, v8, v42);
+  objc_msgSend_unionSet_(self->_purgeableResourceSet, v5, v6, v7, v8, setCopy);
   if (byte_280A46430 == 1)
   {
     v35 = objc_opt_class();
     v36 = NSStringFromSelector(a2);
-    v41 = objc_msgSend_count(v42, v37, v38, v39, v40);
+    v41 = objc_msgSend_count(setCopy, v37, v38, v39, v40);
     NSLog(&cfstr_PFlushLuPurgea.isa, v35, self, v36, v41, self->_purgeableResourceSet);
   }
 
@@ -356,9 +356,9 @@ LABEL_10:
   }
 }
 
-- (void)setIfIsMoreDemandingPerformance:(int)a3
+- (void)setIfIsMoreDemandingPerformance:(int)performance
 {
-  if (self->_performance < a3)
+  if (self->_performance < performance)
   {
     objc_msgSend_setPerformance_(self, a2, v3, v4, v5);
   }

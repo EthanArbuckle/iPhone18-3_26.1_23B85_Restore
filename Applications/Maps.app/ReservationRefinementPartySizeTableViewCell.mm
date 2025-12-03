@@ -1,17 +1,17 @@
 @interface ReservationRefinementPartySizeTableViewCell
-- (ReservationRefinementPartySizeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ReservationRefinementPartySizeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)setupConstraints;
 - (void)updateLabel;
-- (void)updateStepperValueToValue:(unint64_t)a3;
+- (void)updateStepperValueToValue:(unint64_t)value;
 @end
 
 @implementation ReservationRefinementPartySizeTableViewCell
 
-- (void)updateStepperValueToValue:(unint64_t)a3
+- (void)updateStepperValueToValue:(unint64_t)value
 {
-  v4 = a3;
-  v5 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
-  [v5 setValue:v4];
+  valueCopy = value;
+  stepperControl = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
+  [stepperControl setValue:valueCopy];
 
   [(ReservationRefinementPartySizeTableViewCell *)self updateLabel];
 }
@@ -22,8 +22,8 @@
   v10 = +[NSBundle mainBundle];
   v4 = [v10 localizedStringForKey:@"number_of_people_reservation_request" value:@"localized string not found" table:0];
   v5 = +[NSLocale autoupdatingCurrentLocale];
-  v6 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
-  [v6 value];
+  stepperControl = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
+  [stepperControl value];
   LODWORD(v8) = llround(v7);
   v9 = [v3 initWithFormat:v4 locale:v5, v8];
   [(ReservationTableViewCell *)self setTitleText:v9];
@@ -31,31 +31,31 @@
 
 - (void)setupConstraints
 {
-  v3 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stepperControl = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
+  [stepperControl setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
-  v5 = [v4 trailingAnchor];
-  v6 = [(ReservationRefinementPartySizeTableViewCell *)self contentView];
-  v7 = [v6 layoutMarginsGuide];
-  v8 = [v7 trailingAnchor];
-  v14 = [v5 constraintEqualToAnchor:v8];
+  stepperControl2 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
+  trailingAnchor = [stepperControl2 trailingAnchor];
+  contentView = [(ReservationRefinementPartySizeTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v9 = [(ReservationRefinementPartySizeTableViewCell *)self contentView];
-  v10 = [v9 centerYAnchor];
-  v11 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
-  v12 = [v11 centerYAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  contentView2 = [(ReservationRefinementPartySizeTableViewCell *)self contentView];
+  centerYAnchor = [contentView2 centerYAnchor];
+  stepperControl3 = [(ReservationRefinementPartySizeTableViewCell *)self stepperControl];
+  centerYAnchor2 = [stepperControl3 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   [v14 setActive:1];
   [v13 setActive:1];
 }
 
-- (ReservationRefinementPartySizeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ReservationRefinementPartySizeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = ReservationRefinementPartySizeTableViewCell;
-  v4 = [(ReservationTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ReservationTableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -63,13 +63,13 @@
     v4->_stepperControl = v5;
 
     [(UIStepper *)v4->_stepperControl addTarget:v4 action:"valueChanged:" forControlEvents:4096];
-    v7 = [(ReservationRefinementPartySizeTableViewCell *)v4 contentView];
-    v8 = [(ReservationRefinementPartySizeTableViewCell *)v4 stepperControl];
-    [v7 addSubview:v8];
+    contentView = [(ReservationRefinementPartySizeTableViewCell *)v4 contentView];
+    stepperControl = [(ReservationRefinementPartySizeTableViewCell *)v4 stepperControl];
+    [contentView addSubview:stepperControl];
 
     v9 = +[UIColor labelColor];
-    v10 = [(ReservationTableViewCell *)v4 titleLabel];
-    [v10 setTextColor:v9];
+    titleLabel = [(ReservationTableViewCell *)v4 titleLabel];
+    [titleLabel setTextColor:v9];
 
     [(ReservationRefinementPartySizeTableViewCell *)v4 setupConstraints];
   }

@@ -1,17 +1,17 @@
 @interface BLUtilities
-+ (BOOL)isAudioBookFromBuyParameters:(id)a3;
-+ (BOOL)isPreOrderFromBuyParameters:(id)a3;
-+ (id)buyParametersValueForKey:(id)a3 fromBuyParams:(id)a4;
-+ (id)storeIDFromBuyParameters:(id)a3;
++ (BOOL)isAudioBookFromBuyParameters:(id)parameters;
++ (BOOL)isPreOrderFromBuyParameters:(id)parameters;
++ (id)buyParametersValueForKey:(id)key fromBuyParams:(id)params;
++ (id)storeIDFromBuyParameters:(id)parameters;
 @end
 
 @implementation BLUtilities
 
-+ (id)buyParametersValueForKey:(id)a3 fromBuyParams:(id)a4
++ (id)buyParametersValueForKey:(id)key fromBuyParams:(id)params
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [a4 componentsSeparatedByString:@"&"];
+  keyCopy = key;
+  [params componentsSeparatedByString:@"&"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -34,7 +34,7 @@
         if ([v11 count] == 2)
         {
           v12 = [v11 objectAtIndexedSubscript:0];
-          v13 = [v12 isEqualToString:v5];
+          v13 = [v12 isEqualToString:keyCopy];
 
           if (v13)
           {
@@ -58,18 +58,18 @@
   v14 = 0;
 LABEL_12:
 
-  v15 = [v14 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v14 stringByRemovingPercentEncoding];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return stringByRemovingPercentEncoding;
 }
 
-+ (id)storeIDFromBuyParameters:(id)a3
++ (id)storeIDFromBuyParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    v3 = [BLUtilities buyParametersValueForKey:@"salableAdamId" fromBuyParams:a3];
+    v3 = [BLUtilities buyParametersValueForKey:@"salableAdamId" fromBuyParams:parameters];
   }
 
   else
@@ -89,13 +89,13 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)isPreOrderFromBuyParameters:(id)a3
++ (BOOL)isPreOrderFromBuyParameters:(id)parameters
 {
-  v3 = a3;
-  if (v3)
+  parametersCopy = parameters;
+  if (parametersCopy)
   {
-    v4 = [BLUtilities buyParametersValueForKey:@"isPreorder" fromBuyParams:v3];
-    v5 = [BLUtilities buyParametersValueForKey:@"pricingParameters" fromBuyParams:v3];
+    v4 = [BLUtilities buyParametersValueForKey:@"isPreorder" fromBuyParams:parametersCopy];
+    v5 = [BLUtilities buyParametersValueForKey:@"pricingParameters" fromBuyParams:parametersCopy];
     v6 = [v5 hasSuffix:@"PRE"];
     if (v4)
     {
@@ -123,11 +123,11 @@ LABEL_12:
   return v7;
 }
 
-+ (BOOL)isAudioBookFromBuyParameters:(id)a3
++ (BOOL)isAudioBookFromBuyParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    v3 = [BLUtilities buyParametersValueForKey:@"productType" fromBuyParams:a3];
+    v3 = [BLUtilities buyParametersValueForKey:@"productType" fromBuyParams:parameters];
     v4 = v3;
     if (v3)
     {

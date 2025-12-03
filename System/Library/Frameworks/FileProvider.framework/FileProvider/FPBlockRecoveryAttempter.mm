@@ -1,74 +1,74 @@
 @interface FPBlockRecoveryAttempter
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
-- (FPBlockRecoveryAttempter)initWithBlock:(id)a3 operationService:(id)a4;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
+- (FPBlockRecoveryAttempter)initWithBlock:(id)block operationService:(id)service;
 - (NSError)expectedError;
 @end
 
 @implementation FPBlockRecoveryAttempter
 
-- (FPBlockRecoveryAttempter)initWithBlock:(id)a3 operationService:(id)a4
+- (FPBlockRecoveryAttempter)initWithBlock:(id)block operationService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = FPBlockRecoveryAttempter;
   v8 = [(FPBlockRecoveryAttempter *)&v12 init];
   if (v8)
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(blockCopy);
     recoveryBlock = v8->_recoveryBlock;
     v8->_recoveryBlock = v9;
 
-    objc_storeStrong(&v8->_fpxOperationService, a4);
+    objc_storeStrong(&v8->_fpxOperationService, service);
   }
 
   return v8;
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [v6 code];
+  errorCopy = error;
+  code = [errorCopy code];
   WeakRetained = objc_loadWeakRetained(&self->_expectedError);
-  v9 = [WeakRetained code];
+  code2 = [WeakRetained code];
 
-  if (v7 != v9)
+  if (code != code2)
   {
-    v10 = [v6 code];
+    code3 = [errorCopy code];
     v11 = objc_loadWeakRetained(&self->_expectedError);
-    v12 = [v11 code];
+    code4 = [v11 code];
 
-    if (v10 != v12)
+    if (code3 != code4)
     {
       [FPBlockRecoveryAttempter attemptRecoveryFromError:a2 optionIndex:self];
     }
   }
 
-  v13 = [v6 domain];
+  domain = [errorCopy domain];
   v14 = objc_loadWeakRetained(&self->_expectedError);
-  v15 = [v14 domain];
+  domain2 = [v14 domain];
 
-  if (v13 != v15)
+  if (domain != domain2)
   {
-    v16 = [v6 domain];
+    domain3 = [errorCopy domain];
     v17 = objc_loadWeakRetained(&self->_expectedError);
-    v18 = [v17 domain];
+    domain4 = [v17 domain];
 
-    if (v16 != v18)
+    if (domain3 != domain4)
     {
       [FPBlockRecoveryAttempter attemptRecoveryFromError:a2 optionIndex:self];
     }
   }
 
-  v19 = [v6 userInfo];
-  v20 = [v19 valueForKey:@"FPErrorSuppressionCheckboxIsChecked"];
+  userInfo = [errorCopy userInfo];
+  v20 = [userInfo valueForKey:@"FPErrorSuppressionCheckboxIsChecked"];
 
   if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if ([v20 BOOLValue])
     {
-      v21 = [v6 userInfo];
-      v22 = [v21 valueForKey:@"FPUserInteractionIdentifier"];
+      userInfo2 = [errorCopy userInfo];
+      v22 = [userInfo2 valueForKey:@"FPUserInteractionIdentifier"];
 
       v23 = fp_current_or_default_log();
       v24 = v23;
@@ -79,8 +79,8 @@
           [FPBlockRecoveryAttempter attemptRecoveryFromError:optionIndex:];
         }
 
-        v25 = [v6 userInfo];
-        v24 = [v25 objectForKey:@"DomainIdentifier"];
+        userInfo3 = [errorCopy userInfo];
+        v24 = [userInfo3 objectForKey:@"DomainIdentifier"];
 
         [(FPXOperationService *)self->_fpxOperationService userCheckedSuppressionCheckboxForUserInteractionIdentifier:v22 domainIdentifier:v24 completionHandler:&__block_literal_global_299];
       }

@@ -8,16 +8,16 @@
 - (UIView)container;
 - (UIView)monogramColorView;
 - (UIView)ringView;
-- (id)subtitleForPlayer:(id)a3 isCoreRecent:(BOOL)a4 matchedContactName:(id)a5 onlyShowContactName:(BOOL)a6;
+- (id)subtitleForPlayer:(id)player isCoreRecent:(BOOL)recent matchedContactName:(id)name onlyShowContactName:(BOOL)contactName;
 - (void)awakeFromNib;
-- (void)configureWithPlayer:(id)a3 isCoreRecent:(BOOL)a4 matchedContactName:(id)a5 onlyShowContactName:(BOOL)a6;
-- (void)setAccessibilityPrefix:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLineVisible:(BOOL)a3;
-- (void)setSelectable:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)configureWithPlayer:(id)player isCoreRecent:(BOOL)recent matchedContactName:(id)name onlyShowContactName:(BOOL)contactName;
+- (void)setAccessibilityPrefix:(id)prefix;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLineVisible:(BOOL)visible;
+- (void)setSelectable:(BOOL)selectable;
+- (void)setSelected:(BOOL)selected;
 - (void)updateCellBackground;
-- (void)updateLayerMask:(id)a3;
+- (void)updateLayerMask:(id)mask;
 @end
 
 @implementation GKDashboardPickerPlayerCell
@@ -36,169 +36,169 @@
   v32.receiver = self;
   v32.super_class = GKDashboardPickerPlayerCell;
   [(GKFocusHighlightingCollectionViewCell *)&v32 awakeFromNib];
-  v3 = [(GKDashboardPickerPlayerCell *)self playerView];
-  [v3 setUseDarkerPlaceholder:1];
+  playerView = [(GKDashboardPickerPlayerCell *)self playerView];
+  [playerView setUseDarkerPlaceholder:1];
 
-  v4 = [(GKDashboardPickerPlayerCell *)self playerView];
-  [v4 setAvatarSize:0x10000];
+  playerView2 = [(GKDashboardPickerPlayerCell *)self playerView];
+  [playerView2 setAvatarSize:0x10000];
 
-  v5 = [(GKDashboardPickerPlayerCell *)self cellBackgroundColor];
-  v6 = [(GKDashboardPickerPlayerCell *)self contentView];
-  [v6 setBackgroundColor:v5];
+  cellBackgroundColor = [(GKDashboardPickerPlayerCell *)self cellBackgroundColor];
+  contentView = [(GKDashboardPickerPlayerCell *)self contentView];
+  [contentView setBackgroundColor:cellBackgroundColor];
 
-  v7 = [(GKDashboardPickerPlayerCell *)self playerView];
-  [v7 setUserInteractionEnabled:0];
+  playerView3 = [(GKDashboardPickerPlayerCell *)self playerView];
+  [playerView3 setUserInteractionEnabled:0];
 
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  v9 = [v8 colorWithAlphaComponent:0.1];
-  v10 = [(GKDashboardPickerPlayerCell *)self bottomLine];
-  [v10 setBackgroundColor:v9];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v9 = [whiteColor colorWithAlphaComponent:0.1];
+  bottomLine = [(GKDashboardPickerPlayerCell *)self bottomLine];
+  [bottomLine setBackgroundColor:v9];
 
   v11 = *MEMORY[0x277CDA5E8];
-  v12 = [(GKDashboardPickerPlayerCell *)self subtitle];
-  v13 = [v12 layer];
-  [v13 setCompositingFilter:v11];
+  subtitle = [(GKDashboardPickerPlayerCell *)self subtitle];
+  layer = [subtitle layer];
+  [layer setCompositingFilter:v11];
 
   v14 = objc_opt_new();
   v15 = MEMORY[0x277D75208];
-  v16 = [(GKDashboardPickerPlayerCell *)self ringView];
-  [v16 frame];
+  ringView = [(GKDashboardPickerPlayerCell *)self ringView];
+  [ringView frame];
   v18 = v17;
-  v19 = [(GKDashboardPickerPlayerCell *)self ringView];
-  [v19 frame];
+  ringView2 = [(GKDashboardPickerPlayerCell *)self ringView];
+  [ringView2 frame];
   v20 = [v15 bezierPathWithOvalInRect:{0.0, 0.0, v18}];
   [v14 setPath:{objc_msgSend(v20, "CGPath")}];
 
-  v21 = [(GKDashboardPickerPlayerCell *)self ringView];
-  v22 = [v21 layer];
-  [v22 addSublayer:v14];
+  ringView3 = [(GKDashboardPickerPlayerCell *)self ringView];
+  layer2 = [ringView3 layer];
+  [layer2 addSublayer:v14];
 
-  v23 = [MEMORY[0x277D75348] whiteColor];
-  v24 = [v23 colorWithAlphaComponent:0.6];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  v24 = [whiteColor2 colorWithAlphaComponent:0.6];
   [v14 setStrokeColor:{objc_msgSend(v24, "CGColor")}];
 
-  v25 = [MEMORY[0x277D75348] clearColor];
-  [v14 setFillColor:{objc_msgSend(v25, "CGColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v14 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
   [v14 setLineWidth:2.0];
-  v26 = [(GKDashboardPickerPlayerCell *)self ringView];
-  v27 = [v26 layer];
-  [v27 setCompositingFilter:v11];
+  ringView4 = [(GKDashboardPickerPlayerCell *)self ringView];
+  layer3 = [ringView4 layer];
+  [layer3 setCompositingFilter:v11];
 
-  v28 = [(GKDashboardPickerPlayerCell *)self ringView];
-  [v28 setHidden:1];
+  ringView5 = [(GKDashboardPickerPlayerCell *)self ringView];
+  [ringView5 setHidden:1];
 
   v29 = GKGameCenterUIFrameworkBundle();
   v30 = GKGetLocalizedStringFromTableInBundle();
-  v31 = [(GKDashboardPickerPlayerCell *)self ringView];
-  [v31 setAccessibilityLabel:v30];
+  ringView6 = [(GKDashboardPickerPlayerCell *)self ringView];
+  [ringView6 setAccessibilityLabel:v30];
 }
 
-- (void)configureWithPlayer:(id)a3 isCoreRecent:(BOOL)a4 matchedContactName:(id)a5 onlyShowContactName:(BOOL)a6
+- (void)configureWithPlayer:(id)player isCoreRecent:(BOOL)recent matchedContactName:(id)name onlyShowContactName:(BOOL)contactName
 {
-  v6 = a6;
-  v7 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [(GKDashboardPickerPlayerCell *)self monogramColorView];
-  [v12 setHidden:0];
+  contactNameCopy = contactName;
+  recentCopy = recent;
+  nameCopy = name;
+  playerCopy = player;
+  monogramColorView = [(GKDashboardPickerPlayerCell *)self monogramColorView];
+  [monogramColorView setHidden:0];
 
-  v13 = [(GKDashboardPickerPlayerCell *)self playerView];
-  [v13 setPlayer:v11];
+  playerView = [(GKDashboardPickerPlayerCell *)self playerView];
+  [playerView setPlayer:playerCopy];
 
-  v22 = [v11 displayNameWithOptions:0];
-  v14 = [(GKDashboardPickerPlayerCell *)self title];
-  [v14 setText:v22];
+  v22 = [playerCopy displayNameWithOptions:0];
+  title = [(GKDashboardPickerPlayerCell *)self title];
+  [title setText:v22];
 
-  v15 = [(GKDashboardPickerPlayerCell *)self subtitleForPlayer:v11 isCoreRecent:v7 matchedContactName:v10 onlyShowContactName:v6];
+  v15 = [(GKDashboardPickerPlayerCell *)self subtitleForPlayer:playerCopy isCoreRecent:recentCopy matchedContactName:nameCopy onlyShowContactName:contactNameCopy];
 
   [(GKDashboardPickerPlayerCell *)self setOriginalSubtitle:v15];
-  v16 = [(GKDashboardPickerPlayerCell *)self selectable];
-  v17 = v16;
-  if (v16)
+  selectable = [(GKDashboardPickerPlayerCell *)self selectable];
+  v17 = selectable;
+  if (selectable)
   {
     [(GKDashboardPickerPlayerCell *)self originalSubtitle];
   }
 
   else
   {
-    v7 = GKGameCenterUIFrameworkBundle();
+    recentCopy = GKGameCenterUIFrameworkBundle();
     GKGetLocalizedStringFromTableInBundle();
   }
   v18 = ;
-  v19 = [(GKDashboardPickerPlayerCell *)self subtitle];
-  [v19 setText:v18];
+  subtitle = [(GKDashboardPickerPlayerCell *)self subtitle];
+  [subtitle setText:v18];
 
   if (!v17)
   {
 
-    v18 = v7;
+    v18 = recentCopy;
   }
 
   v20 = [v15 length] == 0;
-  v21 = [(GKDashboardPickerPlayerCell *)self subtitle];
-  [v21 setHidden:v20];
+  subtitle2 = [(GKDashboardPickerPlayerCell *)self subtitle];
+  [subtitle2 setHidden:v20];
 }
 
-- (void)setAccessibilityPrefix:(id)a3
+- (void)setAccessibilityPrefix:(id)prefix
 {
-  v12 = a3;
-  v4 = [(GKDashboardPickerPlayerCell *)self title];
-  v5 = [v4 text];
+  prefixCopy = prefix;
+  title = [(GKDashboardPickerPlayerCell *)self title];
+  text = [title text];
 
-  if (v5)
+  if (text)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.title-%@", v12, v5];
-    v7 = [(GKDashboardPickerPlayerCell *)self title];
-    [v7 setAccessibilityIdentifier:v6];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.title-%@", prefixCopy, text];
+    title2 = [(GKDashboardPickerPlayerCell *)self title];
+    [title2 setAccessibilityIdentifier:v6];
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.subtitle-%@", v12, v5];
-    v9 = [(GKDashboardPickerPlayerCell *)self subtitle];
-    [v9 setAccessibilityIdentifier:v8];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.subtitle-%@", prefixCopy, text];
+    subtitle = [(GKDashboardPickerPlayerCell *)self subtitle];
+    [subtitle setAccessibilityIdentifier:v8];
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.ring-%@", v12, v5];
-    v11 = [(GKDashboardPickerPlayerCell *)self ringView];
-    [v11 setAccessibilityIdentifier:v10];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.ring-%@", prefixCopy, text];
+    ringView = [(GKDashboardPickerPlayerCell *)self ringView];
+    [ringView setAccessibilityIdentifier:v10];
   }
 }
 
-- (id)subtitleForPlayer:(id)a3 isCoreRecent:(BOOL)a4 matchedContactName:(id)a5 onlyShowContactName:(BOOL)a6
+- (id)subtitleForPlayer:(id)player isCoreRecent:(BOOL)recent matchedContactName:(id)name onlyShowContactName:(BOOL)contactName
 {
-  v6 = a6;
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (!v6)
+  contactNameCopy = contactName;
+  recentCopy = recent;
+  playerCopy = player;
+  nameCopy = name;
+  if (!contactNameCopy)
   {
-    if (v8)
+    if (recentCopy)
     {
 LABEL_6:
       v13 = GKGameCenterUIFrameworkBundle();
-      v12 = GKGetLocalizedStringFromTableInBundle();
+      contact = GKGetLocalizedStringFromTableInBundle();
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v14 = [v9 lastPlayedGame];
-    if (v14 && (v15 = v14, [v9 lastPlayedGame], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "name"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "length"), v17, v16, v15, v18))
+    lastPlayedGame = [playerCopy lastPlayedGame];
+    if (lastPlayedGame && (v15 = lastPlayedGame, [playerCopy lastPlayedGame], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "name"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "length"), v17, v16, v15, v18))
     {
       v19 = MEMORY[0x277CCACA8];
       v13 = GKGameCenterUIFrameworkBundle();
       v20 = GKGetLocalizedStringFromTableInBundle();
-      v21 = [v9 lastPlayedGame];
-      v22 = [v21 name];
+      lastPlayedGame2 = [playerCopy lastPlayedGame];
+      name = [lastPlayedGame2 name];
     }
 
     else
     {
-      v23 = [v9 lastPlayedDate];
+      lastPlayedDate = [playerCopy lastPlayedDate];
 
-      if (!v23)
+      if (!lastPlayedDate)
       {
-        v12 = [v9 contact];
+        contact = [playerCopy contact];
 
-        if (!v12)
+        if (!contact)
         {
           goto LABEL_14;
         }
@@ -209,66 +209,66 @@ LABEL_13:
       v19 = MEMORY[0x277CCACA8];
       v13 = GKGameCenterUIFrameworkBundle();
       v20 = GKGetLocalizedStringFromTableInBundle();
-      v21 = [v9 lastPlayedDate];
-      v22 = [v21 _gkFormattedWhenStringWithOptions:0];
+      lastPlayedGame2 = [playerCopy lastPlayedDate];
+      name = [lastPlayedGame2 _gkFormattedWhenStringWithOptions:0];
     }
 
-    v24 = v22;
-    v12 = [v19 stringWithFormat:v20, v22];
+    v24 = name;
+    contact = [v19 stringWithFormat:v20, name];
 
     goto LABEL_13;
   }
 
-  v11 = [v9 contact];
+  contact2 = [playerCopy contact];
 
-  v12 = 0;
-  if (v10 && !v11)
+  contact = 0;
+  if (nameCopy && !contact2)
   {
-    v12 = v10;
+    contact = nameCopy;
   }
 
 LABEL_14:
 
-  return v12;
+  return contact;
 }
 
-- (void)updateLayerMask:(id)a3
+- (void)updateLayerMask:(id)mask
 {
   v3 = MEMORY[0x277D75208];
-  v4 = a3;
-  [v4 bounds];
+  maskCopy = mask;
+  [maskCopy bounds];
   v8 = [v3 bezierPathWithRoundedRect:12 byRoundingCorners:? cornerRadii:?];
-  v5 = [MEMORY[0x277CD9F90] layer];
-  [v4 bounds];
-  [v5 setFrame:?];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [maskCopy bounds];
+  [layer setFrame:?];
   v6 = v8;
-  [v5 setPath:{objc_msgSend(v8, "CGPath")}];
-  v7 = [v4 layer];
+  [layer setPath:{objc_msgSend(v8, "CGPath")}];
+  layer2 = [maskCopy layer];
 
-  [v7 setMask:v5];
+  [layer2 setMask:layer];
 }
 
-- (void)setLineVisible:(BOOL)a3
+- (void)setLineVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(GKDashboardPickerPlayerCell *)self bottomLine];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  bottomLine = [(GKDashboardPickerPlayerCell *)self bottomLine];
+  [bottomLine setHidden:!visibleCopy];
 }
 
 - (BOOL)lineVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->_bottomLine);
-  v3 = [WeakRetained isHidden];
+  isHidden = [WeakRetained isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setSelectable:(BOOL)a3
+- (void)setSelectable:(BOOL)selectable
 {
-  self->_selectable = a3;
-  v5 = !a3;
-  v6 = [(GKDashboardPickerPlayerCell *)self playerView];
-  [v6 setDimmed:v5];
+  self->_selectable = selectable;
+  v5 = !selectable;
+  playerView = [(GKDashboardPickerPlayerCell *)self playerView];
+  [playerView setDimmed:v5];
 
   if (v5)
   {
@@ -281,10 +281,10 @@ LABEL_14:
     [(GKDashboardPickerPlayerCell *)self originalSubtitle];
   }
   v8 = ;
-  v7 = [(GKDashboardPickerPlayerCell *)self subtitle];
-  [v7 setText:v8];
+  subtitle = [(GKDashboardPickerPlayerCell *)self subtitle];
+  [subtitle setText:v8];
 
-  if (!a3)
+  if (!selectable)
   {
 
     v8 = v5;
@@ -303,11 +303,11 @@ LABEL_14:
     [(GKDashboardPickerPlayerCell *)self cellBackgroundColor];
   }
   v4 = ;
-  v3 = [(GKDashboardPickerPlayerCell *)self contentView];
-  [v3 setBackgroundColor:v4];
+  contentView = [(GKDashboardPickerPlayerCell *)self contentView];
+  [contentView setBackgroundColor:v4];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = GKDashboardPickerPlayerCell;
@@ -317,7 +317,7 @@ LABEL_14:
   v5[2] = __46__GKDashboardPickerPlayerCell_setHighlighted___block_invoke;
   v5[3] = &unk_27966A890;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0 completion:0.05];
 }
 
@@ -338,17 +338,17 @@ void __46__GKDashboardPickerPlayerCell_setHighlighted___block_invoke(uint64_t a1
   [v3 setOpacity:v2];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = GKDashboardPickerPlayerCell;
   [(GKDashboardPickerPlayerCell *)&v7 setSelected:?];
-  v5 = [(GKDashboardPickerPlayerCell *)self layer];
-  [v5 setBackgroundColor:0];
+  layer = [(GKDashboardPickerPlayerCell *)self layer];
+  [layer setBackgroundColor:0];
 
-  v6 = [(GKDashboardPickerPlayerCell *)self ringView];
-  [v6 setHidden:!v3];
+  ringView = [(GKDashboardPickerPlayerCell *)self ringView];
+  [ringView setHidden:!selectedCopy];
 }
 
 - (UIView)container

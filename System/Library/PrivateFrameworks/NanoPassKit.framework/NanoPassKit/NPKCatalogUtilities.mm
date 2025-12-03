@@ -1,21 +1,21 @@
 @interface NPKCatalogUtilities
-+ (id)catalogByMergingCompanionCatalog:(id)a3 intoWatchCatalog:(id)a4 watchPasses:(id)a5;
++ (id)catalogByMergingCompanionCatalog:(id)catalog intoWatchCatalog:(id)watchCatalog watchPasses:(id)passes;
 @end
 
 @implementation NPKCatalogUtilities
 
-+ (id)catalogByMergingCompanionCatalog:(id)a3 intoWatchCatalog:(id)a4 watchPasses:(id)a5
++ (id)catalogByMergingCompanionCatalog:(id)catalog intoWatchCatalog:(id)watchCatalog watchPasses:(id)passes
 {
   v182 = *MEMORY[0x277D85DE8];
-  v102 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  catalogCopy = catalog;
+  watchCatalogCopy = watchCatalog;
+  passesCopy = passes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v166 = 0u;
   v167 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v10 = v8;
+  v10 = passesCopy;
   v11 = [v10 countByEnumeratingWithState:&v166 objects:v181 count:16];
   if (v11)
   {
@@ -31,10 +31,10 @@
         }
 
         v15 = *(*(&v166 + 1) + 8 * i);
-        v16 = [v15 uniqueID];
-        if (v16)
+        uniqueID = [v15 uniqueID];
+        if (uniqueID)
         {
-          [v9 setObject:v15 forKey:v16];
+          [dictionary setObject:v15 forKey:uniqueID];
         }
       }
 
@@ -46,14 +46,14 @@
 
   v100 = v10;
 
-  v106 = [MEMORY[0x277CBEB18] array];
-  v118 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v162 = 0u;
   v163 = 0u;
   v164 = 0u;
   v165 = 0u;
-  v101 = v7;
-  obj = [v7 groups];
+  v101 = watchCatalogCopy;
+  obj = [watchCatalogCopy groups];
   v17 = [obj countByEnumeratingWithState:&v162 objects:v180 count:16];
   if (v17)
   {
@@ -73,8 +73,8 @@
         v159 = 0u;
         v160 = 0u;
         v161 = 0u;
-        v22 = [v21 uniqueIDs];
-        v23 = [v22 countByEnumeratingWithState:&v158 objects:v179 count:16];
+        uniqueIDs = [v21 uniqueIDs];
+        v23 = [uniqueIDs countByEnumeratingWithState:&v158 objects:v179 count:16];
         if (v23)
         {
           v24 = v23;
@@ -85,22 +85,22 @@
             {
               if (*v159 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(uniqueIDs);
               }
 
-              v27 = [v9 objectForKey:*(*(&v158 + 1) + 8 * k)];
+              v27 = [dictionary objectForKey:*(*(&v158 + 1) + 8 * k)];
               if (v27)
               {
                 v28 = v27;
-                v29 = [v27 passType];
-                if ([v28 style] == 6 && v29 == 1)
+                passType = [v27 passType];
+                if ([v28 style] == 6 && passType == 1)
                 {
-                  v31 = v106;
+                  v31 = array;
                 }
 
                 else
                 {
-                  v31 = v118;
+                  v31 = array2;
                 }
 
                 [v31 addObject:v21];
@@ -109,7 +109,7 @@
               }
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v158 objects:v179 count:16];
+            v24 = [uniqueIDs countByEnumeratingWithState:&v158 objects:v179 count:16];
             if (v24)
             {
               continue;
@@ -128,12 +128,12 @@ LABEL_31:
     while (v18);
   }
 
-  v111 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
   v157 = 0u;
-  obja = [v102 groups];
+  obja = [catalogCopy groups];
   v32 = [obja countByEnumeratingWithState:&v154 objects:v178 count:16];
   if (v32)
   {
@@ -153,8 +153,8 @@ LABEL_31:
         v151 = 0u;
         v152 = 0u;
         v153 = 0u;
-        v37 = [v36 uniqueIDs];
-        v38 = [v37 countByEnumeratingWithState:&v150 objects:v177 count:16];
+        uniqueIDs2 = [v36 uniqueIDs];
+        v38 = [uniqueIDs2 countByEnumeratingWithState:&v150 objects:v177 count:16];
         if (v38)
         {
           v39 = v38;
@@ -165,26 +165,26 @@ LABEL_31:
             {
               if (*v151 != v40)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(uniqueIDs2);
               }
 
-              v42 = [v9 objectForKey:*(*(&v150 + 1) + 8 * n)];
+              v42 = [dictionary objectForKey:*(*(&v150 + 1) + 8 * n)];
               if (v42)
               {
                 v43 = v42;
-                v44 = [v42 passType];
-                v45 = [v43 style];
-                if (v44 != 1 || v45 != 6)
+                passType2 = [v42 passType];
+                style = [v43 style];
+                if (passType2 != 1 || style != 6)
                 {
                   v47 = [v36 copy];
-                  [v111 addObject:v47];
+                  [array3 addObject:v47];
                 }
 
                 goto LABEL_53;
               }
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v150 objects:v177 count:16];
+            v39 = [uniqueIDs2 countByEnumeratingWithState:&v150 objects:v177 count:16];
             if (v39)
             {
               continue;
@@ -208,7 +208,7 @@ LABEL_53:
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
-  v113 = v118;
+  v113 = array2;
   v49 = [v113 countByEnumeratingWithState:&v146 objects:v176 count:16];
   if (v49)
   {
@@ -228,8 +228,8 @@ LABEL_53:
         v143 = 0u;
         v144 = 0u;
         v145 = 0u;
-        v53 = [v52 uniqueIDs];
-        v54 = [v53 countByEnumeratingWithState:&v142 objects:v175 count:16];
+        uniqueIDs3 = [v52 uniqueIDs];
+        v54 = [uniqueIDs3 countByEnumeratingWithState:&v142 objects:v175 count:16];
         if (v54)
         {
           v55 = v54;
@@ -240,18 +240,18 @@ LABEL_53:
             {
               if (*v143 != v56)
               {
-                objc_enumerationMutation(v53);
+                objc_enumerationMutation(uniqueIDs3);
               }
 
               v58 = *(*(&v142 + 1) + 8 * jj);
-              v59 = [v9 objectForKey:v58];
+              v59 = [dictionary objectForKey:v58];
               if (v59)
               {
                 [v48 addObject:v58];
               }
             }
 
-            v55 = [v53 countByEnumeratingWithState:&v142 objects:v175 count:16];
+            v55 = [uniqueIDs3 countByEnumeratingWithState:&v142 objects:v175 count:16];
           }
 
           while (v55);
@@ -269,7 +269,7 @@ LABEL_53:
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
-  v107 = v111;
+  v107 = array3;
   v120 = [v107 countByEnumeratingWithState:&v138 objects:v174 count:16];
   if (v120)
   {
@@ -288,8 +288,8 @@ LABEL_53:
         v135 = 0u;
         v136 = 0u;
         v137 = 0u;
-        v63 = [v62 uniqueIDs];
-        v64 = [v63 countByEnumeratingWithState:&v134 objects:v173 count:16];
+        uniqueIDs4 = [v62 uniqueIDs];
+        v64 = [uniqueIDs4 countByEnumeratingWithState:&v134 objects:v173 count:16];
         if (v64)
         {
           v65 = v64;
@@ -300,18 +300,18 @@ LABEL_53:
             {
               if (*v135 != v66)
               {
-                objc_enumerationMutation(v63);
+                objc_enumerationMutation(uniqueIDs4);
               }
 
               v68 = *(*(&v134 + 1) + 8 * mm);
-              v69 = [v9 objectForKey:v68];
+              v69 = [dictionary objectForKey:v68];
               if (v69)
               {
                 [v60 addObject:v68];
               }
             }
 
-            v65 = [v63 countByEnumeratingWithState:&v134 objects:v173 count:16];
+            v65 = [uniqueIDs4 countByEnumeratingWithState:&v134 objects:v173 count:16];
           }
 
           while (v65);
@@ -326,7 +326,7 @@ LABEL_53:
 
   v70 = [v48 mutableCopy];
   [v70 minusSet:v60];
-  v104 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
@@ -368,8 +368,8 @@ LABEL_94:
             }
 
             v77 = *(*(&v126 + 1) + 8 * v76);
-            v78 = [v77 uniqueIDs];
-            v79 = [v78 containsObject:v72];
+            uniqueIDs5 = [v77 uniqueIDs];
+            v79 = [uniqueIDs5 containsObject:v72];
 
             if (v79)
             {
@@ -399,15 +399,15 @@ LABEL_94:
           }
 
           v71 = v110;
-          if ([v104 containsObject:v80])
+          if ([array4 containsObject:v80])
           {
             goto LABEL_117;
           }
 
           v81 = [v60 mutableCopy];
           v82 = MEMORY[0x277CBEB98];
-          v83 = [v80 uniqueIDs];
-          v84 = [v82 setWithArray:v83];
+          uniqueIDs6 = [v80 uniqueIDs];
+          v84 = [v82 setWithArray:uniqueIDs6];
           [v81 intersectSet:v84];
 
           v121 = v81;
@@ -435,13 +435,13 @@ LABEL_94:
                   }
 
                   v89 = *(*(&v122 + 1) + 8 * nn);
-                  v90 = [v89 uniqueIDs];
-                  v91 = [v90 containsObject:objc];
+                  uniqueIDs7 = [v89 uniqueIDs];
+                  v91 = [uniqueIDs7 containsObject:objc];
 
                   if (v91)
                   {
-                    v92 = [v89 uniqueIDs];
-                    [v92 addObject:v72];
+                    uniqueIDs8 = [v89 uniqueIDs];
+                    [uniqueIDs8 addObject:v72];
 
                     v71 = v110;
                     v80 = v103;
@@ -463,7 +463,7 @@ LABEL_94:
             v80 = v103;
           }
 
-          [v104 addObject:v80];
+          [array4 addObject:v80];
         }
 
         else
@@ -486,14 +486,14 @@ LABEL_117:
   }
 
   v94 = objc_alloc_init(MEMORY[0x277D37E10]);
-  v95 = [v94 groups];
-  [v95 addObjectsFromArray:v106];
+  groups = [v94 groups];
+  [groups addObjectsFromArray:array];
 
-  v96 = [v94 groups];
-  [v96 addObjectsFromArray:v104];
+  groups2 = [v94 groups];
+  [groups2 addObjectsFromArray:array4];
 
-  v97 = [v94 groups];
-  [v97 addObjectsFromArray:v107];
+  groups3 = [v94 groups];
+  [groups3 addObjectsFromArray:v107];
 
   v98 = *MEMORY[0x277D85DE8];
 

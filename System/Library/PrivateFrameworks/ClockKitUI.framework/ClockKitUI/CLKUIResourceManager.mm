@@ -1,16 +1,16 @@
 @interface CLKUIResourceManager
 + (id)sharedInstance;
-- (BOOL)ensureMemoryAvailable:(unint64_t)a3;
+- (BOOL)ensureMemoryAvailable:(unint64_t)available;
 - (CLKUIResourceManager)init;
 - (id)_fetchOldestAtlas;
 - (id)borrowTextureLoadingQueue;
-- (id)delegateForUuid:(id)a3;
-- (id)textureForUuid:(id)a3 delegate:(id)a4 rect:(id)a5 nullTexture:(BOOL)a6 streaming:;
+- (id)delegateForUuid:(id)uuid;
+- (id)textureForUuid:(id)uuid delegate:(id)delegate rect:(id)rect nullTexture:(BOOL)texture streaming:;
 - (unint64_t)_computeMemoryAvailable;
 - (unint64_t)_memoryLimit;
 - (void)_purgeAllUnconditionally;
 - (void)dealloc;
-- (void)purge:(id)a3;
+- (void)purge:(id)purge;
 - (void)purgeAllUnused;
 - (void)updateTextureStreaming;
 @end
@@ -72,8 +72,8 @@ uint64_t __38__CLKUIResourceManager_sharedInstance__block_invoke()
 
     v2->_memoryLimit = v14;
     v2->_explicitMemoryLimit = -1;
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v2 selector:sel__purgeAllUnconditionally name:*MEMORY[0x1E695B4C8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__purgeAllUnconditionally name:*MEMORY[0x1E695B4C8] object:0];
   }
 
   return v2;
@@ -81,42 +81,42 @@ uint64_t __38__CLKUIResourceManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695B4C8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695B4C8] object:0];
 
   v4.receiver = self;
   v4.super_class = CLKUIResourceManager;
   [(CLKUIResourceManager *)&v4 dealloc];
 }
 
-- (id)textureForUuid:(id)a3 delegate:(id)a4 rect:(id)a5 nullTexture:(BOOL)a6 streaming:
+- (id)textureForUuid:(id)uuid delegate:(id)delegate rect:(id)rect nullTexture:(BOOL)texture streaming:
 {
-  v7 = a6;
+  textureCopy = texture;
   v21 = v6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v12 resourceProviderKey];
-  v15 = v14;
+  uuidCopy = uuid;
+  delegateCopy = delegate;
+  rectCopy = rect;
+  resourceProviderKey = [delegateCopy resourceProviderKey];
+  v15 = resourceProviderKey;
   v16 = 0;
-  if (v11 && v14)
+  if (uuidCopy && resourceProviderKey)
   {
-    v17 = [v14 key];
+    v17 = [resourceProviderKey key];
     v18 = [(NSMutableDictionary *)self->_providersByKey objectForKey:v17];
     if (!v18)
     {
-      v18 = [objc_opt_new() initWithDelegate:v12 key:v17];
+      v18 = [objc_opt_new() initWithDelegate:delegateCopy key:v17];
       [(NSMutableDictionary *)self->_providersByKey setObject:v18 forKeyedSubscript:v17];
     }
 
-    [(NSMutableDictionary *)self->_recentProvidersForUuid setObject:v18 forKeyedSubscript:v11, v21];
-    [v18 addUuidToHistory:v11];
-    v19 = [(NSMutableDictionary *)self->_atlasesByUuid objectForKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_recentProvidersForUuid setObject:v18 forKeyedSubscript:uuidCopy, v21];
+    [v18 addUuidToHistory:uuidCopy];
+    v19 = [(NSMutableDictionary *)self->_atlasesByUuid objectForKeyedSubscript:uuidCopy];
     if (!v19)
     {
-      v19 = [(CLKUIResourceManager *)self _newAtlasForUuid:v11 nullTexture:v13 streaming:v7];
-      [(NSMutableDictionary *)self->_atlasesByUuid setObject:v19 forKeyedSubscript:v11];
-      if (v7)
+      v19 = [(CLKUIResourceManager *)self _newAtlasForUuid:uuidCopy nullTexture:rectCopy streaming:textureCopy];
+      [(NSMutableDictionary *)self->_atlasesByUuid setObject:v19 forKeyedSubscript:uuidCopy];
+      if (textureCopy)
       {
         [(NSMutableArray *)self->_streamedAtlases addObject:v19];
       }
@@ -128,9 +128,9 @@ uint64_t __38__CLKUIResourceManager_sharedInstance__block_invoke()
   return v16;
 }
 
-- (void)purge:(id)a3
+- (void)purge:(id)purge
 {
-  v5 = [(NSMutableDictionary *)self->_atlasesByUuid objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_atlasesByUuid objectForKeyedSubscript:purge];
   if ([v5 isPurgable])
   {
     v4 = objc_opt_new();
@@ -236,35 +236,35 @@ uint64_t __38__CLKUIResourceManager_sharedInstance__block_invoke()
 {
   if ([(NSMutableArray *)self->_textureLoaderQueues count])
   {
-    v3 = [(NSMutableArray *)self->_textureLoaderQueues lastObject];
+    lastObject = [(NSMutableArray *)self->_textureLoaderQueues lastObject];
     [(NSMutableArray *)self->_textureLoaderQueues removeLastObject];
   }
 
   else
   {
     v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-    v3 = dispatch_queue_create("CLKUIMetalTexture queue", v4);
+    lastObject = dispatch_queue_create("CLKUIMetalTexture queue", v4);
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (BOOL)ensureMemoryAvailable:(unint64_t)a3
+- (BOOL)ensureMemoryAvailable:(unint64_t)available
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(CLKUIResourceManager *)self _computeMemoryAvailable];
-  v6 = [(CLKUIResourceManager *)self _memoryLimit];
-  if (self->_memoryUsed + a3 > v6 || v5 < a3)
+  _computeMemoryAvailable = [(CLKUIResourceManager *)self _computeMemoryAvailable];
+  _memoryLimit = [(CLKUIResourceManager *)self _memoryLimit];
+  if (self->_memoryUsed + available > _memoryLimit || _computeMemoryAvailable < available)
   {
-    v8 = v6;
+    v8 = _memoryLimit;
     v9 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       memoryUsed = self->_memoryUsed;
       *buf = 134218752;
-      v30 = a3;
+      availableCopy = available;
       v31 = 2048;
-      v32 = v5;
+      v32 = _computeMemoryAvailable;
       v33 = 2048;
       v34 = memoryUsed;
       v35 = 2048;
@@ -273,13 +273,13 @@ uint64_t __38__CLKUIResourceManager_sharedInstance__block_invoke()
     }
 
     [(CLKUIResourceManager *)self purgeAllUnused];
-    v11 = [(CLKUIResourceManager *)self _computeMemoryAvailable];
-    v12 = v11;
-    if (self->_memoryUsed + a3 > v8 || v11 < a3)
+    _computeMemoryAvailable2 = [(CLKUIResourceManager *)self _computeMemoryAvailable];
+    v12 = _computeMemoryAvailable2;
+    if (self->_memoryUsed + available > v8 || _computeMemoryAvailable2 < available)
     {
       v13 = objc_opt_new();
-      v16 = [(CLKUIResourceManager *)self _fetchOldestAtlas];
-      if (!v16)
+      _fetchOldestAtlas = [(CLKUIResourceManager *)self _fetchOldestAtlas];
+      if (!_fetchOldestAtlas)
       {
 LABEL_19:
         v23 = CLKLoggingObjectForDomain();
@@ -287,7 +287,7 @@ LABEL_19:
         {
           v24 = self->_memoryUsed;
           *buf = 134218240;
-          v30 = v12;
+          availableCopy = v12;
           v31 = 2048;
           v32 = v24;
           _os_log_impl(&dword_1E49C8000, v23, OS_LOG_TYPE_DEFAULT, "evications end: failed (%lu available bytes, %lu memory used)", buf, 0x16u);
@@ -297,7 +297,7 @@ LABEL_19:
         goto LABEL_26;
       }
 
-      v18 = v16;
+      v18 = _fetchOldestAtlas;
       *&v17 = 138412290;
       v28 = v17;
       while (1)
@@ -305,26 +305,26 @@ LABEL_19:
         v19 = CLKLoggingObjectForDomain();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v18 uuid];
+          uuid = [v18 uuid];
           *buf = v28;
-          v30 = v20;
+          availableCopy = uuid;
           _os_log_impl(&dword_1E49C8000, v19, OS_LOG_TYPE_DEFAULT, "evict uuid %@", buf, 0xCu);
         }
 
         [v13 addObject:v18];
         [(CLKUIResourceManager *)self _purgeAtlases:v13];
         [v13 removeAllObjects];
-        v21 = [(CLKUIResourceManager *)self _computeMemoryAvailable];
-        v12 = v21;
-        if (self->_memoryUsed + a3 <= v8 && v21 >= a3)
+        _computeMemoryAvailable3 = [(CLKUIResourceManager *)self _computeMemoryAvailable];
+        v12 = _computeMemoryAvailable3;
+        if (self->_memoryUsed + available <= v8 && _computeMemoryAvailable3 >= available)
         {
           break;
         }
 
-        v22 = [(CLKUIResourceManager *)self _fetchOldestAtlas];
+        _fetchOldestAtlas2 = [(CLKUIResourceManager *)self _fetchOldestAtlas];
 
-        v18 = v22;
-        if (!v22)
+        v18 = _fetchOldestAtlas2;
+        if (!_fetchOldestAtlas2)
         {
           goto LABEL_19;
         }
@@ -335,7 +335,7 @@ LABEL_19:
       {
         v26 = self->_memoryUsed;
         *buf = 134218240;
-        v30 = v12;
+        availableCopy = v12;
         v31 = 2048;
         v32 = v26;
         _os_log_impl(&dword_1E49C8000, v25, OS_LOG_TYPE_DEFAULT, "evications end: success (%lu available bytes, %lu memory used)", buf, 0x16u);
@@ -349,7 +349,7 @@ LABEL_19:
       {
         v14 = self->_memoryUsed;
         *buf = 134218240;
-        v30 = v12;
+        availableCopy = v12;
         v31 = 2048;
         v32 = v14;
         _os_log_impl(&dword_1E49C8000, v13, OS_LOG_TYPE_DEFAULT, "evications end: success (%lu available bytes, %lu memory used)", buf, 0x16u);
@@ -392,8 +392,8 @@ LABEL_26:
 
           v9 = *(*(&v37 + 1) + 8 * i);
           v10 = [(NSMutableDictionary *)self->_providersByKey objectForKeyedSubscript:v9];
-          v11 = [v10 delegate];
-          if (!v11)
+          delegate = [v10 delegate];
+          if (!delegate)
           {
             if (!v6)
             {
@@ -510,17 +510,17 @@ LABEL_37:
             }
 
             v25 = *(*(&v29 + 1) + 8 * k);
-            v26 = [v25 uuid];
+            uuid = [v25 uuid];
             v27 = CLKLoggingObjectForDomain();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v42 = v26;
+              v42 = uuid;
               _os_log_impl(&dword_1E49C8000, v27, OS_LOG_TYPE_DEFAULT, "discard uuid %@", buf, 0xCu);
             }
 
-            [(NSMutableDictionary *)self->_atlasesByUuid removeObjectForKey:v26];
-            [(NSMutableDictionary *)self->_recentProvidersForUuid removeObjectForKey:v26];
+            [(NSMutableDictionary *)self->_atlasesByUuid removeObjectForKey:uuid];
+            [(NSMutableDictionary *)self->_recentProvidersForUuid removeObjectForKey:uuid];
             [(NSMutableArray *)self->_streamedAtlases removeObject:v25];
           }
 
@@ -573,13 +573,13 @@ LABEL_37:
   }
 }
 
-- (id)delegateForUuid:(id)a3
+- (id)delegateForUuid:(id)uuid
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_recentProvidersForUuid objectForKeyedSubscript:v4];
+  uuidCopy = uuid;
+  v5 = [(NSMutableDictionary *)self->_recentProvidersForUuid objectForKeyedSubscript:uuidCopy];
   v6 = v5;
-  if (!v5 || ([v5 delegate], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v5 || ([v5 delegate], (delegate = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v20 = 0u;
     v21 = 0u;
@@ -602,15 +602,15 @@ LABEL_37:
           }
 
           v13 = [(NSMutableDictionary *)self->_providersByKey objectForKeyedSubscript:*(*(&v18 + 1) + 8 * i)];
-          v7 = [v13 delegate];
-          if (v7)
+          delegate = [v13 delegate];
+          if (delegate)
           {
-            v14 = [v13 uuidHistory];
-            v15 = [v14 containsObject:v4];
+            uuidHistory = [v13 uuidHistory];
+            v15 = [uuidHistory containsObject:uuidCopy];
 
             if (v15)
             {
-              [(NSMutableDictionary *)self->_recentProvidersForUuid setObject:v13 forKeyedSubscript:v4];
+              [(NSMutableDictionary *)self->_recentProvidersForUuid setObject:v13 forKeyedSubscript:uuidCopy];
 
               goto LABEL_14;
             }
@@ -626,18 +626,18 @@ LABEL_37:
         break;
       }
 
-      v7 = 0;
+      delegate = 0;
 LABEL_14:
       v6 = v17;
     }
 
     else
     {
-      v7 = 0;
+      delegate = 0;
     }
   }
 
-  return v7;
+  return delegate;
 }
 
 - (void)_purgeAllUnconditionally

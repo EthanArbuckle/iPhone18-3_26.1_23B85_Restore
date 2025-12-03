@@ -1,35 +1,35 @@
 @interface IDSGFTMetricsCollector
 - (IDSGFTMetricsCollector)init;
 - (IDSGFTMetricsLocalJoin)localJoin;
-- (id)begin:(id)a3 uniqueID:(id)a4;
-- (id)begin:(id)a3 uniqueID:(id)a4 withClass:(Class)a5;
-- (id)collectForTimeBase:(double)a3 anonymize:(BOOL)a4;
+- (id)begin:(id)begin uniqueID:(id)d;
+- (id)begin:(id)begin uniqueID:(id)d withClass:(Class)class;
+- (id)collectForTimeBase:(double)base anonymize:(BOOL)anonymize;
 - (id)createLinkCycle;
-- (id)error:(id)a3;
-- (id)getOrCreateMKICycleFor:(id)a3;
-- (id)joinCycleForToken:(id)a3;
+- (id)error:(id)error;
+- (id)getOrCreateMKICycleFor:(id)for;
+- (id)joinCycleForToken:(id)token;
 - (id)localDidJoin;
-- (id)mtuChange:(unsigned __int16)a3 previous:(unsigned __int16)a4;
-- (id)participantUpdateForParticipantID:(id)a3;
-- (id)request:(id)a3;
-- (id)uniqueError:(id)a3;
-- (void)allocbindResponseForProtocolStack:(id)a3;
-- (void)allocbindResponseFromInterface:(id)a3;
-- (void)annotate:(id)a3 block:(id)a4;
-- (void)annotate:(id)a3 withEvent:(id)a4;
-- (void)avcReceiveMKMTime:(double)a3 forMKI:(id)a4 isGeneratedLocally:(BOOL)a5;
+- (id)mtuChange:(unsigned __int16)change previous:(unsigned __int16)previous;
+- (id)participantUpdateForParticipantID:(id)d;
+- (id)request:(id)request;
+- (id)uniqueError:(id)error;
+- (void)allocbindResponseForProtocolStack:(id)stack;
+- (void)allocbindResponseFromInterface:(id)interface;
+- (void)annotate:(id)annotate block:(id)block;
+- (void)annotate:(id)annotate withEvent:(id)event;
+- (void)avcReceiveMKMTime:(double)time forMKI:(id)i isGeneratedLocally:(BOOL)locally;
 - (void)clientChannelConnected;
 - (void)connectQRServer;
 - (void)didConnectUnderlyingE2ELink;
 - (void)didConnectUnderlyingRelayLink;
-- (void)didCreateMKM:(id)a3;
-- (void)didFailConnectionOfType:(id)a3;
+- (void)didCreateMKM:(id)m;
+- (void)didFailConnectionOfType:(id)type;
 - (void)didLeave;
-- (void)didMitigateCollision:(BOOL)a3;
+- (void)didMitigateCollision:(BOOL)collision;
 - (void)didSendJoin;
-- (void)endWithReason:(unsigned int)a3;
-- (void)firstIncomingPacketTime:(double)a3 forMKI:(id)a4;
-- (void)firstOutgoingPacketTime:(double)a3 forMKI:(id)a4;
+- (void)endWithReason:(unsigned int)reason;
+- (void)firstIncomingPacketTime:(double)time forMKI:(id)i;
+- (void)firstOutgoingPacketTime:(double)time forMKI:(id)i;
 - (void)flushPendingNowKnownMKMs;
 - (void)globalLinkStart;
 - (void)hasConvergence;
@@ -41,34 +41,34 @@
 - (void)linkConnectedUsingHTTP2;
 - (void)linkConnectedUsingQUIC;
 - (void)linkConnectedUsingTCPSTUN;
-- (void)linkConnectedWithH2FallbackEnabled:(BOOL)a3;
-- (void)mapMKI:(id)a3 toPushToken:(id)a4;
+- (void)linkConnectedWithH2FallbackEnabled:(BOOL)enabled;
+- (void)mapMKI:(id)i toPushToken:(id)token;
 - (void)membershipChange;
 - (void)participantIdChanged;
 - (void)participantIdUnknown;
 - (void)quicAllocbindRequest;
 - (void)quicAllocbindResponse;
-- (void)receivedKMOverPushFromToken:(id)a3;
-- (void)receivedKMOverPushViaCacheForToken:(id)a3;
-- (void)receivedKMOverQRFromToken:(id)a3;
-- (void)receivedKMOverQUICFromToken:(id)a3;
-- (void)receivedParticipantUpdateJoinEventOverPushFromParticipantID:(id)a3;
-- (void)receivedParticipantUpdateJoinEventOverQUICFromParticipantID:(id)a3;
-- (void)receivedParticipantUpdateLeaveEventOverPushFromParticipantID:(id)a3;
-- (void)receivedParticipantUpdateLeaveEventOverQUICFromParticipantID:(id)a3;
-- (void)receivedParticipantUpdateParticipantInfoEventOverPushFromParticipantID:(id)a3;
-- (void)receivedParticipantUpdateParticipantInfoEventOverQUICFromParticipantID:(id)a3;
-- (void)receivedUnknownKMOverPushViaCache:(id)a3;
-- (void)receivedUnverifiedKMOverQUICFromToken:(id)a3;
+- (void)receivedKMOverPushFromToken:(id)token;
+- (void)receivedKMOverPushViaCacheForToken:(id)token;
+- (void)receivedKMOverQRFromToken:(id)token;
+- (void)receivedKMOverQUICFromToken:(id)token;
+- (void)receivedParticipantUpdateJoinEventOverPushFromParticipantID:(id)d;
+- (void)receivedParticipantUpdateJoinEventOverQUICFromParticipantID:(id)d;
+- (void)receivedParticipantUpdateLeaveEventOverPushFromParticipantID:(id)d;
+- (void)receivedParticipantUpdateLeaveEventOverQUICFromParticipantID:(id)d;
+- (void)receivedParticipantUpdateParticipantInfoEventOverPushFromParticipantID:(id)d;
+- (void)receivedParticipantUpdateParticipantInfoEventOverQUICFromParticipantID:(id)d;
+- (void)receivedUnknownKMOverPushViaCache:(id)cache;
+- (void)receivedUnverifiedKMOverQUICFromToken:(id)token;
 - (void)reinitFinish;
 - (void)reinitStart;
-- (void)remoteDidBecomeActive:(id)a3;
-- (void)remoteDidJoin:(id)a3;
+- (void)remoteDidBecomeActive:(id)active;
+- (void)remoteDidJoin:(id)join;
 - (void)requestAllocation;
-- (void)selectedLocalInterface:(id)a3;
+- (void)selectedLocalInterface:(id)interface;
 - (void)sendAllocationRequest;
-- (void)sendMKMToAVC:(id)a3 isGeneratedLocally:(BOOL)a4;
-- (void)sendRatchetedKMtoAVCForToken:(id)a3;
+- (void)sendMKMToAVC:(id)c isGeneratedLocally:(BOOL)locally;
+- (void)sendRatchetedKMtoAVCForToken:(id)token;
 - (void)serverShortMKICacheMiss;
 - (void)stunAllocbindRequest;
 - (void)stunAllocbindResponse;
@@ -76,7 +76,7 @@
 - (void)tcpAllocbindResponse;
 - (void)transactionIDMismatchDetected;
 - (void)useGecko;
-- (void)willSendAllocbindRequestThroughInterface:(id)a3;
+- (void)willSendAllocbindRequestThroughInterface:(id)interface;
 - (void)willSendJoin;
 @end
 
@@ -118,40 +118,40 @@
   return v3;
 }
 
-- (id)begin:(id)a3 uniqueID:(id)a4
+- (id)begin:(id)begin uniqueID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IDSGFTMetricsCollector *)self begin:v7 uniqueID:v6 withClass:objc_opt_class()];
+  dCopy = d;
+  beginCopy = begin;
+  v8 = [(IDSGFTMetricsCollector *)self begin:beginCopy uniqueID:dCopy withClass:objc_opt_class()];
 
   return v8;
 }
 
-- (id)begin:(id)a3 uniqueID:(id)a4 withClass:(Class)a5
+- (id)begin:(id)begin uniqueID:(id)d withClass:(Class)class
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  beginCopy = begin;
+  dCopy = d;
+  if (!dCopy)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    dCopy = [MEMORY[0x1E695DFB0] null];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_referencePointsByType objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_referencePointsByType objectForKeyedSubscript:beginCopy];
 
   if (!v10)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    [(NSMutableDictionary *)self->_referencePointsByType setObject:Mutable forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_referencePointsByType setObject:Mutable forKeyedSubscript:beginCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_referencePointsByType objectForKeyedSubscript:v8];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  v12 = [(NSMutableDictionary *)self->_referencePointsByType objectForKeyedSubscript:beginCopy];
+  v13 = [v12 objectForKeyedSubscript:dCopy];
 
   if (!v13)
   {
-    v14 = [a5 alloc];
+    v14 = [class alloc];
     anonymizer = self->_anonymizer;
     v22[0] = @"i";
     v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_isInitiator];
@@ -160,10 +160,10 @@
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSSet count](self->_activeParticipantURIs, "count")}];
     v23[1] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-    v13 = [v14 initWithFromType:v8 fromUniqueID:v9 anonymizer:anonymizer templateDictionary:v18];
+    v13 = [v14 initWithFromType:beginCopy fromUniqueID:dCopy anonymizer:anonymizer templateDictionary:v18];
 
-    v19 = [(NSMutableDictionary *)self->_referencePointsByType objectForKeyedSubscript:v8];
-    [v19 setObject:v13 forKeyedSubscript:v9];
+    v19 = [(NSMutableDictionary *)self->_referencePointsByType objectForKeyedSubscript:beginCopy];
+    [v19 setObject:v13 forKeyedSubscript:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -172,63 +172,63 @@
   return v20;
 }
 
-- (void)annotate:(id)a3 block:(id)a4
+- (void)annotate:(id)annotate block:(id)block
 {
-  v11 = a3;
-  v6 = a4;
+  annotateCopy = annotate;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_annotatorsByEventType objectForKeyedSubscript:v11];
+  v7 = [(NSMutableDictionary *)self->_annotatorsByEventType objectForKeyedSubscript:annotateCopy];
 
   if (!v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_annotatorsByEventType setObject:v8 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_annotatorsByEventType setObject:v8 forKeyedSubscript:annotateCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->_annotatorsByEventType objectForKeyedSubscript:v11];
-  v10 = _Block_copy(v6);
+  v9 = [(NSMutableDictionary *)self->_annotatorsByEventType objectForKeyedSubscript:annotateCopy];
+  v10 = _Block_copy(blockCopy);
 
   [v9 addObject:v10];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)annotate:(id)a3 withEvent:(id)a4
+- (void)annotate:(id)annotate withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  annotateCopy = annotate;
   v8 = ids_monotonic_time();
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = sub_1A7C49520;
   v14 = &unk_1E77E2070;
-  v15 = v6;
+  v15 = eventCopy;
   v16 = v8;
-  v9 = v6;
+  v9 = eventCopy;
   v10 = _Block_copy(&v11);
-  [(IDSGFTMetricsCollector *)self annotate:v7 block:v10, v11, v12, v13, v14];
+  [(IDSGFTMetricsCollector *)self annotate:annotateCopy block:v10, v11, v12, v13, v14];
 }
 
-- (id)collectForTimeBase:(double)a3 anonymize:(BOOL)a4
+- (id)collectForTimeBase:(double)base anonymize:(BOOL)anonymize
 {
-  v62 = a4;
+  anonymizeCopy = anonymize;
   v110 = *MEMORY[0x1E69E9840];
   [(IDSGFTMetricsCollector *)self flushPendingNowKnownMKMs];
-  v74 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
   v6 = +[IDSFoundationLog Metrics];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v109 = a3;
+    baseCopy = base;
     _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "GFTMetrics: collecting metrics with timeBase %f", buf, 0xCu);
   }
 
-  v73 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  obj = v74->_referencePointsByType;
+  obj = selfCopy->_referencePointsByType;
   v59 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v98 objects:v107 count:16];
   if (v59)
   {
@@ -245,16 +245,16 @@
 
         v60 = v7;
         v8 = *(*(&v98 + 1) + 8 * v7);
-        v68 = [(NSMutableDictionary *)v74->_annotatorsByEventType objectForKeyedSubscript:v8];
-        v75 = [MEMORY[0x1E695DF90] dictionary];
-        v9 = [MEMORY[0x1E695DF90] dictionary];
+        v68 = [(NSMutableDictionary *)selfCopy->_annotatorsByEventType objectForKeyedSubscript:v8];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v94 = 0u;
         v95 = 0u;
         v96 = 0u;
         v97 = 0u;
         v64 = v8;
-        v61 = [(NSMutableDictionary *)v74->_referencePointsByType objectForKeyedSubscript:v8];
-        v76 = v9;
+        v61 = [(NSMutableDictionary *)selfCopy->_referencePointsByType objectForKeyedSubscript:v8];
+        v76 = dictionary2;
         v66 = [v61 countByEnumeratingWithState:&v94 objects:v106 count:16];
         if (!v66)
         {
@@ -276,7 +276,7 @@
 
             v71 = v10;
             v11 = *(*(&v94 + 1) + 8 * v10);
-            v12 = [(NSMutableDictionary *)v74->_referencePointsByType objectForKeyedSubscript:v64];
+            v12 = [(NSMutableDictionary *)selfCopy->_referencePointsByType objectForKeyedSubscript:v64];
             v13 = [v12 objectForKeyedSubscript:v11];
 
             if (v68)
@@ -311,7 +311,7 @@
             }
 
             v69 = v13;
-            v19 = [v13 collectForTimeBase:v62 anonymize:a3];
+            v19 = [v13 collectForTimeBase:anonymizeCopy anonymize:base];
             v86 = 0u;
             v87 = 0u;
             v88 = 0u;
@@ -344,17 +344,17 @@
 
                     else if ([v26 isEqual:@"IDSGFTMetricsWildcard"])
                     {
-                      v29 = [v75 objectForKeyedSubscript:v25];
+                      v29 = [dictionary objectForKeyedSubscript:v25];
 
                       if (!v29)
                       {
-                        v30 = [MEMORY[0x1E695DF70] array];
-                        [v75 setObject:v30 forKeyedSubscript:v25];
+                        array2 = [MEMORY[0x1E695DF70] array];
+                        [dictionary setObject:array2 forKeyedSubscript:v25];
                       }
 
-                      v28 = [v75 objectForKeyedSubscript:v25];
+                      v28 = [dictionary objectForKeyedSubscript:v25];
                       [v28 addObjectsFromArray:v27];
-                      v9 = v76;
+                      dictionary2 = v76;
                     }
 
                     else
@@ -364,15 +364,15 @@
                         goto LABEL_42;
                       }
 
-                      v31 = [v9 objectForKeyedSubscript:v26];
+                      v31 = [dictionary2 objectForKeyedSubscript:v26];
 
                       if (!v31)
                       {
-                        v32 = [MEMORY[0x1E695DF70] array];
-                        [v9 setObject:v32 forKeyedSubscript:v26];
+                        array3 = [MEMORY[0x1E695DF70] array];
+                        [dictionary2 setObject:array3 forKeyedSubscript:v26];
                       }
 
-                      v28 = [v9 objectForKeyedSubscript:v26];
+                      v28 = [dictionary2 objectForKeyedSubscript:v26];
                       [v28 addObjectsFromArray:v27];
                     }
                   }
@@ -380,10 +380,10 @@
                   else
                   {
                     v27 = [v24 mutableCopy];
-                    v33 = [MEMORY[0x1E696AD98] numberWithBool:v74->_isInitiator];
+                    v33 = [MEMORY[0x1E696AD98] numberWithBool:selfCopy->_isInitiator];
                     [v27 setObject:v33 forKeyedSubscript:@"i"];
 
-                    [v73 addObject:v27];
+                    [array addObject:v27];
                   }
 
 LABEL_42:
@@ -409,8 +409,8 @@ LABEL_48:
         v85 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v65 = v73;
-        v34 = v75;
+        v65 = array;
+        v34 = dictionary;
         v35 = v77;
         v70 = [v65 countByEnumeratingWithState:&v82 objects:v103 count:16];
         if (v70)
@@ -434,11 +434,11 @@ LABEL_48:
                 v40 = [v37 objectForKeyedSubscript:@"events"];
                 [v40 addObjectsFromArray:v35];
 
-                v9 = v76;
+                dictionary2 = v76;
               }
 
-              [v9 objectForKeyedSubscript:v39];
-              v42 = v41 = v9;
+              [dictionary2 objectForKeyedSubscript:v39];
+              v42 = v41 = dictionary2;
 
               if (v42)
               {
@@ -490,8 +490,8 @@ LABEL_48:
 
               [v37 removeObjectForKey:@"events"];
               ++v36;
-              v34 = v75;
-              v9 = v76;
+              v34 = dictionary;
+              dictionary2 = v76;
               v35 = v77;
             }
 
@@ -512,9 +512,9 @@ LABEL_48:
     while (v59);
   }
 
-  os_unfair_lock_unlock(&v74->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
-  return v73;
+  return array;
 }
 
 - (void)flushPendingNowKnownMKMs
@@ -585,37 +585,37 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_unknownMKMFlushLock);
 }
 
-- (id)joinCycleForToken:(id)a3
+- (id)joinCycleForToken:(id)token
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self begin:@"ra" uniqueID:v4 withClass:objc_opt_class()];
+  tokenCopy = token;
+  v5 = [(IDSGFTMetricsCollector *)self begin:@"ra" uniqueID:tokenCopy withClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)participantUpdateForParticipantID:(id)a3
+- (id)participantUpdateForParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self begin:@"pu" uniqueID:v4 withClass:objc_opt_class()];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self begin:@"pu" uniqueID:dCopy withClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)error:(id)a3
+- (id)error:(id)error
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"err.%@", a3];
-  v5 = [(IDSGFTMetricsCollector *)self begin:v4 uniqueID:&stru_1F1AC8480];
+  error = [MEMORY[0x1E696AEC0] stringWithFormat:@"err.%@", error];
+  v5 = [(IDSGFTMetricsCollector *)self begin:error uniqueID:&stru_1F1AC8480];
 
   return v5;
 }
 
-- (id)uniqueError:(id)a3
+- (id)uniqueError:(id)error
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"err.%@", a3];
+  error = [MEMORY[0x1E696AEC0] stringWithFormat:@"err.%@", error];
   v5 = MEMORY[0x1E696AD98];
   ++self->_nextUniqueID;
   v6 = [v5 numberWithInt:?];
-  v7 = [(IDSGFTMetricsCollector *)self begin:v4 uniqueID:v6];
+  v7 = [(IDSGFTMetricsCollector *)self begin:error uniqueID:v6];
 
   return v7;
 }
@@ -624,15 +624,15 @@ LABEL_48:
 {
   [(IDSGFTMetricsCollector *)self annotate:@"ra" withEvent:@"lj"];
   [(IDSGFTMetricsCollector *)self annotate:@"kvd" withEvent:@"lj"];
-  v3 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v3 join];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin join];
 
-  return v3;
+  return localJoin;
 }
 
-- (void)remoteDidJoin:(id)a3
+- (void)remoteDidJoin:(id)join
 {
-  v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:a3];
+  v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:join];
   [v4 remoteDidJoin];
 
   [(IDSGFTMetricsCollector *)self annotate:@"kvd" withEvent:@"rj"];
@@ -640,9 +640,9 @@ LABEL_48:
   [(IDSGFTMetricsCollector *)self annotate:@"lj" withEvent:@"rj"];
 }
 
-- (void)remoteDidBecomeActive:(id)a3
+- (void)remoteDidBecomeActive:(id)active
 {
-  v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:a3];
+  v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:active];
   [v4 remoteDidBecomeActive];
   [(IDSGFTMetricsCollector *)self annotate:@"kvd" withEvent:@"ra"];
   [(IDSGFTMetricsCollector *)self annotate:@"lj" withEvent:@"ra"];
@@ -657,286 +657,286 @@ LABEL_48:
 
 - (void)willSendJoin
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 willSendJoin];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin willSendJoin];
 }
 
 - (void)didSendJoin
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 didSendJoin];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin didSendJoin];
 }
 
 - (void)connectQRServer
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 connectQRServer];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin connectQRServer];
 }
 
 - (void)participantIdChanged
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 participantIdChanged];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin participantIdChanged];
 }
 
 - (void)participantIdUnknown
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 participantIdUnknown];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin participantIdUnknown];
 }
 
 - (void)serverShortMKICacheMiss
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 serverShortMKICacheMiss];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin serverShortMKICacheMiss];
 }
 
-- (void)selectedLocalInterface:(id)a3
+- (void)selectedLocalInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v5 selectedLocalInterface:v4];
+  interfaceCopy = interface;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin selectedLocalInterface:interfaceCopy];
 }
 
 - (void)requestAllocation
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 requestAllocation];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin requestAllocation];
 }
 
 - (void)sendAllocationRequest
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 sendAllocationRequest];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin sendAllocationRequest];
 }
 
 - (void)useGecko
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 useGecko];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin useGecko];
 }
 
 - (void)globalLinkStart
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 globalLinkStart];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin globalLinkStart];
 }
 
-- (void)willSendAllocbindRequestThroughInterface:(id)a3
+- (void)willSendAllocbindRequestThroughInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v5 willSendAllocbindRequestThroughInterface:v4];
+  interfaceCopy = interface;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin willSendAllocbindRequestThroughInterface:interfaceCopy];
 }
 
 - (void)stunAllocbindRequest
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 stunAllocbindRequest];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin stunAllocbindRequest];
 }
 
 - (void)stunAllocbindResponse
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 stunAllocbindResponse];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin stunAllocbindResponse];
 }
 
 - (void)tcpAllocbindRequest
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 tcpAllocbindRequest];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin tcpAllocbindRequest];
 }
 
 - (void)tcpAllocbindResponse
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 tcpAllocbindResponse];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin tcpAllocbindResponse];
 }
 
 - (void)quicAllocbindRequest
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 quicAllocbindRequest];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin quicAllocbindRequest];
 }
 
 - (void)quicAllocbindResponse
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 quicAllocbindResponse];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin quicAllocbindResponse];
 }
 
-- (void)allocbindResponseFromInterface:(id)a3
+- (void)allocbindResponseFromInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v5 allocbindResponseFromInterface:v4];
+  interfaceCopy = interface;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin allocbindResponseFromInterface:interfaceCopy];
 }
 
-- (void)allocbindResponseForProtocolStack:(id)a3
+- (void)allocbindResponseForProtocolStack:(id)stack
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v5 allocbindResponseForProtocolStack:v4];
+  stackCopy = stack;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin allocbindResponseForProtocolStack:stackCopy];
 }
 
 - (void)clientChannelConnected
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 clientChannelConnected];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin clientChannelConnected];
 }
 
 - (void)didConnectUnderlyingRelayLink
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 didConnectUnderlyingRelayLink];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin didConnectUnderlyingRelayLink];
 }
 
 - (void)didConnectUnderlyingE2ELink
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 didConnectUnderlyingE2ELink];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin didConnectUnderlyingE2ELink];
 }
 
 - (void)linkConnectedUsingQUIC
 {
-  v3 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v3 linkConnectedUsingQUIC];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin linkConnectedUsingQUIC];
 
   [(IDSGFTMetricsCollector *)self annotate:@"ra" withEvent:@"cl-quic"];
 }
 
 - (void)linkConnectedUsingHTTP2
 {
-  v3 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v3 linkConnectedUsingHTTP2];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin linkConnectedUsingHTTP2];
 
   [(IDSGFTMetricsCollector *)self annotate:@"ra" withEvent:@"cl-h2"];
 }
 
 - (void)linkConnectedUsingTCPSTUN
 {
-  v3 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v3 linkConnectedUsingTCPSTUN];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin linkConnectedUsingTCPSTUN];
 
   [(IDSGFTMetricsCollector *)self annotate:@"ra" withEvent:@"cl-tcp"];
 }
 
 - (void)linkConnectedUsingFakeTLS
 {
-  v3 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v3 linkConnectedUsingFakeTLS];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin linkConnectedUsingFakeTLS];
 
   [(IDSGFTMetricsCollector *)self annotate:@"ra" withEvent:@"cl-tls"];
 }
 
-- (void)linkConnectedWithH2FallbackEnabled:(BOOL)a3
+- (void)linkConnectedWithH2FallbackEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v4 linkConnectedWithH2FallbackEnabled:v3];
+  enabledCopy = enabled;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin linkConnectedWithH2FallbackEnabled:enabledCopy];
 }
 
-- (void)firstIncomingPacketTime:(double)a3 forMKI:(id)a4
+- (void)firstIncomingPacketTime:(double)time forMKI:(id)i
 {
-  v6 = a4;
-  v7 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v7 firstIncomingPacketTime:v6 forMKI:a3];
+  iCopy = i;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin firstIncomingPacketTime:iCopy forMKI:time];
 
-  v8 = IDSGetUUIDDataFromNSUUID(v6);
+  v8 = IDSGetUUIDDataFromNSUUID(iCopy);
 
   v9 = [(IDSGFTMetricsCollector *)self getOrCreateMKICycleFor:v8];
 
-  [v9 receivedFirstPacketTime:a3];
+  [v9 receivedFirstPacketTime:time];
 }
 
-- (void)firstOutgoingPacketTime:(double)a3 forMKI:(id)a4
+- (void)firstOutgoingPacketTime:(double)time forMKI:(id)i
 {
-  v6 = a4;
-  v7 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v7 firstOutgoingPacketTime:v6 forMKI:a3];
+  iCopy = i;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin firstOutgoingPacketTime:iCopy forMKI:time];
 }
 
-- (void)avcReceiveMKMTime:(double)a3 forMKI:(id)a4 isGeneratedLocally:(BOOL)a5
+- (void)avcReceiveMKMTime:(double)time forMKI:(id)i isGeneratedLocally:(BOOL)locally
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v9 avcReceiveMKMTime:v8 forMKI:v5 isGeneratedLocally:a3];
+  locallyCopy = locally;
+  iCopy = i;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin avcReceiveMKMTime:iCopy forMKI:locallyCopy isGeneratedLocally:time];
 }
 
 - (void)hasSentCompoundPacket
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 hasSentCompoundPacket];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin hasSentCompoundPacket];
 }
 
 - (void)hasConvergence
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 hasConvergence];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin hasConvergence];
 }
 
 - (void)hasRealloc
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 hasRealloc];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin hasRealloc];
 }
 
 - (void)hasGoaway
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 hasGoaway];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin hasGoaway];
 }
 
-- (void)endWithReason:(unsigned int)a3
+- (void)endWithReason:(unsigned int)reason
 {
-  v3 = *&a3;
-  v4 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v4 endWithReason:v3];
+  v3 = *&reason;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin endWithReason:v3];
 }
 
 - (void)reinitStart
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 reinitStart];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin reinitStart];
 }
 
 - (void)reinitFinish
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 reinitFinish];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin reinitFinish];
 }
 
 - (void)leave
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 leave];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin leave];
 }
 
 - (void)didLeave
 {
-  v2 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v2 didLeave];
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin didLeave];
 }
 
-- (void)didCreateMKM:(id)a3
+- (void)didCreateMKM:(id)m
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v5 didCreateMKM:v4];
+  mCopy = m;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin didCreateMKM:mCopy];
 }
 
-- (void)sendMKMToAVC:(id)a3 isGeneratedLocally:(BOOL)a4
+- (void)sendMKMToAVC:(id)c isGeneratedLocally:(BOOL)locally
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(IDSGFTMetricsCollector *)self localJoin];
-  [v7 sendMKMToAVC:v6 isGeneratedLocally:v4];
+  locallyCopy = locally;
+  cCopy = c;
+  localJoin = [(IDSGFTMetricsCollector *)self localJoin];
+  [localJoin sendMKMToAVC:cCopy isGeneratedLocally:locallyCopy];
 }
 
-- (void)receivedKMOverPushFromToken:(id)a3
+- (void)receivedKMOverPushFromToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:?];
   [v4 receivedKMOverPush];
 
@@ -945,13 +945,13 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverPushFromToken:v6];
+    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverPushFromToken:tokenCopy];
   }
 }
 
-- (void)receivedKMOverPushViaCacheForToken:(id)a3
+- (void)receivedKMOverPushViaCacheForToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:?];
   [v4 receivedKMOverPushViaCache];
 
@@ -960,13 +960,13 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverPushViaCacheForToken:v6];
+    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverPushViaCacheForToken:tokenCopy];
   }
 }
 
-- (void)receivedUnknownKMOverPushViaCache:(id)a3
+- (void)receivedUnknownKMOverPushViaCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_unknownMKMReceiptTimes)
   {
@@ -976,17 +976,17 @@ LABEL_48:
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:ids_monotonic_time()];
-  [(NSMutableDictionary *)self->_unknownMKMReceiptTimes setObject:v7 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_unknownMKMReceiptTimes setObject:v7 forKeyedSubscript:cacheCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   [(IDSGFTMetricsCollector *)self flushPendingNowKnownMKMs];
 }
 
-- (void)mapMKI:(id)a3 toPushToken:(id)a4
+- (void)mapMKI:(id)i toPushToken:(id)token
 {
-  v10 = a3;
-  v6 = a4;
+  iCopy = i;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
   pushTokensByMKIs = self->_pushTokensByMKIs;
   if (!pushTokensByMKIs)
@@ -998,14 +998,14 @@ LABEL_48:
     pushTokensByMKIs = self->_pushTokensByMKIs;
   }
 
-  [(NSMutableDictionary *)pushTokensByMKIs setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)pushTokensByMKIs setObject:tokenCopy forKeyedSubscript:iCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(IDSGFTMetricsCollector *)self flushPendingNowKnownMKMs];
 }
 
-- (void)receivedKMOverQRFromToken:(id)a3
+- (void)receivedKMOverQRFromToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:?];
   [v4 receivedKMOverQR];
 
@@ -1014,13 +1014,13 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverQRFromToken:v6];
+    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverQRFromToken:tokenCopy];
   }
 }
 
-- (void)receivedKMOverQUICFromToken:(id)a3
+- (void)receivedKMOverQUICFromToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:?];
   [v4 receivedKMOverQUIC];
 
@@ -1029,55 +1029,55 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverQUICFromToken:v6];
+    [(IDSGFTMetricsMembershipChange *)v5 receivedKMOverQUICFromToken:tokenCopy];
   }
 }
 
-- (void)receivedParticipantUpdateJoinEventOverQUICFromParticipantID:(id)a3
+- (void)receivedParticipantUpdateJoinEventOverQUICFromParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:v4];
-  [v5 receivedJoinEventOverQUICFromParticipantID:v4];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:dCopy];
+  [v5 receivedJoinEventOverQUICFromParticipantID:dCopy];
 }
 
-- (void)receivedParticipantUpdateJoinEventOverPushFromParticipantID:(id)a3
+- (void)receivedParticipantUpdateJoinEventOverPushFromParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:v4];
-  [v5 receivedJoinEventOverPushFromParticipantID:v4];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:dCopy];
+  [v5 receivedJoinEventOverPushFromParticipantID:dCopy];
 }
 
-- (void)receivedParticipantUpdateLeaveEventOverQUICFromParticipantID:(id)a3
+- (void)receivedParticipantUpdateLeaveEventOverQUICFromParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:v4];
-  [v5 receivedLeaveEventOverQUICFromParticipantID:v4];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:dCopy];
+  [v5 receivedLeaveEventOverQUICFromParticipantID:dCopy];
 }
 
-- (void)receivedParticipantUpdateLeaveEventOverPushFromParticipantID:(id)a3
+- (void)receivedParticipantUpdateLeaveEventOverPushFromParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:v4];
-  [v5 receivedLeaveEventOverPushFromParticipantID:v4];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:dCopy];
+  [v5 receivedLeaveEventOverPushFromParticipantID:dCopy];
 }
 
-- (void)receivedParticipantUpdateParticipantInfoEventOverQUICFromParticipantID:(id)a3
+- (void)receivedParticipantUpdateParticipantInfoEventOverQUICFromParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:v4];
-  [v5 receivedParticipantInfoEventOverQUICFromParticipantID:v4];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:dCopy];
+  [v5 receivedParticipantInfoEventOverQUICFromParticipantID:dCopy];
 }
 
-- (void)receivedParticipantUpdateParticipantInfoEventOverPushFromParticipantID:(id)a3
+- (void)receivedParticipantUpdateParticipantInfoEventOverPushFromParticipantID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:v4];
-  [v5 receivedParticipantInfoEventOverPushFromParticipantID:v4];
+  dCopy = d;
+  v5 = [(IDSGFTMetricsCollector *)self participantUpdateForParticipantID:dCopy];
+  [v5 receivedParticipantInfoEventOverPushFromParticipantID:dCopy];
 }
 
-- (void)receivedUnverifiedKMOverQUICFromToken:(id)a3
+- (void)receivedUnverifiedKMOverQUICFromToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   v4 = [(IDSGFTMetricsCollector *)self joinCycleForToken:?];
   [v4 receivedUnverifiedKMOverQUIC];
 
@@ -1086,19 +1086,19 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    [(IDSGFTMetricsMembershipChange *)v5 receivedUnverifiedKMOverQUICFromToken:v6];
+    [(IDSGFTMetricsMembershipChange *)v5 receivedUnverifiedKMOverQUICFromToken:tokenCopy];
   }
 }
 
-- (void)sendRatchetedKMtoAVCForToken:(id)a3
+- (void)sendRatchetedKMtoAVCForToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
   v4 = self->_lastMembershipChange;
   os_unfair_lock_unlock(&self->_lock);
   if (v4)
   {
-    [(IDSGFTMetricsMembershipChange *)v4 sendRatchetedKMtoAVCForToken:v5];
+    [(IDSGFTMetricsMembershipChange *)v4 sendRatchetedKMtoAVCForToken:tokenCopy];
   }
 }
 
@@ -1116,13 +1116,13 @@ LABEL_48:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)request:(id)a3
+- (id)request:(id)request
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"req-%@", a3];
+  request = [MEMORY[0x1E696AEC0] stringWithFormat:@"req-%@", request];
   v5 = MEMORY[0x1E696AD98];
   ++self->_nextUniqueID;
   v6 = [v5 numberWithInt:?];
-  v7 = [(IDSGFTMetricsCollector *)self begin:v4 uniqueID:v6 withClass:objc_opt_class()];
+  v7 = [(IDSGFTMetricsCollector *)self begin:request uniqueID:v6 withClass:objc_opt_class()];
 
   return v7;
 }
@@ -1137,34 +1137,34 @@ LABEL_48:
   return v5;
 }
 
-- (id)mtuChange:(unsigned __int16)a3 previous:(unsigned __int16)a4
+- (id)mtuChange:(unsigned __int16)change previous:(unsigned __int16)previous
 {
-  v4 = a4;
-  v5 = a3;
+  previousCopy = previous;
+  changeCopy = change;
   v7 = MEMORY[0x1E696AD98];
   ++self->_nextUniqueID;
   v8 = [v7 numberWithInt:?];
   v9 = [(IDSGFTMetricsCollector *)self begin:@"mtu" uniqueID:v8 withClass:objc_opt_class()];
 
-  [v9 setMTU:v5 previous:v4];
+  [v9 setMTU:changeCopy previous:previousCopy];
 
   return v9;
 }
 
-- (id)getOrCreateMKICycleFor:(id)a3
+- (id)getOrCreateMKICycleFor:(id)for
 {
-  v4 = a3;
-  v5 = [(IDSGFTMetricsCollector *)self begin:@"mki" uniqueID:v4 withClass:objc_opt_class()];
+  forCopy = for;
+  v5 = [(IDSGFTMetricsCollector *)self begin:@"mki" uniqueID:forCopy withClass:objc_opt_class()];
 
   return v5;
 }
 
-- (void)didMitigateCollision:(BOOL)a3
+- (void)didMitigateCollision:(BOOL)collision
 {
-  v3 = a3;
+  collisionCopy = collision;
   v4 = [(IDSGFTMetricsCollector *)self error:@"nwLink"];
   v6 = v4;
-  if (v3)
+  if (collisionCopy)
   {
     v5 = @"collisionMitigationSucceeded";
   }
@@ -1177,11 +1177,11 @@ LABEL_48:
   [v4 event:v5];
 }
 
-- (void)didFailConnectionOfType:(id)a3
+- (void)didFailConnectionOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(IDSGFTMetricsCollector *)self uniqueError:@"nwLinkConnectionFailure"];
-  [v5 event:v4];
+  [v5 event:typeCopy];
 }
 
 - (void)transactionIDMismatchDetected

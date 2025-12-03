@@ -1,6 +1,6 @@
 @interface CAFDAsyncCar
 - (_TtC13caraccessorydP33_63EDB8DF96AF53E23EC725535F297F4012CAFDAsyncCar)init;
-- (void)carIsConfigured:(id)a3;
+- (void)carIsConfigured:(id)configured;
 @end
 
 @implementation CAFDAsyncCar
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)carIsConfigured:(id)a3
+- (void)carIsConfigured:(id)configured
 {
-  v5 = a3;
-  v6 = self;
-  CAFDAsyncCar.carIsConfigured(_:)(a3);
+  configuredCopy = configured;
+  selfCopy = self;
+  CAFDAsyncCar.carIsConfigured(_:)(configured);
 }
 
 @end

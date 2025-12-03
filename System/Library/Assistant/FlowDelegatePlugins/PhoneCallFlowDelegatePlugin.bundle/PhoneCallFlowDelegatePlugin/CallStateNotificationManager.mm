@@ -1,14 +1,14 @@
 @interface CallStateNotificationManager
-- (void)callStateChanged:(id)a3;
+- (void)callStateChanged:(id)changed;
 @end
 
 @implementation CallStateNotificationManager
 
-- (void)callStateChanged:(id)a3
+- (void)callStateChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
 
-  CallStateNotificationManager.callStateChanged(_:)(v3);
+  CallStateNotificationManager.callStateChanged(_:)(changedCopy);
 }
 
 @end

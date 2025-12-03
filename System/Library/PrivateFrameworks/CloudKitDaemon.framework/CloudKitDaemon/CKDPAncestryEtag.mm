@@ -1,35 +1,35 @@
 @interface CKDPAncestryEtag
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)validationTypeAsString:(int)a3;
+- (id)validationTypeAsString:(int)string;
 - (int)validationType;
 - (unint64_t)hash;
-- (void)addAncestorInformation:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAncestorInformation:(id)information;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAncestryEtag
 
-- (void)addAncestorInformation:(id)a3
+- (void)addAncestorInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   ancestorInformations = self->_ancestorInformations;
-  v8 = v4;
+  v8 = informationCopy;
   if (!ancestorInformations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ancestorInformations;
     self->_ancestorInformations = v6;
 
-    v4 = v8;
+    informationCopy = v8;
     ancestorInformations = self->_ancestorInformations;
   }
 
-  objc_msgSend_addObject_(ancestorInformations, v4, v4);
+  objc_msgSend_addObject_(ancestorInformations, informationCopy, informationCopy);
 }
 
 - (int)validationType
@@ -45,16 +45,16 @@
   }
 }
 
-- (id)validationTypeAsString:(int)a3
+- (id)validationTypeAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"fullAncestry";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
@@ -133,10 +133,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -178,12 +178,12 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_ancestorInformationsCount(self, v4, v5))
   {
-    objc_msgSend_clearAncestorInformations(v16, v6, v7);
+    objc_msgSend_clearAncestorInformations(toCopy, v6, v7);
     v10 = objc_msgSend_ancestorInformationsCount(self, v8, v9);
     if (v10)
     {
@@ -191,23 +191,23 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_ancestorInformationAtIndex_(self, v11, i);
-        objc_msgSend_addAncestorInformation_(v16, v15, v14);
+        objc_msgSend_addAncestorInformation_(toCopy, v15, v14);
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v16 + 4) = self->_validationType;
-    *(v16 + 20) |= 1u;
+    *(toCopy + 4) = self->_validationType;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v22 = 0u;
   v23 = 0u;
@@ -229,7 +229,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, a3, v22);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, zone, v22);
         objc_msgSend_addAncestorInformation_(v10, v19, v18);
 
         ++v17;
@@ -252,17 +252,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_8;
   }
 
   ancestorInformations = self->_ancestorInformations;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (ancestorInformations | v9)
   {
     if (!objc_msgSend_isEqual_(ancestorInformations, v7, v9))
@@ -271,10 +271,10 @@
     }
   }
 
-  v10 = (*(v4 + 20) & 1) == 0;
+  v10 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_validationType == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_validationType == *(equalCopy + 4))
     {
       v10 = 1;
       goto LABEL_9;
@@ -305,15 +305,15 @@ LABEL_9:
   return v5 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v13, v17, 16);
   if (v7)
   {
@@ -339,9 +339,9 @@ LABEL_9:
     while (v9);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_validationType = *(v4 + 4);
+    self->_validationType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

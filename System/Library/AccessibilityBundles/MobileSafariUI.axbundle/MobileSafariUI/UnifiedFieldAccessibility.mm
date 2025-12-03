@@ -1,33 +1,33 @@
 @interface UnifiedFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityPath;
 - (int64_t)_accessibilitySortPriority;
 @end
 
 @implementation UnifiedFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITextField" hasInstanceMethod:@"_accessibilityRightButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UnifiedField" isKindOfClass:@"UITextField"];
-  [v3 validateClass:@"_SFNavigationBar"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLOutline" withType:"_SFNavigationBarURLButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITextField" hasInstanceMethod:@"_accessibilityRightButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UnifiedField" isKindOfClass:@"UITextField"];
+  [validationsCopy validateClass:@"_SFNavigationBar"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLOutline" withType:"_SFNavigationBarURLButton"];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v23 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(UnifiedFieldAccessibility *)self _accessibilitySupplementaryFooterViews];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  _accessibilitySupplementaryFooterViews = [(UnifiedFieldAccessibility *)self _accessibilitySupplementaryFooterViews];
+  v9 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -38,12 +38,12 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_accessibilitySupplementaryFooterViews);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
         [v13 convertPoint:self fromView:{x, y}];
-        v14 = [v13 _accessibilityHitTest:v7 withEvent:?];
+        v14 = [v13 _accessibilityHitTest:eventCopy withEvent:?];
         if ([v14 isAccessibilityElement])
         {
 
@@ -51,7 +51,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -63,7 +63,7 @@
 
   v17.receiver = self;
   v17.super_class = UnifiedFieldAccessibility;
-  v14 = [(UnifiedFieldAccessibility *)&v17 _accessibilityHitTest:v7 withEvent:x, y];
+  v14 = [(UnifiedFieldAccessibility *)&v17 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_11:
 
   v15 = *MEMORY[0x29EDCA608];
@@ -90,17 +90,17 @@ LABEL_11:
   if (v3)
   {
     v5 = [v3 safeValueForKey:@"_URLOutline"];
-    v6 = [v5 accessibilityPath];
+    accessibilityPath = [v5 accessibilityPath];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UnifiedFieldAccessibility;
-    v6 = [(UnifiedFieldAccessibility *)&v8 accessibilityPath];
+    accessibilityPath = [(UnifiedFieldAccessibility *)&v8 accessibilityPath];
   }
 
-  return v6;
+  return accessibilityPath;
 }
 
 @end

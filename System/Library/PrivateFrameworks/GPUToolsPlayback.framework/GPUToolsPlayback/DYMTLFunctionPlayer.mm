@@ -1,23 +1,23 @@
 @interface DYMTLFunctionPlayer
-- (DYMTLFunctionPlayer)initWithCaptureStore:(id)a3;
-- (const)computeBytesForKey:(unint64_t)a3;
-- (const)fragmentBytesForKey:(unint64_t)a3;
-- (const)tileBytesForKey:(unint64_t)a3;
-- (const)vertexBytesForKey:(unint64_t)a3;
+- (DYMTLFunctionPlayer)initWithCaptureStore:(id)store;
+- (const)computeBytesForKey:(unint64_t)key;
+- (const)fragmentBytesForKey:(unint64_t)key;
+- (const)tileBytesForKey:(unint64_t)key;
+- (const)vertexBytesForKey:(unint64_t)key;
 - (id).cxx_construct;
-- (id)_createPrivateBufferForFunctionWithDevice:(id)a3 bytes:(char *)a4 length:(unint64_t)a5 resourceOptions:(unint64_t)a6;
-- (id)_getDeviceWithName:(id)a3;
+- (id)_createPrivateBufferForFunctionWithDevice:(id)device bytes:(char *)bytes length:(unint64_t)length resourceOptions:(unint64_t)options;
+- (id)_getDeviceWithName:(id)name;
 - (id)commandQueue;
-- (id)deviceForID:(unint64_t)a3 withDeviceName:(id)a4;
-- (id)objectForKey:(unint64_t)a3;
-- (unint64_t)keyForOriginalObject:(id)a3;
-- (unint64_t)keyForOriginalObject:(id)a3 inverseObjectMap:(void *)a4;
-- (void)_restoreTexture:(unint64_t)a3 commandBuffer:(unint64_t)a4 argumentOffset:(unint64_t)a5;
+- (id)deviceForID:(unint64_t)d withDeviceName:(id)name;
+- (id)objectForKey:(unint64_t)key;
+- (unint64_t)keyForOriginalObject:(id)object;
+- (unint64_t)keyForOriginalObject:(id)object inverseObjectMap:(void *)map;
+- (void)_restoreTexture:(unint64_t)texture commandBuffer:(unint64_t)buffer argumentOffset:(unint64_t)offset;
 - (void)_saveBytes;
 - (void)dealloc;
 - (void)executeGraphicsFunction;
 - (void)executePlatformFunction;
-- (void)setObject:(id)a3 forKey:(unint64_t)a4;
+- (void)setObject:(id)object forKey:(unint64_t)key;
 @end
 
 @implementation DYMTLFunctionPlayer
@@ -27,10 +27,10 @@
   commandQueue = self->_commandQueue;
   if (!commandQueue)
   {
-    v4 = [(DYMTLFunctionPlayer *)self device];
-    v5 = [v4 newCommandQueue];
+    device = [(DYMTLFunctionPlayer *)self device];
+    newCommandQueue = [device newCommandQueue];
     v6 = self->_commandQueue;
-    self->_commandQueue = v5;
+    self->_commandQueue = newCommandQueue;
 
     commandQueue = self->_commandQueue;
   }
@@ -38,12 +38,12 @@
   return commandQueue;
 }
 
-- (DYMTLFunctionPlayer)initWithCaptureStore:(id)a3
+- (DYMTLFunctionPlayer)initWithCaptureStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = DYMTLFunctionPlayer;
-  v5 = [(DYFunctionPlayer *)&v14 initWithCaptureStore:v4];
+  v5 = [(DYFunctionPlayer *)&v14 initWithCaptureStore:storeCopy];
   v6 = v5;
   if (v5)
   {
@@ -84,18 +84,18 @@
   [(DYFunctionPlayer *)&v4 dealloc];
 }
 
-- (id)_getDeviceWithName:(id)a3
+- (id)_getDeviceWithName:(id)name
 {
   v3 = MTLCreateSystemDefaultDevice();
 
   return v3;
 }
 
-- (id)deviceForID:(unint64_t)a3 withDeviceName:(id)a4
+- (id)deviceForID:(unint64_t)d withDeviceName:(id)name
 {
-  v17 = a3;
-  v5 = a4;
-  v6 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v17);
+  dCopy = d;
+  nameCopy = name;
+  v6 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &dCopy);
   if (v6)
   {
     v7 = v6[3];
@@ -103,18 +103,18 @@
 
   else
   {
-    v8 = [(DYMTLFunctionPlayer *)self device];
+    device = [(DYMTLFunctionPlayer *)self device];
 
-    if (v8)
+    if (device)
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [(DYMTLFunctionPlayer *)self _getDeviceWithName:v5];
+      v9 = [(DYMTLFunctionPlayer *)self _getDeviceWithName:nameCopy];
       [(DYMTLFunctionPlayer *)self setDevice:v9];
-      v15 = v17;
+      v15 = dCopy;
       v10 = v9;
       v16 = v10;
       v11 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::pair<unsigned long long,objc_object  {objcproto9MTLDevice}* {__strong}>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v15);
@@ -135,20 +135,20 @@
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(unint64_t)a4
+- (void)setObject:(id)object forKey:(unint64_t)key
 {
-  v6 = a3;
-  v9[0] = a4;
+  objectCopy = object;
+  v9[0] = key;
   v9[2] = v9;
   v7 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v9);
   v8 = v7[3];
-  v7[3] = v6;
+  v7[3] = objectCopy;
 }
 
-- (id)objectForKey:(unint64_t)a3
+- (id)objectForKey:(unint64_t)key
 {
-  v5 = a3;
-  v3 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v5);
+  keyCopy = key;
+  v3 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &keyCopy);
   if (v3)
   {
     v3 = v3[3];
@@ -157,9 +157,9 @@
   return v3;
 }
 
-- (unint64_t)keyForOriginalObject:(id)a3
+- (unint64_t)keyForOriginalObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   p_first_node = &self->_objectMap.__table_.__first_node_;
   while (1)
   {
@@ -171,7 +171,7 @@
 
     next = p_first_node[2].__next_;
     v7 = p_first_node[3].__next_;
-    v8 = [v7 isEqual:v4];
+    v8 = [v7 isEqual:objectCopy];
 
     if (v8)
     {
@@ -185,11 +185,11 @@ LABEL_6:
   return next;
 }
 
-- (unint64_t)keyForOriginalObject:(id)a3 inverseObjectMap:(void *)a4
+- (unint64_t)keyForOriginalObject:(id)object inverseObjectMap:(void *)map
 {
-  v6 = a3;
-  v11 = v6;
-  v7 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(a4, &v11);
+  objectCopy = object;
+  v11 = objectCopy;
+  v7 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(map, &v11);
   if (v7)
   {
     v8 = v7[3];
@@ -197,19 +197,19 @@ LABEL_6:
 
   else
   {
-    v8 = [(DYMTLFunctionPlayer *)self keyForOriginalObject:v6];
-    v10 = v6;
+    v8 = [(DYMTLFunctionPlayer *)self keyForOriginalObject:objectCopy];
+    v10 = objectCopy;
     v11 = &v10;
-    std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(a4, &v10)[3] = v8;
+    std::__hash_table<std::__hash_value_type<unsigned long long,unsigned long long>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long long>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,unsigned long long>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,unsigned long long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(map, &v10)[3] = v8;
   }
 
   return v8;
 }
 
-- (const)vertexBytesForKey:(unint64_t)a3
+- (const)vertexBytesForKey:(unint64_t)key
 {
-  v4 = a3;
-  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_vertexBytesDataMap.__table_.__bucket_list_.__ptr_, &v4);
+  keyCopy = key;
+  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_vertexBytesDataMap.__table_.__bucket_list_.__ptr_, &keyCopy);
   if (result)
   {
     result = *(result + 3);
@@ -222,10 +222,10 @@ LABEL_6:
   return result;
 }
 
-- (const)fragmentBytesForKey:(unint64_t)a3
+- (const)fragmentBytesForKey:(unint64_t)key
 {
-  v4 = a3;
-  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_fragmentBytesDataMap.__table_.__bucket_list_.__ptr_, &v4);
+  keyCopy = key;
+  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_fragmentBytesDataMap.__table_.__bucket_list_.__ptr_, &keyCopy);
   if (result)
   {
     result = *(result + 3);
@@ -238,10 +238,10 @@ LABEL_6:
   return result;
 }
 
-- (const)tileBytesForKey:(unint64_t)a3
+- (const)tileBytesForKey:(unint64_t)key
 {
-  v4 = a3;
-  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_tileBytesDataMap.__table_.__bucket_list_.__ptr_, &v4);
+  keyCopy = key;
+  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_tileBytesDataMap.__table_.__bucket_list_.__ptr_, &keyCopy);
   if (result)
   {
     result = *(result + 3);
@@ -254,10 +254,10 @@ LABEL_6:
   return result;
 }
 
-- (const)computeBytesForKey:(unint64_t)a3
+- (const)computeBytesForKey:(unint64_t)key
 {
-  v4 = a3;
-  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_computeBytesDataMap.__table_.__bucket_list_.__ptr_, &v4);
+  keyCopy = key;
+  result = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::find<unsigned long long>(&self->_computeBytesDataMap.__table_.__bucket_list_.__ptr_, &keyCopy);
   if (result)
   {
     result = *(result + 3);
@@ -270,10 +270,10 @@ LABEL_6:
   return result;
 }
 
-- (void)_restoreTexture:(unint64_t)a3 commandBuffer:(unint64_t)a4 argumentOffset:(unint64_t)a5
+- (void)_restoreTexture:(unint64_t)texture commandBuffer:(unint64_t)buffer argumentOffset:(unint64_t)offset
 {
-  v6 = [(DYMTLFunctionPlayer *)self device:a3];
-  v7 = [(DYMTLFunctionPlayer *)self commandQueue];
+  v6 = [(DYMTLFunctionPlayer *)self device:texture];
+  commandQueue = [(DYMTLFunctionPlayer *)self commandQueue];
   *&v39 = *(&self->super.super.isa + *MEMORY[0x277D0AFA0]) + 16;
   v8 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v39)[3];
   v9 = self + *MEMORY[0x277D0AF68];
@@ -291,8 +291,8 @@ LABEL_6:
   MTLPixelFormatGetInfoForDevice();
   if (-[DYMTLFunctionPlayer _isCPUAccessibleStorageMode:](self, "_isCPUAccessibleStorageMode:", [v8 storageMode]))
   {
-    v16 = [v8 isDrawable];
-    v17 = (WORD4(v39) & 0x2000) != 0 ? 1 : v16;
+    isDrawable = [v8 isDrawable];
+    v17 = (WORD4(v39) & 0x2000) != 0 ? 1 : isDrawable;
     if ((v17 & 1) == 0 && !-[DYMTLFunctionPlayer _isDepthStencilFormat:](self, "_isDepthStencilFormat:", [v8 pixelFormat]))
     {
       v39 = v46[0];
@@ -304,10 +304,10 @@ LABEL_6:
     }
   }
 
-  v18 = [(DYMTLFunctionPlayer *)self commandQueue];
-  AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v45, v18);
+  commandQueue2 = [(DYMTLFunctionPlayer *)self commandQueue];
+  AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v45, commandQueue2);
 
-  v19 = [v7 commandBuffer];
+  commandBuffer = [commandQueue commandBuffer];
   v32 = v12;
   v33 = v10;
   v20 = **(v9 + 4);
@@ -321,7 +321,7 @@ LABEL_6:
     v24 = ~*MEMORY[0x277D85F88] & (*MEMORY[0x277D85F88] + **(v9 + 7));
     if (v24)
     {
-      v30 = v7;
+      v30 = commandQueue;
       v25 = **(v9 + 4);
       Offset = DYHarvesterGetOffset();
       *&v39 = 0;
@@ -343,7 +343,7 @@ LABEL_6:
       v38[5] = &v39;
       v27 = [v6 newBufferWithBytesNoCopy:v25 length:v24 options:0 deallocator:v38];
       _Block_object_dispose(&v39, 8);
-      v7 = v30;
+      commandQueue = v30;
       if (__p)
       {
         v43 = __p;
@@ -352,7 +352,7 @@ LABEL_6:
 
       if (v27)
       {
-        if (!v19)
+        if (!commandBuffer)
         {
           goto LABEL_21;
         }
@@ -360,20 +360,20 @@ LABEL_6:
 LABEL_15:
         if (v27 && v8)
         {
-          [v19 setLabel:*MEMORY[0x277D0B020]];
-          v29 = [v19 blitCommandEncoder];
+          [commandBuffer setLabel:*MEMORY[0x277D0B020]];
+          blitCommandEncoder = [commandBuffer blitCommandEncoder];
           if (-[DYMTLFunctionPlayer _isDepthStencilFormat:](self, "_isDepthStencilFormat:", [v8 pixelFormat]))
           {
             *&v40 = *(&v46[2] + 1);
             v39 = *(&v46[1] + 8);
             v36 = v46[0];
             v37 = *&v46[1];
-            [v29 copyFromBuffer:v27 sourceOffset:Offset sourceBytesPerRow:4 * (v35 / 5) sourceBytesPerImage:4 * (v34 / 5) sourceSize:&v39 toTexture:v8 destinationSlice:v33 destinationLevel:v32 destinationOrigin:&v36 options:1];
+            [blitCommandEncoder copyFromBuffer:v27 sourceOffset:Offset sourceBytesPerRow:4 * (v35 / 5) sourceBytesPerImage:4 * (v34 / 5) sourceSize:&v39 toTexture:v8 destinationSlice:v33 destinationLevel:v32 destinationOrigin:&v36 options:1];
             v39 = *(&v46[1] + 8);
             *&v40 = *(&v46[2] + 1);
             v36 = v46[0];
             v37 = *&v46[1];
-            [v29 copyFromBuffer:v27 sourceOffset:Offset + 4 * (v34 / 5) sourceBytesPerRow:v35 / 5 sourceBytesPerImage:v34 / 5 sourceSize:&v39 toTexture:v8 destinationSlice:v33 destinationLevel:v32 destinationOrigin:&v36 options:2];
+            [blitCommandEncoder copyFromBuffer:v27 sourceOffset:Offset + 4 * (v34 / 5) sourceBytesPerRow:v35 / 5 sourceBytesPerImage:v34 / 5 sourceSize:&v39 toTexture:v8 destinationSlice:v33 destinationLevel:v32 destinationOrigin:&v36 options:2];
           }
 
           else
@@ -382,11 +382,11 @@ LABEL_15:
             *&v40 = *(&v46[2] + 1);
             v36 = v46[0];
             v37 = *&v46[1];
-            [v29 copyFromBuffer:v27 sourceOffset:Offset sourceBytesPerRow:v35 sourceBytesPerImage:v34 sourceSize:&v39 toTexture:v8 destinationSlice:v33 destinationLevel:v32 destinationOrigin:&v36 options:v31 >> 11];
+            [blitCommandEncoder copyFromBuffer:v27 sourceOffset:Offset sourceBytesPerRow:v35 sourceBytesPerImage:v34 sourceSize:&v39 toTexture:v8 destinationSlice:v33 destinationLevel:v32 destinationOrigin:&v36 options:v31 >> 11];
           }
 
-          [v29 endEncoding];
-          [v19 commit];
+          [blitCommandEncoder endEncoding];
+          [commandBuffer commit];
         }
 
         goto LABEL_21;
@@ -398,7 +398,7 @@ LABEL_15:
   [(DYFunctionPlayer *)self releaseDataForArgument:4];
   Offset = 0;
   v27 = v28;
-  if (v19)
+  if (commandBuffer)
   {
     goto LABEL_15;
   }
@@ -481,24 +481,24 @@ LABEL_55:
       v44 = (self + *MEMORY[0x277D0AF68]);
       *&v125 = *v44[1];
       *v131 = &v125;
-      v36 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v125)[3];
+      commandQueue3 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v125)[3];
       v45 = *v44[2];
-      v46 = [(DYMTLFunctionPlayer *)self commandQueue];
-      AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v130, v46);
+      commandQueue = [(DYMTLFunctionPlayer *)self commandQueue];
+      AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v130, commandQueue);
 
-      v47 = [(DYMTLFunctionPlayer *)self commandQueue];
-      v48 = [v47 commandBuffer];
-      [v48 setLabel:*MEMORY[0x277D0B020]];
-      v49 = [v48 resourceStateCommandEncoder];
+      commandQueue2 = [(DYMTLFunctionPlayer *)self commandQueue];
+      commandBuffer = [commandQueue2 commandBuffer];
+      [commandBuffer setLabel:*MEMORY[0x277D0B020]];
+      resourceStateCommandEncoder = [commandBuffer resourceStateCommandEncoder];
       v128 = 0uLL;
       v129 = 0;
-      v50 = [(DYMTLFunctionPlayer *)self device];
-      v51 = [v36 textureType];
-      v52 = [v36 pixelFormat];
-      v53 = [v36 sampleCount];
-      if (v50)
+      device = [(DYMTLFunctionPlayer *)self device];
+      textureType = [commandQueue3 textureType];
+      pixelFormat = [commandQueue3 pixelFormat];
+      sampleCount = [commandQueue3 sampleCount];
+      if (device)
       {
-        [v50 sparseTileSizeWithTextureType:v51 pixelFormat:v52 sampleCount:v53];
+        [device sparseTileSizeWithTextureType:textureType pixelFormat:pixelFormat sampleCount:sampleCount];
       }
 
       else
@@ -509,28 +509,28 @@ LABEL_55:
 
       if (v45 == 2)
       {
-        for (i = 0; i < [v36 arrayLength]; ++i)
+        for (i = 0; i < [commandQueue3 arrayLength]; ++i)
         {
-          for (j = 0; j <= [v36 firstMipmapInTail]; ++j)
+          for (j = 0; j <= [commandQueue3 firstMipmapInTail]; ++j)
           {
             v126 = 0u;
             v127 = 0u;
             v125 = 0u;
-            v97 = [v36 width] >> j;
+            v97 = [commandQueue3 width] >> j;
             if (v97 <= 1)
             {
               v97 = 1;
             }
 
             *(&v126 + 1) = v97;
-            v98 = [v36 height] >> j;
+            v98 = [commandQueue3 height] >> j;
             if (v98 <= 1)
             {
               v98 = 1;
             }
 
             *&v127 = v98;
-            v99 = [v36 depth] >> j;
+            v99 = [commandQueue3 depth] >> j;
             if (v99 <= 1)
             {
               v99 = 1;
@@ -544,7 +544,7 @@ LABEL_55:
             v122 = *v131;
             v123 = *&v131[16];
             v124 = *&v131[32];
-            [v49 updateTextureMapping:v36 mode:1 region:&v122 mipLevel:j slice:i];
+            [resourceStateCommandEncoder updateTextureMapping:commandQueue3 mode:1 region:&v122 mipLevel:j slice:i];
           }
         }
       }
@@ -557,19 +557,19 @@ LABEL_55:
         *&v101 = GPUTools::MTL::MakeMTLRegion(*v44[3], &v125).n128_u64[0];
         v102 = *v44[4];
         v103 = *v44[5];
-        v104 = [(DYMTLFunctionPlayer *)self device];
+        device2 = [(DYMTLFunctionPlayer *)self device];
         v122 = v128;
         *&v123 = v129;
-        [v104 convertSparsePixelRegions:&v125 toTileRegions:v131 withTileSize:&v122 alignmentMode:0 numRegions:1];
+        [device2 convertSparsePixelRegions:&v125 toTileRegions:v131 withTileSize:&v122 alignmentMode:0 numRegions:1];
 
         v122 = *v131;
         v123 = *&v131[16];
         v124 = *&v131[32];
-        [v49 updateTextureMapping:v36 mode:v45 region:&v122 mipLevel:v102 slice:v103];
+        [resourceStateCommandEncoder updateTextureMapping:commandQueue3 mode:v45 region:&v122 mipLevel:v102 slice:v103];
       }
 
-      [v49 endEncoding];
-      [v48 commit];
+      [resourceStateCommandEncoder endEncoding];
+      [commandBuffer commit];
 
       AutoPerfStatSamplingControl::~AutoPerfStatSamplingControl(v130);
     }
@@ -590,16 +590,16 @@ LABEL_55:
           *v131 = v5 + 16;
           v58 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, (v5 + 16))[3];
           v59 = **(&self->super._executePlatform + *MEMORY[0x277D0AF68]);
-          v36 = [(DYMTLFunctionPlayer *)self commandQueue];
-          [(DYMTLIndirectCommandBufferManager *)v57 restoreBuffer:v58 withData:v59 commandQueue:v36];
+          commandQueue3 = [(DYMTLFunctionPlayer *)self commandQueue];
+          [(DYMTLIndirectCommandBufferManager *)v57 restoreBuffer:v58 withData:v59 commandQueue:commandQueue3];
           break;
         case -10216:
           v33 = self->_indirectCommandManager;
           *v131 = v5 + 16;
           v34 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, (v5 + 16))[3];
           v35 = **(&self->super._executePlatform + *MEMORY[0x277D0AF68]);
-          v36 = [(DYMTLFunctionPlayer *)self commandQueue];
-          [(DYMTLIndirectCommandBufferManager *)v33 restoreBuffer:v34 optimizedRanges:v35 commandQueue:v36];
+          commandQueue3 = [(DYMTLFunctionPlayer *)self commandQueue];
+          [(DYMTLIndirectCommandBufferManager *)v33 restoreBuffer:v34 optimizedRanges:v35 commandQueue:commandQueue3];
           break;
         default:
           goto LABEL_55;
@@ -637,7 +637,7 @@ LABEL_126:
             v68 = *&v131[8];
           }
 
-          v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:v68];
+          commandQueue3 = [MEMORY[0x277CCACA8] stringWithUTF8String:v68];
           GPUTools::MTL::DispatchSetCaptureVersion(*v131);
           GPUTools::MTL::Utils::DYMTLDeviceDescriptor::~DYMTLDeviceDescriptor(v131);
           v5 = *(&self->super.super.isa + v4);
@@ -645,10 +645,10 @@ LABEL_126:
 
         else
         {
-          v36 = 0;
+          commandQueue3 = 0;
         }
 
-        [(DYMTLFunctionPlayer *)self deviceForID:*(v5 + 16) withDeviceName:v36];
+        [(DYMTLFunctionPlayer *)self deviceForID:*(v5 + 16) withDeviceName:commandQueue3];
       }
 
       else
@@ -659,8 +659,8 @@ LABEL_126:
         }
 
         *v131 = v5 + 16;
-        v36 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, (v5 + 16))[3];
-        if (v36)
+        commandQueue3 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, (v5 + 16))[3];
+        if (commandQueue3)
         {
           v37 = (self + *MEMORY[0x277D0AF68]);
           [(DYMTLIndirectArgumentBufferManager *)self->_indirectArgumentManager encodeIndirectArgumentsForBuffer:*(*(&self->super.super.isa + v4))[3] data:*v37[1]];
@@ -668,7 +668,7 @@ LABEL_126:
           v39 = *v37[3];
           if ((v38 & 3) != 0 || (*v37[3] & 0xF0) == 0)
           {
-            v41 = [v36 newBufferWithBytes:*v37[1] length:*v37[2] options:0];
+            v41 = [commandQueue3 newBufferWithBytes:*v37[1] length:*v37[2] options:0];
             *v131 = (*(&self->super.super.isa + v4))[3];
             v42 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, *v131);
             v43 = v42[3];
@@ -683,8 +683,8 @@ LABEL_126:
             if (*(v86 + 3) == *(v86 + 4))
             {
               v109 = *v37[1];
-              v110 = [(DYMTLFunctionPlayer *)self device];
-              v111 = [(DYMTLFunctionPlayer *)self _createPrivateBufferForFunctionWithDevice:v110 bytes:v109 length:v38 resourceOptions:v39];
+              device3 = [(DYMTLFunctionPlayer *)self device];
+              v111 = [(DYMTLFunctionPlayer *)self _createPrivateBufferForFunctionWithDevice:device3 bytes:v109 length:v38 resourceOptions:v39];
 
               *v131 = (*(&self->super.super.isa + v4))[3];
               v112 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, *v131);
@@ -694,7 +694,7 @@ LABEL_126:
 
             else
             {
-              v87 = [v36 newBufferWithLength:*v37[2] options:*v37[3]];
+              v87 = [commandQueue3 newBufferWithLength:*v37[2] options:*v37[3]];
               if ((~*MEMORY[0x277D85F88] & (*MEMORY[0x277D85F88] + v38)) != 0)
               {
                 v88 = *(v86 + 3);
@@ -715,17 +715,17 @@ LABEL_126:
                 v130[6] = &unk_27930F398;
                 v130[7] = self;
                 v130[8] = v131;
-                v90 = [v36 newBufferWithBytesNoCopy:v89 length:? options:? deallocator:?];
-                v91 = [(DYMTLFunctionPlayer *)self commandQueue];
-                AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(&v125, v91);
-                v92 = [v91 commandBuffer];
-                v93 = v92;
-                if (v92)
+                v90 = [commandQueue3 newBufferWithBytesNoCopy:v89 length:? options:? deallocator:?];
+                commandQueue4 = [(DYMTLFunctionPlayer *)self commandQueue];
+                AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(&v125, commandQueue4);
+                commandBuffer2 = [commandQueue4 commandBuffer];
+                v93 = commandBuffer2;
+                if (commandBuffer2)
                 {
-                  [v92 setLabel:*MEMORY[0x277D0B020]];
-                  v94 = [v93 blitCommandEncoder];
-                  [v94 copyFromBuffer:v90 sourceOffset:0 toBuffer:v87 destinationOffset:0 size:v38];
-                  [v94 endEncoding];
+                  [commandBuffer2 setLabel:*MEMORY[0x277D0B020]];
+                  blitCommandEncoder = [v93 blitCommandEncoder];
+                  [blitCommandEncoder copyFromBuffer:v90 sourceOffset:0 toBuffer:v87 destinationOffset:0 size:v38];
+                  [blitCommandEncoder endEncoding];
                   [v93 commit];
                 }
 
@@ -753,14 +753,14 @@ LABEL_126:
     v69 = (self + *MEMORY[0x277D0AF68]);
     *&v125 = *v69[1];
     *v131 = &v125;
-    v36 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v125)[3];
+    commandQueue3 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, &v125)[3];
     v70 = *v69[2];
-    v71 = [(DYMTLFunctionPlayer *)self indirectArgumentManager];
-    [v71 encodeIndirectArgumentsForBuffer:v125 data:v70];
+    indirectArgumentManager = [(DYMTLFunctionPlayer *)self indirectArgumentManager];
+    [indirectArgumentManager encodeIndirectArgumentsForBuffer:v125 data:v70];
 
     v72 = *v69[3];
     v73 = *v69[4];
-    if ([v36 storageMode])
+    if ([commandQueue3 storageMode])
     {
       v74 = (v73 & 3) == 0;
     }
@@ -772,39 +772,39 @@ LABEL_126:
 
     if (!v74)
     {
-      memcpy(([v36 contents] + v72), v70, v73);
+      memcpy(([commandQueue3 contents] + v72), v70, v73);
       [(DYFunctionPlayer *)self releaseDataForArgument:2];
       goto LABEL_126;
     }
 
-    v79 = [(DYMTLFunctionPlayer *)self device];
-    v78 = v79;
-    if (v79)
+    device4 = [(DYMTLFunctionPlayer *)self device];
+    indirectArgumentManager2 = device4;
+    if (device4)
     {
       v80 = self + *MEMORY[0x277D0AF70];
       v81 = *(v80 + 6);
       v82 = *(v80 + 7);
       if (v81 == v82)
       {
-        v84 = [v79 newBufferWithLength:v73 options:0];
+        v84 = [device4 newBufferWithLength:v73 options:0];
         memcpy([v84 contents], v70, v73);
         [(DYFunctionPlayer *)self releaseDataForArgument:2];
         v85 = 0;
 LABEL_119:
         if (v84)
         {
-          v113 = [(DYMTLFunctionPlayer *)self commandQueue];
-          AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v131, v113);
+          commandQueue5 = [(DYMTLFunctionPlayer *)self commandQueue];
+          AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v131, commandQueue5);
 
-          v114 = [(DYMTLFunctionPlayer *)self commandQueue];
-          v115 = [v114 commandBuffer];
-          v116 = v115;
-          if (v115)
+          commandQueue6 = [(DYMTLFunctionPlayer *)self commandQueue];
+          commandBuffer3 = [commandQueue6 commandBuffer];
+          v116 = commandBuffer3;
+          if (commandBuffer3)
           {
-            [v115 setLabel:*MEMORY[0x277D0B020]];
-            v117 = [v116 blitCommandEncoder];
-            [v117 copyFromBuffer:v84 sourceOffset:v85 toBuffer:v36 destinationOffset:v72 size:v73];
-            [v117 endEncoding];
+            [commandBuffer3 setLabel:*MEMORY[0x277D0B020]];
+            blitCommandEncoder2 = [v116 blitCommandEncoder];
+            [blitCommandEncoder2 copyFromBuffer:v84 sourceOffset:v85 toBuffer:commandQueue3 destinationOffset:v72 size:v73];
+            [blitCommandEncoder2 endEncoding];
             [v116 commit];
           }
 
@@ -833,7 +833,7 @@ LABEL_119:
         v138[3] = &unk_27930F370;
         v138[4] = self;
         v138[5] = v131;
-        v84 = [v78 newBufferWithBytesNoCopy:v70 length:v83 options:0 deallocator:v138];
+        v84 = [indirectArgumentManager2 newBufferWithBytesNoCopy:v70 length:v83 options:0 deallocator:v138];
         _Block_object_dispose(v131, 8);
         if (*&v131[48])
         {
@@ -877,16 +877,16 @@ LABEL_76:
       v66 = *MEMORY[0x277D0AF90];
       *v131 = v64;
       v67 = std::__hash_table<std::__hash_value_type<void *,unsigned long>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,unsigned long>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,unsigned long>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,unsigned long>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>((&self->super.super.isa + v66), v64);
-      v36 = GPUTools::MTL::MakeDispatchDataT(v65, v67[3]);
+      commandQueue3 = GPUTools::MTL::MakeDispatchDataT(v65, v67[3]);
     }
 
     else
     {
-      v36 = 0;
+      commandQueue3 = 0;
     }
 
-    v78 = [(DYMTLFunctionPlayer *)self indirectArgumentManager];
-    [v78 processCommandBuffer:**(&self->super.super.isa + *MEMORY[0x277D0AF68]) functionIndex:*(&self->super.super.isa + *MEMORY[0x277D0AF88]) ancestorMapData:**(&self->super._executePlatform + *MEMORY[0x277D0AF68]) indirectArgumentBuffersData:**(&self->super._executePlatformSEL + *MEMORY[0x277D0AF68]) resourceMapsData:**(&self->super._executeGraphics + *MEMORY[0x277D0AF68]) driverDecodingData:v36];
+    indirectArgumentManager2 = [(DYMTLFunctionPlayer *)self indirectArgumentManager];
+    [indirectArgumentManager2 processCommandBuffer:**(&self->super.super.isa + *MEMORY[0x277D0AF68]) functionIndex:*(&self->super.super.isa + *MEMORY[0x277D0AF88]) ancestorMapData:**(&self->super._executePlatform + *MEMORY[0x277D0AF68]) indirectArgumentBuffersData:**(&self->super._executePlatformSEL + *MEMORY[0x277D0AF68]) resourceMapsData:**(&self->super._executeGraphics + *MEMORY[0x277D0AF68]) driverDecodingData:commandQueue3];
     goto LABEL_76;
   }
 
@@ -910,15 +910,15 @@ LABEL_76:
     v15 = *v13[2];
     v16 = *v13[3];
     v119 = v12;
-    v17 = [v12 isDrawable];
+    isDrawable = [v12 isDrawable];
     Data = DYHarvesterGetData();
     Metadata = DYHarvesterGetMetadata();
     if (Metadata)
     {
-      if ((v17 & 1) == 0)
+      if ((isDrawable & 1) == 0)
       {
-        v20 = [v119 iosurface];
-        IOSurfaceLock(v20, 0, 0);
+        iosurface = [v119 iosurface];
+        IOSurfaceLock(iosurface, 0, 0);
         DYIOSurfaceUtilsPlaneCount();
         v21 = *(Metadata + 16);
         if (v21 <= 1)
@@ -938,10 +938,10 @@ LABEL_76:
           v120 = Metadata + 24;
           do
           {
-            HeightOfPlane = IOSurfaceGetHeightOfPlane(v20, v24 + v22);
-            IOSurfaceGetWidthOfPlane(v20, v24 + v22);
-            BytesPerRowOfPlane = IOSurfaceGetBytesPerRowOfPlane(v20, v24 + v22);
-            BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane(v20, v24 + v22);
+            HeightOfPlane = IOSurfaceGetHeightOfPlane(iosurface, v24 + v22);
+            IOSurfaceGetWidthOfPlane(iosurface, v24 + v22);
+            BytesPerRowOfPlane = IOSurfaceGetBytesPerRowOfPlane(iosurface, v24 + v22);
+            BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane(iosurface, v24 + v22);
             if (HeightOfPlane)
             {
               v28 = BaseAddressOfPlane;
@@ -967,7 +967,7 @@ LABEL_76:
           while (v24 != v21);
         }
 
-        IOSurfaceUnlock(v20, 0, 0);
+        IOSurfaceUnlock(iosurface, 0, 0);
       }
     }
 
@@ -976,12 +976,12 @@ LABEL_76:
       DecodeRGB10A8_2P_XR10(v119, v14);
     }
 
-    else if ((v17 & 1) == 0)
+    else if ((isDrawable & 1) == 0)
     {
-      v105 = [v119 iosurface];
-      IOSurfaceLock(v105, 0, 0);
-      v106 = IOSurfaceGetBaseAddressOfPlane(v105, v16);
-      AllocSize = IOSurfaceGetAllocSize(v105);
+      iosurface2 = [v119 iosurface];
+      IOSurfaceLock(iosurface2, 0, 0);
+      v106 = IOSurfaceGetBaseAddressOfPlane(iosurface2, v16);
+      AllocSize = IOSurfaceGetAllocSize(iosurface2);
       if (v15 >= AllocSize)
       {
         v108 = AllocSize;
@@ -993,7 +993,7 @@ LABEL_76:
       }
 
       memcpy(v106, v14, v108);
-      IOSurfaceUnlock(v105, 0, 0);
+      IOSurfaceUnlock(iosurface2, 0, 0);
     }
   }
 }
@@ -1017,21 +1017,21 @@ uint64_t __46__DYMTLFunctionPlayer_executePlatformFunction__block_invoke(uint64_
   return result;
 }
 
-- (id)_createPrivateBufferForFunctionWithDevice:(id)a3 bytes:(char *)a4 length:(unint64_t)a5 resourceOptions:(unint64_t)a6
+- (id)_createPrivateBufferForFunctionWithDevice:(id)device bytes:(char *)bytes length:(unint64_t)length resourceOptions:(unint64_t)options
 {
-  v10 = a3;
-  v11 = [v10 newBufferWithBytes:a4 length:a5 options:0];
-  v12 = [v10 newBufferWithLength:a5 options:a6];
-  v13 = [(DYMTLFunctionPlayer *)self commandQueue];
-  AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v18, v13);
-  v14 = [v13 commandBuffer];
-  v15 = v14;
-  if (v14)
+  deviceCopy = device;
+  v11 = [deviceCopy newBufferWithBytes:bytes length:length options:0];
+  v12 = [deviceCopy newBufferWithLength:length options:options];
+  commandQueue = [(DYMTLFunctionPlayer *)self commandQueue];
+  AutoPerfStatSamplingControl::AutoPerfStatSamplingControl(v18, commandQueue);
+  commandBuffer = [commandQueue commandBuffer];
+  v15 = commandBuffer;
+  if (commandBuffer)
   {
-    [v14 setLabel:*MEMORY[0x277D0B020]];
-    v16 = [v15 blitCommandEncoder];
-    [v16 copyFromBuffer:v11 sourceOffset:0 toBuffer:v12 destinationOffset:0 size:a5];
-    [v16 endEncoding];
+    [commandBuffer setLabel:*MEMORY[0x277D0B020]];
+    blitCommandEncoder = [v15 blitCommandEncoder];
+    [blitCommandEncoder copyFromBuffer:v11 sourceOffset:0 toBuffer:v12 destinationOffset:0 size:length];
+    [blitCommandEncoder endEncoding];
     [v15 commit];
   }
 
@@ -1120,8 +1120,8 @@ uint64_t __46__DYMTLFunctionPlayer_executePlatformFunction__block_invoke(uint64_
         v26 = self + *MEMORY[0x277D0AF68];
         v27 = GPUTools::MTL::MakeMTLArray(**(v26 + 1), *(v4 + 92), &self->_objectMap.__table_.__bucket_list_.__ptr_);
         MTLImageFilterFunctionInfo = GPUTools::MTL::MakeMTLImageFilterFunctionInfo(**(v26 + 2), v28);
-        v30 = [(DYMTLFunctionPlayer *)self device];
-        v31 = [v30 newLibraryWithImageFilterFunctionsSPI:v27 imageFilterFunctionInfo:MTLImageFilterFunctionInfo error:0];
+        device = [(DYMTLFunctionPlayer *)self device];
+        v31 = [device newLibraryWithImageFilterFunctionsSPI:v27 imageFilterFunctionInfo:MTLImageFilterFunctionInfo error:0];
 
         *&v58 = (*(&self->super.super.isa + v3))[3];
         v32 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v58);
@@ -1165,14 +1165,14 @@ uint64_t __46__DYMTLFunctionPlayer_executePlatformFunction__block_invoke(uint64_
         if (v18)
         {
           v19 = v18;
-          v6 = [(DYMTLFunctionPlayer *)self device];
-          v7 = [v6 newSharedEventWithHandle:v19[3]];
+          device2 = [(DYMTLFunctionPlayer *)self device];
+          newSharedEvent = [device2 newSharedEventWithHandle:v19[3]];
         }
 
         else
         {
-          v6 = [(DYMTLFunctionPlayer *)self device];
-          v7 = [v6 newSharedEvent];
+          device2 = [(DYMTLFunctionPlayer *)self device];
+          newSharedEvent = [device2 newSharedEvent];
         }
 
         *&v58 = &v61;
@@ -1204,19 +1204,19 @@ LABEL_29:
       if (v20)
       {
         v22 = v20;
-        v6 = [(DYMTLFunctionPlayer *)self device];
-        v23 = [v6 newSharedTextureWithHandle:v22[3]];
+        device2 = [(DYMTLFunctionPlayer *)self device];
+        v23 = [device2 newSharedTextureWithHandle:v22[3]];
         *&v58 = v57;
         v24 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v57);
-        v25 = v24[3];
+        device3 = v24[3];
         v24[3] = v23;
       }
 
       else
       {
-        v6 = GPUTools::MTL::MakeMTLTextureDescriptor(*(*(&self->super.super.isa + v3))[12], v21);
-        v25 = [(DYMTLFunctionPlayer *)self device];
-        v40 = [v25 newSharedTextureWithDescriptor:v6];
+        device2 = GPUTools::MTL::MakeMTLTextureDescriptor(*(*(&self->super.super.isa + v3))[12], v21);
+        device3 = [(DYMTLFunctionPlayer *)self device];
+        v40 = [device3 newSharedTextureWithDescriptor:device2];
         *&v58 = v57;
         v41 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v57);
         v42 = v41[3];
@@ -1228,13 +1228,13 @@ LABEL_29:
 
     if (v5 == -15912)
     {
-      v6 = [(DYMTLFunctionPlayer *)self device:GPUTools::FD::Argument::ViewAsScalarArray<unsigned int>(v4 + 24];
-      v7 = [v6 newSharedEvent];
+      device2 = [(DYMTLFunctionPlayer *)self device:GPUTools::FD::Argument::ViewAsScalarArray<unsigned int>(v4 + 24];
+      newSharedEvent = [device2 newSharedEvent];
       *&v58 = v57;
       v8 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v57);
 LABEL_33:
       v39 = v8[3];
-      v8[3] = v7;
+      v8[3] = newSharedEvent;
 
       goto LABEL_36;
     }
@@ -1247,15 +1247,15 @@ LABEL_33:
     if (v5 == -16236)
     {
       *&v58 = v4 + 16;
-      v6 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, (v4 + 16))[3];
-      if ([v6 storageMode] != 3)
+      device2 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, (v4 + 16))[3];
+      if ([device2 storageMode] != 3)
       {
-        if ([v6 storageMode] == 2)
+        if ([device2 storageMode] == 2)
         {
           [(DYMTLFunctionPlayer *)self _restoreTexture:(*(&self->super.super.isa + v3))[2] commandBuffer:0 argumentOffset:0];
         }
 
-        else if (![v6 iosurface])
+        else if (![device2 iosurface])
         {
           v59 = 0u;
           v60 = 0u;
@@ -1271,7 +1271,7 @@ LABEL_33:
           v57[0] = v58;
           v57[1] = v59;
           v57[2] = v60;
-          [v6 replaceRegion:v57 mipmapLevel:v51 slice:v52 withBytes:Data bytesPerRow:v55 bytesPerImage:v56];
+          [device2 replaceRegion:v57 mipmapLevel:v51 slice:v52 withBytes:Data bytesPerRow:v55 bytesPerImage:v56];
         }
       }
 
@@ -1295,12 +1295,12 @@ LABEL_30:
 
   v14 = *v12[1];
   v15 = *v12[2];
-  v16 = [(DYMTLFunctionPlayer *)self device];
-  v6 = [(DYMTLFunctionPlayer *)self _createPrivateBufferForFunctionWithDevice:v16 bytes:v14 length:v15 resourceOptions:v13];
+  device4 = [(DYMTLFunctionPlayer *)self device];
+  device2 = [(DYMTLFunctionPlayer *)self _createPrivateBufferForFunctionWithDevice:device4 bytes:v14 length:v15 resourceOptions:v13];
 
   *&v58 = (*(&self->super.super.isa + v3))[3];
   v17 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v58);
-  objc_storeStrong(v17 + 3, v6);
+  objc_storeStrong(v17 + 3, device2);
   [(DYFunctionPlayer *)self releaseDataForArgument:1];
 LABEL_36:
 
@@ -1312,8 +1312,8 @@ LABEL_37:
     *&v58 = v57;
     v45 = std::__hash_table<std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,objc_object * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,objc_object * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&self->_objectMap.__table_.__bucket_list_.__ptr_, v57)[3];
     v46 = v45;
-    v47 = [v46 maxCommandBufferCount];
-    if (v47 > [(MTLCommandQueueSPI *)self->_commandQueue maxCommandBufferCount])
+    maxCommandBufferCount = [v46 maxCommandBufferCount];
+    if (maxCommandBufferCount > [(MTLCommandQueueSPI *)self->_commandQueue maxCommandBufferCount])
     {
       [(MTLCommandQueueSPI *)self->_commandQueue finish];
       objc_storeStrong(&self->_commandQueue, v45);

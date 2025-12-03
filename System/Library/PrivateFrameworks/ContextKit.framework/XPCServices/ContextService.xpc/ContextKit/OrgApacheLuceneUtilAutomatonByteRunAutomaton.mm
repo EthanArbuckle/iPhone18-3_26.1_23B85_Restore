@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneUtilAutomatonByteRunAutomaton
-- (BOOL)runWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (BOOL)runWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonByteRunAutomaton
 
-- (BOOL)runWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (BOOL)runWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   initial = self->super.initial_;
-  if (a5 + a4 <= a4)
+  if (withInt + int <= int)
   {
 LABEL_10:
     accept = self->super.accept_;
@@ -27,20 +27,20 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!array)
   {
     goto LABEL_16;
   }
 
-  v8 = a4;
-  v9 = a5 + a4;
-  v10 = a3 + a4;
+  intCopy = int;
+  v9 = withInt + int;
+  v10 = array + int;
   while (1)
   {
-    v11 = *(a3 + 2);
-    if (v8 < 0 || v8 >= v11)
+    v11 = *(array + 2);
+    if (intCopy < 0 || intCopy >= v11)
     {
-      IOSArray_throwOutOfBoundsWithMsg(v11, v8);
+      IOSArray_throwOutOfBoundsWithMsg(v11, intCopy);
     }
 
     v12 = [(OrgApacheLuceneUtilAutomatonRunAutomaton *)self stepWithInt:initial withInt:v10[12]];
@@ -50,9 +50,9 @@ LABEL_16:
     }
 
     initial = v12;
-    ++v8;
+    ++intCopy;
     ++v10;
-    if (v9 == v8)
+    if (v9 == intCopy)
     {
       goto LABEL_10;
     }

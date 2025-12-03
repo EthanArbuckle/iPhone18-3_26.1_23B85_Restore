@@ -1,41 +1,41 @@
 @interface VCAudioTierPicker
-+ (BOOL)arrayHasObject:(id)a3 withPayloadType:(int)a4;
-+ (BOOL)isAlwaysOnRedAudioTier:(unsigned int)a3 redNumPayloads:(unsigned int)a4 usingCellular:(BOOL)a5;
-+ (BOOL)isModePlistSupported:(unsigned __int8)a3;
-+ (BOOL)isU1ModeWithPlistSupport:(unsigned __int8)a3;
-+ (BOOL)loadVCAudioTierFromTierTable:(id)a3 bitrate:(unsigned int)a4 redNumPayloads:(unsigned int)a5 outEntryArray:(id)a6;
-+ (BOOL)loadVCAudioTierFromTierTable:(id)a3 config:(id *)a4 allowRedAtLowBitrate:(BOOL)a5 alwaysOnAudioRedundancyDisabled:(BOOL)a6 redNumPayloads:(unsigned int)a7 tierBitrate:(unsigned int)a8 outEntryArray:(id)a9;
-+ (BOOL)shouldFilterTierForPayloadConfig:(id)a3 bitRate:(unsigned int)a4 packetsPerBundle:(unsigned int)a5 mode:(unsigned __int8)a6 redNumPayloads:(unsigned int)a7 cellular:(BOOL)a8;
-+ (BOOL)usePlistForAudioTierTableFromMode:(unsigned __int8)a3;
-+ (id)allPossibleCombinations:(id)a3 supportedPacketsPerBundle:(id)a4 redNumPayloads:(unsigned int)a5 headerSize:(unsigned int)a6 tierPickerMode:(unsigned __int8)a7 usingCellular:(BOOL)a8 useCaseWatchContinuity:(BOOL)a9;
-+ (id)selectHighestQualityAudioTiers:(id)a3 forBitrateLimits:(id)a4 isHardLimit:(BOOL)a5;
-+ (id)valueForNetworkBitrate:(id)a3 networkBitrate:(unsigned int)a4;
-+ (int)tierPickerModeToAVConferenceOperatingMode:(unsigned __int8)a3;
-+ (unsigned)operatingModeToTierPickerMode:(int)a3 isLowLatency:(BOOL)a4 preferPlistForTierTable:(BOOL)a5;
-- (BOOL)addEntryMatchingPayloadToAudioTierMap:(id)a3 config:(id *)a4 entry:(id)a5 bitrateTier:(id)a6 forcedPayload:(int)a7;
-- (BOOL)reconfigureTierPicker:(id *)a3;
++ (BOOL)arrayHasObject:(id)object withPayloadType:(int)type;
++ (BOOL)isAlwaysOnRedAudioTier:(unsigned int)tier redNumPayloads:(unsigned int)payloads usingCellular:(BOOL)cellular;
++ (BOOL)isModePlistSupported:(unsigned __int8)supported;
++ (BOOL)isU1ModeWithPlistSupport:(unsigned __int8)support;
++ (BOOL)loadVCAudioTierFromTierTable:(id)table bitrate:(unsigned int)bitrate redNumPayloads:(unsigned int)payloads outEntryArray:(id)array;
++ (BOOL)loadVCAudioTierFromTierTable:(id)table config:(id *)config allowRedAtLowBitrate:(BOOL)bitrate alwaysOnAudioRedundancyDisabled:(BOOL)disabled redNumPayloads:(unsigned int)payloads tierBitrate:(unsigned int)tierBitrate outEntryArray:(id)array;
++ (BOOL)shouldFilterTierForPayloadConfig:(id)config bitRate:(unsigned int)rate packetsPerBundle:(unsigned int)bundle mode:(unsigned __int8)mode redNumPayloads:(unsigned int)payloads cellular:(BOOL)cellular;
++ (BOOL)usePlistForAudioTierTableFromMode:(unsigned __int8)mode;
++ (id)allPossibleCombinations:(id)combinations supportedPacketsPerBundle:(id)bundle redNumPayloads:(unsigned int)payloads headerSize:(unsigned int)size tierPickerMode:(unsigned __int8)mode usingCellular:(BOOL)cellular useCaseWatchContinuity:(BOOL)continuity;
++ (id)selectHighestQualityAudioTiers:(id)tiers forBitrateLimits:(id)limits isHardLimit:(BOOL)limit;
++ (id)valueForNetworkBitrate:(id)bitrate networkBitrate:(unsigned int)networkBitrate;
++ (int)tierPickerModeToAVConferenceOperatingMode:(unsigned __int8)mode;
++ (unsigned)operatingModeToTierPickerMode:(int)mode isLowLatency:(BOOL)latency preferPlistForTierTable:(BOOL)table;
+- (BOOL)addEntryMatchingPayloadToAudioTierMap:(id)map config:(id *)config entry:(id)entry bitrateTier:(id)tier forcedPayload:(int)payload;
+- (BOOL)reconfigureTierPicker:(id *)picker;
 - (BOOL)setUpFeatureFlagToEnablementMapping;
-- (BOOL)setupTierPickerForConfig:(id *)a3;
-- (VCAudioTierPicker)initWithConfig:(id *)a3;
+- (BOOL)setupTierPickerForConfig:(id *)config;
+- (VCAudioTierPicker)initWithConfig:(id *)config;
 - (id)allActiveAudioTiers;
-- (id)chooseMultiwayAudioTierForRedPayload:(unint64_t)a3;
-- (id)generateAudioTiersDictFromPlistForBitrateLimits:(id)a3 tierPickerConfig:(id *)a4 redNumPayloads:(unsigned int)a5;
-- (id)loadAudioTiersFromPlist:(id)a3;
-- (id)tierForAudioBitrate:(unint64_t)a3 withRedNumPayloads:(unint64_t)a4;
-- (id)tierForNetworkBitrate:(unint64_t)a3 withLegacyDuplication:(int)a4;
-- (id)tierForNetworkBitrate:(unint64_t)a3 withRedNumPayloads:(unint64_t)a4;
-- (unint64_t)adjustedRedNumPayloadsForLowBitrateAudioTier:(id)a3 redNumPayloads:(unint64_t)a4;
-- (void)addPayloadFromTier:(id)a3;
-- (void)addPayloadsFromGFTPayloadsArray:(id)a3 isACC24Supported:(BOOL)a4;
-- (void)addPayloadsFromGFTRedNumPayloadsDict:(id)a3 isDeviceClassWolf:(BOOL)a4 isACC24Supported:(BOOL)a5;
-- (void)addPayloadsFromU1IPVerDict:(id)a3 config:(id *)a4 mode:(id)a5;
-- (void)addPayloadsFromU1RedNumPayloadsDict:(id)a3 config:(id *)a4 mode:(id)a5 isIPv4:(BOOL)a6 isCellular:(BOOL)a7;
+- (id)chooseMultiwayAudioTierForRedPayload:(unint64_t)payload;
+- (id)generateAudioTiersDictFromPlistForBitrateLimits:(id)limits tierPickerConfig:(id *)config redNumPayloads:(unsigned int)payloads;
+- (id)loadAudioTiersFromPlist:(id)plist;
+- (id)tierForAudioBitrate:(unint64_t)bitrate withRedNumPayloads:(unint64_t)payloads;
+- (id)tierForNetworkBitrate:(unint64_t)bitrate withLegacyDuplication:(int)duplication;
+- (id)tierForNetworkBitrate:(unint64_t)bitrate withRedNumPayloads:(unint64_t)payloads;
+- (unint64_t)adjustedRedNumPayloadsForLowBitrateAudioTier:(id)tier redNumPayloads:(unint64_t)payloads;
+- (void)addPayloadFromTier:(id)tier;
+- (void)addPayloadsFromGFTPayloadsArray:(id)array isACC24Supported:(BOOL)supported;
+- (void)addPayloadsFromGFTRedNumPayloadsDict:(id)dict isDeviceClassWolf:(BOOL)wolf isACC24Supported:(BOOL)supported;
+- (void)addPayloadsFromU1IPVerDict:(id)dict config:(id *)config mode:(id)mode;
+- (void)addPayloadsFromU1RedNumPayloadsDict:(id)dict config:(id *)config mode:(id)mode isIPv4:(BOOL)pv4 isCellular:(BOOL)cellular;
 - (void)dealloc;
-- (void)generateAudioPayloadsFromConfig:(id *)a3;
-- (void)logTierPickerConfig:(id *)a3;
-- (void)printCreatedAudioTiers:(id)a3;
+- (void)generateAudioPayloadsFromConfig:(id *)config;
+- (void)logTierPickerConfig:(id *)config;
+- (void)printCreatedAudioTiers:(id)tiers;
 - (void)setUpFeatureFlagToEnablementMapping;
-- (void)setupAlwaysOnRedTiersForSupportedRed:(id)a3 usingCellular:(BOOL)a4;
+- (void)setupAlwaysOnRedTiersForSupportedRed:(id)red usingCellular:(BOOL)cellular;
 @end
 
 @implementation VCAudioTierPicker
@@ -88,7 +88,7 @@
           v14 = 2112;
           v15 = v5;
           v16 = 2048;
-          v17 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate plistFeatureFlagToEnablementMapping", &v8, 0x30u);
         }
       }
@@ -98,7 +98,7 @@
   return v3 != 0;
 }
 
-- (VCAudioTierPicker)initWithConfig:(id *)a3
+- (VCAudioTierPicker)initWithConfig:(id *)config
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -108,7 +108,7 @@
   {
     v4->_tierTablePlist = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_audioPayloads = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    if (![(VCAudioTierPicker *)v4 setUpFeatureFlagToEnablementMapping]|| (v5 = *&a3->var2, v7[0] = *&a3->var0, v7[1] = v5, v7[2] = *&a3->var4, v8 = *&a3->var12, ![(VCAudioTierPicker *)v4 setupTierPickerForConfig:v7]))
+    if (![(VCAudioTierPicker *)v4 setUpFeatureFlagToEnablementMapping]|| (v5 = *&config->var2, v7[0] = *&config->var0, v7[1] = v5, v7[2] = *&config->var4, v8 = *&config->var12, ![(VCAudioTierPicker *)v4 setupTierPickerForConfig:v7]))
     {
 
       return 0;
@@ -118,7 +118,7 @@
   return v4;
 }
 
-- (BOOL)reconfigureTierPicker:(id *)a3
+- (BOOL)reconfigureTierPicker:(id *)picker
 {
   v13 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -128,7 +128,7 @@
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       mode = self->_config.mode;
-      var0 = a3->var0;
+      var0 = picker->var0;
       *v11 = 136316162;
       *&v11[4] = v5;
       *&v11[12] = 2080;
@@ -145,15 +145,15 @@
 
   self->_tierTablesForRedNumPayloads = 0;
   self->_bitrateLimits = 0;
-  v9 = *&a3->var2;
-  *v11 = *&a3->var0;
+  v9 = *&picker->var2;
+  *v11 = *&picker->var0;
   *&v11[16] = v9;
-  *&v11[32] = *&a3->var4;
-  v12 = *&a3->var12;
+  *&v11[32] = *&picker->var4;
+  v12 = *&picker->var12;
   return [(VCAudioTierPicker *)self setupTierPickerForConfig:v11];
 }
 
-- (void)logTierPickerConfig:(id *)a3
+- (void)logTierPickerConfig:(id *)config
 {
   v53 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -162,16 +162,16 @@
     v5 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var4 = a3->var4;
-      var5 = a3->var5;
-      var6 = a3->var6;
-      var7 = a3->var7;
-      var8 = a3->var8;
-      var9 = a3->var9;
-      var10 = a3->var10;
-      var2 = a3->var2;
-      var3 = a3->var3;
+      var0 = config->var0;
+      var4 = config->var4;
+      var5 = config->var5;
+      var6 = config->var6;
+      var7 = config->var7;
+      var8 = config->var8;
+      var9 = config->var9;
+      var10 = config->var10;
+      var2 = config->var2;
+      var3 = config->var3;
       *buf = 136318210;
       v30 = v4;
       v31 = 2080;
@@ -206,7 +206,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  var1 = a3->var1;
+  var1 = config->var1;
   v17 = [(__CFArray *)var1 countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v17)
   {
@@ -248,10 +248,10 @@
   }
 }
 
-- (BOOL)setupTierPickerForConfig:(id *)a3
+- (BOOL)setupTierPickerForConfig:(id *)config
 {
   v70 = *MEMORY[0x1E69E9840];
-  var0 = a3->var0;
+  var0 = config->var0;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (!var0)
   {
@@ -273,11 +273,11 @@
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *&a3->var2;
-      *buf = *&a3->var0;
+      v9 = *&config->var2;
+      *buf = *&config->var0;
       *&buf[16] = v9;
-      *&buf[32] = *&a3->var4;
-      v69 = *&a3->var12;
+      *&buf[32] = *&config->var4;
+      v69 = *&config->var12;
       v10 = [(VCAudioTierPicker *)self configToString:buf];
       *buf = 136315906;
       *&buf[4] = v7;
@@ -291,26 +291,26 @@
     }
   }
 
-  v11 = *&a3->var2;
-  *buf = *&a3->var0;
+  v11 = *&config->var2;
+  *buf = *&config->var0;
   *&buf[16] = v11;
-  *&buf[32] = *&a3->var4;
-  v69 = *&a3->var12;
+  *&buf[32] = *&config->var4;
+  v69 = *&config->var12;
   [(VCAudioTierPicker *)self logTierPickerConfig:buf];
   v12 = VCMediaStreamSendGroup;
-  if (![VCAudioTierPicker isModePlistSupported:a3->var0])
+  if (![VCAudioTierPicker isModePlistSupported:config->var0])
   {
-    a3->var12 = 0;
+    config->var12 = 0;
   }
 
-  v13 = *&a3->var0;
-  v14 = *&a3->var2;
-  v15 = *&a3->var4;
-  *&self->_config.isACC24Supported = *&a3->var12;
+  v13 = *&config->var0;
+  v14 = *&config->var2;
+  v15 = *&config->var4;
+  *&self->_config.isACC24Supported = *&config->var12;
   *&self->_config.headerSize = v15;
   *&self->_config.supportedPacketsPerBundle = v14;
   *&self->_config.mode = v13;
-  v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[__CFArray count](a3->var3, "count")}];
+  v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[__CFArray count](config->var3, "count")}];
   self->_tierTablesForRedNumPayloads = v16;
   if (!v16)
   {
@@ -326,7 +326,7 @@
     return 0;
   }
 
-  v17 = [[BitrateLimits alloc] initWithOperatingMode:a3->var0 withBitrateCap:a3->var7 useCaseWatchContinuity:a3->var6];
+  v17 = [[BitrateLimits alloc] initWithOperatingMode:config->var0 withBitrateCap:config->var7 useCaseWatchContinuity:config->var6];
   self->_bitrateLimits = v17;
   if (!v17)
   {
@@ -346,7 +346,7 @@
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = a3->var3;
+  obj = config->var3;
   v18 = [(__CFArray *)obj countByEnumeratingWithState:&v64 objects:v63 count:16];
   if (v18)
   {
@@ -363,7 +363,7 @@
         }
 
         v22 = *(*(&v64 + 1) + 8 * i);
-        v23 = [&v12[98] usePlistForAudioTierTableFromMode:a3->var0];
+        v23 = [&v12[98] usePlistForAudioTierTableFromMode:config->var0];
         v24 = VRTraceGetErrorLogLevelForModule();
         if (v23)
         {
@@ -373,10 +373,10 @@
             v26 = *v20;
             if (os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = a3->var0;
-              var11 = a3->var11;
-              var5 = a3->var5;
-              v30 = [v22 unsignedLongValue];
+              v27 = config->var0;
+              var11 = config->var11;
+              var5 = config->var5;
+              unsignedLongValue = [v22 unsignedLongValue];
               *buf = 136316674;
               *&buf[4] = v25;
               *&buf[12] = 2080;
@@ -392,12 +392,12 @@
               *&buf[42] = var5;
               v12 = VCMediaStreamSendGroup;
               *&buf[46] = 2048;
-              v69 = v30;
+              v69 = unsignedLongValue;
               _os_log_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Using plist for audio tier table for config.mode=%d isIPv4=%{BOOL}d isCellular=%{BOOL}d redNumPayloads=%lu", buf, 0x38u);
             }
           }
 
-          v31 = -[VCAudioTierPicker generateAudioTiersDictFromPlistForBitrateLimits:tierPickerConfig:redNumPayloads:](self, "generateAudioTiersDictFromPlistForBitrateLimits:tierPickerConfig:redNumPayloads:", self->_bitrateLimits, a3, [v22 unsignedIntegerValue]);
+          v31 = -[VCAudioTierPicker generateAudioTiersDictFromPlistForBitrateLimits:tierPickerConfig:redNumPayloads:](self, "generateAudioTiersDictFromPlistForBitrateLimits:tierPickerConfig:redNumPayloads:", self->_bitrateLimits, config, [v22 unsignedIntegerValue]);
           if (!v31)
           {
             v49 = VRTraceGetErrorLogLevelForModule();
@@ -407,8 +407,8 @@
               v51 = *v20;
               if (os_log_type_enabled(*v20, OS_LOG_TYPE_ERROR))
               {
-                v53 = [v22 unsignedLongValue];
-                v54 = a3->var0;
+                unsignedLongValue2 = [v22 unsignedLongValue];
+                v54 = config->var0;
                 *buf = 136316162;
                 *&buf[4] = v50;
                 *&buf[12] = 2080;
@@ -416,7 +416,7 @@
                 *&buf[22] = 1024;
                 *&buf[24] = 292;
                 *&buf[28] = 2048;
-                *&buf[30] = v53;
+                *&buf[30] = unsignedLongValue2;
                 *&buf[38] = 1024;
                 *&buf[40] = v54;
                 _os_log_error_impl(&dword_1DB56E000, v51, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to load Audio Tier map from plist for redNumPayloads=%lu. config.mode=%d", buf, 0x2Cu);
@@ -435,10 +435,10 @@
             v33 = *v20;
             if (os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
             {
-              v34 = a3->var0;
-              v35 = a3->var11;
-              v36 = a3->var5;
-              v37 = [v22 unsignedLongValue];
+              v34 = config->var0;
+              v35 = config->var11;
+              v36 = config->var5;
+              unsignedLongValue3 = [v22 unsignedLongValue];
               *buf = 136316674;
               *&buf[4] = v32;
               *&buf[12] = 2080;
@@ -454,16 +454,16 @@
               *&buf[40] = 1024;
               *&buf[42] = v36;
               *&buf[46] = 2048;
-              v69 = v37;
+              v69 = unsignedLongValue3;
               _os_log_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Using algorithm for audio tier table for config.mode=%d isIPv4=%{BOOL}d isCellular=%{BOOL}d redNumPayloads=%lu", buf, 0x38u);
             }
           }
 
-          var1 = a3->var1;
-          var2 = a3->var2;
-          v40 = [v22 unsignedIntegerValue];
-          LOBYTE(v55) = a3->var6;
-          v31 = [&v12[98] selectHighestQualityAudioTiers:objc_msgSend(&v12[98] forBitrateLimits:"allPossibleCombinations:supportedPacketsPerBundle:redNumPayloads:headerSize:tierPickerMode:usingCellular:useCaseWatchContinuity:" isHardLimit:{var1, var2, v40, a3->var4, a3->var0, a3->var5, v55), self->_bitrateLimits, a3->var0 == 6}];
+          var1 = config->var1;
+          var2 = config->var2;
+          unsignedIntegerValue = [v22 unsignedIntegerValue];
+          LOBYTE(v55) = config->var6;
+          v31 = [&v12[98] selectHighestQualityAudioTiers:objc_msgSend(&v12[98] forBitrateLimits:"allPossibleCombinations:supportedPacketsPerBundle:redNumPayloads:headerSize:tierPickerMode:usingCellular:useCaseWatchContinuity:" isHardLimit:{var1, var2, unsignedIntegerValue, config->var4, config->var0, config->var5, v55), self->_bitrateLimits, config->var0 == 6}];
           if (!v31)
           {
             if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -492,17 +492,17 @@
     }
   }
 
-  [(VCAudioTierPicker *)self generateAudioPayloadsFromConfig:a3];
-  if (([&v12[98] usePlistForAudioTierTableFromMode:a3->var0] & 1) == 0 && !+[VCDefaults BOOLeanValueForKey:defaultValue:](VCDefaults, "BOOLeanValueForKey:defaultValue:", @"alwaysOnAudioRedundancyDisabled", !a3->var8))
+  [(VCAudioTierPicker *)self generateAudioPayloadsFromConfig:config];
+  if (([&v12[98] usePlistForAudioTierTableFromMode:config->var0] & 1) == 0 && !+[VCDefaults BOOLeanValueForKey:defaultValue:](VCDefaults, "BOOLeanValueForKey:defaultValue:", @"alwaysOnAudioRedundancyDisabled", !config->var8))
   {
-    [(VCAudioTierPicker *)self setupAlwaysOnRedTiersForSupportedRed:a3->var3 usingCellular:a3->var5];
+    [(VCAudioTierPicker *)self setupAlwaysOnRedTiersForSupportedRed:config->var3 usingCellular:config->var5];
   }
 
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  var3 = a3->var3;
+  var3 = config->var3;
   v42 = [(__CFArray *)var3 countByEnumeratingWithState:&v59 objects:v58 count:16];
   if (v42)
   {
@@ -526,32 +526,32 @@
     while (v43);
   }
 
-  v46 = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads objectForKeyedSubscript:[(__CFArray *)a3->var3 objectAtIndexedSubscript:0]];
-  self->_defaultTier = [v46 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", -[BitrateLimits defaultValueForNetwork:](self->_bitrateLimits, "defaultValueForNetwork:", a3->var5))}];
-  v47 = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads objectForKeyedSubscript:[(__CFArray *)a3->var3 objectAtIndexedSubscript:0]];
+  v46 = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads objectForKeyedSubscript:[(__CFArray *)config->var3 objectAtIndexedSubscript:0]];
+  self->_defaultTier = [v46 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", -[BitrateLimits defaultValueForNetwork:](self->_bitrateLimits, "defaultValueForNetwork:", config->var5))}];
+  v47 = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads objectForKeyedSubscript:[(__CFArray *)config->var3 objectAtIndexedSubscript:0]];
   v48 = 1;
   self->_fallbackTier = [v47 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", -[BitrateLimits defaultValueForNetwork:](self->_bitrateLimits, "defaultValueForNetwork:", 1))}];
   return v48;
 }
 
-+ (int)tierPickerModeToAVConferenceOperatingMode:(unsigned __int8)a3
++ (int)tierPickerModeToAVConferenceOperatingMode:(unsigned __int8)mode
 {
-  if (a3 > 9u)
+  if (mode > 9u)
   {
     return 2;
   }
 
   else
   {
-    return dword_1DBD4F470[a3];
+    return dword_1DBD4F470[mode];
   }
 }
 
-+ (unsigned)operatingModeToTierPickerMode:(int)a3 isLowLatency:(BOOL)a4 preferPlistForTierTable:(BOOL)a5
++ (unsigned)operatingModeToTierPickerMode:(int)mode isLowLatency:(BOOL)latency preferPlistForTierTable:(BOOL)table
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = *&a3;
+  tableCopy = table;
+  latencyCopy = latency;
+  v7 = *&mode;
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -613,7 +613,7 @@
   if (v7 == 1)
   {
 LABEL_23:
-    if (v5)
+    if (tableCopy)
     {
       v10 = 5;
     }
@@ -623,7 +623,7 @@ LABEL_23:
       v10 = 4;
     }
 
-    if (v6)
+    if (latencyCopy)
     {
       return 9;
     }
@@ -631,7 +631,7 @@ LABEL_23:
     return v10;
   }
 
-  if (v5)
+  if (tableCopy)
   {
     v11 = 3;
   }
@@ -641,7 +641,7 @@ LABEL_23:
     v11 = 2;
   }
 
-  if (v6)
+  if (latencyCopy)
   {
     v11 = 8;
   }
@@ -657,46 +657,46 @@ LABEL_23:
   }
 }
 
-- (void)setupAlwaysOnRedTiersForSupportedRed:(id)a3 usingCellular:(BOOL)a4
+- (void)setupAlwaysOnRedTiersForSupportedRed:(id)red usingCellular:(BOOL)cellular
 {
-  if (a3)
+  if (red)
   {
-    v4 = a4;
-    if (-[NSArray containsObject:](-[BitrateLimits limits](self->_bitrateLimits, "limits"), "containsObject:", &unk_1F579AE48) && [a3 count] >= 2)
+    cellularCopy = cellular;
+    if (-[NSArray containsObject:](-[BitrateLimits limits](self->_bitrateLimits, "limits"), "containsObject:", &unk_1F579AE48) && [red count] >= 2)
     {
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 1)), "objectForKeyedSubscript:", &unk_1F579AE48), &unk_1F579AE48}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 1)), "objectForKeyedSubscript:", &unk_1F579AE48), &unk_1F579AE48}];
     }
 
-    if (-[NSArray containsObject:](-[BitrateLimits limits](self->_bitrateLimits, "limits"), "containsObject:", &unk_1F579AE60) && [a3 count] >= 3)
+    if (-[NSArray containsObject:](-[BitrateLimits limits](self->_bitrateLimits, "limits"), "containsObject:", &unk_1F579AE60) && [red count] >= 3)
     {
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE60), &unk_1F579AE60}];
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 1)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE60), &unk_1F579AE60}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE60), &unk_1F579AE60}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 1)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE60), &unk_1F579AE60}];
     }
 
-    if (-[NSArray containsObject:](-[BitrateLimits limits](self->_bitrateLimits, "limits"), "containsObject:", &unk_1F579AE78) && [a3 count] >= 4)
+    if (-[NSArray containsObject:](-[BitrateLimits limits](self->_bitrateLimits, "limits"), "containsObject:", &unk_1F579AE78) && [red count] >= 4)
     {
       tierTablesForRedNumPayloads = self->_tierTablesForRedNumPayloads;
-      if (v4)
+      if (cellularCopy)
       {
-        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
-        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 1)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
-        v8 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE60}];
+        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
+        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 1)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 2)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
+        v8 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE60}];
         v9 = self->_tierTablesForRedNumPayloads;
-        v10 = a3;
+        redCopy2 = red;
         v11 = 3;
       }
 
       else
       {
-        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
-        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 1)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(a3, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
-        v8 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(a3, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE78}];
+        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 0)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
+        [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 1)), "setObject:forKeyedSubscript:", objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", objc_msgSend(red, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE78), &unk_1F579AE78}];
+        v8 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{objc_msgSend(red, "objectAtIndexedSubscript:", 3)), "objectForKeyedSubscript:", &unk_1F579AE78}];
         v9 = self->_tierTablesForRedNumPayloads;
-        v10 = a3;
+        redCopy2 = red;
         v11 = 2;
       }
 
-      v12 = -[NSMutableDictionary objectForKeyedSubscript:](v9, "objectForKeyedSubscript:", [v10 objectAtIndexedSubscript:v11]);
+      v12 = -[NSMutableDictionary objectForKeyedSubscript:](v9, "objectForKeyedSubscript:", [redCopy2 objectAtIndexedSubscript:v11]);
 
       [v12 setObject:v8 forKeyedSubscript:&unk_1F579AE78];
     }
@@ -721,14 +721,14 @@ LABEL_23:
   [(VCAudioTierPicker *)&v3 dealloc];
 }
 
-+ (BOOL)arrayHasObject:(id)a3 withPayloadType:(int)a4
++ (BOOL)arrayHasObject:(id)object withPayloadType:(int)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v6 = [object countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = v6;
@@ -740,10 +740,10 @@ LABEL_23:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(object);
         }
 
-        if ([*(*(&v12 + 1) + 8 * v9) payload] == a4)
+        if ([*(*(&v12 + 1) + 8 * v9) payload] == type)
         {
           LOBYTE(v6) = 1;
           return v6;
@@ -753,7 +753,7 @@ LABEL_23:
       }
 
       while (v7 != v9);
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v6 = [object countByEnumeratingWithState:&v12 objects:v11 count:16];
       v7 = v6;
       if (v6)
       {
@@ -767,22 +767,22 @@ LABEL_23:
   return v6;
 }
 
-+ (id)allPossibleCombinations:(id)a3 supportedPacketsPerBundle:(id)a4 redNumPayloads:(unsigned int)a5 headerSize:(unsigned int)a6 tierPickerMode:(unsigned __int8)a7 usingCellular:(BOOL)a8 useCaseWatchContinuity:(BOOL)a9
++ (id)allPossibleCombinations:(id)combinations supportedPacketsPerBundle:(id)bundle redNumPayloads:(unsigned int)payloads headerSize:(unsigned int)size tierPickerMode:(unsigned __int8)mode usingCellular:(BOOL)cellular useCaseWatchContinuity:(BOOL)continuity
 {
-  v36 = a8;
-  v37 = a7;
+  cellularCopy = cellular;
+  modeCopy = mode;
   v56 = *MEMORY[0x1E69E9840];
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [VCAudioTierPicker arrayHasObject:a3 withPayloadType:97]|| [VCAudioTierPicker arrayHasObject:a3 withPayloadType:98]|| [VCAudioTierPicker arrayHasObject:a3 withPayloadType:108];
-  v12 = [VCAudioTierPicker arrayHasObject:a3 withPayloadType:119];
-  v13 = [VCAudioTierPicker arrayHasObject:a3 withPayloadType:108];
-  v31 = [VCAudioTierPicker tierPickerModeToAVConferenceOperatingMode:v37];
+  v11 = [VCAudioTierPicker arrayHasObject:combinations withPayloadType:97]|| [VCAudioTierPicker arrayHasObject:combinations withPayloadType:98]|| [VCAudioTierPicker arrayHasObject:combinations withPayloadType:108];
+  v12 = [VCAudioTierPicker arrayHasObject:combinations withPayloadType:119];
+  v13 = [VCAudioTierPicker arrayHasObject:combinations withPayloadType:108];
+  v31 = [VCAudioTierPicker tierPickerModeToAVConferenceOperatingMode:modeCopy];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = a3;
-  v28 = [a3 countByEnumeratingWithState:&v52 objects:v51 count:16];
+  obj = combinations;
+  v28 = [combinations countByEnumeratingWithState:&v52 objects:v51 count:16];
   if (v28)
   {
     v27 = *v53;
@@ -802,8 +802,8 @@ LABEL_23:
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v30 = [v15 supportedBitrates];
-        v34 = [v30 countByEnumeratingWithState:&v47 objects:v46 count:16];
+        supportedBitrates = [v15 supportedBitrates];
+        v34 = [supportedBitrates countByEnumeratingWithState:&v47 objects:v46 count:16];
         if (v34)
         {
           v33 = *v48;
@@ -814,25 +814,25 @@ LABEL_23:
             {
               if (*v48 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(supportedBitrates);
               }
 
               v35 = v16;
-              v17 = [*(*(&v47 + 1) + 8 * v16) unsignedIntValue];
+              unsignedIntValue = [*(*(&v47 + 1) + 8 * v16) unsignedIntValue];
               memset(&v40[1], 170, 24);
               v40[0] = v15;
               LOBYTE(v40[1]) = +[VCAudioTier bundlingAppliedByCodecForPayload:mode:](VCAudioTier, "bundlingAppliedByCodecForPayload:mode:", [v15 payload], v31);
-              HIDWORD(v40[1]) = v17;
+              HIDWORD(v40[1]) = unsignedIntValue;
               LODWORD(v40[2]) = 0;
-              HIDWORD(v40[2]) = a5;
-              v40[3] = a6;
+              HIDWORD(v40[2]) = payloads;
+              v40[3] = size;
               if (+[VCPayloadUtils canBundleExternallyForPayload:forBundlingScheme:operatingMode:](VCPayloadUtils, "canBundleExternallyForPayload:forBundlingScheme:operatingMode:", [v15 payload], 1, v31))
               {
                 v44 = 0u;
                 v45 = 0u;
                 v42 = 0u;
                 v43 = 0u;
-                v18 = [a4 countByEnumeratingWithState:&v42 objects:v41 count:16];
+                v18 = [bundle countByEnumeratingWithState:&v42 objects:v41 count:16];
                 if (v18)
                 {
                   v19 = v18;
@@ -843,19 +843,19 @@ LABEL_23:
                     {
                       if (*v43 != v20)
                       {
-                        objc_enumerationMutation(a4);
+                        objc_enumerationMutation(bundle);
                       }
 
-                      v22 = [*(*(&v42 + 1) + 8 * i) unsignedIntValue];
-                      if ((!v12 || [v15 payload] != 106) && (!v11 || objc_msgSend(v15, "payload") != 119) && (!v13 || objc_msgSend(v15, "payload") != 97 && objc_msgSend(v15, "payload") != 98) && (a9 || !+[VCAudioTierPicker shouldFilterTierForPayloadConfig:bitRate:packetsPerBundle:mode:redNumPayloads:cellular:](VCAudioTierPicker, "shouldFilterTierForPayloadConfig:bitRate:packetsPerBundle:mode:redNumPayloads:cellular:", v15, v17, v22, v37, a5, v36)))
+                      unsignedIntValue2 = [*(*(&v42 + 1) + 8 * i) unsignedIntValue];
+                      if ((!v12 || [v15 payload] != 106) && (!v11 || objc_msgSend(v15, "payload") != 119) && (!v13 || objc_msgSend(v15, "payload") != 97 && objc_msgSend(v15, "payload") != 98) && (continuity || !+[VCAudioTierPicker shouldFilterTierForPayloadConfig:bitRate:packetsPerBundle:mode:redNumPayloads:cellular:](VCAudioTierPicker, "shouldFilterTierForPayloadConfig:bitRate:packetsPerBundle:mode:redNumPayloads:cellular:", v15, unsignedIntValue, unsignedIntValue2, modeCopy, payloads, cellularCopy)))
                       {
-                        LODWORD(v40[2]) = v22;
+                        LODWORD(v40[2]) = unsignedIntValue2;
                         v23 = [[VCAudioTier alloc] initWithConfig:v40];
                         [v39 addObject:v23];
                       }
                     }
 
-                    v19 = [a4 countByEnumeratingWithState:&v42 objects:v41 count:16];
+                    v19 = [bundle countByEnumeratingWithState:&v42 objects:v41 count:16];
                   }
 
                   while (v19);
@@ -873,7 +873,7 @@ LABEL_23:
             }
 
             while (v35 + 1 != v34);
-            v34 = [v30 countByEnumeratingWithState:&v47 objects:v46 count:16];
+            v34 = [supportedBitrates countByEnumeratingWithState:&v47 objects:v46 count:16];
           }
 
           while (v34);
@@ -892,11 +892,11 @@ LABEL_23:
   return v39;
 }
 
-+ (BOOL)usePlistForAudioTierTableFromMode:(unsigned __int8)a3
++ (BOOL)usePlistForAudioTierTableFromMode:(unsigned __int8)mode
 {
-  if (a3 > 7)
+  if (mode > 7)
   {
-    if ((a3 - 8) < 2)
+    if ((mode - 8) < 2)
     {
       return 1;
     }
@@ -904,13 +904,13 @@ LABEL_23:
 
   else
   {
-    if (a3 == 3 || a3 == 5)
+    if (mode == 3 || mode == 5)
     {
       v3 = @"usePlistForAudioTierTable";
       return VCDefaults_GetBoolValueForKey(v3, 1);
     }
 
-    if (a3 == 6)
+    if (mode == 6)
     {
       v3 = @"usePlistForAudioTierTableGFT";
       return VCDefaults_GetBoolValueForKey(v3, 1);
@@ -920,11 +920,11 @@ LABEL_23:
   return 0;
 }
 
-+ (BOOL)isModePlistSupported:(unsigned __int8)a3
++ (BOOL)isModePlistSupported:(unsigned __int8)supported
 {
-  v3 = a3;
-  result = [a1 isU1ModeWithPlistSupport:?];
-  if (v3 == 6)
+  supportedCopy = supported;
+  result = [self isU1ModeWithPlistSupport:?];
+  if (supportedCopy == 6)
   {
     return 1;
   }
@@ -932,29 +932,29 @@ LABEL_23:
   return result;
 }
 
-+ (BOOL)isU1ModeWithPlistSupport:(unsigned __int8)a3
++ (BOOL)isU1ModeWithPlistSupport:(unsigned __int8)support
 {
-  v3 = a3;
+  supportCopy = support;
   if ([VCAudioTierPicker isModeV2:?])
   {
     return 1;
   }
 
-  return [VCAudioTierPicker isModeLowLatency:v3];
+  return [VCAudioTierPicker isModeLowLatency:supportCopy];
 }
 
-- (id)generateAudioTiersDictFromPlistForBitrateLimits:(id)a3 tierPickerConfig:(id *)a4 redNumPayloads:(unsigned int)a5
+- (id)generateAudioTiersDictFromPlistForBitrateLimits:(id)limits tierPickerConfig:(id *)config redNumPayloads:(unsigned int)payloads
 {
   v110 = *MEMORY[0x1E69E9840];
-  v8 = [+[VCDefaults sharedInstance](VCDefaults forceAudioPayload];
+  forceAudioPayload = [+[VCDefaults sharedInstance](VCDefaults forceAudioPayload];
   v9 = 45;
-  if (!a4->var5)
+  if (!config->var5)
   {
     v9 = 46;
   }
 
-  v60 = [VCDefaults BOOLeanValueForKey:@"rateControlAllowRedLowBitrate" defaultValue:*(&a4->var0 + v9)];
-  v59 = [VCDefaults BOOLeanValueForKey:@"alwaysOnAudioRedundancyDisabled" defaultValue:!a4->var8];
+  v60 = [VCDefaults BOOLeanValueForKey:@"rateControlAllowRedLowBitrate" defaultValue:*(&config->var0 + v9)];
+  v59 = [VCDefaults BOOLeanValueForKey:@"alwaysOnAudioRedundancyDisabled" defaultValue:!config->var8];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = v11;
@@ -971,13 +971,13 @@ LABEL_23:
     goto LABEL_57;
   }
 
-  if (![VCAudioTierPicker isModePlistSupported:a4->var0])
+  if (![VCAudioTierPicker isModePlistSupported:config->var0])
   {
     [VCAudioTierPicker generateAudioTiersDictFromPlistForBitrateLimits:tierPickerConfig:redNumPayloads:];
     goto LABEL_57;
   }
 
-  if (a4->var0 == 6)
+  if (config->var0 == 6)
   {
     v13 = @"AudioTiers_GFT";
   }
@@ -998,12 +998,12 @@ LABEL_23:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  obj = [a3 limits];
+  obj = [limits limits];
   v63 = [obj countByEnumeratingWithState:&v106 objects:v105 count:16];
   if (v63)
   {
     v62 = *v107;
-    v75 = a4;
+    configCopy = config;
 LABEL_12:
     v14 = 0;
 LABEL_13:
@@ -1014,9 +1014,9 @@ LABEL_13:
 
     v15 = *(*(&v106 + 1) + 8 * v14);
     [v12 removeAllObjects];
-    if (a4->var0 == 6)
+    if (config->var0 == 6)
     {
-      if (!+[VCAudioTierPicker loadVCAudioTierFromTierTable:bitrate:redNumPayloads:outEntryArray:](VCAudioTierPicker, "loadVCAudioTierFromTierTable:bitrate:redNumPayloads:outEntryArray:", v64, [v15 unsignedIntValue], a5, v12))
+      if (!+[VCAudioTierPicker loadVCAudioTierFromTierTable:bitrate:redNumPayloads:outEntryArray:](VCAudioTierPicker, "loadVCAudioTierFromTierTable:bitrate:redNumPayloads:outEntryArray:", v64, [v15 unsignedIntValue], payloads, v12))
       {
         ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
         if (ErrorLogLevelForModule >= 3)
@@ -1025,8 +1025,8 @@ LABEL_13:
           v49 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            v57 = [v15 integerValue];
-            var0 = a4->var0;
+            integerValue = [v15 integerValue];
+            var0 = config->var0;
             *buf = 136316418;
             v78 = v48;
             v79 = 2080;
@@ -1034,11 +1034,11 @@ LABEL_13:
             v81 = 1024;
             v82 = 592;
             v83 = 2048;
-            v84 = v57;
+            v84 = integerValue;
             v85 = 1024;
             *v86 = var0;
             *&v86[4] = 1024;
-            *&v86[6] = a5;
+            *&v86[6] = payloads;
             v44 = " [%s] %s:%d bitrateTier=%ld not found in plist for mode=%d redNumPayloads=%u";
             v45 = v49;
             v46 = 50;
@@ -1051,7 +1051,7 @@ LABEL_62:
       }
     }
 
-    else if (!+[VCAudioTierPicker loadVCAudioTierFromTierTable:config:allowRedAtLowBitrate:alwaysOnAudioRedundancyDisabled:redNumPayloads:tierBitrate:outEntryArray:](VCAudioTierPicker, "loadVCAudioTierFromTierTable:config:allowRedAtLowBitrate:alwaysOnAudioRedundancyDisabled:redNumPayloads:tierBitrate:outEntryArray:", v64, a4, v60, v59, a5, [v15 integerValue], v12))
+    else if (!+[VCAudioTierPicker loadVCAudioTierFromTierTable:config:allowRedAtLowBitrate:alwaysOnAudioRedundancyDisabled:redNumPayloads:tierBitrate:outEntryArray:](VCAudioTierPicker, "loadVCAudioTierFromTierTable:config:allowRedAtLowBitrate:alwaysOnAudioRedundancyDisabled:redNumPayloads:tierBitrate:outEntryArray:", v64, config, v60, v59, payloads, [v15 integerValue], v12))
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -1059,10 +1059,10 @@ LABEL_62:
         v39 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          v40 = [v15 integerValue];
-          v41 = a4->var0;
-          var11 = a4->var11;
-          var5 = a4->var5;
+          integerValue2 = [v15 integerValue];
+          v41 = config->var0;
+          var11 = config->var11;
+          var5 = config->var5;
           *buf = 136316930;
           v78 = v38;
           v79 = 2080;
@@ -1070,7 +1070,7 @@ LABEL_62:
           v81 = 1024;
           v82 = 596;
           v83 = 2048;
-          v84 = v40;
+          v84 = integerValue2;
           v85 = 1024;
           *v86 = v41;
           *&v86[4] = 1024;
@@ -1078,7 +1078,7 @@ LABEL_62:
           LOWORD(v87) = 1024;
           *(&v87 + 2) = var5;
           HIWORD(v87) = 1024;
-          *v88 = a5;
+          *v88 = payloads;
           v44 = " [%s] %s:%d bitrateTier=%ld not found in plist for mode=%d isIPv4=%{BOOL}d celluar=%{BOOL}d redNumPayloads=%u";
           v45 = v39;
           v46 = 62;
@@ -1090,7 +1090,7 @@ LABEL_62:
     }
 
     v66 = v14;
-    if (v8 != 128)
+    if (forceAudioPayload != 128)
     {
       v103 = 0u;
       v104 = 0u;
@@ -1110,7 +1110,7 @@ LABEL_62:
               objc_enumerationMutation(v12);
             }
 
-            [*(*(&v101 + 1) + 8 * i) setPayload:v8];
+            [*(*(&v101 + 1) + 8 * i) setPayload:forceAudioPayload];
           }
 
           v17 = [v12 countByEnumeratingWithState:&v101 objects:v100 count:16];
@@ -1143,13 +1143,13 @@ LABEL_29:
       }
 
       v24 = *(*(&v96 + 1) + 8 * v23);
-      v25 = [v24 featureFlag];
-      if (!v25 || (v26 = v25, ([-[NSDictionary objectForKeyedSubscript:](self->_plistFeatureFlagToEnablementMapping objectForKeyedSubscript:{v25), "BOOLValue"}] & 1) != 0))
+      featureFlag = [v24 featureFlag];
+      if (!featureFlag || (v26 = featureFlag, ([-[NSDictionary objectForKeyedSubscript:](self->_plistFeatureFlagToEnablementMapping objectForKeyedSubscript:{featureFlag), "BOOLValue"}] & 1) != 0))
       {
-        if ([(VCAudioTierPicker *)self addEntryMatchingPayloadToAudioTierMap:v74 config:v75 entry:v24 bitrateTier:v76 forcedPayload:v8])
+        if ([(VCAudioTierPicker *)self addEntryMatchingPayloadToAudioTierMap:v74 config:configCopy entry:v24 bitrateTier:v76 forcedPayload:forceAudioPayload])
         {
           v14 = v66 + 1;
-          a4 = v75;
+          config = configCopy;
           if (v66 + 1 != v63)
           {
             goto LABEL_13;
@@ -1182,10 +1182,10 @@ LABEL_29:
           goto LABEL_35;
         }
 
-        v73 = [v76 integerValue];
-        v71 = [v24 codecBitrate];
-        v69 = [v24 packetsPerBundle];
-        v35 = [v24 redNumPayloads];
+        integerValue3 = [v76 integerValue];
+        codecBitrate = [v24 codecBitrate];
+        packetsPerBundle = [v24 packetsPerBundle];
+        redNumPayloads = [v24 redNumPayloads];
         *buf = 136316930;
         v78 = v33;
         v79 = 2080;
@@ -1195,13 +1195,13 @@ LABEL_29:
         v83 = 2112;
         v84 = v26;
         v85 = 2048;
-        *v86 = v73;
+        *v86 = integerValue3;
         *&v86[8] = 2048;
-        v87 = v71;
+        v87 = codecBitrate;
         *v88 = 2048;
-        *&v88[2] = v69;
+        *&v88[2] = packetsPerBundle;
         v89 = 2048;
-        v90 = v35;
+        v90 = redNumPayloads;
         v30 = v34;
         v31 = " [%s] %s:%d Detected entryFeatureFlag=%@ which is NOT enabled. Skipping entry for bitrate=%ld with codecBitrate=%lu bundle=%lu RED=%lu";
         v32 = 78;
@@ -1227,10 +1227,10 @@ LABEL_29:
           goto LABEL_35;
         }
 
-        v70 = [v76 integerValue];
-        v68 = [v24 codecBitrate];
-        v67 = [v24 packetsPerBundle];
-        v29 = [v24 redNumPayloads];
+        integerValue4 = [v76 integerValue];
+        codecBitrate2 = [v24 codecBitrate];
+        packetsPerBundle2 = [v24 packetsPerBundle];
+        redNumPayloads2 = [v24 redNumPayloads];
         *buf = 136317442;
         v78 = v72;
         v79 = 2080;
@@ -1244,13 +1244,13 @@ LABEL_29:
         *&v86[8] = 2112;
         v87 = v26;
         *v88 = 2048;
-        *&v88[2] = v70;
+        *&v88[2] = integerValue4;
         v89 = 2048;
-        v90 = v68;
+        v90 = codecBitrate2;
         v91 = 2048;
-        v92 = v67;
+        v92 = packetsPerBundle2;
         v93 = 2048;
-        v94 = v29;
+        v94 = redNumPayloads2;
         v30 = v28;
         v31 = " [%s] %s:%d %@(%p) Detected entryFeatureFlag=%@ which is NOT enabled. Skipping entry for bitrate=%ld with codecBitrate=%lu bundle=%lu RED=%lu";
         v32 = 98;
@@ -1274,11 +1274,11 @@ LABEL_58:
           v51 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            v52 = [v76 integerValue];
-            v53 = v75->var0;
-            v54 = v75->var11;
-            v55 = v75->var5;
-            v56 = [(__CFArray *)v75->var1 count];
+            integerValue5 = [v76 integerValue];
+            v53 = configCopy->var0;
+            v54 = configCopy->var11;
+            v55 = configCopy->var5;
+            v56 = [(__CFArray *)configCopy->var1 count];
             *buf = 136317186;
             v78 = v50;
             v79 = 2080;
@@ -1286,7 +1286,7 @@ LABEL_58:
             v81 = 1024;
             v82 = 618;
             v83 = 2048;
-            v84 = v52;
+            v84 = integerValue5;
             v85 = 1024;
             *v86 = v53;
             *&v86[4] = 1024;
@@ -1294,7 +1294,7 @@ LABEL_58:
             LOWORD(v87) = 1024;
             *(&v87 + 2) = v55;
             HIWORD(v87) = 1024;
-            *v88 = a5;
+            *v88 = payloads;
             *&v88[4] = 1024;
             *&v88[6] = v56;
             v44 = " [%s] %s:%d No matching payload found for bitrateTier=%ld in plist for mode=%d isIPv4=%{BOOL}d cellular=%{BOOL}d redNumPayloads=%u supported payload count=%d";
@@ -1314,14 +1314,14 @@ LABEL_57:
   return 0;
 }
 
-- (BOOL)addEntryMatchingPayloadToAudioTierMap:(id)a3 config:(id *)a4 entry:(id)a5 bitrateTier:(id)a6 forcedPayload:(int)a7
+- (BOOL)addEntryMatchingPayloadToAudioTierMap:(id)map config:(id *)config entry:(id)entry bitrateTier:(id)tier forcedPayload:(int)payload
 {
-  v7 = *&a7;
+  v7 = *&payload;
   v55 = *MEMORY[0x1E69E9840];
-  v11 = [a5 featureFlag];
-  if ([a5 payload] == 113)
+  featureFlag = [entry featureFlag];
+  if ([entry payload] == 113)
   {
-    v12 = [v11 isEqualToString:@"UseShortREDWithACC24"];
+    v12 = [featureFlag isEqualToString:@"UseShortREDWithACC24"];
   }
 
   else
@@ -1333,13 +1333,13 @@ LABEL_57:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = a4->var1;
+  obj = config->var1;
   v13 = [(__CFArray *)obj countByEnumeratingWithState:&v51 objects:v50 count:16];
   if (v13)
   {
     v14 = v13;
     v33 = v12;
-    v34 = a3;
+    mapCopy = map;
     v15 = *v52;
     v16 = "";
     v17 = MEMORY[0x1E6986650];
@@ -1354,23 +1354,23 @@ LABEL_57:
         }
 
         v19 = *(*(&v51 + 1) + 8 * v18);
-        v20 = [v19 payload];
-        if (v20 == [a5 payload])
+        payload = [v19 payload];
+        if (payload == [entry payload])
         {
-          if (a4->var12 || (v21 = [a5 payload], v7 == 113) || v21 != 113)
+          if (config->var12 || (v21 = [entry payload], v7 == 113) || v21 != 113)
           {
             *buf = v19;
             *&buf[8] = 0xAAAAAAAAAAAAAAAALL;
-            buf[8] = +[VCAudioTier bundlingAppliedByCodecForPayload:mode:](VCAudioTier, "bundlingAppliedByCodecForPayload:mode:", [a5 payload], +[VCAudioTierPicker tierPickerModeToAVConferenceOperatingMode:](VCAudioTierPicker, "tierPickerModeToAVConferenceOperatingMode:", a4->var0));
-            *&buf[12] = [a5 codecBitrate];
-            *&buf[16] = [a5 packetsPerBundle];
-            v29 = [a5 redNumPayloads];
-            var4 = a4->var4;
-            *&buf[20] = v29;
+            buf[8] = +[VCAudioTier bundlingAppliedByCodecForPayload:mode:](VCAudioTier, "bundlingAppliedByCodecForPayload:mode:", [entry payload], +[VCAudioTierPicker tierPickerModeToAVConferenceOperatingMode:](VCAudioTierPicker, "tierPickerModeToAVConferenceOperatingMode:", config->var0));
+            *&buf[12] = [entry codecBitrate];
+            *&buf[16] = [entry packetsPerBundle];
+            redNumPayloads = [entry redNumPayloads];
+            var4 = config->var4;
+            *&buf[20] = redNumPayloads;
             v40 = var4;
-            *v41 = VCPayloadUtils_ShortREDBitrateForPayload([a5 payload], v33);
+            *v41 = VCPayloadUtils_ShortREDBitrateForPayload([entry payload], v33);
             v31 = [[VCAudioTier alloc] initWithConfig:buf];
-            [v34 setObject:v31 forKeyedSubscript:a6];
+            [mapCopy setObject:v31 forKeyedSubscript:tier];
 
             LOBYTE(v13) = 1;
             return v13;
@@ -1382,13 +1382,13 @@ LABEL_57:
             v23 = *v17;
             if (os_log_type_enabled(*v17, OS_LOG_TYPE_DEFAULT))
             {
-              v37 = [a6 integerValue];
-              v36 = [a5 codecBitrate];
+              integerValue = [tier integerValue];
+              codecBitrate = [entry codecBitrate];
               v24 = v16;
               v25 = v7;
-              v26 = a4;
-              v27 = [a5 packetsPerBundle];
-              v28 = [a5 redNumPayloads];
+              configCopy = config;
+              packetsPerBundle = [entry packetsPerBundle];
+              redNumPayloads2 = [entry redNumPayloads];
               *buf = 136316930;
               *&buf[4] = v22;
               *&buf[12] = 2080;
@@ -1398,17 +1398,17 @@ LABEL_57:
               *v41 = 1024;
               *&v41[2] = 113;
               v42 = 2048;
-              v43 = v37;
+              v43 = integerValue;
               v44 = 2048;
-              v45 = v36;
+              v45 = codecBitrate;
               v46 = 2048;
-              v47 = v27;
-              a4 = v26;
+              v47 = packetsPerBundle;
+              config = configCopy;
               v7 = v25;
               v16 = v24;
               v17 = MEMORY[0x1E6986650];
               v48 = 2048;
-              v49 = v28;
+              v49 = redNumPayloads2;
               _os_log_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Found payload=%u entry in tier table, but the payload is not supported. Skipping entry for bitrate=%ld with codecBitrate=%lu bundle=%lu RED=%lu", buf, 0x4Au);
             }
           }
@@ -1432,35 +1432,35 @@ LABEL_57:
   return v13;
 }
 
-- (id)loadAudioTiersFromPlist:(id)a3
+- (id)loadAudioTiersFromPlist:(id)plist
 {
   if (![(NSMutableDictionary *)self->_tierTablePlist objectForKeyedSubscript:?])
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_tierTablePlist, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", a3, @"plist"}], a3);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_tierTablePlist, "setObject:forKeyedSubscript:", [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", plist, @"plist"}], plist);
   }
 
   tierTablePlist = self->_tierTablePlist;
 
-  return [(NSMutableDictionary *)tierTablePlist objectForKeyedSubscript:a3];
+  return [(NSMutableDictionary *)tierTablePlist objectForKeyedSubscript:plist];
 }
 
-+ (BOOL)isAlwaysOnRedAudioTier:(unsigned int)a3 redNumPayloads:(unsigned int)a4 usingCellular:(BOOL)a5
++ (BOOL)isAlwaysOnRedAudioTier:(unsigned int)tier redNumPayloads:(unsigned int)payloads usingCellular:(BOOL)cellular
 {
-  v5 = a3 == 120000 && a4 == 0;
-  if (v5 || a3 == 170000 && a4 < 2 || a3 == 220000 && a4 < 3 || a3 == 220000 && a4 == 3 && a5)
+  v5 = tier == 120000 && payloads == 0;
+  if (v5 || tier == 170000 && payloads < 2 || tier == 220000 && payloads < 3 || tier == 220000 && payloads == 3 && cellular)
   {
     return 1;
   }
 
-  v8 = a3 == 200000 && a4 == 0;
-  return a3 == 267000 && a4 < 2 || v8;
+  v8 = tier == 200000 && payloads == 0;
+  return tier == 267000 && payloads < 2 || v8;
 }
 
-+ (BOOL)loadVCAudioTierFromTierTable:(id)a3 config:(id *)a4 allowRedAtLowBitrate:(BOOL)a5 alwaysOnAudioRedundancyDisabled:(BOOL)a6 redNumPayloads:(unsigned int)a7 tierBitrate:(unsigned int)a8 outEntryArray:(id)a9
++ (BOOL)loadVCAudioTierFromTierTable:(id)table config:(id *)config allowRedAtLowBitrate:(BOOL)bitrate alwaysOnAudioRedundancyDisabled:(BOOL)disabled redNumPayloads:(unsigned int)payloads tierBitrate:(unsigned int)tierBitrate outEntryArray:(id)array
 {
-  v57 = a6;
+  disabledCopy = disabled;
   v81 = *MEMORY[0x1E69E9840];
-  if (!a9)
+  if (!array)
   {
     [VCAudioTierPicker loadVCAudioTierFromTierTable:buf config:? allowRedAtLowBitrate:? alwaysOnAudioRedundancyDisabled:? redNumPayloads:? tierBitrate:? outEntryArray:?];
 LABEL_44:
@@ -1468,8 +1468,8 @@ LABEL_44:
     return v32;
   }
 
-  v9 = a5;
-  if ([a1 isModeAudioOnly:a4->var0])
+  bitrateCopy = bitrate;
+  if ([self isModeAudioOnly:config->var0])
   {
     v12 = @"modeAudio";
   }
@@ -1479,14 +1479,14 @@ LABEL_44:
     v12 = @"modeVideo";
   }
 
-  v13 = [a3 objectForKeyedSubscript:v12];
+  v13 = [table objectForKeyedSubscript:v12];
   if (!v13)
   {
-    [VCAudioTierPicker loadVCAudioTierFromTierTable:a4 config:buf allowRedAtLowBitrate:? alwaysOnAudioRedundancyDisabled:? redNumPayloads:? tierBitrate:? outEntryArray:?];
+    [VCAudioTierPicker loadVCAudioTierFromTierTable:config config:buf allowRedAtLowBitrate:? alwaysOnAudioRedundancyDisabled:? redNumPayloads:? tierBitrate:? outEntryArray:?];
     goto LABEL_44;
   }
 
-  if (a4->var11)
+  if (config->var11)
   {
     v14 = @"IPv4";
   }
@@ -1499,11 +1499,11 @@ LABEL_44:
   v15 = [v13 objectForKeyedSubscript:v14];
   if (!v15)
   {
-    [VCAudioTierPicker loadVCAudioTierFromTierTable:a4 config:&a4->var11 allowRedAtLowBitrate:buf alwaysOnAudioRedundancyDisabled:? redNumPayloads:? tierBitrate:? outEntryArray:?];
+    [VCAudioTierPicker loadVCAudioTierFromTierTable:config config:&config->var11 allowRedAtLowBitrate:buf alwaysOnAudioRedundancyDisabled:? redNumPayloads:? tierBitrate:? outEntryArray:?];
     goto LABEL_44;
   }
 
-  if (a4->var5)
+  if (config->var5)
   {
     v16 = @"cellular";
   }
@@ -1529,9 +1529,9 @@ LABEL_44:
       return v32;
     }
 
-    var0 = a4->var0;
-    var11 = a4->var11;
-    var5 = a4->var5;
+    var0 = config->var0;
+    var11 = config->var11;
+    var5 = config->var5;
     *buf = 136316418;
     v66 = v41;
     v67 = 2080;
@@ -1555,7 +1555,7 @@ LABEL_40:
   }
 
   v18 = [v17 objectForKeyedSubscript:@"redNumPayloads"];
-  v19 = [v18 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", a7), "stringValue")}];
+  v19 = [v18 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", payloads), "stringValue")}];
   if (!v19)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -1571,9 +1571,9 @@ LABEL_40:
       return v32;
     }
 
-    v48 = a4->var0;
-    v49 = a4->var11;
-    v50 = a4->var5;
+    v48 = config->var0;
+    v49 = config->var11;
+    v50 = config->var5;
     *buf = 136316674;
     v66 = v46;
     v67 = 2080;
@@ -1587,7 +1587,7 @@ LABEL_40:
     v75 = 1024;
     v76 = v50;
     v77 = 1024;
-    v78 = a7;
+    payloadsCopy3 = payloads;
     v38 = " [%s] %s:%d No tier table entry for mode=%d and isIPv4=%{BOOL}d cellular=%{BOOL}d redNumPayloads=%u";
     v39 = v47;
     v40 = 52;
@@ -1595,7 +1595,7 @@ LABEL_40:
   }
 
   v20 = [v19 objectForKeyedSubscript:@"bitrateTier"];
-  v21 = [objc_msgSend(v20 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", a8), "stringValue")), "objectForKeyedSubscript:", @"payloads"}];
+  v21 = [objc_msgSend(v20 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", tierBitrate), "stringValue")), "objectForKeyedSubscript:", @"payloads"}];
   if (!v21)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -1611,9 +1611,9 @@ LABEL_40:
       return v32;
     }
 
-    v52 = a4->var0;
-    v53 = a4->var11;
-    v54 = a4->var5;
+    v52 = config->var0;
+    v53 = config->var11;
+    v54 = config->var5;
     *buf = 136316930;
     v66 = v51;
     v67 = 2080;
@@ -1627,9 +1627,9 @@ LABEL_40:
     v75 = 1024;
     v76 = v54;
     v77 = 1024;
-    v78 = a7;
+    payloadsCopy3 = payloads;
     v79 = 1024;
-    v80 = a8;
+    tierBitrateCopy2 = tierBitrate;
     v38 = " [%s] %s:%d No payloads array for mode=%d and isIPv4=%{BOOL}d cellular=%{BOOL}d redNumPayloads=%u tierBitrate=%u";
 LABEL_38:
     v39 = v34;
@@ -1646,7 +1646,7 @@ LABEL_38:
   if (v23)
   {
     v24 = v23;
-    v56 = a4;
+    configCopy = config;
     v25 = *v62;
 LABEL_18:
     v26 = 0;
@@ -1657,10 +1657,10 @@ LABEL_18:
         objc_enumerationMutation(v22);
       }
 
-      if ((v27 = *(*(&v61 + 1) + 8 * v26), v9) && [VCAudioTierPicker isLowBitrateAudioTier:a8]|| v57 && [VCAudioTierPicker isAlwaysOnRedAudioTier:a8 redNumPayloads:a7 usingCellular:v56->var5])
+      if ((v27 = *(*(&v61 + 1) + 8 * v26), bitrateCopy) && [VCAudioTierPicker isLowBitrateAudioTier:tierBitrate]|| disabledCopy && [VCAudioTierPicker isAlwaysOnRedAudioTier:tierBitrate redNumPayloads:payloads usingCellular:configCopy->var5])
       {
         v28 = [v27 mutableCopy];
-        [v28 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", a7), @"redNumPayloads"}];
+        [v28 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", payloads), @"redNumPayloads"}];
       }
 
       else
@@ -1670,14 +1670,14 @@ LABEL_18:
 
       v29 = [VCAudioTierPickerPlistEntry alloc];
       v30 = v28 ? v28 : v27;
-      v31 = [(VCAudioTierPickerPlistEntry *)v29 initWithDictionary:v30, v56];
+      configCopy = [(VCAudioTierPickerPlistEntry *)v29 initWithDictionary:v30, configCopy];
 
-      if (!v31)
+      if (!configCopy)
       {
         break;
       }
 
-      [a9 addObject:v31];
+      [array addObject:configCopy];
 
       if (v24 == ++v26)
       {
@@ -1701,9 +1701,9 @@ LABEL_18:
     v32 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
     if (v32)
     {
-      v35 = v56->var0;
-      v36 = v56->var11;
-      v37 = v56->var5;
+      v35 = configCopy->var0;
+      v36 = configCopy->var11;
+      v37 = configCopy->var5;
       *buf = 136316930;
       v66 = v33;
       v67 = 2080;
@@ -1717,9 +1717,9 @@ LABEL_18:
       v75 = 1024;
       v76 = v37;
       v77 = 1024;
-      v78 = a7;
+      payloadsCopy3 = payloads;
       v79 = 1024;
-      v80 = a8;
+      tierBitrateCopy2 = tierBitrate;
       v38 = " [%s] %s:%d Invalid entry in tier dictionary for mode=%d and isIPv4=%{BOOL}d cellular=%{BOOL}d redNumPayloads=%u tierBitrate=%u";
       goto LABEL_38;
     }
@@ -1734,10 +1734,10 @@ LABEL_33:
   return v32;
 }
 
-+ (BOOL)loadVCAudioTierFromTierTable:(id)a3 bitrate:(unsigned int)a4 redNumPayloads:(unsigned int)a5 outEntryArray:(id)a6
++ (BOOL)loadVCAudioTierFromTierTable:(id)table bitrate:(unsigned int)bitrate redNumPayloads:(unsigned int)payloads outEntryArray:(id)array
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a6)
+  if (!array)
   {
     [VCAudioTierPicker loadVCAudioTierFromTierTable:buf bitrate:&v28 redNumPayloads:? outEntryArray:?];
 LABEL_27:
@@ -1746,9 +1746,9 @@ LABEL_27:
     goto LABEL_20;
   }
 
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = [a3 objectForKeyedSubscript:@"networkBitrate"];
+  v7 = *&payloads;
+  v8 = *&bitrate;
+  v9 = [table objectForKeyedSubscript:@"networkBitrate"];
   v10 = [objc_msgSend(v9 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v8), "stringValue")), "objectForKeyedSubscript:", @"redNumPayloads"}];
   v11 = [objc_msgSend(v10 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v7), "stringValue")), "mutableCopy"}];
   if (!v11)
@@ -1816,7 +1816,7 @@ LABEL_6:
         break;
       }
 
-      [a6 addObject:v20];
+      [array addObject:v20];
 
       if (v16 == ++v18)
       {
@@ -1866,16 +1866,16 @@ LABEL_20:
   return v21;
 }
 
-+ (id)selectHighestQualityAudioTiers:(id)a3 forBitrateLimits:(id)a4 isHardLimit:(BOOL)a5
++ (id)selectHighestQualityAudioTiers:(id)tiers forBitrateLimits:(id)limits isHardLimit:(BOOL)limit
 {
-  v40 = a5;
+  limitCopy = limit;
   v74 = *MEMORY[0x1E69E9840];
   v36 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = [a4 limits];
+  obj = [limits limits];
   v34 = [obj countByEnumeratingWithState:&v70 objects:v69 count:16];
   if (v34)
   {
@@ -1891,12 +1891,12 @@ LABEL_20:
         }
 
         v42 = *(*(&v70 + 1) + 8 * v5);
-        v6 = [objc_msgSend(objc_msgSend(a4 "limits")];
+        v6 = [objc_msgSend(objc_msgSend(limits "limits")];
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v43 = [a3 countByEnumeratingWithState:&v65 objects:v64 count:16];
+        v43 = [tiers countByEnumeratingWithState:&v65 objects:v64 count:16];
         if (!v43)
         {
           goto LABEL_44;
@@ -1912,17 +1912,17 @@ LABEL_20:
           {
             if (*v66 != v41)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(tiers);
             }
 
             v10 = *(*(&v65 + 1) + 8 * i);
             [objc_msgSend(v10 "payloadConfig")];
             v12 = v11;
-            v13 = [v42 integerValue];
-            if (!v40 || [v10 networkBitrate] <= v13)
+            integerValue = [v42 integerValue];
+            if (!limitCopy || [v10 networkBitrate] <= integerValue)
             {
               v14 = v12;
-              v15 = v13 - [v10 networkBitrate];
+              v15 = integerValue - [v10 networkBitrate];
               if (v15 >= 0)
               {
                 v16 = v15;
@@ -1935,10 +1935,10 @@ LABEL_20:
 
               v17 = v8;
               v18 = v7;
-              v19 = v16 + ((1.0 - v14) * v13 * 0.5) < v8 || v7 == 0;
+              v19 = v16 + ((1.0 - v14) * integerValue * 0.5) < v8 || v7 == 0;
               v20 = " new";
               v21 = v16;
-              v8 = (v16 + ((1.0 - v14) * v13 * 0.5));
+              v8 = (v16 + ((1.0 - v14) * integerValue * 0.5));
               v7 = v10;
               if (!v19)
               {
@@ -1956,10 +1956,10 @@ LABEL_20:
                   v23 = v18;
                   if ([objc_msgSend(v18 "payloadConfig")])
                   {
-                    v24 = [v23 audioCodecBitrate];
-                    v25 = [v10 audioCodecBitrate];
+                    audioCodecBitrate = [v23 audioCodecBitrate];
+                    audioCodecBitrate2 = [v10 audioCodecBitrate];
                     v20 = " new";
-                    if (v24 < v25)
+                    if (audioCodecBitrate < audioCodecBitrate2)
                     {
                       v21 = v16;
                     }
@@ -1970,7 +1970,7 @@ LABEL_20:
                       v21 = v22;
                     }
 
-                    if (v24 < v25)
+                    if (audioCodecBitrate < audioCodecBitrate2)
                     {
                       v7 = v10;
                     }
@@ -2011,13 +2011,13 @@ LABEL_20:
                     v48 = 1024;
                     v49 = 825;
                     v50 = 1024;
-                    v51 = v13;
+                    v51 = integerValue;
                     v52 = 2080;
                     v53 = v29;
                     v54 = 2048;
                     v55 = v14;
                     v56 = 1024;
-                    v57 = ((1.0 - v14) * v13 * 0.5);
+                    v57 = ((1.0 - v14) * integerValue * 0.5);
                     v58 = 1024;
                     v59 = v16;
                     v60 = 1024;
@@ -2038,13 +2038,13 @@ LABEL_20:
                   v48 = 1024;
                   v49 = 825;
                   v50 = 1024;
-                  v51 = v13;
+                  v51 = integerValue;
                   v52 = 2080;
                   v53 = v30;
                   v54 = 2048;
                   v55 = v14;
                   v56 = 1024;
-                  v57 = ((1.0 - v14) * v13 * 0.5);
+                  v57 = ((1.0 - v14) * integerValue * 0.5);
                   v58 = 1024;
                   v59 = v16;
                   v60 = 1024;
@@ -2059,7 +2059,7 @@ LABEL_20:
             }
           }
 
-          v43 = [a3 countByEnumeratingWithState:&v65 objects:v64 count:16];
+          v43 = [tiers countByEnumeratingWithState:&v65 objects:v64 count:16];
         }
 
         while (v43);
@@ -2088,19 +2088,19 @@ LABEL_44:
   return v36;
 }
 
-- (void)printCreatedAudioTiers:(id)a3
+- (void)printCreatedAudioTiers:(id)tiers
 {
-  v3 = a3;
+  tiersCopy = tiers;
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(a3 "allKeys")];
-  v23 = self;
+  v5 = [objc_msgSend(tiers "allKeys")];
+  selfCopy = self;
   v6 = [VCAudioTierPicker usePlistForAudioTierTableFromMode:self->_config.mode];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = [v5 reverseObjectEnumerator];
-  v24 = [v7 countByEnumeratingWithState:&v38 objects:v37 count:16];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  v24 = [reverseObjectEnumerator countByEnumeratingWithState:&v38 objects:v37 count:16];
   if (v24)
   {
     v9 = *v39;
@@ -2112,11 +2112,11 @@ LABEL_44:
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
-        v12 = [v3 objectForKeyedSubscript:{v11, v22}];
+        v12 = [tiersCopy objectForKeyedSubscript:{v11, v22}];
         if ((v6 || ([v11 integerValue] > 10000 || !objc_msgSend(v12, "redNumPayloads")) && (objc_msgSend(v11, "integerValue") > 16000 || objc_msgSend(v12, "redNumPayloads") <= 1) && (objc_msgSend(v11, "integerValue") > 21000 || objc_msgSend(v12, "redNumPayloads") <= 2)) && VRTraceGetErrorLogLevelForModule() >= 7)
         {
           v13 = VRTraceErrorLogLevelToCSTR();
@@ -2125,9 +2125,9 @@ LABEL_44:
           {
             v15 = v9;
             v16 = v6;
-            v17 = v3;
-            v18 = v7;
-            if ([VCAudioTierPicker isModeAudioVideo:v23->_config.mode])
+            v17 = tiersCopy;
+            v18 = reverseObjectEnumerator;
+            if ([VCAudioTierPicker isModeAudioVideo:selfCopy->_config.mode])
             {
               v19 = "Video";
             }
@@ -2137,7 +2137,7 @@ LABEL_44:
               v19 = "Audio";
             }
 
-            v20 = [v11 integerValue];
+            integerValue = [v11 integerValue];
             v21 = [objc_msgSend(v12 "description")];
             *buf = v22;
             v26 = v13;
@@ -2147,12 +2147,12 @@ LABEL_44:
             v30 = 856;
             v31 = 2080;
             v32 = v19;
-            v7 = v18;
-            v3 = v17;
+            reverseObjectEnumerator = v18;
+            tiersCopy = v17;
             v6 = v16;
             v9 = v15;
             v33 = 1024;
-            v34 = v20;
+            v34 = integerValue;
             v35 = 2080;
             v36 = v21;
             _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d (%s) %d: %s", buf, 0x36u);
@@ -2160,71 +2160,71 @@ LABEL_44:
         }
       }
 
-      v24 = [v7 countByEnumeratingWithState:&v38 objects:v37 count:16];
+      v24 = [reverseObjectEnumerator countByEnumeratingWithState:&v38 objects:v37 count:16];
     }
 
     while (v24);
   }
 }
 
-+ (BOOL)shouldFilterTierForPayloadConfig:(id)a3 bitRate:(unsigned int)a4 packetsPerBundle:(unsigned int)a5 mode:(unsigned __int8)a6 redNumPayloads:(unsigned int)a7 cellular:(BOOL)a8
++ (BOOL)shouldFilterTierForPayloadConfig:(id)config bitRate:(unsigned int)rate packetsPerBundle:(unsigned int)bundle mode:(unsigned __int8)mode redNumPayloads:(unsigned int)payloads cellular:(BOOL)cellular
 {
-  v8 = a8;
-  v9 = a6;
-  v14 = [a3 payload];
-  if (v14 == 104)
+  cellularCopy = cellular;
+  modeCopy = mode;
+  payload = [config payload];
+  if (payload == 104)
   {
-    if (a4 >> 5 < 0x271)
+    if (rate >> 5 < 0x271)
     {
       return 1;
     }
   }
 
-  else if (v14 == 119)
+  else if (payload == 119)
   {
-    if (a4 >> 6 > 0x176)
+    if (rate >> 6 > 0x176)
     {
       return 1;
     }
   }
 
-  else if (v14 == 106 && a4 - 20001 < 0xFFFFE0BF)
+  else if (payload == 106 && rate - 20001 < 0xFFFFE0BF)
   {
     return 1;
   }
 
-  if (v9 != 6)
+  if (modeCopy != 6)
   {
-    if (v8)
+    if (cellularCopy)
     {
-      if (a5 >= 3)
+      if (bundle >= 3)
       {
         return 0;
       }
     }
 
-    else if (a4 >> 5 > 0x270 || a5 >= 3)
+    else if (rate >> 5 > 0x270 || bundle >= 3)
     {
-      v18 = [a3 payload];
-      switch(v18)
+      payload2 = [config payload];
+      switch(payload2)
       {
         case 'w':
-          if (a5 == 3)
+          if (bundle == 3)
           {
             return 0;
           }
 
           break;
         case 'h':
-          if (a5 != 3)
+          if (bundle != 3)
           {
             return 0;
           }
 
           break;
         case 'e':
-          v19 = [a1 isModeLowLatency:v9];
-          if (a5 < 2 || (v19 & 1) == 0)
+          v19 = [self isModeLowLatency:modeCopy];
+          if (bundle < 2 || (v19 & 1) == 0)
           {
             return 0;
           }
@@ -2238,14 +2238,14 @@ LABEL_44:
     return 1;
   }
 
-  v15 = [a3 payload];
-  return a4 >> 4 < 0x753 && v15 == 104;
+  payload3 = [config payload];
+  return rate >> 4 < 0x753 && payload3 == 104;
 }
 
-+ (id)valueForNetworkBitrate:(id)a3 networkBitrate:(unsigned int)a4
++ (id)valueForNetworkBitrate:(id)bitrate networkBitrate:(unsigned int)networkBitrate
 {
-  v4 = *&a4;
-  v6 = [objc_msgSend(a3 "allKeys")];
+  v4 = *&networkBitrate;
+  v6 = [objc_msgSend(bitrate "allKeys")];
   v7 = [v6 count] - 1;
   v8 = +[VCArrayUtils insertionIndexForValue:array:](VCArrayUtils, "insertionIndexForValue:array:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4], v6);
   if (v7 >= v8)
@@ -2260,20 +2260,20 @@ LABEL_44:
 
   v10 = [v6 objectAtIndexedSubscript:v9];
 
-  return [a3 objectForKeyedSubscript:v10];
+  return [bitrate objectForKeyedSubscript:v10];
 }
 
-- (id)tierForNetworkBitrate:(unint64_t)a3 withLegacyDuplication:(int)a4
+- (id)tierForNetworkBitrate:(unint64_t)bitrate withLegacyDuplication:(int)duplication
 {
   v65[8] = *MEMORY[0x1E69E9840];
   v6 = 100;
   v7 = 150;
-  if (a4 != 150)
+  if (duplication != 150)
   {
     v7 = 100;
   }
 
-  if (a4 == 200)
+  if (duplication == 200)
   {
     v8 = 200;
   }
@@ -2292,7 +2292,7 @@ LABEL_44:
     v12 = 20000;
   }
 
-  if (v12 < a3)
+  if (v12 < bitrate)
   {
     v6 = v8;
   }
@@ -2363,7 +2363,7 @@ LABEL_44:
     v48[2] = &unk_1F579B058;
     v49[2] = &unk_1F579AFF8;
     v65[7] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:3];
-    v13 = +[VCAudioTierPicker valueForNetworkBitrate:networkBitrate:](VCAudioTierPicker, "valueForNetworkBitrate:networkBitrate:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:8], a3);
+    v13 = +[VCAudioTierPicker valueForNetworkBitrate:networkBitrate:](VCAudioTierPicker, "valueForNetworkBitrate:networkBitrate:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:8], bitrate);
     v14 = [v13 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v6)}];
     v15 = v14;
     if (self->_config.usingCellular && [v14 integerValue] > 32000)
@@ -2424,7 +2424,7 @@ LABEL_44:
     v34[2] = &unk_1F579B058;
     v35[2] = &unk_1F579AF38;
     v47[5] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:3];
-    v17 = +[VCAudioTierPicker valueForNetworkBitrate:networkBitrate:](VCAudioTierPicker, "valueForNetworkBitrate:networkBitrate:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:6], a3);
+    v17 = +[VCAudioTierPicker valueForNetworkBitrate:networkBitrate:](VCAudioTierPicker, "valueForNetworkBitrate:networkBitrate:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:6], bitrate);
     v15 = [v17 objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v6)}];
 LABEL_24:
     v16 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads objectForKeyedSubscript:{&unk_1F579B130), "objectForKeyedSubscript:", v15}];
@@ -2456,7 +2456,7 @@ LABEL_24:
           v30 = 2080;
           v31 = v21;
           v32 = 1024;
-          v33 = [v15 integerValue];
+          integerValue = [v15 integerValue];
           _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d (%s) Using tier: %d", buf, 0x2Cu);
         }
       }
@@ -2491,7 +2491,7 @@ LABEL_24:
   return 0;
 }
 
-- (id)chooseMultiwayAudioTierForRedPayload:(unint64_t)a3
+- (id)chooseMultiwayAudioTierForRedPayload:(unint64_t)payload
 {
   v20 = *MEMORY[0x1E69E9840];
   v14 = 0;
@@ -2501,9 +2501,9 @@ LABEL_24:
   v18 = __Block_byref_object_dispose__31;
   v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_tierTablesForRedNumPayloads, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?]);
   v19 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", -[BitrateLimits defaultValueForNetwork:](self->_bitrateLimits, "defaultValueForNetwork:", self->_config.usingCellular))}];
-  if (a3 >= 1)
+  if (payload >= 1)
   {
-    v6 = a3 + 1;
+    v6 = payload + 1;
     do
     {
       if (v15[5])
@@ -2539,7 +2539,7 @@ LABEL_24:
     v12[4] = self;
     v12[5] = &v14;
     v12[6] = v13;
-    v12[7] = a3;
+    v12[7] = payload;
     [(NSMutableDictionary *)tierTablesForRedNumPayloads enumerateKeysAndObjectsUsingBlock:v12];
     _Block_object_dispose(v13, 8);
     v9 = v15[5];
@@ -2576,7 +2576,7 @@ uint64_t __58__VCAudioTierPicker_chooseMultiwayAudioTierForRedPayload___block_in
   return result;
 }
 
-- (id)tierForNetworkBitrate:(unint64_t)a3 withRedNumPayloads:(unint64_t)a4
+- (id)tierForNetworkBitrate:(unint64_t)bitrate withRedNumPayloads:(unint64_t)payloads
 {
   v15[9] = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -2604,8 +2604,8 @@ uint64_t __58__VCAudioTierPicker_chooseMultiwayAudioTierForRedPayload___block_in
     v9 = v15;
     v10 = v14;
 LABEL_5:
-    v7 = +[VCAudioTierPicker valueForNetworkBitrate:networkBitrate:](VCAudioTierPicker, "valueForNetworkBitrate:networkBitrate:", [v8 dictionaryWithObjects:v9 forKeys:v10 count:9], a3);
-    return -[VCAudioTierPicker tierForAudioBitrate:withRedNumPayloads:](self, "tierForAudioBitrate:withRedNumPayloads:", [v7 unsignedIntValue], a4);
+    v7 = +[VCAudioTierPicker valueForNetworkBitrate:networkBitrate:](VCAudioTierPicker, "valueForNetworkBitrate:networkBitrate:", [v8 dictionaryWithObjects:v9 forKeys:v10 count:9], bitrate);
+    return -[VCAudioTierPicker tierForAudioBitrate:withRedNumPayloads:](self, "tierForAudioBitrate:withRedNumPayloads:", [v7 unsignedIntValue], payloads);
   }
 
   if (self->_config.mode != 6)
@@ -2634,15 +2634,15 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  return -[VCAudioTierPicker tierForAudioBitrate:withRedNumPayloads:](self, "tierForAudioBitrate:withRedNumPayloads:", [v7 unsignedIntValue], a4);
+  return -[VCAudioTierPicker tierForAudioBitrate:withRedNumPayloads:](self, "tierForAudioBitrate:withRedNumPayloads:", [v7 unsignedIntValue], payloads);
 }
 
-- (id)tierForAudioBitrate:(unint64_t)a3 withRedNumPayloads:(unint64_t)a4
+- (id)tierForAudioBitrate:(unint64_t)bitrate withRedNumPayloads:(unint64_t)payloads
 {
   v52 = *MEMORY[0x1E69E9840];
   if (self->_config.mode == 6)
   {
-    v7 = [(VCAudioTierPicker *)self chooseMultiwayAudioTierForRedPayload:a4];
+    v7 = [(VCAudioTierPicker *)self chooseMultiwayAudioTierForRedPayload:payloads];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v7)
     {
@@ -2659,7 +2659,7 @@ LABEL_5:
           v46 = 1024;
           v47 = 1068;
           v48 = 1024;
-          *v49 = a3;
+          *v49 = bitrate;
           *&v49[4] = 2112;
           *&v49[6] = v7;
           v11 = " [%s] %s:%d Tier for bitrate %d -> %@";
@@ -2689,13 +2689,13 @@ LABEL_39:
     return v7;
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  if (+[VCAudioTierPicker isModeAudioVideo:](VCAudioTierPicker, "isModeAudioVideo:", self->_config.mode) && a3 <= 0xA410 && self->_config.usingCellular && [v14 integerValue] > 32000)
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bitrate];
+  if (+[VCAudioTierPicker isModeAudioVideo:](VCAudioTierPicker, "isModeAudioVideo:", self->_config.mode) && bitrate <= 0xA410 && self->_config.usingCellular && [v14 integerValue] > 32000)
   {
     v14 = &unk_1F579AFB0;
   }
 
-  v15 = [(VCAudioTierPicker *)self adjustedRedNumPayloadsForLowBitrateAudioTier:v14 redNumPayloads:a4];
+  v15 = [(VCAudioTierPicker *)self adjustedRedNumPayloadsForLowBitrateAudioTier:v14 redNumPayloads:payloads];
   if (v15 >= 4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -2797,7 +2797,7 @@ LABEL_32:
       v46 = 1024;
       v47 = 1106;
       v48 = 2048;
-      *v49 = a3;
+      *v49 = bitrate;
       *&v49[8] = 2112;
       *&v49[10] = fallbackTier;
       v35 = " [%s] %s:%d No corresponding tier found for audioBitrate=%lu, using fallback=%@";
@@ -2841,7 +2841,7 @@ LABEL_32:
       *&v49[8] = 2048;
       *&v49[10] = self;
       *&v49[18] = 2048;
-      *v50 = a3;
+      *v50 = bitrate;
       *&v50[8] = 2112;
       v51 = v41;
       v35 = " [%s] %s:%d %@(%p) No corresponding tier found for audioBitrate=%lu, using fallback=%@";
@@ -2870,8 +2870,8 @@ LABEL_32:
         v27 = "audio";
       }
 
-      v28 = [v14 intValue];
-      v29 = [v23 intValue];
+      intValue = [v14 intValue];
+      intValue2 = [v23 intValue];
       v30 = [objc_msgSend(v7 "description")];
       v42 = 136316674;
       v43 = v25;
@@ -2882,9 +2882,9 @@ LABEL_32:
       v48 = 2080;
       *v49 = v27;
       *&v49[8] = 1024;
-      *&v49[10] = v28;
+      *&v49[10] = intValue;
       *&v49[14] = 1024;
-      *&v49[16] = v29;
+      *&v49[16] = intValue2;
       *v50 = 2080;
       *&v50[2] = v30;
       v11 = " [%s] %s:%d (%s) Using tier: bitrate=%d, closestAudioBitrate=%d %s";
@@ -2897,7 +2897,7 @@ LABEL_32:
   return v7;
 }
 
-- (unint64_t)adjustedRedNumPayloadsForLowBitrateAudioTier:(id)a3 redNumPayloads:(unint64_t)a4
+- (unint64_t)adjustedRedNumPayloadsForLowBitrateAudioTier:(id)tier redNumPayloads:(unint64_t)payloads
 {
   if (![VCAudioTierPicker usePlistForAudioTierTableFromMode:self->_config.mode])
   {
@@ -2909,29 +2909,29 @@ LABEL_32:
 
     if (![VCDefaults BOOLeanValueForKey:@"rateControlAllowRedLowBitrate" defaultValue:*(&self->super.isa + v7)])
     {
-      v8 = [a3 unsignedIntegerValue];
-      v9 = 2;
-      if (a4 < 2)
+      unsignedIntegerValue = [tier unsignedIntegerValue];
+      payloadsCopy2 = 2;
+      if (payloads < 2)
       {
-        v9 = a4;
+        payloadsCopy2 = payloads;
       }
 
-      if (v8 >= 0x5209)
+      if (unsignedIntegerValue >= 0x5209)
       {
-        v9 = a4;
+        payloadsCopy2 = payloads;
       }
 
-      if (v8 <= 0x3E80)
+      if (unsignedIntegerValue <= 0x3E80)
       {
-        v10 = a4 != 0;
+        v10 = payloads != 0;
       }
 
       else
       {
-        v10 = v9;
+        v10 = payloadsCopy2;
       }
 
-      if (v8 >= 0x2711)
+      if (unsignedIntegerValue >= 0x2711)
       {
         return v10;
       }
@@ -2943,19 +2943,19 @@ LABEL_32:
     }
   }
 
-  return a4;
+  return payloads;
 }
 
 - (id)allActiveAudioTiers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  allValues = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2967,30 +2967,30 @@ LABEL_32:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [v3 addObjectsFromArray:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "allValues")}];
+        [array addObjectsFromArray:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "allValues")}];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)generateAudioPayloadsFromConfig:(id *)a3
+- (void)generateAudioPayloadsFromConfig:(id *)config
 {
   v50 = *MEMORY[0x1E69E9840];
   v5 = +[VCHardwareSettings deviceClass];
   [(NSMutableSet *)self->_audioPayloads removeAllObjects];
-  if ([VCAudioTierPicker usePlistForAudioTierTableFromMode:a3->var0])
+  if ([VCAudioTierPicker usePlistForAudioTierTableFromMode:config->var0])
   {
-    if (a3->var0 == 6)
+    if (config->var0 == 6)
     {
       v6 = [(VCAudioTierPicker *)self loadAudioTiersFromPlist:@"AudioTiers_GFT"];
       v46 = 0u;
@@ -3012,7 +3012,7 @@ LABEL_32:
               objc_enumerationMutation(obj);
             }
 
-            -[VCAudioTierPicker addPayloadsFromGFTRedNumPayloadsDict:isDeviceClassWolf:isACC24Supported:](self, "addPayloadsFromGFTRedNumPayloadsDict:isDeviceClassWolf:isACC24Supported:", [objc_msgSend(objc_msgSend(v6 objectForKeyedSubscript:{@"networkBitrate", "objectForKeyedSubscript:", *(*(&v46 + 1) + 8 * i)), "objectForKeyedSubscript:", @"redNumPayloads"}], v5 == 8, a3->var12);
+            -[VCAudioTierPicker addPayloadsFromGFTRedNumPayloadsDict:isDeviceClassWolf:isACC24Supported:](self, "addPayloadsFromGFTRedNumPayloadsDict:isDeviceClassWolf:isACC24Supported:", [objc_msgSend(objc_msgSend(v6 objectForKeyedSubscript:{@"networkBitrate", "objectForKeyedSubscript:", *(*(&v46 + 1) + 8 * i)), "objectForKeyedSubscript:", @"redNumPayloads"}], v5 == 8, config->var12);
           }
 
           v8 = [obj countByEnumeratingWithState:&v46 objects:v45 count:16];
@@ -3025,12 +3025,12 @@ LABEL_32:
     else
     {
       v23 = [(VCAudioTierPicker *)self loadAudioTiersFromPlist:@"AudioTiers_U1"];
-      v24 = [v23 allKeys];
+      allKeys = [v23 allKeys];
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v25 = [v24 countByEnumeratingWithState:&v41 objects:v40 count:16];
+      v25 = [allKeys countByEnumeratingWithState:&v41 objects:v40 count:16];
       if (v25)
       {
         v26 = v25;
@@ -3041,13 +3041,13 @@ LABEL_32:
           {
             if (*v42 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(allKeys);
             }
 
-            -[VCAudioTierPicker addPayloadsFromU1IPVerDict:config:mode:](self, "addPayloadsFromU1IPVerDict:config:mode:", [v23 objectForKeyedSubscript:*(*(&v41 + 1) + 8 * j)], a3, *(*(&v41 + 1) + 8 * j));
+            -[VCAudioTierPicker addPayloadsFromU1IPVerDict:config:mode:](self, "addPayloadsFromU1IPVerDict:config:mode:", [v23 objectForKeyedSubscript:*(*(&v41 + 1) + 8 * j)], config, *(*(&v41 + 1) + 8 * j));
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v41 objects:v40 count:16];
+          v26 = [allKeys countByEnumeratingWithState:&v41 objects:v40 count:16];
         }
 
         while (v26);
@@ -3061,7 +3061,7 @@ LABEL_32:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    var3 = a3->var3;
+    var3 = config->var3;
     v12 = [(__CFArray *)var3 countByEnumeratingWithState:&v36 objects:v35 count:16];
     if (v12)
     {
@@ -3077,13 +3077,13 @@ LABEL_32:
           }
 
           v16 = [(NSMutableDictionary *)self->_tierTablesForRedNumPayloads objectForKeyedSubscript:*(*(&v36 + 1) + 8 * k)];
-          v17 = [v16 allKeys];
+          allKeys2 = [v16 allKeys];
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v18 = [v17 reverseObjectEnumerator];
-          v19 = [v18 countByEnumeratingWithState:&v31 objects:v30 count:16];
+          reverseObjectEnumerator = [allKeys2 reverseObjectEnumerator];
+          v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v30 count:16];
           if (v19)
           {
             v20 = v19;
@@ -3094,13 +3094,13 @@ LABEL_32:
               {
                 if (*v32 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 -[VCAudioTierPicker addPayloadFromTier:](self, "addPayloadFromTier:", [v16 objectForKeyedSubscript:*(*(&v31 + 1) + 8 * m)]);
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v31 objects:v30 count:16];
+              v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v31 objects:v30 count:16];
             }
 
             while (v20);
@@ -3115,11 +3115,11 @@ LABEL_32:
   }
 }
 
-- (void)addPayloadFromTier:(id)a3
+- (void)addPayloadFromTier:(id)tier
 {
-  if (a3)
+  if (tier)
   {
-    v4 = [objc_msgSend(a3 "payloadConfig")];
+    v4 = [objc_msgSend(tier "payloadConfig")];
     audioPayloads = self->_audioPayloads;
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
 
@@ -3127,16 +3127,16 @@ LABEL_32:
   }
 }
 
-- (void)addPayloadsFromU1IPVerDict:(id)a3 config:(id *)a4 mode:(id)a5
+- (void)addPayloadsFromU1IPVerDict:(id)dict config:(id *)config mode:(id)mode
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dict)
   {
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = [a3 allKeys];
+    obj = [dict allKeys];
     v17 = [obj countByEnumeratingWithState:&v27 objects:v26 count:16];
     if (v17)
     {
@@ -3153,7 +3153,7 @@ LABEL_32:
 
           v18 = v7;
           v8 = *(*(&v27 + 1) + 8 * v7);
-          v9 = [objc_msgSend(a3 objectForKeyedSubscript:{v8), "allKeys"}];
+          v9 = [objc_msgSend(dict objectForKeyedSubscript:{v8), "allKeys"}];
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
@@ -3173,7 +3173,7 @@ LABEL_32:
                   objc_enumerationMutation(v10);
                 }
 
-                -[VCAudioTierPicker addPayloadsFromU1RedNumPayloadsDict:config:mode:isIPv4:isCellular:](self, "addPayloadsFromU1RedNumPayloadsDict:config:mode:isIPv4:isCellular:", [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{v8), "objectForKeyedSubscript:", *(*(&v22 + 1) + 8 * i)), "objectForKeyedSubscript:", @"redNumPayloads"}], a4, a5, objc_msgSend(v8, "isEqualToString:", @"IPv4"), objc_msgSend(*(*(&v22 + 1) + 8 * i), "isEqualToString:", @"cellular"));
+                -[VCAudioTierPicker addPayloadsFromU1RedNumPayloadsDict:config:mode:isIPv4:isCellular:](self, "addPayloadsFromU1RedNumPayloadsDict:config:mode:isIPv4:isCellular:", [objc_msgSend(objc_msgSend(dict objectForKeyedSubscript:{v8), "objectForKeyedSubscript:", *(*(&v22 + 1) + 8 * i)), "objectForKeyedSubscript:", @"redNumPayloads"}], config, mode, objc_msgSend(v8, "isEqualToString:", @"IPv4"), objc_msgSend(*(*(&v22 + 1) + 8 * i), "isEqualToString:", @"cellular"));
               }
 
               v12 = [v10 countByEnumeratingWithState:&v22 objects:v21 count:16];
@@ -3194,25 +3194,25 @@ LABEL_32:
   }
 }
 
-- (void)addPayloadsFromU1RedNumPayloadsDict:(id)a3 config:(id *)a4 mode:(id)a5 isIPv4:(BOOL)a6 isCellular:(BOOL)a7
+- (void)addPayloadsFromU1RedNumPayloadsDict:(id)dict config:(id *)config mode:(id)mode isIPv4:(BOOL)pv4 isCellular:(BOOL)cellular
 {
   v70 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dict)
   {
-    v7 = a7;
-    v8 = a6;
+    cellularCopy = cellular;
+    pv4Copy = pv4;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = [a3 allKeys];
+    obj = [dict allKeys];
     v31 = [obj countByEnumeratingWithState:&v66 objects:v65 count:16];
     if (v31)
     {
       v32 = *v67;
-      v28 = v8;
-      v29 = v7;
-      v27 = a5;
+      v28 = pv4Copy;
+      v29 = cellularCopy;
+      modeCopy = mode;
       do
       {
         v12 = 0;
@@ -3225,7 +3225,7 @@ LABEL_32:
 
           v33 = v12;
           v36 = *(*(&v66 + 1) + 8 * v12);
-          v13 = [objc_msgSend(objc_msgSend(a3 "objectForKeyedSubscript:{"objectForKeyedSubscript:", @"bitrateTier", "allKeys"}")];
+          v13 = [objc_msgSend(objc_msgSend(dict "objectForKeyedSubscript:{"objectForKeyedSubscript:", @"bitrateTier", "allKeys"}")];
           v61 = 0u;
           v62 = 0u;
           v63 = 0u;
@@ -3245,7 +3245,7 @@ LABEL_32:
                 }
 
                 v15 = *(*(&v61 + 1) + 8 * i);
-                v16 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{v36), "objectForKeyedSubscript:", @"bitrateTier", "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"payloads"}];
+                v16 = [objc_msgSend(objc_msgSend(objc_msgSend(dict objectForKeyedSubscript:{v36), "objectForKeyedSubscript:", @"bitrateTier", "objectForKeyedSubscript:", v15), "objectForKeyedSubscript:", @"payloads"}];
                 if (!v16)
                 {
                   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -3254,8 +3254,8 @@ LABEL_32:
                     v24 = *MEMORY[0x1E6986650];
                     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
                     {
-                      v25 = [v36 intValue];
-                      v26 = [v15 intValue];
+                      intValue = [v36 intValue];
+                      intValue2 = [v15 intValue];
                       *buf = 136316930;
                       v45 = v23;
                       v46 = 2080;
@@ -3263,15 +3263,15 @@ LABEL_32:
                       v48 = 1024;
                       v49 = 1242;
                       v50 = 2112;
-                      v51 = v27;
+                      v51 = modeCopy;
                       v52 = 1024;
                       v53 = v28;
                       v54 = 1024;
                       v55 = v29;
                       v56 = 1024;
-                      v57 = v25;
+                      v57 = intValue;
                       v58 = 1024;
-                      v59 = v26;
+                      v59 = intValue2;
                       _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, " [%s] %s:%d No payloads array for mode=%@ and isIPv4=%{BOOL}d isCellular=%{BOOL}d redNumPayloads=%u tierBitrate=%u", buf, 0x3Eu);
                     }
                   }
@@ -3299,7 +3299,7 @@ LABEL_32:
                       }
 
                       v22 = [objc_msgSend(*(*(&v40 + 1) + 8 * j) objectForKeyedSubscript:{@"payload", "integerValue"}];
-                      if (v22 != 112 && (v22 != 113 || a4->var12))
+                      if (v22 != 112 && (v22 != 113 || config->var12))
                       {
                         -[NSMutableSet addObject:](self->_audioPayloads, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:?]);
                       }
@@ -3334,15 +3334,15 @@ LABEL_32:
   }
 }
 
-- (void)addPayloadsFromGFTPayloadsArray:(id)a3 isACC24Supported:(BOOL)a4
+- (void)addPayloadsFromGFTPayloadsArray:(id)array isACC24Supported:(BOOL)supported
 {
-  v4 = a4;
+  supportedCopy = supported;
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  v7 = [array countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3354,10 +3354,10 @@ LABEL_32:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
-        if ([objc_msgSend(*(*(&v13 + 1) + 8 * v10) objectForKeyedSubscript:{@"payload", "integerValue"}] != 113 || v4)
+        if ([objc_msgSend(*(*(&v13 + 1) + 8 * v10) objectForKeyedSubscript:{@"payload", "integerValue"}] != 113 || supportedCopy)
         {
           -[NSMutableSet addObject:](self->_audioPayloads, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:?]);
         }
@@ -3366,26 +3366,26 @@ LABEL_32:
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v8 = [array countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)addPayloadsFromGFTRedNumPayloadsDict:(id)a3 isDeviceClassWolf:(BOOL)a4 isACC24Supported:(BOOL)a5
+- (void)addPayloadsFromGFTRedNumPayloadsDict:(id)dict isDeviceClassWolf:(BOOL)wolf isACC24Supported:(BOOL)supported
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dict)
   {
-    v5 = a5;
-    v6 = a4;
-    v9 = [a3 allKeys];
+    supportedCopy = supported;
+    wolfCopy = wolf;
+    allKeys = [dict allKeys];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v15 count:16];
+    v10 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
     if (v10)
     {
       v11 = v10;
@@ -3396,17 +3396,17 @@ LABEL_32:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          if ([objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", @"lowLatencyAudioDevice", "BOOLValue"}] == v6)
+          if ([objc_msgSend(objc_msgSend(dict objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", @"lowLatencyAudioDevice", "BOOLValue"}] == wolfCopy)
           {
-            -[VCAudioTierPicker addPayloadsFromGFTPayloadsArray:isACC24Supported:](self, "addPayloadsFromGFTPayloadsArray:isACC24Supported:", [objc_msgSend(a3 objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", @"payloads"}], v5);
+            -[VCAudioTierPicker addPayloadsFromGFTPayloadsArray:isACC24Supported:](self, "addPayloadsFromGFTPayloadsArray:isACC24Supported:", [objc_msgSend(dict objectForKeyedSubscript:{v14), "objectForKeyedSubscript:", @"payloads"}], supportedCopy);
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
       }
 
       while (v11);

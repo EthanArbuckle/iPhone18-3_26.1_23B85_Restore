@@ -2,17 +2,17 @@
 - (CGRect)_chartRect;
 - (CGRect)_insetChartRect;
 - (FIUIChartDataSource)dataSource;
-- (FIUIChartView)initWithDateInterval:(id)a3;
+- (FIUIChartView)initWithDateInterval:(id)interval;
 - (UIEdgeInsets)contentBufferEdgeInsets;
 - (UIEdgeInsets)seriesEdgeInsets;
-- (double)_absolutePositionForXPlaneValue:(id)a3;
-- (double)_xAxisLabelPaddingForBackground:(BOOL)a3;
-- (float)_relativePositionForXPlaneValue:(id)a3;
-- (id)_dataPointAtIndex:(unint64_t)a3 forSeriesAtIndex:(unint64_t)a4;
-- (id)_dataPointsForSeriesAtIndex:(unint64_t)a3;
-- (id)_labelsForSeriesAtIndex:(unint64_t)a3;
-- (id)_seriesAtIndex:(unint64_t)a3;
-- (unint64_t)_numberOfDataPointsForSeriesAtIndex:(unint64_t)a3;
+- (double)_absolutePositionForXPlaneValue:(id)value;
+- (double)_xAxisLabelPaddingForBackground:(BOOL)background;
+- (float)_relativePositionForXPlaneValue:(id)value;
+- (id)_dataPointAtIndex:(unint64_t)index forSeriesAtIndex:(unint64_t)atIndex;
+- (id)_dataPointsForSeriesAtIndex:(unint64_t)index;
+- (id)_labelsForSeriesAtIndex:(unint64_t)index;
+- (id)_seriesAtIndex:(unint64_t)index;
+- (unint64_t)_numberOfDataPointsForSeriesAtIndex:(unint64_t)index;
 - (unint64_t)_numberOfSeries;
 - (void)_adjustMinMaxValues;
 - (void)_layoutAxisLabels;
@@ -27,18 +27,18 @@
 - (void)_updateHighlightedValue;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)selectAxisPoint:(int64_t)a3 selected:(BOOL)a4;
-- (void)setBackgroundView:(id)a3;
-- (void)setDateInterval:(id)a3;
-- (void)setXAxisDescriptor:(id)a3;
-- (void)setYAxisDescriptor:(id)a3;
+- (void)selectAxisPoint:(int64_t)point selected:(BOOL)selected;
+- (void)setBackgroundView:(id)view;
+- (void)setDateInterval:(id)interval;
+- (void)setXAxisDescriptor:(id)descriptor;
+- (void)setYAxisDescriptor:(id)descriptor;
 @end
 
 @implementation FIUIChartView
 
-- (FIUIChartView)initWithDateInterval:(id)a3
+- (FIUIChartView)initWithDateInterval:(id)interval
 {
-  v5 = a3;
+  intervalCopy = interval;
   v6 = [(FIUIChartView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v6)
   {
@@ -53,7 +53,7 @@
     v6->_xAxisSubLabels = 0;
 
     [(FIUIChartDataGroup *)v6->_dataGroup setDataSource:v6];
-    objc_storeStrong(&v6->_dateInterval, a3);
+    objc_storeStrong(&v6->_dateInterval, interval);
     v6->_yAxisEdgeInset = 0.0;
     v6->_labelsInsetChartBackground = 1;
     v11 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -78,74 +78,74 @@
   [(FIUIChartView *)self setNeedsLayout];
 }
 
-- (void)selectAxisPoint:(int64_t)a3 selected:(BOOL)a4
+- (void)selectAxisPoint:(int64_t)point selected:(BOOL)selected
 {
-  v4 = a4;
-  if ([(NSArray *)self->_xAxisLabels count]> a3)
+  selectedCopy = selected;
+  if ([(NSArray *)self->_xAxisLabels count]> point)
   {
-    v7 = [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor axisLabels];
-    v10 = [v7 objectAtIndexedSubscript:a3];
+    axisLabels = [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor axisLabels];
+    v10 = [axisLabels objectAtIndexedSubscript:point];
 
-    [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor selectLabel:v4 atIndex:a3];
-    v8 = [(NSArray *)self->_xAxisLabels objectAtIndexedSubscript:a3];
-    v9 = [v10 labelColor];
-    [v8 setTextColor:v9];
+    [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor selectLabel:selectedCopy atIndex:point];
+    v8 = [(NSArray *)self->_xAxisLabels objectAtIndexedSubscript:point];
+    labelColor = [v10 labelColor];
+    [v8 setTextColor:labelColor];
   }
 }
 
-- (void)setDateInterval:(id)a3
+- (void)setDateInterval:(id)interval
 {
-  v9 = a3;
+  intervalCopy = interval;
   if (![(NSDateInterval *)self->_dateInterval isEqualToDateInterval:?])
   {
-    objc_storeStrong(&self->_dateInterval, a3);
+    objc_storeStrong(&self->_dateInterval, interval);
     xAxisDescriptor = self->_xAxisDescriptor;
-    v6 = [v9 startDate];
-    [(FIUIChartTimeAxisDescriptor *)xAxisDescriptor setMinValue:v6];
+    startDate = [intervalCopy startDate];
+    [(FIUIChartTimeAxisDescriptor *)xAxisDescriptor setMinValue:startDate];
 
     v7 = self->_xAxisDescriptor;
-    v8 = [v9 endDate];
-    [(FIUIChartTimeAxisDescriptor *)v7 setMaxValue:v8];
+    endDate = [intervalCopy endDate];
+    [(FIUIChartTimeAxisDescriptor *)v7 setMaxValue:endDate];
 
     [(FIUIChartView *)self setNeedsLayout];
   }
 }
 
-- (void)setXAxisDescriptor:(id)a3
+- (void)setXAxisDescriptor:(id)descriptor
 {
-  objc_storeStrong(&self->_xAxisDescriptor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_xAxisDescriptor, descriptor);
+  descriptorCopy = descriptor;
   xAxisDescriptor = self->_xAxisDescriptor;
-  v7 = [(NSDateInterval *)self->_dateInterval startDate];
-  [(FIUIChartTimeAxisDescriptor *)xAxisDescriptor setMinValue:v7];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  [(FIUIChartTimeAxisDescriptor *)xAxisDescriptor setMinValue:startDate];
 
   v8 = self->_xAxisDescriptor;
-  v9 = [(NSDateInterval *)self->_dateInterval endDate];
-  [(FIUIChartTimeAxisDescriptor *)v8 setMaxValue:v9];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  [(FIUIChartTimeAxisDescriptor *)v8 setMaxValue:endDate];
 
   [(FIUIChartView *)self setNeedsLayout];
 }
 
-- (void)setYAxisDescriptor:(id)a3
+- (void)setYAxisDescriptor:(id)descriptor
 {
-  objc_storeStrong(&self->_yAxisDescriptor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_yAxisDescriptor, descriptor);
+  descriptorCopy = descriptor;
   [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor setMinValue:self->_minYValue];
   [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor setMaxValue:self->_maxYValue];
 
   [(FIUIChartView *)self setNeedsLayout];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(FIUIChartBackgroundView *)backgroundView removeFromSuperview];
     [(FIUIChartView *)self addSubview:v7];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
   }
 
   MEMORY[0x1EEE66BB8]();
@@ -169,21 +169,21 @@
 
 - (void)_reloadDataSeries
 {
-  v3 = [(FIUIChartView *)self _numberOfSeries];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (v3)
+  _numberOfSeries = [(FIUIChartView *)self _numberOfSeries];
+  array = [MEMORY[0x1E695DF70] array];
+  if (_numberOfSeries)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != _numberOfSeries; ++i)
     {
       v5 = [(FIUIChartView *)self _seriesAtIndex:i];
       if (v5)
       {
-        [v8 addObject:v5];
+        [array addObject:v5];
       }
     }
   }
 
-  v6 = [MEMORY[0x1E695DEC8] arrayWithArray:v8];
+  v6 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   chartSeries = self->_chartSeries;
   self->_chartSeries = v6;
 }
@@ -209,16 +209,16 @@
 
 - (void)_adjustMinMaxValues
 {
-  v3 = [(FIUIChartDataGroup *)self->_dataGroup minYValue];
-  if (v3)
+  minYValue = [(FIUIChartDataGroup *)self->_dataGroup minYValue];
+  if (minYValue)
   {
   }
 
   else
   {
-    v4 = [(FIUIChartDataGroup *)self->_dataGroup maxYValue];
+    maxYValue = [(FIUIChartDataGroup *)self->_dataGroup maxYValue];
 
-    if (!v4)
+    if (!maxYValue)
     {
       minYValue = self->_minYValue;
       self->_minYValue = 0;
@@ -233,12 +233,12 @@
 
   if ((v6 & 1) == 0)
   {
-    v12 = [(FIUIChartDataGroup *)self->_dataGroup minYValue];
-    [v12 doubleValue];
+    minYValue2 = [(FIUIChartDataGroup *)self->_dataGroup minYValue];
+    [minYValue2 doubleValue];
     v9 = v13;
 
-    v14 = [(FIUIChartDataGroup *)self->_dataGroup maxYValue];
-    [v14 doubleValue];
+    maxYValue2 = [(FIUIChartDataGroup *)self->_dataGroup maxYValue];
+    [maxYValue2 doubleValue];
     v11 = v15;
 
     if (vabdd_f64(v11, v9) >= 2.22044605e-16)
@@ -394,75 +394,75 @@ LABEL_24:
 {
   v48 = *MEMORY[0x1E69E9840];
   v3 = [(NSArray *)self->_yAxisLabels mutableCopy];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor axisLabels];
+  array = [MEMORY[0x1E695DF70] array];
+  axisLabels = [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor axisLabels];
   [(NSNumber *)self->_minYValue doubleValue];
   v42 = v6;
   [(NSNumber *)self->_maxYValue doubleValue];
   v41 = v7;
-  if ([v5 count])
+  if ([axisLabels count])
   {
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndexedSubscript:v8];
-      v10 = [v3 hk_dequeue];
-      if (!v10)
+      v9 = [axisLabels objectAtIndexedSubscript:v8];
+      hk_dequeue = [v3 hk_dequeue];
+      if (!hk_dequeue)
       {
-        v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-        [v10 setTextAlignment:2];
-        [(UIView *)self->_containerView addSubview:v10];
+        hk_dequeue = objc_alloc_init(MEMORY[0x1E69DCC10]);
+        [hk_dequeue setTextAlignment:2];
+        [(UIView *)self->_containerView addSubview:hk_dequeue];
       }
 
-      v11 = [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor labelFont];
-      [v10 setFont:v11];
+      labelFont = [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor labelFont];
+      [hk_dequeue setFont:labelFont];
 
-      v12 = [v9 text];
-      [v10 setText:v12];
+      text = [v9 text];
+      [hk_dequeue setText:text];
 
-      v13 = [v9 labelColor];
-      [v10 setTextColor:v13];
+      labelColor = [v9 labelColor];
+      [hk_dequeue setTextColor:labelColor];
 
       [v9 shadowOffset];
-      [v10 setShadowOffset:?];
-      v14 = [v9 shadowColor];
-      [v10 setShadowColor:v14];
+      [hk_dequeue setShadowOffset:?];
+      shadowColor = [v9 shadowColor];
+      [hk_dequeue setShadowColor:shadowColor];
 
       [v9 shadowBlur];
-      [v10 setShadowBlur:?];
-      [v10 setAdjustsFontSizeToFitWidth:1];
-      [v10 setNumberOfLines:0];
-      [v10 sizeToFit];
+      [hk_dequeue setShadowBlur:?];
+      [hk_dequeue setAdjustsFontSizeToFitWidth:1];
+      [hk_dequeue setNumberOfLines:0];
+      [hk_dequeue sizeToFit];
       [(FIUIChartView *)self _insetChartRect];
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      [v10 intrinsicContentSize];
+      [hk_dequeue intrinsicContentSize];
       v24 = v23;
       v26 = v25;
       [(FIUIChartAxisDescriptor *)self->_yAxisDescriptor axisDescriptorPadding];
-      v27 = [v9 location];
-      [v27 doubleValue];
+      location = [v9 location];
+      [location doubleValue];
       v29 = v28;
 
       v30 = FIUIChartRelativePositionForYPlaneValue(v29, v42, v41);
       FIUIChartAbsolutePositionForYPlaneValue(self, v30, v16, v18, v20, v22);
-      if (v8 && v8 != [v5 count] - 1 && vabdd_f64(v29, v42) < vabdd_f64(v29, v41))
+      if (v8 && v8 != [axisLabels count] - 1 && vabdd_f64(v29, v42) < vabdd_f64(v29, v41))
       {
-        [v10 _firstBaselineOffsetFromTop];
+        [hk_dequeue _firstBaselineOffsetFromTop];
       }
 
       UIRoundToViewScale();
       v32 = v31;
       UIRoundToViewScale();
-      [v10 setFrame:{v32, v33, v24, v26}];
-      [v4 addObject:v10];
+      [hk_dequeue setFrame:{v32, v33, v24, v26}];
+      [array addObject:hk_dequeue];
 
       ++v8;
     }
 
-    while (v8 < [v5 count]);
+    while (v8 < [axisLabels count]);
   }
 
   v45 = 0u;
@@ -493,35 +493,35 @@ LABEL_24:
     while (v36);
   }
 
-  v39 = [MEMORY[0x1E695DEC8] arrayWithArray:v4];
+  v39 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   yAxisLabels = self->_yAxisLabels;
   self->_yAxisLabels = v39;
 }
 
 - (void)_layoutXAxisLabels
 {
-  v2 = self;
+  selfCopy = self;
   v118 = *MEMORY[0x1E69E9840];
   v89 = [(NSArray *)self->_xAxisLabels mutableCopy];
-  v3 = [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor axisLabels];
-  v85 = [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor axisSubLabels];
-  v83 = v3;
-  v4 = [v3 reverseObjectEnumerator];
-  v90 = [MEMORY[0x1E695DF70] array];
-  v5 = [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor labelFont];
-  [v5 lineHeight];
+  axisLabels = [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor axisLabels];
+  axisSubLabels = [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor axisSubLabels];
+  v83 = axisLabels;
+  reverseObjectEnumerator = [axisLabels reverseObjectEnumerator];
+  array = [MEMORY[0x1E695DF70] array];
+  labelFont = [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor labelFont];
+  [labelFont lineHeight];
 
   v111 = 0u;
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  obj = v4;
+  obj = reverseObjectEnumerator;
   v91 = [obj countByEnumeratingWithState:&v109 objects:v117 count:16];
   if (v91)
   {
     v88 = *v110;
     v84 = *MEMORY[0x1E69DB648];
-    v86 = v2;
+    v86 = selfCopy;
     do
     {
       for (i = 0; i != v91; ++i)
@@ -532,44 +532,44 @@ LABEL_24:
         }
 
         v7 = *(*(&v109 + 1) + 8 * i);
-        v8 = [v89 lastObject];
+        lastObject = [v89 lastObject];
         [v89 removeLastObject];
-        if (!v8)
+        if (!lastObject)
         {
-          v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-          [v8 setTextAlignment:1];
-          [(UIView *)v2->_containerView addSubview:v8];
+          lastObject = objc_alloc_init(MEMORY[0x1E69DCC10]);
+          [lastObject setTextAlignment:1];
+          [(UIView *)selfCopy->_containerView addSubview:lastObject];
         }
 
-        v9 = [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor labelFont];
-        [v8 setFont:v9];
+        labelFont2 = [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor labelFont];
+        [lastObject setFont:labelFont2];
 
-        v10 = [v7 text];
-        [v8 setText:v10];
+        text = [v7 text];
+        [lastObject setText:text];
 
-        v11 = [v7 labelColor];
-        [v8 setTextColor:v11];
+        labelColor = [v7 labelColor];
+        [lastObject setTextColor:labelColor];
 
-        [v8 setAdjustsFontSizeToFitWidth:1];
-        [v8 setNumberOfLines:0];
-        [v8 sizeToFit];
-        v12 = [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor labelAMPMFont];
-        if (v12)
+        [lastObject setAdjustsFontSizeToFitWidth:1];
+        [lastObject setNumberOfLines:0];
+        [lastObject sizeToFit];
+        labelAMPMFont = [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor labelAMPMFont];
+        if (labelAMPMFont)
         {
           v13 = objc_alloc_init(MEMORY[0x1E696AB78]);
-          v14 = [v7 text];
-          v15 = [v13 AMSymbol];
-          v16 = [v14 rangeOfString:v15];
+          text2 = [v7 text];
+          aMSymbol = [v13 AMSymbol];
+          v16 = [text2 rangeOfString:aMSymbol];
           v18 = v17;
 
           if (v16 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v19 = [v7 text];
-            v20 = [v13 PMSymbol];
-            v16 = [v19 rangeOfString:v20];
+            text3 = [v7 text];
+            pMSymbol = [v13 PMSymbol];
+            v16 = [text3 rangeOfString:pMSymbol];
             v18 = v21;
 
-            v2 = v86;
+            selfCopy = v86;
             if (v16 == 0x7FFFFFFFFFFFFFFFLL)
             {
               goto LABEL_14;
@@ -578,60 +578,60 @@ LABEL_24:
 
           else
           {
-            v2 = v86;
+            selfCopy = v86;
           }
 
-          v22 = [v8 attributedText];
-          v23 = [v22 mutableCopy];
+          attributedText = [lastObject attributedText];
+          v23 = [attributedText mutableCopy];
 
-          [v23 addAttribute:v84 value:v12 range:{v16, v18}];
-          [v8 setAttributedText:v23];
+          [v23 addAttribute:v84 value:labelAMPMFont range:{v16, v18}];
+          [lastObject setAttributedText:v23];
 
 LABEL_14:
         }
 
-        [v8 intrinsicContentSize];
-        v24 = [v7 location];
-        [(FIUIChartView *)v2 _absolutePositionForXPlaneValue:v24];
+        [lastObject intrinsicContentSize];
+        location = [v7 location];
+        [(FIUIChartView *)selfCopy _absolutePositionForXPlaneValue:location];
 
         [v7 useReversePlacement];
-        [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor axisDescriptorPadding];
-        if (v2->_xAxisLabelsShouldBaselineAlign)
+        [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor axisDescriptorPadding];
+        if (selfCopy->_xAxisLabelsShouldBaselineAlign)
         {
-          [(UIView *)v2->_containerView bounds];
+          [(UIView *)selfCopy->_containerView bounds];
           CGRectGetMaxY(v119);
-          [v8 _firstBaselineOffsetFromTop];
+          [lastObject _firstBaselineOffsetFromTop];
         }
 
         else
         {
-          [v85 count];
-          [(UIView *)v2->_containerView bounds];
+          [axisSubLabels count];
+          [(UIView *)selfCopy->_containerView bounds];
           CGRectGetMaxY(v120);
-          [(FIUIChartView *)v2 _xAxisLabelPaddingForBackground:0];
+          [(FIUIChartView *)selfCopy _xAxisLabelPaddingForBackground:0];
           UIRoundToViewScale();
           UIRoundToViewScale();
         }
 
         UIRoundToViewScale();
-        [v8 setFrame:?];
-        if ([(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor hideClippedLabels])
+        [lastObject setFrame:?];
+        if ([(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor hideClippedLabels])
         {
-          [v8 frame];
+          [lastObject frame];
           v26 = v25;
-          [v8 frame];
+          [lastObject frame];
           v28 = v27;
-          [v8 frame];
+          [lastObject frame];
           v30 = v29;
-          [(FIUIChartView *)v2 bounds];
+          [(FIUIChartView *)selfCopy bounds];
           v124.size.height = 2.22507386e-308;
           v124.origin.x = v26;
           v124.origin.y = v28;
           v124.size.width = v30;
-          [v8 setHidden:{!CGRectContainsRect(v121, v124)}];
+          [lastObject setHidden:{!CGRectContainsRect(v121, v124)}];
         }
 
-        [v90 insertObject:v8 atIndex:0];
+        [array insertObject:lastObject atIndex:0];
       }
 
       v91 = [obj countByEnumeratingWithState:&v109 objects:v117 count:16];
@@ -668,25 +668,25 @@ LABEL_14:
     while (v33);
   }
 
-  v36 = [MEMORY[0x1E695DEC8] arrayWithArray:v90];
-  xAxisLabels = v2->_xAxisLabels;
-  v2->_xAxisLabels = v36;
+  v36 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
+  xAxisLabels = selfCopy->_xAxisLabels;
+  selfCopy->_xAxisLabels = v36;
 
-  if ([v85 count])
+  if ([axisSubLabels count])
   {
-    v38 = (objc_opt_respondsToSelector() & 1) == 0 || [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor subLabelAlignment]== 0;
+    v38 = (objc_opt_respondsToSelector() & 1) == 0 || [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor subLabelAlignment]== 0;
     v92 = v38;
-    v46 = [(NSArray *)v2->_xAxisSubLabels mutableCopy];
+    v46 = [(NSArray *)selfCopy->_xAxisSubLabels mutableCopy];
 
-    v47 = [v85 reverseObjectEnumerator];
+    reverseObjectEnumerator2 = [axisSubLabels reverseObjectEnumerator];
 
-    v45 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
 
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    obj = v47;
+    obj = reverseObjectEnumerator2;
     v48 = [obj countByEnumeratingWithState:&v101 objects:v115 count:16];
     if (v48)
     {
@@ -702,62 +702,62 @@ LABEL_14:
           }
 
           v52 = *(*(&v101 + 1) + 8 * k);
-          v53 = [v46 lastObject];
+          lastObject2 = [v46 lastObject];
           [v46 removeLastObject];
-          if (!v53)
+          if (!lastObject2)
           {
-            v53 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-            [v53 setTextAlignment:1];
-            [(UIView *)v2->_containerView addSubview:v53];
+            lastObject2 = objc_alloc_init(MEMORY[0x1E69DCC10]);
+            [lastObject2 setTextAlignment:1];
+            [(UIView *)selfCopy->_containerView addSubview:lastObject2];
           }
 
-          v54 = [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor subLabelFont];
-          [v53 setFont:v54];
+          subLabelFont = [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor subLabelFont];
+          [lastObject2 setFont:subLabelFont];
 
-          v55 = [v52 text];
-          [v53 setText:v55];
+          text4 = [v52 text];
+          [lastObject2 setText:text4];
 
-          v56 = [v52 labelColor];
-          [v53 setTextColor:v56];
+          labelColor2 = [v52 labelColor];
+          [lastObject2 setTextColor:labelColor2];
 
-          v57 = [v52 location];
-          [(FIUIChartView *)v2 _absolutePositionForXPlaneValue:v57];
+          location2 = [v52 location];
+          [(FIUIChartView *)selfCopy _absolutePositionForXPlaneValue:location2];
 
-          [(UIView *)v2->_containerView bounds];
+          [(UIView *)selfCopy->_containerView bounds];
           CGRectGetMaxY(v122);
-          [(FIUIChartView *)v2 _xAxisLabelPaddingForBackground:0];
+          [(FIUIChartView *)selfCopy _xAxisLabelPaddingForBackground:0];
           UIRoundToViewScale();
-          [v53 intrinsicContentSize];
+          [lastObject2 intrinsicContentSize];
           v59 = v58;
           v61 = v60;
-          [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor subAxisDescriptorPadding];
+          [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor subAxisDescriptorPadding];
           if (v62 > 0.00000011920929)
           {
             if (v92)
             {
-              [v53 intrinsicContentSize];
-              [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor subAxisDescriptorPadding];
+              [lastObject2 intrinsicContentSize];
+              [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor subAxisDescriptorPadding];
             }
 
             else
             {
-              [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor subAxisDescriptorPadding];
+              [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor subAxisDescriptorPadding];
             }
           }
 
           UIRoundToViewScale();
           v64 = v63;
-          [(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor subAxisVerticalPadding];
+          [(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor subAxisVerticalPadding];
           UIRoundToViewScale();
-          [v53 setFrame:{v64, v65, v59, v61}];
-          if ([(FIUIChartTimeAxisDescriptor *)v2->_xAxisDescriptor hideClippedLabels])
+          [lastObject2 setFrame:{v64, v65, v59, v61}];
+          if ([(FIUIChartTimeAxisDescriptor *)selfCopy->_xAxisDescriptor hideClippedLabels])
           {
-            [(FIUIChartView *)v2 bounds];
+            [(FIUIChartView *)selfCopy bounds];
             v67 = v66;
             v69 = v68;
             v71 = v70;
             v73 = v72;
-            [v53 frame];
+            [lastObject2 frame];
             v125.origin.x = v74;
             v125.origin.y = v75;
             v125.size.width = v76;
@@ -766,10 +766,10 @@ LABEL_14:
             v123.origin.y = v69;
             v123.size.width = v71;
             v123.size.height = v73;
-            [v53 setHidden:{!CGRectContainsRect(v123, v125)}];
+            [lastObject2 setHidden:{!CGRectContainsRect(v123, v125)}];
           }
 
-          [v45 insertObject:v53 atIndex:0];
+          [array2 insertObject:lastObject2 atIndex:0];
         }
 
         v49 = [obj countByEnumeratingWithState:&v101 objects:v115 count:16];
@@ -806,9 +806,9 @@ LABEL_14:
       while (v79);
     }
 
-    v82 = [MEMORY[0x1E695DEC8] arrayWithArray:v45];
-    xAxisSubLabels = v2->_xAxisSubLabels;
-    v2->_xAxisSubLabels = v82;
+    v82 = [MEMORY[0x1E695DEC8] arrayWithArray:array2];
+    xAxisSubLabels = selfCopy->_xAxisSubLabels;
+    selfCopy->_xAxisSubLabels = v82;
   }
 
   else
@@ -817,7 +817,7 @@ LABEL_14:
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v39 = v2->_xAxisSubLabels;
+    v39 = selfCopy->_xAxisSubLabels;
     v40 = [(NSArray *)v39 countByEnumeratingWithState:&v93 objects:v113 count:16];
     if (v40)
     {
@@ -841,9 +841,9 @@ LABEL_14:
       while (v41);
     }
 
-    xAxisSubLabels = v2->_xAxisSubLabels;
-    v2->_xAxisSubLabels = 0;
-    v45 = v90;
+    xAxisSubLabels = selfCopy->_xAxisSubLabels;
+    selfCopy->_xAxisSubLabels = 0;
+    array2 = array;
   }
 }
 
@@ -884,10 +884,10 @@ LABEL_14:
 
         v23 = *(*(&v27 + 1) + 8 * i);
         [v23 setFrame:{v20, v19, v18, v17}];
-        v24 = [v23 superview];
+        superview = [v23 superview];
         containerView = self->_containerView;
 
-        if (v24 != containerView)
+        if (superview != containerView)
         {
           UIEdgeInsetsSubtract();
           [v23 setEdgeInsets:?];
@@ -928,9 +928,9 @@ LABEL_14:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 displayAboveAxisLabels];
+        displayAboveAxisLabels = [v9 displayAboveAxisLabels];
         containerView = self->_containerView;
-        if (v10)
+        if (displayAboveAxisLabels)
         {
           [(UIView *)containerView bringSubviewToFront:v9];
         }
@@ -948,12 +948,12 @@ LABEL_14:
   }
 }
 
-- (double)_xAxisLabelPaddingForBackground:(BOOL)a3
+- (double)_xAxisLabelPaddingForBackground:(BOOL)background
 {
-  if (!a3 || self->_labelsInsetChartBackground)
+  if (!background || self->_labelsInsetChartBackground)
   {
-    v4 = [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor labelFont];
-    [v4 lineHeight];
+    labelFont = [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor labelFont];
+    [labelFont lineHeight];
 
     [(FIUIChartTimeAxisDescriptor *)self->_xAxisDescriptor subAxisSpacing];
   }
@@ -993,26 +993,26 @@ LABEL_14:
   return result;
 }
 
-- (double)_absolutePositionForXPlaneValue:(id)a3
+- (double)_absolutePositionForXPlaneValue:(id)value
 {
-  [(FIUIChartView *)self _relativePositionForXPlaneValue:a3];
+  [(FIUIChartView *)self _relativePositionForXPlaneValue:value];
   v5 = v4;
   [(FIUIChartView *)self _insetChartRect];
 
   return FIUIChartAbsolutePositionForXPlaneValue(self, v5, v6, v7, v8, v9);
 }
 
-- (float)_relativePositionForXPlaneValue:(id)a3
+- (float)_relativePositionForXPlaneValue:(id)value
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  v6 = [(NSDateInterval *)dateInterval startDate];
+  valueCopy = value;
+  startDate = [(NSDateInterval *)dateInterval startDate];
   v7 = (FIUIChartXAxisFloatValue)();
 
-  v8 = [(NSDateInterval *)self->_dateInterval endDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
   v9 = (FIUIChartXAxisFloatValue)();
 
-  v10 = FIUIChartXAxisFloatValue(v5);
+  v10 = FIUIChartXAxisFloatValue(valueCopy);
   return FIUIChartRelativePositionForXPlaneValue(v10, v7, v9);
 }
 
@@ -1024,31 +1024,31 @@ LABEL_14:
   return v4;
 }
 
-- (id)_seriesAtIndex:(unint64_t)a3
+- (id)_seriesAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained chart:self seriesAtIndex:a3];
+  v6 = [WeakRetained chart:self seriesAtIndex:index];
 
   return v6;
 }
 
-- (unint64_t)_numberOfDataPointsForSeriesAtIndex:(unint64_t)a3
+- (unint64_t)_numberOfDataPointsForSeriesAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained chart:self numberOfDataPointsForSeriesAtIndex:a3];
+  v6 = [WeakRetained chart:self numberOfDataPointsForSeriesAtIndex:index];
 
   return v6;
 }
 
-- (id)_dataPointAtIndex:(unint64_t)a3 forSeriesAtIndex:(unint64_t)a4
+- (id)_dataPointAtIndex:(unint64_t)index forSeriesAtIndex:(unint64_t)atIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v8 = [WeakRetained chart:self dataPointAtIndex:a3 forSeriesAtIndex:a4];
+  v8 = [WeakRetained chart:self dataPointAtIndex:index forSeriesAtIndex:atIndex];
 
   return v8;
 }
 
-- (id)_dataPointsForSeriesAtIndex:(unint64_t)a3
+- (id)_dataPointsForSeriesAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = objc_opt_respondsToSelector();
@@ -1056,7 +1056,7 @@ LABEL_14:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [v7 chart:self dataPointsForSeriesAtIndex:a3];
+    v8 = [v7 chart:self dataPointsForSeriesAtIndex:index];
   }
 
   else
@@ -1067,7 +1067,7 @@ LABEL_14:
   return v8;
 }
 
-- (id)_labelsForSeriesAtIndex:(unint64_t)a3
+- (id)_labelsForSeriesAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = objc_opt_respondsToSelector();
@@ -1075,7 +1075,7 @@ LABEL_14:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [v7 chart:self labelsForSeriesAtIndex:a3];
+    v8 = [v7 chart:self labelsForSeriesAtIndex:index];
   }
 
   else

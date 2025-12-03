@@ -1,49 +1,49 @@
 @interface APPBLogMetaData
-- (BOOL)isEqual:(id)a3;
-- (id)adSpaceAsString:(int)a3;
-- (id)buttonStateAsString:(int)a3;
-- (id)clickSourceAsString:(int)a3;
-- (id)connectionTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)adSpaceAsString:(int)string;
+- (id)buttonStateAsString:(int)string;
+- (id)clickSourceAsString:(int)string;
+- (id)connectionTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)impressionSourceAsString:(int)a3;
-- (int)StringAsAdSpace:(id)a3;
-- (int)StringAsButtonState:(id)a3;
-- (int)StringAsClickSource:(id)a3;
-- (int)StringAsConnectionType:(id)a3;
-- (int)StringAsImpressionSource:(id)a3;
+- (id)impressionSourceAsString:(int)string;
+- (int)StringAsAdSpace:(id)space;
+- (int)StringAsButtonState:(id)state;
+- (int)StringAsClickSource:(id)source;
+- (int)StringAsConnectionType:(id)type;
+- (int)StringAsImpressionSource:(id)source;
 - (int)adSpace;
 - (int)buttonState;
 - (int)clickSource;
 - (int)connectionType;
 - (int)impressionSource;
 - (unint64_t)hash;
-- (void)addComponentElements:(id)a3;
-- (void)addTiltTrackBlob:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdSpace:(BOOL)a3;
-- (void)setHasButtonState:(BOOL)a3;
-- (void)setHasClickSource:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasImpressionSequence:(BOOL)a3;
-- (void)setHasImpressionSource:(BOOL)a3;
-- (void)setHasMessageSequence:(BOOL)a3;
-- (void)setHasOverclickCount:(BOOL)a3;
-- (void)setHasSlotPosition:(BOOL)a3;
-- (void)setHasSlotWasVisuallyEngaged:(BOOL)a3;
-- (void)setHasTimeSinceAppResume:(BOOL)a3;
-- (void)setHasTimeStamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addComponentElements:(id)elements;
+- (void)addTiltTrackBlob:(id)blob;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdSpace:(BOOL)space;
+- (void)setHasButtonState:(BOOL)state;
+- (void)setHasClickSource:(BOOL)source;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasImpressionSequence:(BOOL)sequence;
+- (void)setHasImpressionSource:(BOOL)source;
+- (void)setHasMessageSequence:(BOOL)sequence;
+- (void)setHasOverclickCount:(BOOL)count;
+- (void)setHasSlotPosition:(BOOL)position;
+- (void)setHasSlotWasVisuallyEngaged:(BOOL)engaged;
+- (void)setHasTimeSinceAppResume:(BOOL)resume;
+- (void)setHasTimeStamp:(BOOL)stamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogMetaData
 
-- (void)setHasMessageSequence:(BOOL)a3
+- (void)setHasMessageSequence:(BOOL)sequence
 {
-  if (a3)
+  if (sequence)
   {
     v3 = 1024;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasImpressionSequence:(BOOL)a3
+- (void)setHasImpressionSequence:(BOOL)sequence
 {
-  if (a3)
+  if (sequence)
   {
     v3 = 256;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasOverclickCount:(BOOL)a3
+- (void)setHasOverclickCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2048;
   }
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -114,75 +114,75 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (id)connectionTypeAsString:(int)a3
+- (id)connectionTypeAsString:(int)string
 {
-  if (a3 >= 0xB)
+  if (string >= 0xB)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D308 + a3);
+    v4 = *(&off_10047D308 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsConnectionType:(id)a3
+- (int)StringAsConnectionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownConnection"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UnknownConnection"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WiFi"])
+  else if ([typeCopy isEqualToString:@"WiFi"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_2_G"])
+  else if ([typeCopy isEqualToString:@"Cellular_2_G"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_2_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_2_5G"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_G"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_5G"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_75G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_75G"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_H_Plus"])
+  else if ([typeCopy isEqualToString:@"Cellular_H_Plus"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_4G"])
+  else if ([typeCopy isEqualToString:@"Cellular_4G"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_5G"])
   {
     v4 = 10;
   }
@@ -208,9 +208,9 @@
   }
 }
 
-- (void)setHasAdSpace:(BOOL)a3
+- (void)setHasAdSpace:(BOOL)space
 {
-  if (a3)
+  if (space)
   {
     v3 = 8;
   }
@@ -223,45 +223,45 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (id)adSpaceAsString:(int)a3
+- (id)adSpaceAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D360 + a3);
+    v4 = *(&off_10047D360 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsAdSpace:(id)a3
+- (int)StringAsAdSpace:(id)space
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"StationEntry"])
+  spaceCopy = space;
+  if ([spaceCopy isEqualToString:@"StationEntry"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SongSkip"])
+  else if ([spaceCopy isEqualToString:@"SongSkip"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SongBreak"])
+  else if ([spaceCopy isEqualToString:@"SongBreak"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FullScreenBanner"])
+  else if ([spaceCopy isEqualToString:@"FullScreenBanner"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ModalInterstitial"])
+  else if ([spaceCopy isEqualToString:@"ModalInterstitial"])
   {
     v4 = 4;
   }
@@ -274,27 +274,27 @@
   return v4;
 }
 
-- (void)addTiltTrackBlob:(id)a3
+- (void)addTiltTrackBlob:(id)blob
 {
-  v4 = a3;
+  blobCopy = blob;
   tiltTrackBlobs = self->_tiltTrackBlobs;
-  v8 = v4;
+  v8 = blobCopy;
   if (!tiltTrackBlobs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tiltTrackBlobs;
     self->_tiltTrackBlobs = v6;
 
-    v4 = v8;
+    blobCopy = v8;
     tiltTrackBlobs = self->_tiltTrackBlobs;
   }
 
-  [(NSMutableArray *)tiltTrackBlobs addObject:v4];
+  [(NSMutableArray *)tiltTrackBlobs addObject:blobCopy];
 }
 
-- (void)setHasTimeStamp:(BOOL)a3
+- (void)setHasTimeStamp:(BOOL)stamp
 {
-  if (a3)
+  if (stamp)
   {
     v3 = 4;
   }
@@ -307,9 +307,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTimeSinceAppResume:(BOOL)a3
+- (void)setHasTimeSinceAppResume:(BOOL)resume
 {
-  if (a3)
+  if (resume)
   {
     v3 = 2;
   }
@@ -335,9 +335,9 @@
   }
 }
 
-- (void)setHasImpressionSource:(BOOL)a3
+- (void)setHasImpressionSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 512;
   }
@@ -350,45 +350,45 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (id)impressionSourceAsString:(int)a3
+- (id)impressionSourceAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D388 + a3);
+    v4 = *(&off_10047D388 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsImpressionSource:(id)a3
+- (int)StringAsImpressionSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DefaultImpressionSource"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"DefaultImpressionSource"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MiniPlayer"])
+  else if ([sourceCopy isEqualToString:@"MiniPlayer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MiniPlayerLamp"])
+  else if ([sourceCopy isEqualToString:@"MiniPlayerLamp"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FullsizePlayer"])
+  else if ([sourceCopy isEqualToString:@"FullsizePlayer"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HistoryView"])
+  else if ([sourceCopy isEqualToString:@"HistoryView"])
   {
     v4 = 4;
   }
@@ -414,9 +414,9 @@
   }
 }
 
-- (void)setHasClickSource:(BOOL)a3
+- (void)setHasClickSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 32;
   }
@@ -429,40 +429,40 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (id)clickSourceAsString:(int)a3
+- (id)clickSourceAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D3B0 + a3);
+    v4 = *(&off_10047D3B0 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsClickSource:(id)a3
+- (int)StringAsClickSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DefaultClickSource"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"DefaultClickSource"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LogoImage"])
+  else if ([sourceCopy isEqualToString:@"LogoImage"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BasicSlate"])
+  else if ([sourceCopy isEqualToString:@"BasicSlate"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AlphaSlate"])
+  else if ([sourceCopy isEqualToString:@"AlphaSlate"])
   {
     v4 = 3;
   }
@@ -475,9 +475,9 @@
   return v4;
 }
 
-- (void)setHasSlotPosition:(BOOL)a3
+- (void)setHasSlotPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 4096;
   }
@@ -490,9 +490,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSlotWasVisuallyEngaged:(BOOL)a3
+- (void)setHasSlotWasVisuallyEngaged:(BOOL)engaged
 {
-  if (a3)
+  if (engaged)
   {
     v3 = 0x2000;
   }
@@ -518,9 +518,9 @@
   }
 }
 
-- (void)setHasButtonState:(BOOL)a3
+- (void)setHasButtonState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 16;
   }
@@ -533,60 +533,60 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (id)buttonStateAsString:(int)a3
+- (id)buttonStateAsString:(int)string
 {
-  if ((a3 - 5000) >= 8)
+  if ((string - 5000) >= 8)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D3D0 + (a3 - 5000));
+    v4 = *(&off_10047D3D0 + (string - 5000));
   }
 
   return v4;
 }
 
-- (int)StringAsButtonState:(id)a3
+- (int)StringAsButtonState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Get"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Get"])
   {
     v4 = 5000;
   }
 
-  else if ([v3 isEqualToString:@"Purchase"])
+  else if ([stateCopy isEqualToString:@"Purchase"])
   {
     v4 = 5001;
   }
 
-  else if ([v3 isEqualToString:@"GetArcade"])
+  else if ([stateCopy isEqualToString:@"GetArcade"])
   {
     v4 = 5002;
   }
 
-  else if ([v3 isEqualToString:@"GetPreorder"])
+  else if ([stateCopy isEqualToString:@"GetPreorder"])
   {
     v4 = 5003;
   }
 
-  else if ([v3 isEqualToString:@"PurchasePreorder"])
+  else if ([stateCopy isEqualToString:@"PurchasePreorder"])
   {
     v4 = 5004;
   }
 
-  else if ([v3 isEqualToString:@"Update"])
+  else if ([stateCopy isEqualToString:@"Update"])
   {
     v4 = 5005;
   }
 
-  else if ([v3 isEqualToString:@"Download"])
+  else if ([stateCopy isEqualToString:@"Download"])
   {
     v4 = 5006;
   }
 
-  else if ([v3 isEqualToString:@"Open"])
+  else if ([stateCopy isEqualToString:@"Open"])
   {
     v4 = 5007;
   }
@@ -599,9 +599,9 @@
   return v4;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 128;
   }
@@ -614,22 +614,22 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)addComponentElements:(id)a3
+- (void)addComponentElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   componentElements = self->_componentElements;
-  v8 = v4;
+  v8 = elementsCopy;
   if (!componentElements)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_componentElements;
     self->_componentElements = v6;
 
-    v4 = v8;
+    elementsCopy = v8;
     componentElements = self->_componentElements;
   }
 
-  [(NSMutableArray *)componentElements addObject:v4];
+  [(NSMutableArray *)componentElements addObject:elementsCopy];
 }
 
 - (id)description
@@ -637,8 +637,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogMetaData;
   v3 = [(APPBLogMetaData *)&v7 description];
-  v4 = [(APPBLogMetaData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogMetaData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -873,8 +873,8 @@ LABEL_41:
   screenSize = self->_screenSize;
   if (screenSize)
   {
-    v34 = [(APPBAdSize *)screenSize dictionaryRepresentation];
-    [v4 setObject:v34 forKey:@"screenSize"];
+    dictionaryRepresentation = [(APPBAdSize *)screenSize dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"screenSize"];
   }
 
   if (*&self->_has)
@@ -886,15 +886,15 @@ LABEL_41:
   clientViewSize = self->_clientViewSize;
   if (clientViewSize)
   {
-    v37 = [(APPBAdSize *)clientViewSize dictionaryRepresentation];
-    [v4 setObject:v37 forKey:@"clientViewSize"];
+    dictionaryRepresentation2 = [(APPBAdSize *)clientViewSize dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"clientViewSize"];
   }
 
   selectedCreativeSize = self->_selectedCreativeSize;
   if (selectedCreativeSize)
   {
-    v39 = [(APPBAdSize *)selectedCreativeSize dictionaryRepresentation];
-    [v4 setObject:v39 forKey:@"selectedCreativeSize"];
+    dictionaryRepresentation3 = [(APPBAdSize *)selectedCreativeSize dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"selectedCreativeSize"];
   }
 
   actionIdentifier = self->_actionIdentifier;
@@ -956,8 +956,8 @@ LABEL_41:
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v55 + 1) + 8 * i) dictionaryRepresentation];
-          [v46 addObject:v52];
+          dictionaryRepresentation4 = [*(*(&v55 + 1) + 8 * i) dictionaryRepresentation];
+          [v46 addObject:dictionaryRepresentation4];
         }
 
         v49 = [(NSMutableArray *)v47 countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -974,9 +974,9 @@ LABEL_41:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_batchId)
   {
     PBDataWriterWriteStringField();
@@ -1226,33 +1226,33 @@ LABEL_26:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_batchId)
   {
-    [v4 setBatchId:?];
-    v4 = v18;
+    [toCopy setBatchId:?];
+    toCopy = v18;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    *(v4 + 40) = self->_messageSequence;
-    *(v4 + 110) |= 0x400u;
+    *(toCopy + 40) = self->_messageSequence;
+    *(toCopy + 110) |= 0x400u;
   }
 
   if (self->_impressionIdentifierData)
   {
     [v18 setImpressionIdentifierData:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(v4 + 36) = self->_impressionSequence;
-    *(v4 + 110) |= 0x100u;
+    *(toCopy + 36) = self->_impressionSequence;
+    *(toCopy + 110) |= 0x100u;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -1271,8 +1271,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 41) = self->_overclickCount;
-  *(v4 + 110) |= 0x800u;
+  *(toCopy + 41) = self->_overclickCount;
+  *(toCopy + 110) |= 0x800u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1286,13 +1286,13 @@ LABEL_10:
   }
 
 LABEL_64:
-  *(v4 + 24) = self->_connectionType;
-  *(v4 + 110) |= 0x40u;
+  *(toCopy + 24) = self->_connectionType;
+  *(toCopy + 110) |= 0x40u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 12) = self->_adSpace;
-    *(v4 + 110) |= 8u;
+    *(toCopy + 12) = self->_adSpace;
+    *(toCopy + 110) |= 8u;
   }
 
 LABEL_12:
@@ -1304,10 +1304,10 @@ LABEL_12:
   if ([(APPBLogMetaData *)self tiltTrackBlobsCount])
   {
     [v18 clearTiltTrackBlobs];
-    v6 = [(APPBLogMetaData *)self tiltTrackBlobsCount];
-    if (v6)
+    tiltTrackBlobsCount = [(APPBLogMetaData *)self tiltTrackBlobsCount];
+    if (tiltTrackBlobsCount)
     {
-      v7 = v6;
+      v7 = tiltTrackBlobsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(APPBLogMetaData *)self tiltTrackBlobAtIndex:i];
@@ -1468,10 +1468,10 @@ LABEL_23:
   if ([(APPBLogMetaData *)self componentElementsCount])
   {
     [v18 clearComponentElements];
-    v14 = [(APPBLogMetaData *)self componentElementsCount];
-    if (v14)
+    componentElementsCount = [(APPBLogMetaData *)self componentElementsCount];
+    if (componentElementsCount)
     {
-      v15 = v14;
+      v15 = componentElementsCount;
       for (j = 0; j != v15; ++j)
       {
         v17 = [(APPBLogMetaData *)self componentElementsAtIndex:j];
@@ -1481,10 +1481,10 @@ LABEL_23:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_batchId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_batchId copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
@@ -1494,7 +1494,7 @@ LABEL_23:
     *(v5 + 110) |= 0x400u;
   }
 
-  v8 = [(NSData *)self->_impressionIdentifierData copyWithZone:a3];
+  v8 = [(NSData *)self->_impressionIdentifierData copyWithZone:zone];
   v9 = v5[17];
   v5[17] = v8;
 
@@ -1546,7 +1546,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v11 = [(NSData *)self->_tiltStationBlob copyWithZone:a3];
+  v11 = [(NSData *)self->_tiltStationBlob copyWithZone:zone];
   v12 = v5[25];
   v5[25] = v11;
 
@@ -1569,7 +1569,7 @@ LABEL_8:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v55 + 1) + 8 * i) copyWithZone:a3];
+        v18 = [*(*(&v55 + 1) + 8 * i) copyWithZone:zone];
         [v5 addTiltTrackBlob:v18];
       }
 
@@ -1627,7 +1627,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  v20 = [(NSString *)self->_slotIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_slotIdentifier copyWithZone:zone];
   v21 = v5[23];
   v5[23] = v20;
 
@@ -1645,27 +1645,27 @@ LABEL_20:
     *(v5 + 110) |= 0x2000u;
   }
 
-  v23 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v23 = [(NSData *)self->_iAdID copyWithZone:zone];
   v24 = v5[16];
   v5[16] = v23;
 
-  v25 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:a3];
+  v25 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:zone];
   v26 = v5[7];
   v5[7] = v25;
 
-  v27 = [(NSData *)self->_contentiAdID copyWithZone:a3];
+  v27 = [(NSData *)self->_contentiAdID copyWithZone:zone];
   v28 = v5[13];
   v5[13] = v27;
 
-  v29 = [(NSData *)self->_dPID copyWithZone:a3];
+  v29 = [(NSData *)self->_dPID copyWithZone:zone];
   v30 = v5[14];
   v5[14] = v29;
 
-  v31 = [(NSData *)self->_messageIdentifier copyWithZone:a3];
+  v31 = [(NSData *)self->_messageIdentifier copyWithZone:zone];
   v32 = v5[19];
   v5[19] = v31;
 
-  v33 = [(APPBAdSize *)self->_screenSize copyWithZone:a3];
+  v33 = [(APPBAdSize *)self->_screenSize copyWithZone:zone];
   v34 = v5[21];
   v5[21] = v33;
 
@@ -1675,19 +1675,19 @@ LABEL_20:
     *(v5 + 110) |= 1u;
   }
 
-  v35 = [(APPBAdSize *)self->_clientViewSize copyWithZone:a3];
+  v35 = [(APPBAdSize *)self->_clientViewSize copyWithZone:zone];
   v36 = v5[10];
   v5[10] = v35;
 
-  v37 = [(APPBAdSize *)self->_selectedCreativeSize copyWithZone:a3];
+  v37 = [(APPBAdSize *)self->_selectedCreativeSize copyWithZone:zone];
   v38 = v5[22];
   v5[22] = v37;
 
-  v39 = [(NSString *)self->_actionIdentifier copyWithZone:a3];
+  v39 = [(NSString *)self->_actionIdentifier copyWithZone:zone];
   v40 = v5[4];
   v5[4] = v39;
 
-  v41 = [(NSString *)self->_adDataResponseIdentifier copyWithZone:a3];
+  v41 = [(NSString *)self->_adDataResponseIdentifier copyWithZone:zone];
   v42 = v5[5];
   v5[5] = v41;
 
@@ -1724,7 +1724,7 @@ LABEL_20:
           objc_enumerationMutation(v44);
         }
 
-        v49 = [*(*(&v51 + 1) + 8 * j) copyWithZone:{a3, v51}];
+        v49 = [*(*(&v51 + 1) + 8 * j) copyWithZone:{zone, v51}];
         [v5 addComponentElements:v49];
       }
 
@@ -1737,16 +1737,16 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_82;
   }
 
   batchId = self->_batchId;
-  if (batchId | *(v4 + 8))
+  if (batchId | *(equalCopy + 8))
   {
     if (![(NSString *)batchId isEqual:?])
     {
@@ -1757,19 +1757,19 @@ LABEL_20:
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 110) & 0x400) == 0 || self->_messageSequence != *(v4 + 40))
+    if ((*(equalCopy + 110) & 0x400) == 0 || self->_messageSequence != *(equalCopy + 40))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 110) & 0x400) != 0)
+  else if ((*(equalCopy + 110) & 0x400) != 0)
   {
     goto LABEL_82;
   }
 
   impressionIdentifierData = self->_impressionIdentifierData;
-  if (impressionIdentifierData | *(v4 + 17))
+  if (impressionIdentifierData | *(equalCopy + 17))
   {
     if (![(NSData *)impressionIdentifierData isEqual:?])
     {
@@ -1779,36 +1779,36 @@ LABEL_20:
     has = self->_has;
   }
 
-  v8 = *(v4 + 110);
+  v8 = *(equalCopy + 110);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 110) & 0x100) == 0 || self->_impressionSequence != *(v4 + 36))
+    if ((*(equalCopy + 110) & 0x100) == 0 || self->_impressionSequence != *(equalCopy + 36))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 110) & 0x100) != 0)
+  else if ((*(equalCopy + 110) & 0x100) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 0x800) != 0)
   {
-    if ((*(v4 + 110) & 0x800) == 0 || self->_overclickCount != *(v4 + 41))
+    if ((*(equalCopy + 110) & 0x800) == 0 || self->_overclickCount != *(equalCopy + 41))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 110) & 0x800) != 0)
+  else if ((*(equalCopy + 110) & 0x800) != 0)
   {
     goto LABEL_82;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_connectionType != *(v4 + 24))
+    if ((v8 & 0x40) == 0 || self->_connectionType != *(equalCopy + 24))
     {
       goto LABEL_82;
     }
@@ -1821,7 +1821,7 @@ LABEL_20:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_adSpace != *(v4 + 12))
+    if ((v8 & 8) == 0 || self->_adSpace != *(equalCopy + 12))
     {
       goto LABEL_82;
     }
@@ -1833,13 +1833,13 @@ LABEL_20:
   }
 
   tiltStationBlob = self->_tiltStationBlob;
-  if (tiltStationBlob | *(v4 + 25) && ![(NSData *)tiltStationBlob isEqual:?])
+  if (tiltStationBlob | *(equalCopy + 25) && ![(NSData *)tiltStationBlob isEqual:?])
   {
     goto LABEL_82;
   }
 
   tiltTrackBlobs = self->_tiltTrackBlobs;
-  if (tiltTrackBlobs | *(v4 + 26))
+  if (tiltTrackBlobs | *(equalCopy + 26))
   {
     if (![(NSMutableArray *)tiltTrackBlobs isEqual:?])
     {
@@ -1848,10 +1848,10 @@ LABEL_20:
   }
 
   v11 = self->_has;
-  v12 = *(v4 + 110);
+  v12 = *(equalCopy + 110);
   if ((v11 & 4) != 0)
   {
-    if ((v12 & 4) == 0 || self->_timeStamp != *(v4 + 3))
+    if ((v12 & 4) == 0 || self->_timeStamp != *(equalCopy + 3))
     {
       goto LABEL_82;
     }
@@ -1864,7 +1864,7 @@ LABEL_20:
 
   if ((v11 & 2) != 0)
   {
-    if ((v12 & 2) == 0 || self->_timeSinceAppResume != *(v4 + 2))
+    if ((v12 & 2) == 0 || self->_timeSinceAppResume != *(equalCopy + 2))
     {
       goto LABEL_82;
     }
@@ -1877,20 +1877,20 @@ LABEL_20:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 110) & 0x200) == 0 || self->_impressionSource != *(v4 + 37))
+    if ((*(equalCopy + 110) & 0x200) == 0 || self->_impressionSource != *(equalCopy + 37))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 110) & 0x200) != 0)
+  else if ((*(equalCopy + 110) & 0x200) != 0)
   {
     goto LABEL_82;
   }
 
   if ((v11 & 0x20) != 0)
   {
-    if ((v12 & 0x20) == 0 || self->_clickSource != *(v4 + 19))
+    if ((v12 & 0x20) == 0 || self->_clickSource != *(equalCopy + 19))
     {
       goto LABEL_82;
     }
@@ -1902,7 +1902,7 @@ LABEL_20:
   }
 
   slotIdentifier = self->_slotIdentifier;
-  if (slotIdentifier | *(v4 + 23))
+  if (slotIdentifier | *(equalCopy + 23))
   {
     if (![(NSString *)slotIdentifier isEqual:?])
     {
@@ -1914,51 +1914,51 @@ LABEL_20:
 
   if ((v11 & 0x1000) != 0)
   {
-    if ((*(v4 + 110) & 0x1000) == 0 || self->_slotPosition != *(v4 + 48))
+    if ((*(equalCopy + 110) & 0x1000) == 0 || self->_slotPosition != *(equalCopy + 48))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 110) & 0x1000) != 0)
+  else if ((*(equalCopy + 110) & 0x1000) != 0)
   {
     goto LABEL_82;
   }
 
   if ((v11 & 0x2000) != 0)
   {
-    if ((*(v4 + 110) & 0x2000) == 0)
+    if ((*(equalCopy + 110) & 0x2000) == 0)
     {
       goto LABEL_82;
     }
 
     if (self->_slotWasVisuallyEngaged)
     {
-      if ((*(v4 + 216) & 1) == 0)
+      if ((*(equalCopy + 216) & 1) == 0)
       {
         goto LABEL_82;
       }
     }
 
-    else if (*(v4 + 216))
+    else if (*(equalCopy + 216))
     {
       goto LABEL_82;
     }
   }
 
-  else if ((*(v4 + 110) & 0x2000) != 0)
+  else if ((*(equalCopy + 110) & 0x2000) != 0)
   {
     goto LABEL_82;
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 16) && ![(NSData *)iAdID isEqual:?])
+  if (iAdID | *(equalCopy + 16) && ![(NSData *)iAdID isEqual:?])
   {
     goto LABEL_82;
   }
 
   anonymousDemandiAdID = self->_anonymousDemandiAdID;
-  if (anonymousDemandiAdID | *(v4 + 7))
+  if (anonymousDemandiAdID | *(equalCopy + 7))
   {
     if (![(NSData *)anonymousDemandiAdID isEqual:?])
     {
@@ -1967,7 +1967,7 @@ LABEL_20:
   }
 
   contentiAdID = self->_contentiAdID;
-  if (contentiAdID | *(v4 + 13))
+  if (contentiAdID | *(equalCopy + 13))
   {
     if (![(NSData *)contentiAdID isEqual:?])
     {
@@ -1976,7 +1976,7 @@ LABEL_20:
   }
 
   dPID = self->_dPID;
-  if (dPID | *(v4 + 14))
+  if (dPID | *(equalCopy + 14))
   {
     if (![(NSData *)dPID isEqual:?])
     {
@@ -1985,7 +1985,7 @@ LABEL_20:
   }
 
   messageIdentifier = self->_messageIdentifier;
-  if (messageIdentifier | *(v4 + 19))
+  if (messageIdentifier | *(equalCopy + 19))
   {
     if (![(NSData *)messageIdentifier isEqual:?])
     {
@@ -1994,7 +1994,7 @@ LABEL_20:
   }
 
   screenSize = self->_screenSize;
-  if (screenSize | *(v4 + 21))
+  if (screenSize | *(equalCopy + 21))
   {
     if (![(APPBAdSize *)screenSize isEqual:?])
     {
@@ -2002,10 +2002,10 @@ LABEL_20:
     }
   }
 
-  v20 = *(v4 + 110);
+  v20 = *(equalCopy + 110);
   if (*&self->_has)
   {
-    if ((v20 & 1) == 0 || self->_screenScale != *(v4 + 1))
+    if ((v20 & 1) == 0 || self->_screenScale != *(equalCopy + 1))
     {
       goto LABEL_82;
     }
@@ -2017,13 +2017,13 @@ LABEL_20:
   }
 
   clientViewSize = self->_clientViewSize;
-  if (clientViewSize | *(v4 + 10) && ![(APPBAdSize *)clientViewSize isEqual:?])
+  if (clientViewSize | *(equalCopy + 10) && ![(APPBAdSize *)clientViewSize isEqual:?])
   {
     goto LABEL_82;
   }
 
   selectedCreativeSize = self->_selectedCreativeSize;
-  if (selectedCreativeSize | *(v4 + 22))
+  if (selectedCreativeSize | *(equalCopy + 22))
   {
     if (![(APPBAdSize *)selectedCreativeSize isEqual:?])
     {
@@ -2032,7 +2032,7 @@ LABEL_20:
   }
 
   actionIdentifier = self->_actionIdentifier;
-  if (actionIdentifier | *(v4 + 4))
+  if (actionIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)actionIdentifier isEqual:?])
     {
@@ -2041,7 +2041,7 @@ LABEL_20:
   }
 
   adDataResponseIdentifier = self->_adDataResponseIdentifier;
-  if (adDataResponseIdentifier | *(v4 + 5))
+  if (adDataResponseIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)adDataResponseIdentifier isEqual:?])
     {
@@ -2050,10 +2050,10 @@ LABEL_20:
   }
 
   v27 = self->_has;
-  v28 = *(v4 + 110);
+  v28 = *(equalCopy + 110);
   if ((v27 & 0x10) != 0)
   {
-    if ((v28 & 0x10) == 0 || self->_buttonState != *(v4 + 18))
+    if ((v28 & 0x10) == 0 || self->_buttonState != *(equalCopy + 18))
     {
       goto LABEL_82;
     }
@@ -2076,14 +2076,14 @@ LABEL_82:
     goto LABEL_83;
   }
 
-  if ((v28 & 0x80) == 0 || self->_duration != *(v4 + 30))
+  if ((v28 & 0x80) == 0 || self->_duration != *(equalCopy + 30))
   {
     goto LABEL_82;
   }
 
 LABEL_109:
   componentElements = self->_componentElements;
-  if (componentElements | *(v4 + 11))
+  if (componentElements | *(equalCopy + 11))
   {
     v21 = [(NSMutableArray *)componentElements isEqual:?];
   }
@@ -2346,31 +2346,31 @@ LABEL_50:
   return v49 ^ v50 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v15 ^ v16 ^ v17 ^ v20 ^ v24 ^ v25 ^ v26 ^ v27 ^ v29 ^ v30 ^ [(NSMutableArray *)self->_componentElements hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(APPBLogMetaData *)self setBatchId:?];
   }
 
-  if ((*(v4 + 110) & 0x400) != 0)
+  if ((*(fromCopy + 110) & 0x400) != 0)
   {
-    self->_messageSequence = *(v4 + 40);
+    self->_messageSequence = *(fromCopy + 40);
     *&self->_has |= 0x400u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(APPBLogMetaData *)self setImpressionIdentifierData:?];
   }
 
-  v5 = *(v4 + 110);
+  v5 = *(fromCopy + 110);
   if ((v5 & 0x100) != 0)
   {
-    self->_impressionSequence = *(v4 + 36);
+    self->_impressionSequence = *(fromCopy + 36);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 110);
+    v5 = *(fromCopy + 110);
     if ((v5 & 0x800) == 0)
     {
 LABEL_9:
@@ -2383,14 +2383,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 110) & 0x800) == 0)
+  else if ((*(fromCopy + 110) & 0x800) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_overclickCount = *(v4 + 41);
+  self->_overclickCount = *(fromCopy + 41);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 110);
+  v5 = *(fromCopy + 110);
   if ((v5 & 0x40) == 0)
   {
 LABEL_10:
@@ -2403,17 +2403,17 @@ LABEL_10:
   }
 
 LABEL_47:
-  self->_connectionType = *(v4 + 24);
+  self->_connectionType = *(fromCopy + 24);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 110) & 8) != 0)
+  if ((*(fromCopy + 110) & 8) != 0)
   {
 LABEL_11:
-    self->_adSpace = *(v4 + 12);
+    self->_adSpace = *(fromCopy + 12);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(APPBLogMetaData *)self setTiltStationBlob:?];
   }
@@ -2422,7 +2422,7 @@ LABEL_12:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
@@ -2446,12 +2446,12 @@ LABEL_12:
     while (v8);
   }
 
-  v11 = *(v4 + 110);
+  v11 = *(fromCopy + 110);
   if ((v11 & 4) != 0)
   {
-    self->_timeStamp = *(v4 + 3);
+    self->_timeStamp = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v11 = *(v4 + 110);
+    v11 = *(fromCopy + 110);
     if ((v11 & 2) == 0)
     {
 LABEL_23:
@@ -2469,9 +2469,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  self->_timeSinceAppResume = *(v4 + 2);
+  self->_timeSinceAppResume = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v11 = *(v4 + 110);
+  v11 = *(fromCopy + 110);
   if ((v11 & 0x200) == 0)
   {
 LABEL_24:
@@ -2484,62 +2484,62 @@ LABEL_24:
   }
 
 LABEL_51:
-  self->_impressionSource = *(v4 + 37);
+  self->_impressionSource = *(fromCopy + 37);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 110) & 0x20) != 0)
+  if ((*(fromCopy + 110) & 0x20) != 0)
   {
 LABEL_25:
-    self->_clickSource = *(v4 + 19);
+    self->_clickSource = *(fromCopy + 19);
     *&self->_has |= 0x20u;
   }
 
 LABEL_26:
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(APPBLogMetaData *)self setSlotIdentifier:?];
   }
 
-  v12 = *(v4 + 110);
+  v12 = *(fromCopy + 110);
   if ((v12 & 0x1000) != 0)
   {
-    self->_slotPosition = *(v4 + 48);
+    self->_slotPosition = *(fromCopy + 48);
     *&self->_has |= 0x1000u;
-    v12 = *(v4 + 110);
+    v12 = *(fromCopy + 110);
   }
 
   if ((v12 & 0x2000) != 0)
   {
-    self->_slotWasVisuallyEngaged = *(v4 + 216);
+    self->_slotWasVisuallyEngaged = *(fromCopy + 216);
     *&self->_has |= 0x2000u;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(APPBLogMetaData *)self setIAdID:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBLogMetaData *)self setAnonymousDemandiAdID:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(APPBLogMetaData *)self setContentiAdID:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(APPBLogMetaData *)self setDPID:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(APPBLogMetaData *)self setMessageIdentifier:?];
   }
 
   screenSize = self->_screenSize;
-  v14 = *(v4 + 21);
+  v14 = *(fromCopy + 21);
   if (screenSize)
   {
     if (v14)
@@ -2553,14 +2553,14 @@ LABEL_26:
     [(APPBLogMetaData *)self setScreenSize:?];
   }
 
-  if (*(v4 + 110))
+  if (*(fromCopy + 110))
   {
-    self->_screenScale = *(v4 + 1);
+    self->_screenScale = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   clientViewSize = self->_clientViewSize;
-  v16 = *(v4 + 10);
+  v16 = *(fromCopy + 10);
   if (clientViewSize)
   {
     if (v16)
@@ -2575,7 +2575,7 @@ LABEL_26:
   }
 
   selectedCreativeSize = self->_selectedCreativeSize;
-  v18 = *(v4 + 22);
+  v18 = *(fromCopy + 22);
   if (selectedCreativeSize)
   {
     if (v18)
@@ -2589,27 +2589,27 @@ LABEL_26:
     [(APPBLogMetaData *)self setSelectedCreativeSize:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(APPBLogMetaData *)self setActionIdentifier:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(APPBLogMetaData *)self setAdDataResponseIdentifier:?];
   }
 
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x10) != 0)
   {
-    self->_buttonState = *(v4 + 18);
+    self->_buttonState = *(fromCopy + 18);
     *&self->_has |= 0x10u;
-    v19 = *(v4 + 110);
+    v19 = *(fromCopy + 110);
   }
 
   if ((v19 & 0x80) != 0)
   {
-    self->_duration = *(v4 + 30);
+    self->_duration = *(fromCopy + 30);
     *&self->_has |= 0x80u;
   }
 
@@ -2617,7 +2617,7 @@ LABEL_26:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = *(v4 + 11);
+  v20 = *(fromCopy + 11);
   v21 = [v20 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v21)
   {

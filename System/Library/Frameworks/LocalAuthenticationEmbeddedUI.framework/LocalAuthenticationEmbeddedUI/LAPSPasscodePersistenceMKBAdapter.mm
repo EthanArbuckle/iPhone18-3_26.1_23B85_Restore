@@ -1,9 +1,9 @@
 @interface LAPSPasscodePersistenceMKBAdapter
 - (BOOL)isPasscodeLockedOut;
-- (id)_deviceLockStateValueForKey:(id)a3;
-- (id)_mementoStateValueForKey:(id)a3;
-- (id)_verifyPasscode:(id)a3 options:(id)a4;
-- (id)verifyRecoveryPasscode:(id)a3;
+- (id)_deviceLockStateValueForKey:(id)key;
+- (id)_mementoStateValueForKey:(id)key;
+- (id)_verifyPasscode:(id)passcode options:(id)options;
+- (id)verifyRecoveryPasscode:(id)passcode;
 @end
 
 @implementation LAPSPasscodePersistenceMKBAdapter
@@ -21,29 +21,29 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntValue];
-  return (v7 >> 3) & 1;
+  unsignedIntValue = [v6 unsignedIntValue];
+  return (unsignedIntValue >> 3) & 1;
 }
 
-- (id)verifyRecoveryPasscode:(id)a3
+- (id)verifyRecoveryPasscode:(id)passcode
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"UseMementoBlob";
   v11[0] = MEMORY[0x277CBEC38];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  passcodeCopy = passcode;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [(LAPSPasscodePersistenceMKBAdapter *)self _verifyPasscode:v5 options:v6];
+  v7 = [(LAPSPasscodePersistenceMKBAdapter *)self _verifyPasscode:passcodeCopy options:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)_verifyPasscode:(id)a3 options:(id)a4
+- (id)_verifyPasscode:(id)passcode options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  passcodeCopy = passcode;
   v8 = LACLogPasscodeService();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,9 +64,9 @@
   return v11;
 }
 
-- (id)_mementoStateValueForKey:(id)a3
+- (id)_mementoStateValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (MKBKeyBagMementoGetBlobState())
   {
     v4 = 0;
@@ -74,17 +74,17 @@
 
   else
   {
-    v4 = [0 objectForKeyedSubscript:v3];
+    v4 = [0 objectForKeyedSubscript:keyCopy];
   }
 
   return v4;
 }
 
-- (id)_deviceLockStateValueForKey:(id)a3
+- (id)_deviceLockStateValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = MKBGetDeviceLockStateInfo();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }

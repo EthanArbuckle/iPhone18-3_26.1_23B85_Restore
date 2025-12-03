@@ -1,12 +1,12 @@
 @interface AppShowcaseCollectionViewCell
-- (_TtC20ProductPageExtension29AppShowcaseCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension29AppShowcaseCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppShowcaseCollectionViewCell
 
-- (_TtC20ProductPageExtension29AppShowcaseCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29AppShowcaseCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension29AppShowcaseCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -25,13 +25,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004410D4();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100441BE4();
 }
 

@@ -1,29 +1,29 @@
 @interface DSDeepLinkRepresentation
-- (DSDeepLinkRepresentation)initWithOrder:(id)a3 orderType:(int64_t)a4 chapters:(id)a5 requiresAuth:(BOOL)a6 flowType:(int64_t)a7 entrypointAnalytic:(id)a8 path:(id)a9;
+- (DSDeepLinkRepresentation)initWithOrder:(id)order orderType:(int64_t)type chapters:(id)chapters requiresAuth:(BOOL)auth flowType:(int64_t)flowType entrypointAnalytic:(id)analytic path:(id)path;
 - (NSString)remoteUIURL;
 @end
 
 @implementation DSDeepLinkRepresentation
 
-- (DSDeepLinkRepresentation)initWithOrder:(id)a3 orderType:(int64_t)a4 chapters:(id)a5 requiresAuth:(BOOL)a6 flowType:(int64_t)a7 entrypointAnalytic:(id)a8 path:(id)a9
+- (DSDeepLinkRepresentation)initWithOrder:(id)order orderType:(int64_t)type chapters:(id)chapters requiresAuth:(BOOL)auth flowType:(int64_t)flowType entrypointAnalytic:(id)analytic path:(id)path
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
-  v17 = a9;
+  orderCopy = order;
+  chaptersCopy = chapters;
+  analyticCopy = analytic;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = DSDeepLinkRepresentation;
   v18 = [(DSDeepLinkRepresentation *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_navigationOrder, a3);
-    v19->_navigationType = a4;
-    objc_storeStrong(&v19->_navigationChapters, a5);
-    v19->_flowRequiresAuth = a6;
-    v19->_flowType = a7;
-    objc_storeStrong(&v19->_entrypoint, a8);
-    objc_storeStrong(&v19->_path, a9);
+    objc_storeStrong(&v18->_navigationOrder, order);
+    v19->_navigationType = type;
+    objc_storeStrong(&v19->_navigationChapters, chapters);
+    v19->_flowRequiresAuth = auth;
+    v19->_flowType = flowType;
+    objc_storeStrong(&v19->_entrypoint, analytic);
+    objc_storeStrong(&v19->_path, path);
   }
 
   return v19;

@@ -1,18 +1,18 @@
 @interface NavigationCustomFeaturesSource
 - (CLLocationCoordinate2D)lastUpdateLocation;
 - (CLLocationCoordinate2D)overriddenPointToFrame;
-- (NavigationCustomFeaturesSource)initWithPointsFramer:(id)a3;
+- (NavigationCustomFeaturesSource)initWithPointsFramer:(id)framer;
 - (id)allItems;
 - (void)_updateCoalesced;
 - (void)_updateFraming;
 - (void)_updateFramingWithNewLocationIfNeeded;
 - (void)_updateLocationManager;
 - (void)dealloc;
-- (void)displayMapItems:(id)a3;
+- (void)displayMapItems:(id)items;
 - (void)removeMapItems;
-- (void)setFramingMode:(int64_t)a3;
-- (void)setItems:(id)a3;
-- (void)setOverriddenPointToFrame:(CLLocationCoordinate2D)a3;
+- (void)setFramingMode:(int64_t)mode;
+- (void)setItems:(id)items;
+- (void)setOverriddenPointToFrame:(CLLocationCoordinate2D)frame;
 @end
 
 @implementation NavigationCustomFeaturesSource
@@ -40,23 +40,23 @@
   v3 = sub_100067540();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(NavigationCustomFeaturesSource *)self items];
+    items = [(NavigationCustomFeaturesSource *)self items];
     v5 = 138412290;
-    v6 = v4;
+    v6 = items;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "SAR: removeMapItems: %@", &v5, 0xCu);
   }
 
   [(NavigationCustomFeaturesSource *)self setItems:0];
 }
 
-- (void)displayMapItems:(id)a3
+- (void)displayMapItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = itemsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SAR: displayMapItems: %@", buf, 0xCu);
   }
 
@@ -65,7 +65,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -121,11 +121,11 @@
   return v3;
 }
 
-- (void)setFramingMode:(int64_t)a3
+- (void)setFramingMode:(int64_t)mode
 {
-  if (self->_framingMode != a3)
+  if (self->_framingMode != mode)
   {
-    self->_framingMode = a3;
+    self->_framingMode = mode;
     [(NavigationCustomFeaturesSource *)self _updateFraming];
   }
 }
@@ -172,8 +172,8 @@
       if (v4 - v5 >= 10.0)
       {
         v6 = +[MKLocationManager sharedLocationManager];
-        v7 = [v6 lastLocation];
-        [v7 coordinate];
+        lastLocation = [v6 lastLocation];
+        [lastLocation coordinate];
         v15 = v8;
         v16 = v9;
 
@@ -195,15 +195,15 @@
   v2 = sub_100067540();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
   {
-    v3 = [(NavigationCustomFeaturesSource *)self items];
+    items = [(NavigationCustomFeaturesSource *)self items];
     *buf = 138412290;
-    *&buf[4] = v3;
+    *&buf[4] = items;
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_INFO, "SAR: _updateFraming for items: %@", buf, 0xCu);
   }
 
   v4 = +[MKLocationManager sharedLocationManager];
-  v5 = [v4 lastLocation];
-  [v5 coordinate];
+  lastLocation = [v4 lastLocation];
+  [lastLocation coordinate];
   v7 = v6;
   v9 = v8;
 
@@ -221,12 +221,12 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "SAR: framing single point only", buf, 2u);
     }
 
-    v11 = [(NavigationCustomFeaturesSource *)self pointsFramer];
+    pointsFramer = [(NavigationCustomFeaturesSource *)self pointsFramer];
     [(NavigationCustomFeaturesSource *)self overriddenPointToFrame];
     v12 = [NSValue valueWithMKCoordinate:?];
     v50 = v12;
     v13 = [NSArray arrayWithObjects:&v50 count:1];
-    [v11 setSearchAlongTheRoutePoints:v13];
+    [pointsFramer setSearchAlongTheRoutePoints:v13];
   }
 
   else
@@ -247,10 +247,10 @@
     dispatch_sync(lockQueue, block);
     if ([v44[5] count])
     {
-      v15 = [(NavigationCustomFeaturesSource *)self framingMode];
-      if (v15)
+      framingMode = [(NavigationCustomFeaturesSource *)self framingMode];
+      if (framingMode)
       {
-        if (v15 == 1)
+        if (framingMode == 1)
         {
           v16 = v44[5];
           *buf = _NSConcreteStackBlock;
@@ -287,11 +287,11 @@
       v22 = sub_100067540();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [(NavigationCustomFeaturesSource *)self framingMode];
+        framingMode2 = [(NavigationCustomFeaturesSource *)self framingMode];
         *buf = 138412546;
         *&buf[4] = v21;
         *&buf[12] = 2048;
-        *&buf[14] = v23;
+        *&buf[14] = framingMode2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "SAR: items to frame: %@ framingMode: %ld", buf, 0x16u);
       }
 
@@ -300,8 +300,8 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v20 = v21;
-      v25 = [v20 countByEnumeratingWithState:&v38 objects:v49 count:16];
+      pointsFramer3 = v21;
+      v25 = [pointsFramer3 countByEnumeratingWithState:&v38 objects:v49 count:16];
       if (v25)
       {
         v26 = *v39;
@@ -311,20 +311,20 @@
           {
             if (*v39 != v26)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(pointsFramer3);
             }
 
             v28 = *(*(&v38 + 1) + 8 * i);
             v29 = sub_100067540();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
             {
-              v30 = [v28 mapItem];
-              v31 = [v30 name];
+              mapItem = [v28 mapItem];
+              name = [mapItem name];
               [v28 coordinate];
               v33 = v32;
               [v28 coordinate];
               *buf = 138412802;
-              *&buf[4] = v31;
+              *&buf[4] = name;
               *&buf[12] = 2048;
               *&buf[14] = v33;
               *&buf[22] = 2048;
@@ -337,14 +337,14 @@
             [v24 addObject:v35];
           }
 
-          v25 = [v20 countByEnumeratingWithState:&v38 objects:v49 count:16];
+          v25 = [pointsFramer3 countByEnumeratingWithState:&v38 objects:v49 count:16];
         }
 
         while (v25);
       }
 
-      v36 = [(NavigationCustomFeaturesSource *)self pointsFramer];
-      [v36 setSearchAlongTheRoutePoints:v24];
+      pointsFramer2 = [(NavigationCustomFeaturesSource *)self pointsFramer];
+      [pointsFramer2 setSearchAlongTheRoutePoints:v24];
     }
 
     else
@@ -356,8 +356,8 @@
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "SAR: Not framing any SAR items as no items are set.", buf, 2u);
       }
 
-      v20 = [(NavigationCustomFeaturesSource *)self pointsFramer];
-      [v20 setSearchAlongTheRoutePoints:0];
+      pointsFramer3 = [(NavigationCustomFeaturesSource *)self pointsFramer];
+      [pointsFramer3 setSearchAlongTheRoutePoints:0];
     }
 
     _Block_object_dispose(&v43, 8);
@@ -382,12 +382,12 @@
   }
 }
 
-- (void)setOverriddenPointToFrame:(CLLocationCoordinate2D)a3
+- (void)setOverriddenPointToFrame:(CLLocationCoordinate2D)frame
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = frame.longitude;
+  latitude = frame.latitude;
   p_overriddenPointToFrame = &self->_overriddenPointToFrame;
-  if (self->_overriddenPointToFrame.latitude != a3.latitude || self->_overriddenPointToFrame.longitude != a3.longitude)
+  if (self->_overriddenPointToFrame.latitude != frame.latitude || self->_overriddenPointToFrame.longitude != frame.longitude)
   {
     v7 = sub_100067540();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -405,14 +405,14 @@
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = itemsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SAR: setting items: %@", &buf, 0xCu);
   }
 
@@ -425,9 +425,9 @@
   block[1] = 3221225472;
   block[2] = sub_1006D1F80;
   block[3] = &unk_101660778;
-  v7 = v4;
+  v7 = itemsCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   p_buf = &buf;
   dispatch_sync(lockQueue, block);
   if (*(*(&buf + 1) + 24) == 1)
@@ -450,16 +450,16 @@
   [(NavigationCustomFeaturesSource *)&v4 dealloc];
 }
 
-- (NavigationCustomFeaturesSource)initWithPointsFramer:(id)a3
+- (NavigationCustomFeaturesSource)initWithPointsFramer:(id)framer
 {
-  v5 = a3;
+  framerCopy = framer;
   v12.receiver = self;
   v12.super_class = NavigationCustomFeaturesSource;
   v6 = [(NavigationCustomFeaturesSource *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pointsFramer, a3);
+    objc_storeStrong(&v6->_pointsFramer, framer);
     v7->_framingMode = 0;
     v7->_overriddenPointToFrame = kCLLocationCoordinate2DInvalid;
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

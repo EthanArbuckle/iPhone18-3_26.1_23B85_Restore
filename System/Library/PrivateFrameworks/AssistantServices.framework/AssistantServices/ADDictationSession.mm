@@ -1,13 +1,13 @@
 @interface ADDictationSession
-- (ADDictationSession)initWithUUID:(id)a3 timestamp:(unint64_t)a4 languageCode:(id)a5 options:(id)a6 speechRequestOptions:(id)a7;
-- (void)_setAudioFileIOTransactionState:(int64_t)a3;
-- (void)_setSpeechRecognitionTransactionState:(int64_t)a3;
+- (ADDictationSession)initWithUUID:(id)d timestamp:(unint64_t)timestamp languageCode:(id)code options:(id)options speechRequestOptions:(id)requestOptions;
+- (void)_setAudioFileIOTransactionState:(int64_t)state;
+- (void)_setSpeechRecognitionTransactionState:(int64_t)state;
 - (void)dealloc;
 @end
 
 @implementation ADDictationSession
 
-- (void)_setAudioFileIOTransactionState:(int64_t)a3
+- (void)_setAudioFileIOTransactionState:(int64_t)state
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -18,12 +18,12 @@
     v22 = 2048;
     v23 = audioFileIOTransactionState;
     v24 = 2048;
-    v25 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s (oldState = %ld, newState = %ld)", &v20, 0x20u);
   }
 
   v7 = self->_audioFileIOTransactionState;
-  if (v7 != a3)
+  if (v7 != state)
   {
     if (!v7)
     {
@@ -60,8 +60,8 @@
       }
     }
 
-    self->_audioFileIOTransactionState = a3;
-    if (!a3)
+    self->_audioFileIOTransactionState = state;
+    if (!state)
     {
       v15 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -71,8 +71,8 @@
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Will destroy os_transaction_t object", &v20, 0xCu);
       }
 
-      v16 = [(AFQueue *)self->_transactionObjects dequeueObject];
-      if (!v16)
+      dequeueObject = [(AFQueue *)self->_transactionObjects dequeueObject];
+      if (!dequeueObject)
       {
         v17 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -97,7 +97,7 @@
   }
 }
 
-- (void)_setSpeechRecognitionTransactionState:(int64_t)a3
+- (void)_setSpeechRecognitionTransactionState:(int64_t)state
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -108,12 +108,12 @@
     v22 = 2048;
     v23 = speechRecognitionTransactionState;
     v24 = 2048;
-    v25 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s (oldState = %ld, newState = %ld)", &v20, 0x20u);
   }
 
   v7 = self->_speechRecognitionTransactionState;
-  if (v7 != a3)
+  if (v7 != state)
   {
     if (!v7)
     {
@@ -150,8 +150,8 @@
       }
     }
 
-    self->_speechRecognitionTransactionState = a3;
-    if (!a3)
+    self->_speechRecognitionTransactionState = state;
+    if (!state)
     {
       v15 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -161,8 +161,8 @@
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Will destroy os_transaction_t object", &v20, 0xCu);
       }
 
-      v16 = [(AFQueue *)self->_transactionObjects dequeueObject];
-      if (!v16)
+      dequeueObject = [(AFQueue *)self->_transactionObjects dequeueObject];
+      if (!dequeueObject)
       {
         v17 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -199,8 +199,8 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s Will destroy os_transaction_t object", buf, 0xCu);
     }
 
-    v4 = [(AFQueue *)self->_transactionObjects dequeueObject];
-    if (!v4)
+    dequeueObject = [(AFQueue *)self->_transactionObjects dequeueObject];
+    if (!dequeueObject)
     {
       v5 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -233,8 +233,8 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Will destroy os_transaction_t object", buf, 0xCu);
     }
 
-    v9 = [(AFQueue *)self->_transactionObjects dequeueObject];
-    if (!v9)
+    dequeueObject2 = [(AFQueue *)self->_transactionObjects dequeueObject];
+    if (!dequeueObject2)
     {
       v10 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -262,28 +262,28 @@
   [(ADDictationSession *)&v13 dealloc];
 }
 
-- (ADDictationSession)initWithUUID:(id)a3 timestamp:(unint64_t)a4 languageCode:(id)a5 options:(id)a6 speechRequestOptions:(id)a7
+- (ADDictationSession)initWithUUID:(id)d timestamp:(unint64_t)timestamp languageCode:(id)code options:(id)options speechRequestOptions:(id)requestOptions
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  codeCopy = code;
+  optionsCopy = options;
+  requestOptionsCopy = requestOptions;
   v22.receiver = self;
   v22.super_class = ADDictationSession;
   v16 = [(ADDictationSession *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     uuid = v16->_uuid;
     v16->_uuid = v17;
 
-    v16->_timestamp = a4;
-    v19 = [v13 copy];
+    v16->_timestamp = timestamp;
+    v19 = [codeCopy copy];
     languageCode = v16->_languageCode;
     v16->_languageCode = v19;
 
-    objc_storeStrong(&v16->_options, a6);
-    objc_storeStrong(&v16->_speechRequestOptions, a7);
+    objc_storeStrong(&v16->_options, options);
+    objc_storeStrong(&v16->_speechRequestOptions, requestOptions);
     v16->_speechRecognitionTransactionState = 0;
     v16->_audioFileIOTransactionState = 0;
   }

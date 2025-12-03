@@ -1,26 +1,26 @@
 @interface AutoSizingPresentationDelegate
 - (_TtC16CommunicationsUIP33_91F83FA22C2B2DF64A7BD3F45B8C097B30AutoSizingPresentationDelegate)init;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation AutoSizingPresentationDelegate
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1C2DA1F58(a5);
+  selfCopy = self;
+  sub_1C2DA1F58(coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2DA0D38(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_1C2DA0D38(dismissCopy);
 }
 
 - (_TtC16CommunicationsUIP33_91F83FA22C2B2DF64A7BD3F45B8C097B30AutoSizingPresentationDelegate)init

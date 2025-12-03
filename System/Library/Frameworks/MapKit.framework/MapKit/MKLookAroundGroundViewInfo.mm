@@ -1,11 +1,11 @@
 @interface MKLookAroundGroundViewInfo
-- (BOOL)isHeadingInRange:(double)a3;
-- (MKLookAroundGroundViewInfo)initWithStartHeading:(double)a3 endHeading:(double)a4 localityName:(id)a5 locationName:(id)a6 secondaryLocationName:(id)a7;
+- (BOOL)isHeadingInRange:(double)range;
+- (MKLookAroundGroundViewInfo)initWithStartHeading:(double)heading endHeading:(double)endHeading localityName:(id)name locationName:(id)locationName secondaryLocationName:(id)secondaryLocationName;
 @end
 
 @implementation MKLookAroundGroundViewInfo
 
-- (BOOL)isHeadingInRange:(double)a3
+- (BOOL)isHeadingInRange:(double)range
 {
   [(MKLookAroundGroundViewInfo *)self startHeading];
   v6 = v5;
@@ -17,46 +17,46 @@
       return 0;
     }
 
-    if (v6 <= a3 && v7 < a3)
+    if (v6 <= range && v7 < range)
     {
       return 1;
     }
 
-    v8 = a3 >= 0.0;
+    v8 = range >= 0.0;
   }
 
   else
   {
-    v8 = v6 <= a3;
+    v8 = v6 <= range;
   }
 
-  return v7 > a3 && v8;
+  return v7 > range && v8;
 }
 
-- (MKLookAroundGroundViewInfo)initWithStartHeading:(double)a3 endHeading:(double)a4 localityName:(id)a5 locationName:(id)a6 secondaryLocationName:(id)a7
+- (MKLookAroundGroundViewInfo)initWithStartHeading:(double)heading endHeading:(double)endHeading localityName:(id)name locationName:(id)locationName secondaryLocationName:(id)secondaryLocationName
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  locationNameCopy = locationName;
+  secondaryLocationNameCopy = secondaryLocationName;
   v23.receiver = self;
   v23.super_class = MKLookAroundGroundViewInfo;
   v15 = [(MKLookAroundGroundViewInfo *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    v15->_startHeading = a3;
-    v15->_endHeading = a4;
+    v15->_startHeading = heading;
+    v15->_endHeading = endHeading;
     v17 = objc_alloc_init(MEMORY[0x1E69A1E78]);
     locationInfo = v16->_locationInfo;
     v16->_locationInfo = v17;
 
-    v19 = [v12 copy];
+    v19 = [nameCopy copy];
     [(GEOLocationInfo *)v16->_locationInfo setLocalityName:v19];
 
-    v20 = [v13 copy];
+    v20 = [locationNameCopy copy];
     [(GEOLocationInfo *)v16->_locationInfo setLocationName:v20];
 
-    v21 = [v14 copy];
+    v21 = [secondaryLocationNameCopy copy];
     [(GEOLocationInfo *)v16->_locationInfo setSecondaryLocationName:v21];
   }
 

@@ -2,8 +2,8 @@
 + (id)logCategory;
 - (BOOL)isReady;
 - (HMDHomeManager)homeManager;
-- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)a3 homeManager:(id)a4 sessionIdentifier:(id)a5 invitationType:(unint64_t)a6 invitationAge:(double)a7 invitationSource:(unint64_t)a8 logEventSubmitter:(id)a9 wifiManager:(id)a10 currentUpTicksBlock:(id)a11 submissionTimerFactory:(id)a12;
-- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)a3 homeManager:(id)a4 sessionIdentifier:(id)a5 invitationType:(unint64_t)a6 invitationAge:(double)a7 invitationSource:(unint64_t)a8 wifiManager:(id)a9;
+- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)d homeManager:(id)manager sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source logEventSubmitter:(id)submitter wifiManager:(id)self0 currentUpTicksBlock:(id)self1 submissionTimerFactory:(id)self2;
+- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)d homeManager:(id)manager sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source wifiManager:(id)wifiManager;
 - (void)cancel;
 - (void)markAddUserBegin;
 - (void)markAddUserEnd;
@@ -39,31 +39,31 @@
   if (!self->super.submitted)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = HMFGetLogIdentifier();
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v9 = [v8 error];
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      error = [acceptLogEvent2 error];
       *buf = 138543874;
       v16 = v6;
       v17 = 2112;
-      v18 = v7;
+      v18 = acceptLogEvent;
       v19 = 2112;
-      v20 = v9;
+      v20 = error;
       _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Submitting shared user accept latency log event %@ error:%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v3);
-    v14.receiver = v4;
+    v14.receiver = selfCopy;
     v14.super_class = HMDSharedUserInviteAcceptLogEventBuilder;
     [(HMDSharedUserInviteLogEventBuilder *)&v14 submit];
-    v10 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 homeManager];
-    v11 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    v12 = [v11 homeUUID];
-    [v10 removeSharedUserAcceptEventBuilderForHomeUuid:v12];
+    homeManager = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy homeManager];
+    acceptLogEvent3 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    homeUUID = [acceptLogEvent3 homeUUID];
+    [homeManager removeSharedUserAcceptEventBuilderForHomeUuid:homeUUID];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -74,57 +74,57 @@
   os_unfair_lock_assert_owner(&self->super._lock);
   v18.receiver = self;
   v18.super_class = HMDSharedUserInviteAcceptLogEventBuilder;
-  v3 = [(HMDSharedUserInviteLogEventBuilder *)&v18 isReady];
-  if (v3)
+  isReady = [(HMDSharedUserInviteLogEventBuilder *)&v18 isReady];
+  if (isReady)
   {
-    v4 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-    v5 = [v4 error];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+    error = [acceptLogEvent error];
 
-    if (v5)
+    if (error)
     {
 LABEL_3:
-      LOBYTE(v3) = 1;
-      return v3;
+      LOBYTE(isReady) = 1;
+      return isReady;
     }
 
-    v6 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-    if ([v6 joinOwnerShareMS] >= 1)
+    acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+    if ([acceptLogEvent2 joinOwnerShareMS] >= 1)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-      if ([v7 createMKFCKSharedUserDataRootMS] >= 1)
+      acceptLogEvent3 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+      if ([acceptLogEvent3 createMKFCKSharedUserDataRootMS] >= 1)
       {
-        v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-        if ([v8 createReverseShareMS] >= 1)
+        acceptLogEvent4 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+        if ([acceptLogEvent4 createReverseShareMS] >= 1)
         {
-          v9 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-          if ([v9 addUserToShareMS] >= 1)
+          acceptLogEvent5 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+          if ([acceptLogEvent5 addUserToShareMS] >= 1)
           {
-            v10 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-            if ([v10 sendAcceptanceToOwnerMS] >= 1)
+            acceptLogEvent6 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+            if ([acceptLogEvent6 sendAcceptanceToOwnerMS] >= 1)
             {
-              v11 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-              if ([v11 totalInvitationAcceptanceMS] >= 1)
+              acceptLogEvent7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+              if ([acceptLogEvent7 totalInvitationAcceptanceMS] >= 1)
               {
-                v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-                if ([v12 createHomeMS] >= 1)
+                acceptLogEvent8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+                if ([acceptLogEvent8 createHomeMS] >= 1)
                 {
-                  v13 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-                  if ([v13 discoverPrimaryResidentMS] >= 1)
+                  acceptLogEvent9 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+                  if ([acceptLogEvent9 discoverPrimaryResidentMS] >= 1)
                   {
-                    v14 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-                    if ([v14 residentSyncDataReceivedMS] >= 1)
+                    acceptLogEvent10 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+                    if ([acceptLogEvent10 residentSyncDataReceivedMS] >= 1)
                     {
-                      v15 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-                      v17 = [v15 sharedUserTotalMS];
+                      acceptLogEvent11 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+                      sharedUserTotalMS = [acceptLogEvent11 sharedUserTotalMS];
 
-                      if (v17 >= 1)
+                      if (sharedUserTotalMS >= 1)
                       {
                         goto LABEL_3;
                       }
 
 LABEL_24:
-                      LOBYTE(v3) = 0;
-                      return v3;
+                      LOBYTE(isReady) = 0;
+                      return isReady;
                     }
                   }
                 }
@@ -138,7 +138,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  return v3;
+  return isReady;
 }
 
 - (void)cancel
@@ -146,17 +146,17 @@ LABEL_24:
   v6.receiver = self;
   v6.super_class = HMDSharedUserInviteAcceptLogEventBuilder;
   [(HMDSharedUserInviteLogEventBuilder *)&v6 cancel];
-  v3 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self homeManager];
-  v4 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
-  v5 = [v4 homeUUID];
-  [v3 removeSharedUserAcceptEventBuilderForHomeUuid:v5];
+  homeManager = [(HMDSharedUserInviteAcceptLogEventBuilder *)self homeManager];
+  acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)self acceptLogEvent];
+  homeUUID = [acceptLogEvent homeUUID];
+  [homeManager removeSharedUserAcceptEventBuilderForHomeUuid:homeUUID];
 }
 
 - (void)markResidentSyncEnd
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -168,20 +168,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->residentSyncBeginTime)
+    if (selfCopy->residentSyncBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 residentSyncDataReceivedMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent residentSyncDataReceivedMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        residentSyncBeginTime = v4->residentSyncBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        residentSyncBeginTime = selfCopy->residentSyncBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == residentSyncBeginTime)
         {
           v14 = 1;
@@ -192,13 +192,13 @@ LABEL_24:
           v14 = v10 - residentSyncBeginTime;
         }
 
-        [v12 setResidentSyncDataReceivedMS:v14];
+        [acceptLogEvent2 setResidentSyncDataReceivedMS:v14];
 
-        v15 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v16 = v15[2]();
-        eventCreatedTime = v4->super.eventCreatedTime;
-        v18 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v19 = v18;
+        currentUpTicksBlock2 = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v16 = currentUpTicksBlock2[2]();
+        eventCreatedTime = selfCopy->super.eventCreatedTime;
+        acceptLogEvent3 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v19 = acceptLogEvent3;
         if (v16 == eventCreatedTime)
         {
           v20 = 1;
@@ -209,14 +209,14 @@ LABEL_24:
           v20 = v16 - eventCreatedTime;
         }
 
-        [v18 setSharedUserTotalMS:v20];
+        [acceptLogEvent3 setSharedUserTotalMS:v20];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -224,7 +224,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -236,16 +236,16 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->residentSyncBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->residentSyncBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->residentSyncBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->residentSyncBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setResidentSyncDataReceivedMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setResidentSyncDataReceivedMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -253,7 +253,7 @@ LABEL_24:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,20 +265,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->discoverPrimaryResidentBeginTime)
+    if (selfCopy->discoverPrimaryResidentBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 discoverPrimaryResidentMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent discoverPrimaryResidentMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        discoverPrimaryResidentBeginTime = v4->discoverPrimaryResidentBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        discoverPrimaryResidentBeginTime = selfCopy->discoverPrimaryResidentBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == discoverPrimaryResidentBeginTime)
         {
           v14 = 1;
@@ -289,14 +289,14 @@ LABEL_24:
           v14 = v10 - discoverPrimaryResidentBeginTime;
         }
 
-        [v12 setDiscoverPrimaryResidentMS:v14];
+        [acceptLogEvent2 setDiscoverPrimaryResidentMS:v14];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -304,7 +304,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -316,16 +316,16 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->discoverPrimaryResidentBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->discoverPrimaryResidentBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->discoverPrimaryResidentBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->discoverPrimaryResidentBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setDiscoverPrimaryResidentMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setDiscoverPrimaryResidentMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -333,7 +333,7 @@ LABEL_24:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -345,18 +345,18 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    v8 = [v7 createHomeMS] == 0;
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    v8 = [acceptLogEvent createHomeMS] == 0;
 
     if (v8)
     {
-      v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-      v10 = v9[2]();
-      joinOwnerShareBeginTime = v4->joinOwnerShareBeginTime;
-      v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v13 = v12;
+      currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+      v10 = currentUpTicksBlock[2]();
+      joinOwnerShareBeginTime = selfCopy->joinOwnerShareBeginTime;
+      acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v13 = acceptLogEvent2;
       if (v10 == joinOwnerShareBeginTime)
       {
         v14 = 1;
@@ -367,13 +367,13 @@ LABEL_24:
         v14 = v10 - joinOwnerShareBeginTime;
       }
 
-      [v12 setCreateHomeMS:v14];
+      [acceptLogEvent2 setCreateHomeMS:v14];
 
-      [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+      [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -381,7 +381,7 @@ LABEL_24:
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -393,20 +393,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->sendAcceptanceToOwnerBeginTime)
+    if (selfCopy->sendAcceptanceToOwnerBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 sendAcceptanceToOwnerMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent sendAcceptanceToOwnerMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        sendAcceptanceToOwnerBeginTime = v4->sendAcceptanceToOwnerBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        sendAcceptanceToOwnerBeginTime = selfCopy->sendAcceptanceToOwnerBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == sendAcceptanceToOwnerBeginTime)
         {
           v14 = 1;
@@ -417,13 +417,13 @@ LABEL_24:
           v14 = v10 - sendAcceptanceToOwnerBeginTime;
         }
 
-        [v12 setSendAcceptanceToOwnerMS:v14];
+        [acceptLogEvent2 setSendAcceptanceToOwnerMS:v14];
 
-        v15 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v16 = v15[2]();
-        eventCreatedTime = v4->super.eventCreatedTime;
-        v18 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v19 = v18;
+        currentUpTicksBlock2 = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v16 = currentUpTicksBlock2[2]();
+        eventCreatedTime = selfCopy->super.eventCreatedTime;
+        acceptLogEvent3 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v19 = acceptLogEvent3;
         if (v16 == eventCreatedTime)
         {
           v20 = 1;
@@ -434,14 +434,14 @@ LABEL_24:
           v20 = v16 - eventCreatedTime;
         }
 
-        [v18 setTotalInvitationAcceptanceMS:v20];
+        [acceptLogEvent3 setTotalInvitationAcceptanceMS:v20];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -449,7 +449,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -461,16 +461,16 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->sendAcceptanceToOwnerBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->sendAcceptanceToOwnerBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->sendAcceptanceToOwnerBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->sendAcceptanceToOwnerBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setSendAcceptanceToOwnerMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setSendAcceptanceToOwnerMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -478,7 +478,7 @@ LABEL_24:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -490,20 +490,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->addUserToShareBeginTime)
+    if (selfCopy->addUserToShareBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 addUserToShareMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent addUserToShareMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        addUserToShareBeginTime = v4->addUserToShareBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        addUserToShareBeginTime = selfCopy->addUserToShareBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == addUserToShareBeginTime)
         {
           v14 = 1;
@@ -514,14 +514,14 @@ LABEL_24:
           v14 = v10 - addUserToShareBeginTime;
         }
 
-        [v12 setAddUserToShareMS:v14];
+        [acceptLogEvent2 setAddUserToShareMS:v14];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -529,7 +529,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -541,16 +541,16 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->addUserToShareBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->addUserToShareBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->addUserToShareBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->addUserToShareBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setAddUserToShareMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setAddUserToShareMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -558,7 +558,7 @@ LABEL_24:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -570,20 +570,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->createReverseShareBeginTime)
+    if (selfCopy->createReverseShareBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 createReverseShareMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent createReverseShareMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        createReverseShareBeginTime = v4->createReverseShareBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        createReverseShareBeginTime = selfCopy->createReverseShareBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == createReverseShareBeginTime)
         {
           v14 = 1;
@@ -594,14 +594,14 @@ LABEL_24:
           v14 = v10 - createReverseShareBeginTime;
         }
 
-        [v12 setCreateReverseShareMS:v14];
+        [acceptLogEvent2 setCreateReverseShareMS:v14];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -609,7 +609,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -621,16 +621,16 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->createReverseShareBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->createReverseShareBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->createReverseShareBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->createReverseShareBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setCreateReverseShareMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setCreateReverseShareMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -638,7 +638,7 @@ LABEL_24:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -650,20 +650,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->createMKFCKSharedUserDataRootBeginTime)
+    if (selfCopy->createMKFCKSharedUserDataRootBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 createMKFCKSharedUserDataRootMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent createMKFCKSharedUserDataRootMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        createMKFCKSharedUserDataRootBeginTime = v4->createMKFCKSharedUserDataRootBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        createMKFCKSharedUserDataRootBeginTime = selfCopy->createMKFCKSharedUserDataRootBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == createMKFCKSharedUserDataRootBeginTime)
         {
           v14 = 1;
@@ -674,14 +674,14 @@ LABEL_24:
           v14 = v10 - createMKFCKSharedUserDataRootBeginTime;
         }
 
-        [v12 setCreateMKFCKSharedUserDataRootMS:v14];
+        [acceptLogEvent2 setCreateMKFCKSharedUserDataRootMS:v14];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -689,7 +689,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -701,16 +701,16 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->createMKFCKSharedUserDataRootBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->createMKFCKSharedUserDataRootBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->createMKFCKSharedUserDataRootBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->createMKFCKSharedUserDataRootBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setCreateMKFCKSharedUserDataRootMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setCreateMKFCKSharedUserDataRootMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -718,7 +718,7 @@ LABEL_24:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -730,20 +730,20 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->joinOwnerShareBeginTime)
+    if (selfCopy->joinOwnerShareBeginTime)
     {
-      v7 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-      v8 = [v7 joinOwnerShareMS] == -1;
+      acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+      v8 = [acceptLogEvent joinOwnerShareMS] == -1;
 
       if (v8)
       {
-        v9 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v10 = v9[2]();
-        joinOwnerShareBeginTime = v4->joinOwnerShareBeginTime;
-        v12 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-        v13 = v12;
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v10 = currentUpTicksBlock[2]();
+        joinOwnerShareBeginTime = selfCopy->joinOwnerShareBeginTime;
+        acceptLogEvent2 = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+        v13 = acceptLogEvent2;
         if (v10 == joinOwnerShareBeginTime)
         {
           v14 = 1;
@@ -754,14 +754,14 @@ LABEL_24:
           v14 = v10 - joinOwnerShareBeginTime;
         }
 
-        [v12 setJoinOwnerShareMS:v14];
+        [acceptLogEvent2 setJoinOwnerShareMS:v14];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
@@ -769,7 +769,7 @@ LABEL_24:
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -781,27 +781,27 @@ LABEL_24:
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->joinOwnerShareBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->joinOwnerShareBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->joinOwnerShareBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->joinOwnerShareBeginTime = currentUpTicksBlock[2]();
 
-    v8 = [(HMDSharedUserInviteAcceptLogEventBuilder *)v4 acceptLogEvent];
-    [v8 setJoinOwnerShareMS:-1];
+    acceptLogEvent = [(HMDSharedUserInviteAcceptLogEventBuilder *)selfCopy acceptLogEvent];
+    [acceptLogEvent setJoinOwnerShareMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)a3 homeManager:(id)a4 sessionIdentifier:(id)a5 invitationType:(unint64_t)a6 invitationAge:(double)a7 invitationSource:(unint64_t)a8 wifiManager:(id)a9
+- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)d homeManager:(id)manager sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source wifiManager:(id)wifiManager
 {
-  v16 = a9;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  wifiManagerCopy = wifiManager;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  dCopy = d;
   v20 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v21 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self initWithHomeUUID:v19 homeManager:v18 sessionIdentifier:v17 invitationType:a6 invitationAge:a8 invitationSource:v20 logEventSubmitter:a7 wifiManager:v16 currentUpTicksBlock:&__block_literal_global_180656 submissionTimerFactory:&__block_literal_global_4_180657];
+  v21 = [(HMDSharedUserInviteAcceptLogEventBuilder *)self initWithHomeUUID:dCopy homeManager:managerCopy sessionIdentifier:identifierCopy invitationType:type invitationAge:source invitationSource:v20 logEventSubmitter:age wifiManager:wifiManagerCopy currentUpTicksBlock:&__block_literal_global_180656 submissionTimerFactory:&__block_literal_global_4_180657];
 
   return v21;
 }
@@ -813,39 +813,39 @@ id __149__HMDSharedUserInviteAcceptLogEventBuilder_initWithHomeUUID_homeManager_
   return v0;
 }
 
-- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)a3 homeManager:(id)a4 sessionIdentifier:(id)a5 invitationType:(unint64_t)a6 invitationAge:(double)a7 invitationSource:(unint64_t)a8 logEventSubmitter:(id)a9 wifiManager:(id)a10 currentUpTicksBlock:(id)a11 submissionTimerFactory:(id)a12
+- (HMDSharedUserInviteAcceptLogEventBuilder)initWithHomeUUID:(id)d homeManager:(id)manager sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source logEventSubmitter:(id)submitter wifiManager:(id)self0 currentUpTicksBlock:(id)self1 submissionTimerFactory:(id)self2
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a3;
-  v24 = [[HMDSharedUserInviteAcceptLogEvent alloc] initWithHomeUUID:v23];
+  managerCopy = manager;
+  identifierCopy = identifier;
+  submitterCopy = submitter;
+  wifiManagerCopy = wifiManager;
+  blockCopy = block;
+  factoryCopy = factory;
+  dCopy = d;
+  v24 = [[HMDSharedUserInviteAcceptLogEvent alloc] initWithHomeUUID:dCopy];
 
   if (v24)
   {
     v31.receiver = self;
     v31.super_class = HMDSharedUserInviteAcceptLogEventBuilder;
-    v25 = [(HMDSharedUserInviteLogEventBuilder *)&v31 initWithLogEvent:v24 homeManager:v17 sessionIdentifier:v18 invitationType:a6 invitationAge:a8 invitationSource:v19 logEventSubmitter:a7 wifiManager:v20 currentUpTicksBlock:v21 submissionTimerFactory:v22];
+    v25 = [(HMDSharedUserInviteLogEventBuilder *)&v31 initWithLogEvent:v24 homeManager:managerCopy sessionIdentifier:identifierCopy invitationType:type invitationAge:source invitationSource:submitterCopy logEventSubmitter:age wifiManager:wifiManagerCopy currentUpTicksBlock:blockCopy submissionTimerFactory:factoryCopy];
     p_isa = &v25->super.super.isa;
     if (v25)
     {
-      objc_storeWeak(&v25->_homeManager, v17);
+      objc_storeWeak(&v25->_homeManager, managerCopy);
       objc_storeStrong(p_isa + 18, v24);
     }
 
     self = p_isa;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 + (id)logCategory

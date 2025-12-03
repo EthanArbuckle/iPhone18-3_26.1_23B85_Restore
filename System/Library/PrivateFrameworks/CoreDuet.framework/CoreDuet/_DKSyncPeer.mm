@@ -1,7 +1,7 @@
 @interface _DKSyncPeer
 - (NSString)identifier;
 - (NSUUID)sourceDeviceUUID;
-- (_DKSyncPeer)initWithIDSDeviceIdentifier:(id)a3 zoneName:(id)a4;
+- (_DKSyncPeer)initWithIDSDeviceIdentifier:(id)identifier zoneName:(id)name;
 - (id)description;
 @end
 
@@ -40,18 +40,18 @@ LABEL_8:
   return v6;
 }
 
-- (_DKSyncPeer)initWithIDSDeviceIdentifier:(id)a3 zoneName:(id)a4
+- (_DKSyncPeer)initWithIDSDeviceIdentifier:(id)identifier zoneName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = _DKSyncPeer;
   v9 = [(_DKSyncPeer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_idsDeviceIdentifier, a3);
-    objc_storeStrong(&v10->_zoneName, a4);
+    objc_storeStrong(&v9->_idsDeviceIdentifier, identifier);
+    objc_storeStrong(&v10->_zoneName, name);
   }
 
   return v10;
@@ -90,21 +90,21 @@ LABEL_8:
       v7 = @"NO";
     }
 
-    v8 = [(_DKSyncPeer *)self identifier];
+    identifier = [(_DKSyncPeer *)self identifier];
     sourceDeviceID = self->_sourceDeviceID;
-    v10 = [v4 initWithFormat:@"<%@ %p: me=%@, identifier=%@, name=%@, model=%@, sourceDeviceID=%@, zoneName=%@>", v6, self, v7, v8, self->_name, self->_model, sourceDeviceID, self->_zoneName];
+    v10 = [v4 initWithFormat:@"<%@ %p: me=%@, identifier=%@, name=%@, model=%@, sourceDeviceID=%@, zoneName=%@>", v6, self, v7, identifier, self->_name, self->_model, sourceDeviceID, self->_zoneName];
   }
 
   else
   {
-    v8 = [(_DKSyncPeer *)self identifier];
+    identifier = [(_DKSyncPeer *)self identifier];
     v17 = *&self->_name;
     version = self->_version;
     v12 = self->_sourceDeviceID;
     idsDeviceIdentifier = self->_idsDeviceIdentifier;
     zoneName = self->_zoneName;
-    v15 = [(NSDate *)self->_lastSeenDate dk_localtimeString];
-    v10 = [v4 initWithFormat:@"<%@ %p: identifier=%@, name=%@, model=%@, version=%@, sourceDeviceID=%@, idsDeviceIdentifier=%@, zoneName=%@, lastSeenDate=%@>", v6, self, v8, v17, version, v12, idsDeviceIdentifier, zoneName, v15];
+    dk_localtimeString = [(NSDate *)self->_lastSeenDate dk_localtimeString];
+    v10 = [v4 initWithFormat:@"<%@ %p: identifier=%@, name=%@, model=%@, version=%@, sourceDeviceID=%@, idsDeviceIdentifier=%@, zoneName=%@, lastSeenDate=%@>", v6, self, identifier, v17, version, v12, idsDeviceIdentifier, zoneName, dk_localtimeString];
   }
 
   return v10;

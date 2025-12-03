@@ -1,31 +1,31 @@
 @interface WBPPTActivationContext
-- (WBPPTActivationContext)initWithTestName:(id)a3 testOptions:(id)a4 applicationInfo:(id)a5;
+- (WBPPTActivationContext)initWithTestName:(id)name testOptions:(id)options applicationInfo:(id)info;
 - (void)markUserActivationInitiationTime;
-- (void)prepareExecutionContext:(id)a3;
-- (void)prepareTransitionContext:(id)a3;
+- (void)prepareExecutionContext:(id)context;
+- (void)prepareTransitionContext:(id)context;
 @end
 
 @implementation WBPPTActivationContext
 
-- (WBPPTActivationContext)initWithTestName:(id)a3 testOptions:(id)a4 applicationInfo:(id)a5
+- (WBPPTActivationContext)initWithTestName:(id)name testOptions:(id)options applicationInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  optionsCopy = options;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = WBPPTActivationContext;
   v11 = [(WBPPTActivationContext *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     testName = v11->_testName;
     v11->_testName = v12;
 
-    v14 = [v9 copy];
+    v14 = [optionsCopy copy];
     testOptions = v11->_testOptions;
     v11->_testOptions = v14;
 
-    objc_storeStrong(&v11->_applicationInfo, a5);
+    objc_storeStrong(&v11->_applicationInfo, info);
   }
 
   return v11;
@@ -35,27 +35,27 @@
 {
   +[NSDate timeIntervalSinceReferenceDate];
   [(WBPPTActivationContext *)self setUserLaunchEventTime:?];
-  v3 = [(WBPPTActivationContext *)self testName];
-  strncpy(__dst, [v3 UTF8String], 0x10uLL);
-  [v3 hash];
-  [v3 length];
+  testName = [(WBPPTActivationContext *)self testName];
+  strncpy(__dst, [testName UTF8String], 0x10uLL);
+  [testName hash];
+  [testName length];
   kdebug_trace();
 }
 
-- (void)prepareTransitionContext:(id)a3
+- (void)prepareTransitionContext:(id)context
 {
-  v4 = a3;
-  [v4 setForTesting:1];
+  contextCopy = context;
+  [contextCopy setForTesting:1];
   [(WBPPTActivationContext *)self userLaunchEventTime];
-  [v4 setUserLaunchEventTime:?];
+  [contextCopy setUserLaunchEventTime:?];
 }
 
-- (void)prepareExecutionContext:(id)a3
+- (void)prepareExecutionContext:(id)context
 {
-  v17 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(WBPPTActivationContext *)self testOptions];
-  v6 = [v5 objectForKey:@"launchArguments"];
+  testOptions = [(WBPPTActivationContext *)self testOptions];
+  v6 = [testOptions objectForKey:@"launchArguments"];
   v7 = +[NSCharacterSet whitespaceCharacterSet];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
 
@@ -65,8 +65,8 @@
     [v4 addObjectsFromArray:v9];
   }
 
-  v10 = [(WBPPTActivationContext *)self testOptions];
-  v11 = [v10 objectForKey:@"arguments"];
+  testOptions2 = [(WBPPTActivationContext *)self testOptions];
+  v11 = [testOptions2 objectForKey:@"arguments"];
   v12 = +[NSCharacterSet whitespaceCharacterSet];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
 
@@ -81,15 +81,15 @@
     [v4 removeObject:@"--suspended"];
   }
 
-  v15 = [v17 arguments];
+  arguments = [contextCopy arguments];
 
-  if (v15)
+  if (arguments)
   {
-    v16 = [v17 arguments];
-    [v4 addObjectsFromArray:v16];
+    arguments2 = [contextCopy arguments];
+    [v4 addObjectsFromArray:arguments2];
   }
 
-  [v17 setArguments:v4];
+  [contextCopy setArguments:v4];
 }
 
 @end

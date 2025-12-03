@@ -1,56 +1,56 @@
 @interface BKLibraryDataSourcePerformance
 + (void)initialize;
-- (BKLibraryDataSourcePerformance)initWithResource:(id)a3 forceRandomBooks:(BOOL)a4;
+- (BKLibraryDataSourcePerformance)initWithResource:(id)resource forceRandomBooks:(BOOL)books;
 - (BKLibraryManager)libraryManager;
 - (id)_cachedProductProfiles;
 - (void)_fetchProductProfiles;
 - (void)_libraryDataSourcePerformanceChanged;
 - (void)_updateCreationDate;
 - (void)_updateEnabled;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourcePerformance
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     [v2 registerDefaults:&off_DDF30];
   }
 }
 
-- (BKLibraryDataSourcePerformance)initWithResource:(id)a3 forceRandomBooks:(BOOL)a4
+- (BKLibraryDataSourcePerformance)initWithResource:(id)resource forceRandomBooks:(BOOL)books
 {
-  v4 = a4;
-  v7 = a3;
+  booksCopy = books;
+  resourceCopy = resource;
   v26.receiver = self;
   v26.super_class = BKLibraryDataSourcePerformance;
   v8 = [(BKLibraryDataSourcePerformance *)&v26 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_resourceName, a3);
+    objc_storeStrong(&v8->_resourceName, resource);
     v10 = dispatch_queue_create("BKLibraryDataSourcePerformance", &_dispatch_queue_attr_concurrent);
     queue = v9->_queue;
     v9->_queue = v10;
 
-    v12 = [NSString stringWithFormat:@"com.apple.ibooks.library.datasource.performance.%@", v7];
+    resourceCopy = [NSString stringWithFormat:@"com.apple.ibooks.library.datasource.performance.%@", resourceCopy];
     identifier = v9->_identifier;
-    v9->_identifier = v12;
+    v9->_identifier = resourceCopy;
 
     v14 = +[NSUserDefaults standardUserDefaults];
     v15 = [v14 BOOLForKey:@"BKLibraryDataSourcePerformance-PPT"];
 
-    if ((v15 & 1) != 0 || v4)
+    if ((v15 & 1) != 0 || booksCopy)
     {
       [(BKLibraryDataSourcePerformance *)v9 setRunningPPT:1];
       [(BKLibraryDataSourcePerformance *)v9 setIsEnabled:1];
@@ -65,16 +65,16 @@
       [v16 addObserver:v9 forKeyPath:@"BKLibraryPerformanceDataSource" options:0 context:off_EEE98];
 
       v17 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-      v18 = [v17 lastObject];
-      v19 = [v18 stringByAppendingPathComponent:@"BKLibraryDataSourcePerformance"];
+      lastObject = [v17 lastObject];
+      v19 = [lastObject stringByAppendingPathComponent:@"BKLibraryDataSourcePerformance"];
 
       if (v19)
       {
         v20 = +[NSFileManager defaultManager];
         [v20 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:0];
 
-        v21 = [NSString stringWithFormat:@"ProductProfiles-%@.plist", v7];
-        v22 = [v19 stringByAppendingPathComponent:v21];
+        resourceCopy2 = [NSString stringWithFormat:@"ProductProfiles-%@.plist", resourceCopy];
+        v22 = [v19 stringByAppendingPathComponent:resourceCopy2];
         v23 = [NSURL fileURLWithPath:v22];
         cacheURL = v9->_cacheURL;
         v9->_cacheURL = v23;
@@ -97,12 +97,12 @@
   [(BKLibraryDataSourcePerformance *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_EEE98 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_EEE98 == context)
   {
     objc_initWeak(&location, self);
     v18[0] = _NSConcreteStackBlock;
@@ -138,23 +138,23 @@
   {
     v15.receiver = self;
     v15.super_class = BKLibraryDataSourcePerformance;
-    [(BKLibraryDataSourcePerformance *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKLibraryDataSourcePerformance *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (void)_libraryDataSourcePerformanceChanged
 {
-  v3 = [(BKLibraryDataSourcePerformance *)self isEnabled];
+  isEnabled = [(BKLibraryDataSourcePerformance *)self isEnabled];
   [(BKLibraryDataSourcePerformance *)self _updateEnabled];
-  if (v3 != [(BKLibraryDataSourcePerformance *)self isEnabled])
+  if (isEnabled != [(BKLibraryDataSourcePerformance *)self isEnabled])
   {
-    v4 = [(BKLibraryDataSourcePerformance *)self libraryManager];
+    libraryManager = [(BKLibraryDataSourcePerformance *)self libraryManager];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_58754;
     v5[3] = &unk_D70B8;
     v5[4] = self;
-    [v4 libraryDataSource:self updateWithName:@"performance enabled changed" block:v5];
+    [libraryManager libraryDataSource:self updateWithName:@"performance enabled changed" block:v5];
   }
 }
 
@@ -166,9 +166,9 @@
 
 - (void)_updateCreationDate
 {
-  v3 = [(BKLibraryDataSourcePerformance *)self cacheURL];
+  cacheURL = [(BKLibraryDataSourcePerformance *)self cacheURL];
   v6 = 0;
-  [v3 getResourceValue:&v6 forKey:NSURLCreationDateKey error:0];
+  [cacheURL getResourceValue:&v6 forKey:NSURLCreationDateKey error:0];
   v4 = v6;
 
   creationDate = self->_creationDate;
@@ -178,8 +178,8 @@
 - (void)_fetchProductProfiles
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(BKLibraryDataSourcePerformance *)self resourceName];
-  v5 = [v3 URLForResource:v4 withExtension:@"plist"];
+  resourceName = [(BKLibraryDataSourcePerformance *)self resourceName];
+  v5 = [v3 URLForResource:resourceName withExtension:@"plist"];
 
   if (v5)
   {
@@ -193,7 +193,7 @@
 
   v7 = [v6 objectForKeyedSubscript:@"adamIds"];
   v8 = [NSSet setWithArray:v7];
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
   v10 = +[AEUserPublishing sharedInstance];
   v11[0] = _NSConcreteStackBlock;
@@ -201,13 +201,13 @@
   v11[2] = sub_58A0C;
   v11[3] = &unk_D6DF0;
   v11[4] = self;
-  [v10 productProfilesForStoreIDs:v9 completion:v11];
+  [v10 productProfilesForStoreIDs:allObjects completion:v11];
 }
 
 - (id)_cachedProductProfiles
 {
-  v3 = [(BKLibraryDataSourcePerformance *)self cacheURL];
-  v4 = [NSData dataWithContentsOfURL:v3];
+  cacheURL = [(BKLibraryDataSourcePerformance *)self cacheURL];
+  v4 = [NSData dataWithContentsOfURL:cacheURL];
 
   v15 = 0;
   v5 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v4 error:&v15];
@@ -238,17 +238,17 @@
   return v8;
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v9 = a3;
-  v6 = a5;
+  propertiesCopy = properties;
+  completionCopy = completion;
   if (!qword_EFD60)
   {
     BKGenericBookCoverDefaultSettings();
     qword_EFD60 = BKGenericBookCoverCreateImage();
   }
 
-  v7 = objc_retainBlock(v6);
+  v7 = objc_retainBlock(completionCopy);
   if (v7)
   {
     v8 = [UIImage im_imageWithCGImage:qword_EFD60];
@@ -256,9 +256,9 @@
   }
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -267,9 +267,9 @@
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -278,9 +278,9 @@
   }
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -289,9 +289,9 @@
   }
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   kdebug_trace();
   if ([(BKLibraryDataSourcePerformance *)self runningPPT])
   {
@@ -302,8 +302,8 @@
       do
       {
         v7 = [NSNumber numberWithInteger:[(BKLibraryDataSourcePerformance *)self randomBookBaseID]+ v6];
-        v8 = [v7 stringValue];
-        [v5 addObject:v8];
+        stringValue = [v7 stringValue];
+        [v5 addObject:stringValue];
 
         ++v6;
       }
@@ -312,7 +312,7 @@
     }
 
     kdebug_trace();
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -322,36 +322,36 @@
 
   else
   {
-    v11 = [(BKLibraryDataSourcePerformance *)self queue];
+    queue = [(BKLibraryDataSourcePerformance *)self queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_59310;
     v12[3] = &unk_D5550;
     v12[4] = self;
-    v13 = v4;
-    dispatch_async(v11, v12);
+    v13 = completionCopy;
+    dispatch_async(queue, v12);
   }
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   kdebug_trace();
-  v8 = [(BKLibraryDataSourcePerformance *)self runningPPT];
-  v9 = [(BKLibraryDataSourcePerformance *)self queue];
-  if (v8)
+  runningPPT = [(BKLibraryDataSourcePerformance *)self runningPPT];
+  queue = [(BKLibraryDataSourcePerformance *)self queue];
+  if (runningPPT)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_59568;
     block[3] = &unk_D62F8;
-    v19 = v6;
-    v20 = self;
-    v21 = v7;
-    v10 = v7;
-    v11 = v6;
-    dispatch_async(v9, block);
+    v19 = dsCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    v10 = completionCopy;
+    v11 = dsCopy;
+    dispatch_async(queue, block);
 
     v12 = v19;
   }
@@ -363,11 +363,11 @@
     v15[2] = sub_597D8;
     v15[3] = &unk_D62F8;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
-    v13 = v7;
-    v14 = v6;
-    dispatch_async(v9, v15);
+    v16 = dsCopy;
+    v17 = completionCopy;
+    v13 = completionCopy;
+    v14 = dsCopy;
+    dispatch_async(queue, v15);
 
     v12 = v16;
   }

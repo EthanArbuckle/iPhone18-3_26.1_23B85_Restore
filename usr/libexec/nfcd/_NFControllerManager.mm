@@ -1,23 +1,23 @@
 @interface _NFControllerManager
-- (BOOL)isUnifiedAccessForHome:(id)a3 passConfig:(id)a4;
+- (BOOL)isUnifiedAccessForHome:(id)home passConfig:(id)config;
 - (NFCControllerDelegate)delegate;
-- (_NFControllerManager)initWithQueue:(id)a3 driverWrapper:(id)a4;
-- (void)decodeSecureElementTransaction:(id)a3 event:(id)a4;
-- (void)driverRSSIStatsWithTotalSamples:(unsigned int)a3 avgRSSI:(unsigned int)a4 maxRSSI:(unsigned int)a5 minRSSI:(unsigned int)a6;
+- (_NFControllerManager)initWithQueue:(id)queue driverWrapper:(id)wrapper;
+- (void)decodeSecureElementTransaction:(id)transaction event:(id)event;
+- (void)driverRSSIStatsWithTotalSamples:(unsigned int)samples avgRSSI:(unsigned int)i maxRSSI:(unsigned int)sI minRSSI:(unsigned int)sSI;
 - (void)initSETransactionsStates;
-- (void)log:(unsigned __int8)a3 msg:(id)a4;
-- (void)notifyTransactionEvent:(id)a3;
+- (void)log:(unsigned __int8)log msg:(id)msg;
+- (void)notifyTransactionEvent:(id)event;
 @end
 
 @implementation _NFControllerManager
 
-- (void)log:(unsigned __int8)a3 msg:(id)a4
+- (void)log:(unsigned __int8)log msg:(id)msg
 {
-  v4 = a4;
+  msgCopy = msg;
   Logger = NFLogGetLogger();
   if (Logger)
   {
-    Logger(5, "%s:%i %s", "-[_NFControllerManager log:msg:]", 67, [v4 UTF8String]);
+    Logger(5, "%s:%i %s", "-[_NFControllerManager log:msg:]", 67, [msgCopy UTF8String]);
   }
 
   v6 = NFSharedLogGetLogger();
@@ -28,38 +28,38 @@
     v9 = 1024;
     v10 = 67;
     v11 = 2080;
-    v12 = [v4 UTF8String];
+    uTF8String = [msgCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s:%i %s", buf, 0x1Cu);
   }
 }
 
-- (void)notifyTransactionEvent:(id)a3
+- (void)notifyTransactionEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CFF80;
   block[3] = &unk_100315F80;
-  v9 = v5;
-  v10 = self;
+  v9 = eventCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
+  v7 = eventCopy;
   dispatch_async(workQueue, block);
 }
 
-- (_NFControllerManager)initWithQueue:(id)a3 driverWrapper:(id)a4
+- (_NFControllerManager)initWithQueue:(id)queue driverWrapper:(id)wrapper
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  wrapperCopy = wrapper;
   v12.receiver = self;
   v12.super_class = _NFControllerManager;
   v9 = [(_NFControllerManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeStrong(&v10->_driverWrapper, a4);
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v10->_driverWrapper, wrapper);
     [AppletTranslator initLibraryWithDelegate:v10];
   }
 
@@ -75,24 +75,24 @@
   }
 }
 
-- (BOOL)isUnifiedAccessForHome:(id)a3 passConfig:(id)a4
+- (BOOL)isUnifiedAccessForHome:(id)home passConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 NF_isPrefixOfHexEncodedEqualToBytes:&unk_100296F1E length:7])
+  homeCopy = home;
+  configCopy = config;
+  if ([homeCopy NF_isPrefixOfHexEncodedEqualToBytes:&unk_100296F1E length:7])
   {
     v7 = 1;
   }
 
-  else if ([v5 NF_isPrefixOfHexEncodedEqualToBytes:&unk_100296F25 length:9])
+  else if ([homeCopy NF_isPrefixOfHexEncodedEqualToBytes:&unk_100296F25 length:9])
   {
-    v8 = [v6 objectForKeyedSubscript:@"ECP2Info"];
+    v8 = [configCopy objectForKeyedSubscript:@"ECP2Info"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v6 objectForKeyedSubscript:@"ECP2Info"];
+      v10 = [configCopy objectForKeyedSubscript:@"ECP2Info"];
       v11 = v10;
       if (v10)
       {
@@ -163,25 +163,25 @@ LABEL_21:
   return v7;
 }
 
-- (void)decodeSecureElementTransaction:(id)a3 event:(id)a4
+- (void)decodeSecureElementTransaction:(id)transaction event:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  transactionCopy = transaction;
+  eventCopy = event;
   workQueue = self->_workQueue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000D3110;
   v12[3] = &unk_100315FD0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = transactionCopy;
+  v14 = eventCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = eventCopy;
+  v11 = transactionCopy;
   dispatch_async(workQueue, v12);
 }
 
-- (void)driverRSSIStatsWithTotalSamples:(unsigned int)a3 avgRSSI:(unsigned int)a4 maxRSSI:(unsigned int)a5 minRSSI:(unsigned int)a6
+- (void)driverRSSIStatsWithTotalSamples:(unsigned int)samples avgRSSI:(unsigned int)i maxRSSI:(unsigned int)sI minRSSI:(unsigned int)sSI
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -189,10 +189,10 @@ LABEL_21:
   block[2] = sub_1000D5E68;
   block[3] = &unk_100318330;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  samplesCopy = samples;
+  iCopy = i;
+  sICopy = sI;
+  sSICopy = sSI;
   dispatch_async(workQueue, block);
 }
 

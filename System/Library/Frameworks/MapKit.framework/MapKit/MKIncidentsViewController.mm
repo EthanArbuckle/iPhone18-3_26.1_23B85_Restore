@@ -1,30 +1,30 @@
 @interface MKIncidentsViewController
 - (IncidentsViewControllerDelegate)delegate;
 - (MKIncidentsViewController)init;
-- (MKIncidentsViewController)initWithTransitIncidents:(id)a3;
-- (id)_advisoriesInfoCellForIndex:(int64_t)a3;
-- (id)_advisoryItemCellForIndex:(int64_t)a3;
-- (id)_cellForRow:(int64_t)a3 inSection:(int64_t)a4;
-- (id)_transitCellForIndex:(int64_t)a3 inSection:(int64_t)a4;
-- (id)detailCellInSection:(int64_t)a3;
+- (MKIncidentsViewController)initWithTransitIncidents:(id)incidents;
+- (id)_advisoriesInfoCellForIndex:(int64_t)index;
+- (id)_advisoryItemCellForIndex:(int64_t)index;
+- (id)_cellForRow:(int64_t)row inSection:(int64_t)section;
+- (id)_transitCellForIndex:(int64_t)index inSection:(int64_t)section;
+- (id)detailCellInSection:(int64_t)section;
 - (id)extendedDetailCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_numberOfRowsInSection:(int64_t)a3;
-- (int64_t)_sectionForSectionIndex:(int64_t)a3;
-- (int64_t)_transitIncidentIndexForRow:(int64_t)a3 section:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_numberOfRowsInSection:(int64_t)section;
+- (int64_t)_sectionForSectionIndex:(int64_t)index;
+- (int64_t)_transitIncidentIndexForRow:(int64_t)row section:(int64_t)section;
 - (unint64_t)_incidentsCount;
 - (void)_compileSections;
 - (void)_localeDidChange;
 - (void)_updateTitle;
-- (void)cellDidTapDownloadForLocation:(id)a3;
+- (void)cellDidTapDownloadForLocation:(id)location;
 - (void)dealloc;
 - (void)infoCardThemeChanged;
 - (void)reloadDataSource;
-- (void)setAdvisoriesInfo:(id)a3;
-- (void)setAdvisory:(id)a3;
-- (void)setTransitIncidents:(id)a3;
+- (void)setAdvisoriesInfo:(id)info;
+- (void)setAdvisory:(id)advisory;
+- (void)setTransitIncidents:(id)incidents;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MKIncidentsViewController
@@ -36,45 +36,45 @@
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  v7 = [v5 section];
+  pathCopy = path;
+  v6 = [pathCopy row];
+  section = [pathCopy section];
 
-  return [(MKIncidentsViewController *)self _cellForRow:v6 inSection:v7];
+  return [(MKIncidentsViewController *)self _cellForRow:v6 inSection:section];
 }
 
-- (int64_t)_numberOfRowsInSection:(int64_t)a3
+- (int64_t)_numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MKIncidentsViewController *)self _sectionForSectionIndex:a3];
+  v4 = [(MKIncidentsViewController *)self _sectionForSectionIndex:section];
   if (v4 == 1)
   {
-    v7 = [(MKIncidentsViewController *)self advisoriesInfo];
+    advisoriesInfo = [(MKIncidentsViewController *)self advisoriesInfo];
 
-    if (v7)
+    if (advisoriesInfo)
     {
-      v8 = [(MKIncidentsViewController *)self advisoriesInfo];
-      v9 = [v8 genericAdvisorys];
-      v5 = [v9 firstObject];
+      advisoriesInfo2 = [(MKIncidentsViewController *)self advisoriesInfo];
+      genericAdvisorys = [advisoriesInfo2 genericAdvisorys];
+      firstObject = [genericAdvisorys firstObject];
 
-      if (!v5)
+      if (!firstObject)
       {
         v6 = 0;
         goto LABEL_11;
       }
 
-      v10 = v5;
+      advisory = firstObject;
     }
 
     else
     {
-      v10 = [(MKIncidentsViewController *)self advisory];
-      v5 = v10;
+      advisory = [(MKIncidentsViewController *)self advisory];
+      firstObject = advisory;
     }
 
-    v11 = [v10 advisoryItems];
-    v6 = [v11 count];
+    advisoryItems = [advisory advisoryItems];
+    v6 = [advisoryItems count];
 
 LABEL_11:
     return v6;
@@ -82,8 +82,8 @@ LABEL_11:
 
   if (!v4)
   {
-    v5 = [(MKIncidentsViewController *)self transitIncidents];
-    v6 = [v5 count];
+    firstObject = [(MKIncidentsViewController *)self transitIncidents];
+    v6 = [firstObject count];
     goto LABEL_11;
   }
 
@@ -92,8 +92,8 @@ LABEL_11:
 
 - (id)extendedDetailCell
 {
-  v2 = [(MKIncidentsViewController *)self tableView];
-  v3 = [v2 _mapkit_dequeueReusableCellWithIdentifier:@"kIncidentExtendedDetailCellIdentifier"];
+  tableView = [(MKIncidentsViewController *)self tableView];
+  v3 = [tableView _mapkit_dequeueReusableCellWithIdentifier:@"kIncidentExtendedDetailCellIdentifier"];
 
   if (!v3)
   {
@@ -103,10 +103,10 @@ LABEL_11:
   return v3;
 }
 
-- (id)detailCellInSection:(int64_t)a3
+- (id)detailCellInSection:(int64_t)section
 {
-  v3 = [(MKIncidentsViewController *)self tableView];
-  v4 = [v3 _mapkit_dequeueReusableCellWithIdentifier:@"kIncidentDetailCellIdentifier"];
+  tableView = [(MKIncidentsViewController *)self tableView];
+  v4 = [tableView _mapkit_dequeueReusableCellWithIdentifier:@"kIncidentDetailCellIdentifier"];
 
   if (!v4)
   {
@@ -116,37 +116,37 @@ LABEL_11:
   return v4;
 }
 
-- (int64_t)_sectionForSectionIndex:(int64_t)a3
+- (int64_t)_sectionForSectionIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_sections objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSArray *)self->_sections objectAtIndexedSubscript:index];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)_compileSections
 {
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(MKIncidentsViewController *)self transitIncidents];
-  v4 = [v3 count];
+  transitIncidents = [(MKIncidentsViewController *)self transitIncidents];
+  v4 = [transitIncidents count];
 
   if (v4)
   {
     [v11 addObject:&unk_1F1611410];
   }
 
-  v5 = [(MKIncidentsViewController *)self advisory];
-  v6 = [v5 advisoryItems];
-  if ([v6 count])
+  advisory = [(MKIncidentsViewController *)self advisory];
+  advisoryItems = [advisory advisoryItems];
+  if ([advisoryItems count])
   {
   }
 
   else
   {
-    v7 = [(MKIncidentsViewController *)self advisoriesInfo];
+    advisoriesInfo = [(MKIncidentsViewController *)self advisoriesInfo];
 
     v8 = v11;
-    if (!v7)
+    if (!advisoriesInfo)
     {
       goto LABEL_7;
     }
@@ -160,19 +160,19 @@ LABEL_7:
   self->_sections = v9;
 }
 
-- (int64_t)_transitIncidentIndexForRow:(int64_t)a3 section:(int64_t)a4
+- (int64_t)_transitIncidentIndexForRow:(int64_t)row section:(int64_t)section
 {
-  if (a3 < 0)
+  if (row < 0)
   {
     return -1;
   }
 
-  if ([(MKIncidentsViewController *)self _transitIncidentsCount]<= a3)
+  if ([(MKIncidentsViewController *)self _transitIncidentsCount]<= row)
   {
     return -1;
   }
 
-  return a3;
+  return row;
 }
 
 - (unint64_t)_incidentsCount
@@ -186,19 +186,19 @@ LABEL_7:
 
   else
   {
-    v5 = [(MKIncidentsViewController *)self advisoriesInfo];
-    v6 = [v5 genericAdvisorys];
+    advisoriesInfo = [(MKIncidentsViewController *)self advisoriesInfo];
+    genericAdvisorys = [advisoriesInfo genericAdvisorys];
 
-    if (v6)
+    if (genericAdvisorys)
     {
-      v7 = [(MKIncidentsViewController *)self advisoriesInfo];
-      v8 = [v7 genericAdvisorys];
-      v9 = [v8 firstObject];
+      advisoriesInfo2 = [(MKIncidentsViewController *)self advisoriesInfo];
+      genericAdvisorys2 = [advisoriesInfo2 genericAdvisorys];
+      firstObject = [genericAdvisorys2 firstObject];
 
-      if (v9)
+      if (firstObject)
       {
-        v10 = [v9 advisoryItems];
-        v11 = [v10 count];
+        advisoryItems = [firstObject advisoryItems];
+        v11 = [advisoryItems count];
       }
 
       else
@@ -209,81 +209,81 @@ LABEL_7:
 
     else
     {
-      v9 = [(GEOComposedRouteAdvisory *)self->_advisory advisoryItems];
-      v11 = [v9 count];
+      firstObject = [(GEOComposedRouteAdvisory *)self->_advisory advisoryItems];
+      v11 = [firstObject count];
     }
 
     return v11;
   }
 }
 
-- (void)cellDidTapDownloadForLocation:(id)a3
+- (void)cellDidTapDownloadForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(MKIncidentsViewController *)self delegate];
-  [v5 didTapDownloadForLocation:v4];
+  locationCopy = location;
+  delegate = [(MKIncidentsViewController *)self delegate];
+  [delegate didTapDownloadForLocation:locationCopy];
 }
 
-- (id)_advisoriesInfoCellForIndex:(int64_t)a3
+- (id)_advisoriesInfoCellForIndex:(int64_t)index
 {
-  v5 = [(GEOAdvisoriesInfo *)self->_advisoriesInfo genericAdvisorys];
-  v6 = [v5 firstObject];
+  genericAdvisorys = [(GEOAdvisoriesInfo *)self->_advisoriesInfo genericAdvisorys];
+  firstObject = [genericAdvisorys firstObject];
 
-  v7 = [v6 advisoryItems];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  advisoryItems = [firstObject advisoryItems];
+  v8 = [advisoryItems objectAtIndexedSubscript:index];
 
-  v9 = [(MKIncidentsViewController *)self extendedDetailCell];
-  [v9 setDelegate:self];
-  v10 = [v6 noticeArtwork];
-  [v9 configureWithAdvisories:v8 artwork:v10];
+  extendedDetailCell = [(MKIncidentsViewController *)self extendedDetailCell];
+  [extendedDetailCell setDelegate:self];
+  noticeArtwork = [firstObject noticeArtwork];
+  [extendedDetailCell configureWithAdvisories:v8 artwork:noticeArtwork];
 
-  return v9;
+  return extendedDetailCell;
 }
 
-- (id)_advisoryItemCellForIndex:(int64_t)a3
+- (id)_advisoryItemCellForIndex:(int64_t)index
 {
-  v5 = [(GEOComposedRouteAdvisory *)self->_advisory advisoryItems];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  advisoryItems = [(GEOComposedRouteAdvisory *)self->_advisory advisoryItems];
+  v6 = [advisoryItems objectAtIndexedSubscript:index];
 
-  v7 = [(MKIncidentsViewController *)self extendedDetailCell];
-  [v7 setDelegate:self];
-  [v7 configureWithAdvisoryItem:v6];
+  extendedDetailCell = [(MKIncidentsViewController *)self extendedDetailCell];
+  [extendedDetailCell setDelegate:self];
+  [extendedDetailCell configureWithAdvisoryItem:v6];
 
-  return v7;
+  return extendedDetailCell;
 }
 
-- (id)_transitCellForIndex:(int64_t)a3 inSection:(int64_t)a4
+- (id)_transitCellForIndex:(int64_t)index inSection:(int64_t)section
 {
-  v6 = [(MKIncidentsViewController *)self extendedDetailCell:a3];
-  v7 = [(NSArray *)self->_transitIncidents objectAtIndexedSubscript:a3];
-  v8 = [v7 title];
-  v9 = [v7 lastUpdated];
-  v10 = [MKIncidentDetailCell lastUpdateDisplayString:v9];
-  v11 = [v7 fullDescription];
+  v6 = [(MKIncidentsViewController *)self extendedDetailCell:index];
+  v7 = [(NSArray *)self->_transitIncidents objectAtIndexedSubscript:index];
+  title = [v7 title];
+  lastUpdated = [v7 lastUpdated];
+  v10 = [MKIncidentDetailCell lastUpdateDisplayString:lastUpdated];
+  fullDescription = [v7 fullDescription];
   if (v7)
   {
-    v12 = [v7 iconType];
-    if (v12 > 2)
+    iconType = [v7 iconType];
+    if (iconType > 2)
     {
       v23 = 0;
     }
 
     else
     {
-      v13 = v12;
-      v14 = off_1E76C9C80[v12];
-      v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v15 scale];
+      v13 = iconType;
+      v14 = off_1E76C9C80[iconType];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v17 = v16;
 
-      v18 = [MEMORY[0x1E69DF430] sharedManager];
+      mEMORY[0x1E69DF430] = [MEMORY[0x1E69DF430] sharedManager];
       *&v19 = v17;
-      v20 = [v18 imageForName:v14 contentScale:8 sizeGroup:0 modifiers:v19];
+      v20 = [mEMORY[0x1E69DF430] imageForName:v14 contentScale:8 sizeGroup:0 modifiers:v19];
 
-      v21 = [v20 image];
-      if (v21)
+      image = [v20 image];
+      if (image)
       {
-        v22 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v21 scale:0 orientation:v17];
+        v22 = [MEMORY[0x1E69DCAB8] imageWithCGImage:image scale:0 orientation:v17];
 
         if (v22)
         {
@@ -308,26 +308,26 @@ LABEL_7:
   }
 
 LABEL_11:
-  [v6 configureWithTitle:v8 subtitle:v10 body:v11 image:v22];
+  [v6 configureWithTitle:title subtitle:v10 body:fullDescription image:v22];
 
   return v6;
 }
 
-- (id)_cellForRow:(int64_t)a3 inSection:(int64_t)a4
+- (id)_cellForRow:(int64_t)row inSection:(int64_t)section
 {
-  v7 = [(MKIncidentsViewController *)self _sectionForSectionIndex:a4];
+  v7 = [(MKIncidentsViewController *)self _sectionForSectionIndex:section];
   if (v7 == 1)
   {
-    v9 = [(MKIncidentsViewController *)self advisoriesInfo];
+    advisoriesInfo = [(MKIncidentsViewController *)self advisoriesInfo];
 
-    if (v9)
+    if (advisoriesInfo)
     {
-      [(MKIncidentsViewController *)self _advisoriesInfoCellForIndex:a3];
+      [(MKIncidentsViewController *)self _advisoriesInfoCellForIndex:row];
     }
 
     else
     {
-      [(MKIncidentsViewController *)self _advisoryItemCellForIndex:a3];
+      [(MKIncidentsViewController *)self _advisoryItemCellForIndex:row];
     }
     v8 = ;
   }
@@ -344,7 +344,7 @@ LABEL_11:
       goto LABEL_10;
     }
 
-    v8 = [(MKIncidentsViewController *)self _transitCellForIndex:a3 inSection:a4];
+    v8 = [(MKIncidentsViewController *)self _transitCellForIndex:row inSection:section];
   }
 
   v13 = v8;
@@ -356,8 +356,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MKIncidentsViewController;
@@ -366,8 +366,8 @@ LABEL_10:
 
 - (void)_localeDidChange
 {
-  v2 = [(MKIncidentsViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(MKIncidentsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)reloadDataSource
@@ -376,20 +376,20 @@ LABEL_10:
   [(MKIncidentsViewController *)self _compileSections];
   if ([(MKIncidentsViewController *)self isViewLoaded])
   {
-    v3 = [(MKIncidentsViewController *)self tableView];
-    [v3 reloadData];
+    tableView = [(MKIncidentsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)setAdvisory:(id)a3
+- (void)setAdvisory:(id)advisory
 {
-  v4 = a3;
+  advisoryCopy = advisory;
   advisory = self->_advisory;
-  v12 = v4;
-  v6 = advisory;
-  if (v12 | v6)
+  v12 = advisoryCopy;
+  advisoryCopy2 = advisory;
+  if (v12 | advisoryCopy2)
   {
-    v7 = [v12 isEqual:v6];
+    v7 = [v12 isEqual:advisoryCopy2];
 
     if ((v7 & 1) == 0)
     {
@@ -408,11 +408,11 @@ LABEL_10:
   }
 }
 
-- (void)setAdvisoriesInfo:(id)a3
+- (void)setAdvisoriesInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   advisoriesInfo = self->_advisoriesInfo;
-  v12 = v4;
+  v12 = infoCopy;
   v6 = advisoriesInfo;
   if (v12 | v6)
   {
@@ -435,11 +435,11 @@ LABEL_10:
   }
 }
 
-- (void)setTransitIncidents:(id)a3
+- (void)setTransitIncidents:(id)incidents
 {
-  if (self->_transitIncidents != a3)
+  if (self->_transitIncidents != incidents)
   {
-    v4 = [a3 copy];
+    v4 = [incidents copy];
     transitIncidents = self->_transitIncidents;
     self->_transitIncidents = v4;
 
@@ -455,31 +455,31 @@ LABEL_10:
 
 - (void)_updateTitle
 {
-  v3 = [(MKIncidentsViewController *)self advisoriesInfo];
-  v4 = [v3 genericAdvisorys];
-  v5 = [v4 firstObject];
+  advisoriesInfo = [(MKIncidentsViewController *)self advisoriesInfo];
+  genericAdvisorys = [advisoriesInfo genericAdvisorys];
+  firstObject = [genericAdvisorys firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     v6 = objc_alloc(MEMORY[0x1E69A1CA8]);
-    v7 = [v5 detailCardTitle];
-    v8 = [v6 initWithGeoFormattedString:v7];
+    detailCardTitle = [firstObject detailCardTitle];
+    v8 = [v6 initWithGeoFormattedString:detailCardTitle];
 
-    v9 = v8;
+    detailCardTitle3 = v8;
 LABEL_5:
-    v11 = [v9 stringWithDefaultOptions];
+    stringWithDefaultOptions = [detailCardTitle3 stringWithDefaultOptions];
     incidentsTitle = self->_incidentsTitle;
-    self->_incidentsTitle = v11;
+    self->_incidentsTitle = stringWithDefaultOptions;
 
     goto LABEL_6;
   }
 
-  v10 = [(GEOComposedRouteAdvisory *)self->_advisory detailCardTitle];
+  detailCardTitle2 = [(GEOComposedRouteAdvisory *)self->_advisory detailCardTitle];
 
-  if (v10)
+  if (detailCardTitle2)
   {
-    v9 = [(GEOComposedRouteAdvisory *)self->_advisory detailCardTitle];
-    v8 = v9;
+    detailCardTitle3 = [(GEOComposedRouteAdvisory *)self->_advisory detailCardTitle];
+    v8 = detailCardTitle3;
     goto LABEL_5;
   }
 
@@ -487,8 +487,8 @@ LABEL_6:
   if ([(NSString *)self->_incidentsTitle length])
   {
     v13 = self->_incidentsTitle;
-    v14 = [(MKIncidentsViewController *)self navigationItem];
-    [v14 setTitle:v13];
+    navigationItem = [(MKIncidentsViewController *)self navigationItem];
+    [navigationItem setTitle:v13];
   }
 
   else
@@ -503,8 +503,8 @@ LABEL_6:
       self->_incidentsTitle = v16;
 
       v19 = self->_incidentsTitle;
-      v20 = [(MKIncidentsViewController *)self navigationItem];
-      [v20 setTitle:v19];
+      navigationItem2 = [(MKIncidentsViewController *)self navigationItem];
+      [navigationItem2 setTitle:v19];
     }
   }
 }
@@ -516,33 +516,33 @@ LABEL_6:
   [(UIViewController *)&v4 infoCardThemeChanged];
   if ([(MKIncidentsViewController *)self isViewLoaded])
   {
-    v3 = [(MKIncidentsViewController *)self tableView];
-    [v3 reloadData];
+    tableView = [(MKIncidentsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = MKIncidentsViewController;
-  [(MKIncidentsViewController *)&v8 viewWillAppear:a3];
+  [(MKIncidentsViewController *)&v8 viewWillAppear:appear];
   if (_UISolariumEnabled() && !MapKitIdiomIsMacCatalyst())
   {
-    v4 = [(MKIncidentsViewController *)self tableView];
-    v5 = v4;
+    tableView = [(MKIncidentsViewController *)self tableView];
+    v5 = tableView;
     v7 = -72.0;
     v6 = 0.0;
   }
 
   else
   {
-    v4 = [(MKIncidentsViewController *)self tableView];
-    v5 = v4;
+    tableView = [(MKIncidentsViewController *)self tableView];
+    v5 = tableView;
     v6 = *MEMORY[0x1E695EFF8];
     v7 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  [v4 setContentOffset:0 animated:{v6, v7}];
+  [tableView setContentOffset:0 animated:{v6, v7}];
 }
 
 - (void)viewDidLoad
@@ -550,55 +550,55 @@ LABEL_6:
   v19.receiver = self;
   v19.super_class = MKIncidentsViewController;
   [(MKIncidentsViewController *)&v19 viewDidLoad];
-  v3 = [(MKIncidentsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"MKIncidentsView"];
+  view = [(MKIncidentsViewController *)self view];
+  [view setAccessibilityIdentifier:@"MKIncidentsView"];
 
-  v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v5 = [(MKIncidentsViewController *)self tableView];
-  [v5 setBackgroundColor:v4];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  tableView = [(MKIncidentsViewController *)self tableView];
+  [tableView setBackgroundColor:secondarySystemBackgroundColor];
 
-  v6 = [(MKIncidentsViewController *)self tableView];
-  [v6 _setDrawsSeparatorAtTopOfSections:0];
+  tableView2 = [(MKIncidentsViewController *)self tableView];
+  [tableView2 _setDrawsSeparatorAtTopOfSections:0];
 
-  v7 = [(MKIncidentsViewController *)self tableView];
-  [v7 _setTopPadding:0.0];
+  tableView3 = [(MKIncidentsViewController *)self tableView];
+  [tableView3 _setTopPadding:0.0];
 
-  v8 = [(MKIncidentsViewController *)self tableView];
-  [v8 _setBottomPadding:0.0];
+  tableView4 = [(MKIncidentsViewController *)self tableView];
+  [tableView4 _setBottomPadding:0.0];
 
-  v9 = [(MKIncidentsViewController *)self tableView];
-  [v9 setSectionHeaderHeight:0.0];
+  tableView5 = [(MKIncidentsViewController *)self tableView];
+  [tableView5 setSectionHeaderHeight:0.0];
 
-  v10 = [(MKIncidentsViewController *)self tableView];
-  [v10 setSectionFooterHeight:0.0];
+  tableView6 = [(MKIncidentsViewController *)self tableView];
+  [tableView6 setSectionFooterHeight:0.0];
 
-  v11 = [(MKIncidentsViewController *)self tableView];
-  [v11 setSeparatorInset:{0.0, 16.0, 0.0, 0.0}];
+  tableView7 = [(MKIncidentsViewController *)self tableView];
+  [tableView7 setSeparatorInset:{0.0, 16.0, 0.0, 0.0}];
 
-  v12 = [(MKIncidentsViewController *)self tableView];
+  tableView8 = [(MKIncidentsViewController *)self tableView];
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  [v12 registerClass:v13 forHeaderFooterViewReuseIdentifier:v15];
+  [tableView8 registerClass:v13 forHeaderFooterViewReuseIdentifier:v15];
 
-  v16 = [(MKIncidentsViewController *)self view];
-  [v16 setPreservesSuperviewLayoutMargins:1];
+  view2 = [(MKIncidentsViewController *)self view];
+  [view2 setPreservesSuperviewLayoutMargins:1];
 
-  v17 = [(MKIncidentsViewController *)self tableView];
-  [v17 reloadData];
+  tableView9 = [(MKIncidentsViewController *)self tableView];
+  [tableView9 reloadData];
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 addObserver:self selector:sel__localeDidChange name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__localeDidChange name:*MEMORY[0x1E695D8F0] object:0];
 }
 
-- (MKIncidentsViewController)initWithTransitIncidents:(id)a3
+- (MKIncidentsViewController)initWithTransitIncidents:(id)incidents
 {
-  v5 = a3;
+  incidentsCopy = incidents;
   v6 = [(MKIncidentsViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transitIncidents, a3);
+    objc_storeStrong(&v6->_transitIncidents, incidents);
     [(MKIncidentsViewController *)v7 reloadDataSource];
   }
 

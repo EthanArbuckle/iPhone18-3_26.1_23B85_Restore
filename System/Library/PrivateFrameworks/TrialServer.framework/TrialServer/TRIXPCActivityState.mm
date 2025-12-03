@@ -1,57 +1,57 @@
 @interface TRIXPCActivityState
-+ (id)xPCActivityStateWithFutureCompletionStatus:(unint64_t)a3 capabilities:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToXPCActivityState:(id)a3;
-- (TRIXPCActivityState)initWithFutureCompletionStatus:(unint64_t)a3 capabilities:(unint64_t)a4;
-- (id)copyWithReplacementCapabilities:(unint64_t)a3;
-- (id)copyWithReplacementFutureCompletionStatus:(unint64_t)a3;
++ (id)xPCActivityStateWithFutureCompletionStatus:(unint64_t)status capabilities:(unint64_t)capabilities;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToXPCActivityState:(id)state;
+- (TRIXPCActivityState)initWithFutureCompletionStatus:(unint64_t)status capabilities:(unint64_t)capabilities;
+- (id)copyWithReplacementCapabilities:(unint64_t)capabilities;
+- (id)copyWithReplacementFutureCompletionStatus:(unint64_t)status;
 - (id)description;
 @end
 
 @implementation TRIXPCActivityState
 
-- (TRIXPCActivityState)initWithFutureCompletionStatus:(unint64_t)a3 capabilities:(unint64_t)a4
+- (TRIXPCActivityState)initWithFutureCompletionStatus:(unint64_t)status capabilities:(unint64_t)capabilities
 {
   v7.receiver = self;
   v7.super_class = TRIXPCActivityState;
   result = [(TRIXPCActivityState *)&v7 init];
   if (result)
   {
-    result->_futureCompletionStatus = a3;
-    result->_capabilities = a4;
+    result->_futureCompletionStatus = status;
+    result->_capabilities = capabilities;
   }
 
   return result;
 }
 
-+ (id)xPCActivityStateWithFutureCompletionStatus:(unint64_t)a3 capabilities:(unint64_t)a4
++ (id)xPCActivityStateWithFutureCompletionStatus:(unint64_t)status capabilities:(unint64_t)capabilities
 {
-  v4 = [[a1 alloc] initWithFutureCompletionStatus:a3 capabilities:a4];
+  v4 = [[self alloc] initWithFutureCompletionStatus:status capabilities:capabilities];
 
   return v4;
 }
 
-- (id)copyWithReplacementFutureCompletionStatus:(unint64_t)a3
+- (id)copyWithReplacementFutureCompletionStatus:(unint64_t)status
 {
   v5 = objc_alloc(objc_opt_class());
   capabilities = self->_capabilities;
 
-  return [v5 initWithFutureCompletionStatus:a3 capabilities:capabilities];
+  return [v5 initWithFutureCompletionStatus:status capabilities:capabilities];
 }
 
-- (id)copyWithReplacementCapabilities:(unint64_t)a3
+- (id)copyWithReplacementCapabilities:(unint64_t)capabilities
 {
   v5 = objc_alloc(objc_opt_class());
   futureCompletionStatus = self->_futureCompletionStatus;
 
-  return [v5 initWithFutureCompletionStatus:futureCompletionStatus capabilities:a3];
+  return [v5 initWithFutureCompletionStatus:futureCompletionStatus capabilities:capabilities];
 }
 
-- (BOOL)isEqualToXPCActivityState:(id)a3
+- (BOOL)isEqualToXPCActivityState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (futureCompletionStatus = self->_futureCompletionStatus, futureCompletionStatus == [v4 futureCompletionStatus]))
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy && (futureCompletionStatus = self->_futureCompletionStatus, futureCompletionStatus == [stateCopy futureCompletionStatus]))
   {
     capabilities = self->_capabilities;
     v8 = capabilities == [v5 capabilities];
@@ -65,18 +65,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIXPCActivityState *)self isEqualToXPCActivityState:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIXPCActivityState *)self isEqualToXPCActivityState:v5];
   }
 
   return v6;

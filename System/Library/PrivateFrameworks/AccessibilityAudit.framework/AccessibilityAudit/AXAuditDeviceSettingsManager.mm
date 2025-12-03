@@ -1,12 +1,12 @@
 @interface AXAuditDeviceSettingsManager
 - (AXAuditDeviceSettingsManager)init;
 - (AXAuditDeviceSettingsManagerDelegate)delegate;
-- (id)settingForIdentifier:(id)a3;
+- (id)settingForIdentifier:(id)identifier;
 - (void)cacheDeviceSettingsValues;
 - (void)dealloc;
 - (void)resetToDefaultAccessibilitySettings;
 - (void)restoreDeviceSettingsValues;
-- (void)updateSetting:(id)a3 withNumberValue:(id)a4;
+- (void)updateSetting:(id)setting withNumberValue:(id)value;
 @end
 
 @implementation AXAuditDeviceSettingsManager
@@ -36,13 +36,13 @@
 - (void)cacheDeviceSettingsValues
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(AXAuditDeviceSettingsManager *)self settingsToCache];
+  settingsToCache = [(AXAuditDeviceSettingsManager *)self settingsToCache];
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = settingsToCache;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -86,8 +86,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(AXAuditDeviceSettingsManager *)self _cachedSettings];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _cachedSettings = [(AXAuditDeviceSettingsManager *)self _cachedSettings];
+    v4 = [_cachedSettings countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -98,15 +98,15 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_cachedSettings);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
-          v9 = [v8 currentValueNumber];
-          [(AXAuditDeviceSettingsManager *)self updateSetting:v8 withNumberValue:v9];
+          currentValueNumber = [v8 currentValueNumber];
+          [(AXAuditDeviceSettingsManager *)self updateSetting:v8 withNumberValue:currentValueNumber];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [_cachedSettings countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -116,16 +116,16 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)settingForIdentifier:(id)a3
+- (id)settingForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AXAuditDeviceSettingsManager *)self settings];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  settings = [(AXAuditDeviceSettingsManager *)self settings];
+  v6 = [settings countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -135,12 +135,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(settings);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -149,7 +149,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [settings countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -173,8 +173,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(AXAuditDeviceSettingsManager *)self defaultSettings];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  defaultSettings = [(AXAuditDeviceSettingsManager *)self defaultSettings];
+  v4 = [defaultSettings countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -185,15 +185,15 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(defaultSettings);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 currentValueNumber];
-        [(AXAuditDeviceSettingsManager *)self updateSetting:v8 withNumberValue:v9];
+        currentValueNumber = [v8 currentValueNumber];
+        [(AXAuditDeviceSettingsManager *)self updateSetting:v8 withNumberValue:currentValueNumber];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [defaultSettings countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -204,9 +204,9 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSetting:(id)a3 withNumberValue:(id)a4
+- (void)updateSetting:(id)setting withNumberValue:(id)value
 {
-  if (![(AXAuditDeviceSettingsManager *)self deviceSettingsCanBeRestored:a3])
+  if (![(AXAuditDeviceSettingsManager *)self deviceSettingsCanBeRestored:setting])
   {
     [(AXAuditDeviceSettingsManager *)self cacheDeviceSettingsValues];
   }

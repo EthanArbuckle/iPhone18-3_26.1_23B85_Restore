@@ -1,169 +1,169 @@
 @interface MSConversation
 + (id)activeConversation;
 - (MSConversationDelegate)delegate;
-- (id)_initWithState:(id)a3 context:(id)a4;
-- (void)_insertAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_insertAttachment:(id)a3 adamID:(id)a4 appName:(id)a5 completionHandler:(id)a6;
-- (void)_insertAttachment:(id)a3 withAlternateFilename:(id)a4 skipShelf:(BOOL)a5 generativePlaygroundRecipe:(id)a6 completionHandler:(id)a7;
-- (void)_insertMessage:(id)a3 localizedChangeDescription:(id)a4 skipShelf:(BOOL)a5 completionHandler:(id)a6;
-- (void)_insertMessage:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_insertRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_insertSticker:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_insertSticker:(id)a3 skipShelf:(BOOL)a4 frameInWindowCoordinates:(CGRect)a5 completionHandler:(id)a6;
-- (void)_insertText:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)_removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)_requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)_updateWithState:(id)a3;
-- (void)insertImage:(id)a3 completionHandler:(id)a4;
-- (void)insertMediaAtURL:(id)a3 attributionURL:(id)a4 attributionIcon:(id)a5 completionHandler:(id)a6;
-- (void)insertStickerWithImage:(id)a3 completionHandler:(id)a4;
-- (void)insertStickerWithMediaAtURL:(id)a3 completionHandler:(id)a4;
-- (void)sendCustomAcknowledgement:(id)a3 completionHandler:(id)a4;
+- (id)_initWithState:(id)state context:(id)context;
+- (void)_insertAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_insertAttachment:(id)attachment adamID:(id)d appName:(id)name completionHandler:(id)handler;
+- (void)_insertAttachment:(id)attachment withAlternateFilename:(id)filename skipShelf:(BOOL)shelf generativePlaygroundRecipe:(id)recipe completionHandler:(id)handler;
+- (void)_insertMessage:(id)message localizedChangeDescription:(id)description skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_insertMessage:(id)message skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_insertRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_insertSticker:(id)sticker skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_insertSticker:(id)sticker skipShelf:(BOOL)shelf frameInWindowCoordinates:(CGRect)coordinates completionHandler:(id)handler;
+- (void)_insertText:(id)text skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)_removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)_updateWithState:(id)state;
+- (void)insertImage:(id)image completionHandler:(id)handler;
+- (void)insertMediaAtURL:(id)l attributionURL:(id)rL attributionIcon:(id)icon completionHandler:(id)handler;
+- (void)insertStickerWithImage:(id)image completionHandler:(id)handler;
+- (void)insertStickerWithMediaAtURL:(id)l completionHandler:(id)handler;
+- (void)sendCustomAcknowledgement:(id)acknowledgement completionHandler:(id)handler;
 @end
 
 @implementation MSConversation
 
-- (void)insertMediaAtURL:(id)a3 attributionURL:(id)a4 attributionIcon:(id)a5 completionHandler:(id)a6
+- (void)insertMediaAtURL:(id)l attributionURL:(id)rL attributionIcon:(id)icon completionHandler:(id)handler
 {
-  v18 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  iconCopy = icon;
+  handlerCopy = handler;
+  rLCopy = rL;
+  lCopy = l;
   v13 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v13 setMediaURL:v12];
+  [(_MSMessageMediaPayload *)v13 setMediaURL:lCopy];
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v15 = [v11 absoluteString];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  absoluteString = [rLCopy absoluteString];
 
-  if (v15)
+  if (absoluteString)
   {
-    CFDictionarySetValue(v14, @"url", v15);
+    CFDictionarySetValue(dictionary, @"url", absoluteString);
   }
 
-  if (v18)
+  if (iconCopy)
   {
     v16 = _UIImageJPEGRepresentation();
     if (v16)
     {
-      CFDictionarySetValue(v14, @"icon", v16);
+      CFDictionarySetValue(dictionary, @"icon", v16);
     }
   }
 
-  if ([(__CFDictionary *)v14 count])
+  if ([(__CFDictionary *)dictionary count])
   {
-    [(_MSMessageMediaPayload *)v13 setAttributionInfo:v14];
+    [(_MSMessageMediaPayload *)v13 setAttributionInfo:dictionary];
   }
 
-  v17 = [(MSConversation *)self context];
-  [v17 stageMediaItem:v13 skipShelf:0 forceStage:0 completionHandler:v10];
+  context = [(MSConversation *)self context];
+  [context stageMediaItem:v13 skipShelf:0 forceStage:0 completionHandler:handlerCopy];
 }
 
-- (void)insertImage:(id)a3 completionHandler:(id)a4
+- (void)insertImage:(id)image completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  imageCopy = image;
   v9 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v9 setImage:v7];
+  [(_MSMessageMediaPayload *)v9 setImage:imageCopy];
 
-  v8 = [(MSConversation *)self context];
-  [v8 stageMediaItem:v9 skipShelf:0 forceStage:0 completionHandler:v6];
+  context = [(MSConversation *)self context];
+  [context stageMediaItem:v9 skipShelf:0 forceStage:0 completionHandler:handlerCopy];
 }
 
-- (void)insertStickerWithImage:(id)a3 completionHandler:(id)a4
+- (void)insertStickerWithImage:(id)image completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  imageCopy = image;
   v9 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v9 setImage:v7];
+  [(_MSMessageMediaPayload *)v9 setImage:imageCopy];
 
-  v8 = [(MSConversation *)self context];
-  [v8 stageMediaItem:v9 skipShelf:0 forceStage:0 completionHandler:v6];
+  context = [(MSConversation *)self context];
+  [context stageMediaItem:v9 skipShelf:0 forceStage:0 completionHandler:handlerCopy];
 }
 
-- (void)insertStickerWithMediaAtURL:(id)a3 completionHandler:(id)a4
+- (void)insertStickerWithMediaAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  lCopy = l;
   v9 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v9 setMediaURL:v7];
+  [(_MSMessageMediaPayload *)v9 setMediaURL:lCopy];
 
-  v8 = [(MSConversation *)self context];
-  [v8 stageMediaItem:v9 skipShelf:0 forceStage:0 completionHandler:v6];
+  context = [(MSConversation *)self context];
+  [context stageMediaItem:v9 skipShelf:0 forceStage:0 completionHandler:handlerCopy];
 }
 
 + (id)activeConversation
 {
   v2 = +[_MSMessageAppContext activeExtensionContext];
-  v3 = [v2 activeConversation];
+  activeConversation = [v2 activeConversation];
 
-  return v3;
+  return activeConversation;
 }
 
-- (id)_initWithState:(id)a3 context:(id)a4
+- (id)_initWithState:(id)state context:(id)context
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  contextCopy = context;
   v58.receiver = self;
   v58.super_class = MSConversation;
   v8 = [(MSConversation *)&v58 init];
   if (v8)
   {
-    v51 = v7;
-    v52 = a4;
-    v9 = [v6 conversationIdentifier];
+    v51 = contextCopy;
+    contextCopy2 = context;
+    conversationIdentifier = [stateCopy conversationIdentifier];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = conversationIdentifier;
 
-    v11 = [v6 senderIdentifier];
-    v12 = [v11 copy];
+    senderIdentifier = [stateCopy senderIdentifier];
+    v12 = [senderIdentifier copy];
     localParticipantIdentifier = v8->_localParticipantIdentifier;
     v8->_localParticipantIdentifier = v12;
 
-    v14 = [v6 recipientIdentifiers];
-    v15 = [v14 copy];
+    recipientIdentifiers = [stateCopy recipientIdentifiers];
+    v15 = [recipientIdentifiers copy];
     remoteParticipantIdentifiers = v8->_remoteParticipantIdentifiers;
     v8->_remoteParticipantIdentifiers = v15;
 
-    v17 = [v6 activeMessage];
+    activeMessage = [stateCopy activeMessage];
     selectedMessage = v8->_selectedMessage;
-    v8->_selectedMessage = v17;
+    v8->_selectedMessage = activeMessage;
 
-    v19 = [v6 conversationID];
+    conversationID = [stateCopy conversationID];
     conversationIdentifier = v8->_conversationIdentifier;
-    v8->_conversationIdentifier = v19;
+    v8->_conversationIdentifier = conversationID;
 
-    v21 = [v6 conversationEngramID];
+    conversationEngramID = [stateCopy conversationEngramID];
     engramID = v8->_engramID;
-    v8->_engramID = v21;
+    v8->_engramID = conversationEngramID;
 
-    v23 = [v6 groupID];
+    groupID = [stateCopy groupID];
     groupID = v8->_groupID;
-    v8->_groupID = v23;
+    v8->_groupID = groupID;
 
-    v25 = [v6 iMessageLoginID];
+    iMessageLoginID = [stateCopy iMessageLoginID];
     iMessageLoginID = v8->_iMessageLoginID;
-    v8->_iMessageLoginID = v25;
+    v8->_iMessageLoginID = iMessageLoginID;
 
-    v27 = [v6 senderAddress];
+    senderAddress = [stateCopy senderAddress];
     senderAddress = v8->_senderAddress;
-    v8->_senderAddress = v27;
+    v8->_senderAddress = senderAddress;
 
-    v29 = [v6 recipientAddresses];
+    recipientAddresses = [stateCopy recipientAddresses];
     recipientAddresses = v8->_recipientAddresses;
-    v8->_recipientAddresses = v29;
+    v8->_recipientAddresses = recipientAddresses;
 
-    v31 = [v6 generatedSummary];
+    generatedSummary = [stateCopy generatedSummary];
     generatedSummary = v8->_generatedSummary;
     v50 = v8;
-    v8->_generatedSummary = v31;
+    v8->_generatedSummary = generatedSummary;
 
-    v33 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = [v6 conversationContext];
+    obj = [stateCopy conversationContext];
     v34 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
     if (v34)
     {
@@ -192,7 +192,7 @@
           v43 = [v38 objectForKeyedSubscript:@"CKGenerativeContextDisplayName"];
           [(MSConversationContextItem *)v39 setSenderDisplayName:v43];
 
-          [v33 addObject:v39];
+          [array addObject:v39];
         }
 
         v35 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
@@ -201,84 +201,84 @@
       while (v35);
     }
 
-    v44 = [v33 copy];
+    v44 = [array copy];
     v8 = v50;
     contextItems = v50->_contextItems;
     v50->_contextItems = v44;
 
-    v50->_isiMessage = [v6 isiMessage];
-    v50->_isBusiness = [v6 isBusiness];
-    v50->_isUltraConstrainedNetwork = [v6 isUltraConstrainedNetwork];
-    v46 = [v6 draftAssetArchives];
-    v47 = [v46 copy];
+    v50->_isiMessage = [stateCopy isiMessage];
+    v50->_isBusiness = [stateCopy isBusiness];
+    v50->_isUltraConstrainedNetwork = [stateCopy isUltraConstrainedNetwork];
+    draftAssetArchives = [stateCopy draftAssetArchives];
+    v47 = [draftAssetArchives copy];
     draftAssetArchives = v50->_draftAssetArchives;
     v50->_draftAssetArchives = v47;
 
-    objc_storeStrong(&v50->_context, v52);
-    v7 = v51;
+    objc_storeStrong(&v50->_context, contextCopy2);
+    contextCopy = v51;
   }
 
   return v8;
 }
 
-- (void)_updateWithState:(id)a3
+- (void)_updateWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   remoteParticipantIdentifiers = self->_remoteParticipantIdentifiers;
-  v16 = v4;
-  v6 = [v4 recipientIdentifiers];
-  LOBYTE(remoteParticipantIdentifiers) = [(NSArray *)remoteParticipantIdentifiers isEqual:v6];
+  v16 = stateCopy;
+  recipientIdentifiers = [stateCopy recipientIdentifiers];
+  LOBYTE(remoteParticipantIdentifiers) = [(NSArray *)remoteParticipantIdentifiers isEqual:recipientIdentifiers];
 
   if ((remoteParticipantIdentifiers & 1) == 0)
   {
-    v7 = [v16 recipientIdentifiers];
-    [(MSConversation *)self setRemoteParticipantIdentifiers:v7];
+    recipientIdentifiers2 = [v16 recipientIdentifiers];
+    [(MSConversation *)self setRemoteParticipantIdentifiers:recipientIdentifiers2];
   }
 
   selectedMessage = self->_selectedMessage;
   if (!selectedMessage || ([v16 activeMessage], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[MSMessage isEqual:](selectedMessage, "isEqual:", v9), v9, !v10))
   {
-    v11 = [(MSConversation *)self delegate];
-    v12 = [v16 activeMessage];
-    [v11 _conversation:self willSelectMessage:v12];
+    delegate = [(MSConversation *)self delegate];
+    activeMessage = [v16 activeMessage];
+    [delegate _conversation:self willSelectMessage:activeMessage];
 
-    v13 = [v16 activeMessage];
-    [(MSConversation *)self setSelectedMessage:v13];
+    activeMessage2 = [v16 activeMessage];
+    [(MSConversation *)self setSelectedMessage:activeMessage2];
 
-    v14 = [(MSConversation *)self delegate];
-    v15 = [v16 activeMessage];
-    [v14 _conversation:self didSelectMessage:v15];
+    delegate2 = [(MSConversation *)self delegate];
+    activeMessage3 = [v16 activeMessage];
+    [delegate2 _conversation:self didSelectMessage:activeMessage3];
   }
 }
 
-- (void)sendCustomAcknowledgement:(id)a3 completionHandler:(id)a4
+- (void)sendCustomAcknowledgement:(id)acknowledgement completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(MSConversation *)self context];
-  v8 = [(MSConversation *)self selectedMessage];
-  [v9 sendCustomAcknowledgement:v7 selectedMessage:v8 completionHandler:v6];
+  handlerCopy = handler;
+  acknowledgementCopy = acknowledgement;
+  context = [(MSConversation *)self context];
+  selectedMessage = [(MSConversation *)self selectedMessage];
+  [context sendCustomAcknowledgement:acknowledgementCopy selectedMessage:selectedMessage completionHandler:handlerCopy];
 }
 
-- (void)_requestConversationAvatarsWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)_requestConversationAvatarsWithSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(MSConversation *)self context];
-  [v8 requestConversationAvatarsWithSize:v7 completionHandler:{width, height}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  context = [(MSConversation *)self context];
+  [context requestConversationAvatarsWithSize:handlerCopy completionHandler:{width, height}];
 }
 
-- (void)_insertMessage:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_insertMessage:(id)message skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MSConversation *)self context];
-  v12 = v10;
-  if (v8)
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  messageCopy = message;
+  context = [(MSConversation *)self context];
+  v12 = context;
+  if (handlerCopy)
   {
-    v11 = v8;
+    v11 = handlerCopy;
   }
 
   else
@@ -286,20 +286,20 @@
     v11 = &__block_literal_global_6;
   }
 
-  [v10 stageAppItem:v9 skipShelf:v5 completionHandler:v11];
+  [context stageAppItem:messageCopy skipShelf:shelfCopy completionHandler:v11];
 }
 
-- (void)_insertMessage:(id)a3 localizedChangeDescription:(id)a4 skipShelf:(BOOL)a5 completionHandler:(id)a6
+- (void)_insertMessage:(id)message localizedChangeDescription:(id)description skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  [v11 setBreadcrumbText:a4];
-  v12 = [(MSConversation *)self context];
-  v14 = v12;
-  if (v10)
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  messageCopy = message;
+  [messageCopy setBreadcrumbText:description];
+  context = [(MSConversation *)self context];
+  v14 = context;
+  if (handlerCopy)
   {
-    v13 = v10;
+    v13 = handlerCopy;
   }
 
   else
@@ -307,22 +307,22 @@
     v13 = &__block_literal_global_20;
   }
 
-  [v12 stageAppItem:v11 skipShelf:v6 completionHandler:v13];
+  [context stageAppItem:messageCopy skipShelf:shelfCopy completionHandler:v13];
 }
 
-- (void)_insertText:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_insertText:(id)text skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  textCopy = text;
   v13 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v13 setText:v9];
+  [(_MSMessageMediaPayload *)v13 setText:textCopy];
 
-  v10 = [(MSConversation *)self context];
-  v11 = v10;
-  if (v8)
+  context = [(MSConversation *)self context];
+  v11 = context;
+  if (handlerCopy)
   {
-    v12 = v8;
+    v12 = handlerCopy;
   }
 
   else
@@ -330,34 +330,34 @@
     v12 = &__block_literal_global_23;
   }
 
-  [v10 stageMediaItem:v13 skipShelf:v5 forceStage:0 completionHandler:v12];
+  [context stageMediaItem:v13 skipShelf:shelfCopy forceStage:0 completionHandler:v12];
 }
 
-- (void)_insertAttachment:(id)a3 withAlternateFilename:(id)a4 skipShelf:(BOOL)a5 generativePlaygroundRecipe:(id)a6 completionHandler:(id)a7
+- (void)_insertAttachment:(id)attachment withAlternateFilename:(id)filename skipShelf:(BOOL)shelf generativePlaygroundRecipe:(id)recipe completionHandler:(id)handler
 {
-  v9 = a5;
-  v23 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
+  shelfCopy = shelf;
+  attachmentCopy = attachment;
+  filenameCopy = filename;
+  handlerCopy = handler;
+  recipeCopy = recipe;
   v15 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v15 setMediaURL:v23];
-  if (!v12 || ([v12 pathExtension], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, !v17))
+  [(_MSMessageMediaPayload *)v15 setMediaURL:attachmentCopy];
+  if (!filenameCopy || ([filenameCopy pathExtension], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, !v17))
   {
-    v18 = [v23 standardizedURL];
-    v19 = [v18 lastPathComponent];
+    standardizedURL = [attachmentCopy standardizedURL];
+    lastPathComponent = [standardizedURL lastPathComponent];
 
-    v12 = v19;
+    filenameCopy = lastPathComponent;
   }
 
-  [(_MSMessageMediaPayload *)v15 setMediaFilename:v12];
-  [(_MSMessageMediaPayload *)v15 setGenerativePlaygroundRecipeData:v14];
+  [(_MSMessageMediaPayload *)v15 setMediaFilename:filenameCopy];
+  [(_MSMessageMediaPayload *)v15 setGenerativePlaygroundRecipeData:recipeCopy];
 
-  v20 = [(MSConversation *)self context];
-  v21 = v20;
-  if (v13)
+  context = [(MSConversation *)self context];
+  v21 = context;
+  if (handlerCopy)
   {
-    v22 = v13;
+    v22 = handlerCopy;
   }
 
   else
@@ -365,19 +365,19 @@
     v22 = &__block_literal_global_25;
   }
 
-  [v20 stageMediaItem:v15 skipShelf:v9 forceStage:0 completionHandler:v22];
+  [context stageMediaItem:v15 skipShelf:shelfCopy forceStage:0 completionHandler:v22];
 }
 
-- (void)_insertRichLink:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_insertRichLink:(id)link skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MSConversation *)self context];
-  v12 = v10;
-  if (v8)
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  linkCopy = link;
+  context = [(MSConversation *)self context];
+  v12 = context;
+  if (handlerCopy)
   {
-    v11 = v8;
+    v11 = handlerCopy;
   }
 
   else
@@ -385,21 +385,21 @@
     v11 = &__block_literal_global_27;
   }
 
-  [v10 stageRichLink:v9 skipShelf:v5 completionHandler:v11];
+  [context stageRichLink:linkCopy skipShelf:shelfCopy completionHandler:v11];
 }
 
-- (void)_insertSticker:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_insertSticker:(id)sticker skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v13 = [[_MSMessageMediaPayload alloc] initWithSticker:v9];
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  stickerCopy = sticker;
+  v13 = [[_MSMessageMediaPayload alloc] initWithSticker:stickerCopy];
 
-  v10 = [(MSConversation *)self context];
-  v11 = v10;
-  if (v8)
+  context = [(MSConversation *)self context];
+  v11 = context;
+  if (handlerCopy)
   {
-    v12 = v8;
+    v12 = handlerCopy;
   }
 
   else
@@ -407,26 +407,26 @@
     v12 = &__block_literal_global_29;
   }
 
-  [v10 stageMediaItem:v13 skipShelf:v5 forceStage:0 completionHandler:v12];
+  [context stageMediaItem:v13 skipShelf:shelfCopy forceStage:0 completionHandler:v12];
 }
 
-- (void)_insertSticker:(id)a3 skipShelf:(BOOL)a4 frameInWindowCoordinates:(CGRect)a5 completionHandler:(id)a6
+- (void)_insertSticker:(id)sticker skipShelf:(BOOL)shelf frameInWindowCoordinates:(CGRect)coordinates completionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v13 = a6;
-  v14 = a3;
-  v18 = [[_MSMessageMediaPayload alloc] initWithSticker:v14];
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  stickerCopy = sticker;
+  v18 = [[_MSMessageMediaPayload alloc] initWithSticker:stickerCopy];
 
   [(_MSMessageMediaPayload *)v18 setSourceFrame:x, y, width, height];
-  v15 = [(MSConversation *)self context];
-  v16 = v15;
-  if (v13)
+  context = [(MSConversation *)self context];
+  v16 = context;
+  if (handlerCopy)
   {
-    v17 = v13;
+    v17 = handlerCopy;
   }
 
   else
@@ -434,27 +434,27 @@
     v17 = &__block_literal_global_31;
   }
 
-  [v15 stageMediaItem:v18 skipShelf:v10 forceStage:0 completionHandler:v17];
+  [context stageMediaItem:v18 skipShelf:shelfCopy forceStage:0 completionHandler:v17];
 }
 
-- (void)_insertAttachment:(id)a3 adamID:(id)a4 appName:(id)a5 completionHandler:(id)a6
+- (void)_insertAttachment:(id)attachment adamID:(id)d appName:(id)name completionHandler:(id)handler
 {
-  v16 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
+  attachmentCopy = attachment;
   v13 = objc_alloc_init(_MSMessageMediaPayload);
-  [(_MSMessageMediaPayload *)v13 setMediaURL:v12];
+  [(_MSMessageMediaPayload *)v13 setMediaURL:attachmentCopy];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v16 && ([v16 isEqualToNumber:&unk_1F4AC7060] & 1) == 0)
+  if (dCopy && ([dCopy isEqualToNumber:&unk_1F4AC7060] & 1) == 0)
   {
-    [v14 setValue:v16 forKey:@"adam-id"];
+    [v14 setValue:dCopy forKey:@"adam-id"];
   }
 
-  if ([v10 length])
+  if ([nameCopy length])
   {
-    [v14 setValue:v10 forKey:@"name"];
+    [v14 setValue:nameCopy forKey:@"name"];
   }
 
   if ([v14 count])
@@ -462,20 +462,20 @@
     [(_MSMessageMediaPayload *)v13 setAttributionInfo:v14];
   }
 
-  v15 = [(MSConversation *)self context];
-  [v15 stageMediaItem:v13 skipShelf:0 forceStage:0 completionHandler:v11];
+  context = [(MSConversation *)self context];
+  [context stageMediaItem:v13 skipShelf:0 forceStage:0 completionHandler:handlerCopy];
 }
 
-- (void)_insertAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)_insertAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(MSConversation *)self context];
-  v12 = v10;
-  if (v8)
+  shelfCopy = shelf;
+  handlerCopy = handler;
+  archiveCopy = archive;
+  context = [(MSConversation *)self context];
+  v12 = context;
+  if (handlerCopy)
   {
-    v11 = v8;
+    v11 = handlerCopy;
   }
 
   else
@@ -483,15 +483,15 @@
     v11 = &__block_literal_global_35;
   }
 
-  [v10 stageAssetArchive:v9 skipShelf:v5 completionHandler:v11];
+  [context stageAssetArchive:archiveCopy skipShelf:shelfCopy completionHandler:v11];
 }
 
-- (void)_removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSConversation *)self context];
-  [v8 removeAssetArchiveWithIdentifier:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  context = [(MSConversation *)self context];
+  [context removeAssetArchiveWithIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
 - (MSConversationDelegate)delegate

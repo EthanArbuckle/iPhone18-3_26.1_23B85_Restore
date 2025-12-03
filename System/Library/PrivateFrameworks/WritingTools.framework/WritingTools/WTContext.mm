@@ -1,32 +1,32 @@
 @interface WTContext
-- (BOOL)isEqual:(id)a3;
-- (WTContext)initWithAttributedText:(id)a3 range:(_NSRange)a4;
-- (WTContext)initWithCoder:(id)a3;
-- (WTContext)initWithXPCDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WTContext)initWithAttributedText:(id)text range:(_NSRange)range;
+- (WTContext)initWithCoder:(id)coder;
+- (WTContext)initWithXPCDictionary:(id)dictionary;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation WTContext
 
-- (WTContext)initWithAttributedText:(id)a3 range:(_NSRange)a4
+- (WTContext)initWithAttributedText:(id)text range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = WTContext;
   v8 = [(WTContext *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v8->_uuid;
-    v8->_uuid = v9;
+    v8->_uuid = uUID;
 
-    v11 = [v7 copy];
+    v11 = [textCopy copy];
     attributedText = v8->_attributedText;
     v8->_attributedText = v11;
 
@@ -39,32 +39,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WTContext *)self uuid];
-  v4 = [v3 hash];
+  uuid = [(WTContext *)self uuid];
+  v4 = [uuid hash];
 
   v5 = 257 * ([(WTContext *)self range]+ 257 * v4);
   [(WTContext *)self range];
   return v5 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(WTContext *)self uuid];
-    v7 = [(WTContext *)v5 uuid];
-    if ([v6 isEqual:v7])
+    uuid = [(WTContext *)self uuid];
+    uuid2 = [(WTContext *)v5 uuid];
+    if ([uuid isEqual:uuid2])
     {
-      v8 = [(WTContext *)self range];
+      range = [(WTContext *)self range];
       v10 = v9;
-      v13 = v8 == [(WTContext *)v5 range]&& v10 == v11;
+      v13 = range == [(WTContext *)v5 range]&& v10 == v11;
     }
 
     else
@@ -81,17 +81,17 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(WTContext *)self uuid];
+    uuid = [(WTContext *)self uuid];
     v7 = v5[1];
-    v5[1] = v6;
+    v5[1] = uuid;
 
-    v8 = [(WTContext *)self attributedText];
-    v9 = [v8 copyWithZone:a3];
+    attributedText = [(WTContext *)self attributedText];
+    v9 = [attributedText copyWithZone:zone];
     v10 = v5[2];
     v5[2] = v9;
 
@@ -102,53 +102,53 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(WTContext *)self uuid];
-  [v13 encodeObject:v4 forKey:@"WTContextCodingKeyUUID"];
+  coderCopy = coder;
+  uuid = [(WTContext *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"WTContextCodingKeyUUID"];
 
   v5 = objc_alloc_init(WTBSCompatibleAttributedString);
-  v6 = [(WTContext *)self attributedText];
-  [(WTBSCompatibleAttributedString *)v5 setAttributedString:v6];
+  attributedText = [(WTContext *)self attributedText];
+  [(WTBSCompatibleAttributedString *)v5 setAttributedString:attributedText];
 
-  [v13 encodeObject:v5 forKey:@"WTContextCodingKeyAttributedText"];
+  [coderCopy encodeObject:v5 forKey:@"WTContextCodingKeyAttributedText"];
   v7 = MEMORY[0x277CCAE60];
-  v8 = [(WTContext *)self range];
-  v10 = [v7 valueWithRange:{v8, v9}];
-  [v13 encodeObject:v10 forKey:@"WTContextCodingKeyRange"];
+  range = [(WTContext *)self range];
+  v10 = [v7 valueWithRange:{range, v9}];
+  [coderCopy encodeObject:v10 forKey:@"WTContextCodingKeyRange"];
 
-  v11 = [(WTContext *)self smartReplyConfig];
+  smartReplyConfig = [(WTContext *)self smartReplyConfig];
 
-  if (v11)
+  if (smartReplyConfig)
   {
-    v12 = [(WTContext *)self smartReplyConfig];
-    [v13 encodeObject:v12 forKey:@"WTContextCodingKeySmartReplyConfiguration"];
+    smartReplyConfig2 = [(WTContext *)self smartReplyConfig];
+    [coderCopy encodeObject:smartReplyConfig2 forKey:@"WTContextCodingKeySmartReplyConfiguration"];
   }
 }
 
-- (WTContext)initWithCoder:(id)a3
+- (WTContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WTContext;
   v5 = [(WTContext *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeyUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeyUUID"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeyAttributedText"];
-    v9 = [v8 attributedString];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeyAttributedText"];
+    attributedString = [v8 attributedString];
     attributedText = v5->_attributedText;
-    v5->_attributedText = v9;
+    v5->_attributedText = attributedString;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeyRange"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeyRange"];
     v5->_range.location = [v11 rangeValue];
     v5->_range.length = v12;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeySmartReplyConfiguration"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WTContextCodingKeySmartReplyConfiguration"];
     smartReplyConfig = v5->_smartReplyConfig;
     v5->_smartReplyConfig = v13;
   }
@@ -156,16 +156,16 @@
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   [@"WTContextKey" UTF8String];
   BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (WTContext)initWithXPCDictionary:(id)a3
+- (WTContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   [@"WTContextKey" UTF8String];
   v5 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();

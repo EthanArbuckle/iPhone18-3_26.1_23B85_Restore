@@ -1,18 +1,18 @@
 @interface GTIntKeyedDictionary_capture
-- (GTIntKeyedDictionary_capture)initWithCapacity:(unint64_t)a3;
-- (GTIntKeyedDictionary_capture)initWithCoder:(id)a3;
-- (GTIntKeyedDictionary_capture)initWithIntKeyedDictionary:(id)a3;
+- (GTIntKeyedDictionary_capture)initWithCapacity:(unint64_t)capacity;
+- (GTIntKeyedDictionary_capture)initWithCoder:(id)coder;
+- (GTIntKeyedDictionary_capture)initWithIntKeyedDictionary:(id)dictionary;
 - (id)allKeys;
-- (id)objectForIntKey:(int64_t)a3;
-- (id)objectForKey:(id)a3;
+- (id)objectForIntKey:(int64_t)key;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObjectForIntKey:(int64_t)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forIntKey:(int64_t)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForIntKey:(int64_t)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forIntKey:(int64_t)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation GTIntKeyedDictionary_capture
@@ -29,28 +29,28 @@
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [key longLongValue];
 
-  [(GTIntKeyedDictionary_capture *)self removeObjectForIntKey:v4];
+  [(GTIntKeyedDictionary_capture *)self removeObjectForIntKey:longLongValue];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [key longLongValue];
 
-  return [(GTIntKeyedDictionary_capture *)self objectForIntKey:v4];
+  return [(GTIntKeyedDictionary_capture *)self objectForIntKey:longLongValue];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = [a4 longLongValue];
+  longLongValue = [key longLongValue];
 
-  [(GTIntKeyedDictionary_capture *)self setObject:a3 forIntKey:v6];
+  [(GTIntKeyedDictionary_capture *)self setObject:object forIntKey:longLongValue];
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v4 = self->_private;
   v6 = 0;
@@ -63,16 +63,16 @@
       break;
     }
 
-    (*(a3 + 2))(a3, v5[2], v5[3], &v6);
+    (*(block + 2))(block, v5[2], v5[3], &v6);
   }
 
   while (v6 != 1);
 }
 
-- (void)removeObjectForIntKey:(int64_t)a3
+- (void)removeObjectForIntKey:(int64_t)key
 {
   v3 = self->_private;
-  v4 = std::__hash_table<std::__hash_value_type<long long,objc_object  {objcproto8NSObject}*>,std::__unordered_map_hasher<long long,objc_object  {objcproto8NSObject}*,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,objc_object  {objcproto8NSObject}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto8NSObject}*>>::find<long long>(v3, a3);
+  v4 = std::__hash_table<std::__hash_value_type<long long,objc_object  {objcproto8NSObject}*>,std::__unordered_map_hasher<long long,objc_object  {objcproto8NSObject}*,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,objc_object  {objcproto8NSObject}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto8NSObject}*>>::find<long long>(v3, key);
   if (v4)
   {
     v5 = v4;
@@ -182,9 +182,9 @@ LABEL_21:
   }
 }
 
-- (id)objectForIntKey:(int64_t)a3
+- (id)objectForIntKey:(int64_t)key
 {
-  result = std::__hash_table<std::__hash_value_type<long long,objc_object  {objcproto8NSObject}*>,std::__unordered_map_hasher<long long,objc_object  {objcproto8NSObject}*,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,objc_object  {objcproto8NSObject}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto8NSObject}*>>::find<long long>(self->_private, a3);
+  result = std::__hash_table<std::__hash_value_type<long long,objc_object  {objcproto8NSObject}*>,std::__unordered_map_hasher<long long,objc_object  {objcproto8NSObject}*,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,objc_object  {objcproto8NSObject}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto8NSObject}*>>::find<long long>(self->_private, key);
   if (result)
   {
     return *(result + 3);
@@ -193,9 +193,9 @@ LABEL_21:
   return result;
 }
 
-- (void)setObject:(id)a3 forIntKey:(int64_t)a4
+- (void)setObject:(id)object forIntKey:(int64_t)key
 {
-  if (a3)
+  if (object)
   {
     v5 = self->_private;
     v6 = v5[1];
@@ -208,19 +208,19 @@ LABEL_21:
     v7.i16[0] = vaddlv_u8(v7);
     if (v7.u32[0] > 1uLL)
     {
-      v8 = a4;
-      if (v6 <= a4)
+      keyCopy = key;
+      if (v6 <= key)
       {
-        v8 = a4 % v6;
+        keyCopy = key % v6;
       }
     }
 
     else
     {
-      v8 = (v6 - 1) & a4;
+      keyCopy = (v6 - 1) & key;
     }
 
-    v9 = *(*v5 + 8 * v8);
+    v9 = *(*v5 + 8 * keyCopy);
     if (!v9 || (v10 = *v9) == 0)
     {
 LABEL_22:
@@ -230,16 +230,16 @@ LABEL_22:
     while (1)
     {
       v11 = v10[1];
-      if (v11 == a4)
+      if (v11 == key)
       {
-        if (v10[2] == a4)
+        if (v10[2] == key)
         {
           v12 = v10[3];
-          if (v12 != a3)
+          if (v12 != object)
           {
             CFRelease(v12);
-            CFRetain(a3);
-            v10[3] = a3;
+            CFRetain(object);
+            v10[3] = object;
           }
 
           return;
@@ -261,7 +261,7 @@ LABEL_22:
           v11 &= v6 - 1;
         }
 
-        if (v11 != v8)
+        if (v11 != keyCopy)
         {
           goto LABEL_22;
         }
@@ -275,7 +275,7 @@ LABEL_22:
     }
   }
 
-  [(GTIntKeyedDictionary_capture *)self removeObjectForIntKey:a4];
+  [(GTIntKeyedDictionary_capture *)self removeObjectForIntKey:key];
 }
 
 - (void)removeAllObjects
@@ -338,32 +338,32 @@ LABEL_22:
   [(GTIntKeyedDictionary_capture *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     __assert_rtn("[GTIntKeyedDictionary encodeWithCoder:]", ", 0, "[coder allowsKeyedCoding]"");
   }
 
-  [a3 encodeObject:-[GTIntKeyedDictionary_capture allKeys](self forKey:{"allKeys"), @"keys"}];
+  [coder encodeObject:-[GTIntKeyedDictionary_capture allKeys](self forKey:{"allKeys"), @"keys"}];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __40__GTIntKeyedDictionary_encodeWithCoder___block_invoke;
   v5[3] = &unk_2F1428;
-  v5[4] = a3;
+  v5[4] = coder;
   [(GTIntKeyedDictionary_capture *)self enumerateKeysAndObjectsUsingBlock:v5];
 }
 
-- (GTIntKeyedDictionary_capture)initWithCoder:(id)a3
+- (GTIntKeyedDictionary_capture)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v11 = "[coder allowsKeyedCoding]";
     goto LABEL_8;
   }
 
   v5 = objc_opt_class();
-  v6 = [a3 decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, objc_opt_class(), 0), @"keys"}];
+  v6 = [coder decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, objc_opt_class(), 0), @"keys"}];
   if (!v6)
   {
     v11 = "keys";
@@ -380,7 +380,7 @@ LABEL_8:
     v12[1] = 3221225472;
     v12[2] = __38__GTIntKeyedDictionary_initWithCoder___block_invoke;
     v12[3] = &unk_2F1450;
-    v12[4] = a3;
+    v12[4] = coder;
     v12[5] = v8;
     [v7 enumerateObjectsUsingBlock:v12];
   }
@@ -388,9 +388,9 @@ LABEL_8:
   return v9;
 }
 
-- (GTIntKeyedDictionary_capture)initWithIntKeyedDictionary:(id)a3
+- (GTIntKeyedDictionary_capture)initWithIntKeyedDictionary:(id)dictionary
 {
-  v4 = -[GTIntKeyedDictionary_capture initWithCapacity:](self, "initWithCapacity:", [a3 count]);
+  v4 = -[GTIntKeyedDictionary_capture initWithCapacity:](self, "initWithCapacity:", [dictionary count]);
   v5 = v4;
   if (v4)
   {
@@ -399,13 +399,13 @@ LABEL_8:
     v7[2] = __51__GTIntKeyedDictionary_initWithIntKeyedDictionary___block_invoke;
     v7[3] = &unk_2F1428;
     v7[4] = v4;
-    [a3 enumerateKeysAndObjectsUsingBlock:v7];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v7];
   }
 
   return v5;
 }
 
-- (GTIntKeyedDictionary_capture)initWithCapacity:(unint64_t)a3
+- (GTIntKeyedDictionary_capture)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = GTIntKeyedDictionary_capture;

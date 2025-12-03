@@ -1,25 +1,25 @@
 @interface SMTSchemaSMTAppLanguageModelBuildFailed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithDictionary:(id)a3;
-- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithJSON:(id)a3;
+- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithDictionary:(id)dictionary;
+- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SMTSchemaSMTAppLanguageModelBuildFailed
 
-- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithDictionary:(id)a3
+- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SMTSchemaSMTAppLanguageModelBuildFailed;
   v5 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"assetName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"assetName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SMTSchemaSMTAppLanguageModelBuildFailed *)v5 setAssetName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"reason"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithJSON:(id)a3
+- (SMTSchemaSMTAppLanguageModelBuildFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,24 +76,24 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetName)
   {
-    v4 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetName"];
+    assetName = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
+    v5 = [assetName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetName"];
   }
 
   if (*&self->_has)
   {
-    v6 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self reason];
+    reason = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self reason];
     v7 = @"SMTAPPLANGUAGEMODELBUILDFAILUREREASON_UNKNOWN";
-    if (v6 == 1)
+    if (reason == 1)
     {
       v7 = @"SMTAPPLANGUAGEMODELBUILDFAILUREREASON_DATAPACK";
     }
 
-    if (v6 == 2)
+    if (reason == 2)
     {
       v8 = @"SMTAPPLANGUAGEMODELBUILDFAILUREREASON_TRANSITION";
     }
@@ -103,12 +103,12 @@
       v8 = v7;
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v8 forKeyedSubscript:@"reason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,18 +127,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
-  v6 = [v4 assetName];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  assetName = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
+  assetName2 = [equalCopy assetName];
+  v7 = assetName2;
+  if ((assetName != 0) == (assetName2 == 0))
   {
 
 LABEL_12:
@@ -146,13 +146,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
-  if (v8)
+  assetName3 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
+  if (assetName3)
   {
-    v9 = v8;
-    v10 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
-    v11 = [v4 assetName];
-    v12 = [v10 isEqual:v11];
+    v9 = assetName3;
+    assetName4 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
+    assetName5 = [equalCopy assetName];
+    v12 = [assetName4 isEqual:assetName5];
 
     if (!v12)
     {
@@ -164,7 +164,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -172,7 +172,7 @@ LABEL_12:
   if (*&self->_has)
   {
     reason = self->_reason;
-    if (reason != [v4 reason])
+    if (reason != [equalCopy reason])
     {
       goto LABEL_12;
     }
@@ -184,12 +184,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
+  toCopy = to;
+  assetName = [(SMTSchemaSMTAppLanguageModelBuildFailed *)self assetName];
 
-  if (v4)
+  if (assetName)
   {
     PBDataWriterWriteStringField();
   }

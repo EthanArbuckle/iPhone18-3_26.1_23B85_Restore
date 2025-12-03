@@ -1,8 +1,8 @@
 @interface CHUISControlInstanceButton
 - (CHUISControlButtonViewModel)viewModel;
 - (CHUISControlIconView)iconView;
-- (CHUISControlInstanceButton)initWithControl:(id)a3;
-- (CHUISControlInstanceButton)initWithControl:(id)a3 contentType:(unint64_t)a4;
+- (CHUISControlInstanceButton)initWithControl:(id)control;
+- (CHUISControlInstanceButton)initWithControl:(id)control contentType:(unint64_t)type;
 - (NSString)title;
 - (UIColor)tintColor;
 @end
@@ -11,7 +11,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   CHUISControlInstanceButton.title.getter();
   v4 = v3;
 
@@ -43,7 +43,7 @@
 
 - (UIColor)tintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHUISControlInstanceButton.tintColor.getter();
 
   return v3;
@@ -63,17 +63,17 @@
   return v4;
 }
 
-- (CHUISControlInstanceButton)initWithControl:(id)a3 contentType:(unint64_t)a4
+- (CHUISControlInstanceButton)initWithControl:(id)control contentType:(unint64_t)type
 {
   v7 = objc_allocWithZone(MEMORY[0x1E6994270]);
-  v8 = a3;
-  v9 = [v7 initWithControl:v8 contentType:a4 hostIdentifier:0 configurationIdentifier:0];
+  controlCopy = control;
+  v9 = [v7 initWithControl:controlCopy contentType:type hostIdentifier:0 configurationIdentifier:0];
   v10 = [(CHUISControlInstanceButton *)self initWithInstanceIdentity:v9];
 
   return v10;
 }
 
-- (CHUISControlInstanceButton)initWithControl:(id)a3
+- (CHUISControlInstanceButton)initWithControl:(id)control
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,33 +1,33 @@
 @interface StateHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBin:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBin:(id)bin;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation StateHist
 
-- (void)addBin:(id)a3
+- (void)addBin:(id)bin
 {
-  v4 = a3;
+  binCopy = bin;
   bins = self->_bins;
-  v8 = v4;
+  v8 = binCopy;
   if (!bins)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bins;
     self->_bins = v6;
 
-    v4 = v8;
+    binCopy = v8;
     bins = self->_bins;
   }
 
-  [(NSMutableArray *)bins addObject:v4];
+  [(NSMutableArray *)bins addObject:binCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = StateHist;
   v4 = [(StateHist *)&v8 description];
-  v5 = [(StateHist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(StateHist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_state];
-    [v3 setObject:v4 forKey:@"state"];
+    [dictionary setObject:v4 forKey:@"state"];
   }
 
   if ([(NSMutableArray *)self->_bins count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -84,18 +84,18 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"bin"];
+    [dictionary setObject:v5 forKey:@"bin"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     state = self->_state;
@@ -137,23 +137,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_state;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_state;
+    *(toCopy + 20) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(StateHist *)self binsCount])
   {
     [v9 clearBins];
-    v5 = [(StateHist *)self binsCount];
-    if (v5)
+    binsCount = [(StateHist *)self binsCount];
+    if (binsCount)
     {
-      v6 = v5;
+      v6 = binsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(StateHist *)self binAtIndex:i];
@@ -163,10 +163,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -194,7 +194,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addBin:v12];
 
         ++v11;
@@ -211,24 +211,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_state != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_state != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -236,7 +236,7 @@ LABEL_9:
   }
 
   bins = self->_bins;
-  if (bins | *(v4 + 1))
+  if (bins | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)bins isEqual:?];
   }
@@ -266,14 +266,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_bins hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_state = *(v4 + 4);
+    self->_state = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -281,7 +281,7 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

@@ -1,44 +1,44 @@
 @interface FACircleStateResponse
 - (BOOL)success;
-- (FACircleStateResponse)initWithCoder:(id)a3;
-- (FACircleStateResponse)initWithLoadSuccess:(BOOL)a3 error:(id)a4 userInfo:(id)a5;
+- (FACircleStateResponse)initWithCoder:(id)coder;
+- (FACircleStateResponse)initWithLoadSuccess:(BOOL)success error:(id)error userInfo:(id)info;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)success;
 @end
 
 @implementation FACircleStateResponse
 
-- (FACircleStateResponse)initWithLoadSuccess:(BOOL)a3 error:(id)a4 userInfo:(id)a5
+- (FACircleStateResponse)initWithLoadSuccess:(BOOL)success error:(id)error userInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = FACircleStateResponse;
   v11 = [(FACircleStateResponse *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_loadSuccess = a3;
-    objc_storeStrong(&v11->_error, a4);
-    objc_storeStrong(&v12->_userInfo, a5);
+    v11->_loadSuccess = success;
+    objc_storeStrong(&v11->_error, error);
+    objc_storeStrong(&v12->_userInfo, info);
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   loadSuccess = self->_loadSuccess;
-  v5 = a3;
-  [v5 encodeBool:loadSuccess forKey:@"loadSuccess"];
-  [v5 encodeObject:self->_error forKey:@"error"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeBool:loadSuccess forKey:@"loadSuccess"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
 }
 
-- (FACircleStateResponse)initWithCoder:(id)a3
+- (FACircleStateResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FACircleStateResponse *)self init];
   if (v5)
   {
@@ -48,12 +48,12 @@
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
     v11 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v5->_loadSuccess = [v4 decodeBoolForKey:@"loadSuccess"];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"error"];
+    v5->_loadSuccess = [coderCopy decodeBoolForKey:@"loadSuccess"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"error"];
     error = v5->_error;
     v5->_error = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v10 forKey:@"userInfo"];
+    v14 = [coderCopy decodeObjectOfClasses:v10 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v14;
   }
@@ -63,9 +63,9 @@
 
 - (BOOL)success
 {
-  v3 = [(FACircleStateResponse *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"success"];
-  v5 = [v4 BOOLValue];
+  userInfo = [(FACircleStateResponse *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"success"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = _FALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -73,7 +73,7 @@
     [(FACircleStateResponse *)self success];
   }
 
-  return [(FACircleStateResponse *)self loadSuccess]& v5;
+  return [(FACircleStateResponse *)self loadSuccess]& bOOLValue;
 }
 
 - (id)description
@@ -94,10 +94,10 @@
 - (void)success
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [a1 loadSuccess];
+  loadSuccess = [self loadSuccess];
   v6 = @"NO";
   v10 = "[FACircleStateResponse success]";
-  if (v5)
+  if (loadSuccess)
   {
     v7 = @"YES";
   }

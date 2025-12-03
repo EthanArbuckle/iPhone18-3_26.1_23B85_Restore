@@ -1,28 +1,28 @@
 @interface REMAccountStorage
-+ (id)listIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)a3;
++ (id)listIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)d;
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnsupported;
 - (NSString)displayName;
-- (REMAccountStorage)initWithCoder:(id)a3;
-- (REMAccountStorage)initWithObjectID:(id)a3 type:(int64_t)a4 name:(id)a5;
-- (REMAccountStorage)initWithObjectID:(id)a3 type:(int64_t)a4 name:(id)a5 nullableListIDsMergeableOrdering:(id)a6;
+- (REMAccountStorage)initWithCoder:(id)coder;
+- (REMAccountStorage)initWithObjectID:(id)d type:(int64_t)type name:(id)name;
+- (REMAccountStorage)initWithObjectID:(id)d type:(int64_t)type name:(id)name nullableListIDsMergeableOrdering:(id)ordering;
 - (REMCRMergeableOrderedSet)listIDsMergeableOrdering;
 - (REMResolutionTokenMap)resolutionTokenMap;
 - (id)accountTypeHost;
 - (id)cdKeyToStorageKeyMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)listIDsMergeableOrderingReplicaIDSource;
 - (id)serializedListIDsMergeableOrdering;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)listIDsMergeableOrdering;
 - (void)resolutionTokenMap;
-- (void)setListIDsMergeableOrdering:(id)a3;
-- (void)setStoreGenerationIfNeeded:(unint64_t)a3;
+- (void)setListIDsMergeableOrdering:(id)ordering;
+- (void)setStoreGenerationIfNeeded:(unint64_t)needed;
 @end
 
 @implementation REMAccountStorage
@@ -44,26 +44,26 @@
 
 - (NSString)displayName
 {
-  v2 = [(REMAccountStorage *)self name];
-  v3 = [REMDisplayNameUtils displayNameFromAccountName:v2];
+  name = [(REMAccountStorage *)self name];
+  v3 = [REMDisplayNameUtils displayNameFromAccountName:name];
 
   return v3;
 }
 
-- (REMAccountStorage)initWithObjectID:(id)a3 type:(int64_t)a4 name:(id)a5 nullableListIDsMergeableOrdering:(id)a6
+- (REMAccountStorage)initWithObjectID:(id)d type:(int64_t)type name:(id)name nullableListIDsMergeableOrdering:(id)ordering
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  nameCopy = name;
+  orderingCopy = ordering;
   v44.receiver = self;
   v44.super_class = REMAccountStorage;
   v14 = [(REMAccountStorage *)&v44 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_objectID, a3);
-    v15->_type = a4;
-    objc_storeStrong(&v15->_name, a5);
+    objc_storeStrong(&v14->_objectID, d);
+    v15->_type = type;
+    objc_storeStrong(&v15->_name, name);
     v15->_lock._os_unfair_lock_opaque = 0;
     v38 = 0;
     v39 = &v38;
@@ -77,25 +77,25 @@
     v34 = __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMergeableOrdering___block_invoke;
     v35 = &unk_1E7508420;
     v37 = &v38;
-    v36 = v13;
+    v36 = orderingCopy;
     __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMergeableOrdering___block_invoke(&v32);
     os_unfair_lock_unlock(&v15->_lock);
 
     v16 = v39[5];
     if (v16)
     {
-      v17 = v16;
+      data = v16;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DEF0] data];
+      data = [MEMORY[0x1E695DEF0] data];
     }
 
     listIDsMergeableOrderingData = v15->_listIDsMergeableOrderingData;
-    v15->_listIDsMergeableOrderingData = v17;
+    v15->_listIDsMergeableOrderingData = data;
 
-    objc_storeStrong(&v15->_listIDsMergeableOrdering, a6);
+    objc_storeStrong(&v15->_listIDsMergeableOrdering, ordering);
     pinnedListsManualOrdering = v15->_pinnedListsManualOrdering;
     v15->_pinnedListsManualOrdering = 0;
 
@@ -106,9 +106,9 @@
     resolutionTokenMap = v15->_resolutionTokenMap;
     v15->_resolutionTokenMap = v21;
 
-    v23 = [MEMORY[0x1E695DEF0] data];
+    data2 = [MEMORY[0x1E695DEF0] data];
     resolutionTokenMapData = v15->_resolutionTokenMapData;
-    v15->_resolutionTokenMapData = v23;
+    v15->_resolutionTokenMapData = data2;
 
     v25 = [MEMORY[0x1E695DFD8] set];
     listIDsToUndelete = v15->_listIDsToUndelete;
@@ -120,10 +120,10 @@
 
     v15->_isAddingExtraPrimaryCKAccountForTesting = 0;
     *&v15->_listsDADisplayOrderChanged = 0x1000000000000;
-    v29 = [(REMAccountStorage *)v15 accountTypeHost];
-    v30 = [v29 isCloudKit];
+    accountTypeHost = [(REMAccountStorage *)v15 accountTypeHost];
+    isCloudKit = [accountTypeHost isCloudKit];
 
-    v15->_daWasMigrated = v30;
+    v15->_daWasMigrated = isCloudKit;
     _Block_object_dispose(&v38, 8);
   }
 
@@ -140,72 +140,72 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (REMAccountStorage)initWithObjectID:(id)a3 type:(int64_t)a4 name:(id)a5
+- (REMAccountStorage)initWithObjectID:(id)d type:(int64_t)type name:(id)name
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:v9];
+  nameCopy = name;
+  dCopy = d;
+  v10 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:dCopy];
   v11 = [REMCRMergeableOrderedSet alloc];
-  v12 = [MEMORY[0x1E695DFB8] orderedSet];
-  v13 = [(REMCRMergeableOrderedSet *)v11 initWithReplicaIDSource:v10 orderedSet:v12];
+  orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+  v13 = [(REMCRMergeableOrderedSet *)v11 initWithReplicaIDSource:v10 orderedSet:orderedSet];
 
-  v14 = [(REMAccountStorage *)self initWithObjectID:v9 type:a4 name:v8 listIDsMergeableOrdering:v13];
+  v14 = [(REMAccountStorage *)self initWithObjectID:dCopy type:type name:nameCopy listIDsMergeableOrdering:v13];
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMAccountStorage alloc];
-  v5 = [(REMAccountStorage *)self objectID];
-  v6 = [(REMAccountStorage *)self type];
-  v7 = [(REMAccountStorage *)self name];
-  v8 = [(REMAccountStorage *)v4 initWithObjectID:v5 type:v6 name:v7 nullableListIDsMergeableOrdering:0];
+  objectID = [(REMAccountStorage *)self objectID];
+  type = [(REMAccountStorage *)self type];
+  name = [(REMAccountStorage *)self name];
+  v8 = [(REMAccountStorage *)v4 initWithObjectID:objectID type:type name:name nullableListIDsMergeableOrdering:0];
 
   v9 = [(REMCRMergeableOrderedSet *)self->_listIDsMergeableOrdering copy];
   [(REMAccountStorage *)v8 setListIDsMergeableOrdering:v9];
 
   [(REMAccountStorage *)v8 setListIDsMergeableOrderingData:self->_listIDsMergeableOrderingData];
-  v10 = [(REMAccountStorage *)self externalIdentifier];
-  [(REMAccountStorage *)v8 setExternalIdentifier:v10];
+  externalIdentifier = [(REMAccountStorage *)self externalIdentifier];
+  [(REMAccountStorage *)v8 setExternalIdentifier:externalIdentifier];
 
-  v11 = [(REMAccountStorage *)self externalModificationTag];
-  [(REMAccountStorage *)v8 setExternalModificationTag:v11];
+  externalModificationTag = [(REMAccountStorage *)self externalModificationTag];
+  [(REMAccountStorage *)v8 setExternalModificationTag:externalModificationTag];
 
-  v12 = [(REMAccountStorage *)self daSyncToken];
-  [(REMAccountStorage *)v8 setDaSyncToken:v12];
+  daSyncToken = [(REMAccountStorage *)self daSyncToken];
+  [(REMAccountStorage *)v8 setDaSyncToken:daSyncToken];
 
-  v13 = [(REMAccountStorage *)self daPushKey];
-  [(REMAccountStorage *)v8 setDaPushKey:v13];
+  daPushKey = [(REMAccountStorage *)self daPushKey];
+  [(REMAccountStorage *)v8 setDaPushKey:daPushKey];
 
-  v14 = [(REMAccountStorage *)self pinnedListsManualOrdering];
-  v15 = [v14 copy];
+  pinnedListsManualOrdering = [(REMAccountStorage *)self pinnedListsManualOrdering];
+  v15 = [pinnedListsManualOrdering copy];
   [(REMAccountStorage *)v8 setPinnedListsManualOrdering:v15];
 
-  v16 = [(REMAccountStorage *)self templatesManualOrdering];
-  v17 = [v16 copy];
+  templatesManualOrdering = [(REMAccountStorage *)self templatesManualOrdering];
+  v17 = [templatesManualOrdering copy];
   [(REMAccountStorage *)v8 setTemplatesManualOrdering:v17];
 
   v18 = [(REMResolutionTokenMap *)self->_resolutionTokenMap copy];
   resolutionTokenMap = v8->_resolutionTokenMap;
   v8->_resolutionTokenMap = v18;
 
-  v20 = [(REMAccountStorage *)self resolutionTokenMapData];
-  [(REMAccountStorage *)v8 setResolutionTokenMapData:v20];
+  resolutionTokenMapData = [(REMAccountStorage *)self resolutionTokenMapData];
+  [(REMAccountStorage *)v8 setResolutionTokenMapData:resolutionTokenMapData];
 
-  v21 = [(REMAccountStorage *)self listIDsToUndelete];
-  v22 = [v21 copy];
+  listIDsToUndelete = [(REMAccountStorage *)self listIDsToUndelete];
+  v22 = [listIDsToUndelete copy];
   [(REMAccountStorage *)v8 setListIDsToUndelete:v22];
 
-  v23 = [(REMAccountStorage *)self smartListIDsToUndelete];
-  v24 = [v23 copy];
+  smartListIDsToUndelete = [(REMAccountStorage *)self smartListIDsToUndelete];
+  v24 = [smartListIDsToUndelete copy];
   [(REMAccountStorage *)v8 setSmartListIDsToUndelete:v24];
 
   [(REMAccountStorage *)v8 setListsDADisplayOrderChanged:[(REMAccountStorage *)self listsDADisplayOrderChanged]];
-  v25 = [(REMAccountStorage *)self personID];
-  [(REMAccountStorage *)v8 setPersonID:v25];
+  personID = [(REMAccountStorage *)self personID];
+  [(REMAccountStorage *)v8 setPersonID:personID];
 
-  v26 = [(REMAccountStorage *)self personIDSalt];
-  v27 = [v26 copy];
+  personIDSalt = [(REMAccountStorage *)self personIDSalt];
+  v27 = [personIDSalt copy];
   [(REMAccountStorage *)v8 setPersonIDSalt:v27];
 
   [(REMAccountStorage *)v8 setInactive:[(REMAccountStorage *)self inactive]];
@@ -213,8 +213,8 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
   [(REMAccountStorage *)v8 setDidChooseToMigrateLocally:[(REMAccountStorage *)self didChooseToMigrateLocally]];
   [(REMAccountStorage *)v8 setDidFinishMigration:[(REMAccountStorage *)self didFinishMigration]];
   [(REMAccountStorage *)v8 setPersistenceCloudSchemaVersion:[(REMAccountStorage *)self persistenceCloudSchemaVersion]];
-  v28 = [(REMAccountStorage *)self daConstraintsDescriptionPath];
-  [(REMAccountStorage *)v8 setDaConstraintsDescriptionPath:v28];
+  daConstraintsDescriptionPath = [(REMAccountStorage *)self daConstraintsDescriptionPath];
+  [(REMAccountStorage *)v8 setDaConstraintsDescriptionPath:daConstraintsDescriptionPath];
 
   [(REMAccountStorage *)v8 setDaAllowsCalendarAddDeleteModify:[(REMAccountStorage *)self daAllowsCalendarAddDeleteModify]];
   [(REMAccountStorage *)v8 setDaSupportsSharedCalendars:[(REMAccountStorage *)self daSupportsSharedCalendars]];
@@ -231,9 +231,9 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMAccountStorage *)self type];
-  v6 = [(REMAccountStorage *)self objectID];
-  v7 = [v3 stringWithFormat:@"<%@: %p type:%ld, %@>", v4, self, v5, v6];
+  type = [(REMAccountStorage *)self type];
+  objectID = [(REMAccountStorage *)self objectID];
+  v7 = [v3 stringWithFormat:@"<%@: %p type:%ld, %@>", v4, self, type, objectID];
 
   return v7;
 }
@@ -244,24 +244,24 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
   v4 = objc_opt_class();
   storeGeneration = self->_storeGeneration;
   copyGeneration = self->_copyGeneration;
-  v7 = [(REMAccountStorage *)self type];
-  v8 = [(REMAccountStorage *)self name];
-  v9 = [(REMAccountStorage *)self objectID];
-  v10 = [v3 stringWithFormat:@"<%@: %p[%ld.%ld] type:%ld name:%@ %@>", v4, self, storeGeneration, copyGeneration, v7, v8, v9];
+  type = [(REMAccountStorage *)self type];
+  name = [(REMAccountStorage *)self name];
+  objectID = [(REMAccountStorage *)self objectID];
+  v10 = [v3 stringWithFormat:@"<%@: %p[%ld.%ld] type:%ld name:%@ %@>", v4, self, storeGeneration, copyGeneration, type, name, objectID];
 
   return v10;
 }
 
-- (REMAccountStorage)initWithCoder:(id)a3
+- (REMAccountStorage)initWithCoder:(id)coder
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
-  v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalModificationTag"];
-  v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daSyncToken"];
-  v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daPushKey"];
-  v7 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+  v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalModificationTag"];
+  v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daSyncToken"];
+  v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daPushKey"];
+  v7 = [coderCopy decodeIntegerForKey:@"type"];
   if (v7 >= 8)
   {
     v8 = os_log_create("com.apple.reminderkit", "default");
@@ -273,19 +273,19 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
     v7 = 0;
   }
 
-  v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v41 = [v4 decodeBoolForKey:@"markedForRemoval"];
-  v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pinnedListsManualOrdering"];
-  v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templatesManualOrdering"];
+  v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v41 = [coderCopy decodeBoolForKey:@"markedForRemoval"];
+  v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pinnedListsManualOrdering"];
+  v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templatesManualOrdering"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"listIDsToUndelete"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"listIDsToUndelete"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"smartListIDsToUndelete"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"smartListIDsToUndelete"];
 
   v17 = v5;
   if (v7 && v5 && v48)
@@ -300,7 +300,7 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
       [(REMAccountStorage *)v19 setDaSyncToken:v46];
       [(REMAccountStorage *)v19 setDaPushKey:v45];
       [(REMAccountStorage *)v19 setMarkedForRemoval:v41];
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listIDsMergeableOrdering"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listIDsMergeableOrdering"];
       v42 = v21;
       if (v21)
       {
@@ -313,7 +313,7 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
         listIDsMergeableOrdering = v19->_listIDsMergeableOrdering;
         v19->_listIDsMergeableOrdering = 0;
 
-        v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listIDsMergeableOrderingData"];
+        v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listIDsMergeableOrderingData"];
       }
 
       listIDsMergeableOrderingData = v19->_listIDsMergeableOrderingData;
@@ -324,8 +324,8 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
         [REMAccountStorage initWithCoder:];
       }
 
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMapData"];
-      v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMap"];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMapData"];
+      v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMap"];
       v40 = v28;
       if (v29)
       {
@@ -352,31 +352,31 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
       v34 = [MEMORY[0x1E695DFD8] setWithArray:v16];
       [(REMAccountStorage *)v19 setSmartListIDsToUndelete:v34];
 
-      -[REMAccountStorage setListsDADisplayOrderChanged:](v19, "setListsDADisplayOrderChanged:", [v4 decodeBoolForKey:@"listsDADisplayOrderChanged"]);
-      v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
+      -[REMAccountStorage setListsDADisplayOrderChanged:](v19, "setListsDADisplayOrderChanged:", [coderCopy decodeBoolForKey:@"listsDADisplayOrderChanged"]);
+      v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
       [(REMAccountStorage *)v19 setPersonID:v35];
 
-      v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personIDSalt"];
+      v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personIDSalt"];
       [(REMAccountStorage *)v19 setPersonIDSalt:v36];
 
-      -[REMAccountStorage setInactive:](v19, "setInactive:", [v4 decodeBoolForKey:@"inactive"]);
-      -[REMAccountStorage setDidChooseToMigrate:](v19, "setDidChooseToMigrate:", [v4 decodeBoolForKey:@"didChooseToMigrate"]);
-      -[REMAccountStorage setDidChooseToMigrateLocally:](v19, "setDidChooseToMigrateLocally:", [v4 decodeBoolForKey:@"didChooseToMigrateLocally"]);
-      -[REMAccountStorage setDidFinishMigration:](v19, "setDidFinishMigration:", [v4 decodeBoolForKey:@"didFinishMigration"]);
-      -[REMAccountStorage setPersistenceCloudSchemaVersion:](v19, "setPersistenceCloudSchemaVersion:", [v4 decodeIntegerForKey:@"persistenceCloudSchemaVersion"]);
-      v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daConstraintsDescriptionPath"];
+      -[REMAccountStorage setInactive:](v19, "setInactive:", [coderCopy decodeBoolForKey:@"inactive"]);
+      -[REMAccountStorage setDidChooseToMigrate:](v19, "setDidChooseToMigrate:", [coderCopy decodeBoolForKey:@"didChooseToMigrate"]);
+      -[REMAccountStorage setDidChooseToMigrateLocally:](v19, "setDidChooseToMigrateLocally:", [coderCopy decodeBoolForKey:@"didChooseToMigrateLocally"]);
+      -[REMAccountStorage setDidFinishMigration:](v19, "setDidFinishMigration:", [coderCopy decodeBoolForKey:@"didFinishMigration"]);
+      -[REMAccountStorage setPersistenceCloudSchemaVersion:](v19, "setPersistenceCloudSchemaVersion:", [coderCopy decodeIntegerForKey:@"persistenceCloudSchemaVersion"]);
+      v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daConstraintsDescriptionPath"];
       [(REMAccountStorage *)v19 setDaConstraintsDescriptionPath:v37];
 
-      -[REMAccountStorage setDaAllowsCalendarAddDeleteModify:](v19, "setDaAllowsCalendarAddDeleteModify:", [v4 decodeBoolForKey:@"daAllowsCalendarAddDeleteModify"]);
-      -[REMAccountStorage setDaSupportsSharedCalendars:](v19, "setDaSupportsSharedCalendars:", [v4 decodeBoolForKey:@"daSupportsSharedCalendars"]);
-      -[REMAccountStorage setDaWasMigrated:](v19, "setDaWasMigrated:", [v4 decodeBoolForKey:@"daWasMigrated"]);
-      -[REMAccountStorage setMinimumSupportedVersion:](v19, "setMinimumSupportedVersion:", [v4 decodeIntegerForKey:@"minimumSupportedVersion"]);
-      -[REMAccountStorage setEffectiveMinimumSupportedVersion:](v19, "setEffectiveMinimumSupportedVersion:", [v4 decodeIntegerForKey:@"effectiveMinimumSupportedVersion"]);
-      -[REMAccountStorage setDebugSyncDisabled:](v19, "setDebugSyncDisabled:", [v4 decodeBoolForKey:@"debugSyncDisabled"]);
+      -[REMAccountStorage setDaAllowsCalendarAddDeleteModify:](v19, "setDaAllowsCalendarAddDeleteModify:", [coderCopy decodeBoolForKey:@"daAllowsCalendarAddDeleteModify"]);
+      -[REMAccountStorage setDaSupportsSharedCalendars:](v19, "setDaSupportsSharedCalendars:", [coderCopy decodeBoolForKey:@"daSupportsSharedCalendars"]);
+      -[REMAccountStorage setDaWasMigrated:](v19, "setDaWasMigrated:", [coderCopy decodeBoolForKey:@"daWasMigrated"]);
+      -[REMAccountStorage setMinimumSupportedVersion:](v19, "setMinimumSupportedVersion:", [coderCopy decodeIntegerForKey:@"minimumSupportedVersion"]);
+      -[REMAccountStorage setEffectiveMinimumSupportedVersion:](v19, "setEffectiveMinimumSupportedVersion:", [coderCopy decodeIntegerForKey:@"effectiveMinimumSupportedVersion"]);
+      -[REMAccountStorage setDebugSyncDisabled:](v19, "setDebugSyncDisabled:", [coderCopy decodeBoolForKey:@"debugSyncDisabled"]);
     }
 
     self = v19;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
@@ -392,31 +392,31 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
       v53 = 2112;
       v54 = v48;
       v55 = 1024;
-      v56 = [(REMAccountStorage *)self markedForRemoval];
+      markedForRemoval = [(REMAccountStorage *)self markedForRemoval];
       _os_log_fault_impl(&dword_19A0DB000, v23, OS_LOG_TYPE_FAULT, "Attempted to decode REMAccount missing objectID, type or name {objectID: %{public}@, type: %ld, name: %@, markedForRemoval: %d}", buf, 0x26u);
     }
 
     v24 = [REMError internalErrorWithDebugDescription:@"REMAccount missing required fields"];
-    [v4 failWithError:v24];
+    [coderCopy failWithError:v24];
 
-    v25 = 0;
+    selfCopy = 0;
   }
 
   v38 = *MEMORY[0x1E69E9840];
-  return v25;
+  return selfCopy;
 }
 
-- (void)setStoreGenerationIfNeeded:(unint64_t)a3
+- (void)setStoreGenerationIfNeeded:(unint64_t)needed
 {
   if (!self->_storeGeneration)
   {
-    self->_storeGeneration = a3;
+    self->_storeGeneration = needed;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_listIDsMergeableOrdering)
   {
     os_unfair_lock_lock(&self->_lock);
@@ -424,8 +424,8 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
     v23 = 3221225472;
     v24 = __37__REMAccountStorage_encodeWithCoder___block_invoke;
     v25 = &unk_1E7508448;
-    v26 = v4;
-    v27 = self;
+    v26 = coderCopy;
+    selfCopy = self;
     __37__REMAccountStorage_encodeWithCoder___block_invoke(&v22);
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -437,77 +437,77 @@ uint64_t __81__REMAccountStorage_initWithObjectID_type_name_nullableListIDsMerge
       [REMAccountStorage encodeWithCoder:?];
     }
 
-    [v4 encodeObject:0 forKey:@"listIDsMergeableOrdering"];
-    [v4 encodeObject:self->_listIDsMergeableOrderingData forKey:@"listIDsMergeableOrderingData"];
+    [coderCopy encodeObject:0 forKey:@"listIDsMergeableOrdering"];
+    [coderCopy encodeObject:self->_listIDsMergeableOrderingData forKey:@"listIDsMergeableOrderingData"];
   }
 
   v5 = [(REMAccountStorage *)self objectID:v22];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  [coderCopy encodeObject:v5 forKey:@"objectID"];
 
-  v6 = [(REMAccountStorage *)self externalIdentifier];
-  [v4 encodeObject:v6 forKey:@"externalIdentifier"];
+  externalIdentifier = [(REMAccountStorage *)self externalIdentifier];
+  [coderCopy encodeObject:externalIdentifier forKey:@"externalIdentifier"];
 
-  v7 = [(REMAccountStorage *)self externalModificationTag];
-  [v4 encodeObject:v7 forKey:@"externalModificationTag"];
+  externalModificationTag = [(REMAccountStorage *)self externalModificationTag];
+  [coderCopy encodeObject:externalModificationTag forKey:@"externalModificationTag"];
 
-  v8 = [(REMAccountStorage *)self daSyncToken];
-  [v4 encodeObject:v8 forKey:@"daSyncToken"];
+  daSyncToken = [(REMAccountStorage *)self daSyncToken];
+  [coderCopy encodeObject:daSyncToken forKey:@"daSyncToken"];
 
-  v9 = [(REMAccountStorage *)self daPushKey];
-  [v4 encodeObject:v9 forKey:@"daPushKey"];
+  daPushKey = [(REMAccountStorage *)self daPushKey];
+  [coderCopy encodeObject:daPushKey forKey:@"daPushKey"];
 
-  [v4 encodeInteger:-[REMAccountStorage type](self forKey:{"type"), @"type"}];
-  v10 = [(REMAccountStorage *)self name];
-  [v4 encodeObject:v10 forKey:@"name"];
+  [coderCopy encodeInteger:-[REMAccountStorage type](self forKey:{"type"), @"type"}];
+  name = [(REMAccountStorage *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v11 = [(REMAccountStorage *)self personID];
-  [v4 encodeObject:v11 forKey:@"personID"];
+  personID = [(REMAccountStorage *)self personID];
+  [coderCopy encodeObject:personID forKey:@"personID"];
 
-  v12 = [(REMAccountStorage *)self personIDSalt];
-  [v4 encodeObject:v12 forKey:@"personIDSalt"];
+  personIDSalt = [(REMAccountStorage *)self personIDSalt];
+  [coderCopy encodeObject:personIDSalt forKey:@"personIDSalt"];
 
-  v13 = [(REMAccountStorage *)self pinnedListsManualOrdering];
-  [v4 encodeObject:v13 forKey:@"pinnedListsManualOrdering"];
+  pinnedListsManualOrdering = [(REMAccountStorage *)self pinnedListsManualOrdering];
+  [coderCopy encodeObject:pinnedListsManualOrdering forKey:@"pinnedListsManualOrdering"];
 
-  v14 = [(REMAccountStorage *)self templatesManualOrdering];
-  [v4 encodeObject:v14 forKey:@"templatesManualOrdering"];
+  templatesManualOrdering = [(REMAccountStorage *)self templatesManualOrdering];
+  [coderCopy encodeObject:templatesManualOrdering forKey:@"templatesManualOrdering"];
 
-  [v4 encodeBool:-[REMAccountStorage markedForRemoval](self forKey:{"markedForRemoval"), @"markedForRemoval"}];
-  [v4 encodeBool:-[REMAccountStorage inactive](self forKey:{"inactive"), @"inactive"}];
-  [v4 encodeBool:-[REMAccountStorage didChooseToMigrate](self forKey:{"didChooseToMigrate"), @"didChooseToMigrate"}];
-  [v4 encodeBool:-[REMAccountStorage didChooseToMigrateLocally](self forKey:{"didChooseToMigrateLocally"), @"didChooseToMigrateLocally"}];
-  [v4 encodeBool:-[REMAccountStorage didFinishMigration](self forKey:{"didFinishMigration"), @"didFinishMigration"}];
-  [v4 encodeInteger:-[REMAccountStorage persistenceCloudSchemaVersion](self forKey:{"persistenceCloudSchemaVersion"), @"persistenceCloudSchemaVersion"}];
-  v15 = [(REMAccountStorage *)self daConstraintsDescriptionPath];
-  [v4 encodeObject:v15 forKey:@"daConstraintsDescriptionPath"];
+  [coderCopy encodeBool:-[REMAccountStorage markedForRemoval](self forKey:{"markedForRemoval"), @"markedForRemoval"}];
+  [coderCopy encodeBool:-[REMAccountStorage inactive](self forKey:{"inactive"), @"inactive"}];
+  [coderCopy encodeBool:-[REMAccountStorage didChooseToMigrate](self forKey:{"didChooseToMigrate"), @"didChooseToMigrate"}];
+  [coderCopy encodeBool:-[REMAccountStorage didChooseToMigrateLocally](self forKey:{"didChooseToMigrateLocally"), @"didChooseToMigrateLocally"}];
+  [coderCopy encodeBool:-[REMAccountStorage didFinishMigration](self forKey:{"didFinishMigration"), @"didFinishMigration"}];
+  [coderCopy encodeInteger:-[REMAccountStorage persistenceCloudSchemaVersion](self forKey:{"persistenceCloudSchemaVersion"), @"persistenceCloudSchemaVersion"}];
+  daConstraintsDescriptionPath = [(REMAccountStorage *)self daConstraintsDescriptionPath];
+  [coderCopy encodeObject:daConstraintsDescriptionPath forKey:@"daConstraintsDescriptionPath"];
 
-  [v4 encodeBool:-[REMAccountStorage daAllowsCalendarAddDeleteModify](self forKey:{"daAllowsCalendarAddDeleteModify"), @"daAllowsCalendarAddDeleteModify"}];
-  [v4 encodeBool:-[REMAccountStorage daSupportsSharedCalendars](self forKey:{"daSupportsSharedCalendars"), @"daSupportsSharedCalendars"}];
-  [v4 encodeBool:-[REMAccountStorage daWasMigrated](self forKey:{"daWasMigrated"), @"daWasMigrated"}];
-  [v4 encodeInteger:-[REMAccountStorage minimumSupportedVersion](self forKey:{"minimumSupportedVersion"), @"minimumSupportedVersion"}];
-  [v4 encodeInteger:-[REMAccountStorage effectiveMinimumSupportedVersion](self forKey:{"effectiveMinimumSupportedVersion"), @"effectiveMinimumSupportedVersion"}];
-  [v4 encodeBool:-[REMAccountStorage debugSyncDisabled](self forKey:{"debugSyncDisabled"), @"debugSyncDisabled"}];
-  v16 = [(REMAccountStorage *)self listIDsToUndelete];
-  v17 = [v16 allObjects];
-  [v4 encodeObject:v17 forKey:@"listIDsToUndelete"];
+  [coderCopy encodeBool:-[REMAccountStorage daAllowsCalendarAddDeleteModify](self forKey:{"daAllowsCalendarAddDeleteModify"), @"daAllowsCalendarAddDeleteModify"}];
+  [coderCopy encodeBool:-[REMAccountStorage daSupportsSharedCalendars](self forKey:{"daSupportsSharedCalendars"), @"daSupportsSharedCalendars"}];
+  [coderCopy encodeBool:-[REMAccountStorage daWasMigrated](self forKey:{"daWasMigrated"), @"daWasMigrated"}];
+  [coderCopy encodeInteger:-[REMAccountStorage minimumSupportedVersion](self forKey:{"minimumSupportedVersion"), @"minimumSupportedVersion"}];
+  [coderCopy encodeInteger:-[REMAccountStorage effectiveMinimumSupportedVersion](self forKey:{"effectiveMinimumSupportedVersion"), @"effectiveMinimumSupportedVersion"}];
+  [coderCopy encodeBool:-[REMAccountStorage debugSyncDisabled](self forKey:{"debugSyncDisabled"), @"debugSyncDisabled"}];
+  listIDsToUndelete = [(REMAccountStorage *)self listIDsToUndelete];
+  allObjects = [listIDsToUndelete allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"listIDsToUndelete"];
 
-  v18 = [(REMAccountStorage *)self smartListIDsToUndelete];
-  v19 = [v18 allObjects];
-  [v4 encodeObject:v19 forKey:@"smartListIDsToUndelete"];
+  smartListIDsToUndelete = [(REMAccountStorage *)self smartListIDsToUndelete];
+  allObjects2 = [smartListIDsToUndelete allObjects];
+  [coderCopy encodeObject:allObjects2 forKey:@"smartListIDsToUndelete"];
 
-  [v4 encodeBool:-[REMAccountStorage listsDADisplayOrderChanged](self forKey:{"listsDADisplayOrderChanged"), @"listsDADisplayOrderChanged"}];
+  [coderCopy encodeBool:-[REMAccountStorage listsDADisplayOrderChanged](self forKey:{"listsDADisplayOrderChanged"), @"listsDADisplayOrderChanged"}];
   resolutionTokenMap = self->_resolutionTokenMap;
   if (resolutionTokenMap)
   {
-    [v4 encodeObject:resolutionTokenMap forKey:@"resolutionTokenMap"];
-    [v4 encodeObject:0 forKey:@"resolutionTokenMapData"];
+    [coderCopy encodeObject:resolutionTokenMap forKey:@"resolutionTokenMap"];
+    [coderCopy encodeObject:0 forKey:@"resolutionTokenMapData"];
   }
 
   else
   {
-    [v4 encodeObject:0 forKey:@"resolutionTokenMap"];
-    v21 = [(REMAccountStorage *)self resolutionTokenMapData];
-    [v4 encodeObject:v21 forKey:@"resolutionTokenMapData"];
+    [coderCopy encodeObject:0 forKey:@"resolutionTokenMap"];
+    resolutionTokenMapData = [(REMAccountStorage *)self resolutionTokenMapData];
+    [coderCopy encodeObject:resolutionTokenMapData forKey:@"resolutionTokenMapData"];
   }
 }
 
@@ -519,29 +519,29 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
   return [v2 encodeObject:0 forKey:@"listIDsMergeableOrderingData"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v128 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMAccountStorage *)self objectID];
-      v8 = [(REMAccountStorage *)v6 objectID];
-      v9 = v8;
-      if (v7 == v8)
+      objectID = [(REMAccountStorage *)self objectID];
+      objectID2 = [(REMAccountStorage *)v6 objectID];
+      v9 = objectID2;
+      if (objectID == objectID2)
       {
       }
 
       else
       {
-        v10 = [(REMAccountStorage *)self objectID];
-        v11 = [(REMAccountStorage *)v6 objectID];
-        v12 = [v10 isEqual:v11];
+        objectID3 = [(REMAccountStorage *)self objectID];
+        objectID4 = [(REMAccountStorage *)v6 objectID];
+        v12 = [objectID3 isEqual:objectID4];
 
         if (!v12)
         {
@@ -549,18 +549,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v14 = [(REMAccountStorage *)self name];
-      v15 = [(REMAccountStorage *)v6 name];
-      v16 = v15;
-      if (v14 == v15)
+      name = [(REMAccountStorage *)self name];
+      name2 = [(REMAccountStorage *)v6 name];
+      v16 = name2;
+      if (name == name2)
       {
       }
 
       else
       {
-        v17 = [(REMAccountStorage *)self name];
-        v18 = [(REMAccountStorage *)v6 name];
-        v19 = [v17 isEqual:v18];
+        name3 = [(REMAccountStorage *)self name];
+        name4 = [(REMAccountStorage *)v6 name];
+        v19 = [name3 isEqual:name4];
 
         if (!v19)
         {
@@ -568,30 +568,30 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v20 = [(REMAccountStorage *)self type];
-      if (v20 != [(REMAccountStorage *)v6 type])
+      type = [(REMAccountStorage *)self type];
+      if (type != [(REMAccountStorage *)v6 type])
       {
         goto LABEL_77;
       }
 
-      v21 = [(REMAccountStorage *)self markedForRemoval];
-      if (v21 != [(REMAccountStorage *)v6 markedForRemoval])
+      markedForRemoval = [(REMAccountStorage *)self markedForRemoval];
+      if (markedForRemoval != [(REMAccountStorage *)v6 markedForRemoval])
       {
         goto LABEL_77;
       }
 
-      v22 = [(REMAccountStorage *)self externalIdentifier];
-      v23 = [(REMAccountStorage *)v6 externalIdentifier];
-      v24 = v23;
-      if (v22 == v23)
+      externalIdentifier = [(REMAccountStorage *)self externalIdentifier];
+      externalIdentifier2 = [(REMAccountStorage *)v6 externalIdentifier];
+      v24 = externalIdentifier2;
+      if (externalIdentifier == externalIdentifier2)
       {
       }
 
       else
       {
-        v25 = [(REMAccountStorage *)self externalIdentifier];
-        v26 = [(REMAccountStorage *)v6 externalIdentifier];
-        v27 = [v25 isEqual:v26];
+        externalIdentifier3 = [(REMAccountStorage *)self externalIdentifier];
+        externalIdentifier4 = [(REMAccountStorage *)v6 externalIdentifier];
+        v27 = [externalIdentifier3 isEqual:externalIdentifier4];
 
         if (!v27)
         {
@@ -599,18 +599,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v28 = [(REMAccountStorage *)self externalModificationTag];
-      v29 = [(REMAccountStorage *)v6 externalModificationTag];
-      v30 = v29;
-      if (v28 == v29)
+      externalModificationTag = [(REMAccountStorage *)self externalModificationTag];
+      externalModificationTag2 = [(REMAccountStorage *)v6 externalModificationTag];
+      v30 = externalModificationTag2;
+      if (externalModificationTag == externalModificationTag2)
       {
       }
 
       else
       {
-        v31 = [(REMAccountStorage *)self externalModificationTag];
-        v32 = [(REMAccountStorage *)v6 externalModificationTag];
-        v33 = [v31 isEqual:v32];
+        externalModificationTag3 = [(REMAccountStorage *)self externalModificationTag];
+        externalModificationTag4 = [(REMAccountStorage *)v6 externalModificationTag];
+        v33 = [externalModificationTag3 isEqual:externalModificationTag4];
 
         if (!v33)
         {
@@ -618,18 +618,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v34 = [(REMAccountStorage *)self daSyncToken];
-      v35 = [(REMAccountStorage *)v6 daSyncToken];
-      v36 = v35;
-      if (v34 == v35)
+      daSyncToken = [(REMAccountStorage *)self daSyncToken];
+      daSyncToken2 = [(REMAccountStorage *)v6 daSyncToken];
+      v36 = daSyncToken2;
+      if (daSyncToken == daSyncToken2)
       {
       }
 
       else
       {
-        v37 = [(REMAccountStorage *)self daSyncToken];
-        v38 = [(REMAccountStorage *)v6 daSyncToken];
-        v39 = [v37 isEqual:v38];
+        daSyncToken3 = [(REMAccountStorage *)self daSyncToken];
+        daSyncToken4 = [(REMAccountStorage *)v6 daSyncToken];
+        v39 = [daSyncToken3 isEqual:daSyncToken4];
 
         if (!v39)
         {
@@ -637,18 +637,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v40 = [(REMAccountStorage *)self daPushKey];
-      v41 = [(REMAccountStorage *)v6 daPushKey];
-      v42 = v41;
-      if (v40 == v41)
+      daPushKey = [(REMAccountStorage *)self daPushKey];
+      daPushKey2 = [(REMAccountStorage *)v6 daPushKey];
+      v42 = daPushKey2;
+      if (daPushKey == daPushKey2)
       {
       }
 
       else
       {
-        v43 = [(REMAccountStorage *)self daPushKey];
-        v44 = [(REMAccountStorage *)v6 daPushKey];
-        v45 = [v43 isEqual:v44];
+        daPushKey3 = [(REMAccountStorage *)self daPushKey];
+        daPushKey4 = [(REMAccountStorage *)v6 daPushKey];
+        v45 = [daPushKey3 isEqual:daPushKey4];
 
         if (!v45)
         {
@@ -656,18 +656,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v46 = [(REMAccountStorage *)self pinnedListsManualOrdering];
-      v47 = [(REMAccountStorage *)v6 pinnedListsManualOrdering];
-      v48 = v47;
-      if (v46 == v47)
+      pinnedListsManualOrdering = [(REMAccountStorage *)self pinnedListsManualOrdering];
+      pinnedListsManualOrdering2 = [(REMAccountStorage *)v6 pinnedListsManualOrdering];
+      v48 = pinnedListsManualOrdering2;
+      if (pinnedListsManualOrdering == pinnedListsManualOrdering2)
       {
       }
 
       else
       {
-        v49 = [(REMAccountStorage *)self pinnedListsManualOrdering];
-        v50 = [(REMAccountStorage *)v6 pinnedListsManualOrdering];
-        v51 = [v49 isEqual:v50];
+        pinnedListsManualOrdering3 = [(REMAccountStorage *)self pinnedListsManualOrdering];
+        pinnedListsManualOrdering4 = [(REMAccountStorage *)v6 pinnedListsManualOrdering];
+        v51 = [pinnedListsManualOrdering3 isEqual:pinnedListsManualOrdering4];
 
         if (!v51)
         {
@@ -675,18 +675,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v52 = [(REMAccountStorage *)self templatesManualOrdering];
-      v53 = [(REMAccountStorage *)v6 templatesManualOrdering];
-      v54 = v53;
-      if (v52 == v53)
+      templatesManualOrdering = [(REMAccountStorage *)self templatesManualOrdering];
+      templatesManualOrdering2 = [(REMAccountStorage *)v6 templatesManualOrdering];
+      v54 = templatesManualOrdering2;
+      if (templatesManualOrdering == templatesManualOrdering2)
       {
       }
 
       else
       {
-        v55 = [(REMAccountStorage *)self templatesManualOrdering];
-        v56 = [(REMAccountStorage *)v6 templatesManualOrdering];
-        v57 = [v55 isEqual:v56];
+        templatesManualOrdering3 = [(REMAccountStorage *)self templatesManualOrdering];
+        templatesManualOrdering4 = [(REMAccountStorage *)v6 templatesManualOrdering];
+        v57 = [templatesManualOrdering3 isEqual:templatesManualOrdering4];
 
         if (!v57)
         {
@@ -694,18 +694,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v58 = [(REMAccountStorage *)self listIDsToUndelete];
-      v59 = [(REMAccountStorage *)v6 listIDsToUndelete];
-      v60 = v59;
-      if (v58 == v59)
+      listIDsToUndelete = [(REMAccountStorage *)self listIDsToUndelete];
+      listIDsToUndelete2 = [(REMAccountStorage *)v6 listIDsToUndelete];
+      v60 = listIDsToUndelete2;
+      if (listIDsToUndelete == listIDsToUndelete2)
       {
       }
 
       else
       {
-        v61 = [(REMAccountStorage *)self listIDsToUndelete];
-        v62 = [(REMAccountStorage *)v6 listIDsToUndelete];
-        v63 = [v61 isEqual:v62];
+        listIDsToUndelete3 = [(REMAccountStorage *)self listIDsToUndelete];
+        listIDsToUndelete4 = [(REMAccountStorage *)v6 listIDsToUndelete];
+        v63 = [listIDsToUndelete3 isEqual:listIDsToUndelete4];
 
         if (!v63)
         {
@@ -713,18 +713,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v64 = [(REMAccountStorage *)self smartListIDsToUndelete];
-      v65 = [(REMAccountStorage *)v6 smartListIDsToUndelete];
-      v66 = v65;
-      if (v64 == v65)
+      smartListIDsToUndelete = [(REMAccountStorage *)self smartListIDsToUndelete];
+      smartListIDsToUndelete2 = [(REMAccountStorage *)v6 smartListIDsToUndelete];
+      v66 = smartListIDsToUndelete2;
+      if (smartListIDsToUndelete == smartListIDsToUndelete2)
       {
       }
 
       else
       {
-        v67 = [(REMAccountStorage *)self smartListIDsToUndelete];
-        v68 = [(REMAccountStorage *)v6 smartListIDsToUndelete];
-        v69 = [v67 isEqual:v68];
+        smartListIDsToUndelete3 = [(REMAccountStorage *)self smartListIDsToUndelete];
+        smartListIDsToUndelete4 = [(REMAccountStorage *)v6 smartListIDsToUndelete];
+        v69 = [smartListIDsToUndelete3 isEqual:smartListIDsToUndelete4];
 
         if (!v69)
         {
@@ -732,21 +732,21 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
         }
       }
 
-      v70 = [(REMAccountStorage *)self listsDADisplayOrderChanged];
-      if (v70 == [(REMAccountStorage *)v6 listsDADisplayOrderChanged])
+      listsDADisplayOrderChanged = [(REMAccountStorage *)self listsDADisplayOrderChanged];
+      if (listsDADisplayOrderChanged == [(REMAccountStorage *)v6 listsDADisplayOrderChanged])
       {
-        v71 = [(REMAccountStorage *)self personID];
-        v72 = [(REMAccountStorage *)v6 personID];
-        v73 = v72;
-        if (v71 == v72)
+        personID = [(REMAccountStorage *)self personID];
+        personID2 = [(REMAccountStorage *)v6 personID];
+        v73 = personID2;
+        if (personID == personID2)
         {
         }
 
         else
         {
-          v74 = [(REMAccountStorage *)self personID];
-          v75 = [(REMAccountStorage *)v6 personID];
-          v76 = [v74 isEqual:v75];
+          personID3 = [(REMAccountStorage *)self personID];
+          personID4 = [(REMAccountStorage *)v6 personID];
+          v76 = [personID3 isEqual:personID4];
 
           if (!v76)
           {
@@ -754,18 +754,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
           }
         }
 
-        v77 = [(REMAccountStorage *)self personIDSalt];
-        v78 = [(REMAccountStorage *)v6 personIDSalt];
-        v79 = v78;
-        if (v77 == v78)
+        personIDSalt = [(REMAccountStorage *)self personIDSalt];
+        personIDSalt2 = [(REMAccountStorage *)v6 personIDSalt];
+        v79 = personIDSalt2;
+        if (personIDSalt == personIDSalt2)
         {
         }
 
         else
         {
-          v80 = [(REMAccountStorage *)self personIDSalt];
-          v81 = [(REMAccountStorage *)v6 personIDSalt];
-          v82 = [v80 isEqual:v81];
+          personIDSalt3 = [(REMAccountStorage *)self personIDSalt];
+          personIDSalt4 = [(REMAccountStorage *)v6 personIDSalt];
+          v82 = [personIDSalt3 isEqual:personIDSalt4];
 
           if (!v82)
           {
@@ -773,48 +773,48 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
           }
         }
 
-        v83 = [(REMAccountStorage *)self inactive];
-        if (v83 != [(REMAccountStorage *)v6 inactive])
+        inactive = [(REMAccountStorage *)self inactive];
+        if (inactive != [(REMAccountStorage *)v6 inactive])
         {
           goto LABEL_77;
         }
 
-        v84 = [(REMAccountStorage *)self didChooseToMigrate];
-        if (v84 != [(REMAccountStorage *)v6 didChooseToMigrate])
+        didChooseToMigrate = [(REMAccountStorage *)self didChooseToMigrate];
+        if (didChooseToMigrate != [(REMAccountStorage *)v6 didChooseToMigrate])
         {
           goto LABEL_77;
         }
 
-        v85 = [(REMAccountStorage *)self didChooseToMigrateLocally];
-        if (v85 != [(REMAccountStorage *)v6 didChooseToMigrateLocally])
+        didChooseToMigrateLocally = [(REMAccountStorage *)self didChooseToMigrateLocally];
+        if (didChooseToMigrateLocally != [(REMAccountStorage *)v6 didChooseToMigrateLocally])
         {
           goto LABEL_77;
         }
 
-        v86 = [(REMAccountStorage *)self didFinishMigration];
-        if (v86 != [(REMAccountStorage *)v6 didFinishMigration])
+        didFinishMigration = [(REMAccountStorage *)self didFinishMigration];
+        if (didFinishMigration != [(REMAccountStorage *)v6 didFinishMigration])
         {
           goto LABEL_77;
         }
 
-        v87 = [(REMAccountStorage *)self persistenceCloudSchemaVersion];
-        if (v87 != [(REMAccountStorage *)v6 persistenceCloudSchemaVersion])
+        persistenceCloudSchemaVersion = [(REMAccountStorage *)self persistenceCloudSchemaVersion];
+        if (persistenceCloudSchemaVersion != [(REMAccountStorage *)v6 persistenceCloudSchemaVersion])
         {
           goto LABEL_77;
         }
 
-        v88 = [(REMAccountStorage *)self daConstraintsDescriptionPath];
-        v89 = [(REMAccountStorage *)v6 daConstraintsDescriptionPath];
-        v90 = v89;
-        if (v88 == v89)
+        daConstraintsDescriptionPath = [(REMAccountStorage *)self daConstraintsDescriptionPath];
+        daConstraintsDescriptionPath2 = [(REMAccountStorage *)v6 daConstraintsDescriptionPath];
+        v90 = daConstraintsDescriptionPath2;
+        if (daConstraintsDescriptionPath == daConstraintsDescriptionPath2)
         {
         }
 
         else
         {
-          v91 = [(REMAccountStorage *)self daConstraintsDescriptionPath];
-          v92 = [(REMAccountStorage *)v6 daConstraintsDescriptionPath];
-          v93 = [v91 isEqual:v92];
+          daConstraintsDescriptionPath3 = [(REMAccountStorage *)self daConstraintsDescriptionPath];
+          daConstraintsDescriptionPath4 = [(REMAccountStorage *)v6 daConstraintsDescriptionPath];
+          v93 = [daConstraintsDescriptionPath3 isEqual:daConstraintsDescriptionPath4];
 
           if (!v93)
           {
@@ -822,38 +822,38 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
           }
         }
 
-        v94 = [(REMAccountStorage *)self daAllowsCalendarAddDeleteModify];
-        if (v94 != [(REMAccountStorage *)v6 daAllowsCalendarAddDeleteModify])
+        daAllowsCalendarAddDeleteModify = [(REMAccountStorage *)self daAllowsCalendarAddDeleteModify];
+        if (daAllowsCalendarAddDeleteModify != [(REMAccountStorage *)v6 daAllowsCalendarAddDeleteModify])
         {
           goto LABEL_77;
         }
 
-        v95 = [(REMAccountStorage *)self daSupportsSharedCalendars];
-        if (v95 != [(REMAccountStorage *)v6 daSupportsSharedCalendars])
+        daSupportsSharedCalendars = [(REMAccountStorage *)self daSupportsSharedCalendars];
+        if (daSupportsSharedCalendars != [(REMAccountStorage *)v6 daSupportsSharedCalendars])
         {
           goto LABEL_77;
         }
 
-        v96 = [(REMAccountStorage *)self daWasMigrated];
-        if (v96 != [(REMAccountStorage *)v6 daWasMigrated])
+        daWasMigrated = [(REMAccountStorage *)self daWasMigrated];
+        if (daWasMigrated != [(REMAccountStorage *)v6 daWasMigrated])
         {
           goto LABEL_77;
         }
 
-        v97 = [(REMAccountStorage *)self minimumSupportedVersion];
-        if (v97 != [(REMAccountStorage *)v6 minimumSupportedVersion])
+        minimumSupportedVersion = [(REMAccountStorage *)self minimumSupportedVersion];
+        if (minimumSupportedVersion != [(REMAccountStorage *)v6 minimumSupportedVersion])
         {
           goto LABEL_77;
         }
 
-        v98 = [(REMAccountStorage *)self effectiveMinimumSupportedVersion];
-        if (v98 != [(REMAccountStorage *)v6 effectiveMinimumSupportedVersion])
+        effectiveMinimumSupportedVersion = [(REMAccountStorage *)self effectiveMinimumSupportedVersion];
+        if (effectiveMinimumSupportedVersion != [(REMAccountStorage *)v6 effectiveMinimumSupportedVersion])
         {
           goto LABEL_77;
         }
 
-        v99 = [(REMAccountStorage *)self debugSyncDisabled];
-        if (v99 != [(REMAccountStorage *)v6 debugSyncDisabled])
+        debugSyncDisabled = [(REMAccountStorage *)self debugSyncDisabled];
+        if (debugSyncDisabled != [(REMAccountStorage *)v6 debugSyncDisabled])
         {
           goto LABEL_77;
         }
@@ -877,18 +877,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
           }
         }
 
-        v101 = [(REMAccountStorage *)self listIDsMergeableOrdering];
-        v102 = [(REMAccountStorage *)v6 listIDsMergeableOrdering];
-        v103 = v102;
-        if (v101 == v102)
+        listIDsMergeableOrdering = [(REMAccountStorage *)self listIDsMergeableOrdering];
+        listIDsMergeableOrdering2 = [(REMAccountStorage *)v6 listIDsMergeableOrdering];
+        v103 = listIDsMergeableOrdering2;
+        if (listIDsMergeableOrdering == listIDsMergeableOrdering2)
         {
         }
 
         else
         {
-          v104 = [(REMAccountStorage *)self listIDsMergeableOrdering];
-          v105 = [(REMAccountStorage *)v6 listIDsMergeableOrdering];
-          v106 = [v104 isEqual:v105];
+          listIDsMergeableOrdering3 = [(REMAccountStorage *)self listIDsMergeableOrdering];
+          listIDsMergeableOrdering4 = [(REMAccountStorage *)v6 listIDsMergeableOrdering];
+          v106 = [listIDsMergeableOrdering3 isEqual:listIDsMergeableOrdering4];
 
           if (!v106)
           {
@@ -915,18 +915,18 @@ uint64_t __37__REMAccountStorage_encodeWithCoder___block_invoke(uint64_t a1)
           }
         }
 
-        v110 = [(REMAccountStorage *)self resolutionTokenMap];
-        v111 = [(REMAccountStorage *)v6 resolutionTokenMap];
-        if (v110 == v111)
+        resolutionTokenMap = [(REMAccountStorage *)self resolutionTokenMap];
+        resolutionTokenMap2 = [(REMAccountStorage *)v6 resolutionTokenMap];
+        if (resolutionTokenMap == resolutionTokenMap2)
         {
           v13 = 1;
         }
 
         else
         {
-          v112 = [(REMAccountStorage *)self resolutionTokenMap];
-          v113 = [(REMAccountStorage *)v6 resolutionTokenMap];
-          v13 = [v112 isEqual:v113];
+          resolutionTokenMap3 = [(REMAccountStorage *)self resolutionTokenMap];
+          resolutionTokenMap4 = [(REMAccountStorage *)v6 resolutionTokenMap];
+          v13 = [resolutionTokenMap3 isEqual:resolutionTokenMap4];
         }
 
         goto LABEL_78;
@@ -949,8 +949,8 @@ LABEL_79:
 
 - (unint64_t)hash
 {
-  v2 = [(REMAccountStorage *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMAccountStorage *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -966,12 +966,12 @@ LABEL_79:
     goto LABEL_16;
   }
 
-  v6 = [(REMAccountStorage *)self objectID];
-  v7 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:v6];
+  objectID = [(REMAccountStorage *)self objectID];
+  v7 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:objectID];
 
-  v8 = [(REMAccountStorage *)self listIDsMergeableOrderingData];
+  listIDsMergeableOrderingData = [(REMAccountStorage *)self listIDsMergeableOrderingData];
   v9 = 0x1E7506000uLL;
-  if (!v8)
+  if (!listIDsMergeableOrderingData)
   {
     v16 = +[REMLogStore utility];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -985,17 +985,17 @@ LABEL_79:
   }
 
   v22 = 0;
-  v10 = [[REMCRMergeableOrderedSet alloc] initWithReplicaIDSource:v7 serializedData:v8 error:&v22];
+  v10 = [[REMCRMergeableOrderedSet alloc] initWithReplicaIDSource:v7 serializedData:listIDsMergeableOrderingData error:&v22];
   v11 = v22;
   v12 = +[REMLogStore utility];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(REMAccountStorage *)self objectID];
+    objectID2 = [(REMAccountStorage *)self objectID];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[REMCRMergeableOrderedSet count](v10, "count")}];
     *buf = 138543874;
-    v24 = v13;
+    v24 = objectID2;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v14;
     _os_log_impl(&dword_19A0DB000, v12, OS_LOG_TYPE_INFO, "REMAccountStorage listIDsMergeableOrdering deserialized {objectID: %{public}@, self: %p, orderedSet.count: %@}", buf, 0x20u);
@@ -1033,11 +1033,11 @@ LABEL_16:
   return v5;
 }
 
-- (void)setListIDsMergeableOrdering:(id)a3
+- (void)setListIDsMergeableOrdering:(id)ordering
 {
-  v6 = a3;
-  objc_storeStrong(&self->_listIDsMergeableOrdering, a3);
-  if (v6)
+  orderingCopy = ordering;
+  objc_storeStrong(&self->_listIDsMergeableOrdering, ordering);
+  if (orderingCopy)
   {
     listIDsMergeableOrderingData = self->_listIDsMergeableOrderingData;
     self->_listIDsMergeableOrderingData = 0;
@@ -1076,26 +1076,26 @@ uint64_t __55__REMAccountStorage_serializedListIDsMergeableOrdering__block_invok
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMAccountStorage *)self effectiveMinimumSupportedVersion];
+  effectiveMinimumSupportedVersion = [(REMAccountStorage *)self effectiveMinimumSupportedVersion];
 
-  return rem_isUnsupportedVersionByRuntime(v2);
+  return rem_isUnsupportedVersionByRuntime(effectiveMinimumSupportedVersion);
 }
 
 - (id)cdKeyToStorageKeyMap
@@ -1121,8 +1121,8 @@ uint64_t __55__REMAccountStorage_serializedListIDsMergeableOrdering__block_invok
 
   else
   {
-    v6 = [(REMAccountStorage *)self resolutionTokenMapData];
-    if (!v6)
+    resolutionTokenMapData = [(REMAccountStorage *)self resolutionTokenMapData];
+    if (!resolutionTokenMapData)
     {
       v7 = +[REMLogStore utility];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1131,8 +1131,8 @@ uint64_t __55__REMAccountStorage_serializedListIDsMergeableOrdering__block_invok
       }
     }
 
-    v8 = [(REMAccountStorage *)self cdKeyToStorageKeyMap];
-    v9 = [REMResolutionTokenMap resolutionTokenMapWithJSONData:v6 keyMap:v8];
+    cdKeyToStorageKeyMap = [(REMAccountStorage *)self cdKeyToStorageKeyMap];
+    v9 = [REMResolutionTokenMap resolutionTokenMapWithJSONData:resolutionTokenMapData keyMap:cdKeyToStorageKeyMap];
 
     objc_storeStrong(p_resolutionTokenMap, v9);
     v5 = v9;
@@ -1141,18 +1141,18 @@ uint64_t __55__REMAccountStorage_serializedListIDsMergeableOrdering__block_invok
   return v5;
 }
 
-+ (id)listIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)a3
++ (id)listIDsMergeableOrderingReplicaIDSourceWithAccountID:(id)d
 {
-  v3 = a3;
-  v4 = [[REMReplicaIDSource alloc] initWithAccountID:v3 objectID:v3 property:@"listIDsMergeableOrdering"];
+  dCopy = d;
+  v4 = [[REMReplicaIDSource alloc] initWithAccountID:dCopy objectID:dCopy property:@"listIDsMergeableOrdering"];
 
   return v4;
 }
 
 - (id)listIDsMergeableOrderingReplicaIDSource
 {
-  v2 = [(REMAccountStorage *)self objectID];
-  v3 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:v2];
+  objectID = [(REMAccountStorage *)self objectID];
+  v3 = [REMAccountStorage listIDsMergeableOrderingReplicaIDSourceWithAccountID:objectID];
 
   return v3;
 }

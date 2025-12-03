@@ -1,32 +1,32 @@
 @interface VUWGalleryRecognitionResult
 - (VUWGalleryRecognitionResult)init;
-- (VUWGalleryRecognitionResult)initWithEntityIdentifier:(id)a3 tag:(id)a4 confidence:(id)a5;
-- (void)setConfidence:(id)a3;
-- (void)setEntityIdentifier:(id)a3;
+- (VUWGalleryRecognitionResult)initWithEntityIdentifier:(id)identifier tag:(id)tag confidence:(id)confidence;
+- (void)setConfidence:(id)confidence;
+- (void)setEntityIdentifier:(id)identifier;
 @end
 
 @implementation VUWGalleryRecognitionResult
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
   v4 = *(&self->super.isa + OBJC_IVAR___VUWGalleryRecognitionResult_entityIdentifier);
-  *(&self->super.isa + OBJC_IVAR___VUWGalleryRecognitionResult_entityIdentifier) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___VUWGalleryRecognitionResult_entityIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
-- (void)setConfidence:(id)a3
+- (void)setConfidence:(id)confidence
 {
   v4 = *(&self->super.isa + OBJC_IVAR___VUWGalleryRecognitionResult_confidence);
-  *(&self->super.isa + OBJC_IVAR___VUWGalleryRecognitionResult_confidence) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___VUWGalleryRecognitionResult_confidence) = confidence;
+  confidenceCopy = confidence;
 }
 
-- (VUWGalleryRecognitionResult)initWithEntityIdentifier:(id)a3 tag:(id)a4 confidence:(id)a5
+- (VUWGalleryRecognitionResult)initWithEntityIdentifier:(id)identifier tag:(id)tag confidence:(id)confidence
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC6D2110);
   MEMORY[0x1EEE9AC00](v8 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (tag)
   {
     sub_1D225054C();
     v11 = sub_1D225055C();
@@ -39,8 +39,8 @@
     (*(*(v12 - 8) + 56))(v10, 1, 1, v12);
   }
 
-  v13 = a3;
-  v14 = sub_1D2244C64(v13, v10, a5);
+  identifierCopy = identifier;
+  v14 = sub_1D2244C64(identifierCopy, v10, confidence);
 
   return v14;
 }

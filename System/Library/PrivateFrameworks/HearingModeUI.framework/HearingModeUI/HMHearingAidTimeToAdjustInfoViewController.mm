@@ -1,6 +1,6 @@
 @interface HMHearingAidTimeToAdjustInfoViewController
 - (HMHearingAidEnrollmentDelegate)delegate;
-- (HMHearingAidTimeToAdjustInfoViewController)initWithContentProvider:(id)a3;
+- (HMHearingAidTimeToAdjustInfoViewController)initWithContentProvider:(id)provider;
 - (void)mainButtonTapped;
 - (void)updateButtonTray;
 - (void)updateImage;
@@ -9,9 +9,9 @@
 
 @implementation HMHearingAidTimeToAdjustInfoViewController
 
-- (HMHearingAidTimeToAdjustInfoViewController)initWithContentProvider:(id)a3
+- (HMHearingAidTimeToAdjustInfoViewController)initWithContentProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Hearing Aid Can Take Time to Get Used To" value:&stru_286444CA0 table:0];
 
@@ -25,7 +25,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_provider, a3);
+    objc_storeStrong(&v11->_provider, provider);
   }
 
   return v12;
@@ -54,59 +54,59 @@
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"You can speed up the adjustment by consistently wearing your %@ when you find it difficult to hear." value:&stru_286444CA0 table:0];
 
-  v9 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
-  if ([v9 featureFlag])
+  provider = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
+  if ([provider featureFlag])
   {
-    v10 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
-    v11 = [v10 welcomeControllerDeviceSymbol];
+    provider2 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
+    welcomeControllerDeviceSymbol = [provider2 welcomeControllerDeviceSymbol];
   }
 
   else
   {
-    v11 = @"airpodspro";
+    welcomeControllerDeviceSymbol = @"airpodspro";
   }
 
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"You can always adjust the sound in %@ settings and Control Center." value:&stru_286444CA0 table:0];
 
-  v14 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
-  if ([v14 featureFlag])
+  provider3 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
+  if ([provider3 featureFlag])
   {
-    v15 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
-    v16 = [v15 deviceMarketingName];
+    provider4 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
+    deviceMarketingName = [provider4 deviceMarketingName];
   }
 
   else
   {
-    v16 = @"AirPods Pro";
+    deviceMarketingName = @"AirPods Pro";
   }
 
-  v17 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
-  if ([v17 featureFlag])
+  provider5 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
+  if ([provider5 featureFlag])
   {
-    v18 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
-    v19 = [v18 devicePlatformName];
+    provider6 = [(HMHearingAidTimeToAdjustInfoViewController *)self provider];
+    devicePlatformName = [provider6 devicePlatformName];
   }
 
   else
   {
-    v19 = @"AirPods";
+    devicePlatformName = @"AirPods";
   }
 
-  v20 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, v16];
+  v20 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, deviceMarketingName];
 
-  v21 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, v19];
+  v21 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v8, devicePlatformName];
 
-  v22 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, v19];
+  v22 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, devicePlatformName];
 
-  v23 = [MEMORY[0x277D75348] systemBlueColor];
-  [(HMHearingAidTimeToAdjustInfoViewController *)self addBulletedListItemWithTitle:v20 description:&stru_286444CA0 symbolName:@"calendar" tintColor:v23];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(HMHearingAidTimeToAdjustInfoViewController *)self addBulletedListItemWithTitle:v20 description:&stru_286444CA0 symbolName:@"calendar" tintColor:systemBlueColor];
 
-  v24 = [MEMORY[0x277D75348] systemBlueColor];
-  [(HMHearingAidTimeToAdjustInfoViewController *)self addBulletedListItemWithTitle:v21 description:&stru_286444CA0 symbolName:v11 tintColor:v24];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+  [(HMHearingAidTimeToAdjustInfoViewController *)self addBulletedListItemWithTitle:v21 description:&stru_286444CA0 symbolName:welcomeControllerDeviceSymbol tintColor:systemBlueColor2];
 
-  v25 = [MEMORY[0x277D75348] systemBlueColor];
-  [(HMHearingAidTimeToAdjustInfoViewController *)self addBulletedListItemWithTitle:v22 description:&stru_286444CA0 symbolName:@"slider.horizontal.below.waveform" tintColor:v25];
+  systemBlueColor3 = [MEMORY[0x277D75348] systemBlueColor];
+  [(HMHearingAidTimeToAdjustInfoViewController *)self addBulletedListItemWithTitle:v22 description:&stru_286444CA0 symbolName:@"slider.horizontal.below.waveform" tintColor:systemBlueColor3];
 
   [(HMHearingAidTimeToAdjustInfoViewController *)self updateButtonTray];
   objc_destroyWeak(&v28);
@@ -122,14 +122,14 @@ void __57__HMHearingAidTimeToAdjustInfoViewController_viewDidLoad__block_invoke(
 
 - (void)updateButtonTray
 {
-  v6 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"Next" value:&stru_286444CA0 table:0];
 
-  [v6 setTitle:v4 forState:0];
-  [v6 addTarget:self action:sel_mainButtonTapped forControlEvents:64];
-  v5 = [(HMHearingAidTimeToAdjustInfoViewController *)self buttonTray];
-  [v5 addButton:v6];
+  [boldButton setTitle:v4 forState:0];
+  [boldButton addTarget:self action:sel_mainButtonTapped forControlEvents:64];
+  buttonTray = [(HMHearingAidTimeToAdjustInfoViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 }
 
 - (void)mainButtonTapped
@@ -141,10 +141,10 @@ void __57__HMHearingAidTimeToAdjustInfoViewController_viewDidLoad__block_invoke(
 - (void)updateImage
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMHearingAidTimeToAdjustInfoViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection = [(HMHearingAidTimeToAdjustInfoViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v6 = "Light";
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
     v6 = "Dark";
   }
@@ -157,8 +157,8 @@ void __57__HMHearingAidTimeToAdjustInfoViewController_viewDidLoad__block_invoke(
 
   v12.receiver = self;
   v12.super_class = HMHearingAidTimeToAdjustInfoViewController;
-  v11 = [(HMHearingAidTimeToAdjustInfoViewController *)&v12 headerView];
-  [v11 setIcon:v10 accessibilityLabel:&stru_286444CA0];
+  headerView = [(HMHearingAidTimeToAdjustInfoViewController *)&v12 headerView];
+  [headerView setIcon:v10 accessibilityLabel:&stru_286444CA0];
 }
 
 - (HMHearingAidEnrollmentDelegate)delegate

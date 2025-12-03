@@ -1,32 +1,32 @@
 @interface CCUISensorAttributionGameModeFooterView
-- (CCUISensorAttributionGameModeFooterView)initWithLabel:(id)a3;
+- (CCUISensorAttributionGameModeFooterView)initWithLabel:(id)label;
 - (CGRect)cachedExpandedRect;
-- (void)setBlurRadius:(double)a3;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation CCUISensorAttributionGameModeFooterView
 
-- (CCUISensorAttributionGameModeFooterView)initWithLabel:(id)a3
+- (CCUISensorAttributionGameModeFooterView)initWithLabel:(id)label
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v31.receiver = self;
   v31.super_class = CCUISensorAttributionGameModeFooterView;
   v5 = [(CCUISensorAttributionGameModeFooterView *)&v31 init];
   if (v5)
   {
     v29 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
-    v6 = [(CCUISensorAttributionGameModeFooterView *)v5 layer];
+    layer = [(CCUISensorAttributionGameModeFooterView *)v5 layer];
     v33[0] = v29;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-    [v6 setFilters:v7];
+    [layer setFilters:v7];
 
     [(SBFView *)v5 setAnimatedLayerProperties:&unk_28302E3B8];
     [(CCUISensorAttributionGameModeFooterView *)v5 setClipsToBounds:0];
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(UILabel *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [MEMORY[0x277CF0D60] defaultFontProvider];
-    v28 = [v9 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:4];
+    defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+    v28 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:4];
 
     [(UILabel *)v8 setFont:v28];
     [(UILabel *)v8 setLineBreakMode:0];
@@ -35,47 +35,47 @@
     [(UILabel *)v8 setNumberOfLines:0];
     [(UILabel *)v8 setMaximumContentSizeCategory:*MEMORY[0x277D76808]];
     [(UILabel *)v8 setMinimumScaleFactor:0.5];
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v8 setTextColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v8 setTextColor:whiteColor];
 
-    [(UILabel *)v8 setText:v4];
+    [(UILabel *)v8 setText:labelCopy];
     [(CCUISensorAttributionGameModeFooterView *)v5 addSubview:v8];
     label = v5->_label;
     v5->_label = v8;
     v12 = v8;
 
     v22 = MEMORY[0x277CCAAD0];
-    v27 = [(UILabel *)v12 topAnchor];
-    v26 = [(CCUISensorAttributionGameModeFooterView *)v5 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    topAnchor = [(UILabel *)v12 topAnchor];
+    topAnchor2 = [(CCUISensorAttributionGameModeFooterView *)v5 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[0] = v25;
-    v24 = [(UILabel *)v12 bottomAnchor];
-    v23 = [(CCUISensorAttributionGameModeFooterView *)v5 bottomAnchor];
-    v13 = [v24 constraintEqualToAnchor:v23];
+    bottomAnchor = [(UILabel *)v12 bottomAnchor];
+    bottomAnchor2 = [(CCUISensorAttributionGameModeFooterView *)v5 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v32[1] = v13;
     [(UILabel *)v12 leadingAnchor];
-    v14 = v30 = v4;
-    v15 = [(CCUISensorAttributionGameModeFooterView *)v5 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    v14 = v30 = labelCopy;
+    leadingAnchor = [(CCUISensorAttributionGameModeFooterView *)v5 leadingAnchor];
+    v16 = [v14 constraintEqualToAnchor:leadingAnchor];
     v32[2] = v16;
-    v17 = [(UILabel *)v12 trailingAnchor];
-    v18 = [(CCUISensorAttributionGameModeFooterView *)v5 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UILabel *)v12 trailingAnchor];
+    trailingAnchor2 = [(CCUISensorAttributionGameModeFooterView *)v5 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[3] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
     [v22 activateConstraints:v20];
 
-    v4 = v30;
+    labelCopy = v30;
   }
 
   return v5;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v5 = [(CCUISensorAttributionGameModeFooterView *)self layer];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(CCUISensorAttributionGameModeFooterView *)self layer];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
+  [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
 - (CGRect)cachedExpandedRect

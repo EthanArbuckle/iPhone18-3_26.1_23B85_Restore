@@ -1,67 +1,67 @@
 @interface IDSDAccountMetrics
-+ (BOOL)areAllAliasesSelectedOnAccount:(id)a3;
-+ (BOOL)areAllSelectedAliasesRegisteredOnAccount:(id)a3;
++ (BOOL)areAllAliasesSelectedOnAccount:(id)account;
++ (BOOL)areAllSelectedAliasesRegisteredOnAccount:(id)account;
 + (BOOL)isAccountsFrameworkAvailable;
 + (BOOL)isProductionEnvironment;
-+ (BOOL)isiCloudAccountMatchingAccount:(id)a3;
++ (BOOL)isiCloudAccountMatchingAccount:(id)account;
 + (BOOL)isiCloudSignedIn;
 + (BOOL)isiTunesSignedIn;
-+ (double)timeSinceDateOnAccount:(id)a3;
-+ (double)timeSinceLastRegistrationFailureOnAccount:(id)a3;
-+ (double)timeSinceLastRegistrationSuccessOnAccount:(id)a3;
-+ (id)registrationAccountStatusMetricForAccount:(id)a3;
-+ (id)registrationAccountStatusMetricForNonexistentAccountWithType:(int)a3 serviceIdentifier:(id)a4;
-+ (int64_t)accountSecurityLevelForAccount:(id)a3;
++ (double)timeSinceDateOnAccount:(id)account;
++ (double)timeSinceLastRegistrationFailureOnAccount:(id)account;
++ (double)timeSinceLastRegistrationSuccessOnAccount:(id)account;
++ (id)registrationAccountStatusMetricForAccount:(id)account;
++ (id)registrationAccountStatusMetricForNonexistentAccountWithType:(int)type serviceIdentifier:(id)identifier;
++ (int64_t)accountSecurityLevelForAccount:(id)account;
 @end
 
 @implementation IDSDAccountMetrics
 
 + (BOOL)isAccountsFrameworkAvailable
 {
-  v2 = [IMWeakLinkClass() isAccountsFrameworkAvailable];
-  if (v2)
+  isAccountsFrameworkAvailable = [IMWeakLinkClass() isAccountsFrameworkAvailable];
+  if (isAccountsFrameworkAvailable)
   {
     v3 = +[IDSDataMigrationTracker sharedInstance];
-    v4 = [v3 hasPerformedMigration];
+    hasPerformedMigration = [v3 hasPerformedMigration];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isAccountsFrameworkAvailable) = hasPerformedMigration;
   }
 
-  return v2;
+  return isAccountsFrameworkAvailable;
 }
 
 + (BOOL)isiCloudSignedIn
 {
-  v2 = [a1 isAccountsFrameworkAvailable];
-  if (v2)
+  isAccountsFrameworkAvailable = [self isAccountsFrameworkAvailable];
+  if (isAccountsFrameworkAvailable)
   {
     v3 = +[IDSDAccountController sharedInstance];
-    v4 = [v3 isiCloudSignedIn];
+    isiCloudSignedIn = [v3 isiCloudSignedIn];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isAccountsFrameworkAvailable) = isiCloudSignedIn;
   }
 
-  return v2;
+  return isAccountsFrameworkAvailable;
 }
 
 + (BOOL)isiTunesSignedIn
 {
-  v2 = [a1 isAccountsFrameworkAvailable];
-  if (v2)
+  isAccountsFrameworkAvailable = [self isAccountsFrameworkAvailable];
+  if (isAccountsFrameworkAvailable)
   {
     v3 = +[IDSDAccountController sharedInstance];
-    v4 = [v3 isiTunesSignedIn];
+    isiTunesSignedIn = [v3 isiTunesSignedIn];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isAccountsFrameworkAvailable) = isiTunesSignedIn;
   }
 
-  return v2;
+  return isAccountsFrameworkAvailable;
 }
 
-+ (BOOL)isiCloudAccountMatchingAccount:(id)a3
++ (BOOL)isiCloudAccountMatchingAccount:(id)account
 {
-  v4 = a3;
-  if ([a1 isAccountsFrameworkAvailable])
+  accountCopy = account;
+  if ([self isAccountsFrameworkAvailable])
   {
     v5 = [IDSSystemAccountAdapter alloc];
     v6 = im_primary_queue();
@@ -70,12 +70,12 @@
     v8 = [(IDSSystemAccountAdapter *)v7 iCloudSystemAccountWithError:0];
     if (v8)
     {
-      v9 = [v4 dsID];
-      if (v9)
+      dsID = [accountCopy dsID];
+      if (dsID)
       {
-        v10 = [v8 DSID];
-        v11 = [v4 dsID];
-        v12 = [v10 isEqualToString:v11];
+        dSID = [v8 DSID];
+        dsID2 = [accountCopy dsID];
+        v12 = [dSID isEqualToString:dsID2];
       }
 
       else
@@ -83,12 +83,12 @@
         v12 = 0;
       }
 
-      v14 = [v4 loginID];
-      if (v14)
+      loginID = [accountCopy loginID];
+      if (loginID)
       {
-        v15 = [v8 username];
-        v16 = [v4 loginID];
-        v17 = [v15 isEqualToString:v16];
+        username = [v8 username];
+        loginID2 = [accountCopy loginID];
+        v17 = [username isEqualToString:loginID2];
       }
 
       else
@@ -113,27 +113,27 @@
   return v13 & 1;
 }
 
-+ (int64_t)accountSecurityLevelForAccount:(id)a3
++ (int64_t)accountSecurityLevelForAccount:(id)account
 {
-  v4 = a3;
-  if ([v4 accountType] == 1)
+  accountCopy = account;
+  if ([accountCopy accountType] == 1)
   {
-    v5 = [v4 dsID];
-    v6 = [v4 loginID];
-    if ([a1 isAccountsFrameworkAvailable])
+    dsID = [accountCopy dsID];
+    loginID = [accountCopy loginID];
+    if ([self isAccountsFrameworkAvailable])
     {
-      v7 = [IMWeakLinkClass() sharedInstance];
-      if (v7)
+      iMWeakLinkClass() = [IMWeakLinkClass() sharedInstance];
+      if (iMWeakLinkClass())
       {
-        v8 = sub_1004508E4(v5);
-        v9 = [v7 authKitAccountWithDSID:v8];
+        v8 = sub_1004508E4(dsID);
+        v9 = [iMWeakLinkClass() authKitAccountWithDSID:v8];
         if (v9)
         {
           goto LABEL_10;
         }
 
         v14 = 0;
-        v9 = [v7 authKitAccountWithAppleID:v6 error:&v14];
+        v9 = [iMWeakLinkClass() authKitAccountWithAppleID:loginID error:&v14];
         v10 = v14;
         if (v10)
         {
@@ -149,7 +149,7 @@
         if (v9)
         {
 LABEL_10:
-          v12 = [v7 securityLevelForAccount:v9];
+          v12 = [iMWeakLinkClass() securityLevelForAccount:v9];
         }
 
         else
@@ -178,50 +178,50 @@ LABEL_10:
   return v12;
 }
 
-+ (double)timeSinceDateOnAccount:(id)a3
++ (double)timeSinceDateOnAccount:(id)account
 {
-  if (!a3)
+  if (!account)
   {
     return 0.0;
   }
 
-  v3 = a3;
+  accountCopy = account;
   v4 = +[NSDate date];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:accountCopy];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)timeSinceLastRegistrationFailureOnAccount:(id)a3
++ (double)timeSinceLastRegistrationFailureOnAccount:(id)account
 {
-  v4 = [a3 lastRegistrationFailureDate];
-  [a1 timeSinceDateOnAccount:v4];
+  lastRegistrationFailureDate = [account lastRegistrationFailureDate];
+  [self timeSinceDateOnAccount:lastRegistrationFailureDate];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)timeSinceLastRegistrationSuccessOnAccount:(id)a3
++ (double)timeSinceLastRegistrationSuccessOnAccount:(id)account
 {
-  v4 = [a3 lastRegistrationSuccessDate];
-  [a1 timeSinceDateOnAccount:v4];
+  lastRegistrationSuccessDate = [account lastRegistrationSuccessDate];
+  [self timeSinceDateOnAccount:lastRegistrationSuccessDate];
   v6 = v5;
 
   return v6;
 }
 
-+ (BOOL)areAllAliasesSelectedOnAccount:(id)a3
++ (BOOL)areAllAliasesSelectedOnAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 accountType] == 1)
+  accountCopy = account;
+  if ([accountCopy accountType] == 1)
   {
-    v4 = [v3 aliases];
-    v5 = [v4 __imArrayByFilteringWithBlock:&stru_100BDB360];
+    aliases = [accountCopy aliases];
+    v5 = [aliases __imArrayByFilteringWithBlock:&stru_100BDB360];
     v6 = [NSSet setWithArray:v5];
 
-    v7 = [v3 vettedAliases];
-    v8 = [NSMutableSet setWithArray:v7];
+    vettedAliases = [accountCopy vettedAliases];
+    v8 = [NSMutableSet setWithArray:vettedAliases];
 
     v9 = +[IDSRegistrationController registeredPhoneNumbers];
     [v8 minusSet:v9];
@@ -237,22 +237,22 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)areAllSelectedAliasesRegisteredOnAccount:(id)a3
++ (BOOL)areAllSelectedAliasesRegisteredOnAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 registration];
-  v5 = [v4 registrationStatus];
+  accountCopy = account;
+  registration = [accountCopy registration];
+  registrationStatus = [registration registrationStatus];
 
-  if (v5 == 8)
+  if (registrationStatus == 8)
   {
-    if ([v3 accountType] == 1)
+    if ([accountCopy accountType] == 1)
     {
-      v6 = [v3 aliases];
-      v7 = [v6 __imArrayByFilteringWithBlock:&stru_100BDB380];
+      aliases = [accountCopy aliases];
+      v7 = [aliases __imArrayByFilteringWithBlock:&stru_100BDB380];
       v8 = [NSSet setWithArray:v7];
 
-      v9 = [v3 unprefixedURIStringsFromRegistration];
-      v10 = [NSSet setWithArray:v9];
+      unprefixedURIStringsFromRegistration = [accountCopy unprefixedURIStringsFromRegistration];
+      v10 = [NSSet setWithArray:unprefixedURIStringsFromRegistration];
 
       v11 = [v10 isEqualToSet:v8];
     }
@@ -279,15 +279,15 @@ LABEL_10:
   return v3;
 }
 
-+ (id)registrationAccountStatusMetricForAccount:(id)a3
++ (id)registrationAccountStatusMetricForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 aliases];
-  v5 = [v4 __imArrayByFilteringWithBlock:&stru_100BDB3A0];
+  accountCopy = account;
+  aliases = [accountCopy aliases];
+  v5 = [aliases __imArrayByFilteringWithBlock:&stru_100BDB3A0];
   v6 = [NSSet setWithArray:v5];
 
-  v7 = [v3 vettedAliases];
-  v8 = [NSMutableSet setWithArray:v7];
+  vettedAliases = [accountCopy vettedAliases];
+  v8 = [NSMutableSet setWithArray:vettedAliases];
 
   v9 = +[IDSRegistrationController registeredPhoneNumbers];
   [v8 minusSet:v9];
@@ -319,7 +319,7 @@ LABEL_10:
         v18 = *(*(&v56 + 1) + 8 * i);
         if (([v6 containsObject:v18] & 1) == 0)
         {
-          v19 = [v3 unselectReasonForAlias:v18];
+          v19 = [accountCopy unselectReasonForAlias:v18];
           if (v19 <= 2)
           {
             if (v19 < 3)
@@ -369,39 +369,39 @@ LABEL_10:
   }
 
   v52 = [IDSRegistrationAccountStatusMetric alloc];
-  v51 = [v3 accountType];
-  v20 = [v3 service];
-  v50 = [v20 identifier];
-  v49 = [v3 isEnabled];
-  v48 = [v3 isUserDisabled];
-  v47 = [a1 isiCloudSignedIn];
-  v46 = [a1 isiCloudAccountMatchingAccount:v3];
-  v44 = [a1 isiTunesSignedIn];
-  v43 = [v3 registrationError];
-  v42 = [v3 registrationErrorReason];
-  v45 = [v3 registration];
-  v41 = [v45 registrationStatus];
-  v40 = [v3 registrationStatus];
-  v39 = [v3 hasEverRegistered];
-  v38 = [v3 lastRegistrationFailureError];
-  [a1 timeSinceLastRegistrationFailureOnAccount:v3];
+  accountType = [accountCopy accountType];
+  service = [accountCopy service];
+  identifier = [service identifier];
+  isEnabled = [accountCopy isEnabled];
+  isUserDisabled = [accountCopy isUserDisabled];
+  isiCloudSignedIn = [self isiCloudSignedIn];
+  v46 = [self isiCloudAccountMatchingAccount:accountCopy];
+  isiTunesSignedIn = [self isiTunesSignedIn];
+  registrationError = [accountCopy registrationError];
+  registrationErrorReason = [accountCopy registrationErrorReason];
+  registration = [accountCopy registration];
+  registrationStatus = [registration registrationStatus];
+  registrationStatus2 = [accountCopy registrationStatus];
+  hasEverRegistered = [accountCopy hasEverRegistered];
+  lastRegistrationFailureError = [accountCopy lastRegistrationFailureError];
+  [self timeSinceLastRegistrationFailureOnAccount:accountCopy];
   v22 = v21;
-  [a1 timeSinceLastRegistrationSuccessOnAccount:v3];
+  [self timeSinceLastRegistrationSuccessOnAccount:accountCopy];
   v24 = v23;
-  v37 = [a1 accountSecurityLevelForAccount:v3];
-  v36 = [a1 areAllAliasesSelectedOnAccount:v3];
-  v35 = [a1 areAllSelectedAliasesRegisteredOnAccount:v3];
+  v37 = [self accountSecurityLevelForAccount:accountCopy];
+  v36 = [self areAllAliasesSelectedOnAccount:accountCopy];
+  v35 = [self areAllSelectedAliasesRegisteredOnAccount:accountCopy];
   v25 = [v6 count];
   v26 = [v10 count];
-  LOBYTE(v34) = [a1 isProductionEnvironment];
+  LOBYTE(v34) = [self isProductionEnvironment];
   BYTE1(v33) = v35;
   LOBYTE(v33) = v36;
-  BYTE4(v32) = v39;
-  LODWORD(v32) = v40;
-  LODWORD(v31) = v42;
-  BYTE1(v30) = v44;
+  BYTE4(v32) = hasEverRegistered;
+  LODWORD(v32) = registrationStatus2;
+  LODWORD(v31) = registrationErrorReason;
+  BYTE1(v30) = isiTunesSignedIn;
   LOBYTE(v30) = v46;
-  v27 = [v52 initWithAccountType:v51 serviceIdentifier:v50 doesExist:1 isEnabled:v49 isUserDisabled:v48 isiCloudSignedIn:v47 doesMatchiCloudAccount:v22 isiTunesSignedIn:v24 registrationError:v30 registrationErrorReason:v43 registrationStatus:v31 accountRegistrationStatus:v41 hasEverRegistered:v32 lastRegistrationFailureError:v38 timeIntervalSinceLastRegistrationFailure:v37 timeIntervalSinceLastRegistrationSuccess:v33 accountSecurityLevel:v25 areAllAliasesSelected:v26 areAllSelectedAliasesRegistered:v15 numberOfSelected:v14 numberOfVetted:v13 numberOfUnselectReasonUnknown:v54 numberOfUnselectReasonAlertDenial:v55 numberOfUnselectReasonClientCall:v34 numberOfUnselectReasonBadAlias:? numberOfUnselectReasonUpdateInfo:? isProdEnvironment:?];
+  v27 = [v52 initWithAccountType:accountType serviceIdentifier:identifier doesExist:1 isEnabled:isEnabled isUserDisabled:isUserDisabled isiCloudSignedIn:isiCloudSignedIn doesMatchiCloudAccount:v22 isiTunesSignedIn:v24 registrationError:v30 registrationErrorReason:registrationError registrationStatus:v31 accountRegistrationStatus:registrationStatus hasEverRegistered:v32 lastRegistrationFailureError:lastRegistrationFailureError timeIntervalSinceLastRegistrationFailure:v37 timeIntervalSinceLastRegistrationSuccess:v33 accountSecurityLevel:v25 areAllAliasesSelected:v26 areAllSelectedAliasesRegistered:v15 numberOfSelected:v14 numberOfVetted:v13 numberOfUnselectReasonUnknown:v54 numberOfUnselectReasonAlertDenial:v55 numberOfUnselectReasonClientCall:v34 numberOfUnselectReasonBadAlias:? numberOfUnselectReasonUpdateInfo:? isProdEnvironment:?];
 
   v28 = +[IMRGLog registration];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -414,21 +414,21 @@ LABEL_10:
   return v27;
 }
 
-+ (id)registrationAccountStatusMetricForNonexistentAccountWithType:(int)a3 serviceIdentifier:(id)a4
++ (id)registrationAccountStatusMetricForNonexistentAccountWithType:(int)type serviceIdentifier:(id)identifier
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  identifierCopy = identifier;
   v7 = [IDSRegistrationAccountStatusMetric alloc];
-  v8 = [a1 isiCloudSignedIn];
-  v9 = [a1 isiTunesSignedIn];
-  LOBYTE(v17) = [a1 isProductionEnvironment];
+  isiCloudSignedIn = [self isiCloudSignedIn];
+  isiTunesSignedIn = [self isiTunesSignedIn];
+  LOBYTE(v17) = [self isProductionEnvironment];
   LOWORD(v16) = 0;
   BYTE4(v15) = 0;
   LODWORD(v15) = 0;
   LODWORD(v14) = -1;
-  BYTE1(v13) = v9;
+  BYTE1(v13) = isiTunesSignedIn;
   LOBYTE(v13) = 0;
-  v10 = [v7 initWithAccountType:v4 serviceIdentifier:v6 doesExist:0 isEnabled:0 isUserDisabled:0 isiCloudSignedIn:v8 doesMatchiCloudAccount:0.0 isiTunesSignedIn:0.0 registrationError:v13 registrationErrorReason:-1 registrationStatus:v14 accountRegistrationStatus:0 hasEverRegistered:v15 lastRegistrationFailureError:-1 timeIntervalSinceLastRegistrationFailure:0 timeIntervalSinceLastRegistrationSuccess:v16 accountSecurityLevel:0 areAllAliasesSelected:0 areAllSelectedAliasesRegistered:0 numberOfSelected:0 numberOfVetted:0 numberOfUnselectReasonUnknown:0 numberOfUnselectReasonAlertDenial:0 numberOfUnselectReasonClientCall:v17 numberOfUnselectReasonBadAlias:? numberOfUnselectReasonUpdateInfo:? isProdEnvironment:?];
+  v10 = [v7 initWithAccountType:v4 serviceIdentifier:identifierCopy doesExist:0 isEnabled:0 isUserDisabled:0 isiCloudSignedIn:isiCloudSignedIn doesMatchiCloudAccount:0.0 isiTunesSignedIn:0.0 registrationError:v13 registrationErrorReason:-1 registrationStatus:v14 accountRegistrationStatus:0 hasEverRegistered:v15 lastRegistrationFailureError:-1 timeIntervalSinceLastRegistrationFailure:0 timeIntervalSinceLastRegistrationSuccess:v16 accountSecurityLevel:0 areAllAliasesSelected:0 areAllSelectedAliasesRegistered:0 numberOfSelected:0 numberOfVetted:0 numberOfUnselectReasonUnknown:0 numberOfUnselectReasonAlertDenial:0 numberOfUnselectReasonClientCall:v17 numberOfUnselectReasonBadAlias:? numberOfUnselectReasonUpdateInfo:? isProdEnvironment:?];
 
   v11 = +[IMRGLog registration];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))

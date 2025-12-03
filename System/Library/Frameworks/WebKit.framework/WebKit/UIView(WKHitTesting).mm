@@ -8,7 +8,7 @@
 {
   v21 = &v23;
   v22 = 16;
-  WebKit::collectDescendantViewsAtPoint(&v21, a1, a5, a2, a3);
+  WebKit::collectDescendantViewsAtPoint(&v21, self, a5, a2, a3);
   v11 = v21 - 1;
   v12 = HIDWORD(v22);
   while (v12 * 8)
@@ -21,7 +21,7 @@
 
     if ([(WKChildScrollView *)v13 conformsToProtocol:&unk_1F11DCAD0])
     {
-      [(WKChildScrollView *)v13 convertPoint:a1 fromView:a2, a3];
+      [(WKChildScrollView *)v13 convertPoint:self fromView:a2, a3];
       v5 = [(WKChildScrollView *)v13 hitTest:a5 withEvent:?];
       v15 = 0;
     }
@@ -55,7 +55,7 @@ LABEL_11:
 
         if (objc_opt_isKindOfClass() & 1) != 0 && ([(WKChildScrollView *)v13 superview], objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v17 = [(WKChildScrollView *)v13 superview];
+          superview = [(WKChildScrollView *)v13 superview];
           if (!HIDWORD(v22))
           {
 LABEL_26:
@@ -63,7 +63,7 @@ LABEL_26:
             JUMPOUT(0x19D8D9358);
           }
 
-          isScrolledBy = WebKit::isScrolledBy(v17, v21[HIDWORD(v22) - 1], v18);
+          isScrolledBy = WebKit::isScrolledBy(superview, v21[HIDWORD(v22) - 1], v18);
           v15 = isScrolledBy ^ 1;
           if (isScrolledBy)
           {

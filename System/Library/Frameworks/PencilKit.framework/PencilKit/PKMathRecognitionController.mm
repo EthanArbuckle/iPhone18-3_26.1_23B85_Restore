@@ -1,16 +1,16 @@
 @interface PKMathRecognitionController
 - (BOOL)processDelayedItemsIfNecessary;
 - (PKMathRecognitionController)init;
-- (PKMathRecognitionController)initWithDelegate:(id)a3;
+- (PKMathRecognitionController)initWithDelegate:(id)delegate;
 - (PKMathRecognitionControllerDelegate)delegate;
-- (void)_drawingDidUpdate:(uint64_t)a1;
-- (void)_foundStrokeGroups:(int)a3 canDelay:;
-- (void)_updateExpressionForItem:(void *)a3 expression:;
-- (void)actuallySendDelayedItems:(double *)a1;
-- (void)didEraseStrokes:(id)a3;
+- (void)_drawingDidUpdate:(uint64_t)update;
+- (void)_foundStrokeGroups:(int)groups canDelay:;
+- (void)_updateExpressionForItem:(void *)item expression:;
+- (void)actuallySendDelayedItems:(double *)items;
+- (void)didEraseStrokes:(id)strokes;
 - (void)reset;
 - (void)sendDelayedItems;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PKMathRecognitionController
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (PKMathRecognitionController)initWithDelegate:(id)a3
+- (PKMathRecognitionController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKMathRecognitionController;
   v5 = [(PKMathRecognitionController *)&v8 init];
@@ -39,7 +39,7 @@
   if (v5)
   {
     [(PKMathRecognitionController *)v5 reset];
-    [(PKMathRecognitionController *)v6 setDelegate:v4];
+    [(PKMathRecognitionController *)v6 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -48,8 +48,8 @@
 - (void)reset
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 doubleForKey:@"internalSettings.mathUpdateDelay"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"internalSettings.mathUpdateDelay"];
   self->_updateItemsDelay = v4;
 
   if (self->_updateItemsDelay == 0.0)
@@ -93,16 +93,16 @@
   self->_delayedItems = 0;
 }
 
-- (void)_foundStrokeGroups:(int)a3 canDelay:
+- (void)_foundStrokeGroups:(int)groups canDelay:
 {
   v150 = *MEMORY[0x1E69E9840];
   v107 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_74;
   }
 
-  v105 = a3;
+  groupsCopy = groups;
   v5 = os_log_create("com.apple.pencilkit", "Math");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -111,12 +111,12 @@
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Found stroke groups: %lu", buf, 0xCu);
   }
 
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:a1 selector:? object:?];
-  v6 = *(a1 + 8);
-  a1[8] = 0.0;
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:? object:?];
+  v6 = *(self + 8);
+  self[8] = 0.0;
 
-  v115 = a1;
-  v106 = [a1 delegate];
+  selfCopy = self;
+  delegate = [self delegate];
   v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v107, "count")}];
   v122 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v107, "count")}];
   v121 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v107, "count")}];
@@ -125,8 +125,8 @@
   v118 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v107, "count")}];
   v113 = [MEMORY[0x1E695DFA8] set];
   v108 = [MEMORY[0x1E695DFA8] set];
-  v110 = [MEMORY[0x1E695DF70] array];
-  v112 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v137 = 0u;
   v138 = 0u;
   v139 = 0u;
@@ -163,48 +163,48 @@
         }
 
         v16 = v15;
-        v17 = [v16 mathResult];
+        mathResult = [v16 mathResult];
 
-        if (v17)
+        if (mathResult)
         {
-          v18 = [v17 preferredTranscription];
+          preferredTranscription = [mathResult preferredTranscription];
           if (qword_1ED6A5360 != -1)
           {
             dispatch_once(&qword_1ED6A5360, &__block_literal_global_72);
           }
 
-          if (![v18 length] || objc_msgSend(v18, "rangeOfCharacterFromSet:", _MergedGlobals_159) == 0x7FFFFFFFFFFFFFFFLL)
+          if (![preferredTranscription length] || objc_msgSend(preferredTranscription, "rangeOfCharacterFromSet:", _MergedGlobals_159) == 0x7FFFFFFFFFFFFFFFLL)
           {
             v19 = os_log_create("com.apple.pencilkit", "Math");
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138477827;
-              v143 = v18;
+              v143 = preferredTranscription;
               _os_log_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEFAULT, "Ignoring expression: %{private}@", buf, 0xCu);
             }
 
             goto LABEL_29;
           }
 
-          v18 = [[PKMathRecognitionItem alloc] initWithStrokeGroupItem:v14 uuid:0];
-          v20 = [(PKMathRecognitionItem *)v18 strokesForIdentifier];
-          if ([v20 count])
+          preferredTranscription = [[PKMathRecognitionItem alloc] initWithStrokeGroupItem:v14 uuid:0];
+          strokesForIdentifier = [(PKMathRecognitionItem *)preferredTranscription strokesForIdentifier];
+          if ([strokesForIdentifier count])
           {
-            v21 = [v18 uuid];
-            v22 = [v7 containsObject:v21];
+            uuid = [preferredTranscription uuid];
+            v22 = [v7 containsObject:uuid];
 
             v12 = v123;
             if ((v22 & 1) == 0)
             {
-              v23 = [v18 uuid];
-              [v7 addObject:v23];
+              uuid2 = [preferredTranscription uuid];
+              [v7 addObject:uuid2];
 
-              if (v18)
+              if (preferredTranscription)
               {
-                v18[12] = v11;
+                preferredTranscription[12] = v11;
               }
 
-              [v110 addObject:v18];
+              [array addObject:preferredTranscription];
 LABEL_28:
               ++v11;
 LABEL_29:
@@ -220,11 +220,11 @@ LABEL_29:
           v24 = os_log_create("com.apple.pencilkit", "Math");
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v116 = [(PKMathRecognitionItem *)v18 strokesForIdentifier];
-            v25 = [v116 count];
-            v26 = [v18 uuid];
-            v27 = [v7 containsObject:v26];
-            [v17 preferredTranscription];
+            strokesForIdentifier2 = [(PKMathRecognitionItem *)preferredTranscription strokesForIdentifier];
+            v25 = [strokesForIdentifier2 count];
+            uuid3 = [preferredTranscription uuid];
+            v27 = [v7 containsObject:uuid3];
+            [mathResult preferredTranscription];
             v29 = v28 = v11;
             *buf = 134218499;
             v143 = v25;
@@ -261,8 +261,8 @@ LABEL_30:
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v31 = v110;
-  v32 = v115;
+  v31 = array;
+  v32 = selfCopy;
   v33 = v122;
   obj = v31;
   v124 = [v31 countByEnumeratingWithState:&v133 objects:v148 count:16];
@@ -283,24 +283,24 @@ LABEL_30:
       }
 
       v35 = *(*(&v133 + 1) + 8 * v34);
-      v36 = [v35 uuid];
-      v37 = [(PKMathRecognitionItem *)v35 changeIdentifier];
-      v38 = [(PKMathRecognitionItem *)v35 stableIdentifier];
+      uuid4 = [v35 uuid];
+      changeIdentifier = [(PKMathRecognitionItem *)v35 changeIdentifier];
+      stableIdentifier = [(PKMathRecognitionItem *)v35 stableIdentifier];
       v39 = MEMORY[0x1E696AD98];
       [v35 sortIndex];
       v127 = [v39 numberWithDouble:?];
-      v40 = [v35 expression];
+      expression = [v35 expression];
       v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v35, "shouldSolveMathFlagIsSet")}];
-      if ([*(v32 + 1) containsObject:v36])
+      if ([*(v32 + 1) containsObject:uuid4])
       {
-        v42 = [*(v32 + 2) objectForKeyedSubscript:v36];
-        if (![v42 isEqual:v37])
+        v42 = [*(v32 + 2) objectForKeyedSubscript:uuid4];
+        if (![v42 isEqual:changeIdentifier])
         {
           goto LABEL_47;
         }
 
-        v43 = [*(v115 + 3) objectForKeyedSubscript:v36];
-        if (([v43 isEqual:v38] & 1) == 0)
+        v43 = [*(selfCopy + 3) objectForKeyedSubscript:uuid4];
+        if (([v43 isEqual:stableIdentifier] & 1) == 0)
         {
 
 LABEL_47:
@@ -308,30 +308,30 @@ LABEL_48:
           v49 = os_log_create("com.apple.pencilkit", "Math");
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
-            v50 = [v35 expression];
+            expression2 = [v35 expression];
             *buf = 138477827;
-            v143 = v50;
+            v143 = expression2;
             _os_log_impl(&dword_1C7CCA000, v49, OS_LOG_TYPE_DEFAULT, "Expression change detected: %{private}@", buf, 0xCu);
           }
 
-          [v113 addObject:v36];
-          [v112 addObject:v35];
+          [v113 addObject:uuid4];
+          [array2 addObject:v35];
           [(PKMathRecognitionItem *)v35 _tagAsRecentlyUpdated];
 LABEL_51:
-          v32 = v115;
+          v32 = selfCopy;
           goto LABEL_52;
         }
 
-        v44 = [*(v115 + 5) objectForKeyedSubscript:v36];
-        v111 = [v44 isEqual:v40];
+        v44 = [*(selfCopy + 5) objectForKeyedSubscript:uuid4];
+        v111 = [v44 isEqual:expression];
 
         if ((v111 & 1) == 0)
         {
           goto LABEL_48;
         }
 
-        v32 = v115;
-        v45 = [*(v115 + 4) objectForKeyedSubscript:v36];
+        v32 = selfCopy;
+        v45 = [*(selfCopy + 4) objectForKeyedSubscript:uuid4];
         v46 = [v45 isEqual:v127];
 
         if ((v46 & 1) == 0)
@@ -339,34 +339,34 @@ LABEL_51:
           v51 = os_log_create("com.apple.pencilkit", "Math");
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v52 = [v35 expression];
+            expression3 = [v35 expression];
             *buf = 138477827;
-            v143 = v52;
+            v143 = expression3;
             _os_log_impl(&dword_1C7CCA000, v51, OS_LOG_TYPE_DEFAULT, "Sort index changed for: %{private}@", buf, 0xCu);
           }
 
-          [v113 addObject:v36];
+          [v113 addObject:uuid4];
           goto LABEL_51;
         }
 
-        v47 = [*(v115 + 6) objectForKeyedSubscript:v36];
+        v47 = [*(selfCopy + 6) objectForKeyedSubscript:uuid4];
         v48 = [v47 isEqual:v41];
 
         if ((v48 & 1) == 0)
         {
-          [v108 addObject:v36];
+          [v108 addObject:uuid4];
         }
       }
 
 LABEL_52:
       v7 = v125;
-      [v125 addObject:v36];
+      [v125 addObject:uuid4];
       v33 = v122;
-      [v122 setObject:v37 forKeyedSubscript:v36];
-      [v121 setObject:v38 forKeyedSubscript:v36];
-      [v120 setObject:v127 forKeyedSubscript:v36];
-      [v119 setObject:v40 forKeyedSubscript:v36];
-      [v118 setObject:v41 forKeyedSubscript:v36];
+      [v122 setObject:changeIdentifier forKeyedSubscript:uuid4];
+      [v121 setObject:stableIdentifier forKeyedSubscript:uuid4];
+      [v120 setObject:v127 forKeyedSubscript:uuid4];
+      [v119 setObject:expression forKeyedSubscript:uuid4];
+      [v118 setObject:v41 forKeyedSubscript:uuid4];
 
       ++v34;
     }
@@ -386,7 +386,7 @@ LABEL_58:
   [v55 minusSet:*(v32 + 1)];
   v126 = v55;
   v128 = v54;
-  if (v105 && ![v55 count] && !objc_msgSend(v108, "count") && (objc_msgSend(v54, "count") || objc_msgSend(v113, "count")))
+  if (groupsCopy && ![v55 count] && !objc_msgSend(v108, "count") && (objc_msgSend(v54, "count") || objc_msgSend(v113, "count")))
   {
     v85 = os_log_create("com.apple.pencilkit", "Math");
     if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
@@ -401,18 +401,18 @@ LABEL_58:
       *&v145[8] = 2048;
       *&v145[10] = v88;
       v146 = 2048;
-      v147 = v106;
+      v147 = delegate;
       _os_log_impl(&dword_1C7CCA000, v85, OS_LOG_TYPE_DEFAULT, "Delaying items. Removed: %lu, changedItems: %lu, solvingChanged: %lu, delegate: %p", buf, 0x2Au);
     }
 
     v89 = v32[9];
-    if ([v112 count] && !objc_msgSend(v54, "count"))
+    if ([array2 count] && !objc_msgSend(v54, "count"))
     {
       v131 = 0u;
       v132 = 0u;
       v129 = 0u;
       v130 = 0u;
-      v90 = v112;
+      v90 = array2;
       v91 = [v90 countByEnumeratingWithState:&v129 objects:v141 count:16];
       if (v91)
       {
@@ -454,8 +454,8 @@ LABEL_58:
         _os_log_impl(&dword_1C7CCA000, v98, OS_LOG_TYPE_DEFAULT, "Calculated delay: %g", buf, 0xCu);
       }
 
-      v32 = v115;
-      v99 = v115[9];
+      v32 = selfCopy;
+      v99 = selfCopy[9];
       if (v94 < v99)
       {
         v99 = v94;
@@ -485,7 +485,7 @@ LABEL_58:
     }
 
     [v32 performSelector:sel_sendDelayedItems withObject:0 afterDelay:v89];
-    v56 = v106;
+    v56 = delegate;
     v83 = v121;
     v33 = v122;
     v81 = obj;
@@ -496,7 +496,7 @@ LABEL_58:
 
   else
   {
-    v56 = v106;
+    v56 = delegate;
     if ([v54 count] || objc_msgSend(v55, "count") || objc_msgSend(v113, "count"))
     {
       v57 = os_log_create("com.apple.pencilkit", "Math");
@@ -515,11 +515,11 @@ LABEL_58:
         v144 = 2048;
         *v145 = v63;
         v33 = v122;
-        v56 = v106;
+        v56 = delegate;
         *&v145[8] = 2048;
         *&v145[10] = v64;
         v146 = 2048;
-        v147 = v106;
+        v147 = delegate;
         _os_log_impl(&dword_1C7CCA000, v57, OS_LOG_TYPE_DEFAULT, "Removed: %lu, newItems: %lu, changedItems: %lu, delegate: %p", buf, 0x2Au);
       }
 
@@ -598,34 +598,34 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
   _MergedGlobals_159 = v0;
 }
 
-- (void)_updateExpressionForItem:(void *)a3 expression:
+- (void)_updateExpressionForItem:(void *)item expression:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v9 = [a2 uuid];
-    v6 = [*(a1 + 40) mutableCopy];
-    [v6 setObject:v5 forKeyedSubscript:v9];
+    itemCopy = item;
+    uuid = [a2 uuid];
+    v6 = [*(self + 40) mutableCopy];
+    [v6 setObject:itemCopy forKeyedSubscript:uuid];
 
     v7 = [v6 copy];
-    v8 = *(a1 + 40);
-    *(a1 + 40) = v7;
+    v8 = *(self + 40);
+    *(self + 40) = v7;
   }
 }
 
-- (void)_drawingDidUpdate:(uint64_t)a1
+- (void)_drawingDidUpdate:(uint64_t)update
 {
   v47 = *MEMORY[0x1E69E9840];
   v34 = a2;
-  if (a1 && [*(a1 + 56) count] && (*(a1 + 80) & 2) != 0)
+  if (update && [*(update + 56) count] && (*(update + 80) & 2) != 0)
   {
-    v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(*(a1 + 56), "count")}];
+    v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(*(update + 56), "count")}];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v4 = [v34 strokes];
-    v5 = [v4 countByEnumeratingWithState:&v39 objects:v46 count:16];
+    strokes = [v34 strokes];
+    v5 = [strokes countByEnumeratingWithState:&v39 objects:v46 count:16];
     if (v5)
     {
       v6 = v5;
@@ -636,31 +636,31 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
         {
           if (*v40 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(strokes);
           }
 
           v9 = *(*(&v39 + 1) + 8 * i);
           if (([v9 _flags] & 0x20000000000) != 0)
           {
-            v10 = [v9 _strokeUUID];
-            [v3 addObject:v10];
+            _strokeUUID = [v9 _strokeUUID];
+            [v3 addObject:_strokeUUID];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v39 objects:v46 count:16];
+        v6 = [strokes countByEnumeratingWithState:&v39 objects:v46 count:16];
       }
 
       while (v6);
     }
 
-    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(a1 + 56), "count")}];
-    [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(*(a1 + 56), "count")}];
-    v33 = v32 = a1;
+    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(update + 56), "count")}];
+    [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(*(update + 56), "count")}];
+    v33 = v32 = update;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v12 = *(a1 + 56);
+    v12 = *(update + 56);
     v13 = [v12 countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v13)
     {
@@ -676,12 +676,12 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
           }
 
           v17 = *(*(&v35 + 1) + 8 * j);
-          v18 = [(PKMathRecognitionItem *)v17 heroStroke];
-          v19 = v18;
-          if (v18)
+          heroStroke = [(PKMathRecognitionItem *)v17 heroStroke];
+          v19 = heroStroke;
+          if (heroStroke)
           {
-            v20 = [v18 _strokeUUID];
-            v21 = [v3 containsObject:v20];
+            _strokeUUID2 = [heroStroke _strokeUUID];
+            v21 = [v3 containsObject:_strokeUUID2];
 
             if (v21 != [v17 shouldSolveMathFlagIsSet])
             {
@@ -691,8 +691,8 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
                 [(PKStrokeGroupItem *)*(v17 + 8) refreshStrokesInDrawing:v34];
               }
 
-              v22 = [v17 uuid];
-              [v33 addObject:v22];
+              uuid = [v17 uuid];
+              [v33 addObject:uuid];
             }
           }
 
@@ -701,13 +701,13 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
             v21 = 0;
           }
 
-          v23 = [v17 uuid];
+          uuid2 = [v17 uuid];
 
-          if (v23)
+          if (uuid2)
           {
             v24 = [MEMORY[0x1E696AD98] numberWithBool:v21];
-            v25 = [v17 uuid];
-            [v11 setObject:v24 forKeyedSubscript:v25];
+            uuid3 = [v17 uuid];
+            [v11 setObject:v24 forKeyedSubscript:uuid3];
           }
         }
 
@@ -732,22 +732,22 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
         _os_log_impl(&dword_1C7CCA000, v28, OS_LOG_TYPE_DEFAULT, "Found %lu groups with updated solve state", buf, 0xCu);
       }
 
-      v30 = [v32 delegate];
+      delegate = [v32 delegate];
       v31 = [v33 copy];
-      [v30 mathRecognitionController:v32 solveStateChangedForExpressions:v31 mathItems:v32[7]];
+      [delegate mathRecognitionController:v32 solveStateChangedForExpressions:v31 mathItems:v32[7]];
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->__sessionManager);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->__sessionManager, v4);
+    objc_storeWeak(&self->__sessionManager, delegateCopy);
     *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     v6 = (objc_opt_respondsToSelector() & 1) != 0 ? 2 : 0;
     *&self->_delegateFlags = *&self->_delegateFlags & 0xFD | v6;
@@ -756,7 +756,7 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
     if ([(NSSet *)self->_currentItems count])
     {
       v8 = [(NSArray *)self->_currentMathRecognitionItems count];
-      if (v4)
+      if (delegateCopy)
       {
         if (v8)
         {
@@ -772,7 +772,7 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
           v11 = [MEMORY[0x1E695DFD8] set];
           currentItems = self->_currentItems;
           v13 = [MEMORY[0x1E695DFD8] set];
-          [v4 mathRecognitionController:self didUpdateExpressions:v11 newItems:currentItems removedItems:v13 mathItems:self->_currentMathRecognitionItems];
+          [delegateCopy mathRecognitionController:self didUpdateExpressions:v11 newItems:currentItems removedItems:v13 mathItems:self->_currentMathRecognitionItems];
         }
       }
     }
@@ -792,8 +792,8 @@ void __55__PKMathRecognitionController__shouldIgnoreMathResult___block_invoke()
     goto LABEL_7;
   }
 
-  v3 = [(PKMathRecognitionController *)self delegate];
-  [v3 mathRecognitionControllerTimestampForLatestUserInteraction:self];
+  delegate = [(PKMathRecognitionController *)self delegate];
+  [delegate mathRecognitionControllerTimestampForLatestUserInteraction:self];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -838,11 +838,11 @@ LABEL_7:
   }
 }
 
-- (void)actuallySendDelayedItems:(double *)a1
+- (void)actuallySendDelayedItems:(double *)items
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (items)
   {
     v4 = os_log_create("com.apple.pencilkit", "Math");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -854,7 +854,7 @@ LABEL_7:
 
     if (v3)
     {
-      [(PKMathRecognitionController *)a1 _foundStrokeGroups:v3 canDelay:0];
+      [(PKMathRecognitionController *)items _foundStrokeGroups:v3 canDelay:0];
     }
   }
 }
@@ -875,10 +875,10 @@ LABEL_7:
   return delayedItems != 0;
 }
 
-- (void)didEraseStrokes:(id)a3
+- (void)didEraseStrokes:(id)strokes
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  strokesCopy = strokes;
   if ((*&self->_delegateFlags & 4) != 0)
   {
     v21 = [MEMORY[0x1E695DFA8] set];
@@ -886,7 +886,7 @@ LABEL_7:
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v19 = self;
+    selfCopy = self;
     obj = self->_currentMathRecognitionItems;
     v5 = [(NSArray *)obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v5)
@@ -907,8 +907,8 @@ LABEL_7:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v9 = [v8 strokes];
-          v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          strokes = [v8 strokes];
+          v10 = [strokes countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -919,22 +919,22 @@ LABEL_7:
               {
                 if (*v24 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(strokes);
                 }
 
-                v14 = [*(*(&v23 + 1) + 8 * j) _strokeUUID];
-                v15 = [v4 containsObject:v14];
+                _strokeUUID = [*(*(&v23 + 1) + 8 * j) _strokeUUID];
+                v15 = [strokesCopy containsObject:_strokeUUID];
 
                 if (v15)
                 {
-                  v16 = [v8 uuid];
-                  [v21 addObject:v16];
+                  uuid = [v8 uuid];
+                  [v21 addObject:uuid];
 
                   goto LABEL_17;
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v11 = [strokes countByEnumeratingWithState:&v23 objects:v31 count:16];
               if (v11)
               {
                 continue;
@@ -953,9 +953,9 @@ LABEL_17:
       while (v6);
     }
 
-    v17 = [(PKMathRecognitionController *)v19 delegate];
+    delegate = [(PKMathRecognitionController *)selfCopy delegate];
     v18 = [v21 copy];
-    [v17 mathRecognitionController:v19 didEraseStrokesInExpressions:v18];
+    [delegate mathRecognitionController:selfCopy didEraseStrokesInExpressions:v18];
   }
 }
 

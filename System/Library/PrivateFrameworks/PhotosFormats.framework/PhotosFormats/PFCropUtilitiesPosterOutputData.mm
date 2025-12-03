@@ -1,7 +1,7 @@
 @interface PFCropUtilitiesPosterOutputData
 - (CGRect)adaptiveVisibleRect;
 - (CGRect)visibleRect;
-- (PFCropUtilitiesPosterOutputData)initWithVisibleRect:(CGRect)a3 adaptiveVisibleRect:(CGRect)a4 cropScore:(double)a5 layoutScore:(double)a6 clockOverlapAcceptable:(BOOL)a7 headroomEngaged:(BOOL)a8 adaptiveHeadroom:(double)a9 maxClockShift:(double)a10 layoutVariant:(unint64_t)a11 notificationRoom:(double)a12;
+- (PFCropUtilitiesPosterOutputData)initWithVisibleRect:(CGRect)rect adaptiveVisibleRect:(CGRect)visibleRect cropScore:(double)score layoutScore:(double)layoutScore clockOverlapAcceptable:(BOOL)acceptable headroomEngaged:(BOOL)engaged adaptiveHeadroom:(double)headroom maxClockShift:(double)self0 layoutVariant:(unint64_t)self1 notificationRoom:(double)self2;
 @end
 
 @implementation PFCropUtilitiesPosterOutputData
@@ -32,16 +32,16 @@
   return result;
 }
 
-- (PFCropUtilitiesPosterOutputData)initWithVisibleRect:(CGRect)a3 adaptiveVisibleRect:(CGRect)a4 cropScore:(double)a5 layoutScore:(double)a6 clockOverlapAcceptable:(BOOL)a7 headroomEngaged:(BOOL)a8 adaptiveHeadroom:(double)a9 maxClockShift:(double)a10 layoutVariant:(unint64_t)a11 notificationRoom:(double)a12
+- (PFCropUtilitiesPosterOutputData)initWithVisibleRect:(CGRect)rect adaptiveVisibleRect:(CGRect)visibleRect cropScore:(double)score layoutScore:(double)layoutScore clockOverlapAcceptable:(BOOL)acceptable headroomEngaged:(BOOL)engaged adaptiveHeadroom:(double)headroom maxClockShift:(double)self0 layoutVariant:(unint64_t)self1 notificationRoom:(double)self2
 {
-  height = a4.size.height;
-  x = a3.origin.x;
-  width = a4.size.width;
-  y = a4.origin.y;
-  v17 = a4.origin.x;
-  v18 = a3.size.height;
-  v19 = a3.size.width;
-  v20 = a3.origin.y;
+  height = visibleRect.size.height;
+  x = rect.origin.x;
+  width = visibleRect.size.width;
+  y = visibleRect.origin.y;
+  v17 = visibleRect.origin.x;
+  v18 = rect.size.height;
+  v19 = rect.size.width;
+  v20 = rect.origin.y;
   v24.receiver = self;
   v24.super_class = PFCropUtilitiesPosterOutputData;
   result = [(PFCropUtilitiesPosterOutputData *)&v24 init];
@@ -52,14 +52,14 @@
   result->_adaptiveVisibleRect.origin.y = y;
   result->_adaptiveVisibleRect.size.width = width;
   result->_adaptiveVisibleRect.size.height = height;
-  *&result->_cropScore = *&a5;
-  result->_clockOverlapAcceptable = a7;
-  result->_headroomEngaged = a8;
-  result->_adaptiveHeadroom = a9;
-  result->_maxClockShift = a10;
-  result->_layoutVariant = a11;
+  *&result->_cropScore = *&score;
+  result->_clockOverlapAcceptable = acceptable;
+  result->_headroomEngaged = engaged;
+  result->_adaptiveHeadroom = headroom;
+  result->_maxClockShift = shift;
+  result->_layoutVariant = variant;
   result->_visibleRect.origin.x = x;
-  result->_notificationRoom = a12;
+  result->_notificationRoom = room;
   return result;
 }
 

@@ -1,30 +1,30 @@
 @interface AVLazyValueLoadingMetadataItem
-+ (id)metadataItemWithPropertiesOfMetadataItem:(id)a3 valueLoadingHandler:(id)a4;
-- (BOOL)_valueForKeyDependsOnMetadataValue:(id)a3;
-- (id)_initWithFigMetadataDictionary:(id)a3 valueLoadingHandler:(id)a4;
++ (id)metadataItemWithPropertiesOfMetadataItem:(id)item valueLoadingHandler:(id)handler;
+- (BOOL)_valueForKeyDependsOnMetadataValue:(id)value;
+- (id)_initWithFigMetadataDictionary:(id)dictionary valueLoadingHandler:(id)handler;
 - (id)dataType;
 - (int64_t)_valueStatus;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (void)_valueRequestDidFinish;
-- (void)_waitForLoadingOfValueDependentKey:(id)a3;
+- (void)_waitForLoadingOfValueDependentKey:(id)key;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVLazyValueLoadingMetadataItem
 
-+ (id)metadataItemWithPropertiesOfMetadataItem:(id)a3 valueLoadingHandler:(id)a4
++ (id)metadataItemWithPropertiesOfMetadataItem:(id)item valueLoadingHandler:(id)handler
 {
-  v4 = [[a1 alloc] _initWithFigMetadataDictionary:objc_msgSend(a3 valueLoadingHandler:{"_figMetadataDictionaryWithValue:diviningValueDataType:", 0, 0), a4}];
+  v4 = [[self alloc] _initWithFigMetadataDictionary:objc_msgSend(item valueLoadingHandler:{"_figMetadataDictionaryWithValue:diviningValueDataType:", 0, 0), handler}];
 
   return v4;
 }
 
-- (id)_initWithFigMetadataDictionary:(id)a3 valueLoadingHandler:(id)a4
+- (id)_initWithFigMetadataDictionary:(id)dictionary valueLoadingHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = AVLazyValueLoadingMetadataItem;
-  v5 = [(AVMetadataItem *)&v8 _initWithFigMetadataDictionary:a3];
+  v5 = [(AVMetadataItem *)&v8 _initWithFigMetadataDictionary:dictionary];
   if (v5)
   {
     v6 = objc_alloc_init(AVLazyValueLoadingMetadataItemInternal);
@@ -32,10 +32,10 @@
     if (v6)
     {
       CFRetain(v6);
-      if (a4)
+      if (handler)
       {
         *(v5[2] + 24) = [AVMetadataItemValueRequest metadataItemValueRequestWithMetadataItem:v5];
-        *(v5[2] + 32) = [a4 copy];
+        *(v5[2] + 32) = [handler copy];
         *(v5[2] + 40) = 0;
         *(v5[2] + 56) = objc_alloc_init(MEMORY[0x1E695DF70]);
       }
@@ -159,14 +159,14 @@ void *__56__AVLazyValueLoadingMetadataItem__valueRequestDidFinish__block_invoke(
   return result;
 }
 
-- (BOOL)_valueForKeyDependsOnMetadataValue:(id)a3
+- (BOOL)_valueForKeyDependsOnMetadataValue:(id)value
 {
-  if (a3 && (([a3 isEqualToString:@"value"] & 1) != 0 || objc_msgSend(a3, "rangeOfString:options:", @"Value", 14) != 0x7FFFFFFFFFFFFFFFLL || v5))
+  if (value && (([value isEqualToString:@"value"] & 1) != 0 || objc_msgSend(value, "rangeOfString:options:", @"Value", 14) != 0x7FFFFFFFFFFFFFFFLL || v5))
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"dataType"];
+  return [value isEqualToString:@"dataType"];
 }
 
 - (int64_t)_valueStatus
@@ -189,32 +189,32 @@ void *__56__AVLazyValueLoadingMetadataItem__valueRequestDidFinish__block_invoke(
   return v4;
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
-  if (![(AVLazyValueLoadingMetadataItem *)self _valueForKeyDependsOnMetadataValue:a3])
+  if (![(AVLazyValueLoadingMetadataItem *)self _valueForKeyDependsOnMetadataValue:key])
   {
     return 2;
   }
 
   result = [(AVLazyValueLoadingMetadataItem *)self _valueStatus];
-  if (a4)
+  if (error)
   {
     if (result == 3)
     {
-      *a4 = self->_lazyMetadataItem->valueLoadingError;
+      *error = self->_lazyMetadataItem->valueLoadingError;
     }
   }
 
   return result;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if ([objc_msgSend(a3 indexesOfObjectsPassingTest:{&__block_literal_global_304), "count"}])
+  if ([objc_msgSend(keys indexesOfObjectsPassingTest:{&__block_literal_global_304), "count"}])
   {
     readWriteQueue = self->_lazyMetadataItem->readWriteQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -222,11 +222,11 @@ void *__56__AVLazyValueLoadingMetadataItem__valueRequestDidFinish__block_invoke(
     v8[2] = __84__AVLazyValueLoadingMetadataItem_loadValuesAsynchronouslyForKeys_completionHandler___block_invoke_2;
     v8[3] = &unk_1E7461C50;
     v8[4] = self;
-    v8[5] = a4;
+    v8[5] = handler;
     v8[6] = &v9;
     av_readwrite_dispatch_queue_write(readWriteQueue, v8);
     v7 = *(v10 + 24);
-    if (!a4)
+    if (!handler)
     {
       goto LABEL_7;
     }
@@ -236,7 +236,7 @@ void *__56__AVLazyValueLoadingMetadataItem__valueRequestDidFinish__block_invoke(
   {
     v7 = 1;
     *(v10 + 24) = 1;
-    if (!a4)
+    if (!handler)
     {
       goto LABEL_7;
     }
@@ -244,7 +244,7 @@ void *__56__AVLazyValueLoadingMetadataItem__valueRequestDidFinish__block_invoke(
 
   if (v7)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 
 LABEL_7:
@@ -313,12 +313,12 @@ void __84__AVLazyValueLoadingMetadataItem_loadValuesAsynchronouslyForKeys_comple
   *(*(*(a1 + 32) + 16) + 32) = 0;
 }
 
-- (void)_waitForLoadingOfValueDependentKey:(id)a3
+- (void)_waitForLoadingOfValueDependentKey:(id)key
 {
   if ([(AVLazyValueLoadingMetadataItem *)self _valueStatus]<= 1)
   {
     v5 = dispatch_semaphore_create(0);
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+    v6 = [MEMORY[0x1E695DEC8] arrayWithObject:key];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __69__AVLazyValueLoadingMetadataItem__waitForLoadingOfValueDependentKey___block_invoke;

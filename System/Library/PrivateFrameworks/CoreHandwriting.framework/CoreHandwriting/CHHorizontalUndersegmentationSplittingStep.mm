@@ -1,19 +1,19 @@
 @interface CHHorizontalUndersegmentationSplittingStep
-- (CHHorizontalUndersegmentationSplittingStep)initWithAdditionalRecognitionBlock:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (CHHorizontalUndersegmentationSplittingStep)initWithAdditionalRecognitionBlock:(id)block;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHHorizontalUndersegmentationSplittingStep
 
-- (CHHorizontalUndersegmentationSplittingStep)initWithAdditionalRecognitionBlock:(id)a3
+- (CHHorizontalUndersegmentationSplittingStep)initWithAdditionalRecognitionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = CHHorizontalUndersegmentationSplittingStep;
   v5 = [(CHHorizontalUndersegmentationSplittingStep *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x1865E6810](v4);
+    v6 = MEMORY[0x1865E6810](blockCopy);
     additionalRecognitionBlock = v5->_additionalRecognitionBlock;
     v5->_additionalRecognitionBlock = v6;
   }
@@ -21,18 +21,18 @@
   return v5;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v229 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v209 = a4;
+  processCopy = process;
+  optionsCopy = options;
   v221 = 0u;
   v222 = 0u;
   v223 = 0u;
   v224 = 0u;
-  if (v5)
+  if (processCopy)
   {
-    v11 = v5[9];
+    v11 = processCopy[9];
   }
 
   else
@@ -40,7 +40,7 @@
     v11 = 0;
   }
 
-  v220 = v5;
+  v220 = processCopy;
   obj = objc_msgSend_copy(v11, v6, v7, v8, v9, v10);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v221, v225, 16, v13);
   v20 = v14;
@@ -60,9 +60,9 @@
             objc_enumerationMutation(obj);
           }
 
-          if (v5)
+          if (processCopy)
           {
-            v21 = v5[10];
+            v21 = processCopy[10];
           }
 
           else
@@ -170,7 +170,7 @@ LABEL_14:
 LABEL_15:
 
           ++v215;
-          v5 = v220;
+          processCopy = v220;
         }
 
         while (v215 != v213);
@@ -183,7 +183,7 @@ LABEL_15:
       }
     }
 
-    if (v5)
+    if (processCopy)
     {
       do
       {

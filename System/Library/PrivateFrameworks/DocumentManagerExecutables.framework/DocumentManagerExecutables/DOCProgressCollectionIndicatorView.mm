@@ -1,16 +1,16 @@
 @interface DOCProgressCollectionIndicatorView
 - (BOOL)isHidden;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC26DocumentManagerExecutables34DOCProgressCollectionIndicatorView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC26DocumentManagerExecutables34DOCProgressCollectionIndicatorView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)didMoveToWindow;
 - (void)didTap;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation DOCProgressCollectionIndicatorView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 40.0;
   v4 = 40.0;
@@ -22,7 +22,7 @@
 - (void)didTap
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.isa) + 0xB8);
-  v4 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -31,11 +31,11 @@
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = specialized DOCProgressCollectionIndicatorView.pointerInteraction(_:styleFor:)();
 
   return v9;
@@ -43,7 +43,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   DOCProgressCollectionIndicatorView.didMoveToWindow()();
 }
 
@@ -54,21 +54,21 @@
   return [(DOCProgressCollectionIndicatorView *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5 = type metadata accessor for DOCProgressCollectionIndicatorView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(DOCProgressCollectionIndicatorView *)&v9 isHidden];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHidden = [(DOCProgressCollectionIndicatorView *)&v9 isHidden];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(DOCProgressCollectionIndicatorView *)&v8 setHidden:v3];
-  DOCProgressCollectionIndicatorView.isHidden.didset(v7);
+  [(DOCProgressCollectionIndicatorView *)&v8 setHidden:hiddenCopy];
+  DOCProgressCollectionIndicatorView.isHidden.didset(isHidden);
 }
 
-- (_TtC26DocumentManagerExecutables34DOCProgressCollectionIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables34DOCProgressCollectionIndicatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

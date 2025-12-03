@@ -1,27 +1,27 @@
 @interface PDDPPerson
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAccountStatus:(id)a3;
+- (int)StringAsAccountStatus:(id)status;
 - (int)accountStatus;
 - (unint64_t)hash;
-- (void)addPersonLinks:(id)a3;
-- (void)addRoleLocations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsFederatedAccount:(BOOL)a3;
-- (void)setHasIsProgressTrackingAllowed:(BOOL)a3;
-- (void)setHasIsRosterSearchAllowed:(BOOL)a3;
-- (void)setHasPasscodeType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPersonLinks:(id)links;
+- (void)addRoleLocations:(id)locations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsFederatedAccount:(BOOL)account;
+- (void)setHasIsProgressTrackingAllowed:(BOOL)allowed;
+- (void)setHasIsRosterSearchAllowed:(BOOL)allowed;
+- (void)setHasPasscodeType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPPerson
 
-- (void)setHasPasscodeType:(BOOL)a3
+- (void)setHasPasscodeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsProgressTrackingAllowed:(BOOL)a3
+- (void)setHasIsProgressTrackingAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 8;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsFederatedAccount:(BOOL)a3
+- (void)setHasIsFederatedAccount:(BOOL)account
 {
-  if (a3)
+  if (account)
   {
     v3 = 4;
   }
@@ -64,45 +64,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addPersonLinks:(id)a3
+- (void)addPersonLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   personLinks = self->_personLinks;
-  v8 = v4;
+  v8 = linksCopy;
   if (!personLinks)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_personLinks;
     self->_personLinks = v6;
 
-    v4 = v8;
+    linksCopy = v8;
     personLinks = self->_personLinks;
   }
 
-  [(NSMutableArray *)personLinks addObject:v4];
+  [(NSMutableArray *)personLinks addObject:linksCopy];
 }
 
-- (void)addRoleLocations:(id)a3
+- (void)addRoleLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   roleLocations = self->_roleLocations;
-  v8 = v4;
+  v8 = locationsCopy;
   if (!roleLocations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_roleLocations;
     self->_roleLocations = v6;
 
-    v4 = v8;
+    locationsCopy = v8;
     roleLocations = self->_roleLocations;
   }
 
-  [(NSMutableArray *)roleLocations addObject:v4];
+  [(NSMutableArray *)roleLocations addObject:locationsCopy];
 }
 
-- (void)setHasIsRosterSearchAllowed:(BOOL)a3
+- (void)setHasIsRosterSearchAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 16;
   }
@@ -128,40 +128,40 @@
   }
 }
 
-- (int)StringAsAccountStatus:(id)a3
+- (int)StringAsAccountStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_STATUS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NEW"])
+  else if ([statusCopy isEqualToString:@"NEW"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVE"])
+  else if ([statusCopy isEqualToString:@"ACTIVE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ATO_LOCKED"])
+  else if ([statusCopy isEqualToString:@"ATO_LOCKED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FAILED_PASSWORD_LOCKED"])
+  else if ([statusCopy isEqualToString:@"FAILED_PASSWORD_LOCKED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INACTIVE"])
+  else if ([statusCopy isEqualToString:@"INACTIVE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TO_BE_DELETED"])
+  else if ([statusCopy isEqualToString:@"TO_BE_DELETED"])
   {
     v4 = 6;
   }
@@ -179,8 +179,8 @@
   v7.receiver = self;
   v7.super_class = PDDPPerson;
   v3 = [(PDDPPerson *)&v7 description];
-  v4 = [(PDDPPerson *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPPerson *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -287,15 +287,15 @@ LABEL_25:
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v18 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v20 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   if ([(NSMutableArray *)self->_personLinks count])
@@ -320,8 +320,8 @@ LABEL_25:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation3 = [*(*(&v50 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation3];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -367,8 +367,8 @@ LABEL_25:
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
-          [v30 addObject:v36];
+          dictionaryRepresentation4 = [*(*(&v46 + 1) + 8 * j) dictionaryRepresentation];
+          [v30 addObject:dictionaryRepresentation4];
         }
 
         v33 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v46 objects:v54 count:16];
@@ -389,8 +389,8 @@ LABEL_25:
   entityMeta = self->_entityMeta;
   if (entityMeta)
   {
-    v39 = [(PDDPEntityMeta *)entityMeta dictionaryRepresentation];
-    [v4 setObject:v39 forKey:@"entity_meta"];
+    dictionaryRepresentation5 = [(PDDPEntityMeta *)entityMeta dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"entity_meta"];
   }
 
   if (*&self->_has)
@@ -418,9 +418,9 @@ LABEL_25:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_personId)
   {
     PBDataWriterWriteStringField();
@@ -605,75 +605,75 @@ LABEL_25:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_personId)
   {
-    [v4 setPersonId:?];
-    v4 = v15;
+    [toCopy setPersonId:?];
+    toCopy = v15;
   }
 
   if (self->_appleId)
   {
     [v15 setAppleId:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_iCloudUserId)
   {
     [v15 setICloudUserId:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_orgId)
   {
     [v15 setOrgId:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_givenName)
   {
     [v15 setGivenName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_middleName)
   {
     [v15 setMiddleName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_familyName)
   {
     [v15 setFamilyName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_phoneticGivenName)
   {
     [v15 setPhoneticGivenName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_phoneticMiddleName)
   {
     [v15 setPhoneticMiddleName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_phoneticFamilyName)
   {
     [v15 setPhoneticFamilyName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 26) = self->_passcodeType;
-    v4[172] |= 2u;
+    *(toCopy + 26) = self->_passcodeType;
+    toCopy[172] |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -692,13 +692,13 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v4[169] = self->_isProgressTrackingAllowed;
-  v4[172] |= 8u;
+  toCopy[169] = self->_isProgressTrackingAllowed;
+  toCopy[172] |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_24:
-    v4[168] = self->_isFederatedAccount;
-    v4[172] |= 4u;
+    toCopy[168] = self->_isFederatedAccount;
+    toCopy[172] |= 4u;
   }
 
 LABEL_25:
@@ -715,10 +715,10 @@ LABEL_25:
   if ([(PDDPPerson *)self personLinksCount])
   {
     [v15 clearPersonLinks];
-    v6 = [(PDDPPerson *)self personLinksCount];
-    if (v6)
+    personLinksCount = [(PDDPPerson *)self personLinksCount];
+    if (personLinksCount)
     {
-      v7 = v6;
+      v7 = personLinksCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(PDDPPerson *)self personLinksAtIndex:i];
@@ -740,10 +740,10 @@ LABEL_25:
   if ([(PDDPPerson *)self roleLocationsCount])
   {
     [v15 clearRoleLocations];
-    v10 = [(PDDPPerson *)self roleLocationsCount];
-    if (v10)
+    roleLocationsCount = [(PDDPPerson *)self roleLocationsCount];
+    if (roleLocationsCount)
     {
-      v11 = v10;
+      v11 = roleLocationsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(PDDPPerson *)self roleLocationsAtIndex:j];
@@ -778,46 +778,46 @@ LABEL_25:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_personId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_personId copyWithZone:zone];
   v7 = v5[14];
   v5[14] = v6;
 
-  v8 = [(NSString *)self->_appleId copyWithZone:a3];
+  v8 = [(NSString *)self->_appleId copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_iCloudUserId copyWithZone:a3];
+  v10 = [(NSString *)self->_iCloudUserId copyWithZone:zone];
   v11 = v5[10];
   v5[10] = v10;
 
-  v12 = [(NSString *)self->_orgId copyWithZone:a3];
+  v12 = [(NSString *)self->_orgId copyWithZone:zone];
   v13 = v5[12];
   v5[12] = v12;
 
-  v14 = [(NSString *)self->_givenName copyWithZone:a3];
+  v14 = [(NSString *)self->_givenName copyWithZone:zone];
   v15 = v5[8];
   v5[8] = v14;
 
-  v16 = [(NSString *)self->_middleName copyWithZone:a3];
+  v16 = [(NSString *)self->_middleName copyWithZone:zone];
   v17 = v5[11];
   v5[11] = v16;
 
-  v18 = [(NSString *)self->_familyName copyWithZone:a3];
+  v18 = [(NSString *)self->_familyName copyWithZone:zone];
   v19 = v5[7];
   v5[7] = v18;
 
-  v20 = [(NSString *)self->_phoneticGivenName copyWithZone:a3];
+  v20 = [(NSString *)self->_phoneticGivenName copyWithZone:zone];
   v21 = v5[18];
   v5[18] = v20;
 
-  v22 = [(NSString *)self->_phoneticMiddleName copyWithZone:a3];
+  v22 = [(NSString *)self->_phoneticMiddleName copyWithZone:zone];
   v23 = v5[19];
   v5[19] = v22;
 
-  v24 = [(NSString *)self->_phoneticFamilyName copyWithZone:a3];
+  v24 = [(NSString *)self->_phoneticFamilyName copyWithZone:zone];
   v25 = v5[17];
   v5[17] = v24;
 
@@ -854,11 +854,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v27 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v27 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v28 = v5[3];
   v5[3] = v27;
 
-  v29 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v29 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v30 = v5[4];
   v5[4] = v29;
 
@@ -881,7 +881,7 @@ LABEL_5:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v56 + 1) + 8 * i) copyWithZone:a3];
+        v36 = [*(*(&v56 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPersonLinks:v36];
       }
 
@@ -891,11 +891,11 @@ LABEL_5:
     while (v33);
   }
 
-  v37 = [(NSString *)self->_emailAddress copyWithZone:a3];
+  v37 = [(NSString *)self->_emailAddress copyWithZone:zone];
   v38 = v5[5];
   v5[5] = v37;
 
-  v39 = [(NSString *)self->_grade copyWithZone:a3];
+  v39 = [(NSString *)self->_grade copyWithZone:zone];
   v40 = v5[9];
   v5[9] = v39;
 
@@ -918,7 +918,7 @@ LABEL_5:
           objc_enumerationMutation(v41);
         }
 
-        v46 = [*(*(&v52 + 1) + 8 * j) copyWithZone:{a3, v52}];
+        v46 = [*(*(&v52 + 1) + 8 * j) copyWithZone:{zone, v52}];
         [v5 addRoleLocations:v46];
       }
 
@@ -934,7 +934,7 @@ LABEL_5:
     *(v5 + 172) |= 0x10u;
   }
 
-  v47 = [(PDDPEntityMeta *)self->_entityMeta copyWithZone:a3, v52];
+  v47 = [(PDDPEntityMeta *)self->_entityMeta copyWithZone:zone, v52];
   v48 = v5[6];
   v5[6] = v47;
 
@@ -944,23 +944,23 @@ LABEL_5:
     *(v5 + 172) |= 1u;
   }
 
-  v49 = [(NSString *)self->_personNumber copyWithZone:a3];
+  v49 = [(NSString *)self->_personNumber copyWithZone:zone];
   v50 = v5[16];
   v5[16] = v49;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_72;
   }
 
   personId = self->_personId;
-  if (personId | *(v4 + 14))
+  if (personId | *(equalCopy + 14))
   {
     if (![(NSString *)personId isEqual:?])
     {
@@ -969,7 +969,7 @@ LABEL_5:
   }
 
   appleId = self->_appleId;
-  if (appleId | *(v4 + 2))
+  if (appleId | *(equalCopy + 2))
   {
     if (![(NSString *)appleId isEqual:?])
     {
@@ -978,7 +978,7 @@ LABEL_5:
   }
 
   iCloudUserId = self->_iCloudUserId;
-  if (iCloudUserId | *(v4 + 10))
+  if (iCloudUserId | *(equalCopy + 10))
   {
     if (![(NSString *)iCloudUserId isEqual:?])
     {
@@ -987,7 +987,7 @@ LABEL_5:
   }
 
   orgId = self->_orgId;
-  if (orgId | *(v4 + 12))
+  if (orgId | *(equalCopy + 12))
   {
     if (![(NSString *)orgId isEqual:?])
     {
@@ -996,7 +996,7 @@ LABEL_5:
   }
 
   givenName = self->_givenName;
-  if (givenName | *(v4 + 8))
+  if (givenName | *(equalCopy + 8))
   {
     if (![(NSString *)givenName isEqual:?])
     {
@@ -1005,7 +1005,7 @@ LABEL_5:
   }
 
   middleName = self->_middleName;
-  if (middleName | *(v4 + 11))
+  if (middleName | *(equalCopy + 11))
   {
     if (![(NSString *)middleName isEqual:?])
     {
@@ -1014,7 +1014,7 @@ LABEL_5:
   }
 
   familyName = self->_familyName;
-  if (familyName | *(v4 + 7))
+  if (familyName | *(equalCopy + 7))
   {
     if (![(NSString *)familyName isEqual:?])
     {
@@ -1023,7 +1023,7 @@ LABEL_5:
   }
 
   phoneticGivenName = self->_phoneticGivenName;
-  if (phoneticGivenName | *(v4 + 18))
+  if (phoneticGivenName | *(equalCopy + 18))
   {
     if (![(NSString *)phoneticGivenName isEqual:?])
     {
@@ -1032,7 +1032,7 @@ LABEL_5:
   }
 
   phoneticMiddleName = self->_phoneticMiddleName;
-  if (phoneticMiddleName | *(v4 + 19))
+  if (phoneticMiddleName | *(equalCopy + 19))
   {
     if (![(NSString *)phoneticMiddleName isEqual:?])
     {
@@ -1041,7 +1041,7 @@ LABEL_5:
   }
 
   phoneticFamilyName = self->_phoneticFamilyName;
-  if (phoneticFamilyName | *(v4 + 17))
+  if (phoneticFamilyName | *(equalCopy + 17))
   {
     if (![(NSString *)phoneticFamilyName isEqual:?])
     {
@@ -1049,82 +1049,82 @@ LABEL_5:
     }
   }
 
-  v15 = *(v4 + 172);
+  v15 = *(equalCopy + 172);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 172) & 2) == 0 || self->_passcodeType != *(v4 + 26))
+    if ((*(equalCopy + 172) & 2) == 0 || self->_passcodeType != *(equalCopy + 26))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 172) & 2) != 0)
+  else if ((*(equalCopy + 172) & 2) != 0)
   {
     goto LABEL_72;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 172) & 8) == 0)
+    if ((*(equalCopy + 172) & 8) == 0)
     {
       goto LABEL_72;
     }
 
-    v25 = *(v4 + 169);
+    v25 = *(equalCopy + 169);
     if (self->_isProgressTrackingAllowed)
     {
-      if ((*(v4 + 169) & 1) == 0)
+      if ((*(equalCopy + 169) & 1) == 0)
       {
         goto LABEL_72;
       }
     }
 
-    else if (*(v4 + 169))
+    else if (*(equalCopy + 169))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 172) & 8) != 0)
+  else if ((*(equalCopy + 172) & 8) != 0)
   {
     goto LABEL_72;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 172) & 4) == 0)
+    if ((*(equalCopy + 172) & 4) == 0)
     {
       goto LABEL_72;
     }
 
-    v26 = *(v4 + 168);
+    v26 = *(equalCopy + 168);
     if (self->_isFederatedAccount)
     {
-      if ((*(v4 + 168) & 1) == 0)
+      if ((*(equalCopy + 168) & 1) == 0)
       {
         goto LABEL_72;
       }
     }
 
-    else if (*(v4 + 168))
+    else if (*(equalCopy + 168))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 172) & 4) != 0)
+  else if ((*(equalCopy + 172) & 4) != 0)
   {
     goto LABEL_72;
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 3) && ![(PDDPDate *)dateCreated isEqual:?])
+  if (dateCreated | *(equalCopy + 3) && ![(PDDPDate *)dateCreated isEqual:?])
   {
     goto LABEL_72;
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 4))
+  if (dateLastModified | *(equalCopy + 4))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -1133,7 +1133,7 @@ LABEL_5:
   }
 
   personLinks = self->_personLinks;
-  if (personLinks | *(v4 + 15))
+  if (personLinks | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)personLinks isEqual:?])
     {
@@ -1142,7 +1142,7 @@ LABEL_5:
   }
 
   emailAddress = self->_emailAddress;
-  if (emailAddress | *(v4 + 5))
+  if (emailAddress | *(equalCopy + 5))
   {
     if (![(NSString *)emailAddress isEqual:?])
     {
@@ -1151,7 +1151,7 @@ LABEL_5:
   }
 
   grade = self->_grade;
-  if (grade | *(v4 + 9))
+  if (grade | *(equalCopy + 9))
   {
     if (![(NSString *)grade isEqual:?])
     {
@@ -1160,7 +1160,7 @@ LABEL_5:
   }
 
   roleLocations = self->_roleLocations;
-  if (roleLocations | *(v4 + 20))
+  if (roleLocations | *(equalCopy + 20))
   {
     if (![(NSMutableArray *)roleLocations isEqual:?])
     {
@@ -1169,36 +1169,36 @@ LABEL_5:
   }
 
   has = self->_has;
-  v23 = *(v4 + 172);
+  v23 = *(equalCopy + 172);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 172) & 0x10) == 0)
+    if ((*(equalCopy + 172) & 0x10) == 0)
     {
       goto LABEL_72;
     }
 
-    v27 = *(v4 + 170);
+    v27 = *(equalCopy + 170);
     if (self->_isRosterSearchAllowed)
     {
-      if ((*(v4 + 170) & 1) == 0)
+      if ((*(equalCopy + 170) & 1) == 0)
       {
         goto LABEL_72;
       }
     }
 
-    else if (*(v4 + 170))
+    else if (*(equalCopy + 170))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 172) & 0x10) != 0)
+  else if ((*(equalCopy + 172) & 0x10) != 0)
   {
     goto LABEL_72;
   }
 
   entityMeta = self->_entityMeta;
-  if (!(entityMeta | *(v4 + 6)))
+  if (!(entityMeta | *(equalCopy + 6)))
   {
     goto LABEL_48;
   }
@@ -1211,11 +1211,11 @@ LABEL_72:
   }
 
   has = self->_has;
-  v23 = *(v4 + 172);
+  v23 = *(equalCopy + 172);
 LABEL_48:
   if (has)
   {
-    if ((v23 & 1) == 0 || self->_accountStatus != *(v4 + 2))
+    if ((v23 & 1) == 0 || self->_accountStatus != *(equalCopy + 2))
     {
       goto LABEL_72;
     }
@@ -1227,7 +1227,7 @@ LABEL_48:
   }
 
   personNumber = self->_personNumber;
-  if (personNumber | *(v4 + 16))
+  if (personNumber | *(equalCopy + 16))
   {
     v29 = [(NSString *)personNumber isEqual:?];
   }
@@ -1320,65 +1320,65 @@ LABEL_8:
   return v24 ^ v25 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSString *)self->_personNumber hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 14))
+  fromCopy = from;
+  if (*(fromCopy + 14))
   {
     [(PDDPPerson *)self setPersonId:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPPerson *)self setAppleId:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PDDPPerson *)self setICloudUserId:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PDDPPerson *)self setOrgId:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PDDPPerson *)self setGivenName:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PDDPPerson *)self setMiddleName:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PDDPPerson *)self setFamilyName:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(PDDPPerson *)self setPhoneticGivenName:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(PDDPPerson *)self setPhoneticMiddleName:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(PDDPPerson *)self setPhoneticFamilyName:?];
   }
 
-  v5 = *(v4 + 172);
+  v5 = *(fromCopy + 172);
   if ((v5 & 2) != 0)
   {
-    self->_passcodeType = *(v4 + 26);
+    self->_passcodeType = *(fromCopy + 26);
     *&self->_has |= 2u;
-    v5 = *(v4 + 172);
+    v5 = *(fromCopy + 172);
     if ((v5 & 8) == 0)
     {
 LABEL_23:
@@ -1391,23 +1391,23 @@ LABEL_23:
     }
   }
 
-  else if ((*(v4 + 172) & 8) == 0)
+  else if ((*(fromCopy + 172) & 8) == 0)
   {
     goto LABEL_23;
   }
 
-  self->_isProgressTrackingAllowed = *(v4 + 169);
+  self->_isProgressTrackingAllowed = *(fromCopy + 169);
   *&self->_has |= 8u;
-  if ((*(v4 + 172) & 4) != 0)
+  if ((*(fromCopy + 172) & 4) != 0)
   {
 LABEL_24:
-    self->_isFederatedAccount = *(v4 + 168);
+    self->_isFederatedAccount = *(fromCopy + 168);
     *&self->_has |= 4u;
   }
 
 LABEL_25:
   dateCreated = self->_dateCreated;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   if (dateCreated)
   {
     if (v7)
@@ -1422,7 +1422,7 @@ LABEL_25:
   }
 
   dateLastModified = self->_dateLastModified;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   if (dateLastModified)
   {
     if (v9)
@@ -1440,7 +1440,7 @@ LABEL_25:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = *(v4 + 15);
+  v10 = *(fromCopy + 15);
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v11)
   {
@@ -1464,12 +1464,12 @@ LABEL_25:
     while (v12);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPPerson *)self setEmailAddress:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPPerson *)self setGrade:?];
   }
@@ -1478,7 +1478,7 @@ LABEL_25:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = *(v4 + 20);
+  v15 = *(fromCopy + 20);
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
@@ -1502,14 +1502,14 @@ LABEL_25:
     while (v17);
   }
 
-  if ((*(v4 + 172) & 0x10) != 0)
+  if ((*(fromCopy + 172) & 0x10) != 0)
   {
-    self->_isRosterSearchAllowed = *(v4 + 170);
+    self->_isRosterSearchAllowed = *(fromCopy + 170);
     *&self->_has |= 0x10u;
   }
 
   entityMeta = self->_entityMeta;
-  v21 = *(v4 + 6);
+  v21 = *(fromCopy + 6);
   if (entityMeta)
   {
     if (v21)
@@ -1523,13 +1523,13 @@ LABEL_25:
     [(PDDPPerson *)self setEntityMeta:?];
   }
 
-  if (*(v4 + 172))
+  if (*(fromCopy + 172))
   {
-    self->_accountStatus = *(v4 + 2);
+    self->_accountStatus = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(PDDPPerson *)self setPersonNumber:?];
   }

@@ -1,24 +1,24 @@
 @interface MTRDeviceStorageBehaviorConfiguration
 + (MTRDeviceStorageBehaviorConfiguration)configurationWithDefaultStorageBehavior;
-+ (MTRDeviceStorageBehaviorConfiguration)configurationWithReportToPersistenceDelayTime:(double)a3 reportToPersistenceDelayTimeMax:(double)a4 recentReportTimesMaxCount:(unint64_t)a5 timeBetweenReportsTooShortThreshold:(double)a6 timeBetweenReportsTooShortMinThreshold:(double)a7 reportToPersistenceDelayMaxMultiplier:(double)a8 deviceReportingExcessivelyIntervalThreshold:(double)a9;
++ (MTRDeviceStorageBehaviorConfiguration)configurationWithReportToPersistenceDelayTime:(double)time reportToPersistenceDelayTimeMax:(double)max recentReportTimesMaxCount:(unint64_t)count timeBetweenReportsTooShortThreshold:(double)threshold timeBetweenReportsTooShortMinThreshold:(double)minThreshold reportToPersistenceDelayMaxMultiplier:(double)multiplier deviceReportingExcessivelyIntervalThreshold:(double)intervalThreshold;
 + (MTRDeviceStorageBehaviorConfiguration)configurationWithStorageBehaviorOptimizationDisabled;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)checkValuesAndResetToDefaultIfNecessary;
 @end
 
 @implementation MTRDeviceStorageBehaviorConfiguration
 
-+ (MTRDeviceStorageBehaviorConfiguration)configurationWithReportToPersistenceDelayTime:(double)a3 reportToPersistenceDelayTimeMax:(double)a4 recentReportTimesMaxCount:(unint64_t)a5 timeBetweenReportsTooShortThreshold:(double)a6 timeBetweenReportsTooShortMinThreshold:(double)a7 reportToPersistenceDelayMaxMultiplier:(double)a8 deviceReportingExcessivelyIntervalThreshold:(double)a9
++ (MTRDeviceStorageBehaviorConfiguration)configurationWithReportToPersistenceDelayTime:(double)time reportToPersistenceDelayTimeMax:(double)max recentReportTimesMaxCount:(unint64_t)count timeBetweenReportsTooShortThreshold:(double)threshold timeBetweenReportsTooShortMinThreshold:(double)minThreshold reportToPersistenceDelayMaxMultiplier:(double)multiplier deviceReportingExcessivelyIntervalThreshold:(double)intervalThreshold
 {
   v16 = objc_alloc_init(MTRDeviceStorageBehaviorConfiguration);
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setReportToPersistenceDelayTime:a3];
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setReportToPersistenceDelayTimeMax:a4];
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setRecentReportTimesMaxCount:a5];
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setTimeBetweenReportsTooShortThreshold:a6];
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setTimeBetweenReportsTooShortMinThreshold:a7];
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setReportToPersistenceDelayMaxMultiplier:a8];
-  [(MTRDeviceStorageBehaviorConfiguration *)v16 setDeviceReportingExcessivelyIntervalThreshold:a9];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setReportToPersistenceDelayTime:time];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setReportToPersistenceDelayTimeMax:max];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setRecentReportTimesMaxCount:count];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setTimeBetweenReportsTooShortThreshold:threshold];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setTimeBetweenReportsTooShortMinThreshold:minThreshold];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setReportToPersistenceDelayMaxMultiplier:multiplier];
+  [(MTRDeviceStorageBehaviorConfiguration *)v16 setDeviceReportingExcessivelyIntervalThreshold:intervalThreshold];
 
   return v16;
 }
@@ -66,7 +66,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_DEFAULT, "%@ storage behavior: MTRDeviceStorageBehaviorConfiguration values out of bounds - resetting to default", buf, 0xCu);
       }
 
@@ -85,7 +85,7 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceStorageBehaviorConfiguration);
   [(MTRDeviceStorageBehaviorConfiguration *)v4 setDisableStorageBehaviorOptimization:self->_disableStorageBehaviorOptimization];

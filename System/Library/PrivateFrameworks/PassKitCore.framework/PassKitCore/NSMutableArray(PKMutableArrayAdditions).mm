@@ -10,20 +10,20 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)pk_safelyAddObjectsFromArray:()PKMutableArrayAdditions
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)pk_removeObjectsPassingTest:()PKMutableArrayAdditions
@@ -37,8 +37,8 @@
     v7[2] = __71__NSMutableArray_PKMutableArrayAdditions__pk_removeObjectsPassingTest___block_invoke;
     v7[3] = &unk_1E79C8B68;
     v8 = v4;
-    v6 = [a1 indexesOfObjectsPassingTest:v7];
-    [a1 removeObjectsAtIndexes:v6];
+    v6 = [self indexesOfObjectsPassingTest:v7];
+    [self removeObjectsAtIndexes:v6];
   }
 }
 

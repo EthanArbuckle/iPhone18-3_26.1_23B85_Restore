@@ -4,16 +4,16 @@
 - (NSArray)getLines;
 - (NSArray)getRecognizedLanguages;
 - (NSString)getTranscript;
-- (VNRecognizedTextBlockObservation)initWithRequestRevision:(unint64_t)a3 crOutputRegion:(id)a4;
-- (id)boundingBoxForRange:(_NSRange)a3 error:(id *)a4;
+- (VNRecognizedTextBlockObservation)initWithRequestRevision:(unint64_t)revision crOutputRegion:(id)region;
+- (id)boundingBoxForRange:(_NSRange)range error:(id *)error;
 - (id)debugDescription;
-- (id)getDataDetectorResults:(id *)a3;
-- (id)topCandidates:(unint64_t)a3;
+- (id)getDataDetectorResults:(id *)results;
+- (id)topCandidates:(unint64_t)candidates;
 @end
 
 @implementation VNRecognizedTextBlockObservation
 
-- (id)getDataDetectorResults:(id *)a3
+- (id)getDataDetectorResults:(id *)results
 {
   v22 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -41,18 +41,18 @@
 
           v9 = *(*(&v17 + 1) + 8 * i);
           v10 = [VNDataDetectorResult alloc];
-          v11 = [v9 ddResult];
-          v12 = [(VNDataDetectorResult *)v10 initWithDDScannerResult:v11 observation:self];
+          ddResult = [v9 ddResult];
+          v12 = [(VNDataDetectorResult *)v10 initWithDDScannerResult:ddResult observation:self];
 
-          v13 = [v9 dataType];
-          if ((v13 - 1) >= 9)
+          dataType = [v9 dataType];
+          if ((dataType - 1) >= 9)
           {
             v14 = 0;
           }
 
           else
           {
-            v14 = v13;
+            v14 = dataType;
           }
 
           [(VNDataDetectorResult *)v12 setType:v14];
@@ -81,8 +81,8 @@
   v7.receiver = self;
   v7.super_class = VNRecognizedTextBlockObservation;
   v3 = [(VNRecognizedTextBlockObservation *)&v7 debugDescription];
-  v4 = [(VNRecognizedTextBlockObservation *)self getTranscript];
-  v5 = [v3 stringByAppendingFormat:@" transcript=%@", v4];
+  getTranscript = [(VNRecognizedTextBlockObservation *)self getTranscript];
+  v5 = [v3 stringByAppendingFormat:@" transcript=%@", getTranscript];
 
   return v5;
 }
@@ -90,13 +90,13 @@
 - (NSArray)getRecognizedLanguages
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VNRecognizedTextBlockObservation *)self getCROutputRegion];
-  v3 = [v2 recognizedLocale];
+  getCROutputRegion = [(VNRecognizedTextBlockObservation *)self getCROutputRegion];
+  recognizedLocale = [getCROutputRegion recognizedLocale];
 
-  if (v3)
+  if (recognizedLocale)
   {
-    v4 = [v2 recognizedLocale];
-    v5 = [v4 copy];
+    recognizedLocale2 = [getCROutputRegion recognizedLocale];
+    v5 = [recognizedLocale2 copy];
     v8[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
@@ -111,18 +111,18 @@
 
 - (BOOL)shouldBeWrappedWithNextLine
 {
-  v2 = [(VNRecognizedTextBlockObservation *)self getCROutputRegion];
-  if ([v2 type] == 8)
+  getCROutputRegion = [(VNRecognizedTextBlockObservation *)self getCROutputRegion];
+  if ([getCROutputRegion type] == 8)
   {
-    v3 = [v2 shouldWrapToNextLine];
+    shouldWrapToNextLine = [getCROutputRegion shouldWrapToNextLine];
   }
 
   else
   {
-    v3 = 0;
+    shouldWrapToNextLine = 0;
   }
 
-  return v3;
+  return shouldWrapToNextLine;
 }
 
 - (NSArray)getLines
@@ -135,7 +135,7 @@
   v8[3] = &unk_1E77B5C88;
   v5 = v4;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [v3 enumerateObjectsUsingBlock:v8];
   v6 = v5;
 
@@ -154,20 +154,20 @@ void __44__VNRecognizedTextBlockObservation_getLines__block_invoke(uint64_t a1, 
 - (NSString)getTranscript
 {
   v2 = [(VNRecognizedTextBlockObservation *)self topCandidates:1];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 string];
+  string = [firstObject string];
 
-  return v4;
+  return string;
 }
 
-- (id)boundingBoxForRange:(_NSRange)a3 error:(id *)a4
+- (id)boundingBoxForRange:(_NSRange)range error:(id *)error
 {
-  v5 = [(CROutputRegion *)self->_crOutputRegion quadForTextInCharacterRange:a3.location, a3.length, a4];
-  v6 = v5;
-  if (v5)
+  error = [(CROutputRegion *)self->_crOutputRegion quadForTextInCharacterRange:range.location, range.length, error];
+  v6 = error;
+  if (error)
   {
-    [v5 topLeft];
+    [error topLeft];
     v8 = v7;
     v10 = 1.0 - v9;
     [v6 topRight];
@@ -188,29 +188,29 @@ void __44__VNRecognizedTextBlockObservation_getLines__block_invoke(uint64_t a1, 
   return v21;
 }
 
-- (id)topCandidates:(unint64_t)a3
+- (id)topCandidates:(unint64_t)candidates
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(CROutputRegion *)self->_crOutputRegion candidates];
-  if (!v6)
+  candidates = [(CROutputRegion *)self->_crOutputRegion candidates];
+  if (!candidates)
   {
     v24[0] = self->_crOutputRegion;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
+    candidates = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   }
 
-  v7 = [v6 count];
-  if (v7 >= a3)
+  v7 = [candidates count];
+  if (v7 >= candidates)
   {
-    v8 = a3;
+    candidatesCopy = candidates;
   }
 
   else
   {
-    v8 = v7;
+    candidatesCopy = v7;
   }
 
-  v9 = [v6 subarrayWithRange:{0, v8}];
+  v9 = [candidates subarrayWithRange:{0, candidatesCopy}];
 
   v21 = 0u;
   v22 = 0u;
@@ -253,12 +253,12 @@ void __44__VNRecognizedTextBlockObservation_getLines__block_invoke(uint64_t a1, 
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(CROutputRegion *)self->_crOutputRegion children];
+  children = [(CROutputRegion *)self->_crOutputRegion children];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -269,7 +269,7 @@ void __44__VNRecognizedTextBlockObservation_getLines__block_invoke(uint64_t a1, 
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = [[VNRecognizedTextBlock alloc] initWithRequestRevision:[(VNObservation *)self requestRevision] crOutputRegion:*(*(&v11 + 1) + 8 * i)];
@@ -279,7 +279,7 @@ void __44__VNRecognizedTextBlockObservation_getLines__block_invoke(uint64_t a1, 
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -288,36 +288,36 @@ void __44__VNRecognizedTextBlockObservation_getLines__block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (VNRecognizedTextBlockObservation)initWithRequestRevision:(unint64_t)a3 crOutputRegion:(id)a4
+- (VNRecognizedTextBlockObservation)initWithRequestRevision:(unint64_t)revision crOutputRegion:(id)region
 {
-  v7 = a4;
-  v8 = [v7 boundingQuad];
-  [v8 topLeft];
+  regionCopy = region;
+  boundingQuad = [regionCopy boundingQuad];
+  [boundingQuad topLeft];
   v10 = v9;
   v12 = 1.0 - v11;
-  v13 = [v7 boundingQuad];
-  [v13 topRight];
+  boundingQuad2 = [regionCopy boundingQuad];
+  [boundingQuad2 topRight];
   v15 = v14;
   v17 = 1.0 - v16;
-  v18 = [v7 boundingQuad];
-  [v18 bottomRight];
+  boundingQuad3 = [regionCopy boundingQuad];
+  [boundingQuad3 bottomRight];
   v20 = v19;
   v22 = 1.0 - v21;
-  v23 = [v7 boundingQuad];
-  [v23 bottomLeft];
+  boundingQuad4 = [regionCopy boundingQuad];
+  [boundingQuad4 bottomLeft];
   v32.receiver = self;
   v32.super_class = VNRecognizedTextBlockObservation;
-  v26 = [(VNRectangleObservation *)&v32 initWithRequestRevision:a3 topLeft:v10 topRight:v12 bottomRight:v15 bottomLeft:v17, v20, v22, v25, 1.0 - v24];
+  v26 = [(VNRectangleObservation *)&v32 initWithRequestRevision:revision topLeft:v10 topRight:v12 bottomRight:v15 bottomLeft:v17, v20, v22, v25, 1.0 - v24];
 
   if (v26)
   {
-    objc_storeStrong(&v26->_crOutputRegion, a4);
+    objc_storeStrong(&v26->_crOutputRegion, region);
     [(CROutputRegion *)v26->_crOutputRegion rawConfidence];
     [(VNObservation *)v26 setConfidence:?];
-    v27 = [(CROutputRegion *)v26->_crOutputRegion trackingID];
+    trackingID = [(CROutputRegion *)v26->_crOutputRegion trackingID];
 
     crOutputRegion = v26->_crOutputRegion;
-    if (v27)
+    if (trackingID)
     {
       [(CROutputRegion *)crOutputRegion trackingID];
     }

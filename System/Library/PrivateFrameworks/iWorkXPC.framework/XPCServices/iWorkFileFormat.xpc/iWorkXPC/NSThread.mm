@@ -1,7 +1,7 @@
 @interface NSThread
 + (id)tsu_currentThreadName;
-+ (id)tsu_stringForQualityOfService:(int64_t)a3;
-+ (id)tsu_stringForQualityOfServiceClass:(unsigned int)a3;
++ (id)tsu_stringForQualityOfService:(int64_t)service;
++ (id)tsu_stringForQualityOfServiceClass:(unsigned int)class;
 - (unsigned)tsu_qualityOfServiceClass;
 @end
 
@@ -79,10 +79,10 @@ LABEL_13:
   {
 LABEL_23:
     v12 = +[NSThread currentThread];
-    v13 = [v12 name];
+    name = [v12 name];
 
-    v4 = v13;
-    if (!v13)
+    v4 = name;
+    if (!name)
     {
       goto LABEL_17;
     }
@@ -102,8 +102,8 @@ LABEL_17:
 
 - (unsigned)tsu_qualityOfServiceClass
 {
-  v2 = [(NSThread *)self qualityOfService];
-  if (v2 == NSQualityOfServiceUserInteractive)
+  qualityOfService = [(NSThread *)self qualityOfService];
+  if (qualityOfService == NSQualityOfServiceUserInteractive)
   {
     v3 = 33;
   }
@@ -113,7 +113,7 @@ LABEL_17:
     v3 = 0;
   }
 
-  if (v2 == NSQualityOfServiceUserInitiated)
+  if (qualityOfService == NSQualityOfServiceUserInitiated)
   {
     v4 = 25;
   }
@@ -123,7 +123,7 @@ LABEL_17:
     v4 = v3;
   }
 
-  if (v2 == NSQualityOfServiceUtility)
+  if (qualityOfService == NSQualityOfServiceUtility)
   {
     v5 = 17;
   }
@@ -133,7 +133,7 @@ LABEL_17:
     v5 = v4;
   }
 
-  if (v2 == NSQualityOfServiceBackground)
+  if (qualityOfService == NSQualityOfServiceBackground)
   {
     v6 = 9;
   }
@@ -143,7 +143,7 @@ LABEL_17:
     v6 = 0;
   }
 
-  if (v2 == NSQualityOfServiceDefault)
+  if (qualityOfService == NSQualityOfServiceDefault)
   {
     v7 = 21;
   }
@@ -153,7 +153,7 @@ LABEL_17:
     v7 = v6;
   }
 
-  if (v2 <= 16)
+  if (qualityOfService <= 16)
   {
     return v7;
   }
@@ -164,39 +164,39 @@ LABEL_17:
   }
 }
 
-+ (id)tsu_stringForQualityOfService:(int64_t)a3
++ (id)tsu_stringForQualityOfService:(int64_t)service
 {
   v3 = @"NSQualityOfServiceUtility";
   v4 = @"NSQualityOfServiceUserInitiated";
   v5 = @"NSQualityOfServiceUserInteractive";
-  if (a3 != 33)
+  if (service != 33)
   {
     v5 = 0;
   }
 
-  if (a3 != 25)
+  if (service != 25)
   {
     v4 = v5;
   }
 
-  if (a3 != 17)
+  if (service != 17)
   {
     v3 = v4;
   }
 
   v6 = @"NSQualityOfServiceDefault";
   v7 = @"NSQualityOfServiceBackground";
-  if (a3 != 9)
+  if (service != 9)
   {
     v7 = 0;
   }
 
-  if (a3 != -1)
+  if (service != -1)
   {
     v6 = v7;
   }
 
-  if (a3 <= 16)
+  if (service <= 16)
   {
     return v6;
   }
@@ -207,43 +207,43 @@ LABEL_17:
   }
 }
 
-+ (id)tsu_stringForQualityOfServiceClass:(unsigned int)a3
++ (id)tsu_stringForQualityOfServiceClass:(unsigned int)class
 {
   v3 = @"QOS_CLASS_DEFAULT";
   v4 = @"QOS_CLASS_USER_INITIATED";
   v5 = @"QOS_CLASS_USER_INTERACTIVE";
-  if (a3 != 33)
+  if (class != 33)
   {
     v5 = 0;
   }
 
-  if (a3 != 25)
+  if (class != 25)
   {
     v4 = v5;
   }
 
-  if (a3 != 21)
+  if (class != 21)
   {
     v3 = v4;
   }
 
   v6 = @"QOS_CLASS_UTILITY";
-  if (a3 != 17)
+  if (class != 17)
   {
     v6 = 0;
   }
 
-  if (a3 == 9)
+  if (class == 9)
   {
     v6 = @"QOS_CLASS_BACKGROUND";
   }
 
-  if (!a3)
+  if (!class)
   {
     v6 = @"QOS_CLASS_UNSPECIFIED";
   }
 
-  if (a3 <= 20)
+  if (class <= 20)
   {
     return v6;
   }

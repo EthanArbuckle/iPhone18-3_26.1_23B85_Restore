@@ -2,11 +2,11 @@
 + (id)sharedWorker;
 - (DeviceRecoveryEnvironmentWorker)init;
 - (id)DREEntryDescription;
-- (id)DREStringFromEntryReason:(int)a3;
-- (id)getObjectFromInternalCookie:(id)a3;
+- (id)DREStringFromEntryReason:(int)reason;
+- (id)getObjectFromInternalCookie:(id)cookie;
 - (int)DREEntryReasonEnum;
 - (void)CreateCookieAndCleanup;
-- (void)populateDREDescription:(id)a3;
+- (void)populateDREDescription:(id)description;
 - (void)populateDREReason;
 - (void)setupPopulateDREDescription;
 @end
@@ -223,9 +223,9 @@ LABEL_23:
   }
 }
 
-- (void)populateDREDescription:(id)a3
+- (void)populateDREDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = sub_100010688("IODeviceTree:/options", @"device-recovery-boot-reason");
   if (!v5)
   {
@@ -241,7 +241,7 @@ LABEL_23:
       v5 = 0;
     }
 
-    if (v4)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -251,13 +251,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!descriptionCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  v6 = [v4 objectForKey:@"PanicReason"];
+  v6 = [descriptionCopy objectForKey:@"PanicReason"];
   v7 = v6;
   if (v6)
   {
@@ -320,14 +320,14 @@ LABEL_14:
   dispatch_activate(self->_serviceQueue);
 }
 
-- (id)getObjectFromInternalCookie:(id)a3
+- (id)getObjectFromInternalCookie:(id)cookie
 {
-  v3 = a3;
+  cookieCopy = cookie;
   v4 = [NSDictionary dictionaryWithContentsOfFile:@"/var/db/com.apple.DeviceRecovery.entryInfo"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 objectForKey:v3];
+    v6 = [v4 objectForKey:cookieCopy];
     if (v6)
     {
       goto LABEL_7;
@@ -387,12 +387,12 @@ LABEL_7:
   return v3;
 }
 
-- (id)DREStringFromEntryReason:(int)a3
+- (id)DREStringFromEntryReason:(int)reason
 {
   v4 = @"Unknown Entry Reason";
-  if ((a3 - 1) <= 4)
+  if ((reason - 1) <= 4)
   {
-    v5 = *(&off_100035140)[a3 - 1];
+    v5 = *(&off_100035140)[reason - 1];
 
     v4 = v5;
   }

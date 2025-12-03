@@ -1,8 +1,8 @@
 @interface REFeatureValue
-+ (REFeatureValue)featureValueWithDictionary:(id)a3;
-+ (id)nullValueForFeature:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (REFeatureValue)featureValueWithDictionary:(id)dictionary;
++ (id)nullValueForFeature:(id)feature;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 @end
@@ -19,16 +19,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -36,24 +36,24 @@
   return isKindOfClass & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-+ (id)nullValueForFeature:(id)a3
++ (id)nullValueForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   if (nullValueForFeature__onceToken != -1)
   {
     +[REFeatureValue(NullValue) nullValueForFeature:];
   }
 
-  v4 = [v3 featureType];
+  featureType = [featureCopy featureType];
   v5 = &nullValueForFeature__NullBinaryValue;
-  if (v4)
+  if (featureType)
   {
     v5 = &nullValueForFeature__NullValue;
   }
@@ -77,21 +77,21 @@ uint64_t __49__REFeatureValue_NullValue__nullValueForFeature___block_invoke()
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-+ (REFeatureValue)featureValueWithDictionary:(id)a3
++ (REFeatureValue)featureValueWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"value_type"];
-  v5 = [v4 integerValue];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"value_type"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"value_value"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"value_value"];
   v7 = v6;
   v8 = 0;
-  if (v5 <= 1)
+  if (integerValue <= 1)
   {
-    if (v5)
+    if (integerValue)
     {
-      if (v5 != 1)
+      if (integerValue != 1)
       {
         goto LABEL_20;
       }
@@ -107,7 +107,7 @@ uint64_t __49__REFeatureValue_NullValue__nullValueForFeature___block_invoke()
     goto LABEL_19;
   }
 
-  switch(v5)
+  switch(integerValue)
   {
     case 2:
       [v6 doubleValue];
@@ -164,48 +164,48 @@ LABEL_20:
 - (id)dictionaryEncoding
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(REFeatureValue *)self type];
+  type = [(REFeatureValue *)self type];
   v4 = &unk_283BBD920;
-  if (v3 <= 1)
+  if (type <= 1)
   {
-    if (v3)
+    if (type)
     {
-      if (v3 != 1)
+      if (type != 1)
       {
         goto LABEL_20;
       }
 
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[REFeatureValue int64Value](self, "int64Value")}];
+      stringValue = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[REFeatureValue int64Value](self, "int64Value")}];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[REFeatureValue BOOLValue](self, "BOOLValue")}];
+      stringValue = [MEMORY[0x277CCABB0] numberWithBool:{-[REFeatureValue BOOLValue](self, "BOOLValue")}];
     }
 
     goto LABEL_19;
   }
 
-  switch(v3)
+  switch(type)
   {
     case 2:
       v13 = MEMORY[0x277CCABB0];
       [(REFeatureValue *)self doubleValue];
-      v12 = [v13 numberWithDouble:?];
+      stringValue = [v13 numberWithDouble:?];
 LABEL_19:
-      v4 = v12;
+      v4 = stringValue;
       break;
     case 3:
-      v12 = [(REFeatureValue *)self stringValue];
+      stringValue = [(REFeatureValue *)self stringValue];
       goto LABEL_19;
     case 4:
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v6 = [(REFeatureValue *)self setValue];
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      setValue = [(REFeatureValue *)self setValue];
+      v7 = [setValue countByEnumeratingWithState:&v18 objects:v24 count:16];
       if (v7)
       {
         v8 = v7;
@@ -216,20 +216,20 @@ LABEL_19:
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(setValue);
             }
 
-            v11 = [*(*(&v18 + 1) + 8 * i) dictionaryEncoding];
-            [v5 addObject:v11];
+            dictionaryEncoding = [*(*(&v18 + 1) + 8 * i) dictionaryEncoding];
+            [array addObject:dictionaryEncoding];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+          v8 = [setValue countByEnumeratingWithState:&v18 objects:v24 count:16];
         }
 
         while (v8);
       }
 
-      v4 = [v5 copy];
+      v4 = [array copy];
       break;
   }
 

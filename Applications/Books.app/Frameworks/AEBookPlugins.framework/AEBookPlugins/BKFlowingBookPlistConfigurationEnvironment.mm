@@ -1,19 +1,19 @@
 @interface BKFlowingBookPlistConfigurationEnvironment
 - (BKFlowingBookFontSizeConfiguration)fontSizeConfiguration;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFlowingBookPlistConfigurationEnvironment:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFlowingBookPlistConfigurationEnvironment:(id)environment;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key;
 - (int64_t)_semanticFontSize;
-- (void)setLargeSizeFactor:(double)a3;
+- (void)setLargeSizeFactor:(double)factor;
 @end
 
 @implementation BKFlowingBookPlistConfigurationEnvironment
 
-- (void)setLargeSizeFactor:(double)a3
+- (void)setLargeSizeFactor:(double)factor
 {
-  v4 = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
-  [v4 setLargeSizeFactor:a3];
+  fontSizeConfiguration = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
+  [fontSizeConfiguration setLargeSizeFactor:factor];
 }
 
 - (int64_t)_semanticFontSize
@@ -26,8 +26,8 @@
 
   [(BKFlowingBookPlistConfigurationEnvironment *)self fontSize];
   v5 = v4;
-  v6 = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
-  [v6 smallSize];
+  fontSizeConfiguration = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
+  [fontSizeConfiguration smallSize];
   v8 = v7;
 
   if (v5 < v8)
@@ -37,8 +37,8 @@
 
   [(BKFlowingBookPlistConfigurationEnvironment *)self fontSize];
   v11 = v10;
-  v12 = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
-  [v12 mediumSize];
+  fontSizeConfiguration2 = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
+  [fontSizeConfiguration2 mediumSize];
   v14 = v13;
 
   if (v11 < v14)
@@ -48,8 +48,8 @@
 
   [(BKFlowingBookPlistConfigurationEnvironment *)self fontSize];
   v16 = v15;
-  v17 = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
-  [v17 largeSize];
+  fontSizeConfiguration3 = [(BKFlowingBookPlistConfigurationEnvironment *)self fontSizeConfiguration];
+  [fontSizeConfiguration3 largeSize];
   v19 = v18;
 
   if (v16 >= v19)
@@ -63,10 +63,10 @@
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"scroll"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"scroll"])
   {
     v5 = [NSNumber numberWithBool:[(BKFlowingBookPlistConfigurationEnvironment *)self scroll]];
 LABEL_7:
@@ -74,23 +74,23 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![v4 isEqualToString:@"fontsize"])
+  if (![keyCopy isEqualToString:@"fontsize"])
   {
     v9.receiver = self;
     v9.super_class = BKFlowingBookPlistConfigurationEnvironment;
-    v5 = [(BKFlowingBookPlistConfigurationEnvironment *)&v9 valueForKey:v4];
+    v5 = [(BKFlowingBookPlistConfigurationEnvironment *)&v9 valueForKey:keyCopy];
     goto LABEL_7;
   }
 
-  v6 = [(BKFlowingBookPlistConfigurationEnvironment *)self _semanticFontSize];
-  if (v6 > 3)
+  _semanticFontSize = [(BKFlowingBookPlistConfigurationEnvironment *)self _semanticFontSize];
+  if (_semanticFontSize > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1E3B70[v6];
+    v7 = off_1E3B70[_semanticFontSize];
   }
 
 LABEL_8:
@@ -98,25 +98,25 @@ LABEL_8:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = BKFlowingBookPlistConfigurationEnvironment;
-  v4 = [(BKFlowingBookPlistConfigurationEnvironment *)&v6 copyWithZone:a3];
+  v4 = [(BKFlowingBookPlistConfigurationEnvironment *)&v6 copyWithZone:zone];
   [v4 setScroll:{-[BKFlowingBookPlistConfigurationEnvironment scroll](self, "scroll")}];
   [(BKFlowingBookPlistConfigurationEnvironment *)self fontSize];
   [v4 setFontSize:?];
   return v4;
 }
 
-- (BOOL)isEqualToFlowingBookPlistConfigurationEnvironment:(id)a3
+- (BOOL)isEqualToFlowingBookPlistConfigurationEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(BKFlowingBookPlistConfigurationEnvironment *)self scroll];
-  if (v5 == [v4 scroll] && (-[BKFlowingBookPlistConfigurationEnvironment fontSize](self, "fontSize"), v7 = v6, objc_msgSend(v4, "fontSize"), v7 == v8))
+  environmentCopy = environment;
+  scroll = [(BKFlowingBookPlistConfigurationEnvironment *)self scroll];
+  if (scroll == [environmentCopy scroll] && (-[BKFlowingBookPlistConfigurationEnvironment fontSize](self, "fontSize"), v7 = v6, objc_msgSend(environmentCopy, "fontSize"), v7 == v8))
   {
     WeakRetained = objc_loadWeakRetained(&self->_fontSizeConfiguration);
-    v10 = objc_loadWeakRetained(v4 + 3);
+    v10 = objc_loadWeakRetained(environmentCopy + 3);
     if (WeakRetained == v10)
     {
       v13 = 1;
@@ -125,7 +125,7 @@ LABEL_8:
     else
     {
       v11 = objc_loadWeakRetained(&self->_fontSizeConfiguration);
-      v12 = objc_loadWeakRetained(v4 + 3);
+      v12 = objc_loadWeakRetained(environmentCopy + 3);
       v13 = [v11 isEqual:v12];
     }
   }
@@ -138,10 +138,10 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -149,9 +149,9 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = BKFlowingBookPlistConfigurationEnvironment, [(BKFlowingBookPlistConfigurationEnvironment *)&v7 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = BKFlowingBookPlistConfigurationEnvironment, [(BKFlowingBookPlistConfigurationEnvironment *)&v7 isEqual:equalCopy]))
     {
-      v5 = [(BKFlowingBookPlistConfigurationEnvironment *)self isEqualToFlowingBookPlistConfigurationEnvironment:v4];
+      v5 = [(BKFlowingBookPlistConfigurationEnvironment *)self isEqualToFlowingBookPlistConfigurationEnvironment:equalCopy];
     }
 
     else

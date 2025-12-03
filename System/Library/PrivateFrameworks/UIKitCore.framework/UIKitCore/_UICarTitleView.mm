@@ -2,9 +2,9 @@
 - (CGSize)intrinsicContentSize;
 - (void)_updateLayout;
 - (void)_updateText;
-- (void)setLargeText:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setView:(id)a3;
+- (void)setLargeText:(BOOL)text;
+- (void)setText:(id)text;
+- (void)setView:(id)view;
 @end
 
 @implementation _UICarTitleView
@@ -12,30 +12,30 @@
 - (void)_updateText
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UICarTitleView *)self text];
-  if (v3)
+  text = [(_UICarTitleView *)self text];
+  if (text)
   {
-    v4 = v3;
-    v5 = [(_UICarTitleView *)self view];
+    v4 = text;
+    view = [(_UICarTitleView *)self view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(_UICarTitleView *)self view];
-      v8 = [(_UICarTitleView *)self extraConstraints];
+      view2 = [(_UICarTitleView *)self view];
+      extraConstraints = [(_UICarTitleView *)self extraConstraints];
 
-      if (!v8)
+      if (!extraConstraints)
       {
         if (_UISMCBarsEnabled())
         {
-          v9 = [v7 heightAnchor];
-          v10 = [(UIView *)self heightAnchor];
-          v11 = [v9 constraintEqualToAnchor:v10];
+          heightAnchor = [view2 heightAnchor];
+          heightAnchor2 = [(UIView *)self heightAnchor];
+          v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
           v20[0] = v11;
-          v12 = [v7 centerYAnchor];
-          v13 = [(UIView *)self centerYAnchor];
-          v14 = [v12 constraintEqualToAnchor:v13];
+          centerYAnchor = [view2 centerYAnchor];
+          centerYAnchor2 = [(UIView *)self centerYAnchor];
+          v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           v20[1] = v14;
           v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
           [(_UICarTitleView *)self setExtraConstraints:v15];
@@ -53,12 +53,12 @@
             v16 = 28.0;
           }
 
-          v9 = [v7 firstBaselineAnchor];
-          v10 = [(UIView *)self topAnchor];
-          v11 = [v9 constraintEqualToAnchor:v10 constant:v16];
+          heightAnchor = [view2 firstBaselineAnchor];
+          heightAnchor2 = [(UIView *)self topAnchor];
+          v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:v16];
           v19 = v11;
-          v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
-          [(_UICarTitleView *)self setExtraConstraints:v12];
+          centerYAnchor = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
+          [(_UICarTitleView *)self setExtraConstraints:centerYAnchor];
         }
       }
 
@@ -83,30 +83,30 @@
         v18 = 1;
       }
 
-      [v7 setFont:v17];
+      [view2 setFont:v17];
 
-      [v7 setTextAlignment:v18];
-      [v7 sizeToFit];
+      [view2 setTextAlignment:v18];
+      [view2 sizeToFit];
     }
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v10 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
     v5 = MEMORY[0x1E69977A0];
-    v6 = [(_UICarTitleView *)self extraConstraints];
-    [v5 deactivateConstraints:v6];
+    extraConstraints = [(_UICarTitleView *)self extraConstraints];
+    [v5 deactivateConstraints:extraConstraints];
 
     [(_UICarTitleView *)self setExtraConstraints:0];
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     if (self->_text)
     {
       v7 = [UILabel alloc];
       v8 = [(UILabel *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-      [(UIView *)v8 setText:v10];
+      [(UIView *)v8 setText:textCopy];
       [(UIView *)v8 setAdjustsFontForContentSizeCategory:1];
     }
 
@@ -123,29 +123,29 @@
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   text = self->_text;
   self->_text = 0;
 
   v6 = MEMORY[0x1E69977A0];
-  v7 = [(_UICarTitleView *)self extraConstraints];
-  [v6 deactivateConstraints:v7];
+  extraConstraints = [(_UICarTitleView *)self extraConstraints];
+  [v6 deactivateConstraints:extraConstraints];
 
   [(_UICarTitleView *)self setExtraConstraints:0];
   view = self->_view;
-  self->_view = v4;
-  v9 = v4;
+  self->_view = viewCopy;
+  v9 = viewCopy;
 
-  v10 = [(UIView *)v9 topAnchor];
-  v11 = [(UIView *)self topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [(UIView *)v9 topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v17[0] = v12;
-  v13 = [(UIView *)v9 bottomAnchor];
-  v14 = [(UIView *)self bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIView *)v9 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v17[1] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 
@@ -153,19 +153,19 @@
   [(_UICarTitleView *)self _updateLayout];
 }
 
-- (void)setLargeText:(BOOL)a3
+- (void)setLargeText:(BOOL)text
 {
-  if (self->_largeText != a3)
+  if (self->_largeText != text)
   {
-    self->_largeText = a3;
+    self->_largeText = text;
     [(_UICarTitleView *)self _updateText];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(_UICarTitleView *)self view];
-  [v2 intrinsicContentSize];
+  view = [(_UICarTitleView *)self view];
+  [view intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -183,8 +183,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(UIView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  subviews = [(UIView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -196,39 +196,39 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v20 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(_UICarTitleView *)self view];
+  view = [(_UICarTitleView *)self view];
 
-  if (v8)
+  if (view)
   {
-    v9 = [(_UICarTitleView *)self view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(_UICarTitleView *)self view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(_UICarTitleView *)self view];
-    [(UIView *)self addSubview:v10];
+    view3 = [(_UICarTitleView *)self view];
+    [(UIView *)self addSubview:view3];
 
-    v11 = [(_UICarTitleView *)self extraConstraints];
-    v12 = [v11 mutableCopy];
+    extraConstraints = [(_UICarTitleView *)self extraConstraints];
+    v12 = [extraConstraints mutableCopy];
 
-    v13 = [(UIView *)self->_view leadingAnchor];
-    v14 = [(UIView *)self leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [(UIView *)self->_view leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[0] = v15;
-    v16 = [(UIView *)self->_view trailingAnchor];
-    v17 = [(UIView *)self trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIView *)self->_view trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[1] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     [v12 addObjectsFromArray:v19];

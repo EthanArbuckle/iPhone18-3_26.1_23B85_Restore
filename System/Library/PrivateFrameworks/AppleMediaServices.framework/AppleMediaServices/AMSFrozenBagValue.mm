@@ -1,19 +1,19 @@
 @interface AMSFrozenBagValue
-- (AMSFrozenBagValue)initWithKey:(id)a3 value:(id)a4 valueType:(unint64_t)a5;
+- (AMSFrozenBagValue)initWithKey:(id)key value:(id)value valueType:(unint64_t)type;
 @end
 
 @implementation AMSFrozenBagValue
 
-- (AMSFrozenBagValue)initWithKey:(id)a3 value:(id)a4 valueType:(unint64_t)a5
+- (AMSFrozenBagValue)initWithKey:(id)key value:(id)value valueType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v9)
+  if (valueCopy)
   {
-    v23 = self;
-    v11 = a5;
-    v12 = [v8 componentsSeparatedByString:@"/"];
+    selfCopy = self;
+    typeCopy = type;
+    v12 = [keyCopy componentsSeparatedByString:@"/"];
     v13 = v10;
     if ([v12 count])
     {
@@ -23,7 +23,7 @@
         v15 = [v12 objectAtIndexedSubscript:v14];
         if (v14 == [v12 count] - 1)
         {
-          [v13 setObject:v9 forKeyedSubscript:v15];
+          [v13 setObject:valueCopy forKeyedSubscript:v15];
         }
 
         else
@@ -40,28 +40,28 @@
       while (v14 < [v12 count]);
     }
 
-    a5 = v11;
-    self = v23;
+    type = typeCopy;
+    self = selfCopy;
   }
 
   v17 = objc_alloc_init(AMSBagFrozenDataSourceBuilder);
-  v18 = [MEMORY[0x1E695DF00] distantFuture];
-  [(AMSBagFrozenDataSourceBuilder *)v17 setExpirationDate:v18];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [(AMSBagFrozenDataSourceBuilder *)v17 setExpirationDate:distantFuture];
 
   [(AMSBagFrozenDataSourceBuilder *)v17 setData:MEMORY[0x1E695E0F8]];
   [(AMSBagFrozenDataSourceBuilder *)v17 setProfile:@"AMSFrozenBagValue"];
   [(AMSBagFrozenDataSourceBuilder *)v17 setProfileVersion:@"1"];
-  if (v9)
+  if (valueCopy)
   {
     [(AMSBagFrozenDataSourceBuilder *)v17 setData:v10];
   }
 
-  v19 = [(AMSBagFrozenDataSourceBuilder *)v17 createFrozenDataSource];
-  v20 = [(AMSBagValue *)self initWithDataSource:v19 key:v8 valueType:a5];
+  createFrozenDataSource = [(AMSBagFrozenDataSourceBuilder *)v17 createFrozenDataSource];
+  v20 = [(AMSBagValue *)self initWithDataSource:createFrozenDataSource key:keyCopy valueType:type];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_dataSource, v19);
+    objc_storeStrong(&v20->_dataSource, createFrozenDataSource);
   }
 
   return v21;

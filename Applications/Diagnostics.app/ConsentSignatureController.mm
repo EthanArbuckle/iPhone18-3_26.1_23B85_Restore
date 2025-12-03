@@ -1,12 +1,12 @@
 @interface ConsentSignatureController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (BOOL)validateRequiredFields;
-- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)cancelConsent;
 - (void)clearSignature;
 - (void)generateConsentDocument;
-- (void)handleTapOutside:(id)a3;
+- (void)handleTapOutside:(id)outside;
 - (void)viewDidLoad;
 @end
 
@@ -18,12 +18,12 @@
   v6.super_class = type metadata accessor for ConsentSignatureController();
   v2 = v6.receiver;
   [(ConsentSignatureController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v4 setBackgroundColor:clearColor];
 
     sub_10014BE9C();
     sub_10014CB74();
@@ -52,7 +52,7 @@
 
 - (BOOL)validateRequiredFields
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10014DD58();
 
   return v3 & 1;
@@ -60,44 +60,44 @@
 
 - (void)cancelConsent
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014E2C8();
 }
 
 - (void)generateConsentDocument
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014E440();
 }
 
-- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics26ConsentSignatureController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  sub_10014F6C4(v4);
+  returnCopy = return;
+  selfCopy = self;
+  sub_10014F6C4(returnCopy);
 
   return 1;
 }
 
-- (void)handleTapOutside:(id)a3
+- (void)handleTapOutside:(id)outside
 {
-  v4 = a3;
-  v5 = self;
-  sub_10014F820(v4);
+  outsideCopy = outside;
+  selfCopy = self;
+  sub_10014F820(outsideCopy);
 }
 
 @end

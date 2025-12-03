@@ -11,16 +11,16 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(STUIStatusBarPillViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(STUIStatusBarPillViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
-  v2 = [(STUIStatusBarPillViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(STUIStatusBarPillViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
@@ -74,8 +74,8 @@
     return 1;
   }
 
-  v4 = [(STUIStatusBarPillViewAccessibility *)self accessibilityLabel];
-  v3 = [v4 length] != 0;
+  accessibilityLabel = [(STUIStatusBarPillViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }

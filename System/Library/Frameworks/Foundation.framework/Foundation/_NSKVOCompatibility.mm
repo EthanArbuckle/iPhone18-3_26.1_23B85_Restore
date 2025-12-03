@@ -9,7 +9,7 @@
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
 
-    [a1 _setRequiresSilencingExceptions:1];
+    [self _setRequiresSilencingExceptions:1];
   }
 }
 

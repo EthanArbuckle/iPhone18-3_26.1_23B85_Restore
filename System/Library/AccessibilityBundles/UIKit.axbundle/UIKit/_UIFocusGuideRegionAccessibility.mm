@@ -1,18 +1,18 @@
 @interface _UIFocusGuideRegionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_shouldUseNextFocusedItemForLinearSorting;
 @end
 
 @implementation _UIFocusGuideRegionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIFocusGuideRegion";
   v3 = "B";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -27,7 +27,7 @@
 
 - (BOOL)_shouldUseNextFocusedItemForLinearSorting
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UIFocusGuideRegionAccessibility;

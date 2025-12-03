@@ -1,14 +1,14 @@
 @interface WeatherDataProxyResponse
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WeatherDataProxyResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  WeatherDataProxyResponse.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  WeatherDataProxyResponse.encode(with:)(coderCopy);
 }
 
 @end

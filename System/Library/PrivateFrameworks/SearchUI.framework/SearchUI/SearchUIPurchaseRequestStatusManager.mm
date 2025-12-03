@@ -1,12 +1,12 @@
 @interface SearchUIPurchaseRequestStatusManager
 + (SearchUIPurchaseRequestStatusManager)sharedManager;
 - (SearchUIPurchaseRequestStatusManager)init;
-- (id)addObserver:(id)a3;
-- (int)statusForRequestID:(id)a3;
+- (id)addObserver:(id)observer;
+- (int)statusForRequestID:(id)d;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)setupSink;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation SearchUIPurchaseRequestStatusManager
@@ -59,10 +59,10 @@ uint64_t __53__SearchUIPurchaseRequestStatusManager_sharedManager__block_invoke(
   v5 = [objc_alloc(MEMORY[0x1E698F258]) initWithIdentifier:@"com.apple.SearchUI.SearchUIPurchaseRequestStatusManager.scheduler" targetQueue:v4 waking:0];
   objc_initWeak(&location, self);
   v6 = BiomeLibrary();
-  v7 = [v6 Family];
-  v8 = [v7 AskToBuy];
-  v9 = [v8 DSLPublisher];
-  v10 = [v9 subscribeOn:v5];
+  family = [v6 Family];
+  askToBuy = [family AskToBuy];
+  dSLPublisher = [askToBuy DSLPublisher];
+  v10 = [dSLPublisher subscribeOn:v5];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __49__SearchUIPurchaseRequestStatusManager_setupSink__block_invoke_2;
@@ -84,26 +84,26 @@ void __49__SearchUIPurchaseRequestStatusManager_setupSink__block_invoke_2(uint64
   [WeakRetained updateWithEvent:v4];
 }
 
-- (int)statusForRequestID:(id)a3
+- (int)statusForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(SearchUIPurchaseRequestStatusManager *)self requestStatuses];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  requestStatuses = [(SearchUIPurchaseRequestStatusManager *)self requestStatuses];
+  v6 = [requestStatuses objectForKeyedSubscript:dCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(dCopy) = [v6 intValue];
+  return dCopy;
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationCenter = self->_notificationCenter;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__SearchUIPurchaseRequestStatusManager_addObserver___block_invoke;
   v9[3] = &unk_1E85B2A78;
-  v10 = v4;
-  v6 = v4;
+  v10 = observerCopy;
+  v6 = observerCopy;
   v7 = [(NSNotificationCenter *)notificationCenter addObserverForName:@"purchaseRequestStatusDidChangeNotification" object:0 queue:0 usingBlock:v9];
 
   return v7;
@@ -121,33 +121,33 @@ void __52__SearchUIPurchaseRequestStatusManager_addObserver___block_invoke(uint6
   (*(v2 + 16))(v2, v4, [v6 intValue]);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSNotificationCenter *)self->_notificationCenter removeObserver:?];
   }
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
-  v6 = [v4 numberWithInt:{objc_msgSend(v5, "status")}];
-  v7 = [(SearchUIPurchaseRequestStatusManager *)self requestStatuses];
-  v8 = [v5 requestID];
-  [v7 setObject:v6 forKeyedSubscript:v8];
+  eventCopy = event;
+  v6 = [v4 numberWithInt:{objc_msgSend(eventCopy, "status")}];
+  requestStatuses = [(SearchUIPurchaseRequestStatusManager *)self requestStatuses];
+  requestID = [eventCopy requestID];
+  [requestStatuses setObject:v6 forKeyedSubscript:requestID];
 
   notificationCenter = self->_notificationCenter;
   v15[0] = @"requestID";
-  v10 = [v5 requestID];
+  requestID2 = [eventCopy requestID];
   v15[1] = @"status";
-  v16[0] = v10;
+  v16[0] = requestID2;
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v5 status];
+  status = [eventCopy status];
 
-  v13 = [v11 numberWithInt:v12];
+  v13 = [v11 numberWithInt:status];
   v16[1] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
   [(NSNotificationCenter *)notificationCenter postNotificationName:@"purchaseRequestStatusDidChangeNotification" object:0 userInfo:v14];
@@ -155,8 +155,8 @@ void __52__SearchUIPurchaseRequestStatusManager_addObserver___block_invoke(uint6
 
 - (void)dealloc
 {
-  v3 = [(SearchUIPurchaseRequestStatusManager *)self biomeSink];
-  [v3 cancel];
+  biomeSink = [(SearchUIPurchaseRequestStatusManager *)self biomeSink];
+  [biomeSink cancel];
 
   v4.receiver = self;
   v4.super_class = SearchUIPurchaseRequestStatusManager;

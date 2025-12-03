@@ -1,13 +1,13 @@
 @interface NUBufferImageAdapter
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
 - (NUBufferImageAdapter)init;
-- (NUBufferImageAdapter)initWithBuffer:(id)a3 colorSpace:(id)a4 validRegion:(id)a5;
-- (NUBufferImageAdapter)initWithBufferProvider:(id)a3 colorSpace:(id)a4 validRegion:(id)a5;
+- (NUBufferImageAdapter)initWithBuffer:(id)buffer colorSpace:(id)space validRegion:(id)region;
+- (NUBufferImageAdapter)initWithBufferProvider:(id)provider colorSpace:(id)space validRegion:(id)region;
 - (id)debugQuickLookObject;
 - (id)mutableImageCopy;
 - (id)mutablePurgeableImageCopy;
 - (id)purgeableImageCopy;
-- (void)readBufferRegion:(id)a3 withBlock:(id)a4;
+- (void)readBufferRegion:(id)region withBlock:(id)block;
 @end
 
 @implementation NUBufferImageAdapter
@@ -52,8 +52,8 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v20 = v10;
       v21 = 2114;
@@ -72,8 +72,8 @@
     v7 = _NUAssertLogger;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v9;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -116,8 +116,8 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v20 = v10;
       v21 = 2114;
@@ -136,8 +136,8 @@
     v7 = _NUAssertLogger;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v9;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -180,8 +180,8 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v20 = v10;
       v21 = 2114;
@@ -200,8 +200,8 @@
     v7 = _NUAssertLogger;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v9;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -213,9 +213,9 @@
   _NUAssertFailHandler("[NUBufferImageAdapter mutableImageCopy]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 458, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v15, v16, v17, v18, v14);
 }
 
-- (void)readBufferRegion:(id)a3 withBlock:(id)a4
+- (void)readBufferRegion:(id)region withBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = [(NUBufferImageAdapter *)self size];
   bufferProvider = self->_bufferProvider;
   v10[0] = MEMORY[0x1E69E9820];
@@ -226,7 +226,7 @@
   v13 = 0;
   v14 = v6;
   v15 = v8;
-  v9 = v5;
+  v9 = blockCopy;
   v11 = v9;
   [(NUBufferProvider *)bufferProvider provideBuffer:v10];
 }
@@ -286,8 +286,8 @@ void __51__NUBufferImageAdapter_readBufferRegion_withBlock___block_invoke(uint64
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v22 = v12;
       v23 = 2114;
@@ -306,8 +306,8 @@ void __51__NUBufferImageAdapter_readBufferRegion_withBlock___block_invoke(uint64
     v9 = _NUAssertLogger;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v11;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -321,14 +321,14 @@ void __51__NUBufferImageAdapter_readBufferRegion_withBlock___block_invoke(uint64
   _NUAssertFailHandler("[NUBufferImageAdapter init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 429, @"Initializer not available: [%@ %@], use designated initializer instead.", v17, v18, v19, v20, v16);
 }
 
-- (NUBufferImageAdapter)initWithBufferProvider:(id)a3 colorSpace:(id)a4 validRegion:(id)a5
+- (NUBufferImageAdapter)initWithBufferProvider:(id)provider colorSpace:(id)space validRegion:(id)region
 {
   v59 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  providerCopy = provider;
+  spaceCopy = space;
+  regionCopy = region;
+  v12 = regionCopy;
+  if (!providerCopy)
   {
     v20 = NUAssertLogger();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -347,8 +347,8 @@ void __51__NUBufferImageAdapter_readBufferRegion_withBlock___block_invoke(uint64
       if (v24)
       {
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v56 = v39;
         v57 = 2114;
@@ -359,8 +359,8 @@ void __51__NUBufferImageAdapter_readBufferRegion_withBlock___block_invoke(uint64
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v56 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -373,7 +373,7 @@ LABEL_29:
     _NUAssertFailHandler("[NUBufferImageAdapter initWithBufferProvider:colorSpace:validRegion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", v43, @"Invalid parameter not satisfying: %s", v50, v51, v52, v53, v42);
   }
 
-  if (!v10)
+  if (!spaceCopy)
   {
     v27 = NUAssertLogger();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -392,8 +392,8 @@ LABEL_29:
       if (v30)
       {
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v46 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v56 = v44;
         v57 = 2114;
@@ -404,8 +404,8 @@ LABEL_29:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v56 = v32;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -416,7 +416,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (!v11)
+  if (!regionCopy)
   {
     v33 = NUAssertLogger();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -435,8 +435,8 @@ LABEL_29:
       if (v36)
       {
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v49 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v56 = v47;
         v57 = 2114;
@@ -447,8 +447,8 @@ LABEL_29:
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v56 = v38;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -462,9 +462,9 @@ LABEL_29:
   v54.receiver = self;
   v54.super_class = NUBufferImageAdapter;
   v13 = [(NUBufferImageAdapter *)&v54 init];
-  objc_storeStrong(&v13->_bufferProvider, a3);
-  objc_storeStrong(&v13->_colorSpace, a4);
-  v14 = [v9 size];
+  objc_storeStrong(&v13->_bufferProvider, provider);
+  objc_storeStrong(&v13->_colorSpace, space);
+  v14 = [providerCopy size];
   v16 = [NUImageLayout contiguousLayoutForImageSize:v14, v15];
   layout = v13->_layout;
   v13->_layout = v16;
@@ -475,13 +475,13 @@ LABEL_29:
   return v13;
 }
 
-- (NUBufferImageAdapter)initWithBuffer:(id)a3 colorSpace:(id)a4 validRegion:(id)a5
+- (NUBufferImageAdapter)initWithBuffer:(id)buffer colorSpace:(id)space validRegion:(id)region
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  bufferCopy = buffer;
+  spaceCopy = space;
+  regionCopy = region;
+  if (!bufferCopy)
   {
     v14 = NUAssertLogger();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -500,8 +500,8 @@ LABEL_29:
       if (v18)
       {
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v21;
         v30 = 2114;
@@ -512,8 +512,8 @@ LABEL_29:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -522,8 +522,8 @@ LABEL_29:
     _NUAssertFailHandler("[NUBufferImageAdapter initWithBuffer:colorSpace:validRegion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUImageUtilities.mm", 407, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "buffer != nil");
   }
 
-  v11 = [[NUBufferAdapter alloc] initWithBuffer:v8];
-  v12 = [(NUBufferImageAdapter *)self initWithBufferProvider:v11 colorSpace:v9 validRegion:v10];
+  v11 = [[NUBufferAdapter alloc] initWithBuffer:bufferCopy];
+  v12 = [(NUBufferImageAdapter *)self initWithBufferProvider:v11 colorSpace:spaceCopy validRegion:regionCopy];
 
   return v12;
 }

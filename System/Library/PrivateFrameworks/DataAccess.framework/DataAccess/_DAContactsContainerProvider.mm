@@ -1,47 +1,47 @@
 @interface _DAContactsContainerProvider
-- (BOOL)setLastSyncDateForContainer:(id)a3;
-- (_DAContactsContainerProvider)initWithContactStore:(id)a3;
+- (BOOL)setLastSyncDateForContainer:(id)container;
+- (_DAContactsContainerProvider)initWithContactStore:(id)store;
 - (id)allContainers;
-- (id)allContainersForAccountWithExternalIdentifier:(id)a3;
-- (id)containerWithExternalIdentifier:(id)a3 forAccountWithExternalIdentifier:(id)a4;
-- (void)setDefaultContainer:(id)a3 withLocalDBHelper:(id)a4 onlyIfNotSet:(BOOL)a5;
+- (id)allContainersForAccountWithExternalIdentifier:(id)identifier;
+- (id)containerWithExternalIdentifier:(id)identifier forAccountWithExternalIdentifier:(id)externalIdentifier;
+- (void)setDefaultContainer:(id)container withLocalDBHelper:(id)helper onlyIfNotSet:(BOOL)set;
 @end
 
 @implementation _DAContactsContainerProvider
 
-- (_DAContactsContainerProvider)initWithContactStore:(id)a3
+- (_DAContactsContainerProvider)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _DAContactsContainerProvider;
   v6 = [(_DAContactsContainerProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)containerWithExternalIdentifier:(id)a3 forAccountWithExternalIdentifier:(id)a4
+- (id)containerWithExternalIdentifier:(id)identifier forAccountWithExternalIdentifier:(id)externalIdentifier
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBDA28] predicateForAccountWithExternalIdentifier:a4];
-  v8 = [(_DAContactsContainerProvider *)self contactStore];
+  identifierCopy = identifier;
+  v7 = [MEMORY[0x277CBDA28] predicateForAccountWithExternalIdentifier:externalIdentifier];
+  contactStore = [(_DAContactsContainerProvider *)self contactStore];
   v36 = 0;
-  v9 = [v8 accountsMatchingPredicate:v7 error:&v36];
+  v9 = [contactStore accountsMatchingPredicate:v7 error:&v36];
   v10 = v36;
-  v11 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   v12 = MEMORY[0x277CBDAD8];
-  v13 = [v11 identifier];
-  v14 = [v12 predicateForContainersInAccountWithIdentifier:v13 includingDisabledContainers:1];
+  identifier = [firstObject identifier];
+  v14 = [v12 predicateForContainersInAccountWithIdentifier:identifier includingDisabledContainers:1];
 
-  v15 = [(_DAContactsContainerProvider *)self contactStore];
+  contactStore2 = [(_DAContactsContainerProvider *)self contactStore];
   v35 = 0;
-  v16 = [v15 containersMatchingPredicate:v14 error:&v35];
+  v16 = [contactStore2 containersMatchingPredicate:v14 error:&v35];
   v17 = v35;
 
   v33 = 0u;
@@ -66,8 +66,8 @@ LABEL_3:
       }
 
       v22 = *(*(&v31 + 1) + 8 * v21);
-      v23 = [v22 externalIdentifier];
-      v24 = [v23 isEqualToString:v6];
+      externalIdentifier = [v22 externalIdentifier];
+      v24 = [externalIdentifier isEqualToString:identifierCopy];
 
       if (v24)
       {
@@ -120,12 +120,12 @@ LABEL_14:
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBDAD8] predicateForContainersIncludingDisabled:1];
-  v4 = [(_DAContactsContainerProvider *)self contactStore];
+  contactStore = [(_DAContactsContainerProvider *)self contactStore];
   v22 = 0;
-  v5 = [v4 containersMatchingPredicate:v3 error:&v22];
+  v5 = [contactStore containersMatchingPredicate:v3 error:&v22];
   v6 = v22;
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -148,7 +148,7 @@ LABEL_14:
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [DAContactsContainer alloc];
         v15 = [(DAContactsContainer *)v14 initWithCNContainer:v13, v18];
-        [v7 addObject:v15];
+        [array addObject:v15];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -159,30 +159,30 @@ LABEL_14:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-- (id)allContainersForAccountWithExternalIdentifier:(id)a3
+- (id)allContainersForAccountWithExternalIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBDA28] predicateForAccountWithExternalIdentifier:a3];
-  v5 = [(_DAContactsContainerProvider *)self contactStore];
+  v4 = [MEMORY[0x277CBDA28] predicateForAccountWithExternalIdentifier:identifier];
+  contactStore = [(_DAContactsContainerProvider *)self contactStore];
   v30 = 0;
   v24 = v4;
-  v6 = [v5 accountsMatchingPredicate:v4 error:&v30];
+  v6 = [contactStore accountsMatchingPredicate:v4 error:&v30];
   v23 = v30;
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = MEMORY[0x277CBDAD8];
-  v9 = [v7 identifier];
-  v10 = [v8 predicateForContainersInAccountWithIdentifier:v9 includingDisabledContainers:1];
+  identifier = [firstObject identifier];
+  v10 = [v8 predicateForContainersInAccountWithIdentifier:identifier includingDisabledContainers:1];
 
-  v11 = [(_DAContactsContainerProvider *)self contactStore];
+  contactStore2 = [(_DAContactsContainerProvider *)self contactStore];
   v29 = 0;
-  v12 = [v11 containersMatchingPredicate:v10 error:&v29];
+  v12 = [contactStore2 containersMatchingPredicate:v10 error:&v29];
   v13 = v29;
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -203,7 +203,7 @@ LABEL_14:
         }
 
         v20 = [[DAContactsContainer alloc] initWithCNContainer:*(*(&v25 + 1) + 8 * i)];
-        [v14 addObject:v20];
+        [array addObject:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v25 objects:v31 count:16];
@@ -214,10 +214,10 @@ LABEL_14:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return array;
 }
 
-- (void)setDefaultContainer:(id)a3 withLocalDBHelper:(id)a4 onlyIfNotSet:(BOOL)a5
+- (void)setDefaultContainer:(id)container withLocalDBHelper:(id)helper onlyIfNotSet:(BOOL)set
 {
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 3);
@@ -228,9 +228,9 @@ LABEL_14:
   }
 }
 
-- (BOOL)setLastSyncDateForContainer:(id)a3
+- (BOOL)setLastSyncDateForContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v4, v5))

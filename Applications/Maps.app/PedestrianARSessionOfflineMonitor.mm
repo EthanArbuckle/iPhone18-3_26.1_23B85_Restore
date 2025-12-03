@@ -1,6 +1,6 @@
 @interface PedestrianARSessionOfflineMonitor
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
-- (PedestrianARSessionOfflineMonitor)initWithObserver:(id)a3;
+- (PedestrianARSessionOfflineMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)updateState;
@@ -10,16 +10,16 @@
 
 - (id)debugDescription
 {
-  v2 = [objc_opt_class() friendlyName];
+  friendlyName = [objc_opt_class() friendlyName];
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
   v5 = @"NO";
-  if (v4)
+  if (isUsingOfflineMaps)
   {
     v5 = @"YES";
   }
 
-  v6 = [NSString stringWithFormat:@"%@\nusing offline: %@\n", v2, v5];
+  v6 = [NSString stringWithFormat:@"%@\nusing offline: %@\n", friendlyName, v5];
 
   return v6;
 }
@@ -27,16 +27,16 @@
 - (void)updateState
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
   v5 = sub_100FCB520();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isUsingOfflineMaps)
   {
     if (v6)
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       v7 = "[%{public}p] Using offline mode; updating state";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v7, &v8, 0xCu);
@@ -46,12 +46,12 @@ LABEL_6:
   else if (v6)
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy2 = self;
     v7 = "[%{public}p] Not using offline mode; updating state";
     goto LABEL_6;
   }
 
-  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:v4 ^ 1];
+  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:isUsingOfflineMaps ^ 1];
 }
 
 - (void)dealloc
@@ -60,7 +60,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Dealloc", buf, 0xCu);
   }
 
@@ -69,11 +69,11 @@ LABEL_6:
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionOfflineMonitor)initWithObserver:(id)a3
+- (PedestrianARSessionOfflineMonitor)initWithObserver:(id)observer
 {
   v7.receiver = self;
   v7.super_class = PedestrianARSessionOfflineMonitor;
-  v3 = [(PedestrianARSessionMonitor *)&v7 initWithObserver:a3];
+  v3 = [(PedestrianARSessionMonitor *)&v7 initWithObserver:observer];
   if (v3)
   {
     v4 = sub_100FCB520();

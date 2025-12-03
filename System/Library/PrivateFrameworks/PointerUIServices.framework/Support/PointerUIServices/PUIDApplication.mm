@@ -1,26 +1,26 @@
 @interface PUIDApplication
-- (void)sendEvent:(id)a3;
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6;
+- (void)sendEvent:(id)event;
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion;
 @end
 
 @implementation PUIDApplication
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PUIDApplication *)self delegate];
-  [v5 handleEvent:v4];
+  eventCopy = event;
+  delegate = [(PUIDApplication *)self delegate];
+  [delegate handleEvent:eventCopy];
 }
 
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion
 {
   v12.receiver = self;
   v12.super_class = PUIDApplication;
-  v10 = a4;
-  [(PUIDApplication *)&v12 workspace:a3 didCreateScene:v10 withTransitionContext:a5 completion:a6];
+  sceneCopy = scene;
+  [(PUIDApplication *)&v12 workspace:workspace didCreateScene:sceneCopy withTransitionContext:context completion:completion];
   v11 = [(PUIDApplication *)self delegate:v12.receiver];
-  [v10 setDelegate:v11];
-  [v11 applicationDidCreateFBSScene:v10];
+  [sceneCopy setDelegate:v11];
+  [v11 applicationDidCreateFBSScene:sceneCopy];
 }
 
 @end

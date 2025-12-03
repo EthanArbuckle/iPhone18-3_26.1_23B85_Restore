@@ -1,7 +1,7 @@
 @interface _HDWorkoutZonesSampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -12,27 +12,27 @@
   v9[1] = *MEMORY[0x277D85DE8];
   v9[0] = @"zones";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCDCE8]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCDCE8]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
@@ -40,7 +40,7 @@
     v13 = HDSQLiteColumnWithNameAsArrayOfClass();
     if (v13)
     {
-      [v10 _setZones:v13];
+      [objectCopy _setZones:v13];
       LOBYTE(v12) = 1;
     }
 
@@ -50,10 +50,10 @@
       LOBYTE(v12) = v14 == 0;
       if (v14)
       {
-        if (a6)
+        if (error)
         {
           v15 = v14;
-          *a6 = v14;
+          *error = v14;
         }
 
         else
@@ -67,10 +67,10 @@
   return v12;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {

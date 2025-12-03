@@ -1,25 +1,25 @@
 @interface SCATVisualScrollersAuxiliaryElementManager
 - (BOOL)_isGroupingEnabled;
-- (BOOL)_showScroller:(int64_t)a3 withElement:(id)a4;
-- (BOOL)containsElement:(id)a3;
+- (BOOL)_showScroller:(int64_t)scroller withElement:(id)element;
+- (BOOL)containsElement:(id)element;
 - (NSArray)scrollerElements;
 - (NSArray)scrollerGroups;
-- (SCATVisualScrollersAuxiliaryElementManager)initWithMode:(int64_t)a3;
-- (id)_groupForElement:(id)a3;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)lastElementWithOptions:(int *)a3;
+- (SCATVisualScrollersAuxiliaryElementManager)initWithMode:(int64_t)mode;
+- (id)_groupForElement:(id)element;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
+- (id)lastElementWithOptions:(int *)options;
 - (id)scrollerElementsForContextElement;
 - (id)scrollerGroupsForContextElement;
 - (void)dealloc;
-- (void)scrollContainer:(id)a3 scrollInDirection:(int64_t)a4;
-- (void)setContextElement:(id)a3;
+- (void)scrollContainer:(id)container scrollInDirection:(int64_t)direction;
+- (void)setContextElement:(id)element;
 @end
 
 @implementation SCATVisualScrollersAuxiliaryElementManager
 
-- (SCATVisualScrollersAuxiliaryElementManager)initWithMode:(int64_t)a3
+- (SCATVisualScrollersAuxiliaryElementManager)initWithMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = SCATVisualScrollersAuxiliaryElementManager;
@@ -27,16 +27,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_mode = a3;
+    v4->_mode = mode;
     v6 = objc_opt_new();
     [(SCATAuxiliaryElementManager *)v5 setViewController:v6];
     [v6 setScrollDelegate:v5];
-    [v6 setPositionRelativeToContextElement:a3 == 1];
-    v7 = [v6 horizontalScroller];
-    [v7 setDelegate:v5];
+    [v6 setPositionRelativeToContextElement:mode == 1];
+    horizontalScroller = [v6 horizontalScroller];
+    [horizontalScroller setDelegate:v5];
 
-    v8 = [v6 verticalScroller];
-    [v8 setDelegate:v5];
+    verticalScroller = [v6 verticalScroller];
+    [verticalScroller setDelegate:v5];
   }
 
   return v5;
@@ -46,13 +46,13 @@
 {
   if ([(SCATAuxiliaryElementManager *)self isViewControllerLoaded])
   {
-    v3 = [(SCATAuxiliaryElementManager *)self viewController];
-    [v3 setScrollDelegate:0];
-    v4 = [v3 verticalScroller];
-    [v4 setDelegate:0];
+    viewController = [(SCATAuxiliaryElementManager *)self viewController];
+    [viewController setScrollDelegate:0];
+    verticalScroller = [viewController verticalScroller];
+    [verticalScroller setDelegate:0];
 
-    v5 = [v3 horizontalScroller];
-    [v5 setDelegate:0];
+    horizontalScroller = [viewController horizontalScroller];
+    [horizontalScroller setDelegate:0];
   }
 
   v6.receiver = self;
@@ -64,23 +64,23 @@
 {
   if (!self->_scrollerElements)
   {
-    v3 = [(SCATAuxiliaryElementManager *)self viewController];
+    viewController = [(SCATAuxiliaryElementManager *)self viewController];
 
-    if (v3)
+    if (viewController)
     {
-      v4 = [(SCATAuxiliaryElementManager *)self viewController];
-      v21 = [v4 verticalScroller];
-      v5 = [v21 scrollUpView];
-      v27[0] = v5;
-      v6 = [v4 verticalScroller];
-      v7 = [v6 scrollDownView];
-      v27[1] = v7;
-      v8 = [v4 horizontalScroller];
-      v9 = [v8 scrollLeftView];
-      v27[2] = v9;
-      v10 = [v4 horizontalScroller];
-      v11 = [v10 scrollRightView];
-      v27[3] = v11;
+      viewController2 = [(SCATAuxiliaryElementManager *)self viewController];
+      verticalScroller = [viewController2 verticalScroller];
+      scrollUpView = [verticalScroller scrollUpView];
+      v27[0] = scrollUpView;
+      verticalScroller2 = [viewController2 verticalScroller];
+      scrollDownView = [verticalScroller2 scrollDownView];
+      v27[1] = scrollDownView;
+      horizontalScroller = [viewController2 horizontalScroller];
+      scrollLeftView = [horizontalScroller scrollLeftView];
+      v27[2] = scrollLeftView;
+      horizontalScroller2 = [viewController2 horizontalScroller];
+      scrollRightView = [horizontalScroller2 scrollRightView];
+      v27[3] = scrollRightView;
       v12 = [NSArray arrayWithObjects:v27 count:4];
       scrollerElements = self->_scrollerElements;
       self->_scrollerElements = v12;
@@ -127,18 +127,18 @@
 {
   if (!self->_scrollerGroups)
   {
-    v3 = [(SCATAuxiliaryElementManager *)self viewController];
+    viewController = [(SCATAuxiliaryElementManager *)self viewController];
 
-    if (v3)
+    if (viewController)
     {
-      v4 = [(SCATAuxiliaryElementManager *)self viewController];
+      viewController2 = [(SCATAuxiliaryElementManager *)self viewController];
       v5 = [AXElementGroup alloc];
-      v6 = [v4 verticalScroller];
-      v7 = [v6 scrollUpView];
-      v47[0] = v7;
-      v8 = [v4 verticalScroller];
-      v9 = [v8 scrollDownView];
-      v47[1] = v9;
+      verticalScroller = [viewController2 verticalScroller];
+      scrollUpView = [verticalScroller scrollUpView];
+      v47[0] = scrollUpView;
+      verticalScroller2 = [viewController2 verticalScroller];
+      scrollDownView = [verticalScroller2 scrollDownView];
+      v47[1] = scrollDownView;
       v10 = [NSArray arrayWithObjects:v47 count:2];
       v11 = [v5 initWithElements:v10 label:0];
 
@@ -178,12 +178,12 @@
 
       [v13 setScatAuxiliaryElementManager:self];
       v18 = [AXElementGroup alloc];
-      v19 = [v4 horizontalScroller];
-      v20 = [v19 scrollLeftView];
-      v45[0] = v20;
-      v21 = [v4 horizontalScroller];
-      v22 = [v21 scrollRightView];
-      v45[1] = v22;
+      horizontalScroller = [viewController2 horizontalScroller];
+      scrollLeftView = [horizontalScroller scrollLeftView];
+      v45[0] = scrollLeftView;
+      horizontalScroller2 = [viewController2 horizontalScroller];
+      scrollRightView = [horizontalScroller2 scrollRightView];
+      v45[1] = scrollRightView;
       v23 = [NSArray arrayWithObjects:v45 count:2];
       v24 = [v18 initWithElements:v23 label:0];
 
@@ -238,65 +238,65 @@
 - (BOOL)_isGroupingEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchGroupElementsEnabled];
+  assistiveTouchGroupElementsEnabled = [v2 assistiveTouchGroupElementsEnabled];
 
-  return v3;
+  return assistiveTouchGroupElementsEnabled;
 }
 
-- (BOOL)_showScroller:(int64_t)a3 withElement:(id)a4
+- (BOOL)_showScroller:(int64_t)scroller withElement:(id)element
 {
-  v6 = a4;
-  v7 = [(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled];
-  v8 = [(SCATVisualScrollersAuxiliaryElementManager *)self mode];
-  v9 = v8;
-  if (v7)
+  elementCopy = element;
+  _isGroupingEnabled = [(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled];
+  mode = [(SCATVisualScrollersAuxiliaryElementManager *)self mode];
+  v9 = mode;
+  if (_isGroupingEnabled)
   {
-    v10 = [v6 scatScanningBehaviorTraits];
+    scatScanningBehaviorTraits = [elementCopy scatScanningBehaviorTraits];
     if (v9)
     {
-      if (a3)
+      if (scroller)
       {
-        LOBYTE(v11) = v10;
+        LOBYTE(v11) = scatScanningBehaviorTraits;
       }
 
       else
       {
-        LOBYTE(v11) = (v10 & 2) != 0;
+        LOBYTE(v11) = (scatScanningBehaviorTraits & 2) != 0;
       }
     }
 
-    else if (a3)
+    else if (scroller)
     {
-      if ((v10 & 1) != 0 && ([v6 isGroup] & 1) == 0)
+      if ((scatScanningBehaviorTraits & 1) != 0 && ([elementCopy isGroup] & 1) == 0)
       {
-        v13 = [v6 parentGroup];
-        v14 = [v13 parentGroup];
-        LOBYTE(v11) = v14 == 0;
+        parentGroup = [elementCopy parentGroup];
+        v13ParentGroup = [parentGroup parentGroup];
+        LOBYTE(v11) = v13ParentGroup == 0;
       }
 
       else
       {
-        v11 = ([v6 scatScanningBehaviorTraits] >> 2) & 1;
+        v11 = ([elementCopy scatScanningBehaviorTraits] >> 2) & 1;
       }
     }
 
     else
     {
-      v11 = (v10 >> 3) & 1;
+      v11 = (scatScanningBehaviorTraits >> 3) & 1;
     }
   }
 
-  else if (v8)
+  else if (mode)
   {
-    v12 = [v6 scatScanningBehaviorTraits];
-    if (a3)
+    scatScanningBehaviorTraits2 = [elementCopy scatScanningBehaviorTraits];
+    if (scroller)
     {
-      LOBYTE(v11) = (v12 & 5) != 0;
+      LOBYTE(v11) = (scatScanningBehaviorTraits2 & 5) != 0;
     }
 
     else
     {
-      LOBYTE(v11) = (v12 & 0xA) != 0;
+      LOBYTE(v11) = (scatScanningBehaviorTraits2 & 0xA) != 0;
     }
   }
 
@@ -310,13 +310,13 @@
 
 - (id)scrollerElementsForContextElement
 {
-  v3 = [(SCATAuxiliaryElementManager *)self contextElement];
-  v25 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:1 withElement:v3];
+  contextElement = [(SCATAuxiliaryElementManager *)self contextElement];
+  v25 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:1 withElement:contextElement];
 
-  v4 = [(SCATAuxiliaryElementManager *)self contextElement];
-  v5 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:0 withElement:v4];
+  contextElement2 = [(SCATAuxiliaryElementManager *)self contextElement];
+  v5 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:0 withElement:contextElement2];
 
-  v6 = [(SCATAuxiliaryElementManager *)self viewController];
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
   v24 = [NSMutableArray arrayWithCapacity:4];
   v26 = 0u;
   v27 = 0u;
@@ -349,19 +349,19 @@ LABEL_9:
           goto LABEL_13;
         }
 
-        v12 = [v6 horizontalScroller];
-        v13 = [v12 scrollLeftView];
-        v14 = v13;
-        if (v11 == v13)
+        horizontalScroller = [viewController horizontalScroller];
+        scrollLeftView = [horizontalScroller scrollLeftView];
+        v14 = scrollLeftView;
+        if (v11 == scrollLeftView)
         {
         }
 
         else
         {
-          v15 = [v6 horizontalScroller];
-          v16 = [v15 scrollRightView];
+          horizontalScroller2 = [viewController horizontalScroller];
+          scrollRightView = [horizontalScroller2 scrollRightView];
 
-          if (v11 != v16)
+          if (v11 != scrollRightView)
           {
             goto LABEL_9;
           }
@@ -374,19 +374,19 @@ LABEL_9:
         }
 
 LABEL_13:
-        v17 = [v6 verticalScroller];
-        v18 = [v17 scrollUpView];
-        v19 = v18;
-        if (v11 == v18)
+        verticalScroller = [viewController verticalScroller];
+        scrollUpView = [verticalScroller scrollUpView];
+        v19 = scrollUpView;
+        if (v11 == scrollUpView)
         {
         }
 
         else
         {
-          v20 = [v6 verticalScroller];
-          v21 = [v20 scrollDownView];
+          verticalScroller2 = [viewController verticalScroller];
+          scrollDownView = [verticalScroller2 scrollDownView];
 
-          if (v11 != v21)
+          if (v11 != scrollDownView)
           {
             continue;
           }
@@ -406,13 +406,13 @@ LABEL_13:
 
 - (id)scrollerGroupsForContextElement
 {
-  v3 = [(SCATAuxiliaryElementManager *)self contextElement];
-  v4 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:1 withElement:v3];
+  contextElement = [(SCATAuxiliaryElementManager *)self contextElement];
+  v4 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:1 withElement:contextElement];
 
-  v5 = [(SCATAuxiliaryElementManager *)self contextElement];
-  v6 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:0 withElement:v5];
+  contextElement2 = [(SCATAuxiliaryElementManager *)self contextElement];
+  v6 = [(SCATVisualScrollersAuxiliaryElementManager *)self _showScroller:0 withElement:contextElement2];
 
-  v7 = [(SCATAuxiliaryElementManager *)self viewController];
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
   v20 = [NSMutableArray arrayWithCapacity:2];
   v22 = 0u;
   v23 = 0u;
@@ -436,9 +436,9 @@ LABEL_13:
         v12 = *(*(&v22 + 1) + 8 * i);
         if (v4)
         {
-          v13 = [v7 horizontalScroller];
-          v14 = [v13 scrollLeftView];
-          v15 = [v12 containsObject:v14];
+          horizontalScroller = [viewController horizontalScroller];
+          scrollLeftView = [horizontalScroller scrollLeftView];
+          v15 = [v12 containsObject:scrollLeftView];
 
           if (v15)
           {
@@ -448,9 +448,9 @@ LABEL_13:
 
         if (v6)
         {
-          v16 = [v7 verticalScroller];
-          v17 = [v16 scrollUpView];
-          v18 = [v12 containsObject:v17];
+          verticalScroller = [viewController verticalScroller];
+          scrollUpView = [verticalScroller scrollUpView];
+          v18 = [v12 containsObject:scrollUpView];
 
           if (v18)
           {
@@ -468,13 +468,13 @@ LABEL_13:
   return v20;
 }
 
-- (id)_groupForElement:(id)a3
+- (id)_groupForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerGroupsForContextElement];
-  if ([v5 containsObject:v4])
+  elementCopy = element;
+  scrollerGroupsForContextElement = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerGroupsForContextElement];
+  if ([scrollerGroupsForContextElement containsObject:elementCopy])
   {
-    v6 = v5;
+    v6 = scrollerGroupsForContextElement;
   }
 
   else
@@ -483,7 +483,7 @@ LABEL_13:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = v5;
+    v7 = scrollerGroupsForContextElement;
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
@@ -499,7 +499,7 @@ LABEL_13:
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
-          if ([v12 isGroup] && (objc_msgSend(v12, "containsObject:", v4) & 1) != 0)
+          if ([v12 isGroup] && (objc_msgSend(v12, "containsObject:", elementCopy) & 1) != 0)
           {
             v6 = v12;
 
@@ -525,24 +525,24 @@ LABEL_14:
   return v6;
 }
 
-- (void)setContextElement:(id)a3
+- (void)setContextElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SCATVisualScrollersAuxiliaryElementManager;
-  [(SCATAuxiliaryElementManager *)&v15 setContextElement:v4];
+  [(SCATAuxiliaryElementManager *)&v15 setContextElement:elementCopy];
   [(SCATVisualScrollersAuxiliaryElementManager *)self setHasActivatedScrollSinceContextUpdate:0];
   if ([(SCATVisualScrollersAuxiliaryElementManager *)self mode]== 1)
   {
-    v5 = [v4 isGroup];
-    if (!v4 || v5)
+    isGroup = [elementCopy isGroup];
+    if (!elementCopy || isGroup)
     {
       v13 = 0u;
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerGroups];
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      scrollerGroups = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerGroups];
+      v7 = [scrollerGroups countByEnumeratingWithState:&v11 objects:v16 count:16];
       if (v7)
       {
         v8 = v7;
@@ -554,15 +554,15 @@ LABEL_14:
           {
             if (*v12 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(scrollerGroups);
             }
 
-            [*(*(&v11 + 1) + 8 * v10) setParentGroup:v4];
+            [*(*(&v11 + 1) + 8 * v10) setParentGroup:elementCopy];
             v10 = v10 + 1;
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v8 = [scrollerGroups countByEnumeratingWithState:&v11 objects:v16 count:16];
         }
 
         while (v8);
@@ -571,7 +571,7 @@ LABEL_14:
   }
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
   if ([(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled])
   {
@@ -583,12 +583,12 @@ LABEL_14:
     [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerElementsForContextElement];
   }
   v4 = ;
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
   if ([(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled])
   {
@@ -600,17 +600,17 @@ LABEL_14:
     [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerElementsForContextElement];
   }
   v4 = ;
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
-  return v5;
+  return lastObject;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
+  beforeCopy = before;
   if ([(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled])
   {
-    [(SCATVisualScrollersAuxiliaryElementManager *)self _groupForElement:v7];
+    [(SCATVisualScrollersAuxiliaryElementManager *)self _groupForElement:beforeCopy];
   }
 
   else
@@ -619,7 +619,7 @@ LABEL_14:
   }
   v8 = ;
   v9 = v8;
-  if (v8 && (v10 = [v8 indexOfObject:v7], v10 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v8 && (v10 = [v8 indexOfObject:beforeCopy], v10 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v14 = v10;
     v15 = [v9 count];
@@ -635,7 +635,7 @@ LABEL_14:
     }
 
     v11 = [v9 objectAtIndex:v16 - 1];
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_8;
     }
@@ -645,24 +645,24 @@ LABEL_14:
   {
     v11 = 0;
     v12 = 0;
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_8;
     }
   }
 
-  *a4 = v12;
+  *wrap = v12;
 LABEL_8:
 
   return v11;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
+  afterCopy = after;
   if ([(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled])
   {
-    [(SCATVisualScrollersAuxiliaryElementManager *)self _groupForElement:v7];
+    [(SCATVisualScrollersAuxiliaryElementManager *)self _groupForElement:afterCopy];
   }
 
   else
@@ -670,7 +670,7 @@ LABEL_8:
     [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerElementsForContextElement];
   }
   v8 = ;
-  v9 = [v8 indexOfObject:v7];
+  v9 = [v8 indexOfObject:afterCopy];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -687,7 +687,7 @@ LABEL_8:
     }
 
     v10 = [v8 objectAtIndex:v13];
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_12;
     }
@@ -697,10 +697,10 @@ LABEL_8:
 
   v10 = 0;
   v11 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_11:
-    *a4 = v11;
+    *wrap = v11;
   }
 
 LABEL_12:
@@ -708,17 +708,17 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)containsElement:(id)a3
+- (BOOL)containsElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if ([(SCATVisualScrollersAuxiliaryElementManager *)self _isGroupingEnabled])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerGroups];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    scrollerGroups = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerGroups];
+    v6 = [scrollerGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -729,10 +729,10 @@ LABEL_12:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(scrollerGroups);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) containsObject:v4])
+          if ([*(*(&v13 + 1) + 8 * i) containsObject:elementCopy])
           {
 
             v10 = 1;
@@ -740,7 +740,7 @@ LABEL_12:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [scrollerGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -755,8 +755,8 @@ LABEL_12:
 
   else
   {
-    v11 = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerElements];
-    v10 = [v11 containsObject:v4];
+    scrollerElements = [(SCATVisualScrollersAuxiliaryElementManager *)self scrollerElements];
+    v10 = [scrollerElements containsObject:elementCopy];
   }
 
 LABEL_13:
@@ -764,14 +764,14 @@ LABEL_13:
   return v10;
 }
 
-- (void)scrollContainer:(id)a3 scrollInDirection:(int64_t)a4
+- (void)scrollContainer:(id)container scrollInDirection:(int64_t)direction
 {
-  v6 = [(SCATVisualScrollersAuxiliaryElementManager *)self hasActivatedScrollSinceContextUpdate];
+  hasActivatedScrollSinceContextUpdate = [(SCATVisualScrollersAuxiliaryElementManager *)self hasActivatedScrollSinceContextUpdate];
   [(SCATVisualScrollersAuxiliaryElementManager *)self setHasActivatedScrollSinceContextUpdate:1];
-  if (a4 > 3)
+  if (direction > 3)
   {
     v7 = 0;
-    if (v6)
+    if (hasActivatedScrollSinceContextUpdate)
     {
 LABEL_10:
       v10 = *(v7 + 16);
@@ -783,8 +783,8 @@ LABEL_10:
 
   else
   {
-    v7 = *(&off_1001D68C8 + a4);
-    if (v6)
+    v7 = *(&off_1001D68C8 + direction);
+    if (hasActivatedScrollSinceContextUpdate)
     {
       goto LABEL_10;
     }
@@ -795,47 +795,47 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [(SCATAuxiliaryElementManager *)self contextElement];
-  v9 = [v8 isGroup];
+  contextElement = [(SCATAuxiliaryElementManager *)self contextElement];
+  isGroup = [contextElement isGroup];
 
-  if ((v9 & 1) == 0)
+  if ((isGroup & 1) == 0)
   {
     _AXAssert();
     goto LABEL_10;
   }
 
-  v13 = [(SCATAuxiliaryElementManager *)self contextElement];
-  if (![v13 containsNativeFocusElement])
+  contextElement2 = [(SCATAuxiliaryElementManager *)self contextElement];
+  if (![contextElement2 containsNativeFocusElement])
   {
     v11 = 0;
-    if (a4 > 1)
+    if (direction > 1)
     {
-      if (a4 == 2)
+      if (direction == 2)
       {
-        v12 = [v13 leftMostLeafAXElement];
+        leftMostLeafAXElement = [contextElement2 leftMostLeafAXElement];
         goto LABEL_22;
       }
 
-      if (a4 == 3)
+      if (direction == 3)
       {
-        v12 = [v13 rightMostLeafAXElement];
+        leftMostLeafAXElement = [contextElement2 rightMostLeafAXElement];
         goto LABEL_22;
       }
     }
 
     else
     {
-      if (!a4)
+      if (!direction)
       {
-        v12 = [v13 topMostLeafAXElement];
+        leftMostLeafAXElement = [contextElement2 topMostLeafAXElement];
         goto LABEL_22;
       }
 
-      if (a4 == 1)
+      if (direction == 1)
       {
-        v12 = [v13 bottomMostLeafAXElement];
+        leftMostLeafAXElement = [contextElement2 bottomMostLeafAXElement];
 LABEL_22:
-        v11 = v12;
+        v11 = leftMostLeafAXElement;
       }
     }
 

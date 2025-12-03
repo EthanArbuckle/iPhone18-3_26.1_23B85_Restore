@@ -121,18 +121,18 @@
 
 - (uint64_t)ams_isLocalAccount
 {
-  result = [a1 ams_isiTunesAccount];
+  result = [self ams_isiTunesAccount];
   if (result)
   {
-    if ([a1 _accountPropertyBooleanForKey:0x1F071D158])
+    if ([self _accountPropertyBooleanForKey:0x1F071D158])
     {
       return 1;
     }
 
     else
     {
-      v3 = [a1 identifier];
-      v4 = [v3 isEqualToString:@"iTunesLocal-421A04EA-479A-4E46-B49D-556F7144518D"];
+      identifier = [self identifier];
+      v4 = [identifier isEqualToString:@"iTunesLocal-421A04EA-479A-4E46-B49D-556F7144518D"];
 
       return v4;
     }
@@ -143,43 +143,43 @@
 
 - (uint64_t)ams_isiTunesAccount
 {
-  v2 = [a1 accountType];
-  v3 = [v2 identifier];
-  if ([v3 isEqualToString:*MEMORY[0x1E6959930]])
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:*MEMORY[0x1E6959930]])
   {
-    v4 = 1;
+    ams_isSandboxAccount = 1;
   }
 
   else
   {
-    v4 = [a1 ams_isSandboxAccount];
+    ams_isSandboxAccount = [self ams_isSandboxAccount];
   }
 
-  return v4;
+  return ams_isSandboxAccount;
 }
 
 - (uint64_t)ams_isEphemeralAccount
 {
-  v1 = [a1 identifier];
-  v2 = [v1 isEqualToString:@"iTunes-Ephemeral"];
+  identifier = [self identifier];
+  v2 = [identifier isEqualToString:@"iTunes-Ephemeral"];
 
   return v2;
 }
 
 - (uint64_t)ams_isIDMSAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E6959888]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E6959888]];
 
   return v3;
 }
 
 - (uint64_t)ams_isiCloudAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E69597F8]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   return v3;
 }
@@ -187,35 +187,35 @@
 - (id)ams_DSID
 {
   v45 = *MEMORY[0x1E69E9840];
-  if ([a1 ams_isiCloudAccount])
+  if ([self ams_isiCloudAccount])
   {
-    v3 = [a1 objectForKeyedSubscript:@"personID"];
+    mEMORY[0x1E698DC80] = [self objectForKeyedSubscript:@"personID"];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v5 = 0;
+      longLongValue = 0;
       goto LABEL_13;
     }
 
-    v4 = [a1 objectForKeyedSubscript:@"personID"];
-    v5 = [v4 longLongValue];
+    v4 = [self objectForKeyedSubscript:@"personID"];
+    longLongValue = [v4 longLongValue];
   }
 
   else
   {
-    if (![a1 ams_isIDMSAccount])
+    if (![self ams_isIDMSAccount])
     {
-      if ([a1 ams_isiTunesAccount])
+      if ([self ams_isiTunesAccount])
       {
-        v8 = [a1 _accountPropertyForKey:@"dsid" expectedClass:objc_opt_class()];
+        v8 = [self _accountPropertyForKey:@"dsid" expectedClass:objc_opt_class()];
         if (v8)
         {
           v9 = v8;
-          v5 = [v8 longLongValue];
+          longLongValue = [v8 longLongValue];
         }
 
         else
         {
-          v18 = [a1 _accountPropertyForKey:@"dsid" expectedClass:objc_opt_class()];
+          v18 = [self _accountPropertyForKey:@"dsid" expectedClass:objc_opt_class()];
           if (v18)
           {
             v19 = 0x1E73B0000uLL;
@@ -225,8 +225,8 @@
               v20 = +[AMSLogConfig sharedConfig];
             }
 
-            v21 = [v20 OSLogObject];
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+            oSLogObject = [v20 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
             {
               v22 = AMSLogKey();
               v23 = MEMORY[0x1E696AEC0];
@@ -248,7 +248,7 @@
               v42 = v26;
               v43 = 2114;
               v44 = v30;
-              _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@Found a DSID stored as a string. Fixing. dsid = %{public}@", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Found a DSID stored as a string. Fixing. dsid = %{public}@", buf, 0x16u);
               if (v22)
               {
 
@@ -263,8 +263,8 @@
             v9 = [v31 numberFromString:v18];
             if (v9)
             {
-              [a1 _setAccountProperty:v9 forKey:@"dsid" expectedClass:objc_opt_class()];
-              v5 = [v9 longLongValue];
+              [self _setAccountProperty:v9 forKey:@"dsid" expectedClass:objc_opt_class()];
+              longLongValue = [v9 longLongValue];
             }
 
             else
@@ -275,8 +275,8 @@
                 v32 = +[AMSLogConfig sharedConfig];
               }
 
-              v33 = [v32 OSLogObject];
-              if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+              oSLogObject2 = [v32 OSLogObject];
+              if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
               {
                 v34 = AMSLogKey();
                 v35 = MEMORY[0x1E696AEC0];
@@ -295,7 +295,7 @@
                 v38 = ;
                 *buf = 138543362;
                 v42 = v38;
-                _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_ERROR, "%{public}@Found DSID could not be converted into expected format.", buf, 0xCu);
+                _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Found DSID could not be converted into expected format.", buf, 0xCu);
                 if (v34)
                 {
 
@@ -303,19 +303,19 @@
                 }
               }
 
-              [a1 _setAccountProperty:0 forKey:@"dsid" expectedClass:objc_opt_class()];
-              v5 = 0;
+              [self _setAccountProperty:0 forKey:@"dsid" expectedClass:objc_opt_class()];
+              longLongValue = 0;
             }
           }
 
           else
           {
             v9 = 0;
-            v5 = 0;
+            longLongValue = 0;
           }
         }
 
-        if (v5)
+        if (longLongValue)
         {
           goto LABEL_14;
         }
@@ -329,8 +329,8 @@
           v11 = +[AMSLogConfig sharedConfig];
         }
 
-        v12 = [v11 OSLogObject];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v11 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v13 = AMSLogKey();
           v14 = MEMORY[0x1E696AEC0];
@@ -347,14 +347,14 @@
             [v14 stringWithFormat:@"%@: ", v15];
           }
           v17 = ;
-          v27 = [a1 accountType];
-          v28 = [v27 identifier];
-          v29 = AMSHashIfNeeded(v28);
+          accountType = [self accountType];
+          identifier = [accountType identifier];
+          v29 = AMSHashIfNeeded(identifier);
           *buf = 138543618;
           v42 = v17;
           v43 = 2114;
           v44 = v29;
-          _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unexpected account type, cannot determine DSID. accountType = %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@Unexpected account type, cannot determine DSID. accountType = %{public}@", buf, 0x16u);
 
           if (v13)
           {
@@ -367,26 +367,26 @@
       goto LABEL_51;
     }
 
-    v3 = [MEMORY[0x1E698DC80] sharedInstance];
-    v4 = [v3 DSIDForAccount:a1];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    v4 = [mEMORY[0x1E698DC80] DSIDForAccount:self];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [MEMORY[0x1E698DC80] sharedInstance];
-      v7 = [v6 DSIDForAccount:a1];
-      v5 = [v7 longLongValue];
+      mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+      v7 = [mEMORY[0x1E698DC80]2 DSIDForAccount:self];
+      longLongValue = [v7 longLongValue];
     }
 
     else
     {
-      v5 = 0;
+      longLongValue = 0;
     }
   }
 
 LABEL_13:
-  if (v5)
+  if (longLongValue)
   {
 LABEL_14:
-    v10 = [MEMORY[0x1E696AD98] numberWithLongLong:v5];
+    v10 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
     goto LABEL_52;
   }
 
@@ -399,24 +399,24 @@ LABEL_52:
 
 - (uint64_t)ams_isSandboxAccount
 {
-  v1 = [a1 accountType];
-  v2 = [v1 identifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E6959938]];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v3 = [identifier isEqualToString:*MEMORY[0x1E6959938]];
 
   return v3;
 }
 
 - (id)ams_altDSID
 {
-  if ([a1 ams_isIDMSAccount])
+  if ([self ams_isIDMSAccount])
   {
-    v2 = [MEMORY[0x1E698DC80] sharedInstance];
-    v3 = [v2 altDSIDForAccount:a1];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    v3 = [mEMORY[0x1E698DC80] altDSIDForAccount:self];
   }
 
   else
   {
-    v3 = [a1 _accountPropertyForKey:@"altDSID" expectedClass:objc_opt_class()];
+    v3 = [self _accountPropertyForKey:@"altDSID" expectedClass:objc_opt_class()];
   }
 
   return v3;
@@ -424,25 +424,25 @@ LABEL_52:
 
 - (id)hashedDescription
 {
-  v2 = [a1 accountType];
-  v3 = [v2 identifier];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"com.apple.account." withString:&stru_1F071BA78];
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  v4 = [identifier stringByReplacingOccurrencesOfString:@"com.apple.account." withString:&stru_1F071BA78];
 
   v5 = MEMORY[0x1E696AD60];
-  v6 = [a1 identifier];
-  v7 = [v5 stringWithFormat:@"<ACAccount: %p type = %@ | backingID = %@", a1, v4, v6];
+  identifier2 = [self identifier];
+  v7 = [v5 stringWithFormat:@"<ACAccount: %p type = %@ | backingID = %@", self, v4, identifier2];
 
-  v8 = [a1 _hashedIdentifiers];
-  [v7 ams_appendNullableString:v8];
+  _hashedIdentifiers = [self _hashedIdentifiers];
+  [v7 ams_appendNullableString:_hashedIdentifiers];
 
-  v9 = [a1 _hashedMultiUserIdentifiers];
-  [v7 ams_appendNullableString:v9];
+  _hashedMultiUserIdentifiers = [self _hashedMultiUserIdentifiers];
+  [v7 ams_appendNullableString:_hashedMultiUserIdentifiers];
 
-  v10 = [a1 _hashedActiveState];
-  [v7 ams_appendNullableString:v10];
+  _hashedActiveState = [self _hashedActiveState];
+  [v7 ams_appendNullableString:_hashedActiveState];
 
-  v11 = [a1 _hashedStorefront];
-  [v7 ams_appendNullableString:v11];
+  _hashedStorefront = [self _hashedStorefront];
+  [v7 ams_appendNullableString:_hashedStorefront];
 
   [v7 appendString:@">"];
 
@@ -452,14 +452,14 @@ LABEL_52:
 - (id)_hashedIdentifiers
 {
   v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" | username = "];
-  v3 = [a1 ams_isLocalAccount];
-  v4 = [a1 username];
-  v5 = v4;
-  if (v3)
+  ams_isLocalAccount = [self ams_isLocalAccount];
+  username = [self username];
+  ams_DSID = username;
+  if (ams_isLocalAccount)
   {
-    if (v4)
+    if (username)
     {
-      v6 = v4;
+      v6 = username;
     }
 
     else
@@ -472,15 +472,15 @@ LABEL_52:
 
   else
   {
-    v7 = AMSHashIfNeededNonnull(v4);
+    v7 = AMSHashIfNeededNonnull(username);
     [v2 appendString:v7];
 
-    v8 = [a1 ams_altDSID];
-    v9 = AMSHashIfNeededNonnull(v8);
+    ams_altDSID = [self ams_altDSID];
+    v9 = AMSHashIfNeededNonnull(ams_altDSID);
     [v2 appendFormat:@" | altDSID = %@", v9];
 
-    v5 = [a1 ams_DSID];
-    v10 = AMSHashIfNeededNonnull(v5);
+    ams_DSID = [self ams_DSID];
+    v10 = AMSHashIfNeededNonnull(ams_DSID);
     [v2 appendFormat:@" | DSID = %@", v10];
   }
 
@@ -491,12 +491,12 @@ LABEL_52:
 
 - (id)_hashedActiveState
 {
-  if ([a1 ams_isiTunesAccount] && (objc_msgSend(a1, "ams_isLocalAccount") & 1) == 0)
+  if ([self ams_isiTunesAccount] && (objc_msgSend(self, "ams_isLocalAccount") & 1) == 0)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [a1 isActive];
+    isActive = [self isActive];
     v5 = @"false";
-    if (v4)
+    if (isActive)
     {
       v5 = @"true";
     }
@@ -514,11 +514,11 @@ LABEL_52:
 
 - (id)_hashedStorefront
 {
-  if ([a1 ams_isiTunesAccount])
+  if ([self ams_isiTunesAccount])
   {
     v2 = MEMORY[0x1E696AEC0];
-    v3 = [a1 ams_storefront];
-    v4 = AMSHashIfNeeded(v3);
+    ams_storefront = [self ams_storefront];
+    v4 = AMSHashIfNeeded(ams_storefront);
     v5 = [v2 stringWithFormat:@" | storefront = %@", v4];
   }
 
@@ -539,8 +539,8 @@ LABEL_52:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -558,12 +558,12 @@ LABEL_52:
       [v9 stringWithFormat:@"%@: %@ ", v10, v2];
     }
     v11 = ;
-    v12 = AMSHashIfNeeded(a1);
+    v12 = AMSHashIfNeeded(self);
     *buf = 138543618;
     v41 = v11;
     v42 = 2114;
     v43 = v12;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Fetching cookies from cookie storage for account: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Fetching cookies from cookie storage for account: %{public}@", buf, 0x16u);
     if (v8)
     {
 
@@ -572,7 +572,7 @@ LABEL_52:
   }
 
   v39 = 0;
-  v13 = [AMSCookieStorage cookiesForAccount:a1 error:&v39];
+  v13 = [AMSCookieStorage cookiesForAccount:self error:&v39];
   v14 = v39;
   if (v13)
   {
@@ -582,8 +582,8 @@ LABEL_52:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v14;
       v17 = AMSLogKey();
@@ -603,14 +603,14 @@ LABEL_52:
       }
       v21 = ;
       v29 = [v13 count];
-      v30 = AMSHashIfNeeded(a1);
+      v30 = AMSHashIfNeeded(self);
       *buf = 138543874;
       v41 = v21;
       v42 = 2048;
       v43 = v29;
       v44 = 2114;
       v45 = v30;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Fetched %lu cookies from cookie storage for account: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Fetched %lu cookies from cookie storage for account: %{public}@", buf, 0x20u);
       if (v17)
       {
 
@@ -624,7 +624,7 @@ LABEL_52:
     v38[1] = 3221225472;
     v38[2] = __44__ACAccount_AppleMediaServices__ams_cookies__block_invoke;
     v38[3] = &unk_1E73B2DB8;
-    v38[4] = a1;
+    v38[4] = self;
     v22 = [v13 ams_filterUsingTest:v38];
 
     v31 = +[AMSFeatureEnabler cookie];
@@ -646,8 +646,8 @@ LABEL_52:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v24 = AMSLogKey();
       v25 = MEMORY[0x1E696AEC0];
@@ -664,7 +664,7 @@ LABEL_52:
         [v25 stringWithFormat:@"%@: ", v26];
       }
       v28 = ;
-      v34 = AMSHashIfNeeded(a1);
+      v34 = AMSHashIfNeeded(self);
       v35 = AMSLogableError(v14);
       *buf = 138543874;
       v41 = v28;
@@ -672,7 +672,7 @@ LABEL_52:
       v43 = v34;
       v44 = 2114;
       v45 = v35;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@An error occurred fetching cookies. account = %{public}@ | error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@An error occurred fetching cookies. account = %{public}@ | error = %{public}@", buf, 0x20u);
       if (v24)
       {
 
@@ -690,15 +690,15 @@ LABEL_52:
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"privacyAcknowledgement" expectedClass:v2];
+  return [self _accountPropertyForKey:@"privacyAcknowledgement" expectedClass:v2];
 }
 
 - (id)ams_accountFlags
 {
-  v1 = a1;
+  selfCopy = self;
   v21 = *MEMORY[0x1E69E9840];
   v14 = 0;
-  v2 = [a1 _ams_accountFlagsWithError:&v14];
+  v2 = [self _ams_accountFlagsWithError:&v14];
   v3 = v14;
   if (!v2)
   {
@@ -708,8 +708,8 @@ LABEL_52:
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 = AMSLogKey();
       v7 = MEMORY[0x1E696AEC0];
@@ -717,8 +717,8 @@ LABEL_52:
       v9 = v8;
       if (v6)
       {
-        v1 = AMSLogKey();
-        [v7 stringWithFormat:@"%@: [%@] ", v9, v1];
+        selfCopy = AMSLogKey();
+        [v7 stringWithFormat:@"%@: [%@] ", v9, selfCopy];
       }
 
       else
@@ -734,11 +734,11 @@ LABEL_52:
       v18 = v11;
       v19 = 2114;
       v20 = v12;
-      _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error during account flags read: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error during account flags read: %{public}@", buf, 0x20u);
       if (v6)
       {
 
-        v10 = v1;
+        v10 = selfCopy;
       }
     }
   }
@@ -748,41 +748,41 @@ LABEL_52:
 
 - (uint64_t)ams_isLocalOrSandboxAccount
 {
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
     return 1;
   }
 
-  return [a1 ams_isSandboxAccount];
+  return [self ams_isSandboxAccount];
 }
 
 - (uint64_t)ams_firstName
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"firstName" expectedClass:v2];
+  return [self _accountPropertyForKey:@"firstName" expectedClass:v2];
 }
 
 - (uint64_t)ams_lastName
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"lastName" expectedClass:v2];
+  return [self _accountPropertyForKey:@"lastName" expectedClass:v2];
 }
 
 - (id)ams_fullName
 {
-  v2 = [a1 ams_firstName];
-  if (v2)
+  ams_firstName = [self ams_firstName];
+  if (ams_firstName)
   {
 
 LABEL_4:
     v4 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v5 = [a1 ams_lastName];
-    [v4 setFamilyName:v5];
+    ams_lastName = [self ams_lastName];
+    [v4 setFamilyName:ams_lastName];
 
-    v6 = [a1 ams_firstName];
-    [v4 setGivenName:v6];
+    ams_firstName2 = [self ams_firstName];
+    [v4 setGivenName:ams_firstName2];
 
     v7 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     v8 = [v7 stringFromPersonNameComponents:v4];
@@ -790,9 +790,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v3 = [a1 ams_lastName];
+  ams_lastName2 = [self ams_lastName];
 
-  if (v3)
+  if (ams_lastName2)
   {
     goto LABEL_4;
   }
@@ -806,13 +806,13 @@ LABEL_5:
 - (uint64_t)ams_securityLevel
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v3 = [v2 ams_IDMSAccountForAccount:a1];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  v3 = [ams_sharedAccountStore ams_IDMSAccountForAccount:self];
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E698DC80] sharedInstance];
-    v5 = [v4 securityLevelForAccount:v3];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    v5 = [mEMORY[0x1E698DC80] securityLevelForAccount:v3];
   }
 
   else
@@ -823,12 +823,12 @@ LABEL_5:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
       v10 = objc_opt_class();
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Security level check failed to find IDMS account", &v9, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Security level check failed to find IDMS account", &v9, 0xCu);
     }
 
     v5 = 0;
@@ -840,13 +840,13 @@ LABEL_5:
 - (AMSAccountIdentity)ams_accountID
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [a1 ams_altDSID];
-  if (v3 && (v4 = v3, [a1 ams_DSID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  ams_altDSID = [self ams_altDSID];
+  if (ams_altDSID && (v4 = ams_altDSID, [self ams_DSID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = [AMSAccountIdentity alloc];
-    v7 = [a1 ams_DSID];
-    v8 = [a1 ams_altDSID];
-    v9 = [(AMSAccountIdentity *)v6 initWithDSID:v7 altDSID:v8];
+    ams_DSID = [self ams_DSID];
+    ams_altDSID2 = [self ams_altDSID];
+    v9 = [(AMSAccountIdentity *)v6 initWithDSID:ams_DSID altDSID:ams_altDSID2];
   }
 
   else
@@ -857,8 +857,8 @@ LABEL_5:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = AMSLogKey();
       v13 = MEMORY[0x1E696AEC0];
@@ -875,12 +875,12 @@ LABEL_5:
         [v13 stringWithFormat:@"%@: ", v14];
       }
       v16 = ;
-      v17 = AMSHashIfNeeded(a1);
+      v17 = AMSHashIfNeeded(self);
       *buf = 138543618;
       v20 = v16;
       v21 = 2114;
       v22 = v17;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@Account is missing an identifier. account = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Account is missing an identifier. account = %{public}@", buf, 0x16u);
       if (v12)
       {
 
@@ -898,7 +898,7 @@ LABEL_5:
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"accountCredits" expectedClass:v2];
+  return [self _accountPropertyForKey:@"accountCredits" expectedClass:v2];
 }
 
 - (id)_ams_accountFlagsWithError:()AppleMediaServices
@@ -910,8 +910,8 @@ LABEL_5:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -919,19 +919,19 @@ LABEL_5:
     v24 = v7;
     v25 = 2114;
     v26 = v8;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] ams_accountFlags access", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] ams_accountFlags access", buf, 0x16u);
   }
 
-  if (([a1 ams_isLocalOrSandboxAccount] & 1) == 0)
+  if (([self ams_isLocalOrSandboxAccount] & 1) == 0)
   {
     v9 = +[AMSProcessInfo currentProcess];
-    v10 = [v9 isAMSAccountsDaemon];
+    isAMSAccountsDaemon = [v9 isAMSAccountsDaemon];
 
-    if ((v10 & 1) == 0)
+    if ((isAMSAccountsDaemon & 1) == 0)
     {
-      v11 = [a1 ams_accountID];
+      ams_accountID = [self ams_accountID];
 
-      if (v11)
+      if (ams_accountID)
       {
         v12 = +[AMSLogConfig sharedAccountsConfig];
         if (!v12)
@@ -939,8 +939,8 @@ LABEL_5:
           v12 = +[AMSLogConfig sharedConfig];
         }
 
-        v13 = [v12 OSLogObject];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+        oSLogObject2 = [v12 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
         {
           v14 = objc_opt_class();
           v15 = AMSLogKey();
@@ -948,20 +948,20 @@ LABEL_5:
           v24 = v14;
           v25 = 2114;
           v26 = v15;
-          _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Attempting to lazy sync", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Attempting to lazy sync", buf, 0x16u);
         }
 
         v16 = +[AMSAccountCachedServerData sharedInstance];
-        v17 = [a1 ams_accountID];
-        v22 = v17;
+        ams_accountID2 = [self ams_accountID];
+        v22 = ams_accountID2;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
         [v16 lazySync:v18 completion:&__block_literal_global];
       }
     }
   }
 
-  v19 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  v20 = [a1 _accountPropertyForKey:@"accountFlags" dataProtectionClass:1 expectedClasses:v19 error:a3];
+  ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  v20 = [self _accountPropertyForKey:@"accountFlags" dataProtectionClass:1 expectedClasses:ams_PLISTClasses error:a3];
 
   return v20;
 }
@@ -970,34 +970,34 @@ LABEL_5:
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"automaticDownloadKinds" expectedClass:v2];
+  return [self _accountPropertyForKey:@"automaticDownloadKinds" expectedClass:v2];
 }
 
 - (uint64_t)ams_disableAccountFlagsSync
 {
-  v1 = [a1 _accountPropertyForKey:@"disableAccountFlagsSync" expectedClass:objc_opt_class()];
-  v2 = [v1 BOOLValue];
+  v1 = [self _accountPropertyForKey:@"disableAccountFlagsSync" expectedClass:objc_opt_class()];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)ams_freePasswordPromptSetting
 {
-  v1 = [a1 _accountPropertyForKey:@"freeDownloadsPasswordSetting" expectedClass:objc_opt_class()];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self _accountPropertyForKey:@"freeDownloadsPasswordSetting" expectedClass:objc_opt_class()];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (void)ams_setFreePasswordPromptSetting:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  [a1 _setAccountProperty:v2 forKey:@"freeDownloadsPasswordSetting" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"freeDownloadsPasswordSetting" expectedClass:objc_opt_class()];
 }
 
 - (id)ams_iCloudPartition
 {
-  v1 = [a1 propertiesForDataclass:@"com.apple.Dataclass.Quota"];
+  v1 = [self propertiesForDataclass:@"com.apple.Dataclass.Quota"];
   v2 = [v1 objectForKey:@"partition"];
 
   return v2;
@@ -1006,15 +1006,15 @@ LABEL_5:
 - (BOOL)ams_isSelectedProfile
 {
   result = 1;
-  if (([a1 _accountPropertyBooleanForKey:@"isSelectedProfile"] & 1) == 0)
+  if (([self _accountPropertyBooleanForKey:@"isSelectedProfile"] & 1) == 0)
   {
-    if (![a1 isActive])
+    if (![self isActive])
     {
       return 0;
     }
 
-    v3 = [a1 childAccounts];
-    v4 = [v3 ams_firstObjectPassingTest:&__block_literal_global_183];
+    childAccounts = [self childAccounts];
+    v4 = [childAccounts ams_firstObjectPassingTest:&__block_literal_global_183];
 
     if (v4)
     {
@@ -1027,56 +1027,56 @@ LABEL_5:
 
 - (id)ams_lastAuthenticationServerResponse
 {
-  v2 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-  v3 = [a1 _accountPropertyForKey:@"lastAuthenticationServerResponse" dataProtectionClass:1 expectedClasses:v2 error:0];
+  ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+  v3 = [self _accountPropertyForKey:@"lastAuthenticationServerResponse" dataProtectionClass:1 expectedClasses:ams_PLISTClasses error:0];
 
   return v3;
 }
 
 - (uint64_t)ams_paidPasswordPromptSetting
 {
-  v1 = [a1 _accountPropertyForKey:@"paidPurchasesPasswordSetting" expectedClass:objc_opt_class()];
-  v2 = [v1 unsignedIntegerValue];
+  v1 = [self _accountPropertyForKey:@"paidPurchasesPasswordSetting" expectedClass:objc_opt_class()];
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (void)ams_setPaidPasswordPromptSetting:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  [a1 _setAccountProperty:v2 forKey:@"paidPurchasesPasswordSetting" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"paidPurchasesPasswordSetting" expectedClass:objc_opt_class()];
 }
 
 - (id)ams_password
 {
-  v1 = [a1 credential];
-  v2 = [v1 password];
+  credential = [self credential];
+  password = [credential password];
 
-  return v2;
+  return password;
 }
 
 - (uint64_t)ams_pushRegistrationThrottleMap
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"pushRegistrationThrottleMap" expectedClass:v2];
+  return [self _accountPropertyForKey:@"pushRegistrationThrottleMap" expectedClass:v2];
 }
 
 - (id)ams_rawPassword
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 credential];
-  v3 = [v2 credentialItemForKey:*MEMORY[0x1E6959A00]];
+  credential = [self credential];
+  v3 = [credential credentialItemForKey:*MEMORY[0x1E6959A00]];
 
   if (!v3)
   {
-    if (![a1 ams_isDemoAccount])
+    if (![self ams_isDemoAccount])
     {
       v3 = 0;
       goto LABEL_15;
     }
 
-    v3 = [a1 _accountPropertyForKey:@"demoAccountRawPassword" expectedClass:objc_opt_class()];
+    v3 = [self _accountPropertyForKey:@"demoAccountRawPassword" expectedClass:objc_opt_class()];
     v4 = +[AMSLogConfig sharedAccountsConfig];
     v5 = v4;
     if (v3)
@@ -1086,8 +1086,8 @@ LABEL_5:
         v5 = +[AMSLogConfig sharedConfig];
       }
 
-      v6 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_14;
       }
@@ -1099,7 +1099,7 @@ LABEL_5:
       v16 = 2114;
       v17 = v8;
       v9 = "%{public}@: [%{public}@] Using the demo password.";
-      v10 = v6;
+      v10 = oSLogObject;
       v11 = OS_LOG_TYPE_DEFAULT;
     }
 
@@ -1110,8 +1110,8 @@ LABEL_5:
         v5 = +[AMSLogConfig sharedConfig];
       }
 
-      v6 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_14;
       }
@@ -1123,7 +1123,7 @@ LABEL_5:
       v16 = 2114;
       v17 = v8;
       v9 = "%{public}@: [%{public}@] The demo account is missing a raw password.";
-      v10 = v6;
+      v10 = oSLogObject;
       v11 = OS_LOG_TYPE_ERROR;
     }
 
@@ -1141,17 +1141,17 @@ LABEL_15:
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"registerSuccessCriteria" expectedClass:v2];
+  return [self _accountPropertyForKey:@"registerSuccessCriteria" expectedClass:v2];
 }
 
 - (BOOL)ams_requiresAuthKitUpdate
 {
-  v2 = [a1 ams_DSID];
-  if (v2)
+  ams_DSID = [self ams_DSID];
+  if (ams_DSID)
   {
-    v3 = [a1 credential];
-    v4 = [v3 password];
-    v5 = v4 == 0;
+    credential = [self credential];
+    password = [credential password];
+    v5 = password == 0;
   }
 
   else
@@ -1165,19 +1165,19 @@ LABEL_15:
 - (void)ams_setAgreedToTerms:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setAccountProperty:v2 forKey:@"didAgreeToTerms" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"didAgreeToTerms" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setAltDSID:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"altDSID" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"altDSID" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setCreditsString:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"accountCredits" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"accountCredits" expectedClass:objc_opt_class()];
 }
 
 - (uint64_t)ams_setDisableAccountFlagsSync:()AppleMediaServices
@@ -1194,7 +1194,7 @@ LABEL_15:
 
   v5 = objc_opt_class();
 
-  return [a1 _setAccountProperty:v4 forKey:@"disableAccountFlagsSync" expectedClass:v5];
+  return [self _setAccountProperty:v4 forKey:@"disableAccountFlagsSync" expectedClass:v5];
 }
 
 - (uint64_t)ams_setDisablePrivacyAcknowledgementSync:()AppleMediaServices
@@ -1211,61 +1211,61 @@ LABEL_15:
 
   v5 = objc_opt_class();
 
-  return [a1 _setAccountProperty:v4 forKey:@"disablePrivacyAcknowledgementSync" expectedClass:v5];
+  return [self _setAccountProperty:v4 forKey:@"disablePrivacyAcknowledgementSync" expectedClass:v5];
 }
 
 - (void)ams_setDSID:()AppleMediaServices
 {
   v5 = a3;
-  if ([a1 ams_isiCloudAccount])
+  if ([self ams_isiCloudAccount])
   {
-    v4 = [v5 stringValue];
-    [a1 _setAccountProperty:v4 forKey:@"personID" expectedClass:objc_opt_class()];
+    stringValue = [v5 stringValue];
+    [self _setAccountProperty:stringValue forKey:@"personID" expectedClass:objc_opt_class()];
   }
 
-  else if ([a1 ams_isiTunesAccount])
+  else if ([self ams_isiTunesAccount])
   {
-    [a1 _setAccountProperty:v5 forKey:@"dsid" expectedClass:objc_opt_class()];
+    [self _setAccountProperty:v5 forKey:@"dsid" expectedClass:objc_opt_class()];
   }
 }
 
 - (void)ams_setFirstName:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"firstName" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"firstName" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setiCloudFamily:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setAccountProperty:v2 forKey:@"iCloudFamily" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"iCloudFamily" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setInGoodStanding:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setAccountProperty:v2 forKey:@"inGoodStanding" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"inGoodStanding" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setLastName:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"lastName" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"lastName" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setManagedAppleID:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setAccountProperty:v2 forKey:@"isManagedAppleID" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"isManagedAppleID" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setMergedPrivacyAcknowledgement:()AppleMediaServices
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 _setAccountProperty:v9 forKey:@"mergedPrivacyAcknowledgements" expectedClass:objc_opt_class()];
+    [self _setAccountProperty:v9 forKey:@"mergedPrivacyAcknowledgements" expectedClass:objc_opt_class()];
   }
 
   else
@@ -1276,8 +1276,8 @@ LABEL_15:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -1285,7 +1285,7 @@ LABEL_15:
       v11 = v7;
       v12 = 2114;
       v13 = v8;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@] Someone is attempting to set mergedPrivacyAcknowledgement on a non-local account.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@] Someone is attempting to set mergedPrivacyAcknowledgement on a non-local account.", buf, 0x16u);
     }
   }
 }
@@ -1300,8 +1300,8 @@ LABEL_15:
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = AMSLogKey();
     v10 = MEMORY[0x1E696AEC0];
@@ -1320,7 +1320,7 @@ LABEL_15:
       [v10 stringWithFormat:@"%@: %@ ", v11, v12];
     }
     v13 = ;
-    v14 = AMSHashIfNeeded(a1);
+    v14 = AMSHashIfNeeded(self);
     v15 = AMSHashAndLogCacheMisses(v6, 0);
     *buf = 138543874;
     v28 = v13;
@@ -1328,7 +1328,7 @@ LABEL_15:
     v30 = v14;
     v31 = 2114;
     v32 = v15;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@Updating the password of an account. account = %{public}@ | password = %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Updating the password of an account. account = %{public}@ | password = %{public}@", buf, 0x20u);
     if (v9)
     {
 
@@ -1338,8 +1338,8 @@ LABEL_15:
     a2 = v26;
   }
 
-  v16 = [a1 credential];
-  if (!v16)
+  credential = [self credential];
+  if (!credential)
   {
     v17 = +[AMSLogConfig sharedAccountsConfig];
     if (!v17)
@@ -1347,8 +1347,8 @@ LABEL_15:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v19 = AMSLogKey();
       v20 = MEMORY[0x1E696AEC0];
@@ -1356,8 +1356,8 @@ LABEL_15:
       if (v19)
       {
         v22 = AMSLogKey();
-        v16 = NSStringFromSelector(a2);
-        [v20 stringWithFormat:@"%@: [%@] %@ ", v21, v22, v16];
+        credential = NSStringFromSelector(a2);
+        [v20 stringWithFormat:@"%@: [%@] %@ ", v21, v22, credential];
       }
 
       else
@@ -1366,39 +1366,39 @@ LABEL_15:
         [v20 stringWithFormat:@"%@: %@ ", v21, v22];
       }
       v23 = ;
-      v24 = AMSHashIfNeeded(a1);
+      v24 = AMSHashIfNeeded(self);
       *buf = 138543618;
       v28 = v23;
       v29 = 2114;
       v30 = v24;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@The account did not have a credential, creating one. account = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@The account did not have a credential, creating one. account = %{public}@", buf, 0x16u);
       if (v19)
       {
 
-        v23 = v16;
+        v23 = credential;
       }
     }
 
-    v16 = objc_alloc_init(MEMORY[0x1E6959A30]);
-    [a1 setCredential:v16];
+    credential = objc_alloc_init(MEMORY[0x1E6959A30]);
+    [self setCredential:credential];
   }
 
-  v25 = [a1 credential];
-  [v25 setPassword:v6];
+  credential2 = [self credential];
+  [credential2 setPassword:v6];
 }
 
 - (void)ams_setPushRegistrationThrottleMap:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"pushRegistrationThrottleMap" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"pushRegistrationThrottleMap" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setRawPassword:()AppleMediaServices
 {
   v29 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 credential];
-  if (!v7)
+  credential = [self credential];
+  if (!credential)
   {
     v8 = +[AMSLogConfig sharedAccountsConfig];
     if (!v8)
@@ -1406,8 +1406,8 @@ LABEL_15:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = AMSLogKey();
       v11 = MEMORY[0x1E696AEC0];
@@ -1425,12 +1425,12 @@ LABEL_15:
         [v11 stringWithFormat:@"%@: %@ ", v12, v13];
       }
       v14 = ;
-      v15 = AMSHashIfNeeded(a1);
+      v15 = AMSHashIfNeeded(self);
       *buf = 138543618;
       v26 = v14;
       v27 = 2114;
       v28 = v15;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@The account did not have a credential, creating one. account = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@The account did not have a credential, creating one. account = %{public}@", buf, 0x16u);
       if (v10)
       {
 
@@ -1438,14 +1438,14 @@ LABEL_15:
       }
     }
 
-    v7 = objc_alloc_init(MEMORY[0x1E6959A30]);
-    [a1 setCredential:v7];
+    credential = objc_alloc_init(MEMORY[0x1E6959A30]);
+    [self setCredential:credential];
   }
 
-  v16 = [a1 credential];
-  [v16 setCredentialItem:v6 forKey:*MEMORY[0x1E6959A00]];
+  credential2 = [self credential];
+  [credential2 setCredentialItem:v6 forKey:*MEMORY[0x1E6959A00]];
 
-  if ([a1 ams_isDemoAccount])
+  if ([self ams_isDemoAccount])
   {
     v17 = +[AMSLogConfig sharedAccountsConfig];
     if (!v17)
@@ -1453,8 +1453,8 @@ LABEL_15:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v19 = AMSLogKey();
       v20 = MEMORY[0x1E696AEC0];
@@ -1472,12 +1472,12 @@ LABEL_15:
         [v20 stringWithFormat:@"%@: %@ ", v21, v22];
       }
       v23 = ;
-      v24 = AMSHashIfNeeded(a1);
+      v24 = AMSHashIfNeeded(self);
       *buf = 138543618;
       v26 = v23;
       v27 = 2114;
       v28 = v24;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Setting the demo account's raw password. account = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Setting the demo account's raw password. account = %{public}@", buf, 0x16u);
       if (v19)
       {
 
@@ -1485,26 +1485,26 @@ LABEL_15:
       }
     }
 
-    [a1 _setAccountProperty:v6 forKey:@"demoAccountRawPassword" expectedClass:objc_opt_class()];
+    [self _setAccountProperty:v6 forKey:@"demoAccountRawPassword" expectedClass:objc_opt_class()];
   }
 }
 
 - (void)ams_setRegisterSuccessCriteria:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"registerSuccessCriteria" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"registerSuccessCriteria" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setServerResponse:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"lastAuthenticationServerResponse" dataProtectionClass:1 expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"lastAuthenticationServerResponse" dataProtectionClass:1 expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setValidPayment:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setAccountProperty:v2 forKey:@"validPayment" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"validPayment" expectedClass:objc_opt_class()];
 }
 
 + (AMSEphemeralAccount)ams_createEphemeralAccount
@@ -1532,7 +1532,7 @@ LABEL_15:
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 ams_accountFlagOverrideValueForAccountFlag:v4];
+  v5 = [self ams_accountFlagOverrideValueForAccountFlag:v4];
   if (v5)
   {
     v6 = +[AMSLogConfig sharedAccountsConfig];
@@ -1541,19 +1541,19 @@ LABEL_15:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [a1 hashedDescription];
+      hashedDescription = [self hashedDescription];
       v27 = 138543874;
       v28 = v8;
       v29 = 2114;
       v30 = v4;
       v31 = 2114;
-      v32 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@: The account has overrode value for an account flag. accountFlag = %{public}@ | account = %{public}@", &v27, 0x20u);
+      v32 = hashedDescription;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: The account has overrode value for an account flag. accountFlag = %{public}@ | account = %{public}@", &v27, 0x20u);
     }
 
     v11 = v5;
@@ -1562,8 +1562,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = [a1 ams_accountFlags];
-  v12 = [v14 objectForKeyedSubscript:v4];
+  ams_accountFlags = [self ams_accountFlags];
+  v12 = [ams_accountFlags objectForKeyedSubscript:v4];
 
   if (!v12)
   {
@@ -1573,19 +1573,19 @@ LABEL_7:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v24 = objc_opt_class();
       v25 = v24;
-      v26 = [a1 hashedDescription];
+      hashedDescription2 = [self hashedDescription];
       v27 = 138543874;
       v28 = v24;
       v29 = 2114;
       v30 = v4;
       v31 = 2114;
-      v32 = v26;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: The account has no value for an account flag. We'll return the default value. accountFlag = %{public}@ | account = %{public}@", &v27, 0x20u);
+      v32 = hashedDescription2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: The account has no value for an account flag. We'll return the default value. accountFlag = %{public}@ | account = %{public}@", &v27, 0x20u);
     }
 
     v11 = [MEMORY[0x1E6959A28] _defaultValueForAccountFlag:v4];
@@ -1600,17 +1600,17 @@ LABEL_7:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [a1 hashedDescription];
+      hashedDescription3 = [self hashedDescription];
       v20 = AMSHashIfNeeded(v12);
       v27 = 138544386;
       v28 = v17;
       v29 = 2114;
-      v30 = v19;
+      v30 = hashedDescription3;
       v31 = 2114;
       v32 = v4;
       v33 = 2114;
@@ -1618,7 +1618,7 @@ LABEL_7:
       v35 = 2114;
       v36 = objc_opt_class();
       v21 = v36;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: An account flag was stored with an invalid value. account = %{public}@ | flag = %{public}@ | value = %{public}@ | value.class = %{public}@", &v27, 0x34u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: An account flag was stored with an invalid value. account = %{public}@ | flag = %{public}@ | value = %{public}@ | value.class = %{public}@", &v27, 0x34u);
     }
 
     v12 = 0;
@@ -1633,22 +1633,22 @@ LABEL_8:
 {
   v51 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if (!v4 || ([a1 identifier], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
+  if (!v4 || ([self identifier], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
   {
     v45 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [a1 accountProperties];
-    v11 = [v10 allKeys];
-    v12 = [v9 setWithArray:v11];
+    accountProperties = [self accountProperties];
+    allKeys = [accountProperties allKeys];
+    v12 = [v9 setWithArray:allKeys];
     [v8 unionSet:v12];
 
     if (v4)
     {
       v13 = MEMORY[0x1E695DFD8];
-      v10 = [v4 accountProperties];
-      v14 = [v10 allKeys];
-      v15 = [v13 setWithArray:v14];
+      accountProperties = [v4 accountProperties];
+      allKeys2 = [accountProperties allKeys];
+      v15 = [v13 setWithArray:allKeys2];
       [v8 unionSet:v15];
     }
 
@@ -1672,11 +1672,11 @@ LABEL_8:
           }
 
           v21 = *(*(&v46 + 1) + 8 * i);
-          v10 = [a1 objectForKeyedSubscript:v21];
+          accountProperties = [self objectForKeyedSubscript:v21];
           v22 = [v4 objectForKeyedSubscript:v21];
-          if (v10 | v22 && ([v10 isEqual:v22] & 1) == 0)
+          if (accountProperties | v22 && ([accountProperties isEqual:v22] & 1) == 0)
           {
-            v23 = [[AMSPair alloc] initWithFirst:v10 second:v22];
+            v23 = [[AMSPair alloc] initWithFirst:accountProperties second:v22];
             [v45 setObject:v23 forKeyedSubscript:v21];
           }
         }
@@ -1687,14 +1687,14 @@ LABEL_8:
       while (v18);
     }
 
-    v24 = [a1 accountType];
-    if (v24 || ([v4 accountType], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+    accountType = [self accountType];
+    if (accountType || ([v4 accountType], (accountProperties = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v25 = [a1 accountType];
-      v26 = [v4 accountType];
-      v27 = [v25 isEqual:v26];
+      accountType2 = [self accountType];
+      accountType3 = [v4 accountType];
+      v27 = [accountType2 isEqual:accountType3];
 
-      if (v24)
+      if (accountType)
       {
 
         if (v27)
@@ -1709,39 +1709,39 @@ LABEL_8:
       {
 LABEL_19:
         v28 = [AMSPair alloc];
-        v10 = [a1 accountType];
-        v29 = [v4 accountType];
-        v30 = [(AMSPair *)v28 initWithFirst:v10 second:v29];
+        accountProperties = [self accountType];
+        accountType4 = [v4 accountType];
+        v30 = [(AMSPair *)v28 initWithFirst:accountProperties second:accountType4];
         [v45 setObject:v30 forKeyedSubscript:@"accountType"];
       }
     }
 
 LABEL_20:
-    v31 = [a1 isActive];
-    if (v31 != [v4 isActive])
+    isActive = [self isActive];
+    if (isActive != [v4 isActive])
     {
       v32 = [AMSPair alloc];
-      v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isActive")}];
+      accountProperties = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isActive")}];
       v33 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isActive")}];
-      v34 = [(AMSPair *)v32 initWithFirst:v10 second:v33];
+      v34 = [(AMSPair *)v32 initWithFirst:accountProperties second:v33];
       [v45 setObject:v34 forKeyedSubscript:@"active"];
     }
 
-    v35 = [a1 username];
-    if (!v35)
+    username = [self username];
+    if (!username)
     {
-      v10 = [v4 username];
-      if (!v10)
+      accountProperties = [v4 username];
+      if (!accountProperties)
       {
         goto LABEL_27;
       }
     }
 
-    v36 = [a1 username];
-    v37 = [v4 username];
-    v38 = [v36 isEqual:v37];
+    username2 = [self username];
+    username3 = [v4 username];
+    v38 = [username2 isEqual:username3];
 
-    if (v35)
+    if (username)
     {
 
       if (v38)
@@ -1763,9 +1763,9 @@ LABEL_27:
     }
 
     v39 = [AMSPair alloc];
-    v40 = [a1 username];
-    v41 = [v4 username];
-    v42 = [(AMSPair *)v39 initWithFirst:v40 second:v41];
+    username4 = [self username];
+    username5 = [v4 username];
+    v42 = [(AMSPair *)v39 initWithFirst:username4 second:username5];
     [v45 setObject:v42 forKeyedSubscript:@"username"];
 
     goto LABEL_27;
@@ -1780,9 +1780,9 @@ LABEL_29:
 - (uint64_t)ams_didAcknowledgeBundleHolderPrivacyAcknowledgementOnDevice
 {
   v30 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() _ams_storage];
+  _ams_storage = [objc_opt_class() _ams_storage];
   v23 = 0;
-  v3 = [v2 valueForKey:@"bundleHolderAcknowledgedAccounts" error:&v23];
+  v3 = [_ams_storage valueForKey:@"bundleHolderAcknowledgedAccounts" error:&v23];
   v4 = v23;
   if (v4)
   {
@@ -1792,34 +1792,34 @@ LABEL_29:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = v7;
-      v9 = [a1 hashedDescription];
+      hashedDescription = [self hashedDescription];
       v10 = AMSLogableError(v4);
       *buf = 138543874;
       v25 = v7;
       v26 = 2114;
-      v27 = v9;
+      v27 = hashedDescription;
       v28 = 2114;
       v29 = v10;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Could not pull accounts acknowledged on device for holder %{public}@ %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Could not pull accounts acknowledged on device for holder %{public}@ %{public}@", buf, 0x20u);
     }
   }
 
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
-    v11 = @"local";
+    stringValue = @"local";
   }
 
   else
   {
-    v12 = [a1 ams_DSID];
-    v11 = [v12 stringValue];
+    ams_DSID = [self ams_DSID];
+    stringValue = [ams_DSID stringValue];
 
-    if (!v11)
+    if (!stringValue)
     {
       v14 = 0;
       goto LABEL_18;
@@ -1832,8 +1832,8 @@ LABEL_29:
     v21[1] = 3221225472;
     v21[2] = __93__ACAccount_AppleMediaServices__ams_didAcknowledgeBundleHolderPrivacyAcknowledgementOnDevice__block_invoke;
     v21[3] = &unk_1E73B2E28;
-    v22 = v11;
-    v13 = v11;
+    v22 = stringValue;
+    v13 = stringValue;
     v14 = [v3 ams_anyWithTest:v21];
     v15 = v22;
   }
@@ -1846,17 +1846,17 @@ LABEL_29:
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = v17;
-      v19 = [a1 hashedDescription];
+      hashedDescription2 = [self hashedDescription];
       *buf = 138543618;
       v25 = v17;
       v26 = 2114;
-      v27 = v19;
-      _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: No accounts acknowledged on device for holder found %{public}@", buf, 0x16u);
+      v27 = hashedDescription2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: No accounts acknowledged on device for holder found %{public}@", buf, 0x16u);
     }
 
     v14 = 0;
@@ -1868,7 +1868,7 @@ LABEL_18:
 
 - (uint64_t)ams_encryptAccountFlags
 {
-  v2 = [a1 accountPropertyForKey:@"accountFlags"];
+  v2 = [self accountPropertyForKey:@"accountFlags"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1888,7 +1888,7 @@ LABEL_7:
 
   [v3 ams_encryptionResult];
   v4 = 1;
-  [a1 ams_setAccountFlags:v3];
+  [self ams_setAccountFlags:v3];
 
 LABEL_8:
   return v4;
@@ -1901,10 +1901,10 @@ LABEL_8:
   if (![v5 isEqualToString:AMSAccountMediaTypeAppStoreBeta])
   {
     v13 = [v5 isEqualToString:AMSAccountMediaTypeAppStoreSandbox];
-    v14 = [a1 ams_isSandboxAccount];
+    ams_isSandboxAccount = [self ams_isSandboxAccount];
     if (v13)
     {
-      if (!v14)
+      if (!ams_isSandboxAccount)
       {
         v6 = +[AMSLogConfig sharedAccountsConfig];
         if (!v6)
@@ -1912,8 +1912,8 @@ LABEL_8:
           v6 = +[AMSLogConfig sharedConfig];
         }
 
-        v7 = [v6 OSLogObject];
-        if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v6 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_7;
         }
@@ -1932,12 +1932,12 @@ LABEL_8:
       }
     }
 
-    else if (v14)
+    else if (ams_isSandboxAccount)
     {
       goto LABEL_8;
     }
 
-    v12 = [a1 isActive];
+    isActive = [self isActive];
     goto LABEL_17;
   }
 
@@ -1947,8 +1947,8 @@ LABEL_8:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     goto LABEL_7;
   }
@@ -1964,70 +1964,70 @@ LABEL_8:
   v22 = v10;
   v11 = "%{public}@: [%{public}@] %{public}@ does not support AMSAccountMediaTypeAppStoreBeta.";
 LABEL_6:
-  _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, v11, &v17, 0x20u);
+  _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, v11, &v17, 0x20u);
 
 LABEL_7:
 LABEL_8:
-  v12 = 0;
+  isActive = 0;
 LABEL_17:
 
-  return v12;
+  return isActive;
 }
 
 - (uint64_t)ams_isDuplicate:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqualToString:v6];
+  identifier = [self identifier];
+  identifier2 = [v4 identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
     goto LABEL_32;
   }
 
-  v8 = [a1 accountType];
-  v9 = [v8 identifier];
-  v10 = [v4 accountType];
-  v11 = [v10 identifier];
-  v12 = [v9 isEqualToString:v11];
+  accountType = [self accountType];
+  identifier3 = [accountType identifier];
+  accountType2 = [v4 accountType];
+  identifier4 = [accountType2 identifier];
+  v12 = [identifier3 isEqualToString:identifier4];
 
   if (!v12)
   {
     goto LABEL_32;
   }
 
-  v13 = [a1 ams_altDSID];
-  if (v13)
+  ams_altDSID = [self ams_altDSID];
+  if (ams_altDSID)
   {
-    v9 = [a1 ams_altDSID];
-    if ([v9 isEqualToString:&stru_1F071BA78])
+    identifier3 = [self ams_altDSID];
+    if ([identifier3 isEqualToString:&stru_1F071BA78])
     {
 
       goto LABEL_14;
     }
   }
 
-  v14 = [v4 ams_altDSID];
-  if (v14 && ([v4 ams_altDSID], v11 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v11, "isEqualToString:", &stru_1F071BA78) & 1) != 0))
+  ams_altDSID2 = [v4 ams_altDSID];
+  if (ams_altDSID2 && ([v4 ams_altDSID], identifier4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(identifier4, "isEqualToString:", &stru_1F071BA78) & 1) != 0))
   {
     v15 = 0;
   }
 
   else
   {
-    v16 = [a1 ams_altDSID];
-    v17 = [v4 ams_altDSID];
-    v15 = [v16 isEqualToString:v17];
+    ams_altDSID3 = [self ams_altDSID];
+    ams_altDSID4 = [v4 ams_altDSID];
+    v15 = [ams_altDSID3 isEqualToString:ams_altDSID4];
 
-    if (!v14)
+    if (!ams_altDSID2)
     {
       goto LABEL_11;
     }
   }
 
 LABEL_11:
-  if (v13)
+  if (ams_altDSID)
   {
   }
 
@@ -2037,77 +2037,77 @@ LABEL_11:
   }
 
 LABEL_14:
-  v18 = [v4 ams_DSID];
-  if (v18)
+  ams_DSID = [v4 ams_DSID];
+  if (ams_DSID)
   {
-    v19 = v18;
-    v20 = [a1 ams_DSID];
-    v21 = [v4 ams_DSID];
-    v11 = [v20 isEqualToNumber:v21];
+    v19 = ams_DSID;
+    ams_DSID2 = [self ams_DSID];
+    ams_DSID3 = [v4 ams_DSID];
+    identifier4 = [ams_DSID2 isEqualToNumber:ams_DSID3];
 
-    if (v11)
+    if (identifier4)
     {
       goto LABEL_29;
     }
   }
 
-  v22 = [a1 username];
-  if (v22)
+  username = [self username];
+  if (username)
   {
-    v23 = [a1 username];
-    if ([v23 isEqualToString:&stru_1F071BA78])
+    username2 = [self username];
+    if ([username2 isEqualToString:&stru_1F071BA78])
     {
 
       goto LABEL_30;
     }
 
-    v32 = v23;
+    v32 = username2;
   }
 
-  v24 = [v4 username];
-  if (v24 && ([v4 username], v11 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v11, "isEqualToString:", &stru_1F071BA78) & 1) != 0))
+  username3 = [v4 username];
+  if (username3 && ([v4 username], identifier4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(identifier4, "isEqualToString:", &stru_1F071BA78) & 1) != 0))
   {
     v25 = 0;
   }
 
   else
   {
-    v26 = [a1 username];
-    v27 = [v26 lowercaseString];
-    v28 = [v4 username];
-    v29 = [v28 lowercaseString];
-    v25 = [v27 isEqualToString:v29];
+    username4 = [self username];
+    lowercaseString = [username4 lowercaseString];
+    username5 = [v4 username];
+    lowercaseString2 = [username5 lowercaseString];
+    v25 = [lowercaseString isEqualToString:lowercaseString2];
 
-    if (!v24)
+    if (!username3)
     {
       goto LABEL_26;
     }
   }
 
 LABEL_26:
-  if (v22)
+  if (username)
   {
   }
 
   if ((v25 & 1) == 0)
   {
 LABEL_30:
-    if ([a1 ams_isLocalAccount])
+    if ([self ams_isLocalAccount])
     {
-      v30 = [v4 ams_isLocalAccount];
+      ams_isLocalAccount = [v4 ams_isLocalAccount];
       goto LABEL_33;
     }
 
 LABEL_32:
-    v30 = 0;
+    ams_isLocalAccount = 0;
     goto LABEL_33;
   }
 
 LABEL_29:
-  v30 = 1;
+  ams_isLocalAccount = 1;
 LABEL_33:
 
-  return v30;
+  return ams_isLocalAccount;
 }
 
 - (id)ams_isInRestrictedRegionWithBag:()AppleMediaServices waitForSync:
@@ -2115,7 +2115,7 @@ LABEL_33:
   v35 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = AMSSetLogKeyIfNeeded();
-  v8 = [a1 ams_accountFlagValueForAccountFlag:AMSAccountFlagIsInRestrictedRegion];
+  v8 = [self ams_accountFlagValueForAccountFlag:AMSAccountFlagIsInRestrictedRegion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2135,15 +2135,15 @@ LABEL_33:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v30 = objc_opt_class();
       v31 = 2114;
       v32 = v7;
       v18 = v30;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to load bag", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to load bag", buf, 0x16u);
     }
 
     v10 = AMSError(200, @"Bag Invalid Value Error", @"Bag Load Failed", 0);
@@ -2151,7 +2151,7 @@ LABEL_33:
     goto LABEL_23;
   }
 
-  v10 = [[AMSSyncRestrictedRegionTask alloc] initWithAccount:a1 bag:v6];
+  v10 = [[AMSSyncRestrictedRegionTask alloc] initWithAccount:self bag:v6];
   v11 = +[AMSLogConfig sharedAccountsConfig];
   v12 = v11;
   if (!a4)
@@ -2161,16 +2161,16 @@ LABEL_33:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v12 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v21 = objc_opt_class();
-      v22 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       v23 = @"NO";
       *buf = 138543874;
       v30 = v21;
       v31 = 2114;
-      if (v22)
+      if (bOOLValue)
       {
         v23 = @"YES";
       }
@@ -2178,10 +2178,10 @@ LABEL_33:
       v32 = v7;
       v33 = 2114;
       v34 = v23;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask but do not wait for the sync task to be finished, returning currentIsInRestrictedRegion = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask but do not wait for the sync task to be finished, returning currentIsInRestrictedRegion = %{public}@", buf, 0x20u);
     }
 
-    v24 = [(AMSSyncRestrictedRegionTask *)v10 performSync];
+    performSync = [(AMSSyncRestrictedRegionTask *)v10 performSync];
     v19 = [AMSPromise promiseWithResult:v9];
 LABEL_23:
     v15 = v19;
@@ -2193,25 +2193,25 @@ LABEL_23:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v30 = objc_opt_class();
     v31 = 2114;
     v32 = v7;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask and return the promise, which will be finished when the task is done.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask and return the promise, which will be finished when the task is done.", buf, 0x16u);
   }
 
-  v14 = [(AMSSyncRestrictedRegionTask *)v10 performSync];
+  performSync2 = [(AMSSyncRestrictedRegionTask *)v10 performSync];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __77__ACAccount_AppleMediaServices__ams_isInRestrictedRegionWithBag_waitForSync___block_invoke;
   v26[3] = &unk_1E73B2E50;
-  v26[4] = a1;
+  v26[4] = self;
   v27 = v7;
   v28 = v9;
-  v15 = [v14 continueWithBlock:v26];
+  v15 = [performSync2 continueWithBlock:v26];
 
 LABEL_24:
 
@@ -2223,10 +2223,10 @@ LABEL_24:
   v45 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = AMSSetLogKeyIfNeeded();
-  v8 = [a1 ams_accountFlagValueForAccountFlag:AMSAccountFlagIsInRestrictedRegion];
+  v8 = [self ams_accountFlagValueForAccountFlag:AMSAccountFlagIsInRestrictedRegion];
   v9 = v8 != 0;
 
-  v10 = [[AMSSyncRestrictedRegionTask alloc] initWithAccount:a1 bag:v6];
+  v10 = [[AMSSyncRestrictedRegionTask alloc] initWithAccount:self bag:v6];
   v11 = +[AMSLogConfig sharedConfig];
   v12 = v11;
   if (a4)
@@ -2236,19 +2236,19 @@ LABEL_24:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
       v38 = objc_opt_class();
       v39 = 2114;
       v40 = v7;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask and wait until sync finishes.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask and wait until sync finishes.", buf, 0x16u);
     }
 
-    v14 = [(AMSSyncRestrictedRegionTask *)v10 performSync];
+    performSync = [(AMSSyncRestrictedRegionTask *)v10 performSync];
     v36 = 0;
-    v15 = [v14 resultWithError:&v36];
+    v15 = [performSync resultWithError:&v36];
     v16 = v36;
 
     if (v16)
@@ -2259,11 +2259,11 @@ LABEL_24:
         v17 = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v17 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v17 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v19 = objc_opt_class();
-        v20 = AMSHashIfNeeded(a1);
+        v20 = AMSHashIfNeeded(self);
         v21 = AMSLogableError(v16);
         *buf = 138544130;
         v38 = v19;
@@ -2273,11 +2273,11 @@ LABEL_24:
         v42 = v20;
         v43 = 2114;
         v44 = v21;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] AMSSyncRestrictedRegionTask has failed. account = %{public}@ | error = %{public}@", buf, 0x2Au);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] AMSSyncRestrictedRegionTask has failed. account = %{public}@ | error = %{public}@", buf, 0x2Au);
       }
     }
 
-    v22 = [a1 ams_accountFlagValueForAccountFlag:AMSAccountFlagIsInRestrictedRegion];
+    v22 = [self ams_accountFlagValueForAccountFlag:AMSAccountFlagIsInRestrictedRegion];
     v9 = v22 != 0;
 
     v23 = +[AMSLogConfig sharedAccountsConfig];
@@ -2286,8 +2286,8 @@ LABEL_24:
       v23 = +[AMSLogConfig sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v23 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v25 = MEMORY[0x1E696AEC0];
       v26 = objc_opt_class();
@@ -2312,7 +2312,7 @@ LABEL_24:
       v38 = v31;
       v39 = 2114;
       v40 = v33;
-      _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_INFO, "%{public}@AMSSyncRestrictedRegionTask has finished, IsInRestrictedRegion = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@AMSSyncRestrictedRegionTask has finished, IsInRestrictedRegion = %{public}@", buf, 0x16u);
     }
   }
 
@@ -2323,8 +2323,8 @@ LABEL_24:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [v12 OSLogObject];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+    oSLogObject4 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
     {
       v28 = objc_opt_class();
       v29 = @"NO";
@@ -2339,10 +2339,10 @@ LABEL_24:
       v40 = v7;
       v41 = 2114;
       v42 = v29;
-      _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask but not waiting for sync, returning currentIsInRestrictedRegion = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@ [%{public}@]: Start AMSSyncRestrictedRegionTask but not waiting for sync, returning currentIsInRestrictedRegion = %{public}@", buf, 0x20u);
     }
 
-    v30 = [(AMSSyncRestrictedRegionTask *)v10 performSync];
+    performSync2 = [(AMSSyncRestrictedRegionTask *)v10 performSync];
   }
 
   return v9;
@@ -2350,22 +2350,22 @@ LABEL_24:
 
 - (uint64_t)ams_isSubjectToPerDeviceBundleHolderAcknowledgement
 {
-  v2 = [a1 ams_isBundleOwner];
+  ams_isBundleOwner = [self ams_isBundleOwner];
 
-  if (!v2)
+  if (!ams_isBundleOwner)
   {
     return 0;
   }
 
-  v3 = [a1 ams_isBundleOwner];
-  if ([v3 BOOLValue])
+  ams_isBundleOwner2 = [self ams_isBundleOwner];
+  if ([ams_isBundleOwner2 BOOLValue])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [a1 ams_didAcknowledgeBundleHolderPrivacyAcknowledgementOnDevice] ^ 1;
+    v4 = [self ams_didAcknowledgeBundleHolderPrivacyAcknowledgementOnDevice] ^ 1;
   }
 
   return v4;
@@ -2377,34 +2377,34 @@ LABEL_24:
   v4 = a3;
   if (!v4)
   {
-    v5 = [a1 ams_privacyAcknowledgement];
+    ams_privacyAcknowledgement = [self ams_privacyAcknowledgement];
 
-    if (!v5)
+    if (!ams_privacyAcknowledgement)
     {
       v15 = 0;
       goto LABEL_45;
     }
   }
 
-  v35 = a1;
-  v6 = [a1 ams_privacyAcknowledgement];
-  v7 = v6;
+  selfCopy = self;
+  ams_privacyAcknowledgement2 = [self ams_privacyAcknowledgement];
+  v7 = ams_privacyAcknowledgement2;
   v8 = MEMORY[0x1E695E0F8];
-  if (v6)
+  if (ams_privacyAcknowledgement2)
   {
-    v8 = v6;
+    v8 = ams_privacyAcknowledgement2;
   }
 
   v9 = v8;
 
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v11 = [v9 allKeys];
-  [v10 addObjectsFromArray:v11];
+  allKeys = [v9 allKeys];
+  [v10 addObjectsFromArray:allKeys];
 
   if (v4)
   {
-    v12 = [v4 allKeys];
-    [v10 addObjectsFromArray:v12];
+    allKeys2 = [v4 allKeys];
+    [v10 addObjectsFromArray:allKeys2];
   }
 
   else
@@ -2456,7 +2456,7 @@ LABEL_24:
           v42[1] = 3221225472;
           v43 = __65__ACAccount_AppleMediaServices__ams_mergePrivacyAcknowledgement___block_invoke;
           v44 = &unk_1E73B2E78;
-          v45 = v35;
+          v45 = selfCopy;
           v21 = [v9 objectForKeyedSubscript:v17];
           v43(v42, v21);
         }
@@ -2481,7 +2481,7 @@ LABEL_24:
           v38[1] = 3221225472;
           v39 = __65__ACAccount_AppleMediaServices__ams_mergePrivacyAcknowledgement___block_invoke_243;
           v40 = &unk_1E73B2E78;
-          v41 = v35;
+          v41 = selfCopy;
           v24 = [v4 objectForKeyedSubscript:v17];
           v39(v38, v24);
 
@@ -2509,16 +2509,16 @@ LABEL_29:
         goto LABEL_28;
       }
 
-      v28 = [v19 unsignedIntegerValue];
-      if (v28 == [v23 unsignedIntegerValue])
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
+      if (unsignedIntegerValue == [v23 unsignedIntegerValue])
       {
         goto LABEL_36;
       }
 
       if ([v23 unsignedIntegerValue])
       {
-        v29 = [v19 unsignedIntegerValue];
-        if (v29 > [v23 unsignedIntegerValue])
+        unsignedIntegerValue2 = [v19 unsignedIntegerValue];
+        if (unsignedIntegerValue2 > [v23 unsignedIntegerValue])
         {
           v15 |= 4uLL;
 LABEL_36:
@@ -2526,8 +2526,8 @@ LABEL_36:
           goto LABEL_39;
         }
 
-        v31 = [v19 unsignedIntegerValue];
-        if (v31 >= [v23 unsignedIntegerValue])
+        unsignedIntegerValue3 = [v19 unsignedIntegerValue];
+        if (unsignedIntegerValue3 >= [v23 unsignedIntegerValue])
         {
           goto LABEL_30;
         }
@@ -2555,8 +2555,8 @@ LABEL_30:
   while (v32);
 LABEL_44:
 
-  [v35 _setAccountProperty:v36 forKey:@"privacyAcknowledgement" expectedClass:objc_opt_class()];
-  [v35 setDirty:1 forProperty:@"privacyAcknowledgement"];
+  [selfCopy _setAccountProperty:v36 forKey:@"privacyAcknowledgement" expectedClass:objc_opt_class()];
+  [selfCopy setDirty:1 forProperty:@"privacyAcknowledgement"];
 
 LABEL_45:
   return v15;
@@ -2575,19 +2575,19 @@ LABEL_45:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v10 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [a1 hashedDescription];
+      hashedDescription = [self hashedDescription];
       *buf = 138543874;
       v48 = v14;
       v49 = 2114;
-      v50 = v16;
+      v50 = hashedDescription;
       v51 = 2114;
       v52 = v7;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to modify a read-only account flag. account = %{public}@ | flag = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to modify a read-only account flag. account = %{public}@ | flag = %{public}@", buf, 0x20u);
     }
 
     goto LABEL_57;
@@ -2601,68 +2601,68 @@ LABEL_45:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_57;
     }
 
     v17 = objc_opt_class();
-    v13 = v17;
-    v18 = [a1 hashedDescription];
+    v8OSLogObject = v17;
+    hashedDescription2 = [self hashedDescription];
     *buf = 138544130;
     v48 = v17;
     v49 = 2114;
-    v50 = v18;
+    v50 = hashedDescription2;
     v51 = 2114;
     v52 = v7;
     v53 = 2114;
     v54 = objc_opt_class();
     v19 = v54;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to set an account flag with an invalid value. account = %{public}@ | flag = %{public}@ value.class = %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to set an account flag with an invalid value. account = %{public}@ | flag = %{public}@ value.class = %{public}@", buf, 0x2Au);
 
     goto LABEL_55;
   }
 
-  if ([a1 ams_isLocalOrSandboxAccount])
+  if ([self ams_isLocalOrSandboxAccount])
   {
     v46 = 0;
-    v8 = [a1 _ams_accountFlagsWithError:&v46];
+    oSLogObject = [self _ams_accountFlagsWithError:&v46];
     v9 = v46;
     v10 = v9;
-    if (v8 || !v9)
+    if (oSLogObject || !v9)
     {
 LABEL_33:
-      v13 = [v8 mutableCopy];
-      if (!v13)
+      v8OSLogObject = [oSLogObject mutableCopy];
+      if (!v8OSLogObject)
       {
-        v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
+        v8OSLogObject = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
-      [v13 setObject:v6 forKeyedSubscript:v7];
-      if (([v8 isEqualToDictionary:v13]& 1) == 0)
+      [v8OSLogObject setObject:v6 forKeyedSubscript:v7];
+      if (([oSLogObject isEqualToDictionary:v8OSLogObject]& 1) == 0)
       {
-        [a1 _ams_setAccountFlagsShimmed:v13];
+        [self _ams_setAccountFlagsShimmed:v8OSLogObject];
       }
 
       goto LABEL_56;
     }
 
-    v11 = [v9 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"AMSCryptoErrorCode"];
+    userInfo = [v9 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:@"AMSCryptoErrorCode"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v8OSLogObject = v12;
     }
 
     else
     {
-      v13 = 0;
+      v8OSLogObject = 0;
     }
 
-    if ([v13 integerValue]== -4308)
+    if ([v8OSLogObject integerValue]== -4308)
     {
       v29 = +[AMSLogConfig sharedAccountsConfig];
       if (!v29)
@@ -2670,21 +2670,21 @@ LABEL_33:
         v29 = +[AMSLogConfig sharedConfig];
       }
 
-      v30 = [v29 OSLogObject];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v29 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v45 = objc_opt_class();
-        v31 = [a1 hashedDescription];
+        hashedDescription3 = [self hashedDescription];
         v32 = AMSLogableError(v10);
         *buf = 138544130;
         v48 = v45;
         v49 = 2114;
-        v50 = v13;
+        v50 = v8OSLogObject;
         v51 = 2114;
-        v52 = v31;
+        v52 = hashedDescription3;
         v53 = 2114;
         v54 = v32;
-        _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: We failed to decrypt the original account flags with error code %{public}@. Will overwrite with new ones. account = %{public}@ | error = %{public}@", buf, 0x2Au);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: We failed to decrypt the original account flags with error code %{public}@. Will overwrite with new ones. account = %{public}@ | error = %{public}@", buf, 0x2Au);
       }
 
       goto LABEL_33;
@@ -2692,32 +2692,32 @@ LABEL_33:
 
     v33 = +[AMSLogConfig sharedAccountsConfig];
     v19 = v33;
-    if (v13)
+    if (v8OSLogObject)
     {
       if (!v33)
       {
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v34 = [v19 OSLogObject];
-      if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v19 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_54;
       }
 
       v35 = objc_opt_class();
-      v36 = [a1 hashedDescription];
+      hashedDescription4 = [self hashedDescription];
       v37 = AMSLogableError(v10);
       *buf = 138544130;
       v48 = v35;
       v49 = 2114;
-      v50 = v13;
+      v50 = v8OSLogObject;
       v51 = 2114;
-      v52 = v36;
+      v52 = hashedDescription4;
       v53 = 2114;
       v54 = v37;
       v38 = "%{public}@: We failed to decrypt the original account flags with error code %{public}@. Refusing to add new flags. account = %{public}@ | error = %{public}@";
-      v39 = v34;
+      v39 = oSLogObject3;
       v40 = 42;
     }
 
@@ -2728,23 +2728,23 @@ LABEL_33:
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v34 = [v19 OSLogObject];
-      if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v19 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_54;
       }
 
       v42 = objc_opt_class();
-      v36 = [a1 hashedDescription];
+      hashedDescription4 = [self hashedDescription];
       v37 = AMSLogableError(v10);
       *buf = 138543874;
       v48 = v42;
       v49 = 2114;
-      v50 = v36;
+      v50 = hashedDescription4;
       v51 = 2114;
       v52 = v37;
       v38 = "%{public}@: We failed to decrypt the original account flags. Refusing to add new flags. account = %{public}@ | error = %{public}@";
-      v39 = v34;
+      v39 = oSLogObject3;
       v40 = 32;
     }
 
@@ -2767,49 +2767,49 @@ LABEL_56:
     {
       if ([v7 isEqualToString:AMSAccountFlagAutoPlay])
       {
-        v8 = +[AMSAccountCachedServerData sharedInstance];
-        v21 = [v10 BOOLValue];
-        v22 = [a1 ams_accountID];
-        [v8 setAutoPlay:v21 forAccountID:v22];
+        oSLogObject = +[AMSAccountCachedServerData sharedInstance];
+        bOOLValue = [v10 BOOLValue];
+        ams_accountID = [self ams_accountID];
+        [oSLogObject setAutoPlay:bOOLValue forAccountID:ams_accountID];
       }
 
       else
       {
         if (![v7 isEqualToString:AMSAccountFlagPersonalization])
         {
-          v8 = +[AMSLogConfig sharedAccountsConfig];
-          if (!v8)
+          oSLogObject = +[AMSLogConfig sharedAccountsConfig];
+          if (!oSLogObject)
           {
-            v8 = +[AMSLogConfig sharedConfig];
+            oSLogObject = +[AMSLogConfig sharedConfig];
           }
 
-          v13 = [v8 OSLogObject];
-          if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          v8OSLogObject = [oSLogObject OSLogObject];
+          if (!os_log_type_enabled(v8OSLogObject, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_56;
           }
 
           v43 = objc_opt_class();
           v19 = v43;
-          v44 = [a1 hashedDescription];
+          hashedDescription5 = [self hashedDescription];
           *buf = 138544130;
           v48 = v43;
           v49 = 2114;
-          v50 = v44;
+          v50 = hashedDescription5;
           v51 = 2114;
           v52 = v7;
           v53 = 2114;
           v54 = objc_opt_class();
-          v34 = v54;
-          _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to set an account flag that should not be set. account = %{public}@ | flag = %{public}@ value.class = %{public}@", buf, 0x2Au);
+          oSLogObject3 = v54;
+          _os_log_impl(&dword_192869000, v8OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to set an account flag that should not be set. account = %{public}@ | flag = %{public}@ value.class = %{public}@", buf, 0x2Au);
 
           goto LABEL_54;
         }
 
-        v8 = +[AMSAccountCachedServerData sharedInstance];
-        v41 = [v10 BOOLValue];
-        v22 = [a1 ams_accountID];
-        [v8 setPersonalization:v41 forAccountID:v22];
+        oSLogObject = +[AMSAccountCachedServerData sharedInstance];
+        bOOLValue2 = [v10 BOOLValue];
+        ams_accountID = [self ams_accountID];
+        [oSLogObject setPersonalization:bOOLValue2 forAccountID:ams_accountID];
       }
 
 LABEL_57:
@@ -2827,22 +2827,22 @@ LABEL_57:
     v23 = +[AMSLogConfig sharedConfig];
   }
 
-  v24 = [v23 OSLogObject];
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [v23 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
     v25 = objc_opt_class();
     v26 = v25;
-    v27 = [a1 hashedDescription];
+    hashedDescription6 = [self hashedDescription];
     *buf = 138544130;
     v48 = v25;
     v49 = 2114;
-    v50 = v27;
+    v50 = hashedDescription6;
     v51 = 2114;
     v52 = v7;
     v53 = 2114;
     v54 = objc_opt_class();
     v28 = v54;
-    _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to set an account flag with a nil value. account = %{public}@ | flag = %{public}@ value.class = %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: Someone is trying to set an account flag with a nil value. account = %{public}@ | flag = %{public}@ value.class = %{public}@", buf, 0x2Au);
   }
 
   v10 = 0;
@@ -2853,7 +2853,7 @@ LABEL_58:
 {
   v22 = *MEMORY[0x1E69E9840];
   v7 = a4;
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
     v8 = +[AMSLogConfig sharedAccountsConfig];
     if (!v8)
@@ -2861,8 +2861,8 @@ LABEL_58:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_12;
     }
@@ -2888,8 +2888,8 @@ LABEL_58:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_12;
     }
@@ -2907,9 +2907,9 @@ LABEL_58:
     goto LABEL_11;
   }
 
-  if (![v7 isEqualToString:AMSAccountMediaTypeAppStoreSandbox] || objc_msgSend(a1, "ams_isSandboxAccount"))
+  if (![v7 isEqualToString:AMSAccountMediaTypeAppStoreSandbox] || objc_msgSend(self, "ams_isSandboxAccount"))
   {
-    [a1 setActive:a3];
+    [self setActive:a3];
     goto LABEL_13;
   }
 
@@ -2919,8 +2919,8 @@ LABEL_58:
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v15 = objc_opt_class();
     v11 = AMSLogKey();
@@ -2933,7 +2933,7 @@ LABEL_58:
     v21 = v12;
     v13 = "%{public}@: [%{public}@] %{public}@ does not support AMSAccountMediaTypeAppStoreSandbox for non-sandbox accounts.";
 LABEL_11:
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, v13, &v16, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, v13, &v16, 0x20u);
   }
 
 LABEL_12:
@@ -2950,26 +2950,26 @@ LABEL_13:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [a1 hashedDescription];
+    hashedDescription = [self hashedDescription];
     *buf = 138543874;
     v28 = v7;
     v29 = 2114;
-    v30 = v8;
+    v30 = hashedDescription;
     v31 = 1024;
     LODWORD(v32) = a3;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Will attempt to set new per device holder record. Setting  to %d", buf, 0x1Cu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Will attempt to set new per device holder record. Setting  to %d", buf, 0x1Cu);
   }
 
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
-    v9 = @"local";
+    stringValue = @"local";
 LABEL_8:
-    v11 = [objc_opt_class() _ams_storage];
-    v12 = [v11 valueForKey:@"bundleHolderAcknowledgedAccounts" error:0];
+    _ams_storage = [objc_opt_class() _ams_storage];
+    v12 = [_ams_storage valueForKey:@"bundleHolderAcknowledgedAccounts" error:0];
     v13 = v12;
     v14 = MEMORY[0x1E695E0F0];
     if (v12)
@@ -2983,20 +2983,20 @@ LABEL_8:
 
     if (a3)
     {
-      [v16 addObject:v9];
+      [v16 addObject:stringValue];
     }
 
     else
     {
-      [v16 removeObject:v9];
+      [v16 removeObject:stringValue];
     }
 
-    v17 = [v16 allObjects];
+    allObjects = [v16 allObjects];
     v26 = 0;
-    [v11 setValue:v17 forKey:@"bundleHolderAcknowledgedAccounts" error:&v26];
-    v18 = v26;
+    [_ams_storage setValue:allObjects forKey:@"bundleHolderAcknowledgedAccounts" error:&v26];
+    oSLogObject3 = v26;
 
-    if (v18)
+    if (oSLogObject3)
     {
       v19 = +[AMSLogConfig sharedAccountsConfig];
       if (!v19)
@@ -3004,49 +3004,49 @@ LABEL_8:
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v21 = objc_opt_class();
-        v22 = [a1 hashedDescription];
-        v23 = AMSLogableError(v18);
+        hashedDescription2 = [self hashedDescription];
+        v23 = AMSLogableError(oSLogObject3);
         *buf = 138543874;
         v28 = v21;
         v29 = 2114;
-        v30 = v22;
+        v30 = hashedDescription2;
         v31 = 2114;
         v32 = v23;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot update acknowledgement record due to storage error %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot update acknowledgement record due to storage error %{public}@", buf, 0x20u);
       }
     }
 
     goto LABEL_20;
   }
 
-  v10 = [a1 ams_DSID];
-  v9 = [v10 stringValue];
+  ams_DSID = [self ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  if (v9)
+  if (stringValue)
   {
     goto LABEL_8;
   }
 
-  v9 = +[AMSLogConfig sharedAccountsConfig];
-  if (!v9)
+  stringValue = +[AMSLogConfig sharedAccountsConfig];
+  if (!stringValue)
   {
-    v9 = +[AMSLogConfig sharedConfig];
+    stringValue = +[AMSLogConfig sharedConfig];
   }
 
-  v18 = [(__CFString *)v9 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  oSLogObject3 = [(__CFString *)stringValue OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
     v24 = objc_opt_class();
-    v25 = [a1 hashedDescription];
+    hashedDescription3 = [self hashedDescription];
     *buf = 138543618;
     v28 = v24;
     v29 = 2114;
-    v30 = v25;
-    _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot update acknowledgement record for unidentifiable account", buf, 0x16u);
+    v30 = hashedDescription3;
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Cannot update acknowledgement record for unidentifiable account", buf, 0x16u);
   }
 
 LABEL_20:
@@ -3061,8 +3061,8 @@ LABEL_20:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -3076,7 +3076,7 @@ LABEL_20:
       v9 = @"not in";
     }
 
-    v10 = AMSHashIfNeeded(a1);
+    v10 = AMSHashIfNeeded(self);
     v18 = 138544130;
     v19 = v7;
     v20 = 2114;
@@ -3085,38 +3085,38 @@ LABEL_20:
     v23 = v9;
     v24 = 2114;
     v25 = v10;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Marking an account as %@ use for AKAppleIDServiceStore. account = %{public}@", &v18, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Marking an account as %@ use for AKAppleIDServiceStore. account = %{public}@", &v18, 0x2Au);
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E698DCC0]);
-  v12 = [a1 ams_altDSID];
+  ams_altDSID = [self ams_altDSID];
 
-  if (v12)
+  if (ams_altDSID)
   {
-    v13 = [a1 ams_altDSID];
-    [v11 setAppleIDWithAltDSID:v13 inUse:a3 forService:2];
+    ams_altDSID2 = [self ams_altDSID];
+    [v11 setAppleIDWithAltDSID:ams_altDSID2 inUse:a3 forService:2];
   }
 
   else
   {
-    v14 = [a1 ams_DSID];
+    ams_DSID = [self ams_DSID];
 
-    if (v14)
+    if (ams_DSID)
     {
-      v13 = [a1 ams_DSID];
-      [v11 setAppleIDWithDSID:v13 inUse:a3 forService:2];
+      ams_altDSID2 = [self ams_DSID];
+      [v11 setAppleIDWithDSID:ams_altDSID2 inUse:a3 forService:2];
     }
 
     else
     {
-      v13 = +[AMSLogConfig sharedAccountsAuthenticationPluginConfig];
-      if (!v13)
+      ams_altDSID2 = +[AMSLogConfig sharedAccountsAuthenticationPluginConfig];
+      if (!ams_altDSID2)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        ams_altDSID2 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v13 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [ams_altDSID2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v16 = objc_opt_class();
         v17 = AMSLogKey();
@@ -3124,7 +3124,7 @@ LABEL_20:
         v19 = v16;
         v20 = 2114;
         v21 = v17;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to mark the account as not in use. It has no altDSID or DSID.", &v18, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to mark the account as not in use. It has no altDSID or DSID.", &v18, 0x16u);
       }
     }
   }
@@ -3133,13 +3133,13 @@ LABEL_20:
 - (void)ams_setSelectedProfile:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 _setAccountProperty:v2 forKey:@"isSelectedProfile" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v2 forKey:@"isSelectedProfile" expectedClass:objc_opt_class()];
 }
 
 - (void)ams_setStorefront:()AppleMediaServices forMediaType:
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"storefrontID" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"storefrontID" expectedClass:objc_opt_class()];
 }
 
 - (id)ams_storefrontForMediaType:()AppleMediaServices
@@ -3147,10 +3147,10 @@ LABEL_20:
   v4 = a3;
   v5 = AMSAccountMediaTypeAppStoreSandbox;
   v6 = AMSAccountMediaTypeAppStoreBeta;
-  v7 = [a1 ams_isSandboxAccount];
+  ams_isSandboxAccount = [self ams_isSandboxAccount];
   if (v5 != v4 && v6 != v4)
   {
-    if ((v7 & 1) == 0)
+    if ((ams_isSandboxAccount & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -3160,13 +3160,13 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if ((v7 & 1) == 0)
+  if ((ams_isSandboxAccount & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_9:
-  v9 = [a1 _accountPropertyForKey:@"storefrontID" expectedClass:objc_opt_class()];
+  v9 = [self _accountPropertyForKey:@"storefrontID" expectedClass:objc_opt_class()];
 LABEL_10:
 
   return v9;
@@ -3175,7 +3175,7 @@ LABEL_10:
 - (id)ams_asynchronouslyAddCookiesForResponse:()AppleMediaServices
 {
   v2 = [MEMORY[0x1E6959A28] _getSetCookiesForResponse:?];
-  v3 = [a1 ams_asynchronouslyAddCookies:v2];
+  v3 = [self ams_asynchronouslyAddCookies:v2];
 
   return v3;
 }
@@ -3183,10 +3183,10 @@ LABEL_10:
 - (id)ams_asynchronouslyAddGlobalCookiesForResponse:()AppleMediaServices
 {
   v4 = a3;
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
     v5 = [MEMORY[0x1E6959A28] _getSetGlobalCookiesForResponse:v4];
-    [a1 ams_asynchronouslyAddCookies:v5];
+    [self ams_asynchronouslyAddCookies:v5];
   }
 
   else
@@ -3203,17 +3203,17 @@ LABEL_10:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 ams_isLocalAccount])
+  if ([self ams_isLocalAccount])
   {
-    v5 = [v4 response];
+    response = [v4 response];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = response;
 
       if (v6)
       {
-        v7 = [a1 ams_addGlobalCookiesForResponse:v6];
+        v7 = [self ams_addGlobalCookiesForResponse:v6];
 LABEL_12:
 
         goto LABEL_13;
@@ -3230,8 +3230,8 @@ LABEL_12:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -3242,7 +3242,7 @@ LABEL_12:
       v17 = v11;
       v18 = 2114;
       v19 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to set global cookies. The given AMSURLResult does not contain a NSHTTPURLResponse. result = %{public}@", &v14, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to set global cookies. The given AMSURLResult does not contain a NSHTTPURLResponse. result = %{public}@", &v14, 0x20u);
     }
 
     v6 = 0;
@@ -3258,7 +3258,7 @@ LABEL_13:
 
 - (id)ams_cookiesForURL:()AppleMediaServices
 {
-  v3 = [a1 ams_cookiesForURL:a3 bag:0];
+  v3 = [self ams_cookiesForURL:a3 bag:0];
   v4 = [v3 resultWithError:0];
 
   return v4;
@@ -3269,12 +3269,12 @@ LABEL_13:
   v46 = *MEMORY[0x1E69E9840];
   v9 = a3;
   v10 = a4;
-  v11 = [a1 ams_cookies];
-  v12 = v11;
+  ams_cookies = [self ams_cookies];
+  v12 = ams_cookies;
   v13 = MEMORY[0x1E695E0F0];
-  if (v11)
+  if (ams_cookies)
   {
-    v13 = v11;
+    v13 = ams_cookies;
   }
 
   v14 = v13;
@@ -3285,8 +3285,8 @@ LABEL_13:
     v15 = +[AMSLogConfig sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v31 = a5;
     v32 = v9;
@@ -3308,14 +3308,14 @@ LABEL_13:
     }
     v21 = ;
     v22 = [v14 count];
-    v23 = AMSHashIfNeeded(a1);
+    v23 = AMSHashIfNeeded(self);
     *buf = 138543874;
     v41 = v21;
     v42 = 2048;
     v43 = v22;
     v44 = 2114;
     v45 = v23;
-    _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Fetched %lu cookies for account: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Fetched %lu cookies for account: %{public}@", buf, 0x20u);
     if (v17)
     {
 
@@ -3333,7 +3333,7 @@ LABEL_13:
   v34[3] = &unk_1E73B2EF0;
   v39 = a5;
   v35 = v9;
-  v36 = a1;
+  selfCopy = self;
   v37 = v10;
   v38 = a2;
   v24 = v10;
@@ -3347,16 +3347,16 @@ LABEL_13:
 
 - (uint64_t)ams_removeAllCookiesWithError:()AppleMediaServices
 {
-  v5 = [a1 ams_cookies];
-  v6 = [a1 _updateCookiesWithCookiesToAdd:0 cookiesToRemove:v5 error:a3];
+  ams_cookies = [self ams_cookies];
+  v6 = [self _updateCookiesWithCookiesToAdd:0 cookiesToRemove:ams_cookies error:a3];
 
   return v6;
 }
 
 - (uint64_t)ams_removeCookiesMatchingProperties:()AppleMediaServices error:
 {
-  v2 = [a1 _cookiesMatchingProperties:?];
-  v3 = [a1 ams_removeCookies:v2];
+  v2 = [self _cookiesMatchingProperties:?];
+  v3 = [self ams_removeCookies:v2];
 
   return v3;
 }
@@ -3367,7 +3367,7 @@ LABEL_13:
   v5 = a3;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _accountPropertyForKey:v5 dataProtectionClass:0 expectedClasses:v7 error:0];
+  v8 = [self _accountPropertyForKey:v5 dataProtectionClass:0 expectedClasses:v7 error:0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3375,12 +3375,12 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 lowercaseString];
-      if ([v10 isEqualToString:@"true"])
+      lowercaseString = [v8 lowercaseString];
+      if ([lowercaseString isEqualToString:@"true"])
       {
 
 LABEL_7:
-        v9 = 1;
+        bOOLValue = 1;
         goto LABEL_12;
       }
 
@@ -3391,21 +3391,21 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v12 = [v8 lowercaseString];
-      if (([v12 isEqualToString:@"false"] & 1) == 0)
+      lowercaseString2 = [v8 lowercaseString];
+      if (([lowercaseString2 isEqualToString:@"false"] & 1) == 0)
       {
         [v8 isEqualToString:@"0"];
       }
     }
 
-    v9 = 0;
+    bOOLValue = 0;
     goto LABEL_12;
   }
 
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 LABEL_12:
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)_accountPropertyForKey:()AppleMediaServices expectedClass:
@@ -3413,7 +3413,7 @@ LABEL_12:
   v6 = MEMORY[0x1E695DFD8];
   v7 = a3;
   v8 = [v6 setWithObject:a4];
-  v9 = [a1 _accountPropertyForKey:v7 dataProtectionClass:0 expectedClasses:v8 error:0];
+  v9 = [self _accountPropertyForKey:v7 dataProtectionClass:0 expectedClasses:v8 error:0];
 
   return v9;
 }
@@ -3422,7 +3422,7 @@ LABEL_12:
 {
   v35 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  [a1 _accountPropertyForKey:v6 expectedClass:objc_opt_class()];
+  [self _accountPropertyForKey:v6 expectedClass:objc_opt_class()];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -3449,8 +3449,8 @@ LABEL_12:
             v13 = +[AMSLogConfig sharedConfig];
           }
 
-          v14 = [v13 OSLogObject];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v13 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v15 = objc_opt_class();
             v16 = AMSLogKey();
@@ -3466,7 +3466,7 @@ LABEL_12:
             v32 = 2114;
             v33 = a4;
             v18 = v17;
-            _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] An account property inside an NSArray was stored as the wrong type. key = %{public}@ | actualClass = %{public}@ | expectedClass = %{public}@", buf, 0x34u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] An account property inside an NSArray was stored as the wrong type. key = %{public}@ | actualClass = %{public}@ | expectedClass = %{public}@", buf, 0x34u);
           }
 
           v12 = 0;
@@ -3495,13 +3495,13 @@ LABEL_15:
   v48 = *MEMORY[0x1E69E9840];
   v10 = a3;
   v11 = a5;
-  if ([a1 ams_isEphemeralAccount])
+  if ([self ams_isEphemeralAccount])
   {
-    v12 = [a1 _ephemeralAccountPropertyForKey:v10 dataProtectionClass:a4 expectedClasses:v11 error:a6];
+    v12 = [self _ephemeralAccountPropertyForKey:v10 dataProtectionClass:a4 expectedClasses:v11 error:a6];
     goto LABEL_31;
   }
 
-  v13 = [a1 objectForKeyedSubscript:v10];
+  v13 = [self objectForKeyedSubscript:v10];
   if (v13)
   {
     if (!a4)
@@ -3525,8 +3525,8 @@ LABEL_15:
           v26 = +[AMSLogConfig sharedConfig];
         }
 
-        v27 = [v26 OSLogObject];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v26 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v28 = objc_opt_class();
           v29 = AMSLogKey();
@@ -3542,7 +3542,7 @@ LABEL_15:
           v46 = 2114;
           v47 = v11;
           v31 = v30;
-          _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] An account property was stored as the wrong type. key = %{public}@ | actualClass = %{public}@ | expectedClasses = %{public}@", buf, 0x34u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] An account property was stored as the wrong type. key = %{public}@ | actualClass = %{public}@ | expectedClasses = %{public}@", buf, 0x34u);
         }
 
         if (a6)
@@ -3566,8 +3566,8 @@ LABEL_15:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -3579,7 +3579,7 @@ LABEL_15:
       v43 = v10;
       v44 = 2048;
       v45 = a4;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Decrypting an account property. key = %{public}@ | dataProtectionClass = %ld", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Decrypting an account property. key = %{public}@ | dataProtectionClass = %ld", buf, 0x2Au);
     }
 
     v35 = 0;
@@ -3609,8 +3609,8 @@ LABEL_15:
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
       v22 = AMSLogKey();
@@ -3627,7 +3627,7 @@ LABEL_15:
       v46 = 2114;
       v47 = v24;
       v25 = v24;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decrypt an account property. key = %{public}@ | value = %{public}@ | value.class = %{public}@", buf, 0x34u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decrypt an account property. key = %{public}@ | value = %{public}@ | value.class = %{public}@", buf, 0x34u);
     }
 
     if (a6)
@@ -3648,13 +3648,13 @@ LABEL_31:
 {
   v2 = objc_opt_class();
 
-  return [a1 _accountPropertyForKey:@"cookies" expectedClassContainedInArray:v2];
+  return [self _accountPropertyForKey:@"cookies" expectedClassContainedInArray:v2];
 }
 
 - (uint64_t)_ams_setCookieProperties:()AppleMediaServices
 {
   v4 = a3;
-  [a1 _setAccountProperty:v4 forKey:@"cookies" expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v4 forKey:@"cookies" expectedClass:objc_opt_class()];
 
   return 1;
 }
@@ -3671,9 +3671,9 @@ LABEL_31:
 
   if ([v13 hasChanges])
   {
-    v14 = [v13 ams_insertedObjects];
-    v15 = [v13 ams_removedObjects];
-    v16 = [AMSCookieStorage updateCookiesWithCookiesToAdd:v14 cookiesToRemove:v15 forAccount:a1 error:a5];
+    ams_insertedObjects = [v13 ams_insertedObjects];
+    ams_removedObjects = [v13 ams_removedObjects];
+    v16 = [AMSCookieStorage updateCookiesWithCookiesToAdd:ams_insertedObjects cookiesToRemove:ams_removedObjects forAccount:self error:a5];
   }
 
   else
@@ -3687,27 +3687,27 @@ LABEL_31:
 - (void)_ams_setAccountFlagsShimmed:()AppleMediaServices
 {
   v6 = a3;
-  if (([a1 ams_isLocalOrSandboxAccount] & 1) == 0)
+  if (([self ams_isLocalOrSandboxAccount] & 1) == 0)
   {
     v4 = +[AMSAccountCachedServerData sharedInstance];
-    v5 = [a1 ams_accountID];
-    [v4 setAccountFlags:v6 forAccountID:v5];
+    ams_accountID = [self ams_accountID];
+    [v4 setAccountFlags:v6 forAccountID:ams_accountID];
   }
 
-  [a1 _setAccountProperty:v6 forKey:@"accountFlags" dataProtectionClass:1 expectedClass:objc_opt_class()];
+  [self _setAccountProperty:v6 forKey:@"accountFlags" dataProtectionClass:1 expectedClass:objc_opt_class()];
 }
 
 - (id)_cookiesMatchingProperties:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 ams_cookies];
+  ams_cookies = [self ams_cookies];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__ACAccount_AppleMediaServices___cookiesMatchingProperties___block_invoke;
   v9[3] = &unk_1E73B2DB8;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 ams_filterUsingTest:v9];
+  v7 = [ams_cookies ams_filterUsingTest:v9];
 
   return v7;
 }
@@ -3718,7 +3718,7 @@ LABEL_31:
   v7 = a4;
   if ([v6 count] || objc_msgSend(v7, "count"))
   {
-    v8 = [AMSCookieStorage updateCookiesWithCookiesToAdd:v6 cookiesToRemove:v7 forAccount:a1];
+    v8 = [AMSCookieStorage updateCookiesWithCookiesToAdd:v6 cookiesToRemove:v7 forAccount:self];
   }
 
   else
@@ -3748,13 +3748,13 @@ LABEL_31:
 + (id)_getSetGlobalCookiesForResponse:()AppleMediaServices
 {
   v3 = a3;
-  v4 = [v3 allHeaderFields];
-  v5 = [v4 objectForKey:@"X-Apple-Set-Cookie"];
+  allHeaderFields = [v3 allHeaderFields];
+  v5 = [allHeaderFields objectForKey:@"X-Apple-Set-Cookie"];
 
   if ([v5 length])
   {
-    v6 = [v3 allHeaderFields];
-    v7 = [v6 mutableCopy];
+    allHeaderFields2 = [v3 allHeaderFields];
+    v7 = [allHeaderFields2 mutableCopy];
 
     [v7 setObject:v5 forKeyedSubscript:@"Set-Cookie"];
     v8 = MEMORY[0x1E695ABF8];
@@ -3776,18 +3776,18 @@ LABEL_31:
   v3 = a3;
   v4 = 0x1E695A000uLL;
   v5 = MEMORY[0x1E695ABF8];
-  v6 = [v3 allHeaderFields];
+  allHeaderFields = [v3 allHeaderFields];
   v7 = [v3 URL];
-  v8 = [v5 cookiesWithResponseHeaderFields:v6 forURL:v7];
+  v8 = [v5 cookiesWithResponseHeaderFields:allHeaderFields forURL:v7];
   v9 = [v8 mutableCopy];
 
-  v10 = [v3 allHeaderFields];
-  v11 = [v10 objectForKey:@"X-Apple-Set-User-Cookie"];
+  allHeaderFields2 = [v3 allHeaderFields];
+  v11 = [allHeaderFields2 objectForKey:@"X-Apple-Set-User-Cookie"];
 
   if ([v11 length])
   {
-    v12 = [v3 allHeaderFields];
-    v13 = [v12 mutableCopy];
+    allHeaderFields3 = [v3 allHeaderFields];
+    v13 = [allHeaderFields3 mutableCopy];
 
     [v13 setObject:v11 forKeyedSubscript:@"Set-Cookie"];
     v14 = MEMORY[0x1E695ABF8];
@@ -3803,7 +3803,7 @@ LABEL_31:
     v18 = [v3 valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
     v40 = v3;
     v19 = [v3 URL];
-    v20 = [v19 absoluteString];
+    absoluteString = [v19 absoluteString];
 
     v54 = 0u;
     v55 = 0u;
@@ -3816,7 +3816,7 @@ LABEL_31:
       v49 = *MEMORY[0x1E695AAB8];
       v50 = *v53;
       v48 = *MEMORY[0x1E695AAC0];
-      v42 = v20;
+      v42 = absoluteString;
       v43 = v18;
       v41 = v17;
       do
@@ -3829,17 +3829,17 @@ LABEL_31:
           }
 
           v22 = *(*(&v52 + 1) + 8 * i);
-          v23 = [v22 properties];
-          v24 = [v23 mutableCopy];
+          properties = [v22 properties];
+          v24 = [properties mutableCopy];
 
           if (v18)
           {
             [v24 setObject:v18 forKeyedSubscript:v49];
           }
 
-          if (v20)
+          if (absoluteString)
           {
-            [v24 setObject:v20 forKeyedSubscript:v48];
+            [v24 setObject:absoluteString forKeyedSubscript:v48];
           }
 
           v25 = [*(v4 + 3064) cookieWithProperties:v24];
@@ -3851,8 +3851,8 @@ LABEL_31:
               v26 = +[AMSLogConfig sharedConfig];
             }
 
-            v27 = [v26 OSLogObject];
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+            oSLogObject = [v26 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
             {
               v28 = v4;
               v29 = AMSLogKey();
@@ -3878,7 +3878,7 @@ LABEL_31:
               v57 = v33;
               v58 = 2114;
               v59 = v37;
-              _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_DEBUG, "%{public}@Adding modified cookie: %{public}@", buf, 0x16u);
+              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Adding modified cookie: %{public}@", buf, 0x16u);
               v46 = v34;
               if (v29)
               {
@@ -3888,7 +3888,7 @@ LABEL_31:
 
               v4 = v28;
               v17 = v41;
-              v20 = v42;
+              absoluteString = v42;
               v18 = v43;
             }
 
@@ -3962,14 +3962,14 @@ LABEL_31:
 {
   v10 = a4;
   v11 = a3;
-  if ([a1 ams_isEphemeralAccount])
+  if ([self ams_isEphemeralAccount])
   {
-    [a1 _setEphemeralAccountProperty:v11 forKey:v10 dataProtectionClass:a5 expectedClass:a6];
+    [self _setEphemeralAccountProperty:v11 forKey:v10 dataProtectionClass:a5 expectedClass:a6];
   }
 
   else
   {
-    AMSSetAccountProperty(a1, v11, v10, a5, a6);
+    AMSSetAccountProperty(self, v11, v10, a5, a6);
   }
 }
 
@@ -3993,16 +3993,16 @@ LABEL_31:
   {
     v5 = +[AMSUnitTests isRunningUnitTests];
     v6 = +[AMSLogConfig sharedAccountsConfig];
-    v7 = v6;
+    defaultCenter = v6;
     if (v5)
     {
       if (!v6)
       {
-        v7 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v9 = AMSLogKey();
         v10 = MEMORY[0x1E696AEC0];
@@ -4025,26 +4025,26 @@ LABEL_31:
         *&buf[4] = v14;
         *&buf[12] = 2112;
         *&buf[14] = v22;
-        _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Getting ephemeral account dictionary for non-ephemeral account. account = %@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ Getting ephemeral account dictionary for non-ephemeral account. account = %@", buf, 0x16u);
         if (v9)
         {
         }
       }
 
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      v15 = +[AMSLogConfig sharedAccountsConfig];
-      [v7 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v15 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedAccountsConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v6)
       {
-        v7 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v7 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v16 = AMSLogKey();
         v17 = MEMORY[0x1E696AEC0];
@@ -4067,7 +4067,7 @@ LABEL_31:
         *&buf[4] = v21;
         *&buf[12] = 2112;
         *&buf[14] = v23;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_FAULT, "%{public}@ Getting ephemeral account dictionary for non-ephemeral account. account = %@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@ Getting ephemeral account dictionary for non-ephemeral account. account = %@", buf, 0x16u);
         if (v16)
         {
         }
@@ -4081,7 +4081,7 @@ LABEL_31:
   v32 = __Block_byref_object_copy_;
   v33 = __Block_byref_object_dispose_;
   v34 = 0;
-  v24 = [a1 ams_globalEphemeralAccountProperties];
+  ams_globalEphemeralAccountProperties = [self ams_globalEphemeralAccountProperties];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __80__ACAccount_AppleMediaServices__ams_globalEphemeralAccountPropertiesForAccount___block_invoke;
@@ -4089,7 +4089,7 @@ LABEL_31:
   v30 = buf;
   v25 = v4;
   v29 = v25;
-  [v24 readWrite:v28];
+  [ams_globalEphemeralAccountProperties readWrite:v28];
 
   v26 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -4108,8 +4108,8 @@ LABEL_31:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v11 = AMSLogKey();
     v12 = MEMORY[0x1E696AEC0];
@@ -4134,7 +4134,7 @@ LABEL_31:
     v22 = v16;
     v23 = 2114;
     v24 = v17;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ Adding ephemeral account property. Key: %{public}@, Value: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@ Adding ephemeral account property. Key: %{public}@, Value: %{public}@", buf, 0x20u);
     if (v11)
     {
 
@@ -4142,7 +4142,7 @@ LABEL_31:
     }
   }
 
-  v18 = [MEMORY[0x1E6959A28] ams_globalEphemeralAccountPropertiesForAccount:a1];
+  v18 = [MEMORY[0x1E6959A28] ams_globalEphemeralAccountPropertiesForAccount:self];
   [v18 setObject:v7 forKeyedSubscript:v8];
 }
 
@@ -4156,8 +4156,8 @@ LABEL_31:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -4179,7 +4179,7 @@ LABEL_31:
     v18 = v12;
     v19 = 2114;
     v20 = v13;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ Reading ephemeral account property. Key: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@ Reading ephemeral account property. Key: %{public}@", buf, 0x16u);
     if (v8)
     {
 
@@ -4187,7 +4187,7 @@ LABEL_31:
     }
   }
 
-  v14 = [MEMORY[0x1E6959A28] ams_globalEphemeralAccountPropertiesForAccount:a1];
+  v14 = [MEMORY[0x1E6959A28] ams_globalEphemeralAccountPropertiesForAccount:self];
   v15 = [v14 objectForKeyedSubscript:v5];
 
   return v15;
@@ -4195,25 +4195,25 @@ LABEL_31:
 
 - (uint64_t)ams_bundleOwner
 {
-  v1 = [a1 ams_isBundleOwner];
-  v2 = [v1 BOOLValue];
+  ams_isBundleOwner = [self ams_isBundleOwner];
+  bOOLValue = [ams_isBundleOwner BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)ams_homeID
 {
-  v1 = [a1 ams_homeIdentifier];
-  v2 = [v1 UUIDString];
+  ams_homeIdentifier = [self ams_homeIdentifier];
+  uUIDString = [ams_homeIdentifier UUIDString];
 
-  return v2;
+  return uUIDString;
 }
 
 - (id)ams_homeIdentifier
 {
   if (+[AMSDevice deviceIsAudioAccessory])
   {
-    v2 = [a1 _accountPropertyForKey:@"homeIdentifier" expectedClass:objc_opt_class()];
+    v2 = [self _accountPropertyForKey:@"homeIdentifier" expectedClass:objc_opt_class()];
     v3 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v2];
   }
 
@@ -4227,17 +4227,17 @@ LABEL_31:
 
 - (id)ams_homeUserID
 {
-  v1 = [a1 ams_homeUserIdentifiers];
-  v2 = [v1 firstObject];
-  v3 = [v2 UUIDString];
+  ams_homeUserIdentifiers = [self ams_homeUserIdentifiers];
+  firstObject = [ams_homeUserIdentifiers firstObject];
+  uUIDString = [firstObject UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)ams_secureToken
 {
-  v2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v3 = [v2 ams_secureTokenForAccount:a1];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  v3 = [ams_sharedAccountStore ams_secureTokenForAccount:self];
 
   return v3;
 }
@@ -4248,7 +4248,7 @@ LABEL_31:
   v5 = a3;
   v6 = [[v4 alloc] initWithUUIDString:v5];
 
-  [a1 ams_setHomeIdentifier:v6];
+  [self ams_setHomeIdentifier:v6];
 }
 
 - (void)ams_setHomeIdentifier:()AppleMediaServices
@@ -4256,8 +4256,8 @@ LABEL_31:
   v5 = a3;
   if (+[AMSDevice deviceIsAudioAccessory])
   {
-    v4 = [v5 UUIDString];
-    [a1 _setAccountProperty:v4 forKey:@"homeIdentifier" expectedClass:objc_opt_class()];
+    uUIDString = [v5 UUIDString];
+    [self _setAccountProperty:uUIDString forKey:@"homeIdentifier" expectedClass:objc_opt_class()];
   }
 }
 
@@ -4273,13 +4273,13 @@ LABEL_31:
     }
 
     v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
-    [a1 ams_addHomeUserIdentifier:v5];
+    [self ams_addHomeUserIdentifier:v5];
   }
 
   else
   {
     v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:0];
-    [a1 ams_removeHomeUserIdentifier:v5];
+    [self ams_removeHomeUserIdentifier:v5];
   }
 
 LABEL_6:
@@ -4292,12 +4292,12 @@ LABEL_6:
   v6 = MEMORY[0x1E696AD98];
   v7 = a4;
   v8 = [v6 numberWithBool:a3];
-  [a1 ams_setAccountFlagValue:v8 forAccountFlag:v7];
+  [self ams_setAccountFlagValue:v8 forAccountFlag:v7];
 }
 
 - (uint64_t)ams_valueForAccountFlag:()AppleMediaServices
 {
-  v1 = [a1 ams_accountFlagValueForAccountFlag:?];
+  v1 = [self ams_accountFlagValueForAccountFlag:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -4309,14 +4309,14 @@ LABEL_6:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
-  return v3;
+  bOOLValue = [v2 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)ams_addCookiesForResponse:()AppleMediaServices error:
 {
   v6 = [MEMORY[0x1E6959A28] _getSetCookiesForResponse:?];
-  v7 = [a1 ams_asynchronouslyAddCookies:v6];
+  v7 = [self ams_asynchronouslyAddCookies:v6];
   v8 = [v7 resultWithError:a4];
 
   return v8;
@@ -4324,7 +4324,7 @@ LABEL_6:
 
 - (uint64_t)ams_addCookiesForResponse:()AppleMediaServices
 {
-  v1 = [a1 ams_asynchronouslyAddCookiesForResponse:?];
+  v1 = [self ams_asynchronouslyAddCookiesForResponse:?];
   v2 = [v1 resultWithError:0];
 
   return v2;
@@ -4332,7 +4332,7 @@ LABEL_6:
 
 - (uint64_t)ams_addGlobalCookiesForResponse:()AppleMediaServices
 {
-  v1 = [a1 ams_asynchronouslyAddGlobalCookiesForResponse:?];
+  v1 = [self ams_asynchronouslyAddGlobalCookiesForResponse:?];
   v2 = [v1 resultWithError:0];
 
   return v2;
@@ -4340,7 +4340,7 @@ LABEL_6:
 
 - (uint64_t)_updateCookiesWithCookiesToAdd:()AppleMediaServices cookiesToRemove:error:
 {
-  v6 = [a1 _updateCookiesWithCookiesToAdd:? cookiesToRemove:?];
+  v6 = [self _updateCookiesWithCookiesToAdd:? cookiesToRemove:?];
   v7 = [v6 resultWithError:a5];
 
   return v7;
@@ -4350,15 +4350,15 @@ LABEL_6:
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 response];
+  response = [v4 response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = response;
 
     if (v6)
     {
-      v7 = [a1 ams_addCookiesForResponse:v6];
+      v7 = [self ams_addCookiesForResponse:v6];
       goto LABEL_10;
     }
   }
@@ -4373,12 +4373,12 @@ LABEL_6:
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
-    v12 = AMSHashIfNeeded(a1);
+    v12 = AMSHashIfNeeded(self);
     v13 = AMSHashIfNeeded(v4);
     v15 = 138544130;
     v16 = v10;
@@ -4388,7 +4388,7 @@ LABEL_6:
     v20 = v12;
     v21 = 2114;
     v22 = v13;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to set cookies on an account. The given AMSURLResult does not contain a NSHTTPURLResponse. account = %{public}@ | result = %{public}@", &v15, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to set cookies on an account. The given AMSURLResult does not contain a NSHTTPURLResponse. account = %{public}@ | result = %{public}@", &v15, 0x2Au);
   }
 
   v6 = 0;

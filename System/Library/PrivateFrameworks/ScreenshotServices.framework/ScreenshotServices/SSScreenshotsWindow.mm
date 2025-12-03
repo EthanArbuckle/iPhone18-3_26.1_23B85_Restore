@@ -3,12 +3,12 @@
 - (SSScreenshotsWindow)init;
 - (SSScreenshotsWindowDelegate)delegate;
 - (id)_hostViewControllerIfExists;
-- (void)_deviceBacklightChanged:(unint64_t)a3;
-- (void)_deviceLockStateChanged:(unint64_t)a3;
+- (void)_deviceBacklightChanged:(unint64_t)changed;
+- (void)_deviceLockStateChanged:(unint64_t)changed;
 - (void)_dismiss;
-- (void)_prepareRemoteViewControllerWithCompletionHandler:(id)a3;
+- (void)_prepareRemoteViewControllerWithCompletionHandler:(id)handler;
 - (void)activateRemoteViewControllerIfAppropriate;
-- (void)activeInterfaceOrientationObserver:(id)a3 observedChangeToInterfaceOrientation:(int64_t)a4 withDuration:(double)a5;
+- (void)activeInterfaceOrientationObserver:(id)observer observedChangeToInterfaceOrientation:(int64_t)orientation withDuration:(double)duration;
 - (void)dealloc;
 @end
 
@@ -34,12 +34,12 @@ void __27__SSScreenshotsWindow_init__block_invoke_2(uint64_t a1)
   v21.super_class = SSScreenshotsWindow;
   v2 = [(SSScreenshotsWindow *)&v21 init];
   [(SSScreenshotsWindow *)v2 setHidden:0];
-  v3 = [(SSScreenshotsWindow *)v2 layer];
-  [v3 setDisableUpdateMask:2];
+  layer = [(SSScreenshotsWindow *)v2 layer];
+  [layer setDisableUpdateMask:2];
 
   [(SSScreenshotsWindow *)v2 setOpaque:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [(SSScreenshotsWindow *)v2 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(SSScreenshotsWindow *)v2 setBackgroundColor:clearColor];
 
   [(SSScreenshotsWindow *)v2 setWindowLevel:*MEMORY[0x1E69DE398]];
   [(SSScreenshotsWindow *)v2 _setWindowControlsStatusBarOrientation:0];
@@ -67,8 +67,8 @@ void __27__SSScreenshotsWindow_init__block_invoke_2(uint64_t a1)
   v18 = &unk_1E85905D8;
   objc_copyWeak(&v19, &location);
   dispatch_async(v12, &v15);
-  v13 = [MEMORY[0x1E69DC888] purpleColor];
-  SSApplyDebuggingCustomizationsToViewIfAppropriate(v2, v13, 10.0);
+  purpleColor = [MEMORY[0x1E69DC888] purpleColor];
+  SSApplyDebuggingCustomizationsToViewIfAppropriate(v2, purpleColor, 10.0);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -171,8 +171,8 @@ uint64_t __30__SSScreenshotsWindow_dealloc__block_invoke(uint64_t a1)
 
 - (BOOL)hasRemoteViewController
 {
-  v2 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
-  v3 = v2 != 0;
+  _hostViewControllerIfExists = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
+  v3 = _hostViewControllerIfExists != 0;
 
   return v3;
 }
@@ -186,12 +186,12 @@ uint64_t __30__SSScreenshotsWindow_dealloc__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1D9E04000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to activate remote view controller", buf, 2u);
   }
 
-  v4 = [(SSScreenshotsWindowRootViewController *)self->_root managedViewController];
+  managedViewController = [(SSScreenshotsWindowRootViewController *)self->_root managedViewController];
 
-  if (!v4)
+  if (!managedViewController)
   {
-    v5 = [(SSScreenshotsWindow *)self delegate];
-    [v5 screenshotWindowWillBeDisplayed];
+    delegate = [(SSScreenshotsWindow *)self delegate];
+    [delegate screenshotWindowWillBeDisplayed];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -202,9 +202,9 @@ uint64_t __30__SSScreenshotsWindow_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_prepareRemoteViewControllerWithCompletionHandler:(id)a3
+- (void)_prepareRemoteViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -218,8 +218,8 @@ uint64_t __30__SSScreenshotsWindow_dealloc__block_invoke(uint64_t a1)
   v8[2] = __73__SSScreenshotsWindow__prepareRemoteViewControllerWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8590650;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [SSDittoHostViewController requestViewController:@"SSSDittoRemoteViewController" fromServiceWithBundleIdentifier:@"com.apple.ScreenshotServicesService" connectionHandler:v8];
 }
 
@@ -250,11 +250,11 @@ void __73__SSScreenshotsWindow__prepareRemoteViewControllerWithCompletionHandler
 
 - (id)_hostViewControllerIfExists
 {
-  v2 = [(SSScreenshotsWindowRootViewController *)self->_root managedViewController];
+  managedViewController = [(SSScreenshotsWindowRootViewController *)self->_root managedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = managedViewController;
   }
 
   else
@@ -267,62 +267,62 @@ void __73__SSScreenshotsWindow__prepareRemoteViewControllerWithCompletionHandler
 
 - (void)_dismiss
 {
-  v3 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
-  [v3 setDelegate:0];
+  _hostViewControllerIfExists = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
+  [_hostViewControllerIfExists setDelegate:0];
 
-  v4 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
-  v5 = [v4 disconnect];
+  _hostViewControllerIfExists2 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
+  disconnect = [_hostViewControllerIfExists2 disconnect];
 
   [(SSScreenshotsWindowRootViewController *)self->_root setManagedViewController:0];
-  v6 = [(SSScreenshotsWindow *)self delegate];
-  [v6 screenshotWindowWasDismissed];
+  delegate = [(SSScreenshotsWindow *)self delegate];
+  [delegate screenshotWindowWasDismissed];
 }
 
-- (void)activeInterfaceOrientationObserver:(id)a3 observedChangeToInterfaceOrientation:(int64_t)a4 withDuration:(double)a5
+- (void)activeInterfaceOrientationObserver:(id)observer observedChangeToInterfaceOrientation:(int64_t)orientation withDuration:(double)duration
 {
-  v8 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
+  _hostViewControllerIfExists = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
 
-  if (v8)
+  if (_hostViewControllerIfExists)
   {
-    [(SSScreenshotsWindow *)self _setRotatableViewOrientation:a4 duration:a5];
+    [(SSScreenshotsWindow *)self _setRotatableViewOrientation:orientation duration:duration];
   }
 
-  self->_lastActiveInterfaceOrientation = a4;
+  self->_lastActiveInterfaceOrientation = orientation;
 }
 
-- (void)_deviceLockStateChanged:(unint64_t)a3
+- (void)_deviceLockStateChanged:(unint64_t)changed
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    changedCopy = changed;
     _os_log_impl(&dword_1D9E04000, v5, OS_LOG_TYPE_DEFAULT, "device lock state changed %llu", &v7, 0xCu);
   }
 
-  if (a3 == 1)
+  if (changed == 1)
   {
-    v6 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
-    [v6 dismissScreenshotExperience];
+    _hostViewControllerIfExists = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
+    [_hostViewControllerIfExists dismissScreenshotExperience];
   }
 }
 
-- (void)_deviceBacklightChanged:(unint64_t)a3
+- (void)_deviceBacklightChanged:(unint64_t)changed
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    changedCopy = changed;
     _os_log_impl(&dword_1D9E04000, v5, OS_LOG_TYPE_DEFAULT, "device lock state changed, %llu", &v7, 0xCu);
   }
 
-  if (!a3)
+  if (!changed)
   {
-    v6 = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
-    [v6 dismissScreenshotExperience];
+    _hostViewControllerIfExists = [(SSScreenshotsWindow *)self _hostViewControllerIfExists];
+    [_hostViewControllerIfExists dismissScreenshotExperience];
   }
 }
 

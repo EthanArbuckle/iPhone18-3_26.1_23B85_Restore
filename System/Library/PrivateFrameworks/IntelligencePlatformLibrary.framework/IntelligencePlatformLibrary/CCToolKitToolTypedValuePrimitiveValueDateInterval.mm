@@ -1,25 +1,25 @@
 @interface CCToolKitToolTypedValuePrimitiveValueDateInterval
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolTimestamp)end;
 - (CCToolKitToolTimestamp)start;
-- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithStart:(id)a3 end:(id)a4 duration:(id)a5 error:(id *)a6;
+- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithStart:(id)start end:(id)end duration:(id)duration error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueDateInterval
 
-- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v19[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"start"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"start"];
     if (v9)
     {
       v19[0] = 0;
@@ -35,7 +35,7 @@
       v9 = v10;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"end"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"end"];
     if (!v13)
     {
       v14 = 0;
@@ -51,8 +51,8 @@
     {
 
 LABEL_13:
-      v10 = [v6 objectForKeyedSubscript:@"duration"];
-      v16 = [[CCToolKitToolTypedValuePrimitiveValueDateInterval alloc] initWithStart:v9 end:v14 duration:v10 error:a4];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
+      v16 = [[CCToolKitToolTypedValuePrimitiveValueDateInterval alloc] initWithStart:v9 end:v14 duration:v10 error:error];
       v12 = v14;
 LABEL_16:
 
@@ -78,16 +78,16 @@ LABEL_17:
   v3 = objc_opt_new();
   if (self->_start)
   {
-    v4 = [(CCToolKitToolTypedValuePrimitiveValueDateInterval *)self start];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"start"];
+    start = [(CCToolKitToolTypedValuePrimitiveValueDateInterval *)self start];
+    jsonDictionary = [start jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"start"];
   }
 
   if (self->_end)
   {
     v6 = [(CCToolKitToolTypedValuePrimitiveValueDateInterval *)self end];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"end"];
+    jsonDictionary2 = [v6 jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"end"];
   }
 
   if (self->_hasDuration)
@@ -103,11 +103,11 @@ LABEL_17:
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v10 = v5;
+  v10 = blockCopy;
   if (self->_start)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_start];
@@ -141,10 +141,10 @@ LABEL_17:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v41 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v41];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   v8 = MEMORY[0x1E6993AA8];
@@ -326,13 +326,13 @@ LABEL_43:
   return v39;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithStart:(id)a3 end:(id)a4 duration:(id)a5 error:(id *)a6
+- (CCToolKitToolTypedValuePrimitiveValueDateInterval)initWithStart:(id)start end:(id)end duration:(id)duration error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  startCopy = start;
+  endCopy = end;
+  durationCopy = duration;
   v13 = objc_opt_new();
-  if (v10)
+  if (startCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -342,14 +342,14 @@ LABEL_43:
       goto LABEL_7;
     }
 
-    v16 = [v10 data];
+    data = [startCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v11)
+    if (!endCopy)
     {
 LABEL_4:
       v17 = v15;
-      if (v12)
+      if (durationCopy)
       {
         goto LABEL_5;
       }
@@ -363,7 +363,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!endCopy)
     {
       goto LABEL_4;
     }
@@ -376,15 +376,15 @@ LABEL_11:
   if (!v20)
   {
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     v15 = v17;
     goto LABEL_14;
   }
 
-  v21 = [v11 data];
+  data2 = [endCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v12)
+  if (!durationCopy)
   {
     goto LABEL_11;
   }
@@ -396,22 +396,22 @@ LABEL_5:
 
   if (v18)
   {
-    [v12 doubleValue];
+    [durationCopy doubleValue];
     CCPBDataWriterWriteDoubleField();
 LABEL_12:
-    v22 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v22 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v19 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v19 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

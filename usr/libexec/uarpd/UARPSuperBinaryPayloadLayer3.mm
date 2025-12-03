@@ -4,50 +4,50 @@
 - (BOOL)composePersonalizedPayload;
 - (BOOL)compressPayload;
 - (BOOL)decompressPayload;
-- (BOOL)expandPayloadDictionary:(id)a3;
-- (BOOL)expandPayloadDictionaryData:(id)a3;
+- (BOOL)expandPayloadDictionary:(id)dictionary;
+- (BOOL)expandPayloadDictionaryData:(id)data;
 - (BOOL)expandPayloadDictionaryKeyValuePayload;
-- (BOOL)expandPayloadDictionaryPropertyListPayload:(id)a3;
-- (BOOL)expandPayloadDictionaryTLVs:(id)a3;
+- (BOOL)expandPayloadDictionaryPropertyListPayload:(id)payload;
+- (BOOL)expandPayloadDictionaryTLVs:(id)vs;
 - (BOOL)isFTAB;
 - (BOOL)isPropertyListPayload;
-- (BOOL)setCompressedDataBlock:(id)a3 offset:(unint64_t)a4;
-- (BOOL)setDataBlock:(id)a3 offset:(unint64_t)a4;
-- (BOOL)setDataBlockToURL:(id)a3 offset:(unint64_t)a4 url:(id)a5;
-- (BOOL)writeComposedPayloadDataToFile:(id)a3 error:(id *)a4;
-- (BOOL)writeComposedPayloadToFile:(id)a3 error:(id *)a4;
-- (BOOL)writeComposedPayloadURLToFile:(id)a3 error:(id *)a4;
+- (BOOL)setCompressedDataBlock:(id)block offset:(unint64_t)offset;
+- (BOOL)setDataBlock:(id)block offset:(unint64_t)offset;
+- (BOOL)setDataBlockToURL:(id)l offset:(unint64_t)offset url:(id)url;
+- (BOOL)writeComposedPayloadDataToFile:(id)file error:(id *)error;
+- (BOOL)writeComposedPayloadToFile:(id)file error:(id *)error;
+- (BOOL)writeComposedPayloadURLToFile:(id)file error:(id *)error;
 - (UARPSuperBinaryPayloadLayer3)init;
-- (UARPSuperBinaryPayloadLayer3)initWithPayload4cc:(id)a3 payloadVersion:(id)a4 payloadIndex:(unint64_t)a5 baseURL:(id)a6;
-- (UARPSuperBinaryPayloadLayer3)initWithPayloadData:(id)a3 payloadMetaData:(id)a4 payload4cc:(id)a5 payloadVersion:(id)a6 payloadIndex:(unint64_t)a7;
-- (UARPSuperBinaryPayloadLayer3)initWithPayloadDictionary:(id)a3 payloadsURL:(id)a4 payloadIndex:(unint64_t)a5 useFilesystem:(BOOL)a6;
-- (UARPSuperBinaryPayloadLayer3)initWithPayloadURL:(id)a3 payloadTlvs:(id)a4 payload4cc:(id)a5 payloadVersion:(id)a6 payloadIndex:(unint64_t)a7;
+- (UARPSuperBinaryPayloadLayer3)initWithPayload4cc:(id)payload4cc payloadVersion:(id)version payloadIndex:(unint64_t)index baseURL:(id)l;
+- (UARPSuperBinaryPayloadLayer3)initWithPayloadData:(id)data payloadMetaData:(id)metaData payload4cc:(id)payload4cc payloadVersion:(id)version payloadIndex:(unint64_t)index;
+- (UARPSuperBinaryPayloadLayer3)initWithPayloadDictionary:(id)dictionary payloadsURL:(id)l payloadIndex:(unint64_t)index useFilesystem:(BOOL)filesystem;
+- (UARPSuperBinaryPayloadLayer3)initWithPayloadURL:(id)l payloadTlvs:(id)tlvs payload4cc:(id)payload4cc payloadVersion:(id)version payloadIndex:(unint64_t)index;
 - (id)composeMetaData;
-- (id)containsTLV:(Class)a3;
+- (id)containsTLV:(Class)v;
 - (id)description;
 - (id)descriptionOfHeader;
 - (id)ftabDescription;
-- (id)generateHash:(int64_t)a3 ftabSubfile:(id)a4;
-- (id)generatePayloadHash:(int64_t)a3;
-- (id)getDataBlock:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)getDataRangeFromData:(_NSRange)a3;
-- (id)getDataRangeFromURL:(_NSRange)a3;
+- (id)generateHash:(int64_t)hash ftabSubfile:(id)subfile;
+- (id)generatePayloadHash:(int64_t)hash;
+- (id)getDataBlock:(unint64_t)block offset:(unint64_t)offset;
+- (id)getDataRangeFromData:(_NSRange)data;
+- (id)getDataRangeFromURL:(_NSRange)l;
 - (id)payloadData;
 - (id)payloadDataAsData;
 - (id)payloadDataAsURL;
 - (id)personalizedData;
 - (id)preparePersonalizedURL;
-- (id)setDataBlockToData:(id)a3 offset:(unint64_t)a4 payloadData:(id)a5;
+- (id)setDataBlockToData:(id)data offset:(unint64_t)offset payloadData:(id)payloadData;
 - (int64_t)determinePayloadHashAlgorithm;
 - (unint64_t)payloadLength;
-- (void)addTLV:(id)a3;
-- (void)addTLVs:(id)a3;
+- (void)addTLV:(id)v;
+- (void)addTLVs:(id)vs;
 - (void)cachePayloadData;
 - (void)hashPayload;
-- (void)removeTLV:(id)a3;
-- (void)setPayloadData:(id)a3;
-- (void)setPayloadHeader:(UARPPayloadHeader2 *)a3;
-- (void)setPayloadURL:(id)a3;
+- (void)removeTLV:(id)v;
+- (void)setPayloadData:(id)data;
+- (void)setPayloadHeader:(UARPPayloadHeader2 *)header;
+- (void)setPayloadURL:(id)l;
 @end
 
 @implementation UARPSuperBinaryPayloadLayer3
@@ -71,32 +71,32 @@
   return v2;
 }
 
-- (UARPSuperBinaryPayloadLayer3)initWithPayloadData:(id)a3 payloadMetaData:(id)a4 payload4cc:(id)a5 payloadVersion:(id)a6 payloadIndex:(unint64_t)a7
+- (UARPSuperBinaryPayloadLayer3)initWithPayloadData:(id)data payloadMetaData:(id)metaData payload4cc:(id)payload4cc payloadVersion:(id)version payloadIndex:(unint64_t)index
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  dataCopy = data;
+  metaDataCopy = metaData;
+  payload4ccCopy = payload4cc;
+  versionCopy = version;
   v16 = [(UARPSuperBinaryPayloadLayer3 *)self init];
   if (!v16)
   {
     goto LABEL_11;
   }
 
-  if (v12)
+  if (dataCopy)
   {
-    v17 = [v12 copy];
+    v17 = [dataCopy copy];
     payloadDataInternal = v16->_payloadDataInternal;
     v16->_payloadDataInternal = v17;
   }
 
-  if (v13)
+  if (metaDataCopy)
   {
-    v19 = [v13 copy];
+    v19 = [metaDataCopy copy];
     metaData = v16->_metaData;
     v16->_metaData = v19;
 
-    v21 = UARPSuperBinaryProcessMetaData(v13, v16->_log);
+    v21 = UARPSuperBinaryProcessMetaData(metaDataCopy, v16->_log);
     v22 = [NSMutableArray arrayWithArray:v21];
     tlvs = v16->_tlvs;
     v16->_tlvs = v22;
@@ -111,15 +111,15 @@
     v16->_metaData = v24;
   }
 
-  v25 = [v14 copy];
+  v25 = [payload4ccCopy copy];
   payload4cc = v16->_payload4cc;
   v16->_payload4cc = v25;
 
-  v27 = [v15 copy];
+  v27 = [versionCopy copy];
   payloadVersion = v16->_payloadVersion;
   v16->_payloadVersion = v27;
 
-  v16->_index = a7;
+  v16->_index = index;
   if (![(UARPSuperBinaryPayloadLayer3 *)v16 decompressPayload])
   {
     log = v16->_log;
@@ -137,7 +137,7 @@ LABEL_15:
     v41 = 2112;
     v42 = v33;
     v43 = 2048;
-    v44 = index;
+    indexCopy = index;
     v35 = "%s: could not decompress payload %@, index %lu";
 LABEL_14:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, v35, &v39, 0x20u);
@@ -167,7 +167,7 @@ LABEL_14:
         v41 = 2112;
         v42 = v37;
         v43 = 2048;
-        v44 = v38;
+        indexCopy = v38;
         v35 = "%s: could not expand FTAB for payload %@, index %lu";
         goto LABEL_14;
       }
@@ -181,20 +181,20 @@ LABEL_16:
   return v31;
 }
 
-- (UARPSuperBinaryPayloadLayer3)initWithPayloadURL:(id)a3 payloadTlvs:(id)a4 payload4cc:(id)a5 payloadVersion:(id)a6 payloadIndex:(unint64_t)a7
+- (UARPSuperBinaryPayloadLayer3)initWithPayloadURL:(id)l payloadTlvs:(id)tlvs payload4cc:(id)payload4cc payloadVersion:(id)version payloadIndex:(unint64_t)index
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  lCopy = l;
+  tlvsCopy = tlvs;
+  payload4ccCopy = payload4cc;
+  versionCopy = version;
   v16 = [(UARPSuperBinaryPayloadLayer3 *)self init];
   if (!v16)
   {
     goto LABEL_17;
   }
 
-  v40 = v12;
-  v17 = [v12 copy];
+  v40 = lCopy;
+  v17 = [lCopy copy];
   payloadURL = v16->_payloadURL;
   v16->_payloadURL = v17;
 
@@ -204,19 +204,19 @@ LABEL_16:
   {
     v20 = v16->_payloadURL;
     v21 = log;
-    v22 = [(NSURL *)v20 path];
+    path = [(NSURL *)v20 path];
     *buf = 136315650;
     v47 = "[UARPSuperBinaryPayloadLayer3 initWithPayloadURL:payloadTlvs:payload4cc:payloadVersion:payloadIndex:]";
     v48 = 2048;
-    v49 = a7;
+    indexCopy = index;
     v50 = 2112;
-    v51 = v22;
+    v51 = path;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s: setting up payload %lu with file %@", buf, 0x20u);
   }
 
-  v23 = [NSMutableArray arrayWithArray:v13, a7];
+  index = [NSMutableArray arrayWithArray:tlvsCopy, index];
   tlvs = v16->_tlvs;
-  v16->_tlvs = v23;
+  v16->_tlvs = index;
 
   v43 = 0u;
   v44 = 0u;
@@ -258,14 +258,14 @@ LABEL_16:
 
 LABEL_14:
 
-  v12 = v40;
+  lCopy = v40;
   if (!v16->_isFTABPayload || (v31 = [[UARPRTKitFTAB alloc] initWithURL:v16->_payloadURL], ftab = v16->_ftab, v16->_ftab = v31, ftab, v33 = 0, [(UARPRTKitFTAB *)v16->_ftab expandFileTable:0]))
   {
-    v34 = [v14 copy];
+    v34 = [payload4ccCopy copy];
     payload4cc = v16->_payload4cc;
     v16->_payload4cc = v34;
 
-    v36 = [v15 copy];
+    v36 = [versionCopy copy];
     payloadVersion = v16->_payloadVersion;
     v16->_payloadVersion = v36;
 
@@ -277,13 +277,13 @@ LABEL_17:
   return v33;
 }
 
-- (UARPSuperBinaryPayloadLayer3)initWithPayloadDictionary:(id)a3 payloadsURL:(id)a4 payloadIndex:(unint64_t)a5 useFilesystem:(BOOL)a6
+- (UARPSuperBinaryPayloadLayer3)initWithPayloadDictionary:(id)dictionary payloadsURL:(id)l payloadIndex:(unint64_t)index useFilesystem:(BOOL)filesystem
 {
-  v10 = a3;
-  v11 = a4;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v12 = [(UARPSuperBinaryPayloadLayer3 *)self init];
   v13 = v12;
-  if (v12 && (v12->_index = a5, v14 = [v11 copy], payloadsURL = v13->_payloadsURL, v13->_payloadsURL = v14, payloadsURL, v13->_useFilesystem = a6, !-[UARPSuperBinaryPayloadLayer3 expandPayloadDictionary:](v13, "expandPayloadDictionary:", v10)))
+  if (v12 && (v12->_index = index, v14 = [lCopy copy], payloadsURL = v13->_payloadsURL, v13->_payloadsURL = v14, payloadsURL, v13->_useFilesystem = filesystem, !-[UARPSuperBinaryPayloadLayer3 expandPayloadDictionary:](v13, "expandPayloadDictionary:", dictionaryCopy)))
   {
     v16 = 0;
   }
@@ -296,21 +296,21 @@ LABEL_17:
   return v16;
 }
 
-- (UARPSuperBinaryPayloadLayer3)initWithPayload4cc:(id)a3 payloadVersion:(id)a4 payloadIndex:(unint64_t)a5 baseURL:(id)a6
+- (UARPSuperBinaryPayloadLayer3)initWithPayload4cc:(id)payload4cc payloadVersion:(id)version payloadIndex:(unint64_t)index baseURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  payload4ccCopy = payload4cc;
+  versionCopy = version;
+  lCopy = l;
   v13 = [(UARPSuperBinaryPayloadLayer3 *)self init];
   if (!v13)
   {
     goto LABEL_13;
   }
 
-  if (v12)
+  if (lCopy)
   {
-    v14 = [NSString stringWithFormat:@"payload.%lu", a5];
-    v15 = [NSURL fileURLWithPath:v14 isDirectory:0 relativeToURL:v12];
+    index = [NSString stringWithFormat:@"payload.%lu", index];
+    v15 = [NSURL fileURLWithPath:index isDirectory:0 relativeToURL:lCopy];
     payloadURL = v13->_payloadURL;
     v13->_payloadURL = v15;
 
@@ -347,15 +347,15 @@ LABEL_13:
   }
 
 LABEL_6:
-  v23 = [v10 copy];
+  v23 = [payload4ccCopy copy];
   payload4cc = v13->_payload4cc;
   v13->_payload4cc = v23;
 
-  v25 = [v11 copy];
+  v25 = [versionCopy copy];
   payloadVersion = v13->_payloadVersion;
   v13->_payloadVersion = v25;
 
-  v13->_index = a5;
+  v13->_index = index;
   v13->_useFilesystem = 1;
   v27 = v13;
 LABEL_14:
@@ -363,11 +363,11 @@ LABEL_14:
   return v27;
 }
 
-- (void)setPayloadHeader:(UARPPayloadHeader2 *)a3
+- (void)setPayloadHeader:(UARPPayloadHeader2 *)header
 {
-  v3 = *&a3->payloadHeaderLength;
-  v4 = *&a3->payloadVersion.release;
-  *&self->_layer2PayloadHeader.payloadOffset = *&a3->payloadOffset;
+  v3 = *&header->payloadHeaderLength;
+  v4 = *&header->payloadVersion.release;
+  *&self->_layer2PayloadHeader.payloadOffset = *&header->payloadOffset;
   *&self->_layer2PayloadHeader.payloadVersion.release = v4;
   *&self->_layer2PayloadHeader.payloadHeaderLength = v3;
 }
@@ -435,8 +435,8 @@ LABEL_14:
         if (self->_payloadURL)
         {
           v4 = [NSString stringWithFormat:@"personalizedPayload.%lu", self->_index];
-          v5 = [(NSURL *)self->_payloadURL URLByDeletingLastPathComponent];
-          v6 = [NSURL fileURLWithPath:v4 isDirectory:0 relativeToURL:v5];
+          uRLByDeletingLastPathComponent = [(NSURL *)self->_payloadURL URLByDeletingLastPathComponent];
+          v6 = [NSURL fileURLWithPath:v4 isDirectory:0 relativeToURL:uRLByDeletingLastPathComponent];
 
           v13 = 0;
           v7 = [(UARPSuperBinaryPayloadLayer3 *)self cleanFileHandleForWriting:v6 error:&v13];
@@ -520,9 +520,9 @@ LABEL_21:
   return payloadDataInternal;
 }
 
-- (void)setPayloadData:(id)a3
+- (void)setPayloadData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   payloadDataInternal = self->_payloadDataInternal;
   self->_payloadDataInternal = v4;
 
@@ -553,8 +553,8 @@ LABEL_21:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) generateTLV];
-        [(NSMutableData *)v3 appendData:v9];
+        generateTLV = [*(*(&v13 + 1) + 8 * v8) generateTLV];
+        [(NSMutableData *)v3 appendData:generateTLV];
 
         v8 = v8 + 1;
       }
@@ -569,19 +569,19 @@ LABEL_21:
   composedMetaData = self->_composedMetaData;
   self->_composedMetaData = v3;
 
-  v11 = [(UARPSuperBinaryPayloadLayer3 *)self composedMetaData];
+  composedMetaData = [(UARPSuperBinaryPayloadLayer3 *)self composedMetaData];
 
-  return v11;
+  return composedMetaData;
 }
 
 - (void)hashPayload
 {
-  v3 = [(UARPSuperBinaryPayloadLayer3 *)self determinePayloadHashAlgorithm];
-  v4 = [[UARPMetaDataDevicePayloadHashAlgorithm alloc] initWithHashAlgorithm:v3];
+  determinePayloadHashAlgorithm = [(UARPSuperBinaryPayloadLayer3 *)self determinePayloadHashAlgorithm];
+  v4 = [[UARPMetaDataDevicePayloadHashAlgorithm alloc] initWithHashAlgorithm:determinePayloadHashAlgorithm];
   if (v4)
   {
     v7 = v4;
-    v5 = [(UARPSuperBinaryPayloadLayer3 *)self generatePayloadHash:v3];
+    v5 = [(UARPSuperBinaryPayloadLayer3 *)self generatePayloadHash:determinePayloadHashAlgorithm];
     if (v5)
     {
       v6 = [[UARPMetaDataDevicePayloadHash alloc] initWithPayloadHash:v5];
@@ -608,7 +608,7 @@ LABEL_21:
   if (v4)
   {
     [(UARPSuperBinaryPayloadLayer3 *)self removeTLV:v4];
-    v5 = [v4 hashAlgorithm];
+    hashAlgorithm = [v4 hashAlgorithm];
   }
 
   else
@@ -617,37 +617,37 @@ LABEL_21:
     if (v6)
     {
       [(UARPSuperBinaryPayloadLayer3 *)self removeTLV:v6];
-      v5 = [v6 hashAlgorithm];
+      hashAlgorithm = [v6 hashAlgorithm];
     }
 
     else
     {
-      v5 = 0;
+      hashAlgorithm = 0;
     }
   }
 
-  return v5;
+  return hashAlgorithm;
 }
 
-- (void)addTLV:(id)a3
+- (void)addTLV:(id)v
 {
-  if (a3)
+  if (v)
   {
     [(NSMutableArray *)self->_tlvs addObject:?];
   }
 }
 
-- (void)addTLVs:(id)a3
+- (void)addTLVs:(id)vs
 {
-  if (a3)
+  if (vs)
   {
     [(NSMutableArray *)self->_tlvs addObjectsFromArray:?];
   }
 }
 
-- (void)removeTLV:(id)a3
+- (void)removeTLV:(id)v
 {
-  if (a3)
+  if (v)
   {
     [(NSMutableArray *)self->_tlvs removeObject:?];
   }
@@ -687,7 +687,7 @@ LABEL_21:
   return v4;
 }
 
-- (id)containsTLV:(Class)a3
+- (id)containsTLV:(Class)v
 {
   v11 = 0u;
   v12 = 0u;
@@ -732,17 +732,17 @@ LABEL_11:
   return v9;
 }
 
-- (id)generatePayloadHash:(int64_t)a3
+- (id)generatePayloadHash:(int64_t)hash
 {
-  v4 = [[UARPHashMachine alloc] initWithAlgorithm:a3];
+  v4 = [[UARPHashMachine alloc] initWithAlgorithm:hash];
   if (v4)
   {
     v5 = [(UARPSuperBinaryPayloadLayer3 *)self containsTLV:objc_opt_class()];
     if (v5)
     {
-      v6 = self->_uncompressedHash;
+      hashValue = self->_uncompressedHash;
 LABEL_4:
-      v7 = v6;
+      v7 = hashValue;
     }
 
     else
@@ -750,7 +750,7 @@ LABEL_4:
       v8 = 0;
       while (v8 < [(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
       {
-        v9 = v8 + 1024;
+        payloadLength = v8 + 1024;
         if (v8 + 1024 <= [(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
         {
           v10 = 1024;
@@ -758,8 +758,8 @@ LABEL_4:
 
         else
         {
-          v9 = [(UARPSuperBinaryPayloadLayer3 *)self payloadLength];
-          v10 = v9 - v8;
+          payloadLength = [(UARPSuperBinaryPayloadLayer3 *)self payloadLength];
+          v10 = payloadLength - v8;
         }
 
         v11 = objc_autoreleasePoolPush();
@@ -767,7 +767,7 @@ LABEL_4:
         v13 = [(UARPHashMachine *)v4 updateHash:v12];
 
         objc_autoreleasePoolPop(v11);
-        v8 = v9;
+        v8 = payloadLength;
         if ((v13 & 1) == 0)
         {
           goto LABEL_15;
@@ -776,7 +776,7 @@ LABEL_4:
 
       if ([(UARPHashMachine *)v4 finalizeHash])
       {
-        v6 = [(UARPHashMachine *)v4 hashValue];
+        hashValue = [(UARPHashMachine *)v4 hashValue];
         goto LABEL_4;
       }
 
@@ -793,10 +793,10 @@ LABEL_15:
   return v7;
 }
 
-- (id)generateHash:(int64_t)a3 ftabSubfile:(id)a4
+- (id)generateHash:(int64_t)hash ftabSubfile:(id)subfile
 {
-  v6 = a4;
-  if (!v6)
+  subfileCopy = subfile;
+  if (!subfileCopy)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -819,11 +819,11 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v8 = [(UARPRTKitFTAB *)ftab subfileWithTag:v6];
+  v8 = [(UARPRTKitFTAB *)ftab subfileWithTag:subfileCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 generateHash:a3];
+    v10 = [v8 generateHash:hash];
   }
 
   else
@@ -841,7 +841,7 @@ LABEL_14:
   return v10;
 }
 
-- (id)getDataBlock:(unint64_t)a3 offset:(unint64_t)a4
+- (id)getDataBlock:(unint64_t)block offset:(unint64_t)offset
 {
   if (![(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
   {
@@ -853,12 +853,12 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([(UARPSuperBinaryPayloadLayer3 *)self payloadLength]<= a4)
+  if ([(UARPSuperBinaryPayloadLayer3 *)self payloadLength]<= offset)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      sub_100085C30(a4, log, self);
+      sub_100085C30(offset, log, self);
     }
 
 LABEL_13:
@@ -866,32 +866,32 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a4 + a3 > [(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
+  if (offset + block > [(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
   {
-    a3 = [(UARPSuperBinaryPayloadLayer3 *)self payloadLength]- a4;
+    block = [(UARPSuperBinaryPayloadLayer3 *)self payloadLength]- offset;
     v7 = self->_log;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v11 = 136315906;
       v12 = "[UARPSuperBinaryPayloadLayer3 getDataBlock:offset:]";
       v13 = 1024;
-      v14 = a3;
+      blockCopy = block;
       v15 = 1024;
-      v16 = a4;
+      offsetCopy = offset;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s: Can only provide %d bytes from offset %d of payload %@", &v11, 0x22u);
     }
   }
 
   if (self->_useFilesystem)
   {
-    [(UARPSuperBinaryPayloadLayer3 *)self getDataRangeFromURL:a4, a3];
+    [(UARPSuperBinaryPayloadLayer3 *)self getDataRangeFromURL:offset, block];
   }
 
   else
   {
-    [(UARPSuperBinaryPayloadLayer3 *)self getDataRangeFromData:a4, a3];
+    [(UARPSuperBinaryPayloadLayer3 *)self getDataRangeFromData:offset, block];
   }
   v8 = ;
 LABEL_14:
@@ -899,28 +899,28 @@ LABEL_14:
   return v8;
 }
 
-- (id)getDataRangeFromData:(_NSRange)a3
+- (id)getDataRangeFromData:(_NSRange)data
 {
   payloadDataInternal = self->_payloadDataInternal;
   if (payloadDataInternal)
   {
-    payloadDataInternal = [payloadDataInternal subdataWithRange:{a3.location, a3.length}];
+    payloadDataInternal = [payloadDataInternal subdataWithRange:{data.location, data.length}];
     v3 = vars8;
   }
 
   return payloadDataInternal;
 }
 
-- (id)getDataRangeFromURL:(_NSRange)a3
+- (id)getDataRangeFromURL:(_NSRange)l
 {
-  location = a3.location;
+  location = l.location;
   p_payloadURL = &self->_payloadURL;
-  a3.location = self->_payloadURL;
-  if (a3.location)
+  l.location = self->_payloadURL;
+  if (l.location)
   {
-    length = a3.length;
+    length = l.length;
     v31 = 0;
-    v7 = [NSFileHandle fileHandleForReadingFromURL:a3.location error:&v31];
+    v7 = [NSFileHandle fileHandleForReadingFromURL:l.location error:&v31];
     v8 = v31;
     if (v7)
     {
@@ -959,7 +959,7 @@ LABEL_14:
           {
             v24 = *p_payloadURL;
             v25 = v18;
-            v26 = [v24 absoluteString];
+            absoluteString = [v24 absoluteString];
             v27 = [v12 description];
             *buf = 136316162;
             v33 = "[UARPSuperBinaryPayloadLayer3 getDataRangeFromURL:]";
@@ -968,7 +968,7 @@ LABEL_14:
             v36 = 2048;
             v37 = length;
             v38 = 2112;
-            v39 = v26;
+            v39 = absoluteString;
             v40 = 2112;
             v41 = v27;
             _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s: cannot read range (offset %lu, length %lu) from %@, error %@", buf, 0x34u);
@@ -984,17 +984,17 @@ LABEL_14:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v20 = v17;
-          v21 = [(UARPSuperBinaryPayloadLayer3 *)self payloadLength];
-          v22 = [(NSURL *)self->_payloadURL absoluteString];
+          payloadLength = [(UARPSuperBinaryPayloadLayer3 *)self payloadLength];
+          absoluteString2 = [(NSURL *)self->_payloadURL absoluteString];
           v23 = [v10 description];
           *buf = 136316162;
           v33 = "[UARPSuperBinaryPayloadLayer3 getDataRangeFromURL:]";
           v34 = 2048;
           v35 = location;
           v36 = 2048;
-          v37 = v21;
+          v37 = payloadLength;
           v38 = 2112;
-          v39 = v22;
+          v39 = absoluteString2;
           v40 = 2112;
           v41 = v23;
           _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s: cannot seek to offset %lu (file length %lu) from %@, error %@", buf, 0x34u);
@@ -1032,11 +1032,11 @@ LABEL_14:
     if (self->_payloadURL)
     {
       v3 = +[NSFileManager defaultManager];
-      v4 = [(NSURL *)self->_payloadURL path];
-      v5 = [v3 attributesOfItemAtPath:v4 error:0];
+      path = [(NSURL *)self->_payloadURL path];
+      v5 = [v3 attributesOfItemAtPath:path error:0];
 
-      v6 = [v5 fileSize];
-      return v6;
+      fileSize = [v5 fileSize];
+      return fileSize;
     }
 
     return 0;
@@ -1051,19 +1051,19 @@ LABEL_14:
   return [(NSData *)payloadDataInternal length];
 }
 
-- (BOOL)setDataBlock:(id)a3 offset:(unint64_t)a4
+- (BOOL)setDataBlock:(id)block offset:(unint64_t)offset
 {
   if (self->_useFilesystem)
   {
     payloadURL = self->_payloadURL;
 
-    return [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToURL:a3 offset:a4 url:payloadURL];
+    return [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToURL:block offset:offset url:payloadURL];
   }
 
   else
   {
     p_payloadDataInternal = &self->_payloadDataInternal;
-    v8 = [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToData:a3 offset:a4 payloadData:self->_payloadDataInternal];
+    v8 = [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToData:block offset:offset payloadData:self->_payloadDataInternal];
     if (v8)
     {
       objc_storeStrong(p_payloadDataInternal, v8);
@@ -1073,32 +1073,32 @@ LABEL_14:
   }
 }
 
-- (BOOL)setDataBlockToURL:(id)a3 offset:(unint64_t)a4 url:(id)a5
+- (BOOL)setDataBlockToURL:(id)l offset:(unint64_t)offset url:(id)url
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  lCopy = l;
+  urlCopy = url;
+  if (urlCopy)
   {
     v10 = +[NSFileManager defaultManager];
-    v11 = [v9 path];
-    v12 = [v10 attributesOfItemAtPath:v11 error:0];
+    path = [urlCopy path];
+    v12 = [v10 attributesOfItemAtPath:path error:0];
 
-    v13 = [v12 fileSize];
-    if (v13 == a4)
+    fileSize = [v12 fileSize];
+    if (fileSize == offset)
     {
       v14 = objc_autoreleasePoolPush();
       v32 = 0;
-      v15 = [NSFileHandle fileHandleForWritingToURL:v9 error:&v32];
+      v15 = [NSFileHandle fileHandleForWritingToURL:urlCopy error:&v32];
       v16 = v32;
       if (v15)
       {
         v31 = 0;
-        v17 = [v15 seekToOffset:a4 error:&v31];
+        v17 = [v15 seekToOffset:offset error:&v31];
         v18 = v31;
         if (v17)
         {
           v30 = 0;
-          v19 = [v15 writeData:v8 error:&v30];
+          v19 = [v15 writeData:lCopy error:&v30];
           v20 = v30;
           v21 = v20;
           if (v19)
@@ -1153,11 +1153,11 @@ LABEL_14:
 
     else
     {
-      v24 = v13;
+      v24 = fileSize;
       v25 = self->_log;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        sub_100085EF4(a4, v24, v25);
+        sub_100085EF4(offset, v24, v25);
       }
 
       v22 = 0;
@@ -1172,18 +1172,18 @@ LABEL_14:
   return v22;
 }
 
-- (id)setDataBlockToData:(id)a3 offset:(unint64_t)a4 payloadData:(id)a5
+- (id)setDataBlockToData:(id)data offset:(unint64_t)offset payloadData:(id)payloadData
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  dataCopy = data;
+  payloadDataCopy = payloadData;
+  v10 = payloadDataCopy;
+  if (payloadDataCopy)
   {
-    if ([v9 length] == a4)
+    if ([payloadDataCopy length] == offset)
     {
       v11 = objc_autoreleasePoolPush();
       v12 = [v10 mutableCopy];
-      [v12 appendData:v8];
+      [v12 appendData:dataCopy];
       v13 = [v12 copy];
 
       objc_autoreleasePoolPop(v11);
@@ -1206,12 +1206,12 @@ LABEL_7:
 - (BOOL)compressPayload
 {
   v3 = [(UARPSuperBinaryPayloadLayer3 *)self containsTLV:objc_opt_class()];
-  v4 = [v3 chunkSize];
+  chunkSize = [v3 chunkSize];
   v5 = [(UARPSuperBinaryPayloadLayer3 *)self containsTLV:objc_opt_class()];
-  v6 = [v5 compressionAlgorithm];
+  compressionAlgorithm = [v5 compressionAlgorithm];
   if (v5)
   {
-    v7 = v6 == 0;
+    v7 = compressionAlgorithm == 0;
   }
 
   else
@@ -1219,7 +1219,7 @@ LABEL_7:
     v7 = 1;
   }
 
-  if (v7 || v3 == 0 || v4 == 0)
+  if (v7 || v3 == 0 || chunkSize == 0)
   {
     [(UARPSuperBinaryPayloadLayer3 *)self removeTLV:v3];
     [(UARPSuperBinaryPayloadLayer3 *)self removeTLV:v5];
@@ -1240,8 +1240,8 @@ LABEL_7:
     if (self->_payloadURL)
     {
       v15 = [NSString stringWithFormat:@"compressedPayload.%lu", self->_index];
-      v16 = [(NSURL *)self->_payloadURL URLByDeletingLastPathComponent];
-      v17 = [NSURL fileURLWithPath:v15 isDirectory:0 relativeToURL:v16];
+      uRLByDeletingLastPathComponent = [(NSURL *)self->_payloadURL URLByDeletingLastPathComponent];
+      v17 = [NSURL fileURLWithPath:v15 isDirectory:0 relativeToURL:uRLByDeletingLastPathComponent];
       compressedPayloadURL = self->_compressedPayloadURL;
       self->_compressedPayloadURL = v17;
 
@@ -1300,17 +1300,17 @@ LABEL_68:
               v26 = 256;
 LABEL_40:
               algorithm = v26;
-              v27 = [(UARPSuperBinaryPayloadLayer3 *)self determinePayloadHashAlgorithm];
-              v58 = [[UARPHashMachine alloc] initWithAlgorithm:v27];
-              v52 = v27;
-              v57 = [[UARPHashMachine alloc] initWithAlgorithm:v27];
+              determinePayloadHashAlgorithm = [(UARPSuperBinaryPayloadLayer3 *)self determinePayloadHashAlgorithm];
+              v58 = [[UARPHashMachine alloc] initWithAlgorithm:determinePayloadHashAlgorithm];
+              v52 = determinePayloadHashAlgorithm;
+              v57 = [[UARPHashMachine alloc] initWithAlgorithm:determinePayloadHashAlgorithm];
               v55 = v3;
-              v28 = [v3 chunkSize];
+              chunkSize2 = [v3 chunkSize];
               if ([(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
               {
                 v29 = 0;
                 v30 = 0;
-                v31 = v28;
+                v31 = chunkSize2;
                 do
                 {
                   if (v31 + v30 > [(UARPSuperBinaryPayloadLayer3 *)self payloadLength])
@@ -1399,14 +1399,14 @@ LABEL_40:
               }
 
               [(UARPHashMachine *)v58 finalizeHash];
-              v42 = [(UARPHashMachine *)v58 hashValue];
+              hashValue = [(UARPHashMachine *)v58 hashValue];
               uncompressedHash = self->_uncompressedHash;
-              self->_uncompressedHash = v42;
+              self->_uncompressedHash = hashValue;
 
               [(UARPHashMachine *)v57 finalizeHash];
-              v44 = [(UARPHashMachine *)v57 hashValue];
+              hashValue2 = [(UARPHashMachine *)v57 hashValue];
               compressedHash = self->_compressedHash;
-              self->_compressedHash = v44;
+              self->_compressedHash = hashValue2;
 
               v46 = [[UARPMetaDataDevicePayloadHashAlgorithm alloc] initWithHashAlgorithm:v52];
               if (!v46)
@@ -1501,14 +1501,14 @@ LABEL_69:
   return v10;
 }
 
-- (BOOL)setCompressedDataBlock:(id)a3 offset:(unint64_t)a4
+- (BOOL)setCompressedDataBlock:(id)block offset:(unint64_t)offset
 {
-  v6 = a3;
+  blockCopy = block;
   if (self->_useFilesystem)
   {
     if (self->_compressedPayloadURL)
     {
-      v7 = [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToURL:v6 offset:a4 url:?];
+      v7 = [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToURL:blockCopy offset:offset url:?];
     }
 
     else
@@ -1520,7 +1520,7 @@ LABEL_69:
   else
   {
     p_compressedPayloadDataInternal = &self->_compressedPayloadDataInternal;
-    v9 = [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToData:v6 offset:a4 payloadData:self->_compressedPayloadDataInternal];
+    v9 = [(UARPSuperBinaryPayloadLayer3 *)self setDataBlockToData:blockCopy offset:offset payloadData:self->_compressedPayloadDataInternal];
     v7 = v9 != 0;
     if (v9)
     {
@@ -1574,9 +1574,9 @@ LABEL_30:
               v15 = HIWORD(v34);
               v16 = v34;
               v17 = v9;
-              v18 = [v14 bytes];
+              bytes = [v14 bytes];
               v19 = [v14 length];
-              v20 = v18;
+              v20 = bytes;
               v9 = v17;
               v21 = uarpPlatformDarwinDecompressBuffer(v16, v20, v19, v17, __n);
               if (v21)
@@ -1668,25 +1668,25 @@ LABEL_31:
   return v22;
 }
 
-- (BOOL)writeComposedPayloadToFile:(id)a3 error:(id *)a4
+- (BOOL)writeComposedPayloadToFile:(id)file error:(id *)error
 {
   if (self->_useFilesystem)
   {
-    return [(UARPSuperBinaryPayloadLayer3 *)self writeComposedPayloadURLToFile:a3 error:a4];
+    return [(UARPSuperBinaryPayloadLayer3 *)self writeComposedPayloadURLToFile:file error:error];
   }
 
   else
   {
-    return [(UARPSuperBinaryPayloadLayer3 *)self writeComposedPayloadDataToFile:a3 error:a4];
+    return [(UARPSuperBinaryPayloadLayer3 *)self writeComposedPayloadDataToFile:file error:error];
   }
 }
 
-- (BOOL)writeComposedPayloadDataToFile:(id)a3 error:(id *)a4
+- (BOOL)writeComposedPayloadDataToFile:(id)file error:(id *)error
 {
   payloadDataInternal = self->_payloadDataInternal;
   if (payloadDataInternal)
   {
-    return [a3 writeData:payloadDataInternal error:a4];
+    return [file writeData:payloadDataInternal error:error];
   }
 
   else
@@ -1695,37 +1695,37 @@ LABEL_31:
   }
 }
 
-- (BOOL)writeComposedPayloadURLToFile:(id)a3 error:(id *)a4
+- (BOOL)writeComposedPayloadURLToFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   if (self->_payloadURL)
   {
     v7 = +[NSFileManager defaultManager];
-    v8 = [(NSURL *)self->_payloadURL path];
-    v9 = [v7 fileExistsAtPath:v8];
+    path = [(NSURL *)self->_payloadURL path];
+    v9 = [v7 fileExistsAtPath:path];
 
     if (v9)
     {
-      v10 = [NSFileHandle fileHandleForReadingFromURL:self->_payloadURL error:a4];
+      v10 = [NSFileHandle fileHandleForReadingFromURL:self->_payloadURL error:error];
       if (v10)
       {
-        v11 = [(UARPSuperBinaryPayloadLayer3 *)self composedPayloadLength];
+        composedPayloadLength = [(UARPSuperBinaryPayloadLayer3 *)self composedPayloadLength];
         while (1)
         {
           v12 = objc_autoreleasePoolPush();
-          v13 = [v10 readDataUpToLength:1024 error:a4];
+          v13 = [v10 readDataUpToLength:1024 error:error];
           v14 = [v13 length];
-          v15 = v11 >= v14;
-          v11 -= v14;
+          v15 = composedPayloadLength >= v14;
+          composedPayloadLength -= v14;
           if (!v15)
           {
             break;
           }
 
-          v17 = [v6 writeData:v13 error:a4];
+          v17 = [fileCopy writeData:v13 error:error];
 
           objc_autoreleasePoolPop(v12);
-          if (!v17 || !v11)
+          if (!v17 || !composedPayloadLength)
           {
             goto LABEL_13;
           }
@@ -1734,7 +1734,7 @@ LABEL_31:
         objc_autoreleasePoolPop(v12);
         v17 = 0;
 LABEL_13:
-        v16 = v17 & [v10 closeAndReturnError:a4];
+        v16 = v17 & [v10 closeAndReturnError:error];
       }
 
       else
@@ -1757,17 +1757,17 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)expandPayloadDictionary:(id)a3
+- (BOOL)expandPayloadDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Payload 4CC"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Payload 4CC"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [[UARPComponentTag alloc] initWithString:v5];
     payload4cc = self->_payload4cc;
     self->_payload4cc = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"Payload Version"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"Payload Version"];
     if (v8)
     {
       objc_opt_class();
@@ -1786,7 +1786,7 @@ LABEL_13:
     payloadVersion = self->_payloadVersion;
     self->_payloadVersion = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"Payload Filepath"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"Payload Filepath"];
     p_filepath = &self->_filepath;
     filepath = self->_filepath;
     self->_filepath = v11;
@@ -1817,24 +1817,24 @@ LABEL_13:
     self->_payloadURL = v16;
 
     v18 = +[NSFileManager defaultManager];
-    v19 = [(NSURL *)self->_payloadURL path];
-    v20 = [v18 fileExistsAtPath:v19];
+    path = [(NSURL *)self->_payloadURL path];
+    v20 = [v18 fileExistsAtPath:path];
 
     if (v20)
     {
-      v21 = [v4 objectForKeyedSubscript:@"Payload Long Name"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"Payload Long Name"];
       longname = self->_longname;
       self->_longname = v21;
 
       if (!self->_longname || (v23 = *p_filepath, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v24 = [v4 objectForKeyedSubscript:@"Property List Path"];
+        v24 = [dictionaryCopy objectForKeyedSubscript:@"Property List Path"];
         propertyListPath = self->_propertyListPath;
         self->_propertyListPath = v24;
 
         if (!self->_propertyListPath || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v26 = [v4 objectForKeyedSubscript:@"Property List Version Path"];
+          v26 = [dictionaryCopy objectForKeyedSubscript:@"Property List Version Path"];
           if (v26)
           {
             objc_opt_class();
@@ -1858,9 +1858,9 @@ LABEL_13:
             self->_propertyListVersion = v27;
           }
 
-          if ([(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryTLVs:v4])
+          if ([(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryTLVs:dictionaryCopy])
           {
-            v15 = [(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryData:v4];
+            v15 = [(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryData:dictionaryCopy];
 LABEL_39:
 
             goto LABEL_29;
@@ -1908,9 +1908,9 @@ LABEL_30:
   return v15;
 }
 
-- (BOOL)expandPayloadDictionaryTLVs:(id)a3
+- (BOOL)expandPayloadDictionaryTLVs:(id)vs
 {
-  v4 = [a3 objectForKeyedSubscript:@"Payload MetaData"];
+  v4 = [vs objectForKeyedSubscript:@"Payload MetaData"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -1935,14 +1935,14 @@ LABEL_30:
   return v5;
 }
 
-- (BOOL)expandPayloadDictionaryData:(id)a3
+- (BOOL)expandPayloadDictionaryData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(UARPSuperBinaryPayloadLayer3 *)self isPropertyListPayload])
   {
     if (self->_propertyListPath)
     {
-      v5 = [(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryKeyValuePayload];
+      expandPayloadDictionaryKeyValuePayload = [(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryKeyValuePayload];
       goto LABEL_5;
     }
 
@@ -1974,15 +1974,15 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v5 = [(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryPropertyListPayload:v4];
+  expandPayloadDictionaryKeyValuePayload = [(UARPSuperBinaryPayloadLayer3 *)self expandPayloadDictionaryPropertyListPayload:dataCopy];
 LABEL_5:
-  v6 = v5;
+  v6 = expandPayloadDictionaryKeyValuePayload;
 LABEL_6:
 
   return v6;
 }
 
-- (BOOL)expandPayloadDictionaryPropertyListPayload:(id)a3
+- (BOOL)expandPayloadDictionaryPropertyListPayload:(id)payload
 {
   v4 = [NSMutableDictionary dictionaryWithContentsOfURL:self->_payloadURL];
   if (v4)
@@ -2055,9 +2055,9 @@ LABEL_19:
       do
       {
         v8 = v7;
-        v9 = [v5 firstObject];
+        firstObject = [v5 firstObject];
         [v5 removeObjectAtIndex:0];
-        v7 = [v7 objectForKeyedSubscript:v9];
+        v7 = [v7 objectForKeyedSubscript:firstObject];
       }
 
       while ([v5 count]);
@@ -2093,9 +2093,9 @@ LABEL_29:
     {
       do
       {
-        v14 = [v12 firstObject];
+        firstObject2 = [v12 firstObject];
         [v12 removeObjectAtIndex:0];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        v15 = [v13 objectForKeyedSubscript:firstObject2];
 
         v13 = v15;
       }
@@ -2190,12 +2190,12 @@ LABEL_31:
       {
         if (self->_payloadURL)
         {
-          v4 = [(UARPSuperBinaryPayloadLayer3 *)self preparePersonalizedURL];
-          if (v4)
+          preparePersonalizedURL = [(UARPSuperBinaryPayloadLayer3 *)self preparePersonalizedURL];
+          if (preparePersonalizedURL)
           {
-            if ([(UARPRTKitFTAB *)self->_ftab writeToURL:v4])
+            if ([(UARPRTKitFTAB *)self->_ftab writeToURL:preparePersonalizedURL])
             {
-              objc_storeStrong(&self->_payloadURL, v4);
+              objc_storeStrong(&self->_payloadURL, preparePersonalizedURL);
               v5 = [[UARPRTKitFTAB alloc] initWithURL:self->_payloadURL];
               v6 = self->_ftab;
               self->_ftab = v5;
@@ -2252,8 +2252,8 @@ LABEL_29:
   v3 = [NSString stringWithFormat:@"personalizedPayload.%lu", self->_index];
   if (v3)
   {
-    v4 = [(NSURL *)self->_payloadURL URLByDeletingLastPathComponent];
-    v5 = [NSURL fileURLWithPath:v3 isDirectory:0 relativeToURL:v4];
+    uRLByDeletingLastPathComponent = [(NSURL *)self->_payloadURL URLByDeletingLastPathComponent];
+    v5 = [NSURL fileURLWithPath:v3 isDirectory:0 relativeToURL:uRLByDeletingLastPathComponent];
 
     if (v5)
     {
@@ -2324,9 +2324,9 @@ LABEL_29:
   }
 }
 
-- (void)setPayloadURL:(id)a3
+- (void)setPayloadURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
   {
     sub_100086EBC();

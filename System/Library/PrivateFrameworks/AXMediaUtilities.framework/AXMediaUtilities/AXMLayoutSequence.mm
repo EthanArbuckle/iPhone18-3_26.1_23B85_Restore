@@ -1,17 +1,17 @@
 @interface AXMLayoutSequence
-+ (id)sequence:(id)a3;
++ (id)sequence:(id)sequence;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 @end
 
 @implementation AXMLayoutSequence
 
-+ (id)sequence:(id)a3
++ (id)sequence:(id)sequence
 {
-  v3 = a3;
+  sequenceCopy = sequence;
   v4 = objc_alloc_init(AXMLayoutSequence);
   feature = v4->_feature;
-  v4->_feature = v3;
+  v4->_feature = sequenceCopy;
 
   return v4;
 }

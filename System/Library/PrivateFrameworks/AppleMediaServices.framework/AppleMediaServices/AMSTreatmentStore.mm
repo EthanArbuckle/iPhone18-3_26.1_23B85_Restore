@@ -1,19 +1,19 @@
 @interface AMSTreatmentStore
 + (id)defaultTreatmentStore;
-- (AMSTreatmentStore)initWithCachePolicy:(int64_t)a3;
-- (id)_encodeExperimentData:(id)a3;
-- (id)_treatmentOverridesForAreas:(id)a3;
+- (AMSTreatmentStore)initWithCachePolicy:(int64_t)policy;
+- (id)_encodeExperimentData:(id)data;
+- (id)_treatmentOverridesForAreas:(id)areas;
 - (id)_treatmentStoreService;
-- (id)activeTreatmentsForAreas:(id)a3;
-- (id)areasForNamespaces:(id)a3;
-- (id)areasForTopics:(id)a3;
-- (id)areasWithIDs:(id)a3;
-- (id)encodeExperimentDataForTopic:(id)a3;
-- (id)experimentDataForAreas:(id)a3;
+- (id)activeTreatmentsForAreas:(id)areas;
+- (id)areasForNamespaces:(id)namespaces;
+- (id)areasForTopics:(id)topics;
+- (id)areasWithIDs:(id)ds;
+- (id)encodeExperimentDataForTopic:(id)topic;
+- (id)experimentDataForAreas:(id)areas;
 - (id)synchronizeTreatments;
-- (id)treatmentsForAreas:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)treatmentsPayloadForAreas:(id)a3;
-- (id)treatmentsPayloadForTreatments:(id)a3;
+- (id)treatmentsForAreas:(id)areas startDate:(id)date endDate:(id)endDate;
+- (id)treatmentsPayloadForAreas:(id)areas;
+- (id)treatmentsPayloadForTreatments:(id)treatments;
 @end
 
 @implementation AMSTreatmentStore
@@ -39,13 +39,13 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
 
 - (id)_treatmentStoreService
 {
-  v2 = [(AMSTreatmentStore *)self engagement];
-  v3 = [v2 treatmentStoreService];
+  engagement = [(AMSTreatmentStore *)self engagement];
+  treatmentStoreService = [engagement treatmentStoreService];
 
-  return v3;
+  return treatmentStoreService;
 }
 
-- (AMSTreatmentStore)initWithCachePolicy:(int64_t)a3
+- (AMSTreatmentStore)initWithCachePolicy:(int64_t)policy
 {
   v9.receiver = self;
   v9.super_class = AMSTreatmentStore;
@@ -53,7 +53,7 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_cachePolicy = a3;
+    v4->_cachePolicy = policy;
     v6 = objc_alloc_init(AMSEngagement);
     engagement = v5->_engagement;
     v5->_engagement = v6;
@@ -62,11 +62,11 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
   return v5;
 }
 
-- (id)_encodeExperimentData:(id)a3
+- (id)_encodeExperimentData:(id)data
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 count])
+  dataCopy = data;
+  if (![dataCopy count])
   {
     v17 = [AMSPromise promiseWithResult:&stru_1F071BA78];
     goto LABEL_22;
@@ -78,8 +78,8 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -88,12 +88,12 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
     v27 = 2114;
     v28 = v7;
     v29 = 2114;
-    v30 = v3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Serializing experiment data: %{public}@", buf, 0x20u);
+    v30 = dataCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Serializing experiment data: %{public}@", buf, 0x20u);
   }
 
   v24 = 0;
-  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v24];
+  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dataCopy options:0 error:&v24];
   v9 = v24;
   v10 = +[AMSLogConfig sharedTreatmentsConfig];
   v11 = v10;
@@ -104,8 +104,8 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -113,7 +113,7 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
       v26 = v13;
       v27 = 2114;
       v28 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Serialized experiment data successfully", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Serialized experiment data successfully", buf, 0x16u);
     }
 
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v8 encoding:4];
@@ -135,8 +135,8 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v11 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -147,7 +147,7 @@ uint64_t __42__AMSTreatmentStore_defaultTreatmentStore__block_invoke()
       v28 = v20;
       v29 = 2114;
       v30 = v21;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Experiment data serialization error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Experiment data serialization error: %{public}@", buf, 0x20u);
     }
 
     v15 = AMSError(3, @"Treatment Store Failure", @"Failed to encode experiment data due to a JSON serialization error", v9);
@@ -162,16 +162,16 @@ LABEL_22:
   return v17;
 }
 
-- (id)_treatmentOverridesForAreas:(id)a3
+- (id)_treatmentOverridesForAreas:(id)areas
 {
-  v3 = a3;
+  areasCopy = areas;
   v4 = +[AMSDefaults treatmentOverrides];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__AMSTreatmentStore__treatmentOverridesForAreas___block_invoke;
   v8[3] = &unk_1E73BCB98;
-  v9 = v3;
-  v5 = v3;
+  v9 = areasCopy;
+  v5 = areasCopy;
   v6 = [v4 ams_mapWithTransform:v8];
 
   return v6;
@@ -202,12 +202,12 @@ AMSPair *__49__AMSTreatmentStore__treatmentOverridesForAreas___block_invoke(uint
   return v13;
 }
 
-- (id)activeTreatmentsForAreas:(id)a3
+- (id)activeTreatmentsForAreas:(id)areas
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  areasCopy = areas;
   v6 = [v4 now];
-  v7 = [(AMSTreatmentStore *)self treatmentsForAreas:v5 startDate:v6 endDate:v6];
+  v7 = [(AMSTreatmentStore *)self treatmentsForAreas:areasCopy startDate:v6 endDate:v6];
 
   v8 = [v7 thenWithBlock:&__block_literal_global_48_2];
 
@@ -222,10 +222,10 @@ id __46__AMSTreatmentStore_activeTreatmentsForAreas___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (id)areasForNamespaces:(id)a3
+- (id)areasForNamespaces:(id)namespaces
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namespacesCopy = namespaces;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedTreatmentsConfig];
   if (!v6)
@@ -233,37 +233,37 @@ id __46__AMSTreatmentStore_activeTreatmentsForAreas___block_invoke(uint64_t a1, 
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
     v29 = objc_opt_class();
     v30 = 2114;
     v31 = v5;
     v32 = 2114;
-    v33 = v4;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching area identifiers (namespaces: %{public}@)", buf, 0x20u);
+    v33 = namespacesCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching area identifiers (namespaces: %{public}@)", buf, 0x20u);
   }
 
   v8 = [[AMSMutablePromise alloc] initWithTimeout:3.0];
-  v9 = [(AMSTreatmentStore *)self _treatmentStoreService];
+  _treatmentStoreService = [(AMSTreatmentStore *)self _treatmentStoreService];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __40__AMSTreatmentStore_areasForNamespaces___block_invoke;
   v26[3] = &unk_1E73B34B8;
   v10 = v8;
   v27 = v10;
-  [v9 addErrorBlock:v26];
+  [_treatmentStoreService addErrorBlock:v26];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __40__AMSTreatmentStore_areasForNamespaces___block_invoke_2;
   v22[3] = &unk_1E73BCC00;
-  v23 = v4;
-  v24 = self;
+  v23 = namespacesCopy;
+  selfCopy = self;
   v11 = v10;
   v25 = v11;
-  v12 = v4;
-  [v9 addSuccessBlock:v22];
+  v12 = namespacesCopy;
+  [_treatmentStoreService addSuccessBlock:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __40__AMSTreatmentStore_areasForNamespaces___block_invoke_4;
@@ -377,10 +377,10 @@ void __40__AMSTreatmentStore_areasForNamespaces___block_invoke_59(uint64_t a1, v
   }
 }
 
-- (id)areasForTopics:(id)a3
+- (id)areasForTopics:(id)topics
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  topicsCopy = topics;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedTreatmentsConfig];
   if (!v6)
@@ -388,37 +388,37 @@ void __40__AMSTreatmentStore_areasForNamespaces___block_invoke_59(uint64_t a1, v
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
     v29 = objc_opt_class();
     v30 = 2114;
     v31 = v5;
     v32 = 2114;
-    v33 = v4;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching area identifiers (topics: %{public}@)", buf, 0x20u);
+    v33 = topicsCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching area identifiers (topics: %{public}@)", buf, 0x20u);
   }
 
   v8 = [[AMSMutablePromise alloc] initWithTimeout:3.0];
-  v9 = [(AMSTreatmentStore *)self _treatmentStoreService];
+  _treatmentStoreService = [(AMSTreatmentStore *)self _treatmentStoreService];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __36__AMSTreatmentStore_areasForTopics___block_invoke;
   v26[3] = &unk_1E73B34B8;
   v10 = v8;
   v27 = v10;
-  [v9 addErrorBlock:v26];
+  [_treatmentStoreService addErrorBlock:v26];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __36__AMSTreatmentStore_areasForTopics___block_invoke_2;
   v22[3] = &unk_1E73BCC00;
-  v23 = v4;
-  v24 = self;
+  v23 = topicsCopy;
+  selfCopy = self;
   v11 = v10;
   v25 = v11;
-  v12 = v4;
-  [v9 addSuccessBlock:v22];
+  v12 = topicsCopy;
+  [_treatmentStoreService addSuccessBlock:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __36__AMSTreatmentStore_areasForTopics___block_invoke_4;
@@ -532,10 +532,10 @@ void __36__AMSTreatmentStore_areasForTopics___block_invoke_61(uint64_t a1, void 
   }
 }
 
-- (id)areasWithIDs:(id)a3
+- (id)areasWithIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedTreatmentsConfig];
   if (!v6)
@@ -543,37 +543,37 @@ void __36__AMSTreatmentStore_areasForTopics___block_invoke_61(uint64_t a1, void 
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
     v29 = objc_opt_class();
     v30 = 2114;
     v31 = v5;
     v32 = 2114;
-    v33 = v4;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching areas (identifiers: %{public}@)", buf, 0x20u);
+    v33 = dsCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching areas (identifiers: %{public}@)", buf, 0x20u);
   }
 
   v8 = [[AMSMutablePromise alloc] initWithTimeout:3.0];
-  v9 = [(AMSTreatmentStore *)self _treatmentStoreService];
+  _treatmentStoreService = [(AMSTreatmentStore *)self _treatmentStoreService];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __34__AMSTreatmentStore_areasWithIDs___block_invoke;
   v26[3] = &unk_1E73B34B8;
   v10 = v8;
   v27 = v10;
-  [v9 addErrorBlock:v26];
+  [_treatmentStoreService addErrorBlock:v26];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __34__AMSTreatmentStore_areasWithIDs___block_invoke_2;
   v22[3] = &unk_1E73BCC00;
-  v23 = v4;
-  v24 = self;
+  v23 = dsCopy;
+  selfCopy = self;
   v11 = v10;
   v25 = v11;
-  v12 = v4;
-  [v9 addSuccessBlock:v22];
+  v12 = dsCopy;
+  [_treatmentStoreService addSuccessBlock:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __34__AMSTreatmentStore_areasWithIDs___block_invoke_4;
@@ -688,16 +688,16 @@ void __34__AMSTreatmentStore_areasWithIDs___block_invoke_62(uint64_t a1, void *a
   }
 }
 
-- (id)experimentDataForAreas:(id)a3
+- (id)experimentDataForAreas:(id)areas
 {
-  v4 = a3;
-  v5 = [(AMSTreatmentStore *)self activeTreatmentsForAreas:v4];
+  areasCopy = areas;
+  v5 = [(AMSTreatmentStore *)self activeTreatmentsForAreas:areasCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__AMSTreatmentStore_experimentDataForAreas___block_invoke;
   v9[3] = &unk_1E73B5C28;
-  v10 = v4;
-  v6 = v4;
+  v10 = areasCopy;
+  v6 = areasCopy;
   v7 = [v5 thenWithBlock:v9];
 
   return v7;
@@ -762,25 +762,25 @@ id __44__AMSTreatmentStore_experimentDataForAreas___block_invoke(uint64_t a1, vo
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
     v21 = v3;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Synchronizing treatments", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Synchronizing treatments", buf, 0x16u);
   }
 
-  v6 = [(AMSTreatmentStore *)self _treatmentStoreService];
+  _treatmentStoreService = [(AMSTreatmentStore *)self _treatmentStoreService];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __42__AMSTreatmentStore_synchronizeTreatments__block_invoke;
   v17[3] = &unk_1E73BCC50;
   v17[4] = self;
-  v7 = [v6 thenWithBlock:v17];
+  v7 = [_treatmentStoreService thenWithBlock:v17];
   v8 = [v7 promiseWithTimeout:3.0];
-  v9 = [v8 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v8 binaryPromiseAdapter];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -789,7 +789,7 @@ id __44__AMSTreatmentStore_experimentDataForAreas___block_invoke(uint64_t a1, vo
   v15[4] = self;
   v10 = v3;
   v16 = v10;
-  [v9 addErrorBlock:v15];
+  [binaryPromiseAdapter addErrorBlock:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68;
@@ -797,9 +797,9 @@ id __44__AMSTreatmentStore_experimentDataForAreas___block_invoke(uint64_t a1, vo
   v13[4] = self;
   v14 = v10;
   v11 = v10;
-  [v9 addSuccessBlock:v13];
+  [binaryPromiseAdapter addSuccessBlock:v13];
 
-  return v9;
+  return binaryPromiseAdapter;
 }
 
 id __42__AMSTreatmentStore_synchronizeTreatments__block_invoke(uint64_t a1, void *a2)
@@ -863,12 +863,12 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
   }
 }
 
-- (id)treatmentsForAreas:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)treatmentsForAreas:(id)areas startDate:(id)date endDate:(id)endDate
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v38 = a4;
-  v9 = a5;
+  areasCopy = areas;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = AMSSetLogKeyIfNeeded();
   v11 = +[AMSLogConfig sharedTreatmentsConfig];
   if (!v11)
@@ -876,30 +876,30 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
     v55 = objc_opt_class();
     v56 = 2114;
     v57 = v10;
     v58 = 2114;
-    v59 = v8;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching treatments (areas: %{public}@)", buf, 0x20u);
+    v59 = areasCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching treatments (areas: %{public}@)", buf, 0x20u);
   }
 
-  v13 = [(AMSTreatmentStore *)self _treatmentOverridesForAreas:v8];
+  v13 = [(AMSTreatmentStore *)self _treatmentOverridesForAreas:areasCopy];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke;
   v52[3] = &unk_1E73B2E28;
   v14 = v13;
   v53 = v14;
-  v15 = [v8 ams_filterUsingTest:v52];
+  v15 = [areasCopy ams_filterUsingTest:v52];
   v16 = [v15 count];
   v17 = +[AMSLogConfig sharedTreatmentsConfig];
   v18 = v17;
-  v36 = v8;
+  v36 = areasCopy;
   if (v16)
   {
     if (!v17)
@@ -907,8 +907,8 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v20 = objc_opt_class();
       *buf = 138543874;
@@ -917,7 +917,7 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
       v57 = v10;
       v58 = 2114;
       v59 = v14;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Overridden treatments: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Overridden treatments: %{public}@", buf, 0x20u);
     }
 
     v21 = +[AMSLogConfig sharedTreatmentsConfig];
@@ -926,8 +926,8 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v23 = objc_opt_class();
       *buf = 138543874;
@@ -936,32 +936,32 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
       v57 = v10;
       v58 = 2114;
       v59 = v15;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching treatments (missing areas: %{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Fetching treatments (missing areas: %{public}@)", buf, 0x20u);
     }
 
     v24 = [[AMSMutablePromise alloc] initWithTimeout:3.0];
-    v25 = [(AMSTreatmentStore *)self _treatmentStoreService];
+    _treatmentStoreService = [(AMSTreatmentStore *)self _treatmentStoreService];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke_70;
     v50[3] = &unk_1E73B34B8;
     v26 = v24;
     v51 = v26;
-    [v25 addErrorBlock:v50];
+    [_treatmentStoreService addErrorBlock:v50];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke_2;
     v43[3] = &unk_1E73BCC78;
     v44 = v15;
-    v45 = self;
-    v27 = v38;
-    v46 = v38;
-    v28 = v9;
-    v47 = v9;
+    selfCopy = self;
+    v27 = dateCopy;
+    v46 = dateCopy;
+    v28 = endDateCopy;
+    v47 = endDateCopy;
     v29 = v26;
     v48 = v29;
     v49 = v14;
-    [v25 addSuccessBlock:v43];
+    [_treatmentStoreService addSuccessBlock:v43];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke_4;
@@ -988,8 +988,8 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v33 = [v18 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+    oSLogObject4 = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
     {
       v34 = objc_opt_class();
       *buf = 138543874;
@@ -998,12 +998,12 @@ void __42__AMSTreatmentStore_synchronizeTreatments__block_invoke_68(uint64_t a1)
       v57 = v10;
       v58 = 2114;
       v59 = v14;
-      _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] All treatments were overridden: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] All treatments were overridden: %{public}@", buf, 0x20u);
     }
 
     v32 = [AMSPromise promiseWithResult:v14];
-    v27 = v38;
-    v28 = v9;
+    v27 = dateCopy;
+    v28 = endDateCopy;
   }
 
   return v32;
@@ -1112,9 +1112,9 @@ void __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke
   }
 }
 
-- (id)treatmentsPayloadForAreas:(id)a3
+- (id)treatmentsPayloadForAreas:(id)areas
 {
-  v4 = [(AMSTreatmentStore *)self activeTreatmentsForAreas:a3];
+  v4 = [(AMSTreatmentStore *)self activeTreatmentsForAreas:areas];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AMSTreatmentStore_treatmentsPayloadForAreas___block_invoke;
@@ -1125,12 +1125,12 @@ void __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke
   return v5;
 }
 
-- (id)treatmentsPayloadForTreatments:(id)a3
+- (id)treatmentsPayloadForTreatments:(id)treatments
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  treatmentsCopy = treatments;
+  allKeys = [treatmentsCopy allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count") + 1}];
   [v20 addObject:@"1"];
@@ -1154,15 +1154,15 @@ void __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
-        v12 = [v11 identifier];
-        if (v12)
+        v11 = [treatmentsCopy objectForKey:v10];
+        identifier = [v11 identifier];
+        if (identifier)
         {
           v26[0] = v10;
           v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "participationType")}];
           v14 = [v13 description];
           v26[1] = v14;
-          v26[2] = v12;
+          v26[2] = identifier;
           v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
           v16 = [v15 componentsJoinedByString:@"+"];
 
@@ -1194,11 +1194,11 @@ void __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke
   return v18;
 }
 
-- (id)encodeExperimentDataForTopic:(id)a3
+- (id)encodeExperimentDataForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  topicCopy = topic;
+  v5 = topicCopy;
+  if (topicCopy && [topicCopy length])
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObject:v5];
     v7 = [(AMSTreatmentStore *)self areasForTopics:v6];
@@ -1207,7 +1207,7 @@ void __58__AMSTreatmentStore_treatmentsForAreas_startDate_endDate___block_invoke
     v10[2] = __50__AMSTreatmentStore_encodeExperimentDataForTopic___block_invoke;
     v10[3] = &unk_1E73B3F20;
     v11 = v5;
-    v12 = self;
+    selfCopy = self;
     v8 = [v7 thenWithBlock:v10];
   }
 

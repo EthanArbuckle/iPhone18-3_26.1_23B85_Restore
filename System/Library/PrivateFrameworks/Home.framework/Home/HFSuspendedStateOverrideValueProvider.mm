@@ -1,21 +1,21 @@
 @interface HFSuspendedStateOverrideValueProvider
 + (NSDictionary)overrideDefaultValueForCharacteristicType;
-- (BOOL)valueSource:(id)a3 shouldOverrideValueForCharacteristic:(id)a4;
-- (id)valueSource:(id)a3 overrideValueForCharacteristic:(id)a4;
+- (BOOL)valueSource:(id)source shouldOverrideValueForCharacteristic:(id)characteristic;
+- (id)valueSource:(id)source overrideValueForCharacteristic:(id)characteristic;
 @end
 
 @implementation HFSuspendedStateOverrideValueProvider
 
-- (BOOL)valueSource:(id)a3 shouldOverrideValueForCharacteristic:(id)a4
+- (BOOL)valueSource:(id)source shouldOverrideValueForCharacteristic:(id)characteristic
 {
-  v4 = a4;
-  v5 = [v4 service];
-  v6 = [v5 accessory];
-  if ([v6 hf_isSuspended])
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  if ([accessory hf_isSuspended])
   {
-    v7 = [objc_opt_class() overrideDefaultValueForCharacteristicType];
-    v8 = [v4 characteristicType];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    overrideDefaultValueForCharacteristicType = [objc_opt_class() overrideDefaultValueForCharacteristicType];
+    characteristicType = [characteristicCopy characteristicType];
+    v9 = [overrideDefaultValueForCharacteristicType objectForKeyedSubscript:characteristicType];
     v10 = v9 != 0;
   }
 
@@ -27,44 +27,44 @@
   return v10;
 }
 
-- (id)valueSource:(id)a3 overrideValueForCharacteristic:(id)a4
+- (id)valueSource:(id)source overrideValueForCharacteristic:(id)characteristic
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [v4 service];
-  v6 = [v5 accessory];
-  v7 = [v6 hf_isSuspended];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  hf_isSuspended = [accessory hf_isSuspended];
 
-  if (v7)
+  if (hf_isSuspended)
   {
-    v8 = [objc_opt_class() overrideDefaultValueForCharacteristicType];
-    v9 = [v4 characteristicType];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    overrideDefaultValueForCharacteristicType = [objc_opt_class() overrideDefaultValueForCharacteristicType];
+    characteristicType = [characteristicCopy characteristicType];
+    value = [overrideDefaultValueForCharacteristicType objectForKeyedSubscript:characteristicType];
 
     v11 = HFLogForCategory(0x3DuLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 characteristicType];
-      v13 = [v4 service];
-      v14 = [v13 accessory];
+      characteristicType2 = [characteristicCopy characteristicType];
+      service2 = [characteristicCopy service];
+      accessory2 = [service2 accessory];
       v17 = 138412802;
-      v18 = v12;
+      v18 = characteristicType2;
       v19 = 2112;
-      v20 = v10;
+      v20 = value;
       v21 = 2112;
-      v22 = v14;
+      v22 = accessory2;
       _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Overriding characteristic %@ value with %@ for suspended accessory %@", &v17, 0x20u);
     }
   }
 
   else
   {
-    v10 = [v4 value];
+    value = [characteristicCopy value];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return value;
 }
 
 + (NSDictionary)overrideDefaultValueForCharacteristicType

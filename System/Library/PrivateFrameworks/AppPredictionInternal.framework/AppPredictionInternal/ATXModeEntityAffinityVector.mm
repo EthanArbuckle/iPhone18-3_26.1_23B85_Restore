@@ -1,11 +1,11 @@
 @interface ATXModeEntityAffinityVector
-+ (id)centroid:(id)a3;
-+ (id)weightedCentroid:(id)a3;
-- (ATXModeEntityAffinityVector)initWithAffinities:(id)a3 shouldResize:(BOOL)a4;
++ (id)centroid:(id)centroid;
++ (id)weightedCentroid:(id)centroid;
+- (ATXModeEntityAffinityVector)initWithAffinities:(id)affinities shouldResize:(BOOL)resize;
 - (BOOL)isZeroVector;
 - (double)magnitude;
-- (double)scoreForMode:(unint64_t)a3;
-- (id)_initWithAffinityVector:(id)a3;
+- (double)scoreForMode:(unint64_t)mode;
+- (id)_initWithAffinityVector:(id)vector;
 - (id)description;
 - (id)prettyDescription;
 - (id)sortedAffinities;
@@ -14,26 +14,26 @@
 
 @implementation ATXModeEntityAffinityVector
 
-- (id)_initWithAffinityVector:(id)a3
+- (id)_initWithAffinityVector:(id)vector
 {
-  v5 = a3;
+  vectorCopy = vector;
   v9.receiver = self;
   v9.super_class = ATXModeEntityAffinityVector;
   v6 = [(ATXModeEntityAffinityVector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_affinityVector, a3);
+    objc_storeStrong(&v6->_affinityVector, vector);
   }
 
   return v7;
 }
 
-- (ATXModeEntityAffinityVector)initWithAffinities:(id)a3 shouldResize:(BOOL)a4
+- (ATXModeEntityAffinityVector)initWithAffinities:(id)affinities shouldResize:(BOOL)resize
 {
-  v4 = a4;
+  resizeCopy = resize;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  affinitiesCopy = affinities;
   v26.receiver = self;
   v26.super_class = ATXModeEntityAffinityVector;
   v7 = [(ATXModeEntityAffinityVector *)&v26 init];
@@ -52,7 +52,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v6;
+    v10 = affinitiesCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v11)
     {
@@ -90,7 +90,7 @@
     affinityVector = v7->_affinityVector;
     v7->_affinityVector = v9;
 
-    if (v4)
+    if (resizeCopy)
     {
       [(ATXModeEntityAffinityVector *)v7 resizeToUnit];
     }
@@ -112,8 +112,8 @@
 
 - (id)prettyDescription
 {
-  v2 = [(ATXModeEntityAffinityVector *)self sortedAffinities];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_15_0];
+  sortedAffinities = [(ATXModeEntityAffinityVector *)self sortedAffinities];
+  v3 = [sortedAffinities _pas_mappedArrayWithTransform:&__block_literal_global_15_0];
   v4 = [v3 componentsJoinedByString:{@", "}];
 
   return v4;
@@ -169,9 +169,9 @@ uint64_t __47__ATXModeEntityAffinityVector_sortedAffinities__block_invoke_2(uint
   return v7;
 }
 
-- (double)scoreForMode:(unint64_t)a3
+- (double)scoreForMode:(unint64_t)mode
 {
-  if (a3 > 0xF)
+  if (mode > 0xF)
   {
     return 0.0;
   }
@@ -309,28 +309,28 @@ uint64_t __43__ATXModeEntityAffinityVector_resizeToUnit__block_invoke(uint64_t a
   return [v3 numberWithDouble:v5];
 }
 
-+ (id)centroid:(id)a3
++ (id)centroid:(id)centroid
 {
-  v4 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_30];
-  v5 = [a1 weightedCentroid:v4];
+  v4 = [centroid _pas_mappedArrayWithTransform:&__block_literal_global_30];
+  v5 = [self weightedCentroid:v4];
 
   return v5;
 }
 
-+ (id)weightedCentroid:(id)a3
++ (id)weightedCentroid:(id)centroid
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  centroidCopy = centroid;
+  if (![centroidCopy count])
   {
     v37 = objc_opt_new();
     goto LABEL_24;
   }
 
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 first];
-  v7 = [v6 affinityVector];
-  v8 = [v7 count];
+  v5 = [centroidCopy objectAtIndexedSubscript:0];
+  first = [v5 first];
+  affinityVector = [first affinityVector];
+  v8 = [affinityVector count];
 
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v8];
   if (v8)
@@ -349,13 +349,13 @@ uint64_t __43__ATXModeEntityAffinityVector_resizeToUnit__block_invoke(uint64_t a
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v4;
+  v11 = centroidCopy;
   v12 = [v11 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v12)
   {
     v13 = v12;
-    v40 = a1;
-    v41 = v4;
+    selfCopy = self;
+    v41 = centroidCopy;
     v14 = *v44;
     v15 = 0.0;
     obj = v11;
@@ -369,18 +369,18 @@ uint64_t __43__ATXModeEntityAffinityVector_resizeToUnit__block_invoke(uint64_t a
         }
 
         v17 = *(*(&v43 + 1) + 8 * i);
-        v18 = [v17 first];
-        v19 = [v18 affinityVector];
+        first2 = [v17 first];
+        affinityVector2 = [first2 affinityVector];
 
-        v20 = [v17 second];
-        [v20 doubleValue];
+        second = [v17 second];
+        [second doubleValue];
         v22 = v21;
 
         if (v8)
         {
           for (j = 0; j != v8; ++j)
           {
-            v24 = [v19 objectAtIndexedSubscript:j];
+            v24 = [affinityVector2 objectAtIndexedSubscript:j];
             [v24 doubleValue];
             v26 = v22 * v25;
 
@@ -400,7 +400,7 @@ uint64_t __43__ATXModeEntityAffinityVector_resizeToUnit__block_invoke(uint64_t a
 
     while (v13);
 
-    v4 = v41;
+    centroidCopy = v41;
     if (v15 >= 0.0001)
     {
       if (v8)
@@ -415,7 +415,7 @@ uint64_t __43__ATXModeEntityAffinityVector_resizeToUnit__block_invoke(uint64_t a
         }
       }
 
-      v36 = [[v40 alloc] _initWithAffinityVector:v9];
+      v36 = [[selfCopy alloc] _initWithAffinityVector:v9];
       goto LABEL_23;
     }
   }

@@ -1,21 +1,21 @@
 @interface _MTLIOAccelMTLEvent
 - (NSString)label;
-- (_MTLIOAccelMTLEvent)initWithDevice:(id)a3 options:(int64_t)a4;
+- (_MTLIOAccelMTLEvent)initWithDevice:(id)device options:(int64_t)options;
 - (id)retainedLabel;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation _MTLIOAccelMTLEvent
 
-- (_MTLIOAccelMTLEvent)initWithDevice:(id)a3 options:(int64_t)a4
+- (_MTLIOAccelMTLEvent)initWithDevice:(id)device options:(int64_t)options
 {
   v7.receiver = self;
   v7.super_class = _MTLIOAccelMTLEvent;
-  v5 = -[IOAccelMTLEvent initWithShared:options:](&v7, sel_initWithShared_options_, [a3 sharedRef], a4);
+  v5 = -[IOAccelMTLEvent initWithShared:options:](&v7, sel_initWithShared_options_, [device sharedRef], options);
   if (v5)
   {
-    v5->_device = a3;
+    v5->_device = device;
     v5->_labelLock._os_unfair_lock_opaque = 0;
     v5->_enableBarrier = 1;
   }
@@ -40,22 +40,22 @@
 
 - (NSString)label
 {
-  v2 = [(_MTLIOAccelMTLEvent *)self retainedLabel];
+  retainedLabel = [(_MTLIOAccelMTLEvent *)self retainedLabel];
 
-  return v2;
+  return retainedLabel;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   if (**MEMORY[0x1E69A8488])
   {
     v5 = *(&self->super.super.isa + *MEMORY[0x1E69A8480]);
     labelTraceID = self->_labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->_labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 
-  v7 = [a3 copy];
+  v7 = [label copy];
   os_unfair_lock_lock(&self->_labelLock);
   label = self->_label;
   self->_label = v7;

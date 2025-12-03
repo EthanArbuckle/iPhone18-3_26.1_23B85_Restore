@@ -1,32 +1,32 @@
 @interface LSByURLBundleUnregistrant
-- (LSByURLBundleUnregistrant)initWithStrategy:(id)a3 operationUUID:(id)a4 URL:(id)a5;
-- (void)runWithCompletion:(id)a3;
+- (LSByURLBundleUnregistrant)initWithStrategy:(id)strategy operationUUID:(id)d URL:(id)l;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation LSByURLBundleUnregistrant
 
-- (LSByURLBundleUnregistrant)initWithStrategy:(id)a3 operationUUID:(id)a4 URL:(id)a5
+- (LSByURLBundleUnregistrant)initWithStrategy:(id)strategy operationUUID:(id)d URL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  strategyCopy = strategy;
+  dCopy = d;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = LSByURLBundleUnregistrant;
   v12 = [(LSByURLBundleUnregistrant *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_strategy, a3);
-    objc_storeStrong(&v13->_uuid, a4);
-    objc_storeStrong(&v13->_url, a5);
+    objc_storeStrong(&v12->_strategy, strategy);
+    objc_storeStrong(&v13->_uuid, d);
+    objc_storeStrong(&v13->_url, l);
   }
 
   return v13;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -84,8 +84,8 @@
   {
     if (v39[5])
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"LSRegistrants.mm" lineNumber:434 description:{@"have error even though we succeeded!? %@", v39[5]}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"LSRegistrants.mm" lineNumber:434 description:{@"have error even though we succeeded!? %@", v39[5]}];
 
       v11 = v27[5];
     }
@@ -93,7 +93,7 @@
     (*(v11 + 16))(v11, v33[5]);
   }
 
-  v5[2](v5, v21[5], v39[5]);
+  completionCopy[2](completionCopy, v21[5], v39[5]);
   _Block_object_dispose(&v20, 8);
 
   _Block_object_dispose(&v26, 8);

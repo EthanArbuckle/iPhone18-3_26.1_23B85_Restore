@@ -1,21 +1,21 @@
 @interface CMContinuityCaptureSessionStateManager
 + (id)sharedInstance;
-- (BOOL)_isStreamingForDevice:(id)a3;
-- (BOOL)_shouldResetConnectionForDevice:(id)a3;
-- (BOOL)_startSessionWithDevice:(id)a3 forTransportType:(int64_t)a4 validateTransport:(BOOL)a5 initiatedOnCommunalDevice:(BOOL)a6 micOnly:(BOOL)a7 outError:(id *)a8;
-- (BOOL)shouldResetConnectionForDevice:(id)a3;
-- (BOOL)startSessionWithDevice:(id)a3 forTransportType:(int64_t)a4 validateTransport:(BOOL)a5 initiatedOnCommunalDevice:(BOOL)a6 micOnly:(BOOL)a7 outError:(id *)a8;
+- (BOOL)_isStreamingForDevice:(id)device;
+- (BOOL)_shouldResetConnectionForDevice:(id)device;
+- (BOOL)_startSessionWithDevice:(id)device forTransportType:(int64_t)type validateTransport:(BOOL)transport initiatedOnCommunalDevice:(BOOL)communalDevice micOnly:(BOOL)only outError:(id *)error;
+- (BOOL)shouldResetConnectionForDevice:(id)device;
+- (BOOL)startSessionWithDevice:(id)device forTransportType:(int64_t)type validateTransport:(BOOL)transport initiatedOnCommunalDevice:(BOOL)communalDevice micOnly:(BOOL)only outError:(id *)error;
 - (CMContinuityCaptureActiveSession)activeSession;
-- (CMContinuityCaptureSessionStateManager)initWithQueue:(id)a3;
+- (CMContinuityCaptureSessionStateManager)initWithQueue:(id)queue;
 - (id)_devicesWithPendingStopSession;
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)_startStreamForDevice:(id)a3 startCompletion:(id)a4 startSkippedCompletion:(id)a5;
-- (void)_stopCurrentSession:(id)a3;
-- (void)_stopStreamForDevice:(id)a3 option:(int64_t)a4 completion:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)startStreamForDevice:(id)a3 startCompletion:(id)a4 startSkippedCompletion:(id)a5;
-- (void)stopCurrentSession:(id)a3 syncOnOwnedQueue:(BOOL)a4;
-- (void)stopStreamForDevice:(id)a3 option:(int64_t)a4 completion:(id)a5;
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)_startStreamForDevice:(id)device startCompletion:(id)completion startSkippedCompletion:(id)skippedCompletion;
+- (void)_stopCurrentSession:(id)session;
+- (void)_stopStreamForDevice:(id)device option:(int64_t)option completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)startStreamForDevice:(id)device startCompletion:(id)completion startSkippedCompletion:(id)skippedCompletion;
+- (void)stopCurrentSession:(id)session syncOnOwnedQueue:(BOOL)queue;
+- (void)stopStreamForDevice:(id)device option:(int64_t)option completion:(id)completion;
 @end
 
 @implementation CMContinuityCaptureSessionStateManager
@@ -43,18 +43,18 @@ void __56__CMContinuityCaptureSessionStateManager_sharedInstance__block_invoke()
 
 - (CMContinuityCaptureActiveSession)activeSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeSession;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeSession;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)stopStreamForDevice:(id)a3 option:(int64_t)a4 completion:(id)a5
+- (void)stopStreamForDevice:(id)device option:(int64_t)option completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  deviceCopy = device;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -62,11 +62,11 @@ void __56__CMContinuityCaptureSessionStateManager_sharedInstance__block_invoke()
   block[2] = __80__CMContinuityCaptureSessionStateManager_stopStreamForDevice_option_completion___block_invoke;
   block[3] = &unk_278D5C288;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = option;
+  v14 = deviceCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = deviceCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v16);
@@ -84,14 +84,14 @@ void __80__CMContinuityCaptureSessionStateManager_stopStreamForDevice_option_com
   }
 }
 
-- (void)_stopStreamForDevice:(id)a3 option:(int64_t)a4 completion:(id)a5
+- (void)_stopStreamForDevice:(id)device option:(int64_t)option completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  deviceCopy = device;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (optionCopy)
   {
     sessionTerminationGracePeriodInSec = 0;
   }
@@ -105,17 +105,17 @@ void __80__CMContinuityCaptureSessionStateManager_stopStreamForDevice_option_com
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2080;
     v33 = "[CMContinuityCaptureSessionStateManager _stopStreamForDevice:option:completion:]";
     v34 = 2114;
-    v35 = v8;
+    v35 = deviceCopy;
     v36 = 1024;
     v37 = sessionTerminationGracePeriodInSec;
     _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_DEFAULT, "%@ %s device %{public}@ sessionTerminationGracePeriodInSec:%d", buf, 0x26u);
   }
 
-  v12 = [(NSMapTable *)self->_pendingStopCompletionDevices objectForKey:v8];
+  v12 = [(NSMapTable *)self->_pendingStopCompletionDevices objectForKey:deviceCopy];
   v13 = v12;
   if (v12)
   {
@@ -124,15 +124,15 @@ void __80__CMContinuityCaptureSessionStateManager_stopStreamForDevice_option_com
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2080;
       v33 = "[CMContinuityCaptureSessionStateManager _stopStreamForDevice:option:completion:]";
       v34 = 2114;
-      v35 = v8;
+      v35 = deviceCopy;
       _os_log_impl(&dword_242545000, v14, OS_LOG_TYPE_DEFAULT, "%@ %s device %{public}@ pending completion", buf, 0x20u);
     }
 
-    [(NSHashTable *)self->_skippedStopStreamByDevices removeObject:v8];
+    [(NSHashTable *)self->_skippedStopStreamByDevices removeObject:deviceCopy];
     v13[2](v13);
   }
 
@@ -141,9 +141,9 @@ void __80__CMContinuityCaptureSessionStateManager_stopStreamForDevice_option_com
   block[2] = __81__CMContinuityCaptureSessionStateManager__stopStreamForDevice_option_completion___block_invoke;
   block[3] = &unk_278D5C490;
   objc_copyWeak(&v29, &location);
-  v15 = v8;
+  v15 = deviceCopy;
   v27 = v15;
-  v16 = v9;
+  v16 = completionCopy;
   v28 = v16;
   v17 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
   pendingStopCompletionDevices = self->_pendingStopCompletionDevices;
@@ -157,19 +157,19 @@ void __80__CMContinuityCaptureSessionStateManager_stopStreamForDevice_option_com
   v22 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allKeys];
+    allKeys = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allKeys];
     *buf = 138412546;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2114;
-    v33 = v23;
+    v33 = allKeys;
     _os_log_impl(&dword_242545000, v22, OS_LOG_TYPE_DEFAULT, "%@ remaining active entities %{public}@", buf, 0x16u);
   }
 
   [v15 setStreamIntent:0];
   if (![(CMContinuityCaptureSessionStateManager *)self _isStreamingForDevice:v15])
   {
-    v24 = [v15 transportDevice];
-    [v24 setStreamIntent:0];
+    transportDevice = [v15 transportDevice];
+    [transportDevice setStreamIntent:0];
   }
 
   v25 = dispatch_time(0, 1000000000 * sessionTerminationGracePeriodInSec);
@@ -208,30 +208,30 @@ void __81__CMContinuityCaptureSessionStateManager__stopStreamForDevice_option_co
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NSMapTable *)self->_pendingStopCompletionDevices keyEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  keyEnumerator = [(NSMapTable *)self->_pendingStopCompletionDevices keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
       [v3 addObject:v6];
-      v7 = [v4 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v6 = v7;
+      v6 = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   return v3;
 }
 
-- (void)startStreamForDevice:(id)a3 startCompletion:(id)a4 startSkippedCompletion:(id)a5
+- (void)startStreamForDevice:(id)device startCompletion:(id)completion startSkippedCompletion:(id)skippedCompletion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  completionCopy = completion;
+  skippedCompletionCopy = skippedCompletion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -239,12 +239,12 @@ void __81__CMContinuityCaptureSessionStateManager__stopStreamForDevice_option_co
   block[2] = __102__CMContinuityCaptureSessionStateManager_startStreamForDevice_startCompletion_startSkippedCompletion___block_invoke;
   block[3] = &unk_278D5C4B8;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = completionCopy;
+  v18 = skippedCompletionCopy;
+  v12 = skippedCompletionCopy;
+  v13 = completionCopy;
+  v14 = deviceCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
@@ -262,78 +262,78 @@ void __102__CMContinuityCaptureSessionStateManager_startStreamForDevice_startCom
   }
 }
 
-- (void)_startStreamForDevice:(id)a3 startCompletion:(id)a4 startSkippedCompletion:(id)a5
+- (void)_startStreamForDevice:(id)device startCompletion:(id)completion startSkippedCompletion:(id)skippedCompletion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  completionCopy = completion;
+  skippedCompletionCopy = skippedCompletion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v45 = self;
+    selfCopy4 = self;
     v46 = 2080;
     v47 = "[CMContinuityCaptureSessionStateManager _startStreamForDevice:startCompletion:startSkippedCompletion:]";
     v48 = 2114;
-    v49 = v8;
+    v49 = deviceCopy;
     _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_DEFAULT, "%@ %s device %{public}@", buf, 0x20u);
   }
 
-  [v8 setStreamIntent:1];
-  if (![(CMContinuityCaptureSessionStateManager *)self _isStreamingForDevice:v8])
+  [deviceCopy setStreamIntent:1];
+  if (![(CMContinuityCaptureSessionStateManager *)self _isStreamingForDevice:deviceCopy])
   {
-    v12 = [v8 transportDevice];
-    [v12 setStreamIntent:1];
+    transportDevice = [deviceCopy transportDevice];
+    [transportDevice setStreamIntent:1];
   }
 
   activeStreamDevicesByEntity = self->_activeStreamDevicesByEntity;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "entity")}];
-  [(NSMutableDictionary *)activeStreamDevicesByEntity setObject:v8 forKeyedSubscript:v14];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(deviceCopy, "entity")}];
+  [(NSMutableDictionary *)activeStreamDevicesByEntity setObject:deviceCopy forKeyedSubscript:v14];
 
   v15 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allKeys];
+    allKeys = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allKeys];
     *buf = 138412546;
-    v45 = self;
+    selfCopy4 = self;
     v46 = 2114;
-    v47 = v16;
+    v47 = allKeys;
     _os_log_impl(&dword_242545000, v15, OS_LOG_TYPE_DEFAULT, "%@ updated active entities %{public}@", buf, 0x16u);
   }
 
-  v17 = [(NSMapTable *)self->_pendingStopCompletionDevices objectForKey:v8];
+  v17 = [(NSMapTable *)self->_pendingStopCompletionDevices objectForKey:deviceCopy];
   if (v17)
   {
     v18 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v45 = self;
+      selfCopy4 = self;
       v46 = 2080;
       v47 = "[CMContinuityCaptureSessionStateManager _startStreamForDevice:startCompletion:startSkippedCompletion:]";
       v48 = 2114;
-      v49 = v8;
+      v49 = deviceCopy;
       _os_log_impl(&dword_242545000, v18, OS_LOG_TYPE_DEFAULT, "%@ %s device %{public}@ cancel pending completion", buf, 0x20u);
     }
 
     dispatch_block_cancel(v17);
-    [(NSMapTable *)self->_pendingStopCompletionDevices removeObjectForKey:v8];
-    [(NSHashTable *)self->_skippedStopStreamByDevices addObject:v8];
-    v19 = [v8 compositeDelegate];
-    [v19 relayEvent:@"kCMContinuityCaptureEventUserResume"];
+    [(NSMapTable *)self->_pendingStopCompletionDevices removeObjectForKey:deviceCopy];
+    [(NSHashTable *)self->_skippedStopStreamByDevices addObject:deviceCopy];
+    compositeDelegate = [deviceCopy compositeDelegate];
+    [compositeDelegate relayEvent:@"kCMContinuityCaptureEventUserResume"];
 
-    if (v10)
+    if (skippedCompletionCopy)
     {
-      v10[2](v10);
+      skippedCompletionCopy[2](skippedCompletionCopy);
     }
   }
 
   else
   {
-    v20 = [v8 transportDevice];
-    v21 = [v20 deviceIdentifier];
-    v22 = [v21 UUIDString];
+    transportDevice2 = [deviceCopy transportDevice];
+    deviceIdentifier = [transportDevice2 deviceIdentifier];
+    uUIDString = [deviceIdentifier UUIDString];
 
     [(CMContinuityCaptureSessionStateManager *)self _devicesWithPendingStopSession];
     v40 = 0u;
@@ -344,9 +344,9 @@ void __102__CMContinuityCaptureSessionStateManager_startStreamForDevice_startCom
     if (v23)
     {
       v24 = v23;
-      v35 = v10;
-      v36 = v9;
-      v37 = v8;
+      v35 = skippedCompletionCopy;
+      v36 = completionCopy;
+      v37 = deviceCopy;
       v25 = 0;
       v26 = *v41;
       do
@@ -362,20 +362,20 @@ void __102__CMContinuityCaptureSessionStateManager_startStreamForDevice_startCom
           v25 = *(*(&v40 + 1) + 8 * i);
 
           v29 = [(NSMapTable *)self->_pendingStopCompletionDevices objectForKey:v25];
-          v30 = [v25 transportDevice];
-          v31 = [v30 deviceIdentifier];
-          v32 = [v31 UUIDString];
+          transportDevice3 = [v25 transportDevice];
+          deviceIdentifier2 = [transportDevice3 deviceIdentifier];
+          uUIDString2 = [deviceIdentifier2 UUIDString];
 
           if (v29)
           {
-            v33 = !v32 || v22 == 0;
-            if (v33 || ([v32 isEqualToString:v22] & 1) == 0)
+            v33 = !uUIDString2 || uUIDString == 0;
+            if (v33 || ([uUIDString2 isEqualToString:uUIDString] & 1) == 0)
             {
               v34 = CMContinuityCaptureLog(0);
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v45 = self;
+                selfCopy4 = self;
                 v46 = 2114;
                 v47 = v25;
                 _os_log_impl(&dword_242545000, v34, OS_LOG_TYPE_DEFAULT, "%@ complete pending stop for %{public}@", buf, 0x16u);
@@ -394,32 +394,32 @@ void __102__CMContinuityCaptureSessionStateManager_startStreamForDevice_startCom
 
       while (v24);
 
-      v9 = v36;
-      v8 = v37;
+      completionCopy = v36;
+      deviceCopy = v37;
       v17 = 0;
-      v10 = v35;
+      skippedCompletionCopy = v35;
     }
 
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (BOOL)_isStreamingForDevice:(id)a3
+- (BOOL)_isStreamingForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 transportDevice];
-  v6 = [v5 deviceIdentifier];
-  v7 = [v6 UUIDString];
+  transportDevice = [deviceCopy transportDevice];
+  deviceIdentifier = [transportDevice deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
 
-  v8 = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allValues];
-  if ([v8 count])
+  allValues = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allValues];
+  if ([allValues count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v8;
+    v9 = allValues;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v10)
     {
@@ -433,11 +433,11 @@ void __102__CMContinuityCaptureSessionStateManager_startStreamForDevice_startCom
             objc_enumerationMutation(v9);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * i) transportDevice];
-          v14 = [v13 deviceIdentifier];
-          v15 = [v14 UUIDString];
+          transportDevice2 = [*(*(&v18 + 1) + 8 * i) transportDevice];
+          deviceIdentifier2 = [transportDevice2 deviceIdentifier];
+          uUIDString2 = [deviceIdentifier2 UUIDString];
 
-          if (v7 && v15 && [v15 isEqualToString:v7])
+          if (uUIDString && uUIDString2 && [uUIDString2 isEqualToString:uUIDString])
           {
 
             LOBYTE(v10) = 1;
@@ -466,9 +466,9 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)shouldResetConnectionForDevice:(id)a3
+- (BOOL)shouldResetConnectionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -479,15 +479,15 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDevice___block_invoke;
   block[3] = &unk_278D5C4E0;
-  v9 = v4;
+  v9 = deviceCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = deviceCopy;
   dispatch_async_and_wait(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(deviceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return deviceCopy;
 }
 
 uint64_t __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDevice___block_invoke(uint64_t a1)
@@ -497,22 +497,22 @@ uint64_t __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDe
   return result;
 }
 
-- (BOOL)_shouldResetConnectionForDevice:(id)a3
+- (BOOL)_shouldResetConnectionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  v6 = [v5 availableClientDevices];
+  availableClientDevices = [v5 availableClientDevices];
 
-  v7 = [v4 transportDevice];
-  v8 = [v7 deviceIdentifier];
-  v9 = [v8 UUIDString];
+  transportDevice = [deviceCopy transportDevice];
+  deviceIdentifier = [transportDevice deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v6;
+  v10 = availableClientDevices;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v29 count:16];
   if (v11)
   {
@@ -527,18 +527,18 @@ uint64_t __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDe
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 deviceIdentifier];
-        v16 = [v15 UUIDString];
+        deviceIdentifier2 = [v14 deviceIdentifier];
+        uUIDString2 = [deviceIdentifier2 UUIDString];
 
-        if (v9 && v16 && [v9 isEqualToString:v16] && objc_msgSend(v14, "hasStreamIntent"))
+        if (uUIDString && uUIDString2 && [uUIDString isEqualToString:uUIDString2] && objc_msgSend(v14, "hasStreamIntent"))
         {
 
           v27 = 0u;
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v17 = [(NSHashTable *)self->_skippedStopStreamByDevices allObjects];
-          v11 = [v17 countByEnumeratingWithState:&v25 objects:v24 count:16];
+          allObjects = [(NSHashTable *)self->_skippedStopStreamByDevices allObjects];
+          v11 = [allObjects countByEnumeratingWithState:&v25 objects:v24 count:16];
           if (v11)
           {
             v18 = *v26;
@@ -548,14 +548,14 @@ uint64_t __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDe
               {
                 if (*v26 != v18)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(allObjects);
                 }
 
-                v20 = [*(*(&v25 + 1) + 8 * j) transportDevice];
-                v21 = [v20 deviceIdentifier];
-                v22 = [v21 UUIDString];
+                transportDevice2 = [*(*(&v25 + 1) + 8 * j) transportDevice];
+                deviceIdentifier3 = [transportDevice2 deviceIdentifier];
+                uUIDString3 = [deviceIdentifier3 UUIDString];
 
-                if (v22 && ([v9 isEqualToString:v22] & 1) != 0)
+                if (uUIDString3 && ([uUIDString isEqualToString:uUIDString3] & 1) != 0)
                 {
 
                   LOBYTE(v11) = 1;
@@ -563,7 +563,7 @@ uint64_t __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDe
                 }
               }
 
-              v11 = [v17 countByEnumeratingWithState:&v25 objects:v24 count:16];
+              v11 = [allObjects countByEnumeratingWithState:&v25 objects:v24 count:16];
               if (v11)
               {
                 continue;
@@ -587,17 +587,17 @@ uint64_t __73__CMContinuityCaptureSessionStateManager_shouldResetConnectionForDe
     }
   }
 
-  v17 = v10;
+  allObjects = v10;
 LABEL_24:
 
   return v11;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v17[0] = MEMORY[0x277D85DD0];
@@ -605,13 +605,13 @@ LABEL_24:
   v17[2] = __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v17[3] = &unk_278D5C1C0;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21[1] = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = pathCopy;
+  v19 = objectCopy;
+  v20 = changeCopy;
+  v21[1] = context;
+  v14 = changeCopy;
+  v15 = objectCopy;
+  v16 = pathCopy;
   dispatch_async(queue, v17);
 
   objc_destroyWeak(v21);
@@ -629,37 +629,37 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
   }
 }
 
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"availableClientDevices"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"availableClientDevices"])
   {
-    v56 = v11;
-    v57 = v10;
-    v58 = v9;
+    v56 = changeCopy;
+    v57 = objectCopy;
+    v58 = pathCopy;
     v12 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-    v13 = [v12 availableClientDevices];
+    availableClientDevices = [v12 availableClientDevices];
 
     v60 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v14 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v83 = self;
+      selfCopy3 = self;
       v84 = 2114;
-      v85 = v13;
+      v85 = availableClientDevices;
       _os_log_impl(&dword_242545000, v14, OS_LOG_TYPE_DEFAULT, "%@ updated device list %{public}@", buf, 0x16u);
     }
 
-    v15 = [(CMContinuityCaptureSessionStateManager *)self _devicesWithPendingStopSession];
+    _devicesWithPendingStopSession = [(CMContinuityCaptureSessionStateManager *)self _devicesWithPendingStopSession];
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
-    obj = v15;
+    obj = _devicesWithPendingStopSession;
     v17 = [obj countByEnumeratingWithState:&v78 objects:v77 count:16];
     if (v17)
     {
@@ -675,13 +675,13 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
           }
 
           v21 = *(*(&v78 + 1) + 8 * i);
-          v22 = [v21 transportDevice];
-          v23 = [v22 deviceIdentifier];
-          v24 = [v23 UUIDString];
+          transportDevice = [v21 transportDevice];
+          deviceIdentifier = [transportDevice deviceIdentifier];
+          uUIDString = [deviceIdentifier UUIDString];
 
-          if (v24)
+          if (uUIDString)
           {
-            [v16 setObject:v21 forKeyedSubscript:v24];
+            [v16 setObject:v21 forKeyedSubscript:uUIDString];
           }
         }
 
@@ -695,7 +695,7 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v25 = v13;
+    v25 = availableClientDevices;
     v26 = [v25 countByEnumeratingWithState:&v73 objects:v72 count:16];
     if (v26)
     {
@@ -710,13 +710,13 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v73 + 1) + 8 * j) deviceIdentifier];
-          v31 = [v30 UUIDString];
+          deviceIdentifier2 = [*(*(&v73 + 1) + 8 * j) deviceIdentifier];
+          uUIDString2 = [deviceIdentifier2 UUIDString];
 
-          if (v31)
+          if (uUIDString2)
           {
-            [v60 addObject:v31];
-            [v16 removeObjectForKey:v31];
+            [v60 addObject:uUIDString2];
+            [v16 removeObjectForKey:uUIDString2];
           }
         }
 
@@ -732,8 +732,8 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v32 = [v16 allValues];
-    v33 = [v32 countByEnumeratingWithState:&v68 objects:v67 count:16];
+    allValues = [v16 allValues];
+    v33 = [allValues countByEnumeratingWithState:&v68 objects:v67 count:16];
     if (v33)
     {
       v34 = v33;
@@ -744,7 +744,7 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
         {
           if (*v69 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(allValues);
           }
 
           v37 = *(*(&v68 + 1) + 8 * k);
@@ -757,7 +757,7 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v83 = self;
+              selfCopy3 = self;
               v84 = 2114;
               v85 = v37;
               _os_log_impl(&dword_242545000, v40, OS_LOG_TYPE_DEFAULT, "%@ remove pending stop for %{public}@", buf, 0x16u);
@@ -767,21 +767,21 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
           }
         }
 
-        v34 = [v32 countByEnumeratingWithState:&v68 objects:v67 count:16];
+        v34 = [allValues countByEnumeratingWithState:&v68 objects:v67 count:16];
       }
 
       while (v34);
     }
 
-    v41 = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allValues];
-    if ([v41 count])
+    allValues2 = [(NSMutableDictionary *)self->_activeStreamDevicesByEntity allValues];
+    if ([allValues2 count])
     {
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v54 = v41;
-      v59 = v41;
+      v54 = allValues2;
+      v59 = allValues2;
       v42 = [v59 countByEnumeratingWithState:&v63 objects:v62 count:16];
       if (v42)
       {
@@ -797,30 +797,30 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
             }
 
             v46 = *(*(&v63 + 1) + 8 * m);
-            v47 = [v46 transportDevice];
-            v48 = [v47 deviceIdentifier];
-            v49 = [v48 UUIDString];
+            transportDevice2 = [v46 transportDevice];
+            deviceIdentifier3 = [transportDevice2 deviceIdentifier];
+            uUIDString3 = [deviceIdentifier3 UUIDString];
 
-            if (v49 && ([v60 containsObject:v49] & 1) == 0)
+            if (uUIDString3 && ([v60 containsObject:uUIDString3] & 1) == 0)
             {
               [(NSHashTable *)self->_skippedStopStreamByDevices removeObject:v46];
               v50 = CMContinuityCaptureLog(0);
               if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v83 = self;
+                selfCopy3 = self;
                 v84 = 2114;
                 v85 = v46;
                 _os_log_impl(&dword_242545000, v50, OS_LOG_TYPE_DEFAULT, "%@ remove stream intent for terminated device %{public}@", buf, 0x16u);
               }
 
-              v51 = self;
-              objc_sync_enter(v51);
+              selfCopy4 = self;
+              objc_sync_enter(selfCopy4);
               activeStreamDevicesByEntity = self->_activeStreamDevicesByEntity;
               v53 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v46, "entity")}];
               [(NSMutableDictionary *)activeStreamDevicesByEntity removeObjectForKey:v53];
 
-              objc_sync_exit(v51);
+              objc_sync_exit(selfCopy4);
             }
           }
 
@@ -830,18 +830,18 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
         while (v43);
       }
 
-      v41 = v54;
+      allValues2 = v54;
     }
 
-    v10 = v57;
-    v9 = v58;
-    v11 = v56;
+    objectCopy = v57;
+    pathCopy = v58;
+    changeCopy = v56;
   }
 }
 
-- (BOOL)startSessionWithDevice:(id)a3 forTransportType:(int64_t)a4 validateTransport:(BOOL)a5 initiatedOnCommunalDevice:(BOOL)a6 micOnly:(BOOL)a7 outError:(id *)a8
+- (BOOL)startSessionWithDevice:(id)device forTransportType:(int64_t)type validateTransport:(BOOL)transport initiatedOnCommunalDevice:(BOOL)communalDevice micOnly:(BOOL)only outError:(id *)error
 {
-  v14 = a3;
+  deviceCopy = device;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -860,18 +860,18 @@ void __89__CMContinuityCaptureSessionStateManager_observeValueForKeyPath_ofObjec
   block[3] = &unk_278D5C508;
   v21 = &v33;
   block[4] = self;
-  v16 = v14;
+  v16 = deviceCopy;
   v22 = &v27;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = a7;
+  typeCopy = type;
+  transportCopy = transport;
+  communalDeviceCopy = communalDevice;
+  onlyCopy = only;
   v20 = v16;
   dispatch_async_and_wait(queue, block);
 
-  if (a8)
+  if (error)
   {
-    *a8 = v28[5];
+    *error = v28[5];
   }
 
   v17 = *(v34 + 24);
@@ -896,69 +896,69 @@ void __143__CMContinuityCaptureSessionStateManager_startSessionWithDevice_forTra
   *(*(*(a1 + 48) + 8) + 24) = v9;
 }
 
-- (BOOL)_startSessionWithDevice:(id)a3 forTransportType:(int64_t)a4 validateTransport:(BOOL)a5 initiatedOnCommunalDevice:(BOOL)a6 micOnly:(BOOL)a7 outError:(id *)a8
+- (BOOL)_startSessionWithDevice:(id)device forTransportType:(int64_t)type validateTransport:(BOOL)transport initiatedOnCommunalDevice:(BOOL)communalDevice micOnly:(BOOL)only outError:(id *)error
 {
-  v73 = a6;
-  v74 = a7;
-  v8 = a5;
-  v10 = a3;
+  communalDeviceCopy = communalDevice;
+  onlyCopy = only;
+  transportCopy = transport;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  v12 = [v11 availableClientDevices];
+  availableClientDevices = [v11 availableClientDevices];
 
   v13 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+    activeSession = [(CMContinuityCaptureSessionStateManager *)self activeSession];
     *buf = 138413570;
-    v79 = self;
+    selfCopy11 = self;
     v80 = 2080;
     v81 = "[CMContinuityCaptureSessionStateManager _startSessionWithDevice:forTransportType:validateTransport:initiatedOnCommunalDevice:micOnly:outError:]";
     v82 = 2114;
-    *v83 = v10;
+    *v83 = deviceCopy;
     *&v83[8] = 2114;
-    v84 = v14;
+    v84 = activeSession;
     v85 = 1024;
-    v86 = v8;
+    v86 = transportCopy;
     v87 = 2114;
-    v88 = v12;
+    v88 = availableClientDevices;
     _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%@ %s %{public}@ Active session %{public}@ validateTransport:%d availableDevices:%{public}@", buf, 0x3Au);
   }
 
-  v76 = v8;
-  v77 = v12;
+  v76 = transportCopy;
+  v77 = availableClientDevices;
 
-  v15 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-  if (v15)
+  activeSession2 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+  if (activeSession2)
   {
-    v16 = v15;
-    v17 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-    v18 = [v17 device];
-    v19 = [v18 deviceIdentifier];
-    v20 = [v19 UUIDString];
-    v21 = [v10 deviceIdentifier];
-    v22 = [v21 UUIDString];
-    v23 = [v20 isEqualToString:v22];
+    v16 = activeSession2;
+    activeSession3 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+    device = [activeSession3 device];
+    deviceIdentifier = [device deviceIdentifier];
+    uUIDString = [deviceIdentifier UUIDString];
+    deviceIdentifier2 = [deviceCopy deviceIdentifier];
+    uUIDString2 = [deviceIdentifier2 UUIDString];
+    v23 = [uUIDString isEqualToString:uUIDString2];
 
     if ((v23 & 1) == 0)
     {
       v37 = CMContinuityCaptureLog(0);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+        activeSession4 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
         *buf = 138412802;
-        v79 = self;
+        selfCopy11 = self;
         v80 = 2082;
         v81 = "[CMContinuityCaptureSessionStateManager _startSessionWithDevice:forTransportType:validateTransport:initiatedOnCommunalDevice:micOnly:outError:]";
         v82 = 2114;
-        *v83 = v38;
+        *v83 = activeSession4;
         _os_log_impl(&dword_242545000, v37, OS_LOG_TYPE_DEFAULT, "%@ %{public}s already active session for %{public}@", buf, 0x20u);
       }
 
-      v34 = v10;
+      v34 = deviceCopy;
       v39 = v77;
-      v40 = a8;
-      if (!a8)
+      errorCopy2 = error;
+      if (!error)
       {
         goto LABEL_55;
       }
@@ -969,27 +969,27 @@ void __143__CMContinuityCaptureSessionStateManager_startSessionWithDevice_forTra
     }
   }
 
-  v24 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-  if (!v24)
+  activeSession5 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+  if (!activeSession5)
   {
     goto LABEL_9;
   }
 
-  v25 = v24;
-  v26 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-  v27 = [v26 device];
-  v28 = [v27 deviceIdentifier];
-  v29 = [v28 UUIDString];
-  v30 = [v10 deviceIdentifier];
-  v31 = [v30 UUIDString];
-  v32 = [v29 isEqualToString:v31];
+  v25 = activeSession5;
+  activeSession6 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+  device2 = [activeSession6 device];
+  deviceIdentifier3 = [device2 deviceIdentifier];
+  uUIDString3 = [deviceIdentifier3 UUIDString];
+  deviceIdentifier4 = [deviceCopy deviceIdentifier];
+  uUIDString4 = [deviceIdentifier4 UUIDString];
+  v32 = [uUIDString3 isEqualToString:uUIDString4];
 
   if (!v32 || v76)
   {
 LABEL_9:
-    v35 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-    v34 = v10;
-    if (v35)
+    activeSession7 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+    v34 = deviceCopy;
+    if (activeSession7)
     {
 
       v36 = 0x278D5B000;
@@ -998,24 +998,24 @@ LABEL_9:
 
     v36 = 0x278D5B000uLL;
     v43 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-    v44 = [v43 isUserSelectedDeviceIfApplicable:v10];
+    v44 = [v43 isUserSelectedDeviceIfApplicable:deviceCopy];
 
     if (v44)
     {
 LABEL_16:
       if (v76)
       {
-        v45 = [v10 deviceStatus] & 0x1000000;
-        v46 = [v10 deviceStatus] & 0x200;
+        v45 = [deviceCopy deviceStatus] & 0x1000000;
+        v46 = [deviceCopy deviceStatus] & 0x200;
         v47 = CMContinuityCaptureLog(0);
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [*(v36 + 2216) sharedInstance];
-          v49 = [v48 transportErrorFlags];
+          sharedInstance = [*(v36 + 2216) sharedInstance];
+          transportErrorFlags = [sharedInstance transportErrorFlags];
           *buf = 138413058;
-          v79 = self;
+          selfCopy11 = self;
           v80 = 2048;
-          v81 = v49;
+          v81 = transportErrorFlags;
           v82 = 1024;
           *v83 = v45 >> 24;
           *&v83[4] = 1024;
@@ -1023,32 +1023,32 @@ LABEL_16:
           _os_log_impl(&dword_242545000, v47, OS_LOG_TYPE_DEFAULT, "%@ errorFlags : %llx wired:%d wireless:%d", buf, 0x22u);
         }
 
-        v50 = [*(v36 + 2216) sharedInstance];
-        v51 = [v50 transportErrorFlags];
+        sharedInstance2 = [*(v36 + 2216) sharedInstance];
+        transportErrorFlags2 = [sharedInstance2 transportErrorFlags];
 
-        if ((v51 & 0x100) != 0)
+        if ((transportErrorFlags2 & 0x100) != 0)
         {
           v52 = CMContinuityCaptureLog(0);
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v79 = self;
+            selfCopy11 = self;
             _os_log_impl(&dword_242545000, v52, OS_LOG_TYPE_DEFAULT, "%@ RPError : RPErrorFlagsNoManatee", buf, 0xCu);
           }
         }
 
         if (!v45)
         {
-          v53 = [*(v36 + 2216) sharedInstance];
-          v54 = [v53 transportErrorFlags];
+          sharedInstance3 = [*(v36 + 2216) sharedInstance];
+          transportErrorFlags3 = [sharedInstance3 transportErrorFlags];
 
-          if ((v54 & 4) != 0 || !v46)
+          if ((transportErrorFlags3 & 4) != 0 || !v46)
           {
             v55 = CMContinuityCaptureLog(0);
             if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v79 = self;
+              selfCopy11 = self;
               v80 = 2114;
               v81 = v34;
               _os_log_impl(&dword_242545000, v55, OS_LOG_TYPE_DEFAULT, "%@ (%{public}@) RPError : USB inactive and WifiOff", buf, 0x16u);
@@ -1060,30 +1060,30 @@ LABEL_16:
               if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v79 = self;
+                selfCopy11 = self;
                 v80 = 2114;
                 v81 = v34;
                 _os_log_impl(&dword_242545000, v56, OS_LOG_TYPE_DEFAULT, "%@ (%{public}@) non wired with wifip2p2 disabled", buf, 0x16u);
               }
 
               v39 = v77;
-              if (a8)
+              if (error)
               {
-                *a8 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:-1011 userInfo:0];
+                *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:-1011 userInfo:0];
               }
 
-              v57 = self;
-              objc_sync_enter(v57);
-              activeSession = v57->_activeSession;
-              v57->_activeSession = 0;
+              selfCopy7 = self;
+              objc_sync_enter(selfCopy7);
+              activeSession = selfCopy7->_activeSession;
+              selfCopy7->_activeSession = 0;
 
-              objc_sync_exit(v57);
+              objc_sync_exit(selfCopy7);
               v59 = CMContinuityCaptureLog(0);
               if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
               {
-                if (a8)
+                if (error)
                 {
-                  v60 = *a8;
+                  v60 = *error;
                 }
 
                 else
@@ -1092,7 +1092,7 @@ LABEL_16:
                 }
 
                 *buf = 138412802;
-                v79 = v57;
+                selfCopy11 = selfCopy7;
                 v80 = 2080;
                 v81 = "[CMContinuityCaptureSessionStateManager _startSessionWithDevice:forTransportType:validateTransport:initiatedOnCommunalDevice:micOnly:outError:]";
                 v82 = 2114;
@@ -1108,46 +1108,46 @@ LABEL_55:
         }
 
         v61 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
-        v62 = [v34 deviceIdentifier];
-        v63 = [v62 UUIDString];
-        [v61 unscheduleNotificationForDeviceIdentifier:v63 type:14 clearHistory:0];
+        deviceIdentifier5 = [v34 deviceIdentifier];
+        uUIDString5 = [deviceIdentifier5 UUIDString];
+        [v61 unscheduleNotificationForDeviceIdentifier:uUIDString5 type:14 clearHistory:0];
       }
 
-      v64 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+      activeSession8 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
 
-      if (v64)
+      if (activeSession8)
       {
         v65 = CMContinuityCaptureLog(0);
         if (os_log_type_enabled(&v65->super, OS_LOG_TYPE_DEFAULT))
         {
-          v66 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+          activeSession9 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
           *buf = 138412546;
-          v79 = self;
+          selfCopy11 = self;
           v80 = 2114;
-          v81 = v66;
+          v81 = activeSession9;
           _os_log_impl(&dword_242545000, &v65->super, OS_LOG_TYPE_DEFAULT, "%@ Connect to active session %{public}@", buf, 0x16u);
         }
       }
 
       else
       {
-        v65 = [[CMContinuityCaptureActiveSession alloc] initWithDevice:v34 transport:a4 initiatedOnCommunalDevice:v73 micOnly:v74];
+        v65 = [[CMContinuityCaptureActiveSession alloc] initWithDevice:v34 transport:type initiatedOnCommunalDevice:communalDeviceCopy micOnly:onlyCopy];
         if (v65)
         {
-          v67 = self;
-          objc_sync_enter(v67);
-          objc_storeStrong(&v67->_activeSession, v65);
-          objc_sync_exit(v67);
+          selfCopy9 = self;
+          objc_sync_enter(selfCopy9);
+          objc_storeStrong(&selfCopy9->_activeSession, v65);
+          objc_sync_exit(selfCopy9);
         }
 
         v68 = CMContinuityCaptureLog(0);
         if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
         {
-          v69 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+          activeSession10 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
           *buf = 138412546;
-          v79 = self;
+          selfCopy11 = self;
           v80 = 2114;
-          v81 = v69;
+          v81 = activeSession10;
           _os_log_impl(&dword_242545000, v68, OS_LOG_TYPE_DEFAULT, "%@ Activate session %{public}@", buf, 0x16u);
         }
       }
@@ -1161,16 +1161,16 @@ LABEL_55:
     if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v79 = self;
+      selfCopy11 = self;
       v80 = 2082;
       v81 = "[CMContinuityCaptureSessionStateManager _startSessionWithDevice:forTransportType:validateTransport:initiatedOnCommunalDevice:micOnly:outError:]";
       v82 = 2114;
-      *v83 = v10;
+      *v83 = deviceCopy;
       _os_log_impl(&dword_242545000, v70, OS_LOG_TYPE_DEFAULT, "%@ %{public}s device %{public}@ unavailable", buf, 0x20u);
     }
 
-    v40 = a8;
-    if (!a8)
+    errorCopy2 = error;
+    if (!error)
     {
       goto LABEL_55;
     }
@@ -1179,12 +1179,12 @@ LABEL_55:
     v42 = -1013;
 LABEL_51:
     v33 = 0;
-    *v40 = [v41 initWithDomain:@"ContinuityCapture" code:v42 userInfo:0];
+    *errorCopy2 = [v41 initWithDomain:@"ContinuityCapture" code:v42 userInfo:0];
     goto LABEL_56;
   }
 
   v33 = 1;
-  v34 = v10;
+  v34 = deviceCopy;
 LABEL_46:
   v39 = v77;
 LABEL_56:
@@ -1192,10 +1192,10 @@ LABEL_56:
   return v33;
 }
 
-- (void)stopCurrentSession:(id)a3 syncOnOwnedQueue:(BOOL)a4
+- (void)stopCurrentSession:(id)session syncOnOwnedQueue:(BOOL)queue
 {
-  v6 = a3;
-  if (a4)
+  sessionCopy = session;
+  if (queue)
   {
     dispatch_assert_queue_not_V2(self->_queue);
     queue = self->_queue;
@@ -1204,77 +1204,77 @@ LABEL_56:
     v8[2] = __78__CMContinuityCaptureSessionStateManager_stopCurrentSession_syncOnOwnedQueue___block_invoke;
     v8[3] = &unk_278D5C008;
     v8[4] = self;
-    v9 = v6;
+    v9 = sessionCopy;
     dispatch_async_and_wait(queue, v8);
   }
 
   else
   {
-    [(CMContinuityCaptureSessionStateManager *)self _stopCurrentSession:v6];
+    [(CMContinuityCaptureSessionStateManager *)self _stopCurrentSession:sessionCopy];
   }
 }
 
-- (void)_stopCurrentSession:(id)a3
+- (void)_stopCurrentSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
   v5 = +[CMContinuityCaptureDiscoverySession sharedInstance];
-  [v5 discardUserSelectedDeviceIfApplicableWithReason:v4];
+  [v5 discardUserSelectedDeviceIfApplicableWithReason:sessionCopy];
 
   v6 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+    activeSession = [(CMContinuityCaptureSessionStateManager *)self activeSession];
     v16 = 138413058;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[CMContinuityCaptureSessionStateManager _stopCurrentSession:]";
     v20 = 2114;
-    v21 = v7;
+    v21 = activeSession;
     v22 = 2114;
-    v23 = v4;
+    v23 = sessionCopy;
     _os_log_impl(&dword_242545000, v6, OS_LOG_TYPE_DEFAULT, "%@ %s Active session %{public}@ reason %{public}@", &v16, 0x2Au);
   }
 
-  v8 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+  activeSession2 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
 
-  if (v8)
+  if (activeSession2)
   {
-    v9 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-    v10 = [v9 shieldSessionID];
+    activeSession3 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+    shieldSessionID = [activeSession3 shieldSessionID];
 
-    if (v10)
+    if (shieldSessionID)
     {
-      v11 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-      v12 = [v11 device];
-      v13 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
-      [v12 relayUserDisconnectForTransport:objc_msgSend(v13 reason:"transport") shieldSessionID:{v4, v10}];
+      activeSession4 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+      device = [activeSession4 device];
+      activeSession5 = [(CMContinuityCaptureSessionStateManager *)self activeSession];
+      [device relayUserDisconnectForTransport:objc_msgSend(activeSession5 reason:"transport") shieldSessionID:{sessionCopy, shieldSessionID}];
     }
 
-    v14 = self;
-    objc_sync_enter(v14);
-    activeSession = v14->_activeSession;
-    v14->_activeSession = 0;
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    activeSession = selfCopy2->_activeSession;
+    selfCopy2->_activeSession = 0;
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy2);
   }
 }
 
-- (CMContinuityCaptureSessionStateManager)initWithQueue:(id)a3
+- (CMContinuityCaptureSessionStateManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = CMContinuityCaptureSessionStateManager;
   v6 = [(CMContinuityCaptureSessionStateManager *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     dispatch_queue_set_specific(v7->_queue, v7, v7, 0);
     v7->_sessionTerminationGracePeriodInSec = FigGetCFPreferenceNumberWithDefault();
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     pendingStopCompletionDevices = v7->_pendingStopCompletionDevices;
-    v7->_pendingStopCompletionDevices = v8;
+    v7->_pendingStopCompletionDevices = strongToStrongObjectsMapTable;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     activeStreamDevicesByEntity = v7->_activeStreamDevicesByEntity;

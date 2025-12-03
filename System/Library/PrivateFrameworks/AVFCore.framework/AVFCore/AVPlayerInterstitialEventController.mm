@@ -4,14 +4,14 @@
 - (NSBundle)localizedStringsBundle;
 - (NSString)localizedStringsTableName;
 - (void)_resetPlaybackCoordinatorTimelineExpectations;
-- (void)cancelCurrentEventWithReason:(id)a3;
+- (void)cancelCurrentEventWithReason:(id)reason;
 - (void)cancelCurrentEventWithResumptionOffset:(CMTime *)resumptionOffset;
 - (void)dealloc;
-- (void)setCurrentRemoteEventSkippableState:(int64_t)a3;
-- (void)setCurrentRemoteEventSkippableState:(int64_t)a3 withLabel:(id)a4;
+- (void)setCurrentRemoteEventSkippableState:(int64_t)state;
+- (void)setCurrentRemoteEventSkippableState:(int64_t)state withLabel:(id)label;
 - (void)setEvents:(NSArray *)events;
-- (void)setLocalizedStringsBundle:(id)a3;
-- (void)setLocalizedStringsTableName:(id)a3;
+- (void)setLocalizedStringsBundle:(id)bundle;
+- (void)setLocalizedStringsTableName:(id)name;
 - (void)skipCurrentEvent;
 @end
 
@@ -19,17 +19,17 @@
 
 + (AVPlayerInterstitialEventController)interstitialEventControllerWithPrimaryPlayer:(AVPlayer *)primaryPlayer
 {
-  v3 = [[a1 alloc] initWithPrimaryPlayer:primaryPlayer];
+  v3 = [[self alloc] initWithPrimaryPlayer:primaryPlayer];
 
   return v3;
 }
 
 - (AVPlayerInterstitialEventController)initWithPrimaryPlayer:(AVPlayer *)primaryPlayer
 {
-  v5 = [(AVPlayer *)primaryPlayer _copyInterstitialCoordinator];
-  if (v5)
+  _copyInterstitialCoordinator = [(AVPlayer *)primaryPlayer _copyInterstitialCoordinator];
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v5);
+    CFRelease(_copyInterstitialCoordinator);
     v9.receiver = self;
     v9.super_class = AVPlayerInterstitialEventController;
     v6 = [(AVPlayerInterstitialEventMonitor *)&v9 initWithPrimaryPlayer:primaryPlayer];
@@ -97,64 +97,64 @@
     while (v6);
   }
 
-  v10 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   v11 = [(AVPlayerInterstitialEventMonitor *)self makeCopyOf:events immutable:0];
   v12 = *(*(CMBaseObjectGetVTable() + 16) + 24);
   if (v12)
   {
-    v12(v10, v11);
+    v12(_copyInterstitialCoordinator, v11);
   }
 
-  if (v10)
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v10);
+    CFRelease(_copyInterstitialCoordinator);
   }
 }
 
 - (void)cancelCurrentEventWithResumptionOffset:(CMTime *)resumptionOffset
 {
-  v5 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   [(AVPlayerInterstitialEventController *)self _resetPlaybackCoordinatorTimelineExpectations];
   v7 = *resumptionOffset;
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v6)
   {
     v8 = v7;
-    v6(v5, &v8);
+    v6(_copyInterstitialCoordinator, &v8);
   }
 
-  if (v5)
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v5);
+    CFRelease(_copyInterstitialCoordinator);
   }
 }
 
 - (void)skipCurrentEvent
 {
-  v3 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   [(AVPlayerInterstitialEventController *)self _resetPlaybackCoordinatorTimelineExpectations];
   v4 = *(*(CMBaseObjectGetVTable() + 16) + 136);
   if (v4)
   {
-    v4(v3, *MEMORY[0x1E6972EA8]);
+    v4(_copyInterstitialCoordinator, *MEMORY[0x1E6972EA8]);
   }
 
-  if (v3)
+  if (_copyInterstitialCoordinator)
   {
 
-    CFRelease(v3);
+    CFRelease(_copyInterstitialCoordinator);
   }
 }
 
 - (NSBundle)localizedStringsBundle
 {
-  v2 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   cf = 0;
   AllocatorForMedia = FigGetAllocatorForMedia();
   v4 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v4)
   {
-    v4(v2, *MEMORY[0x1E6972E98], AllocatorForMedia, &cf);
+    v4(_copyInterstitialCoordinator, *MEMORY[0x1E6972E98], AllocatorForMedia, &cf);
     v5 = cf;
   }
 
@@ -165,9 +165,9 @@
 
   v6 = CFBundleCopyBundleURL(v5);
   v7 = [MEMORY[0x1E696AAE8] bundleWithURL:v6];
-  if (v2)
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v2);
+    CFRelease(_copyInterstitialCoordinator);
   }
 
   if (v6)
@@ -183,19 +183,19 @@
   return v7;
 }
 
-- (void)setLocalizedStringsBundle:(id)a3
+- (void)setLocalizedStringsBundle:(id)bundle
 {
-  v4 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
-  v5 = CFBundleCreate(*MEMORY[0x1E695E480], [a3 bundleURL]);
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  v5 = CFBundleCreate(*MEMORY[0x1E695E480], [bundle bundleURL]);
   v6 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v6)
   {
-    v6(v4, *MEMORY[0x1E6972E98], v5);
+    v6(_copyInterstitialCoordinator, *MEMORY[0x1E6972E98], v5);
   }
 
-  if (v4)
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v4);
+    CFRelease(_copyInterstitialCoordinator);
   }
 
   if (v5)
@@ -207,13 +207,13 @@
 
 - (NSString)localizedStringsTableName
 {
-  v2 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   cf = 0;
   AllocatorForMedia = FigGetAllocatorForMedia();
   v4 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v4)
   {
-    v4(v2, *MEMORY[0x1E6972EA0], AllocatorForMedia, &cf);
+    v4(_copyInterstitialCoordinator, *MEMORY[0x1E6972EA0], AllocatorForMedia, &cf);
     v5 = cf;
   }
 
@@ -223,9 +223,9 @@
   }
 
   v6 = [v5 copy];
-  if (v2)
+  if (_copyInterstitialCoordinator)
   {
-    CFRelease(v2);
+    CFRelease(_copyInterstitialCoordinator);
   }
 
   if (cf)
@@ -236,84 +236,84 @@
   return v6;
 }
 
-- (void)setLocalizedStringsTableName:(id)a3
+- (void)setLocalizedStringsTableName:(id)name
 {
-  v4 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   v5 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v5)
   {
-    v5(v4, *MEMORY[0x1E6972EA0], a3);
+    v5(_copyInterstitialCoordinator, *MEMORY[0x1E6972EA0], name);
   }
 
-  if (v4)
+  if (_copyInterstitialCoordinator)
   {
 
-    CFRelease(v4);
+    CFRelease(_copyInterstitialCoordinator);
   }
 }
 
 - (void)_resetPlaybackCoordinatorTimelineExpectations
 {
-  v3 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _playbackCoordinatorWithoutTriggeringFullSetup];
-  if (v3)
+  _playbackCoordinatorWithoutTriggeringFullSetup = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _playbackCoordinatorWithoutTriggeringFullSetup];
+  if (_playbackCoordinatorWithoutTriggeringFullSetup)
   {
-    v4 = v3;
+    v4 = _playbackCoordinatorWithoutTriggeringFullSetup;
     if ([[(AVPlayerInterstitialEventMonitor *)self currentEvent] _participatesInCoordinatedPlayback])
     {
       if ([[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] currentItem])
       {
-        v5 = [(AVPlayerItem *)[[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] currentItem] _coordinationIdentifier];
+        _coordinationIdentifier = [(AVPlayerItem *)[[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] currentItem] _coordinationIdentifier];
 
-        [v4 _resetGroupTimelineExpectationsForIdentifier:v5];
+        [v4 _resetGroupTimelineExpectationsForIdentifier:_coordinationIdentifier];
       }
     }
   }
 }
 
-- (void)cancelCurrentEventWithReason:(id)a3
+- (void)cancelCurrentEventWithReason:(id)reason
 {
-  v5 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
+  _copyInterstitialCoordinator = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinator];
   [(AVPlayerInterstitialEventController *)self _resetPlaybackCoordinatorTimelineExpectations];
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 136);
   if (v6)
   {
-    v6(v5, a3);
+    v6(_copyInterstitialCoordinator, reason);
   }
 
-  if (v5)
+  if (_copyInterstitialCoordinator)
   {
 
-    CFRelease(v5);
+    CFRelease(_copyInterstitialCoordinator);
   }
 }
 
-- (void)setCurrentRemoteEventSkippableState:(int64_t)a3
+- (void)setCurrentRemoteEventSkippableState:(int64_t)state
 {
-  v3 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinatorIfCreated];
+  _copyInterstitialCoordinatorIfCreated = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinatorIfCreated];
   if (FigPlayerInterstitialCoordinatorIsRemote())
   {
     FigPlayerInterstitialRemoteCoordinatorSetCurrentEventSkippableStateWithLabel();
   }
 
-  if (v3)
+  if (_copyInterstitialCoordinatorIfCreated)
   {
 
-    CFRelease(v3);
+    CFRelease(_copyInterstitialCoordinatorIfCreated);
   }
 }
 
-- (void)setCurrentRemoteEventSkippableState:(int64_t)a3 withLabel:(id)a4
+- (void)setCurrentRemoteEventSkippableState:(int64_t)state withLabel:(id)label
 {
-  v4 = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinatorIfCreated];
+  _copyInterstitialCoordinatorIfCreated = [[(AVPlayerInterstitialEventMonitor *)self primaryPlayer] _copyInterstitialCoordinatorIfCreated];
   if (FigPlayerInterstitialCoordinatorIsRemote())
   {
     FigPlayerInterstitialRemoteCoordinatorSetCurrentEventSkippableStateWithLabel();
   }
 
-  if (v4)
+  if (_copyInterstitialCoordinatorIfCreated)
   {
 
-    CFRelease(v4);
+    CFRelease(_copyInterstitialCoordinatorIfCreated);
   }
 }
 

@@ -61,7 +61,7 @@ LABEL_15:
 - (id)itemStates
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -81,8 +81,8 @@ LABEL_15:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) itemStates];
-        [v3 addObjectsFromArray:v9];
+        itemStates = [*(*(&v11 + 1) + 8 * i) itemStates];
+        [array addObjectsFromArray:itemStates];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -91,7 +91,7 @@ LABEL_15:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)type
@@ -112,11 +112,11 @@ LABEL_15:
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = _UIStatusBarDisplayItemGroupRelation;
-  v2 = [(_UIStatusBarDisplayItemRelation *)&v7 _ui_descriptionBuilder];
+  _ui_descriptionBuilder = [(_UIStatusBarDisplayItemRelation *)&v7 _ui_descriptionBuilder];
   v3 = NSStringFromSelector(sel_relations);
   v8[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [v2 appendKeys:v4];
+  v5 = [_ui_descriptionBuilder appendKeys:v4];
 
   return v5;
 }

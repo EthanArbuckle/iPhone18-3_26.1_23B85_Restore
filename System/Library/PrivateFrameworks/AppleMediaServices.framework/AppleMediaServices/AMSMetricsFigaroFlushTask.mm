@@ -1,12 +1,12 @@
 @interface AMSMetricsFigaroFlushTask
-+ (BOOL)_shouldClearEventsDespiteError:(id)a3 result:(id)a4;
-- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)a3 bag:(id)a4 maxRequestCount:(unint64_t)a5 maxEventsPerBatch:(unint64_t)a6 topic:(id)a7 includeMMeClientInfoAndDeviceHeaders:(BOOL)a8 metricsSigningFlavour:(unint64_t)a9 maxBatchSizeOverride:(id)a10 urlSession:(id)a11 postBatchBlock:(id)a12;
-- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)a3 bag:(id)a4 maxRequestCount:(unint64_t)a5 maxEventsPerBatch:(unint64_t)a6 topic:(id)a7 includeMMeClientInfoAndDeviceHeaders:(BOOL)a8 metricsSigningFlavour:(unint64_t)a9 urlSession:(id)a10;
++ (BOOL)_shouldClearEventsDespiteError:(id)error result:(id)result;
+- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)source bag:(id)bag maxRequestCount:(unint64_t)count maxEventsPerBatch:(unint64_t)batch topic:(id)topic includeMMeClientInfoAndDeviceHeaders:(BOOL)headers metricsSigningFlavour:(unint64_t)flavour maxBatchSizeOverride:(id)self0 urlSession:(id)self1 postBatchBlock:(id)self2;
+- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)source bag:(id)bag maxRequestCount:(unint64_t)count maxEventsPerBatch:(unint64_t)batch topic:(id)topic includeMMeClientInfoAndDeviceHeaders:(BOOL)headers metricsSigningFlavour:(unint64_t)flavour urlSession:(id)self0;
 - (BOOL)cancel;
-- (id)_flushNextBatchWithRequestCount:(unint64_t)a3 flushedEventCount:(unint64_t)a4 config:(id)a5;
-- (id)_mescalSignaturePromiseWithBodyData:(id)a3;
-- (id)_nextBatchWithConfig:(id)a3 topic:(id)a4;
-- (id)_postBatch:(id)a3;
+- (id)_flushNextBatchWithRequestCount:(unint64_t)count flushedEventCount:(unint64_t)eventCount config:(id)config;
+- (id)_mescalSignaturePromiseWithBodyData:(id)data;
+- (id)_nextBatchWithConfig:(id)config topic:(id)topic;
+- (id)_postBatch:(id)batch;
 - (id)performFlush;
 @end
 
@@ -62,20 +62,20 @@ id __41__AMSMetricsFigaroFlushTask_performFlush__block_invoke_2(uint64_t a1, voi
   return v8;
 }
 
-- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)a3 bag:(id)a4 maxRequestCount:(unint64_t)a5 maxEventsPerBatch:(unint64_t)a6 topic:(id)a7 includeMMeClientInfoAndDeviceHeaders:(BOOL)a8 metricsSigningFlavour:(unint64_t)a9 urlSession:(id)a10
+- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)source bag:(id)bag maxRequestCount:(unint64_t)count maxEventsPerBatch:(unint64_t)batch topic:(id)topic includeMMeClientInfoAndDeviceHeaders:(BOOL)headers metricsSigningFlavour:(unint64_t)flavour urlSession:(id)self0
 {
-  v10 = a8;
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a10;
+  headersCopy = headers;
+  sourceCopy = source;
+  bagCopy = bag;
+  topicCopy = topic;
+  sessionCopy = session;
   objc_initWeak(&location, self);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __162__AMSMetricsFigaroFlushTask_initWithDataSource_bag_maxRequestCount_maxEventsPerBatch_topic_includeMMeClientInfoAndDeviceHeaders_metricsSigningFlavour_urlSession___block_invoke;
   v22[3] = &unk_1E73B9A50;
   objc_copyWeak(&v23, &location);
-  v20 = [(AMSMetricsFigaroFlushTask *)self initWithDataSource:v16 bag:v17 maxRequestCount:a5 maxEventsPerBatch:a6 topic:v18 includeMMeClientInfoAndDeviceHeaders:v10 metricsSigningFlavour:a9 maxBatchSizeOverride:0 urlSession:v19 postBatchBlock:v22];
+  v20 = [(AMSMetricsFigaroFlushTask *)self initWithDataSource:sourceCopy bag:bagCopy maxRequestCount:count maxEventsPerBatch:batch topic:topicCopy includeMMeClientInfoAndDeviceHeaders:headersCopy metricsSigningFlavour:flavour maxBatchSizeOverride:0 urlSession:sessionCopy postBatchBlock:v22];
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
 
@@ -91,32 +91,32 @@ id __162__AMSMetricsFigaroFlushTask_initWithDataSource_bag_maxRequestCount_maxEv
   return v5;
 }
 
-- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)a3 bag:(id)a4 maxRequestCount:(unint64_t)a5 maxEventsPerBatch:(unint64_t)a6 topic:(id)a7 includeMMeClientInfoAndDeviceHeaders:(BOOL)a8 metricsSigningFlavour:(unint64_t)a9 maxBatchSizeOverride:(id)a10 urlSession:(id)a11 postBatchBlock:(id)a12
+- (AMSMetricsFigaroFlushTask)initWithDataSource:(id)source bag:(id)bag maxRequestCount:(unint64_t)count maxEventsPerBatch:(unint64_t)batch topic:(id)topic includeMMeClientInfoAndDeviceHeaders:(BOOL)headers metricsSigningFlavour:(unint64_t)flavour maxBatchSizeOverride:(id)self0 urlSession:(id)self1 postBatchBlock:(id)self2
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v33 = a10;
-  v32 = a11;
-  v19 = a12;
+  sourceCopy = source;
+  bagCopy = bag;
+  topicCopy = topic;
+  overrideCopy = override;
+  sessionCopy = session;
+  blockCopy = block;
   v34.receiver = self;
   v34.super_class = AMSMetricsFigaroFlushTask;
   v20 = [(AMSTask *)&v34 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_dataSource, a3);
-    objc_storeStrong(&v21->_bag, a4);
-    v21->_maxRequestCount = a5;
-    v21->_maxEventsPerBatch = a6;
-    v22 = [v18 copy];
+    objc_storeStrong(&v20->_dataSource, source);
+    objc_storeStrong(&v21->_bag, bag);
+    v21->_maxRequestCount = count;
+    v21->_maxEventsPerBatch = batch;
+    v22 = [topicCopy copy];
     topic = v21->_topic;
     v21->_topic = v22;
 
-    v21->_includeMMeClientInfoAndDeviceHeaders = a8;
-    v21->_metricsSigningFlavour = a9;
-    objc_storeStrong(&v21->_maxBatchSizeOverride, a10);
-    v24 = _Block_copy(v19);
+    v21->_includeMMeClientInfoAndDeviceHeaders = headers;
+    v21->_metricsSigningFlavour = flavour;
+    objc_storeStrong(&v21->_maxBatchSizeOverride, override);
+    v24 = _Block_copy(blockCopy);
     postBatchBlock = v21->_postBatchBlock;
     v21->_postBatchBlock = v24;
 
@@ -124,7 +124,7 @@ id __162__AMSMetricsFigaroFlushTask_initWithDataSource_bag_maxRequestCount_maxEv
     autoDecoration = v21->_autoDecoration;
     v21->_autoDecoration = v26;
 
-    objc_storeStrong(&v21->_URLSession, a11);
+    objc_storeStrong(&v21->_URLSession, session);
     v21->_currentCancellableDataTaskPromiseLock._os_unfair_lock_opaque = 0;
   }
 
@@ -140,50 +140,50 @@ id __162__AMSMetricsFigaroFlushTask_initWithDataSource_bag_maxRequestCount_maxEv
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v10 = objc_opt_class();
     v5 = v10;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Cancelling task", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Cancelling task", buf, 0xCu);
   }
 
-  v6 = [(AMSMetricsFigaroFlushTask *)self dataSource];
-  [v6 cancel];
+  dataSource = [(AMSMetricsFigaroFlushTask *)self dataSource];
+  [dataSource cancel];
 
   os_unfair_lock_lock_with_options();
   [(AMSPromise *)self->_currentCancellableDataTaskPromise cancel];
   v8.receiver = self;
   v8.super_class = AMSMetricsFigaroFlushTask;
-  LOBYTE(v6) = [(AMSTask *)&v8 cancel];
+  LOBYTE(dataSource) = [(AMSTask *)&v8 cancel];
   os_unfair_lock_unlock(&self->_currentCancellableDataTaskPromiseLock);
-  return v6;
+  return dataSource;
 }
 
-- (id)_flushNextBatchWithRequestCount:(unint64_t)a3 flushedEventCount:(unint64_t)a4 config:(id)a5
+- (id)_flushNextBatchWithRequestCount:(unint64_t)count flushedEventCount:(unint64_t)eventCount config:(id)config
 {
-  v8 = a5;
-  if (self->_maxRequestCount - 1 >= a3)
+  configCopy = config;
+  if (self->_maxRequestCount - 1 >= count)
   {
-    v12 = [(AMSMetricsFigaroFlushTask *)self _nextBatchWithConfig:v8 topic:self->_topic];
+    v12 = [(AMSMetricsFigaroFlushTask *)self _nextBatchWithConfig:configCopy topic:self->_topic];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __86__AMSMetricsFigaroFlushTask__flushNextBatchWithRequestCount_flushedEventCount_config___block_invoke;
     v14[3] = &unk_1E73B9AC8;
     v14[4] = self;
-    v16 = a4;
-    v17 = a3;
-    v15 = v8;
+    eventCountCopy = eventCount;
+    countCopy = count;
+    v15 = configCopy;
     v11 = [v12 continueWithBlock:v14];
   }
 
   else
   {
-    v9 = [(AMSMetricsFigaroFlushTask *)self dataSource];
-    [v9 didFinishBatching];
+    dataSource = [(AMSMetricsFigaroFlushTask *)self dataSource];
+    [dataSource didFinishBatching];
 
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:eventCount];
     v11 = [AMSPromise promiseWithResult:v10];
   }
 
@@ -322,13 +322,13 @@ id __86__AMSMetricsFigaroFlushTask__flushNextBatchWithRequestCount_flushedEventC
   return v15;
 }
 
-- (id)_mescalSignaturePromiseWithBodyData:(id)a3
+- (id)_mescalSignaturePromiseWithBodyData:(id)data
 {
-  v4 = [a3 ams_SHA1];
-  if (v4)
+  ams_SHA1 = [data ams_SHA1];
+  if (ams_SHA1)
   {
     v5 = [(AMSMetricsFigaroFlushTask *)self bag];
-    v6 = [AMSMescal signaturePromiseFromData:v4 type:1 bag:v5];
+    v6 = [AMSMescal signaturePromiseFromData:ams_SHA1 type:1 bag:v5];
     v7 = [v6 thenWithBlock:&__block_literal_global_95];
   }
 
@@ -375,22 +375,22 @@ uint64_t __41__AMSMetricsFigaroFlushTask__sortEvents___block_invoke(uint64_t a1,
   return v7;
 }
 
-- (id)_nextBatchWithConfig:(id)a3 topic:(id)a4
+- (id)_nextBatchWithConfig:(id)config topic:(id)topic
 {
-  v6 = a3;
-  v44 = a4;
+  configCopy = config;
+  topicCopy = topic;
   maxBatchSizeOverride = self->_maxBatchSizeOverride;
   if (maxBatchSizeOverride)
   {
-    v8 = [(NSNumber *)maxBatchSizeOverride unsignedIntegerValue];
+    unsignedIntegerValue = [(NSNumber *)maxBatchSizeOverride unsignedIntegerValue];
   }
 
   else
   {
-    v8 = [v6 maxBatchSize];
+    unsignedIntegerValue = [configCopy maxBatchSize];
   }
 
-  v37 = v8;
+  v37 = unsignedIntegerValue;
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v41 = +[AMSDefaults metricsCanaryIdentifier];
@@ -450,12 +450,12 @@ uint64_t __41__AMSMetricsFigaroFlushTask__sortEvents___block_invoke(uint64_t a1,
   if (v17)
   {
     v19 = [v17 length];
-    v39 = v6;
+    v39 = configCopy;
     v76[3] = v19;
     v20 = [@"]}" lengthOfBytesUsingEncoding:4];
     v21 = [@" "];
     v22 = objc_opt_new();
-    v23 = [(AMSMetricsFigaroFlushTask *)self dataSource];
+    dataSource = [(AMSMetricsFigaroFlushTask *)self dataSource];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __56__AMSMetricsFigaroFlushTask__nextBatchWithConfig_topic___block_invoke;
@@ -463,7 +463,7 @@ uint64_t __41__AMSMetricsFigaroFlushTask__sortEvents___block_invoke(uint64_t a1,
     v69 = &v81;
     v24 = v39;
     v63 = v24;
-    v64 = self;
+    selfCopy = self;
     v36 = v43;
     v65 = v36;
     v25 = v42;
@@ -476,20 +476,20 @@ uint64_t __41__AMSMetricsFigaroFlushTask__sortEvents___block_invoke(uint64_t a1,
     v74 = v37;
     v67 = v26;
     v68 = @",";
-    [v23 enumerateSortedEventsForTopic:v44 block:v62];
+    [dataSource enumerateSortedEventsForTopic:topicCopy block:v62];
 
     [(AMSMetricsFigaroFlushTask *)self _sortEvents:v26];
     v38 = v21;
     v27 = objc_alloc_init(AMSMutablePromise);
-    v28 = [v26 firstObject];
+    firstObject = [v26 firstObject];
 
-    if (v28)
+    if (firstObject)
     {
       autoDecoration = self->_autoDecoration;
-      v30 = [v26 firstObject];
+      firstObject2 = [v26 firstObject];
       v31 = [(AMSMetricsFigaroFlushTask *)self bag];
-      v32 = [(AMSPromise *)v27 completionHandlerAdapter];
-      [(AMSPrivateIdentifiersAutoDecorationProtocol *)autoDecoration autoDecorationIdentifiersForEvent:v30 bag:v31 completionHandler:v32];
+      completionHandlerAdapter = [(AMSPromise *)v27 completionHandlerAdapter];
+      [(AMSPrivateIdentifiersAutoDecorationProtocol *)autoDecoration autoDecorationIdentifiersForEvent:firstObject2 bag:v31 completionHandler:completionHandlerAdapter];
     }
 
     else
@@ -512,7 +512,7 @@ uint64_t __41__AMSMetricsFigaroFlushTask__sortEvents___block_invoke(uint64_t a1,
     v56 = v60;
     v57 = &v81;
     v47 = v24;
-    v48 = self;
+    selfCopy2 = self;
     v49 = v17;
     v50 = @",";
     v58 = v79;
@@ -525,7 +525,7 @@ uint64_t __41__AMSMetricsFigaroFlushTask__sortEvents___block_invoke(uint64_t a1,
     v33 = [(AMSMutablePromise *)v27 continueWithBlock:v45];
 
     _Block_object_dispose(v60, 8);
-    v6 = v39;
+    configCopy = v39;
   }
 
   else
@@ -927,18 +927,18 @@ uint64_t __56__AMSMetricsFigaroFlushTask__nextBatchWithConfig_topic___block_invo
   return v3;
 }
 
-- (id)_postBatch:(id)a3
+- (id)_postBatch:(id)batch
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  batchCopy = batch;
   v5 = +[AMSLogConfig sharedMetricsConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -947,14 +947,14 @@ uint64_t __56__AMSMetricsFigaroFlushTask__nextBatchWithConfig_topic___block_invo
     v23 = 2114;
     v24 = v8;
     v25 = 1024;
-    v26 = [v4 anonymous];
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting batch. (anon:%d)", buf, 0x1Cu);
+    anonymous = [batchCopy anonymous];
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting batch. (anon:%d)", buf, 0x1Cu);
   }
 
-  v9 = [v4 serializedEventsData];
-  if (v9)
+  serializedEventsData = [batchCopy serializedEventsData];
+  if (serializedEventsData)
   {
-    v10 = [AMSData compressedGzippedDataWithData:v9];
+    v10 = [AMSData compressedGzippedDataWithData:serializedEventsData];
     if (v10)
     {
       if ([(AMSMetricsFigaroFlushTask *)self metricsSigningFlavour])
@@ -965,7 +965,7 @@ uint64_t __56__AMSMetricsFigaroFlushTask__nextBatchWithConfig_topic___block_invo
 
       else
       {
-        v11 = [(AMSMetricsFigaroFlushTask *)self _mescalSignaturePromiseWithBodyData:v9];
+        v11 = [(AMSMetricsFigaroFlushTask *)self _mescalSignaturePromiseWithBodyData:serializedEventsData];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __40__AMSMetricsFigaroFlushTask__postBatch___block_invoke;
@@ -981,8 +981,8 @@ uint64_t __56__AMSMetricsFigaroFlushTask__nextBatchWithConfig_topic___block_invo
       v16[2] = __40__AMSMetricsFigaroFlushTask__postBatch___block_invoke_128;
       v16[3] = &unk_1E73B9BA8;
       v16[4] = self;
-      v17 = v4;
-      v18 = v9;
+      v17 = batchCopy;
+      v18 = serializedEventsData;
       v19 = v10;
       v13 = [v14 continueWithBlock:v16];
     }
@@ -1154,43 +1154,43 @@ id __40__AMSMetricsFigaroFlushTask__postBatch___block_invoke_2(id *a1, void *a2)
   return v10;
 }
 
-+ (BOOL)_shouldClearEventsDespiteError:(id)a3 result:(id)a4
++ (BOOL)_shouldClearEventsDespiteError:(id)error result:(id)result
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  errorCopy = error;
+  resultCopy = result;
+  v7 = resultCopy;
+  if (resultCopy)
   {
-    v8 = [v6 responseStatusCode];
+    responseStatusCode = [resultCopy responseStatusCode];
 LABEL_5:
-    v14 = (v8 - 200) < 0x64 || (v8 - 400) < 0x64;
+    v14 = (responseStatusCode - 200) < 0x64 || (responseStatusCode - 400) < 0x64;
     goto LABEL_11;
   }
 
-  v9 = [v5 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"AMSStatusCode"];
+  userInfo = [errorCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"AMSStatusCode"];
 
   if (v10)
   {
-    v11 = [v5 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"AMSStatusCode"];
-    v8 = [v12 integerValue];
+    userInfo2 = [errorCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:@"AMSStatusCode"];
+    responseStatusCode = [v12 integerValue];
 
     goto LABEL_5;
   }
 
-  v16 = [v5 domain];
-  v17 = [v16 isEqualToString:@"AMSErrorDomain"];
+  domain = [errorCopy domain];
+  v17 = [domain isEqualToString:@"AMSErrorDomain"];
 
   if (v17)
   {
-    v18 = [v5 code] == 3;
+    v18 = [errorCopy code] == 3;
   }
 
   else
   {
-    v19 = [v5 domain];
-    v20 = [v19 isEqualToString:*MEMORY[0x1E696A978]];
+    domain2 = [errorCopy domain];
+    v20 = [domain2 isEqualToString:*MEMORY[0x1E696A978]];
 
     if (!v20)
     {
@@ -1198,7 +1198,7 @@ LABEL_5:
       goto LABEL_11;
     }
 
-    v18 = [v5 code] == -1102;
+    v18 = [errorCopy code] == -1102;
   }
 
   v14 = v18;

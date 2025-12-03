@@ -1,7 +1,7 @@
 @interface TextResults
 - (TextResults)init;
-- (id)transcriptionOfPath:(id)a3 tokenProcessingBlock:(id)a4;
-- (void)addColumn:(id)a3;
+- (id)transcriptionOfPath:(id)path tokenProcessingBlock:(id)block;
+- (void)addColumn:(id)column;
 - (void)sortCols;
 @end
 
@@ -14,20 +14,20 @@
   v2 = [(TextResults *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutableCols = v2->_mutableCols;
-    v2->_mutableCols = v3;
+    v2->_mutableCols = array;
   }
 
   return v2;
 }
 
-- (void)addColumn:(id)a3
+- (void)addColumn:(id)column
 {
   mutableCols = self->_mutableCols;
   if (mutableCols)
   {
-    [(NSMutableArray *)mutableCols addObject:a3];
+    [(NSMutableArray *)mutableCols addObject:column];
   }
 }
 
@@ -65,32 +65,32 @@
   }
 }
 
-- (id)transcriptionOfPath:(id)a3 tokenProcessingBlock:(id)a4
+- (id)transcriptionOfPath:(id)path tokenProcessingBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD60] string];
-  if ([v5 length])
+  pathCopy = path;
+  blockCopy = block;
+  string = [MEMORY[0x1E696AD60] string];
+  if ([pathCopy length])
   {
     v8 = 0;
     v9 = 0;
-    v24 = v5;
+    v24 = pathCopy;
     do
     {
       v10 = [(NSMutableArray *)self->_mutableCols objectAtIndexedSubscript:v9];
       v29 = v9;
-      v11 = [v5 indexAtPosition:v9];
+      v11 = [pathCopy indexAtPosition:v9];
       v28 = v10;
-      v27 = [v10 rows];
-      v26 = [v27 objectAtIndexedSubscript:v11];
-      v12 = [v26 tokens];
+      rows = [v10 rows];
+      v26 = [rows objectAtIndexedSubscript:v11];
+      tokens = [v26 tokens];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      obj = v12;
-      v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      obj = tokens;
+      v13 = [tokens countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v13)
       {
         v14 = v13;
@@ -118,15 +118,15 @@
               v18 = @" ";
             }
 
-            v19 = [v7 length];
+            v19 = [string length];
             v20 = [(__CFString *)v18 length];
-            v21 = [v17 string];
-            [v7 appendFormat:@"%@%@", v18, v21];
+            string2 = [v17 string];
+            [string appendFormat:@"%@%@", v18, string2];
 
-            v22 = [v7 length];
-            if (v6)
+            v22 = [string length];
+            if (blockCopy)
             {
-              v6[2](v6, v17, v20 + v19, v22 - (v20 + v19));
+              blockCopy[2](blockCopy, v17, v20 + v19, v22 - (v20 + v19));
             }
 
             ++v15;
@@ -141,13 +141,13 @@
       }
 
       v9 = v29 + 1;
-      v5 = v24;
+      pathCopy = v24;
     }
 
     while (v29 + 1 < [v24 length]);
   }
 
-  return v7;
+  return string;
 }
 
 @end

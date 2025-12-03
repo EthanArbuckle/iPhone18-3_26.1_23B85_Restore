@@ -1,15 +1,15 @@
 @interface PersonalAudioLinkControl
-+ (id)linkWithTitle:(id)a3;
++ (id)linkWithTitle:(id)title;
 - (void)layoutSubviews;
 @end
 
 @implementation PersonalAudioLinkControl
 
-+ (id)linkWithTitle:(id)a3
++ (id)linkWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_alloc_init(PersonalAudioLinkControl);
-  [(PersonalAudioLinkControl *)v4 setTitle:v3];
+  [(PersonalAudioLinkControl *)v4 setTitle:titleCopy];
 
   return v4;
 }
@@ -49,8 +49,8 @@
     titleLabel = self->_titleLabel;
   }
 
-  v14 = [(PersonalAudioLinkControl *)self title];
-  [(UILabel *)titleLabel setText:v14];
+  title = [(PersonalAudioLinkControl *)self title];
+  [(UILabel *)titleLabel setText:title];
 }
 
 @end

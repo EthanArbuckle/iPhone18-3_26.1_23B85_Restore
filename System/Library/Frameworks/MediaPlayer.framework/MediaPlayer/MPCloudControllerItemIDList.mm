@@ -1,5 +1,5 @@
 @interface MPCloudControllerItemIDList
-+ (id)cloudItemIDListForPlaylist:(id)a3;
++ (id)cloudItemIDListForPlaylist:(id)playlist;
 - (MPCloudControllerItemIDList)init;
 @end
 
@@ -20,25 +20,25 @@
   return v2;
 }
 
-+ (id)cloudItemIDListForPlaylist:(id)a3
++ (id)cloudItemIDListForPlaylist:(id)playlist
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  playlistCopy = playlist;
   v24 = objc_alloc_init(MPCloudControllerItemIDList);
-  v22 = v3;
-  v4 = [v3 itemsQuery];
-  v5 = [v4 copy];
+  v22 = playlistCopy;
+  itemsQuery = [playlistCopy itemsQuery];
+  v5 = [itemsQuery copy];
 
   [v5 setIgnoreRestrictionsPredicates:1];
   [v5 setIgnoreSystemFilterPredicates:1];
   v21 = v5;
-  v6 = [v5 items];
+  items = [v5 items];
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{@"storeSagaID", @"subscriptionStoreItemAdamID", @"cloudIsInMyLibrary", 0}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v6;
+  obj = items;
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -55,27 +55,27 @@
 
         v12 = [*(*(&v25 + 1) + 8 * i) valuesForProperties:v7];
         v13 = [v12 objectForKey:@"storeSagaID"];
-        v14 = [v13 longLongValue];
+        longLongValue = [v13 longLongValue];
 
         v15 = [v12 objectForKey:@"subscriptionStoreItemAdamID"];
-        v16 = [v15 longLongValue];
+        longLongValue2 = [v15 longLongValue];
 
-        if (v14 < 1)
+        if (longLongValue < 1)
         {
-          if (v16 < 1)
+          if (longLongValue2 < 1)
           {
             goto LABEL_11;
           }
 
           v17 = v24;
-          v18 = v16;
+          v18 = longLongValue2;
           v19 = 1;
         }
 
         else
         {
           v17 = v24;
-          v18 = v14;
+          v18 = longLongValue;
           v19 = 0;
         }
 

@@ -1,38 +1,38 @@
 @interface PKSqueezePaletteViewExpandedInkingToolLayout
 - (PKSqueezePaletteView)paletteView;
-- (void)_colorAlphaSliderUserDidChangeSlider:(id)a3;
-- (void)_didTapDrawingTool:(id)a3;
-- (void)_didTapStrokeWeightButton:(id)a3;
+- (void)_colorAlphaSliderUserDidChangeSlider:(id)slider;
+- (void)_didTapDrawingTool:(id)tool;
+- (void)_didTapStrokeWeightButton:(id)button;
 - (void)_updateToolUIStyle;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
-- (void)initWithContext:(void *)a3 strokeWeightButtons:;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
+- (void)initWithContext:(void *)context strokeWeightButtons:;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewExpandedInkingToolLayout
 
-- (void)initWithContext:(void *)a3 strokeWeightButtons:
+- (void)initWithContext:(void *)context strokeWeightButtons:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PKSqueezePaletteViewExpandedInkingToolLayout;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 3, a2);
-      v9 = [v7 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [contextCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)setupUI
@@ -42,12 +42,12 @@
 
   if (WeakRetained)
   {
-    v4 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
-    v69 = v4;
-    v5 = v4;
-    if (v4)
+    context = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
+    v69 = context;
+    v5 = context;
+    if (context)
     {
-      v6 = *(v4 + 24);
+      v6 = *(context + 24);
       v7 = *(v5 + 8);
       if (self)
       {
@@ -70,15 +70,15 @@ LABEL_4:
     strokeWeightButtons = 0;
 LABEL_5:
     v70 = strokeWeightButtons;
-    v9 = [v6 centerXAnchor];
+    centerXAnchor = [v6 centerXAnchor];
     v10 = objc_loadWeakRetained(&self->_paletteView);
-    v11 = [v10 centerXAnchor];
-    v68 = [v9 constraintEqualToAnchor:v11];
+    centerXAnchor2 = [v10 centerXAnchor];
+    v68 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v12 = [v6 centerYAnchor];
+    centerYAnchor = [v6 centerYAnchor];
     v13 = objc_loadWeakRetained(&self->_paletteView);
-    v14 = [v13 centerYAnchor];
-    v67 = [v12 constraintEqualToAnchor:v14];
+    centerYAnchor2 = [v13 centerYAnchor];
+    v67 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     v15 = objc_loadWeakRetained(&self->_paletteView);
     v16 = v15;
@@ -120,9 +120,9 @@ LABEL_5:
     }
 
     v25 = v24;
-    v26 = [v25 _configuration];
-    v27 = v26;
-    if (v26 && ([v26 supportsStrokeWeight] & 1) != 0)
+    _configuration = [v25 _configuration];
+    v27 = _configuration;
+    if (_configuration && ([_configuration supportsStrokeWeight] & 1) != 0)
     {
       v28 = v27[16];
 
@@ -161,10 +161,10 @@ LABEL_5:
       v29 = 0;
     }
 
-    v30 = v29;
-    v31 = [v30 _configuration];
-    v32 = v31;
-    if (v31 && [v31 supportsOpacity])
+    centerXAnchor3 = v29;
+    _configuration2 = [centerXAnchor3 _configuration];
+    v32 = _configuration2;
+    if (_configuration2 && [_configuration2 supportsOpacity])
     {
       v33 = v32[17];
 
@@ -234,25 +234,25 @@ LABEL_27:
       [v48 addSubview:self->_opacitySlider];
 
       [(PKSqueezePaletteViewExpandedInkingToolLayout *)self setOpacitySlider:self->_opacitySlider];
-      v30 = [(PKAngularOpacitySlider *)self->_opacitySlider centerXAnchor];
+      centerXAnchor3 = [(PKAngularOpacitySlider *)self->_opacitySlider centerXAnchor];
       v32 = objc_loadWeakRetained(&self->_paletteView);
-      v65 = [v32 centerXAnchor];
-      v64 = [v30 constraintEqualToAnchor:v65];
+      centerXAnchor4 = [v32 centerXAnchor];
+      v64 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v83[0] = v64;
-      v62 = [(PKAngularOpacitySlider *)self->_opacitySlider centerYAnchor];
+      centerYAnchor3 = [(PKAngularOpacitySlider *)self->_opacitySlider centerYAnchor];
       v63 = objc_loadWeakRetained(&self->_paletteView);
-      v61 = [v63 centerYAnchor];
-      v60 = [v62 constraintEqualToAnchor:v61];
+      centerYAnchor4 = [v63 centerYAnchor];
+      v60 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v83[1] = v60;
-      v58 = [(PKAngularOpacitySlider *)self->_opacitySlider widthAnchor];
+      widthAnchor = [(PKAngularOpacitySlider *)self->_opacitySlider widthAnchor];
       v59 = objc_loadWeakRetained(&self->_paletteView);
-      v57 = [v59 widthAnchor];
-      v56 = [v58 constraintEqualToAnchor:v57];
+      widthAnchor2 = [v59 widthAnchor];
+      v56 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v83[2] = v56;
-      v49 = [(PKAngularOpacitySlider *)self->_opacitySlider heightAnchor];
+      heightAnchor = [(PKAngularOpacitySlider *)self->_opacitySlider heightAnchor];
       v50 = objc_loadWeakRetained(&self->_paletteView);
-      v51 = [v50 heightAnchor];
-      v52 = [v49 constraintEqualToAnchor:v51];
+      heightAnchor2 = [v50 heightAnchor];
+      v52 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v83[3] = v52;
       v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
       [v21 addObjectsFromArray:v53];
@@ -382,18 +382,18 @@ void __55__PKSqueezePaletteViewExpandedInkingToolLayout_setupUI__block_invoke_2(
 
 - (void)updateUI
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_strokeWeightButtons;
   }
 
   [(PKSqueezePaletteViewExpandedInkingToolLayout *)self enumerateObjectsUsingBlock:&__block_literal_global_50];
-  v3 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)v2 context];
-  v4 = v3;
-  if (v3)
+  context = [(PKSqueezePaletteViewExpandedInkingToolLayout *)selfCopy context];
+  v4 = context;
+  if (context)
   {
-    v5 = *(v3 + 24);
+    v5 = *(context + 24);
   }
 
   else
@@ -403,7 +403,7 @@ void __55__PKSqueezePaletteViewExpandedInkingToolLayout_setupUI__block_invoke_2(
 
   v6 = v5;
 
-  [(PKSqueezePaletteViewExpandedInkingToolLayout *)v2 _updateToolUIStyle];
+  [(PKSqueezePaletteViewExpandedInkingToolLayout *)selfCopy _updateToolUIStyle];
   if (v6)
   {
     v7 = v6[102];
@@ -415,9 +415,9 @@ void __55__PKSqueezePaletteViewExpandedInkingToolLayout_setupUI__block_invoke_2(
   }
 
   v8 = v7;
-  v9 = [v8 _configuration];
-  v10 = v9;
-  if (v9 && ([v9 supportsStrokeWeight] & 1) != 0)
+  _configuration = [v8 _configuration];
+  v10 = _configuration;
+  if (_configuration && ([_configuration supportsStrokeWeight] & 1) != 0)
   {
     v11 = v10[16];
 
@@ -437,9 +437,9 @@ void __55__PKSqueezePaletteViewExpandedInkingToolLayout_setupUI__block_invoke_2(
       [v13 _strokeWeight];
       v15 = v14;
 
-      if (v2)
+      if (selfCopy)
       {
-        strokeWeightButtons = v2->_strokeWeightButtons;
+        strokeWeightButtons = selfCopy->_strokeWeightButtons;
       }
 
       else
@@ -470,19 +470,19 @@ void __55__PKSqueezePaletteViewExpandedInkingToolLayout_setupUI__block_invoke_2(
     v17 = 0;
   }
 
-  v18 = v17;
-  v19 = [v18 _configuration];
-  v20 = v19;
-  if (!v19 || ![v19 supportsOpacity])
+  opacitySlider = v17;
+  _configuration2 = [opacitySlider _configuration];
+  _color = _configuration2;
+  if (!_configuration2 || ![_configuration2 supportsOpacity])
   {
     goto LABEL_25;
   }
 
-  v21 = v20[17];
+  v21 = _color[17];
 
   if (v21 == 1)
   {
-    v18 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)v2 opacitySlider];
+    opacitySlider = [(PKSqueezePaletteViewExpandedInkingToolLayout *)selfCopy opacitySlider];
     if (v6)
     {
       v22 = v6[102];
@@ -494,14 +494,14 @@ void __55__PKSqueezePaletteViewExpandedInkingToolLayout_setupUI__block_invoke_2(
     }
 
     v23 = v22;
-    v20 = [v23 _color];
+    _color = [v23 _color];
 
-    v24 = [v18 color];
-    v25 = [v24 isEqual:v20];
+    color = [opacitySlider color];
+    v25 = [color isEqual:_color];
 
     if ((v25 & 1) == 0)
     {
-      [v18 setColor:v20];
+      [opacitySlider setColor:_color];
     }
 
 LABEL_25:
@@ -510,9 +510,9 @@ LABEL_25:
 
 - (void)_updateToolUIStyle
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     if (WeakRetained)
     {
       v3 = WeakRetained[73];
@@ -524,7 +524,7 @@ LABEL_25:
     }
 
     v7 = WeakRetained;
-    v4 = *(a1 + 24);
+    v4 = *(self + 24);
     if (v4)
     {
       v5 = *(v4 + 24);
@@ -565,11 +565,11 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   }
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self layoutConstraints];
-  [v4 deactivateConstraints:v5];
+  layoutConstraints = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self layoutConstraints];
+  [v4 deactivateConstraints:layoutConstraints];
 
   if (self)
   {
@@ -582,11 +582,11 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   }
 
   [(NSArray *)strokeWeightButtons makeObjectsPerformSelector:sel_removeFromSuperview];
-  v7 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
-  v10 = v7;
-  if (v7)
+  context = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
+  v10 = context;
+  if (context)
   {
-    v8 = *(v7 + 24);
+    v8 = *(context + 24);
   }
 
   else
@@ -598,7 +598,7 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   [v9 removeTarget:self action:sel__didTapDrawingTool_ forControlEvents:64];
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   context = self->_context;
   if (context)
@@ -611,14 +611,14 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v6];
 }
 
-- (void)_didTapStrokeWeightButton:(id)a3
+- (void)_didTapStrokeWeightButton:(id)button
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  buttonCopy = button;
+  v5 = buttonCopy;
+  if (buttonCopy)
   {
-    v6 = v4[93];
+    v6 = buttonCopy[93];
   }
 
   else
@@ -634,15 +634,15 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
     _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Tap stroke weight button %f", &v20, 0xCu);
   }
 
-  v8 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self lastTappedStrokeWeightButton];
+  lastTappedStrokeWeightButton = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self lastTappedStrokeWeightButton];
 
-  v9 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
-  v10 = v9;
-  if (v8 == v5)
+  context = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
+  v10 = context;
+  if (lastTappedStrokeWeightButton == v5)
   {
-    if (v9)
+    if (context)
     {
-      v19 = *(v9 + 16);
+      v19 = *(context + 16);
     }
 
     else
@@ -658,9 +658,9 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
 
   else
   {
-    if (v9)
+    if (context)
     {
-      v11 = *(v9 + 24);
+      v11 = *(context + 24);
     }
 
     else
@@ -702,7 +702,7 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   [(PKSqueezePaletteViewExpandedInkingToolLayout *)self setLastTappedStrokeWeightButton:v5];
 }
 
-- (void)_didTapDrawingTool:(id)a3
+- (void)_didTapDrawingTool:(id)tool
 {
   v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -711,11 +711,11 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Drawing tool tapped", v10, 2u);
   }
 
-  v5 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
-  v6 = v5;
-  if (v5)
+  context = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
+  v6 = context;
+  if (context)
   {
-    v7 = *(v5 + 16);
+    v7 = *(context + 16);
   }
 
   else
@@ -728,14 +728,14 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v8];
 }
 
-- (void)_colorAlphaSliderUserDidChangeSlider:(id)a3
+- (void)_colorAlphaSliderUserDidChangeSlider:(id)slider
 {
-  v21 = a3;
-  v4 = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
-  v5 = v4;
-  if (v4)
+  sliderCopy = slider;
+  context = [(PKSqueezePaletteViewExpandedInkingToolLayout *)self context];
+  v5 = context;
+  if (context)
   {
-    v6 = *(v4 + 24);
+    v6 = *(context + 24);
   }
 
   else
@@ -756,19 +756,19 @@ void __56__PKSqueezePaletteViewExpandedInkingToolLayout_updateUI__block_invoke_2
   }
 
   v9 = v8;
-  v10 = [v9 _color];
+  _color = [v9 _color];
 
-  if (v10)
+  if (_color)
   {
-    [v10 alphaComponent];
+    [_color alphaComponent];
     v12 = v11;
-    v13 = [v21 color];
-    [v13 alphaComponent];
+    color = [sliderCopy color];
+    [color alphaComponent];
     v15 = v14;
 
     if (vabdd_f64(v12, v15) >= 0.01)
     {
-      v16 = [v10 colorWithAlphaComponent:v15];
+      v16 = [_color colorWithAlphaComponent:v15];
       if (v7)
       {
         v17 = v7[102];

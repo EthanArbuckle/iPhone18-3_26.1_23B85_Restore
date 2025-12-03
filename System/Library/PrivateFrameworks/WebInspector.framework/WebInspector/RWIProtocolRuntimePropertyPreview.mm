@@ -4,44 +4,44 @@
 - (NSString)name;
 - (NSString)value;
 - (RWIProtocolRuntimeObjectPreview)valuePreview;
-- (RWIProtocolRuntimePropertyPreview)initWithName:(id)a3 type:(int64_t)a4;
+- (RWIProtocolRuntimePropertyPreview)initWithName:(id)name type:(int64_t)type;
 - (int64_t)subtype;
 - (int64_t)type;
-- (void)setName:(id)a3;
-- (void)setSubtype:(int64_t)a3;
-- (void)setType:(int64_t)a3;
-- (void)setValue:(id)a3;
-- (void)setValuePreview:(id)a3;
+- (void)setName:(id)name;
+- (void)setSubtype:(int64_t)subtype;
+- (void)setType:(int64_t)type;
+- (void)setValue:(id)value;
+- (void)setValuePreview:(id)preview;
 @end
 
 @implementation RWIProtocolRuntimePropertyPreview
 
-- (RWIProtocolRuntimePropertyPreview)initWithName:(id)a3 type:(int64_t)a4
+- (RWIProtocolRuntimePropertyPreview)initWithName:(id)name type:(int64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = RWIProtocolRuntimePropertyPreview;
   v7 = [(RWIProtocolJSONObject *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"name"}];
     }
 
-    [(RWIProtocolRuntimePropertyPreview *)v7 setName:v6];
-    [(RWIProtocolRuntimePropertyPreview *)v7 setType:a4];
+    [(RWIProtocolRuntimePropertyPreview *)v7 setName:nameCopy];
+    [(RWIProtocolRuntimePropertyPreview *)v7 setType:type];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyPreview;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -53,7 +53,7 @@
   return v2;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   Inspector::toProtocolString();
   if (v6)
@@ -121,7 +121,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setSubtype:(int64_t)a3
+- (void)setSubtype:(int64_t)subtype
 {
   Inspector::toProtocolString();
   if (v6)
@@ -189,11 +189,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyPreview;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setString:value forKey:@"value"];
 }
 
 - (NSString)value
@@ -205,11 +205,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setValuePreview:(id)a3
+- (void)setValuePreview:(id)preview
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyPreview;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"valuePreview"];
+  [(RWIProtocolJSONObject *)&v3 setObject:preview forKey:@"valuePreview"];
 }
 
 - (RWIProtocolRuntimeObjectPreview)valuePreview

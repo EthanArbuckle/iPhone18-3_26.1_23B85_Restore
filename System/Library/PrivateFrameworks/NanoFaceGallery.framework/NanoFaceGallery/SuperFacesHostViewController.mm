@@ -1,12 +1,12 @@
 @interface SuperFacesHostViewController
-- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithCoder:(id)a3;
-- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithCoder:(id)coder;
+- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation SuperFacesHostViewController
 
-- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithCoder:(id)a3
+- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithCoder:(id)coder
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -34,12 +34,12 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for SuperFacesHostViewController();
-  v3 = self;
+  selfCopy = self;
   [(SuperFacesHostViewController *)&v4 viewDidLoad];
   sub_25B0462A0();
 }
 
-- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15NanoFaceGalleryP33_40986ADAA0F504397917503E2F9321D528SuperFacesHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25B0E3900();
   sub_25B0E38F0();

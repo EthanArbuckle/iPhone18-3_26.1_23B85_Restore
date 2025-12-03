@@ -1,16 +1,16 @@
 @interface HMDAccessoryFirmwareUpdateCameraPolicy
 + (id)logCategory;
 - (BOOL)evaluate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)_checkStreamingStatus;
 - (void)_handleStreamStatusCharacteristicChanges;
-- (void)_processStreamingStatus:(id)a3;
+- (void)_processStreamingStatus:(id)status;
 - (void)configure;
-- (void)handleAccessoryConfiguredNotification:(id)a3;
-- (void)handleAccessoryUnconfiguredNotification:(id)a3;
-- (void)handleCharacteristicValuesChanged:(id)a3;
-- (void)handleSettingsChange:(id)a3;
+- (void)handleAccessoryConfiguredNotification:(id)notification;
+- (void)handleAccessoryUnconfiguredNotification:(id)notification;
+- (void)handleCharacteristicValuesChanged:(id)changed;
+- (void)handleSettingsChange:(id)change;
 - (void)registerForNotifications;
 @end
 
@@ -19,14 +19,14 @@
 - (BOOL)evaluate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-  v4 = [v3 cameraProfileSettingsManager];
-  v5 = [v4 currentSettings];
+  accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+  cameraProfileSettingsManager = [accessory cameraProfileSettingsManager];
+  currentSettings = [cameraProfileSettingsManager currentSettings];
 
-  if (!v5)
+  if (!currentSettings)
   {
     v6 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -42,12 +42,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v5 currentAccessMode])
+  if ([currentSettings currentAccessMode])
   {
     if (HMIsRecordingAllowedForCameraAccessMode())
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy2 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -68,7 +68,7 @@ LABEL_13:
     {
       [(HMDAccessoryFirmwareUpdateCameraPolicy *)self _checkStreamingStatus];
       v6 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy3 = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -84,7 +84,7 @@ LABEL_13:
 
     HMIsMotionDetectionAllowedForCameraAccessMode();
     v6 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy4 = self;
     v8 = HMFGetOSLogHandle();
     v13 = 1;
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -103,7 +103,7 @@ LABEL_18:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy5 = self;
   v8 = HMFGetOSLogHandle();
   v13 = 1;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -122,15 +122,15 @@ LABEL_15:
   return v13;
 }
 
-- (void)_processStreamingStatus:(id)a3
+- (void)_processStreamingStatus:(id)status
 {
   v41 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  statusCopy = status;
+  v5 = [statusCopy countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -144,7 +144,7 @@ LABEL_15:
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(statusCopy);
         }
 
         v10 = *(v8 + 2704);
@@ -177,14 +177,14 @@ LABEL_15:
         else
         {
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
             v19 = v7;
             v20 = v8;
-            v21 = v4;
+            v21 = statusCopy;
             v23 = v22 = self;
             *buf = 138543618;
             v37 = v23;
@@ -193,7 +193,7 @@ LABEL_15:
             _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Invalid value type: %@", buf, 0x16u);
 
             self = v22;
-            v4 = v21;
+            statusCopy = v21;
             v8 = v20;
             v7 = v19;
             v6 = v31;
@@ -206,7 +206,7 @@ LABEL_15:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v6 = [statusCopy countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (v6)
       {
         continue;
@@ -220,7 +220,7 @@ LABEL_15:
 LABEL_20:
 
   v25 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy2 = self;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
@@ -234,10 +234,10 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v25);
-  if (v24 != [(HMDAccessoryFirmwareUpdatePolicy *)v26 status])
+  if (v24 != [(HMDAccessoryFirmwareUpdatePolicy *)selfCopy2 status])
   {
-    [(HMDAccessoryFirmwareUpdatePolicy *)v26 setStatus:v24];
-    [(HMDAccessoryFirmwareUpdatePolicy *)v26 notify:v24];
+    [(HMDAccessoryFirmwareUpdatePolicy *)selfCopy2 setStatus:v24];
+    [(HMDAccessoryFirmwareUpdatePolicy *)selfCopy2 notify:v24];
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -246,9 +246,9 @@ LABEL_20:
 - (void)_checkStreamingStatus
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-  v5 = [v4 findCharacteristicsByType:*MEMORY[0x277CFE6F0] forServiceType:*MEMORY[0x277CD0E00]];
+  array = [MEMORY[0x277CBEB18] array];
+  accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+  v5 = [accessory findCharacteristicsByType:*MEMORY[0x277CFE6F0] forServiceType:*MEMORY[0x277CD0E00]];
 
   v31 = 0u;
   v32 = 0u;
@@ -270,7 +270,7 @@ LABEL_20:
         }
 
         v10 = [HMDCharacteristicRequest requestWithCharacteristic:*(*(&v29 + 1) + 8 * v9)];
-        [v3 addObject:v10];
+        [array addObject:v10];
 
         ++v9;
       }
@@ -282,13 +282,13 @@ LABEL_20:
     while (v7);
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v11 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+    accessory2 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = accessory2;
     }
 
     else
@@ -299,12 +299,12 @@ LABEL_20:
     v13 = v12;
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v3 count];
+      v18 = [array count];
       *buf = 138543618;
       v34 = v17;
       v35 = 2048;
@@ -313,16 +313,16 @@ LABEL_20:
     }
 
     objc_autoreleasePoolPop(v14);
-    objc_initWeak(buf, v15);
-    v19 = [v13 home];
-    v20 = [(HMDAccessoryFirmwareUpdateCameraPolicy *)v15 description];
+    objc_initWeak(buf, selfCopy);
+    home = [v13 home];
+    v20 = [(HMDAccessoryFirmwareUpdateCameraPolicy *)selfCopy description];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __63__HMDAccessoryFirmwareUpdateCameraPolicy__checkStreamingStatus__block_invoke;
     v26[3] = &unk_278687F40;
     objc_copyWeak(&v28, buf);
-    v27 = v3;
-    [v19 readCharacteristicValues:v27 source:1000 sourceForLogging:v20 qualityOfService:-1 withCompletionHandler:v26];
+    v27 = array;
+    [home readCharacteristicValues:v27 source:1000 sourceForLogging:v20 qualityOfService:-1 withCompletionHandler:v26];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -331,7 +331,7 @@ LABEL_20:
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -472,15 +472,15 @@ void __63__HMDAccessoryFirmwareUpdateCameraPolicy__checkStreamingStatus__block_i
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSettingsChange:(id)a3
+- (void)handleSettingsChange:(id)change
 {
-  v4 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDAccessoryFirmwareUpdateCameraPolicy_handleSettingsChange___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __63__HMDAccessoryFirmwareUpdateCameraPolicy_handleSettingsChange___block_invoke(uint64_t a1)
@@ -506,11 +506,11 @@ uint64_t __63__HMDAccessoryFirmwareUpdateCameraPolicy_handleSettingsChange___blo
 - (void)_handleStreamStatusCharacteristicChanges
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-  v5 = [v4 findCharacteristicsByType:*MEMORY[0x277CFE6F0] forServiceType:*MEMORY[0x277CD0E00]];
+  accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+  v5 = [accessory findCharacteristicsByType:*MEMORY[0x277CFE6F0] forServiceType:*MEMORY[0x277CD0E00]];
 
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
   v14 = 0u;
@@ -533,8 +533,8 @@ uint64_t __63__HMDAccessoryFirmwareUpdateCameraPolicy_handleSettingsChange___blo
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) value];
-        [v6 addObject:v12];
+        value = [*(*(&v14 + 1) + 8 * v11) value];
+        [v6 addObject:value];
 
         ++v11;
       }
@@ -550,18 +550,18 @@ uint64_t __63__HMDAccessoryFirmwareUpdateCameraPolicy_handleSettingsChange___blo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCharacteristicValuesChanged:(id)a3
+- (void)handleCharacteristicValuesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HMDAccessoryFirmwareUpdateCameraPolicy_handleCharacteristicValuesChanged___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __76__HMDAccessoryFirmwareUpdateCameraPolicy_handleCharacteristicValuesChanged___block_invoke(uint64_t a1)
@@ -632,15 +632,15 @@ void __76__HMDAccessoryFirmwareUpdateCameraPolicy_handleCharacteristicValuesChan
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryUnconfiguredNotification:(id)a3
+- (void)handleAccessoryUnconfiguredNotification:(id)notification
 {
-  v4 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryUnconfiguredNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __82__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryUnconfiguredNotification___block_invoke(uint64_t a1)
@@ -668,15 +668,15 @@ uint64_t __82__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryUnconfigure
   return result;
 }
 
-- (void)handleAccessoryConfiguredNotification:(id)a3
+- (void)handleAccessoryConfiguredNotification:(id)notification
 {
-  v4 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredNotification___block_invoke(uint64_t a1)
@@ -706,27 +706,27 @@ uint64_t __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredN
 
 - (void)registerForNotifications
 {
-  v7 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleAccessoryConfiguredNotification_ name:@"HMDAccessoryConnectedNotification" object:v7];
+  accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAccessoryConfiguredNotification_ name:@"HMDAccessoryConnectedNotification" object:accessory];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_handleAccessoryUnconfiguredNotification_ name:@"HMDAccessoryDisconnectedNotification" object:v7];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleAccessoryUnconfiguredNotification_ name:@"HMDAccessoryDisconnectedNotification" object:accessory];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_handleSettingsChange_ name:@"HMDCameraProfileSettingsDidChangeNotification" object:v7];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_handleSettingsChange_ name:@"HMDCameraProfileSettingsDidChangeNotification" object:accessory];
 
-  if ([v7 isReachable])
+  if ([accessory isReachable])
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_handleCharacteristicValuesChanged_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:v7];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_handleCharacteristicValuesChanged_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:accessory];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -736,7 +736,7 @@ uint64_t __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredN
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -747,9 +747,9 @@ uint64_t __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredN
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-      v8 = [(HMDAccessoryFirmwareUpdatePolicy *)v6 accessory];
-      v9 = [v7 isEqual:v8];
+      accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+      accessory2 = [(HMDAccessoryFirmwareUpdatePolicy *)v6 accessory];
+      v9 = [accessory isEqual:accessory2];
     }
 
     else
@@ -763,8 +763,8 @@ uint64_t __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredN
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-  v3 = [v2 hash];
+  accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+  v3 = [accessory hash];
 
   return v3;
 }
@@ -772,9 +772,9 @@ uint64_t __80__HMDAccessoryFirmwareUpdateCameraPolicy_handleAccessoryConfiguredN
 - (void)configure
 {
   [(HMDAccessoryFirmwareUpdateCameraPolicy *)self registerForNotifications];
-  v3 = [(HMDAccessoryFirmwareUpdateCameraPolicy *)self evaluate];
+  evaluate = [(HMDAccessoryFirmwareUpdateCameraPolicy *)self evaluate];
 
-  [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:v3];
+  [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:evaluate];
 }
 
 + (id)logCategory

@@ -1,5 +1,5 @@
 @interface HMDCoreDataLoadErrorLogEvent
-- (HMDCoreDataLoadErrorLogEvent)initWithReason:(unint64_t)a3;
+- (HMDCoreDataLoadErrorLogEvent)initWithReason:(unint64_t)reason;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,23 +7,23 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDCoreDataLoadErrorLogEvent reason](self, "reason")}];
-  [v3 setObject:v4 forKeyedSubscript:@"action"];
+  [dictionary setObject:v4 forKeyedSubscript:@"action"];
 
-  v5 = [v3 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }
 
-- (HMDCoreDataLoadErrorLogEvent)initWithReason:(unint64_t)a3
+- (HMDCoreDataLoadErrorLogEvent)initWithReason:(unint64_t)reason
 {
   v5.receiver = self;
   v5.super_class = HMDCoreDataLoadErrorLogEvent;
   result = [(HMMLogEvent *)&v5 init];
   if (result)
   {
-    result->_reason = a3;
+    result->_reason = reason;
   }
 
   return result;

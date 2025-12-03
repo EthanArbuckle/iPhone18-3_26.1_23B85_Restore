@@ -1,14 +1,14 @@
 @interface WiFiUsageAppleWiFiNameBlocks
-- (WiFiUsageAppleWiFiNameBlocks)initWithAPName:(id)a3;
+- (WiFiUsageAppleWiFiNameBlocks)initWithAPName:(id)name;
 @end
 
 @implementation WiFiUsageAppleWiFiNameBlocks
 
-- (WiFiUsageAppleWiFiNameBlocks)initWithAPName:(id)a3
+- (WiFiUsageAppleWiFiNameBlocks)initWithAPName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 containsString:@"."] & 1) == 0 && (v22.receiver = self, v22.super_class = WiFiUsageAppleWiFiNameBlocks, v6 = -[WiFiUsageAppleWiFiNameBlocks init](&v22, sel_init), (self = v6) != 0))
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && ([nameCopy containsString:@"."] & 1) == 0 && (v22.receiver = self, v22.super_class = WiFiUsageAppleWiFiNameBlocks, v6 = -[WiFiUsageAppleWiFiNameBlocks init](&v22, sel_init), (self = v6) != 0))
   {
     [(WiFiUsageAppleWiFiNameBlocks *)v6 setBuilding:0];
     [(WiFiUsageAppleWiFiNameBlocks *)self setSection:0];
@@ -67,21 +67,21 @@
 
     if ([v7 count] >= 2)
     {
-      v21 = [v7 lastObject];
-      [(WiFiUsageAppleWiFiNameBlocks *)self setOther:v21];
+      lastObject = [v7 lastObject];
+      [(WiFiUsageAppleWiFiNameBlocks *)self setOther:lastObject];
     }
 
     self = self;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

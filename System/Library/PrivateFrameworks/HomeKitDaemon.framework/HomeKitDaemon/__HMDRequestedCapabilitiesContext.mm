@@ -1,27 +1,27 @@
 @interface __HMDRequestedCapabilitiesContext
-- (__HMDRequestedCapabilitiesContext)initWithTransactionID:(id)a3 requestedCapabilities:(id)a4 destinationAddress:(id)a5 responseQueue:(id)a6 completionHandler:(id)a7;
+- (__HMDRequestedCapabilitiesContext)initWithTransactionID:(id)d requestedCapabilities:(id)capabilities destinationAddress:(id)address responseQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation __HMDRequestedCapabilitiesContext
 
-- (__HMDRequestedCapabilitiesContext)initWithTransactionID:(id)a3 requestedCapabilities:(id)a4 destinationAddress:(id)a5 responseQueue:(id)a6 completionHandler:(id)a7
+- (__HMDRequestedCapabilitiesContext)initWithTransactionID:(id)d requestedCapabilities:(id)capabilities destinationAddress:(id)address responseQueue:(id)queue completionHandler:(id)handler
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  capabilitiesCopy = capabilities;
+  addressCopy = address;
+  queueCopy = queue;
+  handlerCopy = handler;
   v25.receiver = self;
   v25.super_class = __HMDRequestedCapabilitiesContext;
   v17 = [(__HMDRequestedCapabilitiesContext *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_transactionID, a3);
-    objc_storeStrong(&v18->_requestedCapabilities, a4);
-    objc_storeStrong(&v18->_destinationAddress, a5);
-    objc_storeStrong(&v18->_responseQueue, a6);
-    v19 = _Block_copy(v16);
+    objc_storeStrong(&v17->_transactionID, d);
+    objc_storeStrong(&v18->_requestedCapabilities, capabilities);
+    objc_storeStrong(&v18->_destinationAddress, address);
+    objc_storeStrong(&v18->_responseQueue, queue);
+    v19 = _Block_copy(handlerCopy);
     completionHandler = v18->_completionHandler;
     v18->_completionHandler = v19;
 

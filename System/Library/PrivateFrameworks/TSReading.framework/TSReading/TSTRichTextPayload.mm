@@ -1,37 +1,37 @@
 @interface TSTRichTextPayload
-- (TSTRichTextPayload)initWithContext:(id)a3 storage:(id)a4;
-- (TSTRichTextPayload)initWithStorage:(id)a3;
-- (id)copyWithContext:(id)a3;
+- (TSTRichTextPayload)initWithContext:(id)context storage:(id)storage;
+- (TSTRichTextPayload)initWithStorage:(id)storage;
+- (id)copyWithContext:(id)context;
 - (id)string;
 - (void)dealloc;
-- (void)setStorage:(id)a3;
+- (void)setStorage:(id)storage;
 @end
 
 @implementation TSTRichTextPayload
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  storageCopy = storage;
 
-  self->mStorage = a3;
+  self->mStorage = storage;
 }
 
-- (TSTRichTextPayload)initWithStorage:(id)a3
+- (TSTRichTextPayload)initWithStorage:(id)storage
 {
-  v5 = [a3 context];
+  context = [storage context];
 
-  return [(TSTRichTextPayload *)self initWithContext:v5 storage:a3];
+  return [(TSTRichTextPayload *)self initWithContext:context storage:storage];
 }
 
-- (TSTRichTextPayload)initWithContext:(id)a3 storage:(id)a4
+- (TSTRichTextPayload)initWithContext:(id)context storage:(id)storage
 {
   v7.receiver = self;
   v7.super_class = TSTRichTextPayload;
-  v5 = [(TSPObject *)&v7 initWithContext:a3];
+  v5 = [(TSPObject *)&v7 initWithContext:context];
   if (v5)
   {
-    v5->mStorage = a4;
+    v5->mStorage = storage;
   }
 
   return v5;
@@ -45,19 +45,19 @@
   [(TSTRichTextPayload *)&v3 dealloc];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(TSWPStorage *)[(TSTRichTextPayload *)self storage] copyWithContext:a3];
+  v6 = [(TSWPStorage *)[(TSTRichTextPayload *)self storage] copyWithContext:context];
 
   return [v5 initWithStorage:v6];
 }
 
 - (id)string
 {
-  v2 = [(TSTRichTextPayload *)self storage];
+  storage = [(TSTRichTextPayload *)self storage];
 
-  return [(TSWPStorage *)v2 stringValue];
+  return [(TSWPStorage *)storage stringValue];
 }
 
 @end

@@ -1,63 +1,63 @@
 @interface RERelevanceEngine
-+ (void)prewarmWithConfiguration:(id)a3;
++ (void)prewarmWithConfiguration:(id)configuration;
 - (BOOL)isRunning;
-- (BOOL)isSectionWithNameHistoric:(id)a3;
+- (BOOL)isSectionWithNameHistoric:(id)historic;
 - (NSArray)subsystems;
 - (NSString)description;
-- (RERelevanceEngine)initWithConfiguration:(id)a3;
-- (RERelevanceEngine)initWithName:(id)a3 configuration:(id)a4;
-- (id)dictionaryFromElement:(id)a3;
-- (id)elementFromDictionary:(id)a3;
-- (id)featuresForRelevanceProvider:(id)a3;
-- (id)historicSectionForSection:(id)a3;
-- (id)sectionForHistoricSection:(id)a3;
-- (void)_addSubsystem:(id)a3;
+- (RERelevanceEngine)initWithConfiguration:(id)configuration;
+- (RERelevanceEngine)initWithName:(id)name configuration:(id)configuration;
+- (id)dictionaryFromElement:(id)element;
+- (id)elementFromDictionary:(id)dictionary;
+- (id)featuresForRelevanceProvider:(id)provider;
+- (id)historicSectionForSection:(id)section;
+- (id)sectionForHistoricSection:(id)section;
+- (void)_addSubsystem:(id)subsystem;
 - (void)_callbackQueue_notifyLoadingState;
-- (void)_captureAndStoreDiagnosticLogs:(id)a3;
+- (void)_captureAndStoreDiagnosticLogs:(id)logs;
 - (void)_notifyResumeCompleted;
-- (void)_queue_pauseSubsystem:(id)a3;
-- (void)_queue_resumeSubsystem:(id)a3;
-- (void)_queue_resumeWithTimeout:(double)a3 completion:(id)a4;
-- (void)_removeSubsystem:(id)a3;
-- (void)activityTracker:(id)a3 didBeginActivity:(id)a4;
-- (void)activityTracker:(id)a3 didEndActivity:(id)a4;
-- (void)addElement:(id)a3 section:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)beginActivity:(id)a3 forObject:(id)a4;
+- (void)_queue_pauseSubsystem:(id)subsystem;
+- (void)_queue_resumeSubsystem:(id)subsystem;
+- (void)_queue_resumeWithTimeout:(double)timeout completion:(id)completion;
+- (void)_removeSubsystem:(id)subsystem;
+- (void)activityTracker:(id)tracker didBeginActivity:(id)activity;
+- (void)activityTracker:(id)tracker didEndActivity:(id)activity;
+- (void)addElement:(id)element section:(id)section;
+- (void)addObserver:(id)observer;
+- (void)beginActivity:(id)activity forObject:(id)object;
 - (void)dealloc;
-- (void)endActivity:(id)a3 forObject:(id)a4;
-- (void)enumerateRankedContent:(id)a3;
-- (void)enumerateRankedContentInSection:(id)a3 usingBlock:(id)a4;
-- (void)enumerateSectionDescriptorsWithOptions:(unint64_t)a3 includeHistoric:(BOOL)a4 usingBlock:(id)a5;
+- (void)endActivity:(id)activity forObject:(id)object;
+- (void)enumerateRankedContent:(id)content;
+- (void)enumerateRankedContentInSection:(id)section usingBlock:(id)block;
+- (void)enumerateSectionDescriptorsWithOptions:(unint64_t)options includeHistoric:(BOOL)historic usingBlock:(id)block;
 - (void)gatherMetrics;
 - (void)pause;
 - (void)pauseForSimulation;
-- (void)removeElement:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)removeElement:(id)element;
+- (void)removeObserver:(id)observer;
 - (void)resume;
 - (void)resumeFromSimulation;
-- (void)resumeWithTimeout:(double)a3 completion:(id)a4;
-- (void)storeDiagnosticLogs:(id)a3;
-- (void)storeDiagnosticLogsToFile:(id)a3;
-- (void)updateSectionsWithIdentifiers:(id)a3 completion:(id)a4;
+- (void)resumeWithTimeout:(double)timeout completion:(id)completion;
+- (void)storeDiagnosticLogs:(id)logs;
+- (void)storeDiagnosticLogsToFile:(id)file;
+- (void)updateSectionsWithIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation RERelevanceEngine
 
-+ (void)prewarmWithConfiguration:(id)a3
++ (void)prewarmWithConfiguration:(id)configuration
 {
   v187 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 dataSourceLoader];
-  [v4 prewarm];
+  configurationCopy = configuration;
+  dataSourceLoader = [configurationCopy dataSourceLoader];
+  [dataSourceLoader prewarm];
 
-  v5 = [v3 relevanceProviderManagerLoader];
-  [v5 prewarm];
+  relevanceProviderManagerLoader = [configurationCopy relevanceProviderManagerLoader];
+  [relevanceProviderManagerLoader prewarm];
 
   REApplicationCachePrewarm();
-  v110 = v3;
-  v6 = [v110 sectionDescriptors];
-  v7 = [v6 copy];
+  v110 = configurationCopy;
+  sectionDescriptors = [v110 sectionDescriptors];
+  v7 = [sectionDescriptors copy];
 
   v118 = [MEMORY[0x277CBEB58] set];
   v167 = 0u;
@@ -79,15 +79,15 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v165 + 1) + 8 * i) name];
-        if ([v118 containsObject:v13])
+        name = [*(*(&v165 + 1) + 8 * i) name];
+        if ([v118 containsObject:name])
         {
-          [MEMORY[0x277CBEAD8] raise:v11 format:{@"Section with name %@ already exists. Please choose a unique name", v13}];
+          [MEMORY[0x277CBEAD8] raise:v11 format:{@"Section with name %@ already exists. Please choose a unique name", name}];
         }
 
         else
         {
-          [v118 addObject:v13];
+          [v118 addObject:name];
         }
       }
 
@@ -145,10 +145,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v24 = [*(*(&v157 + 1) + 8 * k) historicSectionDescriptor];
-        if (v24)
+        historicSectionDescriptor = [*(*(&v157 + 1) + 8 * k) historicSectionDescriptor];
+        if (historicSectionDescriptor)
         {
-          v25 = [[_RESectionDescriptor alloc] initWithHistoricSectionDescriptor:v24];
+          v25 = [[_RESectionDescriptor alloc] initWithHistoricSectionDescriptor:historicSectionDescriptor];
           [v20 addObject:v25];
         }
       }
@@ -164,8 +164,8 @@
   v156 = 0u;
   v153 = 0u;
   v154 = 0u;
-  v26 = [v110 primaryFeatures];
-  n = [v26 countByEnumeratingWithState:&v153 objects:v178 count:16];
+  primaryFeatures = [v110 primaryFeatures];
+  n = [primaryFeatures countByEnumeratingWithState:&v153 objects:v178 count:16];
   if (n)
   {
     v28 = *v154;
@@ -175,7 +175,7 @@
       {
         if (*v154 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(primaryFeatures);
         }
 
         v30 = *(*(&v153 + 1) + 8 * m);
@@ -196,17 +196,17 @@
         }
       }
 
-      n = [v26 countByEnumeratingWithState:&v153 objects:v178 count:16];
+      n = [primaryFeatures countByEnumeratingWithState:&v153 objects:v178 count:16];
     }
 
     while (n);
   }
 
-  v32 = [v110 primaryFeatures];
-  v119 = [v32 mutableCopy];
+  primaryFeatures2 = [v110 primaryFeatures];
+  v119 = [primaryFeatures2 mutableCopy];
 
-  v33 = [MEMORY[0x277CBEB18] array];
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v151 = 0u;
   v152 = 0u;
   v149 = 0u;
@@ -225,8 +225,8 @@
           objc_enumerationMutation(v116);
         }
 
-        v37 = [*(*(&v149 + 1) + 8 * n) rules];
-        REExtractRules(v37, v33, v34);
+        rules = [*(*(&v149 + 1) + 8 * n) rules];
+        REExtractRules(rules, array, array2);
       }
 
       v35 = [v116 countByEnumeratingWithState:&v149 objects:buf count:16];
@@ -253,8 +253,8 @@
           objc_enumerationMutation(v115);
         }
 
-        v40 = [*(*(&v145 + 1) + 8 * n) rules];
-        REExtractRules(v40, v33, v34);
+        rules2 = [*(*(&v145 + 1) + 8 * n) rules];
+        REExtractRules(rules2, array, array2);
       }
 
       v38 = [v115 countByEnumeratingWithState:&v145 objects:v175 count:16];
@@ -267,7 +267,7 @@
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v41 = v33;
+  v41 = array;
   v42 = [v41 countByEnumeratingWithState:&v141 objects:v174 count:16];
   if (v42)
   {
@@ -282,11 +282,11 @@
         }
 
         v45 = *(*(&v141 + 1) + 8 * ii);
-        v46 = [v45 condition];
-        n = [v46 _dependentFeatures];
+        condition = [v45 condition];
+        n = [condition _dependentFeatures];
         [v119 unionFeatureSet:n];
 
-        v47 = [v45 conditionEvaluator];
+        conditionEvaluator = [v45 conditionEvaluator];
       }
 
       v42 = [v41 countByEnumeratingWithState:&v141 objects:v174 count:16];
@@ -299,7 +299,7 @@
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v48 = v34;
+  v48 = array2;
   v49 = [v48 countByEnumeratingWithState:&v137 objects:v173 count:16];
   if (v49)
   {
@@ -314,21 +314,21 @@
         }
 
         v52 = *(*(&v137 + 1) + 8 * jj);
-        v53 = [v52 leftCondition];
-        v54 = [v53 _dependentFeatures];
-        [v119 unionFeatureSet:v54];
+        leftCondition = [v52 leftCondition];
+        _dependentFeatures = [leftCondition _dependentFeatures];
+        [v119 unionFeatureSet:_dependentFeatures];
 
-        v55 = [v52 rightCondition];
-        v56 = [v55 _dependentFeatures];
-        [v119 unionFeatureSet:v56];
+        rightCondition = [v52 rightCondition];
+        _dependentFeatures2 = [rightCondition _dependentFeatures];
+        [v119 unionFeatureSet:_dependentFeatures2];
 
-        v57 = [v52 comparison];
-        n = [v57 _dependentFeatures];
+        comparison = [v52 comparison];
+        n = [comparison _dependentFeatures];
         [v119 unionFeatureSet:n];
 
-        v58 = [v52 leftConditionEvaluator];
-        v59 = [v52 rightConditionEvaluator];
-        v60 = [v52 comparisonConditionEvaluator];
+        leftConditionEvaluator = [v52 leftConditionEvaluator];
+        rightConditionEvaluator = [v52 rightConditionEvaluator];
+        comparisonConditionEvaluator = [v52 comparisonConditionEvaluator];
       }
 
       v49 = [v48 countByEnumeratingWithState:&v137 objects:v173 count:16];
@@ -344,8 +344,8 @@
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v62 = [v110 interactionDescriptors];
-  v63 = [v62 countByEnumeratingWithState:&v133 objects:v172 count:16];
+  interactionDescriptors = [v110 interactionDescriptors];
+  v63 = [interactionDescriptors countByEnumeratingWithState:&v133 objects:v172 count:16];
   if (v63)
   {
     v64 = *v134;
@@ -355,36 +355,36 @@
       {
         if (*v134 != v64)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(interactionDescriptors);
         }
 
         n = *(*(&v133 + 1) + 8 * kk);
-        v66 = [n selectionFeature];
+        selectionFeature = [n selectionFeature];
 
-        if (v66)
+        if (selectionFeature)
         {
-          v67 = [n selectionFeature];
-          [v119 addFeature:v67];
+          selectionFeature2 = [n selectionFeature];
+          [v119 addFeature:selectionFeature2];
         }
 
-        v68 = [n identificationFeature];
+        identificationFeature = [n identificationFeature];
 
-        if (v68)
+        if (identificationFeature)
         {
-          v69 = [n identificationFeature];
-          [v119 addFeature:v69];
+          identificationFeature2 = [n identificationFeature];
+          [v119 addFeature:identificationFeature2];
         }
 
-        v70 = [n biasFeature];
+        biasFeature = [n biasFeature];
 
-        if (v70)
+        if (biasFeature)
         {
-          v71 = [n biasFeature];
-          [v119 addFeature:v71];
+          biasFeature2 = [n biasFeature];
+          [v119 addFeature:biasFeature2];
         }
       }
 
-      v63 = [v62 countByEnumeratingWithState:&v133 objects:v172 count:16];
+      v63 = [interactionDescriptors countByEnumeratingWithState:&v133 objects:v172 count:16];
     }
 
     while (v63);
@@ -416,9 +416,9 @@
           objc_enumerationMutation(v114);
         }
 
-        v77 = [*(*(&v129 + 1) + 8 * mm) condition];
-        v78 = [v77 _inflectionFeatureValuePairs];
-        [v74 unionSet:v78];
+        condition2 = [*(*(&v129 + 1) + 8 * mm) condition];
+        _inflectionFeatureValuePairs = [condition2 _inflectionFeatureValuePairs];
+        [v74 unionSet:_inflectionFeatureValuePairs];
       }
 
       v75 = [v114 countByEnumeratingWithState:&v129 objects:v171 count:16];
@@ -446,17 +446,17 @@
         }
 
         v82 = *(*(&v125 + 1) + 8 * nn);
-        v83 = [v82 leftCondition];
-        v84 = [v83 _inflectionFeatureValuePairs];
-        [v74 unionSet:v84];
+        leftCondition2 = [v82 leftCondition];
+        _inflectionFeatureValuePairs2 = [leftCondition2 _inflectionFeatureValuePairs];
+        [v74 unionSet:_inflectionFeatureValuePairs2];
 
-        v85 = [v82 rightCondition];
-        n = [v85 _inflectionFeatureValuePairs];
+        rightCondition2 = [v82 rightCondition];
+        n = [rightCondition2 _inflectionFeatureValuePairs];
         [v74 unionSet:n];
 
-        v86 = [v82 comparison];
-        v87 = [v86 _inflectionFeatureValuePairs];
-        [v74 unionSet:v87];
+        comparison2 = [v82 comparison];
+        _inflectionFeatureValuePairs3 = [comparison2 _inflectionFeatureValuePairs];
+        [v74 unionSet:_inflectionFeatureValuePairs3];
       }
 
       v79 = [v113 countByEnumeratingWithState:&v125 objects:v170 count:16];
@@ -465,7 +465,7 @@
     while (v79);
   }
 
-  v88 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v123 = 0u;
   v124 = 0u;
   v121 = 0u;
@@ -485,8 +485,8 @@
         }
 
         v92 = *(*(&v121 + 1) + 8 * i1);
-        v93 = [v92 feature];
-        v94 = [v88 objectForKeyedSubscript:v93];
+        feature = [v92 feature];
+        v94 = [dictionary objectForKeyedSubscript:feature];
 
         if (!v94)
         {
@@ -507,8 +507,8 @@
         {
         }
 
-        v98 = [v92 feature];
-        [v88 setObject:v97 forKeyedSubscript:v98];
+        feature2 = [v92 feature];
+        [dictionary setObject:v97 forKeyedSubscript:feature2];
       }
 
       v89 = [v112 countByEnumeratingWithState:&v121 objects:v169 count:16];
@@ -533,7 +533,7 @@
   v183 = 0x3032000000;
   v184 = __Block_byref_object_copy__7;
   v185 = __Block_byref_object_dispose__7;
-  v186 = [v110 predictorManager];
+  predictorManager = [v110 predictorManager];
   if (!v182[5])
   {
     v103 = [REPredictor systemPredictorsSupportingFeatureSet:v108 relevanceEngine:0];
@@ -542,13 +542,13 @@
   }
 
   v105 = dispatch_time(0, 500000000);
-  v106 = [v110 observerQueue];
+  observerQueue = [v110 observerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__RERelevanceEngine_prewarmWithConfiguration___block_invoke;
   block[3] = &unk_2785F9BC0;
   block[4] = &v181;
-  dispatch_after(v105, v106, block);
+  dispatch_after(v105, observerQueue, block);
 
   _Block_object_dispose(&v181, 8);
   v107 = *MEMORY[0x277D85DE8];
@@ -563,24 +563,24 @@ uint64_t __46__RERelevanceEngine_prewarmWithConfiguration___block_invoke(uint64_
   return +[RESingleton _decrementSingletonCache];
 }
 
-- (RERelevanceEngine)initWithConfiguration:(id)a3
+- (RERelevanceEngine)initWithConfiguration:(id)configuration
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [(RERelevanceEngine *)self initWithName:v7 configuration:v5];
+  configurationCopy = configuration;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [(RERelevanceEngine *)self initWithName:uUIDString configuration:configurationCopy];
 
   return v8;
 }
 
-- (RERelevanceEngine)initWithName:(id)a3 configuration:(id)a4
+- (RERelevanceEngine)initWithName:(id)name configuration:(id)configuration
 {
   location[16] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v211 = a4;
-  v221 = v7;
-  if (!v7)
+  nameCopy = name;
+  configurationCopy = configuration;
+  v221 = nameCopy;
+  if (!nameCopy)
   {
     RERaiseInternalException(*MEMORY[0x277CBE660], @"Relevance engine name must be non-nil", v8, v9, v10, v11, v12, v13, v203);
   }
@@ -590,9 +590,9 @@ uint64_t __46__RERelevanceEngine_prewarmWithConfiguration___block_invoke(uint64_
   v226 = 0u;
   v227 = 0u;
   v14 = +[(RESingleton *)RERelevanceEngineDebugger];
-  v15 = [v14 availableEngines];
+  availableEngines = [v14 availableEngines];
 
-  v16 = [v15 countByEnumeratingWithState:&v226 objects:v278 count:16];
+  v16 = [availableEngines countByEnumeratingWithState:&v226 objects:v278 count:16];
   if (v16)
   {
     v17 = *v227;
@@ -603,12 +603,12 @@ uint64_t __46__RERelevanceEngine_prewarmWithConfiguration___block_invoke(uint64_
       {
         if (*v227 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(availableEngines);
         }
 
-        v20 = [*(*(&v226 + 1) + 8 * i) name];
+        name = [*(*(&v226 + 1) + 8 * i) name];
         v21 = v221;
-        v22 = v20;
+        v22 = name;
         k = v22;
         if (v22 == v21)
         {
@@ -626,7 +626,7 @@ LABEL_12:
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v226 objects:v278 count:16];
+      v16 = [availableEngines countByEnumeratingWithState:&v226 objects:v278 count:16];
     }
 
     while (v16);
@@ -645,26 +645,26 @@ LABEL_12:
     val->_running = 0;
     val->_automaticallyResumeEngine = 1;
     val->_activityTrackerLock._os_unfair_lock_opaque = 0;
-    v207 = [v211 preferenceDomain];
-    if (v207)
+    preferenceDomain = [configurationCopy preferenceDomain];
+    if (preferenceDomain)
     {
-      v32 = [[_REEngineDefaults alloc] initWithDomain:v207];
+      v32 = [[_REEngineDefaults alloc] initWithDomain:preferenceDomain];
       defaults = val->_defaults;
       val->_defaults = v32;
     }
 
     +[RESingleton _incrementSingletonCache];
-    v34 = [v211 copy];
+    v34 = [configurationCopy copy];
     configuration = val->_configuration;
     val->_configuration = v34;
 
-    v36 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     subsystems = val->_subsystems;
-    val->_subsystems = v36;
+    val->_subsystems = array;
 
-    v38 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     addedElementsByIdentifier = val->_addedElementsByIdentifier;
-    val->_addedElementsByIdentifier = v38;
+    val->_addedElementsByIdentifier = dictionary;
 
     v40 = objc_opt_new();
     logger = val->_logger;
@@ -685,26 +685,26 @@ LABEL_12:
 
     v209 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.relevanceengine.%@", v45];
     attr = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v206 = [(RERelevanceEngineConfiguration *)val->_configuration engineQueue];
+    engineQueue = [(RERelevanceEngineConfiguration *)val->_configuration engineQueue];
     v46 = v209;
-    v47 = [v209 UTF8String];
-    if (v206)
+    uTF8String = [v209 UTF8String];
+    if (engineQueue)
     {
-      v48 = dispatch_queue_create_with_target_V2(v47, attr, v206);
+      v48 = dispatch_queue_create_with_target_V2(uTF8String, attr, engineQueue);
     }
 
     else
     {
-      v48 = dispatch_queue_create(v47, attr);
+      v48 = dispatch_queue_create(uTF8String, attr);
     }
 
     queue = val->_queue;
     val->_queue = v48;
 
-    v50 = [v211 observerQueue];
-    if (v50)
+    observerQueue = [configurationCopy observerQueue];
+    if (observerQueue)
     {
-      objc_storeStrong(&val->_callbackQueue, v50);
+      objc_storeStrong(&val->_callbackQueue, observerQueue);
     }
 
     else
@@ -715,14 +715,14 @@ LABEL_12:
     }
 
     v53 = [RERelevanceEnginePreferencesController alloc];
-    v54 = [(RERelevanceEngineConfiguration *)val->_configuration observerQueue];
-    v55 = [(RERelevanceEnginePreferencesController *)v53 initWithQueue:v54];
+    observerQueue2 = [(RERelevanceEngineConfiguration *)val->_configuration observerQueue];
+    v55 = [(RERelevanceEnginePreferencesController *)v53 initWithQueue:observerQueue2];
     preferenceController = val->_preferenceController;
     val->_preferenceController = v55;
 
     v210 = val->_configuration;
-    v57 = [(RERelevanceEngineConfiguration *)v210 sectionDescriptors];
-    v58 = [v57 copy];
+    sectionDescriptors = [(RERelevanceEngineConfiguration *)v210 sectionDescriptors];
+    v58 = [sectionDescriptors copy];
 
     v220 = [MEMORY[0x277CBEB58] set];
     v276 = 0u;
@@ -744,15 +744,15 @@ LABEL_12:
             objc_enumerationMutation(v59);
           }
 
-          v63 = [*(*(&v274 + 1) + 8 * j) name];
-          if ([v220 containsObject:v63])
+          name2 = [*(*(&v274 + 1) + 8 * j) name];
+          if ([v220 containsObject:name2])
           {
-            [MEMORY[0x277CBEAD8] raise:v61 format:{@"Section with name %@ already exists. Please choose a unique name", v63}];
+            [MEMORY[0x277CBEAD8] raise:v61 format:{@"Section with name %@ already exists. Please choose a unique name", name2}];
           }
 
           else
           {
-            [v220 addObject:v63];
+            [v220 addObject:name2];
           }
         }
 
@@ -815,10 +815,10 @@ LABEL_12:
             objc_enumerationMutation(obj);
           }
 
-          v74 = [*(*(&v266 + 1) + 8 * m) historicSectionDescriptor];
-          if (v74)
+          historicSectionDescriptor = [*(*(&v266 + 1) + 8 * m) historicSectionDescriptor];
+          if (historicSectionDescriptor)
           {
-            v75 = [[_RESectionDescriptor alloc] initWithHistoricSectionDescriptor:v74];
+            v75 = [[_RESectionDescriptor alloc] initWithHistoricSectionDescriptor:historicSectionDescriptor];
             [v71 addObject:v75];
           }
         }
@@ -838,8 +838,8 @@ LABEL_12:
     v265 = 0u;
     v262 = 0u;
     v263 = 0u;
-    v78 = [(RERelevanceEngineConfiguration *)v210 primaryFeatures];
-    v79 = [v78 countByEnumeratingWithState:&v262 objects:v288 count:16];
+    primaryFeatures = [(RERelevanceEngineConfiguration *)v210 primaryFeatures];
+    v79 = [primaryFeatures countByEnumeratingWithState:&v262 objects:v288 count:16];
     if (v79)
     {
       v80 = *v263;
@@ -850,7 +850,7 @@ LABEL_12:
         {
           if (*v263 != v80)
           {
-            objc_enumerationMutation(v78);
+            objc_enumerationMutation(primaryFeatures);
           }
 
           v82 = *(*(&v262 + 1) + 8 * n);
@@ -871,7 +871,7 @@ LABEL_12:
           }
         }
 
-        v79 = [v78 countByEnumeratingWithState:&v262 objects:v288 count:16];
+        v79 = [primaryFeatures countByEnumeratingWithState:&v262 objects:v288 count:16];
       }
 
       while (v79);
@@ -881,11 +881,11 @@ LABEL_12:
     mlFeatures = val->_mlFeatures;
     val->_mlFeatures = v84;
 
-    v86 = [(RERelevanceEngineConfiguration *)v210 primaryFeatures];
-    v222 = [v86 mutableCopy];
+    primaryFeatures2 = [(RERelevanceEngineConfiguration *)v210 primaryFeatures];
+    v222 = [primaryFeatures2 mutableCopy];
 
-    v87 = [MEMORY[0x277CBEB18] array];
-    v88 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v260 = 0u;
     v261 = 0u;
     v258 = 0u;
@@ -904,8 +904,8 @@ LABEL_12:
             objc_enumerationMutation(v218);
           }
 
-          v91 = [*(*(&v258 + 1) + 8 * k) rules];
-          REExtractRules(v91, v87, v88);
+          rules = [*(*(&v258 + 1) + 8 * k) rules];
+          REExtractRules(rules, array2, array3);
         }
 
         v89 = [v218 countByEnumeratingWithState:&v258 objects:buf count:16];
@@ -932,8 +932,8 @@ LABEL_12:
             objc_enumerationMutation(v217);
           }
 
-          v95 = [*(*(&v254 + 1) + 8 * ii) rules];
-          REExtractRules(v95, v87, v88);
+          rules2 = [*(*(&v254 + 1) + 8 * ii) rules];
+          REExtractRules(rules2, array2, array3);
         }
 
         v92 = [v217 countByEnumeratingWithState:&v254 objects:v285 count:16];
@@ -946,7 +946,7 @@ LABEL_12:
     v253 = 0u;
     v250 = 0u;
     v251 = 0u;
-    v96 = v87;
+    v96 = array2;
     v97 = [v96 countByEnumeratingWithState:&v250 objects:v284 count:16];
     if (v97)
     {
@@ -961,11 +961,11 @@ LABEL_12:
           }
 
           v99 = *(*(&v250 + 1) + 8 * jj);
-          v100 = [v99 condition];
-          v101 = [v100 _dependentFeatures];
-          [v222 unionFeatureSet:v101];
+          condition = [v99 condition];
+          _dependentFeatures = [condition _dependentFeatures];
+          [v222 unionFeatureSet:_dependentFeatures];
 
-          v102 = [v99 conditionEvaluator];
+          conditionEvaluator = [v99 conditionEvaluator];
         }
 
         v97 = [v96 countByEnumeratingWithState:&v250 objects:v284 count:16];
@@ -978,7 +978,7 @@ LABEL_12:
     v249 = 0u;
     v246 = 0u;
     v247 = 0u;
-    v103 = v88;
+    v103 = array3;
     v104 = [v103 countByEnumeratingWithState:&v246 objects:v283 count:16];
     if (v104)
     {
@@ -993,21 +993,21 @@ LABEL_12:
           }
 
           v106 = *(*(&v246 + 1) + 8 * kk);
-          v107 = [v106 leftCondition];
-          v108 = [v107 _dependentFeatures];
-          [v222 unionFeatureSet:v108];
+          leftCondition = [v106 leftCondition];
+          _dependentFeatures2 = [leftCondition _dependentFeatures];
+          [v222 unionFeatureSet:_dependentFeatures2];
 
-          v109 = [v106 rightCondition];
-          v110 = [v109 _dependentFeatures];
-          [v222 unionFeatureSet:v110];
+          rightCondition = [v106 rightCondition];
+          _dependentFeatures3 = [rightCondition _dependentFeatures];
+          [v222 unionFeatureSet:_dependentFeatures3];
 
-          v111 = [v106 comparison];
-          v112 = [v111 _dependentFeatures];
-          [v222 unionFeatureSet:v112];
+          comparison = [v106 comparison];
+          _dependentFeatures4 = [comparison _dependentFeatures];
+          [v222 unionFeatureSet:_dependentFeatures4];
 
-          v113 = [v106 leftConditionEvaluator];
-          v114 = [v106 rightConditionEvaluator];
-          v115 = [v106 comparisonConditionEvaluator];
+          leftConditionEvaluator = [v106 leftConditionEvaluator];
+          rightConditionEvaluator = [v106 rightConditionEvaluator];
+          comparisonConditionEvaluator = [v106 comparisonConditionEvaluator];
         }
 
         v104 = [v103 countByEnumeratingWithState:&v246 objects:v283 count:16];
@@ -1023,8 +1023,8 @@ LABEL_12:
     v245 = 0u;
     v242 = 0u;
     v243 = 0u;
-    v117 = [(RERelevanceEngineConfiguration *)v210 interactionDescriptors];
-    v118 = [v117 countByEnumeratingWithState:&v242 objects:v282 count:16];
+    interactionDescriptors = [(RERelevanceEngineConfiguration *)v210 interactionDescriptors];
+    v118 = [interactionDescriptors countByEnumeratingWithState:&v242 objects:v282 count:16];
     if (v118)
     {
       k = *v243;
@@ -1034,36 +1034,36 @@ LABEL_12:
         {
           if (*v243 != k)
           {
-            objc_enumerationMutation(v117);
+            objc_enumerationMutation(interactionDescriptors);
           }
 
           v120 = *(*(&v242 + 1) + 8 * mm);
-          v121 = [v120 selectionFeature];
+          selectionFeature = [v120 selectionFeature];
 
-          if (v121)
+          if (selectionFeature)
           {
-            v122 = [v120 selectionFeature];
-            [v222 addFeature:v122];
+            selectionFeature2 = [v120 selectionFeature];
+            [v222 addFeature:selectionFeature2];
           }
 
-          v123 = [v120 identificationFeature];
+          identificationFeature = [v120 identificationFeature];
 
-          if (v123)
+          if (identificationFeature)
           {
-            v124 = [v120 identificationFeature];
-            [v222 addFeature:v124];
+            identificationFeature2 = [v120 identificationFeature];
+            [v222 addFeature:identificationFeature2];
           }
 
-          v125 = [v120 biasFeature];
+          biasFeature = [v120 biasFeature];
 
-          if (v125)
+          if (biasFeature)
           {
-            v126 = [v120 biasFeature];
-            [v222 addFeature:v126];
+            biasFeature2 = [v120 biasFeature];
+            [v222 addFeature:biasFeature2];
           }
         }
 
-        v118 = [v117 countByEnumeratingWithState:&v242 objects:v282 count:16];
+        v118 = [interactionDescriptors countByEnumeratingWithState:&v242 objects:v282 count:16];
       }
 
       while (v118);
@@ -1099,9 +1099,9 @@ LABEL_12:
             objc_enumerationMutation(v216);
           }
 
-          v134 = [*(*(&v238 + 1) + 8 * k) condition];
-          v135 = [v134 _inflectionFeatureValuePairs];
-          [v131 unionSet:v135];
+          condition2 = [*(*(&v238 + 1) + 8 * k) condition];
+          _inflectionFeatureValuePairs = [condition2 _inflectionFeatureValuePairs];
+          [v131 unionSet:_inflectionFeatureValuePairs];
         }
 
         v132 = [v216 countByEnumeratingWithState:&v238 objects:v281 count:16];
@@ -1129,17 +1129,17 @@ LABEL_12:
           }
 
           v138 = *(*(&v234 + 1) + 8 * nn);
-          v139 = [v138 leftCondition];
-          v140 = [v139 _inflectionFeatureValuePairs];
-          [v131 unionSet:v140];
+          leftCondition2 = [v138 leftCondition];
+          _inflectionFeatureValuePairs2 = [leftCondition2 _inflectionFeatureValuePairs];
+          [v131 unionSet:_inflectionFeatureValuePairs2];
 
-          v141 = [v138 rightCondition];
-          v142 = [v141 _inflectionFeatureValuePairs];
-          [v131 unionSet:v142];
+          rightCondition2 = [v138 rightCondition];
+          _inflectionFeatureValuePairs3 = [rightCondition2 _inflectionFeatureValuePairs];
+          [v131 unionSet:_inflectionFeatureValuePairs3];
 
-          v143 = [v138 comparison];
-          v144 = [v143 _inflectionFeatureValuePairs];
-          [v131 unionSet:v144];
+          comparison2 = [v138 comparison];
+          _inflectionFeatureValuePairs4 = [comparison2 _inflectionFeatureValuePairs];
+          [v131 unionSet:_inflectionFeatureValuePairs4];
         }
 
         v136 = [v215 countByEnumeratingWithState:&v234 objects:v280 count:16];
@@ -1148,7 +1148,7 @@ LABEL_12:
       while (v136);
     }
 
-    v145 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v232 = 0u;
     v233 = 0u;
     v231 = 0u;
@@ -1168,8 +1168,8 @@ LABEL_12:
           }
 
           v149 = *(*(&v230 + 1) + 8 * i1);
-          v150 = [v149 feature];
-          v151 = [v145 objectForKeyedSubscript:v150];
+          feature = [v149 feature];
+          v151 = [dictionary2 objectForKeyedSubscript:feature];
 
           if (!v151)
           {
@@ -1190,8 +1190,8 @@ LABEL_12:
           {
           }
 
-          v155 = [v149 feature];
-          [v145 setObject:v154 forKeyedSubscript:v155];
+          feature2 = [v149 feature];
+          [dictionary2 setObject:v154 forKeyedSubscript:feature2];
         }
 
         v146 = [v214 countByEnumeratingWithState:&v230 objects:v279 count:16];
@@ -1200,7 +1200,7 @@ LABEL_12:
       while (v146);
     }
 
-    v156 = [v145 copy];
+    v156 = [dictionary2 copy];
     inflectionFeatureValues = val->_inflectionFeatureValues;
     val->_inflectionFeatureValues = v156;
 
@@ -1209,21 +1209,21 @@ LABEL_12:
     modelManager = val->_modelManager;
     val->_modelManager = v159;
 
-    v161 = [(REMLModelManager *)val->_modelManager _orderedModelFeatures];
-    v162 = [v161 mutableCopy];
+    _orderedModelFeatures = [(REMLModelManager *)val->_modelManager _orderedModelFeatures];
+    v162 = [_orderedModelFeatures mutableCopy];
 
     v163 = [REFeatureSet featureSetWithFeatures:v162];
     [v158 minusFeatureSet:v163];
 
-    v164 = [v158 allFeatures];
-    [v162 addObjectsFromArray:v164];
+    allFeatures = [v158 allFeatures];
+    [v162 addObjectsFromArray:allFeatures];
 
     v165 = [REFeatureSet featureSetWithFeatures:v162];
     [v158 unionFeatureSet:v165];
 
     v166 = [REFeatureMapGenerator alloc];
-    v167 = [(REFeatureSet *)val->_rootFeatures allFeatures];
-    v168 = [(REFeatureMapGenerator *)v166 initWithFeatureList:v167];
+    allFeatures2 = [(REFeatureSet *)val->_rootFeatures allFeatures];
+    v168 = [(REFeatureMapGenerator *)v166 initWithFeatureList:allFeatures2];
     inputFeatureMapGenerator = val->_inputFeatureMapGenerator;
     val->_inputFeatureMapGenerator = v168;
 
@@ -1241,8 +1241,8 @@ LABEL_12:
     val->_coordinator = v174;
 
     v176 = [REDataSourceManager alloc];
-    v177 = [v211 dataSourceLoader];
-    v178 = [(REDataSourceManager *)v176 initWithRelevanceEngine:val dataSourceLoader:v177 withDelegate:val->_coordinator];
+    dataSourceLoader = [configurationCopy dataSourceLoader];
+    v178 = [(REDataSourceManager *)v176 initWithRelevanceEngine:val dataSourceLoader:dataSourceLoader withDelegate:val->_coordinator];
     dataSourceManager = val->_dataSourceManager;
     val->_dataSourceManager = v178;
 
@@ -1251,14 +1251,14 @@ LABEL_12:
     val->_trainingManager = v180;
 
     v182 = [REEngineLocationManager alloc];
-    v183 = [v211 locationManager];
-    v184 = [(REEngineLocationManager *)v182 initWithRelevanceEngine:val locationManager:v183];
+    locationManager = [configurationCopy locationManager];
+    v184 = [(REEngineLocationManager *)v182 initWithRelevanceEngine:val locationManager:locationManager];
     locationManager = val->_locationManager;
     val->_locationManager = v184;
 
     v186 = [REEngineVisitManager alloc];
-    v187 = [v211 locationManager];
-    v188 = [(REEngineVisitManager *)v186 initWithRelevanceEngine:val locationManager:v187];
+    locationManager2 = [configurationCopy locationManager];
+    v188 = [(REEngineVisitManager *)v186 initWithRelevanceEngine:val locationManager:locationManager2];
     visitManager = val->_visitManager;
     val->_visitManager = v188;
 
@@ -1280,10 +1280,10 @@ LABEL_12:
     }
 
     [(RERelevanceEngineLogger *)val->_logger addLoggable:?];
-    v193 = [(RERelevanceEngine *)val configuration];
-    v194 = [v193 allowsDiagnosticExtension];
+    configuration = [(RERelevanceEngine *)val configuration];
+    allowsDiagnosticExtension = [configuration allowsDiagnosticExtension];
 
-    if (v194)
+    if (allowsDiagnosticExtension)
     {
       v195 = +[(RESingleton *)RERelevanceEngineDiagnosticRegistration];
       [v195 checkinEngine:val];
@@ -1291,7 +1291,7 @@ LABEL_12:
 
     objc_initWeak(location, val);
     callbackQueue = val->_callbackQueue;
-    if ([v211 wantsImmutableContent])
+    if ([configurationCopy wantsImmutableContent])
     {
       v197 = 0.0;
     }
@@ -1350,17 +1350,17 @@ void __48__RERelevanceEngine_initWithName_configuration___block_invoke_2(uint64_
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(RERelevanceEngine *)self name];
-  v6 = [v3 stringWithFormat:@"<%@ %p> %@", v4, self, v5];
+  name = [(RERelevanceEngine *)self name];
+  v6 = [v3 stringWithFormat:@"<%@ %p> %@", v4, self, name];
 
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(RERelevanceEngine *)self beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
-  [(REElementCoordinator *)self->_coordinator addObserver:v4];
+  [(REElementCoordinator *)self->_coordinator addObserver:observerCopy];
 
   if (self->_automaticallyResumeEngine && [(REElementCoordinator *)self->_coordinator numberOfObservers])
   {
@@ -1376,9 +1376,9 @@ void __48__RERelevanceEngine_initWithName_configuration___block_invoke_2(uint64_
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(REElementCoordinator *)self->_coordinator removeObserver:a3];
+  [(REElementCoordinator *)self->_coordinator removeObserver:observer];
   if (self->_automaticallyResumeEngine && ![(REElementCoordinator *)self->_coordinator numberOfObservers])
   {
 
@@ -1386,18 +1386,18 @@ void __48__RERelevanceEngine_initWithName_configuration___block_invoke_2(uint64_
   }
 }
 
-- (void)enumerateRankedContent:(id)a3
+- (void)enumerateRankedContent:(id)content
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contentCopy = content;
+  v5 = contentCopy;
+  if (contentCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __44__RERelevanceEngine_enumerateRankedContent___block_invoke;
     v6[3] = &unk_2785FB598;
     v6[4] = self;
-    v7 = v4;
+    v7 = contentCopy;
     [(RERelevanceEngine *)self enumerateSectionDescriptorsWithOptions:0 includeHistoric:1 usingBlock:v6];
   }
 }
@@ -1423,44 +1423,44 @@ void __44__RERelevanceEngine_enumerateRankedContent___block_invoke_2(uint64_t a1
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateRankedContentInSection:(id)a3 usingBlock:(id)a4
+- (void)enumerateRankedContentInSection:(id)section usingBlock:(id)block
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  sectionCopy = section;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = [(RERelevanceEngine *)self numberOfElementsInSection:v12];
+    v7 = [(RERelevanceEngine *)self numberOfElementsInSection:sectionCopy];
     if (v7)
     {
       v8 = v7;
       for (i = 0; i != v8; ++i)
       {
-        v10 = [[RESectionPath alloc] initWithSectionName:v12 element:i];
+        v10 = [[RESectionPath alloc] initWithSectionName:sectionCopy element:i];
         v11 = [(RERelevanceEngine *)self elementAtPath:v10];
         if (v11)
         {
-          v6[2](v6, i, v11);
+          blockCopy[2](blockCopy, i, v11);
         }
       }
     }
   }
 }
 
-- (void)addElement:(id)a3 section:(id)a4
+- (void)addElement:(id)element section:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  sectionCopy = section;
   [(RERelevanceEngineSubsystem *)self->_coordinator beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__RERelevanceEngine_addElement_section___block_invoke;
   block[3] = &unk_2785FB070;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = elementCopy;
+  selfCopy = self;
+  v14 = sectionCopy;
+  v9 = sectionCopy;
+  v10 = elementCopy;
   dispatch_async(queue, block);
 }
 
@@ -1526,18 +1526,18 @@ LABEL_15:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeElement:(id)a3
+- (void)removeElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   [(RERelevanceEngineSubsystem *)self->_coordinator beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__RERelevanceEngine_removeElement___block_invoke;
   v7[3] = &unk_2785F9AE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = elementCopy;
+  selfCopy = self;
+  v6 = elementCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1601,30 +1601,30 @@ LABEL_12:
 
 - (BOOL)isRunning
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __30__RERelevanceEngine_isRunning__block_invoke;
   v5[3] = &unk_2785FADB8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_queue_resumeWithTimeout:(double)a3 completion:(id)a4
+- (void)_queue_resumeWithTimeout:(double)timeout completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_running)
   {
     v8 = RELogForDomain(0);
@@ -1642,20 +1642,20 @@ LABEL_12:
 
   else
   {
-    if (v6)
+    if (completionCopy)
     {
       os_unfair_lock_lock(&self->_activityTrackerLock);
       v9 = [v7 copy];
       resumeCompletionBlock = self->_resumeCompletionBlock;
       self->_resumeCompletionBlock = v9;
 
-      v11 = 10.0;
-      if (a3 >= 10.0)
+      timeoutCopy = 10.0;
+      if (timeout >= 10.0)
       {
-        v11 = a3;
+        timeoutCopy = timeout;
       }
 
-      v12 = dispatch_time(0, (v11 * 1000000000.0));
+      v12 = dispatch_time(0, (timeoutCopy * 1000000000.0));
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -1714,35 +1714,35 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resumeWithTimeout:(double)a3 completion:(id)a4
+- (void)resumeWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__RERelevanceEngine_resumeWithTimeout_completion___block_invoke;
   block[3] = &unk_2785FB5C0;
-  v11 = a3;
+  timeoutCopy = timeout;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)updateSectionsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)updateSectionsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RERelevanceEngine_updateSectionsWithIdentifiers_completion___block_invoke;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(queue, block);
 }
 
@@ -1882,37 +1882,37 @@ void __26__RERelevanceEngine_pause__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_resumeSubsystem:(id)a3
+- (void)_queue_resumeSubsystem:(id)subsystem
 {
-  v4 = a3;
+  subsystemCopy = subsystem;
   dispatch_assert_queue_V2(self->_queue);
-  if (([v4 isRunning] & 1) == 0)
+  if (([subsystemCopy isRunning] & 1) == 0)
   {
-    [v4 setRunning:1];
-    [v4 resume];
+    [subsystemCopy setRunning:1];
+    [subsystemCopy resume];
   }
 }
 
-- (void)_queue_pauseSubsystem:(id)a3
+- (void)_queue_pauseSubsystem:(id)subsystem
 {
-  v4 = a3;
+  subsystemCopy = subsystem;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v4 isRunning])
+  if ([subsystemCopy isRunning])
   {
-    [v4 setRunning:0];
-    [v4 pause];
+    [subsystemCopy setRunning:0];
+    [subsystemCopy pause];
   }
 }
 
-- (void)activityTracker:(id)a3 didBeginActivity:(id)a4
+- (void)activityTracker:(id)tracker didBeginActivity:(id)activity
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  activityCopy = activity;
   v6 = RELogForDomain(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v5;
+    v11 = activityCopy;
     _os_log_impl(&dword_22859F000, v6, OS_LOG_TYPE_DEFAULT, "Engine started tracking %{public}@.", buf, 0xCu);
   }
 
@@ -1927,15 +1927,15 @@ void __26__RERelevanceEngine_pause__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activityTracker:(id)a3 didEndActivity:(id)a4
+- (void)activityTracker:(id)tracker didEndActivity:(id)activity
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  activityCopy = activity;
   v6 = RELogForDomain(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v5;
+    v11 = activityCopy;
     _os_log_impl(&dword_22859F000, v6, OS_LOG_TYPE_DEFAULT, "Engine finished tracking %{public}@.", buf, 0xCu);
   }
 
@@ -2018,26 +2018,26 @@ void __26__RERelevanceEngine_pause__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_activityTrackerLock);
 }
 
-- (id)elementFromDictionary:(id)a3
+- (id)elementFromDictionary:(id)dictionary
 {
   coordinator = self->_coordinator;
-  v4 = a3;
-  v5 = [(RELiveElementCoordinator *)coordinator elementRelevanceEngine];
-  v6 = [v5 relevanceProviderEnvironment];
+  dictionaryCopy = dictionary;
+  elementRelevanceEngine = [(RELiveElementCoordinator *)coordinator elementRelevanceEngine];
+  relevanceProviderEnvironment = [elementRelevanceEngine relevanceProviderEnvironment];
 
-  v7 = [[REElement alloc] initWithDictionary:v4 relevanceProviderGenerator:v6];
+  v7 = [[REElement alloc] initWithDictionary:dictionaryCopy relevanceProviderGenerator:relevanceProviderEnvironment];
 
   return v7;
 }
 
-- (id)dictionaryFromElement:(id)a3
+- (id)dictionaryFromElement:(id)element
 {
   coordinator = self->_coordinator;
-  v4 = a3;
-  v5 = [(RELiveElementCoordinator *)coordinator elementRelevanceEngine];
-  v6 = [v5 relevanceProviderEnvironment];
+  elementCopy = element;
+  elementRelevanceEngine = [(RELiveElementCoordinator *)coordinator elementRelevanceEngine];
+  relevanceProviderEnvironment = [elementRelevanceEngine relevanceProviderEnvironment];
 
-  v7 = [v4 dictionaryEncodingWithRelevanceProviderGenerator:v6];
+  v7 = [elementCopy dictionaryEncodingWithRelevanceProviderGenerator:relevanceProviderEnvironment];
 
   if (v7)
   {
@@ -2054,22 +2054,22 @@ void __26__RERelevanceEngine_pause__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)beginActivity:(id)a3 forObject:(id)a4
+- (void)beginActivity:(id)activity forObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
+  objectCopy = object;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_activityTrackerLock);
-  [(REActivityTracker *)self->_activityTracker beginActivity:v7 forObject:v6];
+  [(REActivityTracker *)self->_activityTracker beginActivity:activityCopy forObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_activityTrackerLock);
 }
 
-- (void)endActivity:(id)a3 forObject:(id)a4
+- (void)endActivity:(id)activity forObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
+  objectCopy = object;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_activityTrackerLock);
-  [(REActivityTracker *)self->_activityTracker endActivity:v7 forObject:v6];
+  [(REActivityTracker *)self->_activityTracker endActivity:activityCopy forObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_activityTrackerLock);
 }
@@ -2081,10 +2081,10 @@ void __26__RERelevanceEngine_pause__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)isSectionWithNameHistoric:(id)a3
+- (BOOL)isSectionWithNameHistoric:(id)historic
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  historicCopy = historic;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -2103,8 +2103,8 @@ void __26__RERelevanceEngine_pause__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) name];
-        v10 = [v9 isEqualToString:v4];
+        name = [*(*(&v13 + 1) + 8 * i) name];
+        v10 = [name isEqualToString:historicCopy];
 
         if (v10)
         {
@@ -2129,22 +2129,22 @@ LABEL_11:
   return v6;
 }
 
-- (id)historicSectionForSection:(id)a3
+- (id)historicSectionForSection:(id)section
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v5 = self->_configurationSectionDescriptors;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v6)
+  name2 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (name2)
   {
     v7 = *v16;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != name2; i = i + 1)
       {
         if (*v16 != v7)
         {
@@ -2152,20 +2152,20 @@ LABEL_11:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:sectionCopy];
 
         if (v11)
         {
-          v12 = [v9 historicSectionDescriptor];
-          v6 = [v12 name];
+          historicSectionDescriptor = [v9 historicSectionDescriptor];
+          name2 = [historicSectionDescriptor name];
 
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v6)
+      name2 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (name2)
       {
         continue;
       }
@@ -2178,25 +2178,25 @@ LABEL_11:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return name2;
 }
 
-- (id)sectionForHistoricSection:(id)a3
+- (id)sectionForHistoricSection:(id)section
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v5 = self->_configurationSectionDescriptors;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v6)
+  name2 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (name2)
   {
     v7 = *v16;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != name2; i = i + 1)
       {
         if (*v16 != v7)
         {
@@ -2204,19 +2204,19 @@ LABEL_11:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 historicSectionDescriptor];
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        historicSectionDescriptor = [v9 historicSectionDescriptor];
+        name = [historicSectionDescriptor name];
+        v12 = [name isEqualToString:sectionCopy];
 
         if (v12)
         {
-          v6 = [v9 name];
+          name2 = [v9 name];
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v6)
+      name2 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (name2)
       {
         continue;
       }
@@ -2229,25 +2229,25 @@ LABEL_11:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return name2;
 }
 
-- (void)enumerateSectionDescriptorsWithOptions:(unint64_t)a3 includeHistoric:(BOOL)a4 usingBlock:(id)a5
+- (void)enumerateSectionDescriptorsWithOptions:(unint64_t)options includeHistoric:(BOOL)historic usingBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  historicCopy = historic;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (blockCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __116__RERelevanceEngine_RERelevanceEngineProperties__enumerateSectionDescriptorsWithOptions_includeHistoric_usingBlock___block_invoke;
     v13[3] = &unk_2785FB638;
-    v14 = v8;
+    v14 = blockCopy;
     v10 = MEMORY[0x22AABC5E0](v13);
-    if (v5)
+    if (historicCopy)
     {
-      if ((a3 & 2) != 0)
+      if ((options & 2) != 0)
       {
         v11 = 200;
       }
@@ -2257,7 +2257,7 @@ LABEL_11:
         v11 = 192;
       }
 
-      if ((a3 & 2) != 0)
+      if ((options & 2) != 0)
       {
         v12 = 192;
       }
@@ -2267,7 +2267,7 @@ LABEL_11:
         v12 = 200;
       }
 
-      [*(&self->super.isa + v11) enumerateObjectsWithOptions:a3 usingBlock:v10];
+      [*(&self->super.isa + v11) enumerateObjectsWithOptions:options usingBlock:v10];
     }
 
     else
@@ -2275,16 +2275,16 @@ LABEL_11:
       v12 = 192;
     }
 
-    [*(&self->super.isa + v12) enumerateObjectsWithOptions:a3 usingBlock:v10];
+    [*(&self->super.isa + v12) enumerateObjectsWithOptions:options usingBlock:v10];
   }
 }
 
-- (void)_addSubsystem:(id)a3
+- (void)_addSubsystem:(id)subsystem
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_subsystems addObject:v4];
+  subsystemCopy = subsystem;
+  [(NSMutableArray *)self->_subsystems addObject:subsystemCopy];
   os_unfair_lock_lock(&self->_activityTrackerLock);
-  [(REActivityTracker *)self->_activityTracker trackObject:v4];
+  [(REActivityTracker *)self->_activityTracker trackObject:subsystemCopy];
   os_unfair_lock_unlock(&self->_activityTrackerLock);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -2292,8 +2292,8 @@ LABEL_11:
   v7[2] = __49__RERelevanceEngine_RESubsystems___addSubsystem___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = subsystemCopy;
+  v6 = subsystemCopy;
   dispatch_async(queue, v7);
 }
 
@@ -2312,12 +2312,12 @@ uint64_t __49__RERelevanceEngine_RESubsystems___addSubsystem___block_invoke(uint
   }
 }
 
-- (void)_removeSubsystem:(id)a3
+- (void)_removeSubsystem:(id)subsystem
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_subsystems removeObject:v4];
+  subsystemCopy = subsystem;
+  [(NSMutableArray *)self->_subsystems removeObject:subsystemCopy];
   os_unfair_lock_lock(&self->_activityTrackerLock);
-  [(REActivityTracker *)self->_activityTracker withdrawObject:v4];
+  [(REActivityTracker *)self->_activityTracker withdrawObject:subsystemCopy];
   os_unfair_lock_unlock(&self->_activityTrackerLock);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -2325,60 +2325,60 @@ uint64_t __49__RERelevanceEngine_RESubsystems___addSubsystem___block_invoke(uint
   v7[2] = __52__RERelevanceEngine_RESubsystems___removeSubsystem___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = subsystemCopy;
+  v6 = subsystemCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)storeDiagnosticLogs:(id)a3
+- (void)storeDiagnosticLogs:(id)logs
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  logsCopy = logs;
+  v5 = logsCopy;
+  if (logsCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__RERelevanceEngine_RELogging__storeDiagnosticLogs___block_invoke;
     v6[3] = &unk_2785FB660;
-    v7 = v4;
+    v7 = logsCopy;
     [(RERelevanceEngine *)self _captureAndStoreDiagnosticLogs:v6];
   }
 }
 
-- (void)storeDiagnosticLogsToFile:(id)a3
+- (void)storeDiagnosticLogsToFile:(id)file
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fileCopy = file;
+  v5 = fileCopy;
+  if (fileCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __58__RERelevanceEngine_RELogging__storeDiagnosticLogsToFile___block_invoke;
     v6[3] = &unk_2785FB660;
-    v7 = v4;
+    v7 = fileCopy;
     [(RERelevanceEngine *)self _captureAndStoreDiagnosticLogs:v6];
   }
 }
 
-- (void)_captureAndStoreDiagnosticLogs:(id)a3
+- (void)_captureAndStoreDiagnosticLogs:(id)logs
 {
-  v4 = a3;
-  if (v4)
+  logsCopy = logs;
+  if (logsCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     logger = self->_logger;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__RERelevanceEngine_RELogging___captureAndStoreDiagnosticLogs___block_invoke;
     v12[3] = &unk_2785FB688;
-    v13 = v5;
+    v13 = array;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __63__RERelevanceEngine_RELogging___captureAndStoreDiagnosticLogs___block_invoke_2;
     v8[3] = &unk_2785F99C8;
     v9 = v13;
-    v10 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = logsCopy;
     v7 = v13;
     [(RERelevanceEngineLogger *)logger collectLogs:v12 completion:v8];
   }
@@ -2408,13 +2408,13 @@ void __63__RERelevanceEngine_RELogging___captureAndStoreDiagnosticLogs___block_i
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)featuresForRelevanceProvider:(id)a3
+- (id)featuresForRelevanceProvider:(id)provider
 {
   coordinator = self->_coordinator;
-  v4 = a3;
-  v5 = [(RELiveElementCoordinator *)coordinator elementRelevanceEngine];
-  v6 = [v5 relevanceProviderEnvironment];
-  v7 = [v6 featuresForRelevanceProvider:v4];
+  providerCopy = provider;
+  elementRelevanceEngine = [(RELiveElementCoordinator *)coordinator elementRelevanceEngine];
+  relevanceProviderEnvironment = [elementRelevanceEngine relevanceProviderEnvironment];
+  v7 = [relevanceProviderEnvironment featuresForRelevanceProvider:providerCopy];
 
   return v7;
 }
@@ -2527,8 +2527,8 @@ uint64_t __55__RERelevanceEngine_RESimulation__resumeFromSimulation__block_invok
 
 - (void)gatherMetrics
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"REDidCollectMetrics" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"REDidCollectMetrics" object:0];
 }
 
 @end

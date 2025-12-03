@@ -1,26 +1,26 @@
 @interface BMMomentsEngagementAppEntryEventComposerAsset
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMomentsEngagementAppEntryEventComposerAsset)initWithIsSelected:(id)a3 assetType:(id)a4 assetTransferMechanism:(id)a5;
-- (BMMomentsEngagementAppEntryEventComposerAsset)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMomentsEngagementAppEntryEventComposerAsset)initWithIsSelected:(id)selected assetType:(id)type assetTransferMechanism:(id)mechanism;
+- (BMMomentsEngagementAppEntryEventComposerAsset)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMomentsEngagementAppEntryEventComposerAsset
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMMomentsEngagementAppEntryEventComposerAsset hasIsSelected](self, "hasIsSelected") || [v5 hasIsSelected])
     {
       if (![(BMMomentsEngagementAppEntryEventComposerAsset *)self hasIsSelected])
@@ -33,25 +33,25 @@
         goto LABEL_9;
       }
 
-      v6 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self isSelected];
-      if (v6 != [v5 isSelected])
+      isSelected = [(BMMomentsEngagementAppEntryEventComposerAsset *)self isSelected];
+      if (isSelected != [v5 isSelected])
       {
         goto LABEL_9;
       }
     }
 
-    v7 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
-    v8 = [v5 assetType];
-    v9 = v8;
-    if (v7 == v8)
+    assetType = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
+    assetType2 = [v5 assetType];
+    v9 = assetType2;
+    if (assetType == assetType2)
     {
     }
 
     else
     {
-      v10 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
-      v11 = [v5 assetType];
-      v12 = [v10 isEqual:v11];
+      assetType3 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
+      assetType4 = [v5 assetType];
+      v12 = [assetType3 isEqual:assetType4];
 
       if (!v12)
       {
@@ -63,18 +63,18 @@ LABEL_16:
       }
     }
 
-    v14 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
-    v15 = [v5 assetTransferMechanism];
-    if (v14 == v15)
+    assetTransferMechanism = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
+    assetTransferMechanism2 = [v5 assetTransferMechanism];
+    if (assetTransferMechanism == assetTransferMechanism2)
     {
       v13 = 1;
     }
 
     else
     {
-      v16 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
-      v17 = [v5 assetTransferMechanism];
-      v13 = [v16 isEqual:v17];
+      assetTransferMechanism3 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
+      assetTransferMechanism4 = [v5 assetTransferMechanism];
+      v13 = [assetTransferMechanism3 isEqual:assetTransferMechanism4];
     }
 
     goto LABEL_16;
@@ -99,36 +99,36 @@ LABEL_17:
     v3 = 0;
   }
 
-  v4 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
-  v5 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
+  assetType = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
+  assetTransferMechanism = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
   v12[0] = @"isSelected";
-  v6 = v3;
+  null = v3;
   if (!v3)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"assetType";
-  v7 = v4;
-  if (!v4)
+  null2 = assetType;
+  if (!assetType)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"assetTransferMechanism";
-  v8 = v5;
-  if (!v5)
+  null3 = assetTransferMechanism;
+  if (!assetTransferMechanism)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (assetTransferMechanism)
   {
-    if (v4)
+    if (assetType)
     {
       goto LABEL_12;
     }
@@ -143,7 +143,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v4)
+  if (!assetType)
   {
     goto LABEL_17;
   }
@@ -162,25 +162,25 @@ LABEL_13:
   return v9;
 }
 
-- (BMMomentsEngagementAppEntryEventComposerAsset)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMomentsEngagementAppEntryEventComposerAsset)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"isSelected"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"isSelected"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"assetType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"assetType"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -192,8 +192,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v19 = [v23 initWithDomain:v18 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v19;
+        selfCopy = 0;
+        *error = v19;
         goto LABEL_11;
       }
 
@@ -205,13 +205,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"assetTransferMechanism"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"assetTransferMechanism"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -219,11 +219,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"assetTransferMechanism"];
           v26 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v24 initWithDomain:v22 code:2 userInfo:v21];
+          *error = [v24 initWithDomain:v22 code:2 userInfo:v21];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -236,7 +236,7 @@ LABEL_4:
     }
 
     self = [(BMMomentsEngagementAppEntryEventComposerAsset *)self initWithIsSelected:v8 assetType:v10 assetTransferMechanism:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
     goto LABEL_12;
@@ -249,10 +249,10 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -263,51 +263,51 @@ LABEL_11:
   v30[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v8 = 0;
-  v13 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
 LABEL_12:
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMomentsEngagementAppEntryEventComposerAsset *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_hasIsSelected)
   {
     isSelected = self->_isSelected;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_assetType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_assetTransferMechanism)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMMomentsEngagementAppEntryEventComposerAsset;
   v5 = [(BMEventBase *)&v29 init];
@@ -316,12 +316,12 @@ LABEL_13:
     goto LABEL_40;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -332,18 +332,18 @@ LABEL_13:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -361,9 +361,9 @@ LABEL_13:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -388,18 +388,18 @@ LABEL_16:
             while (1)
             {
               v30 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v30 & 0x7F) << v16;
@@ -417,7 +417,7 @@ LABEL_16:
               }
             }
 
-            v22 = (v18 != 0) & ~[v4 hasError];
+            v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_36:
             v5->_isSelected = v22;
           }
@@ -438,13 +438,13 @@ LABEL_36:
       *(&v5->super.super.isa + v24) = v23;
 
 LABEL_37:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_39:
     v27 = 0;
@@ -463,28 +463,28 @@ LABEL_40:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMomentsEngagementAppEntryEventComposerAsset isSelected](self, "isSelected")}];
-  v5 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
-  v6 = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
-  v7 = [v3 initWithFormat:@"BMMomentsEngagementAppEntryEventComposerAsset with isSelected: %@, assetType: %@, assetTransferMechanism: %@", v4, v5, v6];
+  assetType = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetType];
+  assetTransferMechanism = [(BMMomentsEngagementAppEntryEventComposerAsset *)self assetTransferMechanism];
+  v7 = [v3 initWithFormat:@"BMMomentsEngagementAppEntryEventComposerAsset with isSelected: %@, assetType: %@, assetTransferMechanism: %@", v4, assetType, assetTransferMechanism];
 
   return v7;
 }
 
-- (BMMomentsEngagementAppEntryEventComposerAsset)initWithIsSelected:(id)a3 assetType:(id)a4 assetTransferMechanism:(id)a5
+- (BMMomentsEngagementAppEntryEventComposerAsset)initWithIsSelected:(id)selected assetType:(id)type assetTransferMechanism:(id)mechanism
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  selectedCopy = selected;
+  typeCopy = type;
+  mechanismCopy = mechanism;
   v13.receiver = self;
   v13.super_class = BMMomentsEngagementAppEntryEventComposerAsset;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v8)
+    if (selectedCopy)
     {
       v11->_hasIsSelected = 1;
-      v11->_isSelected = [v8 BOOLValue];
+      v11->_isSelected = [selectedCopy BOOLValue];
     }
 
     else
@@ -493,8 +493,8 @@ LABEL_40:
       v11->_isSelected = 0;
     }
 
-    objc_storeStrong(&v11->_assetType, a4);
-    objc_storeStrong(&v11->_assetTransferMechanism, a5);
+    objc_storeStrong(&v11->_assetType, type);
+    objc_storeStrong(&v11->_assetTransferMechanism, mechanism);
   }
 
   return v11;
@@ -531,9 +531,9 @@ LABEL_40:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -541,8 +541,8 @@ LABEL_40:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMomentsEngagementAppEntryEventComposerAsset alloc] initByReadFrom:v7];
     v4 = v8;

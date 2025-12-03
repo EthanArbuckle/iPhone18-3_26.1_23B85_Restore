@@ -1,20 +1,20 @@
 @interface GKDashboardPlayerCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation GKDashboardPlayerCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKDashboardPlayerCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKDashboardPlayerCell" hasInstanceMethod:@"statusLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKDashboardPlayerCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"GKDashboardPlayerPickerCell" isKindOfClass:@"GKDashboardPlayerCell"];
-  [v3 validateClass:@"GKDashboardPlayerPickerCell" hasInstanceMethod:@"showsPlayerSubtitle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GKDashboardPlayerPickerCell" hasInstanceMethod:@"showsMessagesHandleInStatusText" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKDashboardPlayerCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKDashboardPlayerCell" hasInstanceMethod:@"statusLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKDashboardPlayerCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"GKDashboardPlayerPickerCell" isKindOfClass:@"GKDashboardPlayerCell"];
+  [validationsCopy validateClass:@"GKDashboardPlayerPickerCell" hasInstanceMethod:@"showsPlayerSubtitle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GKDashboardPlayerPickerCell" hasInstanceMethod:@"showsMessagesHandleInStatusText" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

@@ -1,22 +1,22 @@
 @interface PKApplyActionContent
-- (PKApplyActionContent)initWithDictionary:(id)a3;
+- (PKApplyActionContent)initWithDictionary:(id)dictionary;
 - (id)analyticsDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)odiAttributesDictionary;
 @end
 
 @implementation PKApplyActionContent
 
-- (PKApplyActionContent)initWithDictionary:(id)a3
+- (PKApplyActionContent)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PKApplyActionContent;
   v5 = [(PKApplyActionContent *)&v26 init];
   if (v5)
   {
-    v6 = [v4 PKArrayContaining:objc_opt_class() forKey:@"actionItems"];
+    v6 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"actionItems"];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
     v23 = 0u;
@@ -57,7 +57,7 @@
     actionItems = v5->_actionItems;
     v5->_actionItems = v16;
 
-    v18 = [v4 PKDictionaryForKey:@"footerContent"];
+    v18 = [dictionaryCopy PKDictionaryForKey:@"footerContent"];
     if ([v18 count])
     {
       v19 = [[PKApplyFooterContent alloc] initWithDictionary:v18];
@@ -92,8 +92,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) odiAttributesDictionary];
-        [v3 addEntriesFromDictionary:v9];
+        odiAttributesDictionary = [*(*(&v11 + 1) + 8 * i) odiAttributesDictionary];
+        [v3 addEntriesFromDictionary:odiAttributesDictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -133,8 +133,8 @@
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v9 = [v8 items];
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        items = [v8 items];
+        v10 = [items countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v10)
         {
           v11 = v10;
@@ -145,14 +145,14 @@
             {
               if (*v19 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(items);
               }
 
-              v14 = [*(*(&v18 + 1) + 8 * j) analyticsIdentifier];
-              [v3 safelySetObject:@"true" forKey:v14];
+              analyticsIdentifier = [*(*(&v18 + 1) + 8 * j) analyticsIdentifier];
+              [v3 safelySetObject:@"true" forKey:analyticsIdentifier];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v11 = [items countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v11);
@@ -170,14 +170,14 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKApplyActionContent allocWithZone:](PKApplyActionContent init];
-  v6 = [(NSArray *)self->_actionItems copyWithZone:a3];
+  v6 = [(NSArray *)self->_actionItems copyWithZone:zone];
   actionItems = v5->_actionItems;
   v5->_actionItems = v6;
 
-  v8 = [(PKApplyFooterContent *)self->_footerContent copyWithZone:a3];
+  v8 = [(PKApplyFooterContent *)self->_footerContent copyWithZone:zone];
   footerContent = v5->_footerContent;
   v5->_footerContent = v8;
 

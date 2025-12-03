@@ -1,60 +1,60 @@
 @interface HFScheduleRuleItem
-- (BOOL)isEqual:(id)a3;
-- (HFScheduleRuleItem)initWithScheduleRule:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFScheduleRuleItem)initWithScheduleRule:(id)rule;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HFScheduleRuleItem
 
-- (HFScheduleRuleItem)initWithScheduleRule:(id)a3
+- (HFScheduleRuleItem)initWithScheduleRule:(id)rule
 {
-  v5 = a3;
+  ruleCopy = rule;
   v9.receiver = self;
   v9.super_class = HFScheduleRuleItem;
   v6 = [(HFScheduleRuleItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rule, a3);
+    objc_storeStrong(&v6->_rule, rule);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HFScheduleRuleItem *)self rule];
-  v6 = [HFScheduleUtilities localizedStringForRule:v5];
-  [v4 setObject:v6 forKeyedSubscript:@"title"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  rule = [(HFScheduleRuleItem *)self rule];
+  v6 = [HFScheduleUtilities localizedStringForRule:rule];
+  [dictionary setObject:v6 forKeyedSubscript:@"title"];
 
   v7 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"calendar.badge.clock"];
-  [v4 setObject:@"Home.Guest.Schedule.Rule" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
-  [v4 setObject:v7 forKeyedSubscript:@"icon"];
-  [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"elementWithMaxWidth"];
+  [dictionary setObject:@"Home.Guest.Schedule.Rule" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
+  [dictionary setObject:v7 forKeyedSubscript:@"icon"];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"elementWithMaxWidth"];
   v8 = MEMORY[0x277D2C900];
-  v9 = [HFItemUpdateOutcome outcomeWithResults:v4];
+  v9 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
   v10 = [v8 futureWithResult:v9];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HFScheduleRuleItem *)self rule];
+  rule = [(HFScheduleRuleItem *)self rule];
   v6 = v4[7];
-  v4[7] = v5;
+  v4[7] = rule;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -64,9 +64,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HFScheduleRuleItem *)v4 rule];
-      v6 = [(HFScheduleRuleItem *)self rule];
-      v7 = [v5 isEqual:v6];
+      rule = [(HFScheduleRuleItem *)equalCopy rule];
+      rule2 = [(HFScheduleRuleItem *)self rule];
+      v7 = [rule isEqual:rule2];
     }
 
     else
@@ -80,8 +80,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HFScheduleRuleItem *)self rule];
-  v3 = [v2 hash];
+  rule = [(HFScheduleRuleItem *)self rule];
+  v3 = [rule hash];
 
   return v3;
 }

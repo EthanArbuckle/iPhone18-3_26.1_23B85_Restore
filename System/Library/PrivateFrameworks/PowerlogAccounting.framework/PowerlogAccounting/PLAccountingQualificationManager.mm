@@ -1,13 +1,13 @@
 @interface PLAccountingQualificationManager
 + (double)freeTimerInterval;
 - (PLAccountingQualificationManagerDelegate)delegate;
-- (id)dependencyIDsForOwner:(id)a3;
-- (id)ownerIDsForDependency:(id)a3;
-- (void)addEnergyEstimate:(id)a3 withNow:(id)a4;
-- (void)addQualificationEvent:(id)a3;
-- (void)closeLastQualificationEventForwardWithQualificationID:(id)a3 withEndDate:(id)a4;
-- (void)didQualifyEnergyEvent:(id)a3 withRootNodeID:(id)a4 withQualificationID:(id)a5;
-- (void)reloadDependenciesNewerThanDate:(id)a3;
+- (id)dependencyIDsForOwner:(id)owner;
+- (id)ownerIDsForDependency:(id)dependency;
+- (void)addEnergyEstimate:(id)estimate withNow:(id)now;
+- (void)addQualificationEvent:(id)event;
+- (void)closeLastQualificationEventForwardWithQualificationID:(id)d withEndDate:(id)date;
+- (void)didQualifyEnergyEvent:(id)event withRootNodeID:(id)d withQualificationID:(id)iD;
+- (void)reloadDependenciesNewerThanDate:(id)date;
 @end
 
 @implementation PLAccountingQualificationManager
@@ -19,10 +19,10 @@
   return WeakRetained;
 }
 
-- (void)addEnergyEstimate:(id)a3 withNow:(id)a4
+- (void)addEnergyEstimate:(id)estimate withNow:(id)now
 {
-  v6 = a3;
-  v7 = a4;
+  estimateCopy = estimate;
+  nowCopy = now;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -38,12 +38,12 @@
 
     if (addEnergyEstimate_withNow__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimate=%@, now=%@", v6, v7];
+      nowCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimate=%@, now=%@", estimateCopy, nowCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager addEnergyEstimate:withNow:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:19];
+      [v10 logMessage:nowCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:19];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -53,17 +53,17 @@
     }
   }
 
-  if (v6 && v7)
+  if (estimateCopy && nowCopy)
   {
-    v15 = [[PLAccountingQualificationOwner alloc] initWithEnergyEstimate:v6];
-    v16 = [v6 qualificationRuleIDSum];
-    if ([v16 longLongValue])
+    v15 = [[PLAccountingQualificationOwner alloc] initWithEnergyEstimate:estimateCopy];
+    qualificationRuleIDSum = [estimateCopy qualificationRuleIDSum];
+    if ([qualificationRuleIDSum longLongValue])
     {
-      [v6 terminationRatio];
+      [estimateCopy terminationRatio];
       v18 = v17;
-      [v6 energy];
+      [estimateCopy energy];
       v20 = v19;
-      [v6 correctionEnergy];
+      [estimateCopy correctionEnergy];
       v22 = v18 * (v20 + v21);
       +[PLAccountingEngine minEnergy];
       v24 = v23;
@@ -82,11 +82,11 @@ LABEL_16:
     {
     }
 
-    if ([v6 writeToDB])
+    if ([estimateCopy writeToDB])
     {
-      [v6 setQualificationDate:v7];
-      v25 = [(PLAccountingQualificationManager *)self delegate];
-      [v25 didQualifyEnergyEvent:v6 withRootNodeID:&unk_2870F8138 withQualificationID:&unk_2870F8138];
+      [estimateCopy setQualificationDate:nowCopy];
+      delegate = [(PLAccountingQualificationManager *)self delegate];
+      [delegate didQualifyEnergyEvent:estimateCopy withRootNodeID:&unk_2870F8138 withQualificationID:&unk_2870F8138];
     }
 
     goto LABEL_16;
@@ -102,9 +102,9 @@ uint64_t __62__PLAccountingQualificationManager_addEnergyEstimate_withNow___bloc
   return result;
 }
 
-- (void)addQualificationEvent:(id)a3
+- (void)addQualificationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -120,12 +120,12 @@ uint64_t __62__PLAccountingQualificationManager_addEnergyEstimate_withNow___bloc
 
     if (addQualificationEvent__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationEvent=%@", v4];
+      eventCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationEvent=%@", eventCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager addQualificationEvent:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:39];
+      [v7 logMessage:eventCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:39];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -135,12 +135,12 @@ uint64_t __62__PLAccountingQualificationManager_addEnergyEstimate_withNow___bloc
     }
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    v12 = [[PLAccountingQualificationDependency alloc] initWithQualificationEvent:v4];
+    v12 = [[PLAccountingQualificationDependency alloc] initWithQualificationEvent:eventCopy];
     v13 = +[PLAccountingQualificationRuleManager sharedInstance];
-    v14 = [v4 qualificationID];
-    v15 = [v13 qualificationRulesForQualificationID:v14];
+    qualificationID = [eventCopy qualificationID];
+    v15 = [v13 qualificationRulesForQualificationID:qualificationID];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -160,9 +160,9 @@ uint64_t __62__PLAccountingQualificationManager_addEnergyEstimate_withNow___bloc
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationRules=%@", v15];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent2 = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager addQualificationEvent:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:46];
+        [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:46];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -195,10 +195,10 @@ uint64_t __58__PLAccountingQualificationManager_addQualificationEvent___block_in
   return result;
 }
 
-- (void)closeLastQualificationEventForwardWithQualificationID:(id)a3 withEndDate:(id)a4
+- (void)closeLastQualificationEventForwardWithQualificationID:(id)d withEndDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -214,12 +214,12 @@ uint64_t __58__PLAccountingQualificationManager_addQualificationEvent___block_in
 
     if (closeLastQualificationEventForwardWithQualificationID_withEndDate__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationID=%@, endDate=%@", v6, v7];
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationID=%@, endDate=%@", dCopy, dateCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager closeLastQualificationEventForwardWithQualificationID:withEndDate:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:58];
+      [v10 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:58];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -229,15 +229,15 @@ uint64_t __58__PLAccountingQualificationManager_addQualificationEvent___block_in
     }
   }
 
-  v15 = [v6 intValue];
-  if (v7 && v15 >= 1)
+  intValue = [dCopy intValue];
+  if (dateCopy && intValue >= 1)
   {
-    v16 = [&unk_2870F8798 objectAtIndexedSubscript:{objc_msgSend(v6, "intValue")}];
-    v17 = [v16 intValue];
+    v16 = [&unk_2870F8798 objectAtIndexedSubscript:{objc_msgSend(dCopy, "intValue")}];
+    intValue2 = [v16 intValue];
 
-    if (v17 == 1)
+    if (intValue2 == 1)
     {
-      [(PLAccountingOwnerDependencyManager *)self updateLastDependencyID:v6 withEndDate:v7];
+      [(PLAccountingOwnerDependencyManager *)self updateLastDependencyID:dCopy withEndDate:dateCopy];
     }
 
     else if ([MEMORY[0x277D3F180] debugEnabled])
@@ -255,12 +255,12 @@ uint64_t __58__PLAccountingQualificationManager_addQualificationEvent___block_in
 
       if (closeLastQualificationEventForwardWithQualificationID_withEndDate__classDebugEnabled_40 == 1)
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"directionality=%i not allowed for closing", v17];
+        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"directionality=%i not allowed for closing", intValue2];
         v20 = MEMORY[0x277D3F178];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-        v22 = [v21 lastPathComponent];
+        lastPathComponent2 = [v21 lastPathComponent];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager closeLastQualificationEventForwardWithQualificationID:withEndDate:]"];
-        [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:63];
+        [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:63];
 
         v24 = PLLogCommon();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -311,10 +311,10 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
   return result;
 }
 
-- (void)reloadDependenciesNewerThanDate:(id)a3
+- (void)reloadDependenciesNewerThanDate:(id)date
 {
   v118 = *MEMORY[0x277D85DE8];
-  v88 = a3;
+  dateCopy = date;
   v4 = 0x277D3F000uLL;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -331,12 +331,12 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
 
     if (reloadDependenciesNewerThanDate__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"date=%@", v88];
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"date=%@", dateCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:77];
+      [v7 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:77];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -346,13 +346,13 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
     }
   }
 
-  v12 = v88;
-  if (v88)
+  v12 = dateCopy;
+  if (dateCopy)
   {
-    v13 = [MEMORY[0x277CBEAA8] distantFuture];
-    v14 = [v88 isEqualToDate:v13];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v14 = [dateCopy isEqualToDate:distantFuture];
 
-    v12 = v88;
+    v12 = dateCopy;
     if ((v14 & 1) == 0)
     {
       v111 = 0u;
@@ -396,9 +396,9 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
                 v19 = [*(v15 + 3240) stringWithFormat:@"qualificationID=%@", v17];
                 v20 = MEMORY[0x277D3F178];
                 v21 = [*(v15 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-                v22 = [v21 lastPathComponent];
+                lastPathComponent2 = [v21 lastPathComponent];
                 v23 = [*(v15 + 3240) stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-                [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:82];
+                [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:82];
 
                 v24 = PLLogCommon();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -428,9 +428,9 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
                 v26 = [*(v15 + 3240) stringWithFormat:@"PLAccountingQualificationIDDirectionalities=%@", &unk_2870F87B0];
                 v27 = MEMORY[0x277D3F178];
                 v28 = [*(v15 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-                v29 = [v28 lastPathComponent];
+                lastPathComponent3 = [v28 lastPathComponent];
                 v30 = [*(v15 + 3240) stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-                [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:85];
+                [v27 logMessage:v26 fromFile:lastPathComponent3 fromFunction:v30 fromLineNumber:85];
 
                 v31 = PLLogCommon();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -443,9 +443,9 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
             }
 
             v32 = [&unk_2870F87C8 objectAtIndexedSubscript:{objc_msgSend(v17, "intValue")}];
-            v33 = [v32 intValue];
+            selfCopy = [v32 intValue];
 
-            v96 = v33;
+            v96 = selfCopy;
             if ([*(v4 + 384) debugEnabled])
             {
               v34 = objc_opt_class();
@@ -461,58 +461,58 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
 
               if (reloadDependenciesNewerThanDate__classDebugEnabled_71 == 1)
               {
-                v35 = [*(v15 + 3240) stringWithFormat:@"directionality=%i", v33];
+                selfCopy = [*(v15 + 3240) stringWithFormat:@"directionality=%i", selfCopy];
                 v36 = MEMORY[0x277D3F178];
                 v37 = [*(v15 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-                v38 = [v37 lastPathComponent];
+                lastPathComponent4 = [v37 lastPathComponent];
                 v39 = [*(v15 + 3240) stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-                [v36 logMessage:v35 fromFile:v38 fromFunction:v39 fromLineNumber:87];
+                [v36 logMessage:selfCopy fromFile:lastPathComponent4 fromFunction:v39 fromLineNumber:87];
 
                 v40 = PLLogCommon();
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v116 = v35;
+                  v116 = selfCopy;
                   _os_log_debug_impl(&dword_25EDCD000, v40, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                 }
 
-                LODWORD(v33) = v96;
+                LODWORD(selfCopy) = v96;
               }
             }
 
             v41 = 0;
-            if (v33 > 2)
+            if (selfCopy > 2)
             {
-              if (v33 == 3)
+              if (selfCopy == 3)
               {
                 v42 = +[PLAccountingQualificationEventIntervalEntry entryKey];
                 v49 = *(v15 + 3240);
-                [v88 timeIntervalSince1970];
+                [dateCopy timeIntervalSince1970];
                 [v49 stringWithFormat:@"(timestamp+%@) >= %f", v85, v50, v83];
               }
 
               else
               {
                 v42 = 0;
-                if (v33 != 4)
+                if (selfCopy != 4)
                 {
                   goto LABEL_47;
                 }
 
                 v42 = +[PLAccountingQualificationEventPointEntry entryKey];
                 v46 = *(v15 + 3240);
-                [v88 timeIntervalSince1970];
+                [dateCopy timeIntervalSince1970];
                 [v46 stringWithFormat:@"(timestamp+%@) >= %f", v86, v47, v83];
               }
             }
 
             else
             {
-              if (v33 == 1)
+              if (selfCopy == 1)
               {
                 v42 = +[PLAccountingQualificationEventForwardEntry entryKey];
                 v43 = *(v15 + 3240);
-                [v88 timeIntervalSince1970];
+                [dateCopy timeIntervalSince1970];
                 v84 = v48;
                 v45 = v86;
               }
@@ -520,14 +520,14 @@ uint64_t __53__PLAccountingQualificationManager_freeTimerInterval__block_invoke(
               else
               {
                 v42 = 0;
-                if (v33 != 2)
+                if (selfCopy != 2)
                 {
                   goto LABEL_47;
                 }
 
                 v42 = +[PLAccountingQualificationEventBackwardEntry entryKey];
                 v43 = *(v15 + 3240);
-                [v88 timeIntervalSince1970];
+                [dateCopy timeIntervalSince1970];
                 v84 = v44;
                 v45 = v85;
               }
@@ -556,9 +556,9 @@ LABEL_47:
                 v52 = [*(v15 + 3240) stringWithFormat:@"qualificationQuery=%@", v94];
                 v53 = MEMORY[0x277D3F178];
                 v54 = [*(v15 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-                v55 = [v54 lastPathComponent];
+                lastPathComponent5 = [v54 lastPathComponent];
                 v56 = [*(v15 + 3240) stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-                [v53 logMessage:v52 fromFile:v55 fromFunction:v56 fromLineNumber:116];
+                [v53 logMessage:v52 fromFile:lastPathComponent5 fromFunction:v56 fromLineNumber:116];
 
                 v57 = PLLogCommon();
                 if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
@@ -568,13 +568,13 @@ LABEL_47:
                   _os_log_debug_impl(&dword_25EDCD000, v57, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                 }
 
-                LODWORD(v33) = v96;
+                LODWORD(selfCopy) = v96;
               }
             }
 
-            v58 = [MEMORY[0x277D3F2A0] sharedCore];
-            v59 = [v58 storage];
-            v60 = [v59 entriesForKey:v42 withQuery:v94];
+            mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+            storage = [mEMORY[0x277D3F2A0] storage];
+            v60 = [storage entriesForKey:v42 withQuery:v94];
 
             v93 = v16;
             if ([*(v4 + 384) debugEnabled])
@@ -595,9 +595,9 @@ LABEL_47:
                 v62 = [*(v15 + 3240) stringWithFormat:@"qualificationEvents=%@", v60];
                 v63 = MEMORY[0x277D3F178];
                 v64 = [*(v15 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-                v65 = [v64 lastPathComponent];
+                lastPathComponent6 = [v64 lastPathComponent];
                 v66 = [*(v15 + 3240) stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-                [v63 logMessage:v62 fromFile:v65 fromFunction:v66 fromLineNumber:120];
+                [v63 logMessage:v62 fromFile:lastPathComponent6 fromFunction:v66 fromLineNumber:120];
 
                 v67 = PLLogCommon();
                 if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -607,7 +607,7 @@ LABEL_47:
                   _os_log_debug_impl(&dword_25EDCD000, v67, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                 }
 
-                LODWORD(v33) = v96;
+                LODWORD(selfCopy) = v96;
               }
             }
 
@@ -650,13 +650,13 @@ LABEL_47:
                     if (reloadDependenciesNewerThanDate__classDebugEnabled_103 == 1)
                     {
                       v73 = v4;
-                      v33 = self;
+                      selfCopy = self;
                       v74 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationEvent=%@, lastQualificationEvent=%@", v71, v69];
                       v75 = MEMORY[0x277D3F178];
                       v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-                      v77 = [v76 lastPathComponent];
+                      lastPathComponent7 = [v76 lastPathComponent];
                       v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager reloadDependenciesNewerThanDate:]"];
-                      [v75 logMessage:v74 fromFile:v77 fromFunction:v78 fromLineNumber:125];
+                      [v75 logMessage:v74 fromFile:lastPathComponent7 fromFunction:v78 fromLineNumber:125];
 
                       v79 = PLLogCommon();
                       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
@@ -666,53 +666,53 @@ LABEL_47:
                         _os_log_debug_impl(&dword_25EDCD000, v79, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                       }
 
-                      self = v33;
+                      self = selfCopy;
                       v4 = v73;
                       v68 = v95;
-                      LODWORD(v33) = v96;
+                      LODWORD(selfCopy) = v96;
                     }
                   }
 
-                  if (v33 > 2)
+                  if (selfCopy > 2)
                   {
-                    if (v33 == 3)
+                    if (selfCopy == 3)
                     {
-                      v81 = [(PLAccountingQualificationManager *)self delegate];
-                      [v81 addQualificationEventInterval:v71];
+                      delegate = [(PLAccountingQualificationManager *)self delegate];
+                      [delegate addQualificationEventInterval:v71];
                     }
 
                     else
                     {
-                      if (v33 != 4)
+                      if (selfCopy != 4)
                       {
                         goto LABEL_84;
                       }
 
-                      v81 = [(PLAccountingQualificationManager *)self delegate];
-                      [v81 addQualificationEventPoint:v71];
+                      delegate = [(PLAccountingQualificationManager *)self delegate];
+                      [delegate addQualificationEventPoint:v71];
                     }
                   }
 
                   else
                   {
-                    if (v33 == 1)
+                    if (selfCopy == 1)
                     {
-                      v80 = [(PLAccountingQualificationManager *)self delegate];
-                      [v80 addQualificationEventIntervalWithLastQualificationEventForward:v69 withQualificationEventForward:v71];
+                      delegate2 = [(PLAccountingQualificationManager *)self delegate];
+                      [delegate2 addQualificationEventIntervalWithLastQualificationEventForward:v69 withQualificationEventForward:v71];
                     }
 
                     else
                     {
-                      if (v33 != 2)
+                      if (selfCopy != 2)
                       {
                         goto LABEL_84;
                       }
 
-                      v80 = [(PLAccountingQualificationManager *)self delegate];
-                      [v80 addQualificationEventIntervalWithLastQualificationEventBackward:v69 withQualificationEventBackward:v71];
+                      delegate2 = [(PLAccountingQualificationManager *)self delegate];
+                      [delegate2 addQualificationEventIntervalWithLastQualificationEventBackward:v69 withQualificationEventBackward:v71];
                     }
 
-                    v81 = v69;
+                    delegate = v69;
                     v69 = v71;
                   }
 
@@ -738,7 +738,7 @@ LABEL_84:
         while (v90);
       }
 
-      v12 = v88;
+      v12 = dateCopy;
     }
   }
 
@@ -794,11 +794,11 @@ uint64_t __68__PLAccountingQualificationManager_reloadDependenciesNewerThanDate_
   return result;
 }
 
-- (void)didQualifyEnergyEvent:(id)a3 withRootNodeID:(id)a4 withQualificationID:(id)a5
+- (void)didQualifyEnergyEvent:(id)event withRootNodeID:(id)d withQualificationID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  dCopy = d;
+  iDCopy = iD;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
@@ -814,12 +814,12 @@ uint64_t __68__PLAccountingQualificationManager_reloadDependenciesNewerThanDate_
 
     if (didQualifyEnergyEvent_withRootNodeID_withQualificationID__classDebugEnabled == 1)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationEnergyEvent=%@, rootNodeID=%@, qualificationID=%@", v8, v9, v10];
+      iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationEnergyEvent=%@, rootNodeID=%@, qualificationID=%@", eventCopy, dCopy, iDCopy];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager didQualifyEnergyEvent:withRootNodeID:withQualificationID:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:158];
+      [v13 logMessage:iDCopy fromFile:lastPathComponent fromFunction:v16 fromLineNumber:158];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -835,25 +835,25 @@ uint64_t __68__PLAccountingQualificationManager_reloadDependenciesNewerThanDate_
     [PLAccountingQualificationManager didQualifyEnergyEvent:withRootNodeID:withQualificationID:];
   }
 
-  v19 = [v8 range];
-  v20 = [v19 endDate];
-  v21 = [v20 copy];
+  range = [eventCopy range];
+  endDate = [range endDate];
+  v21 = [endDate copy];
   [(PLAccountingQualificationManager *)self setLastQualifiedEnergyEventDate:v21];
 
-  v22 = [(PLAccountingQualificationManager *)self delegate];
-  v23 = [v22 workQueue];
+  delegate = [(PLAccountingQualificationManager *)self delegate];
+  workQueue = [delegate workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID_withQualificationID___block_invoke_111;
   block[3] = &unk_279A55D48;
   block[4] = self;
-  v28 = v8;
-  v29 = v9;
-  v30 = v10;
-  v24 = v10;
-  v25 = v9;
-  v26 = v8;
-  dispatch_async(v23, block);
+  v28 = eventCopy;
+  v29 = dCopy;
+  v30 = iDCopy;
+  v24 = iDCopy;
+  v25 = dCopy;
+  v26 = eventCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID_withQualificationID___block_invoke(uint64_t a1)
@@ -869,10 +869,10 @@ void __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID
   [v2 didQualifyEnergyEvent:*(a1 + 40) withRootNodeID:*(a1 + 48) withQualificationID:*(a1 + 56)];
 }
 
-- (id)dependencyIDsForOwner:(id)a3
+- (id)dependencyIDsForOwner:(id)owner
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  ownerCopy = owner;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -888,12 +888,12 @@ void __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID
 
     if (dependencyIDsForOwner__classDebugEnabled == 1)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"owner=%@", v3];
+      ownerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"owner=%@", ownerCopy];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager dependencyIDsForOwner:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:170];
+      [v6 logMessage:ownerCopy fromFile:lastPathComponent fromFunction:v9 fromLineNumber:170];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -903,10 +903,10 @@ void __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID
     }
   }
 
-  if (v3)
+  if (ownerCopy)
   {
     v11 = +[PLAccountingQualificationRuleManager sharedInstance];
-    v12 = [v3 ID];
+    v12 = [ownerCopy ID];
     v13 = [v11 qualificationRulesForRootNodeID:v12];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -927,9 +927,9 @@ void __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationRules=%@", v13];
         v16 = MEMORY[0x277D3F178];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-        v18 = [v17 lastPathComponent];
+        lastPathComponent2 = [v17 lastPathComponent];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager dependencyIDsForOwner:]"];
-        [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:175];
+        [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:175];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -961,8 +961,8 @@ void __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID
               objc_enumerationMutation(v22);
             }
 
-            v27 = [*(*(&v42 + 1) + 8 * i) qualificationID];
-            [v21 addObject:v27];
+            qualificationID = [*(*(&v42 + 1) + 8 * i) qualificationID];
+            [v21 addObject:qualificationID];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -989,9 +989,9 @@ void __93__PLAccountingQualificationManager_didQualifyEnergyEvent_withRootNodeID
           v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"qualificationIDs=%@", v21, v37, v38, v39, v40, v41, v42];
           v30 = MEMORY[0x277D3F178];
           v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-          v32 = [v31 lastPathComponent];
+          lastPathComponent3 = [v31 lastPathComponent];
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager dependencyIDsForOwner:]"];
-          [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:182];
+          [v30 logMessage:v29 fromFile:lastPathComponent3 fromFunction:v33 fromLineNumber:182];
 
           v34 = PLLogCommon();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -1039,9 +1039,9 @@ uint64_t __58__PLAccountingQualificationManager_dependencyIDsForOwner___block_in
   return result;
 }
 
-- (id)ownerIDsForDependency:(id)a3
+- (id)ownerIDsForDependency:(id)dependency
 {
-  v3 = a3;
+  dependencyCopy = dependency;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -1057,12 +1057,12 @@ uint64_t __58__PLAccountingQualificationManager_dependencyIDsForOwner___block_in
 
     if (ownerIDsForDependency__classDebugEnabled == 1)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependency=%@", v3, block, v14, v15, v16, v17];
+      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependency=%@", dependencyCopy, block, v14, v15, v16, v17];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Qualification/PLAccountingQualificationManager.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationManager ownerIDsForDependency:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:188];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:188];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1072,7 +1072,7 @@ uint64_t __58__PLAccountingQualificationManager_dependencyIDsForOwner___block_in
     }
   }
 
-  if (v3)
+  if (dependencyCopy)
   {
     v11 = [MEMORY[0x277CBEB58] setWithObject:&unk_2870F8150];
   }

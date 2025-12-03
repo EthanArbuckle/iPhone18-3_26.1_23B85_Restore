@@ -1,41 +1,41 @@
 @interface RPTDragTestParameters
-- (RPTDragTestParameters)initWithTestName:(id)a3 window:(id)a4 completionHandler:(id)a5;
+- (RPTDragTestParameters)initWithTestName:(id)name window:(id)window completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)_makeDraggableVectors:(CGVector *)a3 forWindow:(id)a4;
-- (void)prepareWithComposer:(id)a3;
+- (void)_makeDraggableVectors:(CGVector *)vectors forWindow:(id)window;
+- (void)prepareWithComposer:(id)composer;
 @end
 
 @implementation RPTDragTestParameters
 
-- (void)prepareWithComposer:(id)a3
+- (void)prepareWithComposer:(id)composer
 {
-  v4 = [(RPTDragTestParameters *)self window];
-  [v4 _rpt_safeVisibleFrameOfScreen];
+  window = [(RPTDragTestParameters *)self window];
+  [window _rpt_safeVisibleFrameOfScreen];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(RPTDragTestParameters *)self window];
-  [v9 _rpt_moveToSafeTopLeftOfScreemVisibleFrameAndResize:{v6 * 0.5, v8 * 0.5}];
+  window2 = [(RPTDragTestParameters *)self window];
+  [window2 _rpt_moveToSafeTopLeftOfScreemVisibleFrameAndResize:{v6 * 0.5, v8 * 0.5}];
 }
 
-- (RPTDragTestParameters)initWithTestName:(id)a3 window:(id)a4 completionHandler:(id)a5
+- (RPTDragTestParameters)initWithTestName:(id)name window:(id)window completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  windowCopy = window;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = RPTDragTestParameters;
   v12 = [(RPTDragTestParameters *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_testName, a3);
-    objc_storeStrong(&v13->_window, a4);
-    v14 = MEMORY[0x2667162B0](v11);
+    objc_storeStrong(&v12->_testName, name);
+    objc_storeStrong(&v13->_window, window);
+    v14 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v14;
 
-    v16 = [RPTCoordinateSpaceConverter converterFromWindow:v10];
+    v16 = [RPTCoordinateSpaceConverter converterFromWindow:windowCopy];
     conversion = v13->_conversion;
     v13->_conversion = v16;
   }
@@ -43,17 +43,17 @@
   return v13;
 }
 
-- (void)_makeDraggableVectors:(CGVector *)a3 forWindow:(id)a4
+- (void)_makeDraggableVectors:(CGVector *)vectors forWindow:(id)window
 {
-  v5 = a4;
-  [v5 _rpt_safeVisibleFrameOfScreen];
+  windowCopy = window;
+  [windowCopy _rpt_safeVisibleFrameOfScreen];
   v7 = v6;
   v27 = v8;
   v28 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 nsWindowFrame];
+  [windowCopy nsWindowFrame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -79,15 +79,15 @@
   v32.size.width = v19;
   v32.size.height = v21;
   v25 = CGRectGetHeight(v32);
-  a3->dx = v23;
+  vectors->dx = v23;
   v26 = Height - v25;
-  a3->dy = 0.0;
-  a3[1].dx = 0.0;
-  a3[1].dy = v26;
-  a3[2].dx = -v23;
-  a3[2].dy = 0.0;
-  a3[3].dx = 0.0;
-  a3[3].dy = -v26;
+  vectors->dy = 0.0;
+  vectors[1].dx = 0.0;
+  vectors[1].dy = v26;
+  vectors[2].dx = -v23;
+  vectors[2].dy = 0.0;
+  vectors[3].dx = 0.0;
+  vectors[3].dy = -v26;
 }
 
 - (id)composerBlock

@@ -1,8 +1,8 @@
 @interface WeatherMapPanningCoordinator
 - ($F24F406B2B787EFB06265DBA3D28CBD5)lastCenterCoordinate;
-- (WeatherMapPanningCoordinator)initWithWeatherLocationDataProvider:(id)a3;
+- (WeatherMapPanningCoordinator)initWithWeatherLocationDataProvider:(id)provider;
 - (void)_updateWeatherConditions;
-- (void)handleMapViewRegionDidChange:(id)a3 forceUpdate:(BOOL)a4;
+- (void)handleMapViewRegionDidChange:(id)change forceUpdate:(BOOL)update;
 @end
 
 @implementation WeatherMapPanningCoordinator
@@ -26,8 +26,8 @@
     longitude = v8;
   }
 
-  v10 = [(WeatherMapPanningCoordinator *)self weatherLocationDataProvider];
-  [v10 setCoordinate:{latitude, longitude}];
+  weatherLocationDataProvider = [(WeatherMapPanningCoordinator *)self weatherLocationDataProvider];
+  [weatherLocationDataProvider setCoordinate:{latitude, longitude}];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)lastCenterCoordinate
@@ -39,31 +39,31 @@
   return result;
 }
 
-- (void)handleMapViewRegionDidChange:(id)a3 forceUpdate:(BOOL)a4
+- (void)handleMapViewRegionDidChange:(id)change forceUpdate:(BOOL)update
 {
-  v18 = a3;
+  changeCopy = change;
   [(WeatherMapPanningCoordinator *)self minZoomLevelThreshold];
   if (v6 == 0.0 || ([(WeatherMapPanningCoordinator *)self lastCenterCoordinate], CLLocationCoordinate2DFromGEOLocationCoordinate2D(), !CLLocationCoordinate2DIsValid(v20)))
   {
-    [v18 centerCoordinate];
+    [changeCopy centerCoordinate];
     GEOLocationCoordinate2DFromCLLocationCoordinate2D();
     [(WeatherMapPanningCoordinator *)self setLastCenterCoordinate:?];
-    [v18 _zoomLevel];
+    [changeCopy _zoomLevel];
     [(WeatherMapPanningCoordinator *)self setLastZoomLevel:?];
-    [v18 _minimumZoomLevel];
+    [changeCopy _minimumZoomLevel];
     v8 = v7;
-    [v18 _maximumZoomLevel];
+    [changeCopy _maximumZoomLevel];
     [(WeatherMapPanningCoordinator *)self setMinZoomLevelThreshold:v8 + (v9 - v8) * 0.444444444];
-    a4 = 1;
+    update = 1;
   }
 
-  [v18 centerCoordinate];
+  [changeCopy centerCoordinate];
   GEOLocationCoordinate2DFromCLLocationCoordinate2D();
   v11 = v10;
   v13 = v12;
-  [v18 _zoomLevel];
+  [changeCopy _zoomLevel];
   v15 = v14;
-  if (a4 || ([(WeatherMapPanningCoordinator *)self lastZoomLevel], vabdd_f64(v15, v16) > 0.00000011920929) || ([(WeatherMapPanningCoordinator *)self lastCenterCoordinate], GEOCalculateDistance(), v17 >= 5000.0))
+  if (update || ([(WeatherMapPanningCoordinator *)self lastZoomLevel], vabdd_f64(v15, v16) > 0.00000011920929) || ([(WeatherMapPanningCoordinator *)self lastCenterCoordinate], GEOCalculateDistance(), v17 >= 5000.0))
   {
     [(WeatherMapPanningCoordinator *)self setLastCenterCoordinate:v11, v13];
     [(WeatherMapPanningCoordinator *)self setLastZoomLevel:v15];
@@ -71,16 +71,16 @@
   }
 }
 
-- (WeatherMapPanningCoordinator)initWithWeatherLocationDataProvider:(id)a3
+- (WeatherMapPanningCoordinator)initWithWeatherLocationDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = WeatherMapPanningCoordinator;
   v6 = [(WeatherMapPanningCoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_weatherLocationDataProvider, a3);
+    objc_storeStrong(&v6->_weatherLocationDataProvider, provider);
     v7->_lastCenterCoordinate = xmmword_101215F80;
   }
 

@@ -2,15 +2,15 @@
 - (DADeviceObserverAccessories)init;
 - (id)_accessoryIdentifiersToPromote;
 - (id)_fetchDevices;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
-- (void)_accessoryConnected:(id)a3;
-- (void)_accessoryDisconnected:(id)a3;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
+- (void)_accessoryConnected:(id)connected;
+- (void)_accessoryDisconnected:(id)disconnected;
 - (void)_beginObserving;
 - (void)_endObserving;
 - (void)_updateDevices;
 - (void)_updateHandlers;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
 @end
 
 @implementation DADeviceObserverAccessories
@@ -43,25 +43,25 @@
   return v2;
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverAccessories *)self accessoryObservationQueue];
+  handlerCopy = handler;
+  accessoryObservationQueue = [(DADeviceObserverAccessories *)self accessoryObservationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000076B4;
   v7[3] = &unk_100014648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(accessoryObservationQueue, v7);
 }
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSUUID UUID];
-  v6 = [(DADeviceObserverAccessories *)self accessoryRegistrationQueue];
+  accessoryRegistrationQueue = [(DADeviceObserverAccessories *)self accessoryRegistrationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007800;
@@ -69,9 +69,9 @@
   block[4] = self;
   v7 = v5;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v14 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(accessoryRegistrationQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -79,18 +79,18 @@
   return v7;
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverAccessories *)self accessoryRegistrationQueue];
+  identifierCopy = identifier;
+  accessoryRegistrationQueue = [(DADeviceObserverAccessories *)self accessoryRegistrationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000792C;
   v7[3] = &unk_100014708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(accessoryRegistrationQueue, v7);
 }
 
 - (void)_beginObserving
@@ -113,19 +113,19 @@
   [(DADeviceObserverAccessories *)self _updateDevices];
 }
 
-- (void)_accessoryConnected:(id)a3
+- (void)_accessoryConnected:(id)connected
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:EAAccessoryKey];
+  userInfo = [connected userInfo];
+  v5 = [userInfo objectForKeyedSubscript:EAAccessoryKey];
 
   if (v5)
   {
     v6 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 serialNumber];
+      serialNumber = [v5 serialNumber];
       v8 = 138412290;
-      v9 = v7;
+      v9 = serialNumber;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%@] Accessory connected", &v8, 0xCu);
     }
 
@@ -133,19 +133,19 @@
   }
 }
 
-- (void)_accessoryDisconnected:(id)a3
+- (void)_accessoryDisconnected:(id)disconnected
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:EAAccessoryKey];
+  userInfo = [disconnected userInfo];
+  v5 = [userInfo objectForKeyedSubscript:EAAccessoryKey];
 
   if (v5)
   {
     v6 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 serialNumber];
+      serialNumber = [v5 serialNumber];
       v8 = 138412290;
-      v9 = v7;
+      v9 = serialNumber;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%@] Accessory disconnected", &v8, 0xCu);
     }
 
@@ -168,13 +168,13 @@
 
 - (void)_updateDevices
 {
-  v3 = [(DADeviceObserverAccessories *)self accessoryObservationQueue];
+  accessoryObservationQueue = [(DADeviceObserverAccessories *)self accessoryObservationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100007DE8;
   block[3] = &unk_1000147E8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(accessoryObservationQueue, block);
 }
 
 - (void)_updateHandlers
@@ -183,8 +183,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(DADeviceObserverAccessories *)self handlers];
-  v4 = [v3 copy];
+  handlers = [(DADeviceObserverAccessories *)self handlers];
+  v4 = [handlers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
@@ -202,13 +202,13 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(DADeviceObserverAccessories *)self handlers];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        handlers2 = [(DADeviceObserverAccessories *)self handlers];
+        v11 = [handlers2 objectForKeyedSubscript:v9];
 
         if (v11)
         {
-          v12 = [(DADeviceObserverAccessories *)self devices];
-          (v11)[2](v11, v12);
+          devices = [(DADeviceObserverAccessories *)self devices];
+          (v11)[2](v11, devices);
         }
 
         v8 = v8 + 1;
@@ -224,8 +224,8 @@
 
 - (id)_fetchDevices
 {
-  v3 = [(DADeviceObserverAccessories *)self devices];
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  devices = [(DADeviceObserverAccessories *)self devices];
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [devices count]);
 
   v5 = [DSIOHIDDevice deviceMatchingAccessories:&off_100015548];
   v6 = v5;
@@ -234,18 +234,18 @@
     goto LABEL_13;
   }
 
-  v7 = [v5 serialNumber];
-  if (v7)
+  serialNumber = [v5 serialNumber];
+  if (serialNumber)
   {
-    v8 = v7;
+    v8 = serialNumber;
     v9 = +[NSMutableDictionary dictionary];
     [v9 setObject:v8 forKeyedSubscript:@"serialNumber"];
     v10 = [DSEADevice deviceWithSerialNumber:v8];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 information];
-      [v9 addEntriesFromDictionary:v12];
+      information = [v10 information];
+      [v9 addEntriesFromDictionary:information];
     }
 
     v13 = [v9 copy];
@@ -256,16 +256,16 @@
       goto LABEL_12;
     }
 
-    v15 = [v14 serialNumber];
-    if (!v15)
+    serialNumber2 = [v14 serialNumber];
+    if (!serialNumber2)
     {
       goto LABEL_12;
     }
 
-    v16 = v15;
-    v17 = [(DADeviceObserverAccessories *)self _accessoryIdentifiersToPromote];
-    v18 = [v14 identifier];
-    v19 = [v17 containsObject:v18];
+    v16 = serialNumber2;
+    _accessoryIdentifiersToPromote = [(DADeviceObserverAccessories *)self _accessoryIdentifiersToPromote];
+    identifier = [v14 identifier];
+    v19 = [_accessoryIdentifiersToPromote containsObject:identifier];
 
     if (!v19)
     {
@@ -291,8 +291,8 @@ LABEL_13:
     else
     {
       v24 = [DADeviceRepresentation alloc];
-      v25 = [v14 serialNumber];
-      v21 = [(DADeviceRepresentation *)v24 initWithSerialNumber:v25 isLocal:1 attributes:&__NSDictionary0__struct];
+      serialNumber3 = [v14 serialNumber];
+      v21 = [(DADeviceRepresentation *)v24 initWithSerialNumber:serialNumber3 isLocal:1 attributes:&__NSDictionary0__struct];
 
       if (!v21)
       {

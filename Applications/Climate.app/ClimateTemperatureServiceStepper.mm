@@ -1,8 +1,8 @@
 @interface ClimateTemperatureServiceStepper
 - (CAFTemperature)temperature;
-- (void)setTemperature:(id)a3;
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4;
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4;
+- (void)setTemperature:(id)temperature;
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature;
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature;
 @end
 
 @implementation ClimateTemperatureServiceStepper
@@ -14,27 +14,27 @@
   return *&self->_TtC7Climate14ClimateStepper_opaque[v3];
 }
 
-- (void)setTemperature:(id)a3
+- (void)setTemperature:(id)temperature
 {
   v5 = OBJC_IVAR____TtC7Climate32ClimateTemperatureServiceStepper_temperature;
   swift_beginAccess();
   v6 = *&self->_TtC7Climate14ClimateStepper_opaque[v5];
-  v7 = a3;
-  v8 = self;
-  [v6 unregisterObserver:v8];
+  temperatureCopy = temperature;
+  selfCopy = self;
+  [v6 unregisterObserver:selfCopy];
   v9 = *&self->_TtC7Climate14ClimateStepper_opaque[v5];
-  *&self->_TtC7Climate14ClimateStepper_opaque[v5] = v7;
-  v10 = v7;
+  *&self->_TtC7Climate14ClimateStepper_opaque[v5] = temperatureCopy;
+  v10 = temperatureCopy;
 
-  [v10 registerObserver:v8];
+  [v10 registerObserver:selfCopy];
 }
 
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature
 {
   v5 = sub_1000040E8(&unk_1001153F0);
   __chkstk_darwin(v5 - 8);
   v7 = &v10 - v6;
-  if (a4)
+  if (temperature)
   {
     sub_10000827C(0, &qword_100114AB0);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -51,7 +51,7 @@
   sub_10000D894(v7);
 }
 
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature
 {
   v4 = sub_1000040E8(&unk_100114790);
   v5 = *(v4 - 8);

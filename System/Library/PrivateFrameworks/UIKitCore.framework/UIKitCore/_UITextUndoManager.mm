@@ -12,9 +12,9 @@
 - (void)removeAllActions
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v4 = [WeakRetained dontRemoveAllActions];
+  dontRemoveAllActions = [WeakRetained dontRemoveAllActions];
 
-  if ((v4 & 1) == 0)
+  if ((dontRemoveAllActions & 1) == 0)
   {
     v5 = objc_loadWeakRetained(&self->_inputController);
     [v5 undoManagerWillRemoveAllActions];

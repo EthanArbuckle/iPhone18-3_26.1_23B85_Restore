@@ -85,9 +85,9 @@ LABEL_15:
   v6.receiver = self;
   v6.super_class = SBMinusCloseBoxView;
   [(SBHomeScreenButton *)&v6 layoutSubviews];
-  v3 = [(SBHomeScreenButton *)self materialView];
+  materialView = [(SBHomeScreenButton *)self materialView];
   [(SBMinusCloseBoxView *)self bounds];
-  [v3 setImageSize:{v4, v5}];
+  [materialView setImageSize:{v4, v5}];
 }
 
 @end

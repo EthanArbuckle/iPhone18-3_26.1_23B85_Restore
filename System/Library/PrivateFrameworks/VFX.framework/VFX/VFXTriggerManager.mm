@@ -1,28 +1,28 @@
 @interface VFXTriggerManager
 - (BOOL)isPresentation;
-- (VFXTriggerManager)initWithCoder:(id)a3;
+- (VFXTriggerManager)initWithCoder:(id)coder;
 - (id)copy;
-- (void)_updateActiveTriggerTypesWithMoveNeeded:(BOOL)a3;
+- (void)_updateActiveTriggerTypesWithMoveNeeded:(BOOL)needed;
 - (void)dealloc;
-- (void)enableTriggerTypes:(id)a3;
-- (void)physicsWorld:(id)a3 didBeginContact:(id)a4;
-- (void)physicsWorld:(id)a3 didEndContact:(id)a4;
-- (void)physicsWorld:(id)a3 didUpdateContact:(id)a4;
-- (void)setHandTrackingEnabled:(BOOL)a3;
-- (void)setWorld:(id)a3;
-- (void)triggerTouch:(id)a3 event:(id)a4 fromView:(id)a5;
+- (void)enableTriggerTypes:(id)types;
+- (void)physicsWorld:(id)world didBeginContact:(id)contact;
+- (void)physicsWorld:(id)world didEndContact:(id)contact;
+- (void)physicsWorld:(id)world didUpdateContact:(id)contact;
+- (void)setHandTrackingEnabled:(BOOL)enabled;
+- (void)setWorld:(id)world;
+- (void)triggerTouch:(id)touch event:(id)event fromView:(id)view;
 @end
 
 @implementation VFXTriggerManager
 
-- (VFXTriggerManager)initWithCoder:(id)a3
+- (VFXTriggerManager)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = VFXTriggerManager;
   v6 = [(VFXTriggerManager *)&v10 init];
-  if (v6 && objc_msgSend_containsValueForKey_(a3, v4, @"isHandTrackingEnabled", v5))
+  if (v6 && objc_msgSend_containsValueForKey_(coder, v4, @"isHandTrackingEnabled", v5))
   {
-    v6->_isHandTrackingEnabled = objc_msgSend_decodeBoolForKey_(a3, v7, @"isHandTrackingEnabled", v8);
+    v6->_isHandTrackingEnabled = objc_msgSend_decodeBoolForKey_(coder, v7, @"isHandTrackingEnabled", v8);
   }
 
   return v6;
@@ -43,9 +43,9 @@
   return objc_msgSend_isPresentationObject(Weak, v3, v4, v5);
 }
 
-- (void)triggerTouch:(id)a3 event:(id)a4 fromView:(id)a5
+- (void)triggerTouch:(id)touch event:(id)event fromView:(id)view
 {
-  v8 = objc_msgSend_phase(a4, a2, a3, a4);
+  v8 = objc_msgSend_phase(event, a2, touch, event);
   if (v8 > 2)
   {
     if (v8 == 3)
@@ -77,28 +77,28 @@
 
   objc_loadWeak(&self->_world);
 
-  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_touchEvent_view_inWorld_, a3, a4);
+  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_touchEvent_view_inWorld_, touch, event);
 }
 
-- (void)physicsWorld:(id)a3 didBeginContact:(id)a4
+- (void)physicsWorld:(id)world didBeginContact:(id)contact
 {
   objc_loadWeak(&self->_world);
 
-  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_contact_inWorld_, @"VFXTriggerTypeCollisionBegan", a4);
+  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_contact_inWorld_, @"VFXTriggerTypeCollisionBegan", contact);
 }
 
-- (void)physicsWorld:(id)a3 didUpdateContact:(id)a4
+- (void)physicsWorld:(id)world didUpdateContact:(id)contact
 {
   objc_loadWeak(&self->_world);
 
-  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_contact_inWorld_, @"VFXTriggerTypeCollisionUpdate", a4);
+  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_contact_inWorld_, @"VFXTriggerTypeCollisionUpdate", contact);
 }
 
-- (void)physicsWorld:(id)a3 didEndContact:(id)a4
+- (void)physicsWorld:(id)world didEndContact:(id)contact
 {
   objc_loadWeak(&self->_world);
 
-  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_contact_inWorld_, @"VFXTriggerTypeCollisionEnded", a4);
+  MEMORY[0x1EEE66B58](_TtC3VFX8VFXScene, sel_appendWithTrigger_contact_inWorld_, @"VFXTriggerTypeCollisionEnded", contact);
 }
 
 - (id)copy
@@ -110,25 +110,25 @@
   return result;
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
-  objc_storeWeak(&self->_world, a3);
-  if (a3)
+  objc_storeWeak(&self->_world, world);
+  if (world)
   {
-    objc_msgSend_registerWithTriggerManager_inWorld_(_TtC3VFX8VFXScene, v5, self, a3);
-    v9 = objc_msgSend_physicsWorld(a3, v6, v7, v8);
+    objc_msgSend_registerWithTriggerManager_inWorld_(_TtC3VFX8VFXScene, v5, self, world);
+    v9 = objc_msgSend_physicsWorld(world, v6, v7, v8);
     if (!objc_msgSend_contactDelegate(v9, v10, v11, v12))
     {
-      v16 = objc_msgSend_physicsWorld(a3, v13, v14, v15);
+      v16 = objc_msgSend_physicsWorld(world, v13, v14, v15);
 
       MEMORY[0x1EEE66B58](v16, sel_setContactDelegate_, self, v17);
     }
   }
 }
 
-- (void)_updateActiveTriggerTypesWithMoveNeeded:(BOOL)a3
+- (void)_updateActiveTriggerTypesWithMoveNeeded:(BOOL)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ((*&self->_enabledTypes & 0x400) != 0)
   {
     if (self->_handTrackerActive)
@@ -136,7 +136,7 @@
       goto LABEL_7;
     }
 
-    v10 = objc_msgSend_world(self, a2, a3, v3);
+    v10 = objc_msgSend_world(self, a2, needed, v3);
     objc_msgSend_start_(_TtC3VFX14VFXHandTracker, v11, v10, v12);
     v9 = 1;
   }
@@ -148,7 +148,7 @@
       goto LABEL_7;
     }
 
-    v6 = objc_msgSend_world(self, a2, a3, v3);
+    v6 = objc_msgSend_world(self, a2, needed, v3);
     objc_msgSend_stop_(_TtC3VFX14VFXHandTracker, v7, v6, v8);
     v9 = 0;
   }
@@ -204,7 +204,7 @@ LABEL_7:
     self->_motionTracker = 0;
   }
 
-  if (((((*&self->_enabledTypes & 8) == 0) ^ v4) & 1) == 0)
+  if (((((*&self->_enabledTypes & 8) == 0) ^ neededCopy) & 1) == 0)
   {
     if (objc_loadWeak(&self->_world))
     {
@@ -218,14 +218,14 @@ LABEL_7:
   }
 }
 
-- (void)enableTriggerTypes:(id)a3
+- (void)enableTriggerTypes:(id)types
 {
-  if (objc_msgSend_isPresentation(self, a2, a3, v3))
+  if (objc_msgSend_isPresentation(self, a2, types, v3))
   {
     objc_sync_enter(self);
     enabledTypes = self->_enabledTypes;
-    *&self->_enabledTypes = *&self->_enabledTypes & 0xFFFE | objc_msgSend_containsObject_(a3, v7, @"VFXTriggerTypeTapBegan", v8);
-    if (objc_msgSend_containsObject_(a3, v9, @"VFXTriggerTypeTapEnded", v10))
+    *&self->_enabledTypes = *&self->_enabledTypes & 0xFFFE | objc_msgSend_containsObject_(types, v7, @"VFXTriggerTypeTapBegan", v8);
+    if (objc_msgSend_containsObject_(types, v9, @"VFXTriggerTypeTapEnded", v10))
     {
       v13 = 2;
     }
@@ -236,7 +236,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFFFD | v13;
-    if (objc_msgSend_containsObject_(a3, v11, @"VFXTriggerTypeTapDragged", v12))
+    if (objc_msgSend_containsObject_(types, v11, @"VFXTriggerTypeTapDragged", v12))
     {
       v16 = 4;
     }
@@ -247,7 +247,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFFFB | v16;
-    if (objc_msgSend_containsObject_(a3, v14, @"VFXTriggerTypeTapCancelled", v15))
+    if (objc_msgSend_containsObject_(types, v14, @"VFXTriggerTypeTapCancelled", v15))
     {
       v19 = 16;
     }
@@ -258,7 +258,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFFEF | v19;
-    if (objc_msgSend_containsObject_(a3, v17, @"VFXTriggerTypeMouseMoved", v18))
+    if (objc_msgSend_containsObject_(types, v17, @"VFXTriggerTypeMouseMoved", v18))
     {
       v22 = 8;
     }
@@ -269,7 +269,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFFF7 | v22;
-    if (objc_msgSend_containsObject_(a3, v20, @"VFXTriggerTypeKeyDown", v21))
+    if (objc_msgSend_containsObject_(types, v20, @"VFXTriggerTypeKeyDown", v21))
     {
       v25 = 32;
     }
@@ -280,7 +280,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFFDF | v25;
-    if (objc_msgSend_containsObject_(a3, v23, @"VFXTriggerTypeKeyUp", v24))
+    if (objc_msgSend_containsObject_(types, v23, @"VFXTriggerTypeKeyUp", v24))
     {
       v28 = 64;
     }
@@ -291,7 +291,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFFBF | v28;
-    if (objc_msgSend_containsObject_(a3, v26, @"VFXTriggerTypeCollisionBegan", v27))
+    if (objc_msgSend_containsObject_(types, v26, @"VFXTriggerTypeCollisionBegan", v27))
     {
       v31 = 128;
     }
@@ -302,7 +302,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFF7F | v31;
-    if (objc_msgSend_containsObject_(a3, v29, @"VFXTriggerTypeCollisionUpdate", v30))
+    if (objc_msgSend_containsObject_(types, v29, @"VFXTriggerTypeCollisionUpdate", v30))
     {
       v34 = 256;
     }
@@ -313,7 +313,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFEFF | v34;
-    if (objc_msgSend_containsObject_(a3, v32, @"VFXTriggerTypeCollisionEnded", v33))
+    if (objc_msgSend_containsObject_(types, v32, @"VFXTriggerTypeCollisionEnded", v33))
     {
       v37 = 512;
     }
@@ -324,7 +324,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFDFF | v37;
-    v38 = objc_msgSend_containsObject_(a3, v35, @"VFXTriggerTypeHandTracking", v36);
+    v38 = objc_msgSend_containsObject_(types, v35, @"VFXTriggerTypeHandTracking", v36);
     self->_isHandTrackingScriptPresent = v38;
     if (v38)
     {
@@ -345,7 +345,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xFBFF | v41;
-    if (objc_msgSend_containsObject_(a3, v39, @"VFXTriggerTypeGazeTracking", v40))
+    if (objc_msgSend_containsObject_(types, v39, @"VFXTriggerTypeGazeTracking", v40))
     {
       v55 = 2048;
     }
@@ -356,7 +356,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xF7FF | v55;
-    if (objc_msgSend_containsObject_(a3, v53, @"VFXTriggerTypeMotionTracking", v54))
+    if (objc_msgSend_containsObject_(types, v53, @"VFXTriggerTypeMotionTracking", v54))
     {
       v58 = 4096;
     }
@@ -367,7 +367,7 @@ LABEL_7:
     }
 
     *&self->_enabledTypes = *&self->_enabledTypes & 0xEFFF | v58;
-    if (objc_msgSend_containsObject_(a3, v56, @"VFXTriggerTypeParticleCollision", v57))
+    if (objc_msgSend_containsObject_(types, v56, @"VFXTriggerTypeParticleCollision", v57))
     {
       v61 = 0x2000;
     }
@@ -389,17 +389,17 @@ LABEL_7:
     v46 = objc_msgSend_presentationWorld(Weak, v43, v44, v45);
     v50 = objc_msgSend_triggerManager(v46, v47, v48, v49);
 
-    objc_msgSend_enableTriggerTypes_(v50, v51, a3, v52);
+    objc_msgSend_enableTriggerTypes_(v50, v51, types, v52);
   }
 }
 
-- (void)setHandTrackingEnabled:(BOOL)a3
+- (void)setHandTrackingEnabled:(BOOL)enabled
 {
-  if (self->_isHandTrackingEnabled != a3)
+  if (self->_isHandTrackingEnabled != enabled)
   {
     objc_sync_enter(self);
-    self->_isHandTrackingEnabled = a3;
-    if (self->_isHandTrackingScriptPresent && a3)
+    self->_isHandTrackingEnabled = enabled;
+    if (self->_isHandTrackingScriptPresent && enabled)
     {
       v5 = 1024;
     }

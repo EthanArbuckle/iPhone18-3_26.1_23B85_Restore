@@ -1,22 +1,22 @@
 @interface MAAssetCacheStat
-- (MAAssetCacheStat)initWith:(id)a3 createdDay:(int64_t)a4 accessDay:(int64_t)a5 fileSize:(unint64_t)a6;
+- (MAAssetCacheStat)initWith:(id)with createdDay:(int64_t)day accessDay:(int64_t)accessDay fileSize:(unint64_t)size;
 @end
 
 @implementation MAAssetCacheStat
 
-- (MAAssetCacheStat)initWith:(id)a3 createdDay:(int64_t)a4 accessDay:(int64_t)a5 fileSize:(unint64_t)a6
+- (MAAssetCacheStat)initWith:(id)with createdDay:(int64_t)day accessDay:(int64_t)accessDay fileSize:(unint64_t)size
 {
-  v11 = a3;
+  withCopy = with;
   v16.receiver = self;
   v16.super_class = MAAssetCacheStat;
   v12 = [(MAAssetCacheStat *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetId, a3);
-    v13->_createdDay = a4;
-    v13->_accessDay = a5;
-    v13->_fileSize = a6;
+    objc_storeStrong(&v12->_assetId, with);
+    v13->_createdDay = day;
+    v13->_accessDay = accessDay;
+    v13->_fileSize = size;
     v14 = v13;
   }
 

@@ -12,28 +12,28 @@
 
 - (id)_musicKit_self_seekCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DDE80])
+  if ([self conformsToProtocol:&unk_1F50DDE80])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_seekCommand_preferredForwardJumpInterval
 {
-  v1 = [a1 _musicKit_self_seekCommand];
-  v2 = [v1 preferredForwardJumpIntervals];
-  v3 = [v2 firstObject];
+  _musicKit_self_seekCommand = [self _musicKit_self_seekCommand];
+  preferredForwardJumpIntervals = [_musicKit_self_seekCommand preferredForwardJumpIntervals];
+  firstObject = [preferredForwardJumpIntervals firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = v3;
+    v4 = firstObject;
   }
 
   else
@@ -46,13 +46,13 @@
 
 - (id)musicKit_seekCommand_preferredBackwardJumpInterval
 {
-  v1 = [a1 _musicKit_self_seekCommand];
-  v2 = [v1 preferredBackwardJumpIntervals];
-  v3 = [v2 firstObject];
+  _musicKit_self_seekCommand = [self _musicKit_self_seekCommand];
+  preferredBackwardJumpIntervals = [_musicKit_self_seekCommand preferredBackwardJumpIntervals];
+  firstObject = [preferredBackwardJumpIntervals firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = v3;
+    v4 = firstObject;
   }
 
   else
@@ -75,32 +75,32 @@
     v3 = qword_1D5619BF8[a3 + 2];
   }
 
-  v4 = [a1 _musicKit_self_seekCommand];
-  v5 = [v4 beginSeekWithDirection:v3];
+  _musicKit_self_seekCommand = [self _musicKit_self_seekCommand];
+  v5 = [_musicKit_self_seekCommand beginSeekWithDirection:v3];
 
   return v5;
 }
 
 - (id)musicKit_seekCommand_endSeekCommandRequest
 {
-  v1 = [a1 _musicKit_self_seekCommand];
-  v2 = [v1 endSeek];
+  _musicKit_self_seekCommand = [self _musicKit_self_seekCommand];
+  endSeek = [_musicKit_self_seekCommand endSeek];
 
-  return v2;
+  return endSeek;
 }
 
 - (id)musicKit_seekCommand_jumpCommandRequestByInterval:()MusicKit_SoftLinking_MPCPlayerSeekCommand
 {
-  v3 = [a1 _musicKit_self_seekCommand];
-  v4 = [v3 jumpByInterval:a2];
+  _musicKit_self_seekCommand = [self _musicKit_self_seekCommand];
+  v4 = [_musicKit_self_seekCommand jumpByInterval:a2];
 
   return v4;
 }
 
 - (id)musicKit_seekCommand_changePositionCommandRequestToElapsedInterval:()MusicKit_SoftLinking_MPCPlayerSeekCommand
 {
-  v3 = [a1 _musicKit_self_seekCommand];
-  v4 = [v3 changePositionToElapsedInterval:a2];
+  _musicKit_self_seekCommand = [self _musicKit_self_seekCommand];
+  v4 = [_musicKit_self_seekCommand changePositionToElapsedInterval:a2];
 
   return v4;
 }

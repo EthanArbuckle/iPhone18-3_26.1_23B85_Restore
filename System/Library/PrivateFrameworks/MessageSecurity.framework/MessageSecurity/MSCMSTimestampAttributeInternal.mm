@@ -1,12 +1,12 @@
 @interface MSCMSTimestampAttributeInternal
-- (BOOL)verifyTimestamp:(id)a3 error:(id *)a4;
+- (BOOL)verifyTimestamp:(id)timestamp error:(id *)error;
 - (MSCMSTimestampAttributeInternal)init;
-- (MSCMSTimestampAttributeInternal)initWithTimestampToken:(id)a3 error:(id *)a4;
+- (MSCMSTimestampAttributeInternal)initWithTimestampToken:(id)token error:(id *)error;
 - (MSOID)attributeType;
-- (id)encodeAttributeWithError:(id *)a3;
+- (id)encodeAttributeWithError:(id *)error;
 - (id)timestampToken;
 - (void)dealloc;
-- (void)setAttributeType:(id)a3;
+- (void)setAttributeType:(id)type;
 @end
 
 @implementation MSCMSTimestampAttributeInternal
@@ -18,40 +18,40 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAttributeType:(id)a3
+- (void)setAttributeType:(id)type
 {
   v5 = OBJC_IVAR___MSCMSTimestampAttributeInternal_attributeType;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = type;
+  typeCopy = type;
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   free_TSTInfo();
   swift_endAccess();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(MSCMSTimestampAttributeInternal *)&v5 dealloc];
 }
 
-- (MSCMSTimestampAttributeInternal)initWithTimestampToken:(id)a3 error:(id *)a4
+- (MSCMSTimestampAttributeInternal)initWithTimestampToken:(id)token error:(id *)error
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_258CBEA80();
   v7 = v6;
 
   return MSCMSTimestampAttributeInternal.init(timestampToken:)(v5, v7);
 }
 
-- (BOOL)verifyTimestamp:(id)a3 error:(id *)a4
+- (BOOL)verifyTimestamp:(id)timestamp error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  timestampCopy = timestamp;
+  selfCopy = self;
   v7 = sub_258CBEA80();
   v9 = v8;
 
@@ -60,7 +60,7 @@
   return 1;
 }
 
-- (id)encodeAttributeWithError:(id *)a3
+- (id)encodeAttributeWithError:(id *)error
 {
   sub_258CAFE28();
   v4 = swift_allocError();
@@ -68,12 +68,12 @@
   *(v5 + 8) = 0;
   *(v5 + 16) = 48;
   swift_willThrow();
-  if (a3)
+  if (error)
   {
     v6 = sub_258CBEA00();
 
     v7 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -87,9 +87,9 @@
 {
   v2 = (self + OBJC_IVAR___MSCMSTimestampAttributeInternal_tstinfo);
   swift_beginAccess();
-  v3 = [objc_allocWithZone(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970_];
+  initWithTimeIntervalSince1970_ = [objc_allocWithZone(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970_];
 
-  return v3;
+  return initWithTimeIntervalSince1970_;
 }
 
 - (MSCMSTimestampAttributeInternal)init

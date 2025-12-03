@@ -1,53 +1,53 @@
 @interface AMSUnsignedLong
-+ (id)unsignedLongWithUnsignedLong:(unint64_t)a3;
-- (AMSUnsignedLong)initWithUnsignedLong:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUnsignedLong:(id)a3;
++ (id)unsignedLongWithUnsignedLong:(unint64_t)long;
+- (AMSUnsignedLong)initWithUnsignedLong:(unint64_t)long;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUnsignedLong:(id)long;
 @end
 
 @implementation AMSUnsignedLong
 
-- (AMSUnsignedLong)initWithUnsignedLong:(unint64_t)a3
+- (AMSUnsignedLong)initWithUnsignedLong:(unint64_t)long
 {
   v5.receiver = self;
   v5.super_class = AMSUnsignedLong;
   result = [(AMSUnsignedLong *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = long;
   }
 
   return result;
 }
 
-+ (id)unsignedLongWithUnsignedLong:(unint64_t)a3
++ (id)unsignedLongWithUnsignedLong:(unint64_t)long
 {
-  v3 = [[a1 alloc] initWithUnsignedLong:a3];
+  v3 = [[self alloc] initWithUnsignedLong:long];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSUnsignedLong *)self isEqualToUnsignedLong:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSUnsignedLong *)self isEqualToUnsignedLong:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToUnsignedLong:(id)a3
+- (BOOL)isEqualToUnsignedLong:(id)long
 {
-  if (!a3)
+  if (!long)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(AMSUnsignedLong *)self value];
-  v6 = [v4 value];
+  longCopy = long;
+  value = [(AMSUnsignedLong *)self value];
+  value2 = [longCopy value];
 
-  return v5 == v6;
+  return value == value2;
 }
 
 @end

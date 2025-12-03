@@ -1,25 +1,25 @@
 @interface ADVisualLoggerHandler
-- (ADVisualLoggerHandler)initWithName:(id)a3;
+- (ADVisualLoggerHandler)initWithName:(id)name;
 - (int64_t)removeFileSettings;
 - (int64_t)removeHostSettings;
-- (int64_t)setHostName:(id)a3;
-- (int64_t)setLogFolder:(id)a3;
+- (int64_t)setHostName:(id)name;
+- (int64_t)setLogFolder:(id)folder;
 - (void)dealloc;
-- (void)logCalibration:(id)a3 name:(const char *)a4 timestamp:(double)a5;
-- (void)logDictionary:(id)a3 name:(const char *)a4 timestamp:(double)a5;
-- (void)logPixelBuffer:(__CVBuffer *)a3 name:(const char *)a4 timestamp:(double)a5;
-- (void)logPointCloud:(id)a3 name:(const char *)a4 timestamp:(double)a5;
-- (void)logRawBuffer:(void *)a3 size:(unint64_t)a4 name:(const char *)a5 timestamp:(double)a6;
-- (void)logString:(id)a3 name:(const char *)a4 timestamp:(double)a5;
+- (void)logCalibration:(id)calibration name:(const char *)name timestamp:(double)timestamp;
+- (void)logDictionary:(id)dictionary name:(const char *)name timestamp:(double)timestamp;
+- (void)logPixelBuffer:(__CVBuffer *)buffer name:(const char *)name timestamp:(double)timestamp;
+- (void)logPointCloud:(id)cloud name:(const char *)name timestamp:(double)timestamp;
+- (void)logRawBuffer:(void *)buffer size:(unint64_t)size name:(const char *)name timestamp:(double)timestamp;
+- (void)logString:(id)string name:(const char *)name timestamp:(double)timestamp;
 - (void)postDisable;
 - (void)preEnable;
 @end
 
 @implementation ADVisualLoggerHandler
 
-- (void)logDictionary:(id)a3 name:(const char *)a4 timestamp:(double)a5
+- (void)logDictionary:(id)dictionary name:(const char *)name timestamp:(double)timestamp
 {
-  if (a3)
+  if (dictionary)
   {
     obj = self;
     objc_sync_enter(obj);
@@ -27,36 +27,36 @@
   }
 }
 
-- (void)logCalibration:(id)a3 name:(const char *)a4 timestamp:(double)a5
+- (void)logCalibration:(id)calibration name:(const char *)name timestamp:(double)timestamp
 {
-  v8 = a3;
-  if (v8)
+  calibrationCopy = calibration;
+  if (calibrationCopy)
   {
-    v10 = v8;
-    v9 = [v8 dictionaryRepresentation];
-    [(ADVisualLoggerHandler *)self logDictionary:v9 name:a4 timestamp:a5];
+    v10 = calibrationCopy;
+    dictionaryRepresentation = [calibrationCopy dictionaryRepresentation];
+    [(ADVisualLoggerHandler *)self logDictionary:dictionaryRepresentation name:name timestamp:timestamp];
 
-    v8 = v10;
+    calibrationCopy = v10;
   }
 }
 
-- (void)logRawBuffer:(void *)a3 size:(unint64_t)a4 name:(const char *)a5 timestamp:(double)a6
+- (void)logRawBuffer:(void *)buffer size:(unint64_t)size name:(const char *)name timestamp:(double)timestamp
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (buffer && size)
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     VZDataInfoCreate();
     VZDataInfoSetTimestampMachContinuousNanoseconds();
     VZDataInfoSetName();
-    v10 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
+    v10 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:buffer length:size freeWhenDone:0];
     BlobWithCFData = VZDataCreateBlobWithCFData();
     if (BlobWithCFData)
     {
-      v12 = [*&v9->_synchronousFileLogging stringByAppendingFormat:@".%s", a5];
-      v13 = v12;
-      [v12 UTF8String];
+      name = [*&selfCopy->_synchronousFileLogging stringByAppendingFormat:@".%s", name];
+      v13 = name;
+      [name UTF8String];
       VZLoggerLogData();
     }
 
@@ -72,47 +72,47 @@
     VZRelease();
     VZRelease();
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)logString:(id)a3 name:(const char *)a4 timestamp:(double)a5
+- (void)logString:(id)string name:(const char *)name timestamp:(double)timestamp
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (stringCopy)
   {
     v11 = @"value";
-    v12[0] = v8;
+    v12[0] = stringCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    [(ADVisualLoggerHandler *)self logDictionary:v10 name:a4 timestamp:a5];
+    [(ADVisualLoggerHandler *)self logDictionary:v10 name:name timestamp:timestamp];
   }
 }
 
-- (void)logPointCloud:(id)a3 name:(const char *)a4 timestamp:(double)a5
+- (void)logPointCloud:(id)cloud name:(const char *)name timestamp:(double)timestamp
 {
-  v8 = a3;
-  if (v8)
+  cloudCopy = cloud;
+  if (cloudCopy)
   {
-    v10 = v8;
-    v9 = [v8 dictionaryRepresentation];
-    [(ADVisualLoggerHandler *)self logDictionary:v9 name:a4 timestamp:a5];
+    v10 = cloudCopy;
+    dictionaryRepresentation = [cloudCopy dictionaryRepresentation];
+    [(ADVisualLoggerHandler *)self logDictionary:dictionaryRepresentation name:name timestamp:timestamp];
 
-    v8 = v10;
+    cloudCopy = v10;
   }
 }
 
-- (void)logPixelBuffer:(__CVBuffer *)a3 name:(const char *)a4 timestamp:(double)a5
+- (void)logPixelBuffer:(__CVBuffer *)buffer name:(const char *)name timestamp:(double)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (buffer)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    PixelBufferNoCopy = a3;
-    if (CVPixelBufferIsPlanar(a3) && (PixelBufferNoCopy = PixelBufferUtils::createConvertedPixelBufferFormat(a3, 0x42475241, 1)) == 0)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+    PixelBufferNoCopy = buffer;
+    if (CVPixelBufferIsPlanar(buffer) && (PixelBufferNoCopy = PixelBufferUtils::createConvertedPixelBufferFormat(buffer, 0x42475241, 1)) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -132,7 +132,7 @@
     {
       if (PixelFormatType == 825306677 || PixelFormatType == 1932996149 || PixelFormatType == 825437747)
       {
-        PixelBufferNoCopy = PixelBufferUtils::createPixelBufferNoCopy(a3, 0x62313667, *MEMORY[0x277CBF398]);
+        PixelBufferNoCopy = PixelBufferUtils::createPixelBufferNoCopy(buffer, 0x62313667, *MEMORY[0x277CBF398]);
       }
 
       VZDataInfoCreate();
@@ -141,9 +141,9 @@
       ImageWithCVPixelBuffer = VZDataCreateImageWithCVPixelBuffer();
       if (ImageWithCVPixelBuffer)
       {
-        v11 = [*&v7->_synchronousFileLogging stringByAppendingFormat:@".%s", a4];
-        v12 = v11;
-        [v11 UTF8String];
+        name = [*&selfCopy->_synchronousFileLogging stringByAppendingFormat:@".%s", name];
+        v12 = name;
+        [name UTF8String];
         VZLoggerLogData();
       }
 
@@ -158,13 +158,13 @@
 
       VZRelease();
       VZRelease();
-      if (PixelBufferNoCopy != a3)
+      if (PixelBufferNoCopy != buffer)
       {
         CVPixelBufferRelease(PixelBufferNoCopy);
       }
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -181,26 +181,26 @@
     return 0;
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   VZLoggerRemoveDestination();
   VZRelease();
   v4 = 0;
   self->_fileDestination = 0;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (int64_t)setHostName:(id)a3
+- (int64_t)setHostName:(id)name
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (nameCopy)
   {
-    if (v5->_fileDestination)
+    if (selfCopy->_fileDestination)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -208,75 +208,75 @@
         _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "ADLogManager cannot start network logging, network destination already set", buf, 2u);
       }
 
-      v6 = -22961;
+      removeHostSettings = -22961;
     }
 
     else
     {
       VZClientOptionsCreate();
-      [v4 UTF8String];
+      [nameCopy UTF8String];
       VZClientOptionsSetTcpIpAddress();
-      v5->_fileDestination = VZDestinationCreateWithClient();
+      selfCopy->_fileDestination = VZDestinationCreateWithClient();
       VZRelease();
       VZLoggerAddDestination();
-      v6 = 0;
+      removeHostSettings = 0;
     }
   }
 
   else
   {
-    v6 = [(ADVisualLoggerHandler *)v5 removeHostSettings];
+    removeHostSettings = [(ADVisualLoggerHandler *)selfCopy removeHostSettings];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return removeHostSettings;
 }
 
 - (int64_t)removeFileSettings
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_loggerName && v2->_visualLogger)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_loggerName && selfCopy->_visualLogger)
   {
     VZLoggerRemoveDestination();
     VZRelease();
-    v2->_visualLogger = 0;
+    selfCopy->_visualLogger = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
 
-- (int64_t)setLogFolder:(id)a3
+- (int64_t)setLogFolder:(id)folder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ADVisualLoggerHandler *)v5 removeFileSettings];
-  if (!v6)
+  folderCopy = folder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  removeFileSettings = [(ADVisualLoggerHandler *)selfCopy removeFileSettings];
+  if (!removeFileSettings)
   {
-    if (v4)
+    if (folderCopy)
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v16 = 0;
-      v8 = [v7 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v16];
+      v8 = [defaultManager createDirectoryAtPath:folderCopy withIntermediateDirectories:1 attributes:0 error:&v16];
       v9 = v16;
       if (v8)
       {
-        v10 = [v4 stringByAppendingPathComponent:@"sequence.csv"];
-        [v7 removeItemAtPath:v10 error:0];
+        v10 = [folderCopy stringByAppendingPathComponent:@"sequence.csv"];
+        [defaultManager removeItemAtPath:v10 error:0];
 
-        v11 = [v4 stringByAppendingPathComponent:@"info.json"];
-        [v7 removeItemAtPath:v11 error:0];
+        v11 = [folderCopy stringByAppendingPathComponent:@"info.json"];
+        [defaultManager removeItemAtPath:v11 error:0];
 
-        v12 = [*&v5->_synchronousFileLogging stringByReplacingOccurrencesOfString:@"." withString:@"/"];
-        v13 = [v4 stringByAppendingPathComponent:v12];
-        [v7 removeItemAtPath:v13 error:0];
+        v12 = [*&selfCopy->_synchronousFileLogging stringByReplacingOccurrencesOfString:@"." withString:@"/"];
+        v13 = [folderCopy stringByAppendingPathComponent:v12];
+        [defaultManager removeItemAtPath:v13 error:0];
 
-        if (v5->_visualLogger)
+        if (selfCopy->_visualLogger)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -284,13 +284,13 @@
             _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "cannot start file logging. destination already set", buf, 2u);
           }
 
-          v6 = -22961;
+          removeFileSettings = -22961;
         }
 
         else
         {
           VZFileExportOptionsCreate();
-          if (*(&v5->super._humanReadableFormat + 1))
+          if (*(&selfCopy->super._humanReadableFormat + 1))
           {
             VZFileExportOptionsSetAsyncQueueMaxElementCount();
           }
@@ -305,15 +305,15 @@
           VZFileExportOptionsAddFilteredStoragePreference();
           VZLogMessageFilterCreate();
           VZFileExportOptionsAddFilteredStoragePreference();
-          v14 = v4;
-          [v4 UTF8String];
-          v5->_visualLogger = VZDestinationCreateWithFileExporter();
+          v14 = folderCopy;
+          [folderCopy UTF8String];
+          selfCopy->_visualLogger = VZDestinationCreateWithFileExporter();
           VZRelease();
           VZRelease();
           VZRelease();
           VZRelease();
           VZLoggerAddDestination();
-          v6 = 0;
+          removeFileSettings = 0;
         }
       }
 
@@ -322,25 +322,25 @@
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v18 = v4;
+          v18 = folderCopy;
           v19 = 2114;
           v20 = v9;
           _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "ADLogManager cannot create logger directory %{public}@. Error: %{public}@", buf, 0x16u);
         }
 
-        v6 = -22950;
+        removeFileSettings = -22950;
       }
     }
 
     else
     {
-      v6 = 0;
+      removeFileSettings = 0;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return removeFileSettings;
 }
 
 - (void)postDisable
@@ -377,10 +377,10 @@
   [(ADVisualLoggerHandler *)&v3 dealloc];
 }
 
-- (ADVisualLoggerHandler)initWithName:(id)a3
+- (ADVisualLoggerHandler)initWithName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   if (!MEMORY[0x282237DD0])
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -408,9 +408,9 @@
   if (v5)
   {
     *(&v5->super._humanReadableFormat + 1) = 0;
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"appledepth.vz.%@", v4];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"appledepth.vz.%@", nameCopy];
     v7 = *&self->_synchronousFileLogging;
-    *&self->_synchronousFileLogging = v6;
+    *&self->_synchronousFileLogging = nameCopy;
 
     v8 = MEMORY[0x245CBF9F0]();
     self->_loggerName = v8;
@@ -428,16 +428,16 @@
     }
 
 LABEL_12:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
 LABEL_6:
   self = self;
-  v10 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

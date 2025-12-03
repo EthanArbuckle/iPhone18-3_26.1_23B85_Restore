@@ -1,24 +1,24 @@
 @interface VIE5RunnerPortDesc
-- (VIE5RunnerPortDesc)initWithShape:(id)a3 type:(unint64_t)a4 dtype:(VIE5RunnerPortDType)a5 csize:(unint64_t)a6 strides:(id)a7;
+- (VIE5RunnerPortDesc)initWithShape:(id)shape type:(unint64_t)type dtype:(VIE5RunnerPortDType)dtype csize:(unint64_t)csize strides:(id)strides;
 @end
 
 @implementation VIE5RunnerPortDesc
 
-- (VIE5RunnerPortDesc)initWithShape:(id)a3 type:(unint64_t)a4 dtype:(VIE5RunnerPortDType)a5 csize:(unint64_t)a6 strides:(id)a7
+- (VIE5RunnerPortDesc)initWithShape:(id)shape type:(unint64_t)type dtype:(VIE5RunnerPortDType)dtype csize:(unint64_t)csize strides:(id)strides
 {
-  v13 = a3;
-  v14 = a7;
+  shapeCopy = shape;
+  stridesCopy = strides;
   v19.receiver = self;
   v19.super_class = VIE5RunnerPortDesc;
   v15 = [(VIE5RunnerPortDesc *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_shape, a3);
-    v16->_type = a4;
-    v16->_dtype = a5;
-    v16->_csize = a6;
-    objc_storeStrong(&v16->_strides, a7);
+    objc_storeStrong(&v15->_shape, shape);
+    v16->_type = type;
+    v16->_dtype = dtype;
+    v16->_csize = csize;
+    objc_storeStrong(&v16->_strides, strides);
     v17 = v16;
   }
 

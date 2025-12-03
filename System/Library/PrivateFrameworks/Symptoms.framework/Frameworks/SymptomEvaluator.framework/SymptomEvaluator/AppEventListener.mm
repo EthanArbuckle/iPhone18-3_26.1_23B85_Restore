@@ -1,10 +1,10 @@
 @interface AppEventListener
-- (AppEventListener)initWithQueue:(id)a3;
+- (AppEventListener)initWithQueue:(id)queue;
 - (AppStateEventListenerDelegate)appStateDelegate;
 - (void)_applicationStateMonitorInit;
 - (void)cleanupAppStateMonitor;
 - (void)dealloc;
-- (void)setAppStateDelegate:(id)a3;
+- (void)setAppStateDelegate:(id)delegate;
 @end
 
 @implementation AppEventListener
@@ -107,9 +107,9 @@ void __48__AppEventListener__applicationStateMonitorInit__block_invoke(uint64_t 
   }
 }
 
-- (void)setAppStateDelegate:(id)a3
+- (void)setAppStateDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_appStateDelegate);
   if (WeakRetained != obj)
   {
@@ -126,16 +126,16 @@ void __48__AppEventListener__applicationStateMonitorInit__block_invoke(uint64_t 
   }
 }
 
-- (AppEventListener)initWithQueue:(id)a3
+- (AppEventListener)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = AppEventListener;
   v6 = [(AppEventListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

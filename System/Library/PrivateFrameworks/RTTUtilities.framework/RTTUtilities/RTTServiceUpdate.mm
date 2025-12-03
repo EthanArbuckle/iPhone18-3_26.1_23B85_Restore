@@ -1,38 +1,38 @@
 @interface RTTServiceUpdate
-- (BOOL)isEqual:(id)a3;
-- (RTTServiceUpdate)initWithServiceUpdateType:(id)a3 options:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (RTTServiceUpdate)initWithServiceUpdateType:(id)type options:(id)options;
 - (id)description;
-- (id)optionValueForKey:(id)a3;
+- (id)optionValueForKey:(id)key;
 @end
 
 @implementation RTTServiceUpdate
 
-- (RTTServiceUpdate)initWithServiceUpdateType:(id)a3 options:(id)a4
+- (RTTServiceUpdate)initWithServiceUpdateType:(id)type options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = RTTServiceUpdate;
   v9 = [(RTTServiceUpdate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceUpdateType, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_serviceUpdateType, type);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
 }
 
-- (id)optionValueForKey:(id)a3
+- (id)optionValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RTTServiceUpdate *)self options];
+  keyCopy = key;
+  options = [(RTTServiceUpdate *)self options];
 
-  if (v5)
+  if (options)
   {
-    v6 = [(RTTServiceUpdate *)self options];
-    v7 = [v6 objectForKey:v4];
+    options2 = [(RTTServiceUpdate *)self options];
+    v7 = [options2 objectForKey:keyCopy];
   }
 
   else
@@ -43,14 +43,14 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 serviceUpdateType];
-    v6 = [v5 isEqualToString:self->_serviceUpdateType];
+    serviceUpdateType = [equalCopy serviceUpdateType];
+    v6 = [serviceUpdateType isEqualToString:self->_serviceUpdateType];
   }
 
   else

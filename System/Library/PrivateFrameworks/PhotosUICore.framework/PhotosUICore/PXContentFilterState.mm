@@ -1,20 +1,20 @@
 @interface PXContentFilterState
-+ (id)defaultAllPhotosFilterStateForPhotoLibrary:(id)a3;
-+ (id)defaultFilterStateForContainerCollection:(id)a3 photoLibrary:(id)a4;
-- (BOOL)isContentFilterActive:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultAllPhotosFilterStateForPhotoLibrary:(id)library;
++ (id)defaultFilterStateForContainerCollection:(id)collection photoLibrary:(id)library;
+- (BOOL)isContentFilterActive:(int64_t)active;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldExcludeFromMyMac;
 - (BOOL)shouldExcludeScreenshots;
 - (NSString)localizedDescription;
 - (NSString)localizedFooterDescription;
 - (PXContentFilterState)init;
-- (PXContentFilterState)initWithPhotoLibrary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXContentFilterState)initWithPhotoLibrary:(id)library;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)predicateForUseCase:(unint64_t)a3;
+- (id)predicateForUseCase:(unint64_t)case;
 - (int64_t)ruleCount;
 - (unint64_t)hash;
-- (void)_checkDataSourceType:(id)a3;
+- (void)_checkDataSourceType:(id)type;
 @end
 
 @implementation PXContentFilterState
@@ -48,14 +48,14 @@
 - (int64_t)ruleCount
 {
   LODWORD(v3) = [(PXContentFilterState *)self saved];
-  v4 = [(PXContentFilterState *)self unsaved];
+  unsaved = [(PXContentFilterState *)self unsaved];
   v5 = 1;
   if (v3)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (unsaved)
   {
     v3 = v5;
   }
@@ -76,11 +76,11 @@
   v14 = v13 + [(PXContentFilterState *)self showOnlyScreenshots];
   v15 = v14 + [(PXContentFilterState *)self showOnlySharedWithYou];
   v16 = v15 + [(PXContentFilterState *)self showOnlyFromMyMac];
-  v17 = [(PXContentFilterState *)self keywords];
-  v18 = [v17 count];
+  keywords = [(PXContentFilterState *)self keywords];
+  v18 = [keywords count];
 
-  v19 = [(PXContentFilterState *)self uuids];
-  v20 = v16 + v18 + [v19 count];
+  uuids = [(PXContentFilterState *)self uuids];
+  v20 = v16 + v18 + [uuids count];
 
   v21 = v20 + [(PXContentFilterState *)self showOnlySentICloudLinks];
   v22 = v21 + [(PXContentFilterState *)self showOnlyReceivedICloudLinks];
@@ -89,9 +89,9 @@
 
 - (NSString)localizedFooterDescription
 {
-  v3 = [(PXContentFilterState *)self ruleCount];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v3];
-  if (v3 >= 1)
+  ruleCount = [(PXContentFilterState *)self ruleCount];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:ruleCount];
+  if (ruleCount >= 1)
   {
     contentSyndicationConfigurationProvider = self->_contentSyndicationConfigurationProvider;
     if (contentSyndicationConfigurationProvider && [(PXContentSyndicationConfigurationProvider *)contentSyndicationConfigurationProvider contentSyndicationIsAvailable])
@@ -175,18 +175,18 @@
       [v4 addObject:v18];
     }
 
-    v19 = [(PXContentFilterState *)self keywords];
-    v20 = [v19 count];
+    keywords = [(PXContentFilterState *)self keywords];
+    v20 = [keywords count];
 
     if (v20)
     {
-      v21 = [(PXContentFilterState *)self keywords];
-      v22 = [v21 firstObject];
-      [v4 addObject:v22];
+      keywords2 = [(PXContentFilterState *)self keywords];
+      firstObject = [keywords2 firstObject];
+      [v4 addObject:firstObject];
     }
 
-    v23 = [(PXContentFilterState *)self uuids];
-    v24 = [v23 count];
+    uuids = [(PXContentFilterState *)self uuids];
+    v24 = [uuids count];
 
     if (v24)
     {
@@ -221,10 +221,10 @@
 
 - (NSString)localizedDescription
 {
-  v3 = [(PXContentFilterState *)self ruleCount];
-  if (v3 != 1)
+  ruleCount = [(PXContentFilterState *)self ruleCount];
+  if (ruleCount != 1)
   {
-    if (v3)
+    if (ruleCount)
     {
       v4 = @"PXContentFilterTitleFilteringMany";
     }
@@ -246,7 +246,7 @@
 LABEL_33:
       v6 = PXLocalizedStringFromTable(v4, @"PhotosUICore");
 LABEL_34:
-      v7 = v6;
+      firstObject = v6;
       goto LABEL_35;
     }
 
@@ -323,19 +323,19 @@ LABEL_34:
     goto LABEL_33;
   }
 
-  v9 = [(PXContentFilterState *)self keywords];
-  v10 = [v9 count];
+  keywords = [(PXContentFilterState *)self keywords];
+  v10 = [keywords count];
 
   if (v10)
   {
-    v11 = [(PXContentFilterState *)self keywords];
-    v7 = [v11 firstObject];
+    keywords2 = [(PXContentFilterState *)self keywords];
+    firstObject = [keywords2 firstObject];
 
     goto LABEL_35;
   }
 
-  v12 = [(PXContentFilterState *)self uuids];
-  v13 = [v12 count];
+  uuids = [(PXContentFilterState *)self uuids];
+  v13 = [uuids count];
 
   if (v13)
   {
@@ -363,13 +363,13 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  v7 = &stru_1F1741150;
+  firstObject = &stru_1F1741150;
 LABEL_35:
 
-  return v7;
+  return firstObject;
 }
 
-- (id)predicateForUseCase:(unint64_t)a3
+- (id)predicateForUseCase:(unint64_t)case
 {
   v60[2] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -458,7 +458,7 @@ LABEL_18:
 LABEL_23:
   if ([(PXContentFilterState *)self favorite])
   {
-    if (a3 == 1)
+    if (case == 1)
     {
       v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == YES", @"favorite"];
       [v5 addObject:v12];
@@ -477,7 +477,7 @@ LABEL_23:
 
   if ([(PXContentFilterState *)self edited])
   {
-    if (a3 != 1)
+    if (case != 1)
     {
       v14 = [MEMORY[0x1E69BE540] predicateForAdjustedAssetsWithKeyPathToAsset:0];
       goto LABEL_32;
@@ -496,7 +496,7 @@ LABEL_33:
     if ([(PXContentFilterState *)self inUserAlbum])
     {
       v16 = MEMORY[0x1E696AE18];
-      if (a3 == 1)
+      if (case == 1)
       {
         v49 = 1;
 LABEL_41:
@@ -515,7 +515,7 @@ LABEL_45:
     if ([(PXContentFilterState *)self notInUserAlbum])
     {
       v16 = MEMORY[0x1E696AE18];
-      if (a3 == 1)
+      if (case == 1)
       {
         v49 = 0;
         goto LABEL_41;
@@ -560,7 +560,7 @@ LABEL_59:
       goto LABEL_64;
     }
 
-    if (a3 == 1)
+    if (case == 1)
     {
       v21 = @"noindex:(%K) == %d";
     }
@@ -578,7 +578,7 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  if (a3 != 1)
+  if (case != 1)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"kind", 1];
     goto LABEL_58;
@@ -598,7 +598,7 @@ LABEL_63:
 LABEL_64:
   if ([(PXContentFilterState *)self portrait])
   {
-    if (a3 == 1)
+    if (case == 1)
     {
       v25 = @"noindex:(%K & %d) != 0";
     }
@@ -657,19 +657,19 @@ LABEL_78:
   }
 
 LABEL_79:
-  v34 = [(PXContentFilterState *)self uuids];
+  uuids = [(PXContentFilterState *)self uuids];
 
-  if (v34)
+  if (uuids)
   {
     v35 = MEMORY[0x1E696AE18];
-    v36 = [(PXContentFilterState *)self uuids];
-    v37 = [v35 predicateWithFormat:@"%K in %@", @"uuid", v36];
+    uuids2 = [(PXContentFilterState *)self uuids];
+    v37 = [v35 predicateWithFormat:@"%K in %@", @"uuid", uuids2];
     [v5 addObject:v37];
   }
 
-  v38 = [(PXContentFilterState *)self keywords];
+  keywords = [(PXContentFilterState *)self keywords];
 
-  if (v38)
+  if (keywords)
   {
     v50 = v30;
     v39 = [MEMORY[0x1E696AE18] predicateWithFormat:@"packedBadgeAttributes&0x01 == 1"];
@@ -679,8 +679,8 @@ LABEL_79:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v40 = [(PXContentFilterState *)self keywords];
-    v41 = [v40 countByEnumeratingWithState:&v51 objects:v59 count:16];
+    keywords2 = [(PXContentFilterState *)self keywords];
+    v41 = [keywords2 countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (v41)
     {
       v42 = v41;
@@ -691,14 +691,14 @@ LABEL_79:
         {
           if (*v52 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(keywords2);
           }
 
           v45 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ IN %K.title", *(*(&v51 + 1) + 8 * i), @"additionalAttributes.keywords"];
           [v5 addObject:v45];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        v42 = [keywords2 countByEnumeratingWithState:&v51 objects:v59 count:16];
       }
 
       while (v42);
@@ -756,28 +756,28 @@ void __44__PXContentFilterState_predicateForUseCase___block_invoke_2(uint64_t a1
   [*(a1 + 32) addObject:v3];
 }
 
-- (void)_checkDataSourceType:(id)a3
+- (void)_checkDataSourceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   contentSyndicationConfigurationProvider = self->_contentSyndicationConfigurationProvider;
   if (contentSyndicationConfigurationProvider)
   {
-    v9 = v4;
-    v6 = [(PXContentSyndicationConfigurationProvider *)contentSyndicationConfigurationProvider dataSourceType];
-    v4 = v9;
-    if (v6 - 5 <= 0xFFFFFFFFFFFFFFFCLL)
+    v9 = typeCopy;
+    dataSourceType = [(PXContentSyndicationConfigurationProvider *)contentSyndicationConfigurationProvider dataSourceType];
+    typeCopy = v9;
+    if (dataSourceType - 5 <= 0xFFFFFFFFFFFFFFFCLL)
     {
-      if (v6 < 2)
+      if (dataSourceType < 2)
       {
         goto LABEL_6;
       }
 
-      if (v6 == 6)
+      if (dataSourceType == 6)
       {
-        v7 = [MEMORY[0x1E69BF328] maskForMomentSharedAsset];
+        maskForMomentSharedAsset = [MEMORY[0x1E69BF328] maskForMomentSharedAsset];
 LABEL_8:
-        v4 = v9;
-        v8 = v7;
+        typeCopy = v9;
+        v8 = maskForMomentSharedAsset;
         if (!v9)
         {
           goto LABEL_10;
@@ -786,10 +786,10 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      if (v6 == 5)
+      if (dataSourceType == 5)
       {
 LABEL_6:
-        v7 = [MEMORY[0x1E69BF328] maskForGuestAsset];
+        maskForMomentSharedAsset = [MEMORY[0x1E69BF328] maskForGuestAsset];
         goto LABEL_8;
       }
 
@@ -797,8 +797,8 @@ LABEL_6:
       if (v9)
       {
 LABEL_9:
-        v4[2](v4, v8);
-        v4 = v9;
+        typeCopy[2](typeCopy, v8);
+        typeCopy = v9;
       }
     }
   }
@@ -806,11 +806,11 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PXContentFilterState *)self photoLibrary];
-  v6 = [v4 initWithPhotoLibrary:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  photoLibrary = [(PXContentFilterState *)self photoLibrary];
+  v6 = [v4 initWithPhotoLibrary:photoLibrary];
 
   [v6 setIncludeScreenshots:{-[PXContentFilterState includeScreenshots](self, "includeScreenshots")}];
   [v6 setIncludeSharedWithYou:{-[PXContentFilterState includeSharedWithYou](self, "includeSharedWithYou")}];
@@ -828,11 +828,11 @@ LABEL_10:
   [v6 setShowOnlyScreenshots:{-[PXContentFilterState showOnlyScreenshots](self, "showOnlyScreenshots")}];
   [v6 setShowOnlySharedWithYou:{-[PXContentFilterState showOnlySharedWithYou](self, "showOnlySharedWithYou")}];
   [v6 setShowOnlyFromMyMac:{-[PXContentFilterState showOnlyFromMyMac](self, "showOnlyFromMyMac")}];
-  v7 = [(PXContentFilterState *)self keywords];
-  [v6 setKeywords:v7];
+  keywords = [(PXContentFilterState *)self keywords];
+  [v6 setKeywords:keywords];
 
-  v8 = [(PXContentFilterState *)self uuids];
-  [v6 setUuids:v8];
+  uuids = [(PXContentFilterState *)self uuids];
+  [v6 setUuids:uuids];
 
   [v6 setShowOnlySentICloudLinks:{-[PXContentFilterState showOnlySentICloudLinks](self, "showOnlySentICloudLinks")}];
   [v6 setShowOnlyReceivedICloudLinks:{-[PXContentFilterState showOnlyReceivedICloudLinks](self, "showOnlyReceivedICloudLinks")}];
@@ -840,10 +840,10 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v22) = 1;
   }
@@ -853,20 +853,20 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXContentFilterState *)self includeScreenshots];
-      if (v6 == [(PXContentFilterState *)v5 includeScreenshots]&& (v7 = [(PXContentFilterState *)self includeSharedWithYou], v7 == [(PXContentFilterState *)v5 includeSharedWithYou]) && (v8 = [(PXContentFilterState *)self includeFromMyMac], v8 == [(PXContentFilterState *)v5 includeFromMyMac]) && (v9 = [(PXContentFilterState *)self saved], v9 == [(PXContentFilterState *)v5 saved]) && (v10 = [(PXContentFilterState *)self unsaved], v10 == [(PXContentFilterState *)v5 unsaved]) && (v11 = [(PXContentFilterState *)self favorite], v11 == [(PXContentFilterState *)v5 favorite]) && (v12 = [(PXContentFilterState *)self edited], v12 == [(PXContentFilterState *)v5 edited]) && (v13 = [(PXContentFilterState *)self image], v13 == [(PXContentFilterState *)v5 image]) && (v14 = [(PXContentFilterState *)self video], v14 == [(PXContentFilterState *)v5 video]) && (v15 = [(PXContentFilterState *)self live], v15 == [(PXContentFilterState *)v5 live]) && (v16 = [(PXContentFilterState *)self portrait], v16 == [(PXContentFilterState *)v5 portrait]) && (v17 = [(PXContentFilterState *)self inUserAlbum], v17 == [(PXContentFilterState *)v5 inUserAlbum]) && (v18 = [(PXContentFilterState *)self notInUserAlbum], v18 == [(PXContentFilterState *)v5 notInUserAlbum]) && (v19 = [(PXContentFilterState *)self showOnlyScreenshots], v19 == [(PXContentFilterState *)v5 showOnlyScreenshots]) && (v20 = [(PXContentFilterState *)self showOnlySharedWithYou], v20 == [(PXContentFilterState *)v5 showOnlySharedWithYou]) && (v21 = [(PXContentFilterState *)self showOnlyFromMyMac], v21 == [(PXContentFilterState *)v5 showOnlyFromMyMac]))
+      v5 = equalCopy;
+      includeScreenshots = [(PXContentFilterState *)self includeScreenshots];
+      if (includeScreenshots == [(PXContentFilterState *)v5 includeScreenshots]&& (v7 = [(PXContentFilterState *)self includeSharedWithYou], v7 == [(PXContentFilterState *)v5 includeSharedWithYou]) && (v8 = [(PXContentFilterState *)self includeFromMyMac], v8 == [(PXContentFilterState *)v5 includeFromMyMac]) && (v9 = [(PXContentFilterState *)self saved], v9 == [(PXContentFilterState *)v5 saved]) && (v10 = [(PXContentFilterState *)self unsaved], v10 == [(PXContentFilterState *)v5 unsaved]) && (v11 = [(PXContentFilterState *)self favorite], v11 == [(PXContentFilterState *)v5 favorite]) && (v12 = [(PXContentFilterState *)self edited], v12 == [(PXContentFilterState *)v5 edited]) && (v13 = [(PXContentFilterState *)self image], v13 == [(PXContentFilterState *)v5 image]) && (v14 = [(PXContentFilterState *)self video], v14 == [(PXContentFilterState *)v5 video]) && (v15 = [(PXContentFilterState *)self live], v15 == [(PXContentFilterState *)v5 live]) && (v16 = [(PXContentFilterState *)self portrait], v16 == [(PXContentFilterState *)v5 portrait]) && (v17 = [(PXContentFilterState *)self inUserAlbum], v17 == [(PXContentFilterState *)v5 inUserAlbum]) && (v18 = [(PXContentFilterState *)self notInUserAlbum], v18 == [(PXContentFilterState *)v5 notInUserAlbum]) && (v19 = [(PXContentFilterState *)self showOnlyScreenshots], v19 == [(PXContentFilterState *)v5 showOnlyScreenshots]) && (v20 = [(PXContentFilterState *)self showOnlySharedWithYou], v20 == [(PXContentFilterState *)v5 showOnlySharedWithYou]) && (v21 = [(PXContentFilterState *)self showOnlyFromMyMac], v21 == [(PXContentFilterState *)v5 showOnlyFromMyMac]))
       {
-        v24 = [(PXContentFilterState *)self keywords];
-        v25 = [(PXContentFilterState *)v5 keywords];
-        if (v24 == v25 || [v24 isEqual:v25])
+        keywords = [(PXContentFilterState *)self keywords];
+        keywords2 = [(PXContentFilterState *)v5 keywords];
+        if (keywords == keywords2 || [keywords isEqual:keywords2])
         {
-          v26 = [(PXContentFilterState *)self uuids];
-          v27 = [(PXContentFilterState *)v5 uuids];
-          if ((v26 == v27 || [v26 isEqual:v27]) && (v28 = -[PXContentFilterState showOnlySentICloudLinks](self, "showOnlySentICloudLinks"), v28 == -[PXContentFilterState showOnlySentICloudLinks](v5, "showOnlySentICloudLinks")) && (v29 = -[PXContentFilterState showOnlyReceivedICloudLinks](self, "showOnlyReceivedICloudLinks"), v29 == -[PXContentFilterState showOnlyReceivedICloudLinks](v5, "showOnlyReceivedICloudLinks")))
+          uuids = [(PXContentFilterState *)self uuids];
+          uuids2 = [(PXContentFilterState *)v5 uuids];
+          if ((uuids == uuids2 || [uuids isEqual:uuids2]) && (v28 = -[PXContentFilterState showOnlySentICloudLinks](self, "showOnlySentICloudLinks"), v28 == -[PXContentFilterState showOnlySentICloudLinks](v5, "showOnlySentICloudLinks")) && (v29 = -[PXContentFilterState showOnlyReceivedICloudLinks](self, "showOnlyReceivedICloudLinks"), v29 == -[PXContentFilterState showOnlyReceivedICloudLinks](v5, "showOnlyReceivedICloudLinks")))
           {
-            v30 = [(PXContentFilterState *)self includeOthersInSocialGroupAssets];
-            v22 = v30 ^ [(PXContentFilterState *)v5 includeOthersInSocialGroupAssets]^ 1;
+            includeOthersInSocialGroupAssets = [(PXContentFilterState *)self includeOthersInSocialGroupAssets];
+            v22 = includeOthersInSocialGroupAssets ^ [(PXContentFilterState *)v5 includeOthersInSocialGroupAssets]^ 1;
           }
 
           else
@@ -898,15 +898,15 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(PXContentFilterState *)self saved];
-  v4 = [(PXContentFilterState *)self unsaved];
+  saved = [(PXContentFilterState *)self saved];
+  unsaved = [(PXContentFilterState *)self unsaved];
   v5 = 2;
-  if (!v4)
+  if (!unsaved)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | saved;
   if ([(PXContentFilterState *)self favorite])
   {
     v7 = 4;
@@ -917,9 +917,9 @@ LABEL_10:
     v7 = 0;
   }
 
-  v8 = [(PXContentFilterState *)self edited];
+  edited = [(PXContentFilterState *)self edited];
   v9 = 8;
-  if (!v8)
+  if (!edited)
   {
     v9 = 0;
   }
@@ -935,17 +935,17 @@ LABEL_10:
     v11 = 0;
   }
 
-  v12 = [(PXContentFilterState *)self video];
+  video = [(PXContentFilterState *)self video];
   v13 = 32;
-  if (!v12)
+  if (!video)
   {
     v13 = 0;
   }
 
   v14 = v11 | v13;
-  v15 = [(PXContentFilterState *)self live];
+  live = [(PXContentFilterState *)self live];
   v16 = 64;
-  if (!v15)
+  if (!live)
   {
     v16 = 0;
   }
@@ -961,35 +961,35 @@ LABEL_10:
     v18 = 0;
   }
 
-  v19 = [(PXContentFilterState *)self showOnlyScreenshots];
+  showOnlyScreenshots = [(PXContentFilterState *)self showOnlyScreenshots];
   v20 = 256;
-  if (!v19)
+  if (!showOnlyScreenshots)
   {
     v20 = 0;
   }
 
   v21 = v18 ^ v20;
-  v22 = [(PXContentFilterState *)self showOnlySharedWithYou];
+  showOnlySharedWithYou = [(PXContentFilterState *)self showOnlySharedWithYou];
   v23 = 512;
-  if (!v22)
+  if (!showOnlySharedWithYou)
   {
     v23 = 0;
   }
 
   v24 = v21 ^ v23;
-  v25 = [(PXContentFilterState *)self showOnlyFromMyMac];
+  showOnlyFromMyMac = [(PXContentFilterState *)self showOnlyFromMyMac];
   v26 = 1024;
-  if (!v25)
+  if (!showOnlyFromMyMac)
   {
     v26 = 0;
   }
 
   v27 = v17 ^ v24 ^ v26;
-  v28 = [(PXContentFilterState *)self keywords];
-  v29 = v27 ^ ([v28 hash] << 11);
+  keywords = [(PXContentFilterState *)self keywords];
+  v29 = v27 ^ ([keywords hash] << 11);
 
-  v30 = [(PXContentFilterState *)self uuids];
-  v31 = v29 ^ ([v30 hash] << 12);
+  uuids = [(PXContentFilterState *)self uuids];
+  v31 = v29 ^ ([uuids hash] << 12);
 
   if ([(PXContentFilterState *)self showOnlySentICloudLinks])
   {
@@ -1001,33 +1001,33 @@ LABEL_10:
     v32 = 0;
   }
 
-  v33 = [(PXContentFilterState *)self showOnlyReceivedICloudLinks];
+  showOnlyReceivedICloudLinks = [(PXContentFilterState *)self showOnlyReceivedICloudLinks];
   v34 = 0x4000;
-  if (!v33)
+  if (!showOnlyReceivedICloudLinks)
   {
     v34 = 0;
   }
 
   v35 = v32 ^ v34;
-  v36 = [(PXContentFilterState *)self includeOthersInSocialGroupAssets];
+  includeOthersInSocialGroupAssets = [(PXContentFilterState *)self includeOthersInSocialGroupAssets];
   v37 = 0x8000;
-  if (!v36)
+  if (!includeOthersInSocialGroupAssets)
   {
     v37 = 0;
   }
 
   v38 = v35 ^ v37;
-  v39 = [(PXContentFilterState *)self notInUserAlbum];
+  notInUserAlbum = [(PXContentFilterState *)self notInUserAlbum];
   v40 = 0x10000;
-  if (!v39)
+  if (!notInUserAlbum)
   {
     v40 = 0;
   }
 
   v41 = v38 ^ v40;
-  v42 = [(PXContentFilterState *)self inUserAlbum];
+  inUserAlbum = [(PXContentFilterState *)self inUserAlbum];
   v43 = 0x20000;
-  if (!v42)
+  if (!inUserAlbum)
   {
     v43 = 0;
   }
@@ -1121,25 +1121,25 @@ LABEL_10:
     [v3 addObject:@"from my Mac"];
   }
 
-  v4 = [(PXContentFilterState *)self keywords];
-  v5 = [v4 count];
+  keywords = [(PXContentFilterState *)self keywords];
+  v5 = [keywords count];
 
   if (v5)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(PXContentFilterState *)self keywords];
-    v8 = [v6 stringWithFormat:@"keywords: %@", v7];
+    keywords2 = [(PXContentFilterState *)self keywords];
+    v8 = [v6 stringWithFormat:@"keywords: %@", keywords2];
     [v3 addObject:v8];
   }
 
-  v9 = [(PXContentFilterState *)self uuids];
-  v10 = [v9 count];
+  uuids = [(PXContentFilterState *)self uuids];
+  v10 = [uuids count];
 
   if (v10)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(PXContentFilterState *)self uuids];
-    v13 = [v11 stringWithFormat:@"uuids: %@", v12];
+    uuids2 = [(PXContentFilterState *)self uuids];
+    v13 = [v11 stringWithFormat:@"uuids: %@", uuids2];
     [v3 addObject:v13];
   }
 
@@ -1166,22 +1166,22 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)isContentFilterActive:(int64_t)a3
+- (BOOL)isContentFilterActive:(int64_t)active
 {
   v3 = 0;
-  switch(a3)
+  switch(active)
   {
     case 1:
       return [(PXContentFilterState *)self hash]== 0;
     case 2:
-      v5 = [(PXContentFilterState *)self shouldExcludeScreenshots];
-      return !v5;
+      shouldExcludeScreenshots = [(PXContentFilterState *)self shouldExcludeScreenshots];
+      return !shouldExcludeScreenshots;
     case 3:
 
       return [(PXContentFilterState *)self includeSharedWithYou];
     case 4:
-      v5 = [(PXContentFilterState *)self shouldExcludeFromMyMac];
-      return !v5;
+      shouldExcludeScreenshots = [(PXContentFilterState *)self shouldExcludeFromMyMac];
+      return !shouldExcludeScreenshots;
     case 5:
 
       return [(PXContentFilterState *)self saved];
@@ -1235,17 +1235,17 @@ LABEL_10:
   }
 }
 
-- (PXContentFilterState)initWithPhotoLibrary:(id)a3
+- (PXContentFilterState)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = PXContentFilterState;
   v6 = [(PXContentFilterState *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    if (v5)
+    objc_storeStrong(&v6->_photoLibrary, library);
+    if (libraryCopy)
     {
       v8 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v7->_photoLibrary];
       contentSyndicationConfigurationProvider = v7->_contentSyndicationConfigurationProvider;
@@ -1258,23 +1258,23 @@ LABEL_10:
 
 - (PXContentFilterState)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXContentFilterState.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXContentFilterState init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentFilterState.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXContentFilterState init]"}];
 
   abort();
 }
 
-+ (id)defaultFilterStateForContainerCollection:(id)a3 photoLibrary:(id)a4
++ (id)defaultFilterStateForContainerCollection:(id)collection photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [off_1E7721948 standardUserDefaults];
-  v8 = [[PXContentFilterState alloc] initWithPhotoLibrary:v6];
+  collectionCopy = collection;
+  libraryCopy = library;
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  v8 = [[PXContentFilterState alloc] initWithPhotoLibrary:libraryCopy];
 
-  if ([v5 px_isAllPhotosSmartAlbum])
+  if ([collectionCopy px_isAllPhotosSmartAlbum])
   {
-    v9 = [v7 includeScreenshots];
-    -[PXContentFilterState setIncludeScreenshots:](v8, "setIncludeScreenshots:", [v9 BOOLValue]);
+    includeScreenshots = [standardUserDefaults includeScreenshots];
+    -[PXContentFilterState setIncludeScreenshots:](v8, "setIncludeScreenshots:", [includeScreenshots BOOLValue]);
   }
 
   else
@@ -1282,10 +1282,10 @@ LABEL_10:
     [(PXContentFilterState *)v8 setIncludeScreenshots:1];
   }
 
-  if ([v5 px_isAllPhotosSmartAlbum])
+  if ([collectionCopy px_isAllPhotosSmartAlbum])
   {
-    v10 = [v7 includeFromMyMac];
-    -[PXContentFilterState setIncludeFromMyMac:](v8, "setIncludeFromMyMac:", [v10 BOOLValue]);
+    includeFromMyMac = [standardUserDefaults includeFromMyMac];
+    -[PXContentFilterState setIncludeFromMyMac:](v8, "setIncludeFromMyMac:", [includeFromMyMac BOOLValue]);
   }
 
   else
@@ -1293,30 +1293,30 @@ LABEL_10:
     [(PXContentFilterState *)v8 setIncludeFromMyMac:1];
   }
 
-  if (([v5 px_isContentSyndicationAlbum] & 1) != 0 || objc_msgSend(v5, "px_isFeaturedPhotosCollection"))
+  if (([collectionCopy px_isContentSyndicationAlbum] & 1) != 0 || objc_msgSend(collectionCopy, "px_isFeaturedPhotosCollection"))
   {
     [(PXContentFilterState *)v8 setIncludeSharedWithYou:1];
   }
 
   else
   {
-    v11 = [v7 includeSharedWithYou];
-    -[PXContentFilterState setIncludeSharedWithYou:](v8, "setIncludeSharedWithYou:", [v11 BOOLValue]);
+    includeSharedWithYou = [standardUserDefaults includeSharedWithYou];
+    -[PXContentFilterState setIncludeSharedWithYou:](v8, "setIncludeSharedWithYou:", [includeSharedWithYou BOOLValue]);
   }
 
   return v8;
 }
 
-+ (id)defaultAllPhotosFilterStateForPhotoLibrary:(id)a3
++ (id)defaultAllPhotosFilterStateForPhotoLibrary:(id)library
 {
-  v3 = [a1 defaultFilterStateForPhotoLibrary:a3];
-  v4 = [off_1E7721948 standardUserDefaults];
-  v5 = [v4 includeScreenshots];
-  [v3 setIncludeScreenshots:{objc_msgSend(v5, "BOOLValue")}];
+  v3 = [self defaultFilterStateForPhotoLibrary:library];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  includeScreenshots = [standardUserDefaults includeScreenshots];
+  [v3 setIncludeScreenshots:{objc_msgSend(includeScreenshots, "BOOLValue")}];
 
-  v6 = [off_1E7721948 standardUserDefaults];
-  v7 = [v6 includeFromMyMac];
-  [v3 setIncludeFromMyMac:{objc_msgSend(v7, "BOOLValue")}];
+  standardUserDefaults2 = [off_1E7721948 standardUserDefaults];
+  includeFromMyMac = [standardUserDefaults2 includeFromMyMac];
+  [v3 setIncludeFromMyMac:{objc_msgSend(includeFromMyMac, "BOOLValue")}];
 
   return v3;
 }

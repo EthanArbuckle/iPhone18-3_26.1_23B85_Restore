@@ -1,9 +1,9 @@
 @interface NSKeyValueMutableArray
 + (id)_proxyShare;
 - ($6C36EBF4C34944E14D6052B25C3B65B5)_proxyLocator;
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
 - (void)dealloc;
-- (void)setArray:(id)a3;
+- (void)setArray:(id)array;
 @end
 
 @implementation NSKeyValueMutableArray
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -37,8 +37,8 @@
   v6 = [(NSKeyValueMutableArray *)&v8 init];
   if (v6)
   {
-    v6->_container = a3;
-    v6->_key = [objc_msgSend(a4 "key")];
+    v6->_container = container;
+    v6->_key = [objc_msgSend(getter "key")];
   }
 
   return v6;
@@ -55,11 +55,11 @@
   }
 }
 
-- (void)setArray:(id)a3
+- (void)setArray:(id)array
 {
   [(NSKeyValueMutableArray *)self removeAllObjects];
 
-  [(NSKeyValueMutableArray *)self addObjectsFromArray:a3];
+  [(NSKeyValueMutableArray *)self addObjectsFromArray:array];
 }
 
 @end

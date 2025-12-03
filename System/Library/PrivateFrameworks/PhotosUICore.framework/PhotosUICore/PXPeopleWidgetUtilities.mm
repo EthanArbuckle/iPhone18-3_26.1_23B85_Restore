@@ -1,25 +1,25 @@
 @interface PXPeopleWidgetUtilities
-+ (id)localizedTitleStringForWidgetDataSource:(id)a3 photoLibrary:(id)a4;
-+ (id)verifiedPersonsFromMergeCandidatesForPersons:(id)a3;
++ (id)localizedTitleStringForWidgetDataSource:(id)source photoLibrary:(id)library;
++ (id)verifiedPersonsFromMergeCandidatesForPersons:(id)persons;
 @end
 
 @implementation PXPeopleWidgetUtilities
 
-+ (id)localizedTitleStringForWidgetDataSource:(id)a3 photoLibrary:(id)a4
++ (id)localizedTitleStringForWidgetDataSource:(id)source photoLibrary:(id)library
 {
-  v5 = a4;
-  v6 = [a3 numberOfMembers];
+  libraryCopy = library;
+  numberOfMembers = [source numberOfMembers];
   v7 = &stru_1F1741150;
-  if (v6)
+  if (numberOfMembers)
   {
-    v8 = [v5 px_peoplePetsHomeVisibility];
+    px_peoplePetsHomeVisibility = [libraryCopy px_peoplePetsHomeVisibility];
     v9 = @"People";
-    if ((v8 & 1) == 0)
+    if ((px_peoplePetsHomeVisibility & 1) == 0)
     {
       v9 = &stru_1F1741150;
     }
 
-    if ((v8 & 2) != 0)
+    if ((px_peoplePetsHomeVisibility & 2) != 0)
     {
       v7 = @"Pets";
     }
@@ -44,33 +44,33 @@
   return v11;
 }
 
-+ (id)verifiedPersonsFromMergeCandidatesForPersons:(id)a3
++ (id)verifiedPersonsFromMergeCandidatesForPersons:(id)persons
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  personsCopy = persons;
+  if ([personsCopy count])
   {
-    v4 = [MEMORY[0x1E695DFA8] setWithArray:v3];
-    v5 = [v3 firstObject];
-    v6 = [v5 photoLibrary];
-    v7 = [v6 librarySpecificFetchOptions];
+    v4 = [MEMORY[0x1E695DFA8] setWithArray:personsCopy];
+    firstObject = [personsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v27[0] = *MEMORY[0x1E6978F38];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-    [v7 setFetchPropertySets:v8];
+    [librarySpecificFetchOptions setFetchPropertySets:v8];
 
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"verifiedType > %d && type != %d", 0, -1];
-    [v7 setPredicate:v9];
+    [librarySpecificFetchOptions setPredicate:v9];
 
-    v10 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-    [v7 setIncludedDetectionTypes:v10];
+    px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = v3;
-    v11 = v3;
+    v21 = personsCopy;
+    v11 = personsCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -89,12 +89,12 @@
           if (![v16 verifiedType])
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = [MEMORY[0x1E6978980] fetchMergeCandidatePersonsForPerson:v16 options:v7];
+            v18 = [MEMORY[0x1E6978980] fetchMergeCandidatePersonsForPerson:v16 options:librarySpecificFetchOptions];
             if ([v18 count])
             {
               [v4 removeObject:v16];
-              v19 = [v18 fetchedObjects];
-              [v4 addObjectsFromArray:v19];
+              fetchedObjects = [v18 fetchedObjects];
+              [v4 addObjectsFromArray:fetchedObjects];
             }
 
             objc_autoreleasePoolPop(v17);
@@ -107,7 +107,7 @@
       while (v13);
     }
 
-    v3 = v21;
+    personsCopy = v21;
   }
 
   else

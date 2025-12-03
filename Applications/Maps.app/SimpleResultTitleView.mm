@@ -1,5 +1,5 @@
 @interface SimpleResultTitleView
-- (SimpleResultTitleView)initWithFrame:(CGRect)a3;
+- (SimpleResultTitleView)initWithFrame:(CGRect)frame;
 - (void)activeLayout;
 - (void)updateContent;
 - (void)updateLabelFonts;
@@ -10,13 +10,13 @@
 
 - (void)activeLayout
 {
-  v3 = [(MapsThemeLabel *)self->_titleLabel centerYAnchor];
-  v4 = [(SimpleResultTitleView *)self centerYAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:0.0];
+  centerYAnchor = [(MapsThemeLabel *)self->_titleLabel centerYAnchor];
+  centerYAnchor2 = [(SimpleResultTitleView *)self centerYAnchor];
+  v5 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
   v10[0] = v5;
-  v6 = [(MapsThemeLabel *)self->_titleLabel leadingAnchor];
-  v7 = [(SimpleResultTitleView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:15.0];
+  leadingAnchor = [(MapsThemeLabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(SimpleResultTitleView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v10[1] = v8;
   v9 = [NSArray arrayWithObjects:v10 count:2];
   [NSLayoutConstraint activateConstraints:v9];
@@ -32,8 +32,8 @@
 
 - (void)updateLabelFonts
 {
-  v3 = [(SimpleResultTitleView *)self traitCollection];
-  v5 = [(SimpleResultTitleView *)self effectiveTraitCollectionWithTraitCollection:v3];
+  traitCollection = [(SimpleResultTitleView *)self traitCollection];
+  v5 = [(SimpleResultTitleView *)self effectiveTraitCollectionWithTraitCollection:traitCollection];
 
   v4 = [(SimpleResultTitleView *)self titlefontWithTraitCollection:v5];
   [(MapsThemeLabel *)self->_titleLabel setFont:v4];
@@ -56,11 +56,11 @@
   [(MapsThemeLabel *)titleLabel setNumberOfLines:v3];
 }
 
-- (SimpleResultTitleView)initWithFrame:(CGRect)a3
+- (SimpleResultTitleView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SimpleResultTitleView;
-  v3 = [(SimpleResultTitleView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SimpleResultTitleView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

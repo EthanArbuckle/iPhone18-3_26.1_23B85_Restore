@@ -1,68 +1,68 @@
 @interface IMTextMessagePipelineParameter
-+ (BOOL)seenAsOffGridWithBlastDoorMessage:(id)a3;
-+ (id)_fileTransferMatchingAttribute:(id)a3 inFileTransfers:(id)a4;
-+ (id)attributionInfoArrayWithBlastDoorMessage:(id)a3;
-+ (id)availabilityOffGridRecipientEncryptionValidationTokenWithBlastDoorMessage:(id)a3;
-+ (id)availabilityOffGridRecipientSubscriptionValidationTokenWithBlastDoorMessage:(id)a3;
-+ (id)convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:(id)a3 supportingStickerAttributes:(BOOL)a4 existingFileTransfersForMessage:(id)a5;
-+ (id)fileTransferForBlastDoorFileTransferAttribute:(id)a3 fileTransferGUIDs:(id)a4 supportingStickerAttributes:(BOOL)a5;
-+ (id)lastPublisherOfOffGridStatusWithBlastDoorMessage:(id)a3;
-+ (id)nicknameDictionaryWithBlastDoorMessage:(id)a3;
-+ (id)participantDestinationIdentifierWithBasicMessage:(id)a3;
-+ (id)participantDestinationIdentifierWithMessage:(id)a3;
-+ (id)plainTextBodyWithBlastDoorBasicMessage:(id)a3;
-+ (id)plainTextBodyWithBlastDoorMessage:(id)a3;
-+ (id)plainTextSubjectWithBlastDoorBasicMessage:(id)a3;
-+ (id)plainTextSubjectWithBlastDoorMessage:(id)a3;
-+ (id)replicationSourceServiceNameWithBlastDoorBasicMessage:(id)a3;
-+ (id)replicationSourceServiceNameWithBlastDoorMessage:(id)a3;
-+ (id)richBodyWithBlastDoorBasicMessage:(id)a3;
-+ (id)richBodyWithBlastDoorMessage:(id)a3;
-+ (id)stickerInfoDictionaryFromBlastDoorEmojiImageAttachmentInfo:(id)a3;
-+ (id)stickerInfoDictionaryFromBlastDoorStickerAttachmentInfo:(id)a3;
-+ (id)stickerInfoDictionaryWithStickerGUID:(id)a3 stickerPackGUID:(id)a4 stickerHash:(id)a5 positionIntent:(id)a6 associatedPositionIntent:(id)a7 parentPreviewWidth:(id)a8 stickerXOffset:(id)a9 stickerYOffset:(id)a10 stickerScale:(id)a11 stickerRotation:(id)a12 stickerBundleID:(id)a13 stickerIsReaction:(id)a14 stickerPositionVersion:(id)a15 stickerExternalURI:(id)a16;
-+ (id)transcriptBackgroundVersionWithBlastDoorMessage:(id)a3;
-+ (unint64_t)scheduleTypeWithBlastDoorTextMessage:(id)a3;
-- (IMTextMessagePipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4;
-- (IMTextMessagePipelineParameter)initWithBDBasic:(id)a3 idsTrustedData:(id)a4;
-- (id)_createSuperFormattedStringWithAttributedString:(id)a3;
++ (BOOL)seenAsOffGridWithBlastDoorMessage:(id)message;
++ (id)_fileTransferMatchingAttribute:(id)attribute inFileTransfers:(id)transfers;
++ (id)attributionInfoArrayWithBlastDoorMessage:(id)message;
++ (id)availabilityOffGridRecipientEncryptionValidationTokenWithBlastDoorMessage:(id)message;
++ (id)availabilityOffGridRecipientSubscriptionValidationTokenWithBlastDoorMessage:(id)message;
++ (id)convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:(id)string supportingStickerAttributes:(BOOL)attributes existingFileTransfersForMessage:(id)message;
++ (id)fileTransferForBlastDoorFileTransferAttribute:(id)attribute fileTransferGUIDs:(id)ds supportingStickerAttributes:(BOOL)attributes;
++ (id)lastPublisherOfOffGridStatusWithBlastDoorMessage:(id)message;
++ (id)nicknameDictionaryWithBlastDoorMessage:(id)message;
++ (id)participantDestinationIdentifierWithBasicMessage:(id)message;
++ (id)participantDestinationIdentifierWithMessage:(id)message;
++ (id)plainTextBodyWithBlastDoorBasicMessage:(id)message;
++ (id)plainTextBodyWithBlastDoorMessage:(id)message;
++ (id)plainTextSubjectWithBlastDoorBasicMessage:(id)message;
++ (id)plainTextSubjectWithBlastDoorMessage:(id)message;
++ (id)replicationSourceServiceNameWithBlastDoorBasicMessage:(id)message;
++ (id)replicationSourceServiceNameWithBlastDoorMessage:(id)message;
++ (id)richBodyWithBlastDoorBasicMessage:(id)message;
++ (id)richBodyWithBlastDoorMessage:(id)message;
++ (id)stickerInfoDictionaryFromBlastDoorEmojiImageAttachmentInfo:(id)info;
++ (id)stickerInfoDictionaryFromBlastDoorStickerAttachmentInfo:(id)info;
++ (id)stickerInfoDictionaryWithStickerGUID:(id)d stickerPackGUID:(id)iD stickerHash:(id)hash positionIntent:(id)intent associatedPositionIntent:(id)positionIntent parentPreviewWidth:(id)width stickerXOffset:(id)offset stickerYOffset:(id)self0 stickerScale:(id)self1 stickerRotation:(id)self2 stickerBundleID:(id)self3 stickerIsReaction:(id)self4 stickerPositionVersion:(id)self5 stickerExternalURI:(id)self6;
++ (id)transcriptBackgroundVersionWithBlastDoorMessage:(id)message;
++ (unint64_t)scheduleTypeWithBlastDoorTextMessage:(id)message;
+- (IMTextMessagePipelineParameter)initWithBD:(id)d idsTrustedData:(id)data;
+- (IMTextMessagePipelineParameter)initWithBDBasic:(id)basic idsTrustedData:(id)data;
+- (id)_createSuperFormattedStringWithAttributedString:(id)string;
 - (id)description;
-- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)a3;
-- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)a3;
-- (void)_addTranslatedMessageParts:(id)a3 to:(id)a4;
+- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)message;
+- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)message;
+- (void)_addTranslatedMessageParts:(id)parts to:(id)to;
 @end
 
 @implementation IMTextMessagePipelineParameter
 
-+ (id)participantDestinationIdentifierWithMessage:(id)a3
++ (id)participantDestinationIdentifierWithMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 > 3)
+  if (type > 3)
   {
-    if (v5 > 5)
+    if (type > 5)
     {
-      switch(v5)
+      switch(type)
       {
         case 6:
-          v6 = [v3 messageSubType];
-          v7 = [v6 emojiTapback];
-          v8 = [v7 participantDestinationIdentifiers];
+          messageSubType2 = [messageCopy messageSubType];
+          emojiTapback = [messageSubType2 emojiTapback];
+          participantDestinationIdentifiers = [emojiTapback participantDestinationIdentifiers];
           goto LABEL_21;
         case 7:
-          v6 = [v3 messageSubType];
-          v7 = [v6 stickerTapback];
-          v8 = [v7 participantDestinationIdentifiers];
+          messageSubType2 = [messageCopy messageSubType];
+          emojiTapback = [messageSubType2 stickerTapback];
+          participantDestinationIdentifiers = [emojiTapback participantDestinationIdentifiers];
           goto LABEL_21;
         case 8:
-          v6 = [v3 messageSubType];
-          v7 = [v6 customAcknowledgement];
-          v8 = [v7 participantDestinationIdentifiers];
+          messageSubType2 = [messageCopy messageSubType];
+          emojiTapback = [messageSubType2 customAcknowledgement];
+          participantDestinationIdentifiers = [emojiTapback participantDestinationIdentifiers];
 LABEL_21:
-          v9 = v8;
+          v9 = participantDestinationIdentifiers;
 
           goto LABEL_22;
       }
@@ -70,51 +70,51 @@ LABEL_21:
       goto LABEL_25;
     }
 
-    v6 = [v3 messageSubType];
-    if (v5 == 4)
+    messageSubType2 = [messageCopy messageSubType];
+    if (type == 4)
     {
-      [v6 sticker];
+      [messageSubType2 sticker];
     }
 
     else
     {
-      [v6 audioMessage];
+      [messageSubType2 audioMessage];
     }
 
-    v7 = LABEL_13:;
-    v8 = [v7 participantDestinationIdentifiers];
+    emojiTapback = LABEL_13:;
+    participantDestinationIdentifiers = [emojiTapback participantDestinationIdentifiers];
     goto LABEL_21;
   }
 
-  if (v5 > 1)
+  if (type > 1)
   {
-    v6 = [v3 messageSubType];
-    if (v5 == 2)
+    messageSubType2 = [messageCopy messageSubType];
+    if (type == 2)
     {
-      [v6 tapback];
+      [messageSubType2 tapback];
     }
 
     else
     {
-      [v6 balloonPlugin];
+      [messageSubType2 balloonPlugin];
     }
 
     goto LABEL_13;
   }
 
-  if (!v5)
+  if (!type)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 typingIndicator];
-    v8 = [v7 participantDestinationIdentifiers];
+    messageSubType2 = [messageCopy messageSubType];
+    emojiTapback = [messageSubType2 typingIndicator];
+    participantDestinationIdentifiers = [emojiTapback participantDestinationIdentifiers];
     goto LABEL_21;
   }
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 textMessage];
-    v8 = [v7 participantDestinationIdentifiers];
+    messageSubType2 = [messageCopy messageSubType];
+    emojiTapback = [messageSubType2 textMessage];
+    participantDestinationIdentifiers = [emojiTapback participantDestinationIdentifiers];
     goto LABEL_21;
   }
 
@@ -125,7 +125,7 @@ LABEL_25:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = 134217984;
-      v14 = v5;
+      v14 = type;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "<IMTextMessagePipelineParameter> Unhandled BlastDoorTextMessageMessageType: %ld", &v13, 0xCu);
     }
   }
@@ -138,55 +138,55 @@ LABEL_22:
   return v9;
 }
 
-+ (id)participantDestinationIdentifierWithBasicMessage:(id)a3
++ (id)participantDestinationIdentifierWithBasicMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 > 2)
+  if (type > 2)
   {
-    switch(v5)
+    switch(type)
     {
       case 3:
-        v6 = [v3 messageSubType];
-        v7 = [v6 audioMessage];
-        v8 = [v7 participantDestinationIdentifiers];
+        messageSubType2 = [messageCopy messageSubType];
+        audioMessage = [messageSubType2 audioMessage];
+        participantDestinationIdentifiers = [audioMessage participantDestinationIdentifiers];
         goto LABEL_19;
       case 4:
-        v6 = [v3 messageSubType];
-        v7 = [v6 unsupported];
-        v8 = [v7 participantDestinationIdentifiers];
+        messageSubType2 = [messageCopy messageSubType];
+        audioMessage = [messageSubType2 unsupported];
+        participantDestinationIdentifiers = [audioMessage participantDestinationIdentifiers];
         goto LABEL_19;
       case 5:
-        v6 = [v3 messageSubType];
-        v7 = [v6 emojiTapback];
-        v8 = [v7 participantDestinationIdentifiers];
+        messageSubType2 = [messageCopy messageSubType];
+        audioMessage = [messageSubType2 emojiTapback];
+        participantDestinationIdentifiers = [audioMessage participantDestinationIdentifiers];
         goto LABEL_19;
     }
   }
 
   else
   {
-    switch(v5)
+    switch(type)
     {
       case 0:
-        v6 = [v3 messageSubType];
-        v7 = [v6 typingIndicator];
-        v8 = [v7 participantDestinationIdentifiers];
+        messageSubType2 = [messageCopy messageSubType];
+        audioMessage = [messageSubType2 typingIndicator];
+        participantDestinationIdentifiers = [audioMessage participantDestinationIdentifiers];
         goto LABEL_19;
       case 1:
-        v6 = [v3 messageSubType];
-        v7 = [v6 textMessage];
-        v8 = [v7 participantDestinationIdentifiers];
+        messageSubType2 = [messageCopy messageSubType];
+        audioMessage = [messageSubType2 textMessage];
+        participantDestinationIdentifiers = [audioMessage participantDestinationIdentifiers];
         goto LABEL_19;
       case 2:
-        v6 = [v3 messageSubType];
-        v7 = [v6 tapback];
-        v8 = [v7 participantDestinationIdentifiers];
+        messageSubType2 = [messageCopy messageSubType];
+        audioMessage = [messageSubType2 tapback];
+        participantDestinationIdentifiers = [audioMessage participantDestinationIdentifiers];
 LABEL_19:
-        v10 = v8;
+        v10 = participantDestinationIdentifiers;
 
         goto LABEL_20;
     }
@@ -198,7 +198,7 @@ LABEL_19:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v13 = 134217984;
-      v14 = v5;
+      v14 = type;
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "<IMTextMessagePipelineParameter> Unable to extract destination identifiers from BlastDoorTextMessageMessageType: %ld", &v13, 0xCu);
     }
   }
@@ -211,73 +211,73 @@ LABEL_20:
   return v10;
 }
 
-- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)a3
+- (id)messageSummaryInfoDictionaryWithBlastDoorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 messageSubType];
-  v8 = [v7 tapback];
-  v9 = [v8 messageSummaryInfo];
-  v10 = [v6 numberWithInteger:{objc_msgSend(v9, "contentType")}];
+  messageSubType = [messageCopy messageSubType];
+  tapback = [messageSubType tapback];
+  messageSummaryInfo = [tapback messageSummaryInfo];
+  v10 = [v6 numberWithInteger:{objc_msgSend(messageSummaryInfo, "contentType")}];
 
   if (v10)
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A008], v10);
   }
 
-  v11 = [v4 messageSubType];
-  v12 = [v11 tapback];
-  v13 = [v12 messageSummaryInfo];
-  v14 = [v13 summary];
+  messageSubType2 = [messageCopy messageSubType];
+  tapback2 = [messageSubType2 tapback];
+  messageSummaryInfo2 = [tapback2 messageSummaryInfo];
+  summary = [messageSummaryInfo2 summary];
 
-  if (v14)
+  if (summary)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], v14);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], summary);
   }
 
-  v15 = [v4 messageSubType];
-  v16 = [v15 tapback];
-  v17 = [v16 messageSummaryInfo];
-  v18 = [v17 pluginBundleID];
+  messageSubType3 = [messageCopy messageSubType];
+  tapback3 = [messageSubType3 tapback];
+  messageSummaryInfo3 = [tapback3 messageSummaryInfo];
+  pluginBundleID = [messageSummaryInfo3 pluginBundleID];
 
-  if (v18)
+  if (pluginBundleID)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A028], v18);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A028], pluginBundleID);
   }
 
-  v19 = [v4 messageSubType];
-  v20 = [v19 tapback];
-  v21 = [v20 messageSummaryInfo];
-  v22 = [v21 pluginDisplayName];
+  messageSubType4 = [messageCopy messageSubType];
+  tapback4 = [messageSubType4 tapback];
+  messageSummaryInfo4 = [tapback4 messageSummaryInfo];
+  pluginDisplayName = [messageSummaryInfo4 pluginDisplayName];
 
-  if (v22)
+  if (pluginDisplayName)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A030], v22);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A030], pluginDisplayName);
   }
 
-  v23 = [v4 messageSummaryInfo];
-  v24 = [v23 associatedBalloonBundleID];
+  messageSummaryInfo5 = [messageCopy messageSummaryInfo];
+  associatedBalloonBundleID = [messageSummaryInfo5 associatedBalloonBundleID];
 
-  if (v24)
+  if (associatedBalloonBundleID)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D19FF8], v24);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D19FF8], associatedBalloonBundleID);
   }
 
-  v25 = [v4 messageSummaryInfo];
-  v26 = [v25 sourceApplicationID];
+  messageSummaryInfo6 = [messageCopy messageSummaryInfo];
+  sourceApplicationID = [messageSummaryInfo6 sourceApplicationID];
 
-  if (v26)
+  if (sourceApplicationID)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A040], v26);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A040], sourceApplicationID);
   }
 
-  v27 = [v4 messageSummaryInfo];
-  if ([v27 has_updatedDateWithServerTime])
+  messageSummaryInfo7 = [messageCopy messageSummaryInfo];
+  if ([messageSummaryInfo7 has_updatedDateWithServerTime])
   {
     v28 = MEMORY[0x277CCABB0];
-    v29 = [v4 messageSummaryInfo];
-    v30 = [v28 numberWithBool:{objc_msgSend(v29, "updatedDateWithServerTime")}];
+    messageSummaryInfo8 = [messageCopy messageSummaryInfo];
+    v30 = [v28 numberWithBool:{objc_msgSend(messageSummaryInfo8, "updatedDateWithServerTime")}];
 
     if (!v30)
     {
@@ -285,16 +285,16 @@ LABEL_20:
     }
 
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A060], v30);
-    v27 = v30;
+    messageSummaryInfo7 = v30;
   }
 
 LABEL_17:
-  v31 = [v4 messageSummaryInfo];
-  if ([v31 has_hasBeenRetried])
+  messageSummaryInfo9 = [messageCopy messageSummaryInfo];
+  if ([messageSummaryInfo9 has_hasBeenRetried])
   {
     v32 = MEMORY[0x277CCABB0];
-    v33 = [v4 messageSummaryInfo];
-    v34 = [v32 numberWithBool:{objc_msgSend(v33, "hasBeenRetried")}];
+    messageSummaryInfo10 = [messageCopy messageSummaryInfo];
+    v34 = [v32 numberWithBool:{objc_msgSend(messageSummaryInfo10, "hasBeenRetried")}];
 
     if (!v34)
     {
@@ -302,13 +302,13 @@ LABEL_17:
     }
 
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A020], v34);
-    v31 = v34;
+    messageSummaryInfo9 = v34;
   }
 
 LABEL_21:
-  v35 = [v4 messageSummaryInfo];
-  v36 = [v35 translatedMessageParts];
-  [(IMTextMessagePipelineParameter *)self _addTranslatedMessageParts:v36 to:Mutable];
+  messageSummaryInfo11 = [messageCopy messageSummaryInfo];
+  translatedMessageParts = [messageSummaryInfo11 translatedMessageParts];
+  [(IMTextMessagePipelineParameter *)self _addTranslatedMessageParts:translatedMessageParts to:Mutable];
 
   if ([(__CFDictionary *)Mutable count])
   {
@@ -325,11 +325,11 @@ LABEL_21:
   return v37;
 }
 
-- (void)_addTranslatedMessageParts:(id)a3 to:(id)a4
+- (void)_addTranslatedMessageParts:(id)parts to:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  partsCopy = parts;
+  toCopy = to;
   Mutable = [MEMORY[0x277CBEB38] dictionary];
   if (!Mutable)
   {
@@ -341,7 +341,7 @@ LABEL_21:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = partsCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -359,14 +359,14 @@ LABEL_21:
 
         v13 = *(*(&v24 + 1) + 8 * i);
         [v13 messagePartIndex];
-        v14 = [v13 translatedText];
-        v15 = [IMTextMessagePipelineParameter convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:v14 supportingStickerAttributes:1 existingFileTransfersForMessage:v11];
-        v16 = [v15 messageBodyWithNativeAttributes];
+        translatedText = [v13 translatedText];
+        v15 = [IMTextMessagePipelineParameter convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:translatedText supportingStickerAttributes:1 existingFileTransfersForMessage:v11];
+        messageBodyWithNativeAttributes = [v15 messageBodyWithNativeAttributes];
 
         v17 = objc_alloc(MEMORY[0x277D1ACB0]);
-        v18 = [v13 sourceLanguage];
-        v19 = [v13 translationLanguage];
-        v20 = [v17 initWithSourceLanguage:v18 translationLanguage:v19 translatedText:v16];
+        sourceLanguage = [v13 sourceLanguage];
+        translationLanguage = [v13 translationLanguage];
+        v20 = [v17 initWithSourceLanguage:sourceLanguage translationLanguage:translationLanguage translatedText:messageBodyWithNativeAttributes];
 
         IMAddTranslatedMessagePartToMessageSummaryInfo();
       }
@@ -380,29 +380,29 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)a3
+- (id)messageSummaryInfoDictionaryWithBlastDoorBasicMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v5 = MEMORY[0x277CCABB0];
-  v6 = [v3 messageSubType];
-  v7 = [v6 tapback];
-  v8 = [v7 messageSummaryInfo];
-  v9 = [v5 numberWithInteger:{objc_msgSend(v8, "contentType")}];
+  messageSubType = [messageCopy messageSubType];
+  tapback = [messageSubType tapback];
+  messageSummaryInfo = [tapback messageSummaryInfo];
+  v9 = [v5 numberWithInteger:{objc_msgSend(messageSummaryInfo, "contentType")}];
 
   if (v9)
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1A008], v9);
   }
 
-  v10 = [v3 messageSubType];
-  v11 = [v10 tapback];
-  v12 = [v11 messageSummaryInfo];
-  v13 = [v12 summary];
+  messageSubType2 = [messageCopy messageSubType];
+  tapback2 = [messageSubType2 tapback];
+  messageSummaryInfo2 = [tapback2 messageSummaryInfo];
+  summary = [messageSummaryInfo2 summary];
 
-  if (v13)
+  if (summary)
   {
-    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], v13);
+    CFDictionarySetValue(Mutable, *MEMORY[0x277D1A050], summary);
   }
 
   if ([(__CFDictionary *)Mutable count])
@@ -420,17 +420,17 @@ LABEL_21:
   return v14;
 }
 
-+ (id)nicknameDictionaryWithBlastDoorMessage:(id)a3
++ (id)nicknameDictionaryWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 nicknameInformation];
-  if (v4)
+  messageCopy = message;
+  nicknameInformation = [messageCopy nicknameInformation];
+  if (nicknameInformation)
   {
   }
 
   else
   {
-    Mutable = [v3 truncatedNicknameRecordKey];
+    Mutable = [messageCopy truncatedNicknameRecordKey];
 
     if (!Mutable)
     {
@@ -439,59 +439,59 @@ LABEL_21:
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  v6 = [v3 nicknameInformation];
-  v7 = [v6 recordKey];
+  nicknameInformation2 = [messageCopy nicknameInformation];
+  recordKey = [nicknameInformation2 recordKey];
 
-  if (v7)
+  if (recordKey)
   {
-    CFDictionarySetValue(Mutable, MessageDictionaryNicknameCloudKitRecordKey, v7);
+    CFDictionarySetValue(Mutable, MessageDictionaryNicknameCloudKitRecordKey, recordKey);
   }
 
-  v8 = [v3 nicknameInformation];
-  v9 = [v8 decryptionKey];
+  nicknameInformation3 = [messageCopy nicknameInformation];
+  decryptionKey = [nicknameInformation3 decryptionKey];
 
-  if (v9)
+  if (decryptionKey)
   {
-    CFDictionarySetValue(Mutable, MessageDictionaryNicknameCloudKitDecryptionRecordKey, v9);
+    CFDictionarySetValue(Mutable, MessageDictionaryNicknameCloudKitDecryptionRecordKey, decryptionKey);
   }
 
-  v10 = [v3 truncatedNicknameRecordKey];
-  if (v10)
+  truncatedNicknameRecordKey = [messageCopy truncatedNicknameRecordKey];
+  if (truncatedNicknameRecordKey)
   {
-    CFDictionarySetValue(Mutable, MessageDictionaryNicknameParticipantTruncatedRIDKey, v10);
+    CFDictionarySetValue(Mutable, MessageDictionaryNicknameParticipantTruncatedRIDKey, truncatedNicknameRecordKey);
   }
 
-  v11 = [v3 nicknameInformation];
+  nicknameInformation4 = [messageCopy nicknameInformation];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [v3 nicknameInformation];
-    v14 = [v13 lowResWallpaperTag];
+    nicknameInformation5 = [messageCopy nicknameInformation];
+    lowResWallpaperTag = [nicknameInformation5 lowResWallpaperTag];
 
-    if (v14)
+    if (lowResWallpaperTag)
     {
-      CFDictionarySetValue(Mutable, MessageDictionaryNicknameLowResWallpaperTagKey, v14);
+      CFDictionarySetValue(Mutable, MessageDictionaryNicknameLowResWallpaperTagKey, lowResWallpaperTag);
     }
 
-    v15 = [v3 nicknameInformation];
-    v16 = [v15 wallpaperTag];
+    nicknameInformation6 = [messageCopy nicknameInformation];
+    wallpaperTag = [nicknameInformation6 wallpaperTag];
 
-    if (v16)
+    if (wallpaperTag)
     {
-      CFDictionarySetValue(Mutable, MessageDictionaryNicknameWallpaperTagKey, v16);
+      CFDictionarySetValue(Mutable, MessageDictionaryNicknameWallpaperTagKey, wallpaperTag);
     }
 
-    v17 = [v3 nicknameInformation];
-    v18 = [v17 wallpaperMetadataTag];
+    nicknameInformation7 = [messageCopy nicknameInformation];
+    wallpaperMetadataTag = [nicknameInformation7 wallpaperMetadataTag];
 
-    if (v18)
+    if (wallpaperMetadataTag)
     {
-      CFDictionarySetValue(Mutable, MessageDictionaryNicknameWallpaperMetadataTagKey, v18);
+      CFDictionarySetValue(Mutable, MessageDictionaryNicknameWallpaperMetadataTagKey, wallpaperMetadataTag);
     }
 
-    v19 = [v3 nicknameInformation];
-    [v19 includesWallpaperData];
+    nicknameInformation8 = [messageCopy nicknameInformation];
+    [nicknameInformation8 includesWallpaperData];
     v20 = NSStringFromBOOL();
 
     if (v20)
@@ -499,17 +499,17 @@ LABEL_21:
       CFDictionarySetValue(Mutable, MessageDictionaryWallpaperUpdateKey, v20);
     }
 
-    v21 = [v3 nicknameInformation];
-    v22 = [v21 messageType];
+    nicknameInformation9 = [messageCopy nicknameInformation];
+    messageType = [nicknameInformation9 messageType];
 
-    if (v22)
+    if (messageType)
     {
-      CFDictionarySetValue(Mutable, @"MessageType", v22);
+      CFDictionarySetValue(Mutable, @"MessageType", messageType);
     }
 
     v23 = objc_alloc(MEMORY[0x277CCABB0]);
-    v24 = [v3 nicknameInformation];
-    v25 = [v23 initWithLong:{objc_msgSend(v24, "updateInfoIncluded")}];
+    nicknameInformation10 = [messageCopy nicknameInformation];
+    v25 = [v23 initWithLong:{objc_msgSend(nicknameInformation10, "updateInfoIncluded")}];
 
     if (v25)
     {
@@ -517,12 +517,12 @@ LABEL_21:
     }
   }
 
-  v26 = [v3 nicknameInformation];
-  v27 = [v26 avatarRecipeDataTag];
+  nicknameInformation11 = [messageCopy nicknameInformation];
+  avatarRecipeDataTag = [nicknameInformation11 avatarRecipeDataTag];
 
-  if (v27)
+  if (avatarRecipeDataTag)
   {
-    CFDictionarySetValue(Mutable, MessageDictionaryNicknameAvatarRecipeDataTagKey, v27);
+    CFDictionarySetValue(Mutable, MessageDictionaryNicknameAvatarRecipeDataTagKey, avatarRecipeDataTag);
   }
 
 LABEL_27:
@@ -530,12 +530,12 @@ LABEL_27:
   return Mutable;
 }
 
-+ (id)transcriptBackgroundVersionWithBlastDoorMessage:(id)a3
++ (id)transcriptBackgroundVersionWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 has_transcriptBackgroundVersion])
+  messageCopy = message;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [messageCopy has_transcriptBackgroundVersion])
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v3, "transcriptBackgroundVersion")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(messageCopy, "transcriptBackgroundVersion")}];
   }
 
   else
@@ -546,90 +546,90 @@ LABEL_27:
   return v4;
 }
 
-+ (id)availabilityOffGridRecipientSubscriptionValidationTokenWithBlastDoorMessage:(id)a3
++ (id)availabilityOffGridRecipientSubscriptionValidationTokenWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 availabilityOffGridRecipientSubscriptionValidationToken];
+    availabilityOffGridRecipientSubscriptionValidationToken = [messageCopy availabilityOffGridRecipientSubscriptionValidationToken];
   }
 
   else
   {
-    v4 = 0;
+    availabilityOffGridRecipientSubscriptionValidationToken = 0;
   }
 
-  return v4;
+  return availabilityOffGridRecipientSubscriptionValidationToken;
 }
 
-+ (id)availabilityOffGridRecipientEncryptionValidationTokenWithBlastDoorMessage:(id)a3
++ (id)availabilityOffGridRecipientEncryptionValidationTokenWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 availabilityOffGridRecipientEncryptionValidationToken];
+    availabilityOffGridRecipientEncryptionValidationToken = [messageCopy availabilityOffGridRecipientEncryptionValidationToken];
   }
 
   else
   {
-    v4 = 0;
+    availabilityOffGridRecipientEncryptionValidationToken = 0;
   }
 
-  return v4;
+  return availabilityOffGridRecipientEncryptionValidationToken;
 }
 
-+ (BOOL)seenAsOffGridWithBlastDoorMessage:(id)a3
++ (BOOL)seenAsOffGridWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 seenAsOffGrid];
+    seenAsOffGrid = [messageCopy seenAsOffGrid];
   }
 
   else
   {
-    v4 = 0;
+    seenAsOffGrid = 0;
   }
 
-  return v4;
+  return seenAsOffGrid;
 }
 
-+ (id)lastPublisherOfOffGridStatusWithBlastDoorMessage:(id)a3
++ (id)lastPublisherOfOffGridStatusWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 lastPublisherOfOffGridStatus];
+    lastPublisherOfOffGridStatus = [messageCopy lastPublisherOfOffGridStatus];
   }
 
   else
   {
-    v4 = 0;
+    lastPublisherOfOffGridStatus = 0;
   }
 
-  return v4;
+  return lastPublisherOfOffGridStatus;
 }
 
-+ (id)replicationSourceServiceNameWithBlastDoorMessage:(id)a3
++ (id)replicationSourceServiceNameWithBlastDoorMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 has_replicationSourceID])
+  messageCopy = message;
+  if ([messageCopy has_replicationSourceID])
   {
-    v4 = [v3 replicationSourceID];
+    replicationSourceID = [messageCopy replicationSourceID];
     v5 = +[IMDServiceController sharedController];
-    v6 = [v5 serviceWithReplicationSourceID:v4];
+    v6 = [v5 serviceWithReplicationSourceID:replicationSourceID];
 
-    v7 = [v6 internalName];
+    internalName = [v6 internalName];
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v11 = 138412546;
-        v12 = v7;
+        v12 = internalName;
         v13 = 2048;
-        v14 = v4;
+        v14 = replicationSourceID;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Resolved replication source service to %@ for ID %llu", &v11, 0x16u);
       }
     }
@@ -637,34 +637,34 @@ LABEL_27:
 
   else
   {
-    v7 = 0;
+    internalName = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return internalName;
 }
 
-+ (id)replicationSourceServiceNameWithBlastDoorBasicMessage:(id)a3
++ (id)replicationSourceServiceNameWithBlastDoorBasicMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 has_replicationSourceID])
+  messageCopy = message;
+  if ([messageCopy has_replicationSourceID])
   {
-    v4 = [v3 replicationSourceID];
+    replicationSourceID = [messageCopy replicationSourceID];
     v5 = +[IMDServiceController sharedController];
-    v6 = [v5 serviceWithReplicationSourceID:v4];
+    v6 = [v5 serviceWithReplicationSourceID:replicationSourceID];
 
-    v7 = [v6 internalName];
+    internalName = [v6 internalName];
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v11 = 138412546;
-        v12 = v7;
+        v12 = internalName;
         v13 = 2048;
-        v14 = v4;
+        v14 = replicationSourceID;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Resolved replication source service to %@ for ID %llu", &v11, 0x16u);
       }
     }
@@ -672,18 +672,18 @@ LABEL_27:
 
   else
   {
-    v7 = 0;
+    internalName = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return internalName;
 }
 
-+ (unint64_t)scheduleTypeWithBlastDoorTextMessage:(id)a3
++ (unint64_t)scheduleTypeWithBlastDoorTextMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 scheduleType] == -1)
+  messageCopy = message;
+  if ([messageCopy scheduleType] == -1)
   {
     if (IMOSLoggingEnabled())
     {
@@ -695,287 +695,287 @@ LABEL_27:
       }
     }
 
-    v4 = 0;
+    scheduleType = 0;
   }
 
   else
   {
-    v4 = [v3 scheduleType];
+    scheduleType = [messageCopy scheduleType];
   }
 
-  return v4;
+  return scheduleType;
 }
 
-+ (id)richBodyWithBlastDoorMessage:(id)a3
++ (id)richBodyWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  v6 = 0;
-  if (v5 <= 3)
+  content = 0;
+  if (type <= 3)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
-      v7 = [v3 messageSubType];
-      v9 = [v7 textMessage];
+      messageSubType2 = [messageCopy messageSubType];
+      textMessage = [messageSubType2 textMessage];
     }
 
     else
     {
-      if (v5 != 3)
+      if (type != 3)
       {
         goto LABEL_15;
       }
 
-      v7 = [v3 messageSubType];
-      v9 = [v7 balloonPlugin];
+      messageSubType2 = [messageCopy messageSubType];
+      textMessage = [messageSubType2 balloonPlugin];
     }
 
     goto LABEL_13;
   }
 
-  if (v5 != 4)
+  if (type != 4)
   {
-    if (v5 != 5)
+    if (type != 5)
     {
-      if (v5 != 7)
+      if (type != 7)
       {
         goto LABEL_15;
       }
 
-      v7 = [v3 messageSubType];
-      v8 = [v7 stickerTapback];
+      messageSubType2 = [messageCopy messageSubType];
+      stickerTapback = [messageSubType2 stickerTapback];
       goto LABEL_10;
     }
 
-    v7 = [v3 messageSubType];
-    v9 = [v7 audioMessage];
+    messageSubType2 = [messageCopy messageSubType];
+    textMessage = [messageSubType2 audioMessage];
 LABEL_13:
-    v10 = v9;
-    v6 = [v9 content];
+    v10 = textMessage;
+    content = [textMessage content];
     goto LABEL_14;
   }
 
-  v7 = [v3 messageSubType];
-  v8 = [v7 sticker];
+  messageSubType2 = [messageCopy messageSubType];
+  stickerTapback = [messageSubType2 sticker];
 LABEL_10:
-  v10 = v8;
-  v11 = [v8 messageContent];
-  v6 = [v11 content];
+  v10 = stickerTapback;
+  messageContent = [stickerTapback messageContent];
+  content = [messageContent content];
 
 LABEL_14:
 LABEL_15:
 
-  return v6;
+  return content;
 }
 
-+ (id)richBodyWithBlastDoorBasicMessage:(id)a3
++ (id)richBodyWithBlastDoorBasicMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 == 3)
+  if (type == 3)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 audioMessage];
+    messageSubType2 = [messageCopy messageSubType];
+    audioMessage = [messageSubType2 audioMessage];
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 textMessage];
+    messageSubType2 = [messageCopy messageSubType];
+    audioMessage = [messageSubType2 textMessage];
 LABEL_5:
-    v8 = v7;
-    v9 = [v7 content];
+    v8 = audioMessage;
+    content = [audioMessage content];
 
     goto LABEL_7;
   }
 
-  v9 = 0;
+  content = 0;
 LABEL_7:
 
-  return v9;
+  return content;
 }
 
-+ (id)attributionInfoArrayWithBlastDoorMessage:(id)a3
++ (id)attributionInfoArrayWithBlastDoorMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 messageSubType];
-  v6 = [v5 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  switch(v6)
+  switch(type)
   {
     case 4:
-      v11 = [v4 messageSubType];
-      v12 = [v11 sticker];
-      v13 = [v12 messageContent];
+      messageSubType2 = [messageCopy messageSubType];
+      sticker = [messageSubType2 sticker];
+      messageContent = [sticker messageContent];
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
-        v7 = [v4 messageSubType];
-        v9 = [v7 sticker];
-        v15 = [v9 messageContent];
-        v10 = [v15 attributionInfo];
+        messageSubType3 = [messageCopy messageSubType];
+        sticker2 = [messageSubType3 sticker];
+        messageContent2 = [sticker2 messageContent];
+        attributionInfo = [messageContent2 attributionInfo];
 
         goto LABEL_7;
       }
 
       break;
     case 3:
-      v7 = [v4 messageSubType];
-      v8 = [v7 balloonPlugin];
+      messageSubType3 = [messageCopy messageSubType];
+      balloonPlugin = [messageSubType3 balloonPlugin];
       goto LABEL_6;
     case 1:
-      v7 = [v4 messageSubType];
-      v8 = [v7 textMessage];
+      messageSubType3 = [messageCopy messageSubType];
+      balloonPlugin = [messageSubType3 textMessage];
 LABEL_6:
-      v9 = v8;
-      v10 = [v8 attributionInfo];
+      sticker2 = balloonPlugin;
+      attributionInfo = [balloonPlugin attributionInfo];
 LABEL_7:
 
       goto LABEL_11;
   }
 
-  v10 = 0;
+  attributionInfo = 0;
 LABEL_11:
-  v16 = [a1 convertAttributionInfoToArray:v10];
+  v16 = [self convertAttributionInfoToArray:attributionInfo];
 
   return v16;
 }
 
-+ (id)plainTextBodyWithBlastDoorMessage:(id)a3
++ (id)plainTextBodyWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 == 3)
+  if (type == 3)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 balloonPlugin];
+    messageSubType2 = [messageCopy messageSubType];
+    balloonPlugin = [messageSubType2 balloonPlugin];
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 textMessage];
+    messageSubType2 = [messageCopy messageSubType];
+    balloonPlugin = [messageSubType2 textMessage];
 LABEL_5:
-    v8 = v7;
-    v9 = [v7 plainTextBody];
+    v8 = balloonPlugin;
+    plainTextBody = [balloonPlugin plainTextBody];
 
     goto LABEL_7;
   }
 
-  v9 = 0;
+  plainTextBody = 0;
 LABEL_7:
 
-  return v9;
+  return plainTextBody;
 }
 
-+ (id)plainTextBodyWithBlastDoorBasicMessage:(id)a3
++ (id)plainTextBodyWithBlastDoorBasicMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 textMessage];
-    v8 = [v7 plainTextBody];
+    messageSubType2 = [messageCopy messageSubType];
+    textMessage = [messageSubType2 textMessage];
+    plainTextBody = [textMessage plainTextBody];
   }
 
   else
   {
-    v8 = 0;
+    plainTextBody = 0;
   }
 
-  return v8;
+  return plainTextBody;
 }
 
-+ (id)plainTextSubjectWithBlastDoorMessage:(id)a3
++ (id)plainTextSubjectWithBlastDoorMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 textMessage];
-    v8 = [v7 plainTextSubject];
+    messageSubType2 = [messageCopy messageSubType];
+    textMessage = [messageSubType2 textMessage];
+    plainTextSubject = [textMessage plainTextSubject];
   }
 
   else
   {
-    v8 = 0;
+    plainTextSubject = 0;
   }
 
-  return v8;
+  return plainTextSubject;
 }
 
-+ (id)plainTextSubjectWithBlastDoorBasicMessage:(id)a3
++ (id)plainTextSubjectWithBlastDoorBasicMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 messageSubType];
-  v5 = [v4 type];
+  messageCopy = message;
+  messageSubType = [messageCopy messageSubType];
+  type = [messageSubType type];
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [v3 messageSubType];
-    v7 = [v6 textMessage];
-    v8 = [v7 plainTextSubject];
+    messageSubType2 = [messageCopy messageSubType];
+    textMessage = [messageSubType2 textMessage];
+    plainTextSubject = [textMessage plainTextSubject];
   }
 
   else
   {
-    v8 = 0;
+    plainTextSubject = 0;
   }
 
-  return v8;
+  return plainTextSubject;
 }
 
-+ (id)fileTransferForBlastDoorFileTransferAttribute:(id)a3 fileTransferGUIDs:(id)a4 supportingStickerAttributes:(BOOL)a5
++ (id)fileTransferForBlastDoorFileTransferAttribute:(id)attribute fileTransferGUIDs:(id)ds supportingStickerAttributes:(BOOL)attributes
 {
-  v65 = a5;
+  attributesCopy = attributes;
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v70 = a4;
-  v7 = [v6 name];
-  if (!v7)
+  attributeCopy = attribute;
+  dsCopy = ds;
+  name = [attributeCopy name];
+  if (!name)
   {
     v18 = 0;
     goto LABEL_40;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "datasize")}];
-  v66 = [v8 stringValue];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(attributeCopy, "datasize")}];
+  stringValue = [v8 stringValue];
 
-  v9 = [v6 attachmentSubtype];
-  v69 = [v9 livePhoto];
+  attachmentSubtype = [attributeCopy attachmentSubtype];
+  livePhoto = [attachmentSubtype livePhoto];
 
-  v68 = [v69 iris];
-  if ([v68 length])
+  iris = [livePhoto iris];
+  if ([iris length])
   {
-    if ([v70 count])
+    if ([dsCopy count])
     {
-      v10 = [v70 lastObject];
+      lastObject = [dsCopy lastObject];
       v11 = +[IMDFileTransferCenter sharedInstance];
-      v12 = [v11 transferForGUID:v10];
+      v12 = [v11 transferForGUID:lastObject];
 
       if (v12)
       {
         [v12 setIsAuxImage:1];
-        v13 = [MEMORY[0x277D1A9C0] AuxGUIDFromFileTransferGUID:v10];
+        v13 = [MEMORY[0x277D1A9C0] AuxGUIDFromFileTransferGUID:lastObject];
         v14 = +[IMDFileTransferCenter sharedInstance];
-        v15 = [v7 lastPathComponent];
+        lastPathComponent = [name lastPathComponent];
         LOWORD(v64) = 0;
-        [v14 makeNewIncomingTransferWithGUID:v13 filename:v15 isDirectory:0 totalBytes:objc_msgSend(v66 hfsType:"longLongValue") hfsCreator:0 hfsFlags:{0, v64}];
+        [v14 makeNewIncomingTransferWithGUID:v13 filename:lastPathComponent isDirectory:0 totalBytes:objc_msgSend(stringValue hfsType:"longLongValue") hfsCreator:0 hfsFlags:{0, v64}];
 
         v16 = v13;
         v17 = +[IMDFileTransferCenter sharedInstance];
@@ -1018,7 +1018,7 @@ LABEL_7:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v76 = v10;
+            v76 = lastObject;
             _os_log_impl(&dword_22B4CC000, v24, OS_LOG_TYPE_INFO, "Could not find Aux image transfer with guid %@ while parsing message", buf, 0xCu);
           }
         }
@@ -1031,9 +1031,9 @@ LABEL_7:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v76 = v7;
+        v76 = name;
         v77 = 2112;
-        v78 = v70;
+        v78 = dsCopy;
         _os_log_impl(&dword_22B4CC000, v23, OS_LOG_TYPE_INFO, "Could not find Aux image transfer with name (%@) because the list of guids was nil or empty: %@", buf, 0x16u);
       }
     }
@@ -1044,8 +1044,8 @@ LABEL_7:
   }
 
   v20 = +[IMDFileTransferCenter sharedInstance];
-  v21 = [v7 lastPathComponent];
-  v16 = [v20 guidForNewIncomingTransferWithFilename:v21 isDirectory:0 totalBytes:objc_msgSend(v66 hfsType:"longLongValue") hfsCreator:0 hfsFlags:{0, 0}];
+  lastPathComponent2 = [name lastPathComponent];
+  v16 = [v20 guidForNewIncomingTransferWithFilename:lastPathComponent2 isDirectory:0 totalBytes:objc_msgSend(stringValue hfsType:"longLongValue") hfsCreator:0 hfsFlags:{0, 0}];
 
   if (v16)
   {
@@ -1060,8 +1060,8 @@ LABEL_7:
 
 LABEL_24:
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  v26 = [v6 attachments];
-  v27 = [v26 sortedArrayUsingComparator:&unk_283F197A8];
+  attachments = [attributeCopy attachments];
+  v27 = [attachments sortedArrayUsingComparator:&unk_283F197A8];
 
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
@@ -1069,33 +1069,33 @@ LABEL_24:
   v71[3] = &unk_2787034D0;
   v28 = Mutable;
   v72 = v28;
-  v29 = v7;
+  v29 = name;
   v73 = v29;
-  v30 = v6;
+  v30 = attributeCopy;
   v74 = v30;
   [v27 enumerateObjectsUsingBlock:v71];
-  v31 = [v30 attachmentSubtype];
-  v32 = [v31 audioMessage];
+  attachmentSubtype2 = [v30 attachmentSubtype];
+  audioMessage = [attachmentSubtype2 audioMessage];
 
-  if (v32)
+  if (audioMessage)
   {
     CFDictionarySetValue(v28, @"name", v29);
-    v33 = [v30 utiType];
-    if (v33)
+    utiType = [v30 utiType];
+    if (utiType)
     {
-      CFDictionarySetValue(v28, @"uti-type", v33);
+      CFDictionarySetValue(v28, @"uti-type", utiType);
     }
 
-    v34 = [v32 inlineAttachmentKey];
-    if (v34)
+    inlineAttachmentKey = [audioMessage inlineAttachmentKey];
+    if (inlineAttachmentKey)
     {
-      CFDictionarySetValue(v28, @"inline-attachment", v34);
+      CFDictionarySetValue(v28, @"inline-attachment", inlineAttachmentKey);
     }
 
-    v35 = [v32 audioTranscription];
-    if (v35)
+    audioTranscription = [audioMessage audioTranscription];
+    if (audioTranscription)
     {
-      CFDictionarySetValue(v28, @"audio-transcription", v35);
+      CFDictionarySetValue(v28, @"audio-transcription", audioTranscription);
     }
   }
 
@@ -1111,27 +1111,27 @@ LABEL_39:
   }
 
 LABEL_40:
-  v38 = [v6 attachmentSubtype];
-  v39 = [v38 emojiImage];
+  attachmentSubtype3 = [attributeCopy attachmentSubtype];
+  emojiImage = [attachmentSubtype3 emojiImage];
 
-  if (v39)
+  if (emojiImage)
   {
-    v40 = [v39 emojiImageContentIdentifer];
-    v41 = [v39 emojiImageShortDescription];
-    v42 = [a1 stickerInfoDictionaryFromBlastDoorEmojiImageAttachmentInfo:v39];
-    [v18 setAdaptiveImageGlyphContentIdentifier:v40];
-    [v18 setAdaptiveImageGlyphContentDescription:v41];
+    emojiImageContentIdentifer = [emojiImage emojiImageContentIdentifer];
+    emojiImageShortDescription = [emojiImage emojiImageShortDescription];
+    v42 = [self stickerInfoDictionaryFromBlastDoorEmojiImageAttachmentInfo:emojiImage];
+    [v18 setAdaptiveImageGlyphContentIdentifier:emojiImageContentIdentifer];
+    [v18 setAdaptiveImageGlyphContentDescription:emojiImageShortDescription];
     [v18 setStickerUserInfo:v42];
   }
 
-  if (v18 && v65)
+  if (v18 && attributesCopy)
   {
-    v43 = [v6 attachmentSubtype];
-    v44 = [v43 sticker];
+    attachmentSubtype4 = [attributeCopy attachmentSubtype];
+    sticker = [attachmentSubtype4 sticker];
 
-    if (v44)
+    if (sticker)
     {
-      v45 = [a1 stickerInfoDictionaryFromBlastDoorStickerAttachmentInfo:v44];
+      v45 = [self stickerInfoDictionaryFromBlastDoorStickerAttachmentInfo:sticker];
       if (v45)
       {
         [v18 setStickerUserInfo:v45];
@@ -1150,10 +1150,10 @@ LABEL_40:
 
   else
   {
-    v44 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+    sticker = IMLogHandleForCategory();
+    if (os_log_type_enabled(sticker, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D05DC(v44, v46, v47, v48, v49, v50, v51, v52);
+      sub_22B7D05DC(sticker, v46, v47, v48, v49, v50, v51, v52);
     }
   }
 
@@ -1166,23 +1166,23 @@ LABEL_55:
   return v53;
 }
 
-+ (id)stickerInfoDictionaryWithStickerGUID:(id)a3 stickerPackGUID:(id)a4 stickerHash:(id)a5 positionIntent:(id)a6 associatedPositionIntent:(id)a7 parentPreviewWidth:(id)a8 stickerXOffset:(id)a9 stickerYOffset:(id)a10 stickerScale:(id)a11 stickerRotation:(id)a12 stickerBundleID:(id)a13 stickerIsReaction:(id)a14 stickerPositionVersion:(id)a15 stickerExternalURI:(id)a16
++ (id)stickerInfoDictionaryWithStickerGUID:(id)d stickerPackGUID:(id)iD stickerHash:(id)hash positionIntent:(id)intent associatedPositionIntent:(id)positionIntent parentPreviewWidth:(id)width stickerXOffset:(id)offset stickerYOffset:(id)self0 stickerScale:(id)self1 stickerRotation:(id)self2 stickerBundleID:(id)self3 stickerIsReaction:(id)self4 stickerPositionVersion:(id)self5 stickerExternalURI:(id)self6
 {
-  v21 = a3;
-  v35 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v34 = a8;
-  v40 = a9;
-  v25 = v21;
-  v39 = a10;
-  v26 = a11;
-  v37 = a12;
-  v36 = a13;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
+  dCopy = d;
+  iDCopy = iD;
+  hashCopy = hash;
+  intentCopy = intent;
+  positionIntentCopy = positionIntent;
+  widthCopy = width;
+  offsetCopy = offset;
+  v25 = dCopy;
+  yOffsetCopy = yOffset;
+  scaleCopy = scale;
+  rotationCopy = rotation;
+  bundleIDCopy = bundleID;
+  reactionCopy = reaction;
+  versionCopy = version;
+  iCopy = i;
   v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v31 = v30;
   if (v25)
@@ -1190,70 +1190,70 @@ LABEL_55:
     CFDictionarySetValue(v30, *MEMORY[0x277D1A748], v25);
   }
 
-  v38 = v26;
-  if (v35)
+  v38 = scaleCopy;
+  if (iDCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A760], v35);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A760], iDCopy);
   }
 
-  if (v22)
+  if (hashCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A750], v22);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A750], hashCopy);
   }
 
-  if (v23)
+  if (intentCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A718], v23);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A718], intentCopy);
   }
 
-  if (v24)
+  if (positionIntentCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A710], v24);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A710], positionIntentCopy);
   }
 
-  if (v34)
+  if (widthCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A720], v34);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A720], widthCopy);
   }
 
-  if (v40)
+  if (offsetCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A778], v40);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A778], offsetCopy);
   }
 
-  if (v39)
+  if (yOffsetCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A780], v39);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A780], yOffsetCopy);
   }
 
-  if (v26)
+  if (scaleCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A730], v26);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A730], scaleCopy);
   }
 
-  if (v37)
+  if (rotationCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A728], v37);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A728], rotationCopy);
   }
 
-  if (v36)
+  if (bundleIDCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A738], v36);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A738], bundleIDCopy);
   }
 
-  if (v27)
+  if (reactionCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A758], v27);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A758], reactionCopy);
   }
 
-  if (v28)
+  if (versionCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A768], v28);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A768], versionCopy);
   }
 
-  if (v29)
+  if (iCopy)
   {
-    CFDictionarySetValue(v31, *MEMORY[0x277D1A740], v29);
+    CFDictionarySetValue(v31, *MEMORY[0x277D1A740], iCopy);
   }
 
   v32 = [(__CFDictionary *)v31 copy];
@@ -1261,136 +1261,136 @@ LABEL_55:
   return v32;
 }
 
-+ (id)stickerInfoDictionaryFromBlastDoorStickerAttachmentInfo:(id)a3
++ (id)stickerInfoDictionaryFromBlastDoorStickerAttachmentInfo:(id)info
 {
-  v4 = a3;
-  v36 = [v4 stickerIdentifier];
-  v35 = [v4 stickerPackIdentifier];
-  v34 = [v4 stickerHash];
-  if ([v4 has_positionIntent])
+  infoCopy = info;
+  stickerIdentifier = [infoCopy stickerIdentifier];
+  stickerPackIdentifier = [infoCopy stickerPackIdentifier];
+  stickerHash = [infoCopy stickerHash];
+  if ([infoCopy has_positionIntent])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "positionIntent")}];
-    v32 = [v5 stringValue];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(infoCopy, "positionIntent")}];
+    stringValue = [v5 stringValue];
   }
 
   else
   {
-    v32 = 0;
+    stringValue = 0;
   }
 
-  if ([v4 has_associatedPositionIntent])
+  if ([infoCopy has_associatedPositionIntent])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "associatedPositionIntent")}];
-    v31 = [v6 stringValue];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(infoCopy, "associatedPositionIntent")}];
+    stringValue2 = [v6 stringValue];
   }
 
   else
   {
-    v31 = 0;
+    stringValue2 = 0;
   }
 
-  if ([v4 has_parentPreviewWidth])
+  if ([infoCopy has_parentPreviewWidth])
   {
     v7 = MEMORY[0x277CCABB0];
-    [v4 parentPreviewWidth];
+    [infoCopy parentPreviewWidth];
     v8 = [v7 numberWithDouble:?];
-    v30 = [v8 stringValue];
+    stringValue3 = [v8 stringValue];
   }
 
   else
   {
-    v30 = 0;
+    stringValue3 = 0;
   }
 
-  if ([v4 has_stickerOffset])
+  if ([infoCopy has_stickerOffset])
   {
     v9 = MEMORY[0x277CCABB0];
-    [v4 stickerOffset];
+    [infoCopy stickerOffset];
     v10 = [v9 numberWithDouble:?];
-    v33 = [v10 stringValue];
+    stringValue4 = [v10 stringValue];
   }
 
   else
   {
-    v33 = 0;
+    stringValue4 = 0;
   }
 
-  if ([v4 has_stickerOffset])
+  if ([infoCopy has_stickerOffset])
   {
     v11 = MEMORY[0x277CCABB0];
-    [v4 stickerOffset];
+    [infoCopy stickerOffset];
     v13 = [v11 numberWithDouble:v12];
-    v29 = [v13 stringValue];
+    stringValue5 = [v13 stringValue];
   }
 
   else
   {
-    v29 = 0;
+    stringValue5 = 0;
   }
 
-  if ([v4 has_stickerScale])
+  if ([infoCopy has_stickerScale])
   {
     v14 = MEMORY[0x277CCABB0];
-    [v4 stickerScale];
+    [infoCopy stickerScale];
     v15 = [v14 numberWithDouble:?];
-    v16 = [v15 stringValue];
+    stringValue6 = [v15 stringValue];
   }
 
   else
   {
-    v16 = 0;
+    stringValue6 = 0;
   }
 
-  if ([v4 has_stickerRotation])
+  if ([infoCopy has_stickerRotation])
   {
     v17 = MEMORY[0x277CCABB0];
-    [v4 stickerRotation];
+    [infoCopy stickerRotation];
     [v17 numberWithDouble:?];
-    v19 = v18 = a1;
-    v20 = [v19 stringValue];
+    v19 = v18 = self;
+    stringValue7 = [v19 stringValue];
 
-    a1 = v18;
+    self = v18;
   }
 
   else
   {
-    v20 = 0;
+    stringValue7 = 0;
   }
 
-  v27 = [v4 balloonBundleID];
-  v21 = [v4 isReaction];
-  v22 = [v4 stickerPositionVersion];
-  v23 = [v4 stickerExternalURI];
-  v24 = [MEMORY[0x277CCABB0] numberWithBool:v21];
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
-  v28 = [a1 stickerInfoDictionaryWithStickerGUID:v36 stickerPackGUID:v35 stickerHash:v34 positionIntent:v32 associatedPositionIntent:v31 parentPreviewWidth:v30 stickerXOffset:v33 stickerYOffset:v29 stickerScale:v16 stickerRotation:v20 stickerBundleID:v27 stickerIsReaction:v24 stickerPositionVersion:v25 stickerExternalURI:v23];
+  balloonBundleID = [infoCopy balloonBundleID];
+  isReaction = [infoCopy isReaction];
+  stickerPositionVersion = [infoCopy stickerPositionVersion];
+  stickerExternalURI = [infoCopy stickerExternalURI];
+  v24 = [MEMORY[0x277CCABB0] numberWithBool:isReaction];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stickerPositionVersion];
+  v28 = [self stickerInfoDictionaryWithStickerGUID:stickerIdentifier stickerPackGUID:stickerPackIdentifier stickerHash:stickerHash positionIntent:stringValue associatedPositionIntent:stringValue2 parentPreviewWidth:stringValue3 stickerXOffset:stringValue4 stickerYOffset:stringValue5 stickerScale:stringValue6 stickerRotation:stringValue7 stickerBundleID:balloonBundleID stickerIsReaction:v24 stickerPositionVersion:v25 stickerExternalURI:stickerExternalURI];
 
   return v28;
 }
 
-+ (id)stickerInfoDictionaryFromBlastDoorEmojiImageAttachmentInfo:(id)a3
++ (id)stickerInfoDictionaryFromBlastDoorEmojiImageAttachmentInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 stickerIdentifier];
-  v6 = [v4 stickerPackIdentifier];
-  v7 = [v4 stickerHash];
-  v8 = [v4 stickerBalloonBundleID];
-  v9 = [v4 stickerExternalURI];
+  infoCopy = info;
+  stickerIdentifier = [infoCopy stickerIdentifier];
+  stickerPackIdentifier = [infoCopy stickerPackIdentifier];
+  stickerHash = [infoCopy stickerHash];
+  stickerBalloonBundleID = [infoCopy stickerBalloonBundleID];
+  stickerExternalURI = [infoCopy stickerExternalURI];
 
-  v10 = [a1 stickerInfoDictionaryWithStickerGUID:v5 stickerPackGUID:v6 stickerHash:v7 positionIntent:0 associatedPositionIntent:0 parentPreviewWidth:0 stickerXOffset:0 stickerYOffset:0 stickerScale:0 stickerRotation:0 stickerBundleID:v8 stickerIsReaction:0 stickerPositionVersion:0 stickerExternalURI:v9];
+  v10 = [self stickerInfoDictionaryWithStickerGUID:stickerIdentifier stickerPackGUID:stickerPackIdentifier stickerHash:stickerHash positionIntent:0 associatedPositionIntent:0 parentPreviewWidth:0 stickerXOffset:0 stickerYOffset:0 stickerScale:0 stickerRotation:0 stickerBundleID:stickerBalloonBundleID stickerIsReaction:0 stickerPositionVersion:0 stickerExternalURI:stickerExternalURI];
 
   return v10;
 }
 
-+ (id)_fileTransferMatchingAttribute:(id)a3 inFileTransfers:(id)a4
++ (id)_fileTransferMatchingAttribute:(id)attribute inFileTransfers:(id)transfers
 {
   v46 = *MEMORY[0x277D85DE8];
-  v35 = a3;
+  attributeCopy = attribute;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = a4;
+  obj = transfers;
   v31 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v31)
   {
@@ -1408,12 +1408,12 @@ LABEL_55:
 
         v32 = v5;
         v6 = *(*(&v40 + 1) + 8 * v5);
-        v7 = [v35 attachments];
+        attachments = [attributeCopy attachments];
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v34 = v7;
+        v34 = attachments;
         v8 = [v34 countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v8)
         {
@@ -1429,19 +1429,19 @@ LABEL_55:
               }
 
               v12 = *(*(&v36 + 1) + 8 * i);
-              v13 = [v12 attachmentURL];
-              v14 = [v13 absoluteString];
+              attachmentURL = [v12 attachmentURL];
+              absoluteString = [attachmentURL absoluteString];
 
-              v15 = [v12 encryptionKey];
-              if ([v14 length])
+              encryptionKey = [v12 encryptionKey];
+              if ([absoluteString length])
               {
-                v16 = [v6 userInfo];
-                v17 = [v16 objectForKeyedSubscript:@"mmcs-url"];
+                userInfo = [v6 userInfo];
+                v17 = [userInfo objectForKeyedSubscript:@"mmcs-url"];
 
-                v18 = [v6 userInfo];
-                v19 = [v18 objectForKeyedSubscript:@"decryption-key"];
+                userInfo2 = [v6 userInfo];
+                v19 = [userInfo2 objectForKeyedSubscript:@"decryption-key"];
 
-                if ([v17 isEqualToString:v14] && (objc_msgSend(v19, "isEqualToString:", v15) & 1) != 0)
+                if ([v17 isEqualToString:absoluteString] && (objc_msgSend(v19, "isEqualToString:", encryptionKey) & 1) != 0)
                 {
                   v26 = v6;
 
@@ -1450,12 +1450,12 @@ LABEL_55:
                 }
               }
 
-              v20 = [v35 attachmentSubtype];
-              v21 = [v20 emojiImage];
-              v22 = [v21 emojiImageContentIdentifer];
+              attachmentSubtype = [attributeCopy attachmentSubtype];
+              emojiImage = [attachmentSubtype emojiImage];
+              emojiImageContentIdentifer = [emojiImage emojiImageContentIdentifer];
 
-              v23 = [v6 adaptiveImageGlyphContentIdentifier];
-              if ([v22 length] && objc_msgSend(v23, "length") && objc_msgSend(v22, "isEqualToString:", v23))
+              adaptiveImageGlyphContentIdentifier = [v6 adaptiveImageGlyphContentIdentifier];
+              if ([emojiImageContentIdentifer length] && objc_msgSend(adaptiveImageGlyphContentIdentifier, "length") && objc_msgSend(emojiImageContentIdentifer, "isEqualToString:", adaptiveImageGlyphContentIdentifier))
               {
                 v24 = v6;
 
@@ -1506,12 +1506,12 @@ LABEL_25:
   return v33;
 }
 
-+ (id)convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:(id)a3 supportingStickerAttributes:(BOOL)a4 existingFileTransfersForMessage:(id)a5
++ (id)convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:(id)string supportingStickerAttributes:(BOOL)attributes existingFileTransfersForMessage:(id)message
 {
-  v8 = a5;
-  if (a3)
+  messageCopy = message;
+  if (string)
   {
-    v9 = [a3 mutableCopy];
+    v9 = [string mutableCopy];
     v10 = [v9 length];
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1519,10 +1519,10 @@ LABEL_25:
     v22 = 3221225472;
     v23 = sub_22B520BB4;
     v24 = &unk_2787034F8;
-    v29 = a1;
-    v25 = v8;
+    selfCopy = self;
+    v25 = messageCopy;
     v26 = v11;
-    v30 = a4;
+    attributesCopy = attributes;
     v27 = v12;
     v28 = v9;
     v13 = v9;
@@ -1543,19 +1543,19 @@ LABEL_25:
   return v19;
 }
 
-- (id)_createSuperFormattedStringWithAttributedString:(id)a3
+- (id)_createSuperFormattedStringWithAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 __im_attributedStringByAssigningMessagePartNumbers];
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  __im_attributedStringByAssigningMessagePartNumbers = [stringCopy __im_attributedStringByAssigningMessagePartNumbers];
+  v5 = __im_attributedStringByAssigningMessagePartNumbers;
+  if (__im_attributedStringByAssigningMessagePartNumbers)
   {
-    v6 = v4;
+    v6 = __im_attributedStringByAssigningMessagePartNumbers;
   }
 
   else
   {
-    v6 = v3;
+    v6 = stringCopy;
   }
 
   v7 = v6;
@@ -1563,10 +1563,10 @@ LABEL_25:
   return v6;
 }
 
-- (IMTextMessagePipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4
+- (IMTextMessagePipelineParameter)initWithBD:(id)d idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dataCopy = data;
   v86.receiver = self;
   v86.super_class = IMTextMessagePipelineParameter;
   v8 = [(IMTextMessagePipelineParameter *)&v86 init];
@@ -1575,32 +1575,32 @@ LABEL_25:
     goto LABEL_32;
   }
 
-  v9 = [v7 fromIdentifier];
-  [(IMTextMessagePipelineParameter *)v8 setFromIdentifier:v9];
+  fromIdentifier = [dataCopy fromIdentifier];
+  [(IMTextMessagePipelineParameter *)v8 setFromIdentifier:fromIdentifier];
 
-  v10 = [v7 toIdentifier];
-  [(IMTextMessagePipelineParameter *)v8 setToIdentifier:v10];
+  toIdentifier = [dataCopy toIdentifier];
+  [(IMTextMessagePipelineParameter *)v8 setToIdentifier:toIdentifier];
 
-  -[IMTextMessagePipelineParameter setIsFromMe:](v8, "setIsFromMe:", [v7 isFromMe]);
-  v11 = [v7 batchContext];
+  -[IMTextMessagePipelineParameter setIsFromMe:](v8, "setIsFromMe:", [dataCopy isFromMe]);
+  batchContext = [dataCopy batchContext];
   batchContext = v8->_batchContext;
-  v8->_batchContext = v11;
+  v8->_batchContext = batchContext;
 
-  v13 = [v6 metadata];
-  v14 = [v13 messageGUID];
-  v83 = [v14 UUIDString];
+  metadata = [dCopy metadata];
+  messageGUID = [metadata messageGUID];
+  uUIDString = [messageGUID UUIDString];
 
-  v15 = v13;
-  v76 = [v13 timestamp];
-  v16 = [IMTextMessagePipelineParameter richBodyWithBlastDoorMessage:v6];
-  v17 = [(IMTextMessagePipelineParameter *)v8 supportsStickerAttributesInMessageBody];
+  v15 = metadata;
+  timestamp = [metadata timestamp];
+  v16 = [IMTextMessagePipelineParameter richBodyWithBlastDoorMessage:dCopy];
+  supportsStickerAttributesInMessageBody = [(IMTextMessagePipelineParameter *)v8 supportsStickerAttributesInMessageBody];
   v82 = v16;
-  v18 = [IMTextMessagePipelineParameter convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:v16 supportingStickerAttributes:v17 existingFileTransfersForMessage:MEMORY[0x277CBEBF8]];
-  v19 = [v18 messageBodyWithNativeAttributes];
+  v18 = [IMTextMessagePipelineParameter convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:v16 supportingStickerAttributes:supportsStickerAttributesInMessageBody existingFileTransfersForMessage:MEMORY[0x277CBEBF8]];
+  messageBodyWithNativeAttributes = [v18 messageBodyWithNativeAttributes];
   v81 = v18;
-  v20 = [v18 fileTransferGuids];
-  v21 = [IMTextMessagePipelineParameter plainTextBodyWithBlastDoorMessage:v6];
-  if (!v19)
+  fileTransferGuids = [v18 fileTransferGuids];
+  v21 = [IMTextMessagePipelineParameter plainTextBodyWithBlastDoorMessage:dCopy];
+  if (!messageBodyWithNativeAttributes)
   {
     v22 = objc_alloc(MEMORY[0x277CCA898]);
     if (v21)
@@ -1614,104 +1614,104 @@ LABEL_25:
     }
 
     v24 = [v22 initWithString:v23];
-    v19 = [(IMTextMessagePipelineParameter *)v8 _createSuperFormattedStringWithAttributedString:v24];
+    messageBodyWithNativeAttributes = [(IMTextMessagePipelineParameter *)v8 _createSuperFormattedStringWithAttributedString:v24];
   }
 
-  v25 = [IMTextMessagePipelineParameter plainTextSubjectWithBlastDoorMessage:v6];
-  v26 = [IMTextMessagePipelineParameter attributionInfoArrayWithBlastDoorMessage:v6];
+  v25 = [IMTextMessagePipelineParameter plainTextSubjectWithBlastDoorMessage:dCopy];
+  v26 = [IMTextMessagePipelineParameter attributionInfoArrayWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setAttributionInfoArray:v26];
 
-  v79 = v19;
-  [(IMTextMessagePipelineParameter *)v8 setRichBody:v19];
+  v79 = messageBodyWithNativeAttributes;
+  [(IMTextMessagePipelineParameter *)v8 setRichBody:messageBodyWithNativeAttributes];
   [(IMTextMessagePipelineParameter *)v8 setPlainTextBody:v21];
   v78 = v25;
   [(IMTextMessagePipelineParameter *)v8 setPlainTextSubject:v25];
-  v80 = v20;
-  [(IMTextMessagePipelineParameter *)v8 setFileTransferGUIDs:v20];
-  v27 = [v6 messageSubType];
-  v28 = [v27 audioMessage];
-  v29 = [v28 inlineAudioMessages];
+  v80 = fileTransferGuids;
+  [(IMTextMessagePipelineParameter *)v8 setFileTransferGUIDs:fileTransferGuids];
+  messageSubType = [dCopy messageSubType];
+  audioMessage = [messageSubType audioMessage];
+  inlineAudioMessages = [audioMessage inlineAudioMessages];
 
   v30 = v15;
-  if ([v29 count] == 1)
+  if ([inlineAudioMessages count] == 1)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-    v32 = [v29 firstObject];
-    if (v32)
+    firstObject = [inlineAudioMessages firstObject];
+    if (firstObject)
     {
-      CFDictionarySetValue(Mutable, @"ia-0", v32);
+      CFDictionarySetValue(Mutable, @"ia-0", firstObject);
     }
 
     [(IMTextMessagePipelineParameter *)v8 setInlineAttachmentsDictionary:Mutable];
   }
 
-  [(IMTextMessagePipelineParameter *)v8 setGUID:v83];
-  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v76];
+  [(IMTextMessagePipelineParameter *)v8 setGUID:uUIDString];
+  v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:timestamp];
   [(IMTextMessagePipelineParameter *)v8 setTimestamp:v33];
 
-  v34 = [v15 storageContext];
-  -[IMTextMessagePipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [v34 isFromStorage]);
+  storageContext = [v15 storageContext];
+  -[IMTextMessagePipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [storageContext isFromStorage]);
 
-  v35 = [v15 storageContext];
-  -[IMTextMessagePipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [v35 isLastFromStorage]);
+  storageContext2 = [v15 storageContext];
+  -[IMTextMessagePipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [storageContext2 isLastFromStorage]);
 
   -[IMTextMessagePipelineParameter setWantsDeliveryReceipt:](v8, "setWantsDeliveryReceipt:", [v15 wantsDeliveryReceipt]);
   -[IMTextMessagePipelineParameter setWantsCheckpointing:](v8, "setWantsCheckpointing:", [v15 wantsCheckpointing]);
-  v36 = [IMTextMessagePipelineParameter participantDestinationIdentifierWithMessage:v6];
+  v36 = [IMTextMessagePipelineParameter participantDestinationIdentifierWithMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setParticipantIdentifiers:v36];
 
-  v37 = [(IMTextMessagePipelineParameter *)v8 messageSummaryInfoDictionaryWithBlastDoorMessage:v6];
+  v37 = [(IMTextMessagePipelineParameter *)v8 messageSummaryInfoDictionaryWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setMessageSummaryInfo:v37];
 
-  v38 = [IMTextMessagePipelineParameter nicknameDictionaryWithBlastDoorMessage:v6];
+  v38 = [IMTextMessagePipelineParameter nicknameDictionaryWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setNicknameDictionary:v38];
 
-  v39 = [IMTextMessagePipelineParameter transcriptBackgroundVersionWithBlastDoorMessage:v6];
+  v39 = [IMTextMessagePipelineParameter transcriptBackgroundVersionWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setTranscriptBackgroundVersion:v39];
 
-  [(IMTextMessagePipelineParameter *)v8 setAutoReply:[IMTextMessagePipelineParameter isAutoReplyWithBlastDoorMessage:v6]];
-  v40 = [IMTextMessagePipelineParameter availabilityVerificationRecipientChannelIDPrefixWithBlastDoorMessage:v6];
+  [(IMTextMessagePipelineParameter *)v8 setAutoReply:[IMTextMessagePipelineParameter isAutoReplyWithBlastDoorMessage:dCopy]];
+  v40 = [IMTextMessagePipelineParameter availabilityVerificationRecipientChannelIDPrefixWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setAvailabilityVerificationRecipientChannelIDPrefix:v40];
 
-  v41 = [IMTextMessagePipelineParameter availabilityVerificationRecipientEncryptionValidationTokenWithBlastDoorTextMessage:v6];
+  v41 = [IMTextMessagePipelineParameter availabilityVerificationRecipientEncryptionValidationTokenWithBlastDoorTextMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setAvailabilityVerificationRecipientEncryptionValidationToken:v41];
 
-  v42 = [IMTextMessagePipelineParameter availabilityOffGridRecipientSubscriptionValidationTokenWithBlastDoorMessage:v6];
+  v42 = [IMTextMessagePipelineParameter availabilityOffGridRecipientSubscriptionValidationTokenWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setAvailabilityOffGridRecipientSubscriptionValidationToken:v42];
 
-  v43 = [IMTextMessagePipelineParameter availabilityOffGridRecipientEncryptionValidationTokenWithBlastDoorMessage:v6];
+  v43 = [IMTextMessagePipelineParameter availabilityOffGridRecipientEncryptionValidationTokenWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setAvailabilityOffGridRecipientEncryptionValidationToken:v43];
 
-  [(IMTextMessagePipelineParameter *)v8 setSeenAsOffGrid:[IMTextMessagePipelineParameter seenAsOffGridWithBlastDoorMessage:v6]];
-  v44 = [IMTextMessagePipelineParameter lastPublisherOfOffGridStatusWithBlastDoorMessage:v6];
+  [(IMTextMessagePipelineParameter *)v8 setSeenAsOffGrid:[IMTextMessagePipelineParameter seenAsOffGridWithBlastDoorMessage:dCopy]];
+  v44 = [IMTextMessagePipelineParameter lastPublisherOfOffGridStatusWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setLastPublisherOfOffGridStatus:v44];
 
-  [(IMTextMessagePipelineParameter *)v8 setExpirable:[IMTextMessagePipelineParameter isExpirableWithBlastDoorTextMessage:v6]];
-  [(IMTextMessagePipelineParameter *)v8 setSos:[IMTextMessagePipelineParameter isSOSWithBlastDoorMessage:v6]];
-  [(IMTextMessagePipelineParameter *)v8 setCritical:[IMTextMessagePipelineParameter isCriticalWithBlastDoorMessage:v6]];
-  [(IMTextMessagePipelineParameter *)v8 setIsBIA:[IMTextMessagePipelineParameter isBIAWithBlastDoorMessage:v6]];
-  v45 = [IMTextMessagePipelineParameter biaReferenceIDWithBlastDoorMessage:v6];
+  [(IMTextMessagePipelineParameter *)v8 setExpirable:[IMTextMessagePipelineParameter isExpirableWithBlastDoorTextMessage:dCopy]];
+  [(IMTextMessagePipelineParameter *)v8 setSos:[IMTextMessagePipelineParameter isSOSWithBlastDoorMessage:dCopy]];
+  [(IMTextMessagePipelineParameter *)v8 setCritical:[IMTextMessagePipelineParameter isCriticalWithBlastDoorMessage:dCopy]];
+  [(IMTextMessagePipelineParameter *)v8 setIsBIA:[IMTextMessagePipelineParameter isBIAWithBlastDoorMessage:dCopy]];
+  v45 = [IMTextMessagePipelineParameter biaReferenceIDWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setBiaReferenceID:v45];
 
-  v46 = [IMTextMessagePipelineParameter replicationSourceServiceNameWithBlastDoorMessage:v6];
+  v46 = [IMTextMessagePipelineParameter replicationSourceServiceNameWithBlastDoorMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setReplicationSourceServiceName:v46];
 
-  [(IMTextMessagePipelineParameter *)v8 setScheduleType:[IMTextMessagePipelineParameter scheduleTypeWithBlastDoorTextMessage:v6]];
-  v47 = [IMTextMessagePipelineParameter scheduledDateWithBlastDoorTextMessage:v6];
+  [(IMTextMessagePipelineParameter *)v8 setScheduleType:[IMTextMessagePipelineParameter scheduleTypeWithBlastDoorTextMessage:dCopy]];
+  v47 = [IMTextMessagePipelineParameter scheduledDateWithBlastDoorTextMessage:dCopy];
   [(IMTextMessagePipelineParameter *)v8 setScheduledDate:v47];
 
-  v48 = [v6 threadIdentifierGUID];
-  [(IMTextMessagePipelineParameter *)v8 setThreadIdentifierGUID:v48];
+  threadIdentifierGUID = [dCopy threadIdentifierGUID];
+  [(IMTextMessagePipelineParameter *)v8 setThreadIdentifierGUID:threadIdentifierGUID];
 
-  v49 = [v6 threadOriginatorFallbackHash];
-  [(IMTextMessagePipelineParameter *)v8 setThreadOriginatorFallbackHash:v49];
+  threadOriginatorFallbackHash = [dCopy threadOriginatorFallbackHash];
+  [(IMTextMessagePipelineParameter *)v8 setThreadOriginatorFallbackHash:threadOriginatorFallbackHash];
 
-  v50 = [v6 expressiveSendStyleIdentifier];
-  [(IMTextMessagePipelineParameter *)v8 setExpressiveSendStyleIdentifier:v50];
+  expressiveSendStyleIdentifier = [dCopy expressiveSendStyleIdentifier];
+  [(IMTextMessagePipelineParameter *)v8 setExpressiveSendStyleIdentifier:expressiveSendStyleIdentifier];
 
-  if ([v6 has_groupParticipantVersion])
+  if ([dCopy has_groupParticipantVersion])
   {
-    v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "groupParticipantVersion")}];
+    v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dCopy, "groupParticipantVersion")}];
     [(IMTextMessagePipelineParameter *)v8 setGroupParticipantVersion:v51];
   }
 
@@ -1720,9 +1720,9 @@ LABEL_25:
     [(IMTextMessagePipelineParameter *)v8 setGroupParticipantVersion:0];
   }
 
-  if ([v6 has_groupProtocolVersion])
+  if ([dCopy has_groupProtocolVersion])
   {
-    v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "groupProtocolVersion")}];
+    v52 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dCopy, "groupProtocolVersion")}];
     [(IMTextMessagePipelineParameter *)v8 setGroupProtocolVersion:v52];
   }
 
@@ -1731,11 +1731,11 @@ LABEL_25:
     [(IMTextMessagePipelineParameter *)v8 setGroupProtocolVersion:0];
   }
 
-  v77 = v7;
-  v53 = v29;
-  if ([v6 has_groupPhotoCreationTime])
+  v77 = dataCopy;
+  v53 = inlineAudioMessages;
+  if ([dCopy has_groupPhotoCreationTime])
   {
-    v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "groupPhotoCreationTime")}];
+    v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(dCopy, "groupPhotoCreationTime")}];
     [(IMTextMessagePipelineParameter *)v8 setGroupPhotoCreationTime:v54];
   }
 
@@ -1744,51 +1744,51 @@ LABEL_25:
     [(IMTextMessagePipelineParameter *)v8 setGroupPhotoCreationTime:0];
   }
 
-  v55 = [v6 replicatedFallbackGUIDs];
-  [(IMTextMessagePipelineParameter *)v8 setReplicatedFallbackGUIDs:v55];
+  replicatedFallbackGUIDs = [dCopy replicatedFallbackGUIDs];
+  [(IMTextMessagePipelineParameter *)v8 setReplicatedFallbackGUIDs:replicatedFallbackGUIDs];
 
-  v56 = [(IMTextMessagePipelineParameter *)v8 participantIdentifiers];
+  participantIdentifiers = [(IMTextMessagePipelineParameter *)v8 participantIdentifiers];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
   v84[2] = sub_22B522470;
   v84[3] = &unk_278702A40;
   v57 = v8;
   v85 = v57;
-  v58 = [v56 __imArrayByFilteringWithBlock:v84];
-  v59 = [v58 _IDsFromURIs];
+  v58 = [participantIdentifiers __imArrayByFilteringWithBlock:v84];
+  _IDsFromURIs = [v58 _IDsFromURIs];
 
-  v60 = [(IMTextMessagePipelineParameter *)v57 fromIdentifier];
-  v61 = [v60 _stripFZIDPrefix];
+  fromIdentifier2 = [(IMTextMessagePipelineParameter *)v57 fromIdentifier];
+  _stripFZIDPrefix = [fromIdentifier2 _stripFZIDPrefix];
 
-  v62 = [(IMTextMessagePipelineParameter *)v57 participantIdentifiers];
-  v63 = [v62 count];
+  participantIdentifiers2 = [(IMTextMessagePipelineParameter *)v57 participantIdentifiers];
+  v63 = [participantIdentifiers2 count];
 
   if (v63 <= 2)
   {
-    if (!-[IMTextMessagePipelineParameter isFromMe](v57, "isFromMe") || ![v59 count])
+    if (!-[IMTextMessagePipelineParameter isFromMe](v57, "isFromMe") || ![_IDsFromURIs count])
     {
       goto LABEL_26;
     }
 
-    v65 = [v59 lastObject];
-    v66 = [v65 _stripFZIDPrefix];
+    lastObject = [_IDsFromURIs lastObject];
+    _stripFZIDPrefix2 = [lastObject _stripFZIDPrefix];
 
-    v61 = v66;
+    _stripFZIDPrefix = _stripFZIDPrefix2;
   }
 
   else
   {
-    v64 = [v6 groupID];
-    [(IMTextMessagePipelineParameter *)v57 setGroupID:v64];
+    groupID = [dCopy groupID];
+    [(IMTextMessagePipelineParameter *)v57 setGroupID:groupID];
 
-    v65 = [v6 currentGroupName];
-    [(IMTextMessagePipelineParameter *)v57 setCurrentGroupName:v65];
+    lastObject = [dCopy currentGroupName];
+    [(IMTextMessagePipelineParameter *)v57 setCurrentGroupName:lastObject];
   }
 
 LABEL_26:
-  if ([v61 length])
+  if ([_stripFZIDPrefix length])
   {
-    [(IMTextMessagePipelineParameter *)v57 setFromDisplayID:v61];
+    [(IMTextMessagePipelineParameter *)v57 setFromDisplayID:_stripFZIDPrefix];
   }
 
   else
@@ -1800,41 +1800,41 @@ LABEL_26:
     }
   }
 
-  v7 = v77;
+  dataCopy = v77;
 LABEL_32:
 
   return v8;
 }
 
-- (IMTextMessagePipelineParameter)initWithBDBasic:(id)a3 idsTrustedData:(id)a4
+- (IMTextMessagePipelineParameter)initWithBDBasic:(id)basic idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  basicCopy = basic;
+  dataCopy = data;
   v63.receiver = self;
   v63.super_class = IMTextMessagePipelineParameter;
   v8 = [(IMTextMessagePipelineParameter *)&v63 init];
   if (v8)
   {
-    v9 = [v7 fromIdentifier];
-    [(IMTextMessagePipelineParameter *)v8 setFromIdentifier:v9];
+    fromIdentifier = [dataCopy fromIdentifier];
+    [(IMTextMessagePipelineParameter *)v8 setFromIdentifier:fromIdentifier];
 
-    v10 = [v7 toIdentifier];
-    [(IMTextMessagePipelineParameter *)v8 setToIdentifier:v10];
+    toIdentifier = [dataCopy toIdentifier];
+    [(IMTextMessagePipelineParameter *)v8 setToIdentifier:toIdentifier];
 
-    -[IMTextMessagePipelineParameter setIsFromMe:](v8, "setIsFromMe:", [v7 isFromMe]);
-    v11 = [v6 metadata];
-    v12 = [v11 messageGUID];
-    v60 = [v12 UUIDString];
+    -[IMTextMessagePipelineParameter setIsFromMe:](v8, "setIsFromMe:", [dataCopy isFromMe]);
+    metadata = [basicCopy metadata];
+    messageGUID = [metadata messageGUID];
+    uUIDString = [messageGUID UUIDString];
 
-    v13 = [v11 timestamp];
-    v59 = [IMTextMessagePipelineParameter richBodyWithBlastDoorBasicMessage:v6];
+    timestamp = [metadata timestamp];
+    v59 = [IMTextMessagePipelineParameter richBodyWithBlastDoorBasicMessage:basicCopy];
     v14 = [IMTextMessagePipelineParameter convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:"convertBlastDoorInstanceTypedAttributesToNativeTypesInAttributedString:supportingStickerAttributes:existingFileTransfersForMessage:" supportingStickerAttributes:? existingFileTransfersForMessage:?];
-    v15 = [v14 messageBodyWithNativeAttributes];
+    messageBodyWithNativeAttributes = [v14 messageBodyWithNativeAttributes];
     v58 = v14;
     v16 = v14;
-    v17 = v15;
-    v18 = [v16 fileTransferGuids];
-    v19 = [IMTextMessagePipelineParameter plainTextBodyWithBlastDoorBasicMessage:v6];
+    v17 = messageBodyWithNativeAttributes;
+    fileTransferGuids = [v16 fileTransferGuids];
+    v19 = [IMTextMessagePipelineParameter plainTextBodyWithBlastDoorBasicMessage:basicCopy];
     if (!v17)
     {
       v20 = objc_alloc(MEMORY[0x277CCA898]);
@@ -1854,60 +1854,60 @@ LABEL_32:
       v17 = v23;
     }
 
-    v24 = [IMTextMessagePipelineParameter plainTextSubjectWithBlastDoorBasicMessage:v6];
+    v24 = [IMTextMessagePipelineParameter plainTextSubjectWithBlastDoorBasicMessage:basicCopy];
     v56 = v17;
     [(IMTextMessagePipelineParameter *)v8 setRichBody:v17];
     [(IMTextMessagePipelineParameter *)v8 setPlainTextBody:v19];
     v55 = v24;
     [(IMTextMessagePipelineParameter *)v8 setPlainTextSubject:v24];
-    v57 = v18;
-    [(IMTextMessagePipelineParameter *)v8 setFileTransferGUIDs:v18];
-    v25 = [v6 threadIdentifierGUID];
-    [(IMTextMessagePipelineParameter *)v8 setThreadIdentifierGUID:v25];
+    v57 = fileTransferGuids;
+    [(IMTextMessagePipelineParameter *)v8 setFileTransferGUIDs:fileTransferGuids];
+    threadIdentifierGUID = [basicCopy threadIdentifierGUID];
+    [(IMTextMessagePipelineParameter *)v8 setThreadIdentifierGUID:threadIdentifierGUID];
 
-    v26 = [v6 threadOriginatorFallbackHash];
-    [(IMTextMessagePipelineParameter *)v8 setThreadOriginatorFallbackHash:v26];
+    threadOriginatorFallbackHash = [basicCopy threadOriginatorFallbackHash];
+    [(IMTextMessagePipelineParameter *)v8 setThreadOriginatorFallbackHash:threadOriginatorFallbackHash];
 
-    v27 = [v6 messageSubType];
-    v28 = [v27 audioMessage];
-    v29 = [v28 inlineAudioMessages];
+    messageSubType = [basicCopy messageSubType];
+    audioMessage = [messageSubType audioMessage];
+    inlineAudioMessages = [audioMessage inlineAudioMessages];
 
-    if ([v29 count] == 1)
+    if ([inlineAudioMessages count] == 1)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-      v31 = [v29 firstObject];
-      if (v31)
+      firstObject = [inlineAudioMessages firstObject];
+      if (firstObject)
       {
-        CFDictionarySetValue(Mutable, @"ia-0", v31);
+        CFDictionarySetValue(Mutable, @"ia-0", firstObject);
       }
 
       [(IMTextMessagePipelineParameter *)v8 setInlineAttachmentsDictionary:Mutable];
     }
 
-    [(IMTextMessagePipelineParameter *)v8 setGUID:v60];
-    v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
+    [(IMTextMessagePipelineParameter *)v8 setGUID:uUIDString];
+    v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:timestamp];
     [(IMTextMessagePipelineParameter *)v8 setTimestamp:v32];
 
-    v33 = [v11 storageContext];
-    -[IMTextMessagePipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [v33 isFromStorage]);
+    storageContext = [metadata storageContext];
+    -[IMTextMessagePipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [storageContext isFromStorage]);
 
-    v34 = [v11 storageContext];
-    -[IMTextMessagePipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [v34 isLastFromStorage]);
+    storageContext2 = [metadata storageContext];
+    -[IMTextMessagePipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [storageContext2 isLastFromStorage]);
 
-    -[IMTextMessagePipelineParameter setWantsDeliveryReceipt:](v8, "setWantsDeliveryReceipt:", [v11 wantsDeliveryReceipt]);
-    -[IMTextMessagePipelineParameter setWantsCheckpointing:](v8, "setWantsCheckpointing:", [v11 wantsCheckpointing]);
-    v35 = [IMTextMessagePipelineParameter participantDestinationIdentifierWithBasicMessage:v6];
+    -[IMTextMessagePipelineParameter setWantsDeliveryReceipt:](v8, "setWantsDeliveryReceipt:", [metadata wantsDeliveryReceipt]);
+    -[IMTextMessagePipelineParameter setWantsCheckpointing:](v8, "setWantsCheckpointing:", [metadata wantsCheckpointing]);
+    v35 = [IMTextMessagePipelineParameter participantDestinationIdentifierWithBasicMessage:basicCopy];
     [(IMTextMessagePipelineParameter *)v8 setParticipantIdentifiers:v35];
 
-    v36 = [(IMTextMessagePipelineParameter *)v8 messageSummaryInfoDictionaryWithBlastDoorBasicMessage:v6];
+    v36 = [(IMTextMessagePipelineParameter *)v8 messageSummaryInfoDictionaryWithBlastDoorBasicMessage:basicCopy];
     [(IMTextMessagePipelineParameter *)v8 setMessageSummaryInfo:v36];
 
-    v37 = [IMTextMessagePipelineParameter replicationSourceServiceNameWithBlastDoorBasicMessage:v6];
+    v37 = [IMTextMessagePipelineParameter replicationSourceServiceNameWithBlastDoorBasicMessage:basicCopy];
     [(IMTextMessagePipelineParameter *)v8 setReplicationSourceServiceName:v37];
 
-    if ([v6 has_groupParticipantVersion])
+    if ([basicCopy has_groupParticipantVersion])
     {
-      v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "groupParticipantVersion")}];
+      v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(basicCopy, "groupParticipantVersion")}];
       [(IMTextMessagePipelineParameter *)v8 setGroupParticipantVersion:v38];
     }
 
@@ -1916,11 +1916,11 @@ LABEL_32:
       [(IMTextMessagePipelineParameter *)v8 setGroupParticipantVersion:0];
     }
 
-    v39 = [v6 has_groupProtocolVersion];
-    v40 = v29;
-    if (v39)
+    has_groupProtocolVersion = [basicCopy has_groupProtocolVersion];
+    v40 = inlineAudioMessages;
+    if (has_groupProtocolVersion)
     {
-      v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "groupProtocolVersion")}];
+      v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(basicCopy, "groupProtocolVersion")}];
       [(IMTextMessagePipelineParameter *)v8 setGroupProtocolVersion:v41];
     }
 
@@ -1929,46 +1929,46 @@ LABEL_32:
       [(IMTextMessagePipelineParameter *)v8 setGroupProtocolVersion:0];
     }
 
-    v42 = [(IMTextMessagePipelineParameter *)v8 participantIdentifiers];
+    participantIdentifiers = [(IMTextMessagePipelineParameter *)v8 participantIdentifiers];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = sub_22B522B1C;
     v61[3] = &unk_278702A40;
     v43 = v8;
     v62 = v43;
-    v44 = [v42 __imArrayByFilteringWithBlock:v61];
-    v45 = [v44 _IDsFromURIs];
+    v44 = [participantIdentifiers __imArrayByFilteringWithBlock:v61];
+    _IDsFromURIs = [v44 _IDsFromURIs];
 
-    v46 = [(IMTextMessagePipelineParameter *)v43 fromIdentifier];
-    v47 = [v46 _stripFZIDPrefix];
+    fromIdentifier2 = [(IMTextMessagePipelineParameter *)v43 fromIdentifier];
+    _stripFZIDPrefix = [fromIdentifier2 _stripFZIDPrefix];
 
-    v48 = [(IMTextMessagePipelineParameter *)v43 participantIdentifiers];
-    v49 = [v48 count];
+    participantIdentifiers2 = [(IMTextMessagePipelineParameter *)v43 participantIdentifiers];
+    v49 = [participantIdentifiers2 count];
 
     if (v49 <= 2)
     {
-      if (!-[IMTextMessagePipelineParameter isFromMe](v43, "isFromMe") || ![v45 count])
+      if (!-[IMTextMessagePipelineParameter isFromMe](v43, "isFromMe") || ![_IDsFromURIs count])
       {
         goto LABEL_23;
       }
 
-      v51 = [v45 lastObject];
-      v52 = [v51 _stripFZIDPrefix];
+      lastObject = [_IDsFromURIs lastObject];
+      _stripFZIDPrefix2 = [lastObject _stripFZIDPrefix];
 
-      v47 = v52;
+      _stripFZIDPrefix = _stripFZIDPrefix2;
     }
 
     else
     {
-      v50 = [v6 groupID];
-      [(IMTextMessagePipelineParameter *)v43 setGroupID:v50];
+      groupID = [basicCopy groupID];
+      [(IMTextMessagePipelineParameter *)v43 setGroupID:groupID];
 
-      v51 = [v6 currentGroupName];
-      [(IMTextMessagePipelineParameter *)v43 setCurrentGroupName:v51];
+      lastObject = [basicCopy currentGroupName];
+      [(IMTextMessagePipelineParameter *)v43 setCurrentGroupName:lastObject];
     }
 
 LABEL_23:
-    [(IMTextMessagePipelineParameter *)v43 setFromDisplayID:v47];
+    [(IMTextMessagePipelineParameter *)v43 setFromDisplayID:_stripFZIDPrefix];
   }
 
   return v8;
@@ -1977,21 +1977,21 @@ LABEL_23:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMTextMessagePipelineParameter *)self GUID];
-  v5 = [(IMTextMessagePipelineParameter *)self timestamp];
+  gUID = [(IMTextMessagePipelineParameter *)self GUID];
+  timestamp = [(IMTextMessagePipelineParameter *)self timestamp];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isFromStorage](self, "isFromStorage")}];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isLastFromStorage](self, "isLastFromStorage")}];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMTextMessagePipelineParameter isFromMe](self, "isFromMe")}];
-  v9 = [(IMTextMessagePipelineParameter *)self messageItems];
-  v10 = [v9 count];
-  v11 = [(IMTextMessagePipelineParameter *)self hadChat];
+  messageItems = [(IMTextMessagePipelineParameter *)self messageItems];
+  v10 = [messageItems count];
+  hadChat = [(IMTextMessagePipelineParameter *)self hadChat];
   v12 = @"NO";
-  if (v11)
+  if (hadChat)
   {
     v12 = @"YES";
   }
 
-  v13 = [v3 stringWithFormat:@"<IMMessagePipelineParameter %p> { guid: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, isFromMe: %@, output messageItems: %lu, hadChat: %@}", self, v4, v5, v6, v7, v8, v10, v12];
+  v13 = [v3 stringWithFormat:@"<IMMessagePipelineParameter %p> { guid: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, isFromMe: %@, output messageItems: %lu, hadChat: %@}", self, gUID, timestamp, v6, v7, v8, v10, v12];
 
   return v13;
 }

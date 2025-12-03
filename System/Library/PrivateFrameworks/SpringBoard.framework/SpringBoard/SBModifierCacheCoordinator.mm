@@ -1,14 +1,14 @@
 @interface SBModifierCacheCoordinator
-- (void)performResponse:(unint64_t)a3;
+- (void)performResponse:(unint64_t)response;
 @end
 
 @implementation SBModifierCacheCoordinator
 
-- (void)performResponse:(unint64_t)a3
+- (void)performResponse:(unint64_t)response
 {
-  if (a3 <= 2)
+  if (response <= 2)
   {
-    *(&self->super.isa + qword_21F8A75F0[a3]) = (*(&self->super.isa + qword_21F8A75F0[a3]) + qword_21F8A7608[a3]);
+    *(&self->super.isa + qword_21F8A75F0[response]) = (*(&self->super.isa + qword_21F8A75F0[response]) + qword_21F8A7608[response]);
   }
 }
 

@@ -1,27 +1,27 @@
 @interface GCSTombstone
 + (id)archivalClasses;
 - (GCSJSONObject)jsonObject;
-- (GCSTombstone)initWithCoder:(id)a3;
-- (GCSTombstone)initWithIdentifier:(id)a3 creationDate:(id)a4 recordType:(int64_t)a5;
-- (GCSTombstone)initWithJSONObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCSTombstone)initWithCoder:(id)coder;
+- (GCSTombstone)initWithIdentifier:(id)identifier creationDate:(id)date recordType:(int64_t)type;
+- (GCSTombstone)initWithJSONObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCSTombstone
 
-- (GCSTombstone)initWithIdentifier:(id)a3 creationDate:(id)a4 recordType:(int64_t)a5
+- (GCSTombstone)initWithIdentifier:(id)identifier creationDate:(id)date recordType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = GCSTombstone;
   v11 = [(GCSTombstone *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_creationDate, a4);
-    v12->_recordType = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_creationDate, date);
+    v12->_recordType = type;
   }
 
   return v12;
@@ -37,30 +37,30 @@
   return [v2 setWithObjects:{v3, v4, v5, v6, objc_opt_class(), 0}];
 }
 
-- (GCSTombstone)initWithCoder:(id)a3
+- (GCSTombstone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[GCSTombstone archivalClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"_jsonObject"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"_jsonObject"];
 
   v7 = [(GCSTombstone *)self initWithJSONObject:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GCSTombstone *)self jsonObject];
-  [v4 encodeObject:v5 forKey:@"_jsonObject"];
+  coderCopy = coder;
+  jsonObject = [(GCSTombstone *)self jsonObject];
+  [coderCopy encodeObject:jsonObject forKey:@"_jsonObject"];
 }
 
-- (GCSTombstone)initWithJSONObject:(id)a3
+- (GCSTombstone)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v14.receiver = self;
     v14.super_class = GCSTombstone;
     v6 = [(GCSTombstone *)&v14 init];
@@ -80,15 +80,15 @@
 
     self = v6;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject
@@ -99,8 +99,8 @@
   v11[0] = identifier;
   v10[0] = @"identifier";
   v10[1] = @"creationDate";
-  v5 = [(NSDate *)creationDate jsonObject];
-  v11[1] = v5;
+  jsonObject = [(NSDate *)creationDate jsonObject];
+  v11[1] = jsonObject;
   v10[2] = @"recordType";
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_recordType];
   v11[2] = v6;

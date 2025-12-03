@@ -1,16 +1,16 @@
 @interface RBDisplayListInterpolator
-+ (id)interpolatorWithFrom:(id)a3 to:(id)a4 options:(id)a5;
-+ (id)newInterpolatorWithFrom:(id)a3 to:(id)a4 options:(id)a5;
-- (CGRect)boundingRectWithProgress:(float)a3;
-- (RBDisplayListInterpolator)initWithFrom:(id)a3 to:(id)a4 options:(id)a5;
++ (id)interpolatorWithFrom:(id)from to:(id)to options:(id)options;
++ (id)newInterpolatorWithFrom:(id)from to:(id)to options:(id)options;
+- (CGRect)boundingRectWithProgress:(float)progress;
+- (RBDisplayListInterpolator)initWithFrom:(id)from to:(id)to options:(id)options;
 - (double)activeDuration;
-- (double)maxAbsoluteVelocityWithProgress:(float)a3;
+- (double)maxAbsoluteVelocityWithProgress:(float)progress;
 - (id).cxx_construct;
-- (id)contentsWithProgress:(float)a3;
-- (id)copyContentsWithProgress:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_drawInState:(float32_t)a3 alpha:(float)a4 by:;
-- (void)setFrom:(id)a3;
+- (id)contentsWithProgress:(float)progress;
+- (id)copyContentsWithProgress:(float)progress;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_drawInState:(float32_t)state alpha:(float)alpha by:;
+- (void)setFrom:(id)from;
 @end
 
 @implementation RBDisplayListInterpolator
@@ -36,21 +36,21 @@
   }
 }
 
-+ (id)interpolatorWithFrom:(id)a3 to:(id)a4 options:(id)a5
++ (id)interpolatorWithFrom:(id)from to:(id)to options:(id)options
 {
-  v5 = [a1 newInterpolatorWithFrom:a3 to:a4 options:a5];
+  v5 = [self newInterpolatorWithFrom:from to:to options:options];
 
   return v5;
 }
 
-+ (id)newInterpolatorWithFrom:(id)a3 to:(id)a4 options:(id)a5
++ (id)newInterpolatorWithFrom:(id)from to:(id)to options:(id)options
 {
   v8 = [RBDisplayListInterpolator alloc];
 
-  return [(RBDisplayListInterpolator *)v8 initWithFrom:a3 to:a4 options:a5];
+  return [(RBDisplayListInterpolator *)v8 initWithFrom:from to:to options:options];
 }
 
-- (RBDisplayListInterpolator)initWithFrom:(id)a3 to:(id)a4 options:(id)a5
+- (RBDisplayListInterpolator)initWithFrom:(id)from to:(id)to options:(id)options
 {
   v15.receiver = self;
   v15.super_class = RBDisplayListInterpolator;
@@ -59,23 +59,23 @@
   if (v8)
   {
     p = v8->_from._p;
-    if (p != a3)
+    if (p != from)
     {
 
-      v9->_from._p = a3;
+      v9->_from._p = from;
     }
 
     v11 = v9->_to._p;
-    if (v11 != a4)
+    if (v11 != to)
     {
 
-      v9->_to._p = a4;
+      v9->_to._p = to;
     }
 
-    v12 = [a5 copy];
+    v12 = [options copy];
 
     v9->_options._p = v12;
-    v13 = [a5 objectForKeyedSubscript:RBDisplayListInterpolatorTransition];
+    v13 = [options objectForKeyedSubscript:RBDisplayListInterpolatorTransition];
     {
       {
         [RBDisplayListInterpolator initWithFrom:to:options:]::$_0::operator()();
@@ -88,7 +88,7 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -145,24 +145,24 @@
   return v5;
 }
 
-- (void)setFrom:(id)a3
+- (void)setFrom:(id)from
 {
   p = self->_from._p;
-  if (p != a3)
+  if (p != from)
   {
 
-    self->_from._p = a3;
+    self->_from._p = from;
   }
 }
 
-- (CGRect)boundingRectWithProgress:(float)a3
+- (CGRect)boundingRectWithProgress:(float)progress
 {
-  v5 = [(_RBDisplayListContents *)self->_from._p _rb_contents];
-  v6 = [(_RBDisplayListContents *)self->_to._p _rb_contents];
+  _rb_contents = [(_RBDisplayListContents *)self->_from._p _rb_contents];
+  _rb_contents2 = [(_RBDisplayListContents *)self->_to._p _rb_contents];
   p = self->_interp._p;
   if (p)
   {
-    RB::DisplayList::interpolated_bounds((p + 152), 0, a3, v5, v6, v7);
+    RB::DisplayList::interpolated_bounds((p + 152), 0, progress, _rb_contents, _rb_contents2, v7);
     v10 = vcvtq_f64_f32(v9);
     v12 = vcvtq_f64_f32(v11);
   }
@@ -182,7 +182,7 @@
   return result;
 }
 
-- (double)maxAbsoluteVelocityWithProgress:(float)a3
+- (double)maxAbsoluteVelocityWithProgress:(float)progress
 {
   p = self->_interp._p;
   result = 0.0;
@@ -216,7 +216,7 @@
         width = v23.size.height;
       }
 
-      v21 = a3;
+      progressCopy = progress;
       return width * RB::DisplayList::Interpolator::Contents::max_animation_speed((self->_interp._p + 16), v23.origin.x, v23.origin.y);
     }
   }
@@ -224,26 +224,26 @@
   return result;
 }
 
-- (id)copyContentsWithProgress:(float)a3
+- (id)copyContentsWithProgress:(float)progress
 {
   v5 = [RBInterpolatedDisplayListContents alloc];
 
-  return [(RBInterpolatedDisplayListContents *)v5 initWithInterpolator:a3 by:?];
+  return [(RBInterpolatedDisplayListContents *)v5 initWithInterpolator:progress by:?];
 }
 
-- (id)contentsWithProgress:(float)a3
+- (id)contentsWithProgress:(float)progress
 {
   v3 = [(RBDisplayListInterpolator *)self copyContentsWithProgress:?];
 
   return v3;
 }
 
-- (void)_drawInState:(float32_t)a3 alpha:(float)a4 by:
+- (void)_drawInState:(float32_t)state alpha:(float)alpha by:
 {
-  if (a1)
+  if (self)
   {
-    v8 = [*(a1 + 16) _rb_contents];
-    v9 = [*(a1 + 24) _rb_contents];
+    _rb_contents = [*(self + 16) _rb_contents];
+    _rb_contents2 = [*(self + 24) _rb_contents];
     v10 = a2[1];
     if (!*(v10 + 24))
     {
@@ -257,21 +257,21 @@
     v18 = v11;
     v19 = 0;
     v20 = 0;
-    v13 = *(a1 + 8);
+    v13 = *(self + 8);
     if (v13)
     {
-      RB::DisplayList::Builder::draw_interpolated((v10 + 16), a2, (v13 + 152), a3, a4, v8, v9, &v17);
+      RB::DisplayList::Builder::draw_interpolated((v10 + 16), a2, (v13 + 152), state, alpha, _rb_contents, _rb_contents2, &v17);
     }
 
     if (*(v10 + 320))
     {
-      v14 = [*(a1 + 16) _rb_xml_document];
-      v15 = [*(a1 + 24) _rb_xml_document];
-      if (v14)
+      _rb_xml_document = [*(self + 16) _rb_xml_document];
+      _rb_xml_document2 = [*(self + 24) _rb_xml_document];
+      if (_rb_xml_document)
       {
-        if (v15)
+        if (_rb_xml_document2)
         {
-          RB::XML::DisplayList::draw_interpolated(*(v10 + 320), a2, a1, v14, v15, v16, a3, a4);
+          RB::XML::DisplayList::draw_interpolated(*(v10 + 320), a2, self, _rb_xml_document, _rb_xml_document2, v16, state, alpha);
         }
       }
     }

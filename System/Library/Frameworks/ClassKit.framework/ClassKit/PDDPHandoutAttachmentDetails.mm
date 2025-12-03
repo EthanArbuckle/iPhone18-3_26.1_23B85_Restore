@@ -1,17 +1,17 @@
 @interface PDDPHandoutAttachmentDetails
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttachmentType:(id)a3;
-- (int)StringAsContextType:(id)a3;
+- (int)StringAsAttachmentType:(id)type;
+- (int)StringAsContextType:(id)type;
 - (int)attachmentType;
 - (int)contextType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasContextType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasContextType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPHandoutAttachmentDetails
@@ -29,45 +29,45 @@
   }
 }
 
-- (int)StringAsAttachmentType:(id)a3
+- (int)StringAsAttachmentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"URL_TYPE"])
+  else if ([typeCopy isEqualToString:@"URL_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_TYPE"])
+  else if ([typeCopy isEqualToString:@"CONTEXT_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ASSET_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSET_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"APP_TYPE"])
+  else if ([typeCopy isEqualToString:@"APP_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HAND_IN_REQUEST_TYPE"])
+  else if ([typeCopy isEqualToString:@"HAND_IN_REQUEST_TYPE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_TYPE"])
+  else if ([typeCopy isEqualToString:@"SURVEY_TYPE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ASSESSMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSESSMENT_TYPE"])
   {
     v4 = 7;
   }
@@ -93,9 +93,9 @@
   }
 }
 
-- (void)setHasContextType:(BOOL)a3
+- (void)setHasContextType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -108,100 +108,100 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsContextType:(id)a3
+- (int)StringAsContextType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_CONTEXT_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_CONTEXT_TYPE"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"NONE"])
+  else if ([typeCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APP"])
+  else if ([typeCopy isEqualToString:@"APP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CHAPTER"])
+  else if ([typeCopy isEqualToString:@"CHAPTER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SECTION"])
+  else if ([typeCopy isEqualToString:@"SECTION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LEVEL"])
+  else if ([typeCopy isEqualToString:@"LEVEL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PAGE"])
+  else if ([typeCopy isEqualToString:@"PAGE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TASK"])
+  else if ([typeCopy isEqualToString:@"TASK"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CHALLENGE"])
+  else if ([typeCopy isEqualToString:@"CHALLENGE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"QUIZ"])
+  else if ([typeCopy isEqualToString:@"QUIZ"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EXERCISE"])
+  else if ([typeCopy isEqualToString:@"EXERCISE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LESSON"])
+  else if ([typeCopy isEqualToString:@"LESSON"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BOOK"])
+  else if ([typeCopy isEqualToString:@"BOOK"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"GAME"])
+  else if ([typeCopy isEqualToString:@"GAME"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"DOCUMENT"])
+  else if ([typeCopy isEqualToString:@"DOCUMENT"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"AUDIO"])
+  else if ([typeCopy isEqualToString:@"AUDIO"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"VIDEO"])
+  else if ([typeCopy isEqualToString:@"VIDEO"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"COURSE"])
+  else if ([typeCopy isEqualToString:@"COURSE"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typeCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 17;
   }
@@ -219,8 +219,8 @@
   v7.receiver = self;
   v7.super_class = PDDPHandoutAttachmentDetails;
   v3 = [(PDDPHandoutAttachmentDetails *)&v7 description];
-  v4 = [(PDDPHandoutAttachmentDetails *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPHandoutAttachmentDetails *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -279,14 +279,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_attachmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -294,7 +294,7 @@
   {
     attachmentType = self->_attachmentType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -302,51 +302,51 @@
   {
     contextType = self->_contextType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_appIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_attachmentId)
   {
-    [v4 setAttachmentId:?];
-    v4 = v6;
+    [toCopy setAttachmentId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 6) = self->_attachmentType;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 6) = self->_attachmentType;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 7) = self->_contextType;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 7) = self->_contextType;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_appIdentifier)
   {
     [v6 setAppIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_attachmentId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_attachmentId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -364,23 +364,23 @@
     *(v5 + 32) |= 2u;
   }
 
-  v9 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v10 = v5[1];
   v5[1] = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   attachmentId = self->_attachmentId;
-  if (attachmentId | *(v4 + 2))
+  if (attachmentId | *(equalCopy + 2))
   {
     if (![(NSString *)attachmentId isEqual:?])
     {
@@ -388,16 +388,16 @@
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_attachmentType != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_attachmentType != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_16:
     v8 = 0;
@@ -406,19 +406,19 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_contextType != *(v4 + 7))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_contextType != *(equalCopy + 7))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   appIdentifier = self->_appIdentifier;
-  if (appIdentifier | *(v4 + 1))
+  if (appIdentifier | *(equalCopy + 1))
   {
     v8 = [(NSString *)appIdentifier isEqual:?];
   }
@@ -460,34 +460,34 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_appIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PDDPHandoutAttachmentDetails *)self setAttachmentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_attachmentType = v4[6];
+    self->_attachmentType = fromCopy[6];
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_contextType = v4[7];
+    self->_contextType = fromCopy[7];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDDPHandoutAttachmentDetails *)self setAppIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

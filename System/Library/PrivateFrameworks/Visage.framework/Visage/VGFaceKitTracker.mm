@@ -1,13 +1,13 @@
 @interface VGFaceKitTracker
-- (BOOL)processWithCaptureData:(id)a3 callback:(id)a4;
-- (VGFaceKitTracker)initWithOptions:(const VGFaceKitTrackerOptions *)a3;
-- (id)buildInputDictionaryWithCaptureData:(id)a3 callback:(id)a4;
+- (BOOL)processWithCaptureData:(id)data callback:(id)callback;
+- (VGFaceKitTracker)initWithOptions:(const VGFaceKitTrackerOptions *)options;
+- (id)buildInputDictionaryWithCaptureData:(id)data callback:(id)callback;
 - (void)dealloc;
 @end
 
 @implementation VGFaceKitTracker
 
-- (VGFaceKitTracker)initWithOptions:(const VGFaceKitTrackerOptions *)a3
+- (VGFaceKitTracker)initWithOptions:(const VGFaceKitTrackerOptions *)options
 {
   v15 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = *a3;
+    v4->_options = *options;
     v6 = objc_opt_new();
     [v6 setObject:&unk_2880F5EC0 forKeyedSubscript:*MEMORY[0x277CECEA0]];
     [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CECF00]];
@@ -89,11 +89,11 @@ LABEL_16:
   [(VGFaceKitTracker *)&v6 dealloc];
 }
 
-- (id)buildInputDictionaryWithCaptureData:(id)a3 callback:(id)a4
+- (id)buildInputDictionaryWithCaptureData:(id)data callback:(id)callback
 {
   v59[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v45 = a4;
+  dataCopy = data;
+  callbackCopy = callback;
   v58[0] = *MEMORY[0x277CECEA8];
   v7 = [MEMORY[0x277CBEA60] vg_arrayWithRowMajorNumbersFromFloat3x3:{*MEMORY[0x277D860B0], *(MEMORY[0x277D860B0] + 16), *(MEMORY[0x277D860B0] + 32)}];
   v58[1] = *MEMORY[0x277CECEE8];
@@ -104,7 +104,7 @@ LABEL_16:
   v55 = *MEMORY[0x277CECE88];
   v8 = v55;
   v9 = MEMORY[0x277CBEA60];
-  [v6 videoIntrinsics];
+  [dataCopy videoIntrinsics];
   v10 = [v9 vg_arrayWithRowMajorNumbersFromFloat3x3:?];
   v56 = *MEMORY[0x277CECE58];
   v11 = v56;
@@ -114,7 +114,7 @@ LABEL_16:
 
   v53[0] = v8;
   v12 = MEMORY[0x277CBEA60];
-  [v6 depthIntrinsics];
+  [dataCopy depthIntrinsics];
   v13 = [v12 vg_arrayWithRowMajorNumbersFromFloat3x3:?];
   v53[1] = v11;
   v54[0] = v13;
@@ -123,7 +123,7 @@ LABEL_16:
 
   if (self->_options.useInternalFaceDetector)
   {
-    v14 = 0;
+    faceID = 0;
     v15 = 0.0;
     v16 = 0.0;
     v17 = 0.0;
@@ -132,15 +132,15 @@ LABEL_16:
 
   else
   {
-    v19 = [v6 face];
-    [v19 bounds];
+    face = [dataCopy face];
+    [face bounds];
     v18 = v20;
     v17 = v21;
     v15 = v22;
     v16 = v23;
 
-    v24 = [v6 face];
-    v14 = [v24 faceID];
+    face2 = [dataCopy face];
+    faceID = [face2 faceID];
   }
 
   v61.origin.x = v18;
@@ -149,9 +149,9 @@ LABEL_16:
   v61.size.height = v16;
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v61);
   v51[0] = *MEMORY[0x277CECEC8];
-  if (v6)
+  if (dataCopy)
   {
-    [v6 timestamp];
+    [dataCopy timestamp];
   }
 
   else
@@ -166,16 +166,16 @@ LABEL_16:
   v28 = *MEMORY[0x277CECDD0];
   v51[1] = v27;
   v51[2] = v28;
-  v29 = [v6 yuvRectified];
+  yuvRectified = [dataCopy yuvRectified];
   v30 = *MEMORY[0x277CECDC8];
-  v52[2] = v29;
+  v52[2] = yuvRectified;
   v52[3] = v43;
   v31 = *MEMORY[0x277CECDE8];
   v51[3] = v30;
   v51[4] = v31;
-  v32 = [v6 depth];
+  depth = [dataCopy depth];
   v33 = *MEMORY[0x277CECE08];
-  v52[4] = v32;
+  v52[4] = depth;
   v52[5] = &unk_2880F5CC8;
   v34 = *MEMORY[0x277CECE68];
   v35 = MEMORY[0x277CBEC38];
@@ -183,11 +183,11 @@ LABEL_16:
   v51[6] = v34;
   v52[6] = MEMORY[0x277CBEC38];
   v51[7] = *MEMORY[0x277CECDB8];
-  v36 = MEMORY[0x2743B9AA0](v45);
+  v36 = MEMORY[0x2743B9AA0](callbackCopy);
   v52[7] = v36;
   v51[8] = *MEMORY[0x277CECE30];
   v48[0] = *MEMORY[0x277CECE18];
-  v37 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
+  v37 = [MEMORY[0x277CCABB0] numberWithInteger:faceID];
   v48[1] = *MEMORY[0x277CECE28];
   v49[0] = v37;
   v49[1] = DictionaryRepresentation;
@@ -204,19 +204,19 @@ LABEL_16:
   return v40;
 }
 
-- (BOOL)processWithCaptureData:(id)a3 callback:(id)a4
+- (BOOL)processWithCaptureData:(id)data callback:(id)callback
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  callbackCopy = callback;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__VGFaceKitTracker_processWithCaptureData_callback___block_invoke;
   v16[3] = &unk_279E28E58;
-  v8 = v7;
+  v8 = callbackCopy;
   v17 = v8;
   v9 = MEMORY[0x2743B9AA0](v16);
-  v10 = [(VGFaceKitTracker *)self buildInputDictionaryWithCaptureData:v6 callback:v9];
+  v10 = [(VGFaceKitTracker *)self buildInputDictionaryWithCaptureData:dataCopy callback:v9];
   faceKit = self->_faceKit;
   v12 = CVAFaceTrackingProcess();
   if (v12)

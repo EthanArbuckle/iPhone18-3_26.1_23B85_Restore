@@ -1,65 +1,65 @@
 @interface CAFSymbolNameAndColor
-+ (id)symbolNameAndColorWithArray:(id)a3;
-+ (id)symbolNameAndColorWithSymbolImageWithColors:(id)a3;
-- (CAFSymbolNameAndColor)initWithArray:(id)a3;
-- (CAFSymbolNameAndColor)initWithSymbolImageWithColors:(id)a3;
++ (id)symbolNameAndColorWithArray:(id)array;
++ (id)symbolNameAndColorWithSymbolImageWithColors:(id)colors;
+- (CAFSymbolNameAndColor)initWithArray:(id)array;
+- (CAFSymbolNameAndColor)initWithSymbolImageWithColors:(id)colors;
 - (NSArray)arrayRepresentation;
 - (NSString)formattedValue;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation CAFSymbolNameAndColor
 
-+ (id)symbolNameAndColorWithArray:(id)a3
++ (id)symbolNameAndColorWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithArray:arrayCopy];
 
   return v5;
 }
 
-+ (id)symbolNameAndColorWithSymbolImageWithColors:(id)a3
++ (id)symbolNameAndColorWithSymbolImageWithColors:(id)colors
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSymbolImageWithColors:v4];
+  colorsCopy = colors;
+  v5 = [[self alloc] initWithSymbolImageWithColors:colorsCopy];
 
   return v5;
 }
 
-- (CAFSymbolNameAndColor)initWithSymbolImageWithColors:(id)a3
+- (CAFSymbolNameAndColor)initWithSymbolImageWithColors:(id)colors
 {
-  v5 = a3;
+  colorsCopy = colors;
   v9.receiver = self;
   v9.super_class = CAFSymbolNameAndColor;
   v6 = [(CAFSymbolNameAndColor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_symbolImageWithColors, a3);
+    objc_storeStrong(&v6->_symbolImageWithColors, colors);
   }
 
   return v7;
 }
 
-- (CAFSymbolNameAndColor)initWithArray:(id)a3
+- (CAFSymbolNameAndColor)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v18.receiver = self;
   v18.super_class = CAFSymbolNameAndColor;
   v5 = [(CAFSymbolNameAndColor *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __39__CAFSymbolNameAndColor_initWithArray___block_invoke;
     v15 = &unk_27890DA70;
-    v16 = v6;
+    v16 = array;
     v7 = v5;
     v17 = v7;
-    v8 = v6;
-    [v4 enumerateObjectsUsingBlock:&v12];
+    v8 = array;
+    [arrayCopy enumerateObjectsUsingBlock:&v12];
     v9 = [v8 copy];
     symbolImageWithColors = v7->_symbolImageWithColors;
     v7->_symbolImageWithColors = v9;
@@ -96,12 +96,12 @@ void __39__CAFSymbolNameAndColor_initWithArray___block_invoke(uint64_t a1, void 
 
 - (NSString)formattedValue
 {
-  v3 = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
-  if ([v3 count])
+  symbolImageWithColors = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
+  if ([symbolImageWithColors count])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    symbolImageWithColors2 = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
+    v6 = [symbolImageWithColors2 componentsJoinedByString:{@", "}];
     v7 = [v4 stringWithFormat:@"[ %@ ]", v6];
   }
 
@@ -121,8 +121,8 @@ void __39__CAFSymbolNameAndColor_initWithArray___block_invoke(uint64_t a1, void 
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  symbolImageWithColors = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
+  v5 = [symbolImageWithColors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,14 +133,14 @@ void __39__CAFSymbolNameAndColor_initWithArray___block_invoke(uint64_t a1, void 
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(symbolImageWithColors);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [symbolImageWithColors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -151,18 +151,18 @@ void __39__CAFSymbolNameAndColor_initWithArray___block_invoke(uint64_t a1, void 
   return v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v4 = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  symbolImageWithColors = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
+  v5 = [symbolImageWithColors objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  symbolImageWithColors = [(CAFSymbolNameAndColor *)self symbolImageWithColors];
+  v9 = [symbolImageWithColors countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

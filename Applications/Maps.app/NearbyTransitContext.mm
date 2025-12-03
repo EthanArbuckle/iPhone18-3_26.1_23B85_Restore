@@ -2,37 +2,37 @@
 - (ChromeViewController)chromeViewController;
 - (_TtC4Maps20NearbyTransitContext)init;
 - (id)desiredCards;
-- (int64_t)currentlyDisplayedViewModeForNearbyTransitViewController:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)nearbyTransitViewController:(id)a3 didSelect:(id)a4 timeZone:(id)a5 scheduledWindowStart:(id)a6 includeDirections:(BOOL)a7;
-- (void)nearbyTransitViewController:(id)a3 select:(id)a4;
-- (void)nearbyTransitViewController:(id)a3 setViewMode:(int64_t)a4;
-- (void)nearbyTransitViewControllerDidEncounterTeachableMoment:(id)a3;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
-- (void)setChromeViewController:(id)a3;
+- (int64_t)currentlyDisplayedViewModeForNearbyTransitViewController:(id)controller;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)nearbyTransitViewController:(id)controller didSelect:(id)select timeZone:(id)zone scheduledWindowStart:(id)start includeDirections:(BOOL)directions;
+- (void)nearbyTransitViewController:(id)controller select:(id)select;
+- (void)nearbyTransitViewController:(id)controller setViewMode:(int64_t)mode;
+- (void)nearbyTransitViewControllerDidEncounterTeachableMoment:(id)moment;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
+- (void)setChromeViewController:(id)controller;
 @end
 
 @implementation NearbyTransitContext
 
-- (void)nearbyTransitViewControllerDidEncounterTeachableMoment:(id)a3
+- (void)nearbyTransitViewControllerDidEncounterTeachableMoment:(id)moment
 {
-  v4 = a3;
-  v5 = self;
+  momentCopy = moment;
+  selfCopy = self;
   sub_1000FAAD4();
 }
 
-- (void)nearbyTransitViewController:(id)a3 didSelect:(id)a4 timeZone:(id)a5 scheduledWindowStart:(id)a6 includeDirections:(BOOL)a7
+- (void)nearbyTransitViewController:(id)controller didSelect:(id)select timeZone:(id)zone scheduledWindowStart:(id)start includeDirections:(BOOL)directions
 {
-  v7 = a7;
+  directionsCopy = directions;
   v13 = sub_1000CE6B8(&qword_10190EBD0);
   __chkstk_darwin(v13 - 8);
   v15 = &v25 - v14;
   v16 = sub_1000CE6B8(&unk_10190A800);
   __chkstk_darwin(v16 - 8);
   v18 = &v25 - v17;
-  if (a5)
+  if (zone)
   {
     static TimeZone._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = type metadata accessor for TimeZone();
@@ -45,7 +45,7 @@
     (*(*(v20 - 8) + 56))(v18, 1, 1, v20);
   }
 
-  if (a6)
+  if (start)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v21 = 0;
@@ -58,48 +58,48 @@
 
   v22 = type metadata accessor for Date();
   (*(*(v22 - 8) + 56))(v15, v21, 1, v22);
-  v23 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v24 = self;
-  sub_1000FAB9C(a4, v18, v15, v7);
+  selfCopy = self;
+  sub_1000FAB9C(select, v18, v15, directionsCopy);
 
   swift_unknownObjectRelease();
   sub_100024F64(v15, &qword_10190EBD0);
   sub_100024F64(v18, &unk_10190A800);
 }
 
-- (void)nearbyTransitViewController:(id)a3 select:(id)a4
+- (void)nearbyTransitViewController:(id)controller select:(id)select
 {
   sub_1000CE6B8(&unk_10190A7F0);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1000FAF5C();
 }
 
-- (void)nearbyTransitViewController:(id)a3 setViewMode:(int64_t)a4
+- (void)nearbyTransitViewController:(id)controller setViewMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = self;
-  sub_1000FB06C(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000FB06C(mode);
 }
 
-- (int64_t)currentlyDisplayedViewModeForNearbyTransitViewController:(id)a3
+- (int64_t)currentlyDisplayedViewModeForNearbyTransitViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(NearbyTransitContext *)v3 iosChromeViewController];
-  if (v4)
+  selfCopy = self;
+  iosChromeViewController = [(NearbyTransitContext *)selfCopy iosChromeViewController];
+  if (iosChromeViewController)
   {
-    v5 = v4;
-    v6 = [v5 displayedViewMode];
+    v5 = iosChromeViewController;
+    displayedViewMode = [v5 displayedViewMode];
   }
 
   else
   {
-    v6 = -1;
+    displayedViewMode = -1;
   }
 
-  return v6;
+  return displayedViewMode;
 }
 
 - (ChromeViewController)chromeViewController
@@ -109,11 +109,11 @@
   return Strong;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
   swift_unknownObjectWeakAssign();
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001164D8();
 }
 
@@ -132,7 +132,7 @@
 
 - (id)desiredCards
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10014B2B8();
 
   if (v3)
@@ -149,36 +149,36 @@
   return v4.super.isa;
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
-  v7 = self;
-  v3 = [(NearbyTransitContext *)v7 iosBasedChromeViewController];
-  v4 = v7;
-  if (v3)
+  selfCopy = self;
+  iosBasedChromeViewController = [(NearbyTransitContext *)selfCopy iosBasedChromeViewController];
+  v4 = selfCopy;
+  if (iosBasedChromeViewController)
   {
-    v5 = *(v7 + OBJC_IVAR____TtC4Maps20NearbyTransitContext_nearbyTransitViewController);
+    v5 = *(selfCopy + OBJC_IVAR____TtC4Maps20NearbyTransitContext_nearbyTransitViewController);
     if (v5)
     {
       v6 = v5;
-      [v3 registerAdditionalMapViewDelegate:v6];
+      [iosBasedChromeViewController registerAdditionalMapViewDelegate:v6];
     }
 
-    v4 = v7;
+    v4 = selfCopy;
   }
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v7 = self;
-  v4 = [(NearbyTransitContext *)v7 iosBasedChromeViewController];
-  if (v4)
+  selfCopy = self;
+  iosBasedChromeViewController = [(NearbyTransitContext *)selfCopy iosBasedChromeViewController];
+  if (iosBasedChromeViewController)
   {
-    v5 = v4;
-    v6 = [v4 settingsController];
+    v5 = iosBasedChromeViewController;
+    settingsController = [iosBasedChromeViewController settingsController];
 
-    if (v6)
+    if (settingsController)
     {
-      [v6 setMapViewMode:3 animated:1];
+      [settingsController setMapViewMode:3 animated:1];
     }
   }
 
@@ -188,20 +188,20 @@
   }
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
   sub_10014B68C();
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -210,11 +210,11 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
-  sub_100425634(a3);
+  sub_100425634(state);
 
   sub_1000DB2F4(v10);
 }

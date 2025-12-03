@@ -1,21 +1,21 @@
 @interface IRInspectionOrderOfExectionElement
-- (IRInspectionOrderOfExectionElement)initWithRuleName:(id)a3 andRuleType:(id)a4;
+- (IRInspectionOrderOfExectionElement)initWithRuleName:(id)name andRuleType:(id)type;
 @end
 
 @implementation IRInspectionOrderOfExectionElement
 
-- (IRInspectionOrderOfExectionElement)initWithRuleName:(id)a3 andRuleType:(id)a4
+- (IRInspectionOrderOfExectionElement)initWithRuleName:(id)name andRuleType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = IRInspectionOrderOfExectionElement;
   v8 = [(IRInspectionOrderOfExectionElement *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(IRInspectionOrderOfExectionElement *)v8 setRuleName:v6];
-    [(IRInspectionOrderOfExectionElement *)v9 setRuleType:v7];
+    [(IRInspectionOrderOfExectionElement *)v8 setRuleName:nameCopy];
+    [(IRInspectionOrderOfExectionElement *)v9 setRuleType:typeCopy];
   }
 
   return v9;

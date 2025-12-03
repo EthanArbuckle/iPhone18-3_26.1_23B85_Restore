@@ -1,17 +1,17 @@
 @interface CRKClassKitClassPropertyApplicatorResult
-- (CRKClassKitClassPropertyApplicatorResult)initWithClassWasModified:(BOOL)a3;
+- (CRKClassKitClassPropertyApplicatorResult)initWithClassWasModified:(BOOL)modified;
 @end
 
 @implementation CRKClassKitClassPropertyApplicatorResult
 
-- (CRKClassKitClassPropertyApplicatorResult)initWithClassWasModified:(BOOL)a3
+- (CRKClassKitClassPropertyApplicatorResult)initWithClassWasModified:(BOOL)modified
 {
   v5.receiver = self;
   v5.super_class = CRKClassKitClassPropertyApplicatorResult;
   result = [(CRKClassKitClassPropertyApplicatorResult *)&v5 init];
   if (result)
   {
-    result->_classWasModified = a3;
+    result->_classWasModified = modified;
   }
 
   return result;

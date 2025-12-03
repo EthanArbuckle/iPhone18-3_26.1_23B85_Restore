@@ -1,43 +1,43 @@
 @interface BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithLaunchTimeInMs:(id)a3 endpointDelayInMs:(id)a4 siriResponseTimeInMs:(id)a5 timeToUufrInMs:(id)a6 timeToFirstWordInMs:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithLaunchTimeInMs:(id)ms endpointDelayInMs:(id)inMs siriResponseTimeInMs:(id)timeInMs timeToUufrInMs:(id)uufrInMs timeToFirstWordInMs:(id)wordInMs;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_endpointDelayInMsJSONArray;
 - (id)_launchTimeInMsJSONArray;
 - (id)_siriResponseTimeInMsJSONArray;
 - (id)_timeToFirstWordInMsJSONArray;
 - (id)_timeToUufrInMsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
-    v7 = [v5 launchTimeInMs];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    launchTimeInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
+    launchTimeInMs2 = [v5 launchTimeInMs];
+    v8 = launchTimeInMs2;
+    if (launchTimeInMs == launchTimeInMs2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
-      v10 = [v5 launchTimeInMs];
-      v11 = [v9 isEqual:v10];
+      launchTimeInMs3 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
+      launchTimeInMs4 = [v5 launchTimeInMs];
+      v11 = [launchTimeInMs3 isEqual:launchTimeInMs4];
 
       if (!v11)
       {
@@ -45,18 +45,18 @@
       }
     }
 
-    v13 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
-    v14 = [v5 endpointDelayInMs];
-    v15 = v14;
-    if (v13 == v14)
+    endpointDelayInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
+    endpointDelayInMs2 = [v5 endpointDelayInMs];
+    v15 = endpointDelayInMs2;
+    if (endpointDelayInMs == endpointDelayInMs2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
-      v17 = [v5 endpointDelayInMs];
-      v18 = [v16 isEqual:v17];
+      endpointDelayInMs3 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
+      endpointDelayInMs4 = [v5 endpointDelayInMs];
+      v18 = [endpointDelayInMs3 isEqual:endpointDelayInMs4];
 
       if (!v18)
       {
@@ -64,18 +64,18 @@
       }
     }
 
-    v19 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
-    v20 = [v5 siriResponseTimeInMs];
-    v21 = v20;
-    if (v19 == v20)
+    siriResponseTimeInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
+    siriResponseTimeInMs2 = [v5 siriResponseTimeInMs];
+    v21 = siriResponseTimeInMs2;
+    if (siriResponseTimeInMs == siriResponseTimeInMs2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
-      v23 = [v5 siriResponseTimeInMs];
-      v24 = [v22 isEqual:v23];
+      siriResponseTimeInMs3 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
+      siriResponseTimeInMs4 = [v5 siriResponseTimeInMs];
+      v24 = [siriResponseTimeInMs3 isEqual:siriResponseTimeInMs4];
 
       if (!v24)
       {
@@ -83,18 +83,18 @@
       }
     }
 
-    v25 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
-    v26 = [v5 timeToUufrInMs];
-    v27 = v26;
-    if (v25 == v26)
+    timeToUufrInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
+    timeToUufrInMs2 = [v5 timeToUufrInMs];
+    v27 = timeToUufrInMs2;
+    if (timeToUufrInMs == timeToUufrInMs2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
-      v29 = [v5 timeToUufrInMs];
-      v30 = [v28 isEqual:v29];
+      timeToUufrInMs3 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
+      timeToUufrInMs4 = [v5 timeToUufrInMs];
+      v30 = [timeToUufrInMs3 isEqual:timeToUufrInMs4];
 
       if (!v30)
       {
@@ -106,18 +106,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
-    v32 = [v5 timeToFirstWordInMs];
-    if (v31 == v32)
+    timeToFirstWordInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
+    timeToFirstWordInMs2 = [v5 timeToFirstWordInMs];
+    if (timeToFirstWordInMs == timeToFirstWordInMs2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
-      v34 = [v5 timeToFirstWordInMs];
-      v12 = [v33 isEqual:v34];
+      timeToFirstWordInMs3 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
+      timeToFirstWordInMs4 = [v5 timeToFirstWordInMs];
+      v12 = [timeToFirstWordInMs3 isEqual:timeToFirstWordInMs4];
     }
 
     goto LABEL_23;
@@ -132,56 +132,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _launchTimeInMsJSONArray];
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _endpointDelayInMsJSONArray];
-  v5 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _siriResponseTimeInMsJSONArray];
-  v6 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _timeToUufrInMsJSONArray];
-  v7 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _timeToFirstWordInMsJSONArray];
+  _launchTimeInMsJSONArray = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _launchTimeInMsJSONArray];
+  _endpointDelayInMsJSONArray = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _endpointDelayInMsJSONArray];
+  _siriResponseTimeInMsJSONArray = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _siriResponseTimeInMsJSONArray];
+  _timeToUufrInMsJSONArray = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _timeToUufrInMsJSONArray];
+  _timeToFirstWordInMsJSONArray = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self _timeToFirstWordInMsJSONArray];
   v18 = @"launchTimeInMs";
-  v8 = v3;
-  if (!v3)
+  null = _launchTimeInMsJSONArray;
+  if (!_launchTimeInMsJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"endpointDelayInMs";
-  v9 = v4;
-  if (!v4)
+  null2 = _endpointDelayInMsJSONArray;
+  if (!_endpointDelayInMsJSONArray)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"siriResponseTimeInMs";
-  v10 = v5;
-  if (!v5)
+  null3 = _siriResponseTimeInMsJSONArray;
+  if (!_siriResponseTimeInMsJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"timeToUufrInMs";
-  v11 = v6;
-  if (!v6)
+  null4 = _timeToUufrInMsJSONArray;
+  if (!_timeToUufrInMsJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"timeToFirstWordInMs";
-  v12 = v7;
-  if (!v7)
+  null5 = _timeToFirstWordInMsJSONArray;
+  if (!_timeToFirstWordInMsJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (_timeToFirstWordInMsJSONArray)
   {
-    if (v6)
+    if (_timeToUufrInMsJSONArray)
     {
       goto LABEL_13;
     }
@@ -190,10 +190,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (_timeToUufrInMsJSONArray)
     {
 LABEL_13:
-      if (v5)
+      if (_siriResponseTimeInMsJSONArray)
       {
         goto LABEL_14;
       }
@@ -202,17 +202,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (_siriResponseTimeInMsJSONArray)
   {
 LABEL_14:
-    if (v4)
+    if (_endpointDelayInMsJSONArray)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (_launchTimeInMsJSONArray)
     {
       goto LABEL_16;
     }
@@ -222,13 +222,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!_endpointDelayInMsJSONArray)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (_launchTimeInMsJSONArray)
   {
     goto LABEL_16;
   }
@@ -249,8 +249,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  timeToFirstWordInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
+  v5 = [timeToFirstWordInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -261,15 +261,15 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeToFirstWordInMs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -279,7 +279,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [timeToFirstWordInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -298,8 +298,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  timeToUufrInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
+  v5 = [timeToUufrInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -310,15 +310,15 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(timeToUufrInMs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -328,7 +328,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [timeToUufrInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -347,8 +347,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  siriResponseTimeInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
+  v5 = [siriResponseTimeInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -359,15 +359,15 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(siriResponseTimeInMs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -377,7 +377,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [siriResponseTimeInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -396,8 +396,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  endpointDelayInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
+  v5 = [endpointDelayInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -408,15 +408,15 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(endpointDelayInMs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -426,7 +426,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [endpointDelayInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -445,8 +445,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  launchTimeInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
+  v5 = [launchTimeInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -457,15 +457,15 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(launchTimeInMs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -475,7 +475,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [launchTimeInMs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -486,17 +486,17 @@ LABEL_16:
   return v3;
 }
 
-- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v175[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"launchTimeInMs"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"launchTimeInMs"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
-    v119 = self;
+    selfCopy2 = self;
 
     v6 = 0;
   }
@@ -508,7 +508,7 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v35 = *MEMORY[0x1E698F240];
@@ -516,17 +516,17 @@ LABEL_16:
           v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"launchTimeInMs"];
           v175[0] = v9;
           v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v175 forKeys:&v174 count:1];
-          v26 = 0;
-          *a4 = [v34 initWithDomain:v35 code:2 userInfo:v15];
+          selfCopy3 = 0;
+          *error = [v34 initWithDomain:v35 code:2 userInfo:v15];
           goto LABEL_118;
         }
 
-        v26 = 0;
+        selfCopy3 = 0;
         goto LABEL_119;
       }
     }
 
-    v119 = self;
+    selfCopy2 = self;
   }
 
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -556,8 +556,8 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v19 = objc_alloc(MEMORY[0x1E696ABC0]);
           v20 = *MEMORY[0x1E698F240];
@@ -569,25 +569,25 @@ LABEL_16:
           v24 = &v171;
 LABEL_21:
           v25 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:1];
-          self = v119;
-          v26 = 0;
-          *v18 = [v19 initWithDomain:v20 code:2 userInfo:v25];
+          self = selfCopy2;
+          selfCopy3 = 0;
+          *errorCopy2 = [v19 initWithDomain:v20 code:2 userInfo:v25];
           v15 = v6;
           goto LABEL_117;
         }
 
 LABEL_22:
-        v26 = 0;
+        selfCopy3 = 0;
         v15 = v6;
-        self = v119;
+        self = selfCopy2;
         goto LABEL_118;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v18 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v19 = objc_alloc(MEMORY[0x1E696ABC0]);
           v20 = *MEMORY[0x1E698F240];
@@ -612,11 +612,11 @@ LABEL_22:
   while (v11);
 LABEL_15:
 
-  v15 = [v5 objectForKeyedSubscript:@"endpointDelayInMs"];
-  v16 = [MEMORY[0x1E695DFB0] null];
-  v17 = [v15 isEqual:v16];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"endpointDelayInMs"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v17 = [v15 isEqual:null2];
 
-  v117 = v5;
+  v117 = dictionaryCopy;
   if (v17)
   {
 
@@ -649,8 +649,8 @@ LABEL_25:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v36 = a4;
-          if (a4)
+          errorCopy4 = error;
+          if (error)
           {
             v37 = objc_alloc(MEMORY[0x1E696ABC0]);
             v38 = *MEMORY[0x1E698F240];
@@ -662,16 +662,16 @@ LABEL_25:
             v41 = &v164;
 LABEL_42:
             v42 = [v39 dictionaryWithObjects:v40 forKeys:v41 count:1];
-            self = v119;
-            v26 = 0;
-            *v36 = [v37 initWithDomain:v38 code:2 userInfo:v42];
+            self = selfCopy2;
+            selfCopy3 = 0;
+            *errorCopy4 = [v37 initWithDomain:v38 code:2 userInfo:v42];
             v25 = v15;
-            v5 = v117;
+            dictionaryCopy = v117;
             goto LABEL_116;
           }
 
 LABEL_43:
-          v26 = 0;
+          selfCopy3 = 0;
           v25 = v15;
           goto LABEL_44;
         }
@@ -679,8 +679,8 @@ LABEL_43:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v36 = a4;
-          if (a4)
+          errorCopy4 = error;
+          if (error)
           {
             v37 = objc_alloc(MEMORY[0x1E696ABC0]);
             v38 = *MEMORY[0x1E698F240];
@@ -704,9 +704,9 @@ LABEL_43:
       {
 LABEL_34:
 
-        v25 = [v5 objectForKeyedSubscript:@"siriResponseTimeInMs"];
-        v32 = [MEMORY[0x1E695DFB0] null];
-        v33 = [v25 isEqual:v32];
+        v25 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseTimeInMs"];
+        null3 = [MEMORY[0x1E695DFB0] null];
+        v33 = [v25 isEqual:null3];
 
         if (v33)
         {
@@ -742,8 +742,8 @@ LABEL_48:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v57 = a4;
-                if (a4)
+                errorCopy6 = error;
+                if (error)
                 {
                   v58 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v59 = *MEMORY[0x1E698F240];
@@ -755,21 +755,21 @@ LABEL_48:
                   v62 = v59;
 LABEL_65:
                   v65 = v60;
-                  v5 = v117;
+                  dictionaryCopy = v117;
                   v25 = v46;
-                  v26 = 0;
-                  *v57 = [v61 initWithDomain:v62 code:2 userInfo:?];
+                  selfCopy3 = 0;
+                  *errorCopy6 = [v61 initWithDomain:v62 code:2 userInfo:?];
                   v42 = v46;
-                  self = v119;
+                  self = selfCopy2;
                   goto LABEL_66;
                 }
 
 LABEL_67:
-                v26 = 0;
+                selfCopy3 = 0;
                 v25 = v46;
                 v42 = v46;
-                v5 = v117;
-                self = v119;
+                dictionaryCopy = v117;
+                self = selfCopy2;
                 v21 = v113;
                 goto LABEL_116;
               }
@@ -777,8 +777,8 @@ LABEL_67:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v57 = a4;
-                if (a4)
+                errorCopy6 = error;
+                if (error)
                 {
                   v63 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v64 = *MEMORY[0x1E698F240];
@@ -804,10 +804,10 @@ LABEL_67:
             {
 LABEL_57:
 
-              v5 = v117;
+              dictionaryCopy = v117;
               v42 = [v117 objectForKeyedSubscript:@"timeToUufrInMs"];
-              v49 = [MEMORY[0x1E695DFB0] null];
-              v50 = [v42 isEqual:v49];
+              null4 = [MEMORY[0x1E695DFB0] null];
+              v50 = [v42 isEqual:null4];
 
               if (v50)
               {
@@ -842,8 +842,8 @@ LABEL_71:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v77 = a4;
-                      if (a4)
+                      errorCopy8 = error;
+                      if (error)
                       {
                         v78 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v79 = *MEMORY[0x1E698F240];
@@ -856,22 +856,22 @@ LABEL_71:
 LABEL_89:
                         v25 = v69;
                         v42 = obj;
-                        *v77 = [v81 initWithDomain:v82 code:2 userInfo:v80];
+                        *errorCopy8 = [v81 initWithDomain:v82 code:2 userInfo:v80];
 
-                        v26 = 0;
+                        selfCopy3 = 0;
                         v65 = obj;
-                        v5 = v117;
-                        self = v119;
+                        dictionaryCopy = v117;
+                        self = selfCopy2;
                         v21 = v113;
                         goto LABEL_114;
                       }
 
 LABEL_90:
-                      v26 = 0;
+                      selfCopy3 = 0;
                       v42 = obj;
                       v65 = obj;
-                      v5 = v117;
-                      self = v119;
+                      dictionaryCopy = v117;
+                      self = selfCopy2;
                       v25 = v69;
 LABEL_66:
                       v21 = v113;
@@ -881,8 +881,8 @@ LABEL_66:
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      v77 = a4;
-                      if (a4)
+                      errorCopy8 = error;
+                      if (error)
                       {
                         v83 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v84 = *MEMORY[0x1E698F240];
@@ -902,7 +902,7 @@ LABEL_66:
                   }
 
                   v67 = [obj countByEnumeratingWithState:&v125 objects:v152 count:16];
-                  v5 = v117;
+                  dictionaryCopy = v117;
                   v25 = v69;
                   v21 = v113;
                   if (!v67)
@@ -910,10 +910,10 @@ LABEL_66:
 LABEL_80:
                     v42 = obj;
 
-                    v72 = [v5 objectForKeyedSubscript:@"timeToFirstWordInMs"];
-                    v73 = [MEMORY[0x1E695DFB0] null];
+                    v72 = [dictionaryCopy objectForKeyedSubscript:@"timeToFirstWordInMs"];
+                    null5 = [MEMORY[0x1E695DFB0] null];
                     v109 = v72;
-                    LODWORD(v72) = [v72 isEqual:v73];
+                    LODWORD(v72) = [v72 isEqual:null5];
 
                     if (v72)
                     {
@@ -926,7 +926,7 @@ LABEL_80:
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        if (a4)
+                        if (error)
                         {
                           v104 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v105 = *MEMORY[0x1E698F240];
@@ -934,20 +934,20 @@ LABEL_80:
                           v112 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"timeToFirstWordInMs"];
                           v147 = v112;
                           [MEMORY[0x1E695DF20] dictionaryWithObjects:&v147 forKeys:&v146 count:1];
-                          v107 = v106 = v5;
-                          *a4 = [v104 initWithDomain:v105 code:2 userInfo:v107];
+                          v107 = v106 = dictionaryCopy;
+                          *error = [v104 initWithDomain:v105 code:2 userInfo:v107];
                           v21 = v113;
 
-                          v5 = v106;
-                          v26 = 0;
-                          self = v119;
+                          dictionaryCopy = v106;
+                          selfCopy3 = 0;
+                          self = selfCopy2;
                           v65 = v109;
                         }
 
                         else
                         {
-                          v26 = 0;
-                          self = v119;
+                          selfCopy3 = 0;
+                          self = selfCopy2;
                           v65 = v109;
                         }
 
@@ -997,11 +997,11 @@ LABEL_98:
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        v95 = a4;
+                        errorCopy10 = error;
                         v25 = v89;
                         v21 = v113;
                         v42 = obj;
-                        if (a4)
+                        if (error)
                         {
                           v108 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v96 = *MEMORY[0x1E698F240];
@@ -1013,7 +1013,7 @@ LABEL_98:
                           v100 = &v141;
 LABEL_112:
                           v101 = [v98 dictionaryWithObjects:v99 forKeys:v100 count:1];
-                          *v95 = [v108 initWithDomain:v96 code:2 userInfo:v101];
+                          *errorCopy10 = [v108 initWithDomain:v96 code:2 userInfo:v101];
                         }
 
                         goto LABEL_113;
@@ -1023,7 +1023,7 @@ LABEL_112:
                       if (v87 == ++v90)
                       {
                         v87 = [v110 countByEnumeratingWithState:&v121 objects:v145 count:16];
-                        v5 = v117;
+                        dictionaryCopy = v117;
                         v25 = v89;
                         v21 = v113;
                         if (v87)
@@ -1034,8 +1034,8 @@ LABEL_112:
 LABEL_105:
                         v65 = v110;
 
-                        self = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)v119 initWithLaunchTimeInMs:v9 endpointDelayInMs:v21 siriResponseTimeInMs:v118 timeToUufrInMs:v116 timeToFirstWordInMs:v111];
-                        v26 = self;
+                        self = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)selfCopy2 initWithLaunchTimeInMs:v9 endpointDelayInMs:v21 siriResponseTimeInMs:v118 timeToUufrInMs:v116 timeToFirstWordInMs:v111];
+                        selfCopy3 = self;
                         v42 = obj;
 LABEL_114:
 
@@ -1047,11 +1047,11 @@ LABEL_117:
                       }
                     }
 
-                    v95 = a4;
+                    errorCopy10 = error;
                     v25 = v89;
                     v21 = v113;
                     v42 = obj;
-                    if (a4)
+                    if (error)
                     {
                       v108 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v96 = *MEMORY[0x1E698F240];
@@ -1067,9 +1067,9 @@ LABEL_117:
 LABEL_113:
                     v65 = v110;
 
-                    v26 = 0;
-                    v5 = v117;
-                    self = v119;
+                    selfCopy3 = 0;
+                    dictionaryCopy = v117;
+                    self = selfCopy2;
                     goto LABEL_114;
                   }
                 }
@@ -1086,7 +1086,7 @@ LABEL_113:
                 goto LABEL_71;
               }
 
-              if (a4)
+              if (error)
               {
                 obja = objc_alloc(MEMORY[0x1E696ABC0]);
                 v92 = *MEMORY[0x1E698F240];
@@ -1095,16 +1095,16 @@ LABEL_113:
                 v154 = v116;
                 v93 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v154 forKeys:&v153 count:1];
                 v94 = [obja initWithDomain:v92 code:2 userInfo:v93];
-                v26 = 0;
-                *a4 = v94;
+                selfCopy3 = 0;
+                *error = v94;
                 v65 = v93;
-                self = v119;
+                self = selfCopy2;
                 goto LABEL_115;
               }
 
-              v26 = 0;
+              selfCopy3 = 0;
 LABEL_84:
-              self = v119;
+              self = selfCopy2;
               goto LABEL_116;
             }
           }
@@ -1121,7 +1121,7 @@ LABEL_84:
           goto LABEL_48;
         }
 
-        if (a4)
+        if (error)
         {
           v74 = objc_alloc(MEMORY[0x1E696ABC0]);
           v75 = *MEMORY[0x1E698F240];
@@ -1130,14 +1130,14 @@ LABEL_84:
           v161 = v118;
           v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v161 forKeys:&v160 count:1];
           v76 = [v74 initWithDomain:v75 code:2 userInfo:v42];
-          v26 = 0;
-          *a4 = v76;
+          selfCopy3 = 0;
+          *error = v76;
           goto LABEL_84;
         }
 
-        v26 = 0;
+        selfCopy3 = 0;
 LABEL_44:
-        self = v119;
+        self = selfCopy2;
         goto LABEL_117;
       }
     }
@@ -1154,46 +1154,46 @@ LABEL_44:
     goto LABEL_25;
   }
 
-  self = v119;
-  if (a4)
+  self = selfCopy2;
+  if (error)
   {
     v51 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v52 = v5;
+    v52 = dictionaryCopy;
     v53 = *MEMORY[0x1E698F240];
     v167 = *MEMORY[0x1E696A578];
     v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"endpointDelayInMs"];
     v168 = v54;
     v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v168 forKeys:&v167 count:1];
     v56 = v53;
-    v5 = v52;
-    v26 = 0;
-    *a4 = [v51 initWithDomain:v56 code:2 userInfo:v55];
+    dictionaryCopy = v52;
+    selfCopy3 = 0;
+    *error = [v51 initWithDomain:v56 code:2 userInfo:v55];
     v25 = v55;
     v21 = v54;
     goto LABEL_117;
   }
 
-  v26 = 0;
+  selfCopy3 = 0;
 LABEL_118:
 
 LABEL_119:
   v102 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -1357,9 +1357,9 @@ LABEL_119:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v66.receiver = self;
   v66.super_class = BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples;
   v5 = [(BMEventBase *)&v66 init];
@@ -1377,8 +1377,8 @@ LABEL_59:
   v9 = objc_opt_new();
   while (1)
   {
-    v10 = [v4 position];
-    if (v10 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -1389,18 +1389,18 @@ LABEL_59:
     while (1)
     {
       LOBYTE(v67) = 0;
-      v14 = [v4 position] + 1;
-      if (v14 >= [v4 position] && (v15 = objc_msgSend(v4, "position") + 1, v15 <= objc_msgSend(v4, "length")))
+      v14 = [fromCopy position] + 1;
+      if (v14 >= [fromCopy position] && (v15 = objc_msgSend(fromCopy, "position") + 1, v15 <= objc_msgSend(fromCopy, "length")))
       {
-        v16 = [v4 data];
-        [v16 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v13 |= (v67 & 0x7F) << v11;
@@ -1417,9 +1417,9 @@ LABEL_59:
       }
     }
 
-    v18 = [v4 hasError] ? 0 : v13;
+    v18 = [fromCopy hasError] ? 0 : v13;
 LABEL_17:
-    if (([v4 hasError] & 1) != 0 || (v18 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v18 & 7) == 4)
     {
       break;
     }
@@ -1431,18 +1431,18 @@ LABEL_17:
       {
         v36 = MEMORY[0x1E696AD98];
         v67 = 0;
-        v37 = [v4 position] + 4;
-        if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 4, v38 <= objc_msgSend(v4, "length")))
+        v37 = [fromCopy position] + 4;
+        if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 4, v38 <= objc_msgSend(fromCopy, "length")))
         {
-          v46 = [v4 data];
-          [v46 getBytes:&v67 range:{objc_msgSend(v4, "position"), 4}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         LODWORD(v39) = v67;
@@ -1467,18 +1467,18 @@ LABEL_60:
 
         v24 = MEMORY[0x1E696AD98];
         v67 = 0;
-        v25 = [v4 position] + 4;
-        if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 4, v26 <= objc_msgSend(v4, "length")))
+        v25 = [fromCopy position] + 4;
+        if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 4, v26 <= objc_msgSend(fromCopy, "length")))
         {
-          v50 = [v4 data];
-          [v50 getBytes:&v67 range:{objc_msgSend(v4, "position"), 4}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         LODWORD(v27) = v67;
@@ -1503,18 +1503,18 @@ LABEL_57:
         case 3:
           v28 = MEMORY[0x1E696AD98];
           v67 = 0;
-          v29 = [v4 position] + 4;
-          if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 4, v30 <= objc_msgSend(v4, "length")))
+          v29 = [fromCopy position] + 4;
+          if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 4, v30 <= objc_msgSend(fromCopy, "length")))
           {
-            v40 = [v4 data];
-            [v40 getBytes:&v67 range:{objc_msgSend(v4, "position"), 4}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           LODWORD(v31) = v67;
@@ -1530,18 +1530,18 @@ LABEL_57:
         case 4:
           v32 = MEMORY[0x1E696AD98];
           v67 = 0;
-          v33 = [v4 position] + 4;
-          if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 4, v34 <= objc_msgSend(v4, "length")))
+          v33 = [fromCopy position] + 4;
+          if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 4, v34 <= objc_msgSend(fromCopy, "length")))
           {
-            v44 = [v4 data];
-            [v44 getBytes:&v67 range:{objc_msgSend(v4, "position"), 4}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           LODWORD(v35) = v67;
@@ -1557,18 +1557,18 @@ LABEL_57:
         case 5:
           v20 = MEMORY[0x1E696AD98];
           v67 = 0;
-          v21 = [v4 position] + 4;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 4, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 4;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 4, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v48 = [v4 data];
-            [v48 getBytes:&v67 range:{objc_msgSend(v4, "position"), 4}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           LODWORD(v23) = v67;
@@ -1611,8 +1611,8 @@ LABEL_40:
   timeToFirstWordInMs = v5->_timeToFirstWordInMs;
   v5->_timeToFirstWordInMs = v60;
 
-  v62 = [v4 hasError];
-  if ((v62 & 1) == 0)
+  hasError = [fromCopy hasError];
+  if ((hasError & 1) == 0)
   {
     goto LABEL_59;
   }
@@ -1627,34 +1627,34 @@ LABEL_62:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
-  v5 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
-  v6 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
-  v7 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
-  v8 = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
-  v9 = [v3 initWithFormat:@"BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples with launchTimeInMs: %@, endpointDelayInMs: %@, siriResponseTimeInMs: %@, timeToUufrInMs: %@, timeToFirstWordInMs: %@", v4, v5, v6, v7, v8];
+  launchTimeInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self launchTimeInMs];
+  endpointDelayInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self endpointDelayInMs];
+  siriResponseTimeInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self siriResponseTimeInMs];
+  timeToUufrInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToUufrInMs];
+  timeToFirstWordInMs = [(BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples *)self timeToFirstWordInMs];
+  v9 = [v3 initWithFormat:@"BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples with launchTimeInMs: %@, endpointDelayInMs: %@, siriResponseTimeInMs: %@, timeToUufrInMs: %@, timeToFirstWordInMs: %@", launchTimeInMs, endpointDelayInMs, siriResponseTimeInMs, timeToUufrInMs, timeToFirstWordInMs];
 
   return v9;
 }
 
-- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithLaunchTimeInMs:(id)a3 endpointDelayInMs:(id)a4 siriResponseTimeInMs:(id)a5 timeToUufrInMs:(id)a6 timeToFirstWordInMs:(id)a7
+- (BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples)initWithLaunchTimeInMs:(id)ms endpointDelayInMs:(id)inMs siriResponseTimeInMs:(id)timeInMs timeToUufrInMs:(id)uufrInMs timeToFirstWordInMs:(id)wordInMs
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  msCopy = ms;
+  inMsCopy = inMs;
+  timeInMsCopy = timeInMs;
+  uufrInMsCopy = uufrInMs;
+  wordInMsCopy = wordInMs;
   v20.receiver = self;
   v20.super_class = BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_launchTimeInMs, a3);
-    objc_storeStrong(&v17->_endpointDelayInMs, a4);
-    objc_storeStrong(&v17->_siriResponseTimeInMs, a5);
-    objc_storeStrong(&v17->_timeToUufrInMs, a6);
-    objc_storeStrong(&v17->_timeToFirstWordInMs, a7);
+    objc_storeStrong(&v17->_launchTimeInMs, ms);
+    objc_storeStrong(&v17->_endpointDelayInMs, inMs);
+    objc_storeStrong(&v17->_siriResponseTimeInMs, timeInMs);
+    objc_storeStrong(&v17->_timeToUufrInMs, uufrInMs);
+    objc_storeStrong(&v17->_timeToFirstWordInMs, wordInMs);
   }
 
   return v17;
@@ -1744,9 +1744,9 @@ id __80__BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples_c
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1754,8 +1754,8 @@ id __80__BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples_c
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriOnDeviceDigestExperimentMetricsExperimentDigestExperimentTuples alloc] initByReadFrom:v7];
     v4 = v8;

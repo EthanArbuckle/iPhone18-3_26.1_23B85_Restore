@@ -1,75 +1,75 @@
 @interface HMProtoAccessoryCapabilities
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSupports24b183bad693415:(BOOL)a3;
-- (void)setHasSupports29dfaee0e6d26dc:(BOOL)a3;
-- (void)setHasSupports2c25465bb0b47366:(BOOL)a3;
-- (void)setHasSupports45c051b0b1f0:(BOOL)a3;
-- (void)setHasSupports89024c1cadcb8b00:(BOOL)a3;
-- (void)setHasSupports90bb069d6bx54e7:(BOOL)a3;
-- (void)setHasSupportsAnnounce:(BOOL)a3;
-- (void)setHasSupportsAssistantAccessControl:(BOOL)a3;
-- (void)setHasSupportsAudioReturnChannel:(BOOL)a3;
-- (void)setHasSupportsCaptiveNetworks:(BOOL)a3;
-- (void)setHasSupportsCloudDataSync:(BOOL)a3;
-- (void)setHasSupportsCompanionInitiatedObliterate:(BOOL)a3;
-- (void)setHasSupportsCompanionInitiatedRestart:(BOOL)a3;
-- (void)setHasSupportsCoordinationDoorbellChime:(BOOL)a3;
-- (void)setHasSupportsCoordinationFreeDoorbellChime:(BOOL)a3;
-- (void)setHasSupportsDeviceSetup:(BOOL)a3;
-- (void)setHasSupportsDoorbellChime:(BOOL)a3;
-- (void)setHasSupportsHomeHub:(BOOL)a3;
-- (void)setHasSupportsHomeInvitation:(BOOL)a3;
-- (void)setHasSupportsHomeLevelAnalyticsAndImprovementSetting:(BOOL)a3;
-- (void)setHasSupportsHomeLevelLocationServiceSetting:(BOOL)a3;
-- (void)setHasSupportsInstallManagedConfigurationProfile:(BOOL)a3;
-- (void)setHasSupportsKeyTransferClient:(BOOL)a3;
-- (void)setHasSupportsKeyTransferServer:(BOOL)a3;
-- (void)setHasSupportsKeychainSync:(BOOL)a3;
-- (void)setHasSupportsManagedConfigurationProfile:(BOOL)a3;
-- (void)setHasSupportsMediaActions:(BOOL)a3;
-- (void)setHasSupportsMessagedHomePodSettings:(BOOL)a3;
-- (void)setHasSupportsMultiUser:(BOOL)a3;
-- (void)setHasSupportsMusicAlarm:(BOOL)a3;
-- (void)setHasSupportsNetworkDiagnostics:(BOOL)a3;
-- (void)setHasSupportsPreferredMediaUser:(BOOL)a3;
-- (void)setHasSupportsSoftwareUpdateV2:(BOOL)a3;
-- (void)setHasSupportsStandaloneMode:(BOOL)a3;
-- (void)setHasSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)a3;
-- (void)setHasSupportsTVOSUpdateManualUpdateAvailableNotification:(BOOL)a3;
-- (void)setHasSupportsTargetControl:(BOOL)a3;
-- (void)setHasSupportsThirdPartyMusic:(BOOL)a3;
-- (void)setHasSupportsThreadBorderRouter:(BOOL)a3;
-- (void)setHasSupportsUserMediaSettings:(BOOL)a3;
-- (void)setHasSupportsWholeHouseAudio:(BOOL)a3;
-- (void)setHasSupportsWiFiRepairV2:(BOOL)a3;
-- (void)setHasSupportsf9cc0d9d6aa54e7:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSupports24b183bad693415:(BOOL)supports24b183bad693415;
+- (void)setHasSupports29dfaee0e6d26dc:(BOOL)supports29dfaee0e6d26dc;
+- (void)setHasSupports2c25465bb0b47366:(BOOL)supports2c25465bb0b47366;
+- (void)setHasSupports45c051b0b1f0:(BOOL)supports45c051b0b1f0;
+- (void)setHasSupports89024c1cadcb8b00:(BOOL)supports89024c1cadcb8b00;
+- (void)setHasSupports90bb069d6bx54e7:(BOOL)supports90bb069d6bx54e7;
+- (void)setHasSupportsAnnounce:(BOOL)announce;
+- (void)setHasSupportsAssistantAccessControl:(BOOL)control;
+- (void)setHasSupportsAudioReturnChannel:(BOOL)channel;
+- (void)setHasSupportsCaptiveNetworks:(BOOL)networks;
+- (void)setHasSupportsCloudDataSync:(BOOL)sync;
+- (void)setHasSupportsCompanionInitiatedObliterate:(BOOL)obliterate;
+- (void)setHasSupportsCompanionInitiatedRestart:(BOOL)restart;
+- (void)setHasSupportsCoordinationDoorbellChime:(BOOL)chime;
+- (void)setHasSupportsCoordinationFreeDoorbellChime:(BOOL)chime;
+- (void)setHasSupportsDeviceSetup:(BOOL)setup;
+- (void)setHasSupportsDoorbellChime:(BOOL)chime;
+- (void)setHasSupportsHomeHub:(BOOL)hub;
+- (void)setHasSupportsHomeInvitation:(BOOL)invitation;
+- (void)setHasSupportsHomeLevelAnalyticsAndImprovementSetting:(BOOL)setting;
+- (void)setHasSupportsHomeLevelLocationServiceSetting:(BOOL)setting;
+- (void)setHasSupportsInstallManagedConfigurationProfile:(BOOL)profile;
+- (void)setHasSupportsKeyTransferClient:(BOOL)client;
+- (void)setHasSupportsKeyTransferServer:(BOOL)server;
+- (void)setHasSupportsKeychainSync:(BOOL)sync;
+- (void)setHasSupportsManagedConfigurationProfile:(BOOL)profile;
+- (void)setHasSupportsMediaActions:(BOOL)actions;
+- (void)setHasSupportsMessagedHomePodSettings:(BOOL)settings;
+- (void)setHasSupportsMultiUser:(BOOL)user;
+- (void)setHasSupportsMusicAlarm:(BOOL)alarm;
+- (void)setHasSupportsNetworkDiagnostics:(BOOL)diagnostics;
+- (void)setHasSupportsPreferredMediaUser:(BOOL)user;
+- (void)setHasSupportsSoftwareUpdateV2:(BOOL)v2;
+- (void)setHasSupportsStandaloneMode:(BOOL)mode;
+- (void)setHasSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)primary;
+- (void)setHasSupportsTVOSUpdateManualUpdateAvailableNotification:(BOOL)notification;
+- (void)setHasSupportsTargetControl:(BOOL)control;
+- (void)setHasSupportsThirdPartyMusic:(BOOL)music;
+- (void)setHasSupportsThreadBorderRouter:(BOOL)router;
+- (void)setHasSupportsUserMediaSettings:(BOOL)settings;
+- (void)setHasSupportsWholeHouseAudio:(BOOL)audio;
+- (void)setHasSupportsWiFiRepairV2:(BOOL)v2;
+- (void)setHasSupportsf9cc0d9d6aa54e7:(BOOL)supportsf9cc0d9d6aa54e7;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMProtoAccessoryCapabilities
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HMProtoAccessoryCapabilities *)self setTag:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x2000000) != 0)
   {
-    self->_supportsKeychainSync = v4[41];
+    self->_supportsKeychainSync = fromCopy[41];
     *&self->_has |= 0x2000000uLL;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 0x10000) == 0)
     {
 LABEL_5:
@@ -87,9 +87,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_supportsDeviceSetup = v4[32];
+  self->_supportsDeviceSetup = fromCopy[32];
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_6:
@@ -102,9 +102,9 @@ LABEL_6:
   }
 
 LABEL_53:
-  self->_supportsKeyTransferClient = v4[39];
+  self->_supportsKeyTransferClient = fromCopy[39];
   *&self->_has |= 0x800000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_7:
@@ -117,9 +117,9 @@ LABEL_7:
   }
 
 LABEL_54:
-  self->_supportsKeyTransferServer = v4[40];
+  self->_supportsKeyTransferServer = fromCopy[40];
   *&self->_has |= 0x1000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_8:
@@ -132,9 +132,9 @@ LABEL_8:
   }
 
 LABEL_55:
-  self->_supportsStandaloneMode = v4[50];
+  self->_supportsStandaloneMode = fromCopy[50];
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x800) == 0)
   {
 LABEL_9:
@@ -147,9 +147,9 @@ LABEL_9:
   }
 
 LABEL_56:
-  self->_supportsCloudDataSync = v4[27];
+  self->_supportsCloudDataSync = fromCopy[27];
   *&self->_has |= 0x800uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x20000000000) == 0)
   {
 LABEL_10:
@@ -162,9 +162,9 @@ LABEL_10:
   }
 
 LABEL_57:
-  self->_supportsWholeHouseAudio = v4[57];
+  self->_supportsWholeHouseAudio = fromCopy[57];
   *&self->_has |= 0x20000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x100) == 0)
   {
 LABEL_11:
@@ -177,9 +177,9 @@ LABEL_11:
   }
 
 LABEL_58:
-  self->_supportsAssistantAccessControl = v4[24];
+  self->_supportsAssistantAccessControl = fromCopy[24];
   *&self->_has |= 0x100uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_12:
@@ -192,9 +192,9 @@ LABEL_12:
   }
 
 LABEL_59:
-  self->_supportsHomeInvitation = v4[35];
+  self->_supportsHomeInvitation = fromCopy[35];
   *&self->_has |= 0x80000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x2000000000) == 0)
   {
 LABEL_13:
@@ -207,9 +207,9 @@ LABEL_13:
   }
 
 LABEL_60:
-  self->_supportsTargetControl = v4[53];
+  self->_supportsTargetControl = fromCopy[53];
   *&self->_has |= 0x2000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x20000000) == 0)
   {
 LABEL_14:
@@ -222,9 +222,9 @@ LABEL_14:
   }
 
 LABEL_61:
-  self->_supportsMultiUser = v4[45];
+  self->_supportsMultiUser = fromCopy[45];
   *&self->_has |= 0x20000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_15:
@@ -237,9 +237,9 @@ LABEL_15:
   }
 
 LABEL_62:
-  self->_supportsHomeLevelLocationServiceSetting = v4[37];
+  self->_supportsHomeLevelLocationServiceSetting = fromCopy[37];
   *&self->_has |= 0x200000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_16:
@@ -252,9 +252,9 @@ LABEL_16:
   }
 
 LABEL_63:
-  self->_supportsHomeLevelAnalyticsAndImprovementSetting = v4[36];
+  self->_supportsHomeLevelAnalyticsAndImprovementSetting = fromCopy[36];
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_17:
@@ -267,9 +267,9 @@ LABEL_17:
   }
 
 LABEL_64:
-  self->_supportsCompanionInitiatedRestart = v4[29];
+  self->_supportsCompanionInitiatedRestart = fromCopy[29];
   *&self->_has |= 0x2000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_18:
@@ -282,9 +282,9 @@ LABEL_18:
   }
 
 LABEL_65:
-  self->_supportsMusicAlarm = v4[46];
+  self->_supportsMusicAlarm = fromCopy[46];
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80) == 0)
   {
 LABEL_19:
@@ -297,9 +297,9 @@ LABEL_19:
   }
 
 LABEL_66:
-  self->_supportsAnnounce = v4[23];
+  self->_supportsAnnounce = fromCopy[23];
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80000000000) == 0)
   {
 LABEL_20:
@@ -312,9 +312,9 @@ LABEL_20:
   }
 
 LABEL_67:
-  self->_supportsf9cc0d9d6aa54e7 = v4[59];
+  self->_supportsf9cc0d9d6aa54e7 = fromCopy[59];
   *&self->_has |= 0x80000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x4000000000) == 0)
   {
 LABEL_21:
@@ -327,9 +327,9 @@ LABEL_21:
   }
 
 LABEL_68:
-  self->_supportsThirdPartyMusic = v4[54];
+  self->_supportsThirdPartyMusic = fromCopy[54];
   *&self->_has |= 0x4000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x100000000) == 0)
   {
 LABEL_22:
@@ -342,9 +342,9 @@ LABEL_22:
   }
 
 LABEL_69:
-  self->_supportsPreferredMediaUser = v4[48];
+  self->_supportsPreferredMediaUser = fromCopy[48];
   *&self->_has |= 0x100000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x8000000000) == 0)
   {
 LABEL_23:
@@ -357,9 +357,9 @@ LABEL_23:
   }
 
 LABEL_70:
-  self->_supportsThreadBorderRouter = v4[55];
+  self->_supportsThreadBorderRouter = fromCopy[55];
   *&self->_has |= 0x8000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_24:
@@ -372,9 +372,9 @@ LABEL_24:
   }
 
 LABEL_71:
-  self->_supportsDoorbellChime = v4[33];
+  self->_supportsDoorbellChime = fromCopy[33];
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10000000000) == 0)
   {
 LABEL_25:
@@ -387,9 +387,9 @@ LABEL_25:
   }
 
 LABEL_72:
-  self->_supportsUserMediaSettings = v4[56];
+  self->_supportsUserMediaSettings = fromCopy[56];
   *&self->_has |= 0x10000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_26:
@@ -402,9 +402,9 @@ LABEL_26:
   }
 
 LABEL_73:
-  self->_supportsCoordinationDoorbellChime = v4[30];
+  self->_supportsCoordinationDoorbellChime = fromCopy[30];
   *&self->_has |= 0x4000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_27:
@@ -417,9 +417,9 @@ LABEL_27:
   }
 
 LABEL_74:
-  self->_supportsHomeHub = v4[34];
+  self->_supportsHomeHub = fromCopy[34];
   *&self->_has |= 0x40000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x200) == 0)
   {
 LABEL_28:
@@ -432,9 +432,9 @@ LABEL_28:
   }
 
 LABEL_75:
-  self->_supportsAudioReturnChannel = v4[25];
+  self->_supportsAudioReturnChannel = fromCopy[25];
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_29:
@@ -447,9 +447,9 @@ LABEL_29:
   }
 
 LABEL_76:
-  self->_supportsManagedConfigurationProfile = v4[42];
+  self->_supportsManagedConfigurationProfile = fromCopy[42];
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x400) == 0)
   {
 LABEL_30:
@@ -462,9 +462,9 @@ LABEL_30:
   }
 
 LABEL_77:
-  self->_supportsCaptiveNetworks = v4[26];
+  self->_supportsCaptiveNetworks = fromCopy[26];
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_31:
@@ -477,9 +477,9 @@ LABEL_31:
   }
 
 LABEL_78:
-  self->_supportsMessagedHomePodSettings = v4[44];
+  self->_supportsMessagedHomePodSettings = fromCopy[44];
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_32:
@@ -492,9 +492,9 @@ LABEL_32:
   }
 
 LABEL_79:
-  self->_supportsMediaActions = v4[43];
+  self->_supportsMediaActions = fromCopy[43];
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40) == 0)
   {
 LABEL_33:
@@ -507,9 +507,9 @@ LABEL_33:
   }
 
 LABEL_80:
-  self->_supports90bb069d6bx54e7 = v4[22];
+  self->_supports90bb069d6bx54e7 = fromCopy[22];
   *&self->_has |= 0x40uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x20) == 0)
   {
 LABEL_34:
@@ -522,9 +522,9 @@ LABEL_34:
   }
 
 LABEL_81:
-  self->_supports89024c1cadcb8b00 = v4[21];
+  self->_supports89024c1cadcb8b00 = fromCopy[21];
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 8) == 0)
   {
 LABEL_35:
@@ -537,9 +537,9 @@ LABEL_35:
   }
 
 LABEL_82:
-  self->_supports2c25465bb0b47366 = v4[19];
+  self->_supports2c25465bb0b47366 = fromCopy[19];
   *&self->_has |= 8uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_36:
@@ -552,9 +552,9 @@ LABEL_36:
   }
 
 LABEL_83:
-  self->_supportsInstallManagedConfigurationProfile = v4[38];
+  self->_supportsInstallManagedConfigurationProfile = fromCopy[38];
   *&self->_has |= 0x400000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_37:
@@ -567,9 +567,9 @@ LABEL_37:
   }
 
 LABEL_84:
-  self->_supportsCoordinationFreeDoorbellChime = v4[31];
+  self->_supportsCoordinationFreeDoorbellChime = fromCopy[31];
   *&self->_has |= 0x8000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_38:
@@ -582,9 +582,9 @@ LABEL_38:
   }
 
 LABEL_85:
-  self->_supportsCompanionInitiatedObliterate = v4[28];
+  self->_supportsCompanionInitiatedObliterate = fromCopy[28];
   *&self->_has |= 0x1000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10) == 0)
   {
 LABEL_39:
@@ -597,9 +597,9 @@ LABEL_39:
   }
 
 LABEL_86:
-  self->_supports45c051b0b1f0 = v4[20];
+  self->_supports45c051b0b1f0 = fromCopy[20];
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x1000000000) == 0)
   {
 LABEL_40:
@@ -612,9 +612,9 @@ LABEL_40:
   }
 
 LABEL_87:
-  self->_supportsTVOSUpdateManualUpdateAvailableNotification = v4[52];
+  self->_supportsTVOSUpdateManualUpdateAvailableNotification = fromCopy[52];
   *&self->_has |= 0x1000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x40000000000) == 0)
   {
 LABEL_41:
@@ -627,9 +627,9 @@ LABEL_41:
   }
 
 LABEL_88:
-  self->_supportsWiFiRepairV2 = v4[58];
+  self->_supportsWiFiRepairV2 = fromCopy[58];
   *&self->_has |= 0x40000000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x200000000) == 0)
   {
 LABEL_42:
@@ -642,9 +642,9 @@ LABEL_42:
   }
 
 LABEL_89:
-  self->_supportsSoftwareUpdateV2 = v4[49];
+  self->_supportsSoftwareUpdateV2 = fromCopy[49];
   *&self->_has |= 0x200000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x800000000) == 0)
   {
 LABEL_43:
@@ -657,9 +657,9 @@ LABEL_43:
   }
 
 LABEL_90:
-  self->_supportsStereoOdeonTTSUBypassingPrimary = v4[51];
+  self->_supportsStereoOdeonTTSUBypassingPrimary = fromCopy[51];
   *&self->_has |= 0x800000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_44:
@@ -672,9 +672,9 @@ LABEL_44:
   }
 
 LABEL_91:
-  self->_supportsNetworkDiagnostics = v4[47];
+  self->_supportsNetworkDiagnostics = fromCopy[47];
   *&self->_has |= 0x80000000uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 2) == 0)
   {
 LABEL_45:
@@ -687,9 +687,9 @@ LABEL_45:
   }
 
 LABEL_92:
-  self->_supports24b183bad693415 = v4[17];
+  self->_supports24b183bad693415 = fromCopy[17];
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 4) == 0)
   {
 LABEL_46:
@@ -702,12 +702,12 @@ LABEL_46:
   }
 
 LABEL_93:
-  self->_supports29dfaee0e6d26dc = v4[18];
+  self->_supports29dfaee0e6d26dc = fromCopy[18];
   *&self->_has |= 4uLL;
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
 LABEL_47:
-    self->_clearsKeychainWhenRemovedFromHome = v4[16];
+    self->_clearsKeychainWhenRemovedFromHome = fromCopy[16];
     *&self->_has |= 1uLL;
   }
 
@@ -1330,16 +1330,16 @@ LABEL_45:
   return v48 ^ v49 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_353;
   }
 
   tag = self->_tag;
-  if (tag | *(v4 + 1))
+  if (tag | *(equalCopy + 1))
   {
     if (![(NSString *)tag isEqual:?])
     {
@@ -1348,7 +1348,7 @@ LABEL_45:
   }
 
   has = self->_has;
-  v7 = *(v4 + 60);
+  v7 = *(equalCopy + 60);
   if ((*&has & 0x2000000) != 0)
   {
     if ((v7 & 0x2000000) == 0)
@@ -1356,16 +1356,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v8 = v4[41];
+    v8 = equalCopy[41];
     if (self->_supportsKeychainSync)
     {
-      if ((v4[41] & 1) == 0)
+      if ((equalCopy[41] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[41])
+    else if (equalCopy[41])
     {
       goto LABEL_353;
     }
@@ -1383,16 +1383,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v9 = v4[32];
+    v9 = equalCopy[32];
     if (self->_supportsDeviceSetup)
     {
-      if ((v4[32] & 1) == 0)
+      if ((equalCopy[32] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[32])
+    else if (equalCopy[32])
     {
       goto LABEL_353;
     }
@@ -1410,16 +1410,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v10 = v4[39];
+    v10 = equalCopy[39];
     if (self->_supportsKeyTransferClient)
     {
-      if ((v4[39] & 1) == 0)
+      if ((equalCopy[39] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[39])
+    else if (equalCopy[39])
     {
       goto LABEL_353;
     }
@@ -1437,16 +1437,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v11 = v4[40];
+    v11 = equalCopy[40];
     if (self->_supportsKeyTransferServer)
     {
-      if ((v4[40] & 1) == 0)
+      if ((equalCopy[40] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[40])
+    else if (equalCopy[40])
     {
       goto LABEL_353;
     }
@@ -1464,16 +1464,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v12 = v4[50];
+    v12 = equalCopy[50];
     if (self->_supportsStandaloneMode)
     {
-      if ((v4[50] & 1) == 0)
+      if ((equalCopy[50] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[50])
+    else if (equalCopy[50])
     {
       goto LABEL_353;
     }
@@ -1491,16 +1491,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v13 = v4[27];
+    v13 = equalCopy[27];
     if (self->_supportsCloudDataSync)
     {
-      if ((v4[27] & 1) == 0)
+      if ((equalCopy[27] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[27])
+    else if (equalCopy[27])
     {
       goto LABEL_353;
     }
@@ -1518,16 +1518,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v14 = v4[57];
+    v14 = equalCopy[57];
     if (self->_supportsWholeHouseAudio)
     {
-      if ((v4[57] & 1) == 0)
+      if ((equalCopy[57] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[57])
+    else if (equalCopy[57])
     {
       goto LABEL_353;
     }
@@ -1545,16 +1545,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v15 = v4[24];
+    v15 = equalCopy[24];
     if (self->_supportsAssistantAccessControl)
     {
-      if ((v4[24] & 1) == 0)
+      if ((equalCopy[24] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[24])
+    else if (equalCopy[24])
     {
       goto LABEL_353;
     }
@@ -1572,16 +1572,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v16 = v4[35];
+    v16 = equalCopy[35];
     if (self->_supportsHomeInvitation)
     {
-      if ((v4[35] & 1) == 0)
+      if ((equalCopy[35] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[35])
+    else if (equalCopy[35])
     {
       goto LABEL_353;
     }
@@ -1599,16 +1599,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v17 = v4[53];
+    v17 = equalCopy[53];
     if (self->_supportsTargetControl)
     {
-      if ((v4[53] & 1) == 0)
+      if ((equalCopy[53] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[53])
+    else if (equalCopy[53])
     {
       goto LABEL_353;
     }
@@ -1626,16 +1626,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v18 = v4[45];
+    v18 = equalCopy[45];
     if (self->_supportsMultiUser)
     {
-      if ((v4[45] & 1) == 0)
+      if ((equalCopy[45] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[45])
+    else if (equalCopy[45])
     {
       goto LABEL_353;
     }
@@ -1653,16 +1653,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v19 = v4[37];
+    v19 = equalCopy[37];
     if (self->_supportsHomeLevelLocationServiceSetting)
     {
-      if ((v4[37] & 1) == 0)
+      if ((equalCopy[37] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[37])
+    else if (equalCopy[37])
     {
       goto LABEL_353;
     }
@@ -1680,16 +1680,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v20 = v4[36];
+    v20 = equalCopy[36];
     if (self->_supportsHomeLevelAnalyticsAndImprovementSetting)
     {
-      if ((v4[36] & 1) == 0)
+      if ((equalCopy[36] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[36])
+    else if (equalCopy[36])
     {
       goto LABEL_353;
     }
@@ -1707,16 +1707,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v21 = v4[29];
+    v21 = equalCopy[29];
     if (self->_supportsCompanionInitiatedRestart)
     {
-      if ((v4[29] & 1) == 0)
+      if ((equalCopy[29] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[29])
+    else if (equalCopy[29])
     {
       goto LABEL_353;
     }
@@ -1734,16 +1734,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v22 = v4[46];
+    v22 = equalCopy[46];
     if (self->_supportsMusicAlarm)
     {
-      if ((v4[46] & 1) == 0)
+      if ((equalCopy[46] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[46])
+    else if (equalCopy[46])
     {
       goto LABEL_353;
     }
@@ -1761,16 +1761,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v23 = v4[23];
+    v23 = equalCopy[23];
     if (self->_supportsAnnounce)
     {
-      if ((v4[23] & 1) == 0)
+      if ((equalCopy[23] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[23])
+    else if (equalCopy[23])
     {
       goto LABEL_353;
     }
@@ -1788,16 +1788,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v24 = v4[59];
+    v24 = equalCopy[59];
     if (self->_supportsf9cc0d9d6aa54e7)
     {
-      if ((v4[59] & 1) == 0)
+      if ((equalCopy[59] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[59])
+    else if (equalCopy[59])
     {
       goto LABEL_353;
     }
@@ -1815,16 +1815,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v25 = v4[54];
+    v25 = equalCopy[54];
     if (self->_supportsThirdPartyMusic)
     {
-      if ((v4[54] & 1) == 0)
+      if ((equalCopy[54] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[54])
+    else if (equalCopy[54])
     {
       goto LABEL_353;
     }
@@ -1842,16 +1842,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v26 = v4[48];
+    v26 = equalCopy[48];
     if (self->_supportsPreferredMediaUser)
     {
-      if ((v4[48] & 1) == 0)
+      if ((equalCopy[48] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[48])
+    else if (equalCopy[48])
     {
       goto LABEL_353;
     }
@@ -1869,16 +1869,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v27 = v4[55];
+    v27 = equalCopy[55];
     if (self->_supportsThreadBorderRouter)
     {
-      if ((v4[55] & 1) == 0)
+      if ((equalCopy[55] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[55])
+    else if (equalCopy[55])
     {
       goto LABEL_353;
     }
@@ -1896,16 +1896,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v28 = v4[33];
+    v28 = equalCopy[33];
     if (self->_supportsDoorbellChime)
     {
-      if ((v4[33] & 1) == 0)
+      if ((equalCopy[33] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[33])
+    else if (equalCopy[33])
     {
       goto LABEL_353;
     }
@@ -1923,16 +1923,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v29 = v4[56];
+    v29 = equalCopy[56];
     if (self->_supportsUserMediaSettings)
     {
-      if ((v4[56] & 1) == 0)
+      if ((equalCopy[56] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[56])
+    else if (equalCopy[56])
     {
       goto LABEL_353;
     }
@@ -1950,16 +1950,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v30 = v4[30];
+    v30 = equalCopy[30];
     if (self->_supportsCoordinationDoorbellChime)
     {
-      if ((v4[30] & 1) == 0)
+      if ((equalCopy[30] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[30])
+    else if (equalCopy[30])
     {
       goto LABEL_353;
     }
@@ -1977,16 +1977,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v31 = v4[34];
+    v31 = equalCopy[34];
     if (self->_supportsHomeHub)
     {
-      if ((v4[34] & 1) == 0)
+      if ((equalCopy[34] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[34])
+    else if (equalCopy[34])
     {
       goto LABEL_353;
     }
@@ -2004,16 +2004,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v32 = v4[25];
+    v32 = equalCopy[25];
     if (self->_supportsAudioReturnChannel)
     {
-      if ((v4[25] & 1) == 0)
+      if ((equalCopy[25] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[25])
+    else if (equalCopy[25])
     {
       goto LABEL_353;
     }
@@ -2031,16 +2031,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v33 = v4[42];
+    v33 = equalCopy[42];
     if (self->_supportsManagedConfigurationProfile)
     {
-      if ((v4[42] & 1) == 0)
+      if ((equalCopy[42] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[42])
+    else if (equalCopy[42])
     {
       goto LABEL_353;
     }
@@ -2058,16 +2058,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v34 = v4[26];
+    v34 = equalCopy[26];
     if (self->_supportsCaptiveNetworks)
     {
-      if ((v4[26] & 1) == 0)
+      if ((equalCopy[26] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[26])
+    else if (equalCopy[26])
     {
       goto LABEL_353;
     }
@@ -2085,16 +2085,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v35 = v4[44];
+    v35 = equalCopy[44];
     if (self->_supportsMessagedHomePodSettings)
     {
-      if ((v4[44] & 1) == 0)
+      if ((equalCopy[44] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[44])
+    else if (equalCopy[44])
     {
       goto LABEL_353;
     }
@@ -2112,16 +2112,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v36 = v4[43];
+    v36 = equalCopy[43];
     if (self->_supportsMediaActions)
     {
-      if ((v4[43] & 1) == 0)
+      if ((equalCopy[43] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[43])
+    else if (equalCopy[43])
     {
       goto LABEL_353;
     }
@@ -2139,16 +2139,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v37 = v4[22];
+    v37 = equalCopy[22];
     if (self->_supports90bb069d6bx54e7)
     {
-      if ((v4[22] & 1) == 0)
+      if ((equalCopy[22] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[22])
+    else if (equalCopy[22])
     {
       goto LABEL_353;
     }
@@ -2166,16 +2166,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v38 = v4[21];
+    v38 = equalCopy[21];
     if (self->_supports89024c1cadcb8b00)
     {
-      if ((v4[21] & 1) == 0)
+      if ((equalCopy[21] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[21])
+    else if (equalCopy[21])
     {
       goto LABEL_353;
     }
@@ -2193,16 +2193,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v39 = v4[19];
+    v39 = equalCopy[19];
     if (self->_supports2c25465bb0b47366)
     {
-      if ((v4[19] & 1) == 0)
+      if ((equalCopy[19] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[19])
+    else if (equalCopy[19])
     {
       goto LABEL_353;
     }
@@ -2220,16 +2220,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v40 = v4[38];
+    v40 = equalCopy[38];
     if (self->_supportsInstallManagedConfigurationProfile)
     {
-      if ((v4[38] & 1) == 0)
+      if ((equalCopy[38] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[38])
+    else if (equalCopy[38])
     {
       goto LABEL_353;
     }
@@ -2247,16 +2247,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v41 = v4[31];
+    v41 = equalCopy[31];
     if (self->_supportsCoordinationFreeDoorbellChime)
     {
-      if ((v4[31] & 1) == 0)
+      if ((equalCopy[31] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[31])
+    else if (equalCopy[31])
     {
       goto LABEL_353;
     }
@@ -2267,7 +2267,7 @@ LABEL_45:
     goto LABEL_353;
   }
 
-  v42 = *(v4 + 60);
+  v42 = *(equalCopy + 60);
   if ((*&has & 0x1000) != 0)
   {
     if ((v42 & 0x1000) == 0)
@@ -2275,16 +2275,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v43 = v4[28];
+    v43 = equalCopy[28];
     if (self->_supportsCompanionInitiatedObliterate)
     {
-      if ((v4[28] & 1) == 0)
+      if ((equalCopy[28] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[28])
+    else if (equalCopy[28])
     {
       goto LABEL_353;
     }
@@ -2302,16 +2302,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v44 = v4[20];
+    v44 = equalCopy[20];
     if (self->_supports45c051b0b1f0)
     {
-      if ((v4[20] & 1) == 0)
+      if ((equalCopy[20] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[20])
+    else if (equalCopy[20])
     {
       goto LABEL_353;
     }
@@ -2329,16 +2329,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v45 = v4[52];
+    v45 = equalCopy[52];
     if (self->_supportsTVOSUpdateManualUpdateAvailableNotification)
     {
-      if ((v4[52] & 1) == 0)
+      if ((equalCopy[52] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[52])
+    else if (equalCopy[52])
     {
       goto LABEL_353;
     }
@@ -2356,16 +2356,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v46 = v4[58];
+    v46 = equalCopy[58];
     if (self->_supportsWiFiRepairV2)
     {
-      if ((v4[58] & 1) == 0)
+      if ((equalCopy[58] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[58])
+    else if (equalCopy[58])
     {
       goto LABEL_353;
     }
@@ -2383,16 +2383,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v47 = v4[49];
+    v47 = equalCopy[49];
     if (self->_supportsSoftwareUpdateV2)
     {
-      if ((v4[49] & 1) == 0)
+      if ((equalCopy[49] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[49])
+    else if (equalCopy[49])
     {
       goto LABEL_353;
     }
@@ -2410,16 +2410,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v48 = v4[51];
+    v48 = equalCopy[51];
     if (self->_supportsStereoOdeonTTSUBypassingPrimary)
     {
-      if ((v4[51] & 1) == 0)
+      if ((equalCopy[51] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[51])
+    else if (equalCopy[51])
     {
       goto LABEL_353;
     }
@@ -2437,16 +2437,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v49 = v4[47];
+    v49 = equalCopy[47];
     if (self->_supportsNetworkDiagnostics)
     {
-      if ((v4[47] & 1) == 0)
+      if ((equalCopy[47] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[47])
+    else if (equalCopy[47])
     {
       goto LABEL_353;
     }
@@ -2464,16 +2464,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v50 = v4[17];
+    v50 = equalCopy[17];
     if (self->_supports24b183bad693415)
     {
-      if ((v4[17] & 1) == 0)
+      if ((equalCopy[17] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[17])
+    else if (equalCopy[17])
     {
       goto LABEL_353;
     }
@@ -2491,16 +2491,16 @@ LABEL_45:
       goto LABEL_353;
     }
 
-    v51 = v4[18];
+    v51 = equalCopy[18];
     if (self->_supports29dfaee0e6d26dc)
     {
-      if ((v4[18] & 1) == 0)
+      if ((equalCopy[18] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[18])
+    else if (equalCopy[18])
     {
       goto LABEL_353;
     }
@@ -2517,13 +2517,13 @@ LABEL_45:
     {
       if (self->_clearsKeychainWhenRemovedFromHome)
       {
-        if ((v4[16] & 1) == 0)
+        if ((equalCopy[16] & 1) == 0)
         {
           goto LABEL_353;
         }
       }
 
-      else if (v4[16])
+      else if (equalCopy[16])
       {
         goto LABEL_353;
       }
@@ -2537,16 +2537,16 @@ LABEL_353:
     goto LABEL_354;
   }
 
-  v52 = (*(v4 + 60) & 1) == 0;
+  v52 = (*(equalCopy + 60) & 1) == 0;
 LABEL_354:
 
   return v52;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_tag copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_tag copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -3203,21 +3203,21 @@ LABEL_46:
   return v9;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_tag)
   {
-    v6 = v4;
-    [v4 setTag:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setTag:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((*&has & 0x2000000) != 0)
   {
-    v4[41] = self->_supportsKeychainSync;
-    *(v4 + 60) |= 0x2000000uLL;
+    toCopy[41] = self->_supportsKeychainSync;
+    *(toCopy + 60) |= 0x2000000uLL;
     has = self->_has;
     if ((*&has & 0x10000) == 0)
     {
@@ -3236,8 +3236,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4[32] = self->_supportsDeviceSetup;
-  *(v4 + 60) |= 0x10000uLL;
+  toCopy[32] = self->_supportsDeviceSetup;
+  *(toCopy + 60) |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -3251,8 +3251,8 @@ LABEL_6:
   }
 
 LABEL_53:
-  v4[39] = self->_supportsKeyTransferClient;
-  *(v4 + 60) |= 0x800000uLL;
+  toCopy[39] = self->_supportsKeyTransferClient;
+  *(toCopy + 60) |= 0x800000uLL;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -3266,8 +3266,8 @@ LABEL_7:
   }
 
 LABEL_54:
-  v4[40] = self->_supportsKeyTransferServer;
-  *(v4 + 60) |= 0x1000000uLL;
+  toCopy[40] = self->_supportsKeyTransferServer;
+  *(toCopy + 60) |= 0x1000000uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -3281,8 +3281,8 @@ LABEL_8:
   }
 
 LABEL_55:
-  v4[50] = self->_supportsStandaloneMode;
-  *(v4 + 60) |= 0x400000000uLL;
+  toCopy[50] = self->_supportsStandaloneMode;
+  *(toCopy + 60) |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -3296,8 +3296,8 @@ LABEL_9:
   }
 
 LABEL_56:
-  v4[27] = self->_supportsCloudDataSync;
-  *(v4 + 60) |= 0x800uLL;
+  toCopy[27] = self->_supportsCloudDataSync;
+  *(toCopy + 60) |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -3311,8 +3311,8 @@ LABEL_10:
   }
 
 LABEL_57:
-  v4[57] = self->_supportsWholeHouseAudio;
-  *(v4 + 60) |= 0x20000000000uLL;
+  toCopy[57] = self->_supportsWholeHouseAudio;
+  *(toCopy + 60) |= 0x20000000000uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -3326,8 +3326,8 @@ LABEL_11:
   }
 
 LABEL_58:
-  v4[24] = self->_supportsAssistantAccessControl;
-  *(v4 + 60) |= 0x100uLL;
+  toCopy[24] = self->_supportsAssistantAccessControl;
+  *(toCopy + 60) |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -3341,8 +3341,8 @@ LABEL_12:
   }
 
 LABEL_59:
-  v4[35] = self->_supportsHomeInvitation;
-  *(v4 + 60) |= 0x80000uLL;
+  toCopy[35] = self->_supportsHomeInvitation;
+  *(toCopy + 60) |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -3356,8 +3356,8 @@ LABEL_13:
   }
 
 LABEL_60:
-  v4[53] = self->_supportsTargetControl;
-  *(v4 + 60) |= 0x2000000000uLL;
+  toCopy[53] = self->_supportsTargetControl;
+  *(toCopy + 60) |= 0x2000000000uLL;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -3371,8 +3371,8 @@ LABEL_14:
   }
 
 LABEL_61:
-  v4[45] = self->_supportsMultiUser;
-  *(v4 + 60) |= 0x20000000uLL;
+  toCopy[45] = self->_supportsMultiUser;
+  *(toCopy + 60) |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -3386,8 +3386,8 @@ LABEL_15:
   }
 
 LABEL_62:
-  v4[37] = self->_supportsHomeLevelLocationServiceSetting;
-  *(v4 + 60) |= 0x200000uLL;
+  toCopy[37] = self->_supportsHomeLevelLocationServiceSetting;
+  *(toCopy + 60) |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -3401,8 +3401,8 @@ LABEL_16:
   }
 
 LABEL_63:
-  v4[36] = self->_supportsHomeLevelAnalyticsAndImprovementSetting;
-  *(v4 + 60) |= 0x100000uLL;
+  toCopy[36] = self->_supportsHomeLevelAnalyticsAndImprovementSetting;
+  *(toCopy + 60) |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -3416,8 +3416,8 @@ LABEL_17:
   }
 
 LABEL_64:
-  v4[29] = self->_supportsCompanionInitiatedRestart;
-  *(v4 + 60) |= 0x2000uLL;
+  toCopy[29] = self->_supportsCompanionInitiatedRestart;
+  *(toCopy + 60) |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -3431,8 +3431,8 @@ LABEL_18:
   }
 
 LABEL_65:
-  v4[46] = self->_supportsMusicAlarm;
-  *(v4 + 60) |= 0x40000000uLL;
+  toCopy[46] = self->_supportsMusicAlarm;
+  *(toCopy + 60) |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -3446,8 +3446,8 @@ LABEL_19:
   }
 
 LABEL_66:
-  v4[23] = self->_supportsAnnounce;
-  *(v4 + 60) |= 0x80uLL;
+  toCopy[23] = self->_supportsAnnounce;
+  *(toCopy + 60) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x80000000000) == 0)
   {
@@ -3461,8 +3461,8 @@ LABEL_20:
   }
 
 LABEL_67:
-  v4[59] = self->_supportsf9cc0d9d6aa54e7;
-  *(v4 + 60) |= 0x80000000000uLL;
+  toCopy[59] = self->_supportsf9cc0d9d6aa54e7;
+  *(toCopy + 60) |= 0x80000000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -3476,8 +3476,8 @@ LABEL_21:
   }
 
 LABEL_68:
-  v4[54] = self->_supportsThirdPartyMusic;
-  *(v4 + 60) |= 0x4000000000uLL;
+  toCopy[54] = self->_supportsThirdPartyMusic;
+  *(toCopy + 60) |= 0x4000000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -3491,8 +3491,8 @@ LABEL_22:
   }
 
 LABEL_69:
-  v4[48] = self->_supportsPreferredMediaUser;
-  *(v4 + 60) |= 0x100000000uLL;
+  toCopy[48] = self->_supportsPreferredMediaUser;
+  *(toCopy + 60) |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -3506,8 +3506,8 @@ LABEL_23:
   }
 
 LABEL_70:
-  v4[55] = self->_supportsThreadBorderRouter;
-  *(v4 + 60) |= 0x8000000000uLL;
+  toCopy[55] = self->_supportsThreadBorderRouter;
+  *(toCopy + 60) |= 0x8000000000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -3521,8 +3521,8 @@ LABEL_24:
   }
 
 LABEL_71:
-  v4[33] = self->_supportsDoorbellChime;
-  *(v4 + 60) |= 0x20000uLL;
+  toCopy[33] = self->_supportsDoorbellChime;
+  *(toCopy + 60) |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -3536,8 +3536,8 @@ LABEL_25:
   }
 
 LABEL_72:
-  v4[56] = self->_supportsUserMediaSettings;
-  *(v4 + 60) |= 0x10000000000uLL;
+  toCopy[56] = self->_supportsUserMediaSettings;
+  *(toCopy + 60) |= 0x10000000000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -3551,8 +3551,8 @@ LABEL_26:
   }
 
 LABEL_73:
-  v4[30] = self->_supportsCoordinationDoorbellChime;
-  *(v4 + 60) |= 0x4000uLL;
+  toCopy[30] = self->_supportsCoordinationDoorbellChime;
+  *(toCopy + 60) |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -3566,8 +3566,8 @@ LABEL_27:
   }
 
 LABEL_74:
-  v4[34] = self->_supportsHomeHub;
-  *(v4 + 60) |= 0x40000uLL;
+  toCopy[34] = self->_supportsHomeHub;
+  *(toCopy + 60) |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -3581,8 +3581,8 @@ LABEL_28:
   }
 
 LABEL_75:
-  v4[25] = self->_supportsAudioReturnChannel;
-  *(v4 + 60) |= 0x200uLL;
+  toCopy[25] = self->_supportsAudioReturnChannel;
+  *(toCopy + 60) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -3596,8 +3596,8 @@ LABEL_29:
   }
 
 LABEL_76:
-  v4[42] = self->_supportsManagedConfigurationProfile;
-  *(v4 + 60) |= 0x4000000uLL;
+  toCopy[42] = self->_supportsManagedConfigurationProfile;
+  *(toCopy + 60) |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -3611,8 +3611,8 @@ LABEL_30:
   }
 
 LABEL_77:
-  v4[26] = self->_supportsCaptiveNetworks;
-  *(v4 + 60) |= 0x400uLL;
+  toCopy[26] = self->_supportsCaptiveNetworks;
+  *(toCopy + 60) |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -3626,8 +3626,8 @@ LABEL_31:
   }
 
 LABEL_78:
-  v4[44] = self->_supportsMessagedHomePodSettings;
-  *(v4 + 60) |= 0x10000000uLL;
+  toCopy[44] = self->_supportsMessagedHomePodSettings;
+  *(toCopy + 60) |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -3641,8 +3641,8 @@ LABEL_32:
   }
 
 LABEL_79:
-  v4[43] = self->_supportsMediaActions;
-  *(v4 + 60) |= 0x8000000uLL;
+  toCopy[43] = self->_supportsMediaActions;
+  *(toCopy + 60) |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -3656,8 +3656,8 @@ LABEL_33:
   }
 
 LABEL_80:
-  v4[22] = self->_supports90bb069d6bx54e7;
-  *(v4 + 60) |= 0x40uLL;
+  toCopy[22] = self->_supports90bb069d6bx54e7;
+  *(toCopy + 60) |= 0x40uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -3671,8 +3671,8 @@ LABEL_34:
   }
 
 LABEL_81:
-  v4[21] = self->_supports89024c1cadcb8b00;
-  *(v4 + 60) |= 0x20uLL;
+  toCopy[21] = self->_supports89024c1cadcb8b00;
+  *(toCopy + 60) |= 0x20uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -3686,8 +3686,8 @@ LABEL_35:
   }
 
 LABEL_82:
-  v4[19] = self->_supports2c25465bb0b47366;
-  *(v4 + 60) |= 8uLL;
+  toCopy[19] = self->_supports2c25465bb0b47366;
+  *(toCopy + 60) |= 8uLL;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -3701,8 +3701,8 @@ LABEL_36:
   }
 
 LABEL_83:
-  v4[38] = self->_supportsInstallManagedConfigurationProfile;
-  *(v4 + 60) |= 0x400000uLL;
+  toCopy[38] = self->_supportsInstallManagedConfigurationProfile;
+  *(toCopy + 60) |= 0x400000uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -3716,8 +3716,8 @@ LABEL_37:
   }
 
 LABEL_84:
-  v4[31] = self->_supportsCoordinationFreeDoorbellChime;
-  *(v4 + 60) |= 0x8000uLL;
+  toCopy[31] = self->_supportsCoordinationFreeDoorbellChime;
+  *(toCopy + 60) |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -3731,8 +3731,8 @@ LABEL_38:
   }
 
 LABEL_85:
-  v4[28] = self->_supportsCompanionInitiatedObliterate;
-  *(v4 + 60) |= 0x1000uLL;
+  toCopy[28] = self->_supportsCompanionInitiatedObliterate;
+  *(toCopy + 60) |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -3746,8 +3746,8 @@ LABEL_39:
   }
 
 LABEL_86:
-  v4[20] = self->_supports45c051b0b1f0;
-  *(v4 + 60) |= 0x10uLL;
+  toCopy[20] = self->_supports45c051b0b1f0;
+  *(toCopy + 60) |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -3761,8 +3761,8 @@ LABEL_40:
   }
 
 LABEL_87:
-  v4[52] = self->_supportsTVOSUpdateManualUpdateAvailableNotification;
-  *(v4 + 60) |= 0x1000000000uLL;
+  toCopy[52] = self->_supportsTVOSUpdateManualUpdateAvailableNotification;
+  *(toCopy + 60) |= 0x1000000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
   {
@@ -3776,8 +3776,8 @@ LABEL_41:
   }
 
 LABEL_88:
-  v4[58] = self->_supportsWiFiRepairV2;
-  *(v4 + 60) |= 0x40000000000uLL;
+  toCopy[58] = self->_supportsWiFiRepairV2;
+  *(toCopy + 60) |= 0x40000000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -3791,8 +3791,8 @@ LABEL_42:
   }
 
 LABEL_89:
-  v4[49] = self->_supportsSoftwareUpdateV2;
-  *(v4 + 60) |= 0x200000000uLL;
+  toCopy[49] = self->_supportsSoftwareUpdateV2;
+  *(toCopy + 60) |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -3806,8 +3806,8 @@ LABEL_43:
   }
 
 LABEL_90:
-  v4[51] = self->_supportsStereoOdeonTTSUBypassingPrimary;
-  *(v4 + 60) |= 0x800000000uLL;
+  toCopy[51] = self->_supportsStereoOdeonTTSUBypassingPrimary;
+  *(toCopy + 60) |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -3821,8 +3821,8 @@ LABEL_44:
   }
 
 LABEL_91:
-  v4[47] = self->_supportsNetworkDiagnostics;
-  *(v4 + 60) |= 0x80000000uLL;
+  toCopy[47] = self->_supportsNetworkDiagnostics;
+  *(toCopy + 60) |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -3836,8 +3836,8 @@ LABEL_45:
   }
 
 LABEL_92:
-  v4[17] = self->_supports24b183bad693415;
-  *(v4 + 60) |= 2uLL;
+  toCopy[17] = self->_supports24b183bad693415;
+  *(toCopy + 60) |= 2uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -3851,26 +3851,26 @@ LABEL_46:
   }
 
 LABEL_93:
-  v4[18] = self->_supports29dfaee0e6d26dc;
-  *(v4 + 60) |= 4uLL;
+  toCopy[18] = self->_supports29dfaee0e6d26dc;
+  *(toCopy + 60) |= 4uLL;
   if (*&self->_has)
   {
 LABEL_47:
-    v4[16] = self->_clearsKeychainWhenRemovedFromHome;
-    *(v4 + 60) |= 1uLL;
+    toCopy[16] = self->_clearsKeychainWhenRemovedFromHome;
+    *(toCopy + 60) |= 1uLL;
   }
 
 LABEL_48:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v50 = v4;
+  toCopy = to;
+  v50 = toCopy;
   if (self->_tag)
   {
     PBDataWriterWriteStringField();
-    v4 = v50;
+    toCopy = v50;
   }
 
   has = self->_has;
@@ -3878,7 +3878,7 @@ LABEL_48:
   {
     supportsKeychainSync = self->_supportsKeychainSync;
     PBDataWriterWriteBOOLField();
-    v4 = v50;
+    toCopy = v50;
     has = self->_has;
     if ((*&has & 0x10000) == 0)
     {
@@ -3899,7 +3899,7 @@ LABEL_5:
 
   supportsDeviceSetup = self->_supportsDeviceSetup;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -3915,7 +3915,7 @@ LABEL_6:
 LABEL_53:
   supportsKeyTransferClient = self->_supportsKeyTransferClient;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -3931,7 +3931,7 @@ LABEL_7:
 LABEL_54:
   supportsKeyTransferServer = self->_supportsKeyTransferServer;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -3947,7 +3947,7 @@ LABEL_8:
 LABEL_55:
   supportsStandaloneMode = self->_supportsStandaloneMode;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -3963,7 +3963,7 @@ LABEL_9:
 LABEL_56:
   supportsCloudDataSync = self->_supportsCloudDataSync;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -3979,7 +3979,7 @@ LABEL_10:
 LABEL_57:
   supportsWholeHouseAudio = self->_supportsWholeHouseAudio;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -3995,7 +3995,7 @@ LABEL_11:
 LABEL_58:
   supportsAssistantAccessControl = self->_supportsAssistantAccessControl;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -4011,7 +4011,7 @@ LABEL_12:
 LABEL_59:
   supportsHomeInvitation = self->_supportsHomeInvitation;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -4027,7 +4027,7 @@ LABEL_13:
 LABEL_60:
   supportsTargetControl = self->_supportsTargetControl;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -4043,7 +4043,7 @@ LABEL_14:
 LABEL_61:
   supportsMultiUser = self->_supportsMultiUser;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -4059,7 +4059,7 @@ LABEL_15:
 LABEL_62:
   supportsHomeLevelLocationServiceSetting = self->_supportsHomeLevelLocationServiceSetting;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -4075,7 +4075,7 @@ LABEL_16:
 LABEL_63:
   supportsHomeLevelAnalyticsAndImprovementSetting = self->_supportsHomeLevelAnalyticsAndImprovementSetting;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -4091,7 +4091,7 @@ LABEL_17:
 LABEL_64:
   supportsCompanionInitiatedRestart = self->_supportsCompanionInitiatedRestart;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -4107,7 +4107,7 @@ LABEL_18:
 LABEL_65:
   supportsMusicAlarm = self->_supportsMusicAlarm;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -4123,7 +4123,7 @@ LABEL_19:
 LABEL_66:
   supportsAnnounce = self->_supportsAnnounce;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x80000000000) == 0)
   {
@@ -4139,7 +4139,7 @@ LABEL_20:
 LABEL_67:
   supportsf9cc0d9d6aa54e7 = self->_supportsf9cc0d9d6aa54e7;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -4155,7 +4155,7 @@ LABEL_21:
 LABEL_68:
   supportsThirdPartyMusic = self->_supportsThirdPartyMusic;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -4171,7 +4171,7 @@ LABEL_22:
 LABEL_69:
   supportsPreferredMediaUser = self->_supportsPreferredMediaUser;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -4187,7 +4187,7 @@ LABEL_23:
 LABEL_70:
   supportsThreadBorderRouter = self->_supportsThreadBorderRouter;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -4203,7 +4203,7 @@ LABEL_24:
 LABEL_71:
   supportsDoorbellChime = self->_supportsDoorbellChime;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x10000000000) == 0)
   {
@@ -4219,7 +4219,7 @@ LABEL_25:
 LABEL_72:
   supportsUserMediaSettings = self->_supportsUserMediaSettings;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -4235,7 +4235,7 @@ LABEL_26:
 LABEL_73:
   supportsCoordinationDoorbellChime = self->_supportsCoordinationDoorbellChime;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -4251,7 +4251,7 @@ LABEL_27:
 LABEL_74:
   supportsHomeHub = self->_supportsHomeHub;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -4267,7 +4267,7 @@ LABEL_28:
 LABEL_75:
   supportsAudioReturnChannel = self->_supportsAudioReturnChannel;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -4283,7 +4283,7 @@ LABEL_29:
 LABEL_76:
   supportsManagedConfigurationProfile = self->_supportsManagedConfigurationProfile;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -4299,7 +4299,7 @@ LABEL_30:
 LABEL_77:
   supportsCaptiveNetworks = self->_supportsCaptiveNetworks;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -4315,7 +4315,7 @@ LABEL_31:
 LABEL_78:
   supportsMessagedHomePodSettings = self->_supportsMessagedHomePodSettings;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -4331,7 +4331,7 @@ LABEL_32:
 LABEL_79:
   supportsMediaActions = self->_supportsMediaActions;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -4347,7 +4347,7 @@ LABEL_33:
 LABEL_80:
   supports90bb069d6bx54e7 = self->_supports90bb069d6bx54e7;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -4363,7 +4363,7 @@ LABEL_34:
 LABEL_81:
   supports89024c1cadcb8b00 = self->_supports89024c1cadcb8b00;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -4379,7 +4379,7 @@ LABEL_35:
 LABEL_82:
   supports2c25465bb0b47366 = self->_supports2c25465bb0b47366;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -4395,7 +4395,7 @@ LABEL_36:
 LABEL_83:
   supportsInstallManagedConfigurationProfile = self->_supportsInstallManagedConfigurationProfile;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -4411,7 +4411,7 @@ LABEL_37:
 LABEL_84:
   supportsCoordinationFreeDoorbellChime = self->_supportsCoordinationFreeDoorbellChime;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -4427,7 +4427,7 @@ LABEL_38:
 LABEL_85:
   supportsCompanionInitiatedObliterate = self->_supportsCompanionInitiatedObliterate;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -4443,7 +4443,7 @@ LABEL_39:
 LABEL_86:
   supports45c051b0b1f0 = self->_supports45c051b0b1f0;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -4459,7 +4459,7 @@ LABEL_40:
 LABEL_87:
   supportsTVOSUpdateManualUpdateAvailableNotification = self->_supportsTVOSUpdateManualUpdateAvailableNotification;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
   {
@@ -4475,7 +4475,7 @@ LABEL_41:
 LABEL_88:
   supportsWiFiRepairV2 = self->_supportsWiFiRepairV2;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -4491,7 +4491,7 @@ LABEL_42:
 LABEL_89:
   supportsSoftwareUpdateV2 = self->_supportsSoftwareUpdateV2;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -4507,7 +4507,7 @@ LABEL_43:
 LABEL_90:
   supportsStereoOdeonTTSUBypassingPrimary = self->_supportsStereoOdeonTTSUBypassingPrimary;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -4523,7 +4523,7 @@ LABEL_44:
 LABEL_91:
   supportsNetworkDiagnostics = self->_supportsNetworkDiagnostics;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -4539,7 +4539,7 @@ LABEL_45:
 LABEL_92:
   supports24b183bad693415 = self->_supports24b183bad693415;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -4555,13 +4555,13 @@ LABEL_46:
 LABEL_93:
   supports29dfaee0e6d26dc = self->_supports29dfaee0e6d26dc;
   PBDataWriterWriteBOOLField();
-  v4 = v50;
+  toCopy = v50;
   if (*&self->_has)
   {
 LABEL_47:
     clearsKeychainWhenRemovedFromHome = self->_clearsKeychainWhenRemovedFromHome;
     PBDataWriterWriteBOOLField();
-    v4 = v50;
+    toCopy = v50;
   }
 
 LABEL_48:
@@ -4569,12 +4569,12 @@ LABEL_48:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   tag = self->_tag;
   if (tag)
   {
-    [v3 setObject:tag forKey:@"tag"];
+    [dictionary setObject:tag forKey:@"tag"];
   }
 
   has = self->_has;
@@ -5279,16 +5279,16 @@ LABEL_48:
   v8.receiver = self;
   v8.super_class = HMProtoAccessoryCapabilities;
   v4 = [(HMProtoAccessoryCapabilities *)&v8 description];
-  v5 = [(HMProtoAccessoryCapabilities *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMProtoAccessoryCapabilities *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSupports29dfaee0e6d26dc:(BOOL)a3
+- (void)setHasSupports29dfaee0e6d26dc:(BOOL)supports29dfaee0e6d26dc
 {
   v3 = 4;
-  if (!a3)
+  if (!supports29dfaee0e6d26dc)
   {
     v3 = 0;
   }
@@ -5296,10 +5296,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasSupports24b183bad693415:(BOOL)a3
+- (void)setHasSupports24b183bad693415:(BOOL)supports24b183bad693415
 {
   v3 = 2;
-  if (!a3)
+  if (!supports24b183bad693415)
   {
     v3 = 0;
   }
@@ -5307,10 +5307,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasSupportsNetworkDiagnostics:(BOOL)a3
+- (void)setHasSupportsNetworkDiagnostics:(BOOL)diagnostics
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!diagnostics)
   {
     v3 = 0;
   }
@@ -5318,10 +5318,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)a3
+- (void)setHasSupportsStereoOdeonTTSUBypassingPrimary:(BOOL)primary
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!primary)
   {
     v3 = 0;
   }
@@ -5329,10 +5329,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsSoftwareUpdateV2:(BOOL)a3
+- (void)setHasSupportsSoftwareUpdateV2:(BOOL)v2
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!v2)
   {
     v3 = 0;
   }
@@ -5340,10 +5340,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsWiFiRepairV2:(BOOL)a3
+- (void)setHasSupportsWiFiRepairV2:(BOOL)v2
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!v2)
   {
     v3 = 0;
   }
@@ -5351,10 +5351,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsTVOSUpdateManualUpdateAvailableNotification:(BOOL)a3
+- (void)setHasSupportsTVOSUpdateManualUpdateAvailableNotification:(BOOL)notification
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!notification)
   {
     v3 = 0;
   }
@@ -5362,10 +5362,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupports45c051b0b1f0:(BOOL)a3
+- (void)setHasSupports45c051b0b1f0:(BOOL)supports45c051b0b1f0
 {
   v3 = 16;
-  if (!a3)
+  if (!supports45c051b0b1f0)
   {
     v3 = 0;
   }
@@ -5373,10 +5373,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasSupportsCompanionInitiatedObliterate:(BOOL)a3
+- (void)setHasSupportsCompanionInitiatedObliterate:(BOOL)obliterate
 {
   v3 = 4096;
-  if (!a3)
+  if (!obliterate)
   {
     v3 = 0;
   }
@@ -5384,10 +5384,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasSupportsCoordinationFreeDoorbellChime:(BOOL)a3
+- (void)setHasSupportsCoordinationFreeDoorbellChime:(BOOL)chime
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!chime)
   {
     v3 = 0;
   }
@@ -5395,10 +5395,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasSupportsInstallManagedConfigurationProfile:(BOOL)a3
+- (void)setHasSupportsInstallManagedConfigurationProfile:(BOOL)profile
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!profile)
   {
     v3 = 0;
   }
@@ -5406,10 +5406,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasSupports2c25465bb0b47366:(BOOL)a3
+- (void)setHasSupports2c25465bb0b47366:(BOOL)supports2c25465bb0b47366
 {
   v3 = 8;
-  if (!a3)
+  if (!supports2c25465bb0b47366)
   {
     v3 = 0;
   }
@@ -5417,10 +5417,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasSupports89024c1cadcb8b00:(BOOL)a3
+- (void)setHasSupports89024c1cadcb8b00:(BOOL)supports89024c1cadcb8b00
 {
   v3 = 32;
-  if (!a3)
+  if (!supports89024c1cadcb8b00)
   {
     v3 = 0;
   }
@@ -5428,10 +5428,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasSupports90bb069d6bx54e7:(BOOL)a3
+- (void)setHasSupports90bb069d6bx54e7:(BOOL)supports90bb069d6bx54e7
 {
   v3 = 64;
-  if (!a3)
+  if (!supports90bb069d6bx54e7)
   {
     v3 = 0;
   }
@@ -5439,10 +5439,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasSupportsMediaActions:(BOOL)a3
+- (void)setHasSupportsMediaActions:(BOOL)actions
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!actions)
   {
     v3 = 0;
   }
@@ -5450,10 +5450,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasSupportsMessagedHomePodSettings:(BOOL)a3
+- (void)setHasSupportsMessagedHomePodSettings:(BOOL)settings
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!settings)
   {
     v3 = 0;
   }
@@ -5461,10 +5461,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsCaptiveNetworks:(BOOL)a3
+- (void)setHasSupportsCaptiveNetworks:(BOOL)networks
 {
   v3 = 1024;
-  if (!a3)
+  if (!networks)
   {
     v3 = 0;
   }
@@ -5472,10 +5472,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasSupportsManagedConfigurationProfile:(BOOL)a3
+- (void)setHasSupportsManagedConfigurationProfile:(BOOL)profile
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!profile)
   {
     v3 = 0;
   }
@@ -5483,10 +5483,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsAudioReturnChannel:(BOOL)a3
+- (void)setHasSupportsAudioReturnChannel:(BOOL)channel
 {
   v3 = 512;
-  if (!a3)
+  if (!channel)
   {
     v3 = 0;
   }
@@ -5494,10 +5494,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasSupportsHomeHub:(BOOL)a3
+- (void)setHasSupportsHomeHub:(BOOL)hub
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!hub)
   {
     v3 = 0;
   }
@@ -5505,10 +5505,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasSupportsCoordinationDoorbellChime:(BOOL)a3
+- (void)setHasSupportsCoordinationDoorbellChime:(BOOL)chime
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!chime)
   {
     v3 = 0;
   }
@@ -5516,10 +5516,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasSupportsUserMediaSettings:(BOOL)a3
+- (void)setHasSupportsUserMediaSettings:(BOOL)settings
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!settings)
   {
     v3 = 0;
   }
@@ -5527,10 +5527,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsDoorbellChime:(BOOL)a3
+- (void)setHasSupportsDoorbellChime:(BOOL)chime
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!chime)
   {
     v3 = 0;
   }
@@ -5538,10 +5538,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasSupportsThreadBorderRouter:(BOOL)a3
+- (void)setHasSupportsThreadBorderRouter:(BOOL)router
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!router)
   {
     v3 = 0;
   }
@@ -5549,10 +5549,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsPreferredMediaUser:(BOOL)a3
+- (void)setHasSupportsPreferredMediaUser:(BOOL)user
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!user)
   {
     v3 = 0;
   }
@@ -5560,10 +5560,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsThirdPartyMusic:(BOOL)a3
+- (void)setHasSupportsThirdPartyMusic:(BOOL)music
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!music)
   {
     v3 = 0;
   }
@@ -5571,10 +5571,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsf9cc0d9d6aa54e7:(BOOL)a3
+- (void)setHasSupportsf9cc0d9d6aa54e7:(BOOL)supportsf9cc0d9d6aa54e7
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!supportsf9cc0d9d6aa54e7)
   {
     v3 = 0;
   }
@@ -5582,10 +5582,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsAnnounce:(BOOL)a3
+- (void)setHasSupportsAnnounce:(BOOL)announce
 {
   v3 = 128;
-  if (!a3)
+  if (!announce)
   {
     v3 = 0;
   }
@@ -5593,10 +5593,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasSupportsMusicAlarm:(BOOL)a3
+- (void)setHasSupportsMusicAlarm:(BOOL)alarm
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!alarm)
   {
     v3 = 0;
   }
@@ -5604,10 +5604,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsCompanionInitiatedRestart:(BOOL)a3
+- (void)setHasSupportsCompanionInitiatedRestart:(BOOL)restart
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!restart)
   {
     v3 = 0;
   }
@@ -5615,10 +5615,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasSupportsHomeLevelAnalyticsAndImprovementSetting:(BOOL)a3
+- (void)setHasSupportsHomeLevelAnalyticsAndImprovementSetting:(BOOL)setting
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!setting)
   {
     v3 = 0;
   }
@@ -5626,10 +5626,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasSupportsHomeLevelLocationServiceSetting:(BOOL)a3
+- (void)setHasSupportsHomeLevelLocationServiceSetting:(BOOL)setting
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!setting)
   {
     v3 = 0;
   }
@@ -5637,10 +5637,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasSupportsMultiUser:(BOOL)a3
+- (void)setHasSupportsMultiUser:(BOOL)user
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!user)
   {
     v3 = 0;
   }
@@ -5648,10 +5648,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsTargetControl:(BOOL)a3
+- (void)setHasSupportsTargetControl:(BOOL)control
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!control)
   {
     v3 = 0;
   }
@@ -5659,10 +5659,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsHomeInvitation:(BOOL)a3
+- (void)setHasSupportsHomeInvitation:(BOOL)invitation
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!invitation)
   {
     v3 = 0;
   }
@@ -5670,10 +5670,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasSupportsAssistantAccessControl:(BOOL)a3
+- (void)setHasSupportsAssistantAccessControl:(BOOL)control
 {
   v3 = 256;
-  if (!a3)
+  if (!control)
   {
     v3 = 0;
   }
@@ -5681,10 +5681,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasSupportsWholeHouseAudio:(BOOL)a3
+- (void)setHasSupportsWholeHouseAudio:(BOOL)audio
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!audio)
   {
     v3 = 0;
   }
@@ -5692,10 +5692,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsCloudDataSync:(BOOL)a3
+- (void)setHasSupportsCloudDataSync:(BOOL)sync
 {
   v3 = 2048;
-  if (!a3)
+  if (!sync)
   {
     v3 = 0;
   }
@@ -5703,10 +5703,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasSupportsStandaloneMode:(BOOL)a3
+- (void)setHasSupportsStandaloneMode:(BOOL)mode
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -5714,10 +5714,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsKeyTransferServer:(BOOL)a3
+- (void)setHasSupportsKeyTransferServer:(BOOL)server
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!server)
   {
     v3 = 0;
   }
@@ -5725,10 +5725,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasSupportsKeyTransferClient:(BOOL)a3
+- (void)setHasSupportsKeyTransferClient:(BOOL)client
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!client)
   {
     v3 = 0;
   }
@@ -5736,10 +5736,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasSupportsDeviceSetup:(BOOL)a3
+- (void)setHasSupportsDeviceSetup:(BOOL)setup
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!setup)
   {
     v3 = 0;
   }
@@ -5747,10 +5747,10 @@ LABEL_48:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasSupportsKeychainSync:(BOOL)a3
+- (void)setHasSupportsKeychainSync:(BOOL)sync
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!sync)
   {
     v3 = 0;
   }

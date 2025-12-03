@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = RMMDMConduitConfig;
-  v2 = [(RMConduitConfig *)&v5 reportDetails];
-  v3 = [v2 mutableCopy];
+  reportDetails = [(RMConduitConfig *)&v5 reportDetails];
+  v3 = [reportDetails mutableCopy];
 
   return v3;
 }

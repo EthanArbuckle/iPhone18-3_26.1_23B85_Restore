@@ -1,5 +1,5 @@
 @interface VideosUISeasonPickerButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityMultipleSeasonsAvailable;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -8,11 +8,11 @@
 
 @implementation VideosUISeasonPickerButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.SeasonPickerButton" hasSwiftField:@"currentLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"VideosUI.SeasonPickerButton" hasSwiftField:@"headerTitles" withSwiftType:"Array<String>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.SeasonPickerButton" hasSwiftField:@"currentLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"VideosUI.SeasonPickerButton" hasSwiftField:@"headerTitles" withSwiftType:"Array<String>"];
 }
 
 - (id)accessibilityLabel
@@ -21,16 +21,16 @@
   v3 = [(VideosUISeasonPickerButtonAccessibility *)self safeSwiftValueForKey:@"currentLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(VideosUISeasonPickerButtonAccessibility *)self _accessibilityMultipleSeasonsAvailable];
+  _accessibilityMultipleSeasonsAvailable = [(VideosUISeasonPickerButtonAccessibility *)self _accessibilityMultipleSeasonsAvailable];
   v3 = *MEMORY[0x29EDC7F70];
-  if (!v2)
+  if (!_accessibilityMultipleSeasonsAvailable)
   {
     v3 = 0;
   }
@@ -42,17 +42,17 @@
 {
   if ([(VideosUISeasonPickerButtonAccessibility *)self _accessibilityMultipleSeasonsAvailable])
   {
-    v3 = accessibilityLocalizedString(@"season.picker.button.hint");
+    accessibilityHint = accessibilityLocalizedString(@"season.picker.button.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = VideosUISeasonPickerButtonAccessibility;
-    v3 = [(VideosUISeasonPickerButtonAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(VideosUISeasonPickerButtonAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (BOOL)_accessibilityMultipleSeasonsAvailable

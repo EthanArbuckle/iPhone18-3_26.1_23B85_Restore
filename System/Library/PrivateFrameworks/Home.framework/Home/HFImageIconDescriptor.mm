@@ -1,21 +1,21 @@
 @interface HFImageIconDescriptor
-- (BOOL)isEqual:(id)a3;
-- (HFImageIconDescriptor)imageIconDescriptorWithUpdatedImageSymbolConfiguration:(id)a3;
-- (HFImageIconDescriptor)initWithDemoModeImageIdentifier:(id)a3;
-- (HFImageIconDescriptor)initWithImageIdentifier:(id)a3;
-- (HFImageIconDescriptor)initWithSymbolIconConfiguration:(id)a3;
-- (HFImageIconDescriptor)initWithSystemImageNamed:(id)a3 configuration:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFImageIconDescriptor)imageIconDescriptorWithUpdatedImageSymbolConfiguration:(id)configuration;
+- (HFImageIconDescriptor)initWithDemoModeImageIdentifier:(id)identifier;
+- (HFImageIconDescriptor)initWithImageIdentifier:(id)identifier;
+- (HFImageIconDescriptor)initWithSymbolIconConfiguration:(id)configuration;
+- (HFImageIconDescriptor)initWithSystemImageNamed:(id)named configuration:(id)configuration;
 - (NSString)description;
-- (id)iconDescriptorByMergingWithIconDescriptor:(id)a3;
+- (id)iconDescriptorByMergingWithIconDescriptor:(id)descriptor;
 - (unint64_t)hash;
 @end
 
 @implementation HFImageIconDescriptor
 
-- (HFImageIconDescriptor)initWithImageIdentifier:(id)a3
+- (HFImageIconDescriptor)initWithImageIdentifier:(id)identifier
 {
   v11[10] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = HFImageIconDescriptor;
   v6 = [(HFImageIconDescriptor *)&v10 init];
@@ -32,62 +32,62 @@
     v11[8] = @"HFCAPackageIconIdentifierCarbonMonoxideSensor";
     v11[9] = @"HFCAPackageIconIdentifierCarbonDioxideSensor";
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:10];
-    v6->_shouldForceLTR = [v7 containsObject:v5];
+    v6->_shouldForceLTR = [v7 containsObject:identifierCopy];
 
-    objc_storeStrong(&v6->_imageIdentifier, a3);
+    objc_storeStrong(&v6->_imageIdentifier, identifier);
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (HFImageIconDescriptor)initWithDemoModeImageIdentifier:(id)a3
+- (HFImageIconDescriptor)initWithDemoModeImageIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HFImageIconDescriptor;
   v6 = [(HFImageIconDescriptor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageIdentifier, a3);
+    objc_storeStrong(&v6->_imageIdentifier, identifier);
     v7->_isDemoModeDescriptor = 1;
   }
 
   return v7;
 }
 
-- (HFImageIconDescriptor)initWithSystemImageNamed:(id)a3 configuration:(id)a4
+- (HFImageIconDescriptor)initWithSystemImageNamed:(id)named configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  namedCopy = named;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = HFImageIconDescriptor;
   v9 = [(HFImageIconDescriptor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageIdentifier, a3);
+    objc_storeStrong(&v9->_imageIdentifier, named);
     v10->_isSystemImage = 1;
-    objc_storeStrong(&v10->_imageSymbolConfiguration, a4);
+    objc_storeStrong(&v10->_imageSymbolConfiguration, configuration);
   }
 
   return v10;
 }
 
-- (HFImageIconDescriptor)initWithSymbolIconConfiguration:(id)a3
+- (HFImageIconDescriptor)initWithSymbolIconConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 systemImageName];
-  v6 = [v4 configuration];
+  configurationCopy = configuration;
+  systemImageName = [configurationCopy systemImageName];
+  configuration = [configurationCopy configuration];
 
-  v7 = [(HFImageIconDescriptor *)self initWithSystemImageNamed:v5 configuration:v6];
+  v7 = [(HFImageIconDescriptor *)self initWithSystemImageNamed:systemImageName configuration:configuration];
   return v7;
 }
 
-- (HFImageIconDescriptor)imageIconDescriptorWithUpdatedImageSymbolConfiguration:(id)a3
+- (HFImageIconDescriptor)imageIconDescriptorWithUpdatedImageSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (![(HFImageIconDescriptor *)self isSystemImage])
   {
     NSLog(&cfstr_CallWithSystem.isa);
@@ -96,8 +96,8 @@
   if ([(HFImageIconDescriptor *)self isSystemImage])
   {
     v5 = objc_alloc(objc_opt_class());
-    v6 = [(HFImageIconDescriptor *)self imageIdentifier];
-    v7 = [v5 initWithSystemImageNamed:v6 configuration:v4];
+    imageIdentifier = [(HFImageIconDescriptor *)self imageIdentifier];
+    v7 = [v5 initWithSystemImageNamed:imageIdentifier configuration:configurationCopy];
   }
 
   else
@@ -108,10 +108,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -121,10 +121,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HFImageIconDescriptor *)self imageIdentifier];
-      v8 = [(HFImageIconDescriptor *)v6 imageIdentifier];
-      if (![v7 isEqualToString:v8] || (v9 = -[HFImageIconDescriptor isSystemImage](self, "isSystemImage"), v9 != -[HFImageIconDescriptor isSystemImage](v6, "isSystemImage")))
+      v6 = equalCopy;
+      imageIdentifier = [(HFImageIconDescriptor *)self imageIdentifier];
+      imageIdentifier2 = [(HFImageIconDescriptor *)v6 imageIdentifier];
+      if (![imageIdentifier isEqualToString:imageIdentifier2] || (v9 = -[HFImageIconDescriptor isSystemImage](self, "isSystemImage"), v9 != -[HFImageIconDescriptor isSystemImage](v6, "isSystemImage")))
       {
         v10 = 0;
 LABEL_15:
@@ -132,14 +132,14 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v11 = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
-      if (v11 || ([(HFImageIconDescriptor *)v6 imageSymbolConfiguration], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      imageSymbolConfiguration = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
+      if (imageSymbolConfiguration || ([(HFImageIconDescriptor *)v6 imageSymbolConfiguration], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v12 = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
-        v13 = [(HFImageIconDescriptor *)v6 imageSymbolConfiguration];
-        v10 = [v12 isEqualToConfiguration:v13];
+        imageSymbolConfiguration2 = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
+        imageSymbolConfiguration3 = [(HFImageIconDescriptor *)v6 imageSymbolConfiguration];
+        v10 = [imageSymbolConfiguration2 isEqualToConfiguration:imageSymbolConfiguration3];
 
-        if (v11)
+        if (imageSymbolConfiguration)
         {
 LABEL_14:
 
@@ -165,8 +165,8 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(HFImageIconDescriptor *)self imageIdentifier];
-  v3 = [v2 hash];
+  imageIdentifier = [(HFImageIconDescriptor *)self imageIdentifier];
+  v3 = [imageIdentifier hash];
 
   return v3;
 }
@@ -177,41 +177,41 @@ LABEL_16:
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(HFImageIconDescriptor *)self imageIdentifier];
-  v8 = v7;
+  imageIdentifier = [(HFImageIconDescriptor *)self imageIdentifier];
+  v8 = imageIdentifier;
   if (isSystemImage)
   {
-    v9 = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
-    v10 = [v4 stringWithFormat:@"<%@: %p, %@, %@>", v6, self, v8, v9];
+    imageSymbolConfiguration = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
+    v10 = [v4 stringWithFormat:@"<%@: %p, %@, %@>", v6, self, v8, imageSymbolConfiguration];
   }
 
   else
   {
-    v10 = [v4 stringWithFormat:@"<%@: %p, %@>", v6, self, v7];
+    v10 = [v4 stringWithFormat:@"<%@: %p, %@>", v6, self, imageIdentifier];
   }
 
   return v10;
 }
 
-- (id)iconDescriptorByMergingWithIconDescriptor:(id)a3
+- (id)iconDescriptorByMergingWithIconDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(HFImageIconDescriptor *)self identifier];
-    if ([v5 isEqualToString:v6])
+    identifier = [descriptorCopy identifier];
+    identifier2 = [(HFImageIconDescriptor *)self identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
 
-    v8 = v7;
+    v8 = selfCopy;
   }
 
   else

@@ -1,11 +1,11 @@
 @interface IMDIndexingMessageScrutinyController
 + (id)sharedController;
-- (BOOL)isMessageBlocklisted:(id)a3;
+- (BOOL)isMessageBlocklisted:(id)blocklisted;
 - (IMDIndexingMessageScrutinyController)init;
 - (NSMutableOrderedSet)blocklistMessageGUIDs;
 - (id)_scrutinyMessagesQueue;
-- (void)clearMessageGUIDFromScrutiny:(id)a3;
-- (void)setMessageGUIDUnderScrutiny:(id)a3;
+- (void)clearMessageGUIDFromScrutiny:(id)scrutiny;
+- (void)setMessageGUIDUnderScrutiny:(id)scrutiny;
 @end
 
 @implementation IMDIndexingMessageScrutinyController
@@ -115,11 +115,11 @@
   return v5;
 }
 
-- (void)setMessageGUIDUnderScrutiny:(id)a3
+- (void)setMessageGUIDUnderScrutiny:(id)scrutiny
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  scrutinyCopy = scrutiny;
+  if (objc_msgSend_length(scrutinyCopy, v5, v6))
   {
     v9 = objc_msgSend__scrutinyMessagesQueue(self, v7, v8);
     v12[0] = MEMORY[0x1E69E9820];
@@ -127,7 +127,7 @@
     v12[2] = sub_1B7BC9B2C;
     v12[3] = &unk_1E7CB6770;
     v12[4] = self;
-    v13 = v4;
+    v13 = scrutinyCopy;
     dispatch_barrier_sync(v9, v12);
   }
 
@@ -145,11 +145,11 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearMessageGUIDFromScrutiny:(id)a3
+- (void)clearMessageGUIDFromScrutiny:(id)scrutiny
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  scrutinyCopy = scrutiny;
+  if (objc_msgSend_length(scrutinyCopy, v5, v6))
   {
     v9 = objc_msgSend__scrutinyMessagesQueue(self, v7, v8);
     v12[0] = MEMORY[0x1E69E9820];
@@ -157,7 +157,7 @@
     v12[2] = sub_1B7BC9D0C;
     v12[3] = &unk_1E7CB6770;
     v12[4] = self;
-    v13 = v4;
+    v13 = scrutinyCopy;
     dispatch_barrier_sync(v9, v12);
   }
 
@@ -175,9 +175,9 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isMessageBlocklisted:(id)a3
+- (BOOL)isMessageBlocklisted:(id)blocklisted
 {
-  v4 = a3;
+  blocklistedCopy = blocklisted;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -187,15 +187,15 @@
   block[1] = 3221225472;
   block[2] = sub_1B7BC9F78;
   block[3] = &unk_1E7CBC338;
-  v11 = v4;
+  v11 = blocklistedCopy;
   v12 = &v13;
   block[4] = self;
-  v8 = v4;
+  v8 = blocklistedCopy;
   dispatch_barrier_sync(v7, block);
 
-  LOBYTE(v4) = *(v14 + 24);
+  LOBYTE(blocklistedCopy) = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
-  return v4;
+  return blocklistedCopy;
 }
 
 @end

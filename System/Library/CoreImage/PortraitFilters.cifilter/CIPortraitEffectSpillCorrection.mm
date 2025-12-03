@@ -1,20 +1,20 @@
 @interface CIPortraitEffectSpillCorrection
 - (id)outputImage;
-- (id)outputImageOfTile:(id)a3 rgb:(id)a4;
+- (id)outputImageOfTile:(id)tile rgb:(id)rgb;
 @end
 
 @implementation CIPortraitEffectSpillCorrection
 
-- (id)outputImageOfTile:(id)a3 rgb:(id)a4
+- (id)outputImageOfTile:(id)tile rgb:(id)rgb
 {
   v24 = 0;
-  [a4 extent];
+  [rgb extent];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v29[0] = a4;
-  v29[1] = a3;
+  v29[0] = rgb;
+  v29[1] = tile;
   v15 = [NSArray arrayWithObjects:v29 count:2];
   bgColor = self->bgColor;
   v27 = @"bgColor";

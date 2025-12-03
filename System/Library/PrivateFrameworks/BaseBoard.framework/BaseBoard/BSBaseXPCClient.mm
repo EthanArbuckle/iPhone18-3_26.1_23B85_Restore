@@ -1,16 +1,16 @@
 @interface BSBaseXPCClient
 - (BOOL)isSuspended;
-- (BSBaseXPCClient)initWithServiceName:(id)a3 endpoint:(id)a4;
+- (BSBaseXPCClient)initWithServiceName:(id)name endpoint:(id)endpoint;
 - (id)_connection;
-- (id)_errorFromMessageIfAny:(id)a3;
-- (id)_getStringFromMessage:(id)a3 key:(char *)a4;
-- (void)_sendMessage:(id)a3 withReplyHandler:(id)a4 waitForReply:(BOOL)a5 waitDuration:(unint64_t)a6;
-- (void)_sendMessageReply:(id)a3 messagePacker:(id)a4;
-- (void)_sendReplyForMessage:(id)a3 messagePacker:(id)a4;
-- (void)_setEndpoint:(id)a3;
+- (id)_errorFromMessageIfAny:(id)any;
+- (id)_getStringFromMessage:(id)message key:(char *)key;
+- (void)_sendMessage:(id)message withReplyHandler:(id)handler waitForReply:(BOOL)reply waitDuration:(unint64_t)duration;
+- (void)_sendMessageReply:(id)reply messagePacker:(id)packer;
+- (void)_sendReplyForMessage:(id)message messagePacker:(id)packer;
+- (void)_setEndpoint:(id)endpoint;
 - (void)dealloc;
 - (void)invalidate;
-- (void)queue_invalidateAndFlush:(uint64_t)a1;
+- (void)queue_invalidateAndFlush:(uint64_t)flush;
 - (void)queue_registerWithServerIfNecessary;
 - (void)queue_resumeConnection;
 - (void)reconnectIfNecessary;
@@ -20,7 +20,7 @@
 
 @implementation BSBaseXPCClient
 
-- (BSBaseXPCClient)initWithServiceName:(id)a3 endpoint:(id)a4
+- (BSBaseXPCClient)initWithServiceName:(id)name endpoint:(id)endpoint
 {
   v9.receiver = self;
   v9.super_class = BSBaseXPCClient;
@@ -29,9 +29,9 @@
   if (v6)
   {
     v6->_notifyToken = -1;
-    v6->_serviceName = [a3 copy];
-    v7->_queue = BSDispatchQueueCreateWithQualityOfService([a3 UTF8String], 0, QOS_CLASS_USER_INITIATED, 0);
-    v7->_serverEndpoint = a4;
+    v6->_serviceName = [name copy];
+    v7->_queue = BSDispatchQueueCreateWithQualityOfService([name UTF8String], 0, QOS_CLASS_USER_INITIATED, 0);
+    v7->_serverEndpoint = endpoint;
     v7->_clientInvalidated = 0;
   }
 
@@ -51,7 +51,7 @@
         *buf = 136315394;
         v7 = "[BSBaseXPCClient dealloc]";
         v8 = 2114;
-        v9 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_18FEF6000, v3, OS_LOG_TYPE_ERROR, "%s API violation: %{public}@ released before calling -invalidate", buf, 0x16u);
       }
     }
@@ -80,12 +80,12 @@
   [(BSBaseXPCClient *)&v5 dealloc];
 }
 
-- (void)queue_invalidateAndFlush:(uint64_t)a1
+- (void)queue_invalidateAndFlush:(uint64_t)flush
 {
-  if (a1)
+  if (flush)
   {
-    [*(a1 + 16) signal];
-    v4 = *(a1 + 48);
+    [*(flush + 16) signal];
+    v4 = *(flush + 48);
     if (v4)
     {
       v6[0] = 0;
@@ -94,7 +94,7 @@
       v6[3] = __Block_byref_object_copy__4;
       v6[4] = __Block_byref_object_dispose__4;
       v6[5] = v4;
-      *(a1 + 48) = 0;
+      *(flush + 48) = 0;
       if (a2)
       {
         barrier[0] = MEMORY[0x1E69E9820];
@@ -110,7 +110,7 @@
         xpc_release(v4);
       }
 
-      [a1 queue_connectionWasDestroyed];
+      [flush queue_connectionWasDestroyed];
       _Block_object_dispose(v6, 8);
     }
   }
@@ -161,17 +161,17 @@ uint64_t __30__BSBaseXPCClient_isSuspended__block_invoke(uint64_t result)
 - (void)queue_registerWithServerIfNecessary
 {
   location[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    BSDispatchQueueAssert(*(a1 + 8));
-    if (!*(a1 + 48))
+    BSDispatchQueueAssert(*(self + 8));
+    if (!*(self + 48))
     {
       v2 = 1;
-      atomic_compare_exchange_strong_explicit((a1 + 40), &v2, v2, memory_order_relaxed, memory_order_relaxed);
+      atomic_compare_exchange_strong_explicit((self + 40), &v2, v2, memory_order_relaxed, memory_order_relaxed);
       if (v2 != 1)
       {
-        *(a1 + 56) = 1;
-        v3 = *(a1 + 24);
+        *(self + 56) = 1;
+        v3 = *(self + 24);
         if (v3)
         {
           mach_service = xpc_connection_create_from_endpoint(v3);
@@ -179,31 +179,31 @@ uint64_t __30__BSBaseXPCClient_isSuspended__block_invoke(uint64_t result)
 
         else
         {
-          mach_service = xpc_connection_create_mach_service([*(a1 + 32) UTF8String], 0, 0);
+          mach_service = xpc_connection_create_mach_service([*(self + 32) UTF8String], 0, 0);
         }
 
-        *(a1 + 48) = mach_service;
-        v5 = [a1 _connectionInstanceUUID];
-        if (v5)
+        *(self + 48) = mach_service;
+        _connectionInstanceUUID = [self _connectionInstanceUUID];
+        if (_connectionInstanceUUID)
         {
           location[0] = 0;
           location[1] = 0;
-          [v5 getUUIDBytes:location];
+          [_connectionInstanceUUID getUUIDBytes:location];
           xpc_connection_set_oneshot_instance();
         }
 
-        v6 = *(a1 + 16);
+        v6 = *(self + 16);
         if (v6)
         {
 
-          *(a1 + 16) = 0;
+          *(self + 16) = 0;
         }
 
-        *(a1 + 16) = objc_alloc_init(BSAtomicSignal);
-        objc_initWeak(location, a1);
-        v7 = *(a1 + 16);
-        xpc_connection_set_target_queue(*(a1 + 48), *(a1 + 8));
-        v8 = *(a1 + 48);
+        *(self + 16) = objc_alloc_init(BSAtomicSignal);
+        objc_initWeak(location, self);
+        v7 = *(self + 16);
+        xpc_connection_set_target_queue(*(self + 48), *(self + 8));
+        v8 = *(self + 48);
         handler[0] = MEMORY[0x1E69E9820];
         handler[1] = 3221225472;
         handler[2] = __54__BSBaseXPCClient_queue_registerWithServerIfNecessary__block_invoke;
@@ -211,21 +211,21 @@ uint64_t __30__BSBaseXPCClient_isSuspended__block_invoke(uint64_t result)
         handler[4] = v7;
         objc_copyWeak(&v14, location);
         xpc_connection_set_event_handler(v8, handler);
-        if (!notify_is_valid_token(*(a1 + 44)))
+        if (!notify_is_valid_token(*(self + 44)))
         {
-          v9 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@.serverNotifyToken", *(a1 + 32)), "UTF8String"];
-          v10 = *(a1 + 8);
+          v9 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@.serverNotifyToken", *(self + 32)), "UTF8String"];
+          v10 = *(self + 8);
           v11[0] = MEMORY[0x1E69E9820];
           v11[1] = 3221225472;
           v11[2] = __54__BSBaseXPCClient_queue_registerWithServerIfNecessary__block_invoke_37;
           v11[3] = &unk_1E72CB5D8;
           objc_copyWeak(&v12, location);
-          notify_register_dispatch(v9, (a1 + 44), v10, v11);
+          notify_register_dispatch(v9, (self + 44), v10, v11);
           objc_destroyWeak(&v12);
         }
 
-        [a1 queue_connectionWasCreated];
-        [(BSBaseXPCClient *)a1 queue_resumeConnection];
+        [self queue_connectionWasCreated];
+        [(BSBaseXPCClient *)self queue_resumeConnection];
         objc_destroyWeak(&v14);
         objc_destroyWeak(location);
       }
@@ -277,18 +277,18 @@ void __36__BSBaseXPCClient_suspendConnection__block_invoke(uint64_t a1)
 
 - (void)queue_resumeConnection
 {
-  if (a1)
+  if (self)
   {
-    BSDispatchQueueAssert(*(a1 + 8));
-    if (*(a1 + 56) == 1)
+    BSDispatchQueueAssert(*(self + 8));
+    if (*(self + 56) == 1)
     {
-      v2 = *(a1 + 48);
+      v2 = *(self + 48);
       if (v2)
       {
         xpc_connection_resume(v2);
-        *(a1 + 56) = 0;
+        *(self + 56) = 0;
 
-        [a1 queue_connectionWasResumed];
+        [self queue_connectionWasResumed];
       }
     }
   }
@@ -322,22 +322,22 @@ void __29__BSBaseXPCClient_invalidate__block_invoke(uint64_t a1)
   [(BSBaseXPCClient *)v2 queue_invalidateAndFlush:?];
 }
 
-- (id)_errorFromMessageIfAny:(id)a3
+- (id)_errorFromMessageIfAny:(id)any
 {
-  if (object_getClass(a3) != MEMORY[0x1E69E9E98])
+  if (object_getClass(any) != MEMORY[0x1E69E9E98])
   {
     return 0;
   }
 
   v5 = MEMORY[0x1E696ABC0];
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:*MEMORY[0x1E696AA08]];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithObject:any forKey:*MEMORY[0x1E696AA08]];
 
   return [v5 errorWithDomain:@"BSErrorDomain" code:1 userInfo:v6];
 }
 
-- (id)_getStringFromMessage:(id)a3 key:(char *)a4
+- (id)_getStringFromMessage:(id)message key:(char *)key
 {
-  result = xpc_dictionary_get_string(a3, a4);
+  result = xpc_dictionary_get_string(message, key);
   if (result)
   {
     v5 = result;
@@ -349,11 +349,11 @@ void __29__BSBaseXPCClient_invalidate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_sendMessageReply:(id)a3 messagePacker:(id)a4
+- (void)_sendMessageReply:(id)reply messagePacker:(id)packer
 {
-  if (a4)
+  if (packer)
   {
-    if (!a3)
+    if (!reply)
     {
       return;
     }
@@ -362,41 +362,41 @@ void __29__BSBaseXPCClient_invalidate__block_invoke(uint64_t a1)
   else
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
-    if (!a3)
+    if (!reply)
     {
       return;
     }
   }
 
-  (*(a4 + 2))(a4, a3);
-  remote_connection = xpc_dictionary_get_remote_connection(a3);
+  (*(packer + 2))(packer, reply);
+  remote_connection = xpc_dictionary_get_remote_connection(reply);
 
-  xpc_connection_send_message(remote_connection, a3);
+  xpc_connection_send_message(remote_connection, reply);
 }
 
-- (void)_sendReplyForMessage:(id)a3 messagePacker:(id)a4
+- (void)_sendReplyForMessage:(id)message messagePacker:(id)packer
 {
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v7 = reply;
-    [(BSBaseXPCClient *)self _sendMessageReply:reply messagePacker:a4];
+    [(BSBaseXPCClient *)self _sendMessageReply:reply messagePacker:packer];
 
     xpc_release(v7);
   }
 }
 
-- (void)_sendMessage:(id)a3 withReplyHandler:(id)a4 waitForReply:(BOOL)a5 waitDuration:(unint64_t)a6
+- (void)_sendMessage:(id)message withReplyHandler:(id)handler waitForReply:(BOOL)reply waitDuration:(unint64_t)duration
 {
-  v10 = a6 == -1 && a5;
+  v10 = duration == -1 && reply;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v30 = __75__BSBaseXPCClient__sendMessage_withReplyHandler_waitForReply_waitDuration___block_invoke;
   v31 = &unk_1E72CB510;
-  v32 = a4;
-  v11 = [BSXPCMessage messageWithPacker:a3];
+  handlerCopy = handler;
+  v11 = [BSXPCMessage messageWithPacker:message];
   queue = self->_queue;
-  if (a4 && a5)
+  if (handler && reply)
   {
     BSDispatchQueueAssertNot(queue);
     v22 = 0;
@@ -436,14 +436,14 @@ void __29__BSBaseXPCClient_invalidate__block_invoke(uint64_t a1)
         v19[4] = v16;
         v19[5] = v29;
         [(BSXPCMessage *)v11 sendToConnection:connection replyQueue:v18 replyHandler:v19];
-        dispatch_semaphore_wait(v16, a6);
+        dispatch_semaphore_wait(v16, duration);
         dispatch_release(v16);
       }
     }
 
     else
     {
-      (*(a4 + 2))(a4, 0);
+      (*(handler + 2))(handler, 0);
     }
 
     _Block_object_dispose(&v22, 8);
@@ -457,7 +457,7 @@ void __29__BSBaseXPCClient_invalidate__block_invoke(uint64_t a1)
     v28[3] = &unk_1E72CB538;
     v28[4] = self;
     v28[5] = v11;
-    v28[6] = a4;
+    v28[6] = handler;
     v28[7] = v29;
     dispatch_async(queue, v28);
   }
@@ -564,7 +564,7 @@ id __30__BSBaseXPCClient__connection__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setEndpoint:(id)a3
+- (void)_setEndpoint:(id)endpoint
 {
   serverEndpoint = self->_serverEndpoint;
   if (serverEndpoint)
@@ -572,8 +572,8 @@ id __30__BSBaseXPCClient__connection__block_invoke(uint64_t a1)
     xpc_release(serverEndpoint);
   }
 
-  xpc_retain(a3);
-  self->_serverEndpoint = a3;
+  xpc_retain(endpoint);
+  self->_serverEndpoint = endpoint;
 }
 
 void __54__BSBaseXPCClient_queue_registerWithServerIfNecessary__block_invoke(uint64_t a1, void *a2)

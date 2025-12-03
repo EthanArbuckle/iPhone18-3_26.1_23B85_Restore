@@ -1,13 +1,13 @@
 @interface TSPFieldTreeNodeWithChildren
-- (BOOL)addChildNode:(id)a3 forFieldNumber:(int)a4;
+- (BOOL)addChildNode:(id)node forFieldNumber:(int)number;
 - (id).cxx_construct;
-- (id)childNodeForFieldNumber:(int)a3;
-- (void)saveToArchiver:(id)a3 message:(Message *)a4;
+- (id)childNodeForFieldNumber:(int)number;
+- (void)saveToArchiver:(id)archiver message:(Message *)message;
 @end
 
 @implementation TSPFieldTreeNodeWithChildren
 
-- (id)childNodeForFieldNumber:(int)a3
+- (id)childNodeForFieldNumber:(int)number
 {
   left = self->_children.__tree_.__end_node_.__left_;
   if (!left)
@@ -18,16 +18,16 @@
   p_end_node = &self->_children.__tree_.__end_node_;
   do
   {
-    if (SLODWORD(left[4].__left_) >= a3)
+    if (SLODWORD(left[4].__left_) >= number)
     {
       p_end_node = left;
     }
 
-    left = left[SLODWORD(left[4].__left_) < a3].__left_;
+    left = left[SLODWORD(left[4].__left_) < number].__left_;
   }
 
   while (left);
-  if (p_end_node != &self->_children.__tree_.__end_node_ && SLODWORD(p_end_node[4].__left_) <= a3)
+  if (p_end_node != &self->_children.__tree_.__end_node_ && SLODWORD(p_end_node[4].__left_) <= number)
   {
     return p_end_node[5].__left_;
   }
@@ -38,23 +38,23 @@
   }
 }
 
-- (BOOL)addChildNode:(id)a3 forFieldNumber:(int)a4
+- (BOOL)addChildNode:(id)node forFieldNumber:(int)number
 {
-  v8 = a4;
-  v9 = a3;
-  v5 = v9;
-  sub_276AD5504(&self->_children, &v8);
+  numberCopy = number;
+  nodeCopy = node;
+  v5 = nodeCopy;
+  sub_276AD5504(&self->_children, &numberCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (void)saveToArchiver:(id)a3 message:(Message *)a4
+- (void)saveToArchiver:(id)archiver message:(Message *)message
 {
-  v7 = a3;
-  if (a4)
+  archiverCopy = archiver;
+  if (message)
   {
-    (*(a4->var0 + 19))(a4);
+    (*(message->var0 + 19))(message);
     p_end_node = &self->_children.__tree_.__end_node_;
     begin_node = self->_children.__tree_.__begin_node_;
     if (begin_node != p_end_node)
@@ -73,21 +73,21 @@
         {
           v18 = objc_msgSend_field(v14, v15, v16);
           v21 = v18;
-          if (v7)
+          if (archiverCopy)
           {
-            objc_msgSend_saveToArchiver_(v18, v19, v7);
+            objc_msgSend_saveToArchiver_(v18, v19, archiverCopy);
           }
 
           if (objc_msgSend_hasKnownValues(v21, v19, v20))
           {
-            objc_msgSend_mergeToMessage_reflection_(v21, v22, a4, v11);
+            objc_msgSend_mergeToMessage_reflection_(v21, v22, message, v11);
           }
 
           if (objc_msgSend_hasUnknownValues(v21, v22, v23))
           {
             if (!v12)
             {
-              v12 = google::protobuf::Reflection::MutableUnknownFields(v11, a4);
+              v12 = google::protobuf::Reflection::MutableUnknownFields(v11, message);
             }
 
             objc_msgSend_mergeToUnknownFieldSet_(v21, v24, v12);
@@ -104,7 +104,7 @@
             v26 = v55;
             if (!v55)
             {
-              v26 = (*(a4->var0 + 19))(a4);
+              v26 = (*(message->var0 + 19))(message);
             }
 
             v55 = v26;
@@ -132,12 +132,12 @@
             {
               if (*(FieldByNumber + 60) == 3)
               {
-                HasField = google::protobuf::Reflection::FieldSize(v11, a4, FieldByNumber);
+                HasField = google::protobuf::Reflection::FieldSize(v11, message, FieldByNumber);
               }
 
               else
               {
-                HasField = google::protobuf::Reflection::HasField(v11, a4, FieldByNumber);
+                HasField = google::protobuf::Reflection::HasField(v11, message, FieldByNumber);
               }
 
               v39 = HasField;
@@ -149,15 +149,15 @@
                 {
                   if (*(FieldByNumber + 60) == 3)
                   {
-                    v42 = google::protobuf::Reflection::MutableRepeatedMessage(v11, a4, FieldByNumber, v41);
+                    v42 = google::protobuf::Reflection::MutableRepeatedMessage(v11, message, FieldByNumber, v41);
                   }
 
                   else
                   {
-                    v42 = google::protobuf::Reflection::MutableMessage(v11, a4, FieldByNumber, 0);
+                    v42 = google::protobuf::Reflection::MutableMessage(v11, message, FieldByNumber, 0);
                   }
 
-                  objc_msgSend_saveToArchiver_message_(v21, v43, v7, v42);
+                  objc_msgSend_saveToArchiver_message_(v21, v43, archiverCopy, v42);
                   ++v41;
                 }
 

@@ -2,14 +2,14 @@
 + (id)defaults;
 - (ADMetricDepthExecutor)init;
 - (id)getIntermediates;
-- (id)initForEspressoEngine:(unint64_t)a3;
+- (id)initForEspressoEngine:(unint64_t)engine;
 - (int64_t)allocateIntermediateBuffers;
-- (int64_t)prepareForInputRoi:(CGRect)a3;
-- (int64_t)prepareForInputRoi:(CGRect)a3 engineType:(unint64_t)a4;
-- (uint64_t)executeWithPrimaryColor:(float32x4_t)a3 secondaryColor:(float32x4_t)a4 pearl:(float32x4_t)a5 pointClouds:(float32x4_t)a6 primaryColorCalibration:(float32x4_t)a7 secondaryColorCalibration:(float32x4_t)a8 pearlCalibration:(float32x4_t)a9 lidarCameraCalibration:(uint64_t)a10 primaryColorPose:(__CVBuffer *)a11 secondaryColorPose:(__CVBuffer *)a12 pearlPose:(uint64_t)a13 pointCloudPoses:(void *)a14 timestamp:(void *)a15 outputDepthMap:(void *)a16 outputUncertaintyMap:(id)a17 outputConfidenceMap:(id)a18 outputConfidenceLevels:(float32x4_t)a19 outputNormalsMap:(float32x4_t)a20 outputActiveDepthMaskMap:(float32x4_t)a21 outputDepthCalibration:(float32x4_t)a22;
+- (int64_t)prepareForInputRoi:(CGRect)roi;
+- (int64_t)prepareForInputRoi:(CGRect)roi engineType:(unint64_t)type;
+- (uint64_t)executeWithPrimaryColor:(float32x4_t)color secondaryColor:(float32x4_t)secondaryColor pearl:(float32x4_t)pearl pointClouds:(float32x4_t)clouds primaryColorCalibration:(float32x4_t)calibration secondaryColorCalibration:(float32x4_t)colorCalibration pearlCalibration:(float32x4_t)pearlCalibration lidarCameraCalibration:(uint64_t)self0 primaryColorPose:(__CVBuffer *)self1 secondaryColorPose:(__CVBuffer *)self2 pearlPose:(uint64_t)self3 pointCloudPoses:(void *)self4 timestamp:(void *)self5 outputDepthMap:(void *)self6 outputUncertaintyMap:(id)self7 outputConfidenceMap:(id)self8 outputConfidenceLevels:(float32x4_t)self9 outputNormalsMap:(float32x4_t)normalsMap outputActiveDepthMaskMap:(float32x4_t)maskMap outputDepthCalibration:(float32x4_t)depthCalibration;
 - (void)dealloc;
 - (void)deallocInferenceBuffers;
-- (void)writeMetricDepthToJPEG:(id)a3 timestamp:(double)a4 preProcessedJasper:(__CVBuffer *)a5 preProcessedPearl:(__CVBuffer *)a6 preProcessedPrimaryColor:(__CVBuffer *)a7 rawConfOut:(__CVBuffer *)a8 rawDepthOut:(__CVBuffer *)a9;
+- (void)writeMetricDepthToJPEG:(id)g timestamp:(double)timestamp preProcessedJasper:(__CVBuffer *)jasper preProcessedPearl:(__CVBuffer *)pearl preProcessedPrimaryColor:(__CVBuffer *)color rawConfOut:(__CVBuffer *)out rawDepthOut:(__CVBuffer *)depthOut;
 @end
 
 @implementation ADMetricDepthExecutor
@@ -18,9 +18,9 @@
 {
   v37[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ADMetricDepthPipeline *)self->_pipeline inferenceDescriptor];
-  v5 = [v4 primaryColorInput];
-  v6 = [(ADExecutor *)self inferencePixelBufferForDescriptor:v5 inputUserBuffer:0];
+  inferenceDescriptor = [(ADMetricDepthPipeline *)self->_pipeline inferenceDescriptor];
+  primaryColorInput = [inferenceDescriptor primaryColorInput];
+  v6 = [(ADExecutor *)self inferencePixelBufferForDescriptor:primaryColorInput inputUserBuffer:0];
 
   if (v6)
   {
@@ -32,8 +32,8 @@
     [v3 addObject:v7];
   }
 
-  v8 = [v4 secondaryColorInput];
-  v9 = [(ADExecutor *)self inferencePixelBufferForDescriptor:v8 inputUserBuffer:0];
+  secondaryColorInput = [inferenceDescriptor secondaryColorInput];
+  v9 = [(ADExecutor *)self inferencePixelBufferForDescriptor:secondaryColorInput inputUserBuffer:0];
 
   if (v9)
   {
@@ -56,8 +56,8 @@
     [v3 addObject:v12];
   }
 
-  v13 = [v4 depthOutput];
-  v14 = [(ADExecutor *)self inferencePixelBufferForDescriptor:v13 inputUserBuffer:0];
+  depthOutput = [inferenceDescriptor depthOutput];
+  v14 = [(ADExecutor *)self inferencePixelBufferForDescriptor:depthOutput inputUserBuffer:0];
 
   if (v14)
   {
@@ -69,8 +69,8 @@
     [v3 addObject:v15];
   }
 
-  v16 = [v4 confidenceOutput];
-  v17 = [(ADExecutor *)self inferencePixelBufferForDescriptor:v16 inputUserBuffer:0];
+  confidenceOutput = [inferenceDescriptor confidenceOutput];
+  v17 = [(ADExecutor *)self inferencePixelBufferForDescriptor:confidenceOutput inputUserBuffer:0];
 
   if (v17)
   {
@@ -139,22 +139,22 @@
   [(ADExecutor *)&v4 dealloc];
 }
 
-- (uint64_t)executeWithPrimaryColor:(float32x4_t)a3 secondaryColor:(float32x4_t)a4 pearl:(float32x4_t)a5 pointClouds:(float32x4_t)a6 primaryColorCalibration:(float32x4_t)a7 secondaryColorCalibration:(float32x4_t)a8 pearlCalibration:(float32x4_t)a9 lidarCameraCalibration:(uint64_t)a10 primaryColorPose:(__CVBuffer *)a11 secondaryColorPose:(__CVBuffer *)a12 pearlPose:(uint64_t)a13 pointCloudPoses:(void *)a14 timestamp:(void *)a15 outputDepthMap:(void *)a16 outputUncertaintyMap:(id)a17 outputConfidenceMap:(id)a18 outputConfidenceLevels:(float32x4_t)a19 outputNormalsMap:(float32x4_t)a20 outputActiveDepthMaskMap:(float32x4_t)a21 outputDepthCalibration:(float32x4_t)a22
+- (uint64_t)executeWithPrimaryColor:(float32x4_t)color secondaryColor:(float32x4_t)secondaryColor pearl:(float32x4_t)pearl pointClouds:(float32x4_t)clouds primaryColorCalibration:(float32x4_t)calibration secondaryColorCalibration:(float32x4_t)colorCalibration pearlCalibration:(float32x4_t)pearlCalibration lidarCameraCalibration:(uint64_t)self0 primaryColorPose:(__CVBuffer *)self1 secondaryColorPose:(__CVBuffer *)self2 pearlPose:(uint64_t)self3 pointCloudPoses:(void *)self4 timestamp:(void *)self5 outputDepthMap:(void *)self6 outputUncertaintyMap:(id)self7 outputConfidenceMap:(id)self8 outputConfidenceLevels:(float32x4_t)self9 outputNormalsMap:(float32x4_t)normalsMap outputActiveDepthMaskMap:(float32x4_t)maskMap outputDepthCalibration:(float32x4_t)depthCalibration
 {
   v245[4] = *MEMORY[0x277D85DE8];
-  v236 = a14;
-  v222 = a15;
-  v221 = a16;
-  v220 = a17;
-  v219 = a18;
-  v34 = a1;
-  objc_sync_enter(v34);
-  obj = v34;
-  if ((*(v34 + 136) & 1) == 0)
+  posesCopy = poses;
+  timestampCopy = timestamp;
+  mapCopy = map;
+  uncertaintyMapCopy = uncertaintyMap;
+  confidenceMapCopy = confidenceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  if ((*(selfCopy + 136) & 1) == 0)
   {
-    Width = CVPixelBufferGetWidth(a11);
-    v36 = [v34 prepareForInputRoi:{0.0, 0.0, Width, CVPixelBufferGetHeight(a11)}];
-    if (v36)
+    Width = CVPixelBufferGetWidth(pose);
+    execute = [selfCopy prepareForInputRoi:{0.0, 0.0, Width, CVPixelBufferGetHeight(pose)}];
+    if (execute)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -166,32 +166,32 @@
     }
   }
 
-  if (*(v34 + 7))
+  if (*(selfCopy + 7))
   {
-    v37 = [v34 executorParameters];
-    v38 = [v37 logger];
+    executorParameters = [selfCopy executorParameters];
+    logger = [executorParameters logger];
 
-    v235 = v38;
-    *&v205 = a22.i64[0];
-    *&v204 = a21.i64[0];
-    *&v203 = a20.i64[0];
-    *&v202 = a19.i64[0];
+    v235 = logger;
+    *&v205 = depthCalibration.i64[0];
+    *&v204 = maskMap.i64[0];
+    *&v203 = normalsMap.i64[0];
+    *&v202 = levels.i64[0];
     v226 = a23;
-    if ([v38 enabled])
+    if ([logger enabled])
     {
-      [v38 logPixelBuffer:a11 name:"inputColor" priority:1 timestamp:a24];
-      [v38 logCalibration:v222 name:"inputColorCalibration" priority:1 timestamp:a24];
-      [v38 logMatrix4x4:"inputColorPose" name:1 priority:*a2.i64 timestamp:{*a3.i64, *a4.i64, *a5.i64, a24}];
-      [v38 logPixelBuffer:a12 name:"inputSecondaryColor" priority:1 timestamp:a24];
-      [v38 logCalibration:v221 name:"inputSecondaryColorCalibration" priority:1 timestamp:a24];
-      [v38 logMatrix4x4:"inputSecondaryColorPose" name:1 priority:*a6.i64 timestamp:{*a7.i64, *a8.i64, *a9.i64, a24}];
-      [v38 logPixelBuffer:a13 name:"inputPearl" priority:1 timestamp:a24];
-      [v38 logCalibration:v220 name:"inputPearlCalibration" priority:1 timestamp:a24];
-      [v38 logMatrix4x4:"inputPearlPose" name:1 priority:*a19.i64 timestamp:{*a20.i64, *a21.i64, *a22.i64, a24}];
-      [v38 logCalibration:v219 name:"inputPointCloudCalibration" priority:1 timestamp:a24];
-      for (i = 0; [v236 count] > i; ++i)
+      [logger logPixelBuffer:pose name:"inputColor" priority:1 timestamp:a24];
+      [logger logCalibration:timestampCopy name:"inputColorCalibration" priority:1 timestamp:a24];
+      [logger logMatrix4x4:"inputColorPose" name:1 priority:*a2.i64 timestamp:{*color.i64, *secondaryColor.i64, *pearl.i64, a24}];
+      [logger logPixelBuffer:colorPose name:"inputSecondaryColor" priority:1 timestamp:a24];
+      [logger logCalibration:mapCopy name:"inputSecondaryColorCalibration" priority:1 timestamp:a24];
+      [logger logMatrix4x4:"inputSecondaryColorPose" name:1 priority:*clouds.i64 timestamp:{*calibration.i64, *colorCalibration.i64, *pearlCalibration.i64, a24}];
+      [logger logPixelBuffer:pearlPose name:"inputPearl" priority:1 timestamp:a24];
+      [logger logCalibration:uncertaintyMapCopy name:"inputPearlCalibration" priority:1 timestamp:a24];
+      [logger logMatrix4x4:"inputPearlPose" name:1 priority:*levels.i64 timestamp:{*normalsMap.i64, *maskMap.i64, *depthCalibration.i64, a24}];
+      [logger logCalibration:confidenceMapCopy name:"inputPointCloudCalibration" priority:1 timestamp:a24];
+      for (i = 0; [posesCopy count] > i; ++i)
       {
-        v40 = [v236 objectAtIndexedSubscript:i];
+        v40 = [posesCopy objectAtIndexedSubscript:i];
         *(&v239.__r_.__value_.__s + 23) = 15;
         strcpy(&v239, "inputPointCloud");
         std::to_string(&__p, i);
@@ -340,7 +340,7 @@ LABEL_40:
       }
     }
 
-    v52 = vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(a2), vceqzq_f32(a3)), vandq_s8(vceqzq_f32(a4), vceqzq_f32(a5))));
+    v52 = vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(a2), vceqzq_f32(color)), vandq_s8(vceqzq_f32(secondaryColor), vceqzq_f32(pearl))));
     if (v52 < 0)
     {
       v53 = MEMORY[0x277D86220];
@@ -355,7 +355,7 @@ LABEL_40:
       }
     }
 
-    if ((vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(a6), vceqzq_f32(a7)), vandq_s8(vceqzq_f32(a8), vceqzq_f32(a9)))) & 0x80000000) != 0)
+    if ((vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(clouds), vceqzq_f32(calibration)), vandq_s8(vceqzq_f32(colorCalibration), vceqzq_f32(pearlCalibration)))) & 0x80000000) != 0)
     {
       v55 = MEMORY[0x277D86220];
       v56 = MEMORY[0x277D86220];
@@ -369,13 +369,13 @@ LABEL_40:
       }
 
       v234 = 0;
-      if (!a13)
+      if (!pearlPose)
       {
 LABEL_58:
         v59 = 0;
         v60 = a23 + 2;
         v61 = MEMORY[0x277D86220];
-        while (v59 < [v236 count])
+        while (v59 < [posesCopy count])
         {
           if ((vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(v60[-1]), vceqzq_f32(v60[-2])), vandq_s8(vceqzq_f32(*v60), vceqzq_f32(v60[1])))) & 0x80000000) != 0)
           {
@@ -406,7 +406,7 @@ LABEL_58:
           v204 = *(MEMORY[0x277D860B8] + 32);
           v205 = *(MEMORY[0x277D860B8] + 48);
           v65 = a23;
-          while (v63 < [v236 count])
+          while (v63 < [posesCopy count])
           {
             v66 = *v64;
             v67 = v64[1];
@@ -419,38 +419,38 @@ LABEL_58:
             ++v63;
           }
 
-          a6.i64[0] = v202;
-          a7.i64[0] = v203;
-          a8.i64[0] = v204;
-          a9.i64[0] = v205;
+          clouds.i64[0] = v202;
+          calibration.i64[0] = v203;
+          colorCalibration.i64[0] = v204;
+          pearlCalibration.i64[0] = v205;
           a2.i64[0] = v202;
-          a4.i64[0] = v204;
-          a5.i64[0] = v205;
-          a3.i64[0] = v203;
+          secondaryColor.i64[0] = v204;
+          pearl.i64[0] = v205;
+          color.i64[0] = v203;
         }
 
         [*(obj + 29) setAllPosesValid:v234];
-        v69 = [obj executorParameters];
-        v230 = [v69 stepsToExecute];
+        executorParameters2 = [obj executorParameters];
+        stepsToExecute = [executorParameters2 stepsToExecute];
 
-        v70 = [obj executorParameters];
-        v232 = [v70 timeProfiler];
+        executorParameters3 = [obj executorParameters];
+        timeProfiler = [executorParameters3 timeProfiler];
 
-        if (v230 < 1)
+        if (stepsToExecute < 1)
         {
-          v36 = -22977;
+          execute = -22977;
 LABEL_108:
 
           goto LABEL_109;
         }
 
         kdebug_trace();
-        [v232 startWithUTFString:"preprocess color"];
+        [timeProfiler startWithUTFString:"preprocess color"];
         [obj frameExecutionStart];
-        v71 = [*(obj + 28) inferenceDescriptor];
-        v228 = [v71 primaryColorInput];
-        v201 = [v71 secondaryColorInput];
-        v72 = [obj inferencePixelBufferForDescriptor:v228 inputUserBuffer:a11];
+        inferenceDescriptor = [*(obj + 28) inferenceDescriptor];
+        primaryColorInput = [inferenceDescriptor primaryColorInput];
+        secondaryColorInput = [inferenceDescriptor secondaryColorInput];
+        v72 = [obj inferencePixelBufferForDescriptor:primaryColorInput inputUserBuffer:pose];
         v73 = v72;
         if (!v72)
         {
@@ -459,17 +459,17 @@ LABEL_108:
         }
 
         v74 = v72;
-        if (v72 != a11)
+        if (v72 != pose)
         {
           v75 = *(obj + 25);
           if (v75)
           {
-            if (a11)
+            if (pose)
             {
               v76 = *(v75 + 40);
               v78 = *(v75 + 24);
               v77 = *(v75 + 32);
-              if (v78 == CVPixelBufferGetWidth(a11) && v77 == CVPixelBufferGetHeight(a11) && CVPixelBufferGetPixelFormatType(a11) == v76)
+              if (v78 == CVPixelBufferGetWidth(pose) && v77 == CVPixelBufferGetHeight(pose) && CVPixelBufferGetPixelFormatType(pose) == v76)
               {
                 v79 = *(obj + 25);
                 v80 = *(v79 + 64);
@@ -477,7 +477,7 @@ LABEL_108:
                 v81 = *(v79 + 56);
                 if (v82 == CVPixelBufferGetWidth(v73) && v81 == CVPixelBufferGetHeight(v73) && CVPixelBufferGetPixelFormatType(v73) == v80)
                 {
-                  v85 = PixelBufferUtilsSession::run(*(obj + 25), a11, v73);
+                  v85 = PixelBufferUtilsSession::run(*(obj + 25), pose, v73);
                   v74 = v73;
                   if ((v85 & 1) == 0)
                   {
@@ -498,22 +498,22 @@ LABEL_108:
             }
           }
 
-          CVPixelBufferGetWidth(a11);
-          CVPixelBufferGetHeight(a11);
+          CVPixelBufferGetWidth(pose);
+          CVPixelBufferGetHeight(pose);
           CVPixelBufferGetWidth(v73);
           CVPixelBufferGetHeight(v73);
-          CVPixelBufferGetPixelFormatType(a11);
+          CVPixelBufferGetPixelFormatType(pose);
           CVPixelBufferGetPixelFormatType(v73);
           PixelBufferUtilsSession::createCropScaleConvertRotateSession();
         }
 
 LABEL_87:
         [v235 logPixelBuffer:v74 name:"modelInputColor" timestamp:a24];
-        v86 = [obj inferencePixelBufferForDescriptor:v201 inputUserBuffer:a12];
+        v86 = [obj inferencePixelBufferForDescriptor:secondaryColorInput inputUserBuffer:colorPose];
         v87 = v86;
         if (v86)
         {
-          if (v86 == a12)
+          if (v86 == colorPose)
           {
             goto LABEL_104;
           }
@@ -521,36 +521,36 @@ LABEL_87:
           v88 = *(obj + 25);
           if (v88)
           {
-            if (a12)
+            if (colorPose)
             {
               v89 = *(v88 + 40);
               v91 = *(v88 + 24);
               v90 = *(v88 + 32);
-              if (v91 == CVPixelBufferGetWidth(a12) && v90 == CVPixelBufferGetHeight(a12) && CVPixelBufferGetPixelFormatType(a12) == v89 && PixelBufferUtilsSession::verifyOutput(*(obj + 25), v87))
+              if (v91 == CVPixelBufferGetWidth(colorPose) && v90 == CVPixelBufferGetHeight(colorPose) && CVPixelBufferGetPixelFormatType(colorPose) == v89 && PixelBufferUtilsSession::verifyOutput(*(obj + 25), v87))
               {
-                if (PixelBufferUtilsSession::run(*(obj + 25), a12, v87))
+                if (PixelBufferUtilsSession::run(*(obj + 25), colorPose, v87))
                 {
 LABEL_104:
                   [v235 logPixelBuffer:v87 name:"modelInputSecondaryColor" timestamp:a24];
-                  v95 = fabsf(a3.f32[0]);
-                  [*(obj + 29) setColorPoseRoll:{COERCE_DOUBLE(__PAIR64__(a3.u32[1], LODWORD(v95)))}];
-                  [v232 stopWithUTFString:"preprocess color"];
+                  v95 = fabsf(color.f32[0]);
+                  [*(obj + 29) setColorPoseRoll:{COERCE_DOUBLE(__PAIR64__(color.u32[1], LODWORD(v95)))}];
+                  [timeProfiler stopWithUTFString:"preprocess color"];
                   kdebug_trace();
-                  if (v230 == 1)
+                  if (stepsToExecute == 1)
                   {
-                    v36 = -22977;
+                    execute = -22977;
 LABEL_107:
 
                     goto LABEL_108;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"preprocess calibration"];
-                  v97 = [v222 mutableCopy];
+                  [timeProfiler startWithUTFString:"preprocess calibration"];
+                  v97 = [timestampCopy mutableCopy];
                   [v97 crop:{*(obj + 1), *(obj + 2), *(obj + 3), *(obj + 4)}];
-                  v98 = [v71 primaryColorInput];
-                  v99 = [v98 imageDescriptor];
-                  [v99 sizeForLayout:{objc_msgSend(obj, "layout")}];
+                  primaryColorInput2 = [inferenceDescriptor primaryColorInput];
+                  imageDescriptor = [primaryColorInput2 imageDescriptor];
+                  [imageDescriptor sizeForLayout:{objc_msgSend(obj, "layout")}];
                   v100 = [v97 scale:?];
 
                   if ((v100 & 1) == 0)
@@ -561,16 +561,16 @@ LABEL_107:
                       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to scale primary color calibration into network dimensions", buf, 2u);
                     }
 
-                    v36 = -22972;
+                    execute = -22972;
                     goto LABEL_148;
                   }
 
                   [v235 logCalibration:v97 name:"intermediateColorCalibration" timestamp:a24];
-                  v101 = [v221 mutableCopy];
+                  v101 = [mapCopy mutableCopy];
                   [v101 crop:{*(obj + 1), *(obj + 2), *(obj + 3), *(obj + 4)}];
-                  v102 = [v71 secondaryColorInput];
-                  v103 = [v102 imageDescriptor];
-                  [v103 sizeForLayout:{objc_msgSend(obj, "layout")}];
+                  secondaryColorInput2 = [inferenceDescriptor secondaryColorInput];
+                  imageDescriptor2 = [secondaryColorInput2 imageDescriptor];
+                  [imageDescriptor2 sizeForLayout:{objc_msgSend(obj, "layout")}];
                   v104 = [v101 scale:?];
 
                   if ((v104 & 1) == 0)
@@ -582,14 +582,14 @@ LABEL_107:
                       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to scale secondary color calibration into network dimensions", buf, 2u);
                     }
 
-                    v36 = -22972;
+                    execute = -22972;
                     goto LABEL_147;
                   }
 
                   v105 = v101;
                   [v235 logCalibration:v101 name:"intermediateSecondaryColorCalibration" timestamp:a24];
-                  v36 = [*(obj + 28) createCameraEmbeddingsForRightCameraCalibration:v97 leftCameraCalibration:v101 rightCameraPose:*(obj + 20) leftCameraPose:*a2.i64 outputBuffer:{*a3.i64, *a4.i64, *a5.i64, *a6.i64, *a7.i64, *a8.i64, *a9.i64}];
-                  if (v36)
+                  execute = [*(obj + 28) createCameraEmbeddingsForRightCameraCalibration:v97 leftCameraCalibration:v101 rightCameraPose:*(obj + 20) leftCameraPose:*a2.i64 outputBuffer:{*color.i64, *secondaryColor.i64, *pearl.i64, *clouds.i64, *calibration.i64, *colorCalibration.i64, *pearlCalibration.i64}];
+                  if (execute)
                   {
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
@@ -601,8 +601,8 @@ LABEL_107:
                   }
 
                   [v235 logRawBuffer:objc_msgSend(*(obj + 20) size:"data") name:objc_msgSend(*(obj + 20) timestamp:{"size"), "modelInputColorCameraEmbeddings", a24}];
-                  v106 = [objc_opt_class() defaults];
-                  v107 = [v106 BOOLForKey:kADDeviceConfigurationKeyMetricDepthIgnoreActiveSensors];
+                  defaults = [objc_opt_class() defaults];
+                  v107 = [defaults BOOLForKey:kADDeviceConfigurationKeyMetricDepthIgnoreActiveSensors];
 
                   if (v107)
                   {
@@ -616,26 +616,26 @@ LABEL_107:
                   }
 
                   [*(obj + 29) setDepthSensorsIgnored:v107];
-                  v110 = [objc_opt_class() defaults];
-                  v111 = [v110 BOOLForKey:kADDeviceConfigurationKeyMetricDepthEmulatePeridot];
+                  defaults2 = [objc_opt_class() defaults];
+                  v111 = [defaults2 BOOLForKey:kADDeviceConfigurationKeyMetricDepthEmulatePeridot];
 
-                  [v232 stopWithUTFString:"preprocess calibration"];
+                  [timeProfiler stopWithUTFString:"preprocess calibration"];
                   kdebug_trace();
-                  if (v230 < 3)
+                  if (stepsToExecute < 3)
                   {
                     goto LABEL_145;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"preprocess pearl"];
-                  if ((a13 == 0) | v107 & 1 | v111 & 1)
+                  [timeProfiler startWithUTFString:"preprocess pearl"];
+                  if ((pearlPose == 0) | v107 & 1 | v111 & 1)
                   {
                     [*(obj + 22) clearBuffer];
                   }
 
                   else
                   {
-                    v36 = [*(obj + 28) preprocessPearlDepth:*&v202 pearlPose:*&v203 pearlCalibration:*&v204 colorPose:*&v205 colorCalibration:*a2.i64 outputBuffer:{*a3.i64, *a4.i64, *a5.i64}];
+                    execute = [*(obj + 28) preprocessPearlDepth:*&v202 pearlPose:*&v203 pearlCalibration:*&v204 colorPose:*&v205 colorCalibration:*a2.i64 outputBuffer:{*color.i64, *secondaryColor.i64, *pearl.i64}];
                     [*(obj + 29) setPearlProjectedPixelCount:countNonZeroValues(*(obj + 23))];
                     v112 = CVPixelBufferGetWidth(*(obj + 23));
                     Height = CVPixelBufferGetHeight(*(obj + 23));
@@ -654,7 +654,7 @@ LABEL_107:
                       CVPixelBufferLockBaseAddress(PixelBufferWithSameSizeAndFormat, 0);
                       v199 = objc_alloc(MEMORY[0x277CED050]);
                       BaseAddress = CVPixelBufferGetBaseAddress(*(obj + 24));
-                      v200 = [*(obj + 22) dimensions];
+                      dimensions = [*(obj + 22) dimensions];
                       v245[0] = &unk_28524A6F8;
                       v197 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(*(obj + 22), "rowBytes")}];
                       v245[1] = v197;
@@ -663,9 +663,9 @@ LABEL_107:
                       v116 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(*(obj + 22), "batchBytes")}];
                       v245[3] = v116;
                       v117 = [MEMORY[0x277CBEA60] arrayWithObjects:v245 count:4];
-                      v118 = [v199 initWithName:@"projectedPearlToSecondary" rawData:BaseAddress dimensions:v200 strides:v117];
+                      v118 = [v199 initWithName:@"projectedPearlToSecondary" rawData:BaseAddress dimensions:dimensions strides:v117];
 
-                      v119 = [*(obj + 28) preprocessPearlDepth:a13 pearlPose:v220 pearlCalibration:v101 colorPose:v118 colorCalibration:*&v202 outputBuffer:{*&v203, *&v204, *&v205, *a6.i64, *a7.i64, *a8.i64, *a9.i64}];
+                      v119 = [*(obj + 28) preprocessPearlDepth:pearlPose pearlPose:uncertaintyMapCopy pearlCalibration:v101 colorPose:v118 colorCalibration:*&v202 outputBuffer:{*&v203, *&v204, *&v205, *clouds.i64, *calibration.i64, *colorCalibration.i64, *pearlCalibration.i64}];
                       CVPixelBufferUnlockBaseAddress(*(obj + 24), 0);
                       if (v119)
                       {
@@ -685,7 +685,7 @@ LABEL_107:
                       }
                     }
 
-                    if (v36)
+                    if (execute)
                     {
                       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                       {
@@ -707,23 +707,23 @@ LABEL_180:
                     }
                   }
 
-                  [v232 stopWithUTFString:"preprocess pearl"];
+                  [timeProfiler stopWithUTFString:"preprocess pearl"];
                   kdebug_trace();
-                  if (v230 == 3)
+                  if (stepsToExecute == 3)
                   {
 LABEL_145:
-                    v36 = -22977;
+                    execute = -22977;
                     goto LABEL_146;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"preprocess jasper"];
+                  [timeProfiler startWithUTFString:"preprocess jasper"];
                   *buf = xmmword_240406DF0;
                   *&buf[16] = xmmword_240406E00;
                   v243 = xmmword_240406E10;
                   v244 = xmmword_240406E20;
                   v125 = v111 ^ 1;
-                  if (!a13)
+                  if (!pearlPose)
                   {
                     v125 = 1;
                   }
@@ -731,12 +731,12 @@ LABEL_145:
                   if ((v125 & 1) == 0)
                   {
                     v126 = *(obj + 28);
-                    [v219 cameraToPlatformTransform];
+                    [confidenceMapCopy cameraToPlatformTransform];
                     v237 = 0;
-                    v36 = [v126 emulatePeridotFromJasper:v236 jasperPoses:a23 jasperTimestamps:0 jasperToPlatformTransform:a13 pearlDepth:v220 pearlPose:&v237 pearlCalibration:v127 outPointCloud:v128 outPose:v129 outTimestamp:{v130, *&v202, *&v203, *&v204, *&v205, buf, 0}];
+                    execute = [v126 emulatePeridotFromJasper:posesCopy jasperPoses:a23 jasperTimestamps:0 jasperToPlatformTransform:pearlPose pearlDepth:uncertaintyMapCopy pearlPose:&v237 pearlCalibration:v127 outPointCloud:v128 outPose:v129 outTimestamp:{v130, *&v202, *&v203, *&v204, *&v205, buf, 0}];
                     v131 = v237;
                     v132 = v131;
-                    if (v36)
+                    if (execute)
                     {
                       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                       {
@@ -751,20 +751,20 @@ LABEL_145:
                     v133 = [MEMORY[0x277CBEA60] arrayWithObjects:&v241 count:1];
 
                     v226 = buf;
-                    v236 = v133;
+                    posesCopy = v133;
                   }
 
                   v134 = MEMORY[0x277CED0F8];
-                  v240 = v219;
+                  v240 = confidenceMapCopy;
                   v135 = [MEMORY[0x277CBEA60] arrayWithObjects:&v240 count:1];
-                  v136 = [v134 aggregatePointClouds:v236 calibrations:v135 worldToPlatformTransforms:v226 projectingToCamera:v97 worldToPlatformAtProjectionTime:{*a2.i64, *a3.i64, *a4.i64, *a5.i64}];
+                  v136 = [v134 aggregatePointClouds:posesCopy calibrations:v135 worldToPlatformTransforms:v226 projectingToCamera:v97 worldToPlatformAtProjectionTime:{*a2.i64, *color.i64, *secondaryColor.i64, *pearl.i64}];
                   v137 = *(obj + 18);
                   *(obj + 18) = v136;
 
                   v138 = *(obj + 18);
-                  v139 = [*(obj + 28) pipelineParameters];
-                  v140 = [v139 pointCloudFilter];
-                  v141 = [v138 pointCloudByApplyingFilter:v140];
+                  pipelineParameters = [*(obj + 28) pipelineParameters];
+                  pointCloudFilter = [pipelineParameters pointCloudFilter];
+                  v141 = [v138 pointCloudByApplyingFilter:pointCloudFilter];
                   v142 = *(obj + 18);
                   *(obj + 18) = v141;
 
@@ -772,7 +772,7 @@ LABEL_145:
                   v216 = v226[2];
                   v218 = v226[1];
                   v214 = v226[3];
-                  v143 = [v236 count];
+                  v143 = [posesCopy count];
                   v246.columns[0] = *pixelBuffera;
                   v246.columns[2] = v216;
                   v246.columns[1] = v218;
@@ -805,12 +805,12 @@ LABEL_145:
                   v150 = v149;
                   [v97 referenceDimensions];
                   v152 = v151;
-                  if (a13)
+                  if (pearlPose)
                   {
                     v153 = [*(obj + 18) mutableCopy];
                     objc_storeStrong(obj + 18, v153);
-                    v36 = [*(obj + 28) filterJasperPointCloud:v153 usingPearlInput:*(obj + 23)];
-                    if (v36)
+                    execute = [*(obj + 28) filterJasperPointCloud:v153 usingPearlInput:*(obj + 23)];
+                    if (execute)
                     {
                       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                       {
@@ -822,9 +822,9 @@ LABEL_145:
                     }
 
                     v154 = *(obj + 18);
-                    v155 = [*(obj + 28) pipelineParameters];
-                    v156 = [v155 pointCloudFilter];
-                    v157 = [v154 pointCloudByApplyingFilter:v156];
+                    pipelineParameters2 = [*(obj + 28) pipelineParameters];
+                    pointCloudFilter2 = [pipelineParameters2 pointCloudFilter];
+                    v157 = [v154 pointCloudByApplyingFilter:pointCloudFilter2];
                     v158 = *(obj + 18);
                     *(obj + 18) = v157;
 
@@ -843,9 +843,9 @@ LABEL_145:
                     v163 = *(obj + 18);
                     if (v163)
                     {
-                      v164 = [*(obj + 28) pipelineParameters];
-                      v165 = [v164 pointCloudFilter];
-                      [v163 projectJasperPointsFilteredBy:v165 croppedBy:*(obj + 9) rotatedBy:v239.__r_.__value_.__l.__size_ andScaledInto:{0.0, 0.0, v150, v152}];
+                      pipelineParameters3 = [*(obj + 28) pipelineParameters];
+                      pointCloudFilter3 = [pipelineParameters3 pointCloudFilter];
+                      [v163 projectJasperPointsFilteredBy:pointCloudFilter3 croppedBy:*(obj + 9) rotatedBy:v239.__r_.__value_.__l.__size_ andScaledInto:{0.0, 0.0, v150, v152}];
                     }
 
                     else
@@ -857,9 +857,9 @@ LABEL_145:
                     v167 = *(obj + 19);
                     if (v167)
                     {
-                      v168 = [*(obj + 28) pipelineParameters];
-                      v169 = [v168 pointCloudFilter];
-                      [v167 projectJasperPointsFilteredBy:v169 croppedBy:*(obj + 9) rotatedBy:v239.__r_.__value_.__l.__size_ andScaledInto:{0.0, 0.0, v150, v152}];
+                      pipelineParameters4 = [*(obj + 28) pipelineParameters];
+                      pointCloudFilter4 = [pipelineParameters4 pointCloudFilter];
+                      [v167 projectJasperPointsFilteredBy:pointCloudFilter4 croppedBy:*(obj + 9) rotatedBy:v239.__r_.__value_.__l.__size_ andScaledInto:{0.0, 0.0, v150, v152}];
                     }
 
                     else
@@ -871,8 +871,8 @@ LABEL_145:
                     PixelBufferSharedPtr::~PixelBufferSharedPtr(&v239);
                   }
 
-                  v36 = [*(obj + 28) createJasperEmbeddingsForRightCameraPointCloud:*(obj + 18) leftCameraPointCloud:*(obj + 19) crop:*(obj + 9) rotation:*(obj + 21) outputBuffer:{0.0, 0.0, v150, v152}];
-                  if (v36)
+                  execute = [*(obj + 28) createJasperEmbeddingsForRightCameraPointCloud:*(obj + 18) leftCameraPointCloud:*(obj + 19) crop:*(obj + 9) rotation:*(obj + 21) outputBuffer:{0.0, 0.0, v150, v152}];
+                  if (execute)
                   {
                     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
@@ -889,28 +889,28 @@ LABEL_145:
                   [v235 logRawBuffer:objc_msgSend(*(obj + 21) size:"data") name:objc_msgSend(*(obj + 21) timestamp:{"size"), "modelInputJasperEmbeddings", a24}];
                   [v235 logPixelBuffer:*(obj + 23) name:"modelInputProjectedPearl" timestamp:a24];
                   [v235 logRawBuffer:objc_msgSend(*(obj + 22) size:"data") name:objc_msgSend(*(obj + 22) timestamp:{"size"), "modelInputPearlBuffer", a24}];
-                  [v232 stopWithUTFString:"preprocess jasper"];
+                  [timeProfiler stopWithUTFString:"preprocess jasper"];
                   kdebug_trace();
-                  if (v230 < 5)
+                  if (stepsToExecute < 5)
                   {
 LABEL_182:
-                    v36 = -22977;
+                    execute = -22977;
                     goto LABEL_146;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"network execution"];
-                  v170 = [v71 depthOutput];
-                  v171 = [obj inferencePixelBufferForDescriptor:v170 outputUserBuffer:a25];
+                  [timeProfiler startWithUTFString:"network execution"];
+                  depthOutput = [inferenceDescriptor depthOutput];
+                  v171 = [obj inferencePixelBufferForDescriptor:depthOutput outputUserBuffer:a25];
 
-                  v172 = [v71 confidenceOutput];
-                  v173 = [obj inferencePixelBufferForDescriptor:v172 outputUserBuffer:a26];
+                  confidenceOutput = [inferenceDescriptor confidenceOutput];
+                  v173 = [obj inferencePixelBufferForDescriptor:confidenceOutput outputUserBuffer:a26];
 
-                  v174 = [v71 normalsOutput];
-                  v175 = [obj inferencePixelBufferForDescriptor:v174 outputUserBuffer:a29];
+                  normalsOutput = [inferenceDescriptor normalsOutput];
+                  v175 = [obj inferencePixelBufferForDescriptor:normalsOutput outputUserBuffer:a29];
 
-                  v36 = [*(obj + 7) execute];
-                  if (v36)
+                  execute = [*(obj + 7) execute];
+                  if (execute)
                   {
                     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
@@ -926,15 +926,15 @@ LABEL_182:
                   [v235 logPixelBuffer:v171 name:"modelOutputDepth" timestamp:a24];
                   [v235 logPixelBuffer:v173 name:"modelOutputUncertainty" timestamp:a24];
                   [v235 logPixelBuffer:v175 name:"modelOutputNormals" timestamp:a24];
-                  [v232 stopWithUTFString:"network execution"];
+                  [timeProfiler stopWithUTFString:"network execution"];
                   kdebug_trace();
-                  if (v230 == 5)
+                  if (stepsToExecute == 5)
                   {
                     goto LABEL_182;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"postprocess confidence"];
+                  [timeProfiler startWithUTFString:"postprocess confidence"];
                   if (v234)
                   {
                     if (v95 > 0.5)
@@ -971,8 +971,8 @@ LABEL_182:
                       *a27 = PixelBufferUtils::createPixelBufferWithSameSizeAndFormat(v173, 1);
                     }
 
-                    v36 = [*(obj + 28) postProcessEspressoConfidence:v173 outputConfidence:? confidenceUnits:?];
-                    if (v36)
+                    execute = [*(obj + 28) postProcessEspressoConfidence:v173 outputConfidence:? confidenceUnits:?];
+                    if (execute)
                     {
                       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                       {
@@ -995,8 +995,8 @@ LABEL_182:
                       *a28 = PixelBufferUtils::createPixelBufferWithSameSize(v173, 0x4C303038, 1);
                     }
 
-                    v36 = [*(obj + 28) postProcessEspressoConfidence:v173 outputConfidence:? confidenceUnits:?];
-                    if (v36)
+                    execute = [*(obj + 28) postProcessEspressoConfidence:v173 outputConfidence:? confidenceUnits:?];
+                    if (execute)
                     {
                       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                       {
@@ -1018,8 +1018,8 @@ LABEL_182:
                     v183 = v173;
                     if (v173 != *a26)
                     {
-                      v36 = [*(obj + 28) postProcessEspressoConfidence:v173 outputConfidence:? confidenceUnits:?];
-                      if (v36)
+                      execute = [*(obj + 28) postProcessEspressoConfidence:v173 outputConfidence:? confidenceUnits:?];
+                      if (execute)
                       {
                         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                         {
@@ -1039,19 +1039,19 @@ LABEL_209:
                   }
 
                   [v235 logPixelBuffer:v183 name:"outputUncertainty" timestamp:a24];
-                  [v232 stopWithUTFString:"postprocess confidence"];
+                  [timeProfiler stopWithUTFString:"postprocess confidence"];
                   kdebug_trace();
-                  if (v230 < 7)
+                  if (stepsToExecute < 7)
                   {
                     goto LABEL_182;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"postprocess depth"];
+                  [timeProfiler startWithUTFString:"postprocess depth"];
                   if (v171 != *a25)
                   {
-                    v36 = [*(obj + 28) postProcessEspressoDepth:v171 espressoConfidence:0 toOutputDepth:? outputConfidence:?];
-                    if (v36)
+                    execute = [*(obj + 28) postProcessEspressoDepth:v171 espressoConfidence:0 toOutputDepth:? outputConfidence:?];
+                    if (execute)
                     {
                       v184 = MEMORY[0x277D86220];
                       v185 = MEMORY[0x277D86220];
@@ -1069,19 +1069,19 @@ LABEL_240:
                     [v235 logPixelBuffer:*a25 name:"outputDepth" timestamp:a24];
                   }
 
-                  [v232 stopWithUTFString:"postprocess depth"];
+                  [timeProfiler stopWithUTFString:"postprocess depth"];
                   kdebug_trace();
-                  if (v230 == 7)
+                  if (stepsToExecute == 7)
                   {
                     goto LABEL_182;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"postprocess normals"];
+                  [timeProfiler startWithUTFString:"postprocess normals"];
                   if (a29 && v175 != *a29)
                   {
-                    v36 = [*(obj + 28) postProcessEspressoNormals:v175 toOutputNormals:?];
-                    if (v36)
+                    execute = [*(obj + 28) postProcessEspressoNormals:v175 toOutputNormals:?];
+                    if (execute)
                     {
                       v186 = MEMORY[0x277D86220];
                       v187 = MEMORY[0x277D86220];
@@ -1097,15 +1097,15 @@ LABEL_240:
                     [v235 logPixelBuffer:*a29 name:"outputNormals" timestamp:a24];
                   }
 
-                  [v232 stopWithUTFString:"postprocess normals"];
+                  [timeProfiler stopWithUTFString:"postprocess normals"];
                   kdebug_trace();
-                  if (v230 < 9)
+                  if (stepsToExecute < 9)
                   {
                     goto LABEL_182;
                   }
 
                   kdebug_trace();
-                  [v232 startWithUTFString:"postprocess mask"];
+                  [timeProfiler startWithUTFString:"postprocess mask"];
                   if (a30)
                   {
                     if (!*a30)
@@ -1115,8 +1115,8 @@ LABEL_240:
 
                     if (v234)
                     {
-                      v36 = [*(obj + 28) fillSensorsMask:?];
-                      if (v36)
+                      execute = [*(obj + 28) fillSensorsMask:?];
+                      if (execute)
                       {
                         v188 = MEMORY[0x277D86220];
                         v189 = MEMORY[0x277D86220];
@@ -1153,20 +1153,20 @@ LABEL_240:
                     *a31 = v97;
                   }
 
-                  [v232 stopWithUTFString:"postprocess mask"];
+                  [timeProfiler stopWithUTFString:"postprocess mask"];
                   kdebug_trace();
-                  if (v230 != 9)
+                  if (stepsToExecute != 9)
                   {
                     [obj frameExecutionEnd];
-                    v194 = [objc_opt_class() defaults];
-                    v195 = [v194 stringForKey:kADDeviceConfigurationKeyMetricDepthGraphJPEGDumpPath];
+                    defaults3 = [objc_opt_class() defaults];
+                    v195 = [defaults3 stringForKey:kADDeviceConfigurationKeyMetricDepthGraphJPEGDumpPath];
 
                     if (v195)
                     {
                       [obj writeMetricDepthToJPEG:v195 timestamp:0 preProcessedJasper:*(obj + 23) preProcessedPearl:v73 preProcessedPrimaryColor:v173 rawConfOut:v171 rawDepthOut:a24];
                     }
 
-                    v36 = 0;
+                    execute = 0;
                     goto LABEL_146;
                   }
 
@@ -1182,7 +1182,7 @@ LABEL_116:
                   _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed converting color input %d with color session", buf, 8u);
                 }
 
-                v36 = -22950;
+                execute = -22950;
                 goto LABEL_107;
               }
             }
@@ -1195,11 +1195,11 @@ LABEL_116:
             }
           }
 
-          CVPixelBufferGetWidth(a12);
-          CVPixelBufferGetHeight(a12);
+          CVPixelBufferGetWidth(colorPose);
+          CVPixelBufferGetHeight(colorPose);
           CVPixelBufferGetWidth(v87);
           CVPixelBufferGetHeight(v87);
-          CVPixelBufferGetPixelFormatType(a12);
+          CVPixelBufferGetPixelFormatType(colorPose);
           CVPixelBufferGetPixelFormatType(v87);
           PixelBufferUtilsSession::createCropScaleConvertRotateSession();
         }
@@ -1213,7 +1213,7 @@ LABEL_97:
           _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MetricDepth Executor does not have an inference buffer for color %d", buf, 8u);
         }
 
-        v36 = -22953;
+        execute = -22953;
         goto LABEL_107;
       }
     }
@@ -1221,13 +1221,13 @@ LABEL_97:
     else
     {
       v234 = v52 >= 0;
-      if (!a13)
+      if (!pearlPose)
       {
         goto LABEL_58;
       }
     }
 
-    if ((vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(a19), vceqzq_f32(a20)), vandq_s8(vceqzq_f32(a21), vceqzq_f32(a22)))) & 0x80000000) != 0)
+    if ((vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(levels), vceqzq_f32(normalsMap)), vandq_s8(vceqzq_f32(maskMap), vceqzq_f32(depthCalibration)))) & 0x80000000) != 0)
     {
       v57 = MEMORY[0x277D86220];
       v58 = MEMORY[0x277D86220];
@@ -1252,21 +1252,21 @@ LABEL_97:
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "must call prepare before execution", buf, 2u);
   }
 
-  v36 = -22960;
+  execute = -22960;
 LABEL_109:
   objc_sync_exit(obj);
 
-  return v36;
+  return execute;
 }
 
-- (void)writeMetricDepthToJPEG:(id)a3 timestamp:(double)a4 preProcessedJasper:(__CVBuffer *)a5 preProcessedPearl:(__CVBuffer *)a6 preProcessedPrimaryColor:(__CVBuffer *)a7 rawConfOut:(__CVBuffer *)a8 rawDepthOut:(__CVBuffer *)a9
+- (void)writeMetricDepthToJPEG:(id)g timestamp:(double)timestamp preProcessedJasper:(__CVBuffer *)jasper preProcessedPearl:(__CVBuffer *)pearl preProcessedPrimaryColor:(__CVBuffer *)color rawConfOut:(__CVBuffer *)out rawDepthOut:(__CVBuffer *)depthOut
 {
   v33 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  gCopy = g;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v15;
+    *(&buf + 4) = gCopy;
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "writing metricDepth debug images to %@", &buf, 0xCu);
   }
 
@@ -1277,9 +1277,9 @@ LABEL_109:
     operator new();
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a8);
-  Width = CVPixelBufferGetWidth(a8);
-  Height = CVPixelBufferGetHeight(a8);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(out);
+  Width = CVPixelBufferGetWidth(out);
+  Height = CVPixelBufferGetHeight(out);
   *&buf = 0;
   BufferAttributes = getBufferAttributes();
   if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], Width, Height, PixelFormatType, BufferAttributes, &buf))
@@ -1292,31 +1292,31 @@ LABEL_109:
     v20 = buf;
   }
 
-  [(ADMetricDepthPipeline *)self->_pipeline postProcessEspressoConfidence:a8 outputConfidence:v20 confidenceUnits:0];
-  *&buf = a5;
-  *(&buf + 1) = a6;
-  v31 = a9;
+  [(ADMetricDepthPipeline *)self->_pipeline postProcessEspressoConfidence:out outputConfidence:v20 confidenceUnits:0];
+  *&buf = jasper;
+  *(&buf + 1) = pearl;
+  depthOutCopy = depthOut;
   v32 = v20;
   tiledView = self->_tiledView;
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.3f", *&a4];
+  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.3f", *&timestamp];
   v23 = v22;
-  v24 = PixelBufferUtilsTiledView::render(tiledView, &buf, 4, a7, "metric depth", [v22 UTF8String]);
+  v24 = PixelBufferUtilsTiledView::render(tiledView, &buf, 4, color, "metric depth", [v22 UTF8String]);
 
-  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/MD_montage.jpeg", v15];
-  v26 = v25;
-  v27 = [v25 UTF8String];
-  PixelBufferUtils::pixelBufferToImageFile(v27, v24, 0, v28);
+  gCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/MD_montage.jpeg", gCopy];
+  v26 = gCopy;
+  uTF8String = [gCopy UTF8String];
+  PixelBufferUtils::pixelBufferToImageFile(uTF8String, v24, 0, v28);
 
   CVPixelBufferRelease(v20);
   CVPixelBufferRelease(v24);
 }
 
-- (int64_t)prepareForInputRoi:(CGRect)a3
+- (int64_t)prepareForInputRoi:(CGRect)roi
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
   v35 = *MEMORY[0x277D85DE8];
   kdebug_trace();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -1325,9 +1325,9 @@ LABEL_109:
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "metric depths executor: preparing executor", buf, 2u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(ADMetricDepthPipeline *)v8->_pipeline inferenceDescriptor];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  inferenceDescriptor = [(ADMetricDepthPipeline *)selfCopy->_pipeline inferenceDescriptor];
   v36.origin.x = x;
   v36.origin.y = y;
   v36.size.width = width;
@@ -1344,7 +1344,7 @@ LABEL_109:
       goto LABEL_9;
     }
 
-    espressoEngine = v8->_espressoEngine;
+    espressoEngine = selfCopy->_espressoEngine;
     *buf = 134219008;
     v26 = v10;
     v27 = 2048;
@@ -1366,7 +1366,7 @@ LABEL_109:
       goto LABEL_9;
     }
 
-    v17 = v8->_espressoEngine;
+    v17 = selfCopy->_espressoEngine;
     *buf = 134219008;
     v26 = v10;
     v27 = 2048;
@@ -1383,12 +1383,12 @@ LABEL_109:
 
   _os_log_impl(&dword_2402F6000, v15, v16, "metric depth executor: preparing metric depth for roi: [%f,%f,%f,%f] - engine: %lu", buf, 0x34u);
 LABEL_9:
-  v18 = v8->_espressoEngine;
-  v19 = [v9 primaryColorInput];
-  v20 = [v19 imageDescriptor];
-  v21 = [(ADExecutor *)v8 prepareForEngineType:v18 roi:v20 descriptorForROI:1 exifOrientation:2 rotationPreference:v9 inferenceDescriptor:v10, v11, v12, v13];
+  v18 = selfCopy->_espressoEngine;
+  primaryColorInput = [inferenceDescriptor primaryColorInput];
+  imageDescriptor = [primaryColorInput imageDescriptor];
+  allocateIntermediateBuffers = [(ADExecutor *)selfCopy prepareForEngineType:v18 roi:imageDescriptor descriptorForROI:1 exifOrientation:2 rotationPreference:inferenceDescriptor inferenceDescriptor:v10, v11, v12, v13];
 
-  if (v21)
+  if (allocateIntermediateBuffers)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1402,10 +1402,10 @@ LABEL_15:
 
   else
   {
-    v21 = [(ADMetricDepthExecutor *)v8 allocateIntermediateBuffers];
-    if (!v21)
+    allocateIntermediateBuffers = [(ADMetricDepthExecutor *)selfCopy allocateIntermediateBuffers];
+    if (!allocateIntermediateBuffers)
     {
-      v8->_isPrepared = 1;
+      selfCopy->_isPrepared = 1;
       goto LABEL_17;
     }
 
@@ -1420,17 +1420,17 @@ LABEL_15:
 
 LABEL_17:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   kdebug_trace();
-  return v21;
+  return allocateIntermediateBuffers;
 }
 
-- (int64_t)prepareForInputRoi:(CGRect)a3 engineType:(unint64_t)a4
+- (int64_t)prepareForInputRoi:(CGRect)roi engineType:(unint64_t)type
 {
-  if (self->_espressoEngine == a4)
+  if (self->_espressoEngine == type)
   {
 
-    return [(ADMetricDepthExecutor *)self prepareForInputRoi:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    return [(ADMetricDepthExecutor *)self prepareForInputRoi:roi.origin.x, roi.origin.y, roi.size.width, roi.size.height];
   }
 
   else
@@ -1450,58 +1450,58 @@ LABEL_17:
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADMetricDepthExecutor *)self deallocInferenceBuffers];
-  v3 = [(ADMetricDepthPipeline *)self->_pipeline inferenceDescriptor];
-  v4 = [v3 primaryColorInput];
-  v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:v4];
+  inferenceDescriptor = [(ADMetricDepthPipeline *)self->_pipeline inferenceDescriptor];
+  primaryColorInput = [inferenceDescriptor primaryColorInput];
+  v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:primaryColorInput];
 
   if (!v5)
   {
-    v6 = [v3 secondaryColorInput];
-    v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:v6];
+    secondaryColorInput = [inferenceDescriptor secondaryColorInput];
+    v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:secondaryColorInput];
 
     if (!v5)
     {
       espressoRunner = self->super._espressoRunner;
-      v8 = [v3 jasperInput];
-      v9 = [(ADEspressoRunnerProtocol *)espressoRunner registerDescriptor:v8];
+      jasperInput = [inferenceDescriptor jasperInput];
+      v9 = [(ADEspressoRunnerProtocol *)espressoRunner registerDescriptor:jasperInput];
       itmPreProcessedJasperEmbBuffer = self->_itmPreProcessedJasperEmbBuffer;
       self->_itmPreProcessedJasperEmbBuffer = v9;
 
       v11 = self->super._espressoRunner;
-      v12 = [v3 pearlInput];
-      v13 = [(ADEspressoRunnerProtocol *)v11 registerDescriptor:v12];
+      pearlInput = [inferenceDescriptor pearlInput];
+      v13 = [(ADEspressoRunnerProtocol *)v11 registerDescriptor:pearlInput];
       itmPreProcessedPearlBuffer = self->_itmPreProcessedPearlBuffer;
       self->_itmPreProcessedPearlBuffer = v13;
 
       v15 = self->super._espressoRunner;
-      v16 = [v3 cameraEmbeddingInput];
-      v17 = [(ADEspressoRunnerProtocol *)v15 registerDescriptor:v16];
+      cameraEmbeddingInput = [inferenceDescriptor cameraEmbeddingInput];
+      v17 = [(ADEspressoRunnerProtocol *)v15 registerDescriptor:cameraEmbeddingInput];
       itmPreProcessedCameraEmbBuffer = self->_itmPreProcessedCameraEmbBuffer;
       self->_itmPreProcessedCameraEmbBuffer = v17;
 
       if (self->_itmPreProcessedJasperEmbBuffer && self->_itmPreProcessedPearlBuffer && self->_itmPreProcessedCameraEmbBuffer)
       {
-        v19 = [v3 confidenceOutput];
-        v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:v19];
+        confidenceOutput = [inferenceDescriptor confidenceOutput];
+        v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:confidenceOutput];
 
         if (!v5)
         {
-          v20 = [v3 depthOutput];
-          v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:v20];
+          depthOutput = [inferenceDescriptor depthOutput];
+          v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:depthOutput];
 
           if (!v5)
           {
-            v21 = [v3 normalsOutput];
-            v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:v21];
+            normalsOutput = [inferenceDescriptor normalsOutput];
+            v5 = [(ADExecutor *)self preAllocateInferencePixelBufferForDescriptor:normalsOutput];
 
             if (!v5)
             {
-              v22 = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer width];
-              v23 = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer height];
-              v24 = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer data];
-              v25 = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer rowBytes];
+              width = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer width];
+              height = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer height];
+              data = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer data];
+              rowBytes = [(ADEspressoBufferHandle *)self->_itmPreProcessedPearlBuffer rowBytes];
               p_itmPreProcessedPearl = &self->_itmPreProcessedPearl;
-              CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], v22, v23, 0x68646570u, v24, v25, 0, 0, 0, p_itmPreProcessedPearl);
+              CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], width, height, 0x68646570u, data, rowBytes, 0, 0, 0, p_itmPreProcessedPearl);
               if (*p_itmPreProcessedPearl)
               {
                 v5 = 0;
@@ -1543,7 +1543,7 @@ LABEL_17:
   self->_itmPreProcessedCameraEmbBuffer = 0;
 }
 
-- (id)initForEspressoEngine:(unint64_t)a3
+- (id)initForEspressoEngine:(unint64_t)engine
 {
   v17.receiver = self;
   v17.super_class = ADMetricDepthExecutor;
@@ -1557,7 +1557,7 @@ LABEL_17:
   v15 = 0u;
   v16 = 0u;
   kdebug_trace();
-  v4->_espressoEngine = a3;
+  v4->_espressoEngine = engine;
   v5 = [[ADMetricDepthPipeline alloc] initForEspressoEngine:v4->_espressoEngine];
   pipeline = v4->_pipeline;
   v4->_pipeline = v5;
@@ -1615,8 +1615,8 @@ LABEL_7:
   p_opt_class_meths = &OBJC_PROTOCOL___NSObject.opt_class_meths;
   {
     v7[0] = kADDeviceConfigurationKeyMetricDepthGraphJPEGDumpPath;
-    v5 = [MEMORY[0x277CBEB68] null];
-    v8[0] = v5;
+    null = [MEMORY[0x277CBEB68] null];
+    v8[0] = null;
     v8[1] = MEMORY[0x277CBEC28];
     v7[1] = kADDeviceConfigurationKeyMetricDepthIgnoreActiveSensors;
     v7[2] = kADDeviceConfigurationKeyMetricDepthEmulatePeridot;

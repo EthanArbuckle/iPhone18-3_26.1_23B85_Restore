@@ -1,5 +1,5 @@
 @interface _TUIVideoPlayButton
-+ (CGSize)computeSizeFittingVideoSize:(CGSize)a3;
++ (CGSize)computeSizeFittingVideoSize:(CGSize)size;
 - (_TUIVideoPlayButton)init;
 - (void)layoutSubviews;
 @end
@@ -17,7 +17,7 @@
     v4 = [UIImage tui_imageNamed:@"play_glyph" inBundle:v3];
     v5 = [v4 imageWithRenderingMode:2];
 
-    v6 = [v5 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v5 imageFlippedForRightToLeftLayoutDirection];
     v7 = objc_alloc_init(UIImageView);
     glyphView = v2->_glyphView;
     v2->_glyphView = v7;
@@ -40,14 +40,14 @@
   return v2;
 }
 
-+ (CGSize)computeSizeFittingVideoSize:(CGSize)a3
++ (CGSize)computeSizeFittingVideoSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  v3 = fmin(a3.width, 31.0);
+  v3 = fmin(size.width, 31.0);
   if (v3 < 60.0)
   {
     v3 = 60.0;

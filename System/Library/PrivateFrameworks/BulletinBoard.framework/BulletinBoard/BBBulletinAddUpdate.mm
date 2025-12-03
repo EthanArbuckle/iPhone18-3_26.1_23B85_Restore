@@ -1,22 +1,22 @@
 @interface BBBulletinAddUpdate
-- (BBBulletinAddUpdate)initWithBulletin:(id)a3 feeds:(unint64_t)a4 shouldPlayLightsAndSirens:(BOOL)a5;
-- (BBBulletinAddUpdate)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BBBulletinAddUpdate)initWithBulletin:(id)bulletin feeds:(unint64_t)feeds shouldPlayLightsAndSirens:(BOOL)sirens;
+- (BBBulletinAddUpdate)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBBulletinAddUpdate
 
-- (BBBulletinAddUpdate)initWithBulletin:(id)a3 feeds:(unint64_t)a4 shouldPlayLightsAndSirens:(BOOL)a5
+- (BBBulletinAddUpdate)initWithBulletin:(id)bulletin feeds:(unint64_t)feeds shouldPlayLightsAndSirens:(BOOL)sirens
 {
   v7.receiver = self;
   v7.super_class = BBBulletinAddUpdate;
-  result = [(BBBulletinUpdate *)&v7 initWithBulletin:a3 feeds:a4];
+  result = [(BBBulletinUpdate *)&v7 initWithBulletin:bulletin feeds:feeds];
   if (result)
   {
-    result->_shouldPlayLightsAndSirens = a5;
+    result->_shouldPlayLightsAndSirens = sirens;
   }
 
   return result;
@@ -30,10 +30,10 @@
   return v3 ^ [(BBBulletinAddUpdate *)self shouldPlayLightsAndSirens];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -43,13 +43,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v9.receiver = self;
       v9.super_class = BBBulletinAddUpdate;
       if ([(BBBulletinUpdate *)&v9 isEqual:v5])
       {
-        v6 = [(BBBulletinAddUpdate *)self shouldPlayLightsAndSirens];
-        v7 = v6 ^ [(BBBulletinAddUpdate *)v5 shouldPlayLightsAndSirens]^ 1;
+        shouldPlayLightsAndSirens = [(BBBulletinAddUpdate *)self shouldPlayLightsAndSirens];
+        v7 = shouldPlayLightsAndSirens ^ [(BBBulletinAddUpdate *)v5 shouldPlayLightsAndSirens]^ 1;
       }
 
       else
@@ -71,29 +71,29 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[BBBulletinAddUpdate shouldPlayLightsAndSirens](self withName:{"shouldPlayLightsAndSirens"), @"Should Play Lights And Sirens"}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BBBulletinAddUpdate;
-  v4 = a3;
-  [(BBBulletinUpdate *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[BBBulletinAddUpdate shouldPlayLightsAndSirens](self forKey:{"shouldPlayLightsAndSirens", v5.receiver, v5.super_class), @"shouldPlayLightsAndSirens"}];
+  coderCopy = coder;
+  [(BBBulletinUpdate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[BBBulletinAddUpdate shouldPlayLightsAndSirens](self forKey:{"shouldPlayLightsAndSirens", v5.receiver, v5.super_class), @"shouldPlayLightsAndSirens"}];
 }
 
-- (BBBulletinAddUpdate)initWithCoder:(id)a3
+- (BBBulletinAddUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BBBulletinAddUpdate;
-  v5 = [(BBBulletinUpdate *)&v7 initWithCoder:v4];
+  v5 = [(BBBulletinUpdate *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_shouldPlayLightsAndSirens = [v4 decodeBoolForKey:@"shouldPlayLightsAndSirens"];
+    v5->_shouldPlayLightsAndSirens = [coderCopy decodeBoolForKey:@"shouldPlayLightsAndSirens"];
   }
 
   return v5;

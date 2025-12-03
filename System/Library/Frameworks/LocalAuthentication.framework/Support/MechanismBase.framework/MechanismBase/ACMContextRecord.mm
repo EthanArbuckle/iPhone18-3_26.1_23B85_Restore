@@ -1,5 +1,5 @@
 @interface ACMContextRecord
-- (ACMContextRecord)initWithACMContext:(__ACMHandle *)a3 cachedExternalizationDelegate:(id)a4;
+- (ACMContextRecord)initWithACMContext:(__ACMHandle *)context cachedExternalizationDelegate:(id)delegate;
 - (LACContextExternalizing)cachedExternalizationDelegate;
 @end
 
@@ -12,17 +12,17 @@
   return WeakRetained;
 }
 
-- (ACMContextRecord)initWithACMContext:(__ACMHandle *)a3 cachedExternalizationDelegate:(id)a4
+- (ACMContextRecord)initWithACMContext:(__ACMHandle *)context cachedExternalizationDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ACMContextRecord;
   v7 = [(ACMContextRecord *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_context = a3;
-    objc_storeWeak(&v7->_cachedExternalizationDelegate, v6);
+    v7->_context = context;
+    objc_storeWeak(&v7->_cachedExternalizationDelegate, delegateCopy);
   }
 
   return v8;

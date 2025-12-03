@@ -1,7 +1,7 @@
 @interface APOdmlBiomeEvent
 + (id)_customClassesForDataDict;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (APOdmlBiomeEvent)initWithDictionary:(id)a3 andIdentifier:(id)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (APOdmlBiomeEvent)initWithDictionary:(id)dictionary andIdentifier:(id)identifier;
 - (NSDictionary)dictionary;
 - (NSUUID)identifier;
 - (id)serialize;
@@ -9,11 +9,11 @@
 
 @implementation APOdmlBiomeEvent
 
-- (APOdmlBiomeEvent)initWithDictionary:(id)a3 andIdentifier:(id)a4
+- (APOdmlBiomeEvent)initWithDictionary:(id)dictionary andIdentifier:(id)identifier
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = APOdmlBiomeEvent;
   v10 = [(APOdmlBiomeEvent *)&v24 init];
@@ -24,14 +24,14 @@
     v10->_outerDictionary = v11;
 
     v13 = v10->_outerDictionary;
-    v16 = objc_msgSend_copy(v6, v14, v15);
+    v16 = objc_msgSend_copy(dictionaryCopy, v14, v15);
     objc_msgSend_setObject_forKey_(v13, v17, v16, @"data");
 
-    if (v7)
+    if (identifierCopy)
     {
       v19 = v10->_outerDictionary;
       v25 = @"identifier";
-      v26[0] = v7;
+      v26[0] = identifierCopy;
       v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, v26, &v25, 1);
       objc_msgSend_setValuesForKeysWithDictionary_(v19, v21, v20);
     }
@@ -65,16 +65,16 @@
   return MEMORY[0x2821F9670](v2, sel_setWithObject_, v3);
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v8 = objc_msgSend_classesForDataDict(APOdmlTrainingSetBuilder, v6, v7);
-  v11 = objc_msgSend__customClassesForDataDict(a1, v9, v10);
+  v11 = objc_msgSend__customClassesForDataDict(self, v9, v10);
   v13 = objc_msgSend_setByAddingObjectsFromSet_(v8, v12, v11);
 
   v32 = 0;
-  v15 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(MEMORY[0x277CCAAC8], v14, v13, v5, &v32);
+  v15 = objc_msgSend_unarchivedObjectOfClasses_fromData_error_(MEMORY[0x277CCAAC8], v14, v13, dataCopy, &v32);
 
   v17 = v32;
   if (v15)

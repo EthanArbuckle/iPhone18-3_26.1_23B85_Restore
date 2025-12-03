@@ -2,7 +2,7 @@
 - (UILabel)descriptionLabel;
 - (UILabel)titleLabel;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation BKTOCBookmarksDescription
@@ -17,20 +17,20 @@
   v11 = v7 + -50.0;
   v12 = objc_alloc_init(NSStringDrawingContext);
   v29 = NSFontAttributeName;
-  v13 = [(UILabel *)self->_titleLabel font];
-  v30 = v13;
+  font = [(UILabel *)self->_titleLabel font];
+  v30 = font;
   v14 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
-  v15 = [(UILabel *)self->_titleLabel text];
-  [v15 boundingRectWithSize:3 options:v14 attributes:v12 context:{v11, 200.0}];
+  text = [(UILabel *)self->_titleLabel text];
+  [text boundingRectWithSize:3 options:v14 attributes:v12 context:{v11, 200.0}];
   v17 = v16;
 
-  v18 = [(UILabel *)self->_descriptionLabel text];
+  text2 = [(UILabel *)self->_descriptionLabel text];
   v27 = NSFontAttributeName;
-  v19 = [(UILabel *)self->_descriptionLabel font];
-  v28 = v19;
+  font2 = [(UILabel *)self->_descriptionLabel font];
+  v28 = font2;
   v20 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-  [v18 boundingRectWithSize:3 options:v20 attributes:v12 context:{v11, v10 - v17}];
+  [text2 boundingRectWithSize:3 options:v20 attributes:v12 context:{v11, v10 - v17}];
   v22 = v21;
 
   v23 = ceil(v17);
@@ -54,18 +54,18 @@
   [(UILabel *)self->_descriptionLabel setFrame:25.0, v23 + v25 + v26, v11, v24];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(BKTOCBookmarksDescription *)self backgroundColor];
+  colorCopy = color;
+  backgroundColor = [(BKTOCBookmarksDescription *)self backgroundColor];
 
-  if (v5 != v4)
+  if (backgroundColor != colorCopy)
   {
     v6.receiver = self;
     v6.super_class = BKTOCBookmarksDescription;
-    [(BKTOCBookmarksDescription *)&v6 setBackgroundColor:v4];
-    [(UILabel *)self->_titleLabel setBackgroundColor:v4];
-    [(UILabel *)self->_descriptionLabel setBackgroundColor:v4];
+    [(BKTOCBookmarksDescription *)&v6 setBackgroundColor:colorCopy];
+    [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+    [(UILabel *)self->_descriptionLabel setBackgroundColor:colorCopy];
   }
 }
 
@@ -84,8 +84,8 @@
     [(UILabel *)self->_titleLabel setNumberOfLines:2];
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     [(UILabel *)self->_titleLabel setLineBreakMode:0];
-    v7 = [(BKTOCBookmarksDescription *)self backgroundColor];
-    [(UILabel *)self->_titleLabel setBackgroundColor:v7];
+    backgroundColor = [(BKTOCBookmarksDescription *)self backgroundColor];
+    [(UILabel *)self->_titleLabel setBackgroundColor:backgroundColor];
 
     [(BKTOCBookmarksDescription *)self addSubview:self->_titleLabel];
     titleLabel = self->_titleLabel;
@@ -109,8 +109,8 @@
     [(UILabel *)self->_descriptionLabel setNumberOfLines:10];
     [(UILabel *)self->_descriptionLabel setTextAlignment:1];
     [(UILabel *)self->_descriptionLabel setLineBreakMode:0];
-    v7 = [(BKTOCBookmarksDescription *)self backgroundColor];
-    [(UILabel *)self->_descriptionLabel setBackgroundColor:v7];
+    backgroundColor = [(BKTOCBookmarksDescription *)self backgroundColor];
+    [(UILabel *)self->_descriptionLabel setBackgroundColor:backgroundColor];
 
     [(BKTOCBookmarksDescription *)self addSubview:self->_descriptionLabel];
     descriptionLabel = self->_descriptionLabel;

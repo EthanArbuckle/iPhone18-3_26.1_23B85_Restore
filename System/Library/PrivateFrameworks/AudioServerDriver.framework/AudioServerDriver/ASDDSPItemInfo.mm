@@ -1,20 +1,20 @@
 @interface ASDDSPItemInfo
-- (ASDDSPItemInfo)initWithDictionary:(id)a3 resourcePath:(id)a4;
+- (ASDDSPItemInfo)initWithDictionary:(id)dictionary resourcePath:(id)path;
 @end
 
 @implementation ASDDSPItemInfo
 
-- (ASDDSPItemInfo)initWithDictionary:(id)a3 resourcePath:(id)a4
+- (ASDDSPItemInfo)initWithDictionary:(id)dictionary resourcePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = ASDDSPItemInfo;
   v8 = [(ASDDSPItemInfo *)&v14 init];
   if (v8)
   {
     v9 = v8;
-    v10 = [v6 objectForKeyedSubscript:@"Type"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"Type"];
     if ([v10 isEqual:@"DSPGraph"])
     {
       v11 = off_278CE3748;
@@ -36,7 +36,7 @@
       v11 = off_278CE37A0;
     }
 
-    v12 = [objc_alloc(*v11) initWithDictionary:v6 resourcePath:v7];
+    v12 = [objc_alloc(*v11) initWithDictionary:dictionaryCopy resourcePath:pathCopy];
 LABEL_10:
 
     goto LABEL_11;

@@ -1,14 +1,14 @@
 @interface SBDisplayAssertionCoordinator
 - (SBDisplayAssertionCoordinator)init;
 - (SBDisplayAssertionCoordinatorDelegate)delegate;
-- (id)_createDisplayAssertionStackForRootDisplay:(id)a3;
-- (id)acquireAssertionForDisplay:(id)a3 level:(unint64_t)a4 deactivationReasons:(unint64_t)a5 delegate:(id)a6;
-- (void)activateAssertionsForDisplay:(id)a3;
-- (void)assertionStack:(id)a3 updatedAssertionPreferences:(id)a4 oldPreferences:(id)a5;
+- (id)_createDisplayAssertionStackForRootDisplay:(id)display;
+- (id)acquireAssertionForDisplay:(id)display level:(unint64_t)level deactivationReasons:(unint64_t)reasons delegate:(id)delegate;
+- (void)activateAssertionsForDisplay:(id)display;
+- (void)assertionStack:(id)stack updatedAssertionPreferences:(id)preferences oldPreferences:(id)oldPreferences;
 - (void)dealloc;
-- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)a3;
-- (void)rootDisplayDidConnect:(id)a3;
-- (void)rootDisplayDidDisconnect:(id)a3;
+- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)disconnect;
+- (void)rootDisplayDidConnect:(id)connect;
+- (void)rootDisplayDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBDisplayAssertionCoordinator
@@ -20,13 +20,13 @@
   v2 = [(SBDisplayAssertionCoordinator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     assertionStackMap = v2->_assertionStackMap;
-    v2->_assertionStackMap = v3;
+    v2->_assertionStackMap = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     assertionPreferencesMap = v2->_assertionPreferencesMap;
-    v2->_assertionPreferencesMap = v5;
+    v2->_assertionPreferencesMap = dictionary2;
   }
 
   return v2;
@@ -76,18 +76,18 @@
   [(SBDisplayAssertionCoordinator *)&v10 dealloc];
 }
 
-- (id)acquireAssertionForDisplay:(id)a3 level:(unint64_t)a4 deactivationReasons:(unint64_t)a5 delegate:(id)a6
+- (id)acquireAssertionForDisplay:(id)display level:(unint64_t)level deactivationReasons:(unint64_t)reasons delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a3;
-  if (([v11 isRootIdentity] & 1) == 0)
+  delegateCopy = delegate;
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayAssertionCoordinator acquireAssertionForDisplay:level:deactivationReasons:delegate:];
   }
 
-  if (SBDisplayAssertionLevelIsValid(a4))
+  if (SBDisplayAssertionLevelIsValid(level))
   {
-    if (v10)
+    if (delegateCopy)
     {
       goto LABEL_5;
     }
@@ -96,7 +96,7 @@
   else
   {
     [SBDisplayAssertionCoordinator acquireAssertionForDisplay:level:deactivationReasons:delegate:];
-    if (v10)
+    if (delegateCopy)
     {
       goto LABEL_5;
     }
@@ -104,17 +104,17 @@
 
   [SBDisplayAssertionCoordinator acquireAssertionForDisplay:level:deactivationReasons:delegate:];
 LABEL_5:
-  v12 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v11];
-  v13 = [v12 acquireAssertionForDisplay:v11 level:a4 deactivationReasons:a5 delegate:v10];
+  v12 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:displayCopy];
+  v13 = [v12 acquireAssertionForDisplay:displayCopy level:level deactivationReasons:reasons delegate:delegateCopy];
 
   return v13;
 }
 
-- (void)activateAssertionsForDisplay:(id)a3
+- (void)activateAssertionsForDisplay:(id)display
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayAssertionCoordinator activateAssertionsForDisplay:];
   }
@@ -126,28 +126,28 @@ LABEL_5:
     v8 = 138543618;
     v9 = v6;
     v10 = 2114;
-    v11 = v4;
+    v11 = displayCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ activating assertions for display %{public}@", &v8, 0x16u);
   }
 
-  v7 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v4];
-  [v7 activateAssertionsForDisplay:v4];
+  v7 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:displayCopy];
+  [v7 activateAssertionsForDisplay:displayCopy];
 }
 
-- (void)rootDisplayDidConnect:(id)a3
+- (void)rootDisplayDidConnect:(id)connect
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([v5 isRootIdentity] & 1) == 0)
+  connectCopy = connect;
+  if (([connectCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayAssertionCoordinator rootDisplayDidConnect:];
   }
 
-  v6 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:connectCopy];
 
   if (v6)
   {
-    [(SBDisplayAssertionCoordinator *)a2 rootDisplayDidConnect:v5];
+    [(SBDisplayAssertionCoordinator *)a2 rootDisplayDidConnect:connectCopy];
   }
 
   v7 = SBLogDisplayAssertions();
@@ -157,33 +157,33 @@ LABEL_5:
     v11 = 138543618;
     v12 = v8;
     v13 = 2114;
-    v14 = v5;
+    v14 = connectCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ told root display connected %{public}@", &v11, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v5];
+  v9 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:connectCopy];
 
   if (!v9)
   {
-    v10 = [(SBDisplayAssertionCoordinator *)self _createDisplayAssertionStackForRootDisplay:v5];
-    [(NSMutableDictionary *)self->_assertionStackMap setObject:v10 forKey:v5];
+    v10 = [(SBDisplayAssertionCoordinator *)self _createDisplayAssertionStackForRootDisplay:connectCopy];
+    [(NSMutableDictionary *)self->_assertionStackMap setObject:v10 forKey:connectCopy];
   }
 }
 
-- (void)rootDisplayDidDisconnect:(id)a3
+- (void)rootDisplayDidDisconnect:(id)disconnect
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([v5 isRootIdentity] & 1) == 0)
+  disconnectCopy = disconnect;
+  if (([disconnectCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayAssertionCoordinator rootDisplayDidDisconnect:];
   }
 
-  v6 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:disconnectCopy];
 
   if (!v6)
   {
-    [(SBDisplayAssertionCoordinator *)a2 rootDisplayDidDisconnect:v5];
+    [(SBDisplayAssertionCoordinator *)a2 rootDisplayDidDisconnect:disconnectCopy];
   }
 
   v7 = SBLogDisplayAssertions();
@@ -193,76 +193,76 @@ LABEL_5:
     v12 = 138543618;
     v13 = v8;
     v14 = 2114;
-    v15 = v5;
+    v15 = disconnectCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ told root display disconnected %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v5];
-  [(NSMutableDictionary *)self->_assertionStackMap removeObjectForKey:v5];
-  v10 = [(NSMutableDictionary *)self->_assertionPreferencesMap objectForKey:v5];
+  v9 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:disconnectCopy];
+  [(NSMutableDictionary *)self->_assertionStackMap removeObjectForKey:disconnectCopy];
+  v10 = [(NSMutableDictionary *)self->_assertionPreferencesMap objectForKey:disconnectCopy];
   if (v10)
   {
-    [(NSMutableDictionary *)self->_assertionPreferencesMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_assertionPreferencesMap removeObjectForKey:disconnectCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained assertionCoordinator:self updatedAssertionPreferences:0 oldPreferences:v10 forDisplay:v5];
+    [WeakRetained assertionCoordinator:self updatedAssertionPreferences:0 oldPreferences:v10 forDisplay:disconnectCopy];
   }
 
   [v9 invalidateForDisplayDisconnect];
 }
 
-- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)a3
+- (void)invalidateAssertionForDerivedDisplayDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  disconnectCopy = disconnect;
+  v8 = disconnectCopy;
+  if (!disconnectCopy)
   {
     [SBDisplayAssertionCoordinator invalidateAssertionForDerivedDisplayDisconnect:];
-    v4 = 0;
+    disconnectCopy = 0;
   }
 
   assertionStackMap = self->_assertionStackMap;
-  v6 = [v4 rootDisplayIdentity];
-  v7 = [(NSMutableDictionary *)assertionStackMap objectForKey:v6];
+  rootDisplayIdentity = [disconnectCopy rootDisplayIdentity];
+  v7 = [(NSMutableDictionary *)assertionStackMap objectForKey:rootDisplayIdentity];
 
   [v7 invalidateAssertionForDerivedDisplayDisconnect:v8];
 }
 
-- (void)assertionStack:(id)a3 updatedAssertionPreferences:(id)a4 oldPreferences:(id)a5
+- (void)assertionStack:(id)stack updatedAssertionPreferences:(id)preferences oldPreferences:(id)oldPreferences
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = [a3 displayIdentity];
+  preferencesCopy = preferences;
+  oldPreferencesCopy = oldPreferences;
+  displayIdentity = [stack displayIdentity];
   assertionPreferencesMap = self->_assertionPreferencesMap;
-  if (v12)
+  if (preferencesCopy)
   {
-    [(NSMutableDictionary *)assertionPreferencesMap setObject:v12 forKey:v9];
+    [(NSMutableDictionary *)assertionPreferencesMap setObject:preferencesCopy forKey:displayIdentity];
   }
 
   else
   {
-    [(NSMutableDictionary *)assertionPreferencesMap removeObjectForKey:v9];
+    [(NSMutableDictionary *)assertionPreferencesMap removeObjectForKey:displayIdentity];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained assertionCoordinator:self updatedAssertionPreferences:v12 oldPreferences:v8 forDisplay:v9];
+  [WeakRetained assertionCoordinator:self updatedAssertionPreferences:preferencesCopy oldPreferences:oldPreferencesCopy forDisplay:displayIdentity];
 }
 
-- (id)_createDisplayAssertionStackForRootDisplay:(id)a3
+- (id)_createDisplayAssertionStackForRootDisplay:(id)display
 {
-  v4 = a3;
-  if (([v4 isRootIdentity] & 1) == 0)
+  displayCopy = display;
+  if (([displayCopy isRootIdentity] & 1) == 0)
   {
     [SBDisplayAssertionCoordinator _createDisplayAssertionStackForRootDisplay:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_assertionStackMap objectForKey:displayCopy];
 
   if (v5)
   {
     [SBDisplayAssertionCoordinator _createDisplayAssertionStackForRootDisplay:];
   }
 
-  v6 = [[_SBDisplayAssertionStack alloc] initWithRootDisplay:v4 delegate:self];
+  v6 = [[_SBDisplayAssertionStack alloc] initWithRootDisplay:displayCopy delegate:self];
 
   return v6;
 }

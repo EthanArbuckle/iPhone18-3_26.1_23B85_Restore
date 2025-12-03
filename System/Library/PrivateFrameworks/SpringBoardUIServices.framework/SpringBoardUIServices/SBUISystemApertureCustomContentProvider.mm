@@ -1,14 +1,14 @@
 @interface SBUISystemApertureCustomContentProvider
 - (SBUISystemApertureContentViewContaining)contentContainer;
-- (SBUISystemApertureCustomContentProvider)initWithView:(id)a3;
+- (SBUISystemApertureCustomContentProvider)initWithView:(id)view;
 @end
 
 @implementation SBUISystemApertureCustomContentProvider
 
-- (SBUISystemApertureCustomContentProvider)initWithView:(id)a3
+- (SBUISystemApertureCustomContentProvider)initWithView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [(SBUISystemApertureCustomContentProvider *)a2 initWithView:?];
   }
@@ -19,7 +19,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_providedView, a3);
+    objc_storeStrong(&v7->_providedView, view);
   }
 
   return v8;

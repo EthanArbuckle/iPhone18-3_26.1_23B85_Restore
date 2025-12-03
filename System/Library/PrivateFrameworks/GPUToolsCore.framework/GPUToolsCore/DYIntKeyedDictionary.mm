@@ -1,23 +1,23 @@
 @interface DYIntKeyedDictionary
-- (DYIntKeyedDictionary)initWithCapacity:(unint64_t)a3;
-- (DYIntKeyedDictionary)initWithCoder:(id)a3;
-- (DYIntKeyedDictionary)initWithIntKeyedDictionary:(id)a3;
+- (DYIntKeyedDictionary)initWithCapacity:(unint64_t)capacity;
+- (DYIntKeyedDictionary)initWithCoder:(id)coder;
+- (DYIntKeyedDictionary)initWithIntKeyedDictionary:(id)dictionary;
 - (id)allKeys;
-- (id)objectForIntKey:(int64_t)a3;
-- (id)objectForKey:(id)a3;
+- (id)objectForIntKey:(int64_t)key;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObjectForIntKey:(int64_t)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forIntKey:(int64_t)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForIntKey:(int64_t)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forIntKey:(int64_t)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation DYIntKeyedDictionary
 
-- (DYIntKeyedDictionary)initWithCapacity:(unint64_t)a3
+- (DYIntKeyedDictionary)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = DYIntKeyedDictionary;
@@ -29,9 +29,9 @@
   return 0;
 }
 
-- (DYIntKeyedDictionary)initWithIntKeyedDictionary:(id)a3
+- (DYIntKeyedDictionary)initWithIntKeyedDictionary:(id)dictionary
 {
-  result = -[DYIntKeyedDictionary initWithCapacity:](self, "initWithCapacity:", [a3 count]);
+  result = -[DYIntKeyedDictionary initWithCapacity:](self, "initWithCapacity:", [dictionary count]);
   if (result)
   {
     v6[0] = MEMORY[0x277D85DD0];
@@ -40,23 +40,23 @@
     v6[3] = &unk_27930CA88;
     v6[4] = result;
     v5 = result;
-    [a3 enumerateKeysAndObjectsUsingBlock:v6];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v6];
     return v5;
   }
 
   return result;
 }
 
-- (DYIntKeyedDictionary)initWithCoder:(id)a3
+- (DYIntKeyedDictionary)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [DYIntKeyedDictionary initWithCoder:];
   }
 
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
-  v7 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"keys"}];
+  v7 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"keys"}];
   if (!v7)
   {
     [DYIntKeyedDictionary initWithCoder:];
@@ -70,7 +70,7 @@
     v11[1] = 3221225472;
     v11[2] = __38__DYIntKeyedDictionary_initWithCoder___block_invoke;
     v11[3] = &unk_27930CFC0;
-    v11[4] = a3;
+    v11[4] = coder;
     v11[5] = result;
     v10 = result;
     [v8 enumerateObjectsUsingBlock:v11];
@@ -95,19 +95,19 @@ uint64_t __38__DYIntKeyedDictionary_initWithCoder___block_invoke(uint64_t a1, vo
   return [v6 setObject:v5 forIntKey:v3];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [DYIntKeyedDictionary encodeWithCoder:];
   }
 
-  [a3 encodeObject:-[DYIntKeyedDictionary allKeys](self forKey:{"allKeys"), @"keys"}];
+  [coder encodeObject:-[DYIntKeyedDictionary allKeys](self forKey:{"allKeys"), @"keys"}];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__DYIntKeyedDictionary_encodeWithCoder___block_invoke;
   v5[3] = &unk_27930CA88;
-  v5[4] = a3;
+  v5[4] = coder;
   [(DYIntKeyedDictionary *)self enumerateKeysAndObjectsUsingBlock:v5];
 }
 
@@ -196,36 +196,36 @@ uint64_t __40__DYIntKeyedDictionary_encodeWithCoder___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)setObject:(id)a3 forIntKey:(int64_t)a4
+- (void)setObject:(id)object forIntKey:(int64_t)key
 {
-  if (a3)
+  if (object)
   {
     v6 = self->_private;
-    v10[0] = a4;
-    v10[1] = a3;
+    v10[0] = key;
+    v10[1] = object;
     v7 = std::__hash_table<std::__hash_value_type<long long,objc_object  {objcproto8NSObject}*>,std::__unordered_map_hasher<long long,objc_object  {objcproto8NSObject}*,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,objc_object  {objcproto8NSObject}*,std::equal_to,std::hash,true>,std::allocator<objc_object  {objcproto8NSObject}*>>::__emplace_unique_key_args<long long,std::pair<long long const,objc_object  {objcproto8NSObject}>>(v6, v10);
     if (v8)
     {
-      CFRetain(a3);
+      CFRetain(object);
     }
 
-    else if (v7[3] != a3)
+    else if (v7[3] != object)
     {
       v9 = v7;
       CFRelease(v7[3]);
-      CFRetain(a3);
-      v9[3] = a3;
+      CFRetain(object);
+      v9[3] = object;
     }
   }
 
   else
   {
 
-    [(DYIntKeyedDictionary *)self removeObjectForIntKey:a4];
+    [(DYIntKeyedDictionary *)self removeObjectForIntKey:key];
   }
 }
 
-- (id)objectForIntKey:(int64_t)a3
+- (id)objectForIntKey:(int64_t)key
 {
   v3 = self->_private;
   v4 = v3[1];
@@ -238,19 +238,19 @@ uint64_t __40__DYIntKeyedDictionary_encodeWithCoder___block_invoke(uint64_t a1, 
   v5.i16[0] = vaddlv_u8(v5);
   if (v5.u32[0] > 1uLL)
   {
-    v6 = a3;
-    if (v4 <= a3)
+    keyCopy = key;
+    if (v4 <= key)
     {
-      v6 = a3 % v4;
+      keyCopy = key % v4;
     }
   }
 
   else
   {
-    v6 = (v4 - 1) & a3;
+    keyCopy = (v4 - 1) & key;
   }
 
-  v7 = *(*v3 + 8 * v6);
+  v7 = *(*v3 + 8 * keyCopy);
   if (!v7)
   {
     return 0;
@@ -268,15 +268,15 @@ uint64_t __40__DYIntKeyedDictionary_encodeWithCoder___block_invoke(uint64_t a1, 
     while (1)
     {
       v10 = v8[1];
-      if (v10 == a3)
+      if (v10 == key)
       {
-        if (v8[2] == a3)
+        if (v8[2] == key)
         {
           return v8[3];
         }
       }
 
-      else if ((v10 & v9) != v6)
+      else if ((v10 & v9) != keyCopy)
       {
         return 0;
       }
@@ -292,7 +292,7 @@ uint64_t __40__DYIntKeyedDictionary_encodeWithCoder___block_invoke(uint64_t a1, 
   while (1)
   {
     v11 = v8[1];
-    if (v11 == a3)
+    if (v11 == key)
     {
       break;
     }
@@ -302,7 +302,7 @@ uint64_t __40__DYIntKeyedDictionary_encodeWithCoder___block_invoke(uint64_t a1, 
       v11 %= v4;
     }
 
-    if (v11 != v6)
+    if (v11 != keyCopy)
     {
       return 0;
     }
@@ -315,7 +315,7 @@ LABEL_16:
     }
   }
 
-  if (v8[2] != a3)
+  if (v8[2] != key)
   {
     goto LABEL_16;
   }
@@ -323,7 +323,7 @@ LABEL_16:
   return v8[3];
 }
 
-- (void)removeObjectForIntKey:(int64_t)a3
+- (void)removeObjectForIntKey:(int64_t)key
 {
   v3 = self->_private;
   v4 = v3[1];
@@ -333,19 +333,19 @@ LABEL_16:
     v5.i16[0] = vaddlv_u8(v5);
     if (v5.u32[0] > 1uLL)
     {
-      v6 = a3;
-      if (v4 <= a3)
+      keyCopy = key;
+      if (v4 <= key)
       {
-        v6 = a3 % v4;
+        keyCopy = key % v4;
       }
     }
 
     else
     {
-      v6 = (v4 - 1) & a3;
+      keyCopy = (v4 - 1) & key;
     }
 
-    v7 = *(*v3 + 8 * v6);
+    v7 = *(*v3 + 8 * keyCopy);
     if (v7)
     {
       v8 = *v7;
@@ -357,15 +357,15 @@ LABEL_16:
           while (1)
           {
             v10 = *(v8 + 8);
-            if (v10 == a3)
+            if (v10 == key)
             {
-              if (*(v8 + 16) == a3)
+              if (*(v8 + 16) == key)
               {
                 goto LABEL_22;
               }
             }
 
-            else if ((v10 & v9) != v6)
+            else if ((v10 & v9) != keyCopy)
             {
               return;
             }
@@ -381,9 +381,9 @@ LABEL_16:
         do
         {
           v11 = *(v8 + 8);
-          if (v11 == a3)
+          if (v11 == key)
           {
-            if (*(v8 + 16) == a3)
+            if (*(v8 + 16) == key)
             {
 LABEL_22:
               CFRelease(*(v8 + 24));
@@ -406,7 +406,7 @@ LABEL_22:
               v11 %= v4;
             }
 
-            if (v11 != v6)
+            if (v11 != keyCopy)
             {
               return;
             }
@@ -421,7 +421,7 @@ LABEL_22:
   }
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v4 = self->_private;
   v6 = 0;
@@ -434,31 +434,31 @@ LABEL_22:
       break;
     }
 
-    (*(a3 + 2))(a3, v5[2], v5[3], &v6);
+    (*(block + 2))(block, v5[2], v5[3], &v6);
   }
 
   while (v6 != 1);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = [a4 longLongValue];
+  longLongValue = [key longLongValue];
 
-  [(DYIntKeyedDictionary *)self setObject:a3 forIntKey:v6];
+  [(DYIntKeyedDictionary *)self setObject:object forIntKey:longLongValue];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [key longLongValue];
 
-  return [(DYIntKeyedDictionary *)self objectForIntKey:v4];
+  return [(DYIntKeyedDictionary *)self objectForIntKey:longLongValue];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [key longLongValue];
 
-  [(DYIntKeyedDictionary *)self removeObjectForIntKey:v4];
+  [(DYIntKeyedDictionary *)self removeObjectForIntKey:longLongValue];
 }
 
 - (id)allKeys

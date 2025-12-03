@@ -1,13 +1,13 @@
 @interface UIInterfaceActionConcreteVisualStyleFactory_CarPlay
-+ (id)styleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4;
++ (id)styleForTraitCollection:(id)collection presentationStyle:(int64_t)style;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyleFactory_CarPlay
 
-+ (id)styleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4
++ (id)styleForTraitCollection:(id)collection presentationStyle:(int64_t)style
 {
   v4 = off_1E70E9BB8;
-  if (a4)
+  if (style)
   {
     v4 = off_1E70E9BB0;
   }

@@ -1,38 +1,38 @@
 @interface IMMapURLHelpers
-+ (id)_processAppleMapsURLWithQueryItems:(id)a3;
-+ (id)_processGoogleMapsURLWithQueryItems:(id)a3;
-+ (id)coordinatesFromString:(id)a3;
-+ (id)coordinatesFromURL:(id)a3;
++ (id)_processAppleMapsURLWithQueryItems:(id)items;
++ (id)_processGoogleMapsURLWithQueryItems:(id)items;
++ (id)coordinatesFromString:(id)string;
++ (id)coordinatesFromURL:(id)l;
 @end
 
 @implementation IMMapURLHelpers
 
-+ (id)coordinatesFromString:(id)a3
++ (id)coordinatesFromString:(id)string
 {
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a3];
-  v5 = [a1 coordinatesFromURL:v4];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:string];
+  v5 = [self coordinatesFromURL:v4];
 
   return v5;
 }
 
-+ (id)coordinatesFromURL:(id)a3
++ (id)coordinatesFromURL:(id)l
 {
-  v4 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:1];
-  v5 = [v4 host];
-  if ([v5 isEqualToString:@"maps.apple.com"])
+  v4 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:1];
+  host = [v4 host];
+  if ([host isEqualToString:@"maps.apple.com"])
   {
-    v6 = [v4 queryItems];
-    v7 = [a1 _processAppleMapsURLWithQueryItems:v6];
+    queryItems = [v4 queryItems];
+    v7 = [self _processAppleMapsURLWithQueryItems:queryItems];
 LABEL_5:
     v8 = v7;
 
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"maps.google.com"])
+  if ([host isEqualToString:@"maps.google.com"])
   {
-    v6 = [v4 queryItems];
-    v7 = [a1 _processGoogleMapsURLWithQueryItems:v6];
+    queryItems = [v4 queryItems];
+    v7 = [self _processGoogleMapsURLWithQueryItems:queryItems];
     goto LABEL_5;
   }
 
@@ -42,14 +42,14 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_processAppleMapsURLWithQueryItems:(id)a3
++ (id)_processAppleMapsURLWithQueryItems:(id)items
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = items;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -65,34 +65,34 @@ LABEL_7:
         }
 
         v6 = *(*(&v17 + 1) + 8 * i);
-        v7 = [v6 name];
-        if ([v7 isEqualToString:@"center"])
+        name = [v6 name];
+        if ([name isEqualToString:@"center"])
         {
           goto LABEL_16;
         }
 
-        v8 = [v6 name];
-        if ([v8 isEqualToString:@"coordinate"])
+        name2 = [v6 name];
+        if ([name2 isEqualToString:@"coordinate"])
         {
           goto LABEL_15;
         }
 
-        v9 = [v6 name];
-        if ([v9 isEqualToString:@"sll"])
+        name3 = [v6 name];
+        if ([name3 isEqualToString:@"sll"])
         {
 
 LABEL_15:
 LABEL_16:
 
 LABEL_17:
-          v13 = [v6 value];
-          v12 = [v13 componentsSeparatedByString:{@", "}];
+          value = [v6 value];
+          v12 = [value componentsSeparatedByString:{@", "}];
 
           goto LABEL_18;
         }
 
-        v10 = [v6 name];
-        v11 = [v10 isEqualToString:@"ll"];
+        name4 = [v6 name];
+        v11 = [name4 isEqualToString:@"ll"];
 
         if (v11)
         {
@@ -121,15 +121,15 @@ LABEL_18:
   return v12;
 }
 
-+ (id)_processGoogleMapsURLWithQueryItems:(id)a3
++ (id)_processGoogleMapsURLWithQueryItems:(id)items
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -141,17 +141,17 @@ LABEL_18:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:@"q"];
+        name = [v9 name];
+        v11 = [name isEqualToString:@"q"];
 
         if (v11)
         {
-          v12 = [v9 value];
-          v13 = [v12 componentsSeparatedByString:@" "];
+          value = [v9 value];
+          v13 = [value componentsSeparatedByString:@" "];
 
           if ([v13 count])
           {
@@ -163,7 +163,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;

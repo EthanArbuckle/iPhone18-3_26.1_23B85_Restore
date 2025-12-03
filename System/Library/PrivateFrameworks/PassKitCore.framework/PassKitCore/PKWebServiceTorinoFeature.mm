@@ -1,16 +1,16 @@
 @interface PKWebServiceTorinoFeature
-- (PKWebServiceTorinoFeature)initWithDictionary:(id)a3 region:(id)a4;
+- (PKWebServiceTorinoFeature)initWithDictionary:(id)dictionary region:(id)region;
 @end
 
 @implementation PKWebServiceTorinoFeature
 
-- (PKWebServiceTorinoFeature)initWithDictionary:(id)a3 region:(id)a4
+- (PKWebServiceTorinoFeature)initWithDictionary:(id)dictionary region:(id)region
 {
-  v6 = a3;
-  v7 = [(PKWebServiceRegionFeature *)self initWithFeatureType:6 dictionary:v6 region:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(PKWebServiceRegionFeature *)self initWithFeatureType:6 dictionary:dictionaryCopy region:region];
   if (v7)
   {
-    v8 = [v6 PKArrayForKey:@"implicitFeatureSupportedNetworks"];
+    v8 = [dictionaryCopy PKArrayForKey:@"implicitFeatureSupportedNetworks"];
     implicitFeatureSupportedNetworks = v7->_implicitFeatureSupportedNetworks;
     v7->_implicitFeatureSupportedNetworks = v8;
   }

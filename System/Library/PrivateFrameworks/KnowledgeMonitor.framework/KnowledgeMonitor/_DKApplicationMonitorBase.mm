@@ -1,7 +1,7 @@
 @interface _DKApplicationMonitorBase
-- (BOOL)lookupApplication:(id)a3 shortVersionString:(id *)a4 exactBundleVersion:(id *)a5;
+- (BOOL)lookupApplication:(id)application shortVersionString:(id *)string exactBundleVersion:(id *)version;
 - (_DKApplicationMonitorBase)init;
-- (id)_eventWithTimestamp:(id)a3 bundleIdentifier:(id)a4 launchReason:(id)a5 shortVersionString:(id)a6 exactBundleVersion:(id)a7;
+- (id)_eventWithTimestamp:(id)timestamp bundleIdentifier:(id)identifier launchReason:(id)reason shortVersionString:(id)string exactBundleVersion:(id)version;
 - (void)dealloc;
 - (void)obtainCurrentValue;
 - (void)platformSpecificStart;
@@ -9,18 +9,18 @@
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
-- (void)updateBiomeAppInFocusWithStopEventAtTimestamp:(id)a3 reason:(id)a4;
-- (void)updateBiomeWithAppInFocusStartEvent:(id)a3;
-- (void)updateContextStoreWithFocalApplication:(id)a3 launchReason:(id)a4;
+- (void)updateBiomeAppInFocusWithStopEventAtTimestamp:(id)timestamp reason:(id)reason;
+- (void)updateBiomeWithAppInFocusStartEvent:(id)event;
+- (void)updateContextStoreWithFocalApplication:(id)application launchReason:(id)reason;
 @end
 
 @implementation _DKApplicationMonitorBase
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v3 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v3)
+  if (!currentEvent)
   {
 
     [(_DKApplicationMonitorBase *)self obtainCurrentValue];
@@ -36,9 +36,9 @@
   {
     v3 = BiomeLibrary();
     v4 = [v3 App];
-    v5 = [v4 InFocus];
-    v6 = [v5 source];
-    [(_DKApplicationMonitorBase *)v2 setAppInFocusSource:v6];
+    inFocus = [v4 InFocus];
+    source = [inFocus source];
+    [(_DKApplicationMonitorBase *)v2 setAppInFocusSource:source];
 
     [(_DKMonitor *)v2 setFilter:&__block_literal_global_11];
     [(_DKMonitor *)v2 setEventComparator:&__block_literal_global_10];
@@ -74,89 +74,89 @@
   }
 }
 
-- (id)_eventWithTimestamp:(id)a3 bundleIdentifier:(id)a4 launchReason:(id)a5 shortVersionString:(id)a6 exactBundleVersion:(id)a7
+- (id)_eventWithTimestamp:(id)timestamp bundleIdentifier:(id)identifier launchReason:(id)reason shortVersionString:(id)string exactBundleVersion:(id)version
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [MEMORY[0x277CFE1A8] withBundle:a4];
+  reasonCopy = reason;
+  stringCopy = string;
+  versionCopy = version;
+  v13 = [MEMORY[0x277CFE1A8] withBundle:identifier];
   v14 = objc_opt_new();
-  if ([v10 length])
+  if ([reasonCopy length])
   {
-    v15 = [MEMORY[0x277CFE178] launchReason];
-    [v14 setObject:v10 forKeyedSubscript:v15];
+    launchReason = [MEMORY[0x277CFE178] launchReason];
+    [v14 setObject:reasonCopy forKeyedSubscript:launchReason];
   }
 
-  if ([v11 length])
+  if ([stringCopy length])
   {
-    v16 = [MEMORY[0x277CFE178] shortVersionString];
-    [v14 setObject:v11 forKeyedSubscript:v16];
+    shortVersionString = [MEMORY[0x277CFE178] shortVersionString];
+    [v14 setObject:stringCopy forKeyedSubscript:shortVersionString];
   }
 
-  if ([v12 length])
+  if ([versionCopy length])
   {
-    v17 = [MEMORY[0x277CFE178] exactBundleVersion];
-    [v14 setObject:v12 forKeyedSubscript:v17];
+    exactBundleVersion = [MEMORY[0x277CFE178] exactBundleVersion];
+    [v14 setObject:versionCopy forKeyedSubscript:exactBundleVersion];
   }
 
   v18 = MEMORY[0x277CFE1D8];
-  v19 = [MEMORY[0x277CFE298] appInFocusStream];
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [MEMORY[0x277CBEAA8] distantFuture];
+  appInFocusStream = [MEMORY[0x277CFE298] appInFocusStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v22 = [v14 copy];
-  v23 = [v18 eventWithStream:v19 startDate:v20 endDate:v21 value:v13 metadata:v22];
+  v23 = [v18 eventWithStream:appInFocusStream startDate:date endDate:distantFuture value:v13 metadata:v22];
 
   return v23;
 }
 
-- (void)updateContextStoreWithFocalApplication:(id)a3 launchReason:(id)a4
+- (void)updateContextStoreWithFocalApplication:(id)application launchReason:(id)reason
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || [(__CFString *)v6 isEqualToString:@"com.apple.springboard.home-screen"])
+  applicationCopy = application;
+  reasonCopy = reason;
+  if (!applicationCopy || [(__CFString *)applicationCopy isEqualToString:@"com.apple.springboard.home-screen"])
   {
 
-    v6 = &stru_2838F0870;
+    applicationCopy = &stru_2838F0870;
   }
 
-  if (([(NSString *)self->_lastFocalApplicationForContext isEqual:v6]& 1) == 0)
+  if (([(NSString *)self->_lastFocalApplicationForContext isEqual:applicationCopy]& 1) == 0)
   {
-    v8 = [MEMORY[0x277CFE318] userContext];
-    v9 = [MEMORY[0x277CFE338] keyPathForForegroundApp];
-    [v8 setObject:v6 forKeyedSubscript:v9];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    keyPathForForegroundApp = [MEMORY[0x277CFE338] keyPathForForegroundApp];
+    [userContext setObject:applicationCopy forKeyedSubscript:keyPathForForegroundApp];
 
-    objc_storeStrong(&self->_lastFocalApplicationForContext, v6);
-    v10 = [MEMORY[0x277CFE338] appBundleIdKey];
-    v17[0] = v10;
-    v18[0] = v6;
-    v11 = [MEMORY[0x277CFE338] appLaunchReasonKey];
+    objc_storeStrong(&self->_lastFocalApplicationForContext, applicationCopy);
+    appBundleIdKey = [MEMORY[0x277CFE338] appBundleIdKey];
+    v17[0] = appBundleIdKey;
+    v18[0] = applicationCopy;
+    appLaunchReasonKey = [MEMORY[0x277CFE338] appLaunchReasonKey];
     v12 = &stru_2838F0870;
-    v17[1] = v11;
-    if (v7)
+    v17[1] = appLaunchReasonKey;
+    if (reasonCopy)
     {
-      v12 = v7;
+      v12 = reasonCopy;
     }
 
     v18[1] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-    v14 = [MEMORY[0x277CFE318] userContext];
-    v15 = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
-    [v14 setObject:v13 forKeyedSubscript:v15];
+    userContext2 = [MEMORY[0x277CFE318] userContext];
+    keyPathForAppDataDictionary = [MEMORY[0x277CFE338] keyPathForAppDataDictionary];
+    [userContext2 setObject:v13 forKeyedSubscript:keyPathForAppDataDictionary];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)lookupApplication:(id)a3 shortVersionString:(id *)a4 exactBundleVersion:(id *)a5
+- (BOOL)lookupApplication:(id)application shortVersionString:(id *)string exactBundleVersion:(id *)version
 {
-  v8 = a3;
-  if ([v8 length])
+  applicationCopy = application;
+  if ([applicationCopy length])
   {
-    if ([v8 hasPrefix:@"/"])
+    if ([applicationCopy hasPrefix:@"/"])
     {
-      v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+      v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:applicationCopy];
       v16 = 0;
       v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithURL:v9 allowPlaceholder:1 error:&v16];
       v11 = v16;
@@ -165,7 +165,7 @@
     else
     {
       v15 = 0;
-      v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v8 allowPlaceholder:1 error:&v15];
+      v10 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:applicationCopy allowPlaceholder:1 error:&v15];
       v11 = v15;
     }
 
@@ -175,20 +175,20 @@
       v13 = [(_DKMonitor *)self log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [_DKApplicationMonitorBase lookupApplication:v8 shortVersionString:v11 exactBundleVersion:v13];
+        [_DKApplicationMonitorBase lookupApplication:applicationCopy shortVersionString:v11 exactBundleVersion:v13];
       }
     }
 
     else
     {
-      if (a4)
+      if (string)
       {
-        *a4 = [v10 shortVersionString];
+        *string = [v10 shortVersionString];
       }
 
-      if (a5)
+      if (version)
       {
-        *a5 = [v10 exactBundleVersion];
+        *version = [v10 exactBundleVersion];
       }
     }
   }
@@ -201,35 +201,35 @@
   return v12;
 }
 
-- (void)updateBiomeWithAppInFocusStartEvent:(id)a3
+- (void)updateBiomeWithAppInFocusStartEvent:(id)event
 {
-  v4 = a3;
-  v7 = [v4 absoluteTimestamp];
+  eventCopy = event;
+  absoluteTimestamp = [eventCopy absoluteTimestamp];
   if (self->_currentAppInFocusEvent)
   {
-    [(_DKApplicationMonitorBase *)self updateBiomeAppInFocusWithStopEventAtTimestamp:v7 reason:0];
+    [(_DKApplicationMonitorBase *)self updateBiomeAppInFocusWithStopEventAtTimestamp:absoluteTimestamp reason:0];
   }
 
-  v5 = [(_DKApplicationMonitorBase *)self appInFocusSource];
-  [v7 timeIntervalSinceReferenceDate];
-  [v5 sendEvent:v4 timestamp:?];
+  appInFocusSource = [(_DKApplicationMonitorBase *)self appInFocusSource];
+  [absoluteTimestamp timeIntervalSinceReferenceDate];
+  [appInFocusSource sendEvent:eventCopy timestamp:?];
 
   currentAppInFocusEvent = self->_currentAppInFocusEvent;
-  self->_currentAppInFocusEvent = v4;
+  self->_currentAppInFocusEvent = eventCopy;
 }
 
-- (void)updateBiomeAppInFocusWithStopEventAtTimestamp:(id)a3 reason:(id)a4
+- (void)updateBiomeAppInFocusWithStopEventAtTimestamp:(id)timestamp reason:(id)reason
 {
-  v26 = a3;
-  v6 = a4;
+  timestampCopy = timestamp;
+  reasonCopy = reason;
   currentAppInFocusEvent = self->_currentAppInFocusEvent;
   if (currentAppInFocusEvent)
   {
     v8 = currentAppInFocusEvent;
     v21 = objc_alloc(MEMORY[0x277CF0FD8]);
-    if ([v6 length])
+    if ([reasonCopy length])
     {
-      v9 = v6;
+      v9 = reasonCopy;
     }
 
     else
@@ -238,14 +238,14 @@
     }
 
     v20 = v9;
-    v19 = [(BMAppInFocus *)v8 type];
-    v25 = [(BMAppInFocus *)v8 bundleID];
-    v24 = [(BMAppInFocus *)v8 parentBundleID];
-    v23 = [(BMAppInFocus *)v8 extensionHostID];
-    v22 = [(BMAppInFocus *)v8 shortVersionString];
-    v10 = [(BMAppInFocus *)v8 exactVersionString];
-    v11 = [(BMAppInFocus *)v8 hasDyldPlatform];
-    if (v11)
+    type = [(BMAppInFocus *)v8 type];
+    bundleID = [(BMAppInFocus *)v8 bundleID];
+    parentBundleID = [(BMAppInFocus *)v8 parentBundleID];
+    extensionHostID = [(BMAppInFocus *)v8 extensionHostID];
+    shortVersionString = [(BMAppInFocus *)v8 shortVersionString];
+    exactVersionString = [(BMAppInFocus *)v8 exactVersionString];
+    hasDyldPlatform = [(BMAppInFocus *)v8 hasDyldPlatform];
+    if (hasDyldPlatform)
     {
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[BMAppInFocus dyldPlatform](v8, "dyldPlatform")}];
     }
@@ -255,8 +255,8 @@
       v12 = 0;
     }
 
-    v13 = [(BMAppInFocus *)v8 hasIsNativeArchitecture];
-    if (v13)
+    hasIsNativeArchitecture = [(BMAppInFocus *)v8 hasIsNativeArchitecture];
+    if (hasIsNativeArchitecture)
     {
       v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[BMAppInFocus isNativeArchitecture](v8, "isNativeArchitecture")}];
     }
@@ -267,18 +267,18 @@
     }
 
     LODWORD(v18) = [(BMAppInFocus *)v8 displayType];
-    v15 = [v21 initWithLaunchReason:v20 type:v19 starting:MEMORY[0x277CBEC28] absoluteTimestamp:v26 bundleID:v25 parentBundleID:v24 extensionHostID:v23 shortVersionString:v22 exactVersionString:v10 dyldPlatform:v12 isNativeArchitecture:v14 displayType:v18];
-    if (v13)
+    v15 = [v21 initWithLaunchReason:v20 type:type starting:MEMORY[0x277CBEC28] absoluteTimestamp:timestampCopy bundleID:bundleID parentBundleID:parentBundleID extensionHostID:extensionHostID shortVersionString:shortVersionString exactVersionString:exactVersionString dyldPlatform:v12 isNativeArchitecture:v14 displayType:v18];
+    if (hasIsNativeArchitecture)
     {
     }
 
-    if (v11)
+    if (hasDyldPlatform)
     {
     }
 
-    v16 = [(_DKApplicationMonitorBase *)self appInFocusSource];
-    [v26 timeIntervalSinceReferenceDate];
-    [v16 sendEvent:v15 timestamp:?];
+    appInFocusSource = [(_DKApplicationMonitorBase *)self appInFocusSource];
+    [timestampCopy timeIntervalSinceReferenceDate];
+    [appInFocusSource sendEvent:v15 timestamp:?];
 
     v17 = self->_currentAppInFocusEvent;
     self->_currentAppInFocusEvent = 0;

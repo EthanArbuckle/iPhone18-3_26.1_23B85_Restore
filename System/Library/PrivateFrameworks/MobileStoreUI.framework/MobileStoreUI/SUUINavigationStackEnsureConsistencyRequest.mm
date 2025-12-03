@@ -1,28 +1,28 @@
 @interface SUUINavigationStackEnsureConsistencyRequest
-- (BOOL)isEqual:(id)a3;
-- (SUUINavigationStackEnsureConsistencyRequest)initWithNavigationControllerOperation:(int64_t)a3 operationDidComplete:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (SUUINavigationStackEnsureConsistencyRequest)initWithNavigationControllerOperation:(int64_t)operation operationDidComplete:(BOOL)complete;
 @end
 
 @implementation SUUINavigationStackEnsureConsistencyRequest
 
-- (SUUINavigationStackEnsureConsistencyRequest)initWithNavigationControllerOperation:(int64_t)a3 operationDidComplete:(BOOL)a4
+- (SUUINavigationStackEnsureConsistencyRequest)initWithNavigationControllerOperation:(int64_t)operation operationDidComplete:(BOOL)complete
 {
   v7.receiver = self;
   v7.super_class = SUUINavigationStackEnsureConsistencyRequest;
   result = [(SUUINavigationStackEnsureConsistencyRequest *)&v7 init];
   if (result)
   {
-    result->_navigationControllerOperation = a3;
-    result->_operationDidComplete = a4;
+    result->_navigationControllerOperation = operation;
+    result->_operationDidComplete = complete;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -30,7 +30,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_navigationControllerOperation == v4->_navigationControllerOperation && self->_operationDidComplete == v4->_operationDidComplete;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_navigationControllerOperation == equalCopy->_navigationControllerOperation && self->_operationDidComplete == equalCopy->_operationDidComplete;
   }
 
   return v5;

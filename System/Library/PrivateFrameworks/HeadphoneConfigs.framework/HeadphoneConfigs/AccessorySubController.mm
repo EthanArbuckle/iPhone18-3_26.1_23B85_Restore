@@ -2,7 +2,7 @@
 - (AccessorySubController)init;
 - (id)specifiers;
 - (void)dealloc;
-- (void)listItemSelected:(id)a3;
+- (void)listItemSelected:(id)selected;
 - (void)specifiers;
 @end
 
@@ -33,19 +33,19 @@
   v3 = MEMORY[0x277CBEB18];
   v39.receiver = self;
   v39.super_class = AccessorySubController;
-  v4 = [(PSListItemsController *)&v39 specifiers];
-  v5 = [v3 arrayWithArray:v4];
+  specifiers = [(PSListItemsController *)&v39 specifiers];
+  v5 = [v3 arrayWithArray:specifiers];
 
   v6 = *MEMORY[0x277D3FD20];
-  v7 = [*(&self->super.super.super.super.super.super.isa + v6) userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"bt-device"];
+  userInfo = [*(&self->super.super.super.super.super.super.isa + v6) userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"bt-device"];
   currentDevice = self->_currentDevice;
   self->_currentDevice = v8;
 
   v10 = self->_currentDevice;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
   }
 
   else
@@ -62,10 +62,10 @@
       [AccessorySubController specifiers];
     }
 
-    v11 = self->_currentDevice;
+    classicDevice = self->_currentDevice;
   }
 
-  v14 = v11;
+  v14 = classicDevice;
   v15 = MEMORY[0x277D3FAD8];
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:&stru_286339F58 value:&stru_286339F58 table:@"DeviceConfig"];
@@ -73,8 +73,8 @@
 
   v38 = 0;
   [(BluetoothDeviceProtocol *)v14 clickHoldMode:&v38 + 4 rightAction:&v38];
-  v19 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-  LODWORD(v17) = [v19 isEqualToString:@"LEFT_ID"];
+  identifier = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+  LODWORD(v17) = [identifier isEqualToString:@"LEFT_ID"];
 
   v20 = MEMORY[0x277D3FF88];
   if (v17)
@@ -99,8 +99,8 @@
 
   else
   {
-    v22 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-    v23 = [v22 isEqualToString:@"RIGHT_ID"];
+    identifier2 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+    v23 = [identifier2 isEqualToString:@"RIGHT_ID"];
 
     if (!v23)
     {
@@ -130,8 +130,8 @@
   [v18 setProperty:v25 forKey:*v20];
 
 LABEL_18:
-  v26 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-  v27 = [v26 isEqualToString:@"LEFT_ID"];
+  identifier3 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+  v27 = [identifier3 isEqualToString:@"LEFT_ID"];
 
   if (v27)
   {
@@ -155,8 +155,8 @@ LABEL_18:
 
   else
   {
-    v29 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
-    v30 = [v29 isEqualToString:@"RIGHT_ID"];
+    identifier4 = [*(&self->super.super.super.super.super.super.isa + v6) identifier];
+    v30 = [identifier4 isEqualToString:@"RIGHT_ID"];
 
     if (!v30)
     {
@@ -197,14 +197,14 @@ LABEL_29:
   return v36;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = a3;
-  if (![v4 section])
+  selectedCopy = selected;
+  if (![selectedCopy section])
   {
     v5.receiver = self;
     v5.super_class = AccessorySubController;
-    [(PSListItemsController *)&v5 listItemSelected:v4];
+    [(PSListItemsController *)&v5 listItemSelected:selectedCopy];
     [(AccessorySubController *)self reloadSpecifiers];
   }
 }
@@ -212,7 +212,7 @@ LABEL_29:
 - (void)specifiers
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v7 = 138412290;

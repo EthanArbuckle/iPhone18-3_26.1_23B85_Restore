@@ -3,22 +3,22 @@
 - (CGPoint)origin;
 - (NSISEngine)cacheEngine;
 - (UIView)delegate;
-- (_UIViewLayoutEngineRelativeAlignmentRectOriginCache)initWithDelegate:(id)a3;
+- (_UIViewLayoutEngineRelativeAlignmentRectOriginCache)initWithDelegate:(id)delegate;
 @end
 
 @implementation _UIViewLayoutEngineRelativeAlignmentRectOriginCache
 
 - (CGPoint)origin
 {
-  v3 = [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)self isValid];
+  isValid = [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)self isValid];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = WeakRetained;
-  if (v3)
+  _layoutEngine2 = WeakRetained;
+  if (isValid)
   {
-    v6 = [WeakRetained _canBecomeLayoutEngineDelegate];
+    _canBecomeLayoutEngineDelegate = [WeakRetained _canBecomeLayoutEngineDelegate];
     p_cachedOrigin = &self->_cachedOrigin;
     p_y = &self->_cachedOrigin.y;
-    if (v6)
+    if (_canBecomeLayoutEngineDelegate)
     {
       p_y = (MEMORY[0x1E695EFF8] + 8);
       p_cachedOrigin = MEMORY[0x1E695EFF8];
@@ -29,21 +29,21 @@
     goto LABEL_11;
   }
 
-  v11 = [WeakRetained _layoutEngine];
+  _layoutEngine = [WeakRetained _layoutEngine];
 
-  if (v11)
+  if (_layoutEngine)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v12 _layoutEngine];
+    _layoutEngine2 = [v12 _layoutEngine];
 
     v13 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v13 superview];
+    superview = [v13 superview];
 
-    v15 = [v14 _layoutEngine];
+    _layoutEngine3 = [superview _layoutEngine];
 
-    if (v15 == v5)
+    if (_layoutEngine3 == _layoutEngine2)
     {
-      v18 = [(UIView *)v14 _alignmentRectOriginCacheCreateIfNecessary:?];
+      v18 = [(UIView *)superview _alignmentRectOriginCacheCreateIfNecessary:?];
       [v18 origin];
       v16 = v19;
       v17 = v20;
@@ -56,19 +56,19 @@
     }
 
     v21 = objc_loadWeakRetained(&self->_delegate);
-    v22 = [v21 nsli_minXVariable];
-    [v5 valueForVariable:v22];
+    nsli_minXVariable = [v21 nsli_minXVariable];
+    [_layoutEngine2 valueForVariable:nsli_minXVariable];
     x = v16 + round(v23);
 
     v24 = objc_loadWeakRetained(&self->_delegate);
-    v25 = [v24 nsli_minYVariable];
-    [v5 valueForVariable:v25];
+    nsli_minYVariable = [v24 nsli_minYVariable];
+    [_layoutEngine2 valueForVariable:nsli_minYVariable];
     v10 = v17 + round(v26);
 
     self->_cachedOrigin.x = x;
     self->_cachedOrigin.y = v10;
-    [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)self setCacheEngine:v5];
-    self->_variableChangeCount = [v5 variableChangeCount];
+    [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)self setCacheEngine:_layoutEngine2];
+    self->_variableChangeCount = [_layoutEngine2 variableChangeCount];
 
 LABEL_11:
     goto LABEL_12;
@@ -87,7 +87,7 @@ LABEL_12:
 - (BOOL)isValid
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained _layoutEngine];
+  _layoutEngine = [WeakRetained _layoutEngine];
 
   v5 = objc_loadWeakRetained(&self->_delegate);
   if ([v5 _canBecomeLayoutEngineDelegate])
@@ -95,14 +95,14 @@ LABEL_12:
     v6 = 1;
   }
 
-  else if (v4)
+  else if (_layoutEngine)
   {
     v7 = objc_loadWeakRetained(&self->_cacheEngine);
-    if (v4 == v7)
+    if (_layoutEngine == v7)
     {
       v8 = objc_loadWeakRetained(&self->_cacheEngine);
-      v9 = [v8 variableChangeCount];
-      v6 = v9 == [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)self variableChangeCount];
+      variableChangeCount = [v8 variableChangeCount];
+      v6 = variableChangeCount == [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)self variableChangeCount];
     }
 
     else
@@ -119,16 +119,16 @@ LABEL_12:
   return v6;
 }
 
-- (_UIViewLayoutEngineRelativeAlignmentRectOriginCache)initWithDelegate:(id)a3
+- (_UIViewLayoutEngineRelativeAlignmentRectOriginCache)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UIViewLayoutEngineRelativeAlignmentRectOriginCache;
   v5 = [(_UIViewLayoutEngineRelativeAlignmentRectOriginCache *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

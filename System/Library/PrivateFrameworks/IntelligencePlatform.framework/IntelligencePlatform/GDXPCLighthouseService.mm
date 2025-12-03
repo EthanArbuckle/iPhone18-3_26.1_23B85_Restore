@@ -1,15 +1,15 @@
 @interface GDXPCLighthouseService
 - (GDXPCLighthouseService)init;
-- (id)collectDBStats:(id *)a3;
-- (id)collectDBStatus:(id *)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)collectDBStats:(id *)stats;
+- (id)collectDBStatus:(id *)status;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCLighthouseService
 
-- (id)collectDBStatus:(id *)a3
+- (id)collectDBStatus:(id *)status
 {
   v19 = 0;
   v20 = &v19;
@@ -45,9 +45,9 @@
   [v6 collectDBStatusWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (status && !v7)
   {
-    *a3 = v14[5];
+    *status = v14[5];
     v7 = v20[5];
   }
 
@@ -59,7 +59,7 @@
   return v8;
 }
 
-- (id)collectDBStats:(id *)a3
+- (id)collectDBStats:(id *)stats
 {
   v19 = 0;
   v20 = &v19;
@@ -95,9 +95,9 @@
   [v6 collectDBStatsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (stats && !v7)
   {
-    *a3 = v14[5];
+    *stats = v14[5];
     v7 = v20[5];
   }
 
@@ -109,14 +109,14 @@
   return v8;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCLighthouseService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCLighthouseService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

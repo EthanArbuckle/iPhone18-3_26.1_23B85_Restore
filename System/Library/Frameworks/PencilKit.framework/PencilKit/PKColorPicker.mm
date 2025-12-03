@@ -4,12 +4,12 @@
 - (PKColorPickerDelegate)delegate;
 - (UIColor)selectedColor;
 - (int64_t)colorUserInterfaceStyle;
-- (void)_colorPickerViewDidChangeSelectedColor:(id)a3;
-- (void)_colorPickerViewUserDidTouchUpInside:(id)a3;
-- (void)_setInitialColorForSpringLoading:(id)a3;
-- (void)_setSelectedColorForPoint:(CGPoint)a3;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
-- (void)setSelectedColor:(id)a3;
+- (void)_colorPickerViewDidChangeSelectedColor:(id)color;
+- (void)_colorPickerViewUserDidTouchUpInside:(id)inside;
+- (void)_setInitialColorForSpringLoading:(id)loading;
+- (void)_setSelectedColorForPoint:(CGPoint)point;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
+- (void)setSelectedColor:(id)color;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -35,9 +35,9 @@
   v5.receiver = self;
   v5.super_class = PKColorPicker;
   [(PKColorPicker *)&v5 viewDidLoad];
-  v3 = [(PKColorPicker *)self view];
-  v4 = [(PKColorPicker *)self colorPickerView];
-  [v3 addSubview:v4];
+  view = [(PKColorPicker *)self view];
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  [view addSubview:colorPickerView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -45,51 +45,51 @@
   v10.receiver = self;
   v10.super_class = PKColorPicker;
   [(PKColorPicker *)&v10 viewWillLayoutSubviews];
-  v3 = [(PKColorPicker *)self view];
-  v4 = [v3 safeAreaLayoutGuide];
-  [v4 layoutFrame];
+  view = [(PKColorPicker *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v12 = CGRectInset(v11, 5.0, 5.0);
   x = v12.origin.x;
   y = v12.origin.y;
   width = v12.size.width;
   height = v12.size.height;
-  v9 = [(PKColorPicker *)self colorPickerView];
-  [v9 setFrame:{x, y, width, height}];
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  [colorPickerView setFrame:{x, y, width, height}];
 }
 
 - (UIColor)selectedColor
 {
-  v2 = [(PKColorPicker *)self colorPickerView];
-  v3 = [v2 selectedColor];
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  selectedColor = [colorPickerView selectedColor];
 
-  return v3;
+  return selectedColor;
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PKColorPicker *)self colorPickerView];
-  [v5 setSelectedColor:v4];
+  colorCopy = color;
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  [colorPickerView setSelectedColor:colorCopy];
 }
 
 - (int64_t)colorUserInterfaceStyle
 {
-  v2 = [(_PKColorPickerView *)self->_colorPickerView gridColorPicker];
-  v3 = [v2 colorUserInterfaceStyle];
+  gridColorPicker = [(_PKColorPickerView *)self->_colorPickerView gridColorPicker];
+  colorUserInterfaceStyle = [gridColorPicker colorUserInterfaceStyle];
 
-  return v3;
+  return colorUserInterfaceStyle;
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
-  v4 = [(_PKColorPickerView *)self->_colorPickerView gridColorPicker];
-  [v4 setColorUserInterfaceStyle:a3];
+  gridColorPicker = [(_PKColorPickerView *)self->_colorPickerView gridColorPicker];
+  [gridColorPicker setColorUserInterfaceStyle:style];
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(PKColorPicker *)self colorPickerView];
-  [v2 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  [colorPickerView sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v4 = v3;
   v6 = v5;
 
@@ -100,46 +100,46 @@
   return result;
 }
 
-- (void)_setSelectedColorForPoint:(CGPoint)a3
+- (void)_setSelectedColorForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKColorPicker *)self view];
-  v7 = [(PKColorPicker *)self colorPickerView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(PKColorPicker *)self view];
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  [view convertPoint:colorPickerView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PKColorPicker *)self colorPickerView];
-  [v12 _setSelectedColorForPoint:{v9, v11}];
+  colorPickerView2 = [(PKColorPicker *)self colorPickerView];
+  [colorPickerView2 _setSelectedColorForPoint:{v9, v11}];
 }
 
-- (void)_setInitialColorForSpringLoading:(id)a3
+- (void)_setInitialColorForSpringLoading:(id)loading
 {
-  v4 = a3;
-  v5 = [(PKColorPicker *)self colorPickerView];
-  [v5 setInitialColor:v4];
+  loadingCopy = loading;
+  colorPickerView = [(PKColorPicker *)self colorPickerView];
+  [colorPickerView setInitialColor:loadingCopy];
 }
 
-- (void)_colorPickerViewDidChangeSelectedColor:(id)a3
+- (void)_colorPickerViewDidChangeSelectedColor:(id)color
 {
-  v4 = [(PKColorPicker *)self delegate];
-  [v4 colorPickerDidChangeSelectedColor:self];
+  delegate = [(PKColorPicker *)self delegate];
+  [delegate colorPickerDidChangeSelectedColor:self];
 }
 
-- (void)_colorPickerViewUserDidTouchUpInside:(id)a3
+- (void)_colorPickerViewUserDidTouchUpInside:(id)inside
 {
-  v4 = [(PKColorPicker *)self delegate];
-  if (v4)
+  delegate = [(PKColorPicker *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PKColorPicker *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PKColorPicker *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PKColorPicker *)self delegate];
-      [v8 _colorPickerUserDidTouchUpInside:self];
+      delegate3 = [(PKColorPicker *)self delegate];
+      [delegate3 _colorPickerUserDidTouchUpInside:self];
     }
   }
 }

@@ -1,56 +1,56 @@
 @interface TSCHLegendStyle
-+ (float)defaultFloatValueForProperty:(int)a3;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultValueForProperty:(int)a3;
++ (float)defaultFloatValueForProperty:(int)property;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultValueForProperty:(int)property;
 + (id)imageFillProperties;
 + (id)properties;
-+ (int)defaultIntValueForProperty:(int)a3;
-+ (int)muxDefaultPropertyForSpecificProperty:(int)a3;
-- (TSCHLegendStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)a3;
-- (void)saveToArchiver:(id)a3;
++ (int)defaultIntValueForProperty:(int)property;
++ (int)muxDefaultPropertyForSpecificProperty:(int)property;
+- (TSCHLegendStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)usage;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSCHLegendStyle
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(objc_opt_class());
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, v6, v7, v8, v3, 0, 0, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, v6, v7, v8, contextCopy, 0, 0, 0);
 
   return isVariation;
 }
 
-- (TSCHLegendStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6
+- (TSCHLegendStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation
 {
   v7.receiver = self;
   v7.super_class = TSCHLegendStyle;
-  return [(TSCHLegendStyle *)&v7 initWithContext:a3 name:a4 overridePropertyMap:a5 isVariation:a6];
+  return [(TSCHLegendStyle *)&v7 initWithContext:context name:name overridePropertyMap:map isVariation:variation];
 }
 
-- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)a3
+- (void)p_upgradeRemoveShadowEnabledPropertyUsage:(id)usage
 {
-  v12 = a3;
+  usageCopy = usage;
   v7 = objc_msgSend_propertySetWithProperties_(MEMORY[0x277D80AC0], v3, v4, v5, v6, 1582, 0);
-  objc_msgSend_upgradeShadowProperties_inMap_(TSCHStyleUtilities, v8, v9, v10, v11, v7, v12);
+  objc_msgSend_upgradeShadowProperties_inMap_(TSCHStyleUtilities, v8, v9, v10, v11, v7, usageCopy);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_messageType(v4, v5, v6, v7, v8) == 5013)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_messageType(unarchiverCopy, v5, v6, v7, v8) == 5013)
   {
-    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, v4);
+    objc_msgSend_loadFromPreUFFArchiveWithUnarchiver_(self, v9, v10, v11, v12, unarchiverCopy);
   }
 
   else
   {
-    v13 = v4;
+    v13 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v18 = objc_msgSend_messageWithDescriptor_(v13, v14, v15, v16, v17, off_2812ED2B8[12]);
 
@@ -147,11 +147,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, v6, v7, v8, sub_2762C723C, off_2812ED2B8[12]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, v6, v7, v8, sub_2762C723C, off_2812ED2B8[12]);
 
   *(v9 + 40) |= 1u;
   v10 = *(v9 + 48);
@@ -169,7 +169,7 @@
 
   v60.receiver = self;
   v60.super_class = TSCHLegendStyle;
-  [(TSCHLegendStyle *)&v60 saveToArchive:v10 archiver:v4];
+  [(TSCHLegendStyle *)&v60 saveToArchive:v10 archiver:archiverCopy];
   sub_27640E0BC();
   v12 = google::protobuf::internal::ExtensionSet::MutableMessage();
   v13 = *(&self->super.super.super.super.isa + *MEMORY[0x277D80AF0]);
@@ -190,7 +190,7 @@
       *(v12 + 24) = v27;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v23, v22, v24, v25, v26, v27, v4);
+    objc_msgSend_saveToArchive_archiver_(v23, v22, v24, v25, v26, v27, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v18, v19, v20, v21, 1580))
@@ -224,7 +224,7 @@
       *(v12 + 32) = v47;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v43, v42, v44, v45, v46, v47, v4);
+    objc_msgSend_saveToArchive_archiver_(v43, v42, v44, v45, v46, v47, archiverCopy);
   }
 
   if (objc_msgSend_containsProperty_(v13, v38, v39, v40, v41, 1583))
@@ -244,15 +244,15 @@
       *(v12 + 40) = v58;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v54, v53, v55, v56, v57, v58, v4);
+    objc_msgSend_saveToArchive_archiver_(v54, v53, v55, v56, v57, v58, archiverCopy);
   }
 }
 
-- (void)loadFromPreUFFArchiveWithUnarchiver:(id)a3
+- (void)loadFromPreUFFArchiveWithUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, off_2812EE5D0[16]);
+  v9 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, off_2812EE5D0[16]);
 
   if (*(v9 + 24))
   {
@@ -266,12 +266,12 @@
 
   v40.receiver = self;
   v40.super_class = TSCHLegendStyle;
-  [(TSCHLegendStyle *)&v40 loadFromArchive:v10 unarchiver:v4];
+  [(TSCHLegendStyle *)&v40 loadFromArchive:v10 unarchiver:unarchiverCopy];
   v12 = objc_alloc_init(MEMORY[0x277D80AB8]);
   v16 = *(v9 + 16);
   if ((v16 & 2) != 0)
   {
-    v18 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v11, v13, v14, v15, *(v9 + 32), v4);
+    v18 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v11, v13, v14, v15, *(v9 + 32), unarchiverCopy);
     if (v18)
     {
       objc_msgSend_setObject_forProperty_(v12, v17, v19, v20, v21, v18, 1579);
@@ -282,7 +282,7 @@
 
   if ((v16 & 4) != 0)
   {
-    v23 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, v13, v14, v15, *(v9 + 40), v4);
+    v23 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v11, v13, v14, v15, *(v9 + 40), unarchiverCopy);
     if (v23)
     {
       objc_msgSend_setObject_forProperty_(v12, v22, v24, v25, v26, v23, 1583);
@@ -293,7 +293,7 @@
 
   if ((v16 & 8) != 0)
   {
-    v28 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v11, v13, v14, v15, *(v9 + 48), v4);
+    v28 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803A8], v11, v13, v14, v15, *(v9 + 48), unarchiverCopy);
     if (v28)
     {
       objc_msgSend_setObject_forProperty_(v12, v27, v29, v30, v31, v28, 1582);
@@ -315,21 +315,21 @@
   }
 
   objc_storeStrong((&self->super.super.super.super.isa + *MEMORY[0x277D80AF0]), v12);
-  if (objc_msgSend_preUFFVersion(v4, v32, v33, v34, v35) <= 0x77411E587)
+  if (objc_msgSend_preUFFVersion(unarchiverCopy, v32, v33, v34, v35) <= 0x77411E587)
   {
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = sub_2762C6B58;
     v39[3] = &unk_27A6B6888;
     v39[4] = self;
-    objc_msgSend_addFinalizeHandler_(v4, v36, COERCE_DOUBLE(3221225472), v37, v38, v39);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v36, COERCE_DOUBLE(3221225472), v37, v38, v39);
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (!v9)
@@ -363,7 +363,7 @@
   v57 = v9;
   v66 = v57;
   v68 = &v69;
-  v58 = v7;
+  v58 = contextCopy;
   v67 = v58;
   objc_msgSend_enumeratePropertiesUsingBlock_(v28, v59, v60, v61, v62, v65);
   v63 = v70[3];
@@ -372,9 +372,9 @@
   return v63;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v12 = objc_msgSend_copy(self, v8, v9, v10, v11);
@@ -394,7 +394,7 @@
   v55[4] = self;
   v46 = v7;
   v56 = v46;
-  v58 = a3;
+  fractionCopy = fraction;
   v47 = v12;
   v57 = v47;
   objc_msgSend_enumeratePropertiesUsingBlock_(v17, v48, v49, v50, v51, v55);
@@ -428,9 +428,9 @@
   return v3;
 }
 
-+ (int)defaultIntValueForProperty:(int)a3
++ (int)defaultIntValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A47900 != -1)
   {
     sub_2764A805C();
@@ -450,15 +450,15 @@
 
   else
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___TSCHLegendStyle;
     return objc_msgSendSuper2(&v14, sel_defaultIntValueForProperty_, v6);
   }
 }
 
-+ (float)defaultFloatValueForProperty:(int)a3
++ (float)defaultFloatValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A47910 != -1)
   {
     sub_2764A8070();
@@ -476,7 +476,7 @@
     LODWORD(v3) = 1.0;
     if (v6 != 1581)
     {
-      v13.receiver = a1;
+      v13.receiver = self;
       v13.super_class = &OBJC_METACLASS___TSCHLegendStyle;
       objc_msgSendSuper2(&v13, sel_defaultFloatValueForProperty_, v6, v3);
     }
@@ -485,9 +485,9 @@
   return *&v3;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  v6 = *&a3;
+  v6 = *&property;
   if (qword_280A47920 != -1)
   {
     sub_2764A8084();
@@ -512,7 +512,7 @@
         v8 = objc_msgSend_nullShadow(TSCHStyleUtilities, a2, v3, v4, v5);
         break;
       default:
-        v10.receiver = a1;
+        v10.receiver = self;
         v10.super_class = &OBJC_METACLASS___TSCHLegendStyle;
         v8 = objc_msgSendSuper2(&v10, sel_defaultValueForProperty_, v6);
         break;
@@ -522,17 +522,17 @@
   return v8;
 }
 
-+ (int)muxDefaultPropertyForSpecificProperty:(int)a3
++ (int)muxDefaultPropertyForSpecificProperty:(int)property
 {
   if (qword_280A47930 != -1)
   {
     sub_2764A8098();
   }
 
-  result = objc_msgSend_containsKey_(qword_280A47928, a2, v3, v4, v5, a3);
+  result = objc_msgSend_containsKey_(qword_280A47928, a2, v3, v4, v5, property);
   if (result)
   {
-    return objc_msgSend_intForKey_(qword_280A47928, v8, v9, v10, v11, a3);
+    return objc_msgSend_intForKey_(qword_280A47928, v8, v9, v10, v11, property);
   }
 
   return result;

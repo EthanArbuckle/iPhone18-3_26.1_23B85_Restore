@@ -1,29 +1,29 @@
 @interface FCFeedTransformationFeedThrottle
-+ (id)transformationWithDailyLimit:(unint64_t)a3 timeInterval:(double)a4 condition:(id)a5;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithDailyLimit:(unint64_t)limit timeInterval:(double)interval condition:(id)condition;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationFeedThrottle
 
-+ (id)transformationWithDailyLimit:(unint64_t)a3 timeInterval:(double)a4 condition:(id)a5
++ (id)transformationWithDailyLimit:(unint64_t)limit timeInterval:(double)interval condition:(id)condition
 {
-  v7 = a5;
+  conditionCopy = condition;
   v8 = objc_opt_new();
-  [v8 setLimit:{fmax(ceil(a4 / 86400.0 * a3), 1.0)}];
+  [v8 setLimit:{fmax(ceil(interval / 86400.0 * limit), 1.0)}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__FCFeedTransformationFeedThrottle_transformationWithDailyLimit_timeInterval_condition___block_invoke;
   v11[3] = &unk_1E7C407B8;
-  v12 = v7;
-  v9 = v7;
+  v12 = conditionCopy;
+  v9 = conditionCopy;
   [v8 setCondition:v11];
 
   return v8;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
@@ -34,7 +34,7 @@
   v7[3] = &unk_1E7C43320;
   v7[4] = self;
   v7[5] = v8;
-  v5 = [v4 fc_arrayOfObjectsPassingTest:v7];
+  v5 = [itemsCopy fc_arrayOfObjectsPassingTest:v7];
   _Block_object_dispose(v8, 8);
 
   return v5;

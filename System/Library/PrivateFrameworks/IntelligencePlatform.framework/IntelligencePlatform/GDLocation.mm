@@ -1,5 +1,5 @@
 @interface GDLocation
-- (GDLocation)initWithTriplesIterator:(id)a3;
+- (GDLocation)initWithTriplesIterator:(id)iterator;
 - (id)description;
 @end
 
@@ -8,12 +8,12 @@
 - (id)description
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(GDLocation *)self entityIdentifier];
-  v6 = [(GDLocation *)self names];
-  if (v6)
+  entityIdentifier = [(GDLocation *)self entityIdentifier];
+  names = [(GDLocation *)self names];
+  if (names)
   {
-    v2 = [(GDLocation *)self names];
-    v7 = [v2 componentsJoinedByString:@"|"];
+    names2 = [(GDLocation *)self names];
+    v7 = [names2 componentsJoinedByString:@"|"];
   }
 
   else
@@ -21,40 +21,40 @@
     v7 = &stru_1F20A2CD8;
   }
 
-  v8 = [(GDLocation *)self addresses];
-  v9 = [v8 count];
-  v10 = [(GDLocation *)self addresses];
-  v11 = v10;
+  addresses = [(GDLocation *)self addresses];
+  v9 = [addresses count];
+  addresses2 = [(GDLocation *)self addresses];
+  v11 = addresses2;
   if (v9 == 1)
   {
-    v12 = [v10 firstObject];
+    firstObject = [addresses2 firstObject];
 LABEL_8:
-    v13 = v12;
-    v14 = [v4 stringWithFormat:@"<GDLocation id:%@ n:%@ a:%@>", v5, v7, v12];
+    v13 = firstObject;
+    v14 = [v4 stringWithFormat:@"<GDLocation id:%@ n:%@ a:%@>", entityIdentifier, v7, firstObject];
 
     goto LABEL_9;
   }
 
-  if ([v10 count])
+  if ([addresses2 count])
   {
-    v12 = [(GDLocation *)self addresses];
+    firstObject = [(GDLocation *)self addresses];
     goto LABEL_8;
   }
 
-  v14 = [v4 stringWithFormat:@"<GDLocation id:%@ n:%@ a:%@>", v5, v7, &stru_1F20A2CD8];
+  v14 = [v4 stringWithFormat:@"<GDLocation id:%@ n:%@ a:%@>", entityIdentifier, v7, &stru_1F20A2CD8];
 LABEL_9:
 
-  if (v6)
+  if (names)
   {
   }
 
   return v14;
 }
 
-- (GDLocation)initWithTriplesIterator:(id)a3
+- (GDLocation)initWithTriplesIterator:(id)iterator
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v37.receiver = self;
   v37.super_class = GDLocation;
   v5 = [(GDLocation *)&v37 init];
@@ -66,8 +66,8 @@ LABEL_9:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v30 = v4;
-    v6 = v4;
+    v30 = iteratorCopy;
+    v6 = iteratorCopy;
     v7 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v7)
     {
@@ -87,42 +87,42 @@ LABEL_9:
           if (!v5->_entityIdentifier)
           {
             v12 = [GDEntityIdentifier alloc];
-            v13 = [v11 subject];
-            v14 = [(GDEntityIdentifier *)v12 initWithString:v13];
+            subject = [v11 subject];
+            v14 = [(GDEntityIdentifier *)v12 initWithString:subject];
             entityIdentifier = v5->_entityIdentifier;
             v5->_entityIdentifier = v14;
           }
 
-          v16 = [v11 predicate];
-          if ([v16 isEqual:@"PS33"])
+          predicate = [v11 predicate];
+          if ([predicate isEqual:@"PS33"])
           {
-            v17 = [v11 object];
+            object = [v11 object];
             v18 = v32;
             goto LABEL_11;
           }
 
-          if ([v16 isEqual:@"PS317"])
+          if ([predicate isEqual:@"PS317"])
           {
-            v17 = [v11 relationshipPredicate];
-            if (![(GDLocationAddress *)v17 isEqual:@"PS1"])
+            object = [v11 relationshipPredicate];
+            if (![(GDLocationAddress *)object isEqual:@"PS1"])
             {
               goto LABEL_12;
             }
 
-            v19 = [v11 object];
-            v20 = [v19 isEqual:@"CS97"];
+            object2 = [v11 object];
+            v20 = [object2 isEqual:@"CS97"];
 
             if (v20)
             {
               v21 = [GDLocationAddress alloc];
-              v22 = [v6 relationshipIdIterator];
-              v17 = [(GDLocationAddress *)v21 initWithRelationshipIdTriplesIterator:v22];
+              relationshipIdIterator = [v6 relationshipIdIterator];
+              object = [(GDLocationAddress *)v21 initWithRelationshipIdTriplesIterator:relationshipIdIterator];
 
-              if (v17)
+              if (object)
               {
                 v18 = v31;
 LABEL_11:
-                [v18 addObject:v17];
+                [v18 addObject:object];
               }
 
 LABEL_12:
@@ -143,7 +143,7 @@ LABEL_12:
     {
 
       v27 = 0;
-      v4 = v30;
+      iteratorCopy = v30;
       goto LABEL_26;
     }
 
@@ -155,7 +155,7 @@ LABEL_12:
     addresses = v5->_addresses;
     v5->_addresses = v25;
 
-    v4 = v30;
+    iteratorCopy = v30;
   }
 
   v27 = v5;

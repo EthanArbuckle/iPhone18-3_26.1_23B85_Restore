@@ -1,22 +1,22 @@
 @interface IDSServerAuthenticatePhoneResponse
-- (IDSServerAuthenticatePhoneResponse)initWithStatus:(int64_t)a3 user:(id)a4 authenticationCertificate:(id)a5;
+- (IDSServerAuthenticatePhoneResponse)initWithStatus:(int64_t)status user:(id)user authenticationCertificate:(id)certificate;
 @end
 
 @implementation IDSServerAuthenticatePhoneResponse
 
-- (IDSServerAuthenticatePhoneResponse)initWithStatus:(int64_t)a3 user:(id)a4 authenticationCertificate:(id)a5
+- (IDSServerAuthenticatePhoneResponse)initWithStatus:(int64_t)status user:(id)user authenticationCertificate:(id)certificate
 {
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  certificateCopy = certificate;
   v14.receiver = self;
   v14.super_class = IDSServerAuthenticatePhoneResponse;
   v11 = [(IDSServerAuthenticatePhoneResponse *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_status = a3;
-    objc_storeStrong(&v11->_user, a4);
-    objc_storeStrong(&v12->_authenticationCertificate, a5);
+    v11->_status = status;
+    objc_storeStrong(&v11->_user, user);
+    objc_storeStrong(&v12->_authenticationCertificate, certificate);
   }
 
   return v12;

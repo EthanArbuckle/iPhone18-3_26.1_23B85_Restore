@@ -1,22 +1,22 @@
 @interface PDCRemoteAssetOriginalPreviewController
-- (id)imageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5;
+- (id)imageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode;
 @end
 
 @implementation PDCRemoteAssetOriginalPreviewController
 
-- (id)imageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5
+- (id)imageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = sub_100001D30;
   v35 = sub_100001D40;
   v36 = 0;
-  v9 = [v8 mediaType];
-  if (v9 == 1)
+  mediaType = [assetCopy mediaType];
+  if (mediaType == 1)
   {
     v15 = objc_alloc_init(PHImageRequestOptions);
     [v15 setVersion:1];
@@ -30,18 +30,18 @@
     v27 = &v31;
     v10 = v15;
     v25 = v10;
-    v26 = v8;
+    v26 = assetCopy;
     v28 = width;
     v29 = height;
-    v30 = a5;
-    [v16 requestImageForAsset:v26 targetSize:a5 contentMode:v10 options:v24 resultHandler:{width, height}];
+    modeCopy = mode;
+    [v16 requestImageForAsset:v26 targetSize:mode contentMode:v10 options:v24 resultHandler:{width, height}];
 
     v13 = v25;
   }
 
   else
   {
-    if (v9 != 2)
+    if (mediaType != 2)
     {
       goto LABEL_6;
     }
@@ -59,7 +59,7 @@
     v23 = height;
     v13 = v11;
     v20 = v13;
-    [v12 requestAVAssetForVideo:v8 options:v10 resultHandler:v19];
+    [v12 requestAVAssetForVideo:assetCopy options:v10 resultHandler:v19];
 
     v14 = dispatch_time(0, 10000000000);
     dispatch_semaphore_wait(v13, v14);

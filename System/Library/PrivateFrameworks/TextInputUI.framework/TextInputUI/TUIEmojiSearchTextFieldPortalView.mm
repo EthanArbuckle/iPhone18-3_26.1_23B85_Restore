@@ -18,17 +18,17 @@
   v6.receiver = self;
   v6.super_class = TUIEmojiSearchTextFieldPortalView;
   [(TUIEmojiSearchTextFieldPortalView *)&v6 didMoveToWindow];
-  v3 = [(TUIEmojiSearchTextFieldPortalView *)self window];
+  window = [(TUIEmojiSearchTextFieldPortalView *)self window];
 
   WeakRetained = objc_loadWeakRetained(&self->_hitTestView);
-  v5 = WeakRetained;
-  if (v3)
+  sourceView = WeakRetained;
+  if (window)
   {
     [WeakRetained setHidden:0];
 
-    v5 = [(_UIPortalView *)self sourceView];
+    sourceView = [(_UIPortalView *)self sourceView];
     [(_UIPortalView *)self setSourceView:0];
-    [(_UIPortalView *)self setSourceView:v5];
+    [(_UIPortalView *)self setSourceView:sourceView];
   }
 
   else

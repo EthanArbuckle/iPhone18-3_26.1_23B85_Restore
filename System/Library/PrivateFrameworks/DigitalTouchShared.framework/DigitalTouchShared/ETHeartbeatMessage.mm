@@ -1,26 +1,26 @@
 @interface ETHeartbeatMessage
 - (CGPoint)normalizedCenter;
-- (ETHeartbeatMessage)initWithArchiveData:(id)a3;
+- (ETHeartbeatMessage)initWithArchiveData:(id)data;
 - (id)archiveData;
 - (id)description;
-- (void)_displayInScene:(id)a3 useDuration:(BOOL)a4 fastStart:(BOOL)a5;
+- (void)_displayInScene:(id)scene useDuration:(BOOL)duration fastStart:(BOOL)start;
 - (void)breakHeart;
-- (void)displayInScene:(id)a3;
-- (void)moveHeartNodeByX:(double)a3 y:(double)a4 duration:(double)a5;
-- (void)playBeatWithDuration:(double)a3;
-- (void)setMute:(BOOL)a3;
-- (void)startHeartbeat:(id)a3 fastStart:(BOOL)a4;
+- (void)displayInScene:(id)scene;
+- (void)moveHeartNodeByX:(double)x y:(double)y duration:(double)duration;
+- (void)playBeatWithDuration:(double)duration;
+- (void)setMute:(BOOL)mute;
+- (void)startHeartbeat:(id)heartbeat fastStart:(BOOL)start;
 - (void)stopPlaying;
 @end
 
 @implementation ETHeartbeatMessage
 
-- (ETHeartbeatMessage)initWithArchiveData:(id)a3
+- (ETHeartbeatMessage)initWithArchiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = ETHeartbeatMessage;
-  v5 = [(ETMessage *)&v14 initWithArchiveData:v4];
+  v5 = [(ETMessage *)&v14 initWithArchiveData:dataCopy];
   if (!v5)
   {
 LABEL_11:
@@ -28,7 +28,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [[ETPHeartbeat alloc] initWithData:v4];
+  v6 = [[ETPHeartbeat alloc] initWithData:dataCopy];
   v7 = v6;
   if (v6)
   {
@@ -82,26 +82,26 @@ LABEL_12:
   heartbreakTime = self->_heartbreakTime;
   *&heartbreakTime = heartbreakTime;
   [(ETPHeartbeat *)v3 setHeartbreakTime:heartbreakTime];
-  v9 = [(ETPHeartbeat *)v3 data];
+  data = [(ETPHeartbeat *)v3 data];
 
-  return v9;
+  return data;
 }
 
-- (void)displayInScene:(id)a3
+- (void)displayInScene:(id)scene
 {
-  v4 = a3;
-  v5 = objc_initWeak(&location, v4);
-  [(ETHeartbeatMessage *)self _displayInScene:v4 useDuration:1];
+  sceneCopy = scene;
+  v5 = objc_initWeak(&location, sceneCopy);
+  [(ETHeartbeatMessage *)self _displayInScene:sceneCopy useDuration:1];
 
   objc_destroyWeak(&location);
 }
 
-- (void)_displayInScene:(id)a3 useDuration:(BOOL)a4 fastStart:(BOOL)a5
+- (void)_displayInScene:(id)scene useDuration:(BOOL)duration fastStart:(BOOL)start
 {
-  v5 = a5;
-  v6 = a4;
+  startCopy = start;
+  durationCopy = duration;
   v147[5] = *MEMORY[0x277D85DE8];
-  v122 = a3;
+  sceneCopy = scene;
   [(ETHeartbeatMessage *)self beatsPerMinute];
   v9 = v8;
   v10 = 60.0 / v8;
@@ -111,15 +111,15 @@ LABEL_12:
   v13 = fmaxf(*&v10, 0.01);
   self->_hapticLoopPeriod = v12 + v13;
   self->_broken = 0;
-  v14 = [getSKNodeClass() node];
+  node = [getSKNodeClass() node];
   heartNode = self->_heartNode;
-  self->_heartNode = v14;
+  self->_heartNode = node;
 
   v16 = self->_heartNode;
-  [(ETMessage *)self scenePointFromNormalizedPoint:v122 inScene:self->_normalizedCenter.x, self->_normalizedCenter.y];
+  [(ETMessage *)self scenePointFromNormalizedPoint:sceneCopy inScene:self->_normalizedCenter.x, self->_normalizedCenter.y];
   [(SKNode *)v16 setPosition:?];
   [(SKNode *)self->_heartNode setZRotation:self->_rotation];
-  [v122 size];
+  [sceneCopy size];
   v18 = fmax(v17 / 156.0, 1.0);
   [(ETHeartbeatMessage *)self scale];
   v19 = 0.5;
@@ -207,9 +207,9 @@ LABEL_12:
   [(SKSpriteNode *)self->_heartLines setColorBlendFactor:1.0];
   [(SKSpriteNode *)self->_heartLines setBlendMode:5];
   [(SKSpriteNode *)self->_heartLines setScale:0.8];
-  v45 = [getSKNodeClass() node];
+  node2 = [getSKNodeClass() node];
   heartScale = self->_heartScale;
-  self->_heartScale = v45;
+  self->_heartScale = node2;
 
   v47 = [getSKTextureClass() textureWithImageNamed:@"HeartbreakAtlas"];
   heartbreakAtlas = self->_heartbreakAtlas;
@@ -248,12 +248,12 @@ LABEL_12:
   [(SKNode *)self->_heartScale addChild:self->_heartLines];
   [(SKNode *)self->_heartScale addChild:self->_heart];
   [(SKNode *)self->_heartNode addChild:self->_heartScale];
-  [v122 addChild:self->_heartNode];
+  [sceneCopy addChild:self->_heartNode];
   [(SKNode *)self->_heartNode setAlpha:0.0];
   [(SKSpriteNode *)self->_heartLines setAlpha:0.0];
   v60 = self->_heartNode;
   SKActionClass_0 = getSKActionClass_0();
-  if (v5)
+  if (startCopy)
   {
     v62 = 0.0;
   }
@@ -270,7 +270,7 @@ LABEL_12:
   v65 = getSKActionClass_0();
   v66 = getSKActionClass_0();
   v67 = 0.0;
-  if (!v5)
+  if (!startCopy)
   {
     v67 = 0.3;
   }
@@ -283,7 +283,7 @@ LABEL_12:
   v71 = [v65 sequence:v70];
   [(SKSpriteNode *)v64 runAction:v71 withKey:@"fade"];
 
-  if (v6 && ![(ETMessage *)self isRenderingOffscreen])
+  if (durationCopy && ![(ETMessage *)self isRenderingOffscreen])
   {
     if (IMOSLoggingEnabled())
     {
@@ -442,19 +442,19 @@ uint64_t __60__ETHeartbeatMessage__displayInScene_useDuration_fastStart___block_
   return [v1 setFloatValue:v2];
 }
 
-- (void)moveHeartNodeByX:(double)a3 y:(double)a4 duration:(double)a5
+- (void)moveHeartNodeByX:(double)x y:(double)y duration:(double)duration
 {
   heartNode = self->_heartNode;
-  v6 = [getSKActionClass_0() moveByX:a3 y:a4 duration:a5];
+  v6 = [getSKActionClass_0() moveByX:x y:y duration:duration];
   [(SKNode *)heartNode runAction:v6];
 }
 
-- (void)playBeatWithDuration:(double)a3
+- (void)playBeatWithDuration:(double)duration
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v5 = [getSKActionClass_0() scaleTo:1.65 duration:a3 * 0.25];
-  v6 = [getSKActionClass_0() scaleTo:1.0 duration:a3 * 0.600000024];
-  v7 = [getSKActionClass_0() waitForDuration:a3 * 0.150000006];
+  v5 = [getSKActionClass_0() scaleTo:1.65 duration:duration * 0.25];
+  v6 = [getSKActionClass_0() scaleTo:1.0 duration:duration * 0.600000024];
+  v7 = [getSKActionClass_0() waitForDuration:duration * 0.150000006];
   [v5 setTimingMode:3];
   [v6 setTimingMode:3];
   SKActionClass_0 = getSKActionClass_0();
@@ -471,9 +471,9 @@ uint64_t __60__ETHeartbeatMessage__displayInScene_useDuration_fastStart___block_
   v20[2] = __43__ETHeartbeatMessage_playBeatWithDuration___block_invoke;
   v20[3] = &unk_278F7A4E0;
   v21 = 1048576000;
-  *&v20[5] = a3;
+  *&v20[5] = duration;
   v20[4] = self;
-  v12 = [v11 customActionWithDuration:v20 actionBlock:a3 * 0.25];
+  v12 = [v11 customActionWithDuration:v20 actionBlock:duration * 0.25];
 
   v13 = getSKActionClass_0();
   v18[0] = MEMORY[0x277D85DD0];
@@ -481,9 +481,9 @@ uint64_t __60__ETHeartbeatMessage__displayInScene_useDuration_fastStart___block_
   v18[2] = __43__ETHeartbeatMessage_playBeatWithDuration___block_invoke_2;
   v18[3] = &unk_278F7A4E0;
   v19 = 1058642330;
-  *&v18[5] = a3;
+  *&v18[5] = duration;
   v18[4] = self;
-  v14 = [v13 customActionWithDuration:v18 actionBlock:a3 * 0.600000024];
+  v14 = [v13 customActionWithDuration:v18 actionBlock:duration * 0.600000024];
 
   [v12 setTimingMode:2];
   [v14 setTimingMode:1];
@@ -511,12 +511,12 @@ uint64_t __43__ETHeartbeatMessage_playBeatWithDuration___block_invoke_2(uint64_t
   return [*(*(a1 + 32) + 176) setFloatValue:v2];
 }
 
-- (void)startHeartbeat:(id)a3 fastStart:(BOOL)a4
+- (void)startHeartbeat:(id)heartbeat fastStart:(BOOL)start
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = objc_initWeak(&location, v6);
-  [(ETHeartbeatMessage *)self _displayInScene:v6 useDuration:0 fastStart:v4];
+  startCopy = start;
+  heartbeatCopy = heartbeat;
+  v7 = objc_initWeak(&location, heartbeatCopy);
+  [(ETHeartbeatMessage *)self _displayInScene:heartbeatCopy useDuration:0 fastStart:startCopy];
 
   objc_destroyWeak(&location);
 }
@@ -529,36 +529,36 @@ uint64_t __43__ETHeartbeatMessage_playBeatWithDuration___block_invoke_2(uint64_t
   [(SKSpriteNode *)heartLines runAction:v4 withKey:@"fade"];
 
   [(ETHeartbeatMessage *)self _stopAudioPlayback];
-  v5 = [(ETMessage *)self delegate];
-  [v5 messageWillStopPlaying:self];
+  delegate = [(ETMessage *)self delegate];
+  [delegate messageWillStopPlaying:self];
   [(SKNode *)self->_heartNode removeAllActions];
   heartNode = self->_heartNode;
   SKActionClass_0 = getSKActionClass_0();
   v8 = [getSKActionClass_0() fadeOutWithDuration:0.600000024];
   v17[0] = v8;
-  v9 = [getSKActionClass_0() removeFromParent];
-  v17[1] = v9;
+  removeFromParent = [getSKActionClass_0() removeFromParent];
+  v17[1] = removeFromParent;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   v11 = [SKActionClass_0 sequence:v10];
   [(SKNode *)heartNode runAction:v11 withKey:@"fade"];
 
-  v12 = [(SKNode *)self->_heartNode parent];
+  parent = [(SKNode *)self->_heartNode parent];
 
-  if (v12)
+  if (parent)
   {
     v13 = dispatch_time(0, 600000000);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__ETHeartbeatMessage_stopPlaying__block_invoke;
     block[3] = &unk_278F79FB0;
-    v15 = v5;
-    v16 = self;
+    v15 = delegate;
+    selfCopy = self;
     dispatch_after(v13, MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    [v5 messageDidStopPlaying:self];
+    [delegate messageDidStopPlaying:self];
   }
 }
 
@@ -653,13 +653,13 @@ void __32__ETHeartbeatMessage_breakHeart__block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (void)setMute:(BOOL)a3
+- (void)setMute:(BOOL)mute
 {
-  v3 = a3;
+  muteCopy = mute;
   v5.receiver = self;
   v5.super_class = ETHeartbeatMessage;
   [(ETMessage *)&v5 setMute:?];
-  if (v3)
+  if (muteCopy)
   {
     [(ETHeartbeatMessage *)self _stopAudioPlayback];
   }

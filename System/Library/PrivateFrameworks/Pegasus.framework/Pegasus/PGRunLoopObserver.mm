@@ -1,6 +1,6 @@
 @interface PGRunLoopObserver
 - (void)dealloc;
-- (void)setActions:(id)a3;
+- (void)setActions:(id)actions;
 @end
 
 @implementation PGRunLoopObserver
@@ -13,9 +13,9 @@
   [(PGRunLoopObserver *)&v3 dealloc];
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = MEMORY[0x1BFB0C680]();
   actions = self->_actions;
   self->_actions = v5;

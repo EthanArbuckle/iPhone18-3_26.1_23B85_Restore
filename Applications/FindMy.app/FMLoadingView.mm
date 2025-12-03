@@ -1,7 +1,7 @@
 @interface FMLoadingView
 - (_TtC6FindMy13FMLoadingView)init;
-- (_TtC6FindMy13FMLoadingView)initWithCoder:(id)a3;
-- (_TtC6FindMy13FMLoadingView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy13FMLoadingView)initWithCoder:(id)coder;
+- (_TtC6FindMy13FMLoadingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMLoadingView
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (_TtC6FindMy13FMLoadingView)initWithCoder:(id)a3
+- (_TtC6FindMy13FMLoadingView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy13FMLoadingView_title;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UILabel) init];
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (_TtC6FindMy13FMLoadingView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy13FMLoadingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

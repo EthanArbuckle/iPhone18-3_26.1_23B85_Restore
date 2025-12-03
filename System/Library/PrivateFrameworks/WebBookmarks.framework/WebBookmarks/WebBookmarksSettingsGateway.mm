@@ -2,29 +2,29 @@
 - (WBSCreditCardImporterDelegate)creditCardImporterDelegate;
 - (WBSExtensionsImporterDelegate)extensionsImporterDelegate;
 - (WebBookmarksSettingsGateway)init;
-- (void)_enableExtensionWithMessage:(id)a3 connection:(id)a4;
-- (void)_finishedImportingCreditCardsWithMessage:(id)a3 connection:(id)a4;
-- (void)_finishedImportingExtensionsWithMessage:(id)a3 connection:(id)a4;
-- (void)_saveCreditCardWithMessage:(id)a3 connection:(id)a4;
+- (void)_enableExtensionWithMessage:(id)message connection:(id)connection;
+- (void)_finishedImportingCreditCardsWithMessage:(id)message connection:(id)connection;
+- (void)_finishedImportingExtensionsWithMessage:(id)message connection:(id)connection;
+- (void)_saveCreditCardWithMessage:(id)message connection:(id)connection;
 - (void)_setupConnection;
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 profileIdentifiers:(id)a5 options:(int64_t)a6 clearAllSpotlightHistoryForProfile:(BOOL)a7 completionHandler:(id)a8;
-- (void)computeNumberOfItemsToBeImportedFromURL:(id)a3 exportMetadataDataType:(id)a4 completionHandler:(id)a5;
-- (void)connection:(id)a3 didCloseWithError:(id)a4;
-- (void)deleteAllSafariSecurityOriginsForProfileWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)deleteSafariPersistentURLCacheStorageWithCompletionHandler:(id)a3;
-- (void)deleteSafariWebsiteDataRecord:(id)a3 completionHandler:(id)a4;
-- (void)exportBookmarksToURL:(id)a3 sandboxExtension:(id)a4 completionHandler:(id)a5;
-- (void)exportSafariHistoryToURL:(id)a3 sandboxExtension:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)getSafariDataUsageByteCountWithCompletionHandler:(id)a3;
-- (void)getSafariWebDataUsageWithCompletion:(id)a3;
-- (void)importBookmarksFromURL:(id)a3 inFolderWithSuggestedName:(id)a4 completionHandler:(id)a5;
-- (void)importChromeExtensionsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)importChromeHistoryFromURL:(id)a3 ageLimit:(double)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)importCreditCardsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)importExtensionsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)importSafariHistoryFromURL:(id)a3 ageLimit:(double)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)numberOfHistorySitesToBeExportedWithProfileIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5;
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate profileIdentifiers:(id)identifiers options:(int64_t)options clearAllSpotlightHistoryForProfile:(BOOL)profile completionHandler:(id)handler;
+- (void)computeNumberOfItemsToBeImportedFromURL:(id)l exportMetadataDataType:(id)type completionHandler:(id)handler;
+- (void)connection:(id)connection didCloseWithError:(id)error;
+- (void)deleteAllSafariSecurityOriginsForProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteSafariPersistentURLCacheStorageWithCompletionHandler:(id)handler;
+- (void)deleteSafariWebsiteDataRecord:(id)record completionHandler:(id)handler;
+- (void)exportBookmarksToURL:(id)l sandboxExtension:(id)extension completionHandler:(id)handler;
+- (void)exportSafariHistoryToURL:(id)l sandboxExtension:(id)extension profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getSafariDataUsageByteCountWithCompletionHandler:(id)handler;
+- (void)getSafariWebDataUsageWithCompletion:(id)completion;
+- (void)importBookmarksFromURL:(id)l inFolderWithSuggestedName:(id)name completionHandler:(id)handler;
+- (void)importChromeExtensionsFromURL:(id)l completionHandler:(id)handler;
+- (void)importChromeHistoryFromURL:(id)l ageLimit:(double)limit profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)importCreditCardsFromURL:(id)l completionHandler:(id)handler;
+- (void)importExtensionsFromURL:(id)l completionHandler:(id)handler;
+- (void)importSafariHistoryFromURL:(id)l ageLimit:(double)limit profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)numberOfHistorySitesToBeExportedWithProfileIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler;
 - (void)scheduleBookmarksDatabaseMaintenance;
 - (void)scheduleBookmarksDatabaseMigrationTask;
 - (void)scheduleHSTSSuperCookieCleanup;
@@ -124,9 +124,9 @@ void __47__WebBookmarksSettingsGateway__setupConnection__block_invoke_4(uint64_t
   [WeakRetained _finishedImportingCreditCardsWithMessage:v5 connection:v6];
 }
 
-- (void)getSafariWebDataUsageWithCompletion:(id)a3
+- (void)getSafariWebDataUsageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksGetSafariWebDataUsageMessageName];
   v6 = WBS_LOG_CHANNEL_PREFIXWebsiteData();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -140,8 +140,8 @@ void __47__WebBookmarksSettingsGateway__setupConnection__block_invoke_4(uint64_t
   v9[1] = 3221225472;
   v9[2] = __67__WebBookmarksSettingsGateway_getSafariWebDataUsageWithCompletion___block_invoke;
   v9[3] = &unk_279E77D58;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(WebBookmarksXPCConnection *)connection sendMessage:v5 withReplyHandler:v9];
 }
 
@@ -200,10 +200,10 @@ uint64_t __67__WebBookmarksSettingsGateway_getSafariWebDataUsageWithCompletion__
   return 1;
 }
 
-- (void)deleteAllSafariSecurityOriginsForProfileWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)deleteAllSafariSecurityOriginsForProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = WBS_LOG_CHANNEL_PREFIXWebsiteData();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -213,9 +213,9 @@ uint64_t __67__WebBookmarksSettingsGateway_getSafariWebDataUsageWithCompletion__
 
   v9 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksDeleteAllSafariWebSecurityOriginsMessageName];
   v10 = xpc_array_create(0, 0);
-  v11 = [v7 UTF8String];
+  uTF8String = [identifierCopy UTF8String];
 
-  v12 = xpc_string_create(v11);
+  v12 = xpc_string_create(uTF8String);
   xpc_array_append_value(v10, v12);
 
   xpc_dictionary_set_value(v9, kWebsiteProfileIdentifiersKey, v10);
@@ -224,8 +224,8 @@ uint64_t __67__WebBookmarksSettingsGateway_getSafariWebDataUsageWithCompletion__
   v15[1] = 3221225472;
   v15[2] = __104__WebBookmarksSettingsGateway_deleteAllSafariSecurityOriginsForProfileWithIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_279E77D58;
-  v16 = v6;
-  v14 = v6;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WebBookmarksXPCConnection *)connection sendMessage:v9 withReplyHandler:v15];
 }
 
@@ -262,24 +262,24 @@ void __104__WebBookmarksSettingsGateway_deleteAllSafariSecurityOriginsForProfile
   }
 }
 
-- (void)deleteSafariWebsiteDataRecord:(id)a3 completionHandler:(id)a4
+- (void)deleteSafariWebsiteDataRecord:(id)record completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->_connection;
   v8 = kWebBookmarksDeleteSafariWebSecurityOriginMessageName;
-  v9 = a3;
+  recordCopy = record;
   v10 = [(WebBookmarksXPCConnection *)connection messageWithName:v8];
   v11 = kWebsiteDataRecordKey;
-  v12 = [v9 XPCDictionaryRepresentation];
+  xPCDictionaryRepresentation = [recordCopy XPCDictionaryRepresentation];
 
-  xpc_dictionary_set_value(v10, v11, v12);
+  xpc_dictionary_set_value(v10, v11, xPCDictionaryRepresentation);
   v13 = self->_connection;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__WebBookmarksSettingsGateway_deleteSafariWebsiteDataRecord_completionHandler___block_invoke;
   v15[3] = &unk_279E77D58;
-  v16 = v6;
-  v14 = v6;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [(WebBookmarksXPCConnection *)v13 sendMessage:v10 withReplyHandler:v15];
 }
 
@@ -316,17 +316,17 @@ void __79__WebBookmarksSettingsGateway_deleteSafariWebsiteDataRecord_completionH
   }
 }
 
-- (void)deleteSafariPersistentURLCacheStorageWithCompletionHandler:(id)a3
+- (void)deleteSafariPersistentURLCacheStorageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksDeleteSafariPersistentURLCacheStorageMessageName];
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__WebBookmarksSettingsGateway_deleteSafariPersistentURLCacheStorageWithCompletionHandler___block_invoke;
   v8[3] = &unk_279E77D58;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(WebBookmarksXPCConnection *)connection sendMessage:v5 withReplyHandler:v8];
 }
 
@@ -363,17 +363,17 @@ void __90__WebBookmarksSettingsGateway_deleteSafariPersistentURLCacheStorageWith
   }
 }
 
-- (void)getSafariDataUsageByteCountWithCompletionHandler:(id)a3
+- (void)getSafariDataUsageByteCountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksGetSafariDataUsageSummaryMessageName];
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__WebBookmarksSettingsGateway_getSafariDataUsageByteCountWithCompletionHandler___block_invoke;
   v8[3] = &unk_279E77D58;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(WebBookmarksXPCConnection *)connection sendMessage:v5 withReplyHandler:v8];
 }
 
@@ -390,32 +390,32 @@ uint64_t __80__WebBookmarksSettingsGateway_getSafariDataUsageByteCountWithComple
   return v3(v2, xdict);
 }
 
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 profileIdentifiers:(id)a5 options:(int64_t)a6 clearAllSpotlightHistoryForProfile:(BOOL)a7 completionHandler:(id)a8
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate profileIdentifiers:(id)identifiers options:(int64_t)options clearAllSpotlightHistoryForProfile:(BOOL)profile completionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v18 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksClearHistoryMessageName];
   v19 = kWebsiteStartDateKey;
-  [v14 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   xpc_dictionary_set_double(v18, v19, v20);
   v21 = kWebsiteEndDateKey;
-  [v15 timeIntervalSinceReferenceDate];
+  [beforeDateCopy timeIntervalSinceReferenceDate];
   xpc_dictionary_set_double(v18, v21, v22);
-  xpc_dictionary_set_int64(v18, kWebsiteOptionsKey, a6);
-  xpc_dictionary_set_BOOL(v18, kWebsiteClearAllSpotlightHistoryForProfileKey, a7);
-  if (v16)
+  xpc_dictionary_set_int64(v18, kWebsiteOptionsKey, options);
+  xpc_dictionary_set_BOOL(v18, kWebsiteClearAllSpotlightHistoryForProfileKey, profile);
+  if (identifiersCopy)
   {
-    v33 = v15;
-    v34 = v14;
+    v33 = beforeDateCopy;
+    v34 = dateCopy;
     v23 = xpc_array_create(0, 0);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v24 = v16;
+    v24 = identifiersCopy;
     v25 = [v24 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v25)
     {
@@ -445,8 +445,8 @@ uint64_t __80__WebBookmarksSettingsGateway_getSafariDataUsageByteCountWithComple
     }
 
     xpc_dictionary_set_value(v18, kWebsiteProfileIdentifiersKey, v23);
-    v15 = v33;
-    v14 = v34;
+    beforeDateCopy = v33;
+    dateCopy = v34;
   }
 
   connection = self->_connection;
@@ -454,8 +454,8 @@ uint64_t __80__WebBookmarksSettingsGateway_getSafariDataUsageByteCountWithComple
   v35[1] = 3221225472;
   v35[2] = __155__WebBookmarksSettingsGateway_clearHistoryVisitsAddedAfterDate_beforeDate_profileIdentifiers_options_clearAllSpotlightHistoryForProfile_completionHandler___block_invoke;
   v35[3] = &unk_279E77D58;
-  v36 = v17;
-  v31 = v17;
+  v36 = handlerCopy;
+  v31 = handlerCopy;
   [(WebBookmarksXPCConnection *)connection sendMessage:v18 withReplyHandler:v35];
 
   v32 = *MEMORY[0x277D85DE8];
@@ -494,29 +494,29 @@ void __155__WebBookmarksSettingsGateway_clearHistoryVisitsAddedAfterDate_beforeD
   }
 }
 
-- (void)exportBookmarksToURL:(id)a3 sandboxExtension:(id)a4 completionHandler:(id)a5
+- (void)exportBookmarksToURL:(id)l sandboxExtension:(id)extension completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   connection = self->_connection;
   v10 = kWebBookmarksExportBookmarksMessageName;
-  v11 = a4;
-  v12 = a3;
+  extensionCopy = extension;
+  lCopy = l;
   v13 = [(WebBookmarksXPCConnection *)connection messageWithName:v10];
   v14 = kWebBookmarksExportBookmarksURLKey;
-  v15 = [v12 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  xpc_dictionary_set_string(v13, v14, [v15 UTF8String]);
+  xpc_dictionary_set_string(v13, v14, [absoluteString UTF8String]);
   v16 = kWebBookmarksExportBookmarksSandboxExtensionKey;
-  v17 = [v11 UTF8String];
+  uTF8String = [extensionCopy UTF8String];
 
-  xpc_dictionary_set_string(v13, v16, v17);
+  xpc_dictionary_set_string(v13, v16, uTF8String);
   v18 = self->_connection;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __87__WebBookmarksSettingsGateway_exportBookmarksToURL_sandboxExtension_completionHandler___block_invoke;
   v20[3] = &unk_279E77D58;
-  v21 = v8;
-  v19 = v8;
+  v21 = handlerCopy;
+  v19 = handlerCopy;
   [(WebBookmarksXPCConnection *)v18 sendMessage:v13 withReplyHandler:v20];
 }
 
@@ -549,24 +549,24 @@ void __87__WebBookmarksSettingsGateway_exportBookmarksToURL_sandboxExtension_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)importBookmarksFromURL:(id)a3 inFolderWithSuggestedName:(id)a4 completionHandler:(id)a5
+- (void)importBookmarksFromURL:(id)l inFolderWithSuggestedName:(id)name completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v17 = 0;
-  v10 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v17];
+  v10 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v17];
   v11 = v17;
   if (v10)
   {
     v12 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksImportBookmarksMessageName];
-    xpc_dictionary_set_string(v12, kWebBookmarksImportBookmarksSuggestedNameKey, [v8 UTF8String]);
+    xpc_dictionary_set_string(v12, kWebBookmarksImportBookmarksSuggestedNameKey, [nameCopy UTF8String]);
     xpc_dictionary_set_fd(v12, kWebBookmarksImportBookmarksFileDescriptorKey, [v10 fileDescriptor]);
     connection = self->_connection;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __98__WebBookmarksSettingsGateway_importBookmarksFromURL_inFolderWithSuggestedName_completionHandler___block_invoke;
     v15[3] = &unk_279E77D58;
-    v16 = v9;
+    v16 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v12 withReplyHandler:v15];
   }
 
@@ -578,7 +578,7 @@ void __87__WebBookmarksSettingsGateway_exportBookmarksToURL_sandboxExtension_com
       [WebBookmarksSettingsGateway importBookmarksFromURL:v14 inFolderWithSuggestedName:? completionHandler:?];
     }
 
-    (*(v9 + 2))(v9, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -616,34 +616,34 @@ void __98__WebBookmarksSettingsGateway_importBookmarksFromURL_inFolderWithSugges
   }
 }
 
-- (void)exportSafariHistoryToURL:(id)a3 sandboxExtension:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)exportSafariHistoryToURL:(id)l sandboxExtension:(id)extension profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   connection = self->_connection;
   v12 = kWebBookmarksExportHistoryMessageName;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifierCopy = identifier;
+  extensionCopy = extension;
+  lCopy = l;
   v16 = [(WebBookmarksXPCConnection *)connection messageWithName:v12];
   v17 = kWebBookmarksHistoryExportURLKey;
-  v18 = [v15 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  xpc_dictionary_set_string(v16, v17, [v18 UTF8String]);
+  xpc_dictionary_set_string(v16, v17, [absoluteString UTF8String]);
   v19 = kWebBookmarksHistoryExportSandboxExtensionKey;
-  v20 = [v14 UTF8String];
+  uTF8String = [extensionCopy UTF8String];
 
-  xpc_dictionary_set_string(v16, v19, v20);
+  xpc_dictionary_set_string(v16, v19, uTF8String);
   v21 = kWebsiteProfileIdentifiersKey;
-  v22 = [v13 UTF8String];
+  uTF8String2 = [identifierCopy UTF8String];
 
-  xpc_dictionary_set_string(v16, v21, v22);
+  xpc_dictionary_set_string(v16, v21, uTF8String2);
   v23 = self->_connection;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __109__WebBookmarksSettingsGateway_exportSafariHistoryToURL_sandboxExtension_profileIdentifier_completionHandler___block_invoke;
   v25[3] = &unk_279E77D58;
-  v26 = v10;
-  v24 = v10;
+  v26 = handlerCopy;
+  v24 = handlerCopy;
   [(WebBookmarksXPCConnection *)v23 sendMessage:v16 withReplyHandler:v25];
 }
 
@@ -680,18 +680,18 @@ void __109__WebBookmarksSettingsGateway_exportSafariHistoryToURL_sandboxExtensio
   }
 }
 
-- (void)numberOfHistorySitesToBeExportedWithProfileIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)numberOfHistorySitesToBeExportedWithProfileIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->_connection;
   v8 = kWebBookmarksGetNumberOfHistorySitesToBeExportedMessageName;
-  v9 = a3;
+  identifiersCopy = identifiers;
   v10 = [(WebBookmarksXPCConnection *)connection messageWithName:v8];
   v11 = MEMORY[0x277CCAAB0];
-  v12 = [v9 allObjects];
+  allObjects = [identifiersCopy allObjects];
 
   v19 = 0;
-  v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:0 error:&v19];
+  v13 = [v11 archivedDataWithRootObject:allObjects requiringSecureCoding:0 error:&v19];
   v14 = v19;
 
   if (v14)
@@ -702,7 +702,7 @@ void __109__WebBookmarksSettingsGateway_exportSafariHistoryToURL_sandboxExtensio
       [WebBookmarksSettingsGateway numberOfHistorySitesToBeExportedWithProfileIdentifiers:v15 completionHandler:?];
     }
 
-    v6[2](v6, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 
   else
@@ -713,7 +713,7 @@ void __109__WebBookmarksSettingsGateway_exportSafariHistoryToURL_sandboxExtensio
     v17[1] = 3221225472;
     v17[2] = __104__WebBookmarksSettingsGateway_numberOfHistorySitesToBeExportedWithProfileIdentifiers_completionHandler___block_invoke;
     v17[3] = &unk_279E77D58;
-    v18 = v6;
+    v18 = handlerCopy;
     [(WebBookmarksXPCConnection *)v16 sendMessage:v10 withReplyHandler:v17];
   }
 }
@@ -752,21 +752,21 @@ void __104__WebBookmarksSettingsGateway_numberOfHistorySitesToBeExportedWithProf
   }
 }
 
-- (void)importSafariHistoryFromURL:(id)a3 ageLimit:(double)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)importSafariHistoryFromURL:(id)l ageLimit:(double)limit profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v20 = 0;
-  v12 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v20];
+  v12 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v20];
   v13 = v20;
   if (v12)
   {
     v14 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksImportHistoryMessageName];
     xpc_dictionary_set_fd(v14, kWebBookmarksImportHistoryFileDescriptorKey, [v12 fileDescriptor]);
-    xpc_dictionary_set_double(v14, kWebBookmarksImportHistoryAgeLimitKey, a4);
-    if (v10)
+    xpc_dictionary_set_double(v14, kWebBookmarksImportHistoryAgeLimitKey, limit);
+    if (identifierCopy)
     {
-      v15 = v10;
+      v15 = identifierCopy;
     }
 
     else
@@ -780,7 +780,7 @@ void __104__WebBookmarksSettingsGateway_numberOfHistorySitesToBeExportedWithProf
     v18[1] = 3221225472;
     v18[2] = __103__WebBookmarksSettingsGateway_importSafariHistoryFromURL_ageLimit_profileIdentifier_completionHandler___block_invoke;
     v18[3] = &unk_279E77D58;
-    v19 = v11;
+    v19 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v14 withReplyHandler:v18];
   }
 
@@ -792,7 +792,7 @@ void __104__WebBookmarksSettingsGateway_numberOfHistorySitesToBeExportedWithProf
       [WebBookmarksSettingsGateway importSafariHistoryFromURL:v17 ageLimit:? profileIdentifier:? completionHandler:?];
     }
 
-    (*(v11 + 2))(v11, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -830,16 +830,16 @@ void __103__WebBookmarksSettingsGateway_importSafariHistoryFromURL_ageLimit_prof
   }
 }
 
-- (void)scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5
+- (void)scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  extensionsCopy = extensions;
+  handlerCopy = handler;
   connection = self->_connection;
   v11 = kWebBookmarksScanImportURLsMessageName;
-  v12 = a3;
+  lsCopy = ls;
   v13 = [(WebBookmarksXPCConnection *)connection messageWithName:v11];
   v24 = 0;
-  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v12 requiringSecureCoding:0 error:&v24];
+  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:lsCopy requiringSecureCoding:0 error:&v24];
 
   v15 = v24;
   if (v15)
@@ -851,13 +851,13 @@ void __103__WebBookmarksSettingsGateway_importSafariHistoryFromURL_ageLimit_prof
       [WebBookmarksSettingsGateway scanImportURLs:v17 sandboxExtensions:? completionHandler:?];
     }
 
-    v9[2](v9, MEMORY[0x277CBEC10], v16);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEC10], v16);
   }
 
   else
   {
     v23 = 0;
-    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:0 error:&v23];
+    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:extensionsCopy requiringSecureCoding:0 error:&v23];
     v16 = v23;
     if (v16)
     {
@@ -867,7 +867,7 @@ void __103__WebBookmarksSettingsGateway_importSafariHistoryFromURL_ageLimit_prof
         [WebBookmarksSettingsGateway scanImportURLs:v19 sandboxExtensions:? completionHandler:?];
       }
 
-      v9[2](v9, MEMORY[0x277CBEC10], v16);
+      handlerCopy[2](handlerCopy, MEMORY[0x277CBEC10], v16);
     }
 
     else
@@ -879,7 +879,7 @@ void __103__WebBookmarksSettingsGateway_importSafariHistoryFromURL_ageLimit_prof
       v21[1] = 3221225472;
       v21[2] = __82__WebBookmarksSettingsGateway_scanImportURLs_sandboxExtensions_completionHandler___block_invoke;
       v21[3] = &unk_279E77D58;
-      v22 = v9;
+      v22 = handlerCopy;
       [(WebBookmarksXPCConnection *)v20 sendMessage:v13 withReplyHandler:v21];
     }
   }
@@ -949,11 +949,11 @@ void __82__WebBookmarksSettingsGateway_scanImportURLs_sandboxExtensions_completi
   }
 }
 
-- (void)importChromeExtensionsFromURL:(id)a3 completionHandler:(id)a4
+- (void)importChromeExtensionsFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14 = 0;
-  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v14];
+  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v14];
   v8 = v14;
   if (v7)
   {
@@ -964,7 +964,7 @@ void __82__WebBookmarksSettingsGateway_scanImportURLs_sandboxExtensions_completi
     v12[1] = 3221225472;
     v12[2] = __79__WebBookmarksSettingsGateway_importChromeExtensionsFromURL_completionHandler___block_invoke;
     v12[3] = &unk_279E77D58;
-    v13 = v6;
+    v13 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v9 withReplyHandler:v12];
   }
 
@@ -976,7 +976,7 @@ void __82__WebBookmarksSettingsGateway_scanImportURLs_sandboxExtensions_completi
       [WebBookmarksSettingsGateway importChromeExtensionsFromURL:v11 completionHandler:?];
     }
 
-    (*(v6 + 2))(v6, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 }
 
@@ -1009,11 +1009,11 @@ void __79__WebBookmarksSettingsGateway_importChromeExtensionsFromURL_completionH
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)importCreditCardsFromURL:(id)a3 completionHandler:(id)a4
+- (void)importCreditCardsFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v13 = 0;
-  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v13];
+  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v13];
   v8 = v13;
   if (v7)
   {
@@ -1024,13 +1024,13 @@ void __79__WebBookmarksSettingsGateway_importChromeExtensionsFromURL_completionH
     v11[1] = 3221225472;
     v11[2] = __74__WebBookmarksSettingsGateway_importCreditCardsFromURL_completionHandler___block_invoke;
     v11[3] = &unk_279E77D58;
-    v12 = v6;
+    v12 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v9 withReplyHandler:v11];
   }
 
   else
   {
-    (*(v6 + 2))(v6, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 }
 
@@ -1063,11 +1063,11 @@ void __74__WebBookmarksSettingsGateway_importCreditCardsFromURL_completionHandle
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)importExtensionsFromURL:(id)a3 completionHandler:(id)a4
+- (void)importExtensionsFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14 = 0;
-  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v14];
+  v7 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v14];
   v8 = v14;
   if (v7)
   {
@@ -1078,7 +1078,7 @@ void __74__WebBookmarksSettingsGateway_importCreditCardsFromURL_completionHandle
     v12[1] = 3221225472;
     v12[2] = __73__WebBookmarksSettingsGateway_importExtensionsFromURL_completionHandler___block_invoke;
     v12[3] = &unk_279E77D58;
-    v13 = v6;
+    v13 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v9 withReplyHandler:v12];
   }
 
@@ -1090,7 +1090,7 @@ void __74__WebBookmarksSettingsGateway_importCreditCardsFromURL_completionHandle
       [WebBookmarksSettingsGateway importExtensionsFromURL:v11 completionHandler:?];
     }
 
-    (*(v6 + 2))(v6, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 }
 
@@ -1123,24 +1123,24 @@ void __73__WebBookmarksSettingsGateway_importExtensionsFromURL_completionHandler
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)computeNumberOfItemsToBeImportedFromURL:(id)a3 exportMetadataDataType:(id)a4 completionHandler:(id)a5
+- (void)computeNumberOfItemsToBeImportedFromURL:(id)l exportMetadataDataType:(id)type completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  handlerCopy = handler;
   v17 = 0;
-  v10 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v17];
+  v10 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v17];
   v11 = v17;
   if (v10)
   {
     v12 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksComputeNumberOfItemsToBeImportedMessageName];
     xpc_dictionary_set_fd(v12, kWebBookmarksComputeNumberOfItemsToBeImportedFileDescriptorKey, [v10 fileDescriptor]);
-    xpc_dictionary_set_string(v12, kWebBookmarksComputeNumberOfItemsToBeImportedMetadataDataTypeKey, [v8 UTF8String]);
+    xpc_dictionary_set_string(v12, kWebBookmarksComputeNumberOfItemsToBeImportedMetadataDataTypeKey, [typeCopy UTF8String]);
     connection = self->_connection;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __112__WebBookmarksSettingsGateway_computeNumberOfItemsToBeImportedFromURL_exportMetadataDataType_completionHandler___block_invoke;
     v15[3] = &unk_279E77D58;
-    v16 = v9;
+    v16 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v12 withReplyHandler:v15];
   }
 
@@ -1152,7 +1152,7 @@ void __73__WebBookmarksSettingsGateway_importExtensionsFromURL_completionHandler
       [WebBookmarksSettingsGateway computeNumberOfItemsToBeImportedFromURL:v14 exportMetadataDataType:? completionHandler:?];
     }
 
-    (*(v9 + 2))(v9, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -1190,21 +1190,21 @@ void __112__WebBookmarksSettingsGateway_computeNumberOfItemsToBeImportedFromURL_
   }
 }
 
-- (void)importChromeHistoryFromURL:(id)a3 ageLimit:(double)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)importChromeHistoryFromURL:(id)l ageLimit:(double)limit profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v20 = 0;
-  v12 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:a3 error:&v20];
+  v12 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:l error:&v20];
   v13 = v20;
   if (v12)
   {
     v14 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksImportChromeHistoryMessageName];
     xpc_dictionary_set_fd(v14, kWebBookmarksImportChromeHistoryFileDescriptorKey, [v12 fileDescriptor]);
-    xpc_dictionary_set_double(v14, kWebBookmarksImportChromeHistoryAgeLimitKey, a4);
-    if (v10)
+    xpc_dictionary_set_double(v14, kWebBookmarksImportChromeHistoryAgeLimitKey, limit);
+    if (identifierCopy)
     {
-      v15 = v10;
+      v15 = identifierCopy;
     }
 
     else
@@ -1218,7 +1218,7 @@ void __112__WebBookmarksSettingsGateway_computeNumberOfItemsToBeImportedFromURL_
     v18[1] = 3221225472;
     v18[2] = __103__WebBookmarksSettingsGateway_importChromeHistoryFromURL_ageLimit_profileIdentifier_completionHandler___block_invoke;
     v18[3] = &unk_279E77D58;
-    v19 = v11;
+    v19 = handlerCopy;
     [(WebBookmarksXPCConnection *)connection sendMessage:v14 withReplyHandler:v18];
   }
 
@@ -1230,7 +1230,7 @@ void __112__WebBookmarksSettingsGateway_computeNumberOfItemsToBeImportedFromURL_
       [WebBookmarksSettingsGateway importSafariHistoryFromURL:v17 ageLimit:? profileIdentifier:? completionHandler:?];
     }
 
-    (*(v11 + 2))(v11, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -1268,14 +1268,14 @@ void __103__WebBookmarksSettingsGateway_importChromeHistoryFromURL_ageLimit_prof
   }
 }
 
-- (void)_enableExtensionWithMessage:(id)a3 connection:(id)a4
+- (void)_enableExtensionWithMessage:(id)message connection:(id)connection
 {
   v5 = kWebBookmarksEnableImportedExtensionAdamIdentifierKey;
-  v6 = a3;
-  string = xpc_dictionary_get_string(v6, v5);
-  v8 = xpc_dictionary_get_string(v6, kWebBookmarksEnableImportedExtensionAlternatePlatformAppBundleIdentifierKey);
-  v9 = xpc_dictionary_get_string(v6, kWebBookmarksEnableImportedExtensionAlternatePlatformExtensionBundleIdentifierKey);
-  v10 = xpc_dictionary_get_string(v6, kWebBookmarksEnableImportedExtensionComposedIdentifierKey);
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, v5);
+  v8 = xpc_dictionary_get_string(messageCopy, kWebBookmarksEnableImportedExtensionAlternatePlatformAppBundleIdentifierKey);
+  v9 = xpc_dictionary_get_string(messageCopy, kWebBookmarksEnableImportedExtensionAlternatePlatformExtensionBundleIdentifierKey);
+  v10 = xpc_dictionary_get_string(messageCopy, kWebBookmarksEnableImportedExtensionComposedIdentifierKey);
 
   if (string)
   {
@@ -1310,24 +1310,24 @@ LABEL_4:
   [WeakRetained enableExtensionWithComposedIdentifier:v10 adamIdentifier:v12 alternatePlatformAppBundleIdentifier:v8 alternatePlatformExtensionBundleIdentifier:v9];
 }
 
-- (void)_finishedImportingExtensionsWithMessage:(id)a3 connection:(id)a4
+- (void)_finishedImportingExtensionsWithMessage:(id)message connection:(id)connection
 {
   connection = self->_connection;
-  v5 = messageReceivedAcknowledgementReply(a3);
+  v5 = messageReceivedAcknowledgementReply(message);
   [(WebBookmarksXPCConnection *)connection sendMessage:v5];
 }
 
-- (void)_saveCreditCardWithMessage:(id)a3 connection:(id)a4
+- (void)_saveCreditCardWithMessage:(id)message connection:(id)connection
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = kWebBookmarksSaveImportedCreditCardNumberKey;
-  v7 = a3;
-  v15 = [v5 stringWithUTF8String:{xpc_dictionary_get_string(v7, v6)}];
-  string = xpc_dictionary_get_string(v7, kWebBookmarksSaveImportedCreditCardNameKey);
-  v9 = xpc_dictionary_get_string(v7, kWebBookmarksSaveImportedCreditCardHolderNameKey);
-  int64 = xpc_dictionary_get_int64(v7, kWebBookmarksSaveImportedCreditCardExpirationMonthKey);
-  v11 = xpc_dictionary_get_int64(v7, kWebBookmarksSaveImportedCreditCardExpirationYearKey);
-  date = xpc_dictionary_get_date(v7, kWebBookmarksSaveImportedCreditCardLastUsedDateKey);
+  messageCopy = message;
+  v15 = [v5 stringWithUTF8String:{xpc_dictionary_get_string(messageCopy, v6)}];
+  string = xpc_dictionary_get_string(messageCopy, kWebBookmarksSaveImportedCreditCardNameKey);
+  v9 = xpc_dictionary_get_string(messageCopy, kWebBookmarksSaveImportedCreditCardHolderNameKey);
+  int64 = xpc_dictionary_get_int64(messageCopy, kWebBookmarksSaveImportedCreditCardExpirationMonthKey);
+  v11 = xpc_dictionary_get_int64(messageCopy, kWebBookmarksSaveImportedCreditCardExpirationYearKey);
+  date = xpc_dictionary_get_date(messageCopy, kWebBookmarksSaveImportedCreditCardLastUsedDateKey);
 
   if (string)
   {
@@ -1367,10 +1367,10 @@ LABEL_4:
   [WeakRetained importCreditCardDataWithCardNumber:v15 cardName:v13 cardholderName:v9 cardExpirationMonth:int64 cardExpirationYear:v11 lastUsedDate:date];
 }
 
-- (void)_finishedImportingCreditCardsWithMessage:(id)a3 connection:(id)a4
+- (void)_finishedImportingCreditCardsWithMessage:(id)message connection:(id)connection
 {
   connection = self->_connection;
-  v5 = messageReceivedAcknowledgementReply(a3);
+  v5 = messageReceivedAcknowledgementReply(message);
   [(WebBookmarksXPCConnection *)connection sendMessage:v5];
 }
 
@@ -1398,15 +1398,15 @@ LABEL_4:
   [(WebBookmarksXPCConnection *)self->_connection sendMessage:v3];
 }
 
-- (void)connection:(id)a3 didCloseWithError:(id)a4
+- (void)connection:(id)connection didCloseWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = WBS_LOG_CHANNEL_PREFIXWebsiteData();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v5 description];
+    v8 = [errorCopy description];
     v10 = 138543362;
     v11 = v8;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "Settings gateway connection closed with error: %{public}@", &v10, 0xCu);

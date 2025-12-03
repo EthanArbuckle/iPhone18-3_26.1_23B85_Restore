@@ -7,7 +7,7 @@
 + (id)ak_arrayWithJSONResponseData:()AuthKit
 {
   v25 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);

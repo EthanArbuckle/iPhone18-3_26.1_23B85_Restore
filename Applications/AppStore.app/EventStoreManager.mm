@@ -1,6 +1,6 @@
 @interface EventStoreManager
 - (_TtC8AppStore17EventStoreManager)init;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
 @end
 
 @implementation EventStoreManager
@@ -15,14 +15,14 @@
   return [(EventStoreManager *)&v6 init];
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  v4 = [v6 presentingViewController];
-  if (v4)
+  controllerCopy = controller;
+  presentingViewController = [controllerCopy presentingViewController];
+  if (presentingViewController)
   {
-    v5 = v4;
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    v5 = presentingViewController;
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

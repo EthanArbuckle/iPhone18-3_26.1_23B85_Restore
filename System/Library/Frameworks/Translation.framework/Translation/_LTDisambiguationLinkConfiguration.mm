@@ -1,31 +1,31 @@
 @interface _LTDisambiguationLinkConfiguration
 - (NSSet)edgeTypes;
-- (_LTDisambiguationLinkConfiguration)initWithCoder:(id)a3;
-- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)a3 targetRange:(_NSRange)a4 adjacencyList:(id)a5 gender:(id)a6 defaultGender:(id)a7;
-- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)a3 targetRange:(_NSRange)a4 unvalidatedAdjacencyList:(id)a5;
-- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)a3 sourceSnippet:(id)a4 targetText:(id)a5 targetSnippet:(id)a6 adjacencyList:(id)a7 gender:(id)a8 defaultGender:(id)a9;
-- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)a3 sourceSnippet:(id)a4 targetText:(id)a5 targetSnippet:(id)a6 unvalidatedAdjacencyList:(id)a7;
+- (_LTDisambiguationLinkConfiguration)initWithCoder:(id)coder;
+- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)range targetRange:(_NSRange)targetRange adjacencyList:(id)list gender:(id)gender defaultGender:(id)defaultGender;
+- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)range targetRange:(_NSRange)targetRange unvalidatedAdjacencyList:(id)list;
+- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)text sourceSnippet:(id)snippet targetText:(id)targetText targetSnippet:(id)targetSnippet adjacencyList:(id)list gender:(id)gender defaultGender:(id)defaultGender;
+- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)text sourceSnippet:(id)snippet targetText:(id)targetText targetSnippet:(id)targetSnippet unvalidatedAdjacencyList:(id)list;
 - (_NSRange)sourceRange;
 - (_NSRange)targetRange;
-- (id)_unvalidatedEdgeFromAdjacencyListMatchingTargetNodeIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_unvalidatedEdgeFromAdjacencyListMatchingTargetNodeIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_finishValidating;
-- (void)_insertPrefix:(id)a3;
-- (void)_validateWithAdjacencyList:(id)a3 gender:(id)a4 defaultGender:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_insertPrefix:(id)prefix;
+- (void)_validateWithAdjacencyList:(id)list gender:(id)gender defaultGender:(id)defaultGender;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTDisambiguationLinkConfiguration
 
-- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)a3 targetRange:(_NSRange)a4 adjacencyList:(id)a5 gender:(id)a6 defaultGender:(id)a7
+- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)range targetRange:(_NSRange)targetRange adjacencyList:(id)list gender:(id)gender defaultGender:(id)defaultGender
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3.length;
-  v11 = a3.location;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  length = targetRange.length;
+  location = targetRange.location;
+  v10 = range.length;
+  v11 = range.location;
+  listCopy = list;
+  genderCopy = gender;
+  defaultGenderCopy = defaultGender;
   v22.receiver = self;
   v22.super_class = _LTDisambiguationLinkConfiguration;
   v16 = [(_LTDisambiguationLinkConfiguration *)&v22 init];
@@ -36,47 +36,47 @@
     v16->_sourceRange.length = v10;
     v16->_targetRange.location = location;
     v16->_targetRange.length = length;
-    v18 = [v13 copy];
+    v18 = [listCopy copy];
     adjacencyList = v17->_adjacencyList;
     v17->_adjacencyList = v18;
 
-    objc_storeStrong(&v17->_gender, a6);
-    objc_storeStrong(&v17->_defaultGender, a7);
+    objc_storeStrong(&v17->_gender, gender);
+    objc_storeStrong(&v17->_defaultGender, defaultGender);
     v20 = v17;
   }
 
   return v17;
 }
 
-- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)a3 sourceSnippet:(id)a4 targetText:(id)a5 targetSnippet:(id)a6 adjacencyList:(id)a7 gender:(id)a8 defaultGender:(id)a9
+- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)text sourceSnippet:(id)snippet targetText:(id)targetText targetSnippet:(id)targetSnippet adjacencyList:(id)list gender:(id)gender defaultGender:(id)defaultGender
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a6;
-  v19 = a5;
-  v20 = [a3 rangeOfString:a4];
+  listCopy = list;
+  genderCopy = gender;
+  defaultGenderCopy = defaultGender;
+  targetSnippetCopy = targetSnippet;
+  targetTextCopy = targetText;
+  v20 = [text rangeOfString:snippet];
   v22 = v21;
-  v23 = [v19 rangeOfString:v18];
+  v23 = [targetTextCopy rangeOfString:targetSnippetCopy];
   v25 = v24;
 
-  v26 = 0;
+  selfCopy = 0;
   if (v20 != 0x7FFFFFFFFFFFFFFFLL && v23 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    self = [(_LTDisambiguationLinkConfiguration *)self initWithSourceRange:v20 targetRange:v22 adjacencyList:v23 gender:v25 defaultGender:v15, v16, v17];
-    v26 = self;
+    self = [(_LTDisambiguationLinkConfiguration *)self initWithSourceRange:v20 targetRange:v22 adjacencyList:v23 gender:v25 defaultGender:listCopy, genderCopy, defaultGenderCopy];
+    selfCopy = self;
   }
 
-  return v26;
+  return selfCopy;
 }
 
-- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)a3 targetRange:(_NSRange)a4 unvalidatedAdjacencyList:(id)a5
+- (_LTDisambiguationLinkConfiguration)initWithSourceRange:(_NSRange)range targetRange:(_NSRange)targetRange unvalidatedAdjacencyList:(id)list
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3.length;
-  v8 = a3.location;
-  v10 = a5;
+  length = targetRange.length;
+  location = targetRange.location;
+  v7 = range.length;
+  v8 = range.location;
+  listCopy = list;
   v20.receiver = self;
   v20.super_class = _LTDisambiguationLinkConfiguration;
   v11 = [(_LTDisambiguationLinkConfiguration *)&v20 init];
@@ -87,7 +87,7 @@
     v11->_sourceRange.length = v7;
     v11->_targetRange.location = location;
     v11->_targetRange.length = length;
-    v13 = [v10 copy];
+    v13 = [listCopy copy];
     unvalidatedAdjacencyList = v12->_unvalidatedAdjacencyList;
     v12->_unvalidatedAdjacencyList = v13;
 
@@ -106,24 +106,24 @@
   return v12;
 }
 
-- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)a3 sourceSnippet:(id)a4 targetText:(id)a5 targetSnippet:(id)a6 unvalidatedAdjacencyList:(id)a7
+- (_LTDisambiguationLinkConfiguration)initWithSourceText:(id)text sourceSnippet:(id)snippet targetText:(id)targetText targetSnippet:(id)targetSnippet unvalidatedAdjacencyList:(id)list
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = [a3 rangeOfString:a4];
+  listCopy = list;
+  targetSnippetCopy = targetSnippet;
+  targetTextCopy = targetText;
+  v15 = [text rangeOfString:snippet];
   v17 = v16;
-  v18 = [v14 rangeOfString:v13];
+  v18 = [targetTextCopy rangeOfString:targetSnippetCopy];
   v20 = v19;
 
-  v21 = 0;
+  selfCopy = 0;
   if (v15 != 0x7FFFFFFFFFFFFFFFLL && v18 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    self = [(_LTDisambiguationLinkConfiguration *)self initWithSourceRange:v15 targetRange:v17 unvalidatedAdjacencyList:v18, v20, v12];
-    v21 = self;
+    self = [(_LTDisambiguationLinkConfiguration *)self initWithSourceRange:v15 targetRange:v17 unvalidatedAdjacencyList:v18, v20, listCopy];
+    selfCopy = self;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 - (NSSet)edgeTypes
@@ -143,20 +143,20 @@
   return v6;
 }
 
-- (void)_validateWithAdjacencyList:(id)a3 gender:(id)a4 defaultGender:(id)a5
+- (void)_validateWithAdjacencyList:(id)list gender:(id)gender defaultGender:(id)defaultGender
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 copy];
+  genderCopy = gender;
+  defaultGenderCopy = defaultGender;
+  v10 = [list copy];
   adjacencyList = self->_adjacencyList;
   self->_adjacencyList = v10;
 
   gender = self->_gender;
-  self->_gender = v8;
-  v14 = v8;
+  self->_gender = genderCopy;
+  v14 = genderCopy;
 
   defaultGender = self->_defaultGender;
-  self->_defaultGender = v9;
+  self->_defaultGender = defaultGenderCopy;
 }
 
 - (void)_finishValidating
@@ -166,22 +166,22 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)_unvalidatedEdgeFromAdjacencyListMatchingTargetNodeIndex:(unint64_t)a3
+- (id)_unvalidatedEdgeFromAdjacencyListMatchingTargetNodeIndex:(unint64_t)index
 {
   unvalidatedAdjacencyList = self->_unvalidatedAdjacencyList;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __95___LTDisambiguationLinkConfiguration__unvalidatedEdgeFromAdjacencyListMatchingTargetNodeIndex___block_invoke;
   v6[3] = &__block_descriptor_40_e32_B16__0___LTUnvalidatedEdgeInfo_8l;
-  v6[4] = a3;
+  v6[4] = index;
   v4 = [(NSArray *)unvalidatedAdjacencyList lt_firstObjectPassingTest:v6];
 
   return v4;
 }
 
-- (void)_insertPrefix:(id)a3
+- (void)_insertPrefix:(id)prefix
 {
-  v4 = [a3 length];
+  v4 = [prefix length];
   if (v4)
   {
     self->_sourceRange.location += v4;
@@ -189,37 +189,37 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCAE60];
   location = self->_sourceRange.location;
   length = self->_sourceRange.length;
-  v9 = a3;
+  coderCopy = coder;
   v7 = [v4 valueWithRange:{location, length}];
-  [v9 encodeObject:v7 forKey:@"sourceRange"];
+  [coderCopy encodeObject:v7 forKey:@"sourceRange"];
 
   v8 = [MEMORY[0x277CCAE60] valueWithRange:{self->_targetRange.location, self->_targetRange.length}];
-  [v9 encodeObject:v8 forKey:@"targetRange"];
+  [coderCopy encodeObject:v8 forKey:@"targetRange"];
 
-  [v9 encodeObject:self->_adjacencyList forKey:@"adjacencyList"];
-  [v9 encodeObject:self->_gender forKey:@"gender"];
-  [v9 encodeObject:self->_defaultGender forKey:@"defaultGender"];
+  [coderCopy encodeObject:self->_adjacencyList forKey:@"adjacencyList"];
+  [coderCopy encodeObject:self->_gender forKey:@"gender"];
+  [coderCopy encodeObject:self->_defaultGender forKey:@"defaultGender"];
 }
 
-- (_LTDisambiguationLinkConfiguration)initWithCoder:(id)a3
+- (_LTDisambiguationLinkConfiguration)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _LTDisambiguationLinkConfiguration;
   v5 = [(_LTDisambiguationLinkConfiguration *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceRange"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceRange"];
     v5->_sourceRange.location = [v6 rangeValue];
     v5->_sourceRange.length = v7;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetRange"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetRange"];
     v5->_targetRange.location = [v8 rangeValue];
     v5->_targetRange.length = v9;
 
@@ -229,15 +229,15 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"adjacencyList"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"adjacencyList"];
     adjacencyList = v5->_adjacencyList;
     v5->_adjacencyList = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gender"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gender"];
     gender = v5->_gender;
     v5->_gender = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultGender"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultGender"];
     defaultGender = v5->_defaultGender;
     v5->_defaultGender = v17;
 
@@ -248,20 +248,20 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   unvalidatedAdjacencyList = self->_unvalidatedAdjacencyList;
   v6 = [MEMORY[0x277CBEA60] allocWithZone:?];
   if (unvalidatedAdjacencyList)
   {
     v7 = [v6 initWithArray:self->_unvalidatedAdjacencyList copyItems:1];
-    v8 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSourceRange:targetRange:unvalidatedAdjacencyList:", self->_sourceRange.location, self->_sourceRange.length, self->_targetRange.location, self->_targetRange.length, v7}];
+    v8 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSourceRange:targetRange:unvalidatedAdjacencyList:", self->_sourceRange.location, self->_sourceRange.length, self->_targetRange.location, self->_targetRange.length, v7}];
   }
 
   else
   {
     v7 = [v6 initWithArray:self->_adjacencyList copyItems:1];
-    v9 = [objc_opt_class() allocWithZone:a3];
+    v9 = [objc_opt_class() allocWithZone:zone];
     v10 = [(NSNumber *)self->_gender copy];
     v11 = [(NSNumber *)self->_defaultGender copy];
     v8 = [v9 initWithSourceRange:self->_sourceRange.location targetRange:self->_sourceRange.length adjacencyList:self->_targetRange.location gender:self->_targetRange.length defaultGender:{v7, v10, v11}];

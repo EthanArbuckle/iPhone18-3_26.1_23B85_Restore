@@ -1,18 +1,18 @@
 @interface ASGetOptionsTask
-- (BOOL)processContext:(id)a3;
+- (BOOL)processContext:(id)context;
 - (id)_url;
-- (void)finishWithError:(id)a3;
-- (void)setCommandArray:(id)a3;
-- (void)setVersionArray:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)setCommandArray:(id)array;
+- (void)setVersionArray:(id)array;
 @end
 
 @implementation ASGetOptionsTask
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
-  v4 = [(NSHTTPURLResponse *)self->super._response allHeaderFields];
-  v5 = [v4 DAObjectForKeyCaseInsensitive:@"ms-asprotocolcommands"];
-  v6 = [v4 DAObjectForKeyCaseInsensitive:@"ms-asprotocolversions"];
+  allHeaderFields = [(NSHTTPURLResponse *)self->super._response allHeaderFields];
+  v5 = [allHeaderFields DAObjectForKeyCaseInsensitive:@"ms-asprotocolcommands"];
+  v6 = [allHeaderFields DAObjectForKeyCaseInsensitive:@"ms-asprotocolversions"];
   v7 = [v6 componentsSeparatedByString:{@", "}];
   v8 = [v5 componentsSeparatedByString:{@", "}];
   [(ASGetOptionsTask *)self setVersionArray:v7];
@@ -25,22 +25,22 @@
 {
   if (__usePort == 1)
   {
-    v3 = [(ASTask *)self taskManager];
-    if ([v3 port])
+    taskManager = [(ASTask *)self taskManager];
+    if ([taskManager port])
     {
       v4 = MEMORY[0x277CCACA8];
-      v5 = [(ASTask *)self taskManager];
-      v6 = [v4 stringWithFormat:@":%ld", objc_msgSend(v5, "port")];
+      taskManager2 = [(ASTask *)self taskManager];
+      taskManager5 = [v4 stringWithFormat:@":%ld", objc_msgSend(taskManager2, "port")];
     }
 
     else
     {
-      v6 = &stru_285D39BD0;
+      taskManager5 = &stru_285D39BD0;
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v9 = [(ASTask *)self taskManager];
-    if ([v9 useSSL])
+    taskManager3 = [(ASTask *)self taskManager];
+    if ([taskManager3 useSSL])
     {
       v13 = @"s";
     }
@@ -50,16 +50,16 @@
       v13 = &stru_285D39BD0;
     }
 
-    v10 = [(ASTask *)self taskManager];
-    v14 = [v10 server];
-    v11 = [v12 stringWithFormat:@"http%@://%@%@/Microsoft-Server-ActiveSync?", v13, v14, v6];
+    taskManager4 = [(ASTask *)self taskManager];
+    server = [taskManager4 server];
+    v11 = [v12 stringWithFormat:@"http%@://%@%@/Microsoft-Server-ActiveSync?", v13, server, taskManager5];
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v6 = [(ASTask *)self taskManager];
-    if ([(__CFString *)v6 useSSL])
+    taskManager5 = [(ASTask *)self taskManager];
+    if ([(__CFString *)taskManager5 useSSL])
     {
       v8 = @"s";
     }
@@ -69,20 +69,20 @@
       v8 = &stru_285D39BD0;
     }
 
-    v9 = [(ASTask *)self taskManager];
-    v10 = [v9 server];
-    v11 = [v7 stringWithFormat:@"http%@://%@/Microsoft-Server-ActiveSync", v8, v10];
+    taskManager3 = [(ASTask *)self taskManager];
+    taskManager4 = [taskManager3 server];
+    v11 = [v7 stringWithFormat:@"http%@://%@/Microsoft-Server-ActiveSync", v8, taskManager4];
   }
 
   return v11;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self taskStatusForError:v4];
-  v6 = v4;
+  errorCopy = error;
+  v5 = [(ASTask *)self taskStatusForError:errorCopy];
+  v6 = errorCopy;
   if (v6)
   {
     v7 = DALoggingwithCategory();
@@ -135,26 +135,26 @@ LABEL_14:
     v54[1] = v26;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
 
-    v27 = [v6 domain];
-    v28 = [v27 isEqualToString:*MEMORY[0x277CCA738]];
+    domain = [v6 domain];
+    v28 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
     if (v28)
     {
-      v29 = [v6 code];
-      if ((v29 + 1012) <= 0xC)
+      code = [v6 code];
+      if ((code + 1012) <= 0xC)
       {
-        if (((1 << (v29 - 12)) & 0x1A08) != 0)
+        if (((1 << (code - 12)) & 0x1A08) != 0)
         {
           v30 = 101;
 LABEL_32:
           v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D03700] code:v30 userInfo:v17];
 
-          v16 = 0;
-          v15 = 0;
+          versionArray = 0;
+          commandArray = 0;
           goto LABEL_33;
         }
 
-        if (v29 == -1012)
+        if (code == -1012)
         {
 LABEL_27:
           v30 = 102;
@@ -166,9 +166,9 @@ LABEL_27:
       v34 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v33, v34))
       {
-        v38 = [v6 code];
+        code2 = [v6 code];
         *buf = 134217984;
-        v46 = v38;
+        v46 = code2;
         v36 = "Unhandled url error code of %ld";
         goto LABEL_30;
       }
@@ -176,13 +176,13 @@ LABEL_27:
 
     else
     {
-      v31 = [v6 domain];
-      v32 = [v31 isEqualToString:@"ASHTTPConnectionErrorDomain"];
+      domain2 = [v6 domain];
+      v32 = [domain2 isEqualToString:@"ASHTTPConnectionErrorDomain"];
 
       if (!v32)
       {
-        v16 = 0;
-        v15 = 0;
+        versionArray = 0;
+        commandArray = 0;
         v22 = v6;
         goto LABEL_33;
       }
@@ -196,9 +196,9 @@ LABEL_27:
       v34 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v33, v34))
       {
-        v35 = [v6 code];
+        code3 = [v6 code];
         *buf = 134217984;
-        v46 = v35;
+        v46 = code3;
         v36 = "Unhandled ASHTTP error code of %ld";
 LABEL_30:
         _os_log_impl(&dword_24A0AC000, v33, v34, v36, buf, 0xCu);
@@ -209,9 +209,9 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  v15 = [(ASGetOptionsTask *)self commandArray];
-  v16 = [(ASGetOptionsTask *)self versionArray];
-  if (([MEMORY[0x277D03910] ignoreSupportedCommands] || v15) && v16)
+  commandArray = [(ASGetOptionsTask *)self commandArray];
+  versionArray = [(ASGetOptionsTask *)self versionArray];
+  if (([MEMORY[0x277D03910] ignoreSupportedCommands] || commandArray) && versionArray)
   {
     v17 = DALoggingwithCategory();
     v18 = *(MEMORY[0x277D03988] + 6);
@@ -223,11 +223,11 @@ LABEL_30:
       *buf = 138413058;
       v46 = v19;
       v47 = 2112;
-      v48 = v15;
+      v48 = commandArray;
       v49 = 2112;
-      v50 = v16;
+      v50 = versionArray;
       v51 = 1024;
-      v52 = [v20 ignoreSupportedCommands];
+      ignoreSupportedCommands = [v20 ignoreSupportedCommands];
       _os_log_impl(&dword_24A0AC000, v17, v18, "%@ Parsed response with supportedCommands %@, supportedVersions %@.  IgnoreSupportedCommands = %d", buf, 0x26u);
     }
 
@@ -243,9 +243,9 @@ LABEL_30:
     if (os_log_type_enabled(v17, v37))
     {
       *buf = 138412802;
-      v46 = v15;
+      v46 = commandArray;
       v47 = 2112;
-      v48 = v16;
+      v48 = versionArray;
       v49 = 1024;
       LODWORD(v50) = [MEMORY[0x277D03910] ignoreSupportedCommands];
       _os_log_impl(&dword_24A0AC000, v17, v37, "GetOptions request returned no error, but is missing one or more of supportedCommands (%@) or supportedVersions (%@).  IgnoreSupportedCommands = %d", buf, 0x1Cu);
@@ -269,8 +269,8 @@ LABEL_33:
     v40[3] = &unk_278FC8028;
     v40[4] = self;
     v44 = v5;
-    v41 = v15;
-    v42 = v16;
+    v41 = commandArray;
+    v42 = versionArray;
     v43 = v22;
     [(ASTask *)self finishWithError:v6 afterDelegateCallout:v40];
   }
@@ -284,11 +284,11 @@ void __36__ASGetOptionsTask_finishWithError___block_invoke(void *a1)
   [WeakRetained getOptionsTask:a1[4] completedWithStatus:a1[8] supportedCommands:a1[5] supportedVersions:a1[6] error:a1[7]];
 }
 
-- (void)setVersionArray:(id)a3
+- (void)setVersionArray:(id)array
 {
-  if (self->_versionArray != a3)
+  if (self->_versionArray != array)
   {
-    v4 = [a3 copy];
+    v4 = [array copy];
     versionArray = self->_versionArray;
     self->_versionArray = v4;
 
@@ -296,11 +296,11 @@ void __36__ASGetOptionsTask_finishWithError___block_invoke(void *a1)
   }
 }
 
-- (void)setCommandArray:(id)a3
+- (void)setCommandArray:(id)array
 {
-  if (self->_commandArray != a3)
+  if (self->_commandArray != array)
   {
-    v4 = [a3 copy];
+    v4 = [array copy];
     commandArray = self->_commandArray;
     self->_commandArray = v4;
 

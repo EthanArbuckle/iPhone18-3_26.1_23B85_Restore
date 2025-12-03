@@ -1,12 +1,12 @@
 @interface HMDThreadMonitor
-+ (id)createWithRadarInitiator:(id)a3;
++ (id)createWithRadarInitiator:(id)initiator;
 + (id)logCategory;
 + (id)sharedInstance;
 + (void)start;
 - (BOOL)setup;
 - (HMMRadarInitiating)radarInitiator;
-- (void)pthreadHookWithEvent:(unsigned int)a3;
-- (void)resetWithRadarInitiator:(id)a3;
+- (void)pthreadHookWithEvent:(unsigned int)event;
+- (void)resetWithRadarInitiator:(id)initiator;
 @end
 
 @implementation HMDThreadMonitor
@@ -30,11 +30,11 @@
   return WeakRetained;
 }
 
-- (void)pthreadHookWithEvent:(unsigned int)a3
+- (void)pthreadHookWithEvent:(unsigned int)event
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (a3 == 1)
+  if (event == 1)
   {
     v5 = self->currentCount + 1;
     self->currentCount = v5;
@@ -42,7 +42,7 @@
     if (v5 >= threshold)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -62,13 +62,13 @@
 
     if (v5 == threshold && self->ttrEnabled)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"homed thread count is above %zu", threshold];
+      threshold = [MEMORY[0x277CCACA8] stringWithFormat:@"homed thread count is above %zu", threshold];
       WeakRetained = objc_loadWeakRetained(&self->_radarInitiator);
-      [WeakRetained requestRadarWithDisplayReason:v12 radarTitle:v12 componentName:@"HomeKit" componentVersion:@"Performance - cpu" componentID:1653014];
+      [WeakRetained requestRadarWithDisplayReason:threshold radarTitle:threshold componentName:@"HomeKit" componentVersion:@"Performance - cpu" componentID:1653014];
     }
   }
 
-  else if (a3 == 4)
+  else if (event == 4)
   {
     --self->currentCount;
   }
@@ -90,7 +90,7 @@
   [(HMDThreadMonitor *)self resetWithRadarInitiator:v4];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -108,7 +108,7 @@
   if (task_threads(v10, &v30, &act_listCnt))
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -139,9 +139,9 @@
   }
 
   MEMORY[0x22AAD5100](v10, v30, v20);
-  v6->currentCount = act_listCnt;
+  selfCopy->currentCount = act_listCnt;
   v11 = objc_autoreleasePoolPush();
-  v12 = v6;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -168,11 +168,11 @@ LABEL_15:
 
   objc_autoreleasePoolPop(v11);
   v23 = pthread_introspection_hook_install(HMDPthreadHook);
-  v6->_previousHook = v23;
+  selfCopy->_previousHook = v23;
   if (v23 == HMDPthreadHook)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v6;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -183,7 +183,7 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v24);
-    v6->_previousHook = 0;
+    selfCopy->_previousHook = 0;
   }
 
 LABEL_19:
@@ -191,33 +191,33 @@ LABEL_19:
   return v3;
 }
 
-- (void)resetWithRadarInitiator:(id)a3
+- (void)resetWithRadarInitiator:(id)initiator
 {
   self->counterLock._os_unfair_lock_opaque = 0;
   self->currentCount = 0;
   v4 = MEMORY[0x277D0F8D0];
-  v5 = a3;
-  v11 = [v4 sharedPreferences];
-  v6 = [v11 preferenceForKey:@"threadMonitorThreshold"];
-  v7 = [v6 numberValue];
-  v8 = [v7 intValue];
+  initiatorCopy = initiator;
+  sharedPreferences = [v4 sharedPreferences];
+  v6 = [sharedPreferences preferenceForKey:@"threadMonitorThreshold"];
+  numberValue = [v6 numberValue];
+  intValue = [numberValue intValue];
 
-  if (v8 <= 20)
+  if (intValue <= 20)
   {
     v9 = 20;
   }
 
   else
   {
-    v9 = v8;
+    v9 = intValue;
   }
 
   self->threshold = v9;
-  v10 = [v11 preferenceForKey:@"threadMonitorEnableTTR"];
+  v10 = [sharedPreferences preferenceForKey:@"threadMonitorEnableTTR"];
   self->ttrEnabled = [v10 BOOLValue];
 
   self->_previousHook = 0;
-  objc_storeWeak(&self->_radarInitiator, v5);
+  objc_storeWeak(&self->_radarInitiator, initiatorCopy);
 }
 
 + (id)logCategory
@@ -256,14 +256,14 @@ void __31__HMDThreadMonitor_logCategory__block_invoke()
   }
 }
 
-+ (id)createWithRadarInitiator:(id)a3
++ (id)createWithRadarInitiator:(id)initiator
 {
-  v3 = a3;
+  initiatorCopy = initiator;
   v4 = +[HMDThreadMonitor sharedInstance];
   v5 = v4;
   if (v4)
   {
-    [v4 resetWithRadarInitiator:v3];
+    [v4 resetWithRadarInitiator:initiatorCopy];
   }
 
   return v5;

@@ -4,17 +4,17 @@
 - (void)addOrRemoveTargetFooter;
 - (void)openFineTuneHelpLink;
 - (void)openTargetOutOfRangeHelpLink;
-- (void)restoreDefaults:(id)a3;
-- (void)setMeasuredLuminance:(id)a3 forSpecifier:(id)a4;
-- (void)setMeasuredWhitePointX:(id)a3 forSpecifier:(id)a4;
-- (void)setMeasuredWhitePointY:(id)a3 forSpecifier:(id)a4;
-- (void)setTargetLuminance:(id)a3 forSpecifier:(id)a4;
-- (void)setTargetWhitePointX:(id)a3 forSpecifier:(id)a4;
-- (void)setTargetWhitePointY:(id)a3 forSpecifier:(id)a4;
+- (void)restoreDefaults:(id)defaults;
+- (void)setMeasuredLuminance:(id)luminance forSpecifier:(id)specifier;
+- (void)setMeasuredWhitePointX:(id)x forSpecifier:(id)specifier;
+- (void)setMeasuredWhitePointY:(id)y forSpecifier:(id)specifier;
+- (void)setTargetLuminance:(id)luminance forSpecifier:(id)specifier;
+- (void)setTargetWhitePointX:(id)x forSpecifier:(id)specifier;
+- (void)setTargetWhitePointY:(id)y forSpecifier:(id)specifier;
 - (void)updateTargetLuminanceValidationRange;
 - (void)updateValidationRanges;
-- (void)userDidTapCancel:(id)a3;
-- (void)userDidTapDone:(id)a3;
+- (void)userDidTapCancel:(id)cancel;
+- (void)userDidTapDone:(id)done;
 - (void)validateUserAdjustment;
 - (void)viewDidLoad;
 @end
@@ -50,16 +50,16 @@
   v10.super_class = DBSFineTuneController;
   [(DBSFineTuneController *)&v10 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_userDidTapCancel_];
-  v4 = [(DBSFineTuneController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(DBSFineTuneController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_userDidTapDone_];
-  v6 = [(DBSFineTuneController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem2 = [(DBSFineTuneController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 
-  v7 = [(DBSFineTuneController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:0];
+  navigationItem3 = [(DBSFineTuneController *)self navigationItem];
+  rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v9 = DBS_LocalizedStringForDisplays(@"FINE_TUNE");
   [(DBSFineTuneController *)self setTitle:v9];
@@ -76,13 +76,13 @@
     restoreDefaultsSpecifier = self->_restoreDefaultsSpecifier;
     self->_restoreDefaultsSpecifier = v5;
 
-    v7 = [MEMORY[0x277CD9E40] mainDisplay];
-    v8 = [v7 currentPreset];
-    v9 = [v8 userAdjustment];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    currentPreset = [mainDisplay currentPreset];
+    userAdjustment = [currentPreset userAdjustment];
 
-    [v9 xDelta];
-    v48 = v9;
-    if (v10 == 0.0 && ([v9 yDelta], v11 == 0.0) && (objc_msgSend(v9, "luminanceScale"), v12 == 1.0))
+    [userAdjustment xDelta];
+    v48 = userAdjustment;
+    if (v10 == 0.0 && ([userAdjustment yDelta], v11 == 0.0) && (objc_msgSend(userAdjustment, "luminanceScale"), v12 == 1.0))
     {
       [(PSSpecifier *)self->_restoreDefaultsSpecifier setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
     }
@@ -94,7 +94,7 @@
       if (objc_opt_respondsToSelector())
       {
         v15 = MEMORY[0x277CBEAA8];
-        [v9 v14];
+        [userAdjustment v14];
         v16 = [v15 dateWithTimeIntervalSince1970:?];
         v17 = [MEMORY[0x277CCA968] localizedStringFromDate:v16 dateStyle:3 timeStyle:3];
         [v13 setObject:v17 forKeyedSubscript:*MEMORY[0x277D3FF88]];
@@ -175,50 +175,50 @@
   return v3;
 }
 
-- (void)userDidTapCancel:(id)a3
+- (void)userDidTapCancel:(id)cancel
 {
-  v3 = [(DBSFineTuneController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(DBSFineTuneController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)userDidTapDone:(id)a3
+- (void)userDidTapDone:(id)done
 {
   currentPreset = self->_currentPreset;
-  v5 = [MEMORY[0x277CD9E40] mainDisplay];
-  [v5 setCurrentPreset:currentPreset];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  [mainDisplay setCurrentPreset:currentPreset];
 
-  v6 = [(DBSFineTuneController *)self navigationController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(DBSFineTuneController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)updateTargetLuminanceValidationRange
 {
-  v3 = [MEMORY[0x277CD9E40] mainDisplay];
-  v4 = [v3 currentPreset];
-  v50 = [v4 userAdjustmentCommand];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  currentPreset = [mainDisplay currentPreset];
+  userAdjustmentCommand = [currentPreset userAdjustmentCommand];
 
-  [v50 minXDelta];
+  [userAdjustmentCommand minXDelta];
   v6 = v5;
-  v7 = [v50 userAdjustment];
-  [v7 xDelta];
+  userAdjustment = [userAdjustmentCommand userAdjustment];
+  [userAdjustment xDelta];
   v9 = v6 - v8;
 
-  [v50 maxXDelta];
+  [userAdjustmentCommand maxXDelta];
   v11 = v10;
-  v12 = [v50 userAdjustment];
-  [v12 xDelta];
+  userAdjustment2 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment2 xDelta];
   v14 = v11 - v13;
 
-  [v50 minYDelta];
+  [userAdjustmentCommand minYDelta];
   v49 = v15;
-  v16 = [v50 userAdjustment];
-  [v16 yDelta];
+  userAdjustment3 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment3 yDelta];
   v18 = v17;
 
-  [v50 maxYDelta];
+  [userAdjustmentCommand maxYDelta];
   v20 = v19;
-  v21 = [v50 userAdjustment];
-  [v21 yDelta];
+  userAdjustment4 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment4 yDelta];
   v23 = v22;
 
   [(NSNumber *)self->_targetWhitePointX doubleValue];
@@ -238,16 +238,16 @@
     }
   }
 
-  [v50 minLuminanceScale];
+  [userAdjustmentCommand minLuminanceScale];
   v36 = v35;
-  v37 = [v50 userAdjustment];
-  [v37 luminanceScale];
+  userAdjustment5 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment5 luminanceScale];
   v39 = v38;
 
-  [v50 maxLuminanceScale];
+  [userAdjustmentCommand maxLuminanceScale];
   v41 = v40;
-  v42 = [v50 userAdjustment];
-  [v42 luminanceScale];
+  userAdjustment6 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment6 luminanceScale];
   v44 = v43;
 
   if (numberInSpecifierValidationRange(self->_measuredLuminance, self->_measuredLuminanceSpecifier))
@@ -271,32 +271,32 @@
 
 - (void)updateValidationRanges
 {
-  v3 = [MEMORY[0x277CD9E40] mainDisplay];
-  v4 = [v3 currentPreset];
-  v33 = [v4 userAdjustmentCommand];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  currentPreset = [mainDisplay currentPreset];
+  userAdjustmentCommand = [currentPreset userAdjustmentCommand];
 
-  [v33 minXDelta];
+  [userAdjustmentCommand minXDelta];
   v6 = v5;
-  v7 = [v33 userAdjustment];
-  [v7 xDelta];
+  userAdjustment = [userAdjustmentCommand userAdjustment];
+  [userAdjustment xDelta];
   v9 = v8;
 
-  [v33 maxXDelta];
+  [userAdjustmentCommand maxXDelta];
   v11 = v10;
-  v12 = [v33 userAdjustment];
-  [v12 xDelta];
+  userAdjustment2 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment2 xDelta];
   v14 = v13;
 
-  [v33 minYDelta];
+  [userAdjustmentCommand minYDelta];
   v16 = v15;
-  v17 = [v33 userAdjustment];
-  [v17 yDelta];
+  userAdjustment3 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment3 yDelta];
   v19 = v18;
 
-  [v33 maxYDelta];
+  [userAdjustmentCommand maxYDelta];
   v21 = v20;
-  v22 = [v33 userAdjustment];
-  [v22 yDelta];
+  userAdjustment4 = [userAdjustmentCommand userAdjustment];
+  [userAdjustment4 yDelta];
   v24 = v23;
 
   if (numberInSpecifierValidationRange(self->_measuredWhitePointX, self->_measuredWhitePointXSpecifier))
@@ -403,9 +403,9 @@
     [(PSSpecifier *)self->_fineTuneTargetGroupSpecifier removePropertyForKey:*MEMORY[0x277D3FF50]];
   }
 
-  v20 = [(DBSFineTuneController *)self table];
+  table = [(DBSFineTuneController *)self table];
   v19 = [MEMORY[0x277CCAA78] indexSetWithIndex:2];
-  [v20 _reloadSectionHeaderFooters:v19 withRowAnimation:5];
+  [table _reloadSectionHeaderFooters:v19 withRowAnimation:5];
 }
 
 - (void)validateUserAdjustment
@@ -413,15 +413,15 @@
   [(DBSFineTuneController *)self addOrRemoveTargetFooter];
   if (numberInSpecifierValidationRange(self->_measuredWhitePointX, self->_measuredWhitePointXSpecifier) && numberInSpecifierValidationRange(self->_measuredWhitePointY, self->_measuredWhitePointYSpecifier) && numberInSpecifierValidationRange(self->_measuredLuminance, self->_measuredLuminanceSpecifier) && numberInSpecifierValidationRange(self->_targetWhitePointX, self->_targetWhitePointXSpecifier) && numberInSpecifierValidationRange(self->_targetWhitePointY, self->_targetWhitePointYSpecifier) && numberInSpecifierValidationRange(self->_targetLuminance, self->_targetLuminanceSpecifier))
   {
-    v3 = [MEMORY[0x277CD9E40] mainDisplay];
-    v4 = [v3 currentPreset];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    currentPreset = [mainDisplay currentPreset];
     currentPreset = self->_currentPreset;
-    self->_currentPreset = v4;
+    self->_currentPreset = currentPreset;
 
-    v20 = [(CADisplayPreset *)self->_currentPreset userAdjustmentCommand];
-    if (v20 && (-[NSNumber doubleValue](self->_targetWhitePointX, "doubleValue"), v7 = v6, -[NSNumber doubleValue](self->_measuredWhitePointX, "doubleValue"), v9 = v7 - v8, -[NSNumber doubleValue](self->_targetWhitePointY, "doubleValue"), v11 = v10, -[NSNumber doubleValue](self->_measuredWhitePointY, "doubleValue"), v13 = v11 - v12, -[NSNumber doubleValue](self->_targetLuminance, "doubleValue"), v15 = v14, -[NSNumber doubleValue](self->_measuredLuminance, "doubleValue"), [v20 transformWhitePointByXDelta:v9 yDelta:v13 luminanceScale:v15 / v16]))
+    userAdjustmentCommand = [(CADisplayPreset *)self->_currentPreset userAdjustmentCommand];
+    if (userAdjustmentCommand && (-[NSNumber doubleValue](self->_targetWhitePointX, "doubleValue"), v7 = v6, -[NSNumber doubleValue](self->_measuredWhitePointX, "doubleValue"), v9 = v7 - v8, -[NSNumber doubleValue](self->_targetWhitePointY, "doubleValue"), v11 = v10, -[NSNumber doubleValue](self->_measuredWhitePointY, "doubleValue"), v13 = v11 - v12, -[NSNumber doubleValue](self->_targetLuminance, "doubleValue"), v15 = v14, -[NSNumber doubleValue](self->_measuredLuminance, "doubleValue"), [userAdjustmentCommand transformWhitePointByXDelta:v9 yDelta:v13 luminanceScale:v15 / v16]))
     {
-      [(CADisplayPreset *)self->_currentPreset applyUserAdjustmentCommand:v20];
+      [(CADisplayPreset *)self->_currentPreset applyUserAdjustmentCommand:userAdjustmentCommand];
       v17 = 1;
     }
 
@@ -430,118 +430,118 @@
       v17 = 0;
     }
 
-    v18 = [(DBSFineTuneController *)self navigationItem];
-    v19 = [v18 rightBarButtonItem];
-    [v19 setEnabled:v17];
+    navigationItem = [(DBSFineTuneController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v17];
   }
 
   else
   {
-    v20 = [(DBSFineTuneController *)self navigationItem];
-    v18 = [v20 rightBarButtonItem];
-    [v18 setEnabled:0];
+    userAdjustmentCommand = [(DBSFineTuneController *)self navigationItem];
+    navigationItem = [userAdjustmentCommand rightBarButtonItem];
+    [navigationItem setEnabled:0];
   }
 }
 
-- (void)setMeasuredWhitePointX:(id)a3 forSpecifier:(id)a4
+- (void)setMeasuredWhitePointX:(id)x forSpecifier:(id)specifier
 {
-  v5 = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:a3, a4];
+  specifier = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:x, specifier];
   measuredWhitePointX = self->_measuredWhitePointX;
-  self->_measuredWhitePointX = v5;
+  self->_measuredWhitePointX = specifier;
 
   [(DBSFineTuneController *)self updateValidationRanges];
 
   [(DBSFineTuneController *)self validateUserAdjustment];
 }
 
-- (void)setMeasuredWhitePointY:(id)a3 forSpecifier:(id)a4
+- (void)setMeasuredWhitePointY:(id)y forSpecifier:(id)specifier
 {
-  v5 = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:a3, a4];
+  specifier = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:y, specifier];
   measuredWhitePointY = self->_measuredWhitePointY;
-  self->_measuredWhitePointY = v5;
+  self->_measuredWhitePointY = specifier;
 
   [(DBSFineTuneController *)self updateValidationRanges];
 
   [(DBSFineTuneController *)self validateUserAdjustment];
 }
 
-- (void)setMeasuredLuminance:(id)a3 forSpecifier:(id)a4
+- (void)setMeasuredLuminance:(id)luminance forSpecifier:(id)specifier
 {
-  v5 = [(NSNumberFormatter *)self->_luminanceNumberFormatter numberFromString:a3, a4];
+  specifier = [(NSNumberFormatter *)self->_luminanceNumberFormatter numberFromString:luminance, specifier];
   measuredLuminance = self->_measuredLuminance;
-  self->_measuredLuminance = v5;
+  self->_measuredLuminance = specifier;
 
   [(DBSFineTuneController *)self updateValidationRanges];
 
   [(DBSFineTuneController *)self validateUserAdjustment];
 }
 
-- (void)setTargetWhitePointX:(id)a3 forSpecifier:(id)a4
+- (void)setTargetWhitePointX:(id)x forSpecifier:(id)specifier
 {
-  v5 = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:a3, a4];
+  specifier = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:x, specifier];
   targetWhitePointX = self->_targetWhitePointX;
-  self->_targetWhitePointX = v5;
+  self->_targetWhitePointX = specifier;
 
   [(DBSFineTuneController *)self updateTargetLuminanceValidationRange];
 
   [(DBSFineTuneController *)self validateUserAdjustment];
 }
 
-- (void)setTargetWhitePointY:(id)a3 forSpecifier:(id)a4
+- (void)setTargetWhitePointY:(id)y forSpecifier:(id)specifier
 {
-  v5 = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:a3, a4];
+  specifier = [(NSNumberFormatter *)self->_xyNumberFormatter numberFromString:y, specifier];
   targetWhitePointY = self->_targetWhitePointY;
-  self->_targetWhitePointY = v5;
+  self->_targetWhitePointY = specifier;
 
   [(DBSFineTuneController *)self updateTargetLuminanceValidationRange];
 
   [(DBSFineTuneController *)self validateUserAdjustment];
 }
 
-- (void)setTargetLuminance:(id)a3 forSpecifier:(id)a4
+- (void)setTargetLuminance:(id)luminance forSpecifier:(id)specifier
 {
-  v5 = [(NSNumberFormatter *)self->_luminanceNumberFormatter numberFromString:a3, a4];
+  specifier = [(NSNumberFormatter *)self->_luminanceNumberFormatter numberFromString:luminance, specifier];
   targetLuminance = self->_targetLuminance;
-  self->_targetLuminance = v5;
+  self->_targetLuminance = specifier;
 
   [(DBSFineTuneController *)self validateUserAdjustment];
 }
 
-- (void)restoreDefaults:(id)a3
+- (void)restoreDefaults:(id)defaults
 {
-  v4 = [MEMORY[0x277CD9E40] mainDisplay];
-  v5 = [v4 currentPreset];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  currentPreset = [mainDisplay currentPreset];
   currentPreset = self->_currentPreset;
-  self->_currentPreset = v5;
+  self->_currentPreset = currentPreset;
 
-  v7 = [(CADisplayPreset *)self->_currentPreset userAdjustmentCommand];
-  v21 = v7;
-  if (v7 && ([v7 userAdjustment], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "xDelta"), v10 = -v9, v8, objc_msgSend(v21, "userAdjustment"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "yDelta"), v13 = -v12, v11, objc_msgSend(v21, "userAdjustment"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "luminanceScale"), v16 = 1.0 / v15, v14, (objc_msgSend(v21, "transformWhitePointByXDelta:yDelta:luminanceScale:", v10, v13, v16) & 1) != 0))
+  userAdjustmentCommand = [(CADisplayPreset *)self->_currentPreset userAdjustmentCommand];
+  v21 = userAdjustmentCommand;
+  if (userAdjustmentCommand && ([userAdjustmentCommand userAdjustment], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "xDelta"), v10 = -v9, v8, objc_msgSend(v21, "userAdjustment"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "yDelta"), v13 = -v12, v11, objc_msgSend(v21, "userAdjustment"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "luminanceScale"), v16 = 1.0 / v15, v14, (objc_msgSend(v21, "transformWhitePointByXDelta:yDelta:luminanceScale:", v10, v13, v16) & 1) != 0))
   {
     [(CADisplayPreset *)self->_currentPreset applyUserAdjustmentCommand:v21];
     v17 = self->_currentPreset;
-    v18 = [MEMORY[0x277CD9E40] mainDisplay];
-    [v18 setCurrentPreset:v17];
+    mainDisplay2 = [MEMORY[0x277CD9E40] mainDisplay];
+    [mainDisplay2 setCurrentPreset:v17];
 
     [(PSSpecifier *)self->_restoreDefaultsSpecifier setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D3FF38]];
     [(DBSFineTuneController *)self reloadSpecifier:self->_restoreDefaultsSpecifier];
-    v19 = [(DBSFineTuneController *)self navigationController];
-    [v19 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(DBSFineTuneController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v19 = [(DBSFineTuneController *)self navigationItem];
-    v20 = [v19 rightBarButtonItem];
-    [v20 setEnabled:0];
+    navigationController = [(DBSFineTuneController *)self navigationItem];
+    rightBarButtonItem = [navigationController rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
   }
 }
 
 - (void)openFineTuneHelpLink
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/HT213349?cid=mc-ols-ipad-article_ht213349-ipados_ui-10022023#calibrate"];
-  [v3 openURL:v2 withCompletionHandler:&__block_literal_global_2];
+  [mEMORY[0x277D75128] openURL:v2 withCompletionHandler:&__block_literal_global_2];
 }
 
 void __45__DBSFineTuneController_openFineTuneHelpLink__block_invoke(uint64_t a1, char a2)
@@ -559,9 +559,9 @@ void __45__DBSFineTuneController_openFineTuneHelpLink__block_invoke(uint64_t a1,
 
 - (void)openTargetOutOfRangeHelpLink
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v2 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/ht213349?cid=mc-ols-ipad-article_ht213349-ipados_ui-10022023#range-limits"];
-  [v3 openURL:v2 withCompletionHandler:&__block_literal_global_95];
+  [mEMORY[0x277D75128] openURL:v2 withCompletionHandler:&__block_literal_global_95];
 }
 
 void __53__DBSFineTuneController_openTargetOutOfRangeHelpLink__block_invoke(uint64_t a1, char a2)

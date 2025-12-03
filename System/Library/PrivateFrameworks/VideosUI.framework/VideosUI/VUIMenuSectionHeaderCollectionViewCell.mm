@@ -1,26 +1,26 @@
 @interface VUIMenuSectionHeaderCollectionViewCell
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation VUIMenuSectionHeaderCollectionViewCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(VUILabel *)self->_titleLabel removeFromSuperview];
     if (self->_title)
     {
       v5 = objc_alloc_init(VUITextLayout);
       [(VUITextLayout *)v5 setTextStyle:20];
       [(VUITextLayout *)v5 setFontWeight:10];
-      v6 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-      [(VUITextLayout *)v5 setColor:v6];
+      vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+      [(VUITextLayout *)v5 setColor:vui_primaryTextColor];
 
       [(VUITextLayout *)v5 setAlignment:1];
       [(VUITextLayout *)v5 setNumberOfLines:1];
@@ -28,15 +28,15 @@
       titleLabel = self->_titleLabel;
       self->_titleLabel = v7;
 
-      v9 = [(VUIMenuSectionHeaderCollectionViewCell *)self contentView];
-      [v9 addSubview:self->_titleLabel];
+      contentView = [(VUIMenuSectionHeaderCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_titleLabel];
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIMenuSectionHeaderCollectionViewCell *)self _layoutWithSize:1 metricsOnly:a3.width, a3.height];
+  [(VUIMenuSectionHeaderCollectionViewCell *)self _layoutWithSize:1 metricsOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -53,10 +53,10 @@
   [(VUIMenuSectionHeaderCollectionViewCell *)self _layoutWithSize:0 metricsOnly:Width, CGRectGetHeight(v6)];
 }
 
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only
 {
-  v4 = a4;
-  width = a3.width;
+  onlyCopy = only;
+  width = size.width;
   [MEMORY[0x1E69DD2E8] vui_padding];
   v8 = v7;
   [(VUILabel *)self->_titleLabel sizeThatFits:width - (v7 + v9), 1.79769313e308];
@@ -66,7 +66,7 @@
   v15 = v14;
   [(VUILabel *)self->_titleLabel bottomMarginWithBaselineMargin:16.0];
   v17 = v16;
-  if (!v4)
+  if (!onlyCopy)
   {
     v18 = v13;
     if ([(VUIMenuSectionHeaderCollectionViewCell *)self effectiveUserInterfaceLayoutDirection]== 1)

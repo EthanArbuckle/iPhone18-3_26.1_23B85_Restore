@@ -1,24 +1,24 @@
 @interface ICStoreArtworkInfo
 - (BOOL)_hasOriginalSize;
-- (BOOL)isEqual:(id)a3;
-- (CGColor)colorFromStringRepresentation:(id)a3;
-- (CGColor)copyColorWithKind:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGColor)colorFromStringRepresentation:(id)representation;
+- (CGColor)copyColorWithKind:(id)kind;
 - (CGSize)originalSize;
 - (ICStoreArtworkGradientInfo)gradientInfo;
-- (ICStoreArtworkInfo)initWithArtworkResponseArray:(id)a3;
-- (ICStoreArtworkInfo)initWithArtworkResponseDictionary:(id)a3;
-- (ICStoreArtworkInfo)initWithArtworkResponseValue:(id)a3;
-- (ICStoreArtworkInfo)initWithArtworkURL:(id)a3;
-- (ICStoreArtworkInfo)initWithCoder:(id)a3;
+- (ICStoreArtworkInfo)initWithArtworkResponseArray:(id)array;
+- (ICStoreArtworkInfo)initWithArtworkResponseDictionary:(id)dictionary;
+- (ICStoreArtworkInfo)initWithArtworkResponseValue:(id)value;
+- (ICStoreArtworkInfo)initWithArtworkURL:(id)l;
+- (ICStoreArtworkInfo)initWithCoder:(id)coder;
 - (NSArray)textGradient;
 - (NSString)stringRepresentation;
 - (NSURL)artworkURL;
-- (id)artworkURLWithSize:(CGSize)a3 cropStyle:(id)a4 format:(id)a5 preferP3ColorSpace:(BOOL)a6;
+- (id)artworkURLWithSize:(CGSize)size cropStyle:(id)style format:(id)format preferP3ColorSpace:(BOOL)space;
 - (unint64_t)hash;
 - (unint64_t)imageTraits;
 - (void)_sortResponseArray;
 - (void)_sortSupportedSizesArray;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICStoreArtworkInfo
@@ -43,19 +43,19 @@
 
 - (void)_sortSupportedSizesArray
 {
-  v2 = self;
+  selfCopy = self;
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(ICStoreArtworkInfo *)self sortedResponseArray];
-  if ([v3 count])
+  sortedResponseArray = [(ICStoreArtworkInfo *)self sortedResponseArray];
+  if ([sortedResponseArray count])
   {
-    v19 = v2;
-    v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v19 = selfCopy;
+    v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sortedResponseArray, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v18 = v3;
-    v4 = v3;
+    v18 = sortedResponseArray;
+    v4 = sortedResponseArray;
     v5 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v5)
     {
@@ -93,8 +93,8 @@
       while (v6);
     }
 
-    v3 = v18;
-    v2 = v19;
+    sortedResponseArray = v18;
+    selfCopy = v19;
     v16 = v20;
   }
 
@@ -103,8 +103,8 @@
     v16 = 0;
   }
 
-  sortedSupportedSizesArray = v2->_sortedSupportedSizesArray;
-  v2->_sortedSupportedSizesArray = v16;
+  sortedSupportedSizesArray = selfCopy->_sortedSupportedSizesArray;
+  selfCopy->_sortedSupportedSizesArray = v16;
 }
 
 - (void)_sortResponseArray
@@ -295,23 +295,23 @@ uint64_t __40__ICStoreArtworkInfo__sortResponseArray__block_invoke(uint64_t a1, 
 
 - (NSString)stringRepresentation
 {
-  v3 = [(ICStoreArtworkInfo *)self sizeInfo];
-  v4 = [v3 type];
+  sizeInfo = [(ICStoreArtworkInfo *)self sizeInfo];
+  type = [sizeInfo type];
 
-  switch(v4)
+  switch(type)
   {
     case 2:
-      v7 = [(NSArray *)self->_responseArray lastObject];
-      v6 = [v7 objectForKey:@"url"];
+      lastObject = [(NSArray *)self->_responseArray lastObject];
+      v6 = [lastObject objectForKey:@"url"];
 
       break;
     case 1:
-      v5 = [(NSDictionary *)self->_responseDictionary objectForKey:@"url"];
+      absoluteString = [(NSDictionary *)self->_responseDictionary objectForKey:@"url"];
       goto LABEL_6;
     case 0:
-      v5 = [(NSURL *)self->_artworkURL absoluteString];
+      absoluteString = [(NSURL *)self->_artworkURL absoluteString];
 LABEL_6:
-      v6 = v5;
+      v6 = absoluteString;
       break;
     default:
       v6 = 0;
@@ -347,13 +347,13 @@ LABEL_6:
   return result;
 }
 
-- (CGColor)colorFromStringRepresentation:(id)a3
+- (CGColor)colorFromStringRepresentation:(id)representation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  representationCopy = representation;
   if (_NSIsNSString())
   {
-    v4 = strtoul([v3 UTF8String], 0, 16);
+    v4 = strtoul([representationCopy UTF8String], 0, 16);
     v5 = vand_s8(vshl_u32(vdup_n_s32(v4), 0xFFFFFFF8FFFFFFF0), 0xFF000000FFLL);
     v6.i64[0] = v5.u32[0];
     v6.i64[1] = v5.u32[1];
@@ -373,26 +373,26 @@ LABEL_6:
   return v8;
 }
 
-- (CGColor)copyColorWithKind:(id)a3
+- (CGColor)copyColorWithKind:(id)kind
 {
-  v4 = [(NSDictionary *)self->_responseDictionary objectForKey:a3];
+  v4 = [(NSDictionary *)self->_responseDictionary objectForKey:kind];
   v5 = [(ICStoreArtworkInfo *)self colorFromStringRepresentation:v4];
 
   return v5;
 }
 
-- (id)artworkURLWithSize:(CGSize)a3 cropStyle:(id)a4 format:(id)a5 preferP3ColorSpace:(BOOL)a6
+- (id)artworkURLWithSize:(CGSize)size cropStyle:(id)style format:(id)format preferP3ColorSpace:(BOOL)space
 {
-  v6 = a6;
-  height = a3.height;
-  width = a3.width;
+  spaceCopy = space;
+  height = size.height;
+  width = size.width;
   v71 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v12)
+  styleCopy = style;
+  formatCopy = format;
+  v14 = formatCopy;
+  if (styleCopy)
   {
-    if (v13)
+    if (formatCopy)
     {
       goto LABEL_3;
     }
@@ -400,8 +400,8 @@ LABEL_6:
 
   else
   {
-    v62 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v62 handleFailureInMethod:a2 object:self file:@"ICStoreArtworkInfo.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"cropStyle != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreArtworkInfo.m" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"cropStyle != nil"}];
 
     if (v14)
     {
@@ -409,24 +409,24 @@ LABEL_6:
     }
   }
 
-  v63 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v63 handleFailureInMethod:a2 object:self file:@"ICStoreArtworkInfo.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"format != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICStoreArtworkInfo.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"format != nil"}];
 
 LABEL_3:
   v15 = ceil(width);
   v16 = ceil(height);
-  v17 = [(ICStoreArtworkInfo *)self sizeInfo];
-  v18 = [v17 type];
-  if (v18 == 2)
+  sizeInfo = [(ICStoreArtworkInfo *)self sizeInfo];
+  type = [sizeInfo type];
+  if (type == 2)
   {
-    v64 = v12;
-    v24 = [(ICStoreArtworkInfo *)self sortedResponseArray];
-    v65 = [v24 lastObject];
+    v64 = styleCopy;
+    sortedResponseArray = [(ICStoreArtworkInfo *)self sortedResponseArray];
+    lastObject = [sortedResponseArray lastObject];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v25 = v24;
+    v25 = sortedResponseArray;
     v26 = [v25 countByEnumeratingWithState:&v66 objects:v70 count:16];
     if (v26)
     {
@@ -460,7 +460,7 @@ LABEL_3:
 
               v29 = v41;
               v30 = v36;
-              v65 = v42;
+              lastObject = v42;
             }
           }
         }
@@ -471,23 +471,23 @@ LABEL_3:
       while (v27);
     }
 
-    v12 = v64;
-    v20 = v65;
+    styleCopy = v64;
+    v20 = lastObject;
   }
 
   else
   {
-    if (v18 != 1)
+    if (type != 1)
     {
-      if (v18)
+      if (type)
       {
         v20 = 0;
-        v19 = 0;
+        artworkURL = 0;
       }
 
       else
       {
-        v19 = [(ICStoreArtworkInfo *)self artworkURL];
+        artworkURL = [(ICStoreArtworkInfo *)self artworkURL];
         v20 = 0;
       }
 
@@ -495,9 +495,9 @@ LABEL_3:
     }
 
     v20 = self->_responseDictionary;
-    if ([v17 hasMaxSupportedSize])
+    if ([sizeInfo hasMaxSupportedSize])
     {
-      [v17 maxSupportedSize];
+      [sizeInfo maxSupportedSize];
       if (width < v21)
       {
         v21 = width;
@@ -548,7 +548,7 @@ LABEL_3:
   v55 = [v44 rangeOfString:@"{c}" options:5];
   if (v55 != 0x7FFFFFFFFFFFFFFFLL && v56)
   {
-    [v44 replaceCharactersInRange:v55 withString:{v56, v12}];
+    [v44 replaceCharactersInRange:v55 withString:{v56, styleCopy}];
   }
 
   v57 = [v44 rangeOfString:@"{f}" options:5];
@@ -558,7 +558,7 @@ LABEL_3:
     {
       v59 = v57;
       [v44 replaceCharactersInRange:v57 withString:{v58, v14}];
-      if (v6)
+      if (spaceCopy)
       {
         v60 = [(NSDictionary *)v20 objectForKey:@"hasP3"];
         if ([v60 BOOLValue])
@@ -571,17 +571,17 @@ LABEL_3:
 
   if ([v44 length])
   {
-    v19 = [MEMORY[0x1E695DFF8] URLWithString:v44];
+    artworkURL = [MEMORY[0x1E695DFF8] URLWithString:v44];
   }
 
   else
   {
-    v19 = 0;
+    artworkURL = 0;
   }
 
 LABEL_55:
 
-  return v19;
+  return artworkURL;
 }
 
 - (NSURL)artworkURL
@@ -604,8 +604,8 @@ LABEL_5:
 
   if (self->_responseArray)
   {
-    v7 = [(ICStoreArtworkInfo *)self sizeInfo];
-    [v7 maxSupportedSize];
+    sizeInfo = [(ICStoreArtworkInfo *)self sizeInfo];
+    [sizeInfo maxSupportedSize];
     v5 = [(ICStoreArtworkInfo *)self artworkURLWithSize:@"sr" cropStyle:@"jpg" format:?];
   }
 
@@ -619,51 +619,51 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   responseArray = self->_responseArray;
-  v5 = a3;
-  [v5 encodeObject:responseArray forKey:@"responseArray"];
-  [v5 encodeObject:self->_responseDictionary forKey:@"responseDictionary"];
-  [v5 encodeObject:self->_artworkURL forKey:@"artworkURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:responseArray forKey:@"responseArray"];
+  [coderCopy encodeObject:self->_responseDictionary forKey:@"responseDictionary"];
+  [coderCopy encodeObject:self->_artworkURL forKey:@"artworkURL"];
 }
 
-- (ICStoreArtworkInfo)initWithCoder:(id)a3
+- (ICStoreArtworkInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodePropertyListForKey:@"responseArray"];
+  coderCopy = coder;
+  v5 = [coderCopy decodePropertyListForKey:@"responseArray"];
   if (v5)
   {
     self = [(ICStoreArtworkInfo *)self initWithArtworkResponseArray:v5];
-    v6 = self;
+    selfCopy3 = self;
   }
 
   else
   {
-    v7 = [v4 decodePropertyListForKey:@"responseDictionary"];
+    v7 = [coderCopy decodePropertyListForKey:@"responseDictionary"];
     if (v7)
     {
       self = [(ICStoreArtworkInfo *)self initWithArtworkResponseDictionary:v7];
-      v6 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artworkURL"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artworkURL"];
       if (v8)
       {
         self = [(ICStoreArtworkInfo *)self initWithArtworkURL:v8];
-        v6 = self;
+        selfCopy3 = self;
       }
 
       else
       {
-        v6 = 0;
+        selfCopy3 = 0;
       }
     }
   }
 
-  return v6;
+  return selfCopy3;
 }
 
 - (unint64_t)hash
@@ -769,29 +769,29 @@ LABEL_6:
   return (v73 + v74) ^ __ROR8__(v73, 47) ^ v76 ^ __ROR8__(v73 + v74, 32) ^ v76 ^ __ROR8__(v74 ^ v75, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICStoreArtworkInfo *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICStoreArtworkInfo *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(ICStoreArtworkInfo *)self sizeInfo];
-      v7 = [(ICStoreArtworkInfo *)v5 sizeInfo];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      sizeInfo = [(ICStoreArtworkInfo *)self sizeInfo];
+      sizeInfo2 = [(ICStoreArtworkInfo *)v5 sizeInfo];
+      v8 = sizeInfo2;
+      if (sizeInfo == sizeInfo2)
       {
       }
 
       else
       {
-        v9 = [v6 isEqual:v7];
+        v9 = [sizeInfo isEqual:sizeInfo2];
 
         if ((v9 & 1) == 0)
         {
@@ -799,16 +799,16 @@ LABEL_6:
         }
       }
 
-      v11 = [(ICStoreArtworkInfo *)self artworkURL];
-      v12 = [(ICStoreArtworkInfo *)v5 artworkURL];
-      v13 = v12;
-      if (v11 == v12)
+      artworkURL = [(ICStoreArtworkInfo *)self artworkURL];
+      artworkURL2 = [(ICStoreArtworkInfo *)v5 artworkURL];
+      v13 = artworkURL2;
+      if (artworkURL == artworkURL2)
       {
       }
 
       else
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [artworkURL isEqual:artworkURL2];
 
         if ((v14 & 1) == 0)
         {
@@ -816,16 +816,16 @@ LABEL_6:
         }
       }
 
-      v15 = [(ICStoreArtworkInfo *)self responseDictionary];
-      v16 = [(ICStoreArtworkInfo *)v5 responseDictionary];
-      v17 = v16;
-      if (v15 == v16)
+      responseDictionary = [(ICStoreArtworkInfo *)self responseDictionary];
+      responseDictionary2 = [(ICStoreArtworkInfo *)v5 responseDictionary];
+      v17 = responseDictionary2;
+      if (responseDictionary == responseDictionary2)
       {
       }
 
       else
       {
-        v18 = [v15 isEqual:v16];
+        v18 = [responseDictionary isEqual:responseDictionary2];
 
         if ((v18 & 1) == 0)
         {
@@ -837,16 +837,16 @@ LABEL_21:
         }
       }
 
-      v19 = [(ICStoreArtworkInfo *)self responseArray];
-      v20 = [(ICStoreArtworkInfo *)v5 responseArray];
-      if (v19 == v20)
+      responseArray = [(ICStoreArtworkInfo *)self responseArray];
+      responseArray2 = [(ICStoreArtworkInfo *)v5 responseArray];
+      if (responseArray == responseArray2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v19 isEqual:v20];
+        v10 = [responseArray isEqual:responseArray2];
       }
 
       goto LABEL_21;
@@ -860,58 +860,58 @@ LABEL_22:
   return v10;
 }
 
-- (ICStoreArtworkInfo)initWithArtworkResponseValue:(id)a3
+- (ICStoreArtworkInfo)initWithArtworkResponseValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (_NSIsNSDictionary())
   {
-    v5 = [(ICStoreArtworkInfo *)self initWithArtworkResponseDictionary:v4];
+    v5 = [(ICStoreArtworkInfo *)self initWithArtworkResponseDictionary:valueCopy];
 LABEL_5:
     self = v5;
-    v6 = self;
+    selfCopy2 = self;
     goto LABEL_6;
   }
 
   if (_NSIsNSArray())
   {
-    v5 = [(ICStoreArtworkInfo *)self initWithArtworkResponseArray:v4];
+    v5 = [(ICStoreArtworkInfo *)self initWithArtworkResponseArray:valueCopy];
     goto LABEL_5;
   }
 
   if (_NSIsNSString())
   {
-    v8 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+    v8 = [MEMORY[0x1E695DFF8] URLWithString:valueCopy];
     if (v8)
     {
       self = [(ICStoreArtworkInfo *)self initWithArtworkURL:v8];
-      v6 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_6:
 
-  return v6;
+  return selfCopy2;
 }
 
-- (ICStoreArtworkInfo)initWithArtworkURL:(id)a3
+- (ICStoreArtworkInfo)initWithArtworkURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = ICStoreArtworkInfo;
   v5 = [(ICStoreArtworkInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     artworkURL = v5->_artworkURL;
     v5->_artworkURL = v6;
 
@@ -925,10 +925,10 @@ LABEL_6:
   return v5;
 }
 
-- (ICStoreArtworkInfo)initWithArtworkResponseDictionary:(id)a3
+- (ICStoreArtworkInfo)initWithArtworkResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"url"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"url"];
   if (_NSIsNSString())
   {
     v18.receiver = self;
@@ -936,7 +936,7 @@ LABEL_6:
     v6 = [(ICStoreArtworkInfo *)&v18 init];
     if (v6)
     {
-      v7 = [v4 copy];
+      v7 = [dictionaryCopy copy];
       responseDictionary = v6->_responseDictionary;
       v6->_responseDictionary = v7;
 
@@ -959,26 +959,26 @@ LABEL_6:
     }
 
     self = v6;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (ICStoreArtworkInfo)initWithArtworkResponseArray:(id)a3
+- (ICStoreArtworkInfo)initWithArtworkResponseArray:(id)array
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -990,7 +990,7 @@ LABEL_6:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -1009,7 +1009,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -1040,15 +1040,15 @@ LABEL_6:
     }
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

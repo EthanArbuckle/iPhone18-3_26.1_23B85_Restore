@@ -1,29 +1,29 @@
 @interface UGCPhotoCarouselController
 - (NSString)downloadToken;
-- (UGCPhotoCarouselController)initWithDelegate:(id)a3 maximumNumberOfPhotos:(unint64_t)a4 prefersMenu:(BOOL)a5;
+- (UGCPhotoCarouselController)initWithDelegate:(id)delegate maximumNumberOfPhotos:(unint64_t)photos prefersMenu:(BOOL)menu;
 - (UGCPhotoCarouselRequestDelegate)delegate;
 - (UIBarButtonItem)anchoringBarButtonItem;
 - (UIView)anchoringView;
 - (UIViewController)presentingViewController;
 - (double)preferredCellHeight;
 - (id)_buildSnapshotFromCurrentState;
-- (id)_viewModelForIdentifier:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)visibleImageViewForIdentifier:(id)a3;
-- (void)_addViewModel:(id)a3;
-- (void)_cellRequestsRemoveImageForIdentifier:(id)a3;
+- (id)_viewModelForIdentifier:(id)identifier;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)visibleImageViewForIdentifier:(id)identifier;
+- (void)_addViewModel:(id)model;
+- (void)_cellRequestsRemoveImageForIdentifier:(id)identifier;
 - (void)_invokeChangeHandler;
-- (void)_removeImageForIdentifier:(id)a3;
+- (void)_removeImageForIdentifier:(id)identifier;
 - (void)_updateAddButtonState;
-- (void)addImage:(id)a3 forIdentifier:(id)a4;
-- (void)addImageURL:(id)a3 forIdentifier:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)addImage:(id)image forIdentifier:(id)identifier;
+- (void)addImageURL:(id)l forIdentifier:(id)identifier;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)photoCellDidCancel:(id)a3;
+- (void)photoCellDidCancel:(id)cancel;
 - (void)photoOptionsMenuButtonDidSelectAddFromLibrary;
 - (void)photoOptionsMenuButtonDidSelectTakePhoto;
-- (void)setMaximumNumberOfPhotos:(unint64_t)a3;
-- (void)setupCollectionView:(id)a3;
+- (void)setMaximumNumberOfPhotos:(unint64_t)photos;
+- (void)setupCollectionView:(id)view;
 @end
 
 @implementation UGCPhotoCarouselController
@@ -73,19 +73,19 @@
   }
 }
 
-- (void)photoCellDidCancel:(id)a3
+- (void)photoCellDidCancel:(id)cancel
 {
-  v4 = [a3 identifier];
-  [(UGCPhotoCarouselController *)self _cellRequestsRemoveImageForIdentifier:v4];
+  identifier = [cancel identifier];
+  [(UGCPhotoCarouselController *)self _cellRequestsRemoveImageForIdentifier:identifier];
 }
 
 - (double)preferredCellHeight
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   result = 90.0;
-  if (v3 == 5)
+  if (userInterfaceIdiom == 5)
   {
     return 48.0;
   }
@@ -143,8 +143,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) _maps_diffableDataSourceIdentifier];
-        [v5 addObject:v11];
+        _maps_diffableDataSourceIdentifier = [*(*(&v16 + 1) + 8 * i) _maps_diffableDataSourceIdentifier];
+        [v5 addObject:_maps_diffableDataSourceIdentifier];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -154,9 +154,9 @@
   }
 
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-  if (v13 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [v5 addObject:@"AddPhotoCellIdentifier"];
   }
@@ -172,9 +172,9 @@
   return v3;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v8 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a4];
+  v8 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
   if ([v8 isEqualToString:@"AddPhotoCellIdentifier"])
   {
     if ([(NSMutableArray *)self->_viewModels count]>= self->_maximumNumberOfPhotos)
@@ -203,15 +203,15 @@
 LABEL_7:
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if ([v8 isEqualToString:@"AddPhotoCellIdentifier"])
+  identifierCopy = identifier;
+  pathCopy = path;
+  viewCopy = view;
+  if ([identifierCopy isEqualToString:@"AddPhotoCellIdentifier"])
   {
     v11 = +[UGCAddPhotoCollectionViewCell reuseIdentifier];
-    v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
     [v12 setDelegate:self];
     [v12 setPrefersMenu:self->_prefersMenu];
@@ -229,47 +229,47 @@ LABEL_7:
   else
   {
     v15 = +[UGCPhotoCollectionViewCell reuseIdentifier];
-    v13 = [v10 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
     [v13 setDelegate:self];
-    v16 = [(UGCPhotoCarouselController *)self _viewModelForIdentifier:v8];
-    v17 = [v16 identifier];
-    [v13 setIdentifier:v17];
+    v16 = [(UGCPhotoCarouselController *)self _viewModelForIdentifier:identifierCopy];
+    identifier = [v16 identifier];
+    [v13 setIdentifier:identifier];
 
-    v18 = [v16 image];
+    image = [v16 image];
 
-    if (v18)
+    if (image)
     {
-      v19 = [v16 image];
-      [v13 setImage:v19];
+      image2 = [v16 image];
+      [v13 setImage:image2];
     }
 
     else
     {
-      v19 = +[UGCPhotoDownloadManager sharedDownloadManager];
+      image2 = +[UGCPhotoDownloadManager sharedDownloadManager];
       [v13 beginAnimatingActivityIndicator];
-      v20 = [(UGCPhotoCarouselController *)self downloadToken];
+      downloadToken = [(UGCPhotoCarouselController *)self downloadToken];
       v23 = _NSConcreteStackBlock;
       v24 = 3221225472;
       v25 = sub_100DA85CC;
       v26 = &unk_101654148;
       v27 = v13;
       v28 = v16;
-      [v19 fetchImageForPhotoInfo:v28 downloadToken:v20 completion:&v23];
+      [image2 fetchImageForPhotoInfo:v28 downloadToken:downloadToken completion:&v23];
     }
   }
 
   [v13 _setContinuousCornerRadius:{4.0, v23, v24, v25, v26}];
   [v13 setClipsToBounds:1];
-  v21 = [(UGCPhotoCarouselController *)self cellBackgroundColor];
-  [v13 setBackgroundColor:v21];
+  cellBackgroundColor = [(UGCPhotoCarouselController *)self cellBackgroundColor];
+  [v13 setBackgroundColor:cellBackgroundColor];
 
   return v13;
 }
 
-- (id)_viewModelForIdentifier:(id)a3
+- (id)_viewModelForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -289,8 +289,8 @@ LABEL_7:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 _maps_diffableDataSourceIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        _maps_diffableDataSourceIdentifier = [v9 _maps_diffableDataSourceIdentifier];
+        v11 = [_maps_diffableDataSourceIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -321,9 +321,9 @@ LABEL_11:
   [WeakRetained setDimmed:v3];
 }
 
-- (void)_removeImageForIdentifier:(id)a3
+- (void)_removeImageForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -347,8 +347,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v10) identifier];
-        v13 = [v12 isEqualToString:v4];
+        identifier = [*(*(&v15 + 1) + 8 * v10) identifier];
+        v13 = [identifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -382,15 +382,15 @@ LABEL_12:
   {
     [(NSMutableArray *)self->_viewModels removeObjectAtIndex:v8];
     [(UGCPhotoCarouselController *)self _updateAddButtonState];
-    v14 = [(UGCPhotoCarouselController *)self _buildSnapshotFromCurrentState];
-    [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v14 animatingDifferences:1];
+    _buildSnapshotFromCurrentState = [(UGCPhotoCarouselController *)self _buildSnapshotFromCurrentState];
+    [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:_buildSnapshotFromCurrentState animatingDifferences:1];
     [(UGCPhotoCarouselController *)self _invokeChangeHandler];
   }
 }
 
-- (void)_cellRequestsRemoveImageForIdentifier:(id)a3
+- (void)_cellRequestsRemoveImageForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7[0] = _NSConcreteStackBlock;
@@ -398,7 +398,7 @@ LABEL_12:
   v7[2] = sub_100DA8BB8;
   v7[3] = &unk_10165FC50;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = identifierCopy;
   v8 = v6;
   [WeakRetained photoCarouselController:self requestsRemovingImageForIdentifier:v6 completion:v7];
 
@@ -406,57 +406,57 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
   v6 = +[UGCPhotoCollectionViewCell reuseIdentifier];
-  [v4 registerClass:v5 forCellWithReuseIdentifier:v6];
+  [viewCopy registerClass:v5 forCellWithReuseIdentifier:v6];
 
   v7 = objc_opt_class();
   v8 = +[UGCAddPhotoCollectionViewCell reuseIdentifier];
-  [v4 registerClass:v7 forCellWithReuseIdentifier:v8];
+  [viewCopy registerClass:v7 forCellWithReuseIdentifier:v8];
 
-  [v4 setDelegate:self];
-  objc_storeWeak(&self->_collectionView, v4);
+  [viewCopy setDelegate:self];
+  objc_storeWeak(&self->_collectionView, viewCopy);
   v9 = [UICollectionViewDiffableDataSource alloc];
   v10 = sub_1007CDFC8(self);
-  v11 = [v9 initWithCollectionView:v4 cellProvider:v10];
+  v11 = [v9 initWithCollectionView:viewCopy cellProvider:v10];
 
   diffableDataSource = self->_diffableDataSource;
   self->_diffableDataSource = v11;
 
-  v13 = [(UGCPhotoCarouselController *)self _buildSnapshotFromCurrentState];
-  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v13 animatingDifferences:0];
+  _buildSnapshotFromCurrentState = [(UGCPhotoCarouselController *)self _buildSnapshotFromCurrentState];
+  [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:_buildSnapshotFromCurrentState animatingDifferences:0];
 }
 
 - (void)_invokeChangeHandler
 {
-  v3 = [(UGCPhotoCarouselController *)self changeHandler];
+  changeHandler = [(UGCPhotoCarouselController *)self changeHandler];
 
-  if (v3)
+  if (changeHandler)
   {
-    v4 = [(UGCPhotoCarouselController *)self changeHandler];
-    v4[2]();
+    changeHandler2 = [(UGCPhotoCarouselController *)self changeHandler];
+    changeHandler2[2]();
   }
 }
 
-- (void)_addViewModel:(id)a3
+- (void)_addViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if ([(NSMutableArray *)self->_viewModels count]< self->_maximumNumberOfPhotos)
   {
-    [(NSMutableArray *)self->_viewModels addObject:v5];
+    [(NSMutableArray *)self->_viewModels addObject:modelCopy];
     [(UGCPhotoCarouselController *)self _updateAddButtonState];
-    v4 = [(UGCPhotoCarouselController *)self _buildSnapshotFromCurrentState];
-    [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v4 animatingDifferences:1];
+    _buildSnapshotFromCurrentState = [(UGCPhotoCarouselController *)self _buildSnapshotFromCurrentState];
+    [(UICollectionViewDiffableDataSource *)self->_diffableDataSource applySnapshot:_buildSnapshotFromCurrentState animatingDifferences:1];
     [(UGCPhotoCarouselController *)self _invokeChangeHandler];
   }
 }
 
-- (id)visibleImageViewForIdentifier:(id)a3
+- (id)visibleImageViewForIdentifier:(id)identifier
 {
-  v4 = [(UGCPhotoCarouselController *)self _viewModelForIdentifier:a3];
+  v4 = [(UGCPhotoCarouselController *)self _viewModelForIdentifier:identifier];
   if (v4)
   {
     v18 = 0u;
@@ -464,19 +464,19 @@ LABEL_12:
     v16 = 0u;
     v17 = 0u;
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-    v6 = [WeakRetained visibleCells];
+    visibleCells = [WeakRetained visibleCells];
 
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
-    if (v7)
+    imageView = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
+    if (imageView)
     {
       v8 = *v17;
       while (2)
       {
-        for (i = 0; i != v7; i = i + 1)
+        for (i = 0; i != imageView; i = i + 1)
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleCells);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
@@ -484,21 +484,21 @@ LABEL_12:
           if (objc_opt_isKindOfClass())
           {
             v11 = v10;
-            v12 = [v11 identifier];
-            v13 = [v4 _maps_diffableDataSourceIdentifier];
-            v14 = [v12 isEqual:v13];
+            identifier = [v11 identifier];
+            _maps_diffableDataSourceIdentifier = [v4 _maps_diffableDataSourceIdentifier];
+            v14 = [identifier isEqual:_maps_diffableDataSourceIdentifier];
 
             if (v14)
             {
-              v7 = [v11 imageView];
+              imageView = [v11 imageView];
 
               goto LABEL_15;
             }
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
-        if (v7)
+        imageView = [visibleCells countByEnumeratingWithState:&v16 objects:v20 count:16];
+        if (imageView)
         {
           continue;
         }
@@ -512,39 +512,39 @@ LABEL_15:
 
   else
   {
-    v7 = 0;
+    imageView = 0;
   }
 
-  return v7;
+  return imageView;
 }
 
-- (void)addImageURL:(id)a3 forIdentifier:(id)a4
+- (void)addImageURL:(id)l forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  lCopy = l;
   v8 = objc_alloc_init(_UGCPhotoCarouselViewModel);
-  [(_UGCPhotoCarouselViewModel *)v8 setImageURL:v7];
+  [(_UGCPhotoCarouselViewModel *)v8 setImageURL:lCopy];
 
-  [(_UGCPhotoCarouselViewModel *)v8 setIdentifier:v6];
+  [(_UGCPhotoCarouselViewModel *)v8 setIdentifier:identifierCopy];
   [(UGCPhotoCarouselController *)self _addViewModel:v8];
 }
 
-- (void)addImage:(id)a3 forIdentifier:(id)a4
+- (void)addImage:(id)image forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  imageCopy = image;
   v8 = objc_alloc_init(_UGCPhotoCarouselViewModel);
-  [(_UGCPhotoCarouselViewModel *)v8 setImage:v7];
+  [(_UGCPhotoCarouselViewModel *)v8 setImage:imageCopy];
 
-  [(_UGCPhotoCarouselViewModel *)v8 setIdentifier:v6];
+  [(_UGCPhotoCarouselViewModel *)v8 setIdentifier:identifierCopy];
   [(UGCPhotoCarouselController *)self _addViewModel:v8];
 }
 
-- (void)setMaximumNumberOfPhotos:(unint64_t)a3
+- (void)setMaximumNumberOfPhotos:(unint64_t)photos
 {
-  if (self->_maximumNumberOfPhotos != a3)
+  if (self->_maximumNumberOfPhotos != photos)
   {
-    self->_maximumNumberOfPhotos = a3;
+    self->_maximumNumberOfPhotos = photos;
     [(UGCPhotoCarouselController *)self _updateAddButtonState];
   }
 }
@@ -573,8 +573,8 @@ LABEL_15:
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(UGCPhotoCarouselController *)self downloadToken];
-        [v3 cancelRequestForPhotoInfo:v9 downloadToken:v10];
+        downloadToken = [(UGCPhotoCarouselController *)self downloadToken];
+        [v3 cancelRequestForPhotoInfo:v9 downloadToken:downloadToken];
 
         v8 = v8 + 1;
       }
@@ -591,17 +591,17 @@ LABEL_15:
   [(UGCPhotoCarouselController *)&v11 dealloc];
 }
 
-- (UGCPhotoCarouselController)initWithDelegate:(id)a3 maximumNumberOfPhotos:(unint64_t)a4 prefersMenu:(BOOL)a5
+- (UGCPhotoCarouselController)initWithDelegate:(id)delegate maximumNumberOfPhotos:(unint64_t)photos prefersMenu:(BOOL)menu
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = UGCPhotoCarouselController;
   v9 = [(UGCPhotoCarouselController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_maximumNumberOfPhotos = a4;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_maximumNumberOfPhotos = photos;
     v11 = objc_alloc_init(NSMutableArray);
     viewModels = v10->_viewModels;
     v10->_viewModels = v11;
@@ -610,7 +610,7 @@ LABEL_15:
     cellBackgroundColor = v10->_cellBackgroundColor;
     v10->_cellBackgroundColor = v13;
 
-    v10->_prefersMenu = a5;
+    v10->_prefersMenu = menu;
   }
 
   return v10;

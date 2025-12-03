@@ -1,21 +1,21 @@
 @interface NTKUpNextMatchupCell
-- (NTKUpNextMatchupCell)initWithFrame:(CGRect)a3;
-- (void)configureWithContent:(id)a3;
+- (NTKUpNextMatchupCell)initWithFrame:(CGRect)frame;
+- (void)configureWithContent:(id)content;
 - (void)prepareForReuse;
-- (void)setFilterProvider:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setFilterProvider:(id)provider;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKUpNextMatchupCell
 
-- (NTKUpNextMatchupCell)initWithFrame:(CGRect)a3
+- (NTKUpNextMatchupCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v90[16] = *MEMORY[0x277D85DE8];
   v89.receiver = self;
   v89.super_class = NTKUpNextMatchupCell;
@@ -27,8 +27,8 @@
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v9 = [(NTKUpNextBaseCell *)v7 device];
-    ___LayoutConstants_block_invoke_62(v9, &v85);
+    device = [(NTKUpNextBaseCell *)v7 device];
+    ___LayoutConstants_block_invoke_62(device, &v85);
 
     v10 = v85;
     v11 = v86;
@@ -39,127 +39,127 @@
     v8->_scoreLayoutGuide = v14;
 
     [(UILayoutGuide *)v8->_scoreLayoutGuide setIdentifier:@"NTKUpNextMatchupCellScoreGuide"];
-    v16 = [(NTKUpNextMatchupCell *)v8 contentView];
-    [v16 addLayoutGuide:v8->_scoreLayoutGuide];
+    contentView = [(NTKUpNextMatchupCell *)v8 contentView];
+    [contentView addLayoutGuide:v8->_scoreLayoutGuide];
 
-    v17 = [[NTKUpNextMatchupScoreView alloc] initWithFrame:x, y, width, height];
+    height = [[NTKUpNextMatchupScoreView alloc] initWithFrame:x, y, width, height];
     scoreView = v8->_scoreView;
-    v8->_scoreView = v17;
+    v8->_scoreView = height;
 
     [(NTKUpNextMatchupScoreView *)v8->_scoreView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(NTKUpNextMatchupCell *)v8 contentView];
-    [v19 addSubview:v8->_scoreView];
+    contentView2 = [(NTKUpNextMatchupCell *)v8 contentView];
+    [contentView2 addSubview:v8->_scoreView];
 
     v20 = objc_alloc_init(MEMORY[0x277D756D0]);
     upcomingLayoutGuide = v8->_upcomingLayoutGuide;
     v8->_upcomingLayoutGuide = v20;
 
     [(UILayoutGuide *)v8->_upcomingLayoutGuide setIdentifier:@"NTKUpNextMatchupCellUpcomingGuide"];
-    v22 = [(NTKUpNextMatchupCell *)v8 contentView];
-    [v22 addLayoutGuide:v8->_upcomingLayoutGuide];
+    contentView3 = [(NTKUpNextMatchupCell *)v8 contentView];
+    [contentView3 addLayoutGuide:v8->_upcomingLayoutGuide];
 
-    v23 = [[NTKUpNextMatchupUpcomingView alloc] initWithFrame:x, y, width, height];
+    height2 = [[NTKUpNextMatchupUpcomingView alloc] initWithFrame:x, y, width, height];
     upcomingView = v8->_upcomingView;
-    v8->_upcomingView = v23;
+    v8->_upcomingView = height2;
 
     [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(NTKUpNextMatchupCell *)v8 contentView];
-    [v25 addSubview:v8->_upcomingView];
+    contentView4 = [(NTKUpNextMatchupCell *)v8 contentView];
+    [contentView4 addSubview:v8->_upcomingView];
 
-    v83 = [(UILayoutGuide *)v8->_scoreLayoutGuide topAnchor];
-    v84 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v82 = [v84 topAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82 constant:*&v10];
+    topAnchor = [(UILayoutGuide *)v8->_scoreLayoutGuide topAnchor];
+    contentView5 = [(NTKUpNextMatchupCell *)v8 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v81 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:*&v10];
     v90[0] = v81;
-    v79 = [(UILayoutGuide *)v8->_scoreLayoutGuide bottomAnchor];
-    v80 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v78 = [v80 bottomAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78 constant:-*&v11];
+    bottomAnchor = [(UILayoutGuide *)v8->_scoreLayoutGuide bottomAnchor];
+    contentView6 = [(NTKUpNextMatchupCell *)v8 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v77 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-*&v11];
     v90[1] = v77;
-    v75 = [(UILayoutGuide *)v8->_scoreLayoutGuide leadingAnchor];
-    v76 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v74 = [v76 leadingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74 constant:*(&v10 + 1)];
+    leadingAnchor = [(UILayoutGuide *)v8->_scoreLayoutGuide leadingAnchor];
+    contentView7 = [(NTKUpNextMatchupCell *)v8 contentView];
+    leadingAnchor2 = [contentView7 leadingAnchor];
+    v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:*(&v10 + 1)];
     v90[2] = v73;
-    v71 = [(UILayoutGuide *)v8->_scoreLayoutGuide trailingAnchor];
-    v72 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v70 = [v72 trailingAnchor];
-    v68 = [v71 constraintEqualToAnchor:v70 constant:-*(&v11 + 1)];
+    trailingAnchor = [(UILayoutGuide *)v8->_scoreLayoutGuide trailingAnchor];
+    contentView8 = [(NTKUpNextMatchupCell *)v8 contentView];
+    trailingAnchor2 = [contentView8 trailingAnchor];
+    v68 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-*(&v11 + 1)];
     v90[3] = v68;
-    v66 = [(NTKUpNextMatchupScoreView *)v8->_scoreView topAnchor];
-    v65 = [(UILayoutGuide *)v8->_scoreLayoutGuide topAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    topAnchor3 = [(NTKUpNextMatchupScoreView *)v8->_scoreView topAnchor];
+    topAnchor4 = [(UILayoutGuide *)v8->_scoreLayoutGuide topAnchor];
+    v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v90[4] = v64;
-    v62 = [(NTKUpNextMatchupScoreView *)v8->_scoreView bottomAnchor];
-    v61 = [(UILayoutGuide *)v8->_scoreLayoutGuide bottomAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    bottomAnchor3 = [(NTKUpNextMatchupScoreView *)v8->_scoreView bottomAnchor];
+    bottomAnchor4 = [(UILayoutGuide *)v8->_scoreLayoutGuide bottomAnchor];
+    v60 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v90[5] = v60;
-    v58 = [(NTKUpNextMatchupScoreView *)v8->_scoreView leadingAnchor];
-    v57 = [(UILayoutGuide *)v8->_scoreLayoutGuide leadingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    leadingAnchor3 = [(NTKUpNextMatchupScoreView *)v8->_scoreView leadingAnchor];
+    leadingAnchor4 = [(UILayoutGuide *)v8->_scoreLayoutGuide leadingAnchor];
+    v56 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v90[6] = v56;
-    v55 = [(NTKUpNextMatchupScoreView *)v8->_scoreView trailingAnchor];
-    v54 = [(UILayoutGuide *)v8->_scoreLayoutGuide trailingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    trailingAnchor3 = [(NTKUpNextMatchupScoreView *)v8->_scoreView trailingAnchor];
+    trailingAnchor4 = [(UILayoutGuide *)v8->_scoreLayoutGuide trailingAnchor];
+    v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v90[7] = v53;
-    v51 = [(UILayoutGuide *)v8->_upcomingLayoutGuide topAnchor];
-    v52 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v50 = [v52 topAnchor];
-    v59 = [v51 constraintEqualToAnchor:v50 constant:*&v12];
+    topAnchor5 = [(UILayoutGuide *)v8->_upcomingLayoutGuide topAnchor];
+    contentView9 = [(NTKUpNextMatchupCell *)v8 contentView];
+    topAnchor6 = [contentView9 topAnchor];
+    v59 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:*&v12];
     v90[8] = v59;
-    v48 = [(UILayoutGuide *)v8->_upcomingLayoutGuide bottomAnchor];
-    v49 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v47 = [v49 bottomAnchor];
-    v63 = [v48 constraintEqualToAnchor:v47 constant:-*&v13];
+    bottomAnchor5 = [(UILayoutGuide *)v8->_upcomingLayoutGuide bottomAnchor];
+    contentView10 = [(NTKUpNextMatchupCell *)v8 contentView];
+    bottomAnchor6 = [contentView10 bottomAnchor];
+    v63 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-*&v13];
     v90[9] = v63;
-    v45 = [(UILayoutGuide *)v8->_upcomingLayoutGuide leadingAnchor];
-    v46 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v44 = [v46 leadingAnchor];
-    v67 = [v45 constraintEqualToAnchor:v44 constant:*(&v12 + 1)];
+    leadingAnchor5 = [(UILayoutGuide *)v8->_upcomingLayoutGuide leadingAnchor];
+    contentView11 = [(NTKUpNextMatchupCell *)v8 contentView];
+    leadingAnchor6 = [contentView11 leadingAnchor];
+    v67 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:*(&v12 + 1)];
     v90[10] = v67;
-    v42 = [(UILayoutGuide *)v8->_upcomingLayoutGuide trailingAnchor];
-    v43 = [(NTKUpNextMatchupCell *)v8 contentView];
-    v41 = [v43 trailingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41 constant:-*(&v13 + 1)];
+    trailingAnchor5 = [(UILayoutGuide *)v8->_upcomingLayoutGuide trailingAnchor];
+    contentView12 = [(NTKUpNextMatchupCell *)v8 contentView];
+    trailingAnchor6 = [contentView12 trailingAnchor];
+    v40 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-*(&v13 + 1)];
     v90[11] = v40;
-    v39 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView topAnchor];
-    v38 = [(UILayoutGuide *)v8->_upcomingLayoutGuide topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    topAnchor7 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView topAnchor];
+    topAnchor8 = [(UILayoutGuide *)v8->_upcomingLayoutGuide topAnchor];
+    v37 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v90[12] = v37;
-    v26 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView bottomAnchor];
-    v27 = [(UILayoutGuide *)v8->_upcomingLayoutGuide bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    bottomAnchor7 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView bottomAnchor];
+    bottomAnchor8 = [(UILayoutGuide *)v8->_upcomingLayoutGuide bottomAnchor];
+    v28 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v90[13] = v28;
-    v29 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView leadingAnchor];
-    v30 = [(UILayoutGuide *)v8->_upcomingLayoutGuide leadingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    leadingAnchor7 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView leadingAnchor];
+    leadingAnchor8 = [(UILayoutGuide *)v8->_upcomingLayoutGuide leadingAnchor];
+    v31 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v90[14] = v31;
-    v32 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView trailingAnchor];
-    v33 = [(UILayoutGuide *)v8->_upcomingLayoutGuide trailingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    trailingAnchor7 = [(NTKUpNextMatchupUpcomingView *)v8->_upcomingView trailingAnchor];
+    trailingAnchor8 = [(UILayoutGuide *)v8->_upcomingLayoutGuide trailingAnchor];
+    v34 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v90[15] = v34;
     v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:16];
 
-    v35 = [(NTKUpNextMatchupCell *)v8 contentView];
-    [v35 addConstraints:v69];
+    contentView13 = [(NTKUpNextMatchupCell *)v8 contentView];
+    [contentView13 addConstraints:v69];
   }
 
   return v8;
 }
 
-- (void)configureWithContent:(id)a3
+- (void)configureWithContent:(id)content
 {
   v8.receiver = self;
   v8.super_class = NTKUpNextMatchupCell;
-  v4 = a3;
-  [(NTKUpNextBaseCell *)&v8 configureWithContent:v4];
-  v5 = [v4 matchupAccessory];
+  contentCopy = content;
+  [(NTKUpNextBaseCell *)&v8 configureWithContent:contentCopy];
+  matchupAccessory = [contentCopy matchupAccessory];
 
-  [(NTKUpNextMatchupScoreView *)self->_scoreView configureWithMatchup:v5];
-  [(NTKUpNextMatchupUpcomingView *)self->_upcomingView configureWithMatchup:v5];
-  v6 = [v5 status];
-  v7 = (v6 < 8) & (0xECu >> v6);
-  [(NTKUpNextMatchupScoreView *)self->_scoreView setHidden:!((v6 < 8) & (0xECu >> v6))];
+  [(NTKUpNextMatchupScoreView *)self->_scoreView configureWithMatchup:matchupAccessory];
+  [(NTKUpNextMatchupUpcomingView *)self->_upcomingView configureWithMatchup:matchupAccessory];
+  status = [matchupAccessory status];
+  v7 = (status < 8) & (0xECu >> status);
+  [(NTKUpNextMatchupScoreView *)self->_scoreView setHidden:!((status < 8) & (0xECu >> status))];
   [(NTKUpNextMatchupUpcomingView *)self->_upcomingView setHidden:v7];
 }
 
@@ -172,12 +172,12 @@
   [(NTKUpNextMatchupUpcomingView *)self->_upcomingView transitionToMonochromeWithFraction:0.0];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   [(NTKUpNextMatchupScoreView *)self->_scoreView transitionToMonochromeWithFraction:?];
   upcomingView = self->_upcomingView;
 
-  [(NTKUpNextMatchupUpcomingView *)upcomingView transitionToMonochromeWithFraction:a3];
+  [(NTKUpNextMatchupUpcomingView *)upcomingView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
@@ -188,24 +188,24 @@
   [(NTKUpNextMatchupUpcomingView *)upcomingView updateMonochromeColor];
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
   v5.receiver = self;
   v5.super_class = NTKUpNextMatchupCell;
-  v4 = a3;
-  [(NTKUpNextBaseCell *)&v5 setFilterProvider:v4];
-  [(NTKUpNextMatchupScoreView *)self->_scoreView setFilterProvider:v4, v5.receiver, v5.super_class];
-  [(NTKUpNextMatchupUpcomingView *)self->_upcomingView setFilterProvider:v4];
+  providerCopy = provider;
+  [(NTKUpNextBaseCell *)&v5 setFilterProvider:providerCopy];
+  [(NTKUpNextMatchupScoreView *)self->_scoreView setFilterProvider:providerCopy, v5.receiver, v5.super_class];
+  [(NTKUpNextMatchupUpcomingView *)self->_upcomingView setFilterProvider:providerCopy];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKUpNextMatchupCell;
   [(NTKUpNextBaseCell *)&v5 setPaused:?];
-  [(NTKUpNextMatchupScoreView *)self->_scoreView setPaused:v3];
-  [(NTKUpNextMatchupUpcomingView *)self->_upcomingView setPaused:v3];
+  [(NTKUpNextMatchupScoreView *)self->_scoreView setPaused:pausedCopy];
+  [(NTKUpNextMatchupUpcomingView *)self->_upcomingView setPaused:pausedCopy];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface FCFeedDatabase
-+ (id)temporaryFeedDatabaseWithEndpoint:(int64_t)a3;
-- (FCFeedDatabase)initWithParentDirectoryURL:(id)a3 usage:(int64_t)a4 endpoint:(int64_t)a5;
-- (FCFeedDatabaseLookupResult)_shortCircuitLookup:(void *)a3 withFeed:;
-- (id)_feedsForLookups:(uint64_t)a1;
-- (id)_serviceLookup:(void *)a3 withFeed:(void *)a4 feedItems:;
-- (id)performDatabaseLookups:(id)a3;
-- (id)performDatabaseLookups:(id)a3 boundedByCount:(unint64_t)a4;
-- (id)t_lookupFeedID:(id)a3 range:(id)a4 maxCount:(unint64_t)a5;
-- (void)_performWithStorageAndWait:(uint64_t)a1;
++ (id)temporaryFeedDatabaseWithEndpoint:(int64_t)endpoint;
+- (FCFeedDatabase)initWithParentDirectoryURL:(id)l usage:(int64_t)usage endpoint:(int64_t)endpoint;
+- (FCFeedDatabaseLookupResult)_shortCircuitLookup:(void *)lookup withFeed:;
+- (id)_feedsForLookups:(uint64_t)lookups;
+- (id)_serviceLookup:(void *)lookup withFeed:(void *)feed feedItems:;
+- (id)performDatabaseLookups:(id)lookups;
+- (id)performDatabaseLookups:(id)lookups boundedByCount:(unint64_t)count;
+- (id)t_lookupFeedID:(id)d range:(id)range maxCount:(unint64_t)count;
+- (void)_performWithStorageAndWait:(uint64_t)wait;
 - (void)_synchronizedInit;
-- (void)enumerateRangesMissingFromLookups:(id)a3 visitor:(id)a4;
-- (void)lookupFeedItemsForFeedID:(id)a3 feedRange:(id)a4 completion:(id)a5;
-- (void)saveFeedItems:(id)a3 feedID:(id)a4 feedRange:(id)a5;
-- (void)saveFeedItems:(id)a3 feedIDs:(id)a4 extentByFeedID:(id)a5 requestRangeByFeedID:(id)a6;
-- (void)saveFeedItems:(id)a3 forFeedID:(id)a4 insertionToken:(id)a5 requestDate:(id)a6 reachedToOrder:(BOOL)a7 extent:(unint64_t)a8 reachedEnd:(BOOL)a9;
-- (void)saveWithCompletionHandler:(id)a3;
-- (void)t_insertSegmentForFeedID:(id)a3 range:(id)a4 items:(id)a5;
+- (void)enumerateRangesMissingFromLookups:(id)lookups visitor:(id)visitor;
+- (void)lookupFeedItemsForFeedID:(id)d feedRange:(id)range completion:(id)completion;
+- (void)saveFeedItems:(id)items feedID:(id)d feedRange:(id)range;
+- (void)saveFeedItems:(id)items feedIDs:(id)ds extentByFeedID:(id)d requestRangeByFeedID:(id)iD;
+- (void)saveFeedItems:(id)items forFeedID:(id)d insertionToken:(id)token requestDate:(id)date reachedToOrder:(BOOL)order extent:(unint64_t)extent reachedEnd:(BOOL)end;
+- (void)saveWithCompletionHandler:(id)handler;
+- (void)t_insertSegmentForFeedID:(id)d range:(id)range items:(id)items;
 @end
 
 @implementation FCFeedDatabase
 
-+ (id)temporaryFeedDatabaseWithEndpoint:(int64_t)a3
++ (id)temporaryFeedDatabaseWithEndpoint:(int64_t)endpoint
 {
-  v3 = [[FCFeedDatabase alloc] initWithParentDirectoryURL:0 usage:2 endpoint:a3];
+  v3 = [[FCFeedDatabase alloc] initWithParentDirectoryURL:0 usage:2 endpoint:endpoint];
 
   return v3;
 }
 
-- (FCFeedDatabase)initWithParentDirectoryURL:(id)a3 usage:(int64_t)a4 endpoint:(int64_t)a5
+- (FCFeedDatabase)initWithParentDirectoryURL:(id)l usage:(int64_t)usage endpoint:(int64_t)endpoint
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = FCFeedDatabase;
   v9 = [(FCFeedDatabase *)&v21 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [lCopy copy];
     parentDirectoryURL = v9->_parentDirectoryURL;
     v9->_parentDirectoryURL = v10;
 
-    if (a4 == 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (usage == 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"feed database should not be created if it's not intended for use"];
       *buf = 136315906;
@@ -54,14 +54,14 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v9->_usage = a4;
-    v9->_endpoint = a5;
+    v9->_usage = usage;
+    v9->_endpoint = endpoint;
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_create("com.apple.news.feeddb.init", v12);
     initQueue = v9->_initQueue;
     v9->_initQueue = v13;
 
-    if (a5 == 1)
+    if (endpoint == 1)
     {
       v17 = FCFeedDatabaseLog;
       if (os_log_type_enabled(FCFeedDatabaseLog, OS_LOG_TYPE_DEFAULT))
@@ -73,7 +73,7 @@
       v16 = 1029;
     }
 
-    else if (a5)
+    else if (endpoint)
     {
       v16 = 24;
     }
@@ -99,31 +99,31 @@
 
 - (void)_synchronizedInit
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __35__FCFeedDatabase__synchronizedInit__block_invoke;
     block[3] = &unk_1E7C36EA0;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(v1, block);
   }
 }
 
-- (id)performDatabaseLookups:(id)a3
+- (id)performDatabaseLookups:(id)lookups
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  lookupsCopy = lookups;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __41__FCFeedDatabase_performDatabaseLookups___block_invoke;
   v11[3] = &unk_1E7C376A0;
   v11[4] = self;
-  v12 = v4;
-  v6 = v5;
+  v12 = lookupsCopy;
+  v6 = dictionary;
   v13 = v6;
-  v7 = v4;
+  v7 = lookupsCopy;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v11];
   v8 = v13;
   v9 = v6;
@@ -384,11 +384,11 @@ void __41__FCFeedDatabase_performDatabaseLookups___block_invoke(uint64_t a1)
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_feedsForLookups:(uint64_t)a1
+- (id)_feedsForLookups:(uint64_t)lookups
 {
-  if (a1)
+  if (lookups)
   {
-    v3 = *(a1 + 48);
+    v3 = *(lookups + 48);
     v4 = [a2 fc_arrayByTransformingWithBlock:&__block_literal_global_61_4];
     v5 = [v3 feedsForFeedIDs:v4];
   }
@@ -401,18 +401,18 @@ void __41__FCFeedDatabase_performDatabaseLookups___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (FCFeedDatabaseLookupResult)_shortCircuitLookup:(void *)a3 withFeed:
+- (FCFeedDatabaseLookupResult)_shortCircuitLookup:(void *)lookup withFeed:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  lookupCopy = lookup;
+  if (self)
   {
-    v7 = [v5 feedRange];
-    if ([v7 isEmpty])
+    feedRange = [v5 feedRange];
+    if ([feedRange isEmpty])
     {
       v8 = objc_alloc_init(FCFeedDatabaseLookupResult);
       [(FCFeedDatabaseLookupResult *)v8 setFeedItems:0];
-      [(FCFeedDatabaseLookupResult *)v8 setFeedRange:v7];
+      [(FCFeedDatabaseLookupResult *)v8 setFeedRange:feedRange];
       [(FCFeedDatabaseLookupResult *)v8 setExhaustedRange:1];
 LABEL_21:
 
@@ -425,15 +425,15 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v9 = [v6 refreshRegion];
-    v10 = v9;
-    if (v9 && [v9 containsFeedRange:v7])
+    refreshRegion = [lookupCopy refreshRegion];
+    v10 = refreshRegion;
+    if (refreshRegion && [refreshRegion containsFeedRange:feedRange])
     {
       v8 = objc_alloc_init(FCFeedDatabaseLookupResult);
       [(FCFeedDatabaseLookupResult *)v8 setFeedItems:0];
-      v11 = [v7 top];
-      v12 = [v10 bottom];
-      v13 = [FCFeedRange feedRangeWithTop:v11 bottom:v12];
+      v11 = [feedRange top];
+      bottom = [v10 bottom];
+      v13 = [FCFeedRange feedRangeWithTop:v11 bottom:bottom];
       [(FCFeedDatabaseLookupResult *)v8 setFeedRange:v13];
 
       [(FCFeedDatabaseLookupResult *)v8 setExhaustedRange:1];
@@ -442,18 +442,18 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v14 = [v6 fetchedRanges];
-    v15 = [v14 firstObject];
+    fetchedRanges = [lookupCopy fetchedRanges];
+    firstObject = [fetchedRanges firstObject];
 
     v16 = off_1E7C34000;
-    if ([v6 refreshedFromOrder] && (objc_msgSend(v7, "top"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "top"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "compareToCursor:", v18), v18, v17, v19 != 1))
+    if ([lookupCopy refreshedFromOrder] && (objc_msgSend(feedRange, "top"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "top"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "compareToCursor:", v18), v18, v17, v19 != 1))
     {
-      if (v15)
+      if (firstObject)
       {
-        v28 = [v7 top];
-        v37 = [v28 order];
-        v33 = [v15 top];
-        if (v37 <= [(FCFeedInsertionToken *)v33 order])
+        firstObject2 = [feedRange top];
+        order = [firstObject2 order];
+        v33 = [firstObject top];
+        if (order <= [(FCFeedInsertionToken *)v33 order])
         {
           v8 = 0;
 LABEL_18:
@@ -462,12 +462,12 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v38 = [v10 bottom];
-        v42 = [v38 order];
-        v39 = [v15 top];
-        v40 = [v39 order];
+        bottom2 = [v10 bottom];
+        order2 = [bottom2 order];
+        v39 = [firstObject top];
+        order3 = [v39 order];
 
-        v41 = v42 > v40;
+        v41 = order2 > order3;
         v16 = off_1E7C34000;
         if (!v41)
         {
@@ -476,51 +476,51 @@ LABEL_19:
         }
       }
 
-      v43 = v15;
+      v43 = firstObject;
       v20 = v16;
-      v21 = [v10 bottom];
+      bottom3 = [v10 bottom];
     }
 
     else
     {
-      v43 = v15;
+      v43 = firstObject;
       v20 = off_1E7C34000;
-      v21 = +[FCFeedCursor cursorForCurrentDate];
+      bottom3 = +[FCFeedCursor cursorForCurrentDate];
     }
 
-    v22 = v21;
-    v23 = [v21 order];
+    v22 = bottom3;
+    order4 = [bottom3 order];
 
     v8 = objc_alloc_init(FCFeedDatabaseLookupResult);
-    v24 = [v7 top];
-    v25 = [v7 top];
+    v24 = [feedRange top];
+    v25 = [feedRange top];
     v26 = [FCFeedRange feedRangeWithTop:v24 bottom:v25];
     [(FCFeedDatabaseLookupResult *)v8 setFeedRange:v26];
 
-    [(FCFeedDatabaseLookupResult *)v8 setCkFromOrder:v23];
-    v27 = [v6 fetchedRanges];
-    v28 = [v27 firstObject];
+    [(FCFeedDatabaseLookupResult *)v8 setCkFromOrder:order4];
+    fetchedRanges2 = [lookupCopy fetchedRanges];
+    firstObject2 = [fetchedRanges2 firstObject];
 
-    v29 = [v7 bottom];
-    v30 = v29;
-    if (v28)
+    bottom4 = [feedRange bottom];
+    v30 = bottom4;
+    if (firstObject2)
     {
-      v31 = [v28 top];
+      v31 = [firstObject2 top];
       v32 = [v30 topmostCursor:v31];
       -[FCFeedDatabaseLookupResult setCkToOrder:](v8, "setCkToOrder:", [v32 order] + 1);
     }
 
     else
     {
-      -[FCFeedDatabaseLookupResult setCkToOrder:](v8, "setCkToOrder:", [v29 order] + 1);
+      -[FCFeedDatabaseLookupResult setCkToOrder:](v8, "setCkToOrder:", [bottom4 order] + 1);
     }
 
     v33 = objc_alloc_init(FCFeedInsertionToken);
-    v34 = [(__objc2_class *)v20[133] cursorForTopOfFeed];
-    v35 = [v34 order];
+    cursorForTopOfFeed = [(__objc2_class *)v20[133] cursorForTopOfFeed];
+    order5 = [cursorForTopOfFeed order];
     if (v33)
     {
-      v33->_fromOrder = v35;
+      v33->_fromOrder = order5;
 
       v33->_toOrder = [(FCFeedDatabaseLookupResult *)v8 ckToOrder]- 1;
     }
@@ -531,7 +531,7 @@ LABEL_19:
       [(FCFeedDatabaseLookupResult *)v8 ckToOrder];
     }
 
-    v15 = v43;
+    firstObject = v43;
     [(FCFeedDatabaseLookupResult *)v8 setInsertionToken:v33];
     goto LABEL_18;
   }
@@ -542,13 +542,13 @@ LABEL_22:
   return v8;
 }
 
-- (id)_serviceLookup:(void *)a3 withFeed:(void *)a4 feedItems:
+- (id)_serviceLookup:(void *)lookup withFeed:(void *)feed feedItems:
 {
   v64 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  lookupCopy = lookup;
+  feedCopy = feed;
+  if (self)
   {
     v50 = 0;
     v51 = &v50;
@@ -556,19 +556,19 @@ LABEL_22:
     v53 = __Block_byref_object_copy__43;
     v54 = __Block_byref_object_dispose__43;
     v55 = objc_alloc_init(FCFeedDatabaseLookupResult);
-    v10 = [v7 feedRange];
+    feedRange = [v7 feedRange];
     if ([v7 hasMaxCount])
     {
-      v11 = [v7 maxCount];
+      maxCount = [v7 maxCount];
     }
 
     else
     {
-      v11 = -1;
+      maxCount = -1;
     }
 
-    v12 = [v7 cachedOnly];
-    if ([v10 isEmpty])
+    cachedOnly = [v7 cachedOnly];
+    if ([feedRange isEmpty])
     {
       v13 = MEMORY[0x1E69E9C10];
       v14 = MEMORY[0x1E69E9C10];
@@ -587,18 +587,18 @@ LABEL_22:
       }
     }
 
-    if (v12)
+    if (cachedOnly)
     {
-      v15 = [v9 fc_subarrayWithMaxCount:v11];
+      v15 = [feedCopy fc_subarrayWithMaxCount:maxCount];
       [v51[5] setFeedItems:v15];
 
-      v16 = [v51[5] feedItems];
-      v17 = FCFeedRangeCoveredByFeedItems(v16);
+      feedItems = [v51[5] feedItems];
+      v17 = FCFeedRangeCoveredByFeedItems(feedItems);
       [v51[5] setFeedRange:v17];
 
-      v18 = [v51[5] feedItems];
-      v19 = [v18 count];
-      v20 = v19 != [v9 count];
+      feedItems2 = [v51[5] feedItems];
+      v19 = [feedItems2 count];
+      v20 = v19 != [feedCopy count];
       [v51[5] setExhaustedRange:v20];
 LABEL_18:
 
@@ -608,11 +608,11 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v21 = [v8 refreshRegion];
-    v18 = v21;
-    if (v21)
+    refreshRegion = [lookupCopy refreshRegion];
+    feedItems2 = refreshRegion;
+    if (refreshRegion)
     {
-      if ([v21 containsFeedRange:v10])
+      if ([refreshRegion containsFeedRange:feedRange])
       {
         v22 = MEMORY[0x1E69E9C10];
         v23 = MEMORY[0x1E69E9C10];
@@ -637,24 +637,24 @@ LABEL_33:
         goto LABEL_17;
       }
 
-      v25 = [v10 top];
-      v26 = [v18 top];
+      v25 = [feedRange top];
+      v26 = [feedItems2 top];
       v27 = [v25 compareToCursor:v26] == 1;
 
       if (!v27)
       {
-        v32 = [v8 fetchedRanges];
-        v33 = [v32 count] == 0;
+        fetchedRanges = [lookupCopy fetchedRanges];
+        v33 = [fetchedRanges count] == 0;
 
         if (!v33)
         {
-          v22 = [v8 contiguousFetchedRangeInRange:v10];
-          v34 = [v9 fc_subarrayWithMaxCount:v11];
+          v22 = [lookupCopy contiguousFetchedRangeInRange:feedRange];
+          v34 = [feedCopy fc_subarrayWithMaxCount:maxCount];
           v45 = [v34 count];
-          v35 = [v9 count];
+          v35 = [feedCopy count];
           if (v22)
           {
-            v36 = [v22 containsFeedRange:v10];
+            v36 = [v22 containsFeedRange:feedRange];
           }
 
           else
@@ -662,7 +662,7 @@ LABEL_33:
             v36 = 0;
           }
 
-          if (([v9 count] >= v11) | v36 & 1)
+          if (([feedCopy count] >= maxCount) | v36 & 1)
           {
             [v51[5] setFeedItems:v34];
             v40 = FCFeedRangeCoveredByFeedItems(v34);
@@ -673,8 +673,8 @@ LABEL_33:
 
           else
           {
-            v41 = [v10 top];
-            v42 = [v10 top];
+            v41 = [feedRange top];
+            v42 = [feedRange top];
             v43 = [FCFeedRange feedRangeWithTop:v41 bottom:v42];
             [v51[5] setFeedRange:v43];
 
@@ -682,9 +682,9 @@ LABEL_33:
             v46[1] = 3221225472;
             v46[2] = __52__FCFeedDatabase__serviceLookup_withFeed_feedItems___block_invoke;
             v46[3] = &unk_1E7C41528;
-            v47 = v10;
+            v47 = feedRange;
             v49 = &v50;
-            v48 = v8;
+            v48 = lookupCopy;
             [v48 enumerateGapsWithBlock:v46];
           }
 
@@ -744,10 +744,10 @@ LABEL_19:
   return v29;
 }
 
-- (void)_performWithStorageAndWait:(uint64_t)a1
+- (void)_performWithStorageAndWait:(uint64_t)wait
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (wait)
   {
     v3 = a2;
     if (!NSClassFromString(&cfstr_Xctest.isa) && [MEMORY[0x1E696AF00] isMainThread] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -764,23 +764,23 @@ LABEL_19:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v6, 0x26u);
     }
 
-    [(FCFeedDatabase *)a1 _synchronizedInit];
-    [*(a1 + 48) accessWithBlock:v3];
+    [(FCFeedDatabase *)wait _synchronizedInit];
+    [*(wait + 48) accessWithBlock:v3];
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)performDatabaseLookups:(id)a3 boundedByCount:(unint64_t)a4
+- (id)performDatabaseLookups:(id)lookups boundedByCount:(unint64_t)count
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v20 = [MEMORY[0x1E695DF90] dictionary];
+  lookupsCopy = lookups;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v4;
+  v5 = lookupsCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v6)
   {
@@ -797,9 +797,9 @@ LABEL_19:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 requiredFeature];
+        requiredFeature = [v11 requiredFeature];
 
-        if (v12 && os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        if (requiredFeature && os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
           v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"count-bounded lookups don't yet support required features"];
           *buf = 136315906;
@@ -828,9 +828,9 @@ LABEL_19:
   v23[3] = &unk_1E7C41440;
   v23[4] = self;
   v24 = v5;
-  v14 = v20;
+  v14 = dictionary;
   v25 = v14;
-  v26 = a4;
+  countCopy = count;
   v15 = v5;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v23];
   v16 = v25;
@@ -1283,16 +1283,16 @@ LABEL_17:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveFeedItems:(id)a3 forFeedID:(id)a4 insertionToken:(id)a5 requestDate:(id)a6 reachedToOrder:(BOOL)a7 extent:(unint64_t)a8 reachedEnd:(BOOL)a9
+- (void)saveFeedItems:(id)items forFeedID:(id)d insertionToken:(id)token requestDate:(id)date reachedToOrder:(BOOL)order extent:(unint64_t)extent reachedEnd:(BOOL)end
 {
   v41 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  if ([v15 count] | a8 || a9 || a7 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  dCopy = d;
+  tokenCopy = token;
+  dateCopy = date;
+  if ([itemsCopy count] | extent || end || order || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    if (v16)
+    if (dCopy)
     {
       goto LABEL_8;
     }
@@ -1311,7 +1311,7 @@ LABEL_17:
     v40 = v20;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v16)
+    if (dCopy)
     {
       goto LABEL_8;
     }
@@ -1332,7 +1332,7 @@ LABEL_17:
   }
 
 LABEL_8:
-  if (!v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!tokenCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "opaqueInsertionToken != nil"];
     *buf = 136315906;
@@ -1345,13 +1345,13 @@ LABEL_8:
     v40 = v22;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v18)
+    if (dateCopy)
     {
       goto LABEL_13;
     }
   }
 
-  else if (v18)
+  else if (dateCopy)
   {
     goto LABEL_13;
   }
@@ -1371,20 +1371,20 @@ LABEL_8:
   }
 
 LABEL_13:
-  if (v16)
+  if (dCopy)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __102__FCFeedDatabase_saveFeedItems_forFeedID_insertionToken_requestDate_reachedToOrder_extent_reachedEnd___block_invoke;
     v24[3] = &unk_1E7C41468;
-    v25 = v17;
-    v26 = self;
-    v27 = v16;
-    v28 = v15;
-    v31 = a7;
-    v29 = v18;
-    v30 = a8;
-    v32 = a9;
+    v25 = tokenCopy;
+    selfCopy = self;
+    v27 = dCopy;
+    v28 = itemsCopy;
+    orderCopy = order;
+    v29 = dateCopy;
+    extentCopy = extent;
+    endCopy = end;
     [(FCFeedDatabase *)self _performWithStorageAndWait:v24];
   }
 
@@ -1726,25 +1726,25 @@ LABEL_61:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveFeedItems:(id)a3 feedIDs:(id)a4 extentByFeedID:(id)a5 requestRangeByFeedID:(id)a6
+- (void)saveFeedItems:(id)items feedIDs:(id)ds extentByFeedID:(id)d requestRangeByFeedID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __76__FCFeedDatabase_saveFeedItems_feedIDs_extentByFeedID_requestRangeByFeedID___block_invoke;
   v18[3] = &unk_1E7C376C8;
-  v19 = v10;
-  v20 = v11;
-  v21 = self;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = itemsCopy;
+  v20 = dsCopy;
+  selfCopy = self;
+  v22 = dCopy;
+  v23 = iDCopy;
+  v14 = iDCopy;
+  v15 = dCopy;
+  v16 = dsCopy;
+  v17 = itemsCopy;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v18];
 }
 
@@ -2029,19 +2029,19 @@ void __76__FCFeedDatabase_saveFeedItems_feedIDs_extentByFeedID_requestRangeByFee
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateRangesMissingFromLookups:(id)a3 visitor:(id)a4
+- (void)enumerateRangesMissingFromLookups:(id)lookups visitor:(id)visitor
 {
-  v6 = a3;
-  v7 = a4;
+  lookupsCopy = lookups;
+  visitorCopy = visitor;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__FCFeedDatabase_enumerateRangesMissingFromLookups_visitor___block_invoke;
   v10[3] = &unk_1E7C38FF0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lookupsCopy;
+  selfCopy = self;
+  v13 = visitorCopy;
+  v8 = visitorCopy;
+  v9 = lookupsCopy;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v10];
 }
 
@@ -2132,32 +2132,32 @@ void __60__FCFeedDatabase_enumerateRangesMissingFromLookups_visitor___block_invo
   *a3 = v11 <= [v13 order];
 }
 
-- (void)lookupFeedItemsForFeedID:(id)a3 feedRange:(id)a4 completion:(id)a5
+- (void)lookupFeedItemsForFeedID:(id)d feedRange:(id)range completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  rangeCopy = range;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__43;
   v24 = __Block_byref_object_dispose__43;
   v25 = 0;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__FCFeedDatabase_lookupFeedItemsForFeedID_feedRange_completion___block_invoke;
   v15[3] = &unk_1E7C414D8;
   v19 = &v20;
   v15[4] = self;
-  v12 = v8;
+  v12 = dCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = rangeCopy;
   v17 = v13;
-  v14 = v11;
+  v14 = array;
   v18 = v14;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v15];
-  v10[2](v10, v21[5], v14);
+  completionCopy[2](completionCopy, v21[5], v14);
 
   _Block_object_dispose(&v20, 8);
 }
@@ -2219,22 +2219,22 @@ void __64__FCFeedDatabase_lookupFeedItemsForFeedID_feedRange_completion___block_
   *a3 = v8 <= [v9 order];
 }
 
-- (void)saveFeedItems:(id)a3 feedID:(id)a4 feedRange:(id)a5
+- (void)saveFeedItems:(id)items feedID:(id)d feedRange:(id)range
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  dCopy = d;
+  rangeCopy = range;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __49__FCFeedDatabase_saveFeedItems_feedID_feedRange___block_invoke;
   v14[3] = &unk_1E7C38C98;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = itemsCopy;
+  v16 = dCopy;
+  v17 = rangeCopy;
+  v11 = rangeCopy;
+  v12 = dCopy;
+  v13 = itemsCopy;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v14];
 }
 
@@ -2295,9 +2295,9 @@ void __49__FCFeedDatabase_saveFeedItems_feedID_feedRange___block_invoke(uint64_t
   [v9 updateFeedID:v7 refreshedFromOrder:v10 refreshedToOrder:v14 fetchedRange:*(a1 + 56)];
 }
 
-- (void)saveWithCompletionHandler:(id)a3
+- (void)saveWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   if (self)
   {
     storage = self->_storage;
@@ -2309,11 +2309,11 @@ void __49__FCFeedDatabase_saveFeedItems_feedID_feedRange___block_invoke(uint64_t
   }
 
   [(FCFDBStorage *)storage flushChanges];
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy);
+    v5 = handlerCopy;
   }
 }
 
@@ -2593,22 +2593,22 @@ void __68__FCFeedDatabase__feedItemsForLookups_withFeedsByID_boundedByCount___bl
   [v7 addObjectsFromArray:v10];
 }
 
-- (void)t_insertSegmentForFeedID:(id)a3 range:(id)a4 items:(id)a5
+- (void)t_insertSegmentForFeedID:(id)d range:(id)range items:(id)items
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  rangeCopy = range;
+  itemsCopy = items;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__FCFeedDatabase_Testing__t_insertSegmentForFeedID_range_items___block_invoke;
   v14[3] = &unk_1E7C38C98;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dCopy;
+  v16 = rangeCopy;
+  v17 = itemsCopy;
+  v11 = itemsCopy;
+  v12 = rangeCopy;
+  v13 = dCopy;
   [(FCFeedDatabase *)self _performWithStorageAndWait:v14];
 }
 
@@ -2668,25 +2668,25 @@ void __64__FCFeedDatabase_Testing__t_insertSegmentForFeedID_range_items___block_
   [v12 updateFeedID:*(a1 + 40) refreshedFromOrder:v4 refreshedToOrder:v6 fetchedRange:*(a1 + 48)];
 }
 
-- (id)t_lookupFeedID:(id)a3 range:(id)a4 maxCount:(unint64_t)a5
+- (id)t_lookupFeedID:(id)d range:(id)range maxCount:(unint64_t)count
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
+  rangeCopy = range;
+  dCopy = d;
   v10 = objc_opt_new();
-  [v10 setFeedID:v9];
+  [v10 setFeedID:dCopy];
 
-  [v10 setFeedRange:v8];
-  [v10 setMaxCount:a5];
+  [v10 setFeedRange:rangeCopy];
+  [v10 setMaxCount:count];
   v17[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v12 = [(FCFeedDatabase *)self performDatabaseLookups:v11];
-  v13 = [v12 allValues];
-  v14 = [v13 firstObject];
+  allValues = [v12 allValues];
+  firstObject = [allValues firstObject];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return firstObject;
 }
 
 @end

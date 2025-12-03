@@ -1,55 +1,55 @@
 @interface PKPhysicalCard
-+ (BOOL)physicalCard:(id)a3 matchesActivationCode:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isExpiredInCalendar:(id)a3;
-- (PKPhysicalCard)initWithCoder:(id)a3;
-- (PKPhysicalCard)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)physicalCard:(id)card matchesActivationCode:(id)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isExpiredInCalendar:(id)calendar;
+- (PKPhysicalCard)initWithCoder:(id)coder;
+- (PKPhysicalCard)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)expirationDateInCalendar:(id)a3;
+- (id)expirationDateInCalendar:(id)calendar;
 - (id)formattedExpiration;
 - (id)jsonDictionaryRepresentation;
 - (id)latestOrderActivity;
 - (id)latestShippingActivity;
 - (id)shipmentTrackingURL;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPhysicalCard
 
-- (PKPhysicalCard)initWithDictionary:(id)a3
+- (PKPhysicalCard)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = PKPhysicalCard;
   v5 = [(PKPhysicalCard *)&v32 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"accountUserAltDSID"];
+    v8 = [dictionaryCopy PKStringForKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v8;
 
-    v10 = [v4 PKStringForKey:@"state"];
+    v10 = [dictionaryCopy PKStringForKey:@"state"];
     v5->_state = PKPhysicalCardStateFromString(v10);
 
-    v11 = [v4 PKStringForKey:@"FPANSuffix"];
+    v11 = [dictionaryCopy PKStringForKey:@"FPANSuffix"];
     FPANSuffix = v5->_FPANSuffix;
     v5->_FPANSuffix = v11;
 
-    v13 = [v4 PKStringForKey:@"trackingNumber"];
+    v13 = [dictionaryCopy PKStringForKey:@"trackingNumber"];
     trackingNumber = v5->_trackingNumber;
     v5->_trackingNumber = v13;
 
-    v15 = [v4 PKStringForKey:@"shippingCompany"];
+    v15 = [dictionaryCopy PKStringForKey:@"shippingCompany"];
     shippingCompany = v5->_shippingCompany;
     v5->_shippingCompany = v15;
 
-    v17 = [v4 PKDictionaryForKey:@"customizationOptions"];
+    v17 = [dictionaryCopy PKDictionaryForKey:@"customizationOptions"];
     v18 = [v17 PKURLForKey:@"frontFaceImageURL"];
     frontFaceImageURL = v5->_frontFaceImageURL;
     v5->_frontFaceImageURL = v18;
@@ -58,12 +58,12 @@
     nameOnCard = v5->_nameOnCard;
     v5->_nameOnCard = v20;
 
-    v22 = [v4 PKDateForKey:@"lastUpdatedDate"];
+    v22 = [dictionaryCopy PKDateForKey:@"lastUpdatedDate"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v22;
 
     v24 = MEMORY[0x1E695DFD8];
-    v25 = [v4 PKArrayContaining:objc_opt_class() forKey:@"orderActivity"];
+    v25 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"orderActivity"];
     v26 = [v25 pk_arrayByApplyingBlock:&__block_literal_global_56];
     v27 = [v24 setWithArray:v26];
 
@@ -78,12 +78,12 @@
     }
 
     objc_storeStrong(&v5->_orderActivity, v28);
-    v29 = [v4 PKStringForKey:@"activationCodeHash"];
+    v29 = [dictionaryCopy PKStringForKey:@"activationCodeHash"];
     activationCodeHash = v5->_activationCodeHash;
     v5->_activationCodeHash = v29;
 
-    v5->_expirationMonth = [v4 PKIntegerForKey:@"expirationMonth"];
-    v5->_expirationYear = [v4 PKIntegerForKey:@"expirationYear"];
+    v5->_expirationMonth = [dictionaryCopy PKIntegerForKey:@"expirationMonth"];
+    v5->_expirationYear = [dictionaryCopy PKIntegerForKey:@"expirationYear"];
   }
 
   return v5;
@@ -123,9 +123,9 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
         v8 = *(*(&v14 + 1) + 8 * i);
         if (v5)
         {
-          v9 = [*(*(&v14 + 1) + 8 * i) date];
-          v10 = [v5 date];
-          v11 = [v9 compare:v10];
+          date = [*(*(&v14 + 1) + 8 * i) date];
+          date2 = [v5 date];
+          v11 = [date compare:date2];
 
           if (v11 != 1)
           {
@@ -178,9 +178,9 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
         v8 = *(*(&v14 + 1) + 8 * i);
         if (v5)
         {
-          v9 = [*(*(&v14 + 1) + 8 * i) timestamp];
-          v10 = [v5 timestamp];
-          v11 = [v9 compare:v10];
+          timestamp = [*(*(&v14 + 1) + 8 * i) timestamp];
+          timestamp2 = [v5 timestamp];
+          v11 = [timestamp compare:timestamp2];
 
           if (v11 != 1)
           {
@@ -207,26 +207,26 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   return v5;
 }
 
-+ (BOOL)physicalCard:(id)a3 matchesActivationCode:(id)a4
++ (BOOL)physicalCard:(id)card matchesActivationCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = v7;
+  cardCopy = card;
+  codeCopy = code;
+  identifier = [cardCopy identifier];
+  v8 = identifier;
   LOBYTE(v9) = 0;
-  if (v5 && v6 && v7)
+  if (cardCopy && codeCopy && identifier)
   {
-    v10 = [v5 activationCodeHash];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v6, v8];
+    activationCodeHash = [cardCopy activationCodeHash];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", codeCopy, v8];
     v12 = [v11 dataUsingEncoding:4];
     v9 = v12;
     if (v12)
     {
-      v13 = [v12 SHA256Hash];
+      sHA256Hash = [v12 SHA256Hash];
 
-      v14 = [v13 hexEncoding];
-      v15 = v10;
-      v16 = v14;
+      hexEncoding = [sHA256Hash hexEncoding];
+      v15 = activationCodeHash;
+      v16 = hexEncoding;
       v17 = v16;
       if (v15 == v16)
       {
@@ -247,95 +247,95 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   return v9;
 }
 
-- (PKPhysicalCard)initWithCoder:(id)a3
+- (PKPhysicalCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = PKPhysicalCard;
   v5 = [(PKPhysicalCard *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v8;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FPANSuffix"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FPANSuffix"];
     FPANSuffix = v5->_FPANSuffix;
     v5->_FPANSuffix = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frontFaceImageURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frontFaceImageURL"];
     frontFaceImageURL = v5->_frontFaceImageURL;
     v5->_frontFaceImageURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     nameOnCard = v5->_nameOnCard;
     v5->_nameOnCard = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"orderActivity"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"orderActivity"];
     orderActivity = v5->_orderActivity;
     v5->_orderActivity = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"shippingActivity"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"shippingActivity"];
     shippingActivity = v5->_shippingActivity;
     v5->_shippingActivity = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingNumber"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingNumber"];
     trackingNumber = v5->_trackingNumber;
     v5->_trackingNumber = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingCompany"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingCompany"];
     shippingCompany = v5->_shippingCompany;
     v5->_shippingCompany = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationCodeHash"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationCodeHash"];
     activationCodeHash = v5->_activationCodeHash;
     v5->_activationCodeHash = v32;
 
-    v5->_expirationMonth = [v4 decodeIntegerForKey:@"expirationMonth"];
-    v5->_expirationYear = [v4 decodeIntegerForKey:@"expirationYear"];
+    v5->_expirationMonth = [coderCopy decodeIntegerForKey:@"expirationMonth"];
+    v5->_expirationYear = [coderCopy decodeIntegerForKey:@"expirationYear"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_accountUserAltDSID forKey:@"accountUserAltDSID"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_FPANSuffix forKey:@"FPANSuffix"];
-  [v5 encodeObject:self->_frontFaceImageURL forKey:@"frontFaceImageURL"];
-  [v5 encodeObject:self->_nameOnCard forKey:@"name"];
-  [v5 encodeObject:self->_lastUpdated forKey:@"lastUpdatedDate"];
-  [v5 encodeObject:self->_orderActivity forKey:@"orderActivity"];
-  [v5 encodeObject:self->_shippingActivity forKey:@"shippingActivity"];
-  [v5 encodeObject:self->_trackingNumber forKey:@"trackingNumber"];
-  [v5 encodeObject:self->_shippingCompany forKey:@"shippingCompany"];
-  [v5 encodeObject:self->_activationCodeHash forKey:@"activationCodeHash"];
-  [v5 encodeInteger:self->_expirationMonth forKey:@"expirationMonth"];
-  [v5 encodeInteger:self->_expirationYear forKey:@"expirationYear"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_accountUserAltDSID forKey:@"accountUserAltDSID"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_FPANSuffix forKey:@"FPANSuffix"];
+  [coderCopy encodeObject:self->_frontFaceImageURL forKey:@"frontFaceImageURL"];
+  [coderCopy encodeObject:self->_nameOnCard forKey:@"name"];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"lastUpdatedDate"];
+  [coderCopy encodeObject:self->_orderActivity forKey:@"orderActivity"];
+  [coderCopy encodeObject:self->_shippingActivity forKey:@"shippingActivity"];
+  [coderCopy encodeObject:self->_trackingNumber forKey:@"trackingNumber"];
+  [coderCopy encodeObject:self->_shippingCompany forKey:@"shippingCompany"];
+  [coderCopy encodeObject:self->_activationCodeHash forKey:@"activationCodeHash"];
+  [coderCopy encodeInteger:self->_expirationMonth forKey:@"expirationMonth"];
+  [coderCopy encodeInteger:self->_expirationYear forKey:@"expirationYear"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -343,7 +343,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -358,7 +358,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   accountUserAltDSID = self->_accountUserAltDSID;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (accountUserAltDSID && v8)
   {
     if (([(NSString *)accountUserAltDSID isEqual:?]& 1) == 0)
@@ -373,7 +373,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   frontFaceImageURL = self->_frontFaceImageURL;
-  v10 = v4[5];
+  v10 = equalCopy[5];
   if (frontFaceImageURL && v10)
   {
     if (([(NSURL *)frontFaceImageURL isEqual:?]& 1) == 0)
@@ -388,7 +388,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   nameOnCard = self->_nameOnCard;
-  v12 = v4[6];
+  v12 = equalCopy[6];
   if (nameOnCard && v12)
   {
     if (([(NSString *)nameOnCard isEqual:?]& 1) == 0)
@@ -403,7 +403,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   lastUpdated = self->_lastUpdated;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (lastUpdated && v14)
   {
     if (([(NSDate *)lastUpdated isEqual:?]& 1) == 0)
@@ -418,7 +418,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   FPANSuffix = self->_FPANSuffix;
-  v16 = v4[4];
+  v16 = equalCopy[4];
   if (FPANSuffix && v16)
   {
     if (([(NSString *)FPANSuffix isEqual:?]& 1) == 0)
@@ -433,7 +433,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   trackingNumber = self->_trackingNumber;
-  v18 = v4[8];
+  v18 = equalCopy[8];
   if (trackingNumber && v18)
   {
     if (([(NSString *)trackingNumber isEqual:?]& 1) == 0)
@@ -448,7 +448,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   shippingCompany = self->_shippingCompany;
-  v20 = v4[9];
+  v20 = equalCopy[9];
   if (shippingCompany && v20)
   {
     if (([(NSString *)shippingCompany isEqual:?]& 1) == 0)
@@ -463,7 +463,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   orderActivity = self->_orderActivity;
-  v22 = v4[10];
+  v22 = equalCopy[10];
   if (orderActivity && v22)
   {
     if (([(NSSet *)orderActivity isEqual:?]& 1) == 0)
@@ -478,7 +478,7 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
   }
 
   shippingActivity = self->_shippingActivity;
-  v24 = v4[11];
+  v24 = equalCopy[11];
   if (shippingActivity && v24)
   {
     if (([(NSSet *)shippingActivity isEqual:?]& 1) == 0)
@@ -492,13 +492,13 @@ PKPhysicalCardOrderActivityEvent *__37__PKPhysicalCard_initWithDictionary___bloc
     goto LABEL_60;
   }
 
-  if (self->_state != v4[3])
+  if (self->_state != equalCopy[3])
   {
     goto LABEL_60;
   }
 
   activationCodeHash = self->_activationCodeHash;
-  v26 = v4[12];
+  v26 = equalCopy[12];
   if (!activationCodeHash || !v26)
   {
     if (activationCodeHash == v26)
@@ -517,12 +517,12 @@ LABEL_60:
   }
 
 LABEL_58:
-  if (self->_expirationMonth != v4[13])
+  if (self->_expirationMonth != equalCopy[13])
   {
     goto LABEL_60;
   }
 
-  v27 = self->_expirationYear == v4[14];
+  v27 = self->_expirationYear == equalCopy[14];
 LABEL_61:
 
   return v27;
@@ -530,19 +530,19 @@ LABEL_61:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_accountUserAltDSID];
-  [v3 safelyAddObject:self->_frontFaceImageURL];
-  [v3 safelyAddObject:self->_nameOnCard];
-  [v3 safelyAddObject:self->_lastUpdated];
-  [v3 safelyAddObject:self->_FPANSuffix];
-  [v3 safelyAddObject:self->_orderActivity];
-  [v3 safelyAddObject:self->_shippingActivity];
-  [v3 safelyAddObject:self->_trackingNumber];
-  [v3 safelyAddObject:self->_shippingCompany];
-  [v3 safelyAddObject:self->_activationCodeHash];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_accountUserAltDSID];
+  [array safelyAddObject:self->_frontFaceImageURL];
+  [array safelyAddObject:self->_nameOnCard];
+  [array safelyAddObject:self->_lastUpdated];
+  [array safelyAddObject:self->_FPANSuffix];
+  [array safelyAddObject:self->_orderActivity];
+  [array safelyAddObject:self->_shippingActivity];
+  [array safelyAddObject:self->_trackingNumber];
+  [array safelyAddObject:self->_shippingCompany];
+  [array safelyAddObject:self->_activationCodeHash];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_state - v4 + 32 * v4;
   v6 = self->_expirationMonth - v5 + 32 * v5;
   v7 = self->_expirationYear - v6 + 32 * v6;
@@ -595,51 +595,51 @@ LABEL_61:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPhysicalCard allocWithZone:](PKPhysicalCard init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_accountUserAltDSID copyWithZone:a3];
+  v8 = [(NSString *)self->_accountUserAltDSID copyWithZone:zone];
   accountUserAltDSID = v5->_accountUserAltDSID;
   v5->_accountUserAltDSID = v8;
 
   v5->_state = self->_state;
-  v10 = [(NSURL *)self->_frontFaceImageURL copyWithZone:a3];
+  v10 = [(NSURL *)self->_frontFaceImageURL copyWithZone:zone];
   frontFaceImageURL = v5->_frontFaceImageURL;
   v5->_frontFaceImageURL = v10;
 
-  v12 = [(NSString *)self->_nameOnCard copyWithZone:a3];
+  v12 = [(NSString *)self->_nameOnCard copyWithZone:zone];
   nameOnCard = v5->_nameOnCard;
   v5->_nameOnCard = v12;
 
-  v14 = [(NSDate *)self->_lastUpdated copyWithZone:a3];
+  v14 = [(NSDate *)self->_lastUpdated copyWithZone:zone];
   lastUpdated = v5->_lastUpdated;
   v5->_lastUpdated = v14;
 
-  v16 = [(NSString *)self->_FPANSuffix copyWithZone:a3];
+  v16 = [(NSString *)self->_FPANSuffix copyWithZone:zone];
   FPANSuffix = v5->_FPANSuffix;
   v5->_FPANSuffix = v16;
 
-  v18 = [(NSString *)self->_trackingNumber copyWithZone:a3];
+  v18 = [(NSString *)self->_trackingNumber copyWithZone:zone];
   trackingNumber = v5->_trackingNumber;
   v5->_trackingNumber = v18;
 
-  v20 = [(NSString *)self->_shippingCompany copyWithZone:a3];
+  v20 = [(NSString *)self->_shippingCompany copyWithZone:zone];
   shippingCompany = v5->_shippingCompany;
   v5->_shippingCompany = v20;
 
-  v22 = [(NSSet *)self->_orderActivity copyWithZone:a3];
+  v22 = [(NSSet *)self->_orderActivity copyWithZone:zone];
   orderActivity = v5->_orderActivity;
   v5->_orderActivity = v22;
 
-  v24 = [(NSSet *)self->_shippingActivity copyWithZone:a3];
+  v24 = [(NSSet *)self->_shippingActivity copyWithZone:zone];
   shippingActivity = v5->_shippingActivity;
   v5->_shippingActivity = v24;
 
-  v26 = [(NSString *)self->_activationCodeHash copyWithZone:a3];
+  v26 = [(NSString *)self->_activationCodeHash copyWithZone:zone];
   activationCodeHash = v5->_activationCodeHash;
   v5->_activationCodeHash = v26;
 
@@ -650,12 +650,12 @@ LABEL_61:
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKeyedSubscript:@"identifier"];
+    [dictionary setObject:identifier forKeyedSubscript:@"identifier"];
   }
 
   v6 = self->_state - 1;
@@ -670,21 +670,21 @@ LABEL_61:
   }
 
   [v4 setObject:v7 forKeyedSubscript:@"state"];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   frontFaceImageURL = self->_frontFaceImageURL;
   if (frontFaceImageURL)
   {
-    v10 = [(NSURL *)frontFaceImageURL absoluteString];
-    [v8 setObject:v10 forKeyedSubscript:@"frontFaceImageURL"];
+    absoluteString = [(NSURL *)frontFaceImageURL absoluteString];
+    [dictionary2 setObject:absoluteString forKeyedSubscript:@"frontFaceImageURL"];
   }
 
   nameOnCard = self->_nameOnCard;
   if (nameOnCard)
   {
-    [v8 setObject:nameOnCard forKeyedSubscript:@"name"];
+    [dictionary2 setObject:nameOnCard forKeyedSubscript:@"name"];
   }
 
-  [v4 setObject:v8 forKeyedSubscript:@"customizationOptions"];
+  [v4 setObject:dictionary2 forKeyedSubscript:@"customizationOptions"];
   v12 = [v4 copy];
 
   return v12;
@@ -711,20 +711,20 @@ LABEL_61:
   expirationYear = self->_expirationYear;
   if (expirationYear && (expirationMonth = self->_expirationMonth) != 0)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02lu/%lu", expirationMonth, expirationYear];
+    expirationYear = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02lu/%lu", expirationMonth, expirationYear];
   }
 
   else
   {
-    v5 = 0;
+    expirationYear = 0;
   }
 
-  return v5;
+  return expirationYear;
 }
 
-- (BOOL)isExpiredInCalendar:(id)a3
+- (BOOL)isExpiredInCalendar:(id)calendar
 {
-  v4 = [(PKPhysicalCard *)self expirationDateInCalendar:a3];
+  v4 = [(PKPhysicalCard *)self expirationDateInCalendar:calendar];
   if (v4 && self->_state == 5)
   {
     v5 = [MEMORY[0x1E695DF00] now];
@@ -740,16 +740,16 @@ LABEL_61:
   return v7;
 }
 
-- (id)expirationDateInCalendar:(id)a3
+- (id)expirationDateInCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   if (self->_expirationYear && self->_expirationMonth)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v5 setYear:self->_expirationYear];
     [v5 setMonth:self->_expirationMonth + 1];
     [v5 setSecond:-1];
-    v6 = [v4 dateFromComponents:v5];
+    v6 = [calendarCopy dateFromComponents:v5];
   }
 
   else

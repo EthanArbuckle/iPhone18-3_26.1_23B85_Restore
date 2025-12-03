@@ -1,8 +1,8 @@
 @interface WFParameterValuePickerTableViewCellConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIViewController)parentViewController;
 - (WFParameterValuePickerTableViewCellDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
 - (unint64_t)hash;
 @end
@@ -25,18 +25,18 @@
 
 - (unint64_t)hash
 {
-  v28 = [(WFParameterValuePickerTableViewCellConfiguration *)self text];
-  v3 = [v28 hash];
-  v27 = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryText];
-  v4 = [v27 hash] ^ v3;
-  v26 = [(WFParameterValuePickerTableViewCellConfiguration *)self textColor];
-  v5 = [v26 hash];
-  v6 = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextColor];
-  v7 = v4 ^ v5 ^ [v6 hash];
-  v8 = [(WFParameterValuePickerTableViewCellConfiguration *)self textFont];
-  v9 = [v8 hash];
-  v10 = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextFont];
-  v11 = v9 ^ [v10 hash];
+  text = [(WFParameterValuePickerTableViewCellConfiguration *)self text];
+  v3 = [text hash];
+  secondaryText = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryText];
+  v4 = [secondaryText hash] ^ v3;
+  textColor = [(WFParameterValuePickerTableViewCellConfiguration *)self textColor];
+  v5 = [textColor hash];
+  secondaryTextColor = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextColor];
+  v7 = v4 ^ v5 ^ [secondaryTextColor hash];
+  textFont = [(WFParameterValuePickerTableViewCellConfiguration *)self textFont];
+  v9 = [textFont hash];
+  secondaryTextFont = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextFont];
+  v11 = v9 ^ [secondaryTextFont hash];
   if ([(WFParameterValuePickerTableViewCellConfiguration *)self isContainedInState])
   {
     v12 = 3133065982;
@@ -58,10 +58,10 @@
     v14 = 3133065982;
   }
 
-  v15 = [(WFParameterValuePickerTableViewCellConfiguration *)self image];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(WFParameterValuePickerTableViewCellConfiguration *)self icon];
-  v18 = v13 ^ v16 ^ [v17 hash];
+  image = [(WFParameterValuePickerTableViewCellConfiguration *)self image];
+  v16 = v14 ^ [image hash];
+  icon = [(WFParameterValuePickerTableViewCellConfiguration *)self icon];
+  v18 = v13 ^ v16 ^ [icon hash];
   [(WFParameterValuePickerTableViewCellConfiguration *)self cornerRadius];
   v20 = v19;
   if ([(WFParameterValuePickerTableViewCellConfiguration *)self forceImageScaling])
@@ -75,66 +75,66 @@
   }
 
   v22 = v18 ^ v21;
-  v23 = [(WFParameterValuePickerTableViewCellConfiguration *)self parentViewController];
-  v24 = v22 ^ [v23 hash];
+  parentViewController = [(WFParameterValuePickerTableViewCellConfiguration *)self parentViewController];
+  v24 = v22 ^ [parentViewController hash];
 
   return v24 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(WFParameterValuePickerTableViewCellConfiguration *)self text];
-      v8 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 text];
-      if ([v7 isEqualToString:v8])
+      text = [(WFParameterValuePickerTableViewCellConfiguration *)self text];
+      text2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 text];
+      if ([text isEqualToString:text2])
       {
-        v9 = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryText];
-        v10 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 secondaryText];
-        if ([v9 isEqualToString:v10])
+        secondaryText = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryText];
+        secondaryText2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 secondaryText];
+        if ([secondaryText isEqualToString:secondaryText2])
         {
-          v11 = [(WFParameterValuePickerTableViewCellConfiguration *)self textColor];
-          v12 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 textColor];
-          if ([v11 isEqual:v12])
+          textColor = [(WFParameterValuePickerTableViewCellConfiguration *)self textColor];
+          textColor2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 textColor];
+          if ([textColor isEqual:textColor2])
           {
-            v13 = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextColor];
-            v36 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 secondaryTextColor];
-            v37 = v13;
-            if ([v13 isEqual:v36])
+            secondaryTextColor = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextColor];
+            secondaryTextColor2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 secondaryTextColor];
+            v37 = secondaryTextColor;
+            if ([secondaryTextColor isEqual:secondaryTextColor2])
             {
-              v14 = [(WFParameterValuePickerTableViewCellConfiguration *)self textFont];
-              v34 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 textFont];
-              v35 = v14;
-              if ([v14 isEqual:v34])
+              textFont = [(WFParameterValuePickerTableViewCellConfiguration *)self textFont];
+              textFont2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 textFont];
+              v35 = textFont;
+              if ([textFont isEqual:textFont2])
               {
-                v15 = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextFont];
-                v16 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 secondaryTextFont];
-                v33 = v15;
-                v17 = v15;
-                v18 = v16;
-                if ([v17 isEqual:v16] && (v30 = -[WFParameterValuePickerTableViewCellConfiguration isContainedInState](self, "isContainedInState"), v30 == -[WFParameterValuePickerTableViewCellConfiguration isContainedInState](v6, "isContainedInState")) && (v31 = -[WFParameterValuePickerTableViewCellConfiguration usesToggleForSelection](self, "usesToggleForSelection"), v31 == -[WFParameterValuePickerTableViewCellConfiguration usesToggleForSelection](v6, "usesToggleForSelection")))
+                secondaryTextFont = [(WFParameterValuePickerTableViewCellConfiguration *)self secondaryTextFont];
+                secondaryTextFont2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 secondaryTextFont];
+                v33 = secondaryTextFont;
+                v17 = secondaryTextFont;
+                v18 = secondaryTextFont2;
+                if ([v17 isEqual:secondaryTextFont2] && (v30 = -[WFParameterValuePickerTableViewCellConfiguration isContainedInState](self, "isContainedInState"), v30 == -[WFParameterValuePickerTableViewCellConfiguration isContainedInState](v6, "isContainedInState")) && (v31 = -[WFParameterValuePickerTableViewCellConfiguration usesToggleForSelection](self, "usesToggleForSelection"), v31 == -[WFParameterValuePickerTableViewCellConfiguration usesToggleForSelection](v6, "usesToggleForSelection")))
                 {
-                  v32 = [(WFParameterValuePickerTableViewCellConfiguration *)self image];
-                  v29 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 image];
-                  if ([v32 isEqual:?])
+                  image = [(WFParameterValuePickerTableViewCellConfiguration *)self image];
+                  image2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 image];
+                  if ([image isEqual:?])
                   {
-                    v28 = [(WFParameterValuePickerTableViewCellConfiguration *)self icon];
-                    v27 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 icon];
-                    if ([v28 isEqual:?] && (-[WFParameterValuePickerTableViewCellConfiguration cornerRadius](self, "cornerRadius"), v22 = v21, -[WFParameterValuePickerTableViewCellConfiguration cornerRadius](v6, "cornerRadius"), v22 == v23) && (v25 = -[WFParameterValuePickerTableViewCellConfiguration forceImageScaling](self, "forceImageScaling"), v25 == -[WFParameterValuePickerTableViewCellConfiguration forceImageScaling](v6, "forceImageScaling")))
+                    icon = [(WFParameterValuePickerTableViewCellConfiguration *)self icon];
+                    icon2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 icon];
+                    if ([icon isEqual:?] && (-[WFParameterValuePickerTableViewCellConfiguration cornerRadius](self, "cornerRadius"), v22 = v21, -[WFParameterValuePickerTableViewCellConfiguration cornerRadius](v6, "cornerRadius"), v22 == v23) && (v25 = -[WFParameterValuePickerTableViewCellConfiguration forceImageScaling](self, "forceImageScaling"), v25 == -[WFParameterValuePickerTableViewCellConfiguration forceImageScaling](v6, "forceImageScaling")))
                     {
-                      v26 = [(WFParameterValuePickerTableViewCellConfiguration *)self parentViewController];
-                      v24 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 parentViewController];
-                      v19 = v26 == v24;
+                      parentViewController = [(WFParameterValuePickerTableViewCellConfiguration *)self parentViewController];
+                      parentViewController2 = [(WFParameterValuePickerTableViewCellConfiguration *)v6 parentViewController];
+                      v19 = parentViewController == parentViewController2;
                     }
 
                     else
@@ -194,9 +194,9 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(NSString *)self->_text copy];

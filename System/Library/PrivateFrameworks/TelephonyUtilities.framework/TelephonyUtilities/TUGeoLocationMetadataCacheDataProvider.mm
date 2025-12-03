@@ -1,7 +1,7 @@
 @interface TUGeoLocationMetadataCacheDataProvider
 - (TUGeoLocationMetadataCacheDataProvider)init;
-- (id)locationForMetadataIdentifier:(id)a3;
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4;
+- (id)locationForMetadataIdentifier:(id)identifier;
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group;
 @end
 
 @implementation TUGeoLocationMetadataCacheDataProvider
@@ -39,20 +39,20 @@
   return v2;
 }
 
-- (id)locationForMetadataIdentifier:(id)a3
+- (id)locationForMetadataIdentifier:(id)identifier
 {
-  v4 = [a3 handle];
-  v5 = [v4 normalizedValue];
+  handle = [identifier handle];
+  normalizedValue = [handle normalizedValue];
 
-  if ([v5 pn_hasInternationalDirectDialingPrefix])
+  if ([normalizedValue pn_hasInternationalDirectDialingPrefix])
   {
-    v6 = [MEMORY[0x1E695DF58] currentLocale];
-    v7 = [v6 countryCode];
-    v8 = [v7 lowercaseString];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    countryCode = [currentLocale countryCode];
+    lowercaseString = [countryCode lowercaseString];
 
-    v9 = [(TUGeoLocationMetadataCacheDataProvider *)self phoneNumberResolver];
+    phoneNumberResolver = [(TUGeoLocationMetadataCacheDataProvider *)self phoneNumberResolver];
     v14 = 0;
-    v10 = [v9 resolvePhoneNumber:v5 countryCode:v8 error:&v14];
+    v10 = [phoneNumberResolver resolvePhoneNumber:normalizedValue countryCode:lowercaseString error:&v14];
     v11 = v14;
 
     if (v11)
@@ -60,7 +60,7 @@
       v12 = TUDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(TUGeoLocationMetadataCacheDataProvider *)v5 locationForMetadataIdentifier:v11, v12];
+        [(TUGeoLocationMetadataCacheDataProvider *)normalizedValue locationForMetadataIdentifier:v11, v12];
       }
     }
   }
@@ -73,17 +73,17 @@
   return v10;
 }
 
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  dispatch_group_enter(v7);
+  dsCopy = ds;
+  groupCopy = group;
+  dispatch_group_enter(groupCopy);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -112,7 +112,7 @@
     while (v10);
   }
 
-  dispatch_group_leave(v7);
+  dispatch_group_leave(groupCopy);
   v15 = *MEMORY[0x1E69E9840];
 }
 

@@ -1,27 +1,27 @@
 @interface MRAPInputDevice
-- (MRAPInputDevice)initWithInputDevice:(void *)a3;
+- (MRAPInputDevice)initWithInputDevice:(void *)device;
 - (NSString)description;
 - (id)audioInputBlock;
 - (unsigned)mediaRemoteDeviceID;
-- (void)_setRecordingState:(unsigned int)a3 withCompletion:(id)a4;
+- (void)_setRecordingState:(unsigned int)state withCompletion:(id)completion;
 - (void)dealloc;
-- (void)processVoiceDataWithBuffer:(void *)a3 time:(id)a4 gain:(float)a5;
-- (void)setAudioInputBlock:(id)a3;
-- (void)setSupportedFormats:(id)a3;
-- (void)startRecordingWithCompletionBlock:(id)a3;
-- (void)stopRecordingWithCompletionBlock:(id)a3;
+- (void)processVoiceDataWithBuffer:(void *)buffer time:(id)time gain:(float)gain;
+- (void)setAudioInputBlock:(id)block;
+- (void)setSupportedFormats:(id)formats;
+- (void)startRecordingWithCompletionBlock:(id)block;
+- (void)stopRecordingWithCompletionBlock:(id)block;
 @end
 
 @implementation MRAPInputDevice
 
-- (MRAPInputDevice)initWithInputDevice:(void *)a3
+- (MRAPInputDevice)initWithInputDevice:(void *)device
 {
   v23.receiver = self;
   v23.super_class = MRAPInputDevice;
   v4 = [(MRAPInputDevice *)&v23 init];
   if (v4)
   {
-    v4->_inputDevice = CFRetain(a3);
+    v4->_inputDevice = CFRetain(device);
     if (MRVirtualVoiceInputDeviceGetDescriptor())
     {
       v5 = MRVirtualVoiceInputDeviceDescriptorCopySupportedFormats();
@@ -104,18 +104,18 @@
   return v2;
 }
 
-- (void)setAudioInputBlock:(id)a3
+- (void)setAudioInputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   audioInputBlock = self->_audioInputBlock;
   self->_audioInputBlock = v4;
 
   _objc_release_x1();
 }
 
-- (void)setSupportedFormats:(id)a3
+- (void)setSupportedFormats:(id)formats
 {
-  v4 = [a3 copy];
+  v4 = [formats copy];
   supportedFormats = self->_supportedFormats;
   self->_supportedFormats = v4;
 
@@ -133,49 +133,49 @@
   return inputDevice;
 }
 
-- (void)startRecordingWithCompletionBlock:(id)a3
+- (void)startRecordingWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_3040(self, v5);
   }
 
-  [(MRAPInputDevice *)self _setRecordingState:1 withCompletion:v4];
+  [(MRAPInputDevice *)self _setRecordingState:1 withCompletion:blockCopy];
 }
 
-- (void)stopRecordingWithCompletionBlock:(id)a3
+- (void)stopRecordingWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_30B8(self, v5);
   }
 
-  [(MRAPInputDevice *)self _setRecordingState:2 withCompletion:v4];
+  [(MRAPInputDevice *)self _setRecordingState:2 withCompletion:blockCopy];
 }
 
-- (void)processVoiceDataWithBuffer:(void *)a3 time:(id)a4 gain:(float)a5
+- (void)processVoiceDataWithBuffer:(void *)buffer time:(id)time gain:(float)gain
 {
   if (self->_audioInputBlock)
   {
-    var1 = a4.var1;
-    var0 = a4.var0;
-    if (a3)
+    var1 = time.var1;
+    var0 = time.var0;
+    if (buffer)
     {
-      v9 = [a3 buffer];
+      buffer = [buffer buffer];
     }
 
     else
     {
-      v9 = 0;
+      buffer = 0;
     }
 
     v10 = [[AVAudioTime alloc] initWithHostTime:+[AVAudioTime hostTimeForSeconds:](AVAudioTime sampleTime:"hostTimeForSeconds:" atRate:{var0), 0, var1}];
     v14 = @"Gain";
-    *&v11 = a5;
+    *&v11 = gain;
     v12 = [NSNumber numberWithFloat:v11];
     v15 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
@@ -185,28 +185,28 @@
 
   else
   {
-    v9 = _MRLogForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    buffer = _MRLogForCategory();
+    if (os_log_type_enabled(buffer, OS_LOG_TYPE_DEBUG))
     {
-      sub_3130(v9);
+      sub_3130(buffer);
     }
   }
 }
 
-- (void)_setRecordingState:(unsigned int)a3 withCompletion:(id)a4
+- (void)_setRecordingState:(unsigned int)state withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if (self->_inputDevice)
   {
     MRVirtualVoiceInputDeviceGetUniqueIdentifier();
-    v7 = v5;
+    v7 = completionCopy;
     MRVirtualVoiceInputSetRecordingState();
   }
 
   else
   {
     v6 = [NSError mrap_errorWithCode:1];
-    (*(v5 + 2))(v5, v6);
+    (*(completionCopy + 2))(completionCopy, v6);
   }
 }
 

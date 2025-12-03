@@ -1,10 +1,10 @@
 @interface AFibBurdenLifeFactorDescriptionCell
-- (_TtC5Heart35AFibBurdenLifeFactorDescriptionCell)initWithCoder:(id)a3;
+- (_TtC5Heart35AFibBurdenLifeFactorDescriptionCell)initWithCoder:(id)coder;
 @end
 
 @implementation AFibBurdenLifeFactorDescriptionCell
 
-- (_TtC5Heart35AFibBurdenLifeFactorDescriptionCell)initWithCoder:(id)a3
+- (_TtC5Heart35AFibBurdenLifeFactorDescriptionCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5Heart35AFibBurdenLifeFactorDescriptionCell_item;
   *v3 = 0u;

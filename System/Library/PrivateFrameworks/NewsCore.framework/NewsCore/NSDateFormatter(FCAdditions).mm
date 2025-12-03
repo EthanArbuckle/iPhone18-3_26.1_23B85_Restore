@@ -59,20 +59,20 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v12 = [MEMORY[0x1E696AF00] currentThread];
-  v13 = [v12 threadDictionary];
-  v14 = [v13 objectForKey:@"NSDateFormatter_FCAdditions_CachedFormatters"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  dictionary = [threadDictionary objectForKey:@"NSDateFormatter_FCAdditions_CachedFormatters"];
 
-  if (!v14)
+  if (!dictionary)
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    v15 = [MEMORY[0x1E696AF00] currentThread];
-    v16 = [v15 threadDictionary];
-    [v16 setObject:v14 forKey:@"NSDateFormatter_FCAdditions_CachedFormatters"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:dictionary forKey:@"NSDateFormatter_FCAdditions_CachedFormatters"];
   }
 
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v9, v10];
-  v18 = [v14 objectForKey:v17];
+  v18 = [dictionary objectForKey:v17];
   if (!v18)
   {
     v21 = [objc_alloc(MEMORY[0x1E696AB78]) initWithFormat:v9 localeIdentifier:v10];
@@ -86,7 +86,7 @@ LABEL_9:
     {
       if (a6)
       {
-        [v14 setObject:v18 forKey:v17];
+        [dictionary setObject:v18 forKey:v17];
       }
     }
 
@@ -120,7 +120,7 @@ LABEL_12:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 init];
+  v8 = [self init];
   v9 = v8;
   if (v8)
   {

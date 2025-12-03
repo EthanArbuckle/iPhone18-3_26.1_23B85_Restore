@@ -1,18 +1,18 @@
 @interface CRLNumberParser
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5;
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value;
 @end
 
 @implementation CRLNumberParser
 
-+ (BOOL)numberValueFromString:(id)a3 locale:(id)a4 outDoubleValue:(double *)a5
++ (BOOL)numberValueFromString:(id)string locale:(id)locale outDoubleValue:(double *)value
 {
-  if (a5)
+  if (value)
   {
-    [a3 doubleValue];
-    *a5 = v6;
+    [string doubleValue];
+    *value = v6;
   }
 
-  return a5 != 0;
+  return value != 0;
 }
 
 @end

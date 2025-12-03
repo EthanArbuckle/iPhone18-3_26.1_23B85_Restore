@@ -1,118 +1,118 @@
 @interface CKVAdminXPCServiceWrapper
 - (CKVAdminXPCServiceWrapper)init;
-- (void)beginEvaluation:(id)a3 clean:(BOOL)a4 completion:(id)a5;
-- (void)captureVocabularySnapshot:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsWithUserId:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsWithUserId:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)endEvaluation:(id)a3;
-- (void)finishEventSimulation:(id)a3;
-- (void)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5;
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4;
-- (void)startEventSimulation:(BOOL)a3 completion:(id)a4;
-- (void)triggerMaintenance:(id)a3;
-- (void)triggerMigration:(BOOL)a3 completeAfterTrigger:(BOOL)a4 completion:(id)a5;
+- (void)beginEvaluation:(id)evaluation clean:(BOOL)clean completion:(id)completion;
+- (void)captureVocabularySnapshot:(id)snapshot completion:(id)completion;
+- (void)deleteAllItemsWithUserId:(id)id completion:(id)completion;
+- (void)deleteAllItemsWithUserId:(id)id deviceId:(id)deviceId completion:(id)completion;
+- (void)endEvaluation:(id)evaluation;
+- (void)finishEventSimulation:(id)simulation;
+- (void)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason completion:(id)completion;
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion;
+- (void)startEventSimulation:(BOOL)simulation completion:(id)completion;
+- (void)triggerMaintenance:(id)maintenance;
+- (void)triggerMigration:(BOOL)migration completeAfterTrigger:(BOOL)trigger completion:(id)completion;
 @end
 
 @implementation CKVAdminXPCServiceWrapper
 
-- (void)endEvaluation:(id)a3
+- (void)endEvaluation:(id)evaluation
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v4 = a3;
-  v5 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v5 endEvaluation:v4];
+  evaluationCopy = evaluation;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service endEvaluation:evaluationCopy];
 }
 
-- (void)beginEvaluation:(id)a3 clean:(BOOL)a4 completion:(id)a5
+- (void)beginEvaluation:(id)evaluation clean:(BOOL)clean completion:(id)completion
 {
-  v5 = a4;
+  cleanCopy = clean;
   xpcServiceBridge = self->_xpcServiceBridge;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v10 beginEvaluation:v9 clean:v5 completion:v8];
+  completionCopy = completion;
+  evaluationCopy = evaluation;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service beginEvaluation:evaluationCopy clean:cleanCopy completion:completionCopy];
 }
 
-- (void)deleteAllItemsWithUserId:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)deleteAllItemsWithUserId:(id)id deviceId:(id)deviceId completion:(id)completion
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v11 deleteAllItemsWithUserId:v10 deviceId:v9 completion:v8];
+  completionCopy = completion;
+  deviceIdCopy = deviceId;
+  idCopy = id;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service deleteAllItemsWithUserId:idCopy deviceId:deviceIdCopy completion:completionCopy];
 }
 
-- (void)deleteAllItemsWithUserId:(id)a3 completion:(id)a4
+- (void)deleteAllItemsWithUserId:(id)id completion:(id)completion
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v8 deleteAllItemsWithUserId:v7 completion:v6];
+  completionCopy = completion;
+  idCopy = id;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service deleteAllItemsWithUserId:idCopy completion:completionCopy];
 }
 
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v8 rebuildSpeechProfileForUserId:v7 completion:v6];
+  completionCopy = completion;
+  idCopy = id;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service rebuildSpeechProfileForUserId:idCopy completion:completionCopy];
 }
 
-- (void)captureVocabularySnapshot:(id)a3 completion:(id)a4
+- (void)captureVocabularySnapshot:(id)snapshot completion:(id)completion
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v8 captureVocabularySnapshot:v7 completion:v6];
+  completionCopy = completion;
+  snapshotCopy = snapshot;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service captureVocabularySnapshot:snapshotCopy completion:completionCopy];
 }
 
-- (void)triggerMaintenance:(id)a3
+- (void)triggerMaintenance:(id)maintenance
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v4 = a3;
-  v5 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v5 triggerMaintenance:v4];
+  maintenanceCopy = maintenance;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service triggerMaintenance:maintenanceCopy];
 }
 
-- (void)triggerMigration:(BOOL)a3 completeAfterTrigger:(BOOL)a4 completion:(id)a5
+- (void)triggerMigration:(BOOL)migration completeAfterTrigger:(BOOL)trigger completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  triggerCopy = trigger;
+  migrationCopy = migration;
   xpcServiceBridge = self->_xpcServiceBridge;
-  v8 = a5;
-  v9 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v9 triggerMigration:v6 completeAfterTrigger:v5 completion:v8];
+  completionCopy = completion;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service triggerMigration:migrationCopy completeAfterTrigger:triggerCopy completion:completionCopy];
 }
 
-- (void)finishEventSimulation:(id)a3
+- (void)finishEventSimulation:(id)simulation
 {
   xpcServiceBridge = self->_xpcServiceBridge;
-  v4 = a3;
-  v5 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v5 finishEventSimulation:v4];
+  simulationCopy = simulation;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service finishEventSimulation:simulationCopy];
 }
 
-- (void)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 completion:(id)a5
+- (void)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  reasonCopy = reason;
+  taskCopy = task;
   xpcServiceBridge = self->_xpcServiceBridge;
-  v8 = a5;
-  v9 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v9 handleTask:v6 reason:v5 completion:v8];
+  completionCopy = completion;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service handleTask:taskCopy reason:reasonCopy completion:completionCopy];
 }
 
-- (void)startEventSimulation:(BOOL)a3 completion:(id)a4
+- (void)startEventSimulation:(BOOL)simulation completion:(id)completion
 {
-  v4 = a3;
+  simulationCopy = simulation;
   xpcServiceBridge = self->_xpcServiceBridge;
-  v6 = a4;
-  v7 = [(CKVXPCServiceBridge *)xpcServiceBridge service];
-  [v7 startEventSimulation:v4 completion:v6];
+  completionCopy = completion;
+  service = [(CKVXPCServiceBridge *)xpcServiceBridge service];
+  [service startEventSimulation:simulationCopy completion:completionCopy];
 }
 
 - (CKVAdminXPCServiceWrapper)init

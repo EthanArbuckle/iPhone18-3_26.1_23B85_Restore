@@ -1,30 +1,30 @@
 @interface ICAppContext
-- (ICAppContext)initWithCloudContext:(id)a3 contextOptions:(unint64_t)a4 viewContext:(id)a5 backgroundContextCreator:(id)a6 deviceManagementRestrictionsManager:(id)a7;
+- (ICAppContext)initWithCloudContext:(id)context contextOptions:(unint64_t)options viewContext:(id)viewContext backgroundContextCreator:(id)creator deviceManagementRestrictionsManager:(id)manager;
 - (id)makeBackgroundContext;
 @end
 
 @implementation ICAppContext
 
-- (ICAppContext)initWithCloudContext:(id)a3 contextOptions:(unint64_t)a4 viewContext:(id)a5 backgroundContextCreator:(id)a6 deviceManagementRestrictionsManager:(id)a7
+- (ICAppContext)initWithCloudContext:(id)context contextOptions:(unint64_t)options viewContext:(id)viewContext backgroundContextCreator:(id)creator deviceManagementRestrictionsManager:(id)manager
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  viewContextCopy = viewContext;
+  creatorCopy = creator;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = ICAppContext;
   v17 = [(ICAppContext *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_cloudContext, a3);
-    v18->_contextOptions = a4;
-    objc_storeStrong(&v18->_viewContext, a5);
-    v19 = _Block_copy(v15);
+    objc_storeStrong(&v17->_cloudContext, context);
+    v18->_contextOptions = options;
+    objc_storeStrong(&v18->_viewContext, viewContext);
+    v19 = _Block_copy(creatorCopy);
     backgroundContextCreator = v18->_backgroundContextCreator;
     v18->_backgroundContextCreator = v19;
 
-    objc_storeStrong(&v18->_deviceManagementRestrictionsManager, a7);
+    objc_storeStrong(&v18->_deviceManagementRestrictionsManager, manager);
   }
 
   return v18;
@@ -32,11 +32,11 @@
 
 - (id)makeBackgroundContext
 {
-  v3 = [(ICAppContext *)self backgroundContextCreator];
-  if (v3)
+  backgroundContextCreator = [(ICAppContext *)self backgroundContextCreator];
+  if (backgroundContextCreator)
   {
-    v4 = [(ICAppContext *)self backgroundContextCreator];
-    v5 = v4[2]();
+    backgroundContextCreator2 = [(ICAppContext *)self backgroundContextCreator];
+    v5 = backgroundContextCreator2[2]();
   }
 
   else

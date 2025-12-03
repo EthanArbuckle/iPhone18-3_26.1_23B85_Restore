@@ -2,9 +2,9 @@
 + (TLAlertQueuePlayerAnalyticsRecorder)sharedRecorder;
 - (id)_init;
 - (void)_beginMonitoringDisplayLayout;
-- (void)_updateWithDisplayLayout:(id)a3;
+- (void)_updateWithDisplayLayout:(id)layout;
 - (void)dealloc;
-- (void)recordAnalytics:(id)a3;
+- (void)recordAnalytics:(id)analytics;
 @end
 
 @implementation TLAlertQueuePlayerAnalyticsRecorder
@@ -58,47 +58,47 @@ uint64_t __53__TLAlertQueuePlayerAnalyticsRecorder_sharedRecorder__block_invoke(
   [(TLAlertQueuePlayerAnalyticsRecorder *)&v5 dealloc];
 }
 
-- (void)recordAnalytics:(id)a3
+- (void)recordAnalytics:(id)analytics
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  analyticsCopy = analytics;
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v5 = TLLogPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v39 = self;
+    selfCopy = self;
     v40 = 2114;
-    v41 = v4;
+    v41 = analyticsCopy;
     _os_log_impl(&dword_1D9356000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Recording analytics: %{public}@", buf, 0x16u);
   }
 
   v36[0] = @"alertType";
-  v35 = NSStringFromTLAlertType([v4 alertType]);
+  v35 = NSStringFromTLAlertType([analyticsCopy alertType]);
   v37[0] = v35;
   v36[1] = @"toneIdentifier";
-  v34 = [v4 toneIdentifierForAnalytics];
-  v37[1] = v34;
+  toneIdentifierForAnalytics = [analyticsCopy toneIdentifierForAnalytics];
+  v37[1] = toneIdentifierForAnalytics;
   v36[2] = @"toneKind";
-  v33 = [v4 toneKindForAnalytics];
-  v37[2] = v33;
+  toneKindForAnalytics = [analyticsCopy toneKindForAnalytics];
+  v37[2] = toneKindForAnalytics;
   v36[3] = @"userVolume";
   v6 = MEMORY[0x1E696AD98];
-  [v4 userVolume];
+  [analyticsCopy userVolume];
   v32 = [v6 numberWithFloat:?];
   v37[3] = v32;
   v36[4] = @"toneWasAttenuated";
-  v31 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "didAttenuatePlayback")}];
+  v31 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(analyticsCopy, "didAttenuatePlayback")}];
   v37[4] = v31;
   v36[5] = @"timeToAttenuate";
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v4 didAttenuatePlayback];
+  didAttenuatePlayback = [analyticsCopy didAttenuatePlayback];
   v9 = 0.0;
-  if (v8)
+  if (didAttenuatePlayback)
   {
-    [v4 attenuationTime];
+    [analyticsCopy attenuationTime];
     v11 = v10;
-    [v4 startTime];
+    [analyticsCopy startTime];
     v9 = v11 - v12;
   }
 
@@ -106,20 +106,20 @@ uint64_t __53__TLAlertQueuePlayerAnalyticsRecorder_sharedRecorder__block_invoke(
   v37[5] = v13;
   v36[6] = @"timeToStopAlert";
   v14 = MEMORY[0x1E696AD98];
-  [v4 stopTime];
+  [analyticsCopy stopTime];
   v16 = v15;
-  [v4 startTime];
+  [analyticsCopy startTime];
   v18 = [v14 numberWithDouble:v16 - v17];
   v37[6] = v18;
   v36[7] = @"isDisplayInStandByMode";
   v19 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDisplayInStandByMode];
   v37[7] = v19;
   v36[8] = @"deviceChargingOnToneStart";
-  v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "wasDeviceChargingOnStart")}];
+  v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(analyticsCopy, "wasDeviceChargingOnStart")}];
   v37[8] = v20;
   v36[9] = @"deviceChargingOnToneStop";
-  v30 = self;
-  v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "wasDeviceChargingOnStop")}];
+  selfCopy2 = self;
+  v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(analyticsCopy, "wasDeviceChargingOnStop")}];
   v37[9] = v21;
   v36[10] = @"deviceHasFaceID";
   v22 = MEMORY[0x1E696AD98];
@@ -127,17 +127,17 @@ uint64_t __53__TLAlertQueuePlayerAnalyticsRecorder_sharedRecorder__block_invoke(
   v24 = [v22 numberWithBool:{objc_msgSend(v23, "hasFaceIDCapability")}];
   v37[10] = v24;
   v36[11] = @"deviceHasAttentionAwarenessEnabled";
-  v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isAttentionAwarenessSupportEnabled")}];
+  v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(analyticsCopy, "isAttentionAwarenessSupportEnabled")}];
   v37[11] = v25;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:12];
 
-  v27 = [objc_alloc(MEMORY[0x1E698D470]) initWithReporterID:{objc_msgSend(v4, "reporterID")}];
+  v27 = [objc_alloc(MEMORY[0x1E698D470]) initWithReporterID:{objc_msgSend(analyticsCopy, "reporterID")}];
   [v27 sendMessage:v26 category:4 type:2];
   v28 = TLLogPlayback();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v39 = v30;
+    selfCopy = selfCopy2;
     v40 = 2114;
     v41 = v26;
     _os_log_impl(&dword_1D9356000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: Did send analytics message: %{public}@", buf, 0x16u);
@@ -148,15 +148,15 @@ uint64_t __53__TLAlertQueuePlayerAnalyticsRecorder_sharedRecorder__block_invoke(
 
 - (void)_beginMonitoringDisplayLayout
 {
-  v3 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
-  [v3 setNeedsUserInteractivePriority:1];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__TLAlertQueuePlayerAnalyticsRecorder__beginMonitoringDisplayLayout__block_invoke;
   v6[3] = &unk_1E8579800;
   v6[4] = self;
-  [v3 setTransitionHandler:v6];
-  v4 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v3];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v6];
+  v4 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   layoutMonitor = self->_layoutMonitor;
   self->_layoutMonitor = v4;
 }
@@ -179,12 +179,12 @@ void __68__TLAlertQueuePlayerAnalyticsRecorder__beginMonitoringDisplayLayout__bl
   }
 }
 
-- (void)_updateWithDisplayLayout:(id)a3
+- (void)_updateWithDisplayLayout:(id)layout
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layoutCopy = layout;
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  [v4 elements];
+  [layoutCopy elements];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -205,8 +205,8 @@ void __68__TLAlertQueuePlayerAnalyticsRecorder__beginMonitoringDisplayLayout__bl
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) identifier];
-        v12 = [v11 isEqualToString:v9];
+        identifier = [*(*(&v17 + 1) + 8 * v10) identifier];
+        v12 = [identifier isEqualToString:v9];
 
         if (v12)
         {
@@ -240,7 +240,7 @@ LABEL_11:
     {
       isDisplayInStandByMode = self->_isDisplayInStandByMode;
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 1024;
       v24 = isDisplayInStandByMode;
       _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: isDisplayInStandByMode = %{BOOL}u", buf, 0x12u);

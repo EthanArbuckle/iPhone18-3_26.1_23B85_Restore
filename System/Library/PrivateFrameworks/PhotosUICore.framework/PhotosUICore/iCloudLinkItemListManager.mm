@@ -1,12 +1,12 @@
 @interface iCloudLinkItemListManager
-- (void)outputEventSignaledForCoalescer:(id)a3;
+- (void)outputEventSignaledForCoalescer:(id)coalescer;
 @end
 
 @implementation iCloudLinkItemListManager
 
-- (void)outputEventSignaledForCoalescer:(id)a3
+- (void)outputEventSignaledForCoalescer:(id)coalescer
 {
-  v3 = a3;
+  coalescerCopy = coalescer;
 
   sub_1A3E508D4();
 }

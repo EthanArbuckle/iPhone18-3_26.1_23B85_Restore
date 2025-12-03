@@ -1,15 +1,15 @@
 @interface MicroPaymentDownload
-+ (id)downloadEntityFromContext:(id)a3;
++ (id)downloadEntityFromContext:(id)context;
 - (id)copySKDownload;
 - (void)awakeFromInsert;
-- (void)setValuesWithAssetDictionary:(id)a3;
+- (void)setValuesWithAssetDictionary:(id)dictionary;
 @end
 
 @implementation MicroPaymentDownload
 
-+ (id)downloadEntityFromContext:(id)a3
++ (id)downloadEntityFromContext:(id)context
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 "persistentStoreCoordinator")];
+  v3 = [objc_msgSend(objc_msgSend(context "persistentStoreCoordinator")];
 
   return [v3 objectForKey:@"MicroPaymentDownload"];
 }
@@ -32,17 +32,17 @@
   [v3 _setDownloadState:v5];
   [v3 _setVersion:{-[MicroPaymentDownload version](self, "version")}];
   [v3 _setContentLength:{-[MicroPaymentDownload contentLength](self, "contentLength")}];
-  v6 = [(MicroPaymentDownload *)self localURL];
-  if (v6)
+  localURL = [(MicroPaymentDownload *)self localURL];
+  if (localURL)
   {
-    v6 = [NSURL URLWithString:v6];
+    localURL = [NSURL URLWithString:localURL];
   }
 
-  [v3 _setContentURL:v6];
-  v7 = [(MicroPaymentDownload *)self error];
-  if (v7)
+  [v3 _setContentURL:localURL];
+  error = [(MicroPaymentDownload *)self error];
+  if (error)
   {
-    v8 = sub_1001FA204(v7);
+    v8 = sub_1001FA204(error);
   }
 
   else
@@ -54,26 +54,26 @@
   return v3;
 }
 
-- (void)setValuesWithAssetDictionary:(id)a3
+- (void)setValuesWithAssetDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKey:@"downloadKey"];
+  v5 = [dictionary objectForKey:@"downloadKey"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(MicroPaymentDownload *)self setDownloadKey:v5];
   }
 
-  v6 = [a3 objectForKey:@"file-size"];
+  v6 = [dictionary objectForKey:@"file-size"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(MicroPaymentDownload *)self setContentLength:v6];
   }
 
-  v7 = [a3 objectForKey:@"chunks"];
+  v7 = [dictionary objectForKey:@"chunks"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [a3 objectForKey:@"md5"];
+    v13 = [dictionary objectForKey:@"md5"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@ LABEL_16:
     }
 
 LABEL_17:
-    v12 = self;
+    selfCopy2 = self;
     v11 = 0;
     goto LABEL_18;
   }
@@ -125,14 +125,14 @@ LABEL_10:
   }
 
   v11 = v10;
-  v12 = self;
+  selfCopy2 = self;
 LABEL_18:
-  [(MicroPaymentDownload *)v12 setHashArrayData:v11];
+  [(MicroPaymentDownload *)selfCopy2 setHashArrayData:v11];
 LABEL_19:
-  v14 = [a3 objectForKey:@"sinfs"];
+  v14 = [dictionary objectForKey:@"sinfs"];
   if (!v14)
   {
-    v18 = self;
+    selfCopy4 = self;
     v17 = 0;
     goto LABEL_24;
   }
@@ -145,19 +145,19 @@ LABEL_19:
     if (v16)
     {
       v17 = v16;
-      v18 = self;
+      selfCopy4 = self;
 LABEL_24:
-      [(MicroPaymentDownload *)v18 setSinfs:v17];
+      [(MicroPaymentDownload *)selfCopy4 setSinfs:v17];
     }
   }
 
-  v19 = [a3 objectForKey:@"URL"];
+  v19 = [dictionary objectForKey:@"URL"];
   if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(MicroPaymentDownload *)self setRemoteURL:v19];
   }
 
-  v20 = [a3 objectForKey:@"version"];
+  v20 = [dictionary objectForKey:@"version"];
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
 

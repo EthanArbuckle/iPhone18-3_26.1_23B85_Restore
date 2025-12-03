@@ -1,12 +1,12 @@
 @interface SCNActionMove
-+ (id)moveByX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6;
-+ (id)moveToX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6;
++ (id)moveByX:(double)x y:(double)y z:(double)z duration:(double)duration;
++ (id)moveToX:(double)x y:(double)y z:(double)z duration:(double)duration;
 - (SCNActionMove)init;
-- (SCNActionMove)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionMove)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parameters;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionMove
@@ -23,7 +23,7 @@
   return 0;
 }
 
-- (SCNActionMove)initWithCoder:(id)a3
+- (SCNActionMove)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionMove;
@@ -35,64 +35,64 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionMove;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var19), @"_lastRatio"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var2), @"_posTarget.x"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var2 + 1)), @"_posTarget.y"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var3), @"_posTarget.z"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var4), @"_posTargetReversed.x"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var4 + 1)), @"_posTargetReversed.y"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var5), @"_posTargetReversed.z"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var0), @"_posStart.x"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var0 + 1)), @"_posStart.y"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var1), @"_posStart.z"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", LOBYTE(self->_mycaction[1].var6)), @"_isReversed"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE1(self->_mycaction[1].var6)), @"_isRelative"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_mycaction->var19), @"_lastRatio"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var2), @"_posTarget.x"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var2 + 1)), @"_posTarget.y"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var3), @"_posTarget.z"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var4), @"_posTargetReversed.x"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var4 + 1)), @"_posTargetReversed.y"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var5), @"_posTargetReversed.z"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var0), @"_posStart.x"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *(&self->_mycaction[1].var0 + 1)), @"_posStart.y"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", *&self->_mycaction[1].var1), @"_posStart.z"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", LOBYTE(self->_mycaction[1].var6)), @"_isReversed"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", BYTE1(self->_mycaction[1].var6)), @"_isRelative"}];
 }
 
-+ (id)moveByX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6
++ (id)moveByX:(double)x y:(double)y z:(double)z duration:(double)duration
 {
   v10 = objc_alloc_init(SCNActionMove);
-  v11 = a3;
-  *&v10->_mycaction[1].var2 = v11;
-  v12 = a4;
-  *(&v10->_mycaction[1].var2 + 1) = v12;
-  v13 = a5;
-  *&v10->_mycaction[1].var3 = v13;
-  *&v10->_mycaction[1].var4 = -v11;
-  *(&v10->_mycaction[1].var4 + 1) = -v12;
-  *&v10->_mycaction[1].var5 = -v13;
+  xCopy = x;
+  *&v10->_mycaction[1].var2 = xCopy;
+  yCopy = y;
+  *(&v10->_mycaction[1].var2 + 1) = yCopy;
+  zCopy = z;
+  *&v10->_mycaction[1].var3 = zCopy;
+  *&v10->_mycaction[1].var4 = -xCopy;
+  *(&v10->_mycaction[1].var4 + 1) = -yCopy;
+  *&v10->_mycaction[1].var5 = -zCopy;
   LOWORD(v10->_mycaction[1].var6) = 256;
-  [(SCNAction *)v10 setDuration:a6];
+  [(SCNAction *)v10 setDuration:duration];
   return v10;
 }
 
-+ (id)moveToX:(double)a3 y:(double)a4 z:(double)a5 duration:(double)a6
++ (id)moveToX:(double)x y:(double)y z:(double)z duration:(double)duration
 {
   v10 = objc_alloc_init(SCNActionMove);
-  v11 = a3;
-  *&v10->_mycaction[1].var2 = v11;
-  v12 = a4;
-  *(&v10->_mycaction[1].var2 + 1) = v12;
-  v13 = a5;
-  *&v10->_mycaction[1].var3 = v13;
-  *&v10->_mycaction[1].var4 = v11;
-  *(&v10->_mycaction[1].var4 + 1) = v12;
-  *&v10->_mycaction[1].var5 = v13;
+  xCopy = x;
+  *&v10->_mycaction[1].var2 = xCopy;
+  yCopy = y;
+  *(&v10->_mycaction[1].var2 + 1) = yCopy;
+  zCopy = z;
+  *&v10->_mycaction[1].var3 = zCopy;
+  *&v10->_mycaction[1].var4 = xCopy;
+  *(&v10->_mycaction[1].var4 + 1) = yCopy;
+  *&v10->_mycaction[1].var5 = zCopy;
   BYTE1(v10->_mycaction[1].var6) = 0;
-  [(SCNAction *)v10 setDuration:a6];
+  [(SCNAction *)v10 setDuration:duration];
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SCNActionMove;
-  result = [(SCNAction *)&v7 copyWithZone:a3];
+  result = [(SCNAction *)&v7 copyWithZone:zone];
   mycaction = self->_mycaction;
   v6 = *(result + 2);
   *(v6 + 144) = mycaction->var19;

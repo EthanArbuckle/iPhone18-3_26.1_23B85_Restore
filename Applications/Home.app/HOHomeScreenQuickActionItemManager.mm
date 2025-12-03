@@ -1,27 +1,27 @@
 @interface HOHomeScreenQuickActionItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_comparatorForSectionIdentifier:(id)a3;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_comparatorForSectionIdentifier:(id)identifier;
 @end
 
 @implementation HOHomeScreenQuickActionItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  if (v4)
+  homeCopy = home;
+  if (homeCopy)
   {
-    v5 = [[HFHomeItem alloc] initWithHome:v4];
+    v5 = [[HFHomeItem alloc] initWithHome:homeCopy];
     [(HOHomeScreenQuickActionItemManager *)self setSourceItem:v5];
   }
 
-  if ([v4 hf_shouldBlockCurrentUserFromHome])
+  if ([homeCopy hf_shouldBlockCurrentUserFromHome])
   {
     v6 = &__NSArray0__struct;
   }
 
   else
   {
-    v7 = [[HUCCFavoriteActionSetItemProvider alloc] initWithHome:v4 actionSetItemStyle:0];
+    v7 = [[HUCCFavoriteActionSetItemProvider alloc] initWithHome:homeCopy actionSetItemStyle:0];
     [v7 setMaximumNumberOfItems:3];
     v9 = v7;
     v6 = [NSArray arrayWithObjects:&v9 count:1];
@@ -30,35 +30,35 @@
   return v6;
 }
 
-- (id)_comparatorForSectionIdentifier:(id)a3
+- (id)_comparatorForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HOHomeScreenQuickActionItemManager *)self sourceItem];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:HFResultDisplayReorderableActionSetItemListKey];
+  identifierCopy = identifier;
+  sourceItem = [(HOHomeScreenQuickActionItemManager *)self sourceItem];
+  latestResults = [sourceItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:HFResultDisplayReorderableActionSetItemListKey];
 
   if (v7)
   {
-    v8 = [v7 sortedHomeKitItemComparator];
+    sortedHomeKitItemComparator = [v7 sortedHomeKitItemComparator];
   }
 
   else
   {
-    v9 = [(HOHomeScreenQuickActionItemManager *)self sourceItem];
-    v10 = [v9 latestResults];
+    sourceItem2 = [(HOHomeScreenQuickActionItemManager *)self sourceItem];
+    latestResults2 = [sourceItem2 latestResults];
 
-    if (v10)
+    if (latestResults2)
     {
-      v11 = [(HOHomeScreenQuickActionItemManager *)self sourceItem];
-      NSLog(@"No HFResultDisplayReorderableActionSetItemListKey in our sourceItem: %@", v11);
+      sourceItem3 = [(HOHomeScreenQuickActionItemManager *)self sourceItem];
+      NSLog(@"No HFResultDisplayReorderableActionSetItemListKey in our sourceItem: %@", sourceItem3);
     }
 
     v14.receiver = self;
     v14.super_class = HOHomeScreenQuickActionItemManager;
-    v8 = [(HOHomeScreenQuickActionItemManager *)&v14 _comparatorForSectionIdentifier:v4];
+    sortedHomeKitItemComparator = [(HOHomeScreenQuickActionItemManager *)&v14 _comparatorForSectionIdentifier:identifierCopy];
   }
 
-  v12 = v8;
+  v12 = sortedHomeKitItemComparator;
 
   return v12;
 }

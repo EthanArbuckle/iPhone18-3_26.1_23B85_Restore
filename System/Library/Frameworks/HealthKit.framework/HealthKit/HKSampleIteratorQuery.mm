@@ -1,12 +1,12 @@
 @interface HKSampleIteratorQuery
-+ (void)configureClientInterface:(id)a3;
++ (void)configureClientInterface:(id)interface;
 - (HKSampleIteratorQuery)init;
-- (HKSampleIteratorQuery)initWithQueryCursor:(id)a3 limit:(unint64_t)a4 resultsHandler:(id)a5;
-- (HKSampleIteratorQuery)initWithQueryDescriptors:(id)a3 sortDescriptors:(id)a4 followingAnchor:(id)a5 upToAndIncludingAnchor:(id)a6 distinctByKeyPaths:(id)a7 limit:(unint64_t)a8 resultsHandler:(id)a9;
-- (void)client_deliverSampleObjects:(id)a3 queryCursor:(id)a4 deliverResults:(BOOL)a5 query:(id)a6;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKSampleIteratorQuery)initWithQueryCursor:(id)cursor limit:(unint64_t)limit resultsHandler:(id)handler;
+- (HKSampleIteratorQuery)initWithQueryDescriptors:(id)descriptors sortDescriptors:(id)sortDescriptors followingAnchor:(id)anchor upToAndIncludingAnchor:(id)includingAnchor distinctByKeyPaths:(id)paths limit:(unint64_t)limit resultsHandler:(id)handler;
+- (void)client_deliverSampleObjects:(id)objects queryCursor:(id)cursor deliverResults:(BOOL)results query:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
@@ -22,16 +22,16 @@
   return 0;
 }
 
-- (HKSampleIteratorQuery)initWithQueryDescriptors:(id)a3 sortDescriptors:(id)a4 followingAnchor:(id)a5 upToAndIncludingAnchor:(id)a6 distinctByKeyPaths:(id)a7 limit:(unint64_t)a8 resultsHandler:(id)a9
+- (HKSampleIteratorQuery)initWithQueryDescriptors:(id)descriptors sortDescriptors:(id)sortDescriptors followingAnchor:(id)anchor upToAndIncludingAnchor:(id)includingAnchor distinctByKeyPaths:(id)paths limit:(unint64_t)limit resultsHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = v20;
-  if (!v15)
+  descriptorsCopy = descriptors;
+  sortDescriptorsCopy = sortDescriptors;
+  anchorCopy = anchor;
+  includingAnchorCopy = includingAnchor;
+  pathsCopy = paths;
+  handlerCopy = handler;
+  v21 = handlerCopy;
+  if (!descriptorsCopy)
   {
     [HKSampleIteratorQuery initWithQueryDescriptors:sortDescriptors:followingAnchor:upToAndIncludingAnchor:distinctByKeyPaths:limit:resultsHandler:];
     if (v21)
@@ -44,26 +44,26 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v20)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v22 = [[HKSampleIteratorQueryCursor alloc] initWithQueryDescriptors:v15 sortDescriptors:v16 followingAnchor:v17 upToAndIncludingAnchor:v18 distinctByKeyPaths:v19 state:0];
-  v23 = [(HKSampleIteratorQuery *)self initWithQueryCursor:v22 limit:a8 resultsHandler:v21];
+  v22 = [[HKSampleIteratorQueryCursor alloc] initWithQueryDescriptors:descriptorsCopy sortDescriptors:sortDescriptorsCopy followingAnchor:anchorCopy upToAndIncludingAnchor:includingAnchorCopy distinctByKeyPaths:pathsCopy state:0];
+  v23 = [(HKSampleIteratorQuery *)self initWithQueryCursor:v22 limit:limit resultsHandler:v21];
 
   return v23;
 }
 
-- (HKSampleIteratorQuery)initWithQueryCursor:(id)a3 limit:(unint64_t)a4 resultsHandler:(id)a5
+- (HKSampleIteratorQuery)initWithQueryCursor:(id)cursor limit:(unint64_t)limit resultsHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  cursorCopy = cursor;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (cursorCopy)
   {
-    if (v9)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -85,11 +85,11 @@ LABEL_3:
   v11 = [(HKQuery *)&v17 _initWithObjectType:0 predicate:0];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [cursorCopy copy];
     queryCursor = v11->_queryCursor;
     v11->_queryCursor = v12;
 
-    v11->_limit = a4;
+    v11->_limit = limit;
     v14 = [v10 copy];
     resultsHandler = v11->_resultsHandler;
     v11->_resultsHandler = v14;
@@ -98,25 +98,25 @@ LABEL_3:
   return v11;
 }
 
-- (void)client_deliverSampleObjects:(id)a3 queryCursor:(id)a4 deliverResults:(BOOL)a5 query:(id)a6
+- (void)client_deliverSampleObjects:(id)objects queryCursor:(id)cursor deliverResults:(BOOL)results query:(id)query
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(HKQuery *)self queue];
+  objectsCopy = objects;
+  cursorCopy = cursor;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliverResults_query___block_invoke;
   block[3] = &unk_1E737B920;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v12;
-  v20 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  dispatch_sync(v13, block);
+  v18 = objectsCopy;
+  resultsCopy = results;
+  v19 = queryCopy;
+  v20 = cursorCopy;
+  v14 = cursorCopy;
+  v15 = queryCopy;
+  v16 = objectsCopy;
+  dispatch_sync(queue, block);
 }
 
 void __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliverResults_query___block_invoke(uint64_t a1)
@@ -162,30 +162,30 @@ void __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliver
   }
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKSampleIteratorQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverSampleObjects_queryCursor_deliverResults_query_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverSampleObjects_queryCursor_deliverResults_query_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKSampleIteratorQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setQueryCursor:{self->_queryCursor, v5.receiver, v5.super_class}];
-  [v4 setLimit:self->_limit];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setQueryCursor:{self->_queryCursor, v5.receiver, v5.super_class}];
+  [configurationCopy setLimit:self->_limit];
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKSampleIteratorQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }
@@ -200,8 +200,8 @@ void __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliver
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HKSampleIteratorQueryCursor *)self->_queryCursor queryDescriptors];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  queryDescriptors = [(HKSampleIteratorQueryCursor *)self->_queryCursor queryDescriptors];
+  v4 = [queryDescriptors countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -212,18 +212,18 @@ void __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliver
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(queryDescriptors);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 sampleType];
+        sampleType = [v8 sampleType];
 
-        if (!v9)
+        if (!sampleType)
         {
           [MEMORY[0x1E695DF30] raise:@"HKQueryValidationFailureException" format:{@"%@ data type must be non-nil", objc_opt_class()}];
         }
 
-        v10 = [v8 sampleType];
+        sampleType2 = [v8 sampleType];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -235,7 +235,7 @@ void __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliver
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v5 = [queryDescriptors countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v5);
@@ -249,21 +249,21 @@ void __86__HKSampleIteratorQuery_client_deliverSampleObjects_queryCursor_deliver
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultsHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__HKSampleIteratorQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 

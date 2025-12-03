@@ -1,22 +1,22 @@
 @interface SBHomeHardwareButtonActions
 - (BOOL)_performButtonPreflightActions;
-- (BOOL)_shouldIgnorePressesDueToProxOrIdle:(id *)a3;
+- (BOOL)_shouldIgnorePressesDueToProxOrIdle:(id *)idle;
 - (id)hardwareButtonGestureParameters;
-- (id)initWitHomeButtonType:(int64_t)a3;
+- (id)initWitHomeButtonType:(int64_t)type;
 - (void)_logMenuButtonHoldTime;
-- (void)configureForwardingToLockButtonActions:(id)a3;
-- (void)performAfterMenuButtonUpIsHandledUsingBlock:(id)a3;
+- (void)configureForwardingToLockButtonActions:(id)actions;
+- (void)performAfterMenuButtonUpIsHandledUsingBlock:(id)block;
 - (void)performDoublePressDownActions;
 - (void)performDoubleTapUpActions;
 - (void)performFinalButtonUpActions;
 - (void)performInitialButtonDownActions;
 - (void)performLongPressActions;
 - (void)performLongPressCancelledActions;
-- (void)performSinglePressUpActionsWithSourceType:(unint64_t)a3;
+- (void)performSinglePressUpActionsWithSourceType:(unint64_t)type;
 - (void)performTriplePressUpActions;
-- (void)performWhenMenuButtonIsUpUsingBlock:(id)a3;
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4;
-- (void)setButtonDown:(BOOL)a3;
+- (void)performWhenMenuButtonIsUpUsingBlock:(id)block;
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters;
+- (void)setButtonDown:(BOOL)down;
 @end
 
 @implementation SBHomeHardwareButtonActions
@@ -54,9 +54,9 @@ LABEL_18:
     v9 = +[SBSetupManager sharedInstance];
     if ([v9 isInSetupMode])
     {
-      v10 = [v4 inCall];
+      inCall = [v4 inCall];
 
-      if (v10)
+      if (inCall)
       {
         v5 = SBLogButtonsHome();
         if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -82,9 +82,9 @@ LABEL_18:
     }
 
     v11 = +[SBSystemGestureManager mainDisplayManager];
-    v12 = [v11 isAnyTouchGestureRunning];
+    isAnyTouchGestureRunning = [v11 isAnyTouchGestureRunning];
 
-    if (v12)
+    if (isAnyTouchGestureRunning)
     {
       v5 = SBLogButtonsHome();
       if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -115,12 +115,12 @@ LABEL_18:
     v35 = v36;
     if (v17)
     {
-      v18 = [SBApp lockHardwareButton];
-      v19 = [v18 reverseFadeOutIfNeeded];
+      lockHardwareButton = [SBApp lockHardwareButton];
+      reverseFadeOutIfNeeded = [lockHardwareButton reverseFadeOutIfNeeded];
 
       v20 = SBLogButtonsHome();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-      if (v19)
+      if (reverseFadeOutIfNeeded)
       {
         v22 = v35;
         if (v21)
@@ -164,8 +164,8 @@ LABEL_44:
 
     else
     {
-      v25 = [v20 isWakeAnimationInProgress];
-      if ([v15 isUILocked] && (v25 & 1) == 0)
+      isWakeAnimationInProgress = [v20 isWakeAnimationInProgress];
+      if ([v15 isUILocked] && (isWakeAnimationInProgress & 1) == 0)
       {
         v34 = v16;
         v26 = SBLogButtonsHome();
@@ -313,10 +313,10 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v17 = [SBApp lockOutController];
-    v18 = [v17 isBlocked];
+    lockOutController = [SBApp lockOutController];
+    isBlocked = [lockOutController isBlocked];
 
-    if (v18)
+    if (isBlocked)
     {
       v10 = SBLogButtonsHome();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -335,9 +335,9 @@ LABEL_21:
     }
 
     v19 = +[SBSetupManager sharedInstance];
-    v20 = [v19 isInSetupMode];
+    isInSetupMode = [v19 isInSetupMode];
 
-    if (v20)
+    if (isInSetupMode)
     {
       v10 = SBLogButtonsHome();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -354,16 +354,16 @@ LABEL_21:
 
     v10 = +[SBUIController sharedInstance];
     v41 = +[SBLockScreenManager sharedInstance];
-    v21 = [SBApp windowSceneManager];
-    v22 = [v21 activeDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
     v23 = +[SBWorkspace mainWorkspace];
-    v24 = [v23 transientOverlayPresentationManager];
-    v25 = [v24 transientOverlayPresenterForWindowScene:v22];
+    transientOverlayPresentationManager = [v23 transientOverlayPresentationManager];
+    v25 = [transientOverlayPresentationManager transientOverlayPresenterForWindowScene:activeDisplayWindowScene];
 
-    v26 = [SBApp bannerManager];
-    v27 = [SBApp systemApertureControllerForMainDisplay];
-    if ([v27 handleHomeButtonDoublePress])
+    bannerManager = [SBApp bannerManager];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    if ([systemApertureControllerForMainDisplay handleHomeButtonDoublePress])
     {
       v28 = SBLogButtonsHome();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -377,7 +377,7 @@ LABEL_21:
       goto LABEL_35;
     }
 
-    v30 = [v26 bannerWindowInWindowScene:v22];
+    v30 = [bannerManager bannerWindowInWindowScene:activeDisplayWindowScene];
     [v30 windowLevel];
     if ([v25 hasPresentationAboveWindowLevel:?])
     {
@@ -385,9 +385,9 @@ LABEL_21:
 
     else
     {
-      v31 = [v26 handleHomeButtonDoublePress];
+      handleHomeButtonDoublePress = [bannerManager handleHomeButtonDoublePress];
 
-      if (v31)
+      if (handleHomeButtonDoublePress)
       {
         v28 = SBLogButtonsHome();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -403,8 +403,8 @@ LABEL_34:
 LABEL_35:
 
 LABEL_36:
-        v34 = [MEMORY[0x277D65DD0] sharedInstance];
-        [v34 emitEvent:1];
+        mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+        [mEMORY[0x277D65DD0] emitEvent:1];
 
 LABEL_37:
         goto LABEL_38;
@@ -439,11 +439,11 @@ LABEL_37:
         goto LABEL_43;
       }
 
-      v37 = [v41 lockScreenEnvironment];
-      v38 = [v37 buttonEventsHandler];
-      v40 = [v38 handleHomeButtonDoublePress];
+      lockScreenEnvironment = [v41 lockScreenEnvironment];
+      buttonEventsHandler = [lockScreenEnvironment buttonEventsHandler];
+      handleHomeButtonDoublePress2 = [buttonEventsHandler handleHomeButtonDoublePress];
 
-      if (v40)
+      if (handleHomeButtonDoublePress2)
       {
         v28 = SBLogButtonsHome();
         if (!os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -462,9 +462,9 @@ LABEL_37:
     else
     {
       v35 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-      v36 = [v35 handleHomeButtonDoublePress];
+      handleHomeButtonDoublePress3 = [v35 handleHomeButtonDoublePress];
 
-      if (v36)
+      if (handleHomeButtonDoublePress3)
       {
         v28 = SBLogButtonsHome();
         if (!os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -528,11 +528,11 @@ LABEL_39:
 - (BOOL)_performButtonPreflightActions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x277D67A88] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D67A88] object:0];
 
-  v5 = [MEMORY[0x277D65DD0] sharedInstance];
-  [v5 emitEvent:0];
+  mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+  [mEMORY[0x277D65DD0] emitEvent:0];
 
   [(SBHardwareButtonActionList *)self->_buttonUpActions performQueuedButtonUpActions];
   if (objc_opt_respondsToSelector())
@@ -565,9 +565,9 @@ LABEL_15:
 
 LABEL_12:
     v12 = +[SBSystemGestureManager mainDisplayManager];
-    v13 = [v12 isAnyTouchGestureRunning];
+    isAnyTouchGestureRunning = [v12 isAnyTouchGestureRunning];
 
-    if (!v13)
+    if (!isAnyTouchGestureRunning)
     {
       v14 = 1;
       goto LABEL_18;
@@ -586,9 +586,9 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v11 = [v6 inCall];
+  inCall = [v6 inCall];
 
-  if (!v11)
+  if (!inCall)
   {
     goto LABEL_12;
   }
@@ -653,7 +653,7 @@ LABEL_18:
   self->_menuButtonHoldStartAbsoluteTime = 0.0;
 }
 
-- (id)initWitHomeButtonType:(int64_t)a3
+- (id)initWitHomeButtonType:(int64_t)type
 {
   v22.receiver = self;
   v22.super_class = SBHomeHardwareButtonActions;
@@ -664,30 +664,30 @@ LABEL_18:
     hardwareButtonService = v4->_hardwareButtonService;
     v4->_hardwareButtonService = v5;
 
-    v7 = [SBApp proximitySensorManager];
+    proximitySensorManager = [SBApp proximitySensorManager];
     proximitySensorManager = v4->_proximitySensorManager;
-    v4->_proximitySensorManager = v7;
+    v4->_proximitySensorManager = proximitySensorManager;
 
-    v4->_homeButtonType = a3;
-    if (a3 != 2)
+    v4->_homeButtonType = type;
+    if (type != 2)
     {
       v9 = +[SBSiriHardwareButtonInteraction hardwareButtonInteractionForHomeButton];
       siriButtonInteraction = v4->_siriButtonInteraction;
       v4->_siriButtonInteraction = v9;
 
       [(SBHardwareButtonInteraction *)v4->_siriButtonInteraction addHardwareButtonGestureParametersObserver:v4];
-      v11 = [(SBHardwareButtonInteraction *)v4->_siriButtonInteraction hardwareButtonGestureParameters];
+      hardwareButtonGestureParameters = [(SBHardwareButtonInteraction *)v4->_siriButtonInteraction hardwareButtonGestureParameters];
       siriGestureParameters = v4->_siriGestureParameters;
-      v4->_siriGestureParameters = v11;
+      v4->_siriGestureParameters = hardwareButtonGestureParameters;
 
       v13 = +[SBAccessibilityHardwareButtonInteraction hardwareButtonInteractionForHomeButton];
       accessibilityButtonInteraction = v4->_accessibilityButtonInteraction;
       v4->_accessibilityButtonInteraction = v13;
 
       [(SBHardwareButtonInteraction *)v4->_accessibilityButtonInteraction addHardwareButtonGestureParametersObserver:v4];
-      v15 = [(SBHardwareButtonInteraction *)v4->_accessibilityButtonInteraction hardwareButtonGestureParameters];
+      hardwareButtonGestureParameters2 = [(SBHardwareButtonInteraction *)v4->_accessibilityButtonInteraction hardwareButtonGestureParameters];
       accessibilityGestureParameters = v4->_accessibilityGestureParameters;
-      v4->_accessibilityGestureParameters = v15;
+      v4->_accessibilityGestureParameters = hardwareButtonGestureParameters2;
     }
 
     v17 = objc_alloc_init(SBHardwareButtonActionList);
@@ -704,36 +704,36 @@ LABEL_18:
   return v4;
 }
 
-- (void)configureForwardingToLockButtonActions:(id)a3
+- (void)configureForwardingToLockButtonActions:(id)actions
 {
   if (self->_homeButtonType == 2)
   {
-    v7 = [a3 siriButtonInteraction];
-    v5 = [SBSiriHardwareButtonEventsOnlyButtonInteraction hardwareButtonInteractionForHomeButtonForwardingToInteraction:v7];
+    siriButtonInteraction = [actions siriButtonInteraction];
+    v5 = [SBSiriHardwareButtonEventsOnlyButtonInteraction hardwareButtonInteractionForHomeButtonForwardingToInteraction:siriButtonInteraction];
     siriButtonInteraction = self->_siriButtonInteraction;
     self->_siriButtonInteraction = v5;
   }
 }
 
-- (void)setButtonDown:(BOOL)a3
+- (void)setButtonDown:(BOOL)down
 {
-  v3 = a3;
-  self->_buttonDown = a3;
+  downCopy = down;
+  self->_buttonDown = down;
   [(SBHardwareButtonActionList *)self->_buttonUpActions setButtonDown:?];
   buttonUpPostActions = self->_buttonUpPostActions;
 
-  [(SBHardwareButtonActionList *)buttonUpPostActions setButtonDown:v3];
+  [(SBHardwareButtonActionList *)buttonUpPostActions setButtonDown:downCopy];
 }
 
-- (BOOL)_shouldIgnorePressesDueToProxOrIdle:(id *)a3
+- (BOOL)_shouldIgnorePressesDueToProxOrIdle:(id *)idle
 {
-  *a3 = 0;
+  *idle = 0;
   if (!self->_screenWasDimOnMenuDown)
   {
     v5 = +[SBBacklightController sharedInstance];
-    v6 = [v5 screenIsDim];
+    screenIsDim = [v5 screenIsDim];
 
-    if (!v6)
+    if (!screenIsDim)
     {
       return 0;
     }
@@ -752,9 +752,9 @@ LABEL_18:
   else
   {
     v9 = +[SBLockScreenManager sharedInstance];
-    v10 = [v9 isUILocked];
+    isUILocked = [v9 isUILocked];
 
-    if (v10)
+    if (isUILocked)
     {
       return 0;
     }
@@ -762,11 +762,11 @@ LABEL_18:
     v8 = @"screen was/is dim and unlocked";
   }
 
-  *a3 = v8;
+  *idle = v8;
   return 1;
 }
 
-- (void)performSinglePressUpActionsWithSourceType:(unint64_t)a3
+- (void)performSinglePressUpActionsWithSourceType:(unint64_t)type
 {
   v135 = *MEMORY[0x277D85DE8];
   if (![(SBHomeHardwareButtonActions *)self _performButtonPreflightActions])
@@ -818,7 +818,7 @@ LABEL_13:
   [v13 noteMenuButtonSinglePress];
 
   v11 = +[SBReachabilityManager sharedInstance];
-  v120 = [v11 reachabilityModeActive];
+  reachabilityModeActive = [v11 reachabilityModeActive];
   v127 = 0;
   v14 = [(SBHomeHardwareButtonActions *)self _shouldIgnorePressesDueToProxOrIdle:&v127];
   v15 = v127;
@@ -839,9 +839,9 @@ LABEL_13:
   else
   {
     v18 = +[SBMainSwitcherControllerCoordinator _shim_activeSwitcherController];
-    v19 = [v18 unlockedEnvironmentMode];
+    unlockedEnvironmentMode = [v18 unlockedEnvironmentMode];
 
-    if (v19 != 3)
+    if (unlockedEnvironmentMode != 3)
     {
       goto LABEL_18;
     }
@@ -852,8 +852,8 @@ LABEL_13:
 
 LABEL_18:
   v121 = v11;
-  v20 = [SBApp systemApertureControllerForMainDisplay];
-  v119 = v20;
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  v119 = systemApertureControllerForMainDisplay;
   if (v14)
   {
     v21 = v15;
@@ -861,20 +861,20 @@ LABEL_18:
     goto LABEL_32;
   }
 
-  if (![v20 handleHomeButtonPress])
+  if (![systemApertureControllerForMainDisplay handleHomeButtonPress])
   {
-    v23 = [SBApp lockOutController];
-    if (![v23 isProximityReaderBlocked])
+    lockOutController = [SBApp lockOutController];
+    if (![lockOutController isProximityReaderBlocked])
     {
       v22 = 0;
       goto LABEL_31;
     }
 
-    v24 = [SBApp systemUIScenesCoordinator];
-    v25 = [v24 proximityReaderUISceneController];
-    v26 = [v25 handleHomeButtonPress];
-    v22 = v26;
-    if (v26)
+    systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+    proximityReaderUISceneController = [systemUIScenesCoordinator proximityReaderUISceneController];
+    handleHomeButtonPress = [proximityReaderUISceneController handleHomeButtonPress];
+    v22 = handleHomeButtonPress;
+    if (handleHomeButtonPress)
     {
       v27 = v15;
       v28 = SBLogButtonsHome();
@@ -892,14 +892,14 @@ LABEL_18:
     goto LABEL_29;
   }
 
-  v23 = SBLogButtonsHome();
+  lockOutController = SBLogButtonsHome();
   v22 = 1;
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(lockOutController, OS_LOG_TYPE_INFO))
   {
-    v24 = NSStringFromSelector(a2);
+    systemUIScenesCoordinator = NSStringFromSelector(a2);
     *buf = 138543362;
-    v132 = v24;
-    _os_log_impl(&dword_21ED4E000, v23, OS_LOG_TYPE_INFO, "%{public}@ result: system aperture controller wants home button", buf, 0xCu);
+    v132 = systemUIScenesCoordinator;
+    _os_log_impl(&dword_21ED4E000, lockOutController, OS_LOG_TYPE_INFO, "%{public}@ result: system aperture controller wants home button", buf, 0xCu);
 LABEL_29:
   }
 
@@ -907,19 +907,19 @@ LABEL_31:
   v21 = v15;
 
 LABEL_32:
-  v29 = [SBApp windowSceneManager];
-  v30 = [v29 activeDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
   v31 = +[SBWorkspace mainWorkspace];
-  v32 = [v31 transientOverlayPresentationManager];
-  v33 = [v32 transientOverlayPresenterForWindowScene:v30];
+  transientOverlayPresentationManager = [v31 transientOverlayPresentationManager];
+  v33 = [transientOverlayPresentationManager transientOverlayPresenterForWindowScene:activeDisplayWindowScene];
 
-  v34 = [SBApp bannerManager];
-  v35 = v34;
+  bannerManager = [SBApp bannerManager];
+  v35 = bannerManager;
   v36 = v21;
   if ((v22 & 1) == 0)
   {
-    v37 = [v34 bannerWindowInWindowScene:v30];
+    v37 = [bannerManager bannerWindowInWindowScene:activeDisplayWindowScene];
     [v37 windowLevel];
     v118 = v35;
     if ([v33 hasPresentationAboveWindowLevel:?])
@@ -928,9 +928,9 @@ LABEL_32:
 
     else
     {
-      v38 = [v35 handleHomeButtonPress];
+      handleHomeButtonPress2 = [v35 handleHomeButtonPress];
 
-      if (v38)
+      if (handleHomeButtonPress2)
       {
         v39 = SBLogButtonsHome();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -950,13 +950,13 @@ LABEL_42:
       }
     }
 
-    v42 = [v30 commandTabController];
-    v43 = [v42 isVisible];
+    commandTabController = [activeDisplayWindowScene commandTabController];
+    isVisible = [commandTabController isVisible];
 
-    if (v43)
+    if (isVisible)
     {
-      v44 = [v30 commandTabController];
-      [v44 dismiss];
+      commandTabController2 = [activeDisplayWindowScene commandTabController];
+      [commandTabController2 dismiss];
 
       v39 = SBLogButtonsHome();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -971,18 +971,18 @@ LABEL_42:
       goto LABEL_42;
     }
 
-    v45 = [v30 controlCenterController];
-    v47 = [v45 _controlCenterWindow];
-    [v47 windowLevel];
+    controlCenterController = [activeDisplayWindowScene controlCenterController];
+    _controlCenterWindow = [controlCenterController _controlCenterWindow];
+    [_controlCenterWindow windowLevel];
     if ([v33 hasPresentationAboveWindowLevel:?])
     {
     }
 
     else
     {
-      v48 = [v45 handleMenuButtonTap];
+      handleMenuButtonTap = [controlCenterController handleMenuButtonTap];
 
-      if (v48)
+      if (handleMenuButtonTap)
       {
         v49 = SBLogButtonsHome();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
@@ -998,18 +998,18 @@ LABEL_42:
       }
     }
 
-    v116 = [v30 assistantController];
-    v51 = [v116 window];
-    [v51 windowLevel];
+    assistantController = [activeDisplayWindowScene assistantController];
+    window = [assistantController window];
+    [window windowLevel];
     if (([v33 hasPresentationAboveWindowLevel:?] & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
     {
     }
 
     else
     {
-      v52 = [(SBHardwareButtonInteraction *)self->_siriButtonInteraction consumeSinglePressUp];
+      consumeSinglePressUp = [(SBHardwareButtonInteraction *)self->_siriButtonInteraction consumeSinglePressUp];
 
-      if (v52)
+      if (consumeSinglePressUp)
       {
         v53 = SBLogButtonsHome();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
@@ -1020,18 +1020,18 @@ LABEL_42:
           _os_log_impl(&dword_21ED4E000, v53, OS_LOG_TYPE_INFO, "%{public}@ result: assistant handled it", buf, 0xCu);
         }
 
-        v46 = v116;
+        assistantController2 = assistantController;
         v35 = v118;
         goto LABEL_45;
       }
     }
 
-    v113 = v45;
+    v113 = controlCenterController;
     v55 = v36;
     v56 = +[SBLockScreenManager sharedInstance];
     v57 = +[SBLockScreenManager sharedInstance];
-    v58 = [v57 lockScreenEnvironment];
-    v114 = [v58 buttonEventsHandler];
+    lockScreenEnvironment = [v57 lockScreenEnvironment];
+    buttonEventsHandler = [lockScreenEnvironment buttonEventsHandler];
 
     v115 = v56;
     if ([v56 handlesHomeButtonSinglePresses])
@@ -1040,7 +1040,7 @@ LABEL_42:
       if (self->_dontUnlockOnButtonUp)
       {
         v59 = SBLogButtonsHome();
-        v60 = v114;
+        v60 = buttonEventsHandler;
         if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
         {
           v61 = NSStringFromSelector(a2);
@@ -1056,17 +1056,17 @@ LABEL_102:
         goto LABEL_103;
       }
 
-      v60 = v114;
+      v60 = buttonEventsHandler;
       if ([(SBHardwareButtonService *)self->_hardwareButtonService consumeHomeButtonSinglePressUpWithPriority:100])
       {
-        v82 = SBLogButtonsHome();
-        if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
+        transientOverlayPresentationManager2 = SBLogButtonsHome();
+        if (os_log_type_enabled(transientOverlayPresentationManager2, OS_LOG_TYPE_INFO))
         {
           v83 = NSStringFromSelector(a2);
           *buf = 138543362;
           v132 = v83;
           v84 = "%{public}@ result: button consumer app handled it";
-          v85 = v82;
+          v85 = transientOverlayPresentationManager2;
           v86 = 12;
 LABEL_85:
           _os_log_impl(&dword_21ED4E000, v85, OS_LOG_TYPE_INFO, v84, buf, v86);
@@ -1076,9 +1076,9 @@ LABEL_85:
       else
       {
         v92 = +[SBWorkspace mainWorkspace];
-        v82 = [v92 transientOverlayPresentationManager];
+        transientOverlayPresentationManager2 = [v92 transientOverlayPresentationManager];
 
-        if ([v82 handleHomeButtonPress])
+        if ([transientOverlayPresentationManager2 handleHomeButtonPress])
         {
           v93 = SBLogButtonsHome();
           if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
@@ -1092,12 +1092,12 @@ LABEL_85:
           goto LABEL_99;
         }
 
-        if (![v114 handleHomeButtonPress])
+        if (![buttonEventsHandler handleHomeButtonPress])
         {
           v101 = +[SBAlertItemsController sharedInstance];
-          v102 = [v101 hasLockScreenModalAlert];
+          hasLockScreenModalAlert = [v101 hasLockScreenModalAlert];
 
-          if ((v102 & 1) == 0)
+          if ((hasLockScreenModalAlert & 1) == 0)
           {
             v103 = SBLogButtonsHome();
             if (os_log_type_enabled(v103, OS_LOG_TYPE_INFO))
@@ -1112,8 +1112,8 @@ LABEL_85:
 
             v59 = +[SBBacklightController sharedInstance];
             v105 = +[SBScreenWakeAnimationController sharedInstance];
-            v106 = [v59 screenIsOn];
-            if (v106 && ![v105 isSleepAnimationInProgress])
+            screenIsOn = [v59 screenIsOn];
+            if (screenIsOn && ![v105 isSleepAnimationInProgress])
             {
               v107 = 0;
             }
@@ -1124,7 +1124,7 @@ LABEL_85:
             }
 
             v129[0] = @"SBUIUnlockOptionsTurnOnScreenFirstKey";
-            v108 = [MEMORY[0x277CCABB0] numberWithBool:v106 ^ 1u];
+            v108 = [MEMORY[0x277CCABB0] numberWithBool:screenIsOn ^ 1u];
             v130[0] = v108;
             v129[1] = @"SBUIUnlockOptionsStartFadeInAnimation";
             v109 = [MEMORY[0x277CCABB0] numberWithBool:v107];
@@ -1133,7 +1133,7 @@ LABEL_85:
             [v115 unlockUIFromSource:15 withOptions:v110];
 
             v33 = v112;
-            v60 = v114;
+            v60 = buttonEventsHandler;
             goto LABEL_103;
           }
 
@@ -1154,16 +1154,16 @@ LABEL_103:
           goto LABEL_104;
         }
 
-        v82 = SBLogButtonsHome();
-        if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
+        transientOverlayPresentationManager2 = SBLogButtonsHome();
+        if (os_log_type_enabled(transientOverlayPresentationManager2, OS_LOG_TYPE_INFO))
         {
           v83 = NSStringFromSelector(a2);
           *buf = 138543618;
           v132 = v83;
           v133 = 2114;
-          v134 = v114;
+          v134 = buttonEventsHandler;
           v84 = "%{public}@ result: CoverSheet (%{public}@) handled it";
-          v85 = v82;
+          v85 = transientOverlayPresentationManager2;
           v86 = 22;
           goto LABEL_85;
         }
@@ -1176,10 +1176,10 @@ LABEL_99:
 
     v111 = v33;
     v63 = +[SBAssistantController sharedInstance];
-    v64 = [v63 contentObscuresEmbeddedDisplayScreen];
+    contentObscuresEmbeddedDisplayScreen = [v63 contentObscuresEmbeddedDisplayScreen];
 
     v36 = v55;
-    if ((v64 & 1) == 0)
+    if ((contentObscuresEmbeddedDisplayScreen & 1) == 0)
     {
       v65 = +[SBAssistantController sharedInstance];
       [v65 dismissAssistantViewInEverySceneIfNecessary];
@@ -1189,10 +1189,10 @@ LABEL_99:
     v126 = 0u;
     v123 = 0u;
     v124 = 0u;
-    v66 = [SBApp windowSceneManager];
-    v67 = [v66 connectedWindowScenes];
+    windowSceneManager2 = [SBApp windowSceneManager];
+    connectedWindowScenes = [windowSceneManager2 connectedWindowScenes];
 
-    v68 = [v67 countByEnumeratingWithState:&v123 objects:v128 count:16];
+    v68 = [connectedWindowScenes countByEnumeratingWithState:&v123 objects:v128 count:16];
     if (v68)
     {
       v69 = v68;
@@ -1203,7 +1203,7 @@ LABEL_70:
       {
         if (*v124 != v70)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
         v72 = *(*(&v123 + 1) + 8 * v71);
@@ -1214,7 +1214,7 @@ LABEL_70:
 
         if (v69 == ++v71)
         {
-          v69 = [v67 countByEnumeratingWithState:&v123 objects:v128 count:16];
+          v69 = [connectedWindowScenes countByEnumeratingWithState:&v123 objects:v128 count:16];
           if (v69)
           {
             goto LABEL_70;
@@ -1225,21 +1225,21 @@ LABEL_70:
       }
 
       v73 = v36;
-      v74 = [v72 modalLibraryController];
-      v75 = [v72 layoutStateProvider];
-      v76 = [v75 layoutState];
-      v77 = [v76 unlockedEnvironmentMode];
+      modalLibraryController = [v72 modalLibraryController];
+      layoutStateProvider = [v72 layoutStateProvider];
+      layoutState = [layoutStateProvider layoutState];
+      unlockedEnvironmentMode2 = [layoutState unlockedEnvironmentMode];
 
-      if ((v77 & 0xFFFFFFFFFFFFFFFELL) != 2 || ![v74 isPresentingLibraryInForeground])
+      if ((unlockedEnvironmentMode2 & 0xFFFFFFFFFFFFFFFELL) != 2 || ![modalLibraryController isPresentingLibraryInForeground])
       {
 
         v36 = v73;
         goto LABEL_87;
       }
 
-      v78 = v74;
-      v79 = [v74 libraryViewController];
-      [v79 popPresentationState];
+      v78 = modalLibraryController;
+      libraryViewController = [modalLibraryController libraryViewController];
+      [libraryViewController popPresentationState];
 
       v80 = SBLogButtonsHome();
       v11 = v121;
@@ -1253,29 +1253,29 @@ LABEL_70:
       }
 
       v33 = v111;
-      v60 = v114;
+      v60 = buttonEventsHandler;
       goto LABEL_104;
     }
 
 LABEL_87:
 
     v87 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    v88 = [v87 handleHomeButtonPress];
+    handleHomeButtonPress3 = [v87 handleHomeButtonPress];
 
-    if (v88)
+    if (handleHomeButtonPress3)
     {
       v89 = SBLogButtonsHome();
       v11 = v121;
       v33 = v111;
-      v60 = v114;
+      v60 = buttonEventsHandler;
       if (!os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
       {
 LABEL_94:
 
 LABEL_104:
-        v46 = v116;
+        assistantController2 = assistantController;
         v35 = v118;
-        v45 = v113;
+        controlCenterController = v113;
         goto LABEL_45;
       }
 
@@ -1289,11 +1289,11 @@ LABEL_104:
     {
       v11 = v121;
       v33 = v111;
-      v60 = v114;
+      v60 = buttonEventsHandler;
       if (![(SBHardwareButtonService *)self->_hardwareButtonService consumeHomeButtonSinglePressUpWithPriority:0])
       {
         v95 = +[SBUIController sharedInstance];
-        v96 = [v95 handleHomeButtonSinglePressUpForWindowScene:v30 withSourceType:a3];
+        v96 = [v95 handleHomeButtonSinglePressUpForWindowScene:activeDisplayWindowScene withSourceType:type];
 
         if ((v96 & 1) == 0)
         {
@@ -1311,11 +1311,11 @@ LABEL_104:
           v122[2] = __73__SBHomeHardwareButtonActions_performSinglePressUpActionsWithSourceType___block_invoke;
           v122[3] = &unk_2783A8BC8;
           v122[4] = self;
-          v122[5] = a3;
+          v122[5] = type;
           v99 = [MEMORY[0x277D0AB18] eventWithName:@"HandleMenuButton" handler:v122];
-          v100 = [MEMORY[0x277D0AB20] sharedInstance];
-          [v100 cancelEventsWithName:@"HandleMenuButton"];
-          [v100 executeOrAppendEvent:v99];
+          mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+          [mEMORY[0x277D0AB20] cancelEventsWithName:@"HandleMenuButton"];
+          [mEMORY[0x277D0AB20] executeOrAppendEvent:v99];
         }
 
         goto LABEL_104;
@@ -1339,11 +1339,11 @@ LABEL_104:
   }
 
 LABEL_43:
-  v45 = [v30 controlCenterController];
+  controlCenterController = [activeDisplayWindowScene controlCenterController];
 LABEL_44:
-  v46 = [v30 assistantController];
+  assistantController2 = [activeDisplayWindowScene assistantController];
 LABEL_45:
-  if (v120)
+  if (reachabilityModeActive)
   {
     [v11 deactivateReachability];
   }
@@ -1356,25 +1356,25 @@ LABEL_48:
   v39 = *MEMORY[0x277D85DE8];
   if (!SBGuidedAccessIsActive())
   {
-    v5 = [SBApp lockOutController];
+    lockOutController = [SBApp lockOutController];
     v9 = +[SBLockScreenManager sharedInstance];
-    v10 = [SBApp windowSceneManager];
-    v11 = [v10 activeDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
     v12 = +[SBWorkspace mainWorkspace];
-    v13 = [v12 transientOverlayPresentationManager];
-    v36 = [v13 transientOverlayPresenterForWindowScene:v11];
+    transientOverlayPresentationManager = [v12 transientOverlayPresentationManager];
+    v36 = [transientOverlayPresentationManager transientOverlayPresenterForWindowScene:activeDisplayWindowScene];
 
-    v14 = [SBApp bannerManager];
-    v15 = [SBApp systemApertureControllerForMainDisplay];
+    bannerManager = [SBApp bannerManager];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
     v35 = v9;
-    v16 = [v9 isUILocked];
+    isUILocked = [v9 isUILocked];
     v17 = +[SBWorkspace mainWorkspace];
     if ([v17 isPowerDownTransientOverlayTopmost])
     {
-      v18 = [v5 isLockedOut];
+      isLockedOut = [lockOutController isLockedOut];
 
-      if ((v18 & 1) == 0)
+      if ((isLockedOut & 1) == 0)
       {
         v19 = SBLogButtonsHome();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -1385,8 +1385,8 @@ LABEL_48:
           _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_INFO, "%{public}@ result: dismissing powerdown", buf, 0xCu);
         }
 
-        v21 = +[SBWorkspace mainWorkspace];
-        [v21 dismissPowerDownTransientOverlayWithCompletion:&__block_literal_global_113];
+        mEMORY[0x277D65DD0] = +[SBWorkspace mainWorkspace];
+        [mEMORY[0x277D65DD0] dismissPowerDownTransientOverlayWithCompletion:&__block_literal_global_113];
         goto LABEL_39;
       }
     }
@@ -1395,17 +1395,17 @@ LABEL_48:
     {
     }
 
-    if ([v15 handleHomeButtonLongPress])
+    if ([systemApertureControllerForMainDisplay handleHomeButtonLongPress])
     {
-      v21 = SBLogButtonsHome();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+      mEMORY[0x277D65DD0] = SBLogButtonsHome();
+      if (os_log_type_enabled(mEMORY[0x277D65DD0], OS_LOG_TYPE_INFO))
       {
         v22 = NSStringFromSelector(a2);
         *buf = 138543362;
         v38 = v22;
         v23 = "%{public}@ result: system aperture controller handled it";
 LABEL_38:
-        _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, v23, buf, 0xCu);
+        _os_log_impl(&dword_21ED4E000, mEMORY[0x277D65DD0], OS_LOG_TYPE_INFO, v23, buf, 0xCu);
 
         goto LABEL_39;
       }
@@ -1413,7 +1413,7 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v24 = [v14 bannerWindowInWindowScene:v11];
+    v24 = [bannerManager bannerWindowInWindowScene:activeDisplayWindowScene];
     [v24 windowLevel];
     if ([v36 hasPresentationAboveWindowLevel:?])
     {
@@ -1421,12 +1421,12 @@ LABEL_38:
 
     else
     {
-      v25 = [v14 handleHomeButtonLongPress];
+      handleHomeButtonLongPress = [bannerManager handleHomeButtonLongPress];
 
-      if (v25)
+      if (handleHomeButtonLongPress)
       {
-        v21 = SBLogButtonsHome();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+        mEMORY[0x277D65DD0] = SBLogButtonsHome();
+        if (os_log_type_enabled(mEMORY[0x277D65DD0], OS_LOG_TYPE_INFO))
         {
           v22 = NSStringFromSelector(a2);
           *buf = 138543362;
@@ -1441,12 +1441,12 @@ LABEL_39:
       }
     }
 
-    if (!v16 || ([v35 lockScreenEnvironment], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "buttonEventsHandler"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "handleHomeButtonLongPress"), v27, v26, (v28 & 1) == 0))
+    if (!isUILocked || ([v35 lockScreenEnvironment], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "buttonEventsHandler"), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "handleHomeButtonLongPress"), v27, v26, (v28 & 1) == 0))
     {
       v29 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-      v30 = [v29 handleHomeButtonLongPress];
+      handleHomeButtonLongPress2 = [v29 handleHomeButtonLongPress];
 
-      if (v30)
+      if (handleHomeButtonLongPress2)
       {
         v31 = SBLogButtonsHome();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -1478,11 +1478,11 @@ LABEL_30:
 
 LABEL_31:
 
-        v34 = [v11 commandTabController];
-        [v34 dismiss];
+        commandTabController = [activeDisplayWindowScene commandTabController];
+        [commandTabController dismiss];
 
-        v21 = [MEMORY[0x277D65DD0] sharedInstance];
-        [v21 emitEvent:2];
+        mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+        [mEMORY[0x277D65DD0] emitEvent:2];
         goto LABEL_39;
       }
 
@@ -1502,8 +1502,8 @@ LABEL_31:
       }
     }
 
-    v21 = SBLogButtonsHome();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+    mEMORY[0x277D65DD0] = SBLogButtonsHome();
+    if (os_log_type_enabled(mEMORY[0x277D65DD0], OS_LOG_TYPE_INFO))
     {
       v22 = NSStringFromSelector(a2);
       *buf = 138543362;
@@ -1516,8 +1516,8 @@ LABEL_31:
   }
 
   v4 = [(SBHardwareButtonService *)self->_hardwareButtonService consumeHomeButtonLongPressWithPriority:300];
-  v5 = SBLogButtonsHome();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
+  lockOutController = SBLogButtonsHome();
+  v6 = os_log_type_enabled(lockOutController, OS_LOG_TYPE_INFO);
   if (v4)
   {
     if (v6)
@@ -1527,7 +1527,7 @@ LABEL_31:
       v38 = v7;
       v8 = "%{public}@ result: external consumer (at guided-access priority)";
 LABEL_12:
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, v8, buf, 0xCu);
+      _os_log_impl(&dword_21ED4E000, lockOutController, OS_LOG_TYPE_INFO, v8, buf, 0xCu);
     }
   }
 
@@ -1696,17 +1696,17 @@ LABEL_9:
   }
 }
 
-- (void)performWhenMenuButtonIsUpUsingBlock:(id)a3
+- (void)performWhenMenuButtonIsUpUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(SBHardwareButtonActionList *)self->_buttonUpActions scheduleButtonUpActionBlock:?];
   }
 }
 
-- (void)performAfterMenuButtonUpIsHandledUsingBlock:(id)a3
+- (void)performAfterMenuButtonUpIsHandledUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(SBHardwareButtonActionList *)self->_buttonUpPostActions scheduleButtonUpActionBlock:?];
   }
@@ -1736,11 +1736,11 @@ LABEL_9:
   return v4;
 }
 
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_accessibilityButtonInteraction == v6)
+  providerCopy = provider;
+  parametersCopy = parameters;
+  if (self->_accessibilityButtonInteraction == providerCopy)
   {
     v8 = SBLogButtonsHome();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1749,10 +1749,10 @@ LABEL_9:
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "reconfiguring due to AX prefs change", buf, 2u);
     }
 
-    objc_storeStrong(&self->_accessibilityGestureParameters, a4);
+    objc_storeStrong(&self->_accessibilityGestureParameters, parameters);
   }
 
-  if (self->_siriButtonInteraction == v6)
+  if (self->_siriButtonInteraction == providerCopy)
   {
     v9 = SBLogButtonsHome();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -1761,11 +1761,11 @@ LABEL_9:
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "reconfiguring due to Siri prefs change", v11, 2u);
     }
 
-    objc_storeStrong(&self->_siriGestureParameters, a4);
+    objc_storeStrong(&self->_siriGestureParameters, parameters);
   }
 
-  v10 = [(SBHomeHardwareButtonActions *)self hardwareButtonGestureParameters];
-  [(SBHardwareButtonGestureParametersProviderBase *)self publishUpdatedParameters:v10];
+  hardwareButtonGestureParameters = [(SBHomeHardwareButtonActions *)self hardwareButtonGestureParameters];
+  [(SBHardwareButtonGestureParametersProviderBase *)self publishUpdatedParameters:hardwareButtonGestureParameters];
 }
 
 @end

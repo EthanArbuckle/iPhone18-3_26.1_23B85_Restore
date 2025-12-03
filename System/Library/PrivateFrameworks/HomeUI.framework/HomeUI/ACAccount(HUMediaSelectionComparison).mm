@@ -21,9 +21,9 @@
 
   v7 = v6;
 
-  v8 = [a1 ams_altDSID];
-  v9 = [v7 ams_altDSID];
-  v10 = [v8 isEqualToString:v9];
+  ams_altDSID = [self ams_altDSID];
+  ams_altDSID2 = [v7 ams_altDSID];
+  v10 = [ams_altDSID isEqualToString:ams_altDSID2];
 
   return v10;
 }

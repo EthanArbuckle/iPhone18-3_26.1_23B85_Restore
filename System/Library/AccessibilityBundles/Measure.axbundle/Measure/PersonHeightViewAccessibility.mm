@@ -1,24 +1,24 @@
 @interface PersonHeightViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)toggleViewVisibilityWithIsVisible:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)toggleViewVisibilityWithIsVisible:(BOOL)visible;
 @end
 
 @implementation PersonHeightViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.PersonHeightView" hasInstanceMethod:@"toggleViewVisibilityWithIsVisible:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"Measure.PersonHeightView" hasInstanceMethod:@"_accessibilitySpeakableHeight" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.PersonHeightView" hasInstanceMethod:@"toggleViewVisibilityWithIsVisible:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"Measure.PersonHeightView" hasInstanceMethod:@"_accessibilitySpeakableHeight" withFullSignature:{"@", 0}];
 }
 
-- (void)toggleViewVisibilityWithIsVisible:(BOOL)a3
+- (void)toggleViewVisibilityWithIsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v9.receiver = self;
   v9.super_class = PersonHeightViewAccessibility;
   [(PersonHeightViewAccessibility *)&v9 toggleViewVisibilityWithIsVisible:?];
-  if (v3)
+  if (visibleCopy)
   {
     v5 = [(PersonHeightViewAccessibility *)self safeStringForKey:@"_accessibilitySpeakableHeight"];
     v6 = MEMORY[0x29EDBA0F8];

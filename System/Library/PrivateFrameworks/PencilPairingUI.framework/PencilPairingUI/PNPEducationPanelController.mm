@@ -1,30 +1,30 @@
 @interface PNPEducationPanelController
-+ (id)_controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6;
++ (id)_controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate;
 - (CGPoint)forcedContentOffset;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 - (void)cancelWatchdogTimer;
 - (void)dealloc;
 - (void)scheduleWatchdogTimer;
-- (void)setIsAnimating:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUpForIsAnimating:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setIsAnimating:(BOOL)animating animated:(BOOL)animated;
+- (void)setUpForIsAnimating:(BOOL)animating;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PNPEducationPanelController
 
-+ (id)_controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6
++ (id)_controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = [a1 bundleImageNamed:@"welcome_scribble"];
+  delegateCopy = delegate;
+  v11 = [self bundleImageNamed:@"welcome_scribble"];
   v12 = [PNPEducationPanelController alloc];
   v13 = +[PencilEducationViewController localizedTitle];
   v14 = [(PNPWelcomeController *)v12 initWithTitle:v13 detailText:0 icon:v11];
 
-  [(PNPWelcomeController *)v14 setControllerType:a3 buttonType:a4 deviceType:a5 delegate:v10];
+  [(PNPWelcomeController *)v14 setControllerType:type buttonType:buttonType deviceType:deviceType delegate:delegateCopy];
 
   return v14;
 }
@@ -45,60 +45,60 @@
   v3 = [[PencilEducationViewController alloc] initWithNibName:0 bundle:0];
   [(PNPEducationPanelController *)self setEducationController:v3];
 
-  v4 = [(PNPEducationPanelController *)self educationController];
-  [v4 setDelegate:self];
+  educationController = [(PNPEducationPanelController *)self educationController];
+  [educationController setDelegate:self];
 
-  v5 = [(PNPEducationPanelController *)self educationController];
-  [(PNPEducationPanelController *)self addChildViewController:v5];
+  educationController2 = [(PNPEducationPanelController *)self educationController];
+  [(PNPEducationPanelController *)self addChildViewController:educationController2];
 
-  v6 = [(PNPEducationPanelController *)self educationController];
-  v7 = [v6 view];
+  educationController3 = [(PNPEducationPanelController *)self educationController];
+  view = [educationController3 view];
 
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(PNPEducationPanelController *)self contentView];
-  [v8 addSubview:v7];
-  v9 = [v7 leadingAnchor];
-  v10 = [v8 leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(PNPEducationPanelController *)self contentView];
+  [contentView addSubview:view];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v11 setActive:1];
 
-  v12 = [v7 topAnchor];
-  v13 = [v8 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v14 setActive:1];
 
-  v15 = [v7 bottomAnchor];
-  v16 = [v8 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 
-  v18 = [v7 trailingAnchor];
-  v19 = [v8 trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v20 setActive:1];
 
-  v21 = [(PNPEducationPanelController *)self educationController];
-  [v21 didMoveToParentViewController:self];
+  educationController4 = [(PNPEducationPanelController *)self educationController];
+  [educationController4 didMoveToParentViewController:self];
 
   [(PNPEducationPanelController *)self setUpForIsAnimating:[(PNPEducationPanelController *)self isAnimating]];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PNPEducationPanelController;
-  [(OBBaseWelcomeController *)&v4 viewDidAppear:a3];
+  [(OBBaseWelcomeController *)&v4 viewDidAppear:appear];
   [(PNPEducationPanelController *)self scheduleWatchdogTimer];
   [(PNPEducationPanelController *)self setForcedContentOffset:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   [(PNPEducationPanelController *)self cancelWatchdogTimer];
   [(PNPEducationPanelController *)self setUpForIsAnimating:0];
   [(PNPEducationPanelController *)self setDidAdjustHeightForWidth:0];
-  v4 = [(PNPEducationPanelController *)self forcedHeightLayoutConstraint];
-  [v4 setActive:0];
+  forcedHeightLayoutConstraint = [(PNPEducationPanelController *)self forcedHeightLayoutConstraint];
+  [forcedHeightLayoutConstraint setActive:0];
 
   [(PNPEducationPanelController *)self setForcedHeightLayoutConstraint:0];
 
@@ -110,49 +110,49 @@
   v46.receiver = self;
   v46.super_class = PNPEducationPanelController;
   [(OBBaseWelcomeController *)&v46 viewDidLayoutSubviews];
-  v3 = [(PNPEducationPanelController *)self educationController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
-  [v5 frame];
+  educationController = [(PNPEducationPanelController *)self educationController];
+  view = [educationController view];
+  superview = [view superview];
+  [superview frame];
   if (v6 <= 0.0)
   {
   }
 
   else
   {
-    v7 = [(PNPEducationPanelController *)self didAdjustHeightForWidth];
+    didAdjustHeightForWidth = [(PNPEducationPanelController *)self didAdjustHeightForWidth];
 
-    if (!v7)
+    if (!didAdjustHeightForWidth)
     {
       [(PNPEducationPanelController *)self set_shouldInlineButtontray:0];
       [(PNPEducationPanelController *)self setDidAdjustHeightForWidth:1];
-      v8 = [(PNPEducationPanelController *)self educationController];
-      v9 = [v8 view];
-      v10 = [(PNPEducationPanelController *)self educationController];
-      v11 = [v10 view];
-      [v11 bounds];
-      [v9 convertRect:0 toView:?];
+      educationController2 = [(PNPEducationPanelController *)self educationController];
+      view2 = [educationController2 view];
+      educationController3 = [(PNPEducationPanelController *)self educationController];
+      view3 = [educationController3 view];
+      [view3 bounds];
+      [view2 convertRect:0 toView:?];
       v13 = v12;
       v15 = v14;
       v17 = v16;
 
-      v18 = [(PNPEducationPanelController *)self educationController];
-      [v18 calculateFittingHeightByTemporarilyAdjustingFrameForWidth:v17];
+      educationController4 = [(PNPEducationPanelController *)self educationController];
+      [educationController4 calculateFittingHeightByTemporarilyAdjustingFrameForWidth:v17];
       v20 = v19;
 
-      v21 = [(PNPEducationPanelController *)self educationController];
-      v22 = [v21 view];
-      v23 = [v22 heightAnchor];
-      v24 = [v23 constraintEqualToConstant:v20];
+      educationController5 = [(PNPEducationPanelController *)self educationController];
+      view4 = [educationController5 view];
+      heightAnchor = [view4 heightAnchor];
+      v24 = [heightAnchor constraintEqualToConstant:v20];
       [(PNPEducationPanelController *)self setForcedHeightLayoutConstraint:v24];
 
-      v25 = [(PNPEducationPanelController *)self forcedHeightLayoutConstraint];
-      [v25 setActive:1];
+      forcedHeightLayoutConstraint = [(PNPEducationPanelController *)self forcedHeightLayoutConstraint];
+      [forcedHeightLayoutConstraint setActive:1];
 
-      v26 = [(PNPEducationPanelController *)self buttonTray];
-      v27 = [(PNPEducationPanelController *)self buttonTray];
-      [v27 bounds];
-      [v26 convertRect:0 toView:?];
+      buttonTray = [(PNPEducationPanelController *)self buttonTray];
+      buttonTray2 = [(PNPEducationPanelController *)self buttonTray];
+      [buttonTray2 bounds];
+      [buttonTray convertRect:0 toView:?];
       v29 = v28;
 
       v47.origin.x = v13;
@@ -163,16 +163,16 @@
       if (v30 > 0.0)
       {
         [(PNPEducationPanelController *)self set_shouldInlineButtontray:1];
-        v31 = [(PNPEducationPanelController *)self headerView];
-        v32 = [(PNPEducationPanelController *)self headerView];
-        [v32 bounds];
-        [v31 convertRect:0 toView:?];
+        headerView = [(PNPEducationPanelController *)self headerView];
+        headerView2 = [(PNPEducationPanelController *)self headerView];
+        [headerView2 bounds];
+        [headerView convertRect:0 toView:?];
         v34 = v33;
 
-        v35 = [(PNPEducationPanelController *)self scrollView];
-        v36 = [(PNPEducationPanelController *)self scrollView];
-        [v36 bounds];
-        [v35 convertRect:0 toView:?];
+        scrollView = [(PNPEducationPanelController *)self scrollView];
+        scrollView2 = [(PNPEducationPanelController *)self scrollView];
+        [scrollView2 bounds];
+        [scrollView convertRect:0 toView:?];
         v38 = v37;
 
         if (v34 - v38 >= v30)
@@ -196,17 +196,17 @@
     [(PNPEducationPanelController *)self forcedContentOffset];
     v42 = v41;
     v44 = v43;
-    v45 = [(PNPEducationPanelController *)self scrollView];
-    [v45 setContentOffset:{v42, v44}];
+    scrollView3 = [(PNPEducationPanelController *)self scrollView];
+    [scrollView3 setContentOffset:{v42, v44}];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  [(PNPEducationPanelController *)self setForcedContentOffset:a4, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  [(PNPEducationPanelController *)self setForcedContentOffset:coordinator, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   [(PNPEducationPanelController *)self setDidAdjustHeightForWidth:0];
-  v5 = [(PNPEducationPanelController *)self forcedHeightLayoutConstraint];
-  [v5 setActive:0];
+  forcedHeightLayoutConstraint = [(PNPEducationPanelController *)self forcedHeightLayoutConstraint];
+  [forcedHeightLayoutConstraint setActive:0];
 
   [(PNPEducationPanelController *)self setForcedHeightLayoutConstraint:0];
 
@@ -238,16 +238,16 @@ void __52__PNPEducationPanelController_scheduleWatchdogTimer__block_invoke(uint6
 
 - (void)cancelWatchdogTimer
 {
-  v2 = [(PNPEducationPanelController *)self watchdogTimer];
-  [v2 invalidate];
+  watchdogTimer = [(PNPEducationPanelController *)self watchdogTimer];
+  [watchdogTimer invalidate];
 }
 
-- (void)setIsAnimating:(BOOL)a3 animated:(BOOL)a4
+- (void)setIsAnimating:(BOOL)animating animated:(BOOL)animated
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
-    if (a4)
+    self->_isAnimating = animating;
+    if (animated)
     {
       v8 = v4;
       v9 = v5;
@@ -256,7 +256,7 @@ void __52__PNPEducationPanelController_scheduleWatchdogTimer__block_invoke(uint6
       v6[2] = __55__PNPEducationPanelController_setIsAnimating_animated___block_invoke;
       v6[3] = &unk_279A0A100;
       v6[4] = self;
-      v7 = a3;
+      animatingCopy = animating;
       [MEMORY[0x277D75D18] animateWithDuration:v6 animations:0.15];
     }
 
@@ -268,10 +268,10 @@ void __52__PNPEducationPanelController_scheduleWatchdogTimer__block_invoke(uint6
   }
 }
 
-- (void)setUpForIsAnimating:(BOOL)a3
+- (void)setUpForIsAnimating:(BOOL)animating
 {
-  v3 = a3;
-  if (a3)
+  animatingCopy = animating;
+  if (animating)
   {
     v5 = 0.4;
   }
@@ -281,40 +281,40 @@ void __52__PNPEducationPanelController_scheduleWatchdogTimer__block_invoke(uint6
     v5 = 1.0;
   }
 
-  v6 = [(PNPWelcomeController *)self trayButton];
-  [v6 setAlpha:v5];
+  trayButton = [(PNPWelcomeController *)self trayButton];
+  [trayButton setAlpha:v5];
 
-  v7 = [(PNPEducationPanelController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 setAlpha:v5];
+  navigationController = [(PNPEducationPanelController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setAlpha:v5];
 
-  v9 = [(PNPEducationPanelController *)self educationController];
-  v10 = [v9 segmentedControl];
-  [v10 setAlpha:v5];
+  educationController = [(PNPEducationPanelController *)self educationController];
+  segmentedControl = [educationController segmentedControl];
+  [segmentedControl setAlpha:v5];
 
-  v11 = [(PNPWelcomeController *)self trayButton];
-  [v11 setUserInteractionEnabled:!v3];
+  trayButton2 = [(PNPWelcomeController *)self trayButton];
+  [trayButton2 setUserInteractionEnabled:!animatingCopy];
 
-  v12 = [(PNPEducationPanelController *)self navigationController];
-  v13 = [v12 navigationBar];
-  [v13 setUserInteractionEnabled:!v3];
+  navigationController2 = [(PNPEducationPanelController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setUserInteractionEnabled:!animatingCopy];
 
-  v15 = [(PNPEducationPanelController *)self educationController];
-  v14 = [v15 segmentedControl];
-  [v14 setUserInteractionEnabled:!v3];
+  educationController2 = [(PNPEducationPanelController *)self educationController];
+  segmentedControl2 = [educationController2 segmentedControl];
+  [segmentedControl2 setUserInteractionEnabled:!animatingCopy];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (![(PNPEducationPanelController *)self isAnimating])
   {
-    v5 = [(PNPEducationPanelController *)self educationController];
-    [v5 cancelScheduledAnimations];
+    educationController = [(PNPEducationPanelController *)self educationController];
+    [educationController cancelScheduledAnimations];
 
     v6.receiver = self;
     v6.super_class = PNPEducationPanelController;
-    [(PNPWelcomeController *)&v6 buttonPressed:v4];
+    [(PNPWelcomeController *)&v6 buttonPressed:pressedCopy];
   }
 }
 

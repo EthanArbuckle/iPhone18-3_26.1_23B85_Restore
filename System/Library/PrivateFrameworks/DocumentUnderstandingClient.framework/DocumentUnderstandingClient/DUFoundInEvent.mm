@@ -1,14 +1,14 @@
 @interface DUFoundInEvent
-- (id)requestEventExtractionWithSerializedDocument:(id)a3 documentType:(int64_t)a4 options:(id)a5 error:(id *)a6;
-- (void)foundInEventResultWithSerializedDocument:(id)a3 documentType:(int64_t)a4 completion:(id)a5;
+- (id)requestEventExtractionWithSerializedDocument:(id)document documentType:(int64_t)type options:(id)options error:(id *)error;
+- (void)foundInEventResultWithSerializedDocument:(id)document documentType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation DUFoundInEvent
 
-- (id)requestEventExtractionWithSerializedDocument:(id)a3 documentType:(int64_t)a4 options:(id)a5 error:(id *)a6
+- (id)requestEventExtractionWithSerializedDocument:(id)document documentType:(int64_t)type options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  documentCopy = document;
+  optionsCopy = options;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -29,14 +29,14 @@
   v16[3] = &unk_278FB5128;
   v16[4] = &v17;
   v16[5] = &v23;
-  [v11 synchronousEventExtractionWithSerializedDocument:v9 documentType:a4 pid:v12 completion:v16];
+  [v11 synchronousEventExtractionWithSerializedDocument:documentCopy documentType:type pid:v12 completion:v16];
 
-  if (a6)
+  if (error)
   {
     v13 = v18[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -48,18 +48,18 @@
   return v14;
 }
 
-- (void)foundInEventResultWithSerializedDocument:(id)a3 documentType:(int64_t)a4 completion:(id)a5
+- (void)foundInEventResultWithSerializedDocument:(id)document documentType:(int64_t)type completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  documentCopy = document;
   v9 = +[DUXPCClient sharedInstance];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_249D1DF44;
   v11[3] = &unk_278FB5100;
-  v12 = v7;
-  v10 = v7;
-  [v9 foundInEventResultWithSerializedDocument:v8 documentType:a4 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 foundInEventResultWithSerializedDocument:documentCopy documentType:type completion:v11];
 }
 
 @end

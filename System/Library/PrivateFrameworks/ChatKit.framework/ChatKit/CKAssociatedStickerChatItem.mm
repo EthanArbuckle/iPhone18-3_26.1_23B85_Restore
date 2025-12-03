@@ -1,20 +1,20 @@
 @interface CKAssociatedStickerChatItem
-+ (BOOL)isDroppedSticker:(id)a3;
++ (BOOL)isDroppedSticker:(id)sticker;
 + (BOOL)userHasDraggedSticker;
-+ (double)computeHorizontalStickerFrameOffset:(CGRect)a3 parentSize:(CGSize)a4 forPositioningWithinContentAlignmentRect:(CGRect)a5 geometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)a6 forTranscriptOrientation:(char)a7;
++ (double)computeHorizontalStickerFrameOffset:(CGRect)offset parentSize:(CGSize)size forPositioningWithinContentAlignmentRect:(CGRect)rect geometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)descriptor forTranscriptOrientation:(char)orientation;
 + (id)_droppedStickers;
 + (id)_showingStickers;
-+ (void)addDroppedSticker:(id)a3;
++ (void)addDroppedSticker:(id)sticker;
 + (void)clearTranscriptDisplayCaches;
-+ (void)removeDroppedSticker:(id)a3;
-+ (void)setUserHasDraggedSticker:(BOOL)a3;
++ (void)removeDroppedSticker:(id)sticker;
++ (void)setUserHasDraggedSticker:(BOOL)sticker;
 - (BOOL)canShowInAppStore;
 - (BOOL)chatItemIsStickerReposition;
 - (BOOL)currentStickerRepositionIsLocalReposition;
 - (BOOL)isCustomSticker;
 - (BOOL)isReaction;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CKAssociatedStickerChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CKAssociatedStickerChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (IMSticker)sticker;
 - (NSDictionary)attributionInfo;
 - (NSDictionary)stickerUserInfo;
@@ -27,7 +27,7 @@
 - (char)transcriptOrientation;
 - (id)attributionImage;
 - (id)insertionHandler;
-- (id)messageSummaryInfoValueForKey:(id)a3;
+- (id)messageSummaryInfoValueForKey:(id)key;
 - (id)stickerDetailsPreview;
 - (void)clearStickerRepositionLocalState;
 - (void)currentStickerRepositionIsLocalReposition;
@@ -36,30 +36,30 @@
 
 @implementation CKAssociatedStickerChatItem
 
-+ (double)computeHorizontalStickerFrameOffset:(CGRect)a3 parentSize:(CGSize)a4 forPositioningWithinContentAlignmentRect:(CGRect)a5 geometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)a6 forTranscriptOrientation:(char)a7
++ (double)computeHorizontalStickerFrameOffset:(CGRect)offset parentSize:(CGSize)size forPositioningWithinContentAlignmentRect:(CGRect)rect geometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)descriptor forTranscriptOrientation:(char)orientation
 {
-  v7 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  rect = a3.origin.y;
-  x = a3.origin.x;
-  [(CKAssociatedMessageChatItem *)CKAssociatedStickerChatItem adjustContentAlignmentRect:a7 forChatItemSize:a5.origin.x transcriptOrientation:a5.origin.y, a5.size.width, a5.size.height, a4.width, a4.height];
+  orientationCopy = orientation;
+  height = offset.size.height;
+  width = offset.size.width;
+  rect = offset.origin.y;
+  x = offset.origin.x;
+  [(CKAssociatedMessageChatItem *)CKAssociatedStickerChatItem adjustContentAlignmentRect:orientation forChatItemSize:rect.origin.x transcriptOrientation:rect.origin.y, rect.size.width, rect.size.height, size.width, size.height];
   v13 = v12;
-  v14 = *&a6->parentPreviewWidth;
-  v25[0] = *&a6->layoutIntent;
+  v14 = *&descriptor->parentPreviewWidth;
+  v25[0] = *&descriptor->layoutIntent;
   v25[1] = v14;
-  v25[2] = *&a6->yScalar;
-  rotation = a6->rotation;
+  v25[2] = *&descriptor->yScalar;
+  rotation = descriptor->rotation;
   [(CKAssociatedMessageChatItem *)CKAssociatedStickerChatItem horizontalOriginForAssociatedMessageItemSize:v25 parentFrame:width geometryDescriptor:height, v15, v13, v16, v17];
   v19 = v18;
-  if (v7 == 2)
+  if (orientationCopy == 2)
   {
     v27.origin.x = x;
     v27.origin.y = rect;
     v27.size.width = width;
     v27.size.height = height;
     v22 = v19 + CGRectGetWidth(v27);
-    v23 = v22 - CGRectGetMaxX(a5);
+    v23 = v22 - CGRectGetMaxX(rect);
     if (v23 <= 0.0)
     {
       return 0.0;
@@ -74,16 +74,16 @@
   else
   {
     result = 0.0;
-    if (!v7)
+    if (!orientationCopy)
     {
-      if (v19 >= a5.origin.x)
+      if (v19 >= rect.origin.x)
       {
         v21 = v19;
       }
 
       else
       {
-        v21 = a5.origin.x;
+        v21 = rect.origin.x;
       }
 
       return v21 - v19;
@@ -95,67 +95,67 @@
 
 - (NSString)stickerDetailsTitleText
 {
-  v2 = [(CKAssociatedStickerChatItem *)self transferGUID];
-  v3 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v4 = [v3 transferForGUID:v2];
+  transferGUID = [(CKAssociatedStickerChatItem *)self transferGUID];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  v4 = [mEMORY[0x1E69A5B80] transferForGUID:transferGUID];
 
   if ([CKStickerDetailViewController isGenmojiBundleIDFromFileTransfer:v4])
   {
-    v5 = [v4 adaptiveImageGlyphContentDescription];
+    adaptiveImageGlyphContentDescription = [v4 adaptiveImageGlyphContentDescription];
   }
 
   else
   {
-    v5 = 0;
+    adaptiveImageGlyphContentDescription = 0;
   }
 
-  if (![v5 length])
+  if (![adaptiveImageGlyphContentDescription length])
   {
     v6 = [CKStickerDetailViewController localizedAppNameForStickerDetailsFromFileTransfer:v4];
 
-    v5 = v6;
+    adaptiveImageGlyphContentDescription = v6;
   }
 
-  return v5;
+  return adaptiveImageGlyphContentDescription;
 }
 
 - (NSString)stickerDetailsSubtitleText
 {
-  v2 = [(CKAssociatedMessageChatItem *)self sender];
-  v3 = [v2 name];
+  sender = [(CKAssociatedMessageChatItem *)self sender];
+  name = [sender name];
 
-  return v3;
+  return name;
 }
 
 - (id)stickerDetailsPreview
 {
-  v2 = [(CKAssociatedStickerChatItem *)self mediaObject];
+  mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
   v3 = +[CKUIBehavior sharedBehaviors];
   [v3 previewMaxWidth];
   v5 = v4;
 
-  v6 = [v2 previewForWidth:0 orientation:v5];
+  v6 = [mediaObject previewForWidth:0 orientation:v5];
 
   return v6;
 }
 
-- (CKAssociatedStickerChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKAssociatedStickerChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
-  v6 = a3;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = CKAssociatedStickerChatItem;
-  v7 = [(CKChatItem *)&v18 initWithIMChatItem:v6 maxWidth:a4];
+  v7 = [(CKChatItem *)&v18 initWithIMChatItem:itemCopy maxWidth:width];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CKAssociatedStickerChatItem *)v7 transferGUID];
+    transferGUID = [(CKAssociatedStickerChatItem *)v7 transferGUID];
 
-    if (v9)
+    if (transferGUID)
     {
       if (objc_opt_respondsToSelector())
       {
         v10 = NSStringFromSelector(sel_chatContext);
-        v11 = [v6 valueForKey:v10];
+        v11 = [itemCopy valueForKey:v10];
       }
 
       else
@@ -166,7 +166,7 @@
       if (objc_opt_respondsToSelector())
       {
         v12 = NSStringFromSelector(sel_message);
-        v13 = [v6 valueForKey:v12];
+        v13 = [itemCopy valueForKey:v12];
       }
 
       else
@@ -175,8 +175,8 @@
       }
 
       v14 = +[CKMediaObjectManager sharedInstance];
-      v15 = [(CKAssociatedStickerChatItem *)v8 transferGUID];
-      v16 = [v14 mediaObjectWithTransferGUID:v15 imMessage:v13 chatContext:v11];
+      transferGUID2 = [(CKAssociatedStickerChatItem *)v8 transferGUID];
+      v16 = [v14 mediaObjectWithTransferGUID:transferGUID2 imMessage:v13 chatContext:v11];
 
       [(CKAssociatedStickerChatItem *)v8 setMediaObject:v16];
     }
@@ -185,15 +185,15 @@
   return v8;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
   v8 = +[CKChatItemSizeCache sharedInstance];
@@ -207,10 +207,10 @@
 
   else
   {
-    v12 = [(CKAssociatedStickerChatItem *)self mediaObject];
+    mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
     v13 = +[CKUIBehavior sharedBehaviors];
     [v13 previewMaxWidth];
-    v14 = [v12 previewForWidth:0 orientation:?];
+    v14 = [mediaObject previewForWidth:0 orientation:?];
 
     objc_opt_class();
     LOBYTE(v13) = objc_opt_isKindOfClass();
@@ -218,12 +218,12 @@
     v16 = v15;
     if (v13)
     {
-      v17 = [v15 image];
-      [v17 size];
+      image = [v15 image];
+      [image size];
       v19 = v18;
       v21 = v20;
 
-      v22 = [v16 image];
+      image2 = [v16 image];
     }
 
     else
@@ -231,10 +231,10 @@
       [v15 size];
       v19 = v23;
       v21 = v24;
-      v22 = v16;
+      image2 = v16;
     }
 
-    [v22 scale];
+    [image2 scale];
     v26 = v25;
 
     v27 = +[CKUIBehavior sharedBehaviors];
@@ -243,14 +243,14 @@
     [v27 stickerSizeScaledWithInitialSize:v19 imageScale:v21 userScale:v26 rectifiedScreenScale:v47 maxWidth:{v28, width}];
     v11 = v29;
     v10 = v30;
-    v31 = [(CKAssociatedStickerChatItem *)self mediaObject];
+    mediaObject2 = [(CKAssociatedStickerChatItem *)self mediaObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v33 = [(CKAssociatedStickerChatItem *)self mediaObject];
-      if ([v33 isSticker] && objc_msgSend(v33, "isReaction"))
+      mediaObject3 = [(CKAssociatedStickerChatItem *)self mediaObject];
+      if ([mediaObject3 isSticker] && objc_msgSend(mediaObject3, "isReaction"))
       {
         v34 = +[CKUIBehavior sharedBehaviors];
         [v34 stickerReactionSize];
@@ -258,11 +258,11 @@
         v10 = v36;
       }
 
-      else if ([v33 isSticker])
+      else if ([mediaObject3 isSticker])
       {
-        v37 = [v33 sticker];
-        v38 = [v37 externalURI];
-        v39 = [v38 hasPrefix:@"sticker:///emoji/"];
+        sticker = [mediaObject3 sticker];
+        externalURI = [sticker externalURI];
+        v39 = [externalURI hasPrefix:@"sticker:///emoji/"];
 
         v40 = +[CKUIBehavior sharedBehaviors];
         [v27 stickerScreenScale];
@@ -293,10 +293,10 @@
 
 - (NSString)transferGUID
 {
-  v2 = [(CKAssociatedStickerChatItem *)self IMAssociatedStickerChatItem];
-  v3 = [v2 transferGUID];
+  iMAssociatedStickerChatItem = [(CKAssociatedStickerChatItem *)self IMAssociatedStickerChatItem];
+  transferGUID = [iMAssociatedStickerChatItem transferGUID];
 
-  return v3;
+  return transferGUID;
 }
 
 - (char)transcriptOrientation
@@ -314,7 +314,7 @@
 
 - (BOOL)isReaction
 {
-  v3 = [(CKAssociatedStickerChatItem *)self mediaObject];
+  mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -323,19 +323,19 @@
     return 0;
   }
 
-  v5 = [(CKAssociatedStickerChatItem *)self mediaObject];
-  v6 = [v5 isReaction];
+  mediaObject2 = [(CKAssociatedStickerChatItem *)self mediaObject];
+  isReaction = [mediaObject2 isReaction];
 
-  return v6;
+  return isReaction;
 }
 
 - (void)refreshMediaObjectForStickerRepositioning
 {
-  v3 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CKChatItem *)self IMChatItem];
-    v12 = [v4 performSelector:sel_chatContext];
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
+    v12 = [iMChatItem2 performSelector:sel_chatContext];
   }
 
   else
@@ -343,11 +343,11 @@
     v12 = 0;
   }
 
-  v5 = [(CKChatItem *)self IMChatItem];
+  iMChatItem3 = [(CKChatItem *)self IMChatItem];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(CKChatItem *)self IMChatItem];
-    v7 = [v6 performSelector:sel_message];
+    iMChatItem4 = [(CKChatItem *)self IMChatItem];
+    v7 = [iMChatItem4 performSelector:sel_message];
   }
 
   else
@@ -356,19 +356,19 @@
   }
 
   v8 = +[CKMediaObjectManager sharedInstance];
-  v9 = [(CKAssociatedStickerChatItem *)self transferGUID];
-  v10 = [v8 mediaObjectWithTransferGUID:v9 imMessage:v7 chatContext:v12];
+  transferGUID = [(CKAssociatedStickerChatItem *)self transferGUID];
+  v10 = [v8 mediaObjectWithTransferGUID:transferGUID imMessage:v7 chatContext:v12];
 
   [(CKAssociatedStickerChatItem *)self setMediaObject:v10];
-  v11 = [(CKAssociatedStickerChatItem *)self IMAssociatedStickerChatItem];
-  [v11 _refreshGeometryDescriptorFromStickerUserInfo];
+  iMAssociatedStickerChatItem = [(CKAssociatedStickerChatItem *)self IMAssociatedStickerChatItem];
+  [iMAssociatedStickerChatItem _refreshGeometryDescriptorFromStickerUserInfo];
 }
 
 - (BOOL)chatItemIsStickerReposition
 {
-  v3 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v4 = [(CKAssociatedStickerChatItem *)self transferGUID];
-  v5 = [v3 transferForGUID:v4];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  transferGUID = [(CKAssociatedStickerChatItem *)self transferGUID];
+  v5 = [mEMORY[0x1E69A5B80] transferForGUID:transferGUID];
 
   v6 = [v5 updateReason] == 1 || objc_msgSend(v5, "updateReason") == 2;
   return v6;
@@ -376,9 +376,9 @@
 
 - (BOOL)currentStickerRepositionIsLocalReposition
 {
-  v3 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v4 = [(CKAssociatedStickerChatItem *)self transferGUID];
-  v5 = [v3 transferForGUID:v4];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  transferGUID = [(CKAssociatedStickerChatItem *)self transferGUID];
+  v5 = [mEMORY[0x1E69A5B80] transferForGUID:transferGUID];
 
   v6 = IMLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -392,38 +392,38 @@
 
 - (void)clearStickerRepositionLocalState
 {
-  v3 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v4 = [(CKAssociatedStickerChatItem *)self transferGUID];
-  v5 = [v3 transferForGUID:v4];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  transferGUID = [(CKAssociatedStickerChatItem *)self transferGUID];
+  v5 = [mEMORY[0x1E69A5B80] transferForGUID:transferGUID];
 
   [v5 setUpdateReason:0];
 }
 
 - (NSDictionary)stickerUserInfo
 {
-  v2 = [(CKAssociatedStickerChatItem *)self mediaObject];
-  v3 = [v2 transfer];
-  v4 = [v3 stickerUserInfo];
+  mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
+  transfer = [mediaObject transfer];
+  stickerUserInfo = [transfer stickerUserInfo];
 
-  return v4;
+  return stickerUserInfo;
 }
 
 - (NSDictionary)attributionInfo
 {
-  v2 = [(CKAssociatedStickerChatItem *)self mediaObject];
-  v3 = [v2 transfer];
-  v4 = [v3 attributionInfo];
+  mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
+  transfer = [mediaObject transfer];
+  attributionInfo = [transfer attributionInfo];
 
-  return v4;
+  return attributionInfo;
 }
 
 - (NSNumber)adamID
 {
-  v2 = [(CKAssociatedStickerChatItem *)self attributionInfo];
-  v3 = v2;
-  if (v2)
+  attributionInfo = [(CKAssociatedStickerChatItem *)self attributionInfo];
+  v3 = attributionInfo;
+  if (attributionInfo)
   {
-    v4 = [v2 objectForKey:*MEMORY[0x1E69A6FA0]];
+    v4 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FA0]];
   }
 
   else
@@ -453,74 +453,74 @@ void __47__CKAssociatedStickerChatItem__showingStickers__block_invoke()
   _showingStickers_stickers = v0;
 }
 
-- (id)messageSummaryInfoValueForKey:(id)a3
+- (id)messageSummaryInfoValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKAssociatedStickerChatItem *)self IMAssociatedStickerChatItem];
-  v6 = [v5 messageSummaryInfo];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  iMAssociatedStickerChatItem = [(CKAssociatedStickerChatItem *)self IMAssociatedStickerChatItem];
+  messageSummaryInfo = [iMAssociatedStickerChatItem messageSummaryInfo];
+  v7 = [messageSummaryInfo objectForKeyedSubscript:keyCopy];
 
   return v7;
 }
 
 - (IMSticker)sticker
 {
-  v3 = [(CKAssociatedStickerChatItem *)self mediaObject];
+  mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CKAssociatedStickerChatItem *)self mediaObject];
-    v6 = [v5 sticker];
+    mediaObject2 = [(CKAssociatedStickerChatItem *)self mediaObject];
+    sticker = [mediaObject2 sticker];
   }
 
   else
   {
-    v6 = 0;
+    sticker = 0;
   }
 
-  return v6;
+  return sticker;
 }
 
 - (NSString)stickerPackName
 {
-  v2 = [(CKAssociatedStickerChatItem *)self attributionInfo];
-  v3 = [v2 __ck_localizedAppNameForTranscriptAttribution];
+  attributionInfo = [(CKAssociatedStickerChatItem *)self attributionInfo];
+  __ck_localizedAppNameForTranscriptAttribution = [attributionInfo __ck_localizedAppNameForTranscriptAttribution];
 
-  return v3;
+  return __ck_localizedAppNameForTranscriptAttribution;
 }
 
 - (BOOL)isCustomSticker
 {
-  v2 = [(CKAssociatedStickerChatItem *)self stickerPackGUID];
-  v3 = v2 == 0;
+  stickerPackGUID = [(CKAssociatedStickerChatItem *)self stickerPackGUID];
+  v3 = stickerPackGUID == 0;
 
   return v3;
 }
 
 - (NSString)stickerPackGUID
 {
-  v2 = [(CKAssociatedStickerChatItem *)self stickerUserInfo];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7CB0]];
+  stickerUserInfo = [(CKAssociatedStickerChatItem *)self stickerUserInfo];
+  v3 = [stickerUserInfo objectForKeyedSubscript:*MEMORY[0x1E69A7CB0]];
 
   return v3;
 }
 
 - (BOOL)canShowInAppStore
 {
-  v2 = [(CKAssociatedStickerChatItem *)self adamID];
-  v3 = v2 != 0;
+  adamID = [(CKAssociatedStickerChatItem *)self adamID];
+  v3 = adamID != 0;
 
   return v3;
 }
 
 - (id)attributionImage
 {
-  v2 = [(CKAssociatedStickerChatItem *)self sticker];
-  v3 = [v2 image];
+  sticker = [(CKAssociatedStickerChatItem *)self sticker];
+  image = [sticker image];
 
-  return v3;
+  return image;
 }
 
 + (id)_droppedStickers
@@ -544,98 +544,98 @@ void __47__CKAssociatedStickerChatItem__droppedStickers__block_invoke()
 
 + (BOOL)userHasDraggedSticker
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isAlwaysShowStickerDropUIEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAlwaysShowStickerDropUIEnabled = [mEMORY[0x1E69A8070] isAlwaysShowStickerDropUIEnabled];
 
-  if (v3)
+  if (isAlwaysShowStickerDropUIEnabled)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 objectForKey:@"kUserHasDraggedSticker"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"kUserHasDraggedSticker"];
 
   if (v6)
   {
-    v4 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setUserHasDraggedSticker:(BOOL)a3
++ (void)setUserHasDraggedSticker:(BOOL)sticker
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isAlwaysShowStickerDropUIEnabled];
+  stickerCopy = sticker;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAlwaysShowStickerDropUIEnabled = [mEMORY[0x1E69A8070] isAlwaysShowStickerDropUIEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((isAlwaysShowStickerDropUIEnabled & 1) == 0)
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v7 setValue:v8 forKey:@"kUserHasDraggedSticker"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:stickerCopy];
+    [standardUserDefaults setValue:v8 forKey:@"kUserHasDraggedSticker"];
 
     v9 = IMLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(CKAssociatedStickerChatItem *)v3 setUserHasDraggedSticker:v9];
+      [(CKAssociatedStickerChatItem *)stickerCopy setUserHasDraggedSticker:v9];
     }
 
-    if (v3)
+    if (stickerCopy)
     {
-      v10 = [a1 _droppedStickers];
-      [v10 removeAllObjects];
+      _droppedStickers = [self _droppedStickers];
+      [_droppedStickers removeAllObjects];
     }
   }
 }
 
-+ (void)addDroppedSticker:(id)a3
++ (void)addDroppedSticker:(id)sticker
 {
-  v4 = a3;
-  if (([a1 userHasDraggedSticker] & 1) == 0)
+  stickerCopy = sticker;
+  if (([self userHasDraggedSticker] & 1) == 0)
   {
-    v5 = [a1 _droppedStickers];
-    v6 = [v4 uniqueID];
-    [v5 addObject:v6];
+    _droppedStickers = [self _droppedStickers];
+    uniqueID = [stickerCopy uniqueID];
+    [_droppedStickers addObject:uniqueID];
 
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [CKAssociatedStickerChatItem addDroppedSticker:v4];
+      [CKAssociatedStickerChatItem addDroppedSticker:stickerCopy];
     }
   }
 }
 
-+ (void)removeDroppedSticker:(id)a3
++ (void)removeDroppedSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [a1 _droppedStickers];
-  v6 = [v4 uniqueID];
-  [v5 removeObject:v6];
+  stickerCopy = sticker;
+  _droppedStickers = [self _droppedStickers];
+  uniqueID = [stickerCopy uniqueID];
+  [_droppedStickers removeObject:uniqueID];
 
   v7 = IMLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [CKAssociatedStickerChatItem removeDroppedSticker:v4];
+    [CKAssociatedStickerChatItem removeDroppedSticker:stickerCopy];
   }
 }
 
-+ (BOOL)isDroppedSticker:(id)a3
++ (BOOL)isDroppedSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [a1 _droppedStickers];
-  v6 = [v4 uniqueID];
-  v7 = [v5 containsObject:v6];
+  stickerCopy = sticker;
+  _droppedStickers = [self _droppedStickers];
+  uniqueID = [stickerCopy uniqueID];
+  v7 = [_droppedStickers containsObject:uniqueID];
 
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [CKAssociatedStickerChatItem isDroppedSticker:v4];
+    [CKAssociatedStickerChatItem isDroppedSticker:stickerCopy];
   }
 
   return v7;
@@ -643,11 +643,11 @@ void __47__CKAssociatedStickerChatItem__droppedStickers__block_invoke()
 
 + (void)clearTranscriptDisplayCaches
 {
-  v3 = [a1 _droppedStickers];
-  [v3 removeAllObjects];
+  _droppedStickers = [self _droppedStickers];
+  [_droppedStickers removeAllObjects];
 
-  v4 = [a1 _showingStickers];
-  [v4 removeAllObjects];
+  _showingStickers = [self _showingStickers];
+  [_showingStickers removeAllObjects];
 }
 
 - (id)insertionHandler
@@ -671,7 +671,7 @@ void __47__CKAssociatedStickerChatItem_insertionHandler__block_invoke()
 
 - (void)currentStickerRepositionIsLocalReposition
 {
-  [a1 updateReason];
+  [self updateReason];
   v1 = IMStringFromIMFileTransferUpdateReason();
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_0_9();

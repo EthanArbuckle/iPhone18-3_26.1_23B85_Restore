@@ -1,38 +1,38 @@
 @interface _UIStretchableShadow
-+ (CGImage)shadowWithRadius:(double)a3 cornerRadius:(double)a4 isContinuousCorner:(BOOL)a5 white:(double)a6;
-+ (id)_generateShadowWithRadius:(double)a3 cornerRadius:(double)a4 isContinuousCorner:(BOOL)a5 color:(id)a6;
++ (CGImage)shadowWithRadius:(double)radius cornerRadius:(double)cornerRadius isContinuousCorner:(BOOL)corner white:(double)white;
++ (id)_generateShadowWithRadius:(double)radius cornerRadius:(double)cornerRadius isContinuousCorner:(BOOL)corner color:(id)color;
 @end
 
 @implementation _UIStretchableShadow
 
-+ (CGImage)shadowWithRadius:(double)a3 cornerRadius:(double)a4 isContinuousCorner:(BOOL)a5 white:(double)a6
++ (CGImage)shadowWithRadius:(double)radius cornerRadius:(double)cornerRadius isContinuousCorner:(BOOL)corner white:(double)white
 {
-  v7 = a5;
+  cornerCopy = corner;
   if (_MergedGlobals_1001 != -1)
   {
     dispatch_once(&_MergedGlobals_1001, &__block_literal_global_51);
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f-%f-%f", *&a3, *&a4, *&a6];
-  v12 = [qword_1ED49C900 objectForKey:v11];
-  if (!v12)
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f-%f-%f", *&radius, *&cornerRadius, *&white];
+  cGImage = [qword_1ED49C900 objectForKey:v11];
+  if (!cGImage)
   {
-    v13 = [UIColor colorWithWhite:a6 alpha:1.0];
-    v14 = [a1 _generateShadowWithRadius:v7 cornerRadius:v13 isContinuousCorner:a3 color:a4];
+    v13 = [UIColor colorWithWhite:white alpha:1.0];
+    v14 = [self _generateShadowWithRadius:cornerCopy cornerRadius:v13 isContinuousCorner:radius color:cornerRadius];
 
-    v12 = [v14 CGImage];
-    [qword_1ED49C900 setObject:v12 forKey:v11];
+    cGImage = [v14 CGImage];
+    [qword_1ED49C900 setObject:cGImage forKey:v11];
   }
 
-  return v12;
+  return cGImage;
 }
 
-+ (id)_generateShadowWithRadius:(double)a3 cornerRadius:(double)a4 isContinuousCorner:(BOOL)a5 color:(id)a6
++ (id)_generateShadowWithRadius:(double)radius cornerRadius:(double)cornerRadius isContinuousCorner:(BOOL)corner color:(id)color
 {
-  v8 = a3 + a3;
-  v9 = a3 + a3 + a4 + a3 + a3 + a4;
-  v11 = a3 + a3 + v9;
-  v12 = [a6 CGColor];
+  v8 = radius + radius;
+  v9 = radius + radius + cornerRadius + radius + radius + cornerRadius;
+  v11 = radius + radius + v9;
+  cGColor = [color CGColor];
   _UIGraphicsBeginImageContextWithOptions(0, 0, v8 + v8 + v9, v8 + v8 + v9, 1.0);
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -49,9 +49,9 @@
   v15 = (v10 - v9) * 0.5;
   v21.width = 0.0;
   v21.height = v11;
-  CGContextSetShadowWithColor(v14, v21, v8, v12);
-  CGContextSetFillColorWithColor(v14, v12);
-  if (a4 <= 0.0)
+  CGContextSetShadowWithColor(v14, v21, v8, cGColor);
+  CGContextSetFillColorWithColor(v14, cGColor);
+  if (cornerRadius <= 0.0)
   {
     v22.origin.x = (v10 - v9) * 0.5;
     v22.origin.y = -v9;
@@ -63,14 +63,14 @@
   else
   {
     v16 = -v9;
-    if (a5)
+    if (corner)
     {
-      [UIBezierPath _continuousRoundedRectBezierPath:-1 withRoundedCorners:16 cornerRadius:v15 segments:v16, v9, v9, a4, a4];
+      [UIBezierPath _continuousRoundedRectBezierPath:-1 withRoundedCorners:16 cornerRadius:v15 segments:v16, v9, v9, cornerRadius, cornerRadius];
     }
 
     else
     {
-      [UIBezierPath bezierPathWithRoundedRect:v15 cornerRadius:v16, v9, v9, a4];
+      [UIBezierPath bezierPathWithRoundedRect:v15 cornerRadius:v16, v9, v9, cornerRadius];
     }
     v17 = ;
     CGContextAddPath(v14, [v17 CGPath]);

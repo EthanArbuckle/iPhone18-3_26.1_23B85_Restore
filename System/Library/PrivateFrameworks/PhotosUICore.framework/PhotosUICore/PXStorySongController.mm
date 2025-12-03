@@ -1,15 +1,15 @@
 @interface PXStorySongController
 - (PXStoryModel)model;
-- (PXStorySongController)initWithModel:(id)a3;
-- (PXStorySongController)initWithObservableModel:(id)a3;
+- (PXStorySongController)initWithModel:(id)model;
+- (PXStorySongController)initWithObservableModel:(id)model;
 - (void)_invalidateCurrentSongResource;
 - (void)_updateCurrentSongResource;
-- (void)configureUpdater:(id)a3;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setCurrentSongResource:(id)a3;
-- (void)setFailedAudioAssets:(id)a3;
+- (void)configureUpdater:(id)updater;
+- (void)handleModelChange:(unint64_t)change;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setCurrentSongResource:(id)resource;
+- (void)setFailedAudioAssets:(id)assets;
 @end
 
 @implementation PXStorySongController
@@ -21,12 +21,12 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (StyleManagerContext == a5)
+  observableCopy = observable;
+  if (StyleManagerContext == context)
   {
-    if ((a4 & 0x120) == 0)
+    if ((change & 0x120) == 0)
     {
       goto LABEL_9;
     }
@@ -42,9 +42,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (RecipeManagerContext == a5)
+  if (RecipeManagerContext == context)
   {
-    if ((a4 & 1) == 0)
+    if ((change & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -60,16 +60,16 @@ LABEL_8:
 
   v10.receiver = self;
   v10.super_class = PXStorySongController;
-  [(PXStoryController *)&v10 observable:v8 didChange:a4 context:a5];
+  [(PXStoryController *)&v10 observable:observableCopy didChange:change context:context];
 LABEL_9:
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
   v6.receiver = self;
   v6.super_class = PXStorySongController;
   [(PXStoryController *)&v6 handleModelChange:?];
-  if ((a3 & 0x808000010200) != 0)
+  if ((change & 0x808000010200) != 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -82,20 +82,20 @@ LABEL_9:
 
 - (void)_updateCurrentSongResource
 {
-  v3 = [(PXStorySongController *)self model];
-  v4 = [v3 currentStyle];
-  v5 = [v4 songResource];
+  model = [(PXStorySongController *)self model];
+  currentStyle = [model currentStyle];
+  songResource = [currentStyle songResource];
 
-  if (!v5)
+  if (!songResource)
   {
-    v6 = [v3 recipeManager];
-    v7 = [v6 recipe];
-    v5 = [v7 initialSongResource];
+    recipeManager = [model recipeManager];
+    recipe = [recipeManager recipe];
+    songResource = [recipe initialSongResource];
   }
 
-  v8 = [(PXStorySongController *)self failedAudioAssets];
-  v9 = [v5 px_storyResourceSongAsset];
-  v10 = [v8 containsObject:v9];
+  failedAudioAssets = [(PXStorySongController *)self failedAudioAssets];
+  px_storyResourceSongAsset = [songResource px_storyResourceSongAsset];
+  v10 = [failedAudioAssets containsObject:px_storyResourceSongAsset];
 
   if (v10)
   {
@@ -114,62 +114,62 @@ LABEL_9:
       [MEMORY[0x1E696AF00] sleepForTimeInterval:v13];
     }
 
-    v14 = [v3 recipeManager];
-    v15 = [v14 recipe];
-    v16 = [v15 fallbackSongResource];
+    recipeManager2 = [model recipeManager];
+    recipe2 = [recipeManager2 recipe];
+    fallbackSongResource = [recipe2 fallbackSongResource];
 
-    v5 = v16;
+    songResource = fallbackSongResource;
   }
 
-  if ([v3 isPresentingMusicEditor])
+  if ([model isPresentingMusicEditor])
   {
-    [v3 editorPreviewSong];
-    v5 = v17 = v5;
+    [model editorPreviewSong];
+    songResource = styleManager = songResource;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if ([v3 viewMode] == 4)
+  if ([model viewMode] == 4)
   {
-    v17 = [v3 styleManager];
-    v18 = [v17 selectionDataSource];
-    if ([v18 numberOfStyles] >= 1)
+    styleManager = [model styleManager];
+    selectionDataSource = [styleManager selectionDataSource];
+    if ([selectionDataSource numberOfStyles] >= 1)
     {
-      v19 = [v18 styleInfoAtIndex:{objc_msgSend(v17, "focusedStyleIndex")}];
-      v20 = [v19 songResource];
+      v19 = [selectionDataSource styleInfoAtIndex:{objc_msgSend(styleManager, "focusedStyleIndex")}];
+      songResource2 = [v19 songResource];
 
-      v5 = v20;
+      songResource = songResource2;
     }
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  [(PXStorySongController *)self setCurrentSongResource:v5];
+  [(PXStorySongController *)self setCurrentSongResource:songResource];
 }
 
 - (void)_invalidateCurrentSongResource
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentSongResource];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentSongResource];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStorySongController;
-  [(PXStoryController *)&v3 performChanges:a3];
+  [(PXStoryController *)&v3 performChanges:changes];
 }
 
-- (void)setFailedAudioAssets:(id)a3
+- (void)setFailedAudioAssets:(id)assets
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_failedAudioAssets != v4)
+  assetsCopy = assets;
+  v5 = assetsCopy;
+  if (self->_failedAudioAssets != assetsCopy)
   {
-    v9 = v4;
-    v6 = [(NSSet *)v4 isEqual:?];
+    v9 = assetsCopy;
+    v6 = [(NSSet *)assetsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -183,59 +183,59 @@ LABEL_16:
   }
 }
 
-- (void)setCurrentSongResource:(id)a3
+- (void)setCurrentSongResource:(id)resource
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentSongResource != v5 && ([(PXStorySongResource *)v5 isEqual:?]& 1) == 0)
+  resourceCopy = resource;
+  v6 = resourceCopy;
+  if (self->_currentSongResource != resourceCopy && ([(PXStorySongResource *)resourceCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_currentSongResource, a3);
-    v7 = [(PXStorySongResource *)v6 px_storyResourceSongAsset];
+    objc_storeStrong(&self->_currentSongResource, resource);
+    px_storyResourceSongAsset = [(PXStorySongResource *)v6 px_storyResourceSongAsset];
     v8 = PLStoryGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = PXAudioAssetDescription(v7);
+      v9 = PXAudioAssetDescription(px_storyResourceSongAsset);
       *buf = 138412290;
       v14 = v9;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_INFO, "current song %@", buf, 0xCu);
     }
 
-    v10 = [(PXStorySongController *)self model];
+    model = [(PXStorySongController *)self model];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __48__PXStorySongController_setCurrentSongResource___block_invoke;
     v11[3] = &unk_1E77485B0;
     v12 = v6;
-    [v10 performChanges:v11];
+    [model performChanges:v11];
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStorySongController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateCurrentSongResource, v4.receiver, v4.super_class}];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateCurrentSongResource, v4.receiver, v4.super_class}];
 }
 
-- (PXStorySongController)initWithModel:(id)a3
+- (PXStorySongController)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXStorySongController;
-  v5 = [(PXStoryController *)&v12 initWithObservableModel:v4];
+  v5 = [(PXStoryController *)&v12 initWithObservableModel:modelCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_model, v4);
+    objc_storeWeak(&v5->_model, modelCopy);
     v6->_failedSongDelayBeforeSwitchingToFallback = 0.0;
-    v7 = [v4 recipeManager];
-    [v7 registerChangeObserver:v6 context:RecipeManagerContext];
+    recipeManager = [modelCopy recipeManager];
+    [recipeManager registerChangeObserver:v6 context:RecipeManagerContext];
 
-    v8 = [v4 styleManager];
-    [v8 registerChangeObserver:v6 context:StyleManagerContext];
+    styleManager = [modelCopy styleManager];
+    [styleManager registerChangeObserver:v6 context:StyleManagerContext];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -248,11 +248,11 @@ LABEL_16:
   return v6;
 }
 
-- (PXStorySongController)initWithObservableModel:(id)a3
+- (PXStorySongController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStorySongController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStorySongController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorySongController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStorySongController initWithObservableModel:]"}];
 
   abort();
 }

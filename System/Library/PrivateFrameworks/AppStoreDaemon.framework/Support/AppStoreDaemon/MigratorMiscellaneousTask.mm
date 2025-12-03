@@ -1,16 +1,16 @@
 @interface MigratorMiscellaneousTask
-- (MigratorMiscellaneousTask)initWithConfiguration:(id)a3;
+- (MigratorMiscellaneousTask)initWithConfiguration:(id)configuration;
 - (id)copyConfiguration;
 - (void)main;
 @end
 
 @implementation MigratorMiscellaneousTask
 
-- (MigratorMiscellaneousTask)initWithConfiguration:(id)a3
+- (MigratorMiscellaneousTask)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = MigratorMiscellaneousTask;
-  return [(MigratorTask *)&v4 initWithConfiguration:a3];
+  return [(MigratorTask *)&v4 initWithConfiguration:configuration];
 }
 
 - (id)copyConfiguration

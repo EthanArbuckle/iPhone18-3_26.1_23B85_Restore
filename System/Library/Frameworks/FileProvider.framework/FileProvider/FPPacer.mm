@@ -1,5 +1,5 @@
 @interface FPPacer
-- (FPPacer)initWithName:(id)a3 queue:(id)a4 minFireInterval:(double)a5;
+- (FPPacer)initWithName:(id)name queue:(id)queue minFireInterval:(double)interval;
 - (double)_computeNextTime;
 - (void)_fire;
 - (void)_scheduleNextFire;
@@ -30,14 +30,14 @@
 - (void)_scheduleNextFire
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(FPPacer *)self explicitFireBlock];
+  explicitFireBlock = [(FPPacer *)self explicitFireBlock];
   [(FPPacer *)self setExplicitFireBlock:0];
   [(FPPacer *)self _computeNextTime];
   if (v4 <= 0.0)
   {
-    if (v3)
+    if (explicitFireBlock)
     {
-      v3[2](v3);
+      explicitFireBlock[2](explicitFireBlock);
     }
 
     else
@@ -95,13 +95,13 @@ void __46__FPPacer_signalWithTransferredQoSIfImmediate__block_invoke(uint64_t a1
   if (atomic_load_explicit(&self->_sourceSuspendCount, memory_order_acquire) < 1)
   {
     self->_lastFireTime = CFAbsoluteTimeGetCurrent();
-    v3 = [(FPPacer *)self eventBlock];
+    eventBlock = [(FPPacer *)self eventBlock];
 
-    if (v3)
+    if (eventBlock)
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = [(FPPacer *)self eventBlock];
-      v5[2]();
+      eventBlock2 = [(FPPacer *)self eventBlock];
+      eventBlock2[2]();
 
       objc_autoreleasePoolPop(v4);
     }
@@ -151,9 +151,9 @@ void __46__FPPacer_signalWithTransferredQoSIfImmediate__block_invoke(uint64_t a1
   return result;
 }
 
-- (FPPacer)initWithName:(id)a3 queue:(id)a4 minFireInterval:(double)a5
+- (FPPacer)initWithName:(id)name queue:(id)queue minFireInterval:(double)interval
 {
-  v8 = a4;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = FPPacer;
   v9 = [(FPPacer *)&v21 init];
@@ -161,8 +161,8 @@ void __46__FPPacer_signalWithTransferredQoSIfImmediate__block_invoke(uint64_t a1
   if (v9)
   {
     v9->_lastFireTime = 0.0;
-    v9->_minFireInterval = a5;
-    objc_storeStrong(&v9->_queue, a4);
+    v9->_minFireInterval = interval;
+    objc_storeStrong(&v9->_queue, queue);
     v11 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, v10->_queue);
     source = v10->_source;
     v10->_source = v11;

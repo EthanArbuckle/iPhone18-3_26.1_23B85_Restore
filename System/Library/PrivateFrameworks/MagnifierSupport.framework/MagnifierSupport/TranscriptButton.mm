@@ -1,17 +1,17 @@
 @interface TranscriptButton
 - (NSString)accessibilityLabel;
-- (_TtC16MagnifierSupport16TranscriptButton)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport16TranscriptButton)initWithFrame:(CGRect)a3;
+- (_TtC16MagnifierSupport16TranscriptButton)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport16TranscriptButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TranscriptButton
 
-- (_TtC16MagnifierSupport16TranscriptButton)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport16TranscriptButton)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for TranscriptButton();
-  v4 = a3;
-  v5 = [(TranscriptButton *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TranscriptButton *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -22,22 +22,22 @@
   return v6;
 }
 
-- (_TtC16MagnifierSupport16TranscriptButton)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport16TranscriptButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for TranscriptButton();
-  v7 = [(TranscriptButton *)&v10 initWithFrame:x, y, width, height];
+  height = [(TranscriptButton *)&v10 initWithFrame:x, y, width, height];
   sub_257D2E134();
-  [(TranscriptButton *)v7 setShowsLargeContentViewer:1];
-  [(TranscriptButton *)v7 setScalesLargeContentImage:1];
+  [(TranscriptButton *)height setShowsLargeContentViewer:1];
+  [(TranscriptButton *)height setScalesLargeContentImage:1];
   v8 = [objc_allocWithZone(MEMORY[0x277D756C8]) init];
-  [(TranscriptButton *)v7 addInteraction:v8];
+  [(TranscriptButton *)height addInteraction:v8];
 
-  return v7;
+  return height;
 }
 
 - (NSString)accessibilityLabel

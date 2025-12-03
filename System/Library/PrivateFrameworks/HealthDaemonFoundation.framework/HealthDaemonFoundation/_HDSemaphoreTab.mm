@@ -17,9 +17,9 @@
 
     v2->_signaled = 0;
     v2->_priority = 0;
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     requestedDate = v2->_requestedDate;
-    v2->_requestedDate = v5;
+    v2->_requestedDate = date;
   }
 
   return v2;

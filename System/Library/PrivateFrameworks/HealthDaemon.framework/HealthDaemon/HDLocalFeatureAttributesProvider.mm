@@ -1,19 +1,19 @@
 @interface HDLocalFeatureAttributesProvider
-- (HDLocalFeatureAttributesProvider)initWithLocalFeatureAttributes:(id)a3;
+- (HDLocalFeatureAttributesProvider)initWithLocalFeatureAttributes:(id)attributes;
 - (HKPairedFeatureAttributes)currentPairedFeatureAttributes;
 @end
 
 @implementation HDLocalFeatureAttributesProvider
 
-- (HDLocalFeatureAttributesProvider)initWithLocalFeatureAttributes:(id)a3
+- (HDLocalFeatureAttributesProvider)initWithLocalFeatureAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = HDLocalFeatureAttributesProvider;
   v5 = [(HDLocalFeatureAttributesProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributesCopy copy];
     localFeatureAttributes = v5->_localFeatureAttributes;
     v5->_localFeatureAttributes = v6;
   }

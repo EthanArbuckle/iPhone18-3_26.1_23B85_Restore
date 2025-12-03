@@ -1,17 +1,17 @@
 @interface BKUIPearlCrossHairsView
-- (BKUIPearlCrossHairsView)initWithFrame:(CGRect)a3;
-- (void)nudgeCrossHairsAtAngle:(double)a3 completion:(id)a4;
-- (void)nudgeInDirection:(unint64_t)a3 smallNudgePeak:(id)a4 largeNudgePeak:(id)a5 completion:(id)a6;
+- (BKUIPearlCrossHairsView)initWithFrame:(CGRect)frame;
+- (void)nudgeCrossHairsAtAngle:(double)angle completion:(id)completion;
+- (void)nudgeInDirection:(unint64_t)direction smallNudgePeak:(id)peak largeNudgePeak:(id)nudgePeak completion:(id)completion;
 @end
 
 @implementation BKUIPearlCrossHairsView
 
-- (BKUIPearlCrossHairsView)initWithFrame:(CGRect)a3
+- (BKUIPearlCrossHairsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v25.receiver = self;
   v25.super_class = BKUIPearlCrossHairsView;
   v7 = [(BKUIPearlCrossHairsView *)&v25 initWithFrame:?];
@@ -20,8 +20,8 @@
   {
     [(BKUIPearlCrossHairsView *)v7 setOpaque:0];
     v9 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    v10 = [(BKUIPearlCrossHairsView *)v8 layer];
-    [v10 setCompositingFilter:v9];
+    layer = [(BKUIPearlCrossHairsView *)v8 layer];
+    [layer setCompositingFilter:v9];
 
     [(BKUIPearlCrossHairsView *)v8 setAutoresizesSubviews:1];
     v27 = 0;
@@ -49,9 +49,9 @@
     }
 
     v12 = v11();
-    v13 = [[BKUIPearlCrossHairsRenderingView alloc] initWithFrame:v12 device:x, y, width, height];
+    height = [[BKUIPearlCrossHairsRenderingView alloc] initWithFrame:v12 device:x, y, width, height];
     renderingView = v8->_renderingView;
-    v8->_renderingView = v13;
+    v8->_renderingView = height;
 
     [(BKUIPearlCrossHairsRenderingView *)v8->_renderingView setAutoresizingMask:18];
     [(MTKView *)v8->_renderingView setClearColor:0.0, 0.0, 0.0, 0.0];
@@ -59,8 +59,8 @@
     [(BKUIPearlCrossHairsRenderingView *)v8->_renderingView setOpaque:0];
     [(BKUIPearlCrossHairsRenderingView *)v8->_renderingView setSampleCount:4];
     v15 = v8->_renderingView;
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    -[MTKView setPreferredFramesPerSecond:](v15, "setPreferredFramesPerSecond:", [v16 maximumFramesPerSecond]);
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    -[MTKView setPreferredFramesPerSecond:](v15, "setPreferredFramesPerSecond:", [mainScreen maximumFramesPerSecond]);
 
     [(BKUIPearlCrossHairsView *)v8 addSubview:v8->_renderingView];
     v17 = objc_alloc(MEMORY[0x277D755E8]);
@@ -78,14 +78,14 @@
   return v8;
 }
 
-- (void)nudgeCrossHairsAtAngle:(double)a3 completion:(id)a4
+- (void)nudgeCrossHairsAtAngle:(double)angle completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(BKUIPearlCrossHairsView *)self _setPitch:0 yaw:0.0 animated:0.0];
   [(BKUIPearlCrossHairsRenderingView *)self->_renderingView setGrayscale:1];
   [(BKUIPearlCrossHairsView *)self setAlpha:1.0];
   renderingView = self->_renderingView;
-  CGAffineTransformMakeRotation(&v13, -a3);
+  CGAffineTransformMakeRotation(&v13, -angle);
   [(BKUIPearlCrossHairsRenderingView *)renderingView setTransform:&v13];
   [(BKUIPearlCrossHairsView *)self _setPitch:1 yaw:0.0 animated:0.261799388];
   v8 = dispatch_time(0, 500000000);
@@ -95,8 +95,8 @@
   v10[3] = &unk_278D0A830;
   v12 = xmmword_241B72F50;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], v10);
 }
 
@@ -162,17 +162,17 @@ uint64_t __61__BKUIPearlCrossHairsView_nudgeCrossHairsAtAngle_completion___block
   return result;
 }
 
-- (void)nudgeInDirection:(unint64_t)a3 smallNudgePeak:(id)a4 largeNudgePeak:(id)a5 completion:(id)a6
+- (void)nudgeInDirection:(unint64_t)direction smallNudgePeak:(id)peak largeNudgePeak:(id)nudgePeak completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  peakCopy = peak;
+  nudgePeakCopy = nudgePeak;
+  completionCopy = completion;
   v13 = _BKUILoggingFacility();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v30 = a3;
+    directionCopy = direction;
     _os_log_impl(&dword_241B0A000, v13, OS_LOG_TYPE_DEFAULT, "Nudging in direction %i", buf, 8u);
   }
 
@@ -189,13 +189,13 @@ uint64_t __61__BKUIPearlCrossHairsView_nudgeCrossHairsAtAngle_completion___block
   v23[1] = 3221225472;
   v23[2] = __85__BKUIPearlCrossHairsView_nudgeInDirection_smallNudgePeak_largeNudgePeak_completion___block_invoke_2;
   v23[3] = &unk_278D0A920;
-  v26 = v11;
-  v27 = a3;
+  v26 = nudgePeakCopy;
+  directionCopy2 = direction;
   v23[4] = self;
   v24 = v14;
-  v25 = v10;
-  v16 = v11;
-  v17 = v10;
+  v25 = peakCopy;
+  v16 = nudgePeakCopy;
+  v17 = peakCopy;
   v18 = v14;
   [(UIView *)v15 bkui_animateWithDuration:v28 animations:v23 completion:0.3];
   v21[0] = MEMORY[0x277D85DD0];
@@ -203,8 +203,8 @@ uint64_t __61__BKUIPearlCrossHairsView_nudgeCrossHairsAtAngle_completion___block
   v21[2] = __85__BKUIPearlCrossHairsView_nudgeInDirection_smallNudgePeak_largeNudgePeak_completion___block_invoke_15;
   v21[3] = &unk_278D09E98;
   v21[4] = self;
-  v22 = v12;
-  v19 = v12;
+  v22 = completionCopy;
+  v19 = completionCopy;
   dispatch_group_notify(v18, MEMORY[0x277D85CD0], v21);
 
   v20 = *MEMORY[0x277D85DE8];

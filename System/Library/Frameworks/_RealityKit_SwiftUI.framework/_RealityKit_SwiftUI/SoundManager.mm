@@ -1,10 +1,10 @@
 @interface SoundManager
-- (void)handleEngineConfigChange:(id)a3;
+- (void)handleEngineConfigChange:(id)change;
 @end
 
 @implementation SoundManager
 
-- (void)handleEngineConfigChange:(id)a3
+- (void)handleEngineConfigChange:(id)change
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

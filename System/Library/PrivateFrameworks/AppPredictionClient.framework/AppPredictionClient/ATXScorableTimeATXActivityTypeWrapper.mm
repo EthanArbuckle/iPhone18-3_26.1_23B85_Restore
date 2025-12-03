@@ -1,19 +1,19 @@
 @interface ATXScorableTimeATXActivityTypeWrapper
-- (ATXScorableTimeATXActivityTypeWrapper)initWithActivityType:(unint64_t)a3;
+- (ATXScorableTimeATXActivityTypeWrapper)initWithActivityType:(unint64_t)type;
 - (NSString)legacyScorableTimeIdentifier;
 - (NSString)scorableTimeIdentifier;
 @end
 
 @implementation ATXScorableTimeATXActivityTypeWrapper
 
-- (ATXScorableTimeATXActivityTypeWrapper)initWithActivityType:(unint64_t)a3
+- (ATXScorableTimeATXActivityTypeWrapper)initWithActivityType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = ATXScorableTimeATXActivityTypeWrapper;
   result = [(ATXScorableTimeATXActivityTypeWrapper *)&v5 init];
   if (result)
   {
-    result->_activityType = a3;
+    result->_activityType = type;
   }
 
   return result;
@@ -22,9 +22,9 @@
 - (NSString)legacyScorableTimeIdentifier
 {
   v2 = [[ATXScorableTimeATXModeWrapper alloc] initWithATXMode:ATXModeFromActivityType([(ATXScorableTimeATXActivityTypeWrapper *)self activityType])];
-  v3 = [(ATXScorableTimeATXModeWrapper *)v2 scorableTimeIdentifier];
+  scorableTimeIdentifier = [(ATXScorableTimeATXModeWrapper *)v2 scorableTimeIdentifier];
 
-  return v3;
+  return scorableTimeIdentifier;
 }
 
 - (NSString)scorableTimeIdentifier

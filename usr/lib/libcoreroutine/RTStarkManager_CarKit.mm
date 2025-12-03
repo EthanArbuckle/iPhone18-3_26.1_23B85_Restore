@@ -1,24 +1,24 @@
 @interface RTStarkManager_CarKit
 - (CRPairedVehicleManager)pairedVehicleManager;
-- (RTStarkManager_CarKit)initWithDefaultsManager:(id)a3;
-- (void)_fetchConnectionStateWithHandler:(id)a3;
+- (RTStarkManager_CarKit)initWithDefaultsManager:(id)manager;
+- (void)_fetchConnectionStateWithHandler:(id)handler;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_updateTrustedConnectionEstablished;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onPairedVehiclesDidChange:(id)a3;
-- (void)setTrustedConnectionEstablished:(BOOL)a3;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onPairedVehiclesDidChange:(id)change;
+- (void)setTrustedConnectionEstablished:(BOOL)established;
 - (void)setup;
 @end
 
 @implementation RTStarkManager_CarKit
 
-- (RTStarkManager_CarKit)initWithDefaultsManager:(id)a3
+- (RTStarkManager_CarKit)initWithDefaultsManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = RTStarkManager_CarKit;
-  v3 = [(RTStarkManager *)&v6 initWithDefaultsManager:a3];
+  v3 = [(RTStarkManager *)&v6 initWithDefaultsManager:manager];
   v4 = v3;
   if (v3)
   {
@@ -30,72 +30,72 @@
 
 - (void)_setup
 {
-  v3 = [(RTStarkManager *)self defaultsManager];
-  v4 = [v3 objectForKey:@"StarkTrustedConnectionEstablished"];
+  defaultsManager = [(RTStarkManager *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"StarkTrustedConnectionEstablished"];
   self->_trustedConnectionEstablished = [v4 BOOLValue];
 
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v5 addObserver:self selector:sel_onPairedVehiclesDidChange_ name:@"CRPairedVehiclesDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onPairedVehiclesDidChange_ name:@"CRPairedVehiclesDidChangeNotification" object:0];
 }
 
 - (void)setup
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__RTStarkManager_CarKit_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self name:@"CRPairedVehiclesDidChangeNotification" object:0];
+  handlerCopy = handler;
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"CRPairedVehiclesDidChangeNotification" object:0];
 
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
-  v6 = a3;
+  observerCopy = observer;
   v11.receiver = self;
   v11.super_class = RTStarkManager_CarKit;
-  v7 = a4;
-  [(RTStarkManager *)&v11 internalAddObserver:v6 name:v7];
+  nameCopy = name;
+  [(RTStarkManager *)&v11 internalAddObserver:observerCopy name:nameCopy];
   v8 = [(RTNotification *)RTStarkManagerNotificationTrustedConnectionEstablished notificationName:v11.receiver];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
     v10 = [[RTStarkManagerNotificationTrustedConnectionEstablished alloc] initWithTrustedConnectionEstablished:[(RTStarkManager_CarKit *)self trustedConnectionEstablished]];
-    [(RTNotifier *)self postNotification:v10 toObserver:v6];
+    [(RTNotifier *)self postNotification:v10 toObserver:observerCopy];
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v7.receiver = self;
   v7.super_class = RTStarkManager_CarKit;
-  v5 = a4;
-  [(RTStarkManager *)&v7 internalRemoveObserver:a3 name:v5];
+  nameCopy = name;
+  [(RTStarkManager *)&v7 internalRemoveObserver:observer name:nameCopy];
   v6 = [(RTNotification *)RTStarkManagerNotificationTrustedConnectionEstablished notificationName:v7.receiver];
-  [v5 isEqualToString:v6];
+  [nameCopy isEqualToString:v6];
 }
 
-- (void)setTrustedConnectionEstablished:(BOOL)a3
+- (void)setTrustedConnectionEstablished:(BOOL)established
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_trustedConnectionEstablished != a3)
+  if (self->_trustedConnectionEstablished != established)
   {
-    self->_trustedConnectionEstablished = a3;
+    self->_trustedConnectionEstablished = established;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v4 = _rt_log_facility_get_os_log(RTLogFacilityStark);
@@ -117,9 +117,9 @@
       }
     }
 
-    v6 = [(RTStarkManager *)self defaultsManager];
+    defaultsManager = [(RTStarkManager *)self defaultsManager];
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_trustedConnectionEstablished];
-    [v6 setObject:v7 forKey:@"StarkTrustedConnectionEstablished"];
+    [defaultsManager setObject:v7 forKey:@"StarkTrustedConnectionEstablished"];
 
     v8 = [[RTStarkManagerNotificationTrustedConnectionEstablished alloc] initWithTrustedConnectionEstablished:self->_trustedConnectionEstablished];
     [(RTNotifier *)self postNotification:v8];
@@ -143,36 +143,36 @@
 
 - (void)_updateTrustedConnectionEstablished
 {
-  v3 = [(RTStarkManager_CarKit *)self pairedVehicleManager];
+  pairedVehicleManager = [(RTStarkManager_CarKit *)self pairedVehicleManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__RTStarkManager_CarKit__updateTrustedConnectionEstablished__block_invoke;
   v4[3] = &unk_2788C6B10;
   v4[4] = self;
-  [v3 fetchPairedVehiclesWithCompletion:v4];
+  [pairedVehicleManager fetchPairedVehiclesWithCompletion:v4];
 }
 
-- (void)onPairedVehiclesDidChange:(id)a3
+- (void)onPairedVehiclesDidChange:(id)change
 {
-  v4 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__RTStarkManager_CarKit_onPairedVehiclesDidChange___block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchConnectionStateWithHandler:(id)a3
+- (void)_fetchConnectionStateWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     v3 = MEMORY[0x277CF89F8];
-    v4 = a3;
-    v7 = [[v3 alloc] initAndWaitUntilSessionUpdated];
-    v5 = [v7 currentSession];
+    handlerCopy = handler;
+    initAndWaitUntilSessionUpdated = [[v3 alloc] initAndWaitUntilSessionUpdated];
+    currentSession = [initAndWaitUntilSessionUpdated currentSession];
 
-    if (v5)
+    if (currentSession)
     {
       v6 = 1;
     }
@@ -182,7 +182,7 @@
       v6 = 2;
     }
 
-    v4[2](v4, v6, 0);
+    handlerCopy[2](handlerCopy, v6, 0);
   }
 }
 

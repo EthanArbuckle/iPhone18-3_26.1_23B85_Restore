@@ -1,6 +1,6 @@
 @interface SSWindowResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSWindowResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSWindowResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildWindowAppImage;
@@ -9,43 +9,43 @@
 
 @implementation SSWindowResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 contentTypeTree];
-  if ([v4 containsObject:@"com.apple.window-tab"])
+  resultCopy = result;
+  contentTypeTree = [resultCopy contentTypeTree];
+  if ([contentTypeTree containsObject:@"com.apple.window-tab"])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = [v3 contentTypeTree];
-    if ([v6 containsObject:@"com.apple.UIIntelligenceIntents.windowTab"])
+    contentTypeTree2 = [resultCopy contentTypeTree];
+    if ([contentTypeTree2 containsObject:@"com.apple.UIIntelligenceIntents.windowTab"])
     {
-      v5 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v7 = [v3 valueForAttribute:*MEMORY[0x1E6964508] withType:objc_opt_class()];
-      v5 = [v7 BOOLValue];
+      v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6964508] withType:objc_opt_class()];
+      bOOLValue = [v7 BOOLValue];
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (SSWindowResultBuilder)initWithResult:(id)a3
+- (SSWindowResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = SSWindowResultBuilder;
-  v5 = [(SSResultBuilder *)&v10 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v10 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6964CE8] withType:objc_opt_class()];
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6964CF0] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6964CE8] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6964CF0] withType:objc_opt_class()];
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v7];
     [(SSWindowResultBuilder *)v5 setProcessInstanceIdentifier:v8];
   }
@@ -56,9 +56,9 @@
 - (id)buildWindowAppImage
 {
   v3 = objc_opt_new();
-  v4 = [(SSResultBuilder *)self result];
-  v5 = [v4 applicationBundleIdentifier];
-  [v3 setBundleIdentifier:v5];
+  result = [(SSResultBuilder *)self result];
+  applicationBundleIdentifier = [result applicationBundleIdentifier];
+  [v3 setBundleIdentifier:applicationBundleIdentifier];
 
   return v3;
 }
@@ -80,24 +80,24 @@
 
 - (id)buildCommand
 {
-  v3 = [(SSResultBuilder *)self resultAppBundleId];
-  v4 = [(SSWindowResultBuilder *)self processInstanceIdentifier];
-  v5 = [(SSResultBuilder *)self coreSpotlightId];
-  v6 = [_TtC17SpotlightServices20SSWindowTabUtilities openWindowCommandWithAppBundleId:v3 processInstanceIdentifier:v4 entityIdentifier:v5];
+  resultAppBundleId = [(SSResultBuilder *)self resultAppBundleId];
+  processInstanceIdentifier = [(SSWindowResultBuilder *)self processInstanceIdentifier];
+  coreSpotlightId = [(SSResultBuilder *)self coreSpotlightId];
+  v6 = [_TtC17SpotlightServices20SSWindowTabUtilities openWindowCommandWithAppBundleId:resultAppBundleId processInstanceIdentifier:processInstanceIdentifier entityIdentifier:coreSpotlightId];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    buildCommand = v6;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SSWindowResultBuilder;
-    v8 = [(SSResultBuilder *)&v11 buildCommand];
+    buildCommand = [(SSResultBuilder *)&v11 buildCommand];
   }
 
-  v9 = v8;
+  v9 = buildCommand;
 
   return v9;
 }

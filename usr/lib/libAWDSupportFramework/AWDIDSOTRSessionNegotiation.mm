@@ -1,16 +1,16 @@
 @interface AWDIDSOTRSessionNegotiation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSOTRSessionNegotiation
@@ -23,9 +23,9 @@
   [(AWDIDSOTRSessionNegotiation *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 2;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -77,16 +77,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   service = self->_service;
   if (service)
   {
-    [v3 setObject:service forKey:@"service"];
+    [dictionary setObject:service forKey:@"service"];
   }
 
   has = self->_has;
@@ -98,16 +98,16 @@
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
     if ((*&self->_has & 8) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_priority), @"priority"}];
   has = self->_has;
   if (has)
   {
@@ -118,13 +118,13 @@ LABEL_7:
   if ((has & 8) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_result), @"result"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_result), @"result"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
@@ -176,24 +176,24 @@ LABEL_11:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 48) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 48) |= 4u;
   }
 
   if (self->_service)
   {
-    [a3 setService:?];
+    [to setService:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_priority;
-    *(a3 + 48) |= 2u;
+    *(to + 2) = self->_priority;
+    *(to + 48) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -212,21 +212,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 1) = self->_duration;
-  *(a3 + 48) |= 1u;
+  *(to + 1) = self->_duration;
+  *(to + 48) |= 1u;
   if ((*&self->_has & 8) == 0)
   {
     return;
   }
 
 LABEL_8:
-  *(a3 + 8) = self->_result;
-  *(a3 + 48) |= 8u;
+  *(to + 8) = self->_result;
+  *(to + 48) |= 8u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -234,7 +234,7 @@ LABEL_8:
     *(v5 + 48) |= 4u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_service copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_service copyWithZone:zone];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -273,22 +273,22 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 48);
+    v7 = *(equal + 48);
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 48) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 4) != 0)
+    else if ((*(equal + 48) & 4) != 0)
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -296,7 +296,7 @@ LABEL_24:
     }
 
     service = self->_service;
-    if (service | *(a3 + 5))
+    if (service | *(equal + 5))
     {
       v5 = [(NSString *)service isEqual:?];
       if (!v5)
@@ -309,34 +309,34 @@ LABEL_24:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_priority != *(a3 + 2))
+      if ((*(equal + 48) & 2) == 0 || self->_priority != *(equal + 2))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
       goto LABEL_24;
     }
 
     if (has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_duration != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_duration != *(equal + 1))
       {
         goto LABEL_24;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
       goto LABEL_24;
     }
 
-    LOBYTE(v5) = (*(a3 + 48) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 48) & 8) == 0;
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_result != *(a3 + 8))
+      if ((*(equal + 48) & 8) == 0 || self->_result != *(equal + 8))
       {
         goto LABEL_24;
       }
@@ -399,25 +399,25 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 48) & 4) != 0)
+  if ((*(from + 48) & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDIDSOTRSessionNegotiation *)self setService:?];
   }
 
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 2) != 0)
   {
-    self->_priority = *(a3 + 2);
+    self->_priority = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 48);
+    v5 = *(from + 48);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -430,20 +430,20 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 48) & 1) == 0)
+  else if ((*(from + 48) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_duration = *(a3 + 1);
+  self->_duration = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 48) & 8) == 0)
+  if ((*(from + 48) & 8) == 0)
   {
     return;
   }
 
 LABEL_8:
-  self->_result = *(a3 + 8);
+  self->_result = *(from + 8);
   *&self->_has |= 8u;
 }
 

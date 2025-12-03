@@ -1,7 +1,7 @@
 @interface ServiceProductCardHeroView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
-- (void)offerButtonActionWithSender:(id)a3;
+- (void)offerButtonActionWithSender:(id)sender;
 - (void)tintColorDidChange;
 @end
 
@@ -9,14 +9,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_FFD5C();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_FFF88();
   v8 = v7;
   v10 = v9;
@@ -36,14 +36,14 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100134();
 }
 
-- (void)offerButtonActionWithSender:(id)a3
+- (void)offerButtonActionWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_13BF54();
   swift_unknownObjectRelease();
   sub_100494(v5);

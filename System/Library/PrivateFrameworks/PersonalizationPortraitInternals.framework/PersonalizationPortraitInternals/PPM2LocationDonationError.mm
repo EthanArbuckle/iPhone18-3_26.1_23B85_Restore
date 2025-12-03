@@ -1,38 +1,38 @@
 @interface PPM2LocationDonationError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsReason:(id)a3;
+- (int)StringAsReason:(id)reason;
 - (int)reason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2LocationDonationError
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[7])
+  fromCopy = from;
+  if (fromCopy[7])
   {
-    self->_reason = v4[6];
+    self->_reason = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PPM2LocationDonationError *)self setBundleId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPM2LocationDonationError *)self setActiveTreatments:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -52,24 +52,24 @@
   return v4 ^ [(NSString *)self->_activeTreatments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_reason != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_reason != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -77,13 +77,13 @@ LABEL_11:
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 2) && ![(NSString *)bundleId isEqual:?])
+  if (bundleId | *(equalCopy + 2) && ![(NSString *)bundleId isEqual:?])
   {
     goto LABEL_11;
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1))
+  if (activeTreatments | *(equalCopy + 1))
   {
     v8 = [(NSString *)activeTreatments isEqual:?];
   }
@@ -98,9 +98,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -108,67 +108,67 @@ LABEL_12:
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v7 = [(NSString *)self->_bundleId copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v9 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_reason;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_reason;
+    *(toCopy + 28) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v5;
+    [toCopy setBundleId:?];
+    toCopy = v5;
   }
 
   if (self->_activeTreatments)
   {
     [v5 setActiveTreatments:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     reason = self->_reason;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activeTreatments)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     reason = self->_reason;
@@ -190,22 +190,22 @@ LABEL_12:
       v5 = @"ZeroLocations";
     }
 
-    [v3 setObject:v5 forKey:@"reason"];
+    [dictionary setObject:v5 forKey:@"reason"];
   }
 
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   activeTreatments = self->_activeTreatments;
   if (activeTreatments)
   {
-    [v3 setObject:activeTreatments forKey:@"activeTreatments"];
+    [dictionary setObject:activeTreatments forKey:@"activeTreatments"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -214,23 +214,23 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PPM2LocationDonationError;
   v4 = [(PPM2LocationDonationError *)&v8 description];
-  v5 = [(PPM2LocationDonationError *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2LocationDonationError *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ZeroLocations"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"ZeroLocations"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"DisabledBundleId"];
+    v4 = [reasonCopy isEqualToString:@"DisabledBundleId"];
   }
 
   return v4;

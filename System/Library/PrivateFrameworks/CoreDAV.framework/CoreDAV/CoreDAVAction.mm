@@ -1,21 +1,21 @@
 @interface CoreDAVAction
-- (CoreDAVAction)initWithAction:(int)a3 context:(id)a4;
+- (CoreDAVAction)initWithAction:(int)action context:(id)context;
 - (id)description;
 @end
 
 @implementation CoreDAVAction
 
-- (CoreDAVAction)initWithAction:(int)a3 context:(id)a4
+- (CoreDAVAction)initWithAction:(int)action context:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CoreDAVAction;
   v8 = [(CoreDAVAction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_action = a3;
-    objc_storeStrong(&v8->_context, a4);
+    v8->_action = action;
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v9;

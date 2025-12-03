@@ -1,21 +1,21 @@
 @interface PLDuplicateDetectorPostProcessing
-+ (id)_postProcessSortOIDs:(id)a3 oidMetadataMap:(id)a4 sortKey:(id)a5 secondarySortKey:(id)a6;
-+ (id)sharedLibraryLivePhotoPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)a3;
-+ (id)sharedLibraryRawPlusJPEGPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)a3;
-+ (void)postProcessDuplicateSubGroupWithResult:(id)a3 metadataMap:(id)a4 metadataKey:(id)a5 secondarySortKey:(id)a6 subGroupSplitDecisionBlock:(id)a7;
++ (id)_postProcessSortOIDs:(id)ds oidMetadataMap:(id)map sortKey:(id)key secondarySortKey:(id)sortKey;
++ (id)sharedLibraryLivePhotoPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)map;
++ (id)sharedLibraryRawPlusJPEGPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)map;
++ (void)postProcessDuplicateSubGroupWithResult:(id)result metadataMap:(id)map metadataKey:(id)key secondarySortKey:(id)sortKey subGroupSplitDecisionBlock:(id)block;
 @end
 
 @implementation PLDuplicateDetectorPostProcessing
 
-+ (id)sharedLibraryRawPlusJPEGPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)a3
++ (id)sharedLibraryRawPlusJPEGPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)map
 {
-  v3 = a3;
+  mapCopy = map;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __123__PLDuplicateDetectorPostProcessing_sharedLibraryRawPlusJPEGPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap___block_invoke;
   aBlock[3] = &unk_1E756EB10;
-  v9 = v3;
-  v4 = v3;
+  v9 = mapCopy;
+  v4 = mapCopy;
   v5 = _Block_copy(aBlock);
   v6 = _Block_copy(v5);
 
@@ -102,17 +102,17 @@ uint64_t __123__PLDuplicateDetectorPostProcessing_sharedLibraryRawPlusJPEGPostPr
   return v27;
 }
 
-+ (id)sharedLibraryLivePhotoPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)a3
++ (id)sharedLibraryLivePhotoPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __121__PLDuplicateDetectorPostProcessing_sharedLibraryLivePhotoPostProcessDuplicateSubGroupSplitDecisionBlockWithMetadataMap___block_invoke;
   aBlock[3] = &unk_1E7565A58;
   v12 = a2;
-  v13 = a1;
-  v11 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v11 = mapCopy;
+  v6 = mapCopy;
   v7 = _Block_copy(aBlock);
   v8 = _Block_copy(v7);
 
@@ -190,19 +190,19 @@ uint64_t __121__PLDuplicateDetectorPostProcessing_sharedLibraryLivePhotoPostProc
   return v32;
 }
 
-+ (id)_postProcessSortOIDs:(id)a3 oidMetadataMap:(id)a4 sortKey:(id)a5 secondarySortKey:(id)a6
++ (id)_postProcessSortOIDs:(id)ds oidMetadataMap:(id)map sortKey:(id)key secondarySortKey:(id)sortKey
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  dsCopy = ds;
+  mapCopy = map;
+  keyCopy = key;
+  sortKeyCopy = sortKey;
+  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v14 = v9;
+  v14 = dsCopy;
   v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v15)
   {
@@ -218,7 +218,7 @@ uint64_t __121__PLDuplicateDetectorPostProcessing_sharedLibraryLivePhotoPostProc
         }
 
         v19 = *(*(&v30 + 1) + 8 * i);
-        v20 = [v10 objectForKeyedSubscript:v19];
+        v20 = [mapCopy objectForKeyedSubscript:v19];
         v21 = v20;
         if (v19)
         {
@@ -246,10 +246,10 @@ uint64_t __121__PLDuplicateDetectorPostProcessing_sharedLibraryLivePhotoPostProc
   v27[1] = 3221225472;
   v27[2] = __98__PLDuplicateDetectorPostProcessing__postProcessSortOIDs_oidMetadataMap_sortKey_secondarySortKey___block_invoke;
   v27[3] = &unk_1E7565A30;
-  v28 = v11;
-  v29 = v12;
-  v23 = v12;
-  v24 = v11;
+  v28 = keyCopy;
+  v29 = sortKeyCopy;
+  v23 = sortKeyCopy;
+  v24 = keyCopy;
   v25 = [v13 keysSortedByValueUsingComparator:v27];
 
   return v25;
@@ -388,40 +388,40 @@ LABEL_32:
   return v17;
 }
 
-+ (void)postProcessDuplicateSubGroupWithResult:(id)a3 metadataMap:(id)a4 metadataKey:(id)a5 secondarySortKey:(id)a6 subGroupSplitDecisionBlock:(id)a7
++ (void)postProcessDuplicateSubGroupWithResult:(id)result metadataMap:(id)map metadataKey:(id)key secondarySortKey:(id)sortKey subGroupSplitDecisionBlock:(id)block
 {
   v74 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v50 = a6;
-  v53 = a7;
+  resultCopy = result;
+  mapCopy = map;
+  keyCopy = key;
+  sortKeyCopy = sortKey;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
   v14 = objc_alloc_init(PLDuplicateGroup);
-  v46 = v11;
-  if ([v11 hasSubGroups])
+  v46 = resultCopy;
+  if ([resultCopy hasSubGroups])
   {
-    v15 = [v11 subGroups];
+    subGroups = [resultCopy subGroups];
   }
 
   else
   {
     v16 = MEMORY[0x1E695DFD8];
-    v17 = [v11 group];
-    v15 = [v16 setWithObject:v17];
+    group = [resultCopy group];
+    subGroups = [v16 setWithObject:group];
   }
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v15;
+  obj = subGroups;
   v18 = [obj countByEnumeratingWithState:&v61 objects:v73 count:16];
   if (v18)
   {
     v19 = v18;
     v20 = *v62;
-    v55 = v12;
+    v55 = mapCopy;
     v57 = v14;
     v47 = *v62;
     do
@@ -438,7 +438,7 @@ LABEL_32:
         v22 = *(*(&v61 + 1) + 8 * v21);
         if ([v22 count] > 1)
         {
-          v23 = [a1 _postProcessSortOIDs:v22 oidMetadataMap:v12 sortKey:v13 secondarySortKey:v50];
+          v23 = [self _postProcessSortOIDs:v22 oidMetadataMap:mapCopy sortKey:keyCopy secondarySortKey:sortKeyCopy];
           v24 = [v23 count];
           if (v24)
           {
@@ -454,22 +454,22 @@ LABEL_32:
               v28 = [v23 objectAtIndexedSubscript:v26];
               if (v26)
               {
-                v29 = [v12 objectForKeyedSubscript:v28];
-                v30 = [v13 key];
+                v29 = [mapCopy objectForKeyedSubscript:v28];
+                v30 = [keyCopy key];
                 v31 = [v29 objectForKeyedSubscript:v30];
 
                 if (v31)
                 {
                   v32 = [v23 objectAtIndexedSubscript:v26 - 1];
-                  v33 = [v12 objectForKeyedSubscript:v32];
-                  v34 = v13;
-                  v35 = [v13 key];
+                  v33 = [mapCopy objectForKeyedSubscript:v32];
+                  v34 = keyCopy;
+                  v35 = [keyCopy key];
                   v36 = [v33 objectForKeyedSubscript:v35];
 
                   if (v36)
                   {
                     v60 = v58;
-                    v37 = v53[2](v53, v28, v32, &v60);
+                    v37 = blockCopy[2](blockCopy, v28, v32, &v60);
                     v38 = v60;
 
                     if (v37)
@@ -480,11 +480,11 @@ LABEL_32:
                       v40 = PLDuplicateDetectionGetLog();
                       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
                       {
-                        v59 = [v28 URIRepresentation];
-                        v41 = [v59 relativePath];
+                        uRIRepresentation = [v28 URIRepresentation];
+                        relativePath = [uRIRepresentation relativePath];
                         v42 = [v34 key];
                         *buf = 138413058;
-                        v66 = v41;
+                        v66 = relativePath;
                         v67 = 2112;
                         v68 = v42;
                         v69 = 2112;
@@ -503,18 +503,18 @@ LABEL_32:
                       v58 = v38;
                     }
 
-                    v13 = v34;
+                    keyCopy = v34;
                     v23 = v54;
                   }
 
                   else
                   {
-                    v13 = v34;
+                    keyCopy = v34;
                   }
 
                   [v27 addObject:v28];
 
-                  v12 = v55;
+                  mapCopy = v55;
                   v25 = v56;
                 }
 
@@ -562,8 +562,8 @@ LABEL_32:
 
   if ([(PLDuplicateGroup *)v14 hasSubGroups])
   {
-    v44 = [(PLDuplicateGroup *)v14 subGroups];
-    [v46 replaceSubGroups:v44];
+    subGroups2 = [(PLDuplicateGroup *)v14 subGroups];
+    [v46 replaceSubGroups:subGroups2];
   }
 
   objc_autoreleasePoolPop(context);

@@ -1,8 +1,8 @@
 @interface WFImageCache
-- (CGImage)imageForKey:(id)a3;
+- (CGImage)imageForKey:(id)key;
 - (WFImageCache)init;
 - (void)removeAllObjects;
-- (void)setImage:(CGImage *)a3 forKey:(id)a4;
+- (void)setImage:(CGImage *)image forKey:(id)key;
 @end
 
 @implementation WFImageCache
@@ -10,24 +10,24 @@
 - (void)removeAllObjects
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(WFImageCache *)self backingStore];
-  [v3 removeAllObjects];
+  backingStore = [(WFImageCache *)self backingStore];
+  [backingStore removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (CGImage)imageForKey:(id)a3
+- (CGImage)imageForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(WFImageCache *)self backingStore];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  backingStore = [(WFImageCache *)self backingStore];
+  v7 = [backingStore objectForKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v7)
@@ -35,28 +35,28 @@
     goto LABEL_6;
   }
 
-  v8 = [v7 copyImage];
-  if (!v8)
+  copyImage = [v7 copyImage];
+  if (!copyImage)
   {
     os_unfair_lock_lock(&self->_lock);
-    v9 = [(WFImageCache *)self backingStore];
-    [v9 setObject:0 forKeyedSubscript:v5];
+    backingStore2 = [(WFImageCache *)self backingStore];
+    [backingStore2 setObject:0 forKeyedSubscript:keyCopy];
 
     os_unfair_lock_unlock(&self->_lock);
 LABEL_6:
-    v8 = 0;
+    copyImage = 0;
   }
 
-  return v8;
+  return copyImage;
 }
 
-- (void)setImage:(CGImage *)a3 forKey:(id)a4
+- (void)setImage:(CGImage *)image forKey:(id)key
 {
-  v7 = a4;
-  v12 = v7;
-  if (a3)
+  keyCopy = key;
+  v12 = keyCopy;
+  if (image)
   {
-    if (v7)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -64,8 +64,8 @@ LABEL_6:
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"image"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"image"}];
 
     if (v12)
     {
@@ -73,14 +73,14 @@ LABEL_6:
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFImageCache.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
 LABEL_3:
-  v8 = [[WFPurgeableImage alloc] initWithCGImage:a3];
+  v8 = [[WFPurgeableImage alloc] initWithCGImage:image];
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(WFImageCache *)self backingStore];
-  [v9 setObject:v8 forKeyedSubscript:v12];
+  backingStore = [(WFImageCache *)self backingStore];
+  [backingStore setObject:v8 forKeyedSubscript:v12];
 
   os_unfair_lock_unlock(&self->_lock);
 }

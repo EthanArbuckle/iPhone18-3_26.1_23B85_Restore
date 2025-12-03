@@ -1,20 +1,20 @@
 @interface SUDefaultDownloadPolicy
 - (BOOL)_inexpensiveHDM;
 - (BOOL)_isCellularCapable;
-- (BOOL)_isDownloadableForNetworkType:(int)a3 error:(int64_t *)a4 cellularFeesApply:(BOOL *)a5 powerRequired:(BOOL *)a6;
+- (BOOL)_isDownloadableForNetworkType:(int)type error:(int64_t *)error cellularFeesApply:(BOOL *)apply powerRequired:(BOOL *)required;
 - (BOOL)cellularDataIsEnabled;
 - (BOOL)hasEnoughDiskSpace;
 - (BOOL)isDownloadAllowableForCellular;
 - (BOOL)isDownloadAllowableForCellular2G;
-- (BOOL)isDownloadAllowableForCellularIncludingInexpensiveHDM:(BOOL)a3;
+- (BOOL)isDownloadAllowableForCellularIncludingInexpensiveHDM:(BOOL)m;
 - (BOOL)isDownloadAllowableForCellularRoaming;
 - (BOOL)isDownloadAllowableForWiFi;
 - (BOOL)isDownloadable;
-- (BOOL)isDownloadableForCurrentNetworkConditions:(int64_t *)a3 cellularFeesApply:(BOOL *)a4 powerRequired:(BOOL *)a5;
-- (BOOL)isSamePolicy:(id)a3;
+- (BOOL)isDownloadableForCurrentNetworkConditions:(int64_t *)conditions cellularFeesApply:(BOOL *)apply powerRequired:(BOOL *)required;
+- (BOOL)isSamePolicy:(id)policy;
 - (NSString)description;
-- (SUDefaultDownloadPolicy)initWithDescriptor:(id)a3;
-- (id)_stringForBool:(BOOL)a3;
+- (SUDefaultDownloadPolicy)initWithDescriptor:(id)descriptor;
+- (id)_stringForBool:(BOOL)bool;
 - (id)createSpaceOptions;
 - (id)updateDiscoveryDate;
 - (unint64_t)wifiOnlyPeriodInDays;
@@ -22,23 +22,23 @@
 
 @implementation SUDefaultDownloadPolicy
 
-- (SUDefaultDownloadPolicy)initWithDescriptor:(id)a3
+- (SUDefaultDownloadPolicy)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v19.receiver = self;
   v19.super_class = SUDefaultDownloadPolicy;
   v5 = [(SUDefaultDownloadPolicy *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    [(SUDefaultDownloadPolicy *)v5 setDescriptor:v4];
+    [(SUDefaultDownloadPolicy *)v5 setDescriptor:descriptorCopy];
     v7 = +[SUNetworkMonitor sharedInstance];
     [(SUDefaultDownloadPolicy *)v6 setNetworkMonitor:v7];
 
-    v8 = [(SUDefaultDownloadPolicy *)v6 _isCellularCapable];
-    v6->_cellularCapable = v8;
+    _isCellularCapable = [(SUDefaultDownloadPolicy *)v6 _isCellularCapable];
+    v6->_cellularCapable = _isCellularCapable;
     v6->_cellularFeeAgreementStatus = 0;
-    if (v8)
+    if (_isCellularCapable)
     {
       v9 = objc_alloc_init(SUCarrierDownloadPolicyProperties);
       carrierPolicy = v6->_carrierPolicy;
@@ -66,9 +66,9 @@
   return v11;
 }
 
-- (id)_stringForBool:(BOOL)a3
+- (id)_stringForBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"Yes";
   }
@@ -84,12 +84,12 @@
   if (+[SUUtility currentReleaseTypeIsInternal])
   {
     v2 = +[SUPreferences sharedInstance];
-    v3 = [v2 networkMonitorOverride];
+    networkMonitorOverride = [v2 networkMonitorOverride];
 
-    if (v3 && ([v3 intValue] & 0x80000000) == 0 && objc_msgSend(v3, "intValue") < 10000)
+    if (networkMonitorOverride && ([networkMonitorOverride intValue] & 0x80000000) == 0 && objc_msgSend(networkMonitorOverride, "intValue") < 10000)
     {
-      v4 = [v3 intValue];
-      SULogDebug(@"device is considered cellular capable because networkMonitorOverride (%d) exists", v5, v6, v7, v8, v9, v10, v11, v4);
+      intValue = [networkMonitorOverride intValue];
+      SULogDebug(@"device is considered cellular capable because networkMonitorOverride (%d) exists", v5, v6, v7, v8, v9, v10, v11, intValue);
 
       LOBYTE(v12) = 1;
       return v12;
@@ -106,35 +106,35 @@
   return v12;
 }
 
-- (BOOL)isSamePolicy:(id)a3
+- (BOOL)isSamePolicy:(id)policy
 {
-  if (!a3)
+  if (!policy)
   {
     return 0;
   }
 
-  v4 = a3;
+  policyCopy = policy;
   LODWORD(self) = [SUDownloadPolicyFactory downloadPolicyTypeForClass:self];
-  v5 = [SUDownloadPolicyFactory downloadPolicyTypeForClass:v4];
+  v5 = [SUDownloadPolicyFactory downloadPolicyTypeForClass:policyCopy];
 
   return self == v5;
 }
 
 - (id)createSpaceOptions
 {
-  v10 = [(SUDefaultDownloadPolicy *)self descriptor];
-  if (v10)
+  descriptor = [(SUDefaultDownloadPolicy *)self descriptor];
+  if (descriptor)
   {
     v11 = objc_alloc_init(SUSpacePurgeOptions);
-    [(SUSpacePurgeOptions *)v11 setNeededBytes:[SUUtility totalDiskSpaceForUpdate:v10]];
-    v12 = [(SUDefaultDownloadPolicy *)self descriptor];
-    -[SUSpacePurgeOptions setEnableCacheDelete:](v11, "setEnableCacheDelete:", [v12 cdLevel4Disabled] ^ 1);
+    [(SUSpacePurgeOptions *)v11 setNeededBytes:[SUUtility totalDiskSpaceForUpdate:descriptor]];
+    descriptor2 = [(SUDefaultDownloadPolicy *)self descriptor];
+    -[SUSpacePurgeOptions setEnableCacheDelete:](v11, "setEnableCacheDelete:", [descriptor2 cdLevel4Disabled] ^ 1);
 
-    v13 = [(SUDefaultDownloadPolicy *)self descriptor];
-    -[SUSpacePurgeOptions setEnableAppOffload:](v11, "setEnableAppOffload:", [v13 appDemotionDisabled] ^ 1);
+    descriptor3 = [(SUDefaultDownloadPolicy *)self descriptor];
+    -[SUSpacePurgeOptions setEnableAppOffload:](v11, "setEnableAppOffload:", [descriptor3 appDemotionDisabled] ^ 1);
 
-    v14 = [(SUDefaultDownloadPolicy *)self descriptor];
-    -[SUSpacePurgeOptions setEnableMobileAssetSuspend:](v11, "setEnableMobileAssetSuspend:", [v14 maSuspensionDisabled] ^ 1);
+    descriptor4 = [(SUDefaultDownloadPolicy *)self descriptor];
+    -[SUSpacePurgeOptions setEnableMobileAssetSuspend:](v11, "setEnableMobileAssetSuspend:", [descriptor4 maSuspensionDisabled] ^ 1);
 
     [(SUSpacePurgeOptions *)v11 setCacheDeleteUrgency:4];
     [(SUSpacePurgeOptions *)v11 setAppOffloadUrgency:4];
@@ -151,20 +151,20 @@
 
 - (BOOL)hasEnoughDiskSpace
 {
-  v9 = [(SUDefaultDownloadPolicy *)self createSpaceOptions];
-  if (v9)
+  createSpaceOptions = [(SUDefaultDownloadPolicy *)self createSpaceOptions];
+  if (createSpaceOptions)
   {
-    v10 = [SUSpace hasSufficientSpaceWithOptions:v9 error:0];
-    v11 = [v10 hasSufficientFreeSpace];
+    v10 = [SUSpace hasSufficientSpaceWithOptions:createSpaceOptions error:0];
+    hasSufficientFreeSpace = [v10 hasSufficientFreeSpace];
   }
 
   else
   {
     SULogInfo(@"Unable to determine sufficient space with null space options", v2, v3, v4, v5, v6, v7, v8, v13);
-    v11 = 0;
+    hasSufficientFreeSpace = 0;
   }
 
-  return v11;
+  return hasSufficientFreeSpace;
 }
 
 - (BOOL)isDownloadable
@@ -179,22 +179,22 @@
 
 - (BOOL)isDownloadAllowableForWiFi
 {
-  v2 = [(SUDescriptor *)self->_descriptor isDownloadable];
-  if (v2)
+  isDownloadable = [(SUDescriptor *)self->_descriptor isDownloadable];
+  if (isDownloadable)
   {
     if (+[SUUtility isWiFiCapable])
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(isDownloadable) = 1;
     }
 
     else
     {
 
-      LOBYTE(v2) = +[SUUtility isVirtualDevice];
+      LOBYTE(isDownloadable) = +[SUUtility isVirtualDevice];
     }
   }
 
-  return v2;
+  return isDownloadable;
 }
 
 - (BOOL)isDownloadAllowableForCellularRoaming
@@ -207,27 +207,27 @@
   return [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular2G];
 }
 
-- (BOOL)isDownloadableForCurrentNetworkConditions:(int64_t *)a3 cellularFeesApply:(BOOL *)a4 powerRequired:(BOOL *)a5
+- (BOOL)isDownloadableForCurrentNetworkConditions:(int64_t *)conditions cellularFeesApply:(BOOL *)apply powerRequired:(BOOL *)required
 {
-  v9 = [(SUDefaultDownloadPolicy *)self networkMonitor];
-  v10 = [v9 currentNetworkType];
+  networkMonitor = [(SUDefaultDownloadPolicy *)self networkMonitor];
+  currentNetworkType = [networkMonitor currentNetworkType];
 
-  return [(SUDefaultDownloadPolicy *)self _isDownloadableForNetworkType:v10 error:a3 cellularFeesApply:a4 powerRequired:a5];
+  return [(SUDefaultDownloadPolicy *)self _isDownloadableForNetworkType:currentNetworkType error:conditions cellularFeesApply:apply powerRequired:required];
 }
 
 - (BOOL)isDownloadAllowableForCellular
 {
-  v3 = [(SUCarrierDownloadPolicyProperties *)self->_carrierPolicy allowInexpensiveHDMUnlimited];
+  allowInexpensiveHDMUnlimited = [(SUCarrierDownloadPolicyProperties *)self->_carrierPolicy allowInexpensiveHDMUnlimited];
 
-  return [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellularIncludingInexpensiveHDM:v3];
+  return [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellularIncludingInexpensiveHDM:allowInexpensiveHDMUnlimited];
 }
 
 - (id)updateDiscoveryDate
 {
   v3 = +[SUState currentState];
-  v4 = [v3 updateDiscoveryDates];
-  v5 = [(SUDescriptor *)self->_descriptor productBuildVersion];
-  v6 = [v4 objectForKey:v5];
+  updateDiscoveryDates = [v3 updateDiscoveryDates];
+  productBuildVersion = [(SUDescriptor *)self->_descriptor productBuildVersion];
+  v6 = [updateDiscoveryDates objectForKey:productBuildVersion];
 
   return v6;
 }
@@ -237,12 +237,12 @@
   if (+[SUUtility currentReleaseTypeIsInternal])
   {
     v2 = +[SUPreferences sharedInstance];
-    v3 = [v2 networkMonitorOverride];
+    networkMonitorOverride = [v2 networkMonitorOverride];
 
-    if (v3 && ([v3 intValue] & 0x80000000) == 0 && objc_msgSend(v3, "intValue") < 10000)
+    if (networkMonitorOverride && ([networkMonitorOverride intValue] & 0x80000000) == 0 && objc_msgSend(networkMonitorOverride, "intValue") < 10000)
     {
-      v4 = [v3 intValue];
-      SULogDebug(@"device is considered cellular capable because networkMonitorOverride (%d) exists", v5, v6, v7, v8, v9, v10, v11, v4);
+      intValue = [networkMonitorOverride intValue];
+      SULogDebug(@"device is considered cellular capable because networkMonitorOverride (%d) exists", v5, v6, v7, v8, v9, v10, v11, intValue);
 
       return 1;
     }
@@ -251,9 +251,9 @@
   return +[SUUtility cellularDataIsEnabled];
 }
 
-- (BOOL)isDownloadAllowableForCellularIncludingInexpensiveHDM:(BOOL)a3
+- (BOOL)isDownloadAllowableForCellularIncludingInexpensiveHDM:(BOOL)m
 {
-  v3 = a3;
+  mCopy = m;
   if (![(SUDescriptor *)self->_descriptor isDownloadable]|| ![(SUDescriptor *)self->_descriptor isDownloadableOverCellular])
   {
     v13 = @"Cellular download not allowable due to SU asset configuration";
@@ -293,31 +293,31 @@ LABEL_10:
     return 0;
   }
 
-  if (v3 && [(SUDefaultDownloadPolicy *)self _inexpensiveHDM])
+  if (mCopy && [(SUDefaultDownloadPolicy *)self _inexpensiveHDM])
   {
     SULogInfo(@"Network type is inexpensive HDM. SU download allowed", v15, v16, v17, v18, v19, v20, v21, v54);
     return 1;
   }
 
   v22 = +[SUPreferences sharedInstance];
-  v23 = [v22 disableUserWiFiOnlyPeriod];
+  disableUserWiFiOnlyPeriod = [v22 disableUserWiFiOnlyPeriod];
 
-  if (!v23)
+  if (!disableUserWiFiOnlyPeriod)
   {
-    v31 = [(SUDefaultDownloadPolicy *)self updateDiscoveryDate];
-    v32 = [(SUCarrierDownloadPolicyProperties *)self->_carrierPolicy numberOfDaysToWaitForCellularDownload];
-    v40 = v32;
-    if (v31)
+    updateDiscoveryDate = [(SUDefaultDownloadPolicy *)self updateDiscoveryDate];
+    numberOfDaysToWaitForCellularDownload = [(SUCarrierDownloadPolicyProperties *)self->_carrierPolicy numberOfDaysToWaitForCellularDownload];
+    v40 = numberOfDaysToWaitForCellularDownload;
+    if (updateDiscoveryDate)
     {
-      v41 = [MEMORY[0x277CBEAA8] date];
-      v42 = [SUUtility addToDate:v31 numberOfDays:v40];
-      v43 = [v41 laterDate:v42];
+      date = [MEMORY[0x277CBEAA8] date];
+      v42 = [SUUtility addToDate:updateDiscoveryDate numberOfDays:v40];
+      v43 = [date laterDate:v42];
       v44 = [v43 isEqualToDate:v42];
 
       if (v44)
       {
-        v45 = [SUUtility prettyPrintDate:v31];
-        v55 = [SUUtility prettyPrintDate:v41];
+        v45 = [SUUtility prettyPrintDate:updateDiscoveryDate];
+        v55 = [SUUtility prettyPrintDate:date];
         SULogInfo(@"Cellular download not allowed because wifi-only days unmet. Discovery date: %@ Current date: %@ DaysToWait: %lu", v46, v47, v48, v49, v50, v51, v52, v45);
 
 LABEL_26:
@@ -325,7 +325,7 @@ LABEL_26:
       }
     }
 
-    else if (v32)
+    else if (numberOfDaysToWaitForCellularDownload)
     {
       SULogInfo(@"Cellular download not allowed because unknown update discovery date", v33, v34, v35, v36, v37, v38, v39, v54);
       goto LABEL_26;
@@ -336,8 +336,8 @@ LABEL_26:
 
   SULogInfo(@"SUDisableUserWiFiOnlyPeriod is set; will not apply the wifi-only-period check", v24, v25, v26, v27, v28, v29, v30, v54);
 LABEL_29:
-  v53 = [(SUCarrierDownloadPolicyProperties *)self->_carrierPolicy maximumDownloadSizeInBytes];
-  if ((v53 & 0x8000000000000000) == 0 && v53 < [(SUDescriptor *)self->_descriptor downloadSize])
+  maximumDownloadSizeInBytes = [(SUCarrierDownloadPolicyProperties *)self->_carrierPolicy maximumDownloadSizeInBytes];
+  if ((maximumDownloadSizeInBytes & 0x8000000000000000) == 0 && maximumDownloadSizeInBytes < [(SUDescriptor *)self->_descriptor downloadSize])
   {
     v13 = @"Cellular download not allowed because update is larger than carrier maximum download size";
     goto LABEL_10;
@@ -348,23 +348,23 @@ LABEL_29:
 
 - (BOOL)isDownloadAllowableForCellular2G
 {
-  v3 = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular];
-  if (v3)
+  isDownloadAllowableForCellular = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular];
+  if (isDownloadAllowableForCellular)
   {
     if (self->_cellularCapable)
     {
       carrierPolicy = self->_carrierPolicy;
 
-      LOBYTE(v3) = [(SUCarrierDownloadPolicyProperties *)carrierPolicy isDownloadAllowableOver2G];
+      LOBYTE(isDownloadAllowableForCellular) = [(SUCarrierDownloadPolicyProperties *)carrierPolicy isDownloadAllowableOver2G];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isDownloadAllowableForCellular) = 1;
     }
   }
 
-  return v3;
+  return isDownloadAllowableForCellular;
 }
 
 - (unint64_t)wifiOnlyPeriodInDays
@@ -381,9 +381,9 @@ LABEL_29:
   return 0;
 }
 
-- (BOOL)_isDownloadableForNetworkType:(int)a3 error:(int64_t *)a4 cellularFeesApply:(BOOL *)a5 powerRequired:(BOOL *)a6
+- (BOOL)_isDownloadableForNetworkType:(int)type error:(int64_t *)error cellularFeesApply:(BOOL *)apply powerRequired:(BOOL *)required
 {
-  if (!a4)
+  if (!error)
   {
     if (![(SUDefaultDownloadPolicy *)self isDownloadable])
     {
@@ -391,22 +391,22 @@ LABEL_29:
     }
 
 LABEL_5:
-    if (a5)
+    if (apply)
     {
-      *a5 = [(SUDefaultDownloadPolicy *)self cellularDownloadFeesApply];
+      *apply = [(SUDefaultDownloadPolicy *)self cellularDownloadFeesApply];
     }
 
-    v11 = [(SUDefaultDownloadPolicy *)self batteryPolicySatisfied];
-    if (a6)
+    batteryPolicySatisfied = [(SUDefaultDownloadPolicy *)self batteryPolicySatisfied];
+    if (required)
     {
-      *a6 = !v11;
+      *required = !batteryPolicySatisfied;
     }
 
     if (![(SUDefaultDownloadPolicy *)self hasEnoughDiskSpace])
     {
-      if (a4)
+      if (error)
       {
-        v11 = 0;
+        batteryPolicySatisfied = 0;
         v12 = 6;
         goto LABEL_16;
       }
@@ -417,9 +417,9 @@ LABEL_5:
     if (![(SUDefaultDownloadPolicy *)self allowExpensiveNetwork]&& [(SUNetworkMonitor *)self->_networkMonitor isCurrentNetworkTypeExpensive])
     {
       SULogInfo(@"%s preventing download on expensive network", v13, v14, v15, v16, v17, v18, v19, "[SUDefaultDownloadPolicy _isDownloadableForNetworkType:error:cellularFeesApply:powerRequired:]");
-      if (a4)
+      if (error)
       {
-        v11 = 0;
+        batteryPolicySatisfied = 0;
         v12 = 83;
         goto LABEL_16;
       }
@@ -427,49 +427,49 @@ LABEL_5:
       return 0;
     }
 
-    v20 = [(SUDefaultDownloadPolicy *)self networkMonitor];
-    v46 = [v20 isBootstrap];
+    networkMonitor = [(SUDefaultDownloadPolicy *)self networkMonitor];
+    isBootstrap = [networkMonitor isBootstrap];
 
-    v21 = [(SUDefaultDownloadPolicy *)self networkMonitor];
-    v22 = [v21 isPathSatisfied];
+    networkMonitor2 = [(SUDefaultDownloadPolicy *)self networkMonitor];
+    isPathSatisfied = [networkMonitor2 isPathSatisfied];
 
-    v23 = [(SUDefaultDownloadPolicy *)self networkMonitor];
-    v45 = a3;
-    v24 = [v23 isCellularRoaming];
+    networkMonitor3 = [(SUDefaultDownloadPolicy *)self networkMonitor];
+    typeCopy = type;
+    isCellularRoaming = [networkMonitor3 isCellularRoaming];
 
-    v25 = [(SUDefaultDownloadPolicy *)self networkMonitor];
-    v26 = [v25 isCellularDataRoamingEnabled];
+    networkMonitor4 = [(SUDefaultDownloadPolicy *)self networkMonitor];
+    isCellularDataRoamingEnabled = [networkMonitor4 isCellularDataRoamingEnabled];
 
-    LODWORD(v25) = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellularRoaming];
-    v27 = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular];
-    v28 = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular2G];
-    v29 = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForWiFi];
-    v44 = v26;
-    v30 = v25;
+    LODWORD(networkMonitor4) = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellularRoaming];
+    isDownloadAllowableForCellular = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular];
+    isDownloadAllowableForCellular2G = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForCellular2G];
+    isDownloadAllowableForWiFi = [(SUDefaultDownloadPolicy *)self isDownloadAllowableForWiFi];
+    v44 = isCellularDataRoamingEnabled;
+    v30 = networkMonitor4;
     SULogInfo(@"%s networkType:%d, powerRequired:%d, isBootstrap:%d, isPathSatisfied:%d, isRoaming:%d, isRoamingDataEnabled:%d, isRoamingDataAllowed:%d, allowedOverCellular:%d, allowedOverCellular2G:%d, allowedOverWiFi:%d", v31, v32, v33, v34, v35, v36, v37, "[SUDefaultDownloadPolicy _isDownloadableForNetworkType:error:cellularFeesApply:powerRequired:]");
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __95__SUDefaultDownloadPolicy__isDownloadableForNetworkType_error_cellularFeesApply_powerRequired___block_invoke;
     v53[3] = &__block_descriptor_33_e11_q24__0q8q16l;
-    v54 = v25;
+    v54 = networkMonitor4;
     v38 = MEMORY[0x26D668B30](v53);
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __95__SUDefaultDownloadPolicy__isDownloadableForNetworkType_error_cellularFeesApply_powerRequired___block_invoke_2;
     v47[3] = &unk_279CACDF8;
-    v50 = v27;
-    v51 = v28;
-    v52 = v29;
+    v50 = isDownloadAllowableForCellular;
+    v51 = isDownloadAllowableForCellular2G;
+    v52 = isDownloadAllowableForWiFi;
     v48 = v38;
-    v49 = a4;
+    errorCopy = error;
     v39 = v38;
     v40 = MEMORY[0x26D668B30](v47);
     v41 = v40;
-    if ((v45 - 2) >= 8)
+    if ((typeCopy - 2) >= 8)
     {
-      if (v45 != 1)
+      if (typeCopy != 1)
       {
-        if (v45)
+        if (typeCopy)
         {
           goto LABEL_35;
         }
@@ -477,26 +477,26 @@ LABEL_5:
         goto LABEL_34;
       }
 
-      if (!v29)
+      if (!isDownloadAllowableForWiFi)
       {
 LABEL_34:
         (*(v40 + 16))(v40);
 LABEL_35:
-        v11 = 0;
+        batteryPolicySatisfied = 0;
 LABEL_36:
 
-        return v11;
+        return batteryPolicySatisfied;
       }
     }
 
-    else if (!v27 || v24 && (v44 & v30) == 0 || v45 == 2 && !v28 || ((v46 ^ 1 | v22) & 1) == 0)
+    else if (!isDownloadAllowableForCellular || isCellularRoaming && (v44 & v30) == 0 || typeCopy == 2 && !isDownloadAllowableForCellular2G || ((isBootstrap ^ 1 | isPathSatisfied) & 1) == 0)
     {
       goto LABEL_34;
     }
 
-    if (a4)
+    if (error)
     {
-      v42 = v11;
+      v42 = batteryPolicySatisfied;
     }
 
     else
@@ -506,24 +506,24 @@ LABEL_36:
 
     if ((v42 & 1) == 0)
     {
-      v11 = 0;
-      *a4 = 24;
+      batteryPolicySatisfied = 0;
+      *error = 24;
     }
 
     goto LABEL_36;
   }
 
-  *a4 = 0;
+  *error = 0;
   if ([(SUDefaultDownloadPolicy *)self isDownloadable])
   {
     goto LABEL_5;
   }
 
-  v11 = 0;
+  batteryPolicySatisfied = 0;
   v12 = 31;
 LABEL_16:
-  *a4 = v12;
-  return v11;
+  *error = v12;
+  return batteryPolicySatisfied;
 }
 
 uint64_t __95__SUDefaultDownloadPolicy__isDownloadableForNetworkType_error_cellularFeesApply_powerRequired___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -593,12 +593,12 @@ uint64_t __95__SUDefaultDownloadPolicy__isDownloadableForNetworkType_error_cellu
 
 - (BOOL)_inexpensiveHDM
 {
-  v3 = [(SUNetworkMonitor *)self->_networkMonitor currentCellularType];
-  v4 = [(SUNetworkMonitor *)self->_networkMonitor isCurrentNetworkTypeExpensive];
-  v5 = v3 == 5 && !v4;
-  if (v3 != 5 || v4)
+  currentCellularType = [(SUNetworkMonitor *)self->_networkMonitor currentCellularType];
+  isCurrentNetworkTypeExpensive = [(SUNetworkMonitor *)self->_networkMonitor isCurrentNetworkTypeExpensive];
+  v5 = currentCellularType == 5 && !isCurrentNetworkTypeExpensive;
+  if (currentCellularType != 5 || isCurrentNetworkTypeExpensive)
   {
-    v6 = SUStringFromNetworkType(v3);
+    v6 = SUStringFromNetworkType(currentCellularType);
     SULogInfo(@"Device does not currently fall within 5G HDM policy: Network type: %@ NWPath isExpensive: %@", v7, v8, v9, v10, v11, v12, v13, v6);
   }
 

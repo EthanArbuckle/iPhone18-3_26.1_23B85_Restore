@@ -1,28 +1,28 @@
 @interface SSVPlaybackItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isiTunesStoreStream;
 - (NSArray)assets;
 - (NSURL)HLSKeyCertificateURL;
 - (NSURL)HLSKeyServerURL;
 - (NSURL)HLSPlaylistURL;
-- (SSVPlaybackItem)initWithItemDictionary:(id)a3;
-- (id)assetForFlavor:(id)a3;
+- (SSVPlaybackItem)initWithItemDictionary:(id)dictionary;
+- (id)assetForFlavor:(id)flavor;
 - (id)description;
 - (unint64_t)hash;
-- (void)_enumerateAssetsUsingBlock:(id)a3;
+- (void)_enumerateAssetsUsingBlock:(id)block;
 @end
 
 @implementation SSVPlaybackItem
 
-- (SSVPlaybackItem)initWithItemDictionary:(id)a3
+- (SSVPlaybackItem)initWithItemDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SSVPlaybackItem;
   v5 = [(SSVPlaybackItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     itemDictionary = v5->_itemDictionary;
     v5->_itemDictionary = v6;
   }
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (id)assetForFlavor:(id)a3
+- (id)assetForFlavor:(id)flavor
 {
-  v4 = a3;
+  flavorCopy = flavor;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -43,7 +43,7 @@
   v8[1] = 3221225472;
   v8[2] = __34__SSVPlaybackItem_assetForFlavor___block_invoke;
   v8[3] = &unk_1E84B0488;
-  v5 = v4;
+  v5 = flavorCopy;
   v9 = v5;
   v10 = &v11;
   [(SSVPlaybackItem *)self _enumerateAssetsUsingBlock:v8];
@@ -69,12 +69,12 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
 
 - (NSArray)assets
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __25__SSVPlaybackItem_assets__block_invoke;
   v6[3] = &unk_1E84B04B0;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SSVPlaybackItem *)self _enumerateAssetsUsingBlock:v6];
 
@@ -84,23 +84,23 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
 - (NSURL)HLSKeyCertificateURL
 {
   v3 = [(NSDictionary *)self->_itemDictionary objectForKey:@"hls-key-cert-url"];
-  if (![v3 isNSString] || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v3), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![v3 isNSString] || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v3), (fallbackStreamingKeyCertificateURL = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(SSVPlaybackItem *)self fallbackStreamingKeyCertificateURL];
+    fallbackStreamingKeyCertificateURL = [(SSVPlaybackItem *)self fallbackStreamingKeyCertificateURL];
   }
 
-  return v4;
+  return fallbackStreamingKeyCertificateURL;
 }
 
 - (NSURL)HLSKeyServerURL
 {
   v3 = [(NSDictionary *)self->_itemDictionary objectForKey:@"hls-key-server-url"];
-  if (![v3 isNSString] || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v3), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![v3 isNSString] || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v3), (fallbackStreamingKeyServerURL = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(SSVPlaybackItem *)self fallbackStreamingKeyServerURL];
+    fallbackStreamingKeyServerURL = [(SSVPlaybackItem *)self fallbackStreamingKeyServerURL];
   }
 
-  return v4;
+  return fallbackStreamingKeyServerURL;
 }
 
 - (NSURL)HLSPlaylistURL
@@ -124,15 +124,15 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
   v2 = [(NSDictionary *)self->_itemDictionary objectForKey:@"is-itunes-stream"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)description
@@ -141,20 +141,20 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
   v9.receiver = self;
   v9.super_class = SSVPlaybackItem;
   v4 = [(SSVPlaybackItem *)&v9 description];
-  v5 = [(SSVPlaybackItem *)self itemIdentifier];
-  v6 = [(SSVPlaybackItem *)self assets];
-  v7 = [v3 stringWithFormat:@"%@ [ID: %@, Assets: %@]", v4, v5, v6];
+  itemIdentifier = [(SSVPlaybackItem *)self itemIdentifier];
+  assets = [(SSVPlaybackItem *)self assets];
+  v7 = [v3 stringWithFormat:@"%@ [ID: %@, Assets: %@]", v4, itemIdentifier, assets];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SSVPlaybackItem *)self itemIdentifier];
-  v4 = v3;
-  if (v3)
+  itemIdentifier = [(SSVPlaybackItem *)self itemIdentifier];
+  v4 = itemIdentifier;
+  if (itemIdentifier)
   {
-    v5 = [v3 hash];
+    v5 = [itemIdentifier hash];
   }
 
   else
@@ -169,15 +169,15 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SSVPlaybackItem *)self itemIdentifier];
-    v8 = [v4 itemIdentifier];
-    v6 = [v7 isEqual:v8];
+    itemIdentifier = [(SSVPlaybackItem *)self itemIdentifier];
+    itemIdentifier2 = [equalCopy itemIdentifier];
+    v6 = [itemIdentifier isEqual:itemIdentifier2];
   }
 
   else
@@ -188,9 +188,9 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
   return v6;
 }
 
-- (void)_enumerateAssetsUsingBlock:(id)a3
+- (void)_enumerateAssetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSDictionary *)self->_itemDictionary objectForKey:@"assets"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -199,7 +199,7 @@ void __34__SSVPlaybackItem_assetForFlavor___block_invoke(uint64_t a1, void *a2, 
     v6[1] = 3221225472;
     v6[2] = __46__SSVPlaybackItem__enumerateAssetsUsingBlock___block_invoke;
     v6[3] = &unk_1E84B04D8;
-    v7 = v4;
+    v7 = blockCopy;
     [v5 enumerateObjectsUsingBlock:v6];
   }
 }

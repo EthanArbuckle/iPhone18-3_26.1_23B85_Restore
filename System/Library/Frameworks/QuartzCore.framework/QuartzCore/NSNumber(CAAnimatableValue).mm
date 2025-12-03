@@ -10,7 +10,7 @@
 
 - (double)CA_distanceToValue:()CAAnimatableValue
 {
-  [a1 doubleValue];
+  [self doubleValue];
   v5 = v4;
   [a3 doubleValue];
   return vabdd_f64(v5, v6);
@@ -18,7 +18,7 @@
 
 - (uint64_t)CA_roundToIntegerFromValue:()CAAnimatableValue
 {
-  [a1 doubleValue];
+  [self doubleValue];
   v5 = v4;
   [a3 doubleValue];
   v7 = round(v5 - v6) + v6;
@@ -29,7 +29,7 @@
 
 - (uint64_t)CA_interpolateValues:()CAAnimatableValue ::interpolator:
 {
-  [a1 doubleValue];
+  [self doubleValue];
   v22 = v10;
   [a4 doubleValue];
   v12.f64[0] = v11;
@@ -72,7 +72,7 @@ LABEL_6:
 
 - (uint64_t)CA_interpolateValue:()CAAnimatableValue byFraction:
 {
-  [a1 doubleValue];
+  [self doubleValue];
   v7 = v6;
   [a4 doubleValue];
   v9 = MEMORY[0x1E696AD98];
@@ -91,7 +91,7 @@ LABEL_6:
 
 - (uint64_t)CA_addValue:()CAAnimatableValue multipliedBy:
 {
-  [a1 doubleValue];
+  [self doubleValue];
   v7 = v6;
   [a3 doubleValue];
   v8 = MEMORY[0x1E696AD98];

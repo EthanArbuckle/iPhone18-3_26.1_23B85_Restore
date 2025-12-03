@@ -1,10 +1,10 @@
 @interface JFXEffectStaticPreviewOptions
 - ($AC64C642040120CEEAD84DEEACA9A5CE)renderRange;
 - (CGRect)renderedImageCropRect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initStaticPreviewOptions;
-- (void)setRenderRange:(id *)a3;
-- (void)setRenderTime:(id *)a3;
+- (void)setRenderRange:(id *)range;
+- (void)setRenderTime:(id *)time;
 @end
 
 @implementation JFXEffectStaticPreviewOptions
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = JFXEffectStaticPreviewOptions;
-  v4 = [(JFXEffectPreviewOptions *)&v12 copyWithZone:a3];
+  v4 = [(JFXEffectPreviewOptions *)&v12 copyWithZone:zone];
   objc_storeStrong(v4 + 5, self->_renderBackgroundImage);
   v4[33] = self->_dontCache;
   v4[32] = self->_dontCacheToDisk;
@@ -56,10 +56,10 @@
   return v4;
 }
 
-- (void)setRenderTime:(id *)a3
+- (void)setRenderTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_renderTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_renderTime.value = *&time->var0;
   self->_renderTime.epoch = var3;
 }
 
@@ -72,11 +72,11 @@
   return self;
 }
 
-- (void)setRenderRange:(id *)a3
+- (void)setRenderRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_renderRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_renderRange.start.value = *&range->var0.var0;
   *&self->_renderRange.start.epoch = v4;
   *&self->_renderRange.duration.timescale = v3;
 }

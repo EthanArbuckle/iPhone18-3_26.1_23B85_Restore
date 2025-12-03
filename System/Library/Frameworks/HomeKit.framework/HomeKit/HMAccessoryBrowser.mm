@@ -5,31 +5,31 @@
 - (id)delegate;
 - (void)_fetchNewAccessories;
 - (void)_fetchNewAccessoriesWithPrivacyCheck;
-- (void)_handleNewAccessoriesFound:(id)a3;
-- (void)_handleNewAccessoriesRemoved:(id)a3;
+- (void)_handleNewAccessoriesFound:(id)found;
+- (void)_handleNewAccessoriesRemoved:(id)removed;
 - (void)_registerNotificationHandlers;
 - (void)_start;
 - (void)_startSearchingForNewAccessories;
-- (void)_stopSearchingForNewAccessoriesWithError:(id)a3;
-- (void)_updateNewAccessories:(id)a3;
+- (void)_stopSearchingForNewAccessoriesWithError:(id)error;
+- (void)_updateNewAccessories:(id)accessories;
 - (void)dealloc;
-- (void)handleStartWithError:(id)a3 response:(id)a4;
+- (void)handleStartWithError:(id)error response:(id)response;
 - (void)setDelegate:(id)delegate;
 - (void)startSearchingForNewAccessories;
 - (void)stopSearchingForNewAccessories;
-- (void)stopSearchingForNewAccessoriesWithError:(id)a3;
+- (void)stopSearchingForNewAccessoriesWithError:(id)error;
 @end
 
 @implementation HMAccessoryBrowser
 
-- (void)_handleNewAccessoriesRemoved:(id)a3
+- (void)_handleNewAccessoriesRemoved:(id)removed
 {
   v80 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessoryBrowser *)self context];
-  if (v5)
+  removedCopy = removed;
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
-    v6 = [v4 dataForKey:@"kAccessoriesInfoDataKey"];
+    v6 = [removedCopy dataForKey:@"kAccessoriesInfoDataKey"];
     if (v6)
     {
       v7 = MEMORY[0x1E696ACD0];
@@ -45,8 +45,8 @@
       if (v11)
       {
         v45 = v6;
-        v46 = v5;
-        v47 = v4;
+        v46 = context;
+        v47 = removedCopy;
         v44 = v11;
         v12 = v11;
         objc_opt_class();
@@ -62,12 +62,12 @@
 
         v52 = v13;
 
-        v14 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v49 = self;
+        selfCopy = self;
         obj = [(HMAccessoryBrowser *)self discoveredAccessories];
         v53 = [obj countByEnumeratingWithState:&v67 objects:v74 count:16];
         if (v53)
@@ -103,13 +103,13 @@
                     }
 
                     v22 = *(*(&v63 + 1) + 8 * j);
-                    v23 = [v16 uuid];
-                    v24 = [v22 uuid];
-                    v25 = [v23 isEqual:v24];
+                    uuid = [v16 uuid];
+                    uuid2 = [v22 uuid];
+                    v25 = [uuid isEqual:uuid2];
 
                     if (v25)
                     {
-                      [v14 addObject:v16];
+                      [array addObject:v16];
                     }
                   }
 
@@ -126,17 +126,17 @@
           while (v53);
         }
 
-        v26 = [(HMAccessoryBrowser *)v49 accessories];
-        [v26 removeObjectsInArray:v14];
+        accessories = [(HMAccessoryBrowser *)selfCopy accessories];
+        [accessories removeObjectsInArray:array];
 
-        v27 = [(HMAccessoryBrowser *)v49 delegate];
-        if ([v14 count] && -[HMAccessoryBrowser isBrowsing](v49, "isBrowsing") && (objc_opt_respondsToSelector() & 1) != 0)
+        delegate = [(HMAccessoryBrowser *)selfCopy delegate];
+        if ([array count] && -[HMAccessoryBrowser isBrowsing](selfCopy, "isBrowsing") && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v61 = 0u;
           v62 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v54 = v14;
+          v54 = array;
           v28 = [v54 countByEnumeratingWithState:&v59 objects:v72 count:16];
           if (v28)
           {
@@ -152,16 +152,16 @@
                 }
 
                 v32 = *(*(&v59 + 1) + 8 * k);
-                v33 = [(HMAccessoryBrowser *)v49 context];
-                v34 = [v33 delegateCaller];
+                context2 = [(HMAccessoryBrowser *)selfCopy context];
+                delegateCaller = [context2 delegateCaller];
                 v55[0] = MEMORY[0x1E69E9820];
                 v55[1] = 3221225472;
                 v55[2] = __51__HMAccessoryBrowser__handleNewAccessoriesRemoved___block_invoke;
                 v55[3] = &unk_1E754E5E8;
-                v56 = v27;
-                v57 = v49;
+                v56 = delegate;
+                v57 = selfCopy;
                 v58 = v32;
-                [v34 invokeBlock:v55];
+                [delegateCaller invokeBlock:v55];
               }
 
               v29 = [v54 countByEnumeratingWithState:&v59 objects:v72 count:16];
@@ -171,8 +171,8 @@
           }
         }
 
-        v5 = v46;
-        v4 = v47;
+        context = v46;
+        removedCopy = v47;
         v11 = v44;
         v6 = v45;
       }
@@ -180,7 +180,7 @@
       else
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = self;
+        selfCopy2 = self;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -200,7 +200,7 @@
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy3 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -218,15 +218,15 @@
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNewAccessoriesFound:(id)a3
+- (void)_handleNewAccessoriesFound:(id)found
 {
   v103 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessoryBrowser *)self context];
-  if (v5)
+  foundCopy = found;
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
-    v68 = self;
-    v6 = [v4 dataForKey:@"kAccessoriesInfoDataKey"];
+    selfCopy = self;
+    v6 = [foundCopy dataForKey:@"kAccessoriesInfoDataKey"];
     if (v6 && [(HMAccessoryBrowser *)self isBrowsing])
     {
       v7 = MEMORY[0x1E696ACD0];
@@ -242,8 +242,8 @@
       if (v11)
       {
         v57 = v6;
-        v58 = v5;
-        v59 = v4;
+        v58 = context;
+        v59 = foundCopy;
         v56 = v11;
         v12 = v11;
         objc_opt_class();
@@ -259,23 +259,23 @@
 
         v14 = v13;
 
-        v15 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v63 = v14;
-        [v15 setArray:v14];
-        v16 = [(HMAccessoryBrowser *)v68 delegate];
-        v17 = [v16 conformsToProtocol:&unk_1F0F63660];
+        [array setArray:v14];
+        delegate = [(HMAccessoryBrowser *)selfCopy delegate];
+        v17 = [delegate conformsToProtocol:&unk_1F0F63660];
 
-        v67 = 0;
+        delegate2 = 0;
         if (v17)
         {
-          v67 = [(HMAccessoryBrowser *)v68 delegate];
+          delegate2 = [(HMAccessoryBrowser *)selfCopy delegate];
         }
 
         v91 = 0u;
         v92 = 0u;
         v89 = 0u;
         v90 = 0u;
-        obj = [(HMAccessoryBrowser *)v68 discoveredAccessories];
+        obj = [(HMAccessoryBrowser *)selfCopy discoveredAccessories];
         v64 = [obj countByEnumeratingWithState:&v89 objects:v97 count:16];
         if (v64)
         {
@@ -312,28 +312,28 @@
                     }
 
                     v25 = *(*(&v85 + 1) + 8 * i);
-                    v26 = [v19 uuid];
-                    v27 = [v25 uuid];
-                    v28 = [v26 isEqual:v27];
+                    uuid = [v19 uuid];
+                    uuid2 = [v25 uuid];
+                    v28 = [uuid isEqual:uuid2];
 
                     if (v28)
                     {
                       [v19 _updateFromAccessory:v25];
-                      if ([v15 count] && -[HMAccessoryBrowser isBrowsing](v68, "isBrowsing") && (objc_opt_respondsToSelector() & 1) != 0)
+                      if ([array count] && -[HMAccessoryBrowser isBrowsing](selfCopy, "isBrowsing") && (objc_opt_respondsToSelector() & 1) != 0)
                       {
-                        v29 = [(HMAccessoryBrowser *)v68 context];
-                        v30 = [v29 delegateCaller];
+                        context2 = [(HMAccessoryBrowser *)selfCopy context];
+                        delegateCaller = [context2 delegateCaller];
                         v81[0] = MEMORY[0x1E69E9820];
                         v81[1] = 3221225472;
                         v81[2] = __49__HMAccessoryBrowser__handleNewAccessoriesFound___block_invoke;
                         v81[3] = &unk_1E754E5E8;
-                        v82 = v67;
-                        v83 = v68;
+                        v82 = delegate2;
+                        v83 = selfCopy;
                         v84 = v19;
-                        [v30 invokeBlock:v81];
+                        [delegateCaller invokeBlock:v81];
                       }
 
-                      [v15 removeObject:v25];
+                      [array removeObject:v25];
                     }
                   }
 
@@ -353,14 +353,14 @@
           while (v64);
         }
 
-        v31 = [(HMAccessoryBrowser *)v68 accessories];
-        [v31 addObjectsFromArray:v15];
+        accessories = [(HMAccessoryBrowser *)selfCopy accessories];
+        [accessories addObjectsFromArray:array];
 
         v79 = 0u;
         v80 = 0u;
         v78 = 0u;
         v77 = 0u;
-        v32 = v15;
+        v32 = array;
         v33 = [v32 countByEnumeratingWithState:&v77 objects:v95 count:16];
         if (v33)
         {
@@ -376,8 +376,8 @@
               }
 
               v37 = *(*(&v77 + 1) + 8 * j);
-              v38 = [(HMAccessoryBrowser *)v68 context];
-              [v37 __configureWithContext:v38 home:0];
+              context3 = [(HMAccessoryBrowser *)selfCopy context];
+              [v37 __configureWithContext:context3 home:0];
             }
 
             v34 = [v32 countByEnumeratingWithState:&v77 objects:v95 count:16];
@@ -386,8 +386,8 @@
           while (v34);
         }
 
-        v39 = [(HMAccessoryBrowser *)v68 delegate];
-        if ([v32 count] && -[HMAccessoryBrowser isBrowsing](v68, "isBrowsing") && (objc_opt_respondsToSelector() & 1) != 0)
+        delegate3 = [(HMAccessoryBrowser *)selfCopy delegate];
+        if ([v32 count] && -[HMAccessoryBrowser isBrowsing](selfCopy, "isBrowsing") && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v75 = 0u;
           v76 = 0u;
@@ -409,16 +409,16 @@
                 }
 
                 v44 = *(*(&v73 + 1) + 8 * k);
-                v45 = [(HMAccessoryBrowser *)v68 context];
-                v46 = [v45 delegateCaller];
+                context4 = [(HMAccessoryBrowser *)selfCopy context];
+                delegateCaller2 = [context4 delegateCaller];
                 v69[0] = MEMORY[0x1E69E9820];
                 v69[1] = 3221225472;
                 v69[2] = __49__HMAccessoryBrowser__handleNewAccessoriesFound___block_invoke_2;
                 v69[3] = &unk_1E754E5E8;
-                v70 = v39;
-                v71 = v68;
+                v70 = delegate3;
+                v71 = selfCopy;
                 v72 = v44;
-                [v46 invokeBlock:v69];
+                [delegateCaller2 invokeBlock:v69];
               }
 
               v41 = [v66 countByEnumeratingWithState:&v73 objects:v94 count:16];
@@ -428,8 +428,8 @@
           }
         }
 
-        v5 = v58;
-        v4 = v59;
+        context = v58;
+        foundCopy = v59;
         v11 = v56;
         v6 = v57;
       }
@@ -437,7 +437,7 @@
       else
       {
         v51 = objc_autoreleasePoolPush();
-        v52 = v68;
+        v52 = selfCopy;
         v53 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
         {
@@ -457,7 +457,7 @@
   else
   {
     v47 = objc_autoreleasePoolPush();
-    v48 = self;
+    selfCopy2 = self;
     v49 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
@@ -478,22 +478,22 @@
 - (void)_registerNotificationHandlers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryBrowser *)self context];
-  if (v3)
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
-    v4 = [(HMAccessoryBrowser *)self context];
-    v5 = [v4 messageDispatcher];
-    [v5 registerForMessage:@"kNewAccessoriesFoundNotificationKey" receiver:self selector:sel__handleNewAccessoriesFound_];
+    context2 = [(HMAccessoryBrowser *)self context];
+    messageDispatcher = [context2 messageDispatcher];
+    [messageDispatcher registerForMessage:@"kNewAccessoriesFoundNotificationKey" receiver:self selector:sel__handleNewAccessoriesFound_];
 
-    v6 = [(HMAccessoryBrowser *)self context];
-    v7 = [v6 messageDispatcher];
-    [v7 registerForMessage:@"kNewAccessoriesRemovedNotificationKey" receiver:self selector:sel__handleNewAccessoriesRemoved_];
+    context3 = [(HMAccessoryBrowser *)self context];
+    messageDispatcher2 = [context3 messageDispatcher];
+    [messageDispatcher2 registerForMessage:@"kNewAccessoriesRemovedNotificationKey" receiver:self selector:sel__handleNewAccessoriesRemoved_];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -511,11 +511,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateNewAccessories:(id)a3
+- (void)_updateNewAccessories:(id)accessories
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v50 = [(HMAccessoryBrowser *)self delegate];
+  accessoriesCopy = accessories;
+  delegate = [(HMAccessoryBrowser *)self delegate];
   v5 = objc_opt_new();
   obj = objc_opt_new();
   v51 = objc_opt_new();
@@ -523,8 +523,8 @@
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v6 = [(HMAccessoryBrowser *)self discoveredAccessories];
-  v7 = [v6 countByEnumeratingWithState:&v76 objects:v84 count:16];
+  discoveredAccessories = [(HMAccessoryBrowser *)self discoveredAccessories];
+  v7 = [discoveredAccessories countByEnumeratingWithState:&v76 objects:v84 count:16];
   if (v7)
   {
     v8 = v7;
@@ -535,12 +535,12 @@
       {
         if (*v77 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(discoveredAccessories);
         }
 
         v11 = *(*(&v76 + 1) + 8 * i);
-        v12 = [v11 uniqueIdentifier];
-        v13 = [v4 hmf_firstObjectWithUniqueIdentifier:v12];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v13 = [accessoriesCopy hmf_firstObjectWithUniqueIdentifier:uniqueIdentifier];
 
         if (v13)
         {
@@ -555,7 +555,7 @@
         [v14 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v76 objects:v84 count:16];
+      v8 = [discoveredAccessories countByEnumeratingWithState:&v76 objects:v84 count:16];
     }
 
     while (v8);
@@ -565,7 +565,7 @@
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v15 = v4;
+  v15 = accessoriesCopy;
   v16 = [v15 countByEnumeratingWithState:&v72 objects:v83 count:16];
   if (v16)
   {
@@ -581,8 +581,8 @@
         }
 
         v20 = *(*(&v72 + 1) + 8 * j);
-        v21 = [v20 uniqueIdentifier];
-        v22 = [v5 hmf_firstObjectWithUniqueIdentifier:v21];
+        uniqueIdentifier2 = [v20 uniqueIdentifier];
+        v22 = [v5 hmf_firstObjectWithUniqueIdentifier:uniqueIdentifier2];
 
         if (!v22)
         {
@@ -619,8 +619,8 @@
         }
 
         v28 = *(*(&v68 + 1) + 8 * k);
-        v29 = [(HMAccessoryBrowser *)self context];
-        [v28 __configureWithContext:v29 home:0];
+        context = [(HMAccessoryBrowser *)self context];
+        [v28 __configureWithContext:context home:0];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v68 objects:v82 count:16];
@@ -629,10 +629,10 @@
     while (v25);
   }
 
-  v30 = [(HMAccessoryBrowser *)self accessories];
-  [v30 setArray:v5];
+  accessories = [(HMAccessoryBrowser *)self accessories];
+  [accessories setArray:v5];
 
-  if (v50 && [(HMAccessoryBrowser *)self isBrowsing])
+  if (delegate && [(HMAccessoryBrowser *)self isBrowsing])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -656,16 +656,16 @@
             }
 
             v35 = *(*(&v64 + 1) + 8 * m);
-            v36 = [(HMAccessoryBrowser *)self context];
-            v37 = [v36 delegateCaller];
+            context2 = [(HMAccessoryBrowser *)self context];
+            delegateCaller = [context2 delegateCaller];
             v60[0] = MEMORY[0x1E69E9820];
             v60[1] = 3221225472;
             v60[2] = __44__HMAccessoryBrowser__updateNewAccessories___block_invoke;
             v60[3] = &unk_1E754E5E8;
-            v61 = v50;
-            v62 = self;
+            v61 = delegate;
+            selfCopy = self;
             v63 = v35;
-            [v37 invokeBlock:v60];
+            [delegateCaller invokeBlock:v60];
           }
 
           v32 = [obja countByEnumeratingWithState:&v64 objects:v81 count:16];
@@ -697,16 +697,16 @@
             }
 
             v42 = *(*(&v56 + 1) + 8 * n);
-            v43 = [(HMAccessoryBrowser *)self context];
-            v44 = [v43 delegateCaller];
+            context3 = [(HMAccessoryBrowser *)self context];
+            delegateCaller2 = [context3 delegateCaller];
             v52[0] = MEMORY[0x1E69E9820];
             v52[1] = 3221225472;
             v52[2] = __44__HMAccessoryBrowser__updateNewAccessories___block_invoke_2;
             v52[3] = &unk_1E754E5E8;
-            v53 = v50;
-            v54 = self;
+            v53 = delegate;
+            selfCopy2 = self;
             v55 = v42;
-            [v44 invokeBlock:v52];
+            [delegateCaller2 invokeBlock:v52];
           }
 
           v39 = [objb countByEnumeratingWithState:&v56 objects:v80 count:16];
@@ -723,12 +723,12 @@
 - (void)_fetchNewAccessories
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryBrowser *)self context];
-  if (v3)
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
     v4 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v5 = [(HMAccessoryBrowser *)self uuid];
-    v6 = [v4 initWithTarget:v5];
+    uuid = [(HMAccessoryBrowser *)self uuid];
+    v6 = [v4 initWithTarget:uuid];
 
     v7 = MEMORY[0x1E69A2A10];
     v19 = @"kConfigGenerationCounterKey";
@@ -744,8 +744,8 @@
     v17[3] = &unk_1E754CD70;
     objc_copyWeak(&v18, location);
     [v10 setResponseHandler:v17];
-    v11 = [v3 messageDispatcher];
-    [v11 sendMessage:v10];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v10];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);
@@ -754,7 +754,7 @@
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -871,17 +871,17 @@ LABEL_20:
 - (void)_fetchNewAccessoriesWithPrivacyCheck
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryBrowser *)self context];
-  if (v3)
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
     objc_initWeak(location, self);
-    v4 = [v3 queue];
+    queue = [context queue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__HMAccessoryBrowser__fetchNewAccessoriesWithPrivacyCheck__block_invoke;
     v10[3] = &unk_1E754BCB8;
     objc_copyWeak(&v11, location);
-    __HMPrivacyRequestAccessForService(*MEMORY[0x1E69D5620], v4, v10);
+    __HMPrivacyRequestAccessForService(*MEMORY[0x1E69D5620], queue, v10);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(location);
@@ -890,7 +890,7 @@ LABEL_20:
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -917,18 +917,18 @@ void __58__HMAccessoryBrowser__fetchNewAccessoriesWithPrivacyCheck__block_invoke
 - (void)_start
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryBrowser *)self context];
-  if (v3)
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
     [(HMAccessoryBrowser *)self _registerNotificationHandlers];
     objc_initWeak(location, self);
-    v4 = [v3 xpcClient];
+    xpcClient = [context xpcClient];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __28__HMAccessoryBrowser__start__block_invoke;
     v10[3] = &unk_1E754E540;
     objc_copyWeak(&v11, location);
-    [v4 registerReconnectionHandler:v10];
+    [xpcClient registerReconnectionHandler:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(location);
@@ -937,7 +937,7 @@ void __58__HMAccessoryBrowser__fetchNewAccessoriesWithPrivacyCheck__block_invoke
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -970,15 +970,15 @@ void __28__HMAccessoryBrowser__start__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_stopSearchingForNewAccessoriesWithError:(id)a3
+- (void)_stopSearchingForNewAccessoriesWithError:(id)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessoryBrowser *)self context];
-  if (!v5)
+  errorCopy = error;
+  context = [(HMAccessoryBrowser *)self context];
+  if (!context)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -996,7 +996,7 @@ void __28__HMAccessoryBrowser__start__block_invoke(uint64_t a1)
   if (![(HMAccessoryBrowser *)self isBrowsing])
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -1018,9 +1018,9 @@ LABEL_13:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
   v8 = [v6 dictionaryWithDictionary:v7];
 
-  if (v4)
+  if (errorCopy)
   {
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
     if (v9)
     {
       [v8 setObject:v9 forKeyedSubscript:@"kStopSearchReason"];
@@ -1028,8 +1028,8 @@ LABEL_13:
   }
 
   v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v11 = [(HMAccessoryBrowser *)self uuid];
-  v12 = [v10 initWithTarget:v11];
+  uuid = [(HMAccessoryBrowser *)self uuid];
+  v12 = [v10 initWithTarget:uuid];
 
   v13 = MEMORY[0x1E69A2A10];
   v14 = [v8 copy];
@@ -1041,11 +1041,11 @@ LABEL_13:
   v26 = __63__HMAccessoryBrowser__stopSearchingForNewAccessoriesWithError___block_invoke;
   v27 = &unk_1E754BC90;
   objc_copyWeak(&v29, location);
-  v16 = v5;
+  v16 = context;
   v28 = v16;
   [v15 setResponseHandler:&v24];
-  v17 = [v16 messageDispatcher];
-  [v17 sendMessage:v15];
+  messageDispatcher = [v16 messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(location);
@@ -1084,28 +1084,28 @@ uint64_t __63__HMAccessoryBrowser__stopSearchingForNewAccessoriesWithError___blo
   return [v5 setGenerationCounter:-1];
 }
 
-- (void)stopSearchingForNewAccessoriesWithError:(id)a3
+- (void)stopSearchingForNewAccessoriesWithError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessoryBrowser *)self context];
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  context = [(HMAccessoryBrowser *)self context];
+  v6 = context;
+  if (context)
   {
-    v7 = [v5 queue];
+    queue = [context queue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __62__HMAccessoryBrowser_stopSearchingForNewAccessoriesWithError___block_invoke;
     v13[3] = &unk_1E754E5C0;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v7, v13);
+    v14 = errorCopy;
+    dispatch_async(queue, v13);
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1127,7 +1127,7 @@ uint64_t __63__HMAccessoryBrowser__stopSearchingForNewAccessoriesWithError___blo
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1138,34 +1138,34 @@ uint64_t __63__HMAccessoryBrowser__stopSearchingForNewAccessoriesWithError___blo
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMAccessoryBrowser *)v4 stopSearchingForNewAccessoriesWithError:0];
+  [(HMAccessoryBrowser *)selfCopy stopSearchingForNewAccessoriesWithError:0];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleStartWithError:(id)a3 response:(id)a4
+- (void)handleStartWithError:(id)error response:(id)response
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMAccessoryBrowser *)self context];
-  v9 = v8;
-  if (v8)
+  errorCopy = error;
+  responseCopy = response;
+  context = [(HMAccessoryBrowser *)self context];
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__HMAccessoryBrowser_handleStartWithError_response___block_invoke;
     block[3] = &unk_1E754E5E8;
-    v17 = v6;
-    v18 = v7;
-    v19 = self;
-    dispatch_async(v10, block);
+    v17 = errorCopy;
+    v18 = responseCopy;
+    selfCopy = self;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1219,12 +1219,12 @@ void __52__HMAccessoryBrowser_handleStartWithError_response___block_invoke(uint6
 - (void)_startSearchingForNewAccessories
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryBrowser *)self context];
-  if (v3)
+  context = [(HMAccessoryBrowser *)self context];
+  if (context)
   {
     v4 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v5 = [(HMAccessoryBrowser *)self uuid];
-    v6 = [v4 initWithTarget:v5];
+    uuid = [(HMAccessoryBrowser *)self uuid];
+    v6 = [v4 initWithTarget:uuid];
 
     v7 = MEMORY[0x1E69A2A10];
     v18 = @"kStartSearch";
@@ -1239,8 +1239,8 @@ void __52__HMAccessoryBrowser_handleStartWithError_response___block_invoke(uint6
     v16[3] = &unk_1E754CD70;
     objc_copyWeak(&v17, location);
     [v9 setResponseHandler:v16];
-    v10 = [v3 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(location);
@@ -1249,7 +1249,7 @@ void __52__HMAccessoryBrowser_handleStartWithError_response___block_invoke(uint6
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1278,12 +1278,12 @@ void __54__HMAccessoryBrowser__startSearchingForNewAccessories__block_invoke(uin
 - (void)startSearchingForNewAccessories
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(HMAccessoryBrowser *)self context];
+  context = [(HMAccessoryBrowser *)self context];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (context)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1294,13 +1294,13 @@ void __54__HMAccessoryBrowser__startSearchingForNewAccessories__block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v4);
-    v9 = [v3 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__HMAccessoryBrowser_startSearchingForNewAccessories__block_invoke;
     block[3] = &unk_1E754E2A8;
-    block[4] = v5;
-    dispatch_async(v9, block);
+    block[4] = selfCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1323,10 +1323,10 @@ void __54__HMAccessoryBrowser__startSearchingForNewAccessories__block_invoke(uin
 
 - (NSArray)discoveredAccessories
 {
-  v2 = [(HMAccessoryBrowser *)self accessories];
-  v3 = [v2 array];
+  accessories = [(HMAccessoryBrowser *)self accessories];
+  array = [accessories array];
 
-  return v3;
+  return array;
 }
 
 - (void)setDelegate:(id)delegate
@@ -1351,7 +1351,7 @@ void __54__HMAccessoryBrowser__startSearchingForNewAccessories__block_invoke(uin
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1362,17 +1362,17 @@ void __54__HMAccessoryBrowser__startSearchingForNewAccessories__block_invoke(uin
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMutableArray *)v4->_accessories array];
-  v8 = [(_HMContext *)v4->_context queue];
+  array = [(HMMutableArray *)selfCopy->_accessories array];
+  queue = [(_HMContext *)selfCopy->_context queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__HMAccessoryBrowser_dealloc__block_invoke;
   block[3] = &unk_1E754E2A8;
-  v13 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v13 = array;
+  v9 = array;
+  dispatch_async(queue, block);
 
-  v11.receiver = v4;
+  v11.receiver = selfCopy;
   v11.super_class = HMAccessoryBrowser;
   [(HMAccessoryBrowser *)&v11 dealloc];
   v10 = *MEMORY[0x1E69E9840];

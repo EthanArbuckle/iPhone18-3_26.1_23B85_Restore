@@ -29,10 +29,10 @@
 - (BOOL)allowOneFingerDeepPress
 {
   v2 = +[_UITextSelectionSettings sharedInstance];
-  v3 = [v2 enableDeepPress];
-  v4 = [v3 BOOLValue];
+  enableDeepPress = [v2 enableDeepPress];
+  bOOLValue = [enableDeepPress BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

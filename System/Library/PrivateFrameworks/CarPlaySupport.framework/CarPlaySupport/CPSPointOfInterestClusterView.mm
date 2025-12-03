@@ -1,98 +1,98 @@
 @interface CPSPointOfInterestClusterView
-- (CPSPointOfInterestClusterView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (CPSPointOfInterestClusterView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (void)_configure;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setAnnotation:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAnnotation:(id)annotation;
+- (void)traitCollectionDidChange:(id)change;
 - (void)update;
 @end
 
 @implementation CPSPointOfInterestClusterView
 
-- (CPSPointOfInterestClusterView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (CPSPointOfInterestClusterView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, annotation);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, identifier);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = CPSPointOfInterestClusterView;
   v8 = [(MKMarkerAnnotationView *)&v9 initWithAnnotation:location[0] reuseIdentifier:v10];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    [(CPSPointOfInterestClusterView *)v12 _configure];
+    [(CPSPointOfInterestClusterView *)selfCopy _configure];
   }
 
-  v6 = MEMORY[0x277D82BE0](v12);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSPointOfInterestClusterView;
   [(CPSPointOfInterestClusterView *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSPointOfInterestClusterView *)v5 update];
+  [(CPSPointOfInterestClusterView *)selfCopy update];
   objc_storeStrong(location, 0);
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, annotation);
+  v3.receiver = selfCopy;
   v3.super_class = CPSPointOfInterestClusterView;
   [(MKMarkerAnnotationView *)&v3 setAnnotation:location[0]];
-  [(CPSPointOfInterestClusterView *)v5 update];
+  [(CPSPointOfInterestClusterView *)selfCopy update];
   objc_storeStrong(location, 0);
 }
 
 - (void)prepareForDisplay
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSPointOfInterestClusterView;
   [(MKMarkerAnnotationView *)&v2 prepareForDisplay];
-  [(CPSPointOfInterestClusterView *)v4 _configure];
+  [(CPSPointOfInterestClusterView *)selfCopy _configure];
 }
 
 - (void)prepareForReuse
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSPointOfInterestClusterView;
   [(MKMarkerAnnotationView *)&v2 prepareForReuse];
-  [(CPSPointOfInterestClusterView *)v4 _configure];
+  [(CPSPointOfInterestClusterView *)selfCopy _configure];
 }
 
 - (void)update
 {
   v2 = MEMORY[0x277CCACA8];
-  v5 = [(MKAnnotationView *)self annotation];
-  v4 = [(MKAnnotation *)v5 memberAnnotations];
-  v3 = [v2 stringWithFormat:@"%ld", objc_msgSend(v4, "count")];
+  annotation = [(MKAnnotationView *)self annotation];
+  memberAnnotations = [(MKAnnotation *)annotation memberAnnotations];
+  v3 = [v2 stringWithFormat:@"%ld", objc_msgSend(memberAnnotations, "count")];
   [(MKMarkerAnnotationView *)self setGlyphText:?];
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](memberAnnotations);
+  MEMORY[0x277D82BD8](annotation);
 }
 
 - (void)_configure

@@ -1,8 +1,8 @@
 @interface ICWKWebViewDebuggingViewController
 - (WKWebView)webView;
-- (void)dismiss:(id)a3;
+- (void)dismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation ICWKWebViewDebuggingViewController
@@ -12,33 +12,33 @@
   v10.receiver = self;
   v10.super_class = ICWKWebViewDebuggingViewController;
   [(ICWKWebViewDebuggingViewController *)&v10 viewDidLoad];
-  v3 = [(ICWKWebViewDebuggingViewController *)self webView];
-  [v3 setNavigationDelegate:self];
+  webView = [(ICWKWebViewDebuggingViewController *)self webView];
+  [webView setNavigationDelegate:self];
 
-  v4 = [(ICWKWebViewDebuggingViewController *)self webView];
-  [v4 _setInputDelegate:self];
+  webView2 = [(ICWKWebViewDebuggingViewController *)self webView];
+  [webView2 _setInputDelegate:self];
 
-  v5 = [(ICWKWebViewDebuggingViewController *)self webView];
-  [v5 _setEditable:1];
+  webView3 = [(ICWKWebViewDebuggingViewController *)self webView];
+  [webView3 _setEditable:1];
 
-  v6 = [(ICWKWebViewDebuggingViewController *)self webView];
+  webView4 = [(ICWKWebViewDebuggingViewController *)self webView];
   v7 = +[NoteHTMLEditorView baseHTMLString];
-  v8 = [v6 loadHTMLString:v7 baseURL:0];
+  v8 = [webView4 loadHTMLString:v7 baseURL:0];
 
-  v9 = [(ICWKWebViewDebuggingViewController *)self navigationItem];
-  [v9 setTitle:@"WKWebView"];
+  navigationItem = [(ICWKWebViewDebuggingViewController *)self navigationItem];
+  [navigationItem setTitle:@"WKWebView"];
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [(ICWKWebViewDebuggingViewController *)self navigationController];
-  v3 = [v4 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(ICWKWebViewDebuggingViewController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v4 = [(ICWKWebViewDebuggingViewController *)self webView:a3];
+  v4 = [(ICWKWebViewDebuggingViewController *)self webView:view];
   v5 = _NSConcreteStackBlock;
   v6 = 3221225472;
   v7 = sub_1000B5D6C;

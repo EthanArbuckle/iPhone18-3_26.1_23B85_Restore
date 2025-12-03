@@ -1,7 +1,7 @@
 @interface CNKGameControllerManager
 + (id)shared;
 - (id)gameControllerContext;
-- (void)addControl:(id)a3 withControlEvents:(unint64_t)a4 onButtonPress:(int)a5;
+- (void)addControl:(id)control withControlEvents:(unint64_t)events onButtonPress:(int)press;
 - (void)focus;
 @end
 
@@ -15,22 +15,22 @@
   return v2;
 }
 
-- (void)addControl:(id)a3 withControlEvents:(unint64_t)a4 onButtonPress:(int)a5
+- (void)addControl:(id)control withControlEvents:(unint64_t)events onButtonPress:(int)press
 {
-  v6 = a3;
-  v7 = self;
+  controlCopy = control;
+  selfCopy = self;
   CNKGameControllerManager.addControl(_:event:when:)();
 }
 
 - (void)focus
 {
-  v2 = self;
+  selfCopy = self;
   CNKGameControllerManager.focus()();
 }
 
 - (id)gameControllerContext
 {
-  v2 = self;
+  selfCopy = self;
   CNKGameControllerManager.gameControllerContext()(v3);
   v5 = v4;
 

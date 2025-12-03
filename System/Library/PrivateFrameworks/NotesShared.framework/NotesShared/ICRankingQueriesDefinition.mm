@@ -1,33 +1,33 @@
 @interface ICRankingQueriesDefinition
-+ (unint64_t)bucketOfTimeInterval:(double)a3;
-+ (unint64_t)maxCountOfVariantsForCountOfTokens:(unint64_t)a3;
-+ (unint64_t)modificationDateBucketForSearchableItem:(id)a3;
-+ (unint64_t)relevanceBitFieldForSearchableItem:(id)a3;
-- (ICRankingQueriesDefinition)initWithExpandedTokens:(id)a3 rankingQueryType:(int64_t)a4 rankingQueryFlags:(id)a5;
-- (ICRankingQueriesDefinition)initWithSearchString:(id)a3 rankingQueryType:(int64_t)a4 rankingQueryFlags:(id)a5;
++ (unint64_t)bucketOfTimeInterval:(double)interval;
++ (unint64_t)maxCountOfVariantsForCountOfTokens:(unint64_t)tokens;
++ (unint64_t)modificationDateBucketForSearchableItem:(id)item;
++ (unint64_t)relevanceBitFieldForSearchableItem:(id)item;
+- (ICRankingQueriesDefinition)initWithExpandedTokens:(id)tokens rankingQueryType:(int64_t)type rankingQueryFlags:(id)flags;
+- (ICRankingQueriesDefinition)initWithSearchString:(id)string rankingQueryType:(int64_t)type rankingQueryFlags:(id)flags;
 - (NSArray)rankingQueries;
 - (NSArray)rankingQueryDescriptors;
-- (double)rankingScoreForSearchableItem:(id)a3;
-- (id)highlightInfoForSearchableItem:(id)a3;
-- (id)matchingDescriptorsForBitFields:(unint64_t)a3;
-- (void)addDescriptor:(id)a3 intoSearchResultHighlightInfoFieldElement:(id)a4;
+- (double)rankingScoreForSearchableItem:(id)item;
+- (id)highlightInfoForSearchableItem:(id)item;
+- (id)matchingDescriptorsForBitFields:(unint64_t)fields;
+- (void)addDescriptor:(id)descriptor intoSearchResultHighlightInfoFieldElement:(id)element;
 @end
 
 @implementation ICRankingQueriesDefinition
 
-- (ICRankingQueriesDefinition)initWithExpandedTokens:(id)a3 rankingQueryType:(int64_t)a4 rankingQueryFlags:(id)a5
+- (ICRankingQueriesDefinition)initWithExpandedTokens:(id)tokens rankingQueryType:(int64_t)type rankingQueryFlags:(id)flags
 {
-  v9 = a3;
-  v10 = a5;
+  tokensCopy = tokens;
+  flagsCopy = flags;
   v16.receiver = self;
   v16.super_class = ICRankingQueriesDefinition;
   v11 = [(ICRankingQueriesDefinition *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_expandedTokens, a3);
-    v12->_rankingQueryType = a4;
-    objc_storeStrong(&v12->_rankingQueryFlags, a5);
+    objc_storeStrong(&v11->_expandedTokens, tokens);
+    v12->_rankingQueryType = type;
+    objc_storeStrong(&v12->_rankingQueryFlags, flags);
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     matchingDescriptorsCache = v12->_matchingDescriptorsCache;
     v12->_matchingDescriptorsCache = v13;
@@ -36,24 +36,24 @@
   return v12;
 }
 
-- (ICRankingQueriesDefinition)initWithSearchString:(id)a3 rankingQueryType:(int64_t)a4 rankingQueryFlags:(id)a5
+- (ICRankingQueriesDefinition)initWithSearchString:(id)string rankingQueryType:(int64_t)type rankingQueryFlags:(id)flags
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  stringCopy = string;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v15 count:1];
+  flagsCopy = flags;
+  stringCopy2 = string;
+  v11 = [v8 arrayWithObjects:&stringCopy count:1];
   v16[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
 
-  v13 = [(ICRankingQueriesDefinition *)self initWithExpandedTokens:v12 rankingQueryType:a4 rankingQueryFlags:v9];
+  v13 = [(ICRankingQueriesDefinition *)self initWithExpandedTokens:v12 rankingQueryType:type rankingQueryFlags:flagsCopy];
   return v13;
 }
 
 - (NSArray)rankingQueryDescriptors
 {
-  v2 = self;
+  selfCopy = self;
   v110 = *MEMORY[0x277D85DE8];
   rankingQueryDescriptors = self->_rankingQueryDescriptors;
   if (!rankingQueryDescriptors)
@@ -63,8 +63,8 @@
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v5 = [MEMORY[0x277D36268] rankingQueryFieldsForGenericHighlighting];
-    v6 = [v5 countByEnumeratingWithState:&v95 objects:v109 count:16];
+    rankingQueryFieldsForGenericHighlighting = [MEMORY[0x277D36268] rankingQueryFieldsForGenericHighlighting];
+    v6 = [rankingQueryFieldsForGenericHighlighting countByEnumeratingWithState:&v95 objects:v109 count:16];
     v7 = 0x278192000uLL;
     v72 = v4;
     if (v6)
@@ -77,30 +77,30 @@
         {
           if (*v96 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(rankingQueryFieldsForGenericHighlighting);
           }
 
           v11 = *(*(&v95 + 1) + 8 * i);
           v12 = [ICRankingQueryDescriptor alloc];
-          v13 = [(ICRankingQueriesDefinition *)v2 expandedTokens];
-          v14 = [(ICRankingQueriesDefinition *)v2 rankingQueryType];
-          v15 = [(ICRankingQueriesDefinition *)v2 rankingQueryFlags];
-          v16 = [(ICRankingQueryDescriptor *)v12 initWithQueryFields:v11 expandedTokens:v13 rankingQueryType:v14 rankingQueryFlags:v15 purpose:0];
+          expandedTokens = [(ICRankingQueriesDefinition *)selfCopy expandedTokens];
+          rankingQueryType = [(ICRankingQueriesDefinition *)selfCopy rankingQueryType];
+          rankingQueryFlags = [(ICRankingQueriesDefinition *)selfCopy rankingQueryFlags];
+          v16 = [(ICRankingQueryDescriptor *)v12 initWithQueryFields:v11 expandedTokens:expandedTokens rankingQueryType:rankingQueryType rankingQueryFlags:rankingQueryFlags purpose:0];
 
           v7 = 0x278192000uLL;
           v4 = v72;
           [v72 addObject:v16];
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v95 objects:v109 count:16];
+        v8 = [rankingQueryFieldsForGenericHighlighting countByEnumeratingWithState:&v95 objects:v109 count:16];
       }
 
       while (v8);
     }
 
     v17 = objc_opt_class();
-    v18 = [(ICRankingQueriesDefinition *)v2 expandedTokens];
-    v19 = [v17 maxCountOfVariantsForCountOfTokens:{objc_msgSend(v18, "count")}];
+    expandedTokens2 = [(ICRankingQueriesDefinition *)selfCopy expandedTokens];
+    v19 = [v17 maxCountOfVariantsForCountOfTokens:{objc_msgSend(expandedTokens2, "count")}];
 
     v74 = v19;
     if (v19)
@@ -113,7 +113,7 @@
       v67 = [obj countByEnumeratingWithState:&v87 objects:v107 count:16];
       if (v67)
       {
-        v71 = v2;
+        v71 = selfCopy;
         v66 = *v88;
         v20 = 0x277CBE000uLL;
         do
@@ -134,8 +134,8 @@
             v84 = 0u;
             v85 = 0u;
             v86 = 0u;
-            v69 = [(ICRankingQueriesDefinition *)v71 expandedTokens];
-            v73 = [v69 countByEnumeratingWithState:&v83 objects:v106 count:16];
+            expandedTokens3 = [(ICRankingQueriesDefinition *)v71 expandedTokens];
+            v73 = [expandedTokens3 countByEnumeratingWithState:&v83 objects:v106 count:16];
             if (v73)
             {
               v70 = *v84;
@@ -146,7 +146,7 @@
                 {
                   if (*v84 != v70)
                   {
-                    objc_enumerationMutation(v69);
+                    objc_enumerationMutation(expandedTokens3);
                   }
 
                   v24 = *(*(&v83 + 1) + 8 * v23);
@@ -180,13 +180,13 @@
                       v30 = [*(v20 + 2656) arrayWithObjects:&v100 count:1];
                       v101 = v30;
                       v31 = [*(v20 + 2656) arrayWithObjects:&v101 count:1];
-                      v32 = [(ICRankingQueriesDefinition *)v28 rankingQueryType];
+                      rankingQueryType2 = [(ICRankingQueriesDefinition *)v28 rankingQueryType];
                       [(ICRankingQueriesDefinition *)v28 rankingQueryFlags];
                       v33 = v27;
                       v34 = v28;
                       v35 = v25;
                       v37 = v36 = v20;
-                      v38 = [v77 initWithQueryFields:v76 expandedTokens:v31 rankingQueryType:v32 rankingQueryFlags:v37 purpose:0];
+                      v38 = [v77 initWithQueryFields:v76 expandedTokens:v31 rankingQueryType:rankingQueryType2 rankingQueryFlags:v37 purpose:0];
 
                       v20 = v36;
                       v25 = v35;
@@ -202,7 +202,7 @@
                 }
 
                 while (v75 + 1 != v73);
-                v73 = [v69 countByEnumeratingWithState:&v83 objects:v106 count:16];
+                v73 = [expandedTokens3 countByEnumeratingWithState:&v83 objects:v106 count:16];
               }
 
               while (v73);
@@ -216,7 +216,7 @@
         }
 
         while (v67);
-        v2 = v71;
+        selfCopy = v71;
       }
     }
 
@@ -243,12 +243,12 @@
 
             v44 = *(*(&v91 + 1) + 8 * k);
             v45 = [ICRankingQueryDescriptor alloc];
-            v46 = [(ICRankingQueriesDefinition *)v2 expandedTokens];
-            v47 = [(ICRankingQueriesDefinition *)v2 rankingQueryType];
-            v48 = [(ICRankingQueriesDefinition *)v2 rankingQueryFlags];
-            v49 = v47;
+            expandedTokens4 = [(ICRankingQueriesDefinition *)selfCopy expandedTokens];
+            rankingQueryType3 = [(ICRankingQueriesDefinition *)selfCopy rankingQueryType];
+            rankingQueryFlags2 = [(ICRankingQueriesDefinition *)selfCopy rankingQueryFlags];
+            v49 = rankingQueryType3;
             v7 = 0x278192000uLL;
-            v50 = [(ICRankingQueryDescriptor *)v45 initWithQueryFields:v44 expandedTokens:v46 rankingQueryType:v49 rankingQueryFlags:v48 purpose:0];
+            v50 = [(ICRankingQueryDescriptor *)v45 initWithQueryFields:v44 expandedTokens:expandedTokens4 rankingQueryType:v49 rankingQueryFlags:rankingQueryFlags2 purpose:0];
 
             [v4 addObject:v50];
           }
@@ -264,8 +264,8 @@
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v51 = [MEMORY[0x277D36268] rankingQueryFieldsForSorting];
-    v52 = [v51 countByEnumeratingWithState:&v79 objects:v99 count:16];
+    rankingQueryFieldsForSorting = [MEMORY[0x277D36268] rankingQueryFieldsForSorting];
+    v52 = [rankingQueryFieldsForSorting countByEnumeratingWithState:&v79 objects:v99 count:16];
     if (v52)
     {
       v53 = v52;
@@ -276,31 +276,31 @@
         {
           if (*v80 != v54)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(rankingQueryFieldsForSorting);
           }
 
           v56 = *(*(&v79 + 1) + 8 * m);
           v57 = objc_alloc(*(v7 + 3784));
-          v58 = [(ICRankingQueriesDefinition *)v2 expandedTokens];
-          v59 = [(ICRankingQueriesDefinition *)v2 rankingQueryType];
-          v60 = [(ICRankingQueriesDefinition *)v2 rankingQueryFlags];
-          v61 = [v57 initWithQueryFields:v56 expandedTokens:v58 rankingQueryType:v59 rankingQueryFlags:v60 purpose:1];
+          expandedTokens5 = [(ICRankingQueriesDefinition *)selfCopy expandedTokens];
+          rankingQueryType4 = [(ICRankingQueriesDefinition *)selfCopy rankingQueryType];
+          rankingQueryFlags3 = [(ICRankingQueriesDefinition *)selfCopy rankingQueryFlags];
+          v61 = [v57 initWithQueryFields:v56 expandedTokens:expandedTokens5 rankingQueryType:rankingQueryType4 rankingQueryFlags:rankingQueryFlags3 purpose:1];
 
           v7 = 0x278192000;
           [v72 addObject:v61];
         }
 
-        v53 = [v51 countByEnumeratingWithState:&v79 objects:v99 count:16];
+        v53 = [rankingQueryFieldsForSorting countByEnumeratingWithState:&v79 objects:v99 count:16];
       }
 
       while (v53);
     }
 
     v62 = [v72 copy];
-    v63 = v2->_rankingQueryDescriptors;
-    v2->_rankingQueryDescriptors = v62;
+    v63 = selfCopy->_rankingQueryDescriptors;
+    selfCopy->_rankingQueryDescriptors = v62;
 
-    rankingQueryDescriptors = v2->_rankingQueryDescriptors;
+    rankingQueryDescriptors = selfCopy->_rankingQueryDescriptors;
   }
 
   return rankingQueryDescriptors;
@@ -317,8 +317,8 @@
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    rankingQueryDescriptors = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
+    v6 = [rankingQueryDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -330,17 +330,17 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(rankingQueryDescriptors);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) rankingQuery];
-          [v4 addObject:v10];
+          rankingQuery = [*(*(&v14 + 1) + 8 * v9) rankingQuery];
+          [v4 addObject:rankingQuery];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [rankingQueryDescriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -356,34 +356,34 @@
   return rankingQueries;
 }
 
-+ (unint64_t)maxCountOfVariantsForCountOfTokens:(unint64_t)a3
++ (unint64_t)maxCountOfVariantsForCountOfTokens:(unint64_t)tokens
 {
-  if (!a3)
+  if (!tokens)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277D36268] rankingQueryLimit];
-  v5 = [MEMORY[0x277D36268] rankingQueryFieldsForGenericHighlighting];
-  v6 = [v5 count];
+  rankingQueryLimit = [MEMORY[0x277D36268] rankingQueryLimit];
+  rankingQueryFieldsForGenericHighlighting = [MEMORY[0x277D36268] rankingQueryFieldsForGenericHighlighting];
+  v6 = [rankingQueryFieldsForGenericHighlighting count];
 
-  v7 = [MEMORY[0x277D36268] rankingQueryFieldsForSorting];
-  v8 = [v7 count];
+  rankingQueryFieldsForSorting = [MEMORY[0x277D36268] rankingQueryFieldsForSorting];
+  v8 = [rankingQueryFieldsForSorting count];
 
-  v9 = v4 - (v6 + v8);
-  v10 = [MEMORY[0x277D36268] rankingQueryFieldsForWordSpecificHighlighting];
-  v11 = [v10 count];
+  v9 = rankingQueryLimit - (v6 + v8);
+  rankingQueryFieldsForWordSpecificHighlighting = [MEMORY[0x277D36268] rankingQueryFieldsForWordSpecificHighlighting];
+  v11 = [rankingQueryFieldsForWordSpecificHighlighting count];
 
-  return vcvtmd_u64_f64(v9 / v11 / a3);
+  return vcvtmd_u64_f64(v9 / v11 / tokens);
 }
 
-- (id)highlightInfoForSearchableItem:(id)a3
+- (id)highlightInfoForSearchableItem:(id)item
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v20 = v4;
-  -[ICRankingQueriesDefinition matchingDescriptorsForBitFields:](self, "matchingDescriptorsForBitFields:", [objc_opt_class() relevanceBitFieldForSearchableItem:v4]);
+  v20 = itemCopy;
+  -[ICRankingQueriesDefinition matchingDescriptorsForBitFields:](self, "matchingDescriptorsForBitFields:", [objc_opt_class() relevanceBitFieldForSearchableItem:itemCopy]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -406,7 +406,7 @@
         v7 = *(*(&v29 + 1) + 8 * v6);
         if (![v7 purpose])
         {
-          v8 = [v7 displayedMatchedFields];
+          displayedMatchedFields = [v7 displayedMatchedFields];
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
@@ -425,11 +425,11 @@
                   objc_enumerationMutation(&unk_282747EF8);
                 }
 
-                v13 = [*(*(&v25 + 1) + 8 * i) unsignedIntegerValue];
-                if ((v13 & v8) != 0)
+                unsignedIntegerValue = [*(*(&v25 + 1) + 8 * i) unsignedIntegerValue];
+                if ((unsignedIntegerValue & displayedMatchedFields) != 0)
                 {
-                  v14 = v13;
-                  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
+                  v14 = unsignedIntegerValue;
+                  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
                   v16 = [v5 objectForKeyedSubscript:v15];
 
                   if (!v16)
@@ -465,11 +465,11 @@
   return v18;
 }
 
-- (double)rankingScoreForSearchableItem:(id)a3
+- (double)rankingScoreForSearchableItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = -[ICRankingQueriesDefinition matchingDescriptorsForBitFields:](self, "matchingDescriptorsForBitFields:", [objc_opt_class() relevanceBitFieldForSearchableItem:v4]);
+  itemCopy = item;
+  v5 = -[ICRankingQueriesDefinition matchingDescriptorsForBitFields:](self, "matchingDescriptorsForBitFields:", [objc_opt_class() relevanceBitFieldForSearchableItem:itemCopy]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -492,8 +492,8 @@
         v11 = *(*(&v15 + 1) + 8 * i);
         if ([v11 purpose] == 1)
         {
-          v12 = [v4 attributeSet];
-          [v11 rankingScoreForSearchResultType:{objc_msgSend(v12, "ic_searchResultType")}];
+          attributeSet = [itemCopy attributeSet];
+          [v11 rankingScoreForSearchResultType:{objc_msgSend(attributeSet, "ic_searchResultType")}];
           v9 = v9 + v13;
         }
       }
@@ -512,79 +512,79 @@
   return v9;
 }
 
-+ (unint64_t)modificationDateBucketForSearchableItem:(id)a3
++ (unint64_t)modificationDateBucketForSearchableItem:(id)item
 {
-  v4 = [a3 attributeSet];
-  v5 = [v4 contentModificationDate];
+  attributeSet = [item attributeSet];
+  contentModificationDate = [attributeSet contentModificationDate];
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSinceDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:contentModificationDate];
   v8 = v7;
 
-  v9 = [a1 bucketOfTimeInterval:v8];
+  v9 = [self bucketOfTimeInterval:v8];
   return v9;
 }
 
-+ (unint64_t)relevanceBitFieldForSearchableItem:(id)a3
++ (unint64_t)relevanceBitFieldForSearchableItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 ic_relevance];
+  attributeSet = [item attributeSet];
+  ic_relevance = [attributeSet ic_relevance];
 
-  return v4;
+  return ic_relevance;
 }
 
-- (void)addDescriptor:(id)a3 intoSearchResultHighlightInfoFieldElement:(id)a4
+- (void)addDescriptor:(id)descriptor intoSearchResultHighlightInfoFieldElement:(id)element
 {
-  v11 = a4;
-  v5 = a3;
-  v6 = 2 * (([v5 rankingQueryType] - 1) < 2);
-  v7 = [v5 tokens];
+  elementCopy = element;
+  descriptorCopy = descriptor;
+  v6 = 2 * (([descriptorCopy rankingQueryType] - 1) < 2);
+  tokens = [descriptorCopy tokens];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
-  v9 = [v11 objectForKeyedSubscript:v8];
+  v9 = [elementCopy objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
-    [v11 setObject:v9 forKeyedSubscript:v10];
+    [elementCopy setObject:v9 forKeyedSubscript:v10];
   }
 
-  if (v7)
+  if (tokens)
   {
-    [v9 addObjectsFromArray:v7];
+    [v9 addObjectsFromArray:tokens];
   }
 }
 
-- (id)matchingDescriptorsForBitFields:(unint64_t)a3
+- (id)matchingDescriptorsForBitFields:(unint64_t)fields
 {
-  v5 = [(ICRankingQueriesDefinition *)self matchingDescriptorsCache];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  matchingDescriptorsCache = [(ICRankingQueriesDefinition *)self matchingDescriptorsCache];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:fields];
+  v7 = [matchingDescriptorsCache objectForKeyedSubscript:v6];
 
   if (!v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (a3)
+    if (fields)
     {
-      v9 = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
-      v10 = [v9 count];
+      rankingQueryDescriptors = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
+      v10 = [rankingQueryDescriptors count];
 
       if (v10)
       {
         v11 = 0;
         do
         {
-          if (((1 << v11) & a3) >> v11)
+          if (((1 << v11) & fields) >> v11)
           {
-            v12 = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
-            v13 = [v12 objectAtIndexedSubscript:v11];
+            rankingQueryDescriptors2 = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
+            v13 = [rankingQueryDescriptors2 objectAtIndexedSubscript:v11];
             [v8 addObject:v13];
           }
 
           ++v11;
-          v14 = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
-          v15 = [v14 count];
+          rankingQueryDescriptors3 = [(ICRankingQueriesDefinition *)self rankingQueryDescriptors];
+          v15 = [rankingQueryDescriptors3 count];
         }
 
         while (v11 < v15);
@@ -592,22 +592,22 @@
     }
 
     v7 = [v8 copy];
-    v16 = [(ICRankingQueriesDefinition *)self matchingDescriptorsCache];
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    [v16 setObject:v7 forKeyedSubscript:v17];
+    matchingDescriptorsCache2 = [(ICRankingQueriesDefinition *)self matchingDescriptorsCache];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:fields];
+    [matchingDescriptorsCache2 setObject:v7 forKeyedSubscript:v17];
   }
 
   return v7;
 }
 
-+ (unint64_t)bucketOfTimeInterval:(double)a3
++ (unint64_t)bucketOfTimeInterval:(double)interval
 {
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
     return 2;
   }
 
-  v3 = ceil(log(a3) * 1.28617347 + -6.14189718);
+  v3 = ceil(log(interval) * 1.28617347 + -6.14189718);
   if (v3 <= 2.0)
   {
     return 2;

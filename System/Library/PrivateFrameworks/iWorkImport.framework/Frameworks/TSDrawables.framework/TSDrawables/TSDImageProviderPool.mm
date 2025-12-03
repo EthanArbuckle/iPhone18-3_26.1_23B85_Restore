@@ -1,25 +1,25 @@
 @interface TSDImageProviderPool
-+ (Class)p_providerClassForData:(id)a3;
++ (Class)p_providerClassForData:(id)data;
 + (TSDImageProviderPool)sharedPool;
-- (BOOL)isBitmapData:(id)a3;
+- (BOOL)isBitmapData:(id)data;
 - (TSDImageProviderPool)init;
-- (id)p_providerForData:(id)a3 temporary:(BOOL)a4 shouldValidate:(BOOL)a5;
+- (id)p_providerForData:(id)data temporary:(BOOL)temporary shouldValidate:(BOOL)validate;
 - (unint64_t)p_estimatedSizeOfAllProviders;
 - (unint64_t)p_imageProviderMemoryThreshold;
 - (unint64_t)p_removeProvidersWithZeroInterest;
-- (void)addInterestInProviderForData:(id)a3;
+- (void)addInterestInProviderForData:(id)data;
 - (void)dealloc;
 - (void)flushImageProviders;
-- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)a3;
-- (void)p_applicationDidEnterBackground:(id)a3;
-- (void)p_clearCacheForDataUniqueIdentifier:(id)a3 flags:(unint64_t)a4;
-- (void)p_didReceiveMemoryWarning:(id)a3;
+- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)provider;
+- (void)p_applicationDidEnterBackground:(id)background;
+- (void)p_clearCacheForDataUniqueIdentifier:(id)identifier flags:(unint64_t)flags;
+- (void)p_didReceiveMemoryWarning:(id)warning;
 - (void)p_flushProvidersWithNoOneActivelyHoldingAReference;
-- (void)p_flushRandomImageProvidersExcludingProvider:(id)a3;
-- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)a3;
+- (void)p_flushRandomImageProvidersExcludingProvider:(id)provider;
+- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)count;
 - (void)p_updateFileDescriptorLimit;
-- (void)removeInterestInProviderForData:(id)a3;
-- (void)willCloseDocumentContext:(id)a3;
+- (void)removeInterestInProviderForData:(id)data;
+- (void)willCloseDocumentContext:(id)context;
 @end
 
 @implementation TSDImageProviderPool
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = sub_2766A0C00;
   block[3] = &unk_27A6CC4B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A4C238 != -1)
   {
     dispatch_once(&qword_280A4C238, block);
@@ -77,10 +77,10 @@
   [(TSDImageProviderPool *)&v3 dealloc];
 }
 
-- (BOOL)isBitmapData:(id)a3
+- (BOOL)isBitmapData:(id)data
 {
-  v3 = a3;
-  v6 = objc_msgSend_type(v3, v4, v5);
+  dataCopy = data;
+  v6 = objc_msgSend_type(dataCopy, v4, v5);
   v8 = objc_msgSend_tsu_conformsToUTI_(v6, v7, *MEMORY[0x277D81480]);
 
   if (v8)
@@ -91,7 +91,7 @@
   else
   {
     v10 = objc_opt_class();
-    v12 = objc_msgSend_p_providerClassForData_(v10, v11, v3);
+    v12 = objc_msgSend_p_providerClassForData_(v10, v11, dataCopy);
     v13 = objc_opt_class();
     isSubclassOfClass = objc_msgSend_isSubclassOfClass_(v12, v14, v13);
   }
@@ -99,12 +99,12 @@
   return isSubclassOfClass;
 }
 
-+ (Class)p_providerClassForData:(id)a3
++ (Class)p_providerClassForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v6 = objc_msgSend_null(MEMORY[0x277D80828], v4, v5);
 
-  if (v6 == v3)
+  if (v6 == dataCopy)
   {
 LABEL_13:
     if (qword_280A4CEC8 != -1)
@@ -116,7 +116,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v9 = objc_msgSend_type(v3, v7, v8);
+  v9 = objc_msgSend_type(dataCopy, v7, v8);
   if (objc_msgSend_tsu_conformsToUTI_(v9, v10, *MEMORY[0x277D81480]))
   {
     if (qword_280A4CEC8 != -1)
@@ -146,7 +146,7 @@ LABEL_13:
     v30[3] = &unk_27A6CCA98;
     v30[4] = &v31;
     v30[5] = &v35;
-    objc_msgSend_performInputStreamReadWithAccessor_(v3, v25, v30);
+    objc_msgSend_performInputStreamReadWithAccessor_(dataCopy, v25, v30);
     if (*(v32 + 24) == 1 && (v35 == 1178882085 ? (v28 = v36 == 45) : (v28 = 0), v28))
     {
       v19 = objc_opt_class();
@@ -154,7 +154,7 @@ LABEL_13:
 
     else
     {
-      v29 = objc_msgSend_newCGImage(v3, v26, v27);
+      v29 = objc_msgSend_newCGImage(dataCopy, v26, v27);
       if (v29)
       {
         v19 = objc_opt_class();
@@ -186,12 +186,12 @@ LABEL_16:
   return v19;
 }
 
-- (id)p_providerForData:(id)a3 temporary:(BOOL)a4 shouldValidate:(BOOL)a5
+- (id)p_providerForData:(id)data temporary:(BOOL)temporary shouldValidate:(BOOL)validate
 {
-  v5 = a5;
-  v8 = a3;
-  v11 = v8;
-  if (!v8 || (objc_msgSend_needsDownload(v8, v9, v10) & 1) != 0)
+  validateCopy = validate;
+  dataCopy = data;
+  v11 = dataCopy;
+  if (!dataCopy || (objc_msgSend_needsDownload(dataCopy, v9, v10) & 1) != 0)
   {
     if (objc_msgSend_needsDownload(v11, v9, v10))
     {
@@ -217,27 +217,27 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  mImageDataUniqueIdentifierToImageProviderMap = v16->mImageDataUniqueIdentifierToImageProviderMap;
-  mOpenFileDescriptorLimit = v16->mOpenFileDescriptorLimit;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mImageDataUniqueIdentifierToImageProviderMap = selfCopy->mImageDataUniqueIdentifierToImageProviderMap;
+  mOpenFileDescriptorLimit = selfCopy->mOpenFileDescriptorLimit;
   v20 = objc_msgSend_uniqueIdentifier(v11, v18, v19);
   v22 = objc_msgSend_objectForKeyedSubscript_(mImageDataUniqueIdentifierToImageProviderMap, v21, v20);
 
   if (!v22)
   {
-    objc_sync_exit(v16);
+    objc_sync_exit(selfCopy);
 
-    v25 = v16;
+    v25 = selfCopy;
     objc_sync_enter(v25);
-    v26 = v16->mImageDataUniqueIdentifierToImageProviderMap;
+    v26 = selfCopy->mImageDataUniqueIdentifierToImageProviderMap;
     v29 = objc_msgSend_uniqueIdentifier(v11, v27, v28);
     v22 = objc_msgSend_objectForKeyedSubscript_(v26, v30, v29);
 
     if (v22)
     {
 LABEL_11:
-      v15 = objc_msgSend_count(v16->mImageDataUniqueIdentifierToImageProviderMap, v31, v32);
+      v15 = objc_msgSend_count(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v31, v32);
       goto LABEL_12;
     }
 
@@ -249,9 +249,9 @@ LABEL_11:
       v22 = objc_msgSend_initWithImageData_(v36, v37, v11);
       if (v22)
       {
-        if (!a4)
+        if (!temporary)
         {
-          v38 = v16->mImageDataUniqueIdentifierToImageProviderMap;
+          v38 = selfCopy->mImageDataUniqueIdentifierToImageProviderMap;
           v39 = objc_msgSend_uniqueIdentifier(v11, v31, v32);
           objc_msgSend_setObject_forKeyedSubscript_(v38, v40, v22, v39);
         }
@@ -284,11 +284,11 @@ LABEL_12:
     sub_276808640();
   }
 
-  v15 = objc_msgSend_count(v16->mImageDataUniqueIdentifierToImageProviderMap, v23, v24);
-  objc_sync_exit(v16);
+  v15 = objc_msgSend_count(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v23, v24);
+  objc_sync_exit(selfCopy);
 
 LABEL_26:
-  if (v5 && (objc_msgSend_isError(v22, v12, v13) & 1) == 0 && (objc_msgSend_isValid(v22, v12, v13) & 1) == 0)
+  if (validateCopy && (objc_msgSend_isError(v22, v12, v13) & 1) == 0 && (objc_msgSend_isValid(v22, v12, v13) & 1) == 0)
   {
     if (qword_280A4CEC8 != -1)
     {
@@ -313,11 +313,11 @@ LABEL_26:
   return v22;
 }
 
-- (void)addInterestInProviderForData:(id)a3
+- (void)addInterestInProviderForData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v13 = objc_msgSend_providerForData_shouldValidate_(self, a2, a3, 0);
+    v13 = objc_msgSend_providerForData_shouldValidate_(self, a2, data, 0);
     objc_msgSend_addInterest(v13, v3, v4);
   }
 
@@ -334,19 +334,19 @@ LABEL_26:
   }
 }
 
-- (void)removeInterestInProviderForData:(id)a3
+- (void)removeInterestInProviderForData:(id)data
 {
-  v21 = a3;
-  if (v21)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    mImageDataUniqueIdentifierToImageProviderMap = v5->mImageDataUniqueIdentifierToImageProviderMap;
-    v9 = objc_msgSend_uniqueIdentifier(v21, v7, v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    mImageDataUniqueIdentifierToImageProviderMap = selfCopy->mImageDataUniqueIdentifierToImageProviderMap;
+    v9 = objc_msgSend_uniqueIdentifier(dataCopy, v7, v8);
     v11 = objc_msgSend_objectForKeyedSubscript_(mImageDataUniqueIdentifierToImageProviderMap, v10, v9);
 
     objc_msgSend_removeInterest(v11, v12, v13);
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -360,17 +360,17 @@ LABEL_26:
   }
 }
 
-- (void)willCloseDocumentContext:(id)a3
+- (void)willCloseDocumentContext:(id)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = objc_msgSend_objectEnumerator(v5->mImageDataUniqueIdentifierToImageProviderMap, v6, v7);
+  v8 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v6, v7);
   v10 = 0;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v41, v46, 16);
   if (v13)
@@ -391,7 +391,7 @@ LABEL_26:
         if (v17)
         {
           v22 = objc_msgSend_context(v17, v18, v19);
-          if (v22 == v4)
+          if (v22 == contextCopy)
           {
             if (!v10)
             {
@@ -431,7 +431,7 @@ LABEL_26:
         v33 = v30;
         if (v30)
         {
-          mImageDataUniqueIdentifierToImageProviderMap = v5->mImageDataUniqueIdentifierToImageProviderMap;
+          mImageDataUniqueIdentifierToImageProviderMap = selfCopy->mImageDataUniqueIdentifierToImageProviderMap;
           v35 = objc_msgSend_uniqueIdentifier(v30, v31, v32);
           objc_msgSend_removeObjectForKey_(mImageDataUniqueIdentifierToImageProviderMap, v36, v35);
         }
@@ -443,20 +443,20 @@ LABEL_26:
     while (v27);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_flushRandomImageProvidersExcludingProvider:(id)a3
+- (void)p_flushRandomImageProvidersExcludingProvider:(id)provider
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  providerCopy = provider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = objc_msgSend_objectEnumerator(v5->mImageDataUniqueIdentifierToImageProviderMap, v6, v7, 0);
+  v8 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v6, v7, 0);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v16, v20, 16);
   if (v12)
   {
@@ -472,7 +472,7 @@ LABEL_26:
         }
 
         v15 = *(*(&v16 + 1) + 8 * v14);
-        if (v15 != v4 && objc_msgSend_p_rngSaysToFlush(v5, v10, v11))
+        if (v15 != providerCopy && objc_msgSend_p_rngSaysToFlush(selfCopy, v10, v11))
         {
           if (qword_280A4CEC8 != -1)
           {
@@ -492,7 +492,7 @@ LABEL_26:
     while (v12);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)flushImageProviders
@@ -503,13 +503,13 @@ LABEL_26:
     sub_2768086CC();
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = objc_msgSend_objectEnumerator(v3->mImageDataUniqueIdentifierToImageProviderMap, v4, v5, 0);
+  v6 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v4, v5, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v15, v19, 16);
   if (v10)
   {
@@ -532,49 +532,49 @@ LABEL_26:
     while (v10);
   }
 
-  objc_msgSend_removeAllObjects(v3->mImageDataUniqueIdentifierToImageProviderMap, v13, v14);
-  objc_sync_exit(v3);
+  objc_msgSend_removeAllObjects(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v13, v14);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_clearCacheForDataUniqueIdentifier:(id)a3 flags:(unint64_t)a4
+- (void)p_clearCacheForDataUniqueIdentifier:(id)identifier flags:(unint64_t)flags
 {
-  v9 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_objectForKeyedSubscript_(v5->mImageDataUniqueIdentifierToImageProviderMap, v6, v9);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_objectForKeyedSubscript_(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v6, identifierCopy);
   if (v8)
   {
-    objc_msgSend_removeObjectForKey_(v5->mImageDataUniqueIdentifierToImageProviderMap, v7, v9);
+    objc_msgSend_removeObjectForKey_(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v7, identifierCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)a3
+- (void)p_freeFileDescriptorsWithProviderCount:(unint64_t)count
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  obj = v4;
-  objc_msgSend_p_updateFileDescriptorLimit(v4, v5, v6);
-  v10 = objc_msgSend_p_providerLimitForFileDescriptorLimit_(v4, v7, v4->mOpenFileDescriptorLimit);
-  if (v10 < a3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  objc_msgSend_p_updateFileDescriptorLimit(selfCopy, v5, v6);
+  v10 = objc_msgSend_p_providerLimitForFileDescriptorLimit_(selfCopy, v7, selfCopy->mOpenFileDescriptorLimit);
+  if (v10 < count)
   {
     if (qword_280A4CEC0 != -1)
     {
       sub_2768086E0();
     }
 
-    a3 -= objc_msgSend_p_removeProvidersWithZeroInterest(v4, v8, v9);
+    count -= objc_msgSend_p_removeProvidersWithZeroInterest(selfCopy, v8, v9);
     if (qword_280A4CEC0 != -1)
     {
       sub_2768086F4();
     }
   }
 
-  if (a3 > v10)
+  if (count > v10)
   {
-    if (v4->mHaveRaisedFileDescriptorLimit)
+    if (selfCopy->mHaveRaisedFileDescriptorLimit)
     {
       if (qword_280A4CEC0 != -1)
       {
@@ -582,7 +582,7 @@ LABEL_26:
       }
     }
 
-    else if (v4->mOpenFileDescriptorLimit > 0x7FF)
+    else if (selfCopy->mOpenFileDescriptorLimit > 0x7FF)
     {
       if (qword_280A4CEC0 != -1)
       {
@@ -597,7 +597,7 @@ LABEL_26:
         sub_27680871C();
       }
 
-      if (v4->mOpenFileDescriptorLimit <= 0x7FF)
+      if (selfCopy->mOpenFileDescriptorLimit <= 0x7FF)
       {
         v11 = 2048;
         do
@@ -618,15 +618,15 @@ LABEL_26:
           else
           {
             rlim_cur = v73.rlim_cur;
-            v4->mOpenFileDescriptorLimit = v73.rlim_cur;
-            v10 = objc_msgSend_p_providerLimitForFileDescriptorLimit_(v4, v12, rlim_cur);
+            selfCopy->mOpenFileDescriptorLimit = v73.rlim_cur;
+            v10 = objc_msgSend_p_providerLimitForFileDescriptorLimit_(selfCopy, v12, rlim_cur);
           }
         }
 
-        while (v4->mOpenFileDescriptorLimit < v11);
+        while (selfCopy->mOpenFileDescriptorLimit < v11);
       }
 
-      v4->mHaveRaisedFileDescriptorLimit = 1;
+      selfCopy->mHaveRaisedFileDescriptorLimit = 1;
       if (qword_280A4CEC0 != -1)
       {
         sub_276808730();
@@ -634,7 +634,7 @@ LABEL_26:
     }
   }
 
-  if (a3 > v10)
+  if (count > v10)
   {
     if (qword_280A4CEC0 != -1)
     {
@@ -646,11 +646,11 @@ LABEL_26:
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v17 = objc_msgSend_objectEnumerator(v4->mImageDataUniqueIdentifierToImageProviderMap, v15, v16);
+    v17 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v15, v16);
     v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v69, v75, 16);
     if (v19)
     {
-      v22 = a3 - ((3 * v10) >> 2);
+      v22 = count - ((3 * v10) >> 2);
       v63 = *v70;
       v60 = v22;
       v61 = v17;
@@ -770,13 +770,13 @@ LABEL_26:
 - (unint64_t)p_estimatedSizeOfAllProviders
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = objc_msgSend_objectEnumerator(v2->mImageDataUniqueIdentifierToImageProviderMap, v3, v4, 0);
+  v5 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v3, v4, 0);
   v7 = 0;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v14, v18, 16);
   if (v10)
@@ -802,28 +802,28 @@ LABEL_26:
     while (v10);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)a3
+- (void)flushProvidersToFreeMemoryIfNecessaryExcludingProvider:(id)provider
 {
-  v10 = a3;
+  providerCopy = provider;
   v6 = objc_msgSend_p_estimatedSizeOfAllProviders(self, v4, v5);
   if (v6 > objc_msgSend_p_imageProviderMemoryThreshold(self, v7, v8))
   {
-    objc_msgSend_p_flushRandomImageProvidersExcludingProvider_(self, v9, v10);
+    objc_msgSend_p_flushRandomImageProvidersExcludingProvider_(self, v9, providerCopy);
   }
 }
 
-- (void)p_didReceiveMemoryWarning:(id)a3
+- (void)p_didReceiveMemoryWarning:(id)warning
 {
-  objc_msgSend_p_removeProvidersWithZeroInterest(self, a2, a3);
+  objc_msgSend_p_removeProvidersWithZeroInterest(self, a2, warning);
 
   MEMORY[0x2821F9670](self, sel_p_flushProvidersWithNoOneActivelyHoldingAReference, v4);
 }
 
-- (void)p_applicationDidEnterBackground:(id)a3
+- (void)p_applicationDidEnterBackground:(id)background
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -837,13 +837,13 @@ LABEL_26:
 - (unint64_t)p_removeProvidersWithZeroInterest
 {
   v42 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = objc_msgSend_objectEnumerator(v2->mImageDataUniqueIdentifierToImageProviderMap, v3, v4);
+  v5 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v3, v4);
   v7 = 0;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v36, v41, 16);
   if (v10)
@@ -898,7 +898,7 @@ LABEL_26:
         v24 = v21;
         if (v21)
         {
-          mImageDataUniqueIdentifierToImageProviderMap = v2->mImageDataUniqueIdentifierToImageProviderMap;
+          mImageDataUniqueIdentifierToImageProviderMap = selfCopy->mImageDataUniqueIdentifierToImageProviderMap;
           v26 = objc_msgSend_uniqueIdentifier(v21, v22, v23);
           objc_msgSend_removeObjectForKey_(mImageDataUniqueIdentifierToImageProviderMap, v27, v26);
         }
@@ -911,7 +911,7 @@ LABEL_26:
   }
 
   v30 = objc_msgSend_count(v14, v28, v29);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v30;
 }
@@ -919,13 +919,13 @@ LABEL_26:
 - (void)p_flushProvidersWithNoOneActivelyHoldingAReference
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = objc_msgSend_objectEnumerator(v2->mImageDataUniqueIdentifierToImageProviderMap, v3, v4, 0);
+  v5 = objc_msgSend_objectEnumerator(selfCopy->mImageDataUniqueIdentifierToImageProviderMap, v3, v4, 0);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v12, v16, 16);
   if (v9)
   {
@@ -950,7 +950,7 @@ LABEL_26:
     while (v9);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)p_updateFileDescriptorLimit

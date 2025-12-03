@@ -1,19 +1,19 @@
 @interface VCPMADTaskScheduler
 + (id)sharedInstance;
-- (BOOL)taskIsAuxiliaryCompatible:(id)a3 runningTask:(id)a4;
-- (BOOL)validateTask:(id)a3;
+- (BOOL)taskIsAuxiliaryCompatible:(id)compatible runningTask:(id)task;
+- (BOOL)validateTask:(id)task;
 - (VCPMADTaskScheduler)init;
-- (unint64_t)addBackgroundTask:(id)a3 withQoS:(unsigned int)a4;
-- (unint64_t)addForegroundTask:(id)a3 withQoS:(unsigned int)a4 completionHandler:(id)a5;
+- (unint64_t)addBackgroundTask:(id)task withQoS:(unsigned int)s;
+- (unint64_t)addForegroundTask:(id)task withQoS:(unsigned int)s completionHandler:(id)handler;
 - (unint64_t)currentOutstandingTasks;
-- (unsigned)validateQoS:(unsigned int)a3;
-- (void)_checkBackgroundTasksForTask:(id)a3;
-- (void)_runTask:(id)a3;
+- (unsigned)validateQoS:(unsigned int)s;
+- (void)_checkBackgroundTasksForTask:(id)task;
+- (void)_runTask:(id)task;
 - (void)_schedule;
-- (void)_tryFreeingResourcesForQOS:(id)a3 resourceRequirement:(float)a4;
+- (void)_tryFreeingResourcesForQOS:(id)s resourceRequirement:(float)requirement;
 - (void)cancelAllTasks;
 - (void)cancelBackgroundTasks;
-- (void)cancelTaskWithID:(unint64_t)a3;
+- (void)cancelTaskWithID:(unint64_t)d;
 - (void)dealloc;
 @end
 
@@ -49,8 +49,8 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [objc_opt_class() qosArray];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    qosArray = [objc_opt_class() qosArray];
+    v13 = [qosArray countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v13)
     {
       v14 = *v20;
@@ -61,7 +61,7 @@
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(qosArray);
           }
 
           v16 = *(*(&v19 + 1) + 8 * v15);
@@ -72,7 +72,7 @@
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v13 = [qosArray countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v13);
@@ -102,20 +102,20 @@
   return v3;
 }
 
-- (void)_tryFreeingResourcesForQOS:(id)a3 resourceRequirement:(float)a4
+- (void)_tryFreeingResourcesForQOS:(id)s resourceRequirement:(float)requirement
 {
-  v69 = a3;
+  sCopy = s;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v5 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [v69 intValue];
+      intValue = [sCopy intValue];
       resourceBudget = self->_resourceBudget;
       *buf = 67109632;
-      *v80 = v6;
+      *v80 = intValue;
       *&v80[4] = 2048;
-      *&v80[6] = a4;
+      *&v80[6] = requirement;
       *&v80[14] = 2048;
       *&v80[16] = resourceBudget;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[Scheduler] Attempting to terminate low-priority tasks to unblock high-priority request [QoS: %d Cost: %0.3f][Budget: %0.3f]", buf, 0x1Cu);
@@ -149,40 +149,40 @@
       v14 = *(*(&v74 + 1) + 8 * i);
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v11))
       {
-        v15 = [v14 task];
+        task = [v14 task];
         v16 = objc_opt_class();
         NSStringFromClass(v16);
-        v68 = v15;
+        v68 = task;
         v18 = v17 = v11;
-        v19 = [v14 taskID];
-        LODWORD(v15) = [v14 qos];
-        v20 = [v14 task];
-        [v20 resourceRequirement];
+        taskID = [v14 taskID];
+        LODWORD(task) = [v14 qos];
+        task2 = [v14 task];
+        [task2 resourceRequirement];
         *buf = 138413058;
         *v80 = v18;
         *&v80[8] = 2048;
-        *&v80[10] = v19;
+        *&v80[10] = taskID;
         *&v80[18] = 1024;
-        *&v80[20] = v15;
+        *&v80[20] = task;
         v81 = 2048;
         v82 = v21;
         v11 = v17;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "[Scheduler] Evaluating candidate %@ (%lu) [QoS: %d Cost: %0.3f]", buf, 0x26u);
       }
 
-      v22 = [v14 task];
-      if ([v22 autoCancellable])
+      task3 = [v14 task];
+      if ([task3 autoCancellable])
       {
         v23 = [v14 qos];
-        v24 = v23 < [v69 intValue];
+        v24 = v23 < [sCopy intValue];
 
         if (!v24)
         {
           continue;
         }
 
-        v22 = [v14 task];
-        [v22 resourceRequirement];
+        task3 = [v14 task];
+        [task3 resourceRequirement];
         v12 = v12 + v25;
       }
     }
@@ -193,7 +193,7 @@
   while (v9);
 LABEL_20:
 
-  if ((v12 + self->_resourceBudget) >= a4)
+  if ((v12 + self->_resourceBudget) >= requirement)
   {
     v72 = 0u;
     v73 = 0u;
@@ -221,35 +221,35 @@ LABEL_20:
         }
 
         v32 = *(*(&v70 + 1) + 8 * j);
-        v33 = [v32 task];
-        if ([v33 autoCancellable])
+        task4 = [v32 task];
+        if ([task4 autoCancellable])
         {
           v34 = [v32 qos];
-          v35 = v34 < [v69 intValue];
+          v35 = v34 < [sCopy intValue];
 
           if (!v35)
           {
             continue;
           }
 
-          v36 = [v32 task];
+          task5 = [v32 task];
           v37 = objc_opt_respondsToSelector();
 
           if (v37)
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v30))
             {
-              v38 = [v32 task];
+              task6 = [v32 task];
               v39 = objc_opt_class();
               v40 = NSStringFromClass(v39);
-              v41 = [v32 taskID];
+              taskID2 = [v32 taskID];
               v42 = [v32 qos];
-              v43 = [v32 task];
-              [v43 resourceRequirement];
+              task7 = [v32 task];
+              [task7 resourceRequirement];
               *buf = v65;
               *v80 = v40;
               *&v80[8] = 2048;
-              *&v80[10] = v41;
+              *&v80[10] = taskID2;
               *&v80[18] = 1024;
               *&v80[20] = v42;
               v81 = 2048;
@@ -258,25 +258,25 @@ LABEL_20:
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[Scheduler] Interrupting %@ (%lu) [QoS: %d Cost: %0.3f]", buf, 0x26u);
             }
 
-            v45 = [v32 task];
-            [v45 interrupt];
+            task8 = [v32 task];
+            [task8 interrupt];
 
-            v46 = [v32 taskGroup];
-            dispatch_group_wait(v46, 0xFFFFFFFFFFFFFFFFLL);
+            taskGroup = [v32 taskGroup];
+            dispatch_group_wait(taskGroup, 0xFFFFFFFFFFFFFFFFLL);
 
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v30))
             {
-              v47 = [v32 task];
+              task9 = [v32 task];
               v48 = objc_opt_class();
               v49 = NSStringFromClass(v48);
-              v50 = [v32 taskID];
+              taskID3 = [v32 taskID];
               v51 = [v32 qos];
-              v52 = [v32 task];
-              [v52 resourceRequirement];
+              task10 = [v32 task];
+              [task10 resourceRequirement];
               *buf = v65;
               *v80 = v49;
               *&v80[8] = 2048;
-              *&v80[10] = v50;
+              *&v80[10] = taskID3;
               *&v80[18] = 1024;
               *&v80[20] = v51;
               v81 = 2048;
@@ -290,25 +290,25 @@ LABEL_20:
             v56 = [(NSMutableDictionary *)pendingTasks objectForKeyedSubscript:v55];
             [v56 addObject:v32];
 
-            v33 = [v32 task];
-            [v33 resetInterruption];
+            task4 = [v32 task];
+            [task4 resetInterruption];
           }
 
           else
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v30))
             {
-              v57 = [v32 task];
+              task11 = [v32 task];
               v58 = objc_opt_class();
               v59 = NSStringFromClass(v58);
-              v60 = [v32 taskID];
+              taskID4 = [v32 taskID];
               v61 = [v32 qos];
-              v62 = [v32 task];
-              [v62 resourceRequirement];
+              task12 = [v32 task];
+              [task12 resourceRequirement];
               *buf = v65;
               *v80 = v59;
               *&v80[8] = 2048;
-              *&v80[10] = v60;
+              *&v80[10] = taskID4;
               *&v80[18] = 1024;
               *&v80[20] = v61;
               v81 = 2048;
@@ -317,11 +317,11 @@ LABEL_20:
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[Scheduler] Cancelling %@ (%lu) [QoS: %d Cost: %0.3f]", buf, 0x26u);
             }
 
-            v64 = [v32 task];
-            [v64 cancel];
+            task13 = [v32 task];
+            [task13 cancel];
 
-            v33 = [v32 taskGroup];
-            dispatch_group_wait(v33, 0xFFFFFFFFFFFFFFFFLL);
+            task4 = [v32 taskGroup];
+            dispatch_group_wait(task4, 0xFFFFFFFFFFFFFFFFLL);
           }
         }
       }
@@ -353,8 +353,8 @@ LABEL_43:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [objc_opt_class() qosArray];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  qosArray = [objc_opt_class() qosArray];
+  v5 = [qosArray countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = *v22;
@@ -365,7 +365,7 @@ LABEL_43:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(qosArray);
         }
 
         v8 = *(*(&v21 + 1) + 8 * v7);
@@ -381,8 +381,8 @@ LABEL_43:
 
           v11 = [(NSMutableDictionary *)self->_pendingTasks objectForKeyedSubscript:v8];
           v12 = [v11 objectAtIndexedSubscript:0];
-          v13 = [v12 task];
-          [v13 resourceRequirement];
+          task = [v12 task];
+          [task resourceRequirement];
           v15 = v14 > self->_resourceBudget;
 
           if (v15)
@@ -391,8 +391,8 @@ LABEL_43:
             {
               v18 = [(NSMutableDictionary *)self->_pendingTasks objectForKeyedSubscript:v8];
               v19 = [v18 objectAtIndexedSubscript:0];
-              v20 = [v19 task];
-              [v20 resourceRequirement];
+              task2 = [v19 task];
+              [task2 resourceRequirement];
               [(VCPMADTaskScheduler *)self _tryFreeingResourcesForQOS:v8 resourceRequirement:?];
             }
 
@@ -412,7 +412,7 @@ LABEL_43:
         break;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [qosArray countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v5);
@@ -421,11 +421,11 @@ LABEL_43:
 LABEL_18:
 }
 
-- (void)_runTask:(id)a3
+- (void)_runTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = +[VCPWatchdog sharedWatchdog];
-  v6 = [v4 task];
+  task = [taskCopy task];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [NSString stringWithFormat:@"Task: %@", v8];
@@ -436,21 +436,21 @@ LABEL_18:
     v10 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v10))
     {
-      v11 = [v4 task];
+      task2 = [taskCopy task];
       v12 = objc_opt_class();
       *buf = 138412802;
       v52 = v12;
       v53 = 2048;
-      v54 = [v4 taskID];
+      taskID = [taskCopy taskID];
       v55 = 1024;
-      v56 = [v4 qos];
+      v56 = [taskCopy qos];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "Running task %@ (%lu) [QoS: %d]", buf, 0x1Cu);
     }
   }
 
   v13 = +[MADStateHandler sharedStateHandler];
-  v14 = [v4 task];
-  [v13 addBreadcrumb:{@"Running task %@ with qos %u", objc_opt_class(), objc_msgSend(v4, "qos")}];
+  task3 = [taskCopy task];
+  [v13 addBreadcrumb:{@"Running task %@ with qos %u", objc_opt_class(), objc_msgSend(taskCopy, "qos")}];
 
   if (![(NSMutableArray *)self->_runningTasks count])
   {
@@ -462,13 +462,13 @@ LABEL_18:
     self->_cpuMonitorID = [v17 disableWithTimeoutSeconds:86400];
   }
 
-  v18 = [v4 task];
+  task4 = [taskCopy task];
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v4 task];
-    v20 = [v19 cachesResources];
+    task5 = [taskCopy task];
+    cachesResources = [task5 cachesResources];
 
-    if (v20)
+    if (cachesResources)
     {
       goto LABEL_14;
     }
@@ -483,34 +483,34 @@ LABEL_18:
     v21 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v21))
     {
-      v22 = [v4 task];
+      task6 = [taskCopy task];
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [v4 taskID];
+      taskID2 = [taskCopy taskID];
       *buf = 138412546;
       v52 = v24;
       v53 = 2048;
-      v54 = v25;
+      taskID = taskID2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "[Scheduler] %@ (%lu) does not use resource cache; purging if necessary", buf, 0x16u);
     }
   }
 
   v26 = +[VCPMADResourceManager sharedManager];
-  v27 = [v4 task];
-  [v27 resourceRequirement];
+  task7 = [taskCopy task];
+  [task7 resourceRequirement];
   [v26 reserveBudgetNormalized:v28];
 
 LABEL_14:
   pendingTasks = self->_pendingTasks;
-  v30 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 qos]);
+  v30 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [taskCopy qos]);
   v31 = [(NSMutableDictionary *)pendingTasks objectForKeyedSubscript:v30];
-  [v31 removeObject:v4];
+  [v31 removeObject:taskCopy];
 
-  [(NSMutableArray *)self->_runningTasks addObject:v4];
-  if (([v4 background] & 1) == 0)
+  [(NSMutableArray *)self->_runningTasks addObject:taskCopy];
+  if (([taskCopy background] & 1) == 0)
   {
-    v32 = [v4 task];
-    [v32 resourceRequirement];
+    task8 = [taskCopy task];
+    [task8 resourceRequirement];
     self->_resourceBudget = self->_resourceBudget - v33;
   }
 
@@ -520,18 +520,18 @@ LABEL_14:
     v35 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(v34, v35))
     {
-      v36 = [v4 task];
+      task9 = [taskCopy task];
       v37 = objc_opt_class();
       v38 = NSStringFromClass(v37);
-      v39 = [v4 taskID];
-      v40 = [v4 qos];
-      v41 = [v4 task];
-      [v41 resourceRequirement];
+      taskID3 = [taskCopy taskID];
+      v40 = [taskCopy qos];
+      task10 = [taskCopy task];
+      [task10 resourceRequirement];
       resourceBudget = self->_resourceBudget;
       *buf = 138413314;
       v52 = v38;
       v53 = 2048;
-      v54 = v39;
+      taskID = taskID3;
       v55 = 1024;
       v56 = v40;
       v57 = 2048;
@@ -542,18 +542,18 @@ LABEL_14:
     }
   }
 
-  v44 = [v4 taskGroup];
-  dispatch_group_enter(v44);
+  taskGroup = [taskCopy taskGroup];
+  dispatch_group_enter(taskGroup);
 
   runningGroup = self->_runningGroup;
-  v46 = dispatch_get_global_queue([v4 qos], 0);
+  v46 = dispatch_get_global_queue([taskCopy qos], 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C8D0;
   block[3] = &unk_100282BC8;
-  v49 = v4;
-  v50 = self;
-  v47 = v4;
+  v49 = taskCopy;
+  selfCopy = self;
+  v47 = taskCopy;
   dispatch_group_async(runningGroup, v46, block);
 }
 
@@ -580,11 +580,11 @@ LABEL_14:
         v6 = *(*(&v9 + 1) + 8 * i);
         if ([v6 background])
         {
-          v7 = [v6 task];
-          [v7 cancel];
+          task = [v6 task];
+          [task cancel];
 
-          v8 = [v6 taskGroup];
-          dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
+          taskGroup = [v6 taskGroup];
+          dispatch_group_wait(taskGroup, 0xFFFFFFFFFFFFFFFFLL);
         }
       }
 
@@ -595,9 +595,9 @@ LABEL_14:
   }
 }
 
-- (void)_checkBackgroundTasksForTask:(id)a3
+- (void)_checkBackgroundTasksForTask:(id)task
 {
-  v35 = a3;
+  taskCopy = task;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -621,13 +621,13 @@ LABEL_14:
         v7 = *(*(&v37 + 1) + 8 * i);
         if ([v7 background])
         {
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ![v35 interruptBackgroundTasks])
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ![taskCopy interruptBackgroundTasks])
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
             {
               v28 = objc_opt_class();
               v29 = NSStringFromClass(v28);
-              v30 = [v7 task];
+              task = [v7 task];
               v31 = objc_opt_class();
               v32 = NSStringFromClass(v31);
               *buf = v33;
@@ -644,7 +644,7 @@ LABEL_14:
             {
               v23 = objc_opt_class();
               v24 = NSStringFromClass(v23);
-              v25 = [v7 task];
+              task2 = [v7 task];
               v26 = objc_opt_class();
               v27 = NSStringFromClass(v26);
               *buf = v33;
@@ -654,8 +654,8 @@ LABEL_14:
               _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "[Scheduler] Foreground task (%@) interrupting DAS activity (%@)", buf, 0x16u);
             }
 
-            v8 = [v7 task];
-            [v8 cancel];
+            task3 = [v7 task];
+            [task3 cancel];
 
             v9 = VCPSignPostPersistentLog();
             v10 = VCPSignPostPersistentLog();
@@ -667,23 +667,23 @@ LABEL_14:
               v13 = objc_opt_class();
               v14 = NSStringFromClass(v13);
               v15 = v14;
-              v16 = [v14 UTF8String];
-              v17 = [v7 task];
+              uTF8String = [v14 UTF8String];
+              task4 = [v7 task];
               v18 = objc_opt_class();
               v19 = NSStringFromClass(v18);
               v20 = v19;
-              v21 = [v19 UTF8String];
+              uTF8String2 = [v19 UTF8String];
               *buf = 134349570;
               v42 = v12;
               v43 = 2082;
-              v44 = v16;
+              v44 = uTF8String;
               v45 = 2082;
-              v46 = v21;
+              v46 = uTF8String2;
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_EVENT, v11, "InterruptRunningBGST", "%{public, signpost.description:begin_time}llu Foreground=%{public, signpost.telemetry:string1}s Background=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x20u);
             }
 
-            v22 = [v7 taskGroup];
-            dispatch_group_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
+            taskGroup = [v7 taskGroup];
+            dispatch_group_wait(taskGroup, 0xFFFFFFFFFFFFFFFFLL);
           }
         }
       }
@@ -695,11 +695,11 @@ LABEL_14:
   }
 }
 
-- (BOOL)validateTask:(id)a3
+- (BOOL)validateTask:(id)task
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  taskCopy = task;
+  v4 = taskCopy;
+  if (!taskCopy)
   {
     if (MediaAnalysisLogLevel() < 4)
     {
@@ -719,7 +719,7 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  [v3 resourceRequirement];
+  [taskCopy resourceRequirement];
   if (v5 >= 0.0)
   {
     [v4 resourceRequirement];
@@ -753,14 +753,14 @@ LABEL_12:
   return v13;
 }
 
-- (unsigned)validateQoS:(unsigned int)a3
+- (unsigned)validateQoS:(unsigned int)s
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [objc_opt_class() qosArray];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  qosArray = [objc_opt_class() qosArray];
+  v5 = [qosArray countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -770,14 +770,14 @@ LABEL_12:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(qosArray);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) unsignedIntValue];
-        v9 = v8;
-        if (v8 <= a3)
+        unsignedIntValue = [*(*(&v11 + 1) + 8 * i) unsignedIntValue];
+        v9 = unsignedIntValue;
+        if (unsignedIntValue <= s)
         {
-          if (v8 < a3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
+          if (unsignedIntValue < s && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
           {
             sub_10001F110();
           }
@@ -786,7 +786,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [qosArray countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -804,39 +804,39 @@ LABEL_12:
   return 9;
 }
 
-- (BOOL)taskIsAuxiliaryCompatible:(id)a3 runningTask:(id)a4
+- (BOOL)taskIsAuxiliaryCompatible:(id)compatible runningTask:(id)task
 {
-  v5 = a3;
-  v6 = a4;
+  compatibleCopy = compatible;
+  taskCopy = task;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 auxiliaryBackgroundEligible];
+    auxiliaryBackgroundEligible = [compatibleCopy auxiliaryBackgroundEligible];
   }
 
   else
   {
-    v7 = 0;
+    auxiliaryBackgroundEligible = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 auxiliaryBackgroundEligible];
+    auxiliaryBackgroundEligible2 = [taskCopy auxiliaryBackgroundEligible];
   }
 
   else
   {
-    v8 = 0;
+    auxiliaryBackgroundEligible2 = 0;
   }
 
-  return v7 ^ v8;
+  return auxiliaryBackgroundEligible ^ auxiliaryBackgroundEligible2;
 }
 
-- (unint64_t)addForegroundTask:(id)a3 withQoS:(unsigned int)a4 completionHandler:(id)a5
+- (unint64_t)addForegroundTask:(id)task withQoS:(unsigned int)s completionHandler:(id)handler
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
-  if ([(VCPMADTaskScheduler *)self validateTask:v8])
+  v6 = *&s;
+  taskCopy = task;
+  handlerCopy = handler;
+  if ([(VCPMADTaskScheduler *)self validateTask:taskCopy])
   {
     v10 = [(VCPMADTaskScheduler *)self validateQoS:v6];
     v19 = 0;
@@ -850,9 +850,9 @@ LABEL_12:
     block[3] = &unk_1002830D8;
     v17 = &v19;
     block[4] = self;
-    v15 = v8;
+    v15 = taskCopy;
     v18 = v10;
-    v16 = v9;
+    v16 = handlerCopy;
     dispatch_sync(managementQueue, block);
     v12 = v20[3];
 
@@ -867,11 +867,11 @@ LABEL_12:
   return v12;
 }
 
-- (unint64_t)addBackgroundTask:(id)a3 withQoS:(unsigned int)a4
+- (unint64_t)addBackgroundTask:(id)task withQoS:(unsigned int)s
 {
-  v4 = *&a4;
-  v6 = a3;
-  if ([(VCPMADTaskScheduler *)self validateTask:v6])
+  v4 = *&s;
+  taskCopy = task;
+  if ([(VCPMADTaskScheduler *)self validateTask:taskCopy])
   {
     v7 = [(VCPMADTaskScheduler *)self validateQoS:v4];
     v15 = 0;
@@ -884,7 +884,7 @@ LABEL_12:
     v11[2] = sub_10001D9F0;
     v11[3] = &unk_100283100;
     v11[4] = self;
-    v12 = v6;
+    v12 = taskCopy;
     v13 = &v15;
     v14 = v7;
     dispatch_sync(managementQueue, v11);
@@ -901,7 +901,7 @@ LABEL_12:
   return v9;
 }
 
-- (void)cancelTaskWithID:(unint64_t)a3
+- (void)cancelTaskWithID:(unint64_t)d
 {
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -909,7 +909,7 @@ LABEL_12:
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a3;
+      *(&buf + 4) = d;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[Scheduler] Cancelling task %lu", &buf, 0xCu);
     }
   }
@@ -934,13 +934,13 @@ LABEL_12:
   v12[4] = self;
   v12[5] = &buf;
   v12[6] = &v13;
-  v12[7] = a3;
+  v12[7] = d;
   dispatch_sync(managementQueue, v12);
   v7 = *(*(&buf + 1) + 40);
   if (v7)
   {
-    v8 = [v7 taskGroup];
-    dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
+    taskGroup = [v7 taskGroup];
+    dispatch_group_wait(taskGroup, 0xFFFFFFFFFFFFFFFFLL);
 LABEL_6:
 
     goto LABEL_7;
@@ -949,13 +949,13 @@ LABEL_6:
   v9 = v14[5];
   if (v9)
   {
-    v10 = [v9 completionHandler];
-    v11 = v10 == 0;
+    completionHandler = [v9 completionHandler];
+    v11 = completionHandler == 0;
 
     if (!v11)
     {
-      v8 = [v14[5] completionHandler];
-      (*(v8 + 16))(v8, [v14[5] taskID], 4294967168);
+      taskGroup = [v14[5] completionHandler];
+      (*(taskGroup + 16))(taskGroup, [v14[5] taskID], 4294967168);
       goto LABEL_6;
     }
   }
@@ -1012,13 +1012,13 @@ LABEL_7:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 completionHandler];
-        v12 = v11 == 0;
+        completionHandler = [v9 completionHandler];
+        v12 = completionHandler == 0;
 
         if (!v12)
         {
-          v13 = [v9 completionHandler];
-          (v13)[2](v13, [v9 taskID], 4294967168);
+          completionHandler2 = [v9 completionHandler];
+          (completionHandler2)[2](completionHandler2, [v9 taskID], 4294967168);
         }
 
         objc_autoreleasePoolPop(v10);

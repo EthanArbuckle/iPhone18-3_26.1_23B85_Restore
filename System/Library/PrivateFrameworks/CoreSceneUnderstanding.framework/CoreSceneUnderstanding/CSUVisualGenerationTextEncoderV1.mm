@@ -1,36 +1,36 @@
 @interface CSUVisualGenerationTextEncoderV1
-- (BOOL)loadResources:(id *)a3;
-- (CSUVisualGenerationTextEncoderV1)initWithConfiguration:(id)a3;
+- (BOOL)loadResources:(id *)resources;
+- (CSUVisualGenerationTextEncoderV1)initWithConfiguration:(id)configuration;
 - (id).cxx_construct;
-- (unordered_map<std::string,)_inputTokenTensorsWithTokenIDs:()std:()std:(std:(ik:(CSUVisualGenerationTextEncoderV1 *)self :(SEL)a3 Tensor>>> *__return_ptr)retstr :(vector<unsigned)int allocator<std:(std::allocator<unsigned int>> *)a4 :pair<const)std::string :equal_to<std::string> :hash<std::string>;
-- (vector<unsigned)getTokenIDsOnText:(CSUVisualGenerationTextEncoderV1 *)self withBOS:(SEL)a3 withEOS:(id)a4 withError:(BOOL)a5;
-- (void)_unsafeRunOnInput:(id)a3 completion:(id)a4;
-- (void)runOnInput:(id)a3 completion:(id)a4;
+- (unordered_map<std::string,)_inputTokenTensorsWithTokenIDs:()std:()std:(std:(ik:(CSUVisualGenerationTextEncoderV1 *)self :(SEL)a3 Tensor>>> *__return_ptr)retstr :(vector<unsigned)int allocator<std:(std::allocator<unsigned int>> *)std :pair<const)std::string :equal_to<std::string> :hash<std::string>;
+- (vector<unsigned)getTokenIDsOnText:(CSUVisualGenerationTextEncoderV1 *)self withBOS:(SEL)s withEOS:(id)oS withError:(BOOL)error;
+- (void)_unsafeRunOnInput:(id)input completion:(id)completion;
+- (void)runOnInput:(id)input completion:(id)completion;
 @end
 
 @implementation CSUVisualGenerationTextEncoderV1
 
-- (CSUVisualGenerationTextEncoderV1)initWithConfiguration:(id)a3
+- (CSUVisualGenerationTextEncoderV1)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CSUVisualGenerationTextEncoderV1;
   v6 = [(CSUVisualGenerationTextEncoderV1 *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (vector<unsigned)getTokenIDsOnText:(CSUVisualGenerationTextEncoderV1 *)self withBOS:(SEL)a3 withEOS:(id)a4 withError:(BOOL)a5
+- (vector<unsigned)getTokenIDsOnText:(CSUVisualGenerationTextEncoderV1 *)self withBOS:(SEL)s withEOS:(id)oS withError:(BOOL)error
 {
   v8 = a6;
-  v9 = a5;
-  v12 = a4;
+  errorCopy = error;
+  oSCopy = oS;
   if ((objc_msgSend_loadResources_(self, v13, a7, v14, v15) & 1) == 0)
   {
     retstr->var0 = 0;
@@ -41,14 +41,14 @@
 
   if (objc_msgSend_inputIsLowerCase(self->_configuration, v16, v17, v18, v19))
   {
-    v24 = objc_msgSend_lowercaseString(v12, v20, v21, v22, v23);
+    v24 = objc_msgSend_lowercaseString(oSCopy, v20, v21, v22, v23);
 
-    v12 = v24;
+    oSCopy = v24;
   }
 
   ptr = self->_vocabulary.__ptr_;
-  v26 = v12;
-  v55 = v12;
+  v26 = oSCopy;
+  v55 = oSCopy;
   v31 = objc_msgSend_UTF8String(v26, v27, v28, v29, v30);
   v32 = strlen(v31);
   if (v32 >= 0x7FFFFFFFFFFFFFF8)
@@ -70,10 +70,10 @@
 
   *(&__dst + v33) = 0;
   (*(*ptr + 16))(&__p, ptr, &__dst, 0);
-  v12 = v55;
+  oSCopy = v55;
   if ((v57 & 0x80000000) == 0)
   {
-    if (!v9)
+    if (!errorCopy)
     {
       goto LABEL_16;
     }
@@ -82,7 +82,7 @@
   }
 
   operator delete(__dst);
-  if (v9)
+  if (errorCopy)
   {
 LABEL_15:
     LODWORD(__dst) = 1;
@@ -140,21 +140,21 @@ LABEL_26:
   return result;
 }
 
-- (unordered_map<std::string,)_inputTokenTensorsWithTokenIDs:()std:()std:(std:(ik:(CSUVisualGenerationTextEncoderV1 *)self :(SEL)a3 Tensor>>> *__return_ptr)retstr :(vector<unsigned)int allocator<std:(std::allocator<unsigned int>> *)a4 :pair<const)std::string :equal_to<std::string> :hash<std::string>
+- (unordered_map<std::string,)_inputTokenTensorsWithTokenIDs:()std:()std:(std:(ik:(CSUVisualGenerationTextEncoderV1 *)self :(SEL)a3 Tensor>>> *__return_ptr)retstr :(vector<unsigned)int allocator<std:(std::allocator<unsigned int>> *)std :pair<const)std::string :equal_to<std::string> :hash<std::string>
 {
   v10 = *MEMORY[0x1E69E9840];
-  objc_msgSend_maximumSequenceLength(self->_configuration, a3, a4, v4, v5);
+  objc_msgSend_maximumSequenceLength(self->_configuration, a3, std, v4, v5);
   __p = 0;
   v8 = 0;
   v9 = 0;
   operator new();
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   if (!self->_textEncoderNet.__ptr_)
   {
-    v6 = objc_msgSend_vocabularyModelPath(self->_configuration, a2, a3, v3, v4);
+    v6 = objc_msgSend_vocabularyModelPath(self->_configuration, a2, resources, v3, v4);
     objc_msgSend_UTF8String(v6, v7, v8, v9, v10);
     sub_1AC0D4C68();
   }
@@ -162,16 +162,16 @@ LABEL_26:
   return 1;
 }
 
-- (void)_unsafeRunOnInput:(id)a3 completion:(id)a4
+- (void)_unsafeRunOnInput:(id)input completion:(id)completion
 {
   v156 = *MEMORY[0x1E69E9840];
-  v128 = a3;
-  v6 = a4;
+  inputCopy = input;
+  completionCopy = completion;
   v154 = 0;
-  v129 = v6;
-  LOBYTE(a4) = objc_msgSend_loadResources_(self, v7, &v154, v8, v9);
+  v129 = completionCopy;
+  LOBYTE(completion) = objc_msgSend_loadResources_(self, v7, &v154, v8, v9);
   v10 = v154;
-  if (a4)
+  if (completion)
   {
     v151 = 0;
     v152 = 0;
@@ -183,7 +183,7 @@ LABEL_26:
     v145 = 0u;
     v146 = 0u;
     v147 = 0u;
-    v11 = v128;
+    v11 = inputCopy;
     v127 = v11;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v144, v155, 16);
     if (v13)
@@ -222,7 +222,7 @@ LABEL_26:
           v76 = v149;
           if (v149 >= v150)
           {
-            v78 = self;
+            selfCopy = self;
             v79 = v148;
             v80 = v149 - v148;
             v81 = (v149 - v148) >> 4;
@@ -273,7 +273,7 @@ LABEL_103:
               operator delete(v79);
             }
 
-            self = v78;
+            self = selfCopy;
             v11 = v127;
           }
 
@@ -288,7 +288,7 @@ LABEL_103:
           v71 = v152;
           v72 = __p;
           v73 = v141;
-          v6 = v129;
+          completionCopy = v129;
         }
 
         sub_1AC075F44(&v151, v71, v72, v73, (v73 - v72) >> 2);
@@ -332,7 +332,7 @@ LABEL_59:
 
             if (v10)
             {
-              v6[2](v6, 0, v10);
+              completionCopy[2](completionCopy, 0, v10);
               v51 = __p;
               if (__p)
               {
@@ -348,7 +348,7 @@ LABEL_59:
               v55 = v141;
               if (v52)
               {
-                v56 = self;
+                selfCopy2 = self;
                 v57 = (v152 - v151) >> 2;
                 v58 = v57 + ((v141 - __p) >> 2);
                 v59 = v149;
@@ -404,7 +404,7 @@ LABEL_59:
                     operator delete(v61);
                   }
 
-                  self = v56;
+                  self = selfCopy2;
                   v11 = v127;
                 }
 
@@ -413,14 +413,14 @@ LABEL_59:
                   *v149 = v57;
                   *(v59 + 1) = v58;
                   v60 = (v59 + 16);
-                  self = v56;
+                  self = selfCopy2;
                 }
 
                 v149 = v60;
                 v53 = v152;
                 v54 = __p;
                 v55 = v141;
-                v6 = v129;
+                completionCopy = v129;
               }
 
               sub_1AC075F44(&v151, v53, v54, v55, (v55 - v54) >> 2);
@@ -450,7 +450,7 @@ LABEL_18:
         }
       }
 
-      v6[2](v6, 0, v10);
+      completionCopy[2](completionCopy, 0, v10);
       v32 = __p;
       if (!__p)
       {
@@ -554,7 +554,7 @@ LABEL_64:
       operator delete(__dst);
     }
 
-    (v6)[2](v6, HiddenLayer_PooledCLIPEmbedding_MaskIndices, v10);
+    (completionCopy)[2](completionCopy, HiddenLayer_PooledCLIPEmbedding_MaskIndices, v10);
     sub_1AC066D78(v136);
     v122 = v142;
     if (v142)
@@ -614,7 +614,7 @@ LABEL_98:
       operator delete(v126);
     }
 
-    v6 = v129;
+    completionCopy = v129;
     v86 = v148;
     if (v148)
     {
@@ -633,17 +633,17 @@ LABEL_61:
 
   else
   {
-    v6[2](v6, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   v87 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runOnInput:(id)a3 completion:(id)a4
+- (void)runOnInput:(id)input completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend__unsafeRunOnInput_completion_(self, v8, v6, v7, v9);
+  inputCopy = input;
+  completionCopy = completion;
+  objc_msgSend__unsafeRunOnInput_completion_(self, v8, inputCopy, completionCopy, v9);
 }
 
 - (id).cxx_construct

@@ -1,26 +1,26 @@
 @interface AllRefinementsViewModelSectionOpenOption
-- (AllRefinementsViewModelSectionOpenOption)initWithOpenNow:(id)a3 openAt:(id)a4 displayName:(id)a5;
-- (BOOL)compare:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AllRefinementsViewModelSectionOpenOption)initWithOpenNow:(id)now openAt:(id)at displayName:(id)name;
+- (BOOL)compare:(id)compare;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)numberOfItems;
 - (void)resetToDefault;
 @end
 
 @implementation AllRefinementsViewModelSectionOpenOption
 
-- (BOOL)compare:(id)a3
+- (BOOL)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 openNow];
-  v6 = [v5 isSelected];
-  if (v6 == [(AllRefinementsViewModelToggle *)self->_openNow isSelected])
+  compareCopy = compare;
+  openNow = [compareCopy openNow];
+  isSelected = [openNow isSelected];
+  if (isSelected == [(AllRefinementsViewModelToggle *)self->_openNow isSelected])
   {
-    v8 = [v4 openAt];
-    v9 = [v8 isSelected];
-    if (v9 == [(AllRefinementsViewModelOpenAt *)self->_openAt isSelected])
+    openAt = [compareCopy openAt];
+    isSelected2 = [openAt isSelected];
+    if (isSelected2 == [(AllRefinementsViewModelOpenAt *)self->_openAt isSelected])
     {
-      v10 = [v4 openAt];
-      [v10 timeStamp];
+      openAt2 = [compareCopy openAt];
+      [openAt2 timeStamp];
       v12 = v11;
       [(AllRefinementsViewModelOpenAt *)self->_openAt timeStamp];
       v7 = v12 == v13;
@@ -70,7 +70,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AllRefinementsViewModelSectionOpenOption alloc];
   v5 = [(AllRefinementsViewModelToggle *)self->_openNow copy];
@@ -81,20 +81,20 @@
   return v8;
 }
 
-- (AllRefinementsViewModelSectionOpenOption)initWithOpenNow:(id)a3 openAt:(id)a4 displayName:(id)a5
+- (AllRefinementsViewModelSectionOpenOption)initWithOpenNow:(id)now openAt:(id)at displayName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nowCopy = now;
+  atCopy = at;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = AllRefinementsViewModelSectionOpenOption;
   v12 = [(AllRefinementsViewModelSectionOpenOption *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_openNow, a3);
-    objc_storeStrong(&v13->_openAt, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_openNow, now);
+    objc_storeStrong(&v13->_openAt, at);
+    v14 = [nameCopy copy];
     displayName = v13->_displayName;
     v13->_displayName = v14;
 

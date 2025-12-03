@@ -1,15 +1,15 @@
 @interface CKDPShareVettingInitiateResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)vettingErrorAsString:(int)a3;
-- (int)StringAsVettingError:(id)a3;
+- (id)vettingErrorAsString:(int)string;
+- (int)StringAsVettingError:(id)error;
 - (int)vettingError;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPShareVettingInitiateResponse
@@ -27,45 +27,45 @@
   }
 }
 
-- (id)vettingErrorAsString:(int)a3
+- (id)vettingErrorAsString:(int)string
 {
-  if ((a3 - 1) >= 5)
+  if ((string - 1) >= 5)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CCF8[a3 - 1];
+    v4 = off_27854CCF8[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsVettingError:(id)a3
+- (int)StringAsVettingError:(id)error
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"isVettedToCaller"))
+  errorCopy = error;
+  if (objc_msgSend_isEqualToString_(errorCopy, v4, @"isVettedToCaller"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"isVettedToOther"))
+  else if (objc_msgSend_isEqualToString_(errorCopy, v5, @"isVettedToOther"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"isLimitExceeded"))
+  else if (objc_msgSend_isEqualToString_(errorCopy, v7, @"isLimitExceeded"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"serverError"))
+  else if (objc_msgSend_isEqualToString_(errorCopy, v8, @"serverError"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"loginRequired"))
+  else if (objc_msgSend_isEqualToString_(errorCopy, v9, @"loginRequired"))
   {
     v6 = 5;
   }
@@ -112,7 +112,7 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -121,19 +121,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_vettingError;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_vettingError;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   if (*&self->_has)
   {
@@ -144,19 +144,19 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_6;
   }
 
-  v7 = (*(v4 + 12) & 1) == 0;
+  v7 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_vettingError == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_vettingError == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_7;
@@ -184,11 +184,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_vettingError = *(a3 + 2);
+    self->_vettingError = *(from + 2);
     *&self->_has |= 1u;
   }
 }

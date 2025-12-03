@@ -1,5 +1,5 @@
 @interface HDCloudSyncSynchronizeProfilesOperation
-- (uint64_t)_synchronizeProfilesWithRegistryAndShareRecordsForContainer:(void *)a3 database:(void *)a4 error:;
+- (uint64_t)_synchronizeProfilesWithRegistryAndShareRecordsForContainer:(void *)container database:(void *)database error:;
 - (void)main;
 @end
 
@@ -8,12 +8,12 @@
 - (void)main
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self profile];
-  v4 = [v3 daemon];
-  v5 = [v4 behavior];
-  v6 = [v5 supportsSecondaryProfiles];
+  profile = [(HDCloudSyncOperation *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsSecondaryProfiles = [behavior supportsSecondaryProfiles];
 
-  if (v6)
+  if (supportsSecondaryProfiles)
   {
     v7 = objc_alloc_init(MEMORY[0x277D10BB0]);
     taskGroup = self->_taskGroup;
@@ -25,12 +25,12 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v9 = [(HDCloudSyncOperation *)self configuration];
-    v10 = [v9 repository];
-    v11 = [v10 allCKContainers];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    allCKContainers = [repository allCKContainers];
 
-    obj = v11;
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    obj = allCKContainers;
+    v12 = [allCKContainers countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
       v13 = v12;
@@ -47,9 +47,9 @@
 
           v17 = *(*(&v30 + 1) + 8 * i);
           [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-          v18 = [v17 privateCloudDatabase];
+          privateCloudDatabase = [v17 privateCloudDatabase];
           v29 = v14;
-          v19 = [(HDCloudSyncSynchronizeProfilesOperation *)self _synchronizeProfilesWithRegistryAndShareRecordsForContainer:v17 database:v18 error:&v29];
+          v19 = [(HDCloudSyncSynchronizeProfilesOperation *)self _synchronizeProfilesWithRegistryAndShareRecordsForContainer:v17 database:privateCloudDatabase error:&v29];
           v20 = v29;
 
           v21 = self->_taskGroup;
@@ -64,9 +64,9 @@
           }
 
           [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-          v22 = [v17 sharedCloudDatabase];
+          sharedCloudDatabase = [v17 sharedCloudDatabase];
           v28 = v20;
-          v23 = [(HDCloudSyncSynchronizeProfilesOperation *)self _synchronizeProfilesWithRegistryAndShareRecordsForContainer:v17 database:v22 error:&v28];
+          v23 = [(HDCloudSyncSynchronizeProfilesOperation *)self _synchronizeProfilesWithRegistryAndShareRecordsForContainer:v17 database:sharedCloudDatabase error:&v28];
           v14 = v28;
 
           v24 = self->_taskGroup;
@@ -102,7 +102,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v36 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ Device ineligble for synchronizing additional profiles", buf, 0xCu);
     }
 
@@ -112,26 +112,26 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_synchronizeProfilesWithRegistryAndShareRecordsForContainer:(void *)a3 database:(void *)a4 error:
+- (uint64_t)_synchronizeProfilesWithRegistryAndShareRecordsForContainer:(void *)container database:(void *)database error:
 {
   v198 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  if (!a1)
+  containerCopy = container;
+  if (!self)
   {
-    v20 = 0;
+    databaseCopy = 0;
     goto LABEL_150;
   }
 
   v149 = v6;
   v8 = v6;
-  v9 = v7;
-  v154 = a1;
-  v10 = [a1 configuration];
-  v11 = [v10 cachedCloudState];
-  v12 = [v8 containerIdentifier];
+  v9 = containerCopy;
+  selfCopy = self;
+  configuration = [self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  containerIdentifier = [v8 containerIdentifier];
   v188[0] = 0;
-  v13 = [v11 zoneIdentifiersForContainerIdentifier:v12 databaseScope:objc_msgSend(v9 error:{"databaseScope"), v188}];
+  v13 = [cachedCloudState zoneIdentifiersForContainerIdentifier:containerIdentifier databaseScope:objc_msgSend(v9 error:{"databaseScope"), v188}];
   v14 = v188[0];
 
   if (v13 || !v14)
@@ -144,13 +144,13 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
       {
         v126 = v39;
-        v127 = [v8 containerIdentifier];
+        containerIdentifier2 = [v8 containerIdentifier];
         [v9 databaseScope];
         v128 = CKDatabaseScopeString();
         *buf = 138543874;
-        *&buf[4] = v154;
+        *&buf[4] = selfCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v127;
+        *&buf[14] = containerIdentifier2;
         *&buf[22] = 2114;
         v190 = v128;
         _os_log_debug_impl(&dword_228986000, v126, OS_LOG_TYPE_DEBUG, "%{public}@ No zones cached for container %{public}@, database %{public}@", buf, 0x20u);
@@ -167,7 +167,7 @@
     *&buf[8] = 3221225472;
     *&buf[16] = __102__HDCloudSyncSynchronizeProfilesOperation__cachedZonesWithRegistryRecordsForContainer_database_error___block_invoke;
     v190 = &unk_27861EAE8;
-    v191[0] = v154;
+    v191[0] = selfCopy;
     v17 = [v13 hk_map:buf];
     v18 = 0;
   }
@@ -179,13 +179,13 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       v121 = v15;
-      v122 = [v8 containerIdentifier];
+      containerIdentifier3 = [v8 containerIdentifier];
       [v9 databaseScope];
       v123 = CKDatabaseScopeString();
       *buf = 138544130;
-      *&buf[4] = v154;
+      *&buf[4] = selfCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v122;
+      *&buf[14] = containerIdentifier3;
       *&buf[22] = 2114;
       v190 = v123;
       LOWORD(v191[0]) = 2114;
@@ -205,12 +205,12 @@ LABEL_10:
   v148 = v17;
   if (!v17 && v19)
   {
-    v20 = a4;
+    databaseCopy = database;
     v21 = v19;
-    if (a4)
+    if (database)
     {
-      v20 = 0;
-      *a4 = v19;
+      databaseCopy = 0;
+      *database = v19;
     }
 
     else
@@ -224,7 +224,7 @@ LABEL_10:
   v144 = v19;
   if (![v17 count])
   {
-    v20 = 1;
+    databaseCopy = 1;
     goto LABEL_148;
   }
 
@@ -278,11 +278,11 @@ LABEL_10:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             v124 = v34;
-            v125 = [v29 zoneIdentifier];
+            zoneIdentifier = [v29 zoneIdentifier];
             *buf = 138543874;
-            *&buf[4] = v154;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
-            *&buf[14] = v125;
+            *&buf[14] = zoneIdentifier;
             *&buf[22] = 2114;
             v190 = v32;
             _os_log_error_impl(&dword_228986000, v124, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get registry records for %{public}@, %{public}@", buf, 0x20u);
@@ -290,10 +290,10 @@ LABEL_10:
 
           v6 = v149;
           v36 = obj;
-          if (a4)
+          if (database)
           {
             v37 = v32;
-            *a4 = v32;
+            *database = v32;
             v38 = v32;
           }
 
@@ -336,14 +336,14 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v41 = v40;
-    v42 = [v142 containerIdentifier];
+    containerIdentifier4 = [v142 containerIdentifier];
     v43 = [v152 count];
     [v141 databaseScope];
     v44 = CKDatabaseScopeString();
     *buf = 138544130;
-    *&buf[4] = v154;
+    *&buf[4] = selfCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v42;
+    *&buf[14] = containerIdentifier4;
     *&buf[22] = 2048;
     v190 = v43;
     LOWORD(v191[0]) = 2114;
@@ -395,11 +395,11 @@ LABEL_10:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             v129 = v55;
-            v130 = [v51 zoneIdentifier];
+            zoneIdentifier2 = [v51 zoneIdentifier];
             *buf = 138543874;
-            *&buf[4] = v154;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
-            *&buf[14] = v130;
+            *&buf[14] = zoneIdentifier2;
             *&buf[22] = 2114;
             v190 = v53;
             _os_log_error_impl(&dword_228986000, v129, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get share for %{public}@, %{public}@", buf, 0x20u);
@@ -407,9 +407,9 @@ LABEL_10:
 
           v6 = v149;
           v36 = obj;
-          if (a4)
+          if (database)
           {
-            *a4 = v53;
+            *database = v53;
           }
 
           else
@@ -449,14 +449,14 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v59 = v58;
-    v60 = [v142 containerIdentifier];
+    containerIdentifier5 = [v142 containerIdentifier];
     v61 = [v146 count];
     [v141 databaseScope];
     v62 = CKDatabaseScopeString();
     *buf = 138544130;
-    *&buf[4] = v154;
+    *&buf[4] = selfCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v60;
+    *&buf[14] = containerIdentifier5;
     *&buf[22] = 2048;
     v190 = v61;
     LOWORD(v191[0]) = 2114;
@@ -498,9 +498,9 @@ LABEL_10:
       }
 
       v67 = *(*(&v180 + 1) + 8 * j);
-      v68 = [v67 recordID];
-      v69 = [v68 zoneID];
-      v70 = [v163 objectForKeyedSubscript:v69];
+      recordID = [v67 recordID];
+      zoneID = [recordID zoneID];
+      v70 = [v163 objectForKeyedSubscript:zoneID];
       v71 = v67;
       v72 = v70;
       v73 = v165;
@@ -513,24 +513,24 @@ LABEL_10:
         goto LABEL_130;
       }
 
-      v161 = v68;
+      v161 = recordID;
       v168 = v73;
-      v77 = v7;
-      v78 = [v71 recordID];
-      v79 = [v78 zoneID];
+      v77 = containerCopy;
+      recordID2 = [v71 recordID];
+      zoneID2 = [recordID2 zoneID];
       v185 = 0;
-      v80 = [v79 hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v185];
+      v80 = [zoneID2 hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v185];
       v81 = v185;
 
       v166 = v81;
       if (v80 && (![v81 isEqualToString:@"PrimarySyncCircle"] || objc_msgSend(v74, "databaseScope") != 2))
       {
-        v7 = v77;
+        containerCopy = v77;
         v73 = v168;
         if ([v74 databaseScope] == 2)
         {
-          v82 = [v71 ownerProfileIdentifier];
-          if (!v82)
+          ownerProfileIdentifier = [v71 ownerProfileIdentifier];
+          if (!ownerProfileIdentifier)
           {
             goto LABEL_82;
           }
@@ -538,12 +538,12 @@ LABEL_10:
 
         else
         {
-          v82 = [v71 sharedProfileIdentifier];
-          if (!v82)
+          ownerProfileIdentifier = [v71 sharedProfileIdentifier];
+          if (!ownerProfileIdentifier)
           {
 LABEL_82:
-            v82 = [MEMORY[0x277CCD7C8] hd_profileIdentifierWithSyncCircleIdentifier:v81];
-            if (v82)
+            ownerProfileIdentifier = [MEMORY[0x277CCD7C8] hd_profileIdentifierWithSyncCircleIdentifier:v81];
+            if (ownerProfileIdentifier)
             {
               goto LABEL_83;
             }
@@ -559,9 +559,9 @@ LABEL_128:
         }
 
 LABEL_83:
-        v83 = v82;
-        v84 = [v82 type];
-        if ((v84 - 1) >= 4 && v84 != 100)
+        v83 = ownerProfileIdentifier;
+        type = [ownerProfileIdentifier type];
+        if ((type - 1) >= 4 && type != 100)
         {
           v192[0] = 1;
 
@@ -569,34 +569,34 @@ LABEL_83:
           goto LABEL_101;
         }
 
-        v155 = v69;
-        v85 = [v154 configuration];
-        v86 = [v85 repository];
-        v87 = [v86 profile];
-        v88 = [v87 daemon];
-        v89 = [v88 profileManager];
+        v155 = zoneID;
+        configuration2 = [selfCopy configuration];
+        repository = [configuration2 repository];
+        profile = [repository profile];
+        daemon = [profile daemon];
+        profileManager = [daemon profileManager];
 
-        v90 = v89;
-        v91 = [v89 profileForIdentifier:v83];
+        v90 = profileManager;
+        v91 = [profileManager profileForIdentifier:v83];
         v156 = v83;
         if (v91)
         {
           v75 = 0;
           v192[0] = 1;
-          v7 = v77;
+          containerCopy = v77;
           v36 = obj;
           v73 = v168;
-          v69 = v155;
+          zoneID = v155;
 LABEL_127:
 
           goto LABEL_128;
         }
 
-        v92 = [v71 displayFirstName];
-        v93 = v92;
-        if (v92)
+        displayFirstName = [v71 displayFirstName];
+        v93 = displayFirstName;
+        if (displayFirstName)
         {
-          v94 = v92;
+          v94 = displayFirstName;
         }
 
         else
@@ -604,10 +604,10 @@ LABEL_127:
           v94 = @"Auxiliary Health Store";
         }
 
-        v95 = [v71 displayLastName];
+        displayLastName = [v71 displayLastName];
         v184 = 0;
-        v150 = v89;
-        v96 = [v89 createProfileForIdentifier:v83 firstName:v94 lastName:v95 error:&v184];
+        v150 = profileManager;
+        v96 = [profileManager createProfileForIdentifier:v83 firstName:v94 lastName:displayLastName error:&v184];
         v151 = v184;
 
         _HKInitializeLogging();
@@ -615,11 +615,11 @@ LABEL_127:
         v98 = *MEMORY[0x277CCC328];
         if (!v96)
         {
-          v7 = v77;
+          containerCopy = v77;
           if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
           {
             *v192 = 138543874;
-            v193 = v154;
+            v193 = selfCopy;
             v194 = 2114;
             v195 = v166;
             v196 = 2114;
@@ -630,7 +630,7 @@ LABEL_127:
           v108 = v151;
           v75 = v108;
           v36 = obj;
-          v90 = v89;
+          v90 = profileManager;
           if (v108)
           {
             v109 = v108;
@@ -640,12 +640,12 @@ LABEL_127:
           goto LABEL_125;
         }
 
-        v7 = v77;
+        containerCopy = v77;
         v73 = v168;
         if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
         {
           *v192 = 138543874;
-          v193 = v154;
+          v193 = selfCopy;
           v194 = 2114;
           v195 = v166;
           v196 = 2114;
@@ -654,28 +654,28 @@ LABEL_127:
         }
 
         v36 = obj;
-        v90 = v89;
+        v90 = profileManager;
         if (([v156 type] & 0xFFFFFFFFFFFFFFFELL) != 2)
         {
           goto LABEL_119;
         }
 
-        v143 = [v71 recordID];
-        v99 = [v143 zoneID];
+        recordID3 = [v71 recordID];
+        zoneID3 = [recordID3 zoneID];
         v145 = v96;
         v100 = v72;
-        v101 = v99;
+        v101 = zoneID3;
         if (v100)
         {
           v140 = v100;
-          v102 = [v100 owner];
-          if (v102)
+          owner = [v100 owner];
+          if (owner)
           {
-            v103 = v102;
+            v103 = owner;
             v139 = v101;
-            v104 = [v145 cloudSyncManager];
+            cloudSyncManager = [v145 cloudSyncManager];
             v186 = 0;
-            v105 = [v104 setShareOwnerParticipant:v103 error:&v186];
+            v105 = [cloudSyncManager setShareOwnerParticipant:v103 error:&v186];
             v137 = v186;
 
             _HKInitializeLogging();
@@ -689,7 +689,7 @@ LABEL_127:
               if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
               {
                 *v192 = v133;
-                v193 = v154;
+                v193 = selfCopy;
                 v194 = 2114;
                 v195 = v103;
                 _os_log_impl(&dword_228986000, log, OS_LOG_TYPE_DEFAULT, "%{public}@: Stored owner participant: %{public}@", v192, 0x16u);
@@ -703,7 +703,7 @@ LABEL_127:
               if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
               {
                 *v192 = v133;
-                v193 = v154;
+                v193 = selfCopy;
                 v194 = 2114;
                 v195 = v137;
                 _os_log_error_impl(&dword_228986000, log, OS_LOG_TYPE_ERROR, "%{public}@: Failed to store owner participant: %{public}@", v192, 0x16u);
@@ -713,9 +713,9 @@ LABEL_127:
             if ((v138 & 1) == 0)
             {
 LABEL_117:
-              v112 = [v145 profileIdentifier];
+              profileIdentifier = [v145 profileIdentifier];
               v186 = 0;
-              v113 = [v150 deleteProfile:v112 error:&v186];
+              v113 = [v150 deleteProfile:profileIdentifier error:&v186];
               v114 = v186;
 
               if (v113)
@@ -731,7 +731,7 @@ LABEL_117:
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
               {
                 *v192 = v133;
-                v193 = v154;
+                v193 = selfCopy;
                 v194 = 2114;
                 v195 = v145;
                 _os_log_fault_impl(&dword_228986000, v115, OS_LOG_TYPE_FAULT, "%{public}@: Failed to delete profile %{public}@ after failing to set store owner participant.", v192, 0x16u);
@@ -749,7 +749,7 @@ LABEL_117:
 LABEL_125:
               v73 = v168;
 LABEL_126:
-              v69 = v155;
+              zoneID = v155;
 
               v91 = 0;
               goto LABEL_127;
@@ -766,7 +766,7 @@ LABEL_119:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
           {
             *v192 = v133;
-            v193 = v154;
+            v193 = selfCopy;
             v194 = 2114;
             v195 = v140;
             _os_log_fault_impl(&dword_228986000, v111, OS_LOG_TYPE_FAULT, "%{public}@: Unable to find owner participant on share %{public}@", v192, 0x16u);
@@ -780,7 +780,7 @@ LABEL_119:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *v192 = v133;
-            v193 = v154;
+            v193 = selfCopy;
             v194 = 2114;
             v195 = v101;
             _os_log_error_impl(&dword_228986000, v110, OS_LOG_TYPE_ERROR, "%{public}@: Zone %{public}@ does not have a zone share during zone synchronization", v192, 0x16u);
@@ -792,12 +792,12 @@ LABEL_119:
 
       v75 = 0;
       v76 = 1;
-      v7 = v77;
+      containerCopy = v77;
       v36 = obj;
       v73 = v168;
 LABEL_129:
 
-      v68 = v161;
+      recordID = v161;
 LABEL_130:
 
       v118 = v75;
@@ -815,16 +815,16 @@ LABEL_130:
 
   if (v157)
   {
-    v119 = [v158 firstObject];
-    v64 = v119;
-    v134 = v119 == 0;
+    firstObject = [v158 firstObject];
+    v64 = firstObject;
+    v134 = firstObject == 0;
     v6 = v149;
-    if (v119)
+    if (firstObject)
     {
-      if (a4)
+      if (database)
       {
-        v120 = v119;
-        *a4 = v64;
+        v120 = firstObject;
+        *database = v64;
       }
 
       else
@@ -849,14 +849,14 @@ LABEL_146:
   v57 = v153;
 LABEL_147:
 
-  v20 = buf[0];
+  databaseCopy = buf[0];
 LABEL_148:
   v21 = v144;
 LABEL_149:
 
 LABEL_150:
   v131 = *MEMORY[0x277D85DE8];
-  return v20;
+  return databaseCopy;
 }
 
 id __102__HDCloudSyncSynchronizeProfilesOperation__cachedZonesWithRegistryRecordsForContainer_database_error___block_invoke(uint64_t a1, void *a2)

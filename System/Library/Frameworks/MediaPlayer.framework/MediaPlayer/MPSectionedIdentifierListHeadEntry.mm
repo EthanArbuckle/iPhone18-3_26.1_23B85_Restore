@@ -1,54 +1,54 @@
 @interface MPSectionedIdentifierListHeadEntry
-+ (MPSectionedIdentifierListHeadEntry)headEntryWithSectionIdentifier:(id)a3;
-- (MPSectionedIdentifierListHeadEntry)initWithCoder:(id)a3;
-- (MPSectionedIdentifierListHeadEntry)initWithPositionKey:(id)a3 sectionIdentifier:(id)a4;
++ (MPSectionedIdentifierListHeadEntry)headEntryWithSectionIdentifier:(id)identifier;
+- (MPSectionedIdentifierListHeadEntry)initWithCoder:(id)coder;
+- (MPSectionedIdentifierListHeadEntry)initWithPositionKey:(id)key sectionIdentifier:(id)identifier;
 - (NSString)description;
 - (id)nextEntries;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBranchDepth:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBranchDepth:(int64_t)depth;
 @end
 
 @implementation MPSectionedIdentifierListHeadEntry
 
-- (void)setBranchDepth:(int64_t)a3
+- (void)setBranchDepth:(int64_t)depth
 {
   v5.receiver = self;
   v5.super_class = MPSectionedIdentifierListHeadEntry;
   [(MPSectionedIdentifierListEntry *)&v5 setBranchDepth:?];
-  [(MPSectionedIdentifierListEntry *)self->_tailEntry setBranchDepth:a3];
+  [(MPSectionedIdentifierListEntry *)self->_tailEntry setBranchDepth:depth];
 }
 
 - (id)nextEntries
 {
   v7.receiver = self;
   v7.super_class = MPSectionedIdentifierListHeadEntry;
-  v3 = [(MPSectionedIdentifierListEntry *)&v7 nextEntries];
-  v4 = [v3 mutableCopy];
+  nextEntries = [(MPSectionedIdentifierListEntry *)&v7 nextEntries];
+  v4 = [nextEntries mutableCopy];
 
-  v5 = [(MPSectionedIdentifierListHeadEntry *)self tailEntry];
-  [v4 insertObject:v5 atIndex:0];
+  tailEntry = [(MPSectionedIdentifierListHeadEntry *)self tailEntry];
+  [v4 insertObject:tailEntry atIndex:0];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSectionedIdentifierListHeadEntry;
-  v4 = a3;
-  [(MPSectionedIdentifierListEntry *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_shuffledHead forKey:{@"isShuffled", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MPSectionedIdentifierListEntry *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_shuffledHead forKey:{@"isShuffled", v5.receiver, v5.super_class}];
 }
 
-- (MPSectionedIdentifierListHeadEntry)initWithCoder:(id)a3
+- (MPSectionedIdentifierListHeadEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MPSectionedIdentifierListHeadEntry;
-  v5 = [(MPSectionedIdentifierListEntry *)&v7 initWithCoder:v4];
+  v5 = [(MPSectionedIdentifierListEntry *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_shuffledHead = [v4 decodeBoolForKey:@"isShuffled"];
+    v5->_shuffledHead = [coderCopy decodeBoolForKey:@"isShuffled"];
   }
 
   return v5;
@@ -68,22 +68,22 @@
     v5 = &stru_1F149ECA8;
   }
 
-  v6 = [(MPSectionedIdentifierListEntry *)self sectionIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p> %@%@", v4, self, v5, v6];
+  sectionIdentifier = [(MPSectionedIdentifierListEntry *)self sectionIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p> %@%@", v4, self, v5, sectionIdentifier];
 
   return v7;
 }
 
-- (MPSectionedIdentifierListHeadEntry)initWithPositionKey:(id)a3 sectionIdentifier:(id)a4
+- (MPSectionedIdentifierListHeadEntry)initWithPositionKey:(id)key sectionIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = MPSectionedIdentifierListHeadEntry;
-  v4 = [(MPSectionedIdentifierListEntry *)&v10 initWithPositionKey:a3 sectionIdentifier:a4];
+  v4 = [(MPSectionedIdentifierListEntry *)&v10 initWithPositionKey:key sectionIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     identifiersItemEntryMap = v4->_identifiersItemEntryMap;
-    v4->_identifiersItemEntryMap = v5;
+    v4->_identifiersItemEntryMap = dictionary;
 
     v7 = [MPSectionedIdentifierListTailEntry tailEntryWithSectionHeadEntry:v4];
     tailEntry = v4->_tailEntry;
@@ -93,12 +93,12 @@
   return v4;
 }
 
-+ (MPSectionedIdentifierListHeadEntry)headEntryWithSectionIdentifier:(id)a3
++ (MPSectionedIdentifierListHeadEntry)headEntryWithSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  identifierCopy = identifier;
+  v5 = [self alloc];
   v6 = [MPSectionedIdentifierListEntryPositionKey positionKeyWithDeviceIdentifier:&stru_1F149ECA8 generation:@"1"];
-  v7 = [v5 initWithPositionKey:v6 sectionIdentifier:v4];
+  v7 = [v5 initWithPositionKey:v6 sectionIdentifier:identifierCopy];
 
   return v7;
 }

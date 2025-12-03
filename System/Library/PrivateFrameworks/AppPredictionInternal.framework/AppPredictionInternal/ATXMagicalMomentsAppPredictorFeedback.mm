@@ -1,10 +1,10 @@
 @interface ATXMagicalMomentsAppPredictorFeedback
 - (ATXMagicalMomentsAppPredictorFeedback)init;
-- (ATXMagicalMomentsAppPredictorFeedback)initWithTracker:(id)a3;
+- (ATXMagicalMomentsAppPredictorFeedback)initWithTracker:(id)tracker;
 - (id)clientModelIds;
 - (id)getCurrentABGroup;
-- (int64_t)_anchorTypeFromBundleIdToAnchorTypeMap:(id)a3 bundleId:(id)a4;
-- (void)receiveUIFeedbackResult:(id)a3;
+- (int64_t)_anchorTypeFromBundleIdToAnchorTypeMap:(id)map bundleId:(id)id;
+- (void)receiveUIFeedbackResult:(id)result;
 @end
 
 @implementation ATXMagicalMomentsAppPredictorFeedback
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (ATXMagicalMomentsAppPredictorFeedback)initWithTracker:(id)a3
+- (ATXMagicalMomentsAppPredictorFeedback)initWithTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = ATXMagicalMomentsAppPredictorFeedback;
   v6 = [(ATXMagicalMomentsAppPredictorFeedback *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tracker, a3);
+    objc_storeStrong(&v6->_tracker, tracker);
   }
 
   return v7;
@@ -40,25 +40,25 @@
   return v3;
 }
 
-- (void)receiveUIFeedbackResult:(id)a3
+- (void)receiveUIFeedbackResult:(id)result
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ATXMagicalMomentsAppPredictorFeedback receiveUIFeedbackResult:];
   }
 
-  v6 = [v4 shownSuggestions];
-  v7 = [v6 count];
+  shownSuggestions = [resultCopy shownSuggestions];
+  v7 = [shownSuggestions count];
 
   if (v7)
   {
-    v8 = [v4 consumerSubType];
-    if (v8)
+    consumerSubType = [resultCopy consumerSubType];
+    if (consumerSubType)
     {
-      v9 = v8;
+      v9 = consumerSubType;
       v10 = objc_autoreleasePoolPush();
       v11 = objc_alloc(MEMORY[0x277CBEB98]);
       v12 = objc_opt_class();
@@ -67,17 +67,17 @@
       objc_autoreleasePoolPop(v10);
       v15 = objc_autoreleasePoolPush();
       v16 = MEMORY[0x277CCAAC8];
-      v17 = [v4 clientCacheUpdate];
-      v18 = [v17 feedbackMetadata];
+      clientCacheUpdate = [resultCopy clientCacheUpdate];
+      feedbackMetadata = [clientCacheUpdate feedbackMetadata];
       v40 = 0;
-      v19 = [v16 unarchivedObjectOfClasses:v14 fromData:v18 error:&v40];
+      v19 = [v16 unarchivedObjectOfClasses:v14 fromData:feedbackMetadata error:&v40];
       v20 = v40;
 
       objc_autoreleasePoolPop(v15);
       if (!v19 || v20)
       {
-        v26 = __atxlog_handle_feedback();
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+        engagedSuggestions = __atxlog_handle_feedback();
+        if (os_log_type_enabled(engagedSuggestions, OS_LOG_TYPE_ERROR))
         {
           [ATXMagicalMomentsAppPredictorFeedback receiveUIFeedbackResult:];
         }
@@ -89,8 +89,8 @@
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v21 = [v4 shownSuggestions];
-        v22 = [v21 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        shownSuggestions2 = [resultCopy shownSuggestions];
+        v22 = [shownSuggestions2 countByEnumeratingWithState:&v36 objects:v42 count:16];
         if (v22)
         {
           v23 = v22;
@@ -101,13 +101,13 @@
             {
               if (*v37 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(shownSuggestions2);
               }
 
               [(ATXMagicalMomentsAppPredictorFeedback *)self _handleShownProactiveSuggestion:*(*(&v36 + 1) + 8 * i) consumerSubType:v9 bundleIdToAnchorType:v19];
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v36 objects:v42 count:16];
+            v23 = [shownSuggestions2 countByEnumeratingWithState:&v36 objects:v42 count:16];
           }
 
           while (v23);
@@ -117,8 +117,8 @@
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v26 = [v4 engagedSuggestions];
-        v27 = [v26 countByEnumeratingWithState:&v32 objects:v41 count:16];
+        engagedSuggestions = [resultCopy engagedSuggestions];
+        v27 = [engagedSuggestions countByEnumeratingWithState:&v32 objects:v41 count:16];
         if (v27)
         {
           v28 = v27;
@@ -129,13 +129,13 @@
             {
               if (*v33 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(engagedSuggestions);
               }
 
               [(ATXMagicalMomentsAppPredictorFeedback *)self _handleEngagedProactiveSuggestion:*(*(&v32 + 1) + 8 * j) consumerSubType:v9 bundleIdToAnchorType:v19];
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v32 objects:v41 count:16];
+            v28 = [engagedSuggestions countByEnumeratingWithState:&v32 objects:v41 count:16];
           }
 
           while (v28);
@@ -159,22 +159,22 @@
 - (id)getCurrentABGroup
 {
   v2 = +[_ATXAppPredictor sharedInstance];
-  v3 = [v2 abGroupIdentifiers];
-  v4 = [v3 objectAtIndexedSubscript:16];
+  abGroupIdentifiers = [v2 abGroupIdentifiers];
+  v4 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
   return v4;
 }
 
-- (int64_t)_anchorTypeFromBundleIdToAnchorTypeMap:(id)a3 bundleId:(id)a4
+- (int64_t)_anchorTypeFromBundleIdToAnchorTypeMap:(id)map bundleId:(id)id
 {
-  v4 = [a3 objectForKey:a4];
+  v4 = [map objectForKey:id];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if (v6 <= 0x16)
+    integerValue = [v4 integerValue];
+    if (integerValue <= 0x16)
     {
-      v7 = v6;
+      v7 = integerValue;
     }
 
     else

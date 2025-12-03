@@ -3,20 +3,20 @@
 - (unint64_t)determinePresentationMode;
 - (unint64_t)determineiPadPresentationMode;
 - (unint64_t)presentationMode;
-- (void)_enhancedWindowingModeEnabledDidChange:(id)a3;
-- (void)didChangeToPresentationMode:(unint64_t)a3;
-- (void)enhancedWindowingModeEnabledDidChange:(BOOL)a3;
+- (void)_enhancedWindowingModeEnabledDidChange:(id)change;
+- (void)didChangeToPresentationMode:(unint64_t)mode;
+- (void)enhancedWindowingModeEnabledDidChange:(BOOL)change;
 @end
 
 @implementation UIKeyboardScenePresentationModeManager
 
 - (unint64_t)presentationMode
 {
-  v3 = [(UIKeyboardScenePresentationModeManager *)self determinePresentationMode];
-  v4 = v3;
-  if (self->_currentPresentationMode != v3)
+  determinePresentationMode = [(UIKeyboardScenePresentationModeManager *)self determinePresentationMode];
+  v4 = determinePresentationMode;
+  if (self->_currentPresentationMode != determinePresentationMode)
   {
-    self->_currentPresentationMode = v3;
+    self->_currentPresentationMode = determinePresentationMode;
     [(UIKeyboardScenePresentationModeManager *)self didChangeToPresentationMode:?];
     return self->_currentPresentationMode;
   }
@@ -27,15 +27,15 @@
 - (unint64_t)determinePresentationMode
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
 
     return [(UIKeyboardScenePresentationModeManager *)self determineiPadPresentationMode];
   }
 
-  else if (v4)
+  else if (userInterfaceIdiom)
   {
     return 0;
   }
@@ -60,30 +60,30 @@
   }
 }
 
-- (void)enhancedWindowingModeEnabledDidChange:(BOOL)a3
+- (void)enhancedWindowingModeEnabledDidChange:(BOOL)change
 {
-  if (self->_enhancedWindowingModeEnabled != a3)
+  if (self->_enhancedWindowingModeEnabled != change)
   {
-    self->_enhancedWindowingModeEnabled = a3;
+    self->_enhancedWindowingModeEnabled = change;
     [(UIKeyboardScenePresentationModeManager *)self presentationMode];
   }
 }
 
-- (void)_enhancedWindowingModeEnabledDidChange:(id)a3
+- (void)_enhancedWindowingModeEnabledDidChange:(id)change
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [change BOOLValue];
 
-  [(UIKeyboardScenePresentationModeManager *)self enhancedWindowingModeEnabledDidChange:v4];
+  [(UIKeyboardScenePresentationModeManager *)self enhancedWindowingModeEnabledDidChange:bOOLValue];
 }
 
-- (void)didChangeToPresentationMode:(unint64_t)a3
+- (void)didChangeToPresentationMode:(unint64_t)mode
 {
-  v5 = [(UIKeyboardScenePresentationModeManager *)self delegate];
+  delegate = [(UIKeyboardScenePresentationModeManager *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(UIKeyboardScenePresentationModeManager *)self delegate];
-    [v6 scenePresentationModeManager:self didChangeToMode:a3];
+    delegate2 = [(UIKeyboardScenePresentationModeManager *)self delegate];
+    [delegate2 scenePresentationModeManager:self didChangeToMode:mode];
   }
 }
 

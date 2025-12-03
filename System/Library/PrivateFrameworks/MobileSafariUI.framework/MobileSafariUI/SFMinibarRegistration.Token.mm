@@ -1,46 +1,46 @@
 @interface SFMinibarRegistration.Token
 - (_TtCE14MobileSafariUICSo21SFMinibarRegistration5Token)init;
-- (id)popoverSourceInfoForItem:(int64_t)a3;
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4;
+- (id)popoverSourceInfoForItem:(int64_t)item;
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled;
 @end
 
 @implementation SFMinibarRegistration.Token
 
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled
 {
-  v4 = a4;
-  if (sub_215828ED8(a3, *(&self->super.isa + OBJC_IVAR____TtCE14MobileSafariUICSo21SFMinibarRegistration5Token_items)))
+  enabledCopy = enabled;
+  if (sub_215828ED8(item, *(&self->super.isa + OBJC_IVAR____TtCE14MobileSafariUICSo21SFMinibarRegistration5Token_items)))
   {
     swift_beginAccess();
-    if (v4)
+    if (enabledCopy)
     {
-      v7 = self;
-      sub_2158283F4(&v8, a3);
+      selfCopy2 = self;
+      sub_2158283F4(&v8, item);
     }
 
     else
     {
-      v7 = self;
-      sub_215828C20(a3);
+      selfCopy2 = self;
+      sub_215828C20(item);
     }
 
     swift_endAccess();
   }
 }
 
-- (id)popoverSourceInfoForItem:(int64_t)a3
+- (id)popoverSourceInfoForItem:(int64_t)item
 {
-  if (sub_215828ED8(a3, *(&self->super.isa + OBJC_IVAR____TtCE14MobileSafariUICSo21SFMinibarRegistration5Token_items)))
+  if (sub_215828ED8(item, *(&self->super.isa + OBJC_IVAR____TtCE14MobileSafariUICSo21SFMinibarRegistration5Token_items)))
   {
-    v4 = [objc_allocWithZone(MEMORY[0x277D28F68]) initWithView_];
+    initWithView_ = [objc_allocWithZone(MEMORY[0x277D28F68]) initWithView_];
   }
 
   else
   {
-    v4 = 0;
+    initWithView_ = 0;
   }
 
-  return v4;
+  return initWithView_;
 }
 
 - (_TtCE14MobileSafariUICSo21SFMinibarRegistration5Token)init

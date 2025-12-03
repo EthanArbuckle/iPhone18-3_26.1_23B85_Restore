@@ -1,12 +1,12 @@
 @interface ATXPBInfoEngineCachedSuggestions
-- (BOOL)isEqual:(id)a3;
-- (id)cachedSuggestionIdsAtIndex:(id *)a1;
-- (id)cachedSuggestionSourceIdsAtIndex:(id *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)cachedSuggestionIdsAtIndex:(id *)index;
+- (id)cachedSuggestionSourceIdsAtIndex:(id *)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addCachedSuggestionIds:(uint64_t)a1;
-- (uint64_t)addCachedSuggestionSourceIds:(uint64_t)a1;
+- (uint64_t)addCachedSuggestionIds:(uint64_t)ids;
+- (uint64_t)addCachedSuggestionSourceIds:(uint64_t)ids;
 - (uint64_t)cachedSuggestionIds;
 - (uint64_t)cachedSuggestionIdsCount;
 - (uint64_t)cachedSuggestionSourceIds;
@@ -18,11 +18,11 @@
 - (uint64_t)setHasLength:(uint64_t)result;
 - (uint64_t)setLength:(uint64_t)result;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setCachedSuggestionIds:(uint64_t)a1;
-- (void)setCachedSuggestionSourceIds:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setCachedSuggestionIds:(uint64_t)ids;
+- (void)setCachedSuggestionSourceIds:(uint64_t)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBInfoEngineCachedSuggestions
@@ -33,40 +33,40 @@
   v8.receiver = self;
   v8.super_class = ATXPBInfoEngineCachedSuggestions;
   v4 = [(ATXPBInfoEngineCachedSuggestions *)&v8 description];
-  v5 = [(ATXPBInfoEngineCachedSuggestions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBInfoEngineCachedSuggestions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_length];
-    [v3 setObject:v4 forKey:@"length"];
+    [dictionary setObject:v4 forKey:@"length"];
   }
 
   cachedSuggestionIds = self->_cachedSuggestionIds;
   if (cachedSuggestionIds)
   {
-    [v3 setObject:cachedSuggestionIds forKey:@"cachedSuggestionIds"];
+    [dictionary setObject:cachedSuggestionIds forKey:@"cachedSuggestionIds"];
   }
 
   cachedSuggestionSourceIds = self->_cachedSuggestionSourceIds;
   if (cachedSuggestionSourceIds)
   {
-    [v3 setObject:cachedSuggestionSourceIds forKey:@"cachedSuggestionSourceIds"];
+    [dictionary setObject:cachedSuggestionSourceIds forKey:@"cachedSuggestionSourceIds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
@@ -135,10 +135,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -166,7 +166,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v24 + 1) + 8 * v11) copyWithZone:zone];
         [(ATXPBInfoEngineCachedSuggestions *)v6 addCachedSuggestionIds:v12];
 
         ++v11;
@@ -199,7 +199,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * v17) copyWithZone:{a3, v20}];
+        v18 = [*(*(&v20 + 1) + 8 * v17) copyWithZone:{zone, v20}];
         [(ATXPBInfoEngineCachedSuggestions *)v6 addCachedSuggestionSourceIds:v18];
 
         ++v17;
@@ -215,23 +215,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_length != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_length != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -239,13 +239,13 @@ LABEL_11:
   }
 
   cachedSuggestionIds = self->_cachedSuggestionIds;
-  if (cachedSuggestionIds | *(v4 + 2) && ![(NSMutableArray *)cachedSuggestionIds isEqual:?])
+  if (cachedSuggestionIds | *(equalCopy + 2) && ![(NSMutableArray *)cachedSuggestionIds isEqual:?])
   {
     goto LABEL_11;
   }
 
   cachedSuggestionSourceIds = self->_cachedSuggestionSourceIds;
-  if (cachedSuggestionSourceIds | *(v4 + 3))
+  if (cachedSuggestionSourceIds | *(equalCopy + 3))
   {
     v7 = [(NSMutableArray *)cachedSuggestionSourceIds isEqual:?];
   }
@@ -317,21 +317,21 @@ LABEL_12:
   return result;
 }
 
-- (uint64_t)addCachedSuggestionIds:(uint64_t)a1
+- (uint64_t)addCachedSuggestionIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
-    v5 = *(a1 + 16);
+    v5 = *(ids + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(ids + 16);
+      *(ids + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(ids + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -351,15 +351,15 @@ LABEL_12:
   return result;
 }
 
-- (id)cachedSuggestionIdsAtIndex:(id *)a1
+- (id)cachedSuggestionIdsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[2] objectAtIndex:a2];
+    index = [index[2] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearCachedSuggestionSourceIds
@@ -372,21 +372,21 @@ LABEL_12:
   return result;
 }
 
-- (uint64_t)addCachedSuggestionSourceIds:(uint64_t)a1
+- (uint64_t)addCachedSuggestionSourceIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
-    v5 = *(a1 + 24);
+    v5 = *(ids + 24);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(ids + 24);
+      *(ids + 24) = v6;
 
-      v5 = *(a1 + 24);
+      v5 = *(ids + 24);
     }
 
     v3 = [v5 addObject:v9];
@@ -406,61 +406,61 @@ LABEL_12:
   return result;
 }
 
-- (id)cachedSuggestionSourceIdsAtIndex:(id *)a1
+- (id)cachedSuggestionSourceIdsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[3] objectAtIndex:a2];
+    index = [index[3] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v11 = a2;
-  if (a1)
+  if (to)
   {
-    if (*(a1 + 32))
+    if (*(to + 32))
     {
-      *(v11 + 1) = *(a1 + 8);
+      *(v11 + 1) = *(to + 8);
       *(v11 + 32) |= 1u;
     }
 
-    if ([*(a1 + 16) count])
+    if ([*(to + 16) count])
     {
       if (v11)
       {
         [*(v11 + 2) removeAllObjects];
       }
 
-      v3 = [*(a1 + 16) count];
+      v3 = [*(to + 16) count];
       if (v3)
       {
         v4 = v3;
         for (i = 0; i != v4; ++i)
         {
-          v6 = [*(a1 + 16) objectAtIndex:i];
+          v6 = [*(to + 16) objectAtIndex:i];
           [(ATXPBInfoEngineCachedSuggestions *)v11 addCachedSuggestionIds:v6];
         }
       }
     }
 
-    if ([*(a1 + 24) count])
+    if ([*(to + 24) count])
     {
       if (v11)
       {
         [*(v11 + 3) removeAllObjects];
       }
 
-      v7 = [*(a1 + 24) count];
+      v7 = [*(to + 24) count];
       if (v7)
       {
         v8 = v7;
         for (j = 0; j != v8; ++j)
         {
-          v10 = [*(a1 + 24) objectAtIndex:j];
+          v10 = [*(to + 24) objectAtIndex:j];
           [(ATXPBInfoEngineCachedSuggestions *)v11 addCachedSuggestionSourceIds:v10];
         }
       }
@@ -468,17 +468,17 @@ LABEL_12:
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
     if (v3[4])
     {
-      *(a1 + 8) = v3[1];
-      *(a1 + 32) |= 1u;
+      *(from + 8) = v3[1];
+      *(from + 32) |= 1u;
     }
 
     v21 = 0u;
@@ -501,7 +501,7 @@ LABEL_12:
             objc_enumerationMutation(v5);
           }
 
-          [(ATXPBInfoEngineCachedSuggestions *)a1 addCachedSuggestionIds:?];
+          [(ATXPBInfoEngineCachedSuggestions *)from addCachedSuggestionIds:?];
         }
 
         while (v7 != v9);
@@ -531,7 +531,7 @@ LABEL_12:
             objc_enumerationMutation(v10);
           }
 
-          [(ATXPBInfoEngineCachedSuggestions *)a1 addCachedSuggestionSourceIds:?];
+          [(ATXPBInfoEngineCachedSuggestions *)from addCachedSuggestionSourceIds:?];
         }
 
         while (v12 != v14);
@@ -563,11 +563,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setCachedSuggestionIds:(uint64_t)a1
+- (void)setCachedSuggestionIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(ids, a2, 16);
   }
 }
 
@@ -581,11 +581,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setCachedSuggestionSourceIds:(uint64_t)a1
+- (void)setCachedSuggestionSourceIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(ids, a2, 24);
   }
 }
 

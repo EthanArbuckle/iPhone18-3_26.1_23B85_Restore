@@ -1,27 +1,27 @@
 @interface VPSpatialTutorialContentView
-- (VPSpatialTutorialContentView)initWithFrame:(CGRect)a3 mode:(int)a4;
+- (VPSpatialTutorialContentView)initWithFrame:(CGRect)frame mode:(int)mode;
 - (void)dealloc;
 - (void)initPlayerSpatial;
 - (void)initPlayerStereo;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startPlayers;
 - (void)stopPlayers;
-- (void)syncPlayersWithRate:(float)a3;
+- (void)syncPlayersWithRate:(float)rate;
 - (void)updatePlayersValuesBasedOnMode;
 @end
 
 @implementation VPSpatialTutorialContentView
 
-- (VPSpatialTutorialContentView)initWithFrame:(CGRect)a3 mode:(int)a4
+- (VPSpatialTutorialContentView)initWithFrame:(CGRect)frame mode:(int)mode
 {
   v8.receiver = self;
   v8.super_class = VPSpatialTutorialContentView;
-  v5 = [(VPSpatialTutorialContentView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(VPSpatialTutorialContentView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_mode = a4;
+    v5->_mode = mode;
     v5->_playersPlaying = 0;
     v5->_playersStartTriggered = 0;
     v5->_spatialStatus = 0;
@@ -34,11 +34,11 @@
   return v6;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = VPSpatialTutorialContentView;
-  [(VPSpatialTutorialContentView *)&v4 layoutSublayersOfLayer:a3];
+  [(VPSpatialTutorialContentView *)&v4 layoutSublayersOfLayer:layer];
   [(VPSpatialTutorialContentView *)self bounds];
   [(AVPlayerLayer *)self->_playerLayerStereo setFrame:?];
   [(VPSpatialTutorialContentView *)self bounds];
@@ -88,8 +88,8 @@
   playerLayerStereo = self->_playerLayerStereo;
   self->_playerLayerStereo = v15;
 
-  v17 = [(VPSpatialTutorialContentView *)self layer];
-  [v17 addSublayer:self->_playerLayerStereo];
+  layer = [(VPSpatialTutorialContentView *)self layer];
+  [layer addSublayer:self->_playerLayerStereo];
 }
 
 - (void)initPlayerSpatial
@@ -123,8 +123,8 @@
   playerLayerSpatial = self->_playerLayerSpatial;
   self->_playerLayerSpatial = v15;
 
-  v17 = [(VPSpatialTutorialContentView *)self layer];
-  [v17 addSublayer:self->_playerLayerSpatial];
+  layer = [(VPSpatialTutorialContentView *)self layer];
+  [layer addSublayer:self->_playerLayerSpatial];
 }
 
 - (void)startPlayers
@@ -161,7 +161,7 @@
   }
 }
 
-- (void)syncPlayersWithRate:(float)a3
+- (void)syncPlayersWithRate:(float)rate
 {
   memset(&v20, 0, sizeof(v20));
   HostTimeClock = CMClockGetHostTimeClock();
@@ -208,33 +208,33 @@ LABEL_9:
   {
     lhs = rhs;
     Seconds = CMTimeGetSeconds(&lhs);
-    v12 = a3;
+    rateCopy = rate;
     LogPrintF();
   }
 
   v9 = self->_playerStereo;
   lhs = rhs;
   v13 = v19;
-  [(AVQueuePlayer *)v9 setRate:&lhs time:&v13 atHostTime:COERCE_DOUBLE(__PAIR64__(HIDWORD(v19.value), LODWORD(a3))), *&Seconds, *&v12];
+  [(AVQueuePlayer *)v9 setRate:&lhs time:&v13 atHostTime:COERCE_DOUBLE(__PAIR64__(HIDWORD(v19.value), LODWORD(rate))), *&Seconds, *&rateCopy];
   playerSpatial = self->_playerSpatial;
   lhs = rhs;
   v13 = v19;
-  [(AVQueuePlayer *)playerSpatial setRate:&lhs time:&v13 atHostTime:COERCE_DOUBLE(__PAIR64__(HIDWORD(v19.value), LODWORD(a3)))];
-  self->_playersPlaying = a3 == 1.0;
+  [(AVQueuePlayer *)playerSpatial setRate:&lhs time:&v13 atHostTime:COERCE_DOUBLE(__PAIR64__(HIDWORD(v19.value), LODWORD(rate)))];
+  self->_playersPlaying = rate == 1.0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
+  changeCopy = change;
   v9 = CUMainQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__VPSpatialTutorialContentView_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_279E32160;
-  v12 = v8;
-  v13 = a6;
+  v12 = changeCopy;
+  contextCopy = context;
   block[4] = self;
-  v10 = v8;
+  v10 = changeCopy;
   dispatch_async(v9, block);
 }
 

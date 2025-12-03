@@ -1,10 +1,10 @@
 @interface COBrowserObserverSet
 - (COBrowserObserverSet)init;
 - (NSArray)observers;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)informObserverAboutDevice:(id)a3 added:(BOOL)a4;
-- (void)removeObserver:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer;
+- (void)informObserverAboutDevice:(id)device added:(BOOL)added;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation COBrowserObserverSet
@@ -18,24 +18,24 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = array;
   }
 
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__COBrowserObserverSet_addObserver___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(COBrowserObserverSet *)self _withLock:v6];
 }
 
@@ -48,16 +48,16 @@ void __36__COBrowserObserverSet_addObserver___block_invoke(uint64_t a1)
   *(v3 + 16) = v2;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__COBrowserObserverSet_removeObserver___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(COBrowserObserverSet *)self _withLock:v6];
 }
 
@@ -91,17 +91,17 @@ void __39__COBrowserObserverSet_removeObserver___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)informObserverAboutDevice:(id)a3 added:(BOOL)a4
+- (void)informObserverAboutDevice:(id)device added:(BOOL)added
 {
-  v6 = a3;
+  deviceCopy = device;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__COBrowserObserverSet_informObserverAboutDevice_added___block_invoke;
   v8[3] = &unk_278E16998;
-  v10 = a4;
+  addedCopy = added;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   [(COBrowserObserverSet *)self _withLock:v8];
 }
 
@@ -144,11 +144,11 @@ void __56__COBrowserObserverSet_informObserverAboutDevice_added___block_invoke(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

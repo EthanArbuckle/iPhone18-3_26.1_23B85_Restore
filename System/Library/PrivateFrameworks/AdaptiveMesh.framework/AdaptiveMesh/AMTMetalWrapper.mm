@@ -1,15 +1,15 @@
 @interface AMTMetalWrapper
-+ (id)createDefaultLibraryWithDevice:(id)a3;
++ (id)createDefaultLibraryWithDevice:(id)device;
 @end
 
 @implementation AMTMetalWrapper
 
-+ (id)createDefaultLibraryWithDevice:(id)a3
++ (id)createDefaultLibraryWithDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = 0;
-  v5 = [v3 newDefaultLibraryWithBundle:v4 error:&v9];
+  v5 = [deviceCopy newDefaultLibraryWithBundle:v4 error:&v9];
   v6 = v9;
   if (!v5)
   {

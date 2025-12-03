@@ -1,23 +1,23 @@
 @interface APSURLTokenInfo
-- (APSURLTokenInfo)initWithCoder:(id)a3;
-- (APSURLTokenInfo)initWithDictionary:(id)a3;
-- (APSURLTokenInfo)initWithTopic:(id)a3 vapidPublicKey:(id)a4 expirationDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (APSURLTokenInfo)initWithCoder:(id)coder;
+- (APSURLTokenInfo)initWithDictionary:(id)dictionary;
+- (APSURLTokenInfo)initWithTopic:(id)topic vapidPublicKey:(id)key expirationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APSURLTokenInfo
 
-- (APSURLTokenInfo)initWithTopic:(id)a3 vapidPublicKey:(id)a4 expirationDate:(id)a5
+- (APSURLTokenInfo)initWithTopic:(id)topic vapidPublicKey:(id)key expirationDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  topicCopy = topic;
+  keyCopy = key;
+  dateCopy = date;
+  if (topicCopy)
   {
     v16.receiver = self;
     v16.super_class = APSURLTokenInfo;
@@ -25,46 +25,46 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_topic, a3);
-      objc_storeStrong(p_isa + 3, a4);
-      objc_storeStrong(p_isa + 4, a5);
+      objc_storeStrong(&v12->_topic, topic);
+      objc_storeStrong(p_isa + 3, key);
+      objc_storeStrong(p_isa + 4, date);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (APSURLTokenInfo)initWithDictionary:(id)a3
+- (APSURLTokenInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"t"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"t"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 objectForKeyedSubscript:@"vPK"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"vPK"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v13 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v7 = [v4 objectForKeyedSubscript:@"eD"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"eD"];
       if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        v13 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v8 = [v4 objectForKeyedSubscript:@"bT"];
+        v8 = [dictionaryCopy objectForKeyedSubscript:@"bT"];
         v16.receiver = self;
         v16.super_class = APSURLTokenInfo;
         v9 = [(APSURLTokenInfo *)&v16 init];
@@ -93,34 +93,34 @@
 
         self = v10;
 
-        v13 = self;
+        selfCopy = self;
       }
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(APSURLTokenInfo *)self topic];
-  [v3 setObject:v4 forKeyedSubscript:@"t"];
+  topic = [(APSURLTokenInfo *)self topic];
+  [v3 setObject:topic forKeyedSubscript:@"t"];
 
-  v5 = [(APSURLTokenInfo *)self vapidPublicKey];
-  [v3 setObject:v5 forKeyedSubscript:@"vPK"];
+  vapidPublicKey = [(APSURLTokenInfo *)self vapidPublicKey];
+  [v3 setObject:vapidPublicKey forKeyedSubscript:@"vPK"];
 
-  v6 = [(APSURLTokenInfo *)self expirationDate];
-  if (v6)
+  expirationDate = [(APSURLTokenInfo *)self expirationDate];
+  if (expirationDate)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(APSURLTokenInfo *)self expirationDate];
-    [v8 timeIntervalSinceReferenceDate];
+    expirationDate2 = [(APSURLTokenInfo *)self expirationDate];
+    [expirationDate2 timeIntervalSinceReferenceDate];
     v9 = [v7 numberWithDouble:?];
     [v3 setObject:v9 forKeyedSubscript:@"eD"];
   }
@@ -130,8 +130,8 @@
     [v3 setObject:0 forKeyedSubscript:@"eD"];
   }
 
-  v10 = [(APSURLTokenInfo *)self baseToken];
-  [v3 setObject:v10 forKeyedSubscript:@"bT"];
+  baseToken = [(APSURLTokenInfo *)self baseToken];
+  [v3 setObject:baseToken forKeyedSubscript:@"bT"];
 
   v11 = [v3 copy];
 
@@ -141,9 +141,9 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(APSURLTokenInfo *)self topic];
-  v5 = [(APSURLTokenInfo *)self vapidPublicKey];
-  if (v5)
+  topic = [(APSURLTokenInfo *)self topic];
+  vapidPublicKey = [(APSURLTokenInfo *)self vapidPublicKey];
+  if (vapidPublicKey)
   {
     v6 = @"YES";
   }
@@ -153,17 +153,17 @@
     v6 = @"NO";
   }
 
-  v7 = [(APSURLTokenInfo *)self expirationDate];
+  expirationDate = [(APSURLTokenInfo *)self expirationDate];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[APSURLTokenInfo type](self, "type")}];
-  v9 = [(APSURLTokenInfo *)self baseToken];
-  v10 = [v3 stringWithFormat:@"<APSURLTokenInfo %p>: Topic: %@ VapidPublicKey: %@ Expiration: %@ Type: %@ Base Token: %@", self, v4, v6, v7, v8, v9];
+  baseToken = [(APSURLTokenInfo *)self baseToken];
+  v10 = [v3 stringWithFormat:@"<APSURLTokenInfo %p>: Topic: %@ VapidPublicKey: %@ Expiration: %@ Type: %@ Base Token: %@", self, topic, v6, expirationDate, v8, baseToken];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -171,17 +171,17 @@
     goto LABEL_25;
   }
 
-  v7 = v6;
-  v8 = [(APSURLTokenInfo *)self topic];
-  v9 = [v7 topic];
-  if ([v8 isEqualToString:v9])
+  v7 = equalCopy;
+  topic = [(APSURLTokenInfo *)self topic];
+  topic2 = [v7 topic];
+  if ([topic isEqualToString:topic2])
   {
-    v10 = [(APSURLTokenInfo *)self vapidPublicKey];
-    if (v10 || ([v7 vapidPublicKey], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
+    vapidPublicKey = [(APSURLTokenInfo *)self vapidPublicKey];
+    if (vapidPublicKey || ([v7 vapidPublicKey], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(APSURLTokenInfo *)self vapidPublicKey];
-      v4 = [v7 vapidPublicKey];
-      if (([v3 isEqualToData:v4] & 1) == 0)
+      vapidPublicKey2 = [(APSURLTokenInfo *)self vapidPublicKey];
+      vapidPublicKey3 = [v7 vapidPublicKey];
+      if (([vapidPublicKey2 isEqualToData:vapidPublicKey3] & 1) == 0)
       {
 
         v13 = 0;
@@ -197,17 +197,17 @@
       v11 = 0;
     }
 
-    v25 = v4;
-    v26 = v3;
-    v14 = [(APSURLTokenInfo *)self expirationDate];
-    if (v14 || ([v7 expirationDate], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+    v25 = vapidPublicKey3;
+    v26 = vapidPublicKey2;
+    expirationDate = [(APSURLTokenInfo *)self expirationDate];
+    if (expirationDate || ([v7 expirationDate], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v28 = v11;
-      v15 = [(APSURLTokenInfo *)self expirationDate];
-      v16 = [v7 expirationDate];
-      v13 = [v15 isEqualToDate:v16];
+      expirationDate2 = [(APSURLTokenInfo *)self expirationDate];
+      expirationDate3 = [v7 expirationDate];
+      v13 = [expirationDate2 isEqualToDate:expirationDate3];
 
-      if (v14)
+      if (expirationDate)
       {
 
         if (v28)
@@ -216,7 +216,7 @@ LABEL_15:
         }
 
 LABEL_16:
-        if (!v10)
+        if (!vapidPublicKey)
         {
         }
 
@@ -244,18 +244,18 @@ LABEL_16:
   v13 = 0;
 LABEL_19:
 
-  v17 = [(APSURLTokenInfo *)self baseToken];
-  if (v17)
+  baseToken = [(APSURLTokenInfo *)self baseToken];
+  if (baseToken)
   {
-    v18 = v17;
-    v19 = [v7 baseToken];
+    v18 = baseToken;
+    baseToken2 = [v7 baseToken];
 
-    v12 = (v19 == 0) & v13;
-    if (v19 && ((v13 ^ 1) & 1) == 0)
+    v12 = (baseToken2 == 0) & v13;
+    if (baseToken2 && ((v13 ^ 1) & 1) == 0)
     {
-      v20 = [(APSURLTokenInfo *)self baseToken];
-      v21 = [v7 baseToken];
-      v12 = [v20 isEqualToData:v21];
+      baseToken3 = [(APSURLTokenInfo *)self baseToken];
+      baseToken4 = [v7 baseToken];
+      v12 = [baseToken3 isEqualToData:baseToken4];
     }
   }
 
@@ -270,51 +270,51 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(APSURLTokenInfo *)self topic];
-  v4 = [v3 hash];
+  topic = [(APSURLTokenInfo *)self topic];
+  v4 = [topic hash];
 
-  v5 = [(APSURLTokenInfo *)self vapidPublicKey];
+  vapidPublicKey = [(APSURLTokenInfo *)self vapidPublicKey];
 
-  if (v5)
+  if (vapidPublicKey)
   {
-    v6 = [(APSURLTokenInfo *)self vapidPublicKey];
-    v4 ^= [v6 hash];
+    vapidPublicKey2 = [(APSURLTokenInfo *)self vapidPublicKey];
+    v4 ^= [vapidPublicKey2 hash];
   }
 
-  v7 = [(APSURLTokenInfo *)self expirationDate];
+  expirationDate = [(APSURLTokenInfo *)self expirationDate];
 
-  if (v7)
+  if (expirationDate)
   {
-    v8 = [(APSURLTokenInfo *)self expirationDate];
-    v4 ^= [v8 hash];
+    expirationDate2 = [(APSURLTokenInfo *)self expirationDate];
+    v4 ^= [expirationDate2 hash];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(APSURLTokenInfo *)self topic];
-  [v4 encodeObject:v5 forKey:@"t"];
+  coderCopy = coder;
+  topic = [(APSURLTokenInfo *)self topic];
+  [coderCopy encodeObject:topic forKey:@"t"];
 
-  v6 = [(APSURLTokenInfo *)self vapidPublicKey];
-  [v4 encodeObject:v6 forKey:@"vPK"];
+  vapidPublicKey = [(APSURLTokenInfo *)self vapidPublicKey];
+  [coderCopy encodeObject:vapidPublicKey forKey:@"vPK"];
 
-  v7 = [(APSURLTokenInfo *)self expirationDate];
-  [v4 encodeObject:v7 forKey:@"eD"];
+  expirationDate = [(APSURLTokenInfo *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"eD"];
 
-  v8 = [(APSURLTokenInfo *)self baseToken];
-  [v4 encodeObject:v8 forKey:@"bT"];
+  baseToken = [(APSURLTokenInfo *)self baseToken];
+  [coderCopy encodeObject:baseToken forKey:@"bT"];
 }
 
-- (APSURLTokenInfo)initWithCoder:(id)a3
+- (APSURLTokenInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vPK"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eD"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bT"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vPK"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eD"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bT"];
 
   v9 = [(APSURLTokenInfo *)self initWithTopic:v5 vapidPublicKey:v6 expirationDate:v7];
   [(APSURLTokenInfo *)v9 setBaseToken:v8];
@@ -322,16 +322,16 @@ LABEL_25:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [APSURLTokenInfo alloc];
-  v5 = [(APSURLTokenInfo *)self topic];
-  v6 = [(APSURLTokenInfo *)self vapidPublicKey];
-  v7 = [(APSURLTokenInfo *)self expirationDate];
-  v8 = [(APSURLTokenInfo *)v4 initWithTopic:v5 vapidPublicKey:v6 expirationDate:v7];
+  topic = [(APSURLTokenInfo *)self topic];
+  vapidPublicKey = [(APSURLTokenInfo *)self vapidPublicKey];
+  expirationDate = [(APSURLTokenInfo *)self expirationDate];
+  v8 = [(APSURLTokenInfo *)v4 initWithTopic:topic vapidPublicKey:vapidPublicKey expirationDate:expirationDate];
 
-  v9 = [(APSURLTokenInfo *)self baseToken];
-  [(APSURLTokenInfo *)v8 setBaseToken:v9];
+  baseToken = [(APSURLTokenInfo *)self baseToken];
+  [(APSURLTokenInfo *)v8 setBaseToken:baseToken];
 
   return v8;
 }

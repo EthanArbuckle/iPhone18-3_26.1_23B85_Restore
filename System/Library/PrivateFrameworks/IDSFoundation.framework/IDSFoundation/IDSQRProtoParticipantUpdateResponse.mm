@@ -1,14 +1,14 @@
 @interface IDSQRProtoParticipantUpdateResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)participantIdListAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)participantIdListAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoParticipantUpdateResponse
@@ -21,20 +21,20 @@
   [(IDSQRProtoParticipantUpdateResponse *)&v3 dealloc];
 }
 
-- (unint64_t)participantIdListAtIndex:(unint64_t)a3
+- (unint64_t)participantIdListAtIndex:(unint64_t)index
 {
   p_participantIdLists = &self->_participantIdLists;
   count = self->_participantIdLists.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_participantIdLists->list[a3];
+  return p_participantIdLists->list[index];
 }
 
 - (id)description
@@ -43,33 +43,33 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoParticipantUpdateResponse;
   v4 = [(IDSQRProtoParticipantUpdateResponse *)&v8 description];
-  v5 = [(IDSQRProtoParticipantUpdateResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoParticipantUpdateResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_operationFlags];
-  [v3 setObject:v4 forKey:@"operation_flags"];
+  [dictionary setObject:v4 forKey:@"operation_flags"];
 
   v5 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v5 forKey:@"participant_id_list"];
+  [dictionary setObject:v5 forKey:@"participant_id_list"];
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_sessionStateCounter];
-    [v3 setObject:v6 forKey:@"session_state_counter"];
+    [dictionary setObject:v6 forKey:@"session_state_counter"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   if (self->_participantIdLists.count)
   {
@@ -89,34 +89,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
-  v7[8] = self->_operationFlags;
+  toCopy = to;
+  toCopy[8] = self->_operationFlags;
   if ([(IDSQRProtoParticipantUpdateResponse *)self participantIdListsCount])
   {
-    [v7 clearParticipantIdLists];
-    v4 = [(IDSQRProtoParticipantUpdateResponse *)self participantIdListsCount];
-    if (v4)
+    [toCopy clearParticipantIdLists];
+    participantIdListsCount = [(IDSQRProtoParticipantUpdateResponse *)self participantIdListsCount];
+    if (participantIdListsCount)
     {
-      v5 = v4;
+      v5 = participantIdListsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addParticipantIdList:{-[IDSQRProtoParticipantUpdateResponse participantIdListAtIndex:](self, "participantIdListAtIndex:", i)}];
+        [toCopy addParticipantIdList:{-[IDSQRProtoParticipantUpdateResponse participantIdListAtIndex:](self, "participantIdListAtIndex:", i)}];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v7[9] = self->_sessionStateCounter;
-    *(v7 + 40) |= 1u;
+    toCopy[9] = self->_sessionStateCounter;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 32) = self->_operationFlags;
   PBRepeatedUInt64Copy();
   if (*&self->_has)
@@ -128,18 +128,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_operationFlags != *(v4 + 8) || !PBRepeatedUInt64IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_operationFlags != *(equalCopy + 8) || !PBRepeatedUInt64IsEqual())
   {
     goto LABEL_8;
   }
 
-  v5 = (*(v4 + 40) & 1) == 0;
+  v5 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_sessionStateCounter == *(v4 + 9))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_sessionStateCounter == *(equalCopy + 9))
     {
       v5 = 1;
       goto LABEL_9;
@@ -171,15 +171,15 @@ LABEL_9:
   return (2654435761 * operationFlags) ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_operationFlags = v4[8];
-  v8 = v4;
-  v5 = [v4 participantIdListsCount];
-  if (v5)
+  fromCopy = from;
+  self->_operationFlags = fromCopy[8];
+  v8 = fromCopy;
+  participantIdListsCount = [fromCopy participantIdListsCount];
+  if (participantIdListsCount)
   {
-    v6 = v5;
+    v6 = participantIdListsCount;
     for (i = 0; i != v6; ++i)
     {
       -[IDSQRProtoParticipantUpdateResponse addParticipantIdList:](self, "addParticipantIdList:", [v8 participantIdListAtIndex:i]);

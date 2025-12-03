@@ -1,6 +1,6 @@
 @interface MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent
 - (MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent);
-  v5 = [(MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent *)self connectionStatus];
-  [(MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent *)v4 setConnectionStatus:v5];
+  connectionStatus = [(MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent *)self connectionStatus];
+  [(MTRWiFiNetworkDiagnosticsClusterConnectionStatusEvent *)v4 setConnectionStatus:connectionStatus];
 
   return v4;
 }

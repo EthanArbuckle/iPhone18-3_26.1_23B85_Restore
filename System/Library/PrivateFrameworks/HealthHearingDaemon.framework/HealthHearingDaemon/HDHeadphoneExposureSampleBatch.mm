@@ -1,37 +1,37 @@
 @interface HDHeadphoneExposureSampleBatch
-+ (id)batchWithAddedSamples:(id)a3 anchor:(id)a4;
-+ (id)batchWithJournaledSamples:(id)a3;
-- (id)_initWithSamples:(id)a3 journaled:(BOOL)a4 anchor:(id)a5;
++ (id)batchWithAddedSamples:(id)samples anchor:(id)anchor;
++ (id)batchWithJournaledSamples:(id)samples;
+- (id)_initWithSamples:(id)samples journaled:(BOOL)journaled anchor:(id)anchor;
 @end
 
 @implementation HDHeadphoneExposureSampleBatch
 
-+ (id)batchWithJournaledSamples:(id)a3
++ (id)batchWithJournaledSamples:(id)samples
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithSamples:v3 journaled:1 anchor:0];
+  samplesCopy = samples;
+  v4 = [objc_alloc(objc_opt_class()) _initWithSamples:samplesCopy journaled:1 anchor:0];
 
   return v4;
 }
 
-+ (id)batchWithAddedSamples:(id)a3 anchor:(id)a4
++ (id)batchWithAddedSamples:(id)samples anchor:(id)anchor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithSamples:v6 journaled:0 anchor:v5];
+  anchorCopy = anchor;
+  samplesCopy = samples;
+  v7 = [objc_alloc(objc_opt_class()) _initWithSamples:samplesCopy journaled:0 anchor:anchorCopy];
 
   return v7;
 }
 
-- (id)_initWithSamples:(id)a3 journaled:(BOOL)a4 anchor:(id)a5
+- (id)_initWithSamples:(id)samples journaled:(BOOL)journaled anchor:(id)anchor
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v6)
+  journaledCopy = journaled;
+  samplesCopy = samples;
+  anchorCopy = anchor;
+  v11 = anchorCopy;
+  if (journaledCopy)
   {
-    if (!v10)
+    if (!anchorCopy)
     {
       goto LABEL_5;
     }
@@ -41,7 +41,7 @@
 
   else
   {
-    if (v10)
+    if (anchorCopy)
     {
       goto LABEL_5;
     }
@@ -55,13 +55,13 @@ LABEL_5:
   v12 = [(HDHeadphoneExposureSampleBatch *)&v17 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [samplesCopy copy];
     samples = v12->_samples;
     v12->_samples = v13;
 
-    v12->_journaled = v6;
-    objc_storeStrong(&v12->_anchor, a5);
-    v12->_canTriggerUserNotification = [v9 hk_containsObjectPassingTest:&__block_literal_global_0];
+    v12->_journaled = journaledCopy;
+    objc_storeStrong(&v12->_anchor, anchor);
+    v12->_canTriggerUserNotification = [samplesCopy hk_containsObjectPassingTest:&__block_literal_global_0];
     v15 = v12;
   }
 

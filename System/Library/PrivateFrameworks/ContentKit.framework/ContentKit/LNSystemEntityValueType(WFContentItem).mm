@@ -11,9 +11,9 @@
   v16[2] = *MEMORY[0x277D85DE8];
   v2 = objc_opt_class();
   v3 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"[.-]" options:0 error:0];
-  v4 = [a1 identifier];
-  v5 = [a1 identifier];
-  v6 = [v3 stringByReplacingMatchesInString:v4 options:0 range:0 withTemplate:{objc_msgSend(v5, "length"), @"_"}];
+  identifier = [self identifier];
+  identifier2 = [self identifier];
+  v6 = [v3 stringByReplacingMatchesInString:identifier options:0 range:0 withTemplate:{objc_msgSend(identifier2, "length"), @"_"}];
 
   v7 = NSStringFromClass(v2);
   v16[0] = v7;
@@ -54,18 +54,18 @@
 + (id)wf_placeDescriptorObjectClass
 {
   v1 = MEMORY[0x277D23928];
-  v2 = [a1 wf_placeDescriptorIdentifier];
-  v3 = [v1 valueTypeWithIdentifier:v2];
-  v4 = [v3 wf_objectClass];
+  wf_placeDescriptorIdentifier = [self wf_placeDescriptorIdentifier];
+  v3 = [v1 valueTypeWithIdentifier:wf_placeDescriptorIdentifier];
+  wf_objectClass = [v3 wf_objectClass];
 
-  return v4;
+  return wf_objectClass;
 }
 
 + (id)wf_placeDescriptorEntityIdentifier
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 wf_placeDescriptorIdentifier];
-  v3 = [v1 stringWithFormat:@"%@Entity", v2];
+  wf_placeDescriptorIdentifier = [self wf_placeDescriptorIdentifier];
+  v3 = [v1 stringWithFormat:@"%@Entity", wf_placeDescriptorIdentifier];
 
   return v3;
 }

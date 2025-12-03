@@ -2,9 +2,9 @@
 - (ICTableAttachmentViewController)tableAttachmentViewController;
 - (ICTableAttachmentViewController)tableAttachmentViewControllerForUndo;
 - (ICTableUndoTarget)init;
-- (ICTableUndoTarget)initWithProvider:(id)a3 viewController:(id)a4;
+- (ICTableUndoTarget)initWithProvider:(id)provider viewController:(id)controller;
 - (NSString)description;
-- (void)applyUndoGroup:(id)a3;
+- (void)applyUndoGroup:(id)group;
 @end
 
 @implementation ICTableUndoTarget
@@ -16,18 +16,18 @@
   return 0;
 }
 
-- (ICTableUndoTarget)initWithProvider:(id)a3 viewController:(id)a4
+- (ICTableUndoTarget)initWithProvider:(id)provider viewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ICTableUndoTarget;
   v9 = [(ICTableUndoTarget *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provider, a3);
-    objc_storeWeak(&v10->_tableAttachmentViewController, v8);
+    objc_storeStrong(&v9->_provider, provider);
+    objc_storeWeak(&v10->_tableAttachmentViewController, controllerCopy);
   }
 
   return v10;
@@ -35,23 +35,23 @@
 
 - (ICTableAttachmentViewController)tableAttachmentViewControllerForUndo
 {
-  v3 = [(ICTableUndoTarget *)self tableAttachmentViewController];
-  if (!v3)
+  tableAttachmentViewController = [(ICTableUndoTarget *)self tableAttachmentViewController];
+  if (!tableAttachmentViewController)
   {
     objc_opt_class();
-    v4 = [(ICTableUndoTarget *)self provider];
-    v5 = [v4 delegate];
-    v3 = ICCheckedDynamicCast();
+    provider = [(ICTableUndoTarget *)self provider];
+    delegate = [provider delegate];
+    tableAttachmentViewController = ICCheckedDynamicCast();
   }
 
-  return v3;
+  return tableAttachmentViewController;
 }
 
-- (void)applyUndoGroup:(id)a3
+- (void)applyUndoGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(ICTableUndoTarget *)self tableAttachmentViewControllerForUndo];
-  [v5 applyUndoGroup:v4];
+  groupCopy = group;
+  tableAttachmentViewControllerForUndo = [(ICTableUndoTarget *)self tableAttachmentViewControllerForUndo];
+  [tableAttachmentViewControllerForUndo applyUndoGroup:groupCopy];
 }
 
 - (NSString)description
@@ -60,9 +60,9 @@
   v9.receiver = self;
   v9.super_class = ICTableUndoTarget;
   v4 = [(ICTableUndoTarget *)&v9 description];
-  v5 = [(ICTableUndoTarget *)self tableAttachmentViewController];
-  v6 = [(ICTableUndoTarget *)self provider];
-  v7 = [v3 stringWithFormat:@"<%@, %@, %@>", v4, v5, v6];
+  tableAttachmentViewController = [(ICTableUndoTarget *)self tableAttachmentViewController];
+  provider = [(ICTableUndoTarget *)self provider];
+  v7 = [v3 stringWithFormat:@"<%@, %@, %@>", v4, tableAttachmentViewController, provider];
 
   return v7;
 }

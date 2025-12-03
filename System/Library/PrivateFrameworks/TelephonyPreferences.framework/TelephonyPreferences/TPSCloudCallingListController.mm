@@ -1,8 +1,8 @@
 @interface TPSCloudCallingListController
 - (OBPrivacyLinkController)privacyLinkController;
 - (OBPrivacyPresenter)privacyPresenter;
-- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)a3;
-- (void)presentOrUpdateViewController:(id)a3;
+- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)specifier;
+- (void)presentOrUpdateViewController:(id)controller;
 - (void)presentPrivacyPresenter;
 @end
 
@@ -75,25 +75,25 @@
   return privacyPresenter;
 }
 
-- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)a3
+- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v16 = v4;
-    v5 = [(TPSCloudCallingListController *)self privacyLinkController];
-    v6 = [v5 flow];
-    v7 = [v6 localizedButtonTitle];
+    v16 = specifierCopy;
+    privacyLinkController = [(TPSCloudCallingListController *)self privacyLinkController];
+    flow = [privacyLinkController flow];
+    localizedButtonTitle = [flow localizedButtonTitle];
 
     v8 = [v16 propertyForKey:*MEMORY[0x277D3FF88]];
     if (v8)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, v7];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v8, localizedButtonTitle];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v7, v15];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@", localizedButtonTitle, v15];
     }
     v9 = ;
     v10 = objc_opt_class();
@@ -101,7 +101,7 @@
     [v16 setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
 
     [v16 setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
-    v18.location = [v9 rangeOfString:v7];
+    v18.location = [v9 rangeOfString:localizedButtonTitle];
     v12 = NSStringFromRange(v18);
     [v16 setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
 
@@ -111,19 +111,19 @@
     v14 = NSStringFromSelector(sel_presentPrivacyPresenter);
     [v16 setProperty:v14 forKey:*MEMORY[0x277D3FF50]];
 
-    v4 = v16;
+    specifierCopy = v16;
   }
 }
 
-- (void)presentOrUpdateViewController:(id)a3
+- (void)presentOrUpdateViewController:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = controllerCopy;
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "Asked to present or update view controller: %@", buf, 0xCu);
   }
 
@@ -131,9 +131,9 @@
   v13 = 3221225472;
   v14 = __63__TPSCloudCallingListController_presentOrUpdateViewController___block_invoke;
   v15 = &unk_2782E39D0;
-  v16 = v4;
-  v17 = self;
-  v6 = v4;
+  v16 = controllerCopy;
+  selfCopy = self;
+  v6 = controllerCopy;
   v7 = _Block_copy(&v12);
   v8 = [(TPSCloudCallingListController *)self presentedViewController:v12];
 
@@ -142,9 +142,9 @@
     v9 = TPSLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(TPSCloudCallingListController *)self presentedViewController];
+      presentedViewController = [(TPSCloudCallingListController *)self presentedViewController];
       *buf = 138412290;
-      v19 = v10;
+      v19 = presentedViewController;
       _os_log_impl(&dword_21B8E9000, v9, OS_LOG_TYPE_DEFAULT, "A view controller is already being presented: %@. Dismissing it and presenting the new one", buf, 0xCu);
     }
 
@@ -201,8 +201,8 @@ uint64_t __63__TPSCloudCallingListController_presentOrUpdateViewController___blo
 
 - (void)presentPrivacyPresenter
 {
-  v2 = [(TPSCloudCallingListController *)self privacyPresenter];
-  [v2 present];
+  privacyPresenter = [(TPSCloudCallingListController *)self privacyPresenter];
+  [privacyPresenter present];
 }
 
 @end

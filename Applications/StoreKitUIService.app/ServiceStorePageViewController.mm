@@ -1,11 +1,11 @@
 @interface ServiceStorePageViewController
 - (id)_storePageViewController;
 - (void)dealloc;
-- (void)loadPageWithURL:(id)a3;
-- (void)loadPageWithURLBagKey:(id)a3;
+- (void)loadPageWithURL:(id)l;
+- (void)loadPageWithURLBagKey:(id)key;
 - (void)loadView;
-- (void)storePage:(id)a3 showProductPageForItem:(id)a4;
-- (void)storePage:(id)a3 showStorePageForURL:(id)a4;
+- (void)storePage:(id)page showProductPageForItem:(id)item;
+- (void)storePage:(id)page showStorePageForURL:(id)l;
 @end
 
 @implementation ServiceStorePageViewController
@@ -21,35 +21,35 @@
 - (void)loadView
 {
   v5 = objc_alloc_init(UIView);
-  v3 = [(ServiceStorePageViewController *)self _storePageViewController];
-  v4 = [v3 view];
+  _storePageViewController = [(ServiceStorePageViewController *)self _storePageViewController];
+  view = [_storePageViewController view];
 
-  [v4 setAutoresizingMask:18];
+  [view setAutoresizingMask:18];
   [v5 bounds];
-  [v4 setFrame:?];
-  [v5 addSubview:v4];
+  [view setFrame:?];
+  [v5 addSubview:view];
   [(ServiceStorePageViewController *)self setView:v5];
 }
 
-- (void)loadPageWithURLBagKey:(id)a3
+- (void)loadPageWithURLBagKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (!self->_isEntitled)
   {
     v11 = +[SSLogConfig sharedConfig];
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v14 = [v11 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v13;
     }
@@ -69,13 +69,13 @@
       {
 LABEL_15:
 
-        v9 = [(ServiceStorePageViewController *)self _clientViewControllerProxy];
+        _clientViewControllerProxy = [(ServiceStorePageViewController *)self _clientViewControllerProxy];
         v10 = SSError();
-        [v9 didFinishWithResult:&__kCFBooleanFalse error:v10];
+        [_clientViewControllerProxy didFinishWithResult:&__kCFBooleanFalse error:v10];
         goto LABEL_16;
       }
 
-      v14 = [NSString stringWithCString:v16 encoding:4, v20, v17];
+      oSLogObject = [NSString stringWithCString:v16 encoding:4, v20, v17];
       free(v16);
       SSFileLog();
     }
@@ -97,31 +97,31 @@ LABEL_15:
   v18[2] = sub_10002660C;
   v18[3] = &unk_100051898;
   v19 = v7;
-  v9 = v7;
-  [(SSURLBag *)v8 loadValueForKey:v4 completionBlock:v18];
+  _clientViewControllerProxy = v7;
+  [(SSURLBag *)v8 loadValueForKey:keyCopy completionBlock:v18];
   v10 = v19;
 LABEL_16:
 }
 
-- (void)loadPageWithURL:(id)a3
+- (void)loadPageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (!self->_isEntitled)
   {
     v9 = +[SSLogConfig sharedConfig];
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v11;
     }
@@ -141,13 +141,13 @@ LABEL_16:
       {
 LABEL_13:
 
-        v7 = [(ServiceStorePageViewController *)self _clientViewControllerProxy];
+        _clientViewControllerProxy = [(ServiceStorePageViewController *)self _clientViewControllerProxy];
         v8 = SSError();
-        [v7 didFinishWithResult:&__kCFBooleanFalse error:v8];
+        [_clientViewControllerProxy didFinishWithResult:&__kCFBooleanFalse error:v8];
         goto LABEL_14;
       }
 
-      v12 = [NSString stringWithCString:v14 encoding:4, v18, v15];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, v18, v15];
       free(v14);
       SSFileLog();
     }
@@ -156,34 +156,34 @@ LABEL_13:
   }
 
   v5 = [SSWeakReference weakReferenceWithObject:self];
-  v6 = [(ServiceStorePageViewController *)self _storePageViewController];
+  _storePageViewController = [(ServiceStorePageViewController *)self _storePageViewController];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000269A4;
   v16[3] = &unk_100051E30;
   v17 = v5;
-  v7 = v5;
-  [v6 loadURL:v4 withCompletionBlock:v16];
+  _clientViewControllerProxy = v5;
+  [_storePageViewController loadURL:lCopy withCompletionBlock:v16];
 
   v8 = v17;
 LABEL_14:
 }
 
-- (void)storePage:(id)a3 showProductPageForItem:(id)a4
+- (void)storePage:(id)page showProductPageForItem:(id)item
 {
-  v5 = a4;
-  v8 = [(ServiceStorePageViewController *)self _clientViewControllerProxy];
-  v6 = [v5 itemIdentifier];
+  itemCopy = item;
+  _clientViewControllerProxy = [(ServiceStorePageViewController *)self _clientViewControllerProxy];
+  itemIdentifier = [itemCopy itemIdentifier];
 
-  v7 = [NSNumber numberWithLongLong:v6];
-  [v8 showProductPageWithItemIdentifier:v7];
+  v7 = [NSNumber numberWithLongLong:itemIdentifier];
+  [_clientViewControllerProxy showProductPageWithItemIdentifier:v7];
 }
 
-- (void)storePage:(id)a3 showStorePageForURL:(id)a4
+- (void)storePage:(id)page showStorePageForURL:(id)l
 {
-  v4 = a4;
+  lCopy = l;
   v5 = +[UIApplication sharedApplication];
-  [v5 openURL:v4];
+  [v5 openURL:lCopy];
 }
 
 - (id)_storePageViewController

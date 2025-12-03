@@ -1,14 +1,14 @@
 @interface AWAVFoundationAttentionStreamer
-- (BOOL)getStreamingSessionAndStartRunning:(id)a3;
+- (BOOL)getStreamingSessionAndStartRunning:(id)running;
 - (id)cancelEventStream;
-- (id)initForUnitTest:(BOOL)a3 queue:(id)a4;
-- (void)receiveMetadata:(id)a3 type:(id)a4;
-- (void)receiveNotificationOfName:(id)a3 notification:(id)a4;
+- (id)initForUnitTest:(BOOL)test queue:(id)queue;
+- (void)receiveMetadata:(id)metadata type:(id)type;
+- (void)receiveNotificationOfName:(id)name notification:(id)notification;
 - (void)receiveStreamingEvent;
-- (void)sendNotification:(unint64_t)a3;
-- (void)setDisplayState:(BOOL)a3;
-- (void)setNotificationHandler:(id)a3;
-- (void)setSmartCoverState:(BOOL)a3;
+- (void)sendNotification:(unint64_t)notification;
+- (void)setDisplayState:(BOOL)state;
+- (void)setNotificationHandler:(id)handler;
+- (void)setSmartCoverState:(BOOL)state;
 - (void)stopStreaming;
 @end
 
@@ -67,8 +67,8 @@
 {
   if (self->_unitTest)
   {
-    v3 = [(AWAVFoundationAttentionStreamer *)self unitTestDevice];
-    [v3 cancelUnitTestStream];
+    unitTestDevice = [(AWAVFoundationAttentionStreamer *)self unitTestDevice];
+    [unitTestDevice cancelUnitTestStream];
   }
 
   else
@@ -78,11 +78,11 @@
   }
 }
 
-- (void)receiveNotificationOfName:(id)a3 notification:(id)a4
+- (void)receiveNotificationOfName:(id)name notification:(id)notification
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  notificationCopy = notification;
   if (currentLogLevel == 5)
   {
     v8 = _AALog();
@@ -102,7 +102,7 @@
       *v58 = 134218242;
       *&v58[4] = v10;
       *&v58[12] = 2112;
-      *&v58[14] = v6;
+      *&v58[14] = nameCopy;
       v15 = "%13.5f: Notification %@ received";
       v16 = v8;
       v17 = 22;
@@ -149,7 +149,7 @@ LABEL_19:
           *&v58[18] = 2048;
           *&v58[20] = v14;
           *&v58[28] = 2112;
-          *&v58[30] = v6;
+          *&v58[30] = nameCopy;
           v15 = "%30s:%-4d: %13.5f: Notification %@ received";
           v16 = v8;
           v17 = 38;
@@ -160,9 +160,9 @@ LABEL_19:
   }
 
 LABEL_21:
-  if ([v6 isEqual:{*MEMORY[0x1E6986B20], *v58, *&v58[16], *&v58[24]}])
+  if ([nameCopy isEqual:{*MEMORY[0x1E6986B20], *v58, *&v58[16], *&v58[24]}])
   {
-    if (v7)
+    if (notificationCopy)
     {
       if (currentLogLevel == 5)
       {
@@ -180,11 +180,11 @@ LABEL_21:
             v20 = v19 / 1000000000.0;
           }
 
-          v36 = [v7 userInfo];
+          userInfo = [notificationCopy userInfo];
           *v58 = 134218242;
           *&v58[4] = v20;
           *&v58[12] = 2112;
-          *&v58[14] = v36;
+          *&v58[14] = userInfo;
           v37 = "%13.5f: Runtime error received: %@";
           v38 = v18;
           v39 = 22;
@@ -223,7 +223,7 @@ LABEL_82:
                 v31 = v30 / 1000000000.0;
               }
 
-              v36 = [v7 userInfo];
+              userInfo = [notificationCopy userInfo];
               *v58 = 136315906;
               *&v58[4] = v26;
               *&v58[12] = 1024;
@@ -231,7 +231,7 @@ LABEL_82:
               *&v58[18] = 2048;
               *&v58[20] = v31;
               *&v58[28] = 2112;
-              *&v58[30] = v36;
+              *&v58[30] = userInfo;
               v37 = "%30s:%-4d: %13.5f: Runtime error received: %@";
               v38 = v18;
               v39 = 38;
@@ -246,20 +246,20 @@ LABEL_82:
 
 LABEL_83:
     [(AWAVFoundationAttentionStreamer *)self sendNotification:1, *v58, *&v58[8], *&v58[24]];
-    v47 = [(AWAVFoundationAttentionStreamer *)self cancelEventStream];
+    cancelEventStream = [(AWAVFoundationAttentionStreamer *)self cancelEventStream];
     goto LABEL_96;
   }
 
-  if (![v6 isEqual:*MEMORY[0x1E6986A90]])
+  if (![nameCopy isEqual:*MEMORY[0x1E6986A90]])
   {
-    if ([v6 isEqual:*MEMORY[0x1E6986A98]])
+    if ([nameCopy isEqual:*MEMORY[0x1E6986A98]])
     {
       goto LABEL_96;
     }
 
-    if (![v6 isEqual:*MEMORY[0x1E6986B28]])
+    if (![nameCopy isEqual:*MEMORY[0x1E6986B28]])
     {
-      [v6 isEqual:*MEMORY[0x1E6986AA8]];
+      [nameCopy isEqual:*MEMORY[0x1E6986AA8]];
       goto LABEL_96;
     }
 
@@ -483,11 +483,11 @@ LABEL_96:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receiveMetadata:(id)a3 type:(id)a4
+- (void)receiveMetadata:(id)metadata type:(id)type
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_queue);
   v54 = 0;
   v52 = 0u;
@@ -499,9 +499,9 @@ LABEL_96:
   v46 = 0u;
   v47 = 0u;
   memset(v45, 0, sizeof(v45));
-  if (*MEMORY[0x1E6986FE8] == v7)
+  if (*MEMORY[0x1E6986FE8] == typeCopy)
   {
-    v19 = v6;
+    v19 = metadataCopy;
     v10 = v19;
     v20 = 0uLL;
     v52 = 0u;
@@ -550,15 +550,15 @@ LABEL_96:
           *(&v45[2] + 1) = v14;
           if ([v10 hasOrientation])
           {
-            v25 = [v10 orientation];
-            if ((v25 - 1) >= 4)
+            orientation = [v10 orientation];
+            if ((orientation - 1) >= 4)
             {
               v11 = 0;
             }
 
             else
             {
-              v11 = v25;
+              v11 = orientation;
             }
           }
 
@@ -568,9 +568,9 @@ LABEL_96:
           }
 
           *&v45[2] = v11;
-          v42 = [v10 hasConfidence];
+          hasConfidence = [v10 hasConfidence];
           v43 = 0.0;
-          if (v42)
+          if (hasConfidence)
           {
             [v10 confidence];
             v43 = v44 * 100.0;
@@ -620,25 +620,25 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v8 = [v6 type];
+  type = [metadataCopy type];
   v9 = *MEMORY[0x1E6986FE0];
 
-  if (v8 == v9)
+  if (type == v9)
   {
-    v26 = v6;
+    v26 = metadataCopy;
     v11 = v26;
     *(&v46 + 1) = 2;
     if (v26)
     {
-      v27 = [v26 eyeReliefStatus];
-      if ((v27 - 1) >= 5)
+      eyeReliefStatus = [v26 eyeReliefStatus];
+      if ((eyeReliefStatus - 1) >= 5)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = v27;
+        v10 = eyeReliefStatus;
       }
 
       *&v46 = v10;
@@ -717,7 +717,7 @@ LABEL_44:
   v59 = 2048;
   v60 = v33;
   v61 = 2112;
-  v62 = self;
+  selfCopy = self;
   v63 = 2080;
   v64 = v15;
   v65 = 2048;
@@ -769,13 +769,13 @@ LABEL_50:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getStreamingSessionAndStartRunning:(id)a3
+- (BOOL)getStreamingSessionAndStartRunning:(id)running
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  runningCopy = running;
   if (self->_unitTest)
   {
-    v5 = [(AWAVFoundationAttentionStreamer *)self unitTestDevice];
+    unitTestDevice = [(AWAVFoundationAttentionStreamer *)self unitTestDevice];
     if (currentLogLevel == 5)
     {
       v6 = _AALog();
@@ -795,7 +795,7 @@ LABEL_50:
         *v23 = 134218242;
         *&v23[4] = v8;
         *&v23[12] = 2112;
-        *&v23[14] = v5;
+        *&v23[14] = unitTestDevice;
         v18 = "%13.5f: Using device %@ for starting AVFoundation operations";
         v19 = v6;
         v20 = 22;
@@ -809,8 +809,8 @@ LABEL_26:
       if (currentLogLevel < 6)
       {
 LABEL_28:
-        [v5 setAVFoundationDelegate:{self, *v23, *&v23[16], *&v23[24], v24}];
-        v13 = [v5 startUnitTestStream:self->_queue options:*&self->_currentOptions.AWAttentionStreamerActivateEyeRelief | (self->_currentOptions.AWAttentionStreamerActivatePersonDetection << 16)];
+        [unitTestDevice setAVFoundationDelegate:{self, *v23, *&v23[16], *&v23[24], v24}];
+        v13 = [unitTestDevice startUnitTestStream:self->_queue options:*&self->_currentOptions.AWAttentionStreamerActivateEyeRelief | (self->_currentOptions.AWAttentionStreamerActivatePersonDetection << 16)];
 
         goto LABEL_29;
       }
@@ -846,7 +846,7 @@ LABEL_28:
             *&v23[18] = 2048;
             *&v23[20] = v17;
             *&v23[28] = 2112;
-            *&v23[30] = v5;
+            *&v23[30] = unitTestDevice;
             v18 = "%30s:%-4d: %13.5f: Using device %@ for starting AVFoundation operations";
             v19 = v6;
             v20 = 38;
@@ -869,7 +869,7 @@ LABEL_28:
     AVFoundationEngine = self->_AVFoundationEngine;
   }
 
-  if ([AVFoundationEngine registerForOperation:self activateAttentionDetection:self->_currentOptions.AWAttentionStreamerActivateAttentionDetection activateEyeRelief:self->_currentOptions.AWAttentionStreamerActivateEyeRelief activatePersonDetection:self->_currentOptions.AWAttentionStreamerActivatePersonDetection identifier:self->_identifier]&& ([self->_AVFoundationEngine startOperationForReceiver:self->_identifier reply:v4], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+  if ([AVFoundationEngine registerForOperation:self activateAttentionDetection:self->_currentOptions.AWAttentionStreamerActivateAttentionDetection activateEyeRelief:self->_currentOptions.AWAttentionStreamerActivateEyeRelief activatePersonDetection:self->_currentOptions.AWAttentionStreamerActivatePersonDetection identifier:self->_identifier]&& ([self->_AVFoundationEngine startOperationForReceiver:self->_identifier reply:runningCopy], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
     v13 = 1;
     self->_attentionStreamerRunning = 1;
@@ -886,7 +886,7 @@ LABEL_29:
   return v13;
 }
 
-- (void)sendNotification:(unint64_t)a3
+- (void)sendNotification:(unint64_t)notification
 {
   dispatch_assert_queue_V2(self->_queue);
   notificationBlock = self->_notificationBlock;
@@ -898,13 +898,13 @@ LABEL_29:
   }
 }
 
-- (void)setSmartCoverState:(BOOL)a3
+- (void)setSmartCoverState:(BOOL)state
 {
   v30 = *MEMORY[0x1E69E9840];
   smartCoverClosed = self->_smartCoverClosed;
-  if (smartCoverClosed != a3)
+  if (smartCoverClosed != state)
   {
-    self->_smartCoverClosed = a3;
+    self->_smartCoverClosed = state;
     if (currentLogLevel == 5)
     {
       v5 = _AALog();
@@ -941,7 +941,7 @@ LABEL_27:
 
     else
     {
-      smartCoverClosed = a3;
+      smartCoverClosed = state;
       if (currentLogLevel < 6)
       {
         goto LABEL_2;
@@ -1016,7 +1016,7 @@ LABEL_2:
 LABEL_29:
   if (self->_attentionStreamerRunning)
   {
-    v18 = [(AWAVFoundationAttentionStreamer *)self cancelEventStream];
+    cancelEventStream = [(AWAVFoundationAttentionStreamer *)self cancelEventStream];
     (*(self->_notificationBlock + 2))(self->_notificationBlock, 1, v19, v20, v21, v22);
   }
 
@@ -1024,14 +1024,14 @@ LABEL_31:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplayState:(BOOL)a3
+- (void)setDisplayState:(BOOL)state
 {
   v30 = *MEMORY[0x1E69E9840];
   displayOn = self->_displayOn;
-  if (displayOn != a3)
+  if (displayOn != state)
   {
-    v5 = a3;
-    self->_displayOn = a3;
+    stateCopy = state;
+    self->_displayOn = state;
     if (currentLogLevel == 5)
     {
       v6 = _AALog();
@@ -1049,7 +1049,7 @@ LABEL_31:
         }
 
         v13 = "OFF";
-        if (v5)
+        if (stateCopy)
         {
           v13 = "ON";
         }
@@ -1067,7 +1067,7 @@ LABEL_31:
       goto LABEL_25;
     }
 
-    LOBYTE(displayOn) = a3;
+    LOBYTE(displayOn) = state;
     if (currentLogLevel >= 6)
     {
       v6 = _AALog();
@@ -1101,7 +1101,7 @@ LABEL_31:
           v24 = 136315906;
           v25 = *&v9;
           v26 = 1024;
-          if (v5)
+          if (stateCopy)
           {
             v17 = "ON";
           }
@@ -1127,7 +1127,7 @@ LABEL_25:
 
   if (!displayOn && self->_attentionStreamerRunning)
   {
-    v18 = [(AWAVFoundationAttentionStreamer *)self cancelEventStream];
+    cancelEventStream = [(AWAVFoundationAttentionStreamer *)self cancelEventStream];
     (*(self->_notificationBlock + 2))(self->_notificationBlock, 1, v19, v20, v21, v22);
   }
 
@@ -1178,31 +1178,31 @@ void __90__AWAVFoundationAttentionStreamer_streamEventWithBlock_options_operatio
   dispatch_async(v4, v7);
 }
 
-- (void)setNotificationHandler:(id)a3
+- (void)setNotificationHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     __assert_rtn("[AWAVFoundationAttentionStreamer setNotificationHandler:]", "AVFoundationAttentionStreamer.m", 184, "notificationBlock != nil");
   }
 
-  v7 = v4;
+  v7 = handlerCopy;
   v5 = MEMORY[0x1BFB0D030]();
   notificationBlock = self->_notificationBlock;
   self->_notificationBlock = v5;
 }
 
-- (id)initForUnitTest:(BOOL)a3 queue:(id)a4
+- (id)initForUnitTest:(BOOL)test queue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v38.receiver = self;
   v38.super_class = AWAVFoundationAttentionStreamer;
   v8 = [(AWAVFoundationAttentionStreamer *)&v38 init];
   v9 = v8;
   if (v8)
   {
-    v8->_unitTest = a3;
-    objc_storeStrong(&v8->_queue, a4);
+    v8->_unitTest = test;
+    objc_storeStrong(&v8->_queue, queue);
     v9->_attentionStreamerRunning = 0;
     notificationBlock = v9->_notificationBlock;
     v9->_notificationBlock = 0;
@@ -1241,27 +1241,27 @@ void __90__AWAVFoundationAttentionStreamer_streamEventWithBlock_options_operatio
       v18 = v9->_unitTestController;
       v9->_unitTestController = v17;
 
-      v19 = [(AWUnitTestSampler *)v9->_unitTestController AVFoundationSession];
+      aVFoundationSession = [(AWUnitTestSampler *)v9->_unitTestController AVFoundationSession];
       v20 = v9->_unitTester;
-      v9->_unitTester = v19;
+      v9->_unitTester = aVFoundationSession;
 
       *&v16->_displayOn = 1;
-      v21 = [(AWAVFoundationAttentionStreamer *)v16 unitTestController];
+      unitTestController = [(AWAVFoundationAttentionStreamer *)v16 unitTestController];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __57__AWAVFoundationAttentionStreamer_initForUnitTest_queue___block_invoke_7;
       v31[3] = &unk_1E7F37B98;
       v22 = v16;
       v32 = v22;
-      [v21 setDisplayCallback:v31];
+      [unitTestController setDisplayCallback:v31];
 
-      v23 = [(AWAVFoundationAttentionStreamer *)v22 unitTestController];
+      unitTestController2 = [(AWAVFoundationAttentionStreamer *)v22 unitTestController];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __57__AWAVFoundationAttentionStreamer_initForUnitTest_queue___block_invoke_3;
       v29[3] = &unk_1E7F37B98;
       v30 = v22;
-      [v23 setSmartCoverCallback:v29];
+      [unitTestController2 setSmartCoverCallback:v29];
       v24 = &v32;
     }
 

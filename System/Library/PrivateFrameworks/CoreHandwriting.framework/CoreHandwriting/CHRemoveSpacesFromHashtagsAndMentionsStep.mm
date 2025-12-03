@@ -1,13 +1,13 @@
 @interface CHRemoveSpacesFromHashtagsAndMentionsStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHRemoveSpacesFromHashtagsAndMentionsStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v5 = a3;
-  v227 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -24,10 +24,10 @@
   v232 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10, v11, v12);
   v231 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17);
   v23 = 0;
-  v229 = v5;
+  v229 = processCopy;
   while (1)
   {
-    v24 = objc_msgSend_result(v5, v18, v19, v20, v21, v22);
+    v24 = objc_msgSend_result(processCopy, v18, v19, v20, v21, v22);
     v30 = objc_msgSend_transcriptionPaths(v24, v25, v26, v27, v28, v29);
     v36 = objc_msgSend_count(v30, v31, v32, v33, v34, v35);
 
@@ -36,7 +36,7 @@
       break;
     }
 
-    v42 = objc_msgSend_result(v5, v37, v38, v39, v40, v41);
+    v42 = objc_msgSend_result(processCopy, v37, v38, v39, v40, v41);
     v48 = objc_msgSend_transcriptionPaths(v42, v43, v44, v45, v46, v47);
     v53 = objc_msgSend_objectAtIndexedSubscript_(v48, v49, v23, v50, v51, v52);
 
@@ -65,8 +65,8 @@
     v241[1] = v241;
     v241[2] = 0x2020000000;
     v241[3] = 0x43E0000000000000;
-    v72 = objc_msgSend_result(v5, v67, v68, v69, v70, v71);
-    v78 = objc_msgSend_result(v5, v73, v74, v75, v76, v77);
+    v72 = objc_msgSend_result(processCopy, v67, v68, v69, v70, v71);
+    v78 = objc_msgSend_result(processCopy, v73, v74, v75, v76, v77);
     v84 = objc_msgSend_tokenColumnCount(v78, v79, v80, v81, v82, v83);
     v233[0] = MEMORY[0x1E69E9820];
     v233[1] = 3221225472;
@@ -119,7 +119,7 @@
       v53 = v230;
     }
 
-    v5 = v229;
+    processCopy = v229;
     if (objc_msgSend_count(v86, v88, v89, v90, v91, v92))
     {
       if ((objc_msgSend_isEqual_(v86, v175, v85, v176, v177, v178) & 1) == 0)
@@ -147,14 +147,14 @@
     v7 = 0x1E695D000;
   }
 
-  v221 = objc_msgSend_result(v5, v37, v38, v39, v40, v41);
+  v221 = objc_msgSend_result(processCopy, v37, v38, v39, v40, v41);
   v225 = objc_msgSend_modifiedResultWithBestPathTokens_pathProbabilities_(v221, v222, v232, v231, v223, v224);
-  if (v5)
+  if (processCopy)
   {
-    objc_storeStrong(v5 + 3, v225);
+    objc_storeStrong(processCopy + 3, v225);
   }
 
-  return v5;
+  return processCopy;
 }
 
 @end

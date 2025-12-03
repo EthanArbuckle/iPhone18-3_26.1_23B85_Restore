@@ -1,17 +1,17 @@
 @interface TUIGridBoxLayout
-- (TUIGridBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUIGridBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (void)computeLayout;
-- (void)onChildInvalidate:(id)a3;
+- (void)onChildInvalidate:(id)invalidate;
 - (void)onChildrenUpdated;
 @end
 
 @implementation TUIGridBoxLayout
 
-- (TUIGridBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIGridBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v11.receiver = self;
   v11.super_class = TUIGridBoxLayout;
-  v5 = [(TUILayout *)&v11 initWithModel:a3 parent:a4 controller:a5];
+  v5 = [(TUILayout *)&v11 initWithModel:model parent:parent controller:controller];
   v6 = v5;
   if (v5)
   {
@@ -46,24 +46,24 @@
   v17 = v16;
 
   v18 = [(TUILayout *)self box];
-  v19 = [v18 columns];
+  columns = [v18 columns];
 
-  if (v19 <= 1)
+  if (columns <= 1)
   {
     v20 = 1;
   }
 
   else
   {
-    v20 = v19;
+    v20 = columns;
   }
 
   v21 = (v14 + v17) / v20 - v17;
-  v127 = [(TUILayout *)self computedLayoutDirection];
+  computedLayoutDirection = [(TUILayout *)self computedLayoutDirection];
   v130 = v4;
   v126 = v11;
   v22 = 0;
-  if (v127 == 2)
+  if (computedLayoutDirection == 2)
   {
     v23 = v4 - v13;
     v24 = v23;
@@ -150,8 +150,8 @@
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v63 = [(TUILayout *)self children];
-  v64 = [v63 countByEnumeratingWithState:&v137 objects:v142 count:16];
+  children = [(TUILayout *)self children];
+  v64 = [children countByEnumeratingWithState:&v137 objects:v142 count:16];
   if (v64)
   {
     v65 = v64;
@@ -162,25 +162,25 @@
       {
         if (*v138 != v66)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(children);
         }
 
         v68 = *(*(&v137 + 1) + 8 * i);
-        v69 = [v68 effectiveGuideLeading];
+        effectiveGuideLeading = [v68 effectiveGuideLeading];
         v70 = v14;
-        if (v69)
+        if (effectiveGuideLeading)
         {
-          v71 = v69;
-          v72 = [v68 effectiveGuideTrailing];
+          v71 = effectiveGuideLeading;
+          effectiveGuideTrailing = [v68 effectiveGuideTrailing];
 
           v70 = v14;
-          if (v72)
+          if (effectiveGuideTrailing)
           {
-            v73 = [v68 effectiveGuideTrailing];
-            [v73 guideOffset];
+            effectiveGuideTrailing2 = [v68 effectiveGuideTrailing];
+            [effectiveGuideTrailing2 guideOffset];
             v75 = v74;
-            v76 = [v68 effectiveGuideLeading];
-            [v76 guideOffset];
+            effectiveGuideLeading2 = [v68 effectiveGuideLeading];
+            [effectiveGuideLeading2 guideOffset];
             v70 = vabdd_f64(v75, v77);
           }
         }
@@ -190,32 +190,32 @@
         [v68 setContainingHeight:?];
         [v68 setFlexedHeight:NAN];
         [v68 validateLayout];
-        v78 = [v68 effectiveGuideTop];
-        v79 = v78;
+        effectiveGuideTop = [v68 effectiveGuideTop];
+        v79 = effectiveGuideTop;
         v80 = v132;
-        if (v78)
+        if (effectiveGuideTop)
         {
-          v80 = v78;
+          v80 = effectiveGuideTop;
         }
 
         v81 = v80;
 
-        v82 = [v68 effectiveGuideBottom];
-        v83 = v82;
+        effectiveGuideBottom = [v68 effectiveGuideBottom];
+        v83 = effectiveGuideBottom;
         v84 = v131;
-        if (v82)
+        if (effectiveGuideBottom)
         {
-          v84 = v82;
+          v84 = effectiveGuideBottom;
         }
 
         v85 = v84;
 
         v86 = self->_guideLayoutController;
-        v87 = [v68 computedHeight];
-        [(TUIGuideLayoutController *)v86 addEdgeFrom:v81 to:v85 length:v87, v88];
+        computedHeight = [v68 computedHeight];
+        [(TUIGuideLayoutController *)v86 addEdgeFrom:v81 to:v85 length:computedHeight, v88];
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v137 objects:v142 count:16];
+      v65 = [children countByEnumeratingWithState:&v137 objects:v142 count:16];
     }
 
     while (v65);
@@ -261,8 +261,8 @@
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v95 = [(TUILayout *)self children];
-  v96 = [v95 countByEnumeratingWithState:&v133 objects:v141 count:16];
+  children2 = [(TUILayout *)self children];
+  v96 = [children2 countByEnumeratingWithState:&v133 objects:v141 count:16];
   if (v96)
   {
     v97 = v96;
@@ -273,20 +273,20 @@
       {
         if (*v134 != v98)
         {
-          objc_enumerationMutation(v95);
+          objc_enumerationMutation(children2);
         }
 
         v100 = *(*(&v133 + 1) + 8 * j);
         [v100 computedTransformedSize];
         v102 = v101;
         v104 = v103;
-        v105 = [v100 effectiveGuideLeading];
+        effectiveGuideLeading3 = [v100 effectiveGuideLeading];
 
-        if (v105)
+        if (effectiveGuideLeading3)
         {
-          v106 = [v100 effectiveGuideLeading];
-          [v106 guideOffset];
-          if (v127 == 2)
+          effectiveGuideLeading4 = [v100 effectiveGuideLeading];
+          [effectiveGuideLeading4 guideOffset];
+          if (computedLayoutDirection == 2)
           {
             v108 = v107 - v102;
           }
@@ -299,17 +299,17 @@
 
         else
         {
-          v109 = [v100 effectiveGuideTrailing];
+          effectiveGuideTrailing3 = [v100 effectiveGuideTrailing];
 
           v108 = v9;
-          if (!v109)
+          if (!effectiveGuideTrailing3)
           {
             goto LABEL_47;
           }
 
-          v106 = [v100 effectiveGuideTrailing];
-          [v106 guideOffset];
-          if (v127 == 2)
+          effectiveGuideLeading4 = [v100 effectiveGuideTrailing];
+          [effectiveGuideLeading4 guideOffset];
+          if (computedLayoutDirection == 2)
           {
             v108 = v110;
           }
@@ -321,45 +321,45 @@
         }
 
 LABEL_47:
-        v111 = [v100 effectiveGuideTop];
+        effectiveGuideTop2 = [v100 effectiveGuideTop];
 
-        if (v111)
+        if (effectiveGuideTop2)
         {
-          v112 = [v100 effectiveGuideTop];
-          [v112 guideOffset];
+          effectiveGuideTop3 = [v100 effectiveGuideTop];
+          [effectiveGuideTop3 guideOffset];
           v114 = v113;
         }
 
         else
         {
-          v115 = [v100 effectiveGuideBottom];
+          effectiveGuideBottom2 = [v100 effectiveGuideBottom];
 
           v114 = v7;
-          if (!v115)
+          if (!effectiveGuideBottom2)
           {
             goto LABEL_52;
           }
 
-          v112 = [v100 effectiveGuideBottom];
-          [v112 guideOffset];
+          effectiveGuideTop3 = [v100 effectiveGuideBottom];
+          [effectiveGuideTop3 guideOffset];
           v114 = v116 - v104;
         }
 
 LABEL_52:
-        v117 = [v100 effectiveGuideTop];
-        if (v117)
+        effectiveGuideTop4 = [v100 effectiveGuideTop];
+        if (effectiveGuideTop4)
         {
-          v118 = v117;
-          v119 = [v100 effectiveGuideBottom];
+          v118 = effectiveGuideTop4;
+          effectiveGuideBottom3 = [v100 effectiveGuideBottom];
 
           v120 = v104;
-          if (v119)
+          if (effectiveGuideBottom3)
           {
-            v121 = [v100 effectiveGuideBottom];
-            [v121 guideOffset];
+            effectiveGuideBottom4 = [v100 effectiveGuideBottom];
+            [effectiveGuideBottom4 guideOffset];
             v123 = v122;
-            v124 = [v100 effectiveGuideTop];
-            [v124 guideOffset];
+            effectiveGuideTop5 = [v100 effectiveGuideTop];
+            [effectiveGuideTop5 guideOffset];
             v120 = fmax(v123 - v125, 0.0);
           }
         }
@@ -378,7 +378,7 @@ LABEL_52:
         [v100 setComputedOrigin:{v108, v114}];
       }
 
-      v97 = [v95 countByEnumeratingWithState:&v133 objects:v141 count:16];
+      v97 = [children2 countByEnumeratingWithState:&v133 objects:v141 count:16];
     }
 
     while (v97);
@@ -387,13 +387,13 @@ LABEL_52:
   [(TUILayout *)self setComputedNaturalSize:v130, v94];
 }
 
-- (void)onChildInvalidate:(id)a3
+- (void)onChildInvalidate:(id)invalidate
 {
   v4.receiver = self;
   v4.super_class = TUIGridBoxLayout;
-  v3 = a3;
-  [(TUILayout *)&v4 onChildInvalidate:v3];
-  [v3 setFlexedHeight:{NAN, v4.receiver, v4.super_class}];
+  invalidateCopy = invalidate;
+  [(TUILayout *)&v4 onChildInvalidate:invalidateCopy];
+  [invalidateCopy setFlexedHeight:{NAN, v4.receiver, v4.super_class}];
 }
 
 - (void)onChildrenUpdated

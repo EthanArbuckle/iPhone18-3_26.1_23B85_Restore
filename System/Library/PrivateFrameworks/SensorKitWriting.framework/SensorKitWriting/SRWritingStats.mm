@@ -1,5 +1,5 @@
 @interface SRWritingStats
-- (SRAbsoluteTime)initWithSensor:(void *)a1;
+- (SRAbsoluteTime)initWithSensor:(void *)sensor;
 - (double)updateSegmentCreationTime:(double)result rateAdjustedSize:;
 - (id)description;
 - (void)dealloc;
@@ -7,14 +7,14 @@
 
 @implementation SRWritingStats
 
-- (SRAbsoluteTime)initWithSensor:(void *)a1
+- (SRAbsoluteTime)initWithSensor:(void *)sensor
 {
-  if (!a1)
+  if (!sensor)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = sensor;
   v7.super_class = SRWritingStats;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   v4 = v3;
@@ -40,17 +40,17 @@
 
 - (double)updateSegmentCreationTime:(double)result rateAdjustedSize:
 {
-  if (a1)
+  if (self)
   {
     v4 = result;
-    v6 = *(a1 + 16);
+    v6 = *(self + 16);
     v7 = mach_continuous_time();
     v8 = SRAbsoluteTimeFromContinuousTime(v7);
-    *(a1 + 56) = v4;
-    *(a1 + 64) = a2;
-    ++*(a1 + 8);
-    result = v8 - v4 + *(a1 + 16);
-    *(a1 + 16) = result;
+    *(self + 56) = v4;
+    *(self + 64) = a2;
+    ++*(self + 8);
+    result = v8 - v4 + *(self + 16);
+    *(self + 16) = result;
   }
 
   return result;

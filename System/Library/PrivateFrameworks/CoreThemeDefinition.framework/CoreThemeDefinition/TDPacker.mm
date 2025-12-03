@@ -1,18 +1,18 @@
 @interface TDPacker
-- (BOOL)objectAtIndexFit:(int64_t)a3;
-- (CGPoint)fitPositionOfObjectAtIndex:(int64_t)a3;
+- (BOOL)objectAtIndexFit:(int64_t)fit;
+- (CGPoint)fitPositionOfObjectAtIndex:(int64_t)index;
 - (CGSize)enclosingSize;
-- (id)_findNode:(id)a3 ofSize:(CGSize)a4;
-- (id)_growDown:(CGSize)a3;
-- (id)_growNodeToSize:(CGSize)a3;
-- (id)_growRight:(CGSize)a3;
-- (id)_splitNode:(id)a3 toSize:(CGSize)a4;
+- (id)_findNode:(id)node ofSize:(CGSize)size;
+- (id)_growDown:(CGSize)down;
+- (id)_growNodeToSize:(CGSize)size;
+- (id)_growRight:(CGSize)right;
+- (id)_splitNode:(id)node toSize:(CGSize)size;
 - (unint64_t)countOfEmptyNodes;
-- (void)_countOfEmptyNodes:(id)a3 count:(unint64_t *)a4;
+- (void)_countOfEmptyNodes:(id)nodes count:(unint64_t *)count;
 - (void)dealloc;
 - (void)pack;
-- (void)setObjectsToPack:(id)a3;
-- (void)setSizeHandler:(id)a3;
+- (void)setObjectsToPack:(id)pack;
+- (void)setSizeHandler:(id)handler;
 @end
 
 @implementation TDPacker
@@ -27,23 +27,23 @@
   [(TDPacker *)&v3 dealloc];
 }
 
-- (void)setSizeHandler:(id)a3
+- (void)setSizeHandler:(id)handler
 {
   sizeHandler = self->_sizeHandler;
-  if (sizeHandler != a3)
+  if (sizeHandler != handler)
   {
 
-    self->_sizeHandler = [a3 copy];
+    self->_sizeHandler = [handler copy];
   }
 }
 
-- (void)setObjectsToPack:(id)a3
+- (void)setObjectsToPack:(id)pack
 {
   objectsToPack = self->_objectsToPack;
-  if (objectsToPack != a3)
+  if (objectsToPack != pack)
   {
 
-    self->_objectsToPack = a3;
+    self->_objectsToPack = pack;
     [(TDPacker *)self setPackedObjects:0];
 
     [(TDPacker *)self setRoot:0];
@@ -52,21 +52,21 @@
 
 - (void)pack
 {
-  v3 = [(TDPacker *)self objectsToPack];
-  v4 = [(NSArray *)v3 count];
+  objectsToPack = [(TDPacker *)self objectsToPack];
+  v4 = [(NSArray *)objectsToPack count];
   if (v4)
   {
     v5 = v4;
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4];
     v17 = objc_alloc_init(_TDPackerNode);
-    (*(self->_sizeHandler + 2))(self->_sizeHandler, [(NSArray *)v3 objectAtIndex:0]);
+    (*(self->_sizeHandler + 2))(self->_sizeHandler, [(NSArray *)objectsToPack objectAtIndex:0]);
     [(_TDPackerNode *)v17 setSize:?];
     [(TDPacker *)self setRoot:v17];
     v7 = 0;
     v8 = *MEMORY[0x277CBEEE8];
     do
     {
-      v9 = (*(self->_sizeHandler + 2))(self->_sizeHandler, [(NSArray *)v3 objectAtIndex:v7]);
+      v9 = (*(self->_sizeHandler + 2))(self->_sizeHandler, [(NSArray *)objectsToPack objectAtIndex:v7]);
       v11 = v10;
       v12 = [(TDPacker *)self _findNode:[(TDPacker *)self root] ofSize:v9, v10];
       if (v12)
@@ -84,7 +84,7 @@
       {
         [v13 setFit:1];
         [v14 setSize:{v9, v11}];
-        [v14 setNode:{-[NSArray objectAtIndex:](v3, "objectAtIndex:", v7)}];
+        [v14 setNode:{-[NSArray objectAtIndex:](objectsToPack, "objectAtIndex:", v7)}];
         v15 = v6;
         v16 = v14;
       }
@@ -113,34 +113,34 @@
 
 - (CGSize)enclosingSize
 {
-  v2 = [(TDPacker *)self root];
+  root = [(TDPacker *)self root];
 
-  [(_TDPackerNode *)v2 size];
+  [(_TDPackerNode *)root size];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)_countOfEmptyNodes:(id)a3 count:(unint64_t *)a4
+- (void)_countOfEmptyNodes:(id)nodes count:(unint64_t *)count
 {
-  if ([a3 fit])
+  if ([nodes fit])
   {
-    if ([a3 down])
+    if ([nodes down])
     {
-      -[TDPacker _countOfEmptyNodes:count:](self, "_countOfEmptyNodes:count:", [a3 down], a4);
+      -[TDPacker _countOfEmptyNodes:count:](self, "_countOfEmptyNodes:count:", [nodes down], count);
     }
 
-    if ([a3 right])
+    if ([nodes right])
     {
-      v7 = [a3 right];
+      right = [nodes right];
 
-      [(TDPacker *)self _countOfEmptyNodes:v7 count:a4];
+      [(TDPacker *)self _countOfEmptyNodes:right count:count];
     }
   }
 
   else
   {
-    *a4 = (*a4 + 1.0);
+    *count = (*count + 1.0);
   }
 }
 
@@ -153,9 +153,9 @@
   return v4 + v5;
 }
 
-- (BOOL)objectAtIndexFit:(int64_t)a3
+- (BOOL)objectAtIndexFit:(int64_t)fit
 {
-  v3 = [(NSArray *)self->_packedObjects objectAtIndex:a3];
+  v3 = [(NSArray *)self->_packedObjects objectAtIndex:fit];
   if (v3 == *MEMORY[0x277CBEEE8])
   {
     return 0;
@@ -164,9 +164,9 @@
   return [v3 fit];
 }
 
-- (CGPoint)fitPositionOfObjectAtIndex:(int64_t)a3
+- (CGPoint)fitPositionOfObjectAtIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_packedObjects objectAtIndex:a3];
+  v3 = [(NSArray *)self->_packedObjects objectAtIndex:index];
   if (v3 == *MEMORY[0x277CBEEE8])
   {
     v4 = *MEMORY[0x277CBF348];
@@ -183,31 +183,31 @@
   return result;
 }
 
-- (id)_findNode:(id)a3 ofSize:(CGSize)a4
+- (id)_findNode:(id)node ofSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if ([a3 used])
+  height = size.height;
+  width = size.width;
+  if ([node used])
   {
-    result = -[TDPacker _findNode:ofSize:](self, "_findNode:ofSize:", [a3 right], width, height);
+    result = -[TDPacker _findNode:ofSize:](self, "_findNode:ofSize:", [node right], width, height);
     if (!result)
     {
-      v9 = [a3 down];
+      down = [node down];
 
-      return [(TDPacker *)self _findNode:v9 ofSize:width, height];
+      return [(TDPacker *)self _findNode:down ofSize:width, height];
     }
   }
 
   else
   {
-    [a3 size];
+    [node size];
     if (width > v10)
     {
       return 0;
     }
 
-    [a3 size];
-    result = a3;
+    [node size];
+    result = node;
     if (height > v11)
     {
       return 0;
@@ -217,41 +217,41 @@
   return result;
 }
 
-- (id)_splitNode:(id)a3 toSize:(CGSize)a4
+- (id)_splitNode:(id)node toSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(_TDPackerNode);
   v8 = objc_alloc_init(_TDPackerNode);
-  [a3 origin];
+  [node origin];
   v10 = v9;
-  [a3 origin];
+  [node origin];
   [(_TDPackerNode *)v7 setOrigin:v10, height + v11];
-  [a3 origin];
+  [node origin];
   v13 = width + v12;
-  [a3 origin];
+  [node origin];
   [(_TDPackerNode *)v8 setOrigin:v13];
-  [a3 size];
+  [node size];
   v15 = v14;
-  [a3 size];
+  [node size];
   [(_TDPackerNode *)v7 setSize:v15, v16 - height];
-  [a3 size];
+  [node size];
   [(_TDPackerNode *)v8 setSize:v17 - width, height];
-  [a3 setUsed:1];
-  [a3 setDown:v7];
-  [a3 setRight:v8];
+  [node setUsed:1];
+  [node setDown:v7];
+  [node setRight:v8];
 
-  return a3;
+  return node;
 }
 
-- (id)_growNodeToSize:(CGSize)a3
+- (id)_growNodeToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TDPacker *)self root];
-  [(_TDPackerNode *)v6 size];
+  height = size.height;
+  width = size.width;
+  root = [(TDPacker *)self root];
+  [(_TDPackerNode *)root size];
   v8 = v7;
-  [(_TDPackerNode *)v6 size];
+  [(_TDPackerNode *)root size];
   v10 = v9;
   if (height > v9)
   {
@@ -265,9 +265,9 @@
 
   else
   {
-    [(_TDPackerNode *)v6 size];
+    [(_TDPackerNode *)root size];
     v12 = v11;
-    [(_TDPackerNode *)v6 size];
+    [(_TDPackerNode *)root size];
     v14 = v12 >= width + v13;
     if (width > v8)
     {
@@ -275,9 +275,9 @@
     }
   }
 
-  [(_TDPackerNode *)v6 size];
+  [(_TDPackerNode *)root size];
   v16 = v15;
-  [(_TDPackerNode *)v6 size];
+  [(_TDPackerNode *)root size];
   if (v14 || v16 < height + v17 && height <= v10)
   {
 LABEL_7:
@@ -290,16 +290,16 @@ LABEL_12:
   return [(TDPacker *)self _growDown:width, height];
 }
 
-- (id)_growRight:(CGSize)a3
+- (id)_growRight:(CGSize)right
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TDPacker *)self root];
-  [(_TDPackerNode *)v6 size];
+  height = right.height;
+  width = right.width;
+  root = [(TDPacker *)self root];
+  [(_TDPackerNode *)root size];
   v8 = v7;
   v10 = v9;
   v11 = objc_alloc_init(_TDPackerNode);
-  [(_TDPackerNode *)v11 setDown:v6];
+  [(_TDPackerNode *)v11 setDown:root];
   [(_TDPackerNode *)v11 setUsed:1];
   [(_TDPackerNode *)v11 setOrigin:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   [(_TDPackerNode *)v11 setSize:width + v8, v10];
@@ -319,16 +319,16 @@ LABEL_12:
   return result;
 }
 
-- (id)_growDown:(CGSize)a3
+- (id)_growDown:(CGSize)down
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TDPacker *)self root];
-  [(_TDPackerNode *)v6 size];
+  height = down.height;
+  width = down.width;
+  root = [(TDPacker *)self root];
+  [(_TDPackerNode *)root size];
   v8 = v7;
   v10 = v9;
   v11 = objc_alloc_init(_TDPackerNode);
-  [(_TDPackerNode *)v11 setRight:v6];
+  [(_TDPackerNode *)v11 setRight:root];
   [(_TDPackerNode *)v11 setUsed:1];
   [(_TDPackerNode *)v11 setOrigin:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   [(_TDPackerNode *)v11 setSize:v8, height + v10];

@@ -1,7 +1,7 @@
 @interface TGITokenMaskObjC
 - (_TtC24TokenGenerationInference16TGITokenMaskObjC)init;
 - (int64_t)count;
-- (void)getTrailingMaskBytes:(id)a3;
+- (void)getTrailingMaskBytes:(id)bytes;
 @end
 
 @implementation TGITokenMaskObjC
@@ -29,13 +29,13 @@ LABEL_5:
   return self;
 }
 
-- (void)getTrailingMaskBytes:(id)a3
+- (void)getTrailingMaskBytes:(id)bytes
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(bytes);
   v5 = *&self->tokenMask[OBJC_IVAR____TtC24TokenGenerationInference16TGITokenMaskObjC_tokenMask + 8];
   v6 = *(v5 + 16);
   v7 = v4[2];
-  v8 = self;
+  selfCopy = self;
   v7(v4, v5 + 32, v6);
   _Block_release(v4);
 }

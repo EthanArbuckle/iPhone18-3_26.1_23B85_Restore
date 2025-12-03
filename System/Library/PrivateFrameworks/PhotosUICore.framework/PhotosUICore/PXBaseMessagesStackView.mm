@@ -1,45 +1,45 @@
 @interface PXBaseMessagesStackView
-- (BOOL)scrollToIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (BOOL)scrollToObjectReference:(id)a3 animated:(BOOL)a4;
-- (Class)viewClassForItemAtIndex:(int64_t)a3 inStackLayout:(id)a4;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inDecoratingLayout:(id)a4;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (PXBaseMessagesStackView)initWithCoder:(id)a3;
-- (PXBaseMessagesStackView)initWithFrame:(CGRect)a3;
+- (BOOL)scrollToIndex:(unint64_t)index animated:(BOOL)animated;
+- (BOOL)scrollToObjectReference:(id)reference animated:(BOOL)animated;
+- (Class)viewClassForItemAtIndex:(int64_t)index inStackLayout:(id)layout;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inDecoratingLayout:(id)layout;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (PXBaseMessagesStackView)initWithCoder:(id)coder;
+- (PXBaseMessagesStackView)initWithFrame:(CGRect)frame;
 - (PXSectionedObjectReference)currentObjectReference;
 - (UIPanGestureRecognizer)panGestureRecognizer;
-- (double)horizontalContentMarginForSize:(CGSize)a3;
-- (double)solidColorOverlayAlphaForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)shadowForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)solidColorOverlayForLayout:(id)a3;
-- (id)viewUserDataForItemAtIndex:(int64_t)a3 inStackLayout:(id)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inDecoratingLayout:(id)a4;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (double)horizontalContentMarginForSize:(CGSize)size;
+- (double)solidColorOverlayAlphaForSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)shadowForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)solidColorOverlayForLayout:(id)layout;
+- (id)viewUserDataForItemAtIndex:(int64_t)index inStackLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inDecoratingLayout:(id)layout;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (int64_t)numberOfAccessoryItems;
 - (unint64_t)currentIndex;
 - (void)_updateDataSource;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)primaryItemDidChangeForStackItemsLayout:(id)a3;
-- (void)registerAllTextureProvidersWithMediaProvider:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)primaryItemDidChangeForStackItemsLayout:(id)layout;
+- (void)registerAllTextureProvidersWithMediaProvider:(id)provider;
 - (void)reloadAccessoryItems;
-- (void)scrollViewControllerDidLayoutSubviews:(id)a3;
-- (void)scrollViewControllerWillBeginScrolling:(id)a3;
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
-- (void)setCurrentDataSource:(id)a3;
-- (void)setDataSourceManager:(id)a3;
-- (void)setDebugColorModeEnabled:(BOOL)a3;
-- (void)setHorizontalAlignment:(int64_t)a3;
-- (void)setNumberOfAccessoryItems:(int64_t)a3;
-- (void)setSelectionOverlayEnabled:(BOOL)a3;
-- (void)setSettled:(BOOL)a3;
-- (void)setVerticalContentInsets:(double)a3;
+- (void)scrollViewControllerDidLayoutSubviews:(id)subviews;
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling;
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
+- (void)setCurrentDataSource:(id)source;
+- (void)setDataSourceManager:(id)manager;
+- (void)setDebugColorModeEnabled:(BOOL)enabled;
+- (void)setHorizontalAlignment:(int64_t)alignment;
+- (void)setNumberOfAccessoryItems:(int64_t)items;
+- (void)setSelectionOverlayEnabled:(BOOL)enabled;
+- (void)setSettled:(BOOL)settled;
+- (void)setVerticalContentInsets:(double)insets;
 @end
 
 @implementation PXBaseMessagesStackView
 
-- (void)scrollViewControllerDidLayoutSubviews:(id)a3
+- (void)scrollViewControllerDidLayoutSubviews:(id)subviews
 {
   indexToRestore = self->_indexToRestore;
   if (indexToRestore != 0x7FFFFFFFFFFFFFFFLL)
@@ -49,7 +49,7 @@
   }
 }
 
-- (void)scrollViewControllerWillBeginScrolling:(id)a3
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling
 {
   [(PXBaseMessagesStackView *)self setSettled:0];
   [(PXMessagesStackItemsLayout *)self->_layout setIsSettling:0];
@@ -58,19 +58,19 @@
   [(PXBaseMessagesStackView *)self willBeginScrolling];
 }
 
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
-  x = a4.x;
+  x = velocity.x;
   v33 = *MEMORY[0x1E69E9840];
-  v9 = [PXMessagesUISettings sharedInstance:a3];
-  v10 = [v9 pagingBehavior];
+  v9 = [PXMessagesUISettings sharedInstance:scrolling];
+  pagingBehavior = [v9 pagingBehavior];
   [(PXBaseMessagesStackView *)self bounds];
   v12 = v11;
   [v9 pagingVelocityThreshold];
-  switch(v10)
+  switch(pagingBehavior)
   {
     case 1:
-      v18 = a5->x;
+      v18 = offset->x;
       layout = self->_layout;
       goto LABEL_9;
     case 2:
@@ -80,7 +80,7 @@
       {
         [(PXMessagesStackItemsLayout *)self->_layout pageOffsetLessThanOffset:?];
 LABEL_10:
-        a5->x = v19;
+        offset->x = v19;
         break;
       }
 
@@ -120,7 +120,7 @@ LABEL_9:
       v23 = PLUIGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v24 = a5->x;
+        v24 = offset->x;
         v25 = 134218752;
         v26 = v15;
         v27 = 2048;
@@ -132,32 +132,32 @@ LABEL_9:
         _os_log_impl(&dword_1A3C1C000, v23, OS_LOG_TYPE_DEBUG, "Settling nearest clamped. Current (%lf). Proposed (%lf). Final (%lf). Velocity (%lf).", &v25, 0x2Au);
       }
 
-      a5->x = v22;
+      offset->x = v22;
       break;
   }
 
   [(PXMessagesStackItemsLayout *)self->_layout setIsSettling:1];
 }
 
-- (id)viewUserDataForItemAtIndex:(int64_t)a3 inStackLayout:(id)a4
+- (id)viewUserDataForItemAtIndex:(int64_t)index inStackLayout:(id)layout
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  layoutCopy = layout;
   PXAssertGetLog();
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inDecoratingLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inDecoratingLayout:(id)layout
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  layoutCopy = layout;
   PXAssertGetLog();
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
-  if (self->_decoratingLayout == v6)
+  v4 = *&index;
+  layoutCopy = layout;
+  if (self->_decoratingLayout == layoutCopy)
   {
     v15 = [(PXBaseMessagesStackView *)self viewUserDataForSpriteAtIndex:v4 inDecoratingLayout:?];
 LABEL_6:
@@ -165,21 +165,21 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v7 = [(PXBaseMessagesStackView *)self layout];
+  layout = [(PXBaseMessagesStackView *)self layout];
 
-  v8 = [(PXBaseMessagesStackView *)self layout];
-  v9 = v8;
-  if (v7 != v6)
+  layout2 = [(PXBaseMessagesStackView *)self layout];
+  v9 = layout2;
+  if (layout != layoutCopy)
   {
-    v10 = [v8 convertSpriteIndex:v4 fromDescendantLayout:v6];
+    v10 = [layout2 convertSpriteIndex:v4 fromDescendantLayout:layoutCopy];
 
-    v11 = [(PXBaseMessagesStackView *)self layout];
-    v12 = [v11 accessoryItemForSpriteIndex:v10];
+    layout3 = [(PXBaseMessagesStackView *)self layout];
+    v12 = [layout3 accessoryItemForSpriteIndex:v10];
 
-    v13 = [(PXBaseMessagesStackView *)self layout];
-    v14 = [v13 numberOfAccessoryItems];
+    layout4 = [(PXBaseMessagesStackView *)self layout];
+    numberOfAccessoryItems = [layout4 numberOfAccessoryItems];
 
-    if (v12 >= v14)
+    if (v12 >= numberOfAccessoryItems)
     {
       PXAssertGetLog();
     }
@@ -188,35 +188,35 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v17 = [v8 itemForSpriteIndex:v4];
+  v17 = [layout2 itemForSpriteIndex:v4];
 
-  v18 = [(PXBaseMessagesStackView *)self layout];
-  v16 = [(PXBaseMessagesStackView *)self viewUserDataForItemAtIndex:v17 inStackLayout:v18];
+  layout5 = [(PXBaseMessagesStackView *)self layout];
+  v16 = [(PXBaseMessagesStackView *)self viewUserDataForItemAtIndex:v17 inStackLayout:layout5];
 
 LABEL_9:
 
   return v16;
 }
 
-- (Class)viewClassForItemAtIndex:(int64_t)a3 inStackLayout:(id)a4
+- (Class)viewClassForItemAtIndex:(int64_t)index inStackLayout:(id)layout
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  layoutCopy = layout;
   PXAssertGetLog();
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inDecoratingLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inDecoratingLayout:(id)layout
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  layoutCopy = layout;
   PXAssertGetLog();
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
-  if (self->_decoratingLayout == v6)
+  v4 = *&index;
+  layoutCopy = layout;
+  if (self->_decoratingLayout == layoutCopy)
   {
     v15 = [(PXBaseMessagesStackView *)self viewClassForSpriteAtIndex:v4 inDecoratingLayout:?];
 LABEL_6:
@@ -224,21 +224,21 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v7 = [(PXBaseMessagesStackView *)self layout];
+  layout = [(PXBaseMessagesStackView *)self layout];
 
-  v8 = [(PXBaseMessagesStackView *)self layout];
-  v9 = v8;
-  if (v7 != v6)
+  layout2 = [(PXBaseMessagesStackView *)self layout];
+  v9 = layout2;
+  if (layout != layoutCopy)
   {
-    v10 = [v8 convertSpriteIndex:v4 fromDescendantLayout:v6];
+    v10 = [layout2 convertSpriteIndex:v4 fromDescendantLayout:layoutCopy];
 
-    v11 = [(PXBaseMessagesStackView *)self layout];
-    v12 = [v11 accessoryItemForSpriteIndex:v10];
+    layout3 = [(PXBaseMessagesStackView *)self layout];
+    v12 = [layout3 accessoryItemForSpriteIndex:v10];
 
-    v13 = [(PXBaseMessagesStackView *)self layout];
-    v14 = [v13 numberOfAccessoryItems];
+    layout4 = [(PXBaseMessagesStackView *)self layout];
+    numberOfAccessoryItems = [layout4 numberOfAccessoryItems];
 
-    if (v12 >= v14)
+    if (v12 >= numberOfAccessoryItems)
     {
       PXAssertGetLog();
     }
@@ -247,22 +247,22 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v17 = [v8 itemForSpriteIndex:v4];
+  v17 = [layout2 itemForSpriteIndex:v4];
 
-  v18 = [(PXBaseMessagesStackView *)self layout];
-  v16 = [(PXBaseMessagesStackView *)self viewClassForItemAtIndex:v17 inStackLayout:v18];
+  layout5 = [(PXBaseMessagesStackView *)self layout];
+  v16 = [(PXBaseMessagesStackView *)self viewClassForItemAtIndex:v17 inStackLayout:layout5];
 
 LABEL_9:
 
   return v16;
 }
 
-- (id)shadowForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)shadowForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&index;
+  layoutCopy = layout;
   v11 = -1;
-  if ([v6 isSpriteIndex:v4 decoratingSpriteWithIndex:&v11] && (v7 = objc_msgSend(v6, "convertSpriteIndex:toDescendantLayout:", v11, self->_layout), v7 != -1) && (v8 = -[PXGItemsLayout itemForSpriteIndex:](self->_layout, "itemForSpriteIndex:", v7), v8 == -[PXMessagesStackItemsLayout primaryItemIndex](self->_layout, "primaryItemIndex")) && !-[PXBaseMessagesStackView shadowsDisabled](self, "shadowsDisabled"))
+  if ([layoutCopy isSpriteIndex:v4 decoratingSpriteWithIndex:&v11] && (v7 = objc_msgSend(layoutCopy, "convertSpriteIndex:toDescendantLayout:", v11, self->_layout), v7 != -1) && (v8 = -[PXGItemsLayout itemForSpriteIndex:](self->_layout, "itemForSpriteIndex:", v7), v8 == -[PXMessagesStackItemsLayout primaryItemIndex](self->_layout, "primaryItemIndex")) && !-[PXBaseMessagesStackView shadowsDisabled](self, "shadowsDisabled"))
   {
     v9 = self->_centerItemShadow;
   }
@@ -275,10 +275,10 @@ LABEL_9:
   return v9;
 }
 
-- (double)solidColorOverlayAlphaForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- (double)solidColorOverlayAlphaForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = [(PXBaseMessagesStackView *)self selectionOverlayEnabled:*&a3];
+  v4 = *&index;
+  v6 = [(PXBaseMessagesStackView *)self selectionOverlayEnabled:*&index];
   layout = self->_layout;
   if (v6)
   {
@@ -295,7 +295,7 @@ LABEL_9:
   return result;
 }
 
-- (id)solidColorOverlayForLayout:(id)a3
+- (id)solidColorOverlayForLayout:(id)layout
 {
   if ([(PXBaseMessagesStackView *)self selectionOverlayEnabled])
   {
@@ -311,29 +311,29 @@ LABEL_9:
   return v3;
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
   layout = self->_layout;
-  if (layout == a4)
+  if (layout == layout)
   {
-    v6 = *&a3;
-    v7 = layout;
-    v8 = [(PXGItemsLayout *)v7 itemForSpriteIndex:v6];
+    v6 = *&index;
+    layoutCopy = layout;
+    v8 = [(PXGItemsLayout *)layoutCopy itemForSpriteIndex:v6];
     if (colorAtIndex_inLayout__onceToken != -1)
     {
       dispatch_once(&colorAtIndex_inLayout__onceToken, &__block_literal_global_59421);
     }
 
     v9 = [colorAtIndex_inLayout__colors count];
-    v5 = [colorAtIndex_inLayout__colors objectAtIndexedSubscript:v8 % v9];
+    blueColor = [colorAtIndex_inLayout__colors objectAtIndexedSubscript:v8 % v9];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] blueColor];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
   }
 
-  return v5;
+  return blueColor;
 }
 
 void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
@@ -357,13 +357,13 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
   colorAtIndex_inLayout__colors = v7;
 }
 
-- (void)primaryItemDidChangeForStackItemsLayout:(id)a3
+- (void)primaryItemDidChangeForStackItemsLayout:(id)layout
 {
-  v13 = [(PXBaseMessagesStackView *)self currentDataSource];
-  v4 = [(PXBaseMessagesStackView *)self currentIndex];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, [v13 numberOfItemsInSection:0] <= v4))
+  currentDataSource = [(PXBaseMessagesStackView *)self currentDataSource];
+  currentIndex = [(PXBaseMessagesStackView *)self currentIndex];
+  if (currentIndex == 0x7FFFFFFFFFFFFFFFLL || (v5 = currentIndex, [currentDataSource numberOfItemsInSection:0] <= currentIndex))
   {
-    v6 = *off_1E7722228;
+    identifier = *off_1E7722228;
     v7 = *(off_1E7722228 + 1);
     v5 = *(off_1E7722228 + 2);
     v8 = *(off_1E7722228 + 3);
@@ -371,7 +371,7 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
 
   else
   {
-    v6 = [v13 identifier];
+    identifier = [currentDataSource identifier];
     v7 = 0;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -384,46 +384,46 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
 
   else
   {
-    v10 = dataSourceIdentifier != v6 || self->_lastKnownPrimaryIndex.section != v7 || self->_lastKnownPrimaryIndex.item != v5 || self->_lastKnownPrimaryIndex.subitem != v8;
+    v10 = dataSourceIdentifier != identifier || self->_lastKnownPrimaryIndex.section != v7 || self->_lastKnownPrimaryIndex.item != v5 || self->_lastKnownPrimaryIndex.subitem != v8;
   }
 
-  self->_lastKnownPrimaryIndex.dataSourceIdentifier = v6;
+  self->_lastKnownPrimaryIndex.dataSourceIdentifier = identifier;
   self->_lastKnownPrimaryIndex.section = v7;
   self->_lastKnownPrimaryIndex.item = v5;
   self->_lastKnownPrimaryIndex.subitem = v8;
   [(PXBaseMessagesStackView *)self primaryItemDidChange:self->_isProgramaticallyScrolling didChangeIndex:v10];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (DataSourceManagerObservationContext_59424 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (DataSourceManagerObservationContext_59424 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXBaseMessagesStackView.m" lineNumber:444 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXBaseMessagesStackView.m" lineNumber:444 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXBaseMessagesStackView *)self _updateDataSource];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
 - (void)_updateDataSource
 {
-  v3 = [(PXBaseMessagesStackView *)self currentDataSource];
-  v4 = [(PXBaseMessagesStackView *)self dataSourceManager];
-  v5 = [v4 dataSource];
+  currentDataSource = [(PXBaseMessagesStackView *)self currentDataSource];
+  dataSourceManager = [(PXBaseMessagesStackView *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  if (v3 != v5)
+  if (currentDataSource != dataSource)
   {
-    v6 = [(PXBaseMessagesStackView *)self dataSourceManager];
-    v7 = [v6 allChangeDetailsFromDataSource:v3 toDataSource:v5];
+    dataSourceManager2 = [(PXBaseMessagesStackView *)self dataSourceManager];
+    v7 = [dataSourceManager2 allChangeDetailsFromDataSource:currentDataSource toDataSource:dataSource];
 
     v8 = *&self->_lastKnownPrimaryIndex.item;
     v23 = *&self->_lastKnownPrimaryIndex.dataSourceIdentifier;
@@ -432,7 +432,7 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
     v9 = v26;
     *&self->_lastKnownPrimaryIndex.dataSourceIdentifier = v25;
     *&self->_lastKnownPrimaryIndex.item = v9;
-    v10 = [v3 numberOfItemsInSection:0];
+    v10 = [currentDataSource numberOfItemsInSection:0];
     indexToRestore = self->_indexToRestore;
     if (indexToRestore == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -443,7 +443,7 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
     {
       if (indexToRestore == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v5 numberOfItemsInSection:0] <= 0)
+        if ([dataSource numberOfItemsInSection:0] <= 0)
         {
           v13 = 0x7FFFFFFFFFFFFFFFLL;
         }
@@ -456,16 +456,16 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
 
       else
       {
-        v18 = [v3 identifier];
+        identifier = [currentDataSource identifier];
         v25 = 0u;
         v26 = 0u;
-        v23 = v18;
+        v23 = identifier;
         *&v24 = indexToRestore;
         *(&v24 + 1) = 0x7FFFFFFFFFFFFFFFLL;
         [off_1E77218B0 indexPathAfterApplyingChanges:v7 toIndexPath:&v23 hasIncrementalChanges:0 objectChanged:0];
         if (v25 == *off_1E7721F68)
         {
-          v19 = [v5 numberOfItemsInSection:0];
+          v19 = [dataSource numberOfItemsInSection:0];
           v13 = v19 - 1;
           if (v19 <= 0)
           {
@@ -487,16 +487,16 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
 
     else
     {
-      v13 = indexToRestore - v10 + [v5 numberOfItemsInSection:0];
+      v13 = indexToRestore - v10 + [dataSource numberOfItemsInSection:0];
     }
 
     self->_indexToRestore = v13;
-    if (([v3 containsAnyItems] & 1) != 0 && objc_msgSend(v5, "containsAnyItems") && -[PXMessagesStackItemsLayout appearState](self->_layout, "appearState") == 1)
+    if (([currentDataSource containsAnyItems] & 1) != 0 && objc_msgSend(dataSource, "containsAnyItems") && -[PXMessagesStackItemsLayout appearState](self->_layout, "appearState") == 1)
     {
-      v14 = [(PXMessagesStackItemsLayout *)self->_layout createDefaultAnimationForCurrentContext];
-      v15 = [off_1E7721810 sharedInstance];
-      [v15 defaultAnimationDuration];
-      [v14 setDuration:?];
+      createDefaultAnimationForCurrentContext = [(PXMessagesStackItemsLayout *)self->_layout createDefaultAnimationForCurrentContext];
+      sharedInstance = [off_1E7721810 sharedInstance];
+      [sharedInstance defaultAnimationDuration];
+      [createDefaultAnimationForCurrentContext setDuration:?];
     }
 
     layout = self->_layout;
@@ -505,8 +505,8 @@ void __49__PXBaseMessagesStackView_colorAtIndex_inLayout___block_invoke()
     v20[2] = __44__PXBaseMessagesStackView__updateDataSource__block_invoke;
     v20[3] = &unk_1E7733948;
     v20[4] = self;
-    v21 = v3;
-    v17 = v5;
+    v21 = currentDataSource;
+    v17 = dataSource;
     v22 = v17;
     [(PXMessagesStackItemsLayout *)layout applySectionedChangeDetailsForSingleSection:v7 dataSourceBeforeChanges:v21 dataSourceAfterChanges:v17 changeMediaVersionHandler:v20];
     [(PXBaseMessagesStackView *)self setCurrentDataSource:v17];
@@ -527,67 +527,67 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
   return [v3 contentChangedForItemBeforeDataSource:v4 beforeIndexPath:v10 afterDataSource:v5 afterIndexPath:v9];
 }
 
-- (void)setSettled:(BOOL)a3
+- (void)setSettled:(BOOL)settled
 {
-  if (self->_settled != a3)
+  if (self->_settled != settled)
   {
-    self->_settled = a3;
+    self->_settled = settled;
     [(PXBaseMessagesStackView *)self settledDidChange];
   }
 }
 
-- (void)setCurrentDataSource:(id)a3
+- (void)setCurrentDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_currentDataSource != v5)
+  sourceCopy = source;
+  if (self->_currentDataSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentDataSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_currentDataSource, source);
     [(PXBaseMessagesStackView *)self currentDataSourceDidChange];
     [(PXBaseMessagesStackView *)self setNeedsLayout];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
-- (void)registerAllTextureProvidersWithMediaProvider:(id)a3
+- (void)registerAllTextureProvidersWithMediaProvider:(id)provider
 {
-  v4 = a3;
-  v6 = [(PXBaseMessagesStackView *)self tungstenView];
-  [v6 registerAllTextureProvidersWithMediaProvider:v4];
+  providerCopy = provider;
+  tungstenView = [(PXBaseMessagesStackView *)self tungstenView];
+  [tungstenView registerAllTextureProvidersWithMediaProvider:providerCopy];
 
   v5 = objc_alloc_init(off_1E77215C0);
   [v5 setOverlayViewSource:self];
-  [v6 registerTextureProvider:v5 forMediaKind:8];
+  [tungstenView registerTextureProvider:v5 forMediaKind:8];
 }
 
 - (void)reloadAccessoryItems
 {
-  v2 = [(PXBaseMessagesStackView *)self layout];
-  [v2 reloadAccessoryItems];
+  layout = [(PXBaseMessagesStackView *)self layout];
+  [layout reloadAccessoryItems];
 }
 
 - (int64_t)numberOfAccessoryItems
 {
-  v2 = [(PXBaseMessagesStackView *)self layout];
-  v3 = [v2 numberOfAccessoryItems];
+  layout = [(PXBaseMessagesStackView *)self layout];
+  numberOfAccessoryItems = [layout numberOfAccessoryItems];
 
-  return v3;
+  return numberOfAccessoryItems;
 }
 
-- (void)setNumberOfAccessoryItems:(int64_t)a3
+- (void)setNumberOfAccessoryItems:(int64_t)items
 {
-  v9 = [(PXBaseMessagesStackView *)self layout];
-  if ([v9 numberOfAccessoryItems] != a3)
+  layout = [(PXBaseMessagesStackView *)self layout];
+  if ([layout numberOfAccessoryItems] != items)
   {
-    v5 = [v9 numberOfItems];
+    numberOfItems = [layout numberOfItems];
     v6 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = v5 + a3 - 1;
-    if (v5 + a3 >= 1)
+    v7 = numberOfItems + items - 1;
+    if (numberOfItems + items >= 1)
     {
       indexToRestore = self->_indexToRestore;
       if (indexToRestore == 0x7FFFFFFFFFFFFFFFLL)
       {
-        indexToRestore = [v9 primaryItemIndex];
+        indexToRestore = [layout primaryItemIndex];
       }
 
       if (v7 >= indexToRestore)
@@ -602,33 +602,33 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
     }
 
     self->_indexToRestore = v6;
-    [v9 setNumberOfAccessoryItems:a3];
+    [layout setNumberOfAccessoryItems:items];
     [(PXBaseMessagesStackView *)self reloadAccessoryItems];
   }
 }
 
-- (void)setHorizontalAlignment:(int64_t)a3
+- (void)setHorizontalAlignment:(int64_t)alignment
 {
-  if (self->_horizontalAlignment != a3)
+  if (self->_horizontalAlignment != alignment)
   {
-    self->_horizontalAlignment = a3;
+    self->_horizontalAlignment = alignment;
     [(PXBaseMessagesStackView *)self setNeedsLayout];
   }
 }
 
-- (void)setSelectionOverlayEnabled:(BOOL)a3
+- (void)setSelectionOverlayEnabled:(BOOL)enabled
 {
-  if (self->_selectionOverlayEnabled != a3)
+  if (self->_selectionOverlayEnabled != enabled)
   {
-    self->_selectionOverlayEnabled = a3;
-    v4 = [(PXBaseMessagesStackView *)self layout];
-    [v4 invalidateDecorationAndSprites];
+    self->_selectionOverlayEnabled = enabled;
+    layout = [(PXBaseMessagesStackView *)self layout];
+    [layout invalidateDecorationAndSprites];
   }
 }
 
-- (double)horizontalContentMarginForSize:(CGSize)a3
+- (double)horizontalContentMarginForSize:(CGSize)size
 {
-  v4 = MEMORY[0x1A590D300](self, a2, 1.0, a3.width, a3.height);
+  v4 = MEMORY[0x1A590D300](self, a2, 1.0, size.width, size.height);
   v6 = v5;
   [(PXBaseMessagesStackView *)self verticalContentInsets];
   v8 = v7 / v6;
@@ -648,32 +648,32 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
   return result;
 }
 
-- (void)setVerticalContentInsets:(double)a3
+- (void)setVerticalContentInsets:(double)insets
 {
-  if (self->_verticalContentInsets != a3)
+  if (self->_verticalContentInsets != insets)
   {
-    self->_verticalContentInsets = a3;
+    self->_verticalContentInsets = insets;
     [(PXBaseMessagesStackView *)self setNeedsLayout];
   }
 }
 
 - (UIPanGestureRecognizer)panGestureRecognizer
 {
-  v2 = [(PXBaseMessagesStackView *)self tungstenView];
-  v3 = [v2 scrollViewController];
-  v4 = [v3 scrollView];
+  tungstenView = [(PXBaseMessagesStackView *)self tungstenView];
+  scrollViewController = [tungstenView scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  v5 = [v4 panGestureRecognizer];
+  panGestureRecognizer = [scrollView panGestureRecognizer];
 
-  return v5;
+  return panGestureRecognizer;
 }
 
 - (PXSectionedObjectReference)currentObjectReference
 {
-  v3 = [(PXBaseMessagesStackView *)self currentIndex];
-  v4 = [(PXBaseMessagesStackView *)self currentDataSource];
-  v5 = v4;
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL || [v4 numberOfItemsInSection:0] <= v3)
+  currentIndex = [(PXBaseMessagesStackView *)self currentIndex];
+  currentDataSource = [(PXBaseMessagesStackView *)self currentDataSource];
+  v5 = currentDataSource;
+  if (currentIndex == 0x7FFFFFFFFFFFFFFFLL || [currentDataSource numberOfItemsInSection:0] <= currentIndex)
   {
     v6 = 0;
   }
@@ -682,7 +682,7 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
   {
     v8[0] = [v5 identifier];
     v8[1] = 0;
-    v8[2] = v3;
+    v8[2] = currentIndex;
     v8[3] = 0x7FFFFFFFFFFFFFFFLL;
     v6 = [v5 objectReferenceAtIndexPath:v8];
   }
@@ -692,18 +692,18 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
 
 - (unint64_t)currentIndex
 {
-  v2 = [(PXBaseMessagesStackView *)self layout];
-  v3 = [v2 primaryItemIndex];
+  layout = [(PXBaseMessagesStackView *)self layout];
+  primaryItemIndex = [layout primaryItemIndex];
 
-  return v3;
+  return primaryItemIndex;
 }
 
-- (BOOL)scrollToObjectReference:(id)a3 animated:(BOOL)a4
+- (BOOL)scrollToObjectReference:(id)reference animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXBaseMessagesStackView *)self currentDataSource];
-  v8 = [v7 objectReferenceForObjectReference:v6];
+  animatedCopy = animated;
+  referenceCopy = reference;
+  currentDataSource = [(PXBaseMessagesStackView *)self currentDataSource];
+  v8 = [currentDataSource objectReferenceForObjectReference:referenceCopy];
 
   if (v8)
   {
@@ -712,11 +712,11 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
     if (v9)
     {
       self->_isProgramaticallyScrolling = 1;
-      v10 = [(PXGView *)self->_tungstenView scrollViewController];
-      v11 = [v10 scrollView];
+      scrollViewController = [(PXGView *)self->_tungstenView scrollViewController];
+      scrollView = [scrollViewController scrollView];
 
-      [v11 px_scrollToContentOffset:v4 animated:{v13, 0.0}];
-      if (!v4)
+      [scrollView px_scrollToContentOffset:animatedCopy animated:{v13, 0.0}];
+      if (!animatedCopy)
       {
         [(PXGView *)self->_tungstenView ensureUpdatedLayout];
       }
@@ -734,51 +734,51 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
   return v9;
 }
 
-- (BOOL)scrollToIndex:(unint64_t)a3 animated:(BOOL)a4
+- (BOOL)scrollToIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(PXBaseMessagesStackView *)self currentDataSource];
-  if ([v7 numberOfItemsInSection:0] <= a3)
+  animatedCopy = animated;
+  currentDataSource = [(PXBaseMessagesStackView *)self currentDataSource];
+  if ([currentDataSource numberOfItemsInSection:0] <= index)
   {
     v9 = 0;
   }
 
   else
   {
-    v11[0] = [v7 identifier];
+    v11[0] = [currentDataSource identifier];
     v11[1] = 0;
-    v11[2] = a3;
+    v11[2] = index;
     v11[3] = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [v7 objectReferenceAtIndexPath:v11];
-    v9 = [(PXBaseMessagesStackView *)self scrollToObjectReference:v8 animated:v4];
+    v8 = [currentDataSource objectReferenceAtIndexPath:v11];
+    v9 = [(PXBaseMessagesStackView *)self scrollToObjectReference:v8 animated:animatedCopy];
   }
 
   return v9;
 }
 
-- (void)setDebugColorModeEnabled:(BOOL)a3
+- (void)setDebugColorModeEnabled:(BOOL)enabled
 {
-  if (self->_debugColorModeEnabled != a3)
+  if (self->_debugColorModeEnabled != enabled)
   {
-    self->_debugColorModeEnabled = a3;
-    if (a3)
+    self->_debugColorModeEnabled = enabled;
+    if (enabled)
     {
-      v5 = [(PXBaseMessagesStackView *)self layout];
-      v6 = 5;
-      [v5 setMediaKind:5];
+      layout = [(PXBaseMessagesStackView *)self layout];
+      accessoryMediaKind = 5;
+      [layout setMediaKind:5];
     }
 
     else
     {
-      v7 = [objc_opt_class() itemMediaKind];
-      v8 = [(PXBaseMessagesStackView *)self layout];
-      [v8 setMediaKind:v7];
+      itemMediaKind = [objc_opt_class() itemMediaKind];
+      layout2 = [(PXBaseMessagesStackView *)self layout];
+      [layout2 setMediaKind:itemMediaKind];
 
-      v6 = [objc_opt_class() accessoryMediaKind];
+      accessoryMediaKind = [objc_opt_class() accessoryMediaKind];
     }
 
-    v9 = [(PXBaseMessagesStackView *)self layout];
-    [v9 setAccessoryMediaKind:v6];
+    layout3 = [(PXBaseMessagesStackView *)self layout];
+    [layout3 setAccessoryMediaKind:accessoryMediaKind];
   }
 }
 
@@ -787,15 +787,15 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
   v25.receiver = self;
   v25.super_class = PXBaseMessagesStackView;
   [(PXBaseMessagesStackView *)&v25 layoutSubviews];
-  v3 = [(PXBaseMessagesStackView *)self bounds];
-  v6 = MEMORY[0x1A590D300](v3, 1.0, v4, v5);
+  bounds = [(PXBaseMessagesStackView *)self bounds];
+  v6 = MEMORY[0x1A590D300](bounds, 1.0, v4, v5);
   v8 = v7;
   [(NSShadow *)self->_centerItemShadow shadowOffset];
   v10 = v9;
   [(NSShadow *)self->_centerItemShadow shadowBlurRadius];
   v12 = v11;
-  v13 = [(PXBaseMessagesStackView *)self horizontalAlignment];
-  if (!v13 || v13 == 2)
+  horizontalAlignment = [(PXBaseMessagesStackView *)self horizontalAlignment];
+  if (!horizontalAlignment || horizontalAlignment == 2)
   {
     [(PXMessagesStackItemsLayout *)self->_layout displayScale];
     PXFloatRoundToPixel();
@@ -834,35 +834,35 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
   [(PXMessagesStackItemsLayout *)self->_layout setDesiredLayoutRect:v15, 0.0, v6, v8];
 }
 
-- (void)setDataSourceManager:(id)a3
+- (void)setDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   dataSourceManager = self->_dataSourceManager;
-  if (dataSourceManager != v5)
+  if (dataSourceManager != managerCopy)
   {
-    v8 = v5;
+    v8 = managerCopy;
     [(PXSectionedDataSourceManager *)dataSourceManager unregisterChangeObserver:self context:DataSourceManagerObservationContext_59424];
-    objc_storeStrong(&self->_dataSourceManager, a3);
+    objc_storeStrong(&self->_dataSourceManager, manager);
     [(PXSectionedDataSourceManager *)self->_dataSourceManager registerChangeObserver:self context:DataSourceManagerObservationContext_59424];
     [(PXBaseMessagesStackView *)self _updateDataSource];
     v7 = *(off_1E7722228 + 1);
     *&self->_lastKnownPrimaryIndex.dataSourceIdentifier = *off_1E7722228;
     *&self->_lastKnownPrimaryIndex.item = v7;
     [(PXBaseMessagesStackView *)self dataSourceManagerDidChange];
-    v5 = v8;
+    managerCopy = v8;
   }
 }
 
-- (PXBaseMessagesStackView)initWithCoder:(id)a3
+- (PXBaseMessagesStackView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXBaseMessagesStackView.m" lineNumber:116 description:{@"%s is not available as initializer", "-[PXBaseMessagesStackView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXBaseMessagesStackView.m" lineNumber:116 description:{@"%s is not available as initializer", "-[PXBaseMessagesStackView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXBaseMessagesStackView)initWithFrame:(CGRect)a3
+- (PXBaseMessagesStackView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = PXBaseMessagesStackView;
@@ -876,9 +876,9 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
     v8 = +[PXMessagesUISettings sharedInstance];
     v7->_horizontalAlignment = 1;
     v7->_useAspectTiles = [v8 aspectTilesEnabled];
-    v9 = [v8 renderWithCA];
+    renderWithCA = [v8 renderWithCA];
     v10 = &unk_1F1910198;
-    if (!v9)
+    if (!renderWithCA)
     {
       v10 = 0;
     }
@@ -889,52 +889,52 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
     tungstenView = v7->_tungstenView;
     v7->_tungstenView = v12;
 
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXGView *)v7->_tungstenView setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXGView *)v7->_tungstenView setBackgroundColor:clearColor];
 
-    v15 = [(PXGView *)v7->_tungstenView scrollViewController];
-    v16 = [v15 scrollView];
+    scrollViewController = [(PXGView *)v7->_tungstenView scrollViewController];
+    scrollView = [scrollViewController scrollView];
 
-    [v16 setAlwaysBounceVertical:0];
-    [v16 setShowsHorizontalScrollIndicator:0];
-    [v16 setShowsVerticalScrollIndicator:0];
-    [v16 setDecelerationRate:*MEMORY[0x1E69DE3A0]];
-    [v16 setClipsToBounds:0];
-    v17 = [(PXGView *)v7->_tungstenView scrollViewController];
-    [v17 registerObserver:v7];
+    [scrollView setAlwaysBounceVertical:0];
+    [scrollView setShowsHorizontalScrollIndicator:0];
+    [scrollView setShowsVerticalScrollIndicator:0];
+    [scrollView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
+    [scrollView setClipsToBounds:0];
+    scrollViewController2 = [(PXGView *)v7->_tungstenView scrollViewController];
+    [scrollViewController2 registerObserver:v7];
 
     v18 = objc_alloc_init(PXMessagesStackItemsLayout);
     [(PXMessagesStackItemsLayout *)v18 setPresentationType:0];
     if ([(PXBaseMessagesStackView *)v7 debugColorModeEnabled])
     {
-      v19 = 5;
+      itemMediaKind = 5;
     }
 
     else
     {
-      v19 = [objc_opt_class() itemMediaKind];
+      itemMediaKind = [objc_opt_class() itemMediaKind];
     }
 
-    [(PXMessagesStackItemsLayout *)v18 setMediaKind:v19];
+    [(PXMessagesStackItemsLayout *)v18 setMediaKind:itemMediaKind];
     [(PXMessagesStackItemsLayout *)v18 setContentSource:v7];
     [(PXMessagesStackItemsLayout *)v18 setAccessoryPresentationType:1];
     if ([(PXBaseMessagesStackView *)v7 debugColorModeEnabled])
     {
-      v20 = 5;
+      accessoryMediaKind = 5;
     }
 
     else
     {
-      v20 = [objc_opt_class() accessoryMediaKind];
+      accessoryMediaKind = [objc_opt_class() accessoryMediaKind];
     }
 
-    [(PXMessagesStackItemsLayout *)v18 setAccessoryMediaKind:v20];
+    [(PXMessagesStackItemsLayout *)v18 setAccessoryMediaKind:accessoryMediaKind];
     [(PXGItemsLayout *)v18 setAccessoryItemContentSource:v7];
     [(PXMessagesStackItemsLayout *)v18 setPrimaryItemDelegate:v7];
     -[PXMessagesStackItemsLayout setStackedItemsCount:](v18, "setStackedItemsCount:", [v8 stackedItemsCount]);
-    v21 = [v8 renderWithCA];
+    renderWithCA2 = [v8 renderWithCA];
     [v8 normalizedPageWidth];
-    if (!v21)
+    if (!renderWithCA2)
     {
       v22 = v22 * 0.5;
     }
@@ -942,8 +942,8 @@ uint64_t __44__PXBaseMessagesStackView__updateDataSource__block_invoke(void *a1,
     [(PXMessagesStackItemsLayout *)v18 setNormalizedPageWidth:v22];
     [v8 normalizedStackSizeTransform];
     [(PXMessagesStackItemsLayout *)v18 setNormalizedStackSizeTransform:?];
-    v23 = [v8 horizontalOffsets];
-    [(PXMessagesStackItemsLayout *)v18 setNormalizedStackHorizontalOffsets:v23];
+    horizontalOffsets = [v8 horizontalOffsets];
+    [(PXMessagesStackItemsLayout *)v18 setNormalizedStackHorizontalOffsets:horizontalOffsets];
 
     [v8 rotationAngle];
     PXDegreesToRadians();

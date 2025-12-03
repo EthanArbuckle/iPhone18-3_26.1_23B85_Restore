@@ -9,45 +9,45 @@
 
 - (double)hf_sizeInScreenScale
 {
-  [a1 size];
+  [self size];
   v3 = v2;
-  [a1 scale];
+  [self scale];
   v5 = v3 * v4;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v5 / v7;
-  [a1 size];
-  [a1 scale];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  [self size];
+  [self scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
 
   return v8;
 }
 
 - (id)imageWithNormalizedOrientation
 {
-  v1 = a1;
-  if ([v1 imageOrientation])
+  selfCopy = self;
+  if ([selfCopy imageOrientation])
   {
-    [v1 size];
+    [selfCopy size];
     v3 = v2;
     v5 = v4;
-    [v1 scale];
+    [selfCopy scale];
     v7 = v6;
     v14.width = v3;
     v14.height = v5;
     UIGraphicsBeginImageContextWithOptions(v14, 0, v7);
-    [v1 size];
+    [selfCopy size];
     v9 = v8;
-    [v1 size];
-    [v1 drawInRect:{0.0, 0.0, v9, v10}];
+    [selfCopy size];
+    [selfCopy drawInRect:{0.0, 0.0, v9, v10}];
     v11 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v1 = v11;
+    selfCopy = v11;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (id)hf_fetchImageFromURL:()HFAdditions
@@ -61,22 +61,22 @@
   v13 = v3;
   v5 = MEMORY[0x277D2C938];
   v6 = v3;
-  v7 = [v5 globalAsyncScheduler];
-  v8 = [v4 futureWithBlock:v12 scheduler:v7];
-  v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v10 = [v8 reschedule:v9];
+  globalAsyncScheduler = [v5 globalAsyncScheduler];
+  v8 = [v4 futureWithBlock:v12 scheduler:globalAsyncScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v10 = [v8 reschedule:mainThreadScheduler];
 
   return v10;
 }
 
 + (id)hf_safetyAndSecurityImage
 {
-  v0 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+  configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
   v1 = MEMORY[0x277D755D0];
-  v2 = [MEMORY[0x277D75348] hf_keyColor];
-  v3 = [v1 configurationWithHierarchicalColor:v2];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  v3 = [v1 configurationWithHierarchicalColor:hf_keyColor];
 
-  v4 = [v0 configurationByApplyingConfiguration:v3];
+  v4 = [configurationPreferringMulticolor configurationByApplyingConfiguration:v3];
   v5 = [MEMORY[0x277D755B8] _systemImageNamed:@"house.badge.shield.half.filled.fill"];
   v6 = [v5 imageWithConfiguration:v4];
 

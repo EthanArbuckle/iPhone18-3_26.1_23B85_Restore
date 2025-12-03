@@ -1,31 +1,31 @@
 @interface ATXMagicalMomentsPrediction
-+ (id)convertPredictionsToPMMPredictionItems:(id)a3 reason:(unsigned int)a4 anchor:(int64_t)a5 triggerEvent:(id)a6;
-+ (id)pmmMetadataForDuetEvent:(id)a3;
-+ (int64_t)mmAnchorToPMMAnchor:(int64_t)a3;
-+ (int64_t)mmReasonToPMMReason:(unsigned int)a3;
++ (id)convertPredictionsToPMMPredictionItems:(id)items reason:(unsigned int)reason anchor:(int64_t)anchor triggerEvent:(id)event;
++ (id)pmmMetadataForDuetEvent:(id)event;
++ (int64_t)mmAnchorToPMMAnchor:(int64_t)anchor;
++ (int64_t)mmReasonToPMMReason:(unsigned int)reason;
 - (ATXMagicalMomentsPrediction)init;
-- (ATXMagicalMomentsPrediction)initWithCoder:(id)a3;
-- (ATXMagicalMomentsPrediction)initWithConfidence:(double)a3 predictionIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXMagicalMomentsPrediction)initWithCoder:(id)coder;
+- (ATXMagicalMomentsPrediction)initWithConfidence:(double)confidence predictionIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXMagicalMomentsPrediction
 
 - (ATXMagicalMomentsPrediction)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ATXMagicalMomentsPrediction.m" lineNumber:24 description:{@"Do not call -init, call -initWithConfidence:bundleId:."}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXMagicalMomentsPrediction.m" lineNumber:24 description:{@"Do not call -init, call -initWithConfidence:bundleId:."}];
 
   return 0;
 }
 
-- (ATXMagicalMomentsPrediction)initWithConfidence:(double)a3 predictionIdentifier:(id)a4
+- (ATXMagicalMomentsPrediction)initWithConfidence:(double)confidence predictionIdentifier:(id)identifier
 {
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v13.receiver = self;
     v13.super_class = ATXMagicalMomentsPrediction;
@@ -33,28 +33,28 @@
     v8 = v7;
     if (v7)
     {
-      v7->_confidence = a3;
-      v9 = [v6 copy];
+      v7->_confidence = confidence;
+      v9 = [identifierCopy copy];
       predictionIdentifier = v8->_predictionIdentifier;
       v8->_predictionIdentifier = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -64,14 +64,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       confidence = self->_confidence;
       [(ATXMagicalMomentsPrediction *)v5 confidence];
       if (confidence == v7)
       {
         predictionIdentifier = self->_predictionIdentifier;
-        v9 = [(ATXMagicalMomentsPrediction *)v5 predictionIdentifier];
-        v10 = [(NSString *)predictionIdentifier isEqualToString:v9];
+        predictionIdentifier = [(ATXMagicalMomentsPrediction *)v5 predictionIdentifier];
+        v10 = [(NSString *)predictionIdentifier isEqualToString:predictionIdentifier];
       }
 
       else
@@ -89,17 +89,17 @@
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(ATXMagicalMomentsPrediction *)self confidence];
   v6 = v5;
-  [v4 confidence];
+  [compareCopy confidence];
   if (v6 >= v7)
   {
     [(ATXMagicalMomentsPrediction *)self confidence];
     v10 = v9;
-    [v4 confidence];
+    [compareCopy confidence];
     v8 = v10 > v11;
   }
 
@@ -111,28 +111,28 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(ATXMagicalMomentsPrediction *)self confidence];
   v6 = v5;
-  v7 = [(ATXMagicalMomentsPrediction *)self predictionIdentifier];
-  v8 = [v4 initWithConfidence:v7 predictionIdentifier:v6];
+  predictionIdentifier = [(ATXMagicalMomentsPrediction *)self predictionIdentifier];
+  v8 = [v4 initWithConfidence:predictionIdentifier predictionIdentifier:v6];
 
   return v8;
 }
 
-+ (id)convertPredictionsToPMMPredictionItems:(id)a3 reason:(unsigned int)a4 anchor:(int64_t)a5 triggerEvent:(id)a6
++ (id)convertPredictionsToPMMPredictionItems:(id)items reason:(unsigned int)reason anchor:(int64_t)anchor triggerEvent:(id)event
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v25 = a6;
+  itemsCopy = items;
+  eventCopy = event;
   v26 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
@@ -150,12 +150,12 @@
         v11 = *(*(&v27 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
         v13 = objc_alloc(MEMORY[0x277D41FA0]);
-        v14 = [v11 predictionIdentifier];
-        v15 = [ATXMagicalMomentsPrediction mmReasonToPMMReason:a4];
-        v16 = [objc_opt_class() pmmMetadataForDuetEvent:v25];
-        v17 = [ATXMagicalMomentsPrediction mmAnchorToPMMAnchor:a5];
+        predictionIdentifier = [v11 predictionIdentifier];
+        v15 = [ATXMagicalMomentsPrediction mmReasonToPMMReason:reason];
+        v16 = [objc_opt_class() pmmMetadataForDuetEvent:eventCopy];
+        v17 = [ATXMagicalMomentsPrediction mmAnchorToPMMAnchor:anchor];
         [v11 confidence];
-        v18 = [v13 initWithBundleId:v14 predictionSource:2 reason:v15 reasonMetadata:v16 anchorType:v17 confidence:?];
+        v18 = [v13 initWithBundleId:predictionIdentifier predictionSource:2 reason:v15 reasonMetadata:v16 anchorType:v17 confidence:?];
 
         [v26 addObject:v18];
         objc_autoreleasePoolPop(v12);
@@ -172,20 +172,20 @@
   return v26;
 }
 
-+ (id)pmmMetadataForDuetEvent:(id)a3
++ (id)pmmMetadataForDuetEvent:(id)event
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 deviceName];
+    deviceName = [eventCopy deviceName];
 
-    if (v4)
+    if (deviceName)
     {
       v17 = *MEMORY[0x277D41FC0];
-      v5 = [v3 deviceName];
-      v18[0] = v5;
+      deviceName2 = [eventCopy deviceName];
+      v18[0] = deviceName2;
       v6 = MEMORY[0x277CBEAC0];
       v7 = v18;
       v8 = &v17;
@@ -199,13 +199,13 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v3 deviceIdentifier];
+    deviceIdentifier = [eventCopy deviceIdentifier];
 
-    if (v9)
+    if (deviceIdentifier)
     {
       v15 = *MEMORY[0x277D41FC0];
-      v5 = [v3 deviceIdentifier];
-      v16 = v5;
+      deviceName2 = [eventCopy deviceIdentifier];
+      v16 = deviceName2;
       v6 = MEMORY[0x277CBEAC0];
       v7 = &v16;
       v8 = &v15;
@@ -231,39 +231,39 @@ LABEL_9:
   return v11;
 }
 
-+ (int64_t)mmReasonToPMMReason:(unsigned int)a3
++ (int64_t)mmReasonToPMMReason:(unsigned int)reason
 {
   v3 = 128;
   v4 = 256;
   v5 = 512;
-  if (a3 != 512)
+  if (reason != 512)
   {
     v5 = 0;
   }
 
-  if (a3 != 256)
+  if (reason != 256)
   {
     v4 = v5;
   }
 
-  if (a3 != 128)
+  if (reason != 128)
   {
     v3 = v4;
   }
 
   v6 = 32;
   v7 = 64;
-  if (a3 != 64)
+  if (reason != 64)
   {
     v7 = 0;
   }
 
-  if (a3 != 32)
+  if (reason != 32)
   {
     v6 = v7;
   }
 
-  if (a3 <= 127)
+  if (reason <= 127)
   {
     v3 = v6;
   }
@@ -271,39 +271,39 @@ LABEL_9:
   v8 = 4;
   v9 = 8;
   v10 = 16;
-  if (a3 != 16)
+  if (reason != 16)
   {
     v10 = 0;
   }
 
-  if (a3 != 8)
+  if (reason != 8)
   {
     v9 = v10;
   }
 
-  if (a3 != 4)
+  if (reason != 4)
   {
     v8 = v9;
   }
 
   v11 = 1;
   v12 = 2;
-  if (a3 != 2)
+  if (reason != 2)
   {
     v12 = 0;
   }
 
-  if (a3 != 1)
+  if (reason != 1)
   {
     v11 = v12;
   }
 
-  if (a3 <= 3)
+  if (reason <= 3)
   {
     v8 = v11;
   }
 
-  if (a3 <= 31)
+  if (reason <= 31)
   {
     return v8;
   }
@@ -314,33 +314,33 @@ LABEL_9:
   }
 }
 
-+ (int64_t)mmAnchorToPMMAnchor:(int64_t)a3
++ (int64_t)mmAnchorToPMMAnchor:(int64_t)anchor
 {
-  if ((a3 - 1) >= 0x13)
+  if ((anchor - 1) >= 0x13)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return anchor;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   predictionIdentifier = self->_predictionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:predictionIdentifier forKey:@"predictionIdentifier"];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
+  coderCopy = coder;
+  [coderCopy encodeObject:predictionIdentifier forKey:@"predictionIdentifier"];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
 }
 
-- (ATXMagicalMomentsPrediction)initWithCoder:(id)a3
+- (ATXMagicalMomentsPrediction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"confidence"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"confidence"];
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionIdentifier"];
 
   v8 = [(ATXMagicalMomentsPrediction *)self initWithConfidence:v7 predictionIdentifier:v6];
   return v8;

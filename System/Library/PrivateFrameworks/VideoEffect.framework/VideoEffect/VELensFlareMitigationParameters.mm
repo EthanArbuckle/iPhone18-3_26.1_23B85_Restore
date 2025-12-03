@@ -1,50 +1,50 @@
 @interface VELensFlareMitigationParameters
 - (CGPoint)nextFrameOpticalCenter;
 - (CGPoint)sourceFrameOpticalCenter;
-- (VELensFlareMitigationParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 sourceFrameOpticalCenter:(CGPoint)a6 nextFrameOpticalCenter:(CGPoint)a7 opticalCenterShift:(double)a8 previousOutputFrame:(id)a9 previousPreviousOutputFrame:(id)a10 submissionMode:(int64_t)a11 destinationFrame:(id)a12;
+- (VELensFlareMitigationParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow sourceFrameOpticalCenter:(CGPoint)center nextFrameOpticalCenter:(CGPoint)opticalCenter opticalCenterShift:(double)shift previousOutputFrame:(id)outputFrame previousPreviousOutputFrame:(id)self0 submissionMode:(int64_t)self1 destinationFrame:(id)self2;
 @end
 
 @implementation VELensFlareMitigationParameters
 
-- (VELensFlareMitigationParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 opticalFlow:(id)a5 sourceFrameOpticalCenter:(CGPoint)a6 nextFrameOpticalCenter:(CGPoint)a7 opticalCenterShift:(double)a8 previousOutputFrame:(id)a9 previousPreviousOutputFrame:(id)a10 submissionMode:(int64_t)a11 destinationFrame:(id)a12
+- (VELensFlareMitigationParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame opticalFlow:(id)flow sourceFrameOpticalCenter:(CGPoint)center nextFrameOpticalCenter:(CGPoint)opticalCenter opticalCenterShift:(double)shift previousOutputFrame:(id)outputFrame previousPreviousOutputFrame:(id)self0 submissionMode:(int64_t)self1 destinationFrame:(id)self2
 {
-  y = a7.y;
-  x = a7.x;
-  v17 = a6.y;
-  v18 = a6.x;
-  v23 = a3;
-  v24 = a4;
-  v33 = a5;
-  v32 = a9;
-  v31 = a10;
-  v25 = a12;
+  y = opticalCenter.y;
+  x = opticalCenter.x;
+  v17 = center.y;
+  v18 = center.x;
+  frameCopy = frame;
+  nextFrameCopy = nextFrame;
+  flowCopy = flow;
+  outputFrameCopy = outputFrame;
+  previousOutputFrameCopy = previousOutputFrame;
+  destinationFrameCopy = destinationFrame;
   v34.receiver = self;
   v34.super_class = VELensFlareMitigationParameters;
   v26 = [(VELensFlareMitigationParameters *)&v34 init];
   v27 = v26;
   if (!v26)
   {
-    NSLog(&cfstr_FailToInitiali.isa, a11);
+    NSLog(&cfstr_FailToInitiali.isa, mode);
 LABEL_7:
     v28 = 0;
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v26->_sourceFrame, a3);
-  objc_storeStrong(&v27->_nextFrame, a4);
-  objc_storeStrong(&v27->_opticalFlow, a5);
-  objc_storeStrong(&v27->_destinationFrame, a12);
-  objc_storeStrong(&v27->_previousOutputFrame, a9);
-  objc_storeStrong(&v27->_previousPreviousOutputFrame, a10);
+  objc_storeStrong(&v26->_sourceFrame, frame);
+  objc_storeStrong(&v27->_nextFrame, nextFrame);
+  objc_storeStrong(&v27->_opticalFlow, flow);
+  objc_storeStrong(&v27->_destinationFrame, destinationFrame);
+  objc_storeStrong(&v27->_previousOutputFrame, outputFrame);
+  objc_storeStrong(&v27->_previousPreviousOutputFrame, previousOutputFrame);
   v27->_sourceFrameOpticalCenter.x = v18;
   v27->_sourceFrameOpticalCenter.y = v17;
   v27->_nextFrameOpticalCenter.x = x;
   v27->_nextFrameOpticalCenter.y = y;
-  v27->_opticalCenterShift = a8;
-  v27->_submissionMode = a11;
-  if (!isSameFormat([v23 buffer], objc_msgSend(v24, "buffer")))
+  v27->_opticalCenterShift = shift;
+  v27->_submissionMode = mode;
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(nextFrameCopy, "buffer")))
   {
-    NSLog(&cfstr_FailToToInitia_5.isa, a11);
+    NSLog(&cfstr_FailToToInitia_5.isa, mode);
     goto LABEL_7;
   }
 

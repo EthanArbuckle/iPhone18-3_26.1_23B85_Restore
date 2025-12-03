@@ -1,30 +1,30 @@
 @interface CRLiOSRepNudgeGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (CGRect)p_affectedRepsRect:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (CGRect)p_affectedRepsRect:(id)rect;
 - (CRLCanvasLayoutManipulatingTracker)tracker;
-- (CRLiOSRepNudgeGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (CRLiOSRepNudgeGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (id)p_ICC;
 - (void)cancelBecauseOfRotation;
 - (void)operationDidEnd;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLiOSRepNudgeGestureRecognizer
 
-- (CRLiOSRepNudgeGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSRepNudgeGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CRLiOSRepNudgeGestureRecognizer;
   v5 = [(CRLiOSRepNudgeGestureRecognizer *)&v12 initWithTarget:0 action:0];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -53,7 +53,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:69 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
     v9 = objc_alloc_init(NSMutableSet);
     allTouchesDown = v5->_allTouchesDown;
     v5->_allTouchesDown = v9;
@@ -95,9 +95,9 @@
   self->_swipeTouchStartLocationInCanvas = v14;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if ([(CRLiOSRepNudgeGestureRecognizer *)self state]!= a3)
+  if ([(CRLiOSRepNudgeGestureRecognizer *)self state]!= state)
   {
     if (qword_101AD5A00 != -1)
     {
@@ -107,26 +107,26 @@
     v5 = off_1019ED810;
     if (os_log_type_enabled(off_1019ED810, OS_LOG_TYPE_DEBUG))
     {
-      sub_101322798(v5, a3);
+      sub_101322798(v5, state);
     }
   }
 
   v6.receiver = self;
   v6.super_class = CRLiOSRepNudgeGestureRecognizer;
-  [(CRLiOSRepNudgeGestureRecognizer *)&v6 setState:a3];
+  [(CRLiOSRepNudgeGestureRecognizer *)&v6 setState:state];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v97.receiver = self;
   v97.super_class = CRLiOSRepNudgeGestureRecognizer;
-  [(CRLiOSRepNudgeGestureRecognizer *)&v97 touchesBegan:v6 withEvent:a4];
-  v88 = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
-  v7 = [v88 layerHost];
-  v87 = [v7 asiOSCVC];
+  [(CRLiOSRepNudgeGestureRecognizer *)&v97 touchesBegan:beganCopy withEvent:event];
+  p_ICC = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
+  layerHost = [p_ICC layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  if (-[CRLiOSRepNudgeGestureRecognizer state](self, "state") || ![v88 currentlyScrolling])
+  if (-[CRLiOSRepNudgeGestureRecognizer state](self, "state") || ![p_ICC currentlyScrolling])
   {
     v16 = &OBJC_IVAR___CRLBitmapImageProvider_mValidationStatus;
     if (![(NSMutableSet *)self->_allTouchesDown count])
@@ -160,8 +160,8 @@
         [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:113 isFatal:0 description:"anchor touch not null when first touch comes down"];
       }
 
-      v20 = [v88 tmCoordinator];
-      [v20 registerTrackerManipulator:self];
+      tmCoordinator = [p_ICC tmCoordinator];
+      [tmCoordinator registerTrackerManipulator:self];
     }
 
     if ([(NSMutableSet *)self->_allTouchesDown count]== 1)
@@ -195,8 +195,8 @@
         [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:119 isFatal:0 description:"invalid nil value for '%{public}s'", "_anchorTouch"];
       }
 
-      v24 = [(NSMutableSet *)self->_allTouchesDown anyObject];
-      if (v24 != self->_anchorTouch)
+      anyObject = [(NSMutableSet *)self->_allTouchesDown anyObject];
+      if (anyObject != self->_anchorTouch)
       {
         if (qword_101AD5A00 != -1)
         {
@@ -245,12 +245,12 @@
         swipeTouch = self->_swipeTouch;
         self->_swipeTouch = 0;
 
-        objc_storeStrong(&self->_anchorTouch, v24);
+        objc_storeStrong(&self->_anchorTouch, anyObject);
         [(UITouch *)self->_anchorTouch timestamp];
         self->_anchorTouchStartTimestamp = v39;
         anchorTouch = self->_anchorTouch;
-        v41 = [(UITouch *)anchorTouch window];
-        [(UITouch *)anchorTouch locationInView:v41];
+        window = [(UITouch *)anchorTouch window];
+        [(UITouch *)anchorTouch locationInView:window];
         self->_anchorTouchStartLocationInWindow.x = v42;
         self->_anchorTouchStartLocationInWindow.y = v43;
       }
@@ -260,15 +260,15 @@
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v84 = v6;
-    v44 = v6;
+    v84 = beganCopy;
+    v44 = beganCopy;
     v45 = [v44 countByEnumeratingWithState:&v93 objects:v108 count:16];
     if (!v45)
     {
 LABEL_96:
 
       [(NSMutableSet *)self->_allTouchesDown unionSet:v44];
-      v6 = v84;
+      beganCopy = v84;
       goto LABEL_97;
     }
 
@@ -300,10 +300,10 @@ LABEL_50:
 
       if ([*(*(&v93 + 1) + 8 * v48) tapCount] == 1)
       {
-        v53 = [v87 hitRepWithTouch:v49];
-        v54 = [v53 repForDragging];
+        v53 = [asiOSCVC hitRepWithTouch:v49];
+        repForDragging = [v53 repForDragging];
 
-        if (!v54)
+        if (!repForDragging)
         {
           goto LABEL_74;
         }
@@ -358,16 +358,16 @@ LABEL_50:
         [*(&self->super.super.isa + v50) timestamp];
         self->_anchorTouchStartTimestamp = v60;
         v61 = *(&self->super.super.isa + v50);
-        v62 = [v61 window];
-        [v61 locationInView:v62];
+        window2 = [v61 window];
+        [v61 locationInView:window2];
         self->_anchorTouchStartLocationInWindow.x = v63;
         self->_anchorTouchStartLocationInWindow.y = v64;
 
         v65 = *(&self->super.super.isa + v50);
-        v66 = [v88 canvasView];
-        [v65 locationInView:v66];
-        [v88 convertBoundsToUnscaledPoint:?];
-        v69 = [v54 dragTypeAtCanvasPoint:objc_msgSend(*(&self->super.super.isa + v50) forTouchType:{"type"), v67, v68}];
+        canvasView = [p_ICC canvasView];
+        [v65 locationInView:canvasView];
+        [p_ICC convertBoundsToUnscaledPoint:?];
+        v69 = [repForDragging dragTypeAtCanvasPoint:objc_msgSend(*(&self->super.super.isa + v50) forTouchType:{"type"), v67, v68}];
 
         v44 = v85;
         if (!v69)
@@ -410,18 +410,18 @@ LABEL_94:
       goto LABEL_94;
     }
 
-    v70 = [v87 hitRepWithTouch:*(*(&v93 + 1) + 8 * v48)];
-    v71 = [v70 repForDragging];
+    v70 = [asiOSCVC hitRepWithTouch:*(*(&v93 + 1) + 8 * v48)];
+    repForDragging2 = [v70 repForDragging];
 
-    v72 = [v87 hitRepWithTouch:*(&self->super.super.isa + v50)];
-    v73 = [v72 repForDragging];
+    v72 = [asiOSCVC hitRepWithTouch:*(&self->super.super.isa + v50)];
+    repForDragging3 = [v72 repForDragging];
 
-    v74 = [v88 dynamicOperationController];
-    if (![v74 isInOperation] && v71 && v71 == v73)
+    dynamicOperationController = [p_ICC dynamicOperationController];
+    if (![dynamicOperationController isInOperation] && repForDragging2 && repForDragging2 == repForDragging3)
     {
-      v75 = [v73 demandsExclusiveSelection];
+      demandsExclusiveSelection = [repForDragging3 demandsExclusiveSelection];
 
-      if ((v75 & 1) == 0)
+      if ((demandsExclusiveSelection & 1) == 0)
       {
         if (qword_101AD5A00 != -1)
         {
@@ -463,9 +463,9 @@ LABEL_93:
 
     self->_numSwipeTouches = 1;
     v78 = self->_swipeTouch;
-    v79 = [v88 canvasView];
-    [(UITouch *)v78 locationInView:v79];
-    [v88 convertBoundsToUnscaledPoint:?];
+    canvasView2 = [p_ICC canvasView];
+    [(UITouch *)v78 locationInView:canvasView2];
+    [p_ICC convertBoundsToUnscaledPoint:?];
     self->_swipeTouchStartLocationInCanvas.x = v80;
     self->_swipeTouchStartLocationInCanvas.y = v81;
 
@@ -488,21 +488,21 @@ LABEL_93:
 LABEL_97:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v20.receiver = self;
   v20.super_class = CRLiOSRepNudgeGestureRecognizer;
-  v6 = a3;
-  [(CRLiOSRepNudgeGestureRecognizer *)&v20 touchesMoved:v6 withEvent:a4];
-  LODWORD(a4) = [v6 containsObject:{self->_anchorTouch, v20.receiver, v20.super_class}];
+  movedCopy = moved;
+  [(CRLiOSRepNudgeGestureRecognizer *)&v20 touchesMoved:movedCopy withEvent:event];
+  LODWORD(event) = [movedCopy containsObject:{self->_anchorTouch, v20.receiver, v20.super_class}];
 
-  if (a4)
+  if (event)
   {
     if (self->_swipeTouch)
     {
       anchorTouch = self->_anchorTouch;
-      v8 = [(UITouch *)anchorTouch window];
-      [(UITouch *)anchorTouch locationInView:v8];
+      window = [(UITouch *)anchorTouch window];
+      [(UITouch *)anchorTouch locationInView:window];
       v11 = sub_100120090(self->_anchorTouchStartLocationInWindow.x, self->_anchorTouchStartLocationInWindow.y, v9, v10);
       [(UITouch *)self->_anchorTouch timestamp];
       v14 = sub_100349760(0, v13, v12 - self->_anchorTouchStartTimestamp);
@@ -512,12 +512,12 @@ LABEL_97:
         swipeTouch = self->_swipeTouch;
         self->_swipeTouch = 0;
 
-        v16 = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
-        v17 = [v16 layerHost];
-        v18 = [v17 asiOSCVC];
+        p_ICC = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
+        layerHost = [p_ICC layerHost];
+        asiOSCVC = [layerHost asiOSCVC];
 
-        v19 = [v18 repDragGestureRecognizer];
-        if ([v19 state] == 5)
+        repDragGestureRecognizer = [asiOSCVC repDragGestureRecognizer];
+        if ([repDragGestureRecognizer state] == 5)
         {
           [(CRLiOSRepNudgeGestureRecognizer *)self setState:5];
         }
@@ -526,12 +526,12 @@ LABEL_97:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
+  endedCopy = ended;
   v65.receiver = self;
   v65.super_class = CRLiOSRepNudgeGestureRecognizer;
-  [(CRLiOSRepNudgeGestureRecognizer *)&v65 touchesEnded:v6 withEvent:a4];
+  [(CRLiOSRepNudgeGestureRecognizer *)&v65 touchesEnded:endedCopy withEvent:event];
   if (qword_101AD5A00 != -1)
   {
     sub_101322D70();
@@ -543,19 +543,19 @@ LABEL_97:
     sub_101322D98(self, v7, v8);
   }
 
-  v9 = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
-  v10 = [v9 layerHost];
-  v59 = [v10 asiOSCVC];
+  p_ICC = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
+  layerHost = [p_ICC layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v60 = [v9 dynamicOperationController];
-  if (([v6 containsObject:self->_anchorTouch] & 1) == 0)
+  dynamicOperationController = [p_ICC dynamicOperationController];
+  if (([endedCopy containsObject:self->_anchorTouch] & 1) == 0)
   {
     swipeTouch = self->_swipeTouch;
     if (swipeTouch)
     {
-      v12 = [v9 canvasView];
-      [(UITouch *)swipeTouch locationInView:v12];
-      [v9 convertBoundsToUnscaledPoint:?];
+      canvasView = [p_ICC canvasView];
+      [(UITouch *)swipeTouch locationInView:canvasView];
+      [p_ICC convertBoundsToUnscaledPoint:?];
       v14 = v13;
       v16 = v15;
 
@@ -567,8 +567,8 @@ LABEL_97:
         }
 
         self->_didNudge = 1;
-        v17 = [v59 repDragGestureRecognizer];
-        if (([v17 i_beginGestureExternally] & 1) == 0)
+        repDragGestureRecognizer = [asiOSCVC repDragGestureRecognizer];
+        if (([repDragGestureRecognizer i_beginGestureExternally] & 1) == 0)
         {
           [(CRLiOSRepNudgeGestureRecognizer *)self setState:5];
           self->_didNudge = 0;
@@ -577,8 +577,8 @@ LABEL_97:
         if (self->_didNudge)
         {
 LABEL_12:
-          v18 = [v9 tmCoordinator];
-          v19 = [v18 takeControlWithTrackerManipulator:self];
+          tmCoordinator = [p_ICC tmCoordinator];
+          v19 = [tmCoordinator takeControlWithTrackerManipulator:self];
 
           if (v19)
           {
@@ -589,9 +589,9 @@ LABEL_12:
 
             else
             {
-              [(CRLiOSRepNudgeGestureRecognizer *)self addTarget:v60 action:"handleGestureRecognizer:"];
+              [(CRLiOSRepNudgeGestureRecognizer *)self addTarget:dynamicOperationController action:"handleGestureRecognizer:"];
               [(CRLiOSRepNudgeGestureRecognizer *)self setState:1];
-              if (([v60 isInOperation] & 1) == 0)
+              if (([dynamicOperationController isInOperation] & 1) == 0)
               {
                 +[CRLAssertionHandler _atomicIncrementAssertCount];
                 if (qword_101AD5A10 != -1)
@@ -671,8 +671,8 @@ LABEL_12:
               v32 = v30;
             }
 
-            v33 = [v60 currentlyTransformingReps];
-            [(CRLiOSRepNudgeGestureRecognizer *)self p_affectedRepsRect:v33];
+            currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
+            [(CRLiOSRepNudgeGestureRecognizer *)self p_affectedRepsRect:currentlyTransformingReps];
             v35 = v34;
 
             v36 = v35 - v35;
@@ -694,8 +694,8 @@ LABEL_12:
             v38 = sub_10011F31C(v31, v32, v37);
             v40 = v39;
             v41 = objc_opt_class();
-            v42 = [(CRLiOSRepNudgeGestureRecognizer *)self tracker];
-            v43 = sub_100014370(v41, v42);
+            tracker = [(CRLiOSRepNudgeGestureRecognizer *)self tracker];
+            v43 = sub_100014370(v41, tracker);
 
             [v43 addUnscaledDragDelta:0 roundDeltaToViewScale:{v38, v40}];
             if (qword_101AD5A00 != -1)
@@ -710,8 +710,8 @@ LABEL_12:
             }
 
             anchorTouch = self->_anchorTouch;
-            v46 = [v9 canvasView];
-            [(UITouch *)anchorTouch locationInView:v46];
+            canvasView2 = [p_ICC canvasView];
+            [(UITouch *)anchorTouch locationInView:canvasView2];
             [v43 setLogicalDragPoint:?];
 
             [v43 setShouldSnapToGuides:0];
@@ -729,7 +729,7 @@ LABEL_12:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v48 = v6;
+  v48 = endedCopy;
   v49 = [v48 countByEnumeratingWithState:&v61 objects:v68 count:16];
   if (v49)
   {
@@ -776,8 +776,8 @@ LABEL_12:
   [(NSMutableSet *)self->_allTouchesDown minusSet:v48];
   if (![(NSMutableSet *)self->_allTouchesDown count])
   {
-    v55 = [v9 tmCoordinator];
-    [v55 unregisterTrackerManipulator:self];
+    tmCoordinator2 = [p_ICC tmCoordinator];
+    [tmCoordinator2 unregisterTrackerManipulator:self];
 
     if (self->_didNudge)
     {
@@ -798,17 +798,17 @@ LABEL_12:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v22.receiver = self;
   v22.super_class = CRLiOSRepNudgeGestureRecognizer;
-  [(CRLiOSRepNudgeGestureRecognizer *)&v22 touchesEnded:v6 withEvent:a4];
+  [(CRLiOSRepNudgeGestureRecognizer *)&v22 touchesEnded:cancelledCopy withEvent:event];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = cancelledCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
@@ -844,9 +844,9 @@ LABEL_12:
   [(NSMutableSet *)self->_allTouchesDown minusSet:v7, v18];
   if (![(NSMutableSet *)self->_allTouchesDown count])
   {
-    v13 = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
-    v14 = [v13 tmCoordinator];
-    [v14 unregisterTrackerManipulator:self];
+    p_ICC = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
+    tmCoordinator = [p_ICC tmCoordinator];
+    [tmCoordinator unregisterTrackerManipulator:self];
 
     if (self->_didNudge)
     {
@@ -867,11 +867,11 @@ LABEL_12:
   }
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 view], v5 = objc_claimAutoreleasedReturnValue(), -[CRLiOSRepNudgeGestureRecognizer p_ICC](self, "p_ICC"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "canvasView"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "enclosingScrollView"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v5 == v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([recognizerCopy view], v5 = objc_claimAutoreleasedReturnValue(), -[CRLiOSRepNudgeGestureRecognizer p_ICC](self, "p_ICC"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "canvasView"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "enclosingScrollView"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v5 == v8))
   {
     v9 = 0;
   }
@@ -880,7 +880,7 @@ LABEL_12:
   {
     v11.receiver = self;
     v11.super_class = CRLiOSRepNudgeGestureRecognizer;
-    v9 = [(CRLiOSRepNudgeGestureRecognizer *)&v11 canBePreventedByGestureRecognizer:v4];
+    v9 = [(CRLiOSRepNudgeGestureRecognizer *)&v11 canBePreventedByGestureRecognizer:recognizerCopy];
   }
 
   return v9;
@@ -896,17 +896,17 @@ LABEL_12:
 
 - (CRLCanvasLayoutManipulatingTracker)tracker
 {
-  v3 = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
-  v4 = [v3 layerHost];
-  v5 = [v4 asiOSCVC];
+  p_ICC = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
+  layerHost = [p_ICC layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   dragTracker = self->_dragTracker;
   if (!dragTracker)
   {
-    v7 = [v5 repDragGestureRecognizer];
-    v8 = [v7 repDragTracker];
+    repDragGestureRecognizer = [asiOSCVC repDragGestureRecognizer];
+    repDragTracker = [repDragGestureRecognizer repDragTracker];
     v9 = self->_dragTracker;
-    self->_dragTracker = v8;
+    self->_dragTracker = repDragTracker;
 
     dragTracker = self->_dragTracker;
   }
@@ -934,9 +934,9 @@ LABEL_12:
     [(CRLiOSRepNudgeGestureRecognizer *)self setState:3];
   }
 
-  v4 = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
-  v5 = [v4 dynamicOperationController];
-  [(CRLiOSRepNudgeGestureRecognizer *)self removeTarget:v5 action:"handleGestureRecognizer:"];
+  p_ICC = [(CRLiOSRepNudgeGestureRecognizer *)self p_ICC];
+  dynamicOperationController = [p_ICC dynamicOperationController];
+  [(CRLiOSRepNudgeGestureRecognizer *)self removeTarget:dynamicOperationController action:"handleGestureRecognizer:"];
 }
 
 - (id)p_ICC
@@ -946,9 +946,9 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (CGRect)p_affectedRepsRect:(id)a3
+- (CGRect)p_affectedRepsRect:(id)rect
 {
-  v3 = a3;
+  rectCopy = rect;
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
@@ -957,7 +957,7 @@ LABEL_12:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v8 = [rectCopy countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
@@ -968,22 +968,22 @@ LABEL_12:
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rectCopy);
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 layout];
-        [v13 alignmentFrame];
+        layout = [v12 layout];
+        [layout alignmentFrame];
         v15 = v14;
         v17 = v16;
         v19 = v18;
         v21 = v20;
-        v22 = [v12 layout];
-        v23 = [v22 parent];
-        v24 = v23;
-        if (v23)
+        layout2 = [v12 layout];
+        parent = [layout2 parent];
+        v24 = parent;
+        if (parent)
         {
-          [v23 transformInRoot];
+          [parent transformInRoot];
         }
 
         else
@@ -1002,7 +1002,7 @@ LABEL_12:
         height = v27;
       }
 
-      v9 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v9 = [rectCopy countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v9);

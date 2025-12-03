@@ -1,7 +1,7 @@
 @interface HKLiveWorkoutBuilder
 - (BOOL)shouldCollectWorkoutEvents;
 - (HKLiveWorkoutBuilder)initWithHealthStore:(HKHealthStore *)healthStore configuration:(HKWorkoutConfiguration *)configuration device:(HKDevice *)device;
-- (HKLiveWorkoutBuilder)initWithHealthStore:(id)a3 session:(id)a4 builderConfiguration:(id)a5 builderIdentifier:(id)a6;
+- (HKLiveWorkoutBuilder)initWithHealthStore:(id)store session:(id)session builderConfiguration:(id)configuration builderIdentifier:(id)identifier;
 - (HKLiveWorkoutDataSource)dataSource;
 - (HKWorkoutActivity)currentWorkoutActivity;
 - (HKWorkoutSession)workoutSession;
@@ -9,36 +9,36 @@
 - (id)_privateDelegate;
 - (id)delegate;
 - (void)_lock_updateElapsedTimeCache;
-- (void)_lock_updateEvents:(id)a3;
-- (void)clientRemote_didBeginActivity:(id)a3;
-- (void)clientRemote_didEndActivity:(id)a3;
-- (void)clientRemote_didUpdateActivities:(id)a3;
-- (void)clientRemote_didUpdateMetadata:(id)a3;
-- (void)clientRemote_didUpdateStatistics:(id)a3;
+- (void)_lock_updateEvents:(id)events;
+- (void)clientRemote_didBeginActivity:(id)activity;
+- (void)clientRemote_didEndActivity:(id)activity;
+- (void)clientRemote_didUpdateActivities:(id)activities;
+- (void)clientRemote_didUpdateMetadata:(id)metadata;
+- (void)clientRemote_didUpdateStatistics:(id)statistics;
 - (void)connectionInterrupted;
-- (void)setAdditionalDataSources:(id)a3;
+- (void)setAdditionalDataSources:(id)sources;
 - (void)setDataSource:(HKLiveWorkoutDataSource *)dataSource;
-- (void)stateMachine:(id)a3 didEnterState:(id)a4 date:(id)a5 error:(id)a6;
+- (void)stateMachine:(id)machine didEnterState:(id)state date:(id)date error:(id)error;
 @end
 
 @implementation HKLiveWorkoutBuilder
 
-- (HKLiveWorkoutBuilder)initWithHealthStore:(id)a3 session:(id)a4 builderConfiguration:(id)a5 builderIdentifier:(id)a6
+- (HKLiveWorkoutBuilder)initWithHealthStore:(id)store session:(id)session builderConfiguration:(id)configuration builderIdentifier:(id)identifier
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 identifier];
-  [v12 setAssociatedSessionUUID:v14];
+  sessionCopy = session;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  storeCopy = store;
+  identifier = [sessionCopy identifier];
+  [configurationCopy setAssociatedSessionUUID:identifier];
 
   v18.receiver = self;
   v18.super_class = HKLiveWorkoutBuilder;
-  v15 = [(HKWorkoutBuilder *)&v18 initWithHealthStore:v13 builderConfiguration:v12 builderIdentifier:v11];
+  v15 = [(HKWorkoutBuilder *)&v18 initWithHealthStore:storeCopy builderConfiguration:configurationCopy builderIdentifier:identifierCopy];
 
   if (v15)
   {
-    objc_storeWeak(&v15->_workoutSession, v10);
+    objc_storeWeak(&v15->_workoutSession, sessionCopy);
     lock_additionalDataSources = v15->_lock_additionalDataSources;
     v15->_lock_additionalDataSources = MEMORY[0x1E695E0F0];
   }
@@ -55,8 +55,8 @@
   [(HKWorkoutBuilderConfiguration *)v11 setDevice:v8];
 
   [(HKWorkoutBuilderConfiguration *)v11 setWorkoutConfiguration:v9];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [(HKLiveWorkoutBuilder *)self initWithHealthStore:v10 session:0 builderConfiguration:v11 builderIdentifier:v12];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v13 = [(HKLiveWorkoutBuilder *)self initWithHealthStore:v10 session:0 builderConfiguration:v11 builderIdentifier:uUID];
 
   return v13;
 }
@@ -64,11 +64,11 @@
 - (BOOL)shouldCollectWorkoutEvents
 {
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(HKWorkoutBuilder *)self configuration];
-  v4 = [v3 shouldCollectWorkoutEvents];
+  configuration = [(HKWorkoutBuilder *)self configuration];
+  shouldCollectWorkoutEvents = [configuration shouldCollectWorkoutEvents];
 
   os_unfair_lock_unlock(&self->super._lock);
-  return v4;
+  return shouldCollectWorkoutEvents;
 }
 
 void __54__HKLiveWorkoutBuilder_setShouldCollectWorkoutEvents___block_invoke_2(uint64_t a1, void *a2)
@@ -83,10 +83,10 @@ void __54__HKLiveWorkoutBuilder_setShouldCollectWorkoutEvents___block_invoke_2(u
 
 - (id)_privateDelegate
 {
-  v2 = [(HKLiveWorkoutBuilder *)self delegate];
-  if ([v2 conformsToProtocol:&unk_1F06F8558])
+  delegate = [(HKLiveWorkoutBuilder *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F06F8558])
   {
-    v3 = v2;
+    v3 = delegate;
   }
 
   else
@@ -113,40 +113,40 @@ void __54__HKLiveWorkoutBuilder_setShouldCollectWorkoutEvents___block_invoke_2(u
   v9.receiver = self;
   v9.super_class = HKLiveWorkoutBuilder;
   [(HKWorkoutBuilder *)&v9 _lock_updateElapsedTimeCache];
-  v3 = [(HKLiveWorkoutBuilder *)self delegate];
+  delegate = [(HKLiveWorkoutBuilder *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(HKWorkoutBuilder *)self healthStore];
-    v5 = [v4 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __52__HKLiveWorkoutBuilder__lock_updateElapsedTimeCache__block_invoke;
     v6[3] = &unk_1E7378400;
-    v7 = v3;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = delegate;
+    selfCopy = self;
+    dispatch_async(clientQueue, v6);
   }
 }
 
-- (void)_lock_updateEvents:(id)a3
+- (void)_lock_updateEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v12.receiver = self;
   v12.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v12 _lock_updateEvents:v4];
-  v5 = [(HKLiveWorkoutBuilder *)self _privateDelegate];
-  if (v5)
+  [(HKWorkoutBuilder *)&v12 _lock_updateEvents:eventsCopy];
+  _privateDelegate = [(HKLiveWorkoutBuilder *)self _privateDelegate];
+  if (_privateDelegate)
   {
-    v6 = [(HKWorkoutBuilder *)self healthStore];
-    v7 = [v6 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__HKLiveWorkoutBuilder__lock_updateEvents___block_invoke;
     block[3] = &unk_1E7376640;
-    v9 = v4;
-    v10 = v5;
-    v11 = self;
-    dispatch_async(v7, block);
+    v9 = eventsCopy;
+    v10 = _privateDelegate;
+    selfCopy = self;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -186,22 +186,22 @@ void __43__HKLiveWorkoutBuilder__lock_updateEvents___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAdditionalDataSources:(id)a3
+- (void)setAdditionalDataSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   os_unfair_lock_lock(&self->super._lock);
   v5 = [MEMORY[0x1E695DFD8] setWithArray:self->_lock_additionalDataSources];
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:sourcesCopy];
   v7 = [v6 hk_minus:v5];
   v8 = [v5 hk_minus:v6];
-  v9 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v4];
+  v9 = [MEMORY[0x1E695DFB8] orderedSetWithArray:sourcesCopy];
 
-  v10 = [v9 array];
+  array = [v9 array];
   lock_additionalDataSources = self->_lock_additionalDataSources;
-  self->_lock_additionalDataSources = v10;
+  self->_lock_additionalDataSources = array;
 
   os_unfair_lock_unlock(&self->super._lock);
-  v12 = [(HKWorkoutBuilder *)self proxyProvider];
+  proxyProvider = [(HKWorkoutBuilder *)self proxyProvider];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__HKLiveWorkoutBuilder_setAdditionalDataSources___block_invoke;
@@ -210,7 +210,7 @@ void __43__HKLiveWorkoutBuilder__lock_updateEvents___block_invoke(uint64_t a1)
   v17 = v8;
   v13 = v8;
   v14 = v7;
-  [v12 fetchProxyWithHandler:v15 errorHandler:&__block_literal_global_80_0];
+  [proxyProvider fetchProxyWithHandler:v15 errorHandler:&__block_literal_global_80_0];
 }
 
 void __49__HKLiveWorkoutBuilder_setAdditionalDataSources___block_invoke(uint64_t a1, void *a2)
@@ -269,21 +269,21 @@ void __49__HKLiveWorkoutBuilder_setAdditionalDataSources___block_invoke_4(uint64
     os_unfair_lock_unlock(&self->super._lock);
     if (v5)
     {
-      v6 = [(HKWorkoutBuilder *)self proxyProvider];
+      proxyProvider = [(HKWorkoutBuilder *)self proxyProvider];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __38__HKLiveWorkoutBuilder_setDataSource___block_invoke;
       v10[3] = &unk_1E7376870;
       v10[4] = self;
-      [v6 fetchProxyWithHandler:v10 errorHandler:&__block_literal_global_83_0];
+      [proxyProvider fetchProxyWithHandler:v10 errorHandler:&__block_literal_global_83_0];
 
-      v7 = [(HKWorkoutBuilder *)self proxyProvider];
+      proxyProvider2 = [(HKWorkoutBuilder *)self proxyProvider];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __38__HKLiveWorkoutBuilder_setDataSource___block_invoke_84;
       v8[3] = &unk_1E7376870;
       v9 = v5;
-      [v7 fetchProxyWithHandler:v8 errorHandler:&__block_literal_global_87];
+      [proxyProvider2 fetchProxyWithHandler:v8 errorHandler:&__block_literal_global_87];
     }
   }
 }
@@ -334,18 +334,18 @@ void __38__HKLiveWorkoutBuilder_setDataSource___block_invoke_2_85(uint64_t a1, v
   }
 }
 
-- (void)stateMachine:(id)a3 didEnterState:(id)a4 date:(id)a5 error:(id)a6
+- (void)stateMachine:(id)machine didEnterState:(id)state date:(id)date error:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  machineCopy = machine;
+  stateCopy = state;
+  dateCopy = date;
+  errorCopy = error;
   os_unfair_lock_assert_owner(&self->super._lock);
   v25.receiver = self;
   v25.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v25 stateMachine:v10 didEnterState:v11 date:v12 error:v13];
-  if ([v11 index] == 3)
+  [(HKWorkoutBuilder *)&v25 stateMachine:machineCopy didEnterState:stateCopy date:dateCopy error:errorCopy];
+  if ([stateCopy index] == 3)
   {
     currentActivity = self->super._currentActivity;
     self->super._currentActivity = 0;
@@ -385,25 +385,25 @@ void __38__HKLiveWorkoutBuilder_setDataSource___block_invoke_2_85(uint64_t a1, v
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_didUpdateStatistics:(id)a3
+- (void)clientRemote_didUpdateStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v12.receiver = self;
   v12.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v12 clientRemote_didUpdateStatistics:v4];
-  v5 = [(HKLiveWorkoutBuilder *)self delegate];
+  [(HKWorkoutBuilder *)&v12 clientRemote_didUpdateStatistics:statisticsCopy];
+  delegate = [(HKLiveWorkoutBuilder *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(HKWorkoutBuilder *)self healthStore];
-    v7 = [v6 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__HKLiveWorkoutBuilder_clientRemote_didUpdateStatistics___block_invoke;
     block[3] = &unk_1E7376640;
-    v9 = v5;
-    v10 = self;
-    v11 = v4;
-    dispatch_async(v7, block);
+    v9 = delegate;
+    selfCopy = self;
+    v11 = statisticsCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -415,93 +415,93 @@ void __57__HKLiveWorkoutBuilder_clientRemote_didUpdateStatistics___block_invoke(
   [v1 workoutBuilder:v2 didCollectDataOfTypes:v3];
 }
 
-- (void)clientRemote_didUpdateMetadata:(id)a3
+- (void)clientRemote_didUpdateMetadata:(id)metadata
 {
   v10.receiver = self;
   v10.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v10 clientRemote_didUpdateMetadata:a3];
-  v4 = [(HKLiveWorkoutBuilder *)self _privateDelegate];
-  if (v4)
+  [(HKWorkoutBuilder *)&v10 clientRemote_didUpdateMetadata:metadata];
+  _privateDelegate = [(HKLiveWorkoutBuilder *)self _privateDelegate];
+  if (_privateDelegate)
   {
-    v5 = [(HKWorkoutBuilder *)self healthStore];
-    v6 = [v5 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__HKLiveWorkoutBuilder_clientRemote_didUpdateMetadata___block_invoke;
     v7[3] = &unk_1E7378400;
-    v8 = v4;
-    v9 = self;
-    dispatch_async(v6, v7);
+    v8 = _privateDelegate;
+    selfCopy = self;
+    dispatch_async(clientQueue, v7);
   }
 }
 
-- (void)clientRemote_didBeginActivity:(id)a3
+- (void)clientRemote_didBeginActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v12 clientRemote_didBeginActivity:v4];
-  v5 = [(HKLiveWorkoutBuilder *)self delegate];
+  [(HKWorkoutBuilder *)&v12 clientRemote_didBeginActivity:activityCopy];
+  delegate = [(HKLiveWorkoutBuilder *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(HKWorkoutBuilder *)self healthStore];
-    v7 = [v6 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__HKLiveWorkoutBuilder_clientRemote_didBeginActivity___block_invoke;
     block[3] = &unk_1E7376640;
-    v9 = v5;
-    v10 = self;
-    v11 = v4;
-    dispatch_async(v7, block);
+    v9 = delegate;
+    selfCopy = self;
+    v11 = activityCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)clientRemote_didEndActivity:(id)a3
+- (void)clientRemote_didEndActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v12 clientRemote_didEndActivity:v4];
-  v5 = [(HKLiveWorkoutBuilder *)self delegate];
+  [(HKWorkoutBuilder *)&v12 clientRemote_didEndActivity:activityCopy];
+  delegate = [(HKLiveWorkoutBuilder *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(HKWorkoutBuilder *)self healthStore];
-    v7 = [v6 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__HKLiveWorkoutBuilder_clientRemote_didEndActivity___block_invoke;
     block[3] = &unk_1E7376640;
-    v9 = v5;
-    v10 = self;
-    v11 = v4;
-    dispatch_async(v7, block);
+    v9 = delegate;
+    selfCopy = self;
+    v11 = activityCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)clientRemote_didUpdateActivities:(id)a3
+- (void)clientRemote_didUpdateActivities:(id)activities
 {
   v10.receiver = self;
   v10.super_class = HKLiveWorkoutBuilder;
-  [(HKWorkoutBuilder *)&v10 clientRemote_didUpdateActivities:a3];
-  v4 = [(HKLiveWorkoutBuilder *)self _privateDelegate];
-  if (v4)
+  [(HKWorkoutBuilder *)&v10 clientRemote_didUpdateActivities:activities];
+  _privateDelegate = [(HKLiveWorkoutBuilder *)self _privateDelegate];
+  if (_privateDelegate)
   {
-    v5 = [(HKWorkoutBuilder *)self healthStore];
-    v6 = [v5 clientQueue];
+    healthStore = [(HKWorkoutBuilder *)self healthStore];
+    clientQueue = [healthStore clientQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __57__HKLiveWorkoutBuilder_clientRemote_didUpdateActivities___block_invoke;
     v7[3] = &unk_1E7378400;
-    v8 = v4;
-    v9 = self;
-    dispatch_async(v6, v7);
+    v8 = _privateDelegate;
+    selfCopy = self;
+    dispatch_async(clientQueue, v7);
   }
 }
 
 - (void)connectionInterrupted
 {
-  v3 = [(HKWorkoutBuilder *)self proxyProvider];
+  proxyProvider = [(HKWorkoutBuilder *)self proxyProvider];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__HKLiveWorkoutBuilder_connectionInterrupted__block_invoke;
@@ -512,7 +512,7 @@ void __57__HKLiveWorkoutBuilder_clientRemote_didUpdateStatistics___block_invoke(
   v5[2] = __45__HKLiveWorkoutBuilder_connectionInterrupted__block_invoke_2;
   v5[3] = &unk_1E7376898;
   v5[4] = self;
-  [v3 fetchProxyWithHandler:v6 errorHandler:v5];
+  [proxyProvider fetchProxyWithHandler:v6 errorHandler:v5];
 
   v4.receiver = self;
   v4.super_class = HKLiveWorkoutBuilder;

@@ -1,12 +1,12 @@
 @interface NSLocale
-+ (NSLocale)allocWithZone:(_NSZone *)a3;
++ (NSLocale)allocWithZone:(_NSZone *)zone;
 + (NSLocale)localeWithLocaleIdentifier:(NSString *)ident;
 + (NSString)canonicalLanguageIdentifierFromString:(NSString *)string;
 + (NSString)canonicalLocaleIdentifierFromString:(NSString *)string;
 + (id)internetServicesRegion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesMetricSystem;
-- (id)_copyDisplayNameForKey:(id)a3 value:(id)a4;
+- (id)_copyDisplayNameForKey:(id)key value:(id)value;
 - (unint64_t)hash;
 @end
 
@@ -14,38 +14,38 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSLocale *)self localeIdentifier];
+  localeIdentifier = [(NSLocale *)self localeIdentifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)localeIdentifier hash];
 }
 
-+ (NSLocale)allocWithZone:(_NSZone *)a3
++ (NSLocale)allocWithZone:(_NSZone *)zone
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (NSLocale == a1)
+  if (NSLocale == self)
   {
     result = &__placeholderLocale;
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___NSLocale;
-    result = objc_msgSendSuper2(&v5, sel_allocWithZone_, a3);
+    result = objc_msgSendSuper2(&v5, sel_allocWithZone_, zone);
   }
 
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -56,10 +56,10 @@
     return 0;
   }
 
-  v5 = [(NSLocale *)self localeIdentifier];
-  v6 = [a3 localeIdentifier];
+  localeIdentifier = [(NSLocale *)self localeIdentifier];
+  localeIdentifier2 = [equal localeIdentifier];
 
-  return [(NSString *)v5 isEqual:v6];
+  return [(NSString *)localeIdentifier isEqual:localeIdentifier2];
 }
 
 - (BOOL)usesMetricSystem
@@ -71,7 +71,7 @@
 
 + (NSLocale)localeWithLocaleIdentifier:(NSString *)ident
 {
-  v3 = [[a1 alloc] initWithLocaleIdentifier:ident];
+  v3 = [[self alloc] initWithLocaleIdentifier:ident];
 
   return v3;
 }
@@ -102,9 +102,9 @@
   }
 }
 
-- (id)_copyDisplayNameForKey:(id)a3 value:(id)a4
+- (id)_copyDisplayNameForKey:(id)key value:(id)value
 {
-  v4 = [(NSLocale *)self displayNameForKey:a3 value:a4];
+  v4 = [(NSLocale *)self displayNameForKey:key value:value];
 
   return v4;
 }

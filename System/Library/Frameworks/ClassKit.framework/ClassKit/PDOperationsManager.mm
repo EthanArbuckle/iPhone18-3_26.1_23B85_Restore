@@ -3,32 +3,32 @@
 - (PDOperationsManager)init;
 - (id)apsConnection;
 - (id)apsEnvironmentString;
-- (id)issueASMFetchMissingWithDependency:(id)a3;
-- (id)issueASMSyncWithDependency:(id)a3;
-- (id)issueCKBootstrapWithDependency:(id)a3;
-- (id)issueFetchFromCKWithDependency:(id)a3;
-- (id)issueFetchHandoutChangesWithDependency:(id)a3;
-- (id)issueIngestWithDependency:(id)a3;
-- (id)issuePushClassChangesWithDependency:(id)a3;
-- (id)issuePushToCKWithDependency:(id)a3;
-- (id)issueRegisterWithDependency:(id)a3;
-- (id)issueUploadEventsWithDependency:(id)a3;
-- (void)_addOperation:(id)a3 onQueue:(id)a4;
-- (void)_populateDependencySet:(id)a3 ofOperation:(id)a4;
-- (void)addCompletion:(id)a3 toOperation:(id)a4;
-- (void)addPriorityOperation:(id)a3;
-- (void)addReportErrorBlockToOperation:(id)a3;
-- (void)afterBootstrapWithErrorCompletion:(id)a3 doBlock:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)databaseDataChanged:(id)a3;
+- (id)issueASMFetchMissingWithDependency:(id)dependency;
+- (id)issueASMSyncWithDependency:(id)dependency;
+- (id)issueCKBootstrapWithDependency:(id)dependency;
+- (id)issueFetchFromCKWithDependency:(id)dependency;
+- (id)issueFetchHandoutChangesWithDependency:(id)dependency;
+- (id)issueIngestWithDependency:(id)dependency;
+- (id)issuePushClassChangesWithDependency:(id)dependency;
+- (id)issuePushToCKWithDependency:(id)dependency;
+- (id)issueRegisterWithDependency:(id)dependency;
+- (id)issueUploadEventsWithDependency:(id)dependency;
+- (void)_addOperation:(id)operation onQueue:(id)queue;
+- (void)_populateDependencySet:(id)set ofOperation:(id)operation;
+- (void)addCompletion:(id)completion toOperation:(id)operation;
+- (void)addPriorityOperation:(id)operation;
+- (void)addReportErrorBlockToOperation:(id)operation;
+- (void)afterBootstrapWithErrorCompletion:(id)completion doBlock:(id)block;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)databaseDataChanged:(id)changed;
 - (void)dealloc;
 - (void)loadICloudUserIDIfNeeded;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerCloudContainer;
 - (void)registerForLockStateChangedDarwinNotification;
-- (void)registerPeriodicTasksOnQueue:(id)a3;
+- (void)registerPeriodicTasksOnQueue:(id)queue;
 - (void)registerPushTopics;
 - (void)stopListeningToPushNotifications;
 @end
@@ -64,10 +64,10 @@
 
   v7 = v6;
 
-  v8 = [v7 identifier];
-  if (v8)
+  identifier = [v7 identifier];
+  if (identifier)
   {
-    v9 = [[CKAccountOverrideInfo alloc] initWithAccountID:v8];
+    v9 = [[CKAccountOverrideInfo alloc] initWithAccountID:identifier];
     [v3 setAccountOverrideInfo:v9];
   }
 
@@ -93,15 +93,15 @@
   [(PDOperationsManager *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_operationQueue == v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_operationQueue == objectCopy)
   {
-    v14 = [v10 isEqualToString:@"operationCount"];
-    if (a6 == &off_10024BFC0)
+    v14 = [pathCopy isEqualToString:@"operationCount"];
+    if (context == &off_10024BFC0)
     {
       v13 = v14;
     }
@@ -117,10 +117,10 @@
     v13 = 0;
   }
 
-  if (self->_userInteractiveOperationQueue == v11)
+  if (self->_userInteractiveOperationQueue == objectCopy)
   {
-    v16 = [v10 isEqualToString:@"operationCount"];
-    if (a6 == &off_10024BFC8)
+    v16 = [pathCopy isEqualToString:@"operationCount"];
+    if (context == &off_10024BFC8)
     {
       v15 = v16;
     }
@@ -146,17 +146,17 @@
     goto LABEL_18;
   }
 
-  v17 = [(NSOperationQueue *)self->_userInteractiveOperationQueue operationCount];
+  operationCount = [(NSOperationQueue *)self->_userInteractiveOperationQueue operationCount];
   if (((v13 | v15) & 1) == 0)
   {
 LABEL_18:
     v20.receiver = self;
     v20.super_class = PDOperationsManager;
-    [(PDOperationsManager *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PDOperationsManager *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!operationCount)
   {
     v18 = sub_1000B51E4();
     sub_1000B61E0(v18);
@@ -173,34 +173,34 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)addCompletion:(id)a3 toOperation:(id)a4
+- (void)addCompletion:(id)completion toOperation:(id)operation
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100121C2C;
     v7[3] = &unk_1002058F8;
-    v8 = v5;
-    [a4 addOnFinishBlock:v7];
+    v8 = completionCopy;
+    [operation addOnFinishBlock:v7];
   }
 }
 
-- (void)afterBootstrapWithErrorCompletion:(id)a3 doBlock:(id)a4
+- (void)afterBootstrapWithErrorCompletion:(id)completion doBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001226B8;
   v10[3] = &unk_100205970;
-  v8 = v6;
+  v8 = completionCopy;
   v11 = v8;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = blockCopy;
   v12 = v9;
   sub_100121CCC(self, v10);
 
@@ -208,9 +208,9 @@ LABEL_19:
   objc_destroyWeak(&location);
 }
 
-- (id)issueCKBootstrapWithDependency:(id)a3
+- (id)issueCKBootstrapWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   [(PDOperationsManager *)self loadICloudUserIDIfNeeded];
   v5 = [PDCKBootstrap alloc];
   if (self)
@@ -223,13 +223,13 @@ LABEL_19:
     WeakRetained = 0;
   }
 
-  v7 = [(PDOperationsManager *)self cloudContainer];
-  v8 = [(PDCKOperation *)v5 initWithDatabase:WeakRetained container:v7];
+  cloudContainer = [(PDOperationsManager *)self cloudContainer];
+  v8 = [(PDCKOperation *)v5 initWithDatabase:WeakRetained container:cloudContainer];
 
   [(PDCKBootstrap *)v8 setQualityOfService:25];
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDCKBootstrap *)v8 addDependency:v4];
+    [(PDCKBootstrap *)v8 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v8];
@@ -237,9 +237,9 @@ LABEL_19:
   return v8;
 }
 
-- (id)issuePushToCKWithDependency:(id)a3
+- (id)issuePushToCKWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDCKPushLocalChanges alloc];
   if (self)
   {
@@ -251,12 +251,12 @@ LABEL_19:
     WeakRetained = 0;
   }
 
-  v7 = [(PDOperationsManager *)self cloudContainer];
-  v8 = [(PDCKOperation *)v5 initWithDatabase:WeakRetained container:v7];
+  cloudContainer = [(PDOperationsManager *)self cloudContainer];
+  v8 = [(PDCKOperation *)v5 initWithDatabase:WeakRetained container:cloudContainer];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDCKPushLocalChanges *)v8 addDependency:v4];
+    [(PDCKPushLocalChanges *)v8 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v8];
@@ -264,9 +264,9 @@ LABEL_19:
   return v8;
 }
 
-- (id)issueIngestWithDependency:(id)a3
+- (id)issueIngestWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDIngestOperation alloc];
   if (self)
   {
@@ -280,9 +280,9 @@ LABEL_19:
 
   v7 = [(PDURLRequestOperation *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDIngestOperation *)v7 addDependency:v4];
+    [(PDIngestOperation *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -290,9 +290,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)issuePushClassChangesWithDependency:(id)a3
+- (id)issuePushClassChangesWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDPushLocalClassChanges alloc];
   if (self)
   {
@@ -306,9 +306,9 @@ LABEL_19:
 
   v7 = [(PDPushLocalClassChanges *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDPushLocalClassChanges *)v7 addDependency:v4];
+    [(PDPushLocalClassChanges *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -316,9 +316,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)issueRegisterWithDependency:(id)a3
+- (id)issueRegisterWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDDashboardAppRegisterOperation alloc];
   if (self)
   {
@@ -332,9 +332,9 @@ LABEL_19:
 
   v7 = [(PDURLRequestOperation *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDDashboardAppRegisterOperation *)v7 addDependency:v4];
+    [(PDDashboardAppRegisterOperation *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -342,9 +342,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)issueFetchFromCKWithDependency:(id)a3
+- (id)issueFetchFromCKWithDependency:(id)dependency
 {
-  v4 = [(PDOperationsManager *)self issueCKBootstrapWithDependency:a3];
+  v4 = [(PDOperationsManager *)self issueCKBootstrapWithDependency:dependency];
   v5 = [PDCKFetchRemoteChanges alloc];
   if (self)
   {
@@ -356,8 +356,8 @@ LABEL_19:
     WeakRetained = 0;
   }
 
-  v7 = [(PDOperationsManager *)self cloudContainer];
-  v8 = [(PDCKOperation *)v5 initWithDatabase:WeakRetained container:v7];
+  cloudContainer = [(PDOperationsManager *)self cloudContainer];
+  v8 = [(PDCKOperation *)v5 initWithDatabase:WeakRetained container:cloudContainer];
 
   [(PDCKFetchRemoteChanges *)v8 addDependency:v4];
   [(PDOperationsManager *)self addOperation:v8];
@@ -365,9 +365,9 @@ LABEL_19:
   return v8;
 }
 
-- (id)issueASMFetchMissingWithDependency:(id)a3
+- (id)issueASMFetchMissingWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDASMFetchMissingEntitiesOperation alloc];
   if (self)
   {
@@ -381,9 +381,9 @@ LABEL_19:
 
   v7 = [(PDASMFetchMissingEntitiesOperation *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDASMFetchMissingEntitiesOperation *)v7 addDependency:v4];
+    [(PDASMFetchMissingEntitiesOperation *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -391,9 +391,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)issueASMSyncWithDependency:(id)a3
+- (id)issueASMSyncWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDASMSyncOperation alloc];
   if (self)
   {
@@ -407,9 +407,9 @@ LABEL_19:
 
   v7 = [(PDASMSyncOperation *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDASMSyncOperation *)v7 addDependency:v4];
+    [(PDASMSyncOperation *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -417,9 +417,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)issueFetchHandoutChangesWithDependency:(id)a3
+- (id)issueFetchHandoutChangesWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDClassZoneGetChanges alloc];
   if (self)
   {
@@ -433,9 +433,9 @@ LABEL_19:
 
   v7 = [(PDClassZoneGetChanges *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDClassZoneGetChanges *)v7 addDependency:v4];
+    [(PDClassZoneGetChanges *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -443,9 +443,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)issueUploadEventsWithDependency:(id)a3
+- (id)issueUploadEventsWithDependency:(id)dependency
 {
-  v4 = a3;
+  dependencyCopy = dependency;
   v5 = [PDUploadEventsOperation alloc];
   if (self)
   {
@@ -459,9 +459,9 @@ LABEL_19:
 
   v7 = [(PDURLRequestOperation *)v5 initWithDatabase:WeakRetained];
 
-  if (v4)
+  if (dependencyCopy)
   {
-    [(PDUploadEventsOperation *)v7 addDependency:v4];
+    [(PDUploadEventsOperation *)v7 addDependency:dependencyCopy];
   }
 
   [(PDOperationsManager *)self addOperation:v7];
@@ -469,29 +469,29 @@ LABEL_19:
   return v7;
 }
 
-- (void)addReportErrorBlockToOperation:(id)a3
+- (void)addReportErrorBlockToOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100123E98;
   v5[3] = &unk_100205A60;
   objc_copyWeak(&v6, &location);
-  [v4 addOnFinishBlock:v5];
+  [operationCopy addOnFinishBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)_populateDependencySet:(id)a3 ofOperation:(id)a4
+- (void)_populateDependencySet:(id)set ofOperation:(id)operation
 {
-  v6 = a3;
+  setCopy = set;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a4 dependencies];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dependencies = [operation dependencies];
+  v8 = [dependencies countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -502,39 +502,39 @@ LABEL_19:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(dependencies);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        [v6 addObject:v12];
-        [(PDOperationsManager *)self _populateDependencySet:v6 ofOperation:v12];
+        [setCopy addObject:v12];
+        [(PDOperationsManager *)self _populateDependencySet:setCopy ofOperation:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [dependencies countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)addPriorityOperation:(id)a3
+- (void)addPriorityOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (![(PDOperationsManager *)self isInvalidated])
   {
-    [v4 setQualityOfService:25];
+    [operationCopy setQualityOfService:25];
     [(NSOperationQueue *)self->_operationQueue setSuspended:1];
-    [(PDOperationsManager *)self addOperation:v4];
+    [(PDOperationsManager *)self addOperation:operationCopy];
     v5 = objc_opt_new();
-    [(PDOperationsManager *)self _populateDependencySet:v5 ofOperation:v4];
+    [(PDOperationsManager *)self _populateDependencySet:v5 ofOperation:operationCopy];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(NSOperationQueue *)self->_operationQueue operations];
-    v7 = [v6 reverseObjectEnumerator];
+    operations = [(NSOperationQueue *)self->_operationQueue operations];
+    reverseObjectEnumerator = [operations reverseObjectEnumerator];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -546,16 +546,16 @@ LABEL_19:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v12 = *(*(&v15 + 1) + 8 * v11);
           if (([v12 isExecuting] & 1) == 0 && (objc_msgSend(v12, "isCancelled") & 1) == 0)
           {
-            v13 = [v12 isFinished];
-            if (v12 != v4 && (v13 & 1) == 0 && ([v5 containsObject:v12] & 1) == 0)
+            isFinished = [v12 isFinished];
+            if (v12 != operationCopy && (isFinished & 1) == 0 && ([v5 containsObject:v12] & 1) == 0)
             {
-              [v12 addDependency:v4];
+              [v12 addDependency:operationCopy];
             }
           }
 
@@ -563,7 +563,7 @@ LABEL_19:
         }
 
         while (v9 != v11);
-        v14 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
         v9 = v14;
       }
 
@@ -574,20 +574,20 @@ LABEL_19:
   }
 }
 
-- (void)_addOperation:(id)a3 onQueue:(id)a4
+- (void)_addOperation:(id)operation onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  queueCopy = queue;
   if (![(PDOperationsManager *)self isInvalidated])
   {
-    if (sub_100121714(self) || ![v6 requiresValidUser])
+    if (sub_100121714(self) || ![operationCopy requiresValidUser])
     {
-      [(PDOperationsManager *)self addReportErrorBlockToOperation:v6];
-      [v6 setManager:self];
+      [(PDOperationsManager *)self addReportErrorBlockToOperation:operationCopy];
+      [operationCopy setManager:self];
       v9 = +[PDUserDefaults sharedDefaults];
-      v10 = [v9 enableVerboseLogging];
+      enableVerboseLogging = [v9 enableVerboseLogging];
 
-      if (v10)
+      if (enableVerboseLogging)
       {
         CLSInitLog();
         v11 = CLSLogOperations;
@@ -596,33 +596,33 @@ LABEL_19:
           v12 = v11;
           v13 = objc_opt_class();
           v14 = v13;
-          v15 = [v6 operationID];
-          v16 = [v7 name];
-          v17 = [v6 dependencies];
+          operationID = [operationCopy operationID];
+          name = [queueCopy name];
+          dependencies = [operationCopy dependencies];
           v18 = 138544130;
           v19 = v13;
           v20 = 2114;
-          v21 = v15;
+          v21 = operationID;
           v22 = 2112;
-          v23 = v16;
+          v23 = name;
           v24 = 2112;
-          v25 = v17;
+          v25 = dependencies;
           _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "OPS: queued %{public}@:%{public}@ on %@ dependencies: %@", &v18, 0x2Au);
         }
       }
 
-      [v7 addOperation:v6];
+      [queueCopy addOperation:operationCopy];
     }
 
     else
     {
       v8 = [NSError cls_createErrorWithCode:1 description:@"Valid user required."];
-      [v6 abortWithError:v8];
+      [operationCopy abortWithError:v8];
     }
   }
 }
 
-- (void)databaseDataChanged:(id)a3
+- (void)databaseDataChanged:(id)changed
 {
   CLSInitLog();
   v4 = CLSLogSync;
@@ -642,31 +642,31 @@ LABEL_19:
     WeakRetained = objc_loadWeakRetained(&self->_database);
     if (WeakRetained && sub_100121714(self))
     {
-      v4 = self;
-      objc_sync_enter(v4);
-      if (v4->_isLoadingICloudUserID)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if (selfCopy->_isLoadingICloudUserID)
       {
-        objc_sync_exit(v4);
+        objc_sync_exit(selfCopy);
       }
 
       else
       {
-        v4->_isLoadingICloudUserID = 1;
-        objc_sync_exit(v4);
+        selfCopy->_isLoadingICloudUserID = 1;
+        objc_sync_exit(selfCopy);
 
         v5 = sub_10016A49C(WeakRetained, @"PDCK_iCloudUserID");
         if ([v5 length])
         {
-          v6 = v4;
+          v6 = selfCopy;
           objc_sync_enter(v6);
-          v4->_isLoadingICloudUserID = 0;
+          selfCopy->_isLoadingICloudUserID = 0;
           objc_sync_exit(v6);
         }
 
         else
         {
-          objc_initWeak(&location, v4);
-          v7 = v4;
+          objc_initWeak(&location, selfCopy);
+          v7 = selfCopy;
           objc_sync_enter(v7);
           if (!v7->_loadICloudUser)
           {
@@ -766,56 +766,56 @@ LABEL_19:
   return v11;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   CLSInitLog();
   v7 = CLSLogPush;
   if (os_log_type_enabled(CLSLogPush, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = v6;
+    v9 = tokenCopy;
     v10 = 2048;
-    v11 = v5;
+    v11 = connectionCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Received public token %@ on connection %p", &v8, 0x16u);
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   CLSInitLog();
   v13 = CLSLogPush;
   if (os_log_type_enabled(CLSLogPush, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138413058;
-    v15 = v10;
+    v15 = tokenCopy;
     v16 = 2114;
-    v17 = v11;
+    v17 = topicCopy;
     v18 = 2112;
-    v19 = v12;
+    v19 = identifierCopy;
     v20 = 2048;
-    v21 = v9;
+    v21 = connectionCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Received per-topic push token %@ for topic %{public}@ identifier %@ on connection %p", &v14, 0x2Au);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v6 = [v5 userInfo];
-  v7 = [CKNotification notificationFromRemoteNotificationDictionary:v6];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v7 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
   v8 = +[PDUserDefaults sharedDefaults];
-  v9 = [v8 enableVerboseLogging];
+  enableVerboseLogging = [v8 enableVerboseLogging];
 
   CLSInitLog();
   v10 = CLSLogPush;
   v11 = os_log_type_enabled(CLSLogPush, OS_LOG_TYPE_DEBUG);
-  if (v9)
+  if (enableVerboseLogging)
   {
     if (!v11)
     {
@@ -823,9 +823,9 @@ LABEL_19:
     }
 
     v12 = v10;
-    v13 = [v5 topic];
+    topic = [messageCopy topic];
     v34 = 138543618;
-    v35 = v13;
+    v35 = topic;
     v36 = 2114;
     v37 = v7;
     v14 = "APS push received: %{public}@ %{public}@";
@@ -841,9 +841,9 @@ LABEL_19:
     }
 
     v12 = v10;
-    v13 = [v5 topic];
+    topic = [messageCopy topic];
     v34 = 138543362;
-    v35 = v13;
+    v35 = topic;
     v14 = "APS push received: %{public}@";
     v15 = v12;
     v16 = 12;
@@ -855,24 +855,24 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v7 recordZoneID];
-    if (!v17)
+    recordZoneID = [v7 recordZoneID];
+    if (!recordZoneID)
     {
       goto LABEL_16;
     }
 
 LABEL_10:
-    v19 = v17;
+    v19 = recordZoneID;
     if (self)
     {
       if (sub_1001005D4(PDClassZoneGetChanges, v19))
       {
         WeakRetained = objc_loadWeakRetained(&self->_database);
-        v21 = [v19 zoneName];
-        if (([WeakRetained entityExistsByClass:objc_opt_class() identity:v21] & 1) == 0)
+        zoneName = [v19 zoneName];
+        if (([WeakRetained entityExistsByClass:objc_opt_class() identity:zoneName] & 1) == 0)
         {
           v22 = objc_opt_new();
-          sub_10008122C(v22, v21);
+          sub_10008122C(v22, zoneName);
           if ([WeakRetained insertObject:v22])
           {
             goto LABEL_24;
@@ -898,16 +898,16 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v28 = [v19 zoneName];
-      v29 = [v28 hasPrefix:@"Class-Roster-"];
+      zoneName2 = [v19 zoneName];
+      v29 = [zoneName2 hasPrefix:@"Class-Roster-"];
 
       if (v29)
       {
-        v30 = [v19 zoneName];
-        WeakRetained = [v30 substringFromIndex:{objc_msgSend(@"Class-Roster-", "length")}];
+        zoneName3 = [v19 zoneName];
+        WeakRetained = [zoneName3 substringFromIndex:{objc_msgSend(@"Class-Roster-", "length")}];
 
-        v21 = objc_loadWeakRetained(&self->_database);
-        if (([v21 entityExistsByClass:objc_opt_class() identity:WeakRetained] & 1) == 0)
+        zoneName = objc_loadWeakRetained(&self->_database);
+        if (([zoneName entityExistsByClass:objc_opt_class() identity:WeakRetained] & 1) == 0)
         {
           CLSInitLog();
           v31 = CLSLogPush;
@@ -921,7 +921,7 @@ LABEL_24:
           v32 = [PDMissingEntityReference alloc];
           v33 = objc_opt_class();
           v22 = sub_10017BC18(&v32->super.isa, WeakRetained, v33, 0, 0);
-          if ([v21 insertOrUpdateObject:v22])
+          if ([zoneName insertOrUpdateObject:v22])
           {
             goto LABEL_24;
           }
@@ -950,10 +950,10 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v7 recordID];
-    v17 = [v18 zoneID];
+    recordID = [v7 recordID];
+    recordZoneID = [recordID zoneID];
 
-    if (v17)
+    if (recordZoneID)
     {
       goto LABEL_10;
     }
@@ -965,9 +965,9 @@ LABEL_16:
   if (os_log_type_enabled(CLSLogPush, OS_LOG_TYPE_DEBUG))
   {
     v26 = v25;
-    v27 = [v5 topic];
+    topic2 = [messageCopy topic];
     v34 = 138543618;
-    v35 = v27;
+    v35 = topic2;
     v36 = 2114;
     v37 = v7;
     _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "APS push NO zoneID received: %{public}@ %{public}@", &v34, 0x16u);
@@ -981,9 +981,9 @@ LABEL_27:
   if (!self->_apsConnection)
   {
     v3 = [APSConnection alloc];
-    v4 = [(PDOperationsManager *)self apsEnvironmentString];
+    apsEnvironmentString = [(PDOperationsManager *)self apsEnvironmentString];
     v5 = sub_1001214FC();
-    v6 = [v3 initWithEnvironmentName:v4 namedDelegatePort:@"com.apple.progressd.aps" queue:v5];
+    v6 = [v3 initWithEnvironmentName:apsEnvironmentString namedDelegatePort:@"com.apple.progressd.aps" queue:v5];
     apsConnection = self->_apsConnection;
     self->_apsConnection = v6;
 
@@ -1086,9 +1086,9 @@ LABEL_27:
   return v4 & 1;
 }
 
-- (void)registerPeriodicTasksOnQueue:(id)a3
+- (void)registerPeriodicTasksOnQueue:(id)queue
 {
-  objc_storeStrong(&self->_taskQueue, a3);
+  objc_storeStrong(&self->_taskQueue, queue);
   if (sub_100121714(self))
   {
     sub_10012721C(self);

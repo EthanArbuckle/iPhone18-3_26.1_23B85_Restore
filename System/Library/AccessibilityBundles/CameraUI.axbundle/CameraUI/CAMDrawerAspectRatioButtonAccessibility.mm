@@ -1,5 +1,5 @@
 @interface CAMDrawerAspectRatioButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,16 +8,16 @@
 
 @implementation CAMDrawerAspectRatioButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerAspectRatioButton" hasInstanceMethod:@"aspectRatio" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerAspectRatioButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerAspectRatioButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerAspectRatioButton" hasInstanceMethod:@"aspectRatio" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerAspectRatioButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerAspectRatioButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -25,19 +25,19 @@
   if (AXRequestingClient() == 3)
   {
     v3 = [(CAMDrawerAspectRatioButtonAccessibility *)self safeValueForKey:@"aspectRatio"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
-    v5 = 2 * (v4 == 1);
+    v5 = 2 * (integerValue == 1);
     v8 = MEMORY[0x29EDCA5F8];
     v9 = 3221225472;
     v10 = __64__CAMDrawerAspectRatioButtonAccessibility_accessibilityActivate__block_invoke;
     v11 = &unk_29F2ACC58;
-    if (!v4)
+    if (!integerValue)
     {
       v5 = 1;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v5;
     AXPerformSafeBlock();
     return 1;
@@ -61,16 +61,16 @@ void __64__CAMDrawerAspectRatioButtonAccessibility_accessibilityActivate__block_
 - (id)accessibilityValue
 {
   v2 = [(CAMDrawerAspectRatioButtonAccessibility *)self safeValueForKey:@"aspectRatio"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3 > 2)
+  if (integerValue > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2AD090[v3]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2AD090[integerValue]);
   }
 
   return v4;

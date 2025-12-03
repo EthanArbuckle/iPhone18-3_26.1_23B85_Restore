@@ -1,25 +1,25 @@
 @interface ODDSiriSchemaODDFixedDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDFixedDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDFixedDimensions)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDFixedDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDFixedDimensions)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDFixedDimensions
 
-- (ODDSiriSchemaODDFixedDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDFixedDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ODDSiriSchemaODDFixedDimensions;
   v5 = [(ODDSiriSchemaODDFixedDimensions *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ODDSiriSchemaODDFixedDimensions *)v5 setDeviceType:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"programCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"programCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDFixedDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDFixedDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDFixedDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDFixedDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDFixedDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deviceType)
   {
-    v4 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"deviceType"];
+    deviceType = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
+    v5 = [deviceType copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"deviceType"];
   }
 
   if (*&self->_has)
@@ -97,12 +97,12 @@
       v7 = off_1E78DD6E0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"programCode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"programCode"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
-  v6 = [v4 deviceType];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  deviceType = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
+  deviceType2 = [equalCopy deviceType];
+  v7 = deviceType2;
+  if ((deviceType != 0) == (deviceType2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
-  if (v8)
+  deviceType3 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
+  if (deviceType3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
-    v11 = [v4 deviceType];
-    v12 = [v10 isEqual:v11];
+    v9 = deviceType3;
+    deviceType4 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
+    deviceType5 = [equalCopy deviceType];
+    v12 = [deviceType4 isEqual:deviceType5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     programCode = self->_programCode;
-    if (programCode != [v4 programCode])
+    if (programCode != [equalCopy programCode])
     {
       goto LABEL_12;
     }
@@ -178,12 +178,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
+  toCopy = to;
+  deviceType = [(ODDSiriSchemaODDFixedDimensions *)self deviceType];
 
-  if (v4)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }

@@ -1,11 +1,11 @@
 @interface RemoveDownloadShareSheetActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
 - (_TtC9SeymourUI32RemoveDownloadShareSheetActivity)init;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation RemoveDownloadShareSheetActivity
@@ -26,7 +26,7 @@
 {
   type metadata accessor for SeymourLocalizationBundle();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v3 = [objc_opt_self() bundleForClass_];
+  bundleForClass_ = [objc_opt_self() bundleForClass_];
   sub_20C132964();
 
   v4 = sub_20C13C914();
@@ -37,30 +37,30 @@
 - (UIImage)activityImage
 {
   v2 = sub_20C13C914();
-  v3 = [objc_opt_self() systemImageNamed_];
+  systemImageNamed_ = [objc_opt_self() systemImageNamed_];
 
-  return v3;
+  return systemImageNamed_;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_20C13CC74();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_20B624760(v4);
 
   return v6 & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v4 = sub_20C13CC74();
-  v5 = self;
+  selfCopy = self;
   sub_20C04F954(v4);
 }
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C04FA78();
 }
 

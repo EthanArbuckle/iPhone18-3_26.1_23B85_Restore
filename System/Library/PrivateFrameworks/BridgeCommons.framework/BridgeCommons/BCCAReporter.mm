@@ -1,51 +1,51 @@
 @interface BCCAReporter
-+ (id)descriptionForDiscoverSuccessType:(unint64_t)a3;
++ (id)descriptionForDiscoverSuccessType:(unint64_t)type;
 + (id)discoverRouteDescription;
-+ (void)incrementDiscoverSuccessType:(unint64_t)a3;
++ (void)incrementDiscoverSuccessType:(unint64_t)type;
 @end
 
 @implementation BCCAReporter
 
 + (id)discoverRouteDescription
 {
-  v2 = [a1 routeType];
-  if ((v2 - 1) > 2)
+  routeType = [self routeType];
+  if ((routeType - 1) > 2)
   {
     return @"Undefined";
   }
 
   else
   {
-    return off_278D22520[v2 - 1];
+    return off_278D22520[routeType - 1];
   }
 }
 
-+ (id)descriptionForDiscoverSuccessType:(unint64_t)a3
++ (id)descriptionForDiscoverSuccessType:(unint64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
-    if (a3 > 9)
+    if (type > 9)
     {
-      switch(a3)
+      switch(type)
       {
         case 0xAuLL:
           return @"VideoTutorials";
         case 0xBuLL:
           return @"FitnessPlus";
         case 0xCuLL:
-          [a1 setRouteType:3];
+          [self setRouteType:3];
           return @"DiscoverVisitInSyncTrap";
       }
 
       return @"Unknown";
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       return @"CustomizeYourWatch";
     }
 
-    else if (a3 == 8)
+    else if (type == 8)
     {
       return @"HealthAndFitness";
     }
@@ -58,15 +58,15 @@
 
   else
   {
-    if (a3 <= 3)
+    if (type <= 3)
     {
-      switch(a3)
+      switch(type)
       {
         case 1uLL:
-          [a1 setRouteType:?];
+          [self setRouteType:?];
           return @"DiscoverVisitPaired";
         case 2uLL:
-          [a1 setRouteType:?];
+          [self setRouteType:?];
           return @"DiscoverVisitUnpaired";
         case 3uLL:
           return @"WhatsNewInWatchOS";
@@ -75,12 +75,12 @@
       return @"Unknown";
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       return @"WelcomeToAppleWatch";
     }
 
-    else if (a3 == 5)
+    else if (type == 5)
     {
       return @"GetToKnowCurrentSeries";
     }
@@ -92,17 +92,17 @@
   }
 }
 
-+ (void)incrementDiscoverSuccessType:(unint64_t)a3
++ (void)incrementDiscoverSuccessType:(unint64_t)type
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"StoryID";
-  v4 = [a1 descriptionForDiscoverSuccessType:a3];
+  v4 = [self descriptionForDiscoverSuccessType:type];
   v8[1] = @"RouteID";
   v9[0] = v4;
-  v5 = [a1 discoverRouteDescription];
-  v9[1] = v5;
+  discoverRouteDescription = [self discoverRouteDescription];
+  v9[1] = discoverRouteDescription;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
-  [a1 sendEvent:@"com.apple.com.apple.Bridge.DiscoverTab.Story" with:v6];
+  [self sendEvent:@"com.apple.com.apple.Bridge.DiscoverTab.Story" with:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }

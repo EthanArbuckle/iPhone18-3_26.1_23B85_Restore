@@ -1,47 +1,47 @@
 @interface CKKSAnalytics
 + (id)databasePath;
 + (id)logger;
-- (BOOL)isCKPartialError:(id)a3;
-- (id)createErrorAttributes:(id)a3 depth:(unint64_t)a4 attributes:(id)a5;
-- (id)dateOfLastSuccessForEvent:(id)a3 zoneName:(id)a4;
-- (id)datePropertyForKey:(id)a3 zoneName:(id)a4;
-- (id)errorChain:(id)a3 depth:(unint64_t)a4;
-- (void)addCKPartialError:(id)a3 error:(id)a4 depth:(unint64_t)a5;
-- (void)logRecoverableError:(id)a3 forEvent:(id)a4 withAttributes:(id)a5;
-- (void)logRecoverableError:(id)a3 forEvent:(id)a4 zoneName:(id)a5 withAttributes:(id)a6;
-- (void)logSuccessForEvent:(id)a3 zoneName:(id)a4;
-- (void)logUnrecoverableError:(id)a3 forEvent:(id)a4 withAttributes:(id)a5;
-- (void)logUnrecoverableError:(id)a3 forEvent:(id)a4 zoneName:(id)a5 withAttributes:(id)a6;
-- (void)noteEvent:(id)a3 zoneName:(id)a4;
-- (void)noteMetric:(id)a3 count:(int64_t)a4;
-- (void)recordRecoveredTLKMetrics:(id)a3 tlkRecoveryResults:(id)a4 uniqueTLKsRecoveredEvent:(id)a5 totalSharesRecoveredEvent:(id)a6 totalRecoverableTLKSharesEvent:(id)a7 totalRecoverableTLKsEvent:(id)a8 totalViewsWithSharesEvent:(id)a9;
-- (void)setDateProperty:(id)a3 forKey:(id)a4 zoneName:(id)a5;
+- (BOOL)isCKPartialError:(id)error;
+- (id)createErrorAttributes:(id)attributes depth:(unint64_t)depth attributes:(id)a5;
+- (id)dateOfLastSuccessForEvent:(id)event zoneName:(id)name;
+- (id)datePropertyForKey:(id)key zoneName:(id)name;
+- (id)errorChain:(id)chain depth:(unint64_t)depth;
+- (void)addCKPartialError:(id)error error:(id)a4 depth:(unint64_t)depth;
+- (void)logRecoverableError:(id)error forEvent:(id)event withAttributes:(id)attributes;
+- (void)logRecoverableError:(id)error forEvent:(id)event zoneName:(id)name withAttributes:(id)attributes;
+- (void)logSuccessForEvent:(id)event zoneName:(id)name;
+- (void)logUnrecoverableError:(id)error forEvent:(id)event withAttributes:(id)attributes;
+- (void)logUnrecoverableError:(id)error forEvent:(id)event zoneName:(id)name withAttributes:(id)attributes;
+- (void)noteEvent:(id)event zoneName:(id)name;
+- (void)noteMetric:(id)metric count:(int64_t)count;
+- (void)recordRecoveredTLKMetrics:(id)metrics tlkRecoveryResults:(id)results uniqueTLKsRecoveredEvent:(id)event totalSharesRecoveredEvent:(id)recoveredEvent totalRecoverableTLKSharesEvent:(id)sharesEvent totalRecoverableTLKsEvent:(id)ksEvent totalViewsWithSharesEvent:(id)withSharesEvent;
+- (void)setDateProperty:(id)property forKey:(id)key zoneName:(id)name;
 @end
 
 @implementation CKKSAnalytics
 
-- (void)recordRecoveredTLKMetrics:(id)a3 tlkRecoveryResults:(id)a4 uniqueTLKsRecoveredEvent:(id)a5 totalSharesRecoveredEvent:(id)a6 totalRecoverableTLKSharesEvent:(id)a7 totalRecoverableTLKsEvent:(id)a8 totalViewsWithSharesEvent:(id)a9
+- (void)recordRecoveredTLKMetrics:(id)metrics tlkRecoveryResults:(id)results uniqueTLKsRecoveredEvent:(id)event totalSharesRecoveredEvent:(id)recoveredEvent totalRecoverableTLKSharesEvent:(id)sharesEvent totalRecoverableTLKsEvent:(id)ksEvent totalViewsWithSharesEvent:(id)withSharesEvent
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v36 = a9;
-  v19 = [v15 successfulKeysRecovered];
-  v38 = v16;
-  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", v16, [v19 count]);
+  metricsCopy = metrics;
+  resultsCopy = results;
+  eventCopy = event;
+  recoveredEventCopy = recoveredEvent;
+  ksEventCopy = ksEvent;
+  withSharesEventCopy = withSharesEvent;
+  successfulKeysRecovered = [resultsCopy successfulKeysRecovered];
+  v38 = eventCopy;
+  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", eventCopy, [successfulKeysRecovered count]);
 
-  v39 = v15;
-  v37 = v17;
-  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", v17, [v15 totalTLKSharesRecovered]);
-  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", v18, [v14 count]);
+  v39 = resultsCopy;
+  v37 = recoveredEventCopy;
+  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", recoveredEventCopy, [resultsCopy totalTLKSharesRecovered]);
+  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", ksEventCopy, [metricsCopy count]);
   v20 = +[NSMutableSet set];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v21 = v14;
+  v21 = metricsCopy;
   v22 = [v21 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v22)
   {
@@ -56,8 +56,8 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v44 + 1) + 8 * i) tlkUUID];
-        [v20 addObject:v26];
+        tlkUUID = [*(*(&v44 + 1) + 8 * i) tlkUUID];
+        [v20 addObject:tlkUUID];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -66,7 +66,7 @@
     while (v23);
   }
 
-  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", v18, [v20 count]);
+  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", ksEventCopy, [v20 count]);
   v27 = +[NSMutableDictionary dictionary];
   v40 = 0u;
   v41 = 0u;
@@ -88,9 +88,9 @@
         }
 
         v33 = *(*(&v40 + 1) + 8 * j);
-        v34 = [v33 zoneID];
-        v35 = [v33 zoneID];
-        [v27 setObject:v34 forKeyedSubscript:v35];
+        zoneID = [v33 zoneID];
+        zoneID2 = [v33 zoneID];
+        [v27 setObject:zoneID forKeyedSubscript:zoneID2];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -99,210 +99,210 @@
     while (v30);
   }
 
-  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", v36, [v27 count]);
+  -[CKKSAnalytics noteMetric:count:](self, "noteMetric:count:", withSharesEventCopy, [v27 count]);
 }
 
-- (void)noteMetric:(id)a3 count:(int64_t)a4
+- (void)noteMetric:(id)metric count:(int64_t)count
 {
-  v6 = a3;
-  v9 = [NSString stringWithFormat:@"%@%lld", v6, a4];
+  metricCopy = metric;
+  v9 = [NSString stringWithFormat:@"%@%lld", metricCopy, count];
   [(CKKSAnalytics *)self logResultForEvent:v9 hardFailure:0 result:0];
   v7 = +[NSDate date];
   [(CKKSAnalytics *)self setDateProperty:v7 forKey:v9];
 
-  v8 = [[NSNumber alloc] initWithLong:a4];
-  [(CKKSAnalytics *)self setNumberProperty:v8 forKey:v6];
+  v8 = [[NSNumber alloc] initWithLong:count];
+  [(CKKSAnalytics *)self setNumberProperty:v8 forKey:metricCopy];
 }
 
-- (id)datePropertyForKey:(id)a3 zoneName:(id)a4
+- (id)datePropertyForKey:(id)key zoneName:(id)name
 {
-  v5 = [NSString stringWithFormat:@"%@-%@", a3, a4];
-  v6 = [(CKKSAnalytics *)self datePropertyForKey:v5];
+  name = [NSString stringWithFormat:@"%@-%@", key, name];
+  v6 = [(CKKSAnalytics *)self datePropertyForKey:name];
 
   return v6;
 }
 
-- (void)setDateProperty:(id)a3 forKey:(id)a4 zoneName:(id)a5
+- (void)setDateProperty:(id)property forKey:(id)key zoneName:(id)name
 {
-  v8 = a3;
-  v9 = [NSString stringWithFormat:@"%@-%@", a4, a5];
-  [(CKKSAnalytics *)self setDateProperty:v8 forKey:v9];
+  propertyCopy = property;
+  name = [NSString stringWithFormat:@"%@-%@", key, name];
+  [(CKKSAnalytics *)self setDateProperty:propertyCopy forKey:name];
 }
 
-- (id)dateOfLastSuccessForEvent:(id)a3 zoneName:(id)a4
+- (id)dateOfLastSuccessForEvent:(id)event zoneName:(id)name
 {
-  v5 = [NSString stringWithFormat:@"last_success_%@-%@", a4, a3];
-  v6 = [(CKKSAnalytics *)self datePropertyForKey:v5];
+  event = [NSString stringWithFormat:@"last_success_%@-%@", name, event];
+  v6 = [(CKKSAnalytics *)self datePropertyForKey:event];
 
   return v6;
 }
 
-- (void)noteEvent:(id)a3 zoneName:(id)a4
+- (void)noteEvent:(id)event zoneName:(id)name
 {
-  v5 = [NSString stringWithFormat:@"%@-%@", a4, a3];
-  [(CKKSAnalytics *)self noteEventNamed:v5];
+  event = [NSString stringWithFormat:@"%@-%@", name, event];
+  [(CKKSAnalytics *)self noteEventNamed:event];
 }
 
-- (void)logUnrecoverableError:(id)a3 forEvent:(id)a4 withAttributes:(id)a5
+- (void)logUnrecoverableError:(id)error forEvent:(id)event withAttributes:(id)attributes
 {
-  v8 = a5;
-  if (a3)
+  attributesCopy = attributes;
+  if (error)
   {
-    v9 = a4;
-    v10 = a3;
+    eventCopy = event;
+    errorCopy = error;
     v11 = +[NSMutableDictionary dictionary];
     v12 = v11;
-    if (v8)
+    if (attributesCopy)
     {
-      [v11 setValuesForKeysWithDictionary:v8];
+      [v11 setValuesForKeysWithDictionary:attributesCopy];
     }
 
-    v13 = [v10 userInfo];
-    v14 = [v13 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v14 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
     v15 = [(CKKSAnalytics *)self errorChain:v14 depth:0];
     [v12 setObject:v15 forKeyedSubscript:@"errorChain"];
 
-    [(CKKSAnalytics *)self addCKPartialError:v12 error:v10 depth:0];
+    [(CKKSAnalytics *)self addCKPartialError:v12 error:errorCopy depth:0];
     v20[0] = @"recoverableError";
     v20[1] = @"zone";
     v21[0] = &__kCFBooleanFalse;
     v21[1] = @"OTBottledPeer";
     v20[2] = @"errorDomain";
-    v16 = [v10 domain];
-    v21[2] = v16;
+    domain = [errorCopy domain];
+    v21[2] = domain;
     v20[3] = @"errorCode";
-    v17 = [v10 code];
+    code = [errorCopy code];
 
-    v18 = [NSNumber numberWithInteger:v17];
+    v18 = [NSNumber numberWithInteger:code];
     v21[3] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:4];
     [v12 setValuesForKeysWithDictionary:v19];
 
-    [(CKKSAnalytics *)self logHardFailureForEventNamed:v9 withAttributes:v12];
+    [(CKKSAnalytics *)self logHardFailureForEventNamed:eventCopy withAttributes:v12];
   }
 }
 
-- (void)logUnrecoverableError:(id)a3 forEvent:(id)a4 zoneName:(id)a5 withAttributes:(id)a6
+- (void)logUnrecoverableError:(id)error forEvent:(id)event zoneName:(id)name withAttributes:(id)attributes
 {
-  v10 = a6;
-  if (a3)
+  attributesCopy = attributes;
+  if (error)
   {
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
+    nameCopy = name;
+    eventCopy = event;
+    errorCopy = error;
     v14 = +[NSMutableDictionary dictionary];
     v15 = v14;
-    if (v10)
+    if (attributesCopy)
     {
-      [v14 setValuesForKeysWithDictionary:v10];
+      [v14 setValuesForKeysWithDictionary:attributesCopy];
     }
 
-    v16 = [v13 userInfo];
-    v17 = [v16 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v17 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
     v18 = [(CKKSAnalytics *)self errorChain:v17 depth:0];
     [v15 setObject:v18 forKeyedSubscript:@"errorChain"];
 
-    [(CKKSAnalytics *)self addCKPartialError:v15 error:v13 depth:0];
+    [(CKKSAnalytics *)self addCKPartialError:v15 error:errorCopy depth:0];
     v23[0] = @"recoverableError";
     v23[1] = @"zone";
     v24[0] = &__kCFBooleanFalse;
-    v24[1] = v11;
+    v24[1] = nameCopy;
     v23[2] = @"errorDomain";
-    v19 = [v13 domain];
-    v24[2] = v19;
+    domain = [errorCopy domain];
+    v24[2] = domain;
     v23[3] = @"errorCode";
-    v20 = [v13 code];
+    code = [errorCopy code];
 
-    v21 = [NSNumber numberWithInteger:v20];
+    v21 = [NSNumber numberWithInteger:code];
     v24[3] = v21;
     v22 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:4];
 
     [v15 setValuesForKeysWithDictionary:v22];
-    [(CKKSAnalytics *)self logHardFailureForEventNamed:v12 withAttributes:v15];
+    [(CKKSAnalytics *)self logHardFailureForEventNamed:eventCopy withAttributes:v15];
   }
 }
 
-- (void)logRecoverableError:(id)a3 forEvent:(id)a4 withAttributes:(id)a5
+- (void)logRecoverableError:(id)error forEvent:(id)event withAttributes:(id)attributes
 {
-  v8 = a5;
-  if (a3)
+  attributesCopy = attributes;
+  if (error)
   {
-    v9 = a4;
-    v10 = a3;
+    eventCopy = event;
+    errorCopy = error;
     v11 = +[NSMutableDictionary dictionary];
     v12 = v11;
-    if (v8)
+    if (attributesCopy)
     {
-      [v11 setValuesForKeysWithDictionary:v8];
+      [v11 setValuesForKeysWithDictionary:attributesCopy];
     }
 
     v21[0] = &__kCFBooleanTrue;
     v20[0] = @"recoverableError";
     v20[1] = @"errorDomain";
-    v13 = [v10 domain];
-    v21[1] = v13;
+    domain = [errorCopy domain];
+    v21[1] = domain;
     v20[2] = @"errorCode";
-    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 code]);
+    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v21[2] = v14;
     v15 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:3];
     [v12 setValuesForKeysWithDictionary:v15];
 
-    v16 = [v10 userInfo];
-    v17 = [v16 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v17 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
     v18 = [(CKKSAnalytics *)self errorChain:v17 depth:0];
     [v12 setObject:v18 forKeyedSubscript:@"errorChain"];
 
-    [(CKKSAnalytics *)self addCKPartialError:v12 error:v10 depth:0];
+    [(CKKSAnalytics *)self addCKPartialError:v12 error:errorCopy depth:0];
     v19.receiver = self;
     v19.super_class = CKKSAnalytics;
-    [(CKKSAnalytics *)&v19 logSoftFailureForEventNamed:v9 withAttributes:v12];
+    [(CKKSAnalytics *)&v19 logSoftFailureForEventNamed:eventCopy withAttributes:v12];
   }
 }
 
-- (void)logRecoverableError:(id)a3 forEvent:(id)a4 zoneName:(id)a5 withAttributes:(id)a6
+- (void)logRecoverableError:(id)error forEvent:(id)event zoneName:(id)name withAttributes:(id)attributes
 {
-  v10 = a6;
-  if (a3)
+  attributesCopy = attributes;
+  if (error)
   {
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
+    nameCopy = name;
+    eventCopy = event;
+    errorCopy = error;
     v14 = +[NSMutableDictionary dictionary];
     v15 = v14;
-    if (v10)
+    if (attributesCopy)
     {
-      [v14 setValuesForKeysWithDictionary:v10];
+      [v14 setValuesForKeysWithDictionary:attributesCopy];
     }
 
     v23[0] = @"recoverableError";
     v23[1] = @"zone";
     v24[0] = &__kCFBooleanTrue;
-    v24[1] = v11;
+    v24[1] = nameCopy;
     v23[2] = @"errorDomain";
-    v16 = [v13 domain];
-    v24[2] = v16;
+    domain = [errorCopy domain];
+    v24[2] = domain;
     v23[3] = @"errorCode";
-    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v13 code]);
+    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v24[3] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:4];
     [v15 setValuesForKeysWithDictionary:v18];
 
-    v19 = [v13 userInfo];
-    v20 = [v19 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v20 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
     v21 = [(CKKSAnalytics *)self errorChain:v20 depth:0];
     [v15 setObject:v21 forKeyedSubscript:@"errorChain"];
 
-    [(CKKSAnalytics *)self addCKPartialError:v15 error:v13 depth:0];
+    [(CKKSAnalytics *)self addCKPartialError:v15 error:errorCopy depth:0];
     v22.receiver = self;
     v22.super_class = CKKSAnalytics;
-    [(CKKSAnalytics *)&v22 logSoftFailureForEventNamed:v12 withAttributes:v15];
+    [(CKKSAnalytics *)&v22 logSoftFailureForEventNamed:eventCopy withAttributes:v15];
   }
 }
 
-- (id)createErrorAttributes:(id)a3 depth:(unint64_t)a4 attributes:(id)a5
+- (id)createErrorAttributes:(id)attributes depth:(unint64_t)depth attributes:(id)a5
 {
   v7 = a5;
-  v8 = a3;
+  attributesCopy = attributes;
   v9 = +[NSMutableDictionary dictionary];
   v10 = v9;
   if (v7)
@@ -313,44 +313,44 @@
   v19[0] = &__kCFBooleanTrue;
   v18[0] = @"recoverableError";
   v18[1] = @"errorDomain";
-  v11 = [v8 domain];
-  v19[1] = v11;
+  domain = [attributesCopy domain];
+  v19[1] = domain;
   v18[2] = @"errorCode";
-  v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+  v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [attributesCopy code]);
   v19[2] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
   [v10 setValuesForKeysWithDictionary:v13];
 
-  v14 = [v8 userInfo];
-  v15 = [v14 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [attributesCopy userInfo];
+  v15 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
   v16 = [(CKKSAnalytics *)self errorChain:v15 depth:0];
   [v10 setObject:v16 forKeyedSubscript:@"errorChain"];
 
-  [(CKKSAnalytics *)self addCKPartialError:v10 error:v8 depth:0];
+  [(CKKSAnalytics *)self addCKPartialError:v10 error:attributesCopy depth:0];
 
   return v10;
 }
 
-- (id)errorChain:(id)a3 depth:(unint64_t)a4
+- (id)errorChain:(id)chain depth:(unint64_t)depth
 {
-  v6 = a3;
-  if (a4 <= 5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  chainCopy = chain;
+  if (depth <= 5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v15[0] = @"domain";
-    v7 = [v6 domain];
+    domain = [chainCopy domain];
     v15[1] = @"code";
-    v16[0] = v7;
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 code]);
+    v16[0] = domain;
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [chainCopy code]);
     v16[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
     v10 = [v9 mutableCopy];
 
-    v11 = [v6 userInfo];
-    v12 = [v11 objectForKeyedSubscript:NSUnderlyingErrorKey];
-    v13 = [(CKKSAnalytics *)self errorChain:v12 depth:a4 + 1];
+    userInfo = [chainCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
+    v13 = [(CKKSAnalytics *)self errorChain:v12 depth:depth + 1];
     [v10 setObject:v13 forKeyedSubscript:@"child"];
 
-    [(CKKSAnalytics *)self addCKPartialError:v10 error:v6 depth:a4 + 1];
+    [(CKKSAnalytics *)self addCKPartialError:v10 error:chainCopy depth:depth + 1];
   }
 
   else
@@ -361,17 +361,17 @@
   return v10;
 }
 
-- (void)addCKPartialError:(id)a3 error:(id)a4 depth:(unint64_t)a5
+- (void)addCKPartialError:(id)error error:(id)a4 depth:(unint64_t)depth
 {
-  v7 = a3;
+  errorCopy = error;
   v8 = a4;
   if (![(CKKSAnalytics *)self isCKPartialError:v8])
   {
     goto LABEL_20;
   }
 
-  v9 = [v8 userInfo];
-  v10 = [v9 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  userInfo = [v8 userInfo];
+  v10 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -380,7 +380,7 @@
   }
 
   v22 = v8;
-  v23 = v7;
+  v23 = errorCopy;
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -408,12 +408,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v16 domain];
-        if ([v17 isEqualToString:CKErrorDomain])
+        domain = [v16 domain];
+        if ([domain isEqualToString:CKErrorDomain])
         {
-          v18 = [v16 code];
+          code = [v16 code];
 
-          if (v18 == 22)
+          if (code == 22)
           {
             goto LABEL_14;
           }
@@ -423,7 +423,7 @@
         {
         }
 
-        v19 = [(CKKSAnalytics *)self errorChain:v16 depth:a5 + 1];
+        v19 = [(CKKSAnalytics *)self errorChain:v16 depth:depth + 1];
         if (v19)
         {
           v20 = v19;
@@ -448,20 +448,20 @@ LABEL_14:
 LABEL_18:
 
   v8 = v22;
-  v7 = v23;
+  errorCopy = v23;
   v10 = v21;
 LABEL_19:
 
 LABEL_20:
 }
 
-- (BOOL)isCKPartialError:(id)a3
+- (BOOL)isCKPartialError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v5 = [v3 code] == 2;
+    v5 = [errorCopy code] == 2;
   }
 
   else
@@ -472,22 +472,22 @@ LABEL_20:
   return v5;
 }
 
-- (void)logSuccessForEvent:(id)a3 zoneName:(id)a4
+- (void)logSuccessForEvent:(id)event zoneName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSString stringWithFormat:@"%@-%@", v6, v7];
-  [(CKKSAnalytics *)self logSuccessForEventNamed:v8];
+  nameCopy = name;
+  eventCopy = event;
+  eventCopy = [NSString stringWithFormat:@"%@-%@", nameCopy, eventCopy];
+  [(CKKSAnalytics *)self logSuccessForEventNamed:eventCopy];
 
   v10 = +[NSDate date];
-  v9 = [NSString stringWithFormat:@"last_success_%@-%@", v6, v7];
+  eventCopy2 = [NSString stringWithFormat:@"last_success_%@-%@", nameCopy, eventCopy];
 
-  [(CKKSAnalytics *)self setDateProperty:v10 forKey:v9];
+  [(CKKSAnalytics *)self setDateProperty:v10 forKey:eventCopy2];
 }
 
 + (id)logger
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___CKKSAnalytics;
   v2 = objc_msgSendSuper2(&v4, "logger");
 

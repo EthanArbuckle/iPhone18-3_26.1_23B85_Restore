@@ -3,51 +3,51 @@
 - (BOOL)isMalware;
 - (BOOL)isPhishing;
 - (BOOL)isUnwantedSoftware;
-- (SSBLookupResult)initWithCoder:(id)a3;
-- (id)_initWithServiceLookUpResults:(id)a3 URLContainsUserInfo:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SSBLookupResult)initWithCoder:(id)coder;
+- (id)_initWithServiceLookUpResults:(id)results URLContainsUserInfo:(BOOL)info;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSBLookupResult
 
-- (id)_initWithServiceLookUpResults:(id)a3 URLContainsUserInfo:(BOOL)a4
+- (id)_initWithServiceLookUpResults:(id)results URLContainsUserInfo:(BOOL)info
 {
-  v7 = a3;
+  resultsCopy = results;
   v12.receiver = self;
   v12.super_class = SSBLookupResult;
   v8 = [(SSBLookupResult *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_serviceLookupResults, a3);
-    v9->_URLContainsUserInfo = a4;
+    objc_storeStrong(&v8->_serviceLookupResults, results);
+    v9->_URLContainsUserInfo = info;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (SSBLookupResult)initWithCoder:(id)a3
+- (SSBLookupResult)initWithCoder:(id)coder
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"result"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"result"];
 
-  v9 = -[SSBLookupResult _initWithServiceLookUpResults:URLContainsUserInfo:](self, "_initWithServiceLookUpResults:URLContainsUserInfo:", v8, [v4 decodeBoolForKey:@"urlContainsUserInfo"]);
+  v9 = -[SSBLookupResult _initWithServiceLookUpResults:URLContainsUserInfo:](self, "_initWithServiceLookUpResults:URLContainsUserInfo:", v8, [coderCopy decodeBoolForKey:@"urlContainsUserInfo"]);
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_serviceLookupResults forKey:@"result"];
-  [v4 encodeBool:self->_URLContainsUserInfo forKey:@"urlContainsUserInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_serviceLookupResults forKey:@"result"];
+  [coderCopy encodeBool:self->_URLContainsUserInfo forKey:@"urlContainsUserInfo"];
 }
 
 - (BOOL)isMalware

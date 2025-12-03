@@ -1,14 +1,14 @@
 @interface SBUISystemApertureElementSourceAnimator
-+ (void)setActiveAnimator:(id)a3;
-- (SBUISystemApertureElementSourceAnimator)initWithSettings:(id)a3 window:(id)a4;
-- (double)transitionDuration:(id)a3;
-- (void)_finishTransition:(BOOL)a3;
++ (void)setActiveAnimator:(id)animator;
+- (SBUISystemApertureElementSourceAnimator)initWithSettings:(id)settings window:(id)window;
+- (double)transitionDuration:(id)duration;
+- (void)_finishTransition:(BOOL)transition;
 - (void)_performAnimation;
-- (void)addPostAlongsideAnimation:(id)a3;
-- (void)addPostflightAction:(id)a3;
-- (void)addPreAlongsideAnimation:(id)a3;
-- (void)addPreflightAction:(id)a3;
-- (void)animateTransition:(id)a3;
+- (void)addPostAlongsideAnimation:(id)animation;
+- (void)addPostflightAction:(id)action;
+- (void)addPreAlongsideAnimation:(id)animation;
+- (void)addPreflightAction:(id)action;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SBUISystemApertureElementSourceAnimator
@@ -92,48 +92,48 @@
   }
 }
 
-+ (void)setActiveAnimator:(id)a3
++ (void)setActiveAnimator:(id)animator
 {
-  v4 = a3;
-  v7 = [a1 activeAnimator];
+  animatorCopy = animator;
+  activeAnimator = [self activeAnimator];
   v5 = SBUISystemApertureElementSourceActiveAnimator;
-  SBUISystemApertureElementSourceActiveAnimator = v4;
+  SBUISystemApertureElementSourceActiveAnimator = animatorCopy;
 
-  v6 = v7;
-  if (v7)
+  v6 = activeAnimator;
+  if (activeAnimator)
   {
-    [v7 _finishTransition:0];
-    v6 = v7;
+    [activeAnimator _finishTransition:0];
+    v6 = activeAnimator;
   }
 }
 
-- (SBUISystemApertureElementSourceAnimator)initWithSettings:(id)a3 window:(id)a4
+- (SBUISystemApertureElementSourceAnimator)initWithSettings:(id)settings window:(id)window
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = SBUISystemApertureElementSourceAnimator;
   v9 = [(SBUISystemApertureElementSourceAnimator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_settings, a3);
-    objc_storeWeak(&v10->_window, v8);
+    objc_storeStrong(&v9->_settings, settings);
+    objc_storeWeak(&v10->_window, windowCopy);
   }
 
   return v10;
 }
 
-- (void)addPreflightAction:(id)a3
+- (void)addPreflightAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   preflightActions = self->_preflightActions;
-  v9 = v4;
+  v9 = actionCopy;
   if (!preflightActions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_preflightActions;
-    self->_preflightActions = v6;
+    self->_preflightActions = array;
 
     preflightActions = self->_preflightActions;
   }
@@ -142,16 +142,16 @@
   [(NSMutableArray *)preflightActions addObject:v8];
 }
 
-- (void)addPostflightAction:(id)a3
+- (void)addPostflightAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   postflightActions = self->_postflightActions;
-  v9 = v4;
+  v9 = actionCopy;
   if (!postflightActions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_postflightActions;
-    self->_postflightActions = v6;
+    self->_postflightActions = array;
 
     postflightActions = self->_postflightActions;
   }
@@ -160,16 +160,16 @@
   [(NSMutableArray *)postflightActions addObject:v8];
 }
 
-- (void)addPreAlongsideAnimation:(id)a3
+- (void)addPreAlongsideAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   preAlongsideAnimations = self->_preAlongsideAnimations;
-  v9 = v4;
+  v9 = animationCopy;
   if (!preAlongsideAnimations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_preAlongsideAnimations;
-    self->_preAlongsideAnimations = v6;
+    self->_preAlongsideAnimations = array;
 
     preAlongsideAnimations = self->_preAlongsideAnimations;
   }
@@ -178,16 +178,16 @@
   [(NSMutableArray *)preAlongsideAnimations addObject:v8];
 }
 
-- (void)addPostAlongsideAnimation:(id)a3
+- (void)addPostAlongsideAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   postAlongsideAnimations = self->_postAlongsideAnimations;
-  v9 = v4;
+  v9 = animationCopy;
   if (!postAlongsideAnimations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_postAlongsideAnimations;
-    self->_postAlongsideAnimations = v6;
+    self->_postAlongsideAnimations = array;
 
     postAlongsideAnimations = self->_postAlongsideAnimations;
   }
@@ -196,21 +196,21 @@
   [(NSMutableArray *)postAlongsideAnimations addObject:v8];
 }
 
-- (void)_finishTransition:(BOOL)a3
+- (void)_finishTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   WeakRetained = objc_loadWeakRetained(&self->_transitionContext);
-  [WeakRetained completeTransition:v3];
+  [WeakRetained completeTransition:transitionCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SBUISystemApertureElementSourceAnimator__finishTransition___block_invoke;
   v7[3] = &unk_1E789DA60;
   v7[4] = self;
-  v8 = v3;
+  v8 = transitionCopy;
   [MEMORY[0x1E69DD250] SBUISA_performWithoutAnimationOrRetargeting:v7];
-  v6 = [objc_opt_class() activeAnimator];
+  activeAnimator = [objc_opt_class() activeAnimator];
 
-  if (v6 == self)
+  if (activeAnimator == self)
   {
     [objc_opt_class() setActiveAnimator:0];
   }
@@ -256,17 +256,17 @@ void __61__SBUISystemApertureElementSourceAnimator__finishTransition___block_inv
   }
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   WeakRetained = objc_loadWeakRetained(&self->_window);
-  objc_storeWeak(&self->_transitionContext, v4);
+  objc_storeWeak(&self->_transitionContext, transitionCopy);
 
   [objc_opt_class() setActiveAnimator:self];
-  v6 = [(SBUISystemApertureElementSourceAnimator *)self settings];
-  v7 = [v6 isAnimated];
+  settings = [(SBUISystemApertureElementSourceAnimator *)self settings];
+  isAnimated = [settings isAnimated];
 
-  if ((v7 & 1) == 0)
+  if ((isAnimated & 1) == 0)
   {
     [WeakRetained _removeAllRetargetableAnimations:1];
   }
@@ -278,7 +278,7 @@ void __61__SBUISystemApertureElementSourceAnimator__finishTransition___block_inv
   v12[4] = self;
   [MEMORY[0x1E69DD250] SBUISA_performWithoutAnimationOrRetargeting:v12];
   v8 = MEMORY[0x1E69DD250];
-  v9 = [(SBUISystemApertureElementSourceAnimator *)self settings];
+  settings2 = [(SBUISystemApertureElementSourceAnimator *)self settings];
   v10[4] = self;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -289,7 +289,7 @@ void __61__SBUISystemApertureElementSourceAnimator__finishTransition___block_inv
   v10[1] = 3221225472;
   v10[2] = __61__SBUISystemApertureElementSourceAnimator_animateTransition___block_invoke_3;
   v10[3] = &unk_1E789FEE8;
-  [v8 SBUISA_animateWithSettings:v9 animations:v11 completion:v10];
+  [v8 SBUISA_animateWithSettings:settings2 animations:v11 completion:v10];
 }
 
 void __61__SBUISystemApertureElementSourceAnimator_animateTransition___block_invoke(uint64_t a1)
@@ -358,11 +358,11 @@ void __61__SBUISystemApertureElementSourceAnimator_animateTransition___block_inv
   }
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(SBUISystemApertureElementSourceAnimator *)self settings];
-  v4 = [v3 fluidBehaviorSettings];
-  [v4 settlingDuration];
+  settings = [(SBUISystemApertureElementSourceAnimator *)self settings];
+  fluidBehaviorSettings = [settings fluidBehaviorSettings];
+  [fluidBehaviorSettings settlingDuration];
   v6 = v5;
 
   return v6;

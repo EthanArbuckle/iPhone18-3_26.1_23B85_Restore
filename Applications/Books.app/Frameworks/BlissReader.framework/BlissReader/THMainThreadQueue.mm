@@ -3,9 +3,9 @@
 - (THMainThreadQueue)init;
 - (void)cancel;
 - (void)dealloc;
-- (void)enqueueMainThreadBlock:(id)a3;
-- (void)enqueueMainThreadBlock:(id)a3 afterDelay:(double)a4;
-- (void)p_dispatchTimedMainThreadBlock:(id)a3;
+- (void)enqueueMainThreadBlock:(id)block;
+- (void)enqueueMainThreadBlock:(id)block afterDelay:(double)delay;
+- (void)p_dispatchTimedMainThreadBlock:(id)block;
 @end
 
 @implementation THMainThreadQueue
@@ -26,7 +26,7 @@
 
 + (id)queue
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -48,8 +48,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(THMainThreadQueue *)self waitingBlockTimers];
-  v4 = [(NSMutableSet *)v3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  waitingBlockTimers = [(THMainThreadQueue *)self waitingBlockTimers];
+  v4 = [(NSMutableSet *)waitingBlockTimers countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v4)
   {
     v5 = *v16;
@@ -60,7 +60,7 @@
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(waitingBlockTimers);
         }
 
         [*(*(&v15 + 1) + 8 * v6) invalidate];
@@ -68,7 +68,7 @@
       }
 
       while (v4 != v6);
-      v4 = [(NSMutableSet *)v3 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v4 = [(NSMutableSet *)waitingBlockTimers countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v4);
@@ -79,8 +79,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = [(THMainThreadQueue *)self queuedOperations];
-  v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v11 objects:v19 count:16];
+  queuedOperations = [(THMainThreadQueue *)self queuedOperations];
+  v8 = [(NSMutableSet *)queuedOperations countByEnumeratingWithState:&v11 objects:v19 count:16];
   if (v8)
   {
     v9 = *v12;
@@ -91,7 +91,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(queuedOperations);
         }
 
         [*(*(&v11 + 1) + 8 * v10) cancel];
@@ -99,7 +99,7 @@
       }
 
       while (v8 != v10);
-      v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v11 objects:v19 count:16];
+      v8 = [(NSMutableSet *)queuedOperations countByEnumeratingWithState:&v11 objects:v19 count:16];
     }
 
     while (v8);
@@ -109,9 +109,9 @@
   objc_sync_exit(self);
 }
 
-- (void)enqueueMainThreadBlock:(id)a3
+- (void)enqueueMainThreadBlock:(id)block
 {
-  if (!a3)
+  if (!block)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -134,20 +134,20 @@
   v8[3] = &unk_45BFB8;
   v8[5] = v15;
   v8[6] = &v9;
-  v8[4] = a3;
+  v8[4] = block;
   v5 = [NSBlockOperation blockOperationWithBlock:v8];
   v10[5] = v5;
   objc_sync_enter(self);
   v6 = +[NSOperationQueue mainQueue];
   [(NSOperationQueue *)v6 addOperation:v10[5]];
-  v7 = [(THMainThreadQueue *)self queuedOperations];
-  [(NSMutableSet *)v7 addObject:v10[5]];
+  queuedOperations = [(THMainThreadQueue *)self queuedOperations];
+  [(NSMutableSet *)queuedOperations addObject:v10[5]];
   objc_sync_exit(self);
   _Block_object_dispose(&v9, 8);
   _Block_object_dispose(v15, 8);
 }
 
-- (void)p_dispatchTimedMainThreadBlock:(id)a3
+- (void)p_dispatchTimedMainThreadBlock:(id)block
 {
   v7[0] = 0;
   v7[1] = v7;
@@ -155,29 +155,29 @@
   v7[3] = sub_689DC;
   v7[4] = sub_689EC;
   v7[5] = self;
-  v5 = [a3 userInfo];
+  userInfo = [block userInfo];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_68B9C;
   v6[3] = &unk_45BFE0;
-  v6[5] = v5;
+  v6[5] = userInfo;
   v6[6] = v7;
-  v6[4] = a3;
+  v6[4] = block;
   [(THMainThreadQueue *)self enqueueMainThreadBlock:v6];
 
   _Block_object_dispose(v7, 8);
 }
 
-- (void)enqueueMainThreadBlock:(id)a3 afterDelay:(double)a4
+- (void)enqueueMainThreadBlock:(id)block afterDelay:(double)delay
 {
-  if (!a3)
+  if (!block)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   objc_sync_enter(self);
-  v7 = [a3 copy];
-  [(NSMutableSet *)[(THMainThreadQueue *)self waitingBlockTimers] addObject:[NSTimer scheduledTimerWithTimeInterval:self target:"p_dispatchTimedMainThreadBlock:" selector:v7 userInfo:0 repeats:a4]];
+  v7 = [block copy];
+  [(NSMutableSet *)[(THMainThreadQueue *)self waitingBlockTimers] addObject:[NSTimer scheduledTimerWithTimeInterval:self target:"p_dispatchTimedMainThreadBlock:" selector:v7 userInfo:0 repeats:delay]];
 
   objc_sync_exit(self);
 }

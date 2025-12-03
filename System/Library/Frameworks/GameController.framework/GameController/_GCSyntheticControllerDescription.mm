@@ -1,25 +1,25 @@
 @interface _GCSyntheticControllerDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCSyntheticControllerDescription)init;
-- (_GCSyntheticControllerDescription)initWithControllerIdentifier:(id)a3 persistentIdentifier:(id)a4;
+- (_GCSyntheticControllerDescription)initWithControllerIdentifier:(id)identifier persistentIdentifier:(id)persistentIdentifier;
 - (id)debugDescription;
 @end
 
 @implementation _GCSyntheticControllerDescription
 
-- (_GCSyntheticControllerDescription)initWithControllerIdentifier:(id)a3 persistentIdentifier:(id)a4
+- (_GCSyntheticControllerDescription)initWithControllerIdentifier:(id)identifier persistentIdentifier:(id)persistentIdentifier
 {
   v13.receiver = self;
   v13.super_class = _GCSyntheticControllerDescription;
-  v5 = a4;
-  v6 = a3;
+  persistentIdentifierCopy = persistentIdentifier;
+  identifierCopy = identifier;
   v7 = [(_GCSyntheticControllerDescription *)&v13 init];
-  v8 = [v6 copyWithZone:{0, v13.receiver, v13.super_class}];
+  v8 = [identifierCopy copyWithZone:{0, v13.receiver, v13.super_class}];
 
   controllerIdentifier = v7->_controllerIdentifier;
   v7->_controllerIdentifier = v8;
 
-  v10 = [v5 copy];
+  v10 = [persistentIdentifierCopy copy];
   persistentIdentifier = v7->_persistentIdentifier;
   v7->_persistentIdentifier = v10;
 
@@ -33,13 +33,13 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_GCSyntheticControllerDescription *)self isEqualToDescription:v4];
+    v5 = [(_GCSyntheticControllerDescription *)self isEqualToDescription:equalCopy];
   }
 
   else
@@ -52,7 +52,7 @@
       goto LABEL_7;
     }
 
-    v5 = [(NSCopying *)self->_controllerIdentifier isEqual:v4];
+    v5 = [(NSCopying *)self->_controllerIdentifier isEqual:equalCopy];
   }
 
   v7 = v5;

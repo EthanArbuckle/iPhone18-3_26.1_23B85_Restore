@@ -7,7 +7,7 @@
 - (void)ab_runPredicateWithSortOrder:()ABPredicateRunner ranked:inAddressBook:withDelegate:
 {
   theDict[1] = a6;
-  theDict[2] = a1;
+  theDict[2] = self;
   theDict[4] = 0;
   theDict[5] = 0;
   theDict[3] = a5;
@@ -16,28 +16,28 @@
     v18 = 0u;
     v17 = 0u;
     *&v18 = ABCRecordStoreReadColumns();
-    if ([(__CFDictionary *)a6 predicateShouldContinue:a1])
+    if ([(__CFDictionary *)a6 predicateShouldContinue:self])
     {
       CPRecordStoreGetDatabase();
-      v11 = [MEMORY[0x1E695DF70] array];
-      if ([(__CFDictionary *)a1 ab_hasCallback])
+      array = [MEMORY[0x1E695DF70] array];
+      if ([(__CFDictionary *)self ab_hasCallback])
       {
         CPSqliteDatabaseRegisterFunction();
       }
 
       theDict[0] = 0;
-      v12 = [(__CFDictionary *)a1 ab_newQueryWithSortOrder:a3 ranked:a4 addressBook:a5 propertyIndices:theDict];
+      v12 = [(__CFDictionary *)self ab_newQueryWithSortOrder:a3 ranked:a4 addressBook:a5 propertyIndices:theDict];
       *(&v17 + 1) = CFDictionaryGetCount(theDict[0]) + 1;
-      [(__CFDictionary *)a1 ab_addCallbackContextToArray:v11];
+      [(__CFDictionary *)self ab_addCallbackContextToArray:array];
       v13 = CPSqliteDatabaseStatementForReading();
       ABRegulatoryLogReadContactsData(a5);
       if (v13)
       {
         v15 = 1;
-        [(__CFDictionary *)a1 ab_bindSelectClauseComponentOfStatement:v13 withBindingOffset:&v15 predicateIdentifier:0];
-        [(__CFDictionary *)a1 ab_bindJoinClauseComponentOfStatement:v13 withBindingOffset:&v15 predicateIdentifier:0];
-        [(__CFDictionary *)a1 ab_bindWhereClauseComponentOfStatement:v13 withBindingOffset:&v15 predicateIdentifier:0];
-        if (([(__CFDictionary *)a6 predicateShouldContinue:a1]& 1) != 0)
+        [(__CFDictionary *)self ab_bindSelectClauseComponentOfStatement:v13 withBindingOffset:&v15 predicateIdentifier:0];
+        [(__CFDictionary *)self ab_bindJoinClauseComponentOfStatement:v13 withBindingOffset:&v15 predicateIdentifier:0];
+        [(__CFDictionary *)self ab_bindWhereClauseComponentOfStatement:v13 withBindingOffset:&v15 predicateIdentifier:0];
+        if (([(__CFDictionary *)a6 predicateShouldContinue:self]& 1) != 0)
         {
           CPSqliteConnectionEnableProgressHandlerCallback();
           v14 = CPRecordStoreProcessRecordStatementWithPropertyIndices();

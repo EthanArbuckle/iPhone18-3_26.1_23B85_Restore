@@ -1,7 +1,7 @@
 @interface AVVirtualCaptureCard
 + (id)sharedVirtualCaptureCard;
 - (AVVirtualCaptureCard)init;
-- (BOOL)setCapacity:(int64_t)a3 error:(id *)a4;
+- (BOOL)setCapacity:(int64_t)capacity error:(id *)error;
 - (int64_t)capacity;
 - (int64_t)freeSpace;
 - (void)dealloc;
@@ -133,16 +133,16 @@ LABEL_4:
   return SInt64;
 }
 
-- (BOOL)setCapacity:(int64_t)a3 error:(id *)a4
+- (BOOL)setCapacity:(int64_t)capacity error:(id *)error
 {
-  valuePtr = a3;
+  valuePtr = capacity;
   v5 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt64Type, &valuePtr);
   CMBaseObject = FigVirtualCaptureCardGetCMBaseObject();
   v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v7)
   {
     v8 = v7(CMBaseObject, *MEMORY[0x1E6963380], v5);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -151,7 +151,7 @@ LABEL_4:
   else
   {
     v8 = -12782;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -159,7 +159,7 @@ LABEL_4:
 
   if (v8)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v8 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v8 userInfo:0];
   }
 
 LABEL_7:

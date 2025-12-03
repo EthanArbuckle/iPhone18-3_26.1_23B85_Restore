@@ -1,8 +1,8 @@
 @interface MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor
 + (MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor)descriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -38,11 +38,11 @@
   [(MTLAccelerationStructureGeometryDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor;
-  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v7 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v7 copyWithZone:zone];
   v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:self->_boundingBoxBuffers copyItems:1];
   [v4 setBoundingBoxBuffers:v5];
 
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -63,21 +63,21 @@
     v17 = v3;
     v18 = v4;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_3;
     }
 
     v16.receiver = self;
     v16.super_class = MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor;
-    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v16 isEqual:a3];
+    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v16 isEqual:equal];
     if (!v8)
     {
       return v8;
     }
 
     v9 = [(NSArray *)[(MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor *)self boundingBoxBuffers] count];
-    if (v9 != [objc_msgSend(a3 "boundingBoxBuffers")])
+    if (v9 != [objc_msgSend(equal "boundingBoxBuffers")])
     {
       goto LABEL_3;
     }
@@ -88,13 +88,13 @@
       do
       {
         v11 = [-[NSArray objectAtIndexedSubscript:](-[MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor boundingBoxBuffers](self "boundingBoxBuffers")];
-        if (v11 != [objc_msgSend(objc_msgSend(a3 "boundingBoxBuffers")])
+        if (v11 != [objc_msgSend(objc_msgSend(equal "boundingBoxBuffers")])
         {
           goto LABEL_3;
         }
 
         v12 = [-[NSArray objectAtIndexedSubscript:](-[MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor boundingBoxBuffers](self "boundingBoxBuffers")];
-        if (v12 != [objc_msgSend(objc_msgSend(a3 "boundingBoxBuffers")])
+        if (v12 != [objc_msgSend(objc_msgSend(equal "boundingBoxBuffers")])
         {
           goto LABEL_3;
         }
@@ -103,16 +103,16 @@
       while ([(NSArray *)[(MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor *)self boundingBoxBuffers] count]> ++v10);
     }
 
-    v13 = [(MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor *)self boundingBoxStride];
-    if (v13 != [a3 boundingBoxStride])
+    boundingBoxStride = [(MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor *)self boundingBoxStride];
+    if (boundingBoxStride != [equal boundingBoxStride])
     {
 LABEL_3:
       LOBYTE(v8) = 0;
       return v8;
     }
 
-    v14 = [(MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor *)self boundingBoxCount];
-    LOBYTE(v8) = v14 == [a3 boundingBoxCount];
+    boundingBoxCount = [(MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor *)self boundingBoxCount];
+    LOBYTE(v8) = boundingBoxCount == [equal boundingBoxCount];
   }
 
   return v8;

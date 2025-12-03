@@ -1,22 +1,22 @@
 @interface HKNumericAxisZeroOnly
-- (HKNumericAxisZeroOnly)initWithZeroLabel:(id)a3 axisConfiguration:(id)a4;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
+- (HKNumericAxisZeroOnly)initWithZeroLabel:(id)label axisConfiguration:(id)configuration;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation HKNumericAxisZeroOnly
 
-- (HKNumericAxisZeroOnly)initWithZeroLabel:(id)a3 axisConfiguration:(id)a4
+- (HKNumericAxisZeroOnly)initWithZeroLabel:(id)label axisConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 setOverrideNoTopBaseline:1];
+  labelCopy = label;
+  configurationCopy = configuration;
+  [configurationCopy setOverrideNoTopBaseline:1];
   v12.receiver = self;
   v12.super_class = HKNumericAxisZeroOnly;
-  v8 = [(HKNumericAxis *)&v12 initWithConfiguration:v7];
+  v8 = [(HKNumericAxis *)&v12 initWithConfiguration:configurationCopy];
 
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     zeroLabel = v8->_zeroLabel;
     v8->_zeroLabel = v9;
   }
@@ -24,32 +24,32 @@
   return v8;
 }
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  rangeCopy = range;
+  v6 = rangeCopy;
+  if (rangeCopy)
   {
-    v7 = [v5 minValue];
-    [v7 doubleValue];
+    minValue = [rangeCopy minValue];
+    [minValue doubleValue];
     v9 = v8;
 
-    v10 = [v6 maxValue];
-    [v10 doubleValue];
+    maxValue = [v6 maxValue];
+    [maxValue doubleValue];
     v12 = v11;
 
     v13 = 0;
     if (v9 <= 0.0 && v12 >= 0.0)
     {
-      v14 = [(HKNumericAxisZeroOnly *)self zeroLabel];
-      if (!v14)
+      zeroLabel = [(HKNumericAxisZeroOnly *)self zeroLabel];
+      if (!zeroLabel)
       {
-        v14 = [(HKNumericAxis *)self stringFromNumber:&unk_1F4384450];
+        zeroLabel = [(HKNumericAxis *)self stringFromNumber:&unk_1F4384450];
       }
 
       v15 = objc_alloc_init(HKAxisLabel);
-      [(HKAxisLabel *)v15 setText:v14];
+      [(HKAxisLabel *)v15 setText:zeroLabel];
       [(HKAxisLabel *)v15 setLocation:&unk_1F4384450];
       [(HKAxisLabel *)v15 setLabelType:1];
       v17[0] = v15;

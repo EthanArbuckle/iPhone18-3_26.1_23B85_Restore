@@ -1,62 +1,62 @@
 @interface WFMenuItem
-+ (id)platformImageForIcon:(id)a3;
-- (WFMenuItem)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5 state:(int64_t)a6 isDestructive:(BOOL)a7 handler:(id)a8;
-- (id)generateAttributedStringForText:(id)a3 font:(id)a4 color:(id)a5;
-- (id)menuElementRepresentationShowingStatus:(BOOL)a3;
++ (id)platformImageForIcon:(id)icon;
+- (WFMenuItem)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon state:(int64_t)state isDestructive:(BOOL)destructive handler:(id)handler;
+- (id)generateAttributedStringForText:(id)text font:(id)font color:(id)color;
+- (id)menuElementRepresentationShowingStatus:(BOOL)status;
 @end
 
 @implementation WFMenuItem
 
-+ (id)platformImageForIcon:(id)a3
++ (id)platformImageForIcon:(id)icon
 {
-  v3 = a3;
-  if (!v3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  iconCopy = icon;
+  if (!iconCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     v4 = 0;
     goto LABEL_10;
   }
 
-  v4 = v3;
-  if (![v3 hasClearBackground])
+  v4 = iconCopy;
+  if (![iconCopy hasClearBackground])
   {
 LABEL_10:
-    v7 = [WFIconViewImageGenerator loadIcon:v3 size:0 style:25.0, 25.0];
+    v7 = [WFIconViewImageGenerator loadIcon:iconCopy size:0 style:25.0, 25.0];
     goto LABEL_11;
   }
 
-  v5 = [v3 symbolName];
-  if ([(__CFString *)v5 hasSuffix:@".fill"])
+  symbolName = [iconCopy symbolName];
+  if ([(__CFString *)symbolName hasSuffix:@".fill"])
   {
-    v6 = -[__CFString substringToIndex:](v5, "substringToIndex:", -[__CFString length](v5, "length") - [@".fill" length]);
+    v6 = -[__CFString substringToIndex:](symbolName, "substringToIndex:", -[__CFString length](symbolName, "length") - [@".fill" length]);
 
-    v5 = v6;
+    symbolName = v6;
   }
 
-  if ([(__CFString *)v5 isEqualToString:@"f.cursive"])
+  if ([(__CFString *)symbolName isEqualToString:@"f.cursive"])
   {
 
-    v5 = @"f.cursive.circle";
+    symbolName = @"f.cursive.circle";
   }
 
-  v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v5];
+  v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:symbolName];
 
-  v4 = v3;
+  v4 = iconCopy;
 LABEL_11:
 
   return v7;
 }
 
-- (WFMenuItem)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5 state:(int64_t)a6 isDestructive:(BOOL)a7 handler:(id)a8
+- (WFMenuItem)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon state:(int64_t)state isDestructive:(BOOL)destructive handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (!v15)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  iconCopy = icon;
+  handlerCopy = handler;
+  if (!titleCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFMenuItem.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMenuItem.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
   v29.receiver = self;
@@ -64,18 +64,18 @@ LABEL_11:
   v19 = [(WFMenuItem *)&v29 init];
   if (v19)
   {
-    v20 = [v15 copy];
+    v20 = [titleCopy copy];
     title = v19->_title;
     v19->_title = v20;
 
-    v22 = [v16 copy];
+    v22 = [subtitleCopy copy];
     subtitle = v19->_subtitle;
     v19->_subtitle = v22;
 
-    objc_storeStrong(&v19->_icon, a5);
-    v19->_state = a6;
-    v19->_isDestructive = a7;
-    v24 = [v18 copy];
+    objc_storeStrong(&v19->_icon, icon);
+    v19->_state = state;
+    v19->_isDestructive = destructive;
+    v24 = [handlerCopy copy];
     handler = v19->_handler;
     v19->_handler = v24;
 
@@ -85,40 +85,40 @@ LABEL_11:
   return v19;
 }
 
-- (id)generateAttributedStringForText:(id)a3 font:(id)a4 color:(id)a5
+- (id)generateAttributedStringForText:(id)text font:(id)font color:(id)color
 {
-  v8 = a5;
+  colorCopy = color;
   v9 = MEMORY[0x1E696AD40];
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithString:v11];
+  fontCopy = font;
+  textCopy = text;
+  v12 = [[v9 alloc] initWithString:textCopy];
 
   v13 = [v12 length];
-  [v12 addAttribute:*MEMORY[0x1E69DB648] value:v10 range:{0, v13}];
+  [v12 addAttribute:*MEMORY[0x1E69DB648] value:fontCopy range:{0, v13}];
 
-  v14 = [(WFMenuItem *)self handler];
+  handler = [(WFMenuItem *)self handler];
 
-  if (v14)
+  if (handler)
   {
-    v15 = v8;
+    secondaryLabelColor = colorCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  v16 = v15;
-  [v12 addAttribute:*MEMORY[0x1E69DB650] value:v15 range:{0, v13}];
+  v16 = secondaryLabelColor;
+  [v12 addAttribute:*MEMORY[0x1E69DB650] value:secondaryLabelColor range:{0, v13}];
 
   return v12;
 }
 
-- (id)menuElementRepresentationShowingStatus:(BOOL)a3
+- (id)menuElementRepresentationShowingStatus:(BOOL)status
 {
   v4 = objc_alloc(MEMORY[0x1E696AD60]);
-  v5 = [(WFMenuItem *)self title];
-  v6 = [v4 initWithString:v5];
+  title = [(WFMenuItem *)self title];
+  v6 = [v4 initWithString:title];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -126,24 +126,24 @@ LABEL_11:
   v28[3] = &unk_1E83080E8;
   v28[4] = self;
   v7 = [MEMORY[0x1E69DC628] actionWithTitle:v6 image:0 identifier:0 handler:v28];
-  v8 = [(WFMenuItem *)self subtitle];
-  [v7 setSubtitle:v8];
+  subtitle = [(WFMenuItem *)self subtitle];
+  [v7 setSubtitle:subtitle];
 
-  v9 = [(WFMenuItem *)self state];
-  if (v9 == 2)
+  state = [(WFMenuItem *)self state];
+  if (state == 2)
   {
     v10 = 2;
   }
 
   else
   {
-    v10 = v9 == 1;
+    v10 = state == 1;
   }
 
   [v7 setState:v10];
-  v11 = [(WFMenuItem *)self handler];
+  handler = [(WFMenuItem *)self handler];
 
-  if (!v11)
+  if (!handler)
   {
     [v7 setAttributes:{objc_msgSend(v7, "attributes") | 1}];
   }
@@ -153,30 +153,30 @@ LABEL_11:
     [v7 setAttributes:{objc_msgSend(v7, "attributes") | 2}];
   }
 
-  v12 = [(WFMenuItem *)self title];
-  v13 = [v12 isEqualToString:&stru_1F480C910];
+  title2 = [(WFMenuItem *)self title];
+  v13 = [title2 isEqualToString:&stru_1F480C910];
 
   if (v13)
   {
     [v7 setAttributes:4];
   }
 
-  v14 = [(WFMenuItem *)self icon];
+  icon = [(WFMenuItem *)self icon];
 
-  if (v14)
+  if (icon)
   {
-    v15 = [(WFMenuItem *)self icon];
-    v16 = [WFMenuItem platformImageForIcon:v15];
+    icon2 = [(WFMenuItem *)self icon];
+    v16 = [WFMenuItem platformImageForIcon:icon2];
     [v7 setImage:v16];
   }
 
-  v17 = [(WFMenuItem *)self icon];
-  if (v17)
+  icon3 = [(WFMenuItem *)self icon];
+  if (icon3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = icon3;
     }
 
     else
@@ -192,20 +192,20 @@ LABEL_11:
 
   v19 = v18;
 
-  v20 = [v19 bundleIdentifier];
+  bundleIdentifier = [v19 bundleIdentifier];
 
-  if (v20)
+  if (bundleIdentifier)
   {
-    v21 = [v7 image];
+    image = [v7 image];
 
-    if (!v21)
+    if (!image)
     {
       v22 = MEMORY[0x1E69DC928];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __60__WFMenuItem_UIKit__menuElementRepresentationShowingStatus___block_invoke_2;
       v25[3] = &unk_1E8308160;
-      v26 = v20;
+      v26 = bundleIdentifier;
       v27 = v7;
       v23 = v7;
       v7 = [v22 elementWithProvider:v25];

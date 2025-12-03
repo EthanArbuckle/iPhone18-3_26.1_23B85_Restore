@@ -1,22 +1,22 @@
 @interface VFXCameraEffectDoughnutBokeh
 + (id)doughnutBokeh;
 - (BOOL)maskEnabled;
-- (BOOL)rawFloat2ForKey:(id)a3 value:;
-- (VFXCameraEffectDoughnutBokeh)initWithCoder:(id)a3;
+- (BOOL)rawFloat2ForKey:(id)key value:;
+- (VFXCameraEffectDoughnutBokeh)initWithCoder:(id)coder;
 - (double)maskCenter;
 - (float)maskRadius;
 - (float)radius;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key;
 - (uint64_t)createCFXObject;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setMaskCenter:(VFXCameraEffectDoughnutBokeh *)self;
-- (void)setMaskEnabled:(BOOL)a3;
-- (void)setMaskRadius:(float)a3;
-- (void)setRadius:(float)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setMaskEnabled:(BOOL)enabled;
+- (void)setMaskRadius:(float)radius;
+- (void)setRadius:(float)radius;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation VFXCameraEffectDoughnutBokeh
@@ -61,38 +61,38 @@
   return v11;
 }
 
-- (void)setRadius:(float)a3
+- (void)setRadius:(float)radius
 {
-  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != a3)
+  if (self->super._isPresentationObject || *(&self->super._enabled + 1) != radius)
   {
     v7 = v3;
     v8 = v4;
-    *(&self->super._enabled + 1) = a3;
+    *(&self->super._enabled + 1) = radius;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B652C;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"radius", v5);
   }
 }
 
 - (double)maskCenter
 {
-  if (*(a1 + 28) != 1)
+  if (*(self + 28) != 1)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
-  v5 = objc_msgSend_worldRef(a1, a2, a3, a4);
+  v5 = objc_msgSend_worldRef(self, a2, a3, a4);
   v9 = v5;
   if (v5)
   {
     sub_1AF1CEA20(v5);
   }
 
-  v10 = objc_msgSend_cfxObject(a1, v6, v7, v8);
+  v10 = objc_msgSend_cfxObject(self, v6, v7, v8);
   v11 = sub_1AF163AA0(v10);
   if (v9)
   {
@@ -141,19 +141,19 @@
   return v11;
 }
 
-- (void)setMaskRadius:(float)a3
+- (void)setMaskRadius:(float)radius
 {
-  if (self->super._isPresentationObject || *&self->_maskCenter[4] != a3)
+  if (self->super._isPresentationObject || *&self->_maskCenter[4] != radius)
   {
     v7 = v3;
     v8 = v4;
-    *&self->_maskCenter[4] = a3;
+    *&self->_maskCenter[4] = radius;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B67F4;
     v5[3] = &unk_1E7A7E270;
     v5[4] = self;
-    v6 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"maskRadius", v5);
   }
 }
@@ -185,19 +185,19 @@
   return maskRadius_low & 1;
 }
 
-- (void)setMaskEnabled:(BOOL)a3
+- (void)setMaskEnabled:(BOOL)enabled
 {
-  if (self->super._isPresentationObject || LOBYTE(self->_maskRadius) != a3)
+  if (self->super._isPresentationObject || LOBYTE(self->_maskRadius) != enabled)
   {
     v7 = v3;
     v8 = v4;
-    LOBYTE(self->_maskRadius) = a3;
+    LOBYTE(self->_maskRadius) = enabled;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_1AF2B6950;
     v5[3] = &unk_1E7A7E298;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"maskEnabled", v5);
   }
 }
@@ -209,10 +209,10 @@
   return v2;
 }
 
-- (BOOL)rawFloat2ForKey:(id)a3 value:
+- (BOOL)rawFloat2ForKey:(id)key value:
 {
   v4 = v3;
-  isEqualToString = objc_msgSend_isEqualToString_(a3, a2, @"maskCenter", v3);
+  isEqualToString = objc_msgSend_isEqualToString_(key, a2, @"maskCenter", v3);
   if (isEqualToString)
   {
     objc_msgSend_maskCenter(self, v6, v7, v8);
@@ -222,9 +222,9 @@
   return isEqualToString;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"maskCenter", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"maskCenter", v3))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_maskCenter(self, v6, v7, v8);
@@ -236,15 +236,15 @@
   {
     v13.receiver = self;
     v13.super_class = VFXCameraEffectDoughnutBokeh;
-    return [(VFXCameraEffectDoughnutBokeh *)&v13 valueForKey:a3];
+    return [(VFXCameraEffectDoughnutBokeh *)&v13 valueForKey:key];
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a4, a2, @"maskCenter", a4))
+  if (objc_msgSend_isEqualToString_(key, a2, @"maskCenter", key))
   {
-    objc_msgSend_VFXFloat2Value(a3, v7, v8, v9);
+    objc_msgSend_VFXFloat2Value(value, v7, v8, v9);
 
     objc_msgSend_setMaskCenter_(self, v10, v11, v12);
   }
@@ -253,15 +253,15 @@
   {
     v13.receiver = self;
     v13.super_class = VFXCameraEffectDoughnutBokeh;
-    [(VFXCameraEffectDoughnutBokeh *)&v13 setValue:a3 forKey:a4];
+    [(VFXCameraEffectDoughnutBokeh *)&v13 setValue:value forKey:key];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19.receiver = self;
   v19.super_class = VFXCameraEffectDoughnutBokeh;
-  v4 = [(VFXCameraEffect *)&v19 copyWithZone:a3];
+  v4 = [(VFXCameraEffect *)&v19 copyWithZone:zone];
   LODWORD(v5) = *(&self->super._enabled + 1);
   objc_msgSend_setRadius_(v4, v6, v7, v8, v5);
   objc_msgSend_setMaskCenter_(v4, v9, v10, v11, *&self->_radius);
@@ -292,20 +292,20 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = VFXCameraEffectDoughnutBokeh;
   [(VFXCameraEffect *)&v12 encodeWithCoder:?];
   LODWORD(v5) = *(&self->super._enabled + 1);
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"radius", v7, v5);
-  sub_1AF371A30(a3, @"maskCenter", *&self->_radius);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"radius", v7, v5);
+  sub_1AF371A30(coder, @"maskCenter", *&self->_radius);
   LODWORD(v8) = *&self->_maskCenter[4];
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"maskRadius", v10, v8);
-  objc_msgSend_encodeBool_forKey_(a3, v11, LOBYTE(self->_maskRadius), @"maskEnabled");
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"maskRadius", v10, v8);
+  objc_msgSend_encodeBool_forKey_(coder, v11, LOBYTE(self->_maskRadius), @"maskEnabled");
 }
 
-- (VFXCameraEffectDoughnutBokeh)initWithCoder:(id)a3
+- (VFXCameraEffectDoughnutBokeh)initWithCoder:(id)coder
 {
   v33.receiver = self;
   v33.super_class = VFXCameraEffectDoughnutBokeh;
@@ -314,13 +314,13 @@
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"radius", v12);
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"radius", v12);
     objc_msgSend_setRadius_(v7, v13, v14, v15);
-    v16 = sub_1AF371B84(a3, @"maskCenter");
+    v16 = sub_1AF371B84(coder, @"maskCenter");
     objc_msgSend_setMaskCenter_(v7, v17, v18, v19, v16);
-    objc_msgSend_decodeFloatForKey_(a3, v20, @"maskRadius", v21);
+    objc_msgSend_decodeFloatForKey_(coder, v20, @"maskRadius", v21);
     objc_msgSend_setMaskRadius_(v7, v22, v23, v24);
-    v27 = objc_msgSend_decodeBoolForKey_(a3, v25, @"maskEnabled", v26);
+    v27 = objc_msgSend_decodeBoolForKey_(coder, v25, @"maskEnabled", v26);
     objc_msgSend_setMaskEnabled_(v7, v28, v27, v29);
     objc_msgSend_setImmediateMode_(VFXTransaction, v30, v8, v31);
   }

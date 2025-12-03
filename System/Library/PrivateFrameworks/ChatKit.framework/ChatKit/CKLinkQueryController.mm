@@ -1,11 +1,11 @@
 @interface CKLinkQueryController
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
-- (id)queryResultsForItems:(id)a3;
-- (void)postProcessAndUpdateResults:(id)a3;
+- (id)queryAttributesForText:(id)text;
+- (id)queryResultsForItems:(id)items;
+- (void)postProcessAndUpdateResults:(id)results;
 @end
 
 @implementation CKLinkQueryController
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v15[5] = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([text length])
   {
-    v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v4 = [v3 isRedesignedDetailsViewEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
     v5 = *MEMORY[0x1E6964C38];
-    if (v4)
+    if (isRedesignedDetailsViewEnabled)
     {
       v15[0] = @"com_apple_mobilesms_lpDescription";
       v15[1] = v5;
@@ -78,12 +78,12 @@
 - (id)filterQueries
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isRedesignedDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ == %@", *MEMORY[0x1E69645D0], @"lnk"];
   v5 = v4;
-  if (v3)
+  if (isRedesignedDetailsViewEnabled)
   {
     v22[0] = v4;
     v6 = MEMORY[0x1E696AEC0];
@@ -118,16 +118,16 @@
   return v15;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -157,7 +157,7 @@
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__51;
   v18 = __Block_byref_object_dispose__51;
-  v19 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__CKLinkQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -195,16 +195,16 @@ void __58__CKLinkQueryController_detailsFilterQueriesForChatGUIDs___block_invoke
   }
 }
 
-- (id)detailsResultsValidationQueriesForChatGUIDs:(id)a3
+- (id)detailsResultsValidationQueriesForChatGUIDs:(id)ds
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v3;
+  obj = dsCopy;
   v5 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -235,18 +235,18 @@ void __58__CKLinkQueryController_detailsFilterQueriesForChatGUIDs___block_invoke
   return v4;
 }
 
-- (id)queryResultsForItems:(id)a3
+- (id)queryResultsForItems:(id)items
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  itemsCopy = items;
+  v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v25 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v5 = [(CKMessageTypeQueryController *)self maxResultsForMode:[(CKQueryController *)self mode]];
   v6 = IMLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v36 = [v4 count];
+    v36 = [itemsCopy count];
     v37 = 2048;
     v38 = v5;
     _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Got %lu results. Max is %lu", buf, 0x16u);
@@ -256,7 +256,7 @@ void __58__CKLinkQueryController_detailsFilterQueriesForChatGUIDs___block_invoke
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v7 = v25;
   v29 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v29)
@@ -275,14 +275,14 @@ LABEL_5:
 
       v11 = *(*(&v30 + 1) + 8 * v10);
       v12 = [(CKMessageTypeQueryController *)self chatGUIDForSearchableItem:v11];
-      v13 = [(CKQueryController *)self delegate];
-      v14 = [v13 queryController:self conversationForChatGUID:v12];
+      delegate = [(CKQueryController *)self delegate];
+      v14 = [delegate queryController:self conversationForChatGUID:v12];
 
       if (v14 && ([v14 isBlockedByCommunicationLimits] & 1) == 0)
       {
         v15 = v5;
-        v16 = [v11 attributeSet];
-        v17 = [v16 URL];
+        attributeSet = [v11 attributeSet];
+        v17 = [attributeSet URL];
 
         if (([v7 containsObject:v17] & 1) == 0)
         {
@@ -292,8 +292,8 @@ LABEL_5:
           }
 
           v18 = [CKSpotlightQueryResult alloc];
-          v19 = [(CKLinkQueryController *)self queryTypeIdentifier];
-          v20 = [(CKSpotlightQueryResult *)v18 initWithSearchableItem:v11 queryType:v19 withConversation:v14];
+          queryTypeIdentifier = [(CKLinkQueryController *)self queryTypeIdentifier];
+          v20 = [(CKSpotlightQueryResult *)v18 initWithSearchableItem:v11 queryType:queryTypeIdentifier withConversation:v14];
 
           v7 = v25;
           [v26 addObject:v20];
@@ -337,23 +337,23 @@ LABEL_5:
   return v23;
 }
 
-- (void)postProcessAndUpdateResults:(id)a3
+- (void)postProcessAndUpdateResults:(id)results
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[CKLinkQueryController postProcessAndUpdateResults:]";
     v9 = 2048;
-    v10 = [v4 count];
+    v10 = [resultsCopy count];
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "%s got %lu results", &v7, 0x16u);
   }
 
-  [(CKQueryController *)self setResults:v4];
-  v6 = [(CKQueryController *)self delegate];
-  [v6 searchQueryResultsDidChange:self];
+  [(CKQueryController *)self setResults:resultsCopy];
+  delegate = [(CKQueryController *)self delegate];
+  [delegate searchQueryResultsDidChange:self];
 }
 
 @end

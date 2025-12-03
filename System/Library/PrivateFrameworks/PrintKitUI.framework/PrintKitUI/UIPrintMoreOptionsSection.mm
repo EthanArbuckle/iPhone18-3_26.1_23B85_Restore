@@ -1,48 +1,48 @@
 @interface UIPrintMoreOptionsSection
 - (BOOL)keyboardShowing;
 - (BOOL)updatePrintOptionsList;
-- (UIPrintMoreOptionsSection)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintMoreOptionsSection)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (void)dismissKeyboard;
 @end
 
 @implementation UIPrintMoreOptionsSection
 
-- (UIPrintMoreOptionsSection)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintMoreOptionsSection)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = UIPrintMoreOptionsSection;
-  v8 = [(UIPrintOptionSection *)&v20 initWithPrintInfo:v6 printPanelViewController:v7];
+  v8 = [(UIPrintOptionSection *)&v20 initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
   v9 = v8;
   if (v8)
   {
     [(UIPrintOptionSection *)v8 setTitle:&stru_2871AE610];
-    v10 = [[UIPrintCopiesOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v10 = [[UIPrintCopiesOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setCopiesOption:v10];
 
-    v11 = [[UIPrintPageRangeOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v11 = [[UIPrintPageRangeOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setPageRangeOption:v11];
 
-    v12 = [[UIPrintInColorOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v12 = [[UIPrintInColorOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setBlackWhiteOption:v12];
 
-    v13 = [[UIPrintTwoSidedOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v13 = [[UIPrintTwoSidedOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setTwoSidedOption:v13];
 
-    v14 = [[UIPrintPaperSizeOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v14 = [[UIPrintPaperSizeOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setPaperSizePrintOption:v14];
 
-    v15 = [[UIPrintOrientationOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v15 = [[UIPrintOrientationOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setOrientationPrintOption:v15];
 
-    v16 = [[UIPrintScalingOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v16 = [[UIPrintScalingOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setScalingPrintOption:v16];
 
-    v17 = [[UIPrintImagePDFAnnotationsOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v17 = [[UIPrintImagePDFAnnotationsOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setImagePDFAnnotationsPrintOption:v17];
 
-    v18 = [[UIPrintAccountInfoOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v18 = [[UIPrintAccountInfoOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintMoreOptionsSection *)v9 setAccountInfoPrintOption:v18];
 
     [(UIPrintMoreOptionsSection *)v9 updatePrintOptionsList];
@@ -53,94 +53,94 @@
 
 - (BOOL)updatePrintOptionsList
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(UIPrintMoreOptionsSection *)self copiesOption];
-  v5 = [v4 shouldShow];
+  array = [MEMORY[0x277CBEB18] array];
+  copiesOption = [(UIPrintMoreOptionsSection *)self copiesOption];
+  shouldShow = [copiesOption shouldShow];
 
-  if (v5)
+  if (shouldShow)
   {
-    v6 = [(UIPrintMoreOptionsSection *)self copiesOption];
-    [v3 addObject:v6];
+    copiesOption2 = [(UIPrintMoreOptionsSection *)self copiesOption];
+    [array addObject:copiesOption2];
   }
 
-  v7 = [(UIPrintMoreOptionsSection *)self pageRangeOption];
-  v8 = [v7 shouldShow];
+  pageRangeOption = [(UIPrintMoreOptionsSection *)self pageRangeOption];
+  shouldShow2 = [pageRangeOption shouldShow];
 
-  if (v8)
+  if (shouldShow2)
   {
-    v9 = [(UIPrintMoreOptionsSection *)self pageRangeOption];
-    [v3 addObject:v9];
+    pageRangeOption2 = [(UIPrintMoreOptionsSection *)self pageRangeOption];
+    [array addObject:pageRangeOption2];
   }
 
-  v10 = [(UIPrintMoreOptionsSection *)self blackWhiteOption];
-  v11 = [v10 shouldShow];
+  blackWhiteOption = [(UIPrintMoreOptionsSection *)self blackWhiteOption];
+  shouldShow3 = [blackWhiteOption shouldShow];
 
-  if (v11)
+  if (shouldShow3)
   {
-    v12 = [(UIPrintMoreOptionsSection *)self blackWhiteOption];
-    [v3 addObject:v12];
+    blackWhiteOption2 = [(UIPrintMoreOptionsSection *)self blackWhiteOption];
+    [array addObject:blackWhiteOption2];
   }
 
-  v13 = [(UIPrintMoreOptionsSection *)self twoSidedOption];
-  v14 = [v13 shouldShow];
+  twoSidedOption = [(UIPrintMoreOptionsSection *)self twoSidedOption];
+  shouldShow4 = [twoSidedOption shouldShow];
 
-  if (v14)
+  if (shouldShow4)
   {
-    v15 = [(UIPrintMoreOptionsSection *)self twoSidedOption];
-    [v3 addObject:v15];
+    twoSidedOption2 = [(UIPrintMoreOptionsSection *)self twoSidedOption];
+    [array addObject:twoSidedOption2];
   }
 
-  v16 = [(UIPrintMoreOptionsSection *)self paperSizePrintOption];
-  v17 = [v16 shouldShow];
+  paperSizePrintOption = [(UIPrintMoreOptionsSection *)self paperSizePrintOption];
+  shouldShow5 = [paperSizePrintOption shouldShow];
 
-  if (v17)
+  if (shouldShow5)
   {
-    v18 = [(UIPrintMoreOptionsSection *)self paperSizePrintOption];
-    [v3 addObject:v18];
+    paperSizePrintOption2 = [(UIPrintMoreOptionsSection *)self paperSizePrintOption];
+    [array addObject:paperSizePrintOption2];
   }
 
-  v19 = [(UIPrintMoreOptionsSection *)self orientationPrintOption];
-  v20 = [v19 shouldShow];
+  orientationPrintOption = [(UIPrintMoreOptionsSection *)self orientationPrintOption];
+  shouldShow6 = [orientationPrintOption shouldShow];
 
-  if (v20)
+  if (shouldShow6)
   {
-    v21 = [(UIPrintMoreOptionsSection *)self orientationPrintOption];
-    [v3 addObject:v21];
+    orientationPrintOption2 = [(UIPrintMoreOptionsSection *)self orientationPrintOption];
+    [array addObject:orientationPrintOption2];
   }
 
-  v22 = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
-  v23 = [v22 shouldShow];
+  scalingPrintOption = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
+  shouldShow7 = [scalingPrintOption shouldShow];
 
-  if (v23)
+  if (shouldShow7)
   {
-    v24 = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
-    [v3 addObject:v24];
+    scalingPrintOption2 = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
+    [array addObject:scalingPrintOption2];
   }
 
-  v25 = [(UIPrintMoreOptionsSection *)self imagePDFAnnotationsPrintOption];
-  v26 = [v25 shouldShow];
+  imagePDFAnnotationsPrintOption = [(UIPrintMoreOptionsSection *)self imagePDFAnnotationsPrintOption];
+  shouldShow8 = [imagePDFAnnotationsPrintOption shouldShow];
 
-  if (v26)
+  if (shouldShow8)
   {
-    v27 = [(UIPrintMoreOptionsSection *)self imagePDFAnnotationsPrintOption];
-    [v3 addObject:v27];
+    imagePDFAnnotationsPrintOption2 = [(UIPrintMoreOptionsSection *)self imagePDFAnnotationsPrintOption];
+    [array addObject:imagePDFAnnotationsPrintOption2];
   }
 
-  v28 = [(UIPrintMoreOptionsSection *)self accountInfoPrintOption];
-  v29 = [v28 shouldShow];
+  accountInfoPrintOption = [(UIPrintMoreOptionsSection *)self accountInfoPrintOption];
+  shouldShow9 = [accountInfoPrintOption shouldShow];
 
-  if (v29)
+  if (shouldShow9)
   {
-    v30 = [(UIPrintMoreOptionsSection *)self accountInfoPrintOption];
-    [v3 addObject:v30];
+    accountInfoPrintOption2 = [(UIPrintMoreOptionsSection *)self accountInfoPrintOption];
+    [array addObject:accountInfoPrintOption2];
   }
 
-  v31 = [(UIPrintOptionSection *)self printOptions];
-  v32 = [v31 isEqualToArray:v3];
+  printOptions = [(UIPrintOptionSection *)self printOptions];
+  v32 = [printOptions isEqualToArray:array];
 
   if ((v32 & 1) == 0)
   {
-    [(UIPrintOptionSection *)self setPrintOptions:v3];
+    [(UIPrintOptionSection *)self setPrintOptions:array];
   }
 
   return v32 ^ 1;
@@ -148,28 +148,28 @@
 
 - (BOOL)keyboardShowing
 {
-  v3 = [(UIPrintMoreOptionsSection *)self copiesOption];
-  if ([v3 keyboardShowing])
+  copiesOption = [(UIPrintMoreOptionsSection *)self copiesOption];
+  if ([copiesOption keyboardShowing])
   {
-    v4 = 1;
+    keyboardShowing = 1;
   }
 
   else
   {
-    v5 = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
-    v4 = [v5 keyboardShowing];
+    scalingPrintOption = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
+    keyboardShowing = [scalingPrintOption keyboardShowing];
   }
 
-  return v4;
+  return keyboardShowing;
 }
 
 - (void)dismissKeyboard
 {
-  v3 = [(UIPrintMoreOptionsSection *)self copiesOption];
-  [v3 dismissKeyboard];
+  copiesOption = [(UIPrintMoreOptionsSection *)self copiesOption];
+  [copiesOption dismissKeyboard];
 
-  v4 = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
-  [v4 dismissKeyboard];
+  scalingPrintOption = [(UIPrintMoreOptionsSection *)self scalingPrintOption];
+  [scalingPrintOption dismissKeyboard];
 }
 
 @end

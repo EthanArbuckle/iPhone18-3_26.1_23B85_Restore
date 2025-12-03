@@ -1,20 +1,20 @@
 @interface CHStrokeGroupQueryItem
-+ (id)descriptionForStrokeGroupQueryItemType:(int64_t)a3;
++ (id)descriptionForStrokeGroupQueryItemType:(int64_t)type;
 - (id)description;
-- (id)textRecognitionResultForLocale:(id)a3 error:(id *)a4;
+- (id)textRecognitionResultForLocale:(id)locale error:(id *)error;
 @end
 
 @implementation CHStrokeGroupQueryItem
 
-+ (id)descriptionForStrokeGroupQueryItemType:(int64_t)a3
++ (id)descriptionForStrokeGroupQueryItemType:(int64_t)type
 {
   v3 = &stru_1EF1C0318;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Handwriting";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -25,13 +25,13 @@
   }
 }
 
-- (id)textRecognitionResultForLocale:(id)a3 error:(id *)a4
+- (id)textRecognitionResultForLocale:(id)locale error:(id *)error
 {
-  v10 = a3;
+  localeCopy = locale;
   if (self)
   {
-    v11 = objc_msgSend_objectForKeyedSubscript_(self->__tokenizedTextResultsByLocale, v6, v10, v7, v8, v9);
-    if (a4)
+    v11 = objc_msgSend_objectForKeyedSubscript_(self->__tokenizedTextResultsByLocale, v6, localeCopy, v7, v8, v9);
+    if (error)
     {
 LABEL_3:
       if (self)
@@ -45,17 +45,17 @@ LABEL_3:
       }
 
       v13 = errorsByLocale;
-      v18 = objc_msgSend_objectForKeyedSubscript_(v13, v14, v10, v15, v16, v17);
+      v18 = objc_msgSend_objectForKeyedSubscript_(v13, v14, localeCopy, v15, v16, v17);
       v19 = v18;
 
-      *a4 = v18;
+      *error = v18;
     }
   }
 
   else
   {
-    v11 = objc_msgSend_objectForKeyedSubscript_(0, v6, v10, v7, v8, v9);
-    if (a4)
+    v11 = objc_msgSend_objectForKeyedSubscript_(0, v6, localeCopy, v7, v8, v9);
+    if (error)
     {
       goto LABEL_3;
     }

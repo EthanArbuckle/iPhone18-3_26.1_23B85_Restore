@@ -1,94 +1,94 @@
 @interface ICQCommerceRemoteUIDelegate
-- (BOOL)_handleResponseForDialog:(id)a3 atIndex:(int64_t)a4;
+- (BOOL)_handleResponseForDialog:(id)dialog atIndex:(int64_t)index;
 - (BOOL)_hasUnfinishedOperations;
-- (BOOL)_isPurchaseTokenOperation:(id)a3;
-- (BOOL)_loadNativeURL:(id)a3;
-- (BOOL)_shouldSuppressDialog:(id)a3 failureType:(int64_t)a4;
-- (BOOL)didUserDismissAMSFlow:(id)a3;
-- (ICQCommerceRemoteUIDelegate)initWithNavigationController:(id)a3 needsModalPresentation:(BOOL)a4;
+- (BOOL)_isPurchaseTokenOperation:(id)operation;
+- (BOOL)_loadNativeURL:(id)l;
+- (BOOL)_shouldSuppressDialog:(id)dialog failureType:(int64_t)type;
+- (BOOL)didUserDismissAMSFlow:(id)flow;
+- (ICQCommerceRemoteUIDelegate)initWithNavigationController:(id)controller needsModalPresentation:(BOOL)presentation;
 - (ICQCommerceRemoteUIDelegateDelegate)delegate;
-- (id)parentViewControllerForObjectModel:(id)a3;
+- (id)parentViewControllerForObjectModel:(id)model;
 - (id)presentationContext;
-- (int64_t)_statusCodeForFinishedOperation:(id)a3;
+- (int64_t)_statusCodeForFinishedOperation:(id)operation;
 - (void)_clearRetailFollowUpItem;
-- (void)_dismissAccountPageViewController:(id)a3 keepCommerceSpinner:(BOOL)a4;
-- (void)_dismissAlertsWithCompletion:(id)a3;
-- (void)_forgetAccountPageViewController:(id)a3;
-- (void)_handleFinishForOperation:(id)a3 withOutput:(id)a4;
-- (void)_handleOperationError:(id)a3;
-- (void)_popAccountPageViewController:(id)a3 keepCommerceSpinner:(BOOL)a4;
+- (void)_dismissAccountPageViewController:(id)controller keepCommerceSpinner:(BOOL)spinner;
+- (void)_dismissAlertsWithCompletion:(id)completion;
+- (void)_forgetAccountPageViewController:(id)controller;
+- (void)_handleFinishForOperation:(id)operation withOutput:(id)output;
+- (void)_handleOperationError:(id)error;
+- (void)_popAccountPageViewController:(id)controller keepCommerceSpinner:(BOOL)spinner;
 - (void)_popCommerceSpinnerIfNeeded;
-- (void)_popObjectModelAnimated:(BOOL)a3;
-- (void)_presentAlertWithDialog:(id)a3;
-- (void)accountPageViewController:(id)a3 financeInterruptionResolved:(BOOL)a4;
-- (void)accountPageViewControllerDidFinish:(id)a3;
-- (void)cancelFlowBecause:(id)a3;
-- (void)cancelRemoteUIKeeping:(id)a3;
+- (void)_popObjectModelAnimated:(BOOL)animated;
+- (void)_presentAlertWithDialog:(id)dialog;
+- (void)accountPageViewController:(id)controller financeInterruptionResolved:(BOOL)resolved;
+- (void)accountPageViewControllerDidFinish:(id)finish;
+- (void)cancelFlowBecause:(id)because;
+- (void)cancelRemoteUIKeeping:(id)keeping;
 - (void)cleanupLoader;
 - (void)dealloc;
-- (void)errorWithTitle:(id)a3 andExplanation:(id)a4 dismissedCompletion:(id)a5;
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handleDialog:(id)a3;
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6;
-- (void)loadURLforKey:(id)a3;
-- (void)makeBuyRequest:(id)a3;
-- (void)makeBuyRequest:(id)a3 forceAuth:(BOOL)a4 usePurchaseToken:(BOOL)a5;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5;
-- (void)objectModelPressedBack:(id)a3;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
-- (void)processLink:(id)a3 forceAuth:(BOOL)a4 needsAuth:(BOOL)a5 localAuth:(BOOL)a6 usePurchaseToken:(BOOL)a7;
-- (void)purchaseWithToken:(id)a3 buyParameters:(id)a4 requestHeaders:(id)a5;
+- (void)errorWithTitle:(id)title andExplanation:(id)explanation dismissedCompletion:(id)completion;
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handleDialog:(id)dialog;
+- (void)handleDialogRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion;
+- (void)loadURLforKey:(id)key;
+- (void)makeBuyRequest:(id)request;
+- (void)makeBuyRequest:(id)request forceAuth:(BOOL)auth usePurchaseToken:(BOOL)token;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method;
+- (void)objectModelPressedBack:(id)back;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
+- (void)processLink:(id)link forceAuth:(BOOL)auth needsAuth:(BOOL)needsAuth localAuth:(BOOL)localAuth usePurchaseToken:(BOOL)token;
+- (void)purchaseWithToken:(id)token buyParameters:(id)parameters requestHeaders:(id)headers;
 - (void)pushSpinner;
 - (void)retryPurchaseWithoutToken;
 - (void)unregisterAuthNotification;
-- (void)userCompletedFlow:(int64_t)a3;
+- (void)userCompletedFlow:(int64_t)flow;
 @end
 
 @implementation ICQCommerceRemoteUIDelegate
 
-- (BOOL)_isPurchaseTokenOperation:(id)a3
+- (BOOL)_isPurchaseTokenOperation:(id)operation
 {
-  v3 = [a3 requestProperties];
-  v4 = [v3 HTTPHeaders];
-  v5 = [v4 objectForKeyedSubscript:@"X-Apple-GS-Token"];
+  requestProperties = [operation requestProperties];
+  hTTPHeaders = [requestProperties HTTPHeaders];
+  v5 = [hTTPHeaders objectForKeyedSubscript:@"X-Apple-GS-Token"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (int64_t)_statusCodeForFinishedOperation:(id)a3
+- (int64_t)_statusCodeForFinishedOperation:(id)operation
 {
-  v3 = [a3 response];
+  response = [operation response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 statusCode];
+    statusCode = [response statusCode];
   }
 
   else
   {
-    v4 = 0;
+    statusCode = 0;
   }
 
-  return v4;
+  return statusCode;
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  outputCopy = output;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__ICQCommerceRemoteUIDelegate_operation_finishedWithOutput___block_invoke;
   block[3] = &unk_27A65B108;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = operationCopy;
+  v12 = outputCopy;
+  v8 = outputCopy;
+  v9 = operationCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -136,13 +136,13 @@ void __60__ICQCommerceRemoteUIDelegate_operation_finishedWithOutput___block_invo
   [WeakRetained _handleFinishForOperation:*(a1 + 32) withOutput:*(a1 + 40)];
 }
 
-- (void)_handleFinishForOperation:(id)a3 withOutput:(id)a4
+- (void)_handleFinishForOperation:(id)operation withOutput:(id)output
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_finishingOperation, a3);
-  v9 = [v7 dataProvider];
+  operationCopy = operation;
+  outputCopy = output;
+  objc_storeStrong(&self->_finishingOperation, operation);
+  dataProvider = [operationCopy dataProvider];
   if ([(ICQCommerceRemoteUIDelegate *)self skipGoBack])
   {
     v10 = ICQUSLogForCategory(0);
@@ -153,7 +153,7 @@ void __60__ICQCommerceRemoteUIDelegate_operation_finishedWithOutput___block_invo
     }
   }
 
-  v11 = [(ICQCommerceRemoteUIDelegate *)self skipGoBack];
+  skipGoBack = [(ICQCommerceRemoteUIDelegate *)self skipGoBack];
   [(ICQCommerceRemoteUIDelegate *)self setSkipGoBack:0];
   if ([(ICQCommerceRemoteUIDelegate *)self didJustCancelDialog])
   {
@@ -165,17 +165,17 @@ void __60__ICQCommerceRemoteUIDelegate_operation_finishedWithOutput___block_invo
     }
   }
 
-  v13 = [(ICQCommerceRemoteUIDelegate *)self didJustCancelDialog];
+  didJustCancelDialog = [(ICQCommerceRemoteUIDelegate *)self didJustCancelDialog];
   [(ICQCommerceRemoteUIDelegate *)self setDidJustCancelDialog:0];
-  if (([v9 isPlist] & 1) == 0)
+  if (([dataProvider isPlist] & 1) == 0)
   {
-    v19 = [objc_alloc(MEMORY[0x277D461F8]) initWithXML:v8];
+    v19 = [objc_alloc(MEMORY[0x277D461F8]) initWithXML:outputCopy];
     if (PSIsInternalInstall() && CFPreferencesGetAppBooleanValue(@"loggingEnabled", @"com.apple.RemoteUI", 0))
     {
       v22 = ICQUSLogForCategory(0);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+        v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:outputCopy encoding:4];
         *buf = 138412290;
         v68 = v23;
         _os_log_impl(&dword_275623000, v22, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
@@ -184,19 +184,19 @@ void __60__ICQCommerceRemoteUIDelegate_operation_finishedWithOutput___block_invo
 
     if (([v19 succeeded] & 1) == 0)
     {
-      v24 = ISError();
-      [(ICQCommerceRemoteUIDelegate *)self _handleOperationError:v24];
+      uiObjectModel = ISError();
+      [(ICQCommerceRemoteUIDelegate *)self _handleOperationError:uiObjectModel];
 LABEL_99:
 
       goto LABEL_100;
     }
 
-    v24 = [v19 uiObjectModel];
-    v25 = [v19 actionSignal];
-    [v24 setDelegate:self];
-    if (!-[NSMutableArray count](self->_objectModels, "count") && [v25 topSignal] == 3)
+    uiObjectModel = [v19 uiObjectModel];
+    actionSignal = [v19 actionSignal];
+    [uiObjectModel setDelegate:self];
+    if (!-[NSMutableArray count](self->_objectModels, "count") && [actionSignal topSignal] == 3)
     {
-      [v25 setTopSignal:2];
+      [actionSignal setTopSignal:2];
     }
 
     navigationController = self->_navigationController;
@@ -210,22 +210,22 @@ LABEL_99:
       [(UINavigationController *)self->_navigationController setModalTransitionStyle:0];
     }
 
-    if (![v25 topSignal])
+    if (![actionSignal topSignal])
     {
-      [v25 setTopSignal:2];
+      [actionSignal setTopSignal:2];
     }
 
-    v64 = v9;
-    if ([v25 topSignal] == 2)
+    v64 = dataProvider;
+    if ([actionSignal topSignal] == 2)
     {
-      [(NSMutableArray *)self->_objectModels addObject:v24];
+      [(NSMutableArray *)self->_objectModels addObject:uiObjectModel];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v30 = objc_opt_respondsToSelector();
 
       if (v30)
       {
-        v31 = [v24 defaultPages];
-        v32 = [v31 firstObject];
+        defaultPages = [uiObjectModel defaultPages];
+        firstObject = [defaultPages firstObject];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -233,22 +233,22 @@ LABEL_99:
           [ICQCommerceRemoteUIDelegate _handleFinishForOperation:withOutput:];
         }
 
-        if (v32)
+        if (firstObject)
         {
           v33 = objc_loadWeakRetained(&self->_delegate);
-          [v33 commerceDelegate:self willPresentObjectModel:v24 page:v32];
+          [v33 commerceDelegate:self willPresentObjectModel:uiObjectModel page:firstObject];
         }
       }
 
       v34 = navigationController;
-      v35 = [MEMORY[0x277CCA8D8] mainBundle];
-      v36 = [v35 bundleIdentifier];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      v37 = [(UINavigationController *)self->_navigationController topViewController];
+      topViewController = [(UINavigationController *)self->_navigationController topViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v38 = [v36 isEqualToString:@"com.apple.Preferences"];
+        v38 = [bundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
         if (v38)
         {
@@ -259,7 +259,7 @@ LABEL_99:
           v66[2] = __68__ICQCommerceRemoteUIDelegate__handleFinishForOperation_withOutput___block_invoke;
           v66[3] = &unk_27A65A820;
           v66[4] = self;
-          [v24 presentInParentViewController:v39 animated:0 completion:v66];
+          [uiObjectModel presentInParentViewController:v39 animated:0 completion:v66];
 
           goto LABEL_74;
         }
@@ -269,17 +269,17 @@ LABEL_99:
       {
       }
 
-      [v24 presentInParentViewController:self->_navigationController animated:v34 != 0];
+      [uiObjectModel presentInParentViewController:self->_navigationController animated:v34 != 0];
     }
 
     else
     {
-      if ([v25 topSignal] != 3)
+      if ([actionSignal topSignal] != 3)
       {
-        if ([v25 topSignal] == 4)
+        if ([actionSignal topSignal] == 4)
         {
-          v47 = [v24 defaultPages];
-          v48 = [v47 count];
+          defaultPages2 = [uiObjectModel defaultPages];
+          v48 = [defaultPages2 count];
 
           if (v48)
           {
@@ -287,14 +287,14 @@ LABEL_99:
             {
               [(NSMutableArray *)self->_objectModels removeLastObject];
               [(NSMutableArray *)self->_objectModels removeLastObject];
-              v50 = [(UINavigationController *)self->_navigationController viewControllers];
-              v51 = [v50 mutableCopy];
+              viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+              v51 = [viewControllers mutableCopy];
 
               [v51 removeLastObject];
               [v51 removeLastObject];
-              [(NSMutableArray *)self->_objectModels addObject:v24];
-              v52 = [v24 defaultPages];
-              [v52 lastObject];
+              [(NSMutableArray *)self->_objectModels addObject:uiObjectModel];
+              defaultPages3 = [uiObjectModel defaultPages];
+              [defaultPages3 lastObject];
               v54 = v53 = navigationController;
               [v51 addObject:v54];
 
@@ -310,7 +310,7 @@ LABEL_74:
 
 LABEL_76:
 
-              v9 = v64;
+              dataProvider = v64;
               goto LABEL_99;
             }
 
@@ -336,18 +336,18 @@ LABEL_76:
         goto LABEL_76;
       }
 
-      v40 = [(UINavigationController *)self->_navigationController viewControllers];
-      v36 = [v40 mutableCopy];
+      viewControllers2 = [(UINavigationController *)self->_navigationController viewControllers];
+      bundleIdentifier = [viewControllers2 mutableCopy];
 
       [(NSMutableArray *)self->_objectModels removeLastObject];
-      [v36 removeLastObject];
-      v41 = [v24 defaultPages];
-      [v41 lastObject];
+      [bundleIdentifier removeLastObject];
+      defaultPages4 = [uiObjectModel defaultPages];
+      [defaultPages4 lastObject];
       v42 = v34 = navigationController;
-      [v36 addObject:v42];
+      [bundleIdentifier addObject:v42];
 
-      [(NSMutableArray *)self->_objectModels addObject:v24];
-      [(UINavigationController *)self->_navigationController setViewControllers:v36 animated:0];
+      [(NSMutableArray *)self->_objectModels addObject:uiObjectModel];
+      [(UINavigationController *)self->_navigationController setViewControllers:bundleIdentifier animated:0];
     }
 
     if (!v34)
@@ -365,14 +365,14 @@ LABEL_76:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v68 = v8;
+      v68 = outputCopy;
       _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "Store operation completed with response %@", buf, 0xCu);
     }
 
-    v15 = [(ICQCommerceRemoteUIDelegate *)self _isPurchaseTokenOperation:v7];
+    v15 = [(ICQCommerceRemoteUIDelegate *)self _isPurchaseTokenOperation:operationCopy];
     if (v15)
     {
-      v16 = [(ICQCommerceRemoteUIDelegate *)self _statusCodeForFinishedOperation:v7];
+      v16 = [(ICQCommerceRemoteUIDelegate *)self _statusCodeForFinishedOperation:operationCopy];
       v17 = ICQUSLogForCategory(0);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -383,7 +383,7 @@ LABEL_76:
       }
     }
 
-    v19 = [v8 objectForKeyedSubscript:@"failureType"];
+    v19 = [outputCopy objectForKeyedSubscript:@"failureType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
@@ -408,7 +408,7 @@ LABEL_76:
       [(ICQCommerceRemoteUIDelegate *)self _clearRetailFollowUpItem];
     }
 
-    v43 = [v8 objectForKey:@"dialog"];
+    v43 = [outputCopy objectForKey:@"dialog"];
 
     if (!v43)
     {
@@ -419,7 +419,7 @@ LABEL_76:
         _os_log_impl(&dword_275623000, v44, OS_LOG_TYPE_DEFAULT, "no dialog; checking for message", buf, 2u);
       }
 
-      v45 = [v8 objectForKey:@"customerMessage"];
+      v45 = [outputCopy objectForKey:@"customerMessage"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v45 length])
       {
@@ -458,20 +458,20 @@ LABEL_76:
     if ([(ICQCommerceRemoteUIDelegate *)self skipCompletionAlert]&& ([(ICQCommerceRemoteUIDelegate *)self failureType]- 3067) <= 1)
     {
       [(ICQCommerceRemoteUIDelegate *)self userCompletedFlow:[(ICQCommerceRemoteUIDelegate *)self failureType]];
-      v24 = [(UINavigationController *)self->_navigationController topViewController];
-      [(ICQCommerceRemoteUIDelegate *)self cancelRemoteUIKeeping:v24];
+      uiObjectModel = [(UINavigationController *)self->_navigationController topViewController];
+      [(ICQCommerceRemoteUIDelegate *)self cancelRemoteUIKeeping:uiObjectModel];
       goto LABEL_99;
     }
 
-    if (v11)
+    if (skipGoBack)
     {
 LABEL_100:
 
       goto LABEL_101;
     }
 
-    v56 = [v8 objectForKey:@"action"];
-    v24 = v56;
+    v56 = [outputCopy objectForKey:@"action"];
+    uiObjectModel = v56;
     if (v56)
     {
       v57 = [v56 objectForKey:@"kind"];
@@ -480,17 +480,17 @@ LABEL_100:
       if (v58)
       {
         v59 = @"server provided action GoBack";
-        if (!v13)
+        if (!didJustCancelDialog)
         {
           goto LABEL_98;
         }
 
         v60 = 1;
 LABEL_95:
-        v61 = [(UINavigationController *)self->_navigationController topViewController];
+        topViewController2 = [(UINavigationController *)self->_navigationController topViewController];
         topViewController = self->_topViewController;
 
-        if (v61 == topViewController)
+        if (topViewController2 == topViewController)
         {
           v59 = @"dialog cancelled before any pages pushed";
         }
@@ -506,13 +506,13 @@ LABEL_98:
         goto LABEL_99;
       }
 
-      if (!v13)
+      if (!didJustCancelDialog)
       {
         goto LABEL_99;
       }
     }
 
-    else if (!v13)
+    else if (!didJustCancelDialog)
     {
       goto LABEL_99;
     }
@@ -581,16 +581,16 @@ void __55__ICQCommerceRemoteUIDelegate__clearRetailFollowUpItem__block_invoke()
   [MEMORY[0x277CEE470] removeDeviceOfferWithIdentifier:*MEMORY[0x277CEE178] account:v3 bag:v7 logKey:v1];
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ICQCommerceRemoteUIDelegate_operation_failedWithError___block_invoke;
   v7[3] = &unk_27A65A708;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -630,24 +630,24 @@ void __57__ICQCommerceRemoteUIDelegate_operation_failedWithError___block_invoke_
   [WeakRetained _handleOperationError:*(a1 + 32)];
 }
 
-- (void)_handleOperationError:(id)a3
+- (void)_handleOperationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 commerceDelegate:self loadDidFailWithError:v4];
+    [v7 commerceDelegate:self loadDidFailWithError:errorCopy];
   }
 
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  [v8 setNetworkActivityIndicatorVisible:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:0];
 
-  if ([v4 code] == 16 || objc_msgSend(v4, "code") == 4)
+  if ([errorCopy code] == 16 || objc_msgSend(errorCopy, "code") == 4)
   {
-    v9 = [(UINavigationController *)self->_navigationController topViewController];
+    topViewController = [(UINavigationController *)self->_navigationController topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -659,9 +659,9 @@ void __57__ICQCommerceRemoteUIDelegate_operation_failedWithError___block_invoke_
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v9 table];
-        v12 = [v11 indexPathForSelectedRow];
-        [v11 deselectRowAtIndexPath:v12 animated:1];
+        table = [topViewController table];
+        indexPathForSelectedRow = [table indexPathForSelectedRow];
+        [table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
       }
 
       else
@@ -669,11 +669,11 @@ void __57__ICQCommerceRemoteUIDelegate_operation_failedWithError___block_invoke_
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v9 tableViewOM];
-          v16 = [v15 tableView];
+          tableViewOM = [topViewController tableViewOM];
+          tableView = [tableViewOM tableView];
 
-          v17 = [v16 indexPathForSelectedRow];
-          [v16 deselectRowAtIndexPath:v17 animated:1];
+          indexPathForSelectedRow2 = [tableView indexPathForSelectedRow];
+          [tableView deselectRowAtIndexPath:indexPathForSelectedRow2 animated:1];
         }
       }
     }
@@ -681,15 +681,15 @@ void __57__ICQCommerceRemoteUIDelegate_operation_failedWithError___block_invoke_
 
   else
   {
-    v13 = [v4 localizedDescription];
-    v14 = [v4 localizedFailureReason];
+    localizedDescription = [errorCopy localizedDescription];
+    localizedFailureReason = [errorCopy localizedFailureReason];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __53__ICQCommerceRemoteUIDelegate__handleOperationError___block_invoke;
     v18[3] = &unk_27A65A708;
     v18[4] = self;
-    v19 = v4;
-    [(ICQCommerceRemoteUIDelegate *)self errorWithTitle:v13 andExplanation:v14 dismissedCompletion:v18];
+    v19 = errorCopy;
+    [(ICQCommerceRemoteUIDelegate *)self errorWithTitle:localizedDescription andExplanation:localizedFailureReason dismissedCompletion:v18];
   }
 }
 
@@ -704,22 +704,22 @@ uint64_t __53__ICQCommerceRemoteUIDelegate__handleOperationError___block_invoke(
   return [v4 cancelRemoteUI];
 }
 
-- (void)errorWithTitle:(id)a3 andExplanation:(id)a4 dismissedCompletion:(id)a5
+- (void)errorWithTitle:(id)title andExplanation:(id)explanation dismissedCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  explanationCopy = explanation;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__ICQCommerceRemoteUIDelegate_errorWithTitle_andExplanation_dismissedCompletion___block_invoke;
   v14[3] = &unk_27A65C768;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = titleCopy;
+  v16 = explanationCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = explanationCopy;
+  v13 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 
@@ -825,8 +825,8 @@ void __81__ICQCommerceRemoteUIDelegate_errorWithTitle_andExplanation_dismissedCo
 
 - (BOOL)_hasUnfinishedOperations
 {
-  v3 = [(NSOperationQueue *)self->_queue operations];
-  v6 = ([v3 count] != 1 || (objc_msgSend(v3, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), finishingOperation = self->_finishingOperation, v4, v4 != finishingOperation)) && objc_msgSend(v3, "count") != 0;
+  operations = [(NSOperationQueue *)self->_queue operations];
+  v6 = ([operations count] != 1 || (objc_msgSend(operations, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), finishingOperation = self->_finishingOperation, v4, v4 != finishingOperation)) && objc_msgSend(operations, "count") != 0;
 
   return v6;
 }
@@ -845,12 +845,12 @@ void __81__ICQCommerceRemoteUIDelegate_errorWithTitle_andExplanation_dismissedCo
       [v5 commerceDelegate:self loadDidFailWithError:v6];
     }
 
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    [v7 setNetworkActivityIndicatorVisible:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:0];
   }
 
-  v8 = [(NSOperationQueue *)self->_queue operations];
-  [v8 enumerateObjectsUsingBlock:&__block_literal_global_163];
+  operations = [(NSOperationQueue *)self->_queue operations];
+  [operations enumerateObjectsUsingBlock:&__block_literal_global_163];
 
   queue = self->_queue;
 
@@ -918,7 +918,7 @@ void __42__ICQCommerceRemoteUIDelegate_pushSpinner__block_invoke(uint64_t a1)
 - (void)_popCommerceSpinnerIfNeeded
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(UINavigationController *)self->_navigationController topViewController];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -935,21 +935,21 @@ void __42__ICQCommerceRemoteUIDelegate_pushSpinner__block_invoke(uint64_t a1)
   }
 }
 
-- (void)purchaseWithToken:(id)a3 buyParameters:(id)a4 requestHeaders:(id)a5
+- (void)purchaseWithToken:(id)token buyParameters:(id)parameters requestHeaders:(id)headers
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  headersCopy = headers;
+  parametersCopy = parameters;
+  tokenCopy = token;
   [(ICQCommerceRemoteUIDelegate *)self setSkipCompletionAlert:1];
-  [(ICQCommerceRemoteUIDelegate *)self setPurchaseToken:v10];
+  [(ICQCommerceRemoteUIDelegate *)self setPurchaseToken:tokenCopy];
 
-  [(ICQCommerceRemoteUIDelegate *)self setBuyParameters:v9];
-  [(ICQCommerceRemoteUIDelegate *)self setRequestHeaders:v8];
+  [(ICQCommerceRemoteUIDelegate *)self setBuyParameters:parametersCopy];
+  [(ICQCommerceRemoteUIDelegate *)self setRequestHeaders:headersCopy];
 
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v13 = [v12 isEqualToString:@"com.apple.preferences"];
+  v13 = [bundleIdentifier isEqualToString:@"com.apple.preferences"];
   v14 = _ICQGetLogSystem();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
   if (v13)
@@ -971,7 +971,7 @@ void __42__ICQCommerceRemoteUIDelegate_pushSpinner__block_invoke(uint64_t a1)
       _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "Freshmint using legacy purchase flow.", v18, 2u);
     }
 
-    if (v10)
+    if (tokenCopy)
     {
       v16 = 0;
       v17 = 1;
@@ -987,11 +987,11 @@ void __42__ICQCommerceRemoteUIDelegate_pushSpinner__block_invoke(uint64_t a1)
   }
 }
 
-- (void)makeBuyRequest:(id)a3 forceAuth:(BOOL)a4 usePurchaseToken:(BOOL)a5
+- (void)makeBuyRequest:(id)request forceAuth:(BOOL)auth usePurchaseToken:(BOOL)token
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  tokenCopy = token;
+  authCopy = auth;
+  requestCopy = request;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1001,18 +1001,18 @@ void __42__ICQCommerceRemoteUIDelegate_pushSpinner__block_invoke(uint64_t a1)
 
   v10 = objc_alloc_init(MEMORY[0x277D69BD0]);
   [v10 setURLBagKey:@"buyProduct"];
-  v11 = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
-  if (v11 && (v12 = v11, v13 = [v8 length], v12, !v13))
+  buyParameters = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
+  if (buyParameters && (v12 = buyParameters, v13 = [requestCopy length], v12, !v13))
   {
-    v15 = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
-    v16 = [v15 mutableCopy];
+    buyParameters2 = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
+    v16 = [buyParameters2 mutableCopy];
   }
 
   else
   {
     v14 = MEMORY[0x277CBEBC0];
-    v15 = [v8 stringByRemovingPercentEncoding];
-    v16 = [v14 copyDictionaryForQueryString:v15 unescapedValues:0];
+    buyParameters2 = [requestCopy stringByRemovingPercentEncoding];
+    v16 = [v14 copyDictionaryForQueryString:buyParameters2 unescapedValues:0];
   }
 
   v17 = v16;
@@ -1023,22 +1023,22 @@ void __42__ICQCommerceRemoteUIDelegate_pushSpinner__block_invoke(uint64_t a1)
     [(ICQCommerceRemoteUIDelegate *)self setForRetailOffer:1];
   }
 
-  v19 = [MEMORY[0x277D7FCE0] sharedInstance];
-  v20 = [v19 guid];
-  [v17 setObject:v20 forKey:@"guid"];
+  mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+  guid = [mEMORY[0x277D7FCE0] guid];
+  [v17 setObject:guid forKey:@"guid"];
 
   v21 = [MEMORY[0x277CCAC58] dataWithPropertyList:v17 format:100 options:0 error:0];
   [v10 setHTTPBody:v21];
   [v10 setHTTPMethod:@"POST"];
   [v10 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
-  if (v5 && ([(ICQCommerceRemoteUIDelegate *)self purchaseToken], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+  if (tokenCopy && ([(ICQCommerceRemoteUIDelegate *)self purchaseToken], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
   {
     [(ICQCommerceRemoteUIDelegate *)self processLink:v10 forceAuth:0 needsAuth:0 localAuth:0 usePurchaseToken:1];
   }
 
   else
   {
-    [(ICQCommerceRemoteUIDelegate *)self processLink:v10 forceAuth:v6 needsAuth:1 localAuth:1];
+    [(ICQCommerceRemoteUIDelegate *)self processLink:v10 forceAuth:authCopy needsAuth:1 localAuth:1];
   }
 
   if (!self->_registeredAuthNotification)
@@ -1077,14 +1077,14 @@ uint64_t __56__ICQCommerceRemoteUIDelegate_retryPurchaseWithoutToken__block_invo
   return result;
 }
 
-- (void)loadURLforKey:(id)a3
+- (void)loadURLforKey:(id)key
 {
   self->_cancelled = 0;
   v4 = MEMORY[0x277D69BD0];
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_alloc_init(v4);
-  [v6 setURLBagKey:v5];
-  LODWORD(v4) = [v5 isEqualToString:@"mint-offers"];
+  [v6 setURLBagKey:keyCopy];
+  LODWORD(v4) = [keyCopy isEqualToString:@"mint-offers"];
 
   if (v4)
   {
@@ -1102,10 +1102,10 @@ uint64_t __56__ICQCommerceRemoteUIDelegate_retryPurchaseWithoutToken__block_invo
   [(ICQCommerceRemoteUIDelegate *)self processLink:v6 forceAuth:0 needsAuth:0];
 }
 
-- (void)cancelFlowBecause:(id)a3
+- (void)cancelFlowBecause:(id)because
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  becauseCopy = because;
   if (self->_cancelled)
   {
     v5 = _ICQGetLogSystem();
@@ -1121,9 +1121,9 @@ uint64_t __56__ICQCommerceRemoteUIDelegate_retryPurchaseWithoutToken__block_invo
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"reasons";
-    if (v4)
+    if (becauseCopy)
     {
-      v7 = v4;
+      v7 = becauseCopy;
     }
 
     v10 = 138543362;
@@ -1142,7 +1142,7 @@ LABEL_10:
   }
 }
 
-- (void)userCompletedFlow:(int64_t)a3
+- (void)userCompletedFlow:(int64_t)flow
 {
   v22[1] = *MEMORY[0x277D85DE8];
   if (self->_cancelled)
@@ -1157,9 +1157,9 @@ LABEL_10:
   }
 
   v6 = 0;
-  if (a3 && a3 != 3067)
+  if (flow && flow != 3067)
   {
-    if (a3 == 3068)
+    if (flow == 3068)
     {
       v6 = 2;
       goto LABEL_12;
@@ -1169,14 +1169,14 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134217984;
-      v18 = a3;
+      flowCopy = flow;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "unexpected failure type %lld; handling as generic failure", &v17, 0xCu);
     }
 
     v6 = 3;
   }
 
-  if (!a3)
+  if (!flow)
   {
     v9 = 0;
 LABEL_17:
@@ -1210,9 +1210,9 @@ LABEL_19:
   v12 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:flow];
     v17 = 138412546;
-    v18 = v13;
+    flowCopy = v13;
     v19 = 2112;
     v20 = v3;
     _os_log_impl(&dword_275623000, v12, OS_LOG_TYPE_DEFAULT, "user completed flow with ft=%@, error %@", &v17, 0x16u);
@@ -1235,12 +1235,12 @@ LABEL_19:
 LABEL_24:
 }
 
-- (void)cancelRemoteUIKeeping:(id)a3
+- (void)cancelRemoteUIKeeping:(id)keeping
 {
-  v4 = a3;
+  keepingCopy = keeping;
   if (!self->_cancelled)
   {
-    v11 = v4;
+    v11 = keepingCopy;
     [(ICQCommerceRemoteUIDelegate *)self cleanupLoader];
     if (self->_pseudoModallyPresented)
     {
@@ -1278,7 +1278,7 @@ LABEL_8:
     v7 = dispatch_time(0, 1000000000);
     dispatch_after(v7, MEMORY[0x277D85CD0], &__block_literal_global_207);
     self->_cancelled = 1;
-    v4 = v11;
+    keepingCopy = v11;
   }
 }
 
@@ -1288,10 +1288,10 @@ void __53__ICQCommerceRemoteUIDelegate_cancelRemoteUIKeeping___block_invoke()
   [v0 noteQuotaInfoChanged];
 }
 
-- (void)makeBuyRequest:(id)a3
+- (void)makeBuyRequest:(id)request
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1299,18 +1299,18 @@ void __53__ICQCommerceRemoteUIDelegate_cancelRemoteUIKeeping___block_invoke()
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Performing AMSPurchase request.", buf, 2u);
   }
 
-  v6 = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
-  if (v6 && (v7 = [v4 length] == 0, v6, v7))
+  buyParameters = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
+  if (buyParameters && (v7 = [requestCopy length] == 0, buyParameters, v7))
   {
-    v8 = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
-    v26 = [v8 mutableCopy];
+    buyParameters2 = [(ICQCommerceRemoteUIDelegate *)self buyParameters];
+    v26 = [buyParameters2 mutableCopy];
 
     [v26 objectForKeyedSubscript:{@"forRetailOffer", v26}];
   }
 
   else
   {
-    v24 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:v4 unescapedValues:0];
+    v24 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:requestCopy unescapedValues:0];
     [v24 objectForKeyedSubscript:{@"forRetailOffer", v24}];
   }
   v9 = ;
@@ -1320,13 +1320,13 @@ void __53__ICQCommerceRemoteUIDelegate_cancelRemoteUIKeeping___block_invoke()
   }
 
   v10 = objc_alloc(MEMORY[0x277CEE650]);
-  v11 = [MEMORY[0x277CEE3F8] quotaBag];
-  v12 = [v10 initWithBag:v11];
+  quotaBag = [MEMORY[0x277CEE3F8] quotaBag];
+  v12 = [v10 initWithBag:quotaBag];
 
   [v12 setDelegate:self];
   v13 = [objc_alloc(MEMORY[0x277CEE648]) initWithConfiguration:v12];
   v14 = objc_alloc(MEMORY[0x277CEE640]);
-  v15 = [MEMORY[0x277CEE438] buyParamsWithString:v4];
+  v15 = [MEMORY[0x277CEE438] buyParamsWithString:requestCopy];
   v16 = [v14 initWithPurchaseType:0 buyParams:v15];
 
   [v16 setUserInitiated:1];
@@ -1336,24 +1336,24 @@ void __53__ICQCommerceRemoteUIDelegate_cancelRemoteUIKeeping___block_invoke()
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
   [v16 setMetricsOverlay:v17];
 
-  v18 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  if ([v18 ams_isActiveAccountCombined])
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  if ([ams_sharedAccountStore ams_isActiveAccountCombined])
   {
-    [v18 ams_activeiTunesAccount];
+    [ams_sharedAccountStore ams_activeiTunesAccount];
   }
 
   else
   {
-    [v18 ams_activeiCloudAccount];
+    [ams_sharedAccountStore ams_activeiCloudAccount];
   }
   v19 = ;
   [v16 setAccount:v19];
 
-  v20 = [MEMORY[0x277CEE620] currentProcess];
+  currentProcess = [MEMORY[0x277CEE620] currentProcess];
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"CastleSettings/1.0"];
-  [v20 setUserAgentSuffix:v21];
+  [currentProcess setUserAgentSuffix:v21];
 
-  [v16 setClientInfo:v20];
+  [v16 setClientInfo:currentProcess];
   v30 = v16;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
   v23 = [v13 enquePurchases:v22];
@@ -1456,17 +1456,17 @@ void __46__ICQCommerceRemoteUIDelegate_makeBuyRequest___block_invoke_2(uint64_t 
   }
 }
 
-- (BOOL)didUserDismissAMSFlow:(id)a3
+- (BOOL)didUserDismissAMSFlow:(id)flow
 {
-  v3 = a3;
-  if ([v3 code] != 100)
+  flowCopy = flow;
+  if ([flowCopy code] != 100)
   {
-    v8 = [v3 domain];
-    if ([v8 isEqualToString:*MEMORY[0x277CEE188]])
+    domain = [flowCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CEE188]])
     {
-      v9 = [v3 code];
+      code = [flowCopy code];
 
-      if (v9 == 6)
+      if (code == 6)
       {
         v4 = ICQUSLogForCategory(0);
         if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1507,17 +1507,17 @@ LABEL_12:
   return v7;
 }
 
-- (void)processLink:(id)a3 forceAuth:(BOOL)a4 needsAuth:(BOOL)a5 localAuth:(BOOL)a6 usePurchaseToken:(BOOL)a7
+- (void)processLink:(id)link forceAuth:(BOOL)auth needsAuth:(BOOL)needsAuth localAuth:(BOOL)localAuth usePurchaseToken:(BOOL)token
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a4;
+  tokenCopy = token;
+  localAuthCopy = localAuth;
+  authCopy = auth;
   v86 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = [(NSOperationQueue *)self->_queue operationCount];
+  linkCopy = link;
+  operationCount = [(NSOperationQueue *)self->_queue operationCount];
   v13 = _ICQGetLogSystem();
   v14 = v13;
-  if (v12)
+  if (operationCount)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1533,96 +1533,96 @@ LABEL_12:
     _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "Performing legacy ISStoreURLOperation for quota purchase.", buf, 2u);
   }
 
-  v78 = v9;
+  v78 = authCopy;
 
   v14 = objc_alloc_init(MEMORY[0x277D7FD48]);
   v15 = +[(ISDataProvider *)ICQCommerceRemoteUIDataProvider];
   [v15 setParent:self];
   [v14 setDataProvider:v15];
-  v16 = [MEMORY[0x277CEC748] sharedManager];
-  v17 = [v16 primaryAccount];
+  mEMORY[0x277CEC748] = [MEMORY[0x277CEC748] sharedManager];
+  primaryAccount = [mEMORY[0x277CEC748] primaryAccount];
 
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"ISAlwaysSendGuid", @"com.apple.itunesstored", 0);
-  v19 = [v11 URLBagKey];
-  if (v19)
+  uRLBagKey = [linkCopy URLBagKey];
+  if (uRLBagKey)
   {
 
     goto LABEL_8;
   }
 
   v74 = AppBooleanValue;
-  v53 = [v11 URL];
-  v54 = [v53 scheme];
-  [v54 lowercaseString];
+  v53 = [linkCopy URL];
+  scheme = [v53 scheme];
+  [scheme lowercaseString];
   v55 = v14;
-  v56 = v8;
-  v57 = v7;
-  v58 = v17;
+  v56 = localAuthCopy;
+  v57 = tokenCopy;
+  v58 = primaryAccount;
   v60 = v59 = v15;
   v76 = [v60 isEqualToString:@"https"];
 
   v15 = v59;
-  v17 = v58;
-  v7 = v57;
-  v8 = v56;
+  primaryAccount = v58;
+  tokenCopy = v57;
+  localAuthCopy = v56;
   v14 = v55;
 
   if ((v76 & 1) != 0 || v74)
   {
 LABEL_8:
-    v20 = [MEMORY[0x277D69BC8] contextForSignIn];
-    v21 = [v17 username];
-    [v20 setAccountName:v21];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
+    username = [primaryAccount username];
+    [contextForSignIn setAccountName:username];
 
     v22 = MEMORY[0x277CCABB0];
-    v23 = [v17 personID];
-    v24 = [v22 numberWithUnsignedLongLong:{objc_msgSend(v23, "longLongValue")}];
-    [v20 setRequiredUniqueIdentifier:v24];
+    personID = [primaryAccount personID];
+    v24 = [v22 numberWithUnsignedLongLong:{objc_msgSend(personID, "longLongValue")}];
+    [contextForSignIn setRequiredUniqueIdentifier:v24];
 
-    [v20 setAccountNameEditable:0];
-    [v20 setShouldFollowAccountButtons:1];
+    [contextForSignIn setAccountNameEditable:0];
+    [contextForSignIn setShouldFollowAccountButtons:1];
     if (v78)
     {
-      [v20 setPromptStyle:1];
+      [contextForSignIn setPromptStyle:1];
     }
 
-    else if (!v8)
+    else if (!localAuthCopy)
     {
       goto LABEL_12;
     }
 
     [v14 setNeedsAuthentication:1];
 LABEL_12:
-    [v14 setAuthenticationContext:v20];
-    v77 = v17;
-    if (v7 && ([(ICQCommerceRemoteUIDelegate *)self purchaseToken], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
+    [v14 setAuthenticationContext:contextForSignIn];
+    v77 = primaryAccount;
+    if (tokenCopy && ([(ICQCommerceRemoteUIDelegate *)self purchaseToken], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
     {
-      v26 = [MEMORY[0x277CEC7B8] currentInfo];
-      v27 = [v26 clientInfoHeader];
+      currentInfo = [MEMORY[0x277CEC7B8] currentInfo];
+      clientInfoHeader = [currentInfo clientInfoHeader];
 
-      if (v27)
+      if (clientInfoHeader)
       {
-        [v11 setValue:v27 forHTTPHeaderField:@"X-MMe-Client-Info"];
+        [linkCopy setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
       }
 
-      v73 = v27;
-      v75 = v20;
+      v73 = clientInfoHeader;
+      v75 = contextForSignIn;
       v79 = v15;
-      v28 = [v17 account];
-      v29 = [v28 aa_altDSID];
+      account = [primaryAccount account];
+      aa_altDSID = [account aa_altDSID];
 
-      if (v29)
+      if (aa_altDSID)
       {
-        [v11 setValue:v29 forHTTPHeaderField:@"X-Apple-ADSID"];
+        [linkCopy setValue:aa_altDSID forHTTPHeaderField:@"X-Apple-ADSID"];
       }
 
-      v72 = v29;
+      v72 = aa_altDSID;
       v82 = 0u;
       v83 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v30 = [(ICQCommerceRemoteUIDelegate *)self requestHeaders];
-      v31 = [v30 countByEnumeratingWithState:&v80 objects:v85 count:16];
+      requestHeaders = [(ICQCommerceRemoteUIDelegate *)self requestHeaders];
+      v31 = [requestHeaders countByEnumeratingWithState:&v80 objects:v85 count:16];
       if (v31)
       {
         v32 = v31;
@@ -1633,55 +1633,55 @@ LABEL_12:
           {
             if (*v81 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(requestHeaders);
             }
 
             v35 = *(*(&v80 + 1) + 8 * i);
-            v36 = [(ICQCommerceRemoteUIDelegate *)self requestHeaders];
-            v37 = [v36 objectForKeyedSubscript:v35];
+            requestHeaders2 = [(ICQCommerceRemoteUIDelegate *)self requestHeaders];
+            v37 = [requestHeaders2 objectForKeyedSubscript:v35];
 
-            [v11 setValue:v37 forHTTPHeaderField:v35];
+            [linkCopy setValue:v37 forHTTPHeaderField:v35];
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v80 objects:v85 count:16];
+          v32 = [requestHeaders countByEnumeratingWithState:&v80 objects:v85 count:16];
         }
 
         while (v32);
       }
 
       v38 = MGCopyAnswer();
-      [v11 setValue:v38 forHTTPHeaderField:@"X-Mme-Device-Id"];
-      v39 = [MEMORY[0x277CBEBB0] systemTimeZone];
-      v40 = [v39 abbreviation];
-      [v11 setValue:v40 forHTTPHeaderField:@"X-MMe-Timezone"];
+      [linkCopy setValue:v38 forHTTPHeaderField:@"X-Mme-Device-Id"];
+      systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+      abbreviation = [systemTimeZone abbreviation];
+      [linkCopy setValue:abbreviation forHTTPHeaderField:@"X-MMe-Timezone"];
 
-      v41 = [MEMORY[0x277CBEAF8] currentLocale];
-      v42 = [v41 objectForKey:*MEMORY[0x277CBE690]];
-      v43 = [v42 uppercaseString];
-      [v11 setValue:v43 forHTTPHeaderField:@"X-MMe-Country"];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v42 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+      uppercaseString = [v42 uppercaseString];
+      [linkCopy setValue:uppercaseString forHTTPHeaderField:@"X-MMe-Country"];
 
       v44 = v72;
       if (v72)
       {
-        v45 = v72;
+        personID2 = v72;
       }
 
       else
       {
-        v45 = [v77 personID];
+        personID2 = [v77 personID];
       }
 
-      v61 = v45;
-      v20 = v75;
+      v61 = personID2;
+      contextForSignIn = v75;
       v62 = MEMORY[0x277CCACA8];
-      v63 = [(ICQCommerceRemoteUIDelegate *)self purchaseToken];
-      v64 = [v62 stringWithFormat:@"%@:%@", v61, v63];
+      purchaseToken = [(ICQCommerceRemoteUIDelegate *)self purchaseToken];
+      v64 = [v62 stringWithFormat:@"%@:%@", v61, purchaseToken];
 
       v65 = [v64 dataUsingEncoding:4];
       v66 = [v65 base64EncodedStringWithOptions:0];
       if (v66)
       {
-        [v11 setValue:v66 forHTTPHeaderField:@"X-Apple-GS-Token"];
+        [linkCopy setValue:v66 forHTTPHeaderField:@"X-Apple-GS-Token"];
       }
 
       v15 = v79;
@@ -1691,9 +1691,9 @@ LABEL_12:
     else
     {
       v46 = MEMORY[0x277CCACA8];
-      v47 = [v17 personID];
-      v48 = [v17 authToken];
-      v49 = [v46 stringWithFormat:@"%@:%@", v47, v48];
+      personID3 = [primaryAccount personID];
+      authToken = [primaryAccount authToken];
+      v49 = [v46 stringWithFormat:@"%@:%@", personID3, authToken];
 
       v50 = v49;
       v51 = [v49 dataUsingEncoding:4];
@@ -1701,72 +1701,72 @@ LABEL_12:
 
       v44 = v52;
       v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v52];
-      [v11 setValue:v38 forHTTPHeaderField:@"Authorization"];
+      [linkCopy setValue:v38 forHTTPHeaderField:@"Authorization"];
     }
 
-    v67 = [MEMORY[0x277D7FCE0] sharedInstance];
-    v68 = [v67 guid];
-    [v11 setValue:v68 forRequestParameter:@"guid"];
+    mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+    guid = [mEMORY[0x277D7FCE0] guid];
+    [linkCopy setValue:guid forRequestParameter:@"guid"];
 
-    v17 = v77;
+    primaryAccount = v77;
   }
 
   v69 = [MEMORY[0x277CBEA60] arrayWithObject:@"CastleSettings/1.0"];
-  [v11 setUserAgentComponents:v69];
+  [linkCopy setUserAgentComponents:v69];
 
-  [v14 setRequestProperties:v11];
+  [v14 setRequestProperties:linkCopy];
   [v14 setDelegate:self];
   if (!self->_registeredDialogNotification)
   {
-    v70 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v70 addObserver:self selector:sel_handleDialog_ name:*MEMORY[0x277D7FCB0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleDialog_ name:*MEMORY[0x277D7FCB0] object:0];
 
     self->_registeredDialogNotification = 1;
   }
 
-  v71 = [MEMORY[0x277D75128] sharedApplication];
-  [v71 setNetworkActivityIndicatorVisible:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:1];
 
   [(NSOperationQueue *)self->_queue addOperation:v14];
 LABEL_39:
 }
 
-- (id)parentViewControllerForObjectModel:(id)a3
+- (id)parentViewControllerForObjectModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   navigationController = self->_navigationController;
   if (!navigationController)
   {
     [ICQCommerceRemoteUIDelegate parentViewControllerForObjectModel:];
   }
 
-  v6 = v4;
+  v6 = modelCopy;
   v7 = navigationController;
 
   return navigationController;
 }
 
-- (void)_popObjectModelAnimated:(BOOL)a3
+- (void)_popObjectModelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(NSMutableArray *)self->_objectModels count])
   {
     [ICQCommerceRemoteUIDelegate _popObjectModelAnimated:];
   }
 
-  v5 = [(NSMutableArray *)self->_objectModels lastObject];
-  v12 = [v5 defaultPages];
+  lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+  defaultPages = [lastObject defaultPages];
 
   [(NSMutableArray *)self->_objectModels removeLastObject];
-  v6 = [v12 count] - 1;
+  v6 = [defaultPages count] - 1;
   if (v6 >= 0)
   {
     do
     {
-      v7 = [v12 objectAtIndex:v6];
-      v8 = [(UINavigationController *)self->_navigationController topViewController];
+      v7 = [defaultPages objectAtIndex:v6];
+      topViewController = [(UINavigationController *)self->_navigationController topViewController];
 
-      if (v8 == v7)
+      if (topViewController == v7)
       {
         if (v6)
         {
@@ -1775,7 +1775,7 @@ LABEL_39:
 
         else
         {
-          v9 = v3;
+          v9 = animatedCopy;
         }
 
         v10 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:v9];
@@ -1786,19 +1786,19 @@ LABEL_39:
   }
 }
 
-- (void)objectModelPressedBack:(id)a3
+- (void)objectModelPressedBack:(id)back
 {
-  v9 = a3;
-  v4 = [(UINavigationController *)self->_navigationController topViewController];
+  backCopy = back;
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   v5 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = topViewController;
     if (v6)
     {
-      v7 = [v9 defaultPages];
-      v8 = [v7 containsObject:v6];
+      defaultPages = [backCopy defaultPages];
+      v8 = [defaultPages containsObject:v6];
 
       if (v8)
       {
@@ -1813,44 +1813,44 @@ LABEL_39:
   }
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:@"ams_followup"];
+  modelCopy = model;
+  buttonCopy = button;
+  attributesCopy = attributes;
+  v10 = [attributesCopy objectForKeyedSubscript:@"ams_followup"];
   if ([v10 isEqualToString:@"clear"])
   {
     [(ICQCommerceRemoteUIDelegate *)self _clearRetailFollowUpItem];
   }
 
-  if ([v8 isEqualToString:@"cancel"])
+  if ([buttonCopy isEqualToString:@"cancel"])
   {
     [(ICQCommerceRemoteUIDelegate *)self cancelFlowBecause:@"cancel button pressed in RUI object model"];
     [(ICQCommerceRemoteUIDelegate *)self cancelRemoteUI];
   }
 
-  else if ([v8 isEqualToString:@"buy"])
+  else if ([buttonCopy isEqualToString:@"buy"])
   {
-    v11 = [v20 defaultPages];
-    v12 = [v11 lastObject];
-    v13 = [v12 navTitle];
+    defaultPages = [modelCopy defaultPages];
+    lastObject = [defaultPages lastObject];
+    navTitle = [lastObject navTitle];
 
-    [v20 startNavigationBarSpinnerWithTitle:v13];
-    v14 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = [v20 defaultPages];
-    v16 = [v15 lastObject];
-    [v16 populatePostbackDictionary:v14];
+    [modelCopy startNavigationBarSpinnerWithTitle:navTitle];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    defaultPages2 = [modelCopy defaultPages];
+    lastObject2 = [defaultPages2 lastObject];
+    [lastObject2 populatePostbackDictionary:dictionary];
 
-    v17 = [v14 objectForKey:@"quota"];
+    v17 = [dictionary objectForKey:@"quota"];
     if (!v17)
     {
-      v18 = [v9 objectForKeyedSubscript:@"id"];
+      v18 = [attributesCopy objectForKeyedSubscript:@"id"];
       v19 = [v18 isEqualToString:@"quota"];
 
       if (v19)
       {
-        v17 = [v9 objectForKeyedSubscript:@"value"];
+        v17 = [attributesCopy objectForKeyedSubscript:@"value"];
       }
 
       else
@@ -1862,30 +1862,30 @@ LABEL_39:
     [(ICQCommerceRemoteUIDelegate *)self makeBuyRequest:v17];
   }
 
-  else if ([v8 isEqualToString:@"pop"])
+  else if ([buttonCopy isEqualToString:@"pop"])
   {
     [(ICQCommerceRemoteUIDelegate *)self _popObjectModelAnimated:1];
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![(ICQCommerceRemoteUIDelegate *)self _loadNativeURL:v8])
+  modelCopy = model;
+  linkCopy = link;
+  methodCopy = method;
+  if (![(ICQCommerceRemoteUIDelegate *)self _loadNativeURL:linkCopy])
   {
-    v10 = [v9 lowercaseString];
-    v11 = [v10 isEqualToString:@"post"];
+    lowercaseString = [methodCopy lowercaseString];
+    v11 = [lowercaseString isEqualToString:@"post"];
 
     if (v11)
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
-      v13 = [v19 defaultPages];
-      v14 = [v13 lastObject];
-      [v14 populatePostbackDictionary:v12];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      defaultPages = [modelCopy defaultPages];
+      lastObject = [defaultPages lastObject];
+      [lastObject populatePostbackDictionary:dictionary];
 
-      v15 = [MEMORY[0x277CCAC58] dataWithPropertyList:v12 format:100 options:0 error:0];
+      v15 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:100 options:0 error:0];
     }
 
     else
@@ -1893,36 +1893,36 @@ LABEL_39:
       v15 = 0;
     }
 
-    v16 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:v8];
-    [v16 setHTTPMethod:v9];
+    v16 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:linkCopy];
+    [v16 setHTTPMethod:methodCopy];
     if (v15)
     {
       [v16 setHTTPBody:v15];
       [v16 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
     }
 
-    v17 = [v8 scheme];
-    v18 = [v17 lowercaseString];
-    -[ICQCommerceRemoteUIDelegate processLink:forceAuth:needsAuth:](self, "processLink:forceAuth:needsAuth:", v16, 0, [v18 isEqualToString:@"https"]);
+    scheme = [linkCopy scheme];
+    lowercaseString2 = [scheme lowercaseString];
+    -[ICQCommerceRemoteUIDelegate processLink:forceAuth:needsAuth:](self, "processLink:forceAuth:needsAuth:", v16, 0, [lowercaseString2 isEqualToString:@"https"]);
   }
 }
 
-- (BOOL)_loadNativeURL:(id)a3
+- (BOOL)_loadNativeURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  v5 = [v4 isEqualToString:@"ams-ui"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v5 = [scheme isEqualToString:@"ams-ui"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v6 openSensitiveURL:v3 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
   }
 
   return v5;
 }
 
-- (void)accountPageViewControllerDidFinish:(id)a3
+- (void)accountPageViewControllerDidFinish:(id)finish
 {
   v4 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1935,22 +1935,22 @@ LABEL_39:
   [(ICQCommerceRemoteUIDelegate *)self cancelRemoteUI];
 }
 
-- (void)accountPageViewController:(id)a3 financeInterruptionResolved:(BOOL)a4
+- (void)accountPageViewController:(id)controller financeInterruptionResolved:(BOOL)resolved
 {
-  v4 = a4;
+  resolvedCopy = resolved;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_accountPageViewController != v6)
+  controllerCopy = controller;
+  if (self->_accountPageViewController != controllerCopy)
   {
     [ICQCommerceRemoteUIDelegate accountPageViewController:financeInterruptionResolved:];
   }
 
-  v7 = v6;
+  v7 = controllerCopy;
   v8 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v4)
+    if (resolvedCopy)
     {
       v9 = @"YES";
     }
@@ -1966,7 +1966,7 @@ LABEL_39:
   block[3] = &unk_27A65A7D0;
   block[4] = self;
   v12 = v7;
-  v13 = v4;
+  v13 = resolvedCopy;
   v10 = v7;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
@@ -1995,15 +1995,15 @@ uint64_t __85__ICQCommerceRemoteUIDelegate_accountPageViewController_financeInte
   }
 }
 
-- (void)_dismissAccountPageViewController:(id)a3 keepCommerceSpinner:(BOOL)a4
+- (void)_dismissAccountPageViewController:(id)controller keepCommerceSpinner:(BOOL)spinner
 {
-  v6 = a3;
-  if (self->_accountPageViewController != v6)
+  controllerCopy = controller;
+  if (self->_accountPageViewController != controllerCopy)
   {
     [ICQCommerceRemoteUIDelegate _dismissAccountPageViewController:keepCommerceSpinner:];
   }
 
-  v7 = v6;
+  v7 = controllerCopy;
   v8 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2015,7 +2015,7 @@ uint64_t __85__ICQCommerceRemoteUIDelegate_accountPageViewController_financeInte
   v10[1] = 3221225472;
   v10[2] = __85__ICQCommerceRemoteUIDelegate__dismissAccountPageViewController_keepCommerceSpinner___block_invoke;
   v10[3] = &unk_27A65A7D0;
-  v12 = a4;
+  spinnerCopy = spinner;
   v10[4] = self;
   v11 = v7;
   v9 = v7;
@@ -2039,22 +2039,22 @@ uint64_t __85__ICQCommerceRemoteUIDelegate__dismissAccountPageViewController_kee
   return [*(a1 + 32) _forgetAccountPageViewController:*(a1 + 40)];
 }
 
-- (void)_popAccountPageViewController:(id)a3 keepCommerceSpinner:(BOOL)a4
+- (void)_popAccountPageViewController:(id)controller keepCommerceSpinner:(BOOL)spinner
 {
-  v4 = a4;
+  spinnerCopy = spinner;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_accountPageViewController != v6)
+  controllerCopy = controller;
+  if (self->_accountPageViewController != controllerCopy)
   {
     [ICQCommerceRemoteUIDelegate _popAccountPageViewController:keepCommerceSpinner:];
   }
 
-  v7 = v6;
+  v7 = controllerCopy;
   v8 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v4)
+    if (spinnerCopy)
     {
       v9 = @"YES";
     }
@@ -2064,8 +2064,8 @@ uint64_t __85__ICQCommerceRemoteUIDelegate__dismissAccountPageViewController_kee
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "pop accountPageViewController; keepCommerceSpinner: %@", &v18, 0xCu);
   }
 
-  v10 = [(UINavigationController *)self->_navigationController topViewController];
-  if (v10 == v7)
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
+  if (topViewController == v7)
   {
 LABEL_12:
     v15 = ICQUSLogForCategory(0);
@@ -2075,7 +2075,7 @@ LABEL_12:
       _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "popping accountPageViewController", &v18, 2u);
     }
 
-    v16 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:v4];
+    v16 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:spinnerCopy];
   }
 
   else
@@ -2091,7 +2091,7 @@ LABEL_12:
       topViewController = self->_topViewController;
       v12 = ICQUSLogForCategory(0);
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (v10 == topViewController)
+      if (topViewController == topViewController)
       {
         if (v13)
         {
@@ -2109,8 +2109,8 @@ LABEL_12:
       }
 
       v14 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:0];
-      v10 = [(UINavigationController *)self->_navigationController topViewController];
-      if (v10 == v7)
+      topViewController = [(UINavigationController *)self->_navigationController topViewController];
+      if (topViewController == v7)
       {
         goto LABEL_12;
       }
@@ -2126,7 +2126,7 @@ LABEL_12:
 
 LABEL_21:
 
-  if (!v4)
+  if (!spinnerCopy)
   {
     [(ICQCommerceRemoteUIDelegate *)self _popCommerceSpinnerIfNeeded];
   }
@@ -2134,25 +2134,25 @@ LABEL_21:
   [(ICQCommerceRemoteUIDelegate *)self _forgetAccountPageViewController:v7];
 }
 
-- (void)_forgetAccountPageViewController:(id)a3
+- (void)_forgetAccountPageViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   accountPageViewController = self->_accountPageViewController;
-  if (accountPageViewController != v4)
+  if (accountPageViewController != controllerCopy)
   {
     [ICQCommerceRemoteUIDelegate _forgetAccountPageViewController:];
   }
 
-  v7 = v4;
+  v7 = controllerCopy;
   [(SKAccountPageViewController *)accountPageViewController setDelegate:0];
   v6 = self->_accountPageViewController;
   self->_accountPageViewController = 0;
 }
 
-- (BOOL)_shouldSuppressDialog:(id)a3 failureType:(int64_t)a4
+- (BOOL)_shouldSuppressDialog:(id)dialog failureType:(int64_t)type
 {
   result = [(ICQCommerceRemoteUIDelegate *)self skipCompletionAlert];
-  if ((a4 - 3067) >= 2)
+  if ((type - 3067) >= 2)
   {
     return 0;
   }
@@ -2160,16 +2160,16 @@ LABEL_21:
   return result;
 }
 
-- (void)handleDialog:(id)a3
+- (void)handleDialog:(id)dialog
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dialogCopy = dialog;
   v5 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 object];
+    object = [dialogCopy object];
     *buf = 138412290;
-    v11 = v6;
+    v11 = object;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Dialog notification arrived... %@", buf, 0xCu);
   }
 
@@ -2178,8 +2178,8 @@ LABEL_21:
   v8[2] = __44__ICQCommerceRemoteUIDelegate_handleDialog___block_invoke;
   v8[3] = &unk_27A65A708;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dialogCopy;
+  v7 = dialogCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -2246,10 +2246,10 @@ void __44__ICQCommerceRemoteUIDelegate_handleDialog___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_dismissAlertsWithCompletion:(id)a3
+- (void)_dismissAlertsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   alertController = self->_alertController;
   if (alertController)
   {
@@ -2258,13 +2258,13 @@ void __44__ICQCommerceRemoteUIDelegate_handleDialog___block_invoke_2(uint64_t a1
     v7[2] = __60__ICQCommerceRemoteUIDelegate__dismissAlertsWithCompletion___block_invoke;
     v7[3] = &unk_27A65AF58;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(UIAlertController *)alertController dismissViewControllerAnimated:1 completion:v7];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -2279,25 +2279,25 @@ uint64_t __60__ICQCommerceRemoteUIDelegate__dismissAlertsWithCompletion___block_
   return v4();
 }
 
-- (void)_presentAlertWithDialog:(id)a3
+- (void)_presentAlertWithDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   v5 = MEMORY[0x277D75110];
-  v6 = [v4 title];
-  v7 = [v4 message];
-  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  title = [dialogCopy title];
+  message = [dialogCopy message];
+  v8 = [v5 alertControllerWithTitle:title message:message preferredStyle:1];
   alertController = self->_alertController;
   self->_alertController = v8;
 
-  v10 = [v4 buttons];
+  buttons = [dialogCopy buttons];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __55__ICQCommerceRemoteUIDelegate__presentAlertWithDialog___block_invoke;
   v16 = &unk_27A65C7E0;
-  v17 = self;
-  v18 = v4;
-  v11 = v4;
-  [v10 enumerateObjectsUsingBlock:&v13];
+  selfCopy = self;
+  v18 = dialogCopy;
+  v11 = dialogCopy;
+  [buttons enumerateObjectsUsingBlock:&v13];
 
   v12 = [(ICQCommerceRemoteUIDelegate *)self presentationContext:v13];
   [v12 presentViewController:self->_alertController animated:1 completion:0];
@@ -2363,61 +2363,61 @@ void __55__ICQCommerceRemoteUIDelegate__presentAlertWithDialog___block_invoke_2(
   v4 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(UINavigationController *)v3 presentedViewController];
+    presentedViewController = [(UINavigationController *)v3 presentedViewController];
     v7 = 138412546;
     v8 = v3;
     v9 = 2112;
-    v10 = v5;
+    v10 = presentedViewController;
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "Presenting alert on controller: %@ - %@", &v7, 0x16u);
   }
 
   return v3;
 }
 
-- (BOOL)_handleResponseForDialog:(id)a3 atIndex:(int64_t)a4
+- (BOOL)_handleResponseForDialog:(id)dialog atIndex:(int64_t)index
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 buttons];
-  if ([v7 count] > a4)
+  dialogCopy = dialog;
+  buttons = [dialogCopy buttons];
+  if ([buttons count] > index)
   {
-    v8 = [v7 objectAtIndex:a4];
-    v9 = [v8 actionType];
-    if (v9 > 3)
+    v8 = [buttons objectAtIndex:index];
+    actionType = [v8 actionType];
+    if (actionType > 3)
     {
-      if (v9 == 4)
+      if (actionType == 4)
       {
-        v19 = [v8 parameter];
+        parameter = [v8 parameter];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [MEMORY[0x277CBEBC0] URLWithString:v19];
+          v20 = [MEMORY[0x277CBEBC0] URLWithString:parameter];
 
-          v19 = v20;
+          parameter = v20;
         }
 
-        if ([v19 isSafeExternalURL])
+        if ([parameter isSafeExternalURL])
         {
-          v21 = [MEMORY[0x277D75128] sharedApplication];
-          [v21 openURL:v19 options:MEMORY[0x277CBEC10] completionHandler:0];
+          mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+          [mEMORY[0x277D75128] openURL:parameter options:MEMORY[0x277CBEC10] completionHandler:0];
         }
       }
 
       else
       {
-        if (v9 == 5)
+        if (actionType == 5)
         {
           [(ICQCommerceRemoteUIDelegate *)self cancelFlowBecause:@"dialog button pressed with action GoBack"];
         }
 
         else
         {
-          if (v9 != 11)
+          if (actionType != 11)
           {
             goto LABEL_21;
           }
 
-          [v8 performDefaultActionForDialog:v6];
+          [v8 performDefaultActionForDialog:dialogCopy];
         }
 
         [(ICQCommerceRemoteUIDelegate *)self cancelRemoteUI];
@@ -2426,36 +2426,36 @@ void __55__ICQCommerceRemoteUIDelegate__presentAlertWithDialog___block_invoke_2(
 
     else
     {
-      if (v9 == 1)
+      if (actionType == 1)
       {
-        v10 = [v8 parameter];
+        parameter2 = [v8 parameter];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+          v12 = [MEMORY[0x277CBEBC0] URLWithString:parameter2];
 
-          v10 = v12;
+          parameter2 = v12;
         }
 
-        v13 = [v10 schemeSwizzledURL];
+        schemeSwizzledURL = [parameter2 schemeSwizzledURL];
         [v8 urlType];
         v14 = objc_alloc(MEMORY[0x277D69BD0]);
-        v15 = [MEMORY[0x277CCAD20] requestWithURL:v13];
+        v15 = [MEMORY[0x277CCAD20] requestWithURL:schemeSwizzledURL];
         v16 = [v14 initWithURLRequest:v15];
 
-        v17 = [v13 scheme];
-        v18 = [v17 lowercaseString];
-        -[ICQCommerceRemoteUIDelegate processLink:forceAuth:needsAuth:](self, "processLink:forceAuth:needsAuth:", v16, 0, [v18 isEqualToString:@"https"]);
+        scheme = [schemeSwizzledURL scheme];
+        lowercaseString = [scheme lowercaseString];
+        -[ICQCommerceRemoteUIDelegate processLink:forceAuth:needsAuth:](self, "processLink:forceAuth:needsAuth:", v16, 0, [lowercaseString isEqualToString:@"https"]);
 
         goto LABEL_15;
       }
 
-      if (v9 != 2)
+      if (actionType != 2)
       {
-        if (v9 == 3)
+        if (actionType == 3)
         {
-          v10 = [v8 parameter];
-          [(ICQCommerceRemoteUIDelegate *)self makeBuyRequest:v10];
+          parameter2 = [v8 parameter];
+          [(ICQCommerceRemoteUIDelegate *)self makeBuyRequest:parameter2];
 LABEL_15:
 
           v11 = 0;
@@ -2471,12 +2471,12 @@ LABEL_21:
         goto LABEL_32;
       }
 
-      v22 = [v8 parameter];
+      parameter3 = [v8 parameter];
       v23 = ICQUSLogForCategory(0);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v31 = v22;
+        v31 = parameter3;
         _os_log_impl(&dword_275623000, v23, OS_LOG_TYPE_DEFAULT, "GotoFinance %@", buf, 0xCu);
       }
 
@@ -2489,7 +2489,7 @@ LABEL_21:
         }
       }
 
-      v25 = [objc_alloc(MEMORY[0x277CDD340]) initWithAccountURL:v22];
+      v25 = [objc_alloc(MEMORY[0x277CDD340]) initWithAccountURL:parameter3];
       accountPageViewController = self->_accountPageViewController;
       self->_accountPageViewController = v25;
 
@@ -2525,28 +2525,28 @@ uint64_t __64__ICQCommerceRemoteUIDelegate__handleResponseForDialog_atIndex___bl
   return [*(*(a1 + 32) + 8) pushViewController:*(*(a1 + 32) + 32) animated:1];
 }
 
-- (ICQCommerceRemoteUIDelegate)initWithNavigationController:(id)a3 needsModalPresentation:(BOOL)a4
+- (ICQCommerceRemoteUIDelegate)initWithNavigationController:(id)controller needsModalPresentation:(BOOL)presentation
 {
-  v6 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = ICQCommerceRemoteUIDelegate;
   v7 = [(ICQCommerceRemoteUIDelegate *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    if (!v6)
+    if (!controllerCopy)
     {
       [ICQCommerceRemoteUIDelegate initWithNavigationController:needsModalPresentation:];
     }
 
-    v7->_modallyPresented = a4;
+    v7->_modallyPresented = presentation;
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     objectModels = v8->_objectModels;
     v8->_objectModels = v9;
 
     modallyPresented = v8->_modallyPresented;
-    v12 = v6;
-    v13 = v12;
+    v12 = controllerCopy;
+    topViewController = v12;
     if (modallyPresented)
     {
       v14 = 16;
@@ -2557,12 +2557,12 @@ uint64_t __64__ICQCommerceRemoteUIDelegate__handleResponseForDialog_atIndex___bl
       navigationController = v8->_navigationController;
       v8->_navigationController = v12;
 
-      v13 = [v13 topViewController];
+      topViewController = [topViewController topViewController];
       v14 = 24;
     }
 
     v16 = *(&v8->super.isa + v14);
-    *(&v8->super.isa + v14) = v13;
+    *(&v8->super.isa + v14) = topViewController;
 
     v17 = objc_alloc_init(MEMORY[0x277CCABD8]);
     queue = v8->_queue;
@@ -2581,18 +2581,18 @@ uint64_t __64__ICQCommerceRemoteUIDelegate__handleResponseForDialog_atIndex___bl
   CFNotificationCenterRemoveObserver(v4, self, *MEMORY[0x277D6A6D8], 0);
   v5 = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(v5, self, *MEMORY[0x277D6A6D0], 0);
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277D7FCB0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FCB0] object:0];
 
   v7.receiver = self;
   v7.super_class = ICQCommerceRemoteUIDelegate;
   [(ICQCommerceRemoteUIDelegate *)&v7 dealloc];
 }
 
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2604,11 +2604,11 @@ uint64_t __64__ICQCommerceRemoteUIDelegate__handleResponseForDialog_atIndex___bl
   block[1] = 3221225472;
   block[2] = __91__ICQCommerceRemoteUIDelegate_handleAuthenticateRequest_purchase_purchaseQueue_completion___block_invoke;
   block[3] = &unk_27A65B060;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2652,10 +2652,10 @@ void __91__ICQCommerceRemoteUIDelegate_handleAuthenticateRequest_purchase_purcha
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleDialogRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2667,11 +2667,11 @@ void __91__ICQCommerceRemoteUIDelegate_handleAuthenticateRequest_purchase_purcha
   block[1] = 3221225472;
   block[2] = __85__ICQCommerceRemoteUIDelegate_handleDialogRequest_purchase_purchaseQueue_completion___block_invoke;
   block[3] = &unk_27A65B060;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2686,10 +2686,10 @@ void __85__ICQCommerceRemoteUIDelegate_handleDialogRequest_purchase_purchaseQueu
   [v5 addFinishBlock:*(a1 + 48)];
 }
 
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 purchaseQueue:(id)a5 completion:(id)a6
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase purchaseQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2701,11 +2701,11 @@ void __85__ICQCommerceRemoteUIDelegate_handleDialogRequest_purchase_purchaseQueu
   block[1] = 3221225472;
   block[2] = __89__ICQCommerceRemoteUIDelegate_handleEngagementRequest_purchase_purchaseQueue_completion___block_invoke;
   block[3] = &unk_27A65B060;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

@@ -1,11 +1,11 @@
 @interface FBWorkspaceEventDispatcherSource
-- (BOOL)noteHandshakeWithRemnants:(id)a3;
+- (BOOL)noteHandshakeWithRemnants:(id)remnants;
 - (FBWorkspaceEventDispatcherSource)init;
-- (id)_initWithProcessHandle:(id)a3 invalidationBlock:(id)a4;
-- (id)consumeRemnantsPassingTest:(id)a3;
-- (id)dequeueSceneRequestsForTargetIdentifier:(id)a3;
+- (id)_initWithProcessHandle:(id)handle invalidationBlock:(id)block;
+- (id)consumeRemnantsPassingTest:(id)test;
+- (id)dequeueSceneRequestsForTargetIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)enqueueSceneRequest:(id)a3;
+- (void)enqueueSceneRequest:(id)request;
 - (void)invalidate;
 @end
 
@@ -16,7 +16,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -32,31 +32,31 @@
 - (void)invalidate
 {
   v47 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  os_unfair_lock_lock(&v2->_invalidationLock);
-  os_unfair_lock_lock(&v2->_lock);
-  v3 = MEMORY[0x1AC572E40](v2->_lock_invalidationBlock);
-  os_unfair_lock_unlock(&v2->_lock);
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_invalidationLock);
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v3 = MEMORY[0x1AC572E40](selfCopy->_lock_invalidationBlock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v3)
   {
-    (*(v3 + 16))(v3, v2);
+    (*(v3 + 16))(v3, selfCopy);
   }
 
   v29 = v3;
-  os_unfair_lock_lock(&v2->_lock);
-  v4 = v2->_lock_remnants;
-  v5 = v2->_lock_requestsByTargetIdentifier;
-  lock_remnants = v2->_lock_remnants;
-  v2->_lock_remnants = 0;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v4 = selfCopy->_lock_remnants;
+  v5 = selfCopy->_lock_requestsByTargetIdentifier;
+  lock_remnants = selfCopy->_lock_remnants;
+  selfCopy->_lock_remnants = 0;
 
-  lock_requestsByTargetIdentifier = v2->_lock_requestsByTargetIdentifier;
-  v2->_lock_requestsByTargetIdentifier = 0;
+  lock_requestsByTargetIdentifier = selfCopy->_lock_requestsByTargetIdentifier;
+  selfCopy->_lock_requestsByTargetIdentifier = 0;
 
-  lock_invalidationBlock = v2->_lock_invalidationBlock;
-  v2->_lock_invalidationBlock = 0;
+  lock_invalidationBlock = selfCopy->_lock_invalidationBlock;
+  selfCopy->_lock_invalidationBlock = 0;
 
-  v30 = v2;
-  os_unfair_lock_unlock(&v2->_lock);
+  v30 = selfCopy;
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
@@ -159,11 +159,11 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithProcessHandle:(id)a3 invalidationBlock:(id)a4
+- (id)_initWithProcessHandle:(id)handle invalidationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  handleCopy = handle;
+  blockCopy = block;
+  v10 = handleCopy;
   if (!v10)
   {
     [FBWorkspaceEventDispatcherSource _initWithProcessHandle:a2 invalidationBlock:?];
@@ -181,7 +181,7 @@
     [FBWorkspaceEventDispatcherSource _initWithProcessHandle:v11 invalidationBlock:a2];
   }
 
-  if (!v9)
+  if (!blockCopy)
   {
     [FBWorkspaceEventDispatcherSource _initWithProcessHandle:a2 invalidationBlock:?];
   }
@@ -192,8 +192,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_processHandle, a3);
-    v14 = [v9 copy];
+    objc_storeStrong(&v12->_processHandle, handle);
+    v14 = [blockCopy copy];
     lock_invalidationBlock = v13->_lock_invalidationBlock;
     v13->_lock_invalidationBlock = v14;
 
@@ -203,16 +203,16 @@
   return v13;
 }
 
-- (BOOL)noteHandshakeWithRemnants:(id)a3
+- (BOOL)noteHandshakeWithRemnants:(id)remnants
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  remnantsCopy = remnants;
+  if (!remnantsCopy)
   {
     [FBWorkspaceEventDispatcherSource noteHandshakeWithRemnants:a2];
   }
 
-  v6 = v5;
+  v6 = remnantsCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -300,16 +300,16 @@ LABEL_23:
   return v15;
 }
 
-- (id)consumeRemnantsPassingTest:(id)a3
+- (id)consumeRemnantsPassingTest:(id)test
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  testCopy = test;
+  if (!testCopy)
   {
     [FBWorkspaceEventDispatcherSource consumeRemnantsPassingTest:a2];
   }
 
-  v6 = v5;
+  v6 = testCopy;
   os_unfair_lock_lock(&self->_lock);
   lock_remnants = self->_lock_remnants;
   if (!lock_remnants)
@@ -318,7 +318,7 @@ LABEL_23:
     goto LABEL_30;
   }
 
-  v26 = self;
+  selfCopy = self;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -377,8 +377,8 @@ LABEL_13:
   while (v10);
 LABEL_21:
 
-  self = v26;
-  v18 = [(NSSet *)v26->_lock_remnants count];
+  self = selfCopy;
+  v18 = [(NSSet *)selfCopy->_lock_remnants count];
   if (v18 != [v12 count])
   {
     v19 = [v12 copy];
@@ -393,8 +393,8 @@ LABEL_21:
       v21 = [MEMORY[0x1E695DFD8] set];
     }
 
-    v22 = v26->_lock_remnants;
-    v26->_lock_remnants = v21;
+    v22 = selfCopy->_lock_remnants;
+    selfCopy->_lock_remnants = v21;
   }
 
   if (v11)
@@ -417,28 +417,28 @@ LABEL_30:
   return v17;
 }
 
-- (void)enqueueSceneRequest:(id)a3
+- (void)enqueueSceneRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [FBWorkspaceEventDispatcherSource enqueueSceneRequest:a2];
   }
 
-  v13 = v5;
+  v13 = requestCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(FBWorkspaceEventDispatcherSource *)v13 enqueueSceneRequest:a2];
   }
 
-  v6 = [v13 targetIdentifier];
-  if (!v6)
+  targetIdentifier = [v13 targetIdentifier];
+  if (!targetIdentifier)
   {
     [(FBWorkspaceEventDispatcherSource *)v13 enqueueSceneRequest:a2];
   }
 
-  v7 = v6;
+  v7 = targetIdentifier;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_remnants)
   {
@@ -477,12 +477,12 @@ LABEL_30:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)dequeueSceneRequestsForTargetIdentifier:(id)a3
+- (id)dequeueSceneRequestsForTargetIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  if (!v5)
+  if (!identifierCopy)
   {
     v12 = NSStringFromClass(v7);
     v13 = [v6 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"targetIdentifier", v12];
@@ -500,11 +500,11 @@ LABEL_30:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(FBWorkspaceEventDispatcherSource *)v5 dequeueSceneRequestsForTargetIdentifier:a2];
+    [(FBWorkspaceEventDispatcherSource *)identifierCopy dequeueSceneRequestsForTargetIdentifier:a2];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_lock_requestsByTargetIdentifier objectForKey:v5];
+  v8 = [(NSMutableDictionary *)self->_lock_requestsByTargetIdentifier objectForKey:identifierCopy];
   if (v8)
   {
     v9 = [(NSMutableDictionary *)self->_lock_requestsByTargetIdentifier count];
@@ -516,7 +516,7 @@ LABEL_30:
 
     else
     {
-      [(NSMutableDictionary *)lock_requestsByTargetIdentifier removeObjectForKey:v5];
+      [(NSMutableDictionary *)lock_requestsByTargetIdentifier removeObjectForKey:identifierCopy];
     }
   }
 
@@ -538,7 +538,7 @@ LABEL_30:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBWorkspaceEventDispatcherSource.m";
     v17 = 1024;

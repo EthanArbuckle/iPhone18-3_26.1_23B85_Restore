@@ -6,50 +6,50 @@
 
 - (__CFString)singleLineAddress
 {
-  v2 = [a1 formattedAddressLines];
-  v3 = [v2 count];
+  formattedAddressLines = [self formattedAddressLines];
+  v3 = [formattedAddressLines count];
 
   if (!v3)
   {
-    v7 = [a1 structuredAddress];
+    structuredAddress = [self structuredAddress];
 
-    if (!v7)
+    if (!structuredAddress)
     {
       v6 = 0;
       goto LABEL_36;
     }
 
-    v4 = [a1 structuredAddress];
+    structuredAddress2 = [self structuredAddress];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [v4 fullThoroughfare];
-    if ([v8 length])
+    fullThoroughfare = [structuredAddress2 fullThoroughfare];
+    if ([fullThoroughfare length])
     {
-      [v5 addObject:v8];
+      [v5 addObject:fullThoroughfare];
     }
 
-    if (v8)
+    if (fullThoroughfare)
     {
       goto LABEL_16;
     }
 
-    v9 = [v4 subThoroughfare];
-    v10 = [v9 length];
+    subThoroughfare = [structuredAddress2 subThoroughfare];
+    v10 = [subThoroughfare length];
 
-    v11 = [v4 thoroughfare];
-    v12 = [v11 length];
+    thoroughfare = [structuredAddress2 thoroughfare];
+    v12 = [thoroughfare length];
 
     v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:v10 + v12 + 1];
     if (v10)
     {
-      v14 = [v4 subThoroughfare];
-      [v13 appendString:v14];
+      subThoroughfare2 = [structuredAddress2 subThoroughfare];
+      [v13 appendString:subThoroughfare2];
 
       if (v12)
       {
         [v13 appendFormat:@" "];
 LABEL_12:
-        v15 = [v4 thoroughfare];
-        [v13 appendString:v15];
+        thoroughfare2 = [structuredAddress2 thoroughfare];
+        [v13 appendString:thoroughfare2];
       }
     }
 
@@ -64,47 +64,47 @@ LABEL_12:
     }
 
 LABEL_16:
-    v16 = [v4 locality];
+    locality = [structuredAddress2 locality];
 
-    if ([v16 length])
+    if ([locality length])
     {
-      [v5 addObject:v16];
+      [v5 addObject:locality];
     }
 
-    v17 = [v4 subAdministrativeArea];
+    subAdministrativeArea = [structuredAddress2 subAdministrativeArea];
 
-    if ([v17 length])
+    if ([subAdministrativeArea length])
     {
-      v18 = [v4 locality];
-      v19 = [v17 isEqualToString:v18];
+      locality2 = [structuredAddress2 locality];
+      v19 = [subAdministrativeArea isEqualToString:locality2];
 
       if ((v19 & 1) == 0)
       {
-        [v5 addObject:v17];
+        [v5 addObject:subAdministrativeArea];
       }
     }
 
-    v20 = [v4 administrativeArea];
+    administrativeArea = [structuredAddress2 administrativeArea];
 
-    if ([v20 length])
+    if ([administrativeArea length])
     {
-      [v5 addObject:v20];
+      [v5 addObject:administrativeArea];
     }
 
     if (![v5 count])
     {
-      v21 = [v4 administrativeAreaCode];
+      administrativeAreaCode = [structuredAddress2 administrativeAreaCode];
 
-      if ([v21 length])
+      if ([administrativeAreaCode length])
       {
-        [v5 addObject:v21];
+        [v5 addObject:administrativeAreaCode];
       }
 
-      v20 = [v4 country];
+      administrativeArea = [structuredAddress2 country];
 
-      if ([v20 length])
+      if ([administrativeArea length])
       {
-        [v5 addObject:v20];
+        [v5 addObject:administrativeArea];
       }
     }
 
@@ -112,20 +112,20 @@ LABEL_16:
     {
       v22 = _MNLocalizedStringFromThisBundle(@"Address Components Separator");
       v23 = [v5 objectAtIndex:0];
-      v24 = [v23 _navigation_isCJK];
+      _navigation_isCJK = [v23 _navigation_isCJK];
 
-      if (v24)
+      if (_navigation_isCJK)
       {
-        v25 = [v5 reverseObjectEnumerator];
-        v26 = [v25 allObjects];
+        reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
       }
 
       else
       {
-        v26 = v5;
+        allObjects = v5;
       }
 
-      v6 = [v26 componentsJoinedByString:v22];
+      v6 = [allObjects componentsJoinedByString:v22];
     }
 
     else
@@ -136,9 +136,9 @@ LABEL_16:
     goto LABEL_35;
   }
 
-  v4 = [a1 formattedAddressLines];
+  structuredAddress2 = [self formattedAddressLines];
   v5 = _MNLocalizedStringFromThisBundle(@"Address Components Separator");
-  v6 = [v4 componentsJoinedByString:v5];
+  v6 = [structuredAddress2 componentsJoinedByString:v5];
 LABEL_35:
 
 LABEL_36:

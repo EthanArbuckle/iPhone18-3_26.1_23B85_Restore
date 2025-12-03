@@ -1,42 +1,42 @@
 @interface HDEncryptedArchiveKeyPair
-+ (id)fetchFromKeychainForLabel:(id)a3 includePrivate:(BOOL)a4 error:(id *)a5;
-+ (id)randomKeyPairWithError:(id *)a3;
-- (BOOL)_deleteFromKeychainWithLabel:(id)a3 public:(BOOL)a4 error:(id *)a5;
-- (BOOL)addToKeychainWithLabel:(id)a3 error:(id *)a4;
-- (BOOL)deleteFromKeychainWithLabel:(id)a3 error:(id *)a4;
-- (HDEncryptedArchiveKeyPair)initWithPublicSecKey:(__SecKey *)a3;
-- (HDEncryptedArchiveKeyPair)initWithSecKey:(__SecKey *)a3;
-- (id)keyDataForDecryptionWithError:(id *)a3;
-- (id)keyDataForEncryptionWithError:(id *)a3;
++ (id)fetchFromKeychainForLabel:(id)label includePrivate:(BOOL)private error:(id *)error;
++ (id)randomKeyPairWithError:(id *)error;
+- (BOOL)_deleteFromKeychainWithLabel:(id)label public:(BOOL)public error:(id *)error;
+- (BOOL)addToKeychainWithLabel:(id)label error:(id *)error;
+- (BOOL)deleteFromKeychainWithLabel:(id)label error:(id *)error;
+- (HDEncryptedArchiveKeyPair)initWithPublicSecKey:(__SecKey *)key;
+- (HDEncryptedArchiveKeyPair)initWithSecKey:(__SecKey *)key;
+- (id)keyDataForDecryptionWithError:(id *)error;
+- (id)keyDataForEncryptionWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation HDEncryptedArchiveKeyPair
 
-- (HDEncryptedArchiveKeyPair)initWithSecKey:(__SecKey *)a3
+- (HDEncryptedArchiveKeyPair)initWithSecKey:(__SecKey *)key
 {
   v6.receiver = self;
   v6.super_class = HDEncryptedArchiveKeyPair;
   v4 = [(HDEncryptedArchiveKeyPair *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_fullKey = a3;
-    v4->_publicKey = SecKeyCopyPublicKey(a3);
+    CFRetain(key);
+    v4->_fullKey = key;
+    v4->_publicKey = SecKeyCopyPublicKey(key);
   }
 
   return v4;
 }
 
-- (HDEncryptedArchiveKeyPair)initWithPublicSecKey:(__SecKey *)a3
+- (HDEncryptedArchiveKeyPair)initWithPublicSecKey:(__SecKey *)key
 {
   v6.receiver = self;
   v6.super_class = HDEncryptedArchiveKeyPair;
   v4 = [(HDEncryptedArchiveKeyPair *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_publicKey = a3;
+    CFRetain(key);
+    v4->_publicKey = key;
   }
 
   return v4;
@@ -58,7 +58,7 @@
   [(HDEncryptedArchiveKeyPair *)&v4 dealloc];
 }
 
-+ (id)randomKeyPairWithError:(id *)a3
++ (id)randomKeyPairWithError:(id *)error
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CDC040];
@@ -82,10 +82,10 @@
     v10 = v14;
     if (v10)
     {
-      if (a3)
+      if (error)
       {
         v11 = v10;
-        *a3 = v10;
+        *error = v10;
       }
 
       else
@@ -102,11 +102,11 @@
   return v9;
 }
 
-+ (id)fetchFromKeychainForLabel:(id)a3 includePrivate:(BOOL)a4 error:(id *)a5
++ (id)fetchFromKeychainForLabel:(id)label includePrivate:(BOOL)private error:(id *)error
 {
   v36[6] = *MEMORY[0x277D85DE8];
   v7 = "private";
-  if (a4)
+  if (private)
   {
     v8 = MEMORY[0x277CDBF18];
   }
@@ -117,7 +117,7 @@
     v8 = MEMORY[0x277CDBEE8];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", a3, v7];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", label, v7];
   result = 0;
   v10 = *MEMORY[0x277CDC228];
   v35[0] = *MEMORY[0x277CDC080];
@@ -142,7 +142,7 @@
   {
     if (v16 == -25300)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:118 format:@"No matching key found."];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:@"No matching key found."];
     }
 
     else
@@ -156,10 +156,10 @@
       v24 = [v20 errorWithDomain:v21 code:v22 userInfo:v23];
       if (v24)
       {
-        if (a5)
+        if (error)
         {
           v25 = v24;
-          *a5 = v24;
+          *error = v24;
         }
 
         else
@@ -176,7 +176,7 @@
     if (v17 == SecKeyGetTypeID())
     {
       v18 = [HDEncryptedArchiveKeyPair alloc];
-      if (a4)
+      if (private)
       {
         v19 = [(HDEncryptedArchiveKeyPair *)v18 initWithSecKey:result];
       }
@@ -193,7 +193,7 @@
     v26 = MEMORY[0x277CCA9B8];
     v27 = CFGetTypeID(result);
     v28 = CFCopyTypeIDDescription(v27);
-    [v26 hk_assignError:a5 code:3 format:{@"Unexpected return type %@ during keychain fetch.", v28}];
+    [v26 hk_assignError:error code:3 format:{@"Unexpected return type %@ during keychain fetch.", v28}];
 
     CFRelease(result);
   }
@@ -206,10 +206,10 @@ LABEL_19:
   return v29;
 }
 
-- (BOOL)addToKeychainWithLabel:(id)a3 error:(id *)a4
+- (BOOL)addToKeychainWithLabel:(id)label error:(id *)error
 {
   v51[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  labelCopy = label;
   v6 = MEMORY[0x277CDC080];
   v7 = MEMORY[0x277CDC5C8];
   v8 = MEMORY[0x277CBEC38];
@@ -220,8 +220,8 @@ LABEL_19:
   if (self->_fullKey)
   {
     v50[0] = *MEMORY[0x277CDC080];
-    v42 = v5;
-    v13 = v5;
+    v42 = labelCopy;
+    v13 = labelCopy;
     v14 = MEMORY[0x277CDC5C8];
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", v42, "private"];
     v16 = *v14;
@@ -251,13 +251,13 @@ LABEL_19:
       v26 = [v23 errorWithDomain:v24 code:v22 userInfo:v25];
       if (!v26)
       {
-        v5 = v13;
+        labelCopy = v13;
         goto LABEL_14;
       }
 
-      v27 = a4;
-      v5 = v13;
-      if (a4)
+      errorCopy2 = error;
+      labelCopy = v13;
+      if (error)
       {
         goto LABEL_5;
       }
@@ -266,7 +266,7 @@ LABEL_19:
     }
 
     v10 = v19;
-    v5 = v13;
+    labelCopy = v13;
     v9 = MEMORY[0x277CDC140];
     v7 = MEMORY[0x277CDC5C8];
     v6 = MEMORY[0x277CDC080];
@@ -276,7 +276,7 @@ LABEL_19:
   {
     v46[0] = *v6;
     v29 = v7;
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", v5, "public"];
+    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", labelCopy, "public"];
     v31 = *v29;
     v47[0] = v30;
     v47[1] = v8;
@@ -316,12 +316,12 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v27 = a4;
-    if (a4)
+    errorCopy2 = error;
+    if (error)
     {
 LABEL_5:
       v28 = v26;
-      *v27 = v26;
+      *errorCopy2 = v26;
       goto LABEL_14;
     }
 
@@ -337,11 +337,11 @@ LABEL_16:
   return v39;
 }
 
-- (BOOL)_deleteFromKeychainWithLabel:(id)a3 public:(BOOL)a4 error:(id *)a5
+- (BOOL)_deleteFromKeychainWithLabel:(id)label public:(BOOL)public error:(id *)error
 {
   v29[6] = *MEMORY[0x277D85DE8];
   v6 = "public";
-  if (a4)
+  if (public)
   {
     v7 = MEMORY[0x277CDBEE8];
   }
@@ -352,7 +352,7 @@ LABEL_16:
     v7 = MEMORY[0x277CDBF18];
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", a3, v6];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%s", label, v6];
   v9 = *MEMORY[0x277CDC228];
   v28[0] = *MEMORY[0x277CDC080];
   v28[1] = v9;
@@ -383,10 +383,10 @@ LABEL_16:
     v20 = [v17 errorWithDomain:v18 code:v16 userInfo:v19];
     if (v20)
     {
-      if (a5)
+      if (error)
       {
         v21 = v20;
-        *a5 = v20;
+        *error = v20;
       }
 
       else
@@ -412,19 +412,19 @@ LABEL_16:
   return v23;
 }
 
-- (BOOL)deleteFromKeychainWithLabel:(id)a3 error:(id *)a4
+- (BOOL)deleteFromKeychainWithLabel:(id)label error:(id *)error
 {
-  v6 = a3;
+  labelCopy = label;
   v7 = 0;
-  if ([(HDEncryptedArchiveKeyPair *)self _deleteFromKeychainWithLabel:v6 public:0 error:a4])
+  if ([(HDEncryptedArchiveKeyPair *)self _deleteFromKeychainWithLabel:labelCopy public:0 error:error])
   {
-    v7 = [(HDEncryptedArchiveKeyPair *)self _deleteFromKeychainWithLabel:v6 public:1 error:a4];
+    v7 = [(HDEncryptedArchiveKeyPair *)self _deleteFromKeychainWithLabel:labelCopy public:1 error:error];
   }
 
   return v7;
 }
 
-- (id)keyDataForEncryptionWithError:(id *)a3
+- (id)keyDataForEncryptionWithError:(id *)error
 {
   error = 0;
   v4 = SecKeyCopyExternalRepresentation(self->_publicKey, &error);
@@ -436,13 +436,13 @@ LABEL_16:
 
   else
   {
-    v7 = error;
-    if (v7)
+    errorCopy = error;
+    if (errorCopy)
     {
-      if (a3)
+      if (error)
       {
-        v8 = v7;
-        *a3 = v7;
+        v8 = errorCopy;
+        *error = errorCopy;
       }
 
       else
@@ -455,7 +455,7 @@ LABEL_16:
   return v5;
 }
 
-- (id)keyDataForDecryptionWithError:(id *)a3
+- (id)keyDataForDecryptionWithError:(id *)error
 {
   fullKey = self->_fullKey;
   if (fullKey)
@@ -470,13 +470,13 @@ LABEL_16:
 
     else
     {
-      v8 = error;
-      if (v8)
+      errorCopy = error;
+      if (errorCopy)
       {
-        if (a3)
+        if (error)
         {
-          v9 = v8;
-          *a3 = v8;
+          v9 = errorCopy;
+          *error = errorCopy;
         }
 
         else
@@ -489,7 +489,7 @@ LABEL_16:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:924 format:@"Private key not available; did you only fetch the public key?"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:924 format:@"Private key not available; did you only fetch the public key?"];
     v6 = 0;
   }
 

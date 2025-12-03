@@ -1,10 +1,10 @@
 @interface SGCubicSpline
-- (float32x2_t)interpolateAt:(double)a3 derivative:(double)a4;
+- (float32x2_t)interpolateAt:(double)at derivative:(double)derivative;
 - (void)_processClosedSpline;
 - (void)_processOpenSpline;
 - (void)_processSpline;
 - (void)dealloc;
-- (void)interpolateWithSteps:(int)a3 interpolation:(id)a4;
+- (void)interpolateWithSteps:(int)steps interpolation:(id)interpolation;
 - (void)process;
 @end
 
@@ -69,25 +69,25 @@
   self->_startIndex = -1;
 }
 
-- (float32x2_t)interpolateAt:(double)a3 derivative:(double)a4
+- (float32x2_t)interpolateAt:(double)at derivative:(double)derivative
 {
   v9 = a2;
-  *&a3 = a2 - a2;
-  if (*(a1 + 48) == a2)
+  *&at = a2 - a2;
+  if (*(self + 48) == a2)
   {
-    v10 = *(a1 + 56);
-    v11 = *(a1 + 64);
-    *&a7 = *&a3 * *&a3;
-    v13 = *(a1 + 72);
-    v12 = *(a1 + 80);
-    v14 = vdup_lane_s32(*&a3, 0);
+    v10 = *(self + 56);
+    v11 = *(self + 64);
+    *&a7 = *&at * *&at;
+    v13 = *(self + 72);
+    v12 = *(self + 80);
+    v14 = vdup_lane_s32(*&at, 0);
     if (a9)
     {
       __asm { FMOV            V7.2S, #3.0 }
 
       v20 = vmul_f32(v12, _D7);
       v21 = vdup_lane_s32(*&a7, 0);
-      *a9 = vmla_n_f32(vmla_n_f32(v11, vadd_f32(v13, v13), *&a3), v20, *&a7);
+      *a9 = vmla_n_f32(vmla_n_f32(v11, vadd_f32(v13, v13), *&at), v20, *&a7);
     }
 
     else
@@ -95,36 +95,36 @@
       v21 = vdup_lane_s32(*&a7, 0);
     }
 
-    return vmla_n_f32(vmla_f32(vmla_f32(v10, v11, v14), v13, v21), v12, *&a3 * *&a7);
+    return vmla_n_f32(vmla_f32(vmla_f32(v10, v11, v14), v13, v21), v12, *&at * *&a7);
   }
 
   else
   {
-    *(a1 + 48) = v9;
-    v22 = *(a1 + 16);
+    *(self + 48) = v9;
+    v22 = *(self + 16);
     v23 = *(v22 + 2);
     v24 = *v22;
-    v25 = **(a1 + 8);
+    v25 = **(self + 8);
     v26 = *(v24 + 8 * v9);
-    *(a1 + 56) = v26;
+    *(self + 56) = v26;
     v27 = *(v25 + 8 * v9);
     v28 = (v9 + 1) % v23;
-    *(a1 + 64) = v27;
+    *(self + 64) = v27;
     v29 = vsub_f32(*(v24 + 8 * v28), *(v24 + 8 * v9));
     v33.i32[1] = -1073741824;
     __asm { FMOV            V7.2S, #3.0 }
 
     v31 = vsub_f32(vmla_f32(vmul_f32(v27, 0xC0000000C0000000), _D7, v29), *(v25 + 8 * v28));
-    *(a1 + 72) = v31;
+    *(self + 72) = v31;
     v32 = vadd_f32(vmla_f32(*(v25 + 8 * v9), 0xC0000000C0000000, v29), *(v25 + 8 * v28));
-    *(a1 + 80) = v32;
-    *v33.i32 = *&a3 * *&a3;
-    v34 = vdup_lane_s32(*&a3, 0);
+    *(self + 80) = v32;
+    *v33.i32 = *&at * *&at;
+    v34 = vdup_lane_s32(*&at, 0);
     if (a9)
     {
       v35 = vmul_f32(v32, _D7);
       v36 = vdup_lane_s32(v33, 0);
-      *a9 = vmla_n_f32(vmla_n_f32(v27, vadd_f32(v31, v31), *&a3), v35, *v33.i32);
+      *a9 = vmla_n_f32(vmla_n_f32(v27, vadd_f32(v31, v31), *&at), v35, *v33.i32);
     }
 
     else
@@ -132,25 +132,25 @@
       v36 = vdup_lane_s32(v33, 0);
     }
 
-    return vmla_n_f32(vmla_f32(vmla_f32(v26, v27, v34), v31, v36), v32, *&a3 * *v33.i32);
+    return vmla_n_f32(vmla_f32(vmla_f32(v26, v27, v34), v31, v36), v32, *&at * *v33.i32);
   }
 }
 
-- (void)interpolateWithSteps:(int)a3 interpolation:(id)a4
+- (void)interpolateWithSteps:(int)steps interpolation:(id)interpolation
 {
-  v6 = a4;
-  if ((a3 & 0x80000000) == 0)
+  interpolationCopy = interpolation;
+  if ((steps & 0x80000000) == 0)
   {
     v7 = 0;
-    v8 = (self->_length - !self->_closed) / a3;
-    v9 = a3 + 1;
+    v8 = (self->_length - !self->_closed) / steps;
+    v9 = steps + 1;
     do
     {
       v10 = fmod((v8 * v7), self->_length);
       *&v10 = v10;
       v11 = 0;
       [(SGCubicSpline *)self interpolateAt:&v11 derivative:v10];
-      v6[2](v6, v7);
+      interpolationCopy[2](interpolationCopy, v7);
       v7 = (v7 + 1);
     }
 

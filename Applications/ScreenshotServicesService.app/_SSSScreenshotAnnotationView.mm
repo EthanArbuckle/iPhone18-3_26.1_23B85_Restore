@@ -1,26 +1,26 @@
 @interface _SSSScreenshotAnnotationView
-- (_SSSScreenshotAnnotationView)initWithFrame:(CGRect)a3;
+- (_SSSScreenshotAnnotationView)initWithFrame:(CGRect)frame;
 - (void)_asyncHideCachedOverlayView;
-- (void)_hideAndShowViewsForScreenshotEditsSnapshotted:(BOOL)a3;
-- (void)_updateOverlayControllerForBeingActiveForScreenshotEditsSnapshotted:(BOOL)a3;
+- (void)_hideAndShowViewsForScreenshotEditsSnapshotted:(BOOL)snapshotted;
+- (void)_updateOverlayControllerForBeingActiveForScreenshotEditsSnapshotted:(BOOL)snapshotted;
 - (void)dealloc;
 - (void)endedEditing;
 - (void)enterEditing;
-- (void)generateSnapshotImageIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)setCornerRadius:(double)a3;
-- (void)setOverlayControllerActive:(BOOL)a3;
-- (void)setScreenshot:(id)a3;
-- (void)setScreenshotEditsSnapshotted:(BOOL)a3;
-- (void)setVellumOpacity:(double)a3;
+- (void)generateSnapshotImageIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)setCornerRadius:(double)radius;
+- (void)setOverlayControllerActive:(BOOL)active;
+- (void)setScreenshot:(id)screenshot;
+- (void)setScreenshotEditsSnapshotted:(BOOL)snapshotted;
+- (void)setVellumOpacity:(double)opacity;
 @end
 
 @implementation _SSSScreenshotAnnotationView
 
-- (_SSSScreenshotAnnotationView)initWithFrame:(CGRect)a3
+- (_SSSScreenshotAnnotationView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _SSSScreenshotAnnotationView;
-  v3 = [(_SSSScreenshotAnnotationView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SSSScreenshotAnnotationView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(_SSSScreenshotAnnotationController);
   overlayController = v3->_overlayController;
   v3->_overlayController = &v4->super;
@@ -36,11 +36,11 @@
   [(_SSSScreenshotAnnotationView *)&v3 dealloc];
 }
 
-- (void)setScreenshot:(id)a3
+- (void)setScreenshot:(id)screenshot
 {
-  objc_storeStrong(&self->_screenshot, a3);
-  v5 = a3;
-  [(_SSSScreenshotContentOverlayController *)self->_overlayController setScreenshot:v5];
+  objc_storeStrong(&self->_screenshot, screenshot);
+  screenshotCopy = screenshot;
+  [(_SSSScreenshotContentOverlayController *)self->_overlayController setScreenshot:screenshotCopy];
 }
 
 - (void)enterEditing
@@ -60,10 +60,10 @@
   [(_SSSScreenshotContentOverlayController *)overlayController logDidEndEditingWithOverlay];
 }
 
-- (void)setOverlayControllerActive:(BOOL)a3
+- (void)setOverlayControllerActive:(BOOL)active
 {
-  self->_overlayControllerActive = a3;
-  if (a3)
+  self->_overlayControllerActive = active;
+  if (active)
   {
     [(_SSSScreenshotAnnotationView *)self enterEditing];
   }
@@ -74,36 +74,36 @@
   }
 }
 
-- (void)setVellumOpacity:(double)a3
+- (void)setVellumOpacity:(double)opacity
 {
-  if (self->_vellumOpacity != a3)
+  if (self->_vellumOpacity != opacity)
   {
-    self->_vellumOpacity = a3;
+    self->_vellumOpacity = opacity;
     [(_SSSScreenshotAnnotationView *)self setNeedsLayout];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  self->_cornerRadius = a3;
-  [(_SSSScreenshotAnnotationView *)self setClipsToBounds:a3 > 0.0];
+  self->_cornerRadius = radius;
+  [(_SSSScreenshotAnnotationView *)self setClipsToBounds:radius > 0.0];
 
-  [(_SSSScreenshotAnnotationView *)self _setCornerRadius:a3];
+  [(_SSSScreenshotAnnotationView *)self _setCornerRadius:radius];
 }
 
-- (void)setScreenshotEditsSnapshotted:(BOOL)a3
+- (void)setScreenshotEditsSnapshotted:(BOOL)snapshotted
 {
-  if (self->_screenshotEditsSnapshotted != a3)
+  if (self->_screenshotEditsSnapshotted != snapshotted)
   {
-    v3 = a3;
-    self->_screenshotEditsSnapshotted = a3;
+    snapshottedCopy = snapshotted;
+    self->_screenshotEditsSnapshotted = snapshotted;
     objc_initWeak(&location, self);
     v5 = _NSConcreteStackBlock;
     v6 = 3221225472;
     v7 = sub_100039F7C;
     v8 = &unk_1000BA2F8;
     objc_copyWeak(&v9, &location);
-    [(_SSSScreenshotAnnotationView *)self generateSnapshotImageIfNecessary:v3 withCompletion:&v5];
+    [(_SSSScreenshotAnnotationView *)self generateSnapshotImageIfNecessary:snapshottedCopy withCompletion:&v5];
     [(_SSSScreenshotAnnotationView *)self setNeedsLayout:v5];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -123,25 +123,25 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateOverlayControllerForBeingActiveForScreenshotEditsSnapshotted:(BOOL)a3
+- (void)_updateOverlayControllerForBeingActiveForScreenshotEditsSnapshotted:(BOOL)snapshotted
 {
-  v5 = [(_SSSScreenshotAnnotationView *)self overlayController];
-  v6 = v5;
-  v7 = !a3 && self->_overlayControllerActive;
-  [v5 setActive:v7];
+  overlayController = [(_SSSScreenshotAnnotationView *)self overlayController];
+  v6 = overlayController;
+  v7 = !snapshotted && self->_overlayControllerActive;
+  [overlayController setActive:v7];
 
   [(_SSSScreenshotAnnotationView *)self setNeedsLayout];
 }
 
-- (void)_hideAndShowViewsForScreenshotEditsSnapshotted:(BOOL)a3
+- (void)_hideAndShowViewsForScreenshotEditsSnapshotted:(BOOL)snapshotted
 {
-  v3 = a3;
+  snapshottedCopy = snapshotted;
   [(_SSSScreenshotAnnotationView *)self _cancelScheduledHideCachedOverlayView];
-  v5 = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
-  v6 = v5;
-  if (v3)
+  annotationOverlayView = [(_SSSScreenshotAnnotationView *)self annotationOverlayView];
+  v6 = annotationOverlayView;
+  if (snapshottedCopy)
   {
-    [v5 setHidden:1];
+    [annotationOverlayView setHidden:1];
 
     [(UIView *)self->_vellumView setHidden:1];
     [(_SSSScreenshotAnnotationView *)self setCachedViewsHidden:0];
@@ -155,7 +155,7 @@
 
   else
   {
-    [v5 setHidden:0];
+    [annotationOverlayView setHidden:0];
 
     [(_SSSScreenshotAnnotationView *)self _scheduleHideCachedOverlayViewWithDelay:0.0833333333];
     if (!_SSIsViewSnapshotDebuggingEnabled())
@@ -167,22 +167,22 @@
   }
 
   v8 = v7;
-  v9 = [(_SSSScreenshotAnnotationView *)self layer];
-  [v9 setBorderColor:{objc_msgSend(v8, "CGColor")}];
+  layer = [(_SSSScreenshotAnnotationView *)self layer];
+  [layer setBorderColor:{objc_msgSend(v8, "CGColor")}];
 
-  v10 = [(_SSSScreenshotAnnotationView *)self layer];
-  [v10 setBorderWidth:20.0];
+  layer2 = [(_SSSScreenshotAnnotationView *)self layer];
+  [layer2 setBorderWidth:20.0];
 
 LABEL_7:
 
   [(_SSSScreenshotAnnotationView *)self setNeedsLayout];
 }
 
-- (void)generateSnapshotImageIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)generateSnapshotImageIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 

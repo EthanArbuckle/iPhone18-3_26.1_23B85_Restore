@@ -1,7 +1,7 @@
 @interface ACCNavigationLaneGuidanceInfo
-+ (id)keyForType:(unsigned __int16)a3;
++ (id)keyForType:(unsigned __int16)type;
 - (ACCNavigationLaneGuidanceInfo)init;
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4;
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data;
 - (id)copyDictionary;
 @end
 
@@ -22,11 +22,11 @@
   return v2;
 }
 
-- (BOOL)_checkDataClassForType:(unsigned __int16)a3 data:(id)a4
+- (BOOL)_checkDataClassForType:(unsigned __int16)type data:(id)data
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4 >= 4)
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy >= 4)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -47,7 +47,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10[0] = 67109120;
-      v10[1] = v4;
+      v10[1] = typeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown LaneGuidanceInfoUpdate InfoType %d", v10, 8u);
     }
 
@@ -90,8 +90,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) copyDictionary];
-          [v4 addObject:v10];
+          copyDictionary = [*(*(&v12 + 1) + 8 * v9) copyDictionary];
+          [v4 addObject:copyDictionary];
 
           v9 = v9 + 1;
         }
@@ -109,22 +109,22 @@
   return v2;
 }
 
-+ (id)keyForType:(unsigned __int16)a3
++ (id)keyForType:(unsigned __int16)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v4 = &ACCNav_LGIUpdate_InstructionText;
     goto LABEL_7;
   }
 
-  v3 = a3;
-  if (a3 == 2)
+  typeCopy = type;
+  if (type == 2)
   {
     v4 = &ACCNav_LGIUpdate_LaneInfo;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = &ACCNav_LGIUpdate_LaneGuidanceIndex;
 LABEL_7:
@@ -161,7 +161,7 @@ LABEL_7:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109120;
-    v10[1] = v3;
+    v10[1] = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[#Navigation] ERROR: Unknown LaneGuidanceInfoUpdate InfoType %d", v10, 8u);
   }
 

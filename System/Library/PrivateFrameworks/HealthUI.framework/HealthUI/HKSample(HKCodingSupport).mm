@@ -22,8 +22,8 @@
   [v3 endDate];
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
   v7 = MEMORY[0x1E695DF20];
-  v8 = [v3 metadataDictionary];
-  v9 = [v7 dictionaryWithCodableMetadata:v8];
+  metadataDictionary = [v3 metadataDictionary];
+  v9 = [v7 dictionaryWithCodableMetadata:metadataDictionary];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -48,8 +48,8 @@
     if (objc_opt_isKindOfClass())
     {
       v13 = MEMORY[0x1E696C348];
-      v14 = [v3 quantity];
-      v15 = [v13 createWithCodableQuantity:v14];
+      quantity = [v3 quantity];
+      v15 = [v13 createWithCodableQuantity:quantity];
 
       v11 = [MEMORY[0x1E696C358] quantitySampleWithType:v4 quantity:v15 startDate:v5 endDate:v6 device:0 metadata:v9];
     }
@@ -94,12 +94,12 @@ LABEL_9:
   {
     v4 = [MEMORY[0x1E696BF90] dataTypeWithCode:{objc_msgSend(v3, "dataType")}];
     v5 = MEMORY[0x1E696BF88];
-    v6 = [v3 categoryValue];
+    categoryValue = [v3 categoryValue];
     [v3 startDate];
     v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
     [v3 endDate];
     v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
-    v9 = [v5 categorySampleWithType:v4 value:v6 startDate:v7 endDate:v8];
+    v9 = [v5 categorySampleWithType:v4 value:categoryValue startDate:v7 endDate:v8];
   }
 
   else
@@ -113,28 +113,28 @@ LABEL_9:
 - (HKCodableSampleChartData)codableSampleChartData
 {
   v2 = objc_alloc_init(HKCodableSampleChartData);
-  v3 = [a1 sampleType];
-  -[HKCodableSampleChartData setDataType:](v2, "setDataType:", [v3 code]);
+  sampleType = [self sampleType];
+  -[HKCodableSampleChartData setDataType:](v2, "setDataType:", [sampleType code]);
 
-  v4 = [a1 startDate];
-  [v4 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HKCodableSampleChartData *)v2 setStartDate:?];
 
-  v5 = [a1 endDate];
-  [v5 timeIntervalSinceReferenceDate];
+  endDate = [self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HKCodableSampleChartData *)v2 setEndDate:?];
 
-  -[HKCodableSampleChartData setInt64Value:](v2, "setInt64Value:", [a1 hk_integerValue]);
-  v6 = [a1 metadata];
-  v7 = [v6 codableMetadata];
-  [(HKCodableSampleChartData *)v2 setMetadataDictionary:v7];
+  -[HKCodableSampleChartData setInt64Value:](v2, "setInt64Value:", [self hk_integerValue]);
+  metadata = [self metadata];
+  codableMetadata = [metadata codableMetadata];
+  [(HKCodableSampleChartData *)v2 setMetadataDictionary:codableMetadata];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [a1 quantity];
-    v9 = [v8 codableRepresentation];
-    [(HKCodableSampleChartData *)v2 setQuantity:v9];
+    quantity = [self quantity];
+    codableRepresentation = [quantity codableRepresentation];
+    [(HKCodableSampleChartData *)v2 setQuantity:codableRepresentation];
   }
 
   return v2;

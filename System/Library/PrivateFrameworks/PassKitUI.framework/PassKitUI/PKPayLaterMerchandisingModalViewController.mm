@@ -1,23 +1,23 @@
 @interface PKPayLaterMerchandisingModalViewController
-- (PKPayLaterMerchandisingModalViewController)initWithConfiguration:(id)a3;
+- (PKPayLaterMerchandisingModalViewController)initWithConfiguration:(id)configuration;
 - (id)_webViewConfiguration;
-- (void)_calculateWebViewHeightWithCompletion:(id)a3;
-- (void)_setupWebView:(id)a3;
-- (void)_showSpinnerView:(BOOL)a3 showWebView:(BOOL)a4 animate:(BOOL)a5 completion:(id)a6;
+- (void)_calculateWebViewHeightWithCompletion:(id)completion;
+- (void)_setupWebView:(id)view;
+- (void)_showSpinnerView:(BOOL)view showWebView:(BOOL)webView animate:(BOOL)animate completion:(id)completion;
 - (void)loadView;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 - (void)viewWillLayoutSubviews;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewDidClose:(id)a3;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewDidClose:(id)close;
 @end
 
 @implementation PKPayLaterMerchandisingModalViewController
 
-- (PKPayLaterMerchandisingModalViewController)initWithConfiguration:(id)a3
+- (PKPayLaterMerchandisingModalViewController)initWithConfiguration:(id)configuration
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   v37.receiver = self;
   v37.super_class = PKPayLaterMerchandisingModalViewController;
   v6 = [(PKPayLaterMerchandisingModalViewController *)&v37 init];
@@ -26,18 +26,18 @@
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PKPayLaterMerchandisingModalViewController *)v6 _viewControllerDescription];
+      _viewControllerDescription = [(PKPayLaterMerchandisingModalViewController *)v6 _viewControllerDescription];
       *buf = 138412546;
-      v40 = v8;
+      v40 = _viewControllerDescription;
       v41 = 2112;
-      v42 = v5;
+      v42 = configurationCopy;
       _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Creating %@ with configuration %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_configuration, a3);
-    v9 = [MEMORY[0x1E69B8B38] sharedInstance];
+    objc_storeStrong(&v6->_configuration, configuration);
+    mEMORY[0x1E69B8B38] = [MEMORY[0x1E69B8B38] sharedInstance];
     utilities = v6->_utilities;
-    v6->_utilities = v9;
+    v6->_utilities = mEMORY[0x1E69B8B38];
 
     v11 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     spinner = v6->_spinner;
@@ -46,8 +46,8 @@
     [(UIActivityIndicatorView *)v6->_spinner startAnimating];
     [(UIActivityIndicatorView *)v6->_spinner sizeToFit];
     v13 = objc_alloc(MEMORY[0x1E69853A0]);
-    v14 = [(PKPayLaterMerchandisingModalViewController *)v6 _webViewConfiguration];
-    v15 = [v13 initWithFrame:v14 configuration:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    _webViewConfiguration = [(PKPayLaterMerchandisingModalViewController *)v6 _webViewConfiguration];
+    v15 = [v13 initWithFrame:_webViewConfiguration configuration:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     webView = v6->_webView;
     v6->_webView = v15;
 
@@ -58,25 +58,25 @@
     scrollView = v6->_scrollView;
     v6->_scrollView = v17;
 
-    v19 = [(UIScrollView *)v6->_scrollView pinchGestureRecognizer];
-    [v19 setEnabled:0];
+    pinchGestureRecognizer = [(UIScrollView *)v6->_scrollView pinchGestureRecognizer];
+    [pinchGestureRecognizer setEnabled:0];
 
     [(UIScrollView *)v6->_scrollView setShowsHorizontalScrollIndicator:0];
     [(UIScrollView *)v6->_scrollView setShowsVerticalScrollIndicator:1];
     [(UIScrollView *)v6->_scrollView setMultipleTouchEnabled:0];
     v20 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:25.0];
     v21 = MEMORY[0x1E69DCAD8];
-    v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v38[0] = v22;
-    v23 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    v38[1] = v23;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v38[0] = secondaryLabelColor;
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    v38[1] = quaternarySystemFillColor;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v25 = [v21 configurationWithPaletteColors:v24];
     v26 = [v20 configurationByApplyingConfiguration:v25];
 
     v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle.fill" withConfiguration:v26];
-    v28 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v28 setImage:v27];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setImage:v27];
     objc_initWeak(buf, v6);
     v29 = MEMORY[0x1E69DC628];
     v35[0] = MEMORY[0x1E69E9820];
@@ -85,12 +85,12 @@
     v35[3] = &unk_1E8010A60;
     objc_copyWeak(&v36, buf);
     v30 = [v29 actionWithHandler:v35];
-    v31 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v28 primaryAction:v30];
+    v31 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v30];
     closeButton = v6->_closeButton;
     v6->_closeButton = v31;
 
-    v33 = [(PKPayLaterMerchandisingModalViewController *)v6 navigationItem];
-    [v33 _setPreferredNavigationBarVisibility:1];
+    navigationItem = [(PKPayLaterMerchandisingModalViewController *)v6 navigationItem];
+    [navigationItem _setPreferredNavigationBarVisibility:1];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(buf);
@@ -112,17 +112,17 @@ void __68__PKPayLaterMerchandisingModalViewController_initWithConfiguration___bl
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
+    _viewControllerDescription = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
     *buf = 138412290;
-    v13 = v9;
+    v13 = _viewControllerDescription;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "%@ finished loading", buf, 0xCu);
   }
 
@@ -148,48 +148,48 @@ void __74__PKPayLaterMerchandisingModalViewController_webView_didFinishNavigatio
   }
 }
 
-- (void)webViewDidClose:(id)a3
+- (void)webViewDidClose:(id)close
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
+    _viewControllerDescription = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
     v6 = 138412290;
-    v7 = v5;
+    v7 = _viewControllerDescription;
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "%@ did close web view", &v6, 0xCu);
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  handlerCopy = handler;
   utilities = self->_utilities;
   configuration = self->_configuration;
-  v10 = a4;
+  actionCopy = action;
   v11 = [(PKPayLaterMerchandisingUtilities *)utilities merchandisingBaseURLForEnviornmentType:[(PKPayLaterMerchandisingConfiguration *)configuration environmentType]];
-  v12 = [v10 request];
+  request = [actionCopy request];
 
-  v13 = [v12 URL];
+  v13 = [request URL];
 
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
+    _viewControllerDescription = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
     v23 = 138412546;
-    v24 = v15;
+    v24 = _viewControllerDescription;
     v25 = 2112;
     v26 = v13;
     _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "%@ deciding policy for action: %@", &v23, 0x16u);
   }
 
-  v16 = [v13 host];
-  v17 = [v11 host];
-  v18 = v16;
-  v19 = v17;
+  host = [v13 host];
+  host2 = [v11 host];
+  defaultWorkspace = host;
+  v19 = host2;
   v20 = v19;
-  if (v18 == v19)
+  if (defaultWorkspace == v19)
   {
 
     v22 = 1;
@@ -198,13 +198,13 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (!v18 || !v19)
+  if (!defaultWorkspace || !v19)
   {
 
     goto LABEL_10;
   }
 
-  v21 = [v18 isEqualToString:v19];
+  v21 = [defaultWorkspace isEqualToString:v19];
 
   if ((v21 & 1) == 0)
   {
@@ -215,15 +215,15 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    v18 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v18 openURL:v13 withOptions:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openURL:v13 withOptions:0];
     v22 = 0;
     goto LABEL_12;
   }
 
   v22 = 1;
 LABEL_14:
-  v7[2](v7, v22);
+  handlerCopy[2](handlerCopy, v22);
 }
 
 - (void)loadView
@@ -231,23 +231,23 @@ LABEL_14:
   v6.receiver = self;
   v6.super_class = PKPayLaterMerchandisingModalViewController;
   [(PKPayLaterMerchandisingModalViewController *)&v6 loadView];
-  v3 = [(PKPayLaterMerchandisingModalViewController *)self view];
-  [v3 addSubview:self->_scrollView];
-  [v3 addSubview:self->_spinner];
-  [v3 addSubview:self->_closeButton];
+  view = [(PKPayLaterMerchandisingModalViewController *)self view];
+  [view addSubview:self->_scrollView];
+  [view addSubview:self->_spinner];
+  [view addSubview:self->_closeButton];
   [(UIScrollView *)self->_scrollView addSubview:self->_webView];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(PKPayLaterMerchandisingModalViewController *)self _showSpinnerView:1 showWebView:0 animate:0 completion:0];
-  v5 = [(PKPayLaterMerchandisingModalViewController *)self navigationItem];
+  navigationItem = [(PKPayLaterMerchandisingModalViewController *)self navigationItem];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    [v5 pkui_setupScrollEdgeChromelessAppearance];
-    [v5 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+    [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+    [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
   }
 
-  [v5 setBackButtonDisplayMode:2];
+  [navigationItem setBackButtonDisplayMode:2];
 }
 
 - (void)viewWillLayoutSubviews
@@ -255,13 +255,13 @@ LABEL_14:
   v24.receiver = self;
   v24.super_class = PKPayLaterMerchandisingModalViewController;
   [(PKPayLaterMerchandisingModalViewController *)&v24 viewWillLayoutSubviews];
-  v3 = [(PKPayLaterMerchandisingModalViewController *)self view];
-  [v3 bounds];
+  view = [(PKPayLaterMerchandisingModalViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   spinner = self->_spinner;
@@ -273,9 +273,9 @@ LABEL_14:
   [(UIScrollView *)self->_scrollView bounds];
   [(WKWebView *)self->_webView setFrame:*MEMORY[0x1E695EFF8] + 16.0, *(MEMORY[0x1E695EFF8] + 8) + 0.0, v17 + -32.0, self->_webViewHeight];
   [(UIButton *)self->_closeButton frame];
-  v18 = [(UIButton *)self->_closeButton configuration];
-  v19 = [v18 image];
-  [v19 size];
+  configuration = [(UIButton *)self->_closeButton configuration];
+  image = [configuration image];
+  [image size];
   v21 = v20;
   v23 = v22;
 
@@ -286,15 +286,15 @@ LABEL_14:
   [(UIButton *)self->_closeButton setFrame:v9 - v21 + -20.0, CGRectGetMinY(v25) + 20.0, v21, v23];
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a4 name];
+    name = [message name];
     v7 = 138412290;
-    v8 = v6;
+    v8 = name;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKPayLaterMerchandisingModalViewController received script message with name %@", &v7, 0xCu);
   }
 }
@@ -304,8 +304,8 @@ LABEL_14:
   v3 = objc_alloc_init(MEMORY[0x1E6985350]);
   [v3 addScriptMessageHandler:self name:@"modal"];
   v4 = objc_alloc_init(MEMORY[0x1E69853A8]);
-  v5 = [v4 defaultWebpagePreferences];
-  [v5 setAllowsContentJavaScript:1];
+  defaultWebpagePreferences = [v4 defaultWebpagePreferences];
+  [defaultWebpagePreferences setAllowsContentJavaScript:1];
 
   [v4 setUserContentController:v3];
   [v4 setApplicationNameForUserAgent:@"modal"];
@@ -316,37 +316,37 @@ LABEL_14:
   return v4;
 }
 
-- (void)_setupWebView:(id)a3
+- (void)_setupWebView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setAllowsLinkPreview:0];
-  v5 = [v4 scrollView];
-  [v5 setScrollEnabled:0];
-  v6 = [v5 pinchGestureRecognizer];
-  [v6 setEnabled:0];
+  viewCopy = view;
+  [viewCopy setAllowsLinkPreview:0];
+  scrollView = [viewCopy scrollView];
+  [scrollView setScrollEnabled:0];
+  pinchGestureRecognizer = [scrollView pinchGestureRecognizer];
+  [pinchGestureRecognizer setEnabled:0];
 
-  [v5 setShowsHorizontalScrollIndicator:0];
-  [v5 setShowsVerticalScrollIndicator:0];
-  [v5 setMultipleTouchEnabled:0];
+  [scrollView setShowsHorizontalScrollIndicator:0];
+  [scrollView setShowsVerticalScrollIndicator:0];
+  [scrollView setMultipleTouchEnabled:0];
   v7 = [(PKPayLaterMerchandisingUtilities *)self->_utilities merchandisingModalURLWithConfiguration:self->_configuration];
   v8 = [MEMORY[0x1E696AF68] requestWithURL:v7 cachePolicy:0 timeoutInterval:10.0];
-  v9 = [v4 loadRequest:v8];
+  v9 = [viewCopy loadRequest:v8];
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
+    _viewControllerDescription = [(PKPayLaterMerchandisingModalViewController *)self _viewControllerDescription];
     v12 = 138412546;
-    v13 = v11;
+    v13 = _viewControllerDescription;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "%@ loading request %@", &v12, 0x16u);
   }
 }
 
-- (void)_calculateWebViewHeightWithCompletion:(id)a3
+- (void)_calculateWebViewHeightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v23[0] = 0;
   v23[1] = v23;
@@ -358,7 +358,7 @@ LABEL_14:
   aBlock[2] = __84__PKPayLaterMerchandisingModalViewController__calculateWebViewHeightWithCompletion___block_invoke;
   aBlock[3] = &unk_1E80111D0;
   objc_copyWeak(&v22, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v21 = v6;
   v7 = _Block_copy(aBlock);
   v19[0] = MEMORY[0x1E69E9820];
@@ -375,7 +375,7 @@ LABEL_14:
   objc_copyWeak(&v18, &location);
   v17[5] = v23;
   [v5 addOperation:v17];
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__PKPayLaterMerchandisingModalViewController__calculateWebViewHeightWithCompletion___block_invoke_55;
@@ -386,7 +386,7 @@ LABEL_14:
   v10 = v6;
   v14 = v10;
   v15 = v23;
-  v11 = [v5 evaluateWithInput:v8 completion:v12];
+  v11 = [v5 evaluateWithInput:null completion:v12];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
@@ -567,28 +567,28 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_showSpinnerView:(BOOL)a3 showWebView:(BOOL)a4 animate:(BOOL)a5 completion:(id)a6
+- (void)_showSpinnerView:(BOOL)view showWebView:(BOOL)webView animate:(BOOL)animate completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  animateCopy = animate;
+  webViewCopy = webView;
+  viewCopy = view;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__PKPayLaterMerchandisingModalViewController__showSpinnerView_showWebView_animate_completion___block_invoke;
   aBlock[3] = &unk_1E8012188;
   aBlock[4] = self;
-  *&aBlock[5] = v7;
-  *&aBlock[6] = v8;
+  *&aBlock[5] = webViewCopy;
+  *&aBlock[6] = viewCopy;
   v11 = _Block_copy(aBlock);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __94__PKPayLaterMerchandisingModalViewController__showSpinnerView_showWebView_animate_completion___block_invoke_2;
   v19[3] = &unk_1E8010B50;
-  v12 = v10;
+  v12 = completionCopy;
   v20 = v12;
   v13 = _Block_copy(v19);
-  if (v6)
+  if (animateCopy)
   {
     v14 = MEMORY[0x1E69DD250];
     v17[0] = MEMORY[0x1E69E9820];

@@ -1,6 +1,6 @@
 @interface AppProtectionObserver
 - (AppProtectionObserver)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
 @end
 
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = [APApplication applicationWithBundleIdentifier:@"com.apple.MobileSMS", a4];
-  -[AppProtectionObserver setMessagesAppLockState:](self, "setMessagesAppLockState:", [v5 isLocked]);
+  subscription = [APApplication applicationWithBundleIdentifier:@"com.apple.MobileSMS", subscription];
+  -[AppProtectionObserver setMessagesAppLockState:](self, "setMessagesAppLockState:", [subscription isLocked]);
 }
 
 - (void)dealloc

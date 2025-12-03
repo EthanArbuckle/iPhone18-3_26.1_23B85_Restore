@@ -1,20 +1,20 @@
 @interface PPTopic
-+ (id)clusterIdentifierFromTopicId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTopic:(id)a3;
++ (id)clusterIdentifierFromTopicId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTopic:(id)topic;
 - (NSSet)featureNames;
-- (PPTopic)initWithCoder:(id)a3;
-- (PPTopic)initWithTopicIdentifier:(id)a3 mostRelevantRecord:(id)a4;
+- (PPTopic)initWithCoder:(id)coder;
+- (PPTopic)initWithTopicIdentifier:(id)identifier mostRelevantRecord:(id)record;
 - (id)description;
-- (id)featureValueForName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)featureValueForName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTopic
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"topicId"])
+  if ([name isEqualToString:@"topicId"])
   {
     v4 = [MEMORY[0x1E695FE60] featureValueWithString:self->_topicIdentifier];
   }
@@ -58,10 +58,10 @@ void __23__PPTopic_featureNames__block_invoke()
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -69,32 +69,32 @@ void __23__PPTopic_featureNames__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPTopic *)self isEqualToTopic:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPTopic *)self isEqualToTopic:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTopic:(id)a3
+- (BOOL)isEqualToTopic:(id)topic
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  topicCopy = topic;
+  v5 = topicCopy;
+  if (topicCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4)
+  else if (topicCopy)
   {
     v6 = self->_topicIdentifier;
-    v7 = [(PPTopic *)v5 topicIdentifier];
-    v8 = v7;
-    if (v6 | v7)
+    topicIdentifier = [(PPTopic *)v5 topicIdentifier];
+    v8 = topicIdentifier;
+    if (v6 | topicIdentifier)
     {
       v9 = 0;
-      if (v6 && v7)
+      if (v6 && topicIdentifier)
       {
-        v9 = [v6 isEqualToString:v7];
+        v9 = [v6 isEqualToString:topicIdentifier];
       }
     }
 
@@ -112,56 +112,56 @@ void __23__PPTopic_featureNames__block_invoke()
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   topicIdentifier = self->_topicIdentifier;
-  v5 = a3;
-  [v5 encodeObject:topicIdentifier forKey:@"id"];
-  v6 = [(PPTopic *)self mostRelevantRecord];
-  [v5 encodeObject:v6 forKey:@"rec"];
+  coderCopy = coder;
+  [coderCopy encodeObject:topicIdentifier forKey:@"id"];
+  mostRelevantRecord = [(PPTopic *)self mostRelevantRecord];
+  [coderCopy encodeObject:mostRelevantRecord forKey:@"rec"];
 }
 
-- (PPTopic)initWithCoder:(id)a3
+- (PPTopic)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rec"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rec"];
 
   if (v5)
   {
     self = [(PPTopic *)self initWithTopicIdentifier:v5 mostRelevantRecord:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
 
-- (PPTopic)initWithTopicIdentifier:(id)a3 mostRelevantRecord:(id)a4
+- (PPTopic)initWithTopicIdentifier:(id)identifier mostRelevantRecord:(id)record
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  recordCopy = record;
+  v10 = recordCopy;
+  if (identifierCopy)
   {
-    if (v9)
+    if (recordCopy)
     {
 LABEL_3:
-      v11 = [[PPTopicWithRecord alloc] initWithTopicIdentifier:v8 mostRelevantRecord:v10];
+      v11 = [[PPTopicWithRecord alloc] initWithTopicIdentifier:identifierCopy mostRelevantRecord:v10];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PPTopic.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"topicIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPTopic.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"topicIdentifier"}];
 
     if (v10)
     {
@@ -175,8 +175,8 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_topicIdentifier, a3);
-    v15 = [PPTopic clusterIdentifierFromTopicId:v8];
+    objc_storeStrong(&v13->_topicIdentifier, identifier);
+    v15 = [PPTopic clusterIdentifierFromTopicId:identifierCopy];
     clusterIdentifier = v14->_clusterIdentifier;
     v14->_clusterIdentifier = v15;
   }
@@ -189,11 +189,11 @@ LABEL_8:
   return p_super;
 }
 
-+ (id)clusterIdentifierFromTopicId:(id)a3
++ (id)clusterIdentifierFromTopicId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
-  v5 = v3;
+  v5 = idCopy;
   objc_autoreleasePoolPop(v4);
 
   return v5;

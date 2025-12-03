@@ -1,25 +1,25 @@
 @interface CountryBillingInput
-- (BOOL)inArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CountryBillingInput)initWithBillingCountry:(id)a3 status:(unint64_t)a4 process:(id)a5;
-- (CountryBillingInput)initWithCoder:(id)a3;
+- (BOOL)inArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (CountryBillingInput)initWithBillingCountry:(id)country status:(unint64_t)status process:(id)process;
+- (CountryBillingInput)initWithCoder:(id)coder;
 - (NSString)countryCode;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CountryBillingInput
 
-- (BOOL)inArray:(id)a3
+- (BOOL)inArray:(id)array
 {
-  v4 = a3;
-  v5 = [(CountryBillingInput *)self countryCode];
-  if (v5)
+  arrayCopy = array;
+  countryCode = [(CountryBillingInput *)self countryCode];
+  if (countryCode)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = arrayCopy;
     if (objc_opt_isKindOfClass())
     {
       if (v6)
@@ -27,7 +27,7 @@
         objc_opt_class();
         if (sub_100027870(v6))
         {
-          v7 = [v6 containsObject:v5];
+          v7 = [v6 containsObject:countryCode];
         }
 
         else
@@ -85,19 +85,19 @@ LABEL_12:
 
   else
   {
-    v6 = [(CountryBillingInput *)self appStoreCountryCode];
-    v7 = v6;
-    if (v6)
+    appStoreCountryCode = [(CountryBillingInput *)self appStoreCountryCode];
+    v7 = appStoreCountryCode;
+    if (appStoreCountryCode)
     {
-      v8 = v6;
+      iCloudCountryCode = appStoreCountryCode;
     }
 
     else
     {
-      v8 = [(CountryBillingInput *)self iCloudCountryCode];
+      iCloudCountryCode = [(CountryBillingInput *)self iCloudCountryCode];
     }
 
-    v5 = v8;
+    v5 = iCloudCountryCode;
   }
 
   return v5;
@@ -105,26 +105,26 @@ LABEL_12:
 
 - (NSString)description
 {
-  v3 = [(CountryBillingInput *)self countryCode];
-  v4 = [(CountryBillingInput *)self appStoreCountryCode];
-  v5 = [(CountryBillingInput *)self musicCountryCode];
-  v6 = [(CountryBillingInput *)self iCloudCountryCode];
+  countryCode = [(CountryBillingInput *)self countryCode];
+  appStoreCountryCode = [(CountryBillingInput *)self appStoreCountryCode];
+  musicCountryCode = [(CountryBillingInput *)self musicCountryCode];
+  iCloudCountryCode = [(CountryBillingInput *)self iCloudCountryCode];
   v10.receiver = self;
   v10.super_class = CountryBillingInput;
   v7 = [(EligibilityInput *)&v10 description];
-  v8 = [NSString stringWithFormat:@"[CountryBillingInput countryCode:%@ appStore:%@ music:%@ iCloud:%@ %@]", v3, v4, v5, v6, v7];
+  v8 = [NSString stringWithFormat:@"[CountryBillingInput countryCode:%@ appStore:%@ music:%@ iCloud:%@ %@]", countryCode, appStoreCountryCode, musicCountryCode, iCloudCountryCode, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v21.receiver = self;
   v21.super_class = CountryBillingInput;
-  if ([(EligibilityInput *)&v21 isEqual:v4])
+  if ([(EligibilityInput *)&v21 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v18 = 1;
       goto LABEL_22;
@@ -133,28 +133,28 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CountryBillingInput *)self countryCode];
-      v7 = [(CountryBillingInput *)v5 countryCode];
-      v8 = sub_1000277EC(v6, v7);
+      v5 = equalCopy;
+      countryCode = [(CountryBillingInput *)self countryCode];
+      countryCode2 = [(CountryBillingInput *)v5 countryCode];
+      v8 = sub_1000277EC(countryCode, countryCode2);
 
       if (v8)
       {
-        v9 = [(CountryBillingInput *)self appStoreCountryCode];
-        v10 = [(CountryBillingInput *)v5 appStoreCountryCode];
-        v11 = sub_1000277EC(v9, v10);
+        appStoreCountryCode = [(CountryBillingInput *)self appStoreCountryCode];
+        appStoreCountryCode2 = [(CountryBillingInput *)v5 appStoreCountryCode];
+        v11 = sub_1000277EC(appStoreCountryCode, appStoreCountryCode2);
 
         if (v11)
         {
-          v12 = [(CountryBillingInput *)self musicCountryCode];
-          v13 = [(CountryBillingInput *)v5 musicCountryCode];
-          v14 = sub_1000277EC(v12, v13);
+          musicCountryCode = [(CountryBillingInput *)self musicCountryCode];
+          musicCountryCode2 = [(CountryBillingInput *)v5 musicCountryCode];
+          v14 = sub_1000277EC(musicCountryCode, musicCountryCode2);
 
           if (v14)
           {
-            v15 = [(CountryBillingInput *)self iCloudCountryCode];
-            v16 = [(CountryBillingInput *)v5 iCloudCountryCode];
-            v17 = sub_1000277EC(v15, v16);
+            iCloudCountryCode = [(CountryBillingInput *)self iCloudCountryCode];
+            iCloudCountryCode2 = [(CountryBillingInput *)v5 iCloudCountryCode];
+            v17 = sub_1000277EC(iCloudCountryCode, iCloudCountryCode2);
 
             if (v17)
             {
@@ -238,63 +238,63 @@ LABEL_22:
   v13.receiver = self;
   v13.super_class = CountryBillingInput;
   v3 = [(EligibilityInput *)&v13 hash];
-  v4 = [(CountryBillingInput *)self countryCode];
-  v5 = [v4 hash];
-  v6 = [(CountryBillingInput *)self appStoreCountryCode];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(CountryBillingInput *)self musicCountryCode];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(CountryBillingInput *)self iCloudCountryCode];
-  v11 = v9 ^ [v10 hash];
+  countryCode = [(CountryBillingInput *)self countryCode];
+  v5 = [countryCode hash];
+  appStoreCountryCode = [(CountryBillingInput *)self appStoreCountryCode];
+  v7 = v5 ^ [appStoreCountryCode hash];
+  musicCountryCode = [(CountryBillingInput *)self musicCountryCode];
+  v9 = v7 ^ [musicCountryCode hash];
+  iCloudCountryCode = [(CountryBillingInput *)self iCloudCountryCode];
+  v11 = v9 ^ [iCloudCountryCode hash];
 
   return v11 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = CountryBillingInput;
   v5 = [(EligibilityInput *)&v15 copyWithZone:?];
-  v6 = [(CountryBillingInput *)self countryCode];
-  v7 = [v6 copyWithZone:a3];
+  countryCode = [(CountryBillingInput *)self countryCode];
+  v7 = [countryCode copyWithZone:zone];
   [v5 setCountryCode:v7];
 
-  v8 = [(CountryBillingInput *)self appStoreCountryCode];
-  v9 = [v8 copyWithZone:a3];
+  appStoreCountryCode = [(CountryBillingInput *)self appStoreCountryCode];
+  v9 = [appStoreCountryCode copyWithZone:zone];
   [v5 setAppStoreCountryCode:v9];
 
-  v10 = [(CountryBillingInput *)self musicCountryCode];
-  v11 = [v10 copyWithZone:a3];
+  musicCountryCode = [(CountryBillingInput *)self musicCountryCode];
+  v11 = [musicCountryCode copyWithZone:zone];
   [v5 setMusicCountryCode:v11];
 
-  v12 = [(CountryBillingInput *)self iCloudCountryCode];
-  v13 = [v12 copyWithZone:a3];
+  iCloudCountryCode = [(CountryBillingInput *)self iCloudCountryCode];
+  v13 = [iCloudCountryCode copyWithZone:zone];
   [v5 setICloudCountryCode:v13];
 
   return v5;
 }
 
-- (CountryBillingInput)initWithCoder:(id)a3
+- (CountryBillingInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CountryBillingInput;
-  v5 = [(EligibilityInput *)&v15 initWithCoder:v4];
+  v5 = [(EligibilityInput *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appStoreCountryCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appStoreCountryCode"];
     appStoreCountryCode = v5->_appStoreCountryCode;
     v5->_appStoreCountryCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"musicCountryCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"musicCountryCode"];
     musicCountryCode = v5->_musicCountryCode;
     v5->_musicCountryCode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iCloudCountryCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iCloudCountryCode"];
     iCloudCountryCode = v5->_iCloudCountryCode;
     v5->_iCloudCountryCode = v12;
   }
@@ -302,49 +302,49 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CountryBillingInput;
-  [(EligibilityInput *)&v10 encodeWithCoder:v4];
-  v5 = [(CountryBillingInput *)self countryCode];
+  [(EligibilityInput *)&v10 encodeWithCoder:coderCopy];
+  countryCode = [(CountryBillingInput *)self countryCode];
 
-  if (v5)
+  if (countryCode)
   {
-    v6 = [(CountryBillingInput *)self countryCode];
-    [v4 encodeObject:v6 forKey:@"countryCode"];
+    countryCode2 = [(CountryBillingInput *)self countryCode];
+    [coderCopy encodeObject:countryCode2 forKey:@"countryCode"];
   }
 
-  v7 = [(CountryBillingInput *)self appStoreCountryCode];
-  [v4 encodeObject:v7 forKey:@"appStoreCountryCode"];
+  appStoreCountryCode = [(CountryBillingInput *)self appStoreCountryCode];
+  [coderCopy encodeObject:appStoreCountryCode forKey:@"appStoreCountryCode"];
 
-  v8 = [(CountryBillingInput *)self musicCountryCode];
-  [v4 encodeObject:v8 forKey:@"musicCountryCode"];
+  musicCountryCode = [(CountryBillingInput *)self musicCountryCode];
+  [coderCopy encodeObject:musicCountryCode forKey:@"musicCountryCode"];
 
-  v9 = [(CountryBillingInput *)self iCloudCountryCode];
-  [v4 encodeObject:v9 forKey:@"iCloudCountryCode"];
+  iCloudCountryCode = [(CountryBillingInput *)self iCloudCountryCode];
+  [coderCopy encodeObject:iCloudCountryCode forKey:@"iCloudCountryCode"];
 }
 
-- (CountryBillingInput)initWithBillingCountry:(id)a3 status:(unint64_t)a4 process:(id)a5
+- (CountryBillingInput)initWithBillingCountry:(id)country status:(unint64_t)status process:(id)process
 {
-  v8 = a3;
+  countryCopy = country;
   v31.receiver = self;
   v31.super_class = CountryBillingInput;
-  v9 = [(EligibilityInput *)&v31 initWithInputType:2 status:a4 process:a5];
+  v9 = [(EligibilityInput *)&v31 initWithInputType:2 status:status process:process];
   if (!v9)
   {
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!countryCopy)
   {
 LABEL_26:
     v22 = v9;
     goto LABEL_27;
   }
 
-  type = xpc_get_type(v8);
+  type = xpc_get_type(countryCopy);
   if (type != &_xpc_type_string)
   {
     v11 = type;
@@ -364,7 +364,7 @@ LABEL_26:
       goto LABEL_16;
     }
 
-    v12 = v8;
+    v12 = countryCopy;
     string = xpc_dictionary_get_string(v12, "OS_ELIGIBILITY_INPUT_COUNTRY_BILLING_KEY_APP_STORE_ACCOUNT");
     v18 = xpc_dictionary_get_string(v12, "OS_ELIGIBILITY_INPUT_COUNTRY_BILLING_KEY_MUSIC_ACCOUNT");
     v19 = xpc_dictionary_get_string(v12, "OS_ELIGIBILITY_INPUT_COUNTRY_BILLING_KEY_ICLOUD_ACCOUNT");
@@ -417,7 +417,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v12 = v8;
+  v12 = countryCopy;
   string_ptr = xpc_string_get_string_ptr(v12);
   if (string_ptr)
   {

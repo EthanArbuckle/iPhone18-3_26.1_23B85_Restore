@@ -1,24 +1,24 @@
 @interface SKUIIPadCustomerReviewsHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIIPadCustomerReviewsHeaderView)initWithClientContext:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIIPadCustomerReviewsHeaderView)initWithClientContext:(id)context;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_destroySortPopoverController;
 - (void)_reloadSortButton;
-- (void)_sortButtonAction:(id)a3;
+- (void)_sortButtonAction:(id)action;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setSelectedSortIndex:(int64_t)a3;
-- (void)setSortTitles:(id)a3;
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setSelectedSortIndex:(int64_t)index;
+- (void)setSortTitles:(id)titles;
 @end
 
 @implementation SKUIIPadCustomerReviewsHeaderView
 
-- (SKUIIPadCustomerReviewsHeaderView)initWithClientContext:(id)a3
+- (SKUIIPadCustomerReviewsHeaderView)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIPadCustomerReviewsHeaderView initWithClientContext:];
@@ -30,19 +30,19 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = [MEMORY[0x277D75220] buttonWithType:1];
     appSupportButton = v7->_appSupportButton;
     v7->_appSupportButton = v8;
 
-    v10 = [(UIButton *)v7->_appSupportButton titleLabel];
+    titleLabel = [(UIButton *)v7->_appSupportButton titleLabel];
     v11 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v10 setFont:v11];
+    [titleLabel setFont:v11];
 
     v12 = v7->_appSupportButton;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"REVIEWS_HEADER_BUTTON_APP_SUPPORT" inTable:@"ProductPage"];
+      [contextCopy localizedStringForKey:@"REVIEWS_HEADER_BUTTON_APP_SUPPORT" inTable:@"ProductPage"];
     }
 
     else
@@ -54,22 +54,22 @@
 
     [(UIButton *)v7->_appSupportButton sizeToFit];
     v14 = v7->_appSupportButton;
-    v15 = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
-    [(UIButton *)v14 setTintColor:v15];
+    secondaryTextColor = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
+    [(UIButton *)v14 setTintColor:secondaryTextColor];
 
     [(SKUIIPadCustomerReviewsHeaderView *)v7 addSubview:v7->_appSupportButton];
     v16 = [MEMORY[0x277D75220] buttonWithType:1];
     writeAReviewButton = v7->_writeAReviewButton;
     v7->_writeAReviewButton = v16;
 
-    v18 = [(UIButton *)v7->_writeAReviewButton titleLabel];
+    titleLabel2 = [(UIButton *)v7->_writeAReviewButton titleLabel];
     v19 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v18 setFont:v19];
+    [titleLabel2 setFont:v19];
 
     v20 = v7->_writeAReviewButton;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"REVIEWS_HEADER_BUTTON_WRITE_A_REVIEW_IPAD" inTable:@"ProductPage"];
+      [contextCopy localizedStringForKey:@"REVIEWS_HEADER_BUTTON_WRITE_A_REVIEW_IPAD" inTable:@"ProductPage"];
     }
 
     else
@@ -81,8 +81,8 @@
 
     [(UIButton *)v7->_writeAReviewButton sizeToFit];
     v22 = v7->_writeAReviewButton;
-    v23 = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
-    [(UIButton *)v22 setTintColor:v23];
+    secondaryTextColor2 = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
+    [(UIButton *)v22 setTintColor:secondaryTextColor2];
 
     [(SKUIIPadCustomerReviewsHeaderView *)v7 addSubview:v7->_writeAReviewButton];
     v24 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -94,22 +94,22 @@
     [(UILabel *)v26 setFont:v27];
 
     v28 = v7->_titleLabel;
-    v29 = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
-    if (v29)
+    secondaryTextColor3 = [(SKUIColorScheme *)v7->_colorScheme secondaryTextColor];
+    if (secondaryTextColor3)
     {
-      [(UILabel *)v28 setTextColor:v29];
+      [(UILabel *)v28 setTextColor:secondaryTextColor3];
     }
 
     else
     {
-      v30 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)v28 setTextColor:v30];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)v28 setTextColor:blackColor];
     }
 
     v31 = v7->_titleLabel;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"REVIEWS_HEADER_TITLE" inTable:@"ProductPage"];
+      [contextCopy localizedStringForKey:@"REVIEWS_HEADER_TITLE" inTable:@"ProductPage"];
     }
 
     else
@@ -126,10 +126,10 @@
     v7->_separatorView = v33;
 
     v35 = v7->_separatorView;
-    v36 = [(SKUIColorScheme *)v7->_colorScheme primaryTextColor];
-    if (v36)
+    primaryTextColor = [(SKUIColorScheme *)v7->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)v35 setBackgroundColor:v36];
+      [(UIView *)v35 setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -147,8 +147,8 @@
 - (void)dealloc
 {
   [(UIButton *)self->_sortButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
-  v3 = [(UIPopoverController *)self->_sortPopoverController contentViewController];
-  [v3 setDelegate:0];
+  contentViewController = [(UIPopoverController *)self->_sortPopoverController contentViewController];
+  [contentViewController setDelegate:0];
   [(UIPopoverController *)self->_sortPopoverController setDelegate:0];
 
   v4.receiver = self;
@@ -156,29 +156,29 @@
   [(SKUIIPadCustomerReviewsHeaderView *)&v4 dealloc];
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v22 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v22 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     titleLabel = self->_titleLabel;
-    v7 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)titleLabel setTextColor:v7];
+      [(UILabel *)titleLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v8];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
 
     sortLabel = self->_sortLabel;
-    v10 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    v11 = SKUIColorWithAlpha(v10, 0.6);
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    v11 = SKUIColorWithAlpha(primaryTextColor, 0.6);
     if (v11)
     {
       [(UILabel *)sortLabel setTextColor:v11];
@@ -191,10 +191,10 @@
     }
 
     separatorView = self->_separatorView;
-    v14 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v14)
+    primaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor2)
     {
-      [(UIView *)separatorView setBackgroundColor:v14];
+      [(UIView *)separatorView setBackgroundColor:primaryTextColor2];
     }
 
     else
@@ -204,35 +204,35 @@
     }
 
     appSupportButton = self->_appSupportButton;
-    v17 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    [(UIButton *)appSupportButton setTintColor:v17];
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    [(UIButton *)appSupportButton setTintColor:secondaryTextColor2];
 
     writeAReviewButton = self->_writeAReviewButton;
-    v19 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    [(UIButton *)writeAReviewButton setTintColor:v19];
+    secondaryTextColor3 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    [(UIButton *)writeAReviewButton setTintColor:secondaryTextColor3];
 
     sortButton = self->_sortButton;
-    v21 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    [(UIButton *)sortButton setTintColor:v21];
+    secondaryTextColor4 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    [(UIButton *)sortButton setTintColor:secondaryTextColor4];
 
-    v5 = v22;
+    schemeCopy = v22;
   }
 }
 
-- (void)setSelectedSortIndex:(int64_t)a3
+- (void)setSelectedSortIndex:(int64_t)index
 {
-  if (self->_selectedSortIndex != a3)
+  if (self->_selectedSortIndex != index)
   {
-    self->_selectedSortIndex = a3;
+    self->_selectedSortIndex = index;
     [(SKUIIPadCustomerReviewsHeaderView *)self _reloadSortButton];
   }
 }
 
-- (void)setSortTitles:(id)a3
+- (void)setSortTitles:(id)titles
 {
-  if (self->_sortTitles != a3)
+  if (self->_sortTitles != titles)
   {
-    v4 = [a3 copy];
+    v4 = [titles copy];
     sortTitles = self->_sortTitles;
     self->_sortTitles = v4;
 
@@ -240,13 +240,13 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v11.receiver = self;
   v11.super_class = SKUIIPadCustomerReviewsHeaderView;
-  v7 = [(SKUIIPadCustomerReviewsHeaderView *)&v11 hitTest:a4 withEvent:?];
+  v7 = [(SKUIIPadCustomerReviewsHeaderView *)&v11 hitTest:event withEvent:?];
   if (v7 == self)
   {
     sortButton = self->_sortButton;
@@ -330,33 +330,33 @@
   separatorView = self->_separatorView;
   if (separatorView)
   {
-    v27 = [MEMORY[0x277D759A0] mainScreen];
-    [v27 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v24 = v6 - 1.0 / v23;
-    v25 = [MEMORY[0x277D759A0] mainScreen];
-    [v25 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     [(UIView *)separatorView setFrame:15.0, v24, v4 + -15.0, 1.0 / v26];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   appSupportButton = self->_appSupportButton;
-  v5 = a3;
-  [(UIButton *)appSupportButton setBackgroundColor:v5];
-  [(UIButton *)self->_sortButton setBackgroundColor:v5];
-  [(UILabel *)self->_sortLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
-  [(UIButton *)self->_writeAReviewButton setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIButton *)appSupportButton setBackgroundColor:colorCopy];
+  [(UIButton *)self->_sortButton setBackgroundColor:colorCopy];
+  [(UILabel *)self->_sortLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
+  [(UIButton *)self->_writeAReviewButton setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIIPadCustomerReviewsHeaderView;
-  [(SKUIIPadCustomerReviewsHeaderView *)&v6 setBackgroundColor:v5];
+  [(SKUIIPadCustomerReviewsHeaderView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_titleLabel frame:a3.width];
+  width = fits.width;
+  [(UILabel *)self->_titleLabel frame:fits.width];
   v6 = v5 + 30.0 + -5.0 + -5.0 + 19.0;
   [(UIButton *)self->_writeAReviewButton frame];
   v8 = v7 + v6 + -11.0 + -10.0;
@@ -366,11 +366,11 @@
   return result;
 }
 
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
-  if (self->_selectedSortIndex != a4)
+  if (self->_selectedSortIndex != index)
   {
-    self->_selectedSortIndex = a4;
+    self->_selectedSortIndex = index;
     [(SKUIIPadCustomerReviewsHeaderView *)self _reloadSortButton];
     [(SKUIIPadCustomerReviewsHeaderView *)self sendActionsForControlEvents:4096];
   }
@@ -380,11 +380,11 @@
   [(SKUIIPadCustomerReviewsHeaderView *)self _destroySortPopoverController];
 }
 
-- (void)_sortButtonAction:(id)a3
+- (void)_sortButtonAction:(id)action
 {
   if (!self->_sortPopoverController)
   {
-    v4 = a3;
+    actionCopy = action;
     v17 = [[SKUIMenuViewController alloc] initWithMenuTitles:self->_sortTitles];
     [(SKUIMenuViewController *)v17 setDelegate:self];
     [(SKUIMenuViewController *)v17 setIndexOfCheckedTitle:self->_selectedSortIndex];
@@ -395,21 +395,21 @@
     [(UIPopoverController *)self->_sortPopoverController setDelegate:self];
     [(UIPopoverController *)self->_sortPopoverController setPopoverContentSize:320.0, [(NSArray *)self->_sortTitles count]* 44.0];
     v7 = self->_sortPopoverController;
-    [v4 frame];
+    [actionCopy frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v4 superview];
+    superview = [actionCopy superview];
 
-    [(UIPopoverController *)v7 presentPopoverFromRect:v16 inView:15 permittedArrowDirections:1 animated:v9, v11, v13, v15];
+    [(UIPopoverController *)v7 presentPopoverFromRect:superview inView:15 permittedArrowDirections:1 animated:v9, v11, v13, v15];
   }
 }
 
 - (void)_destroySortPopoverController
 {
-  v4 = [(UIPopoverController *)self->_sortPopoverController contentViewController];
-  [v4 setDelegate:0];
+  contentViewController = [(UIPopoverController *)self->_sortPopoverController contentViewController];
+  [contentViewController setDelegate:0];
   [(UIPopoverController *)self->_sortPopoverController setDelegate:0];
   sortPopoverController = self->_sortPopoverController;
   self->_sortPopoverController = 0;
@@ -427,16 +427,16 @@
 
       [(UIButton *)self->_sortButton addTarget:self action:sel__sortButtonAction_ forControlEvents:64];
       v5 = self->_sortButton;
-      v6 = [(SKUIIPadCustomerReviewsHeaderView *)self backgroundColor];
-      [(UIButton *)v5 setBackgroundColor:v6];
+      backgroundColor = [(SKUIIPadCustomerReviewsHeaderView *)self backgroundColor];
+      [(UIButton *)v5 setBackgroundColor:backgroundColor];
 
       v7 = self->_sortButton;
-      v8 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-      [(UIButton *)v7 setTintColor:v8];
+      secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+      [(UIButton *)v7 setTintColor:secondaryTextColor];
 
-      v9 = [(UIButton *)self->_sortButton titleLabel];
+      titleLabel = [(UIButton *)self->_sortButton titleLabel];
       v10 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-      [v9 setFont:v10];
+      [titleLabel setFont:v10];
 
       [(SKUIIPadCustomerReviewsHeaderView *)self addSubview:self->_sortButton];
     }
@@ -448,16 +448,16 @@
       self->_sortLabel = v11;
 
       v13 = self->_sortLabel;
-      v14 = [(SKUIIPadCustomerReviewsHeaderView *)self backgroundColor];
-      [(UILabel *)v13 setBackgroundColor:v14];
+      backgroundColor2 = [(SKUIIPadCustomerReviewsHeaderView *)self backgroundColor];
+      [(UILabel *)v13 setBackgroundColor:backgroundColor2];
 
       v15 = self->_sortLabel;
       v16 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
       [(UILabel *)v15 setFont:v16];
 
       v17 = self->_sortLabel;
-      v18 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-      v19 = SKUIColorWithAlpha(v18, 0.6);
+      primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+      v19 = SKUIColorWithAlpha(primaryTextColor, 0.6);
       if (v19)
       {
         [(UILabel *)v17 setTextColor:v19];

@@ -1,13 +1,13 @@
 @interface WFWidgetCache
 + (WFWidgetCache)sharedCache;
 - (WFWidgetCache)init;
-- (id)widgetWorkflowWithIdentifier:(id)a3;
-- (id)widgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4;
-- (void)observableResultDidChange:(id)a3;
-- (void)queue_getWidgetWorkflowWithIdentifier:(id)a3;
-- (void)queue_getWidgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4;
-- (void)queue_notifyObserversOfChange:(id)a3 forIdentifier:(id)a4;
-- (void)queue_storeAndNotifyWithResult:(id)a3 forIdentifier:(id)a4 resultsLimit:(unint64_t)a5;
+- (id)widgetWorkflowWithIdentifier:(id)identifier;
+- (id)widgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit;
+- (void)observableResultDidChange:(id)change;
+- (void)queue_getWidgetWorkflowWithIdentifier:(id)identifier;
+- (void)queue_getWidgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit;
+- (void)queue_notifyObserversOfChange:(id)change forIdentifier:(id)identifier;
+- (void)queue_storeAndNotifyWithResult:(id)result forIdentifier:(id)identifier resultsLimit:(unint64_t)limit;
 @end
 
 @implementation WFWidgetCache
@@ -44,18 +44,18 @@
   return v2;
 }
 
-- (void)observableResultDidChange:(id)a3
+- (void)observableResultDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(WFWidgetCache *)self queue];
+  changeCopy = change;
+  queue = [(WFWidgetCache *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__WFWidgetCache_observableResultDidChange___block_invoke;
   v7[3] = &unk_1E83086D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
 void __43__WFWidgetCache_observableResultDidChange___block_invoke(uint64_t a1)
@@ -178,15 +178,15 @@ LABEL_21:
   [*(a1 + 40) queue_storeAndNotifyWithResult:*(a1 + 32) forIdentifier:v12 resultsLimit:v13];
 }
 
-- (void)queue_notifyObserversOfChange:(id)a3 forIdentifier:(id)a4
+- (void)queue_notifyObserversOfChange:(id)change forIdentifier:(id)identifier
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWidgetCache *)self queue];
-  dispatch_assert_queue_V2(v8);
+  changeCopy = change;
+  identifierCopy = identifier;
+  queue = [(WFWidgetCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = v6;
+  v9 = changeCopy;
   if (v9)
   {
     objc_opt_class();
@@ -218,9 +218,9 @@ LABEL_21:
 
     if (v11)
     {
-      v15 = [v11 value];
-      v26[0] = v15;
-      v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
+      value = [v11 value];
+      v26[0] = value;
+      values = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
 
       goto LABEL_12;
     }
@@ -231,40 +231,40 @@ LABEL_21:
     v14 = 0;
   }
 
-  v16 = [v14 values];
+  values = [v14 values];
   v12 = 0;
 LABEL_12:
   v17 = [(WFWidgetCache *)self log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v16;
+    v23 = values;
     v24 = 2112;
-    v25 = v7;
+    v25 = identifierCopy;
     _os_log_impl(&dword_1C830A000, v17, OS_LOG_TYPE_DEFAULT, "Posting notification with workflows: %@ for identifier: %@", buf, 0x16u);
   }
 
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v20 = @"WFWidgetCacheAssociatedIdentifier";
-  v21 = v7;
+  v21 = identifierCopy;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  [v18 postNotificationName:@"WFWidgetCacheUpdateNotification" object:v16 userInfo:v19];
+  [defaultCenter postNotificationName:@"WFWidgetCacheUpdateNotification" object:values userInfo:v19];
 }
 
-- (void)queue_storeAndNotifyWithResult:(id)a3 forIdentifier:(id)a4 resultsLimit:(unint64_t)a5
+- (void)queue_storeAndNotifyWithResult:(id)result forIdentifier:(id)identifier resultsLimit:(unint64_t)limit
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WFWidgetCache *)self queue];
-  dispatch_assert_queue_V2(v10);
+  resultCopy = result;
+  identifierCopy = identifier;
+  queue = [(WFWidgetCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v8 || !v9)
+  if (!resultCopy || !identifierCopy)
   {
     goto LABEL_42;
   }
 
-  v11 = v8;
+  v11 = resultCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -297,8 +297,8 @@ LABEL_12:
   if (isKindOfClass)
   {
     [v15 addResultObserver:self];
-    v19 = [(WFWidgetCache *)self resultsByIdentifier];
-    [v19 setObject:v15 forKey:v9];
+    resultsByIdentifier = [(WFWidgetCache *)self resultsByIdentifier];
+    [resultsByIdentifier setObject:v15 forKey:identifierCopy];
 
     v20 = [(WFWidgetCache *)self log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -306,7 +306,7 @@ LABEL_12:
       v35 = 138412546;
       v36 = v15;
       v37 = 2112;
-      v38 = v9;
+      v38 = identifierCopy;
       _os_log_impl(&dword_1C830A000, v20, OS_LOG_TYPE_DEFAULT, "Storing single object result: %@ for identifier: %@", &v35, 0x16u);
     }
 
@@ -315,8 +315,8 @@ LABEL_12:
 
   if (v16)
   {
-    v21 = [(WFWidgetCache *)self resultsByIdentifier];
-    v22 = [v21 objectForKey:v9];
+    resultsByIdentifier2 = [(WFWidgetCache *)self resultsByIdentifier];
+    v22 = [resultsByIdentifier2 objectForKey:identifierCopy];
 
     if (v22)
     {
@@ -339,13 +339,13 @@ LABEL_12:
 
     v20 = v23;
 
-    v24 = [v20 query];
-    if (v24)
+    query = [v20 query];
+    if (query)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = v24;
+        v25 = query;
       }
 
       else
@@ -361,18 +361,18 @@ LABEL_12:
 
     v26 = v25;
 
-    v27 = [(WFWidgetCache *)self log];
-    v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
+    resultsByIdentifier3 = [(WFWidgetCache *)self log];
+    v28 = os_log_type_enabled(resultsByIdentifier3, OS_LOG_TYPE_DEFAULT);
     if (v20 && v26)
     {
       if (v28)
       {
         v35 = 138412290;
-        v36 = v9;
-        _os_log_impl(&dword_1C830A000, v27, OS_LOG_TYPE_DEFAULT, "Cached result found for collection with identifier: %@", &v35, 0xCu);
+        v36 = identifierCopy;
+        _os_log_impl(&dword_1C830A000, resultsByIdentifier3, OS_LOG_TYPE_DEFAULT, "Cached result found for collection with identifier: %@", &v35, 0xCu);
       }
 
-      if ([v26 resultsLimit] >= a5)
+      if ([v26 resultsLimit] >= limit)
       {
         goto LABEL_34;
       }
@@ -383,13 +383,13 @@ LABEL_12:
         v35 = 138412546;
         v36 = v15;
         v37 = 2112;
-        v38 = v9;
+        v38 = identifierCopy;
         _os_log_impl(&dword_1C830A000, v29, OS_LOG_TYPE_DEFAULT, "New results limit is more than cached results limit, removing old cached result and storing the new one: %@, identifier: %@", &v35, 0x16u);
       }
 
       [v20 removeResultObserver:self];
-      v27 = [(WFWidgetCache *)self resultsByIdentifier];
-      [v27 removeObjectForKey:v9];
+      resultsByIdentifier3 = [(WFWidgetCache *)self resultsByIdentifier];
+      [resultsByIdentifier3 removeObjectForKey:identifierCopy];
     }
 
     else if (v28)
@@ -397,20 +397,20 @@ LABEL_12:
       v35 = 138412546;
       v36 = v15;
       v37 = 2112;
-      v38 = v9;
-      _os_log_impl(&dword_1C830A000, v27, OS_LOG_TYPE_DEFAULT, "No cache hit, storing collection result: %@ for identifier: %@", &v35, 0x16u);
+      v38 = identifierCopy;
+      _os_log_impl(&dword_1C830A000, resultsByIdentifier3, OS_LOG_TYPE_DEFAULT, "No cache hit, storing collection result: %@ for identifier: %@", &v35, 0x16u);
     }
 
     [v15 addResultObserver:self];
-    v30 = [(WFWidgetCache *)self resultsByIdentifier];
-    [v30 setObject:v15 forKey:v9];
+    resultsByIdentifier4 = [(WFWidgetCache *)self resultsByIdentifier];
+    [resultsByIdentifier4 setObject:v15 forKey:identifierCopy];
 
 LABEL_34:
 LABEL_35:
   }
 
-  v31 = [(WFWidgetCache *)self resultsByIdentifier];
-  v32 = [v31 objectForKey:v9];
+  resultsByIdentifier5 = [(WFWidgetCache *)self resultsByIdentifier];
+  v32 = [resultsByIdentifier5 objectForKey:identifierCopy];
 
   if (v32)
   {
@@ -433,35 +433,35 @@ LABEL_35:
 
   v34 = v33;
 
-  [(WFWidgetCache *)self queue_notifyObserversOfChange:v34 forIdentifier:v9];
+  [(WFWidgetCache *)self queue_notifyObserversOfChange:v34 forIdentifier:identifierCopy];
 LABEL_42:
 }
 
-- (void)queue_getWidgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4
+- (void)queue_getWidgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WFWidgetCache *)self queue];
-  dispatch_assert_queue_V2(v7);
+  identifierCopy = identifier;
+  queue = [(WFWidgetCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = [(WFWidgetCache *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = identifierCopy;
     _os_log_impl(&dword_1C830A000, v8, OS_LOG_TYPE_DEFAULT, "Requesting widget workflow collection with identifier: %@", buf, 0xCu);
   }
 
-  v9 = [(WFWidgetCache *)self requestQueue];
+  requestQueue = [(WFWidgetCache *)self requestQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__WFWidgetCache_queue_getWidgetWorkflowsInCollectionWithIdentifier_limit___block_invoke;
   v11[3] = &unk_1E8308678;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v10 = v6;
-  [v9 getWidgetWorkflowsInCollectionWithIdentifier:v10 limit:a4 completionHandler:v11];
+  v12 = identifierCopy;
+  limitCopy = limit;
+  v10 = identifierCopy;
+  [requestQueue getWidgetWorkflowsInCollectionWithIdentifier:v10 limit:limit completionHandler:v11];
 }
 
 void __74__WFWidgetCache_queue_getWidgetWorkflowsInCollectionWithIdentifier_limit___block_invoke(uint64_t a1, void *a2)
@@ -495,30 +495,30 @@ void __74__WFWidgetCache_queue_getWidgetWorkflowsInCollectionWithIdentifier_limi
   dispatch_async(v6, v11);
 }
 
-- (void)queue_getWidgetWorkflowWithIdentifier:(id)a3
+- (void)queue_getWidgetWorkflowWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFWidgetCache *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(WFWidgetCache *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [(WFWidgetCache *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&dword_1C830A000, v6, OS_LOG_TYPE_DEFAULT, "Requesting widget workflow with identifier: %@", buf, 0xCu);
   }
 
-  v7 = [(WFWidgetCache *)self requestQueue];
+  requestQueue = [(WFWidgetCache *)self requestQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__WFWidgetCache_queue_getWidgetWorkflowWithIdentifier___block_invoke;
   v9[3] = &unk_1E8308628;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 getWidgetWorkflowWithIdentifier:v8 completionHandler:v9];
+  v10 = identifierCopy;
+  v8 = identifierCopy;
+  [requestQueue getWidgetWorkflowWithIdentifier:v8 completionHandler:v9];
 }
 
 void __55__WFWidgetCache_queue_getWidgetWorkflowWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -549,28 +549,28 @@ void __55__WFWidgetCache_queue_getWidgetWorkflowWithIdentifier___block_invoke(ui
   dispatch_async(v6, block);
 }
 
-- (id)widgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4
+- (id)widgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(WFWidgetCache *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2048;
-    *&buf[14] = a4;
+    *&buf[14] = limit;
     _os_log_impl(&dword_1C830A000, v8, OS_LOG_TYPE_DEFAULT, "Requesting widget workflow collection for identifier: %@, limit: %lu", buf, 0x16u);
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFWidgetCache.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWidgetCache.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v9 = [(WFWidgetCache *)self queue];
-  dispatch_assert_queue_not_V2(v9);
+  queue = [(WFWidgetCache *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   *buf = 0;
   *&buf[8] = buf;
@@ -578,17 +578,17 @@ void __55__WFWidgetCache_queue_getWidgetWorkflowWithIdentifier___block_invoke(ui
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v10 = [(WFWidgetCache *)self queue];
+  queue2 = [(WFWidgetCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__WFWidgetCache_widgetWorkflowsInCollectionWithIdentifier_limit___block_invoke;
   block[3] = &unk_1E83085D8;
   block[4] = self;
-  v16 = v7;
+  v16 = identifierCopy;
   v17 = buf;
-  v18 = a4;
-  v11 = v7;
-  dispatch_sync(v10, block);
+  limitCopy = limit;
+  v11 = identifierCopy;
+  dispatch_sync(queue2, block);
 
   v12 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -689,26 +689,26 @@ void __65__WFWidgetCache_widgetWorkflowsInCollectionWithIdentifier_limit___block
 LABEL_21:
 }
 
-- (id)widgetWorkflowWithIdentifier:(id)a3
+- (id)widgetWorkflowWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(WFWidgetCache *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_1C830A000, v6, OS_LOG_TYPE_DEFAULT, "Requesting widget workflow for identifier: %@", &buf, 0xCu);
   }
 
-  if (!v5)
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFWidgetCache.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWidgetCache.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v7 = [(WFWidgetCache *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  queue = [(WFWidgetCache *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -716,16 +716,16 @@ LABEL_21:
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v8 = [(WFWidgetCache *)self queue];
+  queue2 = [(WFWidgetCache *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__WFWidgetCache_widgetWorkflowWithIdentifier___block_invoke;
   block[3] = &unk_1E83085B0;
   block[4] = self;
-  v14 = v5;
+  v14 = identifierCopy;
   p_buf = &buf;
-  v9 = v5;
-  dispatch_sync(v8, block);
+  v9 = identifierCopy;
+  dispatch_sync(queue2, block);
 
   v10 = *(*(&buf + 1) + 40);
   _Block_object_dispose(&buf, 8);

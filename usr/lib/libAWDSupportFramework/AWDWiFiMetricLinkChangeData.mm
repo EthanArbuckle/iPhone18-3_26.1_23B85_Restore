@@ -1,46 +1,46 @@
 @interface AWDWiFiMetricLinkChangeData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)bcnFrmsHistoryAtIndex:(unint64_t)a3;
-- (int)bcnPerHistoryAtIndex:(unint64_t)a3;
-- (int)fwTxFrmsHistoryAtIndex:(unint64_t)a3;
-- (int)fwTxPerHistoryAtIndex:(unint64_t)a3;
-- (int)rssiHistoryAtIndex:(unint64_t)a3;
-- (int)txFrmsHistoryAtIndex:(unint64_t)a3;
-- (int)txPerHistoryAtIndex:(unint64_t)a3;
+- (int)bcnFrmsHistoryAtIndex:(unint64_t)index;
+- (int)bcnPerHistoryAtIndex:(unint64_t)index;
+- (int)fwTxFrmsHistoryAtIndex:(unint64_t)index;
+- (int)fwTxPerHistoryAtIndex:(unint64_t)index;
+- (int)rssiHistoryAtIndex:(unint64_t)index;
+- (int)txFrmsHistoryAtIndex:(unint64_t)index;
+- (int)txPerHistoryAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAkmSuites:(BOOL)a3;
-- (void)setHasCapabilities:(BOOL)a3;
-- (void)setHasChannel:(BOOL)a3;
-- (void)setHasChannelSwitchDuringHostSleep:(BOOL)a3;
-- (void)setHasChannelSwitchDuringHostWake:(BOOL)a3;
-- (void)setHasChannelWidth:(BOOL)a3;
-- (void)setHasEnhancedSecurityType:(BOOL)a3;
-- (void)setHasFlags:(BOOL)a3;
-- (void)setHasGatewayARPHistory:(BOOL)a3;
-- (void)setHasHtASel:(BOOL)a3;
-- (void)setHasHtAmpduParams:(BOOL)a3;
-- (void)setHasHtExtended:(BOOL)a3;
-- (void)setHasHtInfo:(BOOL)a3;
-- (void)setHasHtTxBf:(BOOL)a3;
-- (void)setHasIsInVol:(BOOL)a3;
-- (void)setHasIsLinkUp:(BOOL)a3;
-- (void)setHasMcastCipher:(BOOL)a3;
-- (void)setHasPhyMode:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasRxCSAFrames:(BOOL)a3;
-- (void)setHasSecurityType:(BOOL)a3;
-- (void)setHasSubreason:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUcastCipher:(BOOL)a3;
-- (void)setHasVhtInfo:(BOOL)a3;
-- (void)setHasWpaProtocol:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAkmSuites:(BOOL)suites;
+- (void)setHasCapabilities:(BOOL)capabilities;
+- (void)setHasChannel:(BOOL)channel;
+- (void)setHasChannelSwitchDuringHostSleep:(BOOL)sleep;
+- (void)setHasChannelSwitchDuringHostWake:(BOOL)wake;
+- (void)setHasChannelWidth:(BOOL)width;
+- (void)setHasEnhancedSecurityType:(BOOL)type;
+- (void)setHasFlags:(BOOL)flags;
+- (void)setHasGatewayARPHistory:(BOOL)history;
+- (void)setHasHtASel:(BOOL)sel;
+- (void)setHasHtAmpduParams:(BOOL)params;
+- (void)setHasHtExtended:(BOOL)extended;
+- (void)setHasHtInfo:(BOOL)info;
+- (void)setHasHtTxBf:(BOOL)bf;
+- (void)setHasIsInVol:(BOOL)vol;
+- (void)setHasIsLinkUp:(BOOL)up;
+- (void)setHasMcastCipher:(BOOL)cipher;
+- (void)setHasPhyMode:(BOOL)mode;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasRxCSAFrames:(BOOL)frames;
+- (void)setHasSecurityType:(BOOL)type;
+- (void)setHasSubreason:(BOOL)subreason;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUcastCipher:(BOOL)cipher;
+- (void)setHasVhtInfo:(BOOL)info;
+- (void)setHasWpaProtocol:(BOOL)protocol;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricLinkChangeData
@@ -75,9 +75,9 @@
   [(AWDWiFiMetricLinkChangeData *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -90,21 +90,21 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (int)rssiHistoryAtIndex:(unint64_t)a3
+- (int)rssiHistoryAtIndex:(unint64_t)index
 {
   p_rssiHistorys = &self->_rssiHistorys;
   count = self->_rssiHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rssiHistorys->list[a3];
+  return p_rssiHistorys->list[index];
 }
 
-- (void)setHasIsLinkUp:(BOOL)a3
+- (void)setHasIsLinkUp:(BOOL)up
 {
-  if (a3)
+  if (up)
   {
     v3 = 0x4000000;
   }
@@ -117,9 +117,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasIsInVol:(BOOL)a3
+- (void)setHasIsInVol:(BOOL)vol
 {
-  if (a3)
+  if (vol)
   {
     v3 = 0x2000000;
   }
@@ -132,9 +132,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 0x40000;
   }
@@ -147,9 +147,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasSubreason:(BOOL)a3
+- (void)setHasSubreason:(BOOL)subreason
 {
-  if (a3)
+  if (subreason)
   {
     v3 = 0x200000;
   }
@@ -162,9 +162,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasChannel:(BOOL)a3
+- (void)setHasChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 16;
   }
@@ -177,9 +177,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasChannelWidth:(BOOL)a3
+- (void)setHasChannelWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 128;
   }
@@ -192,9 +192,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasPhyMode:(BOOL)a3
+- (void)setHasPhyMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x20000;
   }
@@ -207,9 +207,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasFlags:(BOOL)a3
+- (void)setHasFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 512;
   }
@@ -222,9 +222,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasSecurityType:(BOOL)a3
+- (void)setHasSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x100000;
   }
@@ -237,9 +237,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasWpaProtocol:(BOOL)a3
+- (void)setHasWpaProtocol:(BOOL)protocol
 {
-  if (a3)
+  if (protocol)
   {
     v3 = 0x1000000;
   }
@@ -252,9 +252,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasMcastCipher:(BOOL)a3
+- (void)setHasMcastCipher:(BOOL)cipher
 {
-  if (a3)
+  if (cipher)
   {
     v3 = 0x10000;
   }
@@ -267,9 +267,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasUcastCipher:(BOOL)a3
+- (void)setHasUcastCipher:(BOOL)cipher
 {
-  if (a3)
+  if (cipher)
   {
     v3 = 0x400000;
   }
@@ -282,9 +282,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasAkmSuites:(BOOL)a3
+- (void)setHasAkmSuites:(BOOL)suites
 {
-  if (a3)
+  if (suites)
   {
     v3 = 4;
   }
@@ -297,9 +297,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasCapabilities:(BOOL)a3
+- (void)setHasCapabilities:(BOOL)capabilities
 {
-  if (a3)
+  if (capabilities)
   {
     v3 = 8;
   }
@@ -312,9 +312,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasEnhancedSecurityType:(BOOL)a3
+- (void)setHasEnhancedSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -327,9 +327,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasHtInfo:(BOOL)a3
+- (void)setHasHtInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 0x4000;
   }
@@ -342,9 +342,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasHtExtended:(BOOL)a3
+- (void)setHasHtExtended:(BOOL)extended
 {
-  if (a3)
+  if (extended)
   {
     v3 = 0x2000;
   }
@@ -357,9 +357,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasHtTxBf:(BOOL)a3
+- (void)setHasHtTxBf:(BOOL)bf
 {
-  if (a3)
+  if (bf)
   {
     v3 = 0x8000;
   }
@@ -372,9 +372,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasHtASel:(BOOL)a3
+- (void)setHasHtASel:(BOOL)sel
 {
-  if (a3)
+  if (sel)
   {
     v3 = 2048;
   }
@@ -387,9 +387,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasHtAmpduParams:(BOOL)a3
+- (void)setHasHtAmpduParams:(BOOL)params
 {
-  if (a3)
+  if (params)
   {
     v3 = 4096;
   }
@@ -402,9 +402,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasVhtInfo:(BOOL)a3
+- (void)setHasVhtInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 0x800000;
   }
@@ -417,81 +417,81 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (int)txPerHistoryAtIndex:(unint64_t)a3
+- (int)txPerHistoryAtIndex:(unint64_t)index
 {
   p_txPerHistorys = &self->_txPerHistorys;
   count = self->_txPerHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txPerHistorys->list[a3];
+  return p_txPerHistorys->list[index];
 }
 
-- (int)txFrmsHistoryAtIndex:(unint64_t)a3
+- (int)txFrmsHistoryAtIndex:(unint64_t)index
 {
   p_txFrmsHistorys = &self->_txFrmsHistorys;
   count = self->_txFrmsHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txFrmsHistorys->list[a3];
+  return p_txFrmsHistorys->list[index];
 }
 
-- (int)fwTxPerHistoryAtIndex:(unint64_t)a3
+- (int)fwTxPerHistoryAtIndex:(unint64_t)index
 {
   p_fwTxPerHistorys = &self->_fwTxPerHistorys;
   count = self->_fwTxPerHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_fwTxPerHistorys->list[a3];
+  return p_fwTxPerHistorys->list[index];
 }
 
-- (int)fwTxFrmsHistoryAtIndex:(unint64_t)a3
+- (int)fwTxFrmsHistoryAtIndex:(unint64_t)index
 {
   p_fwTxFrmsHistorys = &self->_fwTxFrmsHistorys;
   count = self->_fwTxFrmsHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_fwTxFrmsHistorys->list[a3];
+  return p_fwTxFrmsHistorys->list[index];
 }
 
-- (int)bcnPerHistoryAtIndex:(unint64_t)a3
+- (int)bcnPerHistoryAtIndex:(unint64_t)index
 {
   p_bcnPerHistorys = &self->_bcnPerHistorys;
   count = self->_bcnPerHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_bcnPerHistorys->list[a3];
+  return p_bcnPerHistorys->list[index];
 }
 
-- (int)bcnFrmsHistoryAtIndex:(unint64_t)a3
+- (int)bcnFrmsHistoryAtIndex:(unint64_t)index
 {
   p_bcnFrmsHistorys = &self->_bcnFrmsHistorys;
   count = self->_bcnFrmsHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_bcnFrmsHistorys->list[a3];
+  return p_bcnFrmsHistorys->list[index];
 }
 
-- (void)setHasGatewayARPHistory:(BOOL)a3
+- (void)setHasGatewayARPHistory:(BOOL)history
 {
-  if (a3)
+  if (history)
   {
     v3 = 1024;
   }
@@ -504,9 +504,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasRxCSAFrames:(BOOL)a3
+- (void)setHasRxCSAFrames:(BOOL)frames
 {
-  if (a3)
+  if (frames)
   {
     v3 = 0x80000;
   }
@@ -519,9 +519,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasChannelSwitchDuringHostSleep:(BOOL)a3
+- (void)setHasChannelSwitchDuringHostSleep:(BOOL)sleep
 {
-  if (a3)
+  if (sleep)
   {
     v3 = 32;
   }
@@ -534,9 +534,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasChannelSwitchDuringHostWake:(BOOL)a3
+- (void)setHasChannelSwitchDuringHostWake:(BOOL)wake
 {
-  if (a3)
+  if (wake)
   {
     v3 = 64;
   }
@@ -558,17 +558,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"rssiHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"rssiHistory"];
   has = self->_has;
   if ((*&has & 0x4000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isLinkUp), @"isLinkUp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isLinkUp), @"isLinkUp"}];
     has = self->_has;
     if ((*&has & 0x2000000) == 0)
     {
@@ -587,7 +587,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isInVol), @"isInVol"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isInVol), @"isInVol"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -601,7 +601,7 @@ LABEL_6:
   }
 
 LABEL_70:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reason), @"reason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reason), @"reason"}];
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -615,7 +615,7 @@ LABEL_7:
   }
 
 LABEL_71:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_subreason), @"subreason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_subreason), @"subreason"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -629,7 +629,7 @@ LABEL_8:
   }
 
 LABEL_72:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -643,7 +643,7 @@ LABEL_9:
   }
 
 LABEL_73:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelWidth), @"channelWidth"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelWidth), @"channelWidth"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -657,24 +657,24 @@ LABEL_10:
   }
 
 LABEL_74:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phyMode), @"phyMode"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phyMode), @"phyMode"}];
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_flags), @"flags"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_flags), @"flags"}];
   }
 
 LABEL_12:
   oui = self->_oui;
   if (oui)
   {
-    [v3 setObject:oui forKey:@"oui"];
+    [dictionary setObject:oui forKey:@"oui"];
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x100000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
     v6 = self->_has;
     if ((*&v6 & 0x1000000) == 0)
     {
@@ -693,7 +693,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wpaProtocol), @"wpaProtocol"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wpaProtocol), @"wpaProtocol"}];
   v6 = self->_has;
   if ((*&v6 & 0x10000) == 0)
   {
@@ -707,7 +707,7 @@ LABEL_17:
   }
 
 LABEL_78:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mcastCipher), @"mcastCipher"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_mcastCipher), @"mcastCipher"}];
   v6 = self->_has;
   if ((*&v6 & 0x400000) == 0)
   {
@@ -721,7 +721,7 @@ LABEL_18:
   }
 
 LABEL_79:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ucastCipher), @"ucastCipher"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_ucastCipher), @"ucastCipher"}];
   v6 = self->_has;
   if ((*&v6 & 4) == 0)
   {
@@ -735,7 +735,7 @@ LABEL_19:
   }
 
 LABEL_80:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_akmSuites), @"akmSuites"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_akmSuites), @"akmSuites"}];
   v6 = self->_has;
   if ((*&v6 & 8) == 0)
   {
@@ -749,7 +749,7 @@ LABEL_20:
   }
 
 LABEL_81:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_capabilities), @"capabilities"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_capabilities), @"capabilities"}];
   v6 = self->_has;
   if ((*&v6 & 0x100) == 0)
   {
@@ -763,7 +763,7 @@ LABEL_21:
   }
 
 LABEL_82:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enhancedSecurityType), @"enhancedSecurityType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_enhancedSecurityType), @"enhancedSecurityType"}];
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -777,7 +777,7 @@ LABEL_22:
   }
 
 LABEL_83:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htInfo), @"htInfo"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htInfo), @"htInfo"}];
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -791,7 +791,7 @@ LABEL_23:
   }
 
 LABEL_84:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htExtended), @"htExtended"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htExtended), @"htExtended"}];
   v6 = self->_has;
   if ((*&v6 & 0x8000) == 0)
   {
@@ -805,7 +805,7 @@ LABEL_24:
   }
 
 LABEL_85:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htTxBf), @"htTxBf"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htTxBf), @"htTxBf"}];
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -819,123 +819,123 @@ LABEL_25:
   }
 
 LABEL_86:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htASel), @"htASel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htASel), @"htASel"}];
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_26:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htAmpduParams), @"htAmpduParams"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_htAmpduParams), @"htAmpduParams"}];
   }
 
 LABEL_27:
   htSupportedMcsSet = self->_htSupportedMcsSet;
   if (htSupportedMcsSet)
   {
-    [v3 setObject:htSupportedMcsSet forKey:@"htSupportedMcsSet"];
+    [dictionary setObject:htSupportedMcsSet forKey:@"htSupportedMcsSet"];
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vhtInfo), @"vhtInfo"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_vhtInfo), @"vhtInfo"}];
   }
 
   vhtSupportedMcsSet = self->_vhtSupportedMcsSet;
   if (vhtSupportedMcsSet)
   {
-    [v3 setObject:vhtSupportedMcsSet forKey:@"vhtSupportedMcsSet"];
+    [dictionary setObject:vhtSupportedMcsSet forKey:@"vhtSupportedMcsSet"];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"txPerHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"txFrmsHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"fwTxPerHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"fwTxFrmsHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"bcnPerHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"bcnFrmsHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"txPerHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"txFrmsHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"fwTxPerHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"fwTxFrmsHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"bcnPerHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"bcnFrmsHistory"];
   if ((*(&self->_has + 1) & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayARPHistory), @"gatewayARPHistory"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayARPHistory), @"gatewayARPHistory"}];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [v3 setObject:locale forKey:@"locale"];
+    [dictionary setObject:locale forKey:@"locale"];
   }
 
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_associationDuration), @"associationDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_associationDuration), @"associationDuration"}];
   }
 
   wpsResponseType = self->_wpsResponseType;
   if (wpsResponseType)
   {
-    [v3 setObject:wpsResponseType forKey:@"wpsResponseType"];
+    [dictionary setObject:wpsResponseType forKey:@"wpsResponseType"];
   }
 
   wpsManufacturerElement = self->_wpsManufacturerElement;
   if (wpsManufacturerElement)
   {
-    [v3 setObject:wpsManufacturerElement forKey:@"wpsManufacturerElement"];
+    [dictionary setObject:wpsManufacturerElement forKey:@"wpsManufacturerElement"];
   }
 
   wpsModelName = self->_wpsModelName;
   if (wpsModelName)
   {
-    [v3 setObject:wpsModelName forKey:@"wpsModelName"];
+    [dictionary setObject:wpsModelName forKey:@"wpsModelName"];
   }
 
   wpsModelNumber = self->_wpsModelNumber;
   if (wpsModelNumber)
   {
-    [v3 setObject:wpsModelNumber forKey:@"wpsModelNumber"];
+    [dictionary setObject:wpsModelNumber forKey:@"wpsModelNumber"];
   }
 
   countryCode = self->_countryCode;
   if (countryCode)
   {
-    [v3 setObject:countryCode forKey:@"countryCode"];
+    [dictionary setObject:countryCode forKey:@"countryCode"];
   }
 
   wpsPrimaryDeviceTypeCategory = self->_wpsPrimaryDeviceTypeCategory;
   if (wpsPrimaryDeviceTypeCategory)
   {
-    [v3 setObject:wpsPrimaryDeviceTypeCategory forKey:@"wpsPrimaryDeviceTypeCategory"];
+    [dictionary setObject:wpsPrimaryDeviceTypeCategory forKey:@"wpsPrimaryDeviceTypeCategory"];
   }
 
   wpsPrimaryDeviceTypeSubCategory = self->_wpsPrimaryDeviceTypeSubCategory;
   if (wpsPrimaryDeviceTypeSubCategory)
   {
-    [v3 setObject:wpsPrimaryDeviceTypeSubCategory forKey:@"wpsPrimaryDeviceTypeSubCategory"];
+    [dictionary setObject:wpsPrimaryDeviceTypeSubCategory forKey:@"wpsPrimaryDeviceTypeSubCategory"];
   }
 
   wpsDeviceNameElement = self->_wpsDeviceNameElement;
   if (wpsDeviceNameElement)
   {
-    [v3 setObject:wpsDeviceNameElement forKey:@"wpsDeviceNameElement"];
+    [dictionary setObject:wpsDeviceNameElement forKey:@"wpsDeviceNameElement"];
   }
 
   wpsDeviceNameData = self->_wpsDeviceNameData;
   if (wpsDeviceNameData)
   {
-    [v3 setObject:wpsDeviceNameData forKey:@"wpsDeviceNameData"];
+    [dictionary setObject:wpsDeviceNameData forKey:@"wpsDeviceNameData"];
   }
 
   wpsConfigMethods = self->_wpsConfigMethods;
   if (wpsConfigMethods)
   {
-    [v3 setObject:wpsConfigMethods forKey:@"wpsConfigMethods"];
+    [dictionary setObject:wpsConfigMethods forKey:@"wpsConfigMethods"];
   }
 
   localeSource = self->_localeSource;
   if (localeSource)
   {
-    [v3 setObject:localeSource forKey:@"localeSource"];
+    [dictionary setObject:localeSource forKey:@"localeSource"];
   }
 
   v21 = self->_has;
   if ((*&v21 & 0x80000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rxCSAFrames), @"rxCSAFrames"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rxCSAFrames), @"rxCSAFrames"}];
     v21 = self->_has;
     if ((*&v21 & 0x20) == 0)
     {
@@ -954,24 +954,24 @@ LABEL_63:
     goto LABEL_63;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelSwitchDuringHostSleep), @"channelSwitchDuringHostSleep"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelSwitchDuringHostSleep), @"channelSwitchDuringHostSleep"}];
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_64:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelSwitchDuringHostWake), @"channelSwitchDuringHostWake"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channelSwitchDuringHostWake), @"channelSwitchDuringHostWake"}];
   }
 
 LABEL_65:
   privateMacType = self->_privateMacType;
   if (privateMacType)
   {
-    [v3 setObject:privateMacType forKey:@"privateMacType"];
+    [dictionary setObject:privateMacType forKey:@"privateMacType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -1479,24 +1479,24 @@ LABEL_86:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 23) = self->_timestamp;
-    *(a3 + 109) |= 2u;
+    *(to + 23) = self->_timestamp;
+    *(to + 109) |= 2u;
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self rssiHistorysCount])
   {
-    [a3 clearRssiHistorys];
-    v5 = [(AWDWiFiMetricLinkChangeData *)self rssiHistorysCount];
-    if (v5)
+    [to clearRssiHistorys];
+    rssiHistorysCount = [(AWDWiFiMetricLinkChangeData *)self rssiHistorysCount];
+    if (rssiHistorysCount)
     {
-      v6 = v5;
+      v6 = rssiHistorysCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addRssiHistory:{-[AWDWiFiMetricLinkChangeData rssiHistoryAtIndex:](self, "rssiHistoryAtIndex:", i)}];
+        [to addRssiHistory:{-[AWDWiFiMetricLinkChangeData rssiHistoryAtIndex:](self, "rssiHistoryAtIndex:", i)}];
       }
     }
   }
@@ -1504,8 +1504,8 @@ LABEL_86:
   has = self->_has;
   if ((*&has & 0x4000000) != 0)
   {
-    *(a3 + 433) = self->_isLinkUp;
-    *(a3 + 109) |= 0x4000000u;
+    *(to + 433) = self->_isLinkUp;
+    *(to + 109) |= 0x4000000u;
     has = self->_has;
     if ((*&has & 0x2000000) == 0)
     {
@@ -1524,8 +1524,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 432) = self->_isInVol;
-  *(a3 + 109) |= 0x2000000u;
+  *(to + 432) = self->_isInVol;
+  *(to + 109) |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1539,8 +1539,8 @@ LABEL_10:
   }
 
 LABEL_99:
-  *(a3 + 80) = self->_reason;
-  *(a3 + 109) |= 0x40000u;
+  *(to + 80) = self->_reason;
+  *(to + 109) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1554,8 +1554,8 @@ LABEL_11:
   }
 
 LABEL_100:
-  *(a3 + 83) = self->_subreason;
-  *(a3 + 109) |= 0x200000u;
+  *(to + 83) = self->_subreason;
+  *(to + 109) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1569,8 +1569,8 @@ LABEL_12:
   }
 
 LABEL_101:
-  *(a3 + 50) = self->_channel;
-  *(a3 + 109) |= 0x10u;
+  *(to + 50) = self->_channel;
+  *(to + 109) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1584,8 +1584,8 @@ LABEL_13:
   }
 
 LABEL_102:
-  *(a3 + 53) = self->_channelWidth;
-  *(a3 + 109) |= 0x80u;
+  *(to + 53) = self->_channelWidth;
+  *(to + 109) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1599,26 +1599,26 @@ LABEL_14:
   }
 
 LABEL_103:
-  *(a3 + 76) = self->_phyMode;
-  *(a3 + 109) |= 0x20000u;
+  *(to + 76) = self->_phyMode;
+  *(to + 109) |= 0x20000u;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_15:
-    *(a3 + 57) = self->_flags;
-    *(a3 + 109) |= 0x200u;
+    *(to + 57) = self->_flags;
+    *(to + 109) |= 0x200u;
   }
 
 LABEL_16:
   if (self->_oui)
   {
-    [a3 setOui:?];
+    [to setOui:?];
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x100000) != 0)
   {
-    *(a3 + 82) = self->_securityType;
-    *(a3 + 109) |= 0x100000u;
+    *(to + 82) = self->_securityType;
+    *(to + 109) |= 0x100000u;
     v9 = self->_has;
     if ((*&v9 & 0x1000000) == 0)
     {
@@ -1637,8 +1637,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  *(a3 + 88) = self->_wpaProtocol;
-  *(a3 + 109) |= 0x1000000u;
+  *(to + 88) = self->_wpaProtocol;
+  *(to + 109) |= 0x1000000u;
   v9 = self->_has;
   if ((*&v9 & 0x10000) == 0)
   {
@@ -1652,8 +1652,8 @@ LABEL_21:
   }
 
 LABEL_107:
-  *(a3 + 72) = self->_mcastCipher;
-  *(a3 + 109) |= 0x10000u;
+  *(to + 72) = self->_mcastCipher;
+  *(to + 109) |= 0x10000u;
   v9 = self->_has;
   if ((*&v9 & 0x400000) == 0)
   {
@@ -1667,8 +1667,8 @@ LABEL_22:
   }
 
 LABEL_108:
-  *(a3 + 84) = self->_ucastCipher;
-  *(a3 + 109) |= 0x400000u;
+  *(to + 84) = self->_ucastCipher;
+  *(to + 109) |= 0x400000u;
   v9 = self->_has;
   if ((*&v9 & 4) == 0)
   {
@@ -1682,8 +1682,8 @@ LABEL_23:
   }
 
 LABEL_109:
-  *(a3 + 48) = self->_akmSuites;
-  *(a3 + 109) |= 4u;
+  *(to + 48) = self->_akmSuites;
+  *(to + 109) |= 4u;
   v9 = self->_has;
   if ((*&v9 & 8) == 0)
   {
@@ -1697,8 +1697,8 @@ LABEL_24:
   }
 
 LABEL_110:
-  *(a3 + 49) = self->_capabilities;
-  *(a3 + 109) |= 8u;
+  *(to + 49) = self->_capabilities;
+  *(to + 109) |= 8u;
   v9 = self->_has;
   if ((*&v9 & 0x100) == 0)
   {
@@ -1712,8 +1712,8 @@ LABEL_25:
   }
 
 LABEL_111:
-  *(a3 + 56) = self->_enhancedSecurityType;
-  *(a3 + 109) |= 0x100u;
+  *(to + 56) = self->_enhancedSecurityType;
+  *(to + 109) |= 0x100u;
   v9 = self->_has;
   if ((*&v9 & 0x4000) == 0)
   {
@@ -1727,8 +1727,8 @@ LABEL_26:
   }
 
 LABEL_112:
-  *(a3 + 62) = self->_htInfo;
-  *(a3 + 109) |= 0x4000u;
+  *(to + 62) = self->_htInfo;
+  *(to + 109) |= 0x4000u;
   v9 = self->_has;
   if ((*&v9 & 0x2000) == 0)
   {
@@ -1742,8 +1742,8 @@ LABEL_27:
   }
 
 LABEL_113:
-  *(a3 + 61) = self->_htExtended;
-  *(a3 + 109) |= 0x2000u;
+  *(to + 61) = self->_htExtended;
+  *(to + 109) |= 0x2000u;
   v9 = self->_has;
   if ((*&v9 & 0x8000) == 0)
   {
@@ -1757,8 +1757,8 @@ LABEL_28:
   }
 
 LABEL_114:
-  *(a3 + 66) = self->_htTxBf;
-  *(a3 + 109) |= 0x8000u;
+  *(to + 66) = self->_htTxBf;
+  *(to + 109) |= 0x8000u;
   v9 = self->_has;
   if ((*&v9 & 0x800) == 0)
   {
@@ -1772,193 +1772,193 @@ LABEL_29:
   }
 
 LABEL_115:
-  *(a3 + 59) = self->_htASel;
-  *(a3 + 109) |= 0x800u;
+  *(to + 59) = self->_htASel;
+  *(to + 109) |= 0x800u;
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_30:
-    *(a3 + 60) = self->_htAmpduParams;
-    *(a3 + 109) |= 0x1000u;
+    *(to + 60) = self->_htAmpduParams;
+    *(to + 109) |= 0x1000u;
   }
 
 LABEL_31:
   if (self->_htSupportedMcsSet)
   {
-    [a3 setHtSupportedMcsSet:?];
+    [to setHtSupportedMcsSet:?];
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
-    *(a3 + 85) = self->_vhtInfo;
-    *(a3 + 109) |= 0x800000u;
+    *(to + 85) = self->_vhtInfo;
+    *(to + 109) |= 0x800000u;
   }
 
   if (self->_vhtSupportedMcsSet)
   {
-    [a3 setVhtSupportedMcsSet:?];
+    [to setVhtSupportedMcsSet:?];
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self txPerHistorysCount])
   {
-    [a3 clearTxPerHistorys];
-    v10 = [(AWDWiFiMetricLinkChangeData *)self txPerHistorysCount];
-    if (v10)
+    [to clearTxPerHistorys];
+    txPerHistorysCount = [(AWDWiFiMetricLinkChangeData *)self txPerHistorysCount];
+    if (txPerHistorysCount)
     {
-      v11 = v10;
+      v11 = txPerHistorysCount;
       for (j = 0; j != v11; ++j)
       {
-        [a3 addTxPerHistory:{-[AWDWiFiMetricLinkChangeData txPerHistoryAtIndex:](self, "txPerHistoryAtIndex:", j)}];
+        [to addTxPerHistory:{-[AWDWiFiMetricLinkChangeData txPerHistoryAtIndex:](self, "txPerHistoryAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self txFrmsHistorysCount])
   {
-    [a3 clearTxFrmsHistorys];
-    v13 = [(AWDWiFiMetricLinkChangeData *)self txFrmsHistorysCount];
-    if (v13)
+    [to clearTxFrmsHistorys];
+    txFrmsHistorysCount = [(AWDWiFiMetricLinkChangeData *)self txFrmsHistorysCount];
+    if (txFrmsHistorysCount)
     {
-      v14 = v13;
+      v14 = txFrmsHistorysCount;
       for (k = 0; k != v14; ++k)
       {
-        [a3 addTxFrmsHistory:{-[AWDWiFiMetricLinkChangeData txFrmsHistoryAtIndex:](self, "txFrmsHistoryAtIndex:", k)}];
+        [to addTxFrmsHistory:{-[AWDWiFiMetricLinkChangeData txFrmsHistoryAtIndex:](self, "txFrmsHistoryAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self fwTxPerHistorysCount])
   {
-    [a3 clearFwTxPerHistorys];
-    v16 = [(AWDWiFiMetricLinkChangeData *)self fwTxPerHistorysCount];
-    if (v16)
+    [to clearFwTxPerHistorys];
+    fwTxPerHistorysCount = [(AWDWiFiMetricLinkChangeData *)self fwTxPerHistorysCount];
+    if (fwTxPerHistorysCount)
     {
-      v17 = v16;
+      v17 = fwTxPerHistorysCount;
       for (m = 0; m != v17; ++m)
       {
-        [a3 addFwTxPerHistory:{-[AWDWiFiMetricLinkChangeData fwTxPerHistoryAtIndex:](self, "fwTxPerHistoryAtIndex:", m)}];
+        [to addFwTxPerHistory:{-[AWDWiFiMetricLinkChangeData fwTxPerHistoryAtIndex:](self, "fwTxPerHistoryAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self fwTxFrmsHistorysCount])
   {
-    [a3 clearFwTxFrmsHistorys];
-    v19 = [(AWDWiFiMetricLinkChangeData *)self fwTxFrmsHistorysCount];
-    if (v19)
+    [to clearFwTxFrmsHistorys];
+    fwTxFrmsHistorysCount = [(AWDWiFiMetricLinkChangeData *)self fwTxFrmsHistorysCount];
+    if (fwTxFrmsHistorysCount)
     {
-      v20 = v19;
+      v20 = fwTxFrmsHistorysCount;
       for (n = 0; n != v20; ++n)
       {
-        [a3 addFwTxFrmsHistory:{-[AWDWiFiMetricLinkChangeData fwTxFrmsHistoryAtIndex:](self, "fwTxFrmsHistoryAtIndex:", n)}];
+        [to addFwTxFrmsHistory:{-[AWDWiFiMetricLinkChangeData fwTxFrmsHistoryAtIndex:](self, "fwTxFrmsHistoryAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self bcnPerHistorysCount])
   {
-    [a3 clearBcnPerHistorys];
-    v22 = [(AWDWiFiMetricLinkChangeData *)self bcnPerHistorysCount];
-    if (v22)
+    [to clearBcnPerHistorys];
+    bcnPerHistorysCount = [(AWDWiFiMetricLinkChangeData *)self bcnPerHistorysCount];
+    if (bcnPerHistorysCount)
     {
-      v23 = v22;
+      v23 = bcnPerHistorysCount;
       for (ii = 0; ii != v23; ++ii)
       {
-        [a3 addBcnPerHistory:{-[AWDWiFiMetricLinkChangeData bcnPerHistoryAtIndex:](self, "bcnPerHistoryAtIndex:", ii)}];
+        [to addBcnPerHistory:{-[AWDWiFiMetricLinkChangeData bcnPerHistoryAtIndex:](self, "bcnPerHistoryAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricLinkChangeData *)self bcnFrmsHistorysCount])
   {
-    [a3 clearBcnFrmsHistorys];
-    v25 = [(AWDWiFiMetricLinkChangeData *)self bcnFrmsHistorysCount];
-    if (v25)
+    [to clearBcnFrmsHistorys];
+    bcnFrmsHistorysCount = [(AWDWiFiMetricLinkChangeData *)self bcnFrmsHistorysCount];
+    if (bcnFrmsHistorysCount)
     {
-      v26 = v25;
+      v26 = bcnFrmsHistorysCount;
       for (jj = 0; jj != v26; ++jj)
       {
-        [a3 addBcnFrmsHistory:{-[AWDWiFiMetricLinkChangeData bcnFrmsHistoryAtIndex:](self, "bcnFrmsHistoryAtIndex:", jj)}];
+        [to addBcnFrmsHistory:{-[AWDWiFiMetricLinkChangeData bcnFrmsHistoryAtIndex:](self, "bcnFrmsHistoryAtIndex:", jj)}];
       }
     }
   }
 
   if ((*(&self->_has + 1) & 4) != 0)
   {
-    *(a3 + 58) = self->_gatewayARPHistory;
-    *(a3 + 109) |= 0x400u;
+    *(to + 58) = self->_gatewayARPHistory;
+    *(to + 109) |= 0x400u;
   }
 
   if (self->_locale)
   {
-    [a3 setLocale:?];
+    [to setLocale:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 22) = *&self->_associationDuration;
-    *(a3 + 109) |= 1u;
+    *(to + 22) = *&self->_associationDuration;
+    *(to + 109) |= 1u;
   }
 
   if (self->_wpsResponseType)
   {
-    [a3 setWpsResponseType:?];
+    [to setWpsResponseType:?];
   }
 
   if (self->_wpsManufacturerElement)
   {
-    [a3 setWpsManufacturerElement:?];
+    [to setWpsManufacturerElement:?];
   }
 
   if (self->_wpsModelName)
   {
-    [a3 setWpsModelName:?];
+    [to setWpsModelName:?];
   }
 
   if (self->_wpsModelNumber)
   {
-    [a3 setWpsModelNumber:?];
+    [to setWpsModelNumber:?];
   }
 
   if (self->_countryCode)
   {
-    [a3 setCountryCode:?];
+    [to setCountryCode:?];
   }
 
   if (self->_wpsPrimaryDeviceTypeCategory)
   {
-    [a3 setWpsPrimaryDeviceTypeCategory:?];
+    [to setWpsPrimaryDeviceTypeCategory:?];
   }
 
   if (self->_wpsPrimaryDeviceTypeSubCategory)
   {
-    [a3 setWpsPrimaryDeviceTypeSubCategory:?];
+    [to setWpsPrimaryDeviceTypeSubCategory:?];
   }
 
   if (self->_wpsDeviceNameElement)
   {
-    [a3 setWpsDeviceNameElement:?];
+    [to setWpsDeviceNameElement:?];
   }
 
   if (self->_wpsDeviceNameData)
   {
-    [a3 setWpsDeviceNameData:?];
+    [to setWpsDeviceNameData:?];
   }
 
   if (self->_wpsConfigMethods)
   {
-    [a3 setWpsConfigMethods:?];
+    [to setWpsConfigMethods:?];
   }
 
   if (self->_localeSource)
   {
-    [a3 setLocaleSource:?];
+    [to setLocaleSource:?];
   }
 
   v28 = self->_has;
   if ((*&v28 & 0x80000) != 0)
   {
-    *(a3 + 81) = self->_rxCSAFrames;
-    *(a3 + 109) |= 0x80000u;
+    *(to + 81) = self->_rxCSAFrames;
+    *(to + 109) |= 0x80000u;
     v28 = self->_has;
     if ((*&v28 & 0x20) == 0)
     {
@@ -1977,26 +1977,26 @@ LABEL_91:
     goto LABEL_91;
   }
 
-  *(a3 + 51) = self->_channelSwitchDuringHostSleep;
-  *(a3 + 109) |= 0x20u;
+  *(to + 51) = self->_channelSwitchDuringHostSleep;
+  *(to + 109) |= 0x20u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_92:
-    *(a3 + 52) = self->_channelSwitchDuringHostWake;
-    *(a3 + 109) |= 0x40u;
+    *(to + 52) = self->_channelSwitchDuringHostWake;
+    *(to + 109) |= 0x40u;
   }
 
 LABEL_93:
   if (self->_privateMacType)
   {
 
-    [a3 setPrivateMacType:?];
+    [to setPrivateMacType:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -2114,7 +2114,7 @@ LABEL_11:
 
 LABEL_12:
 
-  *(v6 + 296) = [(NSData *)self->_oui copyWithZone:a3];
+  *(v6 + 296) = [(NSData *)self->_oui copyWithZone:zone];
   v8 = self->_has;
   if ((*&v8 & 0x100000) != 0)
   {
@@ -2284,14 +2284,14 @@ LABEL_24:
 
 LABEL_25:
 
-  *(v6 + 256) = [(NSData *)self->_htSupportedMcsSet copyWithZone:a3];
+  *(v6 + 256) = [(NSData *)self->_htSupportedMcsSet copyWithZone:zone];
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
     *(v6 + 340) = self->_vhtInfo;
     *(v6 + 436) |= 0x800000u;
   }
 
-  *(v6 + 344) = [(NSData *)self->_vhtSupportedMcsSet copyWithZone:a3];
+  *(v6 + 344) = [(NSData *)self->_vhtSupportedMcsSet copyWithZone:zone];
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
@@ -2304,29 +2304,29 @@ LABEL_25:
     *(v6 + 436) |= 0x400u;
   }
 
-  *(v6 + 272) = [(NSString *)self->_locale copyWithZone:a3];
+  *(v6 + 272) = [(NSString *)self->_locale copyWithZone:zone];
   if (*&self->_has)
   {
     *(v6 + 176) = self->_associationDuration;
     *(v6 + 436) |= 1u;
   }
 
-  *(v6 + 424) = [(NSString *)self->_wpsResponseType copyWithZone:a3];
-  *(v6 + 384) = [(NSString *)self->_wpsManufacturerElement copyWithZone:a3];
+  *(v6 + 424) = [(NSString *)self->_wpsResponseType copyWithZone:zone];
+  *(v6 + 384) = [(NSString *)self->_wpsManufacturerElement copyWithZone:zone];
 
-  *(v6 + 392) = [(NSString *)self->_wpsModelName copyWithZone:a3];
-  *(v6 + 400) = [(NSString *)self->_wpsModelNumber copyWithZone:a3];
+  *(v6 + 392) = [(NSString *)self->_wpsModelName copyWithZone:zone];
+  *(v6 + 400) = [(NSString *)self->_wpsModelNumber copyWithZone:zone];
 
-  *(v6 + 216) = [(NSString *)self->_countryCode copyWithZone:a3];
-  *(v6 + 408) = [(NSString *)self->_wpsPrimaryDeviceTypeCategory copyWithZone:a3];
+  *(v6 + 216) = [(NSString *)self->_countryCode copyWithZone:zone];
+  *(v6 + 408) = [(NSString *)self->_wpsPrimaryDeviceTypeCategory copyWithZone:zone];
 
-  *(v6 + 416) = [(NSString *)self->_wpsPrimaryDeviceTypeSubCategory copyWithZone:a3];
-  *(v6 + 376) = [(NSString *)self->_wpsDeviceNameElement copyWithZone:a3];
+  *(v6 + 416) = [(NSString *)self->_wpsPrimaryDeviceTypeSubCategory copyWithZone:zone];
+  *(v6 + 376) = [(NSString *)self->_wpsDeviceNameElement copyWithZone:zone];
 
-  *(v6 + 368) = [(NSString *)self->_wpsDeviceNameData copyWithZone:a3];
-  *(v6 + 360) = [(NSString *)self->_wpsConfigMethods copyWithZone:a3];
+  *(v6 + 368) = [(NSString *)self->_wpsDeviceNameData copyWithZone:zone];
+  *(v6 + 360) = [(NSString *)self->_wpsConfigMethods copyWithZone:zone];
 
-  *(v6 + 280) = [(NSString *)self->_localeSource copyWithZone:a3];
+  *(v6 + 280) = [(NSString *)self->_localeSource copyWithZone:zone];
   v9 = self->_has;
   if ((*&v9 & 0x80000) == 0)
   {
@@ -2364,22 +2364,22 @@ LABEL_34:
 
 LABEL_35:
 
-  *(v6 + 312) = [(NSString *)self->_privateMacType copyWithZone:a3];
+  *(v6 + 312) = [(NSString *)self->_privateMacType copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (!IsEqual)
   {
     return IsEqual;
   }
 
-  v6 = *(a3 + 109);
+  v6 = *(equal + 109);
   if ((*&self->_has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_timestamp != *(a3 + 23))
+    if ((v6 & 2) == 0 || self->_timestamp != *(equal + 23))
     {
       goto LABEL_185;
     }
@@ -2397,7 +2397,7 @@ LABEL_35:
   }
 
   has = self->_has;
-  v8 = *(a3 + 109);
+  v8 = *(equal + 109);
   if ((*&has & 0x4000000) != 0)
   {
     if ((v8 & 0x4000000) == 0)
@@ -2405,16 +2405,16 @@ LABEL_35:
       goto LABEL_185;
     }
 
-    v9 = *(a3 + 433);
+    v9 = *(equal + 433);
     if (self->_isLinkUp)
     {
-      if ((*(a3 + 433) & 1) == 0)
+      if ((*(equal + 433) & 1) == 0)
       {
         goto LABEL_185;
       }
     }
 
-    else if (*(a3 + 433))
+    else if (*(equal + 433))
     {
       goto LABEL_185;
     }
@@ -2429,16 +2429,16 @@ LABEL_35:
   {
     if ((v8 & 0x2000000) != 0)
     {
-      v10 = *(a3 + 432);
+      v10 = *(equal + 432);
       if (self->_isInVol)
       {
-        if ((*(a3 + 432) & 1) == 0)
+        if ((*(equal + 432) & 1) == 0)
         {
           goto LABEL_185;
         }
       }
 
-      else if (*(a3 + 432))
+      else if (*(equal + 432))
       {
         goto LABEL_185;
       }
@@ -2459,7 +2459,7 @@ LABEL_185:
 LABEL_12:
   if ((*&has & 0x40000) != 0)
   {
-    if ((v8 & 0x40000) == 0 || self->_reason != *(a3 + 80))
+    if ((v8 & 0x40000) == 0 || self->_reason != *(equal + 80))
     {
       goto LABEL_185;
     }
@@ -2472,7 +2472,7 @@ LABEL_12:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v8 & 0x200000) == 0 || self->_subreason != *(a3 + 83))
+    if ((v8 & 0x200000) == 0 || self->_subreason != *(equal + 83))
     {
       goto LABEL_185;
     }
@@ -2485,7 +2485,7 @@ LABEL_12:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_channel != *(a3 + 50))
+    if ((v8 & 0x10) == 0 || self->_channel != *(equal + 50))
     {
       goto LABEL_185;
     }
@@ -2498,7 +2498,7 @@ LABEL_12:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_channelWidth != *(a3 + 53))
+    if ((v8 & 0x80) == 0 || self->_channelWidth != *(equal + 53))
     {
       goto LABEL_185;
     }
@@ -2511,7 +2511,7 @@ LABEL_12:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v8 & 0x20000) == 0 || self->_phyMode != *(a3 + 76))
+    if ((v8 & 0x20000) == 0 || self->_phyMode != *(equal + 76))
     {
       goto LABEL_185;
     }
@@ -2524,7 +2524,7 @@ LABEL_12:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_flags != *(a3 + 57))
+    if ((v8 & 0x200) == 0 || self->_flags != *(equal + 57))
     {
       goto LABEL_185;
     }
@@ -2536,7 +2536,7 @@ LABEL_12:
   }
 
   oui = self->_oui;
-  if (oui | *(a3 + 37))
+  if (oui | *(equal + 37))
   {
     IsEqual = [(NSData *)oui isEqual:?];
     if (!IsEqual)
@@ -2547,10 +2547,10 @@ LABEL_12:
     has = self->_has;
   }
 
-  v12 = *(a3 + 109);
+  v12 = *(equal + 109);
   if ((*&has & 0x100000) != 0)
   {
-    if ((v12 & 0x100000) == 0 || self->_securityType != *(a3 + 82))
+    if ((v12 & 0x100000) == 0 || self->_securityType != *(equal + 82))
     {
       goto LABEL_185;
     }
@@ -2563,7 +2563,7 @@ LABEL_12:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v12 & 0x1000000) == 0 || self->_wpaProtocol != *(a3 + 88))
+    if ((v12 & 0x1000000) == 0 || self->_wpaProtocol != *(equal + 88))
     {
       goto LABEL_185;
     }
@@ -2576,7 +2576,7 @@ LABEL_12:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v12 & 0x10000) == 0 || self->_mcastCipher != *(a3 + 72))
+    if ((v12 & 0x10000) == 0 || self->_mcastCipher != *(equal + 72))
     {
       goto LABEL_185;
     }
@@ -2589,7 +2589,7 @@ LABEL_12:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v12 & 0x400000) == 0 || self->_ucastCipher != *(a3 + 84))
+    if ((v12 & 0x400000) == 0 || self->_ucastCipher != *(equal + 84))
     {
       goto LABEL_185;
     }
@@ -2602,7 +2602,7 @@ LABEL_12:
 
   if ((*&has & 4) != 0)
   {
-    if ((v12 & 4) == 0 || self->_akmSuites != *(a3 + 48))
+    if ((v12 & 4) == 0 || self->_akmSuites != *(equal + 48))
     {
       goto LABEL_185;
     }
@@ -2615,7 +2615,7 @@ LABEL_12:
 
   if ((*&has & 8) != 0)
   {
-    if ((v12 & 8) == 0 || self->_capabilities != *(a3 + 49))
+    if ((v12 & 8) == 0 || self->_capabilities != *(equal + 49))
     {
       goto LABEL_185;
     }
@@ -2628,7 +2628,7 @@ LABEL_12:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v12 & 0x100) == 0 || self->_enhancedSecurityType != *(a3 + 56))
+    if ((v12 & 0x100) == 0 || self->_enhancedSecurityType != *(equal + 56))
     {
       goto LABEL_185;
     }
@@ -2641,7 +2641,7 @@ LABEL_12:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v12 & 0x4000) == 0 || self->_htInfo != *(a3 + 62))
+    if ((v12 & 0x4000) == 0 || self->_htInfo != *(equal + 62))
     {
       goto LABEL_185;
     }
@@ -2654,7 +2654,7 @@ LABEL_12:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v12 & 0x2000) == 0 || self->_htExtended != *(a3 + 61))
+    if ((v12 & 0x2000) == 0 || self->_htExtended != *(equal + 61))
     {
       goto LABEL_185;
     }
@@ -2667,7 +2667,7 @@ LABEL_12:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v12 & 0x8000) == 0 || self->_htTxBf != *(a3 + 66))
+    if ((v12 & 0x8000) == 0 || self->_htTxBf != *(equal + 66))
     {
       goto LABEL_185;
     }
@@ -2680,7 +2680,7 @@ LABEL_12:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_htASel != *(a3 + 59))
+    if ((v12 & 0x800) == 0 || self->_htASel != *(equal + 59))
     {
       goto LABEL_185;
     }
@@ -2693,7 +2693,7 @@ LABEL_12:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v12 & 0x1000) == 0 || self->_htAmpduParams != *(a3 + 60))
+    if ((v12 & 0x1000) == 0 || self->_htAmpduParams != *(equal + 60))
     {
       goto LABEL_185;
     }
@@ -2705,7 +2705,7 @@ LABEL_12:
   }
 
   htSupportedMcsSet = self->_htSupportedMcsSet;
-  if (htSupportedMcsSet | *(a3 + 32))
+  if (htSupportedMcsSet | *(equal + 32))
   {
     IsEqual = [(NSData *)htSupportedMcsSet isEqual:?];
     if (!IsEqual)
@@ -2716,10 +2716,10 @@ LABEL_12:
     has = self->_has;
   }
 
-  v14 = *(a3 + 109);
+  v14 = *(equal + 109);
   if ((*&has & 0x800000) != 0)
   {
-    if ((v14 & 0x800000) == 0 || self->_vhtInfo != *(a3 + 85))
+    if ((v14 & 0x800000) == 0 || self->_vhtInfo != *(equal + 85))
     {
       goto LABEL_185;
     }
@@ -2731,7 +2731,7 @@ LABEL_12:
   }
 
   vhtSupportedMcsSet = self->_vhtSupportedMcsSet;
-  if (!(vhtSupportedMcsSet | *(a3 + 43)) || (IsEqual = [(NSData *)vhtSupportedMcsSet isEqual:?]) != 0)
+  if (!(vhtSupportedMcsSet | *(equal + 43)) || (IsEqual = [(NSData *)vhtSupportedMcsSet isEqual:?]) != 0)
   {
     IsEqual = PBRepeatedInt32IsEqual();
     if (IsEqual)
@@ -2752,10 +2752,10 @@ LABEL_12:
               if (IsEqual)
               {
                 v16 = self->_has;
-                v17 = *(a3 + 109);
+                v17 = *(equal + 109);
                 if ((*&v16 & 0x400) != 0)
                 {
-                  if ((v17 & 0x400) == 0 || self->_gatewayARPHistory != *(a3 + 58))
+                  if ((v17 & 0x400) == 0 || self->_gatewayARPHistory != *(equal + 58))
                   {
                     goto LABEL_185;
                   }
@@ -2767,7 +2767,7 @@ LABEL_12:
                 }
 
                 locale = self->_locale;
-                if (locale | *(a3 + 34))
+                if (locale | *(equal + 34))
                 {
                   IsEqual = [(NSString *)locale isEqual:?];
                   if (!IsEqual)
@@ -2778,10 +2778,10 @@ LABEL_12:
                   v16 = self->_has;
                 }
 
-                v19 = *(a3 + 109);
+                v19 = *(equal + 109);
                 if (*&v16)
                 {
-                  if ((v19 & 1) == 0 || self->_associationDuration != *(a3 + 22))
+                  if ((v19 & 1) == 0 || self->_associationDuration != *(equal + 22))
                   {
                     goto LABEL_185;
                   }
@@ -2793,43 +2793,43 @@ LABEL_12:
                 }
 
                 wpsResponseType = self->_wpsResponseType;
-                if (!(wpsResponseType | *(a3 + 53)) || (IsEqual = [(NSString *)wpsResponseType isEqual:?]) != 0)
+                if (!(wpsResponseType | *(equal + 53)) || (IsEqual = [(NSString *)wpsResponseType isEqual:?]) != 0)
                 {
                   wpsManufacturerElement = self->_wpsManufacturerElement;
-                  if (!(wpsManufacturerElement | *(a3 + 48)) || (IsEqual = [(NSString *)wpsManufacturerElement isEqual:?]) != 0)
+                  if (!(wpsManufacturerElement | *(equal + 48)) || (IsEqual = [(NSString *)wpsManufacturerElement isEqual:?]) != 0)
                   {
                     wpsModelName = self->_wpsModelName;
-                    if (!(wpsModelName | *(a3 + 49)) || (IsEqual = [(NSString *)wpsModelName isEqual:?]) != 0)
+                    if (!(wpsModelName | *(equal + 49)) || (IsEqual = [(NSString *)wpsModelName isEqual:?]) != 0)
                     {
                       wpsModelNumber = self->_wpsModelNumber;
-                      if (!(wpsModelNumber | *(a3 + 50)) || (IsEqual = [(NSString *)wpsModelNumber isEqual:?]) != 0)
+                      if (!(wpsModelNumber | *(equal + 50)) || (IsEqual = [(NSString *)wpsModelNumber isEqual:?]) != 0)
                       {
                         countryCode = self->_countryCode;
-                        if (!(countryCode | *(a3 + 27)) || (IsEqual = [(NSString *)countryCode isEqual:?]) != 0)
+                        if (!(countryCode | *(equal + 27)) || (IsEqual = [(NSString *)countryCode isEqual:?]) != 0)
                         {
                           wpsPrimaryDeviceTypeCategory = self->_wpsPrimaryDeviceTypeCategory;
-                          if (!(wpsPrimaryDeviceTypeCategory | *(a3 + 51)) || (IsEqual = [(NSString *)wpsPrimaryDeviceTypeCategory isEqual:?]) != 0)
+                          if (!(wpsPrimaryDeviceTypeCategory | *(equal + 51)) || (IsEqual = [(NSString *)wpsPrimaryDeviceTypeCategory isEqual:?]) != 0)
                           {
                             wpsPrimaryDeviceTypeSubCategory = self->_wpsPrimaryDeviceTypeSubCategory;
-                            if (!(wpsPrimaryDeviceTypeSubCategory | *(a3 + 52)) || (IsEqual = [(NSString *)wpsPrimaryDeviceTypeSubCategory isEqual:?]) != 0)
+                            if (!(wpsPrimaryDeviceTypeSubCategory | *(equal + 52)) || (IsEqual = [(NSString *)wpsPrimaryDeviceTypeSubCategory isEqual:?]) != 0)
                             {
                               wpsDeviceNameElement = self->_wpsDeviceNameElement;
-                              if (!(wpsDeviceNameElement | *(a3 + 47)) || (IsEqual = [(NSString *)wpsDeviceNameElement isEqual:?]) != 0)
+                              if (!(wpsDeviceNameElement | *(equal + 47)) || (IsEqual = [(NSString *)wpsDeviceNameElement isEqual:?]) != 0)
                               {
                                 wpsDeviceNameData = self->_wpsDeviceNameData;
-                                if (!(wpsDeviceNameData | *(a3 + 46)) || (IsEqual = [(NSString *)wpsDeviceNameData isEqual:?]) != 0)
+                                if (!(wpsDeviceNameData | *(equal + 46)) || (IsEqual = [(NSString *)wpsDeviceNameData isEqual:?]) != 0)
                                 {
                                   wpsConfigMethods = self->_wpsConfigMethods;
-                                  if (!(wpsConfigMethods | *(a3 + 45)) || (IsEqual = [(NSString *)wpsConfigMethods isEqual:?]) != 0)
+                                  if (!(wpsConfigMethods | *(equal + 45)) || (IsEqual = [(NSString *)wpsConfigMethods isEqual:?]) != 0)
                                   {
                                     localeSource = self->_localeSource;
-                                    if (!(localeSource | *(a3 + 35)) || (IsEqual = [(NSString *)localeSource isEqual:?]) != 0)
+                                    if (!(localeSource | *(equal + 35)) || (IsEqual = [(NSString *)localeSource isEqual:?]) != 0)
                                     {
                                       v31 = self->_has;
-                                      v32 = *(a3 + 109);
+                                      v32 = *(equal + 109);
                                       if ((*&v31 & 0x80000) != 0)
                                       {
-                                        if ((v32 & 0x80000) == 0 || self->_rxCSAFrames != *(a3 + 81))
+                                        if ((v32 & 0x80000) == 0 || self->_rxCSAFrames != *(equal + 81))
                                         {
                                           goto LABEL_185;
                                         }
@@ -2842,7 +2842,7 @@ LABEL_12:
 
                                       if ((*&v31 & 0x20) != 0)
                                       {
-                                        if ((v32 & 0x20) == 0 || self->_channelSwitchDuringHostSleep != *(a3 + 51))
+                                        if ((v32 & 0x20) == 0 || self->_channelSwitchDuringHostSleep != *(equal + 51))
                                         {
                                           goto LABEL_185;
                                         }
@@ -2855,7 +2855,7 @@ LABEL_12:
 
                                       if ((*&v31 & 0x40) != 0)
                                       {
-                                        if ((v32 & 0x40) == 0 || self->_channelSwitchDuringHostWake != *(a3 + 52))
+                                        if ((v32 & 0x40) == 0 || self->_channelSwitchDuringHostWake != *(equal + 52))
                                         {
                                           goto LABEL_185;
                                         }
@@ -2867,7 +2867,7 @@ LABEL_12:
                                       }
 
                                       privateMacType = self->_privateMacType;
-                                      if (privateMacType | *(a3 + 39))
+                                      if (privateMacType | *(equal + 39))
                                       {
 
                                         LOBYTE(IsEqual) = [(NSString *)privateMacType isEqual:?];
@@ -3295,30 +3295,30 @@ LABEL_63:
   return v59 ^ v60 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v49 ^ v48 ^ v50 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v7 ^ v26 ^ v25 ^ v24 ^ v23 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v19 ^ v20 ^ v21 ^ [(NSString *)self->_privateMacType hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 436) & 2) != 0)
+  if ((*(from + 436) & 2) != 0)
   {
-    self->_timestamp = *(a3 + 23);
+    self->_timestamp = *(from + 23);
     *&self->_has |= 2u;
   }
 
-  v5 = [a3 rssiHistorysCount];
-  if (v5)
+  rssiHistorysCount = [from rssiHistorysCount];
+  if (rssiHistorysCount)
   {
-    v6 = v5;
+    v6 = rssiHistorysCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiMetricLinkChangeData addRssiHistory:](self, "addRssiHistory:", [a3 rssiHistoryAtIndex:i]);
+      -[AWDWiFiMetricLinkChangeData addRssiHistory:](self, "addRssiHistory:", [from rssiHistoryAtIndex:i]);
     }
   }
 
-  v8 = *(a3 + 109);
+  v8 = *(from + 109);
   if ((v8 & 0x4000000) != 0)
   {
-    self->_isLinkUp = *(a3 + 433);
+    self->_isLinkUp = *(from + 433);
     *&self->_has |= 0x4000000u;
-    v8 = *(a3 + 109);
+    v8 = *(from + 109);
     if ((v8 & 0x2000000) == 0)
     {
 LABEL_8:
@@ -3336,9 +3336,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  self->_isInVol = *(a3 + 432);
+  self->_isInVol = *(from + 432);
   *&self->_has |= 0x2000000u;
-  v8 = *(a3 + 109);
+  v8 = *(from + 109);
   if ((v8 & 0x40000) == 0)
   {
 LABEL_9:
@@ -3351,9 +3351,9 @@ LABEL_9:
   }
 
 LABEL_92:
-  self->_reason = *(a3 + 80);
+  self->_reason = *(from + 80);
   *&self->_has |= 0x40000u;
-  v8 = *(a3 + 109);
+  v8 = *(from + 109);
   if ((v8 & 0x200000) == 0)
   {
 LABEL_10:
@@ -3366,9 +3366,9 @@ LABEL_10:
   }
 
 LABEL_93:
-  self->_subreason = *(a3 + 83);
+  self->_subreason = *(from + 83);
   *&self->_has |= 0x200000u;
-  v8 = *(a3 + 109);
+  v8 = *(from + 109);
   if ((v8 & 0x10) == 0)
   {
 LABEL_11:
@@ -3381,9 +3381,9 @@ LABEL_11:
   }
 
 LABEL_94:
-  self->_channel = *(a3 + 50);
+  self->_channel = *(from + 50);
   *&self->_has |= 0x10u;
-  v8 = *(a3 + 109);
+  v8 = *(from + 109);
   if ((v8 & 0x80) == 0)
   {
 LABEL_12:
@@ -3396,9 +3396,9 @@ LABEL_12:
   }
 
 LABEL_95:
-  self->_channelWidth = *(a3 + 53);
+  self->_channelWidth = *(from + 53);
   *&self->_has |= 0x80u;
-  v8 = *(a3 + 109);
+  v8 = *(from + 109);
   if ((v8 & 0x20000) == 0)
   {
 LABEL_13:
@@ -3411,27 +3411,27 @@ LABEL_13:
   }
 
 LABEL_96:
-  self->_phyMode = *(a3 + 76);
+  self->_phyMode = *(from + 76);
   *&self->_has |= 0x20000u;
-  if ((*(a3 + 109) & 0x200) != 0)
+  if ((*(from + 109) & 0x200) != 0)
   {
 LABEL_14:
-    self->_flags = *(a3 + 57);
+    self->_flags = *(from + 57);
     *&self->_has |= 0x200u;
   }
 
 LABEL_15:
-  if (*(a3 + 37))
+  if (*(from + 37))
   {
     [(AWDWiFiMetricLinkChangeData *)self setOui:?];
   }
 
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x100000) != 0)
   {
-    self->_securityType = *(a3 + 82);
+    self->_securityType = *(from + 82);
     *&self->_has |= 0x100000u;
-    v9 = *(a3 + 109);
+    v9 = *(from + 109);
     if ((v9 & 0x1000000) == 0)
     {
 LABEL_19:
@@ -3449,9 +3449,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_wpaProtocol = *(a3 + 88);
+  self->_wpaProtocol = *(from + 88);
   *&self->_has |= 0x1000000u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x10000) == 0)
   {
 LABEL_20:
@@ -3464,9 +3464,9 @@ LABEL_20:
   }
 
 LABEL_100:
-  self->_mcastCipher = *(a3 + 72);
+  self->_mcastCipher = *(from + 72);
   *&self->_has |= 0x10000u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x400000) == 0)
   {
 LABEL_21:
@@ -3479,9 +3479,9 @@ LABEL_21:
   }
 
 LABEL_101:
-  self->_ucastCipher = *(a3 + 84);
+  self->_ucastCipher = *(from + 84);
   *&self->_has |= 0x400000u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 4) == 0)
   {
 LABEL_22:
@@ -3494,9 +3494,9 @@ LABEL_22:
   }
 
 LABEL_102:
-  self->_akmSuites = *(a3 + 48);
+  self->_akmSuites = *(from + 48);
   *&self->_has |= 4u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 8) == 0)
   {
 LABEL_23:
@@ -3509,9 +3509,9 @@ LABEL_23:
   }
 
 LABEL_103:
-  self->_capabilities = *(a3 + 49);
+  self->_capabilities = *(from + 49);
   *&self->_has |= 8u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x100) == 0)
   {
 LABEL_24:
@@ -3524,9 +3524,9 @@ LABEL_24:
   }
 
 LABEL_104:
-  self->_enhancedSecurityType = *(a3 + 56);
+  self->_enhancedSecurityType = *(from + 56);
   *&self->_has |= 0x100u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x4000) == 0)
   {
 LABEL_25:
@@ -3539,9 +3539,9 @@ LABEL_25:
   }
 
 LABEL_105:
-  self->_htInfo = *(a3 + 62);
+  self->_htInfo = *(from + 62);
   *&self->_has |= 0x4000u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x2000) == 0)
   {
 LABEL_26:
@@ -3554,9 +3554,9 @@ LABEL_26:
   }
 
 LABEL_106:
-  self->_htExtended = *(a3 + 61);
+  self->_htExtended = *(from + 61);
   *&self->_has |= 0x2000u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x8000) == 0)
   {
 LABEL_27:
@@ -3569,9 +3569,9 @@ LABEL_27:
   }
 
 LABEL_107:
-  self->_htTxBf = *(a3 + 66);
+  self->_htTxBf = *(from + 66);
   *&self->_has |= 0x8000u;
-  v9 = *(a3 + 109);
+  v9 = *(from + 109);
   if ((v9 & 0x800) == 0)
   {
 LABEL_28:
@@ -3584,170 +3584,170 @@ LABEL_28:
   }
 
 LABEL_108:
-  self->_htASel = *(a3 + 59);
+  self->_htASel = *(from + 59);
   *&self->_has |= 0x800u;
-  if ((*(a3 + 109) & 0x1000) != 0)
+  if ((*(from + 109) & 0x1000) != 0)
   {
 LABEL_29:
-    self->_htAmpduParams = *(a3 + 60);
+    self->_htAmpduParams = *(from + 60);
     *&self->_has |= 0x1000u;
   }
 
 LABEL_30:
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
     [(AWDWiFiMetricLinkChangeData *)self setHtSupportedMcsSet:?];
   }
 
-  if ((*(a3 + 438) & 0x80) != 0)
+  if ((*(from + 438) & 0x80) != 0)
   {
-    self->_vhtInfo = *(a3 + 85);
+    self->_vhtInfo = *(from + 85);
     *&self->_has |= 0x800000u;
   }
 
-  if (*(a3 + 43))
+  if (*(from + 43))
   {
     [(AWDWiFiMetricLinkChangeData *)self setVhtSupportedMcsSet:?];
   }
 
-  v10 = [a3 txPerHistorysCount];
-  if (v10)
+  txPerHistorysCount = [from txPerHistorysCount];
+  if (txPerHistorysCount)
   {
-    v11 = v10;
+    v11 = txPerHistorysCount;
     for (j = 0; j != v11; ++j)
     {
-      -[AWDWiFiMetricLinkChangeData addTxPerHistory:](self, "addTxPerHistory:", [a3 txPerHistoryAtIndex:j]);
+      -[AWDWiFiMetricLinkChangeData addTxPerHistory:](self, "addTxPerHistory:", [from txPerHistoryAtIndex:j]);
     }
   }
 
-  v13 = [a3 txFrmsHistorysCount];
-  if (v13)
+  txFrmsHistorysCount = [from txFrmsHistorysCount];
+  if (txFrmsHistorysCount)
   {
-    v14 = v13;
+    v14 = txFrmsHistorysCount;
     for (k = 0; k != v14; ++k)
     {
-      -[AWDWiFiMetricLinkChangeData addTxFrmsHistory:](self, "addTxFrmsHistory:", [a3 txFrmsHistoryAtIndex:k]);
+      -[AWDWiFiMetricLinkChangeData addTxFrmsHistory:](self, "addTxFrmsHistory:", [from txFrmsHistoryAtIndex:k]);
     }
   }
 
-  v16 = [a3 fwTxPerHistorysCount];
-  if (v16)
+  fwTxPerHistorysCount = [from fwTxPerHistorysCount];
+  if (fwTxPerHistorysCount)
   {
-    v17 = v16;
+    v17 = fwTxPerHistorysCount;
     for (m = 0; m != v17; ++m)
     {
-      -[AWDWiFiMetricLinkChangeData addFwTxPerHistory:](self, "addFwTxPerHistory:", [a3 fwTxPerHistoryAtIndex:m]);
+      -[AWDWiFiMetricLinkChangeData addFwTxPerHistory:](self, "addFwTxPerHistory:", [from fwTxPerHistoryAtIndex:m]);
     }
   }
 
-  v19 = [a3 fwTxFrmsHistorysCount];
-  if (v19)
+  fwTxFrmsHistorysCount = [from fwTxFrmsHistorysCount];
+  if (fwTxFrmsHistorysCount)
   {
-    v20 = v19;
+    v20 = fwTxFrmsHistorysCount;
     for (n = 0; n != v20; ++n)
     {
-      -[AWDWiFiMetricLinkChangeData addFwTxFrmsHistory:](self, "addFwTxFrmsHistory:", [a3 fwTxFrmsHistoryAtIndex:n]);
+      -[AWDWiFiMetricLinkChangeData addFwTxFrmsHistory:](self, "addFwTxFrmsHistory:", [from fwTxFrmsHistoryAtIndex:n]);
     }
   }
 
-  v22 = [a3 bcnPerHistorysCount];
-  if (v22)
+  bcnPerHistorysCount = [from bcnPerHistorysCount];
+  if (bcnPerHistorysCount)
   {
-    v23 = v22;
+    v23 = bcnPerHistorysCount;
     for (ii = 0; ii != v23; ++ii)
     {
-      -[AWDWiFiMetricLinkChangeData addBcnPerHistory:](self, "addBcnPerHistory:", [a3 bcnPerHistoryAtIndex:ii]);
+      -[AWDWiFiMetricLinkChangeData addBcnPerHistory:](self, "addBcnPerHistory:", [from bcnPerHistoryAtIndex:ii]);
     }
   }
 
-  v25 = [a3 bcnFrmsHistorysCount];
-  if (v25)
+  bcnFrmsHistorysCount = [from bcnFrmsHistorysCount];
+  if (bcnFrmsHistorysCount)
   {
-    v26 = v25;
+    v26 = bcnFrmsHistorysCount;
     for (jj = 0; jj != v26; ++jj)
     {
-      -[AWDWiFiMetricLinkChangeData addBcnFrmsHistory:](self, "addBcnFrmsHistory:", [a3 bcnFrmsHistoryAtIndex:jj]);
+      -[AWDWiFiMetricLinkChangeData addBcnFrmsHistory:](self, "addBcnFrmsHistory:", [from bcnFrmsHistoryAtIndex:jj]);
     }
   }
 
-  if ((*(a3 + 437) & 4) != 0)
+  if ((*(from + 437) & 4) != 0)
   {
-    self->_gatewayARPHistory = *(a3 + 58);
+    self->_gatewayARPHistory = *(from + 58);
     *&self->_has |= 0x400u;
   }
 
-  if (*(a3 + 34))
+  if (*(from + 34))
   {
     [(AWDWiFiMetricLinkChangeData *)self setLocale:?];
   }
 
-  if (*(a3 + 436))
+  if (*(from + 436))
   {
-    self->_associationDuration = *(a3 + 22);
+    self->_associationDuration = *(from + 22);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 53))
+  if (*(from + 53))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsResponseType:?];
   }
 
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsManufacturerElement:?];
   }
 
-  if (*(a3 + 49))
+  if (*(from + 49))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsModelName:?];
   }
 
-  if (*(a3 + 50))
+  if (*(from + 50))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsModelNumber:?];
   }
 
-  if (*(a3 + 27))
+  if (*(from + 27))
   {
     [(AWDWiFiMetricLinkChangeData *)self setCountryCode:?];
   }
 
-  if (*(a3 + 51))
+  if (*(from + 51))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsPrimaryDeviceTypeCategory:?];
   }
 
-  if (*(a3 + 52))
+  if (*(from + 52))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsPrimaryDeviceTypeSubCategory:?];
   }
 
-  if (*(a3 + 47))
+  if (*(from + 47))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsDeviceNameElement:?];
   }
 
-  if (*(a3 + 46))
+  if (*(from + 46))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsDeviceNameData:?];
   }
 
-  if (*(a3 + 45))
+  if (*(from + 45))
   {
     [(AWDWiFiMetricLinkChangeData *)self setWpsConfigMethods:?];
   }
 
-  if (*(a3 + 35))
+  if (*(from + 35))
   {
     [(AWDWiFiMetricLinkChangeData *)self setLocaleSource:?];
   }
 
-  v28 = *(a3 + 109);
+  v28 = *(from + 109);
   if ((v28 & 0x80000) != 0)
   {
-    self->_rxCSAFrames = *(a3 + 81);
+    self->_rxCSAFrames = *(from + 81);
     *&self->_has |= 0x80000u;
-    v28 = *(a3 + 109);
+    v28 = *(from + 109);
     if ((v28 & 0x20) == 0)
     {
 LABEL_84:
@@ -3765,17 +3765,17 @@ LABEL_84:
     goto LABEL_84;
   }
 
-  self->_channelSwitchDuringHostSleep = *(a3 + 51);
+  self->_channelSwitchDuringHostSleep = *(from + 51);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 109) & 0x40) != 0)
+  if ((*(from + 109) & 0x40) != 0)
   {
 LABEL_85:
-    self->_channelSwitchDuringHostWake = *(a3 + 52);
+    self->_channelSwitchDuringHostWake = *(from + 52);
     *&self->_has |= 0x40u;
   }
 
 LABEL_86:
-  if (*(a3 + 39))
+  if (*(from + 39))
   {
 
     [(AWDWiFiMetricLinkChangeData *)self setPrivateMacType:?];

@@ -1,12 +1,12 @@
 @interface DOCDocumentPickerViewController
 - (DOCDocumentPickerDelegate)pickerDelegate;
-- (DOCDocumentPickerViewController)initWithConfiguration:(id)a3 context:(id)a4;
-- (DOCDocumentPickerViewController)initWithConfiguration:(id)a3 sourceObserver:(id)a4;
-- (DOCDocumentPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (DOCDocumentPickerViewController)initWithStyle:(int64_t)a3;
-- (void)documentBrowser:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)effectiveAppearanceDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (DOCDocumentPickerViewController)initWithConfiguration:(id)configuration context:(id)context;
+- (DOCDocumentPickerViewController)initWithConfiguration:(id)configuration sourceObserver:(id)observer;
+- (DOCDocumentPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (DOCDocumentPickerViewController)initWithStyle:(int64_t)style;
+- (void)documentBrowser:(id)browser didPickDocumentsAtURLs:(id)ls;
+- (void)effectiveAppearanceDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation DOCDocumentPickerViewController
@@ -19,56 +19,56 @@
   return Strong;
 }
 
-- (DOCDocumentPickerViewController)initWithConfiguration:(id)a3 context:(id)a4
+- (DOCDocumentPickerViewController)initWithConfiguration:(id)configuration context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = specialized DOCDocumentPickerViewController.init(configuration:context:)(v5, a4);
+  configurationCopy = configuration;
+  contextCopy = context;
+  v7 = specialized DOCDocumentPickerViewController.init(configuration:context:)(configurationCopy, context);
 
   return v7;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  DOCDocumentPickerViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  DOCDocumentPickerViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)documentBrowser:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentBrowser:(id)browser didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  browserCopy = browser;
+  selfCopy = self;
   specialized DOCDocumentPickerViewController.documentBrowser(_:didPickDocumentsAt:)(v6);
 }
 
-- (DOCDocumentPickerViewController)initWithConfiguration:(id)a3 sourceObserver:(id)a4
+- (DOCDocumentPickerViewController)initWithConfiguration:(id)configuration sourceObserver:(id)observer
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (DOCDocumentPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DOCDocumentPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (DOCDocumentPickerViewController)initWithStyle:(int64_t)a3
+- (DOCDocumentPickerViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  DOCDocumentPickerViewController.effectiveAppearanceDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  DOCDocumentPickerViewController.effectiveAppearanceDidChange(_:)(changeCopy);
 }
 
 @end

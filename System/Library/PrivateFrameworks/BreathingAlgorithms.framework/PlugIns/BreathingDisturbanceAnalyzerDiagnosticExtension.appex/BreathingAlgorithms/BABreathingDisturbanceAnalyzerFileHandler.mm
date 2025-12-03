@@ -1,46 +1,46 @@
 @interface BABreathingDisturbanceAnalyzerFileHandler
-+ (id)filePath:(id)a3 withPrefixFilename:(id)a4;
-+ (void)writeAnalysisToJsonFile:(BABreathingDisturbanceAnalysis *)a3 withOutputFilePath:(id)a4;
-+ (void)writeSamplesToJsonFile:(id)a3 withDateInterval:(id)a4 withOutputFilePath:(id)a5;
++ (id)filePath:(id)path withPrefixFilename:(id)filename;
++ (void)writeAnalysisToJsonFile:(BABreathingDisturbanceAnalysis *)file withOutputFilePath:(id)path;
++ (void)writeSamplesToJsonFile:(id)file withDateInterval:(id)interval withOutputFilePath:(id)path;
 @end
 
 @implementation BABreathingDisturbanceAnalyzerFileHandler
 
-+ (id)filePath:(id)a3 withPrefixFilename:(id)a4
++ (id)filePath:(id)path withPrefixFilename:(id)filename
 {
-  v5 = a3;
-  v6 = [a4 stringByAppendingString:@"-breathing-disturbance.json"];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  pathCopy = path;
+  v6 = [filename stringByAppendingString:@"-breathing-disturbance.json"];
+  v7 = [pathCopy stringByAppendingPathComponent:v6];
 
   return v7;
 }
 
-+ (void)writeSamplesToJsonFile:(id)a3 withDateInterval:(id)a4 withOutputFilePath:(id)a5
++ (void)writeSamplesToJsonFile:(id)file withDateInterval:(id)interval withOutputFilePath:(id)path
 {
-  a3;
-  v10 = a4;
-  a5;
+  file;
+  intervalCopy = interval;
+  path;
   v7 = objc_alloc_init(NSDateFormatter);
   [v7 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v12[0] = 0;
   v13 = 0;
   sub_1000081DC(v12);
   sub_1000081DC(v12);
-  [v10 startDate];
+  [intervalCopy startDate];
   v8 = [v7 stringFromDate:objc_claimAutoreleasedReturnValue()];
   v9 = v8;
-  v14 = [v8 UTF8String];
+  uTF8String = [v8 UTF8String];
   sub_1000090B4(v11);
 }
 
-+ (void)writeAnalysisToJsonFile:(BABreathingDisturbanceAnalysis *)a3 withOutputFilePath:(id)a4
++ (void)writeAnalysisToJsonFile:(BABreathingDisturbanceAnalysis *)file withOutputFilePath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v104[0] = 0;
   v105 = 0;
   sub_1000081DC(v104);
   sub_1000081DC(v104);
-  [a3->var0 doubleValue];
+  [file->var0 doubleValue];
   v102[0] = 7;
   v103 = v6;
   sub_1000081DC(v102);
@@ -56,7 +56,7 @@
   sub_1000081DC(v7);
   sub_1000081DC(v102);
   sub_100008294(&v103, v102[0]);
-  var2 = a3->var2;
+  var2 = file->var2;
   v100[0] = 4;
   v101 = var2;
   sub_1000081DC(v100);
@@ -72,9 +72,9 @@
   sub_1000081DC(v11);
   sub_1000081DC(v100);
   sub_100008294(&v101, v100[0]);
-  v14 = [a3->var1 objectForKeyedSubscript:@"notification_status"];
+  v14 = [file->var1 objectForKeyedSubscript:@"notification_status"];
   v98[0] = 5;
-  v99 = [v14 intValue];
+  intValue = [v14 intValue];
   sub_1000081DC(v98);
   sub_1000081DC(v98);
   v15 = sub_100003934(v104, "coreAnalytics");
@@ -84,13 +84,13 @@
   *v16 = v98[0];
   v98[0] = v17;
   v18 = *(v16 + 8);
-  *(v16 + 8) = v99;
-  v99 = v18;
+  *(v16 + 8) = intValue;
+  intValue = v18;
   sub_1000081DC(v16);
   sub_1000081DC(v98);
-  sub_100008294(&v99, v98[0]);
+  sub_100008294(&intValue, v98[0]);
 
-  v19 = [a3->var1 objectForKeyedSubscript:@"percent_bd_at_least_10"];
+  v19 = [file->var1 objectForKeyedSubscript:@"percent_bd_at_least_10"];
   [v19 floatValue];
   v96[0] = 7;
   v97 = v20;
@@ -109,7 +109,7 @@
   sub_1000081DC(v96);
   sub_100008294(&v97, v96[0]);
 
-  v25 = [a3->var1 objectForKeyedSubscript:@"percent_bd_at_least_11"];
+  v25 = [file->var1 objectForKeyedSubscript:@"percent_bd_at_least_11"];
   [v25 floatValue];
   v94[0] = 7;
   v95 = v26;
@@ -128,7 +128,7 @@
   sub_1000081DC(v94);
   sub_100008294(&v95, v94[0]);
 
-  v31 = [a3->var1 objectForKeyedSubscript:@"percent_bd_at_least_12"];
+  v31 = [file->var1 objectForKeyedSubscript:@"percent_bd_at_least_12"];
   [v31 floatValue];
   v92[0] = 7;
   v93 = v32;
@@ -147,7 +147,7 @@
   sub_1000081DC(v92);
   sub_100008294(&v93, v92[0]);
 
-  v37 = [a3->var1 objectForKeyedSubscript:@"percent_bd_at_least_13"];
+  v37 = [file->var1 objectForKeyedSubscript:@"percent_bd_at_least_13"];
   [v37 floatValue];
   v90[0] = 7;
   v91 = v38;
@@ -166,9 +166,9 @@
   sub_1000081DC(v90);
   sub_100008294(&v91, v90[0]);
 
-  v43 = [a3->var1 objectForKeyedSubscript:@"bd_count"];
+  v43 = [file->var1 objectForKeyedSubscript:@"bd_count"];
   v88[0] = 5;
-  v89 = [v43 intValue];
+  intValue2 = [v43 intValue];
   sub_1000081DC(v88);
   sub_1000081DC(v88);
   v44 = sub_100003934(v104, "coreAnalytics");
@@ -178,13 +178,13 @@
   *v45 = v88[0];
   v88[0] = v46;
   v47 = *(v45 + 8);
-  *(v45 + 8) = v89;
-  v89 = v47;
+  *(v45 + 8) = intValue2;
+  intValue2 = v47;
   sub_1000081DC(v45);
   sub_1000081DC(v88);
-  sub_100008294(&v89, v88[0]);
+  sub_100008294(&intValue2, v88[0]);
 
-  v48 = [a3->var1 objectForKeyedSubscript:@"bd_median"];
+  v48 = [file->var1 objectForKeyedSubscript:@"bd_median"];
   [v48 floatValue];
   v86[0] = 7;
   v87 = v49;
@@ -203,7 +203,7 @@
   sub_1000081DC(v86);
   sub_100008294(&v87, v86[0]);
 
-  v54 = [a3->var1 objectForKeyedSubscript:@"bd_mean"];
+  v54 = [file->var1 objectForKeyedSubscript:@"bd_mean"];
   [v54 floatValue];
   v84[0] = 7;
   v85 = v55;
@@ -222,7 +222,7 @@
   sub_1000081DC(v84);
   sub_100008294(&v85, v84[0]);
 
-  v60 = [a3->var1 objectForKeyedSubscript:@"bd_standard_deviation"];
+  v60 = [file->var1 objectForKeyedSubscript:@"bd_standard_deviation"];
   [v60 floatValue];
   v82[0] = 7;
   v83 = v61;
@@ -241,7 +241,7 @@
   sub_1000081DC(v82);
   sub_100008294(&v83, v82[0]);
 
-  v66 = [a3->var1 objectForKeyedSubscript:@"bd_maximum"];
+  v66 = [file->var1 objectForKeyedSubscript:@"bd_maximum"];
   [v66 floatValue];
   v80[0] = 7;
   v81 = v67;
@@ -260,7 +260,7 @@
   sub_1000081DC(v80);
   sub_100008294(&v81, v80[0]);
 
-  v72 = [a3->var1 objectForKeyedSubscript:@"bd_minimum"];
+  v72 = [file->var1 objectForKeyedSubscript:@"bd_minimum"];
   [v72 floatValue];
   v78[0] = 7;
   v79 = v73;
@@ -279,7 +279,7 @@
   sub_1000081DC(v78);
   sub_100008294(&v79, v78[0]);
 
-  sub_100003CB4(v104, v5);
+  sub_100003CB4(v104, pathCopy);
 }
 
 @end

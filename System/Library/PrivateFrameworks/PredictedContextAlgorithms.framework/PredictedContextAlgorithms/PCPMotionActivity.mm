@@ -1,18 +1,18 @@
 @interface PCPMotionActivity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMotionActivityConfidence:(id)a3;
-- (int)StringAsMotionActivityType:(id)a3;
+- (int)StringAsMotionActivityConfidence:(id)confidence;
+- (int)StringAsMotionActivityType:(id)type;
 - (int)motionActivityConfidence;
 - (int)motionActivityType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMotionActivityConfidence:(BOOL)a3;
-- (void)setHasMotionActivityType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMotionActivityConfidence:(BOOL)confidence;
+- (void)setHasMotionActivityType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPMotionActivity
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasMotionActivityType:(BOOL)a3
+- (void)setHasMotionActivityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -45,40 +45,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsMotionActivityType:(id)a3
+- (int)StringAsMotionActivityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MAT_Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"MAT_Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MAT_Stationary"])
+  else if ([typeCopy isEqualToString:@"MAT_Stationary"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MAT_Walking"])
+  else if ([typeCopy isEqualToString:@"MAT_Walking"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MAT_Running"])
+  else if ([typeCopy isEqualToString:@"MAT_Running"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAT_Automotive"])
+  else if ([typeCopy isEqualToString:@"MAT_Automotive"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MAT_Cycling"])
+  else if ([typeCopy isEqualToString:@"MAT_Cycling"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MAT_Moving"])
+  else if ([typeCopy isEqualToString:@"MAT_Moving"])
   {
     v4 = 6;
   }
@@ -104,9 +104,9 @@
   }
 }
 
-- (void)setHasMotionActivityConfidence:(BOOL)a3
+- (void)setHasMotionActivityConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2;
   }
@@ -119,25 +119,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsMotionActivityConfidence:(id)a3
+- (int)StringAsMotionActivityConfidence:(id)confidence
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MAC_Unknown"])
+  confidenceCopy = confidence;
+  if ([confidenceCopy isEqualToString:@"MAC_Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MAC_Low"])
+  else if ([confidenceCopy isEqualToString:@"MAC_Low"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MAC_Medium"])
+  else if ([confidenceCopy isEqualToString:@"MAC_Medium"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MAC_High"])
+  else if ([confidenceCopy isEqualToString:@"MAC_High"])
   {
     v4 = 3;
   }
@@ -156,15 +156,15 @@
   v8.receiver = self;
   v8.super_class = PCPMotionActivity;
   v4 = [(PCPMotionActivity *)&v8 description];
-  v5 = [(PCPMotionActivity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPMotionActivity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -179,7 +179,7 @@
       v8 = off_1E83B80D0[motionActivityType];
     }
 
-    [v3 setObject:v8 forKey:@"motionActivityType"];
+    [dictionary setObject:v8 forKey:@"motionActivityType"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -210,7 +210,7 @@ LABEL_3:
     v10 = off_1E83B8108[motionActivityConfidence];
   }
 
-  [v3 setObject:v10 forKey:@"motionActivityConfidence"];
+  [dictionary setObject:v10 forKey:@"motionActivityConfidence"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -219,23 +219,23 @@ LABEL_3:
 
 LABEL_4:
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startTimeCFAbsolute];
-  [v3 setObject:v5 forKey:@"startTimeCFAbsolute"];
+  [dictionary setObject:v5 forKey:@"startTimeCFAbsolute"];
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     motionActivityType = self->_motionActivityType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -256,26 +256,26 @@ LABEL_3:
 
   motionActivityConfidence = self->_motionActivityConfidence;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     startTimeCFAbsolute = self->_startTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[5] = self->_motionActivityType;
-    *(v4 + 24) |= 4u;
+    toCopy[5] = self->_motionActivityType;
+    *(toCopy + 24) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -294,21 +294,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_motionActivityConfidence;
-  *(v4 + 24) |= 2u;
+  toCopy[4] = self->_motionActivityConfidence;
+  *(toCopy + 24) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = *&self->_startTimeCFAbsolute;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = *&self->_startTimeCFAbsolute;
+    *(toCopy + 24) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -345,23 +345,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_motionActivityType != *(v4 + 5))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_motionActivityType != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -370,21 +370,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_motionActivityConfidence != *(v4 + 4))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_motionActivityConfidence != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 24) & 1) == 0;
+  v5 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_startTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_startTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -461,15 +461,15 @@ LABEL_4:
   return v5 ^ v4 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) != 0)
   {
-    self->_motionActivityType = *(v4 + 5);
+    self->_motionActivityType = *(fromCopy + 5);
     *&self->_has |= 4u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -482,17 +482,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 2) == 0)
+  else if ((*(fromCopy + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_motionActivityConfidence = *(v4 + 4);
+  self->_motionActivityConfidence = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
 LABEL_4:
-    self->_startTimeCFAbsolute = *(v4 + 1);
+    self->_startTimeCFAbsolute = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

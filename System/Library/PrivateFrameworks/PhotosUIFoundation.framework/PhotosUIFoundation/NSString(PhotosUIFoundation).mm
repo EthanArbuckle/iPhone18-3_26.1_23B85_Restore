@@ -23,14 +23,14 @@
   v8 = 0x3010000000;
   v9 = "";
   v10 = xmmword_1B4074ED0;
-  v2 = [a1 length];
+  v2 = [self length];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__NSString_PhotosUIFoundation__px_firstLetterRange__block_invoke;
   v5[3] = &unk_1E7BB6220;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = &v6;
-  [a1 enumerateSubstringsInRange:0 options:v2 usingBlock:{1027, v5}];
+  [self enumerateSubstringsInRange:0 options:v2 usingBlock:{1027, v5}];
   v3 = v7[4];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -38,8 +38,8 @@
 
 - (BOOL)px_hasExcessiveLineHeightCharacters
 {
-  v2 = [MEMORY[0x1E696AEC0] _excessiveLineHeightCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2] != 0x7FFFFFFFFFFFFFFFLL;
+  _excessiveLineHeightCharacterSet = [MEMORY[0x1E696AEC0] _excessiveLineHeightCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:_excessiveLineHeightCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v3;
 }
@@ -47,8 +47,8 @@
 - (id)px_stringByAppendingDescriptionDetails:()PhotosUIFoundation
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  v6 = [a1 rangeOfString:@">" options:12];
+  v5 = [self mutableCopy];
+  v6 = [self rangeOfString:@">" options:12];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [v5 length];
@@ -62,7 +62,7 @@
 - (id)px_stringByAppendingDescriptionDetailsWithFormat:()PhotosUIFoundation
 {
   v10 = CFStringCreateWithFormatAndArguments(*MEMORY[0x1E695E480], 0, a3, &a9);
-  v11 = [a1 px_stringByAppendingDescriptionDetails:v10];
+  v11 = [self px_stringByAppendingDescriptionDetails:v10];
 
   return v11;
 }
@@ -74,11 +74,11 @@
     dispatch_once(&px_endsWithFullStopOrEquivalentPunctuationMark_onceToken, &__block_literal_global_41);
   }
 
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v3 = px_endsWithFullStopOrEquivalentPunctuationMark_fullStopPunctuationCharacterSet;
-    v4 = [a1 characterAtIndex:{objc_msgSend(a1, "length") - 1}];
+    v4 = [self characterAtIndex:{objc_msgSend(self, "length") - 1}];
 
     return [v3 characterIsMember:v4];
   }
@@ -88,7 +88,7 @@
 
 - (id)px_integerValues
 {
-  v1 = [a1 componentsSeparatedByString:{@", "}];
+  v1 = [self componentsSeparatedByString:{@", "}];
   v2 = PXMap(v1, &__block_literal_global_6881);
 
   return v2;
@@ -96,8 +96,8 @@
 
 - (id)px_stringByIndentingNewLines
 {
-  v2 = [a1 mutableCopy];
-  [v2 replaceOccurrencesOfString:@"\n" withString:@"\n\t" options:2 range:{0, objc_msgSend(a1, "length")}];
+  v2 = [self mutableCopy];
+  [v2 replaceOccurrencesOfString:@"\n" withString:@"\n\t" options:2 range:{0, objc_msgSend(self, "length")}];
 
   return v2;
 }
@@ -105,14 +105,14 @@
 - (uint64_t)px_platformAgnosticHash
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2;
   v4 = v9;
   if (v2 >= 97)
   {
-    [a1 getCharacters:v9 range:{0, 32}];
-    [a1 getCharacters:&v10 range:{(v2 >> 1) - 16, 32}];
-    [a1 getCharacters:&v11 range:{v2 - 32, 32}];
+    [self getCharacters:v9 range:{0, 32}];
+    [self getCharacters:&v10 range:{(v2 >> 1) - 16, 32}];
+    [self getCharacters:&v11 range:{v2 - 32, 32}];
     v5 = &v12;
     v6 = &v12;
 LABEL_5:
@@ -127,7 +127,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  [a1 getCharacters:v9 range:{0, v2}];
+  [self getCharacters:v9 range:{0, v2}];
   v5 = &v9[v2];
   if ((v2 & 0xFFFFFFFFFFFFFFFCLL) >= 1)
   {
@@ -147,19 +147,19 @@ LABEL_9:
 
 - (id)px_stringByRepeating:()PhotosUIFoundation
 {
-  v5 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (a3 >= 1)
   {
     do
     {
-      [v5 appendString:a1];
+      [string appendString:self];
       --a3;
     }
 
     while (a3);
   }
 
-  return v5;
+  return string;
 }
 
 - (id)px_stringByDeletingCharactersInSet:()PhotosUIFoundation
@@ -167,11 +167,11 @@ LABEL_9:
   v5 = a3;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSString+PhotosUIFoundation.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"characterSet"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSString+PhotosUIFoundation.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"characterSet"}];
   }
 
-  v6 = [a1 mutableCopy];
+  v6 = [self mutableCopy];
   v7 = [v6 rangeOfCharacterFromSet:v5];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -188,13 +188,13 @@ LABEL_9:
 
 - (id)px_stringByApplyingCapitalization:()PhotosUIFoundation
 {
-  v4 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   if (a3 != 3)
   {
     if (a3 == 2)
     {
-      v6 = [v4 localizedCapitalizedString];
+      localizedCapitalizedString = [selfCopy localizedCapitalizedString];
     }
 
     else
@@ -204,22 +204,22 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v6 = [v4 localizedUppercaseString];
+      localizedCapitalizedString = [selfCopy localizedUppercaseString];
     }
 
-    v7 = v6;
+    v7 = localizedCapitalizedString;
     goto LABEL_7;
   }
 
-  v9 = [v4 px_firstLetterRange];
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL)
+  px_firstLetterRange = [selfCopy px_firstLetterRange];
+  if (px_firstLetterRange != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = v9;
+    v11 = px_firstLetterRange;
     v12 = v10;
     v7 = [v5 mutableCopy];
     v13 = [v7 substringWithRange:{v11, v12}];
-    v14 = [v13 localizedCapitalizedString];
-    [v7 replaceCharactersInRange:v11 withString:{v12, v14}];
+    localizedCapitalizedString2 = [v13 localizedCapitalizedString];
+    [v7 replaceCharactersInRange:v11 withString:{v12, localizedCapitalizedString2}];
 
 LABEL_7:
     v5 = v7;
@@ -232,10 +232,10 @@ LABEL_8:
 
 - (id)px_stringByTruncatingToLength:()PhotosUIFoundation addEllipsis:
 {
-  v6 = a1;
-  if ([v6 length] > a3)
+  selfCopy = self;
+  if ([selfCopy length] > a3)
   {
-    v7 = [v6 substringToIndex:a3];
+    v7 = [selfCopy substringToIndex:a3];
     v8 = [v7 mutableCopy];
 
     if (a4)
@@ -245,10 +245,10 @@ LABEL_8:
 
     v9 = [v8 copy];
 
-    v6 = v9;
+    selfCopy = v9;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 + (id)_excessiveLineHeightCharacterSet

@@ -1,24 +1,24 @@
 @interface UserAlertPresenterController
 - (UserAlertPresenterController)init;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation UserAlertPresenterController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100001710(a3, a4);
+  selfCopy = self;
+  sub_100001710(inputs, responder);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000019BC();
 }
 

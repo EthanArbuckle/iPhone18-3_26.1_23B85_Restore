@@ -1,8 +1,8 @@
 @interface BLSHInternalTapToRadarManager
 + (id)sharedTapToRadarManager;
 - (id)_init;
-- (void)requestTapToRadar:(id)a3 log:(id)a4 completion:(id)a5;
-- (void)requestTapToRadarNonInteractiveDraft:(id)a3 log:(id)a4 completion:(id)a5;
+- (void)requestTapToRadar:(id)radar log:(id)log completion:(id)completion;
+- (void)requestTapToRadarNonInteractiveDraft:(id)draft log:(id)log completion:(id)completion;
 @end
 
 @implementation BLSHInternalTapToRadarManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __56__BLSHInternalTapToRadarManager_sharedTapToRadarManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTapToRadarManager__onceToken != -1)
   {
     dispatch_once(&sharedTapToRadarManager__onceToken, block);
@@ -40,14 +40,14 @@ uint64_t __56__BLSHInternalTapToRadarManager_sharedTapToRadarManager__block_invo
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)requestTapToRadar:(id)a3 log:(id)a4 completion:(id)a5
+- (void)requestTapToRadar:(id)radar log:(id)log completion:(id)completion
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v7;
-  v9 = v11;
-  v10 = v12;
+  radarCopy = radar;
+  logCopy = log;
+  completionCopy = completion;
+  v8 = radarCopy;
+  v9 = logCopy;
+  v10 = completionCopy;
   BSDispatchMain();
 }
 
@@ -117,14 +117,14 @@ uint64_t __66__BLSHInternalTapToRadarManager_requestTapToRadar_log_completion___
   return v6();
 }
 
-- (void)requestTapToRadarNonInteractiveDraft:(id)a3 log:(id)a4 completion:(id)a5
+- (void)requestTapToRadarNonInteractiveDraft:(id)draft log:(id)log completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v7 = v12;
-  v8 = v11;
-  v9 = v10;
+  draftCopy = draft;
+  logCopy = log;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = logCopy;
+  v9 = draftCopy;
   BSDispatchMain();
 }
 

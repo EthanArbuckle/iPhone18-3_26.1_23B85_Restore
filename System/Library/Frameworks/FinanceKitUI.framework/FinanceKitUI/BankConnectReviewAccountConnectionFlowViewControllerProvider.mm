@@ -1,11 +1,11 @@
 @interface BankConnectReviewAccountConnectionFlowViewControllerProvider
-+ (id)makeViewControllerWithInstitution:(id)a3 paymentPass:(id)a4 previousConsentUUID:(id)a5 completion:(id)a6;
++ (id)makeViewControllerWithInstitution:(id)institution paymentPass:(id)pass previousConsentUUID:(id)d completion:(id)completion;
 - (_TtC12FinanceKitUI60BankConnectReviewAccountConnectionFlowViewControllerProvider)init;
 @end
 
 @implementation BankConnectReviewAccountConnectionFlowViewControllerProvider
 
-+ (id)makeViewControllerWithInstitution:(id)a3 paymentPass:(id)a4 previousConsentUUID:(id)a5 completion:(id)a6
++ (id)makeViewControllerWithInstitution:(id)institution paymentPass:(id)pass previousConsentUUID:(id)d completion:(id)completion
 {
   v10 = type metadata accessor for BankConnectReviewAccountConnectionFlowView();
   v11 = *(*(v10 - 1) + 64);
@@ -24,24 +24,24 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v18 = _Block_copy(a6);
+  v18 = _Block_copy(completion);
   v19 = swift_allocObject();
   *(v19 + 16) = v18;
   sub_23875BC90();
   v30[1] = objc_allocWithZone(type metadata accessor for BankConnectReviewAccountConnectionFlowViewController());
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  institutionCopy = institution;
+  passCopy = pass;
+  dCopy = d;
   sub_23875EFB0();
   v23 = v14;
   v24 = *(v14 + 16);
   v25 = v31;
   v24(&v13[v10[5]], v17, v31);
-  *&v13[v10[6]] = v21;
+  *&v13[v10[6]] = passCopy;
   v26 = &v13[v10[7]];
   *v26 = sub_2384735C8;
   v26[1] = v19;
-  v27 = v21;
+  v27 = passCopy;
   v28 = sub_23875D080();
 
   (*(v23 + 8))(v17, v25);

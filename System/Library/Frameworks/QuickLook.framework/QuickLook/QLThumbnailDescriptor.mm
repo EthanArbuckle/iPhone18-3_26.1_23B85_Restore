@@ -1,20 +1,20 @@
 @interface QLThumbnailDescriptor
-+ (id)descriptorWithSize:(CGSize)a3 scaleFactor:(double)a4;
++ (id)descriptorWithSize:(CGSize)size scaleFactor:(double)factor;
 - (CGSize)size;
 @end
 
 @implementation QLThumbnailDescriptor
 
-+ (id)descriptorWithSize:(CGSize)a3 scaleFactor:(double)a4
++ (id)descriptorWithSize:(CGSize)size scaleFactor:(double)factor
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  v7 = objc_alloc_init(self);
   v8 = v7;
   if (v7)
   {
     [v7 setSize:{width, height}];
-    [v8 setScaleFactor:a4];
+    [v8 setScaleFactor:factor];
   }
 
   return v8;

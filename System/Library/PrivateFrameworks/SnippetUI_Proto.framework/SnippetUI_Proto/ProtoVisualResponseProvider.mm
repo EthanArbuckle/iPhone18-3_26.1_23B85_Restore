@@ -1,16 +1,16 @@
 @interface ProtoVisualResponseProvider
-+ (id)transformModel:(id)a3 mode:(int64_t)a4 currentIdiom:(int64_t)a5;
-+ (void)preWarm:(id)a3;
-+ (void)setPatternId:(id)a3 forViewId:(id)a4;
-- (id)viewControllerForModel:(id)a3 mode:(int64_t)a4;
-- (id)viewForModel:(id)a3 mode:(int64_t)a4 overload:(int64_t)a5;
++ (id)transformModel:(id)model mode:(int64_t)mode currentIdiom:(int64_t)idiom;
++ (void)preWarm:(id)warm;
++ (void)setPatternId:(id)id forViewId:(id)viewId;
+- (id)viewControllerForModel:(id)model mode:(int64_t)mode;
+- (id)viewForModel:(id)model mode:(int64_t)mode overload:(int64_t)overload;
 - (void)reset;
-- (void)viewControllerFor:(id)a3 mode:(int64_t)a4 completion:(id)a5;
+- (void)viewControllerFor:(id)for mode:(int64_t)mode completion:(id)completion;
 @end
 
 @implementation ProtoVisualResponseProvider
 
-+ (void)setPatternId:(id)a3 forViewId:(id)a4
++ (void)setPatternId:(id)id forViewId:(id)viewId
 {
   v4 = sub_26A930AFC();
   v6 = v5;
@@ -18,39 +18,39 @@
   static ProtoVisualResponseProvider.setPatternId(_:forViewId:)(v4, v6, v7, v8);
 }
 
-+ (void)preWarm:(id)a3
++ (void)preWarm:(id)warm
 {
-  v3 = a3;
-  static ProtoVisualResponseProvider.preWarm(using:)(v3);
+  warmCopy = warm;
+  static ProtoVisualResponseProvider.preWarm(using:)(warmCopy);
 }
 
-- (id)viewControllerForModel:(id)a3 mode:(int64_t)a4
+- (id)viewControllerForModel:(id)model mode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = self;
+  modelCopy = model;
+  selfCopy = self;
   sub_26A93086C();
 
   ProtoVisualResponseProvider.viewController(for:mode:)();
 }
 
-- (id)viewForModel:(id)a3 mode:(int64_t)a4 overload:(int64_t)a5
+- (id)viewForModel:(id)model mode:(int64_t)mode overload:(int64_t)overload
 {
-  v7 = a3;
-  v8 = self;
+  modelCopy = model;
+  selfCopy = self;
   v9 = sub_26A93086C();
   v11 = v10;
 
-  v12 = ProtoVisualResponseProvider.view(for:mode:overload:)(v9, v11, a4);
+  v12 = ProtoVisualResponseProvider.view(for:mode:overload:)(v9, v11, mode);
   sub_26A92E0AC(v9, v11);
 
   return v12;
 }
 
-- (void)viewControllerFor:(id)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)viewControllerFor:(id)for mode:(int64_t)mode completion:(id)completion
 {
-  _Block_copy(a5);
-  v7 = a3;
-  v8 = self;
+  _Block_copy(completion);
+  forCopy = for;
+  selfCopy = self;
   sub_26A93086C();
 
   swift_allocObject();
@@ -59,18 +59,18 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   ProtoVisualResponseProvider.reset()();
 }
 
-+ (id)transformModel:(id)a3 mode:(int64_t)a4 currentIdiom:(int64_t)a5
++ (id)transformModel:(id)model mode:(int64_t)mode currentIdiom:(int64_t)idiom
 {
-  v7 = a3;
+  modelCopy = model;
   v8 = sub_26A93086C();
   v10 = v9;
 
   swift_getObjCClassMetadata();
-  static ProtoVisualResponseProvider.transformModel(_:mode:currentIdiom:)(v8, v10, a4, a5);
+  static ProtoVisualResponseProvider.transformModel(_:mode:currentIdiom:)(v8, v10, mode, idiom);
   v12 = v11;
   sub_26A92E0AC(v8, v10);
   if (v12)

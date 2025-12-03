@@ -1,31 +1,31 @@
 @interface ACDPluginAnalyticsSender
 + (BOOL)accountsTTREnabled;
 + (double)_timeSinceLastTTROffered;
-+ (void)_selected_PostTapToRadar:(id)a3 description:(id)a4;
-+ (void)openTapToRadarWithAlertTitle:(id)a3 alertDescription:(id)a4 TTRTitle:(id)a5 TTRDescription:(id)a6;
++ (void)_selected_PostTapToRadar:(id)radar description:(id)description;
++ (void)openTapToRadarWithAlertTitle:(id)title alertDescription:(id)description TTRTitle:(id)rTitle TTRDescription:(id)rDescription;
 @end
 
 @implementation ACDPluginAnalyticsSender
 
 + (double)_timeSinceLastTTROffered
 {
-  v2 = [MEMORY[0x277CBEAA8] distantPast];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 persistentDomainForName:@"com.apple.accounts"];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults persistentDomainForName:@"com.apple.accounts"];
   v5 = [v4 objectForKeyedSubscript:@"com.apple.accounts.ttr.lastOffered"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v8 = [v7 persistentDomainForName:@"com.apple.accounts"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v8 = [standardUserDefaults2 persistentDomainForName:@"com.apple.accounts"];
     v9 = [v8 objectForKeyedSubscript:@"com.apple.accounts.ttr.lastOffered"];
 
-    v2 = v9;
+    distantPast = v9;
   }
 
-  [v2 timeIntervalSinceNow];
+  [distantPast timeIntervalSinceNow];
   v11 = -v10;
 
   return v11;
@@ -33,8 +33,8 @@
 
 + (BOOL)accountsTTREnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.accounts"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.accounts"];
   v4 = [v3 objectForKeyedSubscript:@"com.apple.accounts.ttr.enabled"];
 
   if (!v4)
@@ -42,30 +42,30 @@
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 persistentDomainForName:@"com.apple.accounts"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults2 persistentDomainForName:@"com.apple.accounts"];
   v7 = [v6 objectForKeyedSubscript:@"com.apple.accounts.ttr.enabled"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (void)openTapToRadarWithAlertTitle:(id)a3 alertDescription:(id)a4 TTRTitle:(id)a5 TTRDescription:(id)a6
++ (void)openTapToRadarWithAlertTitle:(id)title alertDescription:(id)description TTRTitle:(id)rTitle TTRDescription:(id)rDescription
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  descriptionCopy = description;
+  rTitleCopy = rTitle;
+  rDescriptionCopy = rDescription;
   if (ACIsInternal())
   {
-    if ([a1 accountsTTREnabled])
+    if ([self accountsTTREnabled])
     {
-      [a1 _timeSinceLastTTROffered];
+      [self _timeSinceLastTTROffered];
       if (v14 >= 604800.0)
       {
         v16 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.accounts"];
-        v17 = [MEMORY[0x277CBEAA8] date];
-        [v16 setObject:v17 forKey:@"com.apple.accounts.ttr.lastOffered"];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v16 setObject:date forKey:@"com.apple.accounts.ttr.lastOffered"];
 
         v18 = _ACLogSystem();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -77,10 +77,10 @@
         v19[1] = 3221225472;
         v19[2] = __98__ACDPluginAnalyticsSender_openTapToRadarWithAlertTitle_alertDescription_TTRTitle_TTRDescription___block_invoke;
         v19[3] = &unk_27848CCB0;
-        v22 = a1;
-        v20 = v12;
-        v21 = v13;
-        [ACDUserNotification showUserNotificationWithTitle:v10 message:v11 cancelButtonTitle:@"Cancel" otherButtonTitle:@"Open Tap-To-Radar" level:2 withCompletionBlock:v19];
+        selfCopy = self;
+        v20 = rTitleCopy;
+        v21 = rDescriptionCopy;
+        [ACDUserNotification showUserNotificationWithTitle:titleCopy message:descriptionCopy cancelButtonTitle:@"Cancel" otherButtonTitle:@"Open Tap-To-Radar" level:2 withCompletionBlock:v19];
 
         v15 = v20;
       }
@@ -138,22 +138,22 @@ void __98__ACDPluginAnalyticsSender_openTapToRadarWithAlertTitle_alertDescriptio
   }
 }
 
-+ (void)_selected_PostTapToRadar:(id)a3 description:(id)a4
++ (void)_selected_PostTapToRadar:(id)radar description:(id)description
 {
   v21[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  radarCopy = radar;
+  descriptionCopy = description;
   if (ACIsInternal())
   {
     v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v7 setScheme:@"tap-to-radar"];
     [v7 setHost:@"new"];
     v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"BundleID" value:@"com.apple.accounts"];
-    v20 = v5;
+    v20 = radarCopy;
     v21[0] = v8;
-    v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"Title" value:v5];
+    v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"Title" value:radarCopy];
     v21[1] = v9;
-    v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"Description" value:v6];
+    v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"Description" value:descriptionCopy];
     v21[2] = v10;
     v11 = [MEMORY[0x277CCAD18] queryItemWithName:@"Classification" value:@"Crash/Hang/Data Loss"];
     v21[3] = v11;
@@ -170,12 +170,12 @@ void __98__ACDPluginAnalyticsSender_openTapToRadarWithAlertTitle_alertDescriptio
 
     if (v16)
     {
-      v17 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       v18 = [v7 URL];
-      [v17 openURL:v18 configuration:0 completionHandler:&__block_literal_global_7];
+      [defaultWorkspace openURL:v18 configuration:0 completionHandler:&__block_literal_global_7];
     }
 
-    v5 = v20;
+    radarCopy = v20;
   }
 
   else

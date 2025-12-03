@@ -1,18 +1,18 @@
 @interface HSTTipOffsetFilter
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTTipOffsetFilter)initWithConfig:(const HSTTipOffsetFilterConfig *)a3;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTTipOffsetFilter)initWithConfig:(const HSTTipOffsetFilterConfig *)config;
 - (id).cxx_construct;
-- (void)_handleContactFrame:(id)a3;
-- (void)_handleScreenOrientationEvent:(id)a3;
-- (void)_handleTouchHandEvent:(id)a3;
-- (void)_handleWakeSystemEvent:(id)a3;
-- (void)handleConsume:(id)a3;
+- (void)_handleContactFrame:(id)frame;
+- (void)_handleScreenOrientationEvent:(id)event;
+- (void)_handleTouchHandEvent:(id)event;
+- (void)_handleWakeSystemEvent:(id)event;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSTTipOffsetFilter
 
-- (HSTTipOffsetFilter)initWithConfig:(const HSTTipOffsetFilterConfig *)a3
+- (HSTTipOffsetFilter)initWithConfig:(const HSTTipOffsetFilterConfig *)config
 {
   v8.receiver = self;
   v8.super_class = HSTTipOffsetFilter;
@@ -20,17 +20,17 @@
   v5 = v4;
   if (v4)
   {
-    v4->_config = *a3;
+    v4->_config = *config;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (void)_handleContactFrame:(id)a3
+- (void)_handleContactFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"HSTTipOffsetFilter.mm" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
@@ -85,8 +85,8 @@
     v11 = v10;
   }
 
-  v12 = v5[6];
-  v13 = v5[7];
+  v12 = frameCopy[6];
+  v13 = frameCopy[7];
   while (v12 != v13)
   {
     v14 = *(v12 + 20) + v11;
@@ -97,19 +97,19 @@
 
   v16.receiver = self;
   v16.super_class = HSTTipOffsetFilter;
-  [(HSStage *)&v16 handleConsume:v5];
+  [(HSStage *)&v16 handleConsume:frameCopy];
 }
 
-- (void)_handleWakeSystemEvent:(id)a3
+- (void)_handleWakeSystemEvent:(id)event
 {
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"HSTTipOffsetFilter.mm" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  if (*(v5 + 24) == 1)
+  if (*(eventCopy + 24) == 1)
   {
     x = self->_config.tipOffset.x;
     y = self->_config.tipOffset.y;
@@ -156,11 +156,11 @@
       v11 = v10;
     }
 
-    v5[4] += y;
-    v5[5] += v11;
+    eventCopy[4] += y;
+    eventCopy[5] += v11;
   }
 
-  if (*(v5 + 40) == 1)
+  if (*(eventCopy + 40) == 1)
   {
     v12 = self->_config.tipOffset.y;
     v13 = self->_state.screenOrientation;
@@ -211,52 +211,52 @@
       v17 = v16;
     }
 
-    v5[8] += v15;
-    v5[9] += v17;
+    eventCopy[8] += v15;
+    eventCopy[9] += v17;
   }
 
   v19.receiver = self;
   v19.super_class = HSTTipOffsetFilter;
-  [(HSStage *)&v19 handleConsume:v5];
+  [(HSStage *)&v19 handleConsume:eventCopy];
 }
 
-- (void)_handleScreenOrientationEvent:(id)a3
+- (void)_handleScreenOrientationEvent:(id)event
 {
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"HSTTipOffsetFilter.mm" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  self->_state.screenOrientation = [v5 screenOrientation];
+  self->_state.screenOrientation = [eventCopy screenOrientation];
   v7.receiver = self;
   v7.super_class = HSTTipOffsetFilter;
-  [(HSStage *)&v7 handleConsume:v5];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
-- (void)_handleTouchHandEvent:(id)a3
+- (void)_handleTouchHandEvent:(id)event
 {
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"HSTTipOffsetFilter.mm" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  self->_state.touchHand = [v5 touchHand];
+  self->_state.touchHand = [eventCopy touchHand];
   v7.receiver = self;
   v7.super_class = HSTTipOffsetFilter;
-  [(HSStage *)&v7 handleConsume:v5];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -266,12 +266,12 @@
 
   if (v5)
   {
-    [(HSTTipOffsetFilter *)self _handleContactFrame:v4];
+    [(HSTTipOffsetFilter *)self _handleContactFrame:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -337,29 +337,29 @@
   }
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v7 = *(a3 + 17);
+    *&v7 = *(encode + 17);
     DWORD2(v7) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v7);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v7);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeCodable<HSTPipeline::Position const>(a3, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)112,(char)79,(char)102,(char)102,(char)115,(char)101,(char)116>::Key, &self->_config);
+  HSUtil::Encoder::encodeCodable<HSTPipeline::Position const>(encode, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)112,(char)79,(char)102,(char)102,(char)115,(char)101,(char)116>::Key, &self->_config);
   p_state = &self->_state;
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key, p_state->screenOrientation);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)72,(char)97,(char)110,(char)100>::Key, p_state->touchHand);
-  if (!*a3)
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key, p_state->screenOrientation);
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)72,(char)97,(char)110,(char)100>::Key, p_state->touchHand);
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -368,8 +368,8 @@
   v11 = v5;
   v12 = v5;
   v10 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v10);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v10);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTTipOffsetFilter.mm", __b);

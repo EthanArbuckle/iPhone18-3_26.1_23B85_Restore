@@ -1,17 +1,17 @@
 @interface SRAuthorizationCell
-+ (id)authorizationCellForIndexPath:(id)a3 title:(id)a4 state:(id)a5 delegate:(id)a6 tableView:(id)a7;
-- (SRAuthorizationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (id)authorizationCellForIndexPath:(id)path title:(id)title state:(id)state delegate:(id)delegate tableView:(id)view;
+- (SRAuthorizationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)switchChanged;
 @end
 
 @implementation SRAuthorizationCell
 
-- (SRAuthorizationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SRAuthorizationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = SRAuthorizationCell;
-  v4 = [(SRAuthorizationCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SRAuthorizationCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -39,25 +39,25 @@
 
 - (void)switchChanged
 {
-  v3 = [(SRAuthorizationCell *)self delegate];
-  v4 = [(UISwitch *)[(SRAuthorizationCell *)self toggle] isOn];
-  v5 = [(SRAuthorizationCell *)self indexPath];
+  delegate = [(SRAuthorizationCell *)self delegate];
+  isOn = [(UISwitch *)[(SRAuthorizationCell *)self toggle] isOn];
+  indexPath = [(SRAuthorizationCell *)self indexPath];
 
-  [(SRAuthorizationCellDelegate *)v3 authorizationSwitchToggledWithValue:v4 indexPath:v5];
+  [(SRAuthorizationCellDelegate *)delegate authorizationSwitchToggledWithValue:isOn indexPath:indexPath];
 }
 
-+ (id)authorizationCellForIndexPath:(id)a3 title:(id)a4 state:(id)a5 delegate:(id)a6 tableView:(id)a7
++ (id)authorizationCellForIndexPath:(id)path title:(id)title state:(id)state delegate:(id)delegate tableView:(id)view
 {
-  v11 = [a7 dequeueReusableCellWithIdentifier:@"SRAuthorizationSwitchRowReuseIdentifier"];
+  v11 = [view dequeueReusableCellWithIdentifier:@"SRAuthorizationSwitchRowReuseIdentifier"];
   if (!v11)
   {
     v11 = [[SRAuthorizationCell alloc] initWithStyle:0 reuseIdentifier:@"SRAuthorizationSwitchRowReuseIdentifier"];
   }
 
   [-[SRAuthorizationCell textLabel](v11 "textLabel")];
-  [(SRAuthorizationCell *)v11 setDelegate:a6];
-  [(SRAuthorizationCell *)v11 setIndexPath:a3];
-  -[UISwitch setOn:](-[SRAuthorizationCell toggle](v11, "toggle"), "setOn:", [a5 BOOLValue]);
+  [(SRAuthorizationCell *)v11 setDelegate:delegate];
+  [(SRAuthorizationCell *)v11 setIndexPath:path];
+  -[UISwitch setOn:](-[SRAuthorizationCell toggle](v11, "toggle"), "setOn:", [state BOOLValue]);
   return v11;
 }
 

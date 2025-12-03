@@ -1,7 +1,7 @@
 @interface ICSelectionStateModelContainerSelectionOptionsCompletionBlocks
 - (ICSelectionStateModelContainerSelectionOptionsCompletionBlocks)init;
-- (ICSelectionStateModelContainerSelectionOptionsCompletionBlocks)initWithDataIndexedBlock:(id)a3 dataRenderedBlock:(id)a4;
-- (id)copyWithZone:(void *)a3;
+- (ICSelectionStateModelContainerSelectionOptionsCompletionBlocks)initWithDataIndexedBlock:(id)block dataRenderedBlock:(id)renderedBlock;
+- (id)copyWithZone:(void *)zone;
 - (id)dataIndexedBlock;
 - (id)dataRenderedBlock;
 @end
@@ -52,10 +52,10 @@
   return v3;
 }
 
-- (ICSelectionStateModelContainerSelectionOptionsCompletionBlocks)initWithDataIndexedBlock:(id)a3 dataRenderedBlock:(id)a4
+- (ICSelectionStateModelContainerSelectionOptionsCompletionBlocks)initWithDataIndexedBlock:(id)block dataRenderedBlock:(id)renderedBlock
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(block);
+  v7 = _Block_copy(renderedBlock);
   v8 = v7;
   if (!v6)
   {
@@ -95,7 +95,7 @@ LABEL_6:
   return [(ICSelectionStateModelContainerSelectionOptionsCompletionBlocks *)&v15 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(self + OBJC_IVAR___ICSelectionStateModelContainerSelectionOptionsCompletionBlocks_dataIndexedBlock);
   v4 = *(self + OBJC_IVAR___ICSelectionStateModelContainerSelectionOptionsCompletionBlocks_dataIndexedBlock + 8);

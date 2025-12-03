@@ -1,6 +1,6 @@
 @interface INMercuryPushNotificationHandler
 - (INMercuryPushNotificationHandler)init;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation INMercuryPushNotificationHandler
@@ -35,22 +35,22 @@
   return v2;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v8 = _INLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000363FC(v6, v8);
+    sub_1000363FC(responseCopy, v8);
   }
 
-  if ([AMSUserNotification shouldHandleNotificationResponse:v6])
+  if ([AMSUserNotification shouldHandleNotificationResponse:responseCopy])
   {
     v9 = +[AMSBag quotaBag];
-    v10 = [AMSUserNotification handleNotificationResponse:v6 bag:v9];
+    v10 = [AMSUserNotification handleNotificationResponse:responseCopy bag:v9];
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 

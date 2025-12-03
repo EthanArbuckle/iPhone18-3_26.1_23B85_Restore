@@ -1,26 +1,26 @@
 @interface MCSCreateMailboxOperation
 - (BOOL)commit;
-- (MCSCreateMailboxOperation)initWithName:(id)a3 parentMailbox:(id)a4;
+- (MCSCreateMailboxOperation)initWithName:(id)name parentMailbox:(id)mailbox;
 - (id)localizedErrorDescription;
 - (id)localizedErrorTitle;
 @end
 
 @implementation MCSCreateMailboxOperation
 
-- (MCSCreateMailboxOperation)initWithName:(id)a3 parentMailbox:(id)a4
+- (MCSCreateMailboxOperation)initWithName:(id)name parentMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  mailboxCopy = mailbox;
   v12.receiver = self;
   v12.super_class = MCSCreateMailboxOperation;
   v8 = [(MCSCreateMailboxOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     pendingName = v8->_pendingName;
     v8->_pendingName = v9;
 
-    objc_storeStrong(&v8->_parentMailbox, a4);
+    objc_storeStrong(&v8->_parentMailbox, mailbox);
     *(&v8->super.super + 8) |= 1u;
   }
 
@@ -29,8 +29,8 @@
 
 - (BOOL)commit
 {
-  v3 = [(MFMailboxUid *)self->_parentMailbox account];
-  if (![v3 canCreateNewMailboxes])
+  account = [(MFMailboxUid *)self->_parentMailbox account];
+  if (![account canCreateNewMailboxes])
   {
     v6 = 0;
     goto LABEL_5;
@@ -38,31 +38,31 @@
 
   pendingName = self->_pendingName;
   v18 = 0;
-  v5 = [v3 newMailboxNameIsAcceptable:pendingName reasonForFailure:&v18];
+  v5 = [account newMailboxNameIsAcceptable:pendingName reasonForFailure:&v18];
   v6 = v18;
   if (!v5)
   {
 LABEL_5:
     [(MCSCreateMailboxOperation *)self setReasonForFailure:v6];
-    v16 = 0;
+    bOOLValue = 0;
     goto LABEL_6;
   }
 
   v7 = [EMCreateMailboxChangeAction alloc];
   v8 = self->_pendingName;
-  v9 = [(MFMailboxUid *)self->_parentMailbox objectID];
-  v10 = [v7 initWithMailboxName:v8 parentMailboxID:v9];
+  objectID = [(MFMailboxUid *)self->_parentMailbox objectID];
+  v10 = [v7 initWithMailboxName:v8 parentMailboxID:objectID];
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 daemonInterface];
-  v13 = [v12 mailboxRepository];
-  v14 = [v13 performMailboxChangeAction:v10];
+  daemonInterface = [v11 daemonInterface];
+  mailboxRepository = [daemonInterface mailboxRepository];
+  v14 = [mailboxRepository performMailboxChangeAction:v10];
 
   v15 = [v14 result:0];
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
 LABEL_6:
-  return v16;
+  return bOOLValue;
 }
 
 - (id)localizedErrorDescription

@@ -1,21 +1,21 @@
 @interface CategoryListViewController
-- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)dismissSelf;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CategoryListViewController
 
-- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler);
   *v3 = 0;
@@ -28,45 +28,45 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_71BDC0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(CategoryListViewController *)&v7 viewWillAppear:v3];
+  [(CategoryListViewController *)&v7 viewWillAppear:appearCopy];
   sub_75A0A0();
-  v5 = 0;
+  _isInPopoverPresentation = 0;
   if (!sub_7575E0())
   {
-    v5 = [v4 _isInPopoverPresentation];
+    _isInPopoverPresentation = [v4 _isInPopoverPresentation];
   }
 
-  v6 = [v4 navigationController];
-  [v6 setNavigationBarHidden:v5 animated:0];
+  navigationController = [v4 navigationController];
+  [navigationController setNavigationBarHidden:_isInPopoverPresentation animated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(CategoryListViewController *)&v5 viewDidDisappear:v3];
+  [(CategoryListViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_75A0A0();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(CategoryListViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(CategoryListViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -79,54 +79,54 @@
 
 - (void)dismissSelf
 {
-  v5 = self;
-  [(CategoryListViewController *)v5 dismissViewControllerAnimated:1 completion:0];
-  v2 = (&v5->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler);
-  v3 = *(&v5->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler);
-  v4 = *&v5->dataSource[OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler];
+  selfCopy = self;
+  [(CategoryListViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
+  v2 = (&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler);
+  v3 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler);
+  v4 = *&selfCopy->dataSource[OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_selectionHandler];
   *v2 = 0;
   v2[1] = 0;
   sub_47160(v3, v4);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   sub_B170(*(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_dataSource) + 2, (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController_dataSource))[5]);
-  v5 = self;
+  selfCopy = self;
   v6 = sub_762AA0();
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_71C304(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_71C304(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
   v7 = sub_757640();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v15[-((v9 + 15) & 0xFFFFFFFFFFFFFFF0) - 8];
   sub_757590();
-  v11 = a4;
-  v12 = self;
-  v13 = [v11 imageView];
-  if (v13)
+  cellCopy = cell;
+  selfCopy = self;
+  imageView = [cellCopy imageView];
+  if (imageView)
   {
-    v14 = v13;
+    v14 = imageView;
     sub_BE70(0, &qword_949D90);
     sub_41ADDC();
     sub_76A6E0();
@@ -142,28 +142,28 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_71D8A4();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithStyle:(int64_t)a3
+- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProviderP33_726DB7BA519CECBD730F6DC8057B64B226CategoryListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

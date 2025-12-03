@@ -1,6 +1,6 @@
 @interface NPFamilyEligibilityProvider
 - (NPFamilyEligibilityProvider)init;
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 - (id)requestFamilyEligibility;
 @end
 
@@ -13,20 +13,20 @@
   v2 = [(NPFamilyEligibilityProvider *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     store = v2->_store;
-    v2->_store = v3;
+    v2->_store = defaultStore;
 
     v5 = objc_alloc(MEMORY[0x1E698C250]);
-    v6 = [(NPFamilyEligibilityProvider *)v2 store];
-    v7 = [v5 initWithAccountStore:v6];
+    store = [(NPFamilyEligibilityProvider *)v2 store];
+    v7 = [v5 initWithAccountStore:store];
     accountManager = v2->_accountManager;
     v2->_accountManager = v7;
 
     [(AIDAAccountManager *)v2->_accountManager setDelegate:v2];
     v9 = objc_alloc(MEMORY[0x1E699C0A0]);
-    v10 = [(NPFamilyEligibilityProvider *)v2 accountManager];
-    v11 = [v9 initWithAccountManager:v10];
+    accountManager = [(NPFamilyEligibilityProvider *)v2 accountManager];
+    v11 = [v9 initWithAccountManager:accountManager];
     eligibilityRequester = v2->_eligibilityRequester;
     v2->_eligibilityRequester = v11;
   }
@@ -139,18 +139,18 @@ void __55__NPFamilyEligibilityProvider_requestFamilyEligibility__block_invoke_37
   (*(v13 + 16))(v13, v14);
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 accountStore];
+  accountStore = [managerCopy accountStore];
 
-  v7 = [v6 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  if (v7)
+  if (aa_primaryAppleAccount)
   {
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E698C218]];
+    [v5 setObject:aa_primaryAppleAccount forKeyedSubscript:*MEMORY[0x1E698C218]];
   }
 
   v8 = [v5 copy];

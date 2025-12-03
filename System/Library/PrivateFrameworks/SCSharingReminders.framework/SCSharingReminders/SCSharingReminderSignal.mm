@@ -1,41 +1,41 @@
 @interface SCSharingReminderSignal
-- (BOOL)isEqual:(id)a3;
-- (SCSharingReminderSignal)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCSharingReminderSignal)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCSharingReminderSignal
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderSignal *)self sharingIdentifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  sharingIdentifier = [(SCSharingReminderSignal *)self sharingIdentifier];
+  [coderCopy encodeObject:sharingIdentifier forKey:@"identifier"];
 
-  v6 = [(SCSharingReminderSignal *)self sharingType];
-  [v4 encodeObject:v6 forKey:@"sharingType"];
+  sharingType = [(SCSharingReminderSignal *)self sharingType];
+  [coderCopy encodeObject:sharingType forKey:@"sharingType"];
 
-  v7 = [(SCSharingReminderSignal *)self signalType];
-  [v4 encodeObject:v7 forKey:@"signalType"];
+  signalType = [(SCSharingReminderSignal *)self signalType];
+  [coderCopy encodeObject:signalType forKey:@"signalType"];
 }
 
-- (SCSharingReminderSignal)initWithCoder:(id)a3
+- (SCSharingReminderSignal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SCSharingReminderSignal;
   v5 = [(SCSharingReminderSignal *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     sharingIdentifier = v5->_sharingIdentifier;
     v5->_sharingIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingType"];
     sharingType = v5->_sharingType;
     v5->_sharingType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signalType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signalType"];
     signalType = v5->_signalType;
     v5->_signalType = v10;
   }
@@ -43,10 +43,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -56,18 +56,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCSharingReminderSignal *)v5 sharingIdentifier];
-      v7 = [(SCSharingReminderSignal *)self sharingIdentifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      sharingIdentifier = [(SCSharingReminderSignal *)v5 sharingIdentifier];
+      sharingIdentifier2 = [(SCSharingReminderSignal *)self sharingIdentifier];
+      if ([sharingIdentifier isEqualToString:sharingIdentifier2])
       {
-        v8 = [(SCSharingReminderSignal *)v5 sharingType];
-        v9 = [(SCSharingReminderSignal *)self sharingType];
-        if ([v8 isEqualToString:v9])
+        sharingType = [(SCSharingReminderSignal *)v5 sharingType];
+        sharingType2 = [(SCSharingReminderSignal *)self sharingType];
+        if ([sharingType isEqualToString:sharingType2])
         {
-          v10 = [(SCSharingReminderSignal *)v5 signalType];
-          v11 = [(SCSharingReminderSignal *)self signalType];
-          v12 = [v10 isEqual:v11];
+          signalType = [(SCSharingReminderSignal *)v5 signalType];
+          signalType2 = [(SCSharingReminderSignal *)self signalType];
+          v12 = [signalType isEqual:signalType2];
         }
 
         else

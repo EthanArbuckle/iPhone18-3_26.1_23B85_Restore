@@ -1,20 +1,20 @@
 @interface ScheduleOccurrenceViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)handleSignificantTimeChange;
-- (void)saveButtonPressed:(id)a3;
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tonePickerViewController:(id)a3 didDismissVibrationPickerViewController:(id)a4;
-- (void)tonePickerViewController:(id)a3 willPresentVibrationPickerViewController:(id)a4;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)saveButtonPressed:(id)pressed;
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tonePickerViewController:(id)controller didDismissVibrationPickerViewController:(id)viewController;
+- (void)tonePickerViewController:(id)controller willPresentVibrationPickerViewController:(id)viewController;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ScheduleOccurrenceViewController
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -24,11 +24,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_269C28A30(a3);
+  selfCopy = self;
+  sub_269C28A30(disappear);
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v6 = sub_269D97870();
   v7 = *(v6 - 8);
@@ -43,8 +43,8 @@
   }
 
   sub_269D97840();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_269C301BC();
   v13 = v12;
 
@@ -53,7 +53,7 @@
   return v13 & 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_269D97870();
   v7 = *(v6 - 8);
@@ -68,14 +68,14 @@
   }
 
   sub_269D97840();
-  v10 = a3;
-  v11 = self;
-  sub_269C29198(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_269C29198(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_269D97870();
   v9 = *(v8 - 8);
@@ -90,15 +90,15 @@
   }
 
   sub_269D97840();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_269C302BC(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_269C302BC(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -108,14 +108,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_269C299F0(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v9 = sub_269C299F0(viewCopy, section);
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -125,9 +125,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_269C3079C(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v9 = sub_269C3079C(section);
 
   return v9;
 }
@@ -142,11 +142,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269C2A4DC("[%{public}s] Significant time changed");
 }
 
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -156,14 +156,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (changed)
   {
     type metadata accessor for ScheduleOccurrenceAlarmEnabledTableViewCell();
     if (swift_dynamicCastClass())
     {
-      v7 = self;
-      v8 = a3;
-      ScheduleOccurrenceEditModel.alarmEnabled.setter(a4);
+      selfCopy2 = self;
+      changedCopy2 = changed;
+      ScheduleOccurrenceEditModel.alarmEnabled.setter(value);
       sub_269D4B714();
 LABEL_8:
 
@@ -173,15 +173,15 @@ LABEL_8:
     type metadata accessor for ScheduleOccurrenceAlarmSnoozeTableViewCell();
     if (swift_dynamicCastClass())
     {
-      v7 = self;
-      v8 = a3;
-      ScheduleOccurrenceEditModel.allowsSnooze.setter(a4);
+      selfCopy2 = self;
+      changedCopy2 = changed;
+      ScheduleOccurrenceEditModel.allowsSnooze.setter(value);
       goto LABEL_8;
     }
   }
 }
 
-- (void)tonePickerViewController:(id)a3 willPresentVibrationPickerViewController:(id)a4
+- (void)tonePickerViewController:(id)controller willPresentVibrationPickerViewController:(id)viewController
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -191,12 +191,12 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (viewController)
   {
-    v7 = self;
-    v6 = a4;
-    [v6 setShowsEditButtonInNavigationBar_];
-    [v6 setDelegate_];
+    selfCopy = self;
+    viewControllerCopy = viewController;
+    [viewControllerCopy setShowsEditButtonInNavigationBar_];
+    [viewControllerCopy setDelegate_];
   }
 
   else
@@ -205,7 +205,7 @@ LABEL_8:
   }
 }
 
-- (void)tonePickerViewController:(id)a3 didDismissVibrationPickerViewController:(id)a4
+- (void)tonePickerViewController:(id)controller didDismissVibrationPickerViewController:(id)viewController
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -215,9 +215,9 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (viewController)
   {
-    [a4 setDelegate_];
+    [viewController setDelegate_];
   }
 
   else
@@ -226,7 +226,7 @@ LABEL_8:
   }
 }
 
-- (void)saveButtonPressed:(id)a3
+- (void)saveButtonPressed:(id)pressed
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -236,11 +236,11 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  pressedCopy = pressed;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = pressed;
   ScheduleOccurrenceViewController.saveButtonPressed(_:)(v9);
 }
 

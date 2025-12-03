@@ -1,17 +1,17 @@
 @interface ENPreferencesStore
 + (id)defaultPreferenceStore;
-+ (id)pathnameForStoreFilename:(id)a3;
-+ (id)preferenceStoreWithSecurityApplicationGroupIdentifier:(id)a3;
++ (id)pathnameForStoreFilename:(id)filename;
++ (id)preferenceStoreWithSecurityApplicationGroupIdentifier:(id)identifier;
 - (ENPreferencesStore)init;
-- (ENPreferencesStore)initWithStoreFilename:(id)a3;
-- (ENPreferencesStore)initWithURL:(id)a3;
-- (id)decodedObjectForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (ENPreferencesStore)initWithStoreFilename:(id)filename;
+- (ENPreferencesStore)initWithURL:(id)l;
+- (id)decodedObjectForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 - (void)load;
 - (void)removeAllItems;
 - (void)save;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation ENPreferencesStore
@@ -19,9 +19,9 @@
 - (void)load
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(ENPreferencesStore *)self pathname];
+  pathname = [(ENPreferencesStore *)self pathname];
   v15 = 0;
-  v5 = [v3 dataWithContentsOfFile:v4 options:0 error:&v15];
+  v5 = [v3 dataWithContentsOfFile:pathname options:0 error:&v15];
   v6 = v15;
 
   if (!v5)
@@ -37,51 +37,51 @@
 
   if (!v7 || v14 != 100)
   {
-    v9 = [(ENPreferencesStore *)self pathname];
-    NSLog(&cfstr_Enpreferencess_3.isa, v9, v8);
+    pathname2 = [(ENPreferencesStore *)self pathname];
+    NSLog(&cfstr_Enpreferencess_3.isa, pathname2, v8);
 
 LABEL_6:
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [(ENPreferencesStore *)self pathname];
-    [v10 removeItemAtPath:v11 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    pathname3 = [(ENPreferencesStore *)self pathname];
+    [defaultManager removeItemAtPath:pathname3 error:0];
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  [(ENPreferencesStore *)v12 setStore:v7];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ENPreferencesStore *)selfCopy setStore:v7];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ENPreferencesStore *)v2 store];
-  [v3 removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  store = [(ENPreferencesStore *)selfCopy store];
+  [store removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  [(ENPreferencesStore *)v2 save];
+  [(ENPreferencesStore *)selfCopy save];
 }
 
 - (void)save
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ENPreferencesStore *)v2 store];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  store = [(ENPreferencesStore *)selfCopy store];
+  objc_sync_exit(selfCopy);
 
   v11 = 0;
-  v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:v3 format:100 options:0 error:&v11];
+  v4 = [MEMORY[0x277CCAC58] dataWithPropertyList:store format:100 options:0 error:&v11];
   v5 = v11;
   v6 = v5;
   if (v4)
   {
-    v7 = [(ENPreferencesStore *)v2 pathname];
+    pathname = [(ENPreferencesStore *)selfCopy pathname];
     v10 = v6;
-    v8 = [v4 writeToFile:v7 options:1 error:&v10];
+    v8 = [v4 writeToFile:pathname options:1 error:&v10];
     v9 = v10;
 
     if ((v8 & 1) == 0)
@@ -98,32 +98,32 @@ LABEL_6:
   }
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:objectCopy];
   if (v7)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(ENPreferencesStore *)v8 store];
-    [v9 setObject:v7 forKey:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    store = [(ENPreferencesStore *)selfCopy store];
+    [store setObject:v7 forKey:keyCopy];
 
-    objc_sync_exit(v8);
-    [(ENPreferencesStore *)v8 save];
+    objc_sync_exit(selfCopy);
+    [(ENPreferencesStore *)selfCopy save];
   }
 }
 
-- (id)decodedObjectForKey:(id)a3
+- (id)decodedObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ENPreferencesStore *)v5 store];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  store = [(ENPreferencesStore *)selfCopy store];
+  v7 = [store objectForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = [MEMORY[0x277CCAAC8] unarchiveObjectWithData:v7];
@@ -137,36 +137,36 @@ LABEL_6:
   return v8;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(ENPreferencesStore *)v7 store];
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  store = [(ENPreferencesStore *)selfCopy store];
+  if (objectCopy)
   {
-    [v8 setObject:v9 forKey:v6];
+    [store setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [v8 removeObjectForKey:v6];
+    [store removeObjectForKey:keyCopy];
   }
 
-  objc_sync_exit(v7);
-  [(ENPreferencesStore *)v7 save];
+  objc_sync_exit(selfCopy);
+  [(ENPreferencesStore *)selfCopy save];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ENPreferencesStore *)v5 store];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  store = [(ENPreferencesStore *)selfCopy store];
+  v7 = [store objectForKey:keyCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -178,16 +178,16 @@ LABEL_6:
   return 0;
 }
 
-- (ENPreferencesStore)initWithURL:(id)a3
+- (ENPreferencesStore)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = ENPreferencesStore;
   v5 = [(ENPreferencesStore *)&v8 init];
   if (v5)
   {
-    v6 = [v4 path];
-    [(ENPreferencesStore *)v5 setPathname:v6];
+    path = [lCopy path];
+    [(ENPreferencesStore *)v5 setPathname:path];
 
     [(ENPreferencesStore *)v5 load];
   }
@@ -195,15 +195,15 @@ LABEL_6:
   return v5;
 }
 
-- (ENPreferencesStore)initWithStoreFilename:(id)a3
+- (ENPreferencesStore)initWithStoreFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v8.receiver = self;
   v8.super_class = ENPreferencesStore;
   v5 = [(ENPreferencesStore *)&v8 init];
   if (v5)
   {
-    v6 = [objc_opt_class() pathnameForStoreFilename:v4];
+    v6 = [objc_opt_class() pathnameForStoreFilename:filenameCopy];
     [(ENPreferencesStore *)v5 setPathname:v6];
 
     [(ENPreferencesStore *)v5 load];
@@ -214,41 +214,41 @@ LABEL_6:
 
 + (id)defaultPreferenceStore
 {
-  v2 = [[a1 alloc] initWithStoreFilename:@"com.evernote.evernote-sdk-ios.plist"];
+  v2 = [[self alloc] initWithStoreFilename:@"com.evernote.evernote-sdk-ios.plist"];
 
   return v2;
 }
 
-+ (id)preferenceStoreWithSecurityApplicationGroupIdentifier:(id)a3
++ (id)preferenceStoreWithSecurityApplicationGroupIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 containerURLForSecurityApplicationGroupIdentifier:v5];
+  identifierCopy = identifier;
+  defaultManager = [v4 defaultManager];
+  v7 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:identifierCopy];
 
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v9 = [v7 URLByAppendingPathComponent:@"com.evernote.evernote-sdk-ios.plist"];
   v10 = [v8 initWithURL:v9];
 
   return v10;
 }
 
-+ (id)pathnameForStoreFilename:(id)a3
++ (id)pathnameForStoreFilename:(id)filename
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [MEMORY[0x277CFC538] appGroupIdentifier];
-  v6 = [v4 containerURLForSecurityApplicationGroupIdentifier:v5];
-  v7 = [v6 path];
+  filenameCopy = filename;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  appGroupIdentifier = [MEMORY[0x277CFC538] appGroupIdentifier];
+  v6 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:appGroupIdentifier];
+  path = [v6 path];
 
-  if (!v7)
+  if (!path)
   {
     v8 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-    v9 = [v8 firstObject];
-    v7 = [v9 stringByAppendingPathComponent:@"Preferences"];
+    firstObject = [v8 firstObject];
+    path = [firstObject stringByAppendingPathComponent:@"Preferences"];
   }
 
-  v10 = [v7 stringByAppendingPathComponent:v3];
+  v10 = [path stringByAppendingPathComponent:filenameCopy];
 
   return v10;
 }

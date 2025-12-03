@@ -1,49 +1,49 @@
 @interface SUUIProductPageCopyrightView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setColorScheme:(id)a3;
-- (void)setCopyrightString:(id)a3;
+- (void)setColorScheme:(id)scheme;
+- (void)setCopyrightString:(id)string;
 @end
 
 @implementation SUUIProductPageCopyrightView
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v10 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     copyrightLabel = self->_copyrightLabel;
-    v7 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      v8 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-      v9 = SUUIColorWithAlpha(v8, 0.3);
+      secondaryTextColor2 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+      v9 = SUUIColorWithAlpha(secondaryTextColor2, 0.3);
       [(UILabel *)copyrightLabel setTextColor:v9];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
-      [(UILabel *)copyrightLabel setTextColor:v8];
+      secondaryTextColor2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
+      [(UILabel *)copyrightLabel setTextColor:secondaryTextColor2];
     }
 
-    v5 = v10;
+    schemeCopy = v10;
   }
 }
 
-- (void)setCopyrightString:(id)a3
+- (void)setCopyrightString:(id)string
 {
-  v17 = a3;
-  v4 = [(UILabel *)self->_copyrightLabel text];
-  v5 = [v4 isEqualToString:v17];
+  stringCopy = string;
+  text = [(UILabel *)self->_copyrightLabel text];
+  v5 = [text isEqualToString:stringCopy];
 
   if ((v5 & 1) == 0)
   {
     copyrightLabel = self->_copyrightLabel;
-    v7 = v17;
-    if (v17)
+    v7 = stringCopy;
+    if (stringCopy)
     {
       if (!copyrightLabel)
       {
@@ -57,23 +57,23 @@
 
         [(UILabel *)self->_copyrightLabel setNumberOfLines:0];
         v12 = self->_copyrightLabel;
-        v13 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v13)
+        secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          v14 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-          v15 = SUUIColorWithAlpha(v14, 0.3);
+          secondaryTextColor2 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+          v15 = SUUIColorWithAlpha(secondaryTextColor2, 0.3);
           [(UILabel *)v12 setTextColor:v15];
         }
 
         else
         {
-          v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
-          [(UILabel *)v12 setTextColor:v14];
+          secondaryTextColor2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
+          [(UILabel *)v12 setTextColor:secondaryTextColor2];
         }
 
         [(SUUIProductPageCopyrightView *)self addSubview:self->_copyrightLabel];
         copyrightLabel = self->_copyrightLabel;
-        v7 = v17;
+        v7 = stringCopy;
       }
 
       [(UILabel *)copyrightLabel setText:v7];
@@ -108,10 +108,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_copyrightLabel sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(UILabel *)self->_copyrightLabel sizeThatFits:fits.width, fits.height];
   v5 = v4 + 32.0;
   v6 = width;
   result.height = v5;

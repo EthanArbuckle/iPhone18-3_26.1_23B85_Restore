@@ -9,7 +9,7 @@
 
 - (void)tsu_performSelector:()TSUAdditions withValue:
 {
-  v7 = [a1 methodSignatureForSelector:?];
+  v7 = [self methodSignatureForSelector:?];
   if (v7)
   {
     v8 = v7;
@@ -87,13 +87,13 @@
             goto LABEL_31;
           case 'd':
             [a4 doubleValue];
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
 
             goto LABEL_16;
           case 'f':
             [a4 floatValue];
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
 
             goto LABEL_16;
@@ -106,13 +106,13 @@
           case 'q':
             [a4 longLongValue];
 LABEL_35:
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
             goto LABEL_36;
           case 's':
             [a4 shortValue];
 LABEL_31:
-            v10 = a1;
+            selfCopy5 = self;
             v11 = a3;
 
             goto LABEL_16;
@@ -120,24 +120,24 @@ LABEL_31:
             if (*v9 == 35)
             {
 LABEL_10:
-              v10 = a1;
+              selfCopy5 = self;
               v11 = a3;
 LABEL_36:
 
 LABEL_16:
-              [v10 v11];
+              [selfCopy5 v11];
               return;
             }
 
 LABEL_11:
-            v12 = [a4 objCType];
-            if (v12)
+            objCType = [a4 objCType];
+            if (objCType)
             {
-              v13 = v12;
-              if (!strcmp(v9, v12))
+              v13 = objCType;
+              if (!strcmp(v9, objCType))
               {
                 v14 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v8];
-                [v14 setTarget:a1];
+                [v14 setTarget:self];
                 [v14 setSelector:a3];
                 sizep = 0;
                 NSGetSizeAndAlignment(v13, &sizep, 0);
@@ -178,7 +178,7 @@ LABEL_11:
     objc_exception_throw([v21 exceptionWithName:v22 reason:v20 userInfo:0]);
   }
 
-  [a1 doesNotRecognizeSelector:a3];
+  [self doesNotRecognizeSelector:a3];
 }
 
 + (uint64_t)tsu_object:()TSUAdditions isEqualToObject:
@@ -207,14 +207,14 @@ LABEL_11:
 
 - (OITSUKVOToken)tsu_addObserver:()TSUAdditions forKeyPath:options:context:
 {
-  v11 = [[OITSUKVOToken alloc] initWithObserver:a3 target:a1 keyPath:a4 context:a6];
-  AssociatedObject = objc_getAssociatedObject(a1, TSUNSObjectKVOTokensKey);
+  v11 = [[OITSUKVOToken alloc] initWithObserver:a3 target:self keyPath:a4 context:a6];
+  AssociatedObject = objc_getAssociatedObject(self, TSUNSObjectKVOTokensKey);
   if (!AssociatedObject)
   {
     v14 = [MEMORY[0x277CBEB58] setWithObjects:{v11, 0}];
-    objc_setAssociatedObject(a1, TSUNSObjectKVOTokensKey, v14, 1);
+    objc_setAssociatedObject(self, TSUNSObjectKVOTokensKey, v14, 1);
 LABEL_7:
-    [a1 addObserver:a3 forKeyPath:a4 options:a5 context:a6];
+    [self addObserver:a3 forKeyPath:a4 options:a5 context:a6];
     goto LABEL_8;
   }
 
@@ -242,14 +242,14 @@ LABEL_8:
   if (result)
   {
     v7 = result;
-    if ([result target] != a1)
+    if ([result target] != self)
     {
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSObject(TSUAdditions) tsu_removeObserverForToken:]"];
-      +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v8, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/NSObject_TSUAdditions.m"], 211, 0, "Attempted to stop key-value observing on %@ using a token that it was not associated with", a1);
+      +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v8, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/NSObject_TSUAdditions.m"], 211, 0, "Attempted to stop key-value observing on %@ using a token that it was not associated with", self);
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    AssociatedObject = objc_getAssociatedObject(a1, TSUNSObjectKVOTokensKey);
+    AssociatedObject = objc_getAssociatedObject(self, TSUNSObjectKVOTokensKey);
     result = [AssociatedObject containsObject:v7];
     if (result)
     {

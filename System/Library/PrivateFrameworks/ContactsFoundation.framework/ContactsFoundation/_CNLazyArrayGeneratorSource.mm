@@ -1,32 +1,32 @@
 @interface _CNLazyArrayGeneratorSource
-- (_CNLazyArrayGeneratorSource)initWithInitialState:(id)a3 condition:(id)a4 nextState:(id)a5 resultSelector:(id)a6;
+- (_CNLazyArrayGeneratorSource)initWithInitialState:(id)state condition:(id)condition nextState:(id)nextState resultSelector:(id)selector;
 - (id)nextObject;
 @end
 
 @implementation _CNLazyArrayGeneratorSource
 
-- (_CNLazyArrayGeneratorSource)initWithInitialState:(id)a3 condition:(id)a4 nextState:(id)a5 resultSelector:(id)a6
+- (_CNLazyArrayGeneratorSource)initWithInitialState:(id)state condition:(id)condition nextState:(id)nextState resultSelector:(id)selector
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  stateCopy = state;
+  conditionCopy = condition;
+  nextStateCopy = nextState;
+  selectorCopy = selector;
   v25.receiver = self;
   v25.super_class = _CNLazyArrayGeneratorSource;
   v15 = [(_CNLazyArrayGeneratorSource *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_state, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_state, state);
+    v17 = [conditionCopy copy];
     condition = v16->_condition;
     v16->_condition = v17;
 
-    v19 = [v13 copy];
+    v19 = [nextStateCopy copy];
     nextState = v16->_nextState;
     v16->_nextState = v19;
 
-    v21 = [v14 copy];
+    v21 = [selectorCopy copy];
     resultFromState = v16->_resultFromState;
     v16->_resultFromState = v21;
 

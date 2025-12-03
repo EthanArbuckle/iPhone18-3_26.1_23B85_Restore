@@ -1,21 +1,21 @@
 @interface VUIShelfViewController
-- (VUIShelfViewController)initWithGridStyle:(int64_t)a3;
-- (id)_findSnappingItemFromContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (VUIShelfViewController)initWithGridStyle:(int64_t)style;
+- (id)_findSnappingItemFromContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (void)_ensureScrollViewSnaps;
-- (void)_snapTargetContentOffset:(CGPoint *)a3 toItemIndexPath:(id)a4 atItemOffset:(CGPoint)a5;
-- (void)_updateCollectionViewLayout:(BOOL)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)_snapTargetContentOffset:(CGPoint *)offset toItemIndexPath:(id)path atItemOffset:(CGPoint)itemOffset;
+- (void)_updateCollectionViewLayout:(BOOL)layout;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)setHeaderView:(id)a3;
-- (void)updateContentOffsetWithTransitionCoordinator:(id)a3;
+- (void)setHeaderView:(id)view;
+- (void)updateContentOffsetWithTransitionCoordinator:(id)coordinator;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VUIShelfViewController
 
-- (VUIShelfViewController)initWithGridStyle:(int64_t)a3
+- (VUIShelfViewController)initWithGridStyle:(int64_t)style
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_gridStyle = a3;
+    v4->_gridStyle = style;
     objc_initWeak(&location, v4);
     v13[0] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
@@ -56,28 +56,28 @@ void __44__VUIShelfViewController_initWithGridStyle___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
-  if (self->_headerView != v5)
+  viewCopy = view;
+  if (self->_headerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_headerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_headerView, view);
     [(VUIShelfView *)self->_containerView setHeaderView:v6];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (void)loadView
 {
   v3 = [VUIShelfView alloc];
-  v4 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  [v4 bounds];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  [vui_keyWindow bounds];
   v10 = [(VUIShelfView *)v3 initWithFrame:?];
 
   [(VUIShelfView *)v10 setAutoresizingMask:18];
-  v5 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  [(VUIShelfView *)v10 setBackgroundColor:v5];
+  vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  [(VUIShelfView *)v10 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
   [(VUIShelfViewController *)self setView:v10];
   [(VUIShelfViewController *)self setContainerView:v10];
@@ -87,8 +87,8 @@ void __44__VUIShelfViewController_initWithGridStyle___block_invoke(uint64_t a1)
   v7 = [VUILegacyCollectionView alloc];
   v8 = [(VUILegacyCollectionView *)v7 initWithFrame:v6 collectionViewLayout:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(VUILegacyCollectionView *)v8 setAutoresizingMask:18];
-  v9 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  [(VUILegacyCollectionView *)v8 setBackgroundColor:v9];
+  vui_primaryDynamicBackgroundColor2 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  [(VUILegacyCollectionView *)v8 setBackgroundColor:vui_primaryDynamicBackgroundColor2];
 
   [(VUILegacyCollectionView *)v8 setShowsVerticalScrollIndicator:0];
   [(VUILegacyCollectionView *)v8 setShowsHorizontalScrollIndicator:0];
@@ -102,45 +102,45 @@ void __44__VUIShelfViewController_initWithGridStyle___block_invoke(uint64_t a1)
   [(VUIShelfViewController *)self _updateCollectionViewLayout:0];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = VUIShelfViewController;
-  [(VUIShelfViewController *)&v4 didMoveToParentViewController:a3];
+  [(VUIShelfViewController *)&v4 didMoveToParentViewController:controller];
   [(VUIShelfViewController *)self _ensureScrollViewSnaps];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = VUIShelfViewController;
-  v7 = a4;
-  [(VUIShelfViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  [(VUIShelfViewController *)self updateContentOffsetWithTransitionCoordinator:v7, v8.receiver, v8.super_class];
+  coordinatorCopy = coordinator;
+  [(VUIShelfViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  [(VUIShelfViewController *)self updateContentOffsetWithTransitionCoordinator:coordinatorCopy, v8.receiver, v8.super_class];
 }
 
-- (void)updateContentOffsetWithTransitionCoordinator:(id)a3
+- (void)updateContentOffsetWithTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(VUIShelfViewController *)self collectionView];
-  [v5 contentInset];
+  coordinatorCopy = coordinator;
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  [collectionView contentInset];
   v7 = v6;
 
-  v8 = [(VUIShelfViewController *)self collectionView];
-  [v8 contentOffset];
+  collectionView2 = [(VUIShelfViewController *)self collectionView];
+  [collectionView2 contentOffset];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VUIShelfViewController *)self collectionView];
-  [v13 bounds];
+  collectionView3 = [(VUIShelfViewController *)self collectionView];
+  [collectionView3 bounds];
   *&v22 = v7 + v10;
   *(&v22 + 1) = CGRectGetMidY(v23);
 
   v14 = [(VUIShelfViewController *)self _findSnappingItemFromContentOffset:&v22 withVelocity:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
-  v15 = [(VUIShelfViewController *)self view];
-  [v15 setNeedsLayout];
+  view = [(VUIShelfViewController *)self view];
+  [view setNeedsLayout];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -152,7 +152,7 @@ void __44__VUIShelfViewController_initWithGridStyle___block_invoke(uint64_t a1)
   v20 = v12;
   v21 = v22;
   v16 = v14;
-  [v4 animateAlongsideTransition:v17 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v17 completion:0];
 }
 
 void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator___block_invoke(uint64_t a1)
@@ -186,23 +186,23 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
   }
 
   containerView = self->_containerView;
-  v4 = [(VUIShelfViewController *)self view];
-  [v4 bounds];
+  view = [(VUIShelfViewController *)self view];
+  [view bounds];
   [(VUIShelfView *)containerView setFrame:?];
 
   collectionView = self->_collectionView;
   v6 = MEMORY[0x1E69DD2E8];
-  v7 = [(VUIShelfViewController *)self view];
-  [v7 bounds];
+  view2 = [(VUIShelfViewController *)self view];
+  [view2 bounds];
   [v6 vui_paddingForWindowWidth:CGRectGetWidth(v9)];
   [(UICollectionView *)collectionView setContentInset:?];
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_focusedIndexPath && [v4 vui_isIndexPathValid:?])
+  viewCopy = view;
+  v5 = viewCopy;
+  if (self->_focusedIndexPath && [viewCopy vui_isIndexPathValid:?])
   {
     v6 = self->_focusedIndexPath;
   }
@@ -217,18 +217,18 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
 
 - (void)_ensureScrollViewSnaps
 {
-  v3 = [(VUIShelfViewController *)self collectionView];
-  [v3 contentInset];
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  [collectionView contentInset];
   v5 = v4;
 
-  v6 = [(VUIShelfViewController *)self collectionView];
-  [v6 contentOffset];
+  collectionView2 = [(VUIShelfViewController *)self collectionView];
+  [collectionView2 contentOffset];
   v8 = v7;
   v17 = v7;
   v18 = v9;
 
-  v10 = [(VUIShelfViewController *)self collectionView];
-  [v10 bounds];
+  collectionView3 = [(VUIShelfViewController *)self collectionView];
+  [collectionView3 bounds];
   v15 = v5 + v8;
   MidY = CGRectGetMidY(v19);
 
@@ -238,22 +238,22 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
     [(VUIShelfViewController *)self _snapTargetContentOffset:&v17 toItemIndexPath:v11 atItemOffset:v15, MidY];
     v12 = v17;
     v13 = v18;
-    v14 = [(VUIShelfViewController *)self collectionView];
-    [v14 setContentOffset:{v12, v13}];
+    collectionView4 = [(VUIShelfViewController *)self collectionView];
+    [collectionView4 setContentOffset:{v12, v13}];
   }
 }
 
-- (id)_findSnappingItemFromContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4
+- (id)_findSnappingItemFromContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity
 {
-  x = a4.x;
-  v7 = [(VUIShelfViewController *)self collectionView:a4.x];
+  x = velocity.x;
+  v7 = [(VUIShelfViewController *)self collectionView:velocity.x];
   [v7 contentSize];
   v9 = v8;
-  v10 = [(VUIShelfViewController *)self collectionView];
-  [v10 frame];
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  [collectionView frame];
   v12 = v9 - v11;
 
-  if (v12 > 0.0 && a3->x >= v12)
+  if (v12 > 0.0 && offset->x >= v12)
   {
     v14 = 0;
     v26 = 1;
@@ -261,14 +261,14 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
 
   else
   {
-    v13 = [(VUIShelfViewController *)self collectionView];
-    v14 = [v13 indexPathForItemAtPoint:{a3->x, a3->y}];
+    collectionView2 = [(VUIShelfViewController *)self collectionView];
+    v14 = [collectionView2 indexPathForItemAtPoint:{offset->x, offset->y}];
 
     if (!v14)
     {
-      v15 = [(VUIShelfViewController *)self collectionView];
-      v16 = [v15 collectionViewLayout];
-      [v16 minimumInteritemSpacing];
+      collectionView3 = [(VUIShelfViewController *)self collectionView];
+      collectionViewLayout = [collectionView3 collectionViewLayout];
+      [collectionViewLayout minimumInteritemSpacing];
       v18 = v17;
 
       v19 = -v18;
@@ -277,39 +277,39 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
         v19 = v18;
       }
 
-      a3->x = v19 + a3->x;
-      v20 = [(VUIShelfViewController *)self collectionView];
-      v14 = [v20 indexPathForItemAtPoint:{a3->x, a3->y}];
+      offset->x = v19 + offset->x;
+      collectionView4 = [(VUIShelfViewController *)self collectionView];
+      v14 = [collectionView4 indexPathForItemAtPoint:{offset->x, offset->y}];
 
       if (!v14)
       {
-        v21 = [(VUIShelfViewController *)self collectionView];
-        v22 = [v21 collectionViewLayout];
-        [v22 minimumLineSpacing];
+        collectionView5 = [(VUIShelfViewController *)self collectionView];
+        collectionViewLayout2 = [collectionView5 collectionViewLayout];
+        [collectionViewLayout2 minimumLineSpacing];
         v24 = v23;
 
-        a3->y = a3->y - v24;
-        v25 = [(VUIShelfViewController *)self collectionView];
-        v14 = [v25 indexPathForItemAtPoint:{a3->x, a3->y}];
+        offset->y = offset->y - v24;
+        collectionView6 = [(VUIShelfViewController *)self collectionView];
+        v14 = [collectionView6 indexPathForItemAtPoint:{offset->x, offset->y}];
       }
     }
 
     v26 = 0;
   }
 
-  v27 = [(VUIShelfViewController *)self collectionView];
-  v28 = [v27 numberOfSections];
+  collectionView7 = [(VUIShelfViewController *)self collectionView];
+  numberOfSections = [collectionView7 numberOfSections];
 
   if (!v14)
   {
-    v29 = v28 - 1;
-    if (v28 >= 1)
+    v29 = numberOfSections - 1;
+    if (numberOfSections >= 1)
     {
       v30 = 0;
       do
       {
-        v31 = [(VUIShelfViewController *)self collectionView];
-        v32 = [v31 numberOfItemsInSection:v30];
+        collectionView8 = [(VUIShelfViewController *)self collectionView];
+        v32 = [collectionView8 numberOfItemsInSection:v30];
 
         if (v32 < 1)
         {
@@ -323,11 +323,11 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
         }
       }
 
-      while (v30 < v28 && !v33);
+      while (v30 < numberOfSections && !v33);
       do
       {
-        v34 = [(VUIShelfViewController *)self collectionView];
-        v35 = [v34 numberOfItemsInSection:v29];
+        collectionView9 = [(VUIShelfViewController *)self collectionView];
+        v35 = [collectionView9 numberOfItemsInSection:v29];
 
         if (v35 < 1)
         {
@@ -366,26 +366,26 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
   return v14;
 }
 
-- (void)_snapTargetContentOffset:(CGPoint *)a3 toItemIndexPath:(id)a4 atItemOffset:(CGPoint)a5
+- (void)_snapTargetContentOffset:(CGPoint *)offset toItemIndexPath:(id)path atItemOffset:(CGPoint)itemOffset
 {
-  x = a5.x;
-  v35 = a4;
-  v8 = [(VUIShelfViewController *)self collectionView];
-  [v8 frame];
+  x = itemOffset.x;
+  pathCopy = path;
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  [collectionView frame];
   v10 = v9;
 
-  v11 = [(VUIShelfViewController *)self collectionView];
-  [v11 contentSize];
+  collectionView2 = [(VUIShelfViewController *)self collectionView];
+  [collectionView2 contentSize];
   v13 = v12;
 
-  v14 = [(VUIShelfViewController *)self collectionView];
-  [v14 contentInset];
+  collectionView3 = [(VUIShelfViewController *)self collectionView];
+  [collectionView3 contentInset];
   v16 = v15;
   v18 = v17;
 
   v19 = v10 - v18 - v16;
-  v20 = [(VUIShelfViewController *)self collectionView];
-  v21 = [v20 layoutAttributesForItemAtIndexPath:v35];
+  collectionView4 = [(VUIShelfViewController *)self collectionView];
+  v21 = [collectionView4 layoutAttributesForItemAtIndexPath:pathCopy];
 
   [v21 frame];
   v26 = v22;
@@ -393,21 +393,21 @@ void __71__VUIShelfViewController_updateContentOffsetWithTransitionCoordinator__
   {
     if (CGRectGetMidX(*&v22) < x)
     {
-      v27 = [(VUIShelfViewController *)self collectionView];
-      v28 = [v27 numberOfItemsInSection:{objc_msgSend(v35, "section")}] - 1;
-      v29 = [v35 item];
+      collectionView5 = [(VUIShelfViewController *)self collectionView];
+      v28 = [collectionView5 numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}] - 1;
+      item = [pathCopy item];
 
-      if (v28 > v29)
+      if (v28 > item)
       {
-        v30 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v35 inSection:{"item") + 1, objc_msgSend(v35, "section")}];
+        v30 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(pathCopy inSection:{"item") + 1, objc_msgSend(pathCopy, "section")}];
 
-        v31 = [(VUIShelfViewController *)self collectionView];
-        v32 = [v31 layoutAttributesForItemAtIndexPath:v30];
+        collectionView6 = [(VUIShelfViewController *)self collectionView];
+        v32 = [collectionView6 layoutAttributesForItemAtIndexPath:v30];
 
         [v32 frame];
         v26 = v33;
         v21 = v32;
-        v35 = v30;
+        pathCopy = v30;
       }
     }
 
@@ -423,27 +423,27 @@ LABEL_6:
 
   v34 = v13 - v10 + v18;
 LABEL_8:
-  a3->x = v34;
+  offset->x = v34;
 }
 
-- (void)_updateCollectionViewLayout:(BOOL)a3
+- (void)_updateCollectionViewLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(VUIShelfViewController *)self collectionView];
-  v7 = [v5 collectionViewLayout];
+  layoutCopy = layout;
+  collectionView = [(VUIShelfViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
   [MEMORY[0x1E69DD2E8] vui_collectionInteritemSpace:self->_gridStyle gridType:0];
-  [v7 setMinimumInteritemSpacing:?];
+  [collectionViewLayout setMinimumInteritemSpacing:?];
   if (objc_opt_respondsToSelector())
   {
-    [(VUIShelfViewController *)self updateShelfLayout:v7];
+    [(VUIShelfViewController *)self updateShelfLayout:collectionViewLayout];
   }
 
-  if (v3)
+  if (layoutCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69D5970]);
     [v6 setInvalidateLayout:1];
-    [v7 invalidateLayoutWithContext:v6];
+    [collectionViewLayout invalidateLayoutWithContext:v6];
   }
 }
 

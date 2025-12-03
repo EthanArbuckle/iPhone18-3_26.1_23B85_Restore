@@ -1,18 +1,18 @@
 @interface ABPKAlgorithmRA
-- (ABPKAlgorithmRA)initWithCameraParams:(id)a3 andAlgorithmMode:(int64_t)a4;
-- (int)preprocessInputImage:(__CVBuffer *)a3;
-- (void)computeRootTransforms:(uint64_t)a1 withVioPose:(uint64_t)a2 withVioPoseValidity:(void *)a3;
+- (ABPKAlgorithmRA)initWithCameraParams:(id)params andAlgorithmMode:(int64_t)mode;
+- (int)preprocessInputImage:(__CVBuffer *)image;
+- (void)computeRootTransforms:(uint64_t)transforms withVioPose:(uint64_t)pose withVioPoseValidity:(void *)validity;
 - (void)dealloc;
-- (void)runABPKAlgorithmWithInputData:(id)a3 andGetOutput:(id)a4;
-- (void)saveInputData:(id)a3 andOutputData:(id)a4 ToDir:(id)a5 withFileNamePrefix:(id)a6;
+- (void)runABPKAlgorithmWithInputData:(id)data andGetOutput:(id)output;
+- (void)saveInputData:(id)data andOutputData:(id)outputData ToDir:(id)dir withFileNamePrefix:(id)prefix;
 @end
 
 @implementation ABPKAlgorithmRA
 
-- (ABPKAlgorithmRA)initWithCameraParams:(id)a3 andAlgorithmMode:(int64_t)a4
+- (ABPKAlgorithmRA)initWithCameraParams:(id)params andAlgorithmMode:(int64_t)mode
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  paramsCopy = params;
   v35.receiver = self;
   v35.super_class = ABPKAlgorithmRA;
   v7 = [(ABPKAlgorithmRA *)&v35 init];
@@ -22,7 +22,7 @@
     v9 = *(v7 + 24);
     *(v7 + 24) = v8;
 
-    objc_storeStrong(v7 + 5, a3);
+    objc_storeStrong(v7 + 5, params);
     *(v7 + 2) = 7;
     [*(v7 + 5) inputRes];
     *(v7 + 3) = v10;
@@ -156,22 +156,22 @@ LABEL_24:
   [(ABPKAlgorithmRA *)&v4 dealloc];
 }
 
-- (void)runABPKAlgorithmWithInputData:(id)a3 andGetOutput:(id)a4
+- (void)runABPKAlgorithmWithInputData:(id)data andGetOutput:(id)output
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  outputCopy = output;
   [(ABPKAlgorithmRA *)self _startExecuteAlgorithmSignpost];
   +[ABPKTime nowInSeconds];
   *&v8 = v8;
-  [v7 setTimeABPKAlgorithmStart:v8];
-  [v7 setAlgorithmParams:self->_algParams];
+  [outputCopy setTimeABPKAlgorithmStart:v8];
+  [outputCopy setAlgorithmParams:self->_algParams];
   v9 = objc_alloc_init(ABPKAlgorithmState);
-  [v7 setAlgState:v9];
+  [outputCopy setAlgState:v9];
 
-  [v6 timestamp];
-  [v7 setTimestamp:?];
+  [dataCopy timestamp];
+  [outputCopy setTimestamp:?];
   [(ABPKAlgorithmRA *)self _startImagePreprocessingSignpost];
-  LODWORD(v9) = -[ABPKAlgorithmRA preprocessInputImage:](self, "preprocessInputImage:", [v6 image]);
+  LODWORD(v9) = -[ABPKAlgorithmRA preprocessInputImage:](self, "preprocessInputImage:", [dataCopy image]);
   [(ABPKAlgorithmRA *)self _endImagePreprocessingSignpost];
   if (v9)
   {
@@ -182,63 +182,63 @@ LABEL_24:
       _os_log_impl(&dword_23EDDC000, v10, OS_LOG_TYPE_DEFAULT, " Could not preprocess input data ", buf, 2u);
     }
 
-    [v7 setAlgorithmReturnCode:4294960636];
+    [outputCopy setAlgorithmReturnCode:4294960636];
   }
 
   else
   {
-    v11 = [v7 algState];
-    [v11 setImage_preprocessing:1];
+    algState = [outputCopy algState];
+    [algState setImage_preprocessing:1];
 
-    [v7 setMlImage:self->_mlImage];
+    [outputCopy setMlImage:self->_mlImage];
     if (self->_exitPoint)
     {
       [(ABPKAlgorithmRA *)self _startABPKAlgoInitSignpost];
-      -[ABPKAlgInput setImage:](self->_algorithmInput, "setImage:", [v7 mlImage]);
+      -[ABPKAlgInput setImage:](self->_algorithmInput, "setImage:", [outputCopy mlImage]);
       [(ABPKCameraParams *)self->_abpkCameraParams inputRes];
       [(ABPKAlgInput *)self->_algorithmInput setImageResolution:?];
       [(ABPKCameraParams *)self->_abpkCameraParams intrinsics];
       [(ABPKAlgInput *)self->_algorithmInput setImageCameraIntrinsics:?];
-      -[ABPKAlgInput setDepthMap:](self->_algorithmInput, "setDepthMap:", [v6 depthMap]);
+      -[ABPKAlgInput setDepthMap:](self->_algorithmInput, "setDepthMap:", [dataCopy depthMap]);
       [(ABPKAlgInput *)self->_algorithmInput setImagePreProcessingParams:self->_imagePreProcessingParams];
-      [v6 timestamp];
+      [dataCopy timestamp];
       [(ABPKAlgInput *)self->_algorithmInput setTimestamp:?];
-      -[ABPKAlgInput setDepthConfidenceBuffer:](self->_algorithmInput, "setDepthConfidenceBuffer:", [v6 depthConfidenceBuffer]);
-      -[ABPKAlgInput setIsDepthDataValid:](self->_algorithmInput, "setIsDepthDataValid:", [v6 isDepthDataValid]);
-      v12 = [v7 algState];
-      [(ABPKAlgOutput *)self->_algorithmOutput setAlgState:v12];
+      -[ABPKAlgInput setDepthConfidenceBuffer:](self->_algorithmInput, "setDepthConfidenceBuffer:", [dataCopy depthConfidenceBuffer]);
+      -[ABPKAlgInput setIsDepthDataValid:](self->_algorithmInput, "setIsDepthDataValid:", [dataCopy isDepthDataValid]);
+      algState2 = [outputCopy algState];
+      [(ABPKAlgOutput *)self->_algorithmOutput setAlgState:algState2];
 
       [(ABPKAlgorithmRA *)self _endABPKAlgoInitSignpost];
       v13 = [(ABPKAlgorithm *)self->_abpkAlgorithm runWithInput:self->_algorithmInput andGetOutput:self->_algorithmOutput];
       algorithmOutput = self->_algorithmOutput;
-      [v6 vioPose];
-      -[ABPKAlgorithmRA computeRootTransforms:withVioPose:withVioPoseValidity:](self, "computeRootTransforms:withVioPose:withVioPoseValidity:", algorithmOutput, [v6 isVioPoseValid], v15, v16, v17, v18);
-      v19 = [(ABPKAlgOutput *)self->_algorithmOutput rawDetection2dSkeletonABPK];
-      [v7 setRawDetection2dSkeletonABPK:v19];
+      [dataCopy vioPose];
+      -[ABPKAlgorithmRA computeRootTransforms:withVioPose:withVioPoseValidity:](self, "computeRootTransforms:withVioPose:withVioPoseValidity:", algorithmOutput, [dataCopy isVioPoseValid], v15, v16, v17, v18);
+      rawDetection2dSkeletonABPK = [(ABPKAlgOutput *)self->_algorithmOutput rawDetection2dSkeletonABPK];
+      [outputCopy setRawDetection2dSkeletonABPK:rawDetection2dSkeletonABPK];
 
-      v20 = [(ABPKAlgOutput *)self->_algorithmOutput rawDetection2dSkeletonABPKArray];
-      [v7 setRawDetection2dSkeletonABPKArray:v20];
+      rawDetection2dSkeletonABPKArray = [(ABPKAlgOutput *)self->_algorithmOutput rawDetection2dSkeletonABPKArray];
+      [outputCopy setRawDetection2dSkeletonABPKArray:rawDetection2dSkeletonABPKArray];
 
-      v21 = [(ABPKAlgOutput *)self->_algorithmOutput detection2dSkeletonABPK];
-      [v7 setDetection2dSkeletonABPK:v21];
+      detection2dSkeletonABPK = [(ABPKAlgOutput *)self->_algorithmOutput detection2dSkeletonABPK];
+      [outputCopy setDetection2dSkeletonABPK:detection2dSkeletonABPK];
 
-      v22 = [(ABPKAlgOutput *)self->_algorithmOutput liftingSkeletonABPK];
-      [v7 setLiftingSkeletonABPK:v22];
+      liftingSkeletonABPK = [(ABPKAlgOutput *)self->_algorithmOutput liftingSkeletonABPK];
+      [outputCopy setLiftingSkeletonABPK:liftingSkeletonABPK];
 
-      v23 = [(ABPKAlgOutput *)self->_algorithmOutput registered2dSkeletonABPK];
-      [v7 setRegistered2dSkeletonABPK:v23];
+      registered2dSkeletonABPK = [(ABPKAlgOutput *)self->_algorithmOutput registered2dSkeletonABPK];
+      [outputCopy setRegistered2dSkeletonABPK:registered2dSkeletonABPK];
 
-      v24 = [(ABPKAlgOutput *)self->_algorithmOutput retargetedSkeletonABPK];
-      [v7 setRetargetedSkeletonABPK:v24];
+      retargetedSkeletonABPK = [(ABPKAlgOutput *)self->_algorithmOutput retargetedSkeletonABPK];
+      [outputCopy setRetargetedSkeletonABPK:retargetedSkeletonABPK];
 
-      v25 = [(ABPKAlgOutput *)self->_algorithmOutput algState];
-      [v7 setAlgState:v25];
+      algState3 = [(ABPKAlgOutput *)self->_algorithmOutput algState];
+      [outputCopy setAlgState:algState3];
 
-      [v7 setAlgorithmReturnCode:v13];
+      [outputCopy setAlgorithmReturnCode:v13];
       [(ABPKAlgorithmRA *)self _endExecuteAlgorithmSignpost];
       +[ABPKTime nowInSeconds];
       *&v26 = v26;
-      [v7 setTimeABPKAlgorithmFinished:v26];
+      [outputCopy setTimeABPKAlgorithmFinished:v26];
     }
 
     else
@@ -252,27 +252,27 @@ LABEL_24:
 
       +[ABPKTime nowInSeconds];
       *&v28 = v28;
-      [v7 setTimeABPKAlgorithmFinished:v28];
+      [outputCopy setTimeABPKAlgorithmFinished:v28];
     }
   }
 }
 
-- (void)computeRootTransforms:(uint64_t)a1 withVioPose:(uint64_t)a2 withVioPoseValidity:(void *)a3
+- (void)computeRootTransforms:(uint64_t)transforms withVioPose:(uint64_t)pose withVioPoseValidity:(void *)validity
 {
-  v34 = a3;
-  [*(a1 + 40) extrinsics];
+  validityCopy = validity;
+  [*(transforms + 40) extrinsics];
   v30 = v5;
   v32 = v4;
   v26 = v7;
   v28 = v6;
-  v8 = [v34 liftingSkeletonABPK];
-  [v8 cameraRootTransform];
+  liftingSkeletonABPK = [validityCopy liftingSkeletonABPK];
+  [liftingSkeletonABPK cameraRootTransform];
   v22 = v10;
   v23 = v9;
   v24 = v12;
   v25 = v11;
-  v13 = [v34 liftingSkeletonABPK];
-  v14 = v13;
+  liftingSkeletonABPK2 = [validityCopy liftingSkeletonABPK];
+  v14 = liftingSkeletonABPK2;
   v15 = 0;
   v35[0] = v23;
   v35[1] = v22;
@@ -285,19 +285,19 @@ LABEL_24:
   }
 
   while (v15 != 4);
-  [v13 setDeviceRootTransform:{*&v36, *&v37, *&v38, *&v39}];
+  [liftingSkeletonABPK2 setDeviceRootTransform:{*&v36, *&v37, *&v38, *&v39}];
 
-  v16 = [v34 liftingSkeletonABPK];
-  [v16 deviceRootTransform];
+  liftingSkeletonABPK3 = [validityCopy liftingSkeletonABPK];
+  [liftingSkeletonABPK3 deviceRootTransform];
   v31 = v18;
   v33 = v17;
   v27 = v20;
   v29 = v19;
-  v21 = [v34 retargetedSkeletonABPK];
-  [v21 setDeviceRootTransform:{v33, v31, v29, v27}];
+  retargetedSkeletonABPK = [validityCopy retargetedSkeletonABPK];
+  [retargetedSkeletonABPK setDeviceRootTransform:{v33, v31, v29, v27}];
 }
 
-- (int)preprocessInputImage:(__CVBuffer *)a3
+- (int)preprocessInputImage:(__CVBuffer *)image
 {
   v5 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -306,15 +306,15 @@ LABEL_24:
     _os_log_impl(&dword_23EDDC000, v5, OS_LOG_TYPE_DEBUG, " Pre-processing image ", v7, 2u);
   }
 
-  return [(ABPKImagePreProcessing *)self->_imagePreprocessor preprocessData:a3 outputBuffer:self->_mlImage];
+  return [(ABPKImagePreProcessing *)self->_imagePreprocessor preprocessData:image outputBuffer:self->_mlImage];
 }
 
-- (void)saveInputData:(id)a3 andOutputData:(id)a4 ToDir:(id)a5 withFileNamePrefix:(id)a6
+- (void)saveInputData:(id)data andOutputData:(id)outputData ToDir:(id)dir withFileNamePrefix:(id)prefix
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  outputDataCopy = outputData;
+  dirCopy = dir;
+  prefixCopy = prefix;
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -322,7 +322,7 @@ LABEL_24:
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " \t\t Recording input data ", buf, 2u);
   }
 
-  [v9 saveDataToDir:v11 withFileNamePrefix:v12];
+  [dataCopy saveDataToDir:dirCopy withFileNamePrefix:prefixCopy];
   v14 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -330,7 +330,7 @@ LABEL_24:
     _os_log_impl(&dword_23EDDC000, v14, OS_LOG_TYPE_DEBUG, " \t\t Recording output data ", v15, 2u);
   }
 
-  [v10 saveDataToDir:v11 withFileNamePrefix:v12];
+  [outputDataCopy saveDataToDir:dirCopy withFileNamePrefix:prefixCopy];
 }
 
 @end

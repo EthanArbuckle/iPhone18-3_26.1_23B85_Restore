@@ -1,7 +1,7 @@
 @interface BWUBNRFProcessorCompletionStatus
-- (BOOL)waitForCompletionWithDescriptionOut:(uint64_t)a1;
+- (BOOL)waitForCompletionWithDescriptionOut:(uint64_t)out;
 - (void)dealloc;
-- (void)initWithCompletionStatus:(void *)a1;
+- (void)initWithCompletionStatus:(void *)status;
 @end
 
 @implementation BWUBNRFProcessorCompletionStatus
@@ -13,14 +13,14 @@
   [(BWUBNRFProcessorCompletionStatus *)&v3 dealloc];
 }
 
-- (void)initWithCompletionStatus:(void *)a1
+- (void)initWithCompletionStatus:(void *)status
 {
-  if (!a1)
+  if (!status)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = status;
   v5.super_class = BWUBNRFProcessorCompletionStatus;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)
@@ -31,29 +31,29 @@
   return v3;
 }
 
-- (BOOL)waitForCompletionWithDescriptionOut:(uint64_t)a1
+- (BOOL)waitForCompletionWithDescriptionOut:(uint64_t)out
 {
-  if (!a1)
+  if (!out)
   {
     return 0;
   }
 
-  [*(a1 + 8) waitForCompletion];
-  v4 = [objc_msgSend(*(a1 + 8) "metalExecutionStatus")];
+  [*(out + 8) waitForCompletion];
+  v4 = [objc_msgSend(*(out + 8) "metalExecutionStatus")];
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v7 = BWMTLCommandBufferStatusToShortString([objc_msgSend(*(a1 + 8) "metalExecutionStatus")]);
-  v8 = [objc_msgSend(*(a1 + 8) "metalExecutionStatus")];
+  v7 = BWMTLCommandBufferStatusToShortString([objc_msgSend(*(out + 8) "metalExecutionStatus")]);
+  v8 = [objc_msgSend(*(out + 8) "metalExecutionStatus")];
   v9 = v4 == 4;
   v10 = v4 == 4;
   if (v9)
   {
-    v11 = [v5 stringWithFormat:@"<%@ %p>: Status: %@. Completed command buffers:%d", v6, a1, v7, v8, v13];
+    v11 = [v5 stringWithFormat:@"<%@ %p>: Status: %@. Completed command buffers:%d", v6, out, v7, v8, v13];
   }
 
   else
   {
-    v11 = [v5 stringWithFormat:@"<%@ %p>: Status: %@. Completed command buffers:%d. Failed command buffers: %@", v6, a1, v7, v8, objc_msgSend(objc_msgSend(objc_msgSend(*(a1 + 8), "metalExecutionStatus"), "failedCommandBuffers"), "componentsJoinedByString:", @", ")];
+    v11 = [v5 stringWithFormat:@"<%@ %p>: Status: %@. Completed command buffers:%d. Failed command buffers: %@", v6, out, v7, v8, objc_msgSend(objc_msgSend(objc_msgSend(*(out + 8), "metalExecutionStatus"), "failedCommandBuffers"), "componentsJoinedByString:", @", ")];
   }
 
   if (a2)

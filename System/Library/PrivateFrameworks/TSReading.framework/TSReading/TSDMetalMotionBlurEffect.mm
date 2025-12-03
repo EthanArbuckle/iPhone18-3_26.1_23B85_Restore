@@ -1,22 +1,22 @@
 @interface TSDMetalMotionBlurEffect
-- (CATransform3D)adjustTransformForMotionBlurBuffer:(SEL)a3;
+- (CATransform3D)adjustTransformForMotionBlurBuffer:(SEL)buffer;
 - (CGSize)p_squashedVelocityFramebufferSize;
-- (CGSize)p_updateMaxVelocityInShadersWithScale:(double)a3 isColorFBO:(BOOL)a4;
+- (CGSize)p_updateMaxVelocityInShadersWithScale:(double)scale isColorFBO:(BOOL)o;
 - (CGSize)p_velocityFramebufferSize;
 - (CGSize)p_velocityFramebufferTextureScale;
 - (CGSize)velocityScale;
-- (CGSize)velocityScaleForColorFBO:(BOOL)a3;
-- (TSDMetalMotionBlurEffect)initWithFramebufferSize:(CGSize)a3 slideSize:(CGSize)a4 randomGenerator:(id)a5 metalContext:(id)a6;
-- (id)bindColorAndVelocityWithMetalContext:(id)a3 shouldFillBackground:(BOOL)a4;
+- (CGSize)velocityScaleForColorFBO:(BOOL)o;
+- (TSDMetalMotionBlurEffect)initWithFramebufferSize:(CGSize)size slideSize:(CGSize)slideSize randomGenerator:(id)generator metalContext:(id)context;
+- (id)bindColorAndVelocityWithMetalContext:(id)context shouldFillBackground:(BOOL)background;
 - (id)colorAndVelocityBlendingShader;
 - (id)colorAndVelocityShader;
-- (void)drawResultWithWorkingRenderEncoder:(id)a3 destinationRenderEncoder:(id)a4 opacity:(double)a5;
+- (void)drawResultWithWorkingRenderEncoder:(id)encoder destinationRenderEncoder:(id)renderEncoder opacity:(double)opacity;
 - (void)p_blitIntoVelocityTexture;
-- (void)p_debugDrawModeColorBufferWithEncoder:(id)a3;
-- (void)p_debugDrawModeVelocityBufferDilatedWithEncoder:(id)a3;
-- (void)p_debugDrawModeVelocityBufferWithEncoder:(id)a3;
+- (void)p_debugDrawModeColorBufferWithEncoder:(id)encoder;
+- (void)p_debugDrawModeVelocityBufferDilatedWithEncoder:(id)encoder;
+- (void)p_debugDrawModeVelocityBufferWithEncoder:(id)encoder;
 - (void)p_dilateVelocityTexture;
-- (void)p_drawWithEncoder:(id)a3 opacity:(double)a4;
+- (void)p_drawWithEncoder:(id)encoder opacity:(double)opacity;
 - (void)p_setupBuffers;
 - (void)p_setupRenderPasses;
 - (void)p_setupShaders;
@@ -26,13 +26,13 @@
 
 @implementation TSDMetalMotionBlurEffect
 
-- (TSDMetalMotionBlurEffect)initWithFramebufferSize:(CGSize)a3 slideSize:(CGSize)a4 randomGenerator:(id)a5 metalContext:(id)a6
+- (TSDMetalMotionBlurEffect)initWithFramebufferSize:(CGSize)size slideSize:(CGSize)slideSize randomGenerator:(id)generator metalContext:(id)context
 {
-  width = a4.width;
-  height = a3.height;
-  v10 = a3.width;
-  v12 = a5;
-  v13 = a6;
+  width = slideSize.width;
+  height = size.height;
+  v10 = size.width;
+  generatorCopy = generator;
+  contextCopy = context;
   v33.receiver = self;
   v33.super_class = TSDMetalMotionBlurEffect;
   v14 = [(TSDMetalMotionBlurEffect *)&v33 init];
@@ -45,8 +45,8 @@
     v14->_slideSize.height = v17;
     v14->_isSingleObject = 1;
     v14->_motionBlurStrength = 1.0;
-    v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v19 = [v18 objectForKey:@"MotionBlurStrength"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v19 = [standardUserDefaults objectForKey:@"MotionBlurStrength"];
 
     if (v19)
     {
@@ -68,8 +68,8 @@
     }
 
     v14->_framebufferScale = 1.0;
-    v21 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v22 = [v21 objectForKey:@"TSDGLMotionBlurEffectFramebufferScale"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v22 = [standardUserDefaults2 objectForKey:@"TSDGLMotionBlurEffectFramebufferScale"];
 
     if (v22)
     {
@@ -88,30 +88,30 @@
       TSULogErrorInFunction();
     }
 
-    if (!v12)
+    if (!generatorCopy)
     {
-      v24 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalMotionBlurEffect initWithFramebufferSize:slideSize:randomGenerator:metalContext:]"];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMetalMotionBlurEffect.m"];
-      [v24 handleFailureInFunction:v25 file:v26 lineNumber:152 description:{@"invalid nil value for '%s'", "randomGenerator"}];
+      [currentHandler handleFailureInFunction:v25 file:v26 lineNumber:152 description:{@"invalid nil value for '%s'", "randomGenerator"}];
     }
 
-    objc_storeStrong(&v14->_randomGenerator, a5);
-    if (!v13)
+    objc_storeStrong(&v14->_randomGenerator, generator);
+    if (!contextCopy)
     {
-      v27 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalMotionBlurEffect initWithFramebufferSize:slideSize:randomGenerator:metalContext:]"];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMetalMotionBlurEffect.m"];
-      [v27 handleFailureInFunction:v28 file:v29 lineNumber:155 description:{@"invalid nil value for '%s'", "metalContext"}];
+      [currentHandler2 handleFailureInFunction:v28 file:v29 lineNumber:155 description:{@"invalid nil value for '%s'", "metalContext"}];
     }
 
-    objc_storeStrong(&v14->_metalContext, a6);
+    objc_storeStrong(&v14->_metalContext, context);
   }
 
   return v14;
 }
 
-- (CGSize)velocityScaleForColorFBO:(BOOL)a3
+- (CGSize)velocityScaleForColorFBO:(BOOL)o
 {
   v3 = 0.2;
   v4 = 0.2;
@@ -130,10 +130,10 @@
   return result;
 }
 
-- (CGSize)p_updateMaxVelocityInShadersWithScale:(double)a3 isColorFBO:(BOOL)a4
+- (CGSize)p_updateMaxVelocityInShadersWithScale:(double)scale isColorFBO:(BOOL)o
 {
-  [(TSDMetalMotionBlurEffect *)self velocityScaleForColorFBO:a4];
-  v8 = TSDMultiplySizeScalar(v6, v7, a3);
+  [(TSDMetalMotionBlurEffect *)self velocityScaleForColorFBO:o];
+  v8 = TSDMultiplySizeScalar(v6, v7, scale);
   v10 = v9;
   [(TSDMetalMotionBlurEffect *)self motionBlurStrength];
   v12 = TSDMultiplySizeScalar(v8, v10, v11);
@@ -145,7 +145,7 @@
   return result;
 }
 
-- (CATransform3D)adjustTransformForMotionBlurBuffer:(SEL)a3
+- (CATransform3D)adjustTransformForMotionBlurBuffer:(SEL)buffer
 {
   memset(&v15, 0, sizeof(v15));
   CATransform3DMakeTranslation(&v15, (self->_framebufferSize.width - self->_slideSize.width) * 0.5, (self->_framebufferSize.height - self->_slideSize.height) * 0.5, 0.0);
@@ -169,29 +169,29 @@
   return CATransform3DConcat(retstr, &v13, &a);
 }
 
-- (id)bindColorAndVelocityWithMetalContext:(id)a3 shouldFillBackground:(BOOL)a4
+- (id)bindColorAndVelocityWithMetalContext:(id)context shouldFillBackground:(BOOL)background
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_metalContext, a3);
-  v8 = [(TSDMetalContext *)self->_metalContext commandQueue];
-  v9 = [v8 commandBuffer];
+  backgroundCopy = background;
+  contextCopy = context;
+  objc_storeStrong(&self->_metalContext, context);
+  commandQueue = [(TSDMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
   currentCommandBuffer = self->_currentCommandBuffer;
-  self->_currentCommandBuffer = v9;
+  self->_currentCommandBuffer = commandBuffer;
 
   [(TSDMetalMotionBlurEffect *)self setupMotionBlurEffectIfNecessary];
-  if (v4)
+  if (backgroundCopy)
   {
-    v11 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v12 = [colorAttachments objectAtIndexedSubscript:0];
     [v12 setClearColor:{1.0, 0.0, 0.0, 1.0}];
   }
 
   v13 = [(MTLCommandBuffer *)self->_currentCommandBuffer renderCommandEncoderWithDescriptor:self->_colorAndVelocityPassDescriptor];
-  if (v4)
+  if (backgroundCopy)
   {
-    v14 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v15 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v15 setClearColor:{0.0, 0.0, 0.0, 0.0}];
   }
 
@@ -222,35 +222,35 @@
   return colorAndVelocityBlendingShader;
 }
 
-- (void)drawResultWithWorkingRenderEncoder:(id)a3 destinationRenderEncoder:(id)a4 opacity:(double)a5
+- (void)drawResultWithWorkingRenderEncoder:(id)encoder destinationRenderEncoder:(id)renderEncoder opacity:(double)opacity
 {
-  v21 = a3;
-  v8 = a4;
+  encoderCopy = encoder;
+  renderEncoderCopy = renderEncoder;
   if (!self->_randomGenerator)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalMotionBlurEffect drawResultWithWorkingRenderEncoder:destinationRenderEncoder:opacity:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMetalMotionBlurEffect.m"];
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:251 description:{@"invalid nil value for '%s'", "_randomGenerator"}];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:251 description:{@"invalid nil value for '%s'", "_randomGenerator"}];
   }
 
-  v12 = v21;
-  if (!v21)
+  v12 = encoderCopy;
+  if (!encoderCopy)
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalMotionBlurEffect drawResultWithWorkingRenderEncoder:destinationRenderEncoder:opacity:]"];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMetalMotionBlurEffect.m"];
-    [v13 handleFailureInFunction:v14 file:v15 lineNumber:252 description:{@"invalid nil value for '%s'", "workingRenderEncoder"}];
+    [currentHandler2 handleFailureInFunction:v14 file:v15 lineNumber:252 description:{@"invalid nil value for '%s'", "workingRenderEncoder"}];
 
     v12 = 0;
   }
 
   [v12 endEncoding];
-  v16 = [(MTLTexture *)self->_combinedTextureColor1 width];
-  if (v16 == [(MTLTexture *)self->_colorTexture1 width])
+  width = [(MTLTexture *)self->_combinedTextureColor1 width];
+  if (width == [(MTLTexture *)self->_colorTexture1 width])
   {
-    v17 = [(MTLTexture *)self->_combinedTextureColor1 height];
-    v18 = v17 == [(MTLTexture *)self->_colorTexture1 height];
+    height = [(MTLTexture *)self->_combinedTextureColor1 height];
+    v18 = height == [(MTLTexture *)self->_colorTexture1 height];
   }
 
   else
@@ -268,14 +268,14 @@
     [(TSDMetalMotionBlurEffect *)self p_blitIntoColorFramebuffer];
   }
 
-  v19 = [(TSDMetalMotionBlurEffect *)self debugDrawMode];
-  if (v19 <= 1)
+  debugDrawMode = [(TSDMetalMotionBlurEffect *)self debugDrawMode];
+  if (debugDrawMode <= 1)
   {
-    if (v19)
+    if (debugDrawMode)
     {
-      if (v19 == 1)
+      if (debugDrawMode == 1)
       {
-        [(TSDMetalMotionBlurEffect *)self p_debugDrawModeColorBufferWithEncoder:v8];
+        [(TSDMetalMotionBlurEffect *)self p_debugDrawModeColorBufferWithEncoder:renderEncoderCopy];
       }
 
       goto LABEL_24;
@@ -283,18 +283,18 @@
 
     [(TSDMetalMotionBlurEffect *)self p_dilateVelocityTexture];
 LABEL_23:
-    [(TSDMetalMotionBlurEffect *)self p_drawWithEncoder:v8 opacity:a5];
+    [(TSDMetalMotionBlurEffect *)self p_drawWithEncoder:renderEncoderCopy opacity:opacity];
     goto LABEL_24;
   }
 
-  switch(v19)
+  switch(debugDrawMode)
   {
     case 2:
-      [(TSDMetalMotionBlurEffect *)self p_debugDrawModeVelocityBufferWithEncoder:v8];
+      [(TSDMetalMotionBlurEffect *)self p_debugDrawModeVelocityBufferWithEncoder:renderEncoderCopy];
       break;
     case 3:
       [(TSDMetalMotionBlurEffect *)self p_dilateVelocityTexture];
-      [(TSDMetalMotionBlurEffect *)self p_debugDrawModeVelocityBufferDilatedWithEncoder:v8];
+      [(TSDMetalMotionBlurEffect *)self p_debugDrawModeVelocityBufferDilatedWithEncoder:renderEncoderCopy];
       break;
     case 4:
       goto LABEL_23;
@@ -336,13 +336,13 @@ LABEL_24:
   return result;
 }
 
-- (void)p_debugDrawModeColorBufferWithEncoder:(id)a3
+- (void)p_debugDrawModeColorBufferWithEncoder:(id)encoder
 {
   v7 = 0uLL;
   framebufferSize = self->_framebufferSize;
   v9 = xmmword_26CA66250;
-  v4 = a3;
-  [v4 setViewport:&v7];
+  encoderCopy = encoder;
+  [encoderCopy setViewport:&v7];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -357,12 +357,12 @@ LABEL_24:
   v6[2] = vcvt_hight_f32_f64(vcvt_f32_f64(v11), v12);
   v6[3] = vcvt_hight_f32_f64(vcvt_f32_f64(v13), v14);
   v5 = 1065353216;
-  [(TSDMetalShader *)self->_defaultTextureShader setPipelineStateWithEncoder:v4 vertexBytes:v6 fragmentBytes:&v5];
-  [v4 setFragmentTexture:self->_combinedTextureColor1 atIndex:0];
-  [(TSDMTLDataBuffer *)self->_FBODataBufferFlipped drawWithEncoder:v4 atIndex:[(TSDMetalShader *)self->_defaultTextureShader bufferIndex]];
+  [(TSDMetalShader *)self->_defaultTextureShader setPipelineStateWithEncoder:encoderCopy vertexBytes:v6 fragmentBytes:&v5];
+  [encoderCopy setFragmentTexture:self->_combinedTextureColor1 atIndex:0];
+  [(TSDMTLDataBuffer *)self->_FBODataBufferFlipped drawWithEncoder:encoderCopy atIndex:[(TSDMetalShader *)self->_defaultTextureShader bufferIndex]];
 }
 
-- (void)p_debugDrawModeVelocityBufferWithEncoder:(id)a3
+- (void)p_debugDrawModeVelocityBufferWithEncoder:(id)encoder
 {
   v14 = 0u;
   v15 = 0u;
@@ -374,18 +374,18 @@ LABEL_24:
   v9 = 0u;
   width = self->_framebufferSize.width;
   height = self->_framebufferSize.height;
-  v6 = a3;
+  encoderCopy = encoder;
   TSDTransform3DMakeOrtho(&v8, 0.0, width, 0.0, height, -1.0, 1.0);
   v7[0] = vcvt_hight_f32_f64(vcvt_f32_f64(v8), v9);
   v7[1] = vcvt_hight_f32_f64(vcvt_f32_f64(v10), v11);
   v7[2] = vcvt_hight_f32_f64(vcvt_f32_f64(v12), v13);
   v7[3] = vcvt_hight_f32_f64(vcvt_f32_f64(v14), v15);
-  [(TSDMetalShader *)self->_velocityVisualizerShader setPipelineStateWithEncoder:v6 vertexBytes:v7];
-  [v6 setFragmentTexture:self->_combinedTextureVelocity atIndex:0];
-  [(TSDMTLDataBuffer *)self->_FBODataBufferFlipped drawWithEncoder:v6 atIndex:[(TSDMetalShader *)self->_velocityVisualizerShader bufferIndex]];
+  [(TSDMetalShader *)self->_velocityVisualizerShader setPipelineStateWithEncoder:encoderCopy vertexBytes:v7];
+  [encoderCopy setFragmentTexture:self->_combinedTextureVelocity atIndex:0];
+  [(TSDMTLDataBuffer *)self->_FBODataBufferFlipped drawWithEncoder:encoderCopy atIndex:[(TSDMetalShader *)self->_velocityVisualizerShader bufferIndex]];
 }
 
-- (void)p_debugDrawModeVelocityBufferDilatedWithEncoder:(id)a3
+- (void)p_debugDrawModeVelocityBufferDilatedWithEncoder:(id)encoder
 {
   v14 = 0u;
   v15 = 0u;
@@ -397,33 +397,33 @@ LABEL_24:
   v9 = 0u;
   width = self->_framebufferSize.width;
   height = self->_framebufferSize.height;
-  v6 = a3;
+  encoderCopy = encoder;
   TSDTransform3DMakeOrtho(&v8, 0.0, width, 0.0, height, -1.0, 1.0);
   v7[0] = vcvt_hight_f32_f64(vcvt_f32_f64(v8), v9);
   v7[1] = vcvt_hight_f32_f64(vcvt_f32_f64(v10), v11);
   v7[2] = vcvt_hight_f32_f64(vcvt_f32_f64(v12), v13);
   v7[3] = vcvt_hight_f32_f64(vcvt_f32_f64(v14), v15);
-  [(TSDMetalShader *)self->_velocityVisualizerShader setPipelineStateWithEncoder:v6 vertexBytes:v7];
-  [v6 setFragmentTexture:self->_velocityTexture1 atIndex:0];
-  [(TSDMTLDataBuffer *)self->_FBODataBuffer drawWithEncoder:v6 atIndex:[(TSDMetalShader *)self->_velocityVisualizerShader bufferIndex]];
+  [(TSDMetalShader *)self->_velocityVisualizerShader setPipelineStateWithEncoder:encoderCopy vertexBytes:v7];
+  [encoderCopy setFragmentTexture:self->_velocityTexture1 atIndex:0];
+  [(TSDMTLDataBuffer *)self->_FBODataBuffer drawWithEncoder:encoderCopy atIndex:[(TSDMetalShader *)self->_velocityVisualizerShader bufferIndex]];
 }
 
 - (void)p_blitIntoVelocityTexture
 {
   if (!self->_velocityTextureSquashed)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalMotionBlurEffect p_blitIntoVelocityTexture]"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMetalMotionBlurEffect.m"];
-    [v3 handleFailureInFunction:v4 file:v5 lineNumber:382 description:{@"invalid nil value for '%s'", "_velocityTextureSquashed"}];
+    [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:382 description:{@"invalid nil value for '%s'", "_velocityTextureSquashed"}];
   }
 
   if (!self->_velocitySquashedFBODataBuffer)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMetalMotionBlurEffect p_blitIntoVelocityTexture]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMetalMotionBlurEffect.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:383 description:{@"invalid nil value for '%s'", "_velocitySquashedFBODataBuffer"}];
+    [currentHandler2 handleFailureInFunction:v7 file:v8 lineNumber:383 description:{@"invalid nil value for '%s'", "_velocitySquashedFBODataBuffer"}];
   }
 
   [(TSDMetalMotionBlurEffect *)self p_squashedVelocityFramebufferSize];
@@ -539,10 +539,10 @@ LABEL_24:
   v19 = vcvt_f32_f64(vdivq_f64(_Q1, v6));
   v20 = 65539;
   BYTE3(v20) = self->_isSingleObject;
-  v12 = [(TSDMetalShader *)self->_velocityNeighborMaxHorizontalShader bufferIndex];
+  bufferIndex = [(TSDMetalShader *)self->_velocityNeighborMaxHorizontalShader bufferIndex];
   [(TSDMetalShader *)self->_velocityNeighborMaxHorizontalShader setPipelineStateWithEncoder:v5 vertexBytes:&v21 fragmentBytes:v18];
   [v5 setFragmentTexture:self->_velocityTexture1 atIndex:0];
-  [(TSDMTLDataBuffer *)self->_velocityFBODataBuffer drawWithEncoder:v5 atIndex:v12];
+  [(TSDMTLDataBuffer *)self->_velocityFBODataBuffer drawWithEncoder:v5 atIndex:bufferIndex];
   [v5 endEncoding];
   v13 = [(MTLCommandBuffer *)self->_currentCommandBuffer renderCommandEncoderWithDescriptor:self->_neighborVerticalPassDescriptor];
 
@@ -555,21 +555,21 @@ LABEL_24:
   BYTE2(v20) = 0;
   [(TSDMetalShader *)self->_velocityNeighborMaxVerticalShader setPipelineStateWithEncoder:v13 vertexBytes:&v21 fragmentBytes:v18];
   [v13 setFragmentTexture:self->_velocityTexture2 atIndex:0];
-  [(TSDMTLDataBuffer *)self->_velocityFBODataBuffer drawWithEncoder:v13 atIndex:v12];
+  [(TSDMTLDataBuffer *)self->_velocityFBODataBuffer drawWithEncoder:v13 atIndex:bufferIndex];
   [v13 endEncoding];
 }
 
-- (void)p_drawWithEncoder:(id)a3 opacity:(double)a4
+- (void)p_drawWithEncoder:(id)encoder opacity:(double)opacity
 {
-  v6 = a3;
-  v7 = [(MTLTexture *)self->_combinedTextureColor1 width];
+  encoderCopy = encoder;
+  width = [(MTLTexture *)self->_combinedTextureColor1 width];
   p_colorTexture1 = &self->_colorTexture1;
-  if (v7 == [(MTLTexture *)self->_colorTexture1 width])
+  if (width == [(MTLTexture *)self->_colorTexture1 width])
   {
-    v9 = [(MTLTexture *)self->_combinedTextureColor1 height];
-    v10 = [(MTLTexture *)*p_colorTexture1 height];
-    v11 = v9 == v10;
-    if (v9 == v10)
+    height = [(MTLTexture *)self->_combinedTextureColor1 height];
+    height2 = [(MTLTexture *)*p_colorTexture1 height];
+    v11 = height == height2;
+    if (height == height2)
     {
       p_colorTexture1 = &self->_combinedTextureColor1;
     }
@@ -630,19 +630,19 @@ LABEL_24:
   BYTE6(v51) = self->_isSingleObject;
   v27 = [(MTLCommandBuffer *)self->_currentCommandBuffer renderCommandEncoderWithDescriptor:self->_combined1PassDescriptor];
   [(TSDMetalShader *)self->_velocityCollectionShader setPipelineStateWithEncoder:v27 vertexBytes:&v52 fragmentBytes:&v48];
-  v28 = [(MTLTexture *)self->_colorTexture2 width];
-  v29 = [(MTLTexture *)self->_colorTexture2 height];
+  width2 = [(MTLTexture *)self->_colorTexture2 width];
+  height3 = [(MTLTexture *)self->_colorTexture2 height];
   v47.m12 = 0.0;
   v47.m11 = 0.0;
-  v47.m13 = v28;
-  v47.m14 = v29;
+  v47.m13 = width2;
+  v47.m14 = height3;
   *&v47.m21 = xmmword_26CA66250;
   [v27 setViewport:&v47];
-  v30 = [(TSDMetalShader *)self->_velocityCollectionShader bufferIndex];
+  bufferIndex = [(TSDMetalShader *)self->_velocityCollectionShader bufferIndex];
   [v27 setFragmentTexture:v12 atIndex:0];
   [v27 setFragmentTexture:self->_velocityTexture1 atIndex:1];
   [v27 setFragmentTexture:self->_combinedTextureVelocity atIndex:2];
-  [(TSDMTLDataBuffer *)self->_colorFBODataBuffer drawWithEncoder:v27 atIndex:v30];
+  [(TSDMTLDataBuffer *)self->_colorFBODataBuffer drawWithEncoder:v27 atIndex:bufferIndex];
   [v27 endEncoding];
   [(MTLCommandBuffer *)self->_currentCommandBuffer commit];
   v31 = self->_colorTexture2;
@@ -672,11 +672,11 @@ LABEL_24:
     v45.m12 = 0.0;
     *&v45.m13 = self->_slideSize;
     *&v45.m21 = xmmword_26CA66250;
-    [v6 setViewport:&v45];
+    [encoderCopy setViewport:&v45];
     [(TSDMetalMotionBlurEffect *)self p_updateMaxVelocityInShadersWithScale:1 isColorFBO:1.0];
     v33.f64[1] = v32;
     v49 = vcvt_f32_f64(v33);
-    *v33.f64 = a4;
+    *v33.f64 = opacity;
     LODWORD(v51) = LODWORD(v33.f64[0]);
     if (![(TSDMetalMotionBlurEffect *)self isSingleObject])
     {
@@ -688,11 +688,11 @@ LABEL_24:
       v50 = vcvt_f32_f64(v35);
     }
 
-    [(TSDMetalShader *)self->_velocityCollectionShader setPipelineStateWithEncoder:v6 vertexBytes:&v52 fragmentBytes:&v48];
-    [v6 setFragmentTexture:v31 atIndex:0];
-    [v6 setFragmentTexture:self->_velocityTexture1 atIndex:1];
-    [v6 setFragmentTexture:self->_combinedTextureVelocity atIndex:2];
-    [(TSDMTLDataBuffer *)self->_FBODataBuffer drawWithEncoder:v6 atIndex:v30];
+    [(TSDMetalShader *)self->_velocityCollectionShader setPipelineStateWithEncoder:encoderCopy vertexBytes:&v52 fragmentBytes:&v48];
+    [encoderCopy setFragmentTexture:v31 atIndex:0];
+    [encoderCopy setFragmentTexture:self->_velocityTexture1 atIndex:1];
+    [encoderCopy setFragmentTexture:self->_combinedTextureVelocity atIndex:2];
+    [(TSDMTLDataBuffer *)self->_FBODataBuffer drawWithEncoder:encoderCopy atIndex:bufferIndex];
   }
 }
 
@@ -709,7 +709,7 @@ LABEL_24:
 {
   if (!self->_velocityTileMaxHorizontalShader)
   {
-    v22 = [(TSDMetalContext *)self->_metalContext device];
+    device = [(TSDMetalContext *)self->_metalContext device];
     v4 = objc_alloc_init(MEMORY[0x277CD6F68]);
     [v4 setPixelFormat:-[TSDMetalContext pixelFormat](self->_metalContext, "pixelFormat")];
     [v4 setBlendingEnabled:1];
@@ -719,39 +719,39 @@ LABEL_24:
     [v4 setSourceAlphaBlendFactor:1];
     [v4 setDestinationRGBBlendFactor:5];
     [v4 setDestinationAlphaBlendFactor:5];
-    v5 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityShaderWithDevice:v22 colorAttachment:v4];
+    v5 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityShaderWithDevice:device colorAttachment:v4];
     defaultTextureShader = self->_defaultTextureShader;
     self->_defaultTextureShader = v5;
 
-    v7 = [[TSDMetalShader alloc] initDefaultVelocityCollectionShaderWithDevice:v22 colorAttachment:v4];
+    v7 = [[TSDMetalShader alloc] initDefaultVelocityCollectionShaderWithDevice:device colorAttachment:v4];
     velocityCollectionShader = self->_velocityCollectionShader;
     self->_velocityCollectionShader = v7;
 
     [v4 setBlendingEnabled:0];
-    v9 = [[TSDMetalShader alloc] initDefaultTileMaxBlurShaderWithDevice:v22 colorAttachment:v4];
+    v9 = [[TSDMetalShader alloc] initDefaultTileMaxBlurShaderWithDevice:device colorAttachment:v4];
     velocityTileMaxHorizontalShader = self->_velocityTileMaxHorizontalShader;
     self->_velocityTileMaxHorizontalShader = v9;
 
-    v11 = [[TSDMetalShader alloc] initDefaultTileMaxBlurShaderWithDevice:v22 colorAttachment:v4];
+    v11 = [[TSDMetalShader alloc] initDefaultTileMaxBlurShaderWithDevice:device colorAttachment:v4];
     velocityTileMaxVerticalShader = self->_velocityTileMaxVerticalShader;
     self->_velocityTileMaxVerticalShader = v11;
 
-    v13 = [[TSDMetalShader alloc] initDefaultNeighborMaxBlurShaderWithDevice:v22 colorAttachment:v4];
+    v13 = [[TSDMetalShader alloc] initDefaultNeighborMaxBlurShaderWithDevice:device colorAttachment:v4];
     velocityNeighborMaxHorizontalShader = self->_velocityNeighborMaxHorizontalShader;
     self->_velocityNeighborMaxHorizontalShader = v13;
 
-    v15 = [[TSDMetalShader alloc] initDefaultNeighborMaxBlurShaderWithDevice:v22 colorAttachment:v4];
+    v15 = [[TSDMetalShader alloc] initDefaultNeighborMaxBlurShaderWithDevice:device colorAttachment:v4];
     velocityNeighborMaxVerticalShader = self->_velocityNeighborMaxVerticalShader;
     self->_velocityNeighborMaxVerticalShader = v15;
 
     [v4 setBlendingEnabled:1];
     v17 = objc_alloc_init(MEMORY[0x277CD6F68]);
     [v17 setPixelFormat:-[TSDMetalContext pixelFormat](self->_metalContext, "pixelFormat")];
-    v18 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityMotionBlurShaderWithDevice:v22 colorAttachment:v4 velocityAttachment:v17 motionBlur:1];
+    v18 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityMotionBlurShaderWithDevice:device colorAttachment:v4 velocityAttachment:v17 motionBlur:1];
     colorAndVelocityShader = self->_colorAndVelocityShader;
     self->_colorAndVelocityShader = v18;
 
-    v20 = [[TSDMetalShader alloc] initDefaultBlendShaderWithDevice:v22 colorAttachment:v4 velocityAttachment:v17 motionBlur:1];
+    v20 = [[TSDMetalShader alloc] initDefaultBlendShaderWithDevice:device colorAttachment:v4 velocityAttachment:v17 motionBlur:1];
     colorAndVelocityBlendingShader = self->_colorAndVelocityBlendingShader;
     self->_colorAndVelocityBlendingShader = v20;
   }
@@ -759,22 +759,22 @@ LABEL_24:
 
 - (void)p_setupTextures
 {
-  v40 = [(TSDMetalContext *)self->_metalContext device];
-  v3 = [(TSDMetalContext *)self->_metalContext pixelFormat];
+  device = [(TSDMetalContext *)self->_metalContext device];
+  pixelFormat = [(TSDMetalContext *)self->_metalContext pixelFormat];
   if (!self->_combinedTextureColor1)
   {
-    v4 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v3 width:self->_framebufferSize.width height:self->_framebufferSize.height mipmapped:0];
+    v4 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:pixelFormat width:self->_framebufferSize.width height:self->_framebufferSize.height mipmapped:0];
     [v4 setUsage:5];
     [v4 setStorageMode:2];
-    v5 = [v40 newTextureWithDescriptor:v4];
+    v5 = [device newTextureWithDescriptor:v4];
     combinedTextureColor1 = self->_combinedTextureColor1;
     self->_combinedTextureColor1 = v5;
 
-    v7 = [v40 newTextureWithDescriptor:v4];
+    v7 = [device newTextureWithDescriptor:v4];
     combinedTextureColor2 = self->_combinedTextureColor2;
     self->_combinedTextureColor2 = v7;
 
-    v9 = [v40 newTextureWithDescriptor:v4];
+    v9 = [device newTextureWithDescriptor:v4];
     combinedTextureVelocity = self->_combinedTextureVelocity;
     self->_combinedTextureVelocity = v9;
   }
@@ -783,14 +783,14 @@ LABEL_24:
   {
     v11 = TSDMultiplySizeScalar(self->_framebufferSize.width, self->_framebufferSize.height, self->_framebufferScale);
     v12 = TSDCeilSize(v11);
-    v14 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v3 width:v12 height:v13 mipmapped:0];
+    v14 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:pixelFormat width:v12 height:v13 mipmapped:0];
     [v14 setUsage:5];
     [v14 setStorageMode:2];
-    v15 = [v40 newTextureWithDescriptor:v14];
+    v15 = [device newTextureWithDescriptor:v14];
     colorTexture1 = self->_colorTexture1;
     self->_colorTexture1 = v15;
 
-    v17 = [v40 newTextureWithDescriptor:v14];
+    v17 = [device newTextureWithDescriptor:v14];
     colorTexture2 = self->_colorTexture2;
     self->_colorTexture2 = v17;
   }
@@ -804,14 +804,14 @@ LABEL_24:
     [(TSDMetalMotionBlurEffect *)self p_squashedVelocityFramebufferSize];
     v25 = v24;
     v27 = v26;
-    v28 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v3 width:v20 height:v22 mipmapped:0];
+    v28 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:pixelFormat width:v20 height:v22 mipmapped:0];
     [v28 setUsage:5];
     [v28 setStorageMode:2];
-    v29 = [v40 newTextureWithDescriptor:v28];
+    v29 = [device newTextureWithDescriptor:v28];
     v30 = self->_velocityTexture1;
     self->_velocityTexture1 = v29;
 
-    v31 = [v40 newTextureWithDescriptor:v28];
+    v31 = [device newTextureWithDescriptor:v28];
     velocityTexture2 = self->_velocityTexture2;
     self->_velocityTexture2 = v31;
 
@@ -819,15 +819,15 @@ LABEL_24:
 
     [v33 setUsage:5];
     [v33 setStorageMode:2];
-    v34 = [v40 newTextureWithDescriptor:v33];
+    v34 = [device newTextureWithDescriptor:v33];
     velocityTextureSquashed = self->_velocityTextureSquashed;
     self->_velocityTextureSquashed = v34;
 
-    v36 = [TSDGPUDataBuffer newDataBufferWithVertexRect:0 textureRect:v40 textureFlipped:TSDRectWithSize() device:?];
+    v36 = [TSDGPUDataBuffer newDataBufferWithVertexRect:0 textureRect:device textureFlipped:TSDRectWithSize() device:?];
     velocityFBODataBuffer = self->_velocityFBODataBuffer;
     self->_velocityFBODataBuffer = v36;
 
-    v38 = [TSDGPUDataBuffer newDataBufferWithVertexRect:1 textureRect:v40 textureFlipped:TSDRectWithSize() device:?];
+    v38 = [TSDGPUDataBuffer newDataBufferWithVertexRect:1 textureRect:device textureFlipped:TSDRectWithSize() device:?];
     velocitySquashedFBODataBuffer = self->_velocitySquashedFBODataBuffer;
     self->_velocitySquashedFBODataBuffer = v38;
   }
@@ -837,18 +837,18 @@ LABEL_24:
 {
   if (!self->_FBODataBuffer)
   {
-    v10 = [(TSDMetalContext *)self->_metalContext device];
-    v4 = [TSDGPUDataBuffer newDataBufferWithVertexRect:0 textureRect:v10 textureFlipped:TSDRectWithSize() device:?];
+    device = [(TSDMetalContext *)self->_metalContext device];
+    v4 = [TSDGPUDataBuffer newDataBufferWithVertexRect:0 textureRect:device textureFlipped:TSDRectWithSize() device:?];
     FBODataBuffer = self->_FBODataBuffer;
     self->_FBODataBuffer = v4;
 
-    v6 = [TSDGPUDataBuffer newDataBufferWithVertexRect:1 textureRect:v10 textureFlipped:TSDRectWithSize() device:?];
+    v6 = [TSDGPUDataBuffer newDataBufferWithVertexRect:1 textureRect:device textureFlipped:TSDRectWithSize() device:?];
     FBODataBufferFlipped = self->_FBODataBufferFlipped;
     self->_FBODataBufferFlipped = v6;
 
     [(MTLTexture *)self->_colorTexture1 width];
     [(MTLTexture *)self->_colorTexture1 height];
-    v8 = [TSDGPUDataBuffer newDataBufferWithVertexRect:0 textureRect:v10 textureFlipped:TSDRectWithSize() device:?];
+    v8 = [TSDGPUDataBuffer newDataBufferWithVertexRect:0 textureRect:device textureFlipped:TSDRectWithSize() device:?];
     colorFBODataBuffer = self->_colorFBODataBuffer;
     self->_colorFBODataBuffer = v8;
   }
@@ -858,147 +858,147 @@ LABEL_24:
 {
   if (!self->_colorAndVelocityPassDescriptor)
   {
-    v4 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
     colorAndVelocityPassDescriptor = self->_colorAndVelocityPassDescriptor;
-    self->_colorAndVelocityPassDescriptor = v4;
+    self->_colorAndVelocityPassDescriptor = renderPassDescriptor;
 
     combinedTextureColor1 = self->_combinedTextureColor1;
-    v7 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v8 = [colorAttachments objectAtIndexedSubscript:0];
     [v8 setTexture:combinedTextureColor1];
 
-    v9 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    colorAttachments2 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v10 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v10 setLoadAction:2];
 
-    v11 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    colorAttachments3 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v12 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v12 setStoreAction:1];
 
-    v13 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    colorAttachments4 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v14 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v14 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
     combinedTextureVelocity = self->_combinedTextureVelocity;
-    v16 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v17 = [v16 objectAtIndexedSubscript:1];
+    colorAttachments5 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v17 = [colorAttachments5 objectAtIndexedSubscript:1];
     [v17 setTexture:combinedTextureVelocity];
 
-    v18 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v19 = [v18 objectAtIndexedSubscript:1];
+    colorAttachments6 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v19 = [colorAttachments6 objectAtIndexedSubscript:1];
     [v19 setLoadAction:2];
 
-    v20 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v21 = [v20 objectAtIndexedSubscript:1];
+    colorAttachments7 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v21 = [colorAttachments7 objectAtIndexedSubscript:1];
     [v21 setStoreAction:1];
 
-    v22 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
-    v23 = [v22 objectAtIndexedSubscript:1];
+    colorAttachments8 = [(MTLRenderPassDescriptor *)self->_colorAndVelocityPassDescriptor colorAttachments];
+    v23 = [colorAttachments8 objectAtIndexedSubscript:1];
     [v23 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v24 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    renderPassDescriptor2 = [MEMORY[0x277CD6F50] renderPassDescriptor];
     tileHorizontalPassDescriptor = self->_tileHorizontalPassDescriptor;
-    self->_tileHorizontalPassDescriptor = v24;
+    self->_tileHorizontalPassDescriptor = renderPassDescriptor2;
 
     velocityTextureSquashed = self->_velocityTextureSquashed;
-    v27 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
-    v28 = [v27 objectAtIndexedSubscript:0];
+    colorAttachments9 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
+    v28 = [colorAttachments9 objectAtIndexedSubscript:0];
     [v28 setTexture:velocityTextureSquashed];
 
-    v29 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    colorAttachments10 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
+    v30 = [colorAttachments10 objectAtIndexedSubscript:0];
     [v30 setLoadAction:2];
 
-    v31 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    colorAttachments11 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
+    v32 = [colorAttachments11 objectAtIndexedSubscript:0];
     [v32 setStoreAction:1];
 
-    v33 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
-    v34 = [v33 objectAtIndexedSubscript:0];
+    colorAttachments12 = [(MTLRenderPassDescriptor *)self->_tileHorizontalPassDescriptor colorAttachments];
+    v34 = [colorAttachments12 objectAtIndexedSubscript:0];
     [v34 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v35 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    renderPassDescriptor3 = [MEMORY[0x277CD6F50] renderPassDescriptor];
     tileVerticalPassDescriptor = self->_tileVerticalPassDescriptor;
-    self->_tileVerticalPassDescriptor = v35;
+    self->_tileVerticalPassDescriptor = renderPassDescriptor3;
 
     velocityTexture1 = self->_velocityTexture1;
-    v38 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
-    v39 = [v38 objectAtIndexedSubscript:0];
+    colorAttachments13 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
+    v39 = [colorAttachments13 objectAtIndexedSubscript:0];
     [v39 setTexture:velocityTexture1];
 
-    v40 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
-    v41 = [v40 objectAtIndexedSubscript:0];
+    colorAttachments14 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
+    v41 = [colorAttachments14 objectAtIndexedSubscript:0];
     [v41 setLoadAction:2];
 
-    v42 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
-    v43 = [v42 objectAtIndexedSubscript:0];
+    colorAttachments15 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
+    v43 = [colorAttachments15 objectAtIndexedSubscript:0];
     [v43 setStoreAction:1];
 
-    v44 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
-    v45 = [v44 objectAtIndexedSubscript:0];
+    colorAttachments16 = [(MTLRenderPassDescriptor *)self->_tileVerticalPassDescriptor colorAttachments];
+    v45 = [colorAttachments16 objectAtIndexedSubscript:0];
     [v45 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v46 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    renderPassDescriptor4 = [MEMORY[0x277CD6F50] renderPassDescriptor];
     neighborHorizontalPassDescriptor = self->_neighborHorizontalPassDescriptor;
-    self->_neighborHorizontalPassDescriptor = v46;
+    self->_neighborHorizontalPassDescriptor = renderPassDescriptor4;
 
     velocityTexture2 = self->_velocityTexture2;
-    v49 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
-    v50 = [v49 objectAtIndexedSubscript:0];
+    colorAttachments17 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
+    v50 = [colorAttachments17 objectAtIndexedSubscript:0];
     [v50 setTexture:velocityTexture2];
 
-    v51 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
-    v52 = [v51 objectAtIndexedSubscript:0];
+    colorAttachments18 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
+    v52 = [colorAttachments18 objectAtIndexedSubscript:0];
     [v52 setLoadAction:2];
 
-    v53 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
-    v54 = [v53 objectAtIndexedSubscript:0];
+    colorAttachments19 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
+    v54 = [colorAttachments19 objectAtIndexedSubscript:0];
     [v54 setStoreAction:1];
 
-    v55 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
-    v56 = [v55 objectAtIndexedSubscript:0];
+    colorAttachments20 = [(MTLRenderPassDescriptor *)self->_neighborHorizontalPassDescriptor colorAttachments];
+    v56 = [colorAttachments20 objectAtIndexedSubscript:0];
     [v56 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v57 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    renderPassDescriptor5 = [MEMORY[0x277CD6F50] renderPassDescriptor];
     neighborVerticalPassDescriptor = self->_neighborVerticalPassDescriptor;
-    self->_neighborVerticalPassDescriptor = v57;
+    self->_neighborVerticalPassDescriptor = renderPassDescriptor5;
 
     v59 = self->_velocityTexture1;
-    v60 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
-    v61 = [v60 objectAtIndexedSubscript:0];
+    colorAttachments21 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
+    v61 = [colorAttachments21 objectAtIndexedSubscript:0];
     [v61 setTexture:v59];
 
-    v62 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
-    v63 = [v62 objectAtIndexedSubscript:0];
+    colorAttachments22 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
+    v63 = [colorAttachments22 objectAtIndexedSubscript:0];
     [v63 setLoadAction:2];
 
-    v64 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
-    v65 = [v64 objectAtIndexedSubscript:0];
+    colorAttachments23 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
+    v65 = [colorAttachments23 objectAtIndexedSubscript:0];
     [v65 setStoreAction:1];
 
-    v66 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
-    v67 = [v66 objectAtIndexedSubscript:0];
+    colorAttachments24 = [(MTLRenderPassDescriptor *)self->_neighborVerticalPassDescriptor colorAttachments];
+    v67 = [colorAttachments24 objectAtIndexedSubscript:0];
     [v67 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-    v68 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    renderPassDescriptor6 = [MEMORY[0x277CD6F50] renderPassDescriptor];
     combined1PassDescriptor = self->_combined1PassDescriptor;
-    self->_combined1PassDescriptor = v68;
+    self->_combined1PassDescriptor = renderPassDescriptor6;
 
     colorTexture2 = self->_colorTexture2;
-    v71 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
-    v72 = [v71 objectAtIndexedSubscript:0];
+    colorAttachments25 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
+    v72 = [colorAttachments25 objectAtIndexedSubscript:0];
     [v72 setTexture:colorTexture2];
 
-    v73 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
-    v74 = [v73 objectAtIndexedSubscript:0];
+    colorAttachments26 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
+    v74 = [colorAttachments26 objectAtIndexedSubscript:0];
     [v74 setLoadAction:2];
 
-    v75 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
-    v76 = [v75 objectAtIndexedSubscript:0];
+    colorAttachments27 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
+    v76 = [colorAttachments27 objectAtIndexedSubscript:0];
     [v76 setStoreAction:1];
 
-    v78 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
-    v77 = [v78 objectAtIndexedSubscript:0];
+    colorAttachments28 = [(MTLRenderPassDescriptor *)self->_combined1PassDescriptor colorAttachments];
+    v77 = [colorAttachments28 objectAtIndexedSubscript:0];
     [v77 setClearColor:{0.0, 0.0, 0.0, 0.0}];
   }
 }

@@ -1,25 +1,25 @@
 @interface WBSLPLinkMetadataSQLiteStore
 - (BOOL)_deleteAllMetadataInfo;
-- (BOOL)_setMetadataInfo:(id)a3 forURLString:(id)a4;
-- (id)_deleteMetadataInfoForURLStrings:(id)a3;
+- (BOOL)_setMetadataInfo:(id)info forURLString:(id)string;
+- (id)_deleteMetadataInfoForURLStrings:(id)strings;
 - (id)_deleteUUIDWithOldestTimestamp;
 - (id)_fetchAllMetadataInfo;
-- (id)_fetchAllMetadataInfoWithUUID:(id)a3;
-- (id)_fetchMetadataInfoForURLString:(id)a3;
+- (id)_fetchAllMetadataInfoWithUUID:(id)d;
+- (id)_fetchMetadataInfoForURLString:(id)string;
 - (int)_createFreshDatabaseSchema;
-- (int)_migrateToSchemaVersion:(int)a3;
+- (int)_migrateToSchemaVersion:(int)version;
 - (int)_migrateToSchemaVersion_2;
 - (unint64_t)_uuidCount;
 - (void)_deleteAllMetadataInfo;
-- (void)_deleteMetadataInfoWithUUID:(id)a3;
-- (void)getAllMetadataInfoWithCompletionHandler:(id)a3;
-- (void)getMetadataInfoForURLString:(id)a3 completionHandler:(id)a4;
-- (void)linkAndUpdateMetadataInfoForURLString:(id)a3 lastFetchDate:(id)a4 lastFetchDidSucceed:(BOOL)a5 metadataHasImage:(BOOL)a6 completionHandler:(id)a7;
-- (void)linkURLString:(id)a3 withMetadataInfoForURLString:(id)a4 completionHandler:(id)a5;
-- (void)performLRUEvictionIfNecessaryWithMaximumNumberOfEntries:(unint64_t)a3 completionHandler:(id)a4;
-- (void)removeAllMetadataInfoWithCompletionHandler:(id)a3;
-- (void)removeAllMetadataInfoWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeMetadataInfoForURLStrings:(id)a3 completionHandler:(id)a4;
+- (void)_deleteMetadataInfoWithUUID:(id)d;
+- (void)getAllMetadataInfoWithCompletionHandler:(id)handler;
+- (void)getMetadataInfoForURLString:(id)string completionHandler:(id)handler;
+- (void)linkAndUpdateMetadataInfoForURLString:(id)string lastFetchDate:(id)date lastFetchDidSucceed:(BOOL)succeed metadataHasImage:(BOOL)image completionHandler:(id)handler;
+- (void)linkURLString:(id)string withMetadataInfoForURLString:(id)lString completionHandler:(id)handler;
+- (void)performLRUEvictionIfNecessaryWithMaximumNumberOfEntries:(unint64_t)entries completionHandler:(id)handler;
+- (void)removeAllMetadataInfoWithCompletionHandler:(id)handler;
+- (void)removeAllMetadataInfoWithUUID:(id)d completionHandler:(id)handler;
+- (void)removeMetadataInfoForURLStrings:(id)strings completionHandler:(id)handler;
 @end
 
 @implementation WBSLPLinkMetadataSQLiteStore
@@ -27,10 +27,10 @@
 - (id)_fetchAllMetadataInfo
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(WBSSQLiteStore *)self database];
-  v3 = SafariShared::WBSSQLiteDatabaseFetch<>(v2, @"SELECT * FROM page_url");
+  database = [(WBSSQLiteStore *)self database];
+  v3 = SafariShared::WBSSQLiteDatabaseFetch<>(database, @"SELECT * FROM page_url");
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -52,7 +52,7 @@
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [WBSLPLinkMetadataInfo alloc];
         v11 = [(WBSLPLinkMetadataInfo *)v10 initWithSQLiteRow:v9, v15];
-        [v4 safari_addObjectUnlessNil:v11];
+        [array safari_addObjectUnlessNil:v11];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -61,10 +61,10 @@
     while (v6);
   }
 
-  v12 = [v5 statement];
-  [v12 invalidate];
+  statement = [v5 statement];
+  [statement invalidate];
 
-  v13 = [v4 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -75,18 +75,18 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(WBSSQLiteStore *)self database];
+  database = [(WBSSQLiteStore *)self database];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__WBSLPLinkMetadataSQLiteStore__createFreshDatabaseSchema__block_invoke;
   v5[3] = &unk_1E8283618;
   v5[4] = self;
   v5[5] = &v6;
-  [v3 tryToPerformTransactionInBlock:v5];
+  [database tryToPerformTransactionInBlock:v5];
 
-  LODWORD(v3) = *(v7 + 6);
+  LODWORD(database) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v3;
+  return database;
 }
 
 BOOL __58__WBSLPLinkMetadataSQLiteStore__createFreshDatabaseSchema__block_invoke(uint64_t a1)
@@ -121,25 +121,25 @@ BOOL __58__WBSLPLinkMetadataSQLiteStore__createFreshDatabaseSchema__block_invoke
   return *(*(*(a1 + 40) + 8) + 24) == 101;
 }
 
-- (int)_migrateToSchemaVersion:(int)a3
+- (int)_migrateToSchemaVersion:(int)version
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(WBSSQLiteStore *)self database];
+  database = [(WBSSQLiteStore *)self database];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke;
   v7[3] = &unk_1E8283640;
-  v8 = a3;
+  versionCopy = version;
   v7[4] = self;
   v7[5] = &v9;
-  [v5 tryToPerformTransactionInBlock:v7];
+  [database tryToPerformTransactionInBlock:v7];
 
-  LODWORD(v5) = *(v10 + 6);
+  LODWORD(database) = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
-  return v5;
+  return database;
 }
 
 BOOL __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke(uint64_t a1)
@@ -161,18 +161,18 @@ BOOL __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke(u
 - (int)_migrateToSchemaVersion_2
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v3, 0, @"DROP INDEX IF EXISTS UUIDIndex");
+  database = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, @"DROP INDEX IF EXISTS UUIDIndex");
 
   if (v4 != 101)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(WBSSQLiteStore *)self database];
-      v16 = [v15 lastErrorMessage];
+      database2 = [(WBSSQLiteStore *)self database];
+      lastErrorMessage = [database2 lastErrorMessage];
       v26 = 138543618;
-      v27 = v16;
+      v27 = lastErrorMessage;
       v28 = 1024;
       v29 = v4;
       _os_log_error_impl(&dword_1C6968000, v12, OS_LOG_TYPE_ERROR, "Failed to drop index in paged_url table: %{public}@ (%d)", &v26, 0x12u);
@@ -181,18 +181,18 @@ BOOL __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke(u
     goto LABEL_20;
   }
 
-  v5 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v5, 0, @"ALTER TABLE page_url RENAME TO page_url_old");
+  database3 = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database3, 0, @"ALTER TABLE page_url RENAME TO page_url_old");
 
   if (v4 != 101)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(WBSSQLiteStore *)self database];
-      v18 = [v17 lastErrorMessage];
+      database4 = [(WBSSQLiteStore *)self database];
+      lastErrorMessage2 = [database4 lastErrorMessage];
       v26 = 138543618;
-      v27 = v18;
+      v27 = lastErrorMessage2;
       v28 = 1024;
       v29 = v4;
       _os_log_error_impl(&dword_1C6968000, v12, OS_LOG_TYPE_ERROR, "Failed to rename table page_url to page_url_old: %{public}@ (%d)", &v26, 0x12u);
@@ -201,18 +201,18 @@ BOOL __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke(u
     goto LABEL_20;
   }
 
-  v6 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v6, 0, @"CREATE TABLE page_url (url TEXT PRIMARY KEY NOT NULL,uuid TEXT,last_fetch_date REAL NOT NULL,last_fetch_did_succeed BOOLEAN NOT NULL DEFAULT 0,metadata_has_image BOOLEAN NOT NULL DEFAULT 0)");
+  database5 = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database5, 0, @"CREATE TABLE page_url (url TEXT PRIMARY KEY NOT NULL,uuid TEXT,last_fetch_date REAL NOT NULL,last_fetch_did_succeed BOOLEAN NOT NULL DEFAULT 0,metadata_has_image BOOLEAN NOT NULL DEFAULT 0)");
 
   if (v4 != 101)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(WBSSQLiteStore *)self database];
-      v20 = [v19 lastErrorMessage];
+      database6 = [(WBSSQLiteStore *)self database];
+      lastErrorMessage3 = [database6 lastErrorMessage];
       v26 = 138543618;
-      v27 = v20;
+      v27 = lastErrorMessage3;
       v28 = 1024;
       v29 = v4;
       _os_log_error_impl(&dword_1C6968000, v12, OS_LOG_TYPE_ERROR, "Failed to create page_url table during migration: %{public}@ (%d)", &v26, 0x12u);
@@ -221,18 +221,18 @@ BOOL __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke(u
     goto LABEL_20;
   }
 
-  v7 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v7, 0, @"CREATE INDEX UUIDIndex ON page_url (uuid)");
+  database7 = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database7, 0, @"CREATE INDEX UUIDIndex ON page_url (uuid)");
 
   if (v4 != 101)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(WBSSQLiteStore *)self database];
-      v23 = [v22 lastErrorMessage];
+      database8 = [(WBSSQLiteStore *)self database];
+      lastErrorMessage4 = [database8 lastErrorMessage];
       v26 = 138543618;
-      v27 = v23;
+      v27 = lastErrorMessage4;
       v28 = 1024;
       v29 = v4;
       _os_log_error_impl(&dword_1C6968000, v12, OS_LOG_TYPE_ERROR, "Failed to create UUIDIndex on page_url table during migration: %{public}@ (%d)", &v26, 0x12u);
@@ -241,36 +241,36 @@ BOOL __56__WBSLPLinkMetadataSQLiteStore__migrateToSchemaVersion___block_invoke(u
     goto LABEL_20;
   }
 
-  v8 = [(WBSSQLiteStore *)self database];
-  v9 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v8, 0, @"INSERT INTO page_url (url, uuid, last_fetch_date, last_fetch_did_succeed, metadata_has_image)SELECT p.url, p.uuid, u.timestamp, 1, 1 FROM page_url_old p JOIN uuid_info u ON p.uuid = u.uuid");
+  database9 = [(WBSSQLiteStore *)self database];
+  v9 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database9, 0, @"INSERT INTO page_url (url, uuid, last_fetch_date, last_fetch_did_succeed, metadata_has_image)SELECT p.url, p.uuid, u.timestamp, 1, 1 FROM page_url_old p JOIN uuid_info u ON p.uuid = u.uuid");
 
   if (v9 != 101)
   {
     v10 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(WBSSQLiteStore *)self database];
-      v25 = [v24 lastErrorMessage];
+      database10 = [(WBSSQLiteStore *)self database];
+      lastErrorMessage5 = [database10 lastErrorMessage];
       v26 = 138543618;
-      v27 = v25;
+      v27 = lastErrorMessage5;
       v28 = 1024;
       v29 = v9;
       _os_log_error_impl(&dword_1C6968000, v10, OS_LOG_TYPE_ERROR, "Failed to move page_url_old data to page_url table: %{public}@ (%d)", &v26, 0x12u);
     }
   }
 
-  v11 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v11, 0, @"DROP TABLE page_url_old");
+  database11 = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database11, 0, @"DROP TABLE page_url_old");
 
   if (v4 != 101)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(WBSSQLiteStore *)self database];
-      v14 = [v13 lastErrorMessage];
+      database12 = [(WBSSQLiteStore *)self database];
+      lastErrorMessage6 = [database12 lastErrorMessage];
       v26 = 138543618;
-      v27 = v14;
+      v27 = lastErrorMessage6;
       v28 = 1024;
       v29 = v4;
       _os_log_error_impl(&dword_1C6968000, v12, OS_LOG_TYPE_ERROR, "Failed to drop page_url_old table: %{public}@ (%d)", &v26, 0x12u);
@@ -282,26 +282,26 @@ LABEL_20:
   return v4;
 }
 
-- (void)linkAndUpdateMetadataInfoForURLString:(id)a3 lastFetchDate:(id)a4 lastFetchDidSucceed:(BOOL)a5 metadataHasImage:(BOOL)a6 completionHandler:(id)a7
+- (void)linkAndUpdateMetadataInfoForURLString:(id)string lastFetchDate:(id)date lastFetchDidSucceed:(BOOL)succeed metadataHasImage:(BOOL)image completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  dateCopy = date;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __139__WBSLPLinkMetadataSQLiteStore_linkAndUpdateMetadataInfoForURLString_lastFetchDate_lastFetchDidSucceed_metadataHasImage_completionHandler___block_invoke;
   block[3] = &unk_1E8283690;
   block[4] = self;
-  v20 = v12;
-  v23 = a5;
-  v24 = a6;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, block);
+  v20 = stringCopy;
+  succeedCopy = succeed;
+  imageCopy = image;
+  v21 = dateCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = dateCopy;
+  v18 = stringCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __139__WBSLPLinkMetadataSQLiteStore_linkAndUpdateMetadataInfoForURLString_lastFetchDate_lastFetchDidSucceed_metadataHasImage_completionHandler___block_invoke(uint64_t a1)
@@ -362,24 +362,24 @@ uint64_t __139__WBSLPLinkMetadataSQLiteStore_linkAndUpdateMetadataInfoForURLStri
   return 1;
 }
 
-- (void)linkURLString:(id)a3 withMetadataInfoForURLString:(id)a4 completionHandler:(id)a5
+- (void)linkURLString:(id)string withMetadataInfoForURLString:(id)lString completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  lStringCopy = lString;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__WBSLPLinkMetadataSQLiteStore_linkURLString_withMetadataInfoForURLString_completionHandler___block_invoke;
   v15[3] = &unk_1E82836E0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = lStringCopy;
+  v17 = stringCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = stringCopy;
+  v14 = lStringCopy;
+  dispatch_async(databaseQueue, v15);
 }
 
 void __93__WBSLPLinkMetadataSQLiteStore_linkURLString_withMetadataInfoForURLString_completionHandler___block_invoke(uint64_t a1)
@@ -436,21 +436,21 @@ uint64_t __93__WBSLPLinkMetadataSQLiteStore_linkURLString_withMetadataInfoForURL
   return 1;
 }
 
-- (void)getMetadataInfoForURLString:(id)a3 completionHandler:(id)a4
+- (void)getMetadataInfoForURLString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  stringCopy = string;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSLPLinkMetadataSQLiteStore_getMetadataInfoForURLString_completionHandler___block_invoke;
   block[3] = &unk_1E8283708;
-  v12 = v6;
-  v13 = v7;
+  v12 = stringCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = stringCopy;
+  v10 = handlerCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __78__WBSLPLinkMetadataSQLiteStore_getMetadataInfoForURLString_completionHandler___block_invoke(uint64_t a1)
@@ -460,21 +460,21 @@ void __78__WBSLPLinkMetadataSQLiteStore_getMetadataInfoForURLString_completionHa
   (*(v1 + 16))(v1);
 }
 
-- (void)removeMetadataInfoForURLStrings:(id)a3 completionHandler:(id)a4
+- (void)removeMetadataInfoForURLStrings:(id)strings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  stringsCopy = strings;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__WBSLPLinkMetadataSQLiteStore_removeMetadataInfoForURLStrings_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = stringsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = stringsCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __82__WBSLPLinkMetadataSQLiteStore_removeMetadataInfoForURLStrings_completionHandler___block_invoke(uint64_t a1)
@@ -511,21 +511,21 @@ uint64_t __82__WBSLPLinkMetadataSQLiteStore_removeMetadataInfoForURLStrings_comp
   return 1;
 }
 
-- (void)removeAllMetadataInfoWithUUID:(id)a3 completionHandler:(id)a4
+- (void)removeAllMetadataInfoWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSSQLiteStore *)self databaseQueue];
+  dCopy = d;
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__WBSLPLinkMetadataSQLiteStore_removeAllMetadataInfoWithUUID_completionHandler___block_invoke;
   block[3] = &unk_1E8283450;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __80__WBSLPLinkMetadataSQLiteStore_removeAllMetadataInfoWithUUID_completionHandler___block_invoke(uint64_t a1)
@@ -563,18 +563,18 @@ uint64_t __80__WBSLPLinkMetadataSQLiteStore_removeAllMetadataInfoWithUUID_comple
   return 1;
 }
 
-- (void)removeAllMetadataInfoWithCompletionHandler:(id)a3
+- (void)removeAllMetadataInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSSQLiteStore *)self databaseQueue];
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WBSLPLinkMetadataSQLiteStore_removeAllMetadataInfoWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8283758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(databaseQueue, v7);
 }
 
 void __75__WBSLPLinkMetadataSQLiteStore_removeAllMetadataInfoWithCompletionHandler___block_invoke(uint64_t a1)
@@ -596,19 +596,19 @@ void __75__WBSLPLinkMetadataSQLiteStore_removeAllMetadataInfoWithCompletionHandl
   _Block_object_dispose(v4, 8);
 }
 
-- (void)performLRUEvictionIfNecessaryWithMaximumNumberOfEntries:(unint64_t)a3 completionHandler:(id)a4
+- (void)performLRUEvictionIfNecessaryWithMaximumNumberOfEntries:(unint64_t)entries completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(WBSSQLiteStore *)self databaseQueue];
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__WBSLPLinkMetadataSQLiteStore_performLRUEvictionIfNecessaryWithMaximumNumberOfEntries_completionHandler___block_invoke;
   block[3] = &unk_1E82837A8;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  entriesCopy = entries;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = handlerCopy;
+  dispatch_async(databaseQueue, block);
 }
 
 void __106__WBSLPLinkMetadataSQLiteStore_performLRUEvictionIfNecessaryWithMaximumNumberOfEntries_completionHandler___block_invoke(uint64_t a1)
@@ -648,18 +648,18 @@ uint64_t __106__WBSLPLinkMetadataSQLiteStore_performLRUEvictionIfNecessaryWithMa
   return 1;
 }
 
-- (void)getAllMetadataInfoWithCompletionHandler:(id)a3
+- (void)getAllMetadataInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSSQLiteStore *)self databaseQueue];
+  handlerCopy = handler;
+  databaseQueue = [(WBSSQLiteStore *)self databaseQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__WBSLPLinkMetadataSQLiteStore_getAllMetadataInfoWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E82837D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(databaseQueue, v7);
 }
 
 void __72__WBSLPLinkMetadataSQLiteStore_getAllMetadataInfoWithCompletionHandler___block_invoke(uint64_t a1)
@@ -669,17 +669,17 @@ void __72__WBSLPLinkMetadataSQLiteStore_getAllMetadataInfoWithCompletionHandler_
   (*(v1 + 16))(v1);
 }
 
-- (id)_fetchMetadataInfoForURLString:(id)a3
+- (id)_fetchMetadataInfoForURLString:(id)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(v4, @"SELECT * FROM page_url WHERE url = ?", &v11);
+  stringCopy = string;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(database, @"SELECT * FROM page_url WHERE url = ?", &stringCopy);
 
-  v6 = [v5 nextObject];
-  if (v6)
+  nextObject = [v5 nextObject];
+  if (nextObject)
   {
-    v7 = [[WBSLPLinkMetadataInfo alloc] initWithSQLiteRow:v6];
+    v7 = [[WBSLPLinkMetadataInfo alloc] initWithSQLiteRow:nextObject];
   }
 
   else
@@ -687,8 +687,8 @@ void __72__WBSLPLinkMetadataSQLiteStore_getAllMetadataInfoWithCompletionHandler_
     v7 = 0;
   }
 
-  v8 = [v5 statement];
-  [v8 invalidate];
+  statement = [v5 statement];
+  [statement invalidate];
 
   if (!v7)
   {
@@ -696,7 +696,7 @@ void __72__WBSLPLinkMetadataSQLiteStore_getAllMetadataInfoWithCompletionHandler_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138739971;
-      v13 = v11;
+      v13 = stringCopy;
       _os_log_impl(&dword_1C6968000, v9, OS_LOG_TYPE_INFO, "No metadata info found for URL: %{sensitive}@.", buf, 0xCu);
     }
   }
@@ -704,50 +704,50 @@ void __72__WBSLPLinkMetadataSQLiteStore_getAllMetadataInfoWithCompletionHandler_
   return v7;
 }
 
-- (BOOL)_setMetadataInfo:(id)a3 forURLString:(id)a4
+- (BOOL)_setMetadataInfo:(id)info forURLString:(id)string
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v25 = a4;
-  v7 = [v6 uuidString];
+  infoCopy = info;
+  stringCopy = string;
+  uuidString = [infoCopy uuidString];
 
-  if (v7)
+  if (uuidString)
   {
-    v8 = [(WBSSQLiteStore *)self database];
-    v24 = [v6 uuidString];
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSinceReferenceDate];
+    database = [(WBSSQLiteStore *)self database];
+    uuidString2 = [infoCopy uuidString];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     *buf = v10;
-    v11 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong},double>(v8, 0, @"REPLACE INTO uuid_info (uuid, timestamp) VALUES (?, ?)", &v24, buf);
+    v11 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong},double>(database, 0, @"REPLACE INTO uuid_info (uuid, timestamp) VALUES (?, ?)", &uuidString2, buf);
 
     if (v11 != 101)
     {
       v18 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 uuidString];
-        [(WBSLPLinkMetadataSQLiteStore *)v19 _setMetadataInfo:buf forURLString:v11, v18];
+        uuidString3 = [infoCopy uuidString];
+        [(WBSLPLinkMetadataSQLiteStore *)uuidString3 _setMetadataInfo:buf forURLString:v11, v18];
       }
 
       goto LABEL_10;
     }
   }
 
-  v12 = [(WBSSQLiteStore *)self database];
-  v23 = [v6 uuidString];
-  v13 = [v6 lastFetchDate];
-  [v13 timeIntervalSinceReferenceDate];
+  database2 = [(WBSSQLiteStore *)self database];
+  uuidString4 = [infoCopy uuidString];
+  lastFetchDate = [infoCopy lastFetchDate];
+  [lastFetchDate timeIntervalSinceReferenceDate];
   *buf = v14;
-  v22 = [v6 lastFetchDidSucceed];
-  v21 = [v6 metadataHasImage];
-  v15 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong},double,BOOL,BOOL>(v12, 0, @"REPLACE INTO page_url (url, uuid, last_fetch_date, last_fetch_did_succeed, metadata_has_image) VALUES (?, ?, ?, ?, ?)", &v25, &v23, buf, &v22, &v21);
+  lastFetchDidSucceed = [infoCopy lastFetchDidSucceed];
+  metadataHasImage = [infoCopy metadataHasImage];
+  v15 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&,NSString * {__strong},double,BOOL,BOOL>(database2, 0, @"REPLACE INTO page_url (url, uuid, last_fetch_date, last_fetch_did_succeed, metadata_has_image) VALUES (?, ?, ?, ?, ?)", &stringCopy, &uuidString4, buf, &lastFetchDidSucceed, &metadataHasImage);
 
   if (v15 != 101)
   {
     v17 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [(WBSLPLinkMetadataSQLiteStore *)&v25 _setMetadataInfo:v15 forURLString:v17];
+      [(WBSLPLinkMetadataSQLiteStore *)&stringCopy _setMetadataInfo:v15 forURLString:v17];
     }
 
 LABEL_10:
@@ -761,16 +761,16 @@ LABEL_11:
   return v16;
 }
 
-- (id)_deleteMetadataInfoForURLStrings:(id)a3
+- (id)_deleteMetadataInfoForURLStrings:(id)strings
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WBSSQLiteStore *)self database];
-  v6 = [v5 maximumParameterCount];
+  stringsCopy = strings;
+  database = [(WBSSQLiteStore *)self database];
+  maximumParameterCount = [database maximumParameterCount];
 
-  if ([v4 count] > v6)
+  if ([stringsCopy count] > maximumParameterCount)
   {
-    v7 = [v4 subarrayWithRange:{0, v6}];
+    v7 = [stringsCopy subarrayWithRange:{0, maximumParameterCount}];
 
     v8 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -778,13 +778,13 @@ LABEL_11:
       [WBSLPLinkMetadataSQLiteStore _deleteMetadataInfoForURLStrings:];
     }
 
-    v4 = v7;
+    stringsCopy = v7;
   }
 
-  v29 = [@"?" safari_stringByRepeatingWithCount:objc_msgSend(v4 joinedByString:{"count"), @", "}];
+  v29 = [@"?" safari_stringByRepeatingWithCount:objc_msgSend(stringsCopy joinedByString:{"count"), @", "}];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM page_url WHERE url IN (%@)", v29];
-  v10 = [(WBSSQLiteStore *)self database];
-  v11 = SafariShared::WBSSQLiteDatabaseExecuteWithParameterArray<NSString * {__strong}>(v10, v9, v4);
+  database2 = [(WBSSQLiteStore *)self database];
+  v11 = SafariShared::WBSSQLiteDatabaseExecuteWithParameterArray<NSString * {__strong}>(database2, v9, stringsCopy);
 
   if (v11 != 101)
   {
@@ -795,10 +795,10 @@ LABEL_11:
     }
   }
 
-  v13 = [(WBSSQLiteStore *)self database];
-  v30 = SafariShared::WBSSQLiteDatabaseFetch<>(v13, @"SELECT u.uuid FROM uuid_info u LEFT JOIN page_url p ON u.uuid = p.uuid WHERE p.url IS NULL");
+  database3 = [(WBSSQLiteStore *)self database];
+  v30 = SafariShared::WBSSQLiteDatabaseFetch<>(database3, @"SELECT u.uuid FROM uuid_info u LEFT JOIN page_url p ON u.uuid = p.uuid WHERE p.url IS NULL");
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -818,7 +818,7 @@ LABEL_11:
         }
 
         v19 = [*(*(&v31 + 1) + 8 * i) stringAtIndex:0];
-        [v14 safari_addObjectUnlessNil:v19];
+        [array safari_addObjectUnlessNil:v19];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -827,19 +827,19 @@ LABEL_11:
     while (v16);
   }
 
-  v20 = [v15 statement];
-  [v20 invalidate];
+  statement = [v15 statement];
+  [statement invalidate];
 
-  if ([v14 count])
+  if ([array count])
   {
-    if ([v14 count] <= v6)
+    if ([array count] <= maximumParameterCount)
     {
-      v21 = [v14 copy];
+      v21 = [array copy];
     }
 
     else
     {
-      v21 = [v14 subarrayWithRange:{0, v6}];
+      v21 = [array subarrayWithRange:{0, maximumParameterCount}];
       v22 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -850,8 +850,8 @@ LABEL_11:
     v24 = [@"?" safari_stringByRepeatingWithCount:objc_msgSend(v21 joinedByString:{"count"), @", "}];
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM uuid_info WHERE uuid IN (%@)", v24];
 
-    v25 = [(WBSSQLiteStore *)self database];
-    v26 = SafariShared::WBSSQLiteDatabaseExecuteWithParameterArray<NSString * {__strong}>(v25, v23, v21);
+    database4 = [(WBSSQLiteStore *)self database];
+    v26 = SafariShared::WBSSQLiteDatabaseExecuteWithParameterArray<NSString * {__strong}>(database4, v23, v21);
 
     if (v26 != 101)
     {
@@ -866,17 +866,17 @@ LABEL_11:
   else
   {
     v23 = v9;
-    v21 = v14;
+    v21 = array;
   }
 
   return v21;
 }
 
-- (void)_deleteMetadataInfoWithUUID:(id)a3
+- (void)_deleteMetadataInfoWithUUID:(id)d
 {
-  v10 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(v4, 0, @"DELETE FROM uuid_info WHERE uuid = ?", &v10);
+  dCopy = d;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(database, 0, @"DELETE FROM uuid_info WHERE uuid = ?", &dCopy);
 
   if (v5 != 101)
   {
@@ -887,8 +887,8 @@ LABEL_11:
     }
   }
 
-  v7 = [(WBSSQLiteStore *)self database];
-  v8 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(v7, 0, @"DELETE FROM page_url WHERE uuid = ?", &v10);
+  database2 = [(WBSSQLiteStore *)self database];
+  v8 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSString * {__strong}&>(database2, 0, @"DELETE FROM page_url WHERE uuid = ?", &dCopy);
 
   if (v8 != 101)
   {
@@ -902,8 +902,8 @@ LABEL_11:
 
 - (BOOL)_deleteAllMetadataInfo
 {
-  v3 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v3, 0, @"DELETE FROM page_url");
+  database = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, @"DELETE FROM page_url");
 
   if (v4 != 101)
   {
@@ -918,8 +918,8 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v5 = [(WBSSQLiteStore *)self database];
-  v6 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(v5, 0, @"DELETE FROM uuid_info");
+  database2 = [(WBSSQLiteStore *)self database];
+  v6 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database2, 0, @"DELETE FROM uuid_info");
 
   if (v6 != 101)
   {
@@ -942,27 +942,27 @@ LABEL_9:
 
 - (unint64_t)_uuidCount
 {
-  v2 = [(WBSSQLiteStore *)self database];
-  v3 = SafariShared::WBSSQLiteDatabaseFetch<>(v2, @"SELECT COUNT(*) FROM uuid_info");
+  database = [(WBSSQLiteStore *)self database];
+  v3 = SafariShared::WBSSQLiteDatabaseFetch<>(database, @"SELECT COUNT(*) FROM uuid_info");
 
-  v4 = [v3 nextObject];
-  v5 = [v4 int64AtIndex:0];
-  v6 = [v3 statement];
-  [v6 invalidate];
+  nextObject = [v3 nextObject];
+  v5 = [nextObject int64AtIndex:0];
+  statement = [v3 statement];
+  [statement invalidate];
 
   return v5;
 }
 
 - (id)_deleteUUIDWithOldestTimestamp
 {
-  v3 = [(WBSSQLiteStore *)self database];
-  v4 = SafariShared::WBSSQLiteDatabaseFetch<>(v3, @"SELECT uuid FROM uuid_info WHERE timestamp = (SELECT MIN(timestamp) FROM uuid_info)");
+  database = [(WBSSQLiteStore *)self database];
+  v4 = SafariShared::WBSSQLiteDatabaseFetch<>(database, @"SELECT uuid FROM uuid_info WHERE timestamp = (SELECT MIN(timestamp) FROM uuid_info)");
 
-  v5 = [v4 nextObject];
-  v6 = [v5 stringAtIndex:0];
+  nextObject = [v4 nextObject];
+  v6 = [nextObject stringAtIndex:0];
 
-  v7 = [v4 statement];
-  [v7 invalidate];
+  statement = [v4 statement];
+  [statement invalidate];
 
   if (v6)
   {
@@ -984,14 +984,14 @@ LABEL_9:
   return v8;
 }
 
-- (id)_fetchAllMetadataInfoWithUUID:(id)a3
+- (id)_fetchAllMetadataInfoWithUUID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = [(WBSSQLiteStore *)self database];
-  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(v4, @"SELECT * FROM page_url WHERE uuid = ?", &v21);
+  dCopy = d;
+  database = [(WBSSQLiteStore *)self database];
+  v5 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&>(database, @"SELECT * FROM page_url WHERE uuid = ?", &dCopy);
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -1013,7 +1013,7 @@ LABEL_9:
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [WBSLPLinkMetadataInfo alloc];
         v13 = [(WBSLPLinkMetadataInfo *)v12 initWithSQLiteRow:v11, v17];
-        [v6 safari_addObjectUnlessNil:v13];
+        [array safari_addObjectUnlessNil:v13];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -1022,10 +1022,10 @@ LABEL_9:
     while (v8);
   }
 
-  v14 = [v7 statement];
-  [v14 invalidate];
+  statement = [v7 statement];
+  [statement invalidate];
 
-  v15 = [v6 copy];
+  v15 = [array copy];
 
   return v15;
 }

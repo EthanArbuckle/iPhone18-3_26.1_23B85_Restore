@@ -1,35 +1,35 @@
 @interface HROnboardingBulletPoint
-+ (id)bulletPointWithImage:(id)a3 title:(id)a4 body:(id)a5;
-- (HROnboardingBulletPoint)initWithImage:(id)a3 title:(id)a4 body:(id)a5;
++ (id)bulletPointWithImage:(id)image title:(id)title body:(id)body;
+- (HROnboardingBulletPoint)initWithImage:(id)image title:(id)title body:(id)body;
 @end
 
 @implementation HROnboardingBulletPoint
 
-- (HROnboardingBulletPoint)initWithImage:(id)a3 title:(id)a4 body:(id)a5
+- (HROnboardingBulletPoint)initWithImage:(id)image title:(id)title body:(id)body
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  imageCopy = image;
+  titleCopy = title;
+  bodyCopy = body;
   v15.receiver = self;
   v15.super_class = HROnboardingBulletPoint;
   v12 = [(HROnboardingBulletPoint *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bulletImage, a3);
-    objc_storeStrong(&v13->_bulletTitleString, a4);
-    objc_storeStrong(&v13->_bulletBodyString, a5);
+    objc_storeStrong(&v12->_bulletImage, image);
+    objc_storeStrong(&v13->_bulletTitleString, title);
+    objc_storeStrong(&v13->_bulletBodyString, body);
   }
 
   return v13;
 }
 
-+ (id)bulletPointWithImage:(id)a3 title:(id)a4 body:(id)a5
++ (id)bulletPointWithImage:(id)image title:(id)title body:(id)body
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HROnboardingBulletPoint alloc] initWithImage:v9 title:v8 body:v7];
+  bodyCopy = body;
+  titleCopy = title;
+  imageCopy = image;
+  v10 = [[HROnboardingBulletPoint alloc] initWithImage:imageCopy title:titleCopy body:bodyCopy];
 
   return v10;
 }

@@ -1,17 +1,17 @@
 @interface HULinkedApplicationRatingView
-- (HULinkedApplicationRatingView)initWithFrame:(CGRect)a3;
-- (void)setRating:(double)a3;
+- (HULinkedApplicationRatingView)initWithFrame:(CGRect)frame;
+- (void)setRating:(double)rating;
 - (void)setupConstraints;
 - (void)updateStarViews;
 @end
 
 @implementation HULinkedApplicationRatingView
 
-- (HULinkedApplicationRatingView)initWithFrame:(CGRect)a3
+- (HULinkedApplicationRatingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = HULinkedApplicationRatingView;
-  v3 = [(HULinkedApplicationRatingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HULinkedApplicationRatingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -35,16 +35,16 @@
   return v3;
 }
 
-- (void)setRating:(double)a3
+- (void)setRating:(double)rating
 {
-  if (a3 < 0.0 || a3 > 5.0)
+  if (rating < 0.0 || rating > 5.0)
   {
     NSLog(&cfstr_RatingMustBeIn.isa, a2);
   }
 
-  if (self->_rating != a3)
+  if (self->_rating != rating)
   {
-    self->_rating = a3;
+    self->_rating = rating;
 
     [(HULinkedApplicationRatingView *)self updateStarViews];
   }
@@ -53,44 +53,44 @@
 - (void)setupConstraints
 {
   v26 = objc_opt_new();
-  v3 = [(HULinkedApplicationRatingView *)self starViews];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  starViews = [(HULinkedApplicationRatingView *)self starViews];
+  v4 = [starViews objectAtIndexedSubscript:0];
 
-  v5 = [v4 leadingAnchor];
-  v6 = [(HULinkedApplicationRatingView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [(HULinkedApplicationRatingView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v26 addObject:v7];
 
-  v8 = [v4 topAnchor];
-  v9 = [(HULinkedApplicationRatingView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [(HULinkedApplicationRatingView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v26 addObject:v10];
 
-  v11 = [v4 bottomAnchor];
-  v12 = [(HULinkedApplicationRatingView *)self bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [(HULinkedApplicationRatingView *)self bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v26 addObject:v13];
 
   for (i = 1; i != 5; ++i)
   {
     v15 = v4;
-    v16 = [(HULinkedApplicationRatingView *)self starViews];
-    v4 = [v16 objectAtIndexedSubscript:i];
+    starViews2 = [(HULinkedApplicationRatingView *)self starViews];
+    v4 = [starViews2 objectAtIndexedSubscript:i];
 
-    v17 = [v4 leadingAnchor];
-    v18 = [v15 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    leadingAnchor3 = [v4 leadingAnchor];
+    trailingAnchor = [v15 trailingAnchor];
+    v19 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
     [v26 addObject:v19];
 
-    v20 = [v4 centerYAnchor];
-    v21 = [v15 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerYAnchor = [v4 centerYAnchor];
+    centerYAnchor2 = [v15 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v26 addObject:v22];
   }
 
-  v23 = [v4 trailingAnchor];
-  v24 = [(HULinkedApplicationRatingView *)self trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor2 = [v4 trailingAnchor];
+  trailingAnchor3 = [(HULinkedApplicationRatingView *)self trailingAnchor];
+  v25 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v26 addObject:v25];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v26];
@@ -108,8 +108,8 @@
     for (i = 0; i != v5; ++i)
     {
       v9 = [MEMORY[0x277D755B8] imageNamed:@"star-full"];
-      v10 = [(HULinkedApplicationRatingView *)self starViews];
-      v11 = [v10 objectAtIndexedSubscript:i];
+      starViews = [(HULinkedApplicationRatingView *)self starViews];
+      v11 = [starViews objectAtIndexedSubscript:i];
 
       [v11 setImage:v9];
     }
@@ -121,8 +121,8 @@
     do
     {
       v13 = [MEMORY[0x277D755B8] imageNamed:@"star-half"];
-      v14 = [(HULinkedApplicationRatingView *)self starViews];
-      v15 = [v14 objectAtIndexedSubscript:v5];
+      starViews2 = [(HULinkedApplicationRatingView *)self starViews];
+      v15 = [starViews2 objectAtIndexedSubscript:v5];
 
       [v15 setImage:v13];
       ++v5;
@@ -138,8 +138,8 @@
     do
     {
       v16 = [MEMORY[0x277D755B8] imageNamed:@"star-empty"];
-      v17 = [(HULinkedApplicationRatingView *)self starViews];
-      v18 = [v17 objectAtIndexedSubscript:v5];
+      starViews3 = [(HULinkedApplicationRatingView *)self starViews];
+      v18 = [starViews3 objectAtIndexedSubscript:v5];
 
       [v18 setImage:v16];
       ++v5;

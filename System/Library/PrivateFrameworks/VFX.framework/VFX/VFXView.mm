@@ -1,125 +1,125 @@
 @interface VFXView
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)deviceForOptions:(id)a3;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)deviceForOptions:(id)options;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (BOOL)_canJitter;
 - (BOOL)_checkAndUpdateDisplayLinkStateIfNeeded;
 - (BOOL)framebufferOnly;
-- (BOOL)isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4;
+- (BOOL)isNodeInsideFrustum:(id)frustum withPointOfView:(id)view;
 - (CGColorSpace)colorSpace;
 - (CGRect)currentViewport;
 - (CGSize)_updateBackingSize;
-- (CGSize)backingSizeForBoundSize:(CGSize)a3;
+- (CGSize)backingSizeForBoundSize:(CGSize)size;
 - (MTLCommandQueue)commandQueue;
 - (NSString)description;
 - (VFXCameraController)defaultCameraController;
-- (VFXView)initWithCoder:(id)a3;
-- (VFXView)initWithFrame:(CGRect)a3 options:(id)a4;
+- (VFXView)initWithCoder:(id)coder;
+- (VFXView)initWithFrame:(CGRect)frame options:(id)options;
 - (double)contentScaleFactor;
-- (double)projectPoint:(uint64_t)a3;
+- (double)projectPoint:(uint64_t)point;
 - (double)scaleFactor;
 - (id)_rendererForPrepare;
 - (id)effect;
-- (id)hitTest:(CGPoint)a3 options:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test options:(id)options;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)legacyView;
-- (id)nodesInsideFrustumWithPointOfView:(id)a3;
+- (id)nodesInsideFrustumWithPointOfView:(id)view;
 - (id)postRenderCallback;
 - (id)scene;
 - (id)setupLegacyView;
 - (id)snapshot;
 - (id)statistics;
 - (int64_t)preferredFramesPerSecond;
-- (uint64_t)unprojectPoint:(uint64_t)a3;
+- (uint64_t)unprojectPoint:(uint64_t)point;
 - (unint64_t)pixelFormat;
 - (unsigned)resizingMode;
 - (void)_adjustBackingLayerPixelFormat;
 - (void)_backgroundDidChange;
-- (void)_commonInit:(id)a3;
+- (void)_commonInit:(id)init;
 - (void)_createDisplayLinkIfNeeded;
-- (void)_drawWithUpdate:(id)a3;
-- (void)_enterBackground:(id)a3;
-- (void)_enterForeground:(id)a3;
-- (void)_initializeDisplayLinkWithCompletionHandler:(id)a3;
+- (void)_drawWithUpdate:(id)update;
+- (void)_enterBackground:(id)background;
+- (void)_enterForeground:(id)foreground;
+- (void)_initializeDisplayLinkWithCompletionHandler:(id)handler;
 - (void)_resizeIfNeeded;
 - (void)_setNeedsDisplay;
-- (void)_systemTimeAnimationStarted:(id)a3;
+- (void)_systemTimeAnimationStarted:(id)started;
 - (void)_updateContentsScaleFactor;
 - (void)_updateOpacity;
-- (void)_worldDidUpdateEnabledTriggers:(id)a3;
-- (void)applyConfiguration:(id)a3;
+- (void)_worldDidUpdateEnabledTriggers:(id)triggers;
+- (void)applyConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)displayLink:(id)a3 didUpdate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)displayLink:(id)link didUpdate:(id)update;
+- (void)encodeWithCoder:(id)coder;
 - (void)eventHandlerWantsRedraw;
 - (void)invalidateDisplayLink;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pauseDisplayLink;
-- (void)renderWithCompletion:(id)a3;
-- (void)renderWithPresentWithTransaction:(BOOL)a3 completion:(id)a4;
+- (void)renderWithCompletion:(id)completion;
+- (void)renderWithPresentWithTransaction:(BOOL)transaction completion:(id)completion;
 - (void)resumeDisplayLink;
 - (void)safeAreaInsetsDidChange;
-- (void)setAllowsCameraControl:(BOOL)a3;
-- (void)setAntialiasingMode:(unint64_t)a3;
-- (void)setAutoenablesDefaultLighting:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorSpace:(CGColorSpace *)a3;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setDebugOptions:(unint64_t)a3;
-- (void)setDisplayLink:(id)a3;
-- (void)setEffect:(id)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setFramebufferOnly:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setJitteringEnabled:(BOOL)a3;
-- (void)setLowLatency:(BOOL)a3;
-- (void)setNavigationCameraController:(id)a3;
+- (void)setAllowsCameraControl:(BOOL)control;
+- (void)setAntialiasingMode:(unint64_t)mode;
+- (void)setAutoenablesDefaultLighting:(BOOL)lighting;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorSpace:(CGColorSpace *)space;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setDebugOptions:(unint64_t)options;
+- (void)setDisplayLink:(id)link;
+- (void)setEffect:(id)effect;
+- (void)setEventHandler:(id)handler;
+- (void)setFramebufferOnly:(BOOL)only;
+- (void)setHidden:(BOOL)hidden;
+- (void)setJitteringEnabled:(BOOL)enabled;
+- (void)setLowLatency:(BOOL)latency;
+- (void)setNavigationCameraController:(id)controller;
 - (void)setNeedsDisplay;
-- (void)setPixelFormat:(unint64_t)a3;
-- (void)setPointOfCulling:(id)a3;
-- (void)setPointOfView:(id)a3;
-- (void)setPointOfView:(id)a3 animate:(BOOL)a4;
-- (void)setPostRenderCallback:(id)a3;
-- (void)setPreferredFramesPerSecond:(int64_t)a3;
-- (void)setRenderMode:(unint64_t)a3;
-- (void)setRendererKind:(unint64_t)a3;
-- (void)setRendersContinuously:(BOOL)a3;
-- (void)setResizingMode:(unsigned __int8)a3;
-- (void)setScaleFactor:(double)a3;
-- (void)setScene:(id)a3;
-- (void)setShowsStatistics:(BOOL)a3;
-- (void)setWantsExtendedDynamicRange:(BOOL)a3;
-- (void)setWorld:(id)a3;
-- (void)set_legacyView:(id)a3;
-- (void)switchToCameraNamed:(id)a3;
+- (void)setPixelFormat:(unint64_t)format;
+- (void)setPointOfCulling:(id)culling;
+- (void)setPointOfView:(id)view;
+- (void)setPointOfView:(id)view animate:(BOOL)animate;
+- (void)setPostRenderCallback:(id)callback;
+- (void)setPreferredFramesPerSecond:(int64_t)second;
+- (void)setRenderMode:(unint64_t)mode;
+- (void)setRendererKind:(unint64_t)kind;
+- (void)setRendersContinuously:(BOOL)continuously;
+- (void)setResizingMode:(unsigned __int8)mode;
+- (void)setScaleFactor:(double)factor;
+- (void)setScene:(id)scene;
+- (void)setShowsStatistics:(BOOL)statistics;
+- (void)setWantsExtendedDynamicRange:(BOOL)range;
+- (void)setWorld:(id)world;
+- (void)set_legacyView:(id)view;
+- (void)switchToCameraNamed:(id)named;
 - (void)switchToNextCamera;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateLayerLatency;
-- (void)vfx_setBackingLayer:(id)a3;
-- (void)vfx_setGestureRecognizers:(id)a3;
+- (void)vfx_setBackingLayer:(id)layer;
+- (void)vfx_setGestureRecognizers:(id)recognizers;
 - (void)vfx_updateGestureRecognizers;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation VFXView
 
-- (void)_initializeDisplayLinkWithCompletionHandler:(id)a3
+- (void)_initializeDisplayLinkWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1AF3B5310;
   aBlock[3] = &unk_1E7A7FD10;
   objc_copyWeak(&v18, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v17 = v5;
   v6 = _Block_copy(aBlock);
   objc_msgSend__renderThreadPriority(self, v7, v8, v9);
@@ -145,7 +145,7 @@
   objc_destroyWeak(&location);
 }
 
-+ (id)deviceForOptions:(id)a3
++ (id)deviceForOptions:(id)options
 {
   v3 = CFXMTLCreateSystemDefaultDevice();
   if (!v3 && (byte_1EB658E89 & 1) == 0)
@@ -245,22 +245,22 @@ LABEL_9:
   return objc_msgSend_pixelFormat(legacyView, a2, v2, v3);
 }
 
-- (void)setPixelFormat:(unint64_t)a3
+- (void)setPixelFormat:(unint64_t)format
 {
   legacyView = self->_legacyView;
   if (legacyView)
   {
 
-    objc_msgSend_setPixelFormat_(legacyView, a2, a3, v3);
+    objc_msgSend_setPixelFormat_(legacyView, a2, format, v3);
   }
 
   else if (self->_renderer)
   {
-    objc_msgSend_lock(self, a2, a3, v3);
+    objc_msgSend_lock(self, a2, format, v3);
     v10 = objc_msgSend_colorSpace(self, v7, v8, v9);
     *(self + 425) |= 0x10u;
     v14 = objc_msgSend_layer(self, v11, v12, v13);
-    objc_msgSend_setPixelFormat_(v14, v15, a3, v16);
+    objc_msgSend_setPixelFormat_(v14, v15, format, v16);
     if ((*(self + 425) & 0x20) != 0)
     {
       objc_msgSend_setColorSpace_(self, v17, v10, v19);
@@ -279,18 +279,18 @@ LABEL_9:
   return MEMORY[0x1EEE66B58](v4, sel_colorspace, v5, v6);
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  objc_msgSend_lock(self, a2, a3, v3);
+  objc_msgSend_lock(self, a2, space, v3);
   *(self + 425) |= 0x20u;
   v9 = objc_msgSend_layer(self, v6, v7, v8);
-  objc_msgSend_setColorspace_(v9, v10, a3, v11);
+  objc_msgSend_setColorspace_(v9, v10, space, v11);
   objc_msgSend_unlock(self, v12, v13, v14);
 
   objc_msgSend__setNeedsDisplay(self, v15, v16, v17);
 }
 
-- (void)_commonInit:(id)a3
+- (void)_commonInit:(id)init
 {
   sub_1AF332204();
   *(self + 424) |= 1u;
@@ -342,7 +342,7 @@ LABEL_8:
   if (self->_device)
   {
     v61 = [VFXRenderer alloc];
-    self->_renderer = objc_msgSend__initWithDevice_options_isPrivateRenderer_privateRendererOwner_clearsOnDraw_(v61, v62, self->_device, a3, 1, self, 1);
+    self->_renderer = objc_msgSend__initWithDevice_options_isPrivateRenderer_privateRendererOwner_clearsOnDraw_(v61, v62, self->_device, init, 1, self, 1);
   }
 
   v63 = [VFXJitterer alloc];
@@ -365,25 +365,25 @@ LABEL_8:
   objc_msgSend_setNavigationCameraController_(self, v79, v80, v81);
 }
 
-- (VFXView)initWithFrame:(CGRect)a3 options:(id)a4
+- (VFXView)initWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v12.receiver = self;
   v12.super_class = VFXView;
-  v7 = [(VFXView *)&v12 initWithFrame:a3.origin.x, a3.origin.y];
+  v7 = [(VFXView *)&v12 initWithFrame:frame.origin.x, frame.origin.y];
   v10 = v7;
   if (v7)
   {
     v7->_boundsSize.width = width;
     v7->_boundsSize.height = height;
-    objc_msgSend__commonInit_(v7, v8, a4, v9);
+    objc_msgSend__commonInit_(v7, v8, options, v9);
   }
 
   return v10;
 }
 
-- (VFXView)initWithCoder:(id)a3
+- (VFXView)initWithCoder:(id)coder
 {
   v42.receiver = self;
   v42.super_class = VFXView;
@@ -396,34 +396,34 @@ LABEL_8:
     *&p_boundsSize->width = v10;
     v8->_boundsSize.height = v11;
     objc_msgSend__commonInit_(v8, v12, 0, v13);
-    if (objc_msgSend_containsValueForKey_(a3, v14, @"autoenablesDefaultLighting", v15))
+    if (objc_msgSend_containsValueForKey_(coder, v14, @"autoenablesDefaultLighting", v15))
     {
-      v18 = objc_msgSend_decodeBoolForKey_(a3, v16, @"autoenablesDefaultLighting", v17);
+      v18 = objc_msgSend_decodeBoolForKey_(coder, v16, @"autoenablesDefaultLighting", v17);
       objc_msgSend_setAutoenablesDefaultLighting_(v8, v19, v18, v20);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v16, @"jitteringEnabled", v17))
+    if (objc_msgSend_containsValueForKey_(coder, v16, @"jitteringEnabled", v17))
     {
-      v23 = objc_msgSend_decodeBoolForKey_(a3, v21, @"jitteringEnabled", v22);
+      v23 = objc_msgSend_decodeBoolForKey_(coder, v21, @"jitteringEnabled", v22);
       objc_msgSend_setJitteringEnabled_(v8, v24, v23, v25);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v21, @"temporalAntialiasingEnabled", v22))
+    if (objc_msgSend_containsValueForKey_(coder, v21, @"temporalAntialiasingEnabled", v22))
     {
-      v28 = objc_msgSend_decodeBoolForKey_(a3, v26, @"temporalAntialiasingEnabled", v27);
+      v28 = objc_msgSend_decodeBoolForKey_(coder, v26, @"temporalAntialiasingEnabled", v27);
       objc_msgSend_setTemporalAntialiasingEnabled_(v8, v29, v28, v30);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v26, @"allowsCameraControl", v27))
+    if (objc_msgSend_containsValueForKey_(coder, v26, @"allowsCameraControl", v27))
     {
-      v33 = objc_msgSend_decodeBoolForKey_(a3, v31, @"allowsCameraControl", v32);
+      v33 = objc_msgSend_decodeBoolForKey_(coder, v31, @"allowsCameraControl", v32);
       objc_msgSend_setAllowsCameraControl_(v8, v34, v33, v35);
     }
 
-    if (objc_msgSend_containsValueForKey_(a3, v31, @"backgroundColor", v32))
+    if (objc_msgSend_containsValueForKey_(coder, v31, @"backgroundColor", v32))
     {
       v36 = objc_opt_class();
-      v38 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v37, v36, @"backgroundColor");
+      v38 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v37, v36, @"backgroundColor");
       objc_msgSend_setBackgroundColor_(v8, v39, v38, v40);
     }
   }
@@ -431,21 +431,21 @@ LABEL_8:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v30.receiver = self;
   v30.super_class = VFXView;
   [(VFXView *)&v30 encodeWithCoder:?];
   v8 = objc_msgSend_autoenablesDefaultLighting(self, v5, v6, v7);
-  objc_msgSend_encodeBool_forKey_(a3, v9, v8, @"autoenablesDefaultLighting");
+  objc_msgSend_encodeBool_forKey_(coder, v9, v8, @"autoenablesDefaultLighting");
   isJitteringEnabled = objc_msgSend_isJitteringEnabled(self, v10, v11, v12);
-  objc_msgSend_encodeBool_forKey_(a3, v14, isJitteringEnabled, @"jitteringEnabled");
+  objc_msgSend_encodeBool_forKey_(coder, v14, isJitteringEnabled, @"jitteringEnabled");
   isTemporalAntialiasingEnabled = objc_msgSend_isTemporalAntialiasingEnabled(self, v15, v16, v17);
-  objc_msgSend_encodeBool_forKey_(a3, v19, isTemporalAntialiasingEnabled, @"temporalAntialiasingEnabled");
+  objc_msgSend_encodeBool_forKey_(coder, v19, isTemporalAntialiasingEnabled, @"temporalAntialiasingEnabled");
   v23 = objc_msgSend_allowsCameraControl(self, v20, v21, v22);
-  objc_msgSend_encodeBool_forKey_(a3, v24, v23, @"allowsCameraControl");
+  objc_msgSend_encodeBool_forKey_(coder, v24, v23, @"allowsCameraControl");
   v28 = objc_msgSend_backgroundColor(self, v25, v26, v27);
-  objc_msgSend_encodeObject_forKey_(a3, v29, v28, @"backgroundColor");
+  objc_msgSend_encodeObject_forKey_(coder, v29, v28, @"backgroundColor");
 }
 
 - (void)dealloc
@@ -469,9 +469,9 @@ LABEL_8:
   [(VFXView *)&v25 dealloc];
 }
 
-- (void)set_legacyView:(id)a3
+- (void)set_legacyView:(id)view
 {
-  self->_legacyView = a3;
+  self->_legacyView = view;
   objc_msgSend_delegateWillDie(self->_jitterer, v5, v6, v7);
 
   self->_jitterer = 0;
@@ -487,23 +487,23 @@ LABEL_8:
   objc_msgSend_invalidateDisplayLink(self, v14, v15, v16);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = a3;
-  objc_msgSend_setHidden_(self->_legacyView, a2, a3, v3);
+  hiddenCopy = hidden;
+  objc_msgSend_setHidden_(self->_legacyView, a2, hidden, v3);
   v6.receiver = self;
   v6.super_class = VFXView;
-  [(VFXView *)&v6 setHidden:v4];
-  self->_isHidden = v4;
+  [(VFXView *)&v6 setHidden:hiddenCopy];
+  self->_isHidden = hiddenCopy;
 }
 
-- (void)applyConfiguration:(id)a3
+- (void)applyConfiguration:(id)configuration
 {
-  v6 = objc_msgSend_wantsExtendedDynamicRange(a3, a2, a3, v3);
+  v6 = objc_msgSend_wantsExtendedDynamicRange(configuration, a2, configuration, v3);
   objc_msgSend_setWantsExtendedDynamicRange_(self, v7, v6, v8);
-  if (objc_msgSend_colorSpaceName(a3, v9, v10, v11))
+  if (objc_msgSend_colorSpaceName(configuration, v9, v10, v11))
   {
-    v15 = objc_msgSend_colorSpaceName(a3, v12, v13, v14);
+    v15 = objc_msgSend_colorSpaceName(configuration, v12, v13, v14);
     v16 = CGColorSpaceCreateWithName(v15);
     if (v16)
     {
@@ -513,32 +513,32 @@ LABEL_8:
     }
   }
 
-  if (objc_msgSend_pixelFormat(a3, v12, v13, v14))
+  if (objc_msgSend_pixelFormat(configuration, v12, v13, v14))
   {
-    v21 = objc_msgSend_pixelFormat(a3, v18, v19, v20);
+    v21 = objc_msgSend_pixelFormat(configuration, v18, v19, v20);
     objc_msgSend_setPixelFormat_(self, v22, v21, v23);
   }
 
-  if (objc_msgSend_additiveWritesToAlpha(a3, v18, v19, v20))
+  if (objc_msgSend_additiveWritesToAlpha(configuration, v18, v19, v20))
   {
 
     objc_msgSend_setAdditiveWritesToAlpha_(self, v24, 1, v25);
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
-  if (self->_world != a3)
+  if (self->_world != world)
   {
-    objc_msgSend_lock(self, a2, a3, v3);
+    objc_msgSend_lock(self, a2, world, v3);
     v9 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v6, v7, v8);
     objc_msgSend_removeObserver_name_object_(v9, v10, self, @"kCFXWorldDidUpdateNotification", 0);
     objc_msgSend_removeObserver_forKeyPath_(self->_world, v11, self, @"background.contents");
     objc_msgSend_worldWillChange(self->_navigationCameraController, v12, v13, v14);
 
-    v15 = a3;
-    self->_world = v15;
-    if (v15)
+    worldCopy = world;
+    self->_world = worldCopy;
+    if (worldCopy)
     {
       v19 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v16, v17, v18);
       v23 = objc_msgSend_worldRef(self->_world, v20, v21, v22);
@@ -556,8 +556,8 @@ LABEL_8:
     v56[2] = sub_1AF3B738C;
     v56[3] = &unk_1E7A7A770;
     v56[4] = self;
-    objc_msgSend_setWorld_completionHandler_(renderer, v16, a3, v56);
-    v41 = objc_msgSend_preferredConfiguration(a3, v38, v39, v40);
+    objc_msgSend_setWorld_completionHandler_(renderer, v16, world, v56);
+    v41 = objc_msgSend_preferredConfiguration(world, v38, v39, v40);
     objc_msgSend_applyConfiguration_(self, v42, v41, v43);
     objc_msgSend_worldDidChange(self->_navigationCameraController, v44, v45, v46);
     objc_msgSend_startRuntimeThread(self->_world, v47, v48, v49);
@@ -566,35 +566,35 @@ LABEL_8:
   }
 }
 
-- (void)setRenderMode:(unint64_t)a3
+- (void)setRenderMode:(unint64_t)mode
 {
-  objc_msgSend_setRenderMode_(self->_renderer, a2, a3, v3);
+  objc_msgSend_setRenderMode_(self->_renderer, a2, mode, v3);
 
   objc_msgSend__setNeedsDisplay(self, v5, v6, v7);
 }
 
-- (void)setRendererKind:(unint64_t)a3
+- (void)setRendererKind:(unint64_t)kind
 {
-  objc_msgSend_setRendererKind_(self->_renderer, a2, a3, v3);
+  objc_msgSend_setRendererKind_(self->_renderer, a2, kind, v3);
 
   objc_msgSend__setNeedsDisplay(self, v5, v6, v7);
 }
 
-- (void)vfx_setBackingLayer:(id)a3
+- (void)vfx_setBackingLayer:(id)layer
 {
   backingLayer = self->_backingLayer;
-  if (backingLayer != a3)
+  if (backingLayer != layer)
   {
 
-    self->_backingLayer = a3;
+    self->_backingLayer = layer;
   }
 }
 
-- (void)setJitteringEnabled:(BOOL)a3
+- (void)setJitteringEnabled:(BOOL)enabled
 {
-  v4 = a3;
-  objc_msgSend_setEnabled_(self->_jitterer, a2, a3, v3);
-  objc_msgSend_setJitteringEnabled_(self->_renderer, v6, v4, v7);
+  enabledCopy = enabled;
+  objc_msgSend_setEnabled_(self->_jitterer, a2, enabled, v3);
+  objc_msgSend_setJitteringEnabled_(self->_renderer, v6, enabledCopy, v7);
 
   objc_msgSend__setNeedsDisplay(self, v8, v9, v10);
 }
@@ -639,24 +639,24 @@ LABEL_8:
   objc_msgSend_setLowLatency_(backingLayer, v9, v7, v10);
 }
 
-- (void)setLowLatency:(BOOL)a3
+- (void)setLowLatency:(BOOL)latency
 {
   if (self->_legacyView)
   {
-    self->_lowLatency = a3;
-    objc_msgSend_setLowLatency_(self->_legacyView, a2, a3, v3);
+    self->_lowLatency = latency;
+    objc_msgSend_setLowLatency_(self->_legacyView, a2, latency, v3);
   }
 
-  else if (self->_lowLatency != a3)
+  else if (self->_lowLatency != latency)
   {
-    self->_lowLatency = a3;
-    (MEMORY[0x1EEE66B58])(self, sel_updateLayerLatency, a3);
+    self->_lowLatency = latency;
+    (MEMORY[0x1EEE66B58])(self, sel_updateLayerLatency, latency);
   }
 }
 
-- (void)displayLink:(id)a3 didUpdate:(id)a4
+- (void)displayLink:(id)link didUpdate:(id)update
 {
-  v6 = objc_msgSend_world(self, a2, a3, a4);
+  v6 = objc_msgSend_world(self, a2, link, update);
   v10 = objc_msgSend_worldRef(v6, v7, v8, v9);
   if (v10)
   {
@@ -672,7 +672,7 @@ LABEL_8:
       v39[2] = sub_1AF3B7914;
       v39[3] = &unk_1E7A7FD48;
       objc_copyWeak(&v40, &location);
-      v39[4] = a4;
+      v39[4] = update;
       objc_msgSend_triggerRenderWithRendererIdentifier_with_(v18, v21, v20, v39);
       objc_destroyWeak(&v40);
       objc_destroyWeak(&location);
@@ -686,7 +686,7 @@ LABEL_8:
       block[2] = sub_1AF3B7A10;
       block[3] = &unk_1E7A7E198;
       block[4] = self;
-      block[5] = a4;
+      block[5] = update;
       dispatch_sync(v37, block);
     }
   }
@@ -706,7 +706,7 @@ LABEL_8:
 
       renderer = self->_renderer;
 
-      MEMORY[0x1EEE66B58](renderer, sel_clearBackBufferWithUpdate_, a4, v32);
+      MEMORY[0x1EEE66B58](renderer, sel_clearBackBufferWithUpdate_, update, v32);
     }
   }
 }
@@ -720,10 +720,10 @@ LABEL_8:
   objc_msgSend__setContentsScaleFactor_(renderer, v5, v6, v7, v8);
 }
 
-- (CGSize)backingSizeForBoundSize:(CGSize)a3
+- (CGSize)backingSizeForBoundSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend__contentsScaleFactor(self->_renderer, a2, v3, v4);
   v8 = v7;
   v9 = width * v7;
@@ -754,7 +754,7 @@ LABEL_8:
   return result;
 }
 
-- (void)_drawWithUpdate:(id)a3
+- (void)_drawWithUpdate:(id)update
 {
   if (!self->_legacyView)
   {
@@ -769,13 +769,13 @@ LABEL_8:
     }
 
     self->_didTriggerRedrawWhileRendering = 0;
-    objc_msgSend_stopIfNeeded(self->_jitterer, a2, a3, v3);
+    objc_msgSend_stopIfNeeded(self->_jitterer, a2, update, v3);
     objc_msgSend__displayLinkStatsTick(self->_renderer, v6, v7, v8);
     objc_msgSend_lock(self, v9, v10, v11);
-    v15 = objc_msgSend_drawable(a3, v12, v13, v14);
+    v15 = objc_msgSend_drawable(update, v12, v13, v14);
     v19 = objc_msgSend_texture(v15, v16, v17, v18);
     v23 = objc_msgSend_width(v19, v20, v21, v22);
-    v27 = objc_msgSend_drawable(a3, v24, v25, v26);
+    v27 = objc_msgSend_drawable(update, v24, v25, v26);
     v31 = objc_msgSend_texture(v27, v28, v29, v30);
     v35 = objc_msgSend_height(v31, v32, v33, v34);
     if (v23 && v35)
@@ -795,7 +795,7 @@ LABEL_8:
       }
 
       objc_msgSend_lock(self->_world, v52, v53, v54);
-      objc_msgSend_setMetalDisplayLinkUpdate_(self->_renderer, v61, a3, v62);
+      objc_msgSend_setMetalDisplayLinkUpdate_(self->_renderer, v61, update, v62);
       world = self->_world;
       if (world && (v67 = objc_msgSend_worldRef(world, v63, v64, v65), (v68 = sub_1AF1CF8AC(v67)) != 0))
       {
@@ -823,10 +823,10 @@ LABEL_8:
       }
 
       v80 = CACurrentMediaTime();
-      objc_msgSend_targetTimestamp(a3, v81, v82, v83);
+      objc_msgSend_targetTimestamp(update, v81, v82, v83);
       if (v87 != 0.0)
       {
-        objc_msgSend_targetTimestamp(a3, v84, v85, v86);
+        objc_msgSend_targetTimestamp(update, v84, v85, v86);
         v80 = v88;
       }
 
@@ -896,11 +896,11 @@ LABEL_8:
   objc_msgSend__resizeIfNeeded(self, v3, v4, v5);
 }
 
-- (void)setPointOfView:(id)a3 animate:(BOOL)a4
+- (void)setPointOfView:(id)view animate:(BOOL)animate
 {
-  v4 = a4;
-  objc_msgSend_begin(VFXTransaction, a2, a3, a4);
-  if (v4)
+  animateCopy = animate;
+  objc_msgSend_begin(VFXTransaction, a2, view, animate);
+  if (animateCopy)
   {
     objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, 0.75);
   }
@@ -910,22 +910,22 @@ LABEL_8:
     objc_msgSend_setAnimationDuration_(VFXTransaction, v7, v8, v9, 0.0);
   }
 
-  objc_msgSend_setPointOfView_(self, v10, a3, v11);
+  objc_msgSend_setPointOfView_(self, v10, view, v11);
 
   objc_msgSend_commit(VFXTransaction, v12, v13, v14);
 }
 
-- (void)setPointOfView:(id)a3
+- (void)setPointOfView:(id)view
 {
-  if (objc_msgSend_pointOfView(self, a2, a3, v3) != a3)
+  if (objc_msgSend_pointOfView(self, a2, view, v3) != view)
   {
     objc_msgSend_cameraWillChange(self->_navigationCameraController, v6, v7, v8);
-    objc_msgSend_setPointOfView_(self->_renderer, v9, a3, v10);
+    objc_msgSend_setPointOfView_(self->_renderer, v9, view, v10);
     objc_msgSend_cameraDidChange(self->_navigationCameraController, v11, v12, v13);
     v17 = objc_msgSend_world(self, v14, v15, v16);
     IfNeeded = objc_msgSend_authoringEnvironmentForWorld_createIfNeeded_(VFXAuthoringEnvironment2, v18, v17, 0);
 
-    MEMORY[0x1EEE66B58](IfNeeded, sel_didSetPointOfView_, a3, v20);
+    MEMORY[0x1EEE66B58](IfNeeded, sel_didSetPointOfView_, view, v20);
   }
 }
 
@@ -939,19 +939,19 @@ LABEL_8:
   return result;
 }
 
-- (void)setPointOfCulling:(id)a3
+- (void)setPointOfCulling:(id)culling
 {
-  if (objc_msgSend_pointOfCulling(self, a2, a3, v3) != a3)
+  if (objc_msgSend_pointOfCulling(self, a2, culling, v3) != culling)
   {
     renderer = self->_renderer;
 
-    MEMORY[0x1EEE66B58](renderer, sel_setPointOfCulling_, a3, v6);
+    MEMORY[0x1EEE66B58](renderer, sel_setPointOfCulling_, culling, v6);
   }
 }
 
-- (void)setAllowsCameraControl:(BOOL)a3
+- (void)setAllowsCameraControl:(BOOL)control
 {
-  v4 = sub_1AF0D5C40(1) | a3;
+  v4 = sub_1AF0D5C40(1) | control;
   if (v4 != objc_msgSend_enabled(self->_navigationCameraController, v5, v6, v7))
   {
     navigationCameraController = self->_navigationCameraController;
@@ -967,12 +967,12 @@ LABEL_8:
   return objc_msgSend_cameraController(v4, v5, v6, v7);
 }
 
-- (void)setWantsExtendedDynamicRange:(BOOL)a3
+- (void)setWantsExtendedDynamicRange:(BOOL)range
 {
   v4 = *(self + 424);
-  if (((((v4 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 4) == 0) ^ range) & 1) == 0)
   {
-    if (a3)
+    if (range)
     {
       v5 = 4;
     }
@@ -985,16 +985,16 @@ LABEL_8:
     *(self + 424) = v4 & 0xFB | v5;
     *(self + 425) &= ~0x20u;
     *(self + 425) &= ~0x10u;
-    objc_msgSend__adjustBackingLayerPixelFormat(self, a2, a3, v3);
+    objc_msgSend__adjustBackingLayerPixelFormat(self, a2, range, v3);
   }
 }
 
-- (void)setRendersContinuously:(BOOL)a3
+- (void)setRendersContinuously:(BOOL)continuously
 {
   v4 = *(self + 424);
-  if (((((v4 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v4 & 2) == 0) ^ continuously) & 1) == 0)
   {
-    if (a3)
+    if (continuously)
     {
       v6 = 2;
     }
@@ -1005,7 +1005,7 @@ LABEL_8:
     }
 
     *(self + 424) = v4 & 0xFD | v6;
-    objc_msgSend_setRendersContinuously_(self->_renderer, a2, a3, v3);
+    objc_msgSend_setRendersContinuously_(self->_renderer, a2, continuously, v3);
     if ((*(self + 424) & 2) != 0)
     {
       v15 = objc_msgSend_displayLink(self, v7, v8, v9);
@@ -1026,29 +1026,29 @@ LABEL_8:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 options:(id)a4
+- (id)hitTest:(CGPoint)test options:(id)options
 {
-  y = a3.y;
-  objc_msgSend__flipY_(self, a2, a4, v4, a3.x);
+  y = test.y;
+  objc_msgSend__flipY_(self, a2, options, v4, test.x);
   renderer = self->_renderer;
 
-  return MEMORY[0x1EEE66B58](renderer, sel__hitTest_viewport_options_, a4, v8);
+  return MEMORY[0x1EEE66B58](renderer, sel__hitTest_viewport_options_, options, v8);
 }
 
-- (BOOL)isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4
+- (BOOL)isNodeInsideFrustum:(id)frustum withPointOfView:(id)view
 {
   renderer = self->_renderer;
-  objc_msgSend__viewport(self, a2, a3, a4);
+  objc_msgSend__viewport(self, a2, frustum, view);
 
-  return MEMORY[0x1EEE66B58](renderer, sel__isNodeInsideFrustum_withPointOfView_viewport_, a3, a4);
+  return MEMORY[0x1EEE66B58](renderer, sel__isNodeInsideFrustum_withPointOfView_viewport_, frustum, view);
 }
 
-- (id)nodesInsideFrustumWithPointOfView:(id)a3
+- (id)nodesInsideFrustumWithPointOfView:(id)view
 {
   renderer = self->_renderer;
-  objc_msgSend__viewport(self, a2, a3, v3);
+  objc_msgSend__viewport(self, a2, view, v3);
 
-  return MEMORY[0x1EEE66B58](renderer, sel__nodesInsideFrustumWithPointOfView_viewport_, a3, v6);
+  return MEMORY[0x1EEE66B58](renderer, sel__nodesInsideFrustumWithPointOfView_viewport_, view, v6);
 }
 
 - (id)_rendererForPrepare
@@ -1069,32 +1069,32 @@ LABEL_8:
   return CompatibleRenderer;
 }
 
-- (double)projectPoint:(uint64_t)a3
+- (double)projectPoint:(uint64_t)point
 {
-  v6 = a1[55];
-  objc_msgSend__viewport(a1, a2, a3, a4);
+  v6 = self[55];
+  objc_msgSend__viewport(self, a2, point, a4);
   objc_msgSend__projectPoint_viewport_(v6, v7, v8, v9, a5, v10);
   LODWORD(a5) = v11;
   LODWORD(v12) = HIDWORD(v12);
-  objc_msgSend__flipY_(a1, v13, v14, v15, v12);
+  objc_msgSend__flipY_(self, v13, v14, v15, v12);
   return COERCE_DOUBLE(__PAIR64__(v16, LODWORD(a5)));
 }
 
-- (uint64_t)unprojectPoint:(uint64_t)a3
+- (uint64_t)unprojectPoint:(uint64_t)point
 {
   LODWORD(a5) = HIDWORD(a5);
-  objc_msgSend__flipY_(a1, a2, a3, a4, a5);
-  v6 = a1[55];
-  objc_msgSend__viewport(a1, v7, v8, v9);
+  objc_msgSend__flipY_(self, a2, point, a4, a5);
+  v6 = self[55];
+  objc_msgSend__viewport(self, v7, v8, v9);
 
   return MEMORY[0x1EEE66B58](v6, sel__unprojectPoint_viewport_, v10, v11);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"kVFXViewObservingContext")
+  if (context == @"kVFXViewObservingContext")
   {
-    if (objc_msgSend_isEqualToString_(a3, a2, @"background.contents", a4, a5))
+    if (objc_msgSend_isEqualToString_(path, a2, @"background.contents", object, change))
     {
 
       objc_msgSend__updateOpacity(self, v7, v8, v9);
@@ -1105,20 +1105,20 @@ LABEL_8:
   {
     v10.receiver = self;
     v10.super_class = VFXView;
-    [(VFXView *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(VFXView *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &OBJC_METACLASS___VFXView;
   v5 = objc_msgSendSuper2(&v22, sel_keyPathsForValuesAffectingValueForKey_);
-  v9 = objc_msgSend__kvoKeysForwardedToRenderer(a1, v6, v7, v8);
-  if (objc_msgSend_containsObject_(v9, v10, a3, v11))
+  v9 = objc_msgSend__kvoKeysForwardedToRenderer(self, v6, v7, v8);
+  if (objc_msgSend_containsObject_(v9, v10, key, v11))
   {
     v14 = MEMORY[0x1E695DFD8];
-    v15 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v12, @"renderer.%@", v13, a3);
+    v15 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v12, @"renderer.%@", v13, key);
     v18 = objc_msgSend_setWithObject_(v14, v16, v15, v17);
     return objc_msgSend_setByAddingObjectsFromSet_(v18, v19, v5, v20);
   }
@@ -1126,35 +1126,35 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v6 = objc_msgSend__kvoKeysForwardedToRenderer(a1, a2, a3, v3);
-  if (objc_msgSend_containsObject_(v6, v7, a3, v8))
+  v6 = objc_msgSend__kvoKeysForwardedToRenderer(self, a2, key, v3);
+  if (objc_msgSend_containsObject_(v6, v7, key, v8))
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VFXView;
-  return objc_msgSendSuper2(&v10, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v10, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  objc_msgSend_setNavigationCameraController_(self, a2, a3, v3);
-  objc_msgSend_setView_(a3, v6, self, v7);
+  objc_msgSend_setNavigationCameraController_(self, a2, handler, v3);
+  objc_msgSend_setView_(handler, v6, self, v7);
 
   objc_msgSend_setAllowsCameraControl_(self, v8, 1, v9);
 }
 
-- (void)setNavigationCameraController:(id)a3
+- (void)setNavigationCameraController:(id)controller
 {
   navigationCameraController = self->_navigationCameraController;
-  if (navigationCameraController != a3)
+  if (navigationCameraController != controller)
   {
     objc_msgSend_setDelegate_(navigationCameraController, a2, 0, v3);
 
-    self->_navigationCameraController = a3;
+    self->_navigationCameraController = controller;
     v10 = objc_msgSend_navigationCameraController(self, v7, v8, v9);
     objc_msgSend_setDelegate_(v10, v11, self, v12);
 
@@ -1205,33 +1205,33 @@ LABEL_8:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   legacyView = self->_legacyView;
   if (legacyView)
   {
 
-    objc_msgSend_setBackgroundColor_(legacyView, a2, a3, v3);
+    objc_msgSend_setBackgroundColor_(legacyView, a2, color, v3);
   }
 
   else
   {
     backgroundColor = self->_backgroundColor;
-    if (backgroundColor != a3)
+    if (backgroundColor != color)
     {
 
-      self->_backgroundColor = v4;
+      self->_backgroundColor = colorCopy;
     }
 
-    if (!v4)
+    if (!colorCopy)
     {
-      v4 = objc_msgSend__defaultBackgroundColor(self, a2, a3, v3);
+      colorCopy = objc_msgSend__defaultBackgroundColor(self, a2, color, v3);
     }
 
     v21.receiver = self;
     v21.super_class = VFXView;
-    [(VFXView *)&v21 setBackgroundColor:v4];
+    [(VFXView *)&v21 setBackgroundColor:colorCopy];
     v11 = objc_msgSend_traitCollection(self, v8, v9, v10);
     v15 = objc_msgSend_world(self, v12, v13, v14);
     v20[0] = MEMORY[0x1E69E9820];
@@ -1240,19 +1240,19 @@ LABEL_8:
     v20[3] = &unk_1E7A7E3B0;
     v20[4] = v11;
     v20[5] = self;
-    v20[6] = v4;
+    v20[6] = colorCopy;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v16, v15, v20);
     objc_msgSend__backgroundDidChange(self, v17, v18, v19);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v17.receiver = self;
   v17.super_class = VFXView;
   [(VFXView *)&v17 traitCollectionDidChange:?];
   v8 = objc_msgSend_traitCollection(self, v5, v6, v7);
-  if (objc_msgSend_hasDifferentColorAppearanceComparedToTraitCollection_(v8, v9, a3, v10))
+  if (objc_msgSend_hasDifferentColorAppearanceComparedToTraitCollection_(v8, v9, change, v10))
   {
     v14 = objc_msgSend_world(self, v11, v12, v13);
     v16[0] = MEMORY[0x1E69E9820];
@@ -1265,9 +1265,9 @@ LABEL_8:
   }
 }
 
-- (void)setAutoenablesDefaultLighting:(BOOL)a3
+- (void)setAutoenablesDefaultLighting:(BOOL)lighting
 {
-  objc_msgSend_setAutoenablesDefaultLighting_(self->_renderer, a2, a3, v3);
+  objc_msgSend_setAutoenablesDefaultLighting_(self->_renderer, a2, lighting, v3);
 
   objc_msgSend__setNeedsDisplay(self, v5, v6, v7);
 }
@@ -1285,14 +1285,14 @@ LABEL_8:
   }
 }
 
-- (void)setDisplayLink:(id)a3
+- (void)setDisplayLink:(id)link
 {
   displayLink = self->_displayLink;
-  if (displayLink != a3)
+  if (displayLink != link)
   {
-    objc_msgSend_invalidate(displayLink, a2, a3, v3);
+    objc_msgSend_invalidate(displayLink, a2, link, v3);
 
-    self->_displayLink = a3;
+    self->_displayLink = link;
   }
 }
 
@@ -1370,24 +1370,24 @@ LABEL_8:
   return v9;
 }
 
-- (void)setPreferredFramesPerSecond:(int64_t)a3
+- (void)setPreferredFramesPerSecond:(int64_t)second
 {
   legacyView = self->_legacyView;
   if (!legacyView)
   {
-    v7 = objc_msgSend_displayLink(self, a2, a3, v3);
+    v7 = objc_msgSend_displayLink(self, a2, second, v3);
     if (v7)
     {
-      *&v11 = a3;
+      *&v11 = second;
       objc_msgSend_setPreferredFrameRate_(v7, v8, v9, v10, v11);
     }
 
-    self->_preferredFramePerSeconds = a3;
+    self->_preferredFramePerSeconds = second;
     v12 = objc_msgSend_renderer(self, v8, v9, v10);
     legacyView = objc_msgSend__renderContextMetal(v12, v13, v14, v15);
   }
 
-  MEMORY[0x1EEE66B58](legacyView, sel_setPreferredFramesPerSecond_, a3, v3);
+  MEMORY[0x1EEE66B58](legacyView, sel_setPreferredFramesPerSecond_, second, v3);
 }
 
 - (void)_setNeedsDisplay
@@ -1428,26 +1428,26 @@ LABEL_8:
   }
 }
 
-- (void)_systemTimeAnimationStarted:(id)a3
+- (void)_systemTimeAnimationStarted:(id)started
 {
-  v4 = objc_msgSend_displayLink(self, a2, a3, v3);
+  v4 = objc_msgSend_displayLink(self, a2, started, v3);
 
   objc_msgSend_setPaused_(v4, v5, 0, v6);
 }
 
-- (void)_worldDidUpdateEnabledTriggers:(id)a3
+- (void)_worldDidUpdateEnabledTriggers:(id)triggers
 {
-  v6 = objc_msgSend_debugOptions(self, a2, a3, v3);
+  v6 = objc_msgSend_debugOptions(self, a2, triggers, v3);
 
   objc_msgSend_setDebugOptions_(self, v5, v6, v7);
 }
 
-- (void)setShowsStatistics:(BOOL)a3
+- (void)setShowsStatistics:(BOOL)statistics
 {
-  v3 = a3;
+  statisticsCopy = statistics;
   v5 = sub_1AF0D5C40(0);
   objc_msgSend_lock(self->_renderer, v6, v7, v8);
-  objc_msgSend_setShowsStatistics_(self->_renderer, v9, v5 | v3, v10);
+  objc_msgSend_setShowsStatistics_(self->_renderer, v9, v5 | statisticsCopy, v10);
   objc_msgSend_unlock(self->_renderer, v11, v12, v13);
 
   objc_msgSend__setNeedsDisplay(self, v14, v15, v16);
@@ -1485,11 +1485,11 @@ LABEL_8:
   return objc_msgSend_stringWithFormat_(v6, v17, @"<%@: %p | world=%@ frame=%@ pointOfView=%@>", v18, v8, self, v12, v5, v16);
 }
 
-- (void)switchToCameraNamed:(id)a3
+- (void)switchToCameraNamed:(id)named
 {
-  v6 = objc_msgSend_world(self, a2, a3, v3);
+  v6 = objc_msgSend_world(self, a2, named, v3);
   v10 = objc_msgSend_rootNode(v6, v7, v8, v9);
-  v12 = objc_msgSend_childNodeWithName_recursively_(v10, v11, a3, 1);
+  v12 = objc_msgSend_childNodeWithName_recursively_(v10, v11, named, 1);
   if (v12)
   {
 
@@ -1501,7 +1501,7 @@ LABEL_8:
     v13 = sub_1AF0D5194();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_1AFDFBAD0(a3, v13);
+      sub_1AFDFBAD0(named, v13);
     }
   }
 }
@@ -1531,16 +1531,16 @@ LABEL_8:
   }
 }
 
-- (void)setDebugOptions:(unint64_t)a3
+- (void)setDebugOptions:(unint64_t)options
 {
-  objc_msgSend_setDebugOptions_(self->_renderer, a2, a3, v3);
+  objc_msgSend_setDebugOptions_(self->_renderer, a2, options, v3);
 
   objc_msgSend__setNeedsDisplay(self, v5, v6, v7);
 }
 
-- (void)setAntialiasingMode:(unint64_t)a3
+- (void)setAntialiasingMode:(unint64_t)mode
 {
-  objc_msgSend_setAntialiasingMode_(self->_renderer, a2, a3, v3);
+  objc_msgSend_setAntialiasingMode_(self->_renderer, a2, mode, v3);
 
   objc_msgSend__setNeedsDisplay(self, v5, v6, v7);
 }
@@ -1553,11 +1553,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v10.receiver = self;
   v10.super_class = VFXView;
-  [(VFXView *)&v10 setContentScaleFactor:a3];
+  [(VFXView *)&v10 setContentScaleFactor:factor];
   if (self->_renderer)
   {
     objc_msgSend__updateBackingSize(self, v4, v5, v6);
@@ -1586,7 +1586,7 @@ LABEL_8:
   objc_msgSend_vfx_setGestureRecognizers_(self, v5, v8, v7);
 }
 
-- (void)vfx_setGestureRecognizers:(id)a3
+- (void)vfx_setGestureRecognizers:(id)recognizers
 {
   v30 = *MEMORY[0x1E69E9840];
   v24 = 0u;
@@ -1617,13 +1617,13 @@ LABEL_8:
     while (v9);
   }
 
-  v12 = a3;
-  self->_controllerGestureRecognizers = v12;
+  recognizersCopy = recognizers;
+  self->_controllerGestureRecognizers = recognizersCopy;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v20, v28, 16);
+  v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(recognizersCopy, v13, &v20, v28, 16);
   if (v14)
   {
     v17 = v14;
@@ -1634,23 +1634,23 @@ LABEL_8:
       {
         if (*v21 != v18)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(recognizersCopy);
         }
 
         objc_msgSend_addGestureRecognizer_(self, v15, *(*(&v20 + 1) + 8 * j), v16);
       }
 
-      v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v15, &v20, v28, 16);
+      v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(recognizersCopy, v15, &v20, v28, 16);
     }
 
     while (v17);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v72 = *MEMORY[0x1E69E9840];
   if (sub_1AF28D89C())
   {
@@ -1716,13 +1716,13 @@ LABEL_8:
 
   v66.receiver = self;
   v66.super_class = VFXView;
-  return [(VFXView *)&v66 hitTest:a4 withEvent:x, y];
+  return [(VFXView *)&v66 hitTest:event withEvent:x, y];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!objc_msgSend_showsStatistics(self, a2, a3, a4) || (v10 = objc_msgSend_anyObject(a3, v7, v8, v9), objc_msgSend_locationInView_(v10, v11, self, v12), v14 = v13, v16 = v15, objc_msgSend_bounds(self, v17, v18, v19), v21 = v20 - v16, v25 = objc_msgSend__authoringEnvironment(self, v22, v23, v24), (objc_msgSend_didTapAtPoint_(v25, v26, v27, v28, v14, v21) & 1) == 0))
+  if (!objc_msgSend_showsStatistics(self, a2, began, event) || (v10 = objc_msgSend_anyObject(began, v7, v8, v9), objc_msgSend_locationInView_(v10, v11, self, v12), v14 = v13, v16 = v15, objc_msgSend_bounds(self, v17, v18, v19), v21 = v20 - v16, v25 = objc_msgSend__authoringEnvironment(self, v22, v23, v24), (objc_msgSend_didTapAtPoint_(v25, v26, v27, v28, v14, v21) & 1) == 0))
   {
     if (objc_msgSend_triggersEnabled(self, v7, v8, v9))
     {
@@ -1730,7 +1730,7 @@ LABEL_8:
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v31 = objc_msgSend_touchesForView_(a4, v29, self, v30);
+      v31 = objc_msgSend_touchesForView_(event, v29, self, v30);
       v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(v31, v32, &v44, v48, 16);
       if (v33)
       {
@@ -1762,20 +1762,20 @@ LABEL_8:
 
     v43.receiver = self;
     v43.super_class = VFXView;
-    [(VFXView *)&v43 touchesBegan:a3 withEvent:a4];
+    [(VFXView *)&v43 touchesBegan:began withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_triggersEnabled(self, a2, a3, a4))
+  if (objc_msgSend_triggersEnabled(self, a2, ended, event))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = objc_msgSend_touchesForView_(a4, v7, self, v8);
+    v9 = objc_msgSend_touchesForView_(event, v7, self, v8);
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v22, v26, 16);
     if (v11)
     {
@@ -1807,19 +1807,19 @@ LABEL_8:
 
   v21.receiver = self;
   v21.super_class = VFXView;
-  [(VFXView *)&v21 touchesBegan:a3 withEvent:a4];
+  [(VFXView *)&v21 touchesBegan:ended withEvent:event];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_triggersEnabled(self, a2, a3, a4))
+  if (objc_msgSend_triggersEnabled(self, a2, moved, event))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = objc_msgSend_touchesForView_(a4, v7, self, v8);
+    v9 = objc_msgSend_touchesForView_(event, v7, self, v8);
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v22, v26, 16);
     if (v11)
     {
@@ -1851,19 +1851,19 @@ LABEL_8:
 
   v21.receiver = self;
   v21.super_class = VFXView;
-  [(VFXView *)&v21 touchesBegan:a3 withEvent:a4];
+  [(VFXView *)&v21 touchesBegan:moved withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_triggersEnabled(self, a2, a3, a4))
+  if (objc_msgSend_triggersEnabled(self, a2, cancelled, event))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = objc_msgSend_touchesForView_(a4, v7, self, v8);
+    v9 = objc_msgSend_touchesForView_(event, v7, self, v8);
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v22, v26, 16);
     if (v11)
     {
@@ -1895,7 +1895,7 @@ LABEL_8:
 
   v21.receiver = self;
   v21.super_class = VFXView;
-  [(VFXView *)&v21 touchesBegan:a3 withEvent:a4];
+  [(VFXView *)&v21 touchesBegan:cancelled withEvent:event];
 }
 
 - (void)pauseDisplayLink
@@ -1933,9 +1933,9 @@ LABEL_8:
   objc_msgSend__interfaceOrientationDidChange(self->_renderer, v17, v18, v19);
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (!a3)
+  if (!window)
   {
     sub_1AF3B50F0(self);
     objc_msgSend_pauseDisplayLink(self, v5, v6, v7);
@@ -1944,10 +1944,10 @@ LABEL_8:
 
   v8.receiver = self;
   v8.super_class = VFXView;
-  [(VFXView *)&v8 willMoveToWindow:a3];
+  [(VFXView *)&v8 willMoveToWindow:window];
 }
 
-- (void)_enterForeground:(id)a3
+- (void)_enterForeground:(id)foreground
 {
   if (!self->_legacyView)
   {
@@ -1955,12 +1955,12 @@ LABEL_8:
     if (*(self + 425))
     {
       *(self + 425) &= ~1u;
-      v5 = objc_msgSend_world(self, a2, a3, v3);
+      v5 = objc_msgSend_world(self, a2, foreground, v3);
       v9 = objc_msgSend_clock(v5, v6, v7, v8);
       objc_msgSend_setPaused_(v9, v10, 0, v11);
     }
 
-    v12 = sub_1AF15ACD8(0, a2, a3, v3);
+    v12 = sub_1AF15ACD8(0, a2, foreground, v3);
     if (v12)
     {
       objc_msgSend_startAndReturnError_(v12, v13, 0, v15);
@@ -1989,12 +1989,12 @@ LABEL_8:
   }
 }
 
-- (void)_enterBackground:(id)a3
+- (void)_enterBackground:(id)background
 {
   if (!self->_legacyView)
   {
     *(self + 424) |= 0x80u;
-    v6 = objc_msgSend_world(self, a2, a3, v3);
+    v6 = objc_msgSend_world(self, a2, background, v3);
     v10 = objc_msgSend_clock(v6, v7, v8, v9);
     if ((objc_msgSend_isPaused(v10, v11, v12, v13) & 1) == 0)
     {
@@ -2082,11 +2082,11 @@ LABEL_8:
   return objc_msgSend_scene(v4, v5, v6, v7);
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v5 = objc_msgSend_legacyView(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyView(self, a2, scene, v3);
 
-  objc_msgSend_setScene_(v5, v6, a3, v7);
+  objc_msgSend_setScene_(v5, v6, scene, v7);
 }
 
 - (id)postRenderCallback
@@ -2096,26 +2096,26 @@ LABEL_8:
   return MEMORY[0x1EEE66B58](v4, sel_postRenderCallback, v5, v6);
 }
 
-- (void)setPostRenderCallback:(id)a3
+- (void)setPostRenderCallback:(id)callback
 {
-  v5 = objc_msgSend_legacyView(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyView(self, a2, callback, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setPostRenderCallback_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setPostRenderCallback_, callback, v6);
 }
 
-- (void)renderWithCompletion:(id)a3
+- (void)renderWithCompletion:(id)completion
 {
-  v5 = objc_msgSend_legacyView(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyView(self, a2, completion, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_renderWithCompletion_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_renderWithCompletion_, completion, v6);
 }
 
-- (void)renderWithPresentWithTransaction:(BOOL)a3 completion:(id)a4
+- (void)renderWithPresentWithTransaction:(BOOL)transaction completion:(id)completion
 {
-  v5 = a3;
-  v6 = objc_msgSend_legacyView(self, a2, a3, a4);
+  transactionCopy = transaction;
+  v6 = objc_msgSend_legacyView(self, a2, transaction, completion);
 
-  MEMORY[0x1EEE66B58](v6, sel_renderWithPresentWithTransaction_completion_, v5, a4);
+  MEMORY[0x1EEE66B58](v6, sel_renderWithPresentWithTransaction_completion_, transactionCopy, completion);
 }
 
 - (id)effect
@@ -2125,11 +2125,11 @@ LABEL_8:
   return MEMORY[0x1EEE66B58](v4, sel_effect, v5, v6);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v5 = objc_msgSend_legacyView(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyView(self, a2, effect, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setEffect_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setEffect_, effect, v6);
 }
 
 - (unsigned)resizingMode
@@ -2139,12 +2139,12 @@ LABEL_8:
   return MEMORY[0x1EEE66B58](v4, sel_resizingMode, v5, v6);
 }
 
-- (void)setResizingMode:(unsigned __int8)a3
+- (void)setResizingMode:(unsigned __int8)mode
 {
-  v4 = a3;
-  v5 = objc_msgSend_legacyView(self, a2, a3, v3);
+  modeCopy = mode;
+  v5 = objc_msgSend_legacyView(self, a2, mode, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setResizingMode_, v4, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setResizingMode_, modeCopy, v6);
 }
 
 - (double)scaleFactor
@@ -2155,7 +2155,7 @@ LABEL_8:
   return result;
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
   v5 = objc_msgSend_legacyView(self, a2, v3, v4);
 
@@ -2169,12 +2169,12 @@ LABEL_8:
   return objc_msgSend_framebufferOnly(v4, v5, v6, v7);
 }
 
-- (void)setFramebufferOnly:(BOOL)a3
+- (void)setFramebufferOnly:(BOOL)only
 {
-  v4 = a3;
-  v5 = objc_msgSend_legacyView(self, a2, a3, v3);
+  onlyCopy = only;
+  v5 = objc_msgSend_legacyView(self, a2, only, v3);
 
-  objc_msgSend_setFramebufferOnly_(v5, v6, v4, v7);
+  objc_msgSend_setFramebufferOnly_(v5, v6, onlyCopy, v7);
 }
 
 @end

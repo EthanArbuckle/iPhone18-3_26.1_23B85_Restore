@@ -1,50 +1,50 @@
 @interface ConnectionManager
 + (id)instance;
-- (BOOL)allowInRestrictedMode:(id)a3;
-- (BOOL)isAlwaysConnecting:(id)a3;
-- (BOOL)requireServicesAndMFi:(id)a3;
+- (BOOL)allowInRestrictedMode:(id)mode;
+- (BOOL)isAlwaysConnecting:(id)connecting;
+- (BOOL)requireServicesAndMFi:(id)fi;
 - (ConnectionManager)init;
 - (id)centralManagerStateString;
-- (id)peripheralForConnectionUUID:(id)a3;
-- (id)peripheralForIdentifier:(id)a3;
-- (id)peripheralToAddressString:(id)a3;
-- (void)analyzeConnectionError:(id)a3 peripheral:(id)a4 info:(id)a5;
-- (void)authDidFail:(id)a3;
-- (void)authDidSucceed:(id)a3;
-- (void)cancelPeripheralConnectionForConnectOnceIdentifier:(id)a3;
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 timestamp:(double)a5 isReconnecting:(BOOL)a6 error:(id)a7;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)connectAlways:(id)a3;
-- (void)connectOnce:(id)a3 connectionTimeoutEnabled:(BOOL)a4;
-- (void)connectPeripheral:(id)a3 options:(id)a4;
-- (void)connectionTimeout:(id)a3;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)peerDidIdleTimeout:(id)a3;
-- (void)peerIsUsingBuiltinService:(id)a3;
-- (void)performMFiAuth:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didModifyServices:(id)a4;
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheralPairingDidFail:(id)a3;
+- (id)peripheralForConnectionUUID:(id)d;
+- (id)peripheralForIdentifier:(id)identifier;
+- (id)peripheralToAddressString:(id)string;
+- (void)analyzeConnectionError:(id)error peripheral:(id)peripheral info:(id)info;
+- (void)authDidFail:(id)fail;
+- (void)authDidSucceed:(id)succeed;
+- (void)cancelPeripheralConnectionForConnectOnceIdentifier:(id)identifier;
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral timestamp:(double)timestamp isReconnecting:(BOOL)reconnecting error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)connectAlways:(id)always;
+- (void)connectOnce:(id)once connectionTimeoutEnabled:(BOOL)enabled;
+- (void)connectPeripheral:(id)peripheral options:(id)options;
+- (void)connectionTimeout:(id)timeout;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)peerDidIdleTimeout:(id)timeout;
+- (void)peerIsUsingBuiltinService:(id)service;
+- (void)performMFiAuth:(id)auth;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didModifyServices:(id)services;
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheralPairingDidFail:(id)fail;
 - (void)refreshConnectionAssertion;
 - (void)refreshPeripherals;
-- (void)sendAnalyticsEvent:(id)a3 withPayload:(id)a4;
-- (void)setIAPProperty:(id)a3 withValue:(id)a4 forPeripheral:(id)a5;
-- (void)setMFiAccessoryInfo:(id)a3 forPeripheral:(id)a4;
-- (void)transportClient:(id)a3 authStatusDidChange:(BOOL)a4 forConnectionWithUUID:(id)a5;
-- (void)transportClient:(id)a3 propertiesDidChange:(id)a4 forEndpointWithUUID:(id)a5 previousProperties:(id)a6 connectionUUID:(id)a7;
-- (void)transportClientServerDisconnected:(id)a3;
+- (void)sendAnalyticsEvent:(id)event withPayload:(id)payload;
+- (void)setIAPProperty:(id)property withValue:(id)value forPeripheral:(id)peripheral;
+- (void)setMFiAccessoryInfo:(id)info forPeripheral:(id)peripheral;
+- (void)transportClient:(id)client authStatusDidChange:(BOOL)change forConnectionWithUUID:(id)d;
+- (void)transportClient:(id)client propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD;
+- (void)transportClientServerDisconnected:(id)disconnected;
 @end
 
 @implementation ConnectionManager
@@ -61,35 +61,35 @@
   return v3;
 }
 
-- (void)connectOnce:(id)a3 connectionTimeoutEnabled:(BOOL)a4
+- (void)connectOnce:(id)once connectionTimeoutEnabled:(BOOL)enabled
 {
-  v9 = a3;
-  if (a4)
+  onceCopy = once;
+  if (enabled)
   {
-    v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"connectionTimeout:" selector:v9 userInfo:0 repeats:5.0];
-    v7 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-    [v7 setObject:v6 forKeyedSubscript:v9];
+    connectOnceNoTimeoutIdentifiers = [NSTimer scheduledTimerWithTimeInterval:self target:"connectionTimeout:" selector:onceCopy userInfo:0 repeats:5.0];
+    connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+    [connectOnceIdentifiersMap setObject:connectOnceNoTimeoutIdentifiers forKeyedSubscript:onceCopy];
   }
 
   else
   {
-    v6 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-    [v6 addObject:v9];
+    connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+    [connectOnceNoTimeoutIdentifiers addObject:onceCopy];
   }
 
-  v8 = [(ConnectionManager *)self denylistedIdentifiers];
-  [v8 removeObject:v9];
+  denylistedIdentifiers = [(ConnectionManager *)self denylistedIdentifiers];
+  [denylistedIdentifiers removeObject:onceCopy];
 
   [(ConnectionManager *)self refreshConnectionAssertion];
   [(ConnectionManager *)self refreshPeripherals];
 }
 
-- (void)connectAlways:(id)a3
+- (void)connectAlways:(id)always
 {
-  v4 = a3;
-  v5 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v6 = [v5 allKeys];
-  v7 = [v6 isEqualToArray:v4];
+  alwaysCopy = always;
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  allKeys = [connectAlwaysIdentifiersMap allKeys];
+  v7 = [allKeys isEqualToArray:alwaysCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -98,8 +98,8 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v4;
-    v9 = v4;
+    v17 = alwaysCopy;
+    v9 = alwaysCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -116,8 +116,8 @@
           }
 
           v14 = *(*(&v18 + 1) + 8 * v13);
-          v15 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-          v16 = [v15 objectForKeyedSubscript:v14];
+          connectAlwaysIdentifiersMap2 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+          v16 = [connectAlwaysIdentifiersMap2 objectForKeyedSubscript:v14];
 
           if (!v16)
           {
@@ -140,31 +140,31 @@
     [(ConnectionManager *)self refreshConnectionAssertion];
     [(ConnectionManager *)self refreshPeripherals];
 
-    v4 = v17;
+    alwaysCopy = v17;
   }
 }
 
-- (BOOL)isAlwaysConnecting:(id)a3
+- (BOOL)isAlwaysConnecting:(id)connecting
 {
-  v4 = a3;
-  v5 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v6 = [v4 identifier];
+  connectingCopy = connecting;
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  identifier = [connectingCopy identifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
-  LOBYTE(v4) = v7 != 0;
+  v7 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier];
+  LOBYTE(connectingCopy) = v7 != 0;
 
-  return v4;
+  return connectingCopy;
 }
 
-- (id)peripheralForIdentifier:(id)a3
+- (id)peripheralForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ConnectionManager *)self peripherals];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  peripherals = [(ConnectionManager *)self peripherals];
+  v6 = [peripherals countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -174,12 +174,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(peripherals);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -188,7 +188,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [peripherals countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -203,48 +203,48 @@ LABEL_11:
   return v6;
 }
 
-- (void)cancelPeripheralConnectionForConnectOnceIdentifier:(id)a3
+- (void)cancelPeripheralConnectionForConnectOnceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-  [v5 removeObject:v4];
+  identifierCopy = identifier;
+  connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+  [connectOnceNoTimeoutIdentifiers removeObject:identifierCopy];
 
-  v6 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-  [v6 removeObjectForKey:v4];
+  connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+  [connectOnceIdentifiersMap removeObjectForKey:identifierCopy];
 
   [(ConnectionManager *)self refreshConnectionAssertion];
 
   [(ConnectionManager *)self refreshPeripherals];
 }
 
-- (void)performMFiAuth:(id)a3
+- (void)performMFiAuth:(id)auth
 {
-  v4 = a3;
+  authCopy = auth;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v41 = v4;
+    *v41 = authCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Performing MFI Auth for CBPeripheral UUID %@", buf, 0xCu);
   }
 
-  v6 = [(ConnectionManager *)self centralManager];
-  v7 = [v6 state];
+  centralManager = [(ConnectionManager *)self centralManager];
+  state = [centralManager state];
 
-  if (v7 == 5)
+  if (state == 5)
   {
-    v8 = [(ConnectionManager *)self centralManager];
-    v39 = v4;
+    centralManager2 = [(ConnectionManager *)self centralManager];
+    v39 = authCopy;
     v9 = [NSArray arrayWithObjects:&v39 count:1];
-    v10 = [v8 retrievePeripheralsWithIdentifiers:v9];
-    v11 = [v10 firstObject];
+    v10 = [centralManager2 retrievePeripheralsWithIdentifiers:v9];
+    firstObject = [v10 firstObject];
 
-    LODWORD(v9) = [v11 hasTag:@"needsMFiAuthentication4.0"];
-    v12 = [(ConnectionManager *)self centralManager];
-    v13 = v12;
+    LODWORD(v9) = [firstObject hasTag:@"needsMFiAuthentication4.0"];
+    centralManager3 = [(ConnectionManager *)self centralManager];
+    v13 = centralManager3;
     if (v9)
     {
-      [v12 connectPeripheral:v11 options:0];
+      [centralManager3 connectPeripheral:firstObject options:0];
     }
 
     else
@@ -274,13 +274,13 @@ LABEL_11:
             }
 
             v25 = *(*(&v33 + 1) + 8 * i);
-            v26 = [v25 identifier];
-            v27 = [v26 isEqual:v4];
+            identifier = [v25 identifier];
+            v27 = [identifier isEqual:authCopy];
 
             if (v27)
             {
-              v30 = [(ConnectionManager *)self centralManager];
-              [v30 connectPeripheral:v25 options:0];
+              centralManager4 = [(ConnectionManager *)self centralManager];
+              [centralManager4 connectPeripheral:v25 options:0];
               v29 = v13;
               goto LABEL_21;
             }
@@ -304,13 +304,13 @@ LABEL_11:
       }
 
       v29 = objc_alloc_init(NSMutableDictionary);
-      v30 = objc_alloc_init(NSMutableArray);
+      centralManager4 = objc_alloc_init(NSMutableArray);
       v31 = [CBUUID UUIDWithString:@"0000FE13-0000-1000-8000-00805F9B34FB"];
-      [v30 addObject:v31];
+      [centralManager4 addObject:v31];
 
-      [v29 setObject:v30 forKeyedSubscript:CBConnectionEventMatchingOptionServiceUUIDs];
-      v32 = [(ConnectionManager *)self centralManager];
-      [v32 registerForConnectionEventsWithOptions:v29];
+      [v29 setObject:centralManager4 forKeyedSubscript:CBConnectionEventMatchingOptionServiceUUIDs];
+      centralManager5 = [(ConnectionManager *)self centralManager];
+      [centralManager5 registerForConnectionEventsWithOptions:v29];
 
 LABEL_21:
     }
@@ -322,44 +322,44 @@ LABEL_21:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(ConnectionManager *)self centralManager];
-      v17 = [v16 state];
+      centralManager6 = [(ConnectionManager *)self centralManager];
+      state2 = [centralManager6 state];
       *buf = 67109378;
-      *v41 = v17;
+      *v41 = state2;
       *&v41[4] = 2112;
-      *&v41[6] = v4;
+      *&v41[6] = authCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Manager state is %d, deferring MFI Auth for %@", buf, 0x12u);
     }
 
-    [(NSMutableSet *)self->_mfiAuthPendingPeripherals addObject:v4];
+    [(NSMutableSet *)self->_mfiAuthPendingPeripherals addObject:authCopy];
   }
 }
 
-- (void)centralManager:(id)a3 connectionEventDidOccur:(int64_t)a4 forPeripheral:(id)a5
+- (void)centralManager:(id)manager connectionEventDidOccur:(int64_t)occur forPeripheral:(id)peripheral
 {
-  v8 = a3;
-  v9 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   v10 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v9 name];
+    name = [peripheralCopy name];
     v16 = 138412546;
-    v17 = v12;
+    v17 = name;
     v18 = 2048;
-    v19 = a4;
+    occurCopy = occur;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Peripheral %@ connection event:%tu", &v16, 0x16u);
   }
 
-  if (a4)
+  if (occur)
   {
-    if (a4 == 1)
+    if (occur == 1)
     {
-      v13 = [(ConnectionManager *)self centralManager];
-      [v13 connectPeripheral:v9 options:0];
+      centralManager = [(ConnectionManager *)self centralManager];
+      [centralManager connectPeripheral:peripheralCopy options:0];
 
-      v14 = [(ConnectionManager *)self centralManager];
-      [v14 registerForConnectionEventsWithOptions:0];
+      centralManager2 = [(ConnectionManager *)self centralManager];
+      [centralManager2 registerForConnectionEventsWithOptions:0];
     }
   }
 
@@ -368,12 +368,12 @@ LABEL_21:
     v15 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_100075794(v15, v9);
+      sub_100075794(v15, peripheralCopy);
     }
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
   v4 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -383,21 +383,21 @@ LABEL_21:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
   {
     sub_100075828();
   }
 
-  v11 = v9;
+  v11 = pairingCopy;
   if (v11)
   {
-    v12 = [(ConnectionManager *)self peripherals];
-    v13 = [v12 containsObject:v11];
+    peripherals = [(ConnectionManager *)self peripherals];
+    v13 = [peripherals containsObject:v11];
 
     if (v13)
     {
@@ -407,22 +407,22 @@ LABEL_21:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [v11 identifier];
+          identifier = [v11 identifier];
           v18 = 138412546;
-          v19 = v16;
+          v19 = identifier;
           v20 = 2112;
-          v21 = v10;
+          v21 = errorCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "pairing failed with peer %@ error %@, disconnecting", &v18, 0x16u);
         }
 
-        v17 = [(ConnectionManager *)self centralManager];
-        [v17 cancelPeripheralConnection:v11];
+        centralManager = [(ConnectionManager *)self centralManager];
+        [centralManager cancelPeripheralConnection:v11];
       }
     }
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
   v4 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -449,9 +449,9 @@ LABEL_21:
     centralManager = v2->_centralManager;
     v2->_centralManager = v5;
 
-    v7 = [(CBCentralManager *)v2->_centralManager sharedPairingAgent];
+    sharedPairingAgent = [(CBCentralManager *)v2->_centralManager sharedPairingAgent];
     pairingAgent = v2->_pairingAgent;
-    v2->_pairingAgent = v7;
+    v2->_pairingAgent = sharedPairingAgent;
 
     [(CBPairingAgent *)v2->_pairingAgent setDelegate:v2];
     v9 = objc_alloc_init(NSMutableDictionary);
@@ -511,33 +511,33 @@ LABEL_21:
   return v2;
 }
 
-- (BOOL)allowInRestrictedMode:(id)a3
+- (BOOL)allowInRestrictedMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 hasTag:@"A1603"] & 1) != 0 || (objc_msgSend(v3, "hasTag:", @"A2051") & 1) != 0 || (objc_msgSend(v3, "hasTag:", @"A3085") & 1) != 0 || (objc_msgSend(v3, "hasTag:", @"A2538") & 1) != 0 || (objc_msgSend(v3, "hasTag:", @"FastConnection"))
+  modeCopy = mode;
+  if ([modeCopy hasTag:@"A1603"] & 1) != 0 || (objc_msgSend(modeCopy, "hasTag:", @"A2051") & 1) != 0 || (objc_msgSend(modeCopy, "hasTag:", @"A3085") & 1) != 0 || (objc_msgSend(modeCopy, "hasTag:", @"A2538") & 1) != 0 || (objc_msgSend(modeCopy, "hasTag:", @"FastConnection"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasTag:@"DA_ASK_RETAIN_DEVICE"];
+    v4 = [modeCopy hasTag:@"DA_ASK_RETAIN_DEVICE"];
   }
 
   return v4;
 }
 
-- (BOOL)requireServicesAndMFi:(id)a3
+- (BOOL)requireServicesAndMFi:(id)fi
 {
-  v3 = a3;
-  if ([v3 hasTag:@"A2538"])
+  fiCopy = fi;
+  if ([fiCopy hasTag:@"A2538"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasTag:@"MFi-Generic"];
+    v4 = [fiCopy hasTag:@"MFi-Generic"];
   }
 
   return v4;
@@ -545,45 +545,45 @@ LABEL_21:
 
 - (void)refreshPeripherals
 {
-  v3 = [(ConnectionManager *)self centralManager];
-  if ([v3 state] == 5)
+  centralManager = [(ConnectionManager *)self centralManager];
+  if ([centralManager state] == 5)
   {
   }
 
   else
   {
-    v4 = [(ConnectionManager *)self centralManager];
-    v5 = [v4 state];
+    centralManager2 = [(ConnectionManager *)self centralManager];
+    state = [centralManager2 state];
 
-    if (v5 != 10)
+    if (state != 10)
     {
       return;
     }
   }
 
   v6 = +[NSMutableSet set];
-  v7 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-  v8 = [v7 allKeys];
-  [v6 addObjectsFromArray:v8];
+  connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+  allKeys = [connectOnceIdentifiersMap allKeys];
+  [v6 addObjectsFromArray:allKeys];
 
-  v9 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-  v10 = [v9 allObjects];
-  [v6 addObjectsFromArray:v10];
+  connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+  allObjects = [connectOnceNoTimeoutIdentifiers allObjects];
+  [v6 addObjectsFromArray:allObjects];
 
-  v11 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v12 = [v11 allKeys];
-  [v6 addObjectsFromArray:v12];
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  allKeys2 = [connectAlwaysIdentifiersMap allKeys];
+  [v6 addObjectsFromArray:allKeys2];
 
-  v13 = [(ConnectionManager *)self centralManager];
-  v14 = [v6 allObjects];
-  v15 = [v13 retrievePeripheralsWithIdentifiers:v14];
+  centralManager3 = [(ConnectionManager *)self centralManager];
+  allObjects2 = [v6 allObjects];
+  v15 = [centralManager3 retrievePeripheralsWithIdentifiers:allObjects2];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v16 = [(ConnectionManager *)self peripherals];
-  v17 = [v16 countByEnumeratingWithState:&v43 objects:v50 count:16];
+  peripherals = [(ConnectionManager *)self peripherals];
+  v17 = [peripherals countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v17)
   {
     v18 = v17;
@@ -594,7 +594,7 @@ LABEL_21:
       {
         if (*v44 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(peripherals);
         }
 
         v21 = *(*(&v43 + 1) + 8 * i);
@@ -604,9 +604,9 @@ LABEL_21:
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
           {
             v23 = v22;
-            v24 = [v21 name];
+            name = [v21 name];
             *buf = 138412290;
-            v49 = v24;
+            v49 = name;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Disconnecting Peripheral %@ as it is not in list of Peripherals to connect.", buf, 0xCu);
           }
 
@@ -614,7 +614,7 @@ LABEL_21:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v43 objects:v50 count:16];
+      v18 = [peripherals countByEnumeratingWithState:&v43 objects:v50 count:16];
     }
 
     while (v18);
@@ -641,10 +641,10 @@ LABEL_21:
         }
 
         v30 = *(*(&v39 + 1) + 8 * v29);
-        v31 = [(ConnectionManager *)self centralManager];
-        v32 = [v31 state];
+        centralManager4 = [(ConnectionManager *)self centralManager];
+        state2 = [centralManager4 state];
 
-        if (v32 != 10)
+        if (state2 != 10)
         {
           goto LABEL_24;
         }
@@ -668,9 +668,9 @@ LABEL_24:
         if (v35)
         {
           v36 = v34;
-          v37 = [v30 name];
+          name2 = [v30 name];
           *buf = 138412290;
-          v49 = v37;
+          v49 = name2;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Bluetooth is restricted. Outgoing connection to %@ not allowed.", buf, 0xCu);
         }
 
@@ -689,31 +689,31 @@ LABEL_25:
   [(ConnectionManager *)self setPeripherals:v25];
 }
 
-- (void)connectPeripheral:(id)a3 options:(id)a4
+- (void)connectPeripheral:(id)peripheral options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ConnectionManager *)self connectOptionsAllowableOnConnectedPeripherals];
-  v9 = [v7 allKeys];
-  v10 = [NSSet setWithArray:v9];
-  v11 = [v8 intersectsSet:v10];
+  peripheralCopy = peripheral;
+  optionsCopy = options;
+  connectOptionsAllowableOnConnectedPeripherals = [(ConnectionManager *)self connectOptionsAllowableOnConnectedPeripherals];
+  allKeys = [optionsCopy allKeys];
+  v10 = [NSSet setWithArray:allKeys];
+  v11 = [connectOptionsAllowableOnConnectedPeripherals intersectsSet:v10];
 
-  v12 = [(ConnectionManager *)self centralManager];
-  if ([v12 state] == 5)
+  centralManager = [(ConnectionManager *)self centralManager];
+  if ([centralManager state] == 5)
   {
 
     goto LABEL_4;
   }
 
-  v13 = [(ConnectionManager *)self centralManager];
-  v14 = [v13 state];
+  centralManager2 = [(ConnectionManager *)self centralManager];
+  state = [centralManager2 state];
 
-  if (v14 == 10)
+  if (state == 10)
   {
 LABEL_4:
-    if (v7)
+    if (optionsCopy)
     {
-      v15 = [v7 mutableCopy];
+      v15 = [optionsCopy mutableCopy];
     }
 
     else
@@ -722,9 +722,9 @@ LABEL_4:
     }
 
     v16 = v15;
-    if ([v6 state])
+    if ([peripheralCopy state])
     {
-      if ([v6 state] == 2)
+      if ([peripheralCopy state] == 2)
       {
         if (!v11)
         {
@@ -736,11 +736,11 @@ LABEL_16:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v25 = v24;
-          v26 = [v6 name];
+          name = [peripheralCopy name];
           *v40 = 138412802;
-          *&v40[4] = v26;
+          *&v40[4] = name;
           *&v40[12] = 2048;
-          *&v40[14] = [v6 state];
+          *&v40[14] = [peripheralCopy state];
           *&v40[22] = 2112;
           v41 = v16;
           v27 = "Connecting peripheral %@ with state %ld and options %@...";
@@ -752,11 +752,11 @@ LABEL_29:
 
 LABEL_30:
         v21 = [(ConnectionManager *)self centralManager:*v40];
-        [v21 connectPeripheral:v6 options:v16];
+        [v21 connectPeripheral:peripheralCopy options:v16];
         goto LABEL_31;
       }
 
-      if ((([v6 state] == 1) & v11) != 0)
+      if ((([peripheralCopy state] == 1) & v11) != 0)
       {
         goto LABEL_16;
       }
@@ -766,9 +766,9 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v17 = [(ConnectionManager *)self denylistedIdentifiers];
-    v18 = [v6 identifier];
-    v19 = [v17 containsObject:v18];
+    denylistedIdentifiers = [(ConnectionManager *)self denylistedIdentifiers];
+    identifier = [peripheralCopy identifier];
+    v19 = [denylistedIdentifiers containsObject:identifier];
 
     if (v19)
     {
@@ -779,9 +779,9 @@ LABEL_32:
       }
 
       v21 = v20;
-      v22 = [v6 name];
+      name2 = [peripheralCopy name];
       *v40 = 138412290;
-      *&v40[4] = v22;
+      *&v40[4] = name2;
       v23 = "Not connecting peripheral %@ as it is denylisted";
 LABEL_14:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, v23, v40, 0xCu);
@@ -790,27 +790,27 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v30 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-    v31 = [v6 identifier];
-    v32 = [v30 objectForKeyedSubscript:v31];
+    connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+    identifier2 = [peripheralCopy identifier];
+    v32 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier2];
 
     if (v32)
     {
       v33 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000758AC(v33, v6);
+        sub_1000758AC(v33, peripheralCopy);
       }
 
       [v16 setObject:&__kCFBooleanTrue forKeyedSubscript:CBConnectPeripheralOptionEnableAutoReconnect];
     }
 
-    v34 = [(ConnectionManager *)self centralManager];
-    v35 = [v34 state];
+    centralManager3 = [(ConnectionManager *)self centralManager];
+    state2 = [centralManager3 state];
 
-    if (v35 == 10)
+    if (state2 == 10)
     {
-      v36 = [(ConnectionManager *)self allowInRestrictedMode:v6];
+      v36 = [(ConnectionManager *)self allowInRestrictedMode:peripheralCopy];
       v37 = qword_1000DDBC8;
       v38 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
       if (!v36)
@@ -821,9 +821,9 @@ LABEL_31:
         }
 
         v21 = v37;
-        v22 = [v6 name];
+        name2 = [peripheralCopy name];
         *v40 = 138412290;
-        *&v40[4] = v22;
+        *&v40[4] = name2;
         v23 = "Ignoring connection to %@ since bluetooth state is restricted";
         goto LABEL_14;
       }
@@ -834,9 +834,9 @@ LABEL_31:
       }
 
       v25 = v37;
-      v26 = [v6 name];
+      name = [peripheralCopy name];
       *v40 = 138412546;
-      *&v40[4] = v26;
+      *&v40[4] = name;
       *&v40[12] = 2112;
       *&v40[14] = v16;
       v27 = "Allowing connection to Apple Pencil %@ options %@...";
@@ -851,9 +851,9 @@ LABEL_31:
       }
 
       v25 = v39;
-      v26 = [v6 name];
+      name = [peripheralCopy name];
       *v40 = 138412546;
-      *&v40[4] = v26;
+      *&v40[4] = name;
       *&v40[12] = 2112;
       *&v40[14] = v16;
       v27 = "Connecting peripheral %@ options %@...";
@@ -869,8 +869,8 @@ LABEL_33:
 
 - (void)refreshConnectionAssertion
 {
-  v3 = [(ConnectionManager *)self centralManager];
-  if ([v3 state] == 4)
+  centralManager = [(ConnectionManager *)self centralManager];
+  if ([centralManager state] == 4)
   {
 
 LABEL_3:
@@ -879,22 +879,22 @@ LABEL_3:
     return;
   }
 
-  v4 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-  if ([v4 count])
+  connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+  if ([connectOnceIdentifiersMap count])
   {
     goto LABEL_9;
   }
 
-  v5 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  if ([v5 count])
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  if ([connectAlwaysIdentifiersMap count])
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-  v10 = [v9 count];
+  connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+  v10 = [connectOnceNoTimeoutIdentifiers count];
 
   if (!v10)
   {
@@ -902,9 +902,9 @@ LABEL_9:
   }
 
 LABEL_10:
-  v6 = [(ConnectionManager *)self connectionAssertion];
+  connectionAssertion = [(ConnectionManager *)self connectionAssertion];
 
-  if (!v6)
+  if (!connectionAssertion)
   {
     v11 = [NSString stringWithFormat:@"com.apple.%@", objc_opt_class()];
     v7 = v11;
@@ -914,16 +914,16 @@ LABEL_10:
   }
 }
 
-- (void)connectionTimeout:(id)a3
+- (void)connectionTimeout:(id)timeout
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  timeoutCopy = timeout;
+  userInfo = [timeoutCopy userInfo];
+  connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+  v7 = [connectOnceIdentifiersMap objectForKeyedSubscript:userInfo];
 
-  if (v7 == v4)
+  if (v7 == timeoutCopy)
   {
-    v8 = [(ConnectionManager *)self peripheralForIdentifier:v5];
+    v8 = [(ConnectionManager *)self peripheralForIdentifier:userInfo];
     v9 = v8;
     if (v8 && [v8 state] == 1)
     {
@@ -933,8 +933,8 @@ LABEL_10:
         sub_100075950(v10, v9);
       }
 
-      v11 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-      [v11 removeObjectForKey:v5];
+      connectOnceIdentifiersMap2 = [(ConnectionManager *)self connectOnceIdentifiersMap];
+      [connectOnceIdentifiersMap2 removeObjectForKey:userInfo];
 
       [(ConnectionManager *)self refreshConnectionAssertion];
       [(ConnectionManager *)self refreshPeripherals];
@@ -942,30 +942,30 @@ LABEL_10:
   }
 }
 
-- (void)analyzeConnectionError:(id)a3 peripheral:(id)a4 info:(id)a5
+- (void)analyzeConnectionError:(id)error peripheral:(id)peripheral info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 domain];
-  if (v11 == CBErrorDomain && [v8 code] == 6)
+  errorCopy = error;
+  peripheralCopy = peripheral;
+  infoCopy = info;
+  domain = [errorCopy domain];
+  if (domain == CBErrorDomain && [errorCopy code] == 6)
   {
 
     goto LABEL_7;
   }
 
-  v12 = [v8 domain];
-  v13 = v12;
-  if (v12 == CBInternalErrorDomain)
+  domain2 = [errorCopy domain];
+  v13 = domain2;
+  if (domain2 == CBInternalErrorDomain)
   {
-    v14 = [v8 code];
+    code = [errorCopy code];
 
-    if (v14 == 31)
+    if (code == 31)
     {
 LABEL_7:
       v15 = +[NSDate date];
-      v16 = [v10 date];
-      [v15 timeIntervalSinceDate:v16];
+      date = [infoCopy date];
+      [v15 timeIntervalSinceDate:date];
       v18 = v17;
 
       if (v18 < 10.0)
@@ -979,34 +979,34 @@ LABEL_7:
   {
   }
 
-  if ([v10 tryCount])
+  if ([infoCopy tryCount])
   {
     v19 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v9 name];
+      name = [peripheralCopy name];
       *buf = 138412546;
-      v47 = v21;
+      v47 = name;
       v48 = 2048;
-      v49 = [v10 tryCount];
+      tryCount = [infoCopy tryCount];
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Peripheral %@ did not use any built-in service, strike #%lu", buf, 0x16u);
     }
 
-    v22 = [v9 hasTag:@"DoNotStopAutoConnecting"];
-    if ([v10 tryCount] >= 5 && (v22 & 1) == 0)
+    v22 = [peripheralCopy hasTag:@"DoNotStopAutoConnecting"];
+    if ([infoCopy tryCount] >= 5 && (v22 & 1) == 0)
     {
       v23 = @"A1603";
-      if (([v9 hasTag:@"A1603"] & 1) == 0)
+      if (([peripheralCopy hasTag:@"A1603"] & 1) == 0)
       {
         v23 = @"A2051";
-        if (([v9 hasTag:@"A2051"] & 1) == 0)
+        if (([peripheralCopy hasTag:@"A2051"] & 1) == 0)
         {
           v23 = @"A3085";
-          if (([v9 hasTag:@"A3085"] & 1) == 0)
+          if (([peripheralCopy hasTag:@"A3085"] & 1) == 0)
           {
             v23 = @"A2538";
-            if (![v9 hasTag:@"A2538"])
+            if (![peripheralCopy hasTag:@"A2538"])
             {
               v23 = @"Unknown";
             }
@@ -1014,75 +1014,75 @@ LABEL_7:
         }
       }
 
-      v43 = self;
+      selfCopy = self;
       v24 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v25 = v24;
-        v26 = [v9 name];
-        v27 = [v8 domain];
-        v28 = [v8 code];
+        name2 = [peripheralCopy name];
+        domain3 = [errorCopy domain];
+        code2 = [errorCopy code];
         *buf = 138478595;
         v47 = v23;
         v48 = 2113;
-        v49 = v26;
+        tryCount = name2;
         v50 = 2112;
-        v51 = v27;
+        v51 = domain3;
         v52 = 2048;
-        v53 = v28;
+        v53 = code2;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Device type : %{private}@. Removing autoconnect tag for Peripheral %{private}@  : Error domain : %@ , Error code : %ld", buf, 0x2Au);
       }
 
       v29 = +[NSNotificationCenter defaultCenter];
-      [v29 postNotificationName:@"PeerIsNotUsingBuiltinServiceNotification" object:v9];
+      [v29 postNotificationName:@"PeerIsNotUsingBuiltinServiceNotification" object:peripheralCopy];
 
       v44[0] = @"DurationSinceLastSuccessConnectionInSecs";
       v30 = +[NSDate date];
-      v31 = [v10 date];
-      [v30 timeIntervalSinceDate:v31];
+      date2 = [infoCopy date];
+      [v30 timeIntervalSinceDate:date2];
       v32 = [NSNumber numberWithDouble:?];
       v45[0] = v32;
       v45[1] = v23;
       v44[1] = @"ApplePencilGen";
       v44[2] = @"ConnectionRetryCount";
-      v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 tryCount]);
+      v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [infoCopy tryCount]);
       v45[2] = v33;
       v44[3] = @"DisconnectionReason";
-      v34 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+      v34 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
       v45[3] = v34;
       v35 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:4];
 
-      self = v43;
-      [(ConnectionManager *)v43 sendAnalyticsEvent:@"com.apple.Bluetooth.PencilReconnectionFailures" withPayload:v35];
+      self = selfCopy;
+      [(ConnectionManager *)selfCopy sendAnalyticsEvent:@"com.apple.Bluetooth.PencilReconnectionFailures" withPayload:v35];
     }
   }
 
-  v36 = [v8 domain];
-  if (v36 != CBErrorDomain)
+  domain4 = [errorCopy domain];
+  if (domain4 != CBErrorDomain)
   {
     goto LABEL_26;
   }
 
-  v37 = [v8 code];
+  code3 = [errorCopy code];
 
-  if (v37 == 14)
+  if (code3 == 14)
   {
     v38 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v39 = v38;
-      v40 = [v9 name];
+      name3 = [peripheralCopy name];
       *buf = 138412290;
-      v47 = v40;
+      v47 = name3;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Peripheral %@ removed pairing info, stop always connect", buf, 0xCu);
     }
 
     v41 = +[NSNotificationCenter defaultCenter];
-    [v41 postNotificationName:@"PeerIsNotUsingBuiltinServiceNotification" object:v9];
+    [v41 postNotificationName:@"PeerIsNotUsingBuiltinServiceNotification" object:peripheralCopy];
 
-    v36 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-    v42 = [v9 identifier];
-    [(NSString *)v36 removeObjectForKey:v42];
+    domain4 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+    identifier = [peripheralCopy identifier];
+    [(NSString *)domain4 removeObjectForKey:identifier];
 
 LABEL_26:
   }
@@ -1090,26 +1090,26 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ConnectionManager *)self centralManagerStateString];
+    centralManagerStateString = [(ConnectionManager *)self centralManagerStateString];
     *buf = 138412290;
-    v71 = v7;
+    v71 = centralManagerStateString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CentralManager state is now %@", buf, 0xCu);
   }
 
   [(ConnectionManager *)self refreshConnectionAssertion];
-  v8 = [(ConnectionManager *)self centralManager];
-  v9 = [v8 state];
+  centralManager = [(ConnectionManager *)self centralManager];
+  state = [centralManager state];
 
-  if (v9 == 10)
+  if (state == 10)
   {
-    v50 = v4;
+    v50 = stateCopy;
     v10 = objc_opt_new();
     v54 = objc_opt_new();
     v53 = objc_opt_new();
@@ -1118,8 +1118,8 @@ LABEL_27:
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v11 = [(ConnectionManager *)self peripherals];
-    v12 = [v11 countByEnumeratingWithState:&v63 objects:v69 count:16];
+    peripherals = [(ConnectionManager *)self peripherals];
+    v12 = [peripherals countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1130,7 +1130,7 @@ LABEL_27:
         {
           if (*v64 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(peripherals);
           }
 
           v16 = *(*(&v63 + 1) + 8 * i);
@@ -1153,7 +1153,7 @@ LABEL_27:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v63 objects:v69 count:16];
+        v13 = [peripherals countByEnumeratingWithState:&v63 objects:v69 count:16];
       }
 
       while (v13);
@@ -1179,27 +1179,27 @@ LABEL_27:
           }
 
           v22 = *(*(&v59 + 1) + 8 * j);
-          v23 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-          v24 = [v22 identifier];
-          v25 = [v23 objectForKey:v24];
+          connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+          identifier = [v22 identifier];
+          v25 = [connectOnceIdentifiersMap objectForKey:identifier];
 
-          v26 = [(ConnectionManager *)self clientServiceManagerMap];
-          v27 = [v26 objectForKey:v22];
+          clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+          v27 = [clientServiceManagerMap objectForKey:v22];
 
-          v28 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-          v29 = [v22 identifier];
-          v30 = [v28 objectForKey:v29];
+          connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+          identifier2 = [v22 identifier];
+          v30 = [connectAlwaysIdentifiersMap objectForKey:identifier2];
 
           if (v25)
           {
-            v31 = [v22 identifier];
-            [v53 setObject:v25 forKey:v31];
+            identifier3 = [v22 identifier];
+            [v53 setObject:v25 forKey:identifier3];
           }
 
           if (v30)
           {
-            v32 = [v22 identifier];
-            [v54 setObject:v30 forKey:v32];
+            identifier4 = [v22 identifier];
+            [v54 setObject:v30 forKey:identifier4];
           }
 
           if (v27)
@@ -1214,14 +1214,14 @@ LABEL_27:
       while (v19);
     }
 
-    v33 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-    [v33 setDictionary:v53];
+    connectOnceIdentifiersMap2 = [(ConnectionManager *)self connectOnceIdentifiersMap];
+    [connectOnceIdentifiersMap2 setDictionary:v53];
 
-    v34 = [(ConnectionManager *)self clientServiceManagerMap];
-    [v34 setDictionary:v52];
+    clientServiceManagerMap2 = [(ConnectionManager *)self clientServiceManagerMap];
+    [clientServiceManagerMap2 setDictionary:v52];
 
-    v35 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-    [v35 setDictionary:v54];
+    connectAlwaysIdentifiersMap2 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+    [connectAlwaysIdentifiersMap2 setDictionary:v54];
 
     [(ConnectionManager *)self setDenylistedIdentifiers:0];
     [(ConnectionManager *)self refreshPeripherals];
@@ -1229,32 +1229,32 @@ LABEL_27:
 
   else
   {
-    v36 = [(ConnectionManager *)self centralManager];
-    v37 = [v36 state];
+    centralManager2 = [(ConnectionManager *)self centralManager];
+    state2 = [centralManager2 state];
 
-    if (v37 != 5)
+    if (state2 != 5)
     {
-      v45 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-      [v45 removeAllObjects];
+      connectOnceIdentifiersMap3 = [(ConnectionManager *)self connectOnceIdentifiersMap];
+      [connectOnceIdentifiersMap3 removeAllObjects];
 
-      v46 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-      [v46 removeAllObjects];
+      connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+      [connectOnceNoTimeoutIdentifiers removeAllObjects];
 
       [(ConnectionManager *)self setConnectAlwaysIdentifiersMap:0];
-      v47 = [(ConnectionManager *)self denylistedIdentifiers];
-      [v47 removeAllObjects];
+      denylistedIdentifiers = [(ConnectionManager *)self denylistedIdentifiers];
+      [denylistedIdentifiers removeAllObjects];
 
       [(ConnectionManager *)self setPeripherals:0];
-      v48 = [(ConnectionManager *)self clientServiceManagerMap];
-      [v48 removeAllObjects];
+      clientServiceManagerMap3 = [(ConnectionManager *)self clientServiceManagerMap];
+      [clientServiceManagerMap3 removeAllObjects];
 
-      v49 = [(ConnectionManager *)self accessoryConnectionMap];
-      [v49 removeAllObjects];
+      accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+      [accessoryConnectionMap removeAllObjects];
 
       goto LABEL_43;
     }
 
-    v50 = v4;
+    v50 = stateCopy;
     [(ConnectionManager *)self refreshPeripherals];
     v57 = 0u;
     v58 = 0u;
@@ -1296,57 +1296,57 @@ LABEL_27:
     [(NSMutableSet *)self->_mfiAuthPendingPeripherals removeAllObjects];
   }
 
-  v4 = v50;
+  stateCopy = v50;
 LABEL_43:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 name];
+    name = [peripheralCopy name];
     *buf = 138412290;
-    v54 = v10;
+    v54 = name;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Peripheral %@ is now connected", buf, 0xCu);
   }
 
-  v11 = [(ConnectionManager *)self accessoryConnectionMap];
-  v12 = [v11 objectForKey:v7];
+  accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+  v12 = [accessoryConnectionMap objectForKey:peripheralCopy];
 
   if (!v12)
   {
 LABEL_9:
-    if (![v7 hasTag:@"pencilMFiAuth4.0Passed"])
+    if (![peripheralCopy hasTag:@"pencilMFiAuth4.0Passed"])
     {
-      if (([v7 hasTag:@"needsMFiAuthentication4.0"] & 1) == 0 && !objc_msgSend(v7, "hasTag:", @"needsMFiAuthenticationCertClass2.0c"))
+      if (([peripheralCopy hasTag:@"needsMFiAuthentication4.0"] & 1) == 0 && !objc_msgSend(peripheralCopy, "hasTag:", @"needsMFiAuthenticationCertClass2.0c"))
       {
         goto LABEL_37;
       }
 
-      [v7 setDelegate:self];
-      v23 = [(ConnectionManager *)self centralManager];
-      v24 = [v23 sharedPairingAgent];
-      v16 = [v24 retrievePairedPeers];
+      [peripheralCopy setDelegate:self];
+      centralManager = [(ConnectionManager *)self centralManager];
+      sharedPairingAgent = [centralManager sharedPairingAgent];
+      retrievePairedPeers = [sharedPairingAgent retrievePairedPeers];
 
       v51[0] = _NSConcreteStackBlock;
       v51[1] = 3221225472;
       v51[2] = sub_100036EEC;
       v51[3] = &unk_1000BDD58;
-      v25 = v7;
+      v25 = peripheralCopy;
       v52 = v25;
-      if ([v16 indexOfObjectPassingTest:v51] != 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend(v25, "hasTag:", @"A2538") & 1) == 0)
+      if ([retrievePairedPeers indexOfObjectPassingTest:v51] != 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend(v25, "hasTag:", @"A2538") & 1) == 0)
       {
         v26 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v27 = v26;
-          v28 = [v25 name];
+          name2 = [v25 name];
           *buf = 138412290;
-          v54 = v28;
+          v54 = name2;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Opening L2CAP auth channel to %@", buf, 0xCu);
         }
 
@@ -1355,26 +1355,26 @@ LABEL_9:
 
         v30 = objc_alloc_init(MFiAccessoryConnection);
         [(MFiAccessoryConnection *)v30 setAuthInProgress:1];
-        v31 = [(ConnectionManager *)self accessoryConnectionMap];
-        [v31 setObject:v30 forKeyedSubscript:v25];
+        accessoryConnectionMap2 = [(ConnectionManager *)self accessoryConnectionMap];
+        [accessoryConnectionMap2 setObject:v30 forKeyedSubscript:v25];
 
         if ([v25 hasTag:@"needsMFiAuthentication4.0"])
         {
-          v32 = [(ConnectionManager *)self peripheralToAddressString:v25];
+          uUIDString = [(ConnectionManager *)self peripheralToAddressString:v25];
         }
 
         else if ([v25 hasTag:@"needsMFiAuthenticationCertClass2.0c"])
         {
-          v37 = [v25 identifier];
-          v32 = [v37 UUIDString];
+          identifier = [v25 identifier];
+          uUIDString = [identifier UUIDString];
         }
 
         else
         {
-          v32 = 0;
+          uUIDString = 0;
         }
 
-        [(MFiAccessoryConnection *)v30 activateConnectionWithIdentifier:v32];
+        [(MFiAccessoryConnection *)v30 activateConnectionWithIdentifier:uUIDString];
         if ([v25 hasTag:@"MFi-Generic"])
         {
           [(MFiAccessoryConnection *)v30 activateGenericEndpoint];
@@ -1399,10 +1399,10 @@ LABEL_9:
     }
 
 LABEL_10:
-    v16 = [(ConnectionManager *)self peripheralToAddressString:v7];
+    retrievePairedPeers = [(ConnectionManager *)self peripheralToAddressString:peripheralCopy];
     v17 = +[ACCTransportClient sharedClient];
-    v18 = [(MFiAccessoryConnection *)v12 connectionUUID];
-    v19 = [v17 identifierForConnectionWithUUID:v18];
+    connectionUUID = [(MFiAccessoryConnection *)v12 connectionUUID];
+    v19 = [v17 identifierForConnectionWithUUID:connectionUUID];
 
     v20 = +[ACCTransportClient sharedClient];
     [v20 setDelegate:self];
@@ -1416,7 +1416,7 @@ LABEL_10:
 
     if (v12)
     {
-      if ([v19 isEqualToString:v16])
+      if ([v19 isEqualToString:retrievePairedPeers])
       {
         v22 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -1435,34 +1435,34 @@ LABEL_10:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v34 = v33;
-        v35 = [v7 name];
+        name3 = [peripheralCopy name];
         *buf = 138412290;
-        v54 = v35;
+        v54 = name3;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Creating accessory connection without auth for %@ as it previously passed auth", buf, 0xCu);
       }
 
       v12 = objc_alloc_init(MFiAccessoryConnection);
-      v36 = [(ConnectionManager *)self accessoryConnectionMap];
-      [v36 setObject:v12 forKeyedSubscript:v7];
+      accessoryConnectionMap3 = [(ConnectionManager *)self accessoryConnectionMap];
+      [accessoryConnectionMap3 setObject:v12 forKeyedSubscript:peripheralCopy];
     }
 
-    [(MFiAccessoryConnection *)v12 activateConnectionWithIdentifier:v16];
+    [(MFiAccessoryConnection *)v12 activateConnectionWithIdentifier:retrievePairedPeers];
     [(MFiAccessoryConnection *)v12 setAuthenticated];
 LABEL_36:
 
 LABEL_37:
-    v39 = [(ConnectionManager *)self peripherals];
-    v40 = [v39 containsObject:v7];
+    peripherals = [(ConnectionManager *)self peripherals];
+    v40 = [peripherals containsObject:peripheralCopy];
 
     if (!v40)
     {
-      [(ConnectionManager *)self disconnectPeripheral:v7 force:0];
+      [(ConnectionManager *)self disconnectPeripheral:peripheralCopy force:0];
       goto LABEL_47;
     }
 
-    [v7 setDelegate:self];
-    v41 = [(ConnectionManager *)self clientServiceManagerMap];
-    v42 = [v41 objectForKeyedSubscript:v7];
+    [peripheralCopy setDelegate:self];
+    clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+    v42 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
     if (!v42)
     {
@@ -1470,20 +1470,20 @@ LABEL_37:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v44 = v43;
-        v45 = [v7 name];
+        name4 = [peripheralCopy name];
         *buf = 138412290;
-        v54 = v45;
+        v54 = name4;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Initializing ClientServiceManager for %@...", buf, 0xCu);
       }
 
-      v46 = [[ClientServiceManager alloc] initWithPeripheral:v7];
-      v47 = [(ConnectionManager *)self clientServiceManagerMap];
-      [v47 setObject:v46 forKeyedSubscript:v7];
+      v46 = [[ClientServiceManager alloc] initWithPeripheral:peripheralCopy];
+      clientServiceManagerMap2 = [(ConnectionManager *)self clientServiceManagerMap];
+      [clientServiceManagerMap2 setObject:v46 forKeyedSubscript:peripheralCopy];
     }
 
-    v48 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-    v49 = [v7 identifier];
-    v14 = [v48 objectForKeyedSubscript:v49];
+    connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+    identifier2 = [peripheralCopy identifier];
+    v14 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier2];
 
     if (v14)
     {
@@ -1498,7 +1498,7 @@ LABEL_37:
 
   if (![(MFiAccessoryConnection *)v12 authInProgress])
   {
-    if (!-[MFiAccessoryConnection authInProgress](v12, "authInProgress") && ([v7 hasTag:@"needsMFiAuthentication4.0"] & 1) != 0)
+    if (!-[MFiAccessoryConnection authInProgress](v12, "authInProgress") && ([peripheralCopy hasTag:@"needsMFiAuthentication4.0"] & 1) != 0)
     {
       goto LABEL_10;
     }
@@ -1510,9 +1510,9 @@ LABEL_37:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [v7 name];
+    name5 = [peripheralCopy name];
     *buf = 138412290;
-    v54 = v15;
+    v54 = name5;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Authentication in progress for %@ Return.", buf, 0xCu);
 
 LABEL_44:
@@ -1521,45 +1521,45 @@ LABEL_44:
 LABEL_47:
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 name];
+    name = [peripheralCopy name];
     v24 = 138412546;
-    v25 = v13;
+    v25 = name;
     v26 = 2112;
-    v27 = v10;
+    v27 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Peripheral %@ failed to connect: %@", &v24, 0x16u);
   }
 
-  v14 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-  v15 = [v9 identifier];
-  [v14 removeObjectForKey:v15];
+  connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+  identifier = [peripheralCopy identifier];
+  [connectOnceIdentifiersMap removeObjectForKey:identifier];
 
-  v16 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-  v17 = [v9 identifier];
-  [v16 removeObject:v17];
+  connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+  identifier2 = [peripheralCopy identifier];
+  [connectOnceNoTimeoutIdentifiers removeObject:identifier2];
 
-  v18 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v19 = [v9 identifier];
-  v20 = [v18 objectForKeyedSubscript:v19];
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  identifier3 = [peripheralCopy identifier];
+  v20 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier3];
 
   if (v20)
   {
-    [(ConnectionManager *)self analyzeConnectionError:v10 peripheral:v9 info:v20];
-    v21 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-    v22 = [v9 identifier];
-    v23 = [v21 objectForKeyedSubscript:v22];
+    [(ConnectionManager *)self analyzeConnectionError:errorCopy peripheral:peripheralCopy info:v20];
+    connectAlwaysIdentifiersMap2 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+    identifier4 = [peripheralCopy identifier];
+    v23 = [connectAlwaysIdentifiersMap2 objectForKeyedSubscript:identifier4];
 
     if (v23)
     {
-      [(ConnectionManager *)self connectPeripheral:v9 options:0];
+      [(ConnectionManager *)self connectPeripheral:peripheralCopy options:0];
     }
   }
 
@@ -1567,84 +1567,84 @@ LABEL_47:
   [(ConnectionManager *)self refreshPeripherals];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 timestamp:(double)a5 isReconnecting:(BOOL)a6 error:(id)a7
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral timestamp:(double)timestamp isReconnecting:(BOOL)reconnecting error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  reconnectingCopy = reconnecting;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v15 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v13 name];
+    name = [peripheralCopy name];
     v30 = 138413058;
-    v31 = v17;
+    v31 = name;
     v32 = 2112;
-    v33 = v14;
+    v33 = errorCopy;
     v34 = 2048;
-    v35 = CFAbsoluteTimeGetCurrent() - a5;
+    v35 = CFAbsoluteTimeGetCurrent() - timestamp;
     v36 = 1024;
-    v37 = v8;
+    v37 = reconnectingCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Peripheral %@ is disconnected: %@ %lf seconds ago, is reconnecting: %d", &v30, 0x26u);
   }
 
-  v18 = [(ConnectionManager *)self clientServiceManagerMap];
-  [v18 removeObjectForKey:v13];
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  [clientServiceManagerMap removeObjectForKey:peripheralCopy];
 
-  v19 = [(ConnectionManager *)self connectOnceIdentifiersMap];
-  v20 = [v13 identifier];
-  [v19 removeObjectForKey:v20];
+  connectOnceIdentifiersMap = [(ConnectionManager *)self connectOnceIdentifiersMap];
+  identifier = [peripheralCopy identifier];
+  [connectOnceIdentifiersMap removeObjectForKey:identifier];
 
-  v21 = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
-  v22 = [v13 identifier];
-  [v21 removeObject:v22];
+  connectOnceNoTimeoutIdentifiers = [(ConnectionManager *)self connectOnceNoTimeoutIdentifiers];
+  identifier2 = [peripheralCopy identifier];
+  [connectOnceNoTimeoutIdentifiers removeObject:identifier2];
 
-  v23 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v24 = [v13 identifier];
-  v25 = [v23 objectForKeyedSubscript:v24];
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  identifier3 = [peripheralCopy identifier];
+  v25 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier3];
 
   if (v25)
   {
-    [(ConnectionManager *)self analyzeConnectionError:v14 peripheral:v13 info:v25];
-    v26 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-    v27 = [v13 identifier];
-    v28 = [v26 objectForKeyedSubscript:v27];
+    [(ConnectionManager *)self analyzeConnectionError:errorCopy peripheral:peripheralCopy info:v25];
+    connectAlwaysIdentifiersMap2 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+    identifier4 = [peripheralCopy identifier];
+    v28 = [connectAlwaysIdentifiersMap2 objectForKeyedSubscript:identifier4];
 
     if (v28)
     {
-      if (!v8)
+      if (!reconnectingCopy)
       {
-        [(ConnectionManager *)self connectPeripheral:v13 options:0];
+        [(ConnectionManager *)self connectPeripheral:peripheralCopy options:0];
       }
     }
   }
 
-  v29 = [(ConnectionManager *)self accessoryConnectionMap];
-  [v29 removeObjectForKey:v13];
+  accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+  [accessoryConnectionMap removeObjectForKey:peripheralCopy];
 
   [(ConnectionManager *)self refreshConnectionAssertion];
   [(ConnectionManager *)self refreshPeripherals];
 }
 
-- (void)peripheral:(id)a3 didOpenL2CAPChannel:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didOpenL2CAPChannel:(id)channel error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ConnectionManager *)self accessoryConnectionMap];
-  v12 = [v11 objectForKey:v8];
+  peripheralCopy = peripheral;
+  channelCopy = channel;
+  errorCopy = error;
+  accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+  v12 = [accessoryConnectionMap objectForKey:peripheralCopy];
 
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_1000759E4();
     }
 
-    if ([(ConnectionManager *)self requireServicesAndMFi:v8])
+    if ([(ConnectionManager *)self requireServicesAndMFi:peripheralCopy])
     {
-      [(ConnectionManager *)self disconnectPeripheral:v8 force:0];
+      [(ConnectionManager *)self disconnectPeripheral:peripheralCopy force:0];
     }
   }
 
@@ -1653,7 +1653,7 @@ LABEL_47:
     v13 = +[ACCTransportClient sharedClient];
     [v13 setDelegate:self];
 
-    if ([v8 hasTag:@"needsMFiAuthentication4.0"])
+    if ([peripheralCopy hasTag:@"needsMFiAuthentication4.0"])
     {
       v14 = 1;
     }
@@ -1663,36 +1663,36 @@ LABEL_47:
       v14 = 2;
     }
 
-    [v12 activateAuthEndpointWithType:v14 andChannel:v9];
-    v15 = [(ConnectionManager *)self accessoryConnectionMap];
-    [v15 setObject:v12 forKeyedSubscript:v8];
+    [v12 activateAuthEndpointWithType:v14 andChannel:channelCopy];
+    accessoryConnectionMap2 = [(ConnectionManager *)self accessoryConnectionMap];
+    [accessoryConnectionMap2 setObject:v12 forKeyedSubscript:peripheralCopy];
   }
 }
 
-- (void)transportClient:(id)a3 authStatusDidChange:(BOOL)a4 forConnectionWithUUID:(id)a5
+- (void)transportClient:(id)client authStatusDidChange:(BOOL)change forConnectionWithUUID:(id)d
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  changeCopy = change;
+  clientCopy = client;
+  dCopy = d;
   v10 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "not authenticated";
-    if (v6)
+    if (changeCopy)
     {
       v11 = "authenticated";
     }
 
     *buf = 138412546;
-    v31 = v9;
+    v31 = dCopy;
     v32 = 2080;
     v33 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "AuthStatusDidChange for connectionUUID %@ %s", buf, 0x16u);
   }
 
-  v12 = [(ConnectionManager *)self peripheralForConnectionUUID:v9];
-  v13 = [(ConnectionManager *)self accessoryConnectionMap];
-  v14 = [v13 objectForKey:v12];
+  v12 = [(ConnectionManager *)self peripheralForConnectionUUID:dCopy];
+  accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+  v14 = [accessoryConnectionMap objectForKey:v12];
 
   if (v14)
   {
@@ -1701,11 +1701,11 @@ LABEL_47:
       [v14 tearDownPeerChannel];
     }
 
-    if (v6)
+    if (changeCopy)
     {
-      v15 = [v12 identifier];
-      v16 = [v15 UUIDString];
-      v29 = v16;
+      identifier = [v12 identifier];
+      uUIDString = [identifier UUIDString];
+      v29 = uUIDString;
       v17 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1784,9 +1784,9 @@ LABEL_47:
   }
 }
 
-- (void)transportClientServerDisconnected:(id)a3
+- (void)transportClientServerDisconnected:(id)disconnected
 {
-  v17 = a3;
+  disconnectedCopy = disconnected;
   v4 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1794,8 +1794,8 @@ LABEL_47:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "transportClientServerDisconnected!!", buf, 2u);
   }
 
-  v5 = [(ConnectionManager *)self centralManager];
-  v6 = [v5 retrieveConnectedPeripheralsWithServices:0 allowAll:1];
+  centralManager = [(ConnectionManager *)self centralManager];
+  v6 = [centralManager retrieveConnectedPeripheralsWithServices:0 allowAll:1];
 
   v20 = 0u;
   v21 = 0u;
@@ -1827,8 +1827,8 @@ LABEL_47:
           [(MFiAccessoryConnection *)v14 activateConnectionWithIdentifier:v15];
 
           [(MFiAccessoryConnection *)v14 setAuthenticated];
-          v16 = [(ConnectionManager *)self accessoryConnectionMap];
-          [v16 setObject:v14 forKeyedSubscript:v12];
+          accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+          [accessoryConnectionMap setObject:v14 forKeyedSubscript:v12];
         }
       }
 
@@ -1839,128 +1839,128 @@ LABEL_47:
   }
 }
 
-- (void)transportClient:(id)a3 propertiesDidChange:(id)a4 forEndpointWithUUID:(id)a5 previousProperties:(id)a6 connectionUUID:(id)a7
+- (void)transportClient:(id)client propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD
 {
-  v7 = a4;
+  changeCopy = change;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_100075A9C();
   }
 }
 
-- (void)setIAPProperty:(id)a3 withValue:(id)a4 forPeripheral:(id)a5
+- (void)setIAPProperty:(id)property withValue:(id)value forPeripheral:(id)peripheral
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self accessoryConnectionMap];
-  v12 = [v11 objectForKey:v8];
+  peripheralCopy = peripheral;
+  valueCopy = value;
+  propertyCopy = property;
+  accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+  v12 = [accessoryConnectionMap objectForKey:peripheralCopy];
 
-  [v12 sendDataToGenericEndpoint:v9 withProperty:v10];
+  [v12 sendDataToGenericEndpoint:valueCopy withProperty:propertyCopy];
 }
 
-- (void)setMFiAccessoryInfo:(id)a3 forPeripheral:(id)a4
+- (void)setMFiAccessoryInfo:(id)info forPeripheral:(id)peripheral
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ConnectionManager *)self accessoryConnectionMap];
-  v9 = [v8 objectForKey:v6];
+  peripheralCopy = peripheral;
+  infoCopy = info;
+  accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+  v9 = [accessoryConnectionMap objectForKey:peripheralCopy];
 
-  [v9 setAccessoryInfo:v7];
+  [v9 setAccessoryInfo:infoCopy];
 }
 
-- (void)peripheral:(id)a3 didModifyServices:(id)a4
+- (void)peripheral:(id)peripheral didModifyServices:(id)services
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ConnectionManager *)self clientServiceManagerMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  servicesCopy = services;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v9 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v9 peripheral:v7 didModifyServices:v6];
+  [v9 peripheral:peripheralCopy didModifyServices:servicesCopy];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ConnectionManager *)self clientServiceManagerMap];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  servicesCopy = services;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v9 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v9 peripheral:v7 didDiscoverServices:v6];
+  [v9 peripheral:peripheralCopy didDiscoverServices:servicesCopy];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  serviceCopy = service;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didDiscoverCharacteristicsForService:v9 error:v8];
+  [v12 peripheral:peripheralCopy didDiscoverCharacteristicsForService:serviceCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didUpdateValueForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didUpdateValueForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didWriteValueForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didWriteValueForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didUpdateNotificationStateForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didUpdateNotificationStateForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  characteristicCopy = characteristic;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didDiscoverDescriptorsForCharacteristic:v9 error:v8];
+  [v12 peripheral:peripheralCopy didDiscoverDescriptorsForCharacteristic:characteristicCopy error:errorCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ConnectionManager *)self clientServiceManagerMap];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  errorCopy = error;
+  descriptorCopy = descriptor;
+  peripheralCopy = peripheral;
+  clientServiceManagerMap = [(ConnectionManager *)self clientServiceManagerMap];
+  v12 = [clientServiceManagerMap objectForKeyedSubscript:peripheralCopy];
 
-  [v12 peripheral:v10 didUpdateValueForDescriptor:v9 error:v8];
+  [v12 peripheral:peripheralCopy didUpdateValueForDescriptor:descriptorCopy error:errorCopy];
 }
 
-- (void)peripheralPairingDidFail:(id)a3
+- (void)peripheralPairingDidFail:(id)fail
 {
-  v4 = [a3 object];
-  v5 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  object = [fail object];
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  identifier = [object identifier];
+  v7 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
@@ -1969,42 +1969,42 @@ LABEL_47:
     v8[2] = sub_100038380;
     v8[3] = &unk_1000BD8A8;
     v8[4] = self;
-    v9 = v4;
+    v9 = object;
     dispatch_async(&_dispatch_main_q, v8);
   }
 }
 
-- (void)authDidSucceed:(id)a3
+- (void)authDidSucceed:(id)succeed
 {
-  v6 = [a3 object];
-  v4 = [(ConnectionManager *)self denylistedIdentifiers];
-  v5 = [v6 identifier];
-  [v4 removeObject:v5];
+  object = [succeed object];
+  denylistedIdentifiers = [(ConnectionManager *)self denylistedIdentifiers];
+  identifier = [object identifier];
+  [denylistedIdentifiers removeObject:identifier];
 }
 
-- (void)authDidFail:(id)a3
+- (void)authDidFail:(id)fail
 {
-  v4 = [a3 object];
-  v5 = [(ConnectionManager *)self denylistedIdentifiers];
-  v6 = [v4 identifier];
-  [v5 addObject:v6];
+  object = [fail object];
+  denylistedIdentifiers = [(ConnectionManager *)self denylistedIdentifiers];
+  identifier = [object identifier];
+  [denylistedIdentifiers addObject:identifier];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000384F0;
   v8[3] = &unk_1000BD8A8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = object;
+  v7 = object;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)peerIsUsingBuiltinService:(id)a3
+- (void)peerIsUsingBuiltinService:(id)service
 {
-  v7 = [a3 object];
-  v4 = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
-  v5 = [v7 identifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  object = [service object];
+  connectAlwaysIdentifiersMap = [(ConnectionManager *)self connectAlwaysIdentifiersMap];
+  identifier = [object identifier];
+  v6 = [connectAlwaysIdentifiersMap objectForKeyedSubscript:identifier];
 
   if (v6)
   {
@@ -2012,9 +2012,9 @@ LABEL_47:
   }
 }
 
-- (void)peerDidIdleTimeout:(id)a3
+- (void)peerDidIdleTimeout:(id)timeout
 {
-  [a3 object];
+  [timeout object];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100038644;
@@ -2026,43 +2026,43 @@ LABEL_47:
 
 - (id)centralManagerStateString
 {
-  v2 = [(ConnectionManager *)self centralManager];
-  v3 = [v2 state];
+  centralManager = [(ConnectionManager *)self centralManager];
+  state = [centralManager state];
 
-  if ((v3 - 1) > 9)
+  if ((state - 1) > 9)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1000BDD78[(v3 - 1)];
+    return off_1000BDD78[(state - 1)];
   }
 }
 
-- (void)sendAnalyticsEvent:(id)a3 withPayload:(id)a4
+- (void)sendAnalyticsEvent:(id)event withPayload:(id)payload
 {
-  v5 = a4;
-  v4 = v5;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 
-- (id)peripheralToAddressString:(id)a3
+- (id)peripheralToAddressString:(id)string
 {
-  v4 = a3;
-  v5 = [(ConnectionManager *)self centralManager];
-  v6 = [v5 retrievePairingInfoForPeripheral:v4];
+  stringCopy = string;
+  centralManager = [(ConnectionManager *)self centralManager];
+  v6 = [centralManager retrievePairingInfoForPeripheral:stringCopy];
 
   v7 = [v6 objectForKey:@"kCBMsgArgRemoteAddress"];
-  v8 = [v7 bytes];
-  v9 = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x", *v8, v8[1], v8[2], v8[3], v8[4], v8[5]];
+  bytes = [v7 bytes];
+  v9 = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x", *bytes, bytes[1], bytes[2], bytes[3], bytes[4], bytes[5]];
 
   return v9;
 }
 
-- (id)peripheralForConnectionUUID:(id)a3
+- (id)peripheralForConnectionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -2083,10 +2083,10 @@ LABEL_47:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [(ConnectionManager *)self accessoryConnectionMap];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 connectionUUID];
-        v13 = [v12 isEqualToString:v4];
+        accessoryConnectionMap = [(ConnectionManager *)self accessoryConnectionMap];
+        v11 = [accessoryConnectionMap objectForKeyedSubscript:v9];
+        connectionUUID = [v11 connectionUUID];
+        v13 = [connectionUUID isEqualToString:dCopy];
 
         if (v13)
         {

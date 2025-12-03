@@ -7,13 +7,13 @@
 - (BOOL)csd_isSymbolicLink
 {
   v2 = [(CXSandboxExtendedURL *)self URL];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  if ([v3 length])
+  if ([path length])
   {
     v4 = +[NSFileManager defaultManager];
     v10 = 0;
-    v5 = [v4 attributesOfItemAtPath:v3 error:&v10];
+    v5 = [v4 attributesOfItemAtPath:path error:&v10];
     v6 = v10;
 
     if (v5)

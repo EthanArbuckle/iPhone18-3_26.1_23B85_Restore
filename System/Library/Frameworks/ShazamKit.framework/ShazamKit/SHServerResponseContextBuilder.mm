@@ -1,13 +1,13 @@
 @interface SHServerResponseContextBuilder
-- (void)loadContextForClientIdentifier:(id)a3 completion:(id)a4;
+- (void)loadContextForClientIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SHServerResponseContextBuilder
 
-- (void)loadContextForClientIdentifier:(id)a3 completion:(id)a4
+- (void)loadContextForClientIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v8 = dispatch_queue_create("com.apple.ShazamKit.serverResponseContextBuilder.dispatch", 0);
   v9 = objc_alloc_init(SHServerResponseContext);
@@ -30,7 +30,7 @@
     v18[3] = &unk_10007D1E8;
     v12 = v10;
     v19 = v12;
-    v20 = v5;
+    v20 = identifierCopy;
     v13 = v11;
     v21 = v13;
     dispatch_async(v8, v18);
@@ -38,7 +38,7 @@
     v15[1] = 3221225472;
     v15[2] = sub_10000F1D4;
     v15[3] = &unk_10007D210;
-    v17 = v6;
+    v17 = completionCopy;
     v16 = v12;
     dispatch_group_notify(v13, v8, v15);
   }
@@ -52,7 +52,7 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to create dispatch group while loading context", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 

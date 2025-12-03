@@ -1,43 +1,43 @@
 @interface HFScheduleRule
-+ (id)defaultRuleForType:(unint64_t)a3;
++ (id)defaultRuleForType:(unint64_t)type;
 - (BOOL)isAllDayWeekDayRule;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isWeekDayRule;
 - (BOOL)isYearDayRule;
-- (HFScheduleRule)initWithWeekDayRule:(id)a3;
-- (HFScheduleRule)initWithYearDayRule:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFScheduleRule)initWithWeekDayRule:(id)rule;
+- (HFScheduleRule)initWithYearDayRule:(id)rule;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HFScheduleRule
 
-+ (id)defaultRuleForType:(unint64_t)a3
++ (id)defaultRuleForType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       v9 = 0;
       goto LABEL_10;
     case 2uLL:
-      v5 = [MEMORY[0x277CBEAB8] hf_componentsWithHour:0 minute:0];
-      v6 = [MEMORY[0x277CBEAB8] hf_componentsWithHour:23 minute:59];
-      v7 = [objc_alloc(MEMORY[0x277CD1F20]) initWithStartTime:v5 endTime:v6];
+      hf_startOfDay = [MEMORY[0x277CBEAB8] hf_componentsWithHour:0 minute:0];
+      distantFuture = [MEMORY[0x277CBEAB8] hf_componentsWithHour:23 minute:59];
+      v7 = [objc_alloc(MEMORY[0x277CD1F20]) initWithStartTime:hf_startOfDay endTime:distantFuture];
       v8 = [[HFScheduleRule alloc] initWithWeekDayRule:v7];
       break;
     case 1uLL:
-      v4 = [MEMORY[0x277CBEAA8] date];
-      v5 = [v4 hf_startOfDay];
+      date = [MEMORY[0x277CBEAA8] date];
+      hf_startOfDay = [date hf_startOfDay];
 
-      v6 = [MEMORY[0x277CBEAA8] distantFuture];
-      v7 = [objc_alloc(MEMORY[0x277CD1F48]) initWithValidFrom:v5 validUntil:v6];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v7 = [objc_alloc(MEMORY[0x277CD1F48]) initWithValidFrom:hf_startOfDay validUntil:distantFuture];
       v8 = [[HFScheduleRule alloc] initWithYearDayRule:v7];
       break;
     default:
-      v5 = [MEMORY[0x277CCA890] currentHandler];
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-      [v5 handleFailureInMethod:a2 object:a1 file:@"HFScheduleRule.m" lineNumber:44 description:{@"Unknown schedule type [%@]", v6}];
+      hf_startOfDay = [MEMORY[0x277CCA890] currentHandler];
+      distantFuture = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+      [hf_startOfDay handleFailureInMethod:a2 object:self file:@"HFScheduleRule.m" lineNumber:44 description:{@"Unknown schedule type [%@]", distantFuture}];
       v9 = 0;
       goto LABEL_9;
   }
@@ -50,13 +50,13 @@ LABEL_10:
   return v9;
 }
 
-- (HFScheduleRule)initWithWeekDayRule:(id)a3
+- (HFScheduleRule)initWithWeekDayRule:(id)rule
 {
-  v6 = a3;
-  if (!v6)
+  ruleCopy = rule;
+  if (!ruleCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFScheduleRule.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"weekDayRule"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleRule.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"weekDayRule"}];
   }
 
   v11.receiver = self;
@@ -65,19 +65,19 @@ LABEL_10:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_weekDayRule, a3);
+    objc_storeStrong(&v7->_weekDayRule, rule);
   }
 
   return v8;
 }
 
-- (HFScheduleRule)initWithYearDayRule:(id)a3
+- (HFScheduleRule)initWithYearDayRule:(id)rule
 {
-  v6 = a3;
-  if (!v6)
+  ruleCopy = rule;
+  if (!ruleCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFScheduleRule.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"yearDayRule"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleRule.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"yearDayRule"}];
   }
 
   v11.receiver = self;
@@ -86,7 +86,7 @@ LABEL_10:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_yearDayRule, a3);
+    objc_storeStrong(&v7->_yearDayRule, rule);
   }
 
   return v8;
@@ -94,16 +94,16 @@ LABEL_10:
 
 - (BOOL)isWeekDayRule
 {
-  v2 = [(HFScheduleRule *)self weekDayRule];
-  v3 = v2 != 0;
+  weekDayRule = [(HFScheduleRule *)self weekDayRule];
+  v3 = weekDayRule != 0;
 
   return v3;
 }
 
 - (BOOL)isYearDayRule
 {
-  v2 = [(HFScheduleRule *)self yearDayRule];
-  v3 = v2 != 0;
+  yearDayRule = [(HFScheduleRule *)self yearDayRule];
+  v3 = yearDayRule != 0;
 
   return v3;
 }
@@ -111,90 +111,90 @@ LABEL_10:
 - (BOOL)isAllDayWeekDayRule
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = [(HFScheduleRule *)self isWeekDayRule];
+  isWeekDayRule = [(HFScheduleRule *)self isWeekDayRule];
   v5 = HFLogForCategory(0x4CuLL);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isWeekDayRule)
   {
     if (v6)
     {
       v7 = NSStringFromSelector(a2);
-      v8 = [(HFScheduleRule *)self weekDayRule];
+      weekDayRule = [(HFScheduleRule *)self weekDayRule];
       *buf = 138413058;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2112;
       v62 = v7;
       v63 = 2112;
-      v64 = v8;
+      v64 = weekDayRule;
       v65 = 2112;
-      v66 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Attempting to determine all-day rule for weekDayRule [%@] from schedule rule [%@].", buf, 0x2Au);
     }
 
     aSelector = a2;
 
-    v9 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-    v10 = [(HFScheduleRule *)self weekDayRule];
-    v11 = [v10 startTime];
-    v5 = [v9 dateFromComponents:v11];
+    hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+    weekDayRule2 = [(HFScheduleRule *)self weekDayRule];
+    startTime = [weekDayRule2 startTime];
+    v5 = [hf_sharedCalendar dateFromComponents:startTime];
 
-    v12 = [v5 dateComponents];
-    v13 = [v12 hour];
-    v58 = v12;
-    v52 = [v12 minute];
-    v14 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-    v15 = [(HFScheduleRule *)self weekDayRule];
-    v16 = [v15 endTime];
-    v17 = [v14 dateFromComponents:v16];
+    dateComponents = [v5 dateComponents];
+    hour = [dateComponents hour];
+    v58 = dateComponents;
+    minute = [dateComponents minute];
+    hf_sharedCalendar2 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+    weekDayRule3 = [(HFScheduleRule *)self weekDayRule];
+    endTime = [weekDayRule3 endTime];
+    v17 = [hf_sharedCalendar2 dateFromComponents:endTime];
 
-    v18 = [v17 dateComponents];
-    v19 = [v18 hour];
-    v56 = v18;
-    v20 = [v18 minute];
-    v21 = [v5 hf_startOfDay];
-    v22 = [v21 dateComponents];
-    v23 = [v22 hour];
+    dateComponents2 = [v17 dateComponents];
+    hour2 = [dateComponents2 hour];
+    v56 = dateComponents2;
+    minute2 = [dateComponents2 minute];
+    hf_startOfDay = [v5 hf_startOfDay];
+    dateComponents3 = [hf_startOfDay dateComponents];
+    hour3 = [dateComponents3 hour];
 
-    v55 = v21;
-    v24 = [v21 dateComponents];
-    v25 = [v24 minute];
+    v55 = hf_startOfDay;
+    dateComponents4 = [hf_startOfDay dateComponents];
+    minute3 = [dateComponents4 minute];
 
     v57 = v17;
-    v26 = [v17 hf_endOfDay];
-    v27 = [v26 dateComponents];
-    v28 = [v27 hour];
+    hf_endOfDay = [v17 hf_endOfDay];
+    dateComponents5 = [hf_endOfDay dateComponents];
+    hour4 = [dateComponents5 hour];
 
-    v54 = v26;
-    v29 = [v26 dateComponents];
-    v30 = [v29 minute];
+    v54 = hf_endOfDay;
+    dateComponents6 = [hf_endOfDay dateComponents];
+    minute4 = [dateComponents6 minute];
 
-    v48 = v25;
-    v49 = v23;
-    v31 = v13 == v23 && v52 == v25;
-    v32 = v20;
-    v33 = v19;
-    LODWORD(v36) = v31 && v19 == v28 && v20 == v30;
+    v48 = minute3;
+    v49 = hour3;
+    v31 = hour == hour3 && minute == minute3;
+    v32 = minute2;
+    v33 = hour2;
+    LODWORD(v36) = v31 && hour2 == hour4 && minute2 == minute4;
     v37 = HFLogForCategory(0x4CuLL);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       aSelectora = NSStringFromSelector(aSelector);
-      v47 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-      v38 = [MEMORY[0x277CCABB0] numberWithInteger:v52];
+      v47 = [MEMORY[0x277CCABB0] numberWithInteger:hour];
+      v38 = [MEMORY[0x277CCABB0] numberWithInteger:minute];
       v39 = [MEMORY[0x277CCABB0] numberWithInteger:v33];
       v40 = [MEMORY[0x277CCABB0] numberWithInteger:v32];
       v41 = [MEMORY[0x277CCABB0] numberWithInteger:v49];
       [MEMORY[0x277CCABB0] numberWithInteger:v48];
       v36 = v53 = v36;
-      v42 = [MEMORY[0x277CCABB0] numberWithInteger:v28];
-      v43 = [MEMORY[0x277CCABB0] numberWithInteger:v30];
+      v42 = [MEMORY[0x277CCABB0] numberWithInteger:hour4];
+      v43 = [MEMORY[0x277CCABB0] numberWithInteger:minute4];
       *buf = 138414850;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2112;
       v62 = aSelectora;
       v63 = 2112;
       v64 = v47;
       v65 = 2112;
-      v66 = v38;
+      selfCopy2 = v38;
       v67 = 2112;
       v68 = v39;
       v69 = 2112;
@@ -221,7 +221,7 @@ LABEL_10:
     {
       v44 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2112;
       v62 = v44;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ Not a weekDayRule. Unabled to determine if schedule rule is an all-day rule.", buf, 0x16u);
@@ -234,29 +234,29 @@ LABEL_10:
   return v36;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HFScheduleRule *)self weekDayRule];
-  v6 = [v5 copy];
+  weekDayRule = [(HFScheduleRule *)self weekDayRule];
+  v6 = [weekDayRule copy];
   v7 = v4[1];
   v4[1] = v6;
 
-  v8 = [(HFScheduleRule *)self yearDayRule];
-  v9 = [v8 copy];
+  yearDayRule = [(HFScheduleRule *)self yearDayRule];
+  v9 = [yearDayRule copy];
   v10 = v4[2];
   v4[2] = v9;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -273,9 +273,9 @@ LABEL_10:
     {
       if ([(HFScheduleRule *)v7 isWeekDayRule])
       {
-        v8 = [(HFScheduleRule *)v5 weekDayRule];
-        v9 = [(HFScheduleRule *)self weekDayRule];
-        v10 = [v8 isEqual:v9];
+        weekDayRule = [(HFScheduleRule *)v5 weekDayRule];
+        weekDayRule2 = [(HFScheduleRule *)self weekDayRule];
+        v10 = [weekDayRule isEqual:weekDayRule2];
 
         if (v10)
         {
@@ -288,9 +288,9 @@ LABEL_13:
 
       if ([(HFScheduleRule *)v7 isYearDayRule])
       {
-        v12 = [(HFScheduleRule *)v5 yearDayRule];
-        v13 = [(HFScheduleRule *)self yearDayRule];
-        v11 = [v12 isEqual:v13];
+        yearDayRule = [(HFScheduleRule *)v5 yearDayRule];
+        yearDayRule2 = [(HFScheduleRule *)self yearDayRule];
+        v11 = [yearDayRule isEqual:yearDayRule2];
 
         goto LABEL_13;
       }
@@ -308,10 +308,10 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(HFScheduleRule *)self weekDayRule];
-  v4 = [v3 hash];
-  v5 = [(HFScheduleRule *)self yearDayRule];
-  v6 = [v5 hash];
+  weekDayRule = [(HFScheduleRule *)self weekDayRule];
+  v4 = [weekDayRule hash];
+  yearDayRule = [(HFScheduleRule *)self yearDayRule];
+  v6 = [yearDayRule hash];
 
   return v6 ^ v4;
 }
@@ -319,15 +319,15 @@ LABEL_14:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFScheduleRule *)self weekDayRule];
-  v5 = [v3 appendObject:v4 withName:@"weekDayRule"];
+  weekDayRule = [(HFScheduleRule *)self weekDayRule];
+  v5 = [v3 appendObject:weekDayRule withName:@"weekDayRule"];
 
-  v6 = [(HFScheduleRule *)self yearDayRule];
-  v7 = [v3 appendObject:v6 withName:@"yearDayRule"];
+  yearDayRule = [(HFScheduleRule *)self yearDayRule];
+  v7 = [v3 appendObject:yearDayRule withName:@"yearDayRule"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

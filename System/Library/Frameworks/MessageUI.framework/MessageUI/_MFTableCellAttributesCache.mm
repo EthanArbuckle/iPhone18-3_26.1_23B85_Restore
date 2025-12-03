@@ -1,7 +1,7 @@
 @interface _MFTableCellAttributesCache
 + (id)sharedInstance;
 - (_MFTableCellAttributesCache)init;
-- (id)cachedAttributesForIdentifier:(id)a3 constructionBlock:(id)a4;
+- (id)cachedAttributesForIdentifier:(id)identifier constructionBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -9,8 +9,8 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sSharedInstance)
   {
     v3 = objc_alloc_init(_MFTableCellAttributesCache);
@@ -18,7 +18,7 @@
     sSharedInstance = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = sSharedInstance;
 
@@ -36,8 +36,8 @@
     attributesCache = v2->_attributesCache;
     v2->_attributesCache = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__didReceiveFontSizeChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didReceiveFontSizeChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v2;
@@ -45,23 +45,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _MFTableCellAttributesCache;
   [(_MFTableCellAttributesCache *)&v4 dealloc];
 }
 
-- (id)cachedAttributesForIdentifier:(id)a3 constructionBlock:(id)a4
+- (id)cachedAttributesForIdentifier:(id)identifier constructionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSCache *)self->_attributesCache objectForKey:v6];
+  identifierCopy = identifier;
+  blockCopy = block;
+  v8 = [(NSCache *)self->_attributesCache objectForKey:identifierCopy];
   if (!v8)
   {
-    v8 = v7[2](v7);
-    [(NSCache *)self->_attributesCache setObject:v8 forKey:v6];
+    v8 = blockCopy[2](blockCopy);
+    [(NSCache *)self->_attributesCache setObject:v8 forKey:identifierCopy];
   }
 
   return v8;

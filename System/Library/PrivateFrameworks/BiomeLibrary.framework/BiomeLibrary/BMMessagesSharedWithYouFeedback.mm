@@ -1,15 +1,15 @@
 @interface BMMessagesSharedWithYouFeedback
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMessagesSharedWithYouFeedback)initWithClientIdentifier:(id)a3 feedbackType:(int)a4 feedbackCreationSecondsSinceReferenceDate:(id)a5 highlight:(id)a6 clientVariant:(id)a7;
-- (BMMessagesSharedWithYouFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMessagesSharedWithYouFeedback)initWithClientIdentifier:(id)identifier feedbackType:(int)type feedbackCreationSecondsSinceReferenceDate:(id)date highlight:(id)highlight clientVariant:(id)variant;
+- (BMMessagesSharedWithYouFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMessagesSharedWithYouFeedback
@@ -34,25 +34,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
-    v7 = [v5 clientIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    clientIdentifier = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
+    clientIdentifier2 = [v5 clientIdentifier];
+    v8 = clientIdentifier2;
+    if (clientIdentifier == clientIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
-      v10 = [v5 clientIdentifier];
-      v11 = [v9 isEqual:v10];
+      clientIdentifier3 = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
+      clientIdentifier4 = [v5 clientIdentifier];
+      v11 = [clientIdentifier3 isEqual:clientIdentifier4];
 
       if (!v11)
       {
@@ -60,8 +60,8 @@
       }
     }
 
-    v13 = [(BMMessagesSharedWithYouFeedback *)self feedbackType];
-    if (v13 != [v5 feedbackType])
+    feedbackType = [(BMMessagesSharedWithYouFeedback *)self feedbackType];
+    if (feedbackType != [v5 feedbackType])
     {
       goto LABEL_15;
     }
@@ -87,18 +87,18 @@
       }
     }
 
-    v17 = [(BMMessagesSharedWithYouFeedback *)self highlight];
-    v18 = [v5 highlight];
-    v19 = v18;
-    if (v17 == v18)
+    highlight = [(BMMessagesSharedWithYouFeedback *)self highlight];
+    highlight2 = [v5 highlight];
+    v19 = highlight2;
+    if (highlight == highlight2)
     {
     }
 
     else
     {
-      v20 = [(BMMessagesSharedWithYouFeedback *)self highlight];
-      v21 = [v5 highlight];
-      v22 = [v20 isEqual:v21];
+      highlight3 = [(BMMessagesSharedWithYouFeedback *)self highlight];
+      highlight4 = [v5 highlight];
+      v22 = [highlight3 isEqual:highlight4];
 
       if (!v22)
       {
@@ -110,18 +110,18 @@ LABEL_16:
       }
     }
 
-    v24 = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
-    v25 = [v5 clientVariant];
-    if (v24 == v25)
+    clientVariant = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
+    clientVariant2 = [v5 clientVariant];
+    if (clientVariant == clientVariant2)
     {
       v12 = 1;
     }
 
     else
     {
-      v26 = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
-      v27 = [v5 clientVariant];
-      v12 = [v26 isEqual:v27];
+      clientVariant3 = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
+      clientVariant4 = [v5 clientVariant];
+      v12 = [clientVariant3 isEqual:clientVariant4];
     }
 
     goto LABEL_16;
@@ -136,7 +136,7 @@ LABEL_17:
 - (id)jsonDictionary
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
+  clientIdentifier = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMessagesSharedWithYouFeedback feedbackType](self, "feedbackType")}];
   if (![(BMMessagesSharedWithYouFeedback *)self hasFeedbackCreationSecondsSinceReferenceDate]|| ([(BMMessagesSharedWithYouFeedback *)self feedbackCreationSecondsSinceReferenceDate], fabs(v5) == INFINITY))
   {
@@ -151,55 +151,55 @@ LABEL_17:
     v7 = [v6 numberWithDouble:?];
   }
 
-  v8 = [(BMMessagesSharedWithYouFeedback *)self highlight];
-  v9 = [v8 jsonDictionary];
+  highlight = [(BMMessagesSharedWithYouFeedback *)self highlight];
+  jsonDictionary = [highlight jsonDictionary];
 
-  v10 = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
+  clientVariant = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
   v21 = @"clientIdentifier";
-  v11 = v3;
-  if (!v3)
+  null = clientIdentifier;
+  if (!clientIdentifier)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v11;
-  v26[0] = v11;
+  v19 = null;
+  v26[0] = null;
   v22 = @"feedbackType";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v12;
+  v26[1] = null2;
   v23 = @"feedbackCreationSecondsSinceReferenceDate";
-  v13 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v13;
+  v26[2] = null3;
   v24 = @"highlight";
-  v14 = v9;
-  if (!v9)
+  null4 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v14;
+  v26[3] = null4;
   v25 = @"clientVariant";
-  v15 = v10;
-  if (!v10)
+  null5 = clientVariant;
+  if (!clientVariant)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v15;
+  v26[4] = null5;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v21 count:{5, v19}];
-  if (v10)
+  if (clientVariant)
   {
-    if (v9)
+    if (jsonDictionary)
     {
       goto LABEL_17;
     }
@@ -208,7 +208,7 @@ LABEL_17:
   else
   {
 
-    if (v9)
+    if (jsonDictionary)
     {
 LABEL_17:
       if (v7)
@@ -230,7 +230,7 @@ LABEL_18:
 
 LABEL_26:
 
-    if (v3)
+    if (clientIdentifier)
     {
       goto LABEL_20;
     }
@@ -246,7 +246,7 @@ LABEL_25:
   }
 
 LABEL_19:
-  if (v3)
+  if (clientIdentifier)
   {
     goto LABEL_20;
   }
@@ -259,16 +259,16 @@ LABEL_20:
   return v16;
 }
 
-- (BMMessagesSharedWithYouFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMessagesSharedWithYouFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"clientIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"clientIdentifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"feedbackType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"feedbackType"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -282,23 +282,23 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v16 = 0;
             goto LABEL_44;
           }
 
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v40 = a4;
+          errorCopy = error;
           v35 = *MEMORY[0x1E698F240];
           v52 = *MEMORY[0x1E696A578];
           v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"feedbackType"];
           v53 = v43;
           v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
           v36 = [v34 initWithDomain:v35 code:2 userInfo:v17];
-          a4 = 0;
+          error = 0;
           v16 = 0;
-          *v40 = v36;
+          *errorCopy = v36;
           goto LABEL_43;
         }
 
@@ -313,19 +313,19 @@ LABEL_4:
       v41 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"feedbackCreationSecondsSinceReferenceDate"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"feedbackCreationSecondsSinceReferenceDate"];
     v42 = v8;
-    v44 = self;
+    selfCopy = self;
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v43 = 0;
           v16 = 0;
-          a4 = v41;
+          error = v41;
           goto LABEL_43;
         }
 
@@ -338,9 +338,9 @@ LABEL_4:
         v26 = [v24 initWithDomain:v25 code:2 userInfo:v19];
         v43 = 0;
         v16 = 0;
-        v27 = a4;
-        a4 = v41;
-        *v27 = v26;
+        errorCopy2 = error;
+        error = v41;
+        *errorCopy2 = v26;
         goto LABEL_41;
       }
 
@@ -352,18 +352,18 @@ LABEL_4:
       v43 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"highlight"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"highlight"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v19 = 0;
 LABEL_22:
-      v20 = [v6 objectForKeyedSubscript:@"clientVariant"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"clientVariant"];
       if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v39 = objc_alloc(MEMORY[0x1E696ABC0]);
             v38 = *MEMORY[0x1E698F240];
@@ -371,12 +371,12 @@ LABEL_22:
             v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"clientVariant"];
             v47 = v32;
             v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-            *a4 = [v39 initWithDomain:v38 code:2 userInfo:v33];
+            *error = [v39 initWithDomain:v38 code:2 userInfo:v33];
           }
 
           v21 = 0;
           v16 = 0;
-          a4 = v41;
+          error = v41;
           goto LABEL_26;
         }
 
@@ -388,15 +388,15 @@ LABEL_22:
         v21 = 0;
       }
 
-      a4 = v41;
-      v16 = -[BMMessagesSharedWithYouFeedback initWithClientIdentifier:feedbackType:feedbackCreationSecondsSinceReferenceDate:highlight:clientVariant:](v44, "initWithClientIdentifier:feedbackType:feedbackCreationSecondsSinceReferenceDate:highlight:clientVariant:", v42, [v41 intValue], v43, v19, v21);
-      v44 = v16;
+      error = v41;
+      v16 = -[BMMessagesSharedWithYouFeedback initWithClientIdentifier:feedbackType:feedbackCreationSecondsSinceReferenceDate:highlight:clientVariant:](selfCopy, "initWithClientIdentifier:feedbackType:feedbackCreationSecondsSinceReferenceDate:highlight:clientVariant:", v42, [v41 intValue], v43, v19, v21);
+      selfCopy = v16;
 LABEL_26:
 
 LABEL_41:
 LABEL_42:
 
-      self = v44;
+      self = selfCopy;
       v8 = v42;
 LABEL_43:
 
@@ -416,10 +416,10 @@ LABEL_43:
         goto LABEL_22;
       }
 
-      if (a4)
+      if (error)
       {
         v23 = v23;
-        *a4 = v23;
+        *error = v23;
       }
 
       v16 = 0;
@@ -428,10 +428,10 @@ LABEL_43:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v16 = 0;
-        a4 = v41;
+        error = v41;
         goto LABEL_42;
       }
 
@@ -441,12 +441,12 @@ LABEL_43:
       v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"highlight"];
       v49 = v19;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-      *a4 = [v37 initWithDomain:v28 code:2 userInfo:v29];
+      *error = [v37 initWithDomain:v28 code:2 userInfo:v29];
 
       v16 = 0;
     }
 
-    a4 = v41;
+    error = v41;
     goto LABEL_41;
   }
 
@@ -457,7 +457,7 @@ LABEL_43:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
@@ -465,17 +465,17 @@ LABEL_43:
   }
 
   v11 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v12 = a4;
+  errorCopy3 = error;
   v13 = *MEMORY[0x1E698F240];
   v54 = *MEMORY[0x1E696A578];
   v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"clientIdentifier"];
   v55[0] = v14;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
   v15 = v13;
-  a4 = v14;
+  error = v14;
   v8 = 0;
   v16 = 0;
-  *v12 = [v11 initWithDomain:v15 code:2 userInfo:v9];
+  *errorCopy3 = [v11 initWithDomain:v15 code:2 userInfo:v9];
 LABEL_44:
 
 LABEL_45:
@@ -487,14 +487,14 @@ LABEL_45:
 {
   v3 = objc_opt_new();
   [(BMMessagesSharedWithYouFeedback *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_clientIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -511,7 +511,7 @@ LABEL_45:
   if (self->_highlight)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self->_highlight writeTo:v4];
+    [(BMMessagesSharedWithYouFeedbackRankableSocialHighlight *)self->_highlight writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -521,9 +521,9 @@ LABEL_45:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMMessagesSharedWithYouFeedback;
   v5 = [(BMEventBase *)&v34 init];
@@ -532,12 +532,12 @@ LABEL_45:
     goto LABEL_53;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -548,18 +548,18 @@ LABEL_45:
       while (1)
       {
         LOBYTE(v35[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v35[0] & 0x7F) << v7;
@@ -576,9 +576,9 @@ LABEL_45:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -614,18 +614,18 @@ LABEL_42:
         while (1)
         {
           LOBYTE(v35[0]) = 0;
-          v21 = [v4 position] + 1;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 1;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v23 = [v4 data];
-            [v23 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (v35[0] & 0x7F) << v18;
@@ -641,7 +641,7 @@ LABEL_42:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v20 > 0xB)
+        if (([fromCopy hasError] & 1) != 0 || v20 > 0xB)
         {
 LABEL_46:
           LODWORD(v20) = 0;
@@ -656,18 +656,18 @@ LABEL_46:
         {
           v5->_hasFeedbackCreationSecondsSinceReferenceDate = 1;
           v35[0] = 0;
-          v25 = [v4 position] + 8;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 8;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:v35 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           *&v5->_feedbackCreationSecondsSinceReferenceDate = v35[0];
@@ -693,7 +693,7 @@ LABEL_46:
           goto LABEL_52;
         }
 
-        v27 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlight alloc] initByReadFrom:v4];
+        v27 = [[BMMessagesSharedWithYouFeedbackRankableSocialHighlight alloc] initByReadFrom:fromCopy];
         if (!v27)
         {
           goto LABEL_52;
@@ -706,13 +706,13 @@ LABEL_46:
       }
 
 LABEL_50:
-      v31 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v31 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_52:
     v32 = 0;
@@ -730,36 +730,36 @@ LABEL_53:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
+  clientIdentifier = [(BMMessagesSharedWithYouFeedback *)self clientIdentifier];
   v5 = BMMessagesSharedWithYouFeedbackUnifiedFeedbackTypeAsString([(BMMessagesSharedWithYouFeedback *)self feedbackType]);
   v6 = MEMORY[0x1E696AD98];
   [(BMMessagesSharedWithYouFeedback *)self feedbackCreationSecondsSinceReferenceDate];
   v7 = [v6 numberWithDouble:?];
-  v8 = [(BMMessagesSharedWithYouFeedback *)self highlight];
-  v9 = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
-  v10 = [v3 initWithFormat:@"BMMessagesSharedWithYouFeedback with clientIdentifier: %@, feedbackType: %@, feedbackCreationSecondsSinceReferenceDate: %@, highlight: %@, clientVariant: %@", v4, v5, v7, v8, v9];
+  highlight = [(BMMessagesSharedWithYouFeedback *)self highlight];
+  clientVariant = [(BMMessagesSharedWithYouFeedback *)self clientVariant];
+  v10 = [v3 initWithFormat:@"BMMessagesSharedWithYouFeedback with clientIdentifier: %@, feedbackType: %@, feedbackCreationSecondsSinceReferenceDate: %@, highlight: %@, clientVariant: %@", clientIdentifier, v5, v7, highlight, clientVariant];
 
   return v10;
 }
 
-- (BMMessagesSharedWithYouFeedback)initWithClientIdentifier:(id)a3 feedbackType:(int)a4 feedbackCreationSecondsSinceReferenceDate:(id)a5 highlight:(id)a6 clientVariant:(id)a7
+- (BMMessagesSharedWithYouFeedback)initWithClientIdentifier:(id)identifier feedbackType:(int)type feedbackCreationSecondsSinceReferenceDate:(id)date highlight:(id)highlight clientVariant:(id)variant
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  dateCopy = date;
+  highlightCopy = highlight;
+  variantCopy = variant;
   v20.receiver = self;
   v20.super_class = BMMessagesSharedWithYouFeedback;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_clientIdentifier, a3);
-    v17->_feedbackType = a4;
-    if (v14)
+    objc_storeStrong(&v17->_clientIdentifier, identifier);
+    v17->_feedbackType = type;
+    if (dateCopy)
     {
       v17->_hasFeedbackCreationSecondsSinceReferenceDate = 1;
-      [v14 doubleValue];
+      [dateCopy doubleValue];
     }
 
     else
@@ -769,8 +769,8 @@ LABEL_53:
     }
 
     v17->_feedbackCreationSecondsSinceReferenceDate = v18;
-    objc_storeStrong(&v17->_highlight, a6);
-    objc_storeStrong(&v17->_clientVariant, a7);
+    objc_storeStrong(&v17->_highlight, highlight);
+    objc_storeStrong(&v17->_clientVariant, variant);
   }
 
   return v17;
@@ -805,24 +805,24 @@ id __42__BMMessagesSharedWithYouFeedback_columns__block_invoke(uint64_t a1, void
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4 == 3)
+  dataCopy = data;
+  if (version == 3)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMMessagesSharedWithYouFeedback_v3;
   }
 
   else
   {
-    if (a4 != 4)
+    if (version != 4)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMMessagesSharedWithYouFeedback;
   }
 
@@ -830,7 +830,7 @@ id __42__BMMessagesSharedWithYouFeedback_columns__block_invoke(uint64_t a1, void
   v9 = v8;
   if (v8)
   {
-    *(v8 + 20) = a4;
+    *(v8 + 20) = version;
   }
 
 LABEL_9:

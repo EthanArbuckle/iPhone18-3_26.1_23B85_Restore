@@ -1,35 +1,35 @@
 @interface CKTranscriptLayoutEnvironment
-- (CKTranscriptLayoutEnvironment)initWithDatasource:(id)a3 collectionLayoutEnvironment:(id)a4 collectionView:(id)a5 marginInsets:(UIEdgeInsets)a6 layoutContext:(int64_t)a7 messageEditingContext:(id)a8;
+- (CKTranscriptLayoutEnvironment)initWithDatasource:(id)datasource collectionLayoutEnvironment:(id)environment collectionView:(id)view marginInsets:(UIEdgeInsets)insets layoutContext:(int64_t)context messageEditingContext:(id)editingContext;
 - (UIEdgeInsets)marginInsets;
 @end
 
 @implementation CKTranscriptLayoutEnvironment
 
-- (CKTranscriptLayoutEnvironment)initWithDatasource:(id)a3 collectionLayoutEnvironment:(id)a4 collectionView:(id)a5 marginInsets:(UIEdgeInsets)a6 layoutContext:(int64_t)a7 messageEditingContext:(id)a8
+- (CKTranscriptLayoutEnvironment)initWithDatasource:(id)datasource collectionLayoutEnvironment:(id)environment collectionView:(id)view marginInsets:(UIEdgeInsets)insets layoutContext:(int64_t)context messageEditingContext:(id)editingContext
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a8;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  datasourceCopy = datasource;
+  environmentCopy = environment;
+  viewCopy = view;
+  editingContextCopy = editingContext;
   v25.receiver = self;
   v25.super_class = CKTranscriptLayoutEnvironment;
   v22 = [(CKTranscriptLayoutEnvironment *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_datasource, a3);
-    objc_storeStrong(&v23->_collectionLayoutEnvironment, a4);
-    objc_storeStrong(&v23->_collectionView, a5);
+    objc_storeStrong(&v22->_datasource, datasource);
+    objc_storeStrong(&v23->_collectionLayoutEnvironment, environment);
+    objc_storeStrong(&v23->_collectionView, view);
     v23->_marginInsets.top = top;
     v23->_marginInsets.left = left;
     v23->_marginInsets.bottom = bottom;
     v23->_marginInsets.right = right;
-    v23->_layoutContext = a7;
-    objc_storeStrong(&v23->_messageEditingContext, a8);
+    v23->_layoutContext = context;
+    objc_storeStrong(&v23->_messageEditingContext, editingContext);
   }
 
   return v23;

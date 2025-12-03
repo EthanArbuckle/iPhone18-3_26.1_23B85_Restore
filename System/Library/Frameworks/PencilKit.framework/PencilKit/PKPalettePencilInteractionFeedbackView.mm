@@ -1,8 +1,8 @@
 @interface PKPalettePencilInteractionFeedbackView
 - (PKPalettePencilInteractionFeedbackView)init;
-- (void)_setCornerRadius:(double)a3;
+- (void)_setCornerRadius:(double)radius;
 - (void)layoutSubviews;
-- (void)showPreviewForTool:(id)a3 scalingFactor:(double)a4 animated:(BOOL)a5;
+- (void)showPreviewForTool:(id)tool scalingFactor:(double)factor animated:(BOOL)animated;
 @end
 
 @implementation PKPalettePencilInteractionFeedbackView
@@ -44,15 +44,15 @@
   return v2;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v7.receiver = self;
   v7.super_class = PKPalettePencilInteractionFeedbackView;
-  [(PKPalettePencilInteractionFeedbackView *)&v7 _setCornerRadius:a3];
+  [(PKPalettePencilInteractionFeedbackView *)&v7 _setCornerRadius:radius];
   [(PKPalettePencilInteractionFeedbackView *)self _cornerRadius];
   v5 = v4;
-  v6 = [(PKPalettePencilInteractionFeedbackView *)self clippingView];
-  [v6 _setCornerRadius:v5];
+  clippingView = [(PKPalettePencilInteractionFeedbackView *)self clippingView];
+  [clippingView _setCornerRadius:v5];
 }
 
 - (void)layoutSubviews
@@ -65,35 +65,35 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPalettePencilInteractionFeedbackView *)self clippingView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  clippingView = [(PKPalettePencilInteractionFeedbackView *)self clippingView];
+  [clippingView setFrame:{v4, v6, v8, v10}];
 
   [(PKPalettePencilInteractionFeedbackView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PKPalettePencilInteractionFeedbackView *)self backgroundView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  backgroundView = [(PKPalettePencilInteractionFeedbackView *)self backgroundView];
+  [backgroundView setFrame:{v13, v15, v17, v19}];
 
   [(PKPalettePencilInteractionFeedbackView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(PKPalettePencilInteractionFeedbackView *)self toolPreview];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  toolPreview = [(PKPalettePencilInteractionFeedbackView *)self toolPreview];
+  [toolPreview setFrame:{v22, v24, v26, v28}];
 }
 
-- (void)showPreviewForTool:(id)a3 scalingFactor:(double)a4 animated:(BOOL)a5
+- (void)showPreviewForTool:(id)tool scalingFactor:(double)factor animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PKPalettePencilInteractionFeedbackView *)self toolPreview];
-  [v9 setScalingFactor:a4];
+  animatedCopy = animated;
+  toolCopy = tool;
+  toolPreview = [(PKPalettePencilInteractionFeedbackView *)self toolPreview];
+  [toolPreview setScalingFactor:factor];
 
-  v10 = [(PKPalettePencilInteractionFeedbackView *)self toolPreview];
-  [v10 showPreviewForTool:v8 animated:v5];
+  toolPreview2 = [(PKPalettePencilInteractionFeedbackView *)self toolPreview];
+  [toolPreview2 showPreviewForTool:toolCopy animated:animatedCopy];
 }
 
 @end

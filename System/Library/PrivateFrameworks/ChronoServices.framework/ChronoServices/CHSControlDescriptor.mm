@@ -1,29 +1,29 @@
 @interface CHSControlDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matches:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matches:(id)matches;
 - (CHSControlActionMetadata)actionMetadata;
-- (CHSControlDescriptor)initWithCoder:(id)a3;
-- (CHSControlDescriptor)initWithExtensionIdentity:(id)a3 kind:(id)a4 controlType:(unint64_t)a5 intentType:(id)a6;
+- (CHSControlDescriptor)initWithCoder:(id)coder;
+- (CHSControlDescriptor)initWithExtensionIdentity:(id)identity kind:(id)kind controlType:(unint64_t)type intentType:(id)intentType;
 - (id)_intentDescription;
 - (id)copyWithoutIntents;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initFromDescriptor:(id)a3 includeIntents:(BOOL)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initFromDescriptor:(id)descriptor includeIntents:(BOOL)intents;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSControlDescriptor
 
 - (id)succinctDescription
 {
-  v2 = [(CHSControlDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSControlDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -35,7 +35,7 @@
   v7[3] = &unk_1E7453000;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v7];
   v5 = v4;
 
@@ -55,23 +55,23 @@ id __50__CHSControlDescriptor_succinctDescriptionBuilder__block_invoke(uint64_t 
   return [*(a1 + 32) appendInteger:*(*(a1 + 40) + 120) withName:@"requestedDataProtection"];
 }
 
-- (CHSControlDescriptor)initWithExtensionIdentity:(id)a3 kind:(id)a4 controlType:(unint64_t)a5 intentType:(id)a6
+- (CHSControlDescriptor)initWithExtensionIdentity:(id)identity kind:(id)kind controlType:(unint64_t)type intentType:(id)intentType
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identityCopy = identity;
+  kindCopy = kind;
+  intentTypeCopy = intentType;
   v20.receiver = self;
   v20.super_class = CHSControlDescriptor;
-  v13 = [(CHSBaseDescriptor *)&v20 initWithExtensionIdentity:v10];
+  v13 = [(CHSBaseDescriptor *)&v20 initWithExtensionIdentity:identityCopy];
   v14 = v13;
   if (v13)
   {
-    v13->_controlType = a5;
-    v15 = [v11 copy];
+    v13->_controlType = type;
+    v15 = [kindCopy copy];
     kind = v14->_kind;
     v14->_kind = v15;
 
-    v17 = [v12 copy];
+    v17 = [intentTypeCopy copy];
     intentType = v14->_intentType;
     v14->_intentType = v17;
 
@@ -83,30 +83,30 @@ id __50__CHSControlDescriptor_succinctDescriptionBuilder__block_invoke(uint64_t 
   return v14;
 }
 
-- (id)initFromDescriptor:(id)a3 includeIntents:(BOOL)a4
+- (id)initFromDescriptor:(id)descriptor includeIntents:(BOOL)intents
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CHSBaseDescriptor *)self _initWithDescriptor:v6];
+  intentsCopy = intents;
+  descriptorCopy = descriptor;
+  v7 = [(CHSBaseDescriptor *)self _initWithDescriptor:descriptorCopy];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(v7 + 19, v6[19]);
-    v8[21] = v6[21];
-    objc_storeStrong(v8 + 20, v6[20]);
-    v8[24] = v6[24];
-    v9 = [v6[28] copy];
+    objc_storeStrong(v7 + 19, descriptorCopy[19]);
+    v8[21] = descriptorCopy[21];
+    objc_storeStrong(v8 + 20, descriptorCopy[20]);
+    v8[24] = descriptorCopy[24];
+    v9 = [descriptorCopy[28] copy];
     v10 = v8[28];
     v8[28] = v9;
 
-    *(v8 + 200) = *(v6 + 200);
-    *(v8 + 201) = *(v6 + 201);
-    *(v8 + 202) = *(v6 + 202);
-    *(v8 + 203) = *(v6 + 203);
-    v8[29] = v6[29];
-    if (v4)
+    *(v8 + 200) = *(descriptorCopy + 200);
+    *(v8 + 201) = *(descriptorCopy + 201);
+    *(v8 + 202) = *(descriptorCopy + 202);
+    *(v8 + 203) = *(descriptorCopy + 203);
+    v8[29] = descriptorCopy[29];
+    if (intentsCopy)
     {
-      v11 = v6[27];
+      v11 = descriptorCopy[27];
     }
 
     else
@@ -115,9 +115,9 @@ id __50__CHSControlDescriptor_succinctDescriptionBuilder__block_invoke(uint64_t 
     }
 
     objc_storeStrong(v8 + 27, v11);
-    v8[22] = v6[22];
-    *(v8 + 184) = *(v6 + 184);
-    v8[26] = v6[26];
+    v8[22] = descriptorCopy[22];
+    *(v8 + 184) = *(descriptorCopy + 184);
+    v8[26] = descriptorCopy[26];
   }
 
   return v8;
@@ -138,15 +138,15 @@ id __50__CHSControlDescriptor_succinctDescriptionBuilder__block_invoke(uint64_t 
   return actionMetadata;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  v5 = [(CHSBaseDescriptor *)self extensionIdentity];
-  v6 = [v4 extensionIdentity];
+  matchesCopy = matches;
+  extensionIdentity = [(CHSBaseDescriptor *)self extensionIdentity];
+  extensionIdentity2 = [matchesCopy extensionIdentity];
   if (BSEqualObjects())
   {
-    v7 = [(CHSControlDescriptor *)self kind];
-    v8 = [v4 kind];
+    kind = [(CHSControlDescriptor *)self kind];
+    kind2 = [matchesCopy kind];
     v9 = BSEqualStrings();
   }
 
@@ -158,17 +158,17 @@ id __50__CHSControlDescriptor_succinctDescriptionBuilder__block_invoke(uint64_t 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = CHSControlDescriptor;
-  if (![(CHSBaseDescriptor *)&v16 isEqual:v4])
+  if (![(CHSBaseDescriptor *)&v16 isEqual:equalCopy])
   {
     goto LABEL_18;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v14 = 1;
     goto LABEL_22;
@@ -177,7 +177,7 @@ id __50__CHSControlDescriptor_succinctDescriptionBuilder__block_invoke(uint64_t 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     kind = self->_kind;
     v7 = v5->_kind;
     if (BSEqualObjects() && self->_controlType == v5->_controlType && self->_preferredControlSize == v5->_preferredControlSize && self->_supportsPush == v5->_supportsPush && self->_controlVersion == v5->_controlVersion && self->_disfavoredLocations == v5->_disfavoredLocations && (intentType = self->_intentType, v9 = v5->_intentType, BSEqualObjects()) && (defaultIntentReference = self->_defaultIntentReference, v11 = v5->_defaultIntentReference, BSEqualObjects()) && self->_hiddenControl == v5->_hiddenControl && self->_supportsForwardingToRemoteDevices == v5->_supportsForwardingToRemoteDevices && self->_showsContextualMenu == v5->_showsContextualMenu && self->_disablesControlStateCaching == v5->_disablesControlStateCaching && self->_visibility == v5->_visibility)
@@ -206,40 +206,40 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v21.receiver = self;
   v21.super_class = CHSControlDescriptor;
-  v4 = [v3 appendUnsignedInteger:{-[CHSBaseDescriptor hash](&v21, sel_hash)}];
-  v5 = [v3 appendUnsignedInteger:self->_controlType];
-  v6 = [v3 appendUnsignedInteger:self->_preferredControlSize];
-  v7 = [v3 appendBool:self->_supportsPush];
-  v8 = [v3 appendString:self->_kind];
-  v9 = [v3 appendString:self->_intentType];
-  v10 = [v3 appendObject:self->_defaultIntentReference];
-  v11 = [v3 appendInt64:self->_controlVersion];
-  v12 = [v3 appendUnsignedInteger:self->_disfavoredLocations];
-  v13 = [v3 appendInteger:self->_visibility];
-  v14 = [v3 appendBool:self->_hiddenControl];
-  v15 = [v3 appendBool:self->_supportsForwardingToRemoteDevices];
-  v16 = [v3 appendBool:self->_showsContextualMenu];
-  v17 = [v3 appendBool:self->_disablesControlStateCaching];
-  v18 = [v3 appendObject:self->_actionMetadata];
-  v19 = [v3 hash];
+  v4 = [builder appendUnsignedInteger:{-[CHSBaseDescriptor hash](&v21, sel_hash)}];
+  v5 = [builder appendUnsignedInteger:self->_controlType];
+  v6 = [builder appendUnsignedInteger:self->_preferredControlSize];
+  v7 = [builder appendBool:self->_supportsPush];
+  v8 = [builder appendString:self->_kind];
+  v9 = [builder appendString:self->_intentType];
+  v10 = [builder appendObject:self->_defaultIntentReference];
+  v11 = [builder appendInt64:self->_controlVersion];
+  v12 = [builder appendUnsignedInteger:self->_disfavoredLocations];
+  v13 = [builder appendInteger:self->_visibility];
+  v14 = [builder appendBool:self->_hiddenControl];
+  v15 = [builder appendBool:self->_supportsForwardingToRemoteDevices];
+  v16 = [builder appendBool:self->_showsContextualMenu];
+  v17 = [builder appendBool:self->_disablesControlStateCaching];
+  v18 = [builder appendObject:self->_actionMetadata];
+  v19 = [builder hash];
 
   return v19;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSControlDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSControlDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -247,8 +247,8 @@ LABEL_22:
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -319,53 +319,53 @@ id __62__CHSControlDescriptor_descriptionBuilderWithMultilinePrefix___block_invo
   return [(CHSControlDescriptor *)v3 initFromDescriptor:self includeIntents:0];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHSMutableControlDescriptor alloc];
 
   return [(CHSControlDescriptor *)v4 initFromDescriptor:self includeIntents:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = CHSControlDescriptor;
-  [(CHSBaseDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_kind forKey:@"kind"];
-  [v4 encodeInteger:self->_controlType forKey:@"type"];
-  [v4 encodeInteger:self->_preferredControlSize forKey:@"size"];
-  [v4 encodeBool:self->_supportsPush forKey:@"supportsPush"];
-  [v4 encodeObject:self->_intentType forKey:@"intentType"];
-  [v4 encodeInteger:self->_visibility forKey:@"widgetVisibility"];
-  [v4 encodeObject:self->_defaultIntentReference forKey:@"defaultIntentRef"];
-  [v4 encodeBool:self->_hiddenControl forKey:@"hiddenControl"];
-  [v4 encodeBool:self->_supportsForwardingToRemoteDevices forKey:@"supportsForwardingToRemoteDevices"];
-  [v4 encodeBool:self->_showsContextualMenu forKey:@"showContextualMenu"];
-  [v4 encodeBool:self->_disablesControlStateCaching forKey:@"disablesControlStateCaching"];
-  [v4 encodeObject:self->_actionMetadata forKey:@"actionMetadata"];
-  [v4 encodeInt64:self->_controlVersion forKey:@"controlVersion"];
-  [v4 encodeInteger:self->_disfavoredLocations forKey:@"unsupControlLoca"];
+  [(CHSBaseDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
+  [coderCopy encodeInteger:self->_controlType forKey:@"type"];
+  [coderCopy encodeInteger:self->_preferredControlSize forKey:@"size"];
+  [coderCopy encodeBool:self->_supportsPush forKey:@"supportsPush"];
+  [coderCopy encodeObject:self->_intentType forKey:@"intentType"];
+  [coderCopy encodeInteger:self->_visibility forKey:@"widgetVisibility"];
+  [coderCopy encodeObject:self->_defaultIntentReference forKey:@"defaultIntentRef"];
+  [coderCopy encodeBool:self->_hiddenControl forKey:@"hiddenControl"];
+  [coderCopy encodeBool:self->_supportsForwardingToRemoteDevices forKey:@"supportsForwardingToRemoteDevices"];
+  [coderCopy encodeBool:self->_showsContextualMenu forKey:@"showContextualMenu"];
+  [coderCopy encodeBool:self->_disablesControlStateCaching forKey:@"disablesControlStateCaching"];
+  [coderCopy encodeObject:self->_actionMetadata forKey:@"actionMetadata"];
+  [coderCopy encodeInt64:self->_controlVersion forKey:@"controlVersion"];
+  [coderCopy encodeInteger:self->_disfavoredLocations forKey:@"unsupControlLoca"];
 }
 
-- (CHSControlDescriptor)initWithCoder:(id)a3
+- (CHSControlDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = CHSControlDescriptor;
-  v5 = [(CHSBaseDescriptor *)&v29 initWithCoder:v4];
+  v5 = [(CHSBaseDescriptor *)&v29 initWithCoder:coderCopy];
   if (v5)
   {
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
-    v27 = [v4 decodeIntegerForKey:@"type"];
-    v26 = [v4 decodeIntegerForKey:@"size"];
-    v25 = [v4 decodeBoolForKey:@"supportsPush"];
-    v24 = [v4 decodeIntegerForKey:@"widgetVisibility"];
-    v23 = [v4 decodeBoolForKey:@"hiddenControl"];
-    if ([v4 containsValueForKey:@"supportsForwardingToRemoteDevices"])
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v27 = [coderCopy decodeIntegerForKey:@"type"];
+    v26 = [coderCopy decodeIntegerForKey:@"size"];
+    v25 = [coderCopy decodeBoolForKey:@"supportsPush"];
+    v24 = [coderCopy decodeIntegerForKey:@"widgetVisibility"];
+    v23 = [coderCopy decodeBoolForKey:@"hiddenControl"];
+    if ([coderCopy containsValueForKey:@"supportsForwardingToRemoteDevices"])
     {
-      v7 = [v4 decodeBoolForKey:@"supportsForwardingToRemoteDevices"];
+      v7 = [coderCopy decodeBoolForKey:@"supportsForwardingToRemoteDevices"];
     }
 
     else
@@ -373,12 +373,12 @@ id __62__CHSControlDescriptor_descriptionBuilderWithMultilinePrefix___block_invo
       v7 = v5->super._nativeContainerBundleIdentifier == 0;
     }
 
-    v8 = [v4 decodeBoolForKey:@"showContextualMenu"];
-    v9 = [v4 decodeBoolForKey:@"disablesControlStateCaching"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionMetadata"];
+    v8 = [coderCopy decodeBoolForKey:@"showContextualMenu"];
+    v9 = [coderCopy decodeBoolForKey:@"disablesControlStateCaching"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionMetadata"];
     if (!v10)
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIntentType"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIntentType"];
       if (v11)
       {
         v12 = [(CHSControlActionMetadata *)[CHSMutableControlActionMetadata alloc] initWithIntentType:v11];
@@ -391,9 +391,9 @@ id __62__CHSControlDescriptor_descriptionBuilderWithMultilinePrefix___block_invo
       }
     }
 
-    if ([v4 containsValueForKey:@"controlVersion"])
+    if ([coderCopy containsValueForKey:@"controlVersion"])
     {
-      v13 = [v4 decodeInt64ForKey:@"controlVersion"];
+      v13 = [coderCopy decodeInt64ForKey:@"controlVersion"];
     }
 
     else
@@ -401,10 +401,10 @@ id __62__CHSControlDescriptor_descriptionBuilderWithMultilinePrefix___block_invo
       v13 = 0;
     }
 
-    v14 = [v4 decodeIntegerForKey:@"unsupControlLoca"];
-    if ([v4 containsValueForKey:@"defaultIntentRef"])
+    v14 = [coderCopy decodeIntegerForKey:@"unsupControlLoca"];
+    if ([coderCopy containsValueForKey:@"defaultIntentRef"])
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultIntentRef"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultIntentRef"];
     }
 
     else
@@ -452,8 +452,8 @@ id __62__CHSControlDescriptor_descriptionBuilderWithMultilinePrefix___block_invo
 - (id)_intentDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CHSExtensionIdentity *)self->super._extensionIdentity extensionBundleIdentifier];
-  v5 = [v3 stringWithFormat:@"[%@ - %@]", v4, self->_intentType];
+  extensionBundleIdentifier = [(CHSExtensionIdentity *)self->super._extensionIdentity extensionBundleIdentifier];
+  v5 = [v3 stringWithFormat:@"[%@ - %@]", extensionBundleIdentifier, self->_intentType];
 
   return v5;
 }

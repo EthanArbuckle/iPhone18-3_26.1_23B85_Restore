@@ -1,20 +1,20 @@
 @interface SceneDelegate
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scene);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, session);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, options);
   v12 = SUSUILog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -25,11 +25,11 @@
   objc_storeStrong(&v12, 0);
   v5 = [UIWindow alloc];
   v6 = [v5 initWithWindowScene:location[0]];
-  window = v16->_window;
-  v16->_window = v6;
+  window = selfCopy->_window;
+  selfCopy->_window = v6;
 
   v8 = location[0];
-  v9 = [NSArray arrayWithObject:v16];
+  v9 = [NSArray arrayWithObject:selfCopy];
   [v8 _registerSceneActionsHandlerArray:? forKey:?];
 
   objc_storeStrong(&v13, 0);
@@ -37,18 +37,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, actions);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, scene);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, iScene);
   v29 = 0;
-  objc_storeStrong(&v29, a6);
+  objc_storeStrong(&v29, context);
   v28 = [location[0] mutableCopy];
   memset(__b, 0, sizeof(__b));
   v19 = location[0];
@@ -79,7 +79,7 @@
 
       objc_storeStrong(&oslog, 0);
       v8 = [SUSUIAuthenticationAlertAction alloc];
-      v9 = [v27 info];
+      info = [v27 info];
       v23 = [v8 initWithInfo:? forBaseAction:?];
 
       if (v23)
@@ -87,8 +87,8 @@
         [v28 removeObject:v27];
         v21 = objc_alloc_init(SUSUIRemoteAuthenticationContainerViewController);
         [(SUSUIRemoteAuthenticationContainerViewController *)v21 configureWithAction:v23];
-        [(UIWindow *)v33->_window setRootViewController:v21];
-        [(UIWindow *)v33->_window makeKeyAndVisible];
+        [(UIWindow *)selfCopy->_window setRootViewController:v21];
+        [(UIWindow *)selfCopy->_window makeKeyAndVisible];
         objc_storeStrong(&v21, 0);
         v22 = 0;
       }

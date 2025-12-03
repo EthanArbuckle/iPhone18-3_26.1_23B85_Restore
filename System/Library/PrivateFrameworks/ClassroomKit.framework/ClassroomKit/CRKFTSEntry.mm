@@ -1,28 +1,28 @@
 @interface CRKFTSEntry
-- (CRKFTSEntry)initWithFTSEntry:(_ftsent *)a3 error:(id *)a4;
-- (id)errorForFTSEntry:(_ftsent *)a3;
+- (CRKFTSEntry)initWithFTSEntry:(_ftsent *)entry error:(id *)error;
+- (id)errorForFTSEntry:(_ftsent *)entry;
 - (stat)stat;
 @end
 
 @implementation CRKFTSEntry
 
-- (CRKFTSEntry)initWithFTSEntry:(_ftsent *)a3 error:(id *)a4
+- (CRKFTSEntry)initWithFTSEntry:(_ftsent *)entry error:(id *)error
 {
-  v6 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!entry)
   {
     [CRKFTSEntry initWithFTSEntry:a2 error:self];
   }
 
-  v7 = [(CRKFTSEntry *)v6 errorForFTSEntry:a3];
+  v7 = [(CRKFTSEntry *)selfCopy errorForFTSEntry:entry];
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -33,16 +33,16 @@
 
   else
   {
-    v22.receiver = v6;
+    v22.receiver = selfCopy;
     v22.super_class = CRKFTSEntry;
     v11 = [(CRKFTSEntry *)&v22 init];
     if (v11)
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3->fts_accpath];
+      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:entry->fts_accpath];
       path = v11->_path;
       v11->_path = v12;
 
-      fts_statp = a3->fts_statp;
+      fts_statp = entry->fts_statp;
       *&v11->_stat.st_dev = *&fts_statp->st_dev;
       v15 = *&fts_statp->st_uid;
       st_atimespec = fts_statp->st_atimespec;
@@ -60,22 +60,22 @@
       *&v11->_stat.st_size = v19;
     }
 
-    v6 = v11;
-    v10 = v6;
+    selfCopy = v11;
+    v10 = selfCopy;
   }
 
   return v10;
 }
 
-- (id)errorForFTSEntry:(_ftsent *)a3
+- (id)errorForFTSEntry:(_ftsent *)entry
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  fts_info = a3->fts_info;
+  fts_info = entry->fts_info;
   v4 = fts_info > 0xA;
   v5 = (1 << fts_info) & 0x490;
   if (v4 || v5 == 0)
   {
-    if (a3->fts_accpath)
+    if (entry->fts_accpath)
     {
       v7 = 0;
     }
@@ -91,7 +91,7 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:a3->fts_errno userInfo:0];
+    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:entry->fts_errno userInfo:0];
   }
 
   return v7;

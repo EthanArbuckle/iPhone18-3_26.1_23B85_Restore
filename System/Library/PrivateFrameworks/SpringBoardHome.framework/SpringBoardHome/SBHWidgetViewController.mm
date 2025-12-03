@@ -5,9 +5,9 @@
 - (id)sbh_widgetDescriptor;
 - (id)sbh_widgetExtension;
 - (void)invalidate;
-- (void)sbh_addObserver:(id)a3;
-- (void)sbh_setCustomDisplayConfiguration:(id)a3;
-- (void)waitForContentReadyWithTimeout:(double)a3 completion:(id)a4;
+- (void)sbh_addObserver:(id)observer;
+- (void)sbh_setCustomDisplayConfiguration:(id)configuration;
+- (void)waitForContentReadyWithTimeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation SBHWidgetViewController
@@ -19,13 +19,13 @@
   return WeakRetained;
 }
 
-- (void)waitForContentReadyWithTimeout:(double)a3 completion:(id)a4
+- (void)waitForContentReadyWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_isInvalidated)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -35,8 +35,8 @@
     v8[2] = __69__SBHWidgetViewController_waitForContentReadyWithTimeout_completion___block_invoke;
     v8[3] = &unk_1E8089670;
     v8[4] = self;
-    v9 = v6;
-    [(SBHWidgetViewController *)self ensureContentWithTimeout:v8 completion:a3];
+    v9 = completionCopy;
+    [(SBHWidgetViewController *)self ensureContentWithTimeout:v8 completion:timeout];
   }
 }
 
@@ -62,30 +62,30 @@ void __69__SBHWidgetViewController_waitForContentReadyWithTimeout_completion___b
   v5();
 }
 
-- (void)sbh_addObserver:(id)a3
+- (void)sbh_addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)sbh_setCustomDisplayConfiguration:(id)a3
+- (void)sbh_setCustomDisplayConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_customDisplayConfiguration != a3)
+  if (self->_customDisplayConfiguration != configuration)
   {
-    v4 = [a3 copy];
+    v4 = [configuration copy];
     customDisplayConfiguration = self->_customDisplayConfiguration;
     self->_customDisplayConfiguration = v4;
 
@@ -150,33 +150,33 @@ uint64_t __60__SBHWidgetViewController_sbh_sharedWidgetExtensionProvider__block_
 
 - (id)sbh_effectiveWidgetExtensionProvider
 {
-  v2 = [(SBHWidgetViewController *)self sbh_widgetExtensionProvider];
-  if (!v2)
+  sbh_widgetExtensionProvider = [(SBHWidgetViewController *)self sbh_widgetExtensionProvider];
+  if (!sbh_widgetExtensionProvider)
   {
-    v2 = [objc_opt_class() sbh_sharedWidgetExtensionProvider];
+    sbh_widgetExtensionProvider = [objc_opt_class() sbh_sharedWidgetExtensionProvider];
   }
 
-  return v2;
+  return sbh_widgetExtensionProvider;
 }
 
 - (id)sbh_widgetDescriptor
 {
-  v3 = [(SBHWidgetViewController *)self sbh_effectiveWidgetExtensionProvider];
-  v4 = [(SBHWidgetViewController *)self widget];
-  v5 = [v3 widgetDescriptorForWidget:v4];
+  sbh_effectiveWidgetExtensionProvider = [(SBHWidgetViewController *)self sbh_effectiveWidgetExtensionProvider];
+  widget = [(SBHWidgetViewController *)self widget];
+  v5 = [sbh_effectiveWidgetExtensionProvider widgetDescriptorForWidget:widget];
 
   return v5;
 }
 
 - (id)sbh_widgetExtension
 {
-  v3 = [(SBHWidgetViewController *)self sbh_effectiveWidgetExtensionProvider];
-  v4 = [(SBHWidgetViewController *)self widget];
-  v5 = [v4 extensionIdentity];
-  v6 = [v5 extensionBundleIdentifier];
-  v7 = [v3 widgetExtensionContainerForExtensionBundleIdentifier:v6];
+  sbh_effectiveWidgetExtensionProvider = [(SBHWidgetViewController *)self sbh_effectiveWidgetExtensionProvider];
+  widget = [(SBHWidgetViewController *)self widget];
+  extensionIdentity = [widget extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  v7 = [sbh_effectiveWidgetExtensionProvider widgetExtensionContainerForExtensionBundleIdentifier:extensionBundleIdentifier];
 
-  v8 = [v7 extensionForExtensionIdentity:v5];
+  v8 = [v7 extensionForExtensionIdentity:extensionIdentity];
 
   return v8;
 }

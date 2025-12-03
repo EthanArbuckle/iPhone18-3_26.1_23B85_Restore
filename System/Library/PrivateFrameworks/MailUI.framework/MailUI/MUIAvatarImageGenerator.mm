@@ -1,37 +1,37 @@
 @interface MUIAvatarImageGenerator
 + (id)log;
-+ (id)stringForStyle:(int64_t)a3;
-+ (void)roundAvatarView:(id)a3 withBorder:(BOOL)a4 size:(double)a5;
++ (id)stringForStyle:(int64_t)style;
++ (void)roundAvatarView:(id)view withBorder:(BOOL)border size:(double)size;
 - (BOOL)_canGenerateImages;
 - (EFFuture)allowGeneratingAvatarImagesFuture;
-- (MUIAvatarImageGenerator)initWithBimiProvider:(id)a3 categoryProvider:(id)a4 businessServiceProvider:(id)a5 genericAvatarProvider:(id)a6 contactsProviderHandler:(id)a7;
-- (MUIAvatarImageGenerator)initWithBimiProvider:(id)a3 messageRepository:(id)a4 contactsProviderHandler:(id)a5;
+- (MUIAvatarImageGenerator)initWithBimiProvider:(id)provider categoryProvider:(id)categoryProvider businessServiceProvider:(id)serviceProvider genericAvatarProvider:(id)avatarProvider contactsProviderHandler:(id)handler;
+- (MUIAvatarImageGenerator)initWithBimiProvider:(id)provider messageRepository:(id)repository contactsProviderHandler:(id)handler;
 - (MUIContactsProvider)contactsProvider;
-- (id)_avatarCacheKeyForContext:(id)a3;
-- (id)_avatarCacheKeyForEmailAddress:(id)a3 isAuthenticated:(BOOL)a4 businessLogoID:(id)a5;
-- (id)_businessAvatarImageForContext:(id)a3 handler:(id)a4;
-- (id)_cachedStyleIfAvailableForContext:(id)a3;
-- (id)_emailAddressDomainOrStringValueForAddress:(id)a3;
-- (id)_generateAvatarImageForContext:(id)a3 handler:(id)a4;
-- (id)_placeholderCacheEntryForContext:(id)a3 style:(int64_t)a4;
-- (id)contactForContext:(id)a3 handler:(id)a4;
-- (int64_t)_avatarStyleIfAvailableForContext:(id)a3;
-- (void)_avatarStyleForContext:(id)a3 completionHandler:(id)a4;
-- (void)_categoryForContext:(id)a3 completionHandler:(id)a4;
-- (void)_genericAvatarImageForContext:(id)a3 handler:(id)a4;
+- (id)_avatarCacheKeyForContext:(id)context;
+- (id)_avatarCacheKeyForEmailAddress:(id)address isAuthenticated:(BOOL)authenticated businessLogoID:(id)d;
+- (id)_businessAvatarImageForContext:(id)context handler:(id)handler;
+- (id)_cachedStyleIfAvailableForContext:(id)context;
+- (id)_emailAddressDomainOrStringValueForAddress:(id)address;
+- (id)_generateAvatarImageForContext:(id)context handler:(id)handler;
+- (id)_placeholderCacheEntryForContext:(id)context style:(int64_t)style;
+- (id)contactForContext:(id)context handler:(id)handler;
+- (int64_t)_avatarStyleIfAvailableForContext:(id)context;
+- (void)_avatarStyleForContext:(id)context completionHandler:(id)handler;
+- (void)_categoryForContext:(id)context completionHandler:(id)handler;
+- (void)_genericAvatarImageForContext:(id)context handler:(id)handler;
 - (void)_invalidateAvatarCache;
 - (void)allowGeneratingAvatarImages;
-- (void)removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress:(id)a3 businessLogoID:(id)a4;
+- (void)removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress:(id)address businessLogoID:(id)d;
 @end
 
 @implementation MUIAvatarImageGenerator
 
 - (BOOL)_canGenerateImages
 {
-  v2 = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
-  v3 = [v2 future];
-  v4 = [v3 resultIfAvailable];
-  v5 = v4 != 0;
+  allowsGeneratePromise = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
+  future = [allowsGeneratePromise future];
+  resultIfAvailable = [future resultIfAvailable];
+  v5 = resultIfAvailable != 0;
 
   return v5;
 }
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __30__MUIAvatarImageGenerator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_6 != -1)
   {
     dispatch_once(&log_onceToken_6, block);
@@ -67,8 +67,8 @@ void __30__MUIAvatarImageGenerator_log__block_invoke(uint64_t a1)
   v3 = EFAtomicObjectLoad();
   if (!v3)
   {
-    v4 = [(MUIAvatarImageGenerator *)self contactsProviderHandler];
-    v5 = v4[2]();
+    contactsProviderHandler = [(MUIAvatarImageGenerator *)self contactsProviderHandler];
+    v5 = contactsProviderHandler[2]();
 
     v3 = EFAtomicObjectSetIfNil();
   }
@@ -88,26 +88,26 @@ void __30__MUIAvatarImageGenerator_log__block_invoke(uint64_t a1)
     _os_log_impl(&dword_214A5E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
   }
 
-  v6 = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
-  v7 = [MEMORY[0x277CBEB68] null];
-  [v6 finishWithResult:v7];
+  allowsGeneratePromise = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
+  null = [MEMORY[0x277CBEB68] null];
+  [allowsGeneratePromise finishWithResult:null];
 }
 
-+ (void)roundAvatarView:(id)a3 withBorder:(BOOL)a4 size:(double)a5
++ (void)roundAvatarView:(id)view withBorder:(BOOL)border size:(double)size
 {
-  v6 = a4;
-  v18 = a3;
-  [v18 mui_currentScreenScale];
+  borderCopy = border;
+  viewCopy = view;
+  [viewCopy mui_currentScreenScale];
   v8 = fmax(v7, 1.0);
-  if (v6)
+  if (borderCopy)
   {
-    v9 = [MEMORY[0x277D75348] mailBrandAvatarBorderColor];
+    mailBrandAvatarBorderColor = [MEMORY[0x277D75348] mailBrandAvatarBorderColor];
     v10 = 1.0 / v8;
   }
 
   else
   {
-    v9 = 0;
+    mailBrandAvatarBorderColor = 0;
     v10 = 0.0;
   }
 
@@ -119,37 +119,37 @@ void __30__MUIAvatarImageGenerator_log__block_invoke(uint64_t a1)
       goto LABEL_9;
     }
 
-    v11 = v18;
-    [v11 setBorderColor:v9];
+    layer5 = viewCopy;
+    [layer5 setBorderColor:mailBrandAvatarBorderColor];
   }
 
   else
   {
-    v12 = [v18 layer];
-    [v12 setCornerRadius:round(a5 * 0.2 * v8) / v8];
+    layer = [viewCopy layer];
+    [layer setCornerRadius:round(size * 0.2 * v8) / v8];
 
     v13 = *MEMORY[0x277CDA138];
-    v14 = [v18 layer];
-    [v14 setCornerCurve:v13];
+    layer2 = [viewCopy layer];
+    [layer2 setCornerCurve:v13];
 
-    v15 = [v18 layer];
-    [v15 setMasksToBounds:1];
+    layer3 = [viewCopy layer];
+    [layer3 setMasksToBounds:1];
 
-    v16 = [v9 CGColor];
-    v17 = [v18 layer];
-    [v17 setBorderColor:v16];
+    cGColor = [mailBrandAvatarBorderColor CGColor];
+    layer4 = [viewCopy layer];
+    [layer4 setBorderColor:cGColor];
 
-    v11 = [v18 layer];
+    layer5 = [viewCopy layer];
   }
 
-  [v11 setBorderWidth:v10];
+  [layer5 setBorderWidth:v10];
 
 LABEL_9:
 }
 
-+ (id)stringForStyle:(int64_t)a3
++ (id)stringForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
     return @"rounded rect";
   }
@@ -160,24 +160,24 @@ LABEL_9:
   }
 }
 
-- (MUIAvatarImageGenerator)initWithBimiProvider:(id)a3 categoryProvider:(id)a4 businessServiceProvider:(id)a5 genericAvatarProvider:(id)a6 contactsProviderHandler:(id)a7
+- (MUIAvatarImageGenerator)initWithBimiProvider:(id)provider categoryProvider:(id)categoryProvider businessServiceProvider:(id)serviceProvider genericAvatarProvider:(id)avatarProvider contactsProviderHandler:(id)handler
 {
-  v39 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  providerCopy = provider;
+  categoryProviderCopy = categoryProvider;
+  serviceProviderCopy = serviceProvider;
+  avatarProviderCopy = avatarProvider;
+  handlerCopy = handler;
   v40.receiver = self;
   v40.super_class = MUIAvatarImageGenerator;
   v17 = [(MUIAvatarImageGenerator *)&v40 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_businessServiceProvider, a5);
-    objc_storeStrong(&v18->_bimiProvider, a3);
-    objc_storeStrong(&v18->_categoryProvider, a4);
-    objc_storeStrong(&v18->_genericAvatarProvider, a6);
-    v19 = _Block_copy(v16);
+    objc_storeStrong(&v17->_businessServiceProvider, serviceProvider);
+    objc_storeStrong(&v18->_bimiProvider, provider);
+    objc_storeStrong(&v18->_categoryProvider, categoryProvider);
+    objc_storeStrong(&v18->_genericAvatarProvider, avatarProvider);
+    v19 = _Block_copy(handlerCopy);
     contactsProviderHandler = v18->_contactsProviderHandler;
     v18->_contactsProviderHandler = v19;
 
@@ -190,8 +190,8 @@ LABEL_9:
     v18->_businessAvatarScheduler = v23;
 
     v25 = objc_alloc(MEMORY[0x277D07168]);
-    v26 = [MEMORY[0x277CBEB38] dictionary];
-    v27 = [v25 initWithObject:v26];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v27 = [v25 initWithObject:dictionary];
     senderStyleCache = v18->_senderStyleCache;
     v18->_senderStyleCache = v27;
 
@@ -203,107 +203,107 @@ LABEL_9:
     genericAvatarCache = v18->_genericAvatarCache;
     v18->_genericAvatarCache = v31;
 
-    v33 = [MEMORY[0x277D071A8] promise];
+    promise = [MEMORY[0x277D071A8] promise];
     allowsGeneratePromise = v18->_allowsGeneratePromise;
-    v18->_allowsGeneratePromise = v33;
+    v18->_allowsGeneratePromise = promise;
 
-    v35 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastTimeout = v18->_lastTimeout;
-    v18->_lastTimeout = v35;
+    v18->_lastTimeout = distantPast;
 
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 addObserver:v18 selector:sel__invalidateAvatarCache name:*MEMORY[0x277CBD140] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel__invalidateAvatarCache name:*MEMORY[0x277CBD140] object:0];
   }
 
   return v18;
 }
 
-- (MUIAvatarImageGenerator)initWithBimiProvider:(id)a3 messageRepository:(id)a4 contactsProviderHandler:(id)a5
+- (MUIAvatarImageGenerator)initWithBimiProvider:(id)provider messageRepository:(id)repository contactsProviderHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[MUIMessageRepositoryCategoryProvider alloc] initWithMessageRepository:v9];
-  v12 = [[MUIBusinessConnectServiceProvider alloc] initWithMessageRepository:v9];
+  handlerCopy = handler;
+  repositoryCopy = repository;
+  providerCopy = provider;
+  v11 = [[MUIMessageRepositoryCategoryProvider alloc] initWithMessageRepository:repositoryCopy];
+  v12 = [[MUIBusinessConnectServiceProvider alloc] initWithMessageRepository:repositoryCopy];
 
   v13 = objc_alloc_init(MUIPassKitAvatarProvider);
-  v14 = [(MUIAvatarImageGenerator *)self initWithBimiProvider:v10 categoryProvider:v11 businessServiceProvider:v12 genericAvatarProvider:v13 contactsProviderHandler:v8];
+  v14 = [(MUIAvatarImageGenerator *)self initWithBimiProvider:providerCopy categoryProvider:v11 businessServiceProvider:v12 genericAvatarProvider:v13 contactsProviderHandler:handlerCopy];
 
   return v14;
 }
 
 - (EFFuture)allowGeneratingAvatarImagesFuture
 {
-  v2 = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
-  v3 = [v2 future];
+  allowsGeneratePromise = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
+  future = [allowsGeneratePromise future];
 
-  return v3;
+  return future;
 }
 
-- (id)contactForContext:(id)a3 handler:(id)a4
+- (id)contactForContext:(id)context handler:(id)handler
 {
   v75 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForContext:v7];
-  v10 = [(MUIAvatarImageGenerator *)self avatarCache];
-  v11 = [v10 objectForKey:v9];
+  contextCopy = context;
+  handlerCopy = handler;
+  v9 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForContext:contextCopy];
+  avatarCache = [(MUIAvatarImageGenerator *)self avatarCache];
+  v11 = [avatarCache objectForKey:v9];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __53__MUIAvatarImageGenerator_contactForContext_handler___block_invoke;
   aBlock[3] = &unk_278189F98;
-  v12 = v8;
+  v12 = handlerCopy;
   v67 = v12;
   v13 = _Block_copy(aBlock);
   if (!v11)
   {
-    v17 = [MEMORY[0x277D071A8] promise];
+    promise = [MEMORY[0x277D071A8] promise];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __53__MUIAvatarImageGenerator_contactForContext_handler___block_invoke_56;
     v61[3] = &unk_278189FC0;
-    v53 = v17;
+    v53 = promise;
     v62 = v53;
     v64 = v13;
     v65 = a2;
     v52 = v64;
-    v63 = self;
-    v16 = [(MUIAvatarImageGenerator *)self _generateAvatarImageForContext:v7 handler:v61];
-    v55 = [(MUIAvatarImageGenerator *)self lastTimeout];
-    v18 = [v7 emailAddress];
-    v19 = [v18 emailAddressValue];
-    v20 = v19;
-    if (v19)
+    selfCopy = self;
+    v16 = [(MUIAvatarImageGenerator *)self _generateAvatarImageForContext:contextCopy handler:v61];
+    lastTimeout = [(MUIAvatarImageGenerator *)self lastTimeout];
+    emailAddress = [contextCopy emailAddress];
+    emailAddressValue = [emailAddress emailAddressValue];
+    v20 = emailAddressValue;
+    if (emailAddressValue)
     {
-      v54 = [v19 ef_publicDescription];
+      ef_publicDescription = [emailAddressValue ef_publicDescription];
     }
 
     else
     {
       v21 = MEMORY[0x277D07198];
-      [v18 stringValue];
-      v48 = v7;
+      [emailAddress stringValue];
+      v48 = contextCopy;
       v22 = v13;
       v23 = v12;
       v24 = a2;
       v25 = v9;
       v27 = v26 = v16;
-      v54 = [v21 fullyOrPartiallyRedactedStringForString:v27];
+      ef_publicDescription = [v21 fullyOrPartiallyRedactedStringForString:v27];
 
       v16 = v26;
       v9 = v25;
       a2 = v24;
       v12 = v23;
       v13 = v22;
-      v7 = v48;
+      contextCopy = v48;
     }
 
-    v28 = [(MUIAvatarImageGenerator *)self _canGenerateImages];
+    _canGenerateImages = [(MUIAvatarImageGenerator *)self _canGenerateImages];
     v29 = 0;
-    if ([v7 reducePlaceholderImage] && v28)
+    if ([contextCopy reducePlaceholderImage] && _canGenerateImages)
     {
-      v29 = [v55 ef_isMoreThanTimeIntervalAgo:5.0];
+      v29 = [lastTimeout ef_isMoreThanTimeIntervalAgo:5.0];
     }
 
     v30 = +[MUIAvatarImageGenerator log];
@@ -318,13 +318,13 @@ LABEL_9:
       *buf = 138544386;
       v69 = v35;
       v70 = 1024;
-      *v71 = v28;
+      *v71 = _canGenerateImages;
       *&v71[4] = 1024;
       *&v71[6] = v29;
       *v72 = 2114;
-      *&v72[2] = v55;
+      *&v72[2] = lastTimeout;
       v73 = 2114;
-      v74 = v54;
+      v74 = ef_publicDescription;
       _os_log_impl(&dword_214A5E000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ - no cached entry. canGenerate:%{BOOL}d shouldWait:%{BOOL}d lastTimeout:%{public}@ for address:%{public}@", buf, 0x2Cu);
 
       v16 = v34;
@@ -336,9 +336,9 @@ LABEL_9:
 
     if (v29)
     {
-      v36 = [v53 future];
+      future = [v53 future];
       v60 = 0;
-      v37 = [v36 resultWithTimeout:&v60 error:0.1];
+      v37 = [future resultWithTimeout:&v60 error:0.1];
       v50 = v60;
 
       if (v37)
@@ -350,14 +350,14 @@ LABEL_9:
           *buf = 138543618;
           v69 = v39;
           v70 = 2114;
-          *v71 = v54;
+          *v71 = ef_publicDescription;
           _os_log_impl(&dword_214A5E000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@ - waited and got avatar for address:%{public}@", buf, 0x16u);
         }
 
         v52[2](v52, v37, 0);
         v11 = 0;
         v41 = v53;
-        v40 = v54;
+        v40 = ef_publicDescription;
 LABEL_26:
 
         goto LABEL_27;
@@ -384,7 +384,7 @@ LABEL_26:
 
       *v71 = v44;
       *&v71[8] = 2114;
-      *v72 = v54;
+      *v72 = ef_publicDescription;
       _os_log_impl(&dword_214A5E000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ - returning a placeholder %{public}@for address:%{public}@", buf, 0x20u);
     }
 
@@ -394,19 +394,19 @@ LABEL_26:
       [(MUIAvatarImageGenerator *)self setLastTimeout:v45];
     }
 
-    v11 = [(MUIAvatarImageGenerator *)self _placeholderCacheEntryForContext:v7 style:[(MUIAvatarImageGenerator *)self _avatarStyleIfAvailableForContext:v7]];
+    v11 = [(MUIAvatarImageGenerator *)self _placeholderCacheEntryForContext:contextCopy style:[(MUIAvatarImageGenerator *)self _avatarStyleIfAvailableForContext:contextCopy]];
     v52[2](v52, v11, 0);
     v41 = v53;
-    v46 = [v53 future];
+    future2 = [v53 future];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __53__MUIAvatarImageGenerator_contactForContext_handler___block_invoke_70;
     v56[3] = &unk_278189FE8;
     v59 = a2;
-    v40 = v54;
-    v57 = v54;
+    v40 = ef_publicDescription;
+    v57 = ef_publicDescription;
     v58 = v52;
-    [v46 addSuccessBlock:v56];
+    [future2 addSuccessBlock:v56];
 
     v37 = v57;
     goto LABEL_26;
@@ -421,7 +421,7 @@ LABEL_26:
     v70 = 2114;
     *v71 = v11;
     *&v71[8] = 2114;
-    *v72 = v7;
+    *v72 = contextCopy;
     _os_log_impl(&dword_214A5E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - found cached entry\n%{public}@\ncontext %{public}@", buf, 0x20u);
   }
 
@@ -492,30 +492,30 @@ void __53__MUIAvatarImageGenerator_contactForContext_handler___block_invoke_70(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_generateAvatarImageForContext:(id)a3 handler:(id)a4
+- (id)_generateAvatarImageForContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 category];
-  v9 = [v6 emailAddress];
-  if (v9 && v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  category = [contextCopy category];
+  emailAddress = [contextCopy emailAddress];
+  if (emailAddress && category)
   {
     v10 = objc_alloc_init(MEMORY[0x277D07170]);
-    v11 = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
-    v12 = [v11 future];
-    v13 = [(MUIAvatarImageGenerator *)self avatarImageScheduler];
+    allowsGeneratePromise = [(MUIAvatarImageGenerator *)self allowsGeneratePromise];
+    future = [allowsGeneratePromise future];
+    avatarImageScheduler = [(MUIAvatarImageGenerator *)self avatarImageScheduler];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __66__MUIAvatarImageGenerator__generateAvatarImageForContext_handler___block_invoke;
     v22[3] = &unk_27818A038;
     v22[4] = self;
-    v23 = v6;
-    v24 = v9;
-    v25 = v8;
-    v27 = v7;
+    v23 = contextCopy;
+    v24 = emailAddress;
+    v25 = category;
+    v27 = handlerCopy;
     v14 = v10;
     v26 = v14;
-    [v12 onScheduler:v13 addSuccessBlock:v22];
+    [future onScheduler:avatarImageScheduler addSuccessBlock:v22];
 
     v15 = v26;
     v16 = v14;
@@ -528,10 +528,10 @@ void __53__MUIAvatarImageGenerator_contactForContext_handler___block_invoke_70(u
     v18 = +[MUIAvatarImageGenerator log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      [(MUIAvatarImageGenerator *)v9 _generateAvatarImageForContext:v8 handler:v18];
+      [(MUIAvatarImageGenerator *)emailAddress _generateAvatarImageForContext:category handler:v18];
     }
 
-    if (v9)
+    if (emailAddress)
     {
       v19 = @"Missing category";
     }
@@ -542,8 +542,8 @@ void __53__MUIAvatarImageGenerator_contactForContext_handler___block_invoke_70(u
     }
 
     v16 = [MEMORY[0x277CCA9B8] em_internalErrorWithReason:v19];
-    v20 = [(MUIAvatarImageGenerator *)self _placeholderCacheEntryForContext:v6 style:0];
-    (*(v7 + 2))(v7, v20, v16);
+    v20 = [(MUIAvatarImageGenerator *)self _placeholderCacheEntryForContext:contextCopy style:0];
+    (*(handlerCopy + 2))(handlerCopy, v20, v16);
     v17 = objc_alloc_init(MEMORY[0x277D07170]);
   }
 
@@ -629,17 +629,17 @@ void __66__MUIAvatarImageGenerator__generateAvatarImageForContext_handler___bloc
   [*(a1 + 64) addCancelable:v16];
 }
 
-- (id)_cachedStyleIfAvailableForContext:(id)a3
+- (id)_cachedStyleIfAvailableForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForContext:v4];
+  contextCopy = context;
+  v5 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForContext:contextCopy];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__1;
   v17 = __Block_byref_object_dispose__1;
   v18 = 0;
-  v6 = [(MUIAvatarImageGenerator *)self senderStyleCache];
+  senderStyleCache = [(MUIAvatarImageGenerator *)self senderStyleCache];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__MUIAvatarImageGenerator__cachedStyleIfAvailableForContext___block_invoke;
@@ -647,7 +647,7 @@ void __66__MUIAvatarImageGenerator__generateAvatarImageForContext_handler___bloc
   v12 = &v13;
   v7 = v5;
   v11 = v7;
-  [v6 performWhileLocked:v10];
+  [senderStyleCache performWhileLocked:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -665,50 +665,50 @@ uint64_t __61__MUIAvatarImageGenerator__cachedStyleIfAvailableForContext___block
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (int64_t)_avatarStyleIfAvailableForContext:(id)a3
+- (int64_t)_avatarStyleIfAvailableForContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MUIAvatarImageGenerator *)self _cachedStyleIfAvailableForContext:v4];
+  contextCopy = context;
+  v5 = [(MUIAvatarImageGenerator *)self _cachedStyleIfAvailableForContext:contextCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     v8 = +[MUIAvatarImageGenerator log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [MUIAvatarImageGenerator stringForStyle:v7];
-      v10 = [v4 ef_publicDescription];
+      v9 = [MUIAvatarImageGenerator stringForStyle:integerValue];
+      ef_publicDescription = [contextCopy ef_publicDescription];
       v20 = 138412546;
       v21 = v9;
       v22 = 2114;
-      v23 = v10;
+      v23 = ef_publicDescription;
       _os_log_impl(&dword_214A5E000, v8, OS_LOG_TYPE_INFO, "Found cached style %@ for context: %{public}@", &v20, 0x16u);
     }
   }
 
   else
   {
-    v11 = [v4 businessLogoID];
+    businessLogoID = [contextCopy businessLogoID];
 
-    v12 = [v4 brandIndicatorLocation];
-    v13 = v11 | v12;
+    brandIndicatorLocation = [contextCopy brandIndicatorLocation];
+    v13 = businessLogoID | brandIndicatorLocation;
 
-    v14 = [v4 category];
-    v15 = [v14 subtype];
+    category = [contextCopy category];
+    subtype = [category subtype];
 
-    v16 = [(MUIAvatarImageGenerator *)self _shouldShowCircleForSubtype:v15];
+    v16 = [(MUIAvatarImageGenerator *)self _shouldShowCircleForSubtype:subtype];
     if (v13)
     {
-      v17 = [v4 isAuthenticated];
+      isAuthenticated = [contextCopy isAuthenticated];
     }
 
     else
     {
-      v17 = 0;
+      isAuthenticated = 0;
     }
 
-    if (v15)
+    if (subtype)
     {
       v18 = v16;
     }
@@ -718,38 +718,38 @@ uint64_t __61__MUIAvatarImageGenerator__cachedStyleIfAvailableForContext___block
       v18 = 1;
     }
 
-    if (v17 || (v18 & 1) == 0)
+    if (isAuthenticated || (v18 & 1) == 0)
     {
-      v7 = (v17 | ~v16) & 1;
+      integerValue = (isAuthenticated | ~v16) & 1;
     }
 
     else
     {
-      v7 = 0;
+      integerValue = 0;
     }
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)_avatarStyleForContext:(id)a3 completionHandler:(id)a4
+- (void)_avatarStyleForContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__MUIAvatarImageGenerator__avatarStyleForContext_completionHandler___block_invoke;
   aBlock[3] = &unk_27818A088;
-  v8 = v6;
+  v8 = contextCopy;
   v34 = v8;
-  v35 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = handlerCopy;
   v36 = v9;
   v10 = _Block_copy(aBlock);
   v11 = [(MUIAvatarImageGenerator *)self _avatarStyleIfAvailableForContext:v8];
-  v12 = [(MUIAvatarImageGenerator *)self contactsProvider];
-  v13 = [v8 emailAddress];
-  v14 = [v12 contactExistsForEmailAddress:v13];
+  contactsProvider = [(MUIAvatarImageGenerator *)self contactsProvider];
+  emailAddress = [v8 emailAddress];
+  v14 = [contactsProvider contactExistsForEmailAddress:emailAddress];
 
   v29 = 0;
   v30 = &v29;
@@ -761,7 +761,7 @@ uint64_t __61__MUIAvatarImageGenerator__cachedStyleIfAvailableForContext___block
   v28 = 0;
   if (v14)
   {
-    v15 = [v8 category];
+    category = [v8 category];
     if (v11 == 1)
     {
       v16 = 0;
@@ -772,15 +772,15 @@ uint64_t __61__MUIAvatarImageGenerator__cachedStyleIfAvailableForContext___block
       v16 = *(v30 + 24);
     }
 
-    v10[2](v10, v15, v26[3], 1, v16 & 1);
+    v10[2](v10, category, v26[3], 1, v16 & 1);
     goto LABEL_9;
   }
 
   if (v11 == 1)
   {
     v28 = 1;
-    v15 = [v8 category];
-    v10[2](v10, v15, v26[3], 0, 0);
+    category = [v8 category];
+    v10[2](v10, category, v26[3], 0, 0);
 LABEL_9:
 
     goto LABEL_10;
@@ -940,29 +940,29 @@ void __68__MUIAvatarImageGenerator__avatarStyleForContext_completionHandler___bl
   }
 }
 
-- (void)_categoryForContext:(id)a3 completionHandler:(id)a4
+- (void)_categoryForContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 category];
-  v9 = [v8 isUncategorized];
+  contextCopy = context;
+  handlerCopy = handler;
+  category = [contextCopy category];
+  isUncategorized = [category isUncategorized];
 
-  if (v9)
+  if (isUncategorized)
   {
-    v10 = [(MUIAvatarImageGenerator *)self categoryProvider];
+    categoryProvider = [(MUIAvatarImageGenerator *)self categoryProvider];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __65__MUIAvatarImageGenerator__categoryForContext_completionHandler___block_invoke;
     v12[3] = &unk_27818A0D8;
-    v14 = v7;
-    v13 = v6;
-    [v10 categoryForContext:v13 completionHandler:v12];
+    v14 = handlerCopy;
+    v13 = contextCopy;
+    [categoryProvider categoryForContext:v13 completionHandler:v12];
   }
 
   else
   {
-    v11 = [v6 category];
-    (*(v7 + 2))(v7, v11);
+    category2 = [contextCopy category];
+    (*(handlerCopy + 2))(handlerCopy, category2);
   }
 }
 
@@ -988,38 +988,38 @@ void __65__MUIAvatarImageGenerator__categoryForContext_completionHandler___block
   }
 }
 
-- (void)removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress:(id)a3 businessLogoID:(id)a4
+- (void)removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress:(id)address businessLogoID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  dCopy = d;
   v8 = +[MUIAvatarImageGenerator log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = v6;
-    v10 = [v9 emailAddressValue];
-    v11 = v10;
-    if (v10)
+    v9 = addressCopy;
+    emailAddressValue = [v9 emailAddressValue];
+    v11 = emailAddressValue;
+    if (emailAddressValue)
     {
-      v12 = [v10 ef_publicDescription];
+      ef_publicDescription = [emailAddressValue ef_publicDescription];
     }
 
     else
     {
       v13 = MEMORY[0x277D07198];
-      v14 = [v9 stringValue];
-      v12 = [v13 fullyOrPartiallyRedactedStringForString:v14];
+      stringValue = [v9 stringValue];
+      ef_publicDescription = [v13 fullyOrPartiallyRedactedStringForString:stringValue];
     }
 
     *buf = 138543362;
-    v26 = v12;
+    v26 = ef_publicDescription;
     _os_log_impl(&dword_214A5E000, v8, OS_LOG_TYPE_DEFAULT, "Removing cached avatar for %{public}@", buf, 0xCu);
   }
 
-  v15 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForEmailAddress:v6 isAuthenticated:1 businessLogoID:0];
-  if (v7)
+  v15 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForEmailAddress:addressCopy isAuthenticated:1 businessLogoID:0];
+  if (dCopy)
   {
-    v16 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForEmailAddress:v6 isAuthenticated:1 businessLogoID:v7];
+    v16 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForEmailAddress:addressCopy isAuthenticated:1 businessLogoID:dCopy];
   }
 
   else
@@ -1027,16 +1027,16 @@ void __65__MUIAvatarImageGenerator__categoryForContext_completionHandler___block
     v16 = 0;
   }
 
-  v17 = [(MUIAvatarImageGenerator *)self avatarCache];
-  [v17 removeObjectForKey:v15];
+  avatarCache = [(MUIAvatarImageGenerator *)self avatarCache];
+  [avatarCache removeObjectForKey:v15];
 
   if (v16)
   {
-    v18 = [(MUIAvatarImageGenerator *)self avatarCache];
-    [v18 removeObjectForKey:v16];
+    avatarCache2 = [(MUIAvatarImageGenerator *)self avatarCache];
+    [avatarCache2 removeObjectForKey:v16];
   }
 
-  v19 = [(MUIAvatarImageGenerator *)self senderStyleCache];
+  senderStyleCache = [(MUIAvatarImageGenerator *)self senderStyleCache];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __107__MUIAvatarImageGenerator_removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress_businessLogoID___block_invoke;
@@ -1045,7 +1045,7 @@ void __65__MUIAvatarImageGenerator__categoryForContext_completionHandler___block
   v24 = v16;
   v20 = v16;
   v21 = v15;
-  [v19 performWhileLocked:v22];
+  [senderStyleCache performWhileLocked:v22];
 }
 
 void __107__MUIAvatarImageGenerator_removeCachedAvatarImagesForAuthenticatedMessagesWithEmailAddress_businessLogoID___block_invoke(uint64_t a1, void *a2)
@@ -1067,31 +1067,31 @@ void __107__MUIAvatarImageGenerator_removeCachedAvatarImagesForAuthenticatedMess
     _os_log_impl(&dword_214A5E000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating avatar cache", v6, 2u);
   }
 
-  v4 = [(MUIAvatarImageGenerator *)self avatarCache];
-  [v4 removeAllObjects];
+  avatarCache = [(MUIAvatarImageGenerator *)self avatarCache];
+  [avatarCache removeAllObjects];
 
-  v5 = [(MUIAvatarImageGenerator *)self senderStyleCache];
-  [v5 performWhileLocked:&__block_literal_global_13];
+  senderStyleCache = [(MUIAvatarImageGenerator *)self senderStyleCache];
+  [senderStyleCache performWhileLocked:&__block_literal_global_13];
 }
 
-- (id)_businessAvatarImageForContext:(id)a3 handler:(id)a4
+- (id)_businessAvatarImageForContext:(id)context handler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v9 = objc_alloc_init(MEMORY[0x277D07170]);
-  v10 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForContext:v7];
+  v10 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForContext:contextCopy];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__MUIAvatarImageGenerator__businessAvatarImageForContext_handler___block_invoke;
   aBlock[3] = &unk_27818A100;
   v53 = a2;
-  v11 = v7;
+  v11 = contextCopy;
   v49 = v11;
-  v50 = self;
+  selfCopy = self;
   v12 = v10;
   v51 = v12;
-  v13 = v8;
+  v13 = handlerCopy;
   v52 = v13;
   v14 = _Block_copy(aBlock);
   v46[0] = MEMORY[0x277D85DD0];
@@ -1101,8 +1101,8 @@ void __107__MUIAvatarImageGenerator_removeCachedAvatarImagesForAuthenticatedMess
   v15 = v14;
   v47 = v15;
   v16 = _Block_copy(v46);
-  v17 = [(MUIAvatarImageGenerator *)self avatarCache];
-  v18 = [v17 objectForKey:v12];
+  avatarCache = [(MUIAvatarImageGenerator *)self avatarCache];
+  v18 = [avatarCache objectForKey:v12];
 
   if (v18)
   {
@@ -1134,7 +1134,7 @@ void __107__MUIAvatarImageGenerator_removeCachedAvatarImagesForAuthenticatedMess
     v44 = v15;
     v23 = v9;
     v42 = v23;
-    v43 = self;
+    selfCopy2 = self;
     v34 = v11;
     v24 = v9;
     v25 = v16;
@@ -1148,7 +1148,7 @@ void __107__MUIAvatarImageGenerator_removeCachedAvatarImagesForAuthenticatedMess
     v35[2] = __66__MUIAvatarImageGenerator__businessAvatarImageForContext_handler___block_invoke_2;
     v35[3] = &unk_27818A1C8;
     v36 = v22;
-    v37 = self;
+    selfCopy3 = self;
     v38 = v26;
     v28 = v25;
     v9 = v24;
@@ -1387,95 +1387,95 @@ void __66__MUIAvatarImageGenerator__businessAvatarImageForContext_handler___bloc
   }
 }
 
-- (id)_avatarCacheKeyForContext:(id)a3
+- (id)_avatarCacheKeyForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 emailAddress];
-  v6 = [v4 isAuthenticated];
-  v7 = [v4 businessLogoID];
+  contextCopy = context;
+  emailAddress = [contextCopy emailAddress];
+  isAuthenticated = [contextCopy isAuthenticated];
+  businessLogoID = [contextCopy businessLogoID];
 
-  v8 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForEmailAddress:v5 isAuthenticated:v6 businessLogoID:v7];
+  v8 = [(MUIAvatarImageGenerator *)self _avatarCacheKeyForEmailAddress:emailAddress isAuthenticated:isAuthenticated businessLogoID:businessLogoID];
 
   return v8;
 }
 
-- (id)_avatarCacheKeyForEmailAddress:(id)a3 isAuthenticated:(BOOL)a4 businessLogoID:(id)a5
+- (id)_avatarCacheKeyForEmailAddress:(id)address isAuthenticated:(BOOL)authenticated businessLogoID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  authenticatedCopy = authenticated;
+  addressCopy = address;
+  dCopy = d;
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v7 emailAddressValue];
-  v11 = [v10 displayName];
-  v12 = v11;
-  if (v11)
+  emailAddressValue = [addressCopy emailAddressValue];
+  displayName = [emailAddressValue displayName];
+  v12 = displayName;
+  if (displayName)
   {
-    v13 = v11;
+    stringValue = displayName;
   }
 
   else
   {
-    v13 = [v7 stringValue];
+    stringValue = [addressCopy stringValue];
   }
 
-  v14 = v13;
+  v14 = stringValue;
 
-  v15 = v7;
-  v16 = [v15 emailAddressValue];
-  v17 = [v16 simpleAddress];
-  v18 = v17;
-  if (v17)
+  v15 = addressCopy;
+  emailAddressValue2 = [v15 emailAddressValue];
+  simpleAddress = [emailAddressValue2 simpleAddress];
+  v18 = simpleAddress;
+  if (simpleAddress)
   {
-    v19 = v17;
+    stringValue2 = simpleAddress;
   }
 
   else
   {
-    v19 = [v15 stringValue];
+    stringValue2 = [v15 stringValue];
   }
 
-  v20 = v19;
+  v20 = stringValue2;
 
-  v21 = [v9 stringWithFormat:@"dn:%@_sa:%@_%d", v14, v20, v6];
+  authenticatedCopy = [v9 stringWithFormat:@"dn:%@_sa:%@_%d", v14, v20, authenticatedCopy];
 
-  if (v8)
+  if (dCopy)
   {
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_b:%@", v21, v8];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_b:%@", authenticatedCopy, dCopy];
 
-    v21 = v22;
+    authenticatedCopy = dCopy;
   }
 
-  return v21;
+  return authenticatedCopy;
 }
 
-- (id)_emailAddressDomainOrStringValueForAddress:(id)a3
+- (id)_emailAddressDomainOrStringValueForAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 emailAddressValue];
-  v5 = [v4 highLevelDomain];
-  v6 = v5;
-  if (v5)
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  highLevelDomain = [emailAddressValue highLevelDomain];
+  v6 = highLevelDomain;
+  if (highLevelDomain)
   {
-    v7 = v5;
+    stringValue = highLevelDomain;
   }
 
   else
   {
-    v7 = [v3 stringValue];
+    stringValue = [addressCopy stringValue];
   }
 
-  v8 = v7;
+  v8 = stringValue;
 
   return v8;
 }
 
-- (void)_genericAvatarImageForContext:(id)a3 handler:(id)a4
+- (void)_genericAvatarImageForContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUIAvatarImageGenerator *)self genericAvatarProvider];
-  v9 = [v6 emailAddress];
-  v10 = [v8 genericCategoryForEmailAddress:v9];
+  contextCopy = context;
+  handlerCopy = handler;
+  genericAvatarProvider = [(MUIAvatarImageGenerator *)self genericAvatarProvider];
+  emailAddress = [contextCopy emailAddress];
+  v10 = [genericAvatarProvider genericCategoryForEmailAddress:emailAddress];
 
   if (v10)
   {
@@ -1487,23 +1487,23 @@ void __66__MUIAvatarImageGenerator__businessAvatarImageForContext_handler___bloc
     v11 = &unk_2827059F8;
   }
 
-  v12 = [(MUIAvatarImageGenerator *)self genericAvatarCache];
-  v13 = [v12 objectForKey:v11];
+  genericAvatarCache = [(MUIAvatarImageGenerator *)self genericAvatarCache];
+  v13 = [genericAvatarCache objectForKey:v11];
 
   if (!v13)
   {
-    v14 = [(MUIAvatarImageGenerator *)self genericAvatarProvider];
-    v15 = [v14 genericAvatarForContext:v6];
+    genericAvatarProvider2 = [(MUIAvatarImageGenerator *)self genericAvatarProvider];
+    v15 = [genericAvatarProvider2 genericAvatarForContext:contextCopy];
 
     if (!v15)
     {
-      v16 = [(MUIAvatarImageGenerator *)self _placeholderCacheEntryForContext:v6 style:1];
+      v16 = [(MUIAvatarImageGenerator *)self _placeholderCacheEntryForContext:contextCopy style:1];
       if (!v16)
       {
         v18 = +[MUIAvatarImageGenerator log];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          [MUIAvatarImageGenerator _genericAvatarImageForContext:v11 handler:v6];
+          [MUIAvatarImageGenerator _genericAvatarImageForContext:v11 handler:contextCopy];
         }
 
         v15 = 0;
@@ -1513,23 +1513,23 @@ void __66__MUIAvatarImageGenerator__businessAvatarImageForContext_handler___bloc
       v15 = v16;
     }
 
-    v17 = [(MUIAvatarImageGenerator *)self genericAvatarCache];
-    [v17 setObject:v15 forKey:v11];
+    genericAvatarCache2 = [(MUIAvatarImageGenerator *)self genericAvatarCache];
+    [genericAvatarCache2 setObject:v15 forKey:v11];
 
 LABEL_10:
-    v7[2](v7, v15);
+    handlerCopy[2](handlerCopy, v15);
 
     goto LABEL_11;
   }
 
-  v7[2](v7, v13);
+  handlerCopy[2](handlerCopy, v13);
 LABEL_11:
 }
 
-- (id)_placeholderCacheEntryForContext:(id)a3 style:(int64_t)a4
+- (id)_placeholderCacheEntryForContext:(id)context style:(int64_t)style
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
@@ -1537,7 +1537,7 @@ LABEL_11:
   v22 = &unk_27818A1F0;
   objc_copyWeak(&v23, &location);
   v7 = _Block_copy(&v19);
-  if (!a4)
+  if (!style)
   {
     v14 = [(MUIAvatarImageGenerator *)self avatarCache:v19];
     v9 = [v14 objectForKey:@"circle"];
@@ -1548,8 +1548,8 @@ LABEL_11:
     }
 
     v9 = +[MUIAvatarImageGeneratorResult circularPlaceholderResult];
-    v12 = [(MUIAvatarImageGenerator *)self avatarCache];
-    [v12 setObject:v9 forKey:@"circle"];
+    avatarCache = [(MUIAvatarImageGenerator *)self avatarCache];
+    [avatarCache setObject:v9 forKey:@"circle"];
 LABEL_7:
 
     if (v9)
@@ -1560,7 +1560,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
     v8 = [(MUIAvatarImageGenerator *)self avatarCache:v19];
     v9 = [v8 objectForKey:@"rounded rect"];
@@ -1572,12 +1572,12 @@ LABEL_7:
 
     v10 = MEMORY[0x277D755B8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [v10 mui_imageNamed:@"AvatarPlaceholderRect" inBundle:v11];
+    avatarCache = [v10 mui_imageNamed:@"AvatarPlaceholderRect" inBundle:v11];
 
-    v7[2](v7, v12, 1, v6);
-    v9 = [[MUIAvatarImageGeneratorResult alloc] initWithAddress:@"x-apple-rounded-rectangle-placeholder:;" image:v12 style:1 type:0];
-    v13 = [(MUIAvatarImageGenerator *)self avatarCache];
-    [v13 setObject:v9 forKey:@"rounded rect"];
+    v7[2](v7, avatarCache, 1, contextCopy);
+    v9 = [[MUIAvatarImageGeneratorResult alloc] initWithAddress:@"x-apple-rounded-rectangle-placeholder:;" image:avatarCache style:1 type:0];
+    avatarCache2 = [(MUIAvatarImageGenerator *)self avatarCache];
+    [avatarCache2 setObject:v9 forKey:@"rounded rect"];
 
     goto LABEL_7;
   }
@@ -1586,14 +1586,14 @@ LABEL_8:
   v15 = [MUIAvatarImageGenerator log:v19];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v17 = [(MUIAvatarImageGenerator *)self avatarCache];
-    v18 = [v6 ef_publicDescription];
+    avatarCache3 = [(MUIAvatarImageGenerator *)self avatarCache];
+    ef_publicDescription = [contextCopy ef_publicDescription];
     *buf = 134349570;
-    v26 = a4;
+    styleCopy = style;
     v27 = 2114;
-    v28 = v17;
+    v28 = avatarCache3;
     v29 = 2114;
-    v30 = v18;
+    v30 = ef_publicDescription;
     _os_log_error_impl(&dword_214A5E000, v15, OS_LOG_TYPE_ERROR, "Could not load placeholder avatar with style: %{public}ld and cache: %{public}@ and context: %{public}@", buf, 0x20u);
   }
 

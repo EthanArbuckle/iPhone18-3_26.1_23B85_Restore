@@ -1,43 +1,43 @@
 @interface TSWPOverlappingFieldsWrapper
-- (BOOL)isEqualToOverlappingFieldWrapper:(id)a3;
-- (BOOL)isEquivalentToObject:(id)a3;
-- (TSWPOverlappingFieldsWrapper)initWithField:(id)a3 parentStorage:(id)a4;
-- (TSWPOverlappingFieldsWrapper)initWithFields:(id)a3 parentStorage:(id)a4;
-- (id)copyWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToOverlappingFieldWrapper:(id)wrapper;
+- (BOOL)isEquivalentToObject:(id)object;
+- (TSWPOverlappingFieldsWrapper)initWithField:(id)field parentStorage:(id)storage;
+- (TSWPOverlappingFieldsWrapper)initWithFields:(id)fields parentStorage:(id)storage;
+- (id)copyWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)findFieldWithTextAttributeUUIDString:(id)a3;
+- (id)findFieldWithTextAttributeUUIDString:(id)string;
 - (id)parentStorage;
-- (unint64_t)indexOfField:(id)a3;
-- (unint64_t)sortedSearchForIndexOfField:(id)a3;
-- (void)addField:(id)a3;
-- (void)removeField:(id)a3;
+- (unint64_t)indexOfField:(id)field;
+- (unint64_t)sortedSearchForIndexOfField:(id)field;
+- (void)addField:(id)field;
+- (void)removeField:(id)field;
 - (void)resetTextAttributeUUIDString;
-- (void)setParentStorage:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)setParentStorage:(id)storage;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPOverlappingFieldsWrapper
 
-- (TSWPOverlappingFieldsWrapper)initWithFields:(id)a3 parentStorage:(id)a4
+- (TSWPOverlappingFieldsWrapper)initWithFields:(id)fields parentStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  fieldsCopy = fields;
+  storageCopy = storage;
   v23.receiver = self;
   v23.super_class = TSWPOverlappingFieldsWrapper;
   v10 = [(TSWPOverlappingFieldsWrapper *)&v23 init];
   if (v10)
   {
-    if (objc_msgSend_count(v6, v8, v9))
+    if (objc_msgSend_count(fieldsCopy, v8, v9))
     {
-      v13 = objc_msgSend_mutableCopy(v6, v11, v12);
+      v13 = objc_msgSend_mutableCopy(fieldsCopy, v11, v12);
       fields = v10->_fields;
       v10->_fields = v13;
 
-      objc_storeWeak(&v10->_parentStorage, v7);
+      objc_storeWeak(&v10->_parentStorage, storageCopy);
     }
 
     else
@@ -55,21 +55,21 @@
   return v10;
 }
 
-- (TSWPOverlappingFieldsWrapper)initWithField:(id)a3 parentStorage:(id)a4
+- (TSWPOverlappingFieldsWrapper)initWithField:(id)field parentStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  storageCopy = storage;
   v23.receiver = self;
   v23.super_class = TSWPOverlappingFieldsWrapper;
   v8 = [(TSWPOverlappingFieldsWrapper *)&v23 init];
   v10 = v8;
   if (v8)
   {
-    if (v6)
+    if (fieldCopy)
     {
-      objc_storeWeak(&v8->_parentStorage, v7);
+      objc_storeWeak(&v8->_parentStorage, storageCopy);
       v11 = objc_alloc(MEMORY[0x277CBEB18]);
-      v13 = objc_msgSend_initWithObjects_(v11, v12, v6, 0);
+      v13 = objc_msgSend_initWithObjects_(v11, v12, fieldCopy, 0);
       fields = v10->_fields;
       v10->_fields = v13;
     }
@@ -90,7 +90,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_fields(self, v5, v6);
@@ -100,11 +100,11 @@
   return v10;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -124,7 +124,7 @@
           objc_enumerationMutation(v8);
         }
 
-        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v14 + 1) + 8 * v13++), v10, v6, v7, v14);
+        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v14 + 1) + 8 * v13++), v10, rootCopy, contextCopy, v14);
       }
 
       while (v11 != v13);
@@ -135,11 +135,11 @@
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -159,7 +159,7 @@
           objc_enumerationMutation(v8);
         }
 
-        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v14 + 1) + 8 * v13++), v10, v6, v7, v14);
+        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v14 + 1) + 8 * v13++), v10, rootCopy, contextCopy, v14);
       }
 
       while (v11 != v13);
@@ -170,10 +170,10 @@
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -199,7 +199,7 @@
 
         if (v15)
         {
-          objc_msgSend_willBeRemovedFromDocumentRoot_(v12, v7, v4);
+          objc_msgSend_willBeRemovedFromDocumentRoot_(v12, v7, rootCopy);
         }
       }
 
@@ -210,10 +210,10 @@
   }
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -238,7 +238,7 @@
 
         if (v14)
         {
-          objc_msgSend_wasRemovedFromDocumentRoot_(v12, v7, v4);
+          objc_msgSend_wasRemovedFromDocumentRoot_(v12, v7, rootCopy);
         }
       }
 
@@ -249,10 +249,10 @@
   }
 }
 
-- (void)setParentStorage:(id)a3
+- (void)setParentStorage:(id)storage
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storageCopy = storage;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -272,7 +272,7 @@
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_setParentStorage_(*(*(&v11 + 1) + 8 * v10++), v7, v4, v11);
+        objc_msgSend_setParentStorage_(*(*(&v11 + 1) + 8 * v10++), v7, storageCopy, v11);
       }
 
       while (v8 != v10);
@@ -282,7 +282,7 @@
     while (v8);
   }
 
-  objc_storeWeak(&self->_parentStorage, v4);
+  objc_storeWeak(&self->_parentStorage, storageCopy);
 }
 
 - (id)parentStorage
@@ -292,10 +292,10 @@
   return WeakRetained;
 }
 
-- (unint64_t)sortedSearchForIndexOfField:(id)a3
+- (unint64_t)sortedSearchForIndexOfField:(id)field
 {
-  v6 = a3;
-  if (!v6)
+  fieldCopy = field;
+  if (!fieldCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPOverlappingFieldsWrapper sortedSearchForIndexOfField:]");
@@ -307,19 +307,19 @@
 
   fields = self->_fields;
   v15 = objc_msgSend_count(fields, v4, v5);
-  v17 = objc_msgSend_indexOfObject_inSortedRange_options_usingComparator_(fields, v16, v6, 0, v15, 1024, &unk_2885FE8B0);
+  v17 = objc_msgSend_indexOfObject_inSortedRange_options_usingComparator_(fields, v16, fieldCopy, 0, v15, 1024, &unk_2885FE8B0);
 
   return v17;
 }
 
-- (id)findFieldWithTextAttributeUUIDString:(id)a3
+- (id)findFieldWithTextAttributeUUIDString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   for (i = 0; i < objc_msgSend_count(self->_fields, v4, v5); ++i)
   {
     v9 = objc_msgSend_objectAtIndexedSubscript_(self->_fields, v8, i);
     v12 = objc_msgSend_textAttributeUUIDString(v9, v10, v11);
-    isEqualToString = objc_msgSend_isEqualToString_(v6, v13, v12);
+    isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v13, v12);
 
     if (isEqualToString)
     {
@@ -333,10 +333,10 @@ LABEL_6:
   return v9;
 }
 
-- (void)addField:(id)a3
+- (void)addField:(id)field
 {
-  v30 = a3;
-  if (!v30)
+  fieldCopy = field;
+  if (!fieldCopy)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPOverlappingFieldsWrapper addField:]");
@@ -346,7 +346,7 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  hasField = objc_msgSend_hasField_(self, v4, v30);
+  hasField = objc_msgSend_hasField_(self, v4, fieldCopy);
   v14 = hasField;
   if (hasField)
   {
@@ -371,15 +371,15 @@ LABEL_6:
 
   if ((v14 & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_fields, v22, v30);
+    objc_msgSend_addObject_(self->_fields, v22, fieldCopy);
   }
 }
 
-- (void)removeField:(id)a3
+- (void)removeField:(id)field
 {
-  v21 = a3;
-  v6 = objc_msgSend_indexOfField_(self, v4, v21);
-  if (!v21)
+  fieldCopy = field;
+  v6 = objc_msgSend_indexOfField_(self, v4, fieldCopy);
+  if (!fieldCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPOverlappingFieldsWrapper removeField:]");
@@ -405,9 +405,9 @@ LABEL_6:
   }
 }
 
-- (unint64_t)indexOfField:(id)a3
+- (unint64_t)indexOfField:(id)field
 {
-  v6 = a3;
+  fieldCopy = field;
   for (i = 0; ; ++i)
   {
     if (i >= objc_msgSend_count(self->_fields, v4, v5))
@@ -418,13 +418,13 @@ LABEL_6:
 
     v9 = objc_msgSend_objectAtIndexedSubscript_(self->_fields, v8, i);
     v12 = v9;
-    if (v9 == v6)
+    if (v9 == fieldCopy)
     {
       break;
     }
 
     v13 = objc_msgSend_textAttributeUUIDString(v9, v10, v11);
-    v16 = objc_msgSend_textAttributeUUIDString(v6, v14, v15);
+    v16 = objc_msgSend_textAttributeUUIDString(fieldCopy, v14, v15);
     isEqualToString = objc_msgSend_isEqualToString_(v13, v17, v16);
 
     if (isEqualToString)
@@ -437,19 +437,19 @@ LABEL_8:
   return i;
 }
 
-- (BOOL)isEqualToOverlappingFieldWrapper:(id)a3
+- (BOOL)isEqualToOverlappingFieldWrapper:(id)wrapper
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = v4;
-  if (self == v4)
+  wrapperCopy = wrapper;
+  v7 = wrapperCopy;
+  if (self == wrapperCopy)
   {
     v27 = 1;
   }
 
-  else if (v4)
+  else if (wrapperCopy)
   {
-    v8 = objc_msgSend_fields(v4, v5, v6);
+    v8 = objc_msgSend_fields(wrapperCopy, v5, v6);
     v11 = objc_msgSend_count(v8, v9, v10);
     v14 = objc_msgSend_fields(self, v12, v13);
     v17 = objc_msgSend_count(v14, v15, v16);
@@ -516,10 +516,10 @@ LABEL_17:
   return v27;
 }
 
-- (BOOL)isEquivalentToObject:(id)a3
+- (BOOL)isEquivalentToObject:(id)object
 {
   v58 = *MEMORY[0x277D85DE8];
-  v52 = a3;
+  objectCopy = object;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v7 = v4;
@@ -640,10 +640,10 @@ LABEL_25:
   return v35;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
@@ -664,7 +664,7 @@ LABEL_25:
           objc_enumerationMutation(v6);
         }
 
-        v12 = objc_msgSend_copyWithContext_(*(*(&v18 + 1) + 8 * v11), v8, v4, v18);
+        v12 = objc_msgSend_copyWithContext_(*(*(&v18 + 1) + 8 * v11), v8, contextCopy, v18);
         objc_msgSend_addObject_(v5, v13, v12);
 
         ++v11;

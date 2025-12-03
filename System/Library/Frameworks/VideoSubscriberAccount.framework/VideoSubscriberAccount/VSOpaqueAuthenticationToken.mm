@@ -1,11 +1,11 @@
 @interface VSOpaqueAuthenticationToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromUnsupportedProvider;
 - (BOOL)isValid;
 - (NSData)serializedData;
 - (NSString)description;
 - (VSOpaqueAuthenticationToken)init;
-- (VSOpaqueAuthenticationToken)initWithSerializedData:(id)a3;
+- (VSOpaqueAuthenticationToken)initWithSerializedData:(id)data;
 - (unint64_t)hash;
 - (void)serializedData;
 @end
@@ -23,18 +23,18 @@
     body = v2->_body;
     v2->_body = &stru_284DD5B48;
 
-    v5 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     expirationDate = v3->_expirationDate;
-    v3->_expirationDate = v5;
+    v3->_expirationDate = distantFuture;
   }
 
   return v3;
 }
 
-- (VSOpaqueAuthenticationToken)initWithSerializedData:(id)a3
+- (VSOpaqueAuthenticationToken)initWithSerializedData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The serializedData parameter must not be nil."];
   }
@@ -43,7 +43,7 @@
   if (v5)
   {
     v31 = 0;
-    v6 = [MEMORY[0x277CCAC58] propertyListWithData:v4 options:0 format:0 error:&v31];
+    v6 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:&v31];
     v7 = v31;
     if (v6)
     {
@@ -168,17 +168,17 @@
 
 - (BOOL)isValid
 {
-  v3 = [MEMORY[0x277CBEAA8] vs_currentDate];
-  v4 = [(VSOpaqueAuthenticationToken *)self expirationDate];
-  v5 = [v4 vs_isAfter:v3];
+  vs_currentDate = [MEMORY[0x277CBEAA8] vs_currentDate];
+  expirationDate = [(VSOpaqueAuthenticationToken *)self expirationDate];
+  v5 = [expirationDate vs_isAfter:vs_currentDate];
 
   return v5;
 }
 
 - (BOOL)isFromUnsupportedProvider
 {
-  v2 = [(VSOpaqueAuthenticationToken *)self body];
-  v3 = [v2 length] == 0;
+  body = [(VSOpaqueAuthenticationToken *)self body];
+  v3 = [body length] == 0;
 
   return v3;
 }
@@ -186,14 +186,14 @@
 - (NSData)serializedData
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(VSOpaqueAuthenticationToken *)self expirationDate];
-  v5 = [VSOptional optionalWithObject:v4];
+  expirationDate = [(VSOpaqueAuthenticationToken *)self expirationDate];
+  v5 = [VSOptional optionalWithObject:expirationDate];
 
-  v6 = [v5 forceUnwrapObject];
-  [v3 setObject:v6 forKey:@"expirationDate"];
+  forceUnwrapObject = [v5 forceUnwrapObject];
+  [v3 setObject:forceUnwrapObject forKey:@"expirationDate"];
 
-  v7 = [(VSOpaqueAuthenticationToken *)self body];
-  [v3 setObject:v7 forKey:@"body"];
+  body = [(VSOpaqueAuthenticationToken *)self body];
+  [v3 setObject:body forKey:@"body"];
 
   v12 = 0;
   v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:v3 format:100 options:0 error:&v12];
@@ -215,24 +215,24 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VSOpaqueAuthenticationToken *)self serializedData];
-  v3 = [v2 hash];
+  serializedData = [(VSOpaqueAuthenticationToken *)self serializedData];
+  v3 = [serializedData hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -247,10 +247,10 @@
       }
 
       v11 = v6;
-      v12 = [(VSOpaqueAuthenticationToken *)self serializedData];
-      v13 = [(VSOpaqueAuthenticationToken *)v11 serializedData];
+      serializedData = [(VSOpaqueAuthenticationToken *)self serializedData];
+      serializedData2 = [(VSOpaqueAuthenticationToken *)v11 serializedData];
 
-      v14 = [v12 isEqual:v13];
+      v14 = [serializedData isEqual:serializedData2];
     }
 
     else
@@ -272,8 +272,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VSOpaqueAuthenticationToken *)self expirationDate];
-  v7 = [v3 stringWithFormat:@"<%@ %@=%@>", v5, @"expirationDate", v6];
+  expirationDate = [(VSOpaqueAuthenticationToken *)self expirationDate];
+  v7 = [v3 stringWithFormat:@"<%@ %@=%@>", v5, @"expirationDate", expirationDate];
 
   return v7;
 }

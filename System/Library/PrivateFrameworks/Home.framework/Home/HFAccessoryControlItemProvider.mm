@@ -1,21 +1,21 @@
 @interface HFAccessoryControlItemProvider
-- (HFAccessoryControlItemProvider)initWithAccessoryItem:(id)a3;
+- (HFAccessoryControlItemProvider)initWithAccessoryItem:(id)item;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFAccessoryControlItemProvider
 
-- (HFAccessoryControlItemProvider)initWithAccessoryItem:(id)a3
+- (HFAccessoryControlItemProvider)initWithAccessoryItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = HFAccessoryControlItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessoryItem, a3);
+    objc_storeStrong(&v6->_accessoryItem, item);
     v8 = [MEMORY[0x277CBEB98] set];
     previousControlItems = v7->_previousControlItems;
     v7->_previousControlItems = v8;
@@ -26,13 +26,13 @@
 
 - (id)reloadItems
 {
-  v3 = [(HFAccessoryControlItemProvider *)self valueSource];
+  valueSource = [(HFAccessoryControlItemProvider *)self valueSource];
   v4 = [HFStaticReadPolicy policyWithDecision:0];
-  [v3 beginTransactionWithReason:@"HFAccessoryControlItemProviderDisableReads" readPolicy:v4 logger:0];
+  [valueSource beginTransactionWithReason:@"HFAccessoryControlItemProviderDisableReads" readPolicy:v4 logger:0];
 
   objc_initWeak(&location, self);
-  v5 = [(HFAccessoryControlItemProvider *)self accessoryItem];
-  v6 = [v5 updateWithOptions:MEMORY[0x277CBEC10]];
+  accessoryItem = [(HFAccessoryControlItemProvider *)self accessoryItem];
+  v6 = [accessoryItem updateWithOptions:MEMORY[0x277CBEC10]];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __45__HFAccessoryControlItemProvider_reloadItems__block_invoke;
@@ -90,11 +90,11 @@ uint64_t __45__HFAccessoryControlItemProvider_reloadItems__block_invoke_2(uint64
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFAccessoryControlItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"service";
   v8[1] = @"accessory";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 

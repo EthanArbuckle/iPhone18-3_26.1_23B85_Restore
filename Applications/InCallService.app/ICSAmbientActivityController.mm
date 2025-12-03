@@ -1,25 +1,25 @@
 @interface ICSAmbientActivityController
-- (void)handleCallStatusChanged:(id)a3;
-- (void)requestActivityForCall:(id)a3;
+- (void)handleCallStatusChanged:(id)changed;
+- (void)requestActivityForCall:(id)call;
 @end
 
 @implementation ICSAmbientActivityController
 
-- (void)requestActivityForCall:(id)a3
+- (void)requestActivityForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  sub_100009E84(v4);
+  callCopy = call;
+  selfCopy = self;
+  sub_100009E84(callCopy);
 }
 
-- (void)handleCallStatusChanged:(id)a3
+- (void)handleCallStatusChanged:(id)changed
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10000BAC8(v8);
 
   (*(v5 + 8))(v8, v4);

@@ -12,8 +12,8 @@
   [(LPiTunesMediaBookMetadata *)v3 setStoreIdentifier:self->_storeIdentifier];
   [(LPiTunesMediaBookMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaBookMetadata *)v3 setAuthor:self->_author];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaBookMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaBookMetadata *)v3 setArtworkMetadata:metadata];
 
   return v3;
 }

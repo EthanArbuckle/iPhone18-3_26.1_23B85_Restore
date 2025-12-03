@@ -9,7 +9,7 @@
 
 - (uint64_t)sfu_directoryUsage:()SFUtilityAdditions
 {
-  v4 = [a1 subpathsAtPath:?];
+  v4 = [self subpathsAtPath:?];
   v5 = [v4 count];
   if (!v5)
   {
@@ -43,25 +43,25 @@
 - (uint64_t)sfu_pathUsage:()SFUtilityAdditions
 {
   v12 = 0;
-  if (![a1 fileExistsAtPath:a3 isDirectory:&v12])
+  if (![self fileExistsAtPath:a3 isDirectory:&v12])
   {
     return 0;
   }
 
   if (v12 == 1)
   {
-    return [a1 sfu_directoryUsage:a3];
+    return [self sfu_directoryUsage:a3];
   }
 
   v11 = 0;
-  v6 = [a1 attributesOfItemAtPath:a3 error:&v11];
+  v6 = [self attributesOfItemAtPath:a3 error:&v11];
   if (!v6)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSFileManager(SFUtilityAdditions) sfu_pathUsage:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/sf/NSFileManager_SFUAdditions.m"];
-    v9 = [v11 code];
-    v10 = [v11 domain];
-    [OITSUAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:56 isFatal:0 description:"Failed to get size of file at path: %@ error: %zd %{public}@ %@", a3, v9, v10, v11];
+    code = [v11 code];
+    domain = [v11 domain];
+    [OITSUAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:56 isFatal:0 description:"Failed to get size of file at path: %@ error: %zd %{public}@ %@", a3, code, domain, v11];
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
@@ -73,15 +73,15 @@
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0;
   v13 = objc_autoreleasePoolPush();
-  v14 = [a1 attributesOfItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
-  v15 = [v14 fileType];
-  if (!v15)
+  v14 = [self attributesOfItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
+  fileType = [v14 fileType];
+  if (!fileType)
   {
     goto LABEL_28;
   }
 
-  v16 = v15;
-  v17 = [v15 isEqualToString:*MEMORY[0x277CCA1F8]];
+  v16 = fileType;
+  v17 = [fileType isEqualToString:*MEMORY[0x277CCA1F8]];
   v18 = *MEMORY[0x277CCA1F0];
   if ((v17 & 1) == 0 && ([v16 isEqualToString:*MEMORY[0x277CCA1F0]] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", *MEMORY[0x277CCA1E8]) & 1) == 0)
   {
@@ -103,7 +103,7 @@ LABEL_28:
 
     else
     {
-      v20 = [a1 setAttributes:a3 ofItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
+      v20 = [self setAttributes:a3 ofItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
     }
   }
 
@@ -127,7 +127,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v22 = [a1 contentsOfDirectoryAtURL:a4 includingPropertiesForKeys:0 options:0 error:&v40];
+  v22 = [self contentsOfDirectoryAtURL:a4 includingPropertiesForKeys:0 options:0 error:&v40];
   if (!v22)
   {
     goto LABEL_28;
@@ -156,7 +156,7 @@ LABEL_28:
         objc_enumerationMutation(v23);
       }
 
-      v28 = [a1 sfup_setAttributes:a3 ofItemAtURL:*(*(&v36 + 1) + 8 * i) recursively:1 error:&v40 shouldUpdateAttributesHandler:a7];
+      v28 = [self sfup_setAttributes:a3 ofItemAtURL:*(*(&v36 + 1) + 8 * i) recursively:1 error:&v40 shouldUpdateAttributesHandler:a7];
     }
 
     v20 = v28;
@@ -214,7 +214,7 @@ LABEL_29:
 - (uint64_t)sfu_setAttributes:()SFUtilityAdditions ofItemAtURL:recursively:error:
 {
   v7 = a5;
-  v9 = [a1 sfup_setAttributes:a3 ofItemAtURL:a4 recursively:a5 error:a6 shouldUpdateAttributesHandler:0];
+  v9 = [self sfup_setAttributes:a3 ofItemAtURL:a4 recursively:a5 error:a6 shouldUpdateAttributesHandler:0];
   v10 = v9;
   if (a6 && (v9 & 1) == 0 && ([*a6 tsu_isNoSuchFileError] & 1) == 0)
   {

@@ -1,15 +1,15 @@
 @interface GKFireworksPseudonymManager
-- (GKFireworksPseudonymManager)initWithService:(id)a3;
-- (void)provisionPseudonymIfNeeded:(id)a3;
-- (void)revokePseudonym:(id)a3 withCompletionHandler:(id)a4;
+- (GKFireworksPseudonymManager)initWithService:(id)service;
+- (void)provisionPseudonymIfNeeded:(id)needed;
+- (void)revokePseudonym:(id)pseudonym withCompletionHandler:(id)handler;
 @end
 
 @implementation GKFireworksPseudonymManager
 
-- (GKFireworksPseudonymManager)initWithService:(id)a3
+- (GKFireworksPseudonymManager)initWithService:(id)service
 {
-  v6 = a3;
-  if (!v6)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     sub_10028E244(a2, self);
   }
@@ -20,7 +20,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_service, a3);
+    objc_storeStrong(&v7->_service, service);
     v8->_inFlightProvision = 0;
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.gamekit.pseudonymQueue", v9);
@@ -31,35 +31,35 @@
   return v8;
 }
 
-- (void)provisionPseudonymIfNeeded:(id)a3
+- (void)provisionPseudonymIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(GKFireworksPseudonymManager *)self queue];
+  neededCopy = needed;
+  queue = [(GKFireworksPseudonymManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100117DBC;
   v7[3] = &unk_100361270;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = neededCopy;
+  v6 = neededCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)revokePseudonym:(id)a3 withCompletionHandler:(id)a4
+- (void)revokePseudonym:(id)pseudonym withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKFireworksPseudonymManager *)self queue];
+  pseudonymCopy = pseudonym;
+  handlerCopy = handler;
+  queue = [(GKFireworksPseudonymManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001184A0;
   block[3] = &unk_100360FC8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = pseudonymCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = pseudonymCopy;
+  dispatch_async(queue, block);
 }
 
 @end

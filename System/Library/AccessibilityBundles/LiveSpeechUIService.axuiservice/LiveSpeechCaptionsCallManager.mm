@@ -1,6 +1,6 @@
 @interface LiveSpeechCaptionsCallManager
 + (_TtC19LiveSpeechUIService29LiveSpeechCaptionsCallManager)shared;
-- (void)handleCallStatusChanged:(id)a3;
+- (void)handleCallStatusChanged:(id)changed;
 @end
 
 @implementation LiveSpeechCaptionsCallManager
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (void)handleCallStatusChanged:(id)a3
+- (void)handleCallStatusChanged:(id)changed
 {
   v4 = sub_B8FF0();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_B8FC0();
-  v8 = self;
+  selfCopy = self;
   sub_B7DC8(v7);
 
   (*(v5 + 8))(v7, v4);

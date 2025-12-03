@@ -1,32 +1,32 @@
 @interface AltitudeRichRectangularView
-- (RectLayoutConstants)_layoutConstantsForDevice:(id)a3;
+- (RectLayoutConstants)_layoutConstantsForDevice:(id)device;
 - (id)_altitudeLabel;
 - (id)_constraints;
-- (id)_createVerticalStackViewWithLabels:(id)a3;
+- (id)_createVerticalStackViewWithLabels:(id)labels;
 - (id)_headlineLabel;
 - (id)contentFont;
 - (id)headlineFont;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)monochromeAccentViews;
 - (id)monochromeOtherViews;
 - (id)redactionLabel;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 @end
 
 @implementation AltitudeRichRectangularView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
   v52[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v51.receiver = self;
   v51.super_class = AltitudeRichRectangularView;
-  v5 = [(NanoCompassBaseRichView *)&v51 initFullColorImageViewWithDevice:v4];
+  v5 = [(NanoCompassBaseRichView *)&v51 initFullColorImageViewWithDevice:deviceCopy];
   v8 = v5;
   if (v5)
   {
     objc_msgSend_setClipsToBounds_(v5, v6, 1, v7);
-    objc_msgSend__layoutConstantsForDevice_(v8, v9, v4, v10);
+    objc_msgSend__layoutConstantsForDevice_(v8, v9, deviceCopy, v10);
     *(v8 + 58) = v11;
     *(v8 + 59) = v12;
     *(v8 + 60) = v13;
@@ -35,7 +35,7 @@
     *(v8 + 61) = v14;
 
     objc_msgSend_addLayoutGuide_(v8, v16, *(v8 + 61), v17);
-    objc_msgSend_screenBounds(v4, v18, v19, v20);
+    objc_msgSend_screenBounds(deviceCopy, v18, v19, v20);
     v22 = v21 * 0.042;
     *(v8 + 57) = ceilf(v22);
     v26 = objc_msgSend__headlineLabel(v8, v23, v24, v25);
@@ -63,13 +63,13 @@
   return v8;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
+  providerCopy = provider;
   v49.receiver = self;
   v49.super_class = AltitudeRichRectangularView;
-  [(NanoCompassBaseRichView *)&v49 configureWithImageProvider:v6 reason:a4];
-  v10 = objc_msgSend_metadata(v6, v7, v8, v9);
+  [(NanoCompassBaseRichView *)&v49 configureWithImageProvider:providerCopy reason:reason];
+  v10 = objc_msgSend_metadata(providerCopy, v7, v8, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"altitude", v12);
 
   v17 = objc_msgSend_null(MEMORY[0x277CBEB68], v14, v15, v16);
@@ -81,7 +81,7 @@
     v13 = 0;
   }
 
-  v24 = objc_msgSend_metadata(v6, v21, v22, v23);
+  v24 = objc_msgSend_metadata(providerCopy, v21, v22, v23);
   v27 = objc_msgSend_objectForKeyedSubscript_(v24, v25, @"nodata", v26);
   v31 = objc_msgSend_BOOLValue(v27, v28, v29, v30);
 
@@ -130,9 +130,9 @@
   return v2;
 }
 
-- (RectLayoutConstants)_layoutConstantsForDevice:(id)a3
+- (RectLayoutConstants)_layoutConstantsForDevice:(id)device
 {
-  sub_23BD465C0(self, a3);
+  sub_23BD465C0(self, device);
   v3 = *&qword_27E1C51E0;
   v4 = *&qword_27E1C51E8;
   v5 = *&qword_27E1C51F0;
@@ -182,12 +182,12 @@
   return v3;
 }
 
-- (id)_createVerticalStackViewWithLabels:(id)a3
+- (id)_createVerticalStackViewWithLabels:(id)labels
 {
   v3 = MEMORY[0x277D75A68];
-  v4 = a3;
+  labelsCopy = labels;
   v5 = [v3 alloc];
-  v8 = objc_msgSend_initWithArrangedSubviews_(v5, v6, v4, v7);
+  v8 = objc_msgSend_initWithArrangedSubviews_(v5, v6, labelsCopy, v7);
 
   objc_msgSend_setAlignment_(v8, v9, 1, v10);
   objc_msgSend_setAxis_(v8, v11, 1, v12);

@@ -27,7 +27,7 @@
 + (WBSInternalFeedbackRadarComponent)safariTabsMacOS;
 + (WBSInternalFeedbackRadarComponent)webAccessibility;
 + (WBSInternalFeedbackRadarComponent)webExtensionsAll;
-- (WBSInternalFeedbackRadarComponent)initWithIdentifier:(id)a3 name:(id)a4 version:(id)a5;
+- (WBSInternalFeedbackRadarComponent)initWithIdentifier:(id)identifier name:(id)name version:(id)version;
 @end
 
 @implementation WBSInternalFeedbackRadarComponent
@@ -564,25 +564,25 @@ void __53__WBSInternalFeedbackRadarComponent_webAccessibility__block_invoke()
   webAccessibility_component = v0;
 }
 
-- (WBSInternalFeedbackRadarComponent)initWithIdentifier:(id)a3 name:(id)a4 version:(id)a5
+- (WBSInternalFeedbackRadarComponent)initWithIdentifier:(id)identifier name:(id)name version:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  versionCopy = version;
   v20.receiver = self;
   v20.super_class = WBSInternalFeedbackRadarComponent;
   v11 = [(WBSInternalFeedbackRadarComponent *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v16 = [v10 copy];
+    v16 = [versionCopy copy];
     version = v11->_version;
     v11->_version = v16;
 

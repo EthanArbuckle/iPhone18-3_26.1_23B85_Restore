@@ -1,21 +1,21 @@
 @interface TNSheetUIState
 + (int64_t)currentDeviceIdiom;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)previousScrollPosition;
 - (CGPoint)scrollPosition;
 - (CGRect)previousVisibleRect;
 - (CGRect)visibleRect;
 - (TNSheetUIState)init;
-- (TNSheetUIState)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)p_persistableSelectionPathFromSelectionPath:(id)a3;
+- (TNSheetUIState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)p_persistableSelectionPathFromSelectionPath:(id)path;
 - (void)clearPreviousVisibleRect;
 - (void)clearVisibleRect;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 context:(id)a5;
-- (void)setPreviousVisibleRect:(CGRect)a3;
-- (void)setSelectionPath:(id)a3;
-- (void)setVisibleRect:(CGRect)a3;
-- (void)updateForCurrentDeviceIdiomIfNecessaryWithDefaultViewScale:(float)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver context:(id)context;
+- (void)setPreviousVisibleRect:(CGRect)rect;
+- (void)setSelectionPath:(id)path;
+- (void)setVisibleRect:(CGRect)rect;
+- (void)updateForCurrentDeviceIdiomIfNecessaryWithDefaultViewScale:(float)scale;
 @end
 
 @implementation TNSheetUIState
@@ -46,10 +46,10 @@
   }
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
   self->_hasVisibleRect = 1;
-  self->_visibleRect = a3;
+  self->_visibleRect = rect;
   self->_archivedDeviceIdiom = objc_msgSend_currentDeviceIdiom(TNSheetUIState, a2, v3);
 }
 
@@ -61,10 +61,10 @@
   self->_visibleRect.size = v2;
 }
 
-- (void)setPreviousVisibleRect:(CGRect)a3
+- (void)setPreviousVisibleRect:(CGRect)rect
 {
   self->_hasPreviousVisibleRect = 1;
-  self->_previousVisibleRect = a3;
+  self->_previousVisibleRect = rect;
   self->_archivedDeviceIdiom = objc_msgSend_currentDeviceIdiom(TNSheetUIState, a2, v3);
 }
 
@@ -94,7 +94,7 @@
   return result;
 }
 
-- (void)updateForCurrentDeviceIdiomIfNecessaryWithDefaultViewScale:(float)a3
+- (void)updateForCurrentDeviceIdiomIfNecessaryWithDefaultViewScale:(float)scale
 {
   archivedDeviceIdiom = self->_archivedDeviceIdiom;
   if (archivedDeviceIdiom != objc_msgSend_currentDeviceIdiom(TNSheetUIState, a2, v3))
@@ -102,24 +102,24 @@
     objc_msgSend_clearVisibleRect(self, v7, v8);
     objc_msgSend_clearPreviousVisibleRect(self, v9, v10);
     self->_archivedDeviceIdiom = objc_msgSend_currentDeviceIdiom(TNSheetUIState, v11, v12);
-    self->_viewScale = a3;
-    self->_previousViewScale = a3;
+    self->_viewScale = scale;
+    self->_previousViewScale = scale;
   }
 }
 
-- (TNSheetUIState)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TNSheetUIState)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v11 = objc_msgSend_init(self, v7, v8);
   if (v11)
   {
-    if (objc_msgSend_preUFFVersion(v6, v9, v10) >= 0x2CBE9CBCDLL)
+    if (objc_msgSend_preUFFVersion(unarchiverCopy, v9, v10) >= 0x2CBE9CBCDLL)
     {
-      v14 = *(a3 + 4);
+      v14 = *(archive + 4);
       if ((v14 & 4) != 0)
       {
-        v15 = *(a3 + 5);
-        v16 = *(a3 + 3);
+        v15 = *(archive + 5);
+        v16 = *(archive + 3);
         if (!v16)
         {
           v16 = MEMORY[0x277D809F0];
@@ -133,7 +133,7 @@
       {
         *(v11 + 72) = *(v11 + 40);
         *(v11 + 88) = *(v11 + 56);
-        v14 = *(a3 + 4);
+        v14 = *(archive + 4);
         if ((v14 & 0x200) == 0)
         {
           goto LABEL_16;
@@ -142,8 +142,8 @@
 
       else
       {
-        v17 = *(a3 + 6);
-        *(v11 + 72) = vcvtq_f64_f32(*(*(a3 + 4) + 24));
+        v17 = *(archive + 6);
+        *(v11 + 72) = vcvtq_f64_f32(*(*(archive + 4) + 24));
         *(v11 + 88) = vcvtq_f64_f32(v17[3]);
         if ((v14 & 0x200) == 0)
         {
@@ -151,7 +151,7 @@
         }
       }
 
-      if (*(a3 + 81) == 1)
+      if (*(archive + 81) == 1)
       {
         v24 = (v14 >> 2) & 1;
       }
@@ -165,7 +165,7 @@
 LABEL_16:
       if ((v14 & 0x400) != 0)
       {
-        if (*(a3 + 82) == 1)
+        if (*(archive + 82) == 1)
         {
           v25 = (v14 >> 3) & 1;
         }
@@ -178,14 +178,14 @@ LABEL_16:
         *(v11 + 9) = v25;
       }
 
-      v26 = *(a3 + 18);
+      v26 = *(archive + 18);
       if ((v14 & 0x40) == 0)
       {
         v26 = 1.0;
       }
 
       *(v11 + 12) = v26;
-      v27 = *(a3 + 19);
+      v27 = *(archive + 19);
       if ((v14 & 0x80) == 0)
       {
         v27 = 1.0;
@@ -194,7 +194,7 @@ LABEL_16:
       *(v11 + 16) = v27;
       if ((v14 & 0x800) != 0)
       {
-        *(v11 + 24) = *(a3 + 21);
+        *(v11 + 24) = *(archive + 21);
         if ((v14 & 0x10) == 0)
         {
 LABEL_33:
@@ -203,7 +203,7 @@ LABEL_33:
           v34[2] = sub_275F311E0;
           v34[3] = &unk_27A6A2868;
           v35 = v11;
-          objc_msgSend_addFinalizeHandler_(v6, v32, v34);
+          objc_msgSend_addFinalizeHandler_(unarchiverCopy, v32, v34);
 
           goto LABEL_34;
         }
@@ -212,21 +212,21 @@ LABEL_33:
       else
       {
         *(v11 + 24) = objc_msgSend_currentDeviceIdiom(TNSheetUIState, v12, v13);
-        if ((*(a3 + 4) & 0x10) == 0)
+        if ((*(archive + 4) & 0x10) == 0)
         {
           goto LABEL_33;
         }
       }
 
       v28 = objc_alloc(MEMORY[0x277D806C8]);
-      if (*(a3 + 7))
+      if (*(archive + 7))
       {
-        v30 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, *(a3 + 7), v6);
+        v30 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, *(archive + 7), unarchiverCopy);
       }
 
       else
       {
-        v30 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, MEMORY[0x277D80750], v6);
+        v30 = objc_msgSend_initWithArchive_unarchiver_(v28, v29, MEMORY[0x277D80750], unarchiverCopy);
       }
 
       v31 = *(v11 + 32);
@@ -253,15 +253,15 @@ LABEL_34:
   return v11;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4 context:(id)a5
+- (void)saveToArchive:(void *)archive archiver:(id)archiver context:(id)context
 {
-  v11 = a4;
-  v8 = a5;
+  archiverCopy = archiver;
+  contextCopy = context;
   v9 = UnsafePointer();
-  objc_msgSend_saveToArchive_archiver_context_beforeVersion_(self, v10, a3, v11, v8, v9);
+  objc_msgSend_saveToArchive_archiver_context_beforeVersion_(self, v10, archive, archiverCopy, contextCopy, v9);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TNSheetUIState);
   origin = self->_visibleRect.origin;
@@ -282,9 +282,9 @@ LABEL_34:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUDynamicCast();
   v7 = v6;
@@ -323,10 +323,10 @@ LABEL_15:
   return isEqual;
 }
 
-- (id)p_persistableSelectionPathFromSelectionPath:(id)a3
+- (id)p_persistableSelectionPathFromSelectionPath:(id)path
 {
-  v4 = a3;
-  v7 = objc_msgSend_chartSelection(v4, v5, v6);
+  pathCopy = path;
+  v7 = objc_msgSend_chartSelection(pathCopy, v5, v6);
   if (v7)
   {
 
@@ -335,24 +335,24 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = objc_msgSend_formulaSelection(v4, v8, v9);
+  v10 = objc_msgSend_formulaSelection(pathCopy, v8, v9);
 
   if (v10)
   {
     goto LABEL_4;
   }
 
-  v13 = objc_msgSend_selectionPathForUIState(v4, v11, v12);
+  v13 = objc_msgSend_selectionPathForUIState(pathCopy, v11, v12);
 LABEL_5:
   v14 = v13;
 
   return v14;
 }
 
-- (void)setSelectionPath:(id)a3
+- (void)setSelectionPath:(id)path
 {
-  v11 = a3;
-  v5 = objc_msgSend_p_persistableSelectionPathFromSelectionPath_(self, v4, v11);
+  pathCopy = path;
+  v5 = objc_msgSend_p_persistableSelectionPathFromSelectionPath_(self, v4, pathCopy);
 
   selectionPath = self->_selectionPath;
   p_selectionPath = &self->_selectionPath;

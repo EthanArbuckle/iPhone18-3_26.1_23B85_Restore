@@ -45,12 +45,12 @@
 + (id)sharedUserNotificationConfig;
 + (id)sharedWebUIConfig;
 + (id)sharedWebUIPageConfig;
-- (AMSLogConfig)initWithCategory:(id)a3 backingLog:(id)a4;
+- (AMSLogConfig)initWithCategory:(id)category backingLog:(id)log;
 - (BOOL)debugLogsEnabled;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -165,8 +165,8 @@ uint64_t __36__AMSLogConfig_sharedConfigOversize__block_invoke()
 
 - (BOOL)debugLogsEnabled
 {
-  v2 = [(AMSLogConfig *)self OSLogObject];
-  v3 = [AMSLogConfig _debugLogsEnabled:v2];
+  oSLogObject = [(AMSLogConfig *)self OSLogObject];
+  v3 = [AMSLogConfig _debugLogsEnabled:oSLogObject];
 
   return v3;
 }
@@ -380,10 +380,10 @@ uint64_t __41__AMSLogConfig_sharedMarketingItemConfig__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AMSLogConfig)initWithCategory:(id)a3 backingLog:(id)a4
+- (AMSLogConfig)initWithCategory:(id)category backingLog:(id)log
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  logCopy = log;
   v11.receiver = self;
   v11.super_class = AMSLogConfig;
   v8 = [(AMSLogConfig *)&v11 init];
@@ -391,8 +391,8 @@ uint64_t __41__AMSLogConfig_sharedMarketingItemConfig__block_invoke()
   if (v8)
   {
     [(AMSLogConfig *)v8 setSubsystem:@"com.apple.AppleMediaServices"];
-    [(AMSLogConfig *)v9 setCategory:v6];
-    [(AMSLogConfig *)v9 setOSLogObject:v7];
+    [(AMSLogConfig *)v9 setCategory:categoryCopy];
+    [(AMSLogConfig *)v9 setOSLogObject:logCopy];
   }
 
   return v9;
@@ -964,11 +964,11 @@ uint64_t __39__AMSLogConfig_sharedFraudReportConfig__block_invoke()
   v4 = [(AMSLogConfig *)&v9 description];
   v5 = [v3 stringWithFormat:@"%@: {\n", v4];
 
-  v6 = [(AMSLogConfig *)self category];
-  [v5 appendFormat:@"  category: %@\n", v6];
+  category = [(AMSLogConfig *)self category];
+  [v5 appendFormat:@"  category: %@\n", category];
 
-  v7 = [(AMSLogConfig *)self subsystem];
-  [v5 appendFormat:@"  subsystem: %@\n", v7];
+  subsystem = [(AMSLogConfig *)self subsystem];
+  [v5 appendFormat:@"  subsystem: %@\n", subsystem];
 
   [v5 appendString:@"}"];
 
@@ -977,18 +977,18 @@ uint64_t __39__AMSLogConfig_sharedFraudReportConfig__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(AMSLogConfig *)self category];
-  v4 = [v3 hash];
-  v5 = [(AMSLogConfig *)self subsystem];
-  v6 = [v5 hash];
+  category = [(AMSLogConfig *)self category];
+  v4 = [category hash];
+  subsystem = [(AMSLogConfig *)self subsystem];
+  v6 = [subsystem hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_18;
@@ -997,14 +997,14 @@ uint64_t __39__AMSLogConfig_sharedFraudReportConfig__block_invoke()
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = [(AMSLogConfig *)self category];
-    if (v8 || ([(AMSLogConfig *)v5 category], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    category = [(AMSLogConfig *)self category];
+    if (category || ([(AMSLogConfig *)equalCopy category], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(AMSLogConfig *)self category];
-      v10 = [(AMSLogConfig *)v5 category];
-      v11 = [v9 isEqual:v10];
+      category2 = [(AMSLogConfig *)self category];
+      category3 = [(AMSLogConfig *)equalCopy category];
+      v11 = [category2 isEqual:category3];
 
-      if (v8)
+      if (category)
       {
 
         if (!v11)
@@ -1023,14 +1023,14 @@ uint64_t __39__AMSLogConfig_sharedFraudReportConfig__block_invoke()
       }
     }
 
-    v12 = [(AMSLogConfig *)self subsystem];
-    if (v12 || ([(AMSLogConfig *)v5 subsystem], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    subsystem = [(AMSLogConfig *)self subsystem];
+    if (subsystem || ([(AMSLogConfig *)equalCopy subsystem], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = [(AMSLogConfig *)self subsystem];
-      v14 = [(AMSLogConfig *)v5 subsystem];
-      v7 = [v13 isEqual:v14];
+      subsystem2 = [(AMSLogConfig *)self subsystem];
+      subsystem3 = [(AMSLogConfig *)equalCopy subsystem];
+      v7 = [subsystem2 isEqual:subsystem3];
 
-      if (v12)
+      if (subsystem)
       {
 LABEL_17:
 
@@ -1053,39 +1053,39 @@ LABEL_18:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[AMSLogConfig allocWithZone:](AMSLogConfig init];
-  v6 = [(AMSLogConfig *)self category];
-  v7 = [v6 copyWithZone:a3];
+  category = [(AMSLogConfig *)self category];
+  v7 = [category copyWithZone:zone];
   category = v5->_category;
   v5->_category = v7;
 
-  v9 = [(AMSLogConfig *)self subsystem];
-  v10 = [v9 copyWithZone:a3];
+  subsystem = [(AMSLogConfig *)self subsystem];
+  v10 = [subsystem copyWithZone:zone];
   subsystem = v5->_subsystem;
   v5->_subsystem = v10;
 
-  v12 = [(AMSLogConfig *)self OSLogObject];
+  oSLogObject = [(AMSLogConfig *)self OSLogObject];
   OSLogObject = v5->_OSLogObject;
-  v5->_OSLogObject = v12;
+  v5->_OSLogObject = oSLogObject;
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [+[AMSMutableLogConfig allocWithZone:](AMSMutableLogConfig init];
-  v6 = [(AMSLogConfig *)self category];
-  v7 = [v6 copyWithZone:a3];
+  category = [(AMSLogConfig *)self category];
+  v7 = [category copyWithZone:zone];
   [(AMSLogConfig *)v5 setCategory:v7];
 
-  v8 = [(AMSLogConfig *)self subsystem];
-  v9 = [v8 copyWithZone:a3];
+  subsystem = [(AMSLogConfig *)self subsystem];
+  v9 = [subsystem copyWithZone:zone];
   [(AMSLogConfig *)v5 setSubsystem:v9];
 
-  v10 = [(AMSLogConfig *)self OSLogObject];
-  [(AMSLogConfig *)v5 setOSLogObject:v10];
+  oSLogObject = [(AMSLogConfig *)self OSLogObject];
+  [(AMSLogConfig *)v5 setOSLogObject:oSLogObject];
 
   return v5;
 }

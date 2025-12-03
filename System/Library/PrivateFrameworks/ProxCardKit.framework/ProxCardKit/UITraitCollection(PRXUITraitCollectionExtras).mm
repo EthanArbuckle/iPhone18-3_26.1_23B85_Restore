@@ -16,10 +16,10 @@
 
 - (uint64_t)prx_cardSizeClass
 {
-  v1 = [a1 _valueForTraitNamed:@"PRXCardSizeClass"];
-  v2 = [v1 integerValue];
+  v1 = [self _valueForTraitNamed:@"PRXCardSizeClass"];
+  integerValue = [v1 integerValue];
 
-  return v2;
+  return integerValue;
 }
 
 @end

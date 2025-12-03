@@ -6,17 +6,17 @@
 
 - (BOOL)triIsValidTreatmentId
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v3 = [v2 mutableCopy];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  v3 = [alphanumericCharacterSet mutableCopy];
 
   [v3 addCharactersInString:@"-"];
-  v4 = [v3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4] == 0x7FFFFFFFFFFFFFFFLL;
+  invertedSet = [v3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
 }

@@ -1,17 +1,17 @@
 @interface PDFCRGroupRegionTable
-- (PDFCRGroupRegionTable)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 cells:(id)a5 parent:(id)a6;
+- (PDFCRGroupRegionTable)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction cells:(id)cells parent:(id)parent;
 @end
 
 @implementation PDFCRGroupRegionTable
 
-- (PDFCRGroupRegionTable)initWithBoundingQuad:(id)a3 layoutDirection:(unint64_t)a4 cells:(id)a5 parent:(id)a6
+- (PDFCRGroupRegionTable)initWithBoundingQuad:(id)quad layoutDirection:(unint64_t)direction cells:(id)cells parent:(id)parent
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  quadCopy = quad;
+  cellsCopy = cells;
+  parentCopy = parent;
   v16.receiver = self;
   v16.super_class = PDFCRGroupRegionTable;
-  v13 = [(PDFCRGroupRegion *)&v16 initWithBoundingQuad:v10 layoutDirection:a4 subregions:v11 parent:v12];
+  v13 = [(PDFCRGroupRegion *)&v16 initWithBoundingQuad:quadCopy layoutDirection:direction subregions:cellsCopy parent:parentCopy];
   v14 = v13;
   if (v13)
   {

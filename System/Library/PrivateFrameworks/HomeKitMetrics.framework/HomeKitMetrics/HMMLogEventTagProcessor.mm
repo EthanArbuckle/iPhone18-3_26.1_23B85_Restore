@@ -1,7 +1,7 @@
 @interface HMMLogEventTagProcessor
-- (HMMLogEventTagProcessor)initWithSubmitter:(id)a3;
+- (HMMLogEventTagProcessor)initWithSubmitter:(id)submitter;
 - (NSDictionary)tagProcessingBlocks;
-- (void)closeForReason:(unint64_t)a3;
+- (void)closeForReason:(unint64_t)reason;
 - (void)dealloc;
 @end
 
@@ -19,12 +19,12 @@
   [(HMMLogEventTagProcessor *)&v3 dealloc];
 }
 
-- (void)closeForReason:(unint64_t)a3
+- (void)closeForReason:(unint64_t)reason
 {
-  [(HMMLogEventTagProcessor *)self setLogEventCloseReason:a3];
-  v4 = [(HMMLogEventTagProcessor *)self submitter];
-  v5 = [(HMMLogEventTagProcessor *)self logEvent];
-  [v4 submitLogEvent:v5];
+  [(HMMLogEventTagProcessor *)self setLogEventCloseReason:reason];
+  submitter = [(HMMLogEventTagProcessor *)self submitter];
+  logEvent = [(HMMLogEventTagProcessor *)self logEvent];
+  [submitter submitLogEvent:logEvent];
 
   self->_active = 0;
 }
@@ -42,16 +42,16 @@
   objc_exception_throw(v7);
 }
 
-- (HMMLogEventTagProcessor)initWithSubmitter:(id)a3
+- (HMMLogEventTagProcessor)initWithSubmitter:(id)submitter
 {
-  v5 = a3;
+  submitterCopy = submitter;
   v9.receiver = self;
   v9.super_class = HMMLogEventTagProcessor;
   v6 = [(HMMLogEventTagProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_submitter, a3);
+    objc_storeStrong(&v6->_submitter, submitter);
     v7->_active = 1;
   }
 

@@ -1,14 +1,14 @@
 @interface EDSearchableMessageUpdate
 - (EDSearchableMessageUpdate)init;
-- (EDSearchableMessageUpdate)initWithConversationIdentifier:(id)a3 mailboxIdentifiers:(id)a4 gmailLabels:(id)a5 isLikelyJunk:(id)a6 dateLastViewed:(id)a7 flags:(id)a8 authenticationState:(id)a9 messageID:(id)a10 messageIDHeader:(id)a11 subjectWithoutPrefix:(id)a12;
-- (void)addToAttributes:(id)a3 forIdentifier:(id)a4;
+- (EDSearchableMessageUpdate)initWithConversationIdentifier:(id)identifier mailboxIdentifiers:(id)identifiers gmailLabels:(id)labels isLikelyJunk:(id)junk dateLastViewed:(id)viewed flags:(id)flags authenticationState:(id)state messageID:(id)self0 messageIDHeader:(id)self1 subjectWithoutPrefix:(id)self2;
+- (void)addToAttributes:(id)attributes forIdentifier:(id)identifier;
 @end
 
 @implementation EDSearchableMessageUpdate
 
-- (EDSearchableMessageUpdate)initWithConversationIdentifier:(id)a3 mailboxIdentifiers:(id)a4 gmailLabels:(id)a5 isLikelyJunk:(id)a6 dateLastViewed:(id)a7 flags:(id)a8 authenticationState:(id)a9 messageID:(id)a10 messageIDHeader:(id)a11 subjectWithoutPrefix:(id)a12
+- (EDSearchableMessageUpdate)initWithConversationIdentifier:(id)identifier mailboxIdentifiers:(id)identifiers gmailLabels:(id)labels isLikelyJunk:(id)junk dateLastViewed:(id)viewed flags:(id)flags authenticationState:(id)state messageID:(id)self0 messageIDHeader:(id)self1 subjectWithoutPrefix:(id)self2
 {
-  v43 = self;
+  selfCopy = self;
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1C4050, &unk_1C6472830);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x1EEE9AC00](v15 - 8);
@@ -19,7 +19,7 @@
   v40 = sub_1C645CA14();
   sub_1C6401D00(0, &qword_1EDC93590, 0x1E696AD98);
   v39 = sub_1C645CA14();
-  if (a7)
+  if (viewed)
   {
     sub_1C645C654();
     v21 = sub_1C645C674();
@@ -32,15 +32,15 @@
     (*(*(v22 - 8) + 56))(v18, 1, 1, v22);
   }
 
-  v23 = a11;
-  if (a10)
+  headerCopy = header;
+  if (d)
   {
     v38 = sub_1C645C874();
     v25 = v24;
-    if (a11)
+    if (header)
     {
 LABEL_6:
-      v23 = sub_1C645C874();
+      headerCopy = sub_1C645C874();
       v27 = v26;
       goto LABEL_9;
     }
@@ -50,7 +50,7 @@ LABEL_6:
   {
     v38 = 0;
     v25 = 0;
-    if (a11)
+    if (header)
     {
       goto LABEL_6;
     }
@@ -58,13 +58,13 @@ LABEL_6:
 
   v27 = 0;
 LABEL_9:
-  v28 = a6;
-  v29 = a8;
-  v30 = a9;
-  v31 = a12;
-  if (v31)
+  junkCopy = junk;
+  flagsCopy = flags;
+  stateCopy = state;
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    v32 = v31;
+    v32 = prefixCopy;
     v33 = sub_1C645C874();
     v35 = v34;
   }
@@ -75,12 +75,12 @@ LABEL_9:
     v35 = 0;
   }
 
-  v36 = sub_1C64351A8(v42, v41, v40, v39, v28, v18, v29, v30, v38, v25, v23, v27, v33, v35);
+  v36 = sub_1C64351A8(v42, v41, v40, v39, junkCopy, v18, flagsCopy, stateCopy, v38, v25, headerCopy, v27, v33, v35);
 
   return v36;
 }
 
-- (void)addToAttributes:(id)a3 forIdentifier:(id)a4
+- (void)addToAttributes:(id)attributes forIdentifier:(id)identifier
 {
   v6 = type metadata accessor for SearchableMessageUpdate();
   v7 = *(*(v6 - 8) + 64);
@@ -89,10 +89,10 @@ LABEL_9:
   v10 = sub_1C645C874();
   v12 = v11;
   sub_1C640DBAC(self + OBJC_IVAR___EDSearchableMessageUpdate__underlying, v15);
-  v13 = a3;
-  v14 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   swift_dynamicCast();
-  sub_1C6441998(v13, v10, v12);
+  sub_1C6441998(attributesCopy, v10, v12);
 
   sub_1C643514C(v9);
 }

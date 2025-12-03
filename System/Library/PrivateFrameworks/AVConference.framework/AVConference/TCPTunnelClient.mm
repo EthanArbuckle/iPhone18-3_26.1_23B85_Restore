@@ -1,24 +1,24 @@
 @interface TCPTunnelClient
-- (BOOL)sendAllocateMsg:(id *)a3;
-- (BOOL)sendChannelBindingMsgWithDict:(id)a3 error:(id *)a4;
-- (BOOL)sendRefreshMsg:(unsigned int)a3 error:(id *)a4;
-- (TCPTunnelClient)initWithRelayRequestDictionary:(id)a3 withCallID:(unsigned int)a4 relayType:(unsigned __int8)a5 errorCode:(int *)a6;
+- (BOOL)sendAllocateMsg:(id *)msg;
+- (BOOL)sendChannelBindingMsgWithDict:(id)dict error:(id *)error;
+- (BOOL)sendRefreshMsg:(unsigned int)msg error:(id *)error;
+- (TCPTunnelClient)initWithRelayRequestDictionary:(id)dictionary withCallID:(unsigned int)d relayType:(unsigned __int8)type errorCode:(int *)code;
 - (unsigned)connectionType;
 - (void)closeTunnelSocket;
-- (void)createDispatchTimer:(float)a3 withDetailedError:(int64_t)a4;
+- (void)createDispatchTimer:(float)timer withDetailedError:(int64_t)error;
 - (void)dealloc;
 - (void)destroyDispatchTimer;
 - (void)processSocketRead;
 - (void)processSocketReadSSL;
-- (void)processSocketWrite:(unsigned __int8)a3;
-- (void)receivedControlData:(id)a3;
-- (void)receivedSSLConnectionData:(id)a3 recordType:(unsigned __int16)a4;
-- (void)reportErrorAndTerminate:(int64_t)a3 detail:(int64_t)a4 returnCode:(int64_t)a5 description:(id)a6 reason:(id)a7;
+- (void)processSocketWrite:(unsigned __int8)write;
+- (void)receivedControlData:(id)data;
+- (void)receivedSSLConnectionData:(id)data recordType:(unsigned __int16)type;
+- (void)reportErrorAndTerminate:(int64_t)terminate detail:(int64_t)detail returnCode:(int64_t)code description:(id)description reason:(id)reason;
 - (void)resetConnection;
-- (void)sendTCPData:(const void *)a3 bufSize:(int)a4;
+- (void)sendTCPData:(const void *)data bufSize:(int)size;
 - (void)unbindChannel;
-- (void)vcArg:(id)a3 sendControlData:(id)a4 isTypeSSL:(BOOL)a5 withTimeout:(float)a6 withDetail:(int64_t)a7;
-- (void)vcArg:(id)a3 sendRealTimeData:(id)a4 toParticipantID:(id)a5;
+- (void)vcArg:(id)arg sendControlData:(id)data isTypeSSL:(BOOL)l withTimeout:(float)timeout withDetail:(int64_t)detail;
+- (void)vcArg:(id)arg sendRealTimeData:(id)data toParticipantID:(id)d;
 @end
 
 @implementation TCPTunnelClient
@@ -35,15 +35,15 @@
   [(TCPTunnelClient *)self setTerminationHandler:0];
 }
 
-- (void)reportErrorAndTerminate:(int64_t)a3 detail:(int64_t)a4 returnCode:(int64_t)a5 description:(id)a6 reason:(id)a7
+- (void)reportErrorAndTerminate:(int64_t)terminate detail:(int64_t)detail returnCode:(int64_t)code description:(id)description reason:(id)reason
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v9[0] = 0;
-  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", v9, a3, a4, a5, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 138], a6, a7);
-  v8 = [(TCPTunnelClient *)self terminationHandler];
-  if (v8)
+  +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", v9, terminate, detail, code, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 138], description, reason);
+  terminationHandler = [(TCPTunnelClient *)self terminationHandler];
+  if (terminationHandler)
   {
-    v8[2](v8, v9[0]);
+    terminationHandler[2](terminationHandler, v9[0]);
   }
 
   self->_isChannelBound = 0;
@@ -56,7 +56,7 @@
   OUTLINED_FUNCTION_2_11(&dword_1DB56E000, v0, v1, " [%s] %s:%d TCPTUNNEL: timer is deleted.", v2, v3, v4, v5, v6);
 }
 
-- (void)createDispatchTimer:(float)a3 withDetailedError:(int64_t)a4
+- (void)createDispatchTimer:(float)timer withDetailedError:(int64_t)error
 {
   v22 = *MEMORY[0x1E69E9840];
   [(TCPTunnelClient *)self destroyDispatchTimer];
@@ -65,16 +65,16 @@
   if (v7)
   {
     v8 = v7;
-    v9 = dispatch_time(0, (a3 * 1000000000.0));
-    dispatch_source_set_timer(v8, v9, (a3 * 1000000000.0), 0x5F5E100uLL);
+    v9 = dispatch_time(0, (timer * 1000000000.0));
+    dispatch_source_set_timer(v8, v9, (timer * 1000000000.0), 0x5F5E100uLL);
     timer = self->_timer;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __57__TCPTunnelClient_createDispatchTimer_withDetailedError___block_invoke;
     handler[3] = &unk_1E85F3908;
-    v15 = a3;
+    timerCopy = timer;
     handler[4] = self;
-    handler[5] = a4;
+    handler[5] = error;
     dispatch_source_set_event_handler(timer, handler);
     dispatch_resume(self->_timer);
   }
@@ -278,7 +278,7 @@ uint64_t __57__TCPTunnelClient_createDispatchTimer_withDetailedError___block_inv
 
           v30 = self->_currentlyReadingMessage;
           v31 = self->_currentMsgType;
-          v32 = [(TCPTunnelClient *)self receiveHandler];
+          receiveHandler = [(TCPTunnelClient *)self receiveHandler];
           queue = self->_queue;
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -287,7 +287,7 @@ uint64_t __57__TCPTunnelClient_createDispatchTimer_withDetailedError___block_inv
           v37 = v31;
           block[4] = self;
           block[5] = v30;
-          block[6] = v32;
+          block[6] = receiveHandler;
           dispatch_async(queue, block);
 
           self->_currentlyReadingDataGoalLength = 0;
@@ -343,11 +343,11 @@ uint64_t __36__TCPTunnelClient_processSocketRead__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)sendTCPData:(const void *)a3 bufSize:(int)a4
+- (void)sendTCPData:(const void *)data bufSize:(int)size
 {
   v39 = *MEMORY[0x1E69E9840];
   head = self->_head;
-  if (head + a4 - self->_tail > 2048)
+  if (head + size - self->_tail > 2048)
   {
     return;
   }
@@ -356,7 +356,7 @@ uint64_t __36__TCPTunnelClient_processSocketRead__block_invoke(uint64_t result)
   {
     v8 = 0;
 LABEL_4:
-    v9 = a4 - v8;
+    v9 = size - v8;
     v10 = self->_head + v9;
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v10 > 2048)
@@ -405,7 +405,7 @@ LABEL_4:
       memmove(self->_writeBuf, &self->_writeBuf[self->_tail], self->_head - self->_tail);
       v26 = self->_head - self->_tail;
       *&self->_head = v26;
-      v24 = a3 + v8;
+      v24 = data + v8;
       v23 = v9;
       v25 = &self->_writeBuf[v26];
     }
@@ -440,7 +440,7 @@ LABEL_4:
       }
 
       v23 = v9;
-      v24 = a3 + v8;
+      v24 = data + v8;
       v25 = &self->_writeBuf[self->_head];
     }
 
@@ -449,9 +449,9 @@ LABEL_4:
     return;
   }
 
-  v19 = send(self->_connectedFD, a3, a4, 0);
+  v19 = send(self->_connectedFD, data, size, 0);
   v8 = v19;
-  if (v19 == a4)
+  if (v19 == size)
   {
     return;
   }
@@ -528,9 +528,9 @@ LABEL_17:
   [(TCPTunnelClient *)self reportErrorAndTerminate:v27 detail:318 returnCode:*__error() description:@"TCP TURN channel closed" reason:@"Socket closed while writing"];
 }
 
-- (void)processSocketWrite:(unsigned __int8)a3
+- (void)processSocketWrite:(unsigned __int8)write
 {
-  v3 = a3;
+  writeCopy = write;
   v41 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
   {
@@ -597,7 +597,7 @@ LABEL_17:
     }
 
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-    if (v3 == 1)
+    if (writeCopy == 1)
     {
       if (ErrorLogLevelForModule >= 8)
       {
@@ -773,10 +773,10 @@ LABEL_46:
   [(TCPTunnelClient *)self reportErrorAndTerminate:v32 detail:318 returnCode:*__error() description:@"TCP TURN channel closed" reason:@"Socket closed while writing"];
 }
 
-- (void)vcArg:(id)a3 sendControlData:(id)a4 isTypeSSL:(BOOL)a5 withTimeout:(float)a6 withDetail:(int64_t)a7
+- (void)vcArg:(id)arg sendControlData:(id)data isTypeSSL:(BOOL)l withTimeout:(float)timeout withDetail:(int64_t)detail
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!l)
   {
     connectState = self->_connectState;
     if (connectState == 8)
@@ -787,9 +787,9 @@ LABEL_46:
       v10[2] = __74__TCPTunnelClient_vcArg_sendControlData_isTypeSSL_withTimeout_withDetail___block_invoke_2;
       v10[3] = &unk_1E85F7018;
       v10[4] = self;
-      v10[5] = a4;
-      v11 = a6;
-      v10[6] = a7;
+      v10[5] = data;
+      timeoutCopy = timeout;
+      v10[6] = detail;
       v9 = v10;
       goto LABEL_5;
     }
@@ -806,9 +806,9 @@ LABEL_46:
   block[2] = __74__TCPTunnelClient_vcArg_sendControlData_isTypeSSL_withTimeout_withDetail___block_invoke;
   block[3] = &unk_1E85F7018;
   block[4] = self;
-  block[5] = a4;
-  v13 = a6;
-  block[6] = a7;
+  block[5] = data;
+  timeoutCopy2 = timeout;
+  block[6] = detail;
   v9 = block;
 LABEL_5:
   dispatch_async(queue, v9);
@@ -866,12 +866,12 @@ void __74__TCPTunnelClient_vcArg_sendControlData_isTypeSSL_withTimeout_withDetai
   }
 }
 
-- (void)receivedControlData:(id)a3
+- (void)receivedControlData:(id)data
 {
   v59 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  [a3 bytes];
-  [a3 length];
+  [data bytes];
+  [data length];
   v5 = ParseSTUNMessage();
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if ((v5 & 0x80000000) == 0)
@@ -920,10 +920,10 @@ void __74__TCPTunnelClient_vcArg_sendControlData_isTypeSSL_withTimeout_withDetai
             self->_isChannelBound = 1;
           }
 
-          v20 = [(TCPTunnelClient *)self bindingResponseHandler];
-          if (v20)
+          bindingResponseHandler = [(TCPTunnelClient *)self bindingResponseHandler];
+          if (bindingResponseHandler)
           {
-            v20[2](v20, v19);
+            bindingResponseHandler[2](bindingResponseHandler, v19);
           }
 
           v21 = self->_allocationTimestamp - micro() + 30.0;
@@ -1020,7 +1020,7 @@ LABEL_84:
 
         v31 = *buf;
         v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ChannelBind Failed: %u", *buf];
-        v33 = self;
+        selfCopy3 = self;
         v34 = v36;
         v35 = 314;
         break;
@@ -1049,10 +1049,10 @@ LABEL_84:
             }
 
             self->_isChannelBound = 0;
-            v41 = [(TCPTunnelClient *)self destroyHandler];
-            if (v41)
+            destroyHandler = [(TCPTunnelClient *)self destroyHandler];
+            if (destroyHandler)
             {
-              v41[2]();
+              destroyHandler[2]();
             }
 
             goto LABEL_84;
@@ -1099,7 +1099,7 @@ LABEL_84:
 
         v31 = *buf;
         v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Refresh Failed: %u", *buf];
-        v33 = self;
+        selfCopy3 = self;
         v34 = v30;
         v35 = 315;
         break;
@@ -1131,10 +1131,10 @@ LABEL_84:
           else
           {
             self->_allocationTimestamp = micro();
-            v11 = [(TCPTunnelClient *)self allocationResponseHandler];
-            if (v11)
+            allocationResponseHandler = [(TCPTunnelClient *)self allocationResponseHandler];
+            if (allocationResponseHandler)
             {
-              v11[2](v11, self->_reqRespDict);
+              allocationResponseHandler[2](allocationResponseHandler, self->_reqRespDict);
             }
 
             if (self->_channelBReq)
@@ -1193,7 +1193,7 @@ LABEL_84:
 
         v38 = *buf;
         v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Allocation Failed: %u", *buf];
-        v33 = self;
+        selfCopy3 = self;
         v34 = 32002;
         v35 = 313;
         v37 = v38;
@@ -1213,7 +1213,7 @@ LABEL_84:
 
     v37 = v31;
 LABEL_83:
-    [(TCPTunnelClient *)v33 reportErrorAndTerminate:v34 detail:v35 returnCode:v37 description:@"cannot establish TCP TURN channel" reason:v32];
+    [(TCPTunnelClient *)selfCopy3 reportErrorAndTerminate:v34 detail:v35 returnCode:v37 description:@"cannot establish TCP TURN channel" reason:v32];
     goto LABEL_84;
   }
 
@@ -1352,18 +1352,18 @@ unint64_t __39__TCPTunnelClient_processSocketReadSSL__block_invoke(unint64_t res
   return result;
 }
 
-- (void)receivedSSLConnectionData:(id)a3 recordType:(unsigned __int16)a4
+- (void)receivedSSLConnectionData:(id)data recordType:(unsigned __int16)type
 {
   v34 = *MEMORY[0x1E69E9840];
   v21 = -86;
-  if (a4 != 22)
+  if (type != 22)
   {
-    if (a4 == 21)
+    if (type == 21)
     {
       v6 = 2;
     }
 
-    else if (a4 == 20)
+    else if (type == 20)
     {
       if (self->_connectState == 6)
       {
@@ -1446,7 +1446,7 @@ LABEL_24:
 
   else
   {
-    [a3 getBytes:&v21 length:1];
+    [data getBytes:&v21 length:1];
     if (v21 != 14)
     {
       if (v21 == 12)
@@ -1545,9 +1545,9 @@ uint64_t __56__TCPTunnelClient_receivedSSLConnectionData_recordType___block_invo
   return result;
 }
 
-- (TCPTunnelClient)initWithRelayRequestDictionary:(id)a3 withCallID:(unsigned int)a4 relayType:(unsigned __int8)a5 errorCode:(int *)a6
+- (TCPTunnelClient)initWithRelayRequestDictionary:(id)dictionary withCallID:(unsigned int)d relayType:(unsigned __int8)type errorCode:(int *)code
 {
-  v8 = a4;
+  dCopy = d;
   v59 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = TCPTunnelClient;
@@ -1566,9 +1566,9 @@ uint64_t __56__TCPTunnelClient_receivedSSLConnectionData_recordType___block_invo
       v13 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (dictionary)
         {
-          v14 = [objc_msgSend(a3 "description")];
+          v14 = [objc_msgSend(dictionary "description")];
         }
 
         else
@@ -1602,7 +1602,7 @@ uint64_t __56__TCPTunnelClient_receivedSSLConnectionData_recordType___block_invo
     *(v10 + 26) = 1109262336;
     *(v10 + 7) = 0;
     *(v10 + 14) = @"Dummy";
-    *(v10 + 60) = v8 & 0x3FFF | 0x4000;
+    *(v10 + 60) = dCopy & 0x3FFF | 0x4000;
     *(v10 + 17) = 0;
     *(v10 + 27) = 0;
     *(v10 + 112) = 0;
@@ -1658,7 +1658,7 @@ LABEL_20:
       }
 
 LABEL_23:
-      *a6 = 324;
+      *code = 324;
       FreeLocalInterfaceList();
       return 0;
     }
@@ -1786,7 +1786,7 @@ LABEL_23:
           *(v10 + 26) = objc_alloc_init(MEMORY[0x1E695DF88]);
           *(v10 + 30) = malloc_type_malloc(0x800uLL, 0x100004077774924uLL);
           *(v10 + 31) = 0;
-          *(v10 + 16) = [a3 mutableCopy];
+          *(v10 + 16) = [dictionary mutableCopy];
           v32 = dispatch_queue_create("com.apple.viceroy.TCPTunnel", 0);
           *(v10 + 8) = v32;
           block[0] = MEMORY[0x1E69E9820];
@@ -1797,7 +1797,7 @@ LABEL_23:
           block[4] = v10;
           v39 = v58;
           v40 = v25;
-          v42 = a5;
+          typeCopy = type;
           dispatch_async(v32, block);
           return v10;
         }
@@ -1814,7 +1814,7 @@ LABEL_23:
         v28 = 325;
       }
 
-      *a6 = v28;
+      *code = v28;
       close(v25);
       return 0;
     }
@@ -1829,7 +1829,7 @@ LABEL_23:
     }
 
     v10 = 0;
-    *a6 = 322;
+    *code = 322;
   }
 
   return v10;
@@ -2185,7 +2185,7 @@ LABEL_60:
   }
 }
 
-- (BOOL)sendAllocateMsg:(id *)a3
+- (BOOL)sendAllocateMsg:(id *)msg
 {
   v18 = *MEMORY[0x1E69E9840];
   memset(v17, 170, sizeof(v17));
@@ -2213,8 +2213,8 @@ LABEL_60:
       }
     }
 
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1086];
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a3, 32002, 302, v10, v11, @"Sending TCPTunnel Allocate Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Make request error: %x.", v10]);
+    1086 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1086];
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", msg, 32002, 302, v10, 1086, @"Sending TCPTunnel Allocate Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Make request error: %x.", v10]);
     FreeSTUNMessage();
   }
 
@@ -2253,8 +2253,8 @@ LABEL_60:
       }
     }
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1101];
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a3, 32002, 303, v6, v12, @"Sending TCPTunnel Allocate Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Encode request error: %x.", v6]);
+    1101 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1101];
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", msg, 32002, 303, v6, 1101, @"Sending TCPTunnel Allocate Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Encode request error: %x.", v6]);
   }
 
   return 0;
@@ -2306,14 +2306,14 @@ uint64_t __35__TCPTunnelClient_sendAllocateMsg___block_invoke(uint64_t a1, doubl
   return result;
 }
 
-- (BOOL)sendChannelBindingMsgWithDict:(id)a3 error:(id *)a4
+- (BOOL)sendChannelBindingMsgWithDict:(id)dict error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v18 = 1472;
-  if (a3)
+  if (dict)
   {
 
-    self->_relayUpdateDict = [a3 copy];
+    self->_relayUpdateDict = [dict copy];
   }
 
   memset(v19, 170, sizeof(v19));
@@ -2348,8 +2348,8 @@ uint64_t __35__TCPTunnelClient_sendAllocateMsg___block_invoke(uint64_t a1, doubl
       v13 = 32002;
     }
 
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1143];
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a4, v13, 304, v12, v14, @"Sending TCPTunnel ChannelBinding Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Make request error: %x.", v12]);
+    1143 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1143];
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, v13, 304, v12, 1143, @"Sending TCPTunnel ChannelBinding Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Make request error: %x.", v12]);
     FreeSTUNMessage();
   }
 
@@ -2398,8 +2398,8 @@ uint64_t __35__TCPTunnelClient_sendAllocateMsg___block_invoke(uint64_t a1, doubl
       v15 = 32002;
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1159];
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a4, v15, 305, v8, v16, @"Sending TCPTunnel ChannelBinding Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Encode request error: %x.", v8]);
+    1159 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1159];
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, v15, 305, v8, 1159, @"Sending TCPTunnel ChannelBinding Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Encode request error: %x.", v8]);
   }
 
   return 0;
@@ -2451,7 +2451,7 @@ uint64_t __55__TCPTunnelClient_sendChannelBindingMsgWithDict_error___block_invok
   return result;
 }
 
-- (BOOL)sendRefreshMsg:(unsigned int)a3 error:(id *)a4
+- (BOOL)sendRefreshMsg:(unsigned int)msg error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   memset(v12, 170, sizeof(v12));
@@ -2486,8 +2486,8 @@ uint64_t __55__TCPTunnelClient_sendChannelBindingMsgWithDict_error___block_invok
       v9 = 32002;
     }
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1199];
-    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", a4, v9, 307, v6, v10, @"Sending TCPTunnel Refresh Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Encode request error: %x.", v6]);
+    1199 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/TCPTunnelClient.m", 1199];
+    +[GKVoiceChatError getNSError:code:detailedCode:returnCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:returnCode:filePath:description:reason:", error, v9, 307, v6, 1199, @"Sending TCPTunnel Refresh Request failed.", [MEMORY[0x1E696AEC0] stringWithFormat:@"Encode request error: %x.", v6]);
     FreeSTUNMessage();
   }
 
@@ -2502,11 +2502,11 @@ uint64_t __55__TCPTunnelClient_sendChannelBindingMsgWithDict_error___block_invok
   return v6 >= 0;
 }
 
-- (void)vcArg:(id)a3 sendRealTimeData:(id)a4 toParticipantID:(id)a5
+- (void)vcArg:(id)arg sendRealTimeData:(id)data toParticipantID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
   channelNumber = self->_channelNumber;
-  v8 = [a4 length];
+  v8 = [data length];
   v9 = v8;
   v10 = 4 - (v8 & 3);
   if ((v8 & 3) == 0)
@@ -2545,7 +2545,7 @@ LABEL_9:
       v19 = &v14[v15];
       *v19 = HIWORD(v18);
       *(v19 + 1) = bswap32(v9) >> 16;
-      memcpy(&v14[v15 + 4], [a4 bytes], objc_msgSend(a4, "length"));
+      memcpy(&v14[v15 + 4], [data bytes], objc_msgSend(data, "length"));
       queue = self->_queue;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;

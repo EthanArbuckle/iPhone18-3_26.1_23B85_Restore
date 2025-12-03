@@ -1,11 +1,11 @@
 @interface ISGraphicIconConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ISGraphicIconConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSArray *)self->_enclosureColors copy];
@@ -26,9 +26,9 @@
   v9.receiver = self;
   v9.super_class = ISGraphicIconConfiguration;
   v4 = [(ISGraphicIconConfiguration *)&v9 description];
-  v5 = [(ISGraphicIconConfiguration *)self symbolColors];
-  v6 = [(ISGraphicIconConfiguration *)self enclosureColors];
-  v7 = [v3 stringWithFormat:@"%@ Symbol color: %@ Enclosure color: %@ Rendering mode: %ld", v4, v5, v6, -[ISGraphicIconConfiguration renderingMode](self, "renderingMode")];
+  symbolColors = [(ISGraphicIconConfiguration *)self symbolColors];
+  enclosureColors = [(ISGraphicIconConfiguration *)self enclosureColors];
+  v7 = [v3 stringWithFormat:@"%@ Symbol color: %@ Enclosure color: %@ Rendering mode: %ld", v4, symbolColors, enclosureColors, -[ISGraphicIconConfiguration renderingMode](self, "renderingMode")];
 
   return v7;
 }

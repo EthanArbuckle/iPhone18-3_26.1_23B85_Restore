@@ -1,64 +1,64 @@
 @interface SubCalURLRequest
 + (id)_cachedICSFilesDirectory;
 + (void)_initializeFileCache;
-- (BOOL)_canAuthenticateAgainstProtectionSpace:(id)a3;
-- (SubCalURLRequest)initWithURL:(id)a3 wasUserRequested:(BOOL)a4;
+- (BOOL)_canAuthenticateAgainstProtectionSpace:(id)space;
+- (SubCalURLRequest)initWithURL:(id)l wasUserRequested:(BOOL)requested;
 - (SubCalURLRequestDelegate)delegate;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)_cancelIdleTimer;
 - (void)_createIdleTimer;
 - (void)_extendIdleTimer;
-- (void)_finishWithError:(id)a3;
-- (void)_handleAuthenticationChallenge:(id)a3 completionHandler:(id)a4;
+- (void)_finishWithError:(id)error;
+- (void)_handleAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
 - (void)_idleTimerFired;
 - (void)_markEndTime;
 - (void)_markStartTime;
 - (void)_openFileHandle;
-- (void)_receivedDataForFile:(id)a3;
-- (void)_respondToChallenge:(id)a3 withCredential:(id)a4 noCredentialBehavior:(int)a5 completionHandler:(id)a6;
-- (void)_setHeadersOnRequest:(id)a3;
+- (void)_receivedDataForFile:(id)file;
+- (void)_respondToChallenge:(id)challenge withCredential:(id)credential noCredentialBehavior:(int)behavior completionHandler:(id)handler;
+- (void)_setHeadersOnRequest:(id)request;
 - (void)cancel;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startConnection;
 @end
 
 @implementation SubCalURLRequest
 
-- (SubCalURLRequest)initWithURL:(id)a3 wasUserRequested:(BOOL)a4
+- (SubCalURLRequest)initWithURL:(id)l wasUserRequested:(BOOL)requested
 {
-  v8 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = SubCalURLRequest;
   v9 = [(SubCalURLRequest *)&v11 init];
   if (v9)
   {
-    if ([v8 isFileURL])
+    if ([lCopy isFileURL])
     {
       [SubCalURLRequest initWithURL:a2 wasUserRequested:v9];
     }
 
-    objc_storeStrong(&v9->_url, a3);
-    v9->_wasUserRequested = a4;
+    objc_storeStrong(&v9->_url, l);
+    v9->_wasUserRequested = requested;
     v9->_timestamp = 0.0;
   }
 
   return v9;
 }
 
-- (void)_setHeadersOnRequest:(id)a3
+- (void)_setHeadersOnRequest:(id)request
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = DAUserAgent();
-  [v4 setValue:v5 forHTTPHeaderField:@"User-Agent"];
+  [requestCopy setValue:v5 forHTTPHeaderField:@"User-Agent"];
 
-  [v4 setValue:@"text/calendar" forHTTPHeaderField:@"Accept"];
+  [requestCopy setValue:@"text/calendar" forHTTPHeaderField:@"Accept"];
   [(SubCalURLRequest *)self timestamp];
   v6 = MEMORY[0x277D03988];
   if (v7 != 0.0)
@@ -83,16 +83,16 @@
       _os_log_impl(&dword_248587000, v14, v15, "Setting If-Modified-Since: %@", buf, 0xCu);
     }
 
-    [v4 setValue:v13 forHTTPHeaderField:@"If-Modified-Since"];
+    [requestCopy setValue:v13 forHTTPHeaderField:@"If-Modified-Since"];
   }
 
   v16 = DALoggingwithCategory();
   v17 = *(v6 + 7);
   if (os_log_type_enabled(v16, v17))
   {
-    v18 = [v4 allHTTPHeaderFields];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
     *buf = 138412290;
-    v21 = v18;
+    v21 = allHTTPHeaderFields;
     _os_log_impl(&dword_248587000, v16, v17, "Request Headers %@", buf, 0xCu);
   }
 
@@ -107,15 +107,15 @@
 
 - (void)_markEndTime
 {
-  v3 = [(SubCalURLRequest *)self startTime];
+  startTime = [(SubCalURLRequest *)self startTime];
 
-  if (v3)
+  if (startTime)
   {
-    v4 = [(SubCalURLRequest *)self statusReport];
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(SubCalURLRequest *)self startTime];
-    [v5 timeIntervalSinceDate:v6];
-    [v4 noteTimeSpentInNetworking:?];
+    statusReport = [(SubCalURLRequest *)self statusReport];
+    date = [MEMORY[0x277CBEAA8] date];
+    startTime2 = [(SubCalURLRequest *)self startTime];
+    [date timeIntervalSinceDate:startTime2];
+    [statusReport noteTimeSpentInNetworking:?];
 
     [(SubCalURLRequest *)self setStartTime:0];
   }
@@ -128,10 +128,10 @@
   v4 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(SubCalURLRequest *)self startTime];
-    [v5 timeIntervalSinceNow];
+    startTime = [(SubCalURLRequest *)self startTime];
+    [startTime timeIntervalSinceNow];
     v15 = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
     v18 = -v6;
     _os_log_impl(&dword_248587000, v3, v4, "Idle Timer fired for request %@ after %lf seconds", &v15, 0x16u);
@@ -140,28 +140,28 @@
   v7 = DALoggingwithCategory();
   if (os_log_type_enabled(v7, v4))
   {
-    v8 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v15 = 138412290;
-    v16 = v8;
+    selfCopy = currentRunLoop;
     _os_log_impl(&dword_248587000, v7, v4, "Current RunLoop: %@", &v15, 0xCu);
   }
 
   v9 = DALoggingwithCategory();
   if (os_log_type_enabled(v9, v4))
   {
-    v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v11 = [v10 currentMode];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentMode = [currentRunLoop2 currentMode];
     v15 = 138412290;
-    v16 = v11;
+    selfCopy = currentMode;
     _os_log_impl(&dword_248587000, v9, v4, "Current Mode: %@", &v15, 0xCu);
   }
 
   v12 = DALoggingwithCategory();
   if (os_log_type_enabled(v12, v4))
   {
-    v13 = [(SubCalURLRequest *)self startRunloopDescriptionString];
+    startRunloopDescriptionString = [(SubCalURLRequest *)self startRunloopDescriptionString];
     v15 = 138412290;
-    v16 = v13;
+    selfCopy = startRunloopDescriptionString;
     _os_log_impl(&dword_248587000, v12, v4, "Starting runloop %@", &v15, 0xCu);
   }
 
@@ -179,9 +179,9 @@
 
 - (void)_extendIdleTimer
 {
-  v3 = [(SubCalURLRequest *)self idleTimer];
+  idleTimer = [(SubCalURLRequest *)self idleTimer];
   v2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:60.0];
-  [v3 setFireDate:v2];
+  [idleTimer setFireDate:v2];
 }
 
 - (void)_cancelIdleTimer
@@ -194,8 +194,8 @@
     _os_log_impl(&dword_248587000, v3, v4, "Canceling idle timer", v6, 2u);
   }
 
-  v5 = [(SubCalURLRequest *)self idleTimer];
-  [v5 invalidate];
+  idleTimer = [(SubCalURLRequest *)self idleTimer];
+  [idleTimer invalidate];
 
   [(SubCalURLRequest *)self setIdleTimer:0];
 }
@@ -238,27 +238,27 @@
   }
 
   [v11 _setNonAppInitiated:1];
-  v12 = [MEMORY[0x277CBABC8] defaultSessionConfiguration];
-  [v12 set_sourceApplicationBundleIdentifier:*MEMORY[0x277CF78A0]];
-  v13 = [(SubCalURLRequest *)self useShortTimeoutInterval];
+  defaultSessionConfiguration = [MEMORY[0x277CBABC8] defaultSessionConfiguration];
+  [defaultSessionConfiguration set_sourceApplicationBundleIdentifier:*MEMORY[0x277CF78A0]];
+  useShortTimeoutInterval = [(SubCalURLRequest *)self useShortTimeoutInterval];
   v14 = 60.0;
-  if (v13)
+  if (useShortTimeoutInterval)
   {
     v14 = 20.0;
   }
 
-  [v12 setTimeoutIntervalForRequest:v14];
-  [v12 setURLCache:0];
-  [v12 setDiscretionary:{-[SubCalURLRequest wasUserRequested](self, "wasUserRequested") ^ 1}];
-  v15 = [MEMORY[0x277CBABB8] sessionWithConfiguration:v12 delegate:self delegateQueue:0];
+  [defaultSessionConfiguration setTimeoutIntervalForRequest:v14];
+  [defaultSessionConfiguration setURLCache:0];
+  [defaultSessionConfiguration setDiscretionary:{-[SubCalURLRequest wasUserRequested](self, "wasUserRequested") ^ 1}];
+  v15 = [MEMORY[0x277CBABB8] sessionWithConfiguration:defaultSessionConfiguration delegate:self delegateQueue:0];
   [(SubCalURLRequest *)self setSession:v15];
 
-  v16 = [(SubCalURLRequest *)self session];
-  v17 = [v16 dataTaskWithRequest:v11];
+  session = [(SubCalURLRequest *)self session];
+  v17 = [session dataTaskWithRequest:v11];
   [(SubCalURLRequest *)self setTask:v17];
 
-  v18 = [(SubCalURLRequest *)self task];
-  [v18 resume];
+  task = [(SubCalURLRequest *)self task];
+  [task resume];
 
   [(SubCalURLRequest *)self _markStartTime];
   v19 = *MEMORY[0x277D85DE8];
@@ -267,22 +267,22 @@
 - (void)cancel
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SubCalURLRequest *)self session];
-  [v3 invalidateAndCancel];
+  session = [(SubCalURLRequest *)self session];
+  [session invalidateAndCancel];
 
   [(SubCalURLRequest *)self setConnectionData:0];
-  v4 = [(SubCalURLRequest *)self fileHandle];
+  fileHandle = [(SubCalURLRequest *)self fileHandle];
 
-  if (v4)
+  if (fileHandle)
   {
-    v5 = [(SubCalURLRequest *)self fileHandle];
-    [v5 closeFile];
+    fileHandle2 = [(SubCalURLRequest *)self fileHandle];
+    [fileHandle2 closeFile];
 
     [(SubCalURLRequest *)self setFileHandle:0];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [(SubCalURLRequest *)self filePath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    filePath = [(SubCalURLRequest *)self filePath];
     v13 = 0;
-    [v6 removeItemAtPath:v7 error:&v13];
+    [defaultManager removeItemAtPath:filePath error:&v13];
     v8 = v13;
 
     if (v8)
@@ -291,9 +291,9 @@
       v10 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v9, v10))
       {
-        v11 = [(SubCalURLRequest *)self filePath];
+        filePath2 = [(SubCalURLRequest *)self filePath];
         *buf = 138412290;
-        v15 = v11;
+        v15 = filePath2;
         _os_log_impl(&dword_248587000, v9, v10, "Couldn't remove item at path %@", buf, 0xCu);
       }
     }
@@ -305,17 +305,17 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(SubCalURLRequest *)self finished])
   {
-    v5 = DALoggingwithCategory();
+    session = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 3);
-    if (os_log_type_enabled(v5, v6))
+    if (os_log_type_enabled(session, v6))
     {
       *v12 = 0;
-      _os_log_impl(&dword_248587000, v5, v6, "SubCalURLRequest, _finishWithError invoked after finished", v12, 2u);
+      _os_log_impl(&dword_248587000, session, v6, "SubCalURLRequest, _finishWithError invoked after finished", v12, 2u);
     }
   }
 
@@ -324,50 +324,50 @@
     [(SubCalURLRequest *)self setFinished:1];
     [(SubCalURLRequest *)self _markEndTime];
     [(SubCalURLRequest *)self _cancelIdleTimer];
-    if ([v4 code] == 10)
+    if ([errorCopy code] == 10)
     {
-      v7 = [(SubCalURLRequest *)self statusReport];
-      [v7 noteFailedProtocolRequest];
+      statusReport = [(SubCalURLRequest *)self statusReport];
+      [statusReport noteFailedProtocolRequest];
     }
 
     else
     {
-      v8 = [(SubCalURLRequest *)self statusReport];
-      v7 = v8;
-      if (v4)
+      statusReport2 = [(SubCalURLRequest *)self statusReport];
+      statusReport = statusReport2;
+      if (errorCopy)
       {
-        [v8 noteFailedNetworkRequest];
+        [statusReport2 noteFailedNetworkRequest];
       }
 
       else
       {
-        v9 = [(SubCalURLRequest *)self connectionData];
-        [v7 noteSuccessfulRequestWithNumDownloadedElements:v9 != 0];
+        connectionData = [(SubCalURLRequest *)self connectionData];
+        [statusReport noteSuccessfulRequestWithNumDownloadedElements:connectionData != 0];
       }
     }
 
-    v10 = [(SubCalURLRequest *)self delegate];
-    v11 = [(SubCalURLRequest *)self connectionData];
-    [v10 subCalURLRequest:self finishedWithData:v11 error:v4];
+    delegate = [(SubCalURLRequest *)self delegate];
+    connectionData2 = [(SubCalURLRequest *)self connectionData];
+    [delegate subCalURLRequest:self finishedWithData:connectionData2 error:errorCopy];
 
     [(SubCalURLRequest *)self setConnectionData:0];
-    v5 = [(SubCalURLRequest *)self session];
-    [v5 finishTasksAndInvalidate];
+    session = [(SubCalURLRequest *)self session];
+    [session finishTasksAndInvalidate];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   [(SubCalURLRequest *)self setSendDataUpdateCallback:v5 & 1];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (![(SubCalURLRequest *)self finished])
   {
     v6 = dataaccess_get_global_queue();
@@ -376,68 +376,68 @@
     v7[2] = __57__SubCalURLRequest_URLSession_didBecomeInvalidWithError___block_invoke;
     v7[3] = &unk_278F20698;
     v7[4] = self;
-    v8 = v5;
+    v8 = errorCopy;
     dispatch_sync(v6, v7);
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v9 = dataaccess_get_global_queue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__SubCalURLRequest_URLSession_didReceiveChallenge_completionHandler___block_invoke;
   block[3] = &unk_278F206C0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = challengeCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = challengeCopy;
   dispatch_async(v9, block);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SubCalURLRequest_URLSession_task_didReceiveChallenge_completionHandler___block_invoke;
   block[3] = &unk_278F206C0;
   block[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = challengeCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = challengeCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   v18 = dataaccess_get_global_queue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__SubCalURLRequest_URLSession_task_willPerformHTTPRedirection_newRequest_completionHandler___block_invoke;
   block[3] = &unk_278F206E8;
-  v25 = v15;
-  v26 = v16;
-  v30 = v17;
+  v25 = redirectionCopy;
+  v26 = requestCopy;
+  v30 = handlerCopy;
   v31 = a2;
-  v27 = self;
-  v28 = v13;
-  v29 = v14;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  v22 = v17;
-  v23 = v15;
+  selfCopy = self;
+  v28 = sessionCopy;
+  v29 = taskCopy;
+  v19 = taskCopy;
+  v20 = sessionCopy;
+  v21 = requestCopy;
+  v22 = handlerCopy;
+  v23 = redirectionCopy;
   dispatch_async(v18, block);
 }
 
@@ -583,17 +583,17 @@ LABEL_26:
   v13();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = dataaccess_get_global_queue();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__SubCalURLRequest_URLSession_task_didCompleteWithError___block_invoke;
   v9[3] = &unk_278F20698;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = errorCopy;
+  selfCopy = self;
+  v8 = errorCopy;
   dispatch_sync(v7, v9);
 }
 
@@ -687,20 +687,20 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  responseCopy = response;
+  handlerCopy = handler;
   v10 = dataaccess_get_global_queue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SubCalURLRequest_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke;
   block[3] = &unk_278F206C0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = responseCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = responseCopy;
   dispatch_async(v10, block);
 }
 
@@ -814,17 +814,17 @@ LABEL_25:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   v7 = dataaccess_get_global_queue();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__SubCalURLRequest_URLSession_dataTask_didReceiveData___block_invoke;
   v9[3] = &unk_278F20698;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dataCopy;
+  v8 = dataCopy;
   dispatch_sync(v7, v9);
 }
 
@@ -866,21 +866,21 @@ void __55__SubCalURLRequest_URLSession_dataTask_didReceiveData___block_invoke(ui
   }
 }
 
-- (BOOL)_canAuthenticateAgainstProtectionSpace:(id)a3
+- (BOOL)_canAuthenticateAgainstProtectionSpace:(id)space
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  spaceCopy = space;
   [(SubCalURLRequest *)self _extendIdleTimer];
-  v5 = [v4 authenticationMethod];
+  authenticationMethod = [spaceCopy authenticationMethod];
 
-  if ([v5 isEqualToString:*MEMORY[0x277CBAB00]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CBAAE0]))
+  if ([authenticationMethod isEqualToString:*MEMORY[0x277CBAB00]] & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x277CBAAE0]))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:*MEMORY[0x277CBAAE8]];
+    v6 = [authenticationMethod isEqualToString:*MEMORY[0x277CBAAE8]];
   }
 
   v7 = DALoggingwithCategory();
@@ -894,7 +894,7 @@ void __55__SubCalURLRequest_URLSession_dataTask_didReceiveData___block_invoke(ui
     }
 
     v12 = 138412546;
-    v13 = v5;
+    v13 = authenticationMethod;
     v14 = 2112;
     v15 = v9;
     _os_log_impl(&dword_248587000, v7, v8, "Can authenticate against protection space %@? %@", &v12, 0x16u);
@@ -904,29 +904,29 @@ void __55__SubCalURLRequest_URLSession_dataTask_didReceiveData___block_invoke(ui
   return v6;
 }
 
-- (void)_respondToChallenge:(id)a3 withCredential:(id)a4 noCredentialBehavior:(int)a5 completionHandler:(id)a6
+- (void)_respondToChallenge:(id)challenge withCredential:(id)credential noCredentialBehavior:(int)behavior completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  challengeCopy = challenge;
+  credentialCopy = credential;
+  handlerCopy = handler;
   v12 = DALoggingwithCategory();
   v13 = *(MEMORY[0x277D03988] + 6);
   v14 = os_log_type_enabled(v12, v13);
-  if (v10)
+  if (credentialCopy)
   {
     if (v14)
     {
       v19 = 138412290;
-      v20 = v10;
+      v20 = credentialCopy;
       _os_log_impl(&dword_248587000, v12, v13, "Using credential %@ for challenge", &v19, 0xCu);
     }
 
-    v11[2](v11, 0, v10);
+    handlerCopy[2](handlerCopy, 0, credentialCopy);
     goto LABEL_14;
   }
 
-  if (a5 == 1)
+  if (behavior == 1)
   {
     if (v14)
     {
@@ -934,13 +934,13 @@ void __55__SubCalURLRequest_URLSession_dataTask_didReceiveData___block_invoke(ui
       _os_log_impl(&dword_248587000, v12, v13, "continuing without credential for challenge", &v19, 2u);
     }
 
-    v15 = v11[2];
-    v16 = v11;
+    v15 = handlerCopy[2];
+    v16 = handlerCopy;
     v17 = 1;
     goto LABEL_13;
   }
 
-  if (!a5)
+  if (!behavior)
   {
     if (v14)
     {
@@ -948,8 +948,8 @@ void __55__SubCalURLRequest_URLSession_dataTask_didReceiveData___block_invoke(ui
       _os_log_impl(&dword_248587000, v12, v13, "Cancelling auth challenge", &v19, 2u);
     }
 
-    v15 = v11[2];
-    v16 = v11;
+    v15 = handlerCopy[2];
+    v16 = handlerCopy;
     v17 = 2;
 LABEL_13:
     v15(v16, v17, 0);
@@ -966,14 +966,14 @@ LABEL_14:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAuthenticationChallenge:(id)a3 completionHandler:(id)a4
+- (void)_handleAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 protectionSpace];
-  v9 = [v8 authenticationMethod];
-  v10 = [(SubCalURLRequest *)self _canAuthenticateAgainstProtectionSpace:v8];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v10 = [(SubCalURLRequest *)self _canAuthenticateAgainstProtectionSpace:protectionSpace];
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   v13 = *(MEMORY[0x277D03988] + 6);
@@ -983,59 +983,59 @@ LABEL_14:
     if (v14)
     {
       *buf = 138412290;
-      v35 = v9;
+      v35 = authenticationMethod;
       _os_log_impl(&dword_248587000, v11, v13, "Received authentication challenge for method %@", buf, 0xCu);
     }
 
-    if ([v9 isEqualToString:*MEMORY[0x277CBAB00]])
+    if ([authenticationMethod isEqualToString:*MEMORY[0x277CBAB00]])
     {
-      v15 = [(SubCalURLRequest *)self delegate];
-      [v15 handleTrustChallenge:v6 forSubCalURLRequest:self completionHandler:v7];
+      delegate = [(SubCalURLRequest *)self delegate];
+      [delegate handleTrustChallenge:challengeCopy forSubCalURLRequest:self completionHandler:handlerCopy];
 
       goto LABEL_20;
     }
 
-    if (([v9 isEqualToString:*MEMORY[0x277CBAAE0]] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CBAAE8]))
+    if (([authenticationMethod isEqualToString:*MEMORY[0x277CBAAE0]] & 1) != 0 || objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x277CBAAE8]))
     {
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___block_invoke;
       v31[3] = &unk_278F20710;
       v31[4] = self;
-      v16 = v6;
+      v16 = challengeCopy;
       v32 = v16;
-      v17 = v7;
+      v17 = handlerCopy;
       v33 = v17;
       v18 = MEMORY[0x24C1D2310](v31);
-      v19 = [v16 proposedCredential];
-      if (v19)
+      proposedCredential = [v16 proposedCredential];
+      if (proposedCredential)
       {
       }
 
       else
       {
-        v24 = [(SubCalURLRequest *)self password];
-        v25 = [v24 length];
+        password = [(SubCalURLRequest *)self password];
+        v25 = [password length];
 
         if (v25)
         {
-          v26 = [(SubCalURLRequest *)self username];
-          v27 = [(SubCalURLRequest *)self password];
-          (v18)[2](v18, v26, v27);
+          username = [(SubCalURLRequest *)self username];
+          password2 = [(SubCalURLRequest *)self password];
+          (v18)[2](v18, username, password2);
 
 LABEL_19:
           goto LABEL_20;
         }
       }
 
-      v20 = [(SubCalURLRequest *)self delegate];
+      delegate2 = [(SubCalURLRequest *)self delegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(SubCalURLRequest *)self delegate];
-        v23 = [v8 host];
-        [v22 subCalURLRequestNeedsUsernameAndPasswordForHost:v23 continuation:v18];
+        delegate3 = [(SubCalURLRequest *)self delegate];
+        host = [protectionSpace host];
+        [delegate3 subCalURLRequestNeedsUsernameAndPasswordForHost:host continuation:v18];
       }
 
       else
@@ -1051,11 +1051,11 @@ LABEL_19:
     if (os_log_type_enabled(v29, v30))
     {
       *buf = 138412290;
-      v35 = v9;
+      v35 = authenticationMethod;
       _os_log_impl(&dword_248587000, v29, v30, "Try default handling for authentication method %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 
   else
@@ -1063,11 +1063,11 @@ LABEL_19:
     if (v14)
     {
       *buf = 138412290;
-      v35 = v9;
+      v35 = authenticationMethod;
       _os_log_impl(&dword_248587000, v11, v13, "Rejecting authentication challenge for method %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 3, 0);
+    (*(handlerCopy + 2))(handlerCopy, 3, 0);
   }
 
 LABEL_20:
@@ -1109,11 +1109,11 @@ void __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___b
 
   v6 = +[SubCalURLRequest _cachedICSFilesDirectory];
   v7 = [v6 stringByAppendingPathComponent:@"XXXXXX.ics"];
-  v8 = [v7 fileSystemRepresentation];
+  fileSystemRepresentation = [v7 fileSystemRepresentation];
 
-  if (v8)
+  if (fileSystemRepresentation)
   {
-    v9 = strdup(v8);
+    v9 = strdup(fileSystemRepresentation);
     v10 = mkstemps(v9, 4);
     if (v10 == -1)
     {
@@ -1146,20 +1146,20 @@ void __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___b
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_receivedDataForFile:(id)a3
+- (void)_receivedDataForFile:(id)file
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SubCalURLRequest *)self fileHandle];
+  fileCopy = file;
+  fileHandle = [(SubCalURLRequest *)self fileHandle];
 
-  if (!v5)
+  if (!fileHandle)
   {
-    v10 = [(SubCalURLRequest *)self connectionData];
+    connectionData = [(SubCalURLRequest *)self connectionData];
 
-    if (v10)
+    if (connectionData)
     {
-      v11 = [(SubCalURLRequest *)self connectionData];
-      v12 = [v11 length];
+      connectionData2 = [(SubCalURLRequest *)self connectionData];
+      v12 = [connectionData2 length];
       v13 = (*MEMORY[0x277D85FA0] + 5242879) & -*MEMORY[0x277D85FA0];
 
       if (v12 < v13)
@@ -1172,23 +1172,23 @@ void __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___b
           _os_log_impl(&dword_248587000, v14, v15, "Data is smaller than 5MB caching in memory", &v24, 2u);
         }
 
-        v8 = [(SubCalURLRequest *)self connectionData];
-        [v8 appendData:v4];
+        connectionData3 = [(SubCalURLRequest *)self connectionData];
+        [connectionData3 appendData:fileCopy];
         goto LABEL_6;
       }
 
       [(SubCalURLRequest *)self _openFileHandle];
-      v16 = [(SubCalURLRequest *)self fileHandle];
+      fileHandle2 = [(SubCalURLRequest *)self fileHandle];
 
-      if (v16)
+      if (fileHandle2)
       {
-        v17 = [(SubCalURLRequest *)self connectionData];
+        connectionData4 = [(SubCalURLRequest *)self connectionData];
 
-        if (v17)
+        if (connectionData4)
         {
-          v18 = [(SubCalURLRequest *)self fileHandle];
-          v19 = [(SubCalURLRequest *)self connectionData];
-          [v18 writeData:v19];
+          fileHandle3 = [(SubCalURLRequest *)self fileHandle];
+          connectionData5 = [(SubCalURLRequest *)self connectionData];
+          [fileHandle3 writeData:connectionData5];
 
           [(SubCalURLRequest *)self setConnectionData:0];
         }
@@ -1200,9 +1200,9 @@ void __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___b
       v21 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v20, v21))
       {
-        v22 = [(SubCalURLRequest *)self filePath];
+        filePath = [(SubCalURLRequest *)self filePath];
         v24 = 138412290;
-        v25 = v22;
+        v25 = filePath;
         _os_log_impl(&dword_248587000, v20, v21, "Couldn't open file handle at path %@. Will try downloading in memory", &v24, 0xCu);
       }
 
@@ -1210,7 +1210,7 @@ void __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___b
       [(SubCalURLRequest *)self setFilePath:0];
     }
 
-    v23 = [v4 mutableCopy];
+    v23 = [fileCopy mutableCopy];
     [(SubCalURLRequest *)self setConnectionData:v23];
 
     goto LABEL_7;
@@ -1225,8 +1225,8 @@ void __69__SubCalURLRequest__handleAuthenticationChallenge_completionHandler___b
   }
 
 LABEL_5:
-  v8 = [(SubCalURLRequest *)self fileHandle];
-  [v8 writeData:v4];
+  connectionData3 = [(SubCalURLRequest *)self fileHandle];
+  [connectionData3 writeData:fileCopy];
 LABEL_6:
 
 LABEL_7:
@@ -1263,7 +1263,7 @@ void __44__SubCalURLRequest__cachedICSFilesDirectory__block_invoke()
   block[1] = 3221225472;
   block[2] = __40__SubCalURLRequest__initializeFileCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_initializeFileCache_onceToken != -1)
   {
     dispatch_once(&_initializeFileCache_onceToken, block);

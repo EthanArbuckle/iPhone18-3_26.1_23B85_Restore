@@ -1,26 +1,26 @@
 @interface AXPIFingerController
-- (CGPoint)hndAbsoluteCentroidForMultifingers:(CGPoint)a3;
-- (CGPoint)hndCentroidForPinchChainMidPoint:(CGPoint)a3;
-- (CGPoint)hndConvertPointToFingerContainerView:(CGPoint)a3;
+- (CGPoint)hndAbsoluteCentroidForMultifingers:(CGPoint)multifingers;
+- (CGPoint)hndCentroidForPinchChainMidPoint:(CGPoint)point;
+- (CGPoint)hndConvertPointToFingerContainerView:(CGPoint)view;
 - (CGPoint)hndMenuPointForFingerLayout;
-- (CGPoint)hndStandardCentroidForMultifingers:(CGPoint)a3;
+- (CGPoint)hndStandardCentroidForMultifingers:(CGPoint)multifingers;
 @end
 
 @implementation AXPIFingerController
 
-- (CGPoint)hndConvertPointToFingerContainerView:(CGPoint)a3
+- (CGPoint)hndConvertPointToFingerContainerView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(AXPIFingerController *)self fingerContainerView];
-  v6 = [v5 window];
-  v7 = [v6 layer];
-  [v7 convertPoint:0 fromLayer:{x, y}];
+  y = view.y;
+  x = view.x;
+  fingerContainerView = [(AXPIFingerController *)self fingerContainerView];
+  window = [fingerContainerView window];
+  layer = [window layer];
+  [layer convertPoint:0 fromLayer:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v5 window];
-  [v12 convertPoint:v5 toView:{v9, v11}];
+  window2 = [fingerContainerView window];
+  [window2 convertPoint:fingerContainerView toView:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
@@ -31,24 +31,24 @@
   return result;
 }
 
-- (CGPoint)hndStandardCentroidForMultifingers:(CGPoint)a3
+- (CGPoint)hndStandardCentroidForMultifingers:(CGPoint)multifingers
 {
-  [(AXPIFingerController *)self hndConvertPointToFingerContainerView:a3.x, a3.y];
+  [(AXPIFingerController *)self hndConvertPointToFingerContainerView:multifingers.x, multifingers.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(AXPIFingerController *)self fingerModels];
-  v9 = [v8 count];
+  fingerModels = [(AXPIFingerController *)self fingerModels];
+  v9 = [fingerModels count];
 
   if ((v9 - 3) < 2)
   {
-    v22 = [(AXPIFingerController *)self fingerModels];
-    v23 = [v22 objectAtIndexedSubscript:0];
+    fingerModels2 = [(AXPIFingerController *)self fingerModels];
+    v23 = [fingerModels2 objectAtIndexedSubscript:0];
     [v23 location];
     v25 = v24;
     v27 = v26;
 
-    v28 = [(AXPIFingerController *)self fingerModels];
-    v29 = [v28 objectAtIndexedSubscript:1];
+    fingerModels3 = [(AXPIFingerController *)self fingerModels];
+    v29 = [fingerModels3 objectAtIndexedSubscript:1];
     [v29 location];
     v31 = v30;
     v33 = v32;
@@ -61,14 +61,14 @@
 
   if (v9 == 5)
   {
-    v34 = [(AXPIFingerController *)self fingerModels];
-    v35 = [v34 objectAtIndexedSubscript:0];
+    fingerModels4 = [(AXPIFingerController *)self fingerModels];
+    v35 = [fingerModels4 objectAtIndexedSubscript:0];
     [v35 location];
     v37 = v36;
     v39 = v38;
 
-    v40 = [(AXPIFingerController *)self fingerModels];
-    v41 = [v40 objectAtIndexedSubscript:3];
+    fingerModels5 = [(AXPIFingerController *)self fingerModels];
+    v41 = [fingerModels5 objectAtIndexedSubscript:3];
     [v41 location];
     v43 = v42;
     v45 = v44;
@@ -81,14 +81,14 @@
 
   if (v9 == 2)
   {
-    v10 = [(AXPIFingerController *)self fingerModels];
-    v11 = [v10 objectAtIndexedSubscript:0];
+    fingerModels6 = [(AXPIFingerController *)self fingerModels];
+    v11 = [fingerModels6 objectAtIndexedSubscript:0];
     [v11 location];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(AXPIFingerController *)self fingerModels];
-    v17 = [v16 objectAtIndexedSubscript:1];
+    fingerModels7 = [(AXPIFingerController *)self fingerModels];
+    v17 = [fingerModels7 objectAtIndexedSubscript:1];
     [v17 location];
 
     AX_CGPointGetMidpointToPoint();
@@ -106,21 +106,21 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)hndAbsoluteCentroidForMultifingers:(CGPoint)a3
+- (CGPoint)hndAbsoluteCentroidForMultifingers:(CGPoint)multifingers
 {
-  [(AXPIFingerController *)self hndConvertPointToFingerContainerView:a3.x, a3.y];
+  [(AXPIFingerController *)self hndConvertPointToFingerContainerView:multifingers.x, multifingers.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(AXPIFingerController *)self fingerModels];
-  v9 = [v8 count];
+  fingerModels = [(AXPIFingerController *)self fingerModels];
+  v9 = [fingerModels count];
 
   if (v9)
   {
     [(AXPIFingerController *)self midpointForFingers];
     v11 = v10;
     v13 = v12;
-    v14 = [(AXPIFingerController *)self fingerModels];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    fingerModels2 = [(AXPIFingerController *)self fingerModels];
+    v15 = [fingerModels2 objectAtIndexedSubscript:0];
     [v15 location];
     v17 = v16;
     v19 = v18;
@@ -136,30 +136,30 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)hndCentroidForPinchChainMidPoint:(CGPoint)a3
+- (CGPoint)hndCentroidForPinchChainMidPoint:(CGPoint)point
 {
-  [(AXPIFingerController *)self hndConvertPointToFingerContainerView:a3.x, a3.y];
+  [(AXPIFingerController *)self hndConvertPointToFingerContainerView:point.x, point.y];
   v6 = v5;
   v8 = v7;
-  v9 = [(AXPIFingerController *)self fingerModels];
-  v10 = [v9 count];
+  fingerModels = [(AXPIFingerController *)self fingerModels];
+  v10 = [fingerModels count];
 
   if (v10 != 2)
   {
     sub_10012AC9C(a2, self);
   }
 
-  v11 = [(AXPIFingerController *)self fingerModels];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  fingerModels2 = [(AXPIFingerController *)self fingerModels];
+  v12 = [fingerModels2 objectAtIndexedSubscript:0];
   [v12 location];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(AXPIFingerController *)self fingerModels];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  fingerModels3 = [(AXPIFingerController *)self fingerModels];
+  v18 = [fingerModels3 objectAtIndexedSubscript:0];
   [v18 location];
-  v19 = [(AXPIFingerController *)self fingerModels];
-  v20 = [v19 objectAtIndexedSubscript:1];
+  fingerModels4 = [(AXPIFingerController *)self fingerModels];
+  v20 = [fingerModels4 objectAtIndexedSubscript:1];
   [v20 location];
   AX_CGPointGetMidpointToPoint();
   v22 = v21;
@@ -176,30 +176,30 @@ LABEL_7:
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
-  v5 = [(AXPIFingerController *)self fingerModels];
-  v6 = [v5 count];
+  fingerModels = [(AXPIFingerController *)self fingerModels];
+  v6 = [fingerModels count];
 
   if (v6 <= 2)
   {
     if (v6 == 1)
     {
-      v7 = [(AXPIFingerController *)self fingerModels];
-      v8 = v7;
+      fingerModels2 = [(AXPIFingerController *)self fingerModels];
+      v8 = fingerModels2;
       v9 = 0;
       goto LABEL_11;
     }
 
     if (v6 == 2)
     {
-      v10 = [(AXPIFingerController *)self fingerModels];
-      v11 = [v10 objectAtIndexedSubscript:0];
+      fingerModels3 = [(AXPIFingerController *)self fingerModels];
+      v11 = [fingerModels3 objectAtIndexedSubscript:0];
       [v11 location];
 
-      v12 = [(AXPIFingerController *)self fingerModels];
-      v13 = v12;
+      fingerModels4 = [(AXPIFingerController *)self fingerModels];
+      v13 = fingerModels4;
       v14 = 1;
 LABEL_9:
-      v17 = [v12 objectAtIndexedSubscript:v14];
+      v17 = [fingerModels4 objectAtIndexedSubscript:v14];
       [v17 location];
 
       AX_CGPointGetMidpointToPoint();
@@ -212,11 +212,11 @@ LABEL_9:
   {
     if ((v6 - 3) < 2)
     {
-      v7 = [(AXPIFingerController *)self fingerModels];
-      v8 = v7;
+      fingerModels2 = [(AXPIFingerController *)self fingerModels];
+      v8 = fingerModels2;
       v9 = 1;
 LABEL_11:
-      v20 = [v7 objectAtIndexedSubscript:v9];
+      v20 = [fingerModels2 objectAtIndexedSubscript:v9];
       [v20 location];
       x = v21;
       y = v22;
@@ -226,12 +226,12 @@ LABEL_11:
 
     if (v6 == 5)
     {
-      v15 = [(AXPIFingerController *)self fingerModels];
-      v16 = [v15 objectAtIndexedSubscript:0];
+      fingerModels5 = [(AXPIFingerController *)self fingerModels];
+      v16 = [fingerModels5 objectAtIndexedSubscript:0];
       [v16 location];
 
-      v12 = [(AXPIFingerController *)self fingerModels];
-      v13 = v12;
+      fingerModels4 = [(AXPIFingerController *)self fingerModels];
+      v13 = fingerModels4;
       v14 = 3;
       goto LABEL_9;
     }

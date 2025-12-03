@@ -1,8 +1,8 @@
 @interface APDeviceDataAdaptor
 + (id)validClassInputs;
-- (BOOL)_validateParameters:(id *)a3;
+- (BOOL)_validateParameters:(id *)parameters;
 - (id)deviceClass;
-- (void)_run:(id)a3;
+- (void)_run:(id)_run;
 @end
 
 @implementation APDeviceDataAdaptor
@@ -19,21 +19,21 @@
   return v3;
 }
 
-- (void)_run:(id)a3
+- (void)_run:(id)_run
 {
-  v4 = a3;
-  v5 = [(APDataAdaptor *)self parameters];
-  v6 = [v5 objectForKeyedSubscript:@"class"];
+  _runCopy = _run;
+  parameters = [(APDataAdaptor *)self parameters];
+  v6 = [parameters objectForKeyedSubscript:@"class"];
 
   if (v6)
   {
-    v7 = [(APDataAdaptor *)self parameters];
-    v8 = [v7 objectForKeyedSubscript:@"class"];
+    parameters2 = [(APDataAdaptor *)self parameters];
+    v8 = [parameters2 objectForKeyedSubscript:@"class"];
 
-    v9 = [(APDeviceDataAdaptor *)self deviceClass];
-    if (v9)
+    deviceClass = [(APDeviceDataAdaptor *)self deviceClass];
+    if (deviceClass)
     {
-      v10 = [v8 containsObject:v9];
+      v10 = [v8 containsObject:deviceClass];
       v11 = 0;
     }
 
@@ -54,10 +54,10 @@
   }
 
   v13 = [NSNumber numberWithBool:v10];
-  v4[2](v4, v13, 0, v11);
+  _runCopy[2](_runCopy, v13, 0, v11);
 }
 
-- (BOOL)_validateParameters:(id *)a3
+- (BOOL)_validateParameters:(id *)parameters
 {
   v14.receiver = self;
   v14.super_class = APDeviceDataAdaptor;
@@ -66,17 +66,17 @@
     return 0;
   }
 
-  v5 = [(APDataAdaptor *)self parameters];
-  v6 = [v5 objectForKeyedSubscript:@"class"];
-  v7 = [(APDataAdaptor *)self _checkClassType:v6 name:@"class" expectedClass:objc_opt_class() error:a3];
+  parameters = [(APDataAdaptor *)self parameters];
+  v6 = [parameters objectForKeyedSubscript:@"class"];
+  v7 = [(APDataAdaptor *)self _checkClassType:v6 name:@"class" expectedClass:objc_opt_class() error:parameters];
 
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [(APDataAdaptor *)self parameters];
-  v9 = [v8 objectForKeyedSubscript:@"class"];
+  parameters2 = [(APDataAdaptor *)self parameters];
+  v9 = [parameters2 objectForKeyedSubscript:@"class"];
   v10 = [NSSet setWithArray:v9];
 
   v11 = +[APDeviceDataAdaptor validClassInputs];
@@ -88,24 +88,24 @@
 - (id)deviceClass
 {
   v2 = +[APDeviceInfo current];
-  v3 = [v2 deviceModel];
+  deviceModel = [v2 deviceModel];
 
-  if ([v3 hasPrefix:@"iPhone"])
+  if ([deviceModel hasPrefix:@"iPhone"])
   {
     v4 = @"IPHONE";
   }
 
-  else if ([v3 hasPrefix:@"iPad"])
+  else if ([deviceModel hasPrefix:@"iPad"])
   {
     v4 = @"IPAD";
   }
 
-  else if ([v3 hasPrefix:@"Mac"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"iMac"))
+  else if ([deviceModel hasPrefix:@"Mac"] & 1) != 0 || (objc_msgSend(deviceModel, "hasPrefix:", @"iMac"))
   {
     v4 = @"MAC";
   }
 
-  else if ([v3 hasPrefix:@"iPod"])
+  else if ([deviceModel hasPrefix:@"iPod"])
   {
     v4 = @"IPOD";
   }

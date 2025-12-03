@@ -1,14 +1,14 @@
 @interface TSCHChartFeatureCategory
-- (TSCHChartFeatureCategory)initWithChartType:(id)a3;
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4;
+- (TSCHChartFeatureCategory)initWithChartType:(id)type;
+- (void)updateTitlesForExportingModel:(id)model info:(id)info;
 @end
 
 @implementation TSCHChartFeatureCategory
 
-- (TSCHChartFeatureCategory)initWithChartType:(id)a3
+- (TSCHChartFeatureCategory)initWithChartType:(id)type
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = [TSCHChartAxisID alloc];
   v10 = objc_msgSend_initWithType_ordinal_(v5, v6, v7, v8, v9, 2, 0);
   v34[0] = v10;
@@ -19,15 +19,15 @@
   v33 = v21;
   v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v22, v23, v24, v25, &v33, 1);
 
-  v31 = objc_msgSend_initWithChartType_valueAxisIDs_categoryAxisIDs_(self, v27, v28, v29, v30, v4, v15, v26);
+  v31 = objc_msgSend_initWithChartType_valueAxisIDs_categoryAxisIDs_(self, v27, v28, v29, v30, typeCopy, v15, v26);
   return v31;
 }
 
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4
+- (void)updateTitlesForExportingModel:(id)model info:(id)info
 {
-  v102 = a3;
-  v5 = a4;
-  if (objc_msgSend_categoryAxisStyleCount(v5, v6, v7, v8, v9) != 1)
+  modelCopy = model;
+  infoCopy = info;
+  if (objc_msgSend_categoryAxisStyleCount(infoCopy, v6, v7, v8, v9) != 1)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "[TSCHChartFeatureCategory updateTitlesForExportingModel:info:]");
@@ -37,7 +37,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_categoryAxisNonstyleAtIndex_(v5, v10, v11, v12, v13, 0);
+  v29 = objc_msgSend_categoryAxisNonstyleAtIndex_(infoCopy, v10, v11, v12, v13, 0);
   v35 = objc_msgSend_valueForProperty_(v29, v30, v31, v32, v33, 1290);
   if (!v35)
   {
@@ -49,8 +49,8 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51, v52, v53);
   }
 
-  objc_msgSend_setCategoryTitle_(v102, v34, v36, v37, v38, v35);
-  if (!objc_msgSend_valueAxisStyleCount(v5, v54, v55, v56, v57))
+  objc_msgSend_setCategoryTitle_(modelCopy, v34, v36, v37, v38, v35);
+  if (!objc_msgSend_valueAxisStyleCount(infoCopy, v54, v55, v56, v57))
   {
     v62 = MEMORY[0x277D81150];
     v63 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v58, v59, v60, v61, "[TSCHChartFeatureCategory updateTitlesForExportingModel:info:]");
@@ -60,7 +60,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v73, v74, v75, v76);
   }
 
-  v77 = objc_msgSend_valueAxisNonstyleAtIndex_(v5, v58, v59, v60, v61, 0);
+  v77 = objc_msgSend_valueAxisNonstyleAtIndex_(infoCopy, v58, v59, v60, v61, 0);
   v83 = objc_msgSend_valueForProperty_(v77, v78, v79, v80, v81, 1294);
   if (!v83)
   {
@@ -72,7 +72,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v98, v99, v100, v101);
   }
 
-  objc_msgSend_setValueTitle_(v102, v82, v84, v85, v86, v83);
+  objc_msgSend_setValueTitle_(modelCopy, v82, v84, v85, v86, v83);
 }
 
 @end

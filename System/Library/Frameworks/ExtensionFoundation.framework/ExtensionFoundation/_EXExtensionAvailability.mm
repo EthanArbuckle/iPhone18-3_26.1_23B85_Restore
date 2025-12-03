@@ -1,9 +1,9 @@
 @interface _EXExtensionAvailability
-+ (id)addChangeObserver:(id)a3;
-+ (void)removeChangeObserver:(id)a3;
++ (id)addChangeObserver:(id)observer;
++ (void)removeChangeObserver:(id)observer;
 - (_EXExtensionAvailability)init;
-- (_EXExtensionAvailability)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_EXExtensionAvailability)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXExtensionAvailability
@@ -18,24 +18,24 @@
   return [(_EXExtensionAvailability *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _EXExtensionAvailability.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _EXExtensionAvailability.encode(with:)(coderCopy);
 }
 
-- (_EXExtensionAvailability)initWithCoder:(id)a3
+- (_EXExtensionAvailability)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized _EXExtensionAvailability.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized _EXExtensionAvailability.init(coder:)(coderCopy);
 
   return v4;
 }
 
-+ (id)addChangeObserver:(id)a3
++ (id)addChangeObserver:(id)observer
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(observer);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   static _EXExtensionAvailability.add(changeObserver:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned _EXExtensionAvailability) -> (), v4, v7);
@@ -47,7 +47,7 @@
   return v5;
 }
 
-+ (void)removeChangeObserver:(id)a3
++ (void)removeChangeObserver:(id)observer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

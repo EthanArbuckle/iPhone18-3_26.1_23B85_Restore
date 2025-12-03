@@ -1,6 +1,6 @@
 @interface FloatingToolbarViewController
-- (_TtC9Shortcuts29FloatingToolbarViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)keyboardWillChange:(id)a3;
+- (_TtC9Shortcuts29FloatingToolbarViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)keyboardWillChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -8,25 +8,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000133E8();
 }
 
-- (void)keyboardWillChange:(id)a3
+- (void)keyboardWillChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100048960(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100048960(changeCopy);
 }
 
-- (_TtC9Shortcuts29FloatingToolbarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Shortcuts29FloatingToolbarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_100048D6C();
 }
 

@@ -1,13 +1,13 @@
 @interface SUMediaItemCellConfiguration
 - (CGSize)artworkSize;
-- (SUMediaItemCellConfiguration)initWithStringCount:(unint64_t)a3 imageCount:(unint64_t)a4;
+- (SUMediaItemCellConfiguration)initWithStringCount:(unint64_t)count imageCount:(unint64_t)imageCount;
 - (UIEdgeInsets)_ratingBorderInsets;
-- (double)alphaForImageAtIndex:(unint64_t)a3 fromAlpha:(double *)a4 withModifiers:(unint64_t)a5;
-- (double)alphaForLabelAtIndex:(unint64_t)a3 fromAlpha:(double *)a4 withModifiers:(unint64_t)a5;
+- (double)alphaForImageAtIndex:(unint64_t)index fromAlpha:(double *)alpha withModifiers:(unint64_t)modifiers;
+- (double)alphaForLabelAtIndex:(unint64_t)index fromAlpha:(double *)alpha withModifiers:(unint64_t)modifiers;
 - (id)copyImageDataProvider;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (int64_t)mediaIconType;
-- (void)drawWithModifiers:(unint64_t)a3;
+- (void)drawWithModifiers:(unint64_t)modifiers;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -15,19 +15,19 @@
 
 @implementation SUMediaItemCellConfiguration
 
-- (SUMediaItemCellConfiguration)initWithStringCount:(unint64_t)a3 imageCount:(unint64_t)a4
+- (SUMediaItemCellConfiguration)initWithStringCount:(unint64_t)count imageCount:(unint64_t)imageCount
 {
   v5.receiver = self;
   v5.super_class = SUMediaItemCellConfiguration;
-  return [(SUArrayCellConfiguration *)&v5 initWithStringCount:a3 + 1 imageCount:a4 + 2];
+  return [(SUArrayCellConfiguration *)&v5 initWithStringCount:count + 1 imageCount:imageCount + 2];
 }
 
 - (CGSize)artworkSize
 {
-  v3 = [self->super.super.super.super._context imageProvider];
-  if (v3)
+  imageProvider = [self->super.super.super.super._context imageProvider];
+  if (imageProvider)
   {
-    v4 = v3;
+    v4 = imageProvider;
     [self->super.super.super.super._context artworkWidth];
     v6 = v5;
     [v4 finalSize];
@@ -52,27 +52,27 @@
 {
   v5.receiver = self;
   v5.super_class = SUMediaItemCellConfiguration;
-  v3 = [(SUArtworkCellConfiguration *)&v5 copyImageDataProvider];
+  copyImageDataProvider = [(SUArtworkCellConfiguration *)&v5 copyImageDataProvider];
   [(SUMediaItemCellConfiguration *)self artworkSize];
-  [v3 setFinalSize:?];
-  return v3;
+  [copyImageDataProvider setFinalSize:?];
+  return copyImageDataProvider;
 }
 
 - (int64_t)mediaIconType
 {
-  v3 = [self->super.super.super.super._representedObject itemType];
+  itemType = [self->super.super.super.super._representedObject itemType];
   result = 1;
-  if (v3 != 1005 && v3 != 1011)
+  if (itemType != 1005 && itemType != 1011)
   {
-    if (SUItemTypeIsVideoType(v3))
+    if (SUItemTypeIsVideoType(itemType))
     {
       return 2;
     }
 
     else
     {
-      v5 = [self->super.super.super.super._representedObject itemMediaKind];
-      if ([v5 isEqualToString:*MEMORY[0x1E69D4D00]])
+      itemMediaKind = [self->super.super.super.super._representedObject itemMediaKind];
+      if ([itemMediaKind isEqualToString:*MEMORY[0x1E69D4D00]])
       {
         return 2;
       }
@@ -87,43 +87,43 @@
   return result;
 }
 
-- (double)alphaForLabelAtIndex:(unint64_t)a3 fromAlpha:(double *)a4 withModifiers:(unint64_t)a5
+- (double)alphaForLabelAtIndex:(unint64_t)index fromAlpha:(double *)alpha withModifiers:(unint64_t)modifiers
 {
-  v5 = (a5 & 4) != 0 && a3 == 0;
+  v5 = (modifiers & 4) != 0 && index == 0;
   result = 0.0;
   if (!v5)
   {
     result = 1.0;
   }
 
-  if (a4)
+  if (alpha)
   {
-    *a4 = result;
+    *alpha = result;
   }
 
   return result;
 }
 
-- (double)alphaForImageAtIndex:(unint64_t)a3 fromAlpha:(double *)a4 withModifiers:(unint64_t)a5
+- (double)alphaForImageAtIndex:(unint64_t)index fromAlpha:(double *)alpha withModifiers:(unint64_t)modifiers
 {
-  v5 = (a5 & 4) != 0 && a3 == 1;
+  v5 = (modifiers & 4) != 0 && index == 1;
   result = 0.0;
   if (!v5)
   {
     result = 1.0;
   }
 
-  if (a4)
+  if (alpha)
   {
-    *a4 = result;
+    *alpha = result;
   }
 
   return result;
 }
 
-- (void)drawWithModifiers:(unint64_t)a3
+- (void)drawWithModifiers:(unint64_t)modifiers
 {
-  if ((a3 & 4) == 0 && *self->super.super.super._strings)
+  if ((modifiers & 4) == 0 && *self->super.super.super._strings)
   {
     [-[SUCellConfiguration colorForLabelAtIndex:withModifiers:](self colorForLabelAtIndex:0) withModifiers:"set"];
     stringFrames = self->super.super.super._stringFrames;
@@ -139,9 +139,9 @@
   }
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }
@@ -169,8 +169,8 @@
   p_images = &self->super.super.super._images;
 
   *self->super.super.super._images = v7;
-  v9 = [(SUMediaItemCellConfiguration *)self mediaIconType];
-  if (v9 && (v10 = v9, ([self->super.super.super.super._context hiddenMediaIconTypes] & v9) == 0))
+  mediaIconType = [(SUMediaItemCellConfiguration *)self mediaIconType];
+  if (mediaIconType && (v10 = mediaIconType, ([self->super.super.super.super._context hiddenMediaIconTypes] & mediaIconType) == 0))
   {
     (*p_images)[1] = SUTableCellGetMediaIcon(v10, 0);
     v11 = SUTableCellGetMediaIcon(v10, 1);

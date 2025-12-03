@@ -1,19 +1,19 @@
 @interface _HKDisplayTypeSectionedHeaderView
-- (_HKDisplayTypeSectionedHeaderView)initWithFrame:(CGRect)a3;
+- (_HKDisplayTypeSectionedHeaderView)initWithFrame:(CGRect)frame;
 - (void)_updatePreferredTitleFont;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _HKDisplayTypeSectionedHeaderView
 
-- (_HKDisplayTypeSectionedHeaderView)initWithFrame:(CGRect)a3
+- (_HKDisplayTypeSectionedHeaderView)initWithFrame:(CGRect)frame
 {
   v52[4] = *MEMORY[0x1E69E9840];
   v50.receiver = self;
   v50.super_class = _HKDisplayTypeSectionedHeaderView;
-  v3 = [(_HKDisplayTypeSectionedHeaderView *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_HKDisplayTypeSectionedHeaderView *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -31,12 +31,12 @@
     v3->_titleLabel = v11;
 
     [(UILabel *)v3->_titleLabel setAdjustsFontForContentSizeCategory:1];
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v3->_titleLabel setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v3->_titleLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
     [(UILabel *)v3->_titleLabel setClipsToBounds:0];
@@ -44,53 +44,53 @@
     [(_HKDisplayTypeSectionedHeaderView *)v3 _updatePreferredTitleFont];
     [(_HKDisplayTypeSectionedHeaderView *)v3 addSubview:v3->_contentView];
     v44 = MEMORY[0x1E696ACD8];
-    v49 = [(UIView *)v3->_contentView topAnchor];
-    v48 = [(_HKDisplayTypeSectionedHeaderView *)v3 topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    topAnchor = [(UIView *)v3->_contentView topAnchor];
+    topAnchor2 = [(_HKDisplayTypeSectionedHeaderView *)v3 topAnchor];
+    v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[0] = v47;
-    v46 = [(UIView *)v3->_contentView leadingAnchor];
-    v45 = [(_HKDisplayTypeSectionedHeaderView *)v3 leadingAnchor];
-    v43 = [v46 constraintEqualToAnchor:v45];
+    leadingAnchor = [(UIView *)v3->_contentView leadingAnchor];
+    leadingAnchor2 = [(_HKDisplayTypeSectionedHeaderView *)v3 leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[1] = v43;
-    v15 = [(UIView *)v3->_contentView bottomAnchor];
-    v16 = [(_HKDisplayTypeSectionedHeaderView *)v3 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [(UIView *)v3->_contentView bottomAnchor];
+    bottomAnchor2 = [(_HKDisplayTypeSectionedHeaderView *)v3 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[2] = v17;
-    v18 = [(UIView *)v3->_contentView trailingAnchor];
-    v19 = [(_HKDisplayTypeSectionedHeaderView *)v3 trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    trailingAnchor = [(UIView *)v3->_contentView trailingAnchor];
+    trailingAnchor2 = [(_HKDisplayTypeSectionedHeaderView *)v3 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
     [v44 activateConstraints:v21];
 
     [(UIView *)v3->_contentView addSubview:v3->_titleLabel];
-    v22 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v23 = [(UIView *)v3->_contentView trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor3 = [(UILabel *)v3->_titleLabel trailingAnchor];
+    trailingAnchor4 = [(UIView *)v3->_contentView trailingAnchor];
+    v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     titleTrailingConstraint = v3->_titleTrailingConstraint;
     v3->_titleTrailingConstraint = v24;
 
-    v26 = [(UILabel *)v3->_titleLabel topAnchor];
-    v27 = [(UIView *)v3->_contentView topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    topAnchor3 = [(UILabel *)v3->_titleLabel topAnchor];
+    topAnchor4 = [(UIView *)v3->_contentView topAnchor];
+    v28 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     titleWithNoTopMargin = v3->_titleWithNoTopMargin;
     v3->_titleWithNoTopMargin = v28;
 
-    v30 = [(UILabel *)v3->_titleLabel topAnchor];
-    v31 = [(UIView *)v3->_contentView topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:16.0];
+    topAnchor5 = [(UILabel *)v3->_titleLabel topAnchor];
+    topAnchor6 = [(UIView *)v3->_contentView topAnchor];
+    v32 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:16.0];
     titleWithTopMargin = v3->_titleWithTopMargin;
     v3->_titleWithTopMargin = v32;
 
     [(NSLayoutConstraint *)v3->_titleWithNoTopMargin setActive:1];
     v34 = MEMORY[0x1E696ACD8];
-    v35 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v36 = [(UIView *)v3->_contentView leadingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    leadingAnchor3 = [(UILabel *)v3->_titleLabel leadingAnchor];
+    leadingAnchor4 = [(UIView *)v3->_contentView leadingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v51[0] = v37;
-    v38 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v39 = [(UIView *)v3->_contentView bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor3 = [(UILabel *)v3->_titleLabel bottomAnchor];
+    bottomAnchor4 = [(UIView *)v3->_contentView bottomAnchor];
+    v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v51[1] = v40;
     v51[2] = v3->_titleTrailingConstraint;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:3];
@@ -100,30 +100,30 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = _HKDisplayTypeSectionedHeaderView;
-  v4 = a3;
-  [(_HKDisplayTypeSectionedHeaderView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(_HKDisplayTypeSectionedHeaderView *)&v8 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(_HKDisplayTypeSectionedHeaderView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(_HKDisplayTypeSectionedHeaderView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(_HKDisplayTypeSectionedHeaderView *)self _updatePreferredTitleFont];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  titleCopy = title;
+  v8 = titleCopy;
+  if (titleCopy)
   {
-    v5 = [v4 length];
+    v5 = [titleCopy length];
     v6 = v5 == 0;
     v7 = v5 != 0;
   }
@@ -151,8 +151,8 @@
 
 - (void)_updatePreferredTitleFont
 {
-  v3 = [MEMORY[0x1E69DB878] hk_chartOverlaySectionHeaderFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  hk_chartOverlaySectionHeaderFont = [MEMORY[0x1E69DB878] hk_chartOverlaySectionHeaderFont];
+  [(UILabel *)self->_titleLabel setFont:hk_chartOverlaySectionHeaderFont];
 }
 
 @end

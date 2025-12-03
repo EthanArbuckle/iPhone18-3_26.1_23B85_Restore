@@ -1,28 +1,28 @@
 @interface AUV2BridgeBus
-- (AUV2BridgeBus)initWithOwner:(id)a3 au:(OpaqueAudioComponentInstance *)a4 scope:(unsigned int)a5 element:(unsigned int)a6;
-- (BOOL)setFormat:(id)a3 error:(id *)a4;
+- (AUV2BridgeBus)initWithOwner:(id)owner au:(OpaqueAudioComponentInstance *)au scope:(unsigned int)scope element:(unsigned int)element;
+- (BOOL)setFormat:(id)format error:(id *)error;
 - (id)format;
 @end
 
 @implementation AUV2BridgeBus
 
-- (BOOL)setFormat:(id)a3 error:(id *)a4
+- (BOOL)setFormat:(id)format error:(id *)error
 {
-  v6 = a3;
+  formatCopy = format;
   [(AUV2BridgeBus *)self willChangeValueForKey:@"format"];
-  v7 = AudioUnitSetProperty(self->_audioUnit, 8u, self->_scope, self->_element, [v6 streamDescription], 0x28u);
+  v7 = AudioUnitSetProperty(self->_audioUnit, 8u, self->_scope, self->_element, [formatCopy streamDescription], 0x28u);
   if (!v7)
   {
-    v8 = [v6 channelLayout];
-    v9 = v8;
-    if (v8)
+    channelLayout = [formatCopy channelLayout];
+    v9 = channelLayout;
+    if (channelLayout)
     {
       audioUnit = self->_audioUnit;
       scope = self->_scope;
       element = self->_element;
-      v13 = [v8 layout];
+      layout = [channelLayout layout];
       v14 = v9;
-      inData = v13;
+      inData = layout;
       if ([v14 layout])
       {
         v15 = audioUnit;
@@ -48,17 +48,17 @@
   }
 
   [(AUV2BridgeBus *)self didChangeValueForKey:@"format"];
-  if (a4)
+  if (error)
   {
     if (v7)
     {
       v17 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v7 userInfo:0];
-      *a4 = v17;
+      *error = v17;
     }
 
     else
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -67,7 +67,7 @@
 
 - (id)format
 {
-  v3 = 0;
+  0x930000 = 0;
   v64 = *MEMORY[0x1E69E9840];
   ioDataSize = 0;
   v4 = 50;
@@ -86,7 +86,7 @@
     ioDataSize = 40;
     if (AudioUnitGetProperty(self->_audioUnit, 8u, self->_scope, self->_element, outData, &ioDataSize))
     {
-      v3 = 0;
+      0x930000 = 0;
       v23 = 0;
       goto LABEL_56;
     }
@@ -100,14 +100,14 @@
     std::vector<unsigned char>::vector[abi:ne200100](&__p, ioDataSize);
     if (AudioUnitGetProperty(self->_audioUnit, 0x13u, self->_scope, self->_element, __p, &ioDataSize))
     {
-      v3 = 0;
+      0x930000 = 0;
     }
 
     else
     {
-      v3 = [getAVAudioChannelLayoutClass() layoutWithLayout:__p];
-      v8 = [v3 channelCount];
-      if (v8 != v51)
+      0x930000 = [getAVAudioChannelLayoutClass() layoutWithLayout:__p];
+      channelCount = [0x930000 channelCount];
+      if (channelCount != v51)
       {
         vtable = v6[12].vtable;
         if (vtable)
@@ -152,7 +152,7 @@ LABEL_29:
           element = self->_element;
           scope = self->_scope;
           v21 = v51;
-          v22 = [v3 channelCount];
+          channelCount2 = [0x930000 channelCount];
           *buf = 136316930;
           *&buf[4] = "AUAudioUnitV2Bridge.mm";
           *&buf[12] = 1024;
@@ -168,7 +168,7 @@ LABEL_29:
           v60 = 1024;
           v61 = v21;
           v62 = 1024;
-          v63 = v22;
+          v63 = channelCount2;
           v15 = log;
           _os_log_impl(&dword_18F5DF000, log, OS_LOG_TYPE_DEBUG, "%25s:%-5d au@%p {%s} (bus %d, scope %d): inconsistent #channels in asbd %d, layout %d.. retrying", buf, 0x3Eu);
           if (v48)
@@ -210,18 +210,18 @@ LABEL_10:
     }
   }
 
-  v3 = 0;
+  0x930000 = 0;
 LABEL_32:
-  if (!v3 && v51 >= 3)
+  if (!0x930000 && v51 >= 3)
   {
-    v3 = [getAVAudioChannelLayoutClass() layoutWithLayoutTag:v51 | 0x930000];
+    0x930000 = [getAVAudioChannelLayoutClass() layoutWithLayoutTag:v51 | 0x930000];
   }
 
-  if (v3)
+  if (0x930000)
   {
-    v24 = [v3 channelCount];
+    channelCount3 = [0x930000 channelCount];
     v25 = v51;
-    if (v24 != v51)
+    if (channelCount3 != v51)
     {
       v26 = v6[12].vtable;
       if (v26)
@@ -262,7 +262,7 @@ LABEL_32:
         v34 = self->_element;
         v35 = self->_scope;
         v36 = v51;
-        v37 = [v3 channelCount];
+        channelCount4 = [0x930000 channelCount];
         *buf = 136316930;
         *&buf[4] = "AUAudioUnitV2Bridge.mm";
         *&buf[12] = 1024;
@@ -278,7 +278,7 @@ LABEL_32:
         v60 = 1024;
         v61 = v36;
         v62 = 1024;
-        v63 = v37;
+        v63 = channelCount4;
         _os_log_impl(&dword_18F5DF000, v29, OS_LOG_TYPE_DEFAULT, "%25s:%-5d au@%p {%s} (bus %d, scope %d): inconsistent #channels in asbd %d, layout %d, faking a format", buf, 0x3Eu);
         if (*&v47.componentType)
         {
@@ -290,15 +290,15 @@ LABEL_32:
 LABEL_49:
       if (v25 < 3)
       {
-        v38 = 0;
+        0x9300002 = 0;
       }
 
       else
       {
-        v38 = [getAVAudioChannelLayoutClass() layoutWithLayoutTag:v51 | 0x930000];
+        0x9300002 = [getAVAudioChannelLayoutClass() layoutWithLayoutTag:v51 | 0x930000];
       }
 
-      v3 = v38;
+      0x930000 = 0x9300002;
     }
   }
 
@@ -320,7 +320,7 @@ LABEL_49:
 
   v40 = v39;
   _Block_object_dispose(&__p, 8);
-  v23 = [[v39 alloc] initWithStreamDescription:outData channelLayout:v3];
+  v23 = [[v39 alloc] initWithStreamDescription:outData channelLayout:0x930000];
 LABEL_56:
 
   v41 = *MEMORY[0x1E69E9840];
@@ -328,19 +328,19 @@ LABEL_56:
   return v23;
 }
 
-- (AUV2BridgeBus)initWithOwner:(id)a3 au:(OpaqueAudioComponentInstance *)a4 scope:(unsigned int)a5 element:(unsigned int)a6
+- (AUV2BridgeBus)initWithOwner:(id)owner au:(OpaqueAudioComponentInstance *)au scope:(unsigned int)scope element:(unsigned int)element
 {
-  v10 = a3;
+  ownerCopy = owner;
   v14.receiver = self;
   v14.super_class = AUV2BridgeBus;
   v11 = [(AUV2BridgeBus *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_owner, v10);
-    v12->_audioUnit = a4;
-    v12->_scope = a5;
-    v12->_element = a6;
+    objc_storeWeak(&v11->_owner, ownerCopy);
+    v12->_audioUnit = au;
+    v12->_scope = scope;
+    v12->_element = element;
   }
 
   return v12;

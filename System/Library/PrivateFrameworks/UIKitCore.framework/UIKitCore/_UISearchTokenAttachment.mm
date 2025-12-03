@@ -1,20 +1,20 @@
 @interface _UISearchTokenAttachment
 - (_UISearchTokenAttachment)init;
-- (_UISearchTokenAttachment)initWithCoder:(id)a3;
-- (_UISearchTokenAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (_UISearchTokenAttachment)initWithToken:(id)a3;
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
-- (void)detachView:(id)a3 fromParentView:(id)a4;
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7;
+- (_UISearchTokenAttachment)initWithCoder:(id)coder;
+- (_UISearchTokenAttachment)initWithData:(id)data ofType:(id)type;
+- (_UISearchTokenAttachment)initWithToken:(id)token;
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
+- (void)detachView:(id)view fromParentView:(id)parentView;
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager;
 @end
 
 @implementation _UISearchTokenAttachment
 
-- (_UISearchTokenAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_UISearchTokenAttachment)initWithData:(id)data ofType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"must call -initWithToken:" userInfo:0];
   objc_exception_throw(v7);
 }
@@ -25,7 +25,7 @@
   objc_exception_throw(v2);
 }
 
-- (_UISearchTokenAttachment)initWithCoder:(id)a3
+- (_UISearchTokenAttachment)initWithCoder:(id)coder
 {
   v4 = [UISearchToken tokenWithIcon:0 text:&stru_1EFB14550];
   v5 = [(_UISearchTokenAttachment *)self initWithToken:v4];
@@ -33,55 +33,55 @@
   return v5;
 }
 
-- (_UISearchTokenAttachment)initWithToken:(id)a3
+- (_UISearchTokenAttachment)initWithToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v10.receiver = self;
   v10.super_class = _UISearchTokenAttachment;
   v6 = [(_UISearchTokenAttachment *)&v10 initWithData:0 ofType:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_token, a3);
+    objc_storeStrong(&v6->_token, token);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  locationCopy = location;
+  containerCopy = container;
   viewProvider = self->_viewProvider;
-  if (!viewProvider || (-[NSTextAttachmentViewProvider location](viewProvider, "location"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEqual:v9], v12, (v13 & 1) == 0))
+  if (!viewProvider || (-[NSTextAttachmentViewProvider location](viewProvider, "location"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isEqual:locationCopy], v12, (v13 & 1) == 0))
   {
     v14 = [_UISearchTokenAttachmentViewProvider alloc];
-    v15 = [v10 textLayoutManager];
-    v16 = [(_UISearchTokenAttachmentViewProvider *)v14 initWithTextAttachment:self parentView:v8 textLayoutManager:v15 location:v9];
+    textLayoutManager = [containerCopy textLayoutManager];
+    v16 = [(_UISearchTokenAttachmentViewProvider *)v14 initWithTextAttachment:self parentView:viewCopy textLayoutManager:textLayoutManager location:locationCopy];
     v17 = self->_viewProvider;
     self->_viewProvider = v16;
 
     [(NSTextAttachmentViewProvider *)self->_viewProvider setTracksTextAttachmentViewBounds:1];
   }
 
-  v18 = [v10 textLayoutManager];
-  [v18 setViewProvider:self->_viewProvider forTextAttachment:self location:v9];
+  textLayoutManager2 = [containerCopy textLayoutManager];
+  [textLayoutManager2 setViewProvider:self->_viewProvider forTextAttachment:self location:locationCopy];
   v19 = self->_viewProvider;
   v20 = v19;
 
   return v19;
 }
 
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager
 {
   viewProvider = self->_viewProvider;
   if (!viewProvider)
   {
-    v9 = a5;
-    v10 = a3;
-    v11 = [(NSTextAttachmentViewProvider *)[_UISearchTokenAttachmentViewProvider alloc] initWithTextAttachment:self parentView:v10 characterIndex:a4 layoutManager:v9];
+    managerCopy = manager;
+    viewCopy = view;
+    v11 = [(NSTextAttachmentViewProvider *)[_UISearchTokenAttachmentViewProvider alloc] initWithTextAttachment:self parentView:viewCopy characterIndex:index layoutManager:managerCopy];
 
     v12 = self->_viewProvider;
     self->_viewProvider = v11;
@@ -93,11 +93,11 @@
   return viewProvider;
 }
 
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  parentViewCopy = parentView;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -109,7 +109,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         v16 = 138412290;
-        v17 = v9;
+        v17 = parentViewCopy;
         _os_log_fault_impl(&dword_188A29000, v14, OS_LOG_TYPE_FAULT, "Asked to place a token view somewhere we didn't expect (%@)!", &v16, 0xCu);
       }
     }
@@ -121,27 +121,27 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v9;
+      v17 = parentViewCopy;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "Asked to place a token view somewhere we didn't expect (%@)!", &v16, 0xCu);
     }
   }
 
-  v12 = [v9 textField];
-  v13 = v12;
-  if (v12)
+  textField = [parentViewCopy textField];
+  v13 = textField;
+  if (textField)
   {
-    [v12 _willAddTokenLayoutView:v8];
+    [textField _willAddTokenLayoutView:viewCopy];
   }
 }
 
-- (void)detachView:(id)a3 fromParentView:(id)a4
+- (void)detachView:(id)view fromParentView:(id)parentView
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  parentViewCopy = parentView;
   v12.receiver = self;
   v12.super_class = _UISearchTokenAttachment;
-  [(_UISearchTokenAttachment *)&v12 detachView:v6 fromParentView:v7];
-  v8 = v7;
+  [(_UISearchTokenAttachment *)&v12 detachView:viewCopy fromParentView:parentViewCopy];
+  v8 = parentViewCopy;
   v9 = v8;
   if (v8)
   {
@@ -154,16 +154,16 @@
         break;
       }
 
-      v11 = [v10 superview];
+      superview = [v10 superview];
 
-      v10 = v11;
-      if (!v11)
+      v10 = superview;
+      if (!superview)
       {
         goto LABEL_7;
       }
     }
 
-    [v10 _didRemoveTokenLayoutView:v6];
+    [v10 _didRemoveTokenLayoutView:viewCopy];
   }
 
 LABEL_7:

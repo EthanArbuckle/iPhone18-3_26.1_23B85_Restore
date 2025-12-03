@@ -1,24 +1,24 @@
 @interface SKRemoteStorePageViewController
 - (SKStorePageViewController)storePageViewController;
-- (void)didFinishWithResult:(id)a3 error:(id)a4;
-- (void)showProductPageWithItemIdentifier:(id)a3;
+- (void)didFinishWithResult:(id)result error:(id)error;
+- (void)showProductPageWithItemIdentifier:(id)identifier;
 @end
 
 @implementation SKRemoteStorePageViewController
 
-- (void)didFinishWithResult:(id)a3 error:(id)a4
+- (void)didFinishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKRemoteStorePageViewController *)self storePageViewController];
-  [v8 _didFinishWithResult:v7 error:v6];
+  errorCopy = error;
+  resultCopy = result;
+  storePageViewController = [(SKRemoteStorePageViewController *)self storePageViewController];
+  [storePageViewController _didFinishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)showProductPageWithItemIdentifier:(id)a3
+- (void)showProductPageWithItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SKRemoteStorePageViewController *)self storePageViewController];
-  [v5 _showProductPageWithItemIdentifier:v4];
+  identifierCopy = identifier;
+  storePageViewController = [(SKRemoteStorePageViewController *)self storePageViewController];
+  [storePageViewController _showProductPageWithItemIdentifier:identifierCopy];
 }
 
 - (SKStorePageViewController)storePageViewController

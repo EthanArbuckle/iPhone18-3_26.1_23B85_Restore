@@ -3,12 +3,12 @@
 - (BOOL)enabled;
 - (SUSUITestAutomationManager)init;
 - (id)description;
-- (void)addResponderDelegate:(id)a3 forServiceType:(int64_t)a4;
+- (void)addResponderDelegate:(id)delegate forServiceType:(int64_t)type;
 - (void)dealloc;
 - (void)initialize;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)resolveStoredXCUISession:(id)a3;
-- (void)setupAutomaticTestingForStoredSession:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)resolveStoredXCUISession:(id)session;
+- (void)setupAutomaticTestingForStoredSession:(id)session;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -17,14 +17,14 @@
 
 + (id)sharedManager
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __43__SUSUITestAutomationManager_sharedManager__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &sharedManager_onceToken_0;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -92,14 +92,14 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_observing)
   {
-    [(SUSUITestAutomationManager *)v4 stopObserving];
+    [(SUSUITestAutomationManager *)selfCopy stopObserving];
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = SUSUITestAutomationManager;
   [(SUSUITestAutomationManager *)&v2 dealloc];
 }
@@ -125,31 +125,31 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
 - (void)startObserving
 {
   v14 = *MEMORY[0x277D85DE8];
-  v11 = self;
+  selfCopy = self;
   location[3] = a2;
   if (self->_observing)
   {
-    [(SUSUITestAutomationManager *)v11 stopObserving];
+    [(SUSUITestAutomationManager *)selfCopy stopObserving];
   }
 
-  obj = MEMORY[0x277D82BE0](v11);
+  obj = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(obj);
-  v11->_observing = 1;
+  selfCopy->_observing = 1;
   if ((os_variant_has_internal_content() & 1) != 0 && SoftwareUpdateSettingsMockingKitLibraryCore_0(0))
   {
     v6 = objc_alloc(MEMORY[0x277CBEBD0]);
-    v4 = [getSUSUIUserDefaultsKeysClass_0() SoftwareUpdateSettingsSuiteName];
+    softwareUpdateSettingsSuiteName = [getSUSUIUserDefaultsKeysClass_0() SoftwareUpdateSettingsSuiteName];
     v5 = [v6 initWithSuiteName:?];
-    v3 = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingCurrentSession];
-    [v5 addObserver:v11 forKeyPath:? options:? context:?];
-    MEMORY[0x277D82BD8](v3);
+    uIUnitTestingCurrentSession = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingCurrentSession];
+    [v5 addObserver:selfCopy forKeyPath:? options:? context:?];
+    MEMORY[0x277D82BD8](uIUnitTestingCurrentSession);
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](softwareUpdateSettingsSuiteName);
     location[0] = _SUSUILoggingFacility();
     v9 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
     {
-      if ([(SUSUITestAutomationManager *)v11 enabled])
+      if ([(SUSUITestAutomationManager *)selfCopy enabled])
       {
         v2 = @"YES";
       }
@@ -186,11 +186,11 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
 - (void)stopObserving
 {
   v11 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v5 = MEMORY[0x277D82BE0](self);
   objc_sync_enter(v5);
-  if (v9->_observing)
+  if (selfCopy->_observing)
   {
     location = _SUSUILoggingFacility();
     if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
@@ -200,15 +200,15 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
     }
 
     objc_storeStrong(&location, 0);
-    v9->_observing = 0;
+    selfCopy->_observing = 0;
     if ((os_variant_has_internal_content() & 1) != 0 && SoftwareUpdateSettingsMockingKitLibraryCore_0(0))
     {
-      v3 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-      v4 = v9;
-      v2 = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingCurrentSession];
-      [v3 removeObserver:v4 forKeyPath:?];
-      MEMORY[0x277D82BD8](v2);
-      MEMORY[0x277D82BD8](v3);
+      softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+      v4 = selfCopy;
+      uIUnitTestingCurrentSession = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingCurrentSession];
+      [softwareUpdateShared removeObserver:v4 forKeyPath:?];
+      MEMORY[0x277D82BD8](uIUnitTestingCurrentSession);
+      MEMORY[0x277D82BD8](softwareUpdateShared);
     }
 
     v7 = 0;
@@ -235,27 +235,27 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)addResponderDelegate:(id)a3 forServiceType:(int64_t)a4
+- (void)addResponderDelegate:(id)delegate forServiceType:(int64_t)type
 {
   v60 = *MEMORY[0x277D85DE8];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v53 = a4;
+  objc_storeStrong(location, delegate);
+  typeCopy = type;
   v33 = +[SUSUITestAutomationManager sharedManager];
-  v34 = [v33 enabled];
+  enabled = [v33 enabled];
   MEMORY[0x277D82BD8](v33);
-  if (v34)
+  if (enabled)
   {
-    v31 = [(SUSUITestAutomationManager *)v55 currentSession];
-    v51 = [(SUSUIUserDefaultsBasedTestSession *)v31 strategyForServiceType:v53];
-    MEMORY[0x277D82BD8](v31);
+    currentSession = [(SUSUITestAutomationManager *)selfCopy currentSession];
+    v51 = [(SUSUIUserDefaultsBasedTestSession *)currentSession strategyForServiceType:typeCopy];
+    MEMORY[0x277D82BD8](currentSession);
     if (v51)
     {
-      v27 = [(SUSUITestAutomationManager *)v55 currentSession];
-      v47 = [(SUSUIUserDefaultsBasedTestSession *)v27 strategyClassForServiceType:v53];
-      MEMORY[0x277D82BD8](v27);
+      currentSession2 = [(SUSUITestAutomationManager *)selfCopy currentSession];
+      v47 = [(SUSUIUserDefaultsBasedTestSession *)currentSession2 strategyClassForServiceType:typeCopy];
+      MEMORY[0x277D82BD8](currentSession2);
       if (v47)
       {
         if (objc_opt_respondsToSelector() & 1) == 0 || (v21 = location[0], v22 = -[objc_class responderDelegateProtocol](v47, "responderDelegateProtocol"), v23 = [v21 conformsToProtocol:?], MEMORY[0x277D82BD8](v22), (v23))
@@ -267,9 +267,9 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
             v7 = oslog;
             v8 = v37;
             v12 = +[SUSUITestAutomationManager sharedManager];
-            v11 = [v12 currentSession];
-            v10 = [v11 correlationId];
-            v5 = MEMORY[0x277D82BE0](v10);
+            currentSession3 = [v12 currentSession];
+            correlationId = [currentSession3 correlationId];
+            v5 = MEMORY[0x277D82BE0](correlationId);
             v36 = v5;
             v6 = location[0];
             v9 = NSStringFromClass(v47);
@@ -277,8 +277,8 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
             __os_log_helper_16_2_3_8_64_8_64_8_64(v56, v5, v6, v35);
             _os_log_impl(&dword_26AC94000, v7, v8, "[XCUI correlationId: %@] Adding a XCUI responder delegate '%@' as a listener to strategy: %@", v56, 0x20u);
             MEMORY[0x277D82BD8](v9);
-            MEMORY[0x277D82BD8](v10);
-            MEMORY[0x277D82BD8](v11);
+            MEMORY[0x277D82BD8](correlationId);
+            MEMORY[0x277D82BD8](currentSession3);
             MEMORY[0x277D82BD8](v12);
             objc_storeStrong(&v35, 0);
             objc_storeStrong(&v36, 0);
@@ -304,13 +304,13 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
             v19 = NSStringFromClass(v47);
             v14 = MEMORY[0x277D82BE0](v19);
             v40 = v14;
-            v18 = [(objc_class *)v47 responderDelegateProtocol];
-            v17 = NSStringFromProtocol(v18);
+            responderDelegateProtocol = [(objc_class *)v47 responderDelegateProtocol];
+            v17 = NSStringFromProtocol(responderDelegateProtocol);
             v39 = MEMORY[0x277D82BE0](v17);
             __os_log_helper_16_2_3_8_64_8_64_8_64(v57, v13, v14, v39);
             _os_log_error_impl(&dword_26AC94000, v15, v16, "Could not register a new responder, of type '%@', for the strategy class '%@'. The responder class does not implement the required protocol '%@.", v57, 0x20u);
             MEMORY[0x277D82BD8](v17);
-            MEMORY[0x277D82BD8](v18);
+            MEMORY[0x277D82BD8](responderDelegateProtocol);
             MEMORY[0x277D82BD8](v19);
             MEMORY[0x277D82BD8](v20);
             objc_storeStrong(&v39, 0);
@@ -331,7 +331,7 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
         {
           v24 = v46;
           v25 = v45;
-          v26 = [getSUSMKMockedServiceTypeUtilityClass_0() descriptionForType:v53];
+          v26 = [getSUSMKMockedServiceTypeUtilityClass_0() descriptionForType:typeCopy];
           v44 = MEMORY[0x277D82BE0](v26);
           __os_log_helper_16_2_1_8_64(v58, v44);
           _os_log_error_impl(&dword_26AC94000, v24, v25, "Could not find any registered strategy class for service type: %@", v58, 0xCu);
@@ -352,7 +352,7 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
       {
         log = v50;
         type = v49;
-        v30 = [getSUSMKMockedServiceTypeUtilityClass_0() descriptionForType:v53];
+        v30 = [getSUSMKMockedServiceTypeUtilityClass_0() descriptionForType:typeCopy];
         v48 = MEMORY[0x277D82BE0](v30);
         __os_log_helper_16_2_1_8_64(v59, v48);
         _os_log_impl(&dword_26AC94000, log, type, "The service type '%@' was not included in the test plan and thus no strategy was assigned.", v59, 0xCu);
@@ -376,24 +376,24 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
   *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, object);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, change);
   NSLog(&cfstr_SChangedProper.isa, "[SUSUITestAutomationManager observeValueForKeyPath:ofObject:change:context:]", v14, location[0], v13);
   v10 = location[0];
-  v11 = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingCurrentSession];
+  uIUnitTestingCurrentSession = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingCurrentSession];
   v12 = [v10 isEqualToString:?];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](uIUnitTestingCurrentSession);
   if (v12)
   {
-    v6 = v16;
+    v6 = selfCopy;
     v7 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     [(SUSUITestAutomationManager *)v6 resolveStoredXCUISession:?];
     MEMORY[0x277D82BD8](v7);
@@ -404,26 +404,26 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
   objc_storeStrong(location, 0);
 }
 
-- (void)resolveStoredXCUISession:(id)a3
+- (void)resolveStoredXCUISession:(id)session
 {
   v42 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v33 = 0;
   v18 = 1;
   if (location[0])
   {
     v17 = location[0];
-    v34 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v33 = 1;
     v18 = [v17 isEqual:?];
   }
 
   if (v33)
   {
-    MEMORY[0x277D82BD8](v34);
+    MEMORY[0x277D82BD8](null);
   }
 
   if ((v18 & 1) == 0)
@@ -447,7 +447,7 @@ uint64_t __43__SUSUITestAutomationManager_sharedManager__block_invoke(uint64_t a
       }
 
       objc_storeStrong(&oslog, 0);
-      [(SUSUITestAutomationManager *)v36 setupAutomaticTestingForStoredSession:0];
+      [(SUSUITestAutomationManager *)selfCopy setupAutomaticTestingForStoredSession:0];
       v32 = 1;
 LABEL_32:
       objc_storeStrong(&v30, 0);
@@ -455,17 +455,17 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v13 = [MEMORY[0x277D64AE0] sharedDefaults];
-    v14 = [v13 shouldKeepPreviousMockingKitSession];
-    MEMORY[0x277D82BD8](v13);
-    if ((v14 & 1) == 0)
+    mEMORY[0x277D64AE0] = [MEMORY[0x277D64AE0] sharedDefaults];
+    shouldKeepPreviousMockingKitSession = [mEMORY[0x277D64AE0] shouldKeepPreviousMockingKitSession];
+    MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]);
+    if ((shouldKeepPreviousMockingKitSession & 1) == 0)
     {
       if (([MEMORY[0x277CCAC38] isRunning:{objc_msgSend(v30, "processId")}] & 1) == 0)
       {
-        v11 = [MEMORY[0x277D64AE0] sharedDefaults];
-        v12 = [v11 shouldSkipMockingKitPIDValidation];
-        MEMORY[0x277D82BD8](v11);
-        if ((v12 & 1) == 0)
+        mEMORY[0x277D64AE0]2 = [MEMORY[0x277D64AE0] sharedDefaults];
+        shouldSkipMockingKitPIDValidation = [mEMORY[0x277D64AE0]2 shouldSkipMockingKitPIDValidation];
+        MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]2);
+        if ((shouldSkipMockingKitPIDValidation & 1) == 0)
         {
           v26 = _SUSUILoggingFacility();
           v25 = OS_LOG_TYPE_DEFAULT;
@@ -476,7 +476,7 @@ LABEL_32:
           }
 
           objc_storeStrong(&v26, 0);
-          [(SUSUITestAutomationManager *)v36 setupAutomaticTestingForStoredSession:0];
+          [(SUSUITestAutomationManager *)selfCopy setupAutomaticTestingForStoredSession:0];
           v32 = 1;
           goto LABEL_32;
         }
@@ -495,22 +495,22 @@ LABEL_32:
       v22 = [MEMORY[0x277CCAC38] processStartTime:{objc_msgSend(v30, "processId")}];
       if (v22 != [v30 processStartTime])
       {
-        v9 = [MEMORY[0x277D64AE0] sharedDefaults];
-        v10 = [v9 shouldSkipMockingKitPIDValidation];
-        MEMORY[0x277D82BD8](v9);
-        if ((v10 & 1) == 0)
+        mEMORY[0x277D64AE0]3 = [MEMORY[0x277D64AE0] sharedDefaults];
+        shouldSkipMockingKitPIDValidation2 = [mEMORY[0x277D64AE0]3 shouldSkipMockingKitPIDValidation];
+        MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]3);
+        if ((shouldSkipMockingKitPIDValidation2 & 1) == 0)
         {
           v21 = _SUSUILoggingFacility();
           v20 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v8 = [v30 processId];
-            __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v38, "-[SUSUITestAutomationManager resolveStoredXCUISession:]", v8, [v30 processStartTime], v22);
+            processId = [v30 processId];
+            __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v38, "-[SUSUITestAutomationManager resolveStoredXCUISession:]", processId, [v30 processStartTime], v22);
             _os_log_impl(&dword_26AC94000, v21, v20, "%s: Found a UTs session stored in NSUserDefaults. However, the session stored process start time for pid %ld, %ld, different than the start time of the current process with this pid, %ld. Killing the session.", v38, 0x2Au);
           }
 
           objc_storeStrong(&v21, 0);
-          [(SUSUITestAutomationManager *)v36 setupAutomaticTestingForStoredSession:0];
+          [(SUSUITestAutomationManager *)selfCopy setupAutomaticTestingForStoredSession:0];
           v32 = 1;
           goto LABEL_32;
         }
@@ -518,8 +518,8 @@ LABEL_32:
         v19 = _SUSUILoggingFacility();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [v30 processId];
-          __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v37, "-[SUSUITestAutomationManager resolveStoredXCUISession:]", v7, [v30 processStartTime], v22);
+          processId2 = [v30 processId];
+          __os_log_helper_16_2_4_8_32_8_0_8_0_8_0(v37, "-[SUSUITestAutomationManager resolveStoredXCUISession:]", processId2, [v30 processStartTime], v22);
           _os_log_impl(&dword_26AC94000, v19, OS_LOG_TYPE_DEFAULT, "%s: Found a UTs session stored in NSUserDefaults. However, the session stored process start time for pid %ld, %ld, different than the start time of the current process with this pid, %ld. As SUSkipMockingKitPIDValidation is on - we will continue to use the test plan with this, corrupted, PID.", v37, 0x2Au);
         }
 
@@ -527,35 +527,35 @@ LABEL_32:
       }
     }
 
-    v5 = [MEMORY[0x277D64AE0] sharedDefaults];
-    v6 = [v5 shouldSkipMockingKitPIDValidation];
-    MEMORY[0x277D82BD8](v5);
-    if (v6)
+    mEMORY[0x277D64AE0]4 = [MEMORY[0x277D64AE0] sharedDefaults];
+    shouldSkipMockingKitPIDValidation3 = [mEMORY[0x277D64AE0]4 shouldSkipMockingKitPIDValidation];
+    MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]4);
+    if (shouldSkipMockingKitPIDValidation3)
     {
-      v4 = [MEMORY[0x277D64AE0] sharedDefaults];
-      [v4 shouldSkipMockingKitPIDValidation:0];
-      MEMORY[0x277D82BD8](v4);
+      mEMORY[0x277D64AE0]5 = [MEMORY[0x277D64AE0] sharedDefaults];
+      [mEMORY[0x277D64AE0]5 shouldSkipMockingKitPIDValidation:0];
+      MEMORY[0x277D82BD8](mEMORY[0x277D64AE0]5);
     }
 
-    [(SUSUITestAutomationManager *)v36 setupAutomaticTestingForStoredSession:v30];
+    [(SUSUITestAutomationManager *)selfCopy setupAutomaticTestingForStoredSession:v30];
     v32 = 0;
     goto LABEL_32;
   }
 
-  [(SUSUITestAutomationManager *)v36 setupAutomaticTestingForStoredSession:0];
+  [(SUSUITestAutomationManager *)selfCopy setupAutomaticTestingForStoredSession:0];
   v32 = 1;
 LABEL_33:
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setupAutomaticTestingForStoredSession:(id)a3
+- (void)setupAutomaticTestingForStoredSession:(id)session
 {
   v33 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v19 = +[SUSUIServiceManager sharedInstance];
   [(SUSUIServiceManager *)v19 reset];
   MEMORY[0x277D82BD8](v19);
@@ -582,11 +582,11 @@ LABEL_33:
       v3 = objc_opt_class();
       v14 = MEMORY[0x277D82BE0](v3);
       v23 = v14;
-      v17 = [location[0] correlationId];
-      v22 = MEMORY[0x277D82BE0](v17);
+      correlationId = [location[0] correlationId];
+      v22 = MEMORY[0x277D82BE0](correlationId);
       __os_log_helper_16_2_3_8_32_8_64_8_64(v31, "[SUSUITestAutomationManager setupAutomaticTestingForStoredSession:]", v14, v22);
       _os_log_impl(&dword_26AC94000, v15, v16, "%s: XCUI Automation is enabled. Setting up the XCUI communication client using: %@ for test session: %@", v31, 0x20u);
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](correlationId);
       objc_storeStrong(&v22, 0);
       objc_storeStrong(&v23, 0);
     }
@@ -594,16 +594,16 @@ LABEL_33:
     objc_storeStrong(&v25, 0);
     v4 = [SUSUIUserDefaultsBasedTestSession alloc];
     v5 = [(SUSUIUserDefaultsBasedTestSession *)v4 initWithStoredSession:location[0]];
-    currentSession = v29->_currentSession;
-    v29->_currentSession = v5;
+    currentSession = selfCopy->_currentSession;
+    selfCopy->_currentSession = v5;
     MEMORY[0x277D82BD8](currentSession);
   }
 
   else
   {
     memset(__b, 0, sizeof(__b));
-    v12 = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingKeys];
-    v13 = [v12 countByEnumeratingWithState:__b objects:v30 count:16];
+    uIUnitTestingKeys = [getSUSUIUserDefaultsKeysClass_0() UIUnitTestingKeys];
+    v13 = [uIUnitTestingKeys countByEnumeratingWithState:__b objects:v30 count:16];
     if (v13)
     {
       v9 = *__b[2];
@@ -614,18 +614,18 @@ LABEL_33:
         v8 = v10;
         if (*__b[2] != v9)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(uIUnitTestingKeys);
         }
 
         v21 = *(__b[1] + 8 * v10);
-        v7 = [MEMORY[0x277CBEBD0] softwareUpdateShared];
-        [v7 removeObjectForKey:v21];
-        MEMORY[0x277D82BD8](v7);
+        softwareUpdateShared = [MEMORY[0x277CBEBD0] softwareUpdateShared];
+        [softwareUpdateShared removeObjectForKey:v21];
+        MEMORY[0x277D82BD8](softwareUpdateShared);
         ++v10;
         if (v8 + 1 >= v11)
         {
           v10 = 0;
-          v11 = [v12 countByEnumeratingWithState:__b objects:v30 count:16];
+          v11 = [uIUnitTestingKeys countByEnumeratingWithState:__b objects:v30 count:16];
           if (!v11)
           {
             break;
@@ -634,7 +634,7 @@ LABEL_33:
       }
     }
 
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](uIUnitTestingKeys);
   }
 
   objc_storeStrong(location, 0);

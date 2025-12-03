@@ -1,24 +1,24 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   memset(buffer, 0, 255);
-  proc_name([v6 processIdentifier], buffer, 0xFEu);
+  proc_name([connectionCopy processIdentifier], buffer, 0xFEu);
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NFPrivateServiceInterface];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v8 = objc_opt_new();
-  [v6 setExportedObject:v8];
-  v9 = [v6 valueForEntitlement:@"com.apple.nfstorage"];
+  [connectionCopy setExportedObject:v8];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.nfstorage"];
 
   if (v9)
   {
-    [v6 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -32,14 +32,14 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v21 = [v6 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v16 = 43;
       if (!isMetaClass)
       {
         v16 = 45;
       }
 
-      v11(3, "%c[%{public}s %{public}s]:%i PID %d (%s) missing entitlement: %s", v16, ClassName, Name, 37, v21, buffer, "com.apple.nfstorage");
+      v11(3, "%c[%{public}s %{public}s]:%i PID %d (%s) missing entitlement: %s", v16, ClassName, Name, 37, processIdentifier, buffer, "com.apple.nfstorage");
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -66,7 +66,7 @@
       v28 = 1024;
       v29 = 37;
       v30 = 1024;
-      v31 = [v6 processIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
       v32 = 2080;
       v33 = buffer;
       v34 = 2080;

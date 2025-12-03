@@ -3,12 +3,12 @@
 - (FCCKBatchedMultiFetchQueryOperation)init;
 - (id)networkEvents;
 - (void)_continueFetching;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)prepareOperation;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setKnownRecordIDsToEtags:(uint64_t)a1;
-- (void)setRecordIDs:(uint64_t)a1;
-- (void)setRecordSpecs:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
+- (void)setKnownRecordIDsToEtags:(uint64_t)etags;
+- (void)setRecordIDs:(uint64_t)ds;
+- (void)setRecordSpecs:(uint64_t)specs;
 @end
 
 @implementation FCCKBatchedMultiFetchQueryOperation
@@ -135,7 +135,7 @@ uint64_t __55__FCCKBatchedMultiFetchQueryOperation_prepareOperation__block_invok
 
 - (void)_continueFetching
 {
-  if (a1)
+  if (self)
   {
     v12 = 0;
     v13 = &v12;
@@ -143,12 +143,12 @@ uint64_t __55__FCCKBatchedMultiFetchQueryOperation_prepareOperation__block_invok
     v15 = __Block_byref_object_copy__28;
     v16 = __Block_byref_object_dispose__28;
     v17 = 0;
-    v2 = a1[59];
+    v2 = self[59];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __56__FCCKBatchedMultiFetchQueryOperation__continueFetching__block_invoke;
     v11[3] = &unk_1E7C3C578;
-    v11[4] = a1;
+    v11[4] = self;
     v11[5] = &v12;
     [v2 readWriteWithAccessor:v11];
 
@@ -160,16 +160,16 @@ uint64_t __55__FCCKBatchedMultiFetchQueryOperation_prepareOperation__block_invok
       v8[1] = 3221225472;
       v8[2] = __56__FCCKBatchedMultiFetchQueryOperation__continueFetching__block_invoke_3;
       v8[3] = &unk_1E7C3C5F0;
-      v8[4] = a1;
+      v8[4] = self;
       v5 = v3;
       v9 = v5;
       [v4 enumerateObjectsUsingBlock:v8];
-      v6 = FCDispatchQueueForQualityOfService([a1 qualityOfService]);
+      v6 = FCDispatchQueueForQualityOfService([self qualityOfService]);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __56__FCCKBatchedMultiFetchQueryOperation__continueFetching__block_invoke_6;
       v7[3] = &unk_1E7C36EA0;
-      v7[4] = a1;
+      v7[4] = self;
       dispatch_group_notify(v5, v6, v7);
     }
 
@@ -179,7 +179,7 @@ uint64_t __55__FCCKBatchedMultiFetchQueryOperation_prepareOperation__block_invok
       v10[1] = 3221225472;
       v10[2] = __56__FCCKBatchedMultiFetchQueryOperation__continueFetching__block_invoke_2;
       v10[3] = &unk_1E7C36EA0;
-      v10[4] = a1;
+      v10[4] = self;
       __56__FCCKBatchedMultiFetchQueryOperation__continueFetching__block_invoke_2(v10);
     }
 
@@ -390,30 +390,30 @@ LABEL_22:
 
 - (id)networkEvents
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[62] readOnlyArray];
+    self = [self[62] readOnlyArray];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     queryCompletionHandler = self->_queryCompletionHandler;
     if (queryCompletionHandler)
     {
-      v9 = v4;
+      v9 = errorCopy;
       v6 = queryCompletionHandler;
       v7 = self->_resultMissingRecordIDs;
-      v8 = [(FCThreadSafeMutableSet *)v7 readOnlySet];
-      v6[2](v6, v8, v9);
+      readOnlySet = [(FCThreadSafeMutableSet *)v7 readOnlySet];
+      v6[2](v6, readOnlySet, v9);
 
-      v4 = v9;
+      errorCopy = v9;
     }
   }
 }
@@ -571,35 +571,35 @@ LABEL_29:
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((database + 376), a2);
   }
 }
 
-- (void)setRecordIDs:(uint64_t)a1
+- (void)setRecordIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 384), a2);
+    objc_storeStrong((ds + 384), a2);
   }
 }
 
-- (void)setRecordSpecs:(uint64_t)a1
+- (void)setRecordSpecs:(uint64_t)specs
 {
-  if (a1)
+  if (specs)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((specs + 392), a2);
   }
 }
 
-- (void)setKnownRecordIDsToEtags:(uint64_t)a1
+- (void)setKnownRecordIDsToEtags:(uint64_t)etags
 {
-  if (a1)
+  if (etags)
   {
-    objc_storeStrong((a1 + 416), a2);
+    objc_storeStrong((etags + 416), a2);
   }
 }
 

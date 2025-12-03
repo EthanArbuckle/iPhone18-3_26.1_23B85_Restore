@@ -1,41 +1,41 @@
 @interface ASVButton
-- (ASVButton)initWithButton:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 largeImageInsets:(UIEdgeInsets)a7;
-- (ASVButton)initWithImage:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 largeImageInsets:(UIEdgeInsets)a7;
-- (ASVButton)initWithTitle:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 adjustsFontForContentSizeCategory:(BOOL)a7;
+- (ASVButton)initWithButton:(id)button buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle largeImageInsets:(UIEdgeInsets)insets;
+- (ASVButton)initWithImage:(id)image buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle largeImageInsets:(UIEdgeInsets)insets;
+- (ASVButton)initWithTitle:(id)title buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle adjustsFontForContentSizeCategory:(BOOL)category;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIEdgeInsets)contentEdgeInsets;
 - (UIEdgeInsets)largeImageInsets;
 - (UIFont)boldFont;
 - (UIFont)regularFont;
-- (id)_colorDarkenedIfNeededForColor:(id)a3;
-- (void)_didUpdateContentSizeCategory:(id)a3;
-- (void)_didUpdateDarkenColorsSetting:(id)a3;
-- (void)_updateTitleStyleForButton:(id)a3 withControlStyle:(int64_t)a4;
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
+- (id)_colorDarkenedIfNeededForColor:(id)color;
+- (void)_didUpdateContentSizeCategory:(id)category;
+- (void)_didUpdateDarkenColorsSetting:(id)setting;
+- (void)_updateTitleStyleForButton:(id)button withControlStyle:(int64_t)style;
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
 - (void)layoutSubviews;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setControlStyle:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setControlStyle:(int64_t)style;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setSelected:(BOOL)selected;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCurrentAppearanceIfNeeded;
 @end
 
 @implementation ASVButton
 
-- (ASVButton)initWithButton:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 largeImageInsets:(UIEdgeInsets)a7
+- (ASVButton)initWithButton:(id)button buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle largeImageInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v78[8] = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  buttonCopy = button;
   v77.receiver = self;
   v77.super_class = ASVButton;
   v17 = *MEMORY[0x277CBF3A0];
@@ -46,20 +46,20 @@
   v22 = v21;
   if (v21)
   {
-    v76 = v16;
+    v76 = buttonCopy;
     [(ASVButton *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [[ASVBlurredBackgroundView alloc] initWithFrame:a4 == 1 backgroundStyle:a6 controlStyle:v17, v18, v19, v20];
+    v23 = [[ASVBlurredBackgroundView alloc] initWithFrame:style == 1 backgroundStyle:controlStyle controlStyle:v17, v18, v19, v20];
     blurredBackgroundView = v22->_blurredBackgroundView;
     v22->_blurredBackgroundView = v23;
 
     [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ASVButton *)v22 addSubview:v22->_blurredBackgroundView];
-    objc_storeStrong(&v22->_button, a3);
+    objc_storeStrong(&v22->_button, button);
     [(ASVWrappedButton *)v22->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ASVButton *)v22 addSubview:v22->_button];
-    v22->_buttonStyle = a4;
-    v22->_textStyle = a5;
-    v22->_controlStyle = a6;
+    v22->_buttonStyle = style;
+    v22->_textStyle = textStyle;
+    v22->_controlStyle = controlStyle;
     v22->_largeImageInsets.top = top;
     v22->_largeImageInsets.left = left;
     v22->_largeImageInsets.bottom = bottom;
@@ -104,59 +104,59 @@
     white26PercentColor = v22->_white26PercentColor;
     v22->_white26PercentColor = v43;
 
-    if (a6 == 2)
+    if (controlStyle == 2)
     {
       v45 = 0.4;
     }
 
     else
     {
-      if (a6 != 3)
+      if (controlStyle != 3)
       {
 LABEL_7:
         v66 = MEMORY[0x277CCAAD0];
-        v75 = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView leadingAnchor];
-        v74 = [(ASVButton *)v22 leadingAnchor];
-        v73 = [v75 constraintEqualToAnchor:v74];
+        leadingAnchor = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView leadingAnchor];
+        leadingAnchor2 = [(ASVButton *)v22 leadingAnchor];
+        v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v78[0] = v73;
-        v72 = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView trailingAnchor];
-        v71 = [(ASVButton *)v22 trailingAnchor];
-        v70 = [v72 constraintEqualToAnchor:v71];
+        trailingAnchor = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView trailingAnchor];
+        trailingAnchor2 = [(ASVButton *)v22 trailingAnchor];
+        v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v78[1] = v70;
-        v69 = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView topAnchor];
-        v68 = [(ASVButton *)v22 topAnchor];
-        v67 = [v69 constraintEqualToAnchor:v68];
+        topAnchor = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView topAnchor];
+        topAnchor2 = [(ASVButton *)v22 topAnchor];
+        v67 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v78[2] = v67;
-        v65 = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView bottomAnchor];
-        v64 = [(ASVButton *)v22 bottomAnchor];
-        v63 = [v65 constraintEqualToAnchor:v64];
+        bottomAnchor = [(ASVBlurredBackgroundView *)v22->_blurredBackgroundView bottomAnchor];
+        bottomAnchor2 = [(ASVButton *)v22 bottomAnchor];
+        v63 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v78[3] = v63;
-        v62 = [(ASVWrappedButton *)v22->_button leadingAnchor];
-        v61 = [(ASVButton *)v22 leadingAnchor];
-        v60 = [v62 constraintEqualToAnchor:v61];
+        leadingAnchor3 = [(ASVWrappedButton *)v22->_button leadingAnchor];
+        leadingAnchor4 = [(ASVButton *)v22 leadingAnchor];
+        v60 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v78[4] = v60;
-        v59 = [(ASVWrappedButton *)v22->_button trailingAnchor];
-        v47 = [(ASVButton *)v22 trailingAnchor];
-        v48 = [v59 constraintEqualToAnchor:v47];
+        trailingAnchor3 = [(ASVWrappedButton *)v22->_button trailingAnchor];
+        trailingAnchor4 = [(ASVButton *)v22 trailingAnchor];
+        v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v78[5] = v48;
-        v49 = [(ASVWrappedButton *)v22->_button topAnchor];
-        v50 = [(ASVButton *)v22 topAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50];
+        topAnchor3 = [(ASVWrappedButton *)v22->_button topAnchor];
+        topAnchor4 = [(ASVButton *)v22 topAnchor];
+        v51 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         v78[6] = v51;
-        v52 = [(ASVWrappedButton *)v22->_button bottomAnchor];
-        v53 = [(ASVButton *)v22 bottomAnchor];
-        v54 = [v52 constraintEqualToAnchor:v53];
+        bottomAnchor3 = [(ASVWrappedButton *)v22->_button bottomAnchor];
+        bottomAnchor4 = [(ASVButton *)v22 bottomAnchor];
+        v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
         v78[7] = v54;
         v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:8];
         [v66 activateConstraints:v55];
 
-        v56 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v56 addObserver:v22 selector:sel__didUpdateDarkenColorsSetting_ name:*MEMORY[0x277D76460] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:v22 selector:sel__didUpdateDarkenColorsSetting_ name:*MEMORY[0x277D76460] object:0];
 
-        v57 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v57 addObserver:v22 selector:sel__didUpdateContentSizeCategory_ name:*MEMORY[0x277D76810] object:0];
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter2 addObserver:v22 selector:sel__didUpdateContentSizeCategory_ name:*MEMORY[0x277D76810] object:0];
 
-        v16 = v76;
+        buttonCopy = v76;
         goto LABEL_8;
       }
 
@@ -174,58 +174,58 @@ LABEL_8:
   return v22;
 }
 
-- (ASVButton)initWithTitle:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 adjustsFontForContentSizeCategory:(BOOL)a7
+- (ASVButton)initWithTitle:(id)title buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle adjustsFontForContentSizeCategory:(BOOL)category
 {
-  v7 = a7;
-  v12 = a3;
+  categoryCopy = category;
+  titleCopy = title;
   v13 = [ASVWrappedButton alloc];
   v14 = [(ASVWrappedButton *)v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  [(ASVWrappedButton *)v14 setTitle:v12 forState:0];
+  [(ASVWrappedButton *)v14 setTitle:titleCopy forState:0];
 
-  v15 = [(ASVWrappedButton *)v14 titleLabel];
-  [v15 setAdjustsFontForContentSizeCategory:v7];
+  titleLabel = [(ASVWrappedButton *)v14 titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:categoryCopy];
 
-  v16 = [(ASVButton *)self initWithButton:v14 buttonStyle:a4 textStyle:a5 controlStyle:a6 largeImageInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-  [(ASVButton *)v16 _updateTitleStyleForButton:v14 withControlStyle:a6];
+  v16 = [(ASVButton *)self initWithButton:v14 buttonStyle:style textStyle:textStyle controlStyle:controlStyle largeImageInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+  [(ASVButton *)v16 _updateTitleStyleForButton:v14 withControlStyle:controlStyle];
 
   return v16;
 }
 
-- (ASVButton)initWithImage:(id)a3 buttonStyle:(int64_t)a4 textStyle:(int64_t)a5 controlStyle:(int64_t)a6 largeImageInsets:(UIEdgeInsets)a7
+- (ASVButton)initWithImage:(id)image buttonStyle:(int64_t)style textStyle:(int64_t)textStyle controlStyle:(int64_t)controlStyle largeImageInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  v15 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  imageCopy = image;
   v16 = [ASVWrappedButton alloc];
   v17 = [(ASVWrappedButton *)v16 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v18 = [MEMORY[0x277D755D0] configurationWithScale:3];
   [(ASVWrappedButton *)v17 setPreferredSymbolConfiguration:v18 forImageInState:0];
 
-  [(ASVWrappedButton *)v17 setImage:v15 forState:0];
-  v19 = [(ASVButton *)self initWithButton:v17 buttonStyle:a4 textStyle:a5 controlStyle:a6 largeImageInsets:top, left, bottom, right];
-  [(ASVButton *)v19 _updateTitleStyleForButton:v17 withControlStyle:a6];
+  [(ASVWrappedButton *)v17 setImage:imageCopy forState:0];
+  right = [(ASVButton *)self initWithButton:v17 buttonStyle:style textStyle:textStyle controlStyle:controlStyle largeImageInsets:top, left, bottom, right];
+  [(ASVButton *)right _updateTitleStyleForButton:v17 withControlStyle:controlStyle];
 
-  return v19;
+  return right;
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  v8 = a3;
-  v9 = [(ASVButton *)self button];
-  [v9 addTarget:v8 action:a4 forControlEvents:a5];
+  targetCopy = target;
+  button = [(ASVButton *)self button];
+  [button addTarget:targetCopy action:action forControlEvents:events];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASVButton *)self button];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  button = [(ASVButton *)self button];
+  if (button)
   {
-    v7 = [(ASVButton *)self button];
-    [v7 systemLayoutSizeFittingSize:{width, height}];
+    button2 = [(ASVButton *)self button];
+    [button2 systemLayoutSizeFittingSize:{width, height}];
     v9 = v8;
     v11 = v10;
   }
@@ -244,25 +244,25 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(ASVButton *)self button];
-  if (v10)
+  height = size.height;
+  width = size.width;
+  button = [(ASVButton *)self button];
+  if (button)
   {
-    v13 = [(ASVButton *)self button];
-    *&v14 = a4;
-    *&v15 = a5;
-    [v13 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
+    button2 = [(ASVButton *)self button];
+    *&v14 = priority;
+    *&v15 = fittingPriority;
+    [button2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
     v17 = v16;
     v19 = v18;
   }
 
   else
   {
-    *&v11 = a4;
-    *&v12 = a5;
+    *&v11 = priority;
+    *&v12 = fittingPriority;
     [(ASVButton *)self systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v11, v12];
     v17 = v20;
     v19 = v21;
@@ -277,11 +277,11 @@ LABEL_8:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(ASVButton *)self button];
-  if (v3)
+  button = [(ASVButton *)self button];
+  if (button)
   {
-    v4 = [(ASVButton *)self button];
-    [v4 intrinsicContentSize];
+    button2 = [(ASVButton *)self button];
+    [button2 intrinsicContentSize];
     v6 = v5;
     v8 = v7;
   }
@@ -302,20 +302,20 @@ LABEL_8:
   return result;
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(ASVButton *)self button];
-  [v7 setContentEdgeInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  button = [(ASVButton *)self button];
+  [button setContentEdgeInsets:{top, left, bottom, right}];
 }
 
 - (UIEdgeInsets)contentEdgeInsets
 {
-  v2 = [(ASVButton *)self button];
-  [v2 contentEdgeInsets];
+  button = [(ASVButton *)self button];
+  [button contentEdgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -336,11 +336,11 @@ LABEL_8:
 {
   if (!self->_regularFont)
   {
-    v3 = [(ASVButton *)self button];
-    v4 = [v3 titleLabel];
-    v5 = [v4 adjustsFontForContentSizeCategory];
+    button = [(ASVButton *)self button];
+    titleLabel = [button titleLabel];
+    adjustsFontForContentSizeCategory = [titleLabel adjustsFontForContentSizeCategory];
 
-    if (v5)
+    if (adjustsFontForContentSizeCategory)
     {
       [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
     }
@@ -366,8 +366,8 @@ LABEL_8:
   {
     v4 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769D0] addingSymbolicTraits:2 options:0];
     v5 = MEMORY[0x277D74300];
-    v6 = [(ASVButton *)self regularFont];
-    [v6 pointSize];
+    regularFont = [(ASVButton *)self regularFont];
+    [regularFont pointSize];
     v7 = [v5 fontWithDescriptor:v4 size:?];
     v8 = self->_boldFont;
     self->_boldFont = v7;
@@ -378,84 +378,84 @@ LABEL_8:
   return boldFont;
 }
 
-- (void)setControlStyle:(int64_t)a3
+- (void)setControlStyle:(int64_t)style
 {
-  if (self->_controlStyle != a3 && [(ASVButton *)self currentStyle]!= 2)
+  if (self->_controlStyle != style && [(ASVButton *)self currentStyle]!= 2)
   {
-    self->_controlStyle = a3;
-    v5 = [(ASVButton *)self blurredBackgroundView];
-    [v5 setControlStyle:a3];
+    self->_controlStyle = style;
+    blurredBackgroundView = [(ASVButton *)self blurredBackgroundView];
+    [blurredBackgroundView setControlStyle:style];
 
-    v6 = [(ASVButton *)self button];
-    [(ASVButton *)self _updateTitleStyleForButton:v6 withControlStyle:a3];
+    button = [(ASVButton *)self button];
+    [(ASVButton *)self _updateTitleStyleForButton:button withControlStyle:style];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9.receiver = self;
   v9.super_class = ASVButton;
   [(ASVButton *)&v9 setEnabled:?];
-  v5 = [(ASVButton *)self blurredBackgroundView];
-  [v5 setEnabled:v3];
+  blurredBackgroundView = [(ASVButton *)self blurredBackgroundView];
+  [blurredBackgroundView setEnabled:enabledCopy];
 
-  v6 = [(ASVButton *)self button];
-  v7 = [v6 isEnabled];
+  button = [(ASVButton *)self button];
+  isEnabled = [button isEnabled];
 
-  if (v7 != v3)
+  if (isEnabled != enabledCopy)
   {
-    v8 = [(ASVButton *)self button];
-    [v8 setEnabled:v3];
+    button2 = [(ASVButton *)self button];
+    [button2 setEnabled:enabledCopy];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v9.receiver = self;
   v9.super_class = ASVButton;
   [(ASVButton *)&v9 setSelected:?];
-  v5 = [(ASVButton *)self blurredBackgroundView];
-  [v5 setSelected:v3];
+  blurredBackgroundView = [(ASVButton *)self blurredBackgroundView];
+  [blurredBackgroundView setSelected:selectedCopy];
 
-  v6 = [(ASVButton *)self button];
-  v7 = [v6 isSelected];
+  button = [(ASVButton *)self button];
+  isSelected = [button isSelected];
 
-  if (v7 != v3)
+  if (isSelected != selectedCopy)
   {
-    v8 = [(ASVButton *)self button];
-    [v8 setSelected:v3];
+    button2 = [(ASVButton *)self button];
+    [button2 setSelected:selectedCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = ASVButton;
   [(ASVButton *)&v9 setHighlighted:?];
-  v5 = [(ASVButton *)self blurredBackgroundView];
-  [v5 setHighlighted:v3];
+  blurredBackgroundView = [(ASVButton *)self blurredBackgroundView];
+  [blurredBackgroundView setHighlighted:highlightedCopy];
 
-  v6 = [(ASVButton *)self button];
-  v7 = [v6 isHighlighted];
+  button = [(ASVButton *)self button];
+  isHighlighted = [button isHighlighted];
 
-  if (v7 != v3)
+  if (isHighlighted != highlightedCopy)
   {
-    v8 = [(ASVButton *)self button];
-    [v8 setHighlighted:v3];
+    button2 = [(ASVButton *)self button];
+    [button2 setHighlighted:highlightedCopy];
   }
 }
 
-- (id)_colorDarkenedIfNeededForColor:(id)a3
+- (id)_colorDarkenedIfNeededForColor:(id)color
 {
-  v3 = a3;
-  if (UIAccessibilityDarkerSystemColorsEnabled() && (v10 = 0.0, v11 = 0.0, v8 = 0.0, v9 = 0.0, [v3 getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8]))
+  colorCopy = color;
+  if (UIAccessibilityDarkerSystemColorsEnabled() && (v10 = 0.0, v11 = 0.0, v8 = 0.0, v9 = 0.0, [colorCopy getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8]))
   {
     if (v9 == 0.0)
     {
-      v4 = [v3 colorWithAlphaComponent:v8 / 0.75];
+      v4 = [colorCopy colorWithAlphaComponent:v8 / 0.75];
     }
 
     else
@@ -467,7 +467,7 @@ LABEL_8:
 
   else
   {
-    v4 = v3;
+    v4 = colorCopy;
   }
 
   v5 = v4;
@@ -475,100 +475,100 @@ LABEL_8:
   return v5;
 }
 
-- (void)_updateTitleStyleForButton:(id)a3 withControlStyle:(int64_t)a4
+- (void)_updateTitleStyleForButton:(id)button withControlStyle:(int64_t)style
 {
   v55[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 titleForState:0];
+  buttonCopy = button;
+  v7 = [buttonCopy titleForState:0];
   if (v7)
   {
     if ([(ASVButton *)self buttonStyle]== 1 || [(ASVButton *)self textStyle]== 1)
     {
-      v8 = [(ASVButton *)self boldFont];
-      v42 = [(ASVButton *)self boldFont];
-      v9 = [(ASVButton *)self boldFont];
+      boldFont = [(ASVButton *)self boldFont];
+      boldFont2 = [(ASVButton *)self boldFont];
+      boldFont3 = [(ASVButton *)self boldFont];
     }
 
     else
     {
-      v8 = [(ASVButton *)self regularFont];
-      v42 = [(ASVButton *)self regularFont];
-      v9 = [(ASVButton *)self regularFont];
+      boldFont = [(ASVButton *)self regularFont];
+      boldFont2 = [(ASVButton *)self regularFont];
+      boldFont3 = [(ASVButton *)self regularFont];
     }
 
-    v43 = v9;
-    v10 = [(ASVButton *)self boldFont];
-    if (a4 == 3)
+    v43 = boldFont3;
+    boldFont4 = [(ASVButton *)self boldFont];
+    if (style == 3)
     {
-      v11 = [(ASVButton *)self white75PercentColor];
-      v38 = [(ASVButton *)self white52PercentColor];
-      v41 = [(ASVButton *)self white26PercentColor];
-      v40 = [(ASVButton *)self blue100PercentColor];
-      v13 = [(ASVButton *)self white26PercentColor];
+      white75PercentColor = [(ASVButton *)self white75PercentColor];
+      white52PercentColor = [(ASVButton *)self white52PercentColor];
+      white26PercentColor = [(ASVButton *)self white26PercentColor];
+      blue100PercentColor = [(ASVButton *)self blue100PercentColor];
+      white26PercentColor2 = [(ASVButton *)self white26PercentColor];
     }
 
     else
     {
-      if (a4 == 2)
+      if (style == 2)
       {
-        v11 = [(ASVButton *)self white100PercentColor];
-        v38 = [(ASVButton *)self white70PercentColor];
-        v41 = [(ASVButton *)self white35PercentColor];
-        v40 = [(ASVButton *)self white70PercentColor];
-        v39 = [(ASVButton *)self white35PercentColor];
-        v12 = [(ASVButton *)self white35PercentColor];
+        white75PercentColor = [(ASVButton *)self white100PercentColor];
+        white52PercentColor = [(ASVButton *)self white70PercentColor];
+        white26PercentColor = [(ASVButton *)self white35PercentColor];
+        blue100PercentColor = [(ASVButton *)self white70PercentColor];
+        white35PercentColor = [(ASVButton *)self white35PercentColor];
+        white35PercentColor2 = [(ASVButton *)self white35PercentColor];
 LABEL_15:
-        v36 = v11;
-        v37 = v12;
+        v36 = white75PercentColor;
+        v37 = white35PercentColor2;
         v14 = *MEMORY[0x277D740A8];
-        v33 = v8;
-        v55[0] = v8;
+        v33 = boldFont;
+        v55[0] = boldFont;
         v15 = *MEMORY[0x277D740C0];
         v54[0] = v14;
         v54[1] = v15;
-        v16 = [(ASVButton *)self _colorDarkenedIfNeededForColor:v11];
+        v16 = [(ASVButton *)self _colorDarkenedIfNeededForColor:white75PercentColor];
         v55[1] = v16;
         v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
 
         v34 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v35];
-        [v6 setAttributedTitle:v34 forState:0];
+        [buttonCopy setAttributedTitle:v34 forState:0];
         v52[1] = v15;
-        v53[0] = v42;
+        v53[0] = boldFont2;
         v52[0] = v14;
-        v17 = [(ASVButton *)self _colorDarkenedIfNeededForColor:v38];
+        v17 = [(ASVButton *)self _colorDarkenedIfNeededForColor:white52PercentColor];
         v53[1] = v17;
         v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
 
         v31 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v32];
-        [v6 setAttributedTitle:v31 forState:1];
+        [buttonCopy setAttributedTitle:v31 forState:1];
         v50[1] = v15;
         v51[0] = v43;
         v50[0] = v14;
-        v18 = [(ASVButton *)self _colorDarkenedIfNeededForColor:v41];
+        v18 = [(ASVButton *)self _colorDarkenedIfNeededForColor:white26PercentColor];
         v51[1] = v18;
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
 
         v29 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v30];
-        [v6 setAttributedTitle:v29 forState:2];
-        v49[0] = v10;
+        [buttonCopy setAttributedTitle:v29 forState:2];
+        v49[0] = boldFont4;
         v48[0] = v14;
         v48[1] = v15;
-        v19 = [(ASVButton *)self _colorDarkenedIfNeededForColor:v40];
+        v19 = [(ASVButton *)self _colorDarkenedIfNeededForColor:blue100PercentColor];
         v49[1] = v19;
         v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
 
         v27 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v28];
-        [v6 setAttributedTitle:v27 forState:4];
+        [buttonCopy setAttributedTitle:v27 forState:4];
         v46[1] = v15;
-        v47[0] = v10;
+        v47[0] = boldFont4;
         v46[0] = v14;
-        [(ASVButton *)self _colorDarkenedIfNeededForColor:v39];
-        v21 = v20 = v10;
+        [(ASVButton *)self _colorDarkenedIfNeededForColor:white35PercentColor];
+        v21 = v20 = boldFont4;
         v47[1] = v21;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
 
         v23 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v22];
-        [v6 setAttributedTitle:v23 forState:5];
+        [buttonCopy setAttributedTitle:v23 forState:5];
         v44[1] = v15;
         v45[0] = v20;
         v44[0] = v14;
@@ -577,44 +577,44 @@ LABEL_15:
         v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
 
         v26 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v7 attributes:v25];
-        [v6 setAttributedTitle:v26 forState:6];
+        [buttonCopy setAttributedTitle:v26 forState:6];
 
         goto LABEL_16;
       }
 
       if ([(ASVButton *)self buttonStyle]== 1)
       {
-        v11 = [(ASVButton *)self blue100PercentColor];
-        v38 = [(ASVButton *)self black70PercentColor];
+        white75PercentColor = [(ASVButton *)self blue100PercentColor];
+        white52PercentColor = [(ASVButton *)self black70PercentColor];
         [(ASVButton *)self blue50PercentColor];
       }
 
       else
       {
-        v11 = [(ASVButton *)self black70PercentColor];
-        v38 = [(ASVButton *)self black70PercentColor];
+        white75PercentColor = [(ASVButton *)self black70PercentColor];
+        white52PercentColor = [(ASVButton *)self black70PercentColor];
         [(ASVButton *)self black35PercentColor];
       }
-      v41 = ;
-      v40 = [(ASVButton *)self blue100PercentColor];
-      v13 = [(ASVButton *)self black70PercentColor];
+      white26PercentColor = ;
+      blue100PercentColor = [(ASVButton *)self blue100PercentColor];
+      white26PercentColor2 = [(ASVButton *)self black70PercentColor];
     }
 
-    v39 = v13;
-    v12 = [(ASVButton *)self blue50PercentColor];
+    white35PercentColor = white26PercentColor2;
+    white35PercentColor2 = [(ASVButton *)self blue50PercentColor];
     goto LABEL_15;
   }
 
 LABEL_16:
 }
 
-- (void)_didUpdateDarkenColorsSetting:(id)a3
+- (void)_didUpdateDarkenColorsSetting:(id)setting
 {
-  v4 = [(ASVButton *)self button];
-  [(ASVButton *)self _updateTitleStyleForButton:v4 withControlStyle:[(ASVButton *)self controlStyle]];
+  button = [(ASVButton *)self button];
+  [(ASVButton *)self _updateTitleStyleForButton:button withControlStyle:[(ASVButton *)self controlStyle]];
 }
 
-- (void)_didUpdateContentSizeCategory:(id)a3
+- (void)_didUpdateContentSizeCategory:(id)category
 {
   regularFont = self->_regularFont;
   self->_regularFont = 0;
@@ -622,28 +622,28 @@ LABEL_16:
   boldFont = self->_boldFont;
   self->_boldFont = 0;
 
-  v6 = [(ASVButton *)self button];
-  [(ASVButton *)self _updateTitleStyleForButton:v6 withControlStyle:[(ASVButton *)self controlStyle]];
+  button = [(ASVButton *)self button];
+  [(ASVButton *)self _updateTitleStyleForButton:button withControlStyle:[(ASVButton *)self controlStyle]];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(ASVWrappedButton *)self->_button setTitle:a3 forState:0];
+  [(ASVWrappedButton *)self->_button setTitle:title forState:0];
   button = self->_button;
-  v5 = [(ASVButton *)self controlStyle];
+  controlStyle = [(ASVButton *)self controlStyle];
 
-  [(ASVButton *)self _updateTitleStyleForButton:button withControlStyle:v5];
+  [(ASVButton *)self _updateTitleStyleForButton:button withControlStyle:controlStyle];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   button = self->_button;
   v5 = MEMORY[0x277D755D0];
-  v7 = a3;
+  imageCopy = image;
   v6 = [v5 configurationWithScale:3];
   [(ASVWrappedButton *)button setPreferredSymbolConfiguration:v6 forImageInState:0];
 
-  [(ASVWrappedButton *)self->_button setImage:v7 forState:0];
+  [(ASVWrappedButton *)self->_button setImage:imageCopy forState:0];
 }
 
 - (void)layoutSubviews
@@ -656,45 +656,45 @@ LABEL_16:
 
 - (void)updateCurrentAppearanceIfNeeded
 {
-  v3 = [MEMORY[0x277D75C80] _currentTraitCollection];
-  v4 = [v3 userInterfaceStyle];
+  _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+  userInterfaceStyle = [_currentTraitCollection userInterfaceStyle];
 
-  if ([(ASVButton *)self currentStyle]!= v4)
+  if ([(ASVButton *)self currentStyle]!= userInterfaceStyle)
   {
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
-      v5 = [(ASVButton *)self blurredBackgroundView];
-      [v5 setControlStyle:3];
+      blurredBackgroundView = [(ASVButton *)self blurredBackgroundView];
+      [blurredBackgroundView setControlStyle:3];
 
-      v6 = [(ASVButton *)self button];
-      v7 = self;
-      v8 = v6;
-      v9 = 3;
+      button = [(ASVButton *)self button];
+      selfCopy2 = self;
+      v8 = button;
+      controlStyle2 = 3;
     }
 
     else
     {
-      v10 = [(ASVButton *)self controlStyle];
-      v11 = [(ASVButton *)self blurredBackgroundView];
-      [v11 setControlStyle:v10];
+      controlStyle = [(ASVButton *)self controlStyle];
+      blurredBackgroundView2 = [(ASVButton *)self blurredBackgroundView];
+      [blurredBackgroundView2 setControlStyle:controlStyle];
 
-      v6 = [(ASVButton *)self button];
-      v9 = [(ASVButton *)self controlStyle];
-      v7 = self;
-      v8 = v6;
+      button = [(ASVButton *)self button];
+      controlStyle2 = [(ASVButton *)self controlStyle];
+      selfCopy2 = self;
+      v8 = button;
     }
 
-    [(ASVButton *)v7 _updateTitleStyleForButton:v8 withControlStyle:v9];
+    [(ASVButton *)selfCopy2 _updateTitleStyleForButton:v8 withControlStyle:controlStyle2];
 
-    [(ASVButton *)self setCurrentStyle:v4];
+    [(ASVButton *)self setCurrentStyle:userInterfaceStyle];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = ASVButton;
-  [(ASVButton *)&v4 traitCollectionDidChange:a3];
+  [(ASVButton *)&v4 traitCollectionDidChange:change];
   [(ASVButton *)self updateCurrentAppearanceIfNeeded];
 }
 

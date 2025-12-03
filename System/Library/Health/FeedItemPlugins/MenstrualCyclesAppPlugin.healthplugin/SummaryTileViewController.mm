@@ -1,6 +1,6 @@
 @interface SummaryTileViewController
 - (NSString)title;
-- (_TtC24MenstrualCyclesAppPlugin25SummaryTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin25SummaryTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)respondToTraitCollectionChanges;
 - (void)significantTimeChangeDidOccur;
 - (void)userPreferredUnitChanged;
@@ -12,7 +12,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E268B18();
 }
 
@@ -27,26 +27,26 @@
 
 - (void)respondToTraitCollectionChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E269FA0();
   sub_29E26A124();
 }
 
 - (void)userPreferredUnitChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E26B998();
 }
 
 - (void)significantTimeChangeDidOccur
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E26BA08();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin25SummaryTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin25SummaryTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v7 = v6;
@@ -58,13 +58,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29E26C178(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29E26C178(v5, v7, bundle);
 }
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E26C7CC();
   v4 = v3;
 

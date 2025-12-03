@@ -1,11 +1,11 @@
 @interface HUUtilityOnboardingSelectLocationViewController
 - (Class)onboardingFlowClass;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingSelectLocationViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6 itemTableViewController:(id)a7;
+- (HUUtilityOnboardingSelectLocationViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout itemTableViewController:(id)controller;
 - (id)hu_preloadContent;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUUtilityOnboardingSelectLocationViewController
@@ -18,28 +18,28 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___HUUtilityOnboardingSelectLocationViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D0B4FD0();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for UtilityOnboardingLocationSelection();
   v4 = v7.receiver;
-  [(OBBaseWelcomeController *)&v7 viewWillDisappear:v3];
+  [(OBBaseWelcomeController *)&v7 viewWillDisappear:disappearCopy];
   if ([v4 isMovingFromParentViewController])
   {
     v5 = OBJC_IVAR___HUUtilityOnboardingSelectLocationViewController_delegate;
@@ -54,9 +54,9 @@
 
 - (id)hu_preloadContent
 {
-  v2 = [objc_opt_self() futureWithNoResult];
+  futureWithNoResult = [objc_opt_self() futureWithNoResult];
 
-  return v2;
+  return futureWithNoResult;
 }
 
 - (Class)onboardingFlowClass
@@ -66,7 +66,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (HUUtilityOnboardingSelectLocationViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6 itemTableViewController:(id)a7
+- (HUUtilityOnboardingSelectLocationViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout itemTableViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

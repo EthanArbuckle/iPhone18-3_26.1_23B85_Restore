@@ -1,10 +1,10 @@
 @interface CinematicTracker
 - (CinematicTracker)init;
-- (void)processDetections:(id)a3 ofType:(int64_t)a4 atTime:(id *)a5;
-- (void)processFaceDetections:(id)a3 bodyDetections:(id)a4 atTime:(id *)a5 inView:(CGRect)a6;
-- (void)removeTrackOfType:(int64_t)a3 atIndex:(int)a4 atTime:(id *)a5;
+- (void)processDetections:(id)detections ofType:(int64_t)type atTime:(id *)time;
+- (void)processFaceDetections:(id)detections bodyDetections:(id)bodyDetections atTime:(id *)time inView:(CGRect)view;
+- (void)removeTrackOfType:(int64_t)type atIndex:(int)index atTime:(id *)time;
 - (void)resetTracksFramingProperties;
-- (void)updateBodyFacePairsAtTime:(id *)a3;
+- (void)updateBodyFacePairsAtTime:(id *)time;
 @end
 
 @implementation CinematicTracker
@@ -48,44 +48,44 @@
   return v3;
 }
 
-- (void)removeTrackOfType:(int64_t)a3 atIndex:(int)a4 atTime:(id *)a5
+- (void)removeTrackOfType:(int64_t)type atIndex:(int)index atTime:(id *)time
 {
   allTracks = self->_allTracks;
-  v8 = a4;
-  v14 = [(NSMutableArray *)self->_allTracks[a3] objectAtIndexedSubscript:a4];
-  v9 = [v14 pairTrack];
+  indexCopy = index;
+  v14 = [(NSMutableArray *)self->_allTracks[type] objectAtIndexedSubscript:index];
+  pairTrack = [v14 pairTrack];
 
-  if (v9)
+  if (pairTrack)
   {
-    v10 = [v14 pairTrack];
-    [v10 setPairTrack:0];
+    pairTrack2 = [v14 pairTrack];
+    [pairTrack2 setPairTrack:0];
 
     [v14 setPairTrack:0];
   }
 
   oidToTrackMap = self->_oidToTrackMap;
-  v12 = (&self->super.isa + a3);
-  v13 = [v12[3] objectAtIndexedSubscript:v8];
+  v12 = (&self->super.isa + type);
+  v13 = [v12[3] objectAtIndexedSubscript:indexCopy];
   [(NSMutableDictionary *)oidToTrackMap removeObjectForKey:v13];
 
-  [(NSMutableArray *)allTracks[a3] exchangeObjectAtIndex:v8 withObjectAtIndex:[(NSMutableArray *)allTracks[a3] count]- 1];
-  [(NSMutableArray *)allTracks[a3] removeLastObject];
-  [v12[3] exchangeObjectAtIndex:v8 withObjectAtIndex:{objc_msgSend(v12[3], "count") - 1}];
+  [(NSMutableArray *)allTracks[type] exchangeObjectAtIndex:indexCopy withObjectAtIndex:[(NSMutableArray *)allTracks[type] count]- 1];
+  [(NSMutableArray *)allTracks[type] removeLastObject];
+  [v12[3] exchangeObjectAtIndex:indexCopy withObjectAtIndex:{objc_msgSend(v12[3], "count") - 1}];
   [v12[3] removeLastObject];
 }
 
-- (void)processFaceDetections:(id)a3 bodyDetections:(id)a4 atTime:(id *)a5 inView:(CGRect)a6
+- (void)processFaceDetections:(id)detections bodyDetections:(id)bodyDetections atTime:(id *)time inView:(CGRect)view
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  time = *a5;
-  [(CinematicTracker *)self processDetections:a4 ofType:0 atTime:&time];
-  time = *a5;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  detectionsCopy = detections;
+  time = *time;
+  [(CinematicTracker *)self processDetections:bodyDetections ofType:0 atTime:&time];
+  time = *time;
   v14 = 1;
-  [(CinematicTracker *)self processDetections:v13 ofType:1 atTime:&time];
+  [(CinematicTracker *)self processDetections:detectionsCopy ofType:1 atTime:&time];
   v15 = 0;
   allTracks = self->_allTracks;
   do
@@ -109,11 +109,11 @@
           memset(&rhs, 0, sizeof(rhs));
         }
 
-        lhs = *a5;
+        lhs = *time;
         CMTimeSubtract(&time, &lhs, &rhs);
         if (CMTimeGetSeconds(&time) > 1.0)
         {
-          time = *a5;
+          time = *time;
           [(CinematicTracker *)self removeTrackOfType:v15 atIndex:v19 atTime:&time];
           LODWORD(v19) = v19 - 1;
         }
@@ -130,7 +130,7 @@
   }
 
   while ((v17 & 1) != 0);
-  time = *a5;
+  time = *time;
   [(CinematicTracker *)self updateBodyFacePairsAtTime:&time];
   if ([(NSMutableArray *)self->_allTracks[0] count])
   {
@@ -141,11 +141,11 @@
       v24 = [(NSMutableArray *)*allTracks objectAtIndexedSubscript:v22];
       if ([v24 identifier] < 0)
       {
-        v25 = [v24 pairTrack];
+        pairTrack = [v24 pairTrack];
 
-        if (!v25)
+        if (!pairTrack)
         {
-          time = *a5;
+          time = *time;
           [(CinematicTracker *)self removeTrackOfType:0 atIndex:v23 atTime:&time];
           LODWORD(v23) = v23 - 1;
         }
@@ -158,12 +158,12 @@
     while ([(NSMutableArray *)*allTracks count]> v23);
   }
 
-  v26 = [(CinematicTracker *)self tracks];
+  tracks = [(CinematicTracker *)self tracks];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v27 = [v26 countByEnumeratingWithState:&v33 objects:v32 count:16];
+  v27 = [tracks countByEnumeratingWithState:&v33 objects:v32 count:16];
   if (v27)
   {
     v28 = v27;
@@ -174,15 +174,15 @@
       {
         if (*v34 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(tracks);
         }
 
         v31 = *(*(&v33 + 1) + 8 * i);
-        time = *a5;
+        time = *time;
         [v31 updatePropertiesWithTimestamp:&time inView:{x, y, width, height}];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      v28 = [tracks countByEnumeratingWithState:&v33 objects:v32 count:16];
     }
 
     while (v28);
@@ -191,12 +191,12 @@
 
 - (void)resetTracksFramingProperties
 {
-  v2 = [(CinematicTracker *)self tracks];
+  tracks = [(CinematicTracker *)self tracks];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v7 count:16];
+  v3 = [tracks countByEnumeratingWithState:&v8 objects:v7 count:16];
   if (v3)
   {
     v4 = v3;
@@ -208,28 +208,28 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tracks);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) resetProperties];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v7 count:16];
+      v4 = [tracks countByEnumeratingWithState:&v8 objects:v7 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)processDetections:(id)a3 ofType:(int64_t)a4 atTime:(id *)a5
+- (void)processDetections:(id)detections ofType:(int64_t)type atTime:(id *)time
 {
-  v8 = a3;
+  detectionsCopy = detections;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v92 objects:v91 count:16];
+  v9 = [detectionsCopy countByEnumeratingWithState:&v92 objects:v91 count:16];
   if (v9)
   {
     v10 = v9;
@@ -240,7 +240,7 @@
       {
         if (*v93 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(detectionsCopy);
         }
 
         v13 = *(*(&v92 + 1) + 8 * i);
@@ -250,12 +250,12 @@
 
         if (v16)
         {
-          time1 = *a5;
+          time1 = *time;
           [v16 addObservation:v13 atTime:&time1];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v92 objects:v91 count:16];
+      v10 = [detectionsCopy countByEnumeratingWithState:&v92 objects:v91 count:16];
     }
 
     while (v10);
@@ -265,7 +265,7 @@
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v8;
+  obj = detectionsCopy;
   v17 = [obj countByEnumeratingWithState:&v86 objects:v85 count:16];
   if (v17)
   {
@@ -273,7 +273,7 @@
     v19 = *v87;
     allTracks = self->_allTracks;
     tracksOidMappings = self->_tracksOidMappings;
-    v78 = self;
+    selfCopy = self;
     v74 = *v87;
     do
     {
@@ -294,7 +294,7 @@
         if (!v25)
         {
           v79 = [v22 oid];
-          if (![(NSMutableArray *)allTracks[a4] count])
+          if (![(NSMutableArray *)allTracks[type] count])
           {
             goto LABEL_28;
           }
@@ -304,7 +304,7 @@
           v83 = INFINITY;
           do
           {
-            v28 = [(NSMutableArray *)allTracks[a4] objectAtIndexedSubscript:v26];
+            v28 = [(NSMutableArray *)allTracks[type] objectAtIndexedSubscript:v26];
             v29 = v28;
             if (v28)
             {
@@ -316,7 +316,7 @@
               memset(&time1, 0, sizeof(time1));
             }
 
-            time2 = *a5;
+            time2 = *time;
             if (CMTimeCompare(&time1, &time2))
             {
               [v29 lastObservationBounds];
@@ -378,18 +378,18 @@
             ++v26;
           }
 
-          while ([(NSMutableArray *)allTracks[a4] count]> v26);
-          self = v78;
+          while ([(NSMutableArray *)allTracks[type] count]> v26);
+          self = selfCopy;
           if (v27 == -1)
           {
 LABEL_28:
             ++self->_trackIndexCounter;
-            if (a4)
+            if (type)
             {
               v64 = [BaseTrack alloc];
               trackIndexCounter = self->_trackIndexCounter;
-              time1 = *a5;
-              v66 = [(BaseTrack *)v64 initWithObservation:v22 identifier:trackIndexCounter type:a4 atTime:&time1];
+              time1 = *time;
+              v66 = [(BaseTrack *)v64 initWithObservation:v22 identifier:trackIndexCounter type:type atTime:&time1];
             }
 
             else
@@ -397,7 +397,7 @@ LABEL_28:
               v67 = [CinematicTrack alloc];
               v68 = self->_trackIndexCounter;
               options = self->_options;
-              time1 = *a5;
+              time1 = *time;
               v66 = [(CinematicTrack *)v67 initWithObservation:v22 identifier:v68 options:options atTime:&time1];
             }
 
@@ -406,31 +406,31 @@ LABEL_28:
             v71 = [MEMORY[0x277CCABB0] numberWithLong:v79];
             [(NSMutableDictionary *)v70 setObject:v63 forKeyedSubscript:v71];
 
-            [(NSMutableArray *)allTracks[a4] addObject:v63];
-            v72 = tracksOidMappings[a4];
+            [(NSMutableArray *)allTracks[type] addObject:v63];
+            v72 = tracksOidMappings[type];
             v73 = [MEMORY[0x277CCABB0] numberWithLong:v79];
             [(NSMutableArray *)v72 addObject:v73];
           }
 
           else
           {
-            v55 = v78->_oidToTrackMap;
+            v55 = selfCopy->_oidToTrackMap;
             v56 = v27;
-            v57 = [(NSMutableArray *)tracksOidMappings[a4] objectAtIndexedSubscript:v27];
+            v57 = [(NSMutableArray *)tracksOidMappings[type] objectAtIndexedSubscript:v27];
             [(NSMutableDictionary *)v55 removeObjectForKey:v57];
 
-            v58 = [(NSMutableArray *)allTracks[a4] objectAtIndexedSubscript:v56];
-            v59 = v78->_oidToTrackMap;
+            v58 = [(NSMutableArray *)allTracks[type] objectAtIndexedSubscript:v56];
+            v59 = selfCopy->_oidToTrackMap;
             v60 = [MEMORY[0x277CCABB0] numberWithLong:v79];
             v61 = v59;
-            self = v78;
+            self = selfCopy;
             [(NSMutableDictionary *)v61 setObject:v58 forKeyedSubscript:v60];
 
             v62 = [MEMORY[0x277CCABB0] numberWithLong:v79];
-            [(NSMutableArray *)tracksOidMappings[a4] setObject:v62 atIndexedSubscript:v56];
+            [(NSMutableArray *)tracksOidMappings[type] setObject:v62 atIndexedSubscript:v56];
 
-            v63 = [(NSMutableArray *)allTracks[a4] objectAtIndexedSubscript:v56];
-            time1 = *a5;
+            v63 = [(NSMutableArray *)allTracks[type] objectAtIndexedSubscript:v56];
+            time1 = *time;
             [v63 addObservation:v22 atTime:&time1];
           }
 
@@ -450,7 +450,7 @@ LABEL_28:
   }
 }
 
-- (void)updateBodyFacePairsAtTime:(id *)a3
+- (void)updateBodyFacePairsAtTime:(id *)time
 {
   v106 = 0u;
   v107 = 0u;
@@ -472,21 +472,21 @@ LABEL_28:
         }
 
         v8 = *(*(&v104 + 1) + 8 * i);
-        v9 = [v8 pairTrack];
-        if (v9)
+        pairTrack = [v8 pairTrack];
+        if (pairTrack)
         {
-          v10 = v9;
-          v11 = [v8 identifier];
+          v10 = pairTrack;
+          identifier = [v8 identifier];
 
-          if ((v11 & 0x8000000000000000) == 0)
+          if ((identifier & 0x8000000000000000) == 0)
           {
             [v8 lastObservationBounds];
             v13 = v12;
             v15 = v14;
             v17 = v16;
             v19 = v18;
-            v20 = [v8 pairTrack];
-            [v20 lastObservationBounds];
+            pairTrack2 = [v8 pairTrack];
+            [pairTrack2 lastObservationBounds];
             v116.origin.x = v21;
             v116.origin.y = v22;
             v116.size.width = v23;
@@ -497,15 +497,15 @@ LABEL_28:
             v108.size.height = v19;
             v109 = CGRectIntersection(v108, v116);
             *&v13 = v109.size.width * v109.size.height;
-            v25 = [v8 pairTrack];
-            [v25 lastObservationBounds];
+            pairTrack3 = [v8 pairTrack];
+            [pairTrack3 lastObservationBounds];
             v28 = v26 * v27;
             *&v15 = v28 * 0.3;
 
             if (*&v15 > *&v13)
             {
-              v29 = [v8 pairTrack];
-              [v29 setPairTrack:0];
+              pairTrack4 = [v8 pairTrack];
+              [pairTrack4 setPairTrack:0];
 
               [v8 setPairTrack:0];
             }
@@ -539,14 +539,14 @@ LABEL_28:
         }
 
         v34 = *(*(&v99 + 1) + 8 * j);
-        v35 = [v34 pairTrack];
-        if (v35)
+        pairTrack5 = [v34 pairTrack];
+        if (pairTrack5)
         {
-          v36 = v35;
-          v37 = [v34 pairTrack];
-          v38 = [v37 identifier];
+          v36 = pairTrack5;
+          pairTrack6 = [v34 pairTrack];
+          identifier2 = [pairTrack6 identifier];
 
-          if (v38 > 0)
+          if (identifier2 > 0)
           {
             continue;
           }
@@ -575,8 +575,8 @@ LABEL_28:
               }
 
               v46 = *(*(&v94 + 1) + 8 * v45);
-              v47 = [v46 pairTrack];
-              if (v47)
+              pairTrack7 = [v46 pairTrack];
+              if (pairTrack7)
               {
                 goto LABEL_25;
               }
@@ -602,7 +602,7 @@ LABEL_28:
                 if (v44 < v60)
                 {
                   v61 = v46;
-                  v47 = v42;
+                  pairTrack7 = v42;
                   v42 = v61;
                   v44 = v60;
 LABEL_25:
@@ -647,14 +647,14 @@ LABEL_34:
             v75 = objc_alloc_init(Detection);
             -[Detection setOid:](v75, "setOid:", -[v34 identifier]);
             [(Detection *)v75 setBounds:v72, v74, v71, v73];
-            v76 = [v34 pairTrack];
+            pairTrack8 = [v34 pairTrack];
 
-            if (v76)
+            if (pairTrack8)
             {
-              v77 = [v34 pairTrack];
-              v91 = *&a3->var0;
-              var3 = a3->var3;
-              [(BaseTrack *)v77 addObservation:v75 atTime:&v91];
+              pairTrack9 = [v34 pairTrack];
+              v91 = *&time->var0;
+              var3 = time->var3;
+              [(BaseTrack *)pairTrack9 addObservation:v75 atTime:&v91];
             }
 
             else
@@ -664,32 +664,32 @@ LABEL_34:
               v80 = [CinematicTrack alloc];
               v81 = self->_options;
               v82 = -self->_trackIndexCounter;
-              v91 = *&a3->var0;
-              var3 = a3->var3;
-              v77 = [(CinematicTrack *)v80 initWithObservation:v75 identifier:v82 options:v81 atTime:&v91];
+              v91 = *&time->var0;
+              var3 = time->var3;
+              pairTrack9 = [(CinematicTrack *)v80 initWithObservation:v75 identifier:v82 options:v81 atTime:&v91];
               oidToTrackMap = self->_oidToTrackMap;
               v84 = [MEMORY[0x277CCABB0] numberWithLong:v87];
-              [(NSMutableDictionary *)oidToTrackMap setObject:v77 forKeyedSubscript:v84];
+              [(NSMutableDictionary *)oidToTrackMap setObject:pairTrack9 forKeyedSubscript:v84];
 
-              [(NSMutableArray *)self->_allTracks[0] addObject:v77];
+              [(NSMutableArray *)self->_allTracks[0] addObject:pairTrack9];
               v85 = self->_tracksOidMappings[0];
               v86 = [MEMORY[0x277CCABB0] numberWithLong:v87];
               [(NSMutableArray *)v85 addObject:v86];
 
-              [(BaseTrack *)v77 setPairTrack:v34];
-              [v34 setPairTrack:v77];
+              [(BaseTrack *)pairTrack9 setPairTrack:v34];
+              [v34 setPairTrack:pairTrack9];
             }
           }
         }
 
         else
         {
-          v78 = [v34 pairTrack];
+          pairTrack10 = [v34 pairTrack];
 
-          if (v78)
+          if (pairTrack10)
           {
-            v79 = [v34 pairTrack];
-            [v79 setPairTrack:0];
+            pairTrack11 = [v34 pairTrack];
+            [pairTrack11 setPairTrack:0];
           }
 
           [v34 setPairTrack:v42];

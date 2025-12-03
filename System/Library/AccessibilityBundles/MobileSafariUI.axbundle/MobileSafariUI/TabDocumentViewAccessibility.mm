@@ -1,5 +1,5 @@
 @interface TabDocumentViewAccessibility
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
@@ -10,14 +10,14 @@
   v5.receiver = self;
   v5.super_class = TabDocumentViewAccessibility;
   [(TabDocumentViewAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
-  v3 = [MEMORY[0x29EDBA140] UUID];
-  v4 = [v3 UUIDString];
-  [(TabDocumentViewAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:@"tabDocumentViewIdentifier"];
+  uUID = [MEMORY[0x29EDBA140] UUID];
+  uUIDString = [uUID UUIDString];
+  [(TabDocumentViewAccessibility *)self _accessibilitySetRetainedValue:uUIDString forKey:@"tabDocumentViewIdentifier"];
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3
+- (id)_iosAccessibilityAttributeValue:(int64_t)value
 {
-  if (a3 == 5074)
+  if (value == 5074)
   {
     v3 = [(TabDocumentViewAccessibility *)self _accessibilityValueForKey:@"tabDocumentViewIdentifier"];
   }

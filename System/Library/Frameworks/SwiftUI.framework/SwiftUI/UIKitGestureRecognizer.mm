@@ -1,14 +1,14 @@
 @interface UIKitGestureRecognizer
-- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithCoder:(id)a3;
-- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_scrollingChangedWithEvent:(id)a3;
-- (void)_transformChangedWithEvent:(id)a3;
+- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithCoder:(id)coder;
+- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_scrollingChangedWithEvent:(id)event;
+- (void)_transformChangedWithEvent:(id)event;
 - (void)reset;
 @end
 
 @implementation UIKitGestureRecognizer
 
-- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithCoder:(id)a3
+- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithCoder:(id)coder
 {
   swift_weakInit();
   *(&self->super.super.isa + OBJC_IVAR____TtC7SwiftUI22UIKitGestureRecognizer_initialScale) = 0x3FF0000000000000;
@@ -25,13 +25,13 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   UIKitGestureRecognizer.reset()();
 }
 
-- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC7SwiftUI22UIKitGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -43,18 +43,18 @@
   return result;
 }
 
-- (void)_transformChangedWithEvent:(id)a3
+- (void)_transformChangedWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  UIKitGestureRecognizer._transformChanged(with:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  UIKitGestureRecognizer._transformChanged(with:)(eventCopy);
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  UIKitGestureRecognizer._scrollingChanged(with:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  UIKitGestureRecognizer._scrollingChanged(with:)(eventCopy);
 }
 
 @end

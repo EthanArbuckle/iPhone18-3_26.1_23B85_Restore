@@ -1,30 +1,30 @@
 @interface _BKDisplayBlankingContext
-- (id)initForDisplay:(id)a3;
+- (id)initForDisplay:(id)display;
 - (void)_updateBounds;
-- (void)_wrapInCATransaction:(id)a3;
+- (void)_wrapInCATransaction:(id)transaction;
 - (void)blank;
 - (void)clear;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _BKDisplayBlankingContext
 
-- (void)_wrapInCATransaction:(id)a3
+- (void)_wrapInCATransaction:(id)transaction
 {
-  if (a3)
+  if (transaction)
   {
-    v3 = a3;
+    transactionCopy = transaction;
     +[CATransaction begin];
-    v3[2](v3);
+    transactionCopy[2](transactionCopy);
 
     +[CATransaction commit];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"bounds", a4, a5, a6}])
+  if ([path isEqualToString:{@"bounds", object, change, context}])
   {
 
     [(_BKDisplayBlankingContext *)self _updateBounds];
@@ -33,9 +33,9 @@
 
 - (void)_updateBounds
 {
-  v3 = [(CAContext *)self->_blankingContext layer];
+  layer = [(CAContext *)self->_blankingContext layer];
   [(CAWindowServerDisplay *)self->_display bounds];
-  [v3 setBounds:?];
+  [layer setBounds:?];
 }
 
 - (void)clear
@@ -47,7 +47,7 @@
     {
       display = self->_display;
       *buf = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
       v9 = display;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ - clearing blanked display: %@", buf, 0x16u);
@@ -73,11 +73,11 @@
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
       *buf = 138544642;
-      v12 = v7;
+      selfCopy2 = v7;
       v13 = 2114;
       v14 = v9;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"_BKDisplayBlankingContext.m";
       v19 = 1024;
@@ -98,7 +98,7 @@
   {
     display = self->_display;
     *buf = 138412546;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
     v14 = display;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ - blanking display: %@", buf, 0x16u);
@@ -120,16 +120,16 @@
   [(_BKDisplayBlankingContext *)&v3 dealloc];
 }
 
-- (id)initForDisplay:(id)a3
+- (id)initForDisplay:(id)display
 {
-  v5 = a3;
+  displayCopy = display;
   v9.receiver = self;
   v9.super_class = _BKDisplayBlankingContext;
   v6 = [(_BKDisplayBlankingContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_display, a3);
+    objc_storeStrong(&v6->_display, display);
   }
 
   return v7;

@@ -1,34 +1,34 @@
 @interface TSDCanvasZoomTracker
-- (TSDCanvasZoomTracker)initWithCanvasLayer:(id)a3;
-- (void)p_finishZoomWithFinalScaleFactor:(double)a3 contentOffset:(CGPoint)a4;
-- (void)zoomWithScale:(double)a3 velocity:(double)a4 locationInView:(CGPoint)a5 phase:(int)a6;
+- (TSDCanvasZoomTracker)initWithCanvasLayer:(id)layer;
+- (void)p_finishZoomWithFinalScaleFactor:(double)factor contentOffset:(CGPoint)offset;
+- (void)zoomWithScale:(double)scale velocity:(double)velocity locationInView:(CGPoint)view phase:(int)phase;
 @end
 
 @implementation TSDCanvasZoomTracker
 
-- (TSDCanvasZoomTracker)initWithCanvasLayer:(id)a3
+- (TSDCanvasZoomTracker)initWithCanvasLayer:(id)layer
 {
   v5.receiver = self;
   v5.super_class = TSDCanvasZoomTracker;
   result = [(TSDCanvasZoomTracker *)&v5 init];
   if (result)
   {
-    result->mCanvasLayer = a3;
+    result->mCanvasLayer = layer;
     *&result->mSnapsViewScale = 257;
   }
 
   return result;
 }
 
-- (void)zoomWithScale:(double)a3 velocity:(double)a4 locationInView:(CGPoint)a5 phase:(int)a6
+- (void)zoomWithScale:(double)scale velocity:(double)velocity locationInView:(CGPoint)view phase:(int)phase
 {
-  y = a5.y;
-  x = a5.x;
+  y = view.y;
+  x = view.x;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:objc_loadWeak(&self->mDelegate) selector:sel_canvasZoomTrackerDidEndViewScaleFeedback_ object:self];
-  v10 = [(TSDCanvasLayer *)self->mCanvasLayer controller];
-  v11 = [(TSDCanvasView *)[(TSDCanvasLayer *)self->mCanvasLayer canvasView] enclosingScrollView];
+  controller = [(TSDCanvasLayer *)self->mCanvasLayer controller];
+  enclosingScrollView = [(TSDCanvasView *)[(TSDCanvasLayer *)self->mCanvasLayer canvasView] enclosingScrollView];
   v12 = MEMORY[0x277CBF348];
-  switch(a6)
+  switch(phase)
   {
     case 0:
 LABEL_8:
@@ -47,12 +47,12 @@ LABEL_8:
       *&self->mSavedTransform.a = *&v241.a;
       *&self->mSavedTransform.c = v16;
       *&self->mSavedTransform.tx = *&v241.tx;
-      [(TSKScrollView *)v11 contentOffset];
+      [(TSKScrollView *)enclosingScrollView contentOffset];
       self->mSavedContentOffset.x = v17;
       self->mSavedContentOffset.y = v18;
       self->mHasGestureOrigin = 0;
       self->mGestureOffset = *v12;
-      [(TSDInteractiveCanvasController *)v10 i_viewWillBeginZooming];
+      [(TSDInteractiveCanvasController *)controller i_viewWillBeginZooming];
       self->mIsZooming = 1;
       self->mZoomVelocitySampleCount = 0;
       self->mZoomVelocity = 0.0;
@@ -78,13 +78,13 @@ LABEL_8:
       *&v241.c = v14;
       *&v241.tx = *(MEMORY[0x277CBF2C0] + 32);
       [(TSDCanvasLayer *)v13 setAffineTransform:&v241];
-      [(TSDInteractiveCanvasController *)v10 viewDidEndZooming];
+      [(TSDInteractiveCanvasController *)controller viewDidEndZooming];
       [objc_loadWeak(&self->mDelegate) canvasZoomTrackerDidFinish:self];
       return;
   }
 
   mZoomVelocitySampleCount = self->mZoomVelocitySampleCount;
-  v21 = a4 + mZoomVelocitySampleCount++ * self->mZoomVelocity;
+  v21 = velocity + mZoomVelocitySampleCount++ * self->mZoomVelocity;
   self->mZoomVelocity = v21 / mZoomVelocitySampleCount;
   self->mZoomVelocitySampleCount = mZoomVelocitySampleCount;
   [(TSDCanvasLayer *)self->mCanvasLayer viewScale];
@@ -96,10 +96,10 @@ LABEL_8:
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v29 = v28 - self->mZoomStartTime;
   v30 = 0.2;
-  if (a6 == 2 && v29 < 0.2 && fabs(self->mZoomVelocity) > 0.5)
+  if (phase == 2 && v29 < 0.2 && fabs(self->mZoomVelocity) > 0.5)
   {
     [(TSDCanvasLayer *)self->mCanvasLayer viewScale];
-    [(TSDInteractiveCanvasController *)v10 i_nextCanvasViewScaleDetentForProposedViewScale:self->mZoomVelocity > 0.0 greater:?];
+    [(TSDInteractiveCanvasController *)controller i_nextCanvasViewScaleDetentForProposedViewScale:self->mZoomVelocity > 0.0 greater:?];
     v32 = v31;
     if (self->mIsShowingZoomHUD)
     {
@@ -125,10 +125,10 @@ LABEL_8:
       self->mIsShowingZoomHUD = 1;
     }
 
-    v32 = v23 * a3;
-    if (a6 == 2)
+    v32 = v23 * scale;
+    if (phase == 2)
     {
-      [(TSDInteractiveCanvasController *)v10 i_adjustViewScale:v23 * a3, v30];
+      [(TSDInteractiveCanvasController *)controller i_adjustViewScale:v23 * scale, v30];
       v32 = v34;
     }
 
@@ -140,14 +140,14 @@ LABEL_8:
   if ([(TSDCanvasZoomTracker *)self snapsViewScale])
   {
     [(TSDCanvasLayer *)self->mCanvasLayer viewScale];
-    [(TSDInteractiveCanvasController *)v10 i_viewScaleForProposedViewScale:v36 originalViewScale:v37];
+    [(TSDInteractiveCanvasController *)controller i_viewScaleForProposedViewScale:v36 originalViewScale:v37];
     v36 = v38;
   }
 
-  if (a6 == 2)
+  if (phase == 2)
   {
     [(TSDCanvasLayer *)self->mCanvasLayer viewScale];
-    [(TSDInteractiveCanvasController *)v10 i_canvasCenterOffsetForProposedViewScale:v36 originalViewScale:v39];
+    [(TSDInteractiveCanvasController *)controller i_canvasCenterOffsetForProposedViewScale:v36 originalViewScale:v39];
     v221 = v40;
     v42 = v41;
     v32 = v36;
@@ -212,7 +212,7 @@ LABEL_8:
     self->mHasGestureOrigin = 1;
   }
 
-  if (a6 != 2)
+  if (phase != 2)
   {
     self->mGestureOffset.x = TSDSubtractPoints(v55, v57, self->mGestureOrigin.x);
     self->mGestureOffset.y = v59;
@@ -221,10 +221,10 @@ LABEL_8:
   [(TSDCanvasLayer *)self->mCanvasLayer unscaledSize];
   v62 = TSDMultiplySizeScalar(v60, v61, v32);
   v64 = v63;
-  [(TSKScrollView *)v11 bounds];
+  [(TSKScrollView *)enclosingScrollView bounds];
   v66 = fmax((v62 - v65) * 0.5, 0.0);
   v68 = fmax((v64 - v67) * 0.5, 0.0);
-  if (a6 == 2)
+  if (phase == 2)
   {
     TSUClamp();
     self->mGestureOffset.x = v69;
@@ -306,7 +306,7 @@ LABEL_8:
   [(TSDCanvasLayer *)self->mCanvasLayer viewScale];
   v103 = v32;
   v105 = v32 / v104;
-  [(TSKScrollView *)v11 contentOffset];
+  [(TSKScrollView *)enclosingScrollView contentOffset];
   v220 = v106;
   v107 = self->mGestureOffset.x;
   v108 = self->mGestureOffset.y;
@@ -338,13 +338,13 @@ LABEL_8:
   v238 = *&v240.a;
   v239 = *&v240.c;
   v113 = *&v240.tx;
-  if (a6 != 2)
+  if (phase != 2)
   {
     *&v240.a = v238;
     *&v240.c = v239;
     [(TSDCanvasLayer *)self->mCanvasLayer setAffineTransform:&v240];
-    [(TSDInteractiveCanvasController *)v10 i_viewIsZoomingAtPoint:*&mZoomOrigin];
-    [(TSDInteractiveCanvasController *)v10 i_viewDidZoomToViewScale:v36];
+    [(TSDInteractiveCanvasController *)controller i_viewIsZoomingAtPoint:*&mZoomOrigin];
+    [(TSDInteractiveCanvasController *)controller i_viewDidZoomToViewScale:v36];
     return;
   }
 
@@ -379,7 +379,7 @@ LABEL_8:
   v206 = v123 - (v125 + v126);
   v207 = v127;
   v202 = v127 + v128;
-  [(TSKScrollView *)v11 bounds];
+  [(TSKScrollView *)enclosingScrollView bounds];
   v129 = TSDRectWithSize() + v221 * 2.0;
   v131 = v130 + v42 * 2.0;
   v133 = v132 - v221 * 2.0;
@@ -410,14 +410,14 @@ LABEL_8:
   v249.size.width = v133;
   v249.size.height = v135;
   v201 = CGRectGetMaxY(v249);
-  [(TSKScrollView *)v11 contentOffset];
+  [(TSKScrollView *)enclosingScrollView contentOffset];
   v139 = v138;
   v141 = v140;
-  v142 = [(TSDInteractiveCanvasController *)v10 sizeOfScrollViewEnclosingCanvas];
+  sizeOfScrollViewEnclosingCanvas = [(TSDInteractiveCanvasController *)controller sizeOfScrollViewEnclosingCanvas];
   v144.n128_u64[0] = v143;
   v146.n128_u64[0] = v145;
   v147.n128_u64[0] = v139;
-  v148 = TSDRectWithOriginAndSize(v142, v147, v141, v144, v146);
+  v148 = TSDRectWithOriginAndSize(sizeOfScrollViewEnclosingCanvas, v147, v141, v144, v146);
   v150 = v149;
   v152 = v151;
   v154 = v153;
@@ -531,10 +531,10 @@ LABEL_88:
   v175 = v253.origin.y;
   v176 = v253.size.width;
   v177 = v253.size.height;
-  [(TSDCanvas *)[(TSDInteractiveCanvasController *)v10 canvas] contentsScale];
+  [(TSDCanvas *)[(TSDInteractiveCanvasController *)controller canvas] contentsScale];
   v179 = -TSDRoundedRectForScale(v174, v175, v176, v177, v178);
   v181 = -v180;
-  [(TSDInteractiveCanvasController *)v10 clampedUnscaledContentOffset:TSDMultiplyPointScalar(v179 forViewScale:-v180, 1.0 / v227)];
+  [(TSDInteractiveCanvasController *)controller clampedUnscaledContentOffset:TSDMultiplyPointScalar(v179 forViewScale:-v180, 1.0 / v227)];
   v184 = TSDMultiplyPointScalar(v182, v183, v227);
   v186 = v185;
   if ([(TSDCanvasZoomTracker *)self animateTransform])
@@ -574,7 +574,7 @@ LABEL_88:
       v233 = v187;
       v234 = v188;
       v230[4] = self;
-      v230[5] = v10;
+      v230[5] = controller;
       v235 = v219;
       v229[0] = MEMORY[0x277D85DD0];
       v229[1] = 3221225472;
@@ -644,12 +644,12 @@ uint64_t __68__TSDCanvasZoomTracker_zoomWithScale_velocity_locationInView_phase_
   return [v2 p_finishZoomWithFinalScaleFactor:v3 contentOffset:{v4, v5}];
 }
 
-- (void)p_finishZoomWithFinalScaleFactor:(double)a3 contentOffset:(CGPoint)a4
+- (void)p_finishZoomWithFinalScaleFactor:(double)factor contentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(TSDCanvasLayer *)self->mCanvasLayer controller];
-  [(TSDCanvasLayer *)self->mCanvasLayer setViewScale:a3];
+  y = offset.y;
+  x = offset.x;
+  controller = [(TSDCanvasLayer *)self->mCanvasLayer controller];
+  [(TSDCanvasLayer *)self->mCanvasLayer setViewScale:factor];
   mCanvasLayer = self->mCanvasLayer;
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   v14[0] = *MEMORY[0x277CBF2C0];
@@ -659,8 +659,8 @@ uint64_t __68__TSDCanvasZoomTracker_zoomWithScale_velocity_locationInView_phase_
   [(TSDCanvasLayer *)self->mCanvasLayer bounds];
   v12 = TSDSubtractPoints(x, y, v11);
   [(TSKScrollView *)[(TSDCanvasView *)[(TSDCanvasLayer *)self->mCanvasLayer canvasView] enclosingScrollView] setContentOffset:v12, v13];
-  [(TSDInteractiveCanvasController *)v8 viewDidEndZooming];
-  [(TSDInteractiveCanvasController *)v8 i_recordUserViewScale];
+  [(TSDInteractiveCanvasController *)controller viewDidEndZooming];
+  [(TSDInteractiveCanvasController *)controller i_recordUserViewScale];
   self->mIsZooming = 0;
   [objc_loadWeak(&self->mDelegate) canvasZoomTrackerDidFinish:self];
 }

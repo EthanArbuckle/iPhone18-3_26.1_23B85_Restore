@@ -1,8 +1,8 @@
 @interface SSLogConfig
 + (BOOL)_deviceIsRunningInternalOrSeedBuild;
-+ (id)_createLogConfigWithBaseConfig:(id)a3 subystem:(id)a4 category:(id)a5;
-+ (id)_logFileDirectoryPathForSubsystem:(id)a3 category:(id)a4;
-+ (id)_logFilenameForSubsystem:(id)a3 category:(id)a4;
++ (id)_createLogConfigWithBaseConfig:(id)config subystem:(id)subystem category:(id)category;
++ (id)_logFileDirectoryPathForSubsystem:(id)subsystem category:(id)category;
++ (id)_logFilenameForSubsystem:(id)subsystem category:(id)category;
 + (id)sharedAccountsAuthenticationConfig;
 + (id)sharedAccountsConfig;
 + (id)sharedAccountsCookiesConfig;
@@ -27,7 +27,7 @@
 + (id)sharediTunesStoreConfig;
 + (id)sharediTunesStoreConfigOversize;
 - (BOOL)debugLogsEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldLog;
 - (BOOL)shouldLogToDisk;
 - (NSString)outputDirectory;
@@ -35,9 +35,9 @@
 - (OS_os_log)OSLogObject;
 - (SSLogConfig)init;
 - (SSLogFileOptions)logFileOptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __35__SSLogConfig_sharedAccountsConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAccountsConfig_ss_once_token___COUNTER__, block);
@@ -142,7 +142,7 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __40__SSLogConfig_sharedStoreServicesConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStoreServicesConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedStoreServicesConfig_ss_once_token___COUNTER__, block);
@@ -166,7 +166,7 @@ void __40__SSLogConfig_sharedStoreServicesConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__SSLogConfig_sharediTunesStoreConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharediTunesStoreConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharediTunesStoreConfig_ss_once_token___COUNTER__, block);
@@ -189,22 +189,22 @@ void __40__SSLogConfig_sharedStoreServicesConfig__block_invoke(uint64_t a1)
 
 - (BOOL)shouldLogToDisk
 {
-  v3 = [(SSLogConfig *)self shouldLog];
-  if (v3)
+  shouldLog = [(SSLogConfig *)self shouldLog];
+  if (shouldLog)
   {
     if ([(SSLogConfig *)self writeToDisk]&& +[SSLogConfig _deviceIsRunningInternalOrSeedBuild])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(shouldLog) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(SSLogConfig *)self debugLogsEnabled];
+      LOBYTE(shouldLog) = [(SSLogConfig *)self debugLogsEnabled];
     }
   }
 
-  return v3;
+  return shouldLog;
 }
 
 - (OS_os_log)OSLogObject
@@ -215,26 +215,26 @@ void __40__SSLogConfig_sharedStoreServicesConfig__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__44;
   v14 = __Block_byref_object_dispose__44;
   v15 = 0;
-  v3 = [(SSLogConfig *)self propertyAccessQueue];
+  propertyAccessQueue = [(SSLogConfig *)self propertyAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __26__SSLogConfig_OSLogObject__block_invoke;
   block[3] = &unk_1E84ABF40;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v3, block);
+  dispatch_sync(propertyAccessQueue, block);
 
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [(SSLogConfig *)self propertyAccessQueue];
+    propertyAccessQueue2 = [(SSLogConfig *)self propertyAccessQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __26__SSLogConfig_OSLogObject__block_invoke_2;
     v8[3] = &unk_1E84ABF40;
     v8[4] = self;
     v8[5] = &v10;
-    dispatch_barrier_sync(v5, v8);
+    dispatch_barrier_sync(propertyAccessQueue2, v8);
 
     v4 = v11[5];
   }
@@ -247,8 +247,8 @@ void __40__SSLogConfig_sharedStoreServicesConfig__block_invoke(uint64_t a1)
 
 - (BOOL)debugLogsEnabled
 {
-  v2 = [(SSLogConfig *)self OSLogObject];
-  v3 = [SSLogConfig _debugLogsEnabled:v2];
+  oSLogObject = [(SSLogConfig *)self OSLogObject];
+  v3 = [SSLogConfig _debugLogsEnabled:oSLogObject];
 
   return v3;
 }
@@ -259,7 +259,7 @@ void __40__SSLogConfig_sharedStoreServicesConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__SSLogConfig_sharedDaemonConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDaemonConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedDaemonConfig_ss_once_token___COUNTER__, block);
@@ -295,7 +295,7 @@ void __27__SSLogConfig_sharedConfig__block_invoke()
   block[1] = 3221225472;
   block[2] = __49__SSLogConfig_sharedAccountsAuthenticationConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsAuthenticationConfig_onceToken != -1)
   {
     dispatch_once(&sharedAccountsAuthenticationConfig_onceToken, block);
@@ -323,7 +323,7 @@ void __49__SSLogConfig_sharedAccountsAuthenticationConfig__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __42__SSLogConfig_sharedAccountsCookiesConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsCookiesConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAccountsCookiesConfig_ss_once_token___COUNTER__, block);
@@ -349,7 +349,7 @@ void __42__SSLogConfig_sharedAccountsCookiesConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__SSLogConfig_sharedAccountsLogoutConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsLogoutConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAccountsLogoutConfig_ss_once_token___COUNTER__, block);
@@ -375,7 +375,7 @@ void __41__SSLogConfig_sharedAccountsLogoutConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__SSLogConfig_sharedAccountsMigrationConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsMigrationConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAccountsMigrationConfig_ss_once_token___COUNTER__, block);
@@ -401,7 +401,7 @@ void __44__SSLogConfig_sharedAccountsMigrationConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __52__SSLogConfig_sharedAccountsMigrationConfigOversize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsMigrationConfigOversize_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAccountsMigrationConfigOversize_ss_once_token___COUNTER__, block);
@@ -427,7 +427,7 @@ void __52__SSLogConfig_sharedAccountsMigrationConfigOversize__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __45__SSLogConfig_sharedAccountsStorefrontConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAccountsStorefrontConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAccountsStorefrontConfig_ss_once_token___COUNTER__, block);
@@ -453,7 +453,7 @@ void __45__SSLogConfig_sharedAccountsStorefrontConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __49__SSLogConfig_sharedAskPermissionExtensionConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAskPermissionExtensionConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedAskPermissionExtensionConfig_ss_once_token___COUNTER__, block);
@@ -477,7 +477,7 @@ void __49__SSLogConfig_sharedAskPermissionExtensionConfig__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __30__SSLogConfig_sharedBagConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedBagConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedBagConfig_ss_once_token___COUNTER__, block);
@@ -501,7 +501,7 @@ void __30__SSLogConfig_sharedBagConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__SSLogConfig_sharedBagCacheConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedBagCacheConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedBagCacheConfig_ss_once_token___COUNTER__, block);
@@ -534,7 +534,7 @@ void __33__SSLogConfig_sharedDaemonConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__SSLogConfig_sharedDaemonConfigOversize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDaemonConfigOversize_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedDaemonConfigOversize_ss_once_token___COUNTER__, block);
@@ -585,7 +585,7 @@ uint64_t __43__SSLogConfig_sharedFairPlayAnisetteConfig__block_invoke()
   block[1] = 3221225472;
   block[2] = __50__SSLogConfig_sharedFeatureEnablerMigrationConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFeatureEnablerMigrationConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedFeatureEnablerMigrationConfig_ss_once_token___COUNTER__, block);
@@ -609,7 +609,7 @@ void __50__SSLogConfig_sharedFeatureEnablerMigrationConfig__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __35__SSLogConfig_sharedFollowUpConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFollowUpConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedFollowUpConfig_ss_once_token___COUNTER__, block);
@@ -640,7 +640,7 @@ void __38__SSLogConfig_sharediTunesStoreConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __46__SSLogConfig_sharediTunesStoreConfigOversize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharediTunesStoreConfigOversize_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharediTunesStoreConfigOversize_ss_once_token___COUNTER__, block);
@@ -666,7 +666,7 @@ void __46__SSLogConfig_sharediTunesStoreConfigOversize__block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __34__SSLogConfig_sharedPrivacyConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPrivacyConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedPrivacyConfig_ss_once_token___COUNTER__, block);
@@ -690,7 +690,7 @@ void __34__SSLogConfig_sharedPrivacyConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__SSLogConfig_sharedPushNotificationConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPushNotificationConfig_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedPushNotificationConfig_ss_once_token___COUNTER__, block);
@@ -714,7 +714,7 @@ void __43__SSLogConfig_sharedPushNotificationConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __48__SSLogConfig_sharedStoreServicesConfigOversize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStoreServicesConfigOversize_ss_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedStoreServicesConfigOversize_ss_once_token___COUNTER__, block);
@@ -765,26 +765,26 @@ void __38__SSLogConfig_sharedWriteToDiskConfig__block_invoke()
   v13 = __Block_byref_object_copy__44;
   v14 = __Block_byref_object_dispose__44;
   v15 = 0;
-  v3 = [(SSLogConfig *)self propertyAccessQueue];
+  propertyAccessQueue = [(SSLogConfig *)self propertyAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__SSLogConfig_logFileOptions__block_invoke;
   block[3] = &unk_1E84ABF40;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v3, block);
+  dispatch_sync(propertyAccessQueue, block);
 
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [(SSLogConfig *)self propertyAccessQueue];
+    propertyAccessQueue2 = [(SSLogConfig *)self propertyAccessQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __29__SSLogConfig_logFileOptions__block_invoke_2;
     v8[3] = &unk_1E84ABF40;
     v8[4] = self;
     v8[5] = &v10;
-    dispatch_barrier_sync(v5, v8);
+    dispatch_barrier_sync(propertyAccessQueue2, v8);
 
     v4 = v11[5];
   }
@@ -848,9 +848,9 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
   else
   {
     v5 = objc_opt_class();
-    v6 = [(SSLogConfig *)self subsystem];
-    v7 = [(SSLogConfig *)self category];
-    v3 = [v5 _logFileDirectoryPathForSubsystem:v6 category:v7];
+    subsystem = [(SSLogConfig *)self subsystem];
+    category = [(SSLogConfig *)self category];
+    v3 = [v5 _logFileDirectoryPathForSubsystem:subsystem category:category];
   }
 
   return v3;
@@ -867,9 +867,9 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
   else
   {
     v5 = objc_opt_class();
-    v6 = [(SSLogConfig *)self subsystem];
-    v7 = [(SSLogConfig *)self category];
-    v3 = [v5 _logFilenameForSubsystem:v6 category:v7];
+    subsystem = [(SSLogConfig *)self subsystem];
+    category = [(SSLogConfig *)self category];
+    v3 = [v5 _logFilenameForSubsystem:subsystem category:category];
   }
 
   return v3;
@@ -883,22 +883,22 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
   v4 = [(SSLogConfig *)&v13 description];
   v5 = [v3 stringWithFormat:@"%@: {\n", v4];
 
-  v6 = [(SSLogConfig *)self category];
-  [v5 appendFormat:@"  category: %@\n", v6];
+  category = [(SSLogConfig *)self category];
+  [v5 appendFormat:@"  category: %@\n", category];
 
   [v5 appendFormat:@"  environment: %ld\n", -[SSLogConfig environment](self, "environment")];
-  v7 = [(SSLogConfig *)self outputDirectory];
-  [v5 appendFormat:@"  outputDirectory: %@\n", v7];
+  outputDirectory = [(SSLogConfig *)self outputDirectory];
+  [v5 appendFormat:@"  outputDirectory: %@\n", outputDirectory];
 
-  v8 = [(SSLogConfig *)self outputFilename];
-  [v5 appendFormat:@"  outputFilename: %@\n", v8];
+  outputFilename = [(SSLogConfig *)self outputFilename];
+  [v5 appendFormat:@"  outputFilename: %@\n", outputFilename];
 
-  v9 = [(SSLogConfig *)self subsystem];
-  [v5 appendFormat:@"  subsystem: %@\n", v9];
+  subsystem = [(SSLogConfig *)self subsystem];
+  [v5 appendFormat:@"  subsystem: %@\n", subsystem];
 
-  v10 = [(SSLogConfig *)self writeToDisk];
+  writeToDisk = [(SSLogConfig *)self writeToDisk];
   v11 = @"NO";
-  if (v10)
+  if (writeToDisk)
   {
     v11 = @"YES";
   }
@@ -911,11 +911,11 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [(SSLogConfig *)self category];
-  v4 = [v3 hash];
+  category = [(SSLogConfig *)self category];
+  v4 = [category hash];
   v5 = [(SSLogConfig *)self environment]^ v4;
-  v6 = [(SSLogConfig *)self subsystem];
-  v7 = v5 ^ [v6 hash];
+  subsystem = [(SSLogConfig *)self subsystem];
+  v7 = v5 ^ [subsystem hash];
   v8 = v7 ^ [(SSLogConfig *)self writeToDisk];
 
   outputDirectory = self->_outputDirectory;
@@ -933,10 +933,10 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
     goto LABEL_5;
@@ -945,14 +945,14 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v9 = [(SSLogConfig *)self category];
-    if (v9 || ([(SSLogConfig *)v5 category], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    category = [(SSLogConfig *)self category];
+    if (category || ([(SSLogConfig *)equalCopy category], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(SSLogConfig *)self category];
-      v11 = [(SSLogConfig *)v5 category];
-      v12 = [v10 isEqual:v11];
+      category2 = [(SSLogConfig *)self category];
+      category3 = [(SSLogConfig *)equalCopy category];
+      v12 = [category2 isEqual:category3];
 
-      if (v9)
+      if (category)
       {
 
         if (!v12)
@@ -971,14 +971,14 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
       }
     }
 
-    v13 = [(SSLogConfig *)self environment];
-    if (v13 != [(SSLogConfig *)v5 environment])
+    environment = [(SSLogConfig *)self environment];
+    if (environment != [(SSLogConfig *)equalCopy environment])
     {
       goto LABEL_3;
     }
 
     outputFilename = self->_outputFilename;
-    if (outputFilename | v5->_outputFilename)
+    if (outputFilename | equalCopy->_outputFilename)
     {
       if (![(NSString *)outputFilename isEqual:?])
       {
@@ -987,7 +987,7 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
     }
 
     outputDirectory = self->_outputDirectory;
-    if (outputDirectory | v5->_outputDirectory)
+    if (outputDirectory | equalCopy->_outputDirectory)
     {
       if (![(NSString *)outputDirectory isEqual:?])
       {
@@ -995,14 +995,14 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
       }
     }
 
-    v16 = [(SSLogConfig *)self subsystem];
-    if (v16 || ([(SSLogConfig *)v5 subsystem], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    subsystem = [(SSLogConfig *)self subsystem];
+    if (subsystem || ([(SSLogConfig *)equalCopy subsystem], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v17 = [(SSLogConfig *)self subsystem];
-      v18 = [(SSLogConfig *)v5 subsystem];
-      v19 = [v17 isEqual:v18];
+      subsystem2 = [(SSLogConfig *)self subsystem];
+      subsystem3 = [(SSLogConfig *)equalCopy subsystem];
+      v19 = [subsystem2 isEqual:subsystem3];
 
-      if (v16)
+      if (subsystem)
       {
 
         if (!v19)
@@ -1021,8 +1021,8 @@ void __29__SSLogConfig_logFileOptions__block_invoke_2(uint64_t a1)
       }
     }
 
-    v20 = [(SSLogConfig *)self writeToDisk];
-    v7 = v20 ^ [(SSLogConfig *)v5 writeToDisk]^ 1;
+    writeToDisk = [(SSLogConfig *)self writeToDisk];
+    v7 = writeToDisk ^ [(SSLogConfig *)equalCopy writeToDisk]^ 1;
     goto LABEL_5;
   }
 
@@ -1033,19 +1033,19 @@ LABEL_5:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[SSLogConfig allocWithZone:](SSLogConfig init];
-  v6 = [(SSLogConfig *)self category];
-  v7 = [v6 copyWithZone:a3];
+  category = [(SSLogConfig *)self category];
+  v7 = [category copyWithZone:zone];
   category = v5->_category;
   v5->_category = v7;
 
   v5->_environment = [(SSLogConfig *)self environment];
   objc_storeStrong(&v5->_outputDirectory, self->_outputDirectory);
   objc_storeStrong(&v5->_outputFilename, self->_outputFilename);
-  v9 = [(SSLogConfig *)self subsystem];
-  v10 = [v9 copyWithZone:a3];
+  subsystem = [(SSLogConfig *)self subsystem];
+  v10 = [subsystem copyWithZone:zone];
   subsystem = v5->_subsystem;
   v5->_subsystem = v10;
 
@@ -1053,32 +1053,32 @@ LABEL_5:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [(SSLogConfig *)+[SSMutableLogConfig allocWithZone:](SSMutableLogConfig init];
-  v6 = [(SSLogConfig *)self category];
-  v7 = [v6 copyWithZone:a3];
+  category = [(SSLogConfig *)self category];
+  v7 = [category copyWithZone:zone];
   [(SSLogConfig *)v5 setCategory:v7];
 
   [(SSLogConfig *)v5 setEnvironment:[(SSLogConfig *)self environment]];
   [(SSLogConfig *)v5 setOutputDirectory:self->_outputDirectory];
   [(SSLogConfig *)v5 setOutputFilename:self->_outputFilename];
-  v8 = [(SSLogConfig *)self subsystem];
-  v9 = [v8 copyWithZone:a3];
+  subsystem = [(SSLogConfig *)self subsystem];
+  v9 = [subsystem copyWithZone:zone];
   [(SSLogConfig *)v5 setSubsystem:v9];
 
   [(SSLogConfig *)v5 setWriteToDisk:[(SSLogConfig *)self writeToDisk]];
   return v5;
 }
 
-+ (id)_createLogConfigWithBaseConfig:(id)a3 subystem:(id)a4 category:(id)a5
++ (id)_createLogConfigWithBaseConfig:(id)config subystem:(id)subystem category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  configCopy = config;
+  subystemCopy = subystem;
+  categoryCopy = category;
+  if (configCopy)
   {
-    v10 = [v7 mutableCopy];
+    v10 = [configCopy mutableCopy];
   }
 
   else
@@ -1087,14 +1087,14 @@ LABEL_5:
   }
 
   v11 = v10;
-  if (v8)
+  if (subystemCopy)
   {
-    [(SSLogConfig *)v10 setSubsystem:v8];
+    [(SSLogConfig *)v10 setSubsystem:subystemCopy];
   }
 
-  if (v9)
+  if (categoryCopy)
   {
-    [(SSLogConfig *)v11 setCategory:v9];
+    [(SSLogConfig *)v11 setCategory:categoryCopy];
   }
 
   v12 = [(SSMutableLogConfig *)v11 copy];
@@ -1104,37 +1104,37 @@ LABEL_5:
 
 + (BOOL)_deviceIsRunningInternalOrSeedBuild
 {
-  if ([a1 _deviceIsRunningInternalBuild])
+  if ([self _deviceIsRunningInternalBuild])
   {
     return 1;
   }
 
-  return [a1 _deviceIsRunningSeedBuild];
+  return [self _deviceIsRunningSeedBuild];
 }
 
-+ (id)_logFileDirectoryPathForSubsystem:(id)a3 category:(id)a4
++ (id)_logFileDirectoryPathForSubsystem:(id)subsystem category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   if (_logFileDirectoryPathForSubsystem_category__ss_once_token___COUNTER__ != -1)
   {
     +[SSLogConfig _logFileDirectoryPathForSubsystem:category:];
   }
 
   v7 = _logFileDirectoryPathForSubsystem_category__ss_once_object___COUNTER__;
-  if ([v5 length])
+  if ([subsystemCopy length])
   {
-    v8 = [v5 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+    v8 = [subsystemCopy stringByReplacingOccurrencesOfString:@"." withString:@"_"];
 
     v9 = [v7 stringByAppendingPathComponent:v8];
 
-    if ([v6 length])
+    if ([categoryCopy length])
     {
-      v10 = [v6 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+      v10 = [categoryCopy stringByReplacingOccurrencesOfString:@"." withString:@"_"];
 
       v7 = [v9 stringByAppendingPathComponent:v10];
 
-      v6 = v10;
+      categoryCopy = v10;
     }
 
     else
@@ -1145,7 +1145,7 @@ LABEL_5:
 
   else
   {
-    v8 = v5;
+    v8 = subsystemCopy;
   }
 
   return v7;
@@ -1165,24 +1165,24 @@ void __58__SSLogConfig__logFileDirectoryPathForSubsystem_category___block_invoke
   _logFileDirectoryPathForSubsystem_category__ss_once_object___COUNTER__ = v2;
 }
 
-+ (id)_logFilenameForSubsystem:(id)a3 category:(id)a4
++ (id)_logFilenameForSubsystem:(id)subsystem category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  if ([subsystemCopy length])
   {
-    if ([v6 length])
+    if ([categoryCopy length])
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v5, v6];
+      categoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", subsystemCopy, categoryCopy];
     }
 
     else
     {
-      v7 = v5;
+      categoryCopy = subsystemCopy;
     }
 
-    v9 = v7;
-    v8 = [v7 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+    v9 = categoryCopy;
+    v8 = [categoryCopy stringByReplacingOccurrencesOfString:@"." withString:@"_"];
   }
 
   else

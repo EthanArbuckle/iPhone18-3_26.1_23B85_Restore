@@ -1,5 +1,5 @@
 @interface SearchUICardSectionCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHasAccessibleSubviews;
 - (BOOL)isAccessibilityElement;
 - (id)_axAccessibilityElements;
@@ -13,20 +13,20 @@
 
 @implementation SearchUICardSectionCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"TLKTextView" isKindOfClass:@"UITextView"];
-  [v3 validateClass:@"SearchUICardSectionCollectionViewCell" hasInstanceVariable:@"_cardSectionView" withType:"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUIDetailedRowCardSectionView"];
-  [v3 validateClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUICombinedCardSectionsView"];
-  [v3 validateClass:@"SearchUIMultiResultAppCollectionCell"];
-  [v3 validateClass:@"SearchUICircleButtonItemView"];
-  [v3 validateClass:@"FUFlightInfoView"];
-  [v3 validateClass:@"SearchUICircleButtonItemView" isKindOfClass:@"SearchUIButtonItemView"];
-  [v3 validateClass:@"SearchUIButtonItemView" hasInstanceVariable:@"_buttonTitle" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"TLKTextView" isKindOfClass:@"UITextView"];
+  [validationsCopy validateClass:@"SearchUICardSectionCollectionViewCell" hasInstanceVariable:@"_cardSectionView" withType:"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUIDetailedRowCardSectionView"];
+  [validationsCopy validateClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUICombinedCardSectionsView"];
+  [validationsCopy validateClass:@"SearchUIMultiResultAppCollectionCell"];
+  [validationsCopy validateClass:@"SearchUICircleButtonItemView"];
+  [validationsCopy validateClass:@"FUFlightInfoView"];
+  [validationsCopy validateClass:@"SearchUICircleButtonItemView" isKindOfClass:@"SearchUIButtonItemView"];
+  [validationsCopy validateClass:@"SearchUIButtonItemView" hasInstanceVariable:@"_buttonTitle" withType:"NSString"];
 }
 
 - (id)accessibilityElements
@@ -50,9 +50,9 @@
     v6 = [(SearchUICardSectionCollectionViewCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:v9];
     if (![v6 count])
     {
-      v7 = [(SearchUICardSectionCollectionViewCellAccessibility *)self _axAccessibilityElements];
+      _axAccessibilityElements = [(SearchUICardSectionCollectionViewCellAccessibility *)self _axAccessibilityElements];
 
-      v6 = v7;
+      v6 = _axAccessibilityElements;
     }
 
     [*v4 setObject:v6 forKeyedSubscript:v3];
@@ -135,20 +135,20 @@ BOOL __78__SearchUICardSectionCollectionViewCellAccessibility__axAccessibilityEl
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SearchUICardSectionCollectionViewCellAccessibility *)self accessibilityElements];
-  if ([v3 count])
+  accessibilityElements = [(SearchUICardSectionCollectionViewCellAccessibility *)self accessibilityElements];
+  if ([accessibilityElements count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [accessibilityElements objectAtIndexedSubscript:0];
     NSClassFromString(&cfstr_SwiftuiAccessi.isa);
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v7 = [v3 objectAtIndexedSubscript:0];
+      v7 = [accessibilityElements objectAtIndexedSubscript:0];
       NSClassFromString(&cfstr_Searchuiwebcar.isa);
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v3 count];
+        v8 = [accessibilityElements count];
 
         if (v8 == 1)
         {
@@ -161,7 +161,7 @@ BOOL __78__SearchUICardSectionCollectionViewCellAccessibility__axAccessibilityEl
       {
       }
 
-      v9 = [v3 objectAtIndexedSubscript:0];
+      v9 = [accessibilityElements objectAtIndexedSubscript:0];
       v6 = [v9 isAccessibilityElement] ^ 1;
 
       goto LABEL_10;
@@ -184,7 +184,7 @@ LABEL_10:
 {
   v6.receiver = self;
   v6.super_class = SearchUICardSectionCollectionViewCellAccessibility;
-  v3 = [(SearchUICardSectionCollectionViewCellAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(SearchUICardSectionCollectionViewCellAccessibility *)&v6 accessibilityTraits];
   if ([(SearchUICardSectionCollectionViewCellAccessibility *)self safeBoolForKey:@"isSelected"])
   {
     v4 = ~*MEMORY[0x29EDC7FC0];
@@ -195,12 +195,12 @@ LABEL_10:
     v4 = -1;
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(SearchUICardSectionCollectionViewCellAccessibility *)self accessibilityElements];
+  accessibilityElements = [(SearchUICardSectionCollectionViewCellAccessibility *)self accessibilityElements];
   v3 = MEMORY[0x29ED341C0]();
 
   return v3;
@@ -234,22 +234,22 @@ uint64_t __72__SearchUICardSectionCollectionViewCellAccessibility_accessibilityV
 
 - (id)automationCustomProperties
 {
-  v3 = [(SearchUICardSectionCollectionViewCellAccessibility *)self accessibilityElements];
-  v4 = v3;
-  if (v3 && [v3 count])
+  accessibilityElements = [(SearchUICardSectionCollectionViewCellAccessibility *)self accessibilityElements];
+  v4 = accessibilityElements;
+  if (accessibilityElements && [accessibilityElements count])
   {
     v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 automationCustomProperties];
+    automationCustomProperties = [v5 automationCustomProperties];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SearchUICardSectionCollectionViewCellAccessibility;
-    v6 = [(SearchUICardSectionCollectionViewCellAccessibility *)&v8 automationCustomProperties];
+    automationCustomProperties = [(SearchUICardSectionCollectionViewCellAccessibility *)&v8 automationCustomProperties];
   }
 
-  return v6;
+  return automationCustomProperties;
 }
 
 - (BOOL)_accessibilityHasAccessibleSubviews
@@ -299,7 +299,7 @@ uint64_t __89__SearchUICardSectionCollectionViewCellAccessibility__accessibility
 - (id)accessibilityCustomActions
 {
   v21 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   [(SearchUICardSectionCollectionViewCellAccessibility *)self _axCircleButtonViews];
   v16 = 0u;
   v17 = 0u;
@@ -328,7 +328,7 @@ uint64_t __89__SearchUICardSectionCollectionViewCellAccessibility__accessibility
         v15[3] = &unk_29F2F5040;
         v15[4] = v8;
         v11 = [v9 initWithName:v10 actionHandler:v15];
-        [v3 addObject:v11];
+        [array addObject:v11];
       }
 
       v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -339,7 +339,7 @@ uint64_t __89__SearchUICardSectionCollectionViewCellAccessibility__accessibility
 
   v12 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return array;
 }
 
 uint64_t __74__SearchUICardSectionCollectionViewCellAccessibility__axCircleButtonViews__block_invoke(uint64_t a1, void *a2)

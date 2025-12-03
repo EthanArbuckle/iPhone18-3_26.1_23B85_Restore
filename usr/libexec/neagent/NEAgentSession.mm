@@ -1,16 +1,16 @@
 @interface NEAgentSession
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)managerObject;
-- (id)managerObjectWithErrorHandler:(id)a3;
-- (void)disposeWithCompletionHandler:(id)a3;
-- (void)setupWithPluginType:(id)a3 pluginVersion:(int64_t)a4 pluginClass:(int64_t)a5 pluginInfo:(id)a6 completionHandler:(id)a7;
+- (id)managerObjectWithErrorHandler:(id)handler;
+- (void)disposeWithCompletionHandler:(id)handler;
+- (void)setupWithPluginType:(id)type pluginVersion:(int64_t)version pluginClass:(int64_t)class pluginInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation NEAgentSession
 
-- (id)managerObjectWithErrorHandler:(id)a3
+- (id)managerObjectWithErrorHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -21,7 +21,7 @@
     Property = 0;
   }
 
-  v7 = [Property remoteObjectProxyWithErrorHandler:v5];
+  v7 = [Property remoteObjectProxyWithErrorHandler:handlerCopy];
   if (!v7)
   {
     v8 = ne_log_obj();
@@ -39,14 +39,14 @@
 
 - (id)managerObject
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 32, 1);
   }
 
-  v3 = [(NEAgentSession *)self remoteObjectProxy];
-  if (!v3)
+  remoteObjectProxy = [(NEAgentSession *)self remoteObjectProxy];
+  if (!remoteObjectProxy)
   {
     v4 = ne_log_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -55,15 +55,15 @@
       _os_log_error_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "Failed to get the remote manager object", v7, 2u);
     }
 
-    sub_100015D40(v2, v5);
+    sub_100015D40(selfCopy, v5);
   }
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)disposeWithCompletionHandler:(id)a3
+- (void)disposeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -79,16 +79,16 @@
   v8[2] = sub_1000160C8;
   v8[3] = &unk_100024A98;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(Property, v8);
 }
 
-- (void)setupWithPluginType:(id)a3 pluginVersion:(int64_t)a4 pluginClass:(int64_t)a5 pluginInfo:(id)a6 completionHandler:(id)a7
+- (void)setupWithPluginType:(id)type pluginVersion:(int64_t)version pluginClass:(int64_t)class pluginInfo:(id)info completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v15 = a7;
+  typeCopy = type;
+  infoCopy = info;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v14, 16, 1);
@@ -103,21 +103,21 @@
   v20[1] = 3221225472;
   v20[2] = sub_1000163AC;
   v20[3] = &unk_100024A70;
-  v24 = a4;
-  v25 = a5;
+  versionCopy = version;
+  classCopy = class;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v23 = v15;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
+  v21 = typeCopy;
+  v22 = infoCopy;
+  v23 = handlerCopy;
+  v17 = infoCopy;
+  v18 = typeCopy;
+  v19 = handlerCopy;
   dispatch_async(Property, v20);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   delegateConnection = self->_delegateConnection;
   if (delegateConnection)
   {
@@ -138,16 +138,16 @@
     v16[4] = self;
     v9 = objc_retainBlock(v16);
     v11 = [objc_getProperty(self v10];
-    [v6 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
     v13 = [objc_getProperty(self v12];
-    [v6 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
-    [v6 setExportedObject:{objc_getProperty(self, v14, 8, 1)}];
-    [v6 setInvalidationHandler:v9];
-    [v6 setInterruptionHandler:v9];
-    objc_storeStrong(&self->_delegateConnection, a4);
-    [v6 resume];
+    [connectionCopy setExportedObject:{objc_getProperty(self, v14, 8, 1)}];
+    [connectionCopy setInvalidationHandler:v9];
+    [connectionCopy setInterruptionHandler:v9];
+    objc_storeStrong(&self->_delegateConnection, connection);
+    [connectionCopy resume];
   }
 
   return delegateConnection == 0;

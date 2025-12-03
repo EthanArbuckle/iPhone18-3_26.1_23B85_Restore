@@ -1,15 +1,15 @@
 @interface CCSetChangeRelayServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CCSetChangeRelayServer)initWithQueue:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CCSetChangeRelayServer)initWithQueue:(id)queue;
 - (void)activate;
-- (void)notifyChangeToSet:(id)a3 completion:(id)a4;
+- (void)notifyChangeToSet:(id)set completion:(id)completion;
 @end
 
 @implementation CCSetChangeRelayServer
 
-- (CCSetChangeRelayServer)initWithQueue:(id)a3
+- (CCSetChangeRelayServer)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CCSetChangeRelayServer;
   v5 = [(CCSetChangeRelayServer *)&v11 init];
@@ -19,7 +19,7 @@
     setChangeNotifier = v5->_setChangeNotifier;
     v5->_setChangeNotifier = v6;
 
-    v8 = [objc_alloc(MEMORY[0x1E698EA30]) initWithMachServiceName:@"com.apple.cascade.SetChangeRelayService" queue:v4];
+    v8 = [objc_alloc(MEMORY[0x1E698EA30]) initWithMachServiceName:@"com.apple.cascade.SetChangeRelayService" queue:queueCopy];
     listener = v5->_listener;
     v5->_listener = v8;
 
@@ -45,24 +45,24 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E698E9D8] processWithXPCConnection:v5];
+  connectionCopy = connection;
+  v6 = [MEMORY[0x1E698E9D8] processWithXPCConnection:connectionCopy];
   v7 = __biome_log_for_category();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [CCSetChangeRelayServer listener:v6 shouldAcceptNewConnection:v7];
   }
 
-  v8 = [v6 processType];
-  if (v8 == 5)
+  processType = [v6 processType];
+  if (processType == 5)
   {
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F2ED35F0];
     [v9 setClass:objc_opt_class() forSelector:sel_notifyChangeToSet_completion_ argumentIndex:0 ofReply:0];
-    [v5 setExportedInterface:v9];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v9];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   else
@@ -73,24 +73,24 @@
       [CCSetChangeRelayServer listener:v6 shouldAcceptNewConnection:v10];
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
-  return v8 == 5;
+  return processType == 5;
 }
 
-- (void)notifyChangeToSet:(id)a3 completion:(id)a4
+- (void)notifyChangeToSet:(id)set completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  completionCopy = completion;
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [CCSetChangeRelayServer notifyChangeToSet:v6 completion:v8];
+    [CCSetChangeRelayServer notifyChangeToSet:setCopy completion:v8];
   }
 
-  [(CCSetChangeXPCNotifier *)self->_setChangeNotifier notifyChangeToSet:v6];
-  v7[2](v7, 1);
+  [(CCSetChangeXPCNotifier *)self->_setChangeNotifier notifyChangeToSet:setCopy];
+  completionCopy[2](completionCopy, 1);
 }
 
 - (void)listener:(void *)a1 shouldAcceptNewConnection:(NSObject *)a2 .cold.1(void *a1, NSObject *a2)

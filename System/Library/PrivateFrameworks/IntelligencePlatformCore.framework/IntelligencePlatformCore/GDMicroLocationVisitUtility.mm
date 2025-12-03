@@ -1,16 +1,16 @@
 @interface GDMicroLocationVisitUtility
-- (GDMicroLocationVisitUtility)initWithMicroLocationVisitStream:(id)a3;
-- (id)lastMicroLocationVisitEventPriorTo:(id)a3;
-- (id)microLocationVisitEventPublisherFrom:(id)a3 to:(id)a4;
+- (GDMicroLocationVisitUtility)initWithMicroLocationVisitStream:(id)stream;
+- (id)lastMicroLocationVisitEventPriorTo:(id)to;
+- (id)microLocationVisitEventPublisherFrom:(id)from to:(id)to;
 @end
 
 @implementation GDMicroLocationVisitUtility
 
-- (id)microLocationVisitEventPublisherFrom:(id)a3 to:(id)a4
+- (id)microLocationVisitEventPublisherFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend__rawMicroLocationVisitEventPublisherFrom_to_reversed_(self, v8, v6, v7, 0);
+  fromCopy = from;
+  toCopy = to;
+  v9 = objc_msgSend__rawMicroLocationVisitEventPublisherFrom_to_reversed_(self, v8, fromCopy, toCopy, 0);
   v10 = objc_alloc(MEMORY[0x1E696AFB0]);
   v13 = objc_msgSend_initWithUUIDBytes_(v10, v11, &unk_1C4F84171, v12);
   v17 = objc_msgSend_UUIDString(v13, v14, v15, v16);
@@ -37,10 +37,10 @@
   return v25;
 }
 
-- (id)lastMicroLocationVisitEventPriorTo:(id)a3
+- (id)lastMicroLocationVisitEventPriorTo:(id)to
 {
-  v4 = a3;
-  v6 = objc_msgSend__rawMicroLocationVisitEventPublisherFrom_to_reversed_(self, v5, v4, 0, 1);
+  toCopy = to;
+  v6 = objc_msgSend__rawMicroLocationVisitEventPublisherFrom_to_reversed_(self, v5, toCopy, 0, 1);
   v7 = objc_alloc(MEMORY[0x1E696AFB0]);
   v10 = objc_msgSend_initWithUUIDBytes_(v7, v8, &unk_1C4F84171, v9);
   v14 = objc_msgSend_UUIDString(v10, v11, v12, v13);
@@ -95,16 +95,16 @@
   return isEnter;
 }
 
-- (GDMicroLocationVisitUtility)initWithMicroLocationVisitStream:(id)a3
+- (GDMicroLocationVisitUtility)initWithMicroLocationVisitStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = GDMicroLocationVisitUtility;
   v6 = [(GDMicroLocationVisitUtility *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_microLocationVisitStream, a3);
+    objc_storeStrong(&v6->_microLocationVisitStream, stream);
   }
 
   return v7;

@@ -1,27 +1,27 @@
 @interface OPTTSMutableTextToSpeechRequestContext
 - (OPTTSMutableTextToSpeechRequestContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContext_info:(id)a3;
-- (void)setDialog_identifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContext_info:(id)context_info;
+- (void)setDialog_identifier:(id)dialog_identifier;
 @end
 
 @implementation OPTTSMutableTextToSpeechRequestContext
 
-- (void)setDialog_identifier:(id)a3
+- (void)setDialog_identifier:(id)dialog_identifier
 {
-  v4 = [a3 copy];
+  v4 = [dialog_identifier copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setContext_info:(id)a3
+- (void)setContext_info:(id)context_info
 {
-  v4 = [a3 copy];
+  v4 = [context_info copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -36,9 +36,9 @@
   v2 = [(OPTTSMutableTextToSpeechRequestContext *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

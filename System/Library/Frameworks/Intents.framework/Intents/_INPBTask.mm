@@ -1,94 +1,94 @@
 @interface _INPBTask
-- (BOOL)isEqual:(id)a3;
-- (_INPBTask)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBTask)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsPriority:(id)a3;
-- (int)StringAsStatus:(id)a3;
-- (int)StringAsTaskType:(id)a3;
+- (int)StringAsPriority:(id)priority;
+- (int)StringAsStatus:(id)status;
+- (int)StringAsTaskType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)setHasTaskReference:(BOOL)a3;
-- (void)setHasTaskType:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setParentIdentifier:(id)a3;
-- (void)setPriority:(int)a3;
-- (void)setStatus:(int)a3;
-- (void)setTaskReference:(int)a3;
-- (void)setTaskType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasStatus:(BOOL)status;
+- (void)setHasTaskReference:(BOOL)reference;
+- (void)setHasTaskType:(BOOL)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setParentIdentifier:(id)identifier;
+- (void)setPriority:(int)priority;
+- (void)setStatus:(int)status;
+- (void)setTaskReference:(int)reference;
+- (void)setTaskType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBTask
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBTask *)self contactEventTrigger];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"contactEventTrigger"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  contactEventTrigger = [(_INPBTask *)self contactEventTrigger];
+  dictionaryRepresentation = [contactEventTrigger dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contactEventTrigger"];
 
-  v6 = [(_INPBTask *)self createdDateTime];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"createdDateTime"];
+  createdDateTime = [(_INPBTask *)self createdDateTime];
+  dictionaryRepresentation2 = [createdDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"createdDateTime"];
 
   if (self->_identifier)
   {
-    v8 = [(_INPBTask *)self identifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBTask *)self identifier];
+    v9 = [identifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"identifier"];
   }
 
-  v10 = [(_INPBTask *)self modifiedDateTime];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"modifiedDateTime"];
+  modifiedDateTime = [(_INPBTask *)self modifiedDateTime];
+  dictionaryRepresentation3 = [modifiedDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"modifiedDateTime"];
 
   if (self->_parentIdentifier)
   {
-    v12 = [(_INPBTask *)self parentIdentifier];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"parentIdentifier"];
+    parentIdentifier = [(_INPBTask *)self parentIdentifier];
+    v13 = [parentIdentifier copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"parentIdentifier"];
   }
 
   if ([(_INPBTask *)self hasPriority])
   {
-    v14 = [(_INPBTask *)self priority];
-    if (v14 >= 3)
+    priority = [(_INPBTask *)self priority];
+    if (priority >= 3)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", priority];
     }
 
     else
     {
-      v15 = *(&off_1E7283308 + v14);
+      v15 = *(&off_1E7283308 + priority);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"priority"];
+    [dictionary setObject:v15 forKeyedSubscript:@"priority"];
   }
 
-  v16 = [(_INPBTask *)self spatialEventTrigger];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"spatialEventTrigger"];
+  spatialEventTrigger = [(_INPBTask *)self spatialEventTrigger];
+  dictionaryRepresentation4 = [spatialEventTrigger dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"spatialEventTrigger"];
 
   if ([(_INPBTask *)self hasStatus])
   {
-    v18 = [(_INPBTask *)self status];
-    if (v18)
+    status = [(_INPBTask *)self status];
+    if (status)
     {
-      if (v18 == 20)
+      if (status == 20)
       {
         v19 = @"COMPLETED";
       }
 
-      else if (v18 == 10)
+      else if (status == 10)
       {
         v19 = @"NOT_COMPLETED";
       }
 
       else
       {
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v18];
+        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", status];
       }
     }
 
@@ -97,15 +97,15 @@
       v19 = @"UNKNOWN_STATUS";
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"status"];
+    [dictionary setObject:v19 forKeyedSubscript:@"status"];
   }
 
   if ([(_INPBTask *)self hasTaskReference])
   {
-    v20 = [(_INPBTask *)self taskReference];
-    if (v20)
+    taskReference = [(_INPBTask *)self taskReference];
+    if (taskReference)
     {
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", taskReference];
     }
 
     else
@@ -113,27 +113,27 @@
       v21 = @"CURRENT_ACTIVITY";
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"taskReference"];
+    [dictionary setObject:v21 forKeyedSubscript:@"taskReference"];
   }
 
   if ([(_INPBTask *)self hasTaskType])
   {
-    v22 = [(_INPBTask *)self taskType];
-    if (v22)
+    taskType = [(_INPBTask *)self taskType];
+    if (taskType)
     {
-      if (v22 == 20)
+      if (taskType == 20)
       {
         v23 = @"COMPLETABLE";
       }
 
-      else if (v22 == 10)
+      else if (taskType == 10)
       {
         v23 = @"NOT_COMPLETABLE";
       }
 
       else
       {
-        v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v22];
+        v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", taskType];
       }
     }
 
@@ -142,18 +142,18 @@
       v23 = @"UNKNOWN_TASK_TYPE";
     }
 
-    [v3 setObject:v23 forKeyedSubscript:@"taskType"];
+    [dictionary setObject:v23 forKeyedSubscript:@"taskType"];
   }
 
-  v24 = [(_INPBTask *)self temporalEventTrigger];
-  v25 = [v24 dictionaryRepresentation];
-  [v3 setObject:v25 forKeyedSubscript:@"temporalEventTrigger"];
+  temporalEventTrigger = [(_INPBTask *)self temporalEventTrigger];
+  dictionaryRepresentation5 = [temporalEventTrigger dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"temporalEventTrigger"];
 
-  v26 = [(_INPBTask *)self title];
-  v27 = [v26 dictionaryRepresentation];
-  [v3 setObject:v27 forKeyedSubscript:@"title"];
+  title = [(_INPBTask *)self title];
+  dictionaryRepresentation6 = [title dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"title"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -209,28 +209,28 @@
   return v12 ^ v13 ^ [(_INPBDataString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
-  v5 = [(_INPBTask *)self contactEventTrigger];
-  v6 = [v4 contactEventTrigger];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self contactEventTrigger];
+  contactEventTrigger2 = [equalCopy contactEventTrigger];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v7 = [(_INPBTask *)self contactEventTrigger];
-  if (v7)
+  contactEventTrigger3 = [(_INPBTask *)self contactEventTrigger];
+  if (contactEventTrigger3)
   {
-    v8 = v7;
-    v9 = [(_INPBTask *)self contactEventTrigger];
-    v10 = [v4 contactEventTrigger];
-    v11 = [v9 isEqual:v10];
+    v8 = contactEventTrigger3;
+    contactEventTrigger4 = [(_INPBTask *)self contactEventTrigger];
+    contactEventTrigger5 = [equalCopy contactEventTrigger];
+    v11 = [contactEventTrigger4 isEqual:contactEventTrigger5];
 
     if (!v11)
     {
@@ -242,20 +242,20 @@
   {
   }
 
-  v5 = [(_INPBTask *)self createdDateTime];
-  v6 = [v4 createdDateTime];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self createdDateTime];
+  contactEventTrigger2 = [equalCopy createdDateTime];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v12 = [(_INPBTask *)self createdDateTime];
-  if (v12)
+  createdDateTime = [(_INPBTask *)self createdDateTime];
+  if (createdDateTime)
   {
-    v13 = v12;
-    v14 = [(_INPBTask *)self createdDateTime];
-    v15 = [v4 createdDateTime];
-    v16 = [v14 isEqual:v15];
+    v13 = createdDateTime;
+    createdDateTime2 = [(_INPBTask *)self createdDateTime];
+    createdDateTime3 = [equalCopy createdDateTime];
+    v16 = [createdDateTime2 isEqual:createdDateTime3];
 
     if (!v16)
     {
@@ -267,20 +267,20 @@
   {
   }
 
-  v5 = [(_INPBTask *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self identifier];
+  contactEventTrigger2 = [equalCopy identifier];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v17 = [(_INPBTask *)self identifier];
-  if (v17)
+  identifier = [(_INPBTask *)self identifier];
+  if (identifier)
   {
-    v18 = v17;
-    v19 = [(_INPBTask *)self identifier];
-    v20 = [v4 identifier];
-    v21 = [v19 isEqual:v20];
+    v18 = identifier;
+    identifier2 = [(_INPBTask *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v21 = [identifier2 isEqual:identifier3];
 
     if (!v21)
     {
@@ -292,20 +292,20 @@
   {
   }
 
-  v5 = [(_INPBTask *)self modifiedDateTime];
-  v6 = [v4 modifiedDateTime];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self modifiedDateTime];
+  contactEventTrigger2 = [equalCopy modifiedDateTime];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v22 = [(_INPBTask *)self modifiedDateTime];
-  if (v22)
+  modifiedDateTime = [(_INPBTask *)self modifiedDateTime];
+  if (modifiedDateTime)
   {
-    v23 = v22;
-    v24 = [(_INPBTask *)self modifiedDateTime];
-    v25 = [v4 modifiedDateTime];
-    v26 = [v24 isEqual:v25];
+    v23 = modifiedDateTime;
+    modifiedDateTime2 = [(_INPBTask *)self modifiedDateTime];
+    modifiedDateTime3 = [equalCopy modifiedDateTime];
+    v26 = [modifiedDateTime2 isEqual:modifiedDateTime3];
 
     if (!v26)
     {
@@ -317,20 +317,20 @@
   {
   }
 
-  v5 = [(_INPBTask *)self parentIdentifier];
-  v6 = [v4 parentIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self parentIdentifier];
+  contactEventTrigger2 = [equalCopy parentIdentifier];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v27 = [(_INPBTask *)self parentIdentifier];
-  if (v27)
+  parentIdentifier = [(_INPBTask *)self parentIdentifier];
+  if (parentIdentifier)
   {
-    v28 = v27;
-    v29 = [(_INPBTask *)self parentIdentifier];
-    v30 = [v4 parentIdentifier];
-    v31 = [v29 isEqual:v30];
+    v28 = parentIdentifier;
+    parentIdentifier2 = [(_INPBTask *)self parentIdentifier];
+    parentIdentifier3 = [equalCopy parentIdentifier];
+    v31 = [parentIdentifier2 isEqual:parentIdentifier3];
 
     if (!v31)
     {
@@ -342,38 +342,38 @@
   {
   }
 
-  v32 = [(_INPBTask *)self hasPriority];
-  if (v32 != [v4 hasPriority])
+  hasPriority = [(_INPBTask *)self hasPriority];
+  if (hasPriority != [equalCopy hasPriority])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBTask *)self hasPriority])
   {
-    if ([v4 hasPriority])
+    if ([equalCopy hasPriority])
     {
       priority = self->_priority;
-      if (priority != [v4 priority])
+      if (priority != [equalCopy priority])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v5 = [(_INPBTask *)self spatialEventTrigger];
-  v6 = [v4 spatialEventTrigger];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self spatialEventTrigger];
+  contactEventTrigger2 = [equalCopy spatialEventTrigger];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v34 = [(_INPBTask *)self spatialEventTrigger];
-  if (v34)
+  spatialEventTrigger = [(_INPBTask *)self spatialEventTrigger];
+  if (spatialEventTrigger)
   {
-    v35 = v34;
-    v36 = [(_INPBTask *)self spatialEventTrigger];
-    v37 = [v4 spatialEventTrigger];
-    v38 = [v36 isEqual:v37];
+    v35 = spatialEventTrigger;
+    spatialEventTrigger2 = [(_INPBTask *)self spatialEventTrigger];
+    spatialEventTrigger3 = [equalCopy spatialEventTrigger];
+    v38 = [spatialEventTrigger2 isEqual:spatialEventTrigger3];
 
     if (!v38)
     {
@@ -385,74 +385,74 @@
   {
   }
 
-  v39 = [(_INPBTask *)self hasStatus];
-  if (v39 != [v4 hasStatus])
+  hasStatus = [(_INPBTask *)self hasStatus];
+  if (hasStatus != [equalCopy hasStatus])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBTask *)self hasStatus])
   {
-    if ([v4 hasStatus])
+    if ([equalCopy hasStatus])
     {
       status = self->_status;
-      if (status != [v4 status])
+      if (status != [equalCopy status])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v41 = [(_INPBTask *)self hasTaskReference];
-  if (v41 != [v4 hasTaskReference])
+  hasTaskReference = [(_INPBTask *)self hasTaskReference];
+  if (hasTaskReference != [equalCopy hasTaskReference])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBTask *)self hasTaskReference])
   {
-    if ([v4 hasTaskReference])
+    if ([equalCopy hasTaskReference])
     {
       taskReference = self->_taskReference;
-      if (taskReference != [v4 taskReference])
+      if (taskReference != [equalCopy taskReference])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v43 = [(_INPBTask *)self hasTaskType];
-  if (v43 != [v4 hasTaskType])
+  hasTaskType = [(_INPBTask *)self hasTaskType];
+  if (hasTaskType != [equalCopy hasTaskType])
   {
     goto LABEL_58;
   }
 
   if ([(_INPBTask *)self hasTaskType])
   {
-    if ([v4 hasTaskType])
+    if ([equalCopy hasTaskType])
     {
       taskType = self->_taskType;
-      if (taskType != [v4 taskType])
+      if (taskType != [equalCopy taskType])
       {
         goto LABEL_58;
       }
     }
   }
 
-  v5 = [(_INPBTask *)self temporalEventTrigger];
-  v6 = [v4 temporalEventTrigger];
-  if ((v5 != 0) == (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self temporalEventTrigger];
+  contactEventTrigger2 = [equalCopy temporalEventTrigger];
+  if ((contactEventTrigger != 0) == (contactEventTrigger2 == 0))
   {
     goto LABEL_57;
   }
 
-  v45 = [(_INPBTask *)self temporalEventTrigger];
-  if (v45)
+  temporalEventTrigger = [(_INPBTask *)self temporalEventTrigger];
+  if (temporalEventTrigger)
   {
-    v46 = v45;
-    v47 = [(_INPBTask *)self temporalEventTrigger];
-    v48 = [v4 temporalEventTrigger];
-    v49 = [v47 isEqual:v48];
+    v46 = temporalEventTrigger;
+    temporalEventTrigger2 = [(_INPBTask *)self temporalEventTrigger];
+    temporalEventTrigger3 = [equalCopy temporalEventTrigger];
+    v49 = [temporalEventTrigger2 isEqual:temporalEventTrigger3];
 
     if (!v49)
     {
@@ -464,12 +464,12 @@
   {
   }
 
-  v5 = [(_INPBTask *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  contactEventTrigger = [(_INPBTask *)self title];
+  contactEventTrigger2 = [equalCopy title];
+  if ((contactEventTrigger != 0) != (contactEventTrigger2 == 0))
   {
-    v50 = [(_INPBTask *)self title];
-    if (!v50)
+    title = [(_INPBTask *)self title];
+    if (!title)
     {
 
 LABEL_61:
@@ -477,10 +477,10 @@ LABEL_61:
       goto LABEL_59;
     }
 
-    v51 = v50;
-    v52 = [(_INPBTask *)self title];
-    v53 = [v4 title];
-    v54 = [v52 isEqual:v53];
+    v51 = title;
+    title2 = [(_INPBTask *)self title];
+    title3 = [equalCopy title];
+    v54 = [title2 isEqual:title3];
 
     if (v54)
     {
@@ -500,22 +500,22 @@ LABEL_59:
   return v55;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBTask allocWithZone:](_INPBTask init];
-  v6 = [(_INPBContactEventTrigger *)self->_contactEventTrigger copyWithZone:a3];
+  v6 = [(_INPBContactEventTrigger *)self->_contactEventTrigger copyWithZone:zone];
   [(_INPBTask *)v5 setContactEventTrigger:v6];
 
-  v7 = [(_INPBDateTime *)self->_createdDateTime copyWithZone:a3];
+  v7 = [(_INPBDateTime *)self->_createdDateTime copyWithZone:zone];
   [(_INPBTask *)v5 setCreatedDateTime:v7];
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBTask *)v5 setIdentifier:v8];
 
-  v9 = [(_INPBDateTime *)self->_modifiedDateTime copyWithZone:a3];
+  v9 = [(_INPBDateTime *)self->_modifiedDateTime copyWithZone:zone];
   [(_INPBTask *)v5 setModifiedDateTime:v9];
 
-  v10 = [(NSString *)self->_parentIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_parentIdentifier copyWithZone:zone];
   [(_INPBTask *)v5 setParentIdentifier:v10];
 
   if ([(_INPBTask *)self hasPriority])
@@ -523,7 +523,7 @@ LABEL_59:
     [(_INPBTask *)v5 setPriority:[(_INPBTask *)self priority]];
   }
 
-  v11 = [(_INPBSpatialEventTrigger *)self->_spatialEventTrigger copyWithZone:a3];
+  v11 = [(_INPBSpatialEventTrigger *)self->_spatialEventTrigger copyWithZone:zone];
   [(_INPBTask *)v5 setSpatialEventTrigger:v11];
 
   if ([(_INPBTask *)self hasStatus])
@@ -541,77 +541,77 @@ LABEL_59:
     [(_INPBTask *)v5 setTaskType:[(_INPBTask *)self taskType]];
   }
 
-  v12 = [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger copyWithZone:a3];
+  v12 = [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger copyWithZone:zone];
   [(_INPBTask *)v5 setTemporalEventTrigger:v12];
 
-  v13 = [(_INPBDataString *)self->_title copyWithZone:a3];
+  v13 = [(_INPBDataString *)self->_title copyWithZone:zone];
   [(_INPBTask *)v5 setTitle:v13];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBTask *)self data];
+  coderCopy = coder;
+  data = [(_INPBTask *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBTask)initWithCoder:(id)a3
+- (_INPBTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBTask *)self initWithData:v6];
+    self = [(_INPBTask *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(_INPBTask *)self contactEventTrigger];
+  toCopy = to;
+  contactEventTrigger = [(_INPBTask *)self contactEventTrigger];
 
-  if (v4)
+  if (contactEventTrigger)
   {
-    v5 = [(_INPBTask *)self contactEventTrigger];
+    contactEventTrigger2 = [(_INPBTask *)self contactEventTrigger];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBTask *)self createdDateTime];
+  createdDateTime = [(_INPBTask *)self createdDateTime];
 
-  if (v6)
+  if (createdDateTime)
   {
-    v7 = [(_INPBTask *)self createdDateTime];
+    createdDateTime2 = [(_INPBTask *)self createdDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBTask *)self identifier];
+  identifier = [(_INPBTask *)self identifier];
 
-  if (v8)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBTask *)self modifiedDateTime];
+  modifiedDateTime = [(_INPBTask *)self modifiedDateTime];
 
-  if (v10)
+  if (modifiedDateTime)
   {
-    v11 = [(_INPBTask *)self modifiedDateTime];
+    modifiedDateTime2 = [(_INPBTask *)self modifiedDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBTask *)self parentIdentifier];
+  parentIdentifier = [(_INPBTask *)self parentIdentifier];
 
-  if (v12)
+  if (parentIdentifier)
   {
     parentIdentifier = self->_parentIdentifier;
     PBDataWriterWriteStringField();
@@ -623,11 +623,11 @@ LABEL_59:
     PBDataWriterWriteInt32Field();
   }
 
-  v15 = [(_INPBTask *)self spatialEventTrigger];
+  spatialEventTrigger = [(_INPBTask *)self spatialEventTrigger];
 
-  if (v15)
+  if (spatialEventTrigger)
   {
-    v16 = [(_INPBTask *)self spatialEventTrigger];
+    spatialEventTrigger2 = [(_INPBTask *)self spatialEventTrigger];
     PBDataWriterWriteSubmessage();
   }
 
@@ -649,40 +649,40 @@ LABEL_59:
     PBDataWriterWriteInt32Field();
   }
 
-  v20 = [(_INPBTask *)self temporalEventTrigger];
+  temporalEventTrigger = [(_INPBTask *)self temporalEventTrigger];
 
-  if (v20)
+  if (temporalEventTrigger)
   {
-    v21 = [(_INPBTask *)self temporalEventTrigger];
+    temporalEventTrigger2 = [(_INPBTask *)self temporalEventTrigger];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_INPBTask *)self title];
+  title = [(_INPBTask *)self title];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (title)
   {
-    v24 = [(_INPBTask *)self title];
+    title2 = [(_INPBTask *)self title];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
-- (int)StringAsTaskType:(id)a3
+- (int)StringAsTaskType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TASK_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TASK_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_COMPLETABLE"])
+  else if ([typeCopy isEqualToString:@"NOT_COMPLETABLE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETABLE"])
+  else if ([typeCopy isEqualToString:@"COMPLETABLE"])
   {
     v4 = 20;
   }
@@ -695,9 +695,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)setHasTaskType:(BOOL)a3
+- (void)setHasTaskType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -710,10 +710,10 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setTaskType:(int)a3
+- (void)setTaskType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -721,13 +721,13 @@ LABEL_59:
   else
   {
     *&self->_has = has | 8;
-    self->_taskType = a3;
+    self->_taskType = type;
   }
 }
 
-- (void)setHasTaskReference:(BOOL)a3
+- (void)setHasTaskReference:(BOOL)reference
 {
-  if (a3)
+  if (reference)
   {
     v3 = 4;
   }
@@ -740,10 +740,10 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setTaskReference:(int)a3
+- (void)setTaskReference:(int)reference
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reference == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -751,24 +751,24 @@ LABEL_59:
   else
   {
     *&self->_has = has | 4;
-    self->_taskReference = a3;
+    self->_taskReference = reference;
   }
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_STATUS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_COMPLETED"])
+  else if ([statusCopy isEqualToString:@"NOT_COMPLETED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 20;
   }
@@ -781,9 +781,9 @@ LABEL_59:
   return v4;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -796,10 +796,10 @@ LABEL_59:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (status == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -807,24 +807,24 @@ LABEL_59:
   else
   {
     *&self->_has = has | 2;
-    self->_status = a3;
+    self->_status = status;
   }
 }
 
-- (int)StringAsPriority:(id)a3
+- (int)StringAsPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PRIORITY"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"UNKNOWN_PRIORITY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOT_FLAGGED"])
+  else if ([priorityCopy isEqualToString:@"NOT_FLAGGED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([priorityCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 2;
   }
@@ -837,10 +837,10 @@ LABEL_59:
   return v4;
 }
 
-- (void)setPriority:(int)a3
+- (void)setPriority:(int)priority
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (priority == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -848,22 +848,22 @@ LABEL_59:
   else
   {
     *&self->_has = has | 1;
-    self->_priority = a3;
+    self->_priority = priority;
   }
 }
 
-- (void)setParentIdentifier:(id)a3
+- (void)setParentIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   parentIdentifier = self->_parentIdentifier;
   self->_parentIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, parentIdentifier);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

@@ -1,23 +1,23 @@
 @interface _SFSiriReaderPlaybackPositionAndStateControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)prepareStepper:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)prepareStepper:(id)stepper;
 @end
 
 @implementation _SFSiriReaderPlaybackPositionAndStateControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFSiriReaderPlaybackPositionAndStateController" hasInstanceVariable:@"_stepper" withType:"<_SFSettingsAlertStepperConfiguration>"];
-  [v3 validateClass:@"_SFSiriReaderPlaybackPositionAndStateController" hasInstanceMethod:@"prepareStepper:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFSiriReaderPlaybackPositionAndStateController" hasInstanceVariable:@"_isPlaying" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFSiriReaderPlaybackPositionAndStateController" hasInstanceVariable:@"_stepper" withType:"<_SFSettingsAlertStepperConfiguration>"];
+  [validationsCopy validateClass:@"_SFSiriReaderPlaybackPositionAndStateController" hasInstanceMethod:@"prepareStepper:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFSiriReaderPlaybackPositionAndStateController" hasInstanceVariable:@"_isPlaying" withType:"BOOL"];
 }
 
-- (void)prepareStepper:(id)a3
+- (void)prepareStepper:(id)stepper
 {
   v10.receiver = self;
   v10.super_class = _SFSiriReaderPlaybackPositionAndStateControllerAccessibility;
-  [(_SFSiriReaderPlaybackPositionAndStateControllerAccessibility *)&v10 prepareStepper:a3];
+  [(_SFSiriReaderPlaybackPositionAndStateControllerAccessibility *)&v10 prepareStepper:stepper];
   v4 = accessibilitySafariServicesLocalizedString(@"reader.playback");
   v5 = [(_SFSiriReaderPlaybackPositionAndStateControllerAccessibility *)self safeUIViewForKey:@"_stepper"];
   [v5 setAccessibilityLabel:v4];

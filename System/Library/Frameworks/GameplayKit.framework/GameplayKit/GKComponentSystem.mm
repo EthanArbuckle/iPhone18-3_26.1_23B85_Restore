@@ -1,11 +1,11 @@
 @interface GKComponentSystem
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (GKComponentSystem)initWithComponentClass:(Class)cls;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)performSelector:(SEL)a3 withObject:(id)a4;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)performSelector:(SEL)selector withObject:(id)object;
 - (void)addComponent:(id)component;
 - (void)addComponentWithEntity:(GKEntity *)entity;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)removeComponent:(id)component;
 - (void)removeComponentWithEntity:(GKEntity *)entity;
 - (void)updateWithDeltaTime:(NSTimeInterval)seconds;
@@ -137,13 +137,13 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4
+- (id)performSelector:(SEL)selector withObject:(id)object
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(objc_class *)self->_componentClass instancesRespondToSelector:a3])
+  objectCopy = object;
+  if ([(objc_class *)self->_componentClass instancesRespondToSelector:selector])
   {
-    v7 = [(objc_class *)self->_componentClass instanceMethodForSelector:a3];
+    v7 = [(objc_class *)self->_componentClass instanceMethodForSelector:selector];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -163,7 +163,7 @@
             objc_enumerationMutation(v8);
           }
 
-          v7(*(*(&v17 + 1) + 8 * i), a3, v6);
+          v7(*(*(&v17 + 1) + 8 * i), selector, objectCopy);
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -179,7 +179,7 @@
   {
     v16.receiver = self;
     v16.super_class = GKComponentSystem;
-    v13 = [(GKComponentSystem *)&v16 performSelector:a3 withObject:v6];
+    v13 = [(GKComponentSystem *)&v16 performSelector:selector withObject:objectCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -187,7 +187,7 @@
   return v13;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = GKComponentSystem;
@@ -198,16 +198,16 @@
 
   else
   {
-    return [(objc_class *)self->_componentClass instancesRespondToSelector:a3];
+    return [(objc_class *)self->_componentClass instancesRespondToSelector:selector];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   if ([(NSMutableArray *)self->_components count])
   {
     v5 = [(NSMutableArray *)self->_components objectAtIndexedSubscript:0];
-    v6 = [v5 methodSignatureForSelector:a3];
+    v6 = [v5 methodSignatureForSelector:selector];
 
     v7 = v6;
   }
@@ -220,10 +220,10 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invocationCopy = invocation;
   if ([(NSMutableArray *)self->_components count])
   {
     v14 = 0u;
@@ -246,7 +246,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [v4 invokeWithTarget:*(*(&v12 + 1) + 8 * v9++)];
+          [invocationCopy invokeWithTarget:*(*(&v12 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
@@ -261,7 +261,7 @@
   {
     v11.receiver = self;
     v11.super_class = GKComponentSystem;
-    [(GKComponentSystem *)&v11 forwardInvocation:v4];
+    [(GKComponentSystem *)&v11 forwardInvocation:invocationCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];

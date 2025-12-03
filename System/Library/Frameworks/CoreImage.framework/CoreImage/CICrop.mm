@@ -1,6 +1,6 @@
 @interface CICrop
 + (id)customAttributes;
-- (id)_initFromProperties:(id)a3;
+- (id)_initFromProperties:(id)properties;
 - (id)_outputProperties;
 - (id)outputImage;
 @end
@@ -72,13 +72,13 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:4];
 }
 
-- (id)_initFromProperties:(id)a3
+- (id)_initFromProperties:(id)properties
 {
   v8 = 0.0;
   v9 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if (metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropX", &v9) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropY", &v8) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropW", &v7) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropH", &v6))
+  if (metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropX", &v9) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropY", &v8) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropW", &v7) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"CropH", &v6))
   {
     [(CICrop *)self setInputRectangle:[CIVector vectorWithX:v9 Y:v8 Z:v7 W:v6]];
   }

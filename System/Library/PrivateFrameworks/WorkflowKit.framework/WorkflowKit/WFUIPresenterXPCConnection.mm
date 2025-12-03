@@ -1,19 +1,19 @@
 @interface WFUIPresenterXPCConnection
-- (WFUIPresenterXPCConnection)initWithConnection:(id)a3;
-- (WFUIPresenterXPCConnection)initWithEndpoint:(id)a3;
-- (WFUIPresenterXPCConnection)initWithMachServiceName:(id)a3;
-- (WFUIPresenterXPCConnection)initWithServiceName:(id)a3;
-- (id)presenterWithErrorHandler:(id)a3;
-- (id)synchronousPresenterWithErrorHandler:(id)a3;
+- (WFUIPresenterXPCConnection)initWithConnection:(id)connection;
+- (WFUIPresenterXPCConnection)initWithEndpoint:(id)endpoint;
+- (WFUIPresenterXPCConnection)initWithMachServiceName:(id)name;
+- (WFUIPresenterXPCConnection)initWithServiceName:(id)name;
+- (id)presenterWithErrorHandler:(id)handler;
+- (id)synchronousPresenterWithErrorHandler:(id)handler;
 - (void)resumeConnectionIfNecessary;
-- (void)setHost:(id)a3;
+- (void)setHost:(id)host;
 @end
 
 @implementation WFUIPresenterXPCConnection
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -21,32 +21,32 @@
   aBlock[3] = &unk_1E837FA70;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  self->_host = v4;
-  [(NSXPCConnection *)self->_connection setExportedObject:v4];
+  self->_host = hostCopy;
+  [(NSXPCConnection *)self->_connection setExportedObject:hostCopy];
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4AAD268];
   [(NSXPCConnection *)self->_connection setExportedInterface:v6];
 
   v5[2](v5);
 }
 
-- (id)synchronousPresenterWithErrorHandler:(id)a3
+- (id)synchronousPresenterWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WFUIPresenterXPCConnection *)self resumeConnectionIfNecessary];
-  [(WFUIPresenterXPCConnection *)self setErrorHandler:v4];
-  v5 = [(WFUIPresenterXPCConnection *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  [(WFUIPresenterXPCConnection *)self setErrorHandler:handlerCopy];
+  connection = [(WFUIPresenterXPCConnection *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)presenterWithErrorHandler:(id)a3
+- (id)presenterWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WFUIPresenterXPCConnection *)self resumeConnectionIfNecessary];
-  [(WFUIPresenterXPCConnection *)self setErrorHandler:v4];
-  v5 = [(WFUIPresenterXPCConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  [(WFUIPresenterXPCConnection *)self setErrorHandler:handlerCopy];
+  connection = [(WFUIPresenterXPCConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -62,8 +62,8 @@
   v3 = _Block_copy(aBlock);
   if (![(WFUIPresenterXPCConnection *)self connected])
   {
-    v4 = [(WFUIPresenterXPCConnection *)self connection];
-    [v4 resume];
+    connection = [(WFUIPresenterXPCConnection *)self connection];
+    [connection resume];
 
     [(WFUIPresenterXPCConnection *)self setConnected:1];
   }
@@ -71,9 +71,9 @@
   v3[2](v3);
 }
 
-- (WFUIPresenterXPCConnection)initWithConnection:(id)a3
+- (WFUIPresenterXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = WFUIPresenterXPCConnection;
   v6 = [(WFUIPresenterXPCConnection *)&v17 init];
@@ -81,7 +81,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     [(NSXPCConnection *)v7->_connection setInvalidationHandler:&__block_literal_global_172_22695];
     objc_initWeak(&location, v7);
     v11 = MEMORY[0x1E69E9820];
@@ -132,31 +132,31 @@ void __49__WFUIPresenterXPCConnection_initWithConnection___block_invoke()
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (WFUIPresenterXPCConnection)initWithServiceName:(id)a3
+- (WFUIPresenterXPCConnection)initWithServiceName:(id)name
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithServiceName:v5 options:0];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithServiceName:nameCopy options:0];
 
   v7 = [(WFUIPresenterXPCConnection *)self initWithConnection:v6];
   return v7;
 }
 
-- (WFUIPresenterXPCConnection)initWithEndpoint:(id)a3
+- (WFUIPresenterXPCConnection)initWithEndpoint:(id)endpoint
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithListenerEndpoint:v5];
+  endpointCopy = endpoint;
+  v6 = [[v4 alloc] initWithListenerEndpoint:endpointCopy];
 
   v7 = [(WFUIPresenterXPCConnection *)self initWithConnection:v6];
   return v7;
 }
 
-- (WFUIPresenterXPCConnection)initWithMachServiceName:(id)a3
+- (WFUIPresenterXPCConnection)initWithMachServiceName:(id)name
 {
   v4 = MEMORY[0x1E696B0B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithMachServiceName:v5 options:0];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithMachServiceName:nameCopy options:0];
 
   v7 = [(WFUIPresenterXPCConnection *)self initWithConnection:v6];
   return v7;

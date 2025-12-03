@@ -1,13 +1,13 @@
 @interface HomeKitDeviceDetectedStartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (void)_launchHomeApp;
 - (void)_restoreHomeApp;
-- (void)applicationsDidInstall:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)handleSetupButton:(id)a3;
-- (void)handleTapOutsideView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)handleDismissButton:(id)button;
+- (void)handleSetupButton:(id)button;
+- (void)handleTapOutsideView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HomeKitDeviceDetectedStartViewController
@@ -36,7 +36,7 @@
 
 - (void)_launchHomeApp
 {
-  v3 = [self->super._mainController userInfo];
+  userInfo = [self->super._mainController userInfo];
   CFStringGetTypeID();
   v4 = CFDictionaryGetTypedValue();
 
@@ -99,14 +99,14 @@ LABEL_13:
 LABEL_23:
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  installCopy = install;
+  v5 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -117,11 +117,11 @@ LABEL_23:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqual:@"com.apple.Home"];
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqual:@"com.apple.Home"];
 
         if (v10)
         {
@@ -140,7 +140,7 @@ LABEL_23:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -153,9 +153,9 @@ LABEL_23:
 LABEL_15:
 }
 
-- (void)handleTapOutsideView:(id)a3
+- (void)handleTapOutsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -164,19 +164,19 @@ LABEL_15:
   [self->super._mainController dismiss:1];
 }
 
-- (void)handleSetupButton:(id)a3
+- (void)handleSetupButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if ((BYTE1(self->_setupButton) & 1) == 0)
   {
-    v8 = v4;
+    v8 = buttonCopy;
     BYTE1(self->_setupButton) = 1;
     [*(&self->_dismissButton + 1) setEnabled:0];
     v5 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.Home"];
-    v6 = [v5 appState];
-    v7 = [v6 isInstalled];
+    appState = [v5 appState];
+    isInstalled = [appState isInstalled];
 
-    if (v7)
+    if (isInstalled)
     {
       [(HomeKitDeviceDetectedStartViewController *)self _launchHomeApp];
     }
@@ -186,13 +186,13 @@ LABEL_15:
       [(HomeKitDeviceDetectedStartViewController *)self _restoreHomeApp];
     }
 
-    v4 = v8;
+    buttonCopy = v8;
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -201,18 +201,18 @@ LABEL_15:
   [self->super._mainController dismiss:5];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a3;
-  v6 = [a4 view];
-  v7 = [v5 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  return v6 == v7;
+  return view == view2;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -220,12 +220,12 @@ LABEL_15:
 
   v5.receiver = self;
   v5.super_class = HomeKitDeviceDetectedStartViewController;
-  [(HomeKitDeviceDetectedStartViewController *)&v5 viewDidDisappear:v3];
+  [(HomeKitDeviceDetectedStartViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE5E0 <= 30 && (dword_1001BE5E0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -233,19 +233,19 @@ LABEL_15:
 
   v9.receiver = self;
   v9.super_class = HomeKitDeviceDetectedStartViewController;
-  [(SVSBaseViewController *)&v9 viewWillAppear:v3];
-  v5 = [self->super._mainController _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.0];
+  [(SVSBaseViewController *)&v9 viewWillAppear:appearCopy];
+  _remoteViewControllerProxy = [self->super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTapOutsideView:"];
   [v6 setDelegate:self];
   [v6 setNumberOfTapsRequired:1];
   [v6 setCancelsTouchesInView:0];
-  v7 = [(HomeKitDeviceDetectedStartViewController *)self view];
-  [v7 addGestureRecognizer:v6];
+  view = [(HomeKitDeviceDetectedStartViewController *)self view];
+  [view addGestureRecognizer:v6];
 
-  v8 = [(SVSBaseViewController *)self containerView];
-  [v8 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface REMEventKitBridgingDataViewInvocation_fetchLists
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REMEventKitBridgingDataViewInvocation_fetchLists)init;
 @end
 
@@ -12,13 +12,13 @@
   return [(REMStoreInvocationValueStorage *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  return (v3 != 0) & isKindOfClass;
+  return (equalCopy != 0) & isKindOfClass;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface _UISplitViewControllerAdaptiveColumnSeparatorView
 + (double)pointerHitTargetWidth;
-- (_UISplitViewControllerAdaptiveColumnSeparatorView)initWithSplitViewControllerColumn:(int64_t)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)setPermittedResizeDirections:(unint64_t)a3;
+- (_UISplitViewControllerAdaptiveColumnSeparatorView)initWithSplitViewControllerColumn:(int64_t)column;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)setPermittedResizeDirections:(unint64_t)directions;
 @end
 
 @implementation _UISplitViewControllerAdaptiveColumnSeparatorView
@@ -11,15 +11,15 @@
 + (double)pointerHitTargetWidth
 {
   v2 = +[_UIPointerSettingsDomain rootSettings];
-  v3 = [v2 beamSettings];
+  beamSettings = [v2 beamSettings];
 
-  [v3 width];
+  [beamSettings width];
   v5 = v4;
 
   return v5;
 }
 
-- (_UISplitViewControllerAdaptiveColumnSeparatorView)initWithSplitViewControllerColumn:(int64_t)a3
+- (_UISplitViewControllerAdaptiveColumnSeparatorView)initWithSplitViewControllerColumn:(int64_t)column
 {
   v15.receiver = self;
   v15.super_class = _UISplitViewControllerAdaptiveColumnSeparatorView;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_splitViewControllerColumn = a3;
+    v4->_splitViewControllerColumn = column;
     v6 = +[UIColor _splitViewBorderColor];
     [(UIView *)v5 setBackgroundColor:v6];
 
@@ -48,21 +48,21 @@
   return v5;
 }
 
-- (void)setPermittedResizeDirections:(unint64_t)a3
+- (void)setPermittedResizeDirections:(unint64_t)directions
 {
-  if (self->_permittedResizeDirections != a3)
+  if (self->_permittedResizeDirections != directions)
   {
-    self->_permittedResizeDirections = a3;
+    self->_permittedResizeDirections = directions;
     [(UIPointerInteraction *)self->_pointerInteraction invalidate];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  if ([(_UISplitViewControllerAdaptiveColumnSeparatorView *)self permittedResizeDirections:a3])
+  if ([(_UISplitViewControllerAdaptiveColumnSeparatorView *)self permittedResizeDirections:interaction])
   {
-    v6 = [a3 view];
-    [v6 bounds];
+    view = [interaction view];
+    [view bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -79,21 +79,21 @@
     width = v25.size.width;
     height = v25.size.height;
 
-    v21 = [UIPointerRegion regionWithRect:0 identifier:x, y, width, height];
-    [v21 setLatchingAxes:1];
+    height = [UIPointerRegion regionWithRect:0 identifier:x, y, width, height];
+    [height setLatchingAxes:1];
   }
 
   else
   {
-    v21 = 0;
+    height = 0;
   }
 
-  return v21;
+  return height;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [(_UISplitViewControllerAdaptiveColumnSeparatorView *)self permittedResizeDirections:a3];
+  v4 = [(_UISplitViewControllerAdaptiveColumnSeparatorView *)self permittedResizeDirections:interaction];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
   if ((v4 & 2) != 0)
   {

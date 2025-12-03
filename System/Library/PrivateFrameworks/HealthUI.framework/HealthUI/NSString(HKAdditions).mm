@@ -11,7 +11,7 @@
 {
   v10 = a4;
   v11 = a6;
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v10)
   {
     if (a2 < 0.0)
@@ -48,18 +48,18 @@
       [v26 addAttribute:v27 value:v28 range:{0, 1}];
     }
 
-    [v12 addObject:v26];
+    [array addObject:v26];
     if (a5 >= 1)
     {
       v29 = [MEMORY[0x1E696AAB0] hk_attributedStringForSpacing:a5];
-      [v12 addObject:v29];
+      [array addObject:v29];
     }
 
-    v30 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a1 attributes:v11];
-    [v12 addObject:v30];
+    v30 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self attributes:v11];
+    [array addObject:v30];
   }
 
-  v31 = HKUIJoinAttributedStringsForLocale(v12);
+  v31 = HKUIJoinAttributedStringsForLocale(array);
 
   return v31;
 }
@@ -73,7 +73,7 @@
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [a1 boundingRectWithSize:1 options:v8 attributes:0 context:{a2, 3.40282347e38}];
+  [self boundingRectWithSize:1 options:v8 attributes:0 context:{a2, 3.40282347e38}];
   Height = CGRectGetHeight(v13);
 
   return Height;
@@ -88,7 +88,7 @@
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [a1 boundingRectWithSize:1 options:v8 attributes:0 context:{3.40282347e38, a2}];
+  [self boundingRectWithSize:1 options:v8 attributes:0 context:{3.40282347e38, a2}];
   Width = CGRectGetWidth(v13);
 
   return Width;
@@ -98,7 +98,7 @@
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v18 = a9;
-  v19 = [HKStringDrawing stringDrawingWithText:a1 inRect:a8 withAttributes:a2, a3, a4, a5];
+  v19 = [HKStringDrawing stringDrawingWithText:self inRect:a8 withAttributes:a2, a3, a4, a5];
   v21[0] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   [HKStringDrawing drawStrings:v20 outlineWidth:v18 outlineColor:a10 context:a6];

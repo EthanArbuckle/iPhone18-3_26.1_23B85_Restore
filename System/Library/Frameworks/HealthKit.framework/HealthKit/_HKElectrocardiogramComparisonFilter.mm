@@ -1,37 +1,37 @@
 @interface _HKElectrocardiogramComparisonFilter
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)_acceptsECGWithAverageHeartRate:(id)a3;
-- (BOOL)_acceptsECGWithPrivateClassification:(unint64_t)a3;
-- (BOOL)_acceptsECGWithPublicClassification:(int64_t)a3;
-- (BOOL)_acceptsECGWithSymptomsStatus:(int64_t)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)_acceptsECGWithAverageHeartRate:(id)rate;
+- (BOOL)_acceptsECGWithPrivateClassification:(unint64_t)classification;
+- (BOOL)_acceptsECGWithPublicClassification:(int64_t)classification;
+- (BOOL)_acceptsECGWithSymptomsStatus:(int64_t)status;
+- (BOOL)acceptsDataObject:(id)object;
 @end
 
 @implementation _HKElectrocardiogramComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ecg_average_heart_rate"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ecg_public_classification") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ecg_private_classification"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"ecg_average_heart_rate"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ecg_public_classification") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ecg_private_classification"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ecg_symptoms_status"];
+    v4 = [pathCopy isEqualToString:@"ecg_symptoms_status"];
   }
 
   return v4;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -39,10 +39,10 @@
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"ecg_average_heart_rate"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"ecg_average_heart_rate"])
   {
     v6 = MEMORY[0x1E695DFD8];
 LABEL_7:
@@ -50,14 +50,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (([v5 isEqualToString:@"ecg_public_classification"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"ecg_private_classification") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"ecg_symptoms_status"))
+  if (([pathCopy isEqualToString:@"ecg_public_classification"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ecg_private_classification") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"ecg_symptoms_status"))
   {
     v6 = MEMORY[0x1E695DFD8];
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:a1 file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:77 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:77 description:@"Unreachable code has been executed"];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DFD8]);
 LABEL_8:
@@ -66,30 +66,30 @@ LABEL_8:
   return v8;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v5 = a4;
-  if (([v5 isEqualToString:@"ecg_public_classification"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"ecg_private_classification") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"ecg_symptoms_status"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"ecg_public_classification"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"ecg_private_classification") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"ecg_symptoms_status"))
   {
-    v6 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    v6 = (type & 0xFFFFFFFFFFFFFFFELL) == 4;
   }
 
   else
   {
-    v6 = [_HKComparisonFilter isAllowedPredicateOperatorType:a3 forKeyPath:v5];
+    v6 = [_HKComparisonFilter isAllowedPredicateOperatorType:type forKeyPath:pathCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v11.receiver = a1;
+  typesCopy = types;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS____HKElectrocardiogramComparisonFilter;
-  if (objc_msgSendSuper2(&v11, sel_areValidTypes_forKeyPath_error_, v8, a4, a5))
+  if (objc_msgSendSuper2(&v11, sel_areValidTypes_forKeyPath_error_, typesCopy, path, error))
   {
-    v9 = [v8 hk_allObjectsPassTestWithError:a5 test:&__block_literal_global_43];
+    v9 = [typesCopy hk_allObjectsPassTestWithError:error test:&__block_literal_global_43];
   }
 
   else
@@ -100,19 +100,19 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v24.receiver = a1;
+  valueCopy = value;
+  pathCopy = path;
+  v24.receiver = self;
   v24.super_class = &OBJC_METACLASS____HKElectrocardiogramComparisonFilter;
-  if (!objc_msgSendSuper2(&v24, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, v12, v13, a5, a6, a7))
+  if (!objc_msgSendSuper2(&v24, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, valueCopy, pathCopy, type, types, error))
   {
     goto LABEL_15;
   }
 
-  v14 = v12;
-  v15 = v13;
+  v14 = valueCopy;
+  v15 = pathCopy;
   if (![v15 isEqualToString:@"ecg_average_heart_rate"])
   {
     if ([v15 isEqualToString:@"ecg_public_classification"])
@@ -129,9 +129,9 @@ LABEL_8:
     {
       if (([v15 isEqualToString:@"ecg_symptoms_status"] & 1) == 0)
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"BOOL _IsValidValue(id  _Nullable __strong, NSString * _Nonnull __strong)"}];
-        [v21 handleFailureInFunction:v22 file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:47 description:@"Unreachable code has been executed"];
+        [currentHandler handleFailureInFunction:v22 file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:47 description:@"Unreachable code has been executed"];
 
         goto LABEL_14;
       }
@@ -147,7 +147,7 @@ LABEL_8:
     }
 
 LABEL_14:
-    [MEMORY[0x1E696ABC0] hk_assignError:a7 code:3 format:{@"Invalid value '%@' for %@", v14, v15}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Invalid value '%@' for %@", v14, v15}];
 LABEL_15:
     v20 = 0;
     goto LABEL_16;
@@ -168,59 +168,59 @@ LABEL_16:
   return v20;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"ecg_average_heart_rate"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"ecg_average_heart_rate"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"ecg_public_classification"])
+  else if ([pathCopy isEqualToString:@"ecg_public_classification"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"ecg_private_classification"])
+  else if ([pathCopy isEqualToString:@"ecg_private_classification"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"ecg_symptoms_status"])
+  else if ([pathCopy isEqualToString:@"ecg_symptoms_status"])
   {
     v6 = 3;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:139 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:139 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKElectrocardiogramComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-    if (v7 > 1)
+    v6 = objectCopy;
+    keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+    if (keyPathIntegerValue > 1)
     {
-      if (v7 == 2)
+      if (keyPathIntegerValue == 2)
       {
         v8 = -[_HKElectrocardiogramComparisonFilter _acceptsECGWithPrivateClassification:](self, "_acceptsECGWithPrivateClassification:", [v6 privateClassification]);
         goto LABEL_13;
       }
 
-      if (v7 == 3)
+      if (keyPathIntegerValue == 3)
       {
         v8 = -[_HKElectrocardiogramComparisonFilter _acceptsECGWithSymptomsStatus:](self, "_acceptsECGWithSymptomsStatus:", [v6 symptomsStatus]);
         goto LABEL_13;
@@ -229,15 +229,15 @@ LABEL_16:
 
     else
     {
-      if (!v7)
+      if (!keyPathIntegerValue)
       {
-        v11 = [v6 averageHeartRate];
-        v9 = [(_HKElectrocardiogramComparisonFilter *)self _acceptsECGWithAverageHeartRate:v11];
+        averageHeartRate = [v6 averageHeartRate];
+        v9 = [(_HKElectrocardiogramComparisonFilter *)self _acceptsECGWithAverageHeartRate:averageHeartRate];
 
         goto LABEL_14;
       }
 
-      if (v7 == 1)
+      if (keyPathIntegerValue == 1)
       {
         v8 = -[_HKElectrocardiogramComparisonFilter _acceptsECGWithPublicClassification:](self, "_acceptsECGWithPublicClassification:", [v6 classification]);
 LABEL_13:
@@ -246,8 +246,8 @@ LABEL_13:
       }
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:161 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKElectrocardiogramComparisonFilter.m" lineNumber:161 description:@"Unreachable code has been executed"];
 
     v9 = 0;
 LABEL_14:
@@ -261,50 +261,50 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_acceptsECGWithPublicClassification:(int64_t)a3
+- (BOOL)_acceptsECGWithPublicClassification:(int64_t)classification
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(classification, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsECGWithAverageHeartRate:(id)a3
+- (BOOL)_acceptsECGWithAverageHeartRate:(id)rate
 {
-  if (!a3)
+  if (!rate)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = [v4 compare:v5];
+  rateCopy = rate;
+  value = [(_HKComparisonFilter *)self value];
+  v6 = [rateCopy compare:value];
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsECGWithPrivateClassification:(unint64_t)a3
+- (BOOL)_acceptsECGWithPrivateClassification:(unint64_t)classification
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(classification, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsECGWithSymptomsStatus:(int64_t)a3
+- (BOOL)_acceptsECGWithSymptomsStatus:(int64_t)status
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(status, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
 @end

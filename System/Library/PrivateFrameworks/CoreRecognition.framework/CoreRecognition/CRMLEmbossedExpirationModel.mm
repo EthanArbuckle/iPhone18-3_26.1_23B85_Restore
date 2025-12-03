@@ -1,15 +1,15 @@
 @interface CRMLEmbossedExpirationModel
-- (id)decodeActivations:(void *)a3;
+- (id)decodeActivations:(void *)activations;
 @end
 
 @implementation CRMLEmbossedExpirationModel
 
-- (id)decodeActivations:(void *)a3
+- (id)decodeActivations:(void *)activations
 {
-  v5 = [(CRMLEmbossedExpirationModel *)self codeMap];
-  v6 = [(CRMLEmbossedExpirationModel *)self classCount];
+  codeMap = [(CRMLEmbossedExpirationModel *)self codeMap];
+  classCount = [(CRMLEmbossedExpirationModel *)self classCount];
 
-  return decodeCreditCardExpirationActivations(a3, v5, v6);
+  return decodeCreditCardExpirationActivations(activations, codeMap, classCount);
 }
 
 @end

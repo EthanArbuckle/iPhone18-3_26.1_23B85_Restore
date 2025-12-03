@@ -1,17 +1,17 @@
 @interface VLFFailureView
-- (VLFFailureView)initWithFrame:(CGRect)a3;
+- (VLFFailureView)initWithFrame:(CGRect)frame;
 - (VLFFailureViewDelegate)delegate;
-- (id)_fontWithTextStyle:(id)a3 weight:(double)a4;
-- (void)_dismissButtonTapped:(id)a3;
-- (void)_retryButtonTapped:(id)a3;
+- (id)_fontWithTextStyle:(id)style weight:(double)weight;
+- (void)_dismissButtonTapped:(id)tapped;
+- (void)_retryButtonTapped:(id)tapped;
 - (void)_updateBackgroundColor;
 - (void)_updateFonts;
 - (void)_updateForCurrentLayout;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setCurrentLayout:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateFont:(id)a3;
+- (void)setCurrentLayout:(unint64_t)layout;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateFont:(id)font;
 @end
 
 @implementation VLFFailureView
@@ -23,18 +23,18 @@
   return WeakRetained;
 }
 
-- (void)_retryButtonTapped:(id)a3
+- (void)_retryButtonTapped:(id)tapped
 {
   [GEOAPPortal captureUserAction:128 target:669 value:0];
-  v4 = [(VLFFailureView *)self delegate];
-  [v4 failureViewRetryButtonTapped:self];
+  delegate = [(VLFFailureView *)self delegate];
+  [delegate failureViewRetryButtonTapped:self];
 }
 
-- (void)_dismissButtonTapped:(id)a3
+- (void)_dismissButtonTapped:(id)tapped
 {
   [GEOAPPortal captureUserAction:125 target:669 value:0];
-  v4 = [(VLFFailureView *)self delegate];
-  [v4 failureViewDismissButtonTapped:self];
+  delegate = [(VLFFailureView *)self delegate];
+  [delegate failureViewDismissButtonTapped:self];
 }
 
 - (void)_updateForCurrentLayout
@@ -52,9 +52,9 @@
 
   else
   {
-    v4 = [(VLFFailureView *)self traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
-    v6 = UIContentSizeCategoryCompareToCategory(v5, UIContentSizeCategoryLarge);
+    traitCollection = [(VLFFailureView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v6 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryLarge);
     v7 = 18.0;
     if (v6 == NSOrderedDescending)
     {
@@ -65,9 +65,9 @@
 
     [(NSLayoutConstraint *)self->_titleLabelLeadingConstraint setConstant:0.0];
     [(NSLayoutConstraint *)self->_titleLabelTrailingConstraint setConstant:0.0];
-    v8 = [(VLFFailureView *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
-    v10 = UIContentSizeCategoryCompareToCategory(v9, UIContentSizeCategoryLarge);
+    traitCollection2 = [(VLFFailureView *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+    v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, UIContentSizeCategoryLarge);
     v11 = 10.0;
     if (v10 == NSOrderedDescending)
     {
@@ -76,9 +76,9 @@
 
     [(NSLayoutConstraint *)self->_labelPaddingConstraint setConstant:v11];
 
-    v15 = [(VLFFailureView *)self traitCollection];
-    v12 = [v15 preferredContentSizeCategory];
-    v13 = UIContentSizeCategoryCompareToCategory(v12, UIContentSizeCategoryLarge);
+    traitCollection3 = [(VLFFailureView *)self traitCollection];
+    preferredContentSizeCategory3 = [traitCollection3 preferredContentSizeCategory];
+    v13 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory3, UIContentSizeCategoryLarge);
     v14 = -32.0;
     if (v13 == NSOrderedDescending)
     {
@@ -91,10 +91,10 @@
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(VLFFailureView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(VLFFailureView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     +[UIColor secondarySystemBackgroundColor];
   }
@@ -109,52 +109,52 @@
 
 - (void)_updateFonts
 {
-  v19 = [(VLFFailureView *)self _buttonFont];
-  v3 = [(VLFFailureView *)self retryButton];
-  v4 = [v3 titleLabel];
-  [v4 setFont:v19];
+  _buttonFont = [(VLFFailureView *)self _buttonFont];
+  retryButton = [(VLFFailureView *)self retryButton];
+  titleLabel = [retryButton titleLabel];
+  [titleLabel setFont:_buttonFont];
 
-  [v19 lineHeight];
+  [_buttonFont lineHeight];
   v6 = v5;
-  [v19 leading];
+  [_buttonFont leading];
   v8 = v6 + 28.0 + v7;
-  v9 = [(VLFFailureView *)self retryButtonHeightConstraint];
-  [v9 setConstant:v8];
+  retryButtonHeightConstraint = [(VLFFailureView *)self retryButtonHeightConstraint];
+  [retryButtonHeightConstraint setConstant:v8];
 
-  v10 = [(VLFFailureView *)self dismissButton];
-  v11 = [v10 titleLabel];
-  [v11 setFont:v19];
+  dismissButton = [(VLFFailureView *)self dismissButton];
+  titleLabel2 = [dismissButton titleLabel];
+  [titleLabel2 setFont:_buttonFont];
 
-  [v19 lineHeight];
+  [_buttonFont lineHeight];
   v13 = v12;
-  [v19 leading];
+  [_buttonFont leading];
   v15 = v13 + 28.0 + v14;
-  v16 = [(VLFFailureView *)self dismissButtonHeightConstraint];
-  [v16 setConstant:v15];
+  dismissButtonHeightConstraint = [(VLFFailureView *)self dismissButtonHeightConstraint];
+  [dismissButtonHeightConstraint setConstant:v15];
 
-  v17 = [(VLFFailureView *)self _descriptionFont];
-  v18 = [(VLFFailureView *)self descriptionLabel];
-  [v18 setFont:v17];
+  _descriptionFont = [(VLFFailureView *)self _descriptionFont];
+  descriptionLabel = [(VLFFailureView *)self descriptionLabel];
+  [descriptionLabel setFont:_descriptionFont];
 }
 
-- (id)_fontWithTextStyle:(id)a3 weight:(double)a4
+- (id)_fontWithTextStyle:(id)style weight:(double)weight
 {
-  v6 = a3;
-  v7 = [(VLFFailureView *)self traitCollection];
-  v8 = [(VLFFailureView *)self currentLayout];
+  styleCopy = style;
+  traitCollection = [(VLFFailureView *)self traitCollection];
+  currentLayout = [(VLFFailureView *)self currentLayout];
   v9 = &UIContentSizeCategoryAccessibilityMedium;
-  if (v8 != 2)
+  if (currentLayout != 2)
   {
     v9 = &UIContentSizeCategoryExtraLarge;
   }
 
-  v10 = [v7 _maps_traitCollectionWithMaximumContentSizeCategory:*v9];
+  v10 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:*v9];
 
-  v11 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:v6 compatibleWithTraitCollection:v10];
+  v11 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v10];
 
   v20 = UIFontDescriptorTraitsAttribute;
   v18 = UIFontWeightTrait;
-  v12 = [NSNumber numberWithDouble:a4];
+  v12 = [NSNumber numberWithDouble:weight];
   v19 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v21 = v13;
@@ -166,10 +166,10 @@
   return v16;
 }
 
-- (void)updateFont:(id)a3
+- (void)updateFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -198,15 +198,15 @@
     }
   }
 
-  v5 = [(VLFFailureView *)self titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(VLFFailureView *)self titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
-- (void)setCurrentLayout:(unint64_t)a3
+- (void)setCurrentLayout:(unint64_t)layout
 {
-  if (self->_currentLayout != a3)
+  if (self->_currentLayout != layout)
   {
-    self->_currentLayout = a3;
+    self->_currentLayout = layout;
     [(VLFFailureView *)self _updateForCurrentLayout];
 
     [(VLFFailureView *)self _updateFonts];
@@ -222,11 +222,11 @@
   [(VLFFailureView *)self _updateFonts];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = VLFFailureView;
-  [(VLFFailureView *)&v4 traitCollectionDidChange:a3];
+  [(VLFFailureView *)&v4 traitCollectionDidChange:change];
   [(VLFFailureView *)self _updateBackgroundColor];
   [(VLFFailureView *)self _updateFonts];
 }
@@ -239,24 +239,24 @@
   [(VLFFailureView *)&v3 dealloc];
 }
 
-- (VLFFailureView)initWithFrame:(CGRect)a3
+- (VLFFailureView)initWithFrame:(CGRect)frame
 {
   v139.receiver = self;
   v139.super_class = VLFFailureView;
-  v3 = [(VLFFailureView *)&v139 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VLFFailureView *)&v139 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_currentLayout = 2;
     v5 = +[UIApplication _maps_keyMapsSceneDelegate];
-    v6 = [v5 platformController];
-    v7 = [v6 auxiliaryTasksManager];
-    v8 = [v7 auxilaryTaskForClass:objc_opt_class()];
+    platformController = [v5 platformController];
+    auxiliaryTasksManager = [platformController auxiliaryTasksManager];
+    v8 = [auxiliaryTasksManager auxilaryTaskForClass:objc_opt_class()];
 
     v137 = v8;
-    v9 = [v8 stateManager];
+    stateManager = [v8 stateManager];
     stateManager = v4->_stateManager;
-    v4->_stateManager = v9;
+    v4->_stateManager = stateManager;
 
     [(VLFSessionStateManager *)v4->_stateManager addObserver:v4];
     [(VLFFailureView *)v4 _updateBackgroundColor];
@@ -266,8 +266,8 @@
     v4->_retryButton = v11;
 
     [(UIButton *)v4->_retryButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(UIButton *)v4->_retryButton layer];
-    [v13 setCornerRadius:8.0];
+    layer = [(UIButton *)v4->_retryButton layer];
+    [layer setCornerRadius:8.0];
 
     v14 = +[UIColor clearColor];
     [(UIButton *)v4->_retryButton setBackgroundColor:v14];
@@ -284,22 +284,22 @@
     [(UIButton *)v4->_retryButton addTarget:v4 action:"_retryButtonTapped:" forControlEvents:64];
     [(UIButton *)v4->_retryButton setHidden:[(VLFSessionStateManager *)v4->_stateManager currentState]== 0];
     [(VLFFailureView *)v4 addSubview:v4->_retryButton];
-    v20 = [(UIButton *)v4->_retryButton heightAnchor];
-    v21 = [v20 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIButton *)v4->_retryButton heightAnchor];
+    v21 = [heightAnchor constraintEqualToConstant:0.0];
     retryButtonHeightConstraint = v4->_retryButtonHeightConstraint;
     v4->_retryButtonHeightConstraint = v21;
 
-    v131 = [(UIButton *)v4->_retryButton leadingAnchor];
-    v23 = [(VLFFailureView *)v4 leadingAnchor];
-    v24 = [v131 constraintEqualToAnchor:v23 constant:24.0];
+    leadingAnchor = [(UIButton *)v4->_retryButton leadingAnchor];
+    leadingAnchor2 = [(VLFFailureView *)v4 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0];
     v153[0] = v24;
-    v25 = [(UIButton *)v4->_retryButton trailingAnchor];
-    v26 = [(VLFFailureView *)v4 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:-24.0];
+    trailingAnchor = [(UIButton *)v4->_retryButton trailingAnchor];
+    trailingAnchor2 = [(VLFFailureView *)v4 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-24.0];
     v153[1] = v27;
-    v28 = [(UIButton *)v4->_retryButton bottomAnchor];
-    v29 = [(VLFFailureView *)v4 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    bottomAnchor = [(UIButton *)v4->_retryButton bottomAnchor];
+    bottomAnchor2 = [(VLFFailureView *)v4 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v153[2] = v30;
     v153[3] = v4->_retryButtonHeightConstraint;
     v31 = [NSArray arrayWithObjects:v153 count:4];
@@ -310,8 +310,8 @@
     v4->_dismissButton = v32;
 
     [(UIButton *)v4->_dismissButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v34 = [(UIButton *)v4->_dismissButton layer];
-    [v34 setCornerRadius:8.0];
+    layer2 = [(UIButton *)v4->_dismissButton layer];
+    [layer2 setCornerRadius:8.0];
 
     v35 = +[UIColor systemBlueColor];
     [(UIButton *)v4->_dismissButton setBackgroundColor:v35];
@@ -327,22 +327,22 @@
 
     [(UIButton *)v4->_dismissButton addTarget:v4 action:"_dismissButtonTapped:" forControlEvents:64];
     [(VLFFailureView *)v4 addSubview:v4->_dismissButton];
-    v41 = [(UIButton *)v4->_dismissButton heightAnchor];
-    v42 = [v41 constraintEqualToConstant:0.0];
+    heightAnchor2 = [(UIButton *)v4->_dismissButton heightAnchor];
+    v42 = [heightAnchor2 constraintEqualToConstant:0.0];
     dismissButtonHeightConstraint = v4->_dismissButtonHeightConstraint;
     v4->_dismissButtonHeightConstraint = v42;
 
-    v132 = [(UIButton *)v4->_dismissButton leadingAnchor];
-    v129 = [(UIButton *)v4->_retryButton leadingAnchor];
-    v44 = [v132 constraintEqualToAnchor:v129];
+    leadingAnchor3 = [(UIButton *)v4->_dismissButton leadingAnchor];
+    leadingAnchor4 = [(UIButton *)v4->_retryButton leadingAnchor];
+    v44 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v152[0] = v44;
-    v45 = [(UIButton *)v4->_dismissButton trailingAnchor];
-    v46 = [(UIButton *)v4->_retryButton trailingAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    trailingAnchor3 = [(UIButton *)v4->_dismissButton trailingAnchor];
+    trailingAnchor4 = [(UIButton *)v4->_retryButton trailingAnchor];
+    v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v152[1] = v47;
-    v48 = [(UIButton *)v4->_dismissButton bottomAnchor];
-    v49 = [(UIButton *)v4->_retryButton topAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49];
+    bottomAnchor3 = [(UIButton *)v4->_dismissButton bottomAnchor];
+    topAnchor = [(UIButton *)v4->_retryButton topAnchor];
+    v50 = [bottomAnchor3 constraintEqualToAnchor:topAnchor];
     v152[2] = v50;
     v152[3] = v4->_dismissButtonHeightConstraint;
     v51 = [NSArray arrayWithObjects:v152 count:4];
@@ -354,25 +354,25 @@
 
     [(UIView *)v4->_topContentView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(VLFFailureView *)v4 addSubview:v4->_topContentView];
-    v54 = [(UIView *)v4->_topContentView topAnchor];
-    v55 = [(VLFFailureView *)v4 topAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55 constant:14.0];
+    topAnchor2 = [(UIView *)v4->_topContentView topAnchor];
+    topAnchor3 = [(VLFFailureView *)v4 topAnchor];
+    v56 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:14.0];
     topConstraint = v4->_topConstraint;
     v4->_topConstraint = v56;
 
-    v58 = [(UIView *)v4->_topContentView bottomAnchor];
-    v59 = [(UIButton *)v4->_dismissButton topAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59 constant:-20.0];
+    bottomAnchor4 = [(UIView *)v4->_topContentView bottomAnchor];
+    topAnchor4 = [(UIButton *)v4->_dismissButton topAnchor];
+    v60 = [bottomAnchor4 constraintEqualToAnchor:topAnchor4 constant:-20.0];
     buttonPaddingConstraint = v4->_buttonPaddingConstraint;
     v4->_buttonPaddingConstraint = v60;
 
-    v62 = [(UIView *)v4->_topContentView leadingAnchor];
-    v63 = [(VLFFailureView *)v4 leadingAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    leadingAnchor5 = [(UIView *)v4->_topContentView leadingAnchor];
+    leadingAnchor6 = [(VLFFailureView *)v4 leadingAnchor];
+    v64 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v151[0] = v64;
-    v65 = [(UIView *)v4->_topContentView trailingAnchor];
-    v66 = [(VLFFailureView *)v4 trailingAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66];
+    trailingAnchor5 = [(UIView *)v4->_topContentView trailingAnchor];
+    trailingAnchor6 = [(VLFFailureView *)v4 trailingAnchor];
+    v67 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v151[1] = v67;
     v151[2] = v4->_topConstraint;
     v151[3] = v4->_buttonPaddingConstraint;
@@ -385,25 +385,25 @@
 
     [(UIView *)v4->_textContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_topContentView addSubview:v4->_textContainerView];
-    v135 = [(UIView *)v4->_textContainerView leadingAnchor];
-    v133 = [(UIView *)v4->_topContentView leadingAnchor];
-    v130 = [v135 constraintEqualToAnchor:v133 constant:24.0];
+    leadingAnchor7 = [(UIView *)v4->_textContainerView leadingAnchor];
+    leadingAnchor8 = [(UIView *)v4->_topContentView leadingAnchor];
+    v130 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:24.0];
     v150[0] = v130;
-    v128 = [(UIView *)v4->_textContainerView trailingAnchor];
-    v127 = [(UIView *)v4->_topContentView trailingAnchor];
-    v126 = [v128 constraintEqualToAnchor:v127 constant:-24.0];
+    trailingAnchor7 = [(UIView *)v4->_textContainerView trailingAnchor];
+    trailingAnchor8 = [(UIView *)v4->_topContentView trailingAnchor];
+    v126 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-24.0];
     v150[1] = v126;
-    v125 = [(UIView *)v4->_textContainerView topAnchor];
-    v124 = [(UIView *)v4->_topContentView topAnchor];
-    v71 = [v125 constraintGreaterThanOrEqualToAnchor:v124];
+    topAnchor5 = [(UIView *)v4->_textContainerView topAnchor];
+    topAnchor6 = [(UIView *)v4->_topContentView topAnchor];
+    v71 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
     v150[2] = v71;
-    v72 = [(UIView *)v4->_textContainerView bottomAnchor];
-    v73 = [(UIView *)v4->_topContentView bottomAnchor];
-    v74 = [v72 constraintLessThanOrEqualToAnchor:v73];
+    bottomAnchor5 = [(UIView *)v4->_textContainerView bottomAnchor];
+    bottomAnchor6 = [(UIView *)v4->_topContentView bottomAnchor];
+    v74 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
     v150[3] = v74;
-    v75 = [(UIView *)v4->_textContainerView centerYAnchor];
-    v76 = [(UIView *)v4->_topContentView centerYAnchor];
-    v77 = [v75 constraintEqualToAnchor:v76];
+    centerYAnchor = [(UIView *)v4->_textContainerView centerYAnchor];
+    centerYAnchor2 = [(UIView *)v4->_topContentView centerYAnchor];
+    v77 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v150[4] = v77;
     v78 = [NSArray arrayWithObjects:v150 count:5];
     [v138 addObjectsFromArray:v78];
@@ -432,23 +432,23 @@
     [(UILabel *)v4->_titleLabel setText:v88];
 
     [(UIView *)v4->_textContainerView addSubview:v4->_titleLabel];
-    v89 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v90 = [(UIView *)v4->_textContainerView leadingAnchor];
-    v91 = [v89 constraintEqualToAnchor:v90 constant:4.0];
+    leadingAnchor9 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    leadingAnchor10 = [(UIView *)v4->_textContainerView leadingAnchor];
+    v91 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:4.0];
     titleLabelLeadingConstraint = v4->_titleLabelLeadingConstraint;
     v4->_titleLabelLeadingConstraint = v91;
 
-    v93 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v94 = [(UIView *)v4->_textContainerView trailingAnchor];
-    v95 = [v93 constraintEqualToAnchor:v94 constant:-4.0];
+    trailingAnchor9 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    trailingAnchor10 = [(UIView *)v4->_textContainerView trailingAnchor];
+    v95 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-4.0];
     titleLabelTrailingConstraint = v4->_titleLabelTrailingConstraint;
     v4->_titleLabelTrailingConstraint = v95;
 
     v149[0] = v4->_titleLabelLeadingConstraint;
     v149[1] = v4->_titleLabelTrailingConstraint;
-    v97 = [(UILabel *)v4->_titleLabel topAnchor];
-    v98 = [(UIView *)v4->_textContainerView topAnchor];
-    v99 = [v97 constraintEqualToAnchor:v98];
+    topAnchor7 = [(UILabel *)v4->_titleLabel topAnchor];
+    topAnchor8 = [(UIView *)v4->_textContainerView topAnchor];
+    v99 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v149[2] = v99;
     v100 = [NSArray arrayWithObjects:v149 count:3];
     [v138 addObjectsFromArray:v100];
@@ -507,24 +507,24 @@
     [(UILabel *)v4->_descriptionLabel setText:v110];
 
     [(UIView *)v4->_textContainerView addSubview:v4->_descriptionLabel];
-    v111 = [(UILabel *)v4->_descriptionLabel topAnchor];
-    v112 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v113 = [v111 constraintEqualToAnchor:v112 constant:11.0];
+    topAnchor9 = [(UILabel *)v4->_descriptionLabel topAnchor];
+    bottomAnchor7 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v113 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:11.0];
     labelPaddingConstraint = v4->_labelPaddingConstraint;
     v4->_labelPaddingConstraint = v113;
 
-    v136 = [(UILabel *)v4->_descriptionLabel leadingAnchor];
-    v134 = [(UIView *)v4->_textContainerView leadingAnchor];
-    v115 = [v136 constraintEqualToAnchor:v134];
+    leadingAnchor11 = [(UILabel *)v4->_descriptionLabel leadingAnchor];
+    leadingAnchor12 = [(UIView *)v4->_textContainerView leadingAnchor];
+    v115 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v140[0] = v115;
-    v116 = [(UILabel *)v4->_descriptionLabel trailingAnchor];
-    v117 = [(UIView *)v4->_textContainerView trailingAnchor];
-    v118 = [v116 constraintEqualToAnchor:v117];
+    trailingAnchor11 = [(UILabel *)v4->_descriptionLabel trailingAnchor];
+    trailingAnchor12 = [(UIView *)v4->_textContainerView trailingAnchor];
+    v118 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
     v140[1] = v118;
     v140[2] = v4->_labelPaddingConstraint;
-    v119 = [(UILabel *)v4->_descriptionLabel bottomAnchor];
-    v120 = [(UIView *)v4->_textContainerView bottomAnchor];
-    v121 = [v119 constraintEqualToAnchor:v120];
+    bottomAnchor8 = [(UILabel *)v4->_descriptionLabel bottomAnchor];
+    bottomAnchor9 = [(UIView *)v4->_textContainerView bottomAnchor];
+    v121 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     v140[3] = v121;
     v122 = [NSArray arrayWithObjects:v140 count:4];
     [v138 addObjectsFromArray:v122];

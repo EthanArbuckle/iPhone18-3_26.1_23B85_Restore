@@ -1,24 +1,24 @@
 @interface STSRemoteTransceiverProxy
-- (STSRemoteTransceiverProxy)initWithListenerEndpoint:(id)a3;
-- (id)asynchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)transceive:(id)a3 outError:(id *)a4;
+- (STSRemoteTransceiverProxy)initWithListenerEndpoint:(id)endpoint;
+- (id)asynchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)transceive:(id)transceive outError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation STSRemoteTransceiverProxy
 
-- (STSRemoteTransceiverProxy)initWithListenerEndpoint:(id)a3
+- (STSRemoteTransceiverProxy)initWithListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  sub_2645010D8(OS_LOG_TYPE_DEFAULT, 0, "[STSRemoteTransceiverProxy initWithListenerEndpoint:]", 24, self, @"endpoint=%@", v5, v6, v4);
+  endpointCopy = endpoint;
+  sub_2645010D8(OS_LOG_TYPE_DEFAULT, 0, "[STSRemoteTransceiverProxy initWithListenerEndpoint:]", 24, self, @"endpoint=%@", v5, v6, endpointCopy);
   v21.receiver = self;
   v21.super_class = STSRemoteTransceiverProxy;
   v7 = [(STSRemoteTransceiverProxy *)&v21 init];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCAE80]);
-    v10 = objc_msgSend_initWithListenerEndpoint_(v8, v9, v4);
+    v10 = objc_msgSend_initWithListenerEndpoint_(v8, v9, endpointCopy);
     xpc = v7->_xpc;
     v7->_xpc = v10;
 
@@ -44,9 +44,9 @@
   [(STSRemoteTransceiverProxy *)&v7 dealloc];
 }
 
-- (id)transceive:(id)a3 outError:(id *)a4
+- (id)transceive:(id)transceive outError:(id *)error
 {
-  v6 = a3;
+  transceiveCopy = transceive;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -72,7 +72,7 @@
   v15[3] = &unk_279B600C8;
   v15[4] = &v23;
   v15[5] = &v17;
-  objc_msgSend_transceive_completion_(v8, v9, v6, v15);
+  objc_msgSend_transceive_completion_(v8, v9, transceiveCopy, v15);
 
   if (v24[5])
   {
@@ -85,7 +85,7 @@
     v12 = 0;
   }
 
-  *a4 = v12;
+  *error = v12;
   v13 = v18[5];
   _Block_object_dispose(&v17, 8);
 
@@ -94,20 +94,20 @@
   return v13;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_xpc(self, v5, v6);
-  v9 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v7, v8, v4);
+  v9 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(v7, v8, handlerCopy);
 
   return v9;
 }
 
-- (id)asynchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)asynchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_xpc(self, v5, v6);
-  v9 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v8, v4);
+  v9 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v8, handlerCopy);
 
   return v9;
 }

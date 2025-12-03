@@ -1,15 +1,15 @@
 @interface BSUIFontProvider
 + (id)defaultFontProvider;
 + (id)preferredFontProvider;
-- (id)preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4;
-- (id)preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4 contentSizeCategory:(id)a5;
+- (id)preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle;
+- (id)preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle contentSizeCategory:(id)category;
 @end
 
 @implementation BSUIFontProvider
 
 + (id)defaultFontProvider
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   if (v2)
   {
     v4.receiver = v2;
@@ -26,7 +26,7 @@
 
 + (id)preferredFontProvider
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   if (v2)
   {
     v4.receiver = v2;
@@ -41,35 +41,35 @@
   return v2;
 }
 
-- (id)preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4
+- (id)preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle
 {
-  v6 = a3;
+  styleCopy = style;
   if (self->_isDefault)
   {
-    [MEMORY[0x1E69DB878] bsui_defaultFontForTextStyle:v6 hiFontStyle:a4];
+    [MEMORY[0x1E69DB878] bsui_defaultFontForTextStyle:styleCopy hiFontStyle:fontStyle];
   }
 
   else
   {
-    [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:v6 hiFontStyle:a4];
+    [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:styleCopy hiFontStyle:fontStyle];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4 contentSizeCategory:(id)a5
+- (id)preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle contentSizeCategory:(id)category
 {
-  v8 = a3;
-  v9 = a5;
+  styleCopy = style;
+  categoryCopy = category;
   if (self->_isDefault)
   {
-    [MEMORY[0x1E69DB878] bsui_defaultFontForTextStyle:v8 hiFontStyle:a4];
+    [MEMORY[0x1E69DB878] bsui_defaultFontForTextStyle:styleCopy hiFontStyle:fontStyle];
   }
 
   else
   {
-    [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:v8 hiFontStyle:a4 contentSizeCategory:v9];
+    [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:styleCopy hiFontStyle:fontStyle contentSizeCategory:categoryCopy];
   }
   v10 = ;
 

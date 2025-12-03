@@ -1,6 +1,6 @@
 @interface CIBarcodeDescriptor
 - (CIBarcodeDescriptor)init;
-- (CIBarcodeDescriptor)initWithCoder:(id)a3;
+- (CIBarcodeDescriptor)initWithCoder:(id)coder;
 - (void)init;
 @end
 
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (CIBarcodeDescriptor)initWithCoder:(id)a3
+- (CIBarcodeDescriptor)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v4 = ci_logger_api();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

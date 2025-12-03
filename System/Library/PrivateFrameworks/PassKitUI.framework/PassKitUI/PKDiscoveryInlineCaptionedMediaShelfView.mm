@@ -1,16 +1,16 @@
 @interface PKDiscoveryInlineCaptionedMediaShelfView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoveryInlineCaptionedMediaShelfView)initWithShelf:(id)a3 mediaView:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoveryInlineCaptionedMediaShelfView)initWithShelf:(id)shelf mediaView:(id)view;
 - (void)layoutSubviews;
-- (void)setContentInsets:(UIEdgeInsets)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PKDiscoveryInlineCaptionedMediaShelfView
 
-- (PKDiscoveryInlineCaptionedMediaShelfView)initWithShelf:(id)a3 mediaView:(id)a4
+- (PKDiscoveryInlineCaptionedMediaShelfView)initWithShelf:(id)shelf mediaView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  shelfCopy = shelf;
+  viewCopy = view;
   v31.receiver = self;
   v31.super_class = PKDiscoveryInlineCaptionedMediaShelfView;
   v9 = *MEMORY[0x1E695F058];
@@ -21,11 +21,11 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_shelf, a3);
+    objc_storeStrong(&v13->_shelf, shelf);
     v14->_isInline = [(PKDiscoveryInlineMediaShelf *)v14->_shelf displayType]== 1;
-    v15 = [v7 media];
+    media = [shelfCopy media];
     media = v14->_media;
-    v14->_media = v15;
+    v14->_media = media;
 
     v17 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v9, v10, v11, v12}];
     mediaContainerView = v14->_mediaContainerView;
@@ -38,30 +38,30 @@
       [(UIView *)v14->_mediaContainerView _setContinuousCornerRadius:8.0];
     }
 
-    objc_storeStrong(&v14->_mediaView, a4);
+    objc_storeStrong(&v14->_mediaView, view);
     v19 = MEMORY[0x1E69DC888];
-    v20 = [(PKDiscoveryMedia *)v14->_media backgroundColor];
-    v21 = [v19 pkui_colorWithPKColor:v20];
+    backgroundColor = [(PKDiscoveryMedia *)v14->_media backgroundColor];
+    v21 = [v19 pkui_colorWithPKColor:backgroundColor];
     v22 = v21;
     if (v21)
     {
-      v23 = v21;
+      secondarySystemBackgroundColor = v21;
     }
 
     else
     {
-      v23 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+      secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
     }
 
-    v24 = v23;
+    v24 = secondarySystemBackgroundColor;
 
     [(UIView *)v14->_mediaView setBackgroundColor:v24];
     [(UIView *)v14->_mediaContainerView addSubview:v14->_mediaView];
     [(UIView *)v14->_mediaView setAccessibilityIgnoresInvertColors:1];
-    v25 = [v7 localizedCaption];
-    if (v25)
+    localizedCaption = [shelfCopy localizedCaption];
+    if (localizedCaption)
     {
-      v26 = [[PKDiscoveryInlineMediaCaptionView alloc] initWithCaptionText:v25];
+      v26 = [[PKDiscoveryInlineMediaCaptionView alloc] initWithCaptionText:localizedCaption];
       captionView = v14->_captionView;
       v14->_captionView = v26;
     }
@@ -75,20 +75,20 @@
   return v14;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (self->_isInline)
   {
-    [(PKDiscoveryShelfView *)self contentInsets:a3.width];
+    [(PKDiscoveryShelfView *)self contentInsets:fits.width];
     width = width - (v5 + v6);
   }
 
   v7 = *MEMORY[0x1E695F060];
-  v8 = [(PKDiscoveryInlineMediaShelf *)self->_shelf media];
-  [v8 width];
+  media = [(PKDiscoveryInlineMediaShelf *)self->_shelf media];
+  [media width];
   v10 = v9;
-  [v8 height];
+  [media height];
   if (v11 > 0.0 && v10 > 0.0)
   {
     v7 = width;
@@ -114,12 +114,12 @@
   return result;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v9.receiver = self;
   v9.super_class = PKDiscoveryInlineCaptionedMediaShelfView;
   [(PKDiscoveryShelfView *)&v9 setContentInsets:?];
@@ -141,8 +141,8 @@
   [(PKDiscoveryShelfView *)self contentInsets];
   v8 = v7;
   v10 = v9;
-  v11 = [(PKDiscoveryInlineMediaShelf *)self->_shelf media];
-  v12 = v11;
+  media = [(PKDiscoveryInlineMediaShelf *)self->_shelf media];
+  v12 = media;
   if (self->_isInline)
   {
     v6 = v6 - (v8 + v10);
@@ -154,7 +154,7 @@
     v13 = v4;
   }
 
-  [v11 width];
+  [media width];
   v15 = v14;
   [v12 height];
   v17 = 0.0;

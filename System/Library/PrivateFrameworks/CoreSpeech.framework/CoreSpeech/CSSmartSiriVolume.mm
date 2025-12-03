@@ -1,45 +1,45 @@
 @interface CSSmartSiriVolume
-- (CSSmartSiriVolume)initWithSamplingRate:(float)a3;
-- (float)_combineResultsWithOptimalFromNoise:(float)a3 andOptimalFromLkfs:(float)a4 withUserOffset:(float)a5;
-- (float)_estimatedTTSVolume:(float)a3 lowerLimit:(float)a4 upperLimit:(float)a5 TTSmappingInputRangeLow:(float)a6 TTSmappingInputRangeHigh:(float)a7 TTSmappingOutputRangeLow:(float)a8 TTSmappingOutputRangeHigh:(float)a9;
-- (float)_getDevicedBFSForInputLinearVolume:(float)a3;
-- (float)_getFloatBufferData:(id)a3;
-- (float)_getUserOffsetFromMusicVolumeDB:(float)a3;
-- (float)estimateSoundLevelbySoundType:(int64_t)a3;
-- (float)estimatedTTSVolumeForNoiseLevelAndLKFS:(float)a3 LKFS:(float)a4;
+- (CSSmartSiriVolume)initWithSamplingRate:(float)rate;
+- (float)_combineResultsWithOptimalFromNoise:(float)noise andOptimalFromLkfs:(float)lkfs withUserOffset:(float)offset;
+- (float)_estimatedTTSVolume:(float)volume lowerLimit:(float)limit upperLimit:(float)upperLimit TTSmappingInputRangeLow:(float)low TTSmappingInputRangeHigh:(float)high TTSmappingOutputRangeLow:(float)rangeLow TTSmappingOutputRangeHigh:(float)rangeHigh;
+- (float)_getDevicedBFSForInputLinearVolume:(float)volume;
+- (float)_getFloatBufferData:(id)data;
+- (float)_getUserOffsetFromMusicVolumeDB:(float)b;
+- (float)estimateSoundLevelbySoundType:(int64_t)type;
+- (float)estimatedTTSVolumeForNoiseLevelAndLKFS:(float)s LKFS:(float)fS;
 - (id).cxx_construct;
-- (id)getVolumeForTTSType:(unint64_t)a3 withOverrideMediaVolume:(id)a4 WithRequestTime:(unint64_t)a5;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)CSMediaPlayingMonitor:(id)a3 didReceiveMediaPlayingChanged:(int64_t)a4;
+- (id)getVolumeForTTSType:(unint64_t)type withOverrideMediaVolume:(id)volume WithRequestTime:(unint64_t)time;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)CSMediaPlayingMonitor:(id)monitor didReceiveMediaPlayingChanged:(int64_t)changed;
 - (void)_pauseSSVProcessing;
-- (void)_prepareSoundLevelBufferFromSamples:(unsigned int)a3 soundType:(int64_t)a4;
-- (void)_processAudioChunk:(id)a3 soundType:(int64_t)a4;
+- (void)_prepareSoundLevelBufferFromSamples:(unsigned int)samples soundType:(int64_t)type;
+- (void)_processAudioChunk:(id)chunk soundType:(int64_t)type;
 - (void)_reset;
 - (void)_resetStartAnalyzeTime;
 - (void)_resumeSSVProcessing;
-- (void)_setAsset:(id)a3;
+- (void)_setAsset:(id)asset;
 - (void)_setDefaultParameters;
-- (void)_setStartAnalyzeTime:(unint64_t)a3;
+- (void)_setStartAnalyzeTime:(unint64_t)time;
 - (void)_startListenPolling;
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4;
-- (void)_startListenWithCompletion:(id)a3;
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion;
+- (void)_startListenWithCompletion:(id)completion;
 - (void)_stopListening;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)didDetectKeywordWithResult:(id)a3;
-- (void)didReceiveAlarmChanged:(int64_t)a3;
-- (void)didReceiveAlarmVolumeChanged:(float)a3;
-- (void)didReceiveMusicVolumeChanged:(float)a3;
-- (void)didReceiveTimerChanged:(int64_t)a3;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)didDetectKeywordWithResult:(id)result;
+- (void)didReceiveAlarmChanged:(int64_t)changed;
+- (void)didReceiveAlarmVolumeChanged:(float)changed;
+- (void)didReceiveMusicVolumeChanged:(float)changed;
+- (void)didReceiveTimerChanged:(int64_t)changed;
 - (void)fetchInitSystemVolumes;
 - (void)initializeAlarmState;
 - (void)initializeMediaPlayingState;
 - (void)initializeTimerState;
-- (void)prepareSoundLevelBufferFromSamples:(id)a3 soundType:(int64_t)a4 firedVoiceTriggerEvent:(BOOL)a5 triggerStartTimeSampleOffset:(unint64_t)a6 triggerEndTimeSampleOffset:(unint64_t)a7;
+- (void)prepareSoundLevelBufferFromSamples:(id)samples soundType:(int64_t)type firedVoiceTriggerEvent:(BOOL)event triggerStartTimeSampleOffset:(unint64_t)offset triggerEndTimeSampleOffset:(unint64_t)sampleOffset;
 - (void)reset;
-- (void)setAsset:(id)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)startSmartSiriVolumeWithAudioProviderSelector:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)startSmartSiriVolumeWithAudioProviderSelector:(id)selector;
 @end
 
 @implementation CSSmartSiriVolume
@@ -52,9 +52,9 @@
   return self;
 }
 
-- (id)getVolumeForTTSType:(unint64_t)a3 withOverrideMediaVolume:(id)a4 WithRequestTime:(unint64_t)a5
+- (id)getVolumeForTTSType:(unint64_t)type withOverrideMediaVolume:(id)volume WithRequestTime:(unint64_t)time
 {
-  [(CSSmartSiriVolume *)self estimateSoundLevelbySoundType:0, a4, a5];
+  [(CSSmartSiriVolume *)self estimateSoundLevelbySoundType:0, volume, time];
   v7 = v6;
   [(CSSmartSiriVolume *)self estimateSoundLevelbySoundType:1];
   LODWORD(v9) = v8;
@@ -82,32 +82,32 @@
   return v18;
 }
 
-- (float)_getUserOffsetFromMusicVolumeDB:(float)a3
+- (float)_getUserOffsetFromMusicVolumeDB:(float)b
 {
   if (+[CSAsset getSSVDeviceType]!= 2)
   {
-    return a3;
+    return b;
   }
 
-  *&v5 = a3;
+  *&v5 = b;
   [(CSSmartSiriVolume *)self _deviceSpecificDBToLinearVolumeMappingCSSSVDeviceSimple:v5];
 
   [(CSSmartSiriVolume *)self _getDeviceSimpledBFSForOutputLinearVolume:?];
   return result;
 }
 
-- (float)_getDevicedBFSForInputLinearVolume:(float)a3
+- (float)_getDevicedBFSForInputLinearVolume:(float)volume
 {
   if (+[CSAsset getSSVDeviceType]== 2)
   {
-    *&v5 = a3;
+    *&v5 = volume;
 
     [(CSSmartSiriVolume *)self _getMusicVolumeDBCSSSVDeviceSimple:v5];
   }
 
   else
   {
-    *&v5 = a3;
+    *&v5 = volume;
 
     [(CSSmartSiriVolume *)self _getMusicVolumeDBCSSSVDeviceDefault:v5];
   }
@@ -127,12 +127,12 @@
   *&self->_userOffsetOutputRangeHigh = xmmword_1001AA1A0;
 }
 
-- (void)_setStartAnalyzeTime:(unint64_t)a3
+- (void)_setStartAnalyzeTime:(unint64_t)time
 {
   if (!self->_isStartSampleCountMarked)
   {
     self->_isStartSampleCountMarked = 1;
-    self->_startAnalyzeSampleCount = a3;
+    self->_startAnalyzeSampleCount = time;
     self->_samplesFed = 0;
     v4 = CSLogCategoryASV;
     if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
@@ -140,7 +140,7 @@
       v5 = 136315394;
       v6 = "[CSSmartSiriVolume _setStartAnalyzeTime:]";
       v7 = 2050;
-      v8 = a3;
+      timeCopy = time;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s SmartSiriVolume: set StartAnalyzeSampleCount = %{public}lld", &v5, 0x16u);
     }
   }
@@ -153,24 +153,24 @@
   self->_samplesFed = 0;
 }
 
-- (float)_getFloatBufferData:(id)a3
+- (float)_getFloatBufferData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   if (+[CSConfig inputRecordingIsFloat])
   {
-    v4 = [v3 bytes];
+    bytes = [dataCopy bytes];
   }
 
   else
   {
-    v5 = [CSFLPCMTypeConverter convertToFloatLPCMBufFromShortLPCMBuf:v3];
-    v4 = [v5 bytes];
+    v5 = [CSFLPCMTypeConverter convertToFloatLPCMBufFromShortLPCMBuf:dataCopy];
+    bytes = [v5 bytes];
   }
 
-  return v4;
+  return bytes;
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -181,7 +181,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   v4 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
@@ -200,7 +200,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)didReceiveAlarmVolumeChanged:(float)a3
+- (void)didReceiveAlarmVolumeChanged:(float)changed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -208,11 +208,11 @@
   v4[2] = sub_10009EC9C;
   v4[3] = &unk_1002534E8;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(queue, v4);
 }
 
-- (void)didReceiveMusicVolumeChanged:(float)a3
+- (void)didReceiveMusicVolumeChanged:(float)changed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -220,11 +220,11 @@
   v4[2] = sub_10009ED24;
   v4[3] = &unk_1002534E8;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(queue, v4);
 }
 
-- (void)didReceiveTimerChanged:(int64_t)a3
+- (void)didReceiveTimerChanged:(int64_t)changed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -232,11 +232,11 @@
   v4[2] = sub_10009EDCC;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = changed;
   dispatch_async(queue, v4);
 }
 
-- (void)didReceiveAlarmChanged:(int64_t)a3
+- (void)didReceiveAlarmChanged:(int64_t)changed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -244,11 +244,11 @@
   v4[2] = sub_10009EFD0;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = changed;
   dispatch_async(queue, v4);
 }
 
-- (void)CSMediaPlayingMonitor:(id)a3 didReceiveMediaPlayingChanged:(int64_t)a4
+- (void)CSMediaPlayingMonitor:(id)monitor didReceiveMediaPlayingChanged:(int64_t)changed
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -256,11 +256,11 @@
   v5[2] = sub_10009F1D4;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = changed;
   dispatch_async(queue, v5);
 }
 
-- (float)_combineResultsWithOptimalFromNoise:(float)a3 andOptimalFromLkfs:(float)a4 withUserOffset:(float)a5
+- (float)_combineResultsWithOptimalFromNoise:(float)noise andOptimalFromLkfs:(float)lkfs withUserOffset:(float)offset
 {
   v9 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
@@ -268,11 +268,11 @@
     v14 = 136315906;
     v15 = "[CSSmartSiriVolume _combineResultsWithOptimalFromNoise:andOptimalFromLkfs:withUserOffset:]";
     v16 = 2050;
-    v17 = a3;
+    noiseCopy = noise;
     v18 = 2050;
-    v19 = a4;
+    lkfsCopy = lkfs;
     v20 = 2050;
-    v21 = a5;
+    offsetCopy = offset;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s SmartSiriVolume: TTS volume in dB from noise %{public}f, from LKFS %{public}f, with user offset %{public}f", &v14, 0x2Au);
   }
 
@@ -291,12 +291,12 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s SmartSiriVolume: soft volume algorithm in use", &v14, 0xCu);
       }
 
-      if ((a4 + a5) >= a3)
+      if ((lkfs + offset) >= noise)
       {
-        return ((a4 + a5) * (1.0 - self->_noiseWeight)) + (self->_noiseWeight * a3);
+        return ((lkfs + offset) * (1.0 - self->_noiseWeight)) + (self->_noiseWeight * noise);
       }
 
-      return a3;
+      return noise;
     }
   }
 
@@ -304,37 +304,37 @@
   {
   }
 
-  if ((a4 + a5) > a3)
+  if ((lkfs + offset) > noise)
   {
-    return a4 + a5;
+    return lkfs + offset;
   }
 
-  return a3;
+  return noise;
 }
 
-- (float)_estimatedTTSVolume:(float)a3 lowerLimit:(float)a4 upperLimit:(float)a5 TTSmappingInputRangeLow:(float)a6 TTSmappingInputRangeHigh:(float)a7 TTSmappingOutputRangeLow:(float)a8 TTSmappingOutputRangeHigh:(float)a9
+- (float)_estimatedTTSVolume:(float)volume lowerLimit:(float)limit upperLimit:(float)upperLimit TTSmappingInputRangeLow:(float)low TTSmappingInputRangeHigh:(float)high TTSmappingOutputRangeLow:(float)rangeLow TTSmappingOutputRangeHigh:(float)rangeHigh
 {
-  if (a3 < a4)
+  if (volume < limit)
   {
-    return a8;
+    return rangeLow;
   }
 
-  if (a3 > a5)
+  if (volume > upperLimit)
   {
-    return a9;
+    return rangeHigh;
   }
 
   [CSSmartSiriVolume _scaleInputWithInRangeOutRange:"_scaleInputWithInRangeOutRange:minIn:maxIn:minOut:maxOut:" minIn:? maxIn:? minOut:? maxOut:?];
   *&v14 = 1.0 / (expf(-v13) + 1.0);
   LODWORD(v15) = 1.0;
-  *&v16 = a8;
-  *&v17 = a9;
+  *&v16 = rangeLow;
+  *&v17 = rangeHigh;
 
   [(CSSmartSiriVolume *)self _scaleInputWithInRangeOutRange:v14 minIn:0.0 maxIn:v15 minOut:v16 maxOut:v17];
   return result;
 }
 
-- (float)estimatedTTSVolumeForNoiseLevelAndLKFS:(float)a3 LKFS:(float)a4
+- (float)estimatedTTSVolumeForNoiseLevelAndLKFS:(float)s LKFS:(float)fS
 {
   v14 = 0;
   v15 = &v14;
@@ -353,8 +353,8 @@
   block[1] = 3221225472;
   block[2] = sub_10009F7BC;
   block[3] = &unk_1002503C0;
-  v8 = a3;
-  v9 = a4;
+  sCopy = s;
+  fSCopy = fS;
   block[4] = self;
   block[5] = v10;
   block[6] = v12;
@@ -367,9 +367,9 @@
   return v5;
 }
 
-- (void)didDetectKeywordWithResult:(id)a3
+- (void)didDetectKeywordWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
@@ -383,26 +383,26 @@
   v8[1] = 3221225472;
   v8[2] = sub_10009FE20;
   v8[3] = &unk_100253C48;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = resultCopy;
+  selfCopy = self;
+  v7 = resultCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[CSSmartSiriVolume audioStreamProvider:didStopStreamUnexpectedly:]";
     v12 = 2050;
-    v13 = a4;
+    unexpectedlyCopy = unexpectedly;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s stream stopped unexpectedly : %{public}ld", buf, 0x16u);
   }
 
-  if (a4 != -11785)
+  if (unexpectedly != -11785)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -414,17 +414,17 @@
   }
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A05E8;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = availableCopy;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
@@ -461,7 +461,7 @@
   dispatch_async(queue, block);
 }
 
-- (float)estimateSoundLevelbySoundType:(int64_t)a3
+- (float)estimateSoundLevelbySoundType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -473,7 +473,7 @@
   block[2] = sub_1000A0C98;
   block[3] = &unk_100252170;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[6];
@@ -481,9 +481,9 @@
   return v4;
 }
 
-- (void)_processAudioChunk:(id)a3 soundType:(int64_t)a4
+- (void)_processAudioChunk:(id)chunk soundType:(int64_t)type
 {
-  v6 = a3;
+  chunkCopy = chunk;
   v7 = qword_10029E1F8;
   if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * qword_10029E1F8, 2) <= 0x444444444444444uLL)
   {
@@ -505,7 +505,7 @@
   *&buf[16] = 0x2020000000;
   v17 = 0;
   v9 = 128;
-  if (!a4)
+  if (!type)
   {
     v9 = 120;
   }
@@ -515,37 +515,37 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000A1158;
   v12[3] = &unk_100250398;
-  v11 = v6;
+  v11 = chunkCopy;
   v13 = v11;
-  v14 = self;
+  selfCopy = self;
   v15 = buf;
   [CSUtils iterateBitset:v10 block:v12];
-  [(CSSmartSiriVolume *)self _prepareSoundLevelBufferFromSamples:*(*&buf[8] + 24) soundType:a4];
+  [(CSSmartSiriVolume *)self _prepareSoundLevelBufferFromSamples:*(*&buf[8] + 24) soundType:type];
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)prepareSoundLevelBufferFromSamples:(id)a3 soundType:(int64_t)a4 firedVoiceTriggerEvent:(BOOL)a5 triggerStartTimeSampleOffset:(unint64_t)a6 triggerEndTimeSampleOffset:(unint64_t)a7
+- (void)prepareSoundLevelBufferFromSamples:(id)samples soundType:(int64_t)type firedVoiceTriggerEvent:(BOOL)event triggerStartTimeSampleOffset:(unint64_t)offset triggerEndTimeSampleOffset:(unint64_t)sampleOffset
 {
-  v12 = a3;
+  samplesCopy = samples;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000A12F4;
   v15[3] = &unk_100250370;
-  v16 = v12;
-  v17 = self;
-  v21 = a5;
-  v18 = a4;
-  v19 = a6;
-  v20 = a7;
-  v14 = v12;
+  v16 = samplesCopy;
+  selfCopy = self;
+  eventCopy = event;
+  typeCopy = type;
+  offsetCopy = offset;
+  sampleOffsetCopy = sampleOffset;
+  v14 = samplesCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_prepareSoundLevelBufferFromSamples:(unsigned int)a3 soundType:(int64_t)a4
+- (void)_prepareSoundLevelBufferFromSamples:(unsigned int)samples soundType:(int64_t)type
 {
-  if (a4)
+  if (type)
   {
     *&v4 = self->_musicVolumeDB;
     [(CSSmartSiriVolume *)self _convertDB2Mag:v4];
@@ -557,7 +557,7 @@
     v7 = 16;
   }
 
-  sub_1000A142C(*(&self->super.isa + v7), self->_floatBuffer.__begin_, a3);
+  sub_1000A142C(*(&self->super.isa + v7), self->_floatBuffer.__begin_, samples);
   v8 = *(&self->super.isa + v7);
   sub_1000A1540(v8);
 
@@ -586,12 +586,12 @@
   [(CSSmartSiriVolume *)self _resetStartAnalyzeTime];
 }
 
-- (void)_setAsset:(id)a3
+- (void)_setAsset:(id)asset
 {
-  v5 = a3;
-  if (v5)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    objc_storeStrong(&self->_currentAsset, a3);
+    objc_storeStrong(&self->_currentAsset, asset);
     self->_noiseLevelChannelBitset = [(CSAsset *)self->_currentAsset SSVNoiseLevelChannelBitset];
     self->_LKFSChannelBitset = [(CSAsset *)self->_currentAsset SSVLKFSChannelBitset];
     self->_energyBufferSize = [(CSAsset *)self->_currentAsset SSVEnergyBufferSize];
@@ -642,11 +642,11 @@
     v26 = CSLogCategoryASV;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(CSAsset *)self->_currentAsset SSVParameterDirectionary];
+      sSVParameterDirectionary = [(CSAsset *)self->_currentAsset SSVParameterDirectionary];
       v29 = 136315394;
       v30 = "[CSSmartSiriVolume _setAsset:]";
       v31 = 2114;
-      v32 = v27;
+      v32 = sSVParameterDirectionary;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%s SmartSiriVolume configure: %{public}@", &v29, 0x16u);
     }
   }
@@ -663,17 +663,17 @@
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A2144;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -695,8 +695,8 @@
 {
   v3 = +[CSTimerMonitor sharedInstance];
   [v3 initializeTimerState];
-  v4 = [v3 timerState];
-  if ((v4 - 1) <= 1)
+  timerState = [v3 timerState];
+  if ((timerState - 1) <= 1)
   {
     queue = self->_queue;
     v6[0] = _NSConcreteStackBlock;
@@ -704,7 +704,7 @@
     v6[2] = sub_1000A2300;
     v6[3] = &unk_100253C98;
     v6[4] = self;
-    v6[5] = v4;
+    v6[5] = timerState;
     dispatch_async(queue, v6);
   }
 }
@@ -713,8 +713,8 @@
 {
   v3 = +[CSAlarmMonitor sharedInstance];
   [v3 initializeAlarmState];
-  v4 = [v3 alarmState];
-  if ((v4 - 1) <= 1)
+  alarmState = [v3 alarmState];
+  if ((alarmState - 1) <= 1)
   {
     queue = self->_queue;
     v6[0] = _NSConcreteStackBlock;
@@ -722,7 +722,7 @@
     v6[2] = sub_1000A24AC;
     v6[3] = &unk_100253C98;
     v6[4] = self;
-    v6[5] = v4;
+    v6[5] = alarmState;
     dispatch_async(queue, v6);
   }
 }
@@ -732,8 +732,8 @@
   v3 = +[CSMediaPlayingMonitor sharedInstance];
   [v3 addObserver:self];
   [v3 initializeMediaPlayingState];
-  v4 = [v3 mediaPlayingState];
-  if ((v4 - 1) > 1)
+  mediaPlayingState = [v3 mediaPlayingState];
+  if ((mediaPlayingState - 1) > 1)
   {
     v6 = CSLogCategoryASV;
     if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
@@ -752,7 +752,7 @@
     v7[2] = sub_1000A26F4;
     v7[3] = &unk_100253C98;
     v7[4] = self;
-    v7[5] = v4;
+    v7[5] = mediaPlayingState;
     dispatch_async(queue, v7);
   }
 }
@@ -767,8 +767,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(CSSmartSiriVolume *)self audioStream];
-  v5 = v4 == 0;
+  audioStream = [(CSSmartSiriVolume *)self audioStream];
+  v5 = audioStream == 0;
 
   if (v5)
   {
@@ -783,19 +783,19 @@
 
   else
   {
-    v6 = [(CSSmartSiriVolume *)self audioStream];
-    [v6 stopAudioStreamWithOption:0 completion:&stru_100250348];
+    audioStream2 = [(CSSmartSiriVolume *)self audioStream];
+    [audioStream2 stopAudioStreamWithOption:0 completion:&stru_100250348];
   }
 }
 
-- (void)_startListenWithCompletion:(id)a3
+- (void)_startListenWithCompletion:(id)completion
 {
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000A2E04;
   v23[3] = &unk_100253220;
-  v4 = a3;
-  v24 = v4;
+  completionCopy = completion;
+  v24 = completionCopy;
   v5 = objc_retainBlock(v23);
   v6 = +[CSAudioRecordContext contextForBuiltInVoiceTrigger];
   audioProviderSelector = self->_audioProviderSelector;
@@ -850,9 +850,9 @@
   }
 }
 
-- (void)_startListenPollingWithInterval:(double)a3 completion:(id)a4
+- (void)_startListenPollingWithInterval:(double)interval completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = CSLogCategoryASV;
   if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
   {
@@ -861,25 +861,25 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v8 = [(CSSmartSiriVolume *)self audioStream];
-  if ([v8 isStreaming])
+  audioStream = [(CSSmartSiriVolume *)self audioStream];
+  if ([audioStream isStreaming])
   {
   }
 
   else
   {
-    v9 = [(CSSmartSiriVolume *)self enablePolicy];
-    v10 = [v9 isEnabled];
+    enablePolicy = [(CSSmartSiriVolume *)self enablePolicy];
+    isEnabled = [enablePolicy isEnabled];
 
-    if (v10)
+    if (isEnabled)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1000A332C;
       v12[3] = &unk_1002531F8;
       v12[4] = self;
-      v14 = a3;
-      v13 = v6;
+      intervalCopy = interval;
+      v13 = completionCopy;
       [(CSSmartSiriVolume *)self _startListenWithCompletion:v12];
 
       goto LABEL_11;
@@ -894,9 +894,9 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Skip listen polling since audio is streaming / Siri disabled", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_11:
@@ -927,10 +927,10 @@ LABEL_11:
   }
 }
 
-- (void)startSmartSiriVolumeWithAudioProviderSelector:(id)a3
+- (void)startSmartSiriVolumeWithAudioProviderSelector:(id)selector
 {
-  v4 = a3;
-  [(CSSmartSiriVolume *)self setAudioProviderSelector:v4];
+  selectorCopy = selector;
+  [(CSSmartSiriVolume *)self setAudioProviderSelector:selectorCopy];
   [(CSSmartSiriVolume *)self initializeMediaPlayingState];
   [(CSSmartSiriVolume *)self initializeAlarmState];
   [(CSSmartSiriVolume *)self initializeTimerState];
@@ -955,18 +955,18 @@ LABEL_11:
   v8 = +[CSSmartSiriVolumeRunPolicyFactory smartSiriVolumeRunPolicy];
   [(CSSmartSiriVolume *)self setEnablePolicy:v8];
 
-  v9 = [(CSSmartSiriVolume *)self enablePolicy];
+  enablePolicy = [(CSSmartSiriVolume *)self enablePolicy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000A3AAC;
   v16[3] = &unk_100253000;
   objc_copyWeak(&v17, &location);
-  [v9 setCallback:v16];
+  [enablePolicy setCallback:v16];
 
-  v10 = [(CSSmartSiriVolume *)self enablePolicy];
-  v11 = [v10 isEnabled];
+  enablePolicy2 = [(CSSmartSiriVolume *)self enablePolicy];
+  isEnabled = [enablePolicy2 isEnabled];
 
-  if (v11)
+  if (isEnabled)
   {
     queue = self->_queue;
     v15[0] = _NSConcreteStackBlock;
@@ -988,7 +988,7 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (CSSmartSiriVolume)initWithSamplingRate:(float)a3
+- (CSSmartSiriVolume)initWithSamplingRate:(float)rate
 {
   v14.receiver = self;
   v14.super_class = CSSmartSiriVolume;

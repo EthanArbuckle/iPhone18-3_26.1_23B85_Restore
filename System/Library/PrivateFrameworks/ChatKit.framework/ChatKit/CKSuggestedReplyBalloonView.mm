@@ -1,20 +1,20 @@
 @interface CKSuggestedReplyBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithCoder:(id)a3;
-- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithFrame:(CGRect)a3;
-- (void)configureForMessagePart:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithCoder:(id)coder;
+- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithFrame:(CGRect)frame;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation CKSuggestedReplyBalloonView
 
-- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKSuggestedReplyBalloonView_view) = 0;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKSuggestedReplyBalloonView_balloonMask) = 0;
   v8.receiver = self;
@@ -22,7 +22,7 @@
   return [(CKImageBalloonView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithCoder:(id)a3
+- (_TtC7ChatKit27CKSuggestedReplyBalloonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKSuggestedReplyBalloonView_view) = 0;
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKSuggestedReplyBalloonView_balloonMask) = 0;
@@ -31,14 +31,14 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
   v5 = *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit27CKSuggestedReplyBalloonView_view);
   if (v5)
   {
-    height = a3.height;
-    width = a3.width;
-    v8 = self;
+    height = fits.height;
+    width = fits.width;
+    selfCopy = self;
     v9 = v5;
     sub_190B58BDC(width, height);
     v11 = v10;
@@ -60,17 +60,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B8E7AC();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B8E9A0();
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
   type metadata accessor for CKSuggestedReplyMessagePartChatItem();
   v5 = swift_dynamicCastClass();
@@ -79,13 +79,13 @@
     v6 = v5;
     v10.receiver = self;
     v10.super_class = type metadata accessor for CKSuggestedReplyBalloonView();
-    v7 = a3;
-    v8 = self;
+    partCopy = part;
+    selfCopy = self;
     [(CKImageBalloonView *)&v10 configureForMessagePart:v6];
     v9 = *(v6 + OBJC_IVAR____TtC7ChatKit35CKSuggestedReplyMessagePartChatItem_suggestedReply);
     sub_190B8E468(v9);
 
-    [(CKSuggestedReplyBalloonView *)v8 setNeedsLayout:v10.receiver];
+    [(CKSuggestedReplyBalloonView *)selfCopy setNeedsLayout:v10.receiver];
   }
 }
 

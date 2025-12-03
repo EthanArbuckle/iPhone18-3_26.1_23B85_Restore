@@ -1,9 +1,9 @@
 @interface TSDTextureContext
-+ (TSDTextureContext)contextWithSession:(id)a3;
-+ (TSDTextureContext)contextWithTextureContext:(id)a3;
++ (TSDTextureContext)contextWithSession:(id)session;
++ (TSDTextureContext)contextWithTextureContext:(id)context;
 + (id)context;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)reset;
@@ -18,22 +18,22 @@
   return v2;
 }
 
-+ (TSDTextureContext)contextWithSession:(id)a3
++ (TSDTextureContext)contextWithSession:(id)session
 {
   v4 = objc_alloc_init(TSDTextureContext);
-  [(TSDTextureContext *)v4 setSession:a3];
+  [(TSDTextureContext *)v4 setSession:session];
 
   return v4;
 }
 
-+ (TSDTextureContext)contextWithTextureContext:(id)a3
++ (TSDTextureContext)contextWithTextureContext:(id)context
 {
-  v3 = [a3 copy];
+  v3 = [context copy];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSDTextureContext allocWithZone:?]];
   [(TSDTextureContext *)v4 setSession:[(TSDTextureContext *)self session]];
@@ -54,9 +54,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -67,92 +67,92 @@
     return 0;
   }
 
-  v5 = [(TSDTextureContext *)self session];
-  if (v5 != [a3 session])
+  session = [(TSDTextureContext *)self session];
+  if (session != [equal session])
   {
     return 0;
   }
 
-  v6 = [(TSDTextureContext *)self isMagicMove];
-  if (v6 != [a3 isMagicMove])
+  isMagicMove = [(TSDTextureContext *)self isMagicMove];
+  if (isMagicMove != [equal isMagicMove])
   {
     return 0;
   }
 
-  v7 = [(TSDTextureContext *)self shouldAddFinal];
-  if (v7 != [a3 shouldAddFinal])
+  shouldAddFinal = [(TSDTextureContext *)self shouldAddFinal];
+  if (shouldAddFinal != [equal shouldAddFinal])
   {
     return 0;
   }
 
-  v8 = [(TSDTextureContext *)self shouldAddMagicMoveObjectOnly];
-  if (v8 != [a3 shouldAddMagicMoveObjectOnly])
+  shouldAddMagicMoveObjectOnly = [(TSDTextureContext *)self shouldAddMagicMoveObjectOnly];
+  if (shouldAddMagicMoveObjectOnly != [equal shouldAddMagicMoveObjectOnly])
   {
     return 0;
   }
 
-  v9 = [(TSDTextureContext *)self shouldAddReversedFinal];
-  if (v9 != [a3 shouldAddReversedFinal])
+  shouldAddReversedFinal = [(TSDTextureContext *)self shouldAddReversedFinal];
+  if (shouldAddReversedFinal != [equal shouldAddReversedFinal])
   {
     return 0;
   }
 
-  v10 = [(TSDTextureContext *)self shouldDistortToFit];
-  if (v10 != [a3 shouldDistortToFit])
+  shouldDistortToFit = [(TSDTextureContext *)self shouldDistortToFit];
+  if (shouldDistortToFit != [equal shouldDistortToFit])
   {
     return 0;
   }
 
-  v11 = [(TSDTextureContext *)self shouldNotAddContainedReps];
-  if (v11 != [a3 shouldNotAddContainedReps])
+  shouldNotAddContainedReps = [(TSDTextureContext *)self shouldNotAddContainedReps];
+  if (shouldNotAddContainedReps != [equal shouldNotAddContainedReps])
   {
     return 0;
   }
 
-  v12 = [(TSDTextureContext *)self shouldNotAddShapeAttributes];
-  if (v12 != [a3 shouldNotAddShapeAttributes])
+  shouldNotAddShapeAttributes = [(TSDTextureContext *)self shouldNotAddShapeAttributes];
+  if (shouldNotAddShapeAttributes != [equal shouldNotAddShapeAttributes])
   {
     return 0;
   }
 
-  v13 = [(TSDTextureContext *)self shouldNotAddText];
-  if (v13 != [a3 shouldNotAddText])
+  shouldNotAddText = [(TSDTextureContext *)self shouldNotAddText];
+  if (shouldNotAddText != [equal shouldNotAddText])
   {
     return 0;
   }
 
-  v14 = [(TSDTextureContext *)self shouldNotCacheTexture];
-  if (v14 != [a3 shouldNotCacheTexture])
+  shouldNotCacheTexture = [(TSDTextureContext *)self shouldNotCacheTexture];
+  if (shouldNotCacheTexture != [equal shouldNotCacheTexture])
   {
     return 0;
   }
 
-  v15 = [(TSDTextureContext *)self shouldSeparateReflection];
-  if (v15 != [a3 shouldSeparateReflection])
+  shouldSeparateReflection = [(TSDTextureContext *)self shouldSeparateReflection];
+  if (shouldSeparateReflection != [equal shouldSeparateReflection])
   {
     return 0;
   }
 
-  v16 = [(TSDTextureContext *)self shouldSeparateShadow];
-  if (v16 != [a3 shouldSeparateShadow])
+  shouldSeparateShadow = [(TSDTextureContext *)self shouldSeparateShadow];
+  if (shouldSeparateShadow != [equal shouldSeparateShadow])
   {
     return 0;
   }
 
-  v17 = [(TSDTextureContext *)self shouldSeparateStroke];
-  if (v17 != [a3 shouldSeparateStroke])
+  shouldSeparateStroke = [(TSDTextureContext *)self shouldSeparateStroke];
+  if (shouldSeparateStroke != [equal shouldSeparateStroke])
   {
     return 0;
   }
 
-  v18 = [(TSDTextureContext *)self shouldSeparateText];
-  if (v18 != [a3 shouldSeparateText])
+  shouldSeparateText = [(TSDTextureContext *)self shouldSeparateText];
+  if (shouldSeparateText != [equal shouldSeparateText])
   {
     return 0;
   }
 
-  v20 = [(TSDTextureContext *)self shouldForceTextureGeneration];
-  return v20 ^ [a3 shouldForceTextureGeneration] ^ 1;
+  shouldForceTextureGeneration = [(TSDTextureContext *)self shouldForceTextureGeneration];
+  return shouldForceTextureGeneration ^ [equal shouldForceTextureGeneration] ^ 1;
 }
 
 - (id)description
@@ -237,16 +237,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TSDTextureContext *)self session];
-  v4 = [(TSDTextureContext *)self isMagicMove];
-  v5 = [(TSDTextureContext *)self shouldAddFinal];
+  session = [(TSDTextureContext *)self session];
+  isMagicMove = [(TSDTextureContext *)self isMagicMove];
+  shouldAddFinal = [(TSDTextureContext *)self shouldAddFinal];
   v6 = 2;
-  if (!v5)
+  if (!shouldAddFinal)
   {
     v6 = 0;
   }
 
-  v7 = v6 | v4;
+  v7 = v6 | isMagicMove;
   if ([(TSDTextureContext *)self shouldAddMagicMoveObjectOnly])
   {
     v8 = 4;
@@ -257,9 +257,9 @@
     v8 = 0;
   }
 
-  v9 = [(TSDTextureContext *)self shouldAddReversedFinal];
+  shouldAddReversedFinal = [(TSDTextureContext *)self shouldAddReversedFinal];
   v10 = 8;
-  if (!v9)
+  if (!shouldAddReversedFinal)
   {
     v10 = 0;
   }
@@ -275,17 +275,17 @@
     v12 = 0;
   }
 
-  v13 = [(TSDTextureContext *)self shouldForceTextureGeneration];
+  shouldForceTextureGeneration = [(TSDTextureContext *)self shouldForceTextureGeneration];
   v14 = 32;
-  if (!v13)
+  if (!shouldForceTextureGeneration)
   {
     v14 = 0;
   }
 
   v15 = v12 | v14;
-  v16 = [(TSDTextureContext *)self shouldNotAddContainedReps];
+  shouldNotAddContainedReps = [(TSDTextureContext *)self shouldNotAddContainedReps];
   v17 = 64;
-  if (!v16)
+  if (!shouldNotAddContainedReps)
   {
     v17 = 0;
   }
@@ -301,25 +301,25 @@
     v19 = 0;
   }
 
-  v20 = [(TSDTextureContext *)self shouldNotAddText];
+  shouldNotAddText = [(TSDTextureContext *)self shouldNotAddText];
   v21 = 256;
-  if (!v20)
+  if (!shouldNotAddText)
   {
     v21 = 0;
   }
 
   v22 = v19 | v21;
-  v23 = [(TSDTextureContext *)self shouldNotCacheTexture];
+  shouldNotCacheTexture = [(TSDTextureContext *)self shouldNotCacheTexture];
   v24 = 512;
-  if (!v23)
+  if (!shouldNotCacheTexture)
   {
     v24 = 0;
   }
 
   v25 = v22 | v24;
-  v26 = [(TSDTextureContext *)self shouldSeparateReflection];
+  shouldSeparateReflection = [(TSDTextureContext *)self shouldSeparateReflection];
   v27 = 1024;
-  if (!v26)
+  if (!shouldSeparateReflection)
   {
     v27 = 0;
   }
@@ -335,22 +335,22 @@
     v29 = 0;
   }
 
-  v30 = [(TSDTextureContext *)self shouldSeparateStroke];
+  shouldSeparateStroke = [(TSDTextureContext *)self shouldSeparateStroke];
   v31 = 4096;
-  if (!v30)
+  if (!shouldSeparateStroke)
   {
     v31 = 0;
   }
 
   v32 = v29 | v31;
-  v33 = [(TSDTextureContext *)self shouldSeparateText];
+  shouldSeparateText = [(TSDTextureContext *)self shouldSeparateText];
   v34 = 0x2000;
-  if (!v33)
+  if (!shouldSeparateText)
   {
     v34 = 0;
   }
 
-  return (v28 | v32 | v34) ^ v3;
+  return (v28 | v32 | v34) ^ session;
 }
 
 - (void)reset

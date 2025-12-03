@@ -2,9 +2,9 @@
 - (BOOL)isHighlighted;
 - (int64_t)accessibilityState;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DownloadButton
@@ -16,33 +16,33 @@
   return [(DownloadButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for DownloadButton();
   v4 = v5.receiver;
-  [(DownloadButton *)&v5 setHighlighted:v3];
+  [(DownloadButton *)&v5 setHighlighted:highlightedCopy];
   sub_20C0DAFD4([v4 isHighlighted]);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C0DA850();
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C0DAA9C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20C0DAC4C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20C0DAC4C(change);
 }
 
 - (int64_t)accessibilityState

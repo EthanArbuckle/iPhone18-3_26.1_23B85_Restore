@@ -1,10 +1,10 @@
 @interface NBJaliscoArtworkCatalogDataSource
 + (id)instance;
 - (NBJaliscoArtworkCatalogDataSource)init;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation NBJaliscoArtworkCatalogDataSource
@@ -41,8 +41,8 @@
 
     v2->_pendingTaskLock._os_unfair_lock_opaque = 0;
     v9 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v10 = [v9 lastObject];
-    v11 = [v10 stringByAppendingPathComponent:@"bridge-jalisco-artwork"];
+    lastObject = [v9 lastObject];
+    v11 = [lastObject stringByAppendingPathComponent:@"bridge-jalisco-artwork"];
     imageDirectoryPath = v2->_imageDirectoryPath;
     v2->_imageDirectoryPath = v11;
 
@@ -54,41 +54,41 @@
   return v2;
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   objc_opt_class();
-  v5 = [v4 token];
+  token = [catalogCopy token];
   v6 = BUDynamicCast();
 
-  [v4 scaledFittingSize];
+  [catalogCopy scaledFittingSize];
   v8 = v7;
   v10 = v9;
   v11 = [(NBJaliscoArtworkCatalogDataSource *)self _cacheKeyForSize:v6 withBaseKey:?];
-  v12 = [v4 cache];
-  v13 = [v12 objectForKey:v11];
+  cache = [catalogCopy cache];
+  v13 = [cache objectForKey:v11];
 
   if (v13)
   {
     v14 = v13;
   }
 
-  else if (([v4 renderHint] & 8) != 0)
+  else if (([catalogCopy renderHint] & 8) != 0)
   {
     v14 = 0;
   }
 
   else
   {
-    v15 = [(NBJaliscoArtworkCatalogDataSource *)self imageDirectoryPath];
-    v16 = [v15 stringByAppendingPathComponent:v11];
+    imageDirectoryPath = [(NBJaliscoArtworkCatalogDataSource *)self imageDirectoryPath];
+    v16 = [imageDirectoryPath stringByAppendingPathComponent:v11];
     v17 = [UIImage imageWithContentsOfFile:v16];
 
     if (v17)
     {
       v14 = [MPArtworkRepresentation representationWithSize:v17 image:v8, v10];
-      v18 = [v4 cache];
-      [v18 setObject:v14 forKey:v11];
+      cache2 = [catalogCopy cache];
+      [cache2 setObject:v14 forKey:v11];
     }
 
     else
@@ -100,14 +100,14 @@
   return v14;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
   os_unfair_lock_lock(&self->_pendingTaskLock);
-  v9 = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks];
-  v10 = [v9 objectForKey:v8];
+  pendingTasks = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks];
+  v10 = [pendingTasks objectForKey:token];
 
   if (v10)
   {
@@ -117,21 +117,21 @@
   else
   {
     v12 = [NSMutableURLRequest alloc];
-    v13 = [NSURL URLWithString:v8];
+    v13 = [NSURL URLWithString:token];
     v14 = [v12 initWithURL:v13];
 
     [v14 setHTTPShouldUsePipelining:1];
-    v15 = [(NBJaliscoArtworkCatalogDataSource *)self artworkURLSession];
+    artworkURLSession = [(NBJaliscoArtworkCatalogDataSource *)self artworkURLSession];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_52BC;
     v21 = &unk_20998;
-    v22 = self;
-    v23 = v6;
-    v16 = v8;
+    selfCopy = self;
+    v23 = catalogCopy;
+    v16 = token;
     v24 = v16;
-    v25 = v7;
-    v11 = [v15 dataTaskWithRequest:v14 completionHandler:&v18];
+    v25 = handlerCopy;
+    v11 = [artworkURLSession dataTaskWithRequest:v14 completionHandler:&v18];
 
     v17 = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks:v18];
     [v17 setObject:v11 forKey:v16];
@@ -141,24 +141,24 @@
   [v11 resume];
 }
 
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog
 {
-  v7 = [a3 token];
+  token = [catalog token];
   os_unfair_lock_lock(&self->_pendingTaskLock);
-  v4 = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks];
-  v5 = [v4 objectForKey:v7];
+  pendingTasks = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks];
+  v5 = [pendingTasks objectForKey:token];
 
   [v5 cancel];
-  v6 = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks];
-  [v6 removeObjectForKey:v7];
+  pendingTasks2 = [(NBJaliscoArtworkCatalogDataSource *)self pendingTasks];
+  [pendingTasks2 removeObjectForKey:token];
 
   os_unfair_lock_unlock(&self->_pendingTaskLock);
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [[_NBStaticArtworkVisualIdenticalityIdentifier alloc] initWithArtworkIdentifier:v3];
+  token = [catalog token];
+  v4 = [[_NBStaticArtworkVisualIdenticalityIdentifier alloc] initWithArtworkIdentifier:token];
 
   return v4;
 }

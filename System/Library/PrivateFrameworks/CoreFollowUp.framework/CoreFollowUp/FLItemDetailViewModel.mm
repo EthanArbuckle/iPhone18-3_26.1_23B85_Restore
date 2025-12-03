@@ -1,21 +1,21 @@
 @interface FLItemDetailViewModel
-- (FLItemDetailViewModel)initWithIdentifier:(id)a3;
-- (FLItemDetailViewModel)initWithItems:(id)a3;
+- (FLItemDetailViewModel)initWithIdentifier:(id)identifier;
+- (FLItemDetailViewModel)initWithItems:(id)items;
 - (id)allPendingItems;
-- (void)setItemChangeHandler:(id)a3;
+- (void)setItemChangeHandler:(id)handler;
 @end
 
 @implementation FLItemDetailViewModel
 
-- (FLItemDetailViewModel)initWithIdentifier:(id)a3
+- (FLItemDetailViewModel)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FLItemDetailViewModel;
   v5 = [(FLItemDetailViewModel *)&v9 init];
   if (v5)
   {
-    v6 = [[FLFollowUpController alloc] initWithClientIdentifier:v4];
+    v6 = [[FLFollowUpController alloc] initWithClientIdentifier:identifierCopy];
     controller = v5->_controller;
     v5->_controller = v6;
   }
@@ -23,14 +23,14 @@
   return v5;
 }
 
-- (FLItemDetailViewModel)initWithItems:(id)a3
+- (FLItemDetailViewModel)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v6 = [(FLItemDetailViewModel *)self initWithIdentifier:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalItems, a3);
+    objc_storeStrong(&v6->_originalItems, items);
     v8 = MEMORY[0x277CBEB98];
     v9 = [(NSArray *)v7->_originalItems fl_map:&__block_literal_global_10];
     v10 = [v8 setWithArray:v9];
@@ -64,9 +64,9 @@ uint64_t __40__FLItemDetailViewModel_allPendingItems__block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (void)setItemChangeHandler:(id)a3
+- (void)setItemChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -74,7 +74,7 @@ uint64_t __40__FLItemDetailViewModel_allPendingItems__block_invoke(uint64_t a1, 
     _os_log_impl(&dword_22E696000, v5, OS_LOG_TYPE_DEFAULT, "FLItemDetailViewModel: setItemChangeHandler", v8, 2u);
   }
 
-  v6 = [FLItemChangeObserver observerWithChangeHandler:v4];
+  v6 = [FLItemChangeObserver observerWithChangeHandler:handlerCopy];
 
   observer = self->_observer;
   self->_observer = v6;

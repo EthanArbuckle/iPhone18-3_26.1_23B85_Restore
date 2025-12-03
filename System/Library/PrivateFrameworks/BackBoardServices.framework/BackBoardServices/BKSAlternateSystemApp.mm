@@ -1,15 +1,15 @@
 @interface BKSAlternateSystemApp
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)a3 didExitWithContext:(id)a4;
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)a3 failedToOpenWithResult:(id)a4;
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidOpen:(id)a3;
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidTerminate:(id)a3;
-- (BKSAlternateSystemApp)initWithBundleId:(id)a3;
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)d didExitWithContext:(id)context;
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)d failedToOpenWithResult:(id)result;
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidOpen:(id)open;
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidTerminate:(id)terminate;
+- (BKSAlternateSystemApp)initWithBundleId:(id)id;
 - (BKSAlternateSystemAppDelegate)delegate;
 - (void)_handleInterruptedConnection;
-- (void)_queue_changeState:(int64_t)a3;
+- (void)_queue_changeState:(int64_t)state;
 - (void)_queue_ensureConnection;
 - (void)_queue_invalidate;
-- (void)_waitForState:(int64_t)a3;
+- (void)_waitForState:(int64_t)state;
 - (void)activate;
 - (void)dealloc;
 - (void)didBlockSystemAppForAlternateSystemApp;
@@ -26,7 +26,7 @@
   return WeakRetained;
 }
 
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidTerminate:(id)a3
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidTerminate:(id)terminate
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = BKLogAlternateSystemApp();
@@ -65,7 +65,7 @@ void __68__BKSAlternateSystemApp_alternateSystemAppWithBundleIDDidTerminate___bl
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidOpen:(id)a3
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleIDDidOpen:(id)open
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = BKLogAlternateSystemApp();
@@ -126,10 +126,10 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)a3 didExitWithContext:(id)a4
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)d didExitWithContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contextCopy = context;
   v6 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -144,8 +144,8 @@ LABEL_8:
   v11[2] = __75__BKSAlternateSystemApp_alternateSystemAppWithBundleID_didExitWithContext___block_invoke;
   v11[3] = &unk_1E6F47C78;
   v11[4] = self;
-  v12 = v5;
-  v8 = v5;
+  v12 = contextCopy;
+  v8 = contextCopy;
   dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -229,10 +229,10 @@ LABEL_14:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)a3 failedToOpenWithResult:(id)a4
+- (BKSAlternateSystemApp)alternateSystemAppWithBundleID:(id)d failedToOpenWithResult:(id)result
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  resultCopy = result;
   v6 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -247,8 +247,8 @@ LABEL_14:
   v11[2] = __79__BKSAlternateSystemApp_alternateSystemAppWithBundleID_failedToOpenWithResult___block_invoke;
   v11[3] = &unk_1E6F47C78;
   v11[4] = self;
-  v12 = v5;
-  v8 = v5;
+  v12 = resultCopy;
+  v8 = resultCopy;
   dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -405,7 +405,7 @@ void __53__BKSAlternateSystemApp__handleInterruptedConnection__block_invoke(uint
   [(BKSAlternateSystemApp *)self setConnection:0];
 }
 
-- (void)_waitForState:(int64_t)a3
+- (void)_waitForState:(int64_t)state
 {
   dispatch_assert_queue_not_V2(self->_queue);
   v5 = MEMORY[0x1E69E9820];
@@ -421,7 +421,7 @@ void __53__BKSAlternateSystemApp__handleInterruptedConnection__block_invoke(uint
     block[2] = __39__BKSAlternateSystemApp__waitForState___block_invoke;
     block[3] = &unk_1E6F46FB8;
     block[5] = &v8;
-    block[6] = a3;
+    block[6] = state;
     block[4] = self;
     dispatch_sync(queue, block);
     if (v9[3])
@@ -436,21 +436,21 @@ void __53__BKSAlternateSystemApp__handleInterruptedConnection__block_invoke(uint
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)_queue_changeState:(int64_t)a3
+- (void)_queue_changeState:(int64_t)state
 {
   v10 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v5 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (state > 3)
     {
       v6 = @"Unknown";
     }
 
     else
     {
-      v6 = off_1E6F46FD8[a3];
+      v6 = off_1E6F46FD8[state];
     }
 
     v8 = 138543362;
@@ -458,7 +458,7 @@ void __53__BKSAlternateSystemApp__handleInterruptedConnection__block_invoke(uint
     _os_log_impl(&dword_186345000, v5, OS_LOG_TYPE_DEFAULT, "Setting state to %{public}@", &v8, 0xCu);
   }
 
-  self->_state = a3;
+  self->_state = state;
   dispatch_semaphore_signal(self->_stateChangeSemaphore);
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -470,8 +470,8 @@ void __53__BKSAlternateSystemApp__handleInterruptedConnection__block_invoke(uint
   {
     if (self->_state)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      v13 = v12;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v13 = currentHandler;
       state = self->_state;
       if (state > 3)
       {
@@ -483,7 +483,7 @@ void __53__BKSAlternateSystemApp__handleInterruptedConnection__block_invoke(uint
         v15 = off_1E6F46FD8[state];
       }
 
-      [v12 handleFailureInMethod:a2 object:self file:@"BKSAlternateSystemApp.m" lineNumber:119 description:{@"BKSAlternateSystemApp %@ has no connection but is in state %@ instead of Idle", self, v15}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BKSAlternateSystemApp.m" lineNumber:119 description:{@"BKSAlternateSystemApp %@ has no connection but is in state %@ instead of Idle", self, v15}];
     }
 
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.backboard.altsysapp" options:4096];
@@ -610,8 +610,8 @@ void __33__BKSAlternateSystemApp_activate__block_invoke(uint64_t a1)
 {
   if (self->_connection)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"BKSAlternateSystemApp.m" lineNumber:81 description:{@"BKSAlternateSystemApp %@: you must call -terminate before -dealloc", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSAlternateSystemApp.m" lineNumber:81 description:{@"BKSAlternateSystemApp %@: you must call -terminate before -dealloc", self}];
   }
 
   v5.receiver = self;
@@ -619,9 +619,9 @@ void __33__BKSAlternateSystemApp_activate__block_invoke(uint64_t a1)
   [(BKSAlternateSystemApp *)&v5 dealloc];
 }
 
-- (BKSAlternateSystemApp)initWithBundleId:(id)a3
+- (BKSAlternateSystemApp)initWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = BKSAlternateSystemApp;
   v5 = [(BKSAlternateSystemApp *)&v13 init];
@@ -629,7 +629,7 @@ void __33__BKSAlternateSystemApp_activate__block_invoke(uint64_t a1)
   if (v5)
   {
     v5->_state = 0;
-    [(BKSAlternateSystemApp *)v5 setBundleId:v4];
+    [(BKSAlternateSystemApp *)v5 setBundleId:idCopy];
     v6->_stateChangeWaiter = 0;
     v7 = dispatch_semaphore_create(0);
     stateChangeSemaphore = v6->_stateChangeSemaphore;

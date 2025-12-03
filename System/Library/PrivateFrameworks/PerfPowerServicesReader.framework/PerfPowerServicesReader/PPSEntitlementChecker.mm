@@ -1,18 +1,18 @@
 @interface PPSEntitlementChecker
-+ (BOOL)checkForEntitlement:(id)a3;
++ (BOOL)checkForEntitlement:(id)entitlement;
 @end
 
 @implementation PPSEntitlementChecker
 
-+ (BOOL)checkForEntitlement:(id)a3
++ (BOOL)checkForEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = SecTaskCreateFromSelf(0);
   if (v4)
   {
     v5 = v4;
     error = 0;
-    v6 = SecTaskCopyValueForEntitlement(v4, v3, &error);
+    v6 = SecTaskCopyValueForEntitlement(v4, entitlementCopy, &error);
     if (v6)
     {
       v7 = v6;

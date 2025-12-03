@@ -1,5 +1,5 @@
 @interface NCNotificationListCountIndicatorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -9,23 +9,23 @@
 
 @implementation NCNotificationListCountIndicatorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBUILegibilityLabel" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleLabel" withType:"NCNotificationListCountIndicatorButton"];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_subtitleString" withType:"NSString"];
-  [v3 validateClass:@"NCNotificationListCountIndicatorViewController" conformsToProtocol:@"NCNotificationListCountIndicatorViewDelegate"];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleLabelRepresentsNotificationCount" withType:"BOOL"];
-  [v3 validateClass:@"NCNotificationStructuredListViewController" hasInstanceMethod:@"listModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRootList" hasInstanceMethod:@"rootListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCountIndicatorViewController" hasInstanceMethod:@"notificationListCountIndicatorViewTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NCNotificationListCountIndicatorViewController" hasInstanceMethod:@"notificationListCountIndicatorViewLongPressed:presentingView:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleString" withType:"NSString"];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleSymbol" withType:"NSString"];
-  [v3 validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_contentHidden" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBUILegibilityLabel" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleLabel" withType:"NCNotificationListCountIndicatorButton"];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_subtitleString" withType:"NSString"];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorViewController" conformsToProtocol:@"NCNotificationListCountIndicatorViewDelegate"];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleLabelRepresentsNotificationCount" withType:"BOOL"];
+  [validationsCopy validateClass:@"NCNotificationStructuredListViewController" hasInstanceMethod:@"listModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRootList" hasInstanceMethod:@"rootListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorViewController" hasInstanceMethod:@"notificationListCountIndicatorViewTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorViewController" hasInstanceMethod:@"notificationListCountIndicatorViewLongPressed:presentingView:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleString" withType:"NSString"];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_titleSymbol" withType:"NSString"];
+  [validationsCopy validateClass:@"NCNotificationListCountIndicatorView" hasInstanceVariable:@"_contentHidden" withType:"BOOL"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -57,14 +57,14 @@
 {
   v7.receiver = self;
   v7.super_class = NCNotificationListCountIndicatorViewAccessibility;
-  v3 = [(NCNotificationListCountIndicatorViewAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(NCNotificationListCountIndicatorViewAccessibility *)&v7 accessibilityTraits];
   v4 = [(NCNotificationListCountIndicatorViewAccessibility *)self safeValueForKey:@"_titleLabel"];
   if (v4)
   {
 
 LABEL_4:
-    v3 |= *MEMORY[0x29EDC7F70];
-    return v3;
+    accessibilityTraits |= *MEMORY[0x29EDC7F70];
+    return accessibilityTraits;
   }
 
   v5 = [(NCNotificationListCountIndicatorViewAccessibility *)self safeStringForKey:@"_subtitleString"];
@@ -74,7 +74,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (BOOL)accessibilityActivate
@@ -82,7 +82,7 @@ LABEL_4:
   v4 = [(NCNotificationListCountIndicatorViewAccessibility *)self safeValueForKey:@"delegate"];
   v5 = [(NCNotificationListCountIndicatorViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
   v6 = [(NCNotificationListCountIndicatorViewAccessibility *)self safeBoolForKey:@"_titleLabelRepresentsNotificationCount"];
-  v7 = [v4 parentViewController];
+  parentViewController = [v4 parentViewController];
   if (v6)
   {
     v2 = [(NCNotificationListCountIndicatorViewAccessibility *)self safeStringForKey:@"_titleSymbol"];
@@ -95,13 +95,13 @@ LABEL_7:
       v29 = __74__NCNotificationListCountIndicatorViewAccessibility_accessibilityActivate__block_invoke;
       v30 = &unk_29F316EF8;
       v31 = v4;
-      v32 = self;
+      selfCopy = self;
       AXPerformSafeBlock();
       v22 = MEMORY[0x29EDCA5F8];
       v23 = 3221225472;
       v24 = __74__NCNotificationListCountIndicatorViewAccessibility_accessibilityActivate__block_invoke_2;
       v25 = &unk_29F316E90;
-      v26 = v7;
+      v26 = parentViewController;
       AXPerformBlockOnMainThreadAfterDelay();
 
       goto LABEL_8;
@@ -123,37 +123,37 @@ LABEL_7:
   {
     v14.receiver = self;
     v14.super_class = NCNotificationListCountIndicatorViewAccessibility;
-    v9 = [(NCNotificationListCountIndicatorViewAccessibility *)&v14 accessibilityActivate];
+    accessibilityActivate = [(NCNotificationListCountIndicatorViewAccessibility *)&v14 accessibilityActivate];
     goto LABEL_9;
   }
 
   if (v6)
   {
-    v11 = v5;
+    selfCopy2 = v5;
   }
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
   }
 
-  v12 = v11;
+  v12 = selfCopy2;
   v15 = MEMORY[0x29EDCA5F8];
   v16 = 3221225472;
   v17 = __74__NCNotificationListCountIndicatorViewAccessibility_accessibilityActivate__block_invoke_3;
   v18 = &unk_29F316F20;
   v19 = v4;
-  v20 = self;
+  selfCopy3 = self;
   v21 = v12;
   v13 = v12;
   AXPerformSafeBlock();
   AXPerformBlockOnMainThreadAfterDelay();
 
 LABEL_8:
-  v9 = 1;
+  accessibilityActivate = 1;
 LABEL_9:
 
-  return v9;
+  return accessibilityActivate;
 }
 
 void __74__NCNotificationListCountIndicatorViewAccessibility_accessibilityActivate__block_invoke_2(uint64_t a1)
@@ -168,9 +168,9 @@ void __74__NCNotificationListCountIndicatorViewAccessibility_accessibilityActiva
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _allSubviews];
+  _allSubviews = [v2 _allSubviews];
 
-  return v3;
+  return _allSubviews;
 }
 
 @end

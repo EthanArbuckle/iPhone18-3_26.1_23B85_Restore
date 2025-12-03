@@ -1,30 +1,30 @@
 @interface SBCornerFingerPanGestureRecognizer
 - (BOOL)_shouldBegin;
-- (CGVector)_convertReferenceVector:(CGVector)a3 toCorner:(unint64_t)a4 orientation:(int64_t)a5;
-- (SBCornerFingerPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 corner:(unint64_t)a5 classifier:(id)a6;
+- (CGVector)_convertReferenceVector:(CGVector)vector toCorner:(unint64_t)corner orientation:(int64_t)orientation;
+- (SBCornerFingerPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action corner:(unint64_t)corner classifier:(id)classifier;
 - (int64_t)_touchInterfaceOrientation;
 - (unint64_t)edges;
-- (void)_SBLogTouchesWithMethodName:(id)a3 withMethodName:(id)a4;
-- (void)_convertReferenceLocation:(CGPoint)a3 toOrientedLocation:(CGPoint *)a4 orientedBounds:(CGRect *)a5;
+- (void)_SBLogTouchesWithMethodName:(id)name withMethodName:(id)methodName;
+- (void)_convertReferenceLocation:(CGPoint)location toOrientedLocation:(CGPoint *)orientedLocation orientedBounds:(CGRect *)bounds;
 - (void)reset;
-- (void)setEdges:(unint64_t)a3;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setEdges:(unint64_t)edges;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SBCornerFingerPanGestureRecognizer
 
-- (SBCornerFingerPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 corner:(unint64_t)a5 classifier:(id)a6
+- (SBCornerFingerPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action corner:(unint64_t)corner classifier:(id)classifier
 {
-  v11 = a6;
+  classifierCopy = classifier;
   v12 = MEMORY[0x277CF0CA8];
-  v13 = a3;
-  v14 = [v12 sharedInstance];
-  v15 = [v14 homeButtonType];
+  targetCopy = target;
+  sharedInstance = [v12 sharedInstance];
+  homeButtonType = [sharedInstance homeButtonType];
 
-  if (v15 == 2)
+  if (homeButtonType == 2)
   {
     v16 = 5;
   }
@@ -36,7 +36,7 @@
 
   v24.receiver = self;
   v24.super_class = SBCornerFingerPanGestureRecognizer;
-  v17 = [(SBScreenEdgePanGestureRecognizer *)&v24 initWithTarget:v13 action:a4 type:v16 options:0];
+  v17 = [(SBScreenEdgePanGestureRecognizer *)&v24 initWithTarget:targetCopy action:action type:v16 options:0];
 
   if (v17)
   {
@@ -44,8 +44,8 @@
     touchHistory = v17->_touchHistory;
     v17->_touchHistory = v18;
 
-    v17->_corner = a5;
-    objc_storeStrong(&v17->_classifier, a6);
+    v17->_corner = corner;
+    objc_storeStrong(&v17->_classifier, classifier);
     [(SBCornerFingerPanGestureRecognizer *)v17 setMaximumNumberOfTouches:1];
     [(SBCornerFingerPanGestureRecognizer *)v17 setAllowedTouchTypes:&unk_28336F168];
     v20 = v17->_corner - 1;
@@ -95,8 +95,8 @@
       if (corner != 8)
       {
 LABEL_10:
-        v10 = [MEMORY[0x277CCA890] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:184 description:@"_corner incorrectly configured"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:184 description:@"_corner incorrectly configured"];
 
         MaxY = 0.0;
         MaxX = 0.0;
@@ -159,11 +159,11 @@ LABEL_14:
   }
 
 LABEL_24:
-  v21 = [(UIScreenEdgePanGestureRecognizer *)self touchedEdges];
+  touchedEdges = [(UIScreenEdgePanGestureRecognizer *)self touchedEdges];
   [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:0.0416666667];
   v23 = v22;
   v25 = v24;
-  v26 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __50__SBCornerFingerPanGestureRecognizer__shouldBegin__block_invoke;
@@ -171,10 +171,10 @@ LABEL_24:
   v33 = v7;
   v28[4] = self;
   v29 = v8;
-  v30 = v21;
+  v30 = touchedEdges;
   v31 = v23;
   v32 = v25;
-  [v26 logBlock:v28];
+  [mEMORY[0x277D6A798] logBlock:v28];
 
   return v7;
 }
@@ -234,39 +234,39 @@ id __50__SBCornerFingerPanGestureRecognizer__shouldBegin__block_invoke(uint64_t 
   return v14;
 }
 
-- (void)_convertReferenceLocation:(CGPoint)a3 toOrientedLocation:(CGPoint *)a4 orientedBounds:(CGRect *)a5
+- (void)_convertReferenceLocation:(CGPoint)location toOrientedLocation:(CGPoint *)orientedLocation orientedBounds:(CGRect *)bounds
 {
-  v16 = [(SBCornerFingerPanGestureRecognizer *)self view];
+  view = [(SBCornerFingerPanGestureRecognizer *)self view];
   [(SBCornerFingerPanGestureRecognizer *)self _touchInterfaceOrientation];
-  [v16 bounds];
+  [view bounds];
   _UIWindowConvertPointFromOrientationToOrientation();
   v9 = v8;
   v11 = v10;
   _UIWindowConvertRectFromOrientationToOrientation();
-  if (a4)
+  if (orientedLocation)
   {
-    a4->x = v9;
-    a4->y = v11;
+    orientedLocation->x = v9;
+    orientedLocation->y = v11;
   }
 
-  if (a5)
+  if (bounds)
   {
-    a5->origin.x = v12;
-    a5->origin.y = v13;
-    a5->size.width = v14;
-    a5->size.height = v15;
+    bounds->origin.x = v12;
+    bounds->origin.y = v13;
+    bounds->size.width = v14;
+    bounds->size.height = v15;
   }
 }
 
-- (CGVector)_convertReferenceVector:(CGVector)a3 toCorner:(unint64_t)a4 orientation:(int64_t)a5
+- (CGVector)_convertReferenceVector:(CGVector)vector toCorner:(unint64_t)corner orientation:(int64_t)orientation
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  if (a5 > 2)
+  dy = vector.dy;
+  dx = vector.dx;
+  if (orientation > 2)
   {
-    v9 = -a3.dy;
+    v9 = -vector.dy;
     v10 = -dx;
-    if (a5 == 3)
+    if (orientation == 3)
     {
       v11 = dy;
     }
@@ -277,7 +277,7 @@ id __50__SBCornerFingerPanGestureRecognizer__shouldBegin__block_invoke(uint64_t 
       v11 = dx;
     }
 
-    if (a5 == 4)
+    if (orientation == 4)
     {
       dy = dx;
     }
@@ -287,7 +287,7 @@ id __50__SBCornerFingerPanGestureRecognizer__shouldBegin__block_invoke(uint64_t 
       dy = v10;
     }
 
-    if (a5 == 4)
+    if (orientation == 4)
     {
       dx = v9;
     }
@@ -298,20 +298,20 @@ id __50__SBCornerFingerPanGestureRecognizer__shouldBegin__block_invoke(uint64_t 
     }
   }
 
-  else if (a5)
+  else if (orientation)
   {
-    v9 = -a3.dx;
-    if (a5 == 2)
+    v9 = -vector.dx;
+    if (orientation == 2)
     {
-      dy = -a3.dy;
+      dy = -vector.dy;
       dx = -dx;
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:285 description:@"dealing with unknown orientation"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:285 description:@"dealing with unknown orientation"];
   }
 
   corner = self->_corner;
@@ -340,8 +340,8 @@ id __50__SBCornerFingerPanGestureRecognizer__shouldBegin__block_invoke(uint64_t 
     }
 
 LABEL_22:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:304 description:@"_corner incorrectly configured"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:304 description:@"_corner incorrectly configured"];
   }
 
 LABEL_25:
@@ -379,63 +379,63 @@ LABEL_25:
   }
 }
 
-- (void)setEdges:(unint64_t)a3
+- (void)setEdges:(unint64_t)edges
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:326 description:@"edges are readonly"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBCornerFingerPanGestureRecognizer.m" lineNumber:326 description:@"edges are readonly"];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  [v9 locationInView:0];
+  eventCopy = event;
+  beganCopy = began;
+  anyObject = [beganCopy anyObject];
+  [anyObject locationInView:0];
   self->_firstTouchReferenceLocation.x = v10;
   self->_firstTouchReferenceLocation.y = v11;
-  v12 = [v7 coalescedTouchesForTouch:v9];
+  v12 = [eventCopy coalescedTouchesForTouch:anyObject];
   _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v12, self, 0, 0);
   _SBLogCoalescedTouchesForGestureAndView_1(v12, self);
   v13 = NSStringFromSelector(a2);
-  [(SBCornerFingerPanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v13];
+  [(SBCornerFingerPanGestureRecognizer *)self _SBLogTouchesWithMethodName:beganCopy withMethodName:v13];
 
   v14.receiver = self;
   v14.super_class = SBCornerFingerPanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v14 touchesBegan:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
   _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, 0, 0);
   _SBLogCoalescedTouchesForGestureAndView_1(v10, self);
   v11 = NSStringFromSelector(a2);
-  [(SBCornerFingerPanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v11];
+  [(SBCornerFingerPanGestureRecognizer *)self _SBLogTouchesWithMethodName:movedCopy withMethodName:v11];
 
   v12.receiver = self;
   v12.super_class = SBCornerFingerPanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesMoved:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  endedCopy = ended;
+  anyObject = [endedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
 
   _SBUpdateTouchHistoryWithCoalescedTouches(self->_touchHistory, v10, self, 0, 0);
   _SBLogCoalescedTouchesForGestureAndView_1(v10, self);
   v11 = NSStringFromSelector(a2);
-  [(SBCornerFingerPanGestureRecognizer *)self _SBLogTouchesWithMethodName:v8 withMethodName:v11];
+  [(SBCornerFingerPanGestureRecognizer *)self _SBLogTouchesWithMethodName:endedCopy withMethodName:v11];
 
   v12.receiver = self;
   v12.super_class = SBCornerFingerPanGestureRecognizer;
-  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesEnded:v8 withEvent:v7];
+  [(UIScreenEdgePanGestureRecognizer *)&v12 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (void)reset
@@ -448,25 +448,25 @@ LABEL_25:
   [(SBTouchHistory *)self->_touchHistory reset];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     self->_touchInterfaceOrientationWhenGestureBegan = [(SBCornerFingerPanGestureRecognizer *)self _touchInterfaceOrientation];
   }
 
-  v5 = [MEMORY[0x277D6A798] sharedInstance];
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SBCornerFingerPanGestureRecognizer_setState___block_invoke;
   v7[3] = &unk_2783B7B08;
   v7[4] = self;
-  v7[5] = a3;
-  [v5 logBlock:v7];
+  v7[5] = state;
+  [mEMORY[0x277D6A798] logBlock:v7];
 
   v6.receiver = self;
   v6.super_class = SBCornerFingerPanGestureRecognizer;
-  [(SBCornerFingerPanGestureRecognizer *)&v6 setState:a3];
+  [(SBCornerFingerPanGestureRecognizer *)&v6 setState:state];
 }
 
 id __47__SBCornerFingerPanGestureRecognizer_setState___block_invoke(uint64_t a1)
@@ -499,24 +499,24 @@ id __47__SBCornerFingerPanGestureRecognizer_setState___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)_SBLogTouchesWithMethodName:(id)a3 withMethodName:(id)a4
+- (void)_SBLogTouchesWithMethodName:(id)name withMethodName:(id)methodName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D6A798] sharedInstance];
-  v9 = [v8 isEnabled];
+  nameCopy = name;
+  methodNameCopy = methodName;
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v9)
+  if (isEnabled)
   {
-    v10 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __81__SBCornerFingerPanGestureRecognizer__SBLogTouchesWithMethodName_withMethodName___block_invoke;
     v11[3] = &unk_2783B74D0;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    [v10 logBlock:v11];
+    v12 = nameCopy;
+    selfCopy = self;
+    v14 = methodNameCopy;
+    [mEMORY[0x277D6A798]2 logBlock:v11];
   }
 }
 

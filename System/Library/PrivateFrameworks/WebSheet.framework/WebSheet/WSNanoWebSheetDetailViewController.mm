@@ -1,24 +1,24 @@
 @interface WSNanoWebSheetDetailViewController
-- (WSNanoWebSheetDetailViewController)initWithURL:(id)a3 ssid:(id)a4 isSecure:(BOOL)a5 hasEVCert:(BOOL)a6;
+- (WSNanoWebSheetDetailViewController)initWithURL:(id)l ssid:(id)ssid isSecure:(BOOL)secure hasEVCert:(BOOL)cert;
 - (void)loadView;
 @end
 
 @implementation WSNanoWebSheetDetailViewController
 
-- (WSNanoWebSheetDetailViewController)initWithURL:(id)a3 ssid:(id)a4 isSecure:(BOOL)a5 hasEVCert:(BOOL)a6
+- (WSNanoWebSheetDetailViewController)initWithURL:(id)l ssid:(id)ssid isSecure:(BOOL)secure hasEVCert:(BOOL)cert
 {
-  v11 = a3;
-  v12 = a4;
+  lCopy = l;
+  ssidCopy = ssid;
   v17.receiver = self;
   v17.super_class = WSNanoWebSheetDetailViewController;
   v13 = [(WSNanoWebSheetDetailViewController *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_url, a3);
-    objc_storeStrong(&v14->_ssid, a4);
-    v14->_isSecure = a5;
-    v14->_hasEVCert = a6;
+    objc_storeStrong(&v13->_url, l);
+    objc_storeStrong(&v14->_ssid, ssid);
+    v14->_isSecure = secure;
+    v14->_hasEVCert = cert;
     v15 = v14;
   }
 

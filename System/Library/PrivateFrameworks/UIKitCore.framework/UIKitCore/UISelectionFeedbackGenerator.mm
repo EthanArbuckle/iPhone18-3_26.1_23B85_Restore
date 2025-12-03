@@ -1,8 +1,8 @@
 @interface UISelectionFeedbackGenerator
 - (void)_deactivated;
-- (void)selectionChangedAtLocation:(CGPoint)a3;
-- (void)userInteractionCancelledAtLocation:(CGPoint)a3;
-- (void)userInteractionEndedAtLocation:(CGPoint)a3;
+- (void)selectionChangedAtLocation:(CGPoint)location;
+- (void)userInteractionCancelledAtLocation:(CGPoint)location;
+- (void)userInteractionEndedAtLocation:(CGPoint)location;
 @end
 
 @implementation UISelectionFeedbackGenerator
@@ -15,21 +15,21 @@
   self->_lastSelectionChangeTime = 0.0;
 }
 
-- (void)userInteractionEndedAtLocation:(CGPoint)a3
+- (void)userInteractionEndedAtLocation:(CGPoint)location
 {
-  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, a3.x, a3.y];
+  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, location.x, location.y];
 
   [(UIFeedbackGenerator *)self deactivate];
 }
 
-- (void)userInteractionCancelledAtLocation:(CGPoint)a3
+- (void)userInteractionCancelledAtLocation:(CGPoint)location
 {
-  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, a3.x, a3.y];
+  [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2, location.x, location.y];
 
   [(UIFeedbackGenerator *)self deactivate];
 }
 
-- (void)selectionChangedAtLocation:(CGPoint)a3
+- (void)selectionChangedAtLocation:(CGPoint)location
 {
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
   v4 = CACurrentMediaTime();
@@ -51,50 +51,50 @@
   }
 
   self->_lastSelectionChangeTime = v4;
-  v8 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-  v37 = [v8 feedback];
+  _selectionConfiguration = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+  feedback = [_selectionConfiguration feedback];
 
-  v9 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-  [v9 maxSpeed];
+  _selectionConfiguration2 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+  [_selectionConfiguration2 maxSpeed];
   v11 = v10;
 
   if (v11 > 0.0)
   {
-    v12 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v12 maxSpeed];
+    _selectionConfiguration3 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration3 maxSpeed];
     v14 = v7 / v13;
 
     v15 = fmin(fmax(v14, 0.0), 1.0);
-    v16 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v16 slowAudioVolume];
+    _selectionConfiguration4 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration4 slowAudioVolume];
     v18 = v17;
-    v19 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v19 fastAudioVolume];
+    _selectionConfiguration5 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration5 fastAudioVolume];
     v21 = v20;
-    v22 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v22 slowAudioVolume];
+    _selectionConfiguration6 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration6 slowAudioVolume];
     *&v18 = v18 + v15 * (v21 - v23);
-    v24 = [v37 audioParameters];
+    audioParameters = [feedback audioParameters];
     LODWORD(v25) = LODWORD(v18);
-    [v24 setVolume:v25];
+    [audioParameters setVolume:v25];
 
-    v26 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v26 slowHapticVolume];
+    _selectionConfiguration7 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration7 slowHapticVolume];
     v28 = v27;
-    v29 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v29 fastHapticVolume];
+    _selectionConfiguration8 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration8 fastHapticVolume];
     v31 = v30;
-    v32 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-    [v32 slowHapticVolume];
+    _selectionConfiguration9 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+    [_selectionConfiguration9 slowHapticVolume];
     *&v28 = v28 + v15 * (v31 - v33);
-    v34 = [v37 hapticParameters];
+    hapticParameters = [feedback hapticParameters];
     LODWORD(v35) = LODWORD(v28);
-    [v34 setVolume:v35];
+    [hapticParameters setVolume:v35];
   }
 
-  v36 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
-  [v36 minimumInterval];
-  [UIFeedbackGenerator _playFeedback:"_playFeedback:withMinimumIntervalPassed:since:prefersRegularPace:atLocation:" withMinimumIntervalPassed:v37 since:&_playFeedbackWithSpeed_atLocation____lastTime prefersRegularPace:1 atLocation:?];
+  _selectionConfiguration10 = [(UISelectionFeedbackGenerator *)self _selectionConfiguration];
+  [_selectionConfiguration10 minimumInterval];
+  [UIFeedbackGenerator _playFeedback:"_playFeedback:withMinimumIntervalPassed:since:prefersRegularPace:atLocation:" withMinimumIntervalPassed:feedback since:&_playFeedbackWithSpeed_atLocation____lastTime prefersRegularPace:1 atLocation:?];
 }
 
 @end

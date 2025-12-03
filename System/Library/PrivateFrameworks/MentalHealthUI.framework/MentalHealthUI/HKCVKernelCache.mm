@@ -1,6 +1,6 @@
 @interface HKCVKernelCache
 - (HKCVKernelCache)init;
-- (uint64_t)kernelWithIdentifier:(void *)a3 fromLibrary:(uint64_t)a4 archive:;
+- (uint64_t)kernelWithIdentifier:(void *)identifier fromLibrary:(uint64_t)library archive:;
 - (void)dealloc;
 @end
 
@@ -26,14 +26,14 @@
   [(HKCVKernelCache *)&v3 dealloc];
 }
 
-- (uint64_t)kernelWithIdentifier:(void *)a3 fromLibrary:(uint64_t)a4 archive:
+- (uint64_t)kernelWithIdentifier:(void *)identifier fromLibrary:(uint64_t)library archive:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8 = [*(a1 + 8) objectForKey:a2];
+  v8 = [*(self + 8) objectForKey:a2];
   if (v8)
   {
     v9 = v8;
@@ -42,8 +42,8 @@
 
   else
   {
-    v9 = NewComputePipelineState(a3, a4);
-    [*(a1 + 8) setObject:v9 forKey:a2];
+    v9 = NewComputePipelineState(identifier, library);
+    [*(self + 8) setObject:v9 forKey:a2];
   }
 
   return v9;

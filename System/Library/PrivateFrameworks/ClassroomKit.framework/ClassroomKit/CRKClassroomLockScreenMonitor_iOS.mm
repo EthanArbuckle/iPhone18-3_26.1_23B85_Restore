@@ -2,7 +2,7 @@
 - (CRKClassroomLockScreenMonitor_iOS)init;
 - (void)dealloc;
 - (void)dismissClassroomLockScreen;
-- (void)displayClassroomLockScreenWithLabel:(id)a3 passcode:(id)a4;
+- (void)displayClassroomLockScreenWithLabel:(id)label passcode:(id)passcode;
 - (void)endObserving;
 - (void)startObserving;
 @end
@@ -31,24 +31,24 @@
   return v3;
 }
 
-- (void)displayClassroomLockScreenWithLabel:(id)a3 passcode:(id)a4
+- (void)displayClassroomLockScreenWithLabel:(id)label passcode:(id)passcode
 {
-  v12 = a3;
-  v5 = a4;
+  labelCopy = label;
+  passcodeCopy = passcode;
   v6 = objc_opt_new();
   v7 = MEMORY[0x277CCABB0];
-  v8 = [MEMORY[0x277CCAC38] processInfo];
-  v9 = [v7 numberWithInt:{objc_msgSend(v8, "processIdentifier")}];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v9 = [v7 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
   [v6 setObject:v9 forKeyedSubscript:@"studentdPID"];
 
-  if ([v12 length])
+  if ([labelCopy length])
   {
-    [v6 setObject:v12 forKeyedSubscript:@"lockedByLabel"];
+    [v6 setObject:labelCopy forKeyedSubscript:@"lockedByLabel"];
   }
 
-  if ([v5 length])
+  if ([passcodeCopy length])
   {
-    [v6 setObject:v5 forKeyedSubscript:@"passcode"];
+    [v6 setObject:passcodeCopy forKeyedSubscript:@"passcode"];
   }
 
   v10 = objc_opt_new();

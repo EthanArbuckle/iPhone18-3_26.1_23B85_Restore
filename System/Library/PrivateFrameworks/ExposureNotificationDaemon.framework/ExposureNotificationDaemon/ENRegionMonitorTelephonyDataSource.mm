@@ -1,10 +1,10 @@
 @interface ENRegionMonitorTelephonyDataSource
 - (ENRegionMonitorSourceDelegate)delegate;
-- (ENRegionMonitorTelephonyDataSource)initWithDelegate:(id)a3;
-- (void)mobileCountryCodeChanged:(id)a3 withISOString:(id)a4;
+- (ENRegionMonitorTelephonyDataSource)initWithDelegate:(id)delegate;
+- (void)mobileCountryCodeChanged:(id)changed withISOString:(id)string;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)telephonyUtility:(id)a3 mobileCountryCodeChanged:(id)a4 andCountryCodeISO:(id)a5;
+- (void)telephonyUtility:(id)utility mobileCountryCodeChanged:(id)changed andCountryCodeISO:(id)o;
 @end
 
 @implementation ENRegionMonitorTelephonyDataSource
@@ -16,9 +16,9 @@
   return WeakRetained;
 }
 
-- (ENRegionMonitorTelephonyDataSource)initWithDelegate:(id)a3
+- (ENRegionMonitorTelephonyDataSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ENRegionMonitorTelephonyDataSource;
   v5 = [(ENRegionMonitorTelephonyDataSource *)&v10 init];
@@ -28,7 +28,7 @@
     v7 = dispatch_queue_create("com.apple.exposureNotification.regionSource.telephony", v6);
     [(ENRegionMonitorTelephonyDataSource *)v5 setDataSourceQueue:v7];
 
-    [(ENRegionMonitorTelephonyDataSource *)v5 setDelegate:v4];
+    [(ENRegionMonitorTelephonyDataSource *)v5 setDelegate:delegateCopy];
     v8 = +[ENCoreTelephonyUtility sharedInstance];
     [(ENRegionMonitorTelephonyDataSource *)v5 setTelephonyUtility:v8];
   }
@@ -54,37 +54,37 @@
   LogPrintF_safe();
 }
 
-- (void)mobileCountryCodeChanged:(id)a3 withISOString:(id)a4
+- (void)mobileCountryCodeChanged:(id)changed withISOString:(id)string
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(ENRegionMonitorTelephonyDataSource *)self cachedRegionVisit];
+  changedCopy = changed;
+  stringCopy = string;
+  cachedRegionVisit = [(ENRegionMonitorTelephonyDataSource *)self cachedRegionVisit];
 
-  if (!v7 && gLogCategory_ENRegionMonitorTelephonyDataSource <= 30 && (gLogCategory_ENRegionMonitorTelephonyDataSource != -1 || _LogCategory_Initialize()))
+  if (!cachedRegionVisit && gLogCategory_ENRegionMonitorTelephonyDataSource <= 30 && (gLogCategory_ENRegionMonitorTelephonyDataSource != -1 || _LogCategory_Initialize()))
   {
-    [ENRegionMonitorTelephonyDataSource mobileCountryCodeChanged:v13 withISOString:?];
+    [ENRegionMonitorTelephonyDataSource mobileCountryCodeChanged:changedCopy withISOString:?];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CC5CA0]) initWithCountryCode:v6];
+  v8 = [objc_alloc(MEMORY[0x277CC5CA0]) initWithCountryCode:stringCopy];
 
   v9 = objc_alloc(MEMORY[0x277CC5D08]);
-  v10 = [MEMORY[0x277CBEAA0] date];
-  v11 = [v9 initWithRegion:v8 date:v10];
+  date = [MEMORY[0x277CBEAA0] date];
+  v11 = [v9 initWithRegion:v8 date:date];
 
   [(ENRegionMonitorTelephonyDataSource *)self setCachedRegionVisit:v11];
-  v12 = [(ENRegionMonitorTelephonyDataSource *)self delegate];
-  [v12 regionDataSource:self updatedWithVisit:v11];
+  delegate = [(ENRegionMonitorTelephonyDataSource *)self delegate];
+  [delegate regionDataSource:self updatedWithVisit:v11];
 }
 
-- (void)telephonyUtility:(id)a3 mobileCountryCodeChanged:(id)a4 andCountryCodeISO:(id)a5
+- (void)telephonyUtility:(id)utility mobileCountryCodeChanged:(id)changed andCountryCodeISO:(id)o
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9 && [v9 length])
+  utilityCopy = utility;
+  changedCopy = changed;
+  oCopy = o;
+  v10 = oCopy;
+  if (changedCopy && oCopy && [oCopy length])
   {
-    [(ENRegionMonitorTelephonyDataSource *)self mobileCountryCodeChanged:v8 withISOString:v10];
+    [(ENRegionMonitorTelephonyDataSource *)self mobileCountryCodeChanged:changedCopy withISOString:v10];
   }
 
   else if (gLogCategory__ENRegionMonitorTelephonyDataSource <= 90 && (gLogCategory__ENRegionMonitorTelephonyDataSource != -1 || _LogCategory_Initialize()))

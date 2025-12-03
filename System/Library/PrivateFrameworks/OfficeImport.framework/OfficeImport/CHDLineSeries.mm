@@ -1,15 +1,15 @@
 @interface CHDLineSeries
-- (CHDLineSeries)initWithChart:(id)a3;
-- (void)setMarker:(id)a3;
+- (CHDLineSeries)initWithChart:(id)chart;
+- (void)setMarker:(id)marker;
 @end
 
 @implementation CHDLineSeries
 
-- (CHDLineSeries)initWithChart:(id)a3
+- (CHDLineSeries)initWithChart:(id)chart
 {
   v4.receiver = self;
   v4.super_class = CHDLineSeries;
-  result = [(CHDSeries *)&v4 initWithChart:a3];
+  result = [(CHDSeries *)&v4 initWithChart:chart];
   if (result)
   {
     result->mSmooth = 0;
@@ -18,14 +18,14 @@
   return result;
 }
 
-- (void)setMarker:(id)a3
+- (void)setMarker:(id)marker
 {
-  v5 = a3;
-  if (self->mMarker != v5)
+  markerCopy = marker;
+  if (self->mMarker != markerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mMarker, a3);
-    v5 = v6;
+    v6 = markerCopy;
+    objc_storeStrong(&self->mMarker, marker);
+    markerCopy = v6;
   }
 }
 

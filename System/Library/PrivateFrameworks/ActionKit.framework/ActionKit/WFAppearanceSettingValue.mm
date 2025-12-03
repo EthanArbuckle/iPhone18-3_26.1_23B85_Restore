@@ -1,65 +1,65 @@
 @interface WFAppearanceSettingValue
 - (NSString)wfName;
-- (WFAppearanceSettingValue)initWithCoder:(id)a3;
-- (WFAppearanceSettingValue)initWithSetting:(int64_t)a3;
+- (WFAppearanceSettingValue)initWithCoder:(id)coder;
+- (WFAppearanceSettingValue)initWithSetting:(int64_t)setting;
 - (id)valueByInvertingSetting;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAppearanceSettingValue
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[WFAppearanceSettingValue setting](self forKey:{"setting"), @"setting"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WFAppearanceSettingValue setting](self forKey:{"setting"), @"setting"}];
 }
 
-- (WFAppearanceSettingValue)initWithCoder:(id)a3
+- (WFAppearanceSettingValue)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"setting"];
+  v4 = [coder decodeIntegerForKey:@"setting"];
 
   return [(WFAppearanceSettingValue *)self initWithSetting:v4];
 }
 
 - (NSString)wfName
 {
-  v2 = [(WFAppearanceSettingValue *)self setting];
-  if (v2 == 2)
+  setting = [(WFAppearanceSettingValue *)self setting];
+  if (setting == 2)
   {
     v3 = @"Light Mode";
     goto LABEL_7;
   }
 
-  if (v2 == 1)
+  if (setting == 1)
   {
     v3 = @"Dark Mode";
 LABEL_7:
-    v2 = WFLocalizedString(v3);
+    setting = WFLocalizedString(v3);
     goto LABEL_8;
   }
 
-  if (!v2)
+  if (!setting)
   {
-    v2 = WFLocalizedStringWithKey(@"Unknown (appearance)", @"Unknown");
+    setting = WFLocalizedStringWithKey(@"Unknown (appearance)", @"Unknown");
   }
 
 LABEL_8:
 
-  return v2;
+  return setting;
 }
 
 - (id)valueByInvertingSetting
 {
-  v2 = [(WFAppearanceSettingValue *)self setting];
-  if (v2 <= 2)
+  setting = [(WFAppearanceSettingValue *)self setting];
+  if (setting <= 2)
   {
-    v3 = [[WFAppearanceSettingValue alloc] initWithSetting:qword_23E24AC58[v2]];
+    v3 = [[WFAppearanceSettingValue alloc] initWithSetting:qword_23E24AC58[setting]];
   }
 
   return v3;
 }
 
-- (WFAppearanceSettingValue)initWithSetting:(int64_t)a3
+- (WFAppearanceSettingValue)initWithSetting:(int64_t)setting
 {
   v8.receiver = self;
   v8.super_class = WFAppearanceSettingValue;
@@ -67,7 +67,7 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    v4->_setting = a3;
+    v4->_setting = setting;
     v6 = v4;
   }
 

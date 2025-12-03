@@ -1,15 +1,15 @@
 @interface SKUIItemViewElement
-- (SKUIItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIItemViewElement
 
-- (SKUIItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIItemViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,7 +17,7 @@
 
   v24.receiver = self;
   v24.super_class = SKUIItemViewElement;
-  v11 = [(SKUIViewElement *)&v24 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v24 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (!v11)
   {
     goto LABEL_11;
@@ -29,7 +29,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v19 = [v9 parent];
+      parent = [parentCopy parent];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
@@ -37,7 +37,7 @@
 
       else
       {
-        v22 = [v9 parent];
+        parent2 = [parentCopy parent];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -61,16 +61,16 @@ LABEL_7:
     {
       v14 = SKUIStackItemViewElement;
 LABEL_17:
-      v18 = [[v14 alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v18 = [[v14 alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
       goto LABEL_18;
     }
   }
 
-  v15 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:v8 usingParseBlock:0];
+  v15 = [(IKTextParser *)SKUIViewElementText textWithDOMElement:elementCopy usingParseBlock:0];
   itemText = v11->_itemText;
   v11->_itemText = v15;
 
-  v17 = [v8 getAttribute:@"selected"];
+  v17 = [elementCopy getAttribute:@"selected"];
   v11->_selected = [v17 BOOLValue];
 
 LABEL_11:
@@ -81,20 +81,20 @@ LABEL_18:
   return v20;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUIItemViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SKUIItemViewElement *)v4 itemText];
+    itemText = [(SKUIItemViewElement *)elementCopy itemText];
     itemText = self->_itemText;
-    self->_itemText = v7;
+    self->_itemText = itemText;
 
-    self->_selected = [(SKUIItemViewElement *)v4 isSelected];
+    self->_selected = [(SKUIItemViewElement *)elementCopy isSelected];
   }
 
   return v6;

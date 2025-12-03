@@ -1,29 +1,29 @@
 @interface BWDeferredBufferIntermediate
-- (BWDeferredBufferIntermediate)initWithBuffer:(__CVBuffer *)a3 tag:(id)a4 bufferType:(unint64_t)a5 captureFrameFlags:(unint64_t)a6 metadataTag:(id)a7 rawThumbnailsBufferTag:(id)a8 rawThumbnailsMetadataTag:(id)a9 mainRawThumbnailBufferTag:(id)a10 mainRawThumbnailMetadataTag:(id)a11 sifrRawThumbnailBufferTag:(id)a12 sifrRawThumbnailMetadataTag:(id)a13 portType:(id)a14 compressionProfile:(int)a15 URL:(id)a16;
-- (BWDeferredBufferIntermediate)initWithCoder:(id)a3;
+- (BWDeferredBufferIntermediate)initWithBuffer:(__CVBuffer *)buffer tag:(id)tag bufferType:(unint64_t)type captureFrameFlags:(unint64_t)flags metadataTag:(id)metadataTag rawThumbnailsBufferTag:(id)bufferTag rawThumbnailsMetadataTag:(id)thumbnailsMetadataTag mainRawThumbnailBufferTag:(id)self0 mainRawThumbnailMetadataTag:(id)self1 sifrRawThumbnailBufferTag:(id)self2 sifrRawThumbnailMetadataTag:(id)self3 portType:(id)self4 compressionProfile:(int)self5 URL:(id)self6;
+- (BWDeferredBufferIntermediate)initWithCoder:(id)coder;
 - (CVPixelBufferRef)_read:(CVPixelBufferRef)result;
 - (id)_shortString;
-- (id)archive:(int *)a3;
+- (id)archive:(int *)archive;
 - (id)description;
-- (id)fetchAndRetain:(int *)a3;
+- (id)fetchAndRetain:(int *)retain;
 - (int)flush;
-- (int)setBuffer:(__CVBuffer *)a3;
-- (int)setURL:(id)a3 prefetchQueue:(id)a4;
-- (uint64_t)_compressionSettingsForProfile:(int)a3 pixelFormat:(int *)a4 containerFormat:(uint64_t *)a5 options:;
-- (uint64_t)_createCVPixelBufferFromAttributes:(OSType)a3 pixelFormat:(CVPixelBufferRef *)a4 pixelBuffer:;
+- (int)setBuffer:(__CVBuffer *)buffer;
+- (int)setURL:(id)l prefetchQueue:(id)queue;
+- (uint64_t)_compressionSettingsForProfile:(int)profile pixelFormat:(int *)format containerFormat:(uint64_t *)containerFormat options:;
+- (uint64_t)_createCVPixelBufferFromAttributes:(OSType)attributes pixelFormat:(CVPixelBufferRef *)format pixelBuffer:;
 - (uint64_t)_writeAndReleaseBacking;
 - (uint64_t)flush;
 - (unsigned)pixelFormat;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)releaseBuffer;
 @end
 
 @implementation BWDeferredBufferIntermediate
 
-- (BWDeferredBufferIntermediate)initWithBuffer:(__CVBuffer *)a3 tag:(id)a4 bufferType:(unint64_t)a5 captureFrameFlags:(unint64_t)a6 metadataTag:(id)a7 rawThumbnailsBufferTag:(id)a8 rawThumbnailsMetadataTag:(id)a9 mainRawThumbnailBufferTag:(id)a10 mainRawThumbnailMetadataTag:(id)a11 sifrRawThumbnailBufferTag:(id)a12 sifrRawThumbnailMetadataTag:(id)a13 portType:(id)a14 compressionProfile:(int)a15 URL:(id)a16
+- (BWDeferredBufferIntermediate)initWithBuffer:(__CVBuffer *)buffer tag:(id)tag bufferType:(unint64_t)type captureFrameFlags:(unint64_t)flags metadataTag:(id)metadataTag rawThumbnailsBufferTag:(id)bufferTag rawThumbnailsMetadataTag:(id)thumbnailsMetadataTag mainRawThumbnailBufferTag:(id)self0 mainRawThumbnailMetadataTag:(id)self1 sifrRawThumbnailBufferTag:(id)self2 sifrRawThumbnailMetadataTag:(id)self3 portType:(id)self4 compressionProfile:(int)self5 URL:(id)self6
 {
-  if (!a3)
+  if (!buffer)
   {
     [BWDeferredBufferIntermediate initWithBuffer:tag:bufferType:captureFrameFlags:metadataTag:rawThumbnailsBufferTag:rawThumbnailsMetadataTag:mainRawThumbnailBufferTag:mainRawThumbnailMetadataTag:sifrRawThumbnailBufferTag:sifrRawThumbnailMetadataTag:portType:compressionProfile:URL:];
 LABEL_10:
@@ -31,13 +31,13 @@ LABEL_10:
     return 0;
   }
 
-  if (!a5)
+  if (!type)
   {
     [BWDeferredBufferIntermediate initWithBuffer:tag:bufferType:captureFrameFlags:metadataTag:rawThumbnailsBufferTag:rawThumbnailsMetadataTag:mainRawThumbnailBufferTag:mainRawThumbnailMetadataTag:sifrRawThumbnailBufferTag:sifrRawThumbnailMetadataTag:portType:compressionProfile:URL:];
     goto LABEL_10;
   }
 
-  if (!a15)
+  if (!profile)
   {
     [BWDeferredBufferIntermediate initWithBuffer:tag:bufferType:captureFrameFlags:metadataTag:rawThumbnailsBufferTag:rawThumbnailsMetadataTag:mainRawThumbnailBufferTag:mainRawThumbnailMetadataTag:sifrRawThumbnailBufferTag:sifrRawThumbnailMetadataTag:portType:compressionProfile:URL:];
     goto LABEL_10;
@@ -45,30 +45,30 @@ LABEL_10:
 
   v25.receiver = self;
   v25.super_class = BWDeferredBufferIntermediate;
-  v22 = [(BWDeferredIntermediate *)&v25 initWithTag:a4 URL:a16];
+  v22 = [(BWDeferredIntermediate *)&v25 initWithTag:tag URL:l];
   v23 = v22;
   if (v22)
   {
-    v22->_buffer = a3;
-    CFRetain(a3);
+    v22->_buffer = buffer;
+    CFRetain(buffer);
     v23->_attributes = CVPixelBufferGetAttributes();
-    v23->_metadataTag = a7;
-    v23->_bufferType = a5;
-    v23->_captureFrameFlags = a6;
-    v23->_rawThumbnailsBufferTag = a8;
-    v23->_rawThumbnailsMetadataTag = a9;
-    v23->_mainRawThumbnailBufferTag = a10;
-    v23->_mainRawThumbnailMetadataTag = a11;
-    v23->_sifrRawThumbnailBufferTag = a12;
-    v23->_sifrRawThumbnailMetadataTag = a13;
-    v23->_portType = a14;
-    v23->_compressionProfile = a15;
+    v23->_metadataTag = metadataTag;
+    v23->_bufferType = type;
+    v23->_captureFrameFlags = flags;
+    v23->_rawThumbnailsBufferTag = bufferTag;
+    v23->_rawThumbnailsMetadataTag = thumbnailsMetadataTag;
+    v23->_mainRawThumbnailBufferTag = thumbnailBufferTag;
+    v23->_mainRawThumbnailMetadataTag = thumbnailMetadataTag;
+    v23->_sifrRawThumbnailBufferTag = rawThumbnailBufferTag;
+    v23->_sifrRawThumbnailMetadataTag = rawThumbnailMetadataTag;
+    v23->_portType = portType;
+    v23->_compressionProfile = profile;
   }
 
   return v23;
 }
 
-- (BWDeferredBufferIntermediate)initWithCoder:(id)a3
+- (BWDeferredBufferIntermediate)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = BWDeferredBufferIntermediate;
@@ -79,24 +79,24 @@ LABEL_10:
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
-    v4->_attributes = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, objc_opt_class(), 0), @"attributes"}];
-    v4->_metadataTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"metadataTag"];
-    v4->_bufferType = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"bufferType", "unsignedIntegerValue"}];
-    v4->_captureFrameFlags = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"captureFrameFlags", "unsignedIntegerValue"}];
-    v4->_rawThumbnailsBufferTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"rawThumbnailsBufferTag"];
-    v4->_rawThumbnailsMetadataTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"rawThumbnailsMetadataTag"];
-    v4->_mainRawThumbnailBufferTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mainRawThumbnailBufferTag"];
-    v4->_mainRawThumbnailMetadataTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mainRawThumbnailMetadataTag"];
-    v4->_sifrRawThumbnailBufferTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sifrRawThumbnailBufferTag"];
-    v4->_sifrRawThumbnailMetadataTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sifrRawThumbnailMetadataTag"];
-    v4->_portType = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"portType"];
-    v4->_compressionProfile = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"compressionProfile", "unsignedIntegerValue"}];
+    v4->_attributes = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, objc_opt_class(), 0), @"attributes"}];
+    v4->_metadataTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"metadataTag"];
+    v4->_bufferType = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"bufferType", "unsignedIntegerValue"}];
+    v4->_captureFrameFlags = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"captureFrameFlags", "unsignedIntegerValue"}];
+    v4->_rawThumbnailsBufferTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"rawThumbnailsBufferTag"];
+    v4->_rawThumbnailsMetadataTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"rawThumbnailsMetadataTag"];
+    v4->_mainRawThumbnailBufferTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"mainRawThumbnailBufferTag"];
+    v4->_mainRawThumbnailMetadataTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"mainRawThumbnailMetadataTag"];
+    v4->_sifrRawThumbnailBufferTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sifrRawThumbnailBufferTag"];
+    v4->_sifrRawThumbnailMetadataTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sifrRawThumbnailMetadataTag"];
+    v4->_portType = [coder decodeObjectOfClass:objc_opt_class() forKey:@"portType"];
+    v4->_compressionProfile = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"compressionProfile", "unsignedIntegerValue"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = BWDeferredBufferIntermediate;
@@ -112,19 +112,19 @@ LABEL_10:
     v5 = [v7 copy];
   }
 
-  [a3 encodeObject:v5 forKey:@"attributes"];
+  [coder encodeObject:v5 forKey:@"attributes"];
 
-  [a3 encodeObject:self->_metadataTag forKey:@"metadataTag"];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_bufferType), @"bufferType"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_captureFrameFlags), @"captureFrameFlags"}];
-  [a3 encodeObject:self->_rawThumbnailsBufferTag forKey:@"rawThumbnailsBufferTag"];
-  [a3 encodeObject:self->_rawThumbnailsMetadataTag forKey:@"rawThumbnailsMetadataTag"];
-  [a3 encodeObject:self->_mainRawThumbnailBufferTag forKey:@"mainRawThumbnailBufferTag"];
-  [a3 encodeObject:self->_mainRawThumbnailMetadataTag forKey:@"mainRawThumbnailMetadataTag"];
-  [a3 encodeObject:self->_sifrRawThumbnailBufferTag forKey:@"sifrRawThumbnailBufferTag"];
-  [a3 encodeObject:self->_sifrRawThumbnailMetadataTag forKey:@"sifrRawThumbnailMetadataTag"];
-  [a3 encodeObject:self->_portType forKey:@"portType"];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", self->_compressionProfile), @"compressionProfile"}];
+  [coder encodeObject:self->_metadataTag forKey:@"metadataTag"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_bufferType), @"bufferType"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_captureFrameFlags), @"captureFrameFlags"}];
+  [coder encodeObject:self->_rawThumbnailsBufferTag forKey:@"rawThumbnailsBufferTag"];
+  [coder encodeObject:self->_rawThumbnailsMetadataTag forKey:@"rawThumbnailsMetadataTag"];
+  [coder encodeObject:self->_mainRawThumbnailBufferTag forKey:@"mainRawThumbnailBufferTag"];
+  [coder encodeObject:self->_mainRawThumbnailMetadataTag forKey:@"mainRawThumbnailMetadataTag"];
+  [coder encodeObject:self->_sifrRawThumbnailBufferTag forKey:@"sifrRawThumbnailBufferTag"];
+  [coder encodeObject:self->_sifrRawThumbnailMetadataTag forKey:@"sifrRawThumbnailMetadataTag"];
+  [coder encodeObject:self->_portType forKey:@"portType"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", self->_compressionProfile), @"compressionProfile"}];
 }
 
 - (void)dealloc
@@ -140,14 +140,14 @@ LABEL_10:
   [(BWDeferredIntermediate *)&v4 dealloc];
 }
 
-- (int)setURL:(id)a3 prefetchQueue:(id)a4
+- (int)setURL:(id)l prefetchQueue:(id)queue
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   pthread_mutex_lock(&self->super._lock);
-  if (!a3)
+  if (!l)
   {
     FigDebugAssert3();
     v9 = v13;
@@ -165,8 +165,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  self->super._URL = [a3 copy];
-  if (a4)
+  self->super._URL = [l copy];
+  if (queue)
   {
     self->super._prefetching = 1;
     block[0] = MEMORY[0x1E69E9820];
@@ -175,7 +175,7 @@ LABEL_9:
     block[3] = &unk_1E79904A0;
     block[4] = self;
     block[5] = &v12;
-    dispatch_async(a4, block);
+    dispatch_async(queue, block);
   }
 
 LABEL_6:
@@ -214,7 +214,7 @@ uint64_t __53__BWDeferredBufferIntermediate_setURL_prefetchQueue___block_invoke(
   return pthread_mutex_unlock(v3);
 }
 
-- (int)setBuffer:(__CVBuffer *)a3
+- (int)setBuffer:(__CVBuffer *)buffer
 {
   pthread_mutex_lock(&self->super._lock);
   if (self->_buffer)
@@ -231,8 +231,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_buffer = a3;
-  CFRetain(a3);
+  self->_buffer = buffer;
+  CFRetain(buffer);
   v5 = 0;
 LABEL_4:
   pthread_mutex_unlock(&self->super._lock);
@@ -252,7 +252,7 @@ LABEL_4:
   pthread_mutex_unlock(&self->super._lock);
 }
 
-- (id)fetchAndRetain:(int *)a3
+- (id)fetchAndRetain:(int *)retain
 {
   v6 = 0;
   pthread_mutex_lock(&self->super._lock);
@@ -267,9 +267,9 @@ LABEL_4:
   }
 
   pthread_mutex_unlock(&self->super._lock);
-  if (a3)
+  if (retain)
   {
-    *a3 = v6;
+    *retain = v6;
   }
 
   result = self->_buffer;
@@ -282,7 +282,7 @@ LABEL_4:
   return result;
 }
 
-- (id)archive:(int *)a3
+- (id)archive:(int *)archive
 {
   pthread_mutex_lock(&self->super._lock);
   buffer = self->_buffer;
@@ -321,9 +321,9 @@ LABEL_4:
 
 LABEL_5:
   pthread_mutex_unlock(&self->super._lock);
-  if (a3)
+  if (archive)
   {
-    *a3 = v9;
+    *archive = v9;
   }
 
   return v8;
@@ -386,14 +386,14 @@ LABEL_7:
 
 - (unsigned)pixelFormat
 {
-  v2 = [(NSDictionary *)self->_attributes objectForKeyedSubscript:*MEMORY[0x1E6966130]];
+  firstObject = [(NSDictionary *)self->_attributes objectForKeyedSubscript:*MEMORY[0x1E6966130]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v2 firstObject];
+    firstObject = [firstObject firstObject];
   }
 
-  return [v2 unsignedIntValue];
+  return [firstObject unsignedIntValue];
 }
 
 - (CVPixelBufferRef)_read:(CVPixelBufferRef)result
@@ -551,11 +551,11 @@ LABEL_21:
   return v21;
 }
 
-- (uint64_t)_compressionSettingsForProfile:(int)a3 pixelFormat:(int *)a4 containerFormat:(uint64_t *)a5 options:
+- (uint64_t)_compressionSettingsForProfile:(int)profile pixelFormat:(int *)format containerFormat:(uint64_t *)containerFormat options:
 {
   if (result)
   {
-    if (a2 && a4 && a5)
+    if (a2 && format && containerFormat)
     {
       if (a2 == 2)
       {
@@ -577,7 +577,7 @@ LABEL_21:
       if (a2 == 1)
       {
         v16 = 0;
-        FigCapturePreferredSlimCodecFlavorAndTilesForPixelFormat(a3, &v16, &v16 + 1);
+        FigCapturePreferredSlimCodecFlavorAndTilesForPixelFormat(profile, &v16, &v16 + 1);
         v7 = *MEMORY[0x1E6991898];
         v14[0] = *MEMORY[0x1E69918D0];
         v14[1] = v7;
@@ -591,8 +591,8 @@ LABEL_21:
         v9 = 0;
 LABEL_9:
         result = 0;
-        *a4 = v9;
-        *a5 = v8;
+        *format = v9;
+        *containerFormat = v8;
         return result;
       }
     }
@@ -609,17 +609,17 @@ LABEL_9:
   return result;
 }
 
-- (uint64_t)_createCVPixelBufferFromAttributes:(OSType)a3 pixelFormat:(CVPixelBufferRef *)a4 pixelBuffer:
+- (uint64_t)_createCVPixelBufferFromAttributes:(OSType)attributes pixelFormat:(CVPixelBufferRef *)format pixelBuffer:
 {
   if (result)
   {
     pixelBufferOut = 0;
     v7 = [objc_msgSend(a2 objectForKeyedSubscript:{*MEMORY[0x1E6966208]), "unsignedLongValue"}];
     v8 = [objc_msgSend(a2 objectForKeyedSubscript:{*MEMORY[0x1E69660B8]), "unsignedLongValue"}];
-    HasRegroupedLayoutDownscale = FigCapturePixelFormatHasRegroupedLayoutDownscale(a3);
-    if (a3)
+    HasRegroupedLayoutDownscale = FigCapturePixelFormatHasRegroupedLayoutDownscale(attributes);
+    if (attributes)
     {
-      result = CVPixelBufferCreate(0, v7 >> HasRegroupedLayoutDownscale, v8 >> HasRegroupedLayoutDownscale, a3, a2, &pixelBufferOut);
+      result = CVPixelBufferCreate(0, v7 >> HasRegroupedLayoutDownscale, v8 >> HasRegroupedLayoutDownscale, attributes, a2, &pixelBufferOut);
       if (result)
       {
         FigDebugAssert3();
@@ -634,9 +634,9 @@ LABEL_9:
       result = 4294954516;
     }
 
-    if (a4)
+    if (format)
     {
-      *a4 = pixelBufferOut;
+      *format = pixelBufferOut;
     }
   }
 
@@ -645,7 +645,7 @@ LABEL_9:
 
 - (uint64_t)_writeAndReleaseBacking
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -661,7 +661,7 @@ LABEL_9:
   v17 = 0;
   v16 = 0;
   v15 = 0;
-  if (*(a1 + 152) && *(a1 + 128))
+  if (*(self + 152) && *(self + 128))
   {
     if (CMPhotoCompressionSessionCreate())
     {
@@ -670,8 +670,8 @@ LABEL_9:
 
     else
     {
-      PixelFormatType = CVPixelBufferGetPixelFormatType(*(a1 + 152));
-      if ([(BWDeferredBufferIntermediate *)a1 _compressionSettingsForProfile:PixelFormatType pixelFormat:&v16 containerFormat:&v15 options:?])
+      PixelFormatType = CVPixelBufferGetPixelFormatType(*(self + 152));
+      if ([(BWDeferredBufferIntermediate *)self _compressionSettingsForProfile:PixelFormatType pixelFormat:&v16 containerFormat:&v15 options:?])
       {
         OUTLINED_FUNCTION_2_111();
       }
@@ -687,7 +687,7 @@ LABEL_9:
         v13[1] = v6;
         v13[2] = v7;
         v8 = *MEMORY[0x1E6991880];
-        v14[2] = *(a1 + 128);
+        v14[2] = *(self + 128);
         v14[3] = &unk_1F2246888;
         v9 = *MEMORY[0x1E6991868];
         v13[3] = v8;
@@ -696,12 +696,12 @@ LABEL_9:
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:5];
         if (!CMPhotoCompressionSessionOpenEmptyContainer() && !CMPhotoCompressionSessionAddImage())
         {
-          v10 = *(a1 + 152);
+          v10 = *(self + 152);
           if (v10)
           {
             CFRelease(v10);
             v1 = 0;
-            *(a1 + 152) = 0;
+            *(self + 152) = 0;
           }
 
           else
@@ -754,7 +754,7 @@ LABEL_13:
 
 - (uint64_t)flush
 {
-  result = [(BWDeferredBufferIntermediate *)a1 _writeAndReleaseBacking];
+  result = [(BWDeferredBufferIntermediate *)self _writeAndReleaseBacking];
   *a3 = result;
   if (result)
   {

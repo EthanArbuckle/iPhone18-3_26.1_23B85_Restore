@@ -1,5 +1,5 @@
 @interface UISheetPresentationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCanCollapseSheet;
 - (BOOL)_accessibilityCanExpandSheet;
 - (BOOL)_accessibilityCollapseSheet;
@@ -10,23 +10,23 @@
 - (id)_axGrabberStatusDescription;
 - (int64_t)_axCurrentGrabberAction;
 - (int64_t)_axSheetDetentType;
-- (void)_accessibilityChangeSize:(BOOL)a3;
+- (void)_accessibilityChangeSize:(BOOL)size;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axMarkupGrabber:(id)a3;
+- (void)_axMarkupGrabber:(id)grabber;
 - (void)_axMarkupGrabbers;
 - (void)_containerViewLayoutSubviews;
 @end
 
 @implementation UISheetPresentationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v11 = location;
   v10 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UISheetPresentationController";
   v3 = @"UIPresentationController";
   [location[0] validateClass:? isKindOfClass:?];
@@ -61,47 +61,47 @@
 
 - (void)_containerViewLayoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISheetPresentationControllerAccessibility;
   [(UISheetPresentationControllerAccessibility *)&v2 _containerViewLayoutSubviews];
-  [(UISheetPresentationControllerAccessibility *)v4 _axMarkupGrabbers];
+  [(UISheetPresentationControllerAccessibility *)selfCopy _axMarkupGrabbers];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISheetPresentationControllerAccessibility;
   [(UISheetPresentationControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(UISheetPresentationControllerAccessibility *)v4 _axMarkupGrabbers];
+  [(UISheetPresentationControllerAccessibility *)selfCopy _axMarkupGrabbers];
 }
 
 - (void)_axMarkupGrabbers
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UISheetPresentationControllerAccessibility *)self safeValueForKey:@"dropShadowView"];
-  v3 = v8;
+  v3 = selfCopy;
   v4 = [v7[0] safeValueForKey:@"_topGrabber"];
   [(UISheetPresentationControllerAccessibility *)v3 _axMarkupGrabber:?];
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  v5 = v8;
+  v5 = selfCopy;
   v6 = [v7[0] safeValueForKey:{@"_bottomGrabber", v2}];
   [(UISheetPresentationControllerAccessibility *)v5 _axMarkupGrabber:?];
   MEMORY[0x29EDC9740](v6);
   objc_storeStrong(v7, 0);
 }
 
-- (void)_axMarkupGrabber:(id)a3
+- (void)_axMarkupGrabber:(id)grabber
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v34, v36);
+  objc_storeStrong(location, grabber);
+  objc_initWeak(&v34, selfCopy);
   v27 = MEMORY[0x29EDCA5F8];
   v28 = -1073741824;
   v29 = 0;
@@ -274,10 +274,10 @@ id __63__UISheetPresentationControllerAccessibility__axMarkupGrabber___block_inv
 
 - (id)_axGrabberStatusDescription
 {
-  v9 = [(UISheetPresentationControllerAccessibility *)self _axSheetDetentType];
-  if (v9)
+  _axSheetDetentType = [(UISheetPresentationControllerAccessibility *)self _axSheetDetentType];
+  if (_axSheetDetentType)
   {
-    switch(v9)
+    switch(_axSheetDetentType)
     {
       case 1:
         goto LABEL_10;
@@ -287,20 +287,20 @@ id __63__UISheetPresentationControllerAccessibility__axMarkupGrabber___block_inv
         goto LABEL_10;
     }
 
-    if (v9 != 4)
+    if (_axSheetDetentType != 4)
     {
       goto LABEL_17;
     }
   }
 
   v8 = [(UISheetPresentationControllerAccessibility *)self safeUIViewForKey:@"presentedView"];
-  v7 = [v8 window];
-  [v7 frame];
+  window = [v8 window];
+  [window frame];
   v11.origin.x = v2;
   v11.origin.y = v3;
   v11.size.width = v4;
   v11.size.height = v5;
-  MEMORY[0x29EDC9740](v7);
+  MEMORY[0x29EDC9740](window);
   MEMORY[0x29EDC9740](v8);
   [(UISheetPresentationControllerAccessibility *)self safeCGRectForKey:@"_currentPresentedViewFrame"];
   v16 = CGRectIntersection(v15, v11);
@@ -392,7 +392,7 @@ LABEL_18:
 
 - (BOOL)_accessibilityPresentationControllerModalizes
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v21[0] = [(UISheetPresentationControllerAccessibility *)self safeValueForKey:@"_layoutInfo"];
   v9 = [v21[0] safeValueForKey:@"_containerTraitCollection"];
@@ -407,31 +407,31 @@ LABEL_18:
   v16 = MEMORY[0x29EDC9748](v17);
   objc_storeStrong(&v17, 0);
   v19 = v16;
-  v15 = [(UISheetPresentationControllerAccessibility *)v22 _axActiveDetent];
-  v14 = [(UISheetPresentationControllerAccessibility *)v22 _axSheetDetentType];
-  v13 = [v15 safeStringForKey:@"identifier"];
+  _axActiveDetent = [(UISheetPresentationControllerAccessibility *)selfCopy _axActiveDetent];
+  _axSheetDetentType = [(UISheetPresentationControllerAccessibility *)selfCopy _axSheetDetentType];
+  v13 = [_axActiveDetent safeStringForKey:@"identifier"];
   if ([v13 isEqualToString:@"com.apple.UIKit.ColorPicker"] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"ComplicationGalleryDodge") & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", @"homeScreenPickerDodge") & 1) != 0 || (objc_msgSend(v19, "_accessibilityPresentedControllerModalizes"))
   {
     v23 = 1;
   }
 
-  else if (v14 == 1 || v14 == 3 || ([v13 isEqualToString:@"com.apple.UIKit.large"] & 1) != 0)
+  else if (_axSheetDetentType == 1 || _axSheetDetentType == 3 || ([v13 isEqualToString:@"com.apple.UIKit.large"] & 1) != 0)
   {
     v23 = 1;
   }
 
-  else if (v14 == 2 && v20)
+  else if (_axSheetDetentType == 2 && v20)
   {
     v23 = 1;
   }
 
   else
   {
-    v23 = (!v14 || v14 == 4) && ((v8 = -[UISheetPresentationControllerAccessibility safeUIViewForKey:](v22, "safeUIViewForKey:", @"presentedView"), v7 = [v8 window], objc_msgSend(v7, "frame"), r2.origin.x = v2, r2.origin.y = v3, r2.size.width = v4, r2.size.height = v5, MEMORY[0x29EDC9740](v7), MEMORY[0x29EDC9740](v8), -[UISheetPresentationControllerAccessibility safeCGRectForKey:](v22, "safeCGRectForKey:", @"_currentPresentedViewFrame"), v25 = CGRectIntersection(v24, r2), v25.size.height / r2.size.height >= 0.7) && v25.size.width / r2.size.width >= 0.4 || (AXProcessIsShortcuts() & 1) != 0);
+    v23 = (!_axSheetDetentType || _axSheetDetentType == 4) && ((v8 = -[UISheetPresentationControllerAccessibility safeUIViewForKey:](selfCopy, "safeUIViewForKey:", @"presentedView"), v7 = [v8 window], objc_msgSend(v7, "frame"), r2.origin.x = v2, r2.origin.y = v3, r2.size.width = v4, r2.size.height = v5, MEMORY[0x29EDC9740](v7), MEMORY[0x29EDC9740](v8), -[UISheetPresentationControllerAccessibility safeCGRectForKey:](selfCopy, "safeCGRectForKey:", @"_currentPresentedViewFrame"), v25 = CGRectIntersection(v24, r2), v25.size.height / r2.size.height >= 0.7) && v25.size.width / r2.size.width >= 0.4 || (AXProcessIsShortcuts() & 1) != 0);
   }
 
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&_axActiveDetent, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(v21, 0);
   return v23;
@@ -490,14 +490,14 @@ LABEL_18:
   return v4;
 }
 
-- (void)_accessibilityChangeSize:(BOOL)a3
+- (void)_accessibilityChangeSize:(BOOL)size
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  sizeCopy = size;
   v10 = [(UISheetPresentationControllerAccessibility *)self safeValueForKey:@"_layoutInfo"];
   v9 = [v10 safeIntegerForKey:@"_indexOfCurrentActiveDetent"];
-  if (v11)
+  if (sizeCopy)
   {
     v3 = -1;
   }
@@ -511,7 +511,7 @@ LABEL_18:
   v7 = [v10 safeArrayForKey:@"_activeDetents"];
   if ((v8 & 0x8000000000000000) == 0 && v8 < [v7 count])
   {
-    v4 = MEMORY[0x29EDC9748](v13);
+    v4 = MEMORY[0x29EDC9748](selfCopy);
     v5 = MEMORY[0x29EDC9748](v10);
     v6[0] = MEMORY[0x29EDC9748](v7);
     v6[1] = v8;

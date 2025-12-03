@@ -1,9 +1,9 @@
 @interface RAPReportTableViewController
-- (RAPReportTableViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportTableViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (RAPUserInfoPart)userInfoPart;
 - (void)_send;
-- (void)_updateTablePartsScrolling:(BOOL)a3;
-- (void)setNeedsTablePartsUpdateWithSender:(id)a3 scroll:(BOOL)a4;
+- (void)_updateTablePartsScrolling:(BOOL)scrolling;
+- (void)setNeedsTablePartsUpdateWithSender:(id)sender scroll:(BOOL)scroll;
 - (void)updateTablePartsIfNeeded;
 - (void)viewDidLoad;
 @end
@@ -20,16 +20,16 @@
   }
 }
 
-- (void)setNeedsTablePartsUpdateWithSender:(id)a3 scroll:(BOOL)a4
+- (void)setNeedsTablePartsUpdateWithSender:(id)sender scroll:(BOOL)scroll
 {
-  obj = a3;
+  obj = sender;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_storeWeak(&self->_lastTablePartsUpdateSender, obj);
   }
 
-  if (!a4)
+  if (!scroll)
   {
     self->_scrollingSuppressed = 1;
   }
@@ -37,24 +37,24 @@
   [(RAPReportTableViewController *)self _maps_setNeedsUpdateWithSelector:"_updateTableParts"];
 }
 
-- (void)_updateTablePartsScrolling:(BOOL)a3
+- (void)_updateTablePartsScrolling:(BOOL)scrolling
 {
-  v3 = a3;
-  v5 = [(RAPReportTableViewController *)self tableParts];
-  if (v5)
+  scrollingCopy = scrolling;
+  tableParts = [(RAPReportTableViewController *)self tableParts];
+  if (tableParts)
   {
-    v15 = v5;
-    v6 = [(RAPTableViewController *)self dataSource];
-    v7 = [v6 tableParts];
-    v8 = [v7 isEqual:v15];
+    v15 = tableParts;
+    dataSource = [(RAPTableViewController *)self dataSource];
+    tableParts2 = [dataSource tableParts];
+    v8 = [tableParts2 isEqual:v15];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(RAPTableViewController *)self dataSource];
-      [v9 setTableParts:v15 withRowAnimation:0];
+      dataSource2 = [(RAPTableViewController *)self dataSource];
+      [dataSource2 setTableParts:v15 withRowAnimation:0];
     }
 
-    if (!v3)
+    if (!scrollingCopy)
     {
       goto LABEL_11;
     }
@@ -63,7 +63,7 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v12 = objc_loadWeakRetained(&self->_lastTablePartsUpdateSender);
+    partController = objc_loadWeakRetained(&self->_lastTablePartsUpdateSender);
     if ((isKindOfClass & 1) == 0)
     {
       objc_opt_class();
@@ -75,17 +75,17 @@
       }
 
       v14 = objc_loadWeakRetained(&self->_lastTablePartsUpdateSender);
-      v12 = [v14 partController];
+      partController = [v14 partController];
     }
 
-    if (v12)
+    if (partController)
     {
-      [(RAPTableViewController *)self scrollToPartAfterPartAnimated:v12];
+      [(RAPTableViewController *)self scrollToPartAfterPartAnimated:partController];
 
 LABEL_11:
       objc_storeWeak(&self->_lastTablePartsUpdateSender, 0);
       self->_scrollingSuppressed = 0;
-      v5 = v15;
+      tableParts = v15;
       goto LABEL_12;
     }
 
@@ -123,8 +123,8 @@ LABEL_12:
 
 - (void)_send
 {
-  v3 = [(RAPReportTableViewController *)self view];
-  [v3 endEditing:1];
+  view = [(RAPReportTableViewController *)self view];
+  [view endEditing:1];
 
   if (MapsFeature_IsEnabled_RAPCommunityID() && !self->_userInfoPart)
   {
@@ -143,23 +143,23 @@ LABEL_12:
   }
 }
 
-- (RAPReportTableViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportTableViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = RAPReportTableViewController;
   v11 = [(RAPTableViewController *)&v19 init];
   if (v11)
   {
-    v12 = [[RAPReportViewControllerDelegate alloc] initWithReport:v8 completion:v10 delegate:v11];
+    v12 = [[RAPReportViewControllerDelegate alloc] initWithReport:reportCopy completion:completionCopy delegate:v11];
     rapDelegate = v11->_rapDelegate;
     v11->_rapDelegate = v12;
 
-    if (v9)
+    if (questionCopy)
     {
-      [v9 localizedTitle];
+      [questionCopy localizedTitle];
     }
 
     else
@@ -171,8 +171,8 @@ LABEL_12:
 
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"Back" value:@"localized string not found" table:0];
-    v17 = [(RAPReportTableViewController *)v11 navigationItem];
-    [v17 setBackButtonTitle:v16];
+    navigationItem = [(RAPReportTableViewController *)v11 navigationItem];
+    [navigationItem setBackButtonTitle:v16];
   }
 
   return v11;

@@ -1,6 +1,6 @@
 @interface MPSGraphLSTMDescriptor
 + (MPSGraphLSTMDescriptor)descriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphLSTMDescriptor
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [MPSGraphLSTMDescriptor alloc];
   *(result + 13) = self->_reverse;

@@ -8,7 +8,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   CatalogWorkout.duration.getter();
   v4 = v3;
 
@@ -17,7 +17,7 @@
 
 - (NSString)identifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkout.identifier.getter();
   v5 = v4;
 

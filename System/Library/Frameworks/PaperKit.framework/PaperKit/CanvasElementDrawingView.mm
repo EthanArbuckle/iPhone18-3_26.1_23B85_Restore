@@ -1,62 +1,62 @@
 @interface CanvasElementDrawingView
-- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)a3;
-- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)a3 fromTapStroke:(BOOL)a4;
+- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)location;
+- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)location fromTapStroke:(BOOL)stroke;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4;
-- (BOOL)hitChrome:(CGPoint)a3 isStylus:(BOOL)a4 event:(id)a5;
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds;
+- (BOOL)hitChrome:(CGPoint)chrome isStylus:(BOOL)stylus event:(id)event;
 - (BOOL)isAtEndOfDocument;
 - (BOOL)resignFirstResponder;
 - (CGAffineTransform)drawingTransform;
 - (NSArray)additionalStrokes;
 - (PKTiledView)tiledView;
 - (UIView)attachmentContainerView;
-- (_TtC8PaperKit24CanvasElementDrawingView)initWithFrame:(CGRect)a3 drawing:(id)a4;
-- (double)heightFromDrawing:(id)a3 delta:(double)a4;
-- (id)hitMiniMenu:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)inlineViewAtPoint:(CGPoint)a3;
-- (void)cancelledStroke:(id)a3;
+- (_TtC8PaperKit24CanvasElementDrawingView)initWithFrame:(CGRect)frame drawing:(id)drawing;
+- (double)heightFromDrawing:(id)drawing delta:(double)delta;
+- (id)hitMiniMenu:(CGPoint)menu;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)inlineViewAtPoint:(CGPoint)point;
+- (void)cancelledStroke:(id)stroke;
 - (void)didBeginDrawing;
 - (void)didEndDrawing;
 - (void)didMoveToWindow;
 - (void)displayLinkUpdateLiveDrawing;
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3;
-- (void)drawingDidEraseStrokes:(id)a3;
-- (void)eraserMovedToLocation:(CGPoint)a3;
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes;
+- (void)drawingDidEraseStrokes:(id)strokes;
+- (void)eraserMovedToLocation:(CGPoint)location;
 - (void)layoutSubviews;
-- (void)proofreadingView:(id)a3 willPresentStringsForProofreadingItem:(id)a4;
+- (void)proofreadingView:(id)view willPresentStringsForProofreadingItem:(id)item;
 - (void)selectionDidChange;
-- (void)setAdditionalStrokes:(id)a3;
-- (void)setAttachmentChromeVisible:(BOOL)a3 animated:(BOOL)a4 highlightBackground:(BOOL)a5;
-- (void)updateDrawingHeight:(double)a3;
+- (void)setAdditionalStrokes:(id)strokes;
+- (void)setAttachmentChromeVisible:(BOOL)visible animated:(BOOL)animated highlightBackground:(BOOL)background;
+- (void)updateDrawingHeight:(double)height;
 - (void)updateFrameForTextContainer;
 @end
 
 @implementation CanvasElementDrawingView
 
-- (_TtC8PaperKit24CanvasElementDrawingView)initWithFrame:(CGRect)a3 drawing:(id)a4
+- (_TtC8PaperKit24CanvasElementDrawingView)initWithFrame:(CGRect)frame drawing:(id)drawing
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = type metadata accessor for PKDrawing();
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a4;
+  drawingCopy = drawing;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   return CanvasElementDrawingView.init(frame:drawing:)(v11, x, y, width, height);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   CanvasElementDrawingView.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 
@@ -65,28 +65,28 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.didMoveToWindow()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.layoutSubviews()();
 }
 
-- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)a3
+- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKit24CanvasElementDrawingView_mathRecognitionDelegate);
   if (!v6 || (v7 = *(v6 + OBJC_IVAR____TtC8PaperKit37MathRecognitionViewControllerDelegate_viewController)) == 0)
   {
-    v10 = self;
+    selfCopy = self;
     goto LABEL_6;
   }
 
-  v8 = self;
+  selfCopy2 = self;
   if (![v7 handleSingleTapAtDrawingLocation_])
   {
 LABEL_6:
@@ -100,25 +100,25 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)a3 fromTapStroke:(BOOL)a4
+- (BOOL)_handleSingleTapAtDrawingLocation:(CGPoint)location fromTapStroke:(BOOL)stroke
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  strokeCopy = stroke;
+  y = location.y;
+  x = location.x;
   v8 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKit24CanvasElementDrawingView_mathRecognitionDelegate);
   if (!v8 || (v9 = *(v8 + OBJC_IVAR____TtC8PaperKit37MathRecognitionViewControllerDelegate_viewController)) == 0)
   {
-    v12 = self;
+    selfCopy = self;
     goto LABEL_6;
   }
 
-  v10 = self;
+  selfCopy2 = self;
   if (![v9 handleSingleTapAtDrawingLocation_])
   {
 LABEL_6:
     v14.receiver = self;
     v14.super_class = type metadata accessor for CanvasElementDrawingView();
-    v11 = [(PKAttachmentView *)&v14 _handleSingleTapAtDrawingLocation:v4 fromTapStroke:x, y];
+    v11 = [(PKAttachmentView *)&v14 _handleSingleTapAtDrawingLocation:strokeCopy fromTapStroke:x, y];
 
     return v11;
   }
@@ -126,11 +126,11 @@ LABEL_6:
   return 1;
 }
 
-- (void)eraserMovedToLocation:(CGPoint)a3
+- (void)eraserMovedToLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = location.y;
+  x = location.x;
+  selfCopy = self;
   CanvasElementDrawingView.eraserMoved(toLocation:)(__PAIR128__(*&y, *&x));
 }
 
@@ -139,10 +139,10 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = type metadata accessor for CanvasElementDrawingView();
   v2 = v7.receiver;
-  v3 = [(PKAttachmentView *)&v7 additionalStrokes];
-  if (v3)
+  additionalStrokes = [(PKAttachmentView *)&v7 additionalStrokes];
+  if (additionalStrokes)
   {
-    v4 = v3;
+    v4 = additionalStrokes;
     type metadata accessor for PKStroke();
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -158,20 +158,20 @@ LABEL_6:
   return v5.super.isa;
 }
 
-- (void)setAdditionalStrokes:(id)a3
+- (void)setAdditionalStrokes:(id)strokes
 {
-  isa = a3;
-  if (a3)
+  isa = strokes;
+  if (strokes)
   {
     type metadata accessor for PKStroke();
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v5 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -194,22 +194,22 @@ LABEL_6:
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 canBecomeFirstResponder];
+    canBecomeFirstResponder = [v4 canBecomeFirstResponder];
 
     v3 = v5;
   }
 
   else
   {
-    v6 = 0;
+    canBecomeFirstResponder = 0;
   }
 
-  return v6;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.becomeFirstResponder()(&unk_1F4F58728, partial apply for closure #1 in CanvasElementDrawingView.becomeFirstResponder(), &block_descriptor_31);
 
   return 0;
@@ -217,7 +217,7 @@ LABEL_6:
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.becomeFirstResponder()(&unk_1F4F586D8, partial apply for closure #1 in CanvasElementDrawingView.resignFirstResponder(), &block_descriptor_14);
 
   return 0;
@@ -231,7 +231,7 @@ LABEL_6:
     v4 = MEMORY[0x1E69E7D40];
     v5 = Strong;
     v6 = (*((*MEMORY[0x1E69E7D40] & *Strong) + 0x90))();
-    v7 = self;
+    selfCopy = self;
 
     if (v6)
     {
@@ -250,17 +250,17 @@ LABEL_6:
   return Strong;
 }
 
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes
 {
-  v4 = self;
-  CanvasElementDrawingView.drawingDidChangeVisibleStrokes(_:)(a3);
+  selfCopy = self;
+  CanvasElementDrawingView.drawingDidChangeVisibleStrokes(_:)(strokes);
 }
 
-- (id)inlineViewAtPoint:(CGPoint)a3
+- (id)inlineViewAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   CanvasElementDrawingView.inlineView(at:)(v6, __PAIR128__(*&y, *&x));
   v8 = v7;
 
@@ -269,7 +269,7 @@ LABEL_6:
 
 - (CGAffineTransform)drawingTransform
 {
-  v4 = self;
+  selfCopy = self;
   CanvasElementDrawingView.drawingTransform.getter(v8);
 
   v6 = v8[1];
@@ -282,7 +282,7 @@ LABEL_6:
 
 - (void)didBeginDrawing
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.didBeginDrawing()();
 }
 
@@ -300,23 +300,23 @@ LABEL_6:
   }
 }
 
-- (void)cancelledStroke:(id)a3
+- (void)cancelledStroke:(id)stroke
 {
   v5 = type metadata accessor for PKStroke();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  strokeCopy = stroke;
+  selfCopy = self;
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
 
   isa = PKStroke._bridgeToObjectiveC()().super.isa;
   v12 = type metadata accessor for CanvasElementDrawingView();
-  v13.receiver = v10;
+  v13.receiver = selfCopy;
   v13.super_class = v12;
   [(PKAttachmentView *)&v13 cancelledStroke:isa];
 
-  [*(&v10->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKit24CanvasElementDrawingView_liveStreamingDisplayLink) invalidate];
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKit24CanvasElementDrawingView_liveStreamingDisplayLink) invalidate];
   CanvasElementDrawingView.liveStreamingDisplayLink.setter(0);
 
   (*(v6 + 8))(v8, v5);
@@ -324,15 +324,15 @@ LABEL_6:
 
 - (void)displayLinkUpdateLiveDrawing
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.displayLinkUpdateLiveDrawing()();
 }
 
-- (void)drawingDidEraseStrokes:(id)a3
+- (void)drawingDidEraseStrokes:(id)strokes
 {
   type metadata accessor for PKStroke();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   CanvasElementDrawingView.drawingDidEraseStrokes(_:)(v4);
 }
 
@@ -352,27 +352,27 @@ LABEL_6:
 
 - (void)updateFrameForTextContainer
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementDrawingView.updateFrameForTextContainer()();
 }
 
 - (BOOL)isAtEndOfDocument
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CanvasElementDrawingView.isAtEndOfDocument.getter();
 
   return v3 & 1;
 }
 
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v10 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = location.y;
+  v9 = location.x;
+  selfCopy = self;
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -382,24 +382,24 @@ LABEL_6:
   return v11;
 }
 
-- (double)heightFromDrawing:(id)a3 delta:(double)a4
+- (double)heightFromDrawing:(id)drawing delta:(double)delta
 {
   v7 = type metadata accessor for PKDrawing();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a3;
-  v12 = self;
+  drawingCopy = drawing;
+  selfCopy = self;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
-  CanvasElementDrawingView.height(from:delta:)(a4);
+  CanvasElementDrawingView.height(from:delta:)(delta);
   v14 = v13;
 
   (*(v8 + 8))(v10, v7);
   return v14;
 }
 
-- (void)updateDrawingHeight:(double)a3
+- (void)updateDrawingHeight:(double)height
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -411,10 +411,10 @@ LABEL_6:
     {
       v8 = v7;
       v9 = *((*v6 & *v7) + 0x840);
-      v10 = self;
-      v9(a3);
+      selfCopy = self;
+      v9(height);
 
-      v11 = v10;
+      v11 = selfCopy;
     }
 
     else
@@ -426,41 +426,41 @@ LABEL_6:
 
 - (UIView)attachmentContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CanvasElementDrawingView.attachmentContainerView.getter();
 
   return v3;
 }
 
-- (id)hitMiniMenu:(CGPoint)a3
+- (id)hitMiniMenu:(CGPoint)menu
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = menu.y;
+  x = menu.x;
+  selfCopy = self;
   CanvasElementDrawingView.hitMiniMenu(_:)(v6, __PAIR128__(*&y, *&x));
   v8 = v7;
 
   return v8;
 }
 
-- (BOOL)hitChrome:(CGPoint)a3 isStylus:(BOOL)a4 event:(id)a5
+- (BOOL)hitChrome:(CGPoint)chrome isStylus:(BOOL)stylus event:(id)event
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v10 = a5;
-  v11 = self;
-  v13.value.super.isa = v5;
-  LOBYTE(v5) = CanvasElementDrawingView.hitChrome(_:isStylus:event:)(__PAIR128__(*&y, *&x), a4, v13);
+  eventCopy = event;
+  y = chrome.y;
+  x = chrome.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  v13.value.super.isa = eventCopy;
+  LOBYTE(eventCopy) = CanvasElementDrawingView.hitChrome(_:isStylus:event:)(__PAIR128__(*&y, *&x), stylus, v13);
 
-  return v5 & 1;
+  return eventCopy & 1;
 }
 
-- (void)setAttachmentChromeVisible:(BOOL)a3 animated:(BOOL)a4 highlightBackground:(BOOL)a5
+- (void)setAttachmentChromeVisible:(BOOL)visible animated:(BOOL)animated highlightBackground:(BOOL)background
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  backgroundCopy = background;
+  animatedCopy = animated;
+  visibleCopy = visible;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -471,10 +471,10 @@ LABEL_6:
     {
       v12 = v11;
       v13 = *((*v10 & *v11) + 0x8A0);
-      v14 = self;
-      v13(v7, v6, v5);
+      selfCopy = self;
+      v13(visibleCopy, animatedCopy, backgroundCopy);
 
-      v15 = v14;
+      v15 = selfCopy;
     }
 
     else
@@ -484,12 +484,12 @@ LABEL_6:
   }
 }
 
-- (void)proofreadingView:(id)a3 willPresentStringsForProofreadingItem:(id)a4
+- (void)proofreadingView:(id)view willPresentStringsForProofreadingItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CanvasElementDrawingView.proofreadingView(_:willPresentStringsFor:)(v6, v7);
+  viewCopy = view;
+  itemCopy = item;
+  selfCopy = self;
+  CanvasElementDrawingView.proofreadingView(_:willPresentStringsFor:)(viewCopy, itemCopy);
 }
 
 @end

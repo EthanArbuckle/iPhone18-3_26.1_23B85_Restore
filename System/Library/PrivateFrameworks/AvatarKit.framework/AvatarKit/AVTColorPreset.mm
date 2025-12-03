@@ -1,32 +1,32 @@
 @interface AVTColorPreset
-+ (id)_colorPresetsForCategory:(int64_t)a3 palette:(id)a4;
-+ (id)colorPresetWithName:(id)a3 category:(int64_t)a4 colorIndex:(unint64_t)a5 variation:(float)a6;
-+ (id)colorPresetsForCategory:(int64_t)a3 colorIndex:(unint64_t)a4;
-+ (id)fallbackColorPresetForNilPresetAndCategory:(int64_t)a3 colorIndex:(unint64_t)a4;
-- (AVTColorPreset)colorPresetWithVariation:(float)a3;
-- (AVTColorPreset)initWithCategory:(int64_t)a3 description:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_colorPresetsForCategory:(int64_t)category palette:(id)palette;
++ (id)colorPresetWithName:(id)name category:(int64_t)category colorIndex:(unint64_t)index variation:(float)variation;
++ (id)colorPresetsForCategory:(int64_t)category colorIndex:(unint64_t)index;
++ (id)fallbackColorPresetForNilPresetAndCategory:(int64_t)category colorIndex:(unint64_t)index;
+- (AVTColorPreset)colorPresetWithVariation:(float)variation;
+- (AVTColorPreset)initWithCategory:(int64_t)category description:(id)description;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNaturalLipsColor;
 - (UIImage)thumbnail;
 - (id)baseColor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)derivedColorNameForPresetCategory:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)derivedColorNameForPresetCategory:(int64_t)category;
 - (id)description;
-- (id)gradientLayerWithRangeMin:(float)a3 max:(float)a4 withSkinColor:(id)a5;
+- (id)gradientLayerWithRangeMin:(float)min max:(float)max withSkinColor:(id)color;
 - (id)makeMaterial;
 - (id)previewAccentColor;
 - (id)previewColor;
-- (void)enumerateDerivedColorPresetsUsingBlock:(id)a3;
-- (void)renderColorIntoCALayer:(id)a3 withSkinColor:(id)a4;
+- (void)enumerateDerivedColorPresetsUsingBlock:(id)block;
+- (void)renderColorIntoCALayer:(id)layer withSkinColor:(id)color;
 @end
 
 @implementation AVTColorPreset
 
-+ (id)colorPresetWithName:(id)a3 category:(int64_t)a4 colorIndex:(unint64_t)a5 variation:(float)a6
++ (id)colorPresetWithName:(id)name category:(int64_t)category colorIndex:(unint64_t)index variation:(float)variation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  [AVTColorPreset colorPresetsForCategory:a4 colorIndex:a5];
+  nameCopy = name;
+  [AVTColorPreset colorPresetsForCategory:category colorIndex:index];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -45,8 +45,8 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 name];
-        v16 = [v15 isEqualToString:v9];
+        name = [v14 name];
+        v16 = [name isEqualToString:nameCopy];
 
         if (v16)
         {
@@ -67,14 +67,14 @@
 
 LABEL_11:
 
-  if (a6 == 0.0)
+  if (variation == 0.0)
   {
     v18 = v11;
   }
 
   else
   {
-    *&v17 = a6;
+    *&v17 = variation;
     v18 = [v11 colorPresetWithVariation:v17];
   }
 
@@ -85,16 +85,16 @@ LABEL_11:
   return v19;
 }
 
-+ (id)_colorPresetsForCategory:(int64_t)a3 palette:(id)a4
++ (id)_colorPresetsForCategory:(int64_t)category palette:(id)palette
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = AVTPresetCategoryToColorCategoryString(a3);
-  v7 = [v5 objectForKeyedSubscript:v6];
+  paletteCopy = palette;
+  v6 = AVTPresetCategoryToColorCategoryString(category);
+  v7 = [paletteCopy objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -116,8 +116,8 @@ LABEL_11:
 
           v14 = *(*(&v19 + 1) + 8 * i);
           v15 = [AVTColorPreset alloc];
-          v16 = [(AVTColorPreset *)v15 initWithCategory:a3 description:v14, v19];
-          [v8 addObject:v16];
+          v16 = [(AVTColorPreset *)v15 initWithCategory:category description:v14, v19];
+          [array addObject:v16];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -129,27 +129,27 @@ LABEL_11:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
-+ (id)colorPresetsForCategory:(int64_t)a3 colorIndex:(unint64_t)a4
++ (id)colorPresetsForCategory:(int64_t)category colorIndex:(unint64_t)index
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__AVTColorPreset_colorPresetsForCategory_colorIndex___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (colorPresetsForCategory_colorIndex__onceToken != -1)
   {
     dispatch_once(&colorPresetsForCategory_colorIndex__onceToken, block);
   }
 
-  v6 = colorPresetsForCategory_colorIndex__colorPresets[3 * a3 + a4];
+  v6 = colorPresetsForCategory_colorIndex__colorPresets[3 * category + index];
 
   return v6;
 }
@@ -194,62 +194,62 @@ LABEL_6:
   }
 }
 
-+ (id)fallbackColorPresetForNilPresetAndCategory:(int64_t)a3 colorIndex:(unint64_t)a4
++ (id)fallbackColorPresetForNilPresetAndCategory:(int64_t)category colorIndex:(unint64_t)index
 {
-  if (a4 >= 3)
+  if (index >= 3)
   {
     +[AVTColorPreset fallbackColorPresetForNilPresetAndCategory:colorIndex:];
   }
 
-  if (!a4)
+  if (!index)
   {
     goto LABEL_10;
   }
 
-  if (a4 != 2)
+  if (index != 2)
   {
-    if (a3 <= 0x22 && ((1 << a3) & 0x400000090) != 0)
+    if (category <= 0x22 && ((1 << category) & 0x400000090) != 0)
     {
-      v4 = 0;
+      firstObject = 0;
       goto LABEL_11;
     }
 
     goto LABEL_10;
   }
 
-  v4 = 0;
-  if (a3 != 4 && a3 != 34)
+  firstObject = 0;
+  if (category != 4 && category != 34)
   {
 LABEL_10:
-    v5 = [AVTColorPreset colorPresetsForCategory:a3 colorIndex:?];
-    v4 = [v5 firstObject];
+    v5 = [AVTColorPreset colorPresetsForCategory:category colorIndex:?];
+    firstObject = [v5 firstObject];
   }
 
 LABEL_11:
 
-  return v4;
+  return firstObject;
 }
 
-- (AVTColorPreset)initWithCategory:(int64_t)a3 description:(id)a4
+- (AVTColorPreset)initWithCategory:(int64_t)category description:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   v59.receiver = self;
   v59.super_class = AVTColorPreset;
   v7 = [(AVTColorPreset *)&v59 init];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"name"];
+    v8 = [descriptionCopy objectForKeyedSubscript:@"name"];
     name = v7->_name;
     v7->_name = v8;
 
-    v10 = [v6 objectForKeyedSubscript:@"derived"];
+    v10 = [descriptionCopy objectForKeyedSubscript:@"derived"];
     derivedColors = v7->_derivedColors;
     v7->_derivedColors = v10;
 
-    v7->_category = a3;
-    v12 = [v6 objectForKeyedSubscript:@"colors"];
-    v13 = [v6 objectForKeyedSubscript:@"variations-min"];
-    v14 = [v6 objectForKeyedSubscript:@"variations-max"];
+    v7->_category = category;
+    v12 = [descriptionCopy objectForKeyedSubscript:@"colors"];
+    v13 = [descriptionCopy objectForKeyedSubscript:@"variations-min"];
+    v14 = [descriptionCopy objectForKeyedSubscript:@"variations-max"];
     v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v12, "count")}];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
@@ -266,7 +266,7 @@ LABEL_11:
     v7->_propertyColors = v16;
     v20 = v16;
 
-    v21 = [v6 objectForKeyedSubscript:@"preview"];
+    v21 = [descriptionCopy objectForKeyedSubscript:@"preview"];
     if (v21)
     {
       v22 = objc_alloc_init(AVTVaryingColor);
@@ -351,7 +351,7 @@ LABEL_11:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVTColorPreset);
   objc_storeStrong(&v4->_material, self->_material);
@@ -366,17 +366,17 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = v4;
-    v8 = [v7 name];
-    v9 = [v8 isEqualToString:self->_name];
+    v7 = equalCopy;
+    name = [v7 name];
+    v9 = [name isEqualToString:self->_name];
 
     if (v9 && [v7 category] == self->_category)
     {
@@ -400,8 +400,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(AVTColorPreset *)self name];
-  v4 = [v3 containsString:@"Natural"];
+  name = [(AVTColorPreset *)self name];
+  v4 = [name containsString:@"Natural"];
 
   return v4;
 }
@@ -418,8 +418,8 @@ LABEL_11:
   v17.size.height = 120.0;
   CGContextAddEllipseInRect(v4, v17);
   CGContextClip(v4);
-  v5 = [(AVTColorPreset *)self previewColor];
-  *&v7 = AVTGetColorComponents(v5, v6);
+  previewColor = [(AVTColorPreset *)self previewColor];
+  *&v7 = AVTGetColorComponents(previewColor, v6);
   v13 = v7;
 
   v8 = 1.0;
@@ -461,10 +461,10 @@ LABEL_11:
 
 - (id)baseColor
 {
-  v2 = [(AVTColorPreset *)self makeMaterial];
-  v3 = [v2 baseColor];
+  makeMaterial = [(AVTColorPreset *)self makeMaterial];
+  baseColor = [makeMaterial baseColor];
 
-  return v3;
+  return baseColor;
 }
 
 - (id)previewColor
@@ -512,11 +512,11 @@ LABEL_11:
     v11 = 3221225472;
     v12 = __30__AVTColorPreset_makeMaterial__block_invoke;
     v13 = &unk_1E7F48EB8;
-    v14 = self;
+    selfCopy = self;
     v15 = v6;
     v8 = v6;
     [(NSDictionary *)propertyColors enumerateKeysAndObjectsUsingBlock:&v10];
-    [(AVTMaterial *)self->_material setAdditionalPropertyColors:v8, v10, v11, v12, v13, v14];
+    [(AVTMaterial *)self->_material setAdditionalPropertyColors:v8, v10, v11, v12, v13, selfCopy];
 
     material = self->_material;
   }
@@ -561,17 +561,17 @@ void __30__AVTColorPreset_makeMaterial__block_invoke(uint64_t a1, void *a2, void
   }
 }
 
-- (void)enumerateDerivedColorPresetsUsingBlock:(id)a3
+- (void)enumerateDerivedColorPresetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   derivedColors = self->_derivedColors;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__AVTColorPreset_enumerateDerivedColorPresetsUsingBlock___block_invoke;
   v7[3] = &unk_1E7F48EE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)derivedColors enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -590,30 +590,30 @@ void __57__AVTColorPreset_enumerateDerivedColorPresetsUsingBlock___block_invoke(
   }
 }
 
-- (id)derivedColorNameForPresetCategory:(int64_t)a3
+- (id)derivedColorNameForPresetCategory:(int64_t)category
 {
-  v4 = AVTPresetCategoryToColorCategoryString(a3);
+  v4 = AVTPresetCategoryToColorCategoryString(category);
   v5 = [(NSDictionary *)self->_derivedColors objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (AVTColorPreset)colorPresetWithVariation:(float)a3
+- (AVTColorPreset)colorPresetWithVariation:(float)variation
 {
-  if (self->_variation == a3)
+  if (self->_variation == variation)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(AVTColorPreset *)self copy];
-    v4->_variation = a3;
-    material = v4->_material;
-    v4->_material = 0;
+    selfCopy = [(AVTColorPreset *)self copy];
+    selfCopy->_variation = variation;
+    material = selfCopy->_material;
+    selfCopy->_material = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)description
@@ -627,17 +627,17 @@ void __57__AVTColorPreset_enumerateDerivedColorPresetsUsingBlock___block_invoke(
   return v7;
 }
 
-- (void)renderColorIntoCALayer:(id)a3 withSkinColor:(id)a4
+- (void)renderColorIntoCALayer:(id)layer withSkinColor:(id)color
 {
   v42[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  colorCopy = color;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.0];
   if ([(AVTColorPreset *)self isNaturalLipsColor])
   {
-    v8 = [v7 baseColor];
-    *v10.i64 = AVTGetColorComponents(v8, v9);
+    baseColor = [colorCopy baseColor];
+    *v10.i64 = AVTGetColorComponents(baseColor, v9);
     v11 = vsubq_f32(xmmword_1BB4F0900, v10);
     v12 = vaddq_f32(v10, v11);
     v13.i64[0] = 0x3F0000003F000000;
@@ -649,58 +649,58 @@ void __57__AVTColorPreset_enumerateDerivedColorPresetsUsingBlock___block_invoke(
     v16 = [MEMORY[0x1E69DC888] colorWithRed:v39.f32[0] green:v39.f32[1] blue:v39.f32[2] alpha:1.0];
     *&v17 = self->_variation;
     v18 = AVTColorApplyVariation(v16, v14, v15, v17);
-    [v6 setBackgroundColor:{objc_msgSend(v18, "CGColor")}];
+    [layerCopy setBackgroundColor:{objc_msgSend(v18, "CGColor")}];
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v19 = [(AVTColorPreset *)self previewColor];
-  *v21.i64 = AVTGetColorComponents(v19, v20);
+  previewColor = [(AVTColorPreset *)self previewColor];
+  *v21.i64 = AVTGetColorComponents(previewColor, v20);
   v40 = v21;
 
   v22 = COERCE_DOUBLE(__PAIR64__(v40.u32[1], v40.u32[3]));
   if (v40.f32[3] < 1.0 && [(AVTColorPreset *)self shouldBlendWithSkinColor:COERCE_DOUBLE(__PAIR64__(v40.u32[1]])
   {
-    v23 = [v7 previewColor];
-    *v25.i64 = AVTGetColorComponents(v23, v24);
+    previewColor2 = [colorCopy previewColor];
+    *v25.i64 = AVTGetColorComponents(previewColor2, v24);
     v38 = v25;
 
     v26 = vmlaq_laneq_f32(v38, vsubq_f32(v40, v38), v40, 3);
-    v27 = [MEMORY[0x1E69DC888] colorWithRed:v26.f32[0] green:v26.f32[1] blue:v26.f32[2] alpha:1.0];
+    previewColor3 = [MEMORY[0x1E69DC888] colorWithRed:v26.f32[0] green:v26.f32[1] blue:v26.f32[2] alpha:1.0];
   }
 
   else
   {
-    v27 = [(AVTColorPreset *)self previewColor];
+    previewColor3 = [(AVTColorPreset *)self previewColor];
   }
 
-  v28 = v27;
-  v29 = [v27 CGColor];
+  v28 = previewColor3;
+  cGColor = [previewColor3 CGColor];
 
-  [v6 setBackgroundColor:v29];
-  v30 = [(AVTColorPreset *)self previewAccentColor];
-  v31 = [v30 CGColor];
+  [layerCopy setBackgroundColor:cGColor];
+  previewAccentColor = [(AVTColorPreset *)self previewAccentColor];
+  cGColor2 = [previewAccentColor CGColor];
 
-  v32 = [v6 sublayers];
-  v33 = [v32 firstObject];
-  v8 = v33;
-  if (v31)
+  sublayers = [layerCopy sublayers];
+  firstObject = [sublayers firstObject];
+  baseColor = firstObject;
+  if (cGColor2)
   {
 
-    if (!v8)
+    if (!baseColor)
     {
-      v8 = [MEMORY[0x1E6979380] layer];
-      [v6 bounds];
-      [v8 setFrame:?];
-      [v6 addSublayer:v8];
+      baseColor = [MEMORY[0x1E6979380] layer];
+      [layerCopy bounds];
+      [baseColor setFrame:?];
+      [layerCopy addSublayer:baseColor];
     }
 
     previewAccentType = self->_previewAccentType;
     if (previewAccentType == 1)
     {
-      v41[0] = v29;
-      v41[1] = v31;
+      v41[0] = cGColor;
+      v41[1] = cGColor2;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
       v36 = &unk_1F39D95F8;
     }
@@ -712,23 +712,23 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      v42[0] = v31;
-      v42[1] = v29;
-      v42[2] = v31;
+      v42[0] = cGColor2;
+      v42[1] = cGColor;
+      v42[2] = cGColor2;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:3];
       v36 = &unk_1F39D95E0;
     }
 
-    [v8 setColors:{v35, *&v38}];
+    [baseColor setColors:{v35, *&v38}];
 
-    [v8 setLocations:v36];
-    [v8 setStartPoint:{0.0, 0.0}];
-    [v8 setEndPoint:{1.0, 1.0}];
-    [v8 setType:*MEMORY[0x1E6979DA0]];
+    [baseColor setLocations:v36];
+    [baseColor setStartPoint:{0.0, 0.0}];
+    [baseColor setEndPoint:{1.0, 1.0}];
+    [baseColor setType:*MEMORY[0x1E6979DA0]];
     goto LABEL_16;
   }
 
-  [v33 removeFromSuperlayer];
+  [firstObject removeFromSuperlayer];
 
 LABEL_17:
   [MEMORY[0x1E6979518] commit];
@@ -736,14 +736,14 @@ LABEL_17:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (id)gradientLayerWithRangeMin:(float)a3 max:(float)a4 withSkinColor:(id)a5
+- (id)gradientLayerWithRangeMin:(float)min max:(float)max withSkinColor:(id)color
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  colorCopy = color;
   if ([(AVTColorPreset *)self isNaturalLipsColor])
   {
-    v10 = [v8 baseColor];
-    *v12.i64 = AVTGetColorComponents(v10, v11);
+    baseColor = [colorCopy baseColor];
+    *v12.i64 = AVTGetColorComponents(baseColor, v11);
     v13 = vsubq_f32(xmmword_1BB4F0900, v12);
     v14 = vaddq_f32(v12, v13);
     v15.i64[0] = 0x3F0000003F000000;
@@ -751,48 +751,48 @@ LABEL_17:
     v27 = vmlaq_f32(v12, v15, v13);
     v28 = vmlaq_f32(v12, 0, v13);
     v16 = [MEMORY[0x1E69DC888] colorWithRed:v14.f32[0] green:v14.f32[1] blue:v14.f32[2] alpha:1.0];
-    v17 = [MEMORY[0x1E69DC888] colorWithRed:v27.f32[0] green:v27.f32[1] blue:v27.f32[2] alpha:1.0];
-    v18 = [MEMORY[0x1E69DC888] colorWithRed:v28.f32[0] green:v28.f32[1] blue:v28.f32[2] alpha:1.0];
-    v19 = [MEMORY[0x1E6979380] layer];
+    previewColor = [MEMORY[0x1E69DC888] colorWithRed:v27.f32[0] green:v27.f32[1] blue:v27.f32[2] alpha:1.0];
+    previewColor2 = [MEMORY[0x1E69DC888] colorWithRed:v28.f32[0] green:v28.f32[1] blue:v28.f32[2] alpha:1.0];
+    layer = [MEMORY[0x1E6979380] layer];
     v30[0] = [v16 CGColor];
-    v30[1] = [v17 CGColor];
-    v30[2] = [v18 CGColor];
+    v30[1] = [previewColor CGColor];
+    v30[2] = [previewColor2 CGColor];
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
-    [v19 setColors:v20];
+    [layer setColors:v20];
 
-    [v19 setStartPoint:{0.0, 0.5}];
-    [v19 setEndPoint:{1.0, 0.5}];
+    [layer setStartPoint:{0.0, 0.5}];
+    [layer setEndPoint:{1.0, 0.5}];
   }
 
   else
   {
-    *&v9 = a3;
-    v10 = [(AVTColorPreset *)self colorPresetWithVariation:v9];
-    *&v21 = a4;
+    *&v9 = min;
+    baseColor = [(AVTColorPreset *)self colorPresetWithVariation:v9];
+    *&v21 = max;
     v16 = [(AVTColorPreset *)self colorPresetWithVariation:v21];
-    v17 = [v10 previewColor];
-    v18 = [(AVTColorPreset *)self previewColor];
-    v22 = [v16 previewColor];
-    v19 = [MEMORY[0x1E6979380] layer];
-    if (v8 && [(AVTColorPreset *)self shouldBlendWithSkinColor])
+    previewColor = [baseColor previewColor];
+    previewColor2 = [(AVTColorPreset *)self previewColor];
+    previewColor3 = [v16 previewColor];
+    layer = [MEMORY[0x1E6979380] layer];
+    if (colorCopy && [(AVTColorPreset *)self shouldBlendWithSkinColor])
     {
-      v23 = [v8 previewColor];
-      [v19 setBackgroundColor:{objc_msgSend(v23, "CGColor")}];
+      previewColor4 = [colorCopy previewColor];
+      [layer setBackgroundColor:{objc_msgSend(previewColor4, "CGColor")}];
     }
 
-    v29[0] = [v17 CGColor];
-    v29[1] = [v18 CGColor];
-    v29[2] = [v22 CGColor];
+    v29[0] = [previewColor CGColor];
+    v29[1] = [previewColor2 CGColor];
+    v29[2] = [previewColor3 CGColor];
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:3];
-    [v19 setColors:v24];
+    [layer setColors:v24];
 
-    [v19 setStartPoint:{0.0, 0.5}];
-    [v19 setEndPoint:{1.0, 0.5}];
+    [layer setStartPoint:{0.0, 0.5}];
+    [layer setEndPoint:{1.0, 0.5}];
   }
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return layer;
 }
 
 void __47__AVTColorPreset_initWithCategory_description___block_invoke(id *a1, void *a2, void *a3)

@@ -1,45 +1,45 @@
 @interface MSPMutableHistoryEntryTransitLineItem
-- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)a3;
+- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)object;
 - (GEOTransitLineItem)lineItem;
-- (MSPMutableHistoryEntryTransitLineItem)initWithStorage:(id)a3;
-- (id)transferToImmutableIfValidWithError:(id *)a3;
-- (void)setLineItem:(id)a3;
+- (MSPMutableHistoryEntryTransitLineItem)initWithStorage:(id)storage;
+- (id)transferToImmutableIfValidWithError:(id *)error;
+- (void)setLineItem:(id)item;
 @end
 
 @implementation MSPMutableHistoryEntryTransitLineItem
 
-- (MSPMutableHistoryEntryTransitLineItem)initWithStorage:(id)a3
+- (MSPMutableHistoryEntryTransitLineItem)initWithStorage:(id)storage
 {
-  v4 = a3;
-  if (!v4)
+  storageCopy = storage;
+  if (!storageCopy)
   {
-    v4 = objc_alloc_init(MSPHistoryEntryStorage);
-    [(MSPHistoryEntryStorage *)v4 setSearchType:4];
+    storageCopy = objc_alloc_init(MSPHistoryEntryStorage);
+    [(MSPHistoryEntryStorage *)storageCopy setSearchType:4];
     v5 = objc_alloc_init(MSPTransitStorageLineItem);
-    [(MSPHistoryEntryStorage *)v4 setTransitLineItem:v5];
+    [(MSPHistoryEntryStorage *)storageCopy setTransitLineItem:v5];
   }
 
   v14.receiver = self;
   v14.super_class = MSPMutableHistoryEntryTransitLineItem;
-  v6 = [(MSPMutableHistoryEntry *)&v14 initWithStorage:v4];
+  v6 = [(MSPMutableHistoryEntry *)&v14 initWithStorage:storageCopy];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  v8 = [(MSPMutableHistoryEntry *)v6 storage];
-  v9 = [v8 searchType];
+  storage = [(MSPMutableHistoryEntry *)v6 storage];
+  searchType = [storage searchType];
 
-  if (v9 != 4)
+  if (searchType != 4)
   {
     goto LABEL_7;
   }
 
-  v10 = [(MSPMutableHistoryEntry *)v7 storage];
-  v11 = [v10 transitLineItem];
+  storage2 = [(MSPMutableHistoryEntry *)v7 storage];
+  transitLineItem = [storage2 transitLineItem];
 
-  if (v11)
+  if (transitLineItem)
   {
 LABEL_6:
     v12 = v7;
@@ -54,22 +54,22 @@ LABEL_7:
   return v12;
 }
 
-- (id)transferToImmutableIfValidWithError:(id *)a3
+- (id)transferToImmutableIfValidWithError:(id *)error
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
-  if (v6)
+  lineItem = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
+  if (lineItem)
   {
-    v7 = v6;
-    v8 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
-    v9 = [v8 name];
-    if ([v9 length])
+    v7 = lineItem;
+    lineItem2 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
+    name = [lineItem2 name];
+    if ([name length])
     {
-      v10 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
-      v11 = [v10 muid];
+      lineItem3 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
+      muid = [lineItem3 muid];
 
-      if (v11)
+      if (muid)
       {
         goto LABEL_7;
       }
@@ -84,7 +84,7 @@ LABEL_7:
 LABEL_7:
   if ([v5 count])
   {
-    if (a3)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v16[0] = @"MSPContainerUntransferableObject";
@@ -92,50 +92,50 @@ LABEL_7:
       v17[0] = self;
       v17[1] = v5;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-      *a3 = [v12 errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:1 userInfo:v13];
+      *error = [v12 errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:1 userInfo:v13];
 
-      a3 = 0;
+      error = 0;
     }
   }
 
   else
   {
     [(MSPMutableHistoryEntry *)self _markImmutable];
-    a3 = self;
+    error = self;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return a3;
+  return error;
 }
 
 - (GEOTransitLineItem)lineItem
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 transitLineItem];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  transitLineItem = [storage transitLineItem];
 
-  return v3;
+  return transitLineItem;
 }
 
-- (void)setLineItem:(id)a3
+- (void)setLineItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(MSPMutableHistoryEntry *)self _noteWillMutate];
-  v6 = [[MSPTransitStorageLineItem alloc] initWithLineItem:v4];
+  v6 = [[MSPTransitStorageLineItem alloc] initWithLineItem:itemCopy];
 
-  v5 = [(MSPMutableHistoryEntry *)self storage];
-  [v5 setTransitLineItem:v6];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  [storage setTransitLineItem:v6];
 }
 
-- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)a3
+- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)object
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4 lineItem];
-    v6 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
-    v7 = [v6 muid];
-    v8 = v7 == [v5 muid];
+    lineItem = [objectCopy lineItem];
+    lineItem2 = [(MSPMutableHistoryEntryTransitLineItem *)self lineItem];
+    muid = [lineItem2 muid];
+    v8 = muid == [lineItem muid];
   }
 
   else

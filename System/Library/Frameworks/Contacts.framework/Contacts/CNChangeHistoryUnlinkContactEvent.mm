@@ -1,27 +1,27 @@
 @interface CNChangeHistoryUnlinkContactEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryUnlinkContactEvent)init;
-- (CNChangeHistoryUnlinkContactEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryUnlinkContactEvent)initWithContact:(id)a3;
+- (CNChangeHistoryUnlinkContactEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryUnlinkContactEvent)initWithContact:(id)contact;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
 @end
 
 @implementation CNChangeHistoryUnlinkContactEvent
 
 - (CNChangeHistoryUnlinkContactEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryUnlinkContactEvent)initWithContact:(id)a3
+- (CNChangeHistoryUnlinkContactEvent)initWithContact:(id)contact
 {
-  v5 = a3;
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  contactCopy = contact;
+  if (!contactCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (CNGuardOSLog_cn_once_token_0_3 != -1)
     {
@@ -41,33 +41,33 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contact, a3);
+    objc_storeStrong(&v7->_contact, contact);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (CNChangeHistoryUnlinkContactEvent)initWithCoder:(id)a3
+- (CNChangeHistoryUnlinkContactEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_contact"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_contact"];
 
   v6 = [(CNChangeHistoryUnlinkContactEvent *)self initWithContact:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__CNChangeHistoryUnlinkContactEvent_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v8, 0}];
 
   return self;
@@ -108,31 +108,31 @@ uint64_t __41__CNChangeHistoryUnlinkContactEvent_hash__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryUnlinkContactEvent *)self contact];
-  v5 = [v3 appendName:@"contact" object:v4];
+  contact = [(CNChangeHistoryUnlinkContactEvent *)self contact];
+  v5 = [v3 appendName:@"contact" object:contact];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitUnlinkContactEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryUnlinkContactEvent *)self contact];
-  v6 = [v5 identifier];
-  v7 = [v4 contact];
+  classCopy = class;
+  contact = [(CNChangeHistoryUnlinkContactEvent *)self contact];
+  identifier = [contact identifier];
+  contact2 = [classCopy contact];
 
-  v8 = [v7 identifier];
-  v9 = [v6 compare:v8];
+  identifier2 = [contact2 identifier];
+  v9 = [identifier compare:identifier2];
 
   return v9;
 }

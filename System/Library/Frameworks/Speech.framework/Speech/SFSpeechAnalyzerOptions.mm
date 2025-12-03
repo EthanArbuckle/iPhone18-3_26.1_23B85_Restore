@@ -1,24 +1,24 @@
 @interface SFSpeechAnalyzerOptions
-- (SFSpeechAnalyzerOptions)initWithHighPriority:(BOOL)a3 modelRetention:(unint64_t)a4 loggingInfo:(id)a5 powerContext:(id)a6;
+- (SFSpeechAnalyzerOptions)initWithHighPriority:(BOOL)priority modelRetention:(unint64_t)retention loggingInfo:(id)info powerContext:(id)context;
 @end
 
 @implementation SFSpeechAnalyzerOptions
 
-- (SFSpeechAnalyzerOptions)initWithHighPriority:(BOOL)a3 modelRetention:(unint64_t)a4 loggingInfo:(id)a5 powerContext:(id)a6
+- (SFSpeechAnalyzerOptions)initWithHighPriority:(BOOL)priority modelRetention:(unint64_t)retention loggingInfo:(id)info powerContext:(id)context
 {
   v17.receiver = self;
   v17.super_class = SFSpeechAnalyzerOptions;
-  v9 = a6;
-  v10 = a5;
+  contextCopy = context;
+  infoCopy = info;
   v11 = [(SFSpeechAnalyzerOptions *)&v17 init];
-  v11->_highPriority = a3;
-  v11->_modelRetention = a4;
-  v12 = [v10 copy];
+  v11->_highPriority = priority;
+  v11->_modelRetention = retention;
+  v12 = [infoCopy copy];
 
   loggingInfo = v11->_loggingInfo;
   v11->_loggingInfo = v12;
 
-  v14 = [v9 copy];
+  v14 = [contextCopy copy];
   powerContext = v11->_powerContext;
   v11->_powerContext = v14;
 

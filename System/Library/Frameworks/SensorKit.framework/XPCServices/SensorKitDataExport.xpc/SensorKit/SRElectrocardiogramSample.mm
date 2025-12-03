@@ -12,8 +12,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(SRElectrocardiogramSample *)self data];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  data = [(SRElectrocardiogramSample *)self data];
+  v6 = [data countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -24,17 +24,17 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(data);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) sr_dictionaryRepresentation];
-        if (v10)
+        sr_dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) sr_dictionaryRepresentation];
+        if (sr_dictionaryRepresentation)
         {
-          [v4 addObject:v10];
+          [v4 addObject:sr_dictionaryRepresentation];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v7 = [data countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v7);

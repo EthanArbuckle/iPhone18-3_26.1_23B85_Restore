@@ -1,23 +1,23 @@
 @interface CKRecordObserver
-- (CKRecordObserver)initWithContainer:(id)a3 recordType:(id)a4;
-- (CKRecordObserver)initWithContainerInfo:(id)a3 recordType:(id)a4 provider:(id)a5;
+- (CKRecordObserver)initWithContainer:(id)container recordType:(id)type;
+- (CKRecordObserver)initWithContainerInfo:(id)info recordType:(id)type provider:(id)provider;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)redactedDescription;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
 - (void)invalidate;
-- (void)registerWithBlock:(id)a3;
+- (void)registerWithBlock:(id)block;
 @end
 
 @implementation CKRecordObserver
 
-- (CKRecordObserver)initWithContainer:(id)a3 recordType:(id)a4
+- (CKRecordObserver)initWithContainer:(id)container recordType:(id)type
 {
-  v6 = a3;
-  v9 = a4;
-  if (v6)
+  containerCopy = container;
+  typeCopy = type;
+  if (containerCopy)
   {
-    v10 = v6;
+    v10 = containerCopy;
   }
 
   else
@@ -28,20 +28,20 @@
   v13 = v10;
   v14 = objc_msgSend_setupInfo(v10, v11, v12);
   v17 = objc_msgSend_recordChangeProvider(v13, v15, v16);
-  v19 = objc_msgSend_initWithContainerInfo_recordType_provider_(self, v18, v14, v9, v17);
+  v19 = objc_msgSend_initWithContainerInfo_recordType_provider_(self, v18, v14, typeCopy, v17);
 
   return v19;
 }
 
-- (CKRecordObserver)initWithContainerInfo:(id)a3 recordType:(id)a4 provider:(id)a5
+- (CKRecordObserver)initWithContainerInfo:(id)info recordType:(id)type provider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v14 = v11;
-  if (v9)
+  infoCopy = info;
+  typeCopy = type;
+  providerCopy = provider;
+  v14 = providerCopy;
+  if (infoCopy)
   {
-    if (v11)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -67,28 +67,28 @@ LABEL_3:
   v17 = [(CKRecordObserver *)&v29 init];
   if (v17)
   {
-    v18 = objc_msgSend_copy(v9, v15, v16);
+    v18 = objc_msgSend_copy(infoCopy, v15, v16);
     containerInfo = v17->_containerInfo;
     v17->_containerInfo = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(typeCopy, v20, v21);
     recordType = v17->_recordType;
     v17->_recordType = v22;
 
-    objc_storeStrong(&v17->_provider, a5);
+    objc_storeStrong(&v17->_provider, provider);
   }
 
   return v17;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_recordType(self, v5, v6);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v8, @"recordType", v7, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v8, @"recordType", v7, 0);
 
   v12 = objc_msgSend_containerInfo(self, v9, v10);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v11, @"container", v12, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v11, @"container", v12, 0);
 }
 
 - (NSString)description
@@ -113,11 +113,11 @@ LABEL_3:
   return v8;
 }
 
-- (void)registerWithBlock:(id)a3
+- (void)registerWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = objc_msgSend_provider(self, v5, v6);
-  objc_msgSend_addRecordObserver_block_(v8, v7, self, v4);
+  objc_msgSend_addRecordObserver_block_(v8, v7, self, blockCopy);
 }
 
 - (void)invalidate
@@ -126,7 +126,7 @@ LABEL_3:
   objc_msgSend_removeRecordObserver_(v5, v4, self);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKRecordObserver alloc];
   v7 = objc_msgSend_containerInfo(self, v5, v6);

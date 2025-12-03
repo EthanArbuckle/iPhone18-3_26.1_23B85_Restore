@@ -54,14 +54,14 @@
           }
 
           v12 = *(*(&v126 + 1) + 8 * i);
-          v102 = [v12 objectID];
-          [v10 addObject:v102];
+          objectID = [v12 objectID];
+          [v10 addObject:objectID];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v100 = v12;
-            v13 = [v100 isIntegrationEvent];
-            if (([v102 isTemporary] & v13) == 1)
+            isIntegrationEvent = [v100 isIntegrationEvent];
+            if (([objectID isTemporary] & isIntegrationEvent) == 1)
             {
               v11[2](v11, v100);
             }
@@ -70,8 +70,8 @@
             v125 = 0u;
             v122 = 0u;
             v123 = 0u;
-            v14 = [v100 detachedItems];
-            v15 = [v14 countByEnumeratingWithState:&v122 objects:v138 count:16];
+            detachedItems = [v100 detachedItems];
+            v15 = [detachedItems countByEnumeratingWithState:&v122 objects:v138 count:16];
             if (v15)
             {
               v16 = *v123;
@@ -81,16 +81,16 @@
                 {
                   if (*v123 != v16)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(detachedItems);
                   }
 
                   v18 = *(*(&v122 + 1) + 8 * j);
-                  v19 = [v18 objectID];
-                  if (v19)
+                  objectID2 = [v18 objectID];
+                  if (objectID2)
                   {
-                    [v10 addObject:v19];
-                    [v106 addObject:v19];
-                    if (v13 && [v19 isTemporary])
+                    [v10 addObject:objectID2];
+                    [v106 addObject:objectID2];
+                    if (isIntegrationEvent && [objectID2 isTemporary])
                     {
                       v11[2](v11, v18);
                     }
@@ -104,13 +104,13 @@
                       *buf = 138412546;
                       v135 = v100;
                       v136 = 2114;
-                      v137 = v102;
+                      v137 = objectID;
                       _os_log_error_impl(&dword_1A805E000, v20, OS_LOG_TYPE_ERROR, "A detached item's objectID is nil for event %@ (%{public}@)", buf, 0x16u);
                     }
                   }
                 }
 
-                v15 = [v14 countByEnumeratingWithState:&v122 objects:v138 count:16];
+                v15 = [detachedItems countByEnumeratingWithState:&v122 objects:v138 count:16];
               }
 
               while (v15);
@@ -138,12 +138,12 @@
     v7 = v88;
   }
 
-  v84 = [a1 excludeDeclined];
-  v103 = [a1 excludeProposed];
-  v101 = [a1 excludeDeclinedUnlessProposed];
-  v83 = [a1 excludeTimedEvents];
-  v85 = [a1 excludeAllDayEvents];
-  v99 = [a1 excludeSkippedReminders];
+  excludeDeclined = [self excludeDeclined];
+  excludeProposed = [self excludeProposed];
+  excludeDeclinedUnlessProposed = [self excludeDeclinedUnlessProposed];
+  excludeTimedEvents = [self excludeTimedEvents];
+  excludeAllDayEvents = [self excludeAllDayEvents];
+  excludeSkippedReminders = [self excludeSkippedReminders];
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
@@ -167,14 +167,14 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v23 objectID];
-          v25 = [v96 containsObject:v24];
+          objectID3 = [v23 objectID];
+          v25 = [v96 containsObject:objectID3];
 
           if ((v25 & 1) == 0)
           {
             v98 = v23;
-            v26 = [v98 objectID];
-            v27 = v26 == 0;
+            objectID4 = [v98 objectID];
+            v27 = objectID4 == 0;
 
             if (v27)
             {
@@ -190,48 +190,48 @@
             else
             {
               v28 = [EKEvent alloc];
-              v29 = [v98 persistentObject];
-              loga = [(EKEvent *)v28 initWithPersistentObject:v29];
+              persistentObject = [v98 persistentObject];
+              loga = [(EKEvent *)v28 initWithPersistentObject:persistentObject];
 
-              if ((!(v85 & 1 | (([loga isAllDay]& 1) == 0)) || (([loga isAllDay]| v83) & 1) == 0) && (!v84 || [loga participationStatus]!= 3))
+              if ((!(excludeAllDayEvents & 1 | (([loga isAllDay]& 1) == 0)) || (([loga isAllDay]| excludeTimedEvents) & 1) == 0) && (!excludeDeclined || [loga participationStatus]!= 3))
               {
-                v30 = [a1 calendars];
-                if (!v30)
+                calendars = [self calendars];
+                if (!calendars)
                 {
                   goto LABEL_97;
                 }
 
-                v31 = [a1 calendars];
-                v32 = [v98 calendar];
-                v33 = [v32 CADObjectID];
-                v34 = [v31 containsObject:v33];
+                calendars2 = [self calendars];
+                calendar = [v98 calendar];
+                cADObjectID = [calendar CADObjectID];
+                v34 = [calendars2 containsObject:cADObjectID];
 
                 if (v34)
                 {
 LABEL_97:
-                  v35 = [a1 eventUUID];
-                  if (!v35)
+                  eventUUID = [self eventUUID];
+                  if (!eventUUID)
                   {
                     goto LABEL_98;
                   }
 
-                  v36 = [v98 uniqueID];
-                  v37 = [a1 eventUUID];
-                  v38 = [v36 isEqualToString:v37];
+                  uniqueID = [v98 uniqueID];
+                  eventUUID2 = [self eventUUID];
+                  v38 = [uniqueID isEqualToString:eventUUID2];
 
                   if (v38)
                   {
 LABEL_98:
-                    v39 = [loga objectID];
-                    v40 = [v106 containsObject:v39];
+                    objectID5 = [loga objectID];
+                    v40 = [v106 containsObject:objectID5];
 
                     if ((v40 & 1) == 0)
                     {
-                      v41 = [a1 startDate];
-                      if (v41)
+                      startDate = [self startDate];
+                      if (startDate)
                       {
-                        v42 = [a1 endDate];
-                        v43 = v42 != 0;
+                        endDate = [self endDate];
+                        v43 = endDate != 0;
                       }
 
                       else
@@ -240,27 +240,27 @@ LABEL_98:
                       }
 
                       v44 = MEMORY[0x1E6992F70];
-                      v45 = [loga startDate];
-                      v46 = [loga endDateUnadjustedForLegacyClients];
-                      v82 = [v44 rangeWithStartDate:v45 endDate:v46];
+                      startDate2 = [loga startDate];
+                      endDateUnadjustedForLegacyClients = [loga endDateUnadjustedForLegacyClients];
+                      v82 = [v44 rangeWithStartDate:startDate2 endDate:endDateUnadjustedForLegacyClients];
 
                       v47 = MEMORY[0x1E6992F70];
-                      v48 = [a1 startDate];
-                      v49 = [a1 endDate];
-                      v81 = [v47 rangeWithStartDate:v48 endDate:v49];
+                      startDate3 = [self startDate];
+                      endDate2 = [self endDate];
+                      v81 = [v47 rangeWithStartDate:startDate3 endDate:endDate2];
 
                       if (v43)
                       {
                         v50 = [v82 intersectsRange:v81];
                         if (([loga hasRecurrenceRules]& v43) == 1)
                         {
-                          v51 = objc_opt_new();
-                          v52 = [a1 startDate];
-                          v53 = [a1 endDate];
-                          v54 = [loga effectiveTimeZone];
-                          v55 = [loga exceptionDates];
+                          startDate5 = objc_opt_new();
+                          startDate4 = [self startDate];
+                          endDate3 = [self endDate];
+                          effectiveTimeZone = [loga effectiveTimeZone];
+                          exceptionDates = [loga exceptionDates];
                           LOBYTE(v80) = 1;
-                          v56 = [v51 copyOccurrenceDatesWithEKEvent:loga startDate:v52 endDate:v53 timeZone:v54 exceptionDates:v55 limit:0 adjustDatesForAllDayEvents:v80];
+                          v56 = [startDate5 copyOccurrenceDatesWithEKEvent:loga startDate:startDate4 endDate:endDate3 timeZone:effectiveTimeZone exceptionDates:exceptionDates limit:0 adjustDatesForAllDayEvents:v80];
 
                           goto LABEL_61;
                         }
@@ -278,8 +278,8 @@ LABEL_98:
                       }
 
                       v57 = MEMORY[0x1E695DEC8];
-                      v51 = [loga startDate];
-                      v56 = [v57 arrayWithObject:v51];
+                      startDate5 = [loga startDate];
+                      v56 = [v57 arrayWithObject:startDate5];
 LABEL_61:
 
 LABEL_62:
@@ -290,8 +290,8 @@ LABEL_62:
                         v114 = 0u;
                         v111 = 0u;
                         v112 = 0u;
-                        v93 = [loga detachedItems];
-                        v59 = [v93 countByEnumeratingWithState:&v111 objects:v132 count:16];
+                        detachedItems2 = [loga detachedItems];
+                        v59 = [detachedItems2 countByEnumeratingWithState:&v111 objects:v132 count:16];
                         if (v59)
                         {
                           v60 = *v112;
@@ -301,51 +301,51 @@ LABEL_62:
                             {
                               if (*v112 != v60)
                               {
-                                objc_enumerationMutation(v93);
+                                objc_enumerationMutation(detachedItems2);
                               }
 
                               v62 = *(*(&v111 + 1) + 8 * k);
-                              v63 = [v62 objectID];
-                              v64 = [v96 containsObject:v63];
+                              objectID6 = [v62 objectID];
+                              v64 = [v96 containsObject:objectID6];
 
                               if ((v64 & 1) == 0)
                               {
-                                v65 = [v62 startDate];
-                                v66 = [a1 startDate];
-                                v67 = [a1 endDate];
-                                v68 = [v65 CalIsBetweenStartDate:v66 endDate:v67];
+                                startDate6 = [v62 startDate];
+                                startDate7 = [self startDate];
+                                endDate4 = [self endDate];
+                                v68 = [startDate6 CalIsBetweenStartDate:startDate7 endDate:endDate4];
 
                                 if (v68)
                                 {
-                                  [objc_opt_class() _addEventOccurrenceAndProposedTimeOccurrenceFor:v62 withOccurrenceStartDate:v65 toResults:v104 excludeProposed:v103 excludeDeclinedUnlessProposed:v101 excludeSkippedReminders:v99];
+                                  [objc_opt_class() _addEventOccurrenceAndProposedTimeOccurrenceFor:v62 withOccurrenceStartDate:startDate6 toResults:v104 excludeProposed:excludeProposed excludeDeclinedUnlessProposed:excludeDeclinedUnlessProposed excludeSkippedReminders:excludeSkippedReminders];
                                 }
 
-                                v69 = [v62 originalStartDate];
-                                if (v69)
+                                originalStartDate = [v62 originalStartDate];
+                                if (originalStartDate)
                                 {
                                   if ([loga isFloating])
                                   {
-                                    v70 = [loga effectiveTimeZone];
-                                    v71 = [v69 dateInTimeZone:v70 fromTimeZone:0];
+                                    effectiveTimeZone2 = [loga effectiveTimeZone];
+                                    v71 = [originalStartDate dateInTimeZone:effectiveTimeZone2 fromTimeZone:0];
 
-                                    v69 = v71;
+                                    originalStartDate = v71;
                                   }
 
-                                  [v58 addObject:v69];
+                                  [v58 addObject:originalStartDate];
                                 }
 
                                 else
                                 {
-                                  v69 = logHandle();
-                                  if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+                                  originalStartDate = logHandle();
+                                  if (os_log_type_enabled(originalStartDate, OS_LOG_TYPE_ERROR))
                                   {
-                                    [CADEventPredicate(EKPredicateExpanding) expandWithObjectsPendingCommit:buf deletedObjectIDs:&buf[1] andResultArray:v69];
+                                    [CADEventPredicate(EKPredicateExpanding) expandWithObjectsPendingCommit:buf deletedObjectIDs:&buf[1] andResultArray:originalStartDate];
                                   }
                                 }
                               }
                             }
 
-                            v59 = [v93 countByEnumeratingWithState:&v111 objects:v132 count:16];
+                            v59 = [detachedItems2 countByEnumeratingWithState:&v111 objects:v132 count:16];
                           }
 
                           while (v59);
@@ -373,7 +373,7 @@ LABEL_62:
                             v76 = *(*(&v107 + 1) + 8 * m);
                             if (([v58 containsObject:v76] & 1) == 0)
                             {
-                              [objc_opt_class() _addEventOccurrenceAndProposedTimeOccurrenceFor:v98 withOccurrenceStartDate:v76 toResults:v104 excludeProposed:v103 excludeDeclinedUnlessProposed:v101 excludeSkippedReminders:v99];
+                              [objc_opt_class() _addEventOccurrenceAndProposedTimeOccurrenceFor:v98 withOccurrenceStartDate:v76 toResults:v104 excludeProposed:excludeProposed excludeDeclinedUnlessProposed:excludeDeclinedUnlessProposed excludeSkippedReminders:excludeSkippedReminders];
                             }
                           }
 
@@ -383,8 +383,8 @@ LABEL_62:
                         while (v73);
                       }
 
-                      v77 = [loga objectID];
-                      [v106 addObject:v77];
+                      objectID7 = [loga objectID];
+                      [v106 addObject:objectID7];
                     }
                   }
                 }
@@ -412,13 +412,13 @@ LABEL_62:
   v19 = a3;
   v13 = a4;
   v14 = a5;
-  v15 = [v19 persistentObject];
+  persistentObject = [v19 persistentObject];
   if (a8 && [v19 isReminderIntegrationEvent])
   {
-    v16 = [[EKEvent alloc] initWithPersistentObject:v15 occurrenceDate:v13];
-    if ([(EKEvent *)v16 reminderOccurrenceType]!= 1)
+    proposedStartDate = [[EKEvent alloc] initWithPersistentObject:persistentObject occurrenceDate:v13];
+    if ([(EKEvent *)proposedStartDate reminderOccurrenceType]!= 1)
     {
-      [v14 addObject:v16];
+      [v14 addObject:proposedStartDate];
     }
 
 LABEL_11:
@@ -428,16 +428,16 @@ LABEL_11:
 
   if (!a7 || [v19 participationStatus] != 3)
   {
-    v17 = [[EKEvent alloc] initWithPersistentObject:v15 occurrenceDate:v13];
+    v17 = [[EKEvent alloc] initWithPersistentObject:persistentObject occurrenceDate:v13];
     [v14 addObject:v17];
   }
 
   if ((a6 & 1) == 0)
   {
-    v16 = [v19 proposedStartDate];
-    if (v16)
+    proposedStartDate = [v19 proposedStartDate];
+    if (proposedStartDate)
     {
-      v18 = [[EKEvent alloc] initWithPersistentObject:v15 occurrenceDate:v16];
+      v18 = [[EKEvent alloc] initWithPersistentObject:persistentObject occurrenceDate:proposedStartDate];
       [v14 addObject:v18];
     }
 

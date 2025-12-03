@@ -1,83 +1,83 @@
 @interface HKClinicalProviderSearchResult
-- (BOOL)isEqual:(id)a3;
-- (HKClinicalProviderSearchResult)initWithCoder:(id)a3;
-- (HKClinicalProviderSearchResult)initWithExternalID:(id)a3 batchID:(id)a4 title:(id)a5 subtitle:(id)a6 location:(id)a7 supported:(BOOL)a8 countryCode:(id)a9 brand:(id)a10 minCompatibleAPIVersion:(int64_t)a11;
+- (BOOL)isEqual:(id)equal;
+- (HKClinicalProviderSearchResult)initWithCoder:(id)coder;
+- (HKClinicalProviderSearchResult)initWithExternalID:(id)d batchID:(id)iD title:(id)title subtitle:(id)subtitle location:(id)location supported:(BOOL)supported countryCode:(id)code brand:(id)self0 minCompatibleAPIVersion:(int64_t)self1;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalProviderSearchResult
 
-- (HKClinicalProviderSearchResult)initWithExternalID:(id)a3 batchID:(id)a4 title:(id)a5 subtitle:(id)a6 location:(id)a7 supported:(BOOL)a8 countryCode:(id)a9 brand:(id)a10 minCompatibleAPIVersion:(int64_t)a11
+- (HKClinicalProviderSearchResult)initWithExternalID:(id)d batchID:(id)iD title:(id)title subtitle:(id)subtitle location:(id)location supported:(BOOL)supported countryCode:(id)code brand:(id)self0 minCompatibleAPIVersion:(int64_t)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v23 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  locationCopy = location;
+  codeCopy = code;
+  brandCopy = brand;
   v40.receiver = self;
   v40.super_class = HKClinicalProviderSearchResult;
   v24 = [(HKClinicalProviderSearchResult *)&v40 init];
   if (v24)
   {
-    v25 = [v17 copy];
+    v25 = [dCopy copy];
     externalID = v24->_externalID;
     v24->_externalID = v25;
 
-    v27 = [v18 copy];
+    v27 = [iDCopy copy];
     batchID = v24->_batchID;
     v24->_batchID = v27;
 
-    v29 = [v19 copy];
+    v29 = [titleCopy copy];
     title = v24->_title;
     v24->_title = v29;
 
-    v31 = [v20 copy];
+    v31 = [subtitleCopy copy];
     subtitle = v24->_subtitle;
     v24->_subtitle = v31;
 
-    v33 = [v21 copy];
+    v33 = [locationCopy copy];
     location = v24->_location;
     v24->_location = v33;
 
-    v24->_supported = a8;
-    v35 = [v22 copy];
+    v24->_supported = supported;
+    v35 = [codeCopy copy];
     countryCode = v24->_countryCode;
     v24->_countryCode = v35;
 
-    v37 = [v23 copy];
+    v37 = [brandCopy copy];
     brand = v24->_brand;
     v24->_brand = v37;
 
-    v24->_minCompatibleAPIVersion = a11;
+    v24->_minCompatibleAPIVersion = version;
   }
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HKClinicalProviderSearchResult *)self externalID];
-    v6 = [v4 externalID];
-    if (v5 == v6)
+    externalID = [(HKClinicalProviderSearchResult *)self externalID];
+    externalID2 = [equalCopy externalID];
+    if (externalID == externalID2)
     {
       v10 = 1;
     }
 
     else
     {
-      v7 = [v4 externalID];
-      if (v7)
+      externalID3 = [equalCopy externalID];
+      if (externalID3)
       {
-        v8 = [(HKClinicalProviderSearchResult *)self externalID];
-        v9 = [v4 externalID];
-        v10 = [v8 isEqualToString:v9];
+        externalID4 = [(HKClinicalProviderSearchResult *)self externalID];
+        externalID5 = [equalCopy externalID];
+        v10 = [externalID4 isEqualToString:externalID5];
       }
 
       else
@@ -97,47 +97,47 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HKClinicalProviderSearchResult *)self externalID];
-  v3 = [v2 hash];
+  externalID = [(HKClinicalProviderSearchResult *)self externalID];
+  v3 = [externalID hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(HKClinicalProviderSearchResult *)self externalID];
-  [v11 encodeObject:v4 forKey:@"externalID"];
+  coderCopy = coder;
+  externalID = [(HKClinicalProviderSearchResult *)self externalID];
+  [coderCopy encodeObject:externalID forKey:@"externalID"];
 
-  v5 = [(HKClinicalProviderSearchResult *)self batchID];
-  [v11 encodeObject:v5 forKey:@"batchID"];
+  batchID = [(HKClinicalProviderSearchResult *)self batchID];
+  [coderCopy encodeObject:batchID forKey:@"batchID"];
 
-  v6 = [(HKClinicalProviderSearchResult *)self title];
-  [v11 encodeObject:v6 forKey:@"title"];
+  title = [(HKClinicalProviderSearchResult *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(HKClinicalProviderSearchResult *)self subtitle];
-  [v11 encodeObject:v7 forKey:@"subtitle"];
+  subtitle = [(HKClinicalProviderSearchResult *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v8 = [(HKClinicalProviderSearchResult *)self location];
-  [v11 encodeObject:v8 forKey:@"location"];
+  location = [(HKClinicalProviderSearchResult *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  [v11 encodeBool:-[HKClinicalProviderSearchResult isSupported](self forKey:{"isSupported"), @"supported"}];
-  v9 = [(HKClinicalProviderSearchResult *)self countryCode];
-  [v11 encodeObject:v9 forKey:@"countryCode"];
+  [coderCopy encodeBool:-[HKClinicalProviderSearchResult isSupported](self forKey:{"isSupported"), @"supported"}];
+  countryCode = [(HKClinicalProviderSearchResult *)self countryCode];
+  [coderCopy encodeObject:countryCode forKey:@"countryCode"];
 
-  v10 = [(HKClinicalProviderSearchResult *)self brand];
-  [v11 encodeObject:v10 forKey:@"brand"];
+  brand = [(HKClinicalProviderSearchResult *)self brand];
+  [coderCopy encodeObject:brand forKey:@"brand"];
 
-  [v11 encodeInt64:-[HKClinicalProviderSearchResult minCompatibleAPIVersion](self forKey:{"minCompatibleAPIVersion"), @"minCompatibleApiVersion"}];
+  [coderCopy encodeInt64:-[HKClinicalProviderSearchResult minCompatibleAPIVersion](self forKey:{"minCompatibleAPIVersion"), @"minCompatibleApiVersion"}];
 }
 
-- (HKClinicalProviderSearchResult)initWithCoder:(id)a3
+- (HKClinicalProviderSearchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batchID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batchID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
   v9 = v8;
   if (v5)
   {
@@ -150,24 +150,24 @@
   }
 
   v12 = v10 || v7 == 0 || v8 == 0;
-  if (!v12 && [v4 containsValueForKey:@"supported"] && (objc_msgSend(v4, "containsValueForKey:", @"minCompatibleApiVersion") & 1) != 0)
+  if (!v12 && [coderCopy containsValueForKey:@"supported"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"minCompatibleApiVersion") & 1) != 0)
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-    v15 = [v4 decodeBoolForKey:@"supported"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
-    self = -[HKClinicalProviderSearchResult initWithExternalID:batchID:title:subtitle:location:supported:countryCode:brand:minCompatibleAPIVersion:](self, "initWithExternalID:batchID:title:subtitle:location:supported:countryCode:brand:minCompatibleAPIVersion:", v5, v6, v7, v13, v14, v15, v9, v16, [v4 decodeIntForKey:@"minCompatibleApiVersion"]);
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v15 = [coderCopy decodeBoolForKey:@"supported"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brand"];
+    self = -[HKClinicalProviderSearchResult initWithExternalID:batchID:title:subtitle:location:supported:countryCode:brand:minCompatibleAPIVersion:](self, "initWithExternalID:batchID:title:subtitle:location:supported:countryCode:brand:minCompatibleAPIVersion:", v5, v6, v7, v13, v14, v15, v9, v16, [coderCopy decodeIntForKey:@"minCompatibleApiVersion"]);
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v17 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

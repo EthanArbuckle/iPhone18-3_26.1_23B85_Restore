@@ -1,7 +1,7 @@
 @interface NearbyPeerPaymentMetadataView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_TtC9PassKitUI29NearbyPeerPaymentMetadataView)init;
-- (_TtC9PassKitUI29NearbyPeerPaymentMetadataView)initWithFrame:(CGRect)a3;
+- (_TtC9PassKitUI29NearbyPeerPaymentMetadataView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -23,14 +23,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD28D934();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1BD28DC7C(width);
   v7 = v6;
 
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (_TtC9PassKitUI29NearbyPeerPaymentMetadataView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI29NearbyPeerPaymentMetadataView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

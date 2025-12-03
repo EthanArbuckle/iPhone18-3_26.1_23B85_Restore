@@ -1,7 +1,7 @@
 @interface HUCCFavoriteServiceItemProvider
 - (HUCCFavoriteServiceItemProvider)init;
-- (HUCCFavoriteServiceItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUCCFavoriteServiceItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -10,23 +10,23 @@
 
 - (HUCCFavoriteServiceItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCCFavoriteServiceItemProvider.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUCCFavoriteServiceItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCCFavoriteServiceItemProvider.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUCCFavoriteServiceItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HUCCFavoriteServiceItemProvider)initWithHome:(id)a3
+- (HUCCFavoriteServiceItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUCCFavoriteServiceItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     serviceLikeItems = v7->_serviceLikeItems;
     v7->_serviceLikeItems = v8;
@@ -37,11 +37,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUCCFavoriteServiceItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUCCFavoriteServiceItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -49,8 +49,8 @@
 - (id)reloadItems
 {
   v3 = MEMORY[0x277D14770];
-  v4 = [(HUCCFavoriteServiceItemProvider *)self home];
-  v5 = [v3 favoriteServicesForHome:v4 withLimit:{-[HUCCFavoriteServiceItemProvider maximumNumberOfItems](self, "maximumNumberOfItems")}];
+  home = [(HUCCFavoriteServiceItemProvider *)self home];
+  v5 = [v3 favoriteServicesForHome:home withLimit:{-[HUCCFavoriteServiceItemProvider maximumNumberOfItems](self, "maximumNumberOfItems")}];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -217,13 +217,13 @@ id __46__HUCCFavoriteServiceItemProvider_reloadItems__block_invoke_2(uint64_t a1
   v8[3] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUCCFavoriteServiceItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B28];
   v8[0] = *MEMORY[0x277D13B68];
   v8[1] = v3;
   v8[2] = *MEMORY[0x277D13B48];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

@@ -1,9 +1,9 @@
 @interface MFBackFillMessageBodyScheduler
 - (BOOL)didSetCriteria;
 - (EDAccountsProvider)accountProvider;
-- (MFBackFillMessageBodyScheduler)initWithAccountsProvider:(id)a3;
+- (MFBackFillMessageBodyScheduler)initWithAccountsProvider:(id)provider;
 - (OS_dispatch_queue)queue;
-- (void)setDidSetCriteria:(BOOL)a3;
+- (void)setDidSetCriteria:(BOOL)criteria;
 @end
 
 @implementation MFBackFillMessageBodyScheduler
@@ -17,7 +17,7 @@
   return sub_1B0E43368() & 1;
 }
 
-- (void)setDidSetCriteria:(BOOL)a3
+- (void)setDidSetCriteria:(BOOL)criteria
 {
   swift_getObjectType();
   MEMORY[0x1E69E5928](self);
@@ -46,11 +46,11 @@
   return v5;
 }
 
-- (MFBackFillMessageBodyScheduler)initWithAccountsProvider:(id)a3
+- (MFBackFillMessageBodyScheduler)initWithAccountsProvider:(id)provider
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  return sub_1B06BFDF4(a3);
+  return sub_1B06BFDF4(provider);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface RefinementsViewModelFactory
-+ (id)multiSelectRefinementsViewModelWith:(id)a3 tappedAtIndex:(int64_t)a4;
-+ (id)openOptionsRefinementsViewModelWith:(id)a3 tappedAtIndex:(int64_t)a4;
-+ (id)refinementsViewModelWithGroup:(id)a3;
++ (id)multiSelectRefinementsViewModelWith:(id)with tappedAtIndex:(int64_t)index;
++ (id)openOptionsRefinementsViewModelWith:(id)with tappedAtIndex:(int64_t)index;
++ (id)refinementsViewModelWithGroup:(id)group;
 - (_TtC4Maps27RefinementsViewModelFactory)init;
 @end
 
 @implementation RefinementsViewModelFactory
 
-+ (id)refinementsViewModelWithGroup:(id)a3
++ (id)refinementsViewModelWithGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 resultRefinementView];
-  if (v4)
+  groupCopy = group;
+  resultRefinementView = [groupCopy resultRefinementView];
+  if (resultRefinementView)
   {
-    v5 = v4;
+    v5 = resultRefinementView;
     swift_getObjCClassMetadata();
     v6 = sub_100336E00(v5);
   }
@@ -27,18 +27,18 @@
   return v6;
 }
 
-+ (id)multiSelectRefinementsViewModelWith:(id)a3 tappedAtIndex:(int64_t)a4
++ (id)multiSelectRefinementsViewModelWith:(id)with tappedAtIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = sub_100338DF8(v5, a4);
+  withCopy = with;
+  v6 = sub_100338DF8(withCopy, index);
 
   return v6;
 }
 
-+ (id)openOptionsRefinementsViewModelWith:(id)a3 tappedAtIndex:(int64_t)a4
++ (id)openOptionsRefinementsViewModelWith:(id)with tappedAtIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = sub_1003395B4(v5, a4);
+  withCopy = with;
+  v6 = sub_1003395B4(withCopy, index);
 
   return v6;
 }

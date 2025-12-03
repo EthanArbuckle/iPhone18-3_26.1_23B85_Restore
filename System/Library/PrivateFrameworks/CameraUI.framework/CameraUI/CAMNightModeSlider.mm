@@ -1,28 +1,28 @@
 @interface CAMNightModeSlider
 - ($F24F406B2B787EFB06265DBA3D28CBD5)durationMapping;
-- (CAMNightModeSlider)initWithFrame:(CGRect)a3;
-- (id)_valueTextForDuration:(double)a3;
-- (id)_valueTextForDuration:(double)a3 format:(id)a4;
+- (CAMNightModeSlider)initWithFrame:(CGRect)frame;
+- (id)_valueTextForDuration:(double)duration;
+- (id)_valueTextForDuration:(double)duration format:(id)format;
 - (id)valueText;
 - (unint64_t)nightMode;
-- (void)_handleValueLabelUpdateTimerWithStartTime:(double)a3 duration:(double)a4;
-- (void)_startValueLabelUpdateTimerWithDuration:(double)a3;
+- (void)_handleValueLabelUpdateTimerWithStartTime:(double)time duration:(double)duration;
+- (void)_startValueLabelUpdateTimerWithDuration:(double)duration;
 - (void)_stopValueLabelUpdateTimer;
 - (void)dealloc;
-- (void)endCaptureAnimationAnimated:(BOOL)a3;
-- (void)performCaptureAnimationWithDuration:(double)a3 completion:(id)a4;
-- (void)setDurationMapping:(id)a3;
-- (void)setNightMode:(unint64_t)a3;
-- (void)setNightModeActive:(BOOL)a3;
+- (void)endCaptureAnimationAnimated:(BOOL)animated;
+- (void)performCaptureAnimationWithDuration:(double)duration completion:(id)completion;
+- (void)setDurationMapping:(id)mapping;
+- (void)setNightMode:(unint64_t)mode;
+- (void)setNightModeActive:(BOOL)active;
 @end
 
 @implementation CAMNightModeSlider
 
-- (CAMNightModeSlider)initWithFrame:(CGRect)a3
+- (CAMNightModeSlider)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CAMNightModeSlider;
-  v3 = [(CEKDiscreteSlider *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKDiscreteSlider *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,8 +32,8 @@
 
     [(CEKDiscreteSlider *)v4 tickMarksHeight];
     v4->__inactiveTickMarkHeight = v6;
-    v7 = [(CEKDiscreteSlider *)v4 tickMarksConfiguration];
-    [v7 setMainTickMarkInterval:6];
+    tickMarksConfiguration = [(CEKDiscreteSlider *)v4 tickMarksConfiguration];
+    [tickMarksConfiguration setMainTickMarkInterval:6];
 
     [(CEKDiscreteSlider *)v4 setTickMarkCountBetweenIndexes:5];
   }
@@ -49,11 +49,11 @@
   [(CAMNightModeSlider *)&v3 dealloc];
 }
 
-- (void)setDurationMapping:(id)a3
+- (void)setDurationMapping:(id)mapping
 {
-  if (a3.var0 != self->_durationMapping.minimumDuration || a3.var1 != self->_durationMapping.maximumDuration)
+  if (mapping.var0 != self->_durationMapping.minimumDuration || mapping.var1 != self->_durationMapping.maximumDuration)
   {
-    self->_durationMapping = a3;
+    self->_durationMapping = mapping;
     if ([(CAMNightModeSlider *)self nightMode])
     {
 
@@ -62,21 +62,21 @@
   }
 }
 
-- (void)setNightModeActive:(BOOL)a3
+- (void)setNightModeActive:(BOOL)active
 {
-  if (self->_nightModeActive != a3)
+  if (self->_nightModeActive != active)
   {
-    self->_nightModeActive = a3;
+    self->_nightModeActive = active;
     [(CEKDiscreteSlider *)self updateValueLabel];
   }
 }
 
-- (void)setNightMode:(unint64_t)a3
+- (void)setNightMode:(unint64_t)mode
 {
-  if ([(CAMNightModeSlider *)self nightMode]!= a3 && a3 <= 2)
+  if ([(CAMNightModeSlider *)self nightMode]!= mode && mode <= 2)
   {
 
-    [(CEKDiscreteSlider *)self setSelectedIndex:a3];
+    [(CEKDiscreteSlider *)self setSelectedIndex:mode];
   }
 }
 
@@ -102,23 +102,23 @@
 
 - (id)valueText
 {
-  v3 = [(CAMNightModeSlider *)self nightMode];
+  nightMode = [(CAMNightModeSlider *)self nightMode];
   if (![(CAMNightModeSlider *)self _isPerformingCaptureAnimation])
   {
     [(CAMNightModeSlider *)self durationMapping];
-    if (v3 == 2)
+    if (nightMode == 2)
     {
       v12 = v6;
       v9 = CAMLocalizedFrameworkString(@"LOW_LIGHT_MAX_DURATION_TEXT", 0);
-      v10 = self;
+      selfCopy2 = self;
       v11 = v12;
     }
 
     else
     {
-      if (v3 != 1)
+      if (nightMode != 1)
       {
-        if (v3)
+        if (nightMode)
         {
           v13 = 0;
           goto LABEL_15;
@@ -138,11 +138,11 @@ LABEL_13:
       }
 
       v9 = CAMLocalizedFrameworkString(@"LOW_LIGHT_AUTO_DURATION_TEXT", 0);
-      v10 = self;
+      selfCopy2 = self;
       v11 = v8;
     }
 
-    v13 = [(CAMNightModeSlider *)v10 _valueTextForDuration:v9 format:v11];
+    v13 = [(CAMNightModeSlider *)selfCopy2 _valueTextForDuration:v9 format:v11];
 
     goto LABEL_15;
   }
@@ -156,22 +156,22 @@ LABEL_15:
   return v13;
 }
 
-- (id)_valueTextForDuration:(double)a3
+- (id)_valueTextForDuration:(double)duration
 {
   v5 = CAMLocalizedFrameworkString(@"LOW_LIGHT_DURATION_TEXT", 0);
-  v6 = [(CAMNightModeSlider *)self _valueTextForDuration:v5 format:a3];
+  v6 = [(CAMNightModeSlider *)self _valueTextForDuration:v5 format:duration];
 
   return v6;
 }
 
-- (id)_valueTextForDuration:(double)a3 format:(id)a4
+- (id)_valueTextForDuration:(double)duration format:(id)format
 {
-  v5 = round(a3);
-  v6 = llround(a3);
-  v7 = a4;
-  v8 = [(CAMNightModeSlider *)self _isPerformingCaptureAnimation];
+  v5 = round(duration);
+  v6 = llround(duration);
+  formatCopy = format;
+  _isPerformingCaptureAnimation = [(CAMNightModeSlider *)self _isPerformingCaptureAnimation];
   v9 = fmax(v5, 1.0);
-  if (v8)
+  if (_isPerformingCaptureAnimation)
   {
     v10 = v6;
   }
@@ -182,45 +182,45 @@ LABEL_15:
   }
 
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v12 = [MEMORY[0x1E695DF58] currentLocale];
-  v13 = [v11 initWithFormat:@"%li" locale:v12, v10];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v13 = [v11 initWithFormat:@"%li" locale:currentLocale, v10];
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v13];
+  v14 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:formatCopy validFormatSpecifiers:@"%@" error:0, v13];
 
   return v14;
 }
 
-- (void)performCaptureAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)performCaptureAnimationWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(CAMNightModeSlider *)self _isPerformingCaptureAnimation])
   {
     [(CAMNightModeSlider *)self endCaptureAnimationAnimated:0];
   }
 
   [(CAMNightModeSlider *)self _setSelectedIndexBeforeCaptureAnimation:[(CEKDiscreteSlider *)self selectedIndex]];
-  [(CAMNightModeSlider *)self _setRemainingCaptureAnimationTime:a3];
+  [(CAMNightModeSlider *)self _setRemainingCaptureAnimationTime:duration];
   [(CAMNightModeSlider *)self _setPerformingCaptureAnimation:1];
-  v7 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v8 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-  [v8 setMainTickMarkColor:v7];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+  [tickMarksConfiguration setMainTickMarkColor:systemYellowColor];
 
-  v9 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v10 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-  [v10 setSecondaryTickMarkColor:v9];
+  systemYellowColor2 = [MEMORY[0x1E69DC888] systemYellowColor];
+  tickMarksConfiguration2 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+  [tickMarksConfiguration2 setSecondaryTickMarkColor:systemYellowColor2];
 
   [(CEKDiscreteSlider *)self setColorHighlight:2 animated:1];
   [(CEKDiscreteSlider *)self setTickMarksHeight:1 animated:15.0];
-  [(CAMNightModeSlider *)self _startValueLabelUpdateTimerWithDuration:a3];
+  [(CAMNightModeSlider *)self _startValueLabelUpdateTimerWithDuration:duration];
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__CAMNightModeSlider_performCaptureAnimationWithDuration_completion___block_invoke;
   v12[3] = &unk_1E76FBAE0;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = completionCopy;
   v13 = v11;
-  [(CEKDiscreteSlider *)self setSelectedIndex:0 animatedDuration:0 animatedCurve:v12 completion:a3];
+  [(CEKDiscreteSlider *)self setSelectedIndex:0 animatedDuration:0 animatedCurve:v12 completion:duration];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -242,25 +242,25 @@ uint64_t __69__CAMNightModeSlider_performCaptureAnimationWithDuration_completion
   return result;
 }
 
-- (void)endCaptureAnimationAnimated:(BOOL)a3
+- (void)endCaptureAnimationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CAMNightModeSlider *)self _isPerformingCaptureAnimation])
   {
     [(CAMNightModeSlider *)self _stopValueLabelUpdateTimer];
     [(CAMNightModeSlider *)self _setPerformingCaptureAnimation:0];
     [(CAMNightModeSlider *)self _inactiveTickMarkHeight];
-    [(CEKDiscreteSlider *)self setTickMarksHeight:v3 animated:?];
+    [(CEKDiscreteSlider *)self setTickMarksHeight:animatedCopy animated:?];
     [(CEKDiscreteSlider *)self setColorHighlight:1 animated:1];
-    v5 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-    [v5 setMainTickMarkColor:0];
+    tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+    [tickMarksConfiguration setMainTickMarkColor:0];
 
-    v6 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-    [v6 setSecondaryTickMarkColor:0];
+    tickMarksConfiguration2 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+    [tickMarksConfiguration2 setSecondaryTickMarkColor:0];
 
     v8 = 0;
     v9 = 0.5;
-    if (v3)
+    if (animatedCopy)
     {
       v10 = 0.5;
     }
@@ -270,7 +270,7 @@ uint64_t __69__CAMNightModeSlider_performCaptureAnimationWithDuration_completion
       v10 = 0.0;
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       LODWORD(v9) = 1058642330;
       LODWORD(v7) = 1.0;
@@ -282,7 +282,7 @@ uint64_t __69__CAMNightModeSlider_performCaptureAnimationWithDuration_completion
   }
 }
 
-- (void)_startValueLabelUpdateTimerWithDuration:(double)a3
+- (void)_startValueLabelUpdateTimerWithDuration:(double)duration
 {
   [(CAMNightModeSlider *)self _stopValueLabelUpdateTimer];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -295,11 +295,11 @@ uint64_t __69__CAMNightModeSlider_performCaptureAnimationWithDuration_completion
   v13 = &unk_1E76FE7E0;
   objc_copyWeak(v14, &location);
   v14[1] = v6;
-  v14[2] = *&a3;
+  v14[2] = *&duration;
   v8 = [v7 timerWithTimeInterval:1 repeats:&v10 block:0.2];
   [v8 setTolerance:{0.1, v10, v11, v12, v13}];
-  v9 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v9 addTimer:v8 forMode:*MEMORY[0x1E695DA28]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:v8 forMode:*MEMORY[0x1E695DA28]];
 
   [(CAMNightModeSlider *)self _setValueLabelUpdateTimer:v8];
   objc_destroyWeak(v14);
@@ -314,16 +314,16 @@ void __62__CAMNightModeSlider__startValueLabelUpdateTimerWithDuration___block_in
 
 - (void)_stopValueLabelUpdateTimer
 {
-  v3 = [(CAMNightModeSlider *)self _valueLabelUpdateTimer];
-  [v3 invalidate];
+  _valueLabelUpdateTimer = [(CAMNightModeSlider *)self _valueLabelUpdateTimer];
+  [_valueLabelUpdateTimer invalidate];
 
   [(CAMNightModeSlider *)self _setValueLabelUpdateTimer:0];
 }
 
-- (void)_handleValueLabelUpdateTimerWithStartTime:(double)a3 duration:(double)a4
+- (void)_handleValueLabelUpdateTimerWithStartTime:(double)time duration:(double)duration
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [(CAMNightModeSlider *)self _setRemainingCaptureAnimationTime:a4 - (v7 - a3)];
+  [(CAMNightModeSlider *)self _setRemainingCaptureAnimationTime:duration - (v7 - time)];
 
   [(CEKDiscreteSlider *)self updateValueLabel];
 }

@@ -1,14 +1,14 @@
 @interface ManagedSticker
-- (ManagedSticker)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedSticker)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedSticker
 
-- (ManagedSticker)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedSticker)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedSticker();
-  return [(ManagedSticker *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedSticker *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

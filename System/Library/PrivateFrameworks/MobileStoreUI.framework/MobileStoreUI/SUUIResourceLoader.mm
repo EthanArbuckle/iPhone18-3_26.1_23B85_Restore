@@ -1,26 +1,26 @@
 @interface SUUIResourceLoader
-- (BOOL)isIdleForReason:(int64_t)a3;
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4;
-- (BOOL)trySetReason:(int64_t)a3 forRequestWithIdentifier:(unint64_t)a4;
+- (BOOL)isIdleForReason:(int64_t)reason;
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason;
+- (BOOL)trySetReason:(int64_t)reason forRequestWithIdentifier:(unint64_t)identifier;
 - (NSOperationQueue)delegateQueue;
 - (NSString)description;
 - (SUUIResourceLoader)init;
-- (SUUIResourceLoader)initWithClientContext:(id)a3;
-- (SUUIResourceLoader)initWithOperationQueue:(id)a3 clientContext:(id)a4;
+- (SUUIResourceLoader)initWithClientContext:(id)context;
+- (SUUIResourceLoader)initWithOperationQueue:(id)queue clientContext:(id)context;
 - (SUUIResourceLoaderDelegate)delegate;
-- (id)cachedResourceForRequestIdentifier:(unint64_t)a3;
+- (id)cachedResourceForRequestIdentifier:(unint64_t)identifier;
 - (int64_t)_qualityOfService;
-- (int64_t)_queuePriorityForLoadReason:(int64_t)a3;
-- (void)_finishLoadForRequest:(id)a3 withResource:(id)a4;
+- (int64_t)_queuePriorityForLoadReason:(int64_t)reason;
+- (void)_finishLoadForRequest:(id)request withResource:(id)resource;
 - (void)_reprioritizeOperations;
 - (void)_sendDidBeginLoadingIfNecessary;
 - (void)_sendDidIdleIfNecessary;
-- (void)_sendDidLoadAllForReason:(int64_t)a3;
-- (void)_updateLoadReason:(int64_t)a3 forOperation:(id)a4;
-- (void)addResource:(id)a3 forRequestIdentifier:(unint64_t)a4;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (void)_sendDidLoadAllForReason:(int64_t)reason;
+- (void)_updateLoadReason:(int64_t)reason forOperation:(id)operation;
+- (void)addResource:(id)resource forRequestIdentifier:(unint64_t)identifier;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)cancelAllRequests;
-- (void)cancelRequestWithIdentifier:(unint64_t)a3;
+- (void)cancelRequestWithIdentifier:(unint64_t)identifier;
 - (void)dealloc;
 - (void)enterBackground;
 - (void)enterForeground;
@@ -28,25 +28,25 @@
 
 @implementation SUUIResourceLoader
 
-- (SUUIResourceLoader)initWithClientContext:(id)a3
+- (SUUIResourceLoader)initWithClientContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [(SUUIResourceLoader *)a2 initWithClientContext:?];
   }
 
-  v6 = [v5 resourceLoadQueue];
-  v7 = [(SUUIResourceLoader *)self initWithOperationQueue:v6 clientContext:v5];
+  resourceLoadQueue = [contextCopy resourceLoadQueue];
+  v7 = [(SUUIResourceLoader *)self initWithOperationQueue:resourceLoadQueue clientContext:contextCopy];
 
   return v7;
 }
 
-- (SUUIResourceLoader)initWithOperationQueue:(id)a3 clientContext:(id)a4
+- (SUUIResourceLoader)initWithOperationQueue:(id)queue clientContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  queueCopy = queue;
+  contextCopy = context;
+  if (!queueCopy)
   {
     [SUUIResourceLoader initWithOperationQueue:a2 clientContext:self];
   }
@@ -57,10 +57,10 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_clientContext, a4);
-    if (v8)
+    objc_storeStrong(&v10->_clientContext, context);
+    if (queueCopy)
     {
-      objc_storeStrong(&v11->_operationQueue, a3);
+      objc_storeStrong(&v11->_operationQueue, queue);
     }
 
     else
@@ -113,8 +113,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SUUIResourceLoader *)self name];
-  v7 = [(SUUIResourceLoader *)self operationQueue];
+  name = [(SUUIResourceLoader *)self name];
+  operationQueue = [(SUUIResourceLoader *)self operationQueue];
   if (self->_inBackground)
   {
     v8 = @"YES";
@@ -126,35 +126,35 @@
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"{onScreen: %ld, cacheAhead: %ld, cacheFarAhead: %ld}", self->_requestCountMap[2], self->_requestCountMap[1], self->_requestCountMap[0]];
-  v10 = [v3 stringWithFormat:@"<%@:%p name = %@; operationQueue = %@; inBackground = %@; loadCounts = %@>", v5, self, v6, v7, v8, v9];;
+  v10 = [v3 stringWithFormat:@"<%@:%p name = %@; operationQueue = %@; inBackground = %@; loadCounts = %@>", v5, self, name, operationQueue, v8, v9];;
 
   return v10;
 }
 
-- (void)addResource:(id)a3 forRequestIdentifier:(unint64_t)a4
+- (void)addResource:(id)resource forRequestIdentifier:(unint64_t)identifier
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v10 = [[v6 alloc] initWithUnsignedInteger:a4];
+  resourceCopy = resource;
+  v10 = [[v6 alloc] initWithUnsignedInteger:identifier];
   resourcesByRequestID = self->_resourcesByRequestID;
-  v9 = [[_SUUIResourceCacheValue alloc] initWithResource:v7 requestCacheKey:0];
+  v9 = [[_SUUIResourceCacheValue alloc] initWithResource:resourceCopy requestCacheKey:0];
 
   [(NSCache *)resourcesByRequestID setObject:v9 forKey:v10];
 }
 
-- (id)cachedResourceForRequestIdentifier:(unint64_t)a3
+- (id)cachedResourceForRequestIdentifier:(unint64_t)identifier
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:identifier];
   v5 = [(NSCache *)self->_resourcesByRequestID objectForKey:v4];
-  v6 = [v5 resource];
+  resource = [v5 resource];
 
-  return v6;
+  return resource;
 }
 
 - (void)cancelAllRequests
 {
-  v3 = [(NSMutableDictionary *)self->_operationsByRequestID allValues];
-  [v3 makeObjectsPerformSelector:sel_cancel];
+  allValues = [(NSMutableDictionary *)self->_operationsByRequestID allValues];
+  [allValues makeObjectsPerformSelector:sel_cancel];
 
   [(NSMutableDictionary *)self->_operationsByRequestID removeAllObjects];
   if (self->_requestCountMap[2] >= 1)
@@ -177,21 +177,21 @@
   }
 }
 
-- (void)cancelRequestWithIdentifier:(unint64_t)a3
+- (void)cancelRequestWithIdentifier:(unint64_t)identifier
 {
-  v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a3];
+  v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:identifier];
   v4 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 cancel];
     [(NSMutableDictionary *)self->_operationsByRequestID removeObjectForKey:v10];
-    v6 = [v5 _loadReason];
+    _loadReason = [v5 _loadReason];
     requestCountMap = self->_requestCountMap;
     v8 = 2;
-    if (v6 != 1)
+    if (_loadReason != 1)
     {
-      v8 = v6 == 0;
+      v8 = _loadReason == 0;
     }
 
     v9 = requestCountMap[v8];
@@ -202,7 +202,7 @@
 
     if (!v9)
     {
-      [(SUUIResourceLoader *)self _sendDidLoadAllForReason:v6];
+      [(SUUIResourceLoader *)self _sendDidLoadAllForReason:_loadReason];
     }
   }
 }
@@ -230,21 +230,21 @@
   delegateQueue = self->_delegateQueue;
   if (delegateQueue)
   {
-    v3 = delegateQueue;
+    mainQueue = delegateQueue;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   }
 
-  return v3;
+  return mainQueue;
 }
 
-- (BOOL)isIdleForReason:(int64_t)a3
+- (BOOL)isIdleForReason:(int64_t)reason
 {
-  v3 = a3 == 0;
-  if (a3 == 1)
+  v3 = reason == 0;
+  if (reason == 1)
   {
     v3 = 2;
   }
@@ -252,48 +252,48 @@
   return self->_requestCountMap[v3] == 0;
 }
 
-- (BOOL)loadResourceWithRequest:(id)a3 reason:(int64_t)a4
+- (BOOL)loadResourceWithRequest:(id)request reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(v6, "requestIdentifier")}];
+  requestCopy = request;
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(requestCopy, "requestIdentifier")}];
   v8 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:v7];
   if (v8)
   {
-    v9 = [(SUUIResourceLoader *)self _queuePriorityForLoadReason:a4];
+    v9 = [(SUUIResourceLoader *)self _queuePriorityForLoadReason:reason];
     if (v9 > [v8 queuePriority])
     {
-      [(SUUIResourceLoader *)self _updateLoadReason:a4 forOperation:v8];
+      [(SUUIResourceLoader *)self _updateLoadReason:reason forOperation:v8];
       [v8 setQueuePriority:v9];
     }
   }
 
   else
   {
-    v10 = [v6 newLoadOperation];
-    [v10 setClientContext:self->_clientContext];
-    [v10 _setLoadReason:a4];
-    [v10 setQualityOfService:{-[SUUIResourceLoader _qualityOfService](self, "_qualityOfService")}];
-    [v10 setQueuePriority:{-[SUUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", a4)}];
+    newLoadOperation = [requestCopy newLoadOperation];
+    [newLoadOperation setClientContext:self->_clientContext];
+    [newLoadOperation _setLoadReason:reason];
+    [newLoadOperation setQualityOfService:{-[SUUIResourceLoader _qualityOfService](self, "_qualityOfService")}];
+    [newLoadOperation setQueuePriority:{-[SUUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", reason)}];
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __53__SUUIResourceLoader_loadResourceWithRequest_reason___block_invoke;
     v15[3] = &unk_2798F7858;
     objc_copyWeak(&v17, &location);
-    v11 = v6;
+    v11 = requestCopy;
     v16 = v11;
-    [v10 setOutputBlock:v15];
+    [newLoadOperation setOutputBlock:v15];
     [(SUUIResourceLoader *)self _sendDidBeginLoadingIfNecessary];
-    v12 = [v11 cacheKey];
-    if (v12)
+    cacheKey = [v11 cacheKey];
+    if (cacheKey)
     {
-      [(NSMapTable *)self->_requestsByCacheKey setObject:v7 forKey:v12];
+      [(NSMapTable *)self->_requestsByCacheKey setObject:v7 forKey:cacheKey];
     }
 
-    [(NSMutableDictionary *)self->_operationsByRequestID setObject:v10 forKey:v7];
-    [(NSOperationQueue *)self->_operationQueue addOperation:v10];
-    v13 = a4 == 0;
-    if (a4 == 1)
+    [(NSMutableDictionary *)self->_operationsByRequestID setObject:newLoadOperation forKey:v7];
+    [(NSOperationQueue *)self->_operationQueue addOperation:newLoadOperation];
+    v13 = reason == 0;
+    if (reason == 1)
     {
       v13 = 2;
     }
@@ -332,47 +332,47 @@ void __53__SUUIResourceLoader_loadResourceWithRequest_reason___block_invoke_2(ui
   [WeakRetained _finishLoadForRequest:*(a1 + 32) withResource:*(a1 + 40)];
 }
 
-- (BOOL)trySetReason:(int64_t)a3 forRequestWithIdentifier:(unint64_t)a4
+- (BOOL)trySetReason:(int64_t)reason forRequestWithIdentifier:(unint64_t)identifier
 {
-  v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:identifier];
   v7 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:v6];
   if (v7)
   {
-    [(SUUIResourceLoader *)self _updateLoadReason:a3 forOperation:v7];
-    [v7 setQueuePriority:{-[SUUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", a3)}];
+    [(SUUIResourceLoader *)self _updateLoadReason:reason forOperation:v7];
+    [v7 setQueuePriority:{-[SUUIResourceLoader _queuePriorityForLoadReason:](self, "_queuePriorityForLoadReason:", reason)}];
   }
 
   return v7 != 0;
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v8 = a4;
-  v5 = [v8 requestCacheKey];
+  objectCopy = object;
+  requestCacheKey = [objectCopy requestCacheKey];
 
-  if (v5)
+  if (requestCacheKey)
   {
     requestsByCacheKey = self->_requestsByCacheKey;
-    v7 = [v8 requestCacheKey];
-    [(NSMapTable *)requestsByCacheKey removeObjectForKey:v7];
+    requestCacheKey2 = [objectCopy requestCacheKey];
+    [(NSMapTable *)requestsByCacheKey removeObjectForKey:requestCacheKey2];
   }
 }
 
-- (int64_t)_queuePriorityForLoadReason:(int64_t)a3
+- (int64_t)_queuePriorityForLoadReason:(int64_t)reason
 {
   v3 = 4;
-  if ((a3 + 1) < 3)
+  if ((reason + 1) < 3)
   {
-    v3 = 4 * (a3 + 1);
+    v3 = 4 * (reason + 1);
   }
 
   v4 = -8;
-  if (!a3)
+  if (!reason)
   {
     v4 = -4;
   }
 
-  if (a3 == 1)
+  if (reason == 1)
   {
     v4 = 0;
   }
@@ -401,26 +401,26 @@ void __53__SUUIResourceLoader_loadResourceWithRequest_reason___block_invoke_2(ui
   }
 }
 
-- (void)_updateLoadReason:(int64_t)a3 forOperation:(id)a4
+- (void)_updateLoadReason:(int64_t)reason forOperation:(id)operation
 {
-  v12 = a4;
-  v6 = [v12 _loadReason];
-  v7 = v12;
-  if (v6 != a3)
+  operationCopy = operation;
+  _loadReason = [operationCopy _loadReason];
+  v7 = operationCopy;
+  if (_loadReason != reason)
   {
-    [v12 _setLoadReason:a3];
+    [operationCopy _setLoadReason:reason];
     requestCountMap = self->_requestCountMap;
-    v9 = a3 == 0;
+    v9 = reason == 0;
     v10 = 2;
-    if (a3 == 1)
+    if (reason == 1)
     {
       v9 = 2;
     }
 
     ++requestCountMap[v9];
-    if (v6 != 1)
+    if (_loadReason != 1)
     {
-      v10 = v6 == 0;
+      v10 = _loadReason == 0;
     }
 
     v11 = requestCountMap[v10];
@@ -429,11 +429,11 @@ void __53__SUUIResourceLoader_loadResourceWithRequest_reason___block_invoke_2(ui
       requestCountMap[v10] = --v11;
     }
 
-    v7 = v12;
+    v7 = operationCopy;
     if (!v11)
     {
-      [(SUUIResourceLoader *)self _sendDidLoadAllForReason:v6];
-      v7 = v12;
+      [(SUUIResourceLoader *)self _sendDidLoadAllForReason:_loadReason];
+      v7 = operationCopy;
     }
   }
 }
@@ -457,42 +457,42 @@ void __45__SUUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
   [v5 setQualityOfService:{objc_msgSend(*(a1 + 32), "_qualityOfService")}];
 }
 
-- (void)_finishLoadForRequest:(id)a3 withResource:(id)a4
+- (void)_finishLoadForRequest:(id)request withResource:(id)resource
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(v18, "requestIdentifier")}];
+  requestCopy = request;
+  resourceCopy = resource;
+  v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{objc_msgSend(requestCopy, "requestIdentifier")}];
   v8 = [(NSMutableDictionary *)self->_operationsByRequestID objectForKey:v7];
-  v9 = [v8 _loadReason];
+  _loadReason = [v8 _loadReason];
   [(NSMutableDictionary *)self->_operationsByRequestID removeObjectForKey:v7];
-  if (v6)
+  if (resourceCopy)
   {
-    if ([v18 cachesInMemory])
+    if ([requestCopy cachesInMemory])
     {
       resourcesByRequestID = self->_resourcesByRequestID;
       v11 = [_SUUIResourceCacheValue alloc];
-      v12 = [v18 cacheKey];
-      v13 = [(_SUUIResourceCacheValue *)v11 initWithResource:v6 requestCacheKey:v12];
+      cacheKey = [requestCopy cacheKey];
+      v13 = [(_SUUIResourceCacheValue *)v11 initWithResource:resourceCopy requestCacheKey:cacheKey];
       [(NSCache *)resourcesByRequestID setObject:v13 forKey:v7];
     }
 
-    [v18 finishWithResource:v6];
+    [requestCopy finishWithResource:resourceCopy];
   }
 
   else
   {
-    v14 = [v18 cacheKey];
-    if (v14)
+    cacheKey2 = [requestCopy cacheKey];
+    if (cacheKey2)
     {
-      [(NSMapTable *)self->_requestsByCacheKey removeObjectForKey:v14];
+      [(NSMapTable *)self->_requestsByCacheKey removeObjectForKey:cacheKey2];
     }
   }
 
   requestCountMap = self->_requestCountMap;
   v16 = 2;
-  if (v9 != 1)
+  if (_loadReason != 1)
   {
-    v16 = v9 == 0;
+    v16 = _loadReason == 0;
   }
 
   v17 = requestCountMap[v16];
@@ -503,7 +503,7 @@ void __45__SUUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
 
   if (!v17)
   {
-    [(SUUIResourceLoader *)self _sendDidLoadAllForReason:v9];
+    [(SUUIResourceLoader *)self _sendDidLoadAllForReason:_loadReason];
   }
 
   [(SUUIResourceLoader *)self _sendDidIdleIfNecessary];
@@ -513,8 +513,8 @@ void __45__SUUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
 {
   if ([(SUUIResourceLoader *)self isIdle])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"SUUIResourceLoaderDidBeginLoadingNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIResourceLoaderDidBeginLoadingNotification" object:self];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -531,8 +531,8 @@ void __45__SUUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
 {
   if ([(SUUIResourceLoader *)self isIdle])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"SUUIResourceLoaderDidIdleNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIResourceLoaderDidIdleNotification" object:self];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -545,15 +545,15 @@ void __45__SUUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_sendDidLoadAllForReason:(int64_t)a3
+- (void)_sendDidLoadAllForReason:(int64_t)reason
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = @"SUUIResourceLoaderLoadReasonUserInfoKey";
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:reason];
   v11[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v5 postNotificationName:@"SUUIResourceLoaderDidLoadAllForReasonNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"SUUIResourceLoaderDidLoadAllForReasonNotification" object:self userInfo:v7];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   LOBYTE(v6) = objc_opt_respondsToSelector();
@@ -561,7 +561,7 @@ void __45__SUUIResourceLoader__reprioritizeOperations__block_invoke(uint64_t a1,
   if (v6)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 resourceLoader:self didLoadAllForReason:a3];
+    [v9 resourceLoader:self didLoadAllForReason:reason];
   }
 }
 

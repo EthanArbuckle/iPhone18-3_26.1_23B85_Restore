@@ -1,19 +1,19 @@
 @interface DOCFileRenamingSupport
-+ (BOOL)_validateFileName:(id)a3 error:(id *)a4;
-+ (id)_filteredNameForName:(id)a3 error:(id *)a4;
-+ (id)_urlForProposedName:(id)a3 originalURL:(id)a4 error:(id *)a5;
-+ (id)fallbackRename:(id)a3 toProposedName:(id)a4 error:(id *)a5;
++ (BOOL)_validateFileName:(id)name error:(id *)error;
++ (id)_filteredNameForName:(id)name error:(id *)error;
++ (id)_urlForProposedName:(id)name originalURL:(id)l error:(id *)error;
++ (id)fallbackRename:(id)rename toProposedName:(id)name error:(id *)error;
 @end
 
 @implementation DOCFileRenamingSupport
 
-+ (id)fallbackRename:(id)a3 toProposedName:(id)a4 error:(id *)a5
++ (id)fallbackRename:(id)rename toProposedName:(id)name error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  renameCopy = rename;
+  nameCopy = name;
   v24 = 0;
-  v9 = [objc_opt_class() _urlForProposedName:v8 originalURL:v7 error:&v24];
+  v9 = [objc_opt_class() _urlForProposedName:nameCopy originalURL:renameCopy error:&v24];
 
   v10 = v24;
   v11 = v10;
@@ -33,19 +33,19 @@
     }
 
     v17 = 0;
-    if (a5 && v11)
+    if (error && v11)
     {
       v20 = v11;
       v17 = 0;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v23 = 0;
-    v13 = [v12 moveItemAtURL:v7 toURL:v9 error:&v23];
+    v13 = [defaultManager moveItemAtURL:renameCopy toURL:v9 error:&v23];
     v14 = v23;
 
     v15 = MEMORY[0x1E699A450];
@@ -61,7 +61,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v26 = v7;
+        v26 = renameCopy;
         v27 = 2112;
         v28 = v9;
         _os_log_impl(&dword_1E57D8000, v16, OS_LOG_TYPE_INFO, "Renamed: %@ to: %@", buf, 0x16u);
@@ -84,11 +84,11 @@
       }
 
       v17 = 0;
-      if (a5 && v14)
+      if (error && v14)
       {
         v21 = v14;
         v17 = 0;
-        *a5 = v14;
+        *error = v14;
       }
     }
   }
@@ -96,17 +96,17 @@
   return v17;
 }
 
-+ (BOOL)_validateFileName:(id)a3 error:(id *)a4
++ (BOOL)_validateFileName:(id)name error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasPrefix:@"."])
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"."])
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
     v8 = @"You can’t use a name that begins with a dot “.”, because these names are reserved for the system. Please choose another name.";
   }
 
-  else if ([v5 containsString:@":"])
+  else if ([nameCopy containsString:@":"])
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -115,7 +115,7 @@
 
   else
   {
-    if ([v5 length])
+    if ([nameCopy length])
     {
       v9 = 0;
       v10 = 1;
@@ -132,11 +132,11 @@
   v9 = __50__DOCFileRenamingSupport__validateFileName_error___block_invoke(v12, v11, *MEMORY[0x1E696A250], 258);
 
   v10 = v9 == 0;
-  if (a4 && v9)
+  if (error && v9)
   {
     v13 = v9;
     v10 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_11:
@@ -168,56 +168,56 @@ id __50__DOCFileRenamingSupport__validateFileName_error___block_invoke(uint64_t 
   return v11;
 }
 
-+ (id)_filteredNameForName:(id)a3 error:(id *)a4
++ (id)_filteredNameForName:(id)name error:(id *)error
 {
-  v5 = a3;
+  nameCopy = name;
   v14 = 0;
-  v6 = [objc_opt_class() _validateFileName:v5 error:&v14];
+  v6 = [objc_opt_class() _validateFileName:nameCopy error:&v14];
   v7 = v14;
   v8 = v7;
   if (v6)
   {
-    v9 = [v5 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+    v9 = [nameCopy stringByReplacingOccurrencesOfString:@"/" withString:@":"];
     v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
-    v11 = [v10 lastPathComponent];
+    lastPathComponent = [v10 lastPathComponent];
   }
 
   else
   {
-    v11 = 0;
-    if (a4 && v7)
+    lastPathComponent = 0;
+    if (error && v7)
     {
       v12 = v7;
-      v11 = 0;
-      *a4 = v8;
+      lastPathComponent = 0;
+      *error = v8;
     }
   }
 
-  return v11;
+  return lastPathComponent;
 }
 
-+ (id)_urlForProposedName:(id)a3 originalURL:(id)a4 error:(id *)a5
++ (id)_urlForProposedName:(id)name originalURL:(id)l error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 pathExtension];
-  v10 = [v9 length];
-  v11 = [v7 URLByDeletingLastPathComponent];
+  lCopy = l;
+  nameCopy = name;
+  pathExtension = [lCopy pathExtension];
+  v10 = [pathExtension length];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
 
   v26 = 0;
-  v12 = [objc_opt_class() _filteredNameForName:v8 error:&v26];
+  v12 = [objc_opt_class() _filteredNameForName:nameCopy error:&v26];
 
   v13 = v26;
   v14 = v13;
   if (v12)
   {
-    v15 = [v12 pathExtension];
-    v16 = [v15 length];
+    pathExtension2 = [v12 pathExtension];
+    v16 = [pathExtension2 length];
     v17 = MEMORY[0x1E699A450];
     if (v16 && v10)
     {
-      if (([v9 isEqualToString:v15] & 1) == 0)
+      if (([pathExtension isEqualToString:pathExtension2] & 1) == 0)
       {
         v18 = *v17;
         if (!*v17)
@@ -266,8 +266,8 @@ id __50__DOCFileRenamingSupport__validateFileName_error___block_invoke(uint64_t 
       }
     }
 
-    v23 = [v12 stringByAppendingPathExtension:v9];
-    v19 = [v11 URLByAppendingPathComponent:v23];
+    v23 = [v12 stringByAppendingPathExtension:pathExtension];
+    v19 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v23];
     v24 = *v17;
     if (!*v17)
     {
@@ -278,9 +278,9 @@ id __50__DOCFileRenamingSupport__validateFileName_error___block_invoke(uint64_t 
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v28 = v9;
+      v28 = pathExtension;
       v29 = 2112;
-      v30 = v15;
+      v30 = pathExtension2;
       _os_log_impl(&dword_1E57D8000, v24, OS_LOG_TYPE_INFO, "Prepared new url from: %@ to: %@", buf, 0x16u);
     }
   }
@@ -288,11 +288,11 @@ id __50__DOCFileRenamingSupport__validateFileName_error___block_invoke(uint64_t 
   else
   {
     v19 = 0;
-    if (a5 && v13)
+    if (error && v13)
     {
       v20 = v13;
       v19 = 0;
-      *a5 = v14;
+      *error = v14;
     }
   }
 

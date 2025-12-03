@@ -6,23 +6,23 @@
 - (ACDAuthenticationPluginManager)authenticationPluginManager;
 - (ACDDataclassOwnersManager)dataclassOwnersManager;
 - (ACDServer)init;
-- (ACDServer)initWithAccountStoreListener:(id)a3 oauthSignerListener:(id)a4 authenticationDialogListener:(id)a5;
+- (ACDServer)initWithAccountStoreListener:(id)listener oauthSignerListener:(id)signerListener authenticationDialogListener:(id)dialogListener;
 - (BOOL)_isHomePod;
-- (BOOL)_shouldSendDidSaveNotificationForAccount:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_shouldSendDidSaveNotificationForAccount:(id)account;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC14AccountsDaemon35ACDAsyncAuthenticationPluginManager)asyncAuthenticationPluginManager;
-- (id)_newDaemonAccountStoreFilterForClient:(id)a3;
-- (id)_newOAuthSignerForClient:(id)a3;
-- (id)clientForConnection:(id)a3;
-- (id)createClientForConnection:(id)a3;
+- (id)_newDaemonAccountStoreFilterForClient:(id)client;
+- (id)_newOAuthSignerForClient:(id)client;
+- (id)clientForConnection:(id)connection;
+- (id)createClientForConnection:(id)connection;
 - (id)createDatabaseConnection;
 - (void)_beginObservingIDSProxyNotifications;
 - (void)_beginObservingLanguageChangeNotfication;
 - (void)_endObservingLanguageChangeNotification;
 - (void)_handleLanguageChangedDarwinNotification;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 - (void)createDatabaseConnection;
-- (void)credentialsDidChangeForAccount:(id)a3;
+- (void)credentialsDidChangeForAccount:(id)account;
 - (void)dealloc;
 - (void)shutdown;
 - (void)start;
@@ -32,17 +32,17 @@
 
 - (id)createDatabaseConnection
 {
-  v3 = [(ACDServer *)self database];
+  database = [(ACDServer *)self database];
 
-  if (!v3)
+  if (!database)
   {
     [ACDServer createDatabaseConnection];
   }
 
-  v4 = [(ACDServer *)self database];
-  v5 = [v4 createConnection];
+  database2 = [(ACDServer *)self database];
+  createConnection = [database2 createConnection];
 
-  return v5;
+  return createConnection;
 }
 
 - (ACDAccessPluginManager)accessPluginManager
@@ -215,29 +215,29 @@ id __35__ACDServer_dataclassOwnersManager__block_invoke(uint64_t a1)
 
 - (ACDServer)init
 {
-  v3 = [MEMORY[0x277CCAE98] anonymousListener];
-  v4 = [MEMORY[0x277CCAE98] anonymousListener];
-  v5 = [MEMORY[0x277CCAE98] anonymousListener];
-  v6 = [(ACDServer *)self initWithAccountStoreListener:v3 oauthSignerListener:v4 authenticationDialogListener:v5];
+  anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+  anonymousListener2 = [MEMORY[0x277CCAE98] anonymousListener];
+  anonymousListener3 = [MEMORY[0x277CCAE98] anonymousListener];
+  v6 = [(ACDServer *)self initWithAccountStoreListener:anonymousListener oauthSignerListener:anonymousListener2 authenticationDialogListener:anonymousListener3];
 
   return v6;
 }
 
-- (ACDServer)initWithAccountStoreListener:(id)a3 oauthSignerListener:(id)a4 authenticationDialogListener:(id)a5
+- (ACDServer)initWithAccountStoreListener:(id)listener oauthSignerListener:(id)signerListener authenticationDialogListener:(id)dialogListener
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  listenerCopy = listener;
+  signerListenerCopy = signerListener;
+  dialogListenerCopy = dialogListener;
+  if (listenerCopy)
   {
-    if (v10)
+    if (signerListenerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
     [ACDServer initWithAccountStoreListener:oauthSignerListener:authenticationDialogListener:];
-    if (v11)
+    if (dialogListenerCopy)
     {
       goto LABEL_4;
     }
@@ -246,13 +246,13 @@ LABEL_14:
   }
 
   [ACDServer initWithAccountStoreListener:oauthSignerListener:authenticationDialogListener:];
-  if (!v10)
+  if (!signerListenerCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v11)
+  if (dialogListenerCopy)
   {
     goto LABEL_4;
   }
@@ -266,9 +266,9 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountStoreListener, a3);
-    objc_storeStrong(&v13->_oauthSignerListener, a4);
-    objc_storeStrong(&v13->_authenticationDialogListener, a5);
+    objc_storeStrong(&v12->_accountStoreListener, listener);
+    objc_storeStrong(&v13->_oauthSignerListener, signerListener);
+    objc_storeStrong(&v13->_authenticationDialogListener, dialogListener);
     v14 = objc_alloc_init(ACDClientProvider);
     clientProvider = v13->_clientProvider;
     v13->_clientProvider = v14;
@@ -298,10 +298,10 @@ LABEL_4:
     performMigrationQueue = v13->_performMigrationQueue;
     v13->_performMigrationQueue = 0;
 
-    v27 = [MEMORY[0x277CB8F40] isMigrationFinished];
+    isMigrationFinished = [MEMORY[0x277CB8F40] isMigrationFinished];
     v28 = _ACLogSystem();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-    if (v27)
+    if (isMigrationFinished)
     {
       if (v29)
       {
@@ -406,9 +406,9 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
   [(NSXPCListener *)self->_authenticationDialogListener suspend];
   [(NSXPCListener *)self->_oauthSignerListener setDelegate:0];
   [(NSXPCListener *)self->_oauthSignerListener suspend];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NSMutableArray *)v3->_accountStoreClients copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = [(NSMutableArray *)selfCopy->_accountStoreClients copy];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -428,8 +428,8 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v31 + 1) + 8 * v8) connection];
-        [v9 invalidate];
+        connection = [*(*(&v31 + 1) + 8 * v8) connection];
+        [connection invalidate];
 
         ++v8;
       }
@@ -441,7 +441,7 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     while (v6);
   }
 
-  v10 = [(NSMutableArray *)v3->_oauthSignerClients copy];
+  v10 = [(NSMutableArray *)selfCopy->_oauthSignerClients copy];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -461,8 +461,8 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v27 + 1) + 8 * v14) connection];
-        [v15 invalidate];
+        connection2 = [*(*(&v27 + 1) + 8 * v14) connection];
+        [connection2 invalidate];
 
         ++v14;
       }
@@ -474,7 +474,7 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     while (v12);
   }
 
-  v16 = [(NSMutableArray *)v3->_authenticationDialogManagerClients copy];
+  v16 = [(NSMutableArray *)selfCopy->_authenticationDialogManagerClients copy];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -494,8 +494,8 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
           objc_enumerationMutation(v17);
         }
 
-        v21 = [*(*(&v23 + 1) + 8 * v20) connection];
-        [v21 invalidate];
+        connection3 = [*(*(&v23 + 1) + 8 * v20) connection];
+        [connection3 invalidate];
 
         ++v20;
       }
@@ -507,12 +507,12 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     while (v18);
   }
 
-  [(NSMutableArray *)v3->_accountStoreClients removeAllObjects];
-  [(NSMutableArray *)v3->_oauthSignerClients removeAllObjects];
-  [(NSMutableArray *)v3->_authenticationDialogManagerClients removeAllObjects];
-  [(NSMutableDictionary *)v3->_clientsByConnection removeAllObjects];
+  [(NSMutableArray *)selfCopy->_accountStoreClients removeAllObjects];
+  [(NSMutableArray *)selfCopy->_oauthSignerClients removeAllObjects];
+  [(NSMutableArray *)selfCopy->_authenticationDialogManagerClients removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_clientsByConnection removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   v22 = *MEMORY[0x277D85DE8];
 }
 
@@ -528,85 +528,85 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
   return v2;
 }
 
-- (id)createClientForConnection:(id)a3
+- (id)createClientForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(ACDServer *)self clientProvider];
+  connectionCopy = connection;
+  clientProvider = [(ACDServer *)self clientProvider];
 
-  if (!v5)
+  if (!clientProvider)
   {
     [ACDServer createClientForConnection:];
   }
 
-  v6 = [(ACDServer *)self clientProvider];
-  v7 = [v6 createClientForConnection:v4];
+  clientProvider2 = [(ACDServer *)self clientProvider];
+  v7 = [clientProvider2 createClientForConnection:connectionCopy];
 
   return v7;
 }
 
-- (id)clientForConnection:(id)a3
+- (id)clientForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  clientsByConnection = v5->_clientsByConnection;
-  v7 = [(ACDServer *)v5 _keyForConnection:v4];
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clientsByConnection = selfCopy->_clientsByConnection;
+  v7 = [(ACDServer *)selfCopy _keyForConnection:connectionCopy];
   v8 = [(NSMutableDictionary *)clientsByConnection objectForKeyedSubscript:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)_newDaemonAccountStoreFilterForClient:(id)a3
+- (id)_newDaemonAccountStoreFilterForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(ACDServer *)self createDatabaseConnection];
-  v6 = [[ACDAccountStore alloc] initWithClient:v4 databaseConnection:v5];
+  clientCopy = client;
+  createDatabaseConnection = [(ACDServer *)self createDatabaseConnection];
+  v6 = [[ACDAccountStore alloc] initWithClient:clientCopy databaseConnection:createDatabaseConnection];
 
-  v7 = [(ACDServer *)self accessPluginManager];
-  [(ACDAccountStore *)v6 setAccessPluginManager:v7];
+  accessPluginManager = [(ACDServer *)self accessPluginManager];
+  [(ACDAccountStore *)v6 setAccessPluginManager:accessPluginManager];
 
-  v8 = [(ACDServer *)self accountNotifier];
-  [(ACDAccountStore *)v6 setAccountNotifier:v8];
+  accountNotifier = [(ACDServer *)self accountNotifier];
+  [(ACDAccountStore *)v6 setAccountNotifier:accountNotifier];
 
-  v9 = [(ACDServer *)self authenticationDialogManager];
-  [(ACDAccountStore *)v6 setAuthenticationDialogManager:v9];
+  authenticationDialogManager = [(ACDServer *)self authenticationDialogManager];
+  [(ACDAccountStore *)v6 setAuthenticationDialogManager:authenticationDialogManager];
 
-  v10 = [(ACDServer *)self asyncAuthenticationPluginManager];
-  [(ACDAccountStore *)v6 setAsyncAuthenticationPluginManager:v10];
+  asyncAuthenticationPluginManager = [(ACDServer *)self asyncAuthenticationPluginManager];
+  [(ACDAccountStore *)v6 setAsyncAuthenticationPluginManager:asyncAuthenticationPluginManager];
 
-  v11 = [(ACDServer *)self authenticationPluginManager];
-  [(ACDAccountStore *)v6 setAuthenticationPluginManager:v11];
+  authenticationPluginManager = [(ACDServer *)self authenticationPluginManager];
+  [(ACDAccountStore *)v6 setAuthenticationPluginManager:authenticationPluginManager];
 
-  v12 = [(ACDServer *)self databaseBackupActivity];
-  [(ACDAccountStore *)v6 setDatabaseBackupActivity:v12];
+  databaseBackupActivity = [(ACDServer *)self databaseBackupActivity];
+  [(ACDAccountStore *)v6 setDatabaseBackupActivity:databaseBackupActivity];
 
-  v13 = [(ACDServer *)self dataclassOwnersManager];
-  [(ACDAccountStore *)v6 setDataclassOwnersManager:v13];
+  dataclassOwnersManager = [(ACDServer *)self dataclassOwnersManager];
+  [(ACDAccountStore *)v6 setDataclassOwnersManager:dataclassOwnersManager];
 
   [(ACDAccountStore *)v6 setDelegate:self];
-  v14 = [(ACDServer *)self remoteDeviceProxy];
-  [(ACDAccountStore *)v6 setRemoteDeviceProxy:v14];
+  remoteDeviceProxy = [(ACDServer *)self remoteDeviceProxy];
+  [(ACDAccountStore *)v6 setRemoteDeviceProxy:remoteDeviceProxy];
 
   v15 = [[ACDAccountStoreFilter alloc] initWithBackingAccountStore:v6];
   return v15;
 }
 
-- (id)_newOAuthSignerForClient:(id)a3
+- (id)_newOAuthSignerForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(ACDServer *)self createDatabaseConnection];
-  v6 = [[ACDOAuthSigner alloc] initWithClient:v4 databaseConnection:v5];
+  clientCopy = client;
+  createDatabaseConnection = [(ACDServer *)self createDatabaseConnection];
+  v6 = [[ACDOAuthSigner alloc] initWithClient:clientCopy databaseConnection:createDatabaseConnection];
 
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v90 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  val = a4;
+  listenerCopy = listener;
+  val = connection;
   v50 = [(ACDServer *)self createClientForConnection:?];
   v6 = _ACDConnectionLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -615,18 +615,18 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
   }
 
   v48 = [(ACDServer *)self _keyForConnection:val];
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7->_clientsByConnection setObject:v50 forKey:v48];
-  objc_sync_exit(v7);
-  v49 = v7;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_clientsByConnection setObject:v50 forKey:v48];
+  objc_sync_exit(selfCopy);
+  v49 = selfCopy;
 
   objc_initWeak(&location, val);
   objc_initWeak(&from, v50);
-  v8 = v7;
-  v9 = v47;
-  v46 = v7->_accountStoreListener == v47;
-  if (v7->_accountStoreListener == v47)
+  v8 = selfCopy;
+  v9 = listenerCopy;
+  v46 = selfCopy->_accountStoreListener == listenerCopy;
+  if (selfCopy->_accountStoreListener == listenerCopy)
   {
     if (listener_shouldAcceptNewConnection__onceToken != -1)
     {
@@ -643,11 +643,11 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
       _os_log_impl(&dword_221D2F000, v10, OS_LOG_TYPE_DEFAULT, "%@ (%@) received", buf, 0x16u);
     }
 
-    v45 = [(ACDServer *)v7 _newDaemonAccountStoreFilterForClient:v50];
+    v45 = [(ACDServer *)selfCopy _newDaemonAccountStoreFilterForClient:v50];
     [v50 setFilter:v45];
     [val setRemoteObjectInterface:listener_shouldAcceptNewConnection__remoteObjectInterface];
-    v11 = [MEMORY[0x277CB8FA8] XPCInterface];
-    [val setExportedInterface:v11];
+    xPCInterface = [MEMORY[0x277CB8FA8] XPCInterface];
+    [val setExportedInterface:xPCInterface];
 
     [val setExportedObject:v45];
     v79[0] = MEMORY[0x277D85DD0];
@@ -656,7 +656,7 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     v79[3] = &unk_27848CC60;
     objc_copyWeak(&v81, &from);
     objc_copyWeak(&v82, &location);
-    v79[4] = v7;
+    v79[4] = selfCopy;
     v12 = v48;
     v80 = v12;
     [val setInvalidationHandler:v79];
@@ -666,10 +666,10 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     v75[3] = &unk_27848CC60;
     objc_copyWeak(&v77, &from);
     objc_copyWeak(&v78, &location);
-    v75[4] = v7;
+    v75[4] = selfCopy;
     v76 = v12;
     [val setInterruptionHandler:v75];
-    v13 = v7;
+    v13 = selfCopy;
     objc_sync_enter(v13);
     [(NSMutableArray *)v13->_accountStoreClients addObject:v50];
     if ([(NSMutableArray *)v13->_accountStoreClients count]> v13->_clientCountMaximum)
@@ -696,13 +696,13 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
             }
 
             v19 = *(*(&v71 + 1) + 8 * i);
-            v20 = [v19 name];
-            v21 = [v14 objectForKeyedSubscript:v20];
-            v22 = [v21 unsignedIntValue];
+            name = [v19 name];
+            v21 = [v14 objectForKeyedSubscript:name];
+            unsignedIntValue = [v21 unsignedIntValue];
 
-            v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22 + 1];
-            v24 = [v19 name];
-            [v14 setObject:v23 forKeyedSubscript:v24];
+            v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntValue + 1];
+            name2 = [v19 name];
+            [v14 setObject:v23 forKeyedSubscript:name2];
           }
 
           v16 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v71 objects:v85 count:16];
@@ -750,8 +750,8 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
           _os_log_impl(&dword_221D2F000, v28, OS_LOG_TYPE_DEFAULT, "Setting migrationInProgress to YES for the ACDAccountStore of %@", buf, 0xCu);
         }
 
-        v29 = [v45 backingAccountStore];
-        [v29 setMigrationInProgress:1];
+        backingAccountStore = [v45 backingAccountStore];
+        [backingAccountStore setMigrationInProgress:1];
 
         v30 = _ACLogSystem();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -786,7 +786,7 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     objc_destroyWeak(&v82);
     objc_destroyWeak(&v81);
 
-    v9 = v47;
+    v9 = listenerCopy;
     v8 = v49;
   }
 
@@ -835,7 +835,7 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
     objc_destroyWeak(&v66);
 
     v46 = 1;
-    v9 = v47;
+    v9 = listenerCopy;
     v8 = v49;
   }
 
@@ -847,8 +847,8 @@ void __91__ACDServer_initWithAccountStoreListener_oauthSignerListener_authentica
       [ACDServer listener:shouldAcceptNewConnection:];
     }
 
-    v37 = [(ACDServer *)v49 authenticationDialogManager];
-    [val setExportedObject:v37];
+    authenticationDialogManager = [(ACDServer *)v49 authenticationDialogManager];
+    [val setExportedObject:authenticationDialogManager];
 
     v38 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28354AAB0];
     [val setExportedInterface:v38];
@@ -1026,27 +1026,27 @@ void __48__ACDServer_listener_shouldAcceptNewConnection___block_invoke_125(uint6
   objc_sync_exit(v5);
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  v10 = invocationCopy;
+  if (reply)
   {
-    [v9 invoke];
+    [invocationCopy invoke];
   }
 
   else
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    v12 = v11->_performMigrationQueue;
-    objc_sync_exit(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = selfCopy->_performMigrationQueue;
+    objc_sync_exit(selfCopy);
 
     if (v12)
     {
-      v13 = [(ACDServer *)v11 clientForConnection:v8];
+      v13 = [(ACDServer *)selfCopy clientForConnection:connectionCopy];
       v14 = _ACLogSystem();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -1068,7 +1068,7 @@ void __48__ACDServer_listener_shouldAcceptNewConnection___block_invoke_125(uint6
 
     else
     {
-      [v8 setDelegate:0];
+      [connectionCopy setDelegate:0];
       [v10 invoke];
     }
   }
@@ -1126,10 +1126,10 @@ uint64_t __23__ACDServer__isHomePod__block_invoke()
 
 - (void)_handleLanguageChangedDarwinNotification
 {
-  v2 = [(ACDServer *)self _isHomePod];
+  _isHomePod = [(ACDServer *)self _isHomePod];
   v3 = _ACLogSystem();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-  if (v2)
+  if (_isHomePod)
   {
     if (v4)
     {
@@ -1148,20 +1148,20 @@ uint64_t __23__ACDServer__isHomePod__block_invoke()
   }
 }
 
-- (BOOL)_shouldSendDidSaveNotificationForAccount:(id)a3
+- (BOOL)_shouldSendDidSaveNotificationForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 accountType];
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:*MEMORY[0x277CB8D58]])
+  accountCopy = account;
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:*MEMORY[0x277CB8D58]])
   {
   }
 
   else
   {
-    v6 = [v3 accountType];
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x277CB8D60]];
+    accountType2 = [accountCopy accountType];
+    identifier2 = [accountType2 identifier];
+    v8 = [identifier2 isEqualToString:*MEMORY[0x277CB8D60]];
 
     if (!v8)
     {
@@ -1171,31 +1171,31 @@ LABEL_14:
     }
   }
 
-  v9 = [v3 dirtyProperties];
-  if ([v9 count] != 1)
+  dirtyProperties = [accountCopy dirtyProperties];
+  if ([dirtyProperties count] != 1)
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v10 = [v3 dirtyDataclassProperties];
-  if ([v10 count])
+  dirtyDataclassProperties = [accountCopy dirtyDataclassProperties];
+  if ([dirtyDataclassProperties count])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v11 = [v3 dirtyAccountProperties];
-  if ([v11 count] != 1)
+  dirtyAccountProperties = [accountCopy dirtyAccountProperties];
+  if ([dirtyAccountProperties count] != 1)
   {
 
     goto LABEL_12;
   }
 
-  v12 = [v3 dirtyAccountProperties];
-  v13 = [v12 containsObject:@"cookies"];
+  dirtyAccountProperties2 = [accountCopy dirtyAccountProperties];
+  v13 = [dirtyAccountProperties2 containsObject:@"cookies"];
 
   if (!v13)
   {
@@ -1215,23 +1215,23 @@ LABEL_15:
   return v15;
 }
 
-- (void)credentialsDidChangeForAccount:(id)a3
+- (void)credentialsDidChangeForAccount:(id)account
 {
   v31 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v4 = [v25 identifier];
-  v5 = [v25 accountType];
-  v6 = [v5 identifier];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  accountType = [accountCopy accountType];
+  identifier2 = [accountType identifier];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  obj = v7;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v7->_accountStoreClients;
+  v9 = selfCopy->_accountStoreClients;
   v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -1259,15 +1259,15 @@ LABEL_15:
             [v8 addObject:v17];
           }
 
-          v18 = [v13 filter];
-          v19 = [v18 isClientEntitledToAccessAccountTypeWithIdentifier:v6];
+          filter = [v13 filter];
+          v19 = [filter isClientEntitledToAccessAccountTypeWithIdentifier:identifier2];
 
-          v20 = [v13 connection];
-          v21 = [v20 remoteObjectProxy];
+          connection = [v13 connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
 
           if (v19)
           {
-            [v21 accountCredentialsDidChangeForAccountWithIdentifier:v4];
+            [remoteObjectProxy accountCredentialsDidChangeForAccountWithIdentifier:identifier];
           }
         }
       }
@@ -1345,7 +1345,7 @@ LABEL_15:
 - (void)createDatabaseConnection
 {
   OUTLINED_FUNCTION_3_1();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_2_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

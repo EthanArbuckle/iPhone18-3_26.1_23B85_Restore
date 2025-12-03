@@ -1,29 +1,29 @@
 @interface AXAlertBannerContent
-- (AXAlertBannerContent)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 iconImage:(id)a6 userInfo:(id)a7 actionBlock:(id)a8;
+- (AXAlertBannerContent)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle iconImage:(id)image userInfo:(id)info actionBlock:(id)block;
 @end
 
 @implementation AXAlertBannerContent
 
-- (AXAlertBannerContent)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 iconImage:(id)a6 userInfo:(id)a7 actionBlock:(id)a8
+- (AXAlertBannerContent)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle iconImage:(id)image userInfo:(id)info actionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  infoCopy = info;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = AXAlertBannerContent;
   v20 = [(AXAlertBannerContent *)&v24 init];
   v21 = v20;
   if (v20)
   {
-    [(AXAlertBannerContent *)v20 setIdentifier:v14];
-    [(AXAlertBannerContent *)v21 setTitle:v15];
-    [(AXAlertBannerContent *)v21 setSubtitle:v16];
-    if (v17)
+    [(AXAlertBannerContent *)v20 setIdentifier:identifierCopy];
+    [(AXAlertBannerContent *)v21 setTitle:titleCopy];
+    [(AXAlertBannerContent *)v21 setSubtitle:subtitleCopy];
+    if (imageCopy)
     {
-      [(AXAlertBannerContent *)v21 setIconImage:v17];
+      [(AXAlertBannerContent *)v21 setIconImage:imageCopy];
     }
 
     else
@@ -32,8 +32,8 @@
       [(AXAlertBannerContent *)v21 setIconImage:v22];
     }
 
-    [(AXAlertBannerContent *)v21 setUserInfo:v18];
-    [(AXAlertBannerContent *)v21 setActionBlock:v19];
+    [(AXAlertBannerContent *)v21 setUserInfo:infoCopy];
+    [(AXAlertBannerContent *)v21 setActionBlock:blockCopy];
   }
 
   return v21;

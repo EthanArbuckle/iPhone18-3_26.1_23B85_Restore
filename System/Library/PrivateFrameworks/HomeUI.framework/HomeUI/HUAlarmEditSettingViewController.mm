@@ -1,53 +1,53 @@
 @interface HUAlarmEditSettingViewController
-- (HUAlarmEditSettingViewController)initWithAlarm:(id)a3 setting:(int64_t)a4 mediaProfileContainer:(id)a5 selectedRoom:(id)a6 loggedInAppleMusicAccountDSID:(id)a7;
+- (HUAlarmEditSettingViewController)initWithAlarm:(id)alarm setting:(int64_t)setting mediaProfileContainer:(id)container selectedRoom:(id)room loggedInAppleMusicAccountDSID:(id)d;
 - (HUAlarmEditSettingViewControllerDelegate)delegate;
-- (id)initPlayInSettingWithMediaProfileContainer:(id)a3 selectedRoom:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)initPlayInSettingWithMediaProfileContainer:(id)container selectedRoom:(id)room;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_commonInitialization;
 - (void)_dismiss;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textValueChanged:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textValueChanged:(id)changed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUAlarmEditSettingViewController
 
-- (HUAlarmEditSettingViewController)initWithAlarm:(id)a3 setting:(int64_t)a4 mediaProfileContainer:(id)a5 selectedRoom:(id)a6 loggedInAppleMusicAccountDSID:(id)a7
+- (HUAlarmEditSettingViewController)initWithAlarm:(id)alarm setting:(int64_t)setting mediaProfileContainer:(id)container selectedRoom:(id)room loggedInAppleMusicAccountDSID:(id)d
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  alarmCopy = alarm;
+  containerCopy = container;
+  roomCopy = room;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = HUAlarmEditSettingViewController;
   v16 = [(HUAlarmEditSettingViewController *)&v24 init];
   if (v16)
   {
-    v17 = [v15 copy];
+    v17 = [dCopy copy];
     loggedInAppleMusicAccountDSID = v16->_loggedInAppleMusicAccountDSID;
     v16->_loggedInAppleMusicAccountDSID = v17;
 
-    v16->_setting = a4;
-    v19 = [v12 mutableCopy];
+    v16->_setting = setting;
+    v19 = [alarmCopy mutableCopy];
     alarm = v16->_alarm;
     v16->_alarm = v19;
 
-    objc_storeStrong(&v16->_selectedRoom, a6);
+    objc_storeStrong(&v16->_selectedRoom, room);
     v21 = objc_opt_new();
     roomsList = v16->_roomsList;
     v16->_roomsList = v21;
 
-    if (v13 && v16->_setting == 3)
+    if (containerCopy && v16->_setting == 3)
     {
-      [(HUAlarmEditSettingViewController *)v16 _setupPlayInSettingWithMediaProfileContainer:v13];
+      [(HUAlarmEditSettingViewController *)v16 _setupPlayInSettingWithMediaProfileContainer:containerCopy];
     }
 
     [(HUAlarmEditSettingViewController *)v16 _commonInitialization];
@@ -56,10 +56,10 @@
   return v16;
 }
 
-- (id)initPlayInSettingWithMediaProfileContainer:(id)a3 selectedRoom:(id)a4
+- (id)initPlayInSettingWithMediaProfileContainer:(id)container selectedRoom:(id)room
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  roomCopy = room;
   v13.receiver = self;
   v13.super_class = HUAlarmEditSettingViewController;
   v8 = [(HUAlarmEditSettingViewController *)&v13 init];
@@ -67,12 +67,12 @@
   if (v8)
   {
     v8->_setting = 3;
-    objc_storeStrong(&v8->_selectedRoom, a4);
+    objc_storeStrong(&v8->_selectedRoom, room);
     v10 = objc_opt_new();
     roomsList = v9->_roomsList;
     v9->_roomsList = v10;
 
-    [(HUAlarmEditSettingViewController *)v9 _setupPlayInSettingWithMediaProfileContainer:v6];
+    [(HUAlarmEditSettingViewController *)v9 _setupPlayInSettingWithMediaProfileContainer:containerCopy];
     [(HUAlarmEditSettingViewController *)v9 _commonInitialization];
   }
 
@@ -81,8 +81,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUAlarmEditSettingViewController;
@@ -99,9 +99,9 @@
       goto LABEL_7;
     case 2:
       v7 = _HULocalizedStringWithDefaultValue(@"HUAlarmEditLabel", @"HUAlarmEditLabel", 1);
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-      [v5 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+      [defaultCenter addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
       v6 = v7;
       goto LABEL_9;
@@ -134,15 +134,15 @@ LABEL_9:
     {
       if (setting == 1)
       {
-        v4 = [(HUAlarmEditSettingViewController *)self alarm];
-        self->_repeatSchedule = [v4 repeatSchedule];
+        alarm = [(HUAlarmEditSettingViewController *)self alarm];
+        self->_repeatSchedule = [alarm repeatSchedule];
         v5 = 0x277D75B40;
       }
 
       else
       {
-        v4 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v4 addObserver:self selector:sel__dismiss name:kHUEditAlarmTitleFinishedNotification object:0];
+        alarm = [MEMORY[0x277CCAB98] defaultCenter];
+        [alarm addObserver:self selector:sel__dismiss name:kHUEditAlarmTitleFinishedNotification object:0];
         v5 = off_277DB01E0;
       }
     }
@@ -162,51 +162,51 @@ LABEL_9:
   [(HUAlarmEditSettingViewController *)self setView:v9];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v20.receiver = self;
   v20.super_class = HUAlarmEditSettingViewController;
-  [(HUAlarmEditSettingViewController *)&v20 viewWillAppear:a3];
+  [(HUAlarmEditSettingViewController *)&v20 viewWillAppear:appear];
   setting = self->_setting;
   if (setting == 1)
   {
     v17 = objc_alloc(MEMORY[0x277CBEA80]);
     v18 = [v17 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-    v19 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v18 setLocale:v19];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [v18 setLocale:currentLocale];
 
     self->_firstWeekday = [v18 firstWeekday];
   }
 
   else if (setting == 2)
   {
-    v5 = [(HUAlarmEditSettingViewController *)self editingCell];
+    editingCell = [(HUAlarmEditSettingViewController *)self editingCell];
 
-    if (!v5)
+    if (!editingCell)
     {
       v6 = objc_opt_new();
       [(HUAlarmEditSettingViewController *)self setEditingCell:v6];
 
-      v7 = [(HUAlarmEditSettingViewController *)self alarm];
-      v8 = [v7 title];
-      v9 = [(HUAlarmEditSettingViewController *)self editingCell];
-      v10 = [v9 textField];
-      [v10 setText:v8];
+      alarm = [(HUAlarmEditSettingViewController *)self alarm];
+      title = [alarm title];
+      editingCell2 = [(HUAlarmEditSettingViewController *)self editingCell];
+      textField = [editingCell2 textField];
+      [textField setText:title];
 
-      v11 = [(HUAlarmEditSettingViewController *)self editingCell];
-      v12 = [v11 textField];
-      [v12 setAutocapitalizationType:2];
+      editingCell3 = [(HUAlarmEditSettingViewController *)self editingCell];
+      textField2 = [editingCell3 textField];
+      [textField2 setAutocapitalizationType:2];
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v14 = *MEMORY[0x277D770B0];
-      v15 = [(HUAlarmEditableTextCell *)self->_editingCell textField];
-      [v13 addObserver:self selector:sel_textValueChanged_ name:v14 object:v15];
+      textField3 = [(HUAlarmEditableTextCell *)self->_editingCell textField];
+      [defaultCenter addObserver:self selector:sel_textValueChanged_ name:v14 object:textField3];
     }
 
     if ((HUIsPadIdiom() & 1) == 0 && ([MEMORY[0x277D14CE8] isProxHandOffV2Config] & 1) == 0)
     {
-      v16 = [(HUAlarmEditableTextCell *)self->_editingCell textField];
-      [v16 becomeFirstResponder];
+      textField4 = [(HUAlarmEditableTextCell *)self->_editingCell textField];
+      [textField4 becomeFirstResponder];
     }
 
     if ([MEMORY[0x277D14CE8] isProxHandOffV2Config])
@@ -216,15 +216,15 @@ LABEL_9:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUAlarmEditSettingViewController;
-  [(HUAlarmEditSettingViewController *)&v5 viewDidAppear:a3];
+  [(HUAlarmEditSettingViewController *)&v5 viewDidAppear:appear];
   if (self->_setting == 2 && HUIsPadIdiom() && ([MEMORY[0x277D14CE8] isProxHandOffV2Config] & 1) == 0)
   {
-    v4 = [(HUAlarmEditableTextCell *)self->_editingCell textField];
-    [v4 becomeFirstResponder];
+    textField = [(HUAlarmEditableTextCell *)self->_editingCell textField];
+    [textField becomeFirstResponder];
   }
 }
 
@@ -238,31 +238,31 @@ LABEL_9:
   [(HUAlarmEditSettingViewController *)&v4 viewDidUnload];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = HUAlarmEditSettingViewController;
-  [(HUAlarmEditSettingViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(HUAlarmEditSettingViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   if ((HUIsPadIdiom() & 1) == 0 && ([MEMORY[0x277D14CE8] isProxHandOffV2Config] & 1) == 0)
   {
-    v5 = [(HUAlarmEditableTextCell *)self->_editingCell textField];
-    [v5 becomeFirstResponder];
+    textField = [(HUAlarmEditableTextCell *)self->_editingCell textField];
+    [textField becomeFirstResponder];
   }
 }
 
 - (void)_dismiss
 {
-  v3 = [(HUAlarmEditSettingViewController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(HUAlarmEditSettingViewController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v16 = a3;
+  showCopy = show;
   if (!HUIsPadIdiom() || (-[HUAlarmEditSettingViewController traitCollection](self, "traitCollection"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 horizontalSizeClass], v4, v5 != 2))
   {
-    v6 = [v16 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x277D76BB8]];
+    userInfo = [showCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
@@ -274,17 +274,17 @@ LABEL_9:
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   if (!HUIsPadIdiom() || (-[HUAlarmEditSettingViewController traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 horizontalSizeClass], v5, v6 != 2))
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:*MEMORY[0x277D76BB0]];
+    userInfo = [hideCopy userInfo];
+    v8 = [userInfo objectForKey:*MEMORY[0x277D76BB0]];
     [v8 CGRectValue];
     v10 = v9;
 
-    v11 = [v7 objectForKey:*MEMORY[0x277D76BB8]];
+    v11 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
     [v11 CGRectValue];
     v13 = v12;
     v15 = v14;
@@ -294,11 +294,11 @@ LABEL_9:
     if (vabdd_f64(v15, v10) >= 1.0)
     {
       v20 = MEMORY[0x277D75D18];
-      v21 = [v7 objectForKey:*MEMORY[0x277D76B78]];
+      v21 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
       [v21 floatValue];
       v23 = v22;
-      v24 = [v7 objectForKey:*MEMORY[0x277D76B70]];
-      v25 = [v24 intValue];
+      v24 = [userInfo objectForKey:*MEMORY[0x277D76B70]];
+      intValue = [v24 intValue];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke;
@@ -308,7 +308,7 @@ LABEL_9:
       *&v26[6] = v15;
       v26[7] = v17;
       v26[8] = v19;
-      [v20 animateWithDuration:v25 delay:v26 options:0 animations:v23 completion:0.0];
+      [v20 animateWithDuration:intValue delay:v26 options:0 animations:v23 completion:0.0];
     }
   }
 }
@@ -322,7 +322,7 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
   [v3 layoutSubviews];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   setting = self->_setting;
   if (setting == 1)
@@ -335,36 +335,36 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
     return 1;
   }
 
-  v5 = [(HUAlarmEditSettingViewController *)self roomsList:a3];
+  v5 = [(HUAlarmEditSettingViewController *)self roomsList:view];
   v6 = [v5 count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   setting = self->_setting;
   if (setting == 3)
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"kHUAlarmEditSettingViewControllerTableViewCellIdentifier"];
-    v16 = [(HUAlarmEditSettingViewController *)self roomsList];
-    v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
-    v18 = [v17 name];
-    v19 = [(HUAlarmEditableTextCell *)v11 textLabel];
-    [v19 setText:v18];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"kHUAlarmEditSettingViewControllerTableViewCellIdentifier"];
+    roomsList = [(HUAlarmEditSettingViewController *)self roomsList];
+    v17 = [roomsList objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+    name = [v17 name];
+    textLabel = [(HUAlarmEditableTextCell *)v11 textLabel];
+    [textLabel setText:name];
 
-    v20 = [(HUAlarmEditSettingViewController *)self selectedRoom];
-    if (v20)
+    selectedRoom = [(HUAlarmEditSettingViewController *)self selectedRoom];
+    if (selectedRoom)
     {
-      v21 = [(HUAlarmEditSettingViewController *)self roomsList];
-      v22 = [v21 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
-      v23 = [v22 uniqueIdentifier];
-      v24 = [(HUAlarmEditSettingViewController *)self selectedRoom];
-      v25 = [v24 uniqueIdentifier];
-      if ([v23 hmf_isEqualToUUID:v25])
+      roomsList2 = [(HUAlarmEditSettingViewController *)self roomsList];
+      v22 = [roomsList2 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+      uniqueIdentifier = [v22 uniqueIdentifier];
+      selectedRoom2 = [(HUAlarmEditSettingViewController *)self selectedRoom];
+      uniqueIdentifier2 = [selectedRoom2 uniqueIdentifier];
+      if ([uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2])
       {
         v26 = 3;
       }
@@ -385,14 +385,14 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
 
   else if (setting == 1)
   {
-    v10 = -[HUAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [v7 row]);
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"kHUAlarmEditSettingViewControllerTableViewCellIdentifier"];
+    v10 = -[HUAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [pathCopy row]);
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"kHUAlarmEditSettingViewControllerTableViewCellIdentifier"];
     v12 = DateMaskToString();
-    v13 = [(HUAlarmEditableTextCell *)v11 textLabel];
-    [v13 setText:v12];
+    textLabel2 = [(HUAlarmEditableTextCell *)v11 textLabel];
+    [textLabel2 setText:v12];
 
-    v14 = [(HUAlarmEditSettingViewController *)self alarm];
-    if (([v14 repeatSchedule] & v10) != 0)
+    alarm = [(HUAlarmEditSettingViewController *)self alarm];
+    if (([alarm repeatSchedule] & v10) != 0)
     {
       v15 = 3;
     }
@@ -410,44 +410,44 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
     v11 = self->_editingCell;
   }
 
-  v27 = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
-  v28 = [(HUAlarmEditableTextCell *)v11 textLabel];
-  [v28 setTextColor:v27];
+  hu_alarmsPrimaryTextColor = [MEMORY[0x277D75348] hu_alarmsPrimaryTextColor];
+  textLabel3 = [(HUAlarmEditableTextCell *)v11 textLabel];
+  [textLabel3 setTextColor:hu_alarmsPrimaryTextColor];
 
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v23 = a3;
-  v6 = a4;
-  if (v6)
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy)
   {
     setting = self->_setting;
     if (setting == 3)
     {
-      [v23 deselectRowAtIndexPath:v6 animated:1];
-      v12 = [(HUAlarmEditSettingViewController *)self selectedRoom];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      selectedRoom = [(HUAlarmEditSettingViewController *)self selectedRoom];
 
-      if (v12)
+      if (selectedRoom)
       {
-        v13 = [(HUAlarmEditSettingViewController *)self roomsList];
-        v14 = [(HUAlarmEditSettingViewController *)self selectedRoom];
-        v15 = [v13 indexOfObject:v14];
+        roomsList = [(HUAlarmEditSettingViewController *)self roomsList];
+        selectedRoom2 = [(HUAlarmEditSettingViewController *)self selectedRoom];
+        v15 = [roomsList indexOfObject:selectedRoom2];
 
         if (v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v16 = [MEMORY[0x277CCAA70] indexPathForRow:v15 inSection:0];
-          v17 = [v23 cellForRowAtIndexPath:v16];
+          v17 = [viewCopy cellForRowAtIndexPath:v16];
 
           [v17 setAccessoryType:0];
         }
       }
 
-      v8 = [v23 cellForRowAtIndexPath:v6];
+      v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
       [v8 setAccessoryType:3];
-      v18 = [(HUAlarmEditSettingViewController *)self roomsList];
-      v19 = [v18 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      roomsList2 = [(HUAlarmEditSettingViewController *)self roomsList];
+      v19 = [roomsList2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       [(HUAlarmEditSettingViewController *)self setSelectedRoom:v19];
     }
 
@@ -458,7 +458,7 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
         goto LABEL_16;
       }
 
-      v8 = [v23 cellForRowAtIndexPath:v6];
+      v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
       if ([v8 accessoryType] == 3)
       {
         v9 = 0;
@@ -470,8 +470,8 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
       }
 
       [v8 setAccessoryType:v9];
-      [v23 deselectRowAtIndexPath:v6 animated:1];
-      v10 = -[HUAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [v6 row]);
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      v10 = -[HUAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [pathCopy row]);
       if ([v8 accessoryType] == 3)
       {
         v11 = [(HUAlarmEditSettingViewController *)self repeatSchedule]| v10;
@@ -483,47 +483,47 @@ void __54__HUAlarmEditSettingViewController__keyboardWillHide___block_invoke(uin
       }
 
       [(HUAlarmEditSettingViewController *)self setRepeatSchedule:v11];
-      v20 = [(HUAlarmEditSettingViewController *)self repeatSchedule];
-      v18 = [(HUAlarmEditSettingViewController *)self alarm];
-      [v18 setRepeatSchedule:v20];
+      repeatSchedule = [(HUAlarmEditSettingViewController *)self repeatSchedule];
+      roomsList2 = [(HUAlarmEditSettingViewController *)self alarm];
+      [roomsList2 setRepeatSchedule:repeatSchedule];
     }
 
-    v21 = [(HUAlarmEditSettingViewController *)self delegate];
-    v22 = [(HUAlarmEditSettingViewController *)self alarm];
-    [v21 alarmEditSettingController:self didEditAlarm:v22];
+    delegate = [(HUAlarmEditSettingViewController *)self delegate];
+    alarm = [(HUAlarmEditSettingViewController *)self alarm];
+    [delegate alarmEditSettingController:self didEditAlarm:alarm];
   }
 
 LABEL_16:
 }
 
-- (void)textValueChanged:(id)a3
+- (void)textValueChanged:(id)changed
 {
-  v12 = [a3 object];
-  v4 = [v12 text];
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  object = [changed object];
+  text = [object text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v6 length];
   if (v7)
   {
-    v8 = [v12 text];
+    text2 = [object text];
   }
 
   else
   {
-    v8 = 0;
+    text2 = 0;
   }
 
-  v9 = [(HUAlarmEditSettingViewController *)self alarm];
-  [v9 setTitle:v8];
+  alarm = [(HUAlarmEditSettingViewController *)self alarm];
+  [alarm setTitle:text2];
 
   if (v7)
   {
   }
 
-  v10 = [(HUAlarmEditSettingViewController *)self delegate];
-  v11 = [(HUAlarmEditSettingViewController *)self alarm];
-  [v10 alarmEditSettingController:self didEditAlarm:v11];
+  delegate = [(HUAlarmEditSettingViewController *)self delegate];
+  alarm2 = [(HUAlarmEditSettingViewController *)self alarm];
+  [delegate alarmEditSettingController:self didEditAlarm:alarm2];
 }
 
 - (HUAlarmEditSettingViewControllerDelegate)delegate

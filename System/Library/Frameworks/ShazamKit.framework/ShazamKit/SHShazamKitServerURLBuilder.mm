@@ -1,42 +1,42 @@
 @interface SHShazamKitServerURLBuilder
-+ (void)updateTokensForEndpoint:(id)a3 language:(id)a4 storefront:(id)a5 installationID:(id)a6;
++ (void)updateTokensForEndpoint:(id)endpoint language:(id)language storefront:(id)storefront installationID:(id)d;
 - (SHStorefront)storefront;
-- (void)defaultValuesWithCompletion:(id)a3;
-- (void)loadEndpointForClientIdentifier:(id)a3 clientType:(int64_t)a4 endpointType:(int64_t)a5 installationID:(id)a6 callback:(id)a7;
+- (void)defaultValuesWithCompletion:(id)completion;
+- (void)loadEndpointForClientIdentifier:(id)identifier clientType:(int64_t)type endpointType:(int64_t)endpointType installationID:(id)d callback:(id)callback;
 @end
 
 @implementation SHShazamKitServerURLBuilder
 
-- (void)loadEndpointForClientIdentifier:(id)a3 clientType:(int64_t)a4 endpointType:(int64_t)a5 installationID:(id)a6 callback:(id)a7
+- (void)loadEndpointForClientIdentifier:(id)identifier clientType:(int64_t)type endpointType:(int64_t)endpointType installationID:(id)d callback:(id)callback
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  dCopy = d;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v15 = +[SHRemoteConfiguration sharedInstance];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10004A050;
   v19[3] = &unk_10007E3E8;
-  v16 = v14;
+  v16 = callbackCopy;
   v22 = v16;
-  v23[1] = a5;
-  v17 = v12;
+  v23[1] = endpointType;
+  v17 = identifierCopy;
   v20 = v17;
   objc_copyWeak(v23, &location);
-  v18 = v13;
+  v18 = dCopy;
   v21 = v18;
-  [v15 hostForClientType:a4 completion:v19];
+  [v15 hostForClientType:type completion:v19];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
 }
 
-- (void)defaultValuesWithCompletion:(id)a3
+- (void)defaultValuesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[SHRemoteConfiguration sharedInstance];
-  [v4 defaultValuesWithCompletion:v3];
+  [v4 defaultValuesWithCompletion:completionCopy];
 }
 
 - (SHStorefront)storefront
@@ -54,15 +54,15 @@
   return storefront;
 }
 
-+ (void)updateTokensForEndpoint:(id)a3 language:(id)a4 storefront:(id)a5 installationID:(id)a6
++ (void)updateTokensForEndpoint:(id)endpoint language:(id)language storefront:(id)storefront installationID:(id)d
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  [v11 updateToken:2 withValue:a4];
-  [v11 updateToken:3 withValue:v10];
+  dCopy = d;
+  storefrontCopy = storefront;
+  endpointCopy = endpoint;
+  [endpointCopy updateToken:2 withValue:language];
+  [endpointCopy updateToken:3 withValue:storefrontCopy];
 
-  [v11 updateToken:0 withValue:v9];
+  [endpointCopy updateToken:0 withValue:dCopy];
 }
 
 @end

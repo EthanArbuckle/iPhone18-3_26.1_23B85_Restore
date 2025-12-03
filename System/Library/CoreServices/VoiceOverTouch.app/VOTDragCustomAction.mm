@@ -1,27 +1,27 @@
 @interface VOTDragCustomAction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performWithContext:(id)a3;
-- (VOTDragCustomAction)initWithName:(id)a3 wireDictionary:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performWithContext:(id)context;
+- (VOTDragCustomAction)initWithName:(id)name wireDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)setRemotePoint:(CGPoint)a3;
+- (void)setRemotePoint:(CGPoint)point;
 @end
 
 @implementation VOTDragCustomAction
 
-- (VOTDragCustomAction)initWithName:(id)a3 wireDictionary:(id)a4
+- (VOTDragCustomAction)initWithName:(id)name wireDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = VOTDragCustomAction;
   v8 = [(VOTDragCustomAction *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 objectForKeyedSubscript:AXInteractionLocationDescriptorPointValueKey];
+    v11 = [dictionaryCopy objectForKeyedSubscript:AXInteractionLocationDescriptorPointValueKey];
 
     if (AXValueGetType(v11) != kAXValueTypeCGPoint)
     {
@@ -33,7 +33,7 @@
     remoteElement = v8->_remoteElement;
     v8->_remoteElement = 0;
 
-    v13 = [v7 copy];
+    v13 = [dictionaryCopy copy];
     wireDictionary = v8->_wireDictionary;
     v8->_wireDictionary = v13;
   }
@@ -41,12 +41,12 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && -[NSString isEqual:](self->_name, "isEqual:", v4[13]) && (self->_point.x == *(v4 + 14) ? (v5 = self->_point.y == *(v4 + 15)) : (v5 = 0), v5))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && -[NSString isEqual:](self->_name, "isEqual:", equalCopy[13]) && (self->_point.x == *(equalCopy + 14) ? (v5 = self->_point.y == *(equalCopy + 15)) : (v5 = 0), v5))
   {
-    v6 = [(NSDictionary *)self->_wireDictionary isEqual:v4[17]];
+    v6 = [(NSDictionary *)self->_wireDictionary isEqual:equalCopy[17]];
   }
 
   else
@@ -64,35 +64,35 @@
   return v3 ^ y ^ [(NSDictionary *)self->_wireDictionary hash];
 }
 
-- (void)setRemotePoint:(CGPoint)a3
+- (void)setRemotePoint:(CGPoint)point
 {
-  v7 = a3;
-  self->_point = a3;
+  pointCopy = point;
+  self->_point = point;
   v4 = [(NSDictionary *)self->_wireDictionary mutableCopy];
-  v5 = AXValueCreate(kAXValueTypeCGPoint, &v7);
+  v5 = AXValueCreate(kAXValueTypeCGPoint, &pointCopy);
   [(NSDictionary *)v4 setObject:v5 forKeyedSubscript:AXInteractionLocationDescriptorPointValueKey];
 
   wireDictionary = self->_wireDictionary;
   self->_wireDictionary = v4;
 }
 
-- (BOOL)performWithContext:(id)a3
+- (BOOL)performWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   remoteElement = self->_remoteElement;
   if (remoteElement)
   {
-    v7 = remoteElement;
+    actionElement = remoteElement;
   }
 
   else
   {
-    v7 = [v4 actionElement];
+    actionElement = [contextCopy actionElement];
   }
 
-  v8 = v7;
-  v9 = [(VOTElement *)v7 pid];
+  v8 = actionElement;
+  v9 = [(VOTElement *)actionElement pid];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;

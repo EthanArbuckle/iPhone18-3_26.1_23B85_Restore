@@ -1,5 +1,5 @@
 @interface FCGroupConfig
-- (FCGroupConfig)initWithDictionary:(id)a3;
+- (FCGroupConfig)initWithDictionary:(id)dictionary;
 - (NSString)articleListID;
 - (NSString)channelID;
 - (NSString)feedID;
@@ -21,16 +21,16 @@
 
 @implementation FCGroupConfig
 
-- (FCGroupConfig)initWithDictionary:(id)a3
+- (FCGroupConfig)initWithDictionary:(id)dictionary
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v55.receiver = self;
   v55.super_class = FCGroupConfig;
   v5 = [(FCGroupConfig *)&v55 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = dictionaryCopy;
     v7 = [v6 objectForKeyedSubscript:@"scheduledContent"];
     v8 = [v7 objectForKeyedSubscript:@"scheduledLocalDate"];
     if (v7)
@@ -43,7 +43,7 @@
       v9 = 1;
     }
 
-    v48 = v4;
+    v48 = dictionaryCopy;
     v44 = v8;
     v45 = v7;
     if (!v9)
@@ -54,8 +54,8 @@
 
       if (v12)
       {
-        v13 = [MEMORY[0x1E695DF00] date];
-        v14 = [v13 fc_isLaterThan:v12];
+        date = [MEMORY[0x1E695DF00] date];
+        v14 = [date fc_isLaterThan:v12];
 
         if (v14)
         {
@@ -71,30 +71,30 @@
     dictionary = v5->_dictionary;
     v5->_dictionary = v16;
 
-    v18 = [(FCGroupConfig *)v5 dictionary];
-    v19 = [v18 objectForKeyedSubscript:@"groupTitleColor"];
+    dictionary = [(FCGroupConfig *)v5 dictionary];
+    v19 = [dictionary objectForKeyedSubscript:@"groupTitleColor"];
     v20 = [FCColor colorWithHexString:v19];
     groupTitleColor = v5->_groupTitleColor;
     v5->_groupTitleColor = v20;
 
-    v22 = [(FCGroupConfig *)v5 dictionary];
-    v23 = [v22 objectForKeyedSubscript:@"groupAlternateTitleColor"];
+    dictionary2 = [(FCGroupConfig *)v5 dictionary];
+    v23 = [dictionary2 objectForKeyedSubscript:@"groupAlternateTitleColor"];
     v24 = [FCColor colorWithHexString:v23];
     groupDarkStyleTitleColor = v5->_groupDarkStyleTitleColor;
     v5->_groupDarkStyleTitleColor = v24;
 
-    v26 = [(FCGroupConfig *)v5 dictionary];
-    v27 = [v26 objectForKeyedSubscript:@"cutoffTimeSecs"];
+    dictionary3 = [(FCGroupConfig *)v5 dictionary];
+    v27 = [dictionary3 objectForKeyedSubscript:@"cutoffTimeSecs"];
     v5->_cutoffTimeSecs = [v27 unsignedIntegerValue];
 
-    v28 = [(FCGroupConfig *)v5 dictionary];
-    v29 = [v28 objectForKeyedSubscript:@"cutoffCount"];
+    dictionary4 = [(FCGroupConfig *)v5 dictionary];
+    v29 = [dictionary4 objectForKeyedSubscript:@"cutoffCount"];
     v5->_cutoffCount = [v29 unsignedIntegerValue];
 
-    v50 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v47 = v5;
-    v30 = [(FCGroupConfig *)v5 dictionary];
-    v31 = [v30 objectForKeyedSubscript:@"groupFonts"];
+    dictionary5 = [(FCGroupConfig *)v5 dictionary];
+    v31 = [dictionary5 objectForKeyedSubscript:@"groupFonts"];
 
     v53 = 0u;
     v54 = 0u;
@@ -124,7 +124,7 @@
 
           if (v40)
           {
-            [(NSArray *)v50 addObject:v40];
+            [(NSArray *)array addObject:v40];
           }
 
           ++v35;
@@ -139,9 +139,9 @@
 
     v5 = v47;
     groupFonts = v47->_groupFonts;
-    v47->_groupFonts = v50;
+    v47->_groupFonts = array;
 
-    v4 = v48;
+    dictionaryCopy = v48;
   }
 
   v42 = *MEMORY[0x1E69E9840];
@@ -150,48 +150,48 @@
 
 - (NSString)articleListID
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"articleListID"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"articleListID"];
 
   return v3;
 }
 
 - (NSString)groupName
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupName"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupName"];
 
   return v3;
 }
 
 - (NSString)groupSubtitle
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupSubtitle"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupSubtitle"];
 
   return v3;
 }
 
 - (NSString)groupTitleFontName
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupTitleFontName"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupTitleFontName"];
 
   return v3;
 }
 
 - (double)groupTitleFontSize
 {
-  v3 = [(FCGroupConfig *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"groupTitleFontSize"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"groupTitleFontSize"];
 
   if (!v4)
   {
     return 1.79769313e308;
   }
 
-  v5 = [(FCGroupConfig *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"groupTitleFontSize"];
+  dictionary2 = [(FCGroupConfig *)self dictionary];
+  v6 = [dictionary2 objectForKeyedSubscript:@"groupTitleFontSize"];
   [v6 floatValue];
   v8 = v7;
 
@@ -200,8 +200,8 @@
 
 - (double)groupTitleOffsetY
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupTitleOffsetY"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupTitleOffsetY"];
   [v3 floatValue];
   v5 = v4;
 
@@ -210,8 +210,8 @@
 
 - (double)groupTitleOffsetYiPad
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupTitleOffsetYiPad"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupTitleOffsetYiPad"];
   [v3 floatValue];
   v5 = v4;
 
@@ -220,8 +220,8 @@
 
 - (double)groupTitleOffsetHeight
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupTitleOffsetHeight"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupTitleOffsetHeight"];
   [v3 floatValue];
   v5 = v4;
 
@@ -230,8 +230,8 @@
 
 - (double)groupTitleOffsetHeightiPad
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupTitleOffsetHeightiPad"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupTitleOffsetHeightiPad"];
   [v3 floatValue];
   v5 = v4;
 
@@ -240,16 +240,16 @@
 
 - (double)groupTitleFontSizeiPad
 {
-  v3 = [(FCGroupConfig *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"groupTitleFontSizeiPad"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"groupTitleFontSizeiPad"];
 
   if (!v4)
   {
     return 1.79769313e308;
   }
 
-  v5 = [(FCGroupConfig *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"groupTitleFontSizeiPad"];
+  dictionary2 = [(FCGroupConfig *)self dictionary];
+  v6 = [dictionary2 objectForKeyedSubscript:@"groupTitleFontSizeiPad"];
   [v6 floatValue];
   v8 = v7;
 
@@ -258,16 +258,16 @@
 
 - (double)groupTitleFontTracking
 {
-  v3 = [(FCGroupConfig *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"groupTitleFontTracking"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"groupTitleFontTracking"];
 
   if (!v4)
   {
     return 1.79769313e308;
   }
 
-  v5 = [(FCGroupConfig *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"groupTitleFontTracking"];
+  dictionary2 = [(FCGroupConfig *)self dictionary];
+  v6 = [dictionary2 objectForKeyedSubscript:@"groupTitleFontTracking"];
   [v6 floatValue];
   v8 = v7;
 
@@ -276,16 +276,16 @@
 
 - (double)groupTitleFontTrackingiPad
 {
-  v3 = [(FCGroupConfig *)self dictionary];
-  v4 = [v3 objectForKeyedSubscript:@"groupTitleFontTrackingiPad"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v4 = [dictionary objectForKeyedSubscript:@"groupTitleFontTrackingiPad"];
 
   if (!v4)
   {
     return 1.79769313e308;
   }
 
-  v5 = [(FCGroupConfig *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"groupTitleFontTrackingiPad"];
+  dictionary2 = [(FCGroupConfig *)self dictionary];
+  v6 = [dictionary2 objectForKeyedSubscript:@"groupTitleFontTrackingiPad"];
   [v6 floatValue];
   v8 = v7;
 
@@ -294,40 +294,40 @@
 
 - (NSString)groupActionTitle
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupActionTitle"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupActionTitle"];
 
   return v3;
 }
 
 - (NSString)groupActionURLString
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"groupActionUrl"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"groupActionUrl"];
 
   return v3;
 }
 
 - (NSString)sectionID
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"sectionID"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"sectionID"];
 
   return v3;
 }
 
 - (NSString)channelID
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"channelID"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"channelID"];
 
   return v3;
 }
 
 - (NSString)feedID
 {
-  v2 = [(FCGroupConfig *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"feedID"];
+  dictionary = [(FCGroupConfig *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"feedID"];
 
   return v3;
 }

@@ -1,24 +1,24 @@
 @interface SKUISegmentedTableHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setSegmentedControl:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setSegmentedControl:(id)control;
 @end
 
 @implementation SKUISegmentedTableHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUISegmentedTableHeaderView" hasInstanceMethod:@"setSegmentedControl:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUSegmentedControl" hasInstanceVariable:@"_segmentedControl" withType:"UISegmentedControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUISegmentedTableHeaderView" hasInstanceMethod:@"setSegmentedControl:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUSegmentedControl" hasInstanceVariable:@"_segmentedControl" withType:"UISegmentedControl"];
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
   v4.receiver = self;
   v4.super_class = SKUISegmentedTableHeaderViewAccessibility;
-  v3 = a3;
-  [(SKUISegmentedTableHeaderViewAccessibility *)&v4 setSegmentedControl:v3];
-  [v3 setShouldGroupAccessibilityChildren:{0, v4.receiver, v4.super_class}];
+  controlCopy = control;
+  [(SKUISegmentedTableHeaderViewAccessibility *)&v4 setSegmentedControl:controlCopy];
+  [controlCopy setShouldGroupAccessibilityChildren:{0, v4.receiver, v4.super_class}];
 }
 
 @end

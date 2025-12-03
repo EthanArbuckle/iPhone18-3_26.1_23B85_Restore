@@ -1,7 +1,7 @@
 @interface AMDGenreRecommendationService.Event
 - (NSDictionary)engagementData;
 - (_TtCC5Books29AMDGenreRecommendationServiceP33_62C9D66230C56EEE80751242C5DC77115Event)init;
-- (void)setEngagementData:(id)a3;
+- (void)setEngagementData:(id)data;
 @end
 
 @implementation AMDGenreRecommendationService.Event
@@ -22,9 +22,9 @@
   return v2.super.isa;
 }
 
-- (void)setEngagementData:(id)a3
+- (void)setEngagementData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = sub_1007A2044();
   }

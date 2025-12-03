@@ -1,32 +1,32 @@
 @interface AMSUIToastPresentationController
-- (AMSUIToastPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (AMSUIToastPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (CGRect)lastFrameOfPresentedViewInContainerView;
 - (NSArray)passthroughViews;
 - (double)_bottomMargin;
 - (double)_yOffset;
-- (void)_didPanPresentedView:(id)a3;
+- (void)_didPanPresentedView:(id)view;
 - (void)_dismissToast;
-- (void)_hyperInteractorApplyPresentationPoint:(id)a3;
+- (void)_hyperInteractorApplyPresentationPoint:(id)point;
 - (void)_setupPanGestureRecognizer;
 - (void)_setupPassthroughView;
 - (void)_startDismissTimer;
 - (void)containerViewWillLayoutSubviews;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setPassthroughViews:(id)a3;
-- (void)setShowing:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPassthroughViews:(id)views;
+- (void)setShowing:(BOOL)showing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AMSUIToastPresentationController
 
-- (AMSUIToastPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (AMSUIToastPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v15.receiver = self;
   v15.super_class = AMSUIToastPresentationController;
-  v4 = [(AMSUIToastPresentationController *)&v15 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(AMSUIToastPresentationController *)&v15 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD540]) initWithDimensions:1];
@@ -66,8 +66,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AMSUIToastPresentationController *)self presentedView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  presentedView = [(AMSUIToastPresentationController *)self presentedView];
+  [presentedView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)dismissalTransitionWillBegin
@@ -75,26 +75,26 @@
   v4.receiver = self;
   v4.super_class = AMSUIToastPresentationController;
   [(AMSUIToastPresentationController *)&v4 dismissalTransitionWillBegin];
-  v3 = [(AMSUIToastPresentationController *)self dismissalTimer];
-  [v3 invalidate];
+  dismissalTimer = [(AMSUIToastPresentationController *)self dismissalTimer];
+  [dismissalTimer invalidate];
 
   [(AMSUIToastPresentationController *)self setDismissalTimer:0];
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(AMSUIToastPresentationController *)self presentedView];
-  v4 = [(AMSUIToastPresentationController *)self containerView];
-  v5 = v4;
-  if (!v4 || !v3)
+  presentedView = [(AMSUIToastPresentationController *)self presentedView];
+  containerView = [(AMSUIToastPresentationController *)self containerView];
+  v5 = containerView;
+  if (!containerView || !presentedView)
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(AMSUIToastPresentationController *)self presentingViewController];
+  presentingViewController = [(AMSUIToastPresentationController *)self presentingViewController];
 
-  if (!v6)
+  if (!presentingViewController)
   {
 LABEL_8:
     v13 = *MEMORY[0x1E695F058];
@@ -115,37 +115,37 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v7 = [(AMSUIToastPresentationController *)self presentedViewController];
-  [v7 preferredContentSize];
+  presentedViewController = [(AMSUIToastPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
   v9 = v8;
 
   if (v9 == 0.0)
   {
-    v10 = [(AMSUIToastPresentationController *)self containerView];
-    [v10 frame];
+    containerView2 = [(AMSUIToastPresentationController *)self containerView];
+    [containerView2 frame];
     v12 = v25 + -24.0;
   }
 
   else
   {
-    v10 = [(AMSUIToastPresentationController *)self presentedViewController];
-    [v10 preferredContentSize];
+    containerView2 = [(AMSUIToastPresentationController *)self presentedViewController];
+    [containerView2 preferredContentSize];
     v12 = v11;
   }
 
   v15 = fmin(v12, 556.0);
-  v26 = [(AMSUIToastPresentationController *)self containerView];
-  [v26 frame];
+  containerView3 = [(AMSUIToastPresentationController *)self containerView];
+  [containerView3 frame];
   v16 = v27;
 
-  if ([v3 _wantsAutolayout])
+  if ([presentedView _wantsAutolayout])
   {
-    [v3 systemLayoutSizeFittingSize:{v15, v16}];
+    [presentedView systemLayoutSizeFittingSize:{v15, v16}];
   }
 
   else
   {
-    [v3 sizeThatFits:{v15, v16}];
+    [presentedView sizeThatFits:{v15, v16}];
   }
 
   if (v28 < v16)
@@ -153,41 +153,41 @@ LABEL_8:
     v16 = v28;
   }
 
-  v29 = [(AMSUIToastPresentationController *)self containerView];
-  [v29 frame];
+  containerView4 = [(AMSUIToastPresentationController *)self containerView];
+  [containerView4 frame];
   v13 = (v30 - v15) * 0.5;
 
-  v31 = [(AMSUIToastPresentationController *)self containerView];
-  [v31 frame];
+  containerView5 = [(AMSUIToastPresentationController *)self containerView];
+  [containerView5 frame];
   v33 = v32 - v16;
   [(AMSUIToastPresentationController *)self _bottomMargin];
   v35 = v33 - v34;
 
   [(AMSUIToastPresentationController *)self _yOffset];
   v37 = v35 - v36;
-  v38 = [(AMSUIToastPresentationController *)self containerView];
-  [v38 frame];
+  containerView6 = [(AMSUIToastPresentationController *)self containerView];
+  [containerView6 frame];
   v40 = v39;
   [(AMSUIToastPresentationController *)self _bottomMargin];
   v42 = v16 * 0.5 + v41 + v40;
 
-  v43 = [(AMSUIToastPresentationController *)self interactiveRegion];
+  interactiveRegion = [(AMSUIToastPresentationController *)self interactiveRegion];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerView__block_invoke;
   v49[3] = &__block_descriptor_40_e9_v16__0_d8l;
   *&v49[4] = v37;
-  [v43 _mutateMinimumPoint:v49];
+  [interactiveRegion _mutateMinimumPoint:v49];
 
-  v44 = [(AMSUIToastPresentationController *)self interactiveRegion];
+  interactiveRegion2 = [(AMSUIToastPresentationController *)self interactiveRegion];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerView__block_invoke_2;
   v48[3] = &__block_descriptor_40_e9_v16__0_d8l;
   *&v48[4] = v42;
-  [v44 _mutateMaximumPoint:v48];
+  [interactiveRegion2 _mutateMaximumPoint:v48];
 
-  v45 = [(AMSUIToastPresentationController *)self interactor];
+  interactor = [(AMSUIToastPresentationController *)self interactor];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerView__block_invoke_3;
@@ -195,10 +195,10 @@ LABEL_8:
   v47[4] = self;
   *&v47[5] = v37;
   *&v47[6] = v42;
-  [v45 _mutateUnconstrainedPoint:v47];
+  [interactor _mutateUnconstrainedPoint:v47];
 
-  v46 = [(AMSUIToastPresentationController *)self interactor];
-  v14 = *[v46 _presentationPoint];
+  interactor2 = [(AMSUIToastPresentationController *)self interactor];
+  v14 = *[interactor2 _presentationPoint];
 
 LABEL_9:
   [(AMSUIToastPresentationController *)self setLastFrameOfPresentedViewInContainerView:v13, v14, v15, v16];
@@ -252,79 +252,79 @@ double __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerVie
   [(AMSUIToastPresentationController *)self _setupPanGestureRecognizer];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v5.receiver = self;
   v5.super_class = AMSUIToastPresentationController;
   [(AMSUIToastPresentationController *)&v5 presentationTransitionDidEnd:?];
-  if (v3)
+  if (endCopy)
   {
     [(AMSUIToastPresentationController *)self _startDismissTimer];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v15.receiver = self;
   v15.super_class = AMSUIToastPresentationController;
-  v4 = a3;
-  [(AMSUIToastPresentationController *)&v15 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(AMSUIToastPresentationController *)&v15 traitCollectionDidChange:changeCopy];
   v5 = [(AMSUIToastPresentationController *)self traitCollection:v15.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = [(AMSUIToastPresentationController *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
-  v10 = [v4 horizontalSizeClass];
+  traitCollection = [(AMSUIToastPresentationController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-  v11 = [(AMSUIToastPresentationController *)self traitCollection];
-  v12 = [v11 verticalSizeClass];
-  v13 = [v4 verticalSizeClass];
+  traitCollection2 = [(AMSUIToastPresentationController *)self traitCollection];
+  verticalSizeClass = [traitCollection2 verticalSizeClass];
+  verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-  if (v12 != v13 || v9 != v10 || v6 != v7)
+  if (verticalSizeClass != verticalSizeClass2 || horizontalSizeClass != horizontalSizeClass2 || preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v14 = [(AMSUIToastPresentationController *)self containerView];
-    [v14 setNeedsLayout];
+    containerView = [(AMSUIToastPresentationController *)self containerView];
+    [containerView setNeedsLayout];
   }
 }
 
-- (void)_hyperInteractorApplyPresentationPoint:(id)a3
+- (void)_hyperInteractorApplyPresentationPoint:(id)point
 {
-  v4 = [(AMSUIToastPresentationController *)self containerView];
-  [v4 setNeedsLayout];
+  containerView = [(AMSUIToastPresentationController *)self containerView];
+  [containerView setNeedsLayout];
 
-  v5 = [(AMSUIToastPresentationController *)self containerView];
-  [v5 layoutIfNeeded];
+  containerView2 = [(AMSUIToastPresentationController *)self containerView];
+  [containerView2 layoutIfNeeded];
 }
 
 - (void)_setupPassthroughView
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIToastPresentationController *)self containerView];
+  containerView = [(AMSUIToastPresentationController *)self containerView];
 
-  if (v3)
+  if (containerView)
   {
-    v4 = [(AMSUIToastPresentationController *)self containerView];
-    [v4 bounds];
+    containerView2 = [(AMSUIToastPresentationController *)self containerView];
+    [containerView2 bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(AMSUIToastPresentationController *)self touchForwardingView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    touchForwardingView = [(AMSUIToastPresentationController *)self touchForwardingView];
+    [touchForwardingView setFrame:{v6, v8, v10, v12}];
 
-    v14 = [(AMSUIToastPresentationController *)self containerView];
-    v15 = [(AMSUIToastPresentationController *)self touchForwardingView];
-    [v14 insertSubview:v15 atIndex:0];
+    containerView3 = [(AMSUIToastPresentationController *)self containerView];
+    touchForwardingView2 = [(AMSUIToastPresentationController *)self touchForwardingView];
+    [containerView3 insertSubview:touchForwardingView2 atIndex:0];
 
-    v16 = [(AMSUIToastPresentationController *)self passthroughViews];
+    passthroughViews = [(AMSUIToastPresentationController *)self passthroughViews];
 
-    if (!v16)
+    if (!passthroughViews)
     {
-      v17 = [(AMSUIToastPresentationController *)self presentingViewController];
-      v18 = [v17 view];
-      v21[0] = v18;
+      presentingViewController = [(AMSUIToastPresentationController *)self presentingViewController];
+      view = [presentingViewController view];
+      v21[0] = view;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
       [(AMSUIToastPresentationController *)self setPassthroughViews:v19];
     }
@@ -338,8 +338,8 @@ double __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerVie
   [(AMSUIToastPresentationController *)self dismissDelayTimeInterval];
   if (v3 > 0.0)
   {
-    v4 = [(AMSUIToastPresentationController *)self dismissalTimer];
-    [v4 invalidate];
+    dismissalTimer = [(AMSUIToastPresentationController *)self dismissalTimer];
+    [dismissalTimer invalidate];
 
     v5 = MEMORY[0x1E695DFF0];
     [(AMSUIToastPresentationController *)self dismissDelayTimeInterval];
@@ -350,57 +350,57 @@ double __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerVie
 
 - (void)_setupPanGestureRecognizer
 {
-  v3 = [(AMSUIToastPresentationController *)self presentedView];
+  presentedView = [(AMSUIToastPresentationController *)self presentedView];
 
-  if (v3)
+  if (presentedView)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel__didPanPresentedView_];
     [(AMSUIToastPresentationController *)self setPanRecognizer:v4];
 
-    v6 = [(AMSUIToastPresentationController *)self presentedView];
-    v5 = [(AMSUIToastPresentationController *)self panRecognizer];
-    [v6 addGestureRecognizer:v5];
+    presentedView2 = [(AMSUIToastPresentationController *)self presentedView];
+    panRecognizer = [(AMSUIToastPresentationController *)self panRecognizer];
+    [presentedView2 addGestureRecognizer:panRecognizer];
   }
 }
 
-- (void)_didPanPresentedView:(id)a3
+- (void)_didPanPresentedView:(id)view
 {
-  v4 = a3;
-  v5 = [(AMSUIToastPresentationController *)self presentedView];
-  if (v5)
+  viewCopy = view;
+  presentedView = [(AMSUIToastPresentationController *)self presentedView];
+  if (presentedView)
   {
-    v6 = v5;
-    v7 = [(AMSUIToastPresentationController *)self containerView];
+    v6 = presentedView;
+    containerView = [(AMSUIToastPresentationController *)self containerView];
 
-    if (v7)
+    if (containerView)
     {
-      v8 = [(AMSUIToastPresentationController *)self dismissalTimer];
-      [v8 invalidate];
+      dismissalTimer = [(AMSUIToastPresentationController *)self dismissalTimer];
+      [dismissalTimer invalidate];
 
-      v9 = [v4 state];
-      if ((v9 - 3) < 2)
+      state = [viewCopy state];
+      if ((state - 3) < 2)
       {
-        v20 = [(AMSUIToastPresentationController *)self containerView];
-        [v4 translationInView:v20];
+        containerView2 = [(AMSUIToastPresentationController *)self containerView];
+        [viewCopy translationInView:containerView2];
         v22 = v21;
 
-        v23 = [(AMSUIToastPresentationController *)self containerView];
-        [v4 velocityInView:v23];
+        containerView3 = [(AMSUIToastPresentationController *)self containerView];
+        [viewCopy velocityInView:containerView3];
         v25 = v24;
 
         if (v25 < 400.0 && v22 <= 20.0 && [(AMSUIToastPresentationController *)self isShowing])
         {
-          v26 = [(AMSUIToastPresentationController *)self interactor];
-          v27 = *[v26 _projectedPoint];
-          v28 = [(AMSUIToastPresentationController *)self containerView];
-          [v28 bounds];
+          interactor = [(AMSUIToastPresentationController *)self interactor];
+          v27 = *[interactor _projectedPoint];
+          containerView4 = [(AMSUIToastPresentationController *)self containerView];
+          [containerView4 bounds];
           [(AMSUIToastPresentationController *)self setShowing:v27 < CGRectGetMaxX(v33)];
 
-          v29 = [(AMSUIToastPresentationController *)self interactor];
-          [v29 _interactionEnded];
+          interactor2 = [(AMSUIToastPresentationController *)self interactor];
+          [interactor2 _interactionEnded];
 
-          v30 = [(AMSUIToastPresentationController *)self containerView];
-          [v4 setTranslation:v30 inView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+          containerView5 = [(AMSUIToastPresentationController *)self containerView];
+          [viewCopy setTranslation:containerView5 inView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
           [(AMSUIToastPresentationController *)self _startDismissTimer];
         }
@@ -413,34 +413,34 @@ double __71__AMSUIToastPresentationController_frameOfPresentedViewInContainerVie
 
       else
       {
-        if (v9 == 2)
+        if (state == 2)
         {
 LABEL_7:
-          v12 = [(AMSUIToastPresentationController *)self containerView];
-          [v4 translationInView:v12];
+          containerView6 = [(AMSUIToastPresentationController *)self containerView];
+          [viewCopy translationInView:containerView6];
           v14 = v13;
 
           v32 = v14;
-          v15 = [(AMSUIToastPresentationController *)self containerView];
-          [v4 velocityInView:v15];
+          containerView7 = [(AMSUIToastPresentationController *)self containerView];
+          [viewCopy velocityInView:containerView7];
           v17 = v16;
 
-          v18 = [(AMSUIToastPresentationController *)self containerView];
-          [v18 setNeedsLayout];
+          containerView8 = [(AMSUIToastPresentationController *)self containerView];
+          [containerView8 setNeedsLayout];
 
-          v19 = [(AMSUIToastPresentationController *)self interactor];
-          [v19 _interactionChangedCopyingTranslation:&v32 velocity:&v31];
+          interactor3 = [(AMSUIToastPresentationController *)self interactor];
+          [interactor3 _interactionChangedCopyingTranslation:&v32 velocity:&v31];
 
           goto LABEL_13;
         }
 
-        if (v9 == 1)
+        if (state == 1)
         {
-          v10 = [(AMSUIToastPresentationController *)self containerView];
-          [v10 setNeedsLayout];
+          containerView9 = [(AMSUIToastPresentationController *)self containerView];
+          [containerView9 setNeedsLayout];
 
-          v11 = [(AMSUIToastPresentationController *)self interactor];
-          [v11 _interactionBegan];
+          interactor4 = [(AMSUIToastPresentationController *)self interactor];
+          [interactor4 _interactionBegan];
 
           goto LABEL_7;
         }
@@ -453,42 +453,42 @@ LABEL_13:
 
 - (NSArray)passthroughViews
 {
-  v2 = [(AMSUIToastPresentationController *)self touchForwardingView];
-  v3 = [v2 passthroughViews];
+  touchForwardingView = [(AMSUIToastPresentationController *)self touchForwardingView];
+  passthroughViews = [touchForwardingView passthroughViews];
 
-  return v3;
+  return passthroughViews;
 }
 
-- (void)setPassthroughViews:(id)a3
+- (void)setPassthroughViews:(id)views
 {
-  v4 = a3;
-  v5 = [(AMSUIToastPresentationController *)self touchForwardingView];
-  [v5 setPassthroughViews:v4];
+  viewsCopy = views;
+  touchForwardingView = [(AMSUIToastPresentationController *)self touchForwardingView];
+  [touchForwardingView setPassthroughViews:viewsCopy];
 }
 
-- (void)setShowing:(BOOL)a3
+- (void)setShowing:(BOOL)showing
 {
-  if (self->_showing != a3)
+  if (self->_showing != showing)
   {
-    v4 = [(AMSUIToastPresentationController *)self containerView];
-    [v4 setNeedsLayout];
+    containerView = [(AMSUIToastPresentationController *)self containerView];
+    [containerView setNeedsLayout];
   }
 }
 
 - (double)_yOffset
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIToastPresentationController *)self relativeTabBarController];
-  if (!v3)
+  relativeTabBarController = [(AMSUIToastPresentationController *)self relativeTabBarController];
+  if (!relativeTabBarController)
   {
-    v4 = [(AMSUIToastPresentationController *)self presentingViewController];
+    presentingViewController = [(AMSUIToastPresentationController *)self presentingViewController];
     objc_opt_class();
-    v3 = (objc_opt_isKindOfClass() & 1) != 0 ? v4 : 0;
+    relativeTabBarController = (objc_opt_isKindOfClass() & 1) != 0 ? presentingViewController : 0;
 
-    if (!v3)
+    if (!relativeTabBarController)
     {
-      v5 = [(AMSUIToastPresentationController *)self presentingViewController];
-      v3 = [v5 tabBarController];
+      presentingViewController2 = [(AMSUIToastPresentationController *)self presentingViewController];
+      relativeTabBarController = [presentingViewController2 tabBarController];
     }
   }
 
@@ -496,10 +496,10 @@ LABEL_13:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(AMSUIToastPresentationController *)self presentingViewController];
-  v7 = [v6 childViewControllers];
+  presentingViewController3 = [(AMSUIToastPresentationController *)self presentingViewController];
+  childViewControllers = [presentingViewController3 childViewControllers];
 
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v8 = [childViewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -510,10 +510,10 @@ LABEL_13:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        if (v3)
+        if (relativeTabBarController)
         {
 
           goto LABEL_23;
@@ -523,21 +523,21 @@ LABEL_13:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v3 = v12;
+          relativeTabBarController = v12;
         }
 
         else
         {
-          v3 = 0;
+          relativeTabBarController = 0;
         }
 
-        if (!v3)
+        if (!relativeTabBarController)
         {
-          v3 = [v12 tabBarController];
+          relativeTabBarController = [v12 tabBarController];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [childViewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v9)
       {
         continue;
@@ -547,23 +547,23 @@ LABEL_13:
     }
   }
 
-  if (v3)
+  if (relativeTabBarController)
   {
 LABEL_23:
-    v15 = [v3 contentLayoutGuide];
-    v16 = [v15 owningView];
-    [v16 frame];
+    contentLayoutGuide = [relativeTabBarController contentLayoutGuide];
+    owningView = [contentLayoutGuide owningView];
+    [owningView frame];
     v18 = v17;
-    [v15 layoutFrame];
+    [contentLayoutGuide layoutFrame];
     v20 = v19;
-    [v15 layoutFrame];
+    [contentLayoutGuide layoutFrame];
     v14 = v18 - (v20 + v21);
   }
 
   else
   {
-    v3 = [(AMSUIToastPresentationController *)self containerView];
-    [v3 safeAreaInsets];
+    relativeTabBarController = [(AMSUIToastPresentationController *)self containerView];
+    [relativeTabBarController safeAreaInsets];
     v14 = v13;
   }
 
@@ -573,18 +573,18 @@ LABEL_23:
 
 - (void)_dismissToast
 {
-  v3 = [(AMSUIToastPresentationController *)self presentedViewController];
-  v4 = [v3 presentingViewController];
+  presentedViewController = [(AMSUIToastPresentationController *)self presentedViewController];
+  presentingViewController = [presentedViewController presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    v5 = [(AMSUIToastPresentationController *)self presentedViewController];
+    presentedViewController2 = [(AMSUIToastPresentationController *)self presentedViewController];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __49__AMSUIToastPresentationController__dismissToast__block_invoke;
     v6[3] = &unk_1E7F242D0;
     v6[4] = self;
-    [v5 dismissViewControllerAnimated:1 completion:v6];
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:v6];
   }
 }
 
@@ -617,11 +617,11 @@ void __49__AMSUIToastPresentationController__dismissToast__block_invoke(uint64_t
 
 - (double)_bottomMargin
 {
-  v2 = [(AMSUIToastPresentationController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(AMSUIToastPresentationController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   result = 16.0;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 20.0;
   }

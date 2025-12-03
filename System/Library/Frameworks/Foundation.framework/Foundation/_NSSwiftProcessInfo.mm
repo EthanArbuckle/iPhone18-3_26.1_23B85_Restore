@@ -2,7 +2,7 @@
 + (NSProcessInfo)processInfo;
 + (void)cancelPowerStateNotifyNotification;
 + (void)cancelThermalStateNotifyNotification;
-+ (void)updatePowerState:(unint64_t)a3;
++ (void)updatePowerState:(unint64_t)state;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)macCatalystVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersion;
 - (BOOL)isLowPowerModeEnabled;
@@ -13,15 +13,15 @@
 - (NSString)operatingSystemVersionString;
 - (NSString)processName;
 - (double)systemUptime;
-- (id)beginActivityWithOptions:(unint64_t)a3 reason:(id)a4;
-- (id)beginActivityWithOptions:(unint64_t)a3 reason:(id)a4 expirationHandler:(id)a5;
+- (id)beginActivityWithOptions:(unint64_t)options reason:(id)reason;
+- (id)beginActivityWithOptions:(unint64_t)options reason:(id)reason expirationHandler:(id)handler;
 - (int64_t)thermalState;
-- (void)_reactivateActivity:(id)a3;
-- (void)_setShouldRelaunchDueToAutomaticTerminationStateChangedHandler:(id)a3;
-- (void)endActivity:(id)a3;
-- (void)performActivityWithOptions:(unint64_t)a3 reason:(id)a4 block:(id)a5;
-- (void)performExpiringActivityWithReason:(id)a3 usingBlock:(id)a4;
-- (void)setProcessName:(id)a3;
+- (void)_reactivateActivity:(id)activity;
+- (void)_setShouldRelaunchDueToAutomaticTerminationStateChangedHandler:(id)handler;
+- (void)endActivity:(id)activity;
+- (void)performActivityWithOptions:(unint64_t)options reason:(id)reason block:(id)block;
+- (void)performExpiringActivityWithReason:(id)reason usingBlock:(id)block;
+- (void)setProcessName:(id)name;
 @end
 
 @implementation _NSSwiftProcessInfo
@@ -38,22 +38,22 @@
   return v3;
 }
 
-- (id)beginActivityWithOptions:(unint64_t)a3 reason:(id)a4
+- (id)beginActivityWithOptions:(unint64_t)options reason:(id)reason
 {
-  static String._unconditionallyBridgeFromObjectiveC(_:)(a4);
+  static String._unconditionallyBridgeFromObjectiveC(_:)(reason);
   v5 = [objc_allocWithZone(_NSActivityAssertion) init];
   v6 = String._bridgeToObjectiveCImpl()();
 
-  v7 = [v5 _initWithActivityOptions_reason_expirationHandler_];
+  _initWithActivityOptions_reason_expirationHandler_ = [v5 _initWithActivityOptions_reason_expirationHandler_];
   swift_unknownObjectRelease();
 
-  return v7;
+  return _initWithActivityOptions_reason_expirationHandler_;
 }
 
 - (NSArray)arguments
 {
   v2 = (*(&self->super.super.isa + OBJC_IVAR____NSSwiftProcessInfo__processInfo))[2];
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 10);
   closure #1 in _ProcessInfo.arguments.getter(&v2[4], &v6);
   os_unfair_lock_unlock(v2 + 10);
@@ -66,7 +66,7 @@
 - (NSString)processName
 {
   v2 = (*(&self->super.super.isa + OBJC_IVAR____NSSwiftProcessInfo__processInfo))[2];
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 40));
   closure #1 in _ProcessInfo.processName.getter((v2 + 16), &v6);
   os_unfair_lock_unlock((v2 + 40));
@@ -97,7 +97,7 @@
 {
   swift_getObjectType();
   v3 = one-time initialization token for _globalState;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -112,7 +112,7 @@
   return v6;
 }
 
-+ (void)updatePowerState:(unint64_t)a3
++ (void)updatePowerState:(unint64_t)state
 {
   if (one-time initialization token for _globalState != -1)
   {
@@ -121,7 +121,7 @@
 
   v4 = static _NSSwiftProcessInfo._globalState;
   os_unfair_lock_lock((static _NSSwiftProcessInfo._globalState + 44));
-  *(v4 + 33) = a3 != 0;
+  *(v4 + 33) = state != 0;
 
   os_unfair_lock_unlock((v4 + 44));
 }
@@ -145,9 +145,9 @@
   os_unfair_lock_unlock((v2 + 44));
 }
 
-- (void)endActivity:(id)a3
+- (void)endActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
     objc_opt_self();
     v3 = swift_dynamicCastObjCClass();
@@ -169,9 +169,9 @@
   return 1.0 / (1000000000.0 / v3 * v2) * mach_absolute_time();
 }
 
-- (void)_reactivateActivity:(id)a3
+- (void)_reactivateActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
     objc_opt_self();
     v3 = swift_dynamicCastObjCClass();
@@ -208,7 +208,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = one-time initialization token for _globalState;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -250,11 +250,11 @@
   return v2;
 }
 
-- (void)setProcessName:(id)a3
+- (void)setProcessName:(id)name
 {
-  static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  static String._unconditionallyBridgeFromObjectiveC(_:)(name);
   v4 = (*(&self->super.super.isa + OBJC_IVAR____NSSwiftProcessInfo__processInfo))[2];
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v4 + 40));
   partial apply for closure #1 in _ProcessInfo.processName.setter((v4 + 16));
   os_unfair_lock_unlock((v4 + 40));
@@ -263,7 +263,7 @@
 - (NSString)hostName
 {
   v2 = (*(&self->super.super.isa + OBJC_IVAR____NSSwiftProcessInfo__processInfo))[3];
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 32));
   closure #1 in _ProcessInfo.hostName.getter((v2 + 16), &v6);
   os_unfair_lock_unlock((v2 + 32));
@@ -273,10 +273,10 @@
   return v4;
 }
 
-- (id)beginActivityWithOptions:(unint64_t)a3 reason:(id)a4 expirationHandler:(id)a5
+- (id)beginActivityWithOptions:(unint64_t)options reason:(id)reason expirationHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  v9 = static String._unconditionallyBridgeFromObjectiveC(_:)(a4);
+  v8 = _Block_copy(handler);
+  v9 = static String._unconditionallyBridgeFromObjectiveC(_:)(reason);
   v11 = v10;
   if (v8)
   {
@@ -290,26 +290,26 @@
     v12 = 0;
   }
 
-  v13 = self;
-  v14 = specialized _NSSwiftProcessInfo.beginActivity(options:reason:expirationHandler:)(a3, v9, v11, v8, v12);
+  selfCopy = self;
+  v14 = specialized _NSSwiftProcessInfo.beginActivity(options:reason:expirationHandler:)(options, v9, v11, v8, v12);
   outlined consume of (@escaping @callee_guaranteed (@in_guaranteed URL, @guaranteed Error) -> (@unowned Bool))?(v8);
 
   return v14;
 }
 
-- (void)performActivityWithOptions:(unint64_t)a3 reason:(id)a4 block:(id)a5
+- (void)performActivityWithOptions:(unint64_t)options reason:(id)reason block:(id)block
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(block);
   v9 = v8;
-  if (a4)
+  if (reason)
   {
-    static String._unconditionallyBridgeFromObjectiveC(_:)(a4);
-    a4 = v10;
+    static String._unconditionallyBridgeFromObjectiveC(_:)(reason);
+    reason = v10;
     if (v9)
     {
       v11 = swift_allocObject();
       *(v11 + 16) = v9;
-      if (a4)
+      if (reason)
       {
         v12 = v11;
         v13 = String._bridgeToObjectiveCImpl()();
@@ -321,7 +321,7 @@
         v17[2] = thunk for @escaping @callee_guaranteed @Sendable () -> ();
         v17[3] = &block_descriptor_16;
         v15 = _Block_copy(v17);
-        v16 = self;
+        selfCopy = self;
         outlined copy of (@escaping @callee_guaranteed (@in_guaranteed URL, @guaranteed Error) -> (@unowned Bool))?(partial apply for thunk for @escaping @callee_unowned @convention(block) () -> ());
 
         [v14 _performActivityWithOptions_reason_usingBlock_];
@@ -349,7 +349,7 @@ LABEL_8:
     __break(1u);
   }
 
-  if (!a4)
+  if (!reason)
   {
     goto LABEL_8;
   }
@@ -359,10 +359,10 @@ LABEL_9:
   __break(1u);
 }
 
-- (void)performExpiringActivityWithReason:(id)a3 usingBlock:(id)a4
+- (void)performExpiringActivityWithReason:(id)reason usingBlock:(id)block
 {
-  v5 = _Block_copy(a4);
-  static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v5 = _Block_copy(block);
+  static String._unconditionallyBridgeFromObjectiveC(_:)(reason);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = objc_opt_self();
@@ -382,9 +382,9 @@ LABEL_9:
   swift_unknownObjectRelease();
 }
 
-- (void)_setShouldRelaunchDueToAutomaticTerminationStateChangedHandler:(id)a3
+- (void)_setShouldRelaunchDueToAutomaticTerminationStateChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -400,7 +400,7 @@ LABEL_9:
 
   v7 = *(&self->super.super.isa + OBJC_IVAR____NSSwiftProcessInfo__state);
   MEMORY[0x1EEE9AC00](v4);
-  v8 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v7 + 19);
   partial apply for closure #1 in _NSSwiftProcessInfo._setShouldRelaunchDue(toAutomaticTerminationStateChangedHandler:)(&v7[4]);
   os_unfair_lock_unlock(v7 + 19);

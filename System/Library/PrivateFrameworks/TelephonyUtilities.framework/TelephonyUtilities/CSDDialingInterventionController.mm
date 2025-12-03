@@ -1,24 +1,24 @@
 @interface CSDDialingInterventionController
-- (BOOL)interveneIfNeededForDialRequest:(id)a3;
-- (BOOL)interveneIfNeededForJoinRequest:(id)a3;
+- (BOOL)interveneIfNeededForDialRequest:(id)request;
+- (BOOL)interveneIfNeededForJoinRequest:(id)request;
 @end
 
 @implementation CSDDialingInterventionController
 
-- (BOOL)interveneIfNeededForDialRequest:(id)a3
+- (BOOL)interveneIfNeededForDialRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_10001F214(v4);
+  requestCopy = request;
+  selfCopy = self;
+  LOBYTE(self) = sub_10001F214(requestCopy);
 
   return self & 1;
 }
 
-- (BOOL)interveneIfNeededForJoinRequest:(id)a3
+- (BOOL)interveneIfNeededForJoinRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1002DBDF8(v4);
+  requestCopy = request;
+  selfCopy = self;
+  LOBYTE(self) = sub_1002DBDF8(requestCopy);
 
   return self & 1;
 }

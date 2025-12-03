@@ -1,29 +1,29 @@
 @interface _NUCIImageAsset
-- (_NUCIImageAsset)initWithCIImage:(id)a3 type:(int64_t)a4 identifier:(id)a5;
-- (_NUCIImageAsset)initWithIdentifier:(id)a3;
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4;
+- (_NUCIImageAsset)initWithCIImage:(id)image type:(int64_t)type identifier:(id)identifier;
+- (_NUCIImageAsset)initWithIdentifier:(id)identifier;
+- (id)_loadMediaWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation _NUCIImageAsset
 
-- (id)_loadMediaWithOptions:(id)a3 error:(id *)a4
+- (id)_loadMediaWithOptions:(id)options error:(id *)error
 {
-  v6 = [a3 objectForKeyedSubscript:NUAssetOptionOrientation];
+  v6 = [options objectForKeyedSubscript:NUAssetOptionOrientation];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v8 = 1;
+    intValue = 1;
   }
 
-  v9 = [[NUCIImageSourceDefinition alloc] initWithCIImage:self->_image orientation:v8];
-  v10 = [(_NUAsset *)self identifier];
+  v9 = [[NUCIImageSourceDefinition alloc] initWithCIImage:self->_image orientation:intValue];
+  identifier = [(_NUAsset *)self identifier];
   v27 = 0;
-  v11 = [(NUSingleSourceDefinition *)v9 sourceContainerNodeWithIdentifier:v10 error:&v27];
+  v11 = [(NUSingleSourceDefinition *)v9 sourceContainerNodeWithIdentifier:identifier error:&v27];
   v12 = v27;
   sourceContainerNode = self->_sourceContainerNode;
   self->_sourceContainerNode = v11;
@@ -48,8 +48,8 @@
       {
         v19 = [NUChannelImageMediaFormat stillImageFormat:self->_mediaType];
         v20 = [_NUImageAssetMedia alloc];
-        v21 = [v18 mediaGeometry];
-        v22 = [(_NUImageAssetMedia *)v20 initWithImageAsset:self auxImageType:1 format:v19 geometry:v21];
+        mediaGeometry = [v18 mediaGeometry];
+        v22 = [(_NUImageAssetMedia *)v20 initWithImageAsset:self auxImageType:1 format:v19 geometry:mediaGeometry];
 
         v23 = [[_NURenderMedia alloc] initWithBaseMedia:v22 renderNode:v16];
       }
@@ -57,14 +57,14 @@
       else
       {
         [NUError errorWithCode:1 reason:@"Failed to evaluate image geometry node" object:self underlyingError:v12];
-        *a4 = v23 = 0;
+        *error = v23 = 0;
       }
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to prepare image source node" object:self underlyingError:v17];
-      *a4 = v23 = 0;
+      *error = v23 = 0;
       v12 = v17;
     }
   }
@@ -72,18 +72,18 @@
   else
   {
     [NUError errorWithCode:1 reason:@"Failed to create source container node" object:self underlyingError:v12];
-    *a4 = v23 = 0;
+    *error = v23 = 0;
   }
 
   return v23;
 }
 
-- (_NUCIImageAsset)initWithCIImage:(id)a3 type:(int64_t)a4 identifier:(id)a5
+- (_NUCIImageAsset)initWithCIImage:(id)image type:(int64_t)type identifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  imageCopy = image;
+  identifierCopy = identifier;
+  if (!imageCopy)
   {
     v15 = NUAssertLogger_10839();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -104,8 +104,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v22;
         v34 = 2114;
@@ -116,8 +116,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -126,32 +126,32 @@
     _NUAssertFailHandler("[_NUCIImageAsset initWithCIImage:type:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 655, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "image != nil");
   }
 
-  v10 = v9;
+  v10 = identifierCopy;
   v31.receiver = self;
   v31.super_class = _NUCIImageAsset;
-  v11 = [(_NUAsset *)&v31 initWithIdentifier:v9];
+  v11 = [(_NUAsset *)&v31 initWithIdentifier:identifierCopy];
   image = v11->_image;
-  v11->_image = v8;
+  v11->_image = imageCopy;
 
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    v13 = 1;
+    typeCopy = 1;
   }
 
   else
   {
-    v13 = a4;
+    typeCopy = type;
   }
 
-  v11->_mediaType = v13;
+  v11->_mediaType = typeCopy;
 
   return v11;
 }
 
-- (_NUCIImageAsset)initWithIdentifier:(id)a3
+- (_NUCIImageAsset)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -195,8 +195,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -212,8 +212,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

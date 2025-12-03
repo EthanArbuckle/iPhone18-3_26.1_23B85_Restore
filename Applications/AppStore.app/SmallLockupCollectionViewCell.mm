@@ -1,12 +1,12 @@
 @interface SmallLockupCollectionViewCell
-- (_TtC8AppStore29SmallLockupCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore29SmallLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SmallLockupCollectionViewCell
 
-- (_TtC8AppStore29SmallLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore29SmallLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore29SmallLockupCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -25,7 +25,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B0D28();
 }
 

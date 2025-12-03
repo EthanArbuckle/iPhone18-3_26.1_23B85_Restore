@@ -1,7 +1,7 @@
 @interface MFGetMailboxIntentResponse
-- (MFGetMailboxIntentResponse)initWithPropertiesByName:(id)a3;
+- (MFGetMailboxIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation MFGetMailboxIntentResponse
@@ -14,20 +14,20 @@
   return v4;
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   _objc_retain(self);
-  sub_100078250(a3);
+  sub_100078250(code);
   _objc_release(self);
 }
 
-- (MFGetMailboxIntentResponse)initWithPropertiesByName:(id)a3
+- (MFGetMailboxIntentResponse)initWithPropertiesByName:(id)name
 {
-  _objc_retain(a3);
-  if (a3)
+  _objc_retain(name);
+  if (name)
   {
     v4 = sub_10007D7D8();
-    _objc_release(a3);
+    _objc_release(name);
     v5 = v4;
   }
 

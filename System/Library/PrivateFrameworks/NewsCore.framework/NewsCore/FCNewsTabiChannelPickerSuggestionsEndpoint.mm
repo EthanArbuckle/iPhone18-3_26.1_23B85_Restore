@@ -1,5 +1,5 @@
 @interface FCNewsTabiChannelPickerSuggestionsEndpoint
-- (FCNewsTabiChannelPickerSuggestionsEndpoint)initWithDictionary:(id)a3;
+- (FCNewsTabiChannelPickerSuggestionsEndpoint)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,32 +8,32 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiChannelPickerSuggestionsEndpoint *)self packageAssetID];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tpackageAssetID: %@;", v5];
+  packageAssetID = [(FCNewsTabiChannelPickerSuggestionsEndpoint *)self packageAssetID];
+  indentedDescription = [packageAssetID indentedDescription];
+  [v3 appendFormat:@"\n\tpackageAssetID: %@;", indentedDescription];
 
-  v6 = [(FCNewsTabiChannelPickerSuggestionsEndpoint *)self configuration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tconfiguration: %@;", v7];
+  configuration = [(FCNewsTabiChannelPickerSuggestionsEndpoint *)self configuration];
+  indentedDescription2 = [configuration indentedDescription];
+  [v3 appendFormat:@"\n\tconfiguration: %@;", indentedDescription2];
 
-  v8 = [(FCNewsTabiChannelPickerSuggestionsEndpoint *)self eventAggregationOutputs];
-  v9 = [v8 indentedDescription];
-  [v3 appendFormat:@"\n\teventAggregationOutputs: %@;", v9];
+  eventAggregationOutputs = [(FCNewsTabiChannelPickerSuggestionsEndpoint *)self eventAggregationOutputs];
+  indentedDescription3 = [eventAggregationOutputs indentedDescription];
+  [v3 appendFormat:@"\n\teventAggregationOutputs: %@;", indentedDescription3];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiChannelPickerSuggestionsEndpoint)initWithDictionary:(id)a3
+- (FCNewsTabiChannelPickerSuggestionsEndpoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"packageAssetID", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"packageAssetID", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = [[FCNewsTabiChannelPickerSuggestionsConfiguration alloc] initWithDictionary:v4];
+    v8 = [[FCNewsTabiChannelPickerSuggestionsConfiguration alloc] initWithDictionary:dictionaryCopy];
     v9 = v8;
     if (v8)
     {
@@ -46,7 +46,7 @@
       {
         objc_storeStrong(&v11->_packageAssetID, v6);
         objc_storeStrong(&v12->_configuration, v9);
-        v13 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"eventAggregationOutputs", 0);
+        v13 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventAggregationOutputs", 0);
         if (v13)
         {
           v14 = [[FCNewsTabiEventAggregationOutputsConfiguration alloc] initWithDictionary:v13];
@@ -56,7 +56,7 @@
       }
 
       self = v12;
-      v16 = self;
+      selfCopy = self;
     }
 
     else
@@ -65,8 +65,8 @@
       v19[1] = 3221225472;
       v19[2] = __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke_5;
       v19[3] = &unk_1E7C36F98;
-      v20 = v4;
-      v16 = __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke_5(v19);
+      v20 = dictionaryCopy;
+      selfCopy = __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke_5(v19);
       v10 = v20;
     }
   }
@@ -77,12 +77,12 @@
     v21[1] = 3221225472;
     v21[2] = __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke;
     v21[3] = &unk_1E7C36F98;
-    v22 = v4;
-    v16 = __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke(v21);
+    v22 = dictionaryCopy;
+    selfCopy = __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke(v21);
     v7 = v22;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 uint64_t __65__FCNewsTabiChannelPickerSuggestionsEndpoint_initWithDictionary___block_invoke(uint64_t a1)

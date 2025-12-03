@@ -1,24 +1,24 @@
 @interface SKUICounterTimeView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUICounterTimeView)initWithClientContext:(id)a3;
-- (double)_fieldSpacingForFieldCount:(int64_t)a3 fieldWidth:(double)a4 totalWidth:(double)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUICounterTimeView)initWithClientContext:(id)context;
+- (double)_fieldSpacingForFieldCount:(int64_t)count fieldWidth:(double)width totalWidth:(double)totalWidth;
 - (id)_allFieldViews;
 - (id)_visibleFieldViews;
-- (void)_setValuesUsingTimestamp:(int64_t)a3;
+- (void)_setValuesUsingTimestamp:(int64_t)timestamp;
 - (void)layoutSubviews;
 - (void)reloadTimeValue;
-- (void)setBackgroundColor:(id)a3;
-- (void)setEndDate:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setValueFont:(id)a3;
-- (void)setVisibleFields:(unint64_t)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setEndDate:(id)date;
+- (void)setTextColor:(id)color;
+- (void)setValueFont:(id)font;
+- (void)setVisibleFields:(unint64_t)fields;
 @end
 
 @implementation SKUICounterTimeView
 
-- (SKUICounterTimeView)initWithClientContext:(id)a3
+- (SKUICounterTimeView)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICounterTimeView initWithClientContext:];
@@ -30,16 +30,16 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v7->_visibleFields = 255;
     v8 = objc_alloc_init(_SKUICounterTimeFieldView);
     daysFieldView = v7->_daysFieldView;
     v7->_daysFieldView = v8;
 
-    v10 = [(_SKUICounterTimeFieldView *)v7->_daysFieldView labelLabel];
-    if (v5)
+    labelLabel = [(_SKUICounterTimeFieldView *)v7->_daysFieldView labelLabel];
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"COUNTDOWN_DAYS"];
+      [contextCopy localizedStringForKey:@"COUNTDOWN_DAYS"];
     }
 
     else
@@ -47,7 +47,7 @@
       [SKUIClientContext localizedStringForKey:@"COUNTDOWN_DAYS" inBundles:0];
     }
     v11 = ;
-    [v10 setText:v11];
+    [labelLabel setText:v11];
 
     [(_SKUICounterTimeFieldView *)v7->_daysFieldView setVisibilityField:1];
     [(SKUICounterTimeView *)v7 addSubview:v7->_daysFieldView];
@@ -55,10 +55,10 @@
     hoursFieldView = v7->_hoursFieldView;
     v7->_hoursFieldView = v12;
 
-    v14 = [(_SKUICounterTimeFieldView *)v7->_hoursFieldView labelLabel];
-    if (v5)
+    labelLabel2 = [(_SKUICounterTimeFieldView *)v7->_hoursFieldView labelLabel];
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"COUNTDOWN_HOURS"];
+      [contextCopy localizedStringForKey:@"COUNTDOWN_HOURS"];
     }
 
     else
@@ -66,7 +66,7 @@
       [SKUIClientContext localizedStringForKey:@"COUNTDOWN_HOURS" inBundles:0];
     }
     v15 = ;
-    [v14 setText:v15];
+    [labelLabel2 setText:v15];
 
     [(_SKUICounterTimeFieldView *)v7->_hoursFieldView setVisibilityField:2];
     [(SKUICounterTimeView *)v7 addSubview:v7->_hoursFieldView];
@@ -74,10 +74,10 @@
     minutesFieldView = v7->_minutesFieldView;
     v7->_minutesFieldView = v16;
 
-    v18 = [(_SKUICounterTimeFieldView *)v7->_minutesFieldView labelLabel];
-    if (v5)
+    labelLabel3 = [(_SKUICounterTimeFieldView *)v7->_minutesFieldView labelLabel];
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"COUNTDOWN_MINUTES"];
+      [contextCopy localizedStringForKey:@"COUNTDOWN_MINUTES"];
     }
 
     else
@@ -85,7 +85,7 @@
       [SKUIClientContext localizedStringForKey:@"COUNTDOWN_MINUTES" inBundles:0];
     }
     v19 = ;
-    [v18 setText:v19];
+    [labelLabel3 setText:v19];
 
     [(_SKUICounterTimeFieldView *)v7->_minutesFieldView setVisibilityField:4];
     [(SKUICounterTimeView *)v7 addSubview:v7->_minutesFieldView];
@@ -93,10 +93,10 @@
     secondsFieldView = v7->_secondsFieldView;
     v7->_secondsFieldView = v20;
 
-    v22 = [(_SKUICounterTimeFieldView *)v7->_secondsFieldView labelLabel];
-    if (v5)
+    labelLabel4 = [(_SKUICounterTimeFieldView *)v7->_secondsFieldView labelLabel];
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"COUNTDOWN_SECONDS"];
+      [contextCopy localizedStringForKey:@"COUNTDOWN_SECONDS"];
     }
 
     else
@@ -104,7 +104,7 @@
       [SKUIClientContext localizedStringForKey:@"COUNTDOWN_SECONDS" inBundles:0];
     }
     v23 = ;
-    [v22 setText:v23];
+    [labelLabel4 setText:v23];
 
     [(_SKUICounterTimeFieldView *)v7->_secondsFieldView setVisibilityField:8];
     [(SKUICounterTimeView *)v7 addSubview:v7->_secondsFieldView];
@@ -125,15 +125,15 @@
   }
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   endDate = self->_endDate;
-  if (endDate != v4)
+  if (endDate != dateCopy)
   {
-    v9 = v4;
-    endDate = [endDate isEqualToDate:v4];
-    v4 = v9;
+    v9 = dateCopy;
+    endDate = [endDate isEqualToDate:dateCopy];
+    dateCopy = v9;
     if ((endDate & 1) == 0)
     {
       v6 = [v9 copy];
@@ -143,28 +143,28 @@
       [(NSDate *)self->_endDate timeIntervalSinceNow];
       self->_lastTimeValue = fmax(v8, 0.0);
       endDate = [(SKUICounterTimeView *)self _setValuesUsingTimestamp:?];
-      v4 = v9;
+      dateCopy = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](endDate, v4);
+  MEMORY[0x2821F96F8](endDate, dateCopy);
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_textColor != a3)
+  if (self->_textColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     textColor = self->_textColor;
     self->_textColor = v4;
 
-    v6 = [(SKUICounterTimeView *)self _allFieldViews];
+    _allFieldViews = [(SKUICounterTimeView *)self _allFieldViews];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [_allFieldViews countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -175,18 +175,18 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_allFieldViews);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 labelLabel];
-          [v12 setTextColor:self->_textColor];
+          labelLabel = [v11 labelLabel];
+          [labelLabel setTextColor:self->_textColor];
 
-          v13 = [v11 valueLabel];
-          [v13 setTextColor:self->_textColor];
+          valueLabel = [v11 valueLabel];
+          [valueLabel setTextColor:self->_textColor];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [_allFieldViews countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -194,16 +194,16 @@
   }
 }
 
-- (void)setValueFont:(id)a3
+- (void)setValueFont:(id)font
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (self->_valueFont != a3)
+  if (self->_valueFont != font)
   {
-    v4 = [a3 copy];
+    v4 = [font copy];
     valueFont = self->_valueFont;
     self->_valueFont = v4;
 
-    v6 = [(SKUICounterTimeView *)self _allFieldViews];
+    _allFieldViews = [(SKUICounterTimeView *)self _allFieldViews];
     v7 = self->_valueFont;
     [(UIFont *)v7 pointSize];
     v9 = [(UIFont *)v7 fontWithSize:fmax(v8 * 0.5, 8.0)];
@@ -211,7 +211,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = _allFieldViews;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
@@ -227,11 +227,11 @@
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 labelLabel];
-          [v16 setFont:v9];
+          labelLabel = [v15 labelLabel];
+          [labelLabel setFont:v9];
 
-          v17 = [v15 valueLabel];
-          [v17 setFont:self->_valueFont];
+          valueLabel = [v15 valueLabel];
+          [valueLabel setFont:self->_valueFont];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -244,11 +244,11 @@
   }
 }
 
-- (void)setVisibleFields:(unint64_t)a3
+- (void)setVisibleFields:(unint64_t)fields
 {
-  if (self->_visibleFields != a3)
+  if (self->_visibleFields != fields)
   {
-    self->_visibleFields = a3;
+    self->_visibleFields = fields;
     [(SKUICounterTimeView *)self setNeedsLayout];
   }
 }
@@ -256,8 +256,8 @@
 - (void)layoutSubviews
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUICounterTimeView *)self _allFieldViews];
-  v4 = [(SKUICounterTimeView *)self _visibleFieldViews];
+  _allFieldViews = [(SKUICounterTimeView *)self _allFieldViews];
+  _visibleFieldViews = [(SKUICounterTimeView *)self _visibleFieldViews];
   [(SKUICounterTimeView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -267,7 +267,7 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v11 = v3;
+  v11 = _allFieldViews;
   v12 = [v11 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v12)
   {
@@ -283,7 +283,7 @@
         }
 
         v16 = *(*(&v46 + 1) + 8 * i);
-        v17 = [v4 containsObject:v16];
+        v17 = [_visibleFieldViews containsObject:v16];
         if (v17)
         {
           [v16 frame];
@@ -308,14 +308,14 @@
     while (v13);
   }
 
-  v24 = [v4 count];
+  v24 = [_visibleFieldViews count];
   [(SKUICounterTimeView *)self _fieldSpacingForFieldCount:v24 fieldWidth:v9 totalWidth:v6];
   v26 = v25;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v27 = v4;
+  v27 = _visibleFieldViews;
   v28 = [v27 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v28)
   {
@@ -354,16 +354,16 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUICounterTimeView *)self _allFieldViews];
+  colorCopy = color;
+  _allFieldViews = [(SKUICounterTimeView *)self _allFieldViews];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [_allFieldViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -375,14 +375,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allFieldViews);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_allFieldViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -390,22 +390,22 @@
 
   v10.receiver = self;
   v10.super_class = SKUICounterTimeView;
-  [(SKUICounterTimeView *)&v10 setBackgroundColor:v4];
+  [(SKUICounterTimeView *)&v10 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v26 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  v8 = [(SKUICounterTimeView *)self _visibleFieldViews];
+  _visibleFieldViews = [(SKUICounterTimeView *)self _visibleFieldViews];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v9 = [_visibleFieldViews countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -417,7 +417,7 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_visibleFieldViews);
         }
 
         [*(*(&v21 + 1) + 8 * v12) sizeThatFits:{width, height}];
@@ -431,13 +431,13 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [_visibleFieldViews countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  v15 = [v8 count];
+  v15 = [_visibleFieldViews count];
   v16 = (v15 + 1);
   [(SKUICounterTimeView *)self _fieldSpacingForFieldCount:v15 fieldWidth:v7 totalWidth:width];
   v18 = v7 + v16 * v17;
@@ -467,9 +467,9 @@
   return v4;
 }
 
-- (double)_fieldSpacingForFieldCount:(int64_t)a3 fieldWidth:(double)a4 totalWidth:(double)a5
+- (double)_fieldSpacingForFieldCount:(int64_t)count fieldWidth:(double)width totalWidth:(double)totalWidth
 {
-  v5 = (a5 - a4) / (a3 + 1);
+  v5 = (totalWidth - width) / (count + 1);
   v6 = floorf(v5);
   v7 = 5.0;
   if (v6 > 5.0)
@@ -488,7 +488,7 @@
   return result;
 }
 
-- (void)_setValuesUsingTimestamp:(int64_t)a3
+- (void)_setValuesUsingTimestamp:(int64_t)timestamp
 {
   if (!_setValuesUsingTimestamp__sActualValueFormatter)
   {
@@ -510,40 +510,40 @@
   }
 
   v24 = _setValuesUsingTimestamp__sActualValueFormatter;
-  v9 = [(_SKUICounterTimeFieldView *)self->_daysFieldView valueLabel];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3 / 86400];
-  v11 = [v24 stringFromNumber:v10];
-  [v9 setText:v11];
+  valueLabel = [(_SKUICounterTimeFieldView *)self->_daysFieldView valueLabel];
+  86400 = [MEMORY[0x277CCABB0] numberWithInteger:timestamp / 86400];
+  v11 = [v24 stringFromNumber:86400];
+  [valueLabel setText:v11];
 
-  if (a3 >= 86400)
+  if (timestamp >= 86400)
   {
     v12 = _setValuesUsingTimestamp__sPaddedValueFormatter;
 
     v24 = v12;
   }
 
-  v13 = [(_SKUICounterTimeFieldView *)self->_hoursFieldView valueLabel];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3 / 3600 % 24];
+  valueLabel2 = [(_SKUICounterTimeFieldView *)self->_hoursFieldView valueLabel];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:timestamp / 3600 % 24];
   v15 = [v24 stringFromNumber:v14];
-  [v13 setText:v15];
+  [valueLabel2 setText:v15];
 
-  if (a3 / 3600 % 24 >= 1)
+  if (timestamp / 3600 % 24 >= 1)
   {
     v16 = _setValuesUsingTimestamp__sPaddedValueFormatter;
 
     v24 = v16;
   }
 
-  v17 = [(_SKUICounterTimeFieldView *)self->_minutesFieldView valueLabel];
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3 / 60 % 60];
+  valueLabel3 = [(_SKUICounterTimeFieldView *)self->_minutesFieldView valueLabel];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:timestamp / 60 % 60];
   v19 = [v24 stringFromNumber:v18];
-  [v17 setText:v19];
+  [valueLabel3 setText:v19];
 
-  v20 = [(_SKUICounterTimeFieldView *)self->_secondsFieldView valueLabel];
+  valueLabel4 = [(_SKUICounterTimeFieldView *)self->_secondsFieldView valueLabel];
   v21 = _setValuesUsingTimestamp__sPaddedValueFormatter;
-  v22 = [MEMORY[0x277CCABB0] numberWithInteger:a3 % 60];
+  v22 = [MEMORY[0x277CCABB0] numberWithInteger:timestamp % 60];
   v23 = [v21 stringFromNumber:v22];
-  [v20 setText:v23];
+  [valueLabel4 setText:v23];
 
   [(SKUICounterTimeView *)self setNeedsLayout];
 }
@@ -551,13 +551,13 @@
 - (id)_visibleFieldViews
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUICounterTimeView *)self _allFieldViews];
-  v15 = [MEMORY[0x277CBEB18] array];
+  _allFieldViews = [(SKUICounterTimeView *)self _allFieldViews];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = v3;
+  v4 = _allFieldViews;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -573,16 +573,16 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 valueLabel];
-        v11 = [v10 text];
-        if ([v11 length])
+        valueLabel = [v9 valueLabel];
+        text = [valueLabel text];
+        if ([text length])
         {
           visibleFields = self->_visibleFields;
           v13 = [v9 visibilityField] & visibleFields;
 
           if (v13)
           {
-            [v15 addObject:v9];
+            [array addObject:v9];
           }
         }
 
@@ -597,7 +597,7 @@
     while (v6);
   }
 
-  return v15;
+  return array;
 }
 
 - (void)initWithClientContext:.cold.1()

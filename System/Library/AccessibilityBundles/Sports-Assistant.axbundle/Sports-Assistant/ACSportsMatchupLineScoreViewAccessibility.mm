@@ -1,47 +1,47 @@
 @interface ACSportsMatchupLineScoreViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axPeriodNameForPeriod:(id)a3 withValue:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axPeriodNameForPeriod:(id)period withValue:(id)value;
 - (id)_axSportType;
 - (id)accessibilityLabel;
 @end
 
 @implementation ACSportsMatchupLineScoreViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ACSportsMatchupLineScoreView" hasInstanceMethod:@"periodNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ACSportsMatchupLineScoreView" hasInstanceMethod:@"firstScoreLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ACSportsMatchupLineScoreView" hasInstanceMethod:@"secondScoreLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsMatchup" hasInstanceMethod:@"homeEntity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsMatchup" hasInstanceMethod:@"awayEntity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsEntity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsEntity" hasInstanceMethod:@"league" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SASportsLeague" hasInstanceMethod:@"sport" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ACSportsMatchupLineScoreView" hasInstanceMethod:@"periodNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ACSportsMatchupLineScoreView" hasInstanceMethod:@"firstScoreLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ACSportsMatchupLineScoreView" hasInstanceMethod:@"secondScoreLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsMatchup" hasInstanceMethod:@"homeEntity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsMatchup" hasInstanceMethod:@"awayEntity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsEntity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsEntity" hasInstanceMethod:@"league" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SASportsLeague" hasInstanceMethod:@"sport" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(ACSportsMatchupLineScoreViewAccessibility *)self safeValueForKey:@"periodNameLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(ACSportsMatchupLineScoreViewAccessibility *)self _accessibilityValueForKey:@"AXSportsScorePeriodType"];
-  v6 = [(ACSportsMatchupLineScoreViewAccessibility *)self _axPeriodNameForPeriod:v5 withValue:v4];
+  v6 = [(ACSportsMatchupLineScoreViewAccessibility *)self _axPeriodNameForPeriod:v5 withValue:accessibilityLabel];
 
   v7 = [(ACSportsMatchupLineScoreViewAccessibility *)self safeValueForKey:@"firstScoreLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel2 = [v7 accessibilityLabel];
 
   v9 = [(ACSportsMatchupLineScoreViewAccessibility *)self safeValueForKey:@"secondScoreLabel"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel3 = [v9 accessibilityLabel];
 
   v11 = __UIAXStringForVariables();
-  v12 = [(ACSportsMatchupLineScoreViewAccessibility *)self _accessibilityValueForKey:@"AXSportsMatchup", v8, v10, @"__AXStringForVariablesSentinel"];
+  v12 = [(ACSportsMatchupLineScoreViewAccessibility *)self _accessibilityValueForKey:@"AXSportsMatchup", accessibilityLabel2, accessibilityLabel3, @"__AXStringForVariablesSentinel"];
   v13 = v12;
   if (v12)
   {
     v14 = [v12 safeValueForKey:@"homeEntity"];
     [v14 safeValueForKey:@"name"];
-    v15 = v22 = v4;
+    v15 = v22 = accessibilityLabel;
 
     v16 = [v13 safeValueForKey:@"awayEntity"];
     v17 = [v16 safeValueForKey:@"name"];
@@ -53,49 +53,49 @@
 
     v20 = __UIAXStringForVariables();
 
-    v4 = v22;
+    accessibilityLabel = v22;
     v11 = v20;
-    v10 = v19;
-    v8 = v18;
+    accessibilityLabel3 = v19;
+    accessibilityLabel2 = v18;
   }
 
   return v11;
 }
 
-- (id)_axPeriodNameForPeriod:(id)a3 withValue:(id)a4
+- (id)_axPeriodNameForPeriod:(id)period withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  periodCopy = period;
+  valueCopy = value;
   if (_axPeriodNameForPeriod_withValue__onceToken != -1)
   {
     [ACSportsMatchupLineScoreViewAccessibility _axPeriodNameForPeriod:withValue:];
   }
 
-  v8 = [v7 integerValue];
+  integerValue = [valueCopy integerValue];
   v9 = _axPeriodNameForPeriod_withValue__OrdinalNumberFormatter;
-  v10 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(v7, "integerValue")}];
+  v10 = [MEMORY[0x29EDBA070] numberWithInteger:{objc_msgSend(valueCopy, "integerValue")}];
   v11 = [v9 stringFromNumber:v10];
 
-  v12 = [(ACSportsMatchupLineScoreViewAccessibility *)self _axSportType];
-  if (([v12 isEqualToString:@"Baseball"] & 1) != 0 || !objc_msgSend(v6, "isEqualToString:", @"total"))
+  _axSportType = [(ACSportsMatchupLineScoreViewAccessibility *)self _axSportType];
+  if (([_axSportType isEqualToString:@"Baseball"] & 1) != 0 || !objc_msgSend(periodCopy, "isEqualToString:", @"total"))
   {
-    if ([v12 isEqualToString:@"Baseball"])
+    if ([_axSportType isEqualToString:@"Baseball"])
     {
-      if (v6 && !v8)
+      if (periodCopy && !integerValue)
       {
-        if ([v6 isEqualToString:@"total"])
+        if ([periodCopy isEqualToString:@"total"])
         {
           v13 = @"sport.baseball.runs";
           goto LABEL_36;
         }
 
-        if ([v6 isEqualToString:@"hits"])
+        if ([periodCopy isEqualToString:@"hits"])
         {
           v13 = @"sport.baseball.hits";
           goto LABEL_36;
         }
 
-        if ([v6 isEqualToString:@"errors"])
+        if ([periodCopy isEqualToString:@"errors"])
         {
           v13 = @"sport.baseball.errors";
           goto LABEL_36;
@@ -110,9 +110,9 @@ LABEL_18:
       v15 = @"sport.baseball.inning";
     }
 
-    else if ([v12 isEqualToString:@"Football"])
+    else if ([_axSportType isEqualToString:@"Football"])
     {
-      if (v6 && !v8)
+      if (periodCopy && !integerValue)
       {
         goto LABEL_18;
       }
@@ -123,14 +123,14 @@ LABEL_18:
 
     else
     {
-      if ([v12 isEqualToString:@"Soccer"])
+      if ([_axSportType isEqualToString:@"Soccer"])
       {
         goto LABEL_18;
       }
 
-      if ([v12 isEqualToString:@"Hockey"])
+      if ([_axSportType isEqualToString:@"Hockey"])
       {
-        if (v6 && !v8)
+        if (periodCopy && !integerValue)
         {
           goto LABEL_18;
         }
@@ -141,11 +141,11 @@ LABEL_18:
 
       else
       {
-        v18 = [v12 isEqualToString:@"Basketball"];
+        v18 = [_axSportType isEqualToString:@"Basketball"];
         v17 = 0;
-        if (v6)
+        if (periodCopy)
         {
-          v19 = v8 == 0;
+          v19 = integerValue == 0;
         }
 
         else

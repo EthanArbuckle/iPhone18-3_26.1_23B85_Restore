@@ -1,20 +1,20 @@
 @interface NSAttributedString
-+ (id)fr_accessibilityAttributedStringForHighPriorityAnnouncement:(id)a3;
-+ (id)fr_accessibilityAttributedStringForSpeakingStringInLowerPitch:(id)a3;
-+ (id)fr_attributedString:(id)a3;
-+ (id)fr_attributedStringWithString:(id)a3 font:(id)a4;
++ (id)fr_accessibilityAttributedStringForHighPriorityAnnouncement:(id)announcement;
++ (id)fr_accessibilityAttributedStringForSpeakingStringInLowerPitch:(id)pitch;
++ (id)fr_attributedString:(id)string;
++ (id)fr_attributedStringWithString:(id)string font:(id)font;
 - (id)fr_accessibilityAttributedStringForHighPriorityAnnouncement;
 @end
 
 @implementation NSAttributedString
 
-+ (id)fr_attributedString:(id)a3
++ (id)fr_attributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  if (v3)
+  if (stringCopy)
   {
-    v3[2](v3, v4);
+    stringCopy[2](stringCopy, v4);
   }
 
   v5 = [v4 copy];
@@ -34,40 +34,40 @@
   return v8;
 }
 
-+ (id)fr_attributedStringWithString:(id)a3 font:(id)a4
++ (id)fr_attributedStringWithString:(id)string font:(id)font
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  fontCopy = font;
+  stringCopy = string;
+  v8 = [self alloc];
   v12 = NSFontAttributeName;
-  v13 = v6;
+  v13 = fontCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
 
-  v10 = [v8 initWithString:v7 attributes:v9];
+  v10 = [v8 initWithString:stringCopy attributes:v9];
 
   return v10;
 }
 
-+ (id)fr_accessibilityAttributedStringForSpeakingStringInLowerPitch:(id)a3
++ (id)fr_accessibilityAttributedStringForSpeakingStringInLowerPitch:(id)pitch
 {
-  v3 = a3;
+  pitchCopy = pitch;
   v4 = [NSAttributedString alloc];
   v8 = UIAccessibilityTokenLowPitch;
   v9 = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v6 = [v4 initWithString:v3 attributes:v5];
+  v6 = [v4 initWithString:pitchCopy attributes:v5];
 
   return v6;
 }
 
-+ (id)fr_accessibilityAttributedStringForHighPriorityAnnouncement:(id)a3
++ (id)fr_accessibilityAttributedStringForHighPriorityAnnouncement:(id)announcement
 {
-  v3 = a3;
+  announcementCopy = announcement;
   v4 = [NSAttributedString alloc];
   v8 = UIAccessibilityTokenAnnouncementPriority;
   v9 = &off_1000CB540;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  v6 = [v4 initWithString:v3 attributes:v5];
+  v6 = [v4 initWithString:announcementCopy attributes:v5];
 
   return v6;
 }

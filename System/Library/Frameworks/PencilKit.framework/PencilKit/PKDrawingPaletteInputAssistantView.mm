@@ -2,7 +2,7 @@
 - (BOOL)_useThreeButtonLayout;
 - (BOOL)hasInputAssistantItems;
 - (CGSize)intrinsicContentSize;
-- (PKDrawingPaletteInputAssistantView)initWithFrame:(CGRect)a3;
+- (PKDrawingPaletteInputAssistantView)initWithFrame:(CGRect)frame;
 - (double)_contentStackViewSpacing;
 - (id)_topOrTrailingGroupViewButtons;
 - (int64_t)_contentStackViewAlignment;
@@ -12,33 +12,33 @@
 - (void)_updateContentViewSpacing;
 - (void)_updateGroupViewContents;
 - (void)_updateUI;
-- (void)addViewStateObserver:(id)a3;
-- (void)buttonDidChangeIntrinsicContentSize:(id)a3;
-- (void)removeViewStateObserver:(id)a3;
-- (void)setButtons:(id)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setEnableKeyboardButtons:(BOOL)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setShouldShowKeyboardButton:(BOOL)a3;
-- (void)setShouldShowReturnKeyButton:(BOOL)a3;
-- (void)setUseCompactLayout:(BOOL)a3;
+- (void)addViewStateObserver:(id)observer;
+- (void)buttonDidChangeIntrinsicContentSize:(id)size;
+- (void)removeViewStateObserver:(id)observer;
+- (void)setButtons:(id)buttons;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setEnableKeyboardButtons:(BOOL)buttons;
+- (void)setScalingFactor:(double)factor;
+- (void)setShouldShowKeyboardButton:(BOOL)button;
+- (void)setShouldShowReturnKeyButton:(BOOL)button;
+- (void)setUseCompactLayout:(BOOL)layout;
 @end
 
 @implementation PKDrawingPaletteInputAssistantView
 
-- (PKDrawingPaletteInputAssistantView)initWithFrame:(CGRect)a3
+- (PKDrawingPaletteInputAssistantView)initWithFrame:(CGRect)frame
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = PKDrawingPaletteInputAssistantView;
-  v3 = [(PKDrawingPaletteInputAssistantView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDrawingPaletteInputAssistantView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_scalingFactor = 1.0;
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     viewStateObservers = v4->_viewStateObservers;
-    v4->_viewStateObservers = v5;
+    v4->_viewStateObservers = weakObjectsHashTable;
 
     v7 = objc_alloc_init(MEMORY[0x1E69DCF90]);
     contentStackView = v4->_contentStackView;
@@ -60,13 +60,13 @@
     [(PKPaletteButtonGroupView *)v4->_bottomOrLeadingGroupView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_contentStackView addArrangedSubview:v4->_bottomOrLeadingGroupView];
     v13 = MEMORY[0x1E696ACD8];
-    v14 = [(UIStackView *)v4->_contentStackView centerXAnchor];
-    v15 = [(PKDrawingPaletteInputAssistantView *)v4 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerXAnchor = [(UIStackView *)v4->_contentStackView centerXAnchor];
+    centerXAnchor2 = [(PKDrawingPaletteInputAssistantView *)v4 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v23[0] = v16;
-    v17 = [(UIStackView *)v4->_contentStackView centerYAnchor];
-    v18 = [(PKDrawingPaletteInputAssistantView *)v4 centerYAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerYAnchor = [(UIStackView *)v4->_contentStackView centerYAnchor];
+    centerYAnchor2 = [(PKDrawingPaletteInputAssistantView *)v4 centerYAnchor];
+    v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v23[1] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     [v13 activateConstraints:v20];
@@ -81,8 +81,8 @@
 {
   if ([(PKDrawingPaletteInputAssistantView *)self useCompactLayout])
   {
-    v3 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-    [v3 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+    contentStackView = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+    [contentStackView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
     v5 = v4;
     v7 = v6;
 
@@ -92,11 +92,11 @@
 
   else
   {
-    v10 = [(PKDrawingPaletteInputAssistantView *)self _useThreeButtonLayout];
-    v11 = [(PKDrawingPaletteInputAssistantView *)self edgeLocation];
-    if (v10)
+    _useThreeButtonLayout = [(PKDrawingPaletteInputAssistantView *)self _useThreeButtonLayout];
+    edgeLocation = [(PKDrawingPaletteInputAssistantView *)self edgeLocation];
+    if (_useThreeButtonLayout)
     {
-      v12 = v11 == 2 || v11 == 8;
+      v12 = edgeLocation == 2 || edgeLocation == 8;
       if (v12)
       {
         v13 = 84.0;
@@ -138,18 +138,18 @@
   return result;
 }
 
-- (void)addViewStateObserver:(id)a3
+- (void)addViewStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteInputAssistantView *)self viewStateObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  viewStateObservers = [(PKDrawingPaletteInputAssistantView *)self viewStateObservers];
+  [viewStateObservers addObject:observerCopy];
 }
 
-- (void)removeViewStateObserver:(id)a3
+- (void)removeViewStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKDrawingPaletteInputAssistantView *)self viewStateObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  viewStateObservers = [(PKDrawingPaletteInputAssistantView *)self viewStateObservers];
+  [viewStateObservers removeObject:observerCopy];
 }
 
 - (void)_notifyViewStateDidChange
@@ -159,8 +159,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PKDrawingPaletteInputAssistantView *)self viewStateObservers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  viewStateObservers = [(PKDrawingPaletteInputAssistantView *)self viewStateObservers];
+  v4 = [viewStateObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -172,14 +172,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewStateObservers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) paletteInputAssistantViewDidChangeViewState:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [viewStateObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -188,25 +188,25 @@
 
 - (BOOL)hasInputAssistantItems
 {
-  v3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-  v4 = [v3 count] || -[PKDrawingPaletteInputAssistantView shouldShowKeyboardButton](self, "shouldShowKeyboardButton") || -[PKDrawingPaletteInputAssistantView shouldShowReturnKeyButton](self, "shouldShowReturnKeyButton");
+  buttons = [(PKDrawingPaletteInputAssistantView *)self buttons];
+  v4 = [buttons count] || -[PKDrawingPaletteInputAssistantView shouldShowKeyboardButton](self, "shouldShowKeyboardButton") || -[PKDrawingPaletteInputAssistantView shouldShowReturnKeyButton](self, "shouldShowReturnKeyButton");
 
   return v4;
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonsCopy = buttons;
   buttons = self->_buttons;
-  if (buttons != v4)
+  if (buttons != buttonsCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = buttons;
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    buttonsCopy2 = buttons;
+    v7 = [(NSArray *)buttonsCopy2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v7)
     {
       v8 = v7;
@@ -217,7 +217,7 @@
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(buttonsCopy2);
           }
 
           v11 = *(*(&v24 + 1) + 8 * i);
@@ -225,13 +225,13 @@
           [v11 removeFromSuperview];
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v8 = [(NSArray *)buttonsCopy2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v8);
     }
 
-    v12 = [(NSArray *)v4 copy];
+    v12 = [(NSArray *)buttonsCopy copy];
     v13 = self->_buttons;
     self->_buttons = v12;
 
@@ -270,44 +270,44 @@
   }
 }
 
-- (void)setUseCompactLayout:(BOOL)a3
+- (void)setUseCompactLayout:(BOOL)layout
 {
-  if (self->_useCompactLayout != a3)
+  if (self->_useCompactLayout != layout)
   {
-    self->_useCompactLayout = a3;
+    self->_useCompactLayout = layout;
     [(PKDrawingPaletteInputAssistantView *)self _updateUI];
 
     [(PKDrawingPaletteInputAssistantView *)self _notifyViewStateDidChange];
   }
 }
 
-- (void)setShouldShowKeyboardButton:(BOOL)a3
+- (void)setShouldShowKeyboardButton:(BOOL)button
 {
-  if (self->_shouldShowKeyboardButton != a3)
+  if (self->_shouldShowKeyboardButton != button)
   {
-    self->_shouldShowKeyboardButton = a3;
+    self->_shouldShowKeyboardButton = button;
     [(PKDrawingPaletteInputAssistantView *)self _updateUI];
 
     [(PKDrawingPaletteInputAssistantView *)self _notifyViewStateDidChange];
   }
 }
 
-- (void)setShouldShowReturnKeyButton:(BOOL)a3
+- (void)setShouldShowReturnKeyButton:(BOOL)button
 {
-  if (self->_shouldShowReturnKeyButton != a3)
+  if (self->_shouldShowReturnKeyButton != button)
   {
-    self->_shouldShowReturnKeyButton = a3;
+    self->_shouldShowReturnKeyButton = button;
     [(PKDrawingPaletteInputAssistantView *)self _updateUI];
 
     [(PKDrawingPaletteInputAssistantView *)self _notifyViewStateDidChange];
   }
 }
 
-- (void)setEnableKeyboardButtons:(BOOL)a3
+- (void)setEnableKeyboardButtons:(BOOL)buttons
 {
-  if (self->_enableKeyboardButtons != a3)
+  if (self->_enableKeyboardButtons != buttons)
   {
-    self->_enableKeyboardButtons = a3;
+    self->_enableKeyboardButtons = buttons;
     [(PKDrawingPaletteInputAssistantView *)self _updateUI];
 
     [(PKDrawingPaletteInputAssistantView *)self _notifyViewStateDidChange];
@@ -321,34 +321,34 @@
     v6 = +[PKPaletteButton keyboardButton];
     [(PKDrawingPaletteInputAssistantView *)self setKeyboardButton:v6];
 
-    v7 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-    [v7 addIntrinsicContentSizeObserver:self];
+    keyboardButton = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+    [keyboardButton addIntrinsicContentSizeObserver:self];
   }
 
   else if (![(PKDrawingPaletteInputAssistantView *)self shouldShowKeyboardButton])
   {
-    v4 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+    keyboardButton2 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
 
-    if (v4)
+    if (keyboardButton2)
     {
-      v5 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-      [v5 removeFromSuperview];
+      keyboardButton3 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+      [keyboardButton3 removeFromSuperview];
 
       [(PKDrawingPaletteInputAssistantView *)self setKeyboardButton:0];
     }
   }
 
-  v8 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+  keyboardButton4 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
 
-  if (v8)
+  if (keyboardButton4)
   {
-    v9 = [(PKDrawingPaletteInputAssistantView *)self useCompactLayout];
-    v10 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-    [v10 setUseCompactLayout:v9];
+    useCompactLayout = [(PKDrawingPaletteInputAssistantView *)self useCompactLayout];
+    keyboardButton5 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+    [keyboardButton5 setUseCompactLayout:useCompactLayout];
 
-    v11 = [(PKDrawingPaletteInputAssistantView *)self enableKeyboardButtons];
-    v12 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-    [v12 setEnableKeyboardToggle:v11];
+    enableKeyboardButtons = [(PKDrawingPaletteInputAssistantView *)self enableKeyboardButtons];
+    keyboardButton6 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+    [keyboardButton6 setEnableKeyboardToggle:enableKeyboardButtons];
   }
 
   if ([(PKDrawingPaletteInputAssistantView *)self shouldShowReturnKeyButton]&& ([(PKDrawingPaletteInputAssistantView *)self returnKeyButton], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
@@ -356,34 +356,34 @@
     v16 = +[PKPaletteButton returnKeyButton];
     [(PKDrawingPaletteInputAssistantView *)self setReturnKeyButton:v16];
 
-    v17 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-    [v17 addIntrinsicContentSizeObserver:self];
+    returnKeyButton = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+    [returnKeyButton addIntrinsicContentSizeObserver:self];
   }
 
   else if (![(PKDrawingPaletteInputAssistantView *)self shouldShowReturnKeyButton])
   {
-    v14 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+    returnKeyButton2 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
 
-    if (v14)
+    if (returnKeyButton2)
     {
-      v15 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-      [v15 removeFromSuperview];
+      returnKeyButton3 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+      [returnKeyButton3 removeFromSuperview];
 
       [(PKDrawingPaletteInputAssistantView *)self setReturnKeyButton:0];
     }
   }
 
-  v18 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+  returnKeyButton4 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
 
-  if (v18)
+  if (returnKeyButton4)
   {
-    v19 = [(PKDrawingPaletteInputAssistantView *)self useCompactLayout];
-    v20 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-    [v20 setUseCompactLayout:v19];
+    useCompactLayout2 = [(PKDrawingPaletteInputAssistantView *)self useCompactLayout];
+    returnKeyButton5 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+    [returnKeyButton5 setUseCompactLayout:useCompactLayout2];
 
-    v21 = [(PKDrawingPaletteInputAssistantView *)self enableKeyboardButtons];
-    v22 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-    [v22 setEnabled:v21];
+    enableKeyboardButtons2 = [(PKDrawingPaletteInputAssistantView *)self enableKeyboardButtons];
+    returnKeyButton6 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+    [returnKeyButton6 setEnabled:enableKeyboardButtons2];
   }
 
   v23[0] = MEMORY[0x1E69E9820];
@@ -409,17 +409,17 @@ uint64_t __47__PKDrawingPaletteInputAssistantView__updateUI__block_invoke(uint64
 
 - (BOOL)_useThreeButtonLayout
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (!v5 || [(PKDrawingPaletteInputAssistantView *)self useCompactLayout]|| ![(PKDrawingPaletteInputAssistantView *)self shouldShowKeyboardButton]|| ![(PKDrawingPaletteInputAssistantView *)self shouldShowReturnKeyButton])
   {
     return 0;
   }
 
-  v6 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-  v7 = [v6 count] == 1;
+  buttons = [(PKDrawingPaletteInputAssistantView *)self buttons];
+  v7 = [buttons count] == 1;
 
   return v7;
 }
@@ -427,8 +427,8 @@ uint64_t __47__PKDrawingPaletteInputAssistantView__updateUI__block_invoke(uint64
 - (void)_updateGroupViewContents
 {
   v106 = *MEMORY[0x1E69E9840];
-  v3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-  v4 = [v3 count];
+  buttons = [(PKDrawingPaletteInputAssistantView *)self buttons];
+  v4 = [buttons count];
 
   if (v4)
   {
@@ -436,8 +436,8 @@ uint64_t __47__PKDrawingPaletteInputAssistantView__updateUI__block_invoke(uint64
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v5 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-    v6 = [v5 countByEnumeratingWithState:&v95 objects:v105 count:16];
+    buttons2 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+    v6 = [buttons2 countByEnumeratingWithState:&v95 objects:v105 count:16];
     if (v6)
     {
       v7 = v6;
@@ -448,200 +448,200 @@ uint64_t __47__PKDrawingPaletteInputAssistantView__updateUI__block_invoke(uint64
         {
           if (*v96 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(buttons2);
           }
 
           [*(*(&v95 + 1) + 8 * i) setUseCompactLayout:{-[PKDrawingPaletteInputAssistantView useCompactLayout](self, "useCompactLayout")}];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v95 objects:v105 count:16];
+        v7 = [buttons2 countByEnumeratingWithState:&v95 objects:v105 count:16];
       }
 
       while (v7);
     }
 
-    v10 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-    [v10 removeAllButtons];
+    topOrTrailingGroupView = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+    [topOrTrailingGroupView removeAllButtons];
 
-    v11 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-    [v11 removeAllButtons];
+    bottomOrLeadingGroupView = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+    [bottomOrLeadingGroupView removeAllButtons];
 
-    v12 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-    [v12 removeFromSuperview];
+    keyboardButton = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+    [keyboardButton removeFromSuperview];
 
-    v13 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-    [v13 removeFromSuperview];
+    returnKeyButton = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+    [returnKeyButton removeFromSuperview];
 
-    v14 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-    v15 = [(PKDrawingPaletteInputAssistantView *)self _topOrTrailingGroupViewButtons];
-    [v14 addButtonsFromArray:v15];
+    topOrTrailingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+    _topOrTrailingGroupViewButtons = [(PKDrawingPaletteInputAssistantView *)self _topOrTrailingGroupViewButtons];
+    [topOrTrailingGroupView2 addButtonsFromArray:_topOrTrailingGroupViewButtons];
 
     if ([(PKDrawingPaletteInputAssistantView *)self useCompactLayout])
     {
-      v16 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-      v17 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-      [v16 addButtonsFromArray:v17];
+      bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+      buttons3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+      [bottomOrLeadingGroupView2 addButtonsFromArray:buttons3];
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v18 = [(PKDrawingPaletteInputAssistantView *)self _useThreeButtonLayout];
-    v19 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-    v20 = v19;
-    if (v18)
+    _useThreeButtonLayout = [(PKDrawingPaletteInputAssistantView *)self _useThreeButtonLayout];
+    topOrTrailingGroupView3 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+    v20 = topOrTrailingGroupView3;
+    if (_useThreeButtonLayout)
     {
-      [v19 removeAllButtons];
+      [topOrTrailingGroupView3 removeAllButtons];
 
-      v21 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-      [(PKDrawingPaletteInputAssistantView *)self addSubview:v21];
+      keyboardButton2 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+      [(PKDrawingPaletteInputAssistantView *)self addSubview:keyboardButton2];
 
-      v22 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-      [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+      keyboardButton3 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+      [keyboardButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v23 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-      [(PKDrawingPaletteInputAssistantView *)self addSubview:v23];
+      returnKeyButton2 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+      [(PKDrawingPaletteInputAssistantView *)self addSubview:returnKeyButton2];
 
-      v24 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-      [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+      returnKeyButton3 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+      [returnKeyButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v25 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-      v16 = [v25 lastObject];
+      buttons4 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+      bottomOrLeadingGroupView2 = [buttons4 lastObject];
 
-      [v16 removeFromSuperview];
-      [(PKDrawingPaletteInputAssistantView *)self addSubview:v16];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [bottomOrLeadingGroupView2 removeFromSuperview];
+      [(PKDrawingPaletteInputAssistantView *)self addSubview:bottomOrLeadingGroupView2];
+      [bottomOrLeadingGroupView2 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(PKDrawingPaletteInputAssistantView *)self scalingFactor];
       v27 = v26 * 12.0;
-      v28 = [(PKDrawingPaletteInputAssistantView *)self edgeLocation];
-      if (v28 == 8 || v28 == 2)
+      edgeLocation = [(PKDrawingPaletteInputAssistantView *)self edgeLocation];
+      if (edgeLocation == 8 || edgeLocation == 2)
       {
         v69 = MEMORY[0x1E696ACD8];
-        v70 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-        v67 = [v70 topAnchor];
-        v68 = [(PKDrawingPaletteInputAssistantView *)self topAnchor];
-        v94 = [v67 constraintGreaterThanOrEqualToAnchor:v68];
+        returnKeyButton4 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+        topAnchor = [returnKeyButton4 topAnchor];
+        topAnchor2 = [(PKDrawingPaletteInputAssistantView *)self topAnchor];
+        v94 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
         v104[0] = v94;
-        v93 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-        v29 = [v93 centerXAnchor];
-        v91 = [(PKDrawingPaletteInputAssistantView *)self centerXAnchor];
-        v92 = v29;
-        v90 = [v29 constraintEqualToAnchor:v91];
+        returnKeyButton5 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+        centerXAnchor = [returnKeyButton5 centerXAnchor];
+        centerXAnchor2 = [(PKDrawingPaletteInputAssistantView *)self centerXAnchor];
+        v92 = centerXAnchor;
+        v90 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v104[1] = v90;
-        v89 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-        v30 = [v89 bottomAnchor];
-        v87 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        [v87 topAnchor];
-        v86 = v88 = v30;
-        v85 = [v30 constraintEqualToAnchor:-v27 constant:?];
+        returnKeyButton6 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+        bottomAnchor = [returnKeyButton6 bottomAnchor];
+        keyboardButton4 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        [keyboardButton4 topAnchor];
+        v86 = v88 = bottomAnchor;
+        v85 = [bottomAnchor constraintEqualToAnchor:-v27 constant:?];
         v104[2] = v85;
-        v31 = [v16 leadingAnchor];
-        v83 = [(PKDrawingPaletteInputAssistantView *)self leadingAnchor];
-        v84 = v31;
-        v82 = [v31 constraintEqualToAnchor:v83];
+        leadingAnchor = [bottomOrLeadingGroupView2 leadingAnchor];
+        leadingAnchor2 = [(PKDrawingPaletteInputAssistantView *)self leadingAnchor];
+        centerYAnchor = leadingAnchor;
+        v82 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v104[3] = v82;
-        v32 = [v16 trailingAnchor];
-        v80 = [(PKDrawingPaletteInputAssistantView *)self centerXAnchor];
-        v81 = v32;
-        v79 = [v32 constraintEqualToAnchor:v80 constant:-(v27 * 0.5)];
+        trailingAnchor = [bottomOrLeadingGroupView2 trailingAnchor];
+        centerXAnchor3 = [(PKDrawingPaletteInputAssistantView *)self centerXAnchor];
+        trailingAnchor6 = trailingAnchor;
+        v79 = [trailingAnchor constraintEqualToAnchor:centerXAnchor3 constant:-(v27 * 0.5)];
         v104[4] = v79;
-        v33 = [v16 bottomAnchor];
-        v77 = [(PKDrawingPaletteInputAssistantView *)self bottomAnchor];
-        v78 = v33;
-        v76 = [v33 constraintEqualToAnchor:v77];
-        v104[5] = v76;
-        v75 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        v34 = [v75 leadingAnchor];
-        v73 = [(PKDrawingPaletteInputAssistantView *)self centerXAnchor];
-        v74 = v34;
-        v72 = [v34 constraintEqualToAnchor:v73 constant:v27 * 0.5];
+        bottomAnchor2 = [bottomOrLeadingGroupView2 bottomAnchor];
+        bottomAnchor3 = [(PKDrawingPaletteInputAssistantView *)self bottomAnchor];
+        bottomAnchor8 = bottomAnchor2;
+        returnKeyButton7 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+        v104[5] = returnKeyButton7;
+        keyboardButton5 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        leadingAnchor3 = [keyboardButton5 leadingAnchor];
+        centerXAnchor4 = [(PKDrawingPaletteInputAssistantView *)self centerXAnchor];
+        keyboardButton9 = leadingAnchor3;
+        v72 = [leadingAnchor3 constraintEqualToAnchor:centerXAnchor4 constant:v27 * 0.5];
         v104[6] = v72;
-        v35 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        v36 = [v35 trailingAnchor];
-        v37 = [(PKDrawingPaletteInputAssistantView *)self trailingAnchor];
-        v38 = [v36 constraintEqualToAnchor:v37];
+        keyboardButton6 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        trailingAnchor2 = [keyboardButton6 trailingAnchor];
+        trailingAnchor3 = [(PKDrawingPaletteInputAssistantView *)self trailingAnchor];
+        v38 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
         v104[7] = v38;
-        v39 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        v40 = [v39 bottomAnchor];
-        v41 = [(PKDrawingPaletteInputAssistantView *)self bottomAnchor];
-        v42 = [v40 constraintEqualToAnchor:v41];
+        keyboardButton7 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        bottomAnchor4 = [keyboardButton7 bottomAnchor];
+        bottomAnchor5 = [(PKDrawingPaletteInputAssistantView *)self bottomAnchor];
+        v42 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
         v104[8] = v42;
         v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:9];
         [v69 activateConstraints:v43];
 
-        v44 = v67;
-        v45 = v70;
+        topAnchor3 = topAnchor;
+        keyboardButton8 = returnKeyButton4;
 
-        v46 = v68;
+        topAnchor4 = topAnchor2;
       }
 
       else
       {
         v71 = MEMORY[0x1E696ACD8];
-        v45 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        v44 = [v45 topAnchor];
-        v46 = [(PKDrawingPaletteInputAssistantView *)self topAnchor];
-        v94 = [v44 constraintGreaterThanOrEqualToAnchor:v46];
+        keyboardButton8 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        topAnchor3 = [keyboardButton8 topAnchor];
+        topAnchor4 = [(PKDrawingPaletteInputAssistantView *)self topAnchor];
+        v94 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
         v103[0] = v94;
-        v93 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        v55 = [v93 bottomAnchor];
-        v91 = [(PKDrawingPaletteInputAssistantView *)self centerYAnchor];
-        v92 = v55;
-        v90 = [v55 constraintEqualToAnchor:v91 constant:-(v27 * 0.5)];
+        returnKeyButton5 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        bottomAnchor6 = [returnKeyButton5 bottomAnchor];
+        centerXAnchor2 = [(PKDrawingPaletteInputAssistantView *)self centerYAnchor];
+        v92 = bottomAnchor6;
+        v90 = [bottomAnchor6 constraintEqualToAnchor:centerXAnchor2 constant:-(v27 * 0.5)];
         v103[1] = v90;
-        v89 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        v56 = [v89 trailingAnchor];
-        v87 = [(PKDrawingPaletteInputAssistantView *)self trailingAnchor];
-        v88 = v56;
-        v86 = [v56 constraintEqualToAnchor:v87];
+        returnKeyButton6 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        trailingAnchor4 = [returnKeyButton6 trailingAnchor];
+        keyboardButton4 = [(PKDrawingPaletteInputAssistantView *)self trailingAnchor];
+        v88 = trailingAnchor4;
+        v86 = [trailingAnchor4 constraintEqualToAnchor:keyboardButton4];
         v103[2] = v86;
-        v57 = [v16 topAnchor];
-        v84 = [(PKDrawingPaletteInputAssistantView *)self centerYAnchor];
-        v85 = v57;
-        v83 = [v57 constraintEqualToAnchor:v84 constant:v27 * 0.5];
-        v103[3] = v83;
-        v58 = [v16 trailingAnchor];
-        v81 = [(PKDrawingPaletteInputAssistantView *)self trailingAnchor];
-        v82 = v58;
-        v80 = [v58 constraintEqualToAnchor:v81];
-        v103[4] = v80;
-        v59 = [v16 bottomAnchor];
-        v78 = [(PKDrawingPaletteInputAssistantView *)self bottomAnchor];
-        v79 = v59;
-        v77 = [v59 constraintLessThanOrEqualToAnchor:v78];
-        v103[5] = v77;
-        v76 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-        v60 = [v76 trailingAnchor];
-        v74 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        [v74 leadingAnchor];
-        v73 = v75 = v60;
-        v72 = [v60 constraintEqualToAnchor:-v27 constant:?];
+        topAnchor5 = [bottomOrLeadingGroupView2 topAnchor];
+        centerYAnchor = [(PKDrawingPaletteInputAssistantView *)self centerYAnchor];
+        v85 = topAnchor5;
+        leadingAnchor2 = [topAnchor5 constraintEqualToAnchor:centerYAnchor constant:v27 * 0.5];
+        v103[3] = leadingAnchor2;
+        trailingAnchor5 = [bottomOrLeadingGroupView2 trailingAnchor];
+        trailingAnchor6 = [(PKDrawingPaletteInputAssistantView *)self trailingAnchor];
+        v82 = trailingAnchor5;
+        centerXAnchor3 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+        v103[4] = centerXAnchor3;
+        bottomAnchor7 = [bottomOrLeadingGroupView2 bottomAnchor];
+        bottomAnchor8 = [(PKDrawingPaletteInputAssistantView *)self bottomAnchor];
+        v79 = bottomAnchor7;
+        bottomAnchor3 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
+        v103[5] = bottomAnchor3;
+        returnKeyButton7 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+        trailingAnchor7 = [returnKeyButton7 trailingAnchor];
+        keyboardButton9 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        [keyboardButton9 leadingAnchor];
+        centerXAnchor4 = keyboardButton5 = trailingAnchor7;
+        v72 = [trailingAnchor7 constraintEqualToAnchor:-v27 constant:?];
         v103[6] = v72;
-        v35 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-        v36 = [v35 centerYAnchor];
-        v37 = [(PKDrawingPaletteInputAssistantView *)self centerYAnchor];
-        v38 = [v36 constraintEqualToAnchor:v37];
+        keyboardButton6 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+        trailingAnchor2 = [keyboardButton6 centerYAnchor];
+        trailingAnchor3 = [(PKDrawingPaletteInputAssistantView *)self centerYAnchor];
+        v38 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
         v103[7] = v38;
-        v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:8];
-        [v71 activateConstraints:v39];
+        keyboardButton7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:8];
+        [v71 activateConstraints:keyboardButton7];
       }
 
       goto LABEL_30;
     }
 
-    v47 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-    v48 = v47;
+    buttons5 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+    v48 = buttons5;
     if (v4 > 2)
     {
       if (v4 == 3)
       {
-        v65 = [v47 subarrayWithRange:{0, 2}];
+        v65 = [buttons5 subarrayWithRange:{0, 2}];
         [v20 addButtonsFromArray:v65];
 
-        v16 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-        v17 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-        v51 = [v17 lastObject];
-        v100 = v51;
+        bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+        buttons3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+        lastObject = [buttons3 lastObject];
+        v100 = lastObject;
         v52 = MEMORY[0x1E695DEC8];
         v53 = &v100;
         goto LABEL_27;
@@ -649,13 +649,13 @@ LABEL_29:
 
       if (v4 == 4)
       {
-        v54 = [v47 subarrayWithRange:{0, 2}];
+        v54 = [buttons5 subarrayWithRange:{0, 2}];
         [v20 addButtonsFromArray:v54];
 
-        v16 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-        v17 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-        v51 = [v17 subarrayWithRange:{2, 2}];
-        [v16 addButtonsFromArray:v51];
+        bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+        buttons3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+        lastObject = [buttons3 subarrayWithRange:{2, 2}];
+        [bottomOrLeadingGroupView2 addButtonsFromArray:lastObject];
 LABEL_28:
 
         goto LABEL_29;
@@ -666,10 +666,10 @@ LABEL_28:
     {
       if (v4 == 1)
       {
-        [v20 addButtonsFromArray:v47];
+        [v20 addButtonsFromArray:buttons5];
 
-        v16 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-        [v16 removeAllButtons];
+        bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+        [bottomOrLeadingGroupView2 removeAllButtons];
 LABEL_30:
 
         return;
@@ -677,37 +677,37 @@ LABEL_30:
 
       if (v4 == 2)
       {
-        v49 = [v47 firstObject];
-        v102 = v49;
+        firstObject = [buttons5 firstObject];
+        v102 = firstObject;
         v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v102 count:1];
         [v20 addButtonsFromArray:v50];
 
-        v16 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-        v17 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-        v51 = [v17 lastObject];
-        v101 = v51;
+        bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+        buttons3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+        lastObject = [buttons3 lastObject];
+        v101 = lastObject;
         v52 = MEMORY[0x1E695DEC8];
         v53 = &v101;
 LABEL_27:
         v66 = [v52 arrayWithObjects:v53 count:1];
-        [v16 addButtonsFromArray:v66];
+        [bottomOrLeadingGroupView2 addButtonsFromArray:v66];
 
         goto LABEL_28;
       }
     }
 
-    v61 = [v47 subarrayWithRange:{0, 2}];
+    v61 = [buttons5 subarrayWithRange:{0, 2}];
     [v20 addButtonsFromArray:v61];
 
-    v62 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-    v63 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-    v64 = [v63 subarrayWithRange:{2, 1}];
-    [v62 addButtonsFromArray:v64];
+    bottomOrLeadingGroupView3 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+    buttons6 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+    v64 = [buttons6 subarrayWithRange:{2, 1}];
+    [bottomOrLeadingGroupView3 addButtonsFromArray:v64];
 
-    v16 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-    v17 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-    v51 = [v17 lastObject];
-    v99 = v51;
+    bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+    buttons3 = [(PKDrawingPaletteInputAssistantView *)self buttons];
+    lastObject = [buttons3 lastObject];
+    v99 = lastObject;
     v52 = MEMORY[0x1E695DEC8];
     v53 = &v99;
     goto LABEL_27;
@@ -716,33 +716,33 @@ LABEL_27:
 
 - (id)_topOrTrailingGroupViewButtons
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(PKDrawingPaletteInputAssistantView *)self useCompactLayout])
   {
     if ([(PKDrawingPaletteInputAssistantView *)self shouldShowKeyboardButton])
     {
-      v4 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+      keyboardButton = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
 
-      if (v4)
+      if (keyboardButton)
       {
-        v5 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-        [v3 addObject:v5];
+        keyboardButton2 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+        [array addObject:keyboardButton2];
       }
     }
 
     if ([(PKDrawingPaletteInputAssistantView *)self shouldShowReturnKeyButton])
     {
-      v6 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+      returnKeyButton = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
 
-      if (v6)
+      if (returnKeyButton)
       {
-        v7 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-        [v3 addObject:v7];
+        returnKeyButton2 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+        [array addObject:returnKeyButton2];
       }
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_updateContentOrientation
@@ -752,9 +752,9 @@ LABEL_27:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-  v4 = [v3 arrangedSubviews];
-  v5 = [v4 copy];
+  contentStackView = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+  arrangedSubviews = [contentStackView arrangedSubviews];
+  v5 = [arrangedSubviews copy];
 
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v6)
@@ -772,8 +772,8 @@ LABEL_27:
         }
 
         v10 = *(*(&v31 + 1) + 8 * v9);
-        v11 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-        [v11 removeArrangedSubview:v10];
+        contentStackView2 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+        [contentStackView2 removeArrangedSubview:v10];
 
         [v10 removeFromSuperview];
         ++v9;
@@ -786,56 +786,56 @@ LABEL_27:
     while (v7);
   }
 
-  v12 = [(PKDrawingPaletteInputAssistantView *)self _contentStackViewAlignment];
-  v13 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-  [v13 setAlignment:v12];
+  _contentStackViewAlignment = [(PKDrawingPaletteInputAssistantView *)self _contentStackViewAlignment];
+  contentStackView3 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+  [contentStackView3 setAlignment:_contentStackViewAlignment];
 
-  LODWORD(v13) = [(PKDrawingPaletteInputAssistantView *)self useCompactLayout];
-  v14 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-  v15 = v14;
-  if (!v13)
+  LODWORD(contentStackView3) = [(PKDrawingPaletteInputAssistantView *)self useCompactLayout];
+  contentStackView4 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+  v15 = contentStackView4;
+  if (!contentStackView3)
   {
-    [v14 setAxis:1];
+    [contentStackView4 setAxis:1];
 
-    v28 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-    v29 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-    [v28 addArrangedSubview:v29];
+    contentStackView5 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+    topOrTrailingGroupView = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+    [contentStackView5 addArrangedSubview:topOrTrailingGroupView];
 
-    v26 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-    v27 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+    contentStackView6 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+    bottomOrLeadingGroupView = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
     goto LABEL_14;
   }
 
-  [v14 setAxis:0];
+  [contentStackView4 setAxis:0];
 
-  v16 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-  [v16 setAxis:0];
+  topOrTrailingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+  [topOrTrailingGroupView2 setAxis:0];
 
-  v17 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-  [v17 setAxis:0];
+  bottomOrLeadingGroupView2 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+  [bottomOrLeadingGroupView2 setAxis:0];
 
-  v18 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-  v19 = [v18 buttons];
-  v20 = [v19 count];
+  bottomOrLeadingGroupView3 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+  buttons = [bottomOrLeadingGroupView3 buttons];
+  v20 = [buttons count];
 
   if (v20)
   {
-    v21 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-    v22 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-    [v21 addArrangedSubview:v22];
+    contentStackView7 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+    bottomOrLeadingGroupView4 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+    [contentStackView7 addArrangedSubview:bottomOrLeadingGroupView4];
   }
 
-  v23 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-  v24 = [v23 buttons];
-  v25 = [v24 count];
+  topOrTrailingGroupView3 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+  buttons2 = [topOrTrailingGroupView3 buttons];
+  v25 = [buttons2 count];
 
   if (v25)
   {
-    v26 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-    v27 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+    contentStackView6 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+    bottomOrLeadingGroupView = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
 LABEL_14:
-    v30 = v27;
-    [v26 addArrangedSubview:v27];
+    v30 = bottomOrLeadingGroupView;
+    [contentStackView6 addArrangedSubview:bottomOrLeadingGroupView];
   }
 }
 
@@ -844,30 +844,30 @@ LABEL_14:
   v26 = *MEMORY[0x1E69E9840];
   [(PKDrawingPaletteInputAssistantView *)self scalingFactor];
   v4 = v3;
-  v5 = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
-  [v5 setScalingFactor:v4];
+  topOrTrailingGroupView = [(PKDrawingPaletteInputAssistantView *)self topOrTrailingGroupView];
+  [topOrTrailingGroupView setScalingFactor:v4];
 
   [(PKDrawingPaletteInputAssistantView *)self scalingFactor];
   v7 = v6;
-  v8 = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
-  [v8 setScalingFactor:v7];
+  bottomOrLeadingGroupView = [(PKDrawingPaletteInputAssistantView *)self bottomOrLeadingGroupView];
+  [bottomOrLeadingGroupView setScalingFactor:v7];
 
   [(PKDrawingPaletteInputAssistantView *)self scalingFactor];
   v10 = v9;
-  v11 = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
-  [v11 setScalingFactor:v10];
+  returnKeyButton = [(PKDrawingPaletteInputAssistantView *)self returnKeyButton];
+  [returnKeyButton setScalingFactor:v10];
 
   [(PKDrawingPaletteInputAssistantView *)self scalingFactor];
   v13 = v12;
-  v14 = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
-  [v14 setScalingFactor:v13];
+  keyboardButton = [(PKDrawingPaletteInputAssistantView *)self keyboardButton];
+  [keyboardButton setScalingFactor:v13];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = [(PKDrawingPaletteInputAssistantView *)self buttons];
-  v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  buttons = [(PKDrawingPaletteInputAssistantView *)self buttons];
+  v16 = [buttons countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v16)
   {
     v17 = v16;
@@ -879,7 +879,7 @@ LABEL_14:
       {
         if (*v22 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(buttons);
         }
 
         v20 = *(*(&v21 + 1) + 8 * v19);
@@ -889,7 +889,7 @@ LABEL_14:
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v17 = [buttons countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v17);
@@ -900,8 +900,8 @@ LABEL_14:
 {
   [(PKDrawingPaletteInputAssistantView *)self _contentStackViewSpacing];
   v4 = v3;
-  v5 = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
-  [v5 setSpacing:v4];
+  contentStackView = [(PKDrawingPaletteInputAssistantView *)self contentStackView];
+  [contentStackView setSpacing:v4];
 }
 
 - (int64_t)_contentStackViewAlignment
@@ -928,30 +928,30 @@ LABEL_14:
   return result;
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKDrawingPaletteInputAssistantView *)self _updateContentOrientation];
 
     [(PKDrawingPaletteInputAssistantView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKDrawingPaletteInputAssistantView *)self _updateUI];
 
     [(PKDrawingPaletteInputAssistantView *)self _notifyViewStateDidChange];
   }
 }
 
-- (void)buttonDidChangeIntrinsicContentSize:(id)a3
+- (void)buttonDidChangeIntrinsicContentSize:(id)size
 {
   [(PKDrawingPaletteInputAssistantView *)self _notifyViewStateDidChange];
 

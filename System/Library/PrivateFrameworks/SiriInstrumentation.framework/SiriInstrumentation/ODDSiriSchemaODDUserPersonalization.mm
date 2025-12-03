@@ -1,36 +1,36 @@
 @interface ODDSiriSchemaODDUserPersonalization
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDUserPersonalization)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDUserPersonalization)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDUserPersonalization)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDUserPersonalization)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)activeSubscriptionsAtIndex:(unint64_t)a3;
+- (int)activeSubscriptionsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addActiveSubscriptions:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveSubscriptions:(int)subscriptions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDUserPersonalization
 
-- (ODDSiriSchemaODDUserPersonalization)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDUserPersonalization)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ODDSiriSchemaODDUserPersonalization;
   v5 = [(ODDSiriSchemaODDUserPersonalization *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isPersonalDomainRequestsEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isPersonalDomainRequestsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDUserPersonalization setIsPersonalDomainRequestsEnabled:](v5, "setIsPersonalDomainRequestsEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"activeSubscriptions"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"activeSubscriptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"voiceSettings", v18}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"voiceSettings", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDUserPersonalization)initWithJSON:(id)a3
+- (ODDSiriSchemaODDUserPersonalization)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDUserPersonalization *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDUserPersonalization *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDUserPersonalization *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -122,39 +122,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_activeSubscriptions count])
   {
-    v4 = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"activeSubscriptions"];
+    activeSubscriptions = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
+    v5 = [activeSubscriptions copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"activeSubscriptions"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDUserPersonalization isPersonalDomainRequestsEnabled](self, "isPersonalDomainRequestsEnabled")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isPersonalDomainRequestsEnabled"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isPersonalDomainRequestsEnabled"];
   }
 
   if (self->_voiceSettings)
   {
-    v7 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    voiceSettings = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
+    dictionaryRepresentation = [voiceSettings dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"voiceSettings"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceSettings"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"voiceSettings"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceSettings"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -173,15 +173,15 @@
   return v4 ^ [(SISchemaVoiceSettings *)self->_voiceSettings hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -189,26 +189,26 @@
   if (*&self->_has)
   {
     isPersonalDomainRequestsEnabled = self->_isPersonalDomainRequestsEnabled;
-    if (isPersonalDomainRequestsEnabled != [v4 isPersonalDomainRequestsEnabled])
+    if (isPersonalDomainRequestsEnabled != [equalCopy isPersonalDomainRequestsEnabled])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
-  v7 = [v4 activeSubscriptions];
-  if ((v6 != 0) == (v7 == 0))
+  activeSubscriptions = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
+  activeSubscriptions2 = [equalCopy activeSubscriptions];
+  if ((activeSubscriptions != 0) == (activeSubscriptions2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
-  if (v8)
+  activeSubscriptions3 = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
+  if (activeSubscriptions3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
-    v11 = [v4 activeSubscriptions];
-    v12 = [v10 isEqual:v11];
+    v9 = activeSubscriptions3;
+    activeSubscriptions4 = [(ODDSiriSchemaODDUserPersonalization *)self activeSubscriptions];
+    activeSubscriptions5 = [equalCopy activeSubscriptions];
+    v12 = [activeSubscriptions4 isEqual:activeSubscriptions5];
 
     if (!v12)
     {
@@ -220,12 +220,12 @@
   {
   }
 
-  v6 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
-  v7 = [v4 voiceSettings];
-  if ((v6 != 0) != (v7 == 0))
+  activeSubscriptions = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
+  activeSubscriptions2 = [equalCopy voiceSettings];
+  if ((activeSubscriptions != 0) != (activeSubscriptions2 == 0))
   {
-    v13 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
-    if (!v13)
+    voiceSettings = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
+    if (!voiceSettings)
     {
 
 LABEL_18:
@@ -233,10 +233,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
-    v16 = [v4 voiceSettings];
-    v17 = [v15 isEqual:v16];
+    v14 = voiceSettings;
+    voiceSettings2 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
+    voiceSettings3 = [equalCopy voiceSettings];
+    v17 = [voiceSettings2 isEqual:voiceSettings3];
 
     if (v17)
     {
@@ -256,10 +256,10 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -297,32 +297,32 @@ LABEL_16:
     while (v7);
   }
 
-  v10 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
+  voiceSettings = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
 
-  if (v10)
+  if (voiceSettings)
   {
-    v11 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
+    voiceSettings2 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (int)activeSubscriptionsAtIndex:(unint64_t)a3
+- (int)activeSubscriptionsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_activeSubscriptions objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_activeSubscriptions objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addActiveSubscriptions:(int)a3
+- (void)addActiveSubscriptions:(int)subscriptions
 {
-  v3 = *&a3;
+  v3 = *&subscriptions;
   activeSubscriptions = self->_activeSubscriptions;
   if (!activeSubscriptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeSubscriptions;
-    self->_activeSubscriptions = v6;
+    self->_activeSubscriptions = array;
 
     activeSubscriptions = self->_activeSubscriptions;
   }
@@ -331,17 +331,17 @@ LABEL_16:
   [(NSArray *)activeSubscriptions addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDUserPersonalization;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDUserPersonalization *)self voiceSettings:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDUserPersonalization *)self deleteVoiceSettings];
   }

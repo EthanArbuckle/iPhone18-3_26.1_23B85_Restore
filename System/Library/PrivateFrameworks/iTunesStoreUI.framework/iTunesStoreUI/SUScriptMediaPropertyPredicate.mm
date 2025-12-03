@@ -1,11 +1,11 @@
 @interface SUScriptMediaPropertyPredicate
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (MPMediaPropertyPredicate)nativePredicate;
 - (NSString)comparisonType;
 - (NSString)property;
-- (SUScriptMediaPropertyPredicate)initWithProperty:(id)a3 value:(id)a4 comparisonType:(id)a5;
-- (id)_playlistAttributesForScriptArray:(id)a3;
+- (SUScriptMediaPropertyPredicate)initWithProperty:(id)property value:(id)value comparisonType:(id)type;
+- (id)_playlistAttributesForScriptArray:(id)array;
 - (id)scriptAttributeKeys;
 - (id)value;
 - (void)dealloc;
@@ -13,12 +13,12 @@
 
 @implementation SUScriptMediaPropertyPredicate
 
-- (SUScriptMediaPropertyPredicate)initWithProperty:(id)a3 value:(id)a4 comparisonType:(id)a5
+- (SUScriptMediaPropertyPredicate)initWithProperty:(id)property value:(id)value comparisonType:(id)type
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a5 = 0;
+    type = 0;
   }
 
   v7 = [(SUScriptObject *)self init];
@@ -31,17 +31,17 @@
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
     }
 
-    if (a5)
+    if (type)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a5 isEqualToString:@"equals"])
+        if ([type isEqualToString:@"equals"])
         {
           goto LABEL_10;
         }
 
-        if ([a5 isEqualToString:@"contains"])
+        if ([type isEqualToString:@"contains"])
         {
           if (isKindOfClass)
           {
@@ -108,9 +108,9 @@ uint64_t __72__SUScriptMediaPropertyPredicate_initWithProperty_value_comparisonT
 
 - (MPMediaPropertyPredicate)nativePredicate
 {
-  v2 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
 
-  return [(SUScriptNativeObject *)v2 object];
+  return [(SUScriptNativeObject *)nativeObject object];
 }
 
 - (NSString)comparisonType
@@ -126,15 +126,15 @@ uint64_t __72__SUScriptMediaPropertyPredicate_initWithProperty_value_comparisonT
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -175,15 +175,15 @@ uint64_t __48__SUScriptMediaPropertyPredicate_comparisonType__block_invoke(uint6
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -208,15 +208,15 @@ id __42__SUScriptMediaPropertyPredicate_property__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -228,7 +228,7 @@ id __39__SUScriptMediaPropertyPredicate_value__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_playlistAttributesForScriptArray:(id)a3
+- (id)_playlistAttributesForScriptArray:(id)array
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -236,7 +236,7 @@ id __39__SUScriptMediaPropertyPredicate_value__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v4 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+  v4 = [array copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
   if (!v4)
   {
     return 0;
@@ -248,14 +248,14 @@ id __39__SUScriptMediaPropertyPredicate_value__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_37 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaPropertyPredicate;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -265,14 +265,14 @@ id __39__SUScriptMediaPropertyPredicate_value__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptMediaPropertyPredicate;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_37 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_37 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_37 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"comparisonType", @"property", @"property", @"value", @"value", 0}];
   }

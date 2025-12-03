@@ -1,40 +1,40 @@
 @interface PKIdentityDocumentDetailsViewController
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKIdentityDocumentDetailsViewController)initWithPass:(id)a3 dataProvider:(id)a4 detailViewStyle:(int64_t)a5;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_elementAtIndexPath:(id)a3;
-- (id)_elementsForSection:(unint64_t)a3;
-- (id)initDigitalIDViewWithPass:(id)a3 dataProvider:(id)a4 detailViewStyle:(int64_t)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_formatDataElementsForISO18013:(id)a3 withCompletion:(id)a4;
-- (void)_formatDataElementsForISO23220:(id)a3 withCompletion:(id)a4;
-- (void)_formatDataElementsForISO23220_PhotoID:(id)a3 withCompletion:(id)a4;
-- (void)_formatDataElementsForISO23220_PhotoID_digitalIDView:(id)a3 withCompletion:(id)a4;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKIdentityDocumentDetailsViewController)initWithPass:(id)pass dataProvider:(id)provider detailViewStyle:(int64_t)style;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_elementAtIndexPath:(id)path;
+- (id)_elementsForSection:(unint64_t)section;
+- (id)initDigitalIDViewWithPass:(id)pass dataProvider:(id)provider detailViewStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_formatDataElementsForISO18013:(id)o18013 withCompletion:(id)completion;
+- (void)_formatDataElementsForISO23220:(id)o23220 withCompletion:(id)completion;
+- (void)_formatDataElementsForISO23220_PhotoID:(id)d withCompletion:(id)completion;
+- (void)_formatDataElementsForISO23220_PhotoID_digitalIDView:(id)view withCompletion:(id)completion;
 - (void)_setTitleForViewController;
-- (void)preflightWithCompletion:(id)a3;
+- (void)preflightWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PKIdentityDocumentDetailsViewController
 
-- (PKIdentityDocumentDetailsViewController)initWithPass:(id)a3 dataProvider:(id)a4 detailViewStyle:(int64_t)a5
+- (PKIdentityDocumentDetailsViewController)initWithPass:(id)pass dataProvider:(id)provider detailViewStyle:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  passCopy = pass;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PKIdentityDocumentDetailsViewController;
   v11 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v14, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1], 8);
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pass, a3);
-    v12->_detailViewStyle = a5;
-    objc_storeStrong(&v12->_dataProvider, a4);
+    objc_storeStrong(&v11->_pass, pass);
+    v12->_detailViewStyle = style;
+    objc_storeStrong(&v12->_dataProvider, provider);
     v12->_inBridge = v12->_detailViewStyle == 2;
     v12->_needsDigitalIDView = 0;
     [(PKIdentityDocumentDetailsViewController *)v12 _setTitleForViewController];
@@ -43,9 +43,9 @@
   return v12;
 }
 
-- (id)initDigitalIDViewWithPass:(id)a3 dataProvider:(id)a4 detailViewStyle:(int64_t)a5
+- (id)initDigitalIDViewWithPass:(id)pass dataProvider:(id)provider detailViewStyle:(int64_t)style
 {
-  v5 = [(PKIdentityDocumentDetailsViewController *)self initWithPass:a3 dataProvider:a4 detailViewStyle:a5];
+  v5 = [(PKIdentityDocumentDetailsViewController *)self initWithPass:pass dataProvider:provider detailViewStyle:style];
   v6 = v5;
   if (v5)
   {
@@ -80,18 +80,18 @@
   [(PKIdentityDocumentDetailsViewController *)self setTitle:v4];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v5 = [(PKSecureElementPass *)self->_pass devicePaymentApplications];
-    v6 = [v5 countByEnumeratingWithState:&v68 objects:v73 count:16];
+    devicePaymentApplications = [(PKSecureElementPass *)self->_pass devicePaymentApplications];
+    v6 = [devicePaymentApplications countByEnumeratingWithState:&v68 objects:v73 count:16];
     if (v6)
     {
       v7 = *v69;
@@ -101,18 +101,18 @@ LABEL_4:
       {
         if (*v69 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v9 = *(*(&v68 + 1) + 8 * v8);
         [v9 paymentType];
         if (PKPaymentMethodTypeIsIdentityDocument())
         {
-          v10 = [v9 subcredentials];
-          v11 = [v10 anyObject];
-          v12 = [v11 identifier];
+          subcredentials = [v9 subcredentials];
+          anyObject = [subcredentials anyObject];
+          identifier = [anyObject identifier];
 
-          if (v12)
+          if (identifier)
           {
             break;
           }
@@ -120,7 +120,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [v5 countByEnumeratingWithState:&v68 objects:v73 count:16];
+          v6 = [devicePaymentApplications countByEnumeratingWithState:&v68 objects:v73 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -134,10 +134,10 @@ LABEL_4:
     else
     {
 LABEL_11:
-      v12 = 0;
+      identifier = 0;
     }
 
-    if ([v12 length])
+    if ([identifier length])
     {
       *buf = 0;
       v63 = buf;
@@ -180,7 +180,7 @@ LABEL_11:
       v45[3] = &unk_1E8015E38;
       v17 = v16;
       v46 = v17;
-      v18 = v12;
+      v18 = identifier;
       v47 = v18;
       objc_copyWeak(&v50, &location);
       v48 = v58;
@@ -225,17 +225,17 @@ LABEL_11:
       v32 = v20;
       v34 = v60;
       objc_copyWeak(&v35, &location);
-      v33 = self;
+      selfCopy = self;
       [v13 addOperation:v30];
-      v22 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __67__PKIdentityDocumentDetailsViewController_preflightWithCompletion___block_invoke_7;
       v26[3] = &unk_1E8016018;
       v28 = v56;
-      v27 = v4;
+      v27 = completionCopy;
       v29 = v54;
-      v23 = [v13 evaluateWithInput:v22 completion:v26];
+      v23 = [v13 evaluateWithInput:null completion:v26];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(&v37);
@@ -263,7 +263,7 @@ LABEL_11:
       }
 
       v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKIdentityDocumentDetailsErrorDomain" code:0 userInfo:0];
-      (*(v4 + 2))(v4, v25);
+      (*(completionCopy + 2))(completionCopy, v25);
     }
   }
 }
@@ -961,19 +961,19 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_formatDataElementsForISO18013:(id)a3 withCompletion:(id)a4
+- (void)_formatDataElementsForISO18013:(id)o18013 withCompletion:(id)completion
 {
   v270 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v213 = a4;
-  v6 = [v5 objectForKey:*MEMORY[0x1E69BB9C8]];
-  v217 = v5;
-  v225 = [v5 objectForKey:*MEMORY[0x1E69BB9C0]];
+  o18013Copy = o18013;
+  completionCopy = completion;
+  v6 = [o18013Copy objectForKey:*MEMORY[0x1E69BB9C8]];
+  v217 = o18013Copy;
+  v225 = [o18013Copy objectForKey:*MEMORY[0x1E69BB9C0]];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc(MEMORY[0x1E69DCAB8]);
   v9 = [v6 objectForKey:*MEMORY[0x1E69BB9D8]];
-  v10 = [v9 dataValue];
-  v11 = [v8 initWithData:v10];
+  dataValue = [v9 dataValue];
+  v11 = [v8 initWithData:dataValue];
 
   v216 = v11;
   v212 = v7;
@@ -990,27 +990,27 @@ LABEL_7:
 
   v226 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = [v6 objectForKey:*MEMORY[0x1E69BB988]];
-  v14 = [v13 stringValue];
-  v15 = [v14 pk_zString];
+  stringValue = [v13 stringValue];
+  pk_zString = [stringValue pk_zString];
 
   v16 = [v6 objectForKey:*MEMORY[0x1E69BB9B8]];
-  v17 = [v16 stringValue];
-  v18 = [v17 pk_zString];
+  stringValue2 = [v16 stringValue];
+  pk_zString2 = [stringValue2 pk_zString];
 
   v224 = v6;
-  v214 = v18;
-  v215 = v15;
-  if ([v15 length] || objc_msgSend(v18, "length"))
+  v214 = pk_zString2;
+  v215 = pk_zString;
+  if ([pk_zString length] || objc_msgSend(pk_zString2, "length"))
   {
     v19 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    if ([v15 length])
+    if ([pk_zString length])
     {
-      [v19 setGivenName:v15];
+      [v19 setGivenName:pk_zString];
     }
 
-    if ([v18 length])
+    if ([pk_zString2 length])
     {
-      [v19 setFamilyName:v18];
+      [v19 setFamilyName:pk_zString2];
     }
 
     v20 = objc_alloc_init(MEMORY[0x1E696ADF8]);
@@ -1026,62 +1026,62 @@ LABEL_7:
 
   v25 = objc_alloc_init(MEMORY[0x1E695CF30]);
   v26 = [v6 objectForKey:*MEMORY[0x1E69BB948]];
-  v27 = [v26 stringValue];
-  v28 = [v27 pk_zString];
-  [v25 setStreet:v28];
+  stringValue3 = [v26 stringValue];
+  pk_zString3 = [stringValue3 pk_zString];
+  [v25 setStreet:pk_zString3];
 
   v29 = [v6 objectForKey:*MEMORY[0x1E69BB958]];
-  v30 = [v29 stringValue];
-  v31 = [v30 pk_zString];
-  [v25 setCity:v31];
+  stringValue4 = [v29 stringValue];
+  pk_zString4 = [stringValue4 pk_zString];
+  [v25 setCity:pk_zString4];
 
   v32 = [v6 objectForKey:*MEMORY[0x1E69BB960]];
-  v33 = [v32 stringValue];
-  v34 = [v33 pk_zString];
+  stringValue5 = [v32 stringValue];
+  pk_zString5 = [stringValue5 pk_zString];
 
-  [v25 setISOCountryCode:v34];
+  [v25 setISOCountryCode:pk_zString5];
   v35 = [v6 objectForKey:*MEMORY[0x1E69BB9E0]];
-  v36 = [v35 stringValue];
-  v37 = [v36 pk_zString];
+  stringValue6 = [v35 stringValue];
+  pk_zString6 = [stringValue6 pk_zString];
 
-  v38 = v34;
+  v38 = pk_zString5;
   v210 = v38;
   if (v38 != @"US")
   {
     v39 = v38;
     if (!v38 || (v40 = [(__CFString *)v38 caseInsensitiveCompare:@"US"], v39, v40))
     {
-      v41 = v37;
+      v41 = pk_zString6;
 LABEL_19:
       v51 = off_1E8005000;
       goto LABEL_20;
     }
   }
 
-  v41 = v37;
-  if ([v37 length] != 9)
+  v41 = pk_zString6;
+  if ([pk_zString6 length] != 9)
   {
     goto LABEL_19;
   }
 
-  v42 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v43 = [v42 invertedSet];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v41 = v37;
-  if ([v37 rangeOfCharacterFromSet:v43] == 0x7FFFFFFFFFFFFFFFLL)
+  v41 = pk_zString6;
+  if ([pk_zString6 rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v44 = [v37 substringToIndex:5];
-    v45 = [v44 pk_zString];
+    v44 = [pk_zString6 substringToIndex:5];
+    pk_zString7 = [v44 pk_zString];
 
-    v46 = [v37 substringFromIndex:5];
+    v46 = [pk_zString6 substringFromIndex:5];
     [v46 pk_zString];
     v48 = v47 = v25;
 
-    v49 = PKLocalizedIdentityString(&cfstr_DriverLicenseZ.isa, &stru_1F3BD6370.isa, v45, v48);
-    v50 = [v49 pk_zString];
+    v49 = PKLocalizedIdentityString(&cfstr_DriverLicenseZ.isa, &stru_1F3BD6370.isa, pk_zString7, v48);
+    pk_zString8 = [v49 pk_zString];
 
     v25 = v47;
-    v41 = v50;
+    v41 = pk_zString8;
     v6 = v224;
   }
 
@@ -1091,9 +1091,9 @@ LABEL_20:
   v209 = v41;
   [v25 setPostalCode:v41];
   v52 = [v6 objectForKey:*MEMORY[0x1E69BBA00]];
-  v53 = [v52 stringValue];
-  v54 = [v53 pk_zString];
-  [v25 setState:v54];
+  stringValue7 = [v52 stringValue];
+  pk_zString9 = [stringValue7 pk_zString];
+  [v25 setState:pk_zString9];
 
   v55 = [MEMORY[0x1E695CF68] stringFromPostalAddress:v25 style:0];
   v211 = v25;
@@ -1115,19 +1115,19 @@ LABEL_20:
 
   _PKAddDateToElements(v6, v59, *MEMORY[0x1E69BB968], @"DRIVER_LICENSE_DOB");
   v60 = [v6 objectForKey:*MEMORY[0x1E69BB950]];
-  v61 = [v60 numberValue];
+  numberValue = [v60 numberValue];
 
   v208 = v55;
-  v220 = v61;
-  if (v61)
+  v220 = numberValue;
+  if (numberValue)
   {
-    if ([v61 pk_isNotANumber])
+    if ([numberValue pk_isNotANumber])
     {
       v62 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v269 = v61;
+        v269 = numberValue;
         _os_log_impl(&dword_1BD026000, v62, OS_LOG_TYPE_DEFAULT, "Age in years is not a number %@", buf, 0xCu);
       }
     }
@@ -1146,17 +1146,17 @@ LABEL_20:
 
   v223 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v67 = [v225 objectForKey:*MEMORY[0x1E69BB9F8]];
-  v68 = [v67 numberValue];
+  numberValue2 = [v67 numberValue];
 
-  if (v68)
+  if (numberValue2)
   {
-    if ([v68 pk_isNotANumber])
+    if ([numberValue2 pk_isNotANumber])
     {
       v69 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v269 = v68;
+        v269 = numberValue2;
         v70 = "Sex is not a number %@";
 LABEL_37:
         _os_log_impl(&dword_1BD026000, v69, OS_LOG_TYPE_DEFAULT, v70, buf, 0xCu);
@@ -1170,22 +1170,22 @@ LABEL_37:
   else
   {
     v71 = [v6 objectForKey:*MEMORY[0x1E69BB9F0]];
-    v68 = [v71 numberValue];
+    numberValue2 = [v71 numberValue];
 
-    if (!v68)
+    if (!numberValue2)
     {
 LABEL_39:
       v72 = 0;
       goto LABEL_41;
     }
 
-    if ([v68 pk_isNotANumber])
+    if ([numberValue2 pk_isNotANumber])
     {
       v69 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v269 = v68;
+        v269 = numberValue2;
         v70 = "Sex(AAMVA) is not a number %@";
         goto LABEL_37;
       }
@@ -1196,9 +1196,9 @@ LABEL_38:
     }
   }
 
-  v72 = SexDisplayableValueFromInteger([v68 unsignedIntegerValue]);
+  v72 = SexDisplayableValueFromInteger([numberValue2 unsignedIntegerValue]);
 LABEL_41:
-  v207 = v68;
+  v207 = numberValue2;
   v206 = v72;
   if ([v72 length])
   {
@@ -1211,13 +1211,13 @@ LABEL_41:
   }
 
   v76 = MEMORY[0x1E695DF58];
-  v77 = [MEMORY[0x1E695DF58] currentLocale];
-  v78 = [v77 localeIdentifier];
-  v79 = [v76 componentsFromLocaleIdentifier:v78];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v79 = [v76 componentsFromLocaleIdentifier:localeIdentifier];
   v80 = [v79 mutableCopy];
 
-  v81 = [(PKSecureElementPass *)self->_pass issuerCountryCode];
-  [v80 setObject:v81 forKey:*MEMORY[0x1E695D978]];
+  issuerCountryCode = [(PKSecureElementPass *)self->_pass issuerCountryCode];
+  [v80 setObject:issuerCountryCode forKey:*MEMORY[0x1E695D978]];
 
   v205 = v80;
   v204 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v80];
@@ -1239,14 +1239,14 @@ LABEL_41:
   v86 = *MEMORY[0x1E69BB998];
   v87 = v224;
   v88 = [v224 objectForKey:*MEMORY[0x1E69BB998]];
-  v89 = [v88 numberValue];
+  numberValue3 = [v88 numberValue];
 
-  v201 = v89;
-  if (v89)
+  v201 = numberValue3;
+  if (numberValue3)
   {
     v90 = v225;
     v91 = off_1E8005000;
-    if ([v89 pk_isNotANumber])
+    if ([numberValue3 pk_isNotANumber])
     {
       v92 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -1260,8 +1260,8 @@ LABEL_41:
 
     else
     {
-      v94 = [v89 unsignedIntegerValue];
-      if ((v94 - 1) > 0x3E6)
+      unsignedIntegerValue = [numberValue3 unsignedIntegerValue];
+      if ((unsignedIntegerValue - 1) > 0x3E6)
       {
         v92 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -1273,30 +1273,30 @@ LABEL_41:
 
       else
       {
-        v95 = v94;
+        v95 = unsignedIntegerValue;
         v96 = objc_alloc(MEMORY[0x1E696AD28]);
-        v97 = [MEMORY[0x1E696B058] centimeters];
-        v92 = [v96 initWithDoubleValue:v97 unit:v95];
+        centimeters = [MEMORY[0x1E696B058] centimeters];
+        v92 = [v96 initWithDoubleValue:centimeters unit:v95];
 
         if ([v219 usesMetricSystem])
         {
-          v98 = [MEMORY[0x1E696B058] meters];
-          v99 = [v92 measurementByConvertingToUnit:v98];
+          meters = [MEMORY[0x1E696B058] meters];
+          v99 = [v92 measurementByConvertingToUnit:meters];
         }
 
         else
         {
-          v100 = [MEMORY[0x1E696B058] inches];
-          v98 = [v92 measurementByConvertingToUnit:v100];
+          inches = [MEMORY[0x1E696B058] inches];
+          meters = [v92 measurementByConvertingToUnit:inches];
 
           v101 = objc_alloc(MEMORY[0x1E696AD28]);
-          [v98 doubleValue];
+          [meters doubleValue];
           v103 = round(v102);
-          v104 = [MEMORY[0x1E696B058] inches];
-          v105 = [v101 initWithDoubleValue:v104 unit:v103];
+          inches2 = [MEMORY[0x1E696B058] inches];
+          v105 = [v101 initWithDoubleValue:inches2 unit:v103];
 
-          v106 = [MEMORY[0x1E696B058] meters];
-          v99 = [v105 measurementByConvertingToUnit:v106];
+          meters2 = [MEMORY[0x1E696B058] meters];
+          v99 = [v105 measurementByConvertingToUnit:meters2];
         }
 
         [v99 doubleValue];
@@ -1330,14 +1330,14 @@ LABEL_41:
   v221 = v111;
   _PKAddDateToElements(v87, v111, *MEMORY[0x1E69BB978], @"DRIVER_LICENSE_ID_EXPIRATION_DATE");
   v112 = [v90 objectForKey:*MEMORY[0x1E69BB9E8]];
-  v113 = [v112 stringValue];
-  v114 = v113;
+  stringValue8 = [v112 stringValue];
+  v114 = stringValue8;
   v115 = @"DRIVER_LICENSE_ATTRIBUTE_YES";
-  if (v113 != @"F")
+  if (stringValue8 != @"F")
   {
-    if (v113)
+    if (stringValue8)
     {
-      if (![@"F" isEqualToString:v113])
+      if (![@"F" isEqualToString:stringValue8])
       {
         v115 = @"DRIVER_LICENSE_ATTRIBUTE_NO";
       }
@@ -1357,10 +1357,10 @@ LABEL_41:
 
   [v221 addObject:v120];
   v121 = [v90 objectForKey:*MEMORY[0x1E69BB9D0]];
-  v122 = [v121 numberValue];
+  numberValue4 = [v121 numberValue];
 
-  v199 = v122;
-  if ([v122 isEqualToNumber:&unk_1F3CC70D0])
+  v199 = numberValue4;
+  if ([numberValue4 isEqualToNumber:&unk_1F3CC70D0])
   {
     v123 = PKLocalizedIdentityString(&cfstr_DriverLicenseA_1.isa);
     v124 = objc_alloc(v119[60]);
@@ -1372,10 +1372,10 @@ LABEL_41:
   }
 
   v127 = [v90 objectForKey:*MEMORY[0x1E69BBA08]];
-  v128 = [v127 numberValue];
+  numberValue5 = [v127 numberValue];
 
-  v198 = v128;
-  if ([v128 isEqualToNumber:&unk_1F3CC70D0])
+  v198 = numberValue5;
+  if ([numberValue5 isEqualToNumber:&unk_1F3CC70D0])
   {
     v129 = PKLocalizedIdentityString(&cfstr_DriverLicenseA_1.isa);
     v130 = [PKIdentityDocumentDataElement alloc];
@@ -1530,9 +1530,9 @@ LABEL_137:
                   {
                     if (v161)
                     {
-                      v166 = [v161 stringByAppendingFormat:@", %@", v165];
+                      v165 = [v161 stringByAppendingFormat:@", %@", v165];
 
-                      v161 = v166;
+                      v161 = v165;
                     }
 
                     else
@@ -1613,9 +1613,9 @@ LABEL_111:
                   {
                     if (v177)
                     {
-                      v182 = [v177 stringByAppendingFormat:@", %@", v181];
+                      v181 = [v177 stringByAppendingFormat:@", %@", v181];
 
-                      v177 = v182;
+                      v177 = v181;
                     }
 
                     else
@@ -1742,7 +1742,7 @@ LABEL_145:
   v250 = v193;
   v194 = v134;
   v251 = v194;
-  v195 = v213;
+  v195 = completionCopy;
   v252 = v195;
   dispatch_async(v185, block);
 }
@@ -1806,25 +1806,25 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return result;
 }
 
-- (void)_formatDataElementsForISO23220_PhotoID_digitalIDView:(id)a3 withCompletion:(id)a4
+- (void)_formatDataElementsForISO23220_PhotoID_digitalIDView:(id)view withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a3;
+  viewCopy = view;
   v9 = objc_alloc_init(v7);
-  v10 = [v8 objectForKey:*MEMORY[0x1E69BBA40]];
+  v10 = [viewCopy objectForKey:*MEMORY[0x1E69BBA40]];
 
   v11 = [v10 objectForKey:*MEMORY[0x1E69BBA88]];
-  v12 = [v11 stringValue];
-  v13 = [v12 pk_zString];
+  stringValue = [v11 stringValue];
+  pk_zString = [stringValue pk_zString];
 
-  if ([v13 length])
+  if ([pk_zString length])
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"APPLE (%@)", v13];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"APPLE (%@)", pk_zString];
     v15 = [PKIdentityDocumentDataElement alloc];
     v16 = PKLocalizedIdentityString(&cfstr_DigitalIdVerif.isa);
-    v17 = [v14 pk_uppercaseFirstStringForPreferredLocale];
-    v18 = [(PKIdentityDocumentDataElement *)v15 initWithLocalizedLabel:v16 text:v17 isCopyable:1];
+    pk_uppercaseFirstStringForPreferredLocale = [v14 pk_uppercaseFirstStringForPreferredLocale];
+    v18 = [(PKIdentityDocumentDataElement *)v15 initWithLocalizedLabel:v16 text:pk_uppercaseFirstStringForPreferredLocale isCopyable:1];
 
     [v9 addObject:v18];
   }
@@ -1836,8 +1836,8 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   block[3] = &unk_1E8012300;
   block[4] = self;
   v22 = v9;
-  v23 = v6;
-  v19 = v6;
+  v23 = completionCopy;
+  v19 = completionCopy;
   v20 = v9;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
@@ -1866,21 +1866,21 @@ uint64_t __111__PKIdentityDocumentDetailsViewController__formatDataElementsForIS
   return result;
 }
 
-- (void)_formatDataElementsForISO23220_PhotoID:(id)a3 withCompletion:(id)a4
+- (void)_formatDataElementsForISO23220_PhotoID:(id)d withCompletion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v46 = a4;
+  completionCopy = completion;
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
+  dCopy = d;
   v7 = objc_alloc_init(v5);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [v6 objectForKey:*MEMORY[0x1E69BBA40]];
+  v10 = [dCopy objectForKey:*MEMORY[0x1E69BBA40]];
 
   v11 = objc_alloc(MEMORY[0x1E69DCAB8]);
   v12 = [v10 objectForKey:*MEMORY[0x1E69BBA98]];
-  v13 = [v12 dataValue];
-  v14 = [v11 initWithData:v13];
+  dataValue = [v12 dataValue];
+  v14 = [v11 initWithData:dataValue];
 
   v48 = v7;
   v49 = v14;
@@ -1896,19 +1896,19 @@ uint64_t __111__PKIdentityDocumentDetailsViewController__formatDataElementsForIS
   }
 
   v16 = [v10 objectForKey:*MEMORY[0x1E69BBA78]];
-  v17 = [v16 stringValue];
-  v18 = [v17 pk_zString];
+  stringValue = [v16 stringValue];
+  pk_zString = [stringValue pk_zString];
 
   v19 = [v10 objectForKey:*MEMORY[0x1E69BBA70]];
-  v20 = [v19 stringValue];
-  v21 = [v20 pk_zString];
+  stringValue2 = [v19 stringValue];
+  pk_zString2 = [stringValue2 pk_zString];
 
-  v45 = v21;
-  if ([v18 length] || objc_msgSend(v21, "length"))
+  v45 = pk_zString2;
+  if ([pk_zString length] || objc_msgSend(pk_zString2, "length"))
   {
     v22 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    [v22 setFamilyName:v21];
-    [v22 setGivenName:v18];
+    [v22 setFamilyName:pk_zString2];
+    [v22 setGivenName:pk_zString];
     v23 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     v24 = [PKIdentityDocumentDataElement alloc];
     v25 = PKLocalizedIdentityString(&cfstr_PhotoIdName.isa);
@@ -1922,17 +1922,17 @@ uint64_t __111__PKIdentityDocumentDetailsViewController__formatDataElementsForIS
   _PKAddDateToElements(v10, v8, *MEMORY[0x1E69BBA50], @"PHOTO_ID_DOB");
   _PKAddStringToElements(v10, v8, *MEMORY[0x1E69BBA58], @"PHOTO_ID_BIRTHPLACE");
   v28 = [v10 objectForKey:*MEMORY[0x1E69BBA48]];
-  v29 = [v28 numberValue];
+  numberValue = [v28 numberValue];
 
-  if (v29)
+  if (numberValue)
   {
-    if ([v29 pk_isNotANumber])
+    if ([numberValue pk_isNotANumber])
     {
       v30 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v56 = v29;
+        v56 = numberValue;
         _os_log_impl(&dword_1BD026000, v30, OS_LOG_TYPE_DEFAULT, "Age in years is not a number %@", buf, 0xCu);
       }
     }
@@ -1941,7 +1941,7 @@ uint64_t __111__PKIdentityDocumentDetailsViewController__formatDataElementsForIS
     {
       v31 = [PKIdentityDocumentDataElement alloc];
       v32 = PKLocalizedIdentityString(&cfstr_PhotoIdAge.isa);
-      v33 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:v29 numberStyle:0];
+      v33 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:numberValue numberStyle:0];
       v34 = [(PKIdentityDocumentDataElement *)v31 initWithLocalizedLabel:v32 text:v33 isCopyable:1];
 
       [v8 addObject:v34];
@@ -1950,9 +1950,9 @@ uint64_t __111__PKIdentityDocumentDetailsViewController__formatDataElementsForIS
   }
 
   v35 = [v10 objectForKey:*MEMORY[0x1E69BBAA0]];
-  v36 = [v35 numberValue];
+  numberValue2 = [v35 numberValue];
 
-  v37 = SexDisplayableValueFromInteger([v36 unsignedIntegerValue]);
+  v37 = SexDisplayableValueFromInteger([numberValue2 unsignedIntegerValue]);
   if ([v37 length])
   {
     v38 = [PKIdentityDocumentDataElement alloc];
@@ -1974,8 +1974,8 @@ uint64_t __111__PKIdentityDocumentDetailsViewController__formatDataElementsForIS
   v51 = v48;
   v52 = v8;
   v53 = v9;
-  v54 = v46;
-  v41 = v46;
+  v54 = completionCopy;
+  v41 = completionCopy;
   v42 = v9;
   v43 = v8;
   v44 = v48;
@@ -2016,22 +2016,22 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return result;
 }
 
-- (void)_formatDataElementsForISO23220:(id)a3 withCompletion:(id)a4
+- (void)_formatDataElementsForISO23220:(id)o23220 withCompletion:(id)completion
 {
   v73 = *MEMORY[0x1E69E9840];
-  v60 = a4;
+  completionCopy = completion;
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
+  o23220Copy = o23220;
   v7 = objc_alloc_init(v5);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v6 objectForKey:*MEMORY[0x1E69BBA40]];
-  v10 = [v6 objectForKey:*MEMORY[0x1E69BBA38]];
+  v9 = [o23220Copy objectForKey:*MEMORY[0x1E69BBA40]];
+  v10 = [o23220Copy objectForKey:*MEMORY[0x1E69BBA38]];
 
   v11 = objc_alloc(MEMORY[0x1E69DCAB8]);
   v12 = [v10 objectForKey:*MEMORY[0x1E69BBAA8]];
-  v13 = [v12 dataValue];
-  v14 = [v11 initWithData:v13];
+  dataValue = [v12 dataValue];
+  v14 = [v11 initWithData:dataValue];
 
   v63 = v14;
   if (v14)
@@ -2047,14 +2047,14 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
 
   v62 = v7;
   v16 = [v10 objectForKey:*MEMORY[0x1E69BBA20]];
-  v17 = [v16 stringValue];
-  v18 = [v17 pk_zString];
+  stringValue = [v16 stringValue];
+  pk_zString = [stringValue pk_zString];
 
-  v58 = v18;
-  if ([v18 length])
+  v58 = pk_zString;
+  if ([pk_zString length])
   {
     v19 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    [v19 setFamilyName:v18];
+    [v19 setFamilyName:pk_zString];
     v20 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     v21 = [PKIdentityDocumentDataElement alloc];
     v22 = PKLocalizedIdentityString(&cfstr_DriverLicenseN.isa);
@@ -2066,14 +2066,14 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   }
 
   v25 = [v10 objectForKey:*MEMORY[0x1E69BBA30]];
-  v26 = [v25 stringValue];
-  v27 = [v26 pk_zString];
+  stringValue2 = [v25 stringValue];
+  pk_zString2 = [stringValue2 pk_zString];
 
-  if ([v27 length])
+  if ([pk_zString2 length])
   {
     v28 = [PKIdentityDocumentDataElement alloc];
     v29 = PKLocalizedIdentityString(&cfstr_DriverLicenseA.isa);
-    v30 = [(PKIdentityDocumentDataElement *)v28 initWithLocalizedLabel:v29 text:v27 isCopyable:1];
+    v30 = [(PKIdentityDocumentDataElement *)v28 initWithLocalizedLabel:v29 text:pk_zString2 isCopyable:1];
 
     [v8 addObject:v30];
     v15 = v30;
@@ -2081,17 +2081,17 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
 
   _PKAddDateToElements(v9, v8, *MEMORY[0x1E69BBA18], @"DRIVER_LICENSE_DOB");
   v31 = [v9 objectForKey:*MEMORY[0x1E69BBA10]];
-  v32 = [v31 numberValue];
+  numberValue = [v31 numberValue];
 
-  if (v32)
+  if (numberValue)
   {
-    if ([v32 pk_isNotANumber])
+    if ([numberValue pk_isNotANumber])
     {
       v33 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v72 = v32;
+        v72 = numberValue;
         _os_log_impl(&dword_1BD026000, v33, OS_LOG_TYPE_DEFAULT, "Age in years is not a number %@", buf, 0xCu);
       }
     }
@@ -2100,7 +2100,7 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
     {
       v34 = [PKIdentityDocumentDataElement alloc];
       v35 = PKLocalizedIdentityString(&cfstr_DriverLicenseA_0.isa);
-      v36 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:v32 numberStyle:0];
+      v36 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:numberValue numberStyle:0];
       v37 = [(PKIdentityDocumentDataElement *)v34 initWithLocalizedLabel:v35 text:v36 isCopyable:1];
 
       [v8 addObject:v37];
@@ -2109,9 +2109,9 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   }
 
   v38 = [v9 objectForKey:*MEMORY[0x1E69BBAB0]];
-  v39 = [v38 numberValue];
+  numberValue2 = [v38 numberValue];
 
-  v40 = SexDisplayableValueFromInteger([v39 unsignedIntegerValue]);
+  v40 = SexDisplayableValueFromInteger([numberValue2 unsignedIntegerValue]);
   v65 = v9;
   if ([v40 length])
   {
@@ -2126,18 +2126,18 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   }
 
   v64 = v10;
-  v45 = [v10 objectForKey:{*MEMORY[0x1E69BBA28], v27}];
-  v46 = [v45 stringValue];
-  v47 = [v46 pk_zString];
+  v45 = [v10 objectForKey:{*MEMORY[0x1E69BBA28], pk_zString2}];
+  stringValue3 = [v45 stringValue];
+  pk_zString3 = [stringValue3 pk_zString];
 
-  v48 = [v47 pk_stringByInsertingString:@" " afterEvery:4];
+  v48 = [pk_zString3 pk_stringByInsertingString:@" " afterEvery:4];
   if ([v48 length])
   {
     v49 = [PKIdentityDocumentDataElement alloc];
     v50 = PKLocalizedIdentityString(&cfstr_NationalIdJpIn.isa);
     v51 = [(PKIdentityDocumentDataElement *)v49 initWithLocalizedLabel:v50 text:v48 isCopyable:1];
 
-    [(PKIdentityDocumentDataElement *)v51 setOverrideCopyableText:v47];
+    [(PKIdentityDocumentDataElement *)v51 setOverrideCopyableText:pk_zString3];
     v52 = v59;
     [v59 addObject:v51];
     v15 = v51;
@@ -2156,8 +2156,8 @@ uint64_t __97__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   v67 = v62;
   v68 = v8;
   v69 = v52;
-  v70 = v60;
-  v53 = v60;
+  v70 = completionCopy;
+  v53 = completionCopy;
   v54 = v52;
   v55 = v8;
   v56 = v62;
@@ -2203,32 +2203,32 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   v4.receiver = self;
   v4.super_class = PKIdentityDocumentDetailsViewController;
   [(PKSectionTableViewController *)&v4 viewDidLoad];
-  v3 = [(PKIdentityDocumentDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PortraitCellIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"DataElementCellIdentifier"];
-  [v3 reloadData];
+  tableView = [(PKIdentityDocumentDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PortraitCellIdentifier"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"DataElementCellIdentifier"];
+  [tableView reloadData];
 }
 
-- (id)_elementsForSection:(unint64_t)a3
+- (id)_elementsForSection:(unint64_t)section
 {
-  if (a3 > 7)
+  if (section > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.super.isa + *off_1E80160B0[a3]);
+    v4 = *(&self->super.super.super.super.super.isa + *off_1E80160B0[section]);
   }
 
   return v4;
 }
 
-- (id)_elementAtIndexPath:(id)a3
+- (id)_elementAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[PKIdentityDocumentDetailsViewController _elementsForSection:](self, "_elementsForSection:", -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v4 section]));
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[PKIdentityDocumentDetailsViewController _elementsForSection:](self, "_elementsForSection:", -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]));
+  v6 = [pathCopy row];
 
   if ([v5 count] <= v6)
   {
@@ -2243,106 +2243,106 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return v7;
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  v3 = [(PKIdentityDocumentDetailsViewController *)self _elementsForSection:a3];
+  v3 = [(PKIdentityDocumentDetailsViewController *)self _elementsForSection:section];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PKIdentityDocumentDetailsViewController *)self _elementsForSection:[(PKSectionTableViewController *)self sectionForIndex:a4]];
+  v4 = [(PKIdentityDocumentDetailsViewController *)self _elementsForSection:[(PKSectionTableViewController *)self sectionForIndex:section]];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKIdentityDocumentDetailsViewController *)self _elementAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PKIdentityDocumentDetailsViewController *)self _elementAtIndexPath:pathCopy];
   v9 = v8;
   if (v8)
   {
     if ([v8 type] == 1)
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"PortraitCellIdentifier" forIndexPath:v7];
-      v11 = [v10 imageView];
-      v12 = [v9 image];
-      [v11 setImage:v12];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"PortraitCellIdentifier" forIndexPath:pathCopy];
+      imageView = [v10 imageView];
+      image = [v9 image];
+      [imageView setImage:image];
 
-      [v11 pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
+      [imageView pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
     }
 
     else
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"DataElementCellIdentifier" forIndexPath:v7];
-      v11 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-      v13 = [v9 localizedLabel];
-      [v11 setText:v13];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"DataElementCellIdentifier" forIndexPath:pathCopy];
+      imageView = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+      localizedLabel = [v9 localizedLabel];
+      [imageView setText:localizedLabel];
 
-      v14 = [v9 attributedText];
+      attributedText = [v9 attributedText];
 
-      if (v14)
+      if (attributedText)
       {
-        v15 = [v9 attributedText];
-        [v11 setSecondaryAttributedText:v15];
+        attributedText2 = [v9 attributedText];
+        [imageView setSecondaryAttributedText:attributedText2];
       }
 
       else
       {
-        v15 = [v9 text];
-        [v11 setSecondaryText:v15];
+        attributedText2 = [v9 text];
+        [imageView setSecondaryText:attributedText2];
       }
 
-      v16 = [v11 textProperties];
+      textProperties = [imageView textProperties];
       v17 = MEMORY[0x1E69DB878];
       v18 = *MEMORY[0x1E69DDD80];
-      v19 = [v6 traitCollection];
-      v20 = [v17 preferredFontForTextStyle:v18 compatibleWithTraitCollection:v19];
-      [v16 setFont:v20];
+      traitCollection = [viewCopy traitCollection];
+      v20 = [v17 preferredFontForTextStyle:v18 compatibleWithTraitCollection:traitCollection];
+      [textProperties setFont:v20];
 
-      v21 = [v11 secondaryTextProperties];
+      secondaryTextProperties = [imageView secondaryTextProperties];
       v22 = MEMORY[0x1E69DB878];
       v23 = *MEMORY[0x1E69DDCF8];
-      v24 = [v6 traitCollection];
-      v25 = [v22 preferredFontForTextStyle:v23 compatibleWithTraitCollection:v24];
-      [v21 setFont:v25];
+      traitCollection2 = [viewCopy traitCollection];
+      v25 = [v22 preferredFontForTextStyle:v23 compatibleWithTraitCollection:traitCollection2];
+      [secondaryTextProperties setFont:v25];
 
-      v26 = [v11 secondaryTextProperties];
-      [v26 setNumberOfLines:0];
+      secondaryTextProperties2 = [imageView secondaryTextProperties];
+      [secondaryTextProperties2 setNumberOfLines:0];
 
-      [v11 setDirectionalLayoutMargins:{8.0, 0.0, 8.0, 0.0}];
-      [v11 setAxesPreservingSuperviewLayoutMargins:1];
-      [v11 setTextToSecondaryTextVerticalPadding:4.0];
-      LODWORD(v26) = self->_inBridge;
-      v27 = [v11 textProperties];
-      if (v26 == 1)
+      [imageView setDirectionalLayoutMargins:{8.0, 0.0, 8.0, 0.0}];
+      [imageView setAxesPreservingSuperviewLayoutMargins:1];
+      [imageView setTextToSecondaryTextVerticalPadding:4.0];
+      LODWORD(secondaryTextProperties2) = self->_inBridge;
+      textProperties2 = [imageView textProperties];
+      if (secondaryTextProperties2 == 1)
       {
         v28 = PKBridgeAltTextColor();
-        [v27 setColor:v28];
+        [textProperties2 setColor:v28];
 
-        v29 = [v11 secondaryTextProperties];
+        secondaryTextProperties3 = [imageView secondaryTextProperties];
         PKBridgeTextColor();
       }
 
       else
       {
-        v30 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v27 setColor:v30];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [textProperties2 setColor:secondaryLabelColor];
 
-        v29 = [v11 secondaryTextProperties];
+        secondaryTextProperties3 = [imageView secondaryTextProperties];
         [MEMORY[0x1E69DC888] labelColor];
       }
       v31 = ;
-      [v29 setColor:v31];
+      [secondaryTextProperties3 setColor:v31];
 
-      [v10 setContentConfiguration:v11];
-      v32 = [v10 contentView];
-      [v32 pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
+      [v10 setContentConfiguration:imageView];
+      contentView = [v10 contentView];
+      [contentView pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
     }
   }
 
@@ -2354,9 +2354,9 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(PKIdentityDocumentDetailsViewController *)self _elementAtIndexPath:a4];
+  v4 = [(PKIdentityDocumentDetailsViewController *)self _elementAtIndexPath:path];
   if ([v4 type] == 1)
   {
     v5 = 100.0;
@@ -2370,10 +2370,10 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = *MEMORY[0x1E69DE3D0];
-  if (!a4)
+  if (!section)
   {
     return 10.0;
   }
@@ -2381,9 +2381,9 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
@@ -2397,9 +2397,9 @@ uint64_t __89__PKIdentityDocumentDetailsViewController__formatDataElementsForISO
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v4 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v4 == 5)
   {
     v5 = @"DRIVER_LICENSE_DRIVING_PRIVILEGES";
@@ -2420,9 +2420,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v5 = [(PKIdentityDocumentDetailsViewController *)self _elementAtIndexPath:a4, a5.x, a5.y];
+  v5 = [(PKIdentityDocumentDetailsViewController *)self _elementAtIndexPath:path, point.x, point.y];
   if ([v5 isCopyable])
   {
     v6 = MEMORY[0x1E69DC8D8];

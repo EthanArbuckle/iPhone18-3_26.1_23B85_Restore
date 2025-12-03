@@ -1,25 +1,25 @@
 @interface MTStandardIDService
 + (NSString)localCachePath;
-+ (id)writeDebugData:(id)a3 toFileWithNameFormat:(id)a4;
-+ (void)registerInterprocessChangeNotifier:(id)a3;
-+ (void)setLocalCachePath:(id)a3;
-- (MTStandardIDService)initWithConfigDictPromise:(id)a3 bag:(id)a4;
-- (MTStandardIDService)initWithConfigDictionary:(id)a3;
++ (id)writeDebugData:(id)data toFileWithNameFormat:(id)format;
++ (void)registerInterprocessChangeNotifier:(id)notifier;
++ (void)setLocalCachePath:(id)path;
+- (MTStandardIDService)initWithConfigDictPromise:(id)promise bag:(id)bag;
+- (MTStandardIDService)initWithConfigDictionary:(id)dictionary;
 - (NSNumber)defaultDSID;
 - (NSNumber)dsId;
 - (OS_dispatch_queue)serialQueue;
-- (id)IDFieldsForTopic:(id)a3 options:(id)a4;
-- (id)IDForTopic:(id)a3 type:(int64_t)a4 options:(id)a5;
-- (id)IDInfoForNamespace:(id)a3 options:(id)a4 fromConfig:(id)a5;
-- (id)IDsForNamespaces:(id)a3 options:(id)a4 fromConfig:(id)a5;
-- (id)_IDInfoForNamespace:(id)a3 options:(id)a4 fromConfig:(id)a5;
+- (id)IDFieldsForTopic:(id)topic options:(id)options;
+- (id)IDForTopic:(id)topic type:(int64_t)type options:(id)options;
+- (id)IDInfoForNamespace:(id)namespace options:(id)options fromConfig:(id)config;
+- (id)IDsForNamespaces:(id)namespaces options:(id)options fromConfig:(id)config;
+- (id)_IDInfoForNamespace:(id)namespace options:(id)options fromConfig:(id)config;
 - (id)configPromise;
-- (id)filledOptions:(id)a3;
-- (id)generateIDInfo:(id)a3 secret:(id)a4 dsId:(id)a5 correlationIDs:(id)a6;
-- (id)resetIDForTopics:(id)a3 options:(id)a4;
-- (id)secretValueForNamespace:(id)a3 options:(id)a4;
-- (id)sync:(id)a3;
-- (void)IDFieldsForTopic:(id)a3 options:(id)a4 completion:(id)a5;
+- (id)filledOptions:(id)options;
+- (id)generateIDInfo:(id)info secret:(id)secret dsId:(id)id correlationIDs:(id)ds;
+- (id)resetIDForTopics:(id)topics options:(id)options;
+- (id)secretValueForNamespace:(id)namespace options:(id)options;
+- (id)sync:(id)sync;
+- (void)IDFieldsForTopic:(id)topic options:(id)options completion:(id)completion;
 - (void)_clearLocalData;
 - (void)_getConfig;
 - (void)_getIDs;
@@ -28,36 +28,36 @@
 - (void)dealloc;
 - (void)flushPerfKitEvents;
 - (void)handleAccountNotification;
-- (void)handleApplicationStateChange:(id)a3;
+- (void)handleApplicationStateChange:(id)change;
 - (void)handleRecordNotification;
-- (void)handleResetNotification:(id)a3;
+- (void)handleResetNotification:(id)notification;
 - (void)maybeSubscribeToDarwinNotifications;
-- (void)performMaintenanceWithCompletion:(id)a3;
-- (void)queryIDForTopic:(id)a3 type:(int64_t)a4 options:(id)a5 completion:(id)a6;
-- (void)resetIDForTopics:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)setConfig:(id)a3;
+- (void)performMaintenanceWithCompletion:(id)completion;
+- (void)queryIDForTopic:(id)topic type:(int64_t)type options:(id)options completion:(id)completion;
+- (void)resetIDForTopics:(id)topics options:(id)options completion:(id)completion;
+- (void)setConfig:(id)config;
 @end
 
 @implementation MTStandardIDService
 
 - (id)configPromise
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTStandardIDService *)v2 cachedConfig];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedConfig = [(MTStandardIDService *)selfCopy cachedConfig];
+  objc_sync_exit(selfCopy);
 
-  if (v3)
+  if (cachedConfig)
   {
-    v4 = [MTPromise promiseWithResult:v3];
+    v4 = [MTPromise promiseWithResult:cachedConfig];
   }
 
   else
   {
-    v5 = v2;
+    v5 = selfCopy;
     objc_sync_enter(v5);
-    v6 = [(MTStandardIDService *)v5 associatedObjects];
-    v7 = [v6 objectForKeyedSubscript:@"AMSBag"];
+    associatedObjects = [(MTStandardIDService *)v5 associatedObjects];
+    v7 = [associatedObjects objectForKeyedSubscript:@"AMSBag"];
 
     objc_sync_exit(v5);
     if (v7)
@@ -74,20 +74,20 @@
       [v9 valueWithCompletion:v15];
 
       v11 = v16;
-      v12 = v10;
+      configDictPromise = v10;
 
-      v4 = v12;
+      v4 = configDictPromise;
     }
 
     else
     {
-      v12 = [(MTStandardIDService *)v5 configDictPromise];
+      configDictPromise = [(MTStandardIDService *)v5 configDictPromise];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __36__MTStandardIDService_configPromise__block_invoke_42;
       v14[3] = &unk_2798CD570;
       v14[4] = v5;
-      v4 = [(MTPromise *)v12 thenWithBlock:v14];
+      v4 = [(MTPromise *)configDictPromise thenWithBlock:v14];
     }
   }
 
@@ -96,22 +96,22 @@
 
 - (NSNumber)defaultDSID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  defaultDSID = v2->_defaultDSID;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultDSID = selfCopy->_defaultDSID;
   if (!defaultDSID)
   {
-    v4 = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
-    v5 = [v4 ams_activeiTunesAccount];
-    v6 = [v5 ams_DSID];
-    v7 = v2->_defaultDSID;
-    v2->_defaultDSID = v6;
+    ams_sharedAccountStore = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
+    v7 = selfCopy->_defaultDSID;
+    selfCopy->_defaultDSID = ams_DSID;
 
-    defaultDSID = v2->_defaultDSID;
+    defaultDSID = selfCopy->_defaultDSID;
   }
 
   v8 = defaultDSID;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -121,15 +121,15 @@
   dsId = self->_dsId;
   if (dsId)
   {
-    v3 = dsId;
+    defaultDSID = dsId;
   }
 
   else
   {
-    v3 = [(MTStandardIDService *)self defaultDSID];
+    defaultDSID = [(MTStandardIDService *)self defaultDSID];
   }
 
-  return v3;
+  return defaultDSID;
 }
 
 - (void)dealloc
@@ -144,20 +144,20 @@
 
 - (void)flushPerfKitEvents
 {
-  v3 = [(MTStandardIDService *)self associatedObjects];
-  objc_sync_enter(v3);
-  v4 = [(MTStandardIDService *)self associatedObjects];
-  v9 = [v4 objectForKeyedSubscript:@"perfKit"];
+  associatedObjects = [(MTStandardIDService *)self associatedObjects];
+  objc_sync_enter(associatedObjects);
+  associatedObjects2 = [(MTStandardIDService *)self associatedObjects];
+  v9 = [associatedObjects2 objectForKeyedSubscript:@"perfKit"];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(associatedObjects);
   v5 = v9;
   if (v9)
   {
-    v6 = [v9 system];
-    v7 = [v6 eventRecorder];
-    v8 = [v7 flushUnreportedEvents];
+    system = [v9 system];
+    eventRecorder = [system eventRecorder];
+    flushUnreportedEvents = [eventRecorder flushUnreportedEvents];
 
-    [v8 addFinishBlock:&__block_literal_global_130];
+    [flushUnreportedEvents addFinishBlock:&__block_literal_global_130];
     v5 = v9;
   }
 }
@@ -168,9 +168,9 @@
   v4 = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(v4, self, _handleITunesAccountsChangedNotification, @"com.apple.itunesstored.accountschanged", 0, CFNotificationSuspensionBehaviorDrop);
   v5 = +[MTFrameworkEnvironment sharedEnvironment];
-  v6 = [v5 isInternalBuild];
+  isInternalBuild = [v5 isInternalBuild];
 
-  if (v6)
+  if (isInternalBuild)
   {
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _handleDarwinNotification, @"MTIDServiceClearLocalDataNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _handleDarwinNotification, @"MTIDServiceResetIDsNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -193,27 +193,27 @@
   return v3;
 }
 
-- (MTStandardIDService)initWithConfigDictionary:(id)a3
+- (MTStandardIDService)initWithConfigDictionary:(id)dictionary
 {
-  v4 = [MTPromise promiseWithResult:a3];
+  v4 = [MTPromise promiseWithResult:dictionary];
   v5 = [(MTStandardIDService *)self initWithConfigPromise:v4];
 
   return v5;
 }
 
-- (MTStandardIDService)initWithConfigDictPromise:(id)a3 bag:(id)a4
+- (MTStandardIDService)initWithConfigDictPromise:(id)promise bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  promiseCopy = promise;
+  bagCopy = bag;
   v29.receiver = self;
   v29.super_class = MTStandardIDService;
   v8 = [(MTStandardIDService *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (promiseCopy)
     {
-      [(MTStandardIDService *)v8 setConfigDictPromise:v6];
+      [(MTStandardIDService *)v8 setConfigDictPromise:promiseCopy];
     }
 
     else
@@ -223,27 +223,27 @@
     }
 
     v11 = +[MTFrameworkEnvironment sharedEnvironment];
-    v12 = [v11 idCache];
-    [(MTStandardIDService *)v9 setCache:v12];
+    idCache = [v11 idCache];
+    [(MTStandardIDService *)v9 setCache:idCache];
 
     v13 = +[MTFrameworkEnvironment sharedEnvironment];
-    v14 = [v13 secretStore];
-    [(MTStandardIDService *)v9 setSecretStore:v14];
+    secretStore = [v13 secretStore];
+    [(MTStandardIDService *)v9 setSecretStore:secretStore];
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(MTStandardIDService *)v9 setAssociatedObjects:v15];
 
-    if (v7)
+    if (bagCopy)
     {
-      v16 = [(MTStandardIDService *)v9 associatedObjects];
-      [v16 setObject:v7 forKeyedSubscript:@"AMSBag"];
+      associatedObjects = [(MTStandardIDService *)v9 associatedObjects];
+      [associatedObjects setObject:bagCopy forKeyedSubscript:@"AMSBag"];
     }
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v9 selector:sel_handleResetNotification_ name:@"MTIDNamespacesDidResetNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_handleResetNotification_ name:@"MTIDNamespacesDidResetNotification" object:0];
     if (NSClassFromString(&cfstr_Uiapplication.isa))
     {
-      [v17 addObserver:v9 selector:sel_handleApplicationStateChange_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+      [defaultCenter addObserver:v9 selector:sel_handleApplicationStateChange_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
     }
 
     objc_initWeak(&location, v9);
@@ -256,11 +256,11 @@
     v19 = [(MTInterprocessChangeNotifier *)v18 initWithIdentifier:@"MTCloudKitAccountDidChangeNotification" onChange:&v23];
     [(MTStandardIDService *)v9 setAccountChanged:v19, v23, v24, v25, v26];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v9 selector:sel_handleAccountNotification name:*MEMORY[0x277CB8908] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel_handleAccountNotification name:*MEMORY[0x277CB8908] object:0];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v9 selector:sel_handleAccountNotification name:*MEMORY[0x277CB8B70] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel_handleAccountNotification name:*MEMORY[0x277CB8B70] object:0];
 
     [(MTStandardIDService *)v9 maybeSubscribeToDarwinNotifications];
     objc_destroyWeak(&v27);
@@ -333,21 +333,21 @@ id __36__MTStandardIDService_configPromise__block_invoke_42(uint64_t a1, void *a
   return v5;
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MTStandardIDService *)v4 setCachedConfig:v5];
-  objc_sync_exit(v4);
+  configCopy = config;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MTStandardIDService *)selfCopy setCachedConfig:configCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)handleAccountNotification
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MTStandardIDService *)obj cache];
-  [v2 removeAllNamespaces];
+  cache = [(MTStandardIDService *)obj cache];
+  [cache removeAllNamespaces];
 
   [(MTStandardIDService *)obj setDefaultDSID:0];
   objc_sync_exit(obj);
@@ -357,96 +357,96 @@ id __36__MTStandardIDService_configPromise__block_invoke_42(uint64_t a1, void *a
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MTStandardIDService *)obj cache];
-  [v2 removeUnsyncedNamespaces];
+  cache = [(MTStandardIDService *)obj cache];
+  [cache removeUnsyncedNamespaces];
 
   objc_sync_exit(obj);
 }
 
-- (void)handleResetNotification:(id)a3
+- (void)handleResetNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:@"namespaces"];
+  userInfo = [notification userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"namespaces"];
 
-  v5 = [(MTStandardIDService *)self cache];
-  v6 = v5;
+  cache = [(MTStandardIDService *)self cache];
+  v6 = cache;
   if (v7)
   {
-    [v5 removeNamespaces:v7];
+    [cache removeNamespaces:v7];
   }
 
   else
   {
-    [v5 removeAllNamespaces];
+    [cache removeAllNamespaces];
   }
 }
 
-- (void)handleApplicationStateChange:(id)a3
+- (void)handleApplicationStateChange:(id)change
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTStandardIDService *)v4 cache];
-  [v5 removeAllNamespaces];
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MTStandardIDService *)selfCopy cache];
+  [cache removeAllNamespaces];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)setLocalCachePath:(id)a3
++ (void)setLocalCachePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[MTFrameworkEnvironment sharedEnvironment];
-  [v4 setLocalDataPath:v3];
+  [v4 setLocalDataPath:pathCopy];
 }
 
 + (NSString)localCachePath
 {
   v2 = +[MTFrameworkEnvironment sharedEnvironment];
-  v3 = [v2 localDataPath];
+  localDataPath = [v2 localDataPath];
 
-  return v3;
+  return localDataPath;
 }
 
-- (void)IDFieldsForTopic:(id)a3 options:(id)a4 completion:(id)a5
+- (void)IDFieldsForTopic:(id)topic options:(id)options completion:(id)completion
 {
-  v9 = a5;
-  v8 = [(MTStandardIDService *)self IDFieldsForTopic:a3 options:a4];
-  if (v9)
+  completionCopy = completion;
+  v8 = [(MTStandardIDService *)self IDFieldsForTopic:topic options:options];
+  if (completionCopy)
   {
-    [v8 addFinishBlock:v9];
+    [v8 addFinishBlock:completionCopy];
   }
 }
 
-- (void)resetIDForTopics:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resetIDForTopics:(id)topics options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(MTStandardIDService *)self resetIDForTopics:a3 options:a4];
-  if (v8)
+  completionCopy = completion;
+  v9 = [(MTStandardIDService *)self resetIDForTopics:topics options:options];
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __59__MTStandardIDService_resetIDForTopics_options_completion___block_invoke;
     v10[3] = &unk_2798CD598;
-    v11 = v8;
+    v11 = completionCopy;
     [v9 addFinishBlock:v10];
   }
 }
 
-- (id)IDFieldsForTopic:(id)a3 options:(id)a4
+- (id)IDFieldsForTopic:(id)topic options:(id)options
 {
-  v6 = a3;
-  v7 = [(MTStandardIDService *)self filledOptions:a4];
-  v8 = [(MTStandardIDService *)self configPromise];
+  topicCopy = topic;
+  v7 = [(MTStandardIDService *)self filledOptions:options];
+  configPromise = [(MTStandardIDService *)self configPromise];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __48__MTStandardIDService_IDFieldsForTopic_options___block_invoke;
   v18[3] = &unk_2798CD600;
-  v9 = v6;
+  v9 = topicCopy;
   v19 = v9;
   v10 = v7;
   v20 = v10;
-  v21 = self;
-  v11 = [v8 thenWithBlock:v18];
+  selfCopy = self;
+  v11 = [configPromise thenWithBlock:v18];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -561,21 +561,21 @@ void __48__MTStandardIDService_IDFieldsForTopic_options___block_invoke_4(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resetIDForTopics:(id)a3 options:(id)a4
+- (id)resetIDForTopics:(id)topics options:(id)options
 {
-  v6 = a3;
-  v7 = [(MTStandardIDService *)self filledOptions:a4];
-  v8 = [(MTStandardIDService *)self configPromise];
+  topicsCopy = topics;
+  v7 = [(MTStandardIDService *)self filledOptions:options];
+  configPromise = [(MTStandardIDService *)self configPromise];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__MTStandardIDService_resetIDForTopics_options___block_invoke;
   v13[3] = &unk_2798CD600;
-  v14 = v6;
-  v15 = self;
+  v14 = topicsCopy;
+  selfCopy = self;
   v16 = v7;
   v9 = v7;
-  v10 = v6;
-  v11 = [v8 thenWithBlock:v13];
+  v10 = topicsCopy;
+  v11 = [configPromise thenWithBlock:v13];
 
   return v11;
 }
@@ -686,28 +686,28 @@ void __48__MTStandardIDService_resetIDForTopics_options___block_invoke_2(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryIDForTopic:(id)a3 type:(int64_t)a4 options:(id)a5 completion:(id)a6
+- (void)queryIDForTopic:(id)topic type:(int64_t)type options:(id)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(MTStandardIDService *)self IDForTopic:a3 type:a4 options:a5];
-  [v11 addFinishBlock:v10];
+  completionCopy = completion;
+  v11 = [(MTStandardIDService *)self IDForTopic:topic type:type options:options];
+  [v11 addFinishBlock:completionCopy];
 }
 
-- (void)performMaintenanceWithCompletion:(id)a3
+- (void)performMaintenanceWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([objc_opt_class() isTinkerPaired])
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 valueForKey:@"MTIDServiceLastMaintenanceDate"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [standardUserDefaults valueForKey:@"MTIDServiceLastMaintenanceDate"];
     v7 = +[MTFrameworkEnvironment sharedEnvironment];
-    v8 = [v7 date];
+    date = [v7 date];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 timeIntervalSinceDate:v6];
+      [date timeIntervalSinceDate:v6];
       if (v9 < 86400.0)
       {
         v10 = MTMetricsKitOSLog();
@@ -718,30 +718,30 @@ void __48__MTStandardIDService_resetIDForTopics_options___block_invoke_2(uint64_
           _os_log_impl(&dword_258F4B000, v10, OS_LOG_TYPE_INFO, "MetricsKit: Skipping ID service maintenance because the last performed maintenance was too recent at %@", buf, 0xCu);
         }
 
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_13;
       }
     }
 
-    [v5 setValue:v8 forKey:@"MTIDServiceLastMaintenanceDate"];
+    [standardUserDefaults setValue:date forKey:@"MTIDServiceLastMaintenanceDate"];
   }
 
-  v5 = [(MTStandardIDService *)self filledOptions:0];
-  v11 = [(MTStandardIDService *)self secretStore];
+  standardUserDefaults = [(MTStandardIDService *)self filledOptions:0];
+  secretStore = [(MTStandardIDService *)self secretStore];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(MTStandardIDService *)self configPromise];
+    configPromise = [(MTStandardIDService *)self configPromise];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__MTStandardIDService_performMaintenanceWithCompletion___block_invoke;
     v17[3] = &unk_2798CD678;
     v17[4] = self;
-    v18 = v5;
-    v6 = [v13 thenWithBlock:v17];
+    v18 = standardUserDefaults;
+    v6 = [configPromise thenWithBlock:v17];
 
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_14;
     }
@@ -750,16 +750,16 @@ void __48__MTStandardIDService_resetIDForTopics_options___block_invoke_2(uint64_
   }
 
   v6 = [MTPromise promiseWithResult:MEMORY[0x277CBEC38]];
-  if (v4)
+  if (completionCopy)
   {
 LABEL_12:
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __56__MTStandardIDService_performMaintenanceWithCompletion___block_invoke_2;
     v15[3] = &unk_2798CD598;
-    v16 = v4;
+    v16 = completionCopy;
     [v6 addFinishBlock:v15];
-    v8 = v16;
+    date = v16;
 LABEL_13:
   }
 
@@ -780,21 +780,21 @@ id __56__MTStandardIDService_performMaintenanceWithCompletion___block_invoke(uin
   return v7;
 }
 
-- (id)sync:(id)a3
+- (id)sync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v5 = [(MTStandardIDService *)self filledOptions:0];
-  v6 = [(MTStandardIDService *)self configPromise];
+  configPromise = [(MTStandardIDService *)self configPromise];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __28__MTStandardIDService_sync___block_invoke;
   v11[3] = &unk_2798CD600;
-  v12 = v4;
-  v13 = self;
+  v12 = syncCopy;
+  selfCopy = self;
   v14 = v5;
   v7 = v5;
-  v8 = v4;
-  v9 = [v6 thenWithBlock:v11];
+  v8 = syncCopy;
+  v9 = [configPromise thenWithBlock:v11];
 
   return v9;
 }
@@ -818,18 +818,18 @@ id __28__MTStandardIDService_sync___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)filledOptions:(id)a3
+- (id)filledOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"date"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"date"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"dsId"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"dsId"];
     if (v7)
     {
       v8 = v7;
-      v9 = [v4 objectForKeyedSubscript:@"appBundleID"];
+      v9 = [optionsCopy objectForKeyedSubscript:@"appBundleID"];
 
       if (v9)
       {
@@ -842,58 +842,58 @@ id __28__MTStandardIDService_sync___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (optionsCopy)
   {
-    [v10 addEntriesFromDictionary:v4];
+    [dictionary addEntriesFromDictionary:optionsCopy];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"date"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"date"];
 
   if (!v12)
   {
     v13 = +[MTFrameworkEnvironment sharedEnvironment];
-    v14 = [v13 date];
-    [v11 setObject:v14 forKeyedSubscript:@"date"];
+    date = [v13 date];
+    [v11 setObject:date forKeyedSubscript:@"date"];
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"dsId"];
+  v15 = [optionsCopy objectForKeyedSubscript:@"dsId"];
 
   if (!v15)
   {
-    v16 = [(MTStandardIDService *)self dsId];
-    if (v16)
+    dsId = [(MTStandardIDService *)self dsId];
+    if (dsId)
     {
-      [v11 setObject:v16 forKeyedSubscript:@"dsId"];
+      [v11 setObject:dsId forKeyedSubscript:@"dsId"];
     }
 
     else
     {
-      v17 = [(MTStandardIDService *)self defaultDSID];
-      [v11 setObject:v17 forKeyedSubscript:@"dsId"];
+      defaultDSID = [(MTStandardIDService *)self defaultDSID];
+      [v11 setObject:defaultDSID forKeyedSubscript:@"dsId"];
     }
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"appBundleID"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"appBundleID"];
 
   if (!v18)
   {
-    v19 = [(MTStandardIDService *)self applicationBundleIdentifierOverrideForNetworkAttribution];
-    if (v19)
+    applicationBundleIdentifierOverrideForNetworkAttribution = [(MTStandardIDService *)self applicationBundleIdentifierOverrideForNetworkAttribution];
+    if (applicationBundleIdentifierOverrideForNetworkAttribution)
     {
-      [v11 setObject:v19 forKeyedSubscript:@"appBundleID"];
+      [v11 setObject:applicationBundleIdentifierOverrideForNetworkAttribution forKeyedSubscript:@"appBundleID"];
     }
 
     else
     {
       v20 = +[MTFrameworkEnvironment sharedEnvironment];
-      v21 = [v20 hostProcessBundleIdentifier];
-      [v11 setObject:v21 forKeyedSubscript:@"appBundleID"];
+      hostProcessBundleIdentifier = [v20 hostProcessBundleIdentifier];
+      [v11 setObject:hostProcessBundleIdentifier forKeyedSubscript:@"appBundleID"];
     }
   }
 
-  v22 = [v4 objectForKeyedSubscript:@"iTunesUserRequired"];
+  v22 = [optionsCopy objectForKeyedSubscript:@"iTunesUserRequired"];
 
   if (!v22)
   {
@@ -902,28 +902,28 @@ id __28__MTStandardIDService_sync___block_invoke(uint64_t a1, void *a2)
 
   v23 = [v11 copy];
 
-  v4 = v23;
+  optionsCopy = v23;
 LABEL_23:
 
-  return v4;
+  return optionsCopy;
 }
 
-- (id)IDForTopic:(id)a3 type:(int64_t)a4 options:(id)a5
+- (id)IDForTopic:(id)topic type:(int64_t)type options:(id)options
 {
-  v8 = a3;
-  v9 = [(MTStandardIDService *)self filledOptions:a5];
-  v10 = [(MTStandardIDService *)self configPromise];
+  topicCopy = topic;
+  v9 = [(MTStandardIDService *)self filledOptions:options];
+  configPromise = [(MTStandardIDService *)self configPromise];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__MTStandardIDService_IDForTopic_type_options___block_invoke;
   v20[3] = &unk_2798CD6A0;
-  v11 = v8;
-  v24 = a4;
+  v11 = topicCopy;
+  typeCopy = type;
   v21 = v11;
-  v22 = self;
+  selfCopy = self;
   v12 = v9;
   v23 = v12;
-  v13 = [v10 thenWithBlock:v20];
+  v13 = [configPromise thenWithBlock:v20];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -984,21 +984,21 @@ void __47__MTStandardIDService_IDForTopic_type_options___block_invoke_2(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)IDsForNamespaces:(id)a3 options:(id)a4 fromConfig:(id)a5
+- (id)IDsForNamespaces:(id)namespaces options:(id)options fromConfig:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  namespacesCopy = namespaces;
+  optionsCopy = options;
+  configCopy = config;
+  if ([namespacesCopy count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__MTStandardIDService_IDsForNamespaces_options_fromConfig___block_invoke;
     v14[3] = &unk_2798CD6F0;
     v14[4] = self;
-    v15 = v9;
-    v16 = v10;
-    v11 = [v8 mt_map:v14];
+    v15 = optionsCopy;
+    v16 = configCopy;
+    v11 = [namespacesCopy mt_map:v14];
     v12 = [MTPromise promiseWithAll:v11];
   }
 
@@ -1010,27 +1010,27 @@ void __47__MTStandardIDService_IDForTopic_type_options___block_invoke_2(uint64_t
   return v12;
 }
 
-- (id)IDInfoForNamespace:(id)a3 options:(id)a4 fromConfig:(id)a5
+- (id)IDInfoForNamespace:(id)namespace options:(id)options fromConfig:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  namespaceCopy = namespace;
+  optionsCopy = options;
+  configCopy = config;
   v11 = objc_alloc_init(MTPromise);
-  v12 = [(MTStandardIDService *)self serialQueue];
+  serialQueue = [(MTStandardIDService *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__MTStandardIDService_IDInfoForNamespace_options_fromConfig___block_invoke;
   block[3] = &unk_2798CD740;
-  v21 = v9;
-  v22 = self;
-  v23 = v8;
-  v24 = v10;
+  v21 = optionsCopy;
+  selfCopy = self;
+  v23 = namespaceCopy;
+  v24 = configCopy;
   v13 = v11;
   v25 = v13;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
-  dispatch_async(v12, block);
+  v14 = configCopy;
+  v15 = namespaceCopy;
+  v16 = optionsCopy;
+  dispatch_async(serialQueue, block);
 
   v17 = v25;
   v18 = v13;
@@ -1090,35 +1090,35 @@ void __61__MTStandardIDService_IDInfoForNamespace_options_fromConfig___block_inv
   }
 }
 
-- (id)_IDInfoForNamespace:(id)a3 options:(id)a4 fromConfig:(id)a5
+- (id)_IDInfoForNamespace:(id)namespace options:(id)options fromConfig:(id)config
 {
   v97 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v81 = v7;
-  v10 = [v9 schemeForNamespace:v7];
-  v83 = [v8 objectForKeyedSubscript:@"date"];
-  v84 = [v8 objectForKeyedSubscript:@"dsId"];
-  v11 = [v8 objectForKeyedSubscript:@"existingOnly"];
-  v12 = [v11 BOOLValue];
+  namespaceCopy = namespace;
+  optionsCopy = options;
+  configCopy = config;
+  v81 = namespaceCopy;
+  v10 = [configCopy schemeForNamespace:namespaceCopy];
+  v83 = [optionsCopy objectForKeyedSubscript:@"date"];
+  v84 = [optionsCopy objectForKeyedSubscript:@"dsId"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"existingOnly"];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [v8 objectForKeyedSubscript:@"iTunesUserRequired"];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"iTunesUserRequired"];
+  bOOLValue2 = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue2)
   {
-    v15 = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
-    v16 = [v15 ams_activeiTunesAccount];
-    v17 = [v16 ams_DSID];
+    ams_sharedAccountStore = [MEMORY[0x277CB8F50] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-    if (!v84 || v17 && ![v17 isEqualToNumber:v84])
+    if (!v84 || ams_DSID && ![ams_DSID isEqualToNumber:v84])
     {
       v38 = [[MTIDSecret alloc] initWithValue:&stru_286A3A510 effectiveDate:0 expirationDate:0 isSynchronize:0];
       v39 = [MTIDInfo alloc];
-      v40 = [(MTIDSecret *)v38 value];
+      value = [(MTIDSecret *)v38 value];
       LOBYTE(v72) = 0;
-      v41 = [(MTIDInfo *)v39 initWithScheme:v10 secret:v38 idString:v40 dsId:0 effectiveDate:0 expirationDate:0 shouldGenerateMetricsFields:v72];
+      v41 = [(MTIDInfo *)v39 initWithScheme:v10 secret:v38 idString:value dsId:0 effectiveDate:0 expirationDate:0 shouldGenerateMetricsFields:v72];
 
       v31 = [MTPromise promiseWithResult:v41];
 
@@ -1132,8 +1132,8 @@ void __61__MTStandardIDService_IDInfoForNamespace_options_fromConfig___block_inv
   }
 
   v18 = +[MTFrameworkEnvironment sharedEnvironment];
-  v19 = [v18 date];
-  [v83 timeIntervalSinceDate:v19];
+  date = [v18 date];
+  [v83 timeIntervalSinceDate:date];
   v21 = v20;
 
   [v10 maxPastTimeInterval];
@@ -1146,12 +1146,12 @@ void __61__MTStandardIDService_IDInfoForNamespace_options_fromConfig___block_inv
   if (v21 <= v29)
   {
 LABEL_10:
-    v32 = [v8 objectForKeyedSubscript:@"reset"];
-    v33 = [v32 BOOLValue];
+    v32 = [optionsCopy objectForKeyedSubscript:@"reset"];
+    bOOLValue3 = [v32 BOOLValue];
 
-    v34 = v8;
+    v34 = optionsCopy;
     v35 = v34;
-    if (v33)
+    if (bOOLValue3)
     {
       v36 = [v34 mutableCopy];
       [v36 setObject:0 forKeyedSubscript:@"reset"];
@@ -1177,8 +1177,8 @@ LABEL_10:
       v79 = v35;
     }
 
-    v43 = [(MTStandardIDService *)self cache];
-    v80 = [v43 IDInfoForScheme:v10 options:v35];
+    cache = [(MTStandardIDService *)self cache];
+    v80 = [cache IDInfoForScheme:v10 options:v35];
 
     if (v80)
     {
@@ -1192,33 +1192,33 @@ LABEL_10:
 
     v45 = MTMetricsKitOSLog();
     v46 = os_log_type_enabled(v45, OS_LOG_TYPE_INFO);
-    if ((v44 | v12))
+    if ((v44 | bOOLValue))
     {
       if (v80)
       {
         if (v46)
         {
-          v47 = [v10 idNamespace];
+          idNamespace = [v10 idNamespace];
           *buf = 138412290;
-          v96 = v47;
+          v96 = idNamespace;
           _os_log_impl(&dword_258F4B000, v45, OS_LOG_TYPE_INFO, "MetricsKit: ID promise for scheme %@ is cached but not used", buf, 0xCu);
         }
       }
 
       else if (v46)
       {
-        v50 = [v10 idNamespace];
+        idNamespace2 = [v10 idNamespace];
         *buf = 138412290;
-        v96 = v50;
+        v96 = idNamespace2;
         _os_log_impl(&dword_258F4B000, v45, OS_LOG_TYPE_INFO, "MetricsKit: ID promise for scheme %@ is not cached", buf, 0xCu);
       }
 
       v51 = MEMORY[0x277CBEB18];
-      v52 = [v10 correlations];
-      v53 = v52;
-      if (v52)
+      correlations = [v10 correlations];
+      v53 = correlations;
+      if (correlations)
       {
-        v54 = v52;
+        v54 = correlations;
       }
 
       else
@@ -1229,8 +1229,8 @@ LABEL_10:
       v78 = [v51 arrayWithArray:v54];
 
       [v78 removeObject:v81];
-      v55 = [(MTStandardIDService *)self secretStore];
-      v77 = [v55 secretForScheme:v10 options:v35];
+      secretStore = [(MTStandardIDService *)self secretStore];
+      v77 = [secretStore secretForScheme:v10 options:v35];
 
       v75 = dispatch_get_global_queue(0, 0);
       v56 = [[MTPromiseWithTimeout alloc] initWithTimeout:v75 queue:&__block_literal_global_102 timeoutBlock:55.0];
@@ -1241,25 +1241,25 @@ LABEL_10:
       v74 = v56;
       v93 = v74;
       [v77 addFinishBlock:v92];
-      v73 = [(MTStandardIDService *)self IDsForNamespaces:v78 options:v79 fromConfig:v9];
-      v76 = [v9 performanceTopic];
-      if (v76 && [v10 idType] == 2)
+      v73 = [(MTStandardIDService *)self IDsForNamespaces:v78 options:v79 fromConfig:configCopy];
+      performanceTopic = [configCopy performanceTopic];
+      if (performanceTopic && [v10 idType] == 2)
       {
-        v57 = [(MTStandardIDService *)self associatedObjects];
-        objc_sync_enter(v57);
-        v58 = [(MTStandardIDService *)self associatedObjects];
-        v59 = [v58 objectForKeyedSubscript:@"AMSBag"];
+        associatedObjects = [(MTStandardIDService *)self associatedObjects];
+        objc_sync_enter(associatedObjects);
+        associatedObjects2 = [(MTStandardIDService *)self associatedObjects];
+        v59 = [associatedObjects2 objectForKeyedSubscript:@"AMSBag"];
 
         if (v59)
         {
-          v60 = [(MTStandardIDService *)self associatedObjects];
-          v61 = [v60 objectForKeyedSubscript:@"perfKit"];
+          associatedObjects3 = [(MTStandardIDService *)self associatedObjects];
+          v61 = [associatedObjects3 objectForKeyedSubscript:@"perfKit"];
 
           if (!v61)
           {
-            v61 = [(MTMetricsKitTemplate *)MTPerfKit kitWithTopic:v76 amsBag:v59];
-            v62 = [(MTStandardIDService *)self associatedObjects];
-            [v62 setObject:v61 forKeyedSubscript:@"perfKit"];
+            v61 = [(MTMetricsKitTemplate *)MTPerfKit kitWithTopic:performanceTopic amsBag:v59];
+            associatedObjects4 = [(MTStandardIDService *)self associatedObjects];
+            [associatedObjects4 setObject:v61 forKeyedSubscript:@"perfKit"];
           }
         }
 
@@ -1268,7 +1268,7 @@ LABEL_10:
           v61 = 0;
         }
 
-        objc_sync_exit(v57);
+        objc_sync_exit(associatedObjects);
         if (v61)
         {
           v63 = [v61 flexibleMeasurementWithEventType:@"idRequest"];
@@ -1284,8 +1284,8 @@ LABEL_10:
         }
       }
 
-      v65 = [(MTPromiseWithTimeout *)v74 promise];
-      v94[0] = v65;
+      promise = [(MTPromiseWithTimeout *)v74 promise];
+      v94[0] = promise;
       v94[1] = v73;
       v66 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:2];
       v67 = [MTPromise promiseWithAll:v66];
@@ -1296,11 +1296,11 @@ LABEL_10:
       v68 = v10;
       v86 = v68;
       v87 = v84;
-      v88 = self;
+      selfCopy = self;
       v31 = [v67 thenWithBlock:v85];
 
-      v69 = [(MTStandardIDService *)self cache];
-      [v69 addIdInfoPromise:v31 forScheme:v68 options:v35];
+      cache2 = [(MTStandardIDService *)self cache];
+      [cache2 addIdInfoPromise:v31 forScheme:v68 options:v35];
 
       v49 = v80;
     }
@@ -1309,9 +1309,9 @@ LABEL_10:
     {
       if (v46)
       {
-        v48 = [v10 idNamespace];
+        idNamespace3 = [v10 idNamespace];
         *buf = 138412290;
-        v96 = v48;
+        v96 = idNamespace3;
         _os_log_impl(&dword_258F4B000, v45, OS_LOG_TYPE_INFO, "MetricsKit: Returning cached ID promise for scheme %@", buf, 0xCu);
       }
 
@@ -1457,21 +1457,21 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
   return v14;
 }
 
-- (id)generateIDInfo:(id)a3 secret:(id)a4 dsId:(id)a5 correlationIDs:(id)a6
+- (id)generateIDInfo:(id)info secret:(id)secret dsId:(id)id correlationIDs:(id)ds
 {
   v59 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v49 = a5;
-  v11 = a6;
+  infoCopy = info;
+  secretCopy = secret;
+  idCopy = id;
+  dsCopy = ds;
   v12 = MEMORY[0x277CBEB18];
-  v13 = [v9 idNamespace];
-  v51 = v9;
-  v14 = [v9 version];
-  v15 = v14;
-  if (v14)
+  idNamespace = [infoCopy idNamespace];
+  v51 = infoCopy;
+  version = [infoCopy version];
+  v15 = version;
+  if (version)
   {
-    v16 = v14;
+    v16 = version;
   }
 
   else
@@ -1479,11 +1479,11 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
     v16 = &stru_286A3A510;
   }
 
-  v17 = [v10 value];
-  v18 = v17;
-  if (v17)
+  value = [secretCopy value];
+  v18 = value;
+  if (value)
   {
-    v19 = v17;
+    v19 = value;
   }
 
   else
@@ -1491,17 +1491,17 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
     v19 = &stru_286A3A510;
   }
 
-  v52 = [v12 arrayWithObjects:{v13, v16, v19, 0}];
+  v52 = [v12 arrayWithObjects:{idNamespace, v16, v19, 0}];
 
-  v20 = [v10 effectiveDate];
-  v21 = [v10 expirationDate];
-  v50 = v10;
-  v22 = [v10 isSynchronized];
+  effectiveDate = [secretCopy effectiveDate];
+  expirationDate = [secretCopy expirationDate];
+  v50 = secretCopy;
+  isSynchronized = [secretCopy isSynchronized];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v11;
+  obj = dsCopy;
   v23 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v23)
   {
@@ -1518,21 +1518,21 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
         }
 
         v28 = *(*(&v54 + 1) + 8 * i);
-        v29 = [v28 idString];
-        [v26 addObject:v29];
+        idString = [v28 idString];
+        [v26 addObject:idString];
 
-        v30 = [v28 effectiveDate];
-        v31 = v30;
-        if (v20)
+        effectiveDate2 = [v28 effectiveDate];
+        v31 = effectiveDate2;
+        if (effectiveDate)
         {
-          if (v30)
+          if (effectiveDate2)
           {
-            v32 = [v28 effectiveDate];
-            if ([v20 compare:v32] == -1)
+            effectiveDate3 = [v28 effectiveDate];
+            if ([effectiveDate compare:effectiveDate3] == -1)
             {
-              v33 = [v28 effectiveDate];
+              effectiveDate4 = [v28 effectiveDate];
 
-              v20 = v33;
+              effectiveDate = effectiveDate4;
               v26 = v52;
             }
           }
@@ -1540,21 +1540,21 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
 
         else
         {
-          v20 = v30;
+          effectiveDate = effectiveDate2;
         }
 
-        v34 = [v28 expirationDate];
-        v35 = v34;
-        if (v21)
+        expirationDate2 = [v28 expirationDate];
+        v35 = expirationDate2;
+        if (expirationDate)
         {
-          if (v34)
+          if (expirationDate2)
           {
-            v36 = [v28 expirationDate];
-            if ([v21 compare:v36] != -1)
+            expirationDate3 = [v28 expirationDate];
+            if ([expirationDate compare:expirationDate3] != -1)
             {
-              v37 = [v28 expirationDate];
+              expirationDate4 = [v28 expirationDate];
 
-              v21 = v37;
+              expirationDate = expirationDate4;
               v26 = v52;
             }
           }
@@ -1562,10 +1562,10 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
 
         else
         {
-          v21 = v34;
+          expirationDate = expirationDate2;
         }
 
-        v22 = v22 & [v28 isSynchronized];
+        isSynchronized = isSynchronized & [v28 isSynchronized];
       }
 
       v24 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
@@ -1574,53 +1574,53 @@ id __62__MTStandardIDService__IDInfoForNamespace_options_fromConfig___block_invo
     while (v24);
   }
 
-  v38 = [MEMORY[0x277CCAB68] string];
-  v39 = [v51 version];
-  v40 = [v39 length];
+  string = [MEMORY[0x277CCAB68] string];
+  version2 = [v51 version];
+  v40 = [version2 length];
 
   if (v40)
   {
-    v41 = [v51 version];
-    [v38 appendString:v41];
+    version3 = [v51 version];
+    [string appendString:version3];
 
-    [v38 appendString:@"_"];
+    [string appendString:@"_"];
   }
 
   v42 = [v52 componentsJoinedByString:@"\n"];
-  v43 = [v42 mt_SHA1Base62String];
-  [v38 appendString:v43];
+  mt_SHA1Base62String = [v42 mt_SHA1Base62String];
+  [string appendString:mt_SHA1Base62String];
 
-  v44 = [[MTIDInfo alloc] initWithScheme:v51 secret:v50 idString:v38 dsId:v49 effectiveDate:v20 expirationDate:v21];
-  [(MTIDInfo *)v44 setIsSynchronized:v22];
-  v45 = [(MTIDInfo *)v44 scheme];
-  v46 = [v45 idNamespace];
-  [MTStandardIDService registerInterprocessChangeNotifier:v46];
+  v44 = [[MTIDInfo alloc] initWithScheme:v51 secret:v50 idString:string dsId:idCopy effectiveDate:effectiveDate expirationDate:expirationDate];
+  [(MTIDInfo *)v44 setIsSynchronized:isSynchronized];
+  scheme = [(MTIDInfo *)v44 scheme];
+  idNamespace2 = [scheme idNamespace];
+  [MTStandardIDService registerInterprocessChangeNotifier:idNamespace2];
 
   v47 = *MEMORY[0x277D85DE8];
 
   return v44;
 }
 
-- (id)secretValueForNamespace:(id)a3 options:(id)a4
+- (id)secretValueForNamespace:(id)namespace options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTStandardIDService *)self configPromise];
+  namespaceCopy = namespace;
+  optionsCopy = options;
+  configPromise = [(MTStandardIDService *)self configPromise];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__MTStandardIDService_secretValueForNamespace_options___block_invoke;
   v17[3] = &unk_2798CD7D8;
-  v18 = v6;
-  v9 = v6;
-  v10 = [v8 thenWithBlock:v17];
+  v18 = namespaceCopy;
+  v9 = namespaceCopy;
+  v10 = [configPromise thenWithBlock:v17];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__MTStandardIDService_secretValueForNamespace_options___block_invoke_2;
   v15[3] = &unk_2798CD800;
   v15[4] = self;
-  v16 = v7;
-  v11 = v7;
+  v16 = optionsCopy;
+  v11 = optionsCopy;
   v12 = [v10 thenWithBlock:v15];
   v13 = [v12 thenWithBlock:&__block_literal_global_128];
 
@@ -1687,9 +1687,9 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerInterprocessChangeNotifier:(id)a3
++ (void)registerInterprocessChangeNotifier:(id)notifier
 {
-  v3 = a3;
+  notifierCopy = notifier;
   if (registerInterprocessChangeNotifier__onceToken != -1)
   {
     +[MTStandardIDService registerInterprocessChangeNotifier:];
@@ -1697,7 +1697,7 @@ LABEL_6:
 
   v4 = registerInterprocessChangeNotifier__subscriptions;
   objc_sync_enter(v4);
-  v5 = [registerInterprocessChangeNotifier__subscriptions objectForKeyedSubscript:v3];
+  v5 = [registerInterprocessChangeNotifier__subscriptions objectForKeyedSubscript:notifierCopy];
 
   if (!v5)
   {
@@ -1706,7 +1706,7 @@ LABEL_6:
     v9[1] = 3221225472;
     v9[2] = __58__MTStandardIDService_registerInterprocessChangeNotifier___block_invoke_2;
     v9[3] = &unk_2798CD868;
-    v7 = v3;
+    v7 = notifierCopy;
     v10 = v7;
     v8 = [(MTInterprocessChangeNotifier *)v6 initWithIdentifier:v7 onChange:v9];
     [registerInterprocessChangeNotifier__subscriptions setObject:v8 forKeyedSubscript:v7];
@@ -1736,36 +1736,36 @@ void __58__MTStandardIDService_registerInterprocessChangeNotifier___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)writeDebugData:(id)a3 toFileWithNameFormat:(id)a4
++ (id)writeDebugData:(id)data toFileWithNameFormat:(id)format
 {
   v33 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA968];
-  v6 = a4;
-  v7 = a3;
+  formatCopy = format;
+  dataCopy = data;
   v8 = objc_alloc_init(v5);
   [v8 setDateFormat:@"yyyyMMddHHmmss"];
   v9 = MEMORY[0x277CCACA8];
   v10 = +[MTFrameworkEnvironment sharedEnvironment];
-  v11 = [v10 hostProcessBundleIdentifier];
+  hostProcessBundleIdentifier = [v10 hostProcessBundleIdentifier];
   v12 = +[MTFrameworkEnvironment sharedEnvironment];
-  v13 = [v12 date];
-  v14 = [v8 stringFromDate:v13];
-  v15 = [v9 stringWithFormat:v6, v11, v14];
+  date = [v12 date];
+  v14 = [v8 stringFromDate:date];
+  v15 = [v9 stringWithFormat:formatCopy, hostProcessBundleIdentifier, v14];
 
   v16 = NSTemporaryDirectory();
   v17 = +[MTFrameworkEnvironment sharedEnvironment];
-  v18 = [v17 metricsKitBundleIdentifier];
-  v19 = [v16 stringByAppendingPathComponent:v18];
+  metricsKitBundleIdentifier = [v17 metricsKitBundleIdentifier];
+  v19 = [v16 stringByAppendingPathComponent:metricsKitBundleIdentifier];
 
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  [v20 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:0];
 
   v21 = [v19 stringByAppendingPathComponent:v15];
 
   v22 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:v21 append:0];
   [v22 open];
   v28 = 0;
-  [MEMORY[0x277CCAAA0] writeJSONObject:v7 toStream:v22 options:0 error:&v28];
+  [MEMORY[0x277CCAAA0] writeJSONObject:dataCopy toStream:v22 options:0 error:&v28];
 
   v23 = v28;
   [v22 close];
@@ -1796,11 +1796,11 @@ void __58__MTStandardIDService_registerInterprocessChangeNotifier___block_invoke
 
 - (void)_clearLocalData
 {
-  v2 = [(MTStandardIDService *)self secretStore];
-  [v2 clearLocalData];
+  secretStore = [(MTStandardIDService *)self secretStore];
+  [secretStore clearLocalData];
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"MTIDNamespacesDidResetNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MTIDNamespacesDidResetNotification" object:0 userInfo:0];
 
   v4 = MTMetricsKitOSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1815,7 +1815,7 @@ void __58__MTStandardIDService_registerInterprocessChangeNotifier___block_invoke
   objc_initWeak(&location, self);
   v3 = [(MTStandardIDService *)self filledOptions:0];
   v4 = objc_loadWeakRetained(&location);
-  v5 = [v4 configPromise];
+  configPromise = [v4 configPromise];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__MTStandardIDService__resetIDs__block_invoke;
@@ -1823,7 +1823,7 @@ void __58__MTStandardIDService_registerInterprocessChangeNotifier___block_invoke
   v7[4] = self;
   v6 = v3;
   v8 = v6;
-  [v5 addSuccessBlock:v7];
+  [configPromise addSuccessBlock:v7];
 
   objc_destroyWeak(&location);
 }
@@ -1847,19 +1847,19 @@ void __32__MTStandardIDService__resetIDs__block_invoke(uint64_t a1, void *a2)
 - (void)_getSecrets
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(MTStandardIDService *)self secretStore];
+  secretStore = [(MTStandardIDService *)self secretStore];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(MTStandardIDService *)self secretStore];
-    v5 = [v4 debugInfo];
+    secretStore2 = [(MTStandardIDService *)self secretStore];
+    debugInfo = [secretStore2 debugInfo];
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEC10];
+    debugInfo = MEMORY[0x277CBEC10];
   }
 
-  v6 = [MTStandardIDService writeDebugData:v5 toFileWithNameFormat:@"MTIDSecrets-%@-%@.json"];
+  v6 = [MTStandardIDService writeDebugData:debugInfo toFileWithNameFormat:@"MTIDSecrets-%@-%@.json"];
   if (v6)
   {
     v7 = MTMetricsKitOSLog();
@@ -1879,7 +1879,7 @@ void __32__MTStandardIDService__resetIDs__block_invoke(uint64_t a1, void *a2)
   objc_initWeak(&location, self);
   v3 = [(MTStandardIDService *)self filledOptions:0];
   v4 = objc_loadWeakRetained(&location);
-  v5 = [v4 configPromise];
+  configPromise = [v4 configPromise];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__MTStandardIDService__getIDs__block_invoke;
@@ -1887,7 +1887,7 @@ void __32__MTStandardIDService__resetIDs__block_invoke(uint64_t a1, void *a2)
   objc_copyWeak(&v9, &location);
   v6 = v3;
   v8 = v6;
-  [v5 addSuccessBlock:v7];
+  [configPromise addSuccessBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1992,15 +1992,15 @@ void __30__MTStandardIDService__getIDs__block_invoke_3(uint64_t a1, void *a2)
 - (void)_getConfig
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(MTStandardIDService *)self configPromise];
-  v3 = [v2 resultWithError:0];
+  configPromise = [(MTStandardIDService *)self configPromise];
+  v3 = [configPromise resultWithError:0];
 
-  v4 = [v3 dictionaryRepresentation];
+  dictionaryRepresentation = [v3 dictionaryRepresentation];
 
-  if (v4)
+  if (dictionaryRepresentation)
   {
-    v5 = [v3 dictionaryRepresentation];
-    v6 = [MTStandardIDService writeDebugData:v5 toFileWithNameFormat:@"MTIDConfig-%@-%@.json"];
+    dictionaryRepresentation2 = [v3 dictionaryRepresentation];
+    v6 = [MTStandardIDService writeDebugData:dictionaryRepresentation2 toFileWithNameFormat:@"MTIDConfig-%@-%@.json"];
     if (v6)
     {
       v7 = MTMetricsKitOSLog();

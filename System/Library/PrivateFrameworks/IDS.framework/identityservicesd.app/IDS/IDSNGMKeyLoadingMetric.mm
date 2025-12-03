@@ -1,22 +1,22 @@
 @interface IDSNGMKeyLoadingMetric
-- (IDSNGMKeyLoadingMetric)initWithErrorContainer:(id)a3 missingIdentity:(BOOL)a4 missingPrekey:(BOOL)a5;
+- (IDSNGMKeyLoadingMetric)initWithErrorContainer:(id)container missingIdentity:(BOOL)identity missingPrekey:(BOOL)prekey;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSNGMKeyLoadingMetric
 
-- (IDSNGMKeyLoadingMetric)initWithErrorContainer:(id)a3 missingIdentity:(BOOL)a4 missingPrekey:(BOOL)a5
+- (IDSNGMKeyLoadingMetric)initWithErrorContainer:(id)container missingIdentity:(BOOL)identity missingPrekey:(BOOL)prekey
 {
-  v9 = a3;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = IDSNGMKeyLoadingMetric;
   v10 = [(IDSNGMKeyLoadingMetric *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_errorContainer, a3);
-    v11->_missingIdentity = a4;
-    v11->_missingPrekey = a5;
+    objc_storeStrong(&v10->_errorContainer, container);
+    v11->_missingIdentity = identity;
+    v11->_missingPrekey = prekey;
   }
 
   return v11;
@@ -25,45 +25,45 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v5 = [v4 registeredKeychainError];
-  if (!v5)
+  errorContainer = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  registeredKeychainError = [errorContainer registeredKeychainError];
+  if (!registeredKeychainError)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v6 = v5;
-  v7 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v8 = [v7 shouldHaveRegisteredIdentity];
-  if (!v8)
+  v6 = registeredKeychainError;
+  errorContainer2 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  shouldHaveRegisteredIdentity = [errorContainer2 shouldHaveRegisteredIdentity];
+  if (!shouldHaveRegisteredIdentity)
   {
 
 LABEL_6:
-    v13 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v14 = [v13 registeredKeychainError];
-    v4 = [v14 domain];
+    errorContainer3 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    registeredKeychainError2 = [errorContainer3 registeredKeychainError];
+    errorContainer = [registeredKeychainError2 domain];
 
-    v15 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v16 = [v15 registeredKeychainError];
-    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v16 code]);
+    errorContainer4 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    registeredKeychainError3 = [errorContainer4 registeredKeychainError];
+    v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [registeredKeychainError3 code]);
 
-    v18 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v19 = [v18 registeredKeychainError];
-    v20 = [v19 userInfo];
+    errorContainer5 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    registeredKeychainError4 = [errorContainer5 registeredKeychainError];
+    userInfo = [registeredKeychainError4 userInfo];
 
-    v21 = [v20 objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
-    if ([v4 isEqualToString:@"IDSKeychainWrapperErrorDomain"] && v21)
+    v21 = [userInfo objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
+    if ([errorContainer isEqualToString:@"IDSKeychainWrapperErrorDomain"] && v21)
     {
       v22 = v21;
 
       v17 = v22;
     }
 
-    if (v4)
+    if (errorContainer)
     {
-      CFDictionarySetValue(v3, @"RegisteredKeychainErrorDomain", v4);
+      CFDictionarySetValue(v3, @"RegisteredKeychainErrorDomain", errorContainer);
     }
 
     if (v17)
@@ -74,56 +74,56 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v9 = v8;
-  v10 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v11 = [v10 shouldHaveRegisteredIdentity];
-  v12 = [v11 BOOLValue];
+  v9 = shouldHaveRegisteredIdentity;
+  errorContainer6 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  shouldHaveRegisteredIdentity2 = [errorContainer6 shouldHaveRegisteredIdentity];
+  bOOLValue = [shouldHaveRegisteredIdentity2 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v23 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v24 = [v23 unregisteredKeychainError];
-  if (!v24)
+  errorContainer7 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  unregisteredKeychainError = [errorContainer7 unregisteredKeychainError];
+  if (!unregisteredKeychainError)
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v25 = v24;
-  v26 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v27 = [v26 shouldHaveUnregisteredIdentity];
-  if (!v27)
+  v25 = unregisteredKeychainError;
+  errorContainer8 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  shouldHaveUnregisteredIdentity = [errorContainer8 shouldHaveUnregisteredIdentity];
+  if (!shouldHaveUnregisteredIdentity)
   {
 
 LABEL_20:
-    v32 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v33 = [v32 unregisteredKeychainError];
-    v23 = [v33 domain];
+    errorContainer9 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    unregisteredKeychainError2 = [errorContainer9 unregisteredKeychainError];
+    errorContainer7 = [unregisteredKeychainError2 domain];
 
-    v34 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v35 = [v34 unregisteredKeychainError];
-    v36 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v35 code]);
+    errorContainer10 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    unregisteredKeychainError3 = [errorContainer10 unregisteredKeychainError];
+    v36 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [unregisteredKeychainError3 code]);
 
-    v37 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v38 = [v37 unregisteredKeychainError];
-    v39 = [v38 userInfo];
+    errorContainer11 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    unregisteredKeychainError4 = [errorContainer11 unregisteredKeychainError];
+    userInfo2 = [unregisteredKeychainError4 userInfo];
 
-    v40 = [v39 objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
-    if ([v23 isEqualToString:@"IDSKeychainWrapperErrorDomain"] && v40)
+    v40 = [userInfo2 objectForKey:@"IDSKeychainWrapperErrorOSStatus"];
+    if ([errorContainer7 isEqualToString:@"IDSKeychainWrapperErrorDomain"] && v40)
     {
       v41 = v40;
 
       v36 = v41;
     }
 
-    if (v23)
+    if (errorContainer7)
     {
-      CFDictionarySetValue(v3, @"UnregisteredKeychainErrorDomain", v23);
+      CFDictionarySetValue(v3, @"UnregisteredKeychainErrorDomain", errorContainer7);
     }
 
     if (v36)
@@ -134,34 +134,34 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  v28 = v27;
-  v29 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v30 = [v29 shouldHaveUnregisteredIdentity];
-  v31 = [v30 BOOLValue];
+  v28 = shouldHaveUnregisteredIdentity;
+  errorContainer12 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  shouldHaveUnregisteredIdentity2 = [errorContainer12 shouldHaveUnregisteredIdentity];
+  bOOLValue2 = [shouldHaveUnregisteredIdentity2 BOOLValue];
 
-  if (v31)
+  if (bOOLValue2)
   {
     goto LABEL_20;
   }
 
 LABEL_29:
-  v42 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v43 = [v42 registeredDeserializationError];
+  errorContainer13 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  registeredDeserializationError = [errorContainer13 registeredDeserializationError];
 
-  if (v43)
+  if (registeredDeserializationError)
   {
-    v44 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v45 = [v44 registeredDeserializationError];
-    v46 = [v45 domain];
+    errorContainer14 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    registeredDeserializationError2 = [errorContainer14 registeredDeserializationError];
+    domain = [registeredDeserializationError2 domain];
 
-    if (v46)
+    if (domain)
     {
-      CFDictionarySetValue(v3, @"RegisteredDeserializationErrorDomain", v46);
+      CFDictionarySetValue(v3, @"RegisteredDeserializationErrorDomain", domain);
     }
 
-    v47 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v48 = [v47 registeredDeserializationError];
-    v49 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v48 code]);
+    errorContainer15 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    registeredDeserializationError3 = [errorContainer15 registeredDeserializationError];
+    v49 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [registeredDeserializationError3 code]);
 
     if (v49)
     {
@@ -169,23 +169,23 @@ LABEL_29:
     }
   }
 
-  v50 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v51 = [v50 unregisteredDeserializationError];
+  errorContainer16 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  unregisteredDeserializationError = [errorContainer16 unregisteredDeserializationError];
 
-  if (v51)
+  if (unregisteredDeserializationError)
   {
-    v52 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v53 = [v52 unregisteredDeserializationError];
-    v54 = [v53 domain];
+    errorContainer17 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    unregisteredDeserializationError2 = [errorContainer17 unregisteredDeserializationError];
+    domain2 = [unregisteredDeserializationError2 domain];
 
-    if (v54)
+    if (domain2)
     {
-      CFDictionarySetValue(v3, @"UnregisteredDeserializationErrorDomain", v54);
+      CFDictionarySetValue(v3, @"UnregisteredDeserializationErrorDomain", domain2);
     }
 
-    v55 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v56 = [v55 unregisteredDeserializationError];
-    v57 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v56 code]);
+    errorContainer18 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    unregisteredDeserializationError3 = [errorContainer18 unregisteredDeserializationError];
+    v57 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [unregisteredDeserializationError3 code]);
 
     if (v57)
     {
@@ -193,23 +193,23 @@ LABEL_29:
     }
   }
 
-  v58 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v59 = [v58 generationError];
+  errorContainer19 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  generationError = [errorContainer19 generationError];
 
-  if (v59)
+  if (generationError)
   {
-    v60 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v61 = [v60 generationError];
-    v62 = [v61 domain];
+    errorContainer20 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    generationError2 = [errorContainer20 generationError];
+    domain3 = [generationError2 domain];
 
-    if (v62)
+    if (domain3)
     {
-      CFDictionarySetValue(v3, @"GenerationErrorDomain", v62);
+      CFDictionarySetValue(v3, @"GenerationErrorDomain", domain3);
     }
 
-    v63 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v64 = [v63 generationError];
-    v65 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v64 code]);
+    errorContainer21 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    generationError3 = [errorContainer21 generationError];
+    v65 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [generationError3 code]);
 
     if (v65)
     {
@@ -217,23 +217,23 @@ LABEL_29:
     }
   }
 
-  v66 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v67 = [v66 rollingError];
+  errorContainer22 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  rollingError = [errorContainer22 rollingError];
 
-  if (v67)
+  if (rollingError)
   {
-    v68 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v69 = [v68 rollingError];
-    v70 = [v69 domain];
+    errorContainer23 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    rollingError2 = [errorContainer23 rollingError];
+    domain4 = [rollingError2 domain];
 
-    if (v70)
+    if (domain4)
     {
-      CFDictionarySetValue(v3, @"RollingErrorDomain", v70);
+      CFDictionarySetValue(v3, @"RollingErrorDomain", domain4);
     }
 
-    v71 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v72 = [v71 rollingError];
-    v73 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v72 code]);
+    errorContainer24 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    rollingError3 = [errorContainer24 rollingError];
+    v73 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [rollingError3 code]);
 
     if (v73)
     {
@@ -241,23 +241,23 @@ LABEL_29:
     }
   }
 
-  v74 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v75 = [v74 identityToRegisterError];
+  errorContainer25 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  identityToRegisterError = [errorContainer25 identityToRegisterError];
 
-  if (v75)
+  if (identityToRegisterError)
   {
-    v76 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v77 = [v76 identityToRegisterError];
-    v78 = [v77 domain];
+    errorContainer26 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    identityToRegisterError2 = [errorContainer26 identityToRegisterError];
+    domain5 = [identityToRegisterError2 domain];
 
-    if (v78)
+    if (domain5)
     {
-      CFDictionarySetValue(v3, @"IdentityToRegisterErrorDomain", v78);
+      CFDictionarySetValue(v3, @"IdentityToRegisterErrorDomain", domain5);
     }
 
-    v79 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-    v80 = [v79 identityToRegisterError];
-    v81 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v80 code]);
+    errorContainer27 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+    identityToRegisterError3 = [errorContainer27 identityToRegisterError];
+    v81 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [identityToRegisterError3 code]);
 
     if (v81)
     {
@@ -277,32 +277,32 @@ LABEL_29:
     CFDictionarySetValue(v3, @"NGMMissingIdentity", v83);
   }
 
-  v84 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v85 = [v84 shouldHaveRegisteredIdentity];
+  errorContainer28 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  shouldHaveRegisteredIdentity3 = [errorContainer28 shouldHaveRegisteredIdentity];
 
-  if (v85)
+  if (shouldHaveRegisteredIdentity3)
   {
-    CFDictionarySetValue(v3, @"ShouldHaveRegisteredIdentity", v85);
+    CFDictionarySetValue(v3, @"ShouldHaveRegisteredIdentity", shouldHaveRegisteredIdentity3);
   }
 
-  v86 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v87 = [v86 shouldHaveUnregisteredIdentity];
+  errorContainer29 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  shouldHaveUnregisteredIdentity3 = [errorContainer29 shouldHaveUnregisteredIdentity];
 
-  if (v87)
+  if (shouldHaveUnregisteredIdentity3)
   {
-    CFDictionarySetValue(v3, @"ShouldHaveUnregisteredIdentity", v87);
+    CFDictionarySetValue(v3, @"ShouldHaveUnregisteredIdentity", shouldHaveUnregisteredIdentity3);
   }
 
-  v88 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v89 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v88 hasRegisteredContainer]);
+  errorContainer30 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  v89 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [errorContainer30 hasRegisteredContainer]);
 
   if (v89)
   {
     CFDictionarySetValue(v3, @"HasRegisteredIdentity", v89);
   }
 
-  v90 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
-  v91 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v90 hasUnregisteredContainer]);
+  errorContainer31 = [(IDSNGMKeyLoadingMetric *)self errorContainer];
+  v91 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [errorContainer31 hasUnregisteredContainer]);
 
   if (v91)
   {

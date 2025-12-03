@@ -1,10 +1,10 @@
 @interface CAFFloatRange
-- (BOOL)valueIsInRange:(float)a3;
-- (float)limitedValueForValue:(float)a3;
+- (BOOL)valueIsInRange:(float)range;
+- (float)limitedValueForValue:(float)value;
 - (float)maximumValue;
 - (float)minimumValue;
 - (float)stepValue;
-- (float)valueRoundedToNearestStepValue:(float)a3;
+- (float)valueRoundedToNearestStepValue:(float)value;
 - (id)rangeDescription;
 @end
 
@@ -12,8 +12,8 @@
 
 - (float)minimumValue
 {
-  v2 = [(CAFRange *)self minimum];
-  [v2 floatValue];
+  minimum = [(CAFRange *)self minimum];
+  [minimum floatValue];
   v4 = v3;
 
   return v4;
@@ -21,8 +21,8 @@
 
 - (float)maximumValue
 {
-  v2 = [(CAFRange *)self maximum];
-  [v2 floatValue];
+  maximum = [(CAFRange *)self maximum];
+  [maximum floatValue];
   v4 = v3;
 
   return v4;
@@ -30,8 +30,8 @@
 
 - (float)stepValue
 {
-  v2 = [(CAFRange *)self step];
-  [v2 floatValue];
+  step = [(CAFRange *)self step];
+  [step floatValue];
   v4 = v3;
 
   return v4;
@@ -48,7 +48,7 @@
   return [v3 stringWithFormat:@"[%g..%g]x%g", *&v5, *&v7, v8];
 }
 
-- (BOOL)valueIsInRange:(float)a3
+- (BOOL)valueIsInRange:(float)range
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   LOBYTE(self) = [(CAFRange *)self isInRange:v4];
@@ -56,7 +56,7 @@
   return self;
 }
 
-- (float)valueRoundedToNearestStepValue:(float)a3
+- (float)valueRoundedToNearestStepValue:(float)value
 {
   [(CAFFloatRange *)self stepValue];
   if (v5 >= 0.0)
@@ -64,12 +64,12 @@
     [(CAFFloatRange *)self stepValue];
     if (v6 <= 0.00000011921)
     {
-      return a3;
+      return value;
     }
   }
 
   [(CAFFloatRange *)self minimumValue];
-  v8 = a3 - v7;
+  v8 = value - v7;
   [(CAFFloatRange *)self stepValue];
   v10 = vcvtas_u32_f32(v8 / v9);
   [(CAFFloatRange *)self minimumValue];
@@ -78,7 +78,7 @@
   return v12 + (v10 * v13);
 }
 
-- (float)limitedValueForValue:(float)a3
+- (float)limitedValueForValue:(float)value
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   v5 = [(CAFRange *)self limitedToRange:v4];

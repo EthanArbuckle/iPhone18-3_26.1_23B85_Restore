@@ -1,26 +1,26 @@
 @interface RPTScrollViewTestParameters
-+ (id)newWithTestName:(id)a3 scrollBounds:(CGRect)a4 amplitude:(double)a5 direction:(int64_t)a6 completionHandler:(id)a7;
-+ (id)newWithTestName:(id)a3 scrollView:(id)a4 completionHandler:(id)a5;
++ (id)newWithTestName:(id)name scrollBounds:(CGRect)bounds amplitude:(double)amplitude direction:(int64_t)direction completionHandler:(id)handler;
++ (id)newWithTestName:(id)name scrollView:(id)view completionHandler:(id)handler;
 - (CGRect)scrollingBounds;
-- (RPTScrollViewTestParameters)initWithTestName:(id)a3 scrollBounds:(CGRect)a4 scrollContentLength:(double)a5 direction:(int64_t)a6 completionHandler:(id)a7;
-- (RPTScrollViewTestParameters)initWithTestName:(id)a3 scrollView:(id)a4 completionHandler:(id)a5;
-- (RPTScrollViewTestParameters)initWithTestName:(id)a3 scrollViewIdentifier:(id)a4 scrollBounds:(CGRect)a5 scrollContentLength:(double)a6 direction:(int64_t)a7 completionHandler:(id)a8;
+- (RPTScrollViewTestParameters)initWithTestName:(id)name scrollBounds:(CGRect)bounds scrollContentLength:(double)length direction:(int64_t)direction completionHandler:(id)handler;
+- (RPTScrollViewTestParameters)initWithTestName:(id)name scrollView:(id)view completionHandler:(id)handler;
+- (RPTScrollViewTestParameters)initWithTestName:(id)name scrollViewIdentifier:(id)identifier scrollBounds:(CGRect)bounds scrollContentLength:(double)length direction:(int64_t)direction completionHandler:(id)handler;
 - (id)_v1_composerBlock;
 - (id)_v2_composerBlock;
 - (id)_v3_4_composerBlock;
 - (id)composerBlock;
 - (unint64_t)effectiveVersion;
 - (void)_v3_4_composerBlock;
-- (void)completeAfterScrollEndNotification:(id)a3;
-- (void)completeAfterScrollEndSignpost:(id)a3;
-- (void)setScrollingBounds:(CGRect)a3;
-- (void)setScrollingContentLength:(double)a3;
-- (void)waitForPostEventStreamDelayWithHandler:(id)a3;
+- (void)completeAfterScrollEndNotification:(id)notification;
+- (void)completeAfterScrollEndSignpost:(id)signpost;
+- (void)setScrollingBounds:(CGRect)bounds;
+- (void)setScrollingContentLength:(double)length;
+- (void)waitForPostEventStreamDelayWithHandler:(id)handler;
 @end
 
 @implementation RPTScrollViewTestParameters
 
-- (void)setScrollingContentLength:(double)a3
+- (void)setScrollingContentLength:(double)length
 {
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
 
@@ -29,19 +29,19 @@
     v6 = RPTLogTestRunning();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(RPTScrollViewTestParameters *)self setScrollingContentLength:v6, a3];
+      [(RPTScrollViewTestParameters *)self setScrollingContentLength:v6, length];
     }
   }
 
-  self->_scrollingContentLength = a3;
+  self->_scrollingContentLength = length;
 }
 
-- (void)setScrollingBounds:(CGRect)a3
+- (void)setScrollingBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
 
   if (WeakRetained)
@@ -105,45 +105,45 @@
   }
 }
 
-+ (id)newWithTestName:(id)a3 scrollView:(id)a4 completionHandler:(id)a5
++ (id)newWithTestName:(id)name scrollView:(id)view completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = RPTDefaultScrollDirection(v8);
-  v11 = RPTContentSizeInDirection(v8, v10);
-  v12 = RPTGetBoundsForView(v8);
-  v16 = [RPTScrollViewTestParameters newWithTestName:v9 scrollBounds:_UIScrollDirectionFromRPTScrollDirection(v10) amplitude:v7 direction:v12 completionHandler:v13, v14, v15, v11];
+  handlerCopy = handler;
+  viewCopy = view;
+  nameCopy = name;
+  v10 = RPTDefaultScrollDirection(viewCopy);
+  v11 = RPTContentSizeInDirection(viewCopy, v10);
+  v12 = RPTGetBoundsForView(viewCopy);
+  v16 = [RPTScrollViewTestParameters newWithTestName:nameCopy scrollBounds:_UIScrollDirectionFromRPTScrollDirection(v10) amplitude:handlerCopy direction:v12 completionHandler:v13, v14, v15, v11];
 
-  v17 = [v8 window];
+  window = [viewCopy window];
 
-  v18 = [RPTCoordinateSpaceConverter converterFromWindow:v17];
+  v18 = [RPTCoordinateSpaceConverter converterFromWindow:window];
   [v16 setConversion:v18];
 
   return v16;
 }
 
-+ (id)newWithTestName:(id)a3 scrollBounds:(CGRect)a4 amplitude:(double)a5 direction:(int64_t)a6 completionHandler:(id)a7
++ (id)newWithTestName:(id)name scrollBounds:(CGRect)bounds amplitude:(double)amplitude direction:(int64_t)direction completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a7;
-  v15 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  handlerCopy = handler;
+  nameCopy = name;
   v16 = objc_opt_new();
-  [v16 setTestName:v15];
+  [v16 setTestName:nameCopy];
 
   [v16 setScrollingBounds:{x, y, width, height}];
-  [v16 setAmplitude:a5];
+  [v16 setAmplitude:amplitude];
   [v16 setAmplitudeFactor:1.0];
-  [v16 setDirection:a6];
-  [v16 setCompletionHandler:v14];
+  [v16 setDirection:direction];
+  [v16 setCompletionHandler:handlerCopy];
 
-  v17 = [MEMORY[0x277CCAC38] processInfo];
-  v18 = [v17 isiOSAppOnMac];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isiOSAppOnMac = [processInfo isiOSAppOnMac];
 
-  if (v18)
+  if (isiOSAppOnMac)
   {
     [v16 setPreventSheetDismissal:0];
     [v16 setShouldFlick:0];
@@ -156,38 +156,38 @@
   return v16;
 }
 
-- (RPTScrollViewTestParameters)initWithTestName:(id)a3 scrollView:(id)a4 completionHandler:(id)a5
+- (RPTScrollViewTestParameters)initWithTestName:(id)name scrollView:(id)view completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  viewCopy = view;
+  handlerCopy = handler;
   v11 = RPTLogTestRunning();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"YES";
     *v20 = 138543874;
-    *&v20[4] = v8;
+    *&v20[4] = nameCopy;
     *&v20[12] = 2114;
-    if (!v10)
+    if (!handlerCopy)
     {
       v12 = @"NULL";
     }
 
-    *&v20[14] = v9;
+    *&v20[14] = viewCopy;
     v21 = 2114;
     v22 = v12;
     _os_log_impl(&dword_261A17000, v11, OS_LOG_TYPE_DEFAULT, "RPT: [RPTScrollViewTestParameters initWithTestName:]", v20, 0x20u);
   }
 
-  v13 = RPTDefaultScrollDirection(v9);
-  RPTContentSizeInDirection(v9, v13);
-  v14 = [(RPTScrollViewTestParameters *)self initWithTestName:v8 scrollBounds:v13 scrollContentLength:v10 direction:RPTGetBoundsForView(v9) completionHandler:?];
-  v15 = [v9 window];
-  v16 = [RPTCoordinateSpaceConverter converterFromWindow:v15];
+  v13 = RPTDefaultScrollDirection(viewCopy);
+  RPTContentSizeInDirection(viewCopy, v13);
+  v14 = [(RPTScrollViewTestParameters *)self initWithTestName:nameCopy scrollBounds:v13 scrollContentLength:handlerCopy direction:RPTGetBoundsForView(viewCopy) completionHandler:?];
+  window = [viewCopy window];
+  v16 = [RPTCoordinateSpaceConverter converterFromWindow:window];
 
   [(RPTScrollViewTestParameters *)v14 setConversion:v16];
-  objc_storeWeak(&v14->_scrollView, v9);
+  objc_storeWeak(&v14->_scrollView, viewCopy);
   if ([(RPTScrollViewTestParameters *)v14 effectiveVersion]> 2 || [(RPTScrollViewTestParameters *)v14 effectiveVersion]>= 2)
   {
     [(RPTScrollViewTestParameters *)v14 setShouldFlick:1, *v20];
@@ -196,24 +196,24 @@
   v17 = RPTLogTestRunning();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(RPTScrollViewTestParameters *)v14 shouldFlick];
+    shouldFlick = [(RPTScrollViewTestParameters *)v14 shouldFlick];
     *v20 = 67109120;
-    *&v20[4] = v18;
+    *&v20[4] = shouldFlick;
     _os_log_impl(&dword_261A17000, v17, OS_LOG_TYPE_DEFAULT, "RPT: RPTScrollViewTestParameters shouldFlick: %{BOOL}u", v20, 8u);
   }
 
   return v14;
 }
 
-- (RPTScrollViewTestParameters)initWithTestName:(id)a3 scrollBounds:(CGRect)a4 scrollContentLength:(double)a5 direction:(int64_t)a6 completionHandler:(id)a7
+- (RPTScrollViewTestParameters)initWithTestName:(id)name scrollBounds:(CGRect)bounds scrollContentLength:(double)length direction:(int64_t)direction completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v42 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a7;
+  nameCopy = name;
+  handlerCopy = handler;
   v17 = RPTLogTestRunning();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -225,37 +225,37 @@
     v19 = v18;
     *v35 = 138544386;
     v20 = @"YES";
-    *&v35[4] = v15;
+    *&v35[4] = nameCopy;
     *&v35[12] = 2114;
-    if (!v16)
+    if (!handlerCopy)
     {
       v20 = @"NULL";
     }
 
     *&v35[14] = v18;
     v36 = 2048;
-    v37 = a5;
+    lengthCopy = length;
     v38 = 2050;
-    v39 = a6;
+    directionCopy = direction;
     v40 = 2114;
     v41 = v20;
     _os_log_impl(&dword_261A17000, v17, OS_LOG_TYPE_DEFAULT, "RPT: [RPTScrollViewTestParameters initWithTestName:]", v35, 0x34u);
   }
 
-  v21 = _RPTAxisFromScrollDirection(a6);
-  if (RPTSizeAlongAxis(v21, width, height) * 2.5 > a5)
+  v21 = _RPTAxisFromScrollDirection(direction);
+  if (RPTSizeAlongAxis(v21, width, height) * 2.5 > length)
   {
     v22 = RPTLogTestRunning();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      [(RPTScrollViewTestParameters *)v22 initWithTestName:y scrollBounds:width scrollContentLength:height direction:a5 completionHandler:?];
+      [(RPTScrollViewTestParameters *)v22 initWithTestName:y scrollBounds:width scrollContentLength:height direction:length completionHandler:?];
     }
   }
 
   v23 = [(RPTScrollViewTestParameters *)self init];
   if (v23)
   {
-    v24 = [v15 copy];
+    v24 = [nameCopy copy];
     testName = v23->_testName;
     v23->_testName = v24;
 
@@ -263,10 +263,10 @@
     v23->_scrollingBounds.origin.y = y;
     v23->_scrollingBounds.size.width = width;
     v23->_scrollingBounds.size.height = height;
-    v23->_scrollingContentLength = a5;
+    v23->_scrollingContentLength = length;
     v23->_amplitudeFactor = 1.0;
-    v23->_direction = _UIScrollDirectionFromRPTScrollDirection(a6);
-    v26 = MEMORY[0x2667162B0](v16);
+    v23->_direction = _UIScrollDirectionFromRPTScrollDirection(direction);
+    v26 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v26;
 
@@ -288,27 +288,27 @@
   v32 = RPTLogTestRunning();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(RPTScrollViewTestParameters *)v23 curveFunction];
+    curveFunction = [(RPTScrollViewTestParameters *)v23 curveFunction];
     *v35 = 138543362;
-    *&v35[4] = v33;
+    *&v35[4] = curveFunction;
     _os_log_impl(&dword_261A17000, v32, OS_LOG_TYPE_DEFAULT, "RPT: RPTScrollViewTestParameters curveFunction: %{public}@", v35, 0xCu);
   }
 
   return v23;
 }
 
-- (RPTScrollViewTestParameters)initWithTestName:(id)a3 scrollViewIdentifier:(id)a4 scrollBounds:(CGRect)a5 scrollContentLength:(double)a6 direction:(int64_t)a7 completionHandler:(id)a8
+- (RPTScrollViewTestParameters)initWithTestName:(id)name scrollViewIdentifier:(id)identifier scrollBounds:(CGRect)bounds scrollContentLength:(double)length direction:(int64_t)direction completionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a4;
-  v18 = [(RPTScrollViewTestParameters *)self initWithTestName:a3 scrollBounds:a7 scrollContentLength:a8 direction:x completionHandler:y, width, height, a6];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifierCopy = identifier;
+  v18 = [(RPTScrollViewTestParameters *)self initWithTestName:name scrollBounds:direction scrollContentLength:handler direction:x completionHandler:y, width, height, length];
   v19 = v18;
-  if (v17 && v18 && [v17 length])
+  if (identifierCopy && v18 && [identifierCopy length])
   {
-    v20 = [v17 copy];
+    v20 = [identifierCopy copy];
     scrollViewIdentifier = v19->_scrollViewIdentifier;
     v19->_scrollViewIdentifier = v20;
 
@@ -320,44 +320,44 @@
 
 - (id)composerBlock
 {
-  v3 = [(RPTScrollViewTestParameters *)self effectiveVersion];
-  if (v3 - 3 < 2)
+  effectiveVersion = [(RPTScrollViewTestParameters *)self effectiveVersion];
+  if (effectiveVersion - 3 < 2)
   {
-    v4 = [(RPTScrollViewTestParameters *)self _v3_4_composerBlock];
+    _v3_4_composerBlock = [(RPTScrollViewTestParameters *)self _v3_4_composerBlock];
   }
 
-  else if (v3 == 2)
+  else if (effectiveVersion == 2)
   {
-    v4 = [(RPTScrollViewTestParameters *)self _v2_composerBlock];
+    _v3_4_composerBlock = [(RPTScrollViewTestParameters *)self _v2_composerBlock];
   }
 
-  else if (v3 == 1)
+  else if (effectiveVersion == 1)
   {
-    v4 = [(RPTScrollViewTestParameters *)self _v1_composerBlock];
+    _v3_4_composerBlock = [(RPTScrollViewTestParameters *)self _v1_composerBlock];
   }
 
   else
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unknown RPTScrollViewTestParametersForceVersion specified: %ld", v3}];
-    v4 = 0;
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unknown RPTScrollViewTestParametersForceVersion specified: %ld", effectiveVersion}];
+    _v3_4_composerBlock = 0;
   }
 
-  return v4;
+  return _v3_4_composerBlock;
 }
 
-- (void)waitForPostEventStreamDelayWithHandler:(id)a3
+- (void)waitForPostEventStreamDelayWithHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = RPTLogTestRunning();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(RPTScrollViewTestParameters *)self effectiveVersion];
+    effectiveVersion = [(RPTScrollViewTestParameters *)self effectiveVersion];
     WeakRetained = objc_loadWeakRetained(&self->_scrollView);
     scrollViewIdentifier = self->_scrollViewIdentifier;
     shouldFlick = self->_shouldFlick;
     v17 = 134218754;
-    v18 = v6;
+    v18 = effectiveVersion;
     v19 = 1024;
     v20 = WeakRetained != 0;
     v21 = 2112;
@@ -399,30 +399,30 @@
   {
     if (self->_shouldFlick && self->_scrollViewIdentifier)
     {
-      [(RPTScrollViewTestParameters *)self completeAfterScrollEndSignpost:v4];
+      [(RPTScrollViewTestParameters *)self completeAfterScrollEndSignpost:handlerCopy];
       goto LABEL_16;
     }
 
 LABEL_15:
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
     goto LABEL_16;
   }
 
   v15 = objc_loadWeakRetained(&self->_scrollView);
-  v16 = [v15 isDecelerating];
+  isDecelerating = [v15 isDecelerating];
 
-  if (!v16)
+  if (!isDecelerating)
   {
     goto LABEL_15;
   }
 
-  [(RPTScrollViewTestParameters *)self completeAfterScrollEndNotification:v4];
+  [(RPTScrollViewTestParameters *)self completeAfterScrollEndNotification:handlerCopy];
 LABEL_16:
 }
 
-- (void)completeAfterScrollEndNotification:(id)a3
+- (void)completeAfterScrollEndNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = *MEMORY[0x277D77558];
   v6 = RPTLogTestRunning();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -437,17 +437,17 @@ LABEL_16:
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_scrollView);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__RPTScrollViewTestParameters_completeAfterScrollEndNotification___block_invoke;
   v12[3] = &unk_279AF3950;
-  v13 = v4;
+  v13 = notificationCopy;
   v14 = buf;
   v12[4] = self;
-  v9 = v4;
-  v10 = [v7 addObserverForName:v5 object:WeakRetained queue:0 usingBlock:v12];
+  v9 = notificationCopy;
+  v10 = [defaultCenter addObserverForName:v5 object:WeakRetained queue:0 usingBlock:v12];
   v11 = *(v16 + 5);
   *(v16 + 5) = v10;
 
@@ -477,10 +477,10 @@ void __66__RPTScrollViewTestParameters_completeAfterScrollEndNotification___bloc
   }
 }
 
-- (void)completeAfterScrollEndSignpost:(id)a3
+- (void)completeAfterScrollEndSignpost:(id)signpost
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  signpostCopy = signpost;
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"category=='ScrollView' AND ((subsystem=='com.apple.UIKit' AND signpostName=='Scroll_Deceleration') OR (subsystem=='com.apple.AppKit' AND signpostName=='ScrollGesture')) AND message CONTAINS 'id=%@'", self->_scrollViewIdentifier];
   v16 = 0;
   v17 = &v16;
@@ -494,7 +494,7 @@ void __66__RPTScrollViewTestParameters_completeAfterScrollEndNotification___bloc
   v13[2] = __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___block_invoke;
   v13[3] = &unk_279AF39A0;
   v15 = &v16;
-  v6 = v4;
+  v6 = signpostCopy;
   v14 = v6;
   [v17[5] setEndEventProcessingBlock:v13];
   v7 = v17[5];
@@ -673,7 +673,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     _os_log_impl(&dword_261A17000, v25, OS_LOG_TYPE_DEFAULT, "RPT: RPTScrollViewTestParameters capOffset %f", v57, 0xCu);
   }
 
-  v56 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = 0; i != v12; ++i)
   {
     v27 = *(&v63 + i);
@@ -691,7 +691,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
       }
 
       v32 = [RPTOscillationScrollTestParameters alloc];
-      v33 = [(RPTScrollViewTestParameters *)self testName];
+      testName = [(RPTScrollViewTestParameters *)self testName];
       [(RPTScrollViewTestParameters *)self scrollingBounds];
       v35 = v34;
       v37 = v36;
@@ -712,16 +712,16 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
       [(RPTScrollViewTestParameters *)self _effectiveAmplitudeFactor];
       v46 = v28 * v45;
       [(RPTScrollViewTestParameters *)self iterationDurationFactor];
-      v48 = [(RPTOscillationScrollTestParameters *)v32 initWithTestName:v33 iterations:v43 scrollingBounds:i == 5 useFlicks:preventSheetDismissal preventDismissalGestures:v31 initialAmplitude:v44 amplitudeVariationPerIteration:v35 initialDirection:v37 iterationDuration:v39 finishWithHalfIteration:v41, v46, 0.0, v28 / v29 * v47];
+      v48 = [(RPTOscillationScrollTestParameters *)v32 initWithTestName:testName iterations:v43 scrollingBounds:i == 5 useFlicks:preventSheetDismissal preventDismissalGestures:v31 initialAmplitude:v44 amplitudeVariationPerIteration:v35 initialDirection:v37 iterationDuration:v39 finishWithHalfIteration:v41, v46, 0.0, v28 / v29 * v47];
 
-      v49 = [(RPTScrollViewTestParameters *)self conversion];
-      [(RPTOscillationScrollTestParameters *)v48 setConversion:v49];
+      conversion = [(RPTScrollViewTestParameters *)self conversion];
+      [(RPTOscillationScrollTestParameters *)v48 setConversion:conversion];
 
       [(RPTOscillationScrollTestParameters *)v48 setUseDefaultDurationForFlick:0.0];
       if (i == 5)
       {
-        v50 = [(CAMediaTimingFunction *)self->_curveFunction rcp_functionWithLinearEnd];
-        [(RPTOscillationScrollTestParameters *)v48 setCurveFunction:v50];
+        rcp_functionWithLinearEnd = [(CAMediaTimingFunction *)self->_curveFunction rcp_functionWithLinearEnd];
+        [(RPTOscillationScrollTestParameters *)v48 setCurveFunction:rcp_functionWithLinearEnd];
       }
 
       else
@@ -729,16 +729,16 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
         [(RPTOscillationScrollTestParameters *)v48 setCurveFunction:self->_curveFunction];
       }
 
-      [v56 addObject:v48];
+      [array addObject:v48];
     }
   }
 
-  v51 = [(RPTScrollViewTestParameters *)self testName];
-  v52 = [RPTGroupScrollTestParameters newWithTestName:v51 parameters:v56 completionHandler:0];
+  testName2 = [(RPTScrollViewTestParameters *)self testName];
+  v52 = [RPTGroupScrollTestParameters newWithTestName:testName2 parameters:array completionHandler:0];
 
-  v53 = [v52 composerBlock];
+  composerBlock = [v52 composerBlock];
 
-  return v53;
+  return composerBlock;
 }
 
 - (id)_v2_composerBlock
@@ -793,7 +793,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
   {
     v16 = v15;
     v17 = [RPTOscillationScrollTestParameters alloc];
-    v18 = [(RPTScrollViewTestParameters *)self testName];
+    testName = [(RPTScrollViewTestParameters *)self testName];
     v19 = qword_261A289F8[v14];
     [(RPTScrollViewTestParameters *)self scrollingBounds];
     v21 = v20;
@@ -809,7 +809,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     v34 = _RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]);
     v35 = *&qword_261A28A10[v14];
     [(RPTScrollViewTestParameters *)self iterationDurationFactor];
-    v37 = [(RPTOscillationScrollTestParameters *)v17 initWithTestName:v18 iterations:v19 scrollingBounds:0 useFlicks:preventSheetDismissal preventDismissalGestures:v34 initialAmplitude:1 amplitudeVariationPerIteration:v21 initialDirection:v23 iterationDuration:v25 finishWithHalfIteration:v27, v31, v33, v35 * v36];
+    v37 = [(RPTOscillationScrollTestParameters *)v17 initWithTestName:testName iterations:v19 scrollingBounds:0 useFlicks:preventSheetDismissal preventDismissalGestures:v34 initialAmplitude:1 amplitudeVariationPerIteration:v21 initialDirection:v23 iterationDuration:v25 finishWithHalfIteration:v27, v31, v33, v35 * v36];
     v15 = [v16 arrayByAddingObject:v37];
 
     ++v14;
@@ -819,7 +819,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
   if (self->_shouldFlick)
   {
     v38 = [RPTOscillationScrollTestParameters alloc];
-    v39 = [(RPTScrollViewTestParameters *)self testName];
+    testName2 = [(RPTScrollViewTestParameters *)self testName];
     [(RPTScrollViewTestParameters *)self scrollingBounds];
     v41 = v40;
     v43 = v42;
@@ -832,7 +832,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     v52 = _RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]);
     v53 = RPTOppositeDirectionFrom(v52);
     [(RPTScrollViewTestParameters *)self iterationDurationFactor];
-    v55 = [(RPTOscillationScrollTestParameters *)v38 initWithTestName:v39 iterations:2 scrollingBounds:1 useFlicks:v48 preventDismissalGestures:v53 initialAmplitude:1 amplitudeVariationPerIteration:v41 initialDirection:v43 iterationDuration:v45 finishWithHalfIteration:v47, v51, 0.0, v54 * 1.875];
+    v55 = [(RPTOscillationScrollTestParameters *)v38 initWithTestName:testName2 iterations:2 scrollingBounds:1 useFlicks:v48 preventDismissalGestures:v53 initialAmplitude:1 amplitudeVariationPerIteration:v41 initialDirection:v43 iterationDuration:v45 finishWithHalfIteration:v47, v51, 0.0, v54 * 1.875];
     v76 = v55;
     v56 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
     v57 = [v15 arrayByAddingObjectsFromArray:v56];
@@ -860,8 +860,8 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
         }
 
         v63 = *(*(&v71 + 1) + 8 * i);
-        v64 = [(RPTScrollViewTestParameters *)self conversion];
-        [v63 setConversion:v64];
+        conversion = [(RPTScrollViewTestParameters *)self conversion];
+        [v63 setConversion:conversion];
       }
 
       v60 = [v58 countByEnumeratingWithState:&v71 objects:v75 count:16];
@@ -870,12 +870,12 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     while (v60);
   }
 
-  v65 = [(RPTScrollViewTestParameters *)self testName];
-  v66 = [RPTGroupScrollTestParameters newWithTestName:v65 parameters:v58 completionHandler:0];
+  testName3 = [(RPTScrollViewTestParameters *)self testName];
+  v66 = [RPTGroupScrollTestParameters newWithTestName:testName3 parameters:v58 completionHandler:0];
 
-  v67 = [v66 composerBlock];
+  composerBlock = [v66 composerBlock];
 
-  return v67;
+  return composerBlock;
 }
 
 - (id)_v1_composerBlock
@@ -912,12 +912,12 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
   [(RPTScrollViewTestParameters *)self iterationDurationFactor];
   v13 = v12 * 0.3125;
   v14 = [RPTOscillationScrollTestParameters alloc];
-  v15 = [(RPTScrollViewTestParameters *)self testName];
+  testName = [(RPTScrollViewTestParameters *)self testName];
   [(RPTScrollViewTestParameters *)self scrollingBounds];
-  v20 = [(RPTOscillationScrollTestParameters *)v14 initWithTestName:v15 iterations:6 scrollingBounds:0 useFlicks:self->_preventSheetDismissal preventDismissalGestures:_RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]) initialAmplitude:0 amplitudeVariationPerIteration:v16 initialDirection:v17 iterationDuration:v18 finishWithHalfIteration:v19, v7 / 10.0];
+  v20 = [(RPTOscillationScrollTestParameters *)v14 initWithTestName:testName iterations:6 scrollingBounds:0 useFlicks:self->_preventSheetDismissal preventDismissalGestures:_RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]) initialAmplitude:0 amplitudeVariationPerIteration:v16 initialDirection:v17 iterationDuration:v18 finishWithHalfIteration:v19, v7 / 10.0];
   v102[0] = v20;
   v21 = [RPTOscillationScrollTestParameters alloc];
-  v22 = [(RPTScrollViewTestParameters *)self testName];
+  testName2 = [(RPTScrollViewTestParameters *)self testName];
   [(RPTScrollViewTestParameters *)self scrollingBounds];
   v24 = v23;
   v26 = v25;
@@ -928,7 +928,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
   [(RPTScrollViewTestParameters *)self iterationDurationFactor];
   v34 = v26;
   v35 = v7;
-  v36 = [(RPTOscillationScrollTestParameters *)v21 initWithTestName:v22 iterations:3 scrollingBounds:0 useFlicks:preventSheetDismissal preventDismissalGestures:v32 initialAmplitude:1 amplitudeVariationPerIteration:v24 initialDirection:v34 iterationDuration:v28 finishWithHalfIteration:v30, v7, 0.0, v33 * 1.25];
+  v36 = [(RPTOscillationScrollTestParameters *)v21 initWithTestName:testName2 iterations:3 scrollingBounds:0 useFlicks:preventSheetDismissal preventDismissalGestures:v32 initialAmplitude:1 amplitudeVariationPerIteration:v24 initialDirection:v34 iterationDuration:v28 finishWithHalfIteration:v30, v7, 0.0, v33 * 1.25];
   v102[1] = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v102 count:2];
 
@@ -944,14 +944,14 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     do
     {
       v39 = [RPTOscillationScrollTestParameters alloc];
-      v40 = [(RPTScrollViewTestParameters *)self testName];
+      testName3 = [(RPTScrollViewTestParameters *)self testName];
       [(RPTScrollViewTestParameters *)self scrollingBounds];
       v41 = v9;
       v42 = v35;
-      v47 = [(RPTOscillationScrollTestParameters *)v39 initWithTestName:v40 iterations:6 scrollingBounds:0 useFlicks:self->_preventSheetDismissal preventDismissalGestures:_RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]) initialAmplitude:0 amplitudeVariationPerIteration:v43 initialDirection:v44 iterationDuration:v45 finishWithHalfIteration:v46, v93, 0.015, v13];
+      v47 = [(RPTOscillationScrollTestParameters *)v39 initWithTestName:testName3 iterations:6 scrollingBounds:0 useFlicks:self->_preventSheetDismissal preventDismissalGestures:_RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]) initialAmplitude:0 amplitudeVariationPerIteration:v43 initialDirection:v44 iterationDuration:v45 finishWithHalfIteration:v46, v93, 0.015, v13];
       v101[0] = v47;
       v48 = [RPTOscillationScrollTestParameters alloc];
-      v49 = [(RPTScrollViewTestParameters *)self testName];
+      testName4 = [(RPTScrollViewTestParameters *)self testName];
       [(RPTScrollViewTestParameters *)self scrollingBounds];
       v51 = v50;
       v53 = v52;
@@ -963,7 +963,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
       v61 = v53;
       v35 = v42;
       v9 = v41;
-      v62 = [(RPTOscillationScrollTestParameters *)v48 initWithTestName:v49 iterations:3 scrollingBounds:0 useFlicks:v58 preventDismissalGestures:v59 initialAmplitude:1 amplitudeVariationPerIteration:v51 initialDirection:v61 iterationDuration:v55 finishWithHalfIteration:v57, v35, 0.0, v60 * 1.25];
+      v62 = [(RPTOscillationScrollTestParameters *)v48 initWithTestName:testName4 iterations:3 scrollingBounds:0 useFlicks:v58 preventDismissalGestures:v59 initialAmplitude:1 amplitudeVariationPerIteration:v51 initialDirection:v61 iterationDuration:v55 finishWithHalfIteration:v57, v35, 0.0, v60 * 1.25];
       v101[1] = v62;
       v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v101 count:2];
       v64 = [v37 arrayByAddingObjectsFromArray:v63];
@@ -978,7 +978,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
   if (self->_shouldFlick)
   {
     v65 = [RPTOscillationScrollTestParameters alloc];
-    v66 = [(RPTScrollViewTestParameters *)self testName];
+    testName5 = [(RPTScrollViewTestParameters *)self testName];
     [(RPTScrollViewTestParameters *)self scrollingBounds];
     v68 = v67;
     v70 = v69;
@@ -988,7 +988,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     v76 = _RPTScrollDirectionFromUIScrollDirection([(RPTScrollViewTestParameters *)self direction]);
     v77 = RPTOppositeDirectionFrom(v76);
     [(RPTScrollViewTestParameters *)self iterationDurationFactor];
-    v79 = [(RPTOscillationScrollTestParameters *)v65 initWithTestName:v66 iterations:6 scrollingBounds:1 useFlicks:v75 preventDismissalGestures:v77 initialAmplitude:1 amplitudeVariationPerIteration:v68 initialDirection:v70 iterationDuration:v72 finishWithHalfIteration:v74, v35, 0.0, v78 * 1.875];
+    v79 = [(RPTOscillationScrollTestParameters *)v65 initWithTestName:testName5 iterations:6 scrollingBounds:1 useFlicks:v75 preventDismissalGestures:v77 initialAmplitude:1 amplitudeVariationPerIteration:v68 initialDirection:v70 iterationDuration:v72 finishWithHalfIteration:v74, v35, 0.0, v78 * 1.875];
     v100 = v79;
     v80 = [MEMORY[0x277CBEA60] arrayWithObjects:&v100 count:1];
     v81 = [v64 arrayByAddingObjectsFromArray:v80];
@@ -1016,8 +1016,8 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
         }
 
         v87 = *(*(&v94 + 1) + 8 * i);
-        v88 = [(RPTScrollViewTestParameters *)self conversion];
-        [v87 setConversion:v88];
+        conversion = [(RPTScrollViewTestParameters *)self conversion];
+        [v87 setConversion:conversion];
       }
 
       v84 = [v82 countByEnumeratingWithState:&v94 objects:v99 count:16];
@@ -1026,12 +1026,12 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
     while (v84);
   }
 
-  v89 = [(RPTScrollViewTestParameters *)self testName];
-  v90 = [RPTGroupScrollTestParameters newWithTestName:v89 parameters:v82 completionHandler:0];
+  testName6 = [(RPTScrollViewTestParameters *)self testName];
+  v90 = [RPTGroupScrollTestParameters newWithTestName:testName6 parameters:v82 completionHandler:0];
 
-  v91 = [v90 composerBlock];
+  composerBlock = [v90 composerBlock];
 
-  return v91;
+  return composerBlock;
 }
 
 - (CGRect)scrollingBounds
@@ -1098,7 +1098,7 @@ uint64_t __62__RPTScrollViewTestParameters_completeAfterScrollEndSignpost___bloc
 - (void)_v3_4_composerBlock
 {
   v7 = *MEMORY[0x277D85DE8];
-  WeakRetained = objc_loadWeakRetained(a1);
+  WeakRetained = objc_loadWeakRetained(self);
   v8.x = RPTContentOffsetOf();
   v4 = _RPTStringFromCGPoint(v8);
   v5 = 138543362;

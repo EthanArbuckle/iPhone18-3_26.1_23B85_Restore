@@ -1,28 +1,28 @@
 @interface HUITitleDarkStepSliderView
 - (HUIStepSlider)slider;
-- (HUITitleDarkStepSliderView)initWithConfig:(id)a3;
+- (HUITitleDarkStepSliderView)initWithConfig:(id)config;
 - (UILabel)titleLabel;
 - (UILabel)valueLabel;
 - (void)_setupTitleView;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setIsLargeText:(BOOL)a3;
-- (void)setIsSubmenu:(BOOL)a3;
+- (void)setIsLargeText:(BOOL)text;
+- (void)setIsSubmenu:(BOOL)submenu;
 @end
 
 @implementation HUITitleDarkStepSliderView
 
-- (HUITitleDarkStepSliderView)initWithConfig:(id)a3
+- (HUITitleDarkStepSliderView)initWithConfig:(id)config
 {
   v47[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configCopy = config;
   v46.receiver = self;
   v46.super_class = HUITitleDarkStepSliderView;
   v6 = [(HUITitleDarkStepSliderView *)&v46 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = objc_alloc_init(HACCStackView);
     stackView = v7->_stackView;
     v7->_stackView = v8;
@@ -36,58 +36,58 @@
     v7->_titleView = v10;
 
     [(HACCCapsuleTitleView *)v7->_titleView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [[_HUIDarkStepSliderView alloc] initWithConfig:v5];
+    v12 = [[_HUIDarkStepSliderView alloc] initWithConfig:configCopy];
     sliderView = v7->_sliderView;
     v7->_sliderView = v12;
 
-    v14 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
-    [v14 setSupportsVibrancy:1];
+    slider = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
+    [slider setSupportsVibrancy:1];
 
-    v15 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
-    [v15 setDrawsEndTicks:0];
+    slider2 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
+    [slider2 setDrawsEndTicks:0];
 
-    v16 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
+    slider3 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
     [MEMORY[0x277D75348] whiteColor];
-    v17 = v45 = v5;
-    [v16 setMinimumTrackTintColor:v17];
+    v17 = v45 = configCopy;
+    [slider3 setMinimumTrackTintColor:v17];
 
-    v18 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
-    v19 = [MEMORY[0x277D75348] whiteColor];
-    [v18 setTickColor:v19];
+    slider4 = [(_HUIDarkStepSliderView *)v7->_sliderView slider];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [slider4 setTickColor:whiteColor];
 
     [(_HUIDarkStepSliderView *)v7->_sliderView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUITitleDarkStepSliderView *)v7 _setupTitleView];
     v36 = MEMORY[0x277CCAAD0];
-    v44 = [(HUITitleDarkStepSliderView *)v7 stackView];
-    v43 = [v44 leadingAnchor];
-    v42 = [(HUITitleDarkStepSliderView *)v7 leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    stackView = [(HUITitleDarkStepSliderView *)v7 stackView];
+    leadingAnchor = [stackView leadingAnchor];
+    leadingAnchor2 = [(HUITitleDarkStepSliderView *)v7 leadingAnchor];
+    v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[0] = v41;
-    v40 = [(HUITitleDarkStepSliderView *)v7 stackView];
-    v39 = [v40 trailingAnchor];
-    v38 = [(HUITitleDarkStepSliderView *)v7 trailingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    stackView2 = [(HUITitleDarkStepSliderView *)v7 stackView];
+    trailingAnchor = [stackView2 trailingAnchor];
+    trailingAnchor2 = [(HUITitleDarkStepSliderView *)v7 trailingAnchor];
+    v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v47[1] = v37;
-    v35 = [(HUITitleDarkStepSliderView *)v7 stackView];
-    v34 = [v35 topAnchor];
-    v33 = [(HUITitleDarkStepSliderView *)v7 topAnchor];
-    v20 = [v34 constraintEqualToAnchor:v33];
+    stackView3 = [(HUITitleDarkStepSliderView *)v7 stackView];
+    topAnchor = [stackView3 topAnchor];
+    topAnchor2 = [(HUITitleDarkStepSliderView *)v7 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v47[2] = v20;
-    v21 = [(HUITitleDarkStepSliderView *)v7 stackView];
-    v22 = [v21 bottomAnchor];
-    v23 = [(HUITitleDarkStepSliderView *)v7 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    stackView4 = [(HUITitleDarkStepSliderView *)v7 stackView];
+    bottomAnchor = [stackView4 bottomAnchor];
+    bottomAnchor2 = [(HUITitleDarkStepSliderView *)v7 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v47[3] = v24;
-    v25 = [(HUITitleDarkStepSliderView *)v7 sliderView];
-    v26 = [v25 heightAnchor];
-    v27 = [v26 constraintGreaterThanOrEqualToConstant:52.0];
+    sliderView = [(HUITitleDarkStepSliderView *)v7 sliderView];
+    heightAnchor = [sliderView heightAnchor];
+    v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:52.0];
     v47[4] = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:5];
     [v36 activateConstraints:v28];
 
-    v5 = v45;
-    v29 = [(HACCCapsuleTitleView *)v7->_titleView heightAnchor];
-    v30 = [v29 constraintGreaterThanOrEqualToConstant:52.0];
+    configCopy = v45;
+    heightAnchor2 = [(HACCCapsuleTitleView *)v7->_titleView heightAnchor];
+    v30 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:52.0];
     titleViewHeightLayout = v7->_titleViewHeightLayout;
     v7->_titleViewHeightLayout = v30;
   }
@@ -97,39 +97,39 @@
 
 - (HUIStepSlider)slider
 {
-  v2 = [(HUITitleDarkStepSliderView *)self sliderView];
-  v3 = [v2 slider];
+  sliderView = [(HUITitleDarkStepSliderView *)self sliderView];
+  slider = [sliderView slider];
 
-  return v3;
+  return slider;
 }
 
 - (UILabel)titleLabel
 {
-  v2 = [(HUITitleDarkStepSliderView *)self titleView];
-  v3 = [v2 titleLabel];
+  titleView = [(HUITitleDarkStepSliderView *)self titleView];
+  titleLabel = [titleView titleLabel];
 
-  return v3;
+  return titleLabel;
 }
 
 - (UILabel)valueLabel
 {
-  v2 = [(HUITitleDarkStepSliderView *)self sliderView];
-  v3 = [v2 config];
-  v4 = [v3 valueLabel];
+  sliderView = [(HUITitleDarkStepSliderView *)self sliderView];
+  config = [sliderView config];
+  valueLabel = [config valueLabel];
 
-  return v4;
+  return valueLabel;
 }
 
-- (void)setIsSubmenu:(BOOL)a3
+- (void)setIsSubmenu:(BOOL)submenu
 {
-  v3 = a3;
-  v5 = [(HUITitleDarkStepSliderView *)self config];
-  v6 = [v5 isSubmenuSlider];
+  submenuCopy = submenu;
+  config = [(HUITitleDarkStepSliderView *)self config];
+  isSubmenuSlider = [config isSubmenuSlider];
 
-  if (v6 != v3)
+  if (isSubmenuSlider != submenuCopy)
   {
-    v7 = [(HUITitleDarkStepSliderView *)self config];
-    [v7 setIsSubmenuSlider:v3];
+    config2 = [(HUITitleDarkStepSliderView *)self config];
+    [config2 setIsSubmenuSlider:submenuCopy];
 
     [(HUITitleDarkStepSliderView *)self _setupTitleView];
   }
@@ -137,86 +137,86 @@
 
 - (void)_setupTitleView
 {
-  v3 = [(HUITitleDarkStepSliderView *)self titleView];
-  [v3 removeFromSuperview];
+  titleView = [(HUITitleDarkStepSliderView *)self titleView];
+  [titleView removeFromSuperview];
 
-  v4 = [(HUITitleDarkStepSliderView *)self stackView];
-  v5 = [(HUITitleDarkStepSliderView *)self titleView];
-  [v4 removeArrangedSubview:v5];
+  stackView = [(HUITitleDarkStepSliderView *)self stackView];
+  titleView2 = [(HUITitleDarkStepSliderView *)self titleView];
+  [stackView removeArrangedSubview:titleView2];
 
-  v6 = [(HUITitleDarkStepSliderView *)self stackView];
-  v7 = [(HUITitleDarkStepSliderView *)self sliderView];
-  [v6 removeArrangedSubview:v7];
+  stackView2 = [(HUITitleDarkStepSliderView *)self stackView];
+  sliderView = [(HUITitleDarkStepSliderView *)self sliderView];
+  [stackView2 removeArrangedSubview:sliderView];
 
-  v8 = [(HUITitleDarkStepSliderView *)self config];
-  LODWORD(v7) = [v8 isSubmenuSlider];
+  config = [(HUITitleDarkStepSliderView *)self config];
+  LODWORD(sliderView) = [config isSubmenuSlider];
 
-  v9 = [(HUITitleDarkStepSliderView *)self stackView];
-  if (v7)
+  stackView3 = [(HUITitleDarkStepSliderView *)self stackView];
+  if (sliderView)
   {
-    v10 = [(HUITitleDarkStepSliderView *)self sliderView];
-    [v9 addArrangedSubview:v10 withPartialSeparator:1 withDarkBackground:1];
+    sliderView2 = [(HUITitleDarkStepSliderView *)self sliderView];
+    [stackView3 addArrangedSubview:sliderView2 withPartialSeparator:1 withDarkBackground:1];
 
-    v11 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
-    LODWORD(v10) = [v11 isActive];
+    titleViewHeightLayout = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
+    LODWORD(sliderView2) = [titleViewHeightLayout isActive];
 
-    if (!v10)
+    if (!sliderView2)
     {
       return;
     }
 
-    v17 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
-    [v17 setActive:0];
+    titleViewHeightLayout2 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
+    [titleViewHeightLayout2 setActive:0];
   }
 
   else
   {
-    v12 = [(HUITitleDarkStepSliderView *)self titleView];
-    v13 = [(HUITitleDarkStepSliderView *)self config];
-    [v9 addArrangedSubview:v12 withSeparator:{objc_msgSend(v13, "providesOwnSeparator")}];
+    titleView3 = [(HUITitleDarkStepSliderView *)self titleView];
+    config2 = [(HUITitleDarkStepSliderView *)self config];
+    [stackView3 addArrangedSubview:titleView3 withSeparator:{objc_msgSend(config2, "providesOwnSeparator")}];
 
-    v14 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
-    LOBYTE(v12) = [v14 isActive];
+    titleViewHeightLayout3 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
+    LOBYTE(titleView3) = [titleViewHeightLayout3 isActive];
 
-    if ((v12 & 1) == 0)
+    if ((titleView3 & 1) == 0)
     {
-      v15 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
-      [v15 setActive:1];
+      titleViewHeightLayout4 = [(HUITitleDarkStepSliderView *)self titleViewHeightLayout];
+      [titleViewHeightLayout4 setActive:1];
     }
 
-    v17 = [(HUITitleDarkStepSliderView *)self stackView];
-    v16 = [(HUITitleDarkStepSliderView *)self sliderView];
-    [v17 addArrangedSubview:v16 withSeparator:1];
+    titleViewHeightLayout2 = [(HUITitleDarkStepSliderView *)self stackView];
+    sliderView3 = [(HUITitleDarkStepSliderView *)self sliderView];
+    [titleViewHeightLayout2 addArrangedSubview:sliderView3 withSeparator:1];
   }
 }
 
-- (void)setIsLargeText:(BOOL)a3
+- (void)setIsLargeText:(BOOL)text
 {
-  v3 = a3;
-  v5 = [(HUITitleDarkStepSliderView *)self config];
-  v6 = [v5 isLargeText];
+  textCopy = text;
+  config = [(HUITitleDarkStepSliderView *)self config];
+  isLargeText = [config isLargeText];
 
-  if (v6 != v3)
+  if (isLargeText != textCopy)
   {
-    v7 = [(HUITitleDarkStepSliderView *)self config];
-    [v7 setIsLargeText:v3];
+    config2 = [(HUITitleDarkStepSliderView *)self config];
+    [config2 setIsLargeText:textCopy];
 
-    v9 = [(HUITitleDarkStepSliderView *)self sliderView];
-    v8 = [(HUITitleDarkStepSliderView *)self config];
-    [v9 updateConstraintsWithConfig:v8];
+    sliderView = [(HUITitleDarkStepSliderView *)self sliderView];
+    config3 = [(HUITitleDarkStepSliderView *)self config];
+    [sliderView updateConstraintsWithConfig:config3];
   }
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(HUITitleDarkStepSliderView *)self sliderView];
-  [v2 accessibilityDecrement];
+  sliderView = [(HUITitleDarkStepSliderView *)self sliderView];
+  [sliderView accessibilityDecrement];
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(HUITitleDarkStepSliderView *)self sliderView];
-  [v2 accessibilityIncrement];
+  sliderView = [(HUITitleDarkStepSliderView *)self sliderView];
+  [sliderView accessibilityIncrement];
 }
 
 @end

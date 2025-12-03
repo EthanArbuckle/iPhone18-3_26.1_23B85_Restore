@@ -1,47 +1,47 @@
 @interface IMInternalAVAudioPlayer
-- (BOOL)_playAtTime:(double)a3;
+- (BOOL)_playAtTime:(double)time;
 - (BOOL)isPlaying;
-- (BOOL)playAtTime:(double)a3;
-- (IMInternalAVAudioPlayer)initWithContentsOfURL:(id)a3 playerType:(int64_t)a4;
+- (BOOL)playAtTime:(double)time;
+- (IMInternalAVAudioPlayer)initWithContentsOfURL:(id)l playerType:(int64_t)type;
 - (IMInternalAVAudioPlayerDelegate)delegate;
 - (double)currentTime;
 - (double)deviceCurrentTime;
 - (double)duration;
 - (float)volume;
 - (void)_handleAVPlayerItemStateChange;
-- (void)_playerItemDidEndNotification:(id)a3;
+- (void)_playerItemDidEndNotification:(id)notification;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)prepareToPlay;
-- (void)setVolume:(float)a3;
+- (void)setVolume:(float)volume;
 - (void)stop;
 @end
 
 @implementation IMInternalAVAudioPlayer
 
-- (IMInternalAVAudioPlayer)initWithContentsOfURL:(id)a3 playerType:(int64_t)a4
+- (IMInternalAVAudioPlayer)initWithContentsOfURL:(id)l playerType:(int64_t)type
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   v41.receiver = self;
   v41.super_class = IMInternalAVAudioPlayer;
   v7 = [(IMInternalAVAudioPlayer *)&v41 init];
   v10 = v7;
   v11 = 0;
-  if (v6 && v7)
+  if (lCopy && v7)
   {
-    if (objc_msgSend_isFileURL(v6, v8, v9))
+    if (objc_msgSend_isFileURL(lCopy, v8, v9))
     {
-      *(v10 + 48) = a4;
-      if (a4 == 1)
+      *(v10 + 48) = type;
+      if (type == 1)
       {
         v42 = *MEMORY[0x277CE6260];
         v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v12, 0xFFFFLL);
         v43[0] = v13;
         v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v43, &v42, 1);
 
-        v17 = objc_msgSend_URLAssetWithURL_options_(MEMORY[0x277CE6650], v16, v6, v15);
+        v17 = objc_msgSend_URLAssetWithURL_options_(MEMORY[0x277CE6650], v16, lCopy, v15);
         v19 = objc_msgSend_playerItemWithAsset_(MEMORY[0x277CE65B0], v18, v17);
         v20 = *(v10 + 24);
         *(v10 + 24) = v19;
@@ -62,7 +62,7 @@
       else
       {
         v34 = objc_alloc(MEMORY[0x277CB83D0]);
-        v36 = objc_msgSend_initWithContentsOfURL_error_(v34, v35, v6, 0);
+        v36 = objc_msgSend_initWithContentsOfURL_error_(v34, v35, lCopy, 0);
         v37 = *(v10 + 8);
         *(v10 + 8) = v36;
 
@@ -82,15 +82,15 @@
   return v11;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a5;
-  if (qword_27F6116A0 == a6)
+  changeCopy = change;
+  if (qword_27F6116A0 == context)
   {
-    if (objc_msgSend_isEqualToString_(a3, v10, @"status"))
+    if (objc_msgSend_isEqualToString_(path, v10, @"status"))
     {
-      v13 = objc_msgSend_objectForKeyedSubscript_(v11, v12, *MEMORY[0x277CCA2F0]);
-      v15 = objc_msgSend_objectForKeyedSubscript_(v11, v14, *MEMORY[0x277CCA300]);
+      v13 = objc_msgSend_objectForKeyedSubscript_(changeCopy, v12, *MEMORY[0x277CCA2F0]);
+      v15 = objc_msgSend_objectForKeyedSubscript_(changeCopy, v14, *MEMORY[0x277CCA300]);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -112,11 +112,11 @@
   {
     v18.receiver = self;
     v18.super_class = IMInternalAVAudioPlayer;
-    [(IMInternalAVAudioPlayer *)&v18 observeValueForKeyPath:a3 ofObject:a4 change:v11 context:a6];
+    [(IMInternalAVAudioPlayer *)&v18 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 
-- (BOOL)playAtTime:(double)a3
+- (BOOL)playAtTime:(double)time
 {
   if (self->_playerType == 1 && !objc_msgSend_status(self->_playerItem, a2, v3))
   {
@@ -131,7 +131,7 @@
   }
 }
 
-- (BOOL)_playAtTime:(double)a3
+- (BOOL)_playAtTime:(double)time
 {
   v5 = MEMORY[0x259C1A7F0]("kCMTimeZero", @"CoreMedia");
   v13 = *v5;
@@ -156,7 +156,7 @@
   {
     avAudioPlayer = self->_avAudioPlayer;
 
-    return objc_msgSend_playAtTime_(avAudioPlayer, v6, v7, a3);
+    return objc_msgSend_playAtTime_(avAudioPlayer, v6, v7, time);
   }
 }
 
@@ -219,7 +219,7 @@
   return result;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v4 = 8;
   if (self->_playerType == 1)
@@ -342,7 +342,7 @@
   {
     v7 = objc_msgSend_prepareToPlay(self->_avAudioPlayer, a2, v2);
 LABEL_7:
-    v6 = self;
+    selfCopy2 = self;
     goto LABEL_8;
   }
 
@@ -359,11 +359,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = self;
+  selfCopy2 = self;
   v7 = 1;
 LABEL_8:
 
-  objc_msgSend__notifyPlayerDidPrepareAudioFileSuccessfully_(v6, v4, v7);
+  objc_msgSend__notifyPlayerDidPrepareAudioFileSuccessfully_(selfCopy2, v4, v7);
 }
 
 - (void)dealloc
@@ -381,16 +381,16 @@ LABEL_8:
   [(IMInternalAVAudioPlayer *)&v12 dealloc];
 }
 
-- (void)_playerItemDidEndNotification:(id)a3
+- (void)_playerItemDidEndNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2548001C8;
   v6[3] = &unk_279789020;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

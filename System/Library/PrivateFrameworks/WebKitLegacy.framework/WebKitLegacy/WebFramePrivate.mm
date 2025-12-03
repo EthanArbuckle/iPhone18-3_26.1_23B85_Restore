@@ -1,19 +1,19 @@
 @interface WebFramePrivate
 - (id).cxx_construct;
-- (void)setWebFrameView:(id)a3;
+- (void)setWebFrameView:(id)view;
 @end
 
 @implementation WebFramePrivate
 
-- (void)setWebFrameView:(id)a3
+- (void)setWebFrameView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v5 = a3;
+    viewCopy = view;
   }
 
   m_ptr = self->webFrameView.m_ptr;
-  self->webFrameView.m_ptr = a3;
+  self->webFrameView.m_ptr = view;
   if (m_ptr)
   {
   }

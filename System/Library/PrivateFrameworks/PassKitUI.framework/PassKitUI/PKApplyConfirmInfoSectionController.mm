@@ -1,61 +1,61 @@
 @interface PKApplyConfirmInfoSectionController
-- (Class)footerViewClassForSectionIdentifier:(id)a3;
-- (PKApplyConfirmInfoSectionController)initWithController:(id)a3 applyPage:(id)a4 delegate:(id)a5;
+- (Class)footerViewClassForSectionIdentifier:(id)identifier;
+- (PKApplyConfirmInfoSectionController)initWithController:(id)controller applyPage:(id)page delegate:(id)delegate;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_configureContentSection:(id)a3;
-- (void)configureCellForRegistration:(id)a3 item:(id)a4;
-- (void)configureFooterView:(id)a3 forSectionIdentifier:(id)a4;
-- (void)setPage:(id)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_configureContentSection:(id)section;
+- (void)configureCellForRegistration:(id)registration item:(id)item;
+- (void)configureFooterView:(id)view forSectionIdentifier:(id)identifier;
+- (void)setPage:(id)page;
 @end
 
 @implementation PKApplyConfirmInfoSectionController
 
-- (PKApplyConfirmInfoSectionController)initWithController:(id)a3 applyPage:(id)a4 delegate:(id)a5
+- (PKApplyConfirmInfoSectionController)initWithController:(id)controller applyPage:(id)page delegate:(id)delegate
 {
-  v8 = a4;
-  v9 = a5;
+  pageCopy = page;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = PKApplyConfirmInfoSectionController;
-  v10 = [(PKApplyCollectionViewSectionController *)&v15 initWithController:a3 applyPage:v8];
+  v10 = [(PKApplyCollectionViewSectionController *)&v15 initWithController:controller applyPage:pageCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v9);
-    v12 = [v8 actionContent];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    actionContent = [pageCopy actionContent];
     actionContent = v11->_actionContent;
-    v11->_actionContent = v12;
+    v11->_actionContent = actionContent;
   }
 
   return v11;
 }
 
-- (void)setPage:(id)a3
+- (void)setPage:(id)page
 {
   v7.receiver = self;
   v7.super_class = PKApplyConfirmInfoSectionController;
-  v4 = a3;
-  [(PKApplyCollectionViewSectionController *)&v7 setPage:v4];
-  v5 = [v4 actionContent];
+  pageCopy = page;
+  [(PKApplyCollectionViewSectionController *)&v7 setPage:pageCopy];
+  actionContent = [pageCopy actionContent];
 
   actionContent = self->_actionContent;
-  self->_actionContent = v5;
+  self->_actionContent = actionContent;
 }
 
-- (void)configureCellForRegistration:(id)a3 item:(id)a4
+- (void)configureCellForRegistration:(id)registration item:(id)item
 {
-  v6 = a3;
+  registrationCopy = registration;
   v9.receiver = self;
   v9.super_class = PKApplyConfirmInfoSectionController;
-  [(PKApplyCollectionViewSectionController *)&v9 configureCellForRegistration:v6 item:a4];
+  [(PKApplyCollectionViewSectionController *)&v9 configureCellForRegistration:registrationCopy item:item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+    listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
     v8 = +[PKApplyActionContentActionItemCell backgroundColor];
-    [v7 setBackgroundColor:v8];
+    [listCellConfiguration setBackgroundColor:v8];
 
-    [v6 setBackgroundConfiguration:v7];
+    [registrationCopy setBackgroundConfiguration:listCellConfiguration];
   }
 }
 
@@ -68,51 +68,51 @@
   return v2;
 }
 
-- (Class)footerViewClassForSectionIdentifier:(id)a3
+- (Class)footerViewClassForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"kContentSection" || v4 && (v6 = [(__CFString *)v4 isEqualToString:@"kContentSection"], v5, v6))
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy == @"kContentSection" || identifierCopy && (v6 = [(__CFString *)identifierCopy isEqualToString:@"kContentSection"], v5, v6))
   {
-    v7 = [(PKApplyActionContent *)self->_actionContent footerContent];
+    footerContent = [(PKApplyActionContent *)self->_actionContent footerContent];
 
-    if (v7)
+    if (footerContent)
     {
-      v7 = objc_opt_class();
+      footerContent = objc_opt_class();
     }
   }
 
   else
   {
-    v7 = 0;
+    footerContent = 0;
   }
 
-  return v7;
+  return footerContent;
 }
 
-- (void)configureFooterView:(id)a3 forSectionIdentifier:(id)a4
+- (void)configureFooterView:(id)view forSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKApplyActionContent *)self->_actionContent footerContent];
-  if (v8)
+  viewCopy = view;
+  identifierCopy = identifier;
+  footerContent = [(PKApplyActionContent *)self->_actionContent footerContent];
+  if (footerContent)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
+      v9 = identifierCopy;
       if (v9 == @"kContentSection" || (v10 = v9) != 0 && (v11 = [(__CFString *)v9 isEqualToString:@"kContentSection"], v10, v11))
       {
         objc_initWeak(&location, self);
-        v12 = v6;
+        v12 = viewCopy;
         v15 = MEMORY[0x1E69E9820];
         v16 = 3221225472;
         v17 = __80__PKApplyConfirmInfoSectionController_configureFooterView_forSectionIdentifier___block_invoke;
         v18 = &unk_1E80126D0;
         objc_copyWeak(&v19, &location);
-        v13 = [PKTextRangeHyperlink hyperlinkSourcesFromApplyFooter:v8 linkTapped:&v15];
-        v14 = [v8 footerText];
-        [v12 setText:v14];
+        v13 = [PKTextRangeHyperlink hyperlinkSourcesFromApplyFooter:footerContent linkTapped:&v15];
+        footerText = [footerContent footerText];
+        [v12 setText:footerText];
 
         [v12 setTextAlignment:4];
         [v12 setSources:v13];
@@ -136,11 +136,11 @@ void __80__PKApplyConfirmInfoSectionController_configureFooterView_forSectionIde
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = v5;
+  v7 = identifierCopy;
   v8 = v7;
   if (v7 == @"kContentSection" || v7 && (v9 = [(__CFString *)v7 isEqualToString:@"kContentSection"], v8, v9))
   {
@@ -150,10 +150,10 @@ void __80__PKApplyConfirmInfoSectionController_configureFooterView_forSectionIde
   return v6;
 }
 
-- (void)_configureContentSection:(id)a3
+- (void)_configureContentSection:(id)section
 {
   v22 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  sectionCopy = section;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(PKApplyActionContent *)self->_actionContent actionItems];
   v19 = 0u;
@@ -199,7 +199,7 @@ void __80__PKApplyConfirmInfoSectionController_configureFooterView_forSectionIde
   }
 
   v11 = [v4 copy];
-  [v12 appendItems:v11];
+  [sectionCopy appendItems:v11];
 }
 
 void __64__PKApplyConfirmInfoSectionController__configureContentSection___block_invoke(uint64_t a1)

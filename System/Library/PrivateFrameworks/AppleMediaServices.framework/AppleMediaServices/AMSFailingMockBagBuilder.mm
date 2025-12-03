@@ -7,11 +7,11 @@
 - (id)createMockBag
 {
   v3 = [AMSBagFailingDataSource alloc];
-  v4 = [(AMSMockBagBuilder *)self profile];
-  v5 = v4;
-  if (v4)
+  profile = [(AMSMockBagBuilder *)self profile];
+  v5 = profile;
+  if (profile)
   {
-    v6 = v4;
+    v6 = profile;
   }
 
   else
@@ -19,11 +19,11 @@
     v6 = @"AMSFailingMockBag";
   }
 
-  v7 = [(AMSMockBagBuilder *)self profileVersion];
-  v8 = v7;
-  if (v7)
+  profileVersion = [(AMSMockBagBuilder *)self profileVersion];
+  v8 = profileVersion;
+  if (profileVersion)
   {
-    v9 = v7;
+    v9 = profileVersion;
   }
 
   else
@@ -31,9 +31,9 @@
     v9 = @"@";
   }
 
-  v10 = [(AMSFailingMockBagBuilder *)self error];
+  error = [(AMSFailingMockBagBuilder *)self error];
   [(AMSFailingMockBagBuilder *)self delay];
-  v11 = [(AMSBagFailingDataSource *)v3 initWithProfile:v6 profileVersion:v9 error:v10 delay:?];
+  v11 = [(AMSBagFailingDataSource *)v3 initWithProfile:v6 profileVersion:v9 error:error delay:?];
 
   v12 = [[AMSBag alloc] initWithDataSource:v11];
 

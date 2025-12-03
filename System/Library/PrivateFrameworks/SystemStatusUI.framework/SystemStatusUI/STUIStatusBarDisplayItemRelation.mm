@@ -1,51 +1,51 @@
 @interface STUIStatusBarDisplayItemRelation
-+ (id)allRelationWithRelations:(id)a3;
-+ (id)anyRelationWithRelations:(id)a3;
-+ (id)exclusionWithDisplayItemState:(id)a3 placement:(id)a4;
-+ (id)requirementWithDisplayItemState:(id)a3 placement:(id)a4;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)allRelationWithRelations:(id)relations;
++ (id)anyRelationWithRelations:(id)relations;
++ (id)exclusionWithDisplayItemState:(id)state placement:(id)placement;
++ (id)requirementWithDisplayItemState:(id)state placement:(id)placement;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation STUIStatusBarDisplayItemRelation
 
-+ (id)exclusionWithDisplayItemState:(id)a3 placement:(id)a4
++ (id)exclusionWithDisplayItemState:(id)state placement:(id)placement
 {
-  v5 = a4;
-  v6 = a3;
+  placementCopy = placement;
+  stateCopy = state;
   v7 = objc_alloc_init(STUIStatusBarDisplayItemDependencyRelation);
-  [(STUIStatusBarDisplayItemDependencyRelation *)v7 setItemState:v6];
+  [(STUIStatusBarDisplayItemDependencyRelation *)v7 setItemState:stateCopy];
 
-  [(STUIStatusBarDisplayItemDependencyRelation *)v7 setPlacement:v5];
+  [(STUIStatusBarDisplayItemDependencyRelation *)v7 setPlacement:placementCopy];
 
   return v7;
 }
 
-+ (id)requirementWithDisplayItemState:(id)a3 placement:(id)a4
++ (id)requirementWithDisplayItemState:(id)state placement:(id)placement
 {
-  v4 = [a1 exclusionWithDisplayItemState:a3 placement:a4];
+  v4 = [self exclusionWithDisplayItemState:state placement:placement];
   [v4 setRequirement:1];
 
   return v4;
 }
 
-+ (id)anyRelationWithRelations:(id)a3
++ (id)anyRelationWithRelations:(id)relations
 {
-  v3 = a3;
+  relationsCopy = relations;
   v4 = objc_alloc_init(STUIStatusBarDisplayItemGroupRelation);
-  [(STUIStatusBarDisplayItemGroupRelation *)v4 setRelations:v3];
+  [(STUIStatusBarDisplayItemGroupRelation *)v4 setRelations:relationsCopy];
 
   return v4;
 }
 
-+ (id)allRelationWithRelations:(id)a3
++ (id)allRelationWithRelations:(id)relations
 {
-  v3 = a3;
+  relationsCopy = relations;
   v4 = objc_alloc_init(STUIStatusBarDisplayItemGroupRelation);
-  [(STUIStatusBarDisplayItemGroupRelation *)v4 setRelations:v3];
+  [(STUIStatusBarDisplayItemGroupRelation *)v4 setRelations:relationsCopy];
 
   [(STUIStatusBarDisplayItemGroupRelation *)v4 setRequiresAll:1];
 
@@ -54,48 +54,48 @@
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarDisplayItemRelation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemRelation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(STUIStatusBarDisplayItemRelation *)self type];
-  [v3 appendString:v4 withName:@"type" skipIfEmpty:1];
+  type = [(STUIStatusBarDisplayItemRelation *)self type];
+  [v3 appendString:type withName:@"type" skipIfEmpty:1];
 
   v5 = [v3 appendBool:-[STUIStatusBarDisplayItemRelation isFulfilled](self withName:{"isFulfilled"), @"fulfilled"}];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemRelation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemRelation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarDisplayItemRelation *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarDisplayItemRelation *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STUIStatusBarDisplayItemRelation *)self succinctDescriptionBuilder];
-  [v7 setUseDebugDescription:v4];
-  [v7 setActiveMultilinePrefix:v6];
+  debugCopy = debug;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarDisplayItemRelation *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  return v7;
+  return succinctDescriptionBuilder;
 }
 
 @end

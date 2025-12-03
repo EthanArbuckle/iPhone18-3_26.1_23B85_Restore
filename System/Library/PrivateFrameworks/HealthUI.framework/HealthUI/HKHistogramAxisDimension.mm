@@ -1,15 +1,15 @@
 @interface HKHistogramAxisDimension
 - (HKHistogramAxisDimensionDataSource)dataSource;
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation HKHistogramAxisDimension
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  v5 = a3;
-  v6 = [(HKHistogramAxisDimension *)self dataSource];
-  v7 = [v6 stringForLocation:v5];
+  locationCopy = location;
+  dataSource = [(HKHistogramAxisDimension *)self dataSource];
+  v7 = [dataSource stringForLocation:locationCopy];
 
   return v7;
 }

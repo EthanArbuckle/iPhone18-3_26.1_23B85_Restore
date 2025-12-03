@@ -1,18 +1,18 @@
 @interface SKUISegmentedControlCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (id)viewForElementIdentifier:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (id)viewForElementIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUISegmentedControlCollectionViewCell
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -29,7 +29,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -50,7 +50,7 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -62,10 +62,10 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -78,20 +78,20 @@
     }
   }
 
-  [v8 sizeForViewElement:v7 width:a3];
+  [contextCopy sizeForViewElement:elementCopy width:width];
   v18 = v17;
 
-  v19 = a3;
+  widthCopy = width;
   v20 = v18;
   result.height = v20;
-  result.width = v19;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -104,9 +104,9 @@
     }
   }
 
-  v17 = [(SKUISegmentedControlViewElementController *)self->_elementController viewElement];
+  viewElement = [(SKUISegmentedControlViewElementController *)self->_elementController viewElement];
 
-  if (v17 == v7)
+  if (viewElement == elementCopy)
   {
     [(SKUISegmentedControlViewElementController *)self->_elementController reloadAfterDocumentUpdate];
   }
@@ -123,9 +123,9 @@
     v20[1] = 3221225472;
     v20[2] = __78__SKUISegmentedControlCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
     v20[3] = &unk_2781F8450;
-    v21 = v7;
-    v22 = v8;
-    v23 = self;
+    v21 = elementCopy;
+    v22 = contextCopy;
+    selfCopy = self;
     [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:v20];
   }
 }
@@ -170,7 +170,7 @@ void __78__SKUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -187,7 +187,7 @@ void __78__SKUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   return 0;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
   if (os_variant_has_internal_content())
   {
@@ -204,7 +204,7 @@ void __78__SKUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   return 0;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -238,8 +238,8 @@ void __78__SKUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   v37.receiver = self;
   v37.super_class = SKUISegmentedControlCollectionViewCell;
   [(SKUICollectionViewCell *)&v37 layoutSubviews];
-  v11 = [(SKUISegmentedControlCollectionViewCell *)self contentView];
-  [v11 bounds];
+  contentView = [(SKUISegmentedControlCollectionViewCell *)self contentView];
+  [contentView bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -250,18 +250,18 @@ void __78__SKUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   v23 = v15 + v22;
   v25 = v17 - (v20 + v24);
   v27 = v19 - (v22 + v26);
-  v28 = [(SKUISegmentedControlViewElementController *)self->_elementController segmentedControlView];
-  [v28 sizeThatFits:{v25, v27}];
+  segmentedControlView = [(SKUISegmentedControlViewElementController *)self->_elementController segmentedControlView];
+  [segmentedControlView sizeThatFits:{v25, v27}];
   v30 = v29;
   v32 = v31;
   *&v29 = v21 + (v25 - v29) * 0.5;
   *&v31 = v23 + (v27 - v31) * 0.5;
   SKUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(floorf(*&v29), floorf(*&v31), v30, v32, v13, v15, v17, v19);
-  [v28 setFrame:?];
+  [segmentedControlView setFrame:?];
   if (self->_bottomDividerView)
   {
-    v33 = [MEMORY[0x277D759A0] mainScreen];
-    [v33 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v35 = 1.0 / v34;
 
     bottomDividerView = self->_bottomDividerView;

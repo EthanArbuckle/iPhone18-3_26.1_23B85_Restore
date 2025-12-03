@@ -1,16 +1,16 @@
 @interface AXMLayoutRow
-+ (id)row:(id)a3;
++ (id)row:(id)row;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 @end
 
 @implementation AXMLayoutRow
 
-+ (id)row:(id)a3
++ (id)row:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = objc_alloc_init(AXMLayoutRow);
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v3];
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:rowCopy];
 
   cells = v4->_cells;
   v4->_cells = v5;

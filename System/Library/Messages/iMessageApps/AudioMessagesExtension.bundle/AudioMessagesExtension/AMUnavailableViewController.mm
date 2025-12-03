@@ -1,7 +1,7 @@
 @interface AMUnavailableViewController
 - (UILabel)label;
-- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithCoder:(id)a3;
-- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithCoder:(id)coder;
+- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -16,18 +16,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A414();
 }
 
-- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_42978();
     swift_unknownObjectWeakInit();
     *(self + OBJC_IVAR____TtC22AudioMessagesExtension27AMUnavailableViewController_conversation) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_42968();
   }
 
@@ -35,25 +35,25 @@
   {
     swift_unknownObjectWeakInit();
     *(self + OBJC_IVAR____TtC22AudioMessagesExtension27AMUnavailableViewController_conversation) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AMUnavailableViewController();
-  v9 = [(AMUnavailableViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AMUnavailableViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithCoder:(id)a3
+- (_TtC22AudioMessagesExtension27AMUnavailableViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC22AudioMessagesExtension27AMUnavailableViewController_conversation) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AMUnavailableViewController();
-  v5 = a3;
-  v6 = [(AMUnavailableViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AMUnavailableViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

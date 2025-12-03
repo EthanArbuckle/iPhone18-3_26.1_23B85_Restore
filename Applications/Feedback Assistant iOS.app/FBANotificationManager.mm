@@ -2,19 +2,19 @@
 + (_TtC18Feedback_Assistant22FBANotificationManager)sharedManager;
 - (NSString)apnsToken;
 - (_TtC18Feedback_Assistant22FBANotificationManager)init;
-- (void)registerAPNSWithParticipantID:(id)a3 api:(id)a4;
+- (void)registerAPNSWithParticipantID:(id)d api:(id)api;
 - (void)requestPermission;
-- (void)saveToken:(id)a3;
-- (void)setApnsToken:(id)a3;
+- (void)saveToken:(id)token;
+- (void)setApnsToken:(id)token;
 @end
 
 @implementation FBANotificationManager
 
 - (void)requestPermission
 {
-  v2 = [objc_opt_self() currentNotificationCenter];
+  currentNotificationCenter = [objc_opt_self() currentNotificationCenter];
   v3 = swift_allocObject();
-  *(v3 + 16) = v2;
+  *(v3 + 16) = currentNotificationCenter;
   v6[4] = sub_100041A2C;
   v6[5] = v3;
   v6[0] = _NSConcreteStackBlock;
@@ -22,7 +22,7 @@
   v6[2] = sub_100040DDC;
   v6[3] = &unk_1000DFE78;
   v4 = _Block_copy(v6);
-  v5 = v2;
+  v5 = currentNotificationCenter;
 
   [v5 getNotificationSettingsWithCompletionHandler:v4];
   _Block_release(v4);
@@ -46,9 +46,9 @@
   return v4;
 }
 
-- (void)setApnsToken:(id)a3
+- (void)setApnsToken:(id)token
 {
-  if (a3)
+  if (token)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -88,10 +88,10 @@
   return [(FBANotificationManager *)&v6 init];
 }
 
-- (void)saveToken:(id)a3
+- (void)saveToken:(id)token
 {
-  v4 = a3;
-  v8 = self;
+  tokenCopy = token;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -99,12 +99,12 @@
   sub_100046730(v5, v7);
 }
 
-- (void)registerAPNSWithParticipantID:(id)a3 api:(id)a4
+- (void)registerAPNSWithParticipantID:(id)d api:(id)api
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000738A8(v6, v7);
+  dCopy = d;
+  apiCopy = api;
+  selfCopy = self;
+  sub_1000738A8(dCopy, apiCopy);
 }
 
 @end

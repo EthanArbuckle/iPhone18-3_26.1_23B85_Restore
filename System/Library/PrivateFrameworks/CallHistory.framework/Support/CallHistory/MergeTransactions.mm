@@ -1,28 +1,28 @@
 @interface MergeTransactions
-- (MergeTransactions)initWithDatabase:(id)a3 andInteractionManager:(id)a4;
-- (id)filterRemoteTransactions:(id)a3 withLocalTransactions:(id)a4;
-- (id)merge:(id)a3 withRemoteTransactions:(id)a4;
-- (id)reconcileTransaction:(unint64_t)a3 withLocalCall:(id)a4 withRemoteCall:(id)a5;
-- (id)unarchiveCallObject:(id)a3;
+- (MergeTransactions)initWithDatabase:(id)database andInteractionManager:(id)manager;
+- (id)filterRemoteTransactions:(id)transactions withLocalTransactions:(id)localTransactions;
+- (id)merge:(id)merge withRemoteTransactions:(id)transactions;
+- (id)reconcileTransaction:(unint64_t)transaction withLocalCall:(id)call withRemoteCall:(id)remoteCall;
+- (id)unarchiveCallObject:(id)object;
 - (void)dealloc;
-- (void)parseMergeDictionary:(id)a3 withSyncSource:(unsigned __int8)a4;
+- (void)parseMergeDictionary:(id)dictionary withSyncSource:(unsigned __int8)source;
 - (void)registerForNotifications;
 @end
 
 @implementation MergeTransactions
 
-- (MergeTransactions)initWithDatabase:(id)a3 andInteractionManager:(id)a4
+- (MergeTransactions)initWithDatabase:(id)database andInteractionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = MergeTransactions;
   v9 = [(MergeTransactions *)&v14 initWithDomain:"MergeTransactions"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    v11 = [[ApplyLocalTransactions alloc] initWithDatabase:v10->_database andInteractionManager:v8];
+    objc_storeStrong(&v9->_database, database);
+    v11 = [[ApplyLocalTransactions alloc] initWithDatabase:v10->_database andInteractionManager:managerCopy];
     applyLocalTransactions = v10->_applyLocalTransactions;
     v10->_applyLocalTransactions = v11;
 
@@ -59,23 +59,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)parseMergeDictionary:(id)a3 withSyncSource:(unsigned __int8)a4
+- (void)parseMergeDictionary:(id)dictionary withSyncSource:(unsigned __int8)source
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"kCHRemoteTransactionsKey"];
+  sourceCopy = source;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"kCHRemoteTransactionsKey"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138543618;
       v22 = @"kCHRemoteTransactionsKey";
       v23 = 2114;
       v24 = objc_opt_class();
       v14 = v24;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Expected %{public}@ key to be of type %{public}@", &v21, 0x16u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Expected %{public}@ key to be of type %{public}@", &v21, 0x16u);
     }
 
     goto LABEL_21;
@@ -88,7 +88,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = [v7 count];
-    v12 = sub_10001F5B8(v4);
+    v12 = sub_10001F5B8(sourceCopy);
     v21 = 134218242;
     v22 = v11;
     v23 = 2114;
@@ -96,25 +96,25 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%lu remote transactions from %{public}@", &v21, 0x16u);
   }
 
-  if (v4 == 1)
+  if (sourceCopy == 1)
   {
-    v13 = [v6 objectForKeyedSubscript:@"kCHChangeTokenKey"];
+    logHandle = [dictionaryCopy objectForKeyedSubscript:@"kCHChangeTokenKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v6 objectForKeyedSubscript:@"kCHMoreTransactionsComingKey"];
+      logHandle3 = [dictionaryCopy objectForKeyedSubscript:@"kCHMoreTransactionsComingKey"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(MergeTransactions *)self handleRemoteTransactionsNotification:v7 withChangeToken:v13 withMoreComing:v15 withSource:1];
+        [(MergeTransactions *)self handleRemoteTransactionsNotification:v7 withChangeToken:logHandle withMoreComing:logHandle3 withSource:1];
 LABEL_20:
 
 LABEL_21:
         goto LABEL_22;
       }
 
-      v18 = [(MergeTransactions *)self logHandle];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(MergeTransactions *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         v19 = objc_opt_class();
         v21 = 138543618;
@@ -122,14 +122,14 @@ LABEL_21:
         v23 = 2114;
         v24 = v19;
         v20 = v19;
-        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Expected %{public}@ key to be of type %{public}@", &v21, 0x16u);
+        _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Expected %{public}@ key to be of type %{public}@", &v21, 0x16u);
       }
     }
 
     else
     {
-      v15 = [(MergeTransactions *)self logHandle];
-      if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      logHandle3 = [(MergeTransactions *)self logHandle];
+      if (!os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
       }
@@ -139,55 +139,55 @@ LABEL_21:
       v22 = @"kCHChangeTokenKey";
       v23 = 2114;
       v24 = v17;
-      v18 = v17;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Expected %{public}@ key to be of type %{public}@", &v21, 0x16u);
+      logHandle2 = v17;
+      _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Expected %{public}@ key to be of type %{public}@", &v21, 0x16u);
     }
 
     goto LABEL_20;
   }
 
-  if (v4 == 2)
+  if (sourceCopy == 2)
   {
     [(MergeTransactions *)self handleRemoteTransactionsNotification:v7 withSource:2];
   }
 
   else
   {
-    v16 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    logHandle4 = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR))
     {
-      sub_100034430(v4, v16);
+      sub_100034430(sourceCopy, logHandle4);
     }
   }
 
 LABEL_22:
 }
 
-- (id)merge:(id)a3 withRemoteTransactions:(id)a4
+- (id)merge:(id)merge withRemoteTransactions:(id)transactions
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  mergeCopy = merge;
+  transactionsCopy = transactions;
+  if ([transactionsCopy count])
   {
-    v8 = [(MergeTransactions *)self filterRemoteTransactions:v7 withLocalTransactions:v6];
-    v9 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    v8 = [(MergeTransactions *)self filterRemoteTransactions:transactionsCopy withLocalTransactions:mergeCopy];
+    logHandle = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v40 = [v8 count];
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Applying %ld remote transactions", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Applying %ld remote transactions", buf, 0xCu);
     }
 
-    v31 = v7;
-    v32 = v6;
+    v31 = transactionsCopy;
+    v32 = mergeCopy;
 
     [(ApplyLocalTransactions *)self->_applyLocalTransactions apply:v8];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = v8;
-    v11 = [v10 countByEnumeratingWithState:&v33 objects:v47 count:16];
+    logHandle3 = v8;
+    v11 = [logHandle3 countByEnumeratingWithState:&v33 objects:v47 count:16];
     if (v11)
     {
       v12 = v11;
@@ -202,26 +202,26 @@ LABEL_22:
         {
           if (*v34 != v17)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(logHandle3);
           }
 
-          v19 = [*(*(&v33 + 1) + 8 * i) transactionType];
-          if (v19 > 1)
+          transactionType = [*(*(&v33 + 1) + 8 * i) transactionType];
+          if (transactionType > 1)
           {
-            if (v19 == 2)
+            if (transactionType == 2)
             {
               ++v13;
             }
 
-            else if (v19 == 3)
+            else if (transactionType == 3)
             {
               ++v14;
             }
           }
 
-          else if (v19)
+          else if (transactionType)
           {
-            if (v19 == 1)
+            if (transactionType == 1)
             {
               ++v15;
             }
@@ -233,7 +233,7 @@ LABEL_22:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v33 objects:v47 count:16];
+        v12 = [logHandle3 countByEnumeratingWithState:&v33 objects:v47 count:16];
       }
 
       while (v12);
@@ -247,8 +247,8 @@ LABEL_22:
       v16 = 0;
     }
 
-    v21 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218752;
       v40 = v16;
@@ -258,7 +258,7 @@ LABEL_22:
       v44 = v13;
       v45 = 2048;
       v46 = v14;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Applied %lu insert %lu update %lu delete %lu batch delete transactions", buf, 0x2Au);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Applied %lu insert %lu update %lu delete %lu batch delete transactions", buf, 0x2Au);
     }
 
     v22 = [CHTransaction toString:0];
@@ -279,17 +279,17 @@ LABEL_22:
     v38[3] = v29;
     v20 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:4];
 
-    v7 = v31;
-    v6 = v32;
+    transactionsCopy = v31;
+    mergeCopy = v32;
   }
 
   else
   {
-    v10 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logHandle3 = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No remote transactions", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "No remote transactions", buf, 2u);
     }
 
     v20 = 0;
@@ -298,16 +298,16 @@ LABEL_22:
   return v20;
 }
 
-- (id)filterRemoteTransactions:(id)a3 withLocalTransactions:(id)a4
+- (id)filterRemoteTransactions:(id)transactions withLocalTransactions:(id)localTransactions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MergeTransactions *)self logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  transactionsCopy = transactions;
+  localTransactionsCopy = localTransactions;
+  logHandle = [(MergeTransactions *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = [v6 count];
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Filtering %lu remote transactions with local data store", buf, 0xCu);
+    v19 = [transactionsCopy count];
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Filtering %lu remote transactions with local data store", buf, 0xCu);
   }
 
   v15[0] = _NSConcreteStackBlock;
@@ -315,12 +315,12 @@ LABEL_22:
   v15[2] = sub_10002271C;
   v15[3] = &unk_1000518D0;
   v15[4] = self;
-  v16 = v7;
+  v16 = localTransactionsCopy;
   v9 = objc_opt_new();
   v17 = v9;
-  v10 = v7;
+  v10 = localTransactionsCopy;
   v11 = [NSPredicate predicateWithBlock:v15];
-  v12 = [v6 filteredArrayUsingPredicate:v11];
+  v12 = [transactionsCopy filteredArrayUsingPredicate:v11];
 
   [v9 addObjectsFromArray:v12];
   v13 = v9;
@@ -328,10 +328,10 @@ LABEL_22:
   return v9;
 }
 
-- (id)unarchiveCallObject:(id)a3
+- (id)unarchiveCallObject:(id)object
 {
-  v3 = a3;
-  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v3 error:0];
+  objectCopy = object;
+  v4 = [[NSKeyedUnarchiver alloc] initForReadingFromData:objectCopy error:0];
   v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
   [v4 finishDecoding];
 
@@ -340,40 +340,40 @@ LABEL_22:
   return v6;
 }
 
-- (id)reconcileTransaction:(unint64_t)a3 withLocalCall:(id)a4 withRemoteCall:(id)a5
+- (id)reconcileTransaction:(unint64_t)transaction withLocalCall:(id)call withRemoteCall:(id)remoteCall
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [CHCallFingerprint shouldCall:v9 updateMatchingCall:v8];
+  callCopy = call;
+  remoteCallCopy = remoteCall;
+  v10 = [CHCallFingerprint shouldCall:remoteCallCopy updateMatchingCall:callCopy];
   v11 = 0;
-  if (!a3 && v10)
+  if (!transaction && v10)
   {
-    v12 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v8;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Reconciling %@", buf, 0xCu);
+      v21 = callCopy;
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Reconciling %@", buf, 0xCu);
     }
 
-    v13 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v9;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "With remote call %@", buf, 0xCu);
+      v21 = remoteCallCopy;
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "With remote call %@", buf, 0xCu);
     }
 
-    v14 = [CHCallFingerprint updateCall:v9 withFingerprintedCall:v8 areBothCallsLocal:0];
-    v15 = [v8 uniqueId];
-    [v14 setUniqueId:v15];
+    v14 = [CHCallFingerprint updateCall:remoteCallCopy withFingerprintedCall:callCopy areBothCallsLocal:0];
+    uniqueId = [callCopy uniqueId];
+    [v14 setUniqueId:uniqueId];
 
-    v16 = [(MergeTransactions *)self logHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    logHandle3 = [(MergeTransactions *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v21 = v14;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Generated reconciled call %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Generated reconciled call %@", buf, 0xCu);
     }
 
     v19 = 0;

@@ -1,31 +1,31 @@
 @interface WFReversibleLinkAction
 + (Class)settingsClientClass;
-- (void)finishRunningWithError:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)finishRunningWithError:(id)error;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFReversibleLinkAction
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
-  v4 = a3;
-  if (v4 || ([(WFAction *)self runningDelegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
+  errorCopy = error;
+  if (errorCopy || ([(WFAction *)self runningDelegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) == 0))
   {
     v10.receiver = self;
     v10.super_class = WFReversibleLinkAction;
-    [(WFAppIntentExecutionAction *)&v10 finishRunningWithError:v4];
+    [(WFAppIntentExecutionAction *)&v10 finishRunningWithError:errorCopy];
   }
 
   else
   {
-    v7 = [objc_opt_class() settingsClientClass];
-    v8 = [(WFReversibleLinkAction *)self stateBeforeRun];
+    settingsClientClass = [objc_opt_class() settingsClientClass];
+    stateBeforeRun = [(WFReversibleLinkAction *)self stateBeforeRun];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__WFReversibleLinkAction_finishRunningWithError___block_invoke;
     v9[3] = &unk_1E837B8D0;
     v9[4] = self;
-    [v7 getBookmarkForFirstEventAfterBookmark:v8 completionHandler:v9];
+    [settingsClientClass getBookmarkForFirstEventAfterBookmark:stateBeforeRun completionHandler:v9];
   }
 }
 
@@ -73,20 +73,20 @@ void __117__WFReversibleLinkAction_getValueForParameterData_ofProcessedParameter
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [objc_opt_class() settingsClientClass];
+  inputCopy = input;
+  settingsClientClass = [objc_opt_class() settingsClientClass];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__WFReversibleLinkAction_runAsynchronouslyWithInput___block_invoke;
   v7[3] = &unk_1E837B880;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = inputCopy;
   v8 = v6;
-  v9 = self;
-  [v5 getBookmarkForCurrentStateWithCompletionHandler:v7];
+  selfCopy = self;
+  [settingsClientClass getBookmarkForCurrentStateWithCompletionHandler:v7];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);

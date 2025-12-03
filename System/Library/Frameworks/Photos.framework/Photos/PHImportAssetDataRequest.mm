@@ -1,7 +1,7 @@
 @interface PHImportAssetDataRequest
 - (BOOL)isCanceled;
 - (PHImportAsset)requestAsset;
-- (PHImportAssetDataRequest)initWithAsset:(id)a3;
+- (PHImportAssetDataRequest)initWithAsset:(id)asset;
 - (void)cancel;
 @end
 
@@ -26,29 +26,29 @@
     canceler->_isCanceled = 1;
   }
 
-  v4 = [(PHImportAssetDataRequest *)self cancelBlock];
+  cancelBlock = [(PHImportAssetDataRequest *)self cancelBlock];
 
-  if (v4)
+  if (cancelBlock)
   {
-    v5 = [(PHImportAssetDataRequest *)self cancelBlock];
-    v5[2]();
+    cancelBlock2 = [(PHImportAssetDataRequest *)self cancelBlock];
+    cancelBlock2[2]();
   }
 }
 
 - (PHImportAsset)requestAsset
 {
-  v3 = [(PHImportAsset *)self->_asset largeRender];
-  v4 = v3;
-  if (v3)
+  largeRender = [(PHImportAsset *)self->_asset largeRender];
+  v4 = largeRender;
+  if (largeRender)
   {
-    v5 = v3;
+    v5 = largeRender;
   }
 
   else
   {
-    v6 = [(PHImportAsset *)self->_asset largeMovieRender];
-    asset = v6;
-    if (!v6)
+    largeMovieRender = [(PHImportAsset *)self->_asset largeMovieRender];
+    asset = largeMovieRender;
+    if (!largeMovieRender)
     {
       asset = self->_asset;
     }
@@ -59,14 +59,14 @@
   return v5;
 }
 
-- (PHImportAssetDataRequest)initWithAsset:(id)a3
+- (PHImportAssetDataRequest)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = [(PHImportAssetDataRequest *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
     v8 = objc_opt_new();
     canceler = v7->_canceler;
     v7->_canceler = v8;

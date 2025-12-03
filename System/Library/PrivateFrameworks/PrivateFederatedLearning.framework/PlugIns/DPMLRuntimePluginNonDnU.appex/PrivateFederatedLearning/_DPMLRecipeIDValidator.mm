@@ -1,36 +1,36 @@
 @interface _DPMLRecipeIDValidator
-+ (id)checkClientIdentifier:(id)a3 againstNamespaceIdentifier:(id)a4 error:(id *)a5;
-+ (id)sharedInstanceWithError:(id *)a3;
-- (_DPMLRecipeIDValidator)initWithAssociation:(id)a3;
++ (id)checkClientIdentifier:(id)identifier againstNamespaceIdentifier:(id)namespaceIdentifier error:(id *)error;
++ (id)sharedInstanceWithError:(id *)error;
+- (_DPMLRecipeIDValidator)initWithAssociation:(id)association;
 @end
 
 @implementation _DPMLRecipeIDValidator
 
-- (_DPMLRecipeIDValidator)initWithAssociation:(id)a3
+- (_DPMLRecipeIDValidator)initWithAssociation:(id)association
 {
-  v5 = a3;
+  associationCopy = association;
   v9.receiver = self;
   v9.super_class = _DPMLRecipeIDValidator;
   v6 = [(_DPMLRecipeIDValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_association, a3);
+    objc_storeStrong(&v6->_association, association);
   }
 
   return v7;
 }
 
-+ (id)sharedInstanceWithError:(id *)a3
++ (id)sharedInstanceWithError:(id *)error
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006AD0;
   block[3] = &unk_1000305B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003D590 == -1)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -39,10 +39,10 @@
   }
 
   dispatch_once(&qword_10003D590, block);
-  if (a3)
+  if (error)
   {
 LABEL_3:
-    *a3 = qword_10003D588;
+    *error = qword_10003D588;
   }
 
 LABEL_4:
@@ -51,18 +51,18 @@ LABEL_4:
   return v4;
 }
 
-+ (id)checkClientIdentifier:(id)a3 againstNamespaceIdentifier:(id)a4 error:(id *)a5
++ (id)checkClientIdentifier:(id)identifier againstNamespaceIdentifier:(id)namespaceIdentifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  namespaceIdentifierCopy = namespaceIdentifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
 LABEL_10:
       [_DPMLRuntimeError errorWithCode:300 description:v14];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_16;
     }
 
@@ -74,7 +74,7 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -82,21 +82,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [_DPMLRecipeIDValidator sharedInstanceWithError:a5];
+  v9 = [_DPMLRecipeIDValidator sharedInstanceWithError:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 association];
-    v12 = [v11 objectForKey:v8];
+    association = [v9 association];
+    v12 = [association objectForKey:namespaceIdentifierCopy];
 
-    if ([v12 containsObject:v7])
+    if ([v12 containsObject:identifierCopy])
     {
       v13 = 1;
     }
 
     else
     {
-      v16 = [v7 stringByReplacingOccurrencesOfString:@"fedstats:" withString:&stru_100031E10];
+      v16 = [identifierCopy stringByReplacingOccurrencesOfString:@"fedstats:" withString:&stru_100031E10];
       v13 = [v12 containsObject:v16];
     }
 

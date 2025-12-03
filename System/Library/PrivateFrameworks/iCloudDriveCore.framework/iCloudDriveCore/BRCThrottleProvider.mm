@@ -13,32 +13,32 @@
   if (v2)
   {
     v3 = [BRCUserDefaults defaultsForMangledID:0];
-    v4 = [v3 appLibraryResetThrottleParams];
-    v5 = [[BRCThrottle alloc] initWithName:@"container.reset.throttle" andParameters:v4];
+    appLibraryResetThrottleParams = [v3 appLibraryResetThrottleParams];
+    v5 = [[BRCThrottle alloc] initWithName:@"container.reset.throttle" andParameters:appLibraryResetThrottleParams];
     appLibraryResetThrottle = v2->_appLibraryResetThrottle;
     v2->_appLibraryResetThrottle = v5;
 
-    v7 = [v3 sharedAppLibraryResetThrottleParams];
+    sharedAppLibraryResetThrottleParams = [v3 sharedAppLibraryResetThrottleParams];
 
-    v8 = [[BRCThrottle alloc] initWithName:@"shared-container.reset.throttle" andParameters:v7];
+    v8 = [[BRCThrottle alloc] initWithName:@"shared-container.reset.throttle" andParameters:sharedAppLibraryResetThrottleParams];
     sharedAppLibraryResetThrottle = v2->_sharedAppLibraryResetThrottle;
     v2->_sharedAppLibraryResetThrottle = v8;
 
-    v10 = [v3 operationFailureThrottleParams];
+    operationFailureThrottleParams = [v3 operationFailureThrottleParams];
 
-    v11 = [[BRCThrottle alloc] initWithName:@"operation.failure.throttle" andParameters:v10];
+    v11 = [[BRCThrottle alloc] initWithName:@"operation.failure.throttle" andParameters:operationFailureThrottleParams];
     operationFailureThrottle = v2->_operationFailureThrottle;
     v2->_operationFailureThrottle = v11;
 
-    v13 = [v3 syncClientZoneThrottleParams];
+    syncClientZoneThrottleParams = [v3 syncClientZoneThrottleParams];
 
-    v14 = [[BRCThrottle alloc] initWithName:@"sync.container.throttle" andParameters:v13];
+    v14 = [[BRCThrottle alloc] initWithName:@"sync.container.throttle" andParameters:syncClientZoneThrottleParams];
     syncClientZoneThrottle = v2->_syncClientZoneThrottle;
     v2->_syncClientZoneThrottle = v14;
 
-    v16 = [v3 syncClientZoneErrorThrottleParams];
+    syncClientZoneErrorThrottleParams = [v3 syncClientZoneErrorThrottleParams];
 
-    v17 = [[BRCThrottle alloc] initWithName:@"sync.container.error.throttle" andParameters:v16];
+    v17 = [[BRCThrottle alloc] initWithName:@"sync.container.error.throttle" andParameters:syncClientZoneErrorThrottleParams];
     syncClientZoneErrorThrottle = v2->_syncClientZoneErrorThrottle;
     v2->_syncClientZoneErrorThrottle = v17;
   }
@@ -48,20 +48,20 @@
 
 - (void)resetThrottles
 {
-  v3 = [(BRCThrottleProvider *)self appLibraryResetThrottle];
-  [v3 reset];
+  appLibraryResetThrottle = [(BRCThrottleProvider *)self appLibraryResetThrottle];
+  [appLibraryResetThrottle reset];
 
-  v4 = [(BRCThrottleProvider *)self sharedAppLibraryResetThrottle];
-  [v4 reset];
+  sharedAppLibraryResetThrottle = [(BRCThrottleProvider *)self sharedAppLibraryResetThrottle];
+  [sharedAppLibraryResetThrottle reset];
 
-  v5 = [(BRCThrottleProvider *)self operationFailureThrottle];
-  [v5 reset];
+  operationFailureThrottle = [(BRCThrottleProvider *)self operationFailureThrottle];
+  [operationFailureThrottle reset];
 
-  v6 = [(BRCThrottleProvider *)self syncClientZoneThrottle];
-  [v6 reset];
+  syncClientZoneThrottle = [(BRCThrottleProvider *)self syncClientZoneThrottle];
+  [syncClientZoneThrottle reset];
 
-  v7 = [(BRCThrottleProvider *)self syncClientZoneErrorThrottle];
-  [v7 reset];
+  syncClientZoneErrorThrottle = [(BRCThrottleProvider *)self syncClientZoneErrorThrottle];
+  [syncClientZoneErrorThrottle reset];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface THWAnchoredWidgetRep
 - (id)_controlHostRep;
-- (id)delegateConformingToProtocol:(id)a3 forRep:(id)a4;
+- (id)delegateConformingToProtocol:(id)protocol forRep:(id)rep;
 @end
 
 @implementation THWAnchoredWidgetRep
@@ -12,9 +12,9 @@
   return TSUProtocolCast();
 }
 
-- (id)delegateConformingToProtocol:(id)a3 forRep:(id)a4
+- (id)delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  if (!protocol_isEqual(a3, &OBJC_PROTOCOL___THWControlHosting))
+  if (!protocol_isEqual(protocol, &OBJC_PROTOCOL___THWControlHosting))
   {
     return 0;
   }

@@ -1,23 +1,23 @@
 @interface NSSExternalAnalyticsPaneldentifierProvider
-- (NSSExternalAnalyticsPaneldentifierProvider)initWithHostNames:(id)a3;
-- (id)panelIdentifierWithHostNames:(id)a3;
+- (NSSExternalAnalyticsPaneldentifierProvider)initWithHostNames:(id)names;
+- (id)panelIdentifierWithHostNames:(id)names;
 @end
 
 @implementation NSSExternalAnalyticsPaneldentifierProvider
 
-- (NSSExternalAnalyticsPaneldentifierProvider)initWithHostNames:(id)a3
+- (NSSExternalAnalyticsPaneldentifierProvider)initWithHostNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v11.receiver = self;
   v11.super_class = NSSExternalAnalyticsPaneldentifierProvider;
   v5 = [(NSSExternalAnalyticsPaneldentifierProvider *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [namesCopy copy];
     hostNames = v5->_hostNames;
     v5->_hostNames = v6;
 
-    v8 = [(NSSExternalAnalyticsPaneldentifierProvider *)v5 panelIdentifierWithHostNames:v4];
+    v8 = [(NSSExternalAnalyticsPaneldentifierProvider *)v5 panelIdentifierWithHostNames:namesCopy];
     panelIdentifier = v5->_panelIdentifier;
     v5->_panelIdentifier = v8;
   }
@@ -25,22 +25,22 @@
   return v5;
 }
 
-- (id)panelIdentifierWithHostNames:(id)a3
+- (id)panelIdentifierWithHostNames:(id)names
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  namesCopy = names;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __75__NSSExternalAnalyticsPaneldentifierProvider_panelIdentifierWithHostNames___block_invoke;
   v33[3] = &unk_279980C30;
-  v4 = v3;
+  v4 = namesCopy;
   v34 = v4;
   v5 = MEMORY[0x25F882600](v33);
   v6 = CFNetworkCopySystemProxySettings();
   v7 = [(__CFDictionary *)v6 objectForKeyedSubscript:@"ProxyAutoConfigEnable"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = [(__CFDictionary *)v6 objectForKeyedSubscript:@"ProxyAutoConfigURLString"];
     v10 = [v9 copy];
@@ -50,11 +50,11 @@
   {
     v9 = [(__CFDictionary *)v6 objectForKeyedSubscript:@"HTTPProxy"];
     v11 = [(__CFDictionary *)v6 objectForKeyedSubscript:@"HTTPPort"];
-    v12 = [v11 stringValue];
+    stringValue = [v11 stringValue];
 
-    if ([v9 length] && objc_msgSend(v12, "length"))
+    if ([v9 length] && objc_msgSend(stringValue, "length"))
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v9, v12];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v9, stringValue];
     }
 
     else
@@ -108,11 +108,11 @@
 
         v21 = [v13 objectForKeyedSubscript:v18];
         v22 = [v21 objectForKeyedSubscript:@"HTTPPort"];
-        v23 = [v22 stringValue];
+        stringValue2 = [v22 stringValue];
 
-        if ([v20 length] && objc_msgSend(v23, "length") && ((v5)[2](v5, v20) & 1) != 0)
+        if ([v20 length] && objc_msgSend(stringValue2, "length") && ((v5)[2](v5, v20) & 1) != 0)
         {
-          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v20, v23];
+          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v20, stringValue2];
 
           goto LABEL_31;
         }

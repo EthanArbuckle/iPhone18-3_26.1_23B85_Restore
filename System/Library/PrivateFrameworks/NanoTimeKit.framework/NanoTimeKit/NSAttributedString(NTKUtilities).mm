@@ -52,7 +52,7 @@
 {
   v9 = a3;
   v10 = a4;
-  v11 = a5;
+  systemTimeZone = a5;
   if (_TimeFormatterWithDate_onceToken != -1)
   {
     +[NSAttributedString(NTKUtilities) NTKTimeWithDate:andDesignatorAttributes:timeZone:options:];
@@ -61,15 +61,15 @@
   [_TimeFormatterWithDate___formatter setOverrideDate:v9];
   v12 = _TimeFormatterWithDate___formatter;
   [v12 _setUseNarrowDesignatorTextForGerman:(a6 >> 1) & 1];
-  if (!v11)
+  if (!systemTimeZone)
   {
-    v11 = [MEMORY[0x277CBEBB0] systemTimeZone];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
   }
 
-  [v12 setTimeZone:v11];
+  [v12 setTimeZone:systemTimeZone];
   if (a6)
   {
-    v13 = [v12 timeText];
+    timeText = [v12 timeText];
     v16 = 0;
     v17 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -78,21 +78,21 @@
   {
     if ((a6 & 4) != 0)
     {
-      v13 = [v12 timeAndDesignatorTextWithoutMinutesIfZero];
-      v14 = [v12 designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero];
+      timeText = [v12 timeAndDesignatorTextWithoutMinutesIfZero];
+      designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = [v12 designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero];
     }
 
     else
     {
-      v13 = [v12 timeAndDesignatorText];
-      v14 = [v12 designatorRangeInTimeAndDesignatorText];
+      timeText = [v12 timeAndDesignatorText];
+      designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = [v12 designatorRangeInTimeAndDesignatorText];
     }
 
-    v17 = v14;
+    v17 = designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero;
     v16 = v15;
   }
 
-  v18 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v13];
+  v18 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:timeText];
   v19 = v18;
   if (v10 && v16)
   {
@@ -134,21 +134,21 @@
   v7 = a5;
   v8 = MEMORY[0x277CBEA80];
   v9 = a3;
-  v10 = [v8 currentCalendar];
+  currentCalendar = [v8 currentCalendar];
   v11 = [MEMORY[0x277CBB700] now];
-  v12 = [v10 components:126 fromDate:v11];
-  v13 = [v10 components:126 fromDate:v9];
+  v12 = [currentCalendar components:126 fromDate:v11];
+  v13 = [currentCalendar components:126 fromDate:v9];
 
-  v14 = [v10 components:96 fromDateComponents:v12 toDateComponents:v13 options:0];
-  v15 = [v14 hour];
-  v16 = [v14 minute];
-  if (v15 < 0 || (v17 = v16, v16 < 0))
+  v14 = [currentCalendar components:96 fromDateComponents:v12 toDateComponents:v13 options:0];
+  hour = [v14 hour];
+  minute = [v14 minute];
+  if (hour < 0 || (v17 = minute, minute < 0))
   {
     v20 = objc_alloc_init(MEMORY[0x277CCA898]);
     goto LABEL_24;
   }
 
-  if (!(v15 | v16))
+  if (!(hour | minute))
   {
     v18 = objc_alloc(MEMORY[0x277CCA898]);
     v19 = NTKClockFaceLocalizedString(@"COUNTDOWN_NOW", @"now");
@@ -159,7 +159,7 @@ LABEL_23:
   }
 
   v20 = objc_opt_new();
-  if (v15)
+  if (hour)
   {
     v41 = a4;
     if (a4)
@@ -170,7 +170,7 @@ LABEL_23:
     else
     {
       v22 = @"COUNTDOWN_HOUR_MULTIPLE";
-      if (v15 == 1)
+      if (hour == 1)
       {
         v22 = @"COUNTDOWN_HOUR_SINGLE";
       }
@@ -181,7 +181,7 @@ LABEL_23:
     v40 = NTKClockFaceLocalizedString(v21, @"hrs");
 
     v23 = objc_alloc(MEMORY[0x277CCA898]);
-    v24 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%d", v15];
+    v24 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%d", hour];
     v25 = [v23 initWithString:v24];
     [v20 appendAttributedString:v25];
 
@@ -251,7 +251,7 @@ LABEL_24:
   {
     v5 = MEMORY[0x277D74240];
     v6 = a4;
-    *&v7 = a1;
+    *&v7 = self;
     v8 = [v5 NTKHyphenationParagraphStyleWithFactor:v7];
     v9 = objc_alloc(MEMORY[0x277CCA898]);
     v13 = *MEMORY[0x277D74118];
@@ -294,8 +294,8 @@ LABEL_24:
   {
     v20 = [v14 length];
     v21 = objc_alloc(MEMORY[0x277CCAB48]);
-    v22 = [v14 string];
-    v23 = [v21 initWithString:v22 attributes:v10];
+    string = [v14 string];
+    v23 = [v21 initWithString:string attributes:v10];
 
     v36 = 0;
     v37 = &v36;
@@ -346,7 +346,7 @@ LABEL_24:
 
 + (id)ntk_attributedStringFromAttributesTable:()NTKUtilities defaultAttributes:markdownFormat:
 {
-  v9 = [a1 ntk_attributedStringFromAttributesTable:a3 defaultAttributes:a4 markdownFormat:a5 arguments:&a9];
+  v9 = [self ntk_attributedStringFromAttributesTable:a3 defaultAttributes:a4 markdownFormat:a5 arguments:&a9];
 
   return v9;
 }
@@ -356,7 +356,7 @@ LABEL_24:
   v11 = a4;
   v12 = a3;
   v13 = [v12 objectForKeyedSubscript:@"default"];
-  v14 = [a1 ntk_attributedStringFromAttributesTable:v12 defaultAttributes:v13 markdownFormat:v11 arguments:&a9];
+  v14 = [self ntk_attributedStringFromAttributesTable:v12 defaultAttributes:v13 markdownFormat:v11 arguments:&a9];
 
   return v14;
 }

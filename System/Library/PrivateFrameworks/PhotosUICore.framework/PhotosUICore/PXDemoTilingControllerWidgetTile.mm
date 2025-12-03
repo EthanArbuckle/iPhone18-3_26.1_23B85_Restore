@@ -16,8 +16,8 @@
     v2->__mapView = v3;
 
     v5 = v2->__mapView;
-    v6 = [MEMORY[0x1E69DC888] greenColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    [(UIView *)v5 setBackgroundColor:greenColor];
   }
 
   return v2;

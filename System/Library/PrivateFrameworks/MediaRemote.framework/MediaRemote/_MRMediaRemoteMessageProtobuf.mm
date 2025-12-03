@@ -1,16 +1,16 @@
 @interface _MRMediaRemoteMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRMediaRemoteMessageProtobuf
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,520 +43,520 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SendCommand"])
+  else if ([typeCopy isEqualToString:@"SendCommand"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SendCommandResult"])
+  else if ([typeCopy isEqualToString:@"SendCommandResult"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GetState"])
+  else if ([typeCopy isEqualToString:@"GetState"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SetState"])
+  else if ([typeCopy isEqualToString:@"SetState"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SetArtwork"])
+  else if ([typeCopy isEqualToString:@"SetArtwork"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RegisterHIDDevice"])
+  else if ([typeCopy isEqualToString:@"RegisterHIDDevice"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RegisterHIDDeviceResult"])
+  else if ([typeCopy isEqualToString:@"RegisterHIDDeviceResult"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SendHIDEvent"])
+  else if ([typeCopy isEqualToString:@"SendHIDEvent"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SendHIDReport"])
+  else if ([typeCopy isEqualToString:@"SendHIDReport"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SendVirtualTouchEvent"])
+  else if ([typeCopy isEqualToString:@"SendVirtualTouchEvent"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Notification"])
+  else if ([typeCopy isEqualToString:@"Notification"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"DeviceInfo"])
+  else if ([typeCopy isEqualToString:@"DeviceInfo"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"ClientUpdatesConfiguration"])
+  else if ([typeCopy isEqualToString:@"ClientUpdatesConfiguration"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"LegacyVolumeControlCapabilitiesDidChange"])
+  else if ([typeCopy isEqualToString:@"LegacyVolumeControlCapabilitiesDidChange"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"GameController"])
+  else if ([typeCopy isEqualToString:@"GameController"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"RegisterGameController"])
+  else if ([typeCopy isEqualToString:@"RegisterGameController"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"RegisterGameControllerResponse"])
+  else if ([typeCopy isEqualToString:@"RegisterGameControllerResponse"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"UnregisterGameController"])
+  else if ([typeCopy isEqualToString:@"UnregisterGameController"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"RegisterForGameControllerEvents"])
+  else if ([typeCopy isEqualToString:@"RegisterForGameControllerEvents"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"Keyboard"])
+  else if ([typeCopy isEqualToString:@"Keyboard"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"GetKeyboardSession"])
+  else if ([typeCopy isEqualToString:@"GetKeyboardSession"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"TextInput"])
+  else if ([typeCopy isEqualToString:@"TextInput"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"GetVoiceInputDevices"])
+  else if ([typeCopy isEqualToString:@"GetVoiceInputDevices"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"GetVoiceInputDevicesResponse"])
+  else if ([typeCopy isEqualToString:@"GetVoiceInputDevicesResponse"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"RegisterVoiceInputDevice"])
+  else if ([typeCopy isEqualToString:@"RegisterVoiceInputDevice"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"RegisterVoiceInputDeviceResponse"])
+  else if ([typeCopy isEqualToString:@"RegisterVoiceInputDeviceResponse"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SetVoiceInputRecordingState"])
+  else if ([typeCopy isEqualToString:@"SetVoiceInputRecordingState"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"SendVoiceInput"])
+  else if ([typeCopy isEqualToString:@"SendVoiceInput"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackQueueRequest"])
+  else if ([typeCopy isEqualToString:@"PlaybackQueueRequest"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"Transaction"])
+  else if ([typeCopy isEqualToString:@"Transaction"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"CryptoPairing"])
+  else if ([typeCopy isEqualToString:@"CryptoPairing"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"GameControllerProperties"])
+  else if ([typeCopy isEqualToString:@"GameControllerProperties"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"SetReadyState"])
+  else if ([typeCopy isEqualToString:@"SetReadyState"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"DeviceInfoUpdate"])
+  else if ([typeCopy isEqualToString:@"DeviceInfoUpdate"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"SetConnectionState"])
+  else if ([typeCopy isEqualToString:@"SetConnectionState"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"SendButtonEvent"])
+  else if ([typeCopy isEqualToString:@"SendButtonEvent"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"SetHiliteMode"])
+  else if ([typeCopy isEqualToString:@"SetHiliteMode"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"WakeDevice"])
+  else if ([typeCopy isEqualToString:@"WakeDevice"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"Generic"])
+  else if ([typeCopy isEqualToString:@"Generic"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"SendPackedVirtualTouchEvent"])
+  else if ([typeCopy isEqualToString:@"SendPackedVirtualTouchEvent"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"SendLyricsEventMessage"])
+  else if ([typeCopy isEqualToString:@"SendLyricsEventMessage"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"SetNowPlayingClient"])
+  else if ([typeCopy isEqualToString:@"SetNowPlayingClient"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SetNowPlayingPlayer"])
+  else if ([typeCopy isEqualToString:@"SetNowPlayingPlayer"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"ModifyOutputContextRequest"])
+  else if ([typeCopy isEqualToString:@"ModifyOutputContextRequest"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"GetVolume"])
+  else if ([typeCopy isEqualToString:@"GetVolume"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"GetVolumeResult"])
+  else if ([typeCopy isEqualToString:@"GetVolumeResult"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"SetVolume"])
+  else if ([typeCopy isEqualToString:@"SetVolume"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"VolumeDidChange"])
+  else if ([typeCopy isEqualToString:@"VolumeDidChange"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"RemoveClient"])
+  else if ([typeCopy isEqualToString:@"RemoveClient"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"RemovePlayer"])
+  else if ([typeCopy isEqualToString:@"RemovePlayer"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"UpdateClient"])
+  else if ([typeCopy isEqualToString:@"UpdateClient"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"UpdateContentItems"])
+  else if ([typeCopy isEqualToString:@"UpdateContentItems"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"UpdateContentItemArtwork"])
+  else if ([typeCopy isEqualToString:@"UpdateContentItemArtwork"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"UpdatePlayer"])
+  else if ([typeCopy isEqualToString:@"UpdatePlayer"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"PromptForRouteAuthorization"])
+  else if ([typeCopy isEqualToString:@"PromptForRouteAuthorization"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"PromptForRouteAuthorizationResponse"])
+  else if ([typeCopy isEqualToString:@"PromptForRouteAuthorizationResponse"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"PresentRouteAuthorizationStatus"])
+  else if ([typeCopy isEqualToString:@"PresentRouteAuthorizationStatus"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"GetVolumeControlCapabilities"])
+  else if ([typeCopy isEqualToString:@"GetVolumeControlCapabilities"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"GetVolumeControlCapabilitiesResult"])
+  else if ([typeCopy isEqualToString:@"GetVolumeControlCapabilitiesResult"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"VolumeControlCapabilitiesDidChange"])
+  else if ([typeCopy isEqualToString:@"VolumeControlCapabilitiesDidChange"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"UpdateOutputDevices"])
+  else if ([typeCopy isEqualToString:@"UpdateOutputDevices"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"RemoveOutputDevices"])
+  else if ([typeCopy isEqualToString:@"RemoveOutputDevices"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"RemoteTextInput"])
+  else if ([typeCopy isEqualToString:@"RemoteTextInput"])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:@"GetRemoteTextInputSession"])
+  else if ([typeCopy isEqualToString:@"GetRemoteTextInputSession"])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:@"RemoveFromParentGroup"])
+  else if ([typeCopy isEqualToString:@"RemoveFromParentGroup"])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionRequest"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionRequest"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionResponse"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionResponse"])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:@"SetDefaultSupportedCommands"])
+  else if ([typeCopy isEqualToString:@"SetDefaultSupportedCommands"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionMigrateRequest"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionMigrateRequest"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionMigrateResponse"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionMigrateResponse"])
   {
     v4 = 74;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionMigrateBegin"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionMigrateBegin"])
   {
     v4 = 75;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionMigrateEnd"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionMigrateEnd"])
   {
     v4 = 76;
   }
 
-  else if ([v3 isEqualToString:@"UpdateActiveSystemEndpoint"])
+  else if ([typeCopy isEqualToString:@"UpdateActiveSystemEndpoint"])
   {
     v4 = 77;
   }
 
-  else if ([v3 isEqualToString:@"PlaybackSessionMigratePost"])
+  else if ([typeCopy isEqualToString:@"PlaybackSessionMigratePost"])
   {
     v4 = 78;
   }
 
-  else if ([v3 isEqualToString:@"SetDiscoveryMode"])
+  else if ([typeCopy isEqualToString:@"SetDiscoveryMode"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"UpdateEndpoints"])
+  else if ([typeCopy isEqualToString:@"UpdateEndpoints"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"RemoveEndpoints"])
+  else if ([typeCopy isEqualToString:@"RemoveEndpoints"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"SetPlayerClientProperties"])
+  else if ([typeCopy isEqualToString:@"SetPlayerClientProperties"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"SetOriginClientProperties"])
+  else if ([typeCopy isEqualToString:@"SetOriginClientProperties"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"AudioFade"])
+  else if ([typeCopy isEqualToString:@"AudioFade"])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:@"AudioFadeResponse"])
+  else if ([typeCopy isEqualToString:@"AudioFadeResponse"])
   {
     v4 = 107;
   }
 
-  else if ([v3 isEqualToString:@"DiscoveryUpdateEndpoints"])
+  else if ([typeCopy isEqualToString:@"DiscoveryUpdateEndpoints"])
   {
     v4 = 108;
   }
 
-  else if ([v3 isEqualToString:@"DiscoveryUpdateOutputDevices"])
+  else if ([typeCopy isEqualToString:@"DiscoveryUpdateOutputDevices"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:@"SetListeningMode"])
+  else if ([typeCopy isEqualToString:@"SetListeningMode"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"ConfigureConnection"])
+  else if ([typeCopy isEqualToString:@"ConfigureConnection"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"CreatedHostedEndpointRequest"])
+  else if ([typeCopy isEqualToString:@"CreatedHostedEndpointRequest"])
   {
     v4 = 121;
   }
 
-  else if ([v3 isEqualToString:@"CreatedHostedEndpointResponse"])
+  else if ([typeCopy isEqualToString:@"CreatedHostedEndpointResponse"])
   {
     v4 = 122;
   }
 
-  else if ([v3 isEqualToString:@"AdjustVolume"])
+  else if ([typeCopy isEqualToString:@"AdjustVolume"])
   {
     v4 = 125;
   }
 
-  else if ([v3 isEqualToString:@"GetVolumeMuted"])
+  else if ([typeCopy isEqualToString:@"GetVolumeMuted"])
   {
     v4 = 126;
   }
 
-  else if ([v3 isEqualToString:@"GetVolumeMutedResult"])
+  else if ([typeCopy isEqualToString:@"GetVolumeMutedResult"])
   {
     v4 = 127;
   }
 
-  else if ([v3 isEqualToString:@"SetVolumeMuted"])
+  else if ([typeCopy isEqualToString:@"SetVolumeMuted"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"VolumeMutedDidChange"])
+  else if ([typeCopy isEqualToString:@"VolumeMutedDidChange"])
   {
     v4 = 129;
   }
 
-  else if ([v3 isEqualToString:@"SetConversationDetectionEnabled"])
+  else if ([typeCopy isEqualToString:@"SetConversationDetectionEnabled"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"PlayerClientParticipantsUpdate"])
+  else if ([typeCopy isEqualToString:@"PlayerClientParticipantsUpdate"])
   {
     v4 = 131;
   }
 
-  else if ([v3 isEqualToString:@"RequestGroupSession"])
+  else if ([typeCopy isEqualToString:@"RequestGroupSession"])
   {
     v4 = 132;
   }
 
-  else if ([v3 isEqualToString:@"ConfigureConnectionService"])
+  else if ([typeCopy isEqualToString:@"ConfigureConnectionService"])
   {
     v4 = 133;
   }
 
-  else if ([v3 isEqualToString:@"CreateApplicationConnection"])
+  else if ([typeCopy isEqualToString:@"CreateApplicationConnection"])
   {
     v4 = 134;
   }
 
-  else if ([v3 isEqualToString:@"ApplicationConnectionProtocolMessage"])
+  else if ([typeCopy isEqualToString:@"ApplicationConnectionProtocolMessage"])
   {
     v4 = 135;
   }
 
-  else if ([v3 isEqualToString:@"InvalidateApplicationConnection"])
+  else if ([typeCopy isEqualToString:@"InvalidateApplicationConnection"])
   {
     v4 = 136;
   }
 
-  else if ([v3 isEqualToString:@"MicrophoneConnectionRequest"])
+  else if ([typeCopy isEqualToString:@"MicrophoneConnectionRequest"])
   {
     v4 = 137;
   }
 
-  else if ([v3 isEqualToString:@"MicrophoneConnectionResponse"])
+  else if ([typeCopy isEqualToString:@"MicrophoneConnectionResponse"])
   {
     v4 = 138;
   }
 
-  else if ([v3 isEqualToString:@"LastMessageType"])
+  else if ([typeCopy isEqualToString:@"LastMessageType"])
   {
     v4 = 139;
   }
@@ -569,9 +569,9 @@
   return v4;
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -590,15 +590,15 @@
   v8.receiver = self;
   v8.super_class = _MRMediaRemoteMessageProtobuf;
   v4 = [(_MRMediaRemoteMessageProtobuf *)&v8 description];
-  v5 = [(_MRMediaRemoteMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRMediaRemoteMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = @"Unknown";
@@ -917,26 +917,26 @@
         break;
     }
 
-    [v3 setObject:v4 forKey:@"type"];
+    [dictionary setObject:v4 forKey:@"type"];
   }
 
   replyIdentifier = self->_replyIdentifier;
   if (replyIdentifier)
   {
-    [v3 setObject:replyIdentifier forKey:@"replyIdentifier"];
+    [dictionary setObject:replyIdentifier forKey:@"replyIdentifier"];
   }
 
   authenticationToken = self->_authenticationToken;
   if (authenticationToken)
   {
-    [v3 setObject:authenticationToken forKey:@"authenticationToken"];
+    [dictionary setObject:authenticationToken forKey:@"authenticationToken"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_errorCode];
-    [v3 setObject:v8 forKey:@"errorCode"];
+    [dictionary setObject:v8 forKey:@"errorCode"];
 
     has = self->_has;
   }
@@ -944,747 +944,747 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v9 forKey:@"timestamp"];
+    [dictionary setObject:v9 forKey:@"timestamp"];
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    [v3 setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [dictionary setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
   }
 
   sendCommandMessage = self->_sendCommandMessage;
   if (sendCommandMessage)
   {
-    v12 = [(_MRSendCommandMessageProtobuf *)sendCommandMessage dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"sendCommandMessage"];
+    dictionaryRepresentation = [(_MRSendCommandMessageProtobuf *)sendCommandMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sendCommandMessage"];
   }
 
   sendCommandResultMessage = self->_sendCommandResultMessage;
   if (sendCommandResultMessage)
   {
-    v14 = [(_MRSendCommandResultMessageProtobuf *)sendCommandResultMessage dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"sendCommandResultMessage"];
+    dictionaryRepresentation2 = [(_MRSendCommandResultMessageProtobuf *)sendCommandResultMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sendCommandResultMessage"];
   }
 
   setStateMessage = self->_setStateMessage;
   if (setStateMessage)
   {
-    v16 = [(_MRSetStateMessageProtobuf *)setStateMessage dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"setStateMessage"];
+    dictionaryRepresentation3 = [(_MRSetStateMessageProtobuf *)setStateMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"setStateMessage"];
   }
 
   notificationMessage = self->_notificationMessage;
   if (notificationMessage)
   {
-    v18 = [(_MRNotificationMessageProtobuf *)notificationMessage dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"notificationMessage"];
+    dictionaryRepresentation4 = [(_MRNotificationMessageProtobuf *)notificationMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"notificationMessage"];
   }
 
   contentItemsChangedNotificationMessage = self->_contentItemsChangedNotificationMessage;
   if (contentItemsChangedNotificationMessage)
   {
-    v20 = [(_MRPlaybackQueueProtobuf *)contentItemsChangedNotificationMessage dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"contentItemsChangedNotificationMessage"];
+    dictionaryRepresentation5 = [(_MRPlaybackQueueProtobuf *)contentItemsChangedNotificationMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"contentItemsChangedNotificationMessage"];
   }
 
   deviceInfoMessage = self->_deviceInfoMessage;
   if (deviceInfoMessage)
   {
-    v22 = [(_MRDeviceInfoMessageProtobuf *)deviceInfoMessage dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"deviceInfoMessage"];
+    dictionaryRepresentation6 = [(_MRDeviceInfoMessageProtobuf *)deviceInfoMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"deviceInfoMessage"];
   }
 
   clientUpdatesConfigMessage = self->_clientUpdatesConfigMessage;
   if (clientUpdatesConfigMessage)
   {
-    v24 = [(_MRClientUpdatesConfigurationProtobuf *)clientUpdatesConfigMessage dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"clientUpdatesConfigMessage"];
+    dictionaryRepresentation7 = [(_MRClientUpdatesConfigurationProtobuf *)clientUpdatesConfigMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"clientUpdatesConfigMessage"];
   }
 
   playbackQueueRequest = self->_playbackQueueRequest;
   if (playbackQueueRequest)
   {
-    v26 = [(_MRPlaybackQueueRequestProtobuf *)playbackQueueRequest dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"playbackQueueRequest"];
+    dictionaryRepresentation8 = [(_MRPlaybackQueueRequestProtobuf *)playbackQueueRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"playbackQueueRequest"];
   }
 
   connectionState = self->_connectionState;
   if (connectionState)
   {
-    v28 = [(_MRSetConnectionStateMessageProtobuf *)connectionState dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"connectionState"];
+    dictionaryRepresentation9 = [(_MRSetConnectionStateMessageProtobuf *)connectionState dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"connectionState"];
   }
 
   getVolumeMessage = self->_getVolumeMessage;
   if (getVolumeMessage)
   {
-    v30 = [(_MRGetVolumeMessageProtobuf *)getVolumeMessage dictionaryRepresentation];
-    [v3 setObject:v30 forKey:@"getVolumeMessage"];
+    dictionaryRepresentation10 = [(_MRGetVolumeMessageProtobuf *)getVolumeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation10 forKey:@"getVolumeMessage"];
   }
 
   getVolumeResultMessage = self->_getVolumeResultMessage;
   if (getVolumeResultMessage)
   {
-    v32 = [(_MRGetVolumeResultMessageProtobuf *)getVolumeResultMessage dictionaryRepresentation];
-    [v3 setObject:v32 forKey:@"getVolumeResultMessage"];
+    dictionaryRepresentation11 = [(_MRGetVolumeResultMessageProtobuf *)getVolumeResultMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation11 forKey:@"getVolumeResultMessage"];
   }
 
   setVolumeMessage = self->_setVolumeMessage;
   if (setVolumeMessage)
   {
-    v34 = [(_MRSetVolumeMessageProtobuf *)setVolumeMessage dictionaryRepresentation];
-    [v3 setObject:v34 forKey:@"setVolumeMessage"];
+    dictionaryRepresentation12 = [(_MRSetVolumeMessageProtobuf *)setVolumeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation12 forKey:@"setVolumeMessage"];
   }
 
   volumeDidChangeMessage = self->_volumeDidChangeMessage;
   if (volumeDidChangeMessage)
   {
-    v36 = [(_MRVolumeDidChangeMessageProtobuf *)volumeDidChangeMessage dictionaryRepresentation];
-    [v3 setObject:v36 forKey:@"volumeDidChangeMessage"];
+    dictionaryRepresentation13 = [(_MRVolumeDidChangeMessageProtobuf *)volumeDidChangeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation13 forKey:@"volumeDidChangeMessage"];
   }
 
   updateContentItemMessage = self->_updateContentItemMessage;
   if (updateContentItemMessage)
   {
-    v38 = [(_MRUpdateContentItemMessageProtobuf *)updateContentItemMessage dictionaryRepresentation];
-    [v3 setObject:v38 forKey:@"updateContentItemMessage"];
+    dictionaryRepresentation14 = [(_MRUpdateContentItemMessageProtobuf *)updateContentItemMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation14 forKey:@"updateContentItemMessage"];
   }
 
   setDefaultSupportedCommandsMessage = self->_setDefaultSupportedCommandsMessage;
   if (setDefaultSupportedCommandsMessage)
   {
-    v40 = [(_MRSetStateMessageProtobuf *)setDefaultSupportedCommandsMessage dictionaryRepresentation];
-    [v3 setObject:v40 forKey:@"setDefaultSupportedCommandsMessage"];
+    dictionaryRepresentation15 = [(_MRSetStateMessageProtobuf *)setDefaultSupportedCommandsMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation15 forKey:@"setDefaultSupportedCommandsMessage"];
   }
 
   getStateMessage = self->_getStateMessage;
   if (getStateMessage)
   {
-    v42 = [(_MRGetStateMessageProtobuf *)getStateMessage dictionaryRepresentation];
-    [v3 setObject:v42 forKey:@"getStateMessage"];
+    dictionaryRepresentation16 = [(_MRGetStateMessageProtobuf *)getStateMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation16 forKey:@"getStateMessage"];
   }
 
   error = self->_error;
   if (error)
   {
-    v44 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
-    [v3 setObject:v44 forKey:@"error"];
+    dictionaryRepresentation17 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation17 forKey:@"error"];
   }
 
   setArtworkMessage = self->_setArtworkMessage;
   if (setArtworkMessage)
   {
-    v46 = [(_MRSetArtworkMessageProtobuf *)setArtworkMessage dictionaryRepresentation];
-    [v3 setObject:v46 forKey:@"setArtworkMessage"];
+    dictionaryRepresentation18 = [(_MRSetArtworkMessageProtobuf *)setArtworkMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation18 forKey:@"setArtworkMessage"];
   }
 
   registerHIDDeviceMessage = self->_registerHIDDeviceMessage;
   if (registerHIDDeviceMessage)
   {
-    v48 = [(_MRRegisterHIDDeviceMessageProtobuf *)registerHIDDeviceMessage dictionaryRepresentation];
-    [v3 setObject:v48 forKey:@"registerHIDDeviceMessage"];
+    dictionaryRepresentation19 = [(_MRRegisterHIDDeviceMessageProtobuf *)registerHIDDeviceMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation19 forKey:@"registerHIDDeviceMessage"];
   }
 
   registerHIDDeviceResultMessage = self->_registerHIDDeviceResultMessage;
   if (registerHIDDeviceResultMessage)
   {
-    v50 = [(_MRRegisterHIDDeviceResultMessageProtobuf *)registerHIDDeviceResultMessage dictionaryRepresentation];
-    [v3 setObject:v50 forKey:@"registerHIDDeviceResultMessage"];
+    dictionaryRepresentation20 = [(_MRRegisterHIDDeviceResultMessageProtobuf *)registerHIDDeviceResultMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation20 forKey:@"registerHIDDeviceResultMessage"];
   }
 
   sendHIDEventMessage = self->_sendHIDEventMessage;
   if (sendHIDEventMessage)
   {
-    v52 = [(_MRSendHIDEventMessageProtobuf *)sendHIDEventMessage dictionaryRepresentation];
-    [v3 setObject:v52 forKey:@"sendHIDEventMessage"];
+    dictionaryRepresentation21 = [(_MRSendHIDEventMessageProtobuf *)sendHIDEventMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation21 forKey:@"sendHIDEventMessage"];
   }
 
   sendHIDReportMessage = self->_sendHIDReportMessage;
   if (sendHIDReportMessage)
   {
-    v54 = [(_MRSendHIDReportMessageProtobuf *)sendHIDReportMessage dictionaryRepresentation];
-    [v3 setObject:v54 forKey:@"sendHIDReportMessage"];
+    dictionaryRepresentation22 = [(_MRSendHIDReportMessageProtobuf *)sendHIDReportMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation22 forKey:@"sendHIDReportMessage"];
   }
 
   sendVirtualTouchEventMessage = self->_sendVirtualTouchEventMessage;
   if (sendVirtualTouchEventMessage)
   {
-    v56 = [(_MRSendVirtualTouchEventMessageProtobuf *)sendVirtualTouchEventMessage dictionaryRepresentation];
-    [v3 setObject:v56 forKey:@"sendVirtualTouchEventMessage"];
+    dictionaryRepresentation23 = [(_MRSendVirtualTouchEventMessageProtobuf *)sendVirtualTouchEventMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation23 forKey:@"sendVirtualTouchEventMessage"];
   }
 
   masterVolumeControlCapabilitiesDidChangeMessage = self->_masterVolumeControlCapabilitiesDidChangeMessage;
   if (masterVolumeControlCapabilitiesDidChangeMessage)
   {
-    v58 = [(_MRVolumeControlAvailabilityProtobuf *)masterVolumeControlCapabilitiesDidChangeMessage dictionaryRepresentation];
-    [v3 setObject:v58 forKey:@"masterVolumeControlCapabilitiesDidChangeMessage"];
+    dictionaryRepresentation24 = [(_MRVolumeControlAvailabilityProtobuf *)masterVolumeControlCapabilitiesDidChangeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation24 forKey:@"masterVolumeControlCapabilitiesDidChangeMessage"];
   }
 
   gameController = self->_gameController;
   if (gameController)
   {
-    v60 = [(_MRGameControllerMessageProtobuf *)gameController dictionaryRepresentation];
-    [v3 setObject:v60 forKey:@"gameController"];
+    dictionaryRepresentation25 = [(_MRGameControllerMessageProtobuf *)gameController dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation25 forKey:@"gameController"];
   }
 
   registerGameController = self->_registerGameController;
   if (registerGameController)
   {
-    v62 = [(_MRRegisterGameControllerMessageProtobuf *)registerGameController dictionaryRepresentation];
-    [v3 setObject:v62 forKey:@"registerGameController"];
+    dictionaryRepresentation26 = [(_MRRegisterGameControllerMessageProtobuf *)registerGameController dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation26 forKey:@"registerGameController"];
   }
 
   registerGameControllerResponse = self->_registerGameControllerResponse;
   if (registerGameControllerResponse)
   {
-    v64 = [(_MRRegisterGameControllerResponseMessageProtobuf *)registerGameControllerResponse dictionaryRepresentation];
-    [v3 setObject:v64 forKey:@"registerGameControllerResponse"];
+    dictionaryRepresentation27 = [(_MRRegisterGameControllerResponseMessageProtobuf *)registerGameControllerResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation27 forKey:@"registerGameControllerResponse"];
   }
 
   unregisterGameController = self->_unregisterGameController;
   if (unregisterGameController)
   {
-    v66 = [(_MRUnregisterGameControllerMessageProtobuf *)unregisterGameController dictionaryRepresentation];
-    [v3 setObject:v66 forKey:@"unregisterGameController"];
+    dictionaryRepresentation28 = [(_MRUnregisterGameControllerMessageProtobuf *)unregisterGameController dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation28 forKey:@"unregisterGameController"];
   }
 
   registerForGameControllerEvents = self->_registerForGameControllerEvents;
   if (registerForGameControllerEvents)
   {
-    v68 = [(_MRRegisterForGameControllerEventsMessageProtobuf *)registerForGameControllerEvents dictionaryRepresentation];
-    [v3 setObject:v68 forKey:@"registerForGameControllerEvents"];
+    dictionaryRepresentation29 = [(_MRRegisterForGameControllerEventsMessageProtobuf *)registerForGameControllerEvents dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation29 forKey:@"registerForGameControllerEvents"];
   }
 
   keyboardMessage = self->_keyboardMessage;
   if (keyboardMessage)
   {
-    v70 = [(_MRKeyboardMessageProtobuf *)keyboardMessage dictionaryRepresentation];
-    [v3 setObject:v70 forKey:@"keyboardMessage"];
+    dictionaryRepresentation30 = [(_MRKeyboardMessageProtobuf *)keyboardMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation30 forKey:@"keyboardMessage"];
   }
 
   getKeyboardMessage = self->_getKeyboardMessage;
   if (getKeyboardMessage)
   {
-    v72 = [(_MRGetKeyboardSessionProtobuf *)getKeyboardMessage dictionaryRepresentation];
-    [v3 setObject:v72 forKey:@"getKeyboardMessage"];
+    dictionaryRepresentation31 = [(_MRGetKeyboardSessionProtobuf *)getKeyboardMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation31 forKey:@"getKeyboardMessage"];
   }
 
   textInputMessage = self->_textInputMessage;
   if (textInputMessage)
   {
-    v74 = [(_MRTextInputMessageProtobuf *)textInputMessage dictionaryRepresentation];
-    [v3 setObject:v74 forKey:@"textInputMessage"];
+    dictionaryRepresentation32 = [(_MRTextInputMessageProtobuf *)textInputMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation32 forKey:@"textInputMessage"];
   }
 
   getVoiceInputDevicesMessage = self->_getVoiceInputDevicesMessage;
   if (getVoiceInputDevicesMessage)
   {
-    v76 = [(_MRGetVoiceInputDevicesMessageProtobuf *)getVoiceInputDevicesMessage dictionaryRepresentation];
-    [v3 setObject:v76 forKey:@"getVoiceInputDevicesMessage"];
+    dictionaryRepresentation33 = [(_MRGetVoiceInputDevicesMessageProtobuf *)getVoiceInputDevicesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation33 forKey:@"getVoiceInputDevicesMessage"];
   }
 
   getVoiceInputDevicesResponseMessage = self->_getVoiceInputDevicesResponseMessage;
   if (getVoiceInputDevicesResponseMessage)
   {
-    v78 = [(_MRGetVoiceInputDevicesResponseMessageProtobuf *)getVoiceInputDevicesResponseMessage dictionaryRepresentation];
-    [v3 setObject:v78 forKey:@"getVoiceInputDevicesResponseMessage"];
+    dictionaryRepresentation34 = [(_MRGetVoiceInputDevicesResponseMessageProtobuf *)getVoiceInputDevicesResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation34 forKey:@"getVoiceInputDevicesResponseMessage"];
   }
 
   registerVoiceInputDeviceMessage = self->_registerVoiceInputDeviceMessage;
   if (registerVoiceInputDeviceMessage)
   {
-    v80 = [(_MRRegisterVoiceInputDeviceMessageProtobuf *)registerVoiceInputDeviceMessage dictionaryRepresentation];
-    [v3 setObject:v80 forKey:@"registerVoiceInputDeviceMessage"];
+    dictionaryRepresentation35 = [(_MRRegisterVoiceInputDeviceMessageProtobuf *)registerVoiceInputDeviceMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation35 forKey:@"registerVoiceInputDeviceMessage"];
   }
 
   registerVoiceInputDeviceResponseMessage = self->_registerVoiceInputDeviceResponseMessage;
   if (registerVoiceInputDeviceResponseMessage)
   {
-    v82 = [(_MRRegisterVoiceInputDeviceResponseMessageProtobuf *)registerVoiceInputDeviceResponseMessage dictionaryRepresentation];
-    [v3 setObject:v82 forKey:@"registerVoiceInputDeviceResponseMessage"];
+    dictionaryRepresentation36 = [(_MRRegisterVoiceInputDeviceResponseMessageProtobuf *)registerVoiceInputDeviceResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation36 forKey:@"registerVoiceInputDeviceResponseMessage"];
   }
 
   setRecordingStateMessage = self->_setRecordingStateMessage;
   if (setRecordingStateMessage)
   {
-    v84 = [(_MRSetRecordingStateMessageProtobuf *)setRecordingStateMessage dictionaryRepresentation];
-    [v3 setObject:v84 forKey:@"setRecordingStateMessage"];
+    dictionaryRepresentation37 = [(_MRSetRecordingStateMessageProtobuf *)setRecordingStateMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation37 forKey:@"setRecordingStateMessage"];
   }
 
   sendVoiceInputMessage = self->_sendVoiceInputMessage;
   if (sendVoiceInputMessage)
   {
-    v86 = [(_MRSendVoiceInputMessageProtobuf *)sendVoiceInputMessage dictionaryRepresentation];
-    [v3 setObject:v86 forKey:@"sendVoiceInputMessage"];
+    dictionaryRepresentation38 = [(_MRSendVoiceInputMessageProtobuf *)sendVoiceInputMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation38 forKey:@"sendVoiceInputMessage"];
   }
 
   transactionPackets = self->_transactionPackets;
   if (transactionPackets)
   {
-    v88 = [(_MRTransactionMessageProtobuf *)transactionPackets dictionaryRepresentation];
-    [v3 setObject:v88 forKey:@"transactionPackets"];
+    dictionaryRepresentation39 = [(_MRTransactionMessageProtobuf *)transactionPackets dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation39 forKey:@"transactionPackets"];
   }
 
   cryptoPairingMessage = self->_cryptoPairingMessage;
   if (cryptoPairingMessage)
   {
-    v90 = [(_MRCryptoPairingMessageProtobuf *)cryptoPairingMessage dictionaryRepresentation];
-    [v3 setObject:v90 forKey:@"cryptoPairingMessage"];
+    dictionaryRepresentation40 = [(_MRCryptoPairingMessageProtobuf *)cryptoPairingMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation40 forKey:@"cryptoPairingMessage"];
   }
 
   gameControllerProperties = self->_gameControllerProperties;
   if (gameControllerProperties)
   {
-    v92 = [(_MRGameControllerPropertiesMessageProtobuf *)gameControllerProperties dictionaryRepresentation];
-    [v3 setObject:v92 forKey:@"gameControllerProperties"];
+    dictionaryRepresentation41 = [(_MRGameControllerPropertiesMessageProtobuf *)gameControllerProperties dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation41 forKey:@"gameControllerProperties"];
   }
 
   readyStateMessage = self->_readyStateMessage;
   if (readyStateMessage)
   {
-    v94 = [(_MRSetReadyStateMessageProtobuf *)readyStateMessage dictionaryRepresentation];
-    [v3 setObject:v94 forKey:@"readyStateMessage"];
+    dictionaryRepresentation42 = [(_MRSetReadyStateMessageProtobuf *)readyStateMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation42 forKey:@"readyStateMessage"];
   }
 
   sendButtonEventMessage = self->_sendButtonEventMessage;
   if (sendButtonEventMessage)
   {
-    v96 = [(_MRSendButtonEventMessageProtobuf *)sendButtonEventMessage dictionaryRepresentation];
-    [v3 setObject:v96 forKey:@"sendButtonEventMessage"];
+    dictionaryRepresentation43 = [(_MRSendButtonEventMessageProtobuf *)sendButtonEventMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation43 forKey:@"sendButtonEventMessage"];
   }
 
   setHiliteModeMessage = self->_setHiliteModeMessage;
   if (setHiliteModeMessage)
   {
-    v98 = [(_MRSetHiliteModeMessageProtobuf *)setHiliteModeMessage dictionaryRepresentation];
-    [v3 setObject:v98 forKey:@"setHiliteModeMessage"];
+    dictionaryRepresentation44 = [(_MRSetHiliteModeMessageProtobuf *)setHiliteModeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation44 forKey:@"setHiliteModeMessage"];
   }
 
   wakeDeviceMessage = self->_wakeDeviceMessage;
   if (wakeDeviceMessage)
   {
-    v100 = [(_MRWakeDeviceMessageProtobuf *)wakeDeviceMessage dictionaryRepresentation];
-    [v3 setObject:v100 forKey:@"wakeDeviceMessage"];
+    dictionaryRepresentation45 = [(_MRWakeDeviceMessageProtobuf *)wakeDeviceMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation45 forKey:@"wakeDeviceMessage"];
   }
 
   genericMessage = self->_genericMessage;
   if (genericMessage)
   {
-    v102 = [(_MRGenericMessageProtobuf *)genericMessage dictionaryRepresentation];
-    [v3 setObject:v102 forKey:@"genericMessage"];
+    dictionaryRepresentation46 = [(_MRGenericMessageProtobuf *)genericMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation46 forKey:@"genericMessage"];
   }
 
   sendPackedVirtualTouchEventMessage = self->_sendPackedVirtualTouchEventMessage;
   if (sendPackedVirtualTouchEventMessage)
   {
-    v104 = [(_MRSendPackedVirtualTouchEventMessageProtobuf *)sendPackedVirtualTouchEventMessage dictionaryRepresentation];
-    [v3 setObject:v104 forKey:@"sendPackedVirtualTouchEventMessage"];
+    dictionaryRepresentation47 = [(_MRSendPackedVirtualTouchEventMessageProtobuf *)sendPackedVirtualTouchEventMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation47 forKey:@"sendPackedVirtualTouchEventMessage"];
   }
 
   sendLyricsEventMessage = self->_sendLyricsEventMessage;
   if (sendLyricsEventMessage)
   {
-    v106 = [(_MRSendLyricsEventMessageProtobuf *)sendLyricsEventMessage dictionaryRepresentation];
-    [v3 setObject:v106 forKey:@"sendLyricsEventMessage"];
+    dictionaryRepresentation48 = [(_MRSendLyricsEventMessageProtobuf *)sendLyricsEventMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation48 forKey:@"sendLyricsEventMessage"];
   }
 
   setNowPlayingClientMessage = self->_setNowPlayingClientMessage;
   if (setNowPlayingClientMessage)
   {
-    v108 = [(_MRSetNowPlayingClientMessageProtobuf *)setNowPlayingClientMessage dictionaryRepresentation];
-    [v3 setObject:v108 forKey:@"setNowPlayingClientMessage"];
+    dictionaryRepresentation49 = [(_MRSetNowPlayingClientMessageProtobuf *)setNowPlayingClientMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation49 forKey:@"setNowPlayingClientMessage"];
   }
 
   setNowPlayingPlayerMessage = self->_setNowPlayingPlayerMessage;
   if (setNowPlayingPlayerMessage)
   {
-    v110 = [(_MRSetNowPlayingPlayerMessageProtobuf *)setNowPlayingPlayerMessage dictionaryRepresentation];
-    [v3 setObject:v110 forKey:@"setNowPlayingPlayerMessage"];
+    dictionaryRepresentation50 = [(_MRSetNowPlayingPlayerMessageProtobuf *)setNowPlayingPlayerMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation50 forKey:@"setNowPlayingPlayerMessage"];
   }
 
   modifyOutputContextRequestMessage = self->_modifyOutputContextRequestMessage;
   if (modifyOutputContextRequestMessage)
   {
-    v112 = [(_MRAVModifyOutputContextRequestProtobuf *)modifyOutputContextRequestMessage dictionaryRepresentation];
-    [v3 setObject:v112 forKey:@"modifyOutputContextRequestMessage"];
+    dictionaryRepresentation51 = [(_MRAVModifyOutputContextRequestProtobuf *)modifyOutputContextRequestMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation51 forKey:@"modifyOutputContextRequestMessage"];
   }
 
   removeClientMessage = self->_removeClientMessage;
   if (removeClientMessage)
   {
-    v114 = [(_MRRemoveClientMessageProtobuf *)removeClientMessage dictionaryRepresentation];
-    [v3 setObject:v114 forKey:@"removeClientMessage"];
+    dictionaryRepresentation52 = [(_MRRemoveClientMessageProtobuf *)removeClientMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation52 forKey:@"removeClientMessage"];
   }
 
   removePlayerMessage = self->_removePlayerMessage;
   if (removePlayerMessage)
   {
-    v116 = [(_MRRemovePlayerMessageProtobuf *)removePlayerMessage dictionaryRepresentation];
-    [v3 setObject:v116 forKey:@"removePlayerMessage"];
+    dictionaryRepresentation53 = [(_MRRemovePlayerMessageProtobuf *)removePlayerMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation53 forKey:@"removePlayerMessage"];
   }
 
   updateClientMessage = self->_updateClientMessage;
   if (updateClientMessage)
   {
-    v118 = [(_MRUpdateClientMessageProtobuf *)updateClientMessage dictionaryRepresentation];
-    [v3 setObject:v118 forKey:@"updateClientMessage"];
+    dictionaryRepresentation54 = [(_MRUpdateClientMessageProtobuf *)updateClientMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation54 forKey:@"updateClientMessage"];
   }
 
   updateContentItemArtworkMessage = self->_updateContentItemArtworkMessage;
   if (updateContentItemArtworkMessage)
   {
-    v120 = [(_MRUpdateContentItemArtworkMessageProtobuf *)updateContentItemArtworkMessage dictionaryRepresentation];
-    [v3 setObject:v120 forKey:@"updateContentItemArtworkMessage"];
+    dictionaryRepresentation55 = [(_MRUpdateContentItemArtworkMessageProtobuf *)updateContentItemArtworkMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation55 forKey:@"updateContentItemArtworkMessage"];
   }
 
   updatePlayerMessage = self->_updatePlayerMessage;
   if (updatePlayerMessage)
   {
-    v122 = [(_MRUpdatePlayerMessageProtobuf *)updatePlayerMessage dictionaryRepresentation];
-    [v3 setObject:v122 forKey:@"updatePlayerMessage"];
+    dictionaryRepresentation56 = [(_MRUpdatePlayerMessageProtobuf *)updatePlayerMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation56 forKey:@"updatePlayerMessage"];
   }
 
   promptForRouteAuthorizationMessage = self->_promptForRouteAuthorizationMessage;
   if (promptForRouteAuthorizationMessage)
   {
-    v124 = [(_MRPromptForRouteAuthorizationMessageProtobuf *)promptForRouteAuthorizationMessage dictionaryRepresentation];
-    [v3 setObject:v124 forKey:@"promptForRouteAuthorizationMessage"];
+    dictionaryRepresentation57 = [(_MRPromptForRouteAuthorizationMessageProtobuf *)promptForRouteAuthorizationMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation57 forKey:@"promptForRouteAuthorizationMessage"];
   }
 
   promptForRouteAuthorizationResponseMessage = self->_promptForRouteAuthorizationResponseMessage;
   if (promptForRouteAuthorizationResponseMessage)
   {
-    v126 = [(_MRPromptForRouteAuthorizationResponseMessageProtobuf *)promptForRouteAuthorizationResponseMessage dictionaryRepresentation];
-    [v3 setObject:v126 forKey:@"promptForRouteAuthorizationResponseMessage"];
+    dictionaryRepresentation58 = [(_MRPromptForRouteAuthorizationResponseMessageProtobuf *)promptForRouteAuthorizationResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation58 forKey:@"promptForRouteAuthorizationResponseMessage"];
   }
 
   presentRouteAuthorizationStatusMessage = self->_presentRouteAuthorizationStatusMessage;
   if (presentRouteAuthorizationStatusMessage)
   {
-    v128 = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)presentRouteAuthorizationStatusMessage dictionaryRepresentation];
-    [v3 setObject:v128 forKey:@"presentRouteAuthorizationStatusMessage"];
+    dictionaryRepresentation59 = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)presentRouteAuthorizationStatusMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation59 forKey:@"presentRouteAuthorizationStatusMessage"];
   }
 
   getVolumeControlCapabilitiesMessage = self->_getVolumeControlCapabilitiesMessage;
   if (getVolumeControlCapabilitiesMessage)
   {
-    v130 = [(_MRGetVolumeControlCapabilitiesMessageProtobuf *)getVolumeControlCapabilitiesMessage dictionaryRepresentation];
-    [v3 setObject:v130 forKey:@"getVolumeControlCapabilitiesMessage"];
+    dictionaryRepresentation60 = [(_MRGetVolumeControlCapabilitiesMessageProtobuf *)getVolumeControlCapabilitiesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation60 forKey:@"getVolumeControlCapabilitiesMessage"];
   }
 
   getVolumeControlCapabilitiesResultMessage = self->_getVolumeControlCapabilitiesResultMessage;
   if (getVolumeControlCapabilitiesResultMessage)
   {
-    v132 = [(_MRGetVolumeControlCapabilitiesResultMessageProtobuf *)getVolumeControlCapabilitiesResultMessage dictionaryRepresentation];
-    [v3 setObject:v132 forKey:@"getVolumeControlCapabilitiesResultMessage"];
+    dictionaryRepresentation61 = [(_MRGetVolumeControlCapabilitiesResultMessageProtobuf *)getVolumeControlCapabilitiesResultMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation61 forKey:@"getVolumeControlCapabilitiesResultMessage"];
   }
 
   volumeControlCapabilitiesDidChangeMessage = self->_volumeControlCapabilitiesDidChangeMessage;
   if (volumeControlCapabilitiesDidChangeMessage)
   {
-    v134 = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)volumeControlCapabilitiesDidChangeMessage dictionaryRepresentation];
-    [v3 setObject:v134 forKey:@"volumeControlCapabilitiesDidChangeMessage"];
+    dictionaryRepresentation62 = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)volumeControlCapabilitiesDidChangeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation62 forKey:@"volumeControlCapabilitiesDidChangeMessage"];
   }
 
   updateOutputDevicesMessage = self->_updateOutputDevicesMessage;
   if (updateOutputDevicesMessage)
   {
-    v136 = [(_MRUpdateOutputDevicesMessageProtobuf *)updateOutputDevicesMessage dictionaryRepresentation];
-    [v3 setObject:v136 forKey:@"updateOutputDevicesMessage"];
+    dictionaryRepresentation63 = [(_MRUpdateOutputDevicesMessageProtobuf *)updateOutputDevicesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation63 forKey:@"updateOutputDevicesMessage"];
   }
 
   removeOutputDevicesMessage = self->_removeOutputDevicesMessage;
   if (removeOutputDevicesMessage)
   {
-    v138 = [(_MRRemoveOutputDevicesMessageProtobuf *)removeOutputDevicesMessage dictionaryRepresentation];
-    [v3 setObject:v138 forKey:@"removeOutputDevicesMessage"];
+    dictionaryRepresentation64 = [(_MRRemoveOutputDevicesMessageProtobuf *)removeOutputDevicesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation64 forKey:@"removeOutputDevicesMessage"];
   }
 
   remoteTextInputMessage = self->_remoteTextInputMessage;
   if (remoteTextInputMessage)
   {
-    v140 = [(_MRRemoteTextInputMessageProtobuf *)remoteTextInputMessage dictionaryRepresentation];
-    [v3 setObject:v140 forKey:@"remoteTextInputMessage"];
+    dictionaryRepresentation65 = [(_MRRemoteTextInputMessageProtobuf *)remoteTextInputMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation65 forKey:@"remoteTextInputMessage"];
   }
 
   getRemoteTextInputSessionMessage = self->_getRemoteTextInputSessionMessage;
   if (getRemoteTextInputSessionMessage)
   {
-    v142 = [(_MRGetRemoteTextInputSessionProtobuf *)getRemoteTextInputSessionMessage dictionaryRepresentation];
-    [v3 setObject:v142 forKey:@"getRemoteTextInputSessionMessage"];
+    dictionaryRepresentation66 = [(_MRGetRemoteTextInputSessionProtobuf *)getRemoteTextInputSessionMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation66 forKey:@"getRemoteTextInputSessionMessage"];
   }
 
   playbackSessionRequestMessage = self->_playbackSessionRequestMessage;
   if (playbackSessionRequestMessage)
   {
-    v144 = [(_MRPlaybackSessionRequestMessageProtobuf *)playbackSessionRequestMessage dictionaryRepresentation];
-    [v3 setObject:v144 forKey:@"playbackSessionRequestMessage"];
+    dictionaryRepresentation67 = [(_MRPlaybackSessionRequestMessageProtobuf *)playbackSessionRequestMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation67 forKey:@"playbackSessionRequestMessage"];
   }
 
   playbackSessionResponseMessage = self->_playbackSessionResponseMessage;
   if (playbackSessionResponseMessage)
   {
-    v146 = [(_MRPlaybackSessionResponseMessageProtobuf *)playbackSessionResponseMessage dictionaryRepresentation];
-    [v3 setObject:v146 forKey:@"playbackSessionResponseMessage"];
+    dictionaryRepresentation68 = [(_MRPlaybackSessionResponseMessageProtobuf *)playbackSessionResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation68 forKey:@"playbackSessionResponseMessage"];
   }
 
   playbackSessionMigrateRequestMessage = self->_playbackSessionMigrateRequestMessage;
   if (playbackSessionMigrateRequestMessage)
   {
-    v148 = [(_MRPlaybackSessionMigrateRequestMessageProtobuf *)playbackSessionMigrateRequestMessage dictionaryRepresentation];
-    [v3 setObject:v148 forKey:@"playbackSessionMigrateRequestMessage"];
+    dictionaryRepresentation69 = [(_MRPlaybackSessionMigrateRequestMessageProtobuf *)playbackSessionMigrateRequestMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation69 forKey:@"playbackSessionMigrateRequestMessage"];
   }
 
   playbackSessionMigrateResponseMessage = self->_playbackSessionMigrateResponseMessage;
   if (playbackSessionMigrateResponseMessage)
   {
-    v150 = [(_MRPlaybackSessionMigrateResponseMessageProtobuf *)playbackSessionMigrateResponseMessage dictionaryRepresentation];
-    [v3 setObject:v150 forKey:@"playbackSessionMigrateResponseMessage"];
+    dictionaryRepresentation70 = [(_MRPlaybackSessionMigrateResponseMessageProtobuf *)playbackSessionMigrateResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation70 forKey:@"playbackSessionMigrateResponseMessage"];
   }
 
   errorDescription = self->_errorDescription;
   if (errorDescription)
   {
-    [v3 setObject:errorDescription forKey:@"errorDescription"];
+    [dictionary setObject:errorDescription forKey:@"errorDescription"];
   }
 
   playbackSessionMigrateBeginMessage = self->_playbackSessionMigrateBeginMessage;
   if (playbackSessionMigrateBeginMessage)
   {
-    v153 = [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)playbackSessionMigrateBeginMessage dictionaryRepresentation];
-    [v3 setObject:v153 forKey:@"playbackSessionMigrateBeginMessage"];
+    dictionaryRepresentation71 = [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)playbackSessionMigrateBeginMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation71 forKey:@"playbackSessionMigrateBeginMessage"];
   }
 
   playbackSessionMigrateEndMessage = self->_playbackSessionMigrateEndMessage;
   if (playbackSessionMigrateEndMessage)
   {
-    v155 = [(_MRPlaybackSessionMigrateEndMessageProtobuf *)playbackSessionMigrateEndMessage dictionaryRepresentation];
-    [v3 setObject:v155 forKey:@"playbackSessionMigrateEndMessage"];
+    dictionaryRepresentation72 = [(_MRPlaybackSessionMigrateEndMessageProtobuf *)playbackSessionMigrateEndMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation72 forKey:@"playbackSessionMigrateEndMessage"];
   }
 
   updateActiveSystemEndpointMessage = self->_updateActiveSystemEndpointMessage;
   if (updateActiveSystemEndpointMessage)
   {
-    v157 = [(_MRUpdateActiveSystemEndpointMessageProtobuf *)updateActiveSystemEndpointMessage dictionaryRepresentation];
-    [v3 setObject:v157 forKey:@"updateActiveSystemEndpointMessage"];
+    dictionaryRepresentation73 = [(_MRUpdateActiveSystemEndpointMessageProtobuf *)updateActiveSystemEndpointMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation73 forKey:@"updateActiveSystemEndpointMessage"];
   }
 
   discoveryModeMessage = self->_discoveryModeMessage;
   if (discoveryModeMessage)
   {
-    v159 = [(_MRSetDiscoveryModeProtobufMessage *)discoveryModeMessage dictionaryRepresentation];
-    [v3 setObject:v159 forKey:@"discoveryModeMessage"];
+    dictionaryRepresentation74 = [(_MRSetDiscoveryModeProtobufMessage *)discoveryModeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation74 forKey:@"discoveryModeMessage"];
   }
 
   updateEndpointsMessage = self->_updateEndpointsMessage;
   if (updateEndpointsMessage)
   {
-    v161 = [(_MRUpdateEndpointsMessageProtobuf *)updateEndpointsMessage dictionaryRepresentation];
-    [v3 setObject:v161 forKey:@"updateEndpointsMessage"];
+    dictionaryRepresentation75 = [(_MRUpdateEndpointsMessageProtobuf *)updateEndpointsMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation75 forKey:@"updateEndpointsMessage"];
   }
 
   removeEndpointsMessage = self->_removeEndpointsMessage;
   if (removeEndpointsMessage)
   {
-    v163 = [(_MRRemoveEndpointsMessageProtobuf *)removeEndpointsMessage dictionaryRepresentation];
-    [v3 setObject:v163 forKey:@"removeEndpointsMessage"];
+    dictionaryRepresentation76 = [(_MRRemoveEndpointsMessageProtobuf *)removeEndpointsMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation76 forKey:@"removeEndpointsMessage"];
   }
 
   playerClientPropertiesMessage = self->_playerClientPropertiesMessage;
   if (playerClientPropertiesMessage)
   {
-    v165 = [(_MRPlayerClientPropertiesMessageProtobuf *)playerClientPropertiesMessage dictionaryRepresentation];
-    [v3 setObject:v165 forKey:@"playerClientPropertiesMessage"];
+    dictionaryRepresentation77 = [(_MRPlayerClientPropertiesMessageProtobuf *)playerClientPropertiesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation77 forKey:@"playerClientPropertiesMessage"];
   }
 
   originClientPropertiesMessage = self->_originClientPropertiesMessage;
   if (originClientPropertiesMessage)
   {
-    v167 = [(_MROriginClientPropertiesMessageProtobuf *)originClientPropertiesMessage dictionaryRepresentation];
-    [v3 setObject:v167 forKey:@"originClientPropertiesMessage"];
+    dictionaryRepresentation78 = [(_MROriginClientPropertiesMessageProtobuf *)originClientPropertiesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation78 forKey:@"originClientPropertiesMessage"];
   }
 
   audioFadeMessage = self->_audioFadeMessage;
   if (audioFadeMessage)
   {
-    v169 = [(_MRAudioFadeMessageProtobuf *)audioFadeMessage dictionaryRepresentation];
-    [v3 setObject:v169 forKey:@"audioFadeMessage"];
+    dictionaryRepresentation79 = [(_MRAudioFadeMessageProtobuf *)audioFadeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation79 forKey:@"audioFadeMessage"];
   }
 
   audioFadeResponseMessage = self->_audioFadeResponseMessage;
   if (audioFadeResponseMessage)
   {
-    v171 = [(_MRAudioFadeResponseMessageProtobuf *)audioFadeResponseMessage dictionaryRepresentation];
-    [v3 setObject:v171 forKey:@"audioFadeResponseMessage"];
+    dictionaryRepresentation80 = [(_MRAudioFadeResponseMessageProtobuf *)audioFadeResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation80 forKey:@"audioFadeResponseMessage"];
   }
 
   discoveryUpdateEndpointsMessage = self->_discoveryUpdateEndpointsMessage;
   if (discoveryUpdateEndpointsMessage)
   {
-    v173 = [(_MRDiscoveryUpdateEndpointsProtobufMessage *)discoveryUpdateEndpointsMessage dictionaryRepresentation];
-    [v3 setObject:v173 forKey:@"discoveryUpdateEndpointsMessage"];
+    dictionaryRepresentation81 = [(_MRDiscoveryUpdateEndpointsProtobufMessage *)discoveryUpdateEndpointsMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation81 forKey:@"discoveryUpdateEndpointsMessage"];
   }
 
   discoveryUpdateOutputDevicesMessage = self->_discoveryUpdateOutputDevicesMessage;
   if (discoveryUpdateOutputDevicesMessage)
   {
-    v175 = [(_MRDiscoveryUpdateOutputDevicesProtobufMessage *)discoveryUpdateOutputDevicesMessage dictionaryRepresentation];
-    [v3 setObject:v175 forKey:@"discoveryUpdateOutputDevicesMessage"];
+    dictionaryRepresentation82 = [(_MRDiscoveryUpdateOutputDevicesProtobufMessage *)discoveryUpdateOutputDevicesMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation82 forKey:@"discoveryUpdateOutputDevicesMessage"];
   }
 
   setListeningModeMessage = self->_setListeningModeMessage;
   if (setListeningModeMessage)
   {
-    v177 = [(_MRSetListeningModeMessageProtobuf *)setListeningModeMessage dictionaryRepresentation];
-    [v3 setObject:v177 forKey:@"setListeningModeMessage"];
+    dictionaryRepresentation83 = [(_MRSetListeningModeMessageProtobuf *)setListeningModeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation83 forKey:@"setListeningModeMessage"];
   }
 
   configureConnectionMessage = self->_configureConnectionMessage;
   if (configureConnectionMessage)
   {
-    v179 = [(_MRConfigureConnectionMessageProtobuf *)configureConnectionMessage dictionaryRepresentation];
-    [v3 setObject:v179 forKey:@"configureConnectionMessage"];
+    dictionaryRepresentation84 = [(_MRConfigureConnectionMessageProtobuf *)configureConnectionMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation84 forKey:@"configureConnectionMessage"];
   }
 
   createHostedEndpointRequest = self->_createHostedEndpointRequest;
   if (createHostedEndpointRequest)
   {
-    v181 = [(_MRCreateHostedEndpointRequestProtobuf *)createHostedEndpointRequest dictionaryRepresentation];
-    [v3 setObject:v181 forKey:@"createHostedEndpointRequest"];
+    dictionaryRepresentation85 = [(_MRCreateHostedEndpointRequestProtobuf *)createHostedEndpointRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation85 forKey:@"createHostedEndpointRequest"];
   }
 
   createHostedEndpointResponse = self->_createHostedEndpointResponse;
   if (createHostedEndpointResponse)
   {
-    v183 = [(_MRCreateHostedEndpointResponseProtobuf *)createHostedEndpointResponse dictionaryRepresentation];
-    [v3 setObject:v183 forKey:@"createHostedEndpointResponse"];
+    dictionaryRepresentation86 = [(_MRCreateHostedEndpointResponseProtobuf *)createHostedEndpointResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation86 forKey:@"createHostedEndpointResponse"];
   }
 
   adjustVolumeMessage = self->_adjustVolumeMessage;
   if (adjustVolumeMessage)
   {
-    v185 = [(_MRAdjustVolumeMessageProtobuf *)adjustVolumeMessage dictionaryRepresentation];
-    [v3 setObject:v185 forKey:@"adjustVolumeMessage"];
+    dictionaryRepresentation87 = [(_MRAdjustVolumeMessageProtobuf *)adjustVolumeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation87 forKey:@"adjustVolumeMessage"];
   }
 
   getVolumeMutedMessage = self->_getVolumeMutedMessage;
   if (getVolumeMutedMessage)
   {
-    v187 = [(_MRGetVolumeMutedMessageProtobuf *)getVolumeMutedMessage dictionaryRepresentation];
-    [v3 setObject:v187 forKey:@"getVolumeMutedMessage"];
+    dictionaryRepresentation88 = [(_MRGetVolumeMutedMessageProtobuf *)getVolumeMutedMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation88 forKey:@"getVolumeMutedMessage"];
   }
 
   getVolumeMutedResultMessage = self->_getVolumeMutedResultMessage;
   if (getVolumeMutedResultMessage)
   {
-    v189 = [(_MRGetVolumeMutedResultMessageProtobuf *)getVolumeMutedResultMessage dictionaryRepresentation];
-    [v3 setObject:v189 forKey:@"getVolumeMutedResultMessage"];
+    dictionaryRepresentation89 = [(_MRGetVolumeMutedResultMessageProtobuf *)getVolumeMutedResultMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation89 forKey:@"getVolumeMutedResultMessage"];
   }
 
   setVolumeMutedMessage = self->_setVolumeMutedMessage;
   if (setVolumeMutedMessage)
   {
-    v191 = [(_MRSetVolumeMutedMessageProtobuf *)setVolumeMutedMessage dictionaryRepresentation];
-    [v3 setObject:v191 forKey:@"setVolumeMutedMessage"];
+    dictionaryRepresentation90 = [(_MRSetVolumeMutedMessageProtobuf *)setVolumeMutedMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation90 forKey:@"setVolumeMutedMessage"];
   }
 
   volumeMutedDidChangeMessage = self->_volumeMutedDidChangeMessage;
   if (volumeMutedDidChangeMessage)
   {
-    v193 = [(_MRVolumeMutedDidChangeMessageProtobuf *)volumeMutedDidChangeMessage dictionaryRepresentation];
-    [v3 setObject:v193 forKey:@"volumeMutedDidChangeMessage"];
+    dictionaryRepresentation91 = [(_MRVolumeMutedDidChangeMessageProtobuf *)volumeMutedDidChangeMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation91 forKey:@"volumeMutedDidChangeMessage"];
   }
 
   setConversationDetectionEnabledMessage = self->_setConversationDetectionEnabledMessage;
   if (setConversationDetectionEnabledMessage)
   {
-    v195 = [(_MRSetConversationDetectionEnabledMessageProtobuf *)setConversationDetectionEnabledMessage dictionaryRepresentation];
-    [v3 setObject:v195 forKey:@"setConversationDetectionEnabledMessage"];
+    dictionaryRepresentation92 = [(_MRSetConversationDetectionEnabledMessageProtobuf *)setConversationDetectionEnabledMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation92 forKey:@"setConversationDetectionEnabledMessage"];
   }
 
   playerClientParticipantsUpdateMessage = self->_playerClientParticipantsUpdateMessage;
   if (playerClientParticipantsUpdateMessage)
   {
-    v197 = [(_MRPlayerClientParticipantsUpdateMessageProtobuf *)playerClientParticipantsUpdateMessage dictionaryRepresentation];
-    [v3 setObject:v197 forKey:@"playerClientParticipantsUpdateMessage"];
+    dictionaryRepresentation93 = [(_MRPlayerClientParticipantsUpdateMessageProtobuf *)playerClientParticipantsUpdateMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation93 forKey:@"playerClientParticipantsUpdateMessage"];
   }
 
   requestGroupSessionMessage = self->_requestGroupSessionMessage;
   if (requestGroupSessionMessage)
   {
-    v199 = [(_MRRequestGroupSessionMessageProtobuf *)requestGroupSessionMessage dictionaryRepresentation];
-    [v3 setObject:v199 forKey:@"requestGroupSessionMessage"];
+    dictionaryRepresentation94 = [(_MRRequestGroupSessionMessageProtobuf *)requestGroupSessionMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation94 forKey:@"requestGroupSessionMessage"];
   }
 
   createApplicationConnectionMessage = self->_createApplicationConnectionMessage;
   if (createApplicationConnectionMessage)
   {
-    v201 = [(_MRCreateApplicationConnectionMessageProtobuf *)createApplicationConnectionMessage dictionaryRepresentation];
-    [v3 setObject:v201 forKey:@"createApplicationConnectionMessage"];
+    dictionaryRepresentation95 = [(_MRCreateApplicationConnectionMessageProtobuf *)createApplicationConnectionMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation95 forKey:@"createApplicationConnectionMessage"];
   }
 
   applicationConnectionProtocolMessage = self->_applicationConnectionProtocolMessage;
   if (applicationConnectionProtocolMessage)
   {
-    v203 = [(_MRApplicationConnectionProtocolMessageProtobuf *)applicationConnectionProtocolMessage dictionaryRepresentation];
-    [v3 setObject:v203 forKey:@"applicationConnectionProtocolMessage"];
+    dictionaryRepresentation96 = [(_MRApplicationConnectionProtocolMessageProtobuf *)applicationConnectionProtocolMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation96 forKey:@"applicationConnectionProtocolMessage"];
   }
 
   invalidateApplicationConnectionMessage = self->_invalidateApplicationConnectionMessage;
   if (invalidateApplicationConnectionMessage)
   {
-    v205 = [(_MRApplicationConnectionContextProtobuf *)invalidateApplicationConnectionMessage dictionaryRepresentation];
-    [v3 setObject:v205 forKey:@"InvalidateApplicationConnectionMessage"];
+    dictionaryRepresentation97 = [(_MRApplicationConnectionContextProtobuf *)invalidateApplicationConnectionMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation97 forKey:@"InvalidateApplicationConnectionMessage"];
   }
 
   microphoneConnectionRequestMessage = self->_microphoneConnectionRequestMessage;
   if (microphoneConnectionRequestMessage)
   {
-    v207 = [(_MRMicrophoneConnectionRequestMessageProtobuf *)microphoneConnectionRequestMessage dictionaryRepresentation];
-    [v3 setObject:v207 forKey:@"microphoneConnectionRequestMessage"];
+    dictionaryRepresentation98 = [(_MRMicrophoneConnectionRequestMessageProtobuf *)microphoneConnectionRequestMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation98 forKey:@"microphoneConnectionRequestMessage"];
   }
 
   microphoneConnectionResponseMessage = self->_microphoneConnectionResponseMessage;
   if (microphoneConnectionResponseMessage)
   {
-    v209 = [(_MRMicrophoneConnectionResponseMessageProtobuf *)microphoneConnectionResponseMessage dictionaryRepresentation];
-    [v3 setObject:v209 forKey:@"microphoneConnectionResponseMessage"];
+    dictionaryRepresentation99 = [(_MRMicrophoneConnectionResponseMessageProtobuf *)microphoneConnectionResponseMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation99 forKey:@"microphoneConnectionResponseMessage"];
   }
 
   playbackSessionMigratePostMessage = self->_playbackSessionMigratePostMessage;
   if (playbackSessionMigratePostMessage)
   {
-    v211 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)playbackSessionMigratePostMessage dictionaryRepresentation];
-    [v3 setObject:v211 forKey:@"playbackSessionMigratePostMessage"];
+    dictionaryRepresentation100 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)playbackSessionMigratePostMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation100 forKey:@"playbackSessionMigratePostMessage"];
   }
 
-  v212 = v3;
+  v212 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_replyIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_authenticationToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -1692,7 +1692,7 @@
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -1700,1274 +1700,1274 @@
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendCommandMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendCommandResultMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getStateMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setStateMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setArtworkMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerHIDDeviceMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerHIDDeviceResultMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendHIDEventMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendHIDReportMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendVirtualTouchEventMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_notificationMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_contentItemsChangedNotificationMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_deviceInfoMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_clientUpdatesConfigMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_masterVolumeControlCapabilitiesDidChangeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_gameController)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerGameController)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerGameControllerResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_unregisterGameController)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerForGameControllerEvents)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_keyboardMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getKeyboardMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_textInputMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVoiceInputDevicesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVoiceInputDevicesResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerVoiceInputDeviceMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_registerVoiceInputDeviceResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setRecordingStateMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendVoiceInputMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackQueueRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_transactionPackets)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_cryptoPairingMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_gameControllerProperties)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_readyStateMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_connectionState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendButtonEventMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setHiliteModeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_wakeDeviceMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_genericMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendPackedVirtualTouchEventMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sendLyricsEventMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setNowPlayingClientMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setNowPlayingPlayerMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_modifyOutputContextRequestMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVolumeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVolumeResultMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setVolumeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_volumeDidChangeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_removeClientMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_removePlayerMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updateClientMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updateContentItemMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updateContentItemArtworkMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updatePlayerMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_promptForRouteAuthorizationMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_promptForRouteAuthorizationResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_presentRouteAuthorizationStatusMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVolumeControlCapabilitiesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVolumeControlCapabilitiesResultMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_volumeControlCapabilitiesDidChangeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updateOutputDevicesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_removeOutputDevicesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_remoteTextInputMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getRemoteTextInputSessionMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionRequestMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setDefaultSupportedCommandsMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionMigrateRequestMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionMigrateResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionMigrateBeginMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionMigrateEndMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updateActiveSystemEndpointMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_discoveryModeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_updateEndpointsMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_removeEndpointsMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playerClientPropertiesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_originClientPropertiesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_audioFadeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_audioFadeResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_discoveryUpdateEndpointsMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_discoveryUpdateOutputDevicesMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setListeningModeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_configureConnectionMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_createHostedEndpointRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_createHostedEndpointResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_adjustVolumeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVolumeMutedMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_getVolumeMutedResultMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setVolumeMutedMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_volumeMutedDidChangeMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setConversationDetectionEnabledMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playerClientParticipantsUpdateMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_requestGroupSessionMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_createApplicationConnectionMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_applicationConnectionProtocolMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_invalidateApplicationConnectionMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_microphoneConnectionRequestMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_microphoneConnectionResponseMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_playbackSessionMigratePostMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[188] = self->_type;
-    *(v4 + 864) |= 4u;
+    toCopy[188] = self->_type;
+    *(toCopy + 864) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_replyIdentifier)
   {
-    [v4 setReplyIdentifier:?];
-    v4 = v6;
+    [toCopy setReplyIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_authenticationToken)
   {
     [v6 setAuthenticationToken:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[40] = self->_errorCode;
-    *(v4 + 864) |= 2u;
+    toCopy[40] = self->_errorCode;
+    *(toCopy + 864) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_timestamp;
-    *(v4 + 864) |= 1u;
+    *(toCopy + 1) = self->_timestamp;
+    *(toCopy + 864) |= 1u;
   }
 
   if (self->_sendCommandMessage)
   {
     [v6 setSendCommandMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendCommandResultMessage)
   {
     [v6 setSendCommandResultMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getStateMessage)
   {
     [v6 setGetStateMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setStateMessage)
   {
     [v6 setSetStateMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setArtworkMessage)
   {
     [v6 setSetArtworkMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerHIDDeviceMessage)
   {
     [v6 setRegisterHIDDeviceMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerHIDDeviceResultMessage)
   {
     [v6 setRegisterHIDDeviceResultMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendHIDEventMessage)
   {
     [v6 setSendHIDEventMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendHIDReportMessage)
   {
     [v6 setSendHIDReportMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendVirtualTouchEventMessage)
   {
     [v6 setSendVirtualTouchEventMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_notificationMessage)
   {
     [v6 setNotificationMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentItemsChangedNotificationMessage)
   {
     [v6 setContentItemsChangedNotificationMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceInfoMessage)
   {
     [v6 setDeviceInfoMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientUpdatesConfigMessage)
   {
     [v6 setClientUpdatesConfigMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_masterVolumeControlCapabilitiesDidChangeMessage)
   {
     [v6 setMasterVolumeControlCapabilitiesDidChangeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_gameController)
   {
     [v6 setGameController:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerGameController)
   {
     [v6 setRegisterGameController:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerGameControllerResponse)
   {
     [v6 setRegisterGameControllerResponse:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_unregisterGameController)
   {
     [v6 setUnregisterGameController:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerForGameControllerEvents)
   {
     [v6 setRegisterForGameControllerEvents:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_keyboardMessage)
   {
     [v6 setKeyboardMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getKeyboardMessage)
   {
     [v6 setGetKeyboardMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_textInputMessage)
   {
     [v6 setTextInputMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVoiceInputDevicesMessage)
   {
     [v6 setGetVoiceInputDevicesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVoiceInputDevicesResponseMessage)
   {
     [v6 setGetVoiceInputDevicesResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerVoiceInputDeviceMessage)
   {
     [v6 setRegisterVoiceInputDeviceMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_registerVoiceInputDeviceResponseMessage)
   {
     [v6 setRegisterVoiceInputDeviceResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setRecordingStateMessage)
   {
     [v6 setSetRecordingStateMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendVoiceInputMessage)
   {
     [v6 setSendVoiceInputMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackQueueRequest)
   {
     [v6 setPlaybackQueueRequest:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_transactionPackets)
   {
     [v6 setTransactionPackets:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_cryptoPairingMessage)
   {
     [v6 setCryptoPairingMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_gameControllerProperties)
   {
     [v6 setGameControllerProperties:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_readyStateMessage)
   {
     [v6 setReadyStateMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_connectionState)
   {
     [v6 setConnectionState:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendButtonEventMessage)
   {
     [v6 setSendButtonEventMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setHiliteModeMessage)
   {
     [v6 setSetHiliteModeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_wakeDeviceMessage)
   {
     [v6 setWakeDeviceMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_genericMessage)
   {
     [v6 setGenericMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendPackedVirtualTouchEventMessage)
   {
     [v6 setSendPackedVirtualTouchEventMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sendLyricsEventMessage)
   {
     [v6 setSendLyricsEventMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setNowPlayingClientMessage)
   {
     [v6 setSetNowPlayingClientMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setNowPlayingPlayerMessage)
   {
     [v6 setSetNowPlayingPlayerMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_modifyOutputContextRequestMessage)
   {
     [v6 setModifyOutputContextRequestMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVolumeMessage)
   {
     [v6 setGetVolumeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVolumeResultMessage)
   {
     [v6 setGetVolumeResultMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setVolumeMessage)
   {
     [v6 setSetVolumeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_volumeDidChangeMessage)
   {
     [v6 setVolumeDidChangeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_removeClientMessage)
   {
     [v6 setRemoveClientMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_removePlayerMessage)
   {
     [v6 setRemovePlayerMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updateClientMessage)
   {
     [v6 setUpdateClientMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updateContentItemMessage)
   {
     [v6 setUpdateContentItemMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updateContentItemArtworkMessage)
   {
     [v6 setUpdateContentItemArtworkMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updatePlayerMessage)
   {
     [v6 setUpdatePlayerMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_promptForRouteAuthorizationMessage)
   {
     [v6 setPromptForRouteAuthorizationMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_promptForRouteAuthorizationResponseMessage)
   {
     [v6 setPromptForRouteAuthorizationResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_presentRouteAuthorizationStatusMessage)
   {
     [v6 setPresentRouteAuthorizationStatusMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVolumeControlCapabilitiesMessage)
   {
     [v6 setGetVolumeControlCapabilitiesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVolumeControlCapabilitiesResultMessage)
   {
     [v6 setGetVolumeControlCapabilitiesResultMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_volumeControlCapabilitiesDidChangeMessage)
   {
     [v6 setVolumeControlCapabilitiesDidChangeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updateOutputDevicesMessage)
   {
     [v6 setUpdateOutputDevicesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_removeOutputDevicesMessage)
   {
     [v6 setRemoveOutputDevicesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_remoteTextInputMessage)
   {
     [v6 setRemoteTextInputMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getRemoteTextInputSessionMessage)
   {
     [v6 setGetRemoteTextInputSessionMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionRequestMessage)
   {
     [v6 setPlaybackSessionRequestMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionResponseMessage)
   {
     [v6 setPlaybackSessionResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setDefaultSupportedCommandsMessage)
   {
     [v6 setSetDefaultSupportedCommandsMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionMigrateRequestMessage)
   {
     [v6 setPlaybackSessionMigrateRequestMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionMigrateResponseMessage)
   {
     [v6 setPlaybackSessionMigrateResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorDescription)
   {
     [v6 setErrorDescription:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionMigrateBeginMessage)
   {
     [v6 setPlaybackSessionMigrateBeginMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionMigrateEndMessage)
   {
     [v6 setPlaybackSessionMigrateEndMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updateActiveSystemEndpointMessage)
   {
     [v6 setUpdateActiveSystemEndpointMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_discoveryModeMessage)
   {
     [v6 setDiscoveryModeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_updateEndpointsMessage)
   {
     [v6 setUpdateEndpointsMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_removeEndpointsMessage)
   {
     [v6 setRemoveEndpointsMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uniqueIdentifier)
   {
     [v6 setUniqueIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playerClientPropertiesMessage)
   {
     [v6 setPlayerClientPropertiesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_originClientPropertiesMessage)
   {
     [v6 setOriginClientPropertiesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_audioFadeMessage)
   {
     [v6 setAudioFadeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_audioFadeResponseMessage)
   {
     [v6 setAudioFadeResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_discoveryUpdateEndpointsMessage)
   {
     [v6 setDiscoveryUpdateEndpointsMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_discoveryUpdateOutputDevicesMessage)
   {
     [v6 setDiscoveryUpdateOutputDevicesMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setListeningModeMessage)
   {
     [v6 setSetListeningModeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_error)
   {
     [v6 setError:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_configureConnectionMessage)
   {
     [v6 setConfigureConnectionMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_createHostedEndpointRequest)
   {
     [v6 setCreateHostedEndpointRequest:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_createHostedEndpointResponse)
   {
     [v6 setCreateHostedEndpointResponse:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_adjustVolumeMessage)
   {
     [v6 setAdjustVolumeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVolumeMutedMessage)
   {
     [v6 setGetVolumeMutedMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_getVolumeMutedResultMessage)
   {
     [v6 setGetVolumeMutedResultMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setVolumeMutedMessage)
   {
     [v6 setSetVolumeMutedMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_volumeMutedDidChangeMessage)
   {
     [v6 setVolumeMutedDidChangeMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setConversationDetectionEnabledMessage)
   {
     [v6 setSetConversationDetectionEnabledMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playerClientParticipantsUpdateMessage)
   {
     [v6 setPlayerClientParticipantsUpdateMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestGroupSessionMessage)
   {
     [v6 setRequestGroupSessionMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_createApplicationConnectionMessage)
   {
     [v6 setCreateApplicationConnectionMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_applicationConnectionProtocolMessage)
   {
     [v6 setApplicationConnectionProtocolMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_invalidateApplicationConnectionMessage)
   {
     [v6 setInvalidateApplicationConnectionMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_microphoneConnectionRequestMessage)
   {
     [v6 setMicrophoneConnectionRequestMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_microphoneConnectionResponseMessage)
   {
     [v6 setMicrophoneConnectionResponseMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_playbackSessionMigratePostMessage)
   {
     [v6 setPlaybackSessionMigratePostMessage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -2975,11 +2975,11 @@
     *(v5 + 864) |= 4u;
   }
 
-  v7 = [(NSString *)self->_replyIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_replyIdentifier copyWithZone:zone];
   v8 = *(v6 + 560);
   *(v6 + 560) = v7;
 
-  v9 = [(NSString *)self->_authenticationToken copyWithZone:a3];
+  v9 = [(NSString *)self->_authenticationToken copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
@@ -2997,435 +2997,435 @@
     *(v6 + 864) |= 1u;
   }
 
-  v12 = [(_MRSendCommandMessageProtobuf *)self->_sendCommandMessage copyWithZone:a3];
+  v12 = [(_MRSendCommandMessageProtobuf *)self->_sendCommandMessage copyWithZone:zone];
   v13 = *(v6 + 584);
   *(v6 + 584) = v12;
 
-  v14 = [(_MRSendCommandResultMessageProtobuf *)self->_sendCommandResultMessage copyWithZone:a3];
+  v14 = [(_MRSendCommandResultMessageProtobuf *)self->_sendCommandResultMessage copyWithZone:zone];
   v15 = *(v6 + 592);
   *(v6 + 592) = v14;
 
-  v16 = [(_MRGetStateMessageProtobuf *)self->_getStateMessage copyWithZone:a3];
+  v16 = [(_MRGetStateMessageProtobuf *)self->_getStateMessage copyWithZone:zone];
   v17 = *(v6 + 216);
   *(v6 + 216) = v16;
 
-  v18 = [(_MRSetStateMessageProtobuf *)self->_setStateMessage copyWithZone:a3];
+  v18 = [(_MRSetStateMessageProtobuf *)self->_setStateMessage copyWithZone:zone];
   v19 = *(v6 + 712);
   *(v6 + 712) = v18;
 
-  v20 = [(_MRSetArtworkMessageProtobuf *)self->_setArtworkMessage copyWithZone:a3];
+  v20 = [(_MRSetArtworkMessageProtobuf *)self->_setArtworkMessage copyWithZone:zone];
   v21 = *(v6 + 648);
   *(v6 + 648) = v20;
 
-  v22 = [(_MRRegisterHIDDeviceMessageProtobuf *)self->_registerHIDDeviceMessage copyWithZone:a3];
+  v22 = [(_MRRegisterHIDDeviceMessageProtobuf *)self->_registerHIDDeviceMessage copyWithZone:zone];
   v23 = *(v6 + 488);
   *(v6 + 488) = v22;
 
-  v24 = [(_MRRegisterHIDDeviceResultMessageProtobuf *)self->_registerHIDDeviceResultMessage copyWithZone:a3];
+  v24 = [(_MRRegisterHIDDeviceResultMessageProtobuf *)self->_registerHIDDeviceResultMessage copyWithZone:zone];
   v25 = *(v6 + 496);
   *(v6 + 496) = v24;
 
-  v26 = [(_MRSendHIDEventMessageProtobuf *)self->_sendHIDEventMessage copyWithZone:a3];
+  v26 = [(_MRSendHIDEventMessageProtobuf *)self->_sendHIDEventMessage copyWithZone:zone];
   v27 = *(v6 + 600);
   *(v6 + 600) = v26;
 
-  v28 = [(_MRSendHIDReportMessageProtobuf *)self->_sendHIDReportMessage copyWithZone:a3];
+  v28 = [(_MRSendHIDReportMessageProtobuf *)self->_sendHIDReportMessage copyWithZone:zone];
   v29 = *(v6 + 608);
   *(v6 + 608) = v28;
 
-  v30 = [(_MRSendVirtualTouchEventMessageProtobuf *)self->_sendVirtualTouchEventMessage copyWithZone:a3];
+  v30 = [(_MRSendVirtualTouchEventMessageProtobuf *)self->_sendVirtualTouchEventMessage copyWithZone:zone];
   v31 = *(v6 + 632);
   *(v6 + 632) = v30;
 
-  v32 = [(_MRNotificationMessageProtobuf *)self->_notificationMessage copyWithZone:a3];
+  v32 = [(_MRNotificationMessageProtobuf *)self->_notificationMessage copyWithZone:zone];
   v33 = *(v6 + 336);
   *(v6 + 336) = v32;
 
-  v34 = [(_MRPlaybackQueueProtobuf *)self->_contentItemsChangedNotificationMessage copyWithZone:a3];
+  v34 = [(_MRPlaybackQueueProtobuf *)self->_contentItemsChangedNotificationMessage copyWithZone:zone];
   v35 = *(v6 + 80);
   *(v6 + 80) = v34;
 
-  v36 = [(_MRDeviceInfoMessageProtobuf *)self->_deviceInfoMessage copyWithZone:a3];
+  v36 = [(_MRDeviceInfoMessageProtobuf *)self->_deviceInfoMessage copyWithZone:zone];
   v37 = *(v6 + 120);
   *(v6 + 120) = v36;
 
-  v38 = [(_MRClientUpdatesConfigurationProtobuf *)self->_clientUpdatesConfigMessage copyWithZone:a3];
+  v38 = [(_MRClientUpdatesConfigurationProtobuf *)self->_clientUpdatesConfigMessage copyWithZone:zone];
   v39 = *(v6 + 56);
   *(v6 + 56) = v38;
 
-  v40 = [(_MRVolumeControlAvailabilityProtobuf *)self->_masterVolumeControlCapabilitiesDidChangeMessage copyWithZone:a3];
+  v40 = [(_MRVolumeControlAvailabilityProtobuf *)self->_masterVolumeControlCapabilitiesDidChangeMessage copyWithZone:zone];
   v41 = *(v6 + 304);
   *(v6 + 304) = v40;
 
-  v42 = [(_MRGameControllerMessageProtobuf *)self->_gameController copyWithZone:a3];
+  v42 = [(_MRGameControllerMessageProtobuf *)self->_gameController copyWithZone:zone];
   v43 = *(v6 + 176);
   *(v6 + 176) = v42;
 
-  v44 = [(_MRRegisterGameControllerMessageProtobuf *)self->_registerGameController copyWithZone:a3];
+  v44 = [(_MRRegisterGameControllerMessageProtobuf *)self->_registerGameController copyWithZone:zone];
   v45 = *(v6 + 472);
   *(v6 + 472) = v44;
 
-  v46 = [(_MRRegisterGameControllerResponseMessageProtobuf *)self->_registerGameControllerResponse copyWithZone:a3];
+  v46 = [(_MRRegisterGameControllerResponseMessageProtobuf *)self->_registerGameControllerResponse copyWithZone:zone];
   v47 = *(v6 + 480);
   *(v6 + 480) = v46;
 
-  v48 = [(_MRUnregisterGameControllerMessageProtobuf *)self->_unregisterGameController copyWithZone:a3];
+  v48 = [(_MRUnregisterGameControllerMessageProtobuf *)self->_unregisterGameController copyWithZone:zone];
   v49 = *(v6 + 768);
   *(v6 + 768) = v48;
 
-  v50 = [(_MRRegisterForGameControllerEventsMessageProtobuf *)self->_registerForGameControllerEvents copyWithZone:a3];
+  v50 = [(_MRRegisterForGameControllerEventsMessageProtobuf *)self->_registerForGameControllerEvents copyWithZone:zone];
   v51 = *(v6 + 464);
   *(v6 + 464) = v50;
 
-  v52 = [(_MRKeyboardMessageProtobuf *)self->_keyboardMessage copyWithZone:a3];
+  v52 = [(_MRKeyboardMessageProtobuf *)self->_keyboardMessage copyWithZone:zone];
   v53 = *(v6 + 296);
   *(v6 + 296) = v52;
 
-  v54 = [(_MRGetKeyboardSessionProtobuf *)self->_getKeyboardMessage copyWithZone:a3];
+  v54 = [(_MRGetKeyboardSessionProtobuf *)self->_getKeyboardMessage copyWithZone:zone];
   v55 = *(v6 + 200);
   *(v6 + 200) = v54;
 
-  v56 = [(_MRTextInputMessageProtobuf *)self->_textInputMessage copyWithZone:a3];
+  v56 = [(_MRTextInputMessageProtobuf *)self->_textInputMessage copyWithZone:zone];
   v57 = *(v6 + 736);
   *(v6 + 736) = v56;
 
-  v58 = [(_MRGetVoiceInputDevicesMessageProtobuf *)self->_getVoiceInputDevicesMessage copyWithZone:a3];
+  v58 = [(_MRGetVoiceInputDevicesMessageProtobuf *)self->_getVoiceInputDevicesMessage copyWithZone:zone];
   v59 = *(v6 + 224);
   *(v6 + 224) = v58;
 
-  v60 = [(_MRGetVoiceInputDevicesResponseMessageProtobuf *)self->_getVoiceInputDevicesResponseMessage copyWithZone:a3];
+  v60 = [(_MRGetVoiceInputDevicesResponseMessageProtobuf *)self->_getVoiceInputDevicesResponseMessage copyWithZone:zone];
   v61 = *(v6 + 232);
   *(v6 + 232) = v60;
 
-  v62 = [(_MRRegisterVoiceInputDeviceMessageProtobuf *)self->_registerVoiceInputDeviceMessage copyWithZone:a3];
+  v62 = [(_MRRegisterVoiceInputDeviceMessageProtobuf *)self->_registerVoiceInputDeviceMessage copyWithZone:zone];
   v63 = *(v6 + 504);
   *(v6 + 504) = v62;
 
-  v64 = [(_MRRegisterVoiceInputDeviceResponseMessageProtobuf *)self->_registerVoiceInputDeviceResponseMessage copyWithZone:a3];
+  v64 = [(_MRRegisterVoiceInputDeviceResponseMessageProtobuf *)self->_registerVoiceInputDeviceResponseMessage copyWithZone:zone];
   v65 = *(v6 + 512);
   *(v6 + 512) = v64;
 
-  v66 = [(_MRSetRecordingStateMessageProtobuf *)self->_setRecordingStateMessage copyWithZone:a3];
+  v66 = [(_MRSetRecordingStateMessageProtobuf *)self->_setRecordingStateMessage copyWithZone:zone];
   v67 = *(v6 + 704);
   *(v6 + 704) = v66;
 
-  v68 = [(_MRSendVoiceInputMessageProtobuf *)self->_sendVoiceInputMessage copyWithZone:a3];
+  v68 = [(_MRSendVoiceInputMessageProtobuf *)self->_sendVoiceInputMessage copyWithZone:zone];
   v69 = *(v6 + 640);
   *(v6 + 640) = v68;
 
-  v70 = [(_MRPlaybackQueueRequestProtobuf *)self->_playbackQueueRequest copyWithZone:a3];
+  v70 = [(_MRPlaybackQueueRequestProtobuf *)self->_playbackQueueRequest copyWithZone:zone];
   v71 = *(v6 + 352);
   *(v6 + 352) = v70;
 
-  v72 = [(_MRTransactionMessageProtobuf *)self->_transactionPackets copyWithZone:a3];
+  v72 = [(_MRTransactionMessageProtobuf *)self->_transactionPackets copyWithZone:zone];
   v73 = *(v6 + 744);
   *(v6 + 744) = v72;
 
-  v74 = [(_MRCryptoPairingMessageProtobuf *)self->_cryptoPairingMessage copyWithZone:a3];
+  v74 = [(_MRCryptoPairingMessageProtobuf *)self->_cryptoPairingMessage copyWithZone:zone];
   v75 = *(v6 + 112);
   *(v6 + 112) = v74;
 
-  v76 = [(_MRGameControllerPropertiesMessageProtobuf *)self->_gameControllerProperties copyWithZone:a3];
+  v76 = [(_MRGameControllerPropertiesMessageProtobuf *)self->_gameControllerProperties copyWithZone:zone];
   v77 = *(v6 + 184);
   *(v6 + 184) = v76;
 
-  v78 = [(_MRSetReadyStateMessageProtobuf *)self->_readyStateMessage copyWithZone:a3];
+  v78 = [(_MRSetReadyStateMessageProtobuf *)self->_readyStateMessage copyWithZone:zone];
   v79 = *(v6 + 456);
   *(v6 + 456) = v78;
 
-  v80 = [(_MRSetConnectionStateMessageProtobuf *)self->_connectionState copyWithZone:a3];
+  v80 = [(_MRSetConnectionStateMessageProtobuf *)self->_connectionState copyWithZone:zone];
   v81 = *(v6 + 72);
   *(v6 + 72) = v80;
 
-  v82 = [(_MRSendButtonEventMessageProtobuf *)self->_sendButtonEventMessage copyWithZone:a3];
+  v82 = [(_MRSendButtonEventMessageProtobuf *)self->_sendButtonEventMessage copyWithZone:zone];
   v83 = *(v6 + 576);
   *(v6 + 576) = v82;
 
-  v84 = [(_MRSetHiliteModeMessageProtobuf *)self->_setHiliteModeMessage copyWithZone:a3];
+  v84 = [(_MRSetHiliteModeMessageProtobuf *)self->_setHiliteModeMessage copyWithZone:zone];
   v85 = *(v6 + 672);
   *(v6 + 672) = v84;
 
-  v86 = [(_MRWakeDeviceMessageProtobuf *)self->_wakeDeviceMessage copyWithZone:a3];
+  v86 = [(_MRWakeDeviceMessageProtobuf *)self->_wakeDeviceMessage copyWithZone:zone];
   v87 = *(v6 + 856);
   *(v6 + 856) = v86;
 
-  v88 = [(_MRGenericMessageProtobuf *)self->_genericMessage copyWithZone:a3];
+  v88 = [(_MRGenericMessageProtobuf *)self->_genericMessage copyWithZone:zone];
   v89 = *(v6 + 192);
   *(v6 + 192) = v88;
 
-  v90 = [(_MRSendPackedVirtualTouchEventMessageProtobuf *)self->_sendPackedVirtualTouchEventMessage copyWithZone:a3];
+  v90 = [(_MRSendPackedVirtualTouchEventMessageProtobuf *)self->_sendPackedVirtualTouchEventMessage copyWithZone:zone];
   v91 = *(v6 + 624);
   *(v6 + 624) = v90;
 
-  v92 = [(_MRSendLyricsEventMessageProtobuf *)self->_sendLyricsEventMessage copyWithZone:a3];
+  v92 = [(_MRSendLyricsEventMessageProtobuf *)self->_sendLyricsEventMessage copyWithZone:zone];
   v93 = *(v6 + 616);
   *(v6 + 616) = v92;
 
-  v94 = [(_MRSetNowPlayingClientMessageProtobuf *)self->_setNowPlayingClientMessage copyWithZone:a3];
+  v94 = [(_MRSetNowPlayingClientMessageProtobuf *)self->_setNowPlayingClientMessage copyWithZone:zone];
   v95 = *(v6 + 688);
   *(v6 + 688) = v94;
 
-  v96 = [(_MRSetNowPlayingPlayerMessageProtobuf *)self->_setNowPlayingPlayerMessage copyWithZone:a3];
+  v96 = [(_MRSetNowPlayingPlayerMessageProtobuf *)self->_setNowPlayingPlayerMessage copyWithZone:zone];
   v97 = *(v6 + 696);
   *(v6 + 696) = v96;
 
-  v98 = [(_MRAVModifyOutputContextRequestProtobuf *)self->_modifyOutputContextRequestMessage copyWithZone:a3];
+  v98 = [(_MRAVModifyOutputContextRequestProtobuf *)self->_modifyOutputContextRequestMessage copyWithZone:zone];
   v99 = *(v6 + 328);
   *(v6 + 328) = v98;
 
-  v100 = [(_MRGetVolumeMessageProtobuf *)self->_getVolumeMessage copyWithZone:a3];
+  v100 = [(_MRGetVolumeMessageProtobuf *)self->_getVolumeMessage copyWithZone:zone];
   v101 = *(v6 + 256);
   *(v6 + 256) = v100;
 
-  v102 = [(_MRGetVolumeResultMessageProtobuf *)self->_getVolumeResultMessage copyWithZone:a3];
+  v102 = [(_MRGetVolumeResultMessageProtobuf *)self->_getVolumeResultMessage copyWithZone:zone];
   v103 = *(v6 + 280);
   *(v6 + 280) = v102;
 
-  v104 = [(_MRSetVolumeMessageProtobuf *)self->_setVolumeMessage copyWithZone:a3];
+  v104 = [(_MRSetVolumeMessageProtobuf *)self->_setVolumeMessage copyWithZone:zone];
   v105 = *(v6 + 720);
   *(v6 + 720) = v104;
 
-  v106 = [(_MRVolumeDidChangeMessageProtobuf *)self->_volumeDidChangeMessage copyWithZone:a3];
+  v106 = [(_MRVolumeDidChangeMessageProtobuf *)self->_volumeDidChangeMessage copyWithZone:zone];
   v107 = *(v6 + 840);
   *(v6 + 840) = v106;
 
-  v108 = [(_MRRemoveClientMessageProtobuf *)self->_removeClientMessage copyWithZone:a3];
+  v108 = [(_MRRemoveClientMessageProtobuf *)self->_removeClientMessage copyWithZone:zone];
   v109 = *(v6 + 528);
   *(v6 + 528) = v108;
 
-  v110 = [(_MRRemovePlayerMessageProtobuf *)self->_removePlayerMessage copyWithZone:a3];
+  v110 = [(_MRRemovePlayerMessageProtobuf *)self->_removePlayerMessage copyWithZone:zone];
   v111 = *(v6 + 552);
   *(v6 + 552) = v110;
 
-  v112 = [(_MRUpdateClientMessageProtobuf *)self->_updateClientMessage copyWithZone:a3];
+  v112 = [(_MRUpdateClientMessageProtobuf *)self->_updateClientMessage copyWithZone:zone];
   v113 = *(v6 + 784);
   *(v6 + 784) = v112;
 
-  v114 = [(_MRUpdateContentItemMessageProtobuf *)self->_updateContentItemMessage copyWithZone:a3];
+  v114 = [(_MRUpdateContentItemMessageProtobuf *)self->_updateContentItemMessage copyWithZone:zone];
   v115 = *(v6 + 800);
   *(v6 + 800) = v114;
 
-  v116 = [(_MRUpdateContentItemArtworkMessageProtobuf *)self->_updateContentItemArtworkMessage copyWithZone:a3];
+  v116 = [(_MRUpdateContentItemArtworkMessageProtobuf *)self->_updateContentItemArtworkMessage copyWithZone:zone];
   v117 = *(v6 + 792);
   *(v6 + 792) = v116;
 
-  v118 = [(_MRUpdatePlayerMessageProtobuf *)self->_updatePlayerMessage copyWithZone:a3];
+  v118 = [(_MRUpdatePlayerMessageProtobuf *)self->_updatePlayerMessage copyWithZone:zone];
   v119 = *(v6 + 824);
   *(v6 + 824) = v118;
 
-  v120 = [(_MRPromptForRouteAuthorizationMessageProtobuf *)self->_promptForRouteAuthorizationMessage copyWithZone:a3];
+  v120 = [(_MRPromptForRouteAuthorizationMessageProtobuf *)self->_promptForRouteAuthorizationMessage copyWithZone:zone];
   v121 = *(v6 + 440);
   *(v6 + 440) = v120;
 
-  v122 = [(_MRPromptForRouteAuthorizationResponseMessageProtobuf *)self->_promptForRouteAuthorizationResponseMessage copyWithZone:a3];
+  v122 = [(_MRPromptForRouteAuthorizationResponseMessageProtobuf *)self->_promptForRouteAuthorizationResponseMessage copyWithZone:zone];
   v123 = *(v6 + 448);
   *(v6 + 448) = v122;
 
-  v124 = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)self->_presentRouteAuthorizationStatusMessage copyWithZone:a3];
+  v124 = [(_MRPresentRouteAuthorizationStatusMessageProtobuf *)self->_presentRouteAuthorizationStatusMessage copyWithZone:zone];
   v125 = *(v6 + 432);
   *(v6 + 432) = v124;
 
-  v126 = [(_MRGetVolumeControlCapabilitiesMessageProtobuf *)self->_getVolumeControlCapabilitiesMessage copyWithZone:a3];
+  v126 = [(_MRGetVolumeControlCapabilitiesMessageProtobuf *)self->_getVolumeControlCapabilitiesMessage copyWithZone:zone];
   v127 = *(v6 + 240);
   *(v6 + 240) = v126;
 
-  v128 = [(_MRGetVolumeControlCapabilitiesResultMessageProtobuf *)self->_getVolumeControlCapabilitiesResultMessage copyWithZone:a3];
+  v128 = [(_MRGetVolumeControlCapabilitiesResultMessageProtobuf *)self->_getVolumeControlCapabilitiesResultMessage copyWithZone:zone];
   v129 = *(v6 + 248);
   *(v6 + 248) = v128;
 
-  v130 = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self->_volumeControlCapabilitiesDidChangeMessage copyWithZone:a3];
+  v130 = [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)self->_volumeControlCapabilitiesDidChangeMessage copyWithZone:zone];
   v131 = *(v6 + 832);
   *(v6 + 832) = v130;
 
-  v132 = [(_MRUpdateOutputDevicesMessageProtobuf *)self->_updateOutputDevicesMessage copyWithZone:a3];
+  v132 = [(_MRUpdateOutputDevicesMessageProtobuf *)self->_updateOutputDevicesMessage copyWithZone:zone];
   v133 = *(v6 + 816);
   *(v6 + 816) = v132;
 
-  v134 = [(_MRRemoveOutputDevicesMessageProtobuf *)self->_removeOutputDevicesMessage copyWithZone:a3];
+  v134 = [(_MRRemoveOutputDevicesMessageProtobuf *)self->_removeOutputDevicesMessage copyWithZone:zone];
   v135 = *(v6 + 544);
   *(v6 + 544) = v134;
 
-  v136 = [(_MRRemoteTextInputMessageProtobuf *)self->_remoteTextInputMessage copyWithZone:a3];
+  v136 = [(_MRRemoteTextInputMessageProtobuf *)self->_remoteTextInputMessage copyWithZone:zone];
   v137 = *(v6 + 520);
   *(v6 + 520) = v136;
 
-  v138 = [(_MRGetRemoteTextInputSessionProtobuf *)self->_getRemoteTextInputSessionMessage copyWithZone:a3];
+  v138 = [(_MRGetRemoteTextInputSessionProtobuf *)self->_getRemoteTextInputSessionMessage copyWithZone:zone];
   v139 = *(v6 + 208);
   *(v6 + 208) = v138;
 
-  v140 = [(_MRPlaybackSessionRequestMessageProtobuf *)self->_playbackSessionRequestMessage copyWithZone:a3];
+  v140 = [(_MRPlaybackSessionRequestMessageProtobuf *)self->_playbackSessionRequestMessage copyWithZone:zone];
   v141 = *(v6 + 400);
   *(v6 + 400) = v140;
 
-  v142 = [(_MRPlaybackSessionResponseMessageProtobuf *)self->_playbackSessionResponseMessage copyWithZone:a3];
+  v142 = [(_MRPlaybackSessionResponseMessageProtobuf *)self->_playbackSessionResponseMessage copyWithZone:zone];
   v143 = *(v6 + 408);
   *(v6 + 408) = v142;
 
-  v144 = [(_MRSetStateMessageProtobuf *)self->_setDefaultSupportedCommandsMessage copyWithZone:a3];
+  v144 = [(_MRSetStateMessageProtobuf *)self->_setDefaultSupportedCommandsMessage copyWithZone:zone];
   v145 = *(v6 + 664);
   *(v6 + 664) = v144;
 
-  v146 = [(_MRPlaybackSessionMigrateRequestMessageProtobuf *)self->_playbackSessionMigrateRequestMessage copyWithZone:a3];
+  v146 = [(_MRPlaybackSessionMigrateRequestMessageProtobuf *)self->_playbackSessionMigrateRequestMessage copyWithZone:zone];
   v147 = *(v6 + 384);
   *(v6 + 384) = v146;
 
-  v148 = [(_MRPlaybackSessionMigrateResponseMessageProtobuf *)self->_playbackSessionMigrateResponseMessage copyWithZone:a3];
+  v148 = [(_MRPlaybackSessionMigrateResponseMessageProtobuf *)self->_playbackSessionMigrateResponseMessage copyWithZone:zone];
   v149 = *(v6 + 392);
   *(v6 + 392) = v148;
 
-  v150 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v150 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v151 = *(v6 + 168);
   *(v6 + 168) = v150;
 
-  v152 = [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)self->_playbackSessionMigrateBeginMessage copyWithZone:a3];
+  v152 = [(_MRPlaybackSessionMigrateBeginMessageProtobuf *)self->_playbackSessionMigrateBeginMessage copyWithZone:zone];
   v153 = *(v6 + 360);
   *(v6 + 360) = v152;
 
-  v154 = [(_MRPlaybackSessionMigrateEndMessageProtobuf *)self->_playbackSessionMigrateEndMessage copyWithZone:a3];
+  v154 = [(_MRPlaybackSessionMigrateEndMessageProtobuf *)self->_playbackSessionMigrateEndMessage copyWithZone:zone];
   v155 = *(v6 + 368);
   *(v6 + 368) = v154;
 
-  v156 = [(_MRUpdateActiveSystemEndpointMessageProtobuf *)self->_updateActiveSystemEndpointMessage copyWithZone:a3];
+  v156 = [(_MRUpdateActiveSystemEndpointMessageProtobuf *)self->_updateActiveSystemEndpointMessage copyWithZone:zone];
   v157 = *(v6 + 776);
   *(v6 + 776) = v156;
 
-  v158 = [(_MRSetDiscoveryModeProtobufMessage *)self->_discoveryModeMessage copyWithZone:a3];
+  v158 = [(_MRSetDiscoveryModeProtobufMessage *)self->_discoveryModeMessage copyWithZone:zone];
   v159 = *(v6 + 128);
   *(v6 + 128) = v158;
 
-  v160 = [(_MRUpdateEndpointsMessageProtobuf *)self->_updateEndpointsMessage copyWithZone:a3];
+  v160 = [(_MRUpdateEndpointsMessageProtobuf *)self->_updateEndpointsMessage copyWithZone:zone];
   v161 = *(v6 + 808);
   *(v6 + 808) = v160;
 
-  v162 = [(_MRRemoveEndpointsMessageProtobuf *)self->_removeEndpointsMessage copyWithZone:a3];
+  v162 = [(_MRRemoveEndpointsMessageProtobuf *)self->_removeEndpointsMessage copyWithZone:zone];
   v163 = *(v6 + 536);
   *(v6 + 536) = v162;
 
-  v164 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v164 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v165 = *(v6 + 760);
   *(v6 + 760) = v164;
 
-  v166 = [(_MRPlayerClientPropertiesMessageProtobuf *)self->_playerClientPropertiesMessage copyWithZone:a3];
+  v166 = [(_MRPlayerClientPropertiesMessageProtobuf *)self->_playerClientPropertiesMessage copyWithZone:zone];
   v167 = *(v6 + 424);
   *(v6 + 424) = v166;
 
-  v168 = [(_MROriginClientPropertiesMessageProtobuf *)self->_originClientPropertiesMessage copyWithZone:a3];
+  v168 = [(_MROriginClientPropertiesMessageProtobuf *)self->_originClientPropertiesMessage copyWithZone:zone];
   v169 = *(v6 + 344);
   *(v6 + 344) = v168;
 
-  v170 = [(_MRAudioFadeMessageProtobuf *)self->_audioFadeMessage copyWithZone:a3];
+  v170 = [(_MRAudioFadeMessageProtobuf *)self->_audioFadeMessage copyWithZone:zone];
   v171 = *(v6 + 32);
   *(v6 + 32) = v170;
 
-  v172 = [(_MRAudioFadeResponseMessageProtobuf *)self->_audioFadeResponseMessage copyWithZone:a3];
+  v172 = [(_MRAudioFadeResponseMessageProtobuf *)self->_audioFadeResponseMessage copyWithZone:zone];
   v173 = *(v6 + 40);
   *(v6 + 40) = v172;
 
-  v174 = [(_MRDiscoveryUpdateEndpointsProtobufMessage *)self->_discoveryUpdateEndpointsMessage copyWithZone:a3];
+  v174 = [(_MRDiscoveryUpdateEndpointsProtobufMessage *)self->_discoveryUpdateEndpointsMessage copyWithZone:zone];
   v175 = *(v6 + 136);
   *(v6 + 136) = v174;
 
-  v176 = [(_MRDiscoveryUpdateOutputDevicesProtobufMessage *)self->_discoveryUpdateOutputDevicesMessage copyWithZone:a3];
+  v176 = [(_MRDiscoveryUpdateOutputDevicesProtobufMessage *)self->_discoveryUpdateOutputDevicesMessage copyWithZone:zone];
   v177 = *(v6 + 144);
   *(v6 + 144) = v176;
 
-  v178 = [(_MRSetListeningModeMessageProtobuf *)self->_setListeningModeMessage copyWithZone:a3];
+  v178 = [(_MRSetListeningModeMessageProtobuf *)self->_setListeningModeMessage copyWithZone:zone];
   v179 = *(v6 + 680);
   *(v6 + 680) = v178;
 
-  v180 = [(_MRErrorProtobuf *)self->_error copyWithZone:a3];
+  v180 = [(_MRErrorProtobuf *)self->_error copyWithZone:zone];
   v181 = *(v6 + 152);
   *(v6 + 152) = v180;
 
-  v182 = [(_MRConfigureConnectionMessageProtobuf *)self->_configureConnectionMessage copyWithZone:a3];
+  v182 = [(_MRConfigureConnectionMessageProtobuf *)self->_configureConnectionMessage copyWithZone:zone];
   v183 = *(v6 + 64);
   *(v6 + 64) = v182;
 
-  v184 = [(_MRCreateHostedEndpointRequestProtobuf *)self->_createHostedEndpointRequest copyWithZone:a3];
+  v184 = [(_MRCreateHostedEndpointRequestProtobuf *)self->_createHostedEndpointRequest copyWithZone:zone];
   v185 = *(v6 + 96);
   *(v6 + 96) = v184;
 
-  v186 = [(_MRCreateHostedEndpointResponseProtobuf *)self->_createHostedEndpointResponse copyWithZone:a3];
+  v186 = [(_MRCreateHostedEndpointResponseProtobuf *)self->_createHostedEndpointResponse copyWithZone:zone];
   v187 = *(v6 + 104);
   *(v6 + 104) = v186;
 
-  v188 = [(_MRAdjustVolumeMessageProtobuf *)self->_adjustVolumeMessage copyWithZone:a3];
+  v188 = [(_MRAdjustVolumeMessageProtobuf *)self->_adjustVolumeMessage copyWithZone:zone];
   v189 = *(v6 + 16);
   *(v6 + 16) = v188;
 
-  v190 = [(_MRGetVolumeMutedMessageProtobuf *)self->_getVolumeMutedMessage copyWithZone:a3];
+  v190 = [(_MRGetVolumeMutedMessageProtobuf *)self->_getVolumeMutedMessage copyWithZone:zone];
   v191 = *(v6 + 264);
   *(v6 + 264) = v190;
 
-  v192 = [(_MRGetVolumeMutedResultMessageProtobuf *)self->_getVolumeMutedResultMessage copyWithZone:a3];
+  v192 = [(_MRGetVolumeMutedResultMessageProtobuf *)self->_getVolumeMutedResultMessage copyWithZone:zone];
   v193 = *(v6 + 272);
   *(v6 + 272) = v192;
 
-  v194 = [(_MRSetVolumeMutedMessageProtobuf *)self->_setVolumeMutedMessage copyWithZone:a3];
+  v194 = [(_MRSetVolumeMutedMessageProtobuf *)self->_setVolumeMutedMessage copyWithZone:zone];
   v195 = *(v6 + 728);
   *(v6 + 728) = v194;
 
-  v196 = [(_MRVolumeMutedDidChangeMessageProtobuf *)self->_volumeMutedDidChangeMessage copyWithZone:a3];
+  v196 = [(_MRVolumeMutedDidChangeMessageProtobuf *)self->_volumeMutedDidChangeMessage copyWithZone:zone];
   v197 = *(v6 + 848);
   *(v6 + 848) = v196;
 
-  v198 = [(_MRSetConversationDetectionEnabledMessageProtobuf *)self->_setConversationDetectionEnabledMessage copyWithZone:a3];
+  v198 = [(_MRSetConversationDetectionEnabledMessageProtobuf *)self->_setConversationDetectionEnabledMessage copyWithZone:zone];
   v199 = *(v6 + 656);
   *(v6 + 656) = v198;
 
-  v200 = [(_MRPlayerClientParticipantsUpdateMessageProtobuf *)self->_playerClientParticipantsUpdateMessage copyWithZone:a3];
+  v200 = [(_MRPlayerClientParticipantsUpdateMessageProtobuf *)self->_playerClientParticipantsUpdateMessage copyWithZone:zone];
   v201 = *(v6 + 416);
   *(v6 + 416) = v200;
 
-  v202 = [(_MRRequestGroupSessionMessageProtobuf *)self->_requestGroupSessionMessage copyWithZone:a3];
+  v202 = [(_MRRequestGroupSessionMessageProtobuf *)self->_requestGroupSessionMessage copyWithZone:zone];
   v203 = *(v6 + 568);
   *(v6 + 568) = v202;
 
-  v204 = [(_MRCreateApplicationConnectionMessageProtobuf *)self->_createApplicationConnectionMessage copyWithZone:a3];
+  v204 = [(_MRCreateApplicationConnectionMessageProtobuf *)self->_createApplicationConnectionMessage copyWithZone:zone];
   v205 = *(v6 + 88);
   *(v6 + 88) = v204;
 
-  v206 = [(_MRApplicationConnectionProtocolMessageProtobuf *)self->_applicationConnectionProtocolMessage copyWithZone:a3];
+  v206 = [(_MRApplicationConnectionProtocolMessageProtobuf *)self->_applicationConnectionProtocolMessage copyWithZone:zone];
   v207 = *(v6 + 24);
   *(v6 + 24) = v206;
 
-  v208 = [(_MRApplicationConnectionContextProtobuf *)self->_invalidateApplicationConnectionMessage copyWithZone:a3];
+  v208 = [(_MRApplicationConnectionContextProtobuf *)self->_invalidateApplicationConnectionMessage copyWithZone:zone];
   v209 = *(v6 + 288);
   *(v6 + 288) = v208;
 
-  v210 = [(_MRMicrophoneConnectionRequestMessageProtobuf *)self->_microphoneConnectionRequestMessage copyWithZone:a3];
+  v210 = [(_MRMicrophoneConnectionRequestMessageProtobuf *)self->_microphoneConnectionRequestMessage copyWithZone:zone];
   v211 = *(v6 + 312);
   *(v6 + 312) = v210;
 
-  v212 = [(_MRMicrophoneConnectionResponseMessageProtobuf *)self->_microphoneConnectionResponseMessage copyWithZone:a3];
+  v212 = [(_MRMicrophoneConnectionResponseMessageProtobuf *)self->_microphoneConnectionResponseMessage copyWithZone:zone];
   v213 = *(v6 + 320);
   *(v6 + 320) = v212;
 
-  v214 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)self->_playbackSessionMigratePostMessage copyWithZone:a3];
+  v214 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)self->_playbackSessionMigratePostMessage copyWithZone:zone];
   v215 = *(v6 + 376);
   *(v6 + 376) = v214;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_225;
   }
 
-  v5 = *(v4 + 864);
+  v5 = *(equalCopy + 864);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 864) & 4) == 0 || self->_type != *(v4 + 188))
+    if ((*(equalCopy + 864) & 4) == 0 || self->_type != *(equalCopy + 188))
     {
       goto LABEL_225;
     }
   }
 
-  else if ((*(v4 + 864) & 4) != 0)
+  else if ((*(equalCopy + 864) & 4) != 0)
   {
 LABEL_225:
     v111 = 0;
@@ -3433,13 +3433,13 @@ LABEL_225:
   }
 
   replyIdentifier = self->_replyIdentifier;
-  if (replyIdentifier | *(v4 + 70) && ![(NSString *)replyIdentifier isEqual:?])
+  if (replyIdentifier | *(equalCopy + 70) && ![(NSString *)replyIdentifier isEqual:?])
   {
     goto LABEL_225;
   }
 
   authenticationToken = self->_authenticationToken;
-  if (authenticationToken | *(v4 + 6))
+  if (authenticationToken | *(equalCopy + 6))
   {
     if (![(NSString *)authenticationToken isEqual:?])
     {
@@ -3447,41 +3447,41 @@ LABEL_225:
     }
   }
 
-  v8 = *(v4 + 864);
+  v8 = *(equalCopy + 864);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 864) & 2) == 0 || self->_errorCode != *(v4 + 40))
+    if ((*(equalCopy + 864) & 2) == 0 || self->_errorCode != *(equalCopy + 40))
     {
       goto LABEL_225;
     }
   }
 
-  else if ((*(v4 + 864) & 2) != 0)
+  else if ((*(equalCopy + 864) & 2) != 0)
   {
     goto LABEL_225;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 864) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 864) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_225;
     }
   }
 
-  else if (*(v4 + 864))
+  else if (*(equalCopy + 864))
   {
     goto LABEL_225;
   }
 
   sendCommandMessage = self->_sendCommandMessage;
-  if (sendCommandMessage | *(v4 + 73) && ![(_MRSendCommandMessageProtobuf *)sendCommandMessage isEqual:?])
+  if (sendCommandMessage | *(equalCopy + 73) && ![(_MRSendCommandMessageProtobuf *)sendCommandMessage isEqual:?])
   {
     goto LABEL_225;
   }
 
   sendCommandResultMessage = self->_sendCommandResultMessage;
-  if (sendCommandResultMessage | *(v4 + 74))
+  if (sendCommandResultMessage | *(equalCopy + 74))
   {
     if (![(_MRSendCommandResultMessageProtobuf *)sendCommandResultMessage isEqual:?])
     {
@@ -3490,7 +3490,7 @@ LABEL_225:
   }
 
   getStateMessage = self->_getStateMessage;
-  if (getStateMessage | *(v4 + 27))
+  if (getStateMessage | *(equalCopy + 27))
   {
     if (![(_MRGetStateMessageProtobuf *)getStateMessage isEqual:?])
     {
@@ -3499,7 +3499,7 @@ LABEL_225:
   }
 
   setStateMessage = self->_setStateMessage;
-  if (setStateMessage | *(v4 + 89))
+  if (setStateMessage | *(equalCopy + 89))
   {
     if (![(_MRSetStateMessageProtobuf *)setStateMessage isEqual:?])
     {
@@ -3508,7 +3508,7 @@ LABEL_225:
   }
 
   setArtworkMessage = self->_setArtworkMessage;
-  if (setArtworkMessage | *(v4 + 81))
+  if (setArtworkMessage | *(equalCopy + 81))
   {
     if (![(_MRSetArtworkMessageProtobuf *)setArtworkMessage isEqual:?])
     {
@@ -3517,7 +3517,7 @@ LABEL_225:
   }
 
   registerHIDDeviceMessage = self->_registerHIDDeviceMessage;
-  if (registerHIDDeviceMessage | *(v4 + 61))
+  if (registerHIDDeviceMessage | *(equalCopy + 61))
   {
     if (![(_MRRegisterHIDDeviceMessageProtobuf *)registerHIDDeviceMessage isEqual:?])
     {
@@ -3526,7 +3526,7 @@ LABEL_225:
   }
 
   registerHIDDeviceResultMessage = self->_registerHIDDeviceResultMessage;
-  if (registerHIDDeviceResultMessage | *(v4 + 62))
+  if (registerHIDDeviceResultMessage | *(equalCopy + 62))
   {
     if (![(_MRRegisterHIDDeviceResultMessageProtobuf *)registerHIDDeviceResultMessage isEqual:?])
     {
@@ -3535,7 +3535,7 @@ LABEL_225:
   }
 
   sendHIDEventMessage = self->_sendHIDEventMessage;
-  if (sendHIDEventMessage | *(v4 + 75))
+  if (sendHIDEventMessage | *(equalCopy + 75))
   {
     if (![(_MRSendHIDEventMessageProtobuf *)sendHIDEventMessage isEqual:?])
     {
@@ -3544,7 +3544,7 @@ LABEL_225:
   }
 
   sendHIDReportMessage = self->_sendHIDReportMessage;
-  if (sendHIDReportMessage | *(v4 + 76))
+  if (sendHIDReportMessage | *(equalCopy + 76))
   {
     if (![(_MRSendHIDReportMessageProtobuf *)sendHIDReportMessage isEqual:?])
     {
@@ -3553,7 +3553,7 @@ LABEL_225:
   }
 
   sendVirtualTouchEventMessage = self->_sendVirtualTouchEventMessage;
-  if (sendVirtualTouchEventMessage | *(v4 + 79))
+  if (sendVirtualTouchEventMessage | *(equalCopy + 79))
   {
     if (![(_MRSendVirtualTouchEventMessageProtobuf *)sendVirtualTouchEventMessage isEqual:?])
     {
@@ -3562,7 +3562,7 @@ LABEL_225:
   }
 
   notificationMessage = self->_notificationMessage;
-  if (notificationMessage | *(v4 + 42))
+  if (notificationMessage | *(equalCopy + 42))
   {
     if (![(_MRNotificationMessageProtobuf *)notificationMessage isEqual:?])
     {
@@ -3571,7 +3571,7 @@ LABEL_225:
   }
 
   contentItemsChangedNotificationMessage = self->_contentItemsChangedNotificationMessage;
-  if (contentItemsChangedNotificationMessage | *(v4 + 10))
+  if (contentItemsChangedNotificationMessage | *(equalCopy + 10))
   {
     if (![(_MRPlaybackQueueProtobuf *)contentItemsChangedNotificationMessage isEqual:?])
     {
@@ -3580,7 +3580,7 @@ LABEL_225:
   }
 
   deviceInfoMessage = self->_deviceInfoMessage;
-  if (deviceInfoMessage | *(v4 + 15))
+  if (deviceInfoMessage | *(equalCopy + 15))
   {
     if (![(_MRDeviceInfoMessageProtobuf *)deviceInfoMessage isEqual:?])
     {
@@ -3589,7 +3589,7 @@ LABEL_225:
   }
 
   clientUpdatesConfigMessage = self->_clientUpdatesConfigMessage;
-  if (clientUpdatesConfigMessage | *(v4 + 7))
+  if (clientUpdatesConfigMessage | *(equalCopy + 7))
   {
     if (![(_MRClientUpdatesConfigurationProtobuf *)clientUpdatesConfigMessage isEqual:?])
     {
@@ -3598,7 +3598,7 @@ LABEL_225:
   }
 
   masterVolumeControlCapabilitiesDidChangeMessage = self->_masterVolumeControlCapabilitiesDidChangeMessage;
-  if (masterVolumeControlCapabilitiesDidChangeMessage | *(v4 + 38))
+  if (masterVolumeControlCapabilitiesDidChangeMessage | *(equalCopy + 38))
   {
     if (![(_MRVolumeControlAvailabilityProtobuf *)masterVolumeControlCapabilitiesDidChangeMessage isEqual:?])
     {
@@ -3607,7 +3607,7 @@ LABEL_225:
   }
 
   gameController = self->_gameController;
-  if (gameController | *(v4 + 22))
+  if (gameController | *(equalCopy + 22))
   {
     if (![(_MRGameControllerMessageProtobuf *)gameController isEqual:?])
     {
@@ -3616,7 +3616,7 @@ LABEL_225:
   }
 
   registerGameController = self->_registerGameController;
-  if (registerGameController | *(v4 + 59))
+  if (registerGameController | *(equalCopy + 59))
   {
     if (![(_MRRegisterGameControllerMessageProtobuf *)registerGameController isEqual:?])
     {
@@ -3625,7 +3625,7 @@ LABEL_225:
   }
 
   registerGameControllerResponse = self->_registerGameControllerResponse;
-  if (registerGameControllerResponse | *(v4 + 60))
+  if (registerGameControllerResponse | *(equalCopy + 60))
   {
     if (![(_MRRegisterGameControllerResponseMessageProtobuf *)registerGameControllerResponse isEqual:?])
     {
@@ -3634,7 +3634,7 @@ LABEL_225:
   }
 
   unregisterGameController = self->_unregisterGameController;
-  if (unregisterGameController | *(v4 + 96))
+  if (unregisterGameController | *(equalCopy + 96))
   {
     if (![(_MRUnregisterGameControllerMessageProtobuf *)unregisterGameController isEqual:?])
     {
@@ -3643,7 +3643,7 @@ LABEL_225:
   }
 
   registerForGameControllerEvents = self->_registerForGameControllerEvents;
-  if (registerForGameControllerEvents | *(v4 + 58))
+  if (registerForGameControllerEvents | *(equalCopy + 58))
   {
     if (![(_MRRegisterForGameControllerEventsMessageProtobuf *)registerForGameControllerEvents isEqual:?])
     {
@@ -3652,7 +3652,7 @@ LABEL_225:
   }
 
   keyboardMessage = self->_keyboardMessage;
-  if (keyboardMessage | *(v4 + 37))
+  if (keyboardMessage | *(equalCopy + 37))
   {
     if (![(_MRKeyboardMessageProtobuf *)keyboardMessage isEqual:?])
     {
@@ -3661,7 +3661,7 @@ LABEL_225:
   }
 
   getKeyboardMessage = self->_getKeyboardMessage;
-  if (getKeyboardMessage | *(v4 + 25))
+  if (getKeyboardMessage | *(equalCopy + 25))
   {
     if (![(_MRGetKeyboardSessionProtobuf *)getKeyboardMessage isEqual:?])
     {
@@ -3670,7 +3670,7 @@ LABEL_225:
   }
 
   textInputMessage = self->_textInputMessage;
-  if (textInputMessage | *(v4 + 92))
+  if (textInputMessage | *(equalCopy + 92))
   {
     if (![(_MRTextInputMessageProtobuf *)textInputMessage isEqual:?])
     {
@@ -3679,7 +3679,7 @@ LABEL_225:
   }
 
   getVoiceInputDevicesMessage = self->_getVoiceInputDevicesMessage;
-  if (getVoiceInputDevicesMessage | *(v4 + 28))
+  if (getVoiceInputDevicesMessage | *(equalCopy + 28))
   {
     if (![(_MRGetVoiceInputDevicesMessageProtobuf *)getVoiceInputDevicesMessage isEqual:?])
     {
@@ -3688,7 +3688,7 @@ LABEL_225:
   }
 
   getVoiceInputDevicesResponseMessage = self->_getVoiceInputDevicesResponseMessage;
-  if (getVoiceInputDevicesResponseMessage | *(v4 + 29))
+  if (getVoiceInputDevicesResponseMessage | *(equalCopy + 29))
   {
     if (![(_MRGetVoiceInputDevicesResponseMessageProtobuf *)getVoiceInputDevicesResponseMessage isEqual:?])
     {
@@ -3697,7 +3697,7 @@ LABEL_225:
   }
 
   registerVoiceInputDeviceMessage = self->_registerVoiceInputDeviceMessage;
-  if (registerVoiceInputDeviceMessage | *(v4 + 63))
+  if (registerVoiceInputDeviceMessage | *(equalCopy + 63))
   {
     if (![(_MRRegisterVoiceInputDeviceMessageProtobuf *)registerVoiceInputDeviceMessage isEqual:?])
     {
@@ -3706,7 +3706,7 @@ LABEL_225:
   }
 
   registerVoiceInputDeviceResponseMessage = self->_registerVoiceInputDeviceResponseMessage;
-  if (registerVoiceInputDeviceResponseMessage | *(v4 + 64))
+  if (registerVoiceInputDeviceResponseMessage | *(equalCopy + 64))
   {
     if (![(_MRRegisterVoiceInputDeviceResponseMessageProtobuf *)registerVoiceInputDeviceResponseMessage isEqual:?])
     {
@@ -3715,7 +3715,7 @@ LABEL_225:
   }
 
   setRecordingStateMessage = self->_setRecordingStateMessage;
-  if (setRecordingStateMessage | *(v4 + 88))
+  if (setRecordingStateMessage | *(equalCopy + 88))
   {
     if (![(_MRSetRecordingStateMessageProtobuf *)setRecordingStateMessage isEqual:?])
     {
@@ -3724,7 +3724,7 @@ LABEL_225:
   }
 
   sendVoiceInputMessage = self->_sendVoiceInputMessage;
-  if (sendVoiceInputMessage | *(v4 + 80))
+  if (sendVoiceInputMessage | *(equalCopy + 80))
   {
     if (![(_MRSendVoiceInputMessageProtobuf *)sendVoiceInputMessage isEqual:?])
     {
@@ -3733,7 +3733,7 @@ LABEL_225:
   }
 
   playbackQueueRequest = self->_playbackQueueRequest;
-  if (playbackQueueRequest | *(v4 + 44))
+  if (playbackQueueRequest | *(equalCopy + 44))
   {
     if (![(_MRPlaybackQueueRequestProtobuf *)playbackQueueRequest isEqual:?])
     {
@@ -3742,7 +3742,7 @@ LABEL_225:
   }
 
   transactionPackets = self->_transactionPackets;
-  if (transactionPackets | *(v4 + 93))
+  if (transactionPackets | *(equalCopy + 93))
   {
     if (![(_MRTransactionMessageProtobuf *)transactionPackets isEqual:?])
     {
@@ -3751,7 +3751,7 @@ LABEL_225:
   }
 
   cryptoPairingMessage = self->_cryptoPairingMessage;
-  if (cryptoPairingMessage | *(v4 + 14))
+  if (cryptoPairingMessage | *(equalCopy + 14))
   {
     if (![(_MRCryptoPairingMessageProtobuf *)cryptoPairingMessage isEqual:?])
     {
@@ -3760,7 +3760,7 @@ LABEL_225:
   }
 
   gameControllerProperties = self->_gameControllerProperties;
-  if (gameControllerProperties | *(v4 + 23))
+  if (gameControllerProperties | *(equalCopy + 23))
   {
     if (![(_MRGameControllerPropertiesMessageProtobuf *)gameControllerProperties isEqual:?])
     {
@@ -3769,7 +3769,7 @@ LABEL_225:
   }
 
   readyStateMessage = self->_readyStateMessage;
-  if (readyStateMessage | *(v4 + 57))
+  if (readyStateMessage | *(equalCopy + 57))
   {
     if (![(_MRSetReadyStateMessageProtobuf *)readyStateMessage isEqual:?])
     {
@@ -3778,7 +3778,7 @@ LABEL_225:
   }
 
   connectionState = self->_connectionState;
-  if (connectionState | *(v4 + 9))
+  if (connectionState | *(equalCopy + 9))
   {
     if (![(_MRSetConnectionStateMessageProtobuf *)connectionState isEqual:?])
     {
@@ -3787,7 +3787,7 @@ LABEL_225:
   }
 
   sendButtonEventMessage = self->_sendButtonEventMessage;
-  if (sendButtonEventMessage | *(v4 + 72))
+  if (sendButtonEventMessage | *(equalCopy + 72))
   {
     if (![(_MRSendButtonEventMessageProtobuf *)sendButtonEventMessage isEqual:?])
     {
@@ -3796,7 +3796,7 @@ LABEL_225:
   }
 
   setHiliteModeMessage = self->_setHiliteModeMessage;
-  if (setHiliteModeMessage | *(v4 + 84))
+  if (setHiliteModeMessage | *(equalCopy + 84))
   {
     if (![(_MRSetHiliteModeMessageProtobuf *)setHiliteModeMessage isEqual:?])
     {
@@ -3805,7 +3805,7 @@ LABEL_225:
   }
 
   wakeDeviceMessage = self->_wakeDeviceMessage;
-  if (wakeDeviceMessage | *(v4 + 107))
+  if (wakeDeviceMessage | *(equalCopy + 107))
   {
     if (![(_MRWakeDeviceMessageProtobuf *)wakeDeviceMessage isEqual:?])
     {
@@ -3814,7 +3814,7 @@ LABEL_225:
   }
 
   genericMessage = self->_genericMessage;
-  if (genericMessage | *(v4 + 24))
+  if (genericMessage | *(equalCopy + 24))
   {
     if (![(_MRGenericMessageProtobuf *)genericMessage isEqual:?])
     {
@@ -3823,7 +3823,7 @@ LABEL_225:
   }
 
   sendPackedVirtualTouchEventMessage = self->_sendPackedVirtualTouchEventMessage;
-  if (sendPackedVirtualTouchEventMessage | *(v4 + 78))
+  if (sendPackedVirtualTouchEventMessage | *(equalCopy + 78))
   {
     if (![(_MRSendPackedVirtualTouchEventMessageProtobuf *)sendPackedVirtualTouchEventMessage isEqual:?])
     {
@@ -3832,7 +3832,7 @@ LABEL_225:
   }
 
   sendLyricsEventMessage = self->_sendLyricsEventMessage;
-  if (sendLyricsEventMessage | *(v4 + 77))
+  if (sendLyricsEventMessage | *(equalCopy + 77))
   {
     if (![(_MRSendLyricsEventMessageProtobuf *)sendLyricsEventMessage isEqual:?])
     {
@@ -3841,7 +3841,7 @@ LABEL_225:
   }
 
   setNowPlayingClientMessage = self->_setNowPlayingClientMessage;
-  if (setNowPlayingClientMessage | *(v4 + 86))
+  if (setNowPlayingClientMessage | *(equalCopy + 86))
   {
     if (![(_MRSetNowPlayingClientMessageProtobuf *)setNowPlayingClientMessage isEqual:?])
     {
@@ -3850,7 +3850,7 @@ LABEL_225:
   }
 
   setNowPlayingPlayerMessage = self->_setNowPlayingPlayerMessage;
-  if (setNowPlayingPlayerMessage | *(v4 + 87))
+  if (setNowPlayingPlayerMessage | *(equalCopy + 87))
   {
     if (![(_MRSetNowPlayingPlayerMessageProtobuf *)setNowPlayingPlayerMessage isEqual:?])
     {
@@ -3859,7 +3859,7 @@ LABEL_225:
   }
 
   modifyOutputContextRequestMessage = self->_modifyOutputContextRequestMessage;
-  if (modifyOutputContextRequestMessage | *(v4 + 41))
+  if (modifyOutputContextRequestMessage | *(equalCopy + 41))
   {
     if (![(_MRAVModifyOutputContextRequestProtobuf *)modifyOutputContextRequestMessage isEqual:?])
     {
@@ -3868,7 +3868,7 @@ LABEL_225:
   }
 
   getVolumeMessage = self->_getVolumeMessage;
-  if (getVolumeMessage | *(v4 + 32))
+  if (getVolumeMessage | *(equalCopy + 32))
   {
     if (![(_MRGetVolumeMessageProtobuf *)getVolumeMessage isEqual:?])
     {
@@ -3877,7 +3877,7 @@ LABEL_225:
   }
 
   getVolumeResultMessage = self->_getVolumeResultMessage;
-  if (getVolumeResultMessage | *(v4 + 35))
+  if (getVolumeResultMessage | *(equalCopy + 35))
   {
     if (![(_MRGetVolumeResultMessageProtobuf *)getVolumeResultMessage isEqual:?])
     {
@@ -3886,7 +3886,7 @@ LABEL_225:
   }
 
   setVolumeMessage = self->_setVolumeMessage;
-  if (setVolumeMessage | *(v4 + 90))
+  if (setVolumeMessage | *(equalCopy + 90))
   {
     if (![(_MRSetVolumeMessageProtobuf *)setVolumeMessage isEqual:?])
     {
@@ -3895,7 +3895,7 @@ LABEL_225:
   }
 
   volumeDidChangeMessage = self->_volumeDidChangeMessage;
-  if (volumeDidChangeMessage | *(v4 + 105))
+  if (volumeDidChangeMessage | *(equalCopy + 105))
   {
     if (![(_MRVolumeDidChangeMessageProtobuf *)volumeDidChangeMessage isEqual:?])
     {
@@ -3904,7 +3904,7 @@ LABEL_225:
   }
 
   removeClientMessage = self->_removeClientMessage;
-  if (removeClientMessage | *(v4 + 66))
+  if (removeClientMessage | *(equalCopy + 66))
   {
     if (![(_MRRemoveClientMessageProtobuf *)removeClientMessage isEqual:?])
     {
@@ -3913,7 +3913,7 @@ LABEL_225:
   }
 
   removePlayerMessage = self->_removePlayerMessage;
-  if (removePlayerMessage | *(v4 + 69))
+  if (removePlayerMessage | *(equalCopy + 69))
   {
     if (![(_MRRemovePlayerMessageProtobuf *)removePlayerMessage isEqual:?])
     {
@@ -3922,7 +3922,7 @@ LABEL_225:
   }
 
   updateClientMessage = self->_updateClientMessage;
-  if (updateClientMessage | *(v4 + 98))
+  if (updateClientMessage | *(equalCopy + 98))
   {
     if (![(_MRUpdateClientMessageProtobuf *)updateClientMessage isEqual:?])
     {
@@ -3931,7 +3931,7 @@ LABEL_225:
   }
 
   updateContentItemMessage = self->_updateContentItemMessage;
-  if (updateContentItemMessage | *(v4 + 100))
+  if (updateContentItemMessage | *(equalCopy + 100))
   {
     if (![(_MRUpdateContentItemMessageProtobuf *)updateContentItemMessage isEqual:?])
     {
@@ -3940,7 +3940,7 @@ LABEL_225:
   }
 
   updateContentItemArtworkMessage = self->_updateContentItemArtworkMessage;
-  if (updateContentItemArtworkMessage | *(v4 + 99))
+  if (updateContentItemArtworkMessage | *(equalCopy + 99))
   {
     if (![(_MRUpdateContentItemArtworkMessageProtobuf *)updateContentItemArtworkMessage isEqual:?])
     {
@@ -3949,7 +3949,7 @@ LABEL_225:
   }
 
   updatePlayerMessage = self->_updatePlayerMessage;
-  if (updatePlayerMessage | *(v4 + 103))
+  if (updatePlayerMessage | *(equalCopy + 103))
   {
     if (![(_MRUpdatePlayerMessageProtobuf *)updatePlayerMessage isEqual:?])
     {
@@ -3958,7 +3958,7 @@ LABEL_225:
   }
 
   promptForRouteAuthorizationMessage = self->_promptForRouteAuthorizationMessage;
-  if (promptForRouteAuthorizationMessage | *(v4 + 55))
+  if (promptForRouteAuthorizationMessage | *(equalCopy + 55))
   {
     if (![(_MRPromptForRouteAuthorizationMessageProtobuf *)promptForRouteAuthorizationMessage isEqual:?])
     {
@@ -3967,7 +3967,7 @@ LABEL_225:
   }
 
   promptForRouteAuthorizationResponseMessage = self->_promptForRouteAuthorizationResponseMessage;
-  if (promptForRouteAuthorizationResponseMessage | *(v4 + 56))
+  if (promptForRouteAuthorizationResponseMessage | *(equalCopy + 56))
   {
     if (![(_MRPromptForRouteAuthorizationResponseMessageProtobuf *)promptForRouteAuthorizationResponseMessage isEqual:?])
     {
@@ -3976,7 +3976,7 @@ LABEL_225:
   }
 
   presentRouteAuthorizationStatusMessage = self->_presentRouteAuthorizationStatusMessage;
-  if (presentRouteAuthorizationStatusMessage | *(v4 + 54))
+  if (presentRouteAuthorizationStatusMessage | *(equalCopy + 54))
   {
     if (![(_MRPresentRouteAuthorizationStatusMessageProtobuf *)presentRouteAuthorizationStatusMessage isEqual:?])
     {
@@ -3985,7 +3985,7 @@ LABEL_225:
   }
 
   getVolumeControlCapabilitiesMessage = self->_getVolumeControlCapabilitiesMessage;
-  if (getVolumeControlCapabilitiesMessage | *(v4 + 30))
+  if (getVolumeControlCapabilitiesMessage | *(equalCopy + 30))
   {
     if (![(_MRGetVolumeControlCapabilitiesMessageProtobuf *)getVolumeControlCapabilitiesMessage isEqual:?])
     {
@@ -3994,7 +3994,7 @@ LABEL_225:
   }
 
   getVolumeControlCapabilitiesResultMessage = self->_getVolumeControlCapabilitiesResultMessage;
-  if (getVolumeControlCapabilitiesResultMessage | *(v4 + 31))
+  if (getVolumeControlCapabilitiesResultMessage | *(equalCopy + 31))
   {
     if (![(_MRGetVolumeControlCapabilitiesResultMessageProtobuf *)getVolumeControlCapabilitiesResultMessage isEqual:?])
     {
@@ -4003,7 +4003,7 @@ LABEL_225:
   }
 
   volumeControlCapabilitiesDidChangeMessage = self->_volumeControlCapabilitiesDidChangeMessage;
-  if (volumeControlCapabilitiesDidChangeMessage | *(v4 + 104))
+  if (volumeControlCapabilitiesDidChangeMessage | *(equalCopy + 104))
   {
     if (![(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)volumeControlCapabilitiesDidChangeMessage isEqual:?])
     {
@@ -4012,7 +4012,7 @@ LABEL_225:
   }
 
   updateOutputDevicesMessage = self->_updateOutputDevicesMessage;
-  if (updateOutputDevicesMessage | *(v4 + 102))
+  if (updateOutputDevicesMessage | *(equalCopy + 102))
   {
     if (![(_MRUpdateOutputDevicesMessageProtobuf *)updateOutputDevicesMessage isEqual:?])
     {
@@ -4021,7 +4021,7 @@ LABEL_225:
   }
 
   removeOutputDevicesMessage = self->_removeOutputDevicesMessage;
-  if (removeOutputDevicesMessage | *(v4 + 68))
+  if (removeOutputDevicesMessage | *(equalCopy + 68))
   {
     if (![(_MRRemoveOutputDevicesMessageProtobuf *)removeOutputDevicesMessage isEqual:?])
     {
@@ -4030,7 +4030,7 @@ LABEL_225:
   }
 
   remoteTextInputMessage = self->_remoteTextInputMessage;
-  if (remoteTextInputMessage | *(v4 + 65))
+  if (remoteTextInputMessage | *(equalCopy + 65))
   {
     if (![(_MRRemoteTextInputMessageProtobuf *)remoteTextInputMessage isEqual:?])
     {
@@ -4039,7 +4039,7 @@ LABEL_225:
   }
 
   getRemoteTextInputSessionMessage = self->_getRemoteTextInputSessionMessage;
-  if (getRemoteTextInputSessionMessage | *(v4 + 26))
+  if (getRemoteTextInputSessionMessage | *(equalCopy + 26))
   {
     if (![(_MRGetRemoteTextInputSessionProtobuf *)getRemoteTextInputSessionMessage isEqual:?])
     {
@@ -4048,7 +4048,7 @@ LABEL_225:
   }
 
   playbackSessionRequestMessage = self->_playbackSessionRequestMessage;
-  if (playbackSessionRequestMessage | *(v4 + 50))
+  if (playbackSessionRequestMessage | *(equalCopy + 50))
   {
     if (![(_MRPlaybackSessionRequestMessageProtobuf *)playbackSessionRequestMessage isEqual:?])
     {
@@ -4057,7 +4057,7 @@ LABEL_225:
   }
 
   playbackSessionResponseMessage = self->_playbackSessionResponseMessage;
-  if (playbackSessionResponseMessage | *(v4 + 51))
+  if (playbackSessionResponseMessage | *(equalCopy + 51))
   {
     if (![(_MRPlaybackSessionResponseMessageProtobuf *)playbackSessionResponseMessage isEqual:?])
     {
@@ -4066,7 +4066,7 @@ LABEL_225:
   }
 
   setDefaultSupportedCommandsMessage = self->_setDefaultSupportedCommandsMessage;
-  if (setDefaultSupportedCommandsMessage | *(v4 + 83))
+  if (setDefaultSupportedCommandsMessage | *(equalCopy + 83))
   {
     if (![(_MRSetStateMessageProtobuf *)setDefaultSupportedCommandsMessage isEqual:?])
     {
@@ -4075,7 +4075,7 @@ LABEL_225:
   }
 
   playbackSessionMigrateRequestMessage = self->_playbackSessionMigrateRequestMessage;
-  if (playbackSessionMigrateRequestMessage | *(v4 + 48))
+  if (playbackSessionMigrateRequestMessage | *(equalCopy + 48))
   {
     if (![(_MRPlaybackSessionMigrateRequestMessageProtobuf *)playbackSessionMigrateRequestMessage isEqual:?])
     {
@@ -4084,7 +4084,7 @@ LABEL_225:
   }
 
   playbackSessionMigrateResponseMessage = self->_playbackSessionMigrateResponseMessage;
-  if (playbackSessionMigrateResponseMessage | *(v4 + 49))
+  if (playbackSessionMigrateResponseMessage | *(equalCopy + 49))
   {
     if (![(_MRPlaybackSessionMigrateResponseMessageProtobuf *)playbackSessionMigrateResponseMessage isEqual:?])
     {
@@ -4093,7 +4093,7 @@ LABEL_225:
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 21))
+  if (errorDescription | *(equalCopy + 21))
   {
     if (![(NSString *)errorDescription isEqual:?])
     {
@@ -4102,7 +4102,7 @@ LABEL_225:
   }
 
   playbackSessionMigrateBeginMessage = self->_playbackSessionMigrateBeginMessage;
-  if (playbackSessionMigrateBeginMessage | *(v4 + 45))
+  if (playbackSessionMigrateBeginMessage | *(equalCopy + 45))
   {
     if (![(_MRPlaybackSessionMigrateBeginMessageProtobuf *)playbackSessionMigrateBeginMessage isEqual:?])
     {
@@ -4111,7 +4111,7 @@ LABEL_225:
   }
 
   playbackSessionMigrateEndMessage = self->_playbackSessionMigrateEndMessage;
-  if (playbackSessionMigrateEndMessage | *(v4 + 46))
+  if (playbackSessionMigrateEndMessage | *(equalCopy + 46))
   {
     if (![(_MRPlaybackSessionMigrateEndMessageProtobuf *)playbackSessionMigrateEndMessage isEqual:?])
     {
@@ -4120,7 +4120,7 @@ LABEL_225:
   }
 
   updateActiveSystemEndpointMessage = self->_updateActiveSystemEndpointMessage;
-  if (updateActiveSystemEndpointMessage | *(v4 + 97))
+  if (updateActiveSystemEndpointMessage | *(equalCopy + 97))
   {
     if (![(_MRUpdateActiveSystemEndpointMessageProtobuf *)updateActiveSystemEndpointMessage isEqual:?])
     {
@@ -4129,7 +4129,7 @@ LABEL_225:
   }
 
   discoveryModeMessage = self->_discoveryModeMessage;
-  if (discoveryModeMessage | *(v4 + 16))
+  if (discoveryModeMessage | *(equalCopy + 16))
   {
     if (![(_MRSetDiscoveryModeProtobufMessage *)discoveryModeMessage isEqual:?])
     {
@@ -4138,7 +4138,7 @@ LABEL_225:
   }
 
   updateEndpointsMessage = self->_updateEndpointsMessage;
-  if (updateEndpointsMessage | *(v4 + 101))
+  if (updateEndpointsMessage | *(equalCopy + 101))
   {
     if (![(_MRUpdateEndpointsMessageProtobuf *)updateEndpointsMessage isEqual:?])
     {
@@ -4147,7 +4147,7 @@ LABEL_225:
   }
 
   removeEndpointsMessage = self->_removeEndpointsMessage;
-  if (removeEndpointsMessage | *(v4 + 67))
+  if (removeEndpointsMessage | *(equalCopy + 67))
   {
     if (![(_MRRemoveEndpointsMessageProtobuf *)removeEndpointsMessage isEqual:?])
     {
@@ -4156,7 +4156,7 @@ LABEL_225:
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 95))
+  if (uniqueIdentifier | *(equalCopy + 95))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -4165,7 +4165,7 @@ LABEL_225:
   }
 
   playerClientPropertiesMessage = self->_playerClientPropertiesMessage;
-  if (playerClientPropertiesMessage | *(v4 + 53))
+  if (playerClientPropertiesMessage | *(equalCopy + 53))
   {
     if (![(_MRPlayerClientPropertiesMessageProtobuf *)playerClientPropertiesMessage isEqual:?])
     {
@@ -4174,7 +4174,7 @@ LABEL_225:
   }
 
   originClientPropertiesMessage = self->_originClientPropertiesMessage;
-  if (originClientPropertiesMessage | *(v4 + 43))
+  if (originClientPropertiesMessage | *(equalCopy + 43))
   {
     if (![(_MROriginClientPropertiesMessageProtobuf *)originClientPropertiesMessage isEqual:?])
     {
@@ -4183,7 +4183,7 @@ LABEL_225:
   }
 
   audioFadeMessage = self->_audioFadeMessage;
-  if (audioFadeMessage | *(v4 + 4))
+  if (audioFadeMessage | *(equalCopy + 4))
   {
     if (![(_MRAudioFadeMessageProtobuf *)audioFadeMessage isEqual:?])
     {
@@ -4192,7 +4192,7 @@ LABEL_225:
   }
 
   audioFadeResponseMessage = self->_audioFadeResponseMessage;
-  if (audioFadeResponseMessage | *(v4 + 5))
+  if (audioFadeResponseMessage | *(equalCopy + 5))
   {
     if (![(_MRAudioFadeResponseMessageProtobuf *)audioFadeResponseMessage isEqual:?])
     {
@@ -4201,7 +4201,7 @@ LABEL_225:
   }
 
   discoveryUpdateEndpointsMessage = self->_discoveryUpdateEndpointsMessage;
-  if (discoveryUpdateEndpointsMessage | *(v4 + 17))
+  if (discoveryUpdateEndpointsMessage | *(equalCopy + 17))
   {
     if (![(_MRDiscoveryUpdateEndpointsProtobufMessage *)discoveryUpdateEndpointsMessage isEqual:?])
     {
@@ -4210,7 +4210,7 @@ LABEL_225:
   }
 
   discoveryUpdateOutputDevicesMessage = self->_discoveryUpdateOutputDevicesMessage;
-  if (discoveryUpdateOutputDevicesMessage | *(v4 + 18))
+  if (discoveryUpdateOutputDevicesMessage | *(equalCopy + 18))
   {
     if (![(_MRDiscoveryUpdateOutputDevicesProtobufMessage *)discoveryUpdateOutputDevicesMessage isEqual:?])
     {
@@ -4219,7 +4219,7 @@ LABEL_225:
   }
 
   setListeningModeMessage = self->_setListeningModeMessage;
-  if (setListeningModeMessage | *(v4 + 85))
+  if (setListeningModeMessage | *(equalCopy + 85))
   {
     if (![(_MRSetListeningModeMessageProtobuf *)setListeningModeMessage isEqual:?])
     {
@@ -4228,7 +4228,7 @@ LABEL_225:
   }
 
   error = self->_error;
-  if (error | *(v4 + 19))
+  if (error | *(equalCopy + 19))
   {
     if (![(_MRErrorProtobuf *)error isEqual:?])
     {
@@ -4237,7 +4237,7 @@ LABEL_225:
   }
 
   configureConnectionMessage = self->_configureConnectionMessage;
-  if (configureConnectionMessage | *(v4 + 8))
+  if (configureConnectionMessage | *(equalCopy + 8))
   {
     if (![(_MRConfigureConnectionMessageProtobuf *)configureConnectionMessage isEqual:?])
     {
@@ -4246,7 +4246,7 @@ LABEL_225:
   }
 
   createHostedEndpointRequest = self->_createHostedEndpointRequest;
-  if (createHostedEndpointRequest | *(v4 + 12))
+  if (createHostedEndpointRequest | *(equalCopy + 12))
   {
     if (![(_MRCreateHostedEndpointRequestProtobuf *)createHostedEndpointRequest isEqual:?])
     {
@@ -4255,7 +4255,7 @@ LABEL_225:
   }
 
   createHostedEndpointResponse = self->_createHostedEndpointResponse;
-  if (createHostedEndpointResponse | *(v4 + 13))
+  if (createHostedEndpointResponse | *(equalCopy + 13))
   {
     if (![(_MRCreateHostedEndpointResponseProtobuf *)createHostedEndpointResponse isEqual:?])
     {
@@ -4264,7 +4264,7 @@ LABEL_225:
   }
 
   adjustVolumeMessage = self->_adjustVolumeMessage;
-  if (adjustVolumeMessage | *(v4 + 2))
+  if (adjustVolumeMessage | *(equalCopy + 2))
   {
     if (![(_MRAdjustVolumeMessageProtobuf *)adjustVolumeMessage isEqual:?])
     {
@@ -4273,7 +4273,7 @@ LABEL_225:
   }
 
   getVolumeMutedMessage = self->_getVolumeMutedMessage;
-  if (getVolumeMutedMessage | *(v4 + 33))
+  if (getVolumeMutedMessage | *(equalCopy + 33))
   {
     if (![(_MRGetVolumeMutedMessageProtobuf *)getVolumeMutedMessage isEqual:?])
     {
@@ -4282,7 +4282,7 @@ LABEL_225:
   }
 
   getVolumeMutedResultMessage = self->_getVolumeMutedResultMessage;
-  if (getVolumeMutedResultMessage | *(v4 + 34))
+  if (getVolumeMutedResultMessage | *(equalCopy + 34))
   {
     if (![(_MRGetVolumeMutedResultMessageProtobuf *)getVolumeMutedResultMessage isEqual:?])
     {
@@ -4291,7 +4291,7 @@ LABEL_225:
   }
 
   setVolumeMutedMessage = self->_setVolumeMutedMessage;
-  if (setVolumeMutedMessage | *(v4 + 91))
+  if (setVolumeMutedMessage | *(equalCopy + 91))
   {
     if (![(_MRSetVolumeMutedMessageProtobuf *)setVolumeMutedMessage isEqual:?])
     {
@@ -4300,7 +4300,7 @@ LABEL_225:
   }
 
   volumeMutedDidChangeMessage = self->_volumeMutedDidChangeMessage;
-  if (volumeMutedDidChangeMessage | *(v4 + 106))
+  if (volumeMutedDidChangeMessage | *(equalCopy + 106))
   {
     if (![(_MRVolumeMutedDidChangeMessageProtobuf *)volumeMutedDidChangeMessage isEqual:?])
     {
@@ -4309,7 +4309,7 @@ LABEL_225:
   }
 
   setConversationDetectionEnabledMessage = self->_setConversationDetectionEnabledMessage;
-  if (setConversationDetectionEnabledMessage | *(v4 + 82))
+  if (setConversationDetectionEnabledMessage | *(equalCopy + 82))
   {
     if (![(_MRSetConversationDetectionEnabledMessageProtobuf *)setConversationDetectionEnabledMessage isEqual:?])
     {
@@ -4318,7 +4318,7 @@ LABEL_225:
   }
 
   playerClientParticipantsUpdateMessage = self->_playerClientParticipantsUpdateMessage;
-  if (playerClientParticipantsUpdateMessage | *(v4 + 52))
+  if (playerClientParticipantsUpdateMessage | *(equalCopy + 52))
   {
     if (![(_MRPlayerClientParticipantsUpdateMessageProtobuf *)playerClientParticipantsUpdateMessage isEqual:?])
     {
@@ -4327,7 +4327,7 @@ LABEL_225:
   }
 
   requestGroupSessionMessage = self->_requestGroupSessionMessage;
-  if (requestGroupSessionMessage | *(v4 + 71))
+  if (requestGroupSessionMessage | *(equalCopy + 71))
   {
     if (![(_MRRequestGroupSessionMessageProtobuf *)requestGroupSessionMessage isEqual:?])
     {
@@ -4336,7 +4336,7 @@ LABEL_225:
   }
 
   createApplicationConnectionMessage = self->_createApplicationConnectionMessage;
-  if (createApplicationConnectionMessage | *(v4 + 11))
+  if (createApplicationConnectionMessage | *(equalCopy + 11))
   {
     if (![(_MRCreateApplicationConnectionMessageProtobuf *)createApplicationConnectionMessage isEqual:?])
     {
@@ -4345,7 +4345,7 @@ LABEL_225:
   }
 
   applicationConnectionProtocolMessage = self->_applicationConnectionProtocolMessage;
-  if (applicationConnectionProtocolMessage | *(v4 + 3))
+  if (applicationConnectionProtocolMessage | *(equalCopy + 3))
   {
     if (![(_MRApplicationConnectionProtocolMessageProtobuf *)applicationConnectionProtocolMessage isEqual:?])
     {
@@ -4354,7 +4354,7 @@ LABEL_225:
   }
 
   invalidateApplicationConnectionMessage = self->_invalidateApplicationConnectionMessage;
-  if (invalidateApplicationConnectionMessage | *(v4 + 36))
+  if (invalidateApplicationConnectionMessage | *(equalCopy + 36))
   {
     if (![(_MRApplicationConnectionContextProtobuf *)invalidateApplicationConnectionMessage isEqual:?])
     {
@@ -4363,7 +4363,7 @@ LABEL_225:
   }
 
   microphoneConnectionRequestMessage = self->_microphoneConnectionRequestMessage;
-  if (microphoneConnectionRequestMessage | *(v4 + 39))
+  if (microphoneConnectionRequestMessage | *(equalCopy + 39))
   {
     if (![(_MRMicrophoneConnectionRequestMessageProtobuf *)microphoneConnectionRequestMessage isEqual:?])
     {
@@ -4372,7 +4372,7 @@ LABEL_225:
   }
 
   microphoneConnectionResponseMessage = self->_microphoneConnectionResponseMessage;
-  if (microphoneConnectionResponseMessage | *(v4 + 40))
+  if (microphoneConnectionResponseMessage | *(equalCopy + 40))
   {
     if (![(_MRMicrophoneConnectionResponseMessageProtobuf *)microphoneConnectionResponseMessage isEqual:?])
     {
@@ -4381,7 +4381,7 @@ LABEL_225:
   }
 
   playbackSessionMigratePostMessage = self->_playbackSessionMigratePostMessage;
-  if (playbackSessionMigratePostMessage | *(v4 + 47))
+  if (playbackSessionMigratePostMessage | *(equalCopy + 47))
   {
     v111 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)playbackSessionMigratePostMessage isEqual:?];
   }
@@ -4537,18 +4537,18 @@ LABEL_9:
   return v109 ^ [(_MRPlaybackSessionMigratePostMessageProtobuf *)self->_playbackSessionMigratePostMessage hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[216] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[216] & 4) != 0)
   {
-    self->_type = v4[188];
+    self->_type = fromCopy[188];
     *&self->_has |= 4u;
   }
 
-  v207 = v4;
-  if (*(v4 + 70))
+  v207 = fromCopy;
+  if (*(fromCopy + 70))
   {
     [(_MRMediaRemoteMessageProtobuf *)self setReplyIdentifier:?];
     v5 = v207;

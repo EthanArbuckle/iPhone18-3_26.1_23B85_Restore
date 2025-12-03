@@ -1,18 +1,18 @@
 @interface DetailHeader
 - (CGRect)bounds;
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityIsVisiblePlaylistTitle;
 - (UIView)accessibilityArtworkEditingOverlayView;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DetailHeader
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D0B4();
 }
 
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_29DC80(width, height);
   v7 = v6;
   v9 = v8;
@@ -52,11 +52,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_29E210(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_29E210(change);
 }
 
 - (NSString)accessibilityIsVisiblePlaylistTitle
@@ -72,7 +72,7 @@
 
 - (UIView)accessibilityArtworkEditingOverlayView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_29F560();
 
   return v3;

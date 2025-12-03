@@ -14,7 +14,7 @@
   v6 = *MEMORY[0x1E695E480];
   v8 = *a3;
   v7 = CMTimeCopyAsDictionary(&v8, v6);
-  [a1 encodeObject:v7 forKey:a4];
+  [self encodeObject:v7 forKey:a4];
   if (v7)
   {
     CFRelease(v7);
@@ -26,7 +26,7 @@
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
-  v9 = [a1 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, objc_opt_class(), 0), a2}];
+  v9 = [self decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, objc_opt_class(), 0), a2}];
 
   return CMTimeMakeFromDictionary(a3, v9);
 }
@@ -39,7 +39,7 @@
   *&v9.start.epoch = v7;
   *&v9.duration.timescale = a3[2];
   v8 = CMTimeRangeCopyAsDictionary(&v9, v6);
-  [a1 encodeObject:v8 forKey:a4];
+  [self encodeObject:v8 forKey:a4];
   if (v8)
   {
     CFRelease(v8);
@@ -51,7 +51,7 @@
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
-  v9 = [a1 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, objc_opt_class(), 0), a2}];
+  v9 = [self decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, objc_opt_class(), 0), a2}];
 
   return CMTimeRangeMakeFromDictionary(a3, v9);
 }
@@ -70,7 +70,7 @@
   *&range.duration.timescale = a3[5];
   v11 = CMTimeRangeCopyAsDictionary(&range, v7);
   v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v9, v11, 0}];
-  [a1 encodeObject:v12 forKey:a4];
+  [self encodeObject:v12 forKey:a4];
 
   if (v9)
   {
@@ -99,7 +99,7 @@
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = objc_opt_class();
-  v14 = [a1 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, v12, v13, objc_opt_class(), 0), a2}];
+  v14 = [self decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, v12, v13, objc_opt_class(), 0), a2}];
   if ([v14 count] == 2)
   {
     CMTimeRangeMakeFromDictionary(a3, [v14 objectAtIndex:0]);

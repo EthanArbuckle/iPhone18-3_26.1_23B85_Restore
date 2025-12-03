@@ -1,21 +1,21 @@
 @interface GTServiceProviderXPCProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)waitForService:(id)a3 error:(id *)a4;
-- (GTServiceProviderXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)waitForService:(id)service error:(id *)error;
+- (GTServiceProviderXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties;
 - (id)allServices;
-- (unint64_t)registerObserver:(id)a3;
-- (void)deregisterObserver:(unint64_t)a3;
-- (void)deregisterService:(unint64_t)a3;
-- (void)registerService:(id)a3 forProcess:(id)a4;
-- (void)waitForService:(id)a3 completionHandler:(id)a4;
+- (unint64_t)registerObserver:(id)observer;
+- (void)deregisterObserver:(unint64_t)observer;
+- (void)deregisterService:(unint64_t)service;
+- (void)registerService:(id)service forProcess:(id)process;
+- (void)waitForService:(id)service completionHandler:(id)handler;
 @end
 
 @implementation GTServiceProviderXPCProxy
 
-- (GTServiceProviderXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4
+- (GTServiceProviderXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  propertiesCopy = properties;
   v29.receiver = self;
   v29.super_class = GTServiceProviderXPCProxy;
   v8 = [(GTServiceProviderXPCProxy *)&v29 init];
@@ -25,25 +25,25 @@
   }
 
   v9 = &unk_2860EC7A8;
-  v10 = [v7 protocolName];
+  protocolName = [propertiesCopy protocolName];
   v11 = NSStringFromProtocol(v9);
-  v12 = [v10 isEqualToString:v11];
+  v12 = [protocolName isEqualToString:v11];
 
   if (v12)
   {
-    v13 = [v7 deviceUDID];
+    deviceUDID = [propertiesCopy deviceUDID];
     deviceUDID = v8->_deviceUDID;
-    v8->_deviceUDID = v13;
+    v8->_deviceUDID = deviceUDID;
 
     v15 = [GTServiceConnection alloc];
-    v16 = [v7 deviceUDID];
-    v17 = -[GTServiceConnection initWithConnection:device:port:](v15, "initWithConnection:device:port:", v6, v16, [v7 servicePort]);
+    deviceUDID2 = [propertiesCopy deviceUDID];
+    v17 = -[GTServiceConnection initWithConnection:device:port:](v15, "initWithConnection:device:port:", connectionCopy, deviceUDID2, [propertiesCopy servicePort]);
     connection = v8->_connection;
     v8->_connection = v17;
 
     v19 = [GTServiceProperties protocolMethods:v9];
-    v20 = [v7 protocolMethods];
-    v21 = newSetWithArrayMinusArray(v19, v20);
+    protocolMethods = [propertiesCopy protocolMethods];
+    v21 = newSetWithArrayMinusArray(v19, protocolMethods);
     ignoreMethods = v8->_ignoreMethods;
     v8->_ignoreMethods = v21;
 
@@ -78,10 +78,10 @@ LABEL_10:
   return v25;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   ignoreMethods = self->_ignoreMethods;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   if ([(NSSet *)ignoreMethods containsObject:v6])
   {
     v7 = 0;
@@ -91,7 +91,7 @@ LABEL_10:
   {
     v9.receiver = self;
     v9.super_class = GTServiceProviderXPCProxy;
-    v7 = [(GTServiceProviderXPCProxy *)&v9 respondsToSelector:a3];
+    v7 = [(GTServiceProviderXPCProxy *)&v9 respondsToSelector:selector];
   }
 
   return v7;
@@ -117,21 +117,21 @@ LABEL_10:
   return nsarray;
 }
 
-- (void)registerService:(id)a3 forProcess:(id)a4
+- (void)registerService:(id)service forProcess:(id)process
 {
-  v16 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  processCopy = process;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "serviceProperties", v16);
-  xpc_dictionary_set_nsobject(empty, "processInfo", v7);
+  xpc_dictionary_set_nsobject(empty, "serviceProperties", serviceCopy);
+  xpc_dictionary_set_nsobject(empty, "processInfo", processCopy);
 
   v10 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:0];
   v11 = v10;
   if (v10)
   {
-    [v16 setServicePort:{xpc_dictionary_get_uint64(v10, "servicePort")}];
+    [serviceCopy setServicePort:{xpc_dictionary_get_uint64(v10, "servicePort")}];
     v12 = MEMORY[0x277CCACA8];
     string = xpc_dictionary_get_string(v11, "deviceUDID");
     if (string)
@@ -145,33 +145,33 @@ LABEL_10:
     }
 
     v15 = [v12 stringWithUTF8String:v14];
-    [v16 setDeviceUDID:v15];
+    [serviceCopy setDeviceUDID:v15];
   }
 
   else
   {
-    [v16 setServicePort:0];
-    [v16 setDeviceUDID:0];
+    [serviceCopy setServicePort:0];
+    [serviceCopy setDeviceUDID:0];
   }
 }
 
-- (void)waitForService:(id)a3 completionHandler:(id)a4
+- (void)waitForService:(id)service completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  serviceCopy = service;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  v11 = [v8 UTF8String];
+  uTF8String = [serviceCopy UTF8String];
 
-  xpc_dictionary_set_string(empty, "protocolName", v11);
+  xpc_dictionary_set_string(empty, "protocolName", uTF8String);
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__GTServiceProviderXPCProxy_waitForService_completionHandler___block_invoke;
   v14[3] = &unk_279661050;
-  v15 = v7;
-  v13 = v7;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [(GTServiceConnection *)connection sendMessage:empty replyHandler:v14];
 }
 
@@ -193,25 +193,25 @@ void __62__GTServiceProviderXPCProxy_waitForService_completionHandler___block_in
   }
 }
 
-- (BOOL)waitForService:(id)a3 error:(id *)a4
+- (BOOL)waitForService:(id)service error:(id *)error
 {
-  v7 = a3;
+  serviceCopy = service;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  v10 = [v7 UTF8String];
+  uTF8String = [serviceCopy UTF8String];
 
-  xpc_dictionary_set_string(empty, "protocolName", v10);
-  v11 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:a4];
+  xpc_dictionary_set_string(empty, "protocolName", uTF8String);
+  v11 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:error];
   v12 = v11;
   if (v11)
   {
     nserror = xpc_dictionary_get_nserror(v11, "error");
     v14 = nserror == 0;
-    if (a4 && nserror)
+    if (error && nserror)
     {
       nserror = nserror;
-      *a4 = nserror;
+      *error = nserror;
     }
   }
 
@@ -223,22 +223,22 @@ void __62__GTServiceProviderXPCProxy_waitForService_completionHandler___block_in
   return v14;
 }
 
-- (void)deregisterService:(unint64_t)a3
+- (void)deregisterService:(unint64_t)service
 {
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
-  xpc_dictionary_set_uint64(xdict, "servicePort", a3);
+  xpc_dictionary_set_uint64(xdict, "servicePort", service);
   [(GTServiceConnection *)self->_connection sendMessage:xdict];
 }
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  v8 = [[GTServiceProviderReplyStream alloc] initWithObserver:v5];
+  v8 = [[GTServiceProviderReplyStream alloc] initWithObserver:observerCopy];
 
   v9 = [(GTServiceConnection *)self->_connection registerDispatcher:v8];
   v10 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty replyStreamId:v9 error:0];
@@ -260,23 +260,23 @@ void __62__GTServiceProviderXPCProxy_waitForService_completionHandler___block_in
   return uint64;
 }
 
-- (void)deregisterObserver:(unint64_t)a3
+- (void)deregisterObserver:(unint64_t)observer
 {
   observerIdToPort = self->_observerIdToPort;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
   v8 = [(NSMutableDictionary *)observerIdToPort objectForKeyedSubscript:v7];
-  v9 = [v8 unsignedLongValue];
+  unsignedLongValue = [v8 unsignedLongValue];
 
   v10 = self->_observerIdToPort;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:observer];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
-  xpc_dictionary_set_uint64(xdict, "observerId", a3);
+  xpc_dictionary_set_uint64(xdict, "observerId", observer);
   v13 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:xdict error:0];
-  [(GTServiceConnection *)self->_connection deregisterDispatcher:v9];
+  [(GTServiceConnection *)self->_connection deregisterDispatcher:unsignedLongValue];
 }
 
 @end

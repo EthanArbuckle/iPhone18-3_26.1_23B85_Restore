@@ -1,55 +1,55 @@
 @interface ATXDefaultHomeScreenItemTilerPodBuilder
-- (ATXDefaultHomeScreenItemTilerPodBuilder)initWithDefaultStack:(id)a3 defaultWidgetsSmall:(id)a4 defaultWidgetsMedium:(id)a5 defaultWidgetsLarge:(id)a6 defaultWidgetsExtraLarge:(id)a7 widgetFamilyMask:(unint64_t)a8 targetNumberOfSuggestions:(unint64_t)a9;
+- (ATXDefaultHomeScreenItemTilerPodBuilder)initWithDefaultStack:(id)stack defaultWidgetsSmall:(id)small defaultWidgetsMedium:(id)medium defaultWidgetsLarge:(id)large defaultWidgetsExtraLarge:(id)extraLarge widgetFamilyMask:(unint64_t)mask targetNumberOfSuggestions:(unint64_t)suggestions;
 - (NSArray)tiledHomeScreenItems;
-- (unint64_t)_addPod:(id)a3 podType:(unint64_t)a4 podsAdded:(unint64_t)a5;
-- (unint64_t)_addPodTypeFourSmalls:(id)a3;
-- (unint64_t)_addPodTypeOneExtraLarge:(id)a3 podsAdded:(unint64_t)a4;
-- (unint64_t)_addPodTypeOneLarge:(id)a3;
-- (unint64_t)_addPodTypeOneMediumAndTwoSmalls:(id)a3;
-- (unint64_t)_addPodTypeTwoMediums:(id)a3;
-- (unint64_t)_addPodTypeTwoSmallsAndOneMedium:(id)a3;
-- (unint64_t)addFirstPod:(id)a3;
-- (unint64_t)addPod:(id)a3 podType:(unint64_t)a4 allowAlternatePodTypeAsBackup:(BOOL)a5 podsAdded:(unint64_t)a6;
+- (unint64_t)_addPod:(id)pod podType:(unint64_t)type podsAdded:(unint64_t)added;
+- (unint64_t)_addPodTypeFourSmalls:(id)smalls;
+- (unint64_t)_addPodTypeOneExtraLarge:(id)large podsAdded:(unint64_t)added;
+- (unint64_t)_addPodTypeOneLarge:(id)large;
+- (unint64_t)_addPodTypeOneMediumAndTwoSmalls:(id)smalls;
+- (unint64_t)_addPodTypeTwoMediums:(id)mediums;
+- (unint64_t)_addPodTypeTwoSmallsAndOneMedium:(id)medium;
+- (unint64_t)addFirstPod:(id)pod;
+- (unint64_t)addPod:(id)pod podType:(unint64_t)type allowAlternatePodTypeAsBackup:(BOOL)backup podsAdded:(unint64_t)added;
 @end
 
 @implementation ATXDefaultHomeScreenItemTilerPodBuilder
 
-- (ATXDefaultHomeScreenItemTilerPodBuilder)initWithDefaultStack:(id)a3 defaultWidgetsSmall:(id)a4 defaultWidgetsMedium:(id)a5 defaultWidgetsLarge:(id)a6 defaultWidgetsExtraLarge:(id)a7 widgetFamilyMask:(unint64_t)a8 targetNumberOfSuggestions:(unint64_t)a9
+- (ATXDefaultHomeScreenItemTilerPodBuilder)initWithDefaultStack:(id)stack defaultWidgetsSmall:(id)small defaultWidgetsMedium:(id)medium defaultWidgetsLarge:(id)large defaultWidgetsExtraLarge:(id)extraLarge widgetFamilyMask:(unint64_t)mask targetNumberOfSuggestions:(unint64_t)suggestions
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  stackCopy = stack;
+  smallCopy = small;
+  mediumCopy = medium;
+  largeCopy = large;
+  extraLargeCopy = extraLarge;
   v34.receiver = self;
   v34.super_class = ATXDefaultHomeScreenItemTilerPodBuilder;
   v21 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)&v34 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_defaultStack, a3);
-    v23 = [v17 mutableCopy];
+    objc_storeStrong(&v21->_defaultStack, stack);
+    v23 = [smallCopy mutableCopy];
     defaultWidgetsSmall = v22->_defaultWidgetsSmall;
     v22->_defaultWidgetsSmall = v23;
 
-    v25 = [v18 mutableCopy];
+    v25 = [mediumCopy mutableCopy];
     defaultWidgetsMedium = v22->_defaultWidgetsMedium;
     v22->_defaultWidgetsMedium = v25;
 
-    v27 = [v19 mutableCopy];
+    v27 = [largeCopy mutableCopy];
     defaultWidgetsLarge = v22->_defaultWidgetsLarge;
     v22->_defaultWidgetsLarge = v27;
 
-    v29 = [v20 mutableCopy];
+    v29 = [extraLargeCopy mutableCopy];
     defaultWidgetsExtraLarge = v22->_defaultWidgetsExtraLarge;
     v22->_defaultWidgetsExtraLarge = v29;
 
-    v22->_widgetFamilyMask = a8;
+    v22->_widgetFamilyMask = mask;
     v31 = objc_opt_new();
     tilerHelper = v22->_tilerHelper;
     v22->_tilerHelper = v31;
 
-    v22->_targetNumberOfSuggestions = a9;
+    v22->_targetNumberOfSuggestions = suggestions;
   }
 
   return v22;
@@ -62,9 +62,9 @@
   return v2;
 }
 
-- (unint64_t)addFirstPod:(id)a3
+- (unint64_t)addFirstPod:(id)pod
 {
-  v4 = a3;
+  podCopy = pod;
   if ((self->_widgetFamilyMask & 2) != 0 && [(ATXDefaultWidgetStack *)self->_defaultStack suggestedSize]== 1 && [(NSMutableArray *)self->_defaultWidgetsSmall count]>= 2)
   {
     v5 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsSmall];
@@ -72,9 +72,9 @@
     v7 = v6;
     if (self->_defaultStack && v5 && v6)
     {
-      [v4 addObject:?];
-      [v4 addObject:v5];
-      [v4 addObject:v7];
+      [podCopy addObject:?];
+      [podCopy addObject:v5];
+      [podCopy addObject:v7];
       v8 = 1;
     }
 
@@ -94,19 +94,19 @@
   return v8;
 }
 
-- (unint64_t)addPod:(id)a3 podType:(unint64_t)a4 allowAlternatePodTypeAsBackup:(BOOL)a5 podsAdded:(unint64_t)a6
+- (unint64_t)addPod:(id)pod podType:(unint64_t)type allowAlternatePodTypeAsBackup:(BOOL)backup podsAdded:(unint64_t)added
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPod:v10 podType:a4 podsAdded:a6];
-  if (!v11 && v7)
+  backupCopy = backup;
+  podCopy = pod;
+  v11 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPod:podCopy podType:type podsAdded:added];
+  if (!v11 && backupCopy)
   {
     v12 = 0;
     while (1)
     {
-      if (a4 != v12)
+      if (type != v12)
       {
-        v13 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPod:v10 podType:v12 podsAdded:a6];
+        v13 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPod:podCopy podType:v12 podsAdded:added];
         if (v13)
         {
           break;
@@ -128,38 +128,38 @@ LABEL_9:
   return v11;
 }
 
-- (unint64_t)_addPod:(id)a3 podType:(unint64_t)a4 podsAdded:(unint64_t)a5
+- (unint64_t)_addPod:(id)pod podType:(unint64_t)type podsAdded:(unint64_t)added
 {
-  v8 = a3;
+  podCopy = pod;
   v9 = 0;
-  if (a4 > 2)
+  if (type > 2)
   {
-    switch(a4)
+    switch(type)
     {
       case 3uLL:
-        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeOneLarge:v8];
+        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeOneLarge:podCopy];
         goto LABEL_14;
       case 5uLL:
-        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeOneExtraLarge:v8 podsAdded:a5];
+        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeOneExtraLarge:podCopy podsAdded:added];
         goto LABEL_14;
       case 4uLL:
-        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeFourSmalls:v8];
+        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeFourSmalls:podCopy];
         goto LABEL_14;
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 0uLL:
-        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeOneMediumAndTwoSmalls:v8];
+        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeOneMediumAndTwoSmalls:podCopy];
         goto LABEL_14;
       case 1uLL:
-        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeTwoSmallsAndOneMedium:v8];
+        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeTwoSmallsAndOneMedium:podCopy];
         goto LABEL_14;
       case 2uLL:
-        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeTwoMediums:v8];
+        v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self _addPodTypeTwoMediums:podCopy];
 LABEL_14:
         v9 = v10;
         break;
@@ -169,9 +169,9 @@ LABEL_14:
   return v9;
 }
 
-- (unint64_t)_addPodTypeFourSmalls:(id)a3
+- (unint64_t)_addPodTypeFourSmalls:(id)smalls
 {
-  v4 = a3;
+  smallsCopy = smalls;
   if ((self->_widgetFamilyMask & 2) == 0 || [(NSMutableArray *)self->_defaultWidgetsSmall count]< 4)
   {
     goto LABEL_19;
@@ -196,10 +196,10 @@ LABEL_14:
 
   else
   {
-    [v4 addObject:v5];
-    [v4 addObject:v6];
-    [v4 addObject:v7];
-    [v4 addObject:v9];
+    [smallsCopy addObject:v5];
+    [smallsCopy addObject:v6];
+    [smallsCopy addObject:v7];
+    [smallsCopy addObject:v9];
   }
 
   if (!v13)
@@ -216,9 +216,9 @@ LABEL_19:
   return v14;
 }
 
-- (unint64_t)_addPodTypeTwoMediums:(id)a3
+- (unint64_t)_addPodTypeTwoMediums:(id)mediums
 {
-  v4 = a3;
+  mediumsCopy = mediums;
   if ((self->_widgetFamilyMask & 4) != 0 && [(NSMutableArray *)self->_defaultWidgetsMedium count]>= 2)
   {
     v5 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsMedium];
@@ -226,8 +226,8 @@ LABEL_19:
     v7 = v6;
     if (v5 && v6)
     {
-      [v4 addObject:v5];
-      [v4 addObject:v7];
+      [mediumsCopy addObject:v5];
+      [mediumsCopy addObject:v7];
       v8 = 1;
     }
 
@@ -247,9 +247,9 @@ LABEL_19:
   return v8;
 }
 
-- (unint64_t)_addPodTypeOneLarge:(id)a3
+- (unint64_t)_addPodTypeOneLarge:(id)large
 {
-  v4 = a3;
+  largeCopy = large;
   if ((self->_widgetFamilyMask & 8) == 0 || ![(NSMutableArray *)self->_defaultWidgetsLarge count])
   {
     goto LABEL_6;
@@ -265,7 +265,7 @@ LABEL_6:
   }
 
   v6 = v5;
-  [v4 addObject:v5];
+  [largeCopy addObject:v5];
 
   v7 = 1;
 LABEL_7:
@@ -273,19 +273,19 @@ LABEL_7:
   return v7;
 }
 
-- (unint64_t)_addPodTypeOneExtraLarge:(id)a3 podsAdded:(unint64_t)a4
+- (unint64_t)_addPodTypeOneExtraLarge:(id)large podsAdded:(unint64_t)added
 {
-  v4 = a4;
-  v6 = a3;
+  addedCopy = added;
+  largeCopy = large;
   v7 = 0;
-  if ((v4 & 1) == 0 && (self->_widgetFamilyMask & 0x10) != 0)
+  if ((addedCopy & 1) == 0 && (self->_widgetFamilyMask & 0x10) != 0)
   {
     if ([(NSMutableArray *)self->_defaultWidgetsExtraLarge count])
     {
       v7 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsExtraLarge];
       if (v7)
       {
-        [v6 addObject:v7];
+        [largeCopy addObject:v7];
 
         v7 = 2;
       }
@@ -305,9 +305,9 @@ LABEL_7:
   return v7;
 }
 
-- (unint64_t)_addPodTypeOneMediumAndTwoSmalls:(id)a3
+- (unint64_t)_addPodTypeOneMediumAndTwoSmalls:(id)smalls
 {
-  v4 = a3;
+  smallsCopy = smalls;
   if ((~LODWORD(self->_widgetFamilyMask) & 6) != 0 || ![(NSMutableArray *)self->_defaultWidgetsMedium count]|| [(NSMutableArray *)self->_defaultWidgetsSmall count]< 2)
   {
     v9 = 0;
@@ -321,9 +321,9 @@ LABEL_7:
     v8 = v7;
     if (v5 && v6 && v7)
     {
-      [v4 addObject:v5];
-      [v4 addObject:v6];
-      [v4 addObject:v8];
+      [smallsCopy addObject:v5];
+      [smallsCopy addObject:v6];
+      [smallsCopy addObject:v8];
       v9 = 1;
     }
 
@@ -339,9 +339,9 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)_addPodTypeTwoSmallsAndOneMedium:(id)a3
+- (unint64_t)_addPodTypeTwoSmallsAndOneMedium:(id)medium
 {
-  v4 = a3;
+  mediumCopy = medium;
   if ((~LODWORD(self->_widgetFamilyMask) & 6) != 0 || ![(NSMutableArray *)self->_defaultWidgetsMedium count]|| [(NSMutableArray *)self->_defaultWidgetsSmall count]< 2)
   {
     v9 = 0;
@@ -355,9 +355,9 @@ LABEL_7:
     v8 = v7;
     if (v5 && v6 && v7)
     {
-      [v4 addObject:v6];
-      [v4 addObject:v8];
-      [v4 addObject:v5];
+      [mediumCopy addObject:v6];
+      [mediumCopy addObject:v8];
+      [mediumCopy addObject:v5];
       v9 = 1;
     }
 

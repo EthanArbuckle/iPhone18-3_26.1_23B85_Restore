@@ -6,17 +6,17 @@
 
 - (id)contentTilingController
 {
-  v3 = [(PXWidgetCompositionElement *)self widget];
-  v4 = [v3 contentTilingController];
+  widget = [(PXWidgetCompositionElement *)self widget];
+  contentTilingController = [widget contentTilingController];
   if (![(PXWidgetCompositionTilingControllerElement *)self _didLoadContent])
   {
-    v5 = [(PXWidgetCompositionElement *)self scrollViewController];
-    [v4 setScrollController:v5];
+    scrollViewController = [(PXWidgetCompositionElement *)self scrollViewController];
+    [contentTilingController setScrollController:scrollViewController];
 
     [(PXWidgetCompositionTilingControllerElement *)self _setDidLoadContent:1];
   }
 
-  return v4;
+  return contentTilingController;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface PDBootstrapOperation
 - (BOOL)canSkipExecution;
-- (id)replaceEndpoints:(id)a3 excludeEndpointIDs:(id)a4 forServiceID:(id)a5;
-- (id)saveEndpointConfig:(id)a3;
+- (id)replaceEndpoints:(id)endpoints excludeEndpointIDs:(id)ds forServiceID:(id)d;
+- (id)saveEndpointConfig:(id)config;
 - (void)prepare;
 @end
 
@@ -9,17 +9,17 @@
 
 - (BOOL)canSkipExecution
 {
-  v3 = [(PDEndpointRequestOperation *)self endpointInfo];
-  v4 = v3;
-  if (!v3 || *(v3 + 16) == 0.0)
+  endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+  v4 = endpointInfo;
+  if (!endpointInfo || *(endpointInfo + 16) == 0.0)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v5 = [(PDEndpointRequestOperation *)self endpointInfo];
-    v6 = !sub_1000E9D80(v5);
+    endpointInfo2 = [(PDEndpointRequestOperation *)self endpointInfo];
+    v6 = !sub_1000E9D80(endpointInfo2);
   }
 
   return v6;
@@ -38,17 +38,17 @@
   }
 }
 
-- (id)saveEndpointConfig:(id)a3
+- (id)saveEndpointConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = objc_alloc_init(PDEndpointInfo);
-  v6 = [v4 serviceId];
-  sub_100087930(v5, v6);
+  serviceId = [configCopy serviceId];
+  sub_100087930(v5, serviceId);
 
-  v7 = [v4 identifier];
-  sub_10003F68C(v5, v7);
+  identifier = [configCopy identifier];
+  sub_10003F68C(v5, identifier);
 
-  v8 = [v4 url];
+  v8 = [configCopy url];
   sub_10003F69C(v5, v8);
 
   v9 = sub_1000E9BC0(v5);
@@ -63,33 +63,33 @@
     v10 = [NSError cls_createErrorWithCode:307 description:@"Server sent invalid URL!"];
   }
 
-  v11 = [v4 payloadLimitBytes];
+  payloadLimitBytes = [configCopy payloadLimitBytes];
   if (v5)
   {
-    v5->_payloadLimitBytes = v11;
-    v5->_payloadLimitItems = [v4 payloadLimitItems];
-    v5->_responseTTLSeconds = [v4 responseTTLSeconds];
-    v5->_requiresAuth = [v4 requiresAuth];
+    v5->_payloadLimitBytes = payloadLimitBytes;
+    v5->_payloadLimitItems = [configCopy payloadLimitItems];
+    v5->_responseTTLSeconds = [configCopy responseTTLSeconds];
+    v5->_requiresAuth = [configCopy requiresAuth];
   }
 
   else
   {
-    [v4 payloadLimitItems];
-    [v4 responseTTLSeconds];
-    [v4 requiresAuth];
+    [configCopy payloadLimitItems];
+    [configCopy responseTTLSeconds];
+    [configCopy requiresAuth];
   }
 
-  if ([v4 hasIsInternal])
+  if ([configCopy hasIsInternal])
   {
-    v12 = [v4 isInternal];
+    isInternal = [configCopy isInternal];
     if (v5)
     {
-      v5->_isInternal = v12;
+      v5->_isInternal = isInternal;
     }
   }
 
-  v13 = [(PDOperation *)self database];
-  v14 = [v13 insertOrUpdateObject:v5];
+  database = [(PDOperation *)self database];
+  v14 = [database insertOrUpdateObject:v5];
 
   if ((v14 & 1) == 0)
   {
@@ -101,17 +101,17 @@
   return v10;
 }
 
-- (id)replaceEndpoints:(id)a3 excludeEndpointIDs:(id)a4 forServiceID:(id)a5
+- (id)replaceEndpoints:(id)endpoints excludeEndpointIDs:(id)ds forServiceID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  endpointsCopy = endpoints;
+  dsCopy = ds;
+  dCopy = d;
   v11 = objc_opt_new();
-  [v11 addObject:v10];
-  if ([v9 count])
+  [v11 addObject:dCopy];
+  if ([dsCopy count])
   {
-    v12 = [PDDatabase whereSQLForArray:v9 prefix:@"serviceID = ? AND NOT identifier IN "];
-    [v11 addObjectsFromArray:v9];
+    v12 = [PDDatabase whereSQLForArray:dsCopy prefix:@"serviceID = ? AND NOT identifier IN "];
+    [v11 addObjectsFromArray:dsCopy];
   }
 
   else
@@ -119,20 +119,20 @@
     v12 = @"serviceID = ?";
   }
 
-  v13 = [(PDOperation *)self database];
-  [v13 deleteAll:objc_opt_class() where:v12 bindings:v11];
+  database = [(PDOperation *)self database];
+  [database deleteAll:objc_opt_class() where:v12 bindings:v11];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = v8;
+  v14 = endpointsCopy;
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
     v26 = v11;
-    v27 = v9;
+    v27 = dsCopy;
     v17 = *v29;
     while (2)
     {
@@ -145,13 +145,13 @@
 
         v19 = *(*(&v28 + 1) + 8 * i);
         v20 = objc_autoreleasePoolPush();
-        if (v10)
+        if (dCopy)
         {
-          if ([@"orion" isEqualToString:v10])
+          if ([@"orion" isEqualToString:dCopy])
           {
-            v21 = [v19 serviceId];
+            serviceId = [v19 serviceId];
 
-            if (!v21)
+            if (!serviceId)
             {
               [v19 setServiceId:@"orion"];
             }
@@ -186,7 +186,7 @@
     v24 = 0;
 LABEL_19:
     v11 = v26;
-    v9 = v27;
+    dsCopy = v27;
   }
 
   else

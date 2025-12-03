@@ -1,28 +1,28 @@
 @interface WLKPostPlayAutoPlayCache
-- (BOOL)_cacheResultForType:(unint64_t)a3;
-- (BOOL)currentSettingForType:(unint64_t)a3;
-- (BOOL)hasCacheForType:(unint64_t)a3;
-- (WLKPostPlayAutoPlayCache)initWithUserDefaults:(id)a3;
-- (id)_cacheKeyForType:(unint64_t)a3;
+- (BOOL)_cacheResultForType:(unint64_t)type;
+- (BOOL)currentSettingForType:(unint64_t)type;
+- (BOOL)hasCacheForType:(unint64_t)type;
+- (WLKPostPlayAutoPlayCache)initWithUserDefaults:(id)defaults;
+- (id)_cacheKeyForType:(unint64_t)type;
 - (id)currentSettings;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setIsWaitingForConnection:(BOOL)a3;
-- (void)updateWithSettings:(id)a3;
+- (void)setIsWaitingForConnection:(BOOL)connection;
+- (void)updateWithSettings:(id)settings;
 @end
 
 @implementation WLKPostPlayAutoPlayCache
 
-- (WLKPostPlayAutoPlayCache)initWithUserDefaults:(id)a3
+- (WLKPostPlayAutoPlayCache)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v19.receiver = self;
   v19.super_class = WLKPostPlayAutoPlayCache;
   v6 = [(WLKPostPlayAutoPlayCache *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     objc_initWeak(&location, v7);
     v8 = MEMORY[0x277D85CD0];
     v9 = MEMORY[0x277D85CD0];
@@ -122,7 +122,7 @@ void __49__WLKPostPlayAutoPlayCache_initWithUserDefaults___block_invoke_19(uint6
   [(NSUserDefaults *)userDefaults removeObjectForKey:@"auto-play-is-waiting-for-connection-status"];
 }
 
-- (BOOL)hasCacheForType:(unint64_t)a3
+- (BOOL)hasCacheForType:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = [(WLKPostPlayAutoPlayCache *)self _cacheKeyForType:?];
@@ -131,7 +131,7 @@ void __49__WLKPostPlayAutoPlayCache_initWithUserDefaults___block_invoke_19(uint6
   v7 = WLKSystemLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:v6 != 0];
     v12 = 138412546;
     v13 = v8;
@@ -144,36 +144,36 @@ void __49__WLKPostPlayAutoPlayCache_initWithUserDefaults___block_invoke_19(uint6
   return v6 != 0;
 }
 
-- (void)updateWithSettings:(id)a3
+- (void)updateWithSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = settingsCopy;
     _os_log_impl(&dword_272A0F000, v5, OS_LOG_TYPE_DEFAULT, "WLKPostPlayAutoPlay - update cache for post play auto-play settings: %@", &v13, 0xCu);
   }
 
-  v6 = [v4 nextEpisodeSettingValue];
+  nextEpisodeSettingValue = [settingsCopy nextEpisodeSettingValue];
 
-  if (v6)
+  if (nextEpisodeSettingValue)
   {
-    v7 = [v4 nextEpisodeSettingValue];
-    v8 = [v7 BOOLValue];
+    nextEpisodeSettingValue2 = [settingsCopy nextEpisodeSettingValue];
+    bOOLValue = [nextEpisodeSettingValue2 BOOLValue];
 
-    [(WLKPostPlayAutoPlayCache *)self _setEnabled:v8 type:1];
+    [(WLKPostPlayAutoPlayCache *)self _setEnabled:bOOLValue type:1];
   }
 
-  v9 = [v4 recommendedItemsSettingValue];
+  recommendedItemsSettingValue = [settingsCopy recommendedItemsSettingValue];
 
-  if (v9)
+  if (recommendedItemsSettingValue)
   {
-    v10 = [v4 recommendedItemsSettingValue];
-    v11 = [v10 BOOLValue];
+    recommendedItemsSettingValue2 = [settingsCopy recommendedItemsSettingValue];
+    bOOLValue2 = [recommendedItemsSettingValue2 BOOLValue];
 
-    [(WLKPostPlayAutoPlayCache *)self _setEnabled:v11 type:2];
+    [(WLKPostPlayAutoPlayCache *)self _setEnabled:bOOLValue2 type:2];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -193,34 +193,34 @@ void __49__WLKPostPlayAutoPlayCache_initWithUserDefaults___block_invoke_19(uint6
   return v3;
 }
 
-- (BOOL)currentSettingForType:(unint64_t)a3
+- (BOOL)currentSettingForType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(WLKPostPlayAutoPlayCache *)self currentSettings];
-  v5 = v4;
-  if (a3 == 2)
+  currentSettings = [(WLKPostPlayAutoPlayCache *)self currentSettings];
+  v5 = currentSettings;
+  if (type == 2)
   {
-    v6 = [v4 recommendedItemsSettingValue];
+    recommendedItemsSettingValue = [currentSettings recommendedItemsSettingValue];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v6 = [v4 nextEpisodeSettingValue];
+    recommendedItemsSettingValue = [currentSettings nextEpisodeSettingValue];
 LABEL_5:
-    v7 = v6;
-    v8 = [v6 BOOLValue];
+    v7 = recommendedItemsSettingValue;
+    bOOLValue = [recommendedItemsSettingValue BOOLValue];
 
     goto LABEL_7;
   }
 
-  v8 = 1;
+  bOOLValue = 1;
 LABEL_7:
   v9 = WLKSystemLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     v14 = 138412546;
     v15 = v10;
     v16 = 2112;
@@ -229,13 +229,13 @@ LABEL_7:
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
-- (void)setIsWaitingForConnection:(BOOL)a3
+- (void)setIsWaitingForConnection:(BOOL)connection
 {
   userDefaults = self->_userDefaults;
-  if (a3)
+  if (connection)
   {
     [(NSUserDefaults *)userDefaults setBool:1 forKey:@"auto-play-is-waiting-for-connection-status"];
   }
@@ -252,17 +252,17 @@ void __71__WLKPostPlayAutoPlayCache__postLocalNotificationForType_status_error__
   [v2 postNotificationName:*(a1 + 32) object:0 userInfo:*(a1 + 40)];
 }
 
-- (BOOL)_cacheResultForType:(unint64_t)a3
+- (BOOL)_cacheResultForType:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   if ([(WLKPostPlayAutoPlayCache *)self hasCacheForType:?])
   {
-    v5 = [(WLKPostPlayAutoPlayCache *)self _cacheKeyForType:a3];
+    v5 = [(WLKPostPlayAutoPlayCache *)self _cacheKeyForType:type];
     v6 = [(NSUserDefaults *)self->_userDefaults BOOLForKey:v5];
     v7 = WLKSystemLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       v12 = 138412546;
       v13 = v8;
       v14 = 1024;
@@ -276,7 +276,7 @@ void __71__WLKPostPlayAutoPlayCache__postLocalNotificationForType_status_error__
     v5 = WLKSystemLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       v12 = 138412290;
       v13 = v9;
       _os_log_impl(&dword_272A0F000, v5, OS_LOG_TYPE_DEFAULT, "WLKPostPlayAutoPlay - No cache result for type: %@, default to YES", &v12, 0xCu);
@@ -289,16 +289,16 @@ void __71__WLKPostPlayAutoPlayCache__postLocalNotificationForType_status_error__
   return v6;
 }
 
-- (id)_cacheKeyForType:(unint64_t)a3
+- (id)_cacheKeyForType:(unint64_t)type
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = @"auto-play-recommended-items-status";
-  if (a3 != 2)
+  if (type != 2)
   {
     v4 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = @"auto-play-next-episode-status";
   }
@@ -311,7 +311,7 @@ void __71__WLKPostPlayAutoPlayCache__postLocalNotificationForType_status_error__
   v6 = WLKSystemLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     v10 = 138412546;
     v11 = v7;
     v12 = 2112;

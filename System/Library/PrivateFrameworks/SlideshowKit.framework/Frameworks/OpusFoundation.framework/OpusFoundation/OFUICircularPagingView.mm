@@ -1,16 +1,16 @@
 @interface OFUICircularPagingView
-- (CGRect)_frameForPageAtIndex:(unint64_t)a3;
+- (CGRect)_frameForPageAtIndex:(unint64_t)index;
 - (CGRect)_frameForScrollView;
-- (OFUICircularPagingView)initWithCoder:(id)a3;
-- (OFUICircularPagingView)initWithFrame:(CGRect)a3;
-- (id)pagingViewAtIndex:(unint64_t)a3;
+- (OFUICircularPagingView)initWithCoder:(id)coder;
+- (OFUICircularPagingView)initWithFrame:(CGRect)frame;
+- (id)pagingViewAtIndex:(unint64_t)index;
 - (void)_updateLayout;
 - (void)commonInit;
 - (void)dealloc;
 - (void)didRotate;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)willAnimateRotation;
 @end
 
@@ -53,11 +53,11 @@
   [(UIScrollView *)self->_scrollView addSubview:self->_nextPagingView];
 }
 
-- (OFUICircularPagingView)initWithFrame:(CGRect)a3
+- (OFUICircularPagingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OFUICircularPagingView;
-  v3 = [(OFViewProxy *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OFViewProxy *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -67,11 +67,11 @@
   return v4;
 }
 
-- (OFUICircularPagingView)initWithCoder:(id)a3
+- (OFUICircularPagingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUICircularPagingView;
-  v3 = [(OFViewProxy *)&v6 initWithCoder:a3];
+  v3 = [(OFViewProxy *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -140,12 +140,12 @@
   return result;
 }
 
-- (CGRect)_frameForPageAtIndex:(unint64_t)a3
+- (CGRect)_frameForPageAtIndex:(unint64_t)index
 {
   [(UIScrollView *)self->_scrollView frame];
   v6 = v5;
   [(OFUICircularPagingView *)self bounds];
-  v9 = self->_gapBetweenPages * 0.5 + v6 * a3;
+  v9 = self->_gapBetweenPages * 0.5 + v6 * index;
   v10 = 0.0;
   result.size.height = v8;
   result.size.width = v7;
@@ -205,12 +205,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OFUICircularPagingView *)self frame];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -232,12 +232,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OFUICircularPagingView *)self bounds];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -259,16 +259,16 @@
   }
 }
 
-- (id)pagingViewAtIndex:(unint64_t)a3
+- (id)pagingViewAtIndex:(unint64_t)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->super.super.super.super.super.isa + *off_279C8A460[a3]);
+    return *(&self->super.super.super.super.super.isa + *off_279C8A460[index]);
   }
 }
 
@@ -297,19 +297,19 @@
   [(OFUICircularPagingView *)self _updateLayout];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  [a3 contentOffset];
+  [decelerating contentOffset];
   v6 = v5;
-  [a3 frame];
+  [decelerating frame];
   if (v6 > v7 && self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(OFUICircularPagingViewDelegate *)self->_delegate circularPagingViewDidMoveForward:self];
   }
 
-  [a3 contentOffset];
+  [decelerating contentOffset];
   v9 = v8;
-  [a3 frame];
+  [decelerating frame];
   if (v9 < v10 && self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(OFUICircularPagingViewDelegate *)self->_delegate circularPagingViewDidMoveBackward:self];
@@ -317,7 +317,7 @@
 
   [(OFUICircularPagingView *)self _frameForPageAtIndex:1];
 
-  [a3 scrollRectToVisible:0 animated:?];
+  [decelerating scrollRectToVisible:0 animated:?];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface ATSLoggingProvider
-+ (id)availableDataCategories:(void *)a3;
-- (BOOL)collectToFile:(void *)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6;
-- (BOOL)configureWithLogger:(id)a3 machine:(void *)a4 options:(id)a5 dataCategories:(id)a6 error:(id *)a7;
-- (BOOL)shouldAmendWithFile:(void *)a3 error:(id *)a4;
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(void *)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)shouldStartTracingWithConfiguration:(void *)a3 error:(id *)a4;
++ (id)availableDataCategories:(void *)categories;
+- (BOOL)collectToFile:(void *)file startDate:(id)date endDate:(id)endDate error:(id *)error;
+- (BOOL)configureWithLogger:(id)logger machine:(void *)machine options:(id)options dataCategories:(id)categories error:(id *)error;
+- (BOOL)shouldAmendWithFile:(void *)file error:(id *)error;
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(void *)machine options:(id)options error:(id *)error;
+- (BOOL)shouldStartTracingWithConfiguration:(void *)configuration error:(id *)error;
 - (id)dataSourceName;
-- (id)describeChunk:(void *)a3;
-- (void)configureWithSession:(void *)a3;
-- (void)didStopTracingToFile:(void *)a3;
-- (void)postprocessingCompleteWithFile:(void *)a3;
-- (void)willStartTracingToFile:(void *)a3;
+- (id)describeChunk:(void *)chunk;
+- (void)configureWithSession:(void *)session;
+- (void)didStopTracingToFile:(void *)file;
+- (void)postprocessingCompleteWithFile:(void *)file;
+- (void)willStartTracingToFile:(void *)file;
 @end
 
 @implementation ATSLoggingProvider
 
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(void *)a4 options:(id)a5 error:(id *)a6
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(void *)machine options:(id)options error:(id *)error
 {
   v8 = sub_A008();
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_5D38(a3, v8);
+  selfCopy = self;
+  sub_5D38(logger, v8);
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (BOOL)shouldAmendWithFile:(void *)a3 error:(id *)a4
+- (BOOL)shouldAmendWithFile:(void *)file error:(id *)error
 {
-  v5 = self;
-  sub_1904(a3);
+  selfCopy = self;
+  sub_1904(file);
 
   return 1;
 }
 
-- (BOOL)shouldStartTracingWithConfiguration:(void *)a3 error:(id *)a4
+- (BOOL)shouldStartTracingWithConfiguration:(void *)configuration error:(id *)error
 {
   v4 = (self + OBJC_IVAR___ATSLoggingProvider_initializationError);
   v5 = self->streamFlags[OBJC_IVAR___ATSLoggingProvider_initializationError];
@@ -49,12 +49,12 @@
     *(v9 + 16) = v5;
     swift_willThrow();
     sub_641C(v8, v7, v5);
-    if (a4)
+    if (error)
     {
       v10 = sub_9ED8();
 
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -65,31 +65,31 @@
   return v5 == 255;
 }
 
-- (void)configureWithSession:(void *)a3
+- (void)configureWithSession:(void *)session
 {
-  v3 = self;
+  selfCopy = self;
   sub_2038();
 }
 
-- (void)willStartTracingToFile:(void *)a3
+- (void)willStartTracingToFile:(void *)file
 {
-  v3 = self;
+  selfCopy = self;
   sub_6434();
 }
 
-- (void)didStopTracingToFile:(void *)a3
+- (void)didStopTracingToFile:(void *)file
 {
-  v3 = self;
+  selfCopy = self;
   sub_6E74();
 }
 
-- (void)postprocessingCompleteWithFile:(void *)a3
+- (void)postprocessingCompleteWithFile:(void *)file
 {
-  v4 = self;
-  sub_23AC(a3);
+  selfCopy = self;
+  sub_23AC(file);
 }
 
-- (id)describeChunk:(void *)a3
+- (id)describeChunk:(void *)chunk
 {
   v3 = ktrace_chunk_tag();
   if (v3 == 32785 || v3 == 32786)
@@ -105,16 +105,16 @@
   return v4;
 }
 
-- (BOOL)configureWithLogger:(id)a3 machine:(void *)a4 options:(id)a5 dataCategories:(id)a6 error:(id *)a7
+- (BOOL)configureWithLogger:(id)logger machine:(void *)machine options:(id)options dataCategories:(id)categories error:(id *)error
 {
-  v8 = a5;
-  if (a5)
+  optionsCopy = options;
+  if (options)
   {
     sub_62F4(&qword_14F58, &qword_B0F8);
-    v8 = sub_A008();
+    optionsCopy = sub_A008();
   }
 
-  if (a6)
+  if (categories)
   {
     sub_62F4(&qword_14F50, &qword_B0F0);
     v11 = sub_A098();
@@ -126,19 +126,19 @@
   }
 
   swift_unknownObjectRetain();
-  v12 = self;
-  sub_6F60(a3, v8, v11);
+  selfCopy = self;
+  sub_6F60(logger, optionsCopy, v11);
 
   swift_unknownObjectRelease();
 
   return 1;
 }
 
-- (BOOL)collectToFile:(void *)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6
+- (BOOL)collectToFile:(void *)file startDate:(id)date endDate:(id)endDate error:(id *)error
 {
-  v28[1] = a6;
-  v29 = self;
-  v30 = a3;
+  v28[1] = error;
+  selfCopy = self;
+  fileCopy = file;
   v31 = sub_9E68();
   v6 = *(v31 - 8);
   v7 = *(v6 + 64);
@@ -160,9 +160,9 @@
   v24 = v11[2];
   v24(v18, v23, v10);
   v24(v15, v21, v10);
-  v25 = v29;
+  v25 = selfCopy;
   sub_9E48();
-  sub_273C(v30, v9);
+  sub_273C(fileCopy, v9);
 
   (*(v6 + 8))(v9, v31);
   v26 = v11[1];
@@ -171,9 +171,9 @@
   return 1;
 }
 
-+ (id)availableDataCategories:(void *)a3
++ (id)availableDataCategories:(void *)categories
 {
-  sub_7910(a3);
+  sub_7910(categories);
   sub_62F4(&qword_14F50, &qword_B0F0);
   v3.super.isa = sub_9FF8().super.isa;
 

@@ -1,36 +1,36 @@
 @interface SUDownloadManager
-- (BOOL)deleteDownload:(id)a3;
+- (BOOL)deleteDownload:(id)download;
 - (NSArray)downloads;
 - (SSDownloadManager)downloadManager;
-- (SUDownloadManager)initWithDownloadManager:(id)a3;
-- (SUDownloadManager)initWithDownloadManager:(id)a3 clientInterface:(id)a4;
-- (id)downloadForDownloadIdentifier:(int64_t)a3;
-- (void)_finishPreflightWithCompletionBlock:(id)a3;
+- (SUDownloadManager)initWithDownloadManager:(id)manager;
+- (SUDownloadManager)initWithDownloadManager:(id)manager clientInterface:(id)interface;
+- (id)downloadForDownloadIdentifier:(int64_t)identifier;
+- (void)_finishPreflightWithCompletionBlock:(id)block;
 - (void)_reloadDownloadManager;
-- (void)_removeObject:(id)a3 fromArray:(id *)a4;
+- (void)_removeObject:(id)object fromArray:(id *)array;
 - (void)dealloc;
-- (void)preflightWithCompletionBlock:(id)a3;
+- (void)preflightWithCompletionBlock:(id)block;
 - (void)reloadDownloadManager;
 @end
 
 @implementation SUDownloadManager
 
-- (SUDownloadManager)initWithDownloadManager:(id)a3
+- (SUDownloadManager)initWithDownloadManager:(id)manager
 {
   v5 = +[SUClientDispatch clientInterface];
 
-  return [(SUDownloadManager *)self initWithDownloadManager:a3 clientInterface:v5];
+  return [(SUDownloadManager *)self initWithDownloadManager:manager clientInterface:v5];
 }
 
-- (SUDownloadManager)initWithDownloadManager:(id)a3 clientInterface:(id)a4
+- (SUDownloadManager)initWithDownloadManager:(id)manager clientInterface:(id)interface
 {
   v9.receiver = self;
   v9.super_class = SUDownloadManager;
   v6 = [(SUDownloadManager *)&v9 init];
   if (v6)
   {
-    v6->_clientInterface = a4;
-    v6->_downloadManager = a3;
+    v6->_clientInterface = interface;
+    v6->_downloadManager = manager;
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.iTunesStoreUI.SUDownloadManager.%p", v6];
     v6->_dispatchQueue = dispatch_queue_create([v7 UTF8String], 0);
   }
@@ -51,7 +51,7 @@
   [(SUDownloadManager *)&v4 dealloc];
 }
 
-- (BOOL)deleteDownload:(id)a3
+- (BOOL)deleteDownload:(id)download
 {
   v7 = 0;
   v8 = &v7;
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __36__SUDownloadManager_deleteDownload___block_invoke;
   block[3] = &unk_1E8165CA0;
-  block[4] = a3;
+  block[4] = download;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(dispatchQueue, block);
@@ -97,7 +97,7 @@ void __36__SUDownloadManager_deleteDownload___block_invoke(uint64_t a1)
   }
 }
 
-- (id)downloadForDownloadIdentifier:(int64_t)a3
+- (id)downloadForDownloadIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -111,7 +111,7 @@ void __36__SUDownloadManager_deleteDownload___block_invoke(uint64_t a1)
   block[2] = __51__SUDownloadManager_downloadForDownloadIdentifier___block_invoke;
   block[3] = &unk_1E8166ED0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
@@ -189,7 +189,7 @@ id __30__SUDownloadManager_downloads__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)preflightWithCompletionBlock:(id)a3
+- (void)preflightWithCompletionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -197,7 +197,7 @@ id __30__SUDownloadManager_downloads__block_invoke(uint64_t a1)
   v4[2] = __50__SUDownloadManager_preflightWithCompletionBlock___block_invoke;
   v4[3] = &unk_1E8166F20;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -260,7 +260,7 @@ uint64_t __50__SUDownloadManager_preflightWithCompletionBlock___block_invoke_4(u
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)_finishPreflightWithCompletionBlock:(id)a3
+- (void)_finishPreflightWithCompletionBlock:(id)block
 {
   if (![(NSArray *)self->_cachedDownloads count])
   {
@@ -268,13 +268,13 @@ uint64_t __50__SUDownloadManager_preflightWithCompletionBlock___block_invoke_4(u
     self->_cachedDownloads = 0;
   }
 
-  if (a3)
+  if (block)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__SUDownloadManager__finishPreflightWithCompletionBlock___block_invoke;
     block[3] = &unk_1E8166EF8;
-    block[4] = a3;
+    block[4] = block;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -284,13 +284,13 @@ uint64_t __50__SUDownloadManager_preflightWithCompletionBlock___block_invoke_4(u
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(SSDownloadManager *)self->_downloadManager downloads];
+  downloads = [(SSDownloadManager *)self->_downloadManager downloads];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  obj = downloads;
+  v6 = [downloads countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -336,18 +336,18 @@ uint64_t __50__SUDownloadManager_preflightWithCompletionBlock___block_invoke_4(u
   self->_downloadsByID = v3;
 }
 
-- (void)_removeObject:(id)a3 fromArray:(id *)a4
+- (void)_removeObject:(id)object fromArray:(id *)array
 {
-  if (*a4)
+  if (*array)
   {
-    v5 = [*a4 indexOfObject:a3];
+    v5 = [*array indexOfObject:object];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v5;
-      v7 = [*a4 mutableCopy];
+      v7 = [*array mutableCopy];
       [v7 removeObjectAtIndex:v6];
 
-      *a4 = [v7 copy];
+      *array = [v7 copy];
     }
   }
 }

@@ -1,22 +1,22 @@
 @interface _UITextAnimationContext
-- (_UITextAnimationContext)initWithTextLayoutManager:(id)a3 textRanges:(id)a4 animationName:(id)a5;
+- (_UITextAnimationContext)initWithTextLayoutManager:(id)manager textRanges:(id)ranges animationName:(id)name;
 - (id)description;
 @end
 
 @implementation _UITextAnimationContext
 
-- (_UITextAnimationContext)initWithTextLayoutManager:(id)a3 textRanges:(id)a4 animationName:(id)a5
+- (_UITextAnimationContext)initWithTextLayoutManager:(id)manager textRanges:(id)ranges animationName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = _UITextAnimationContext;
-  v9 = [(NSTextAnimationContext *)&v13 initWithTextLayoutManager:a3 textRanges:a4];
+  v9 = [(NSTextAnimationContext *)&v13 initWithTextLayoutManager:manager textRanges:ranges];
   if (v9)
   {
-    v10 = [v8 length];
+    v10 = [nameCopy length];
     if (v10)
     {
-      v11 = [v8 copy];
+      v11 = [nameCopy copy];
     }
 
     else

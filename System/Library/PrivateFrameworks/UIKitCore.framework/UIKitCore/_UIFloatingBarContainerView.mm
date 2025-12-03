@@ -1,20 +1,20 @@
 @interface _UIFloatingBarContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_UIFloatingBarContainerView)initWithCoder:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_UIFloatingBarContainerView)initWithCoder:(id)coder;
 - (double)toolbarOverlayInset;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setToolbarItems:(id)a3 avoidsKeyboard:(BOOL)a4 animated:(BOOL)a5;
+- (void)setToolbarItems:(id)items avoidsKeyboard:(BOOL)keyboard animated:(BOOL)animated;
 @end
 
 @implementation _UIFloatingBarContainerView
 
-- (void)setToolbarItems:(id)a3 avoidsKeyboard:(BOOL)a4 animated:(BOOL)a5
+- (void)setToolbarItems:(id)items avoidsKeyboard:(BOOL)keyboard animated:(BOOL)animated
 {
   sub_188A34624(0, &qword_1ED48E8C0);
   v8 = sub_18A4A7548();
-  v9 = self;
-  sub_188B27DC8(v8, a4, a5);
+  selfCopy = self;
+  sub_188B27DC8(v8, keyboard, animated);
 }
 
 - (void)didMoveToWindow
@@ -25,12 +25,12 @@
   v6 = &v13 - v5;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(UIView *)&v13 didMoveToWindow];
   v8 = sub_18A4A76C8();
   (*(*(v8 - 8) + 56))(v6, 1, 1, v8);
   sub_18A4A76A8();
-  v9 = v7;
+  v9 = selfCopy;
   v10 = sub_18A4A7698();
   v11 = swift_allocObject();
   v12 = MEMORY[0x1E69E85E0];
@@ -42,7 +42,7 @@
 
 - (double)toolbarOverlayInset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1890AD30C();
 
   return v3;
@@ -50,11 +50,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188BADC04();
 }
 
-- (_UIFloatingBarContainerView)initWithCoder:(id)a3
+- (_UIFloatingBarContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____UIFloatingBarContainerView__edgesRequiringContentMargin) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____UIFloatingBarContainerView__adjacentBarEdges) = 0;
@@ -63,11 +63,11 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   if (*(sub_188BAC8D4() + 16) && (sub_188C629E8(&v9), (v10 & 1) == 0))
   {
     v11.x = x;

@@ -1,12 +1,12 @@
 @interface MediaTransportVideoStream
 - (_TtC16ScreenSharingKit25MediaTransportVideoStream)init;
 - (void)dealloc;
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3;
-- (void)screenCapture:(id)a3 didUpdateAttributes:(id)a4 error:(id)a5;
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame;
+- (void)screenCapture:(id)capture didUpdateAttributes:(id)attributes error:(id)error;
 - (void)serverDidDisconnect:;
-- (void)streamDidRTCPTimeOut:(id)a3;
-- (void)streamDidServerDie:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)streamDidRTCPTimeOut:(id)out;
+- (void)streamDidServerDie:(id)die;
+- (void)streamDidStop:(id)stop;
 @end
 
 @implementation MediaTransportVideoStream
@@ -35,41 +35,41 @@
   return result;
 }
 
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame
 {
-  v5 = a3;
-  v6 = self;
-  sub_264AE913C(a3);
+  frameCopy = frame;
+  selfCopy = self;
+  sub_264AE913C(frame);
 }
 
-- (void)streamDidRTCPTimeOut:(id)a3
+- (void)streamDidRTCPTimeOut:(id)out
 {
-  v5 = a3;
-  v6 = self;
-  sub_264AE94E4(a3);
+  outCopy = out;
+  selfCopy = self;
+  sub_264AE94E4(out);
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v4 = a3;
-  v5 = self;
+  stopCopy = stop;
+  selfCopy = self;
   sub_264AEB2C4();
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
-  v4 = a3;
-  v5 = self;
+  dieCopy = die;
+  selfCopy = self;
   sub_264AEB574();
 }
 
-- (void)screenCapture:(id)a3 didUpdateAttributes:(id)a4 error:(id)a5
+- (void)screenCapture:(id)capture didUpdateAttributes:(id)attributes error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_264AEBBE0(v9, a5);
+  captureCopy = capture;
+  attributesCopy = attributes;
+  selfCopy = self;
+  errorCopy = error;
+  sub_264AEBBE0(attributesCopy, error);
 }
 
 - (void)serverDidDisconnect:

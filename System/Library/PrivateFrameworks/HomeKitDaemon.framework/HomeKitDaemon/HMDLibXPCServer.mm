@@ -1,9 +1,9 @@
 @interface HMDLibXPCServer
 + (id)logCategory;
-- (HMDLibXPCServer)initWithMachServiceName:(id)a3;
-- (HMDLibXPCServer)initWithMachServiceName:(id)a3 queue:(id)a4 libXPCInterface:(id)a5;
+- (HMDLibXPCServer)initWithMachServiceName:(id)name;
+- (HMDLibXPCServer)initWithMachServiceName:(id)name queue:(id)queue libXPCInterface:(id)interface;
 - (HMDLibXPCServerDelegate)delegate;
-- (void)handleIncomingConnection:(id)a3;
+- (void)handleIncomingConnection:(id)connection;
 - (void)start;
 - (void)stop;
 @end
@@ -17,12 +17,12 @@
   return WeakRetained;
 }
 
-- (void)handleIncomingConnection:(id)a3
+- (void)handleIncomingConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -30,27 +30,27 @@
     *buf = 138543618;
     v22 = v8;
     v23 = 2112;
-    v24 = v4;
+    v24 = connectionCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling incoming connection: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDLibXPCServer *)v6 libXPCInterface];
-  v10 = [(HMDLibXPCServer *)v6 queue];
-  [v9 setXPCTargetQueueForConnection:v4 queue:v10];
+  libXPCInterface = [(HMDLibXPCServer *)selfCopy libXPCInterface];
+  queue = [(HMDLibXPCServer *)selfCopy queue];
+  [libXPCInterface setXPCTargetQueueForConnection:connectionCopy queue:queue];
 
-  objc_initWeak(buf, v6);
-  v11 = [(HMDLibXPCServer *)v6 libXPCInterface];
+  objc_initWeak(buf, selfCopy);
+  libXPCInterface2 = [(HMDLibXPCServer *)selfCopy libXPCInterface];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __44__HMDLibXPCServer_handleIncomingConnection___block_invoke;
   v18 = &unk_27867D130;
   objc_copyWeak(&v20, buf);
-  v12 = v4;
+  v12 = connectionCopy;
   v19 = v12;
-  [v11 setXPCEventHandlerForConnection:v12 handler:&v15];
+  [libXPCInterface2 setXPCEventHandlerForConnection:v12 handler:&v15];
 
-  v13 = [(HMDLibXPCServer *)v6 libXPCInterface:v15];
+  v13 = [(HMDLibXPCServer *)selfCopy libXPCInterface:v15];
   [v13 activateXPCConnection:v12];
 
   objc_destroyWeak(&v20);
@@ -212,13 +212,13 @@ LABEL_13:
 
 - (void)stop
 {
-  v3 = [(HMDLibXPCServer *)self listenerConnection];
+  listenerConnection = [(HMDLibXPCServer *)self listenerConnection];
 
-  if (v3)
+  if (listenerConnection)
   {
-    v4 = [(HMDLibXPCServer *)self libXPCInterface];
-    v5 = [(HMDLibXPCServer *)self listenerConnection];
-    [v4 cancelXPCConnection:v5];
+    libXPCInterface = [(HMDLibXPCServer *)self libXPCInterface];
+    listenerConnection2 = [(HMDLibXPCServer *)self listenerConnection];
+    [libXPCInterface cancelXPCConnection:listenerConnection2];
 
     [(HMDLibXPCServer *)self setListenerConnection:0];
   }
@@ -226,29 +226,29 @@ LABEL_13:
 
 - (void)start
 {
-  v3 = [(HMDLibXPCServer *)self listenerConnection];
+  listenerConnection = [(HMDLibXPCServer *)self listenerConnection];
 
-  if (!v3)
+  if (!listenerConnection)
   {
-    v4 = [(HMDLibXPCServer *)self libXPCInterface];
-    v5 = [(HMDLibXPCServer *)self name];
-    v6 = [(HMDLibXPCServer *)self queue];
-    v7 = [v4 createXPCMachServiceWithName:v5 queue:v6 flags:1];
+    libXPCInterface = [(HMDLibXPCServer *)self libXPCInterface];
+    name = [(HMDLibXPCServer *)self name];
+    queue = [(HMDLibXPCServer *)self queue];
+    v7 = [libXPCInterface createXPCMachServiceWithName:name queue:queue flags:1];
     [(HMDLibXPCServer *)self setListenerConnection:v7];
 
     objc_initWeak(&location, self);
-    v8 = [(HMDLibXPCServer *)self libXPCInterface];
-    v9 = [(HMDLibXPCServer *)self listenerConnection];
+    libXPCInterface2 = [(HMDLibXPCServer *)self libXPCInterface];
+    listenerConnection2 = [(HMDLibXPCServer *)self listenerConnection];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __24__HMDLibXPCServer_start__block_invoke;
     v15 = &unk_278680088;
     objc_copyWeak(&v16, &location);
-    [v8 setXPCEventHandlerForConnection:v9 handler:&v12];
+    [libXPCInterface2 setXPCEventHandlerForConnection:listenerConnection2 handler:&v12];
 
     v10 = [(HMDLibXPCServer *)self libXPCInterface:v12];
-    v11 = [(HMDLibXPCServer *)self listenerConnection];
-    [v10 activateXPCConnection:v11];
+    listenerConnection3 = [(HMDLibXPCServer *)self listenerConnection];
+    [v10 activateXPCConnection:listenerConnection3];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -327,36 +327,36 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDLibXPCServer)initWithMachServiceName:(id)a3 queue:(id)a4 libXPCInterface:(id)a5
+- (HMDLibXPCServer)initWithMachServiceName:(id)name queue:(id)queue libXPCInterface:(id)interface
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  interfaceCopy = interface;
   v15.receiver = self;
   v15.super_class = HMDLibXPCServer;
   v11 = [(HMDLibXPCServer *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    objc_storeStrong(&v11->_queue, a4);
-    objc_storeStrong(&v11->_libXPCInterface, a5);
+    objc_storeStrong(&v11->_queue, queue);
+    objc_storeStrong(&v11->_libXPCInterface, interface);
   }
 
   return v11;
 }
 
-- (HMDLibXPCServer)initWithMachServiceName:(id)a3
+- (HMDLibXPCServer)initWithMachServiceName:(id)name
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
+  nameCopy = name;
+  nameCopy2 = name;
+  uTF8String = [nameCopy2 UTF8String];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v9 = dispatch_queue_create(v7, v8);
+  v9 = dispatch_queue_create(uTF8String, v8);
   v10 = objc_alloc_init(HMDLibXPCInterface);
-  v11 = [(HMDLibXPCServer *)self initWithMachServiceName:v6 queue:v9 libXPCInterface:v10];
+  v11 = [(HMDLibXPCServer *)self initWithMachServiceName:nameCopy2 queue:v9 libXPCInterface:v10];
 
   return v11;
 }

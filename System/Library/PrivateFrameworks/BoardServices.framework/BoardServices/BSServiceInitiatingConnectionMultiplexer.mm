@@ -1,20 +1,20 @@
 @interface BSServiceInitiatingConnectionMultiplexer
-+ (_BYTE)_defaultInstanceCreatingIfNecessary:(uint64_t)a1;
-+ (_BYTE)_userInteractiveInstanceCreatingIfNecessary:(uint64_t)a1;
-+ (id)debugDescriptionWithMultilinePrefix:(uint64_t)a1;
++ (_BYTE)_defaultInstanceCreatingIfNecessary:(uint64_t)necessary;
++ (_BYTE)_userInteractiveInstanceCreatingIfNecessary:(uint64_t)necessary;
++ (id)debugDescriptionWithMultilinePrefix:(uint64_t)prefix;
 - (BSServiceInitiatingConnectionMultiplexer)init;
-- (_BYTE)_initAsUserInteractive:(void *)a1;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_BYTE)_initAsUserInteractive:(void *)interactive;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (uint64_t)newConnectionWithEndpoint:(uint64_t)a1;
+- (uint64_t)newConnectionWithEndpoint:(uint64_t)endpoint;
 - (void)dealloc;
 @end
 
 @implementation BSServiceInitiatingConnectionMultiplexer
 
-+ (_BYTE)_userInteractiveInstanceCreatingIfNecessary:(uint64_t)a1
++ (_BYTE)_userInteractiveInstanceCreatingIfNecessary:(uint64_t)necessary
 {
   objc_opt_self();
   os_unfair_lock_lock(&_MergedGlobals_12);
@@ -43,14 +43,14 @@
   return v3;
 }
 
-- (_BYTE)_initAsUserInteractive:(void *)a1
+- (_BYTE)_initAsUserInteractive:(void *)interactive
 {
-  if (!a1)
+  if (!interactive)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = interactive;
   v8.super_class = BSServiceInitiatingConnectionMultiplexer;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -66,7 +66,7 @@
   return v4;
 }
 
-+ (_BYTE)_defaultInstanceCreatingIfNecessary:(uint64_t)a1
++ (_BYTE)_defaultInstanceCreatingIfNecessary:(uint64_t)necessary
 {
   objc_opt_self();
   os_unfair_lock_lock(&stru_1ED4A7C8C);
@@ -109,7 +109,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceInitiatingConnectionMultiplexer.m";
     v18 = 1024;
@@ -142,7 +142,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceInitiatingConnectionMultiplexer.m";
       v19 = 1024;
@@ -165,12 +165,12 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)newConnectionWithEndpoint:(uint64_t)a1
+- (uint64_t)newConnectionWithEndpoint:(uint64_t)endpoint
 {
   v77 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!endpoint)
   {
     v20 = 0;
     goto LABEL_28;
@@ -194,7 +194,7 @@
       v67 = 2114;
       v68 = v32;
       v69 = 2048;
-      v70 = a1;
+      endpointCopy5 = endpoint;
       v71 = 2114;
       v72 = @"BSServiceInitiatingConnectionMultiplexer.m";
       v73 = 1024;
@@ -215,13 +215,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v34 = MEMORY[0x1E696AEC0];
-    v35 = [v5 classForCoder];
-    if (!v35)
+    classForCoder = [v5 classForCoder];
+    if (!classForCoder)
     {
-      v35 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v36 = NSStringFromClass(v35);
+    v36 = NSStringFromClass(classForCoder);
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
     v39 = [v34 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"endpoint", v36, v38];
@@ -236,7 +236,7 @@
       v67 = 2114;
       v68 = v42;
       v69 = 2048;
-      v70 = a1;
+      endpointCopy5 = endpoint;
       v71 = 2114;
       v72 = @"BSServiceInitiatingConnectionMultiplexer.m";
       v73 = 1024;
@@ -254,8 +254,8 @@
   }
 
   v6 = v5[2];
-  os_unfair_lock_lock((a1 + 16));
-  if (*(a1 + 20) == 1)
+  os_unfair_lock_lock((endpoint + 16));
+  if (*(endpoint + 20) == 1)
   {
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create an outgoing connection after invalidation"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -268,7 +268,7 @@
       v67 = 2114;
       v68 = v47;
       v69 = 2048;
-      v70 = a1;
+      endpointCopy5 = endpoint;
       v71 = 2114;
       v72 = @"BSServiceInitiatingConnectionMultiplexer.m";
       v73 = 1024;
@@ -299,21 +299,21 @@
       }
     }
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((endpoint + 16));
     v12 = [BSXPCServiceConnection connectionWithEndpoint:v5];
     goto LABEL_27;
   }
 
-  v7 = [*(a1 + 8) objectForKey:v5];
+  v7 = [*(endpoint + 8) objectForKey:v5];
   if (v7)
   {
     v8 = BSServiceLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(BSXPCServiceConnection *)v7 loggingProem];
+      loggingProem = [(BSXPCServiceConnection *)v7 loggingProem];
       v10 = v5[4];
       *buf = 138543618;
-      v66 = v9;
+      v66 = loggingProem;
       v67 = 2114;
       v68 = v10;
       _os_log_impl(&dword_19A821000, v8, OS_LOG_TYPE_INFO, "found existing rootConnection %{public}@ by endpoint (%{public}@)", buf, 0x16u);
@@ -323,8 +323,8 @@
   else
   {
     v13 = v5;
-    os_unfair_lock_assert_owner((a1 + 16));
-    if (*(a1 + 20) == 1)
+    os_unfair_lock_assert_owner((endpoint + 16));
+    if (*(endpoint + 20) == 1)
     {
       v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to create an outgoing connection after invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -337,7 +337,7 @@
         v67 = 2114;
         v68 = v52;
         v69 = 2048;
-        v70 = a1;
+        endpointCopy5 = endpoint;
         v71 = 2114;
         v72 = @"BSServiceInitiatingConnectionMultiplexer.m";
         v73 = 1024;
@@ -354,7 +354,7 @@
       JUMPOUT(0x19A861B5CLL);
     }
 
-    v14 = [*(a1 + 8) objectForKey:v13];
+    v14 = [*(endpoint + 8) objectForKey:v13];
     if (v14)
     {
       v54 = MEMORY[0x1E696AEC0];
@@ -371,7 +371,7 @@
         v67 = 2114;
         v68 = v59;
         v69 = 2048;
-        v70 = a1;
+        endpointCopy5 = endpoint;
         v71 = 2114;
         v72 = @"BSServiceInitiatingConnectionMultiplexer.m";
         v73 = 1024;
@@ -401,7 +401,7 @@
         _os_log_impl(&dword_19A821000, v21, OS_LOG_TYPE_INFO, "failed to create outgoing root connection for endpoint=%{public}@", buf, 0xCu);
       }
 
-      os_unfair_lock_unlock((a1 + 16));
+      os_unfair_lock_unlock((endpoint + 16));
       goto LABEL_26;
     }
 
@@ -412,7 +412,7 @@
     v61[3] = &unk_1E7520DD0;
     v17 = v16;
     v62 = v17;
-    v63 = a1;
+    endpointCopy6 = endpoint;
     v18 = v13;
     v64 = v18;
     [(BSXPCServiceConnection *)v7 configure:v61];
@@ -424,13 +424,13 @@
       _os_log_impl(&dword_19A821000, v19, OS_LOG_TYPE_INFO, "created outgoing root connection %{public}@", buf, 0xCu);
     }
 
-    [*(a1 + 8) setObject:v7 forKey:v18];
+    [*(endpoint + 8) setObject:v7 forKey:v18];
     [(BSXPCServiceConnection *)v7 activateNowOrWhenReady:?];
   }
 
   v20 = [BSXPCServiceConnection connectionWithConnection:v7];
 
-  os_unfair_lock_unlock((a1 + 16));
+  os_unfair_lock_unlock((endpoint + 16));
   if (!v20)
   {
 LABEL_26:
@@ -610,7 +610,7 @@ void __80__BSServiceInitiatingConnectionMultiplexer__lock_newRootConnectionWithE
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)debugDescriptionWithMultilinePrefix:(uint64_t)a1
++ (id)debugDescriptionWithMultilinePrefix:(uint64_t)prefix
 {
   v2 = a2;
   objc_opt_self();
@@ -623,20 +623,20 @@ void __80__BSServiceInitiatingConnectionMultiplexer__lock_newRootConnectionWithE
   }
 
   [v5 setUseDebugDescription:1];
-  v6 = [v5 activeMultilinePrefix];
+  activeMultilinePrefix = [v5 activeMultilinePrefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E75205D0;
   v7 = v5;
   v11 = v7;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v6 block:v10];
+  [v7 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
 
-  v8 = [v7 build];
+  build = [v7 build];
 
   objc_autoreleasePoolPop(v3);
 
-  return v8;
+  return build;
 }
 
 void __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -650,22 +650,22 @@ void __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilin
   v5 = [v4 appendObject:? withName:? skipIfNil:?];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSServiceInitiatingConnectionMultiplexer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSServiceInitiatingConnectionMultiplexer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v6 = v5;
-  if (v4)
+  if (prefixCopy)
   {
-    [v5 setActiveMultilinePrefix:v4];
+    [v5 setActiveMultilinePrefix:prefixCopy];
   }
 
   return v6;
@@ -673,19 +673,19 @@ void __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilin
 
 - (id)succinctDescription
 {
-  v2 = [(BSServiceInitiatingConnectionMultiplexer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSServiceInitiatingConnectionMultiplexer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSServiceInitiatingConnectionMultiplexer *)self descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(BSServiceInitiatingConnectionMultiplexer *)self descriptionBuilderWithMultilinePrefix:prefixCopy];
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(NSMutableDictionary *)self->_lock_endpointToOutgoingRootConnections allKeys];
-  v7 = [v6 mutableCopy];
+  allKeys = [(NSMutableDictionary *)self->_lock_endpointToOutgoingRootConnections allKeys];
+  v7 = [allKeys mutableCopy];
 
   [v7 sortUsingComparator:&__block_literal_global_81];
   v20[0] = MEMORY[0x1E69E9820];
@@ -697,7 +697,7 @@ void __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilin
   v9 = v7;
   v22 = v9;
   v10 = [v8 modifyProem:v20];
-  v11 = [v8 activeMultilinePrefix];
+  activeMultilinePrefix = [v8 activeMultilinePrefix];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilinePrefix___block_invoke_3;
@@ -706,13 +706,13 @@ void __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilin
   v17 = v12;
   v13 = v9;
   v18 = v13;
-  v19 = self;
-  [v12 appendBodySectionWithName:0 multilinePrefix:v11 block:v16];
+  selfCopy = self;
+  [v12 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v16];
 
   os_unfair_lock_unlock(&self->_lock);
-  v14 = [v12 build];
+  build = [v12 build];
 
-  return v14;
+  return build;
 }
 
 void __80__BSServiceInitiatingConnectionMultiplexer_debugDescriptionWithMultilinePrefix___block_invoke_3(void *a1)

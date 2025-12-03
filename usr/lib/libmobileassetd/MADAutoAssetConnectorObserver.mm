@@ -1,30 +1,30 @@
 @interface MADAutoAssetConnectorObserver
-- (MADAutoAssetConnectorObserver)initWithCoder:(id)a3;
-- (id)initForServerPath:(id)a3;
+- (MADAutoAssetConnectorObserver)initWithCoder:(id)coder;
+- (id)initForServerPath:(id)path;
 - (id)summary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation MADAutoAssetConnectorObserver
 
-- (id)initForServerPath:(id)a3
+- (id)initForServerPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v31.receiver = self;
   v31.super_class = MADAutoAssetConnectorObserver;
   v6 = [(MADAutoAssetConnectorObserver *)&v31 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pathToServer, a3);
+    objc_storeStrong(&v6->_pathToServer, path);
     pathEvaluator = v7->_pathEvaluator;
     v7->_pathEvaluator = 0;
 
-    v9 = [@"com.apple.MobileAsset.autoassetconnectorobserver.status" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.autoassetconnectorobserver.status" UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     pathStatusDispatchQueue = v7->_pathStatusDispatchQueue;
     v7->_pathStatusDispatchQueue = v11;
 
@@ -34,27 +34,27 @@
       v14 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(MADAutoAssetConnectorObserver *)v7 pathToServer];
-        v27 = [v26 absoluteString];
+        pathToServer = [(MADAutoAssetConnectorObserver *)v7 pathToServer];
+        absoluteString = [pathToServer absoluteString];
         *buf = 138543362;
-        v33 = v27;
+        v33 = absoluteString;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "[CONNECTION-OBSERVER] {initForServerPath} NWPathEvaluator not available | pathToServer:%{public}@", buf, 0xCu);
       }
 
       goto LABEL_18;
     }
 
-    v13 = [v5 absoluteString];
-    v14 = [NWHostEndpoint endpointWithHostname:v13 port:@"443"];
+    absoluteString2 = [pathCopy absoluteString];
+    v14 = [NWHostEndpoint endpointWithHostname:absoluteString2 port:@"443"];
 
     v15 = objc_alloc_init(NWParameters);
     v16 = [[NWPathEvaluator alloc] initWithEndpoint:v14 parameters:v15];
     v17 = v7->_pathEvaluator;
     v7->_pathEvaluator = v16;
 
-    v18 = [(NWPathEvaluator *)v7->_pathEvaluator path];
-    v19 = [v18 status];
-    if (v19 == &dword_0 + 1)
+    path = [(NWPathEvaluator *)v7->_pathEvaluator path];
+    status = [path status];
+    if (status == &dword_0 + 1)
     {
       [(MADAutoAssetConnectorObserver *)v7 setPathToServerIsUp:1];
       v20 = _MADLog(@"AutoScheduler");
@@ -68,10 +68,10 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v21 = [(MADAutoAssetConnectorObserver *)v7 pathToServer];
-      v22 = [v21 absoluteString];
+      pathToServer2 = [(MADAutoAssetConnectorObserver *)v7 pathToServer];
+      absoluteString3 = [pathToServer2 absoluteString];
       *buf = 138543362;
-      v33 = v22;
+      v33 = absoluteString3;
       v23 = "[CONNECTION-OBSERVER] {initForServerPath} starting UP | pathStatus:NWPathStatusSatisfied | pathToServer:%{public}@";
       v24 = v20;
       v25 = 12;
@@ -79,7 +79,7 @@ LABEL_18:
 
     else
     {
-      v28 = v19;
+      v28 = status;
       [(MADAutoAssetConnectorObserver *)v7 setPathToServerIsUp:0];
       if (v28 > 3)
       {
@@ -97,12 +97,12 @@ LABEL_18:
         goto LABEL_17;
       }
 
-      v21 = [(MADAutoAssetConnectorObserver *)v7 pathToServer];
-      v22 = [v21 absoluteString];
+      pathToServer2 = [(MADAutoAssetConnectorObserver *)v7 pathToServer];
+      absoluteString3 = [pathToServer2 absoluteString];
       *buf = 138543618;
       v33 = v29;
       v34 = 2114;
-      v35 = v22;
+      v35 = absoluteString3;
       v23 = "[CONNECTION-OBSERVER] {initForServerPath} starting DOWN | pathStatus:%{public}@ | pathToServer:%{public}@";
       v24 = v20;
       v25 = 22;
@@ -120,12 +120,12 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [(MADAutoAssetConnectorObserver *)self pathEvaluator];
+  pathEvaluator = [(MADAutoAssetConnectorObserver *)self pathEvaluator];
 
-  if (v3)
+  if (pathEvaluator)
   {
-    v4 = [(MADAutoAssetConnectorObserver *)self pathEvaluator];
-    [v4 removeObserver:self forKeyPath:@"path"];
+    pathEvaluator2 = [(MADAutoAssetConnectorObserver *)self pathEvaluator];
+    [pathEvaluator2 removeObserver:self forKeyPath:@"path"];
 
     [(MADAutoAssetConnectorObserver *)self setPathEvaluator:0];
   }
@@ -135,19 +135,19 @@ LABEL_19:
   [(MADAutoAssetConnectorObserver *)&v5 dealloc];
 }
 
-- (MADAutoAssetConnectorObserver)initWithCoder:(id)a3
+- (MADAutoAssetConnectorObserver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADAutoAssetConnectorObserver;
   v5 = [(MADAutoAssetConnectorObserver *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathToServer"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathToServer"];
     pathToServer = v5->_pathToServer;
     v5->_pathToServer = v6;
 
-    v5->_pathToServerIsUp = [v4 decodeBoolForKey:@"pathToServerIsUp"];
+    v5->_pathToServerIsUp = [coderCopy decodeBoolForKey:@"pathToServerIsUp"];
     pathEvaluator = v5->_pathEvaluator;
     v5->_pathEvaluator = 0;
 
@@ -158,18 +158,18 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(MADAutoAssetConnectorObserver *)self pathToServer];
-  [v5 encodeObject:v4 forKey:@"pathToServer"];
+  coderCopy = coder;
+  pathToServer = [(MADAutoAssetConnectorObserver *)self pathToServer];
+  [coderCopy encodeObject:pathToServer forKey:@"pathToServer"];
 
-  [v5 encodeBool:-[MADAutoAssetConnectorObserver pathToServerIsUp](self forKey:{"pathToServerIsUp"), @"pathToServerIsUp"}];
+  [coderCopy encodeBool:-[MADAutoAssetConnectorObserver pathToServerIsUp](self forKey:{"pathToServerIsUp"), @"pathToServerIsUp"}];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [(MADAutoAssetConnectorObserver *)self pathStatusDispatchQueue:a3];
+  v7 = [(MADAutoAssetConnectorObserver *)self pathStatusDispatchQueue:path];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __80__MADAutoAssetConnectorObserver_observeValueForKeyPath_ofObject_change_context___block_invoke;
@@ -226,15 +226,15 @@ LABEL_11:
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetConnectorObserver *)self pathToServer];
-  v4 = [(MADAutoAssetConnectorObserver *)self pathEvaluator];
+  pathToServer = [(MADAutoAssetConnectorObserver *)self pathToServer];
+  pathEvaluator = [(MADAutoAssetConnectorObserver *)self pathEvaluator];
   v5 = @"Y";
-  if (!v4)
+  if (!pathEvaluator)
   {
     v5 = @"N";
   }
 
-  v6 = [NSString stringWithFormat:@"[pathToServer:%@|pathEvaluator:%@]", v3, v5];
+  v6 = [NSString stringWithFormat:@"[pathToServer:%@|pathEvaluator:%@]", pathToServer, v5];
 
   return v6;
 }

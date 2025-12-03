@@ -1,31 +1,31 @@
 @interface TKToneClassicsTableViewController
-- (TKToneClassicsTableViewController)initWithClassicTonesHeaderItem:(id)a3;
+- (TKToneClassicsTableViewController)initWithClassicTonesHeaderItem:(id)item;
 - (TKTonePickerTableViewControllerHelper)tonePickerTableViewControllerHelper;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)didReloadTones;
-- (void)didUpdateDetailText:(id)a3 ofToneClassicsPickerItem:(id)a4;
-- (void)layoutMarginsDidChangeInTonePickerTableView:(id)a3;
+- (void)didUpdateDetailText:(id)text ofToneClassicsPickerItem:(id)item;
+- (void)layoutMarginsDidChangeInTonePickerTableView:(id)view;
 - (void)loadView;
-- (void)separatorColorDidChangeInTonePickerTableView:(id)a3;
-- (void)setTonePickerTableViewControllerHelper:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)separatorColorDidChangeInTonePickerTableView:(id)view;
+- (void)setTonePickerTableViewControllerHelper:(id)helper;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation TKToneClassicsTableViewController
 
-- (TKToneClassicsTableViewController)initWithClassicTonesHeaderItem:(id)a3
+- (TKToneClassicsTableViewController)initWithClassicTonesHeaderItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = TKToneClassicsTableViewController;
   v6 = [(TKToneClassicsTableViewController *)&v10 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_classicTonesHeaderItem, a3);
+    objc_storeStrong(&v6->_classicTonesHeaderItem, item);
     v8 = TLLocalizedString();
     [(TKToneClassicsTableViewController *)v7 setTitle:v8];
   }
@@ -35,36 +35,36 @@
 
 - (void)dealloc
 {
-  v3 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  [v3 tonePickerTableViewControllerWillBeDeallocated:self];
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  [tonePickerTableViewControllerHelper tonePickerTableViewControllerWillBeDeallocated:self];
 
   v4.receiver = self;
   v4.super_class = TKToneClassicsTableViewController;
   [(TKToneClassicsTableViewController *)&v4 dealloc];
 }
 
-- (void)setTonePickerTableViewControllerHelper:(id)a3
+- (void)setTonePickerTableViewControllerHelper:(id)helper
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  helperCopy = helper;
   WeakRetained = objc_loadWeakRetained(&self->_tonePickerTableViewControllerHelper);
-  objc_storeWeak(&self->_tonePickerTableViewControllerHelper, v4);
-  if ([(TKToneClassicsTableViewController *)self isViewLoaded]&& (v4 == 0) == (WeakRetained != 0))
+  objc_storeWeak(&self->_tonePickerTableViewControllerHelper, helperCopy);
+  if ([(TKToneClassicsTableViewController *)self isViewLoaded]&& (helperCopy == 0) == (WeakRetained != 0))
   {
     v6 = TLLogToneManagement();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543874;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = WeakRetained;
       v13 = 2114;
-      v14 = v4;
+      v14 = helperCopy;
       _os_log_impl(&dword_21C599000, v6, OS_LOG_TYPE_DEFAULT, "The tonePickerTableViewControllerHelper property of %{public}@ is being updated from %{public}@ to %{public}@. Reloading table view.", &v9, 0x20u);
     }
 
-    v7 = [(TKToneClassicsTableViewController *)self tableView];
-    [v7 reloadData];
+    tableView = [(TKToneClassicsTableViewController *)self tableView];
+    [tableView reloadData];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -74,35 +74,35 @@
 {
   if ([(TKToneClassicsTableViewController *)self isViewLoaded])
   {
-    v3 = [(TKToneClassicsTableViewController *)self tableView];
-    [v3 reloadData];
+    tableView = [(TKToneClassicsTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)didUpdateDetailText:(id)a3 ofToneClassicsPickerItem:(id)a4
+- (void)didUpdateDetailText:(id)text ofToneClassicsPickerItem:(id)item
 {
   v6 = MEMORY[0x277CCAA70];
-  v7 = a3;
-  v11 = [v6 indexPathForRow:objc_msgSend(a4 inSection:{"classicToneIndex"), 0}];
-  v8 = [(TKToneClassicsTableViewController *)self tableView];
-  v9 = [v8 cellForRowAtIndexPath:v11];
+  textCopy = text;
+  v11 = [v6 indexPathForRow:objc_msgSend(item inSection:{"classicToneIndex"), 0}];
+  tableView = [(TKToneClassicsTableViewController *)self tableView];
+  v9 = [tableView cellForRowAtIndexPath:v11];
 
-  v10 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  [v10 updateCell:v9 withDetailText:v7];
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  [tonePickerTableViewControllerHelper updateCell:v9 withDetailText:textCopy];
 }
 
 - (void)loadView
 {
-  v3 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  [v3 loadViewForTonePickerTableViewController:self];
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  [tonePickerTableViewControllerHelper loadViewForTonePickerTableViewController:self];
 }
 
-- (void)layoutMarginsDidChangeInTonePickerTableView:(id)a3
+- (void)layoutMarginsDidChangeInTonePickerTableView:(id)view
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  [v4 indexPathsForVisibleRows];
+  viewCopy = view;
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  [viewCopy indexPathsForVisibleRows];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -122,9 +122,9 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 cellForRowAtIndexPath:v10];
+        v11 = [viewCopy cellForRowAtIndexPath:v10];
         v12 = -[TKTonePickerItem childItemAtIndex:](self->_classicTonesHeaderItem, "childItemAtIndex:", [v10 row]);
-        [v5 tableView:v4 updateCell:v11 withSeparatorForPickerRowItem:v12];
+        [tonePickerTableViewControllerHelper tableView:viewCopy updateCell:v11 withSeparatorForPickerRowItem:v12];
       }
 
       v7 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -136,36 +136,36 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)separatorColorDidChangeInTonePickerTableView:(id)a3
+- (void)separatorColorDidChangeInTonePickerTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  [v5 updateDividerContentColorToMatchSeparatorColorInTableView:v4];
+  viewCopy = view;
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  [tonePickerTableViewControllerHelper updateDividerContentColorToMatchSeparatorColorInTableView:viewCopy];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper:a3];
+  v5 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper:view];
   if (v5)
   {
-    v6 = [(TKTonePickerItem *)self->_classicTonesHeaderItem numberOfChildren];
+    numberOfChildren = [(TKTonePickerItem *)self->_classicTonesHeaderItem numberOfChildren];
   }
 
   else
   {
-    v6 = 0;
+    numberOfChildren = 0;
   }
 
-  return v6;
+  return numberOfChildren;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  if (!v8)
+  viewCopy = view;
+  pathCopy = path;
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  if (!tonePickerTableViewControllerHelper)
   {
     v9 = TLLogGeneral();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -176,16 +176,16 @@
       v12 = TLLogGeneral();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 lastPathComponent];
-        v14 = [MEMORY[0x277CCACC8] callStackSymbols];
+        lastPathComponent = [v11 lastPathComponent];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         v55 = 136381443;
-        v56 = "[TKToneClassicsTableViewController tableView:cellForRowAtIndexPath:]";
+        selfCopy = "[TKToneClassicsTableViewController tableView:cellForRowAtIndexPath:]";
         v57 = 2113;
-        v58 = v13;
+        v58 = lastPathComponent;
         v59 = 2049;
         v60 = 183;
         v61 = 2113;
-        v62 = v14;
+        v62 = callStackSymbols;
         _os_log_impl(&dword_21C599000, v12, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v55, 0x2Au);
       }
     }
@@ -206,7 +206,7 @@
     }
   }
 
-  v23 = -[TKTonePickerItem childItemAtIndex:](self->_classicTonesHeaderItem, "childItemAtIndex:", [v7 row]);
+  v23 = -[TKTonePickerItem childItemAtIndex:](self->_classicTonesHeaderItem, "childItemAtIndex:", [pathCopy row]);
   if (!v23)
   {
     v24 = TLLogGeneral();
@@ -218,16 +218,16 @@
       v27 = TLLogGeneral();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v26 lastPathComponent];
-        v29 = [MEMORY[0x277CCACC8] callStackSymbols];
+        lastPathComponent2 = [v26 lastPathComponent];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
         v55 = 136381443;
-        v56 = "[TKToneClassicsTableViewController tableView:cellForRowAtIndexPath:]";
+        selfCopy = "[TKToneClassicsTableViewController tableView:cellForRowAtIndexPath:]";
         v57 = 2113;
-        v58 = v28;
+        v58 = lastPathComponent2;
         v59 = 2049;
         v60 = 185;
         v61 = 2113;
-        v62 = v29;
+        v62 = callStackSymbols2;
         _os_log_impl(&dword_21C599000, v27, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v55, 0x2Au);
       }
     }
@@ -248,7 +248,7 @@
     }
   }
 
-  v38 = [v8 tableView:v6 cellForPickerRowItem:v23];
+  v38 = [tonePickerTableViewControllerHelper tableView:viewCopy cellForPickerRowItem:v23];
   if (!v38)
   {
     v39 = TLLogGeneral();
@@ -260,16 +260,16 @@
       v42 = TLLogGeneral();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [v41 lastPathComponent];
-        v44 = [MEMORY[0x277CCACC8] callStackSymbols];
+        lastPathComponent3 = [v41 lastPathComponent];
+        callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
         v55 = 136381443;
-        v56 = "[TKToneClassicsTableViewController tableView:cellForRowAtIndexPath:]";
+        selfCopy = "[TKToneClassicsTableViewController tableView:cellForRowAtIndexPath:]";
         v57 = 2113;
-        v58 = v43;
+        v58 = lastPathComponent3;
         v59 = 2049;
         v60 = 187;
         v61 = 2113;
-        v62 = v44;
+        v62 = callStackSymbols3;
         _os_log_impl(&dword_21C599000, v42, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v55, 0x2Au);
       }
     }
@@ -287,9 +287,9 @@
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       v55 = 138543874;
-      v56 = self;
+      selfCopy = self;
       v57 = 2114;
-      v58 = v7;
+      v58 = pathCopy;
       v59 = 2114;
       v60 = v23;
       _os_log_error_impl(&dword_21C599000, v52, OS_LOG_TYPE_ERROR, "%{public}@ is about to return a nil cell for row at index path %{public}@ with toneClassicsPickerItem = %{public}@.", &v55, 0x20u);
@@ -301,26 +301,26 @@
   return v38;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  pathCopy = path;
+  cellCopy = cell;
+  viewCopy = view;
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
   classicTonesHeaderItem = self->_classicTonesHeaderItem;
-  v12 = [v8 row];
+  v12 = [pathCopy row];
 
   v13 = [(TKTonePickerItem *)classicTonesHeaderItem childItemAtIndex:v12];
-  [v14 tableView:v10 willDisplayCell:v9 forPickerRowItem:v13];
+  [tonePickerTableViewControllerHelper tableView:viewCopy willDisplayCell:cellCopy forPickerRowItem:v13];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
-  v8 = -[TKTonePickerItem childItemAtIndex:](self->_classicTonesHeaderItem, "childItemAtIndex:", [v6 row]);
-  [v9 tableView:v7 didSelectRowAtIndexPath:v6 forPickerRowItem:v8];
+  pathCopy = path;
+  viewCopy = view;
+  tonePickerTableViewControllerHelper = [(TKToneClassicsTableViewController *)self tonePickerTableViewControllerHelper];
+  v8 = -[TKTonePickerItem childItemAtIndex:](self->_classicTonesHeaderItem, "childItemAtIndex:", [pathCopy row]);
+  [tonePickerTableViewControllerHelper tableView:viewCopy didSelectRowAtIndexPath:pathCopy forPickerRowItem:v8];
 }
 
 - (TKTonePickerTableViewControllerHelper)tonePickerTableViewControllerHelper

@@ -1,57 +1,57 @@
 @interface PredictorUtils
-+ (id)getInitStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5;
-+ (id)getPredictStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5;
-+ (int64_t)handleInitException:(exception_ptr)a3;
-+ (int64_t)handlePredictException:(exception_ptr)a3;
-+ (void)reportInitStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5 locale:(id)a6;
-+ (void)reportPredictStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5 locale:(id)a6;
++ (id)getInitStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code;
++ (id)getPredictStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code;
++ (int64_t)handleInitException:(exception_ptr)exception;
++ (int64_t)handlePredictException:(exception_ptr)exception;
++ (void)reportInitStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code locale:(id)locale;
++ (void)reportPredictStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code locale:(id)locale;
 @end
 
 @implementation PredictorUtils
 
-+ (id)getPredictStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5
++ (id)getPredictStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  nameCopy = name;
+  domainCopy = domain;
+  if (code)
   {
     v9 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prediction failed with %@", v7, *MEMORY[0x277CCA450]];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prediction failed with %@", nameCopy, *MEMORY[0x277CCA450]];
     v15[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    a5 = [v9 initWithDomain:v8 code:a5 userInfo:v11];
+    code = [v9 initWithDomain:domainCopy code:code userInfo:v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return code;
 }
 
-+ (id)getInitStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5
++ (id)getInitStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  nameCopy = name;
+  domainCopy = domain;
+  if (code)
   {
     v9 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to intialize %@", v7, *MEMORY[0x277CCA450]];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to intialize %@", nameCopy, *MEMORY[0x277CCA450]];
     v15[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    a5 = [v9 initWithDomain:v8 code:a5 userInfo:v11];
+    code = [v9 initWithDomain:domainCopy code:code userInfo:v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return code;
 }
 
-+ (void)reportPredictStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5 locale:(id)a6
++ (void)reportPredictStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code locale:(id)locale
 {
-  v8 = a6;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.Prediction", a4, a3];
-  v10 = v8;
+  localeCopy = locale;
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.Prediction", domain, name];
+  v10 = localeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -80,11 +80,11 @@ id __74__PredictorUtils_reportPredictStatusWithPredictorName_domain_code_locale_
   return v6;
 }
 
-+ (void)reportInitStatusWithPredictorName:(id)a3 domain:(id)a4 code:(int64_t)a5 locale:(id)a6
++ (void)reportInitStatusWithPredictorName:(id)name domain:(id)domain code:(int64_t)code locale:(id)locale
 {
-  v8 = a6;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.Initialization", a4, a3];
-  v10 = v8;
+  localeCopy = locale;
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.Initialization", domain, name];
+  v10 = localeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -113,12 +113,12 @@ id __71__PredictorUtils_reportInitStatusWithPredictorName_domain_code_locale___b
   return v6;
 }
 
-+ (int64_t)handlePredictException:(exception_ptr)a3
++ (int64_t)handlePredictException:(exception_ptr)exception
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (*a3.var0)
+  if (*exception.var0)
   {
-    std::exception_ptr::exception_ptr(&v6, a3.var0);
+    std::exception_ptr::exception_ptr(&v6, exception.var0);
     v5.__ptr_ = &v6;
     std::rethrow_exception(v5);
     __break(1u);
@@ -129,12 +129,12 @@ id __71__PredictorUtils_reportInitStatusWithPredictorName_domain_code_locale___b
   return result;
 }
 
-+ (int64_t)handleInitException:(exception_ptr)a3
++ (int64_t)handleInitException:(exception_ptr)exception
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (*a3.var0)
+  if (*exception.var0)
   {
-    std::exception_ptr::exception_ptr(&v6, a3.var0);
+    std::exception_ptr::exception_ptr(&v6, exception.var0);
     v5.__ptr_ = &v6;
     std::rethrow_exception(v5);
     __break(1u);

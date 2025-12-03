@@ -1,19 +1,19 @@
 @interface SBWorkStore
 - (NSArray)keysWithWork;
-- (SBWorkStore)initWithMaximumNumberOfWorkItemsPerKey:(unint64_t)a3;
+- (SBWorkStore)initWithMaximumNumberOfWorkItemsPerKey:(unint64_t)key;
 - (id)debugDescription;
-- (id)dequeueWorkForKey:(id)a3;
+- (id)dequeueWorkForKey:(id)key;
 - (void)_notifyObserversWorkDidChange;
-- (void)_workQueue_expireWorkForKey:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addWorkItem:(id)a3 forKey:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setWorkExpirationPeriod:(double)a3 forKey:(id)a4;
+- (void)_workQueue_expireWorkForKey:(id)key;
+- (void)addObserver:(id)observer;
+- (void)addWorkItem:(id)item forKey:(id)key;
+- (void)removeObserver:(id)observer;
+- (void)setWorkExpirationPeriod:(double)period forKey:(id)key;
 @end
 
 @implementation SBWorkStore
 
-- (SBWorkStore)initWithMaximumNumberOfWorkItemsPerKey:(unint64_t)a3
+- (SBWorkStore)initWithMaximumNumberOfWorkItemsPerKey:(unint64_t)key
 {
   v16.receiver = self;
   v16.super_class = SBWorkStore;
@@ -40,7 +40,7 @@
     observerQueue = v4->_observerQueue;
     v4->_observerQueue = v13;
 
-    v4->_maxWorkPerKey = a3;
+    v4->_maxWorkPerKey = key;
   }
 
   return v4;
@@ -76,11 +76,11 @@ void __27__SBWorkStore_keysWithWork__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observerQueue = self->_observerQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -88,7 +88,7 @@ void __27__SBWorkStore_keysWithWork__block_invoke(uint64_t a1)
     v7[2] = __27__SBWorkStore_addObserver___block_invoke;
     v7[3] = &unk_2783A92D8;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(observerQueue, v7);
   }
 }
@@ -112,35 +112,35 @@ uint64_t __27__SBWorkStore_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__SBWorkStore_removeObserver___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)addWorkItem:(id)a3 forKey:(id)a4
+- (void)addWorkItem:(id)item forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  itemCopy = item;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (itemCopy && keyCopy)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__SBWorkStore_addWorkItem_forKey___block_invoke;
     block[3] = &unk_2783A8ED8;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = keyCopy;
+    selfCopy = self;
+    v13 = itemCopy;
     dispatch_async(workQueue, block);
   }
 }
@@ -175,9 +175,9 @@ void __34__SBWorkStore_addWorkItem_forKey___block_invoke(uint64_t a1)
   [*(a1 + 40) _notifyObserversWorkDidChange];
 }
 
-- (id)dequeueWorkForKey:(id)a3
+- (id)dequeueWorkForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -189,10 +189,10 @@ void __34__SBWorkStore_addWorkItem_forKey___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__SBWorkStore_dequeueWorkForKey___block_invoke;
   block[3] = &unk_2783AEA70;
-  v10 = v4;
-  v11 = self;
+  v10 = keyCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(workQueue, block);
   v7 = v14[5];
 
@@ -224,18 +224,18 @@ void __33__SBWorkStore_dequeueWorkForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setWorkExpirationPeriod:(double)a3 forKey:(id)a4
+- (void)setWorkExpirationPeriod:(double)period forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SBWorkStore_setWorkExpirationPeriod_forKey___block_invoke;
   block[3] = &unk_2783AB2A8;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = keyCopy;
+  selfCopy = self;
+  periodCopy = period;
+  v8 = keyCopy;
   dispatch_sync(workQueue, block);
 }
 
@@ -249,16 +249,16 @@ void __46__SBWorkStore_setWorkExpirationPeriod_forKey___block_invoke(uint64_t a1
   }
 }
 
-- (void)_workQueue_expireWorkForKey:(id)a3
+- (void)_workQueue_expireWorkForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v19 = v4;
-    v5 = [(NSMutableDictionary *)self->_workItemsPerKey objectForKey:v4];
+    v19 = keyCopy;
+    v5 = [(NSMutableDictionary *)self->_workItemsPerKey objectForKey:keyCopy];
     v6 = [v5 count];
 
-    v4 = v19;
+    keyCopy = v19;
     if (v6)
     {
       defaultWorkExpirationPeriod = self->_defaultWorkExpirationPeriod;
@@ -273,8 +273,8 @@ void __46__SBWorkStore_setWorkExpirationPeriod_forKey___block_invoke(uint64_t a1
       if (defaultWorkExpirationPeriod > 0.0)
       {
         v11 = [(NSMutableDictionary *)self->_workItemsPerKey objectForKey:v19];
-        v12 = [MEMORY[0x277CBEAA8] date];
-        v13 = [v12 dateByAddingTimeInterval:-defaultWorkExpirationPeriod];
+        date = [MEMORY[0x277CBEAA8] date];
+        v13 = [date dateByAddingTimeInterval:-defaultWorkExpirationPeriod];
 
         if ([v11 count])
         {
@@ -283,8 +283,8 @@ void __46__SBWorkStore_setWorkExpirationPeriod_forKey___block_invoke(uint64_t a1
           do
           {
             v16 = [v11 objectAtIndex:v14];
-            v17 = [v16 creationDate];
-            v18 = [v17 compare:v13];
+            creationDate = [v16 creationDate];
+            v18 = [creationDate compare:v13];
 
             if (v18 == -1)
             {
@@ -299,7 +299,7 @@ void __46__SBWorkStore_setWorkExpirationPeriod_forKey___block_invoke(uint64_t a1
         }
       }
 
-      v4 = v19;
+      keyCopy = v19;
     }
   }
 }

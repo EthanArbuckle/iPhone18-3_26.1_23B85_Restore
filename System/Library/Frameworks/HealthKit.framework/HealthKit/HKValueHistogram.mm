@@ -1,28 +1,28 @@
 @interface HKValueHistogram
-- (BOOL)isEqual:(id)a3;
-- (HKValueHistogram)initWithCoder:(id)a3;
-- (HKValueHistogram)initWithSegments:(id)a3 dateInterval:(id)a4;
-- (double)fractionOfValuesInSegmentAtIndex:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKValueHistogram)initWithCoder:(id)coder;
+- (HKValueHistogram)initWithSegments:(id)segments dateInterval:(id)interval;
+- (double)fractionOfValuesInSegmentAtIndex:(int64_t)index;
 - (int64_t)totalSampleCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKValueHistogram
 
-- (HKValueHistogram)initWithSegments:(id)a3 dateInterval:(id)a4
+- (HKValueHistogram)initWithSegments:(id)segments dateInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  segmentsCopy = segments;
+  intervalCopy = interval;
   v12.receiver = self;
   v12.super_class = HKValueHistogram;
   v8 = [(HKValueHistogram *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [segmentsCopy copy];
     segments = v8->_segments;
     v8->_segments = v9;
 
-    objc_storeStrong(&v8->_dateInterval, a4);
+    objc_storeStrong(&v8->_dateInterval, interval);
   }
 
   return v8;
@@ -69,38 +69,38 @@
   return v5;
 }
 
-- (double)fractionOfValuesInSegmentAtIndex:(int64_t)a3
+- (double)fractionOfValuesInSegmentAtIndex:(int64_t)index
 {
-  v5 = [(NSArray *)self->_segments objectAtIndexedSubscript:a3];
+  v5 = [(NSArray *)self->_segments objectAtIndexedSubscript:index];
   v6 = [v5 count];
 
-  v7 = [(HKValueHistogram *)self totalSampleCount];
-  if (v7 <= 0)
+  totalSampleCount = [(HKValueHistogram *)self totalSampleCount];
+  if (totalSampleCount <= 0)
   {
     [(HKValueHistogram *)a2 fractionOfValuesInSegmentAtIndex:?];
   }
 
-  return v6 / v7;
+  return v6 / totalSampleCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if ([(HKValueHistogram *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HKValueHistogram *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     segments = self->_segments;
-    v7 = [(HKValueHistogram *)v5 segments];
-    if ([(NSArray *)segments isEqual:v7])
+    segments = [(HKValueHistogram *)v5 segments];
+    if ([(NSArray *)segments isEqual:segments])
     {
       dateInterval = self->_dateInterval;
-      v9 = [(HKValueHistogram *)v5 dateInterval];
-      v10 = [(NSDateInterval *)dateInterval isEqual:v9];
+      dateInterval = [(HKValueHistogram *)v5 dateInterval];
+      v10 = [(NSDateInterval *)dateInterval isEqual:dateInterval];
     }
 
     else
@@ -117,25 +117,25 @@
   return v10;
 }
 
-- (HKValueHistogram)initWithCoder:(id)a3
+- (HKValueHistogram)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 hk_typesForArrayOf:objc_opt_class()];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"segments"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"segments"];
 
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
 
   v9 = [(HKValueHistogram *)self initWithSegments:v7 dateInterval:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   segments = self->_segments;
-  v5 = a3;
-  [v5 encodeObject:segments forKey:@"segments"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  coderCopy = coder;
+  [coderCopy encodeObject:segments forKey:@"segments"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
 }
 
 - (void)fractionOfValuesInSegmentAtIndex:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

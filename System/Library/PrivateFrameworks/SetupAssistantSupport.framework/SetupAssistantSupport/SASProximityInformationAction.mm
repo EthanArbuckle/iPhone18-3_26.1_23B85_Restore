@@ -1,7 +1,7 @@
 @interface SASProximityInformationAction
 - (SASProximityInformationAction)init;
 - (id)responsePayload;
-- (void)setResponseFromData:(id)a3;
+- (void)setResponseFromData:(id)data;
 @end
 
 @implementation SASProximityInformationAction
@@ -20,17 +20,17 @@
   return v2;
 }
 
-- (void)setResponseFromData:(id)a3
+- (void)setResponseFromData:(id)data
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAC8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v5 setWithObjects:{v7, v8, objc_opt_class(), 0}];
   v22 = 0;
-  v10 = [v4 unarchivedObjectOfClasses:v9 fromData:v6 error:&v22];
+  v10 = [v4 unarchivedObjectOfClasses:v9 fromData:dataCopy error:&v22];
 
   v11 = v22;
   if (!v10)
@@ -52,9 +52,9 @@
   v17 = v21;
 
   [(SASProximityInformationAction *)self setInformation:v16];
-  v18 = [(SASProximityInformationAction *)self information];
+  information = [(SASProximityInformationAction *)self information];
 
-  if (!v18)
+  if (!information)
   {
     v19 = +[SASLogging facility];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -71,13 +71,13 @@
 - (id)responsePayload
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SASProximityInformationAction *)self information];
-  [v3 loadInformation];
+  information = [(SASProximityInformationAction *)self information];
+  [information loadInformation];
 
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [(SASProximityInformationAction *)self information];
+  information2 = [(SASProximityInformationAction *)self information];
   v16 = 0;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v16];
+  v6 = [v4 archivedDataWithRootObject:information2 requiringSecureCoding:1 error:&v16];
   v7 = v16;
 
   if (v6)

@@ -1,7 +1,7 @@
 @interface GQDArcPath
 - (CGPath)createBezierPath;
 - (CGSize)size;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 @end
 
 @implementation GQDArcPath
@@ -103,17 +103,17 @@
   return Mutable;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  if (!sub_426B0(a3, qword_A35E8, "headAngle", &self->mHeadAngle) || !sub_426B0(a3, qword_A35E8, "arcWidth", &self->mArcWidth))
+  if (!sub_426B0(reader, qword_A35E8, "headAngle", &self->mHeadAngle) || !sub_426B0(reader, qword_A35E8, "arcWidth", &self->mArcWidth))
   {
     return 3;
   }
 
   v6 = 3;
-  if (sub_426B0(a3, qword_A35E8, "arrowWidth", &self->mArrowWidth))
+  if (sub_426B0(reader, qword_A35E8, "arrowWidth", &self->mArrowWidth))
   {
-    if (sub_426B0(a3, qword_A35E8, "arrowLength", &self->mArrowLength))
+    if (sub_426B0(reader, qword_A35E8, "arrowLength", &self->mArrowLength))
     {
       return 1;
     }

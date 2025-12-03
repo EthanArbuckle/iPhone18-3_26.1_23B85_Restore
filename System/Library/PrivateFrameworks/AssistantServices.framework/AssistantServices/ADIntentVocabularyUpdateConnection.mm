@@ -1,52 +1,52 @@
 @interface ADIntentVocabularyUpdateConnection
-- (ADIntentVocabularyUpdateConnection)initWithBundleID:(id)a3 path:(id)a4 canDonateOnBehalfOfApps:(BOOL)a5;
+- (ADIntentVocabularyUpdateConnection)initWithBundleID:(id)d path:(id)path canDonateOnBehalfOfApps:(BOOL)apps;
 - (id)_datastoreManager;
-- (id)_datastoreManagerFor:(id)a3 bundlePath:(id)a4;
-- (void)_askToSyncSlot:(id)a3 onBehalfOf:(id)a4;
-- (void)_deleteEverythingOnBehalfOf:(id)a3 withDataStorageManager:(id)a4;
-- (void)_recordVocabulary:(id)a3 forIntentSlot:(id)a4 onBehalfOf:(id)a5 withDataStorageManager:(id)a6 withValidationCompletion:(id)a7;
-- (void)_triggerUserVocabularySyncAttributingApp:(id)a3 vocabType:(id)a4;
+- (id)_datastoreManagerFor:(id)for bundlePath:(id)path;
+- (void)_askToSyncSlot:(id)slot onBehalfOf:(id)of;
+- (void)_deleteEverythingOnBehalfOf:(id)of withDataStorageManager:(id)manager;
+- (void)_recordVocabulary:(id)vocabulary forIntentSlot:(id)slot onBehalfOf:(id)of withDataStorageManager:(id)manager withValidationCompletion:(id)completion;
+- (void)_triggerUserVocabularySyncAttributingApp:(id)app vocabType:(id)type;
 - (void)deleteEverything;
-- (void)deleteEverythingOnBehalfOf:(id)a3;
-- (void)fetchCurrentSiriLanguageCode:(id)a3;
-- (void)fetchSiriAuthorization:(id)a3;
-- (void)recordVocabulary:(id)a3 forIntentSlot:(id)a4 onBehalfOf:(id)a5 withValidationCompletion:(id)a6;
-- (void)recordVocabulary:(id)a3 forIntentSlot:(id)a4 withValidationCompletion:(id)a5;
-- (void)requestSiriAuthorization:(id)a3;
-- (void)verifyProcessCanDonateIntentWithName:(id)a3 completion:(id)a4;
+- (void)deleteEverythingOnBehalfOf:(id)of;
+- (void)fetchCurrentSiriLanguageCode:(id)code;
+- (void)fetchSiriAuthorization:(id)authorization;
+- (void)recordVocabulary:(id)vocabulary forIntentSlot:(id)slot onBehalfOf:(id)of withValidationCompletion:(id)completion;
+- (void)recordVocabulary:(id)vocabulary forIntentSlot:(id)slot withValidationCompletion:(id)completion;
+- (void)requestSiriAuthorization:(id)authorization;
+- (void)verifyProcessCanDonateIntentWithName:(id)name completion:(id)completion;
 @end
 
 @implementation ADIntentVocabularyUpdateConnection
 
-- (void)fetchCurrentSiriLanguageCode:(id)a3
+- (void)fetchCurrentSiriLanguageCode:(id)code
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  codeCopy = code;
+  v5 = codeCopy;
+  if (codeCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10031534C;
     v6[3] = &unk_10051C628;
-    v7 = v4;
+    v7 = codeCopy;
     [(ADIntentVocabularyUpdateConnection *)self fetchSiriAuthorization:v6];
   }
 }
 
-- (void)verifyProcessCanDonateIntentWithName:(id)a3 completion:(id)a4
+- (void)verifyProcessCanDonateIntentWithName:(id)name completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v6 = a4;
+    completionCopy = completion;
     CanDonateIntent = INAppCanDonateIntent();
-    (*(a4 + 2))(v6, CanDonateIntent);
+    (*(completion + 2))(completionCopy, CanDonateIntent);
   }
 }
 
-- (void)requestSiriAuthorization:(id)a3
+- (void)requestSiriAuthorization:(id)authorization
 {
-  v4 = a3;
-  if (v4)
+  authorizationCopy = authorization;
+  if (authorizationCopy)
   {
     v5 = objc_alloc_init(BKSApplicationStateMonitor);
     v6 = [v5 applicationStateForApplication:self->_appBundleID];
@@ -65,7 +65,7 @@
         memset(v11, 0, sizeof(v11));
       }
 
-      [_INSiriAuthorizationManager _requestSiriAuthorization:v4 auditToken:v11];
+      [_INSiriAuthorizationManager _requestSiriAuthorization:authorizationCopy auditToken:v11];
     }
 
     else
@@ -81,28 +81,28 @@
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Ignoring attempt by %{public}@ to request Siri authorization while not in the foreground", v11, 0x16u);
       }
 
-      [(ADIntentVocabularyUpdateConnection *)self fetchSiriAuthorization:v4];
+      [(ADIntentVocabularyUpdateConnection *)self fetchSiriAuthorization:authorizationCopy];
     }
   }
 }
 
-- (void)fetchSiriAuthorization:(id)a3
+- (void)fetchSiriAuthorization:(id)authorization
 {
-  if (a3)
+  if (authorization)
   {
     appBundleID = self->_appBundleID;
-    v5 = a3;
-    (*(a3 + 2))(v5, [_INSiriAuthorizationManager _siriAuthorizationStatusForAppID:appBundleID]);
+    authorizationCopy = authorization;
+    (*(authorization + 2))(authorizationCopy, [_INSiriAuthorizationManager _siriAuthorizationStatusForAppID:appBundleID]);
   }
 }
 
-- (void)deleteEverythingOnBehalfOf:(id)a3
+- (void)deleteEverythingOnBehalfOf:(id)of
 {
-  v4 = a3;
+  ofCopy = of;
   if (self->_canDonateOnBehalfOfApps)
   {
-    v5 = [(ADIntentVocabularyUpdateConnection *)self _datastoreManagerFor:v4 bundlePath:0];
-    [(ADIntentVocabularyUpdateConnection *)self _deleteEverythingOnBehalfOf:v4 withDataStorageManager:v5];
+    v5 = [(ADIntentVocabularyUpdateConnection *)self _datastoreManagerFor:ofCopy bundlePath:0];
+    [(ADIntentVocabularyUpdateConnection *)self _deleteEverythingOnBehalfOf:ofCopy withDataStorageManager:v5];
   }
 
   else
@@ -120,15 +120,15 @@
 - (void)deleteEverything
 {
   appBundleID = self->_appBundleID;
-  v4 = [(ADIntentVocabularyUpdateConnection *)self _datastoreManager];
-  [(ADIntentVocabularyUpdateConnection *)self _deleteEverythingOnBehalfOf:appBundleID withDataStorageManager:v4];
+  _datastoreManager = [(ADIntentVocabularyUpdateConnection *)self _datastoreManager];
+  [(ADIntentVocabularyUpdateConnection *)self _deleteEverythingOnBehalfOf:appBundleID withDataStorageManager:_datastoreManager];
 }
 
-- (void)_deleteEverythingOnBehalfOf:(id)a3 withDataStorageManager:(id)a4
+- (void)_deleteEverythingOnBehalfOf:(id)of withDataStorageManager:(id)manager
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 deleteEverything];
+  managerCopy = manager;
+  v7 = [of copy];
+  deleteEverything = [managerCopy deleteEverything];
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
@@ -145,15 +145,15 @@
   v12[2] = sub_1003158F4;
   v12[3] = &unk_10051C868;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v11 = v7;
   [v10 checkIfAnyUserVocabularyIsDeniedForApp:v11 completion:v12];
 }
 
-- (void)_askToSyncSlot:(id)a3 onBehalfOf:(id)a4
+- (void)_askToSyncSlot:(id)slot onBehalfOf:(id)of
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  slotCopy = slot;
+  v7 = [of copy];
   v8 = +[ADSyncDeny sharedInstance];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -161,57 +161,57 @@
   v11[3] = &unk_10051BBE0;
   v11[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = slotCopy;
+  v9 = slotCopy;
   v10 = v7;
   [v8 checkPermissionToSyncSlot:v9 forApp:v10 completion:v11];
 }
 
-- (void)_triggerUserVocabularySyncAttributingApp:(id)a3 vocabType:(id)a4
+- (void)_triggerUserVocabularySyncAttributingApp:(id)app vocabType:(id)type
 {
-  v4 = [NSString stringWithFormat:@"Synapse.%@#%@", a3, a4];
+  type = [NSString stringWithFormat:@"Synapse.%@#%@", app, type];
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v7 = "[ADIntentVocabularyUpdateConnection _triggerUserVocabularySyncAttributingApp:vocabType:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Posting sync notification for reason: %@", buf, 0x16u);
   }
 
   notify_post("com.apple.assistant.app_vocabulary");
 }
 
-- (void)_recordVocabulary:(id)a3 forIntentSlot:(id)a4 onBehalfOf:(id)a5 withDataStorageManager:(id)a6 withValidationCompletion:(id)a7
+- (void)_recordVocabulary:(id)vocabulary forIntentSlot:(id)slot onBehalfOf:(id)of withDataStorageManager:(id)manager withValidationCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  vocabularyCopy = vocabulary;
+  slotCopy = slot;
+  ofCopy = of;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100315E14;
   v20[3] = &unk_10051BBB8;
-  v21 = a6;
-  v22 = v12;
-  v23 = v13;
-  v24 = self;
-  v25 = v14;
-  v26 = a7;
-  v15 = v26;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v21;
+  managerCopy = manager;
+  v22 = vocabularyCopy;
+  v23 = slotCopy;
+  selfCopy = self;
+  v25 = ofCopy;
+  completionCopy = completion;
+  v15 = completionCopy;
+  v16 = ofCopy;
+  v17 = slotCopy;
+  v18 = vocabularyCopy;
+  v19 = managerCopy;
   [v19 checkIfSyncSlot:v17 isAllowedWithCompletion:v20];
 }
 
-- (void)recordVocabulary:(id)a3 forIntentSlot:(id)a4 onBehalfOf:(id)a5 withValidationCompletion:(id)a6
+- (void)recordVocabulary:(id)vocabulary forIntentSlot:(id)slot onBehalfOf:(id)of withValidationCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  vocabularyCopy = vocabulary;
+  slotCopy = slot;
+  ofCopy = of;
+  completionCopy = completion;
   v14 = AFSiriLogContextDaemon;
   if (!self->_canDonateOnBehalfOfApps)
   {
@@ -220,27 +220,27 @@
       v20 = 136315138;
       v21 = "[ADIntentVocabularyUpdateConnection recordVocabulary:forIntentSlot:onBehalfOf:withValidationCompletion:]";
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Process tried to donate vocabulary on behalf of apps but not authorized", &v20, 0xCu);
-      if (!v13)
+      if (!completionCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v13)
+    else if (!completionCopy)
     {
       goto LABEL_8;
     }
 
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_8;
   }
 
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v12 copy];
+    v16 = [ofCopy copy];
     v17 = v16;
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 count]);
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vocabularyCopy count]);
     v20 = 136315906;
     v21 = "[ADIntentVocabularyUpdateConnection recordVocabulary:forIntentSlot:onBehalfOf:withValidationCompletion:]";
     v22 = 2112;
@@ -248,56 +248,56 @@
     v24 = 2112;
     v25 = v18;
     v26 = 2112;
-    v27 = v11;
+    v27 = slotCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s On behalf of %@ got %@ items for %@", &v20, 0x2Au);
   }
 
-  v19 = [(ADIntentVocabularyUpdateConnection *)self _datastoreManagerFor:v12 bundlePath:0];
-  [(ADIntentVocabularyUpdateConnection *)self _recordVocabulary:v10 forIntentSlot:v11 onBehalfOf:v12 withDataStorageManager:v19 withValidationCompletion:v13];
+  v19 = [(ADIntentVocabularyUpdateConnection *)self _datastoreManagerFor:ofCopy bundlePath:0];
+  [(ADIntentVocabularyUpdateConnection *)self _recordVocabulary:vocabularyCopy forIntentSlot:slotCopy onBehalfOf:ofCopy withDataStorageManager:v19 withValidationCompletion:completionCopy];
 
 LABEL_8:
 }
 
-- (void)recordVocabulary:(id)a3 forIntentSlot:(id)a4 withValidationCompletion:(id)a5
+- (void)recordVocabulary:(id)vocabulary forIntentSlot:(id)slot withValidationCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  vocabularyCopy = vocabulary;
+  slotCopy = slot;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
+    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vocabularyCopy count]);
     v14 = [(NSString *)self->_appBundleID copy];
     v16 = 136315906;
     v17 = "[ADIntentVocabularyUpdateConnection recordVocabulary:forIntentSlot:withValidationCompletion:]";
     v18 = 2112;
     v19 = v13;
     v20 = 2112;
-    v21 = v9;
+    v21 = slotCopy;
     v22 = 2112;
     v23 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s got %@ items for %@ from %@", &v16, 0x2Au);
   }
 
-  v15 = [(ADIntentVocabularyUpdateConnection *)self _datastoreManager];
-  [(ADIntentVocabularyUpdateConnection *)self _recordVocabulary:v8 forIntentSlot:v9 onBehalfOf:self->_appBundleID withDataStorageManager:v15 withValidationCompletion:v10];
+  _datastoreManager = [(ADIntentVocabularyUpdateConnection *)self _datastoreManager];
+  [(ADIntentVocabularyUpdateConnection *)self _recordVocabulary:vocabularyCopy forIntentSlot:slotCopy onBehalfOf:self->_appBundleID withDataStorageManager:_datastoreManager withValidationCompletion:completionCopy];
 }
 
-- (id)_datastoreManagerFor:(id)a3 bundlePath:(id)a4
+- (id)_datastoreManagerFor:(id)for bundlePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  forCopy = for;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (pathCopy)
   {
-    v9 = v7;
+    path = pathCopy;
     goto LABEL_18;
   }
 
-  v10 = [v6 isEqualToString:@"com.apple.siriactionsd"];
+  v10 = [forCopy isEqualToString:@"com.apple.siriactionsd"];
   v24 = 0;
-  v11 = [LSBundleRecord bundleRecordWithBundleIdentifier:v6 allowPlaceholder:0 error:&v24];
+  v11 = [LSBundleRecord bundleRecordWithBundleIdentifier:forCopy allowPlaceholder:0 error:&v24];
   v12 = v24;
   if (!v11)
   {
@@ -315,7 +315,7 @@ LABEL_8:
           v14 = v12;
         }
 
-        v28 = v6;
+        v28 = forCopy;
         v29 = 2112;
         v30 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Could not get bundle record for app bundle ID %@ %@", buf, 0x20u);
@@ -333,7 +333,7 @@ LABEL_8:
         v22 = v12;
       }
 
-      v28 = v6;
+      v28 = forCopy;
       v29 = 2112;
       v30 = v22;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Could not get bundle record for app bundle ID %@ %@", buf, 0x20u);
@@ -341,9 +341,9 @@ LABEL_8:
   }
 
   v15 = [v11 URL];
-  v9 = [v15 path];
+  path = [v15 path];
 
-  if (!v9)
+  if (!path)
   {
     v16 = AFSiriLogContextDaemon;
     if (v10)
@@ -351,7 +351,7 @@ LABEL_8:
       if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
 LABEL_16:
-        v9 = self->_appPath;
+        path = self->_appPath;
         goto LABEL_17;
       }
 
@@ -361,7 +361,7 @@ LABEL_16:
       *buf = 136315650;
       v26 = "[ADIntentVocabularyUpdateConnection _datastoreManagerFor:bundlePath:]";
       v27 = 2112;
-      v28 = v6;
+      v28 = forCopy;
       v29 = 2112;
       v30 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s App bundle path for app bundle ID %@ is nil, using %@", buf, 0x20u);
@@ -380,7 +380,7 @@ LABEL_16:
       *buf = 136315650;
       v26 = "[ADIntentVocabularyUpdateConnection _datastoreManagerFor:bundlePath:]";
       v27 = 2112;
-      v28 = v6;
+      v28 = forCopy;
       v29 = 2112;
       v30 = v19;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s App bundle path for app bundle ID %@ is nil, using %@", buf, 0x20u);
@@ -392,7 +392,7 @@ LABEL_16:
 LABEL_17:
 
 LABEL_18:
-  v20 = [_INVocabularyStoreManager managerForBundleID:v6 bundlePath:v9];
+  v20 = [_INVocabularyStoreManager managerForBundleID:forCopy bundlePath:path];
 
   return v20;
 }
@@ -412,30 +412,30 @@ LABEL_18:
   return datastoreManager;
 }
 
-- (ADIntentVocabularyUpdateConnection)initWithBundleID:(id)a3 path:(id)a4 canDonateOnBehalfOfApps:(BOOL)a5
+- (ADIntentVocabularyUpdateConnection)initWithBundleID:(id)d path:(id)path canDonateOnBehalfOfApps:(BOOL)apps
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dCopy = d;
+  pathCopy = path;
+  if (dCopy)
   {
     v18.receiver = self;
     v18.super_class = ADIntentVocabularyUpdateConnection;
     v10 = [(ADIntentVocabularyUpdateConnection *)&v18 init];
     if (v10)
     {
-      v11 = [v8 copy];
+      v11 = [dCopy copy];
       appBundleID = v10->_appBundleID;
       v10->_appBundleID = v11;
 
-      v13 = [v9 copy];
+      v13 = [pathCopy copy];
       appPath = v10->_appPath;
       v10->_appPath = v13;
 
-      v10->_canDonateOnBehalfOfApps = a5;
+      v10->_canDonateOnBehalfOfApps = apps;
     }
 
     self = v10;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -448,10 +448,10 @@ LABEL_18:
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s no bundleID!", buf, 0xCu);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

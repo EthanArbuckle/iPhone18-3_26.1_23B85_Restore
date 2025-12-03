@@ -18,8 +18,8 @@
 - (id)hf_SHA1
 {
   v6 = *MEMORY[0x277D85DE8];
-  CC_SHA1([a1 UTF8String], objc_msgSend(a1, "hf_UTF8Length"), md);
-  v2 = [a1 hf_toHexString:md length:20];
+  CC_SHA1([self UTF8String], objc_msgSend(self, "hf_UTF8Length"), md);
+  v2 = [self hf_toHexString:md length:20];
   v3 = *MEMORY[0x277D85DE8];
 
   return v2;
@@ -28,8 +28,8 @@
 - (id)hf_SHA256
 {
   v6 = *MEMORY[0x277D85DE8];
-  CC_SHA256([a1 UTF8String], objc_msgSend(a1, "hf_UTF8Length"), md);
-  v2 = [a1 hf_toHexString:md length:32];
+  CC_SHA256([self UTF8String], objc_msgSend(self, "hf_UTF8Length"), md);
+  v2 = [self hf_toHexString:md length:32];
   v3 = *MEMORY[0x277D85DE8];
 
   return v2;
@@ -37,20 +37,20 @@
 
 - (BOOL)hf_isPhoneNumber
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
-  [v2 addCharactersInString:@"+()-"];
-  v3 = [MEMORY[0x277CCA900] controlCharacterSet];
-  [v2 formUnionWithCharacterSet:v3];
+  decimalDigitCharacterSet = [MEMORY[0x277CCAB50] decimalDigitCharacterSet];
+  [decimalDigitCharacterSet addCharactersInString:@"+()-"];
+  controlCharacterSet = [MEMORY[0x277CCA900] controlCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:controlCharacterSet];
 
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  [v2 formUnionWithCharacterSet:v4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  [decimalDigitCharacterSet formUnionWithCharacterSet:whitespaceAndNewlineCharacterSet];
 
-  v5 = [a1 componentsSeparatedByCharactersInSet:v2];
+  v5 = [self componentsSeparatedByCharactersInSet:decimalDigitCharacterSet];
   v6 = [v5 componentsJoinedByString:&stru_2824B1A78];
 
   v7 = [v6 length] == 0;
@@ -66,7 +66,7 @@
 
   v2 = _MergedGlobals_258;
 
-  return [v2 evaluateWithObject:a1];
+  return [v2 evaluateWithObject:self];
 }
 
 + (id)hf_formattedPersonNameForFirstName:()HFAdditions lastName:
@@ -113,7 +113,7 @@
   v18 = __Block_byref_object_copy__12;
   v19 = __Block_byref_object_dispose__12;
   v20 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__NSString_HFAdditions__hf_stringByTransformingFirstWordUsingBlock___block_invoke;
@@ -122,19 +122,19 @@
   v14 = &v15;
   v6 = v4;
   v12 = v6;
-  [a1 enumerateSubstringsInRange:0 options:v5 usingBlock:{3, v11}];
+  [self enumerateSubstringsInRange:0 options:v5 usingBlock:{3, v11}];
   v7 = v22[4];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [a1 stringByReplacingCharactersInRange:v7 withString:{v22[5], v16[5]}];
+    selfCopy = [self stringByReplacingCharactersInRange:v7 withString:{v22[5], v16[5]}];
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -144,9 +144,9 @@
 
 - (id)hf_extractDecimalDigits
 {
-  v2 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v3 = [v2 invertedSet];
-  v4 = [a1 componentsSeparatedByCharactersInSet:v3];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v4 = [self componentsSeparatedByCharactersInSet:invertedSet];
   v5 = [v4 componentsJoinedByString:&stru_2824B1A78];
 
   return v5;
@@ -154,10 +154,10 @@
 
 - (BOOL)hf_containsOnlyDecimalDigits
 {
-  v2 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v3 = [v2 invertedSet];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v4 = [a1 rangeOfCharacterFromSet:v3] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "length") != 0;
+  v4 = [self rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "length") != 0;
   return v4;
 }
 
@@ -182,7 +182,7 @@
 
 - (uint64_t)hf_countForSubstring:()HFAdditions
 {
-  v1 = [a1 componentsSeparatedByString:?];
+  v1 = [self componentsSeparatedByString:?];
   v2 = [v1 count] - 1;
 
   return v2;
@@ -190,40 +190,40 @@
 
 - (id)hf_stringByTrimmingTrailingHexCode
 {
-  v2 = [MEMORY[0x277CCAB50] whitespaceCharacterSet];
-  [v2 addCharactersInString:@"-"];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
-  v4 = [v3 lastObject];
-  v5 = [v4 uppercaseString];
+  whitespaceCharacterSet = [MEMORY[0x277CCAB50] whitespaceCharacterSet];
+  [whitespaceCharacterSet addCharactersInString:@"-"];
+  v3 = [self componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
+  lastObject = [v3 lastObject];
+  uppercaseString = [lastObject uppercaseString];
 
   v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789ABCDEF"];
-  v7 = [v6 invertedSet];
+  invertedSet = [v6 invertedSet];
 
-  v8 = [v5 rangeOfCharacterFromSet:v7];
+  v8 = [uppercaseString rangeOfCharacterFromSet:invertedSet];
   if ([v3 count] >= 2)
   {
-    if ([v5 length] == 2)
+    if ([uppercaseString length] == 2)
     {
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_4:
-        v9 = [a1 substringToIndex:{objc_msgSend(a1, "length") - objc_msgSend(v5, "length")}];
-        v10 = [v9 stringByTrimmingCharactersInSet:v2];
+        v9 = [self substringToIndex:{objc_msgSend(self, "length") - objc_msgSend(uppercaseString, "length")}];
+        selfCopy = [v9 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
         goto LABEL_10;
       }
     }
 
-    else if ([v5 length] == 4 && v8 == 0x7FFFFFFFFFFFFFFFLL)
+    else if ([uppercaseString length] == 4 && v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_4;
     }
   }
 
-  v10 = a1;
+  selfCopy = self;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
 + (id)hf_stringWithFormat:()HFAdditions arguments:

@@ -2,25 +2,25 @@
 + (id)databaseFolderURL;
 - (BOOL)storeFileExists;
 - (IMUbiquitousPersistentStoreLoader)init;
-- (IMUbiquitousPersistentStoreLoader)initWithIdentifier:(id)a3;
-- (IMUbiquitousPersistentStoreLoader)initWithPersistentStoreURL:(id)a3;
+- (IMUbiquitousPersistentStoreLoader)initWithIdentifier:(id)identifier;
+- (IMUbiquitousPersistentStoreLoader)initWithPersistentStoreURL:(id)l;
 - (NSURL)storeURL;
-- (id)addPersistentStoreToPersistentStoreCoordinator:(id)a3;
-- (id)addPersistentStoreToPersistentStoreCoordinator:(id)a3 withType:(id)a4 configuration:(id)a5 URL:(id)a6 options:(id)a7;
+- (id)addPersistentStoreToPersistentStoreCoordinator:(id)coordinator;
+- (id)addPersistentStoreToPersistentStoreCoordinator:(id)coordinator withType:(id)type configuration:(id)configuration URL:(id)l options:(id)options;
 - (void)deletePersistentStore;
 @end
 
 @implementation IMUbiquitousPersistentStoreLoader
 
-- (IMUbiquitousPersistentStoreLoader)initWithIdentifier:(id)a3
+- (IMUbiquitousPersistentStoreLoader)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = IMUbiquitousPersistentStoreLoader;
   v5 = [(IMUbiquitousPersistentStoreLoader *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -28,16 +28,16 @@
   return v5;
 }
 
-- (IMUbiquitousPersistentStoreLoader)initWithPersistentStoreURL:(id)a3
+- (IMUbiquitousPersistentStoreLoader)initWithPersistentStoreURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = IMUbiquitousPersistentStoreLoader;
   v6 = [(IMUbiquitousPersistentStoreLoader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentStoreURL, a3);
+    objc_storeStrong(&v6->_persistentStoreURL, l);
   }
 
   return v7;
@@ -52,9 +52,9 @@
   return 0;
 }
 
-- (id)addPersistentStoreToPersistentStoreCoordinator:(id)a3
+- (id)addPersistentStoreToPersistentStoreCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v5 = +[NSMutableDictionary dictionary];
   v6 = [NSNumber numberWithBool:1];
   [v5 setValue:v6 forKey:NSMigratePersistentStoresAutomaticallyOption];
@@ -62,8 +62,8 @@
   v7 = [NSNumber numberWithBool:1];
   [v5 setValue:v7 forKey:NSInferMappingModelAutomaticallyOption];
 
-  v8 = [(IMUbiquitousPersistentStoreLoader *)self storeURL];
-  v9 = [(IMUbiquitousPersistentStoreLoader *)self addPersistentStoreToPersistentStoreCoordinator:v4 withType:NSSQLiteStoreType configuration:0 URL:v8 options:v5];
+  storeURL = [(IMUbiquitousPersistentStoreLoader *)self storeURL];
+  v9 = [(IMUbiquitousPersistentStoreLoader *)self addPersistentStoreToPersistentStoreCoordinator:coordinatorCopy withType:NSSQLiteStoreType configuration:0 URL:storeURL options:v5];
   if (!v9)
   {
     v10 = BCIMLog();
@@ -82,27 +82,27 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v14 = v4;
+      v14 = coordinatorCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = storeURL;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "@Failed to add persistentStore at URL: %@ Error: %@ -- Crashing to avoid data loss", buf, 0x16u);
     }
 
-    [NSException raise:NSGenericException format:@"%@ failed to add persistentStore to PSC: %@ at URL: %@", @"self", v4, v8];
+    [NSException raise:NSGenericException format:@"%@ failed to add persistentStore to PSC: %@ at URL: %@", @"self", coordinatorCopy, storeURL];
   }
 
   return v9;
 }
 
-- (id)addPersistentStoreToPersistentStoreCoordinator:(id)a3 withType:(id)a4 configuration:(id)a5 URL:(id)a6 options:(id)a7
+- (id)addPersistentStoreToPersistentStoreCoordinator:(id)coordinator withType:(id)type configuration:(id)configuration URL:(id)l options:(id)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  coordinatorCopy = coordinator;
+  typeCopy = type;
+  configurationCopy = configuration;
+  lCopy = l;
+  optionsCopy = options;
   v87 = 0;
-  v17 = [v12 addPersistentStoreWithType:v13 configuration:v14 URL:v15 options:v16 error:&v87];
+  v17 = [coordinatorCopy addPersistentStoreWithType:typeCopy configuration:configurationCopy URL:lCopy options:optionsCopy error:&v87];
   v71 = v87;
   if (v17)
   {
@@ -112,31 +112,31 @@
   else
   {
     object = self;
-    v66 = v14;
-    v69 = v16;
-    v67 = v13;
+    v66 = configurationCopy;
+    v69 = optionsCopy;
+    v67 = typeCopy;
     v19 = BCIMLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
       v91 = @"self";
       v92 = 2112;
-      v93 = v12;
+      v93 = coordinatorCopy;
       v94 = 2112;
-      v95 = v15;
+      v95 = lCopy;
       v96 = 2112;
       v97 = v71;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "%@ failed to add persistentStore to PSC: %@ at URL: %@ -- Error: %@", buf, 0x2Au);
     }
 
-    v68 = v12;
+    v68 = coordinatorCopy;
 
-    v70 = v15;
-    v20 = [(__CFString *)v15 path];
+    v70 = lCopy;
+    path = [(__CFString *)lCopy path];
     v21 = +[NSFileManager defaultManager];
-    v22 = [v20 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
     v75 = v21;
-    v23 = [v21 enumeratorAtPath:v22];
+    v23 = [v21 enumeratorAtPath:stringByDeletingLastPathComponent];
     v76 = objc_opt_new();
     v83 = 0u;
     v84 = 0u;
@@ -157,8 +157,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [v22 stringByAppendingPathComponent:*(*(&v83 + 1) + 8 * i)];
-          if ([v29 hasPrefix:v20] && (objc_msgSend(v29, "hasSuffix:", @"bak") & 1) == 0)
+          v29 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:*(*(&v83 + 1) + 8 * i)];
+          if ([v29 hasPrefix:path] && (objc_msgSend(v29, "hasSuffix:", @"bak") & 1) == 0)
           {
             v30 = [NSURL fileURLWithPath:v29];
             [v76 addObject:v30];
@@ -222,9 +222,9 @@
               }
 
               v17 = 0;
-              v13 = v67;
-              v12 = v68;
-              v14 = v66;
+              typeCopy = v67;
+              coordinatorCopy = v68;
+              configurationCopy = v66;
               goto LABEL_49;
             }
 
@@ -262,9 +262,9 @@
       obja = v59;
 
       v61 = objc_getAssociatedObject(object, @"kIMDidRetryAddPersistentStore");
-      v13 = v67;
-      v12 = v68;
-      v14 = v66;
+      typeCopy = v67;
+      coordinatorCopy = v68;
+      configurationCopy = v66;
       if ([v61 BOOLValue])
       {
         v62 = BCIMLog();
@@ -302,24 +302,24 @@ LABEL_49:
         sub_1EAC00(v33);
       }
 
-      v45 = [(__CFString *)v15 path];
-      v46 = [v75 isWritableFileAtPath:v45];
+      path2 = [(__CFString *)lCopy path];
+      v46 = [v75 isWritableFileAtPath:path2];
 
-      v13 = v67;
+      typeCopy = v67;
       if (v46)
       {
-        v47 = [(__CFString *)v15 path];
+        path3 = [(__CFString *)lCopy path];
         v77 = v71;
-        v48 = [v75 attributesOfFileSystemForPath:v47 error:&v77];
+        v48 = [v75 attributesOfFileSystemForPath:path3 error:&v77];
         v49 = v77;
 
         v50 = BCIMLog();
         v51 = os_log_type_enabled(v50, OS_LOG_TYPE_ERROR);
-        v12 = v68;
+        coordinatorCopy = v68;
         v74 = v48;
         if (v48)
         {
-          v14 = v66;
+          configurationCopy = v66;
           if (v51)
           {
             sub_1EACAC();
@@ -328,7 +328,7 @@ LABEL_49:
 
         else
         {
-          v14 = v66;
+          configurationCopy = v66;
           if (v51)
           {
             sub_1EAD14(v50, v52, v53, v54, v55, v56, v57, v58);
@@ -341,7 +341,7 @@ LABEL_49:
       else
       {
         v74 = BCIMLog();
-        v12 = v68;
+        coordinatorCopy = v68;
         if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
         {
           sub_1EAC44();
@@ -349,13 +349,13 @@ LABEL_49:
 
         v17 = 0;
         v49 = v71;
-        v14 = v66;
+        configurationCopy = v66;
       }
     }
 
     v18 = v49;
-    v16 = v69;
-    v15 = v70;
+    optionsCopy = v69;
+    lCopy = v70;
   }
 
   return v17;
@@ -364,24 +364,24 @@ LABEL_49:
 - (BOOL)storeFileExists
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(IMUbiquitousPersistentStoreLoader *)self storeURL];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  storeURL = [(IMUbiquitousPersistentStoreLoader *)self storeURL];
+  path = [storeURL path];
+  v6 = [v3 fileExistsAtPath:path];
 
   return v6;
 }
 
 - (void)deletePersistentStore
 {
-  v2 = [(IMUbiquitousPersistentStoreLoader *)self storeURL];
+  storeURL = [(IMUbiquitousPersistentStoreLoader *)self storeURL];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [storeURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   if (v5)
   {
     v9 = 0;
-    v6 = [v3 removeItemAtURL:v2 error:&v9];
+    v6 = [v3 removeItemAtURL:storeURL error:&v9];
     v7 = v9;
     if ((v6 & 1) == 0)
     {
@@ -402,9 +402,9 @@ LABEL_49:
 + (id)databaseFolderURL
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [NSURL fileURLWithPath:v3 isDirectory:1];
+  v4 = [NSURL fileURLWithPath:lastObject isDirectory:1];
   v5 = [v4 URLByAppendingPathComponent:@"storeFiles"];
 
   return v5;
@@ -415,11 +415,11 @@ LABEL_49:
   persistentStoreURL = self->_persistentStoreURL;
   if (!persistentStoreURL)
   {
-    v4 = [objc_opt_class() databaseFolderURL];
+    databaseFolderURL = [objc_opt_class() databaseFolderURL];
     v5 = +[NSFileManager defaultManager];
-    v6 = [v4 path];
+    path = [databaseFolderURL path];
     v15 = 0;
-    v7 = [v5 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v15];
+    v7 = [v5 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v15];
     v8 = v15;
 
     if ((v7 & 1) == 0)
@@ -431,10 +431,10 @@ LABEL_49:
       }
     }
 
-    v10 = [(IMUbiquitousPersistentStoreLoader *)self storeName];
-    v11 = [(IMUbiquitousPersistentStoreLoader *)self identifier];
-    v12 = [NSString stringWithFormat:@"%@_%@.sqlite", v10, v11];
-    v13 = [v4 URLByAppendingPathComponent:v12];
+    storeName = [(IMUbiquitousPersistentStoreLoader *)self storeName];
+    identifier = [(IMUbiquitousPersistentStoreLoader *)self identifier];
+    v12 = [NSString stringWithFormat:@"%@_%@.sqlite", storeName, identifier];
+    v13 = [databaseFolderURL URLByAppendingPathComponent:v12];
     [(IMUbiquitousPersistentStoreLoader *)self setPersistentStoreURL:v13];
 
     persistentStoreURL = self->_persistentStoreURL;

@@ -1,16 +1,16 @@
 @interface PKDatePickerCellAccessory
-+ (id)accessoryWithDatePicker:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)_initWithDatePicker:(id)a3;
++ (id)accessoryWithDatePicker:(id)picker;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)_initWithDatePicker:(id)picker;
 - (void)layoutSubviews;
 @end
 
 @implementation PKDatePickerCellAccessory
 
-+ (id)accessoryWithDatePicker:(id)a3
++ (id)accessoryWithDatePicker:(id)picker
 {
-  v3 = a3;
-  v4 = [[PKDatePickerCellAccessory alloc] _initWithDatePicker:v3];
+  pickerCopy = picker;
+  v4 = [[PKDatePickerCellAccessory alloc] _initWithDatePicker:pickerCopy];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v4 placement:1];
   [v5 setMaintainsFixedSize:1];
@@ -19,17 +19,17 @@
   return v5;
 }
 
-- (id)_initWithDatePicker:(id)a3
+- (id)_initWithDatePicker:(id)picker
 {
-  v5 = a3;
+  pickerCopy = picker;
   v11.receiver = self;
   v11.super_class = PKDatePickerCellAccessory;
   v6 = [(PKDatePickerCellAccessory *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_datePicker, a3);
-    [(PKDatePickerCellAccessory *)v7 addSubview:v5];
+    objc_storeStrong(&v6->_datePicker, picker);
+    [(PKDatePickerCellAccessory *)v7 addSubview:pickerCopy];
     [(PKDatePickerCellAccessory *)v7 sizeThatFits:1.79769313e308, 1.79769313e308];
     [(PKDatePickerCellAccessory *)v7 setFrame:0.0, 0.0, v8, v9];
   }
@@ -37,7 +37,7 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(UIDatePicker *)self->_datePicker systemLayoutSizeFittingSize:50.0, 1.79769313e308];
   result.height = v4;

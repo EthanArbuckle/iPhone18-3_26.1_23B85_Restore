@@ -1,15 +1,15 @@
 @interface PUScreenRoutePickerViewController
-- (PUScreenRoutePickerViewController)initWithCompletionBlock:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (PUScreenRoutePickerViewController)initWithCompletionBlock:(id)block;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PUScreenRoutePickerViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PUScreenRoutePickerViewController;
-  [(PUScreenRoutePickerViewController *)&v6 viewDidDisappear:a3];
+  [(PUScreenRoutePickerViewController *)&v6 viewDidDisappear:disappear];
   completionBlock = self->_completionBlock;
   if (completionBlock)
   {
@@ -19,15 +19,15 @@
   }
 }
 
-- (PUScreenRoutePickerViewController)initWithCompletionBlock:(id)a3
+- (PUScreenRoutePickerViewController)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = PUScreenRoutePickerViewController;
   v5 = [(_UIScreenRoutePickerViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     completionBlock = v5->_completionBlock;
     v5->_completionBlock = v6;
   }

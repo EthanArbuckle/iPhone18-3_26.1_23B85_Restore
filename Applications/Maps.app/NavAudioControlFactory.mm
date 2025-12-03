@@ -1,26 +1,26 @@
 @interface NavAudioControlFactory
 + (NSString)audioTypeNotification;
-+ (id)accessibilityIdentifierForAudioType:(unint64_t)a3;
-+ (id)imageForNavAudioType:(unint64_t)a3;
-+ (id)imageForNavAudioType:(unint64_t)a3 imageConfiguration:(id)a4;
-+ (id)imageNameForNavAudioType:(unint64_t)a3;
-+ (unint64_t)guidanceLevelForNavAudioType:(unint64_t)a3;
-+ (unint64_t)navAudioTypeForGuidanceLevel:(unint64_t)a3;
++ (id)accessibilityIdentifierForAudioType:(unint64_t)type;
++ (id)imageForNavAudioType:(unint64_t)type;
++ (id)imageForNavAudioType:(unint64_t)type imageConfiguration:(id)configuration;
++ (id)imageNameForNavAudioType:(unint64_t)type;
++ (unint64_t)guidanceLevelForNavAudioType:(unint64_t)type;
++ (unint64_t)navAudioTypeForGuidanceLevel:(unint64_t)level;
 - (_TtC4Maps22NavAudioControlFactory)init;
 @end
 
 @implementation NavAudioControlFactory
 
-+ (unint64_t)navAudioTypeForGuidanceLevel:(unint64_t)a3
++ (unint64_t)navAudioTypeForGuidanceLevel:(unint64_t)level
 {
-  if (a3 + 1 > 3)
+  if (level + 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1011EAC60[a3 + 1];
+    return qword_1011EAC60[level + 1];
   }
 }
 
@@ -31,15 +31,15 @@
   return v2;
 }
 
-+ (unint64_t)guidanceLevelForNavAudioType:(unint64_t)a3
++ (unint64_t)guidanceLevelForNavAudioType:(unint64_t)type
 {
   v3 = 1;
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 0;
   }
@@ -50,28 +50,28 @@
   }
 }
 
-+ (id)imageForNavAudioType:(unint64_t)a3
++ (id)imageForNavAudioType:(unint64_t)type
 {
-  v3 = sub_100176E44(a3);
+  v3 = sub_100176E44(type);
 
   return v3;
 }
 
-+ (id)imageForNavAudioType:(unint64_t)a3 imageConfiguration:(id)a4
++ (id)imageForNavAudioType:(unint64_t)type imageConfiguration:(id)configuration
 {
-  v4 = sub_100176E44(a3);
+  v4 = sub_100176E44(type);
 
   return v4;
 }
 
-+ (id)imageNameForNavAudioType:(unint64_t)a3
++ (id)imageNameForNavAudioType:(unint64_t)type
 {
-  if (!a3 || a3 == 2)
+  if (!type || type == 2)
   {
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     _UISolariumEnabled();
 LABEL_5:
@@ -86,7 +86,7 @@ LABEL_7:
   return v3;
 }
 
-+ (id)accessibilityIdentifierForAudioType:(unint64_t)a3
++ (id)accessibilityIdentifierForAudioType:(unint64_t)type
 {
   v3 = String._bridgeToObjectiveC()();
 

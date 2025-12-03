@@ -1,23 +1,23 @@
 @interface VUWGalleryChange
 - (VUWGalleryChange)init;
-- (VUWGalleryChange)initWithUpdateType:(int64_t)a3 entityIdentifier:(id)a4 tag:(id)a5;
-- (void)setEntityIdentifier:(id)a3;
+- (VUWGalleryChange)initWithUpdateType:(int64_t)type entityIdentifier:(id)identifier tag:(id)tag;
+- (void)setEntityIdentifier:(id)identifier;
 @end
 
 @implementation VUWGalleryChange
 
-- (void)setEntityIdentifier:(id)a3
+- (void)setEntityIdentifier:(id)identifier
 {
   v4 = *(&self->super.isa + OBJC_IVAR___VUWGalleryChange_entityIdentifier);
-  *(&self->super.isa + OBJC_IVAR___VUWGalleryChange_entityIdentifier) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___VUWGalleryChange_entityIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
-- (VUWGalleryChange)initWithUpdateType:(int64_t)a3 entityIdentifier:(id)a4 tag:(id)a5
+- (VUWGalleryChange)initWithUpdateType:(int64_t)type entityIdentifier:(id)identifier tag:(id)tag
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = sub_1D2244E50(a3, v7, a5);
+  identifierCopy = identifier;
+  tagCopy = tag;
+  v9 = sub_1D2244E50(type, identifierCopy, tag);
 
   return v9;
 }

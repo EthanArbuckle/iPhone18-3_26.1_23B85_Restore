@@ -1,35 +1,35 @@
 @interface TSPortMetrics
-- (TSPortMetrics)initWithDaemonMetrics:(id)a3;
-- (TSPortMetrics)initWithInterfaceMetrics:(id *)a3;
+- (TSPortMetrics)initWithDaemonMetrics:(id)metrics;
+- (TSPortMetrics)initWithInterfaceMetrics:(id *)metrics;
 - (id)toDaemonMetrics;
 - (void)printMetrics;
 @end
 
 @implementation TSPortMetrics
 
-- (TSPortMetrics)initWithDaemonMetrics:(id)a3
+- (TSPortMetrics)initWithDaemonMetrics:(id)metrics
 {
-  v4 = a3;
-  self->_portNumber = [v4 portNumber];
-  self->_syncTimeouts = [v4 syncTimeouts];
-  self->_filterResetsDroppedLimit = [v4 filterResetsDroppedLimit];
-  self->_filterResetsOutOfBounds = [v4 filterResetsOutOfBounds];
-  self->_meanDelayTime = [v4 meanDelayTime];
-  self->_droppedMeasurements = [v4 droppedMeasurements];
-  self->_discardedPpmLimitMeasurements = [v4 discardedPpmLimitMeasurements];
-  self->_discardedDelayLimitExceededMeasurements = [v4 discardedDelayLimitExceededMeasurements];
-  self->_discardedOutOfBoundsMeasurements = [v4 discardedOutOfBoundsMeasurements];
-  self->_discardedTimestampsOutOfOrderMeasurements = [v4 discardedTimestampsOutOfOrderMeasurements];
-  self->_successfulMeasurements = [v4 successfulMeasurements];
-  self->_totalMeasurements = [v4 totalMeasurements];
-  self->_droppedPercentage = [v4 droppedPercentage];
-  self->_discardedPpmLimitPercentage = [v4 discardedPpmLimitPercentage];
-  self->_discardedDelayLimitExceededPercentage = [v4 discardedDelayLimitExceededPercentage];
-  self->_discardedOutOfBoundsPercentage = [v4 discardedOutOfBoundsPercentage];
-  self->_discardedTimestampsOutOfOrderPercentage = [v4 discardedTimestampsOutOfOrderPercentage];
-  v5 = [v4 successfulPercentage];
+  metricsCopy = metrics;
+  self->_portNumber = [metricsCopy portNumber];
+  self->_syncTimeouts = [metricsCopy syncTimeouts];
+  self->_filterResetsDroppedLimit = [metricsCopy filterResetsDroppedLimit];
+  self->_filterResetsOutOfBounds = [metricsCopy filterResetsOutOfBounds];
+  self->_meanDelayTime = [metricsCopy meanDelayTime];
+  self->_droppedMeasurements = [metricsCopy droppedMeasurements];
+  self->_discardedPpmLimitMeasurements = [metricsCopy discardedPpmLimitMeasurements];
+  self->_discardedDelayLimitExceededMeasurements = [metricsCopy discardedDelayLimitExceededMeasurements];
+  self->_discardedOutOfBoundsMeasurements = [metricsCopy discardedOutOfBoundsMeasurements];
+  self->_discardedTimestampsOutOfOrderMeasurements = [metricsCopy discardedTimestampsOutOfOrderMeasurements];
+  self->_successfulMeasurements = [metricsCopy successfulMeasurements];
+  self->_totalMeasurements = [metricsCopy totalMeasurements];
+  self->_droppedPercentage = [metricsCopy droppedPercentage];
+  self->_discardedPpmLimitPercentage = [metricsCopy discardedPpmLimitPercentage];
+  self->_discardedDelayLimitExceededPercentage = [metricsCopy discardedDelayLimitExceededPercentage];
+  self->_discardedOutOfBoundsPercentage = [metricsCopy discardedOutOfBoundsPercentage];
+  self->_discardedTimestampsOutOfOrderPercentage = [metricsCopy discardedTimestampsOutOfOrderPercentage];
+  successfulPercentage = [metricsCopy successfulPercentage];
 
-  self->_successfulPercentage = v5;
+  self->_successfulPercentage = successfulPercentage;
   return self;
 }
 
@@ -58,22 +58,22 @@
   return v3;
 }
 
-- (TSPortMetrics)initWithInterfaceMetrics:(id *)a3
+- (TSPortMetrics)initWithInterfaceMetrics:(id *)metrics
 {
-  self->_portNumber = a3->var0;
-  v3 = *(&a3->var2 + 2);
-  *&self->_syncTimeouts = *(&a3->var0 + 1);
+  self->_portNumber = metrics->var0;
+  v3 = *(&metrics->var2 + 2);
+  *&self->_syncTimeouts = *(&metrics->var0 + 1);
   *&self->_filterResetsOutOfBounds = v3;
-  v4 = *(&a3->var6 + 2);
-  *&self->_droppedMeasurements = *(&a3->var4 + 2);
+  v4 = *(&metrics->var6 + 2);
+  *&self->_droppedMeasurements = *(&metrics->var4 + 2);
   *&self->_discardedDelayLimitExceededMeasurements = v4;
-  v5 = *(&a3->var10 + 2);
-  *&self->_discardedTimestampsOutOfOrderMeasurements = *(&a3->var8 + 2);
+  v5 = *(&metrics->var10 + 2);
+  *&self->_discardedTimestampsOutOfOrderMeasurements = *(&metrics->var8 + 2);
   *&self->_totalMeasurements = v5;
-  v6 = *(&a3->var14 + 2);
-  *&self->_discardedPpmLimitPercentage = *(&a3->var12 + 2);
+  v6 = *(&metrics->var14 + 2);
+  *&self->_discardedPpmLimitPercentage = *(&metrics->var12 + 2);
   *&self->_discardedOutOfBoundsPercentage = v6;
-  self->_successfulPercentage = *(&a3->var16 + 2);
+  self->_successfulPercentage = *(&metrics->var16 + 2);
   return self;
 }
 

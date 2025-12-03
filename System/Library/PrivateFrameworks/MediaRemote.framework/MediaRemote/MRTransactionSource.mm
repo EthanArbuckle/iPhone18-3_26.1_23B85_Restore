@@ -1,42 +1,42 @@
 @interface MRTransactionSource
-- (MRTransactionSource)initWithName:(unint64_t)a3 playerPath:(id)a4 packets:(id)a5 delegate:(id)a6;
+- (MRTransactionSource)initWithName:(unint64_t)name playerPath:(id)path packets:(id)packets delegate:(id)delegate;
 - (void)_begin;
-- (void)_processMessage:(id)a3;
+- (void)_processMessage:(id)message;
 @end
 
 @implementation MRTransactionSource
 
-- (MRTransactionSource)initWithName:(unint64_t)a3 playerPath:(id)a4 packets:(id)a5 delegate:(id)a6
+- (MRTransactionSource)initWithName:(unint64_t)name playerPath:(id)path packets:(id)packets delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  packetsCopy = packets;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = MRTransactionSource;
   v14 = [(MRTransactionSource *)&v26 init];
   v15 = v14;
   if (v14)
   {
-    v14->_name = a3;
-    objc_storeStrong(&v14->_playerPath, a4);
+    v14->_name = name;
+    objc_storeStrong(&v14->_playerPath, path);
     v16 = objc_alloc_init(MRTransactionPacketizer);
     packetizer = v15->_packetizer;
     v15->_packetizer = v16;
 
-    v18 = [v12 mutableCopy];
+    v18 = [packetsCopy mutableCopy];
     packets = v15->_packets;
     v15->_packets = v18;
 
-    objc_storeStrong(&v15->_delegate, a6);
+    objc_storeStrong(&v15->_delegate, delegate);
     objc_initWeak(&location, v15);
     v20 = +[MRMediaRemoteServiceClient sharedServiceClient];
-    v21 = [v20 workerQueue];
+    workerQueue = [v20 workerQueue];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __64__MRTransactionSource_initWithName_playerPath_packets_delegate___block_invoke;
     v23[3] = &unk_1E769B178;
     objc_copyWeak(&v24, &location);
-    dispatch_async(v21, v23);
+    dispatch_async(workerQueue, v23);
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -58,18 +58,18 @@ void __64__MRTransactionSource_initWithName_playerPath_packets_delegate___block_
   MRAddPlayerPathToXPCMessage(v3, self->_playerPath);
   objc_initWeak(&location, self);
   v4 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v5 = [v4 service];
+  service = [v4 service];
 
-  v6 = MRMediaRemoteServiceGetConnection(v5);
-  v7 = [v6 connection];
+  v6 = MRMediaRemoteServiceGetConnection(service);
+  connection = [v6 connection];
   v8 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v9 = [v8 workerQueue];
+  workerQueue = [v8 workerQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __29__MRTransactionSource__begin__block_invoke;
   v10[3] = &unk_1E769F738;
   objc_copyWeak(&v11, &location);
-  xpc_connection_send_message_with_reply(v7, v3, v9, v10);
+  xpc_connection_send_message_with_reply(connection, v3, workerQueue, v10);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -82,11 +82,11 @@ void __29__MRTransactionSource__begin__block_invoke(uint64_t a1, void *a2)
   [WeakRetained _processMessage:v3];
 }
 
-- (void)_processMessage:(id)a3
+- (void)_processMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == MEMORY[0x1E69E9E18] || v4 == MEMORY[0x1E69E9E20])
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy == MEMORY[0x1E69E9E18] || messageCopy == MEMORY[0x1E69E9E20])
   {
     v7 = _MRLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -99,7 +99,7 @@ void __29__MRTransactionSource__begin__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v8 = xpc_dictionary_get_remote_connection(v4);
+    v8 = xpc_dictionary_get_remote_connection(messageCopy);
     v9 = v8;
     if (v8)
     {
@@ -121,7 +121,7 @@ void __29__MRTransactionSource__begin__block_invoke(uint64_t a1, void *a2)
         v16[3] = &unk_1E76A16C0;
         v20 = uint64;
         v17 = reply;
-        v18 = self;
+        selfCopy = self;
         v19 = v9;
         [(MRTransactionPacketizer *)packetizer packetize:v12 packageSize:uint64 completion:v16];
       }

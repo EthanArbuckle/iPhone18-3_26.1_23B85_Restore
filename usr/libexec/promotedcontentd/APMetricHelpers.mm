@@ -1,10 +1,10 @@
 @interface APMetricHelpers
 + (Class)diagnosticDaemonMetricHelper;
 + (Class)journeyDaemonMetricHelper;
-+ (id)diagnosticMetricHelperForContentData:(id)a3;
-+ (id)journeyMetricHelperForContentData:(id)a3;
-+ (void)setDiagnosticDaemonMetricHelper:(Class)a3;
-+ (void)setJourneyDaemonMetricHelper:(Class)a3;
++ (id)diagnosticMetricHelperForContentData:(id)data;
++ (id)journeyMetricHelperForContentData:(id)data;
++ (void)setDiagnosticDaemonMetricHelper:(Class)helper;
++ (void)setJourneyDaemonMetricHelper:(Class)helper;
 @end
 
 @implementation APMetricHelpers
@@ -21,22 +21,22 @@
   return v3;
 }
 
-+ (void)setDiagnosticDaemonMetricHelper:(Class)a3
++ (void)setDiagnosticDaemonMetricHelper:(Class)helper
 {
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 isRunningTests];
+  isRunningTests = [v4 isRunningTests];
 
-  if (v5)
+  if (isRunningTests)
   {
     proto = &OBJC_PROTOCOL___APDiagnosticDaemonMetricHelping;
-    if ([(objc_class *)a3 conformsToProtocol:?])
+    if ([(objc_class *)helper conformsToProtocol:?])
     {
-      qword_1004E6E10 = a3;
+      qword_1004E6E10 = helper;
     }
 
     else
     {
-      v6 = NSStringFromClass(a3);
+      v6 = NSStringFromClass(helper);
       v7 = NSStringFromProtocol(proto);
       v8 = [NSString stringWithFormat:@"Class %@ does not implement protocol %@!", v6, v7];
 
@@ -57,22 +57,22 @@
   return v3;
 }
 
-+ (void)setJourneyDaemonMetricHelper:(Class)a3
++ (void)setJourneyDaemonMetricHelper:(Class)helper
 {
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 isRunningTests];
+  isRunningTests = [v4 isRunningTests];
 
-  if (v5)
+  if (isRunningTests)
   {
     proto = &OBJC_PROTOCOL___APJourneyDaemonMetricHelping;
-    if ([(objc_class *)a3 conformsToProtocol:?])
+    if ([(objc_class *)helper conformsToProtocol:?])
     {
-      qword_1004E6E20 = a3;
+      qword_1004E6E20 = helper;
     }
 
     else
     {
-      v6 = NSStringFromClass(a3);
+      v6 = NSStringFromClass(helper);
       v7 = NSStringFromProtocol(proto);
       v8 = [NSString stringWithFormat:@"Class %@ does not implement protocol %@!", v6, v7];
 
@@ -81,18 +81,18 @@
   }
 }
 
-+ (id)diagnosticMetricHelperForContentData:(id)a3
++ (id)diagnosticMetricHelperForContentData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_msgSend(a1 "diagnosticDaemonMetricHelper"))];
+  dataCopy = data;
+  v5 = [objc_alloc(objc_msgSend(self "diagnosticDaemonMetricHelper"))];
 
   return v5;
 }
 
-+ (id)journeyMetricHelperForContentData:(id)a3
++ (id)journeyMetricHelperForContentData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_msgSend(a1 "journeyDaemonMetricHelper"))];
+  dataCopy = data;
+  v5 = [objc_alloc(objc_msgSend(self "journeyDaemonMetricHelper"))];
 
   return v5;
 }

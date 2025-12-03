@@ -1,10 +1,10 @@
 @interface SFPasswordPickerRemoteViewController
 + (id)passwordServiceViewControllerName;
-- (void)fillPassword:(id)a3;
-- (void)fillText:(id)a3;
-- (void)fillUsername:(id)a3;
-- (void)fillVerificationCode:(id)a3;
-- (void)selectedCredential:(id)a3;
+- (void)fillPassword:(id)password;
+- (void)fillText:(id)text;
+- (void)fillUsername:(id)username;
+- (void)fillVerificationCode:(id)code;
+- (void)selectedCredential:(id)credential;
 @end
 
 @implementation SFPasswordPickerRemoteViewController
@@ -16,53 +16,53 @@
   return NSStringFromClass(v2);
 }
 
-- (void)selectedCredential:(id)a3
+- (void)selectedCredential:(id)credential
 {
-  v5 = a3;
-  v4 = [(SFPasswordRemoteViewController *)self delegate];
+  credentialCopy = credential;
+  delegate = [(SFPasswordRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 remoteViewController:self selectedCredential:v5];
+    [delegate remoteViewController:self selectedCredential:credentialCopy];
   }
 }
 
-- (void)fillUsername:(id)a3
+- (void)fillUsername:(id)username
 {
-  v5 = a3;
-  v4 = [(SFPasswordRemoteViewController *)self delegate];
+  usernameCopy = username;
+  delegate = [(SFPasswordRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 remoteViewController:self fillUsername:v5];
+    [delegate remoteViewController:self fillUsername:usernameCopy];
   }
 }
 
-- (void)fillPassword:(id)a3
+- (void)fillPassword:(id)password
 {
-  v5 = a3;
-  v4 = [(SFPasswordRemoteViewController *)self delegate];
+  passwordCopy = password;
+  delegate = [(SFPasswordRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 remoteViewController:self fillPassword:v5];
+    [delegate remoteViewController:self fillPassword:passwordCopy];
   }
 }
 
-- (void)fillVerificationCode:(id)a3
+- (void)fillVerificationCode:(id)code
 {
-  v5 = a3;
-  v4 = [(SFPasswordRemoteViewController *)self delegate];
+  codeCopy = code;
+  delegate = [(SFPasswordRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 remoteViewController:self fillVerificationCode:v5];
+    [delegate remoteViewController:self fillVerificationCode:codeCopy];
   }
 }
 
-- (void)fillText:(id)a3
+- (void)fillText:(id)text
 {
-  v5 = a3;
-  v4 = [(SFPasswordRemoteViewController *)self delegate];
+  textCopy = text;
+  delegate = [(SFPasswordRemoteViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 remoteViewController:self fillText:v5];
+    [delegate remoteViewController:self fillText:textCopy];
   }
 }
 

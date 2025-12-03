@@ -1,26 +1,26 @@
 @interface PKTransitTicketDetailViewController
 - (PKTransitTicketDetailDataSource)dataSource;
-- (PKTransitTicketDetailViewController)initWithTransitTicketDetailDataSource:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_applyDefaultStaticStylingToCell:(id)a3;
+- (PKTransitTicketDetailViewController)initWithTransitTicketDetailDataSource:(id)source;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_applyDefaultStaticStylingToCell:(id)cell;
 - (void)viewDidLoad;
 @end
 
 @implementation PKTransitTicketDetailViewController
 
-- (PKTransitTicketDetailViewController)initWithTransitTicketDetailDataSource:(id)a3
+- (PKTransitTicketDetailViewController)initWithTransitTicketDetailDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = PKTransitTicketDetailViewController;
   v5 = [(PKTransitTicketDetailViewController *)&v8 initWithStyle:1];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;
@@ -33,74 +33,74 @@
   [(PKTransitTicketDetailViewController *)&v2 viewDidLoad];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(PKTransitTicketDetailViewController *)self dataSource];
-  v6 = [v5 titleForLeg:a4];
+  dataSource = [(PKTransitTicketDetailViewController *)self dataSource];
+  v6 = [dataSource titleForLeg:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PKTransitTicketDetailViewController *)self dataSource];
-  v4 = [v3 numberOfLegs];
+  dataSource = [(PKTransitTicketDetailViewController *)self dataSource];
+  numberOfLegs = [dataSource numberOfLegs];
 
-  return v4;
+  return numberOfLegs;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKTransitTicketDetailViewController *)self dataSource];
-  v6 = [v5 transitTicketDetailNumberOfRowsForLeg:a4];
+  dataSource = [(PKTransitTicketDetailViewController *)self dataSource];
+  v6 = [dataSource transitTicketDetailNumberOfRowsForLeg:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKTransitTicketDetailCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKTransitTicketDetailCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PKTransitTicketDetailCell"];
   }
 
   [(PKTransitTicketDetailViewController *)self _applyDefaultStaticStylingToCell:v7];
-  v8 = [v7 textLabel];
-  v9 = [(PKTransitTicketDetailViewController *)self dataSource];
-  v10 = [v9 transitTicketDetailTitleForRow:objc_msgSend(v6 leg:{"row"), objc_msgSend(v6, "section")}];
-  [v8 setText:v10];
+  textLabel = [v7 textLabel];
+  dataSource = [(PKTransitTicketDetailViewController *)self dataSource];
+  v10 = [dataSource transitTicketDetailTitleForRow:objc_msgSend(pathCopy leg:{"row"), objc_msgSend(pathCopy, "section")}];
+  [textLabel setText:v10];
 
-  v11 = [v7 textLabel];
-  v12 = v11;
+  textLabel2 = [v7 textLabel];
+  v12 = textLabel2;
   if (self->_primaryTextColor)
   {
-    [v11 setTextColor:?];
+    [textLabel2 setTextColor:?];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [v12 setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v12 setTextColor:labelColor];
   }
 
-  v14 = [v7 detailTextLabel];
-  v15 = [(PKTransitTicketDetailViewController *)self dataSource];
-  v16 = [v15 transitTicketDetailValueForRow:objc_msgSend(v6 leg:{"row"), objc_msgSend(v6, "section")}];
-  [v14 setText:v16];
+  detailTextLabel = [v7 detailTextLabel];
+  dataSource2 = [(PKTransitTicketDetailViewController *)self dataSource];
+  v16 = [dataSource2 transitTicketDetailValueForRow:objc_msgSend(pathCopy leg:{"row"), objc_msgSend(pathCopy, "section")}];
+  [detailTextLabel setText:v16];
 
-  v17 = [v7 detailTextLabel];
-  v18 = v17;
+  detailTextLabel2 = [v7 detailTextLabel];
+  v18 = detailTextLabel2;
   if (self->_secondaryTextColor)
   {
-    [v17 setTextColor:?];
+    [detailTextLabel2 setTextColor:?];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v18 setTextColor:v19];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v18 setTextColor:secondaryLabelColor];
   }
 
   [v7 setSelectionStyle:0];
@@ -108,16 +108,16 @@
   return v7;
 }
 
-- (void)_applyDefaultStaticStylingToCell:(id)a3
+- (void)_applyDefaultStaticStylingToCell:(id)cell
 {
-  v5 = a3;
-  v3 = [v5 textLabel];
-  [v3 setText:0];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:0];
 
-  v4 = [v5 detailTextLabel];
-  [v4 setText:0];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setText:0];
 
-  [v5 setSelectionStyle:0];
+  [cellCopy setSelectionStyle:0];
 }
 
 - (PKTransitTicketDetailDataSource)dataSource

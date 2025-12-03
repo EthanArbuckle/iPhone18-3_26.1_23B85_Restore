@@ -1,32 +1,32 @@
 @interface UITableViewCellDetailDisclosureView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UITableViewCellDetailDisclosureView)initWithTarget:(id)a3 action:(SEL)a4 cell:(id)a5 buttonType:(int64_t)a6 shouldReverseLayoutDirection:(BOOL)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UITableViewCellDetailDisclosureView)initWithTarget:(id)target action:(SEL)action cell:(id)cell buttonType:(int64_t)type shouldReverseLayoutDirection:(BOOL)direction;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateDisclosureChevronImage;
-- (void)setAccessoryTintColor:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setAccessoryTintColor:(id)color;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation UITableViewCellDetailDisclosureView
 
-- (UITableViewCellDetailDisclosureView)initWithTarget:(id)a3 action:(SEL)a4 cell:(id)a5 buttonType:(int64_t)a6 shouldReverseLayoutDirection:(BOOL)a7
+- (UITableViewCellDetailDisclosureView)initWithTarget:(id)target action:(SEL)action cell:(id)cell buttonType:(int64_t)type shouldReverseLayoutDirection:(BOOL)direction
 {
-  v10 = a5;
+  cellCopy = cell;
   v19.receiver = self;
   v19.super_class = UITableViewCellDetailDisclosureView;
   v11 = [(UIControl *)&v19 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_cell, v10);
+    objc_storeWeak(&v11->_cell, cellCopy);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __106__UITableViewCellDetailDisclosureView_initWithTarget_action_cell_buttonType_shouldReverseLayoutDirection___block_invoke;
     v14[3] = &unk_1E7102A70;
     v15 = v12;
-    v17 = a6;
-    v16 = v10;
-    v18 = a7;
+    typeCopy = type;
+    v16 = cellCopy;
+    directionCopy = direction;
     [UIView performWithoutAnimation:v14];
   }
 
@@ -140,17 +140,17 @@ void __106__UITableViewCellDetailDisclosureView_initWithTarget_action_cell_butto
   [*(a1 + 32) setFrame:{0.0, 0.0, MaxX, CGRectGetHeight(v44)}];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = UITableViewCellDetailDisclosureView;
   [(UIView *)&v5 setSemanticContentAttribute:?];
-  [(UIImageView *)self->_disclosureView setSemanticContentAttribute:a3];
+  [(UIImageView *)self->_disclosureView setSemanticContentAttribute:attribute];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self frame:a3.width];
+  [(UIView *)self frame:fits.width];
   v4 = v3;
   v6 = v5;
   result.height = v6;
@@ -173,12 +173,12 @@ void __106__UITableViewCellDetailDisclosureView_initWithTarget_action_cell_butto
   [(UITableViewCellDetailDisclosureView *)self _updateDisclosureChevronImage];
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_accessoryTintColor isEqual:?])
   {
-    objc_storeStrong(&self->_accessoryTintColor, a3);
+    objc_storeStrong(&self->_accessoryTintColor, color);
     [(UITableViewCellDetailDisclosureView *)self _updateDisclosureChevronImage];
   }
 }

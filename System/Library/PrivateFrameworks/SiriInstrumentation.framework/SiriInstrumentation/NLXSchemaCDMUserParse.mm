@@ -1,29 +1,29 @@
 @interface NLXSchemaCDMUserParse
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMUserParse)initWithDictionary:(id)a3;
-- (NLXSchemaCDMUserParse)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMUserParse)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMUserParse)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addUserDialogActs:(id)a3;
-- (void)setHasComparableProbability:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserDialogActs:(id)acts;
+- (void)setHasComparableProbability:(BOOL)probability;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMUserParse
 
-- (NLXSchemaCDMUserParse)initWithDictionary:(id)a3
+- (NLXSchemaCDMUserParse)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = NLXSchemaCDMUserParse;
   v5 = [(NLXSchemaCDMUserParse *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(NLXSchemaCDMUserParse *)v5 setId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userDialogActs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userDialogActs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       v6 = v26;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"probability"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"probability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(NLXSchemaCDMUserParse *)v5 setProbability:?];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"repetitionResult"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"repetitionResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(NLXSchemaCDMUserParse *)v5 setRepetitionResult:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"parser"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"parser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       [(NLXSchemaCDMUserParse *)v5 setParser:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"comparableProbability"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"comparableProbability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       [(NLXSchemaCDMUserParse *)v5 setComparableProbability:?];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"correctionOutcome"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"correctionOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,30 +123,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMUserParse)initWithJSON:(id)a3
+- (NLXSchemaCDMUserParse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMUserParse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMUserParse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMUserParse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -160,60 +160,60 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(NLXSchemaCDMUserParse *)self comparableProbability];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"comparableProbability"];
+    [dictionary setObject:v5 forKeyedSubscript:@"comparableProbability"];
   }
 
   if (self->_correctionOutcome)
   {
-    v6 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    correctionOutcome = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+    dictionaryRepresentation = [correctionOutcome dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"correctionOutcome"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"correctionOutcome"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"correctionOutcome"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"correctionOutcome"];
     }
   }
 
   if (self->_id)
   {
     v9 = [(NLXSchemaCDMUserParse *)self id];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    dictionaryRepresentation2 = [v9 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"id"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"id"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"id"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"id"];
     }
   }
 
   if (self->_parser)
   {
-    v12 = [(NLXSchemaCDMUserParse *)self parser];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    parser = [(NLXSchemaCDMUserParse *)self parser];
+    dictionaryRepresentation3 = [parser dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"parser"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"parser"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"parser"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"parser"];
     }
   }
 
@@ -222,28 +222,28 @@
     v15 = MEMORY[0x1E696AD98];
     [(NLXSchemaCDMUserParse *)self probability];
     v16 = [v15 numberWithDouble:?];
-    [v3 setObject:v16 forKeyedSubscript:@"probability"];
+    [dictionary setObject:v16 forKeyedSubscript:@"probability"];
   }
 
   if (self->_repetitionResult)
   {
-    v17 = [(NLXSchemaCDMUserParse *)self repetitionResult];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    repetitionResult = [(NLXSchemaCDMUserParse *)self repetitionResult];
+    dictionaryRepresentation4 = [repetitionResult dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"repetitionResult"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"repetitionResult"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"repetitionResult"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"repetitionResult"];
     }
   }
 
   if ([(NSArray *)self->_userDialogActs count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -263,16 +263,16 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation5 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v20 addObject:v26];
+            [array addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null5];
           }
         }
 
@@ -282,12 +282,12 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"userDialogActs"];
+    [dictionary setObject:array forKeyedSubscript:@"userDialogActs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v29];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v29];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -365,17 +365,17 @@
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v15 ^ [(NLXSchemaCDMCorrectionOutcome *)self->_correctionOutcome hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
-  v5 = [(NLXSchemaCDMUserParse *)self id];
-  v6 = [v4 id];
-  if ((v5 != 0) == (v6 == 0))
+  userDialogActs = [(NLXSchemaCDMUserParse *)self id];
+  userDialogActs2 = [equalCopy id];
+  if ((userDialogActs != 0) == (userDialogActs2 == 0))
   {
     goto LABEL_32;
   }
@@ -385,7 +385,7 @@
   {
     v8 = v7;
     v9 = [(NLXSchemaCDMUserParse *)self id];
-    v10 = [v4 id];
+    v10 = [equalCopy id];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -398,20 +398,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMUserParse *)self userDialogActs];
-  v6 = [v4 userDialogActs];
-  if ((v5 != 0) == (v6 == 0))
+  userDialogActs = [(NLXSchemaCDMUserParse *)self userDialogActs];
+  userDialogActs2 = [equalCopy userDialogActs];
+  if ((userDialogActs != 0) == (userDialogActs2 == 0))
   {
     goto LABEL_32;
   }
 
-  v12 = [(NLXSchemaCDMUserParse *)self userDialogActs];
-  if (v12)
+  userDialogActs3 = [(NLXSchemaCDMUserParse *)self userDialogActs];
+  if (userDialogActs3)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMUserParse *)self userDialogActs];
-    v15 = [v4 userDialogActs];
-    v16 = [v14 isEqual:v15];
+    v13 = userDialogActs3;
+    userDialogActs4 = [(NLXSchemaCDMUserParse *)self userDialogActs];
+    userDialogActs5 = [equalCopy userDialogActs];
+    v16 = [userDialogActs4 isEqual:userDialogActs5];
 
     if (!v16)
     {
@@ -423,7 +423,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[64] & 1))
+  if ((*&self->_has & 1) != (equalCopy[64] & 1))
   {
     goto LABEL_33;
   }
@@ -431,27 +431,27 @@
   if (*&self->_has)
   {
     probability = self->_probability;
-    [v4 probability];
+    [equalCopy probability];
     if (probability != v18)
     {
       goto LABEL_33;
     }
   }
 
-  v5 = [(NLXSchemaCDMUserParse *)self repetitionResult];
-  v6 = [v4 repetitionResult];
-  if ((v5 != 0) == (v6 == 0))
+  userDialogActs = [(NLXSchemaCDMUserParse *)self repetitionResult];
+  userDialogActs2 = [equalCopy repetitionResult];
+  if ((userDialogActs != 0) == (userDialogActs2 == 0))
   {
     goto LABEL_32;
   }
 
-  v19 = [(NLXSchemaCDMUserParse *)self repetitionResult];
-  if (v19)
+  repetitionResult = [(NLXSchemaCDMUserParse *)self repetitionResult];
+  if (repetitionResult)
   {
-    v20 = v19;
-    v21 = [(NLXSchemaCDMUserParse *)self repetitionResult];
-    v22 = [v4 repetitionResult];
-    v23 = [v21 isEqual:v22];
+    v20 = repetitionResult;
+    repetitionResult2 = [(NLXSchemaCDMUserParse *)self repetitionResult];
+    repetitionResult3 = [equalCopy repetitionResult];
+    v23 = [repetitionResult2 isEqual:repetitionResult3];
 
     if (!v23)
     {
@@ -463,20 +463,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMUserParse *)self parser];
-  v6 = [v4 parser];
-  if ((v5 != 0) == (v6 == 0))
+  userDialogActs = [(NLXSchemaCDMUserParse *)self parser];
+  userDialogActs2 = [equalCopy parser];
+  if ((userDialogActs != 0) == (userDialogActs2 == 0))
   {
     goto LABEL_32;
   }
 
-  v24 = [(NLXSchemaCDMUserParse *)self parser];
-  if (v24)
+  parser = [(NLXSchemaCDMUserParse *)self parser];
+  if (parser)
   {
-    v25 = v24;
-    v26 = [(NLXSchemaCDMUserParse *)self parser];
-    v27 = [v4 parser];
-    v28 = [v26 isEqual:v27];
+    v25 = parser;
+    parser2 = [(NLXSchemaCDMUserParse *)self parser];
+    parser3 = [equalCopy parser];
+    v28 = [parser2 isEqual:parser3];
 
     if (!v28)
     {
@@ -489,7 +489,7 @@
   }
 
   v29 = (*&self->_has >> 1) & 1;
-  if (v29 != ((v4[64] >> 1) & 1))
+  if (v29 != ((equalCopy[64] >> 1) & 1))
   {
     goto LABEL_33;
   }
@@ -497,19 +497,19 @@
   if (v29)
   {
     comparableProbability = self->_comparableProbability;
-    [v4 comparableProbability];
+    [equalCopy comparableProbability];
     if (comparableProbability != v31)
     {
       goto LABEL_33;
     }
   }
 
-  v5 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
-  v6 = [v4 correctionOutcome];
-  if ((v5 != 0) != (v6 == 0))
+  userDialogActs = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+  userDialogActs2 = [equalCopy correctionOutcome];
+  if ((userDialogActs != 0) != (userDialogActs2 == 0))
   {
-    v32 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
-    if (!v32)
+    correctionOutcome = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+    if (!correctionOutcome)
     {
 
 LABEL_36:
@@ -517,10 +517,10 @@ LABEL_36:
       goto LABEL_34;
     }
 
-    v33 = v32;
-    v34 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
-    v35 = [v4 correctionOutcome];
-    v36 = [v34 isEqual:v35];
+    v33 = correctionOutcome;
+    correctionOutcome2 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+    correctionOutcome3 = [equalCopy correctionOutcome];
+    v36 = [correctionOutcome2 isEqual:correctionOutcome3];
 
     if (v36)
     {
@@ -540,10 +540,10 @@ LABEL_34:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = [(NLXSchemaCDMUserParse *)self id];
 
   if (v5)
@@ -588,19 +588,19 @@ LABEL_34:
     PBDataWriterWriteDoubleField();
   }
 
-  v12 = [(NLXSchemaCDMUserParse *)self repetitionResult];
+  repetitionResult = [(NLXSchemaCDMUserParse *)self repetitionResult];
 
-  if (v12)
+  if (repetitionResult)
   {
-    v13 = [(NLXSchemaCDMUserParse *)self repetitionResult];
+    repetitionResult2 = [(NLXSchemaCDMUserParse *)self repetitionResult];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(NLXSchemaCDMUserParse *)self parser];
+  parser = [(NLXSchemaCDMUserParse *)self parser];
 
-  if (v14)
+  if (parser)
   {
-    v15 = [(NLXSchemaCDMUserParse *)self parser];
+    parser2 = [(NLXSchemaCDMUserParse *)self parser];
     PBDataWriterWriteSubmessage();
   }
 
@@ -609,18 +609,18 @@ LABEL_34:
     PBDataWriterWriteDoubleField();
   }
 
-  v16 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+  correctionOutcome = [(NLXSchemaCDMUserParse *)self correctionOutcome];
 
-  if (v16)
+  if (correctionOutcome)
   {
-    v17 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+    correctionOutcome2 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasComparableProbability:(BOOL)a3
+- (void)setHasComparableProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }
@@ -633,66 +633,66 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addUserDialogActs:(id)a3
+- (void)addUserDialogActs:(id)acts
 {
-  v4 = a3;
+  actsCopy = acts;
   userDialogActs = self->_userDialogActs;
-  v8 = v4;
+  v8 = actsCopy;
   if (!userDialogActs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_userDialogActs;
-    self->_userDialogActs = v6;
+    self->_userDialogActs = array;
 
-    v4 = v8;
+    actsCopy = v8;
     userDialogActs = self->_userDialogActs;
   }
 
-  [(NSArray *)userDialogActs addObject:v4];
+  [(NSArray *)userDialogActs addObject:actsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v21.receiver = self;
   v21.super_class = NLXSchemaCDMUserParse;
-  v5 = [(SISchemaInstrumentationMessage *)&v21 applySensitiveConditionsPolicy:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v21 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMUserParse *)self id];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMUserParse *)self deleteId];
   }
 
-  v9 = [(NLXSchemaCDMUserParse *)self userDialogActs];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  userDialogActs = [(NLXSchemaCDMUserParse *)self userDialogActs];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:userDialogActs underConditions:policyCopy];
   [(NLXSchemaCDMUserParse *)self setUserDialogActs:v10];
 
-  v11 = [(NLXSchemaCDMUserParse *)self repetitionResult];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  repetitionResult = [(NLXSchemaCDMUserParse *)self repetitionResult];
+  v12 = [repetitionResult applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMUserParse *)self deleteRepetitionResult];
   }
 
-  v14 = [(NLXSchemaCDMUserParse *)self parser];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  parser = [(NLXSchemaCDMUserParse *)self parser];
+  v15 = [parser applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(NLXSchemaCDMUserParse *)self deleteParser];
   }
 
-  v17 = [(NLXSchemaCDMUserParse *)self correctionOutcome];
-  v18 = [v17 applySensitiveConditionsPolicy:v4];
-  v19 = [v18 suppressMessage];
+  correctionOutcome = [(NLXSchemaCDMUserParse *)self correctionOutcome];
+  v18 = [correctionOutcome applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v18 suppressMessage];
 
-  if (v19)
+  if (suppressMessage4)
   {
     [(NLXSchemaCDMUserParse *)self deleteCorrectionOutcome];
   }

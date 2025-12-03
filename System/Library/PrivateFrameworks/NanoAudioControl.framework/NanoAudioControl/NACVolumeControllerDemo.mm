@@ -1,32 +1,32 @@
 @interface NACVolumeControllerDemo
 - (NACVolumeControllerDelegate)delegate;
-- (NACVolumeControllerDemo)initWithAudioCategory:(id)a3;
+- (NACVolumeControllerDemo)initWithAudioCategory:(id)category;
 - (NSString)currentListeningMode;
 - (float)volumeValue;
 - (id)_volumeDictionary;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_persistVolumeValue:(id)a3;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_persistVolumeValue:(id)value;
 - (void)_setNeedsVolumeReload;
 - (void)beginObservingVolume;
 - (void)dealloc;
-- (void)setCurrentListeningMode:(id)a3;
-- (void)setVolumeValue:(float)a3;
+- (void)setCurrentListeningMode:(id)mode;
+- (void)setVolumeValue:(float)value;
 @end
 
 @implementation NACVolumeControllerDemo
 
-- (NACVolumeControllerDemo)initWithAudioCategory:(id)a3
+- (NACVolumeControllerDemo)initWithAudioCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v19.receiver = self;
   v19.super_class = NACVolumeControllerDemo;
   v5 = [(NACVolumeControllerDemo *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (categoryCopy)
     {
-      v7 = v4;
+      v7 = categoryCopy;
     }
 
     else
@@ -48,8 +48,8 @@
     v16 = &unk_27992BD88;
     objc_copyWeak(&v17, &location);
     [(NACEventThrottler *)v10 setEventBlock:&v13];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v6 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -67,8 +67,8 @@ void __49__NACVolumeControllerDemo_initWithAudioCategory___block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NACVolumeControllerDemo;
@@ -102,8 +102,8 @@ void __49__NACVolumeControllerDemo_initWithAudioCategory___block_invoke(uint64_t
   volumeValue = self->_volumeValue;
   if (!volumeValue)
   {
-    v4 = [(NACVolumeControllerDemo *)self _volumeDictionary];
-    v5 = [v4 objectForKeyedSubscript:self->_audioCategory];
+    _volumeDictionary = [(NACVolumeControllerDemo *)self _volumeDictionary];
+    v5 = [_volumeDictionary objectForKeyedSubscript:self->_audioCategory];
     v6 = v5;
     if (v5)
     {
@@ -125,7 +125,7 @@ void __49__NACVolumeControllerDemo_initWithAudioCategory___block_invoke(uint64_t
   return result;
 }
 
-- (void)setVolumeValue:(float)a3
+- (void)setVolumeValue:(float)value
 {
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   volumeValue = self->_volumeValue;
@@ -142,10 +142,10 @@ void __49__NACVolumeControllerDemo_initWithAudioCategory___block_invoke(uint64_t
   currentListeningMode = self->_currentListeningMode;
   if (!currentListeningMode)
   {
-    v4 = [(NACVolumeControllerDemo *)self availableListeningModes];
-    v5 = [v4 firstObject];
+    availableListeningModes = [(NACVolumeControllerDemo *)self availableListeningModes];
+    firstObject = [availableListeningModes firstObject];
     v6 = self->_currentListeningMode;
-    self->_currentListeningMode = v5;
+    self->_currentListeningMode = firstObject;
 
     currentListeningMode = self->_currentListeningMode;
   }
@@ -153,17 +153,17 @@ void __49__NACVolumeControllerDemo_initWithAudioCategory___block_invoke(uint64_t
   return currentListeningMode;
 }
 
-- (void)setCurrentListeningMode:(id)a3
+- (void)setCurrentListeningMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = dispatch_time(0, 500000000);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__NACVolumeControllerDemo_setCurrentListeningMode___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modeCopy;
+  v6 = modeCopy;
   dispatch_after(v5, MEMORY[0x277D85CD0], v7);
 }
 
@@ -184,7 +184,7 @@ void __51__NACVolumeControllerDemo_setCurrentListeningMode___block_invoke(uint64
   }
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -214,13 +214,13 @@ void __67__NACVolumeControllerDemo__applicationDidBecomeActiveNotification___blo
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_persistVolumeValue:(id)a3
+- (void)_persistVolumeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(NACVolumeControllerDemo *)self _volumeDictionary];
-  value = [v5 mutableCopy];
+  valueCopy = value;
+  _volumeDictionary = [(NACVolumeControllerDemo *)self _volumeDictionary];
+  value = [_volumeDictionary mutableCopy];
 
-  [value setObject:v4 forKeyedSubscript:self->_audioCategory];
+  [value setObject:valueCopy forKeyedSubscript:self->_audioCategory];
   CFPreferencesSetAppValue(@"DemoVolume", value, @"com.apple.NanoAudioControl");
   CFPreferencesAppSynchronize(@"com.apple.NanoAudioControl");
 }

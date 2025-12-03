@@ -1,20 +1,20 @@
 @interface SUPostConcernOperation
-- (SUPostConcernOperation)initWithConcern:(id)a3;
+- (SUPostConcernOperation)initWithConcern:(id)concern;
 - (id)_httpBody;
 - (void)dealloc;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
 - (void)run;
 @end
 
 @implementation SUPostConcernOperation
 
-- (SUPostConcernOperation)initWithConcern:(id)a3
+- (SUPostConcernOperation)initWithConcern:(id)concern
 {
   v4 = [(SUPostConcernOperation *)self init];
   v5 = v4;
   if (v4)
   {
-    [(SUPostConcernOperation *)v4 setConcern:a3];
+    [(SUPostConcernOperation *)v4 setConcern:concern];
   }
 
   return v5;
@@ -51,31 +51,31 @@
   [v3 setDelegate:0];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = [a4 objectForKey:@"success"];
+  v6 = [output objectForKey:@"success"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 BOOLValue])
   {
 
     [(SUPostConcernOperation *)self setSuccess:1];
   }
 
-  else if (![a4 objectForKey:*MEMORY[0x1E69E4828]])
+  else if (![output objectForKey:*MEMORY[0x1E69E4828]])
   {
-    v7 = [MEMORY[0x1E69D4938] sharedConfig];
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v9 &= 2u;
     }
@@ -103,10 +103,10 @@
 - (id)_httpBody
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(SUPostConcernOperation *)self commentText];
-  if (v4)
+  commentText = [(SUPostConcernOperation *)self commentText];
+  if (commentText)
   {
-    [v3 setObject:v4 forKey:@"comments"];
+    [v3 setObject:commentText forKey:@"comments"];
   }
 
   if (self->_itemIdentifier)
@@ -114,10 +114,10 @@
     [v3 setObject:objc_msgSend(MEMORY[0x1E696AEC0] forKey:{"stringWithFormat:", @"%llu", self->_itemIdentifier), @"item-id"}];
   }
 
-  v5 = [(SUConcernItem *)[(SUPostConcernOperation *)self concern] identifier];
-  if (v5)
+  identifier = [(SUConcernItem *)[(SUPostConcernOperation *)self concern] identifier];
+  if (identifier)
   {
-    [v3 setObject:v5 forKey:@"problem-id"];
+    [v3 setObject:identifier forKey:@"problem-id"];
   }
 
   v6 = [MEMORY[0x1E695DFF8] queryStringForDictionary:v3 escapedValues:1];

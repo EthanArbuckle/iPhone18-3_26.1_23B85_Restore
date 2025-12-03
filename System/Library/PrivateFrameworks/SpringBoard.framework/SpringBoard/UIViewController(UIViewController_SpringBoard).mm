@@ -12,10 +12,10 @@
 
 - (SBMutableStatusBarSettings)sb_childOrPresentedViewControllerStatusBarSettings
 {
-  v2 = [a1 _effectiveStatusBarStyleViewController];
-  v3 = [a1 _effectiveStatusBarHiddenViewController];
-  v4 = v3;
-  if (v2 == a1 && v3 == a1)
+  _effectiveStatusBarStyleViewController = [self _effectiveStatusBarStyleViewController];
+  _effectiveStatusBarHiddenViewController = [self _effectiveStatusBarHiddenViewController];
+  v4 = _effectiveStatusBarHiddenViewController;
+  if (_effectiveStatusBarStyleViewController == self && _effectiveStatusBarHiddenViewController == self)
   {
     v5 = 0;
   }
@@ -23,12 +23,12 @@
   else
   {
     v5 = objc_alloc_init(SBMutableStatusBarSettings);
-    v6 = [v4 _preferredStatusBarVisibility];
-    v7 = [v2 preferredStatusBarStyle];
-    if (v6)
+    _preferredStatusBarVisibility = [v4 _preferredStatusBarVisibility];
+    preferredStatusBarStyle = [_effectiveStatusBarStyleViewController preferredStatusBarStyle];
+    if (_preferredStatusBarVisibility)
     {
       v8 = 1.0;
-      if (v6 == 1)
+      if (_preferredStatusBarVisibility == 1)
       {
         v8 = 0.0;
       }
@@ -37,9 +37,9 @@
       [(SBMutableStatusBarSettings *)v5 setAlpha:v9];
     }
 
-    if (v7 != -1)
+    if (preferredStatusBarStyle != -1)
     {
-      if (v7)
+      if (preferredStatusBarStyle)
       {
         v10 = 1;
       }
@@ -59,22 +59,22 @@
 
 - (uint64_t)sb_beginAppearanceTransitionIfNecessary:()UIViewController_SpringBoard animated:
 {
-  result = [a1 isViewLoaded];
+  result = [self isViewLoaded];
   if (result)
   {
-    v8 = [a1 _appearState];
+    _appearState = [self _appearState];
     if (a3)
     {
-      if (!v8 || v8 == 3)
+      if (!_appearState || _appearState == 3)
       {
         goto LABEL_5;
       }
     }
 
-    else if ((v8 - 1) <= 1)
+    else if ((_appearState - 1) <= 1)
     {
 LABEL_5:
-      [a1 beginAppearanceTransition:a3 animated:a4];
+      [self beginAppearanceTransition:a3 animated:a4];
       return 1;
     }
 
@@ -86,12 +86,12 @@ LABEL_5:
 
 - (uint64_t)sb_endAppearanceTransitionIfNecessary
 {
-  result = [a1 isViewLoaded];
+  result = [self isViewLoaded];
   if (result)
   {
-    if (([a1 _appearState] & 0xFFFFFFFD) == 1)
+    if (([self _appearState] & 0xFFFFFFFD) == 1)
     {
-      [a1 endAppearanceTransition];
+      [self endAppearanceTransition];
       return 1;
     }
 
@@ -112,7 +112,7 @@ LABEL_5:
   v8 = [v6 bs_firstObjectPassingTest:v7];
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -133,11 +133,11 @@ LABEL_5:
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 childViewControllers];
-          [v9 addObjectsFromArray:v16];
+          childViewControllers = [v15 childViewControllers];
+          [array addObjectsFromArray:childViewControllers];
 
-          v17 = [v15 presentedViewController];
-          [v9 _sb_safeAddObject:v17];
+          presentedViewController = [v15 presentedViewController];
+          [array _sb_safeAddObject:presentedViewController];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -146,9 +146,9 @@ LABEL_5:
       while (v12);
     }
 
-    if ([v9 count])
+    if ([array count])
     {
-      v8 = [a1 sb_firstDescendantOfViewControllers:v9 passingTest:v7];
+      v8 = [self sb_firstDescendantOfViewControllers:array passingTest:v7];
     }
 
     else
@@ -165,7 +165,7 @@ LABEL_5:
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = objc_opt_class();
-  v9[0] = a1;
+  v9[0] = self;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v7 = [v5 sb_firstDescendantOfViewControllers:v6 passingTest:v4];
 
@@ -179,7 +179,7 @@ LABEL_5:
   v5[2] = __76__UIViewController_UIViewController_SpringBoard__sb_firstDescendantOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
   v5[4] = a3;
-  v3 = [a1 sb_firstDescendantPassingTest:v5];
+  v3 = [self sb_firstDescendantPassingTest:v5];
 
   return v3;
 }
@@ -188,7 +188,7 @@ LABEL_5:
 {
   v4 = NSClassFromString(aClassName);
 
-  return [a1 sb_firstDescendantOfClass:v4];
+  return [self sb_firstDescendantOfClass:v4];
 }
 
 @end

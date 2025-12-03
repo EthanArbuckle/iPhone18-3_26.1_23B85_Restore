@@ -1,12 +1,12 @@
 @interface SearchTransparencyView
-- (_TtC8AppStore22SearchTransparencyView)initWithCoder:(id)a3;
+- (_TtC8AppStore22SearchTransparencyView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchTransparencyView
 
-- (_TtC8AppStore22SearchTransparencyView)initWithCoder:(id)a3
+- (_TtC8AppStore22SearchTransparencyView)initWithCoder:(id)coder
 {
   v4 = type metadata accessor for FontUseCase();
   v5 = *(v4 - 8);

@@ -1,10 +1,10 @@
 @interface _UIStatusBarIndicatorLiquidDetectionItem
-- (id)systemImageNameForUpdate:(id)a3;
+- (id)systemImageNameForUpdate:(id)update;
 @end
 
 @implementation _UIStatusBarIndicatorLiquidDetectionItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
   if ([(_UIStatusBarIndicatorLiquidDetectionItem *)self useFullColorIndicator])
   {

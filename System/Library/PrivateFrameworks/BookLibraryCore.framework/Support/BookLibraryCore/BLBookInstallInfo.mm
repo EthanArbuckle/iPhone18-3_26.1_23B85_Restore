@@ -7,31 +7,31 @@
 - (NSString)libraryItemIdentifier;
 - (NSString)permlink;
 - (id)_estimatedDownloadSize;
-- (id)_manifestEntryWithStoreInfo:(BOOL)a3 withStoreAccountInfo:(BOOL)a4 withFileName:(id)a5;
+- (id)_manifestEntryWithStoreInfo:(BOOL)info withStoreAccountInfo:(BOOL)accountInfo withFileName:(id)name;
 - (id)assetFlavor;
 - (id)storeAccountInfoEntries;
 - (id)storeInfoEntries;
-- (void)setPlistPath:(id)a3;
+- (void)setPlistPath:(id)path;
 @end
 
 @implementation BLBookInstallInfo
 
-- (void)setPlistPath:(id)a3
+- (void)setPlistPath:(id)path
 {
-  v10 = a3;
-  v4 = [(BLBookInstallInfo *)self plistPath];
-  v5 = [v10 isEqualToString:v4];
+  pathCopy = path;
+  plistPath = [(BLBookInstallInfo *)self plistPath];
+  v5 = [pathCopy isEqualToString:plistPath];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v10 copy];
+    v6 = [pathCopy copy];
     plistPath = self->_plistPath;
     self->_plistPath = v6;
 
     v8 = objc_autoreleasePoolPush();
-    if ([v10 length])
+    if ([pathCopy length])
     {
-      v9 = [(BLBookInstallInfo *)self _itunesMetadataPlistDictionaryFromPath:v10];
+      v9 = [(BLBookInstallInfo *)self _itunesMetadataPlistDictionaryFromPath:pathCopy];
       [(BLBookInstallInfo *)self setItunesMetadata:v9];
     }
 
@@ -46,24 +46,24 @@
 
 - (NSString)permlink
 {
-  v2 = [(BLBookInstallInfo *)self itunesMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"p0"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v3 = [itunesMetadata objectForKeyedSubscript:@"p0"];
 
   return v3;
 }
 
 - (NSNumber)storeIdentifier
 {
-  v2 = [(BLBookInstallInfo *)self itunesMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"itemId"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v3 = [itunesMetadata objectForKeyedSubscript:@"itemId"];
 
   return v3;
 }
 
 - (NSNumber)storePlaylistIdentifier
 {
-  v2 = [(BLBookInstallInfo *)self itunesMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"playlistId"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v3 = [itunesMetadata objectForKeyedSubscript:@"playlistId"];
   v4 = BLGetNSNumberFromValue();
 
   return v4;
@@ -71,15 +71,15 @@
 
 - (NSNumber)storePublicationVersion
 {
-  v2 = [(BLBookInstallInfo *)self itunesMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"publication-version"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v3 = [itunesMetadata objectForKeyedSubscript:@"publication-version"];
 
   return v3;
 }
 
 - (BOOL)isStoreDownload
 {
-  v2 = [(BLBookInstallInfo *)self storePublicationVersion];
+  storePublicationVersion = [(BLBookInstallInfo *)self storePublicationVersion];
   v3 = BLGetUnsignedLongLongFromValue() != 0;
 
   return v3;
@@ -87,16 +87,16 @@
 
 - (NSString)libraryItemIdentifier
 {
-  v2 = [(BLBookInstallInfo *)self itunesMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"Q"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v3 = [itunesMetadata objectForKeyedSubscript:@"Q"];
 
   return v3;
 }
 
 - (id)assetFlavor
 {
-  v2 = [(BLBookInstallInfo *)self itunesMetadata];
-  v3 = [v2 objectForKeyedSubscript:@"asset-info"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v3 = [itunesMetadata objectForKeyedSubscript:@"asset-info"];
 
   if (v3)
   {
@@ -111,51 +111,51 @@
   return v4;
 }
 
-- (id)_manifestEntryWithStoreInfo:(BOOL)a3 withStoreAccountInfo:(BOOL)a4 withFileName:(id)a5
+- (id)_manifestEntryWithStoreInfo:(BOOL)info withStoreAccountInfo:(BOOL)accountInfo withFileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  accountInfoCopy = accountInfo;
+  infoCopy = info;
+  nameCopy = name;
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [(BLBookInstallInfo *)self itunesMetadata];
-  if ([v8 length])
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  if ([nameCopy length])
   {
-    [v9 setObject:v8 forKey:@"Path"];
+    [v9 setObject:nameCopy forKey:@"Path"];
   }
 
   else
   {
-    v11 = [(BLBookInstallInfo *)self destinationFilename];
-    v12 = [v11 length];
+    destinationFilename = [(BLBookInstallInfo *)self destinationFilename];
+    v12 = [destinationFilename length];
 
     if (v12)
     {
-      v13 = [(BLBookInstallInfo *)self destinationFilename];
-      [v9 setObject:v13 forKey:@"Path"];
+      destinationFilename2 = [(BLBookInstallInfo *)self destinationFilename];
+      [v9 setObject:destinationFilename2 forKey:@"Path"];
     }
 
     else
     {
-      v13 = BLBookInstallLog();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      destinationFilename2 = BLBookInstallLog();
+      if (os_log_type_enabled(destinationFilename2, OS_LOG_TYPE_ERROR))
       {
         *v46 = 0;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "No destination file name available for manifest.", v46, 2u);
+        _os_log_impl(&_mh_execute_header, destinationFilename2, OS_LOG_TYPE_ERROR, "No destination file name available for manifest.", v46, 2u);
       }
     }
   }
 
-  v14 = [(BLBookInstallInfo *)self uniqueID];
-  v15 = [v14 length];
+  uniqueID = [(BLBookInstallInfo *)self uniqueID];
+  v15 = [uniqueID length];
 
   if (v15)
   {
-    v16 = [(BLBookInstallInfo *)self uniqueID];
+    uniqueID2 = [(BLBookInstallInfo *)self uniqueID];
     v17 = +[IMLibraryPlist keyNameForUniqueId];
-    [v9 setObject:v16 forKey:v17];
+    [v9 setObject:uniqueID2 forKey:v17];
   }
 
-  v18 = [v10 objectForKeyedSubscript:@"isSample"];
+  v18 = [itunesMetadata objectForKeyedSubscript:@"isSample"];
   v19 = v18;
   if (v18)
   {
@@ -168,75 +168,75 @@
   }
 
   [v9 setObject:v20 forKey:@"isSample"];
-  v21 = [v10 objectForKeyedSubscript:@"playlistName"];
+  v21 = [itunesMetadata objectForKeyedSubscript:@"playlistName"];
 
   if (v21)
   {
     [v9 setObject:v21 forKey:@"Album"];
   }
 
-  v22 = [v10 objectForKeyedSubscript:@"artistName"];
+  v22 = [itunesMetadata objectForKeyedSubscript:@"artistName"];
 
   if (v22)
   {
     [v9 setObject:v22 forKey:@"Artist"];
   }
 
-  v23 = [v10 objectForKeyedSubscript:@"artwork-template-name"];
+  v23 = [itunesMetadata objectForKeyedSubscript:@"artwork-template-name"];
 
   if (v23)
   {
     [v9 setObject:v23 forKey:@"artwork-template-name"];
   }
 
-  v24 = [v10 objectForKeyedSubscript:@"genre"];
+  v24 = [itunesMetadata objectForKeyedSubscript:@"genre"];
 
   if (v24)
   {
     [v9 setObject:v24 forKey:@"Genre"];
   }
 
-  v25 = [v10 objectForKeyedSubscript:@"Q"];
+  v25 = [itunesMetadata objectForKeyedSubscript:@"Q"];
 
   if (v25)
   {
     [v9 setObject:v25 forKey:@"Persistent ID"];
   }
 
-  if (v6)
+  if (infoCopy)
   {
-    v26 = [(BLBookInstallInfo *)self storeInfoEntries];
-    [v9 addEntriesFromDictionary:v26];
+    storeInfoEntries = [(BLBookInstallInfo *)self storeInfoEntries];
+    [v9 addEntriesFromDictionary:storeInfoEntries];
   }
 
-  if (v5)
+  if (accountInfoCopy)
   {
-    v27 = [(BLBookInstallInfo *)self storeAccountInfoEntries];
-    [v9 addEntriesFromDictionary:v27];
+    storeAccountInfoEntries = [(BLBookInstallInfo *)self storeAccountInfoEntries];
+    [v9 addEntriesFromDictionary:storeAccountInfoEntries];
   }
 
-  v28 = [v10 objectForKeyedSubscript:@"p0"];
+  v28 = [itunesMetadata objectForKeyedSubscript:@"p0"];
 
   if (v28)
   {
     [v9 setObject:v28 forKey:@"iTunesU Permlink"];
   }
 
-  v29 = [v10 objectForKeyedSubscript:@"xid"];
+  v29 = [itunesMetadata objectForKeyedSubscript:@"xid"];
 
   if (v29)
   {
     [v9 setObject:v29 forKey:@"XID"];
   }
 
-  v30 = [v10 objectForKeyedSubscript:@"itemName"];
+  v30 = [itunesMetadata objectForKeyedSubscript:@"itemName"];
 
   if (v30)
   {
     [v9 setObject:v30 forKey:@"Name"];
   }
 
-  v31 = [v10 objectForKeyedSubscript:@"copyright"];
+  v31 = [itunesMetadata objectForKeyedSubscript:@"copyright"];
 
   if (v31)
   {
@@ -244,7 +244,7 @@
   }
 
   objc_opt_class();
-  v32 = [v10 objectForKeyedSubscript:@"explicit"];
+  v32 = [itunesMetadata objectForKeyedSubscript:@"explicit"];
   v33 = BUDynamicCast();
 
   if ([v33 integerValue] == 1)
@@ -252,81 +252,81 @@
     [v9 setObject:&__kCFBooleanTrue forKey:@"isExplicit"];
   }
 
-  v34 = [v10 objectForKeyedSubscript:@"human-friendly-publication-version"];
+  v34 = [itunesMetadata objectForKeyedSubscript:@"human-friendly-publication-version"];
 
   if (v34)
   {
     [v9 setObject:v34 forKey:@"Human Readable Publication Version"];
   }
 
-  v35 = [v10 objectForKeyedSubscript:@"languages"];
+  v35 = [itunesMetadata objectForKeyedSubscript:@"languages"];
 
   if (v35)
   {
     [v9 setObject:v35 forKey:@"Languages"];
   }
 
-  v36 = [v10 objectForKeyedSubscript:@"PageProgression"];
+  v36 = [itunesMetadata objectForKeyedSubscript:@"PageProgression"];
 
   if (v36)
   {
     [v9 setObject:v36 forKey:@"PageProgression"];
   }
 
-  v37 = [v10 objectForKeyedSubscript:@"page-progression-direction"];
+  v37 = [itunesMetadata objectForKeyedSubscript:@"page-progression-direction"];
 
   if (v37)
   {
     [v9 setObject:v37 forKey:@"Page Progression Direction"];
   }
 
-  v38 = [v10 objectForKeyedSubscript:@"publication-version"];
+  v38 = [itunesMetadata objectForKeyedSubscript:@"publication-version"];
 
   if (v38)
   {
     [v9 setObject:v38 forKey:@"Publication Version"];
   }
 
-  v39 = [v10 objectForKeyedSubscript:@"releaseDate"];
+  v39 = [itunesMetadata objectForKeyedSubscript:@"releaseDate"];
 
   if (v39)
   {
     [v9 setObject:v39 forKey:@"Release Date"];
   }
 
-  v40 = [v10 objectForKeyedSubscript:@"sort-artist"];
+  v40 = [itunesMetadata objectForKeyedSubscript:@"sort-artist"];
 
   if (v40)
   {
     [v9 setObject:v40 forKey:@"Sort Artist"];
   }
 
-  v41 = [v10 objectForKeyedSubscript:@"sort-album"];
+  v41 = [itunesMetadata objectForKeyedSubscript:@"sort-album"];
 
   if (v41)
   {
     [v9 setObject:v41 forKey:@"Sort Album"];
   }
 
-  v42 = [v10 objectForKeyedSubscript:@"sort-name"];
+  v42 = [itunesMetadata objectForKeyedSubscript:@"sort-name"];
 
   if (v42)
   {
     [v9 setObject:v42 forKey:@"Sort Name"];
   }
 
-  v43 = [(BLBookInstallInfo *)self assetFlavor];
+  assetFlavor = [(BLBookInstallInfo *)self assetFlavor];
 
-  if (v43)
+  if (assetFlavor)
   {
-    [v9 setObject:v43 forKey:@"Flavor"];
+    [v9 setObject:assetFlavor forKey:@"Flavor"];
   }
 
-  v44 = [(BLBookInstallInfo *)self _estimatedDownloadSize];
+  _estimatedDownloadSize = [(BLBookInstallInfo *)self _estimatedDownloadSize];
 
-  if (v44)
+  if (_estimatedDownloadSize)
   {
-    [v9 setObject:v44 forKey:@"Estimated Download Size"];
+    [v9 setObject:_estimatedDownloadSize forKey:@"Estimated Download Size"];
   }
 
   return v9;
@@ -335,14 +335,14 @@
 - (id)storeInfoEntries
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(BLBookInstallInfo *)self itunesMetadata];
-  v5 = [v4 objectForKeyedSubscript:@"s"];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
+  v5 = [itunesMetadata objectForKeyedSubscript:@"s"];
   if (v5)
   {
     [v3 setObject:v5 forKeyedSubscript:@"Storefront ID"];
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"itemId"];
+  v6 = [itunesMetadata objectForKeyedSubscript:@"itemId"];
   v7 = BLGetUnsignedLongLongFromValue();
 
   if (v7)
@@ -351,7 +351,7 @@
     [v3 setObject:v8 forKeyedSubscript:@"s"];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"playlistId"];
+  v9 = [itunesMetadata objectForKeyedSubscript:@"playlistId"];
 
   if (v9)
   {
@@ -365,9 +365,9 @@
 - (id)storeAccountInfoEntries
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(BLBookInstallInfo *)self itunesMetadata];
+  itunesMetadata = [(BLBookInstallInfo *)self itunesMetadata];
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"com.apple.iTunesStore.downloadInfo"];
+  v5 = [itunesMetadata objectForKeyedSubscript:@"com.apple.iTunesStore.downloadInfo"];
   v6 = BUDynamicCast();
 
   objc_opt_class();
@@ -396,19 +396,19 @@
 
 - (id)_estimatedDownloadSize
 {
-  v3 = [(BLBookInstallInfo *)self assetFileSize];
-  if (v3)
+  assetFileSize = [(BLBookInstallInfo *)self assetFileSize];
+  if (assetFileSize)
   {
-    v4 = [(BLBookInstallInfo *)self artworkFileSize];
-    if (v4)
+    artworkFileSize = [(BLBookInstallInfo *)self artworkFileSize];
+    if (artworkFileSize)
     {
-      v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 unsignedLongLongValue] + objc_msgSend(v4, "unsignedLongLongValue"));
+      v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [assetFileSize unsignedLongLongValue] + objc_msgSend(artworkFileSize, "unsignedLongLongValue"));
 
-      v3 = v5;
+      assetFileSize = v5;
     }
   }
 
-  return v3;
+  return assetFileSize;
 }
 
 - (BLBookInstallOperationProgressDelegate)progressDelegate

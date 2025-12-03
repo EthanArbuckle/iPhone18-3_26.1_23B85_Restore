@@ -1,13 +1,13 @@
 @interface MAProgressHandler
-- (MAProgressHandler)initWithCallBack:(id)a3;
-- (void)addCallBack:(id)a3;
+- (MAProgressHandler)initWithCallBack:(id)back;
+- (void)addCallBack:(id)back;
 @end
 
 @implementation MAProgressHandler
 
-- (MAProgressHandler)initWithCallBack:(id)a3
+- (MAProgressHandler)initWithCallBack:(id)back
 {
-  v4 = a3;
+  backCopy = back;
   v10.receiver = self;
   v10.super_class = MAProgressHandler;
   v5 = [(MAProgressHandler *)&v10 init];
@@ -19,17 +19,17 @@
     callBackArray = v6->_callBackArray;
     v6->_callBackArray = v7;
 
-    [(MAProgressHandler *)v6 addCallBack:v4];
+    [(MAProgressHandler *)v6 addCallBack:backCopy];
   }
 
   return v6;
 }
 
-- (void)addCallBack:(id)a3
+- (void)addCallBack:(id)back
 {
-  if (a3)
+  if (back)
   {
-    v6 = [a3 copy];
+    v6 = [back copy];
     callBackArray = self->_callBackArray;
     v5 = MEMORY[0x19A8EC5D0]();
     [(NSMutableArray *)callBackArray addObject:v5];

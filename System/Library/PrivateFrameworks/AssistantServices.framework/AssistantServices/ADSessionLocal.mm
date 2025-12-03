@@ -1,15 +1,15 @@
 @interface ADSessionLocal
-- (BOOL)_commandRequiresSync:(id)a3;
+- (BOOL)_commandRequiresSync:(id)sync;
 - (BOOL)sessionRequiresSync;
-- (id)initOnQueue:(id)a3 withAccount:(id)a4 config:(id *)a5;
-- (void)_saCommandFailed:(id)a3;
-- (void)_sendServerCommand:(id)a3;
-- (void)_siriNetworkConnection:(id)a3 didEncounterError:(id)a4 siriNetworkAnalysisInfo:(id)a5;
-- (void)_siriNetworkConnection:(id)a3 didEncounterIntermediateError:(id)a4;
+- (id)initOnQueue:(id)queue withAccount:(id)account config:(id *)config;
+- (void)_saCommandFailed:(id)failed;
+- (void)_sendServerCommand:(id)command;
+- (void)_siriNetworkConnection:(id)connection didEncounterError:(id)error siriNetworkAnalysisInfo:(id)info;
+- (void)_siriNetworkConnection:(id)connection didEncounterIntermediateError:(id)error;
 - (void)_startSession;
-- (void)sendCommand:(id)a3 opportunistically:(BOOL)a4;
-- (void)sendCommands:(id)a3;
-- (void)setHasActiveRequest:(BOOL)a3;
+- (void)sendCommand:(id)command opportunistically:(BOOL)opportunistically;
+- (void)sendCommands:(id)commands;
+- (void)setHasActiveRequest:(BOOL)request;
 @end
 
 @implementation ADSessionLocal
@@ -27,7 +27,7 @@
   return 0;
 }
 
-- (BOOL)_commandRequiresSync:(id)a3
+- (BOOL)_commandRequiresSync:(id)sync
 {
   v3 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
@@ -40,7 +40,7 @@
   return 0;
 }
 
-- (void)_siriNetworkConnection:(id)a3 didEncounterIntermediateError:(id)a4
+- (void)_siriNetworkConnection:(id)connection didEncounterIntermediateError:(id)error
 {
   v4 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
@@ -51,9 +51,9 @@
   }
 }
 
-- (void)_saCommandFailed:(id)a3
+- (void)_saCommandFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
   {
@@ -64,10 +64,10 @@
 
   v6.receiver = self;
   v6.super_class = ADSessionLocal;
-  [(ADSessionLocal *)&v6 _saCommandFailed:v4];
+  [(ADSessionLocal *)&v6 _saCommandFailed:failedCopy];
 }
 
-- (void)_siriNetworkConnection:(id)a3 didEncounterError:(id)a4 siriNetworkAnalysisInfo:(id)a5
+- (void)_siriNetworkConnection:(id)connection didEncounterError:(id)error siriNetworkAnalysisInfo:(id)info
 {
   v5 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_ERROR))
@@ -78,11 +78,11 @@
   }
 }
 
-- (void)setHasActiveRequest:(BOOL)a3
+- (void)setHasActiveRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   hasActiveRequest = self->_hasActiveRequest;
-  if (hasActiveRequest != a3)
+  if (hasActiveRequest != request)
   {
     v6 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
@@ -92,12 +92,12 @@
       v13 = 1024;
       *v14 = hasActiveRequest;
       *&v14[4] = 1024;
-      *&v14[6] = v3;
+      *&v14[6] = requestCopy;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s current {_hasActiveRequest: %d, new _hasActiveRequest: %d}", &v11, 0x18u);
     }
 
-    self->_hasActiveRequest = v3;
-    if (v3)
+    self->_hasActiveRequest = requestCopy;
+    if (requestCopy)
     {
       [(ADSession *)self setDormant:0];
       [(ADSession *)self _setRequestId:0];
@@ -106,14 +106,14 @@
     [(ADSession *)self setCanHandleRequest:1];
   }
 
-  if (!v3)
+  if (!requestCopy)
   {
     v7 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
     {
       v8 = v7;
-      v9 = [(ADSession *)self _sendBuffer];
-      v10 = [v9 count];
+      _sendBuffer = [(ADSession *)self _sendBuffer];
+      v10 = [_sendBuffer count];
       v11 = 136315394;
       v12 = "[ADSessionLocal setHasActiveRequest:]";
       v13 = 2048;
@@ -125,7 +125,7 @@
   }
 }
 
-- (void)_sendServerCommand:(id)a3
+- (void)_sendServerCommand:(id)command
 {
   v3 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
@@ -136,19 +136,19 @@
   }
 }
 
-- (void)sendCommand:(id)a3 opportunistically:(BOOL)a4
+- (void)sendCommand:(id)command opportunistically:(BOOL)opportunistically
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(SACommandSucceeded);
     v6 = +[NSUUID UUID];
-    v7 = [v6 UUIDString];
-    [v5 setAceId:v7];
+    uUIDString = [v6 UUIDString];
+    [v5 setAceId:uUIDString];
 
-    v8 = [v4 aceId];
-    [v5 setRefId:v8];
+    aceId = [commandCopy aceId];
+    [v5 setRefId:aceId];
 
     v9 = AFSiriLogContextSession;
     if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
@@ -176,7 +176,7 @@
   }
 }
 
-- (void)sendCommands:(id)a3
+- (void)sendCommands:(id)commands
 {
   v3 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
@@ -197,55 +197,55 @@
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%s ", &v5, 0xCu);
   }
 
-  v4 = [(ADSession *)self delegate];
-  [v4 assistantSessionWillStartConnection:self];
+  delegate = [(ADSession *)self delegate];
+  [delegate assistantSessionWillStartConnection:self];
 }
 
-- (id)initOnQueue:(id)a3 withAccount:(id)a4 config:(id *)a5
+- (id)initOnQueue:(id)queue withAccount:(id)account config:(id *)config
 {
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  accountCopy = account;
   v10 = AFSiriLogContextSession;
   if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v21 = "[ADSessionLocal initOnQueue:withAccount:config:]";
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s ", buf, 0xCu);
-    if (!a5)
+    if (!config)
     {
       goto LABEL_5;
     }
   }
 
-  else if (!a5)
+  else if (!config)
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  var0 = a5->var0;
-  var2 = a5->var2;
-  var3 = a5->var3;
-  var4 = a5->var4;
+  var0 = config->var0;
+  var2 = config->var2;
+  var3 = config->var3;
+  var4 = config->var4;
   v19.receiver = self;
   v19.super_class = ADSessionLocal;
-  v15 = [(ADSession *)&v19 initOnQueue:v8 withAccount:v9 languageCode:var0 connectionMode:0 sharedUserIdentifier:var2 loggingSharedUserIdentifier:var3 instanceContext:var4];
-  a5 = v15;
+  v15 = [(ADSession *)&v19 initOnQueue:queueCopy withAccount:accountCopy languageCode:var0 connectionMode:0 sharedUserIdentifier:var2 loggingSharedUserIdentifier:var3 instanceContext:var4];
+  config = v15;
   if (v15)
   {
     [($475D18A0C013DEA4C77274343E9ED385 *)v15 setSessionType:2];
     v16 = [NSString alloc];
     self = [NSNumber numberWithUnsignedInt:arc4random()];
     v17 = [v16 initWithFormat:@"%@.%@", &off_100533848, self];
-    [($475D18A0C013DEA4C77274343E9ED385 *)a5 _setSessionId:v17];
+    [($475D18A0C013DEA4C77274343E9ED385 *)config _setSessionId:v17];
 
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return a5;
+  return config;
 }
 
 @end

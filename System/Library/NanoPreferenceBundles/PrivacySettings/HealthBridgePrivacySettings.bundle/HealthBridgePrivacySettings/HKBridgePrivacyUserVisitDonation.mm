@@ -12,7 +12,7 @@
   objc_opt_class();
   objc_opt_self();
   v3 = [NSString stringWithFormat:@"bridge:root=%@", @"PRIVACY_ID"];
-  sub_128C(a1, v4, &__NSArray0__struct, v3);
+  sub_128C(self, v4, &__NSArray0__struct, v3);
 }
 
 + (void)donateUserVisitForHeadphonePrivacySection
@@ -25,7 +25,7 @@
   v5 = [NSArray arrayWithObjects:&v7 count:1];
   objc_opt_class();
   v6 = sub_1590();
-  sub_128C(a1, v3, v5, v6);
+  sub_128C(self, v3, v5, v6);
 }
 
 @end

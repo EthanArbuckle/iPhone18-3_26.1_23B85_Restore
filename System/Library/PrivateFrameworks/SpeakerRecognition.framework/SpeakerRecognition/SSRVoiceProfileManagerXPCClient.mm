@@ -2,41 +2,41 @@
 + (id)createVoiceProfileManagerXPCConnection;
 + (id)sharedClient;
 - (SSRVoiceProfileManagerXPCClient)init;
-- (void)importVoiceProfile:(id)a3 appDomain:(id)a4 withSharedUserId:(id)a5 withPersonaId:(id)a6 withLocale:(id)a7 withAsset:(id)a8 trainWithPayload:(BOOL)a9 withCompletion:(id)a10;
-- (void)markSATEnrollmentSuccessForVoiceProfile:(id)a3 completion:(id)a4;
+- (void)importVoiceProfile:(id)profile appDomain:(id)domain withSharedUserId:(id)id withPersonaId:(id)personaId withLocale:(id)locale withAsset:(id)asset trainWithPayload:(BOOL)payload withCompletion:(id)self0;
+- (void)markSATEnrollmentSuccessForVoiceProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation SSRVoiceProfileManagerXPCClient
 
-- (void)importVoiceProfile:(id)a3 appDomain:(id)a4 withSharedUserId:(id)a5 withPersonaId:(id)a6 withLocale:(id)a7 withAsset:(id)a8 trainWithPayload:(BOOL)a9 withCompletion:(id)a10
+- (void)importVoiceProfile:(id)profile appDomain:(id)domain withSharedUserId:(id)id withPersonaId:(id)personaId withLocale:(id)locale withAsset:(id)asset trainWithPayload:(BOOL)payload withCompletion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
+  profileCopy = profile;
+  domainCopy = domain;
+  idCopy = id;
+  personaIdCopy = personaId;
+  localeCopy = locale;
+  assetCopy = asset;
+  completionCopy = completion;
   queue = self->_queue;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __148__SSRVoiceProfileManagerXPCClient_importVoiceProfile_appDomain_withSharedUserId_withPersonaId_withLocale_withAsset_trainWithPayload_withCompletion___block_invoke;
   v31[3] = &unk_278579640;
-  v37 = v21;
-  v38 = v22;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = v20;
-  v39 = a9;
-  v24 = v21;
-  v25 = v20;
-  v26 = v19;
-  v27 = v18;
-  v28 = v17;
-  v29 = v16;
-  v30 = v22;
+  v37 = assetCopy;
+  v38 = completionCopy;
+  v32 = profileCopy;
+  v33 = domainCopy;
+  v34 = idCopy;
+  v35 = personaIdCopy;
+  v36 = localeCopy;
+  payloadCopy = payload;
+  v24 = assetCopy;
+  v25 = localeCopy;
+  v26 = personaIdCopy;
+  v27 = idCopy;
+  v28 = domainCopy;
+  v29 = profileCopy;
+  v30 = completionCopy;
   dispatch_async(queue, v31);
 }
 
@@ -175,19 +175,19 @@ void __148__SSRVoiceProfileManagerXPCClient_importVoiceProfile_appDomain_withSha
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markSATEnrollmentSuccessForVoiceProfile:(id)a3 completion:(id)a4
+- (void)markSATEnrollmentSuccessForVoiceProfile:(id)profile completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__SSRVoiceProfileManagerXPCClient_markSATEnrollmentSuccessForVoiceProfile_completion___block_invoke;
   v11[3] = &unk_278579618;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = profileCopy;
+  v13 = completionCopy;
+  v9 = profileCopy;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 

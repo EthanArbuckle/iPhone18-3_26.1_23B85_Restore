@@ -1,5 +1,5 @@
 @interface PPKLayoutCompleteCollectionView
-- (PPKLayoutCompleteCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4 layoutCompletion:(id)a5;
+- (PPKLayoutCompleteCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout layoutCompletion:(id)completion;
 - (void)layoutSubviews;
 @end
 
@@ -13,24 +13,24 @@
   if (![(PPKLayoutCompleteCollectionView *)self laidOut])
   {
     [(PPKLayoutCompleteCollectionView *)self setLaidOut:1];
-    v3 = [(PPKLayoutCompleteCollectionView *)self layoutCompletion];
-    v3[2]();
+    layoutCompletion = [(PPKLayoutCompleteCollectionView *)self layoutCompletion];
+    layoutCompletion[2]();
   }
 }
 
-- (PPKLayoutCompleteCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4 layoutCompletion:(id)a5
+- (PPKLayoutCompleteCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout layoutCompletion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = PPKLayoutCompleteCollectionView;
-  v10 = a5;
-  v11 = [(PPKLayoutCompleteCollectionView *)&v13 initWithFrame:a4 collectionViewLayout:x, y, width, height];
-  [(PPKLayoutCompleteCollectionView *)v11 setLayoutCompletion:v10, v13.receiver, v13.super_class];
+  completionCopy = completion;
+  height = [(PPKLayoutCompleteCollectionView *)&v13 initWithFrame:layout collectionViewLayout:x, y, width, height];
+  [(PPKLayoutCompleteCollectionView *)height setLayoutCompletion:completionCopy, v13.receiver, v13.super_class];
 
-  return v11;
+  return height;
 }
 
 @end

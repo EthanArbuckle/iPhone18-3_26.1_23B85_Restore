@@ -1,18 +1,18 @@
 @interface SUUIActivityIndicatorViewElement
-- (SUUIActivityIndicatorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIActivityIndicatorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIActivityIndicatorViewElement
 
-- (SUUIActivityIndicatorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIActivityIndicatorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIActivityIndicatorViewElement;
-  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"period"];
+    v10 = [elementCopy getAttribute:@"period"];
     v11 = v10;
     if (v10)
     {

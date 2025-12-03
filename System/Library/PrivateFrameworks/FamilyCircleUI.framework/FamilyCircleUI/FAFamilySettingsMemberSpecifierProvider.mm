@@ -1,52 +1,52 @@
 @interface FAFamilySettingsMemberSpecifierProvider
-- (BOOL)_launchWithResourceDictionary:(id)a3;
-- (BOOL)handleURL:(id)a3;
+- (BOOL)_launchWithResourceDictionary:(id)dictionary;
+- (BOOL)handleURL:(id)l;
 - (FAFamilyMemberCardTapHandler)memberCardTapHandler;
-- (FAFamilySettingsMemberSpecifierProvider)initWithAppleAccount:(id)a3 familyCircle:(id)a4 familyPictureStore:(id)a5;
+- (FAFamilySettingsMemberSpecifierProvider)initWithAppleAccount:(id)account familyCircle:(id)circle familyPictureStore:(id)store;
 - (FAFamilySettingsMemberSpecifierProviderDelegeate)delegate;
 - (NSArray)specifiers;
-- (id)_createSpecifierForFamilyMemberCell:(id)a3;
-- (id)_createSpecifierForPendingMember:(id)a3;
-- (id)_specifierWithID:(id)a3;
-- (void)_addFamilyMemberButtonWasTapped:(id)a3;
+- (id)_createSpecifierForFamilyMemberCell:(id)cell;
+- (id)_createSpecifierForPendingMember:(id)member;
+- (id)_specifierWithID:(id)d;
+- (void)_addFamilyMemberButtonWasTapped:(id)tapped;
 - (void)_delayedLoadIfNeeded;
-- (void)_familyMemberCellWasTapped:(id)a3;
-- (void)_pendingFamilyMemberCellWasTapped:(id)a3;
+- (void)_familyMemberCellWasTapped:(id)tapped;
+- (void)_pendingFamilyMemberCellWasTapped:(id)tapped;
 - (void)reloadSpecifiers;
-- (void)setFamilyCircle:(id)a3;
+- (void)setFamilyCircle:(id)circle;
 @end
 
 @implementation FAFamilySettingsMemberSpecifierProvider
 
-- (FAFamilySettingsMemberSpecifierProvider)initWithAppleAccount:(id)a3 familyCircle:(id)a4 familyPictureStore:(id)a5
+- (FAFamilySettingsMemberSpecifierProvider)initWithAppleAccount:(id)account familyCircle:(id)circle familyPictureStore:(id)store
 {
-  v8 = a4;
-  v9 = a5;
+  circleCopy = circle;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = FAFamilySettingsMemberSpecifierProvider;
   v10 = [(FAFamilySettingsMemberSpecifierProvider *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_familyCircle, a4);
-    objc_storeStrong(&v11->_familyPictureStore, a5);
+    objc_storeStrong(&v10->_familyCircle, circle);
+    objc_storeStrong(&v11->_familyPictureStore, store);
   }
 
   return v11;
 }
 
-- (void)setFamilyCircle:(id)a3
+- (void)setFamilyCircle:(id)circle
 {
-  objc_storeStrong(&self->_familyCircle, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_familyCircle, circle);
+  circleCopy = circle;
   specifiers = self->_specifiers;
   self->_specifiers = 0;
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v5 = a3;
-  v6 = [(FAFamilySettingsMemberSpecifierProvider *)self _launchWithResourceDictionary:v5];
+  lCopy = l;
+  v6 = [(FAFamilySettingsMemberSpecifierProvider *)self _launchWithResourceDictionary:lCopy];
   if (!v6)
   {
     v7 = _FALogSystem();
@@ -56,16 +56,16 @@
       _os_log_impl(&dword_21BB35000, v7, OS_LOG_TYPE_DEFAULT, "FAFamilySettingsMemberSpecifierProvider doesn't have the specifier, will try again upon response.", v9, 2u);
     }
 
-    objc_storeStrong(&self->_cachedResourceDictionary, a3);
+    objc_storeStrong(&self->_cachedResourceDictionary, l);
   }
 
   return v6;
 }
 
-- (BOOL)_launchWithResourceDictionary:(id)a3
+- (BOOL)_launchWithResourceDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D08130]];
+  v4 = [dictionary objectForKeyedSubscript:*MEMORY[0x277D08130]];
   if (!v4)
   {
 LABEL_8:
@@ -124,8 +124,8 @@ LABEL_9:
   if (([(FAFamilyCircle *)self->_familyCircle canAddMembers]& 1) == 0 && [(FAFamilyCircle *)self->_familyCircle showAddMemberButton])
   {
     v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"FamilyMembers"];
-    v5 = [(FAFamilyCircle *)self->_familyCircle familyMembersFooterLabel];
-    [v4 setProperty:v5 forKey:*MEMORY[0x277D3FF88]];
+    familyMembersFooterLabel = [(FAFamilyCircle *)self->_familyCircle familyMembersFooterLabel];
+    [v4 setProperty:familyMembersFooterLabel forKey:*MEMORY[0x277D3FF88]];
 
     [v3 addObject:v4];
   }
@@ -134,8 +134,8 @@ LABEL_9:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [(FAFamilyCircle *)self->_familyCircle members];
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  members = [(FAFamilyCircle *)self->_familyCircle members];
+  v7 = [members countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v7)
   {
     v8 = v7;
@@ -146,7 +146,7 @@ LABEL_9:
       {
         if (*v40 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(members);
         }
 
         v11 = [(FAFamilySettingsMemberSpecifierProvider *)self _createSpecifierForFamilyMemberCell:*(*(&v39 + 1) + 8 * i)];
@@ -156,18 +156,18 @@ LABEL_9:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v8 = [members countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(FAFamilyCircle *)self->_familyCircle pendingMembers];
+  pendingMembers = [(FAFamilyCircle *)self->_familyCircle pendingMembers];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  v13 = [pendingMembers countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
@@ -178,7 +178,7 @@ LABEL_9:
       {
         if (*v36 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(pendingMembers);
         }
 
         v17 = [(FAFamilySettingsMemberSpecifierProvider *)self _createSpecifierForPendingMember:*(*(&v35 + 1) + 8 * j)];
@@ -188,7 +188,7 @@ LABEL_9:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v14 = [pendingMembers countByEnumeratingWithState:&v35 objects:v43 count:16];
     }
 
     while (v14);
@@ -196,11 +196,11 @@ LABEL_9:
 
   if ([(FAFamilyCircle *)self->_familyCircle showAddMemberButton])
   {
-    v18 = [(FAFamilyCircle *)self->_familyCircle addMemberButtonLabel];
-    v19 = v18;
-    if (v18)
+    addMemberButtonLabel = [(FAFamilyCircle *)self->_familyCircle addMemberButtonLabel];
+    v19 = addMemberButtonLabel;
+    if (addMemberButtonLabel)
     {
-      v20 = v18;
+      v20 = addMemberButtonLabel;
     }
 
     else
@@ -227,8 +227,8 @@ LABEL_9:
 
     else
     {
-      v27 = [MEMORY[0x277D75348] systemDarkGrayColor];
-      v28 = [v26 imageWithTintColor:v27 renderingMode:1];
+      systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
+      v28 = [v26 imageWithTintColor:systemDarkGrayColor renderingMode:1];
 
       [(PSSpecifier *)self->_addFamilyMemberCell setProperty:v28 forKey:*MEMORY[0x277D3FFC0]];
     }
@@ -248,51 +248,51 @@ LABEL_9:
   return v31;
 }
 
-- (id)_createSpecifierForFamilyMemberCell:(id)a3
+- (id)_createSpecifierForFamilyMemberCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 fullName];
-  if ([v4 isMe])
+  cellCopy = cell;
+  fullName = [cellCopy fullName];
+  if ([cellCopy isMe])
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"FAMILY_MEMBER_ME_MARKER_FORMAT" value:&stru_282D9AA68 table:@"Localizable"];
-    v9 = [v6 stringWithFormat:v8, v5];
+    v9 = [v6 stringWithFormat:v8, fullName];
 
-    v5 = v9;
+    fullName = v9;
   }
 
-  v10 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:2 edit:0];
-  v11 = [v4 appleID];
-  [v10 setIdentifier:v11];
+  v10 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:fullName target:self set:0 get:0 detail:0 cell:2 edit:0];
+  appleID = [cellCopy appleID];
+  [v10 setIdentifier:appleID];
 
-  if (([v4 hasLinkediTunesAccount] & 1) != 0 || !objc_msgSend(v4, "isMe"))
+  if (([cellCopy hasLinkediTunesAccount] & 1) != 0 || !objc_msgSend(cellCopy, "isMe"))
   {
-    v18 = [v4 memberTypeDisplayString];
+    memberTypeDisplayString = [cellCopy memberTypeDisplayString];
 
-    if (!v18)
+    if (!memberTypeDisplayString)
     {
       goto LABEL_11;
     }
 
-    v12 = [v4 memberTypeDisplayString];
+    memberTypeDisplayString2 = [cellCopy memberTypeDisplayString];
     v15 = *MEMORY[0x277D40160];
     v17 = v10;
-    v16 = v12;
+    v16 = memberTypeDisplayString2;
   }
 
   else
   {
-    v12 = [v4 iTunesNotLinkedMessage];
-    if (![v12 length])
+    memberTypeDisplayString2 = [cellCopy iTunesNotLinkedMessage];
+    if (![memberTypeDisplayString2 length])
     {
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"NOT_SHARING_PURCHASES" value:&stru_282D9AA68 table:@"Localizable"];
 
-      v12 = v14;
+      memberTypeDisplayString2 = v14;
     }
 
-    [v10 setProperty:v12 forKey:*MEMORY[0x277D40160]];
+    [v10 setProperty:memberTypeDisplayString2 forKey:*MEMORY[0x277D40160]];
     v15 = *MEMORY[0x277CEC9B0];
     v16 = MEMORY[0x277CBEC38];
     v17 = v10;
@@ -301,19 +301,19 @@ LABEL_9:
   [v17 setProperty:v16 forKey:v15];
 
 LABEL_11:
-  v19 = [v4 dsid];
+  dsid = [cellCopy dsid];
 
-  if (v19)
+  if (dsid)
   {
-    [v10 setProperty:v4 forKey:@"FAFamilySettingsMemberSpecifierMemberKey"];
+    [v10 setProperty:cellCopy forKey:@"FAFamilySettingsMemberSpecifierMemberKey"];
   }
 
-  v20 = [(FAProfilePictureStore *)self->_familyPictureStore profilePictureForFamilyMember:v4 pictureDiameter:40.0];
+  v20 = [(FAProfilePictureStore *)self->_familyPictureStore profilePictureForFamilyMember:cellCopy pictureDiameter:40.0];
   if (v20)
   {
     v21 = MEMORY[0x277D755B8];
-    v22 = [MEMORY[0x277D759A0] mainScreen];
-    [v22 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v23 = [v21 imageWithData:v20 scale:?];
 
     [v10 setProperty:v23 forKey:*MEMORY[0x277D3FFC0]];
@@ -321,8 +321,8 @@ LABEL_11:
 
   [v10 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v25 = [WeakRetained preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v25);
+  preferredContentSizeCategory = [WeakRetained preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v27 = MEMORY[0x277CCABB0];
   if (IsAccessibilityCategory)
   {
@@ -343,39 +343,39 @@ LABEL_11:
   return v10;
 }
 
-- (id)_createSpecifierForPendingMember:(id)a3
+- (id)_createSpecifierForPendingMember:(id)member
 {
-  v4 = a3;
-  v5 = [v4 fullName];
-  v6 = [v4 inviteEmail];
-  v7 = v6;
-  if (v5)
+  memberCopy = member;
+  fullName = [memberCopy fullName];
+  inviteEmail = [memberCopy inviteEmail];
+  v7 = inviteEmail;
+  if (fullName)
   {
-    v8 = v5;
+    v8 = fullName;
   }
 
   else
   {
-    v8 = v6;
+    v8 = inviteEmail;
   }
 
   v9 = v8;
-  v10 = [v4 invitationDate];
+  invitationDate = [memberCopy invitationDate];
 
-  if (v10)
+  if (invitationDate)
   {
-    v11 = [MEMORY[0x277CCA968] fa_standardFormatter];
-    [v11 setFormattingContext:5];
-    v12 = [v4 invitationDate];
-    v13 = [v11 stringFromDate:v12];
+    fa_standardFormatter = [MEMORY[0x277CCA968] fa_standardFormatter];
+    [fa_standardFormatter setFormattingContext:5];
+    invitationDate2 = [memberCopy invitationDate];
+    v13 = [fa_standardFormatter stringFromDate:invitationDate2];
 
-    v14 = [v4 invitationDate];
-    v15 = [v14 isDateRelative];
+    invitationDate3 = [memberCopy invitationDate];
+    isDateRelative = [invitationDate3 isDateRelative];
 
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v18 = v17;
-    if (v15)
+    if (isDateRelative)
     {
       v19 = @"INVITED_DATE_RELATIVE";
     }
@@ -391,8 +391,8 @@ LABEL_11:
 
   else
   {
-    v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v21 = [v11 localizedStringForKey:@"INVITED" value:&stru_282D9AA68 table:@"Localizable"];
+    fa_standardFormatter = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v21 = [fa_standardFormatter localizedStringForKey:@"INVITED" value:&stru_282D9AA68 table:@"Localizable"];
   }
 
   v22 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:2 edit:0];
@@ -401,8 +401,8 @@ LABEL_11:
   [v22 setProperty:v21 forKey:*MEMORY[0x277D40160]];
   [v22 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v24 = [WeakRetained preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v24);
+  preferredContentSizeCategory = [WeakRetained preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v26 = MEMORY[0x277CCABB0];
   if (IsAccessibilityCategory)
   {
@@ -417,52 +417,52 @@ LABEL_11:
   v28 = [v26 numberWithDouble:v27];
   [v22 setProperty:v28 forKey:*MEMORY[0x277D40140]];
 
-  v29 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v22 setProperty:v29 forKey:*MEMORY[0x277CEC9B8]];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v22 setProperty:secondaryLabelColor forKey:*MEMORY[0x277CEC9B8]];
 
   [v22 setProperty:&unk_282DC0780 forKey:*MEMORY[0x277CEC9A8]];
   [v22 setControllerLoadAction:sel__pendingFamilyMemberCellWasTapped_];
-  v30 = [(FAProfilePictureStore *)self->_familyPictureStore profilePictureForFamilyMember:v4 pictureDiameter:40.0];
+  v30 = [(FAProfilePictureStore *)self->_familyPictureStore profilePictureForFamilyMember:memberCopy pictureDiameter:40.0];
   if (v30)
   {
     v31 = MEMORY[0x277D755B8];
-    v32 = [MEMORY[0x277D759A0] mainScreen];
-    [v32 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v33 = [v31 imageWithData:v30 scale:?];
 
     [v22 setProperty:v33 forKey:*MEMORY[0x277D3FFC0]];
   }
 
-  [v22 setProperty:v4 forKey:@"FAFamilySettingsMemberSpecifierMemberKey"];
+  [v22 setProperty:memberCopy forKey:@"FAFamilySettingsMemberSpecifierMemberKey"];
 
   return v22;
 }
 
-- (void)_addFamilyMemberButtonWasTapped:(id)a3
+- (void)_addFamilyMemberButtonWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained addFamilyMemberButtonWasTapped:v4];
+  [WeakRetained addFamilyMemberButtonWasTapped:tappedCopy];
 }
 
-- (void)_familyMemberCellWasTapped:(id)a3
+- (void)_familyMemberCellWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained familyMemberCellWasTapped:v4];
+  [WeakRetained familyMemberCellWasTapped:tappedCopy];
 }
 
-- (void)_pendingFamilyMemberCellWasTapped:(id)a3
+- (void)_pendingFamilyMemberCellWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pendingFamilyMemberCellWasTapped:v4];
+  [WeakRetained pendingFamilyMemberCellWasTapped:tappedCopy];
 }
 
-- (id)_specifierWithID:(id)a3
+- (id)_specifierWithID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -482,8 +482,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:dCopy];
 
         if (v11)
         {

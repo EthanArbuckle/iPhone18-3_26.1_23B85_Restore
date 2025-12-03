@@ -1,10 +1,10 @@
 @interface VUIFeatureManager
 + (id)sharedInstance;
-- (BOOL)isFeatureEnabled:(id)a3;
+- (BOOL)isFeatureEnabled:(id)enabled;
 - (VUIFeatureManager)init;
 - (id)availableFeatures;
 - (id)osFeatureFlagsJSON;
-- (void)setFeatureValue:(BOOL)a3 forFeature:(id)a4;
+- (void)setFeatureValue:(BOOL)value forFeature:(id)feature;
 @end
 
 @implementation VUIFeatureManager
@@ -36,7 +36,7 @@ uint64_t __35__VUIFeatureManager_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [(VUIFeatureManager *)v2 _allFeatures];
+    _allFeatures = [(VUIFeatureManager *)v2 _allFeatures];
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -44,7 +44,7 @@ uint64_t __35__VUIFeatureManager_sharedInstance__block_invoke()
     v10[3] = &unk_279E211F8;
     v11 = v5;
     v6 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [_allFeatures enumerateKeysAndObjectsUsingBlock:v10];
     v7 = [v6 copy];
     features = v3->_features;
     v3->_features = v7;
@@ -202,31 +202,31 @@ void __38__VUIFeatureManager_availableFeatures__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (BOOL)isFeatureEnabled:(id)a3
+- (BOOL)isFeatureEnabled:(id)enabled
 {
-  v3 = [(NSDictionary *)self->_features objectForKey:a3];
+  v3 = [(NSDictionary *)self->_features objectForKey:enabled];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 enabled];
+    enabled = [v3 enabled];
   }
 
   else
   {
-    v5 = 0;
+    enabled = 0;
   }
 
-  return v5;
+  return enabled;
 }
 
-- (void)setFeatureValue:(BOOL)a3 forFeature:(id)a4
+- (void)setFeatureValue:(BOOL)value forFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_features objectForKey:a4];
+  valueCopy = value;
+  v5 = [(NSDictionary *)self->_features objectForKey:feature];
   if (v5)
   {
     v6 = v5;
-    [v5 setEnabled:v4];
+    [v5 setEnabled:valueCopy];
     v5 = v6;
   }
 }

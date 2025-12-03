@@ -1,41 +1,41 @@
 @interface MIExecutableBundle
-+ (BOOL)isGrandfatheredNonContainerizedForSigningInfo:(id)a3;
-+ (id)bundlesInParentBundle:(id)a3 subDirectory:(id)a4 matchingPredicate:(id)a5 error:(id *)a6;
-- (BOOL)_hasNoConflictWithSystemAppsForSigningInfo:(id)a3 error:(id *)a4;
-- (BOOL)_hasNonContainerizingEntitlement:(id)a3 checkSeatbeltProfiles:(BOOL)a4;
-- (BOOL)_hasResource:(id)a3 withExtension:(id)a4;
-- (BOOL)_validateWithError:(id *)a3;
++ (BOOL)isGrandfatheredNonContainerizedForSigningInfo:(id)info;
++ (id)bundlesInParentBundle:(id)bundle subDirectory:(id)directory matchingPredicate:(id)predicate error:(id *)error;
+- (BOOL)_hasNoConflictWithSystemAppsForSigningInfo:(id)info error:(id *)error;
+- (BOOL)_hasNonContainerizingEntitlement:(id)entitlement checkSeatbeltProfiles:(BOOL)profiles;
+- (BOOL)_hasResource:(id)resource withExtension:(id)extension;
+- (BOOL)_validateWithError:(id *)error;
 - (BOOL)allowsAppleAppExtensionsNotInExtensionCache;
-- (BOOL)checkExecutableExistsIfRequiredWithError:(id *)a3;
-- (BOOL)getIsBuiltForMacPlatform:(BOOL *)a3 error:(id *)a4;
-- (BOOL)getSinfDataType:(unsigned int *)a3 withError:(id *)a4;
-- (BOOL)hasExecutableSliceForCPUType:(int)a3 subtype:(int)a4 error:(id *)a5;
-- (BOOL)hasExecutableSliceForPlatform:(unsigned int)a3 error:(id *)a4;
-- (BOOL)hasNoConflictsWithOtherInstalledEntitiesForSigningInfo:(id)a3 forPersona:(id)a4 error:(id *)a5;
-- (BOOL)hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:(unsigned __int8)a3 error:(id *)a4;
+- (BOOL)checkExecutableExistsIfRequiredWithError:(id *)error;
+- (BOOL)getIsBuiltForMacPlatform:(BOOL *)platform error:(id *)error;
+- (BOOL)getSinfDataType:(unsigned int *)type withError:(id *)error;
+- (BOOL)hasExecutableSliceForCPUType:(int)type subtype:(int)subtype error:(id *)error;
+- (BOOL)hasExecutableSliceForPlatform:(unsigned int)platform error:(id *)error;
+- (BOOL)hasNoConflictsWithOtherInstalledEntitiesForSigningInfo:(id)info forPersona:(id)persona error:(id *)error;
+- (BOOL)hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:(unsigned __int8)version error:(id *)error;
 - (BOOL)hasSinf;
 - (BOOL)installsAppleAppExtensionsNotInExtensionCache;
 - (BOOL)isExtensionBasedWatchKitApp;
 - (BOOL)isExtensionlessWatchKitApp;
 - (BOOL)isWatchOnlyApp;
-- (BOOL)makeAndSetNewInstallationIdentityWithError:(id *)a3;
-- (BOOL)makeExecutableWithError:(id *)a3;
+- (BOOL)makeAndSetNewInstallationIdentityWithError:(id *)error;
+- (BOOL)makeExecutableWithError:(id *)error;
 - (BOOL)minimumWatchOSVersionIsPreV6;
 - (BOOL)needsDataContainer;
 - (BOOL)needsSinf;
-- (BOOL)onlyHasExecutableSlicesForPlatform:(unsigned int)a3 error:(id *)a4;
-- (BOOL)replicateRootSinfWithError:(id *)a3;
-- (BOOL)setBundleParentDirectoryURL:(id)a3 error:(id *)a4;
-- (BOOL)setLaunchWarningData:(id)a3 withError:(id *)a4;
-- (BOOL)setSinfDataType:(unsigned int)a3 withError:(id *)a4;
-- (BOOL)transferInstallationIdentityFromBundle:(id)a3 error:(id *)a4;
-- (BOOL)updateMCMWithCodeSigningInfoAsAdvanceCopy:(BOOL)a3 withError:(id *)a4;
-- (BOOL)updateSinfWithData:(id)a3 error:(id *)a4;
-- (BOOL)validatePluginKitMetadataWithError:(id *)a3;
-- (BOOL)validateSinfWithError:(id *)a3;
+- (BOOL)onlyHasExecutableSlicesForPlatform:(unsigned int)platform error:(id *)error;
+- (BOOL)replicateRootSinfWithError:(id *)error;
+- (BOOL)setBundleParentDirectoryURL:(id)l error:(id *)error;
+- (BOOL)setLaunchWarningData:(id)data withError:(id *)error;
+- (BOOL)setSinfDataType:(unsigned int)type withError:(id *)error;
+- (BOOL)transferInstallationIdentityFromBundle:(id)bundle error:(id *)error;
+- (BOOL)updateMCMWithCodeSigningInfoAsAdvanceCopy:(BOOL)copy withError:(id *)error;
+- (BOOL)updateSinfWithData:(id)data error:(id *)error;
+- (BOOL)validatePluginKitMetadataWithError:(id *)error;
+- (BOOL)validateSinfWithError:(id *)error;
 - (BOOL)watchKitAppRunsIndependentlyOfCompanion;
 - (MIBundleContainer)bundleContainer;
-- (MIExecutableBundle)initWithBundleInContainer:(id)a3 withExtension:(id)a4 error:(id *)a5;
+- (MIExecutableBundle)initWithBundleInContainer:(id)container withExtension:(id)extension error:(id *)error;
 - (NSArray)counterpartIdentifiers;
 - (NSString)companionAppIdentifier;
 - (NSString)executableName;
@@ -45,39 +45,39 @@
 - (NSURL)rootSupfURL;
 - (NSURL)rootSuppURL;
 - (id)_codeSigningInfoFromMCM;
-- (id)_dataContainerCreatingIfNeeded:(BOOL)a3 forPersona:(id)a4 makeLive:(BOOL)a5 checkIfNeeded:(BOOL)a6 created:(BOOL *)a7 error:(id *)a8;
-- (id)_discoverWatchAppBundleAsPlaceholder:(BOOL)a3 error:(id *)a4;
-- (id)_nameListForPlatformSet:(id)a3;
-- (id)bundleSignatureVersionWithError:(id *)a3;
-- (id)codeSigningInfoByValidatingResources:(BOOL)a3 performingOnlineAuthorization:(BOOL)a4 ignoringCachedSigningInfo:(BOOL)a5 checkingTrustCacheIfApplicable:(BOOL)a6 skippingProfileIDValidation:(BOOL)a7 error:(id *)a8;
-- (id)enumerateDylibsWithBlock:(id)a3;
-- (id)executableImageSlicesWithError:(id *)a3;
-- (id)executablePlatformsWithError:(id *)a3;
-- (id)fairPlaySinfInfoWithError:(id *)a3;
+- (id)_dataContainerCreatingIfNeeded:(BOOL)needed forPersona:(id)persona makeLive:(BOOL)live checkIfNeeded:(BOOL)ifNeeded created:(BOOL *)created error:(id *)error;
+- (id)_discoverWatchAppBundleAsPlaceholder:(BOOL)placeholder error:(id *)error;
+- (id)_nameListForPlatformSet:(id)set;
+- (id)bundleSignatureVersionWithError:(id *)error;
+- (id)codeSigningInfoByValidatingResources:(BOOL)resources performingOnlineAuthorization:(BOOL)authorization ignoringCachedSigningInfo:(BOOL)info checkingTrustCacheIfApplicable:(BOOL)applicable skippingProfileIDValidation:(BOOL)validation error:(id *)error;
+- (id)enumerateDylibsWithBlock:(id)block;
+- (id)executableImageSlicesWithError:(id *)error;
+- (id)executablePlatformsWithError:(id *)error;
+- (id)fairPlaySinfInfoWithError:(id *)error;
 - (id)initForTesting;
-- (id)installationIdentitySettingIfNotSet:(BOOL)a3 withError:(id *)a4;
-- (id)lsInstallTypeWithError:(id *)a3;
-- (id)updateAndValidateSinf:(id)a3 withRollback:(BOOL)a4 error:(id *)a5;
-- (id)watchKitAppBundleForWKVersionOrEarlier:(unsigned __int8)a3 error:(id *)a4;
-- (id)watchKitAppExecutableHashWithError:(id *)a3;
-- (id)watchKitPluginWithError:(id *)a3;
-- (id)watchKitV2AppBundleWithError:(id *)a3;
-- (int)_installEmbeddedProvisioningProfileAtURL:(id)a3 withProgress:(id)a4;
+- (id)installationIdentitySettingIfNotSet:(BOOL)set withError:(id *)error;
+- (id)lsInstallTypeWithError:(id *)error;
+- (id)updateAndValidateSinf:(id)sinf withRollback:(BOOL)rollback error:(id *)error;
+- (id)watchKitAppBundleForWKVersionOrEarlier:(unsigned __int8)earlier error:(id *)error;
+- (id)watchKitAppExecutableHashWithError:(id *)error;
+- (id)watchKitPluginWithError:(id *)error;
+- (id)watchKitV2AppBundleWithError:(id *)error;
+- (int)_installEmbeddedProvisioningProfileAtURL:(id)l withProgress:(id)progress;
 - (int)dataProtectionClass;
-- (int)installEmbeddedProvisioningProfileWithProgress:(id)a3;
-- (int)installMacStyleEmbeddedProvisioningProfileWithProgress:(id)a3;
+- (int)installEmbeddedProvisioningProfileWithProgress:(id)progress;
+- (int)installMacStyleEmbeddedProvisioningProfileWithProgress:(id)progress;
 - (unint64_t)compatibilityState;
 - (unint64_t)dataContainerContentClass;
 - (unint64_t)estimatedMemoryUsageToValidate;
 - (unsigned)maxLinkedSDKVersion;
-- (unsigned)watchKitVersionWithError:(id *)a3;
-- (void)bestEffortRollbackSinfData:(id)a3;
+- (unsigned)watchKitVersionWithError:(id *)error;
+- (void)bestEffortRollbackSinfData:(id)data;
 - (void)removeSinf;
 @end
 
 @implementation MIExecutableBundle
 
-- (BOOL)_validateWithError:(id *)a3
+- (BOOL)_validateWithError:(id *)error
 {
   v32.receiver = self;
   v32.super_class = MIExecutableBundle;
@@ -86,11 +86,11 @@
   v6 = v33;
   if (!v5)
   {
-    v7 = 0;
+    executableURL = 0;
     goto LABEL_24;
   }
 
-  v7 = [(MIExecutableBundle *)self executableURL];
+  executableURL = [(MIExecutableBundle *)self executableURL];
   if ([(MIBundle *)self isPlaceholder])
   {
     v8 = 0;
@@ -100,17 +100,17 @@
   {
     v9 = +[MIFileManager defaultManager];
     v31 = v6;
-    v8 = [v9 itemExistsAtURL:v7 error:&v31];
+    v8 = [v9 itemExistsAtURL:executableURL error:&v31];
     v10 = v31;
 
     if ((v8 & 1) == 0)
     {
-      v14 = [v10 domain];
-      if ([v14 isEqualToString:*MEMORY[0x1E696A798]])
+      domain = [v10 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A798]])
       {
-        v15 = [v10 code];
+        code = [v10 code];
 
-        if (v15 == 2)
+        if (code == 2)
         {
 
           v6 = 0;
@@ -122,8 +122,8 @@
       {
       }
 
-      v16 = [(MIExecutableBundle *)self relativeExecutablePath];
-      v20 = _CreateAndLogError("[MIExecutableBundle _validateWithError:]", 111, @"MIInstallerErrorDomain", 71, v10, 0, @"Unable to determine if bundle executable is present at %@.", v19, v16);
+      relativeExecutablePath = [(MIExecutableBundle *)self relativeExecutablePath];
+      v20 = _CreateAndLogError("[MIExecutableBundle _validateWithError:]", 111, @"MIInstallerErrorDomain", 71, v10, 0, @"Unable to determine if bundle executable is present at %@.", v19, relativeExecutablePath);
       goto LABEL_23;
     }
 
@@ -150,8 +150,8 @@ LABEL_9:
     goto LABEL_27;
   }
 
-  v16 = [(MIBundle *)self infoPlistSubset];
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x1E695E4E8]];
+  relativeExecutablePath = [(MIBundle *)self infoPlistSubset];
+  v17 = [relativeExecutablePath objectForKeyedSubscript:*MEMORY[0x1E695E4E8]];
   objc_opt_class();
   v18 = v17;
   if (objc_opt_isKindOfClass())
@@ -169,8 +169,8 @@ LABEL_9:
     if ([v10 length])
     {
       v21 = +[MIFileManager defaultManager];
-      v22 = [(MIBundle *)self bundleURL];
-      v23 = [v21 realPathForURL:v7 ifChildOfURL:v22];
+      bundleURL = [(MIBundle *)self bundleURL];
+      v23 = [v21 realPathForURL:executableURL ifChildOfURL:bundleURL];
 
       if (v23)
       {
@@ -180,18 +180,18 @@ LABEL_9:
     }
   }
 
-  v24 = [(MIBundle *)self bundleURL];
-  v25 = [v24 path];
-  v20 = _CreateAndLogError("[MIExecutableBundle _validateWithError:]", 129, @"MIInstallerErrorDomain", 11, 0, &unk_1F28883F8, @"Bundle at path %@ has missing or invalid CFBundleExecutable in its Info.plist", v26, v25);
+  bundleURL2 = [(MIBundle *)self bundleURL];
+  path = [bundleURL2 path];
+  v20 = _CreateAndLogError("[MIExecutableBundle _validateWithError:]", 129, @"MIInstallerErrorDomain", 11, 0, &unk_1F28883F8, @"Bundle at path %@ has missing or invalid CFBundleExecutable in its Info.plist", v26, path);
 
 LABEL_23:
   v6 = v20;
 LABEL_24:
-  if (a3)
+  if (error)
   {
     v27 = v6;
     v13 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -211,28 +211,28 @@ LABEL_27:
   return [(MIBundle *)&v3 initForTesting];
 }
 
-- (MIExecutableBundle)initWithBundleInContainer:(id)a3 withExtension:(id)a4 error:(id *)a5
+- (MIExecutableBundle)initWithBundleInContainer:(id)container withExtension:(id)extension error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 containerURL];
+  containerCopy = container;
+  extensionCopy = extension;
+  containerURL = [containerCopy containerURL];
   v13.receiver = self;
   v13.super_class = MIExecutableBundle;
-  v11 = [(MIBundle *)&v13 initWithBundleInDirectory:v10 withExtension:v9 error:a5];
+  v11 = [(MIBundle *)&v13 initWithBundleInDirectory:containerURL withExtension:extensionCopy error:error];
 
   if (v11)
   {
-    objc_storeWeak(&v11->_bundleContainer, v8);
+    objc_storeWeak(&v11->_bundleContainer, containerCopy);
   }
 
   return v11;
 }
 
-+ (id)bundlesInParentBundle:(id)a3 subDirectory:(id)a4 matchingPredicate:(id)a5 error:(id *)a6
++ (id)bundlesInParentBundle:(id)bundle subDirectory:(id)directory matchingPredicate:(id)predicate error:(id *)error
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___MIExecutableBundle;
-  v6 = objc_msgSendSuper2(&v8, sel_bundlesInParentBundle_subDirectory_matchingPredicate_error_, a3, a4, a5, a6);
+  v6 = objc_msgSendSuper2(&v8, sel_bundlesInParentBundle_subDirectory_matchingPredicate_error_, bundle, directory, predicate, error);
 
   return v6;
 }
@@ -253,55 +253,55 @@ LABEL_27:
 
 - (NSString)executableName
 {
-  v3 = [(MIBundle *)self bundleURL];
-  v4 = [(MIBundle *)self infoPlistSubset];
-  v5 = MIBundleExecutableName(v3, v4);
+  bundleURL = [(MIBundle *)self bundleURL];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v5 = MIBundleExecutableName(bundleURL, infoPlistSubset);
 
   return v5;
 }
 
 - (NSURL)executableURL
 {
-  v3 = [(MIBundle *)self bundleURL];
-  v4 = [(MIBundle *)self cfBundle];
-  v5 = [(MIBundle *)self infoPlistSubset];
-  v6 = MIBundleExecutableURL(v3, v4, v5);
+  bundleURL = [(MIBundle *)self bundleURL];
+  cfBundle = [(MIBundle *)self cfBundle];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v6 = MIBundleExecutableURL(bundleURL, cfBundle, infoPlistSubset);
 
   return v6;
 }
 
 - (NSURL)relativeExecutablePath
 {
-  v3 = [(MIExecutableBundle *)self executableURL];
-  v4 = [v3 URLByStandardizingPath];
+  executableURL = [(MIExecutableBundle *)self executableURL];
+  uRLByStandardizingPath = [executableURL URLByStandardizingPath];
 
-  v5 = [v4 path];
-  v6 = [(MIBundle *)self bundleURL];
-  v7 = [v6 URLByStandardizingPath];
+  path = [uRLByStandardizingPath path];
+  bundleURL = [(MIBundle *)self bundleURL];
+  uRLByStandardizingPath2 = [bundleURL URLByStandardizingPath];
 
-  v8 = [v7 path];
-  v9 = [v5 length];
-  if (v9 <= [v8 length])
+  path2 = [uRLByStandardizingPath2 path];
+  v9 = [path length];
+  if (v9 <= [path2 length])
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
       MOLogWrite();
     }
 
-    v12 = v5;
+    v12 = path;
   }
 
   else
   {
-    v10 = [v5 substringFromIndex:{objc_msgSend(v8, "length") + 1}];
-    v11 = [(MIBundle *)self relativePath];
-    v12 = [v11 stringByAppendingPathComponent:v10];
+    v10 = [path substringFromIndex:{objc_msgSend(path2, "length") + 1}];
+    relativePath = [(MIBundle *)self relativePath];
+    v12 = [relativePath stringByAppendingPathComponent:v10];
   }
 
   return v12;
 }
 
-- (id)executableImageSlicesWithError:(id *)a3
+- (id)executableImageSlicesWithError:(id *)error
 {
   if ([(MIBundle *)self isPlaceholder])
   {
@@ -329,11 +329,11 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v16 = [(MIExecutableBundle *)self executableURL];
-  v17 = [v16 fileSystemRepresentation];
+  executableURL = [(MIExecutableBundle *)self executableURL];
+  fileSystemRepresentation = [executableURL fileSystemRepresentation];
 
   v21 = 0;
-  v12 = MIMachOFileImageSlices(v17, &v21);
+  v12 = MIMachOFileImageSlices(fileSystemRepresentation, &v21);
   v11 = v21;
   if (!v12)
   {
@@ -342,15 +342,15 @@ LABEL_7:
 
   if (![v12 count])
   {
-    v19 = _CreateAndLogError("[MIExecutableBundle executableImageSlicesWithError:]", 263, @"MIInstallerErrorDomain", 73, 0, 0, @"Executable at %s contained no image slices", v18, v17);
+    v19 = _CreateAndLogError("[MIExecutableBundle executableImageSlicesWithError:]", 263, @"MIInstallerErrorDomain", 73, 0, 0, @"Executable at %s contained no image slices", v18, fileSystemRepresentation);
 
     v11 = v19;
 LABEL_8:
-    if (a3)
+    if (error)
     {
       v13 = v11;
       v14 = 0;
-      *a3 = v11;
+      *error = v11;
     }
 
     else
@@ -372,7 +372,7 @@ LABEL_12:
   return v10;
 }
 
-- (id)executablePlatformsWithError:(id *)a3
+- (id)executablePlatformsWithError:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -382,7 +382,7 @@ LABEL_12:
   if (!v6)
   {
     v14 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -420,13 +420,13 @@ LABEL_12:
   }
 
   v14 = [v5 copy];
-  if (a3)
+  if (error)
   {
 LABEL_12:
     if (!v14)
     {
       v15 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -435,9 +435,9 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)hasExecutableSliceForPlatform:(unsigned int)a3 error:(id *)a4
+- (BOOL)hasExecutableSliceForPlatform:(unsigned int)platform error:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&platform;
   v18 = 0;
   v7 = [(MIExecutableBundle *)self executablePlatformsWithError:&v18];
   v8 = v18;
@@ -453,17 +453,17 @@ LABEL_14:
     }
 
     v12 = MIMachOStringForPlatform(v5);
-    v13 = [(MIExecutableBundle *)self relativeExecutablePath];
-    v15 = _CreateError("[MIExecutableBundle hasExecutableSliceForPlatform:error:]", 319, @"MIInstallerErrorDomain", 198, 0, 0, @"Executable at %@ did not contain a slice built for platform %@.", v14, v13);
+    relativeExecutablePath = [(MIExecutableBundle *)self relativeExecutablePath];
+    v15 = _CreateError("[MIExecutableBundle hasExecutableSliceForPlatform:error:]", 319, @"MIInstallerErrorDomain", 198, 0, 0, @"Executable at %@ did not contain a slice built for platform %@.", v14, relativeExecutablePath);
 
     v8 = v15;
   }
 
-  if (a4)
+  if (error)
   {
     v16 = v8;
     v11 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -476,16 +476,16 @@ LABEL_8:
   return v11;
 }
 
-- (id)_nameListForPlatformSet:(id)a3
+- (id)_nameListForPlatformSet:(id)set
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  setCopy = set;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = setCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -510,16 +510,16 @@ LABEL_8:
     while (v7);
   }
 
-  v11 = [v4 allObjects];
-  v12 = [v11 componentsJoinedByString:{@", "}];
+  allObjects = [v4 allObjects];
+  v12 = [allObjects componentsJoinedByString:{@", "}];
 
   return v12;
 }
 
-- (BOOL)onlyHasExecutableSlicesForPlatform:(unsigned int)a3 error:(id *)a4
+- (BOOL)onlyHasExecutableSlicesForPlatform:(unsigned int)platform error:(id *)error
 {
-  v5 = *&a3;
-  v7 = MIMachOStringForPlatform(*&a3);
+  v5 = *&platform;
+  v7 = MIMachOStringForPlatform(*&platform);
   v25 = 0;
   v8 = [(MIExecutableBundle *)self executablePlatformsWithError:&v25];
   v9 = v25;
@@ -540,44 +540,44 @@ LABEL_8:
       goto LABEL_14;
     }
 
-    v19 = [v8 allObjects];
-    v14 = [v19 firstObject];
+    allObjects = [v8 allObjects];
+    firstObject = [allObjects firstObject];
 
-    v16 = MIMachOStringForPlatform([v14 unsignedIntValue]);
-    v17 = [(MIExecutableBundle *)self relativeExecutablePath];
-    _CreateError("[MIExecutableBundle onlyHasExecutableSlicesForPlatform:error:]", 375, @"MIInstallerErrorDomain", 198, 0, 0, @"Executable at %@ did not contain a slice built for platform %@ (found only platform %@).", v20, v17);
+    relativeExecutablePath2 = MIMachOStringForPlatform([firstObject unsignedIntValue]);
+    relativeExecutablePath = [(MIExecutableBundle *)self relativeExecutablePath];
+    _CreateError("[MIExecutableBundle onlyHasExecutableSlicesForPlatform:error:]", 375, @"MIInstallerErrorDomain", 198, 0, 0, @"Executable at %@ did not contain a slice built for platform %@ (found only platform %@).", v20, relativeExecutablePath);
   }
 
   else
   {
     if (!v12)
     {
-      v14 = [(MIExecutableBundle *)self _nameListForPlatformSet:v8];
-      v16 = [(MIExecutableBundle *)self relativeExecutablePath];
+      firstObject = [(MIExecutableBundle *)self _nameListForPlatformSet:v8];
+      relativeExecutablePath2 = [(MIExecutableBundle *)self relativeExecutablePath];
       v21 = _CreateError("[MIExecutableBundle onlyHasExecutableSlicesForPlatform:error:]", 368, @"MIInstallerErrorDomain", 198, 0, 0, @"Expected to find one or more platform slices for %@ in executable at %@ but only found other platforms: %@", v22, v7);
       goto LABEL_10;
     }
 
-    v14 = [v8 mutableCopy];
+    firstObject = [v8 mutableCopy];
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
-    [v14 removeObject:v15];
+    [firstObject removeObject:v15];
 
-    v16 = [(MIExecutableBundle *)self _nameListForPlatformSet:v14];
-    v17 = [(MIExecutableBundle *)self relativeExecutablePath];
+    relativeExecutablePath2 = [(MIExecutableBundle *)self _nameListForPlatformSet:firstObject];
+    relativeExecutablePath = [(MIExecutableBundle *)self relativeExecutablePath];
     _CreateError("[MIExecutableBundle onlyHasExecutableSlicesForPlatform:error:]", 363, @"MIInstallerErrorDomain", 198, 0, 0, @"Expected to find only one or more platform slices for %@ in executable at %@ but also found other platforms: %@", v18, v7);
   }
   v21 = ;
 
-  v9 = v17;
+  v9 = relativeExecutablePath;
 LABEL_10:
 
   v9 = v21;
 LABEL_11:
-  if (a4)
+  if (error)
   {
     v23 = v9;
     v13 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -590,17 +590,17 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)hasExecutableSliceForCPUType:(int)a3 subtype:(int)a4 error:(id *)a5
+- (BOOL)hasExecutableSliceForCPUType:(int)type subtype:(int)subtype error:(id *)error
 {
-  v7 = *&a3;
+  v7 = *&type;
   v34 = *MEMORY[0x1E69E9840];
   v32 = 0;
   v9 = [(MIExecutableBundle *)self executableImageSlicesWithError:&v32];
   v10 = v32;
   if (v9)
   {
-    v26 = self;
-    v27 = a5;
+    selfCopy = self;
+    errorCopy = error;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -621,8 +621,8 @@ LABEL_14:
           }
 
           v16 = *(*(&v28 + 1) + 8 * i);
-          v17 = [v16 cpuSubtype];
-          if ([v16 cpuType] == v7 && (v17 & 0xFFFFFF) == a4)
+          cpuSubtype = [v16 cpuSubtype];
+          if ([v16 cpuType] == v7 && (cpuSubtype & 0xFFFFFF) == subtype)
           {
 
             v23 = 1;
@@ -640,19 +640,19 @@ LABEL_14:
       }
     }
 
-    v19 = [(MIBundle *)v26 bundleURL];
-    v25 = [v19 path];
+    bundleURL = [(MIBundle *)selfCopy bundleURL];
+    path = [bundleURL path];
     v21 = _CreateError("[MIExecutableBundle hasExecutableSliceForCPUType:subtype:error:]", 406, @"MIInstallerErrorDomain", 198, 0, 0, @"Did not find at least one executable slice with CPU type %d and subtype %d in bundle %@", v20, v7);
 
     v10 = v21;
-    a5 = v27;
+    error = errorCopy;
   }
 
-  if (a5)
+  if (error)
   {
     v22 = v10;
     v23 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -665,13 +665,13 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)getIsBuiltForMacPlatform:(BOOL *)a3 error:(id *)a4
+- (BOOL)getIsBuiltForMacPlatform:(BOOL *)platform error:(id *)error
 {
   if ([(MIBundle *)self isPlaceholder])
   {
     v17.receiver = self;
     v17.super_class = MIExecutableBundle;
-    v7 = [(MIBundle *)&v17 getIsBuiltForMacPlatform:a3 error:a4];
+    v7 = [(MIBundle *)&v17 getIsBuiltForMacPlatform:platform error:error];
 LABEL_9:
     v12 = v7;
     v10 = 0;
@@ -682,7 +682,7 @@ LABEL_9:
   {
     v16.receiver = self;
     v16.super_class = MIExecutableBundle;
-    v7 = [(MIBundle *)&v16 getIsBuiltForMacPlatform:a3 error:a4];
+    v7 = [(MIBundle *)&v16 getIsBuiltForMacPlatform:platform error:error];
     goto LABEL_9;
   }
 
@@ -695,7 +695,7 @@ LABEL_9:
     if ([v8 containsObject:&unk_1F2888E08])
     {
       v11 = 1;
-      if (!a3)
+      if (!platform)
       {
         goto LABEL_16;
       }
@@ -704,7 +704,7 @@ LABEL_9:
     else
     {
       v11 = [v8 containsObject:&unk_1F2888E20];
-      if (!a3)
+      if (!platform)
       {
 LABEL_16:
         v12 = 1;
@@ -712,16 +712,16 @@ LABEL_16:
       }
     }
 
-    *a3 = v11;
+    *platform = v11;
     goto LABEL_16;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v9;
     v12 = 0;
     v8 = 0;
-    *a4 = v10;
+    *error = v10;
     goto LABEL_11;
   }
 
@@ -733,7 +733,7 @@ LABEL_11:
   return v12;
 }
 
-- (id)lsInstallTypeWithError:(id *)a3
+- (id)lsInstallTypeWithError:(id *)error
 {
   if (self->_lsInstallType)
   {
@@ -741,9 +741,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v6 = [(MIExecutableBundle *)self bundleContainer];
-  v8 = v6;
-  if (!v6)
+  bundleContainer = [(MIExecutableBundle *)self bundleContainer];
+  v8 = bundleContainer;
+  if (!bundleContainer)
   {
     v14 = _CreateAndLogError("[MIExecutableBundle lsInstallTypeWithError:]", 520, @"MIInstallerErrorDomain", 158, 0, 0, @"Could not get install type because no bundle container relation is set on %@", v7, self);
     v9 = 0;
@@ -751,7 +751,7 @@ LABEL_11:
   }
 
   v19 = 0;
-  v9 = [v6 bundleMetadataWithError:&v19];
+  v9 = [bundleContainer bundleMetadataWithError:&v19];
   v11 = v19;
   if (!v9)
   {
@@ -761,8 +761,8 @@ LABEL_10:
 
 LABEL_11:
     v16 = +[MIFileManager defaultManager];
-    v17 = [(MIBundle *)self bundleURL];
-    v4 = [v16 installTypeFromExtendedAttributeOnBundle:v17 error:a3];
+    bundleURL = [(MIBundle *)self bundleURL];
+    v4 = [v16 installTypeFromExtendedAttributeOnBundle:bundleURL error:error];
 
     if (v4)
     {
@@ -772,15 +772,15 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v12 = [v9 installType];
-  if (!v12)
+  installType = [v9 installType];
+  if (!installType)
   {
     v15 = _CreateError("[MIExecutableBundle lsInstallTypeWithError:]", 532, @"MIInstallerErrorDomain", 158, 0, 0, @"Install type not set in bundle metadata for %@", v13, v8);
     goto LABEL_10;
   }
 
-  self->_lsInstallType = v12;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
+  self->_lsInstallType = installType;
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:installType];
 
 LABEL_13:
 LABEL_14:
@@ -788,17 +788,17 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)setBundleParentDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)setBundleParentDirectoryURL:(id)l error:(id *)error
 {
   v16.receiver = self;
   v16.super_class = MIExecutableBundle;
   v17 = 0;
-  v6 = [(MIBundle *)&v16 setBundleParentDirectoryURL:a3 error:&v17];
+  v6 = [(MIBundle *)&v16 setBundleParentDirectoryURL:l error:&v17];
   v7 = v17;
   if (!v6)
   {
-    v8 = 0;
-    if (!a4)
+    wk2AppBundle = 0;
+    if (!error)
     {
 LABEL_9:
       v12 = 0;
@@ -808,26 +808,26 @@ LABEL_9:
 LABEL_6:
     v13 = v7;
     v12 = 0;
-    *a4 = v7;
+    *error = v7;
     goto LABEL_10;
   }
 
-  v8 = [(MIExecutableBundle *)self wk2AppBundle];
-  if (!v8)
+  wk2AppBundle = [(MIExecutableBundle *)self wk2AppBundle];
+  if (!wk2AppBundle)
   {
     v12 = 1;
     goto LABEL_10;
   }
 
-  v9 = [(MIBundle *)self bundleURL];
+  bundleURL = [(MIBundle *)self bundleURL];
   v15 = v7;
-  v10 = [v8 setBundleParentDirectoryURL:v9 error:&v15];
+  v10 = [wk2AppBundle setBundleParentDirectoryURL:bundleURL error:&v15];
   v11 = v15;
 
   if ((v10 & 1) == 0)
   {
     v7 = v11;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -842,23 +842,23 @@ LABEL_10:
   return v12;
 }
 
-- (id)watchKitAppExecutableHashWithError:(id *)a3
+- (id)watchKitAppExecutableHashWithError:(id *)error
 {
-  v5 = [(MIExecutableBundle *)self watchKitAppExecutableHash];
-  if (v5)
+  watchKitAppExecutableHash = [(MIExecutableBundle *)self watchKitAppExecutableHash];
+  if (watchKitAppExecutableHash)
   {
-    v6 = v5;
-    v7 = 0;
+    v6 = watchKitAppExecutableHash;
+    executableURL = 0;
     v8 = 0;
     goto LABEL_13;
   }
 
   if ([(MIBundle *)self isPlaceholder]|| [(MIBundle *)self bundleType]!= 4)
   {
-    v14 = [(MIBundle *)self identifier];
-    v8 = _CreateError("[MIExecutableBundle watchKitAppExecutableHashWithError:]", 618, @"MIInstallerErrorDomain", 85, 0, 0, @"%@ is not expected to contain watch app executables", v15, v14);
+    identifier = [(MIBundle *)self identifier];
+    v8 = _CreateError("[MIExecutableBundle watchKitAppExecutableHashWithError:]", 618, @"MIInstallerErrorDomain", 85, 0, 0, @"%@ is not expected to contain watch app executables", v15, identifier);
 
-    v7 = 0;
+    executableURL = 0;
   }
 
   else
@@ -870,24 +870,24 @@ LABEL_10:
     {
 LABEL_8:
 
-      v7 = 0;
+      executableURL = 0;
       v8 = v10;
       goto LABEL_10;
     }
 
     if ([v9 isPlaceholder])
     {
-      v11 = [(MIBundle *)self identifier];
-      v13 = _CreateError("[MIExecutableBundle watchKitAppExecutableHashWithError:]", 610, @"MIInstallerErrorDomain", 139, 0, 0, @"%@ contains a placeholder watch app, so an executable hash is not possible.", v12, v11);
+      identifier2 = [(MIBundle *)self identifier];
+      v13 = _CreateError("[MIExecutableBundle watchKitAppExecutableHashWithError:]", 610, @"MIInstallerErrorDomain", 139, 0, 0, @"%@ contains a placeholder watch app, so an executable hash is not possible.", v12, identifier2);
 
       v10 = v13;
       goto LABEL_8;
     }
 
-    v7 = [v9 executableURL];
+    executableURL = [v9 executableURL];
 
     v20 = v10;
-    v6 = MICreateSHA256Digest(v7, &v20);
+    v6 = MICreateSHA256Digest(executableURL, &v20);
     v8 = v20;
 
     if (v6)
@@ -898,18 +898,18 @@ LABEL_8:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v18 = [(MIBundle *)self identifier];
-      v19 = [v7 path];
+      identifier3 = [(MIBundle *)self identifier];
+      path = [executableURL path];
       MOLogWrite();
     }
   }
 
 LABEL_10:
-  if (a3)
+  if (error)
   {
     v16 = v8;
     v6 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -922,29 +922,29 @@ LABEL_13:
   return v6;
 }
 
-- (id)installationIdentitySettingIfNotSet:(BOOL)a3 withError:(id *)a4
+- (id)installationIdentitySettingIfNotSet:(BOOL)set withError:(id *)error
 {
-  v5 = a3;
-  v7 = [(MIExecutableBundle *)self installationIdentity];
+  setCopy = set;
+  installationIdentity = [(MIExecutableBundle *)self installationIdentity];
 
-  if (v7)
+  if (installationIdentity)
   {
-    v8 = [(MIExecutableBundle *)self installationIdentity];
+    installationIdentity2 = [(MIExecutableBundle *)self installationIdentity];
   }
 
   else
   {
-    v8 = [MIInstallationIdentity installationIdentityForBundle:self settingIfNotSet:v5 error:a4];
-    [(MIExecutableBundle *)self setInstallationIdentity:v8];
+    installationIdentity2 = [MIInstallationIdentity installationIdentityForBundle:self settingIfNotSet:setCopy error:error];
+    [(MIExecutableBundle *)self setInstallationIdentity:installationIdentity2];
   }
 
-  return v8;
+  return installationIdentity2;
 }
 
-- (BOOL)transferInstallationIdentityFromBundle:(id)a3 error:(id *)a4
+- (BOOL)transferInstallationIdentityFromBundle:(id)bundle error:(id *)error
 {
   v15 = 0;
-  v6 = [MIInstallationIdentity identityForUpdateOfBundle:a3 error:&v15];
+  v6 = [MIInstallationIdentity identityForUpdateOfBundle:bundle error:&v15];
   v7 = v15;
   v8 = v7;
   if (v6)
@@ -966,10 +966,10 @@ LABEL_13:
     v10 = v7;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   [(MIExecutableBundle *)self setInstallationIdentity:0];
@@ -979,10 +979,10 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)makeAndSetNewInstallationIdentityWithError:(id *)a3
+- (BOOL)makeAndSetNewInstallationIdentityWithError:(id *)error
 {
   v5 = [MIInstallationIdentity newIdentityForBundle:self];
-  v6 = [v5 writeToBundle:self error:a3];
+  v6 = [v5 writeToBundle:self error:error];
   if (v6)
   {
     v7 = v5;
@@ -1005,8 +1005,8 @@ LABEL_8:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(MIExecutableBundle *)self executableImageSlices];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  executableImageSlices = [(MIExecutableBundle *)self executableImageSlices];
+  v3 = [executableImageSlices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1018,17 +1018,17 @@ LABEL_8:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(executableImageSlices);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) sdkVersion];
-        if (v5 <= v8)
+        sdkVersion = [*(*(&v10 + 1) + 8 * i) sdkVersion];
+        if (v5 <= sdkVersion)
         {
-          v5 = v8;
+          v5 = sdkVersion;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [executableImageSlices countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1044,8 +1044,8 @@ LABEL_8:
 
 - (unint64_t)estimatedMemoryUsageToValidate
 {
-  v2 = [(MIBundle *)self contentsURL];
-  v3 = [v2 URLByAppendingPathComponent:@"_CodeSignature/CodeResources" isDirectory:0];
+  contentsURL = [(MIBundle *)self contentsURL];
+  v3 = [contentsURL URLByAppendingPathComponent:@"_CodeSignature/CodeResources" isDirectory:0];
 
   memset(&v8, 0, sizeof(v8));
   if (lstat([v3 fileSystemRepresentation], &v8))
@@ -1053,7 +1053,7 @@ LABEL_8:
     v4 = *__error();
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v5 = [v3 path];
+      path = [v3 path];
       strerror(v4);
       MOLogWrite();
     }
@@ -1079,9 +1079,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(MIExecutableBundle *)self executableURL];
+  executableURL = [(MIExecutableBundle *)self executableURL];
   v11 = 0;
-  v7 = MIMachOFileMatchesMyArchitecture([v6 fileSystemRepresentation], &v11);
+  v7 = MIMachOFileMatchesMyArchitecture([executableURL fileSystemRepresentation], &v11);
   v3 = v11;
 
   if (v7)
@@ -1091,9 +1091,9 @@ LABEL_5:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v8 = [(MIBundle *)self identifier];
-    v9 = [(MIBundle *)self bundleURL];
-    v10 = [v9 path];
+    identifier = [(MIBundle *)self identifier];
+    bundleURL = [(MIBundle *)self bundleURL];
+    path = [bundleURL path];
     MOLogWrite();
   }
 
@@ -1104,19 +1104,19 @@ LABEL_6:
   return v4;
 }
 
-+ (BOOL)isGrandfatheredNonContainerizedForSigningInfo:(id)a3
++ (BOOL)isGrandfatheredNonContainerizedForSigningInfo:(id)info
 {
   v3 = isGrandfatheredNonContainerizedForSigningInfo__onceToken;
-  v4 = a3;
+  infoCopy = info;
   if (v3 != -1)
   {
     +[MIExecutableBundle isGrandfatheredNonContainerizedForSigningInfo:];
   }
 
   v5 = isGrandfatheredNonContainerizedForSigningInfo__grandfatheredSigningIDs;
-  v6 = [v4 codeInfoIdentifier];
+  codeInfoIdentifier = [infoCopy codeInfoIdentifier];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:codeInfoIdentifier];
   return v7;
 }
 
@@ -1127,16 +1127,16 @@ uint64_t __68__MIExecutableBundle_isGrandfatheredNonContainerizedForSigningInfo_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_hasNonContainerizingEntitlement:(id)a3 checkSeatbeltProfiles:(BOOL)a4
+- (BOOL)_hasNonContainerizingEntitlement:(id)entitlement checkSeatbeltProfiles:(BOOL)profiles
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 entitlements];
-  v8 = MIHasNoContainerEntitlement(v7);
+  profilesCopy = profiles;
+  entitlementCopy = entitlement;
+  entitlements = [entitlementCopy entitlements];
+  v8 = MIHasNoContainerEntitlement(entitlements);
 
   if (v8)
   {
-    if (![objc_opt_class() isGrandfatheredNonContainerizedForSigningInfo:v6] || !gLogHandle || *(gLogHandle + 44) < 7)
+    if (![objc_opt_class() isGrandfatheredNonContainerizedForSigningInfo:entitlementCopy] || !gLogHandle || *(gLogHandle + 44) < 7)
     {
       goto LABEL_11;
     }
@@ -1144,12 +1144,12 @@ uint64_t __68__MIExecutableBundle_isGrandfatheredNonContainerizedForSigningInfo_
     goto LABEL_10;
   }
 
-  v9 = [v6 entitlements];
-  v10 = MIHasNoSandboxEntitlement(v9);
+  entitlements2 = [entitlementCopy entitlements];
+  v10 = MIHasNoSandboxEntitlement(entitlements2);
 
   if (v10)
   {
-    if (![objc_opt_class() isGrandfatheredNonContainerizedForSigningInfo:v6] || !gLogHandle || *(gLogHandle + 44) < 7)
+    if (![objc_opt_class() isGrandfatheredNonContainerizedForSigningInfo:entitlementCopy] || !gLogHandle || *(gLogHandle + 44) < 7)
     {
       goto LABEL_11;
     }
@@ -1157,16 +1157,16 @@ uint64_t __68__MIExecutableBundle_isGrandfatheredNonContainerizedForSigningInfo_
     goto LABEL_10;
   }
 
-  if (!v4 || ([v6 entitlements], v14 = objc_claimAutoreleasedReturnValue(), v15 = MIHasSeatbeltProfilesEntitlement(v14), v14, !v15))
+  if (!profilesCopy || ([entitlementCopy entitlements], v14 = objc_claimAutoreleasedReturnValue(), v15 = MIHasSeatbeltProfilesEntitlement(v14), v14, !v15))
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  if ([objc_opt_class() isGrandfatheredNonContainerizedForSigningInfo:v6] && gLogHandle && *(gLogHandle + 44) >= 7)
+  if ([objc_opt_class() isGrandfatheredNonContainerizedForSigningInfo:entitlementCopy] && gLogHandle && *(gLogHandle + 44) >= 7)
   {
 LABEL_10:
-    v11 = [(MIBundle *)self identifier];
+    identifier = [(MIBundle *)self identifier];
     MOLogWrite();
   }
 
@@ -1180,13 +1180,13 @@ LABEL_12:
 - (BOOL)needsDataContainer
 {
   v3 = [(MIExecutableBundle *)self codeSigningInfoByValidatingResources:0 performingOnlineAuthorization:0 ignoringCachedSigningInfo:0 checkingTrustCacheIfApplicable:0 skippingProfileIDValidation:0 error:0];
-  v4 = [(MIBundle *)self bundleType];
+  bundleType = [(MIBundle *)self bundleType];
   v5 = 0;
-  if (v4 <= 4)
+  if (bundleType <= 4)
   {
-    if (v4 > 2)
+    if (bundleType > 2)
     {
-      if (v4 == 3)
+      if (bundleType == 3)
       {
         goto LABEL_31;
       }
@@ -1196,9 +1196,9 @@ LABEL_12:
 
     else
     {
-      if (v4 != 1)
+      if (bundleType != 1)
       {
-        if (v4 != 2)
+        if (bundleType != 2)
         {
 LABEL_21:
           [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Unhandled bundle type %hhu", -[MIBundle bundleType](self, "bundleType")}];
@@ -1218,7 +1218,7 @@ LABEL_30:
         }
 
 LABEL_27:
-        v10 = [(MIBundle *)self identifier];
+        identifier = [(MIBundle *)self identifier];
         MOLogWrite();
 
 LABEL_28:
@@ -1226,8 +1226,8 @@ LABEL_28:
         goto LABEL_31;
       }
 
-      v8 = [v3 entitlements];
-      v9 = MIHasContainerRequiredEntitlement(v8);
+      entitlements = [v3 entitlements];
+      v9 = MIHasContainerRequiredEntitlement(entitlements);
 
       if (v9)
       {
@@ -1251,14 +1251,14 @@ LABEL_28:
     goto LABEL_31;
   }
 
-  if ((v4 - 7) < 6)
+  if ((bundleType - 7) < 6)
   {
     goto LABEL_31;
   }
 
-  if (v4 != 5)
+  if (bundleType != 5)
   {
-    if (v4 != 6)
+    if (bundleType != 6)
     {
       goto LABEL_21;
     }
@@ -1271,15 +1271,15 @@ LABEL_13:
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v12 = [(MIBundle *)self identifier];
+      identifier2 = [(MIBundle *)self identifier];
       MOLogWrite();
     }
 
     goto LABEL_30;
   }
 
-  v7 = [v3 entitlements];
-  v5 = MIHasContainerRequiredEntitlement(v7);
+  entitlements2 = [v3 entitlements];
+  v5 = MIHasContainerRequiredEntitlement(entitlements2);
 
 LABEL_31:
   return v5;
@@ -1289,8 +1289,8 @@ LABEL_31:
 {
   v24 = *MEMORY[0x1E69E9840];
   v2 = [(MIExecutableBundle *)self codeSigningInfoByValidatingResources:0 performingOnlineAuthorization:0 ignoringCachedSigningInfo:0 checkingTrustCacheIfApplicable:0 skippingProfileIDValidation:0 error:0];
-  v3 = [v2 entitlements];
-  v4 = MICopyDataProtectionIfAvailableEntitlement(v3);
+  entitlements = [v2 entitlements];
+  v4 = MICopyDataProtectionIfAvailableEntitlement(entitlements);
   if (!v4)
   {
     goto LABEL_23;
@@ -1371,7 +1371,7 @@ LABEL_22:
     }
 
 LABEL_23:
-    v16 = MICopyDataProtectionClassEntitlement(v3);
+    v16 = MICopyDataProtectionClassEntitlement(entitlements);
     v17 = v16;
     if (v16)
     {
@@ -1404,9 +1404,9 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)updateMCMWithCodeSigningInfoAsAdvanceCopy:(BOOL)a3 withError:(id *)a4
+- (BOOL)updateMCMWithCodeSigningInfoAsAdvanceCopy:(BOOL)copy withError:(id *)error
 {
-  v5 = a3;
+  copyCopy = copy;
   if ([(MIExecutableBundle *)self codeSignatureVerificationState]- 1 >= 2)
   {
     if (gLogHandle && *(gLogHandle + 44) >= 7)
@@ -1417,8 +1417,8 @@ LABEL_30:
     goto LABEL_21;
   }
 
-  v7 = [(MIBundle *)self bundleType];
-  if ((v7 - 1) >= 6 && v7 != 12)
+  bundleType = [(MIBundle *)self bundleType];
+  if ((bundleType - 1) >= 6 && bundleType != 12)
   {
 LABEL_21:
     v20 = 0;
@@ -1433,8 +1433,8 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(MIBundle *)self parentBundleID];
-    [v8 setObject:v10 forKeyedSubscript:@"com.apple.MobileContainerManager.ParentBundleID"];
+    parentBundleID = [(MIBundle *)self parentBundleID];
+    [v8 setObject:parentBundleID forKeyedSubscript:@"com.apple.MobileContainerManager.ParentBundleID"];
   }
 
   if ([(MIBundle *)self isPlaceholder])
@@ -1442,18 +1442,18 @@ LABEL_21:
     [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"com.apple.MobileContainerManager.PlaceholderEntitlements"];
   }
 
-  if (v5)
+  if (copyCopy)
   {
     [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"com.apple.MobileContainerManager.AdvanceCopy"];
   }
 
-  v11 = [(MIExecutableBundle *)self codeSigningInfo];
-  v12 = [v11 dictionaryRepresentation];
+  codeSigningInfo = [(MIExecutableBundle *)self codeSigningInfo];
+  dictionaryRepresentation = [codeSigningInfo dictionaryRepresentation];
 
   if (gLogHandle && *(gLogHandle + 44) >= 7)
   {
     [(MIBundle *)self identifier];
-    v25 = v12;
+    v25 = dictionaryRepresentation;
     v24 = v26 = v8;
     MOLogWrite();
   }
@@ -1471,16 +1471,16 @@ LABEL_21:
   }
 
   v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MIContainerManagerErrorDomain" code:v16 userInfo:0];
-  v18 = [(MIBundle *)self identifier];
+  identifier = [(MIBundle *)self identifier];
   [(MIBundle *)self isPlaceholder];
-  v20 = _CreateAndLogError("[MIExecutableBundle updateMCMWithCodeSigningInfoAsAdvanceCopy:withError:]", 1069, @"MIInstallerErrorDomain", 110, v17, 0, @"Failed to set code signing info with MCM for %@, isPlaceholder: %c", v19, v18);
+  v20 = _CreateAndLogError("[MIExecutableBundle updateMCMWithCodeSigningInfoAsAdvanceCopy:withError:]", 1069, @"MIInstallerErrorDomain", 110, v17, 0, @"Failed to set code signing info with MCM for %@, isPlaceholder: %c", v19, identifier);
 
   v21 = 0;
-  if (a4 && v20)
+  if (error && v20)
   {
     v22 = v20;
     v21 = 0;
-    *a4 = v20;
+    *error = v20;
   }
 
 LABEL_22:
@@ -1490,22 +1490,22 @@ LABEL_22:
 
 - (id)_codeSigningInfoFromMCM
 {
-  v3 = [(MIBundle *)self bundleType];
-  if ((v3 - 1) >= 6 && v3 != 12)
+  bundleType = [(MIBundle *)self bundleType];
+  if ((bundleType - 1) >= 6 && bundleType != 12)
   {
     v12 = 0;
     goto LABEL_21;
   }
 
-  v5 = [(MIBundle *)self identifier];
-  [v5 UTF8String];
+  identifier = [(MIBundle *)self identifier];
+  [identifier UTF8String];
   v6 = container_copy_code_signing_info_for_identifier();
 
   if (!v6)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v13 = [(MIBundle *)self identifier];
+      identifier2 = [(MIBundle *)self identifier];
       MOLogWrite();
     }
 
@@ -1547,67 +1547,67 @@ LABEL_21:
   return v12;
 }
 
-- (id)codeSigningInfoByValidatingResources:(BOOL)a3 performingOnlineAuthorization:(BOOL)a4 ignoringCachedSigningInfo:(BOOL)a5 checkingTrustCacheIfApplicable:(BOOL)a6 skippingProfileIDValidation:(BOOL)a7 error:(id *)a8
+- (id)codeSigningInfoByValidatingResources:(BOOL)resources performingOnlineAuthorization:(BOOL)authorization ignoringCachedSigningInfo:(BOOL)info checkingTrustCacheIfApplicable:(BOOL)applicable skippingProfileIDValidation:(BOOL)validation error:(id *)error
 {
-  v9 = a7;
-  v12 = a4;
-  v13 = a3;
-  v15 = [(MIBundle *)self identifier];
-  v16 = [(MIExecutableBundle *)self codeSignatureVerificationState];
-  v17 = v16;
-  if (a5 || v16 - 3 < 0xFFFFFFFFFFFFFFFELL)
+  validationCopy = validation;
+  authorizationCopy = authorization;
+  resourcesCopy = resources;
+  identifier = [(MIBundle *)self identifier];
+  codeSignatureVerificationState = [(MIExecutableBundle *)self codeSignatureVerificationState];
+  v17 = codeSignatureVerificationState;
+  if (info || codeSignatureVerificationState - 3 < 0xFFFFFFFFFFFFFFFELL)
   {
-    v19 = [(MIBundle *)self bundleType];
-    v20 = [(MIBundle *)self bundleURL];
+    bundleType = [(MIBundle *)self bundleType];
+    bundleURL = [(MIBundle *)self bundleURL];
     if (v17 == 6 || v17 == 3)
     {
-      if (a8)
+      if (error)
       {
-        v21 = v20;
+        v21 = bundleURL;
         [(MIExecutableBundle *)self codeSigningInfoError];
-        *a8 = v18 = 0;
-        v20 = v21;
+        *error = codeSigningInfo = 0;
+        bundleURL = v21;
       }
 
       else
       {
-        v18 = 0;
+        codeSigningInfo = 0;
       }
 
       goto LABEL_98;
     }
 
-    v70 = v20;
-    if (a5 || v19 != 4)
+    v70 = bundleURL;
+    if (info || bundleType != 4)
     {
-      v23 = [(MIBundle *)self isStaticContent];
-      if (v23 && v19 == 7)
+      isStaticContent = [(MIBundle *)self isStaticContent];
+      if (isStaticContent && bundleType == 7)
       {
         if (![(MIExecutableBundle *)self hasExecutable])
         {
           self->_codeSignatureVerificationState = 4;
-          v37 = _CreateError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1160, @"MIInstallerErrorDomain", 71, 0, 0, @"Built in framework is expectedly missing its bundle executable.", v24, v67);
-          if (a8)
+          v37 = _CreateError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1160, @"MIInstallerErrorDomain", 71, 0, 0, @"Built in framework is expectedly missing its bundle executable.", v24, path3);
+          if (error)
           {
             v37 = v37;
-            *a8 = v37;
+            *error = v37;
           }
 
-          v18 = 0;
+          codeSigningInfo = 0;
           goto LABEL_97;
         }
 
-        v23 = 1;
+        isStaticContent = 1;
       }
     }
 
     else
     {
-      v22 = [(MIExecutableBundle *)self _codeSigningInfoFromMCM];
-      if (v22)
+      _codeSigningInfoFromMCM = [(MIExecutableBundle *)self _codeSigningInfoFromMCM];
+      if (_codeSigningInfoFromMCM)
       {
-        v18 = v22;
-        [(MIExecutableBundle *)self setCodeSigningInfo:v22];
+        codeSigningInfo = _codeSigningInfoFromMCM;
+        [(MIExecutableBundle *)self setCodeSigningInfo:_codeSigningInfoFromMCM];
         self->_codeSignatureVerificationState = 5;
         if (gLogHandle && *(gLogHandle + 44) >= 7)
         {
@@ -1617,7 +1617,7 @@ LABEL_21:
         goto LABEL_97;
       }
 
-      v23 = [(MIBundle *)self isStaticContent];
+      isStaticContent = [(MIBundle *)self isStaticContent];
     }
 
     if ([(MIBundle *)self isPlaceholder])
@@ -1637,14 +1637,14 @@ LABEL_21:
         goto LABEL_28;
       }
 
-      v38 = [v26 domain];
-      if ([v38 isEqualToString:*MEMORY[0x1E696A250]])
+      domain = [v26 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A250]])
       {
-        v39 = [v27 code];
+        code = [v27 code];
 
-        if (v39 == 260)
+        if (code == 260)
         {
-          if (v19 == 1)
+          if (bundleType == 1)
           {
             if (gLogHandle && *(gLogHandle + 44) < 5)
             {
@@ -1658,14 +1658,14 @@ LABEL_21:
           }
 
 LABEL_28:
-          v28 = [v70 path];
+          path = [v70 path];
           MOLogWrite();
 
 LABEL_29:
-          v29 = [[MICodeSigningInfo alloc] initWithSignerIdentity:@"Unsigned Placeholder" signerOrganization:@"Unsigned Placeholder" codeInfoIdentifier:v15 teamIdentifier:@"Unsigned Placeholder" signatureVersion:&unk_1F2888E38 entitlements:v25 signerType:6 profileType:1 signingInfoSource:1 launchWarningData:0];
+          v29 = [[MICodeSigningInfo alloc] initWithSignerIdentity:@"Unsigned Placeholder" signerOrganization:@"Unsigned Placeholder" codeInfoIdentifier:identifier teamIdentifier:@"Unsigned Placeholder" signatureVersion:&unk_1F2888E38 entitlements:v25 signerType:6 profileType:1 signingInfoSource:1 launchWarningData:0];
           [(MIExecutableBundle *)self setCodeSigningInfo:v29];
 
-          v18 = [(MIExecutableBundle *)self codeSigningInfo];
+          codeSigningInfo = [(MIExecutableBundle *)self codeSigningInfo];
 LABEL_96:
 
           goto LABEL_97;
@@ -1676,19 +1676,19 @@ LABEL_96:
       {
       }
 
-      v43 = [v70 path];
-      v45 = _CreateAndLogError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1179, @"MIInstallerErrorDomain", 4, v27, 0, @"Failed to read placeholder entitlements file from %@", v44, v43);
+      path2 = [v70 path];
+      v45 = _CreateAndLogError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1179, @"MIInstallerErrorDomain", 4, v27, 0, @"Failed to read placeholder entitlements file from %@", v44, path2);
 
-      if (a8)
+      if (error)
       {
         v46 = v45;
-        v18 = 0;
-        *a8 = v45;
+        codeSigningInfo = 0;
+        *error = v45;
       }
 
       else
       {
-        v18 = 0;
+        codeSigningInfo = 0;
       }
 
       v27 = v45;
@@ -1700,29 +1700,29 @@ LABEL_96:
     if (!v30)
     {
       v40 = _CreateAndLogError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1205, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to create verifier for executable %@", v31, v70);
-      if (a8)
+      if (error)
       {
         v40 = v40;
-        *a8 = v40;
+        *error = v40;
       }
 
-      v18 = 0;
+      codeSigningInfo = 0;
       goto LABEL_93;
     }
 
-    if (v13)
+    if (resourcesCopy)
     {
       [v30 setValidateResources:1];
-      if (!v12)
+      if (!authorizationCopy)
       {
         goto LABEL_33;
       }
     }
 
-    else if (!v12)
+    else if (!authorizationCopy)
     {
 LABEL_33:
-      if (!v9)
+      if (!validationCopy)
       {
         goto LABEL_35;
       }
@@ -1731,27 +1731,27 @@ LABEL_33:
     }
 
     [v32 setPerformOnlineAuthorization:1];
-    if (!v9)
+    if (!validationCopy)
     {
 LABEL_35:
-      v33 = [(MIBundle *)self parentBundle];
+      parentBundle = [(MIBundle *)self parentBundle];
       v34 = +[MIDaemonConfiguration sharedInstance];
-      v35 = [v34 codeSigningEnforcementIsDisabled];
+      codeSigningEnforcementIsDisabled = [v34 codeSigningEnforcementIsDisabled];
 
-      if (v35)
+      if (codeSigningEnforcementIsDisabled)
       {
         [v32 setAllowAdhocSigning:1];
         [v32 setVerifyTrustCachePresence:0];
         [v32 setValidateUsingDetachedSignature:0];
-        if (-[MIBundle isRemovableSystemApp](self, "isRemovableSystemApp") || [v33 isRemovableSystemApp])
+        if (-[MIBundle isRemovableSystemApp](self, "isRemovableSystemApp") || [parentBundle isRemovableSystemApp])
         {
           [v32 setValidateResources:0];
         }
 
-        if (!v23 && ![(MIBundle *)self isRemovableSystemApp])
+        if (!isStaticContent && ![(MIBundle *)self isRemovableSystemApp])
         {
-          v36 = [v33 isRemovableSystemApp] ^ 1;
-          if (a6)
+          v36 = [parentBundle isRemovableSystemApp] ^ 1;
+          if (applicable)
           {
             goto LABEL_74;
           }
@@ -1766,28 +1766,28 @@ LABEL_35:
       {
         if (gLogHandle && *(gLogHandle + 44) >= 7)
         {
-          v67 = v15;
+          path3 = identifier;
           MOLogWrite();
         }
 
-        [v32 setAllowAdhocSigning:{1, v67}];
+        [v32 setAllowAdhocSigning:{1, path3}];
         v41 = v32;
         v42 = 1;
       }
 
       else
       {
-        if (![v33 isRemovableSystemApp])
+        if (![parentBundle isRemovableSystemApp])
         {
-          if (v23)
+          if (isStaticContent)
           {
             if (gLogHandle && *(gLogHandle + 44) >= 7)
             {
-              v67 = v15;
+              path3 = identifier;
               MOLogWrite();
             }
 
-            [v32 setAllowAdhocSigning:{1, v67}];
+            [v32 setAllowAdhocSigning:{1, path3}];
             [v32 setVerifyTrustCachePresence:1];
             [v32 setValidateResources:0];
           }
@@ -1806,7 +1806,7 @@ LABEL_35:
               {
                 if (!gLogHandle || *(gLogHandle + 44) >= 3)
                 {
-                  v67 = v66;
+                  path3 = v66;
                   MOLogWrite();
                 }
 
@@ -1820,65 +1820,65 @@ LABEL_35:
               {
                 if (!gLogHandle || *(gLogHandle + 44) >= 5)
                 {
-                  v67 = [v70 path];
+                  path3 = [v70 path];
                   MOLogWrite();
                 }
 
-                [v32 setAllowAdhocSigning:{1, v67}];
+                [v32 setAllowAdhocSigning:{1, path3}];
               }
 
-              if (a6)
+              if (applicable)
               {
 LABEL_74:
                 v71 = 0;
-                v47 = [v32 performValidationWithError:{&v71, v67}];
+                v47 = [v32 performValidationWithError:{&v71, path3}];
                 v48 = v71;
                 if (v47)
                 {
-                  v49 = [v32 signingInfo];
-                  v50 = [v49 codeInfoIdentifier];
-                  v51 = [v50 isEqualToString:v15];
+                  signingInfo = [v32 signingInfo];
+                  codeInfoIdentifier = [signingInfo codeInfoIdentifier];
+                  v51 = [codeInfoIdentifier isEqualToString:identifier];
 
                   if (v51)
                   {
                     self->_codeSignatureVerificationState = 2;
-                    v52 = [v32 signingInfo];
-                    [(MIExecutableBundle *)self setCodeSigningInfo:v52];
+                    signingInfo2 = [v32 signingInfo];
+                    [(MIExecutableBundle *)self setCodeSigningInfo:signingInfo2];
 
                     if (v36)
                     {
-                      v53 = [(MIExecutableBundle *)self codeSigningInfo];
-                      v54 = [v53 codeSignerType];
+                      codeSigningInfo2 = [(MIExecutableBundle *)self codeSigningInfo];
+                      codeSignerType = [codeSigningInfo2 codeSignerType];
 
-                      if (v54 == 1 && (!gLogHandle || *(gLogHandle + 44) >= 5))
+                      if (codeSignerType == 1 && (!gLogHandle || *(gLogHandle + 44) >= 5))
                       {
-                        v68 = [v70 path];
+                        path4 = [v70 path];
                         MOLogWrite();
                       }
                     }
 
-                    v18 = [(MIExecutableBundle *)self codeSigningInfo];
+                    codeSigningInfo = [(MIExecutableBundle *)self codeSigningInfo];
                     goto LABEL_92;
                   }
 
                   self->_codeSignatureVerificationState = 6;
-                  v56 = [v32 signingInfo];
-                  v57 = [v56 codeInfoIdentifier];
-                  v69 = [v70 path];
-                  v59 = _CreateAndLogError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1306, @"MIInstallerErrorDomain", 77, 0, &unk_1F2888420, @"Code signing identifier (%@) does not match bundle identifier (%@) for %@", v58, v57);
+                  signingInfo3 = [v32 signingInfo];
+                  codeInfoIdentifier2 = [signingInfo3 codeInfoIdentifier];
+                  path5 = [v70 path];
+                  v59 = _CreateAndLogError("[MIExecutableBundle codeSigningInfoByValidatingResources:performingOnlineAuthorization:ignoringCachedSigningInfo:checkingTrustCacheIfApplicable:skippingProfileIDValidation:error:]", 1306, @"MIInstallerErrorDomain", 77, 0, &unk_1F2888420, @"Code signing identifier (%@) does not match bundle identifier (%@) for %@", v58, codeInfoIdentifier2);
                   [(MIExecutableBundle *)self setCodeSigningInfoError:v59];
 
-                  if (a8)
+                  if (error)
                   {
-                    *a8 = [(MIExecutableBundle *)self codeSigningInfoError];
+                    *error = [(MIExecutableBundle *)self codeSigningInfoError];
                   }
 
                   if ([(MIExecutableBundle *)self hasExecutable])
                   {
-                    v60 = [(MIExecutableBundle *)self executableURL];
-                    v61 = [v60 fileSystemRepresentation];
+                    executableURL = [(MIExecutableBundle *)self executableURL];
+                    fileSystemRepresentation = [executableURL fileSystemRepresentation];
 
-                    if (lchmod(v61, 0x1A4u))
+                    if (lchmod(fileSystemRepresentation, 0x1A4u))
                     {
                       v62 = *__error();
                       if (!gLogHandle || *(gLogHandle + 44) >= 3)
@@ -1894,43 +1894,43 @@ LABEL_74:
                 {
                   self->_codeSignatureVerificationState = 3;
                   [(MIExecutableBundle *)self setCodeSigningInfoError:v48];
-                  if (a8)
+                  if (error)
                   {
                     v55 = v48;
-                    v18 = 0;
-                    *a8 = v48;
+                    codeSigningInfo = 0;
+                    *error = v48;
 LABEL_92:
 
 LABEL_93:
 LABEL_97:
-                    v20 = v70;
+                    bundleURL = v70;
 LABEL_98:
 
                     goto LABEL_99;
                   }
                 }
 
-                v18 = 0;
+                codeSigningInfo = 0;
                 goto LABEL_92;
               }
 
 LABEL_73:
-              [v32 setVerifyTrustCachePresence:{0, v67}];
+              [v32 setVerifyTrustCachePresence:{0, path3}];
               goto LABEL_74;
             }
 
             if (!gLogHandle || *(gLogHandle + 44) >= 5)
             {
-              v67 = [v70 path];
+              path3 = [v70 path];
               MOLogWrite();
             }
 
-            [v32 setAllowAdhocSigning:{1, v67}];
+            [v32 setAllowAdhocSigning:{1, path3}];
           }
 
 LABEL_72:
           v36 = 0;
-          if (a6)
+          if (applicable)
           {
             goto LABEL_74;
           }
@@ -1940,11 +1940,11 @@ LABEL_72:
 
         if (gLogHandle && *(gLogHandle + 44) >= 7)
         {
-          v67 = v15;
+          path3 = identifier;
           MOLogWrite();
         }
 
-        [v32 setAllowAdhocSigning:{1, v67}];
+        [v32 setAllowAdhocSigning:{1, path3}];
         [v32 setValidateResources:0];
         v41 = v32;
         v42 = 0;
@@ -1962,27 +1962,27 @@ LABEL_34:
 
   if (gLogHandle && *(gLogHandle + 44) >= 7)
   {
-    v67 = v15;
+    path3 = identifier;
     MOLogWrite();
   }
 
-  v18 = [(MIExecutableBundle *)self codeSigningInfo];
+  codeSigningInfo = [(MIExecutableBundle *)self codeSigningInfo];
 LABEL_99:
 
-  return v18;
+  return codeSigningInfo;
 }
 
-- (int)_installEmbeddedProvisioningProfileAtURL:(id)a3 withProgress:(id)a4
+- (int)_installEmbeddedProvisioningProfileAtURL:(id)l withProgress:(id)progress
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  progressCopy = progress;
   memset(&v10, 0, sizeof(v10));
-  if (lstat([v5 fileSystemRepresentation], &v10))
+  if (lstat([lCopy fileSystemRepresentation], &v10))
   {
     v7 = *__error();
     if (v7 != 2 && (!gLogHandle || *(gLogHandle + 44) >= 3))
     {
-      [v5 fileSystemRepresentation];
+      [lCopy fileSystemRepresentation];
       strerror(v7);
       MOLogWrite();
     }
@@ -1992,75 +1992,75 @@ LABEL_99:
 
   else
   {
-    if (v6)
+    if (progressCopy)
     {
-      v6[2](v6, @"InstallingEmbeddedProfile", 0);
+      progressCopy[2](progressCopy, @"InstallingEmbeddedProfile", 0);
     }
 
-    v8 = MIInstallProfileAtURL(v5);
+    v8 = MIInstallProfileAtURL(lCopy);
   }
 
   return v8;
 }
 
-- (int)installEmbeddedProvisioningProfileWithProgress:(id)a3
+- (int)installEmbeddedProvisioningProfileWithProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(MIBundle *)self bundleURL];
-  v6 = [v5 URLByAppendingPathComponent:@"embedded.mobileprovision" isDirectory:0];
+  progressCopy = progress;
+  bundleURL = [(MIBundle *)self bundleURL];
+  v6 = [bundleURL URLByAppendingPathComponent:@"embedded.mobileprovision" isDirectory:0];
 
-  LODWORD(self) = [(MIExecutableBundle *)self _installEmbeddedProvisioningProfileAtURL:v6 withProgress:v4];
+  LODWORD(self) = [(MIExecutableBundle *)self _installEmbeddedProvisioningProfileAtURL:v6 withProgress:progressCopy];
   return self;
 }
 
-- (int)installMacStyleEmbeddedProvisioningProfileWithProgress:(id)a3
+- (int)installMacStyleEmbeddedProvisioningProfileWithProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(MIBundle *)self bundleURL];
-  v6 = [v5 URLByAppendingPathComponent:@"embedded.provisionprofile" isDirectory:0];
+  progressCopy = progress;
+  bundleURL = [(MIBundle *)self bundleURL];
+  v6 = [bundleURL URLByAppendingPathComponent:@"embedded.provisionprofile" isDirectory:0];
 
-  LODWORD(self) = [(MIExecutableBundle *)self _installEmbeddedProvisioningProfileAtURL:v6 withProgress:v4];
+  LODWORD(self) = [(MIExecutableBundle *)self _installEmbeddedProvisioningProfileAtURL:v6 withProgress:progressCopy];
   return self;
 }
 
-- (BOOL)_hasNoConflictWithSystemAppsForSigningInfo:(id)a3 error:(id *)a4
+- (BOOL)_hasNoConflictWithSystemAppsForSigningInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIBundle *)self bundleTypeDescription];
-  v8 = [(MIBundle *)self identifier];
-  v9 = [(MIBundle *)self parentBundle];
+  infoCopy = info;
+  bundleTypeDescription = [(MIBundle *)self bundleTypeDescription];
+  identifier = [(MIBundle *)self identifier];
+  parentBundle = [(MIBundle *)self parentBundle];
   if ([(MIBundle *)self bundleType]== 1 && [(MIBundle *)self isRemovableSystemApp])
   {
-    v10 = [v6 entitlements];
-    if ([v10 count])
+    entitlements = [infoCopy entitlements];
+    if ([entitlements count])
     {
-      if (MIHasSystemApplicationEntitlement(v10))
+      if (MIHasSystemApplicationEntitlement(entitlements))
       {
-        v37 = v6;
+        v37 = infoCopy;
         if (gLogHandle && *(gLogHandle + 44) >= 7)
         {
-          v36 = v8;
+          v36 = identifier;
           MOLogWrite();
         }
 
         v13 = +[MIDaemonConfiguration sharedInstance];
-        v14 = [v13 systemAppPlaceholderXPCServiceBundleIDs];
+        systemAppPlaceholderXPCServiceBundleIDs = [v13 systemAppPlaceholderXPCServiceBundleIDs];
         v43 = 0;
-        hasNoConflictWithSystemAppBundleIDs = _hasNoConflictWithSystemAppBundleIDs(v14, v8, @"System App XPC Service", v7, &v43);
+        hasNoConflictWithSystemAppBundleIDs = _hasNoConflictWithSystemAppBundleIDs(systemAppPlaceholderXPCServiceBundleIDs, identifier, @"System App XPC Service", bundleTypeDescription, &v43);
         v16 = v43;
 
         if (hasNoConflictWithSystemAppBundleIDs)
         {
           v17 = +[MIDaemonConfiguration sharedInstance];
-          v18 = [v17 systemAppPlaceholderAppExtensionBundleIDs];
+          systemAppPlaceholderAppExtensionBundleIDs = [v17 systemAppPlaceholderAppExtensionBundleIDs];
           v42 = v16;
-          v19 = _hasNoConflictWithSystemAppBundleIDs(v18, v8, @"System App Extension", v7, &v42);
+          v19 = _hasNoConflictWithSystemAppBundleIDs(systemAppPlaceholderAppExtensionBundleIDs, identifier, @"System App Extension", bundleTypeDescription, &v42);
           v20 = v42;
 
           if (v19)
           {
             v21 = 1;
-            v6 = v37;
+            infoCopy = v37;
 LABEL_26:
             v16 = v20;
             goto LABEL_30;
@@ -2075,16 +2075,16 @@ LABEL_26:
           v21 = 0;
         }
 
-        v6 = v37;
+        infoCopy = v37;
         goto LABEL_30;
       }
 
-      _CreateAndLogError("[MIExecutableBundle _hasNoConflictWithSystemAppsForSigningInfo:error:]", 1475, @"MIInstallerErrorDomain", 127, 0, &unk_1F2888470, @"This app has the same bundle ID (%@) as a known deletable system app but is missing the required entitlement %@ = true (BOOLean).", v12, v8);
+      _CreateAndLogError("[MIExecutableBundle _hasNoConflictWithSystemAppsForSigningInfo:error:]", 1475, @"MIInstallerErrorDomain", 127, 0, &unk_1F2888470, @"This app has the same bundle ID (%@) as a known deletable system app but is missing the required entitlement %@ = true (BOOLean).", v12, identifier);
     }
 
     else
     {
-      _CreateAndLogError("[MIExecutableBundle _hasNoConflictWithSystemAppsForSigningInfo:error:]", 1459, @"MIInstallerErrorDomain", 127, 0, &unk_1F2888448, @"This app has the same bundle ID (%@) as a known deletable system app, but was signed with no entitlements at all and thus is missing the required entitlement %@ = true (BOOLean).", v11, v8);
+      _CreateAndLogError("[MIExecutableBundle _hasNoConflictWithSystemAppsForSigningInfo:error:]", 1459, @"MIInstallerErrorDomain", 127, 0, &unk_1F2888448, @"This app has the same bundle ID (%@) as a known deletable system app, but was signed with no entitlements at all and thus is missing the required entitlement %@ = true (BOOLean).", v11, identifier);
     }
     v20 = ;
     v21 = 0;
@@ -2092,9 +2092,9 @@ LABEL_26:
   }
 
   v22 = +[MIDaemonConfiguration sharedInstance];
-  v23 = [v22 systemAppPlaceholderBundleIDs];
+  systemAppPlaceholderBundleIDs = [v22 systemAppPlaceholderBundleIDs];
   v41 = 0;
-  v24 = _hasNoConflictWithSystemAppBundleIDs(v23, v8, @"System App", v7, &v41);
+  v24 = _hasNoConflictWithSystemAppBundleIDs(systemAppPlaceholderBundleIDs, identifier, @"System App", bundleTypeDescription, &v41);
   v16 = v41;
 
   if (!v24)
@@ -2107,24 +2107,24 @@ LABEL_26:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_21:
-    v38 = a4;
-    v28 = v6;
+    errorCopy = error;
+    v28 = infoCopy;
     v29 = +[MIDaemonConfiguration sharedInstance];
-    v30 = [v29 systemAppPlaceholderXPCServiceBundleIDs];
+    systemAppPlaceholderXPCServiceBundleIDs2 = [v29 systemAppPlaceholderXPCServiceBundleIDs];
     v40 = v16;
-    v31 = _hasNoConflictWithSystemAppBundleIDs(v30, v8, @"System App XPC Service", v7, &v40);
+    v31 = _hasNoConflictWithSystemAppBundleIDs(systemAppPlaceholderXPCServiceBundleIDs2, identifier, @"System App XPC Service", bundleTypeDescription, &v40);
     v32 = v40;
 
     if (v31)
     {
-      v10 = +[MIDaemonConfiguration sharedInstance];
-      v33 = [v10 systemAppPlaceholderAppExtensionBundleIDs];
+      entitlements = +[MIDaemonConfiguration sharedInstance];
+      systemAppPlaceholderAppExtensionBundleIDs2 = [entitlements systemAppPlaceholderAppExtensionBundleIDs];
       v39 = v32;
-      v21 = _hasNoConflictWithSystemAppBundleIDs(v33, v8, @"System App Extension", v7, &v39);
+      v21 = _hasNoConflictWithSystemAppBundleIDs(systemAppPlaceholderAppExtensionBundleIDs2, identifier, @"System App Extension", bundleTypeDescription, &v39);
       v16 = v39;
 
-      v6 = v28;
-      a4 = v38;
+      infoCopy = v28;
+      error = errorCopy;
 LABEL_30:
 
       goto LABEL_31;
@@ -2132,22 +2132,22 @@ LABEL_30:
 
     v21 = 0;
     v16 = v32;
-    v6 = v28;
-    a4 = v38;
+    infoCopy = v28;
+    error = errorCopy;
 LABEL_31:
-    if (a4 && (v21 & 1) == 0)
+    if (error && (v21 & 1) == 0)
     {
       v34 = v16;
       v21 = 0;
-      *a4 = v16;
+      *error = v16;
     }
 
     goto LABEL_34;
   }
 
-  v25 = [v9 codeSigningInfoByValidatingResources:0 performingOnlineAuthorization:0 ignoringCachedSigningInfo:0 checkingTrustCacheIfApplicable:0 skippingProfileIDValidation:0 error:0];
-  v26 = [v25 entitlements];
-  v27 = MIHasSystemApplicationEntitlement(v26);
+  v25 = [parentBundle codeSigningInfoByValidatingResources:0 performingOnlineAuthorization:0 ignoringCachedSigningInfo:0 checkingTrustCacheIfApplicable:0 skippingProfileIDValidation:0 error:0];
+  entitlements2 = [v25 entitlements];
+  v27 = MIHasSystemApplicationEntitlement(entitlements2);
 
   if (!v27)
   {
@@ -2166,40 +2166,40 @@ LABEL_34:
   return v21;
 }
 
-- (BOOL)hasNoConflictsWithOtherInstalledEntitiesForSigningInfo:(id)a3 forPersona:(id)a4 error:(id *)a5
+- (BOOL)hasNoConflictsWithOtherInstalledEntitiesForSigningInfo:(id)info forPersona:(id)persona error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MIBundle *)self bundleTypeDescription];
-  v11 = [(MIBundle *)self bundleType];
-  if (v11 > 0xC)
+  infoCopy = info;
+  personaCopy = persona;
+  bundleTypeDescription = [(MIBundle *)self bundleTypeDescription];
+  bundleType = [(MIBundle *)self bundleType];
+  if (bundleType > 0xC)
   {
     goto LABEL_21;
   }
 
   v13 = 1;
-  if (((1 << v11) & 0x101E) != 0)
+  if (((1 << bundleType) & 0x101E) != 0)
   {
-    v15 = [(MIBundle *)self identifier];
+    identifier = [(MIBundle *)self identifier];
     v39 = 0;
-    v16 = _checkIdentifierForConflict(v15, v9, 4, @"App Extension", v10, &v39);
+    v16 = _checkIdentifierForConflict(identifier, personaCopy, 4, @"App Extension", bundleTypeDescription, &v39);
     v17 = v39;
 
     if (v16)
     {
       v38 = v17;
-      v18 = [(MIExecutableBundle *)self _hasNoConflictWithSystemAppsForSigningInfo:v8 error:&v38];
+      v18 = [(MIExecutableBundle *)self _hasNoConflictWithSystemAppsForSigningInfo:infoCopy error:&v38];
       v14 = v38;
 
       if (v18)
       {
-        v19 = [v8 codeInfoIdentifier];
-        if (v19)
+        codeInfoIdentifier = [infoCopy codeInfoIdentifier];
+        if (codeInfoIdentifier)
         {
-          v20 = v19;
-          v21 = [v8 codeInfoIdentifier];
+          v20 = codeInfoIdentifier;
+          codeInfoIdentifier2 = [infoCopy codeInfoIdentifier];
           v37 = v14;
-          v22 = _checkIdentifierForConflict(v21, v9, 4, @"App Extension", v10, &v37);
+          v22 = _checkIdentifierForConflict(codeInfoIdentifier2, personaCopy, 4, @"App Extension", bundleTypeDescription, &v37);
           v23 = v37;
           goto LABEL_9;
         }
@@ -2210,7 +2210,7 @@ LABEL_24:
       }
 
 LABEL_22:
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -2220,7 +2220,7 @@ LABEL_22:
 
 LABEL_19:
     v14 = v17;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -2228,13 +2228,13 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if (((1 << v11) & 0xB80) == 0)
+  if (((1 << bundleType) & 0xB80) == 0)
   {
-    if (v11 == 6)
+    if (bundleType == 6)
     {
-      v25 = [(MIBundle *)self identifier];
+      identifier2 = [(MIBundle *)self identifier];
       v44 = 0;
-      v26 = _checkIdentifierForConflict(v25, v9, 2, @"App", v10, &v44);
+      v26 = _checkIdentifierForConflict(identifier2, personaCopy, 2, @"App", bundleTypeDescription, &v44);
       v14 = v44;
 
       if (!v26)
@@ -2243,28 +2243,28 @@ LABEL_19:
       }
 
       v43 = v14;
-      v27 = [(MIExecutableBundle *)self _hasNoConflictWithSystemAppsForSigningInfo:v8 error:&v43];
+      v27 = [(MIExecutableBundle *)self _hasNoConflictWithSystemAppsForSigningInfo:infoCopy error:&v43];
       v17 = v43;
 
       if (v27)
       {
-        v28 = [v8 codeInfoIdentifier];
-        if (!v28 || (v29 = v28, [v8 codeInfoIdentifier], v30 = objc_claimAutoreleasedReturnValue(), v42 = v17, v31 = _checkIdentifierForConflict(v30, v9, 2, @"App", v10, &v42), v14 = v42, v17, v30, v29, v17 = v14, v31))
+        codeInfoIdentifier3 = [infoCopy codeInfoIdentifier];
+        if (!codeInfoIdentifier3 || (v29 = codeInfoIdentifier3, [infoCopy codeInfoIdentifier], v30 = objc_claimAutoreleasedReturnValue(), v42 = v17, v31 = _checkIdentifierForConflict(v30, personaCopy, 2, @"App", bundleTypeDescription, &v42), v14 = v42, v17, v30, v29, v17 = v14, v31))
         {
-          v32 = [(MIBundle *)self identifier];
+          identifier3 = [(MIBundle *)self identifier];
           v41 = v17;
-          hasNoConflictWithNonContainerizedSystemApp = _hasNoConflictWithNonContainerizedSystemApp(v32, v10, &v41);
+          hasNoConflictWithNonContainerizedSystemApp = _hasNoConflictWithNonContainerizedSystemApp(identifier3, bundleTypeDescription, &v41);
           v14 = v41;
 
           if (hasNoConflictWithNonContainerizedSystemApp)
           {
-            v34 = [v8 codeInfoIdentifier];
-            if (v34)
+            codeInfoIdentifier4 = [infoCopy codeInfoIdentifier];
+            if (codeInfoIdentifier4)
             {
-              v20 = v34;
-              v21 = [v8 codeInfoIdentifier];
+              v20 = codeInfoIdentifier4;
+              codeInfoIdentifier2 = [infoCopy codeInfoIdentifier];
               v40 = v14;
-              v22 = _hasNoConflictWithNonContainerizedSystemApp(v21, v10, &v40);
+              v22 = _hasNoConflictWithNonContainerizedSystemApp(codeInfoIdentifier2, bundleTypeDescription, &v40);
               v23 = v40;
 LABEL_9:
               v24 = v23;
@@ -2277,7 +2277,7 @@ LABEL_9:
               }
 
               v14 = v24;
-              if (!a5)
+              if (!error)
               {
 LABEL_26:
                 v13 = 0;
@@ -2287,7 +2287,7 @@ LABEL_26:
 LABEL_23:
               v35 = v14;
               v13 = 0;
-              *a5 = v14;
+              *error = v14;
               goto LABEL_27;
             }
 
@@ -2314,31 +2314,31 @@ LABEL_27:
 
 - (unint64_t)dataContainerContentClass
 {
-  v2 = [(MIBundle *)self bundleType];
-  if (v2 > 0xC)
+  bundleType = [(MIBundle *)self bundleType];
+  if (bundleType > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B175DB78[v2];
+    return qword_1B175DB78[bundleType];
   }
 }
 
-- (id)_dataContainerCreatingIfNeeded:(BOOL)a3 forPersona:(id)a4 makeLive:(BOOL)a5 checkIfNeeded:(BOOL)a6 created:(BOOL *)a7 error:(id *)a8
+- (id)_dataContainerCreatingIfNeeded:(BOOL)needed forPersona:(id)persona makeLive:(BOOL)live checkIfNeeded:(BOOL)ifNeeded created:(BOOL *)created error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v14 = a4;
-  if (v10 && ![(MIExecutableBundle *)self needsDataContainer])
+  ifNeededCopy = ifNeeded;
+  liveCopy = live;
+  neededCopy = needed;
+  personaCopy = persona;
+  if (ifNeededCopy && ![(MIExecutableBundle *)self needsDataContainer])
   {
-    v23 = [(MIBundle *)self bundleURL];
-    v19 = _CreateAndLogError("[MIExecutableBundle _dataContainerCreatingIfNeeded:forPersona:makeLive:checkIfNeeded:created:error:]", 1718, @"MIInstallerErrorDomain", 4, 0, 0, @"Asked for data container for %@ but none is needed.", v24, v23);
+    bundleURL = [(MIBundle *)self bundleURL];
+    v19 = _CreateAndLogError("[MIExecutableBundle _dataContainerCreatingIfNeeded:forPersona:makeLive:checkIfNeeded:created:error:]", 1718, @"MIInstallerErrorDomain", 4, 0, 0, @"Asked for data container for %@ but none is needed.", v24, bundleURL);
 
     v15 = 0;
-    if (a8)
+    if (error)
     {
       goto LABEL_29;
     }
@@ -2349,19 +2349,19 @@ LABEL_23:
   }
 
   v35 = 0;
-  v15 = [(objc_class *)[(MIExecutableBundle *)self dataContainerClass] dataContainerForExecutableBundle:self forPersona:v14 createIfNeeded:v12 temporary:0 created:a7 error:&v35];
+  v15 = [(objc_class *)[(MIExecutableBundle *)self dataContainerClass] dataContainerForExecutableBundle:self forPersona:personaCopy createIfNeeded:neededCopy temporary:0 created:created error:&v35];
   v16 = v35;
   v17 = v16;
   if (!v15)
   {
-    if (!v12)
+    if (!neededCopy)
     {
-      v21 = [v16 domain];
-      if ([v21 isEqualToString:@"MIContainerManagerErrorDomain"])
+      domain = [v16 domain];
+      if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
       {
-        v22 = [v17 code];
+        code = [v17 code];
 
-        if (v22 == 21)
+        if (code == 21)
         {
           goto LABEL_28;
         }
@@ -2374,14 +2374,14 @@ LABEL_23:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v31 = [(MIBundle *)self identifier];
+      identifier = [(MIBundle *)self identifier];
       MOLogWrite();
     }
 
 LABEL_28:
     v15 = 0;
     v19 = v17;
-    if (a8)
+    if (error)
     {
       goto LABEL_29;
     }
@@ -2389,7 +2389,7 @@ LABEL_28:
     goto LABEL_23;
   }
 
-  if (!v12 || !v11)
+  if (!neededCopy || !liveCopy)
   {
     goto LABEL_8;
   }
@@ -2410,12 +2410,12 @@ LABEL_8:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v30 = [(MIBundle *)self identifier];
+    identifier2 = [(MIBundle *)self identifier];
     v32 = v19;
     MOLogWrite();
   }
 
-  v25 = [(MIBundle *)self identifier:v30];
+  v25 = [(MIBundle *)self identifier:identifier2];
   v33 = 0;
   v26 = [v15 removeUnderlyingContainerWaitingForDeletion:0 error:&v33];
   v27 = v33;
@@ -2424,7 +2424,7 @@ LABEL_8:
     MOLogWrite();
   }
 
-  if (!a8)
+  if (!error)
   {
     goto LABEL_23;
   }
@@ -2432,13 +2432,13 @@ LABEL_8:
 LABEL_29:
   v28 = v19;
   v20 = 0;
-  *a8 = v19;
+  *error = v19;
 LABEL_30:
 
   return v20;
 }
 
-- (BOOL)checkExecutableExistsIfRequiredWithError:(id *)a3
+- (BOOL)checkExecutableExistsIfRequiredWithError:(id *)error
 {
   if ([(MIBundle *)self isPlaceholder]|| [(MIExecutableBundle *)self hasExecutable])
   {
@@ -2448,15 +2448,15 @@ LABEL_30:
 
   else
   {
-    v8 = [(MIBundle *)self relativePath];
-    v11 = [(MIExecutableBundle *)self relativeExecutablePath];
-    v5 = _CreateAndLogError("[MIExecutableBundle checkExecutableExistsIfRequiredWithError:]", 1764, @"MIInstallerErrorDomain", 71, 0, 0, @"%@ is missing its bundle executable. Please check your build settings to make sure that a bundle executable is produced at the path %@.", v9, v8);
+    relativePath = [(MIBundle *)self relativePath];
+    relativeExecutablePath = [(MIExecutableBundle *)self relativeExecutablePath];
+    v5 = _CreateAndLogError("[MIExecutableBundle checkExecutableExistsIfRequiredWithError:]", 1764, @"MIInstallerErrorDomain", 71, 0, 0, @"%@ is missing its bundle executable. Please check your build settings to make sure that a bundle executable is produced at the path %@.", v9, relativePath);
 
-    if (a3)
+    if (error)
     {
       v10 = v5;
       v6 = 0;
-      *a3 = v5;
+      *error = v5;
     }
 
     else
@@ -2468,7 +2468,7 @@ LABEL_30:
   return v6;
 }
 
-- (BOOL)makeExecutableWithError:(id *)a3
+- (BOOL)makeExecutableWithError:(id *)error
 {
   if (-[MIBundle isLaunchProhibited](self, "isLaunchProhibited") || -[MIBundle isPlaceholder](self, "isPlaceholder") || (-[MIExecutableBundle executableURL](self, "executableURL"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fileSystemRepresentation], v5, !lchmod(v6, 0x1EDu)))
   {
@@ -2484,11 +2484,11 @@ LABEL_30:
     strerror(v8);
     v11 = _CreateAndLogError("[MIExecutableBundle makeExecutableWithError:]", 1804, @"MIInstallerErrorDomain", 4, v9, &unk_1F2888498, @"Failed to chmod %s : %s", v10, v6);
 
-    if (a3)
+    if (error)
     {
       v12 = v11;
       v13 = 0;
-      *a3 = v11;
+      *error = v11;
     }
 
     else
@@ -2500,10 +2500,10 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)setLaunchWarningData:(id)a3 withError:(id *)a4
+- (BOOL)setLaunchWarningData:(id)data withError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v25 = +[MIFileManager defaultManager];
   v32 = 0;
   v7 = [(MIBundle *)self thisBundleAndAllContainedBundlesWithError:&v32];
@@ -2515,12 +2515,12 @@ LABEL_30:
     v28 = 0u;
     v29 = 0u;
     v24 = v7;
-    v9 = v7;
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    identifier = v7;
+    v10 = [identifier countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v10)
     {
       v11 = v10;
-      v23 = a4;
+      errorCopy = error;
       v12 = *v29;
       while (2)
       {
@@ -2528,18 +2528,18 @@ LABEL_30:
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(identifier);
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 mayHaveExecutableProgram])
           {
-            v15 = [v14 executableURL];
-            if (v6)
+            executableURL = [v14 executableURL];
+            if (dataCopy)
             {
               v27 = v8;
-              v16 = [v25 setData:v6 forExtendedAttributeNamed:@"com.apple.mis.warning" onURL:v15 error:&v27];
+              v16 = [v25 setData:dataCopy forExtendedAttributeNamed:@"com.apple.mis.warning" onURL:executableURL error:&v27];
               v17 = v27;
 
               if ((v16 & 1) == 0)
@@ -2551,14 +2551,14 @@ LABEL_30:
             else
             {
               v26 = v8;
-              v18 = [v25 removeExtendedAttributeNamed:@"com.apple.mis.warning" fromURL:v15 error:&v26];
+              v18 = [v25 removeExtendedAttributeNamed:@"com.apple.mis.warning" fromURL:executableURL error:&v26];
               v17 = v26;
 
               if (!v18)
               {
 LABEL_18:
-                v8 = v15;
-                a4 = v23;
+                v8 = executableURL;
+                error = errorCopy;
                 v7 = v24;
                 goto LABEL_19;
               }
@@ -2568,7 +2568,7 @@ LABEL_18:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v11 = [identifier countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v11)
         {
           continue;
@@ -2585,15 +2585,15 @@ LABEL_18:
 
   else
   {
-    v9 = [(MIBundle *)self identifier];
-    v17 = _CreateAndLogError("[MIExecutableBundle setLaunchWarningData:withError:]", 1826, @"MIInstallerErrorDomain", 4, v8, 0, @"Failed to get all bundles within app %@", v20, v9);
+    identifier = [(MIBundle *)self identifier];
+    v17 = _CreateAndLogError("[MIExecutableBundle setLaunchWarningData:withError:]", 1826, @"MIInstallerErrorDomain", 4, v8, 0, @"Failed to get all bundles within app %@", v20, identifier);
 LABEL_19:
 
-    if (a4)
+    if (error)
     {
       v21 = v17;
       v19 = 0;
-      *a4 = v17;
+      *error = v17;
     }
 
     else
@@ -2605,7 +2605,7 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)validatePluginKitMetadataWithError:(id *)a3
+- (BOOL)validatePluginKitMetadataWithError:(id *)error
 {
   v19.receiver = self;
   v19.super_class = MIExecutableBundle;
@@ -2622,14 +2622,14 @@ LABEL_19:
       goto LABEL_16;
     }
 
-    v9 = [v7 siriIntents];
-    if (!v9)
+    siriIntents = [v7 siriIntents];
+    if (!siriIntents)
     {
       v11 = 1;
 LABEL_15:
 
 LABEL_16:
-      if (!a3)
+      if (!error)
       {
         goto LABEL_19;
       }
@@ -2637,10 +2637,10 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v10 = [(MIBundle *)self siriIntents];
-    if (v10)
+    siriIntents2 = [(MIBundle *)self siriIntents];
+    if (siriIntents2)
     {
-      if ([v9 isSubsetOfSet:v10])
+      if ([siriIntents isSubsetOfSet:siriIntents2])
       {
         v11 = 1;
 LABEL_14:
@@ -2648,16 +2648,16 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v12 = [v8 identifier];
-      v13 = [(MIBundle *)self identifier];
-      _CreateAndLogError("[MIExecutableBundle validatePluginKitMetadataWithError:]", 1882, @"MIInstallerErrorDomain", 126, 0, &unk_1F28884E8, @"Siri Intents in the WatchKit app %@ are not a subset of the Siri Intents in the companion app %@", v15, v12);
+      identifier = [v8 identifier];
+      identifier2 = [(MIBundle *)self identifier];
+      _CreateAndLogError("[MIExecutableBundle validatePluginKitMetadataWithError:]", 1882, @"MIInstallerErrorDomain", 126, 0, &unk_1F28884E8, @"Siri Intents in the WatchKit app %@ are not a subset of the Siri Intents in the companion app %@", v15, identifier);
     }
 
     else
     {
-      v12 = [v8 identifier];
-      v13 = [(MIBundle *)self identifier];
-      _CreateAndLogError("[MIExecutableBundle validatePluginKitMetadataWithError:]", 1879, @"MIInstallerErrorDomain", 126, 0, &unk_1F28884C0, @"Siri Intents app extension is present in the WatchKit app %@ but there are no Siri Intents in the companion app %@", v14, v12);
+      identifier = [v8 identifier];
+      identifier2 = [(MIBundle *)self identifier];
+      _CreateAndLogError("[MIExecutableBundle validatePluginKitMetadataWithError:]", 1879, @"MIInstallerErrorDomain", 126, 0, &unk_1F28884C0, @"Siri Intents app extension is present in the WatchKit app %@ but there are no Siri Intents in the companion app %@", v14, identifier);
     }
     v16 = ;
 
@@ -2667,7 +2667,7 @@ LABEL_14:
   }
 
   v11 = 0;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_19;
   }
@@ -2676,7 +2676,7 @@ LABEL_17:
   if (!v11)
   {
     v17 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_19:
@@ -2684,11 +2684,11 @@ LABEL_19:
   return v11;
 }
 
-- (id)bundleSignatureVersionWithError:(id *)a3
+- (id)bundleSignatureVersionWithError:(id *)error
 {
   v13 = 0;
-  v5 = [(MIExecutableBundle *)self executableURL];
-  v6 = MIFetchSignatureVersionForExecutableURL(v5, &v13);
+  executableURL = [(MIExecutableBundle *)self executableURL];
+  v6 = MIFetchSignatureVersionForExecutableURL(executableURL, &v13);
 
   if (v6)
   {
@@ -2697,33 +2697,33 @@ LABEL_19:
 
   else
   {
-    v8 = [(MIExecutableBundle *)self relativeExecutablePath];
+    relativeExecutablePath = [(MIExecutableBundle *)self relativeExecutablePath];
     v12 = MIErrorStringForMISError(v13);
-    v7 = _CreateAndLogError("[MIExecutableBundle bundleSignatureVersionWithError:]", 1903, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to fetch signature version for executable at %@ with libMIS error %@", v9, v8);
+    v7 = _CreateAndLogError("[MIExecutableBundle bundleSignatureVersionWithError:]", 1903, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to fetch signature version for executable at %@ with libMIS error %@", v9, relativeExecutablePath);
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
   return v6;
 }
 
-- (id)enumerateDylibsWithBlock:(id)a3
+- (id)enumerateDylibsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MIBundle *)self bundleURL];
-  v6 = [v5 URLByAppendingPathComponent:@"Frameworks" isDirectory:1];
+  blockCopy = block;
+  bundleURL = [(MIBundle *)self bundleURL];
+  v6 = [bundleURL URLByAppendingPathComponent:@"Frameworks" isDirectory:1];
 
   v7 = +[MIFileManager defaultManager];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke;
   v16[3] = &unk_1E7AE2118;
-  v17 = v4;
-  v8 = v4;
+  v17 = blockCopy;
+  v8 = blockCopy;
   v9 = [v7 enumerateURLsForItemsInDirectoryAtURL:v6 ignoreSymlinks:1 withBlock:v16];
 
   if (!v9)
@@ -2732,22 +2732,22 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  v10 = [v9 domain];
-  if (![v10 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v9 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A798]])
   {
 
     goto LABEL_7;
   }
 
-  v11 = [v9 code];
+  code = [v9 code];
 
-  if (v11 != 2)
+  if (code != 2)
   {
 LABEL_7:
-    v13 = [v6 path];
-    v12 = _CreateAndLogError("[MIExecutableBundle enumerateDylibsWithBlock:]", 1936, @"MIInstallerErrorDomain", 54, v9, 0, @"Failed to discover dylibs in directory %@", v14, v13);
+    path = [v6 path];
+    v12 = _CreateAndLogError("[MIExecutableBundle enumerateDylibsWithBlock:]", 1936, @"MIInstallerErrorDomain", 54, v9, 0, @"Failed to discover dylibs in directory %@", v14, path);
 
-    v9 = v13;
+    v9 = path;
     goto LABEL_8;
   }
 
@@ -2778,11 +2778,11 @@ uint64_t __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke(uint64
 
 - (NSURL)rootSinfURL
 {
-  v3 = [(MIBundle *)self bundleURL];
-  v4 = [v3 URLByAppendingPathComponent:@"SC_Info" isDirectory:1];
+  bundleURL = [(MIBundle *)self bundleURL];
+  v4 = [bundleURL URLByAppendingPathComponent:@"SC_Info" isDirectory:1];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(MIExecutableBundle *)self executableName];
-  v7 = [v5 stringWithFormat:@"%@.sinf", v6];
+  executableName = [(MIExecutableBundle *)self executableName];
+  v7 = [v5 stringWithFormat:@"%@.sinf", executableName];
   v8 = [v4 URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v8;
@@ -2790,11 +2790,11 @@ uint64_t __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke(uint64
 
 - (NSURL)rootSuppURL
 {
-  v3 = [(MIBundle *)self bundleURL];
-  v4 = [v3 URLByAppendingPathComponent:@"SC_Info" isDirectory:1];
+  bundleURL = [(MIBundle *)self bundleURL];
+  v4 = [bundleURL URLByAppendingPathComponent:@"SC_Info" isDirectory:1];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(MIExecutableBundle *)self executableName];
-  v7 = [v5 stringWithFormat:@"%@.supp", v6];
+  executableName = [(MIExecutableBundle *)self executableName];
+  v7 = [v5 stringWithFormat:@"%@.supp", executableName];
   v8 = [v4 URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v8;
@@ -2802,51 +2802,51 @@ uint64_t __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke(uint64
 
 - (NSURL)rootSupfURL
 {
-  v3 = [(MIBundle *)self bundleURL];
-  v4 = [v3 URLByAppendingPathComponent:@"SC_Info" isDirectory:1];
+  bundleURL = [(MIBundle *)self bundleURL];
+  v4 = [bundleURL URLByAppendingPathComponent:@"SC_Info" isDirectory:1];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(MIExecutableBundle *)self executableName];
-  v7 = [v5 stringWithFormat:@"%@.supf", v6];
+  executableName = [(MIExecutableBundle *)self executableName];
+  v7 = [v5 stringWithFormat:@"%@.supf", executableName];
   v8 = [v4 URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v8;
 }
 
-- (BOOL)updateSinfWithData:(id)a3 error:(id *)a4
+- (BOOL)updateSinfWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = +[MIDaemonConfiguration sharedInstance];
   v8 = [v7 uid];
 
   v9 = +[MIDaemonConfiguration sharedInstance];
   v10 = [v9 gid];
 
-  v11 = [(MIBundle *)self bundleURL];
-  v12 = [(MIExecutableBundle *)self executableName];
+  bundleURL = [(MIBundle *)self bundleURL];
+  executableName = [(MIExecutableBundle *)self executableName];
   v17 = 0;
-  v13 = MIUpdateSinfWithData(v6, v11, v12, v8, v10, &v17);
+  v13 = MIUpdateSinfWithData(dataCopy, bundleURL, executableName, v8, v10, &v17);
 
   v14 = v17;
-  if (a4 && (v13 & 1) == 0)
+  if (error && (v13 & 1) == 0)
   {
     v15 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (void)bestEffortRollbackSinfData:(id)a3
+- (void)bestEffortRollbackSinfData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v9 = 0;
-    v5 = [(MIExecutableBundle *)self updateSinfWithData:v4 error:&v9];
+    v5 = [(MIExecutableBundle *)self updateSinfWithData:dataCopy error:&v9];
     v6 = v9;
     if (!v5 && (!gLogHandle || *(gLogHandle + 44) >= 3))
     {
-      v8 = [(MIBundle *)self identifier];
+      identifier = [(MIBundle *)self identifier];
       MOLogWrite();
     }
   }
@@ -2855,7 +2855,7 @@ uint64_t __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke(uint64
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v7 = [(MIBundle *)self identifier];
+      identifier2 = [(MIBundle *)self identifier];
       MOLogWrite();
     }
 
@@ -2864,30 +2864,30 @@ uint64_t __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke(uint64
   }
 }
 
-- (id)updateAndValidateSinf:(id)a3 withRollback:(BOOL)a4 error:(id *)a5
+- (id)updateAndValidateSinf:(id)sinf withRollback:(BOOL)rollback error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (!v6)
+  rollbackCopy = rollback;
+  sinfCopy = sinf;
+  if (!rollbackCopy)
   {
     v11 = 0;
     goto LABEL_12;
   }
 
   v9 = MEMORY[0x1E695DEF0];
-  v10 = [(MIExecutableBundle *)self rootSinfURL];
+  rootSinfURL = [(MIExecutableBundle *)self rootSinfURL];
   v31 = 0;
-  v11 = [v9 dataWithContentsOfURL:v10 options:2 error:&v31];
+  v11 = [v9 dataWithContentsOfURL:rootSinfURL options:2 error:&v31];
   v12 = v31;
 
   if (!v11)
   {
-    v13 = [v12 domain];
-    if ([v13 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v12 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v14 = [v12 code];
+      code = [v12 code];
 
-      if (v14 == 260)
+      if (code == 260)
       {
         goto LABEL_11;
       }
@@ -2899,11 +2899,11 @@ uint64_t __47__MIExecutableBundle_enumerateDylibsWithBlock___block_invoke(uint64
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v15 = [(MIExecutableBundle *)self rootSinfURL];
-      v16 = [v15 path];
-      v26 = [(MIBundle *)self identifier];
+      rootSinfURL2 = [(MIExecutableBundle *)self rootSinfURL];
+      path = [rootSinfURL2 path];
+      identifier = [(MIBundle *)self identifier];
       v27 = v12;
-      v25 = v16;
+      v25 = path;
       MOLogWrite();
     }
   }
@@ -2912,13 +2912,13 @@ LABEL_11:
 
 LABEL_12:
   v30 = 0;
-  v17 = [(MIExecutableBundle *)self updateSinfWithData:v8 error:&v30, v25, v26, v27];
+  v17 = [(MIExecutableBundle *)self updateSinfWithData:sinfCopy error:&v30, v25, identifier, v27];
   v18 = v30;
   v19 = v18;
   if (!v17)
   {
     v22 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -2936,7 +2936,7 @@ LABEL_12:
     v22 = [(MIExecutableBundle *)self fairPlaySinfInfoWithError:&v28];
     v19 = v28;
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -2944,20 +2944,20 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  if (v6)
+  if (rollbackCopy)
   {
     [(MIExecutableBundle *)self bestEffortRollbackSinfData:v11];
   }
 
   v22 = 0;
   v19 = v21;
-  if (a5)
+  if (error)
   {
 LABEL_21:
     if (!v22)
     {
       v23 = v19;
-      *a5 = v19;
+      *error = v19;
     }
   }
 
@@ -2966,30 +2966,30 @@ LABEL_23:
   return v22;
 }
 
-- (BOOL)replicateRootSinfWithError:(id *)a3
+- (BOOL)replicateRootSinfWithError:(id *)error
 {
-  v5 = [(MIBundle *)self bundleURL];
-  v6 = [(MIExecutableBundle *)self executableName];
+  bundleURL = [(MIBundle *)self bundleURL];
+  executableName = [(MIExecutableBundle *)self executableName];
   v7 = +[MIDaemonConfiguration sharedInstance];
   v8 = [v7 uid];
   v9 = +[MIDaemonConfiguration sharedInstance];
-  LOBYTE(a3) = MIReplicateRootSinf(v5, v6, v8, [v9 gid], a3);
+  LOBYTE(error) = MIReplicateRootSinf(bundleURL, executableName, v8, [v9 gid], error);
 
-  return a3;
+  return error;
 }
 
 - (void)removeSinf
 {
-  v4 = [(MIBundle *)self bundleURL];
-  v3 = [(MIExecutableBundle *)self executableName];
-  MIRemoveSinf(v4, v3);
+  bundleURL = [(MIBundle *)self bundleURL];
+  executableName = [(MIExecutableBundle *)self executableName];
+  MIRemoveSinf(bundleURL, executableName);
 }
 
 - (BOOL)needsSinf
 {
   v3 = +[MIFileManager defaultManager];
-  v4 = [(MIExecutableBundle *)self rootSuppURL];
-  if ([v3 itemExistsAtURL:v4])
+  rootSuppURL = [(MIExecutableBundle *)self rootSuppURL];
+  if ([v3 itemExistsAtURL:rootSuppURL])
   {
     v5 = 1;
   }
@@ -2997,8 +2997,8 @@ LABEL_23:
   else
   {
     v6 = +[MIFileManager defaultManager];
-    v7 = [(MIExecutableBundle *)self rootSupfURL];
-    v5 = [v6 itemExistsAtURL:v7];
+    rootSupfURL = [(MIExecutableBundle *)self rootSupfURL];
+    v5 = [v6 itemExistsAtURL:rootSupfURL];
   }
 
   return v5;
@@ -3007,13 +3007,13 @@ LABEL_23:
 - (BOOL)hasSinf
 {
   v3 = +[MIFileManager defaultManager];
-  v4 = [(MIExecutableBundle *)self rootSinfURL];
-  v5 = [v3 itemExistsAtURL:v4];
+  rootSinfURL = [(MIExecutableBundle *)self rootSinfURL];
+  v5 = [v3 itemExistsAtURL:rootSinfURL];
 
   return v5;
 }
 
-- (id)fairPlaySinfInfoWithError:(id *)a3
+- (id)fairPlaySinfInfoWithError:(id *)error
 {
   v37 = -1;
   v36 = 0;
@@ -3021,7 +3021,7 @@ LABEL_23:
   v6 = v36;
   if (!v5)
   {
-    v8 = 0;
+    rootSinfURL = 0;
     v9 = 0;
 LABEL_5:
     v7 = 0;
@@ -3030,9 +3030,9 @@ LABEL_5:
 
   if (!v37)
   {
-    v8 = [(MIExecutableBundle *)self rootSinfURL];
+    rootSinfURL = [(MIExecutableBundle *)self rootSinfURL];
     v35 = v6;
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8 options:2 error:&v35];
+    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:rootSinfURL options:2 error:&v35];
     v10 = v35;
 
     if (v9)
@@ -3043,7 +3043,7 @@ LABEL_5:
       {
         if (gLogHandle && *(gLogHandle + 44) >= 7)
         {
-          v29 = [v8 path];
+          path = [rootSinfURL path];
           MOLogWrite();
         }
 
@@ -3052,8 +3052,8 @@ LABEL_5:
 
       else if (v14)
       {
-        v15 = [v8 path];
-        _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2107, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get MID-based SINF status from SINF at %@: %ld", v16, v15);
+        path2 = [rootSinfURL path];
+        _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2107, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get MID-based SINF status from SINF at %@: %ld", v16, path2);
         v6 = LABEL_33:;
 
         goto LABEL_5;
@@ -3063,8 +3063,8 @@ LABEL_5:
       hZZRqgZwI([v9 bytes], objc_msgSend(v9, "length"), 1, &v33);
       if (v19)
       {
-        v15 = [v8 path];
-        _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2119, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get purchaser DSID from SINF at %@: %ld", v20, v15);
+        path2 = [rootSinfURL path];
+        _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2119, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get purchaser DSID from SINF at %@: %ld", v20, path2);
       }
 
       else
@@ -3073,8 +3073,8 @@ LABEL_5:
         hZZRqgZwI([v9 bytes], objc_msgSend(v9, "length"), 41, &v32);
         if (v21)
         {
-          v15 = [v8 path];
-          _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2127, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get family ID from SINF at %@: %ld", v22, v15);
+          path2 = [rootSinfURL path];
+          _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2127, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get family ID from SINF at %@: %ld", v22, path2);
         }
 
         else
@@ -3099,20 +3099,20 @@ LABEL_5:
             goto LABEL_7;
           }
 
-          v15 = [v8 path];
-          _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2135, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get downloader DSID from SINF at %@: %ld", v24, v15);
+          path2 = [rootSinfURL path];
+          _CreateAndLogError("[MIExecutableBundle fairPlaySinfInfoWithError:]", 2135, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get downloader DSID from SINF at %@: %ld", v24, path2);
         }
       }
 
       goto LABEL_33;
     }
 
-    v17 = [v10 domain];
-    if ([v17 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v10 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v18 = [v10 code];
+      code = [v10 code];
 
-      if (v18 == 260)
+      if (code == 260)
       {
 LABEL_28:
         v9 = 0;
@@ -3127,7 +3127,7 @@ LABEL_28:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v30 = [v8 path];
+      path3 = [rootSinfURL path];
       MOLogWrite();
     }
 
@@ -3136,15 +3136,15 @@ LABEL_28:
 
   v7 = objc_opt_new();
   [v7 setIsMissingRequiredSINF:0];
-  v8 = 0;
+  rootSinfURL = 0;
   v9 = 0;
 LABEL_6:
   v10 = v6;
 LABEL_7:
-  if (a3 && !v7)
+  if (error && !v7)
   {
     v11 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   v12 = v7;
@@ -3152,9 +3152,9 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)setSinfDataType:(unsigned int)a3 withError:(id *)a4
+- (BOOL)setSinfDataType:(unsigned int)type withError:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&type;
   v46 = *MEMORY[0x1E69E9840];
   if (![(MIBundle *)self isPlaceholder])
   {
@@ -3168,10 +3168,10 @@ LABEL_7:
     [(MIExecutableBundle *)self setSinfDataTypeIsSet:1];
     if ([(MIBundle *)self isAppTypeBundle])
     {
-      v8 = [(MIExecutableBundle *)self needsSinf];
+      needsSinf = [(MIExecutableBundle *)self needsSinf];
       if (v5)
       {
-        v9 = v8;
+        v9 = needsSinf;
       }
 
       else
@@ -3199,7 +3199,7 @@ LABEL_31:
     v11 = v40 + 5;
     obj = v40[5];
     v29 = [(MIBundle *)self thisBundleAndAllContainedBundlesWithError:&obj];
-    v28 = a4;
+    errorCopy = error;
     objc_storeStrong(v11, obj);
     if (v29)
     {
@@ -3226,10 +3226,10 @@ LABEL_31:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = [v16 executableURL];
+              executableURL = [v16 executableURL];
               v18 = v40 + 5;
               v33 = v40[5];
-              v19 = MISetSinfDataType(v17, v5, &v33);
+              v19 = MISetSinfDataType(executableURL, v5, &v33);
               objc_storeStrong(v18, v33);
               if ((v19 & 1) == 0)
               {
@@ -3284,17 +3284,17 @@ LABEL_27:
     else
     {
       v23 = v40[5];
-      v24 = [(MIBundle *)self identifier];
-      v26 = _CreateAndLogError("[MIExecutableBundle setSinfDataType:withError:]", 2183, @"MIInstallerErrorDomain", 4, v23, 0, @"Failed to get all bundles within app %@", v25, v24);
-      v30 = v24;
-      v17 = v40[5];
+      identifier = [(MIBundle *)self identifier];
+      v26 = _CreateAndLogError("[MIExecutableBundle setSinfDataType:withError:]", 2183, @"MIInstallerErrorDomain", 4, v23, 0, @"Failed to get all bundles within app %@", v25, identifier);
+      v30 = identifier;
+      executableURL = v40[5];
       v40[5] = v26;
 LABEL_28:
 
       v7 = 0;
-      if (v28)
+      if (errorCopy)
       {
-        *v28 = v40[5];
+        *errorCopy = v40[5];
       }
 
       v10 = v29;
@@ -3321,13 +3321,13 @@ uint64_t __48__MIExecutableBundle_setSinfDataType_withError___block_invoke(uint6
   return v5;
 }
 
-- (BOOL)getSinfDataType:(unsigned int *)a3 withError:(id *)a4
+- (BOOL)getSinfDataType:(unsigned int *)type withError:(id *)error
 {
   if ([(MIExecutableBundle *)self sinfDataTypeIsSet])
   {
-    if (*a3)
+    if (*type)
     {
-      *a3 = [(MIExecutableBundle *)self sinfDataType];
+      *type = [(MIExecutableBundle *)self sinfDataType];
     }
 
     return 1;
@@ -3335,14 +3335,14 @@ uint64_t __48__MIExecutableBundle_setSinfDataType_withError___block_invoke(uint6
 
   else
   {
-    v8 = [(MIExecutableBundle *)self executableURL];
-    v9 = MIGetSinfDataType(v8, a3, a4);
+    executableURL = [(MIExecutableBundle *)self executableURL];
+    v9 = MIGetSinfDataType(executableURL, type, error);
 
     return v9;
   }
 }
 
-- (BOOL)validateSinfWithError:(id *)a3
+- (BOOL)validateSinfWithError:(id *)error
 {
   if (![(MIExecutableBundle *)self hasSinf]|| [(MIBundle *)self isPlaceholder])
   {
@@ -3365,34 +3365,34 @@ LABEL_4:
 
     if (gLogHandle && *(gLogHandle + 44) >= 7)
     {
-      v19 = self;
+      selfCopy = self;
       MOLogWrite();
     }
 
-    v9 = [(MIExecutableBundle *)self executableURL];
-    [v9 fileSystemRepresentation];
+    executableURL = [(MIExecutableBundle *)self executableURL];
+    [executableURL fileSystemRepresentation];
     mm0Euuzhc();
     v11 = v10;
 
     switch(v11)
     {
       case -42057:
-        v12 = [(MIBundle *)self bundleURL];
-        v13 = [v12 path];
-        _CreateAndLogError("[MIExecutableBundle validateSinfWithError:]", 2279, @"MIInstallerErrorDomain", 174, 0, &unk_1F2888538, @"The SINF provided for the bundle at %@ does not have a matching key in the FairPlay keybag.", v15, v13);
+        bundleURL = [(MIBundle *)self bundleURL];
+        path = [bundleURL path];
+        _CreateAndLogError("[MIExecutableBundle validateSinfWithError:]", 2279, @"MIInstallerErrorDomain", 174, 0, &unk_1F2888538, @"The SINF provided for the bundle at %@ does not have a matching key in the FairPlay keybag.", v15, path);
         break;
       case 0:
         goto LABEL_4;
       case -42056:
-        v12 = [(MIBundle *)self bundleURL];
-        v13 = [v12 path];
-        _CreateAndLogError("[MIExecutableBundle validateSinfWithError:]", 2276, @"MIInstallerErrorDomain", 120, 0, &unk_1F2888510, @"The SINF provided for the bundle at %@ is not valid so this application will not run.", v14, v13);
+        bundleURL = [(MIBundle *)self bundleURL];
+        path = [bundleURL path];
+        _CreateAndLogError("[MIExecutableBundle validateSinfWithError:]", 2276, @"MIInstallerErrorDomain", 120, 0, &unk_1F2888510, @"The SINF provided for the bundle at %@ is not valid so this application will not run.", v14, path);
         break;
       default:
         if (!gLogHandle || *(gLogHandle + 44) >= 5)
         {
-          v18 = [(MIBundle *)self bundleURL];
-          v20 = [v18 path];
+          bundleURL2 = [(MIBundle *)self bundleURL];
+          path2 = [bundleURL2 path];
           MOLogWrite();
         }
 
@@ -3403,11 +3403,11 @@ LABEL_4:
     v5 = v16;
   }
 
-  if (a3)
+  if (error)
   {
     v17 = v5;
     v6 = 0;
-    *a3 = v5;
+    *error = v5;
   }
 
   else
@@ -3420,14 +3420,14 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_hasResource:(id)a3 withExtension:(id)a4
+- (BOOL)_hasResource:(id)resource withExtension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MIBundle *)self cfBundle];
-  if (v8)
+  resourceCopy = resource;
+  extensionCopy = extension;
+  cfBundle = [(MIBundle *)self cfBundle];
+  if (cfBundle)
   {
-    v9 = CFBundleCopyResourceURL(v8, v6, v7, 0);
+    v9 = CFBundleCopyResourceURL(cfBundle, resourceCopy, extensionCopy, 0);
     v10 = v9 != 0;
   }
 
@@ -3441,8 +3441,8 @@ LABEL_5:
 
 - (BOOL)isExtensionBasedWatchKitApp
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"WKWatchKitApp"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"WKWatchKitApp"];
   v4 = MIBooleanValue(v3, 0);
 
   return v4;
@@ -3450,8 +3450,8 @@ LABEL_5:
 
 - (BOOL)isExtensionlessWatchKitApp
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"WKApplication"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"WKApplication"];
   v4 = MIBooleanValue(v3, 0);
 
   return v4;
@@ -3459,8 +3459,8 @@ LABEL_5:
 
 - (NSString)companionAppIdentifier
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"WKCompanionAppBundleIdentifier"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"WKCompanionAppBundleIdentifier"];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -3481,8 +3481,8 @@ LABEL_5:
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(MIBundle *)self bundleType]== 1 || [(MIBundle *)self bundleType]== 10)
   {
-    v3 = [(MIBundle *)self infoPlistSubset];
-    v4 = [v3 objectForKeyedSubscript:@"LSCounterpartIdentifiers"];
+    infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+    v4 = [infoPlistSubset objectForKeyedSubscript:@"LSCounterpartIdentifiers"];
     objc_opt_class();
     v5 = v4;
     if (objc_opt_isKindOfClass())
@@ -3507,9 +3507,9 @@ LABEL_5:
     v7 = [(MIExecutableBundle *)self watchKitAppBundleForWKVersionOrEarlier:3 error:0];
     if (v7)
     {
-      v8 = v7;
-      v9 = [v7 identifier];
-      v12[0] = v9;
+      companionAppIdentifier = v7;
+      identifier = [v7 identifier];
+      v12[0] = identifier;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
 LABEL_13:
@@ -3519,8 +3519,8 @@ LABEL_13:
 
   else if ([(MIBundle *)self bundleType]== 9)
   {
-    v8 = [(MIExecutableBundle *)self companionAppIdentifier];
-    v11 = v8;
+    companionAppIdentifier = [(MIExecutableBundle *)self companionAppIdentifier];
+    v11 = companionAppIdentifier;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
     goto LABEL_13;
   }
@@ -3533,16 +3533,16 @@ LABEL_15:
 
 - (BOOL)minimumWatchOSVersionIsPreV6
 {
-  v2 = [(MIBundle *)self minimumOSVersion];
-  IsPreV6 = MIBundleMinimumOSVersionIsPreV6(v2);
+  minimumOSVersion = [(MIBundle *)self minimumOSVersion];
+  IsPreV6 = MIBundleMinimumOSVersionIsPreV6(minimumOSVersion);
 
   return IsPreV6;
 }
 
 - (BOOL)watchKitAppRunsIndependentlyOfCompanion
 {
-  v3 = [(MIBundle *)self infoPlistSubset];
-  v4 = [v3 objectForKeyedSubscript:@"WKRunsIndependentlyOfCompanionApp"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v4 = [infoPlistSubset objectForKeyedSubscript:@"WKRunsIndependentlyOfCompanionApp"];
   v5 = MIBooleanValue(v4, 0);
 
   if (v5)
@@ -3550,9 +3550,9 @@ LABEL_15:
     return 1;
   }
 
-  v7 = [(MIBundle *)self bundleType];
-  v6 = 0;
-  if (v7 <= 0xA && ((1 << v7) & 0x63E) != 0)
+  bundleType = [(MIBundle *)self bundleType];
+  watchKitAppRunsIndependentlyOfCompanion = 0;
+  if (bundleType <= 0xA && ((1 << bundleType) & 0x63E) != 0)
   {
     v15 = 0;
     v8 = [(MIExecutableBundle *)self watchKitPluginWithError:&v15];
@@ -3560,21 +3560,21 @@ LABEL_15:
     v10 = v9;
     if (v8)
     {
-      v6 = [v8 watchKitAppRunsIndependentlyOfCompanion];
+      watchKitAppRunsIndependentlyOfCompanion = [v8 watchKitAppRunsIndependentlyOfCompanion];
 LABEL_15:
 
-      return v6;
+      return watchKitAppRunsIndependentlyOfCompanion;
     }
 
-    v11 = [v9 domain];
-    if ([v11 isEqualToString:@"MIInstallerErrorDomain"])
+    domain = [v9 domain];
+    if ([domain isEqualToString:@"MIInstallerErrorDomain"])
     {
-      v12 = [v10 code];
+      code = [v10 code];
 
-      if (v12 == 96)
+      if (code == 96)
       {
 
-        v6 = 0;
+        watchKitAppRunsIndependentlyOfCompanion = 0;
         v10 = 0;
         goto LABEL_15;
       }
@@ -3586,21 +3586,21 @@ LABEL_15:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v14 = [(MIBundle *)self identifier];
+      identifier = [(MIBundle *)self identifier];
       MOLogWrite();
     }
 
-    v6 = 0;
+    watchKitAppRunsIndependentlyOfCompanion = 0;
     goto LABEL_15;
   }
 
-  return v6;
+  return watchKitAppRunsIndependentlyOfCompanion;
 }
 
 - (BOOL)isWatchOnlyApp
 {
-  v3 = [(MIBundle *)self infoPlistSubset];
-  v4 = [v3 objectForKeyedSubscript:@"WKWatchOnly"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v4 = [infoPlistSubset objectForKeyedSubscript:@"WKWatchOnly"];
   v5 = MIBooleanValue(v4, 0);
 
   if (v5)
@@ -3608,9 +3608,9 @@ LABEL_15:
     return 1;
   }
 
-  v7 = [(MIBundle *)self bundleType];
-  v6 = 0;
-  if (v7 <= 0xA && ((1 << v7) & 0x63E) != 0)
+  bundleType = [(MIBundle *)self bundleType];
+  isWatchOnlyApp = 0;
+  if (bundleType <= 0xA && ((1 << bundleType) & 0x63E) != 0)
   {
     v15 = 0;
     v8 = [(MIExecutableBundle *)self watchKitPluginWithError:&v15];
@@ -3618,21 +3618,21 @@ LABEL_15:
     v10 = v9;
     if (v8)
     {
-      v6 = [v8 isWatchOnlyApp];
+      isWatchOnlyApp = [v8 isWatchOnlyApp];
 LABEL_15:
 
-      return v6;
+      return isWatchOnlyApp;
     }
 
-    v11 = [v9 domain];
-    if ([v11 isEqualToString:@"MIInstallerErrorDomain"])
+    domain = [v9 domain];
+    if ([domain isEqualToString:@"MIInstallerErrorDomain"])
     {
-      v12 = [v10 code];
+      code = [v10 code];
 
-      if (v12 == 96)
+      if (code == 96)
       {
 
-        v6 = 0;
+        isWatchOnlyApp = 0;
         v10 = 0;
         goto LABEL_15;
       }
@@ -3644,30 +3644,30 @@ LABEL_15:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v14 = [(MIBundle *)self identifier];
+      identifier = [(MIBundle *)self identifier];
       MOLogWrite();
     }
 
-    v6 = 0;
+    isWatchOnlyApp = 0;
     goto LABEL_15;
   }
 
-  return v6;
+  return isWatchOnlyApp;
 }
 
-- (id)watchKitPluginWithError:(id *)a3
+- (id)watchKitPluginWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(MIExecutableBundle *)self watchKitPlugin];
+  watchKitPlugin = [(MIExecutableBundle *)self watchKitPlugin];
 
-  if (v5)
+  if (watchKitPlugin)
   {
-    v6 = [(MIExecutableBundle *)self watchKitPlugin];
+    watchKitPlugin2 = [(MIExecutableBundle *)self watchKitPlugin];
   }
 
   else
   {
-    v7 = [(MIBundle *)self pluginKitBundlesWithError:a3];
+    v7 = [(MIBundle *)self pluginKitBundlesWithError:error];
     v8 = v7;
     if (!v7)
     {
@@ -3697,7 +3697,7 @@ LABEL_15:
           if ([v14 isWatchKitExtension])
           {
             [(MIExecutableBundle *)self setWatchKitPlugin:v14];
-            v6 = v14;
+            watchKitPlugin2 = v14;
 
             goto LABEL_16;
           }
@@ -3713,25 +3713,25 @@ LABEL_15:
       }
     }
 
-    if (a3)
+    if (error)
     {
       _CreateError("[MIExecutableBundle watchKitPluginWithError:]", 2451, @"MIInstallerErrorDomain", 96, 0, 0, @"No WatchKit extension found", v15, v17);
-      *a3 = v6 = 0;
+      *error = watchKitPlugin2 = 0;
     }
 
     else
     {
 LABEL_14:
-      v6 = 0;
+      watchKitPlugin2 = 0;
     }
 
 LABEL_16:
   }
 
-  return v6;
+  return watchKitPlugin2;
 }
 
-- (unsigned)watchKitVersionWithError:(id *)a3
+- (unsigned)watchKitVersionWithError:(id *)error
 {
   if ([(MIExecutableBundle *)self isExtensionlessWatchKitApp])
   {
@@ -3752,12 +3752,12 @@ LABEL_17:
       return v5;
     }
 
-    v9 = [v7 domain];
-    if ([v9 isEqualToString:@"MIInstallerErrorDomain"])
+    domain = [v7 domain];
+    if ([domain isEqualToString:@"MIInstallerErrorDomain"])
     {
-      v10 = [v8 code];
+      code = [v8 code];
 
-      if (v10 == 96)
+      if (code == 96)
       {
         v5 = 2;
         goto LABEL_17;
@@ -3768,11 +3768,11 @@ LABEL_17:
     {
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v8;
       v5 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -3785,21 +3785,21 @@ LABEL_17:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v13 = [(MIBundle *)self identifier];
+    identifier = [(MIBundle *)self identifier];
     MOLogWrite();
   }
 
   return 1;
 }
 
-- (id)watchKitAppBundleForWKVersionOrEarlier:(unsigned __int8)a3 error:(id *)a4
+- (id)watchKitAppBundleForWKVersionOrEarlier:(unsigned __int8)earlier error:(id *)error
 {
-  if (a3 == 3)
+  if (earlier == 3)
   {
     v9 = 0;
     v6 = [(MIExecutableBundle *)self watchKitV2AppBundleWithError:&v9];
     v7 = v9;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -3807,18 +3807,18 @@ LABEL_17:
 
   else
   {
-    if (a3 == 2)
+    if (earlier == 2)
     {
       _CreateAndLogError("[MIExecutableBundle watchKitAppBundleForWKVersionOrEarlier:error:]", 2490, @"MIInstallerErrorDomain", 133, 0, 0, @"WatchKit version enum value %hhu is no longer supported", v4, 2);
     }
 
     else
     {
-      _CreateAndLogError("[MIExecutableBundle watchKitAppBundleForWKVersionOrEarlier:error:]", 2497, @"MIInstallerErrorDomain", 4, 0, 0, @"Unknown WatchKit version enum value %hhu", v4, a3);
+      _CreateAndLogError("[MIExecutableBundle watchKitAppBundleForWKVersionOrEarlier:error:]", 2497, @"MIInstallerErrorDomain", 4, 0, 0, @"Unknown WatchKit version enum value %hhu", v4, earlier);
     }
     v7 = ;
     v6 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -3827,7 +3827,7 @@ LABEL_17:
   if (!v6)
   {
     v7 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_10:
@@ -3835,9 +3835,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)_discoverWatchAppBundleAsPlaceholder:(BOOL)a3 error:(id *)a4
+- (id)_discoverWatchAppBundleAsPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  if (a3)
+  if (placeholder)
   {
     v7 = @"com.apple.WatchPlaceholder";
   }
@@ -3847,8 +3847,8 @@ LABEL_10:
     v7 = @"Watch";
   }
 
-  v8 = [(MIBundle *)self bundleURL];
-  v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:1];
+  bundleURL = [(MIBundle *)self bundleURL];
+  v9 = [bundleURL URLByAppendingPathComponent:v7 isDirectory:1];
 
   v31 = 0;
   v32 = &v31;
@@ -3870,8 +3870,8 @@ LABEL_10:
   v22 = &v31;
   v23 = &v25;
   v20 = v7;
-  v21 = self;
-  v24 = a3;
+  selfCopy = self;
+  placeholderCopy = placeholder;
   v11 = [v10 enumerateURLsForItemsInDirectoryAtURL:v9 ignoreSymlinks:1 withBlock:v19];
 
   if (v11)
@@ -3881,15 +3881,15 @@ LABEL_10:
       objc_storeStrong(v26 + 5, v11);
     }
 
-    v12 = v32[5];
+    identifier = v32[5];
     v32[5] = 0;
     goto LABEL_8;
   }
 
   if (!v32[5] && !v26[5])
   {
-    v12 = [(MIBundle *)self identifier];
-    v17 = _CreateError("[MIExecutableBundle _discoverWatchAppBundleAsPlaceholder:error:]", 2563, @"MIInstallerErrorDomain", 85, 0, 0, @"No WatchKit 2.0 app bundle or placeholder found for app %@", v16, v12);
+    identifier = [(MIBundle *)self identifier];
+    v17 = _CreateError("[MIExecutableBundle _discoverWatchAppBundleAsPlaceholder:error:]", 2563, @"MIInstallerErrorDomain", 85, 0, 0, @"No WatchKit 2.0 app bundle or placeholder found for app %@", v16, identifier);
     v18 = v26[5];
     v26[5] = v17;
 
@@ -3897,9 +3897,9 @@ LABEL_8:
   }
 
   v13 = v32[5];
-  if (a4 && !v13)
+  if (error && !v13)
   {
-    *a4 = v26[5];
+    *error = v26[5];
     v13 = v32[5];
   }
 
@@ -3990,73 +3990,73 @@ LABEL_16:
   return v16;
 }
 
-- (id)watchKitV2AppBundleWithError:(id *)a3
+- (id)watchKitV2AppBundleWithError:(id *)error
 {
-  v5 = [(MIExecutableBundle *)self wk2AppBundle];
-  if (v5)
+  wk2AppBundle = [(MIExecutableBundle *)self wk2AppBundle];
+  if (wk2AppBundle)
   {
 
     goto LABEL_4;
   }
 
-  v6 = [(MIExecutableBundle *)self wk2AppBundleError];
+  wk2AppBundleError = [(MIExecutableBundle *)self wk2AppBundleError];
 
-  if (!v6)
+  if (!wk2AppBundleError)
   {
     v39 = 0;
-    v10 = [(MIExecutableBundle *)self _discoverWatchAppBundleAsPlaceholder:0 error:&v39];
+    bundleURL3 = [(MIExecutableBundle *)self _discoverWatchAppBundleAsPlaceholder:0 error:&v39];
     v11 = v39;
-    v12 = v11;
-    if (v10)
+    bundleURL = v11;
+    if (bundleURL3)
     {
 LABEL_12:
-      if ([v10 isExtensionBasedWatchKitApp] & 1) != 0 || (objc_msgSend(v10, "isExtensionlessWatchKitApp"))
+      if ([bundleURL3 isExtensionBasedWatchKitApp] & 1) != 0 || (objc_msgSend(bundleURL3, "isExtensionlessWatchKitApp"))
       {
-        v37 = v12;
-        v13 = [v10 watchKitVersionWithError:&v37];
+        v37 = bundleURL;
+        v13 = [bundleURL3 watchKitVersionWithError:&v37];
         v14 = v37;
 
         if (v13 == 3)
         {
-          v12 = v14;
+          bundleURL = v14;
 LABEL_38:
-          [(MIExecutableBundle *)self setWk2AppBundle:v10];
-          [(MIExecutableBundle *)self setWk2AppBundleError:v12];
-          v8 = v10;
+          [(MIExecutableBundle *)self setWk2AppBundle:bundleURL3];
+          [(MIExecutableBundle *)self setWk2AppBundleError:bundleURL];
+          wk2AppBundle3 = bundleURL3;
 
           goto LABEL_8;
         }
 
-        v12 = [v10 bundleURL];
-        v18 = [v12 path];
-        v20 = _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2616, @"MIInstallerErrorDomain", 92, v14, &unk_1F2888628, @"Found WatchKit app at %@ but it was not a WatchKit 2 app. Is it missing its app extension?", v19, v18);
+        bundleURL = [bundleURL3 bundleURL];
+        path = [bundleURL path];
+        v20 = _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2616, @"MIInstallerErrorDomain", 92, v14, &unk_1F2888628, @"Found WatchKit app at %@ but it was not a WatchKit 2 app. Is it missing its app extension?", v19, path);
       }
 
       else
       {
-        v25 = [v10 bundleURL];
-        v26 = [v25 path];
-        v20 = _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2608, @"MIInstallerErrorDomain", 92, 0, &unk_1F2888600, @"Found WatchKit 2.0 app at %@ but it does not have a WKWatchKitApp or WKApplication key set to true in its Info.plist", v27, v26);
+        bundleURL2 = [bundleURL3 bundleURL];
+        path2 = [bundleURL2 path];
+        v20 = _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2608, @"MIInstallerErrorDomain", 92, 0, &unk_1F2888600, @"Found WatchKit 2.0 app at %@ but it does not have a WKWatchKitApp or WKApplication key set to true in its Info.plist", v27, path2);
 
-        v12 = v25;
+        bundleURL = bundleURL2;
       }
 
       goto LABEL_34;
     }
 
-    v15 = [v11 domain];
+    domain = [v11 domain];
     v16 = *MEMORY[0x1E696A798];
-    if (![v15 isEqualToString:*MEMORY[0x1E696A798]] || objc_msgSend(v12, "code") != 2)
+    if (![domain isEqualToString:*MEMORY[0x1E696A798]] || objc_msgSend(bundleURL, "code") != 2)
     {
-      v17 = [v12 domain];
-      if (![v17 isEqualToString:v16] || objc_msgSend(v12, "code") != 20)
+      domain2 = [bundleURL domain];
+      if (![domain2 isEqualToString:v16] || objc_msgSend(bundleURL, "code") != 20)
       {
-        v21 = [v12 domain];
-        if ([v21 isEqualToString:@"MIInstallerErrorDomain"])
+        domain3 = [bundleURL domain];
+        if ([domain3 isEqualToString:@"MIInstallerErrorDomain"])
         {
-          v22 = [v12 code];
+          code = [bundleURL code];
 
-          if (v22 == 85)
+          if (code == 85)
           {
             goto LABEL_25;
           }
@@ -4066,38 +4066,38 @@ LABEL_38:
         {
         }
 
-        v10 = [(MIBundle *)self bundleURL];
-        _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2591, @"MIInstallerErrorDomain", 92, v12, &unk_1F28885B0, @"Could not get contents of Watch directory in %@", v28, v10);
+        bundleURL3 = [(MIBundle *)self bundleURL];
+        _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2591, @"MIInstallerErrorDomain", 92, bundleURL, &unk_1F28885B0, @"Could not get contents of Watch directory in %@", v28, bundleURL3);
         goto LABEL_32;
       }
     }
 
 LABEL_25:
     v38 = 0;
-    v10 = [(MIExecutableBundle *)self _discoverWatchAppBundleAsPlaceholder:1 error:&v38];
+    bundleURL3 = [(MIExecutableBundle *)self _discoverWatchAppBundleAsPlaceholder:1 error:&v38];
     v23 = v38;
-    v12 = v23;
-    if (v10)
+    bundleURL = v23;
+    if (bundleURL3)
     {
       goto LABEL_12;
     }
 
-    v24 = [v23 domain];
-    if ([v24 isEqualToString:v16] && objc_msgSend(v12, "code") == 2)
+    domain4 = [v23 domain];
+    if ([domain4 isEqualToString:v16] && objc_msgSend(bundleURL, "code") == 2)
     {
 
 LABEL_41:
-      v10 = [(MIBundle *)self identifier];
-      v29 = _CreateError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2599, @"MIInstallerErrorDomain", 85, 0, 0, @"No WatchKit 2.0 placeholder found for app %@", v33, v10);
+      bundleURL3 = [(MIBundle *)self identifier];
+      v29 = _CreateError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2599, @"MIInstallerErrorDomain", 85, 0, 0, @"No WatchKit 2.0 placeholder found for app %@", v33, bundleURL3);
       goto LABEL_33;
     }
 
-    v31 = [v12 domain];
-    if ([v31 isEqualToString:v16])
+    domain5 = [bundleURL domain];
+    if ([domain5 isEqualToString:v16])
     {
-      v32 = [v12 code];
+      code2 = [bundleURL code];
 
-      if (v32 == 20)
+      if (code2 == 20)
       {
         goto LABEL_41;
       }
@@ -4107,24 +4107,24 @@ LABEL_41:
     {
     }
 
-    v34 = [v12 domain];
-    if ([v34 isEqualToString:@"MIInstallerErrorDomain"])
+    domain6 = [bundleURL domain];
+    if ([domain6 isEqualToString:@"MIInstallerErrorDomain"])
     {
-      v35 = [v12 code];
+      code3 = [bundleURL code];
 
-      if (v35 == 85)
+      if (code3 == 85)
       {
 LABEL_35:
-        if (a3)
+        if (error)
         {
-          v30 = v12;
-          v10 = 0;
-          *a3 = v12;
+          v30 = bundleURL;
+          bundleURL3 = 0;
+          *error = bundleURL;
         }
 
         else
         {
-          v10 = 0;
+          bundleURL3 = 0;
         }
 
         goto LABEL_38;
@@ -4135,53 +4135,53 @@ LABEL_35:
     {
     }
 
-    v10 = [(MIBundle *)self bundleURL];
-    _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2601, @"MIInstallerErrorDomain", 92, v12, &unk_1F28885D8, @"Could not get contents of watch placeholder directory in %@", v36, v10);
+    bundleURL3 = [(MIBundle *)self bundleURL];
+    _CreateAndLogError("[MIExecutableBundle watchKitV2AppBundleWithError:]", 2601, @"MIInstallerErrorDomain", 92, bundleURL, &unk_1F28885D8, @"Could not get contents of watch placeholder directory in %@", v36, bundleURL3);
     v29 = LABEL_32:;
 LABEL_33:
     v20 = v29;
 LABEL_34:
 
-    v12 = v20;
+    bundleURL = v20;
     goto LABEL_35;
   }
 
 LABEL_4:
-  if (a3)
+  if (error)
   {
-    v7 = [(MIExecutableBundle *)self wk2AppBundle];
+    wk2AppBundle2 = [(MIExecutableBundle *)self wk2AppBundle];
 
-    if (!v7)
+    if (!wk2AppBundle2)
     {
-      *a3 = [(MIExecutableBundle *)self wk2AppBundleError];
+      *error = [(MIExecutableBundle *)self wk2AppBundleError];
     }
   }
 
-  v8 = [(MIExecutableBundle *)self wk2AppBundle];
+  wk2AppBundle3 = [(MIExecutableBundle *)self wk2AppBundle];
 LABEL_8:
 
-  return v8;
+  return wk2AppBundle3;
 }
 
-- (BOOL)hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:(unsigned __int8)version error:(id *)error
 {
-  v5 = a3;
+  versionCopy = version;
   v32 = *MEMORY[0x1E69E9840];
   if (hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion_error__onceToken != -1)
   {
     [MIExecutableBundle hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:error:];
   }
 
-  if ((v5 & 0xFE) != 2)
+  if ((versionCopy & 0xFE) != 2)
   {
     [MIExecutableBundle hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:error:];
   }
 
-  v7 = [(MIBundle *)self bundleURL];
-  v8 = MILoadInfoPlist(v7, 0);
+  bundleURL = [(MIBundle *)self bundleURL];
+  v8 = MILoadInfoPlist(bundleURL, 0);
 
   v9 = &hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion_error__allowedV1Keys;
-  if (v5 != 2)
+  if (versionCopy != 2)
   {
     v9 = &hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion_error__allowedV2Keys;
   }
@@ -4219,12 +4219,12 @@ LABEL_8:
       if (([v10 containsObject:v17] & 1) == 0)
       {
         v24 = @"Unknown";
-        if (v5 == 3)
+        if (versionCopy == 3)
         {
           v24 = @"2.0";
         }
 
-        if (v5 == 2)
+        if (versionCopy == 2)
         {
           v24 = @"1.0";
         }
@@ -4232,11 +4232,11 @@ LABEL_8:
         _CreateAndLogError("[MIExecutableBundle hasOnlyAllowedWatchKitAppInfoPlistKeysForWatchKitVersion:error:]", 2729, @"MIInstallerErrorDomain", 99, 0, &unk_1F2888678, @"WatchKit %@ app has disallowed Info.plist key: %@", v20, v24);
         v21 = LABEL_29:;
 
-        if (a4)
+        if (error)
         {
           v25 = v21;
           v22 = 0;
-          *a4 = v21;
+          *error = v21;
         }
 
         else
@@ -4260,12 +4260,12 @@ LABEL_8:
     }
 
     v23 = @"Unknown";
-    if (v5 == 3)
+    if (versionCopy == 3)
     {
       v23 = @"2.0";
     }
 
-    if (v5 == 2)
+    if (versionCopy == 2)
     {
       v23 = @"1.0";
     }

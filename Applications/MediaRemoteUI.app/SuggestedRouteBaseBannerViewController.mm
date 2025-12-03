@@ -1,14 +1,14 @@
 @interface SuggestedRouteBaseBannerViewController
-- (_TtC13MediaRemoteUI38SuggestedRouteBaseBannerViewController)initWithCoder:(id)a3;
-- (void)actionButtonTappedWithSender:(id)a3;
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeArtwork:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5;
+- (_TtC13MediaRemoteUI38SuggestedRouteBaseBannerViewController)initWithCoder:(id)coder;
+- (void)actionButtonTappedWithSender:(id)sender;
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeArtwork:(id)artwork;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info;
 @end
 
 @implementation SuggestedRouteBaseBannerViewController
 
-- (_TtC13MediaRemoteUI38SuggestedRouteBaseBannerViewController)initWithCoder:(id)a3
+- (_TtC13MediaRemoteUI38SuggestedRouteBaseBannerViewController)initWithCoder:(id)coder
 {
   *&self->_TtC13MediaRemoteUI24BannerBaseViewController_opaque[OBJC_IVAR____TtC13MediaRemoteUI38SuggestedRouteBaseBannerViewController_activityRouteView] = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -16,41 +16,41 @@
   return result;
 }
 
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  endpointControllerCopy = endpointController;
+  routeCopy = route;
+  selfCopy = self;
   sub_1000257A8();
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeArtwork:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeArtwork:(id)artwork
 {
   v5 = *&self->_TtC13MediaRemoteUI24BannerBaseViewController_opaque[OBJC_IVAR____TtC13MediaRemoteUI38SuggestedRouteBaseBannerViewController_controller];
-  v6 = self;
-  v7 = [v5 metadataController];
-  v8 = [v7 artwork];
+  selfCopy = self;
+  metadataController = [v5 metadataController];
+  artwork = [metadataController artwork];
 
   swift_getKeyPath();
   swift_getKeyPath();
   v9 = static Published.subscript.modify();
   v11 = *(v10 + 104);
-  *(v10 + 104) = v8;
+  *(v10 + 104) = artwork;
 
   v9(&v12, 0);
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeNowPlayingInfo:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeNowPlayingInfo:(id)info
 {
-  v5 = self;
+  selfCopy = self;
   sub_100024C98();
 }
 
-- (void)actionButtonTappedWithSender:(id)a3
+- (void)actionButtonTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_100025968();
 }
 

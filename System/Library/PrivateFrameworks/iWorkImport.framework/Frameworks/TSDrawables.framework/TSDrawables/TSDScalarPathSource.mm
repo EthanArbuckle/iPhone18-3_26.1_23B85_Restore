@@ -1,109 +1,109 @@
 @interface TSDScalarPathSource
-+ (id)chevronWithScalar:(double)a3 naturalSize:(CGSize)a4;
-+ (id)pathSourceWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5;
-+ (id)regularPolygonWithScalar:(double)a3 naturalSize:(CGSize)a4;
-+ (id)roundedRectangleWithScalar:(double)a3 naturalSize:(CGSize)a4 continuousCurve:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)chevronWithScalar:(double)scalar naturalSize:(CGSize)size;
++ (id)pathSourceWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size;
++ (id)regularPolygonWithScalar:(double)scalar naturalSize:(CGSize)size;
++ (id)roundedRectangleWithScalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangular;
 - (CGPath)p_newChevronPath;
 - (CGPath)p_newRegularPolygonPath;
 - (CGPath)p_newRoundedRectPath;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)p_getControlKnobPointForChevron;
 - (CGPoint)p_getControlKnobPointForRegularPolygon;
 - (CGPoint)p_getControlKnobPointForRoundedRect;
 - (CGSize)naturalSize;
-- (TSDScalarPathSource)initWithArchive:(const void *)a3;
-- (TSDScalarPathSource)initWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5 continuousCurve:(BOOL)a6;
+- (TSDScalarPathSource)initWithArchive:(const void *)archive;
+- (TSDScalarPathSource)initWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve;
 - (double)cornerRadius;
 - (double)maxCornerRadius;
 - (double)maxScalar;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)inferredAccessibilityDescription;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)name;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
 - (unint64_t)numberOfSides;
-- (void)p_setControlKnobPointForChevron:(CGPoint)a3;
-- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)a3;
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setIsCurveContinuous:(BOOL)a3;
-- (void)setScalarValue:(id)a3;
+- (void)p_setControlKnobPointForChevron:(CGPoint)chevron;
+- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)polygon;
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect;
+- (void)saveToArchive:(void *)archive;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setIsCurveContinuous:(BOOL)continuous;
+- (void)setScalarValue:(id)value;
 @end
 
 @implementation TSDScalarPathSource
 
-+ (id)roundedRectangleWithScalar:(double)a3 naturalSize:(CGSize)a4 continuousCurve:(BOOL)a5
++ (id)roundedRectangleWithScalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
+  curveCopy = curve;
+  height = size.height;
+  width = size.width;
   v9 = [TSDScalarPathSource alloc];
-  v11 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v9, v10, 0, v5, a3, width, height);
+  v11 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v9, v10, 0, curveCopy, scalar, width, height);
 
   return v11;
 }
 
-+ (id)regularPolygonWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)regularPolygonWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = [TSDScalarPathSource alloc];
-  v9 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v7, v8, 1, 0, a3, width, height);
+  v9 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v7, v8, 1, 0, scalar, width, height);
 
   return v9;
 }
 
-+ (id)chevronWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)chevronWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = [TSDScalarPathSource alloc];
-  v9 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v7, v8, 2, 0, a3, width, height);
+  v9 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v7, v8, 2, 0, scalar, width, height);
 
   return v9;
 }
 
-+ (id)pathSourceWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5
++ (id)pathSourceWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v9 = [TSDScalarPathSource alloc];
-  v11 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v9, v10, a3, 0, a4, width, height);
+  v11 = objc_msgSend_initWithType_scalar_naturalSize_continuousCurve_(v9, v10, type, 0, scalar, width, height);
 
   return v11;
 }
 
-- (TSDScalarPathSource)initWithType:(unint64_t)a3 scalar:(double)a4 naturalSize:(CGSize)a5 continuousCurve:(BOOL)a6
+- (TSDScalarPathSource)initWithType:(unint64_t)type scalar:(double)scalar naturalSize:(CGSize)size continuousCurve:(BOOL)curve
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
+  curveCopy = curve;
+  height = size.height;
+  width = size.width;
   v20.receiver = self;
   v20.super_class = TSDScalarPathSource;
   v11 = [(TSDScalarPathSource *)&v20 init];
   v13 = v11;
   if (v11)
   {
-    objc_msgSend_setType_(v11, v12, a3);
-    objc_msgSend_setScalar_(v13, v14, v15, a4);
+    objc_msgSend_setType_(v11, v12, type);
+    objc_msgSend_setScalar_(v13, v14, v15, scalar);
     objc_msgSend_setNaturalSize_(v13, v16, v17, width, height);
-    objc_msgSend_setIsCurveContinuous_(v13, v18, v6);
+    objc_msgSend_setIsCurveContinuous_(v13, v18, curveCopy);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22.receiver = self;
   v22.super_class = TSDScalarPathSource;
-  v4 = [(TSDPathSource *)&v22 copyWithZone:a3];
+  v4 = [(TSDPathSource *)&v22 copyWithZone:zone];
   v7 = objc_msgSend_type(self, v5, v6);
   objc_msgSend_setType_(v4, v8, v7);
   objc_msgSend_scalar(self, v9, v10);
@@ -115,10 +115,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v27) = 1;
   }
@@ -127,7 +127,7 @@
   {
     v29.receiver = self;
     v29.super_class = TSDScalarPathSource;
-    if ([(TSDPathSource *)&v29 isEqual:v4])
+    if ([(TSDPathSource *)&v29 isEqual:equalCopy])
     {
       objc_opt_class();
       v5 = TSUCheckedDynamicCast();
@@ -182,11 +182,11 @@
   return v6;
 }
 
-- (void)setIsCurveContinuous:(BOOL)a3
+- (void)setIsCurveContinuous:(BOOL)continuous
 {
-  if (a3)
+  if (continuous)
   {
-    if (!objc_msgSend_type(self, a2, a3))
+    if (!objc_msgSend_type(self, a2, continuous))
     {
       v12 = 1;
       goto LABEL_5;
@@ -205,10 +205,10 @@ LABEL_5:
   self->mIsCurveContinuous = v12;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!objc_msgSend_type(self, a2, v3))
   {
     objc_msgSend_uniformScaleForScalingToNaturalSize_(self, v7, v8, width, height);
@@ -219,9 +219,9 @@ LABEL_5:
   self->mNaturalSize.height = height;
 }
 
-- (void)setScalarValue:(id)a3
+- (void)setScalarValue:(id)value
 {
-  objc_msgSend_floatValue(a3, a2, a3);
+  objc_msgSend_floatValue(value, a2, value);
   v7 = v6;
 
   objc_msgSend_setScalar_(self, v4, v5, v7);
@@ -312,9 +312,9 @@ LABEL_5:
   return v13;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = objc_msgSend_type(self, a2, a3);
+  v4 = objc_msgSend_type(self, a2, position);
   if (v4 == 2)
   {
     objc_msgSend_p_getControlKnobPointForChevron(self, v5, v6);
@@ -396,9 +396,9 @@ LABEL_7:
   return v9;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -450,9 +450,9 @@ LABEL_7:
   return v30;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -572,7 +572,7 @@ LABEL_7:
   return Mutable;
 }
 
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect
 {
   objc_msgSend_naturalSize(self, a2, v3);
   TSUDistance();
@@ -595,10 +595,10 @@ LABEL_7:
   return result;
 }
 
-- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)a3
+- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)polygon
 {
-  y = a3.y;
-  x = a3.x;
+  y = polygon.y;
+  x = polygon.x;
   objc_msgSend_naturalSize(self, a2, v3);
   v8 = v7;
   v10 = v9;
@@ -670,7 +670,7 @@ LABEL_7:
   return result;
 }
 
-- (void)p_setControlKnobPointForChevron:(CGPoint)a3
+- (void)p_setControlKnobPointForChevron:(CGPoint)chevron
 {
   objc_msgSend_naturalSize(self, a2, v3);
   v6 = v5;
@@ -834,11 +834,11 @@ LABEL_30:
   return result;
 }
 
-- (TSDScalarPathSource)initWithArchive:(const void *)a3
+- (TSDScalarPathSource)initWithArchive:(const void *)archive
 {
-  if (*(a3 + 6))
+  if (*(archive + 6))
   {
-    v5 = *(a3 + 6);
+    v5 = *(archive + 6);
   }
 
   else
@@ -890,27 +890,27 @@ LABEL_30:
   v18 = v16;
   if (v16)
   {
-    objc_msgSend_loadSharedFromArchive_(v16, v17, a3);
+    objc_msgSend_loadSharedFromArchive_(v16, v17, archive);
   }
 
   return v18;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  objc_msgSend_saveSharedToArchive_(self, a2, a3);
-  *(a3 + 4) |= 8u;
-  v7 = *(a3 + 6);
+  objc_msgSend_saveSharedToArchive_(self, a2, archive);
+  *(archive + 4) |= 8u;
+  v7 = *(archive + 6);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSD::ScalarPathSourceArchive>(v8);
-    *(a3 + 6) = v7;
+    *(archive + 6) = v7;
   }
 
   v9 = objc_msgSend_type(self, v5, v6);

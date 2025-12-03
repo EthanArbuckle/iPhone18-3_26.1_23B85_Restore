@@ -1,11 +1,11 @@
 @interface _REFrequencyFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
 - (_REFrequencyFeatureTransformer)init;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)_updateConfigurationForCount:(unint64_t)a3;
-- (void)configureWithInvocation:(id)a3;
+- (void)_updateConfigurationForCount:(unint64_t)count;
+- (void)configureWithInvocation:(id)invocation;
 @end
 
 @implementation _REFrequencyFeatureTransformer
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (void)configureWithInvocation:(id)a3
+- (void)configureWithInvocation:(id)invocation
 {
-  v21 = a3;
-  if (([v21 numberOfArguments] - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  invocationCopy = invocation;
+  if (([invocationCopy numberOfArguments] - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     self->_validCount = -1;
-    if ([v21 numberOfArguments] == 2)
+    if ([invocationCopy numberOfArguments] == 2)
     {
-      self->_validCount = REIntegerValueForTaggedPointer([v21 getArgumentAtIndex:1]);
+      self->_validCount = REIntegerValueForTaggedPointer([invocationCopy getArgumentAtIndex:1]);
     }
 
-    v10 = [v21 getArgumentAtIndex:0];
+    v10 = [invocationCopy getArgumentAtIndex:0];
     v11 = v10;
     if (v10 && REFeatureValueTypeForTaggedPointer(v10) == 1)
     {
@@ -59,28 +59,28 @@
   }
 }
 
-- (void)_updateConfigurationForCount:(unint64_t)a3
+- (void)_updateConfigurationForCount:(unint64_t)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"%s Count is too low. Must be 2 or greater.", a3, v3, v4, v5, v6, v7, "[_REFrequencyFeatureTransformer _updateConfigurationForCount:]");
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"%s Count is too low. Must be 2 or greater.", count, v3, v4, v5, v6, v7, "[_REFrequencyFeatureTransformer _updateConfigurationForCount:]");
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Frequency%lu", a3];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Frequency%lu", count];
   [(REFeatureTransformer *)self setName:v10];
 
   counter = self->_counter;
 
-  [(REFeatureValueCounter *)counter setCount:a3];
+  [(REFeatureValueCounter *)counter setCount:count];
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
-  v6 = [(REFeatureValueCounter *)self->_counter totalCount:a3];
+  v6 = [(REFeatureValueCounter *)self->_counter totalCount:values];
   validCount = self->_validCount;
   if ((validCount & 0x8000000000000000) != 0 || v6 > validCount)
   {
-    v9 = REFeatureValueForTaggedPointer(*a3);
+    v9 = REFeatureValueForTaggedPointer(*values);
     [(REFeatureValueCounter *)self->_counter countForValue:v9];
     v10 = RECreateDoubleFeatureValueTaggedPointer();
 
@@ -94,10 +94,10 @@
   }
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = v3 != 0;
+  firstObject = [features firstObject];
+  v4 = firstObject != 0;
 
   return v4;
 }
@@ -110,10 +110,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -124,7 +124,7 @@
     if (objc_opt_isKindOfClass())
     {
       counter = self->_counter;
-      v6 = v4;
+      v6 = equalCopy;
       v7 = [(REFeatureValueCounter *)counter count];
       v8 = v6->_counter;
 

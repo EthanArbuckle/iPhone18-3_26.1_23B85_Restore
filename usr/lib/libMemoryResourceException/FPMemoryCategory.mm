@@ -4,20 +4,20 @@
 - (NSString)detailedName;
 - (NSString)fullName;
 - (NSString)name;
-- (id)initSummary:(BOOL)a3;
-- (void)addMemoryObject:(id)a3;
+- (id)initSummary:(BOOL)summary;
+- (void)addMemoryObject:(id)object;
 @end
 
 @implementation FPMemoryCategory
 
-- (id)initSummary:(BOOL)a3
+- (id)initSummary:(BOOL)summary
 {
   v5.receiver = self;
   v5.super_class = FPMemoryCategory;
   result = [(FPMemoryCategory *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = summary;
     *(result + 2) = 0u;
     *(result + 3) = 0u;
     *(result + 8) = 0;
@@ -31,9 +31,9 @@
   name = self->_name;
   if (!name)
   {
-    v4 = [(FPMemoryObject *)self->_firstMemoryObject name];
+    name = [(FPMemoryObject *)self->_firstMemoryObject name];
     v5 = self->_name;
-    self->_name = v4;
+    self->_name = name;
 
     name = self->_name;
   }
@@ -45,15 +45,15 @@
 {
   if (self->_isSummary)
   {
-    v4 = 0;
+    detailedName = 0;
   }
 
   else
   {
-    v4 = [(FPMemoryObject *)self->_firstMemoryObject detailedName];
+    detailedName = [(FPMemoryObject *)self->_firstMemoryObject detailedName];
   }
 
-  return v4;
+  return detailedName;
 }
 
 - (NSString)fullName
@@ -74,42 +74,42 @@
 
 - (NSDictionary)auxData
 {
-  v3 = [(FPMemoryObject *)self->_firstMemoryObject auxData];
-  v4 = v3;
+  auxData = [(FPMemoryObject *)self->_firstMemoryObject auxData];
+  v4 = auxData;
   if (self->_isSummary)
   {
-    v5 = v3;
+    detailedAuxData = auxData;
   }
 
   else
   {
-    v5 = [(FPMemoryObject *)self->_firstMemoryObject detailedAuxData];
+    detailedAuxData = [(FPMemoryObject *)self->_firstMemoryObject detailedAuxData];
     if (v4)
     {
-      v6 = [v4 fp_mergeWithData:v5 forceAggregate:1];
+      v6 = [v4 fp_mergeWithData:detailedAuxData forceAggregate:1];
 
-      v5 = v6;
+      detailedAuxData = v6;
     }
   }
 
-  return v5;
+  return detailedAuxData;
 }
 
 - (NSString)auxDataFullName
 {
-  v3 = [(FPMemoryObject *)self->_firstMemoryObject auxDataName];
-  v4 = v3;
+  auxDataName = [(FPMemoryObject *)self->_firstMemoryObject auxDataName];
+  v4 = auxDataName;
   if (self->_isSummary)
   {
-    v5 = v3;
+    v5 = auxDataName;
   }
 
   else
   {
-    v6 = [(FPMemoryObject *)self->_firstMemoryObject detailedAuxDataName];
-    if ([v6 length])
+    detailedAuxDataName = [(FPMemoryObject *)self->_firstMemoryObject detailedAuxDataName];
+    if ([detailedAuxDataName length])
     {
-      v7 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"%@ %@", v4, v6];
+      v7 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"%@ %@", v4, detailedAuxDataName];
     }
 
     else
@@ -123,17 +123,17 @@
   return v5;
 }
 
-- (void)addMemoryObject:(id)a3
+- (void)addMemoryObject:(id)object
 {
-  v5 = a3;
-  v6 = v5;
+  objectCopy = object;
+  v6 = objectCopy;
   if (!self->_firstMemoryObject)
   {
-    objc_storeStrong(&self->_firstMemoryObject, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_firstMemoryObject, object);
+    objectCopy = v6;
   }
 
-  self->_totalDirtySize += [v5 dirtySize];
+  self->_totalDirtySize += [objectCopy dirtySize];
   self->_totalSwappedSize += [v6 swappedSize];
   self->_totalCleanSize += [v6 cleanSize];
   self->_totalReclaimableSize += [v6 reclaimableSize];

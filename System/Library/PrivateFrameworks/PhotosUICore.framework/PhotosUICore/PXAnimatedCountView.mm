@@ -1,40 +1,40 @@
 @interface PXAnimatedCountView
-- (BOOL)_requiresDigitAnimationForNewText:(id)a3;
-- (BOOL)_requiresLabelSwitchForNewText:(id)a3;
+- (BOOL)_requiresDigitAnimationForNewText:(id)text;
+- (BOOL)_requiresLabelSwitchForNewText:(id)text;
 - (CGSize)intrinsicContentSize;
-- (PXAnimatedCountView)initWithCoder:(id)a3;
-- (PXAnimatedCountView)initWithFrame:(CGRect)a3;
-- (id)_labelWithText:(id)a3;
-- (void)_animateLabelSwitchFromLabel:(id)a3 toLabel:(id)a4 andAnimationStyle:(int64_t)a5 completionBlock:(id)a6;
-- (void)_updateSizingWithText:(id)a3;
+- (PXAnimatedCountView)initWithCoder:(id)coder;
+- (PXAnimatedCountView)initWithFrame:(CGRect)frame;
+- (id)_labelWithText:(id)text;
+- (void)_animateLabelSwitchFromLabel:(id)label toLabel:(id)toLabel andAnimationStyle:(int64_t)style completionBlock:(id)block;
+- (void)_updateSizingWithText:(id)text;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setText:(id)a3 withAnimationStyle:(int64_t)a4 spinDigits:(BOOL)a5;
+- (void)setFont:(id)font;
+- (void)setText:(id)text withAnimationStyle:(int64_t)style spinDigits:(BOOL)digits;
 @end
 
 @implementation PXAnimatedCountView
 
-- (void)_animateLabelSwitchFromLabel:(id)a3 toLabel:(id)a4 andAnimationStyle:(int64_t)a5 completionBlock:(id)a6
+- (void)_animateLabelSwitchFromLabel:(id)label toLabel:(id)toLabel andAnimationStyle:(int64_t)style completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v10;
-  v14 = v11;
+  labelCopy = label;
+  toLabelCopy = toLabel;
+  blockCopy = block;
+  v13 = labelCopy;
+  v14 = toLabelCopy;
   [(PXAnimatedCountView *)self bounds];
   [v14 setFrame:?];
   [(PXAnimatedCountView *)self addSubview:v14];
   [(PXAnimatedCountView *)self setCurrentLabel:v14];
-  v15 = [(PXAnimatedCountView *)self currentLabel];
-  [v15 bounds];
+  currentLabel = [(PXAnimatedCountView *)self currentLabel];
+  [currentLabel bounds];
   v16 = CGRectGetHeight(v35) + 1.0;
 
   memset(&v34, 0, sizeof(v34));
   CGAffineTransformMakeTranslation(&v34, 0.0, 0.0 - v16);
   memset(&v33, 0, sizeof(v33));
   CGAffineTransformMakeTranslation(&v33, 0.0, v16);
-  if (a5 == 2)
+  if (style == 2)
   {
     v32 = v34;
     v29 = *&v33.a;
@@ -66,8 +66,8 @@
   v22[2] = __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnimationStyle_completionBlock___block_invoke_2;
   v22[3] = &unk_1E7740890;
   v23 = v19;
-  v24 = v12;
-  v20 = v12;
+  v24 = blockCopy;
+  v20 = blockCopy;
   v21 = v14;
   [v18 animateWithDuration:0x10000 delay:v25 options:v22 animations:0.400000006 completion:0.0];
 }
@@ -104,11 +104,11 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
   return result;
 }
 
-- (void)_updateSizingWithText:(id)a3
+- (void)_updateSizingWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(PXAnimatedCountView *)self sizingLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  sizingLabel = [(PXAnimatedCountView *)self sizingLabel];
+  [sizingLabel setText:textCopy];
 
   [(PXAnimatedCountView *)self invalidateIntrinsicContentSize];
   v6 = MEMORY[0x1E6979518];
@@ -116,14 +116,14 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
   [v6 flush];
 }
 
-- (id)_labelWithText:(id)a3
+- (id)_labelWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(PXAnimatedLabel);
   v6 = v5;
-  if (v4)
+  if (textCopy)
   {
-    v7 = v4;
+    v7 = textCopy;
   }
 
   else
@@ -134,52 +134,52 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
   [(PXAnimatedLabel *)v5 setText:v7];
 
   [(PXAnimatedLabel *)v6 setAlpha:0.0];
-  v8 = [(PXAnimatedCountView *)self font];
-  if (v8)
+  font = [(PXAnimatedCountView *)self font];
+  if (font)
   {
-    [(PXAnimatedLabel *)v6 setFont:v8];
+    [(PXAnimatedLabel *)v6 setFont:font];
   }
 
   return v6;
 }
 
-- (BOOL)_requiresDigitAnimationForNewText:(id)a3
+- (BOOL)_requiresDigitAnimationForNewText:(id)text
 {
-  v3 = a3;
-  if ([v3 rangeOfDigits])
+  textCopy = text;
+  if ([textCopy rangeOfDigits])
   {
-    v4 = 0;
+    containsDigits = 0;
   }
 
   else
   {
-    v4 = [v3 containsDigits];
+    containsDigits = [textCopy containsDigits];
   }
 
-  return v4;
+  return containsDigits;
 }
 
-- (BOOL)_requiresLabelSwitchForNewText:(id)a3
+- (BOOL)_requiresLabelSwitchForNewText:(id)text
 {
-  v4 = a3;
-  v5 = [(PXAnimatedCountView *)self text];
-  v6 = [v5 stringByRemovingDigits];
-  v7 = [v4 stringByRemovingDigits];
-  v8 = [v4 rangeOfDigits];
+  textCopy = text;
+  text = [(PXAnimatedCountView *)self text];
+  stringByRemovingDigits = [text stringByRemovingDigits];
+  stringByRemovingDigits2 = [textCopy stringByRemovingDigits];
+  rangeOfDigits = [textCopy rangeOfDigits];
   v10 = v9;
-  [v5 rangeOfDigits];
+  [text rangeOfDigits];
   v12 = v11;
-  if (v8)
+  if (rangeOfDigits)
   {
     LOBYTE(v13) = 1;
   }
 
   else
   {
-    v13 = [v4 containsDigits] ^ 1;
+    v13 = [textCopy containsDigits] ^ 1;
   }
 
-  v14 = [v6 isEqualToString:v7];
+  v14 = [stringByRemovingDigits isEqualToString:stringByRemovingDigits2];
   if (v12 == v10)
   {
     v15 = v13;
@@ -203,51 +203,51 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
   return v16;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  objc_storeStrong(&self->_font, a3);
-  v5 = a3;
-  v6 = [(PXAnimatedCountView *)self currentLabel];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_font, font);
+  fontCopy = font;
+  currentLabel = [(PXAnimatedCountView *)self currentLabel];
+  [currentLabel setFont:fontCopy];
 
-  v7 = [(PXAnimatedCountView *)self sizingLabel];
-  [v7 setFont:v5];
+  sizingLabel = [(PXAnimatedCountView *)self sizingLabel];
+  [sizingLabel setFont:fontCopy];
 }
 
-- (void)setText:(id)a3 withAnimationStyle:(int64_t)a4 spinDigits:(BOOL)a5
+- (void)setText:(id)text withAnimationStyle:(int64_t)style spinDigits:(BOOL)digits
 {
-  v5 = a5;
-  v9 = a3;
-  if (a4)
+  digitsCopy = digits;
+  textCopy = text;
+  if (style)
   {
     v10 = 1;
-    if (a4 != 1)
+    if (style != 1)
     {
       v10 = 2;
     }
 
     v39 = v10;
-    v11 = [(PXAnimatedCountView *)self currentLabel];
+    currentLabel = [(PXAnimatedCountView *)self currentLabel];
     v12 = self->_text;
-    v13 = [(PXAnimatedCountView *)self _requiresLabelSwitchForNewText:v9];
-    v14 = [(PXAnimatedCountView *)self _requiresDigitAnimationForNewText:v9]&& v5;
-    objc_storeStrong(&self->_text, a3);
+    v13 = [(PXAnimatedCountView *)self _requiresLabelSwitchForNewText:textCopy];
+    v14 = [(PXAnimatedCountView *)self _requiresDigitAnimationForNewText:textCopy]&& digitsCopy;
+    objc_storeStrong(&self->_text, text);
     if (v13 && v14)
     {
-      v37 = v11;
-      v15 = v9;
-      v36 = [v15 rangeOfDigits];
+      v37 = currentLabel;
+      v15 = textCopy;
+      rangeOfDigits = [v15 rangeOfDigits];
       v17 = v16;
       v38 = v12;
-      v18 = [(NSString *)v12 digits];
-      if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+      digits = [(NSString *)v12 digits];
+      if (digits == 0x7FFFFFFFFFFFFFFFLL)
       {
         v19 = 0;
       }
 
       else
       {
-        v19 = v18;
+        v19 = digits;
       }
 
       v20 = MEMORY[0x1E696ADA0];
@@ -272,7 +272,7 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
         while ([v24 length] < v17);
       }
 
-      v27 = [v15 stringByReplacingCharactersInRange:v36 withString:{v17, v24}];
+      v27 = [v15 stringByReplacingCharactersInRange:rangeOfDigits withString:{v17, v24}];
 
       [(NSString *)v38 rangeOfDigits];
       v29 = v28;
@@ -281,8 +281,8 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
       {
         v33 = [(PXAnimatedCountView *)self _labelWithText:v27];
         [(PXAnimatedCountView *)self _updateSizingWithText:v15];
-        v11 = v37;
-        [(PXAnimatedCountView *)self _animateLabelSwitchFromLabel:v37 toLabel:v33 andAnimationStyle:a4 completionBlock:0];
+        currentLabel = v37;
+        [(PXAnimatedCountView *)self _animateLabelSwitchFromLabel:v37 toLabel:v33 andAnimationStyle:style completionBlock:0];
         v34 = dispatch_time(0, 240000003);
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
@@ -297,8 +297,8 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
 
       else
       {
-        v31 = [(PXAnimatedCountView *)self currentLabel];
-        [v31 setText:v15 withAnimationStyle:v39 completionBlock:&__block_literal_global_140251];
+        currentLabel2 = [(PXAnimatedCountView *)self currentLabel];
+        [currentLabel2 setText:v15 withAnimationStyle:v39 completionBlock:&__block_literal_global_140251];
 
         v32 = dispatch_time(0, 330000013);
         block[0] = MEMORY[0x1E69E9820];
@@ -307,9 +307,9 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
         block[3] = &unk_1E774A768;
         block[4] = self;
         v41 = v15;
-        v11 = v37;
+        currentLabel = v37;
         v42 = v37;
-        v43 = a4;
+        styleCopy = style;
         dispatch_after(v32, MEMORY[0x1E69E96A0], block);
       }
 
@@ -318,25 +318,25 @@ uint64_t __94__PXAnimatedCountView__animateLabelSwitchFromLabel_toLabel_andAnima
 
     else if (v13)
     {
-      v26 = [(PXAnimatedCountView *)self _labelWithText:v9];
-      [(PXAnimatedCountView *)self _updateSizingWithText:v9];
-      [(PXAnimatedCountView *)self _animateLabelSwitchFromLabel:v11 toLabel:v26 andAnimationStyle:a4 completionBlock:0];
+      v26 = [(PXAnimatedCountView *)self _labelWithText:textCopy];
+      [(PXAnimatedCountView *)self _updateSizingWithText:textCopy];
+      [(PXAnimatedCountView *)self _animateLabelSwitchFromLabel:currentLabel toLabel:v26 andAnimationStyle:style completionBlock:0];
     }
 
     else if (v14)
     {
-      [v11 setText:v9 withAnimationStyle:v39 completionBlock:0];
-      [(PXAnimatedCountView *)self _updateSizingWithText:v9];
+      [currentLabel setText:textCopy withAnimationStyle:v39 completionBlock:0];
+      [(PXAnimatedCountView *)self _updateSizingWithText:textCopy];
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_text, a3);
-    v25 = [(PXAnimatedCountView *)self currentLabel];
-    [v25 setText:v9];
+    objc_storeStrong(&self->_text, text);
+    currentLabel3 = [(PXAnimatedCountView *)self currentLabel];
+    [currentLabel3 setText:textCopy];
 
-    [(PXAnimatedCountView *)self _updateSizingWithText:v9];
+    [(PXAnimatedCountView *)self _updateSizingWithText:textCopy];
   }
 }
 
@@ -365,22 +365,22 @@ void __61__PXAnimatedCountView_setText_withAnimationStyle_spinDigits___block_inv
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXAnimatedCountView *)self gradientLayer];
+  gradientLayer = [(PXAnimatedCountView *)self gradientLayer];
   v14.origin.x = v4;
   v14.origin.y = v6;
   v14.size.width = v8;
   v14.size.height = v10;
   v15 = CGRectInset(v14, 0.0, 4.0);
-  [v11 setFrame:{v15.origin.x, v15.origin.y, v15.size.width, v15.size.height}];
+  [gradientLayer setFrame:{v15.origin.x, v15.origin.y, v15.size.width, v15.size.height}];
 
-  v12 = [(PXAnimatedCountView *)self currentLabel];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  currentLabel = [(PXAnimatedCountView *)self currentLabel];
+  [currentLabel setFrame:{v4, v6, v8, v10}];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PXAnimatedCountView *)self sizingLabel];
-  [v2 intrinsicContentSize];
+  sizingLabel = [(PXAnimatedCountView *)self sizingLabel];
+  [sizingLabel intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -391,11 +391,11 @@ void __61__PXAnimatedCountView_setText_withAnimationStyle_spinDigits___block_inv
   return result;
 }
 
-- (PXAnimatedCountView)initWithCoder:(id)a3
+- (PXAnimatedCountView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXAnimatedCountView;
-  v3 = [(PXAnimatedCountView *)&v6 initWithCoder:a3];
+  v3 = [(PXAnimatedCountView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -405,11 +405,11 @@ void __61__PXAnimatedCountView_setText_withAnimationStyle_spinDigits___block_inv
   return v4;
 }
 
-- (PXAnimatedCountView)initWithFrame:(CGRect)a3
+- (PXAnimatedCountView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXAnimatedCountView;
-  v3 = [(PXAnimatedCountView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXAnimatedCountView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -422,34 +422,34 @@ void __61__PXAnimatedCountView_setText_withAnimationStyle_spinDigits___block_inv
 - (void)commonInit
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6979380] layer];
+  layer = [MEMORY[0x1E6979380] layer];
   v4 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
-  v5 = [v4 CGColor];
+  cGColor = [v4 CGColor];
 
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
-  v7 = [v6 CGColor];
+  cGColor2 = [v6 CGColor];
 
-  v20[0] = v5;
-  v20[1] = v7;
-  v20[2] = v7;
-  v20[3] = v5;
+  v20[0] = cGColor;
+  v20[1] = cGColor2;
+  v20[2] = cGColor2;
+  v20[3] = cGColor;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
-  [(CAGradientLayer *)v3 setColors:v8];
-  [(CAGradientLayer *)v3 setLocations:&unk_1F1910E58];
-  v9 = [(PXAnimatedCountView *)self layer];
-  [v9 bounds];
-  [(CAGradientLayer *)v3 setFrame:?];
+  [(CAGradientLayer *)layer setColors:v8];
+  [(CAGradientLayer *)layer setLocations:&unk_1F1910E58];
+  layer2 = [(PXAnimatedCountView *)self layer];
+  [layer2 bounds];
+  [(CAGradientLayer *)layer setFrame:?];
 
   v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   font = self->_font;
   self->_font = v10;
 
   gradientLayer = self->_gradientLayer;
-  self->_gradientLayer = v3;
-  v13 = v3;
+  self->_gradientLayer = layer;
+  v13 = layer;
 
-  v14 = [(PXAnimatedCountView *)self layer];
-  [v14 setMask:v13];
+  layer3 = [(PXAnimatedCountView *)self layer];
+  [layer3 setMask:v13];
 
   v15 = objc_alloc_init(PXAnimatedLabel);
   [(PXAnimatedLabel *)v15 setText:&stru_1F1741150];

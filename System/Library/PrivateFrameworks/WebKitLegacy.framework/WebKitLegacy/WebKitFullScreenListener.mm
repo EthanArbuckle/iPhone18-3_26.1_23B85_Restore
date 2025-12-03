@@ -1,5 +1,5 @@
 @interface WebKitFullScreenListener
-- (WebKitFullScreenListener)initWithElement:(void *)a3 initialCompletionHandler:(void *)a4 finalCompletionHandler:(void *)a5;
+- (WebKitFullScreenListener)initWithElement:(void *)element initialCompletionHandler:(void *)handler finalCompletionHandler:(void *)completionHandler;
 - (id).cxx_construct;
 - (void)webkitDidEnterFullScreen;
 - (void)webkitDidExitFullScreen;
@@ -9,7 +9,7 @@
 
 @implementation WebKitFullScreenListener
 
-- (WebKitFullScreenListener)initWithElement:(void *)a3 initialCompletionHandler:(void *)a4 finalCompletionHandler:(void *)a5
+- (WebKitFullScreenListener)initWithElement:(void *)element initialCompletionHandler:(void *)handler finalCompletionHandler:(void *)completionHandler
 {
   v17.receiver = self;
   v17.super_class = WebKitFullScreenListener;
@@ -20,18 +20,18 @@
     return v9;
   }
 
-  if (a3)
+  if (element)
   {
-    *(a3 + 7) += 2;
+    *(element + 7) += 2;
   }
 
   m_ptr = v8->_element.m_ptr;
-  v9->_element.m_ptr = a3;
+  v9->_element.m_ptr = element;
   if (!m_ptr)
   {
 LABEL_7:
-    v11 = *a4;
-    *a4 = 0;
+    v11 = *handler;
+    *handler = 0;
     ptr = v9->_initialCompletionHandler.m_function.m_callableWrapper.__ptr_;
     v9->_initialCompletionHandler.m_function.m_callableWrapper.__ptr_ = v11;
     if (!ptr)
@@ -49,8 +49,8 @@ LABEL_7:
   }
 
   WebCore::Node::removedLastRef(m_ptr);
-  v16 = *a4;
-  *a4 = 0;
+  v16 = *handler;
+  *handler = 0;
   ptr = v9->_initialCompletionHandler.m_function.m_callableWrapper.__ptr_;
   v9->_initialCompletionHandler.m_function.m_callableWrapper.__ptr_ = v16;
   if (ptr)
@@ -60,8 +60,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v13 = *a5;
-  *a5 = 0;
+  v13 = *completionHandler;
+  *completionHandler = 0;
   v14 = v9->_finalCompletionHandler.m_function.m_callableWrapper.__ptr_;
   v9->_finalCompletionHandler.m_function.m_callableWrapper.__ptr_ = v13;
   if (v14)

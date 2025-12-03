@@ -24,11 +24,11 @@ LABEL_10:
   }
 
   v10 = v9;
-  v11 = [v9 numberOfArguments];
-  v12 = v11;
-  if ((v11 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  numberOfArguments = [v9 numberOfArguments];
+  v12 = numberOfArguments;
+  if ((numberOfArguments & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    if (v11 >= 4)
+    if (numberOfArguments >= 4)
     {
       v15 = _NSMethodExceptionProem(self, a2);
       v16 = NSStringFromSelector(sel);
@@ -96,9 +96,9 @@ LABEL_10:
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v22[0] = 0;
-  v4 = [(NSOperation *)self isFinished];
+  isFinished = [(NSOperation *)self isFinished];
   result = 0;
-  if (!v4)
+  if (!isFinished)
   {
     return result;
   }
@@ -132,10 +132,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v8 = [(NSInvocation *)self->_inv methodSignature];
-  v9 = [(NSMethodSignature *)v8 methodReturnType];
-  v10 = strspn(v9, "norNORV+0123456789");
-  v11 = v9[v10];
+  methodSignature = [(NSInvocation *)self->_inv methodSignature];
+  methodReturnType = [(NSMethodSignature *)methodSignature methodReturnType];
+  v10 = strspn(methodReturnType, "norNORV+0123456789");
+  v11 = methodReturnType[v10];
   if (v11 == 64 || v11 == 35)
   {
     [(NSInvocation *)self->_inv getReturnValue:v22];
@@ -144,11 +144,11 @@ LABEL_14:
   else
   {
     v12 = v10;
-    v13 = [(NSMethodSignature *)v8 methodReturnLength];
-    v14 = MEMORY[0x1EEE9AC00](v13);
+    methodReturnLength = [(NSMethodSignature *)methodSignature methodReturnLength];
+    v14 = MEMORY[0x1EEE9AC00](methodReturnLength);
     v16 = v22 - v15;
     [(NSInvocation *)self->_inv getReturnValue:v22 - v15, v14];
-    v22[0] = [NSValue valueWithBytes:v16 objCType:&v9[v12]];
+    v22[0] = [NSValue valueWithBytes:v16 objCType:&methodReturnType[v12]];
   }
 
   os_unfair_lock_unlock(&self->super._iop.__lock);

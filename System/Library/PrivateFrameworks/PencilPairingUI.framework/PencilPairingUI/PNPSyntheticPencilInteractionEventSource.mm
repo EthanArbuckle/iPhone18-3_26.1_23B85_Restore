@@ -1,7 +1,7 @@
 @interface PNPSyntheticPencilInteractionEventSource
 - (PNPPencilInteractionEventDestination)eventDestination;
-- (int64_t)_playlistPositionForPosition:(int64_t)a3;
-- (void)_playEventAtPlayheadPosition:(int64_t)a3;
+- (int64_t)_playlistPositionForPosition:(int64_t)position;
+- (void)_playEventAtPlayheadPosition:(int64_t)position;
 - (void)play;
 @end
 
@@ -17,19 +17,19 @@
   }
 }
 
-- (void)_playEventAtPlayheadPosition:(int64_t)a3
+- (void)_playEventAtPlayheadPosition:(int64_t)position
 {
-  v5 = [(PNPSyntheticPencilInteractionEventSource *)self playlist];
-  v6 = [v5 objectAtIndex:a3];
+  playlist = [(PNPSyntheticPencilInteractionEventSource *)self playlist];
+  v6 = [playlist objectAtIndex:position];
 
-  v7 = [(PNPSyntheticPencilInteractionEventSource *)self eventDestination];
+  eventDestination = [(PNPSyntheticPencilInteractionEventSource *)self eventDestination];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__PNPSyntheticPencilInteractionEventSource__playEventAtPlayheadPosition___block_invoke;
   v8[3] = &unk_279A0A150;
   v8[4] = self;
-  v8[5] = a3;
-  [v6 serviceDestination:v7 fromSource:self withCompletionBlock:v8];
+  v8[5] = position;
+  [v6 serviceDestination:eventDestination fromSource:self withCompletionBlock:v8];
 }
 
 uint64_t __73__PNPSyntheticPencilInteractionEventSource__playEventAtPlayheadPosition___block_invoke(uint64_t result)
@@ -51,14 +51,14 @@ uint64_t __73__PNPSyntheticPencilInteractionEventSource__playEventAtPlayheadPosi
   return result;
 }
 
-- (int64_t)_playlistPositionForPosition:(int64_t)a3
+- (int64_t)_playlistPositionForPosition:(int64_t)position
 {
-  v4 = [(PNPSyntheticPencilInteractionEventSource *)self playlist];
-  v5 = [v4 count] - 1;
+  playlist = [(PNPSyntheticPencilInteractionEventSource *)self playlist];
+  v5 = [playlist count] - 1;
 
-  if (v5 >= a3)
+  if (v5 >= position)
   {
-    return a3;
+    return position;
   }
 
   else

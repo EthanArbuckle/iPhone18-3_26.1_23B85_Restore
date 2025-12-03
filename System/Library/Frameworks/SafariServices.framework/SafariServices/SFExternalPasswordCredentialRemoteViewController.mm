@@ -7,8 +7,8 @@
 
 - (void)presentExternalPasswordCredentialRemoteViewController
 {
-  v3 = [(SFPasswordRemoteViewController *)self delegate];
-  [v3 presentExternalPasswordCredentialRemoteViewController:self];
+  delegate = [(SFPasswordRemoteViewController *)self delegate];
+  [delegate presentExternalPasswordCredentialRemoteViewController:self];
 }
 
 + (id)passwordServiceViewControllerName

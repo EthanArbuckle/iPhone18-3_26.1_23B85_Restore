@@ -1,23 +1,23 @@
 @interface HKCodableHealthRecordsSharableViewModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAllRecords:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsPinned:(BOOL)a3;
-- (void)setHasLatestSupportedVersion:(BOOL)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllRecords:(id)records;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsPinned:(BOOL)pinned;
+- (void)setHasLatestSupportedVersion:(BOOL)version;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHealthRecordsSharableViewModel
 
-- (void)setHasIsPinned:(BOOL)a3
+- (void)setHasIsPinned:(BOOL)pinned
 {
-  if (a3)
+  if (pinned)
   {
     v3 = 8;
   }
@@ -30,27 +30,27 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addAllRecords:(id)a3
+- (void)addAllRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   allRecords = self->_allRecords;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!allRecords)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_allRecords;
     self->_allRecords = v6;
 
-    v4 = v8;
+    recordsCopy = v8;
     allRecords = self->_allRecords;
   }
 
-  [(NSMutableArray *)allRecords addObject:v4];
+  [(NSMutableArray *)allRecords addObject:recordsCopy];
 }
 
-- (void)setHasLatestSupportedVersion:(BOOL)a3
+- (void)setHasLatestSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -84,8 +84,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableHealthRecordsSharableViewModel;
   v4 = [(HKCodableHealthRecordsSharableViewModel *)&v8 description];
-  v5 = [(HKCodableHealthRecordsSharableViewModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHealthRecordsSharableViewModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -93,12 +93,12 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   conceptIdentifier = self->_conceptIdentifier;
   if (conceptIdentifier)
   {
-    [v3 setObject:conceptIdentifier forKey:@"conceptIdentifier"];
+    [dictionary setObject:conceptIdentifier forKey:@"conceptIdentifier"];
   }
 
   if (*&self->_has)
@@ -116,8 +116,8 @@
   eduContent = self->_eduContent;
   if (eduContent)
   {
-    v9 = [(HKCodableHealthRecordsEduContent *)eduContent dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"eduContent"];
+    dictionaryRepresentation = [(HKCodableHealthRecordsEduContent *)eduContent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"eduContent"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -129,15 +129,15 @@
   localizedEducationContent = self->_localizedEducationContent;
   if (localizedEducationContent)
   {
-    v12 = [(HKCodableHealthRecordsLocalizedEducationContent *)localizedEducationContent dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"localizedEducationContent"];
+    dictionaryRepresentation2 = [(HKCodableHealthRecordsLocalizedEducationContent *)localizedEducationContent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"localizedEducationContent"];
   }
 
   latestRecord = self->_latestRecord;
   if (latestRecord)
   {
-    v14 = [(HKCodableHealthRecordsIndividualRecord *)latestRecord dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"latestRecord"];
+    dictionaryRepresentation3 = [(HKCodableHealthRecordsIndividualRecord *)latestRecord dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"latestRecord"];
   }
 
   if ([(NSMutableArray *)self->_allRecords count])
@@ -162,8 +162,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation4 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation4];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -193,10 +193,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_conceptIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -273,38 +273,38 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_conceptIdentifier)
   {
-    [v4 setConceptIdentifier:?];
-    v4 = v11;
+    [toCopy setConceptIdentifier:?];
+    toCopy = v11;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_category;
-    *(v4 + 84) |= 1u;
+    *(toCopy + 1) = self->_category;
+    *(toCopy + 84) |= 1u;
   }
 
   if (self->_preferredName)
   {
     [v11 setPreferredName:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_eduContent)
   {
     [v11 setEduContent:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 80) = self->_isPinned;
-    *(v4 + 84) |= 8u;
+    *(toCopy + 80) = self->_isPinned;
+    *(toCopy + 84) |= 8u;
   }
 
   if (self->_latestRecord)
@@ -315,10 +315,10 @@
   if ([(HKCodableHealthRecordsSharableViewModel *)self allRecordsCount])
   {
     [v11 clearAllRecords];
-    v5 = [(HKCodableHealthRecordsSharableViewModel *)self allRecordsCount];
-    if (v5)
+    allRecordsCount = [(HKCodableHealthRecordsSharableViewModel *)self allRecordsCount];
+    if (allRecordsCount)
     {
-      v6 = v5;
+      v6 = allRecordsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HKCodableHealthRecordsSharableViewModel *)self allRecordsAtIndex:i];
@@ -349,11 +349,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_conceptIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_conceptIdentifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -363,11 +363,11 @@
     *(v5 + 84) |= 1u;
   }
 
-  v8 = [(NSString *)self->_preferredName copyWithZone:a3];
+  v8 = [(NSString *)self->_preferredName copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
-  v10 = [(HKCodableHealthRecordsEduContent *)self->_eduContent copyWithZone:a3];
+  v10 = [(HKCodableHealthRecordsEduContent *)self->_eduContent copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -377,7 +377,7 @@
     *(v5 + 84) |= 8u;
   }
 
-  v12 = [(HKCodableHealthRecordsIndividualRecord *)self->_latestRecord copyWithZone:a3];
+  v12 = [(HKCodableHealthRecordsIndividualRecord *)self->_latestRecord copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -400,7 +400,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{a3, v24}];
+        v19 = [*(*(&v24 + 1) + 8 * i) copyWithZone:{zone, v24}];
         [v5 addAllRecords:v19];
       }
 
@@ -424,23 +424,23 @@
     *(v5 + 84) |= 4u;
   }
 
-  v21 = [(HKCodableHealthRecordsLocalizedEducationContent *)self->_localizedEducationContent copyWithZone:a3, v24];
+  v21 = [(HKCodableHealthRecordsLocalizedEducationContent *)self->_localizedEducationContent copyWithZone:zone, v24];
   v22 = *(v5 + 64);
   *(v5 + 64) = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   conceptIdentifier = self->_conceptIdentifier;
-  if (conceptIdentifier | *(v4 + 5))
+  if (conceptIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)conceptIdentifier isEqual:?])
     {
@@ -450,25 +450,25 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_category != *(v4 + 1))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_category != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_23;
   }
 
   preferredName = self->_preferredName;
-  if (preferredName | *(v4 + 9) && ![(NSString *)preferredName isEqual:?])
+  if (preferredName | *(equalCopy + 9) && ![(NSString *)preferredName isEqual:?])
   {
     goto LABEL_23;
   }
 
   eduContent = self->_eduContent;
-  if (eduContent | *(v4 + 6))
+  if (eduContent | *(equalCopy + 6))
   {
     if (![(HKCodableHealthRecordsEduContent *)eduContent isEqual:?])
     {
@@ -478,38 +478,38 @@
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 84) & 8) == 0)
+    if ((*(equalCopy + 84) & 8) == 0)
     {
       goto LABEL_23;
     }
 
     if (self->_isPinned)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 84) & 8) != 0)
+  else if ((*(equalCopy + 84) & 8) != 0)
   {
     goto LABEL_23;
   }
 
   latestRecord = self->_latestRecord;
-  if (latestRecord | *(v4 + 7) && ![(HKCodableHealthRecordsIndividualRecord *)latestRecord isEqual:?])
+  if (latestRecord | *(equalCopy + 7) && ![(HKCodableHealthRecordsIndividualRecord *)latestRecord isEqual:?])
   {
     goto LABEL_23;
   }
 
   allRecords = self->_allRecords;
-  if (allRecords | *(v4 + 4))
+  if (allRecords | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)allRecords isEqual:?])
     {
@@ -519,20 +519,20 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 84) & 2) == 0 || self->_latestSupportedVersion != *(v4 + 2))
+    if ((*(equalCopy + 84) & 2) == 0 || self->_latestSupportedVersion != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 84) & 2) != 0)
+  else if ((*(equalCopy + 84) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 84) & 4) == 0)
+    if ((*(equalCopy + 84) & 4) == 0)
     {
       goto LABEL_37;
     }
@@ -542,14 +542,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 84) & 4) == 0 || self->_minimumSupportedVersion != *(v4 + 3))
+  if ((*(equalCopy + 84) & 4) == 0 || self->_minimumSupportedVersion != *(equalCopy + 3))
   {
     goto LABEL_23;
   }
 
 LABEL_37:
   localizedEducationContent = self->_localizedEducationContent;
-  if (localizedEducationContent | *(v4 + 8))
+  if (localizedEducationContent | *(equalCopy + 8))
   {
     v10 = [(HKCodableHealthRecordsLocalizedEducationContent *)localizedEducationContent isEqual:?];
   }
@@ -615,28 +615,28 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(HKCodableHealthRecordsLocalizedEducationContent *)self->_localizedEducationContent hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(HKCodableHealthRecordsSharableViewModel *)self setConceptIdentifier:?];
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
-    self->_category = *(v4 + 1);
+    self->_category = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HKCodableHealthRecordsSharableViewModel *)self setPreferredName:?];
   }
 
   eduContent = self->_eduContent;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   if (eduContent)
   {
     if (v6)
@@ -650,14 +650,14 @@ LABEL_9:
     [(HKCodableHealthRecordsSharableViewModel *)self setEduContent:?];
   }
 
-  if ((*(v4 + 84) & 8) != 0)
+  if ((*(fromCopy + 84) & 8) != 0)
   {
-    self->_isPinned = *(v4 + 80);
+    self->_isPinned = *(fromCopy + 80);
     *&self->_has |= 8u;
   }
 
   latestRecord = self->_latestRecord;
-  v8 = *(v4 + 7);
+  v8 = *(fromCopy + 7);
   if (latestRecord)
   {
     if (v8)
@@ -675,7 +675,7 @@ LABEL_9:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -699,22 +699,22 @@ LABEL_9:
     while (v11);
   }
 
-  v14 = *(v4 + 84);
+  v14 = *(fromCopy + 84);
   if ((v14 & 2) != 0)
   {
-    self->_latestSupportedVersion = *(v4 + 2);
+    self->_latestSupportedVersion = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v14 = *(v4 + 84);
+    v14 = *(fromCopy + 84);
   }
 
   if ((v14 & 4) != 0)
   {
-    self->_minimumSupportedVersion = *(v4 + 3);
+    self->_minimumSupportedVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
   localizedEducationContent = self->_localizedEducationContent;
-  v16 = *(v4 + 8);
+  v16 = *(fromCopy + 8);
   if (localizedEducationContent)
   {
     if (v16)

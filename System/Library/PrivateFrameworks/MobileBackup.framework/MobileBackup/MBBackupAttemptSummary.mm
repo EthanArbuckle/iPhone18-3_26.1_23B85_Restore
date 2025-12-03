@@ -1,20 +1,20 @@
 @interface MBBackupAttemptSummary
 - (MBBackupAttemptSummary)init;
-- (MBBackupAttemptSummary)initWithDictionaryRepresentation:(id)a3;
+- (MBBackupAttemptSummary)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
-- (void)trackConsolidatedDomainDuringFileListSynchronization:(id)a3;
-- (void)trackDeletedDomainDuringFileListSynchronization:(id)a3;
-- (void)trackDeletedDomainInCommit:(id)a3;
-- (void)trackDomainTranscription:(id)a3;
-- (void)trackDownloadedDomainDuringFileListSynchronization:(id)a3;
-- (void)trackDuration:(double)a3 forEngineState:(id)a4;
-- (void)trackKeyBagValidationState:(id)a3;
-- (void)trackModifiedDomainInCommit:(id)a3;
-- (void)trackModifiedDomainInTranscription:(id)a3;
-- (void)trackRepairedDomain:(id)a3;
-- (void)trackSkippedFileListCloneDomain:(id)a3;
-- (void)trackSnapshotVerificationFailure:(id)a3;
-- (void)trackUploadedDomain:(id)a3;
+- (void)trackConsolidatedDomainDuringFileListSynchronization:(id)synchronization;
+- (void)trackDeletedDomainDuringFileListSynchronization:(id)synchronization;
+- (void)trackDeletedDomainInCommit:(id)commit;
+- (void)trackDomainTranscription:(id)transcription;
+- (void)trackDownloadedDomainDuringFileListSynchronization:(id)synchronization;
+- (void)trackDuration:(double)duration forEngineState:(id)state;
+- (void)trackKeyBagValidationState:(id)state;
+- (void)trackModifiedDomainInCommit:(id)commit;
+- (void)trackModifiedDomainInTranscription:(id)transcription;
+- (void)trackRepairedDomain:(id)domain;
+- (void)trackSkippedFileListCloneDomain:(id)domain;
+- (void)trackSnapshotVerificationFailure:(id)failure;
+- (void)trackUploadedDomain:(id)domain;
 @end
 
 @implementation MBBackupAttemptSummary
@@ -112,9 +112,9 @@
   return v3;
 }
 
-- (MBBackupAttemptSummary)initWithDictionaryRepresentation:(id)a3
+- (MBBackupAttemptSummary)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v80.receiver = self;
   v80.super_class = MBBackupAttemptSummary;
   v5 = [(MBBackupAttemptSummary *)&v80 init];
@@ -122,182 +122,182 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 objectForKeyedSubscript:@"Error"];
+    v7 = [representationCopy objectForKeyedSubscript:@"Error"];
     v8 = [MBError errorWithDictionaryRepresentation:v7];
     error = v6->_error;
     v6->_error = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"CommitID"];
+    v10 = [representationCopy objectForKeyedSubscript:@"CommitID"];
     commitID = v6->_commitID;
     v6->_commitID = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"SnapshotType"];
+    v12 = [representationCopy objectForKeyedSubscript:@"SnapshotType"];
     v6->_snapshotType = [v12 longLongValue];
 
-    v13 = [v4 objectForKeyedSubscript:@"SnapshotFormat"];
+    v13 = [representationCopy objectForKeyedSubscript:@"SnapshotFormat"];
     v6->_snapshotFormat = [v13 longLongValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"PreviousSnapshot"];
+    v14 = [representationCopy objectForKeyedSubscript:@"PreviousSnapshot"];
     previousSnapshotCommitID = v6->_previousSnapshotCommitID;
     v6->_previousSnapshotCommitID = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"DurationsByEngineState"];
+    v16 = [representationCopy objectForKeyedSubscript:@"DurationsByEngineState"];
     durationByEngineState = v6->_durationByEngineState;
     v6->_durationByEngineState = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"ConsolidatedDomainsInFileListSynchronization"];
+    v18 = [representationCopy objectForKeyedSubscript:@"ConsolidatedDomainsInFileListSynchronization"];
     consolidatedDomainsInFileListSynchronization = v6->_consolidatedDomainsInFileListSynchronization;
     v6->_consolidatedDomainsInFileListSynchronization = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"DeletedDomainsInFileListSynchronization"];
+    v20 = [representationCopy objectForKeyedSubscript:@"DeletedDomainsInFileListSynchronization"];
     deletedDomainsInFileListSynchronization = v6->_deletedDomainsInFileListSynchronization;
     v6->_deletedDomainsInFileListSynchronization = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"DownloadedDomainsInFileListSynchronization"];
+    v22 = [representationCopy objectForKeyedSubscript:@"DownloadedDomainsInFileListSynchronization"];
     downloadedDomainsInFileListSynchronization = v6->_downloadedDomainsInFileListSynchronization;
     v6->_downloadedDomainsInFileListSynchronization = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"ModifiedDomainsInTranscription"];
+    v24 = [representationCopy objectForKeyedSubscript:@"ModifiedDomainsInTranscription"];
     modifiedDomainsInTranscription = v6->_modifiedDomainsInTranscription;
     v6->_modifiedDomainsInTranscription = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"VolumeMapLoadType"];
+    v26 = [representationCopy objectForKeyedSubscript:@"VolumeMapLoadType"];
     volumeMapLoadType = v6->_volumeMapLoadType;
     v6->_volumeMapLoadType = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"EmptyDomainCount"];
+    v28 = [representationCopy objectForKeyedSubscript:@"EmptyDomainCount"];
     v6->_emptyDomainCount = [v28 unsignedLongLongValue];
 
-    v29 = [v4 objectForKeyedSubscript:@"ModifiedDirectoryCount"];
+    v29 = [representationCopy objectForKeyedSubscript:@"ModifiedDirectoryCount"];
     v6->_modifiedDirectoryCount = [v29 unsignedLongValue];
 
-    v30 = [v4 objectForKeyedSubscript:@"DeletedFileCount"];
+    v30 = [representationCopy objectForKeyedSubscript:@"DeletedFileCount"];
     v6->_deletedFileCount = [v30 unsignedLongValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"UnmodifiedDirectoryCount"];
+    v31 = [representationCopy objectForKeyedSubscript:@"UnmodifiedDirectoryCount"];
     v6->_unmodifiedDirectoryCount = [v31 unsignedLongValue];
 
-    v32 = [v4 objectForKeyedSubscript:@"ModifiedDirectoryCount"];
+    v32 = [representationCopy objectForKeyedSubscript:@"ModifiedDirectoryCount"];
     v6->_modifiedDirectoryCount = [v32 unsignedLongValue];
 
-    v33 = [v4 objectForKeyedSubscript:@"UnmodifiedSymlinkCount"];
+    v33 = [representationCopy objectForKeyedSubscript:@"UnmodifiedSymlinkCount"];
     v6->_unmodifiedSymlinkCount = [v33 unsignedLongLongValue];
 
-    v34 = [v4 objectForKeyedSubscript:@"ModifiedSymlinkCount"];
+    v34 = [representationCopy objectForKeyedSubscript:@"ModifiedSymlinkCount"];
     v6->_modifiedSymlinkCount = [v34 unsignedLongLongValue];
 
-    v35 = [v4 objectForKeyedSubscript:@"ReusedAssetCount"];
+    v35 = [representationCopy objectForKeyedSubscript:@"ReusedAssetCount"];
     v6->_reusedAssetCount = [v35 unsignedLongLongValue];
 
-    v36 = [v4 objectForKeyedSubscript:@"ClassAFilesMissingEncryptionKeys"];
+    v36 = [representationCopy objectForKeyedSubscript:@"ClassAFilesMissingEncryptionKeys"];
     v6->_classAFilesMissingEncryptionKeys = [v36 unsignedLongLongValue];
 
-    v37 = [v4 objectForKeyedSubscript:@"ClassBFilesMissingEncryptionKeys"];
+    v37 = [representationCopy objectForKeyedSubscript:@"ClassBFilesMissingEncryptionKeys"];
     v6->_classBFilesMissingEncryptionKeys = [v37 unsignedLongLongValue];
 
-    v38 = [v4 objectForKeyedSubscript:@"DomainsTransitioningVolumeCount"];
+    v38 = [representationCopy objectForKeyedSubscript:@"DomainsTransitioningVolumeCount"];
     v6->_domainsTransitioningVolumesCount = [v38 unsignedLongLongValue];
 
-    v39 = [v4 objectForKeyedSubscript:@"UnmodifiedRegularFileCount"];
+    v39 = [representationCopy objectForKeyedSubscript:@"UnmodifiedRegularFileCount"];
     v6->_unmodifiedRegularFileCount = [v39 unsignedLongLongValue];
 
-    v40 = [v4 objectForKeyedSubscript:@"ModifiedRegularFileCount"];
+    v40 = [representationCopy objectForKeyedSubscript:@"ModifiedRegularFileCount"];
     v6->_modifiedRegularFileCount = [v40 unsignedLongLongValue];
 
-    v41 = [v4 objectForKeyedSubscript:@"DeletedFileCount"];
+    v41 = [representationCopy objectForKeyedSubscript:@"DeletedFileCount"];
     v6->_deletedFileCount = [v41 unsignedLongValue];
 
-    v42 = [v4 objectForKeyedSubscript:@"AssetCopyDuration"];
+    v42 = [representationCopy objectForKeyedSubscript:@"AssetCopyDuration"];
     [v42 doubleValue];
     v6->_assetCopyDuration = v43;
 
-    v44 = [v4 objectForKeyedSubscript:@"TotalQuotaReservation"];
+    v44 = [representationCopy objectForKeyedSubscript:@"TotalQuotaReservation"];
     v6->_totalQuotaReservation = [v44 unsignedLongLongValue];
 
-    v45 = [v4 objectForKeyedSubscript:@"UploadedAssetWriteDuration"];
+    v45 = [representationCopy objectForKeyedSubscript:@"UploadedAssetWriteDuration"];
     [v45 doubleValue];
     v6->_uploadedAssetWriteDuration = v46;
 
-    v47 = [v4 objectForKeyedSubscript:@"UploadedFileListSize"];
+    v47 = [representationCopy objectForKeyedSubscript:@"UploadedFileListSize"];
     v6->_uploadedFileListSize = [v47 unsignedLongLongValue];
 
-    v48 = [v4 objectForKeyedSubscript:@"UploadedDomains"];
+    v48 = [representationCopy objectForKeyedSubscript:@"UploadedDomains"];
     uploadedDomains = v6->_uploadedDomains;
     v6->_uploadedDomains = v48;
 
-    v50 = [v4 objectForKeyedSubscript:@"ModifiedDomainsInCommit"];
+    v50 = [representationCopy objectForKeyedSubscript:@"ModifiedDomainsInCommit"];
     modifiedDomainsInCommit = v6->_modifiedDomainsInCommit;
     v6->_modifiedDomainsInCommit = v50;
 
-    v52 = [v4 objectForKeyedSubscript:@"DeletedDomainsInCommit"];
+    v52 = [representationCopy objectForKeyedSubscript:@"DeletedDomainsInCommit"];
     deletedDomainsInCommit = v6->_deletedDomainsInCommit;
     v6->_deletedDomainsInCommit = v52;
 
-    v54 = [v4 objectForKeyedSubscript:@"RepairedDomains"];
+    v54 = [representationCopy objectForKeyedSubscript:@"RepairedDomains"];
     repairedDomains = v6->_repairedDomains;
     v6->_repairedDomains = v54;
 
-    v56 = [v4 objectForKeyedSubscript:@"UnknownDomainHMACsToRepair"];
+    v56 = [representationCopy objectForKeyedSubscript:@"UnknownDomainHMACsToRepair"];
     unknownDomainHMACsToRepair = v6->_unknownDomainHMACsToRepair;
     v6->_unknownDomainHMACsToRepair = v56;
 
-    v58 = [v4 objectForKeyedSubscript:@"SkippedFileListCloneDomains"];
+    v58 = [representationCopy objectForKeyedSubscript:@"SkippedFileListCloneDomains"];
     skippedFileListCloneDomains = v6->_skippedFileListCloneDomains;
     v6->_skippedFileListCloneDomains = v58;
 
-    v60 = [v4 objectForKeyedSubscript:@"LegacyCacheSize"];
+    v60 = [representationCopy objectForKeyedSubscript:@"LegacyCacheSize"];
     v6->_legacyCacheSize = [v60 unsignedLongLongValue];
 
-    v61 = [v4 objectForKeyedSubscript:@"SnapshotDirectorySize"];
+    v61 = [representationCopy objectForKeyedSubscript:@"SnapshotDirectorySize"];
     v6->_snapshotDirectorySize = [v61 unsignedLongLongValue];
 
-    v62 = [v4 objectForKeyedSubscript:@"SnapshotDirectoryCloneSize"];
+    v62 = [representationCopy objectForKeyedSubscript:@"SnapshotDirectoryCloneSize"];
     v6->_snapshotDirectoryCloneSize = [v62 unsignedLongLongValue];
 
-    v63 = [v4 objectForKeyedSubscript:@"PeakMemoryUsage"];
+    v63 = [representationCopy objectForKeyedSubscript:@"PeakMemoryUsage"];
     v6->_peakMemoryUsage = [v63 unsignedLongLongValue];
 
-    v64 = [v4 objectForKeyedSubscript:@"SnapshotVerificationFailures"];
+    v64 = [representationCopy objectForKeyedSubscript:@"SnapshotVerificationFailures"];
     snapshotVerificationFailures = v6->_snapshotVerificationFailures;
     v6->_snapshotVerificationFailures = v64;
 
-    v66 = [v4 objectForKeyedSubscript:@"SnapshotVerificationRan"];
+    v66 = [representationCopy objectForKeyedSubscript:@"SnapshotVerificationRan"];
     v6->_snapshotVerificationRan = [v66 BOOLValue];
 
-    v67 = [v4 objectForKeyedSubscript:@"AssetUploadDuration"];
+    v67 = [representationCopy objectForKeyedSubscript:@"AssetUploadDuration"];
     v6->_assetUploadDuration = [v67 unsignedLongLongValue];
 
-    v68 = [v4 objectForKeyedSubscript:@"QueuedAssetCount"];
+    v68 = [representationCopy objectForKeyedSubscript:@"QueuedAssetCount"];
     v6->_queuedAssetCount = [v68 unsignedLongLongValue];
 
-    v69 = [v4 objectForKeyedSubscript:@"QueuedAssetSize"];
+    v69 = [representationCopy objectForKeyedSubscript:@"QueuedAssetSize"];
     v6->_queuedAssetSize = [v69 unsignedLongLongValue];
 
-    v70 = [v4 objectForKeyedSubscript:@"UploadedAssetSize"];
+    v70 = [representationCopy objectForKeyedSubscript:@"UploadedAssetSize"];
     v6->_uploadedAssetSize = [v70 unsignedLongLongValue];
 
-    v71 = [v4 objectForKeyedSubscript:@"UploadedAssetCount"];
+    v71 = [representationCopy objectForKeyedSubscript:@"UploadedAssetCount"];
     v6->_uploadedAssetCount = [v71 unsignedLongLongValue];
 
-    v72 = [v4 objectForKeyedSubscript:@"ScrubbedSQLiteDatabaseCount"];
+    v72 = [representationCopy objectForKeyedSubscript:@"ScrubbedSQLiteDatabaseCount"];
     v6->_scrubbedSQLiteFileCount = [v72 unsignedLongLongValue];
 
-    v73 = [v4 objectForKeyedSubscript:@"CompactedSQLiteDatabaseCount"];
+    v73 = [representationCopy objectForKeyedSubscript:@"CompactedSQLiteDatabaseCount"];
     v6->_compactedSQLiteFileCount = [v73 unsignedLongLongValue];
 
-    v74 = [v4 objectForKeyedSubscript:@"CompressedSQLiteDatabaseCount"];
+    v74 = [representationCopy objectForKeyedSubscript:@"CompressedSQLiteDatabaseCount"];
     v6->_compressedSQLiteFileCount = [v74 unsignedLongLongValue];
 
-    v75 = [v4 objectForKeyedSubscript:@"KeyBagValidationResult"];
+    v75 = [representationCopy objectForKeyedSubscript:@"KeyBagValidationResult"];
     v6->_keyBagValidationResult = [v75 unsignedLongLongValue];
 
-    v76 = [v4 objectForKeyedSubscript:@"ValidKeyBagReferenceCount"];
+    v76 = [representationCopy objectForKeyedSubscript:@"ValidKeyBagReferenceCount"];
     v6->_validKeyBagReferenceCount = [v76 unsignedLongLongValue];
 
-    v77 = [v4 objectForKeyedSubscript:@"InvalidKeyBagReferenceCount"];
+    v77 = [representationCopy objectForKeyedSubscript:@"InvalidKeyBagReferenceCount"];
     v6->_invalidKeyBagReferenceCount = [v77 unsignedLongLongValue];
 
-    v78 = [v4 objectForKeyedSubscript:@"EncryptionKeysPendingRepairCount"];
+    v78 = [representationCopy objectForKeyedSubscript:@"EncryptionKeysPendingRepairCount"];
     v6->_encryptionKeysPendingRepairCount = [v78 unsignedLongValue];
   }
 
@@ -308,8 +308,8 @@
 {
   v3 = objc_opt_new();
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(MBBackupAttemptSummary *)self error];
-  v5 = [MBError dictionaryRepresentationForError:v4];
+  error = [(MBBackupAttemptSummary *)self error];
+  v5 = [MBError dictionaryRepresentationForError:error];
   [v3 setObject:v5 forKeyedSubscript:@"Error"];
 
   [v3 setObject:self->_commitID forKeyedSubscript:@"CommitID"];
@@ -321,21 +321,21 @@
 
   [v3 setObject:self->_previousSnapshotCommitID forKeyedSubscript:@"PreviousSnapshot"];
   [v3 setObject:self->_durationByEngineState forKeyedSubscript:@"DurationsByEngineState"];
-  v8 = [(NSMutableSet *)self->_consolidatedDomainsInFileListSynchronization allObjects];
-  v9 = [v8 sortedArrayUsingSelector:"compare:"];
+  allObjects = [(NSMutableSet *)self->_consolidatedDomainsInFileListSynchronization allObjects];
+  v9 = [allObjects sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v9 forKeyedSubscript:@"ConsolidatedDomainsInFileListSynchronization"];
 
-  v10 = [(NSMutableSet *)self->_deletedDomainsInFileListSynchronization allObjects];
-  v11 = [v10 sortedArrayUsingSelector:"compare:"];
+  allObjects2 = [(NSMutableSet *)self->_deletedDomainsInFileListSynchronization allObjects];
+  v11 = [allObjects2 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v11 forKeyedSubscript:@"DeletedDomainsInFileListSynchronization"];
 
-  v12 = [(NSMutableSet *)self->_downloadedDomainsInFileListSynchronization allObjects];
-  v13 = [v12 sortedArrayUsingSelector:"compare:"];
+  allObjects3 = [(NSMutableSet *)self->_downloadedDomainsInFileListSynchronization allObjects];
+  v13 = [allObjects3 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v13 forKeyedSubscript:@"DownloadedDomainsInFileListSynchronization"];
 
   [v3 setObject:self->_volumeMapLoadType forKeyedSubscript:@"VolumeMapLoadType"];
-  v14 = [(NSMutableSet *)self->_modifiedDomainsInTranscription allObjects];
-  v15 = [v14 sortedArrayUsingSelector:"compare:"];
+  allObjects4 = [(NSMutableSet *)self->_modifiedDomainsInTranscription allObjects];
+  v15 = [allObjects4 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v15 forKeyedSubscript:@"ModifiedDomainsInTranscription"];
 
   v16 = [NSNumber numberWithUnsignedLongLong:self->_emptyDomainCount];
@@ -392,28 +392,28 @@
   v33 = [NSNumber numberWithLongLong:[(MBBackupAttemptSummary *)self uploadedFileListSize]];
   [v3 setObject:v33 forKeyedSubscript:@"UploadedFileListSize"];
 
-  v34 = [(NSMutableSet *)self->_uploadedDomains allObjects];
-  v35 = [v34 sortedArrayUsingSelector:"compare:"];
+  allObjects5 = [(NSMutableSet *)self->_uploadedDomains allObjects];
+  v35 = [allObjects5 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v35 forKeyedSubscript:@"UploadedDomains"];
 
-  v36 = [(NSMutableSet *)self->_modifiedDomainsInCommit allObjects];
-  v37 = [v36 sortedArrayUsingSelector:"compare:"];
+  allObjects6 = [(NSMutableSet *)self->_modifiedDomainsInCommit allObjects];
+  v37 = [allObjects6 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v37 forKeyedSubscript:@"ModifiedDomainsInCommit"];
 
-  v38 = [(NSMutableSet *)self->_deletedDomainsInCommit allObjects];
-  v39 = [v38 sortedArrayUsingSelector:"compare:"];
+  allObjects7 = [(NSMutableSet *)self->_deletedDomainsInCommit allObjects];
+  v39 = [allObjects7 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v39 forKeyedSubscript:@"DeletedDomainsInCommit"];
 
-  v40 = [(NSMutableSet *)self->_repairedDomains allObjects];
-  v41 = [v40 sortedArrayUsingSelector:"compare:"];
+  allObjects8 = [(NSMutableSet *)self->_repairedDomains allObjects];
+  v41 = [allObjects8 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v41 forKeyedSubscript:@"RepairedDomains"];
 
-  v42 = [(NSSet *)self->_unknownDomainHMACsToRepair allObjects];
-  v43 = [v42 sortedArrayUsingSelector:"compare:"];
+  allObjects9 = [(NSSet *)self->_unknownDomainHMACsToRepair allObjects];
+  v43 = [allObjects9 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v43 forKeyedSubscript:@"UnknownDomainHMACsToRepair"];
 
-  v44 = [(NSMutableSet *)self->_skippedFileListCloneDomains allObjects];
-  v45 = [v44 sortedArrayUsingSelector:"compare:"];
+  allObjects10 = [(NSMutableSet *)self->_skippedFileListCloneDomains allObjects];
+  v45 = [allObjects10 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v45 forKeyedSubscript:@"SkippedFileListCloneDomains"];
 
   v46 = [NSNumber numberWithUnsignedLongLong:self->_legacyCacheSize];
@@ -428,8 +428,8 @@
   v49 = [NSNumber numberWithUnsignedLongLong:self->_peakMemoryUsage];
   [v3 setObject:v49 forKeyedSubscript:@"PeakMemoryUsage"];
 
-  v50 = [(NSMutableSet *)self->_snapshotVerificationFailures allObjects];
-  v51 = [v50 sortedArrayUsingSelector:"compare:"];
+  allObjects11 = [(NSMutableSet *)self->_snapshotVerificationFailures allObjects];
+  v51 = [allObjects11 sortedArrayUsingSelector:"compare:"];
   [v3 setObject:v51 forKeyedSubscript:@"SnapshotVerificationFailures"];
 
   v52 = [NSNumber numberWithBool:self->_snapshotVerificationRan];
@@ -476,143 +476,143 @@
   return v3;
 }
 
-- (void)trackDeletedDomainDuringFileListSynchronization:(id)a3
+- (void)trackDeletedDomainDuringFileListSynchronization:(id)synchronization
 {
-  v4 = a3;
+  synchronizationCopy = synchronization;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_deletedDomainsInFileListSynchronization addObject:v4];
+  [(NSMutableSet *)self->_deletedDomainsInFileListSynchronization addObject:synchronizationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackDeletedDomainInCommit:(id)a3
+- (void)trackDeletedDomainInCommit:(id)commit
 {
-  v4 = a3;
+  commitCopy = commit;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_deletedDomainsInCommit addObject:v4];
+  [(NSMutableSet *)self->_deletedDomainsInCommit addObject:commitCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackModifiedDomainInTranscription:(id)a3
+- (void)trackModifiedDomainInTranscription:(id)transcription
 {
-  v4 = a3;
+  transcriptionCopy = transcription;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_modifiedDomainsInTranscription addObject:v4];
+  [(NSMutableSet *)self->_modifiedDomainsInTranscription addObject:transcriptionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackDomainTranscription:(id)a3
+- (void)trackDomainTranscription:(id)transcription
 {
-  v4 = a3;
-  self->_unmodifiedDirectoryCount = [v4 unmodifiedDirectories];
-  self->_modifiedDirectoryCount = [v4 modifiedDirectories];
-  self->_unmodifiedSymlinkCount = [v4 unmodifiedSymlinks];
-  self->_modifiedSymlinkCount = [v4 modifiedSymlinks];
-  self->_unmodifiedRegularFileCount = [v4 unmodifiedRegularFiles];
-  self->_modifiedRegularFileCount = [v4 modifiedRegularFiles];
-  self->_deletedFileCount = [v4 deletedFileCount];
-  self->_emptyDomainCount = [v4 emptyDomainCount];
-  self->_reusedAssetCount = [v4 reusedAssetRecords];
-  self->_domainsTransitioningVolumesCount = [v4 domainsTransitioningVolumes];
-  self->_encryptionKeysPendingRepairCount += [v4 encryptionKeysPendingRepairCount];
-  self->_classAFilesMissingEncryptionKeys = [v4 classAFilesMissingEncryptionKeys];
-  v5 = [v4 classBFilesMissingEncryptionKeys];
+  transcriptionCopy = transcription;
+  self->_unmodifiedDirectoryCount = [transcriptionCopy unmodifiedDirectories];
+  self->_modifiedDirectoryCount = [transcriptionCopy modifiedDirectories];
+  self->_unmodifiedSymlinkCount = [transcriptionCopy unmodifiedSymlinks];
+  self->_modifiedSymlinkCount = [transcriptionCopy modifiedSymlinks];
+  self->_unmodifiedRegularFileCount = [transcriptionCopy unmodifiedRegularFiles];
+  self->_modifiedRegularFileCount = [transcriptionCopy modifiedRegularFiles];
+  self->_deletedFileCount = [transcriptionCopy deletedFileCount];
+  self->_emptyDomainCount = [transcriptionCopy emptyDomainCount];
+  self->_reusedAssetCount = [transcriptionCopy reusedAssetRecords];
+  self->_domainsTransitioningVolumesCount = [transcriptionCopy domainsTransitioningVolumes];
+  self->_encryptionKeysPendingRepairCount += [transcriptionCopy encryptionKeysPendingRepairCount];
+  self->_classAFilesMissingEncryptionKeys = [transcriptionCopy classAFilesMissingEncryptionKeys];
+  classBFilesMissingEncryptionKeys = [transcriptionCopy classBFilesMissingEncryptionKeys];
 
-  self->_classBFilesMissingEncryptionKeys = v5;
+  self->_classBFilesMissingEncryptionKeys = classBFilesMissingEncryptionKeys;
 }
 
-- (void)trackKeyBagValidationState:(id)a3
+- (void)trackKeyBagValidationState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = a3;
-    self->_keyBagValidationResult = [v4 lastValidationResult];
-    self->_validKeyBagReferenceCount = [v4 validKeyBagReferenceCount];
-    v5 = [v4 invalidKeyBagReferenceCount];
+    stateCopy = state;
+    self->_keyBagValidationResult = [stateCopy lastValidationResult];
+    self->_validKeyBagReferenceCount = [stateCopy validKeyBagReferenceCount];
+    invalidKeyBagReferenceCount = [stateCopy invalidKeyBagReferenceCount];
 
     v6 = 120;
   }
 
   else
   {
-    v5 = 0;
+    invalidKeyBagReferenceCount = 0;
     v6 = 104;
   }
 
-  *(&self->super.isa + v6) = v5;
+  *(&self->super.isa + v6) = invalidKeyBagReferenceCount;
 }
 
-- (void)trackDownloadedDomainDuringFileListSynchronization:(id)a3
+- (void)trackDownloadedDomainDuringFileListSynchronization:(id)synchronization
 {
-  v4 = a3;
+  synchronizationCopy = synchronization;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_downloadedDomainsInFileListSynchronization addObject:v4];
+  [(NSMutableSet *)self->_downloadedDomainsInFileListSynchronization addObject:synchronizationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackDuration:(double)a3 forEngineState:(id)a4
+- (void)trackDuration:(double)duration forEngineState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [NSNumber numberWithDouble:a3];
-  [(NSMutableDictionary *)self->_durationByEngineState setObject:v7 forKeyedSubscript:v6];
+  v7 = [NSNumber numberWithDouble:duration];
+  [(NSMutableDictionary *)self->_durationByEngineState setObject:v7 forKeyedSubscript:stateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackModifiedDomainInCommit:(id)a3
+- (void)trackModifiedDomainInCommit:(id)commit
 {
-  v4 = a3;
+  commitCopy = commit;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_modifiedDomainsInCommit addObject:v4];
+  [(NSMutableSet *)self->_modifiedDomainsInCommit addObject:commitCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackConsolidatedDomainDuringFileListSynchronization:(id)a3
+- (void)trackConsolidatedDomainDuringFileListSynchronization:(id)synchronization
 {
-  v4 = a3;
+  synchronizationCopy = synchronization;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_consolidatedDomainsInFileListSynchronization addObject:v4];
+  [(NSMutableSet *)self->_consolidatedDomainsInFileListSynchronization addObject:synchronizationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackUploadedDomain:(id)a3
+- (void)trackUploadedDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_uploadedDomains addObject:v4];
+  [(NSMutableSet *)self->_uploadedDomains addObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackSnapshotVerificationFailure:(id)a3
+- (void)trackSnapshotVerificationFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_snapshotVerificationFailures addObject:v4];
+  [(NSMutableSet *)self->_snapshotVerificationFailures addObject:failureCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackRepairedDomain:(id)a3
+- (void)trackRepairedDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_repairedDomains addObject:v4];
+  [(NSMutableSet *)self->_repairedDomains addObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)trackSkippedFileListCloneDomain:(id)a3
+- (void)trackSkippedFileListCloneDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_skippedFileListCloneDomains addObject:v4];
+  [(NSMutableSet *)self->_skippedFileListCloneDomains addObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

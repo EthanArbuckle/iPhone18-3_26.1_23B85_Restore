@@ -1,6 +1,6 @@
 @interface MailStatusProgressBarView
 - (void)removeFromSuperview;
-- (void)updateWithStatusInfo:(id)a3;
+- (void)updateWithStatusInfo:(id)info;
 @end
 
 @implementation MailStatusProgressBarView
@@ -17,13 +17,13 @@
   self->_lastProgress = 0.0;
 }
 
-- (void)updateWithStatusInfo:(id)a3
+- (void)updateWithStatusInfo:(id)info
 {
-  v7 = a3;
-  v4 = [v7 status];
-  if (v4)
+  infoCopy = info;
+  status = [infoCopy status];
+  if (status)
   {
-    v5 = [[NSAttributedString alloc] initWithString:v4];
+    v5 = [[NSAttributedString alloc] initWithString:status];
   }
 
   else
@@ -31,7 +31,7 @@
     v5 = 0;
   }
 
-  v6 = [(MailStatusLabelView *)self preferredPrefixWithStatusInfo:v7];
+  v6 = [(MailStatusLabelView *)self preferredPrefixWithStatusInfo:infoCopy];
   [(MailStatusLabelView *)self setPrimaryLabelText:v5 prefix:v6 animated:0];
 
   [(MailStatusLabelView *)self setSecondaryLabelText:0];

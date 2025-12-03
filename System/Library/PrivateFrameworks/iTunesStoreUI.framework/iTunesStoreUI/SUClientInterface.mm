@@ -15,34 +15,34 @@
 - (SUQueueSessionManager)queueSessionManager;
 - (SUTabBarController)tabBarController;
 - (SUUIAppearance)appearance;
-- (id)URLBagKeyForIdentifier:(id)a3;
+- (id)URLBagKeyForIdentifier:(id)identifier;
 - (id)_newScriptInterface;
-- (void)_dismissModalViewControllerFromViewController:(id)a3 withTransition:(int)a4;
-- (void)_dismissViewControllerFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_dispatchOnPageResponseWithData:(id)a3 response:(id)a4;
-- (void)_dispatchXEvent:(id)a3 withCompletionBlock:(id)a4;
-- (void)_exitStoreWithReason:(int64_t)a3;
-- (void)_hidePreviewOverlayAnimated:(BOOL)a3;
-- (void)_mediaPlayerViewControllerWillDismiss:(id)a3 animated:(BOOL)a4;
-- (void)_presentDialog:(id)a3;
-- (void)_presentViewController:(id)a3 fromViewController:(id)a4 withTransition:(int)a5;
+- (void)_dismissModalViewControllerFromViewController:(id)controller withTransition:(int)transition;
+- (void)_dismissViewControllerFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_dispatchOnPageResponseWithData:(id)data response:(id)response;
+- (void)_dispatchXEvent:(id)event withCompletionBlock:(id)block;
+- (void)_exitStoreWithReason:(int64_t)reason;
+- (void)_hidePreviewOverlayAnimated:(BOOL)animated;
+- (void)_mediaPlayerViewControllerWillDismiss:(id)dismiss animated:(BOOL)animated;
+- (void)_presentDialog:(id)dialog;
+- (void)_presentViewController:(id)controller fromViewController:(id)viewController withTransition:(int)transition;
 - (void)_returnToLibrary;
-- (void)_setIgnoresExpectedClientsProtocol:(BOOL)a3;
-- (void)_setStatusBarHidden:(BOOL)a3 withAnimation:(int64_t)a4;
-- (void)_setStatusBarStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)_showPreviewOverlayAnimated:(BOOL)a3;
+- (void)_setIgnoresExpectedClientsProtocol:(BOOL)protocol;
+- (void)_setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation;
+- (void)_setStatusBarStyle:(int64_t)style animated:(BOOL)animated;
+- (void)_showPreviewOverlayAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)setAppearance:(id)a3;
-- (void)setApplicationIdentifier:(id)a3;
-- (void)setApplicationVersion:(id)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setIgnoreDefaultKeyboardNotifications:(BOOL)a3;
-- (void)setLocalStoragePath:(id)a3;
-- (void)setPurchaseManager:(id)a3;
-- (void)setQueueSessionManager:(id)a3;
-- (void)setURLBagKey:(id)a3 forIdentifier:(id)a4;
-- (void)setUserAgent:(id)a3;
-- (void)setWasLaunchedFromLibrary:(BOOL)a3;
+- (void)setAppearance:(id)appearance;
+- (void)setApplicationIdentifier:(id)identifier;
+- (void)setApplicationVersion:(id)version;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setIgnoreDefaultKeyboardNotifications:(BOOL)notifications;
+- (void)setLocalStoragePath:(id)path;
+- (void)setPurchaseManager:(id)manager;
+- (void)setQueueSessionManager:(id)manager;
+- (void)setURLBagKey:(id)key forIdentifier:(id)identifier;
+- (void)setUserAgent:(id)agent;
+- (void)setWasLaunchedFromLibrary:(BOOL)library;
 @end
 
 @implementation SUClientInterface
@@ -324,7 +324,7 @@ id __36__SUClientInterface_purchaseManager__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setApplicationIdentifier:(id)a3
+- (void)setApplicationIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -332,7 +332,7 @@ id __36__SUClientInterface_purchaseManager__block_invoke(uint64_t a1)
   v4[2] = __46__SUClientInterface_setApplicationIdentifier___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -350,7 +350,7 @@ uint64_t __46__SUClientInterface_setApplicationIdentifier___block_invoke(uint64_
   return result;
 }
 
-- (void)setApplicationVersion:(id)a3
+- (void)setApplicationVersion:(id)version
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -358,7 +358,7 @@ uint64_t __46__SUClientInterface_setApplicationIdentifier___block_invoke(uint64_
   v4[2] = __43__SUClientInterface_setApplicationVersion___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = version;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -376,7 +376,7 @@ uint64_t __43__SUClientInterface_setApplicationVersion___block_invoke(uint64_t r
   return result;
 }
 
-- (void)setAppearance:(id)a3
+- (void)setAppearance:(id)appearance
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -384,7 +384,7 @@ uint64_t __43__SUClientInterface_setApplicationVersion___block_invoke(uint64_t r
   v4[2] = __35__SUClientInterface_setAppearance___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = appearance;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -402,7 +402,7 @@ uint64_t __35__SUClientInterface_setAppearance___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -410,7 +410,7 @@ uint64_t __35__SUClientInterface_setAppearance___block_invoke(uint64_t result)
   v4[2] = __41__SUClientInterface_setClientIdentifier___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -428,7 +428,7 @@ uint64_t __41__SUClientInterface_setClientIdentifier___block_invoke(uint64_t res
   return result;
 }
 
-- (void)setIgnoreDefaultKeyboardNotifications:(BOOL)a3
+- (void)setIgnoreDefaultKeyboardNotifications:(BOOL)notifications
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -436,11 +436,11 @@ uint64_t __41__SUClientInterface_setClientIdentifier___block_invoke(uint64_t res
   v4[2] = __59__SUClientInterface_setIgnoreDefaultKeyboardNotifications___block_invoke;
   v4[3] = &unk_1E8165528;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setLocalStoragePath:(id)a3
+- (void)setLocalStoragePath:(id)path
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -448,7 +448,7 @@ uint64_t __41__SUClientInterface_setClientIdentifier___block_invoke(uint64_t res
   v4[2] = __41__SUClientInterface_setLocalStoragePath___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = path;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -466,7 +466,7 @@ uint64_t __41__SUClientInterface_setLocalStoragePath___block_invoke(uint64_t res
   return result;
 }
 
-- (void)setPurchaseManager:(id)a3
+- (void)setPurchaseManager:(id)manager
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -474,7 +474,7 @@ uint64_t __41__SUClientInterface_setLocalStoragePath___block_invoke(uint64_t res
   v4[2] = __40__SUClientInterface_setPurchaseManager___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = manager;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -500,7 +500,7 @@ uint64_t __40__SUClientInterface_setPurchaseManager___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)setQueueSessionManager:(id)a3
+- (void)setQueueSessionManager:(id)manager
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -508,7 +508,7 @@ uint64_t __40__SUClientInterface_setPurchaseManager___block_invoke(uint64_t resu
   v4[2] = __44__SUClientInterface_setQueueSessionManager___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = manager;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -536,16 +536,16 @@ void *__44__SUClientInterface_setQueueSessionManager___block_invoke(void *result
   return result;
 }
 
-- (void)setURLBagKey:(id)a3 forIdentifier:(id)a4
+- (void)setURLBagKey:(id)key forIdentifier:(id)identifier
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__SUClientInterface_setURLBagKey_forIdentifier___block_invoke;
   block[3] = &unk_1E8164A20;
-  block[4] = a3;
+  block[4] = key;
   block[5] = self;
-  block[6] = a4;
+  block[6] = identifier;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -575,7 +575,7 @@ uint64_t __48__SUClientInterface_setURLBagKey_forIdentifier___block_invoke(void 
   }
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -583,7 +583,7 @@ uint64_t __48__SUClientInterface_setURLBagKey_forIdentifier___block_invoke(void 
   v4[2] = __34__SUClientInterface_setUserAgent___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = agent;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -605,7 +605,7 @@ uint64_t __34__SUClientInterface_setUserAgent___block_invoke(uint64_t a1)
   return [v5 setUserAgent:v1];
 }
 
-- (void)setWasLaunchedFromLibrary:(BOOL)a3
+- (void)setWasLaunchedFromLibrary:(BOOL)library
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -613,7 +613,7 @@ uint64_t __34__SUClientInterface_setUserAgent___block_invoke(uint64_t a1)
   v4[2] = __47__SUClientInterface_setWasLaunchedFromLibrary___block_invoke;
   v4[3] = &unk_1E8165528;
   v4[4] = self;
-  v5 = a3;
+  libraryCopy = library;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -629,7 +629,7 @@ uint64_t __34__SUClientInterface_setUserAgent___block_invoke(uint64_t a1)
   return [(SUClientInterfaceDelegatePrivate *)delegate tabBarControllerForClientInterface:self];
 }
 
-- (id)URLBagKeyForIdentifier:(id)a3
+- (id)URLBagKeyForIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -642,7 +642,7 @@ uint64_t __34__SUClientInterface_setUserAgent___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__SUClientInterface_URLBagKeyForIdentifier___block_invoke;
   block[3] = &unk_1E8165810;
-  block[5] = a3;
+  block[5] = identifier;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
@@ -705,84 +705,84 @@ id __30__SUClientInterface_userAgent__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_dismissModalViewControllerFromViewController:(id)a3 withTransition:(int)a4
+- (void)_dismissModalViewControllerFromViewController:(id)controller withTransition:(int)transition
 {
-  v4 = *&a4;
+  v4 = *&transition;
   if (objc_opt_respondsToSelector())
   {
-    [(SUClientInterfaceDelegatePrivate *)self->_delegate clientInterface:self willDismissViewController:a3];
+    [(SUClientInterfaceDelegatePrivate *)self->_delegate clientInterface:self willDismissViewController:controller];
   }
 
-  [a3 dismissModalViewControllerWithTransition:v4];
+  [controller dismissModalViewControllerWithTransition:v4];
 }
 
-- (void)_dismissViewControllerFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissViewControllerFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   if (objc_opt_respondsToSelector())
   {
-    [(SUClientInterfaceDelegatePrivate *)self->_delegate clientInterface:self willDismissViewController:a3];
+    [(SUClientInterfaceDelegatePrivate *)self->_delegate clientInterface:self willDismissViewController:controller];
   }
 
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self dismissViewController:a3 animated:v6 completion:a5];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self dismissViewController:controller animated:animatedCopy completion:completion];
   }
 
   else
   {
 
-    [a3 dismissViewControllerAnimated:v6 completion:a5];
+    [controller dismissViewControllerAnimated:animatedCopy completion:completion];
   }
 }
 
-- (void)_dispatchOnPageResponseWithData:(id)a3 response:(id)a4
+- (void)_dispatchOnPageResponseWithData:(id)data response:(id)response
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self dispatchOnPageResponseWithData:a3 response:a4];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self dispatchOnPageResponseWithData:data response:response];
   }
 }
 
-- (void)_dispatchXEvent:(id)a3 withCompletionBlock:(id)a4
+- (void)_dispatchXEvent:(id)event withCompletionBlock:(id)block
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self dispatchXEvent:a3 completionBlock:a4];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self dispatchXEvent:event completionBlock:block];
   }
 
   else
   {
-    v8 = *(a4 + 2);
+    v8 = *(block + 2);
 
-    v8(a4, 0);
+    v8(block, 0);
   }
 }
 
-- (void)_exitStoreWithReason:(int64_t)a3
+- (void)_exitStoreWithReason:(int64_t)reason
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self exitStoreWithReason:a3];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self exitStoreWithReason:reason];
   }
 }
 
-- (void)_hidePreviewOverlayAnimated:(BOOL)a3
+- (void)_hidePreviewOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self hidePreviewOverlayAnimated:v3];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self hidePreviewOverlayAnimated:animatedCopy];
   }
 }
 
@@ -805,35 +805,35 @@ id __30__SUClientInterface_userAgent__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_mediaPlayerViewControllerWillDismiss:(id)a3 animated:(BOOL)a4
+- (void)_mediaPlayerViewControllerWillDismiss:(id)dismiss animated:(BOOL)animated
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self willDismissViewController:a3];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self willDismissViewController:dismiss];
   }
 }
 
-- (void)_presentDialog:(id)a3
+- (void)_presentDialog:(id)dialog
 {
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self presentDialog:a3];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self presentDialog:dialog];
   }
 }
 
-- (void)_presentViewController:(id)a3 fromViewController:(id)a4 withTransition:(int)a5
+- (void)_presentViewController:(id)controller fromViewController:(id)viewController withTransition:(int)transition
 {
-  v5 = *&a5;
+  v5 = *&transition;
   if (objc_opt_respondsToSelector())
   {
-    [(SUClientInterfaceDelegatePrivate *)self->_delegate clientInterface:self willPresentViewController:a3];
+    [(SUClientInterfaceDelegatePrivate *)self->_delegate clientInterface:self willPresentViewController:controller];
   }
 
-  [a4 presentViewController:a3 withTransition:v5 completion:0];
+  [viewController presentViewController:controller withTransition:v5 completion:0];
 }
 
 - (id)_newScriptInterface
@@ -858,29 +858,29 @@ id __30__SUClientInterface_userAgent__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setStatusBarHidden:(BOOL)a3 withAnimation:(int64_t)a4
+- (void)_setStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self setStatusBarHidden:v5 withAnimation:a4];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self setStatusBarHidden:hiddenCopy withAnimation:animation];
   }
 }
 
-- (void)_setStatusBarStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_setStatusBarStyle:(int64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self setStatusBarStyle:a3 animated:v4];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self setStatusBarStyle:style animated:animatedCopy];
   }
 }
 
-- (void)_setIgnoresExpectedClientsProtocol:(BOOL)a3
+- (void)_setIgnoresExpectedClientsProtocol:(BOOL)protocol
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -888,18 +888,18 @@ id __30__SUClientInterface_userAgent__block_invoke(uint64_t a1)
   v4[2] = __56__SUClientInterface__setIgnoresExpectedClientsProtocol___block_invoke;
   v4[3] = &unk_1E8165528;
   v4[4] = self;
-  v5 = a3;
+  protocolCopy = protocol;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_showPreviewOverlayAnimated:(BOOL)a3
+- (void)_showPreviewOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (objc_opt_respondsToSelector())
   {
     delegate = self->_delegate;
 
-    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self showPreviewOverlayAnimated:v3];
+    [(SUClientInterfaceDelegatePrivate *)delegate clientInterface:self showPreviewOverlayAnimated:animatedCopy];
   }
 }
 

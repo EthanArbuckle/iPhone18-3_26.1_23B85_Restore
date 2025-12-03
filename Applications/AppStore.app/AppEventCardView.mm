@@ -1,27 +1,27 @@
 @interface AppEventCardView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleTapWithGestureRecognizer:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleTapWithGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
-- (void)notifyMeButtonTapped:(id)a3;
+- (void)notifyMeButtonTapped:(id)tapped;
 @end
 
 @implementation AppEventCardView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100629AE8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = type metadata accessor for AppEventCardLayout(0);
   __chkstk_darwin(v4 - 8);
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_100629FBC(v6);
-  sub_100770A88(v7, v6);
+  sub_100770A88(selfCopy, v6);
   v9 = v8;
   v11 = v10;
 
@@ -33,12 +33,12 @@
   return result;
 }
 
-- (void)handleTapWithGestureRecognizer:(id)a3
+- (void)handleTapWithGestureRecognizer:(id)recognizer
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore16AppEventCardView_lockupViewTappedAction);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10000827C(v3);
     v3(v5);
 
@@ -46,23 +46,23 @@
   }
 }
 
-- (void)notifyMeButtonTapped:(id)a3
+- (void)notifyMeButtonTapped:(id)tapped
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore16AppEventCardView_notifyMeButtonPresenter))
   {
-    v4 = a3;
-    v5 = self;
+    tappedCopy = tapped;
+    selfCopy = self;
 
-    NotifyMeButtonPresenter.didTapButton(sender:)(v4);
+    NotifyMeButtonPresenter.didTapButton(sender:)(tappedCopy);
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10062C3E0(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_10062C3E0(touchCopy);
 
   return v9;
 }

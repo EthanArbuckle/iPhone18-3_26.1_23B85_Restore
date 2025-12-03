@@ -1,12 +1,12 @@
 @interface ICQBackupDeviceGroup
-- (ICQBackupDeviceGroup)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQBackupDeviceGroup)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQBackupDeviceGroup
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQBackupDeviceGroup);
   [(ICQBackupDeviceGroup *)v4 setSectionHeader:self->_sectionHeader];
@@ -15,29 +15,29 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sectionHeader = self->_sectionHeader;
-  v5 = a3;
-  [v5 encodeObject:sectionHeader forKey:@"sectionHeader"];
-  [v5 encodeObject:self->_sectionFooter forKey:@"sectionFooter"];
-  [v5 encodeObject:self->_backupDevices forKey:@"backupDevices"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sectionHeader forKey:@"sectionHeader"];
+  [coderCopy encodeObject:self->_sectionFooter forKey:@"sectionFooter"];
+  [coderCopy encodeObject:self->_backupDevices forKey:@"backupDevices"];
 }
 
-- (ICQBackupDeviceGroup)initWithCoder:(id)a3
+- (ICQBackupDeviceGroup)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ICQBackupDeviceGroup;
   v5 = [(ICQBackupDeviceGroup *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionHeader"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionHeader"];
     sectionHeader = v5->_sectionHeader;
     v5->_sectionHeader = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionFooter"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionFooter"];
     sectionFooter = v5->_sectionFooter;
     v5->_sectionFooter = v8;
 
@@ -47,7 +47,7 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"backupDevices"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"backupDevices"];
     backupDevices = v5->_backupDevices;
     v5->_backupDevices = v13;
   }

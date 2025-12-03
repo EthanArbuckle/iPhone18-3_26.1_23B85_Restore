@@ -1,15 +1,15 @@
 @interface TPSFullTipContentManager
 - (TPSFullTipContentManager)init;
-- (id)_objectCompletionOnClientQueue:(id)a3;
-- (id)_objectsCompletionOnClientQueue:(id)a3;
-- (void)_performWithProxyHandler:(id)a3 errorHandler:(id)a4;
-- (void)contentForVariant:(id)a3 completionHandler:(id)a4;
-- (void)contentWithCompletionHandler:(id)a3;
-- (void)fetchAssetsWithAssetsConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)markTipViewed:(id)a3;
-- (void)removeNotificationForIdentifier:(id)a3;
-- (void)supportFlowContentWithCompletionHandler:(id)a3;
-- (void)userGuideMapWithCompletionHandler:(id)a3;
+- (id)_objectCompletionOnClientQueue:(id)queue;
+- (id)_objectsCompletionOnClientQueue:(id)queue;
+- (void)_performWithProxyHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)contentForVariant:(id)variant completionHandler:(id)handler;
+- (void)contentWithCompletionHandler:(id)handler;
+- (void)fetchAssetsWithAssetsConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)markTipViewed:(id)viewed;
+- (void)removeNotificationForIdentifier:(id)identifier;
+- (void)supportFlowContentWithCompletionHandler:(id)handler;
+- (void)userGuideMapWithCompletionHandler:(id)handler;
 @end
 
 @implementation TPSFullTipContentManager
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (void)contentWithCompletionHandler:(id)a3
+- (void)contentWithCompletionHandler:(id)handler
 {
-  v4 = [(TPSFullTipContentManager *)self _objectsCompletionOnClientQueue:a3];
+  v4 = [(TPSFullTipContentManager *)self _objectsCompletionOnClientQueue:handler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__TPSFullTipContentManager_contentWithCompletionHandler___block_invoke;
@@ -54,15 +54,15 @@
   [(TPSFullTipContentManager *)self _performWithProxyHandler:v8 errorHandler:v6];
 }
 
-- (void)contentForVariant:(id)a3 completionHandler:(id)a4
+- (void)contentForVariant:(id)variant completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:a4];
+  variantCopy = variant;
+  v7 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:handler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__TPSFullTipContentManager_contentForVariant_completionHandler___block_invoke;
   v12[3] = &unk_1E8101CF0;
-  v13 = v6;
+  v13 = variantCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -70,13 +70,13 @@
   v10[3] = &unk_1E8101CC8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = variantCopy;
   [(TPSFullTipContentManager *)self _performWithProxyHandler:v12 errorHandler:v10];
 }
 
-- (void)supportFlowContentWithCompletionHandler:(id)a3
+- (void)supportFlowContentWithCompletionHandler:(id)handler
 {
-  v4 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:a3];
+  v4 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:handler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__TPSFullTipContentManager_supportFlowContentWithCompletionHandler___block_invoke;
@@ -91,15 +91,15 @@
   [(TPSFullTipContentManager *)self _performWithProxyHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchAssetsWithAssetsConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchAssetsWithAssetsConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:a4];
+  configurationCopy = configuration;
+  v7 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:handler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__TPSFullTipContentManager_fetchAssetsWithAssetsConfiguration_completionHandler___block_invoke;
   v12[3] = &unk_1E8101CF0;
-  v13 = v6;
+  v13 = configurationCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -107,21 +107,21 @@
   v10[3] = &unk_1E8101CC8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = configurationCopy;
   [(TPSFullTipContentManager *)self _performWithProxyHandler:v12 errorHandler:v10];
 }
 
-- (void)markTipViewed:(id)a3
+- (void)markTipViewed:(id)viewed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewedCopy = viewed;
+  v5 = viewedCopy;
+  if (viewedCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__TPSFullTipContentManager_markTipViewed___block_invoke;
     v6[3] = &unk_1E8101D18;
-    v7 = v4;
+    v7 = viewedCopy;
     [(TPSFullTipContentManager *)self _performWithProxyHandler:v6 errorHandler:&__block_literal_global_8];
   }
 }
@@ -141,17 +141,17 @@ void __42__TPSFullTipContentManager_markTipViewed___block_invoke_2(uint64_t a1, 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeNotificationForIdentifier:(id)a3
+- (void)removeNotificationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__TPSFullTipContentManager_removeNotificationForIdentifier___block_invoke;
     v6[3] = &unk_1E8101D18;
-    v7 = v4;
+    v7 = identifierCopy;
     [(TPSFullTipContentManager *)self _performWithProxyHandler:v6 errorHandler:&__block_literal_global_5];
   }
 }
@@ -186,9 +186,9 @@ void __41__TPSFullTipContentManager_tipsAppActive__block_invoke_2(uint64_t a1, v
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userGuideMapWithCompletionHandler:(id)a3
+- (void)userGuideMapWithCompletionHandler:(id)handler
 {
-  v4 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:a3];
+  v4 = [(TPSFullTipContentManager *)self _objectCompletionOnClientQueue:handler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__TPSFullTipContentManager_userGuideMapWithCompletionHandler___block_invoke;
@@ -203,30 +203,30 @@ void __41__TPSFullTipContentManager_tipsAppActive__block_invoke_2(uint64_t a1, v
   [(TPSFullTipContentManager *)self _performWithProxyHandler:v8 errorHandler:v6];
 }
 
-- (void)_performWithProxyHandler:(id)a3 errorHandler:(id)a4
+- (void)_performWithProxyHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v10 = a3;
+  handlerCopy = handler;
   serviceProxy = self->_serviceProxy;
-  v7 = a4;
-  v8 = [(TPSServiceConnection *)serviceProxy connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v7];
+  errorHandlerCopy = errorHandler;
+  connection = [(TPSServiceConnection *)serviceProxy connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:errorHandlerCopy];
 
   if (v9)
   {
-    v10[2](v10, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (id)_objectCompletionOnClientQueue:(id)a3
+- (id)_objectCompletionOnClientQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__TPSFullTipContentManager__objectCompletionOnClientQueue___block_invoke;
   v8[3] = &unk_1E8101D80;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = queueCopy;
+  v5 = queueCopy;
   v6 = [v8 copy];
 
   return v6;
@@ -261,16 +261,16 @@ uint64_t __59__TPSFullTipContentManager__objectCompletionOnClientQueue___block_i
   return result;
 }
 
-- (id)_objectsCompletionOnClientQueue:(id)a3
+- (id)_objectsCompletionOnClientQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__TPSFullTipContentManager__objectsCompletionOnClientQueue___block_invoke;
   v8[3] = &unk_1E8101DD0;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = queueCopy;
+  v5 = queueCopy;
   v6 = [v8 copy];
 
   return v6;

@@ -1,17 +1,17 @@
 @interface DMDTestEventStream
 - (id)_testEvent;
-- (void)startNotificationStreamWithEventsHandler:(id)a3;
+- (void)startNotificationStreamWithEventsHandler:(id)handler;
 @end
 
 @implementation DMDTestEventStream
 
-- (void)startNotificationStreamWithEventsHandler:(id)a3
+- (void)startNotificationStreamWithEventsHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(DMDTestEventStream *)self _testEvent];
-  v8 = v6;
+  handlerCopy = handler;
+  _testEvent = [(DMDTestEventStream *)self _testEvent];
+  v8 = _testEvent;
   v7 = [NSArray arrayWithObjects:&v8 count:1];
-  (*(a3 + 2))(v5, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
 - (id)_testEvent

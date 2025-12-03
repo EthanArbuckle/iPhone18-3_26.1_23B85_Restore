@@ -1,8 +1,8 @@
 @interface FCContextConfiguration
 + (id)defaultConfiguration;
 - (FCContextConfiguration)init;
-- (FCContextConfiguration)initWithEnvironment:(int64_t)a3;
-- (FCContextConfiguration)initWithProductionContentEnvironment:(BOOL)a3 productionPrivateDataEnvironment:(BOOL)a4 contentContainerIdentifier:(id)a5 privateDataContainerIdentifier:(id)a6 privateDataSecureContainerIdentifier:(id)a7 storeFrontID:(id)a8 environment:(int64_t)a9;
+- (FCContextConfiguration)initWithEnvironment:(int64_t)environment;
+- (FCContextConfiguration)initWithProductionContentEnvironment:(BOOL)environment productionPrivateDataEnvironment:(BOOL)dataEnvironment contentContainerIdentifier:(id)identifier privateDataContainerIdentifier:(id)containerIdentifier privateDataSecureContainerIdentifier:(id)secureContainerIdentifier storeFrontID:(id)d environment:(int64_t)a9;
 - (NSString)contentEnvironmentDescription;
 @end
 
@@ -53,16 +53,16 @@ uint64_t __46__FCContextConfiguration_defaultConfiguration__block_invoke()
   objc_exception_throw(v6);
 }
 
-- (FCContextConfiguration)initWithProductionContentEnvironment:(BOOL)a3 productionPrivateDataEnvironment:(BOOL)a4 contentContainerIdentifier:(id)a5 privateDataContainerIdentifier:(id)a6 privateDataSecureContainerIdentifier:(id)a7 storeFrontID:(id)a8 environment:(int64_t)a9
+- (FCContextConfiguration)initWithProductionContentEnvironment:(BOOL)environment productionPrivateDataEnvironment:(BOOL)dataEnvironment contentContainerIdentifier:(id)identifier privateDataContainerIdentifier:(id)containerIdentifier privateDataSecureContainerIdentifier:(id)secureContainerIdentifier storeFrontID:(id)d environment:(int64_t)a9
 {
-  v12 = a4;
-  v13 = a3;
+  dataEnvironmentCopy = dataEnvironment;
+  environmentCopy = environment;
   v50 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v40 = a8;
-  if (!v15 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  secureContainerIdentifierCopy = secureContainerIdentifier;
+  dCopy = d;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v37 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentContainerIdentifier"];
     *buf = 136315906;
@@ -75,13 +75,13 @@ uint64_t __46__FCContextConfiguration_defaultConfiguration__block_invoke()
     v49 = v37;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v16)
+    if (containerIdentifierCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v16)
+  else if (containerIdentifierCopy)
   {
     goto LABEL_6;
   }
@@ -108,21 +108,21 @@ LABEL_6:
   if (v18)
   {
     v18->_environment = a9;
-    v18->_isProductionContentEnvironment = v13;
-    v18->_isProductionPrivateDataEnvironment = v12;
-    v20 = [v15 copy];
+    v18->_isProductionContentEnvironment = environmentCopy;
+    v18->_isProductionPrivateDataEnvironment = dataEnvironmentCopy;
+    v20 = [identifierCopy copy];
     contentContainerIdentifier = v19->_contentContainerIdentifier;
     v19->_contentContainerIdentifier = v20;
 
-    v22 = [v16 copy];
+    v22 = [containerIdentifierCopy copy];
     privateDataContainerIdentifier = v19->_privateDataContainerIdentifier;
     v19->_privateDataContainerIdentifier = v22;
 
-    v24 = [v17 copy];
+    v24 = [secureContainerIdentifierCopy copy];
     privateDataSecureContainerIdentifier = v19->_privateDataSecureContainerIdentifier;
     v19->_privateDataSecureContainerIdentifier = v24;
 
-    if (v13)
+    if (environmentCopy)
     {
       v26 = @"production";
     }
@@ -135,20 +135,20 @@ LABEL_6:
     v27 = MEMORY[0x1E696AEC0];
     v28 = v26;
     v29 = v28;
-    if (v40)
+    if (dCopy)
     {
-      [v27 stringWithFormat:@"%@-%@-%@", v15, v28, v40];
+      [v27 stringWithFormat:@"%@-%@-%@", identifierCopy, v28, dCopy];
     }
 
     else
     {
-      [v27 stringWithFormat:@"%@-%@", v15, v28, v39];
+      [v27 stringWithFormat:@"%@-%@", identifierCopy, v28, v39];
     }
     v30 = ;
     contentContainerCombinationIdentifier = v19->_contentContainerCombinationIdentifier;
     v19->_contentContainerCombinationIdentifier = v30;
 
-    if (v12)
+    if (dataEnvironmentCopy)
     {
       v32 = @"production";
     }
@@ -158,7 +158,7 @@ LABEL_6:
       v32 = @"sandbox";
     }
 
-    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", v15, v16, v32];
+    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@", identifierCopy, containerIdentifierCopy, v32];
     privateDataContainerCombinationIdentifier = v19->_privateDataContainerCombinationIdentifier;
     v19->_privateDataContainerCombinationIdentifier = v33;
   }
@@ -167,21 +167,21 @@ LABEL_6:
   return v19;
 }
 
-- (FCContextConfiguration)initWithEnvironment:(int64_t)a3
+- (FCContextConfiguration)initWithEnvironment:(int64_t)environment
 {
   v39 = *MEMORY[0x1E69E9840];
   v5 = +[FCAppleAccount sharedAccount];
-  v6 = [v5 contentStoreFrontID];
+  contentStoreFrontID = [v5 contentStoreFrontID];
 
   v7 = 0;
   v8 = 1;
-  v29 = self;
-  v30 = v6;
-  if (a3 > 3)
+  selfCopy = self;
+  v30 = contentStoreFrontID;
+  if (environment > 3)
   {
-    if (a3 > 5)
+    if (environment > 5)
     {
-      if (a3 == 6)
+      if (environment == 6)
       {
         v8 = 0;
         v11 = FCCKSandboxPrivateSecureContainerIdentifier;
@@ -189,7 +189,7 @@ LABEL_6:
         v13 = FCCKSandboxContentContainerIdentifier;
       }
 
-      else if (a3 == 7)
+      else if (environment == 7)
       {
         v8 = 0;
         v11 = FCCKDemo1PrivateSecureContainerIdentifier;
@@ -201,7 +201,7 @@ LABEL_6:
       {
         v9 = 0;
         v10 = 0;
-        if (a3 != 8)
+        if (environment != 8)
         {
           goto LABEL_21;
         }
@@ -215,7 +215,7 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    if (a3 != 4)
+    if (environment != 4)
     {
 LABEL_14:
       v8 = 0;
@@ -225,9 +225,9 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  if (a3 > 1)
+  if (environment > 1)
   {
-    if (a3 == 2)
+    if (environment == 2)
     {
       v8 = 0;
       v11 = FCCKQAPrivateSecureContainerIdentifier;
@@ -239,7 +239,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!environment)
   {
 LABEL_15:
     v11 = FCCKProductionPrivateSecureContainerIdentifier;
@@ -254,7 +254,7 @@ LABEL_20:
 
   v9 = 0;
   v10 = 0;
-  if (a3 == 1)
+  if (environment == 1)
   {
 LABEL_16:
     v8 = 0;
@@ -331,7 +331,7 @@ LABEL_21:
   }
 
 LABEL_32:
-  v24 = [(FCContextConfiguration *)v29 initWithProductionContentEnvironment:v8 productionPrivateDataEnvironment:v23 contentContainerIdentifier:v10 privateDataContainerIdentifier:v9 privateDataSecureContainerIdentifier:v7 storeFrontID:v30 environment:a3];
+  v24 = [(FCContextConfiguration *)selfCopy initWithProductionContentEnvironment:v8 productionPrivateDataEnvironment:v23 contentContainerIdentifier:v10 privateDataContainerIdentifier:v9 privateDataSecureContainerIdentifier:v7 storeFrontID:v30 environment:environment];
 
   v25 = *MEMORY[0x1E69E9840];
   return v24;
@@ -339,15 +339,15 @@ LABEL_32:
 
 - (NSString)contentEnvironmentDescription
 {
-  v2 = [(FCContextConfiguration *)self environment];
-  if ((v2 - 1) > 7)
+  environment = [(FCContextConfiguration *)self environment];
+  if ((environment - 1) > 7)
   {
     return @"production";
   }
 
   else
   {
-    return &off_1E7C42368[v2 - 1]->isa;
+    return &off_1E7C42368[environment - 1]->isa;
   }
 }
 

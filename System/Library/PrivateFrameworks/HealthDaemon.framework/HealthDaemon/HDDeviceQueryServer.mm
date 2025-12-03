@@ -9,7 +9,7 @@
   v27.receiver = self;
   v27.super_class = HDDeviceQueryServer;
   [(HDQueryServer *)&v27 _queue_start];
-  v3 = [(HDQueryServer *)self objectType];
+  objectType = [(HDQueryServer *)self objectType];
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
@@ -35,21 +35,21 @@
   aBlock[6] = v21;
   v4 = _Block_copy(aBlock);
   v5 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
-  v6 = [(HDQueryServer *)self profile];
-  v7 = [v6 database];
+  profile = [(HDQueryServer *)self profile];
+  database = [profile database];
   v19 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __35__HDDeviceQueryServer__queue_start__block_invoke_297;
   v14[3] = &unk_27861DE48;
   v14[4] = self;
-  v8 = v3;
+  v8 = objectType;
   v15 = v8;
   v17 = v25;
   v18 = v23;
   v9 = v4;
   v16 = v9;
-  v10 = [v7 performTransactionWithContext:v5 error:&v19 block:v14 inaccessibilityHandler:0];
+  v10 = [database performTransactionWithContext:v5 error:&v19 block:v14 inaccessibilityHandler:0];
   v11 = v19;
 
   if (v10)
@@ -59,9 +59,9 @@
 
   else
   {
-    v12 = [(HDQueryServer *)self clientProxy];
-    v13 = [(HDQueryServer *)self queryUUID];
-    [v12 client_deliverError:v11 forQuery:v13];
+    clientProxy = [(HDQueryServer *)self clientProxy];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v11 forQuery:queryUUID];
   }
 
   _Block_object_dispose(v21, 8);

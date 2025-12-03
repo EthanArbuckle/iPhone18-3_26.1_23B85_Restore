@@ -1,15 +1,15 @@
 @interface TSPResourceLocationProvider
 + (NSBundle)bundle;
 + (TSUResourceFileURLProvider)documentResourceAlternateFileURLProvider;
-+ (void)setAlternateBundle:(id)a3;
-+ (void)setDocumentResourceAlternateFileURLProvider:(id)a3;
++ (void)setAlternateBundle:(id)bundle;
++ (void)setDocumentResourceAlternateFileURLProvider:(id)provider;
 @end
 
 @implementation TSPResourceLocationProvider
 
 + (NSBundle)bundle
 {
-  v3 = objc_msgSend_alternateBundle(a1, a2, v2);
+  v3 = objc_msgSend_alternateBundle(self, a2, v2);
   v6 = v3;
   if (v3)
   {
@@ -26,20 +26,20 @@
   return v8;
 }
 
-+ (void)setAlternateBundle:(id)a3
++ (void)setAlternateBundle:(id)bundle
 {
-  v4 = a3;
-  if (qword_280A52AF0 != v4)
+  bundleCopy = bundle;
+  if (qword_280A52AF0 != bundleCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&qword_280A52AF0, a3);
-    v4 = v5;
+    v5 = bundleCopy;
+    objc_storeStrong(&qword_280A52AF0, bundle);
+    bundleCopy = v5;
   }
 }
 
-+ (void)setDocumentResourceAlternateFileURLProvider:(id)a3
++ (void)setDocumentResourceAlternateFileURLProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&qword_280A52AF8);
 
   v4 = obj;

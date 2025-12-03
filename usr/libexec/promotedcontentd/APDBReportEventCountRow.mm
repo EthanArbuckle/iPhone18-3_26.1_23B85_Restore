@@ -1,7 +1,7 @@
 @interface APDBReportEventCountRow
 - (NSArray)branch;
 - (NSString)value;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation APDBReportEventCountRow
@@ -22,28 +22,28 @@
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  if (!a3)
+  if (!value)
   {
-    a3 = @"valueNullPlaceholder";
+    value = @"valueNullPlaceholder";
   }
 
-  [(APDBReportEventCountRow *)self setValue:a3 forColumnName:@"value"];
+  [(APDBReportEventCountRow *)self setValue:value forColumnName:@"value"];
 }
 
 - (NSArray)branch
 {
-  v3 = [(APDBReportEventCountRow *)self manager];
-  if (v3)
+  manager = [(APDBReportEventCountRow *)self manager];
+  if (manager)
   {
     v4 = [APDatabaseColumn alloc];
-    v5 = [(APDBReportEventCountRow *)self rowid];
-    v6 = [v4 initWithName:@"rowid" forColumnType:0 withValue:v5];
+    rowid = [(APDBReportEventCountRow *)self rowid];
+    v6 = [v4 initWithName:@"rowid" forColumnType:0 withValue:rowid];
 
     v11 = v6;
     v7 = [NSArray arrayWithObjects:&v11 count:1];
-    v8 = [v3 executeSelectStringsQuery:@"SELECT branch FROM APDBEventBranch WHERE eventId = ?" withParameters:v7];
+    v8 = [manager executeSelectStringsQuery:@"SELECT branch FROM APDBEventBranch WHERE eventId = ?" withParameters:v7];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface UIKBViewTreeSnapshotter
-+ (id)snapshotterForKeyboardView:(id)a3 afterScreenUpdates:(BOOL)a4;
++ (id)snapshotterForKeyboardView:(id)view afterScreenUpdates:(BOOL)updates;
 @end
 
 @implementation UIKBViewTreeSnapshotter
 
-+ (id)snapshotterForKeyboardView:(id)a3 afterScreenUpdates:(BOOL)a4
++ (id)snapshotterForKeyboardView:(id)view afterScreenUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v5 = a3;
+  updatesCopy = updates;
+  viewCopy = view;
   v6 = objc_alloc_init(UIKBViewTreeSnapshotter);
   v7 = [_UIViewBlockVisitor alloc];
   v14[0] = MEMORY[0x1E69E9820];
@@ -18,8 +18,8 @@
   v15 = v8;
   v9 = [(_UIViewBlockVisitor *)v7 initWithTraversalDirection:2 visitorBlock:v14];
   [(_UIViewVisitor *)v9 setVisitMaskViews:0];
-  [v5 _receiveVisitor:v9];
-  v10 = [v5 snapshotViewAfterScreenUpdates:v4];
+  [viewCopy _receiveVisitor:v9];
+  v10 = [viewCopy snapshotViewAfterScreenUpdates:updatesCopy];
 
   snapshotView = v8->_snapshotView;
   v8->_snapshotView = v10;

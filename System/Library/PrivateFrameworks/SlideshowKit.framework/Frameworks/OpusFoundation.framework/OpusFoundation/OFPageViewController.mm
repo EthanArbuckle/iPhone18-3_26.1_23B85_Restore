@@ -1,33 +1,33 @@
 @interface OFPageViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (double)_normalizerForFingerTracking;
-- (double)_progressFromRubberBandingProgress:(double)a3;
+- (double)_progressFromRubberBandingProgress:(double)progress;
 - (double)_rubberBandingProgressFromProgress:(double)result;
 - (id)_contentView;
-- (id)_customAnimationControllerForDirection:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5;
-- (id)_customInteractionControllerForAnimationController:(id)a3;
+- (id)_customAnimationControllerForDirection:(int64_t)direction fromViewController:(id)controller toViewController:(id)viewController;
+- (id)_customInteractionControllerForAnimationController:(id)controller;
 - (id)_pageControl;
-- (id)_transitionContextForDirection:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5;
-- (void)_beginTransitionWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_cancelInteractiveTransitionWithProgressVelocity:(double)a3;
+- (id)_transitionContextForDirection:(int64_t)direction fromViewController:(id)controller toViewController:(id)viewController;
+- (void)_beginTransitionWithContext:(id)context completionHandler:(id)handler;
+- (void)_cancelInteractiveTransitionWithProgressVelocity:(double)velocity;
 - (void)_fakeHandlePanGesture;
-- (void)_finishInteractiveTransitionWithProgress:(double)a3 andProgressVelocity:(double)a4;
-- (void)_handlePanGesture:(id)a3;
-- (void)_resumeInteractiveTransitionWithTranslation:(double)a3;
-- (void)_startInteractiveTransitionWithVelocity:(double)a3;
+- (void)_finishInteractiveTransitionWithProgress:(double)progress andProgressVelocity:(double)velocity;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_resumeInteractiveTransitionWithTranslation:(double)translation;
+- (void)_startInteractiveTransitionWithVelocity:(double)velocity;
 - (void)_startTransition;
-- (void)_updateInteractiveTransitionForProgress:(double)a3;
+- (void)_updateInteractiveTransitionForProgress:(double)progress;
 - (void)_updatePageControlViaDataSourceIfNecessary;
-- (void)bounceInDirection:(int64_t)a3 completionHandler:(id)a4;
+- (void)bounceInDirection:(int64_t)direction completionHandler:(id)handler;
 - (void)commonInit;
 - (void)dealloc;
 - (void)loadView;
-- (void)reportTransitionProgress:(double)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setViewController:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)setWantsPageControl:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)reportTransitionProgress:(double)progress;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)setViewController:(id)controller direction:(int64_t)direction animated:(BOOL)animated completionHandler:(id)handler;
+- (void)setWantsPageControl:(BOOL)control;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation OFPageViewController
@@ -65,11 +65,11 @@
   [(OFUIViewController *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    objc_storeWeak(&self->_delegate, a3);
+    objc_storeWeak(&self->_delegate, delegate);
     *&self->_flags = *&self->_flags & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -142,11 +142,11 @@
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  if (self->_dataSource != a3)
+  if (self->_dataSource != source)
   {
-    objc_storeWeak(&self->_dataSource, a3);
+    objc_storeWeak(&self->_dataSource, source);
     v4 = (objc_opt_respondsToSelector() & 1) != 0 ? 128 : 0;
     *&self->_flags = *&self->_flags & 0xFF7F | v4;
     v5 = (objc_opt_respondsToSelector() & 1) != 0 ? 256 : 0;
@@ -157,9 +157,9 @@
     *&self->_flags = *&self->_flags & 0xFBFF | v7;
     if ([(OFPageViewController *)self isViewLoaded])
     {
-      v8 = [(OFPageViewController *)self _contentView];
+      _contentView = [(OFPageViewController *)self _contentView];
 
-      [v8 setNeedsLayout];
+      [_contentView setNeedsLayout];
     }
   }
 }
@@ -174,20 +174,20 @@
   return [(OFPageViewController *)self view];
 }
 
-- (void)setWantsPageControl:(BOOL)a3
+- (void)setWantsPageControl:(BOOL)control
 {
-  if (self->_wantsPageControl != a3)
+  if (self->_wantsPageControl != control)
   {
-    self->_wantsPageControl = a3;
+    self->_wantsPageControl = control;
     [(OFPageViewController *)self _updatePageControlViaDataSourceIfNecessary];
   }
 }
 
 - (id)_pageControl
 {
-  v2 = [(OFPageViewController *)self _contentView];
+  _contentView = [(OFPageViewController *)self _contentView];
 
-  return [v2 pageControl];
+  return [_contentView pageControl];
 }
 
 - (void)loadView
@@ -207,14 +207,14 @@
   [-[OFPageViewController view](self "view")];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFPageViewController;
-  [(OFUIViewController *)&v3 viewWillAppear:a3];
+  [(OFUIViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)setViewController:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)setViewController:(id)controller direction:(int64_t)direction animated:(BOOL)animated completionHandler:(id)handler
 {
   if (self->_currentTransitionContext)
   {
@@ -224,23 +224,23 @@
   viewController = self->_viewController;
   if ((*&self->_flags & 2) != 0)
   {
-    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self willStartTransitioningToViewController:a3 fromViewController:viewController withDirection:a4];
+    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self willStartTransitioningToViewController:controller fromViewController:viewController withDirection:direction];
   }
 
-  if (a5)
+  if (animated)
   {
-    v12 = [(OFPageViewController *)self _transitionContextForDirection:a4 fromViewController:viewController toViewController:a3];
+    v12 = [(OFPageViewController *)self _transitionContextForDirection:direction fromViewController:viewController toViewController:controller];
     self->_currentTransitionContext = v12;
     if (v12)
     {
-      [(OFPageViewController *)self addChildViewController:a3];
-      [objc_msgSend(a3 "view")];
-      [(OFPageViewController *)self _beginTransitionWithContext:self->_currentTransitionContext completionHandler:a6];
+      [(OFPageViewController *)self addChildViewController:controller];
+      [objc_msgSend(controller "view")];
+      [(OFPageViewController *)self _beginTransitionWithContext:self->_currentTransitionContext completionHandler:handler];
       if ((*&self->_flags & 4) != 0)
       {
-        v13 = [(OFPageViewController *)self delegate];
+        delegate = [(OFPageViewController *)self delegate];
 
-        [(OFPageViewControllerDelegate *)v13 pageViewController:self didStartTransitioningToViewController:a3 fromViewController:viewController];
+        [(OFPageViewControllerDelegate *)delegate pageViewController:self didStartTransitioningToViewController:controller fromViewController:viewController];
       }
 
       return;
@@ -252,49 +252,49 @@
     self->_currentTransitionContext = 0;
   }
 
-  [(UIViewController *)self addChildViewControllerInstantly:a3];
+  [(UIViewController *)self addChildViewControllerInstantly:controller];
   if ((*&self->_flags & 4) != 0)
   {
-    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self didStartTransitioningToViewController:a3 fromViewController:viewController];
+    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self didStartTransitioningToViewController:controller fromViewController:viewController];
   }
 
-  self->_viewController = a3;
+  self->_viewController = controller;
   if ((*&self->_flags & 8) != 0)
   {
-    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self willFinishTransitioningToViewController:a3 fromViewController:viewController transitionWillComplete:1];
+    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self willFinishTransitioningToViewController:controller fromViewController:viewController transitionWillComplete:1];
   }
 
   [(UIViewController *)viewController removeFromParentViewControllerInstantly];
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, 1);
+    (*(handler + 2))(handler, 1);
   }
 
   if ((*&self->_flags & 0x10) != 0)
   {
-    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self didFinishTransitioningToViewController:a3 fromViewController:viewController transitionCompleted:1];
+    [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self didFinishTransitioningToViewController:controller fromViewController:viewController transitionCompleted:1];
   }
 
   [(OFPageViewController *)self _updatePageControlViaDataSourceIfNecessary];
 }
 
-- (void)bounceInDirection:(int64_t)a3 completionHandler:(id)a4
+- (void)bounceInDirection:(int64_t)direction completionHandler:(id)handler
 {
   if (!self->_currentTransitionContext)
   {
     if ((*&self->_flags & 0x20) != 0)
     {
-      [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self willStartBouncingWithDirection:a3];
+      [(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self willStartBouncingWithDirection:direction];
     }
 
-    v7 = [(OFPageViewController *)self _transitionContextForDirection:a3 fromViewController:self->_viewController toViewController:0];
+    v7 = [(OFPageViewController *)self _transitionContextForDirection:direction fromViewController:self->_viewController toViewController:0];
     self->_currentTransitionContext = v7;
     if (v7)
     {
       [(_OFViewControllerTransitionContext *)v7 setIsRubberBanding:1];
       currentTransitionContext = self->_currentTransitionContext;
 
-      [(OFPageViewController *)self _beginTransitionWithContext:currentTransitionContext completionHandler:a4];
+      [(OFPageViewController *)self _beginTransitionWithContext:currentTransitionContext completionHandler:handler];
     }
   }
 }
@@ -317,16 +317,16 @@
 - (void)_startTransition
 {
   isForward = self->_isForward;
-  v4 = [(OFPageViewController *)self dataSource];
+  dataSource = [(OFPageViewController *)self dataSource];
   viewController = self->_viewController;
   if (isForward)
   {
-    v6 = [(OFPageViewControllerDataSource *)v4 pageViewController:self viewControllerAfterViewController:viewController];
+    v6 = [(OFPageViewControllerDataSource *)dataSource pageViewController:self viewControllerAfterViewController:viewController];
   }
 
   else
   {
-    v6 = [(OFPageViewControllerDataSource *)v4 pageViewController:self viewControllerBeforeViewController:viewController];
+    v6 = [(OFPageViewControllerDataSource *)dataSource pageViewController:self viewControllerBeforeViewController:viewController];
   }
 
   v7 = self->_isForward;
@@ -344,16 +344,16 @@
   self->_progressVelocityForChainedTransition = 0.0;
 }
 
-- (void)_startInteractiveTransitionWithVelocity:(double)a3
+- (void)_startInteractiveTransitionWithVelocity:(double)velocity
 {
-  self->_isForward = a3 < 0.0;
+  self->_isForward = velocity < 0.0;
   self->_chainsNextTransition = 0;
   self->_progressOffset = 0.0;
   self->_isInteractive = 1;
   [(OFPageViewController *)self _startTransition];
 }
 
-- (void)_resumeInteractiveTransitionWithTranslation:(double)a3
+- (void)_resumeInteractiveTransitionWithTranslation:(double)translation
 {
   self->_isInteractive = 1;
   self->_chainsNextTransition = 0;
@@ -376,14 +376,14 @@
 
   self->_progressOffset = v6;
 LABEL_6:
-  v7 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
-  if (!v7)
+  interactor = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
+  if (!interactor)
   {
-    v7 = [(OFPageViewController *)self _customInteractionControllerForAnimationController:[(_OFViewControllerTransitionContext *)self->_currentTransitionContext animator]];
+    interactor = [(OFPageViewController *)self _customInteractionControllerForAnimationController:[(_OFViewControllerTransitionContext *)self->_currentTransitionContext animator]];
   }
 
-  [(OFViewControllerInteractiveTransitioning *)v7 makeCurrentTransitionInteractiveWithContext:self->_currentTransitionContext andProgress:self->_progressOffset];
-  if ([(OFViewControllerInteractiveTransitioning *)v7 tracksWithFinger])
+  [(OFViewControllerInteractiveTransitioning *)interactor makeCurrentTransitionInteractiveWithContext:self->_currentTransitionContext andProgress:self->_progressOffset];
+  if ([(OFViewControllerInteractiveTransitioning *)interactor tracksWithFinger])
   {
     [(OFPageViewController *)self _normalizerForFingerTracking];
   }
@@ -393,69 +393,69 @@ LABEL_6:
     [(OFPageViewController *)self _normalizerForBoxTracking];
   }
 
-  v9 = a3 / v8;
+  v9 = translation / v8;
 
   [(OFPageViewController *)self _updateInteractiveTransitionForProgress:v9];
 }
 
-- (void)_finishInteractiveTransitionWithProgress:(double)a3 andProgressVelocity:(double)a4
+- (void)_finishInteractiveTransitionWithProgress:(double)progress andProgressVelocity:(double)velocity
 {
   if ([(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController])
   {
     self->_isInteractive = 0;
-    if (a4 < 0.0 || (progressOffset = self->_progressOffset, progressOffset == 0.0))
+    if (velocity < 0.0 || (progressOffset = self->_progressOffset, progressOffset == 0.0))
     {
       self->_chainsNextTransition = 0;
-      v10 = 0.0;
+      velocityCopy = 0.0;
     }
 
     else
     {
-      v8 = fabs(progressOffset + a3);
+      v8 = fabs(progressOffset + progress);
       v9 = v8 <= 0.5;
       self->_chainsNextTransition = v8 > 0.5;
-      v10 = 0.0;
+      velocityCopy = 0.0;
       if (!v9)
       {
-        v10 = a4;
+        velocityCopy = velocity;
       }
     }
 
-    self->_progressVelocityForChainedTransition = v10;
+    self->_progressVelocityForChainedTransition = velocityCopy;
     currentTransitionContext = self->_currentTransitionContext;
 
-    [(_OFViewControllerTransitionContext *)currentTransitionContext finishInteractiveTransitionWithVelocity:a4];
+    [(_OFViewControllerTransitionContext *)currentTransitionContext finishInteractiveTransitionWithVelocity:velocity];
   }
 
   else
   {
 
-    [(OFPageViewController *)self _cancelInteractiveTransitionWithProgressVelocity:a4];
+    [(OFPageViewController *)self _cancelInteractiveTransitionWithProgressVelocity:velocity];
   }
 }
 
-- (void)_cancelInteractiveTransitionWithProgressVelocity:(double)a3
+- (void)_cancelInteractiveTransitionWithProgressVelocity:(double)velocity
 {
   self->_isInteractive = 0;
   self->_chainsNextTransition = 0;
   self->_progressVelocityForChainedTransition = 0.0;
-  [(_OFViewControllerTransitionContext *)self->_currentTransitionContext cancelInteractiveTransitionWithVelocity:a3];
+  [(_OFViewControllerTransitionContext *)self->_currentTransitionContext cancelInteractiveTransitionWithVelocity:velocity];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   if (!self->_panIsEnabled)
   {
     return 0;
   }
 
-  if (![(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self canAutomaticallyHandleGestureRecognizer:a3])
+  if (![(OFPageViewControllerDelegate *)[(OFPageViewController *)self delegate] pageViewController:self canAutomaticallyHandleGestureRecognizer:begin])
   {
     return 0;
   }
 
   panGestureRecognizer = self->_panGestureRecognizer;
-  if (panGestureRecognizer != a3)
+  if (panGestureRecognizer != begin)
   {
     return 0;
   }
@@ -482,28 +482,28 @@ LABEL_6:
   }
 
 LABEL_11:
-  v14 = [(OFPageViewController *)self dataSource];
+  dataSource = [(OFPageViewController *)self dataSource];
   viewController = self->_viewController;
   if (v11 >= 0.0)
   {
-    v16 = [(OFPageViewControllerDataSource *)v14 pageViewController:self viewControllerBeforeViewController:viewController];
+    v16 = [(OFPageViewControllerDataSource *)dataSource pageViewController:self viewControllerBeforeViewController:viewController];
   }
 
   else
   {
-    v16 = [(OFPageViewControllerDataSource *)v14 pageViewController:self viewControllerAfterViewController:viewController];
+    v16 = [(OFPageViewControllerDataSource *)dataSource pageViewController:self viewControllerAfterViewController:viewController];
   }
 
   return self->_bouncesOnEdges || v16 != 0;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
   navigationOrientation = self->_navigationOrientation;
-  [a3 translationInView:{-[OFPageViewController view](self, "view")}];
+  [gesture translationInView:{-[OFPageViewController view](self, "view")}];
   v7 = v6;
   v9 = v8;
-  [a3 velocityInView:{-[OFPageViewController view](self, "view")}];
+  [gesture velocityInView:{-[OFPageViewController view](self, "view")}];
   if (navigationOrientation)
   {
     v7 = v9;
@@ -518,7 +518,7 @@ LABEL_11:
   panGestureRecognizer = self->_panGestureRecognizer;
   if (panGestureRecognizer)
   {
-    v14 = panGestureRecognizer == a3;
+    v14 = panGestureRecognizer == gesture;
   }
 
   else
@@ -555,8 +555,8 @@ LABEL_11:
       return;
     }
 
-    v17 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
-    if (!v17)
+    interactor = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
+    if (!interactor)
     {
       v18 = dbl_269E92C50[v12 <= 0.0];
       if (v7 != 0.0)
@@ -569,7 +569,7 @@ LABEL_11:
       self->_progressVelocityForChainedTransition = 0.0;
     }
 
-    if ([(OFViewControllerInteractiveTransitioning *)v17 tracksWithFinger])
+    if ([(OFViewControllerInteractiveTransitioning *)interactor tracksWithFinger])
     {
       [(OFPageViewController *)self _normalizerForFingerTracking];
     }
@@ -593,16 +593,16 @@ LABEL_11:
     v22 = v21 / v20;
     if ([(UIPanGestureRecognizer *)self->_panGestureRecognizer state]!= 3 || (!self->_isForward ? (v23 = v12) : (v23 = -v12), ![(OFPageViewController *)self _shouldFinishTransitionWithVelocity:v23]))
     {
-      v25 = self;
+      selfCopy3 = self;
       v27 = v22;
 LABEL_42:
 
-      [(OFPageViewController *)v25 _cancelInteractiveTransitionWithProgressVelocity:v27];
+      [(OFPageViewController *)selfCopy3 _cancelInteractiveTransitionWithProgressVelocity:v27];
       return;
     }
 
     v24 = v7 / v20;
-    v25 = self;
+    selfCopy3 = self;
     v26 = v22;
     goto LABEL_56;
   }
@@ -612,10 +612,10 @@ LABEL_42:
     return;
   }
 
-  v15 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
-  if (v15)
+  interactor2 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
+  if (interactor2)
   {
-    if ([(OFViewControllerInteractiveTransitioning *)v15 tracksWithFinger])
+    if ([(OFViewControllerInteractiveTransitioning *)interactor2 tracksWithFinger])
     {
       [(OFPageViewController *)self _normalizerForFingerTracking];
     }
@@ -635,7 +635,7 @@ LABEL_42:
     if (fabs(v7) > self->_interactiveTransitionProgressThreshold && [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController])
     {
       v26 = v12 / v28;
-      v25 = self;
+      selfCopy3 = self;
       if (v12 / v28 < 0.0)
       {
         v27 = v12 / v28;
@@ -645,7 +645,7 @@ LABEL_42:
       v24 = v7;
 LABEL_56:
 
-      [(OFPageViewController *)v25 _finishInteractiveTransitionWithProgress:v24 andProgressVelocity:v26];
+      [(OFPageViewController *)selfCopy3 _finishInteractiveTransitionWithProgress:v24 andProgressVelocity:v26];
       return;
     }
   }
@@ -705,13 +705,13 @@ LABEL_10:
     }
 
     v7 = *&_fakeHandlePanGesture_translation;
-    v8 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
-    if (!v8)
+    interactor = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
+    if (!interactor)
     {
       goto LABEL_42;
     }
 
-    if ([(OFViewControllerInteractiveTransitioning *)v8 tracksWithFinger])
+    if ([(OFViewControllerInteractiveTransitioning *)interactor tracksWithFinger])
     {
       [(OFPageViewController *)self _normalizerForFingerTracking];
     }
@@ -732,7 +732,7 @@ LABEL_42:
     }
 
     v19 = v22 / v21;
-    v18 = self;
+    selfCopy3 = self;
     if (v22 / v21 >= 0.0)
     {
       v17 = v7;
@@ -741,7 +741,7 @@ LABEL_42:
 
     v20 = v22 / v21;
 LABEL_33:
-    [(OFPageViewController *)v18 _cancelInteractiveTransitionWithProgressVelocity:v20];
+    [(OFPageViewController *)selfCopy3 _cancelInteractiveTransitionWithProgressVelocity:v20];
     return;
   }
 
@@ -752,8 +752,8 @@ LABEL_33:
       return;
     }
 
-    v10 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
-    if (!v10)
+    interactor2 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
+    if (!interactor2)
     {
       v11 = *&_fakeHandlePanGesture_translation;
       if (*&_fakeHandlePanGesture_translation == 0.0)
@@ -766,7 +766,7 @@ LABEL_33:
       self->_progressVelocityForChainedTransition = 0.0;
     }
 
-    if ([(OFViewControllerInteractiveTransitioning *)v10 tracksWithFinger])
+    if ([(OFViewControllerInteractiveTransitioning *)interactor2 tracksWithFinger])
     {
       [(OFPageViewController *)self _normalizerForFingerTracking];
     }
@@ -790,15 +790,15 @@ LABEL_33:
       if ([(OFPageViewController *)self _shouldFinishTransitionWithVelocity:?])
       {
         v17 = v16 / v13;
-        v18 = self;
+        selfCopy3 = self;
         v19 = v15;
 LABEL_44:
-        [(OFPageViewController *)v18 _finishInteractiveTransitionWithProgress:v17 andProgressVelocity:v19];
+        [(OFPageViewController *)selfCopy3 _finishInteractiveTransitionWithProgress:v17 andProgressVelocity:v19];
         return;
       }
     }
 
-    v18 = self;
+    selfCopy3 = self;
     v20 = v15;
     goto LABEL_33;
   }
@@ -837,21 +837,21 @@ LABEL_44:
     }
 
     [-[OFPageViewController _pageControl](self "_pageControl")];
-    v8 = [(OFPageViewController *)self _pageControl];
+    _pageControl = [(OFPageViewController *)self _pageControl];
 
-    [v8 setCurrentPage:v7];
+    [_pageControl setCurrentPage:v7];
   }
 }
 
-- (void)_beginTransitionWithContext:(id)a3 completionHandler:(id)a4
+- (void)_beginTransitionWithContext:(id)context completionHandler:(id)handler
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__OFPageViewController__beginTransitionWithContext_completionHandler___block_invoke;
   v8[3] = &unk_279C8A018;
   v8[4] = self;
-  v8[5] = a4;
-  [a3 setCompletionHandler:v8];
+  v8[5] = handler;
+  [context setCompletionHandler:v8];
   v6 = [OFWeakReferenceHolder weakReferenceHolderWithObject:self];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -860,21 +860,21 @@ LABEL_44:
   v7[4] = v6;
   v7[5] = self;
   v7[6] = &__block_literal_global_3;
-  [a3 setInteractiveUpdateHandler:v7];
-  if ([a3 initiallyInteractive])
+  [context setInteractiveUpdateHandler:v7];
+  if ([context initiallyInteractive])
   {
-    [objc_msgSend(a3 "interactor")];
+    [objc_msgSend(context "interactor")];
   }
 
   else
   {
-    [a3 setProgressVelocity:self->_progressVelocityForChainedTransition];
-    [a3 setDoEaseIn:!self->_chainsNextTransition];
-    [a3 setDoEaseOut:1];
-    [objc_msgSend(a3 "animator")];
+    [context setProgressVelocity:self->_progressVelocityForChainedTransition];
+    [context setDoEaseIn:!self->_chainsNextTransition];
+    [context setDoEaseOut:1];
+    [objc_msgSend(context "animator")];
   }
 
-  [a3 setIsInFlight:1];
+  [context setIsInFlight:1];
 }
 
 _BYTE *__70__OFPageViewController__beginTransitionWithContext_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -994,36 +994,36 @@ uint64_t __70__OFPageViewController__beginTransitionWithContext_completionHandle
   return result;
 }
 
-- (double)_progressFromRubberBandingProgress:(double)a3
+- (double)_progressFromRubberBandingProgress:(double)progress
 {
-  v3 = -a3;
+  progressCopy = -progress;
   if (!self->_isForward)
   {
-    v3 = a3;
+    progressCopy = progress;
   }
 
-  return v3 / ((1.0 - a3) * 0.5);
+  return progressCopy / ((1.0 - progress) * 0.5);
 }
 
-- (void)_updateInteractiveTransitionForProgress:(double)a3
+- (void)_updateInteractiveTransitionForProgress:(double)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   currentTransitionContext = self->_currentTransitionContext;
   if (currentTransitionContext)
   {
-    v3 = self->_progressOffset + a3;
+    progressCopy = self->_progressOffset + progress;
     isForward = self->_isForward;
-    if (isForward == 1 && v3 < -1.0)
+    if (isForward == 1 && progressCopy < -1.0)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = (v3 > 1.0) & ~isForward;
+      v8 = (progressCopy > 1.0) & ~isForward;
     }
 
-    if (self->_isForward && v3 > 0.0 || (v8 | (v3 < 0.0) & ~isForward) == 1)
+    if (self->_isForward && progressCopy > 0.0 || (v8 | (progressCopy < 0.0) & ~isForward) == 1)
     {
       v9 = 1.0;
       if (self->_isForward)
@@ -1051,8 +1051,8 @@ uint64_t __70__OFPageViewController__beginTransitionWithContext_completionHandle
       if (objc_opt_respondsToSelector())
       {
         delegate = self->_delegate;
-        v13 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController];
-        v14 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext fromViewController];
+        toViewController = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController];
+        fromViewController = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext fromViewController];
         v15 = -v10;
         v16 = self->_isForward;
         [(_OFViewControllerTransitionContext *)self->_currentTransitionContext progressVelocity];
@@ -1062,16 +1062,16 @@ uint64_t __70__OFPageViewController__beginTransitionWithContext_completionHandle
           v18 = v17;
         }
 
-        [(OFPageViewControllerDelegate *)delegate pageViewController:self didUpdateTransitioningToViewController:v13 fromViewController:v14 withProgress:v15 andVelocity:v18];
+        [(OFPageViewControllerDelegate *)delegate pageViewController:self didUpdateTransitioningToViewController:toViewController fromViewController:fromViewController withProgress:v15 andVelocity:v18];
       }
 
       v19 = self->_currentTransitionContext;
       if (v8)
       {
-        v20 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext isRubberBanding];
+        isRubberBanding = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext isRubberBanding];
         v21 = self->_currentTransitionContext;
         [(_OFViewControllerTransitionContext *)v21 progressVelocity];
-        if (v20)
+        if (isRubberBanding)
         {
           [(OFPageViewController *)self _cancelInteractiveTransitionWithProgressVelocity:?];
         }
@@ -1079,7 +1079,7 @@ uint64_t __70__OFPageViewController__beginTransitionWithContext_completionHandle
         else
         {
           [(_OFViewControllerTransitionContext *)v21 finishInteractiveTransitionWithVelocity:?];
-          self->_progressOffset = self->_progressOffset - v3;
+          self->_progressOffset = self->_progressOffset - progressCopy;
         }
       }
 
@@ -1090,33 +1090,33 @@ uint64_t __70__OFPageViewController__beginTransitionWithContext_completionHandle
       }
 
       panGestureRecognizer = self->_panGestureRecognizer;
-      v34 = [(OFPageViewController *)self view];
+      view = [(OFPageViewController *)self view];
       v35 = *MEMORY[0x277CBF348];
       v36 = *(MEMORY[0x277CBF348] + 8);
 
-      [(UIPanGestureRecognizer *)panGestureRecognizer setTranslation:v34 inView:v35, v36];
+      [(UIPanGestureRecognizer *)panGestureRecognizer setTranslation:view inView:v35, v36];
       return;
     }
 
     goto LABEL_28;
   }
 
-  if (a3 == 0.0)
+  if (progress == 0.0)
   {
 LABEL_28:
     if (![(_OFViewControllerTransitionContext *)currentTransitionContext toViewController])
     {
-      [(OFPageViewController *)self _rubberBandingProgressFromProgress:v3];
-      v3 = v23;
+      [(OFPageViewController *)self _rubberBandingProgressFromProgress:progressCopy];
+      progressCopy = v23;
     }
 
-    [(OFViewControllerInteractiveTransitioning *)[(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor] updateInteractiveTransitionWithContext:self->_currentTransitionContext andProgress:fabs(v3)];
+    [(OFViewControllerInteractiveTransitioning *)[(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor] updateInteractiveTransitionWithContext:self->_currentTransitionContext andProgress:fabs(progressCopy)];
     if (objc_opt_respondsToSelector())
     {
       v24 = self->_delegate;
-      v25 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController];
-      v26 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext fromViewController];
-      v27 = -v3;
+      toViewController2 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController];
+      fromViewController2 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext fromViewController];
+      v27 = -progressCopy;
       v28 = self->_isForward;
       [(_OFViewControllerTransitionContext *)self->_currentTransitionContext progressVelocity];
       v30 = -v29;
@@ -1125,14 +1125,14 @@ LABEL_28:
         v30 = v29;
       }
 
-      [(OFPageViewControllerDelegate *)v24 pageViewController:self didUpdateTransitioningToViewController:v25 fromViewController:v26 withProgress:v27 andVelocity:v30];
+      [(OFPageViewControllerDelegate *)v24 pageViewController:self didUpdateTransitioningToViewController:toViewController2 fromViewController:fromViewController2 withProgress:v27 andVelocity:v30];
     }
 
     return;
   }
 
   self->_isInteractive = 1;
-  self->_isForward = a3 < 0.0;
+  self->_isForward = progress < 0.0;
   [(OFPageViewController *)self _startTransition];
   if ([(OFViewControllerInteractiveTransitioning *)[(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor] tracksWithFinger])
   {
@@ -1144,20 +1144,20 @@ LABEL_28:
     [(OFPageViewController *)self _normalizerForBoxTracking];
   }
 
-  self->_progressOffset = -v3 / v22;
-  v31 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
+  self->_progressOffset = -progressCopy / v22;
+  interactor = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor];
   v32 = self->_currentTransitionContext;
 
-  [(OFViewControllerInteractiveTransitioning *)v31 updateInteractiveTransitionWithContext:v32 andProgress:0.0];
+  [(OFViewControllerInteractiveTransitioning *)interactor updateInteractiveTransitionWithContext:v32 andProgress:0.0];
 }
 
-- (id)_transitionContextForDirection:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5
+- (id)_transitionContextForDirection:(int64_t)direction fromViewController:(id)controller toViewController:(id)viewController
 {
-  if (a4 && (v8 = [OFPageViewController _customAnimationControllerForDirection:"_customAnimationControllerForDirection:fromViewController:toViewController:" fromViewController:a3 toViewController:?]) != 0)
+  if (controller && (v8 = [OFPageViewController _customAnimationControllerForDirection:"_customAnimationControllerForDirection:fromViewController:toViewController:" fromViewController:direction toViewController:?]) != 0)
   {
-    v9 = [[_OFViewControllerTransitionContext alloc] initWithContainerView:[(OFPageViewController *)self _contentView] fromViewController:a4 toViewController:a5 animator:v8 interactor:[(OFPageViewController *)self _customInteractionControllerForAnimationController:v8]];
-    [objc_msgSend(a4 "view")];
-    [objc_msgSend(a5 "view")];
+    v9 = [[_OFViewControllerTransitionContext alloc] initWithContainerView:[(OFPageViewController *)self _contentView] fromViewController:controller toViewController:viewController animator:v8 interactor:[(OFPageViewController *)self _customInteractionControllerForAnimationController:v8]];
+    [objc_msgSend(controller "view")];
+    [objc_msgSend(viewController "view")];
   }
 
   else
@@ -1168,7 +1168,7 @@ LABEL_28:
   return v9;
 }
 
-- (id)_customAnimationControllerForDirection:(int64_t)a3 fromViewController:(id)a4 toViewController:(id)a5
+- (id)_customAnimationControllerForDirection:(int64_t)direction fromViewController:(id)controller toViewController:(id)viewController
 {
   [(OFPageViewController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1176,38 +1176,38 @@ LABEL_28:
     return 0;
   }
 
-  v9 = [(OFPageViewController *)self delegate];
+  delegate = [(OFPageViewController *)self delegate];
 
-  return [(OFPageViewControllerDelegate *)v9 navigationController:self animationControllerForDirection:a3 fromViewController:a4 toViewController:a5];
+  return [(OFPageViewControllerDelegate *)delegate navigationController:self animationControllerForDirection:direction fromViewController:controller toViewController:viewController];
 }
 
-- (id)_customInteractionControllerForAnimationController:(id)a3
+- (id)_customInteractionControllerForAnimationController:(id)controller
 {
   if (!self->_isInteractive || (*&self->_flags & 1) == 0)
   {
     return 0;
   }
 
-  v6 = [(OFPageViewController *)self delegate];
+  delegate = [(OFPageViewController *)self delegate];
 
-  return [(OFPageViewControllerDelegate *)v6 navigationController:self interactionControllerForAnimationController:a3];
+  return [(OFPageViewControllerDelegate *)delegate navigationController:self interactionControllerForAnimationController:controller];
 }
 
-- (void)reportTransitionProgress:(double)a3
+- (void)reportTransitionProgress:(double)progress
 {
-  v3 = a3;
-  [(_OFViewControllerTransitionContext *)self->_currentTransitionContext updateNonInteractiveTransitionWithProgress:fabs(a3)];
+  progressCopy = progress;
+  [(_OFViewControllerTransitionContext *)self->_currentTransitionContext updateNonInteractiveTransitionWithProgress:fabs(progress)];
   if ([(_OFViewControllerTransitionContext *)self->_currentTransitionContext interactor]&& !self->_isForward)
   {
-    v3 = -v3;
+    progressCopy = -progressCopy;
   }
 
   [(OFPageViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(OFPageViewController *)self delegate];
-    v6 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController];
-    v7 = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext fromViewController];
+    delegate = [(OFPageViewController *)self delegate];
+    toViewController = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext toViewController];
+    fromViewController = [(_OFViewControllerTransitionContext *)self->_currentTransitionContext fromViewController];
     isForward = self->_isForward;
     [(_OFViewControllerTransitionContext *)self->_currentTransitionContext progressVelocity];
     v10 = -v9;
@@ -1216,7 +1216,7 @@ LABEL_28:
       v10 = v9;
     }
 
-    [(OFPageViewControllerDelegate *)v5 pageViewController:self didUpdateTransitioningToViewController:v6 fromViewController:v7 withProgress:v3 andVelocity:v10];
+    [(OFPageViewControllerDelegate *)delegate pageViewController:self didUpdateTransitioningToViewController:toViewController fromViewController:fromViewController withProgress:progressCopy andVelocity:v10];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface AVMutableMovieTrack
-+ (AVMutableMovieTrack)trackWithTrackID:(int)a3 forMovie:(id)a4;
++ (AVMutableMovieTrack)trackWithTrackID:(int)d forMovie:(id)movie;
 - (AVMediaDataStorage)mediaDataStorage;
-- (AVMutableMovieTrack)initWithTrackID:(int)a3 forMovie:(id)a4;
-- (BOOL)appendMediaData:(id)a3 dataOffset:(int64_t *)a4;
+- (AVMutableMovieTrack)initWithTrackID:(int)d forMovie:(id)movie;
+- (BOOL)appendMediaData:(id)data dataOffset:(int64_t *)offset;
 - (BOOL)appendSampleBuffer:(CMSampleBufferRef)sampleBuffer decodeTime:(CMTime *)outDecodeTime presentationTime:(CMTime *)outPresentationTime error:(NSError *)outError;
 - (BOOL)hasProtectedContent;
 - (BOOL)insertMediaTimeRange:(CMTimeRange *)mediaTimeRange intoTimeRange:(CMTimeRange *)trackTimeRange;
 - (BOOL)insertTimeRange:(CMTimeRange *)timeRange ofTrack:(AVAssetTrack *)track atTime:(CMTime *)startTime copySampleData:(BOOL)copySampleData error:(NSError *)outError;
-- (BOOL)isCompatibleWithFormatDescription:(opaqueCMFormatDescription *)a3;
+- (BOOL)isCompatibleWithFormatDescription:(opaqueCMFormatDescription *)description;
 - (CGSize)cleanApertureDimensions;
 - (CGSize)dimensions;
 - (CGSize)encodedPixelsDimensions;
@@ -21,12 +21,12 @@
 - (id)locale;
 - (void)_addFigAssetTrackNotifications;
 - (void)_removeFigAssetTrackNotifications;
-- (void)_setSize:(CGSize)a3 forProperty:(__CFString *)a4;
-- (void)_setString:(id)a3 forProperty:(__CFString *)a4;
+- (void)_setSize:(CGSize)size forProperty:(__CFString *)property;
+- (void)_setString:(id)string forProperty:(__CFString *)property;
 - (void)addTrackAssociationToTrack:(AVMovieTrack *)movieTrack type:(AVTrackAssociationType)trackAssociationType;
 - (void)dealloc;
 - (void)insertEmptyTimeRange:(CMTimeRange *)timeRange;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 - (void)removeTimeRange:(CMTimeRange *)timeRange;
 - (void)removeTrackAssociationToTrack:(AVMovieTrack *)movieTrack type:(AVTrackAssociationType)trackAssociationType;
 - (void)replaceFormatDescription:(CMFormatDescriptionRef)formatDescription withFormatDescription:(CMFormatDescriptionRef)newFormatDescription;
@@ -46,19 +46,19 @@
 
 @implementation AVMutableMovieTrack
 
-+ (AVMutableMovieTrack)trackWithTrackID:(int)a3 forMovie:(id)a4
++ (AVMutableMovieTrack)trackWithTrackID:(int)d forMovie:(id)movie
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithTrackID:v4 forMovie:v5];
+  v4 = *&d;
+  movieCopy = movie;
+  v6 = [objc_alloc(objc_opt_class()) initWithTrackID:v4 forMovie:movieCopy];
 
   return v6;
 }
 
-- (AVMutableMovieTrack)initWithTrackID:(int)a3 forMovie:(id)a4
+- (AVMutableMovieTrack)initWithTrackID:(int)d forMovie:(id)movie
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&d;
+  movieCopy = movie;
   v7 = objc_alloc_init(AVMutableMovieTrackInternal);
   mutableMovieTrackInternal = self->_mutableMovieTrackInternal;
   self->_mutableMovieTrackInternal = v7;
@@ -68,8 +68,8 @@
     goto LABEL_34;
   }
 
-  v9 = [v6 _figAsset];
-  if (!v9)
+  selfCopy = [movieCopy _figAsset];
+  if (!selfCopy)
   {
     goto LABEL_35;
   }
@@ -78,22 +78,22 @@
   v11 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (v11)
   {
-    v11(v9, v4, &v10->figAssetTrack);
+    v11(selfCopy, v4, &v10->figAssetTrack);
   }
 
   if (!self->_mutableMovieTrackInternal->figAssetTrack)
   {
 LABEL_34:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_35;
   }
 
   v32.receiver = self;
   v32.super_class = AVMutableMovieTrack;
-  v12 = [(AVAssetTrack *)&v32 _initWithAsset:v6 trackID:v4 trackIndex:-1];
+  v12 = [(AVAssetTrack *)&v32 _initWithAsset:movieCopy trackID:v4 trackIndex:-1];
   if (v12)
   {
-    *(v12[3] + 8) = CFRetain([v6 _figMutableMovie]);
+    *(v12[3] + 8) = CFRetain([movieCopy _figMutableMovie]);
     *(v12[3] + 16) = v4;
     v13 = dispatch_semaphore_create(0);
     v14 = v12[3];
@@ -188,10 +188,10 @@ LABEL_34:
   }
 
   self = v12;
-  v9 = self;
+  selfCopy = self;
 LABEL_35:
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -221,17 +221,17 @@ LABEL_35:
 
 - (void)_addFigAssetTrackNotifications
 {
-  v3 = [(AVMutableMovieTrack *)self _figAssetTrack];
-  v4 = [(AVAssetTrack *)self _weakReference];
-  if (v3 && v4)
+  _figAssetTrack = [(AVMutableMovieTrack *)self _figAssetTrack];
+  _weakReference = [(AVAssetTrack *)self _weakReference];
+  if (_figAssetTrack && _weakReference)
   {
-    obj = v4;
+    obj = _weakReference;
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    self->_mutableMovieTrackInternal->figAssetTrackNotificationSource = CFRetain(v3);
+    self->_mutableMovieTrackInternal->figAssetTrackNotificationSource = CFRetain(_figAssetTrack);
     objc_storeStrong(&self->_mutableMovieTrackInternal->figAssetTrackNotificationListenerWeakReference, obj);
     [v5 addListenerWithWeakReference:self->_mutableMovieTrackInternal->figAssetTrackNotificationListenerWeakReference callback:mutableMovieTrackNotificationHandler name:*MEMORY[0x1E6971480] object:self->_mutableMovieTrackInternal->figAssetTrackNotificationSource flags:0];
 
-    v4 = obj;
+    _weakReference = obj;
   }
 }
 
@@ -254,21 +254,21 @@ LABEL_35:
   self->_mutableMovieTrackInternal->figAssetTrackNotificationSource = 0;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
-  v4 = a4;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v4[2]();
+    handlerCopy[2]();
   }
 }
 
 - (id)locale
 {
-  v3 = [(AVMutableMovieTrack *)self extendedLanguageTag];
-  if (v3 || ([(AVMutableMovieTrack *)self languageCode], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  extendedLanguageTag = [(AVMutableMovieTrack *)self extendedLanguageTag];
+  if (extendedLanguageTag || ([(AVMutableMovieTrack *)self languageCode], (extendedLanguageTag = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = CFLocaleCreate(*MEMORY[0x1E695E480], v3);
+    v4 = CFLocaleCreate(*MEMORY[0x1E695E480], extendedLanguageTag);
     if (v4)
     {
       v5 = v4;
@@ -335,55 +335,55 @@ LABEL_35:
   return [(AVAssetTrack *)&v3 hasProtectedContent];
 }
 
-- (void)_setSize:(CGSize)a3 forProperty:(__CFString *)a4
+- (void)_setSize:(CGSize)size forProperty:(__CFString *)property
 {
-  DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(size);
   if (DictionaryRepresentation)
   {
     v7 = DictionaryRepresentation;
-    v8 = [(AVMutableMovieTrack *)self _figMutableMovie];
-    v9 = [(AVMutableMovieTrack *)self trackID];
+    _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+    trackID = [(AVMutableMovieTrack *)self trackID];
     v10 = *(*(CMBaseObjectGetVTable() + 16) + 56);
     if (v10)
     {
-      v10(v8, v9, a4, v7);
+      v10(_figMutableMovie, trackID, property, v7);
     }
 
     CFRelease(v7);
   }
 }
 
-- (void)_setString:(id)a3 forProperty:(__CFString *)a4
+- (void)_setString:(id)string forProperty:(__CFString *)property
 {
-  v9 = a3;
-  v6 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v7 = [(AVMutableMovieTrack *)self trackID];
+  stringCopy = string;
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v8)
   {
-    v8(v6, v7, a4, v9);
+    v8(_figMutableMovie, trackID, property, stringCopy);
   }
 }
 
 - (void)setSampleReferenceBaseURL:(NSURL *)sampleReferenceBaseURL
 {
   v7 = sampleReferenceBaseURL;
-  v4 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v5 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v6)
   {
-    v6(v4, v5, *MEMORY[0x1E6972110], v7);
+    v6(_figMutableMovie, trackID, *MEMORY[0x1E6972110], v7);
   }
 }
 
 - (AVMediaDataStorage)mediaDataStorage
 {
   cf = 0;
-  v3 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v4 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 48);
-  if (!v5 || v5(v3, v4, *MEMORY[0x1E69720C0], *MEMORY[0x1E695E480], &cf))
+  if (!v5 || v5(_figMutableMovie, trackID, *MEMORY[0x1E69720C0], *MEMORY[0x1E695E480], &cf))
   {
     goto LABEL_6;
   }
@@ -421,19 +421,19 @@ LABEL_9:
 {
   v8 = mediaDataStorage;
   v4 = [(AVMediaDataStorage *)v8 URL];
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v7)
   {
-    v7(v5, v6, *MEMORY[0x1E69720C0], v4);
+    v7(_figMutableMovie, trackID, *MEMORY[0x1E69720C0], v4);
   }
 }
 
 - (void)setPreferredVolume:(float)preferredVolume
 {
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   *&v7 = preferredVolume;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 56);
@@ -441,22 +441,22 @@ LABEL_9:
   {
     v10 = *MEMORY[0x1E6972120];
 
-    v9(v5, v6, v10, v8);
+    v9(_figMutableMovie, trackID, v10, v8);
   }
 }
 
 - (void)setTimescale:(CMTimeScale)timescale
 {
   v3 = *&timescale;
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:v3];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v8)
   {
     v9 = *MEMORY[0x1E69720D8];
 
-    v8(v5, v6, v9, v7);
+    v8(_figMutableMovie, trackID, v9, v7);
   }
 }
 
@@ -465,23 +465,23 @@ LABEL_9:
   valuePtr = alternateGroupID;
   if (alternateGroupID < 0x8000)
   {
-    v4 = [(AVAssetTrack *)self asset];
-    [v4 willChangeValueForKey:@"trackGroups"];
+    asset = [(AVAssetTrack *)self asset];
+    [asset willChangeValueForKey:@"trackGroups"];
 
     v5 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt16Type, &valuePtr);
     if (v5)
     {
       v6 = v5;
-      v7 = [(AVMutableMovieTrack *)self _figMutableMovie];
-      v8 = [(AVMutableMovieTrack *)self trackID];
+      _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+      trackID = [(AVMutableMovieTrack *)self trackID];
       v9 = *(*(CMBaseObjectGetVTable() + 16) + 56);
       if (v9)
       {
-        v9(v7, v8, *MEMORY[0x1E6972070], v6);
+        v9(_figMutableMovie, trackID, *MEMORY[0x1E6972070], v6);
       }
 
-      v10 = [(AVAssetTrack *)self asset];
-      [v10 didChangeValueForKey:@"trackGroups"];
+      asset2 = [(AVAssetTrack *)self asset];
+      [asset2 didChangeValueForKey:@"trackGroups"];
 
       CFRelease(v6);
     }
@@ -491,8 +491,8 @@ LABEL_9:
 - (void)setEnabled:(BOOL)enabled
 {
   v3 = enabled;
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   if (v3)
   {
     v7 = MEMORY[0x1E695E4D0];
@@ -509,15 +509,15 @@ LABEL_9:
     v9 = *MEMORY[0x1E69720A8];
     v10 = *v7;
 
-    v8(v5, v6, v9, v10);
+    v8(_figMutableMovie, trackID, v9, v10);
   }
 }
 
 - (void)setModified:(BOOL)modified
 {
   v3 = modified;
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   if (v3)
   {
     v7 = MEMORY[0x1E695E4D0];
@@ -534,21 +534,21 @@ LABEL_9:
     v9 = *MEMORY[0x1E69720E8];
     v10 = *v7;
 
-    v8(v5, v6, v9, v10);
+    v8(_figMutableMovie, trackID, v9, v10);
   }
 }
 
 - (void)setPreferredMediaChunkSize:(NSInteger)preferredMediaChunkSize
 {
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:preferredMediaChunkSize];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v8)
   {
     v9 = *MEMORY[0x1E6972100];
 
-    v8(v5, v6, v9, v7);
+    v8(_figMutableMovie, trackID, v9, v7);
   }
 }
 
@@ -557,12 +557,12 @@ LABEL_9:
   v4 = *MEMORY[0x1E695E480];
   v9 = *preferredMediaChunkDuration;
   v5 = CMTimeCopyAsDictionary(&v9, v4);
-  v6 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v7 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v8)
   {
-    v8(v6, v7, *MEMORY[0x1E69720F8], v5);
+    v8(_figMutableMovie, trackID, *MEMORY[0x1E69720F8], v5);
   }
 
   if (v5)
@@ -573,37 +573,37 @@ LABEL_9:
 
 - (void)setPreferredMediaChunkAlignment:(NSInteger)preferredMediaChunkAlignment
 {
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:preferredMediaChunkAlignment];
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v8)
   {
     v9 = *MEMORY[0x1E69720F0];
 
-    v8(v5, v6, v9, v7);
+    v8(_figMutableMovie, trackID, v9, v7);
   }
 }
 
 - (id)description
 {
-  v3 = [(AVMutableMovieTrack *)self sampleReferenceBaseURL];
+  sampleReferenceBaseURL = [(AVMutableMovieTrack *)self sampleReferenceBaseURL];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  if (v3)
+  if (sampleReferenceBaseURL)
   {
-    v7 = [(AVMutableMovieTrack *)self trackID];
-    v8 = [(AVAssetTrack *)self mediaType];
-    v9 = [(AVMutableMovieTrack *)self sampleReferenceBaseURL];
-    v10 = [v4 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@, sampleReferenceBaseURL = %@>", v6, self, v7, v8, v9];
+    trackID = [(AVMutableMovieTrack *)self trackID];
+    mediaType = [(AVAssetTrack *)self mediaType];
+    sampleReferenceBaseURL2 = [(AVMutableMovieTrack *)self sampleReferenceBaseURL];
+    v10 = [v4 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@, sampleReferenceBaseURL = %@>", v6, self, trackID, mediaType, sampleReferenceBaseURL2];
   }
 
   else
   {
-    v11 = [(AVMutableMovieTrack *)self trackID];
-    v8 = [(AVAssetTrack *)self mediaType];
-    v10 = [v4 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@>", v6, self, v11, v8];
+    trackID2 = [(AVMutableMovieTrack *)self trackID];
+    mediaType = [(AVAssetTrack *)self mediaType];
+    v10 = [v4 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@>", v6, self, trackID2, mediaType];
   }
 
   return v10;
@@ -647,10 +647,10 @@ LABEL_19:
     objc_exception_throw(v29);
   }
 
-  v36 = [(AVMutableMovieTrack *)self formatDescriptions];
-  if ([v36 containsObject:formatDescription])
+  formatDescriptions = [(AVMutableMovieTrack *)self formatDescriptions];
+  if ([formatDescriptions containsObject:formatDescription])
   {
-    v18 = [MEMORY[0x1E695DF70] arrayWithArray:v36];
+    v18 = [MEMORY[0x1E695DF70] arrayWithArray:formatDescriptions];
     v19 = 0;
     v20 = *MEMORY[0x1E69600D0];
     v21 = *MEMORY[0x1E69600C8];
@@ -668,12 +668,12 @@ LABEL_19:
       ++v19;
     }
 
-    v24 = [(AVMutableMovieTrack *)self _figMutableMovie];
-    v25 = [(AVMutableMovieTrack *)self trackID];
+    _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+    trackID = [(AVMutableMovieTrack *)self trackID];
     v26 = *(*(CMBaseObjectGetVTable() + 16) + 56);
     if (v26)
     {
-      v26(v24, v25, *MEMORY[0x1E69720A0], v18);
+      v26(_figMutableMovie, trackID, *MEMORY[0x1E69720A0], v18);
     }
   }
 }
@@ -681,19 +681,19 @@ LABEL_19:
 - (NSArray)formatDescriptions
 {
   cf = 0;
-  v3 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v4 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 48);
   if (v5)
   {
-    v6 = v5(v3, v4, *MEMORY[0x1E69720A0], *MEMORY[0x1E695E480], &cf);
-    v7 = cf;
+    v6 = v5(_figMutableMovie, trackID, *MEMORY[0x1E69720A0], *MEMORY[0x1E695E480], &cf);
+    array = cf;
     if (v6)
     {
 LABEL_10:
-      if (v7)
+      if (array)
       {
-        CFRelease(v7);
+        CFRelease(array);
       }
 
       goto LABEL_6;
@@ -703,11 +703,11 @@ LABEL_10:
     {
       v8 = CFGetTypeID(cf);
       TypeID = CFArrayGetTypeID();
-      v7 = cf;
+      array = cf;
       if (v8 == TypeID)
       {
         cf = 0;
-        if (v7)
+        if (array)
         {
           goto LABEL_7;
         }
@@ -720,18 +720,18 @@ LABEL_10:
   }
 
 LABEL_6:
-  v7 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 LABEL_7:
 
-  return v7;
+  return array;
 }
 
-- (BOOL)isCompatibleWithFormatDescription:(opaqueCMFormatDescription *)a3
+- (BOOL)isCompatibleWithFormatDescription:(opaqueCMFormatDescription *)description
 {
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 96);
-  return v7 && v7(v5, v6, a3) != 0;
+  return v7 && v7(_figMutableMovie, trackID, description) != 0;
 }
 
 - (BOOL)insertTimeRange:(CMTimeRange *)timeRange ofTrack:(AVAssetTrack *)track atTime:(CMTime *)startTime copySampleData:(BOOL)copySampleData error:(NSError *)outError
@@ -739,17 +739,17 @@ LABEL_7:
   LODWORD(v8) = copySampleData;
   v38[1] = *MEMORY[0x1E69E9840];
   v12 = track;
-  v13 = [(AVAssetTrack *)v12 asset];
-  v14 = [v13 providesPreciseDurationAndTiming];
+  asset = [(AVAssetTrack *)v12 asset];
+  providesPreciseDurationAndTiming = [asset providesPreciseDurationAndTiming];
 
-  if (v14)
+  if (providesPreciseDurationAndTiming)
   {
     [(AVMutableMovieTrack *)self willChangeValueForKey:@"segments"];
     if (![(AVAssetTrack *)self isEqual:v12]|| (v8 & 1) != 0)
     {
-      v22 = [(AVAssetTrack *)v12 _figFormatReader];
-      v23 = [(AVAssetTrack *)v12 _figTrackReader];
-      if (!v23)
+      _figFormatReader = [(AVAssetTrack *)v12 _figFormatReader];
+      _figTrackReader = [(AVAssetTrack *)v12 _figTrackReader];
+      if (!_figTrackReader)
       {
         v20 = AVLocalizedError(@"AVFoundationErrorDomain", -11838, 0);
         v21 = 0;
@@ -783,10 +783,10 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v24 = [(AVAssetTrack *)v12 asset];
-      v25 = [v24 _prefersNominalDurations];
+      asset2 = [(AVAssetTrack *)v12 asset];
+      _prefersNominalDurations = [asset2 _prefersNominalDurations];
 
-      if (v25)
+      if (_prefersNominalDurations)
       {
         v8 = v8 | 0x100;
       }
@@ -796,8 +796,8 @@ LABEL_23:
         v8 = v8;
       }
 
-      v26 = [(AVMutableMovieTrack *)self _figMutableMovie];
-      v27 = [(AVMutableMovieTrack *)self trackID];
+      _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+      trackID = [(AVMutableMovieTrack *)self trackID];
       v28 = *&timeRange->start.epoch;
       *&duration.start.value = *&timeRange->start.value;
       *&duration.start.epoch = v28;
@@ -810,15 +810,15 @@ LABEL_23:
         start = duration;
         *&v34.start.value = *&v33.start.value;
         v34.start.epoch = v33.start.epoch;
-        v18 = v29(v26, v27, v22, v23, &start, &v34, v8);
+        v18 = v29(_figMutableMovie, trackID, _figFormatReader, _figTrackReader, &start, &v34, v8);
         goto LABEL_16;
       }
     }
 
     else
     {
-      v15 = [(AVMutableMovieTrack *)self _figMutableMovie];
-      v16 = [(AVMutableMovieTrack *)self trackID];
+      _figMutableMovie2 = [(AVMutableMovieTrack *)self _figMutableMovie];
+      trackID2 = [(AVMutableMovieTrack *)self trackID];
       *&start.start.value = *&startTime->value;
       start.start.epoch = startTime->epoch;
       *&duration.start.value = *&timeRange->duration.value;
@@ -832,7 +832,7 @@ LABEL_23:
       {
         start = v34;
         duration = v33;
-        v18 = v17(v15, v16, &start, &duration);
+        v18 = v17(_figMutableMovie2, trackID2, &start, &duration);
         goto LABEL_16;
       }
     }
@@ -867,14 +867,14 @@ LABEL_24:
 - (void)insertEmptyTimeRange:(CMTimeRange *)timeRange
 {
   [(AVMutableMovieTrack *)self willChangeValueForKey:@"segments"];
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v8 = *timeRange;
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 120);
   if (v7)
   {
     v9 = v8;
-    v7(v5, v6, &v9);
+    v7(_figMutableMovie, trackID, &v9);
   }
 
   [(AVMutableMovieTrack *)self didChangeValueForKey:@"segments", *&v8.start.value, *&v8.start.epoch, *&v8.duration.timescale];
@@ -883,14 +883,14 @@ LABEL_24:
 - (void)removeTimeRange:(CMTimeRange *)timeRange
 {
   [(AVMutableMovieTrack *)self willChangeValueForKey:@"segments"];
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v8 = *timeRange;
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 136);
   if (v7)
   {
     v9 = v8;
-    v7(v5, v6, &v9);
+    v7(_figMutableMovie, trackID, &v9);
   }
 
   [(AVMutableMovieTrack *)self didChangeValueForKey:@"segments", *&v8.start.value, *&v8.start.epoch, *&v8.duration.timescale];
@@ -899,8 +899,8 @@ LABEL_24:
 - (void)scaleTimeRange:(CMTimeRange *)timeRange toDuration:(CMTime *)duration
 {
   [(AVMutableMovieTrack *)self willChangeValueForKey:@"segments"];
-  v7 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v8 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v11 = *timeRange;
   v10 = *duration;
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 152);
@@ -908,7 +908,7 @@ LABEL_24:
   {
     v13 = v11;
     v12 = v10;
-    v9(v7, v8, &v13, &v12);
+    v9(_figMutableMovie, trackID, &v13, &v12);
   }
 
   [(AVMutableMovieTrack *)self didChangeValueForKey:@"segments", *&v10.value, v10.epoch];
@@ -920,8 +920,8 @@ LABEL_24:
   {
     v33 = MEMORY[0x1E695DF30];
     v34 = *MEMORY[0x1E695D940];
-    v35 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"invalid parameter not satisfying: %s", outDecodeTime, outPresentationTime, outError, v6, v7, "sampleBuffer != NULL");
-    v36 = [v33 exceptionWithName:v34 reason:v35 userInfo:0];
+    mediaType2 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"invalid parameter not satisfying: %s", outDecodeTime, outPresentationTime, outError, v6, v7, "sampleBuffer != NULL");
+    v36 = [v33 exceptionWithName:v34 reason:mediaType2 userInfo:0];
 LABEL_20:
     v41 = v36;
     v42 = v36;
@@ -932,14 +932,14 @@ LABEL_20:
   if (FormatDescription)
   {
     v15 = FormatDescription;
-    v16 = [(AVAssetTrack *)self mediaType];
-    v17 = CMMediaTypeFromAVMediaType(v16);
+    mediaType = [(AVAssetTrack *)self mediaType];
+    v17 = CMMediaTypeFromAVMediaType(mediaType);
 
     if (CMFormatDescriptionGetMediaType(v15) != v17)
     {
       v43 = MEMORY[0x1E695DF30];
-      v35 = [(AVAssetTrack *)self mediaType];
-      v49 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Media type of sample buffer must match receiver's media type (%@)", v44, v45, v46, v47, v48, v35);
+      mediaType2 = [(AVAssetTrack *)self mediaType];
+      v49 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Media type of sample buffer must match receiver's media type (%@)", v44, v45, v46, v47, v48, mediaType2);
       v41 = [v43 exceptionWithName:*MEMORY[0x1E695D940] reason:v49 userInfo:0];
       v50 = v41;
 
@@ -952,8 +952,8 @@ LABEL_21:
   {
     v37 = MEMORY[0x1E695DF30];
     v38 = *MEMORY[0x1E695D940];
-    v35 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"CMSampleBuffers containing image buffers are not supported you must provide CMSampleBuffers containing encoded video", v18, v19, v20, v21, v22, v51);;
-    v36 = [v37 exceptionWithName:v38 reason:v35 userInfo:0];
+    mediaType2 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"CMSampleBuffers containing image buffers are not supported you must provide CMSampleBuffers containing encoded video", v18, v19, v20, v21, v22, v51);;
+    v36 = [v37 exceptionWithName:v38 reason:mediaType2 userInfo:0];
     goto LABEL_20;
   }
 
@@ -961,8 +961,8 @@ LABEL_21:
   {
     v39 = MEMORY[0x1E695DF30];
     v40 = *MEMORY[0x1E695D940];
-    v35 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"CMSampleBuffers containing caption groups are not supported you must provide CMSampleBuffers containing encoded media data", v23, v24, v25, v26, v27, v51);;
-    v36 = [v39 exceptionWithName:v40 reason:v35 userInfo:0];
+    mediaType2 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"CMSampleBuffers containing caption groups are not supported you must provide CMSampleBuffers containing encoded media data", v23, v24, v25, v26, v27, v51);;
+    v36 = [v39 exceptionWithName:v40 reason:mediaType2 userInfo:0];
     goto LABEL_20;
   }
 
@@ -970,8 +970,8 @@ LABEL_21:
   v55 = *(MEMORY[0x1E6960C70] + 16);
   v52 = v54;
   v53 = v55;
-  v28 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v29 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v30 = *(*(CMBaseObjectGetVTable() + 16) + 64);
   if (!v30)
   {
@@ -984,7 +984,7 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  v31 = v30(v28, v29, sampleBuffer, 0, &v54, &v52);
+  v31 = v30(_figMutableMovie, trackID, sampleBuffer, 0, &v54, &v52);
   if (outDecodeTime)
   {
 LABEL_10:
@@ -1009,8 +1009,8 @@ LABEL_11:
 
 - (BOOL)insertMediaTimeRange:(CMTimeRange *)mediaTimeRange intoTimeRange:(CMTimeRange *)trackTimeRange
 {
-  v7 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v8 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v12 = *trackTimeRange;
   v11 = *mediaTimeRange;
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 112);
@@ -1021,16 +1021,16 @@ LABEL_11:
 
   v14 = v12;
   v13 = v11;
-  return v9(v7, v8, &v14, &v13) == 0;
+  return v9(_figMutableMovie, trackID, &v14, &v13) == 0;
 }
 
-- (BOOL)appendMediaData:(id)a3 dataOffset:(int64_t *)a4
+- (BOOL)appendMediaData:(id)data dataOffset:(int64_t *)offset
 {
-  v6 = a3;
-  v12 = v6;
+  dataCopy = data;
+  v12 = dataCopy;
   v19 = 0;
   cf = 0;
-  if (!v6)
+  if (!dataCopy)
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"invalid parameter not satisfying: %s", v7, v8, v9, v10, v11, "data != nil");
@@ -1040,7 +1040,7 @@ LABEL_11:
     objc_exception_throw(v17);
   }
 
-  [v6 length];
+  [dataCopy length];
   BlockBufferWithCFDataNoCopy = FigCreateBlockBufferWithCFDataNoCopy();
 
   return BlockBufferWithCFDataNoCopy == 0;
@@ -1049,19 +1049,19 @@ LABEL_11:
 - (id)availableMetadataFormats
 {
   cf = 0;
-  v3 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v4 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 48);
   if (v5)
   {
-    v6 = v5(v3, v4, *MEMORY[0x1E6972078], *MEMORY[0x1E695E480], &cf);
-    v7 = cf;
+    v6 = v5(_figMutableMovie, trackID, *MEMORY[0x1E6972078], *MEMORY[0x1E695E480], &cf);
+    array = cf;
     if (v6)
     {
 LABEL_10:
-      if (v7)
+      if (array)
       {
-        CFRelease(v7);
+        CFRelease(array);
       }
 
       goto LABEL_6;
@@ -1071,11 +1071,11 @@ LABEL_10:
     {
       v8 = CFGetTypeID(cf);
       TypeID = CFArrayGetTypeID();
-      v7 = cf;
+      array = cf;
       if (v8 == TypeID)
       {
         cf = 0;
-        if (v7)
+        if (array)
         {
           goto LABEL_7;
         }
@@ -1088,20 +1088,20 @@ LABEL_10:
   }
 
 LABEL_6:
-  v7 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 LABEL_7:
 
-  return v7;
+  return array;
 }
 
 - (NSArray)metadataForFormat:(AVMetadataFormat)format
 {
   v4 = format;
-  v5 = [(AVAssetTrack *)self _figTrackReader];
+  _figTrackReader = [(AVAssetTrack *)self _figTrackReader];
   v6 = 0;
   cf = 0;
   theArray = 0;
-  if (v4 && v5)
+  if (v4 && _figTrackReader)
   {
     FigBaseObject = FigTrackReaderGetFigBaseObject();
     v8 = *(*(CMBaseObjectGetVTable() + 8) + 48);
@@ -1144,8 +1144,8 @@ LABEL_24:
         {
           v16 = [AVMetadataEnumerator metadataEnumeratorWithMetadataReader:ValueAtIndex];
           v17 = MEMORY[0x1E695DF70];
-          v18 = [v16 allObjects];
-          v19 = [v17 arrayWithArray:v18];
+          allObjects = [v16 allObjects];
+          v19 = [v17 arrayWithArray:allObjects];
 
           if ([(NSString *)v4 isEqualToString:@"com.apple.quicktime.udta"]|| [(NSString *)v4 isEqualToString:v29])
           {
@@ -1196,15 +1196,15 @@ LABEL_29:
 
   if (v25)
   {
-    v26 = v25;
+    array = v25;
   }
 
   else
   {
-    v26 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v27 = v26;
+  v27 = array;
 
   return v27;
 }
@@ -1212,13 +1212,13 @@ LABEL_29:
 - (NSArray)metadata
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(AVMutableMovieTrack *)self availableMetadataFormats];
-  v4 = [MEMORY[0x1E695DF70] array];
+  availableMetadataFormats = [(AVMutableMovieTrack *)self availableMetadataFormats];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v3;
+  v5 = availableMetadataFormats;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -1233,7 +1233,7 @@ LABEL_29:
         }
 
         v9 = [(AVMutableMovieTrack *)self metadataForFormat:*(*(&v11 + 1) + 8 * i), v11];
-        [v4 addObjectsFromArray:v9];
+        [array addObjectsFromArray:v9];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1242,19 +1242,19 @@ LABEL_29:
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 - (void)setMetadata:(NSArray *)metadata
 {
   v8 = metadata;
   v4 = [AVMetadataItem _figMetadataPropertyFromMetadataItems:?];
-  v5 = [(AVMutableMovieTrack *)self _figMutableMovie];
-  v6 = [(AVMutableMovieTrack *)self trackID];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
+  trackID = [(AVMutableMovieTrack *)self trackID];
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 56);
   if (v7)
   {
-    v7(v5, v6, *MEMORY[0x1E69720E0], v4);
+    v7(_figMutableMovie, trackID, *MEMORY[0x1E69720E0], v4);
   }
 
   dispatch_semaphore_wait(self->_mutableMovieTrackInternal->metadataWaitingSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -1264,10 +1264,10 @@ LABEL_29:
 {
   v25 = movieTrack;
   v7 = trackAssociationType;
-  v8 = [(AVAssetTrack *)self asset];
-  v9 = [(AVAssetTrack *)v25 asset];
+  asset = [(AVAssetTrack *)self asset];
+  asset2 = [(AVAssetTrack *)v25 asset];
 
-  if (v8 != v9)
+  if (asset != asset2)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"the tracks being associated must belong to the same movie", v10, v11, v12, v13, v14, v24);
@@ -1277,14 +1277,14 @@ LABEL_29:
     objc_exception_throw(v22);
   }
 
-  v15 = [(AVMutableMovieTrack *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
   v16 = AVOSTypeForString(v7);
-  v17 = [(AVMutableMovieTrack *)self trackID];
-  v18 = [(AVAssetTrack *)v25 trackID];
+  trackID = [(AVMutableMovieTrack *)self trackID];
+  trackID2 = [(AVAssetTrack *)v25 trackID];
   v19 = *(*(CMBaseObjectGetVTable() + 16) + 184);
   if (v19)
   {
-    v19(v15, v16, v17, v18);
+    v19(_figMutableMovie, v16, trackID, trackID2);
   }
 }
 
@@ -1292,10 +1292,10 @@ LABEL_29:
 {
   v25 = movieTrack;
   v7 = trackAssociationType;
-  v8 = [(AVAssetTrack *)self asset];
-  v9 = [(AVAssetTrack *)v25 asset];
+  asset = [(AVAssetTrack *)self asset];
+  asset2 = [(AVAssetTrack *)v25 asset];
 
-  if (v8 != v9)
+  if (asset != asset2)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"the tracks being dissociated must belong to the same movie", v10, v11, v12, v13, v14, v24);
@@ -1305,14 +1305,14 @@ LABEL_29:
     objc_exception_throw(v22);
   }
 
-  v15 = [(AVMutableMovieTrack *)self _figMutableMovie];
+  _figMutableMovie = [(AVMutableMovieTrack *)self _figMutableMovie];
   v16 = AVOSTypeForString(v7);
-  v17 = [(AVMutableMovieTrack *)self trackID];
-  v18 = [(AVAssetTrack *)v25 trackID];
+  trackID = [(AVMutableMovieTrack *)self trackID];
+  trackID2 = [(AVAssetTrack *)v25 trackID];
   v19 = *(*(CMBaseObjectGetVTable() + 16) + 192);
   if (v19)
   {
-    v19(v15, v16, v17, v18);
+    v19(_figMutableMovie, v16, trackID, trackID2);
   }
 }
 

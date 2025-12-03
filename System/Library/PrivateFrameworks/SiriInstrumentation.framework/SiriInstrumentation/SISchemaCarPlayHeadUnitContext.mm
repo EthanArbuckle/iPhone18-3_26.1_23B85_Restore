@@ -1,54 +1,54 @@
 @interface SISchemaCarPlayHeadUnitContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaCarPlayHeadUnitContext)initWithDictionary:(id)a3;
-- (SISchemaCarPlayHeadUnitContext)initWithJSON:(id)a3;
+- (SISchemaCarPlayHeadUnitContext)initWithDictionary:(id)dictionary;
+- (SISchemaCarPlayHeadUnitContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaCarPlayHeadUnitContext
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_vehicleManufacturer)
   {
-    v4 = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"vehicleManufacturer"];
+    vehicleManufacturer = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
+    v5 = [vehicleManufacturer copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"vehicleManufacturer"];
   }
 
   if (self->_vehicleModel)
   {
-    v6 = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"vehicleModel"];
+    vehicleModel = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
+    v7 = [vehicleModel copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"vehicleModel"];
   }
 
   if (self->_vehicleName)
   {
-    v8 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"vehicleName"];
+    vehicleName = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
+    v9 = [vehicleName copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"vehicleName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (SISchemaCarPlayHeadUnitContext)initWithDictionary:(id)a3
+- (SISchemaCarPlayHeadUnitContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SISchemaCarPlayHeadUnitContext;
   v5 = [(SISchemaCarPlayHeadUnitContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"vehicleName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"vehicleName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(SISchemaCarPlayHeadUnitContext *)v5 setVehicleName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"vehicleModel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"vehicleModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(SISchemaCarPlayHeadUnitContext *)v5 setVehicleModel:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"vehicleManufacturer"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"vehicleManufacturer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (SISchemaCarPlayHeadUnitContext)initWithJSON:(id)a3
+- (SISchemaCarPlayHeadUnitContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaCarPlayHeadUnitContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaCarPlayHeadUnitContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaCarPlayHeadUnitContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -119,28 +119,28 @@
   return v4 ^ [(NSString *)self->_vehicleManufacturer hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
-  v6 = [v4 vehicleName];
-  if ((v5 != 0) == (v6 == 0))
+  vehicleName = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
+  vehicleName2 = [equalCopy vehicleName];
+  if ((vehicleName != 0) == (vehicleName2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
-  if (v7)
+  vehicleName3 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
+  if (vehicleName3)
   {
-    v8 = v7;
-    v9 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
-    v10 = [v4 vehicleName];
-    v11 = [v9 isEqual:v10];
+    v8 = vehicleName3;
+    vehicleName4 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
+    vehicleName5 = [equalCopy vehicleName];
+    v11 = [vehicleName4 isEqual:vehicleName5];
 
     if (!v11)
     {
@@ -152,20 +152,20 @@
   {
   }
 
-  v5 = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
-  v6 = [v4 vehicleModel];
-  if ((v5 != 0) == (v6 == 0))
+  vehicleName = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
+  vehicleName2 = [equalCopy vehicleModel];
+  if ((vehicleName != 0) == (vehicleName2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
-  if (v12)
+  vehicleModel = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
+  if (vehicleModel)
   {
-    v13 = v12;
-    v14 = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
-    v15 = [v4 vehicleModel];
-    v16 = [v14 isEqual:v15];
+    v13 = vehicleModel;
+    vehicleModel2 = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
+    vehicleModel3 = [equalCopy vehicleModel];
+    v16 = [vehicleModel2 isEqual:vehicleModel3];
 
     if (!v16)
     {
@@ -177,12 +177,12 @@
   {
   }
 
-  v5 = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
-  v6 = [v4 vehicleManufacturer];
-  if ((v5 != 0) != (v6 == 0))
+  vehicleName = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
+  vehicleName2 = [equalCopy vehicleManufacturer];
+  if ((vehicleName != 0) != (vehicleName2 == 0))
   {
-    v17 = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
-    if (!v17)
+    vehicleManufacturer = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
+    if (!vehicleManufacturer)
     {
 
 LABEL_20:
@@ -190,10 +190,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
-    v20 = [v4 vehicleManufacturer];
-    v21 = [v19 isEqual:v20];
+    v18 = vehicleManufacturer;
+    vehicleManufacturer2 = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
+    vehicleManufacturer3 = [equalCopy vehicleManufacturer];
+    v21 = [vehicleManufacturer2 isEqual:vehicleManufacturer3];
 
     if (v21)
     {
@@ -213,30 +213,30 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
+  toCopy = to;
+  vehicleName = [(SISchemaCarPlayHeadUnitContext *)self vehicleName];
 
-  if (v4)
+  if (vehicleName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
+  vehicleModel = [(SISchemaCarPlayHeadUnitContext *)self vehicleModel];
 
-  if (v5)
+  if (vehicleModel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
+  vehicleManufacturer = [(SISchemaCarPlayHeadUnitContext *)self vehicleManufacturer];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (vehicleManufacturer)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 

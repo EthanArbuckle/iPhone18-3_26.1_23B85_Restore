@@ -1,25 +1,25 @@
 @interface ACCHIDServerRemote
-- (ACCHIDServerRemote)initWithXPCConnection:(id)a3;
-- (void)componentUpdate:(id)a3 componentID:(id)a4 enabled:(BOOL)a5 withReply:(id)a6;
-- (void)getReport:(id)a3 componentID:(id)a4 reportType:(id)a5 reportID:(id)a6 withReply:(id)a7;
-- (void)initConnection:(id)a3;
-- (void)outReport:(id)a3 componentID:(id)a4 report:(id)a5 withReply:(id)a6;
+- (ACCHIDServerRemote)initWithXPCConnection:(id)connection;
+- (void)componentUpdate:(id)update componentID:(id)d enabled:(BOOL)enabled withReply:(id)reply;
+- (void)getReport:(id)report componentID:(id)d reportType:(id)type reportID:(id)iD withReply:(id)reply;
+- (void)initConnection:(id)connection;
+- (void)outReport:(id)report componentID:(id)d report:(id)a5 withReply:(id)reply;
 @end
 
 @implementation ACCHIDServerRemote
 
-- (ACCHIDServerRemote)initWithXPCConnection:(id)a3
+- (ACCHIDServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ACCHIDServerRemote;
   v6 = [(ACCHIDServerRemote *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v6->_XPCConnection, a3);
+      objc_storeStrong(&v6->_XPCConnection, connection);
     }
 
     else
@@ -32,14 +32,14 @@
   return v7;
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCHIDServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCHIDServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCHIDServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -102,42 +102,42 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[#HID] shouldStayConnected: %d", v13, 8u);
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)outReport:(id)a3 componentID:(id)a4 report:(id)a5 withReply:(id)a6
+- (void)outReport:(id)report componentID:(id)d report:(id)a5 withReply:(id)reply
 {
-  v11 = a6;
-  v9 = platform_hid_send_out_report(a3, a4, a5);
-  v10 = v11;
-  if (v11)
+  replyCopy = reply;
+  v9 = platform_hid_send_out_report(report, d, a5);
+  v10 = replyCopy;
+  if (replyCopy)
   {
-    (*(v11 + 2))(v11, v9);
-    v10 = v11;
+    (*(replyCopy + 2))(replyCopy, v9);
+    v10 = replyCopy;
   }
 }
 
-- (void)getReport:(id)a3 componentID:(id)a4 reportType:(id)a5 reportID:(id)a6 withReply:(id)a7
+- (void)getReport:(id)report componentID:(id)d reportType:(id)type reportID:(id)iD withReply:(id)reply
 {
-  v13 = a7;
-  report = platform_hid_send_get_report(a3, a4, a5, a6);
-  v12 = v13;
-  if (v13)
+  replyCopy = reply;
+  report = platform_hid_send_get_report(report, d, type, iD);
+  v12 = replyCopy;
+  if (replyCopy)
   {
-    (*(v13 + 2))(v13, report);
-    v12 = v13;
+    (*(replyCopy + 2))(replyCopy, report);
+    v12 = replyCopy;
   }
 }
 
-- (void)componentUpdate:(id)a3 componentID:(id)a4 enabled:(BOOL)a5 withReply:(id)a6
+- (void)componentUpdate:(id)update componentID:(id)d enabled:(BOOL)enabled withReply:(id)reply
 {
-  v11 = a6;
-  v9 = platform_hid_send_component_update(a3, a4, a5);
-  v10 = v11;
-  if (v11)
+  replyCopy = reply;
+  v9 = platform_hid_send_component_update(update, d, enabled);
+  v10 = replyCopy;
+  if (replyCopy)
   {
-    (*(v11 + 2))(v11, v9);
-    v10 = v11;
+    (*(replyCopy + 2))(replyCopy, v9);
+    v10 = replyCopy;
   }
 }
 

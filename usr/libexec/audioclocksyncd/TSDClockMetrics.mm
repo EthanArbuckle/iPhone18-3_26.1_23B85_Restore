@@ -1,25 +1,25 @@
 @interface TSDClockMetrics
-- (TSDClockMetrics)initWithClock:(id)a3;
-- (TSDClockMetrics)initWithInterfaceMetrics:(id *)a3;
-- (id)getDelta:(id)a3;
+- (TSDClockMetrics)initWithClock:(id)clock;
+- (TSDClockMetrics)initWithInterfaceMetrics:(id *)metrics;
+- (id)getDelta:(id)delta;
 @end
 
 @implementation TSDClockMetrics
 
-- (TSDClockMetrics)initWithClock:(id)a3
+- (TSDClockMetrics)initWithClock:(id)clock
 {
-  v4 = a3;
-  v5 = +[TSDgPTPClock iokitMatchingDictionaryForClockIdentifier:](TSDgPTPClock, "iokitMatchingDictionaryForClockIdentifier:", [v4 clockIdentity]);
+  clockCopy = clock;
+  v5 = +[TSDgPTPClock iokitMatchingDictionaryForClockIdentifier:](TSDgPTPClock, "iokitMatchingDictionaryForClockIdentifier:", [clockCopy clockIdentity]);
   v6 = [IOKService matchingService:v5];
 
-  v7 = [v6 iodProperties];
-  v8 = [v4 clockIdentity];
+  iodProperties = [v6 iodProperties];
+  clockIdentity = [clockCopy clockIdentity];
 
-  self->_clockIdentity = v8;
-  v9 = [v7 objectForKeyedSubscript:@"GrandmasterChangesCounter"];
+  self->_clockIdentity = clockIdentity;
+  v9 = [iodProperties objectForKeyedSubscript:@"GrandmasterChangesCounter"];
   if (v9)
   {
-    v10 = [v7 objectForKeyedSubscript:@"GrandmasterChangesCounter"];
+    v10 = [iodProperties objectForKeyedSubscript:@"GrandmasterChangesCounter"];
     self->_gmChangesCount = [v10 unsignedIntValue];
   }
 
@@ -28,10 +28,10 @@
     self->_gmChangesCount = 0;
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"TimeToChangeGrandmaster"];
+  v11 = [iodProperties objectForKeyedSubscript:@"TimeToChangeGrandmaster"];
   if (v11)
   {
-    v12 = [v7 objectForKeyedSubscript:@"TimeToChangeGrandmaster"];
+    v12 = [iodProperties objectForKeyedSubscript:@"TimeToChangeGrandmaster"];
     self->_timeToChangeGm = [v12 unsignedLongLongValue];
   }
 
@@ -40,10 +40,10 @@
     self->_timeToChangeGm = 0;
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"TimeToLock"];
+  v13 = [iodProperties objectForKeyedSubscript:@"TimeToLock"];
   if (v13)
   {
-    v14 = [v7 objectForKeyedSubscript:@"TimeToLock"];
+    v14 = [iodProperties objectForKeyedSubscript:@"TimeToLock"];
     self->_timeToLock = [v14 unsignedLongLongValue];
   }
 
@@ -52,10 +52,10 @@
     self->_timeToLock = 0;
   }
 
-  v15 = [v7 objectForKeyedSubscript:@"CoreAudioReanchors"];
+  v15 = [iodProperties objectForKeyedSubscript:@"CoreAudioReanchors"];
   if (v15)
   {
-    v16 = [v7 objectForKeyedSubscript:@"CoreAudioReanchors"];
+    v16 = [iodProperties objectForKeyedSubscript:@"CoreAudioReanchors"];
     self->_coreAudioReanchors = [v16 unsignedIntValue];
   }
 
@@ -67,25 +67,25 @@
   return self;
 }
 
-- (TSDClockMetrics)initWithInterfaceMetrics:(id *)a3
+- (TSDClockMetrics)initWithInterfaceMetrics:(id *)metrics
 {
-  self->_clockIdentity = a3->var0;
-  v3 = *&a3->var3;
-  *&self->_gmChangesCount = *&a3->var1;
+  self->_clockIdentity = metrics->var0;
+  v3 = *&metrics->var3;
+  *&self->_gmChangesCount = *&metrics->var1;
   *&self->_timeToLock = v3;
   return self;
 }
 
-- (id)getDelta:(id)a3
+- (id)getDelta:(id)delta
 {
-  v4 = a3;
+  deltaCopy = delta;
   v5 = objc_alloc_init(TSDClockMetrics);
   [(TSDClockMetrics *)v5 setClockIdentity:self->_clockIdentity];
-  -[TSDClockMetrics setGmChangesCount:](v5, "setGmChangesCount:", self->_gmChangesCount - [v4 gmChangesCount]);
+  -[TSDClockMetrics setGmChangesCount:](v5, "setGmChangesCount:", self->_gmChangesCount - [deltaCopy gmChangesCount]);
   coreAudioReanchors = self->_coreAudioReanchors;
-  v7 = [v4 coreAudioReanchors];
+  coreAudioReanchors = [deltaCopy coreAudioReanchors];
 
-  [(TSDClockMetrics *)v5 setCoreAudioReanchors:coreAudioReanchors - v7];
+  [(TSDClockMetrics *)v5 setCoreAudioReanchors:coreAudioReanchors - coreAudioReanchors];
 
   return v5;
 }

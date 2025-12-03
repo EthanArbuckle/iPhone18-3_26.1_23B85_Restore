@@ -1,5 +1,5 @@
 @interface _UIFeedbackCoreHapticsHighPriorityEngine
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3;
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback;
 + (id)_additionalEngineOptions;
 + (id)sharedEngine;
 - (id)_internal_createCoreHapticsEngine;
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __56___UIFeedbackCoreHapticsHighPriorityEngine_sharedEngine__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49A150 != -1)
   {
     dispatch_once(&qword_1ED49A150, block);
@@ -24,9 +24,9 @@
   return v2;
 }
 
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v4 = +[UIDevice currentDevice];
   if ([v4 _feedbackSupportLevel] < 2)
   {
@@ -36,9 +36,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [v3 _effectiveFeedbackTypes];
+  _effectiveFeedbackTypes = [feedbackCopy _effectiveFeedbackTypes];
 
-  if (v5 != 2)
+  if (_effectiveFeedbackTypes != 2)
   {
     goto LABEL_10;
   }
@@ -48,14 +48,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = [v3 pattern];
-  if (!v6)
+  pattern = [feedbackCopy pattern];
+  if (!pattern)
   {
     goto LABEL_10;
   }
 
-  v7 = v6;
-  v8 = [v6 configurationDictionary];
+  v7 = pattern;
+  configurationDictionary = [pattern configurationDictionary];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -72,7 +72,7 @@ LABEL_10:
   _Block_object_dispose(&v17, 8);
   if (v9)
   {
-    v11 = [v8 valueForKey:*v9];
+    v11 = [configurationDictionary valueForKey:*v9];
     v12 = getCHHapticPriorityHigh();
     v13 = [v11 isEqualToString:v12];
 
@@ -80,9 +80,9 @@ LABEL_11:
     return v13;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticPatternKey getCHHapticPatternKeyPriority(void)"];
-  [v15 handleFailureInFunction:v16 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:98 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v16 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:98 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -92,17 +92,17 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = _UIFeedbackCoreHapticsHighPriorityEngine;
-  v3 = [(_UIFeedbackCoreHapticsEngine *)&v7 _internal_createCoreHapticsEngine];
-  if (!v3)
+  _internal_createCoreHapticsEngine = [(_UIFeedbackCoreHapticsEngine *)&v7 _internal_createCoreHapticsEngine];
+  if (!_internal_createCoreHapticsEngine)
   {
-    v4 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
-    [v4 setMuteHapticsWhileRecordingAudio:0];
+    coreHapticsEngine = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
+    [coreHapticsEngine setMuteHapticsWhileRecordingAudio:0];
 
-    v5 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
-    [v5 setPlaysHapticsOnly:1];
+    coreHapticsEngine2 = [(_UIFeedbackCoreHapticsEngine *)self coreHapticsEngine];
+    [coreHapticsEngine2 setPlaysHapticsOnly:1];
   }
 
-  return v3;
+  return _internal_createCoreHapticsEngine;
 }
 
 + (id)_additionalEngineOptions
@@ -124,9 +124,9 @@ LABEL_11:
   _Block_object_dispose(&v26, 8);
   if (!v2)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticEngineOptionKey getCHHapticEngineOptionKeyHapticPowerUsage(void)"];
-    [v18 handleFailureInFunction:v19 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:35 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v19 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:35 description:{@"%s", dlerror()}];
 
     goto LABEL_20;
   }
@@ -149,9 +149,9 @@ LABEL_11:
   _Block_object_dispose(&v26, 8);
   if (!v5)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticPowerUsage getCHHapticPowerUsageLow(void)"];
-    [v20 handleFailureInFunction:v21 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v21 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:36 description:{@"%s", dlerror()}];
 
     goto LABEL_20;
   }
@@ -176,9 +176,9 @@ LABEL_11:
   _Block_object_dispose(&v26, 8);
   if (!v9)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticLocality getCHHapticLocalityDefaultWithFullStrength(void)"];
-    [v22 handleFailureInFunction:v23 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v23 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:30 description:{@"%s", dlerror()}];
 
     goto LABEL_20;
   }
@@ -201,9 +201,9 @@ LABEL_11:
   _Block_object_dispose(&v26, 8);
   if (!v12)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticEngineOptionKey getCHHapticEngineOptionKeyPriority(void)"];
-    [v24 handleFailureInFunction:v25 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v25 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:33 description:{@"%s", dlerror()}];
 
 LABEL_20:
     __break(1u);

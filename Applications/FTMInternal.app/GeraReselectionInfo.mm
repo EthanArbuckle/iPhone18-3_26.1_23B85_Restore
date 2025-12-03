@@ -1,22 +1,22 @@
 @interface GeraReselectionInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addGeraNcell:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSfMedium:(BOOL)a3;
-- (void)setHasTReselection:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGeraNcell:(id)ncell;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSfMedium:(BOOL)medium;
+- (void)setHasTReselection:(BOOL)reselection;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GeraReselectionInfo
 
-- (void)setHasTReselection:(BOOL)a3
+- (void)setHasTReselection:(BOOL)reselection
 {
-  if (a3)
+  if (reselection)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSfMedium:(BOOL)a3
+- (void)setHasSfMedium:(BOOL)medium
 {
-  if (a3)
+  if (medium)
   {
     v3 = 2;
   }
@@ -44,22 +44,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addGeraNcell:(id)a3
+- (void)addGeraNcell:(id)ncell
 {
-  v4 = a3;
+  ncellCopy = ncell;
   geraNcells = self->_geraNcells;
-  v8 = v4;
+  v8 = ncellCopy;
   if (!geraNcells)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_geraNcells;
     self->_geraNcells = v6;
 
-    v4 = v8;
+    ncellCopy = v8;
     geraNcells = self->_geraNcells;
   }
 
-  [(NSMutableArray *)geraNcells addObject:v4];
+  [(NSMutableArray *)geraNcells addObject:ncellCopy];
 }
 
 - (id)description
@@ -67,8 +67,8 @@
   v7.receiver = self;
   v7.super_class = GeraReselectionInfo;
   v3 = [(GeraReselectionInfo *)&v7 description];
-  v4 = [(GeraReselectionInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(GeraReselectionInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -133,8 +133,8 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -149,9 +149,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -215,9 +215,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -227,8 +227,8 @@ LABEL_5:
     }
 
 LABEL_13:
-    v4[5] = self->_sfMedium;
-    *(v4 + 28) |= 2u;
+    toCopy[5] = self->_sfMedium;
+    *(toCopy + 28) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_5;
@@ -237,8 +237,8 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v4[6] = self->_tReselection;
-  *(v4 + 28) |= 4u;
+  toCopy[6] = self->_tReselection;
+  *(toCopy + 28) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -249,19 +249,19 @@ LABEL_3:
   if (has)
   {
 LABEL_4:
-    v4[4] = self->_sfHigh;
-    *(v4 + 28) |= 1u;
+    toCopy[4] = self->_sfHigh;
+    *(toCopy + 28) |= 1u;
   }
 
 LABEL_5:
-  v10 = v4;
+  v10 = toCopy;
   if ([(GeraReselectionInfo *)self geraNcellsCount])
   {
     [v10 clearGeraNcells];
-    v6 = [(GeraReselectionInfo *)self geraNcellsCount];
-    if (v6)
+    geraNcellsCount = [(GeraReselectionInfo *)self geraNcellsCount];
+    if (geraNcellsCount)
     {
-      v7 = v6;
+      v7 = geraNcellsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(GeraReselectionInfo *)self geraNcellAtIndex:i];
@@ -271,9 +271,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -327,7 +327,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addGeraNcell:v13];
       }
 
@@ -340,24 +340,24 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_tReselection != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_tReselection != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
 LABEL_19:
     v7 = 0;
@@ -366,32 +366,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_sfMedium != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_sfMedium != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_sfHigh != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_sfHigh != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_19;
   }
 
   geraNcells = self->_geraNcells;
-  if (geraNcells | *(v4 + 1))
+  if (geraNcells | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)geraNcells isEqual:?];
   }
@@ -446,16 +446,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSMutableArray *)self->_geraNcells hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if ((v6 & 4) != 0)
   {
-    self->_tReselection = *(v4 + 6);
+    self->_tReselection = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -468,17 +468,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sfMedium = *(v4 + 5);
+  self->_sfMedium = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_4:
-    self->_sfHigh = *(v4 + 4);
+    self->_sfHigh = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -487,7 +487,7 @@ LABEL_5:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

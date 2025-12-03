@@ -1,10 +1,10 @@
 @interface PPKMarkupViewController
 + (BOOL)_isInLowMemoryEnvironment;
-+ (BOOL)hasPrivateImageMetadata:(id)a3;
-+ (id)_contentTypeForData:(id)a3;
-+ (id)_contentTypeForImageSource:(CGImageSource *)a3;
-+ (id)_contentTypeForURL:(id)a3;
-+ (id)cleanImageMetadataFromData:(id)a3;
++ (BOOL)hasPrivateImageMetadata:(id)metadata;
++ (id)_contentTypeForData:(id)data;
++ (id)_contentTypeForImageSource:(CGImageSource *)source;
++ (id)_contentTypeForURL:(id)l;
++ (id)cleanImageMetadataFromData:(id)data;
 + (id)supportedOutputTypes;
 - (BOOL)_findInteractionEnabled;
 - (BOOL)_hasPDFContent;
@@ -14,60 +14,60 @@
 - (BOOL)canResignFirstResponder;
 - (BOOL)encryptPrivateMetadata;
 - (BOOL)formFillingEnabled;
-- (BOOL)isTouchInThumbnailView:(id)a3;
-- (BOOL)markupContainerViewController:(id)a3 shouldOpenLink:(id)a4;
-- (BOOL)needsToolPickerContentInsetActiveForTraitCollection:(id)a3;
+- (BOOL)isTouchInThumbnailView:(id)view;
+- (BOOL)markupContainerViewController:(id)controller shouldOpenLink:(id)link;
+- (BOOL)needsToolPickerContentInsetActiveForTraitCollection:(id)collection;
 - (BOOL)pencilAlwaysDraws;
 - (BOOL)resignFirstResponder;
 - (BOOL)showThumbnailViewForMultipage;
 - (BOOL)toolbarHidden;
-- (BOOL)validateRedo:(id)a3;
-- (BOOL)validateUndo:(id)a3;
-- (BOOL)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 contentType:(id)a5 error:(id *)a6;
-- (BOOL)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
-- (BOOL)writeToURL:(id)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)validateRedo:(id)redo;
+- (BOOL)validateUndo:(id)undo;
+- (BOOL)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model contentType:(id)type error:(id *)error;
+- (BOOL)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model error:(id *)error;
+- (BOOL)writeToURL:(id)l error:(id *)error;
+- (BOOL)writeToURL:(id)l options:(id)options error:(id *)error;
 - (CGSize)adjustedSourceImageSize;
 - (MarkupViewControllerDelegate)delegate;
 - (NSString)hostProcessBundleIdentifier;
 - (NSString)imageDescription;
 - (NSString)outputType;
 - (PPKMarkupViewController)init;
-- (PPKMarkupViewController)initWithCoder:(id)a3;
-- (PPKMarkupViewController)initWithImageAnalysisEnabled:(BOOL)a3;
-- (UIEdgeInsets)activeMinimumContentInsetsForTraitCollection:(id)a3;
+- (PPKMarkupViewController)initWithCoder:(id)coder;
+- (PPKMarkupViewController)initWithImageAnalysisEnabled:(BOOL)enabled;
+- (UIEdgeInsets)activeMinimumContentInsetsForTraitCollection:(id)collection;
 - (UIFindInteraction)_findInteraction;
 - (UIScrollView)contentViewScrollView;
 - (UTType)outputContentType;
 - (id)createArchivedModelData;
-- (id)dataRepresentationWithError:(id *)a3;
+- (id)dataRepresentationWithError:(id *)error;
 - (id)undoManager;
 - (unint64_t)currentPDFPageIndex;
 - (void)_ppkMarkupViewControllerCommonInit;
-- (void)_setFindInteractionEnabled:(BOOL)a3;
-- (void)loadWithData:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6;
-- (void)loadWithURL:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6;
-- (void)markupContainerViewController:(id)a3 wantsToEnterFullscreen:(BOOL)a4;
-- (void)redo:(id)a3;
+- (void)_setFindInteractionEnabled:(BOOL)enabled;
+- (void)loadWithData:(id)data archivedModelData:(id)modelData placeholderImage:(id)image completionHandler:(id)handler;
+- (void)loadWithURL:(id)l archivedModelData:(id)data placeholderImage:(id)image completionHandler:(id)handler;
+- (void)markupContainerViewController:(id)controller wantsToEnterFullscreen:(BOOL)fullscreen;
+- (void)redo:(id)redo;
 - (void)revert;
-- (void)setAllEditingDisabled:(BOOL)a3;
-- (void)setAnnotationEditingEnabled:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCurrentPDFPageIndex:(unint64_t)a3;
-- (void)setEncryptPrivateMetadata:(BOOL)a3;
-- (void)setFormFillingEnabled:(BOOL)a3;
-- (void)setFormFillingEnabled:(BOOL)a3 didUseBanner:(BOOL)a4;
-- (void)setImageDescription:(id)a3;
-- (void)setPencilAlwaysDraws:(BOOL)a3;
-- (void)setShowThumbnailViewForMultipage:(BOOL)a3;
-- (void)setToolbarHidden:(BOOL)a3;
-- (void)setToolbarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)undo:(id)a3;
+- (void)setAllEditingDisabled:(BOOL)disabled;
+- (void)setAnnotationEditingEnabled:(BOOL)enabled;
+- (void)setBackgroundColor:(id)color;
+- (void)setCurrentPDFPageIndex:(unint64_t)index;
+- (void)setEncryptPrivateMetadata:(BOOL)metadata;
+- (void)setFormFillingEnabled:(BOOL)enabled;
+- (void)setFormFillingEnabled:(BOOL)enabled didUseBanner:(BOOL)banner;
+- (void)setImageDescription:(id)description;
+- (void)setPencilAlwaysDraws:(BOOL)draws;
+- (void)setShowThumbnailViewForMultipage:(BOOL)multipage;
+- (void)setToolbarHidden:(BOOL)hidden;
+- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)undo:(id)undo;
 - (void)updateContentInsets;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 contentType:(id)a5 options:(id)a6 completionHandler:(id)a7;
+- (void)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model contentType:(id)type options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation PPKMarkupViewController
@@ -86,11 +86,11 @@
   return v3;
 }
 
-- (PPKMarkupViewController)initWithCoder:(id)a3
+- (PPKMarkupViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PPKMarkupViewController;
-  v3 = [(PPKMarkupViewController *)&v6 initWithCoder:a3];
+  v3 = [(PPKMarkupViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -100,15 +100,15 @@
   return v4;
 }
 
-- (PPKMarkupViewController)initWithImageAnalysisEnabled:(BOOL)a3
+- (PPKMarkupViewController)initWithImageAnalysisEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [(PPKMarkupViewController *)self init];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PPKMarkupViewController *)v4 markupContainerVC];
-    [v6 setIsImageAnalysisEnabled:v3];
+    markupContainerVC = [(PPKMarkupViewController *)v4 markupContainerVC];
+    [markupContainerVC setIsImageAnalysisEnabled:enabledCopy];
   }
 
   return v5;
@@ -119,8 +119,8 @@
   v3 = objc_alloc_init(PPKMarkupContainerViewController);
   [(PPKMarkupViewController *)self setMarkupContainerVC:v3];
 
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setDelegate:self];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setDelegate:self];
 }
 
 - (void)viewDidLoad
@@ -129,41 +129,41 @@
   v26.receiver = self;
   v26.super_class = PPKMarkupViewController;
   [(PPKMarkupViewController *)&v26 viewDidLoad];
-  v3 = [(PPKMarkupViewController *)self markupContainerVC];
-  [(PPKMarkupViewController *)self addChildViewController:v3];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [(PPKMarkupViewController *)self addChildViewController:markupContainerVC];
 
-  v4 = [(PPKMarkupViewController *)self view];
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  v6 = [v5 view];
+  view = [(PPKMarkupViewController *)self view];
+  markupContainerVC2 = [(PPKMarkupViewController *)self markupContainerVC];
+  view2 = [markupContainerVC2 view];
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:v6];
-  v24 = [v6 topAnchor];
-  v23 = [v4 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:view2];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[0] = v22;
-  v21 = [v6 bottomAnchor];
-  v20 = [v4 bottomAnchor];
-  v7 = [v21 constraintEqualToAnchor:v20];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v28[1] = v7;
-  v8 = [v6 leadingAnchor];
-  v25 = v4;
-  v9 = [v4 leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [view2 leadingAnchor];
+  v25 = view;
+  leadingAnchor2 = [view leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[2] = v10;
-  v11 = [v6 trailingAnchor];
-  v12 = [v4 trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   [(PPKMarkupViewController *)self setFullViewLayoutConstraints:v14];
 
   v15 = MEMORY[0x1E696ACD8];
-  v16 = [(PPKMarkupViewController *)self fullViewLayoutConstraints];
-  [v15 activateConstraints:v16];
+  fullViewLayoutConstraints = [(PPKMarkupViewController *)self fullViewLayoutConstraints];
+  [v15 activateConstraints:fullViewLayoutConstraints];
 
-  v17 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v17 didMoveToParentViewController:self];
+  markupContainerVC3 = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC3 didMoveToParentViewController:self];
 
   [(PPKMarkupViewController *)self updateContentInsets];
   v27 = objc_opt_class();
@@ -173,93 +173,93 @@
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(PPKMarkupViewController *)self markupContainerVC];
-  v4 = [v3 documentIsLocked];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  documentIsLocked = [markupContainerVC documentIsLocked];
 
-  if (v4)
+  if (documentIsLocked)
   {
     return 0;
   }
 
-  v6 = [(PPKMarkupViewController *)self delegate];
+  delegate = [(PPKMarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 controllerCanBecomeFirstResponder:self];
+    canBecomeFirstResponder = [delegate controllerCanBecomeFirstResponder:self];
   }
 
   else
   {
-    v7 = [(PPKMarkupViewController *)self markupContainerVC];
-    v5 = [v7 canBecomeFirstResponder];
+    markupContainerVC2 = [(PPKMarkupViewController *)self markupContainerVC];
+    canBecomeFirstResponder = [markupContainerVC2 canBecomeFirstResponder];
   }
 
-  return v5;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 becomeFirstResponder];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  becomeFirstResponder = [markupContainerVC becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 canResignFirstResponder];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  canResignFirstResponder = [markupContainerVC canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 resignFirstResponder];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  resignFirstResponder = [markupContainerVC resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (UIFindInteraction)_findInteraction
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 findInteraction];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  findInteraction = [markupContainerVC findInteraction];
 
-  return v3;
+  return findInteraction;
 }
 
-- (void)_setFindInteractionEnabled:(BOOL)a3
+- (void)_setFindInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setFindInteractionEnabled:v3];
+  enabledCopy = enabled;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setFindInteractionEnabled:enabledCopy];
 }
 
 - (BOOL)_findInteractionEnabled
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 findInteractionEnabled];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  findInteractionEnabled = [markupContainerVC findInteractionEnabled];
 
-  return v3;
+  return findInteractionEnabled;
 }
 
-- (void)loadWithData:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6
+- (void)loadWithData:(id)data archivedModelData:(id)modelData placeholderImage:(id)image completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [PPKMarkupViewController _contentTypeForData:v13];
+  handlerCopy = handler;
+  imageCopy = image;
+  modelDataCopy = modelData;
+  dataCopy = data;
+  v14 = [PPKMarkupViewController _contentTypeForData:dataCopy];
   [(PPKMarkupViewController *)self setSourceContentType:v14];
 
-  v15 = [(PPKMarkupViewController *)self markupContainerVC];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __93__PPKMarkupViewController_loadWithData_archivedModelData_placeholderImage_completionHandler___block_invoke;
   v17[3] = &unk_1E845C0C8;
-  v18 = v10;
-  v16 = v10;
-  [v15 loadFromData:v13 with:v12 placeholderImage:v11 completionHandler:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [markupContainerVC loadFromData:dataCopy with:modelDataCopy placeholderImage:imageCopy completionHandler:v17];
 }
 
 uint64_t __93__PPKMarkupViewController_loadWithData_archivedModelData_placeholderImage_completionHandler___block_invoke(uint64_t a1)
@@ -273,23 +273,23 @@ uint64_t __93__PPKMarkupViewController_loadWithData_archivedModelData_placeholde
   return result;
 }
 
-- (void)loadWithURL:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6
+- (void)loadWithURL:(id)l archivedModelData:(id)data placeholderImage:(id)image completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [PPKMarkupViewController _contentTypeForURL:v13];
+  handlerCopy = handler;
+  imageCopy = image;
+  dataCopy = data;
+  lCopy = l;
+  v14 = [PPKMarkupViewController _contentTypeForURL:lCopy];
   [(PPKMarkupViewController *)self setSourceContentType:v14];
 
-  v15 = [(PPKMarkupViewController *)self markupContainerVC];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholderImage_completionHandler___block_invoke;
   v17[3] = &unk_1E845C0C8;
-  v18 = v10;
-  v16 = v10;
-  [v15 loadFromURL:v13 with:v12 placeholderImage:v11 completionHandler:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [markupContainerVC loadFromURL:lCopy with:dataCopy placeholderImage:imageCopy completionHandler:v17];
 }
 
 uint64_t __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholderImage_completionHandler___block_invoke(uint64_t a1)
@@ -303,132 +303,132 @@ uint64_t __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholder
   return result;
 }
 
-- (BOOL)writeToURL:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PPKMarkupViewController *)self markupContainerVC];
-  v11 = [(PPKMarkupViewController *)self outputContentType];
-  LOBYTE(a5) = [v10 writeTo:v9 imageType:v11 error:a5 embeddingSourceImageAndEditModel:1 options:v8];
+  optionsCopy = options;
+  lCopy = l;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  outputContentType = [(PPKMarkupViewController *)self outputContentType];
+  LOBYTE(error) = [markupContainerVC writeTo:lCopy imageType:outputContentType error:error embeddingSourceImageAndEditModel:1 options:optionsCopy];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(PPKMarkupViewController *)self markupContainerVC];
-  v10 = [(PPKMarkupViewController *)self outputContentType];
-  LOBYTE(a5) = [v9 writeTo:v8 imageType:v10 error:a5 embeddingSourceImageAndEditModel:v6];
+  modelCopy = model;
+  lCopy = l;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  outputContentType = [(PPKMarkupViewController *)self outputContentType];
+  LOBYTE(error) = [markupContainerVC writeTo:lCopy imageType:outputContentType error:error embeddingSourceImageAndEditModel:modelCopy];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 contentType:(id)a5 error:(id *)a6
+- (BOOL)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model contentType:(id)type error:(id *)error
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [(PPKMarkupViewController *)self markupContainerVC];
-  LOBYTE(a6) = [v12 writeTo:v11 imageType:v10 error:a6 embeddingSourceImageAndEditModel:v7];
+  modelCopy = model;
+  typeCopy = type;
+  lCopy = l;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  LOBYTE(error) = [markupContainerVC writeTo:lCopy imageType:typeCopy error:error embeddingSourceImageAndEditModel:modelCopy];
 
-  return a6;
+  return error;
 }
 
-- (void)writeToURL:(id)a3 embeddingSourceImageAndEditModel:(BOOL)a4 contentType:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)writeToURL:(id)l embeddingSourceImageAndEditModel:(BOOL)model contentType:(id)type options:(id)options completionHandler:(id)handler
 {
-  v9 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v16 writeTo:v15 imageType:v14 embeddingSourceImageAndEditModel:v9 options:v13 completionHandler:v12];
+  modelCopy = model;
+  handlerCopy = handler;
+  optionsCopy = options;
+  typeCopy = type;
+  lCopy = l;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC writeTo:lCopy imageType:typeCopy embeddingSourceImageAndEditModel:modelCopy options:optionsCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PPKMarkupViewController *)self markupContainerVC];
-  v8 = [(PPKMarkupViewController *)self outputContentType];
-  LOBYTE(a4) = [v7 writeTo:v6 imageType:v8 error:a4 embeddingSourceImageAndEditModel:1];
+  lCopy = l;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  outputContentType = [(PPKMarkupViewController *)self outputContentType];
+  LOBYTE(error) = [markupContainerVC writeTo:lCopy imageType:outputContentType error:error embeddingSourceImageAndEditModel:1];
 
-  return a4;
+  return error;
 }
 
-- (id)dataRepresentationWithError:(id *)a3
+- (id)dataRepresentationWithError:(id *)error
 {
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  v5 = [v4 dataRepresentationWithError:a3];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  v5 = [markupContainerVC dataRepresentationWithError:error];
 
   return v5;
 }
 
 - (id)createArchivedModelData
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 archivedModelData];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  archivedModelData = [markupContainerVC archivedModelData];
 
-  return v3;
+  return archivedModelData;
 }
 
 - (BOOL)encryptPrivateMetadata
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 encryptPrivateMetadata];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  encryptPrivateMetadata = [markupContainerVC encryptPrivateMetadata];
 
-  return v3;
+  return encryptPrivateMetadata;
 }
 
-- (void)setEncryptPrivateMetadata:(BOOL)a3
+- (void)setEncryptPrivateMetadata:(BOOL)metadata
 {
-  v3 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 setEncryptPrivateMetadata:v3];
+  metadataCopy = metadata;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setEncryptPrivateMetadata:metadataCopy];
 
-  self->_encryptPrivateMetadata = v3;
+  self->_encryptPrivateMetadata = metadataCopy;
 }
 
 - (UIScrollView)contentViewScrollView
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 contentViewScrollView];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  contentViewScrollView = [markupContainerVC contentViewScrollView];
 
-  return v3;
+  return contentViewScrollView;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setBackgroundColor:colorCopy];
 }
 
 - (BOOL)annotationEditingEnabled
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 annotationEditingEnabled];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  annotationEditingEnabled = [markupContainerVC annotationEditingEnabled];
 
-  return v3;
+  return annotationEditingEnabled;
 }
 
 - (BOOL)_hasPDFContent
 {
-  v2 = [(PPKMarkupViewController *)self sourceContentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6982F10]];
+  sourceContentType = [(PPKMarkupViewController *)self sourceContentType];
+  v3 = [sourceContentType conformsToType:*MEMORY[0x1E6982F10]];
 
   return v3;
 }
 
-- (BOOL)needsToolPickerContentInsetActiveForTraitCollection:(id)a3
+- (BOOL)needsToolPickerContentInsetActiveForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(PPKMarkupViewController *)self annotationEditingEnabled])
   {
-    if ([v4 userInterfaceIdiom])
+    if ([collectionCopy userInterfaceIdiom])
     {
-      v5 = [v4 horizontalSizeClass] == 1;
+      v5 = [collectionCopy horizontalSizeClass] == 1;
     }
 
     else
@@ -450,29 +450,29 @@ uint64_t __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholder
   v13.receiver = self;
   v13.super_class = PPKMarkupViewController;
   [(PPKMarkupViewController *)&v13 viewSafeAreaInsetsDidChange];
-  v3 = [(PPKMarkupViewController *)self traitCollection];
-  [(PPKMarkupViewController *)self activeMinimumContentInsetsForTraitCollection:v3];
+  traitCollection = [(PPKMarkupViewController *)self traitCollection];
+  [(PPKMarkupViewController *)self activeMinimumContentInsetsForTraitCollection:traitCollection];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v12 setMinimumContentInsets:{v5, v7, v9, v11}];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setMinimumContentInsets:{v5, v7, v9, v11}];
 }
 
-- (UIEdgeInsets)activeMinimumContentInsetsForTraitCollection:(id)a3
+- (UIEdgeInsets)activeMinimumContentInsetsForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(PPKMarkupViewController *)self annotationEditingEnabled])
   {
-    v5 = [(PPKMarkupViewController *)self view];
-    [v5 safeAreaInsets];
+    view = [(PPKMarkupViewController *)self view];
+    [view safeAreaInsets];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    if ([(PPKMarkupViewController *)self needsToolPickerContentInsetActiveForTraitCollection:v4])
+    if ([(PPKMarkupViewController *)self needsToolPickerContentInsetActiveForTraitCollection:collectionCopy])
     {
       v11 = v11 + 75.0;
     }
@@ -499,24 +499,24 @@ uint64_t __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholder
 
 - (void)updateContentInsets
 {
-  v3 = [(PPKMarkupViewController *)self traitCollection];
-  [(PPKMarkupViewController *)self activeMinimumContentInsetsForTraitCollection:v3];
+  traitCollection = [(PPKMarkupViewController *)self traitCollection];
+  [(PPKMarkupViewController *)self activeMinimumContentInsetsForTraitCollection:traitCollection];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v12 setMinimumContentInsets:{v5, v7, v9, v11}];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setMinimumContentInsets:{v5, v7, v9, v11}];
 
   v14 = *MEMORY[0x1E69DDCE0];
   v13 = *(MEMORY[0x1E69DDCE0] + 8);
   v16 = *(MEMORY[0x1E69DDCE0] + 16);
   v15 = *(MEMORY[0x1E69DDCE0] + 24);
-  v17 = [(PPKMarkupViewController *)self markupContainerVC];
-  if ([v17 annotationEditingEnabled])
+  markupContainerVC2 = [(PPKMarkupViewController *)self markupContainerVC];
+  if ([markupContainerVC2 annotationEditingEnabled])
   {
-    v18 = [(PPKMarkupViewController *)self traitCollection];
-    v19 = [(PPKMarkupViewController *)self needsToolPickerContentInsetActiveForTraitCollection:v18];
+    traitCollection2 = [(PPKMarkupViewController *)self traitCollection];
+    v19 = [(PPKMarkupViewController *)self needsToolPickerContentInsetActiveForTraitCollection:traitCollection2];
 
     if (v19)
     {
@@ -531,120 +531,120 @@ uint64_t __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholder
   {
   }
 
-  v20 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v20 setAdditionalSafeAreaInsets:{v14, v13, v16, v15}];
+  markupContainerVC3 = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC3 setAdditionalSafeAreaInsets:{v14, v13, v16, v15}];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = PPKMarkupViewController;
-  [(PPKMarkupViewController *)&v4 viewIsAppearing:a3];
+  [(PPKMarkupViewController *)&v4 viewIsAppearing:appearing];
   [(PPKMarkupViewController *)self updateContentInsets];
 }
 
-- (void)setAnnotationEditingEnabled:(BOOL)a3
+- (void)setAnnotationEditingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 setAnnotationEditingEnabled:v3];
+  enabledCopy = enabled;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setAnnotationEditingEnabled:enabledCopy];
 
   [(PPKMarkupViewController *)self updateContentInsets];
 }
 
-- (void)setFormFillingEnabled:(BOOL)a3
+- (void)setFormFillingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setFormFillingEnabled:v3];
+  enabledCopy = enabled;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setFormFillingEnabled:enabledCopy];
 }
 
-- (void)setFormFillingEnabled:(BOOL)a3 didUseBanner:(BOOL)a4
+- (void)setFormFillingEnabled:(BOOL)enabled didUseBanner:(BOOL)banner
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v6 setFormFillingEnabled:v5 didUseBanner:v4];
+  bannerCopy = banner;
+  enabledCopy = enabled;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setFormFillingEnabled:enabledCopy didUseBanner:bannerCopy];
 }
 
 - (BOOL)formFillingEnabled
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 formFillingEnabled];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  formFillingEnabled = [markupContainerVC formFillingEnabled];
 
-  return v3;
+  return formFillingEnabled;
 }
 
 - (BOOL)toolbarHidden
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 toolbarHidden];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  toolbarHidden = [markupContainerVC toolbarHidden];
 
-  return v3;
+  return toolbarHidden;
 }
 
-- (void)setToolbarHidden:(BOOL)a3
+- (void)setToolbarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setToolbarHidden:v3];
+  hiddenCopy = hidden;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setToolbarHidden:hiddenCopy];
 }
 
-- (void)setToolbarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC:a3];
-  [v5 setToolbarHidden:v4];
+  hiddenCopy = hidden;
+  v5 = [(PPKMarkupViewController *)self markupContainerVC:hidden];
+  [v5 setToolbarHidden:hiddenCopy];
 }
 
 - (unint64_t)currentPDFPageIndex
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 currentPDFPageIndex];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  currentPDFPageIndex = [markupContainerVC currentPDFPageIndex];
 
-  return v3;
+  return currentPDFPageIndex;
 }
 
-- (void)setCurrentPDFPageIndex:(unint64_t)a3
+- (void)setCurrentPDFPageIndex:(unint64_t)index
 {
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setCurrentPDFPageIndex:a3];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setCurrentPDFPageIndex:index];
 }
 
 - (BOOL)pencilAlwaysDraws
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 pencilAlwaysDraws];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  pencilAlwaysDraws = [markupContainerVC pencilAlwaysDraws];
 
-  return v3;
+  return pencilAlwaysDraws;
 }
 
-- (void)setPencilAlwaysDraws:(BOOL)a3
+- (void)setPencilAlwaysDraws:(BOOL)draws
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setPencilAlwaysDraws:v3];
+  drawsCopy = draws;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setPencilAlwaysDraws:drawsCopy];
 }
 
 + (id)supportedOutputTypes
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  v2 = [*MEMORY[0x1E6982F10] identifier];
-  v13[0] = v2;
-  v3 = [*MEMORY[0x1E6982E58] identifier];
-  v13[1] = v3;
-  v4 = [*MEMORY[0x1E6982F28] identifier];
-  v13[2] = v4;
-  v5 = [*MEMORY[0x1E6983008] identifier];
-  v13[3] = v5;
+  identifier = [*MEMORY[0x1E6982F10] identifier];
+  v13[0] = identifier;
+  identifier2 = [*MEMORY[0x1E6982E58] identifier];
+  v13[1] = identifier2;
+  identifier3 = [*MEMORY[0x1E6982F28] identifier];
+  v13[2] = identifier3;
+  identifier4 = [*MEMORY[0x1E6983008] identifier];
+  v13[3] = identifier4;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:4];
 
   if (_os_feature_enabled_impl())
   {
-    v7 = [*MEMORY[0x1E6982E00] identifier];
-    v12[0] = v7;
-    v8 = [*MEMORY[0x1E6982E10] identifier];
-    v12[1] = v8;
+    identifier5 = [*MEMORY[0x1E6982E00] identifier];
+    v12[0] = identifier5;
+    identifier6 = [*MEMORY[0x1E6982E10] identifier];
+    v12[1] = identifier6;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     v10 = [v6 arrayByAddingObjectsFromArray:v9];
 
@@ -665,53 +665,53 @@ uint64_t __92__PPKMarkupViewController_loadWithURL_archivedModelData_placeholder
 
 - (id)undoManager
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 undoManager];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  undoManager = [markupContainerVC undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)setAllEditingDisabled:(BOOL)a3
+- (void)setAllEditingDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setAllEditingDisabled:v3];
+  disabledCopy = disabled;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setAllEditingDisabled:disabledCopy];
 }
 
 - (UTType)outputContentType
 {
   v3 = _os_feature_enabled_impl();
-  v4 = [(PPKMarkupViewController *)self sourceContentType];
+  sourceContentType = [(PPKMarkupViewController *)self sourceContentType];
   v5 = *MEMORY[0x1E6982F10];
-  if ([v4 conformsToType:*MEMORY[0x1E6982F10]])
+  if ([sourceContentType conformsToType:*MEMORY[0x1E6982F10]])
   {
     goto LABEL_10;
   }
 
   v5 = *MEMORY[0x1E6982F28];
-  if ([v4 conformsToType:*MEMORY[0x1E6982F28]])
+  if ([sourceContentType conformsToType:*MEMORY[0x1E6982F28]])
   {
     goto LABEL_10;
   }
 
   v5 = *MEMORY[0x1E6983008];
-  if ([v4 conformsToType:*MEMORY[0x1E6983008]])
+  if ([sourceContentType conformsToType:*MEMORY[0x1E6983008]])
   {
     goto LABEL_10;
   }
 
   v5 = *MEMORY[0x1E6982E58];
-  if ([v4 conformsToType:*MEMORY[0x1E6982E58]])
+  if ([sourceContentType conformsToType:*MEMORY[0x1E6982E58]])
   {
     goto LABEL_10;
   }
 
-  if (!v3 || (v6 = *MEMORY[0x1E6982E00], ([v4 conformsToType:*MEMORY[0x1E6982E00]] & 1) == 0) && (v6 = *MEMORY[0x1E6982E10], (objc_msgSend(v4, "conformsToType:", *MEMORY[0x1E6982E10]) & 1) == 0))
+  if (!v3 || (v6 = *MEMORY[0x1E6982E00], ([sourceContentType conformsToType:*MEMORY[0x1E6982E00]] & 1) == 0) && (v6 = *MEMORY[0x1E6982E10], (objc_msgSend(sourceContentType, "conformsToType:", *MEMORY[0x1E6982E10]) & 1) == 0))
   {
-    if (![v4 conformsToType:*MEMORY[0x1E6982E30]])
+    if (![sourceContentType conformsToType:*MEMORY[0x1E6982E30]])
     {
-      v15 = [v4 identifier];
-      NSLog(&cfstr_SNullOutputcon.isa, "[PPKMarkupViewController outputContentType]", v15);
+      identifier = [sourceContentType identifier];
+      NSLog(&cfstr_SNullOutputcon.isa, "[PPKMarkupViewController outputContentType]", identifier);
 
       v7 = 0;
 LABEL_11:
@@ -735,16 +735,16 @@ LABEL_12:
     v8 = *MEMORY[0x1E6982E00];
     if (([v7 isEqual:*MEMORY[0x1E6982E00]] & 1) == 0)
     {
-      v9 = [(PPKMarkupViewController *)self markupContainerVC];
-      v10 = [v9 shouldSaveHDRImage];
+      markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+      shouldSaveHDRImage = [markupContainerVC shouldSaveHDRImage];
 
-      v11 = [(PPKMarkupViewController *)self markupContainerVC];
-      v12 = [v11 canChangeImageFileFormat];
+      markupContainerVC2 = [(PPKMarkupViewController *)self markupContainerVC];
+      canChangeImageFileFormat = [markupContainerVC2 canChangeImageFileFormat];
 
-      NSLog(&cfstr_MarkupConvertT.isa, v10, v12);
-      if (v10)
+      NSLog(&cfstr_MarkupConvertT.isa, shouldSaveHDRImage, canChangeImageFileFormat);
+      if (shouldSaveHDRImage)
       {
-        if (v12)
+        if (canChangeImageFileFormat)
         {
           v13 = v8;
 
@@ -759,11 +759,11 @@ LABEL_17:
   return v7;
 }
 
-+ (id)_contentTypeForImageSource:(CGImageSource *)a3
++ (id)_contentTypeForImageSource:(CGImageSource *)source
 {
-  if (a3)
+  if (source)
   {
-    v3 = CGImageSourceGetType(a3);
+    v3 = CGImageSourceGetType(source);
     if (v3)
     {
       v4 = [MEMORY[0x1E6982C40] typeWithIdentifier:v3];
@@ -783,9 +783,9 @@ LABEL_17:
   return v4;
 }
 
-+ (id)_contentTypeForURL:(id)a3
++ (id)_contentTypeForURL:(id)l
 {
-  v3 = CGImageSourceCreateWithURL(a3, 0);
+  v3 = CGImageSourceCreateWithURL(l, 0);
   if (v3)
   {
     v4 = v3;
@@ -801,9 +801,9 @@ LABEL_17:
   return v5;
 }
 
-+ (id)_contentTypeForData:(id)a3
++ (id)_contentTypeForData:(id)data
 {
-  v3 = CGImageSourceCreateWithData(a3, 0);
+  v3 = CGImageSourceCreateWithData(data, 0);
   if (v3)
   {
     v4 = v3;
@@ -846,10 +846,10 @@ void __52__PPKMarkupViewController__isInLowMemoryEnvironment__block_invoke()
   hostProcessBundleIdentifier = self->_hostProcessBundleIdentifier;
   if (!hostProcessBundleIdentifier)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v6 = self->_hostProcessBundleIdentifier;
-    self->_hostProcessBundleIdentifier = v5;
+    self->_hostProcessBundleIdentifier = bundleIdentifier;
 
     hostProcessBundleIdentifier = self->_hostProcessBundleIdentifier;
   }
@@ -857,106 +857,106 @@ void __52__PPKMarkupViewController__isInLowMemoryEnvironment__block_invoke()
   return hostProcessBundleIdentifier;
 }
 
-+ (id)cleanImageMetadataFromData:(id)a3
++ (id)cleanImageMetadataFromData:(id)data
 {
-  v3 = a3;
-  v4 = [getMUImageReaderClass() cleanImageMetadataFromData:v3];
+  dataCopy = data;
+  v4 = [getMUImageReaderClass() cleanImageMetadataFromData:dataCopy];
 
   return v4;
 }
 
-+ (BOOL)hasPrivateImageMetadata:(id)a3
++ (BOOL)hasPrivateImageMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [getMUImageReaderClass() hasPrivateImageMetadata:v3];
+  metadataCopy = metadata;
+  v4 = [getMUImageReaderClass() hasPrivateImageMetadata:metadataCopy];
 
   return v4;
 }
 
-- (BOOL)isTouchInThumbnailView:(id)a3
+- (BOOL)isTouchInThumbnailView:(id)view
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  v6 = [v5 isTouchInThumbnailView:v4];
+  viewCopy = view;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  v6 = [markupContainerVC isTouchInThumbnailView:viewCopy];
 
   return v6;
 }
 
-- (void)setShowThumbnailViewForMultipage:(BOOL)a3
+- (void)setShowThumbnailViewForMultipage:(BOOL)multipage
 {
-  v3 = a3;
-  v4 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v4 setShowThumbnailViewForMultipage:v3];
+  multipageCopy = multipage;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setShowThumbnailViewForMultipage:multipageCopy];
 }
 
 - (BOOL)showThumbnailViewForMultipage
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 showThumbnailViewForMultipage];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  showThumbnailViewForMultipage = [markupContainerVC showThumbnailViewForMultipage];
 
-  return v3;
+  return showThumbnailViewForMultipage;
 }
 
-- (void)setImageDescription:(id)a3
+- (void)setImageDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 setImageDescription:v4];
+  descriptionCopy = description;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC setImageDescription:descriptionCopy];
 }
 
 - (NSString)imageDescription
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  v3 = [v2 imageDescription];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  imageDescription = [markupContainerVC imageDescription];
 
-  return v3;
+  return imageDescription;
 }
 
-- (BOOL)validateRedo:(id)a3
+- (BOOL)validateRedo:(id)redo
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  v6 = [v5 validateRedo:v4];
+  redoCopy = redo;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  v6 = [markupContainerVC validateRedo:redoCopy];
 
   return v6;
 }
 
-- (BOOL)validateUndo:(id)a3
+- (BOOL)validateUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  v6 = [v5 validateUndo:v4];
+  undoCopy = undo;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  v6 = [markupContainerVC validateUndo:undoCopy];
 
   return v6;
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 undo:v4];
+  undoCopy = undo;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC undo:undoCopy];
 }
 
-- (void)redo:(id)a3
+- (void)redo:(id)redo
 {
-  v4 = a3;
-  v5 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v5 redo:v4];
+  redoCopy = redo;
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC redo:redoCopy];
 }
 
 - (void)revert
 {
-  v2 = [(PPKMarkupViewController *)self markupContainerVC];
-  [v2 revert:0];
+  markupContainerVC = [(PPKMarkupViewController *)self markupContainerVC];
+  [markupContainerVC revert:0];
 }
 
-- (BOOL)markupContainerViewController:(id)a3 shouldOpenLink:(id)a4
+- (BOOL)markupContainerViewController:(id)controller shouldOpenLink:(id)link
 {
-  v5 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
+  linkCopy = link;
+  delegate = [(PPKMarkupViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 controller:self shouldOpenLinkAtURL:v5];
+    v7 = [delegate controller:self shouldOpenLinkAtURL:linkCopy];
   }
 
   else
@@ -967,19 +967,19 @@ void __52__PPKMarkupViewController__isInLowMemoryEnvironment__block_invoke()
   return v7;
 }
 
-- (void)markupContainerViewController:(id)a3 wantsToEnterFullscreen:(BOOL)a4
+- (void)markupContainerViewController:(id)controller wantsToEnterFullscreen:(BOOL)fullscreen
 {
-  v4 = a4;
-  v6 = [(PPKMarkupViewController *)self delegate];
-  v7 = v6;
-  if (v6)
+  fullscreenCopy = fullscreen;
+  delegate = [(PPKMarkupViewController *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    v9 = v6;
+    v9 = delegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
     {
-      [v9 markupViewController:self didChangeShowingSignaturesUI:v4];
+      [v9 markupViewController:self didChangeShowingSignaturesUI:fullscreenCopy];
       v7 = v9;
     }
   }
@@ -987,10 +987,10 @@ void __52__PPKMarkupViewController__isInLowMemoryEnvironment__block_invoke()
 
 - (NSString)outputType
 {
-  v2 = [(PPKMarkupViewController *)self outputContentType];
-  v3 = [v2 identifier];
+  outputContentType = [(PPKMarkupViewController *)self outputContentType];
+  identifier = [outputContentType identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (MarkupViewControllerDelegate)delegate

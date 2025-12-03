@@ -1,17 +1,17 @@
 @interface RCSChatBotBrandDataSource
-- (void)didFinishFetchChatBotRenderInformation:(id)a3 forChatBot:(id)a4 withRenderData:(id)a5 withResult:(id)a6;
+- (void)didFinishFetchChatBotRenderInformation:(id)information forChatBot:(id)bot withRenderData:(id)data withResult:(id)result;
 @end
 
 @implementation RCSChatBotBrandDataSource
 
-- (void)didFinishFetchChatBotRenderInformation:(id)a3 forChatBot:(id)a4 withRenderData:(id)a5 withResult:(id)a6
+- (void)didFinishFetchChatBotRenderInformation:(id)information forChatBot:(id)bot withRenderData:(id)data withResult:(id)result
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  informationCopy = information;
+  botCopy = bot;
+  dataCopy = data;
+  resultCopy = result;
 
-  sub_2155C9AD0(v10, a5, v12);
+  sub_2155C9AD0(botCopy, data, resultCopy);
 }
 
 @end

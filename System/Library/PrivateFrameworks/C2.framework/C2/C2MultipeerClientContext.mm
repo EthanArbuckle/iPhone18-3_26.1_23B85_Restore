@@ -3,7 +3,7 @@
 - (C2MultipeerClientContext)init;
 - (void)resetTimerForChunkData;
 - (void)resetTimerForDiscovery;
-- (void)startTimerOnQueue:(id)a3;
+- (void)startTimerOnQueue:(id)queue;
 - (void)stopTimer;
 @end
 
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)startTimerOnQueue:(id)a3
+- (void)startTimerOnQueue:(id)queue
 {
-  v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, a3);
+  v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
   timeoutTrigger = self->_timeoutTrigger;
   self->_timeoutTrigger = v4;
 

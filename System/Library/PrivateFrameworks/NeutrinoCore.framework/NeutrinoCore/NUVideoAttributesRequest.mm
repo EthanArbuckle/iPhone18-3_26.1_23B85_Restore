@@ -7,17 +7,17 @@
 
 - (int64_t)mediaComponentType
 {
-  v2 = [(NURenderRequest *)self composition];
-  v3 = [v2 mediaType];
+  composition = [(NURenderRequest *)self composition];
+  mediaType = [composition mediaType];
 
-  if ((v3 - 1) > 2)
+  if ((mediaType - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1C03C2EA8[v3 - 1];
+    return qword_1C03C2EA8[mediaType - 1];
   }
 }
 

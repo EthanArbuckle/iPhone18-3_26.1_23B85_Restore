@@ -1,38 +1,38 @@
 @interface MasterNavigationPaletteView
 - (BOOL)focusBannerVisible;
 - (BOOL)showsHeader;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MasterNavigationPaletteView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MasterNavigationPaletteView)initWithFrame:(CGRect)frame;
 - (void)cellTapped;
-- (void)focusBannerTableViewCellToggled:(id)a3;
+- (void)focusBannerTableViewCellToggled:(id)toggled;
 - (void)layoutSubviews;
-- (void)setSegmentedControl:(id)a3;
-- (void)setShowIdentity:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)updateIdentity:(id)a3;
+- (void)setSegmentedControl:(id)control;
+- (void)setShowIdentity:(BOOL)identity;
+- (void)setTitle:(id)title;
+- (void)updateIdentity:(id)identity;
 @end
 
 @implementation MasterNavigationPaletteView
 
 - (BOOL)showsHeader
 {
-  v2 = [(MasterNavigationPaletteView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 0;
+  traitCollection = [(MasterNavigationPaletteView *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 0;
 
   return v3;
 }
 
-- (MasterNavigationPaletteView)initWithFrame:(CGRect)a3
+- (MasterNavigationPaletteView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = MasterNavigationPaletteView;
-  v3 = [(MasterNavigationPaletteView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MasterNavigationPaletteView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UINavigationBarAppearance);
-    v5 = [v4 largeTitleTextAttributes];
+    largeTitleTextAttributes = [v4 largeTitleTextAttributes];
     titleAttributes = v3->_titleAttributes;
-    v3->_titleAttributes = v5;
+    v3->_titleAttributes = largeTitleTextAttributes;
 
     v7 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     titleLabel = v3->_titleLabel;
@@ -46,11 +46,11 @@
 
 - (BOOL)focusBannerVisible
 {
-  v2 = [(MasterNavigationPaletteView *)self delegate];
-  v3 = [v2 focusFilterMode];
+  delegate = [(MasterNavigationPaletteView *)self delegate];
+  focusFilterMode = [delegate focusFilterMode];
 
   result = CalSystemSolariumEnabled();
-  if (!v3)
+  if (!focusFilterMode)
   {
     return 0;
   }
@@ -113,8 +113,8 @@
     v17 = v16;
     v18 = 6.0;
     [(IdentitySwitcherCell *)self->_identityCell setFrame:v13, 6.0, v15, v16];
-    v19 = [(IdentitySwitcherCell *)self->_identityCell layer];
-    [v19 setCornerRadius:v17 * 0.5];
+    layer = [(IdentitySwitcherCell *)self->_identityCell layer];
+    [layer setCornerRadius:v17 * 0.5];
   }
 
   else
@@ -145,13 +145,13 @@
   v49.size.height = v17;
   MaxY = CGRectGetMaxY(v49);
 LABEL_19:
-  v25 = [(MasterNavigationPaletteView *)self focusBannerVisible];
+  focusBannerVisible = [(MasterNavigationPaletteView *)self focusBannerVisible];
   focusBannerCell = self->_focusBannerCell;
-  if (v25)
+  if (focusBannerVisible)
   {
-    v27 = [(EKUIFocusBannerTableViewCell *)focusBannerCell superview];
+    superview = [(EKUIFocusBannerTableViewCell *)focusBannerCell superview];
 
-    if (!v27)
+    if (!superview)
     {
       v28 = self->_focusBannerCell;
       if (!v28)
@@ -170,15 +170,15 @@ LABEL_19:
       [(MasterNavigationPaletteView *)self addSubview:v28];
     }
 
-    v31 = [(MasterNavigationPaletteView *)self delegate];
-    -[EKUIFocusBannerTableViewCell setOn:](self->_focusBannerCell, "setOn:", [v31 focusFilterMode] == 1);
+    delegate = [(MasterNavigationPaletteView *)self delegate];
+    -[EKUIFocusBannerTableViewCell setOn:](self->_focusBannerCell, "setOn:", [delegate focusFilterMode] == 1);
 
     v32 = +[UIBackgroundConfiguration clearConfiguration];
     [(EKUIFocusBannerTableViewCell *)self->_focusBannerCell setBackgroundConfiguration:v32];
 
     v33 = +[UIColor clearColor];
-    v34 = [(EKUIFocusBannerTableViewCell *)self->_focusBannerCell backgroundConfiguration];
-    [v34 setBackgroundColor:v33];
+    backgroundConfiguration = [(EKUIFocusBannerTableViewCell *)self->_focusBannerCell backgroundConfiguration];
+    [backgroundConfiguration setBackgroundColor:v33];
 
     if (CalInterfaceIsLeftToRight())
     {
@@ -235,11 +235,11 @@ LABEL_29:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = 0.0;
-  if (![(MasterNavigationPaletteView *)self showsHeader:a3.width])
+  if (![(MasterNavigationPaletteView *)self showsHeader:fits.width])
   {
     goto LABEL_9;
   }
@@ -283,12 +283,12 @@ LABEL_9:
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
-  v4 = [(MasterNavigationPaletteView *)self window];
-  v5 = [(MasterNavigationPaletteView *)self traitCollection];
-  v6 = paletteTitleFont(v4, v5);
+  [(UILabel *)self->_titleLabel setText:title];
+  window = [(MasterNavigationPaletteView *)self window];
+  traitCollection = [(MasterNavigationPaletteView *)self traitCollection];
+  v6 = paletteTitleFont(window, traitCollection);
   [(UILabel *)self->_titleLabel setFont:v6];
 
   titleLabel = self->_titleLabel;
@@ -296,40 +296,40 @@ LABEL_9:
   [(UILabel *)titleLabel sizeToFit];
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   segmentedControl = self->_segmentedControl;
-  if (segmentedControl != v4)
+  if (segmentedControl != controlCopy)
   {
-    v6 = v4;
+    v6 = controlCopy;
     if (segmentedControl)
     {
       segmentedControl = [(UISegmentedControl *)segmentedControl removeFromSuperview];
-      v4 = v6;
+      controlCopy = v6;
     }
 
-    self->_segmentedControl = v4;
-    if (v4)
+    self->_segmentedControl = controlCopy;
+    if (controlCopy)
     {
       segmentedControl = [(MasterNavigationPaletteView *)self addSubview:v6];
-      v4 = v6;
+      controlCopy = v6;
     }
   }
 
-  _objc_release_x1(segmentedControl, v4);
+  _objc_release_x1(segmentedControl, controlCopy);
 }
 
-- (void)setShowIdentity:(BOOL)a3
+- (void)setShowIdentity:(BOOL)identity
 {
-  v3 = a3;
-  self->_showIdentity = a3;
+  identityCopy = identity;
+  self->_showIdentity = identity;
   if ([(MasterNavigationPaletteView *)self showsHeader])
   {
-    if (v3)
+    if (identityCopy)
     {
-      v5 = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
-      [(MasterNavigationPaletteView *)self updateIdentity:v5];
+      sourceForSelectedIdentity = [(CUIKCalendarModel *)self->_model sourceForSelectedIdentity];
+      [(MasterNavigationPaletteView *)self updateIdentity:sourceForSelectedIdentity];
 
       titleLabel = self->_titleLabel;
 
@@ -346,12 +346,12 @@ LABEL_9:
   }
 }
 
-- (void)updateIdentity:(id)a3
+- (void)updateIdentity:(id)identity
 {
   identityCell = self->_identityCell;
-  v5 = a3;
+  identityCopy = identity;
   [(IdentitySwitcherCell *)identityCell removeFromSuperview];
-  v6 = [IdentitySwitcherCell cellForSource:v5 withModel:self->_model inTableView:0];
+  v6 = [IdentitySwitcherCell cellForSource:identityCopy withModel:self->_model inTableView:0];
 
   v7 = self->_identityCell;
   self->_identityCell = v6;
@@ -363,8 +363,8 @@ LABEL_9:
 
   [(IdentitySwitcherCell *)self->_identityCell frame];
   v10 = v9 * 0.5;
-  v11 = [(IdentitySwitcherCell *)self->_identityCell layer];
-  [v11 setCornerRadius:v10];
+  layer = [(IdentitySwitcherCell *)self->_identityCell layer];
+  [layer setCornerRadius:v10];
 
   v12 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"cellTapped"];
   [(IdentitySwitcherCell *)self->_identityCell addGestureRecognizer:v12];
@@ -373,13 +373,13 @@ LABEL_9:
 
 - (void)cellTapped
 {
-  v3 = [(MasterNavigationPaletteView *)self delegate];
-  [v3 palette:self identitySwitcherTapped:self->_identityCell];
+  delegate = [(MasterNavigationPaletteView *)self delegate];
+  [delegate palette:self identitySwitcherTapped:self->_identityCell];
 }
 
-- (void)focusBannerTableViewCellToggled:(id)a3
+- (void)focusBannerTableViewCellToggled:(id)toggled
 {
-  if ([a3 on])
+  if ([toggled on])
   {
     v4 = 1;
   }
@@ -389,8 +389,8 @@ LABEL_9:
     v4 = 2;
   }
 
-  v5 = [(MasterNavigationPaletteView *)self delegate];
-  [v5 setFocusFilterMode:v4];
+  delegate = [(MasterNavigationPaletteView *)self delegate];
+  [delegate setFocusFilterMode:v4];
 }
 
 @end

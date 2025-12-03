@@ -7,31 +7,31 @@
 - (id)initWithRecognition:()Daemon wordConfidenceThreshold:
 {
   v6 = a3;
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = &off_28488F108;
   v7 = objc_msgSendSuper2(&v26, sel_init);
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [v6 interpretationIndices];
-    v10 = [v9 firstObject];
+    array = [MEMORY[0x277CBEB18] array];
+    interpretationIndices = [v6 interpretationIndices];
+    firstObject = [interpretationIndices firstObject];
 
-    v11 = [v6 tokenSausage];
+    tokenSausage = [v6 tokenSausage];
     v23 = v7;
-    if ([v11 count])
+    if ([tokenSausage count])
     {
       v12 = 0;
       while (1)
       {
-        v13 = [v10 count];
+        v13 = [firstObject count];
 
         if (v12 >= v13)
         {
           break;
         }
 
-        v14 = [v6 tokenSausage];
-        v15 = [v14 objectAtIndexedSubscript:v12];
+        tokenSausage2 = [v6 tokenSausage];
+        v15 = [tokenSausage2 objectAtIndexedSubscript:v12];
 
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
@@ -39,15 +39,15 @@
         v25[3] = &__block_descriptor_40_e56____LTSpeechRecognitionTokensAlternative_16__0__NSArray_8l;
         v25[4] = a4;
         v16 = [v15 _ltCompactMap:v25];
-        v17 = [v10 objectAtIndexedSubscript:v12];
+        v17 = [firstObject objectAtIndexedSubscript:v12];
         v18 = objc_alloc_init(MEMORY[0x277CE1B88]);
         [v18 setBestAlternativeIndex:{objc_msgSend(v17, "unsignedIntegerValue")}];
         [v18 setAlternatives:v16];
-        [v8 addObject:v18];
+        [array addObject:v18];
 
         ++v12;
-        v11 = [v6 tokenSausage];
-        if (v12 >= [v11 count])
+        tokenSausage = [v6 tokenSausage];
+        if (v12 >= [tokenSausage count])
         {
           goto LABEL_6;
         }
@@ -59,7 +59,7 @@
 LABEL_6:
     }
 
-    v19 = [v8 _ltCompactMap:{&__block_literal_global_28, v23}];
+    v19 = [array _ltCompactMap:{&__block_literal_global_28, v23}];
     v20 = _LTOSLogSpeech();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -67,7 +67,7 @@ LABEL_6:
     }
 
     v7 = v24;
-    [v24 setBins:v8];
+    [v24 setBins:array];
     v21 = v24;
   }
 

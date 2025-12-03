@@ -1,13 +1,13 @@
 @interface SSSilentEnrollmentPaymentSession
-- (void)startWithCompletion:(id)a3;
+- (void)startWithCompletion:(id)completion;
 @end
 
 @implementation SSSilentEnrollmentPaymentSession
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -16,19 +16,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -52,9 +52,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -66,8 +66,8 @@ LABEL_16:
   v19[2] = __56__SSSilentEnrollmentPaymentSession_startWithCompletion___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = completionCopy;
+  v17 = completionCopy;
   [(SSRequest *)self _startWithMessageID:211 messageBlock:v19];
 }
 

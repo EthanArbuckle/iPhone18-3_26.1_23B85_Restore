@@ -1,14 +1,14 @@
 @interface PSGSelfSizingTableView
 - (CGSize)intrinsicContentSize;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation PSGSelfSizingTableView
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PSGSelfSizingTableView *)self contentSize];
   if (width != v7 || height != v6)
   {

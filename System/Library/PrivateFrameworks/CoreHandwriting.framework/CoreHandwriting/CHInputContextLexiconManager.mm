@@ -2,7 +2,7 @@
 - (CHInputContextLexiconManager)init;
 - (NSArray)addressBookLexicon;
 - (NSDictionary)textReplacements;
-- (_LXLexicon)transientLexiconWithCustomEntries:(id)a3;
+- (_LXLexicon)transientLexiconWithCustomEntries:(id)entries;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
@@ -326,10 +326,10 @@ LABEL_36:
   return v3;
 }
 
-- (_LXLexicon)transientLexiconWithCustomEntries:(id)a3
+- (_LXLexicon)transientLexiconWithCustomEntries:(id)entries
 {
   v53 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  entriesCopy = entries;
   if (self->_transientLexiconWithCustomEntries.mCFObject)
   {
     goto LABEL_11;
@@ -375,26 +375,26 @@ LABEL_9:
 LABEL_10:
 
 LABEL_11:
-  v11 = v39;
-  if (!objc_msgSend_count(v39, v4, v5, v6, v7, v8))
+  v11 = entriesCopy;
+  if (!objc_msgSend_count(entriesCopy, v4, v5, v6, v7, v8))
   {
     mCFObject = self->_transientLexicon.mCFObject;
     goto LABEL_39;
   }
 
-  if (objc_msgSend_isEqualToSet_(v39, v12, self->_lastCustomLexiconEntries, v13, v14, v15))
+  if (objc_msgSend_isEqualToSet_(entriesCopy, v12, self->_lastCustomLexiconEntries, v13, v14, v15))
   {
     mCFObject = self->_transientLexiconWithCustomEntries.mCFObject;
     goto LABEL_39;
   }
 
-  v22 = objc_msgSend_copy(v39, v16, v17, v18, v19, v20);
+  v22 = objc_msgSend_copy(entriesCopy, v16, v17, v18, v19, v20);
   lastCustomLexiconEntries = self->_lastCustomLexiconEntries;
   self->_lastCustomLexiconEntries = v22;
 
   LXLexiconClear();
   RootCursor = LXLexiconCreateRootCursor();
-  v50 = self;
+  selfCopy = self;
   *buf = RootCursor;
   v46 = MEMORY[0x1E69E9820];
   v47 = 3221225472;
@@ -405,7 +405,7 @@ LABEL_11:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v25 = v39;
+  v25 = entriesCopy;
   v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, &v42, v52, 16, v27);
   if (!v28)
   {
@@ -491,7 +491,7 @@ LABEL_36:
     CFRelease(RootCursor);
   }
 
-  v11 = v39;
+  v11 = entriesCopy;
 LABEL_39:
 
   return mCFObject;

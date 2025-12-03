@@ -1,48 +1,48 @@
 @interface MDMOAuth2Authenticator
 + (id)_createOAuth2InvalidError;
-+ (id)deserializeTokens:(id)a3;
-+ (id)serializeTokens:(id)a3;
-- (BOOL)authenticateRequest:(id)a3 error:(id *)a4;
++ (id)deserializeTokens:(id)tokens;
++ (id)serializeTokens:(id)tokens;
+- (BOOL)authenticateRequest:(id)request error:(id *)error;
 - (BOOL)canRefreshToken;
-- (BOOL)validAuthParams:(id)a3;
-- (MDMOAuth2Authenticator)initWithRMAccountID:(id)a3;
-- (MDMOAuth2Authenticator)initWithTokens:(id)a3;
-- (id)_authorizationGrantURLWithAuthParams:(id)a3;
-- (id)prepareForReauthenticationWithAuthParams:(id)a3 accountID:(id)a4 error:(id *)a5;
-- (id)webAuthenticationURLForAuthParams:(id)a3 userIdentifier:(id)a4;
-- (void)_executeTokenRequestWithURL:(id)a3 body:(id)a4 completionHandler:(id)a5;
-- (void)_processTokenResponse:(id)a3 data:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)_refreshRequestWithRefreshToken:(id)a3 authParams:(id)a4 completionHandler:(id)a5;
-- (void)_tokenRequestWithCode:(id)a3 authParams:(id)a4 completionHandler:(id)a5;
-- (void)authTokensWithCallbackURL:(id)a3 authParams:(id)a4 completionHandler:(id)a5;
-- (void)refreshTokenWithAuthParams:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
+- (BOOL)validAuthParams:(id)params;
+- (MDMOAuth2Authenticator)initWithRMAccountID:(id)d;
+- (MDMOAuth2Authenticator)initWithTokens:(id)tokens;
+- (id)_authorizationGrantURLWithAuthParams:(id)params;
+- (id)prepareForReauthenticationWithAuthParams:(id)params accountID:(id)d error:(id *)error;
+- (id)webAuthenticationURLForAuthParams:(id)params userIdentifier:(id)identifier;
+- (void)_executeTokenRequestWithURL:(id)l body:(id)body completionHandler:(id)handler;
+- (void)_processTokenResponse:(id)response data:(id)data error:(id)error completionHandler:(id)handler;
+- (void)_refreshRequestWithRefreshToken:(id)token authParams:(id)params completionHandler:(id)handler;
+- (void)_tokenRequestWithCode:(id)code authParams:(id)params completionHandler:(id)handler;
+- (void)authTokensWithCallbackURL:(id)l authParams:(id)params completionHandler:(id)handler;
+- (void)refreshTokenWithAuthParams:(id)params accountID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation MDMOAuth2Authenticator
 
-- (MDMOAuth2Authenticator)initWithRMAccountID:(id)a3
+- (MDMOAuth2Authenticator)initWithRMAccountID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = MDMOAuth2Authenticator;
   v5 = [(MDMOAuth2Authenticator *)&v19 init];
   if (v5)
   {
     v18 = 0;
-    v6 = [MDMAccountUtilities rmAccountWithIdentifier:v4 fromStore:0 error:&v18];
+    v6 = [MDMAccountUtilities rmAccountWithIdentifier:dCopy fromStore:0 error:&v18];
     v7 = v18;
     if (v6)
     {
-      v8 = [v6 credential];
-      v9 = [v8 token];
-      v10 = [MDMOAuth2Authenticator deserializeTokens:v9];
+      credential = [v6 credential];
+      token = [credential token];
+      v10 = [MDMOAuth2Authenticator deserializeTokens:token];
       tokens = v5->_tokens;
       v5->_tokens = v10;
 
-      v12 = [v6 dmc_personaIdentifier];
+      dmc_personaIdentifier = [v6 dmc_personaIdentifier];
       personaID = v5->_personaID;
-      v5->_personaID = v12;
+      v5->_personaID = dmc_personaIdentifier;
     }
 
     else
@@ -58,7 +58,7 @@
       v15 = v5->_tokens;
       v5->_tokens = MEMORY[0x277CBEC10];
 
-      v8 = v5->_personaID;
+      credential = v5->_personaID;
       v5->_personaID = 0;
     }
   }
@@ -67,16 +67,16 @@
   return v5;
 }
 
-- (MDMOAuth2Authenticator)initWithTokens:(id)a3
+- (MDMOAuth2Authenticator)initWithTokens:(id)tokens
 {
-  v5 = a3;
+  tokensCopy = tokens;
   v10.receiver = self;
   v10.super_class = MDMOAuth2Authenticator;
   v6 = [(MDMOAuth2Authenticator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tokens, a3);
+    objc_storeStrong(&v6->_tokens, tokens);
     personaID = v7->_personaID;
     v7->_personaID = 0;
   }
@@ -84,23 +84,23 @@
   return v7;
 }
 
-- (BOOL)validAuthParams:(id)a3
+- (BOOL)validAuthParams:(id)params
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"method"];
+  paramsCopy = params;
+  v4 = [paramsCopy objectForKeyedSubscript:@"method"];
   v5 = +[MDMOAuth2Authenticator authenticationMethod];
   if ([v4 isEqualToString:v5])
   {
-    v6 = [v3 objectForKeyedSubscript:@"authorization-url"];
+    v6 = [paramsCopy objectForKeyedSubscript:@"authorization-url"];
     if (v6)
     {
-      v7 = [v3 objectForKeyedSubscript:@"token-url"];
+      v7 = [paramsCopy objectForKeyedSubscript:@"token-url"];
       if (v7)
       {
-        v8 = [v3 objectForKeyedSubscript:@"client-id"];
+        v8 = [paramsCopy objectForKeyedSubscript:@"client-id"];
         if (v8)
         {
-          v9 = [v3 objectForKeyedSubscript:@"redirect-url"];
+          v9 = [paramsCopy objectForKeyedSubscript:@"redirect-url"];
           v10 = v9 != 0;
         }
 
@@ -130,12 +130,12 @@
   return v10;
 }
 
-+ (id)serializeTokens:(id)a3
++ (id)serializeTokens:(id)tokens
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = objc_alloc_init(MEMORY[0x277CCAA68]);
-  v5 = [v3 objectForKeyedSubscript:@"expires"];
+  v5 = [tokensCopy objectForKeyedSubscript:@"expires"];
   if (v5)
   {
     v6 = [v4 stringFromDate:v5];
@@ -147,10 +147,10 @@
   }
 
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v8 = [v3 objectForKeyedSubscript:@"access_token"];
+  v8 = [tokensCopy objectForKeyedSubscript:@"access_token"];
   [v7 setObject:v8 forKeyedSubscript:@"access_token"];
 
-  v9 = [v3 objectForKeyedSubscript:@"refresh_token"];
+  v9 = [tokensCopy objectForKeyedSubscript:@"refresh_token"];
   [v7 setObject:v9 forKeyedSubscript:@"refresh_token"];
 
   [v7 setObject:v6 forKeyedSubscript:@"expires"];
@@ -182,10 +182,10 @@
   return v12;
 }
 
-+ (id)deserializeTokens:(id)a3
++ (id)deserializeTokens:(id)tokens
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [tokens dataUsingEncoding:4];
   v15 = 0;
   v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v3 options:0 error:&v15];
   v5 = v15;
@@ -233,41 +233,41 @@
   return v10;
 }
 
-- (BOOL)authenticateRequest:(id)a3 error:(id *)a4
+- (BOOL)authenticateRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MDMOAuth2Authenticator *)self tokens];
-  v7 = [v6 objectForKeyedSubscript:@"access_token"];
+  requestCopy = request;
+  tokens = [(MDMOAuth2Authenticator *)self tokens];
+  v7 = [tokens objectForKeyedSubscript:@"access_token"];
 
   if (v7)
   {
     v8 = DMCHTTPAuthStringWithAuthToken();
-    [v5 addValue:v8 forHTTPHeaderField:*MEMORY[0x277D03358]];
+    [requestCopy addValue:v8 forHTTPHeaderField:*MEMORY[0x277D03358]];
   }
 
   return v7 != 0;
 }
 
-- (id)webAuthenticationURLForAuthParams:(id)a3 userIdentifier:(id)a4
+- (id)webAuthenticationURLForAuthParams:(id)params userIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(MDMOAuth2Authenticator *)self validAuthParams:v6])
+  paramsCopy = params;
+  identifierCopy = identifier;
+  if ([(MDMOAuth2Authenticator *)self validAuthParams:paramsCopy])
   {
     v8 = objc_opt_new();
-    v9 = [v8 UUIDString];
-    [(MDMOAuth2Authenticator *)self setState:v9];
+    uUIDString = [v8 UUIDString];
+    [(MDMOAuth2Authenticator *)self setState:uUIDString];
 
-    v10 = [(MDMOAuth2Authenticator *)self _authorizationGrantURLWithAuthParams:v6];
+    v10 = [(MDMOAuth2Authenticator *)self _authorizationGrantURLWithAuthParams:paramsCopy];
     if (v10)
     {
       v11 = [MEMORY[0x277CCACE0] componentsWithURL:v10 resolvingAgainstBaseURL:0];
       v12 = v11;
-      if (v7)
+      if (identifierCopy)
       {
-        v13 = [v11 queryItems];
-        v14 = [MEMORY[0x277CCAD18] queryItemWithName:@"login_hint" value:v7];
-        v15 = [v13 arrayByAddingObject:v14];
+        queryItems = [v11 queryItems];
+        v14 = [MEMORY[0x277CCAD18] queryItemWithName:@"login_hint" value:identifierCopy];
+        v15 = [queryItems arrayByAddingObject:v14];
         [v12 setQueryItems:v15];
       }
 
@@ -288,15 +288,15 @@
   return v16;
 }
 
-- (void)authTokensWithCallbackURL:(id)a3 authParams:(id)a4 completionHandler:(id)a5
+- (void)authTokensWithCallbackURL:(id)l authParams:(id)params completionHandler:(id)handler
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCACE0] componentsWithURL:v8 resolvingAgainstBaseURL:0];
-  v12 = [v11 scheme];
-  v13 = [v12 isEqualToString:@"apple-remotemanagement-user-login"];
+  lCopy = l;
+  paramsCopy = params;
+  handlerCopy = handler;
+  v11 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+  scheme = [v11 scheme];
+  v13 = [scheme isEqualToString:@"apple-remotemanagement-user-login"];
 
   if ((v13 & 1) == 0)
   {
@@ -304,24 +304,24 @@
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = v31;
-      v33 = [v11 scheme];
+      scheme2 = [v11 scheme];
       *buf = 138543362;
-      v47 = v33;
+      v47 = scheme2;
       _os_log_impl(&dword_22E997000, v32, OS_LOG_TYPE_ERROR, "Incorrect auth callback scheme: %{public}@", buf, 0xCu);
     }
 
     v18 = +[MDMOAuth2Authenticator _createOAuth2InvalidError];
-    v10[2](v10, 0, v18);
+    handlerCopy[2](handlerCopy, 0, v18);
     goto LABEL_27;
   }
 
-  v40 = self;
+  selfCopy = self;
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v14 = [v11 queryItems];
-  v15 = [v14 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  queryItems = [v11 queryItems];
+  v15 = [queryItems countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (!v15)
   {
 
@@ -331,9 +331,9 @@
   }
 
   v16 = v15;
-  v37 = v10;
-  v38 = v9;
-  v39 = v8;
+  v37 = handlerCopy;
+  v38 = paramsCopy;
+  v39 = lCopy;
   v17 = 0;
   v18 = 0;
   v19 = *v42;
@@ -343,54 +343,54 @@
     {
       if (*v42 != v19)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(queryItems);
       }
 
       v21 = *(*(&v41 + 1) + 8 * i);
-      v22 = [v21 name];
-      v23 = [v22 isEqualToString:@"code"];
+      name = [v21 name];
+      v23 = [name isEqualToString:@"code"];
 
       if (v23)
       {
-        v24 = [v21 value];
+        value = [v21 value];
         v25 = v18;
-        v18 = v24;
+        v18 = value;
       }
 
       else
       {
-        v26 = [v21 name];
-        v27 = [v26 isEqualToString:@"state"];
+        name2 = [v21 name];
+        v27 = [name2 isEqualToString:@"state"];
 
         if (!v27)
         {
           continue;
         }
 
-        v28 = [v21 value];
+        value2 = [v21 value];
         v25 = v17;
-        v17 = v28;
+        v17 = value2;
       }
     }
 
-    v16 = [v14 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    v16 = [queryItems countByEnumeratingWithState:&v41 objects:v45 count:16];
   }
 
   while (v16);
 
   if (v18)
   {
-    v9 = v38;
-    v8 = v39;
-    v10 = v37;
+    paramsCopy = v38;
+    lCopy = v39;
+    handlerCopy = v37;
     if (v17)
     {
-      v29 = [(MDMOAuth2Authenticator *)v40 state];
-      v30 = [v17 isEqualToString:v29];
+      state = [(MDMOAuth2Authenticator *)selfCopy state];
+      v30 = [v17 isEqualToString:state];
 
       if (v30)
       {
-        [(MDMOAuth2Authenticator *)v40 _tokenRequestWithCode:v18 authParams:v38 completionHandler:v37];
+        [(MDMOAuth2Authenticator *)selfCopy _tokenRequestWithCode:v18 authParams:v38 completionHandler:v37];
         goto LABEL_26;
       }
     }
@@ -398,9 +398,9 @@
 
   else
   {
-    v9 = v38;
-    v8 = v39;
-    v10 = v37;
+    paramsCopy = v38;
+    lCopy = v39;
+    handlerCopy = v37;
   }
 
 LABEL_23:
@@ -408,12 +408,12 @@ LABEL_23:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v47 = v8;
+    v47 = lCopy;
     _os_log_impl(&dword_22E997000, v34, OS_LOG_TYPE_ERROR, "Invalid OAuth2 redirect URL response: %{public}@", buf, 0xCu);
   }
 
   v35 = +[MDMOAuth2Authenticator _createOAuth2InvalidError];
-  v10[2](v10, 0, v35);
+  handlerCopy[2](handlerCopy, 0, v35);
 
 LABEL_26:
 LABEL_27:
@@ -423,23 +423,23 @@ LABEL_27:
 
 - (BOOL)canRefreshToken
 {
-  v2 = [(MDMOAuth2Authenticator *)self tokens];
-  v3 = [v2 objectForKeyedSubscript:@"refresh_token"];
+  tokens = [(MDMOAuth2Authenticator *)self tokens];
+  v3 = [tokens objectForKeyedSubscript:@"refresh_token"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)prepareForReauthenticationWithAuthParams:(id)a3 accountID:(id)a4 error:(id *)a5
+- (id)prepareForReauthenticationWithAuthParams:(id)params accountID:(id)d error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"authorization-url"];
+  paramsCopy = params;
+  dCopy = d;
+  v9 = [paramsCopy objectForKeyedSubscript:@"authorization-url"];
   if (v9 && ([MEMORY[0x277CBEBC0] URLWithString:v9], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
-    v12 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     v24 = 0;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -447,8 +447,8 @@ LABEL_27:
     v21[3] = &unk_278856D18;
     v13 = v11;
     v22 = v13;
-    v23 = v7;
-    v14 = [v12 dmc_updateAccountWithIdentifier:v8 error:&v24 updateBlock:v21];
+    v23 = paramsCopy;
+    v14 = [defaultStore dmc_updateAccountWithIdentifier:dCopy error:&v24 updateBlock:v21];
     v15 = v24;
 
     if (v14)
@@ -467,11 +467,11 @@ LABEL_27:
       }
 
       v16 = 0;
-      if (a5 && v15)
+      if (error && v15)
       {
         v18 = v15;
         v16 = 0;
-        *a5 = v15;
+        *error = v15;
       }
     }
   }
@@ -496,23 +496,23 @@ void __83__MDMOAuth2Authenticator_prepareForReauthenticationWithAuthParams_accou
   [v5 dmc_setBearerReauthParams:*(a1 + 40)];
 }
 
-- (void)refreshTokenWithAuthParams:(id)a3 accountID:(id)a4 completionHandler:(id)a5
+- (void)refreshTokenWithAuthParams:(id)params accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(MDMOAuth2Authenticator *)self tokens];
-  v12 = [v11 objectForKeyedSubscript:@"refresh_token"];
+  dCopy = d;
+  handlerCopy = handler;
+  paramsCopy = params;
+  tokens = [(MDMOAuth2Authenticator *)self tokens];
+  v12 = [tokens objectForKeyedSubscript:@"refresh_token"];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completionHandler___block_invoke;
   v15[3] = &unk_278857230;
-  v16 = v8;
-  v17 = v9;
+  v16 = dCopy;
+  v17 = handlerCopy;
   v15[4] = self;
-  v13 = v8;
-  v14 = v9;
-  [(MDMOAuth2Authenticator *)self _refreshRequestWithRefreshToken:v12 authParams:v10 completionHandler:v15];
+  v13 = dCopy;
+  v14 = handlerCopy;
+  [(MDMOAuth2Authenticator *)self _refreshRequestWithRefreshToken:v12 authParams:paramsCopy completionHandler:v15];
 }
 
 void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -620,26 +620,26 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
   [v3 dmc_setBearerToken:v5];
 }
 
-- (id)_authorizationGrantURLWithAuthParams:(id)a3
+- (id)_authorizationGrantURLWithAuthParams:(id)params
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(MDMOAuth2Authenticator *)self validAuthParams:v4])
+  paramsCopy = params;
+  if ([(MDMOAuth2Authenticator *)self validAuthParams:paramsCopy])
   {
     v5 = MEMORY[0x277CBEBC0];
-    v6 = [v4 objectForKeyedSubscript:@"authorization-url"];
+    v6 = [paramsCopy objectForKeyedSubscript:@"authorization-url"];
     v7 = [v5 URLWithString:v6];
 
-    v8 = [v4 objectForKeyedSubscript:@"client-id"];
-    v9 = [v4 objectForKeyedSubscript:@"redirect-url"];
-    v10 = [v4 objectForKeyedSubscript:@"scope"];
+    v8 = [paramsCopy objectForKeyedSubscript:@"client-id"];
+    v9 = [paramsCopy objectForKeyedSubscript:@"redirect-url"];
+    v10 = [paramsCopy objectForKeyedSubscript:@"scope"];
     v11 = [MEMORY[0x277CCACE0] componentsWithURL:v7 resolvingAgainstBaseURL:0];
     v12 = MEMORY[0x277CBEB18];
-    v13 = [v11 queryItems];
-    v14 = v13;
-    if (v13)
+    queryItems = [v11 queryItems];
+    v14 = queryItems;
+    if (queryItems)
     {
-      v15 = v13;
+      v15 = queryItems;
     }
 
     else
@@ -665,8 +665,8 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
     }
 
     v21 = MEMORY[0x277CCAD18];
-    v22 = [(MDMOAuth2Authenticator *)self state];
-    v23 = [v21 queryItemWithName:@"state" value:v22];
+    state = [(MDMOAuth2Authenticator *)self state];
+    v23 = [v21 queryItemWithName:@"state" value:state];
     [v16 addObject:v23];
 
     [v11 setQueryItems:v16];
@@ -679,7 +679,7 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v28 = 138543362;
-      v29 = v4;
+      v29 = paramsCopy;
       _os_log_impl(&dword_22E997000, v25, OS_LOG_TYPE_ERROR, "Invalid OAuth2 parameters: %{public}@", &v28, 0xCu);
     }
 
@@ -691,26 +691,26 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
   return v24;
 }
 
-- (void)_tokenRequestWithCode:(id)a3 authParams:(id)a4 completionHandler:(id)a5
+- (void)_tokenRequestWithCode:(id)code authParams:(id)params completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MDMOAuth2Authenticator *)self validAuthParams:v9])
+  codeCopy = code;
+  paramsCopy = params;
+  handlerCopy = handler;
+  if ([(MDMOAuth2Authenticator *)self validAuthParams:paramsCopy])
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v9 objectForKeyedSubscript:@"token-url"];
+    v12 = [paramsCopy objectForKeyedSubscript:@"token-url"];
     v13 = [v11 URLWithString:v12];
 
-    v24 = [v9 objectForKeyedSubscript:@"client-id"];
-    v14 = [v9 objectForKeyedSubscript:@"redirect-url"];
+    v24 = [paramsCopy objectForKeyedSubscript:@"client-id"];
+    v14 = [paramsCopy objectForKeyedSubscript:@"redirect-url"];
     v15 = [MEMORY[0x277CCAD18] queryItemWithName:@"grant_type" value:@"authorization_code"];
     v26[0] = v15;
-    v16 = [MEMORY[0x277CCAD18] queryItemWithName:@"code" value:v8];
+    v16 = [MEMORY[0x277CCAD18] queryItemWithName:@"code" value:codeCopy];
     v26[1] = v16;
     [MEMORY[0x277CCAD18] queryItemWithName:@"redirect_uri" value:v14];
-    v17 = v25 = v8;
+    v17 = v25 = codeCopy;
     v26[2] = v17;
     v18 = [MEMORY[0x277CCAD18] queryItemWithName:@"client_id" value:v24];
     v26[3] = v18;
@@ -718,11 +718,11 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
 
     v20 = [MEMORY[0x277CCACE0] componentsWithURL:v13 resolvingAgainstBaseURL:0];
     [v20 setQueryItems:v19];
-    v21 = [v20 percentEncodedQuery];
-    [(MDMOAuth2Authenticator *)self _executeTokenRequestWithURL:v13 body:v21 completionHandler:v10];
+    percentEncodedQuery = [v20 percentEncodedQuery];
+    [(MDMOAuth2Authenticator *)self _executeTokenRequestWithURL:v13 body:percentEncodedQuery completionHandler:handlerCopy];
 
-    v8 = v25;
-    v10 = v24;
+    codeCopy = v25;
+    handlerCopy = v24;
   }
 
   else
@@ -731,33 +731,33 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = v9;
+      v28 = paramsCopy;
       _os_log_impl(&dword_22E997000, v22, OS_LOG_TYPE_ERROR, "Invalid OAuth2 parameters: %{public}@", buf, 0xCu);
     }
 
     v13 = +[MDMOAuth2Authenticator _createOAuth2InvalidError];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshRequestWithRefreshToken:(id)a3 authParams:(id)a4 completionHandler:(id)a5
+- (void)_refreshRequestWithRefreshToken:(id)token authParams:(id)params completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MDMOAuth2Authenticator *)self validAuthParams:v9])
+  tokenCopy = token;
+  paramsCopy = params;
+  handlerCopy = handler;
+  if ([(MDMOAuth2Authenticator *)self validAuthParams:paramsCopy])
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v9 objectForKeyedSubscript:@"token-url"];
+    v12 = [paramsCopy objectForKeyedSubscript:@"token-url"];
     v13 = [v11 URLWithString:v12];
 
-    v14 = [v9 objectForKeyedSubscript:@"client-id"];
+    v14 = [paramsCopy objectForKeyedSubscript:@"client-id"];
     v15 = [MEMORY[0x277CCAD18] queryItemWithName:@"grant_type" value:@"refresh_token"];
     v23[0] = v15;
-    v16 = [MEMORY[0x277CCAD18] queryItemWithName:@"refresh_token" value:v8];
+    v16 = [MEMORY[0x277CCAD18] queryItemWithName:@"refresh_token" value:tokenCopy];
     v23[1] = v16;
     v17 = [MEMORY[0x277CCAD18] queryItemWithName:@"client_id" value:v14];
     v23[2] = v17;
@@ -765,10 +765,10 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
 
     v19 = [MEMORY[0x277CCACE0] componentsWithURL:v13 resolvingAgainstBaseURL:0];
     [v19 setQueryItems:v18];
-    v20 = [v19 percentEncodedQuery];
-    [(MDMOAuth2Authenticator *)self _executeTokenRequestWithURL:v13 body:v20 completionHandler:v10];
+    percentEncodedQuery = [v19 percentEncodedQuery];
+    [(MDMOAuth2Authenticator *)self _executeTokenRequestWithURL:v13 body:percentEncodedQuery completionHandler:handlerCopy];
 
-    v10 = v14;
+    handlerCopy = v14;
   }
 
   else
@@ -777,27 +777,27 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = v9;
+      v25 = paramsCopy;
       _os_log_impl(&dword_22E997000, v21, OS_LOG_TYPE_ERROR, "Invalid OAuth2 parameters: %{public}@", buf, 0xCu);
     }
 
     v13 = +[MDMOAuth2Authenticator _createOAuth2InvalidError];
-    (*(v10 + 2))(v10, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeTokenRequestWithURL:(id)a3 body:(id)a4 completionHandler:(id)a5
+- (void)_executeTokenRequestWithURL:(id)l body:(id)body completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCAB70];
-  v10 = a4;
-  v11 = [v9 requestWithURL:a3];
+  bodyCopy = body;
+  v11 = [v9 requestWithURL:l];
   [v11 setAttribution:1];
   [v11 setHTTPMethod:*MEMORY[0x277D033A0]];
   [v11 setTimeoutInterval:90.0];
-  v12 = [v10 dataUsingEncoding:4];
+  v12 = [bodyCopy dataUsingEncoding:4];
 
   [v11 setHTTPBody:v12];
   [v11 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -814,48 +814,48 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
   v16[2] = __77__MDMOAuth2Authenticator__executeTokenRequestWithURL_body_completionHandler___block_invoke;
   v16[3] = &unk_278857168;
   v16[4] = self;
-  v17 = v8;
-  v15 = v8;
+  v17 = handlerCopy;
+  v15 = handlerCopy;
   [v13 startWithRequest:v11 username:0 password:0 anchorCertificateRefs:0 completionBlock:v16];
 }
 
-- (void)_processTokenResponse:(id)a3 data:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)_processTokenResponse:(id)response data:(id)data error:(id)error completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
   v13 = *DMCLogObjects();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
     *buf = 134218242;
-    v36 = [v10 length];
+    v36 = [dataCopy length];
     v37 = 2114;
-    v38 = v9;
+    v38 = responseCopy;
     _os_log_impl(&dword_22E997000, v14, OS_LOG_TYPE_DEFAULT, "Getting OAuth2 bearer token finished with data: %lu bytes, response: %{public}@", buf, 0x16u);
   }
 
-  if (v11)
+  if (errorCopy)
   {
     v15 = *DMCLogObjects();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v36 = v11;
+      v36 = errorCopy;
       _os_log_impl(&dword_22E997000, v15, OS_LOG_TYPE_ERROR, "Failed to get OAuth2 bearer token with error: %{public}@", buf, 0xCu);
     }
 
-    v12[2](v12, 0, v11);
+    handlerCopy[2](handlerCopy, 0, errorCopy);
     goto LABEL_29;
   }
 
-  v16 = [v9 statusCode];
-  if (v16 == 200)
+  statusCode = [responseCopy statusCode];
+  if (statusCode == 200)
   {
     v34 = 0;
-    v17 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v10 options:0 error:&v34];
+    v17 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v34];
     v18 = v34;
     if (v18)
     {
@@ -867,7 +867,7 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
         _os_log_impl(&dword_22E997000, v19, OS_LOG_TYPE_ERROR, "Failed to deserialize server's response with error: %{public}@", buf, 0xCu);
       }
 
-      v12[2](v12, 0, v18);
+      handlerCopy[2](handlerCopy, 0, v18);
       goto LABEL_28;
     }
 
@@ -911,7 +911,7 @@ void __81__MDMOAuth2Authenticator_refreshTokenWithAuthParams_accountID_completio
         _os_log_impl(&dword_22E997000, v28, OS_LOG_TYPE_DEBUG, "%s results: %@", buf, 0x16u);
       }
 
-      (v12)[2](v12, v27, 0);
+      (handlerCopy)[2](handlerCopy, v27, 0);
       v24 = v31;
       goto LABEL_27;
     }
@@ -926,14 +926,14 @@ LABEL_24:
     }
 
     v27 = +[MDMOAuth2Authenticator _createOAuth2InvalidError];
-    v12[2](v12, 0, v27);
+    handlerCopy[2](handlerCopy, 0, v27);
 LABEL_27:
 
 LABEL_28:
     goto LABEL_29;
   }
 
-  v20 = v16;
+  v20 = statusCode;
   v21 = *DMCLogObjects();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -943,7 +943,7 @@ LABEL_28:
   }
 
   v22 = +[MDMOAuth2Authenticator _createOAuth2InvalidError];
-  v12[2](v12, 0, v22);
+  handlerCopy[2](handlerCopy, 0, v22);
 
 LABEL_29:
   v30 = *MEMORY[0x277D85DE8];

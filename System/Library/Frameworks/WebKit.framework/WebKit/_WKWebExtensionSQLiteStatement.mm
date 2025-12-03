@@ -1,17 +1,17 @@
 @interface _WKWebExtensionSQLiteStatement
-- (BOOL)execute:(id *)a3;
-- (BOOL)fetchWithEnumerationBlock:(id)a3 error:(id *)a4;
+- (BOOL)execute:(id *)execute;
+- (BOOL)fetchWithEnumerationBlock:(id)block error:(id *)error;
 - (NSArray)columnNames;
 - (NSDictionary)columnNamesToIndexes;
-- (_WKWebExtensionSQLiteStatement)initWithDatabase:(id)a3 query:(id)a4 error:(id *)a5;
+- (_WKWebExtensionSQLiteStatement)initWithDatabase:(id)database query:(id)query error:(id *)error;
 - (id)fetch;
 - (int)execute;
-- (void)bindData:(id)a3 atParameterIndex:(unint64_t)a4;
-- (void)bindDouble:(double)a3 atParameterIndex:(unint64_t)a4;
-- (void)bindInt64:(int64_t)a3 atParameterIndex:(unint64_t)a4;
-- (void)bindInt:(int)a3 atParameterIndex:(unint64_t)a4;
-- (void)bindNullAtParameterIndex:(unint64_t)a3;
-- (void)bindString:(id)a3 atParameterIndex:(unint64_t)a4;
+- (void)bindData:(id)data atParameterIndex:(unint64_t)index;
+- (void)bindDouble:(double)double atParameterIndex:(unint64_t)index;
+- (void)bindInt64:(int64_t)int64 atParameterIndex:(unint64_t)index;
+- (void)bindInt:(int)int atParameterIndex:(unint64_t)index;
+- (void)bindNullAtParameterIndex:(unint64_t)index;
+- (void)bindString:(id)string atParameterIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)invalidate;
 - (void)reset;
@@ -19,28 +19,28 @@
 
 @implementation _WKWebExtensionSQLiteStatement
 
-- (_WKWebExtensionSQLiteStatement)initWithDatabase:(id)a3 query:(id)a4 error:(id *)a5
+- (_WKWebExtensionSQLiteStatement)initWithDatabase:(id)database query:(id)query error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  databaseCopy = database;
+  queryCopy = query;
   v17.receiver = self;
   v17.super_class = _WKWebExtensionSQLiteStatement;
   v11 = [(_WKWebExtensionSQLiteStatement *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_database, a3);
-    v13 = [(_WKWebExtensionSQLiteDatabase *)v12->_database queue];
-    dispatch_assert_queue_V2(v13);
+    objc_storeStrong(&v11->_database, database);
+    queue = [(_WKWebExtensionSQLiteDatabase *)v12->_database queue];
+    dispatch_assert_queue_V2(queue);
 
-    v14 = sqlite3_prepare_v2([v9 handle], objc_msgSend(v10, "UTF8String"), -1, &v12->_handle, 0);
+    v14 = sqlite3_prepare_v2([databaseCopy handle], objc_msgSend(queryCopy, "UTF8String"), -1, &v12->_handle, 0);
     if (!v14)
     {
       v15 = v12;
       goto LABEL_6;
     }
 
-    [v9 reportErrorWithCode:v14 query:v10 error:a5];
+    [databaseCopy reportErrorWithCode:v14 query:queryCopy error:error];
   }
 
   v15 = 0;
@@ -55,7 +55,7 @@ LABEL_6:
   if (handle)
   {
     v4 = self->_database;
-    v5 = [(_WKWebExtensionSQLiteDatabase *)v4 queue];
+    queue = [(_WKWebExtensionSQLiteDatabase *)v4 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41___WKWebExtensionSQLiteStatement_dealloc__block_invoke;
@@ -63,7 +63,7 @@ LABEL_6:
     v9 = v4;
     v10 = handle;
     v6 = v4;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 
   v7.receiver = self;
@@ -73,8 +73,8 @@ LABEL_6:
 
 - (int)execute
 {
-  v3 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sqlite3_step(self->_handle);
   v5 = v4;
@@ -86,10 +86,10 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)execute:(id *)a3
+- (BOOL)execute:(id *)execute
 {
-  v5 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sqlite3_step(self->_handle);
   if ((v6 - 100) < 2 || v6 == 0)
@@ -97,25 +97,25 @@ LABEL_6:
     return 1;
   }
 
-  [(_WKWebExtensionSQLiteDatabase *)self->_database reportErrorWithCode:v6 statement:self->_handle error:a3];
+  [(_WKWebExtensionSQLiteDatabase *)self->_database reportErrorWithCode:v6 statement:self->_handle error:execute];
   return 0;
 }
 
 - (id)fetch
 {
-  v3 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [[_WKWebExtensionSQLiteRowEnumerator alloc] initWithResultsOfStatement:self];
 
   return v4;
 }
 
-- (BOOL)fetchWithEnumerationBlock:(id)a3 error:(id *)a4
+- (BOOL)fetchWithEnumerationBlock:(id)block error:(id *)error
 {
-  v5 = a3;
-  v6 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v6);
+  blockCopy = block;
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = 0;
   v10 = 0;
@@ -132,7 +132,7 @@ LABEL_6:
       v7 = [[_WKWebExtensionSQLiteRow alloc] initWithStatement:self];
     }
 
-    v5[2](v5, v7, &v10);
+    blockCopy[2](blockCopy, v7, &v10);
   }
 
   while ((v10 & 1) == 0);
@@ -143,8 +143,8 @@ LABEL_6:
 - (void)reset
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sqlite3_reset(self->_handle);
   if (v4)
@@ -153,9 +153,9 @@ LABEL_6:
     v6 = qword_1ED640AB8;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v8 = 138412546;
-      v9 = v7;
+      v9 = lastErrorMessage;
       v10 = 1024;
       v11 = v5;
       _os_log_debug_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEBUG, "Could not reset statement: %@ (%d)", &v8, 0x12u);
@@ -166,8 +166,8 @@ LABEL_6:
 - (void)invalidate
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = sqlite3_finalize(self->_handle);
   if (v4)
@@ -176,9 +176,9 @@ LABEL_6:
     v6 = qword_1ED640AB8;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v8 = 138412546;
-      v9 = v7;
+      v9 = lastErrorMessage;
       v10 = 1024;
       v11 = v5;
       _os_log_debug_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEBUG, "Could not finalize statement: %@ (%d)", &v8, 0x12u);
@@ -188,16 +188,16 @@ LABEL_6:
   self->_handle = 0;
 }
 
-- (void)bindString:(id)a3 atParameterIndex:(unint64_t)a4
+- (void)bindString:(id)string atParameterIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v7);
+  stringCopy = string;
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   handle = self->_handle;
-  MEMORY[0x19EB02040](&v17, v6);
+  MEMORY[0x19EB02040](&v17, stringCopy);
   WTF::String::utf8();
   if (*buf)
   {
@@ -211,7 +211,7 @@ LABEL_6:
     v10 = 0;
   }
 
-  v12 = sqlite3_bind_text(handle, v4, v9, v10, 0xFFFFFFFFFFFFFFFFLL);
+  v12 = sqlite3_bind_text(handle, indexCopy, v9, v10, 0xFFFFFFFFFFFFFFFFLL);
   v13 = *buf;
   *buf = 0;
   if (v13)
@@ -246,9 +246,9 @@ LABEL_6:
   v15 = qword_1ED640AB8;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+    lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
     *buf = 138412546;
-    *&buf[4] = v16;
+    *&buf[4] = lastErrorMessage;
     v19 = 1024;
     v20 = v12;
     _os_log_debug_impl(&dword_19D52D000, v15, OS_LOG_TYPE_DEBUG, "Could not bind string: %@ (%d)", buf, 0x12u);
@@ -257,23 +257,23 @@ LABEL_6:
 LABEL_12:
 }
 
-- (void)bindInt:(int)a3 atParameterIndex:(unint64_t)a4
+- (void)bindInt:(int)int atParameterIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = sqlite3_bind_int(self->_handle, v4, a3);
+  v8 = sqlite3_bind_int(self->_handle, indexCopy, int);
   if (v8)
   {
     v9 = v8;
     v10 = qword_1ED640AB8;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v12 = 138412546;
-      v13 = v11;
+      v13 = lastErrorMessage;
       v14 = 1024;
       v15 = v9;
       _os_log_debug_impl(&dword_19D52D000, v10, OS_LOG_TYPE_DEBUG, "Could not bind int: %@ (%d)", &v12, 0x12u);
@@ -281,23 +281,23 @@ LABEL_12:
   }
 }
 
-- (void)bindInt64:(int64_t)a3 atParameterIndex:(unint64_t)a4
+- (void)bindInt64:(int64_t)int64 atParameterIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = sqlite3_bind_int64(self->_handle, v4, a3);
+  v8 = sqlite3_bind_int64(self->_handle, indexCopy, int64);
   if (v8)
   {
     v9 = v8;
     v10 = qword_1ED640AB8;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v12 = 138412546;
-      v13 = v11;
+      v13 = lastErrorMessage;
       v14 = 1024;
       v15 = v9;
       _os_log_debug_impl(&dword_19D52D000, v10, OS_LOG_TYPE_DEBUG, "Could not bind integer: %@ (%d)", &v12, 0x12u);
@@ -305,23 +305,23 @@ LABEL_12:
   }
 }
 
-- (void)bindDouble:(double)a3 atParameterIndex:(unint64_t)a4
+- (void)bindDouble:(double)double atParameterIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = sqlite3_bind_double(self->_handle, v4, a3);
+  v8 = sqlite3_bind_double(self->_handle, indexCopy, double);
   if (v8)
   {
     v9 = v8;
     v10 = qword_1ED640AB8;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v12 = 138412546;
-      v13 = v11;
+      v13 = lastErrorMessage;
       v14 = 1024;
       v15 = v9;
       _os_log_debug_impl(&dword_19D52D000, v10, OS_LOG_TYPE_DEBUG, "Could not bind double: %@ (%d)", &v12, 0x12u);
@@ -329,38 +329,38 @@ LABEL_12:
   }
 }
 
-- (void)bindData:(id)a3 atParameterIndex:(unint64_t)a4
+- (void)bindData:(id)data atParameterIndex:(unint64_t)index
 {
-  v4 = a4;
+  indexCopy = index;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v7);
+  dataCopy = data;
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   handle = self->_handle;
-  v9 = v6;
+  v9 = dataCopy;
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 bytes];
+    bytes = [v9 bytes];
     v12 = [v10 length];
   }
 
   else
   {
-    v11 = 0;
+    bytes = 0;
     v12 = 0;
   }
 
-  v13 = sqlite3_bind_blob64(handle, v4, v11, v12, 0xFFFFFFFFFFFFFFFFLL);
+  v13 = sqlite3_bind_blob64(handle, indexCopy, bytes, v12, 0xFFFFFFFFFFFFFFFFLL);
   if (v13)
   {
     v14 = qword_1ED640AB8;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v16 = 138412546;
-      v17 = v15;
+      v17 = lastErrorMessage;
       v18 = 1024;
       v19 = v13;
       _os_log_debug_impl(&dword_19D52D000, v14, OS_LOG_TYPE_DEBUG, "Could not bind blob: %@ (%d)", &v16, 0x12u);
@@ -368,23 +368,23 @@ LABEL_12:
   }
 }
 
-- (void)bindNullAtParameterIndex:(unint64_t)a3
+- (void)bindNullAtParameterIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = sqlite3_bind_null(self->_handle, v3);
+  v6 = sqlite3_bind_null(self->_handle, indexCopy);
   if (v6)
   {
     v7 = v6;
     v8 = qword_1ED640AB8;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(_WKWebExtensionSQLiteDatabase *)self->_database lastErrorMessage];
       v10 = 138412546;
-      v11 = v9;
+      v11 = lastErrorMessage;
       v12 = 1024;
       v13 = v7;
       _os_log_debug_impl(&dword_19D52D000, v8, OS_LOG_TYPE_DEBUG, "Could not bind null: %@ (%d)", &v10, 0x12u);
@@ -394,8 +394,8 @@ LABEL_12:
 
 - (NSDictionary)columnNamesToIndexes
 {
-  v3 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   columnNamesToIndexes = self->_columnNamesToIndexes;
   if (columnNamesToIndexes)
@@ -462,8 +462,8 @@ LABEL_12:
 
 - (NSArray)columnNames
 {
-  v3 = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_WKWebExtensionSQLiteDatabase *)self->_database queue];
+  dispatch_assert_queue_V2(queue);
 
   columnNames = self->_columnNames;
   if (columnNames)

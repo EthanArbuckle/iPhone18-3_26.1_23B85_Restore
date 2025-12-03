@@ -1,35 +1,35 @@
 @interface CHContextualTextResult
-+ (id)defaultWordTerminationCharacterForLocale:(id)a3;
++ (id)defaultWordTerminationCharacterForLocale:(id)locale;
 - (BOOL)isMathForContextLookup;
 - (BOOL)isNonTextCandidateForContextLookup;
-- (BOOL)isNonTextCandidateForContextLookupByStrokeClassificationResult:(id)a3;
-- (CHContextualTextResult)initWithTextResult:(id)a3 terminatingSpecialCharacter:(id)a4 strokeGroup:(id)a5;
+- (BOOL)isNonTextCandidateForContextLookupByStrokeClassificationResult:(id)result;
+- (CHContextualTextResult)initWithTextResult:(id)result terminatingSpecialCharacter:(id)character strokeGroup:(id)group;
 @end
 
 @implementation CHContextualTextResult
 
-- (CHContextualTextResult)initWithTextResult:(id)a3 terminatingSpecialCharacter:(id)a4 strokeGroup:(id)a5
+- (CHContextualTextResult)initWithTextResult:(id)result terminatingSpecialCharacter:(id)character strokeGroup:(id)group
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resultCopy = result;
+  characterCopy = character;
+  groupCopy = group;
   v15.receiver = self;
   v15.super_class = CHContextualTextResult;
   v12 = [(CHContextualTextResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_textResult, a3);
-    objc_storeStrong(&v13->_terminatingSpecialCharacter, a4);
-    objc_storeStrong(&v13->_strokeGroup, a5);
+    objc_storeStrong(&v12->_textResult, result);
+    objc_storeStrong(&v13->_terminatingSpecialCharacter, character);
+    objc_storeStrong(&v13->_strokeGroup, group);
   }
 
   return v13;
 }
 
-+ (id)defaultWordTerminationCharacterForLocale:(id)a3
++ (id)defaultWordTerminationCharacterForLocale:(id)locale
 {
-  if (objc_msgSend_shouldApplyLatinSpacingForLocale_(CHRecognizerConfiguration, a2, a3, v3, v4, v5))
+  if (objc_msgSend_shouldApplyLatinSpacingForLocale_(CHRecognizerConfiguration, a2, locale, v3, v4, v5))
   {
     v6 = @" ";
   }
@@ -44,12 +44,12 @@
 
 - (BOOL)isNonTextCandidateForContextLookup
 {
-  v6 = self;
+  selfCopy = self;
   v7 = objc_msgSend_textResult(self, a2, v2, v3, v4, v5);
-  isMathForContextLookup = objc_msgSend_isMathForContextLookup(v6, v8, v9, v10, v11, v12);
-  LOBYTE(v6) = objc_msgSend_isNonTextCandidateTranscriptionWithStrictFiltering_(v7, v14, isMathForContextLookup ^ 1u, v15, v16, v17);
+  isMathForContextLookup = objc_msgSend_isMathForContextLookup(selfCopy, v8, v9, v10, v11, v12);
+  LOBYTE(selfCopy) = objc_msgSend_isNonTextCandidateTranscriptionWithStrictFiltering_(v7, v14, isMathForContextLookup ^ 1u, v15, v16, v17);
 
-  return v6;
+  return selfCopy;
 }
 
 - (BOOL)isMathForContextLookup
@@ -80,16 +80,16 @@
   return isStrokeClassificationMath & v23;
 }
 
-- (BOOL)isNonTextCandidateForContextLookupByStrokeClassificationResult:(id)a3
+- (BOOL)isNonTextCandidateForContextLookupByStrokeClassificationResult:(id)result
 {
   v129 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v10 = objc_msgSend_textResult(self, v5, v6, v7, v8, v9);
   v16 = objc_msgSend_inputStrokeIdentifiers(v10, v11, v12, v13, v14, v15);
 
   v22 = objc_msgSend_count(v16, v17, v18, v19, v20, v21);
   v28 = 1;
-  if (v4 && v22)
+  if (resultCopy && v22)
   {
     v123 = v22;
     v29 = objc_msgSend_textResult(self, v23, v24, v25, v26, v27);
@@ -133,7 +133,7 @@
             }
 
             v89 = *(*(&v124 + 1) + 8 * i);
-            v90 = objc_msgSend_scriptClassificationRawResultsByStrokeIdentifier(v4, v80, v81, v82, v83, v84, v122);
+            v90 = objc_msgSend_scriptClassificationRawResultsByStrokeIdentifier(resultCopy, v80, v81, v82, v83, v84, v122);
             v95 = objc_msgSend_objectForKeyedSubscript_(v90, v91, v89, v92, v93, v94);
 
             if (v95)

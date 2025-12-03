@@ -1,6 +1,6 @@
 @interface BCUI4x4AvocadoViewController
 - (unint64_t)_maximumNumberOfBatteryDeviceViews;
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5;
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -12,29 +12,29 @@
   v34.receiver = self;
   v34.super_class = BCUI4x4AvocadoViewController;
   [(BCUIAvocadoViewController *)&v34 viewWillLayoutSubviews];
-  v3 = [(BCUI4x4AvocadoViewController *)self view];
-  [v3 bounds];
+  view = [(BCUI4x4AvocadoViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = BCUI6x8RowHeightForBounds(v5, v7, v9, v11);
-  v13 = [(BCUI4x4AvocadoViewController *)self traitCollection];
-  v14 = [v13 preferredContentSizeCategory];
+  traitCollection = [(BCUI4x4AvocadoViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v29 = v14;
+  v29 = preferredContentSizeCategory;
   v30 = 0u;
   v31 = 0u;
-  if ([BCUIRowView isAX3PlusLayoutRequiredForContentSizeCategory:v14])
+  if ([BCUIRowView isAX3PlusLayoutRequiredForContentSizeCategory:preferredContentSizeCategory])
   {
     v12 = v12 + v12;
   }
 
   v32 = 0uLL;
   v33 = 0uLL;
-  v15 = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
-  v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  _batteryDeviceViews = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
+  v16 = [_batteryDeviceViews countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v16)
   {
     v17 = v16;
@@ -46,7 +46,7 @@
       {
         if (*v31 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(_batteryDeviceViews);
         }
 
         v21 = *(*(&v30 + 1) + 8 * i);
@@ -72,9 +72,9 @@
 
         v25 = v24;
 
-        v26 = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
-        v27 = [v26 lastObject];
-        [v25 setSeparatorVisible:v23 != v27];
+        _batteryDeviceViews2 = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
+        lastObject = [_batteryDeviceViews2 lastObject];
+        [v25 setSeparatorVisible:v23 != lastObject];
 
         v37.origin.x = v5;
         v37.origin.y = v7;
@@ -89,7 +89,7 @@
         MaxY = CGRectGetMaxY(v38);
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v17 = [_batteryDeviceViews countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v17);
@@ -98,10 +98,10 @@
 
 - (unint64_t)_maximumNumberOfBatteryDeviceViews
 {
-  v2 = [(BCUI4x4AvocadoViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(BCUI4x4AvocadoViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if ([BCUIRowView isAX3PlusLayoutRequiredForContentSizeCategory:v3])
+  if ([BCUIRowView isAX3PlusLayoutRequiredForContentSizeCategory:preferredContentSizeCategory])
   {
     v4 = 3;
   }
@@ -114,22 +114,22 @@
   return v4;
 }
 
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 setEmpty:v9 == 0];
+  viewCopy = view;
+  deviceCopy = device;
+  coordinatorCopy = coordinator;
+  [viewCopy setEmpty:deviceCopy == 0];
   if (objc_opt_respondsToSelector())
   {
-    [v8 setTransitionCoordinator:v10];
+    [viewCopy setTransitionCoordinator:coordinatorCopy];
   }
 
-  if (v9)
+  if (deviceCopy)
   {
     v11.receiver = self;
     v11.super_class = BCUI4x4AvocadoViewController;
-    [(BCUIAvocadoViewController *)&v11 _configureBatteryDeviceView:v8 withBatteryDevice:v9 transitionCoordinator:v10];
+    [(BCUIAvocadoViewController *)&v11 _configureBatteryDeviceView:viewCopy withBatteryDevice:deviceCopy transitionCoordinator:coordinatorCopy];
   }
 }
 

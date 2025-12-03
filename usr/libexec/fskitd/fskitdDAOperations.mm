@@ -1,7 +1,7 @@
 @interface fskitdDAOperations
 + (__DASession)getMainDASession;
-+ (void)probeDisk:(id)a3 replyHandler:(id)a4;
-+ (void)setFSKitAdditions:(id)a3 disk:(id)a4 replyHandler:(id)a5;
++ (void)probeDisk:(id)disk replyHandler:(id)handler;
++ (void)setFSKitAdditions:(id)additions disk:(id)disk replyHandler:(id)handler;
 @end
 
 @implementation fskitdDAOperations
@@ -16,38 +16,38 @@
   return qword_1000686F8;
 }
 
-+ (void)probeDisk:(id)a3 replyHandler:(id)a4
++ (void)probeDisk:(id)disk replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 getMainDASession];
-  if (v8 && DADiskCreateFromBSDName(kCFAllocatorDefault, v8, [v6 UTF8String]))
+  diskCopy = disk;
+  handlerCopy = handler;
+  getMainDASession = [self getMainDASession];
+  if (getMainDASession && DADiskCreateFromBSDName(kCFAllocatorDefault, getMainDASession, [diskCopy UTF8String]))
   {
-    v9 = v7;
+    v9 = handlerCopy;
     DADiskProbeWithBlock();
   }
 
   else
   {
-    (*(v7 + 2))(v7, 4175036417);
+    (*(handlerCopy + 2))(handlerCopy, 4175036417);
   }
 }
 
-+ (void)setFSKitAdditions:(id)a3 disk:(id)a4 replyHandler:(id)a5
++ (void)setFSKitAdditions:(id)additions disk:(id)disk replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 getMainDASession];
-  if (v11 && DADiskCreateFromBSDName(kCFAllocatorDefault, v11, [v9 UTF8String]))
+  additionsCopy = additions;
+  diskCopy = disk;
+  handlerCopy = handler;
+  getMainDASession = [self getMainDASession];
+  if (getMainDASession && DADiskCreateFromBSDName(kCFAllocatorDefault, getMainDASession, [diskCopy UTF8String]))
   {
-    v12 = v10;
+    v12 = handlerCopy;
     DADiskSetFSKitAdditions();
   }
 
   else
   {
-    (*(v10 + 2))(v10, 4175036417);
+    (*(handlerCopy + 2))(handlerCopy, 4175036417);
   }
 }
 

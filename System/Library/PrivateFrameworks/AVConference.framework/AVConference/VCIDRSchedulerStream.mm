@@ -1,20 +1,20 @@
 @interface VCIDRSchedulerStream
-+ (id)schedulerStreamWithKeyFrameInterval:(unsigned int)a3 framerate:(unsigned int)a4 weightFactor:(unsigned int)a5;
-- (VCIDRSchedulerStream)initWithKeyFrameInterval:(unsigned int)a3 framerate:(unsigned int)a4 weightFactor:(unsigned int)a5;
++ (id)schedulerStreamWithKeyFrameInterval:(unsigned int)interval framerate:(unsigned int)framerate weightFactor:(unsigned int)factor;
+- (VCIDRSchedulerStream)initWithKeyFrameInterval:(unsigned int)interval framerate:(unsigned int)framerate weightFactor:(unsigned int)factor;
 - (id)description;
-- (int64_t)compareWeightFactor:(id)a3;
+- (int64_t)compareWeightFactor:(id)factor;
 @end
 
 @implementation VCIDRSchedulerStream
 
-+ (id)schedulerStreamWithKeyFrameInterval:(unsigned int)a3 framerate:(unsigned int)a4 weightFactor:(unsigned int)a5
++ (id)schedulerStreamWithKeyFrameInterval:(unsigned int)interval framerate:(unsigned int)framerate weightFactor:(unsigned int)factor
 {
-  v5 = [[VCIDRSchedulerStream alloc] initWithKeyFrameInterval:*&a3 framerate:*&a4 weightFactor:*&a5];
+  v5 = [[VCIDRSchedulerStream alloc] initWithKeyFrameInterval:*&interval framerate:*&framerate weightFactor:*&factor];
 
   return v5;
 }
 
-- (VCIDRSchedulerStream)initWithKeyFrameInterval:(unsigned int)a3 framerate:(unsigned int)a4 weightFactor:(unsigned int)a5
+- (VCIDRSchedulerStream)initWithKeyFrameInterval:(unsigned int)interval framerate:(unsigned int)framerate weightFactor:(unsigned int)factor
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -22,24 +22,24 @@
   result = [(VCIDRSchedulerStream *)&v9 init];
   if (result)
   {
-    result->_keyFrameInterval = a3;
-    result->_framerate = a4;
-    result->_weightFactor = a5;
+    result->_keyFrameInterval = interval;
+    result->_framerate = framerate;
+    result->_weightFactor = factor;
   }
 
   return result;
 }
 
-- (int64_t)compareWeightFactor:(id)a3
+- (int64_t)compareWeightFactor:(id)factor
 {
   weightFactor = self->_weightFactor;
-  if (weightFactor > [a3 weightFactor])
+  if (weightFactor > [factor weightFactor])
   {
     return -1;
   }
 
   v7 = self->_weightFactor;
-  return v7 != [a3 weightFactor];
+  return v7 != [factor weightFactor];
 }
 
 - (id)description

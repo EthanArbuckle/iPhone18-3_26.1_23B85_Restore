@@ -1,29 +1,29 @@
 @interface EKCalendarChooserCell
-- (EKCalendarChooserCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKCalendarChooserCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)selectionCheckmarkCheckedSystemImageName;
 - (NSString)selectionCheckmarkUncheckedSystemImageName;
 - (double)textLeadingIndent;
 - (void)_updateTextLabelTextWithColorDot;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setChecked:(BOOL)a3;
-- (void)setColorDotHighlightedImage:(id)a3;
-- (void)setColorDotImage:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowCheckmarksOnLeft:(BOOL)a3;
-- (void)setTextLabelText:(id)a3;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setChecked:(BOOL)checked;
+- (void)setColorDotHighlightedImage:(id)image;
+- (void)setColorDotImage:(id)image;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShowCheckmarksOnLeft:(BOOL)left;
+- (void)setTextLabelText:(id)text;
 - (void)updateSelectionCheckmark;
 @end
 
 @implementation EKCalendarChooserCell
 
-- (EKCalendarChooserCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKCalendarChooserCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = EKCalendarChooserCell;
-  v4 = [(EKUITableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUITableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -73,34 +73,34 @@
   }
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = EKCalendarChooserCell;
   [(EKCalendarChooserCell *)&v5 setAccessoryType:?];
-  [(EKCalendarChooserCell *)self setEditingAccessoryType:a3];
+  [(EKCalendarChooserCell *)self setEditingAccessoryType:type];
 }
 
-- (void)setShowCheckmarksOnLeft:(BOOL)a3
+- (void)setShowCheckmarksOnLeft:(BOOL)left
 {
-  self->_showCheckmarksOnLeft = a3;
+  self->_showCheckmarksOnLeft = left;
   checkmarkView = self->_checkmarkView;
-  if (a3)
+  if (left)
   {
     if (checkmarkView)
     {
       goto LABEL_7;
     }
 
-    v5 = [(EKCalendarChooserCell *)self traitCollection];
-    v6 = TableViewCheckmarkImage(v5);
+    traitCollection = [(EKCalendarChooserCell *)self traitCollection];
+    v6 = TableViewCheckmarkImage(traitCollection);
 
     v7 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
     v8 = self->_checkmarkView;
     self->_checkmarkView = v7;
 
-    v9 = [(EKCalendarChooserCell *)self contentView];
-    [v9 addSubview:self->_checkmarkView];
+    contentView = [(EKCalendarChooserCell *)self contentView];
+    [contentView addSubview:self->_checkmarkView];
 
     [(UIImageView *)self->_checkmarkView setAlpha:0.0];
   }
@@ -142,9 +142,9 @@ LABEL_7:
     [(NSTextAttachment *)colorDotAttachment setImage:colorDot];
     if (![(UIImage *)self->_colorDot isSymbolImage])
     {
-      v7 = [(EKCalendarChooserCell *)self textLabel];
-      v8 = [v7 font];
-      [v8 capHeight];
+      textLabel = [(EKCalendarChooserCell *)self textLabel];
+      font = [textLabel font];
+      [font capHeight];
       v10 = v9;
 
       [(UIImage *)self->_colorDot size];
@@ -177,22 +177,22 @@ LABEL_7:
   v21 = [v19 initWithString:textLabelText];
   [v23 appendAttributedString:v21];
 
-  v22 = [(EKCalendarChooserCell *)self textLabel];
-  [v22 setAttributedText:v23];
+  textLabel2 = [(EKCalendarChooserCell *)self textLabel];
+  [textLabel2 setAttributedText:v23];
 }
 
-- (void)setTextLabelText:(id)a3
+- (void)setTextLabelText:(id)text
 {
-  v8 = a3;
-  if (self->_textLabelText != v8)
+  textCopy = text;
+  if (self->_textLabelText != textCopy)
   {
-    objc_storeStrong(&self->_textLabelText, a3);
+    objc_storeStrong(&self->_textLabelText, text);
   }
 
   if (self->_colorDot)
   {
-    v5 = [(EKCalendarChooserCell *)self traitCollection];
-    if (EKUIUsesLargeTextLayout(v5))
+    traitCollection = [(EKCalendarChooserCell *)self traitCollection];
+    if (EKUIUsesLargeTextLayout(traitCollection))
     {
 
 LABEL_7:
@@ -200,30 +200,30 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v6 = [(EKCalendarChooserCell *)self multiSelectStyle];
+    multiSelectStyle = [(EKCalendarChooserCell *)self multiSelectStyle];
 
-    if (v6)
+    if (multiSelectStyle)
     {
       goto LABEL_7;
     }
   }
 
-  v7 = [(EKCalendarChooserCell *)self textLabel];
-  [v7 setText:self->_textLabelText];
+  textLabel = [(EKCalendarChooserCell *)self textLabel];
+  [textLabel setText:self->_textLabelText];
 
 LABEL_9:
 }
 
-- (void)setColorDotImage:(id)a3
+- (void)setColorDotImage:(id)image
 {
-  v25 = a3;
-  if (self->_colorDot != v25)
+  imageCopy = image;
+  if (self->_colorDot != imageCopy)
   {
-    objc_storeStrong(&self->_colorDot, a3);
+    objc_storeStrong(&self->_colorDot, image);
   }
 
-  v5 = [(EKCalendarChooserCell *)self traitCollection];
-  if (EKUIUsesLargeTextLayout(v5))
+  traitCollection = [(EKCalendarChooserCell *)self traitCollection];
+  if (EKUIUsesLargeTextLayout(traitCollection))
   {
 
 LABEL_6:
@@ -235,9 +235,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(EKCalendarChooserCell *)self multiSelectStyle];
+  multiSelectStyle = [(EKCalendarChooserCell *)self multiSelectStyle];
 
-  if (v6)
+  if (multiSelectStyle)
   {
     goto LABEL_6;
   }
@@ -255,7 +255,7 @@ LABEL_6:
 
   else
   {
-    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v25];
+    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     v16 = self->_colorDotView;
     self->_colorDotView = v15;
 
@@ -264,36 +264,36 @@ LABEL_6:
     v20 = v19;
     [(UIImage *)self->_colorDot size];
     [(UIImageView *)self->_colorDotView setFrame:v18, v20, v21, v22];
-    v23 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)self->_colorDotView setTintColor:v23];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)self->_colorDotView setTintColor:labelColor];
 
-    v24 = [(EKCalendarChooserCell *)self contentView];
-    [v24 addSubview:self->_colorDotView];
+    contentView = [(EKCalendarChooserCell *)self contentView];
+    [contentView addSubview:self->_colorDotView];
   }
 
 LABEL_7:
   [(EKCalendarChooserCell *)self setNeedsLayout];
 }
 
-- (void)setColorDotHighlightedImage:(id)a3
+- (void)setColorDotHighlightedImage:(id)image
 {
-  v5 = a3;
-  if (self->_colorDotHighlighted != v5)
+  imageCopy = image;
+  if (self->_colorDotHighlighted != imageCopy)
   {
-    objc_storeStrong(&self->_colorDotHighlighted, a3);
+    objc_storeStrong(&self->_colorDotHighlighted, image);
   }
 
   [(EKCalendarChooserCell *)self setNeedsLayout];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
-  self->_checked = a3;
+  checkedCopy = checked;
+  self->_checked = checked;
   if ([(EKCalendarChooserCell *)self showCheckmarksOnLeft])
   {
     v5 = 0.0;
-    if (v3)
+    if (checkedCopy)
     {
       v5 = 1.0;
     }
@@ -305,31 +305,31 @@ LABEL_7:
 
   else
   {
-    if ([(EKCalendarChooserCell *)self accessoryType]!= 3 || v3)
+    if ([(EKCalendarChooserCell *)self accessoryType]!= 3 || checkedCopy)
     {
-      if ([(EKCalendarChooserCell *)self accessoryType]|| !v3)
+      if ([(EKCalendarChooserCell *)self accessoryType]|| !checkedCopy)
       {
         return;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 3;
     }
 
     else
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
     }
 
-    [(EKCalendarChooserCell *)v7 setAccessoryType:v8];
+    [(EKCalendarChooserCell *)selfCopy2 setAccessoryType:v8];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  LODWORD(v5) = a3;
+  animatedCopy = animated;
+  LODWORD(v5) = highlighted;
   if ([(EKCalendarChooserCell *)self selectionStyle])
   {
     v5 = v5;
@@ -342,7 +342,7 @@ LABEL_7:
 
   v8.receiver = self;
   v8.super_class = EKCalendarChooserCell;
-  [(EKCalendarChooserCell *)&v8 setHighlighted:v5 animated:v4];
+  [(EKCalendarChooserCell *)&v8 setHighlighted:v5 animated:animatedCopy];
   if (!v5 || (colorDot = self->_colorDotHighlighted) == 0)
   {
     colorDot = self->_colorDot;
@@ -355,13 +355,13 @@ LABEL_7:
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   if ([(EKCalendarChooserCell *)self selectionStyle])
   {
-    v7 = v5;
+    v7 = selectedCopy;
   }
 
   else
@@ -371,7 +371,7 @@ LABEL_7:
 
   v8.receiver = self;
   v8.super_class = EKCalendarChooserCell;
-  [(EKCalendarChooserCell *)&v8 setSelected:v7 animated:v4];
+  [(EKCalendarChooserCell *)&v8 setSelected:v7 animated:animatedCopy];
   if ([(EKCalendarChooserCell *)self multiSelectStyle])
   {
     [(EKCalendarChooserCell *)self updateSelectionCheckmark];
@@ -380,17 +380,17 @@ LABEL_7:
 
 - (void)updateSelectionCheckmark
 {
-  v3 = [(EKCalendarChooserCell *)self isSelected];
-  v4 = v3 ^ [(EKCalendarChooserCell *)self isHighlighted];
-  v5 = [(EKCalendarChooserCell *)self imageView];
-  v6 = [v5 image];
-  v7 = v6;
-  if (v6 && self->_showingSelectionCheckmark == v4)
+  isSelected = [(EKCalendarChooserCell *)self isSelected];
+  v4 = isSelected ^ [(EKCalendarChooserCell *)self isHighlighted];
+  imageView = [(EKCalendarChooserCell *)self imageView];
+  image = [imageView image];
+  v7 = image;
+  if (image && self->_showingSelectionCheckmark == v4)
   {
     checkMarkColor = self->_checkMarkColor;
-    v9 = [(EKCalendarChooserCell *)self selectionCheckmarkColor];
+    selectionCheckmarkColor = [(EKCalendarChooserCell *)self selectionCheckmarkColor];
 
-    if (checkMarkColor == v9)
+    if (checkMarkColor == selectionCheckmarkColor)
     {
       return;
     }
@@ -400,13 +400,13 @@ LABEL_7:
   {
   }
 
-  v10 = [(EKCalendarChooserCell *)self traitCollection];
-  v11 = [EKUIConstrainedFontUtilities tableViewCellCappedSymbolImageScaleWithScale:0 traitCollection:v10];
+  traitCollection = [(EKCalendarChooserCell *)self traitCollection];
+  v11 = [EKUIConstrainedFontUtilities tableViewCellCappedSymbolImageScaleWithScale:0 traitCollection:traitCollection];
 
   v12 = MEMORY[0x1E69DCAD8];
-  v13 = [(EKCalendarChooserCell *)self textLabel];
-  v14 = [v13 font];
-  v15 = [v12 configurationWithFont:v14 scale:v11];
+  textLabel = [(EKCalendarChooserCell *)self textLabel];
+  font = [textLabel font];
+  v15 = [v12 configurationWithFont:font scale:v11];
 
   if (v4)
   {
@@ -419,27 +419,27 @@ LABEL_7:
   }
   v16 = ;
   v24 = [MEMORY[0x1E69DCAB8] systemImageNamed:v16 withConfiguration:v15];
-  v17 = [(EKCalendarChooserCell *)self imageView];
-  [v17 setImage:v24];
+  imageView2 = [(EKCalendarChooserCell *)self imageView];
+  [imageView2 setImage:v24];
 
-  v18 = [(EKCalendarChooserCell *)self selectionCheckmarkColor];
-  v19 = [(EKCalendarChooserCell *)self traitCollection];
-  [v19 userInterfaceStyle];
+  selectionCheckmarkColor2 = [(EKCalendarChooserCell *)self selectionCheckmarkColor];
+  traitCollection2 = [(EKCalendarChooserCell *)self traitCollection];
+  [traitCollection2 userInterfaceStyle];
   v20 = CUIKAdjustedColorForColor();
-  v21 = [(EKCalendarChooserCell *)self imageView];
-  [v21 setTintColor:v20];
+  imageView3 = [(EKCalendarChooserCell *)self imageView];
+  [imageView3 setTintColor:v20];
 
-  v22 = [(EKCalendarChooserCell *)self selectionCheckmarkColor];
+  selectionCheckmarkColor3 = [(EKCalendarChooserCell *)self selectionCheckmarkColor];
   v23 = self->_checkMarkColor;
-  self->_checkMarkColor = v22;
+  self->_checkMarkColor = selectionCheckmarkColor3;
 
   self->_showingSelectionCheckmark = v4;
 }
 
 - (double)textLeadingIndent
 {
-  v3 = [(EKCalendarChooserCell *)self traitCollection];
-  v4 = EKUIUsesLargeTextLayout(v3);
+  traitCollection = [(EKCalendarChooserCell *)self traitCollection];
+  v4 = EKUIUsesLargeTextLayout(traitCollection);
 
   v5 = 0.0;
   if (![(EKCalendarChooserCell *)self multiSelectStyle])
@@ -481,15 +481,15 @@ LABEL_7:
   }
 
 LABEL_11:
-  v10 = [(EKCalendarChooserCell *)self imageView];
-  v11 = [v10 image];
+  imageView = [(EKCalendarChooserCell *)self imageView];
+  image = [imageView image];
 
-  if (v11)
+  if (image)
   {
     if (CalInterfaceIsLeftToRight())
     {
-      v12 = [(EKCalendarChooserCell *)self imageView];
-      [v12 frame];
+      imageView2 = [(EKCalendarChooserCell *)self imageView];
+      [imageView2 frame];
       v14 = v13;
     }
 
@@ -497,13 +497,13 @@ LABEL_11:
     {
       [(EKCalendarChooserCell *)self bounds];
       v16 = v15;
-      v12 = [(EKCalendarChooserCell *)self imageView];
-      [v12 frame];
+      imageView2 = [(EKCalendarChooserCell *)self imageView];
+      [imageView2 frame];
       v14 = v16 - CGRectGetMaxX(v21);
     }
 
-    v17 = [(EKCalendarChooserCell *)self imageView];
-    [v17 bounds];
+    imageView3 = [(EKCalendarChooserCell *)self imageView];
+    [imageView3 bounds];
     v5 = v14 + CGRectGetWidth(v22) + 10.0;
   }
 

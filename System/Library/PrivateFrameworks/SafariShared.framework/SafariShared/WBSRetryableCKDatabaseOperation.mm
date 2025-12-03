@@ -1,7 +1,7 @@
 @interface WBSRetryableCKDatabaseOperation
 - (CKDatabase)database;
-- (void)_setUpOperation:(id)a3;
-- (void)setDatabase:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setDatabase:(id)database;
 @end
 
 @implementation WBSRetryableCKDatabaseOperation
@@ -15,28 +15,28 @@
   return v3;
 }
 
-- (void)setDatabase:(id)a3
+- (void)setDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   os_unfair_lock_lock(&self->super._internalLock);
   database = self->_database;
-  self->_database = v4;
-  v6 = v4;
+  self->_database = databaseCopy;
+  v6 = databaseCopy;
 
   [(NSMutableSet *)self->super._explicitlySetProperties addObject:@"database"];
 
   os_unfair_lock_unlock(&self->super._internalLock);
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5.receiver = self;
   v5.super_class = WBSRetryableCKDatabaseOperation;
-  [(WBSRetryableCKOperation *)&v5 _setUpOperation:v4];
+  [(WBSRetryableCKOperation *)&v5 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"database"])
   {
-    [v4 setDatabase:self->_database];
+    [operationCopy setDatabase:self->_database];
   }
 }
 

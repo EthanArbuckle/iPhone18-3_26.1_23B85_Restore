@@ -1,94 +1,94 @@
 @interface CBBrightnessProxyCA
-- (BOOL)commitBrightness:(id *)a3;
-- (BOOL)commitBrightness:(id *)a3 withBlock:(id)a4;
-- (BOOL)forceCommitBrightness:(id *)a3 withBlock:(id)a4;
-- (BOOL)setWhitePoint:(id)a3 rampDuration:(double)a4 error:(id *)a5;
-- (CBBrightnessProxyCA)initWithCABrightnessControl:(id)a3;
+- (BOOL)commitBrightness:(id *)brightness;
+- (BOOL)commitBrightness:(id *)brightness withBlock:(id)block;
+- (BOOL)forceCommitBrightness:(id *)brightness withBlock:(id)block;
+- (BOOL)setWhitePoint:(id)point rampDuration:(double)duration error:(id *)error;
+- (CBBrightnessProxyCA)initWithCABrightnessControl:(id)control;
 - (void)dealloc;
-- (void)setAmbient:(float)a3;
-- (void)setBrightnessControlDisabled:(BOOL)a3;
-- (void)setBrightnessLimit:(float)a3;
-- (void)setContrastPreservation:(float)a3;
-- (void)setFilteredAmbient:(float)a3;
-- (void)setHeadroom:(float)a3;
-- (void)setHighAmbientAdaptation:(float)a3;
-- (void)setIndicatorBrightness:(float)a3;
-- (void)setIndicatorBrightnessLimit:(float)a3;
-- (void)setLowAmbientAdaptation:(float)a3;
-- (void)setPotentialHeadroom:(float)a3;
-- (void)setSDRBrightness:(float)a3;
+- (void)setAmbient:(float)ambient;
+- (void)setBrightnessControlDisabled:(BOOL)disabled;
+- (void)setBrightnessLimit:(float)limit;
+- (void)setContrastPreservation:(float)preservation;
+- (void)setFilteredAmbient:(float)ambient;
+- (void)setHeadroom:(float)headroom;
+- (void)setHighAmbientAdaptation:(float)adaptation;
+- (void)setIndicatorBrightness:(float)brightness;
+- (void)setIndicatorBrightnessLimit:(float)limit;
+- (void)setLowAmbientAdaptation:(float)adaptation;
+- (void)setPotentialHeadroom:(float)headroom;
+- (void)setSDRBrightness:(float)brightness;
 @end
 
 @implementation CBBrightnessProxyCA
 
-- (CBBrightnessProxyCA)initWithCABrightnessControl:(id)a3
+- (CBBrightnessProxyCA)initWithCABrightnessControl:(id)control
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  controlCopy = control;
   v6.receiver = self;
   v6.super_class = CBBrightnessProxyCA;
-  v9 = [(CBBrightnessProxyCA *)&v6 init];
-  if (v9)
+  selfCopy = [(CBBrightnessProxyCA *)&v6 init];
+  if (selfCopy)
   {
-    v9->_brightnessNotificationRequestEDR = *MEMORY[0x1E69795F0];
-    v9->_brightnessRequestEDRHeadroom = *MEMORY[0x1E6979618];
-    v9->_brightnessRequestRampDuration = *MEMORY[0x1E6979620];
-    v9->_brightnessSecureIndicatorType = *MEMORY[0x1E6979610];
-    v9->_brightnessSecureIndicatorActiveCount = *MEMORY[0x1E69795F8];
-    v9->_brightnessNotificationSecureIndicatorOn = *MEMORY[0x1E6979608];
-    v9->_brightnessNotificationSecureIndicatorOff = *MEMORY[0x1E6979600];
-    v9->_brightnessNotificationPowerOn = *MEMORY[0x1E69795E8];
-    v9->_brightnessNotificationPowerOff = *MEMORY[0x1E69795E0];
-    v9->_CBDispTypeIntegrated = 0;
-    v9->_CBDispTypeExternal = 1;
-    v9->_CBDispTypeWireless = 2;
-    v9->_CBDispTypeVirtual = 3;
-    v9->_CBDispTypeDFR = 4;
+    selfCopy->_brightnessNotificationRequestEDR = *MEMORY[0x1E69795F0];
+    selfCopy->_brightnessRequestEDRHeadroom = *MEMORY[0x1E6979618];
+    selfCopy->_brightnessRequestRampDuration = *MEMORY[0x1E6979620];
+    selfCopy->_brightnessSecureIndicatorType = *MEMORY[0x1E6979610];
+    selfCopy->_brightnessSecureIndicatorActiveCount = *MEMORY[0x1E69795F8];
+    selfCopy->_brightnessNotificationSecureIndicatorOn = *MEMORY[0x1E6979608];
+    selfCopy->_brightnessNotificationSecureIndicatorOff = *MEMORY[0x1E6979600];
+    selfCopy->_brightnessNotificationPowerOn = *MEMORY[0x1E69795E8];
+    selfCopy->_brightnessNotificationPowerOff = *MEMORY[0x1E69795E0];
+    selfCopy->_CBDispTypeIntegrated = 0;
+    selfCopy->_CBDispTypeExternal = 1;
+    selfCopy->_CBDispTypeWireless = 2;
+    selfCopy->_CBDispTypeVirtual = 3;
+    selfCopy->_CBDispTypeDFR = 4;
     v3 = os_log_create("com.apple.CoreBrightness.CBBrightnessProxyCA", "default");
-    v9->_logHandle = v3;
-    v4 = MEMORY[0x1E69E5928](v7);
-    v9->_brightnessControl = v4;
-    v9->_allowUpdates = 1;
+    selfCopy->_logHandle = v3;
+    v4 = MEMORY[0x1E69E5928](controlCopy);
+    selfCopy->_brightnessControl = v4;
+    selfCopy->_allowUpdates = 1;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_brightnessControl).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_brightnessControl).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBBrightnessProxyCA;
   [(CBBrightnessProxyCA *)&v3 dealloc];
 }
 
-- (BOOL)setWhitePoint:(id)a3 rampDuration:(double)a4 error:(id *)a5
+- (BOOL)setWhitePoint:(id)point rampDuration:(double)duration error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
-  v14 = a5;
+  pointCopy = point;
+  durationCopy = duration;
+  errorCopy = error;
   v13 = 0;
   memset(__b, 0, sizeof(__b));
-  for (i = 0; i < [v16 count]; ++i)
+  for (i = 0; i < [pointCopy count]; ++i)
   {
-    [objc_msgSend(v16 objectAtIndexedSubscript:{i), "floatValue"}];
+    [objc_msgSend(pointCopy objectAtIndexedSubscript:{i), "floatValue"}];
     __b[i] = v5;
   }
 
-  if (v18->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v18->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -112,14 +112,14 @@
     _os_signpost_emit_with_name_impl(&dword_1DE8E5000, logHandle, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "setWhitePoint", "[(%f;%f;%f),(%f;%f;%f),(%f;%f;%f)]", v20, 0x5Cu);
   }
 
-  if ([(CBBrightnessProxyCA *)v18 allowUpdates])
+  if ([(CBBrightnessProxyCA *)selfCopy allowUpdates])
   {
-    v13 = [(CABrightnessControl *)v18->_brightnessControl setWhitePoint:__b rampDuration:v14 error:v15];
+    v13 = [(CABrightnessControl *)selfCopy->_brightnessControl setWhitePoint:__b rampDuration:errorCopy error:durationCopy];
   }
 
-  if (v18->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v8 = v18->_logHandle;
+    v8 = selfCopy->_logHandle;
   }
 
   else
@@ -147,68 +147,68 @@
   return v13 & 1;
 }
 
-- (void)setSDRBrightness:(float)a3
+- (void)setSDRBrightness:(float)brightness
 {
   if ([(CBBrightnessProxyCA *)self allowUpdates])
   {
-    *&v3 = a3;
+    *&v3 = brightness;
     [(CABrightnessControl *)self->_brightnessControl setSDRBrightness:v3];
   }
 }
 
-- (void)setHeadroom:(float)a3
+- (void)setHeadroom:(float)headroom
 {
   if ([(CBBrightnessProxyCA *)self allowUpdates])
   {
-    *&v3 = a3;
+    *&v3 = headroom;
     [(CABrightnessControl *)self->_brightnessControl setHeadroom:v3];
   }
 }
 
-- (void)setPotentialHeadroom:(float)a3
+- (void)setPotentialHeadroom:(float)headroom
 {
   if ([(CBBrightnessProxyCA *)self allowUpdates])
   {
-    *&v3 = a3;
+    *&v3 = headroom;
     [(CABrightnessControl *)self->_brightnessControl setPotentialHeadroom:v3];
   }
 }
 
-- (void)setAmbient:(float)a3
+- (void)setAmbient:(float)ambient
 {
   if ([(CBBrightnessProxyCA *)self allowUpdates])
   {
-    *&v3 = a3;
+    *&v3 = ambient;
     [(CABrightnessControl *)self->_brightnessControl setAmbient:v3];
   }
 }
 
-- (void)setFilteredAmbient:(float)a3
+- (void)setFilteredAmbient:(float)ambient
 {
   if ([(CBBrightnessProxyCA *)self allowUpdates])
   {
-    *&v3 = a3;
+    *&v3 = ambient;
     [(CABrightnessControl *)self->_brightnessControl setFilteredAmbient:v3];
   }
 }
 
-- (void)setBrightnessLimit:(float)a3
+- (void)setBrightnessLimit:(float)limit
 {
   if ([(CBBrightnessProxyCA *)self allowUpdates])
   {
-    *&v3 = a3;
+    *&v3 = limit;
     [(CABrightnessControl *)self->_brightnessControl setBrightnessLimit:v3];
   }
 }
 
-- (BOOL)commitBrightness:(id *)a3
+- (BOOL)commitBrightness:(id *)brightness
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
+  brightnessCopy = brightness;
   if (self->_logHandle)
   {
-    logHandle = v25->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -239,14 +239,14 @@
   }
 
   v18 = 0;
-  if ([(CBBrightnessProxyCA *)v25 allowUpdates])
+  if ([(CBBrightnessProxyCA *)selfCopy allowUpdates])
   {
-    v18 = [(CABrightnessControl *)v25->_brightnessControl commitBrightness:v23];
+    v18 = [(CABrightnessControl *)selfCopy->_brightnessControl commitBrightness:brightnessCopy];
   }
 
-  if (v25->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v8 = v25->_logHandle;
+    v8 = selfCopy->_logHandle;
   }
 
   else
@@ -279,15 +279,15 @@
   return v18 & 1;
 }
 
-- (BOOL)commitBrightness:(id *)a3 withBlock:(id)a4
+- (BOOL)commitBrightness:(id *)brightness withBlock:(id)block
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
+  brightnessCopy = brightness;
+  blockCopy = block;
   if (self->_logHandle)
   {
-    logHandle = v27->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -318,14 +318,14 @@
   }
 
   v19 = 0;
-  if ([(CBBrightnessProxyCA *)v27 allowUpdates])
+  if ([(CBBrightnessProxyCA *)selfCopy allowUpdates])
   {
-    v19 = [(CABrightnessControl *)v27->_brightnessControl commitBrightness:v25 withBlock:v24];
+    v19 = [(CABrightnessControl *)selfCopy->_brightnessControl commitBrightness:brightnessCopy withBlock:blockCopy];
   }
 
-  if (v27->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v9 = v27->_logHandle;
+    v9 = selfCopy->_logHandle;
   }
 
   else
@@ -358,15 +358,15 @@
   return v19 & 1;
 }
 
-- (BOOL)forceCommitBrightness:(id *)a3 withBlock:(id)a4
+- (BOOL)forceCommitBrightness:(id *)brightness withBlock:(id)block
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
-  v33 = a3;
-  v32 = a4;
+  brightnessCopy = brightness;
+  blockCopy = block;
   if (self->_logHandle)
   {
-    logHandle = v35->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -397,19 +397,19 @@
   }
 
   v27 = 0;
-  if ([(CBBrightnessProxyCA *)v35 allowUpdates])
+  if ([(CBBrightnessProxyCA *)selfCopy allowUpdates])
   {
-    brightnessControl = v35->_brightnessControl;
+    brightnessControl = selfCopy->_brightnessControl;
     if (objc_opt_respondsToSelector())
     {
-      v27 = [(CABrightnessControl *)v35->_brightnessControl forceCommitBrightness:v33 withBlock:v32];
+      v27 = [(CABrightnessControl *)selfCopy->_brightnessControl forceCommitBrightness:brightnessCopy withBlock:blockCopy];
     }
 
     else
     {
-      if (v35->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v14 = v35->_logHandle;
+        v14 = selfCopy->_logHandle;
       }
 
       else
@@ -437,13 +437,13 @@
         _os_log_error_impl(&dword_1DE8E5000, v11, v12, "CABrightnessControl forceCommitBrightness SPI does not exist -> use normal commitBrightness.", v24, 2u);
       }
 
-      v27 = [(CABrightnessControl *)v35->_brightnessControl commitBrightness:v33 withBlock:v32];
+      v27 = [(CABrightnessControl *)selfCopy->_brightnessControl commitBrightness:brightnessCopy withBlock:blockCopy];
     }
   }
 
-  if (v35->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v10 = v35->_logHandle;
+    v10 = selfCopy->_logHandle;
   }
 
   else
@@ -476,10 +476,10 @@
   return v27 & 1;
 }
 
-- (void)setBrightnessControlDisabled:(BOOL)a3
+- (void)setBrightnessControlDisabled:(BOOL)disabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  [(CABrightnessControl *)self->_brightnessControl setBrightnessControlDisabled:a3];
+  [(CABrightnessControl *)self->_brightnessControl setBrightnessControlDisabled:disabled];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -502,7 +502,7 @@
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3)
+    if (disabled)
     {
       v3 = "Disabled";
     }
@@ -519,53 +519,53 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setLowAmbientAdaptation:(float)a3
+- (void)setLowAmbientAdaptation:(float)adaptation
 {
   brightnessControl = self->_brightnessControl;
   if (objc_opt_respondsToSelector())
   {
-    *&v4 = a3;
+    *&v4 = adaptation;
     [(CABrightnessControl *)self->_brightnessControl setLowAmbientAdaptation:v4];
   }
 }
 
-- (void)setHighAmbientAdaptation:(float)a3
+- (void)setHighAmbientAdaptation:(float)adaptation
 {
   brightnessControl = self->_brightnessControl;
   if (objc_opt_respondsToSelector())
   {
-    *&v4 = a3;
+    *&v4 = adaptation;
     [(CABrightnessControl *)self->_brightnessControl setHighAmbientAdaptation:v4];
   }
 }
 
-- (void)setContrastPreservation:(float)a3
+- (void)setContrastPreservation:(float)preservation
 {
   v4 = MEMORY[0x1E69E5918];
   v5 = NSSelectorFromString(&cfstr_Setcontrastpre.isa);
   brightnessControl = self->_brightnessControl;
   if (objc_opt_respondsToSelector())
   {
-    v4(self->_brightnessControl, v5, a3);
+    v4(self->_brightnessControl, v5, preservation);
   }
 }
 
-- (void)setIndicatorBrightness:(float)a3
+- (void)setIndicatorBrightness:(float)brightness
 {
   brightnessControl = self->_brightnessControl;
   if (objc_opt_respondsToSelector())
   {
-    *&v4 = a3;
+    *&v4 = brightness;
     [(CABrightnessControl *)self->_brightnessControl setIndicatorBrightness:v4];
   }
 }
 
-- (void)setIndicatorBrightnessLimit:(float)a3
+- (void)setIndicatorBrightnessLimit:(float)limit
 {
   brightnessControl = self->_brightnessControl;
   if (objc_opt_respondsToSelector())
   {
-    *&v4 = a3;
+    *&v4 = limit;
     [(CABrightnessControl *)self->_brightnessControl setIndicatorBrightnessLimit:v4];
   }
 }

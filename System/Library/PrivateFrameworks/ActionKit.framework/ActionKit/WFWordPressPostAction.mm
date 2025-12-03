@@ -1,54 +1,54 @@
 @interface WFWordPressPostAction
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)possibleStatesForEnumeration:(id)a3;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (id)suggestedTagsForTagField:(id)a3;
-- (void)generateHTMLFromInput:(id)a3 completionHandler:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)possibleStatesForEnumeration:(id)enumeration;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (id)suggestedTagsForTagField:(id)field;
+- (void)generateHTMLFromInput:(id)input completionHandler:(id)handler;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)updateAccountMetadata;
 - (void)updateHiddenStates;
 - (void)updatePossibleStates;
-- (void)wasAddedToWorkflow:(id)a3;
-- (void)wasRemovedFromWorkflow:(id)a3;
+- (void)wasAddedToWorkflow:(id)workflow;
+- (void)wasRemovedFromWorkflow:(id)workflow;
 @end
 
 @implementation WFWordPressPostAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to post %2$@ on WordPress?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to post on WordPress?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
-  v4 = a3;
+  enumerationCopy = enumeration;
   v5 = +[WFDiskCache workflowCache];
   v6 = [(WFWordPressPostAction *)self parameterForKey:@"WFAccount"];
   v7 = [(WFWordPressPostAction *)self parameterStateForKey:@"WFAccount"];
-  v8 = [v7 value];
+  value = [v7 value];
   v93 = v6;
-  if (v8)
+  if (value)
   {
-    v9 = [v7 value];
-    v10 = [v6 accountWithName:v9];
+    value2 = [v7 value];
+    v10 = [v6 accountWithName:value2];
   }
 
   else
@@ -56,36 +56,36 @@
     v10 = 0;
   }
 
-  v11 = [v10 username];
-  v12 = [v10 endpointURL];
-  v13 = [v12 absoluteString];
-  v21 = WFDiskCacheKey(v11, v14, v15, v16, v17, v18, v19, v20, v13);
+  username = [v10 username];
+  endpointURL = [v10 endpointURL];
+  absoluteString = [endpointURL absoluteString];
+  v21 = WFDiskCacheKey(username, v14, v15, v16, v17, v18, v19, v20, absoluteString);
 
   v22 = MEMORY[0x277CBEB98];
   v23 = objc_opt_class();
   v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
   v25 = [v5 objectOfClasses:v24 forKeyComponents:{v21, @"WFWordPressBlogs", 0}];
 
-  v26 = [v4 key];
-  LODWORD(v13) = [v26 isEqualToString:@"Blog"];
+  v26 = [enumerationCopy key];
+  LODWORD(absoluteString) = [v26 isEqualToString:@"Blog"];
 
-  if (v13)
+  if (absoluteString)
   {
-    [v4 setHidden:{objc_msgSend(v25, "count") < 2}];
+    [enumerationCopy setHidden:{objc_msgSend(v25, "count") < 2}];
     v27 = [v25 if_compactMap:&__block_literal_global_319];
   }
 
   else
   {
     v28 = [(WFWordPressPostAction *)self parameterStateForKey:@"Blog"];
-    v29 = [v28 value];
+    value3 = [v28 value];
     v91 = v7;
     v92 = v5;
     v90 = v28;
-    if (v29)
+    if (value3)
     {
-      v30 = [v28 value];
-      v31 = [v25 objectMatchingKey:@"blogName" value:v30];
+      value4 = [v28 value];
+      v31 = [v25 objectMatchingKey:@"blogName" value:value4];
     }
 
     else
@@ -94,11 +94,11 @@
     }
 
     v89 = v31;
-    v32 = [v31 blogId];
-    v33 = [v32 description];
+    blogId = [v31 blogId];
+    v33 = [blogId description];
     v41 = WFDiskCacheKey(v21, v34, v35, v36, v37, v38, v39, v40, v33);
 
-    v42 = [v4 key];
+    v42 = [enumerationCopy key];
     v43 = [v42 isEqualToString:@"Type"];
 
     v44 = MEMORY[0x277CBEB98];
@@ -111,14 +111,14 @@
     if (v43)
     {
 
-      [v4 setHidden:{objc_msgSend(v49, "count") < 2}];
-      v50 = [v49 allKeys];
+      [enumerationCopy setHidden:{objc_msgSend(v49, "count") < 2}];
+      allKeys = [v49 allKeys];
       v104[0] = MEMORY[0x277D85DD0];
       v104[1] = 3221225472;
       v104[2] = __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke_2;
       v104[3] = &unk_278C1DDA8;
       v105 = &unk_28509CD28;
-      v51 = [v50 sortedArrayUsingComparator:v104];
+      v51 = [allKeys sortedArrayUsingComparator:v104];
 
       v102[0] = MEMORY[0x277D85DD0];
       v102[1] = 3221225472;
@@ -140,13 +140,13 @@
       v52 = [v48 objectForKey:@"attachment"];
 
       v56 = [(WFWordPressPostAction *)self parameterStateForKey:@"Type"];
-      v57 = [v52 labels];
-      v58 = [v57 objectForKeyedSubscript:@"singular_name"];
+      labels = [v52 labels];
+      v58 = [labels objectForKeyedSubscript:@"singular_name"];
       v87 = v56;
-      v59 = [v56 value];
-      v60 = [v58 isEqual:v59];
+      value5 = [v56 value];
+      v60 = [v58 isEqual:value5];
 
-      v61 = [v4 key];
+      v61 = [enumerationCopy key];
       LODWORD(v58) = [v61 isEqualToString:@"Format"];
 
       if (v58)
@@ -157,14 +157,14 @@
         v55 = v88;
         v65 = [v92 objectOfClasses:v64 forKeyComponents:{v88, @"WFWordPressPostFormats", 0}];
 
-        [v4 setHidden:{(objc_msgSend(v65, "count") < 2) | (v60 & 1)}];
-        v66 = [v65 allKeys];
+        [enumerationCopy setHidden:{(objc_msgSend(v65, "count") < 2) | (v60 & 1)}];
+        allKeys2 = [v65 allKeys];
         v100[0] = MEMORY[0x277D85DD0];
         v100[1] = 3221225472;
         v100[2] = __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke_4;
         v100[3] = &unk_278C1DDA8;
         v101 = &unk_28509CD40;
-        v67 = [v66 sortedArrayUsingComparator:v100];
+        v67 = [allKeys2 sortedArrayUsingComparator:v100];
 
         v98[0] = MEMORY[0x277D85DD0];
         v98[1] = 3221225472;
@@ -182,7 +182,7 @@
       else
       {
         v86 = v60;
-        v69 = [v4 key];
+        v69 = [enumerationCopy key];
         v70 = [v69 isEqualToString:@"Status"];
 
         v54 = v90;
@@ -194,14 +194,14 @@
           v73 = [v71 setWithObjects:{v72, objc_opt_class(), 0}];
           v74 = [v92 objectOfClasses:v73 forKeyComponents:{v88, @"WFWordPressPostStatuses", 0}];
 
-          [v4 setHidden:{(objc_msgSend(v74, "count") < 2) | (v86 & 1)}];
-          v75 = [v74 allKeys];
+          [enumerationCopy setHidden:{(objc_msgSend(v74, "count") < 2) | (v86 & 1)}];
+          allKeys3 = [v74 allKeys];
           v96[0] = MEMORY[0x277D85DD0];
           v96[1] = 3221225472;
           v96[2] = __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke_6;
           v96[3] = &unk_278C1DDA8;
           v97 = &unk_28509CD58;
-          v76 = [v75 sortedArrayUsingComparator:v96];
+          v76 = [allKeys3 sortedArrayUsingComparator:v96];
 
           v94[0] = MEMORY[0x277D85DD0];
           v94[1] = 3221225472;
@@ -216,7 +216,7 @@
 
         else
         {
-          v78 = [v4 key];
+          v78 = [enumerationCopy key];
           v79 = [v78 isEqualToString:@"Template"];
 
           if (v79)
@@ -226,9 +226,9 @@
             v82 = [v80 setWithObjects:{v81, objc_opt_class(), 0}];
             v83 = [v92 objectOfClasses:v82 forKeyComponents:{v88, @"WFWordPressPageTemplates", 0}];
 
-            [v4 setHidden:{(objc_msgSend(v83, "count") < 2) | (v86 & 1)}];
-            v84 = [v83 allKeys];
-            v27 = [v84 if_compactMap:&__block_literal_global_379];
+            [enumerationCopy setHidden:{(objc_msgSend(v83, "count") < 2) | (v86 & 1)}];
+            allKeys4 = [v83 allKeys];
+            v27 = [allKeys4 if_compactMap:&__block_literal_global_379];
 
             v5 = v92;
           }
@@ -354,29 +354,29 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
   return v6;
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v3 = [(WFWordPressPostAction *)self possibleStatesForEnumeration:a3];
-  v4 = [v3 firstObject];
-  v5 = [v4 serializedRepresentation];
+  v3 = [(WFWordPressPostAction *)self possibleStatesForEnumeration:enumeration];
+  firstObject = [v3 firstObject];
+  serializedRepresentation = [firstObject serializedRepresentation];
 
-  return v5;
+  return serializedRepresentation;
 }
 
-- (id)suggestedTagsForTagField:(id)a3
+- (id)suggestedTagsForTagField:(id)field
 {
   v57[2] = *MEMORY[0x277D85DE8];
-  v52 = a3;
+  fieldCopy = field;
   v4 = +[WFDiskCache workflowCache];
   v5 = [(WFWordPressPostAction *)self parameterForKey:@"WFAccount"];
   v6 = [(WFWordPressPostAction *)self parameterStateForKey:@"WFAccount"];
-  v7 = [v6 value];
+  value = [v6 value];
   v54 = v6;
   v55 = v5;
-  if (v7)
+  if (value)
   {
-    v8 = [v6 value];
-    v9 = [v5 accountWithName:v8];
+    value2 = [v6 value];
+    v9 = [v5 accountWithName:value2];
   }
 
   else
@@ -384,11 +384,11 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
     v9 = 0;
   }
 
-  v10 = [v9 username];
+  username = [v9 username];
   v53 = v9;
-  v11 = [v9 endpointURL];
-  v12 = [v11 absoluteString];
-  v20 = WFDiskCacheKey(v10, v13, v14, v15, v16, v17, v18, v19, v12);
+  endpointURL = [v9 endpointURL];
+  absoluteString = [endpointURL absoluteString];
+  v20 = WFDiskCacheKey(username, v13, v14, v15, v16, v17, v18, v19, absoluteString);
 
   v21 = [(WFWordPressPostAction *)self parameterStateForKey:@"Blog"];
   v22 = MEMORY[0x277CBEB98];
@@ -396,14 +396,14 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
   v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
   v25 = [v4 objectOfClasses:v24 forKeyComponents:{v20, @"WFWordPressBlogs", 0}];
 
-  v26 = [v21 value];
+  value3 = [v21 value];
   v50 = v25;
   v51 = v21;
   v27 = v4;
-  if (v26)
+  if (value3)
   {
-    v28 = [v21 value];
-    v29 = [v25 objectMatchingKey:@"blogName" value:v28];
+    value4 = [v21 value];
+    v29 = [v25 objectMatchingKey:@"blogName" value:value4];
   }
 
   else
@@ -411,8 +411,8 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
     v29 = 0;
   }
 
-  v30 = [v29 blogId];
-  v31 = [v30 description];
+  blogId = [v29 blogId];
+  v31 = [blogId description];
   v39 = WFDiskCacheKey(v20, v32, v33, v34, v35, v36, v37, v38, v31);
 
   v56[0] = @"Tags";
@@ -423,7 +423,7 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
   v41 = MEMORY[0x277CBEB98];
   v42 = objc_opt_class();
   v43 = [v41 setWithObjects:{v42, objc_opt_class(), 0}];
-  v44 = [v52 key];
+  v44 = [fieldCopy key];
 
   v45 = [v40 objectForKeyedSubscript:v44];
   v46 = [v27 objectOfClasses:v43 forKeyComponents:{v39, v45, 0}];
@@ -439,13 +439,13 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
   v3 = +[WFDiskCache workflowCache];
   v4 = [(WFWordPressPostAction *)self parameterForKey:@"WFAccount"];
   v5 = [(WFWordPressPostAction *)self parameterStateForKey:@"WFAccount"];
-  v6 = [v5 value];
+  value = [v5 value];
   v54 = v5;
   v55 = v4;
-  if (v6)
+  if (value)
   {
-    v7 = [v5 value];
-    v8 = [v4 accountWithName:v7];
+    value2 = [v5 value];
+    v8 = [v4 accountWithName:value2];
   }
 
   else
@@ -453,11 +453,11 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
     v8 = 0;
   }
 
-  v9 = [v8 username];
+  username = [v8 username];
   v53 = v8;
-  v10 = [v8 endpointURL];
-  v11 = [v10 absoluteString];
-  v19 = WFDiskCacheKey(v9, v12, v13, v14, v15, v16, v17, v18, v11);
+  endpointURL = [v8 endpointURL];
+  absoluteString = [endpointURL absoluteString];
+  v19 = WFDiskCacheKey(username, v12, v13, v14, v15, v16, v17, v18, absoluteString);
 
   v20 = [(WFWordPressPostAction *)self parameterStateForKey:@"Blog"];
   v21 = MEMORY[0x277CBEB98];
@@ -465,13 +465,13 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
   v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
   v24 = [v3 objectOfClasses:v23 forKeyComponents:{v19, @"WFWordPressBlogs", 0}];
 
-  v25 = [v20 value];
+  value3 = [v20 value];
   v51 = v24;
   v52 = v20;
-  if (v25)
+  if (value3)
   {
-    v26 = [v20 value];
-    v27 = [v24 objectMatchingKey:@"blogName" value:v26];
+    value4 = [v20 value];
+    v27 = [v24 objectMatchingKey:@"blogName" value:value4];
   }
 
   else
@@ -479,8 +479,8 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
     v27 = 0;
   }
 
-  v28 = [v27 blogId];
-  v29 = [v28 description];
+  blogId = [v27 blogId];
+  v29 = [blogId description];
   v37 = WFDiskCacheKey(v19, v30, v31, v32, v33, v34, v35, v36, v29);
 
   v38 = MEMORY[0x277CBEB98];
@@ -491,19 +491,19 @@ id __54__WFWordPressPostAction_possibleStatesForEnumeration___block_invoke(uint6
   v43 = [v42 objectForKey:@"attachment"];
 
   v44 = [(WFWordPressPostAction *)self parameterStateForKey:@"Type"];
-  v45 = [v43 labels];
-  v46 = [v45 objectForKeyedSubscript:@"singular_name"];
+  labels = [v43 labels];
+  v46 = [labels objectForKeyedSubscript:@"singular_name"];
   [v44 value];
   v47 = v50 = v3;
   v48 = [v46 isEqual:v47];
 
-  v49 = [(WFWordPressPostAction *)self parameters];
+  parameters = [(WFWordPressPostAction *)self parameters];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __43__WFWordPressPostAction_updateHiddenStates__block_invoke;
   v56[3] = &__block_descriptor_33_e28_v32__0__WFParameter_8Q16_B24l;
   v57 = v48;
-  [v49 enumerateObjectsUsingBlock:v56];
+  [parameters enumerateObjectsUsingBlock:v56];
 }
 
 void __43__WFWordPressPostAction_updateHiddenStates__block_invoke(uint64_t a1, void *a2)
@@ -536,8 +536,8 @@ LABEL_5:
 
 - (void)updatePossibleStates
 {
-  v2 = [(WFWordPressPostAction *)self parameters];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_312];
+  parameters = [(WFWordPressPostAction *)self parameters];
+  [parameters enumerateObjectsUsingBlock:&__block_literal_global_312];
 }
 
 void __45__WFWordPressPostAction_updatePossibleStates__block_invoke(uint64_t a1, void *a2)
@@ -550,20 +550,20 @@ void __45__WFWordPressPostAction_updatePossibleStates__block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = WFWordPressPostAction;
-  v7 = [(WFWordPressPostAction *)&v9 setParameterState:a3 forKey:v6];
+  v7 = [(WFWordPressPostAction *)&v9 setParameterState:state forKey:keyCopy];
   if (v7)
   {
-    if ([v6 isEqualToString:@"Type"])
+    if ([keyCopy isEqualToString:@"Type"])
     {
       [(WFWordPressPostAction *)self updateHiddenStates];
     }
 
-    if (([v6 isEqualToString:@"WFAccount"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Blog"))
+    if (([keyCopy isEqualToString:@"WFAccount"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"Blog"))
     {
       [(WFWordPressPostAction *)self updatePossibleStates];
     }
@@ -576,18 +576,18 @@ void __45__WFWordPressPostAction_updatePossibleStates__block_invoke(uint64_t a1,
 {
   v44 = *MEMORY[0x277D85DE8];
   v32 = +[WFDiskCache workflowCache];
-  v29 = self;
-  v3 = [(WFWordPressPostAction *)self resourceManager];
-  v4 = [v3 resourceObjectsOfClass:objc_opt_class()];
-  v5 = [v4 anyObject];
+  selfCopy = self;
+  resourceManager = [(WFWordPressPostAction *)self resourceManager];
+  v4 = [resourceManager resourceObjectsOfClass:objc_opt_class()];
+  anyObject = [v4 anyObject];
 
   v6 = dispatch_group_create();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v28 = v5;
-  obj = [v5 accounts];
+  v28 = anyObject;
+  obj = [anyObject accounts];
   v7 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v7)
   {
@@ -604,19 +604,19 @@ void __45__WFWordPressPostAction_updatePossibleStates__block_invoke(uint64_t a1,
 
         v10 = *(*(&v39 + 1) + 8 * i);
         v11 = objc_alloc_init(WFWordPressSessionManager);
-        v12 = [v10 username];
-        [(WFWordPressSessionManager *)v11 setUsername:v12];
+        username = [v10 username];
+        [(WFWordPressSessionManager *)v11 setUsername:username];
 
-        v13 = [v10 password];
-        [(WFWordPressSessionManager *)v11 setPassword:v13];
+        password = [v10 password];
+        [(WFWordPressSessionManager *)v11 setPassword:password];
 
-        v14 = [v10 endpointURL];
-        [(WFWordPressSessionManager *)v11 setEndpointURL:v14];
+        endpointURL = [v10 endpointURL];
+        [(WFWordPressSessionManager *)v11 setEndpointURL:endpointURL];
 
-        v15 = [v10 username];
-        v16 = [v10 endpointURL];
-        v17 = [v16 absoluteString];
-        v25 = WFDiskCacheKey(v15, v18, v19, v20, v21, v22, v23, v24, v17);
+        username2 = [v10 username];
+        endpointURL2 = [v10 endpointURL];
+        absoluteString = [endpointURL2 absoluteString];
+        v25 = WFDiskCacheKey(username2, v18, v19, v20, v21, v22, v23, v24, absoluteString);
 
         dispatch_group_enter(v6);
         v34[0] = MEMORY[0x277D85DD0];
@@ -641,7 +641,7 @@ void __45__WFWordPressPostAction_updatePossibleStates__block_invoke(uint64_t a1,
   block[1] = 3221225472;
   block[2] = __46__WFWordPressPostAction_updateAccountMetadata__block_invoke_8;
   block[3] = &unk_278C224A0;
-  block[4] = v29;
+  block[4] = selfCopy;
   dispatch_group_notify(v6, MEMORY[0x277D85CD0], block);
 
   v27 = *MEMORY[0x277D85DE8];
@@ -847,21 +847,21 @@ void __46__WFWordPressPostAction_updateAccountMetadata__block_invoke_7(uint64_t 
   dispatch_group_leave(v3);
 }
 
-- (void)wasRemovedFromWorkflow:(id)a3
+- (void)wasRemovedFromWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFWordPressPostAction;
-  [(WFWordPressPostAction *)&v5 wasRemovedFromWorkflow:a3];
-  v4 = [(WFWordPressPostAction *)self observer];
-  [(WFAccount *)WFWordPressAccount removeAccountObserver:v4];
+  [(WFWordPressPostAction *)&v5 wasRemovedFromWorkflow:workflow];
+  observer = [(WFWordPressPostAction *)self observer];
+  [(WFAccount *)WFWordPressAccount removeAccountObserver:observer];
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
-  v4 = a3;
+  workflowCopy = workflow;
   v12.receiver = self;
   v12.super_class = WFWordPressPostAction;
-  [(WFWordPressPostAction *)&v12 wasAddedToWorkflow:v4];
+  [(WFWordPressPostAction *)&v12 wasAddedToWorkflow:workflowCopy];
   [(WFWordPressPostAction *)self updateAccountMetadata];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D85DD0];
@@ -937,19 +937,19 @@ void __44__WFWordPressPostAction_wasAddedToWorkflow___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v109 = a3;
+  inputCopy = input;
   v4 = +[WFDiskCache workflowCache];
   v5 = [(WFWordPressPostAction *)self parameterForKey:@"WFAccount"];
   v6 = [(WFWordPressPostAction *)self parameterValueForKey:@"WFAccount" ofClass:objc_opt_class()];
   v96 = v5;
   v107 = [v5 accountWithName:v6];
 
-  v7 = [v107 username];
-  v8 = [v107 endpointURL];
-  v9 = [v8 absoluteString];
-  v17 = WFDiskCacheKey(v7, v10, v11, v12, v13, v14, v15, v16, v9);
+  username = [v107 username];
+  endpointURL = [v107 endpointURL];
+  absoluteString = [endpointURL absoluteString];
+  v17 = WFDiskCacheKey(username, v10, v11, v12, v13, v14, v15, v16, absoluteString);
 
   v18 = MEMORY[0x277CBEB98];
   v19 = objc_opt_class();
@@ -961,8 +961,8 @@ void __44__WFWordPressPostAction_wasAddedToWorkflow___block_invoke(uint64_t a1)
   v94 = v21;
   v105 = [v21 objectMatchingKey:@"blogName" value:v22];
 
-  v23 = [v105 blogId];
-  v24 = [v23 description];
+  blogId = [v105 blogId];
+  v24 = [blogId description];
   v95 = v17;
   v32 = WFDiskCacheKey(v17, v25, v26, v27, v28, v29, v30, v31, v24);
 
@@ -975,15 +975,15 @@ void __44__WFWordPressPostAction_wasAddedToWorkflow___block_invoke(uint64_t a1)
   v39 = [v34 objectOfClasses:v38 forKeyComponents:{v32, @"WFWordPressPostTypes", 0}];
 
   v92 = v39;
-  v40 = [v39 allValues];
+  allValues = [v39 allValues];
   v137[0] = MEMORY[0x277D85DD0];
   v137[1] = 3221225472;
   v137[2] = __52__WFWordPressPostAction_runAsynchronouslyWithInput___block_invoke;
   v137[3] = &unk_278C1BFE0;
   v91 = v33;
   v138 = v91;
-  v41 = [v40 if_compactMap:v137];
-  v103 = [v41 firstObject];
+  v41 = [allValues if_compactMap:v137];
+  firstObject = [v41 firstObject];
 
   v42 = [(WFWordPressPostAction *)self parameterValueForKey:@"Format" ofClass:objc_opt_class()];
   v43 = +[WFDiskCache workflowCache];
@@ -1000,7 +1000,7 @@ void __44__WFWordPressPostAction_wasAddedToWorkflow___block_invoke(uint64_t a1)
   v90 = v47;
   v136 = v89;
   v48 = [v47 keysOfEntriesPassingTest:v135];
-  v101 = [v48 anyObject];
+  anyObject = [v48 anyObject];
 
   v49 = [(WFWordPressPostAction *)self parameterValueForKey:@"Status" ofClass:objc_opt_class()];
   v50 = +[WFDiskCache workflowCache];
@@ -1017,7 +1017,7 @@ void __44__WFWordPressPostAction_wasAddedToWorkflow___block_invoke(uint64_t a1)
   v88 = v54;
   v134 = v87;
   v55 = [v54 keysOfEntriesPassingTest:v133];
-  v99 = [v55 anyObject];
+  anyObject2 = [v55 anyObject];
 
   v56 = [(WFWordPressPostAction *)self parameterValueForKey:@"Template" ofClass:objc_opt_class()];
   v57 = +[WFDiskCache workflowCache];
@@ -1063,17 +1063,17 @@ void __44__WFWordPressPostAction_wasAddedToWorkflow___block_invoke(uint64_t a1)
   v115 = v108;
   v106 = v105;
   v116 = v106;
-  v104 = v103;
+  v104 = firstObject;
   v117 = v104;
-  v110 = v109;
+  v110 = inputCopy;
   v118 = v110;
-  v119 = self;
+  selfCopy = self;
   v83 = v62;
   v120 = v83;
   v129 = v131;
-  v102 = v101;
+  v102 = anyObject;
   v121 = v102;
-  v100 = v99;
+  v100 = anyObject2;
   v122 = v100;
   v130 = v56;
   v74 = v64;
@@ -1487,11 +1487,11 @@ id __52__WFWordPressPostAction_runAsynchronouslyWithInput___block_invoke_4(uint6
   return v5;
 }
 
-- (void)generateHTMLFromInput:(id)a3 completionHandler:(id)a4
+- (void)generateHTMLFromInput:(id)input completionHandler:(id)handler
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  inputCopy = input;
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v13[2] = objc_opt_class();
@@ -1501,9 +1501,9 @@ id __52__WFWordPressPostAction_runAsynchronouslyWithInput___block_invoke_4(uint6
   v11[2] = __65__WFWordPressPostAction_generateHTMLFromInput_completionHandler___block_invoke;
   v11[3] = &unk_278C20848;
   v11[4] = self;
-  v12 = v6;
-  v9 = v6;
-  [v7 generateCollectionByCoercingToItemClasses:v8 completionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  [inputCopy generateCollectionByCoercingToItemClasses:v8 completionHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }

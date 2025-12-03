@@ -1,34 +1,34 @@
 @interface TSCHChartAxisLabelsLayoutItem
-- (BOOL)p_circularStridingLabelAtIndex:(unint64_t)a3 inLayoutSize:(CGSize)a4 intersectsLabelAtIndex:(unint64_t)a5 extraTransform:(CGAffineTransform *)a6;
-- (CGAffineTransform)i_localTransformForLabel:(SEL)a3 range:(unint64_t)a4 inLayoutSize:(_NSRange *)a5 outElementSize:(CGSize)a6 outClipRect:(CGSize *)a7 usingString:(CGRect *)a8 stride:(id)a9 useAngle:(unint64_t *)a10;
-- (CGAffineTransform)p_localTransformForAxisLabelWithInfo:(SEL)a3;
-- (CGAffineTransform)p_localTransformForCartesianAxisLabelWithInfo:(SEL)a3;
-- (CGAffineTransform)p_localTransformForLabel:(SEL)a3 range:(unint64_t)a4 inLayoutSize:(_NSRange *)a5 outElementSize:(CGSize)a6 outClipRect:(CGSize *)a7 usingString:(CGRect *)a8 useAngle:(id)a9;
-- (CGAffineTransform)p_localTransformForPolarAngleAxisLabelWithInfo:(SEL)a3;
-- (CGAffineTransform)p_localTransformForPolarAxisLabelWithInfo:(SEL)a3;
-- (CGAffineTransform)p_localTransformForPolarRadiusAxisLabelWithInfo:(SEL)a3;
-- (CGAffineTransform)p_rootedTransformFromLocalTransform:(SEL)a3;
-- (CGAffineTransform)p_transformForLabelWithPaddingPerSide:(SEL)a3 outwardOrigin:(double)a4 outwardDirection:(CGPoint)a5 boundaryPosition:(CGPoint)a6 boundaryNormal:(CGPoint)a7 alignWithMaxSizeAtClosestMidpoint:(CGPoint)a8 anchorMaxSizeAtClosestMidpoint:(BOOL)a9 info:(BOOL)a10;
-- (CGAffineTransform)p_transformWithOrigin:(SEL)a3 verticalDirection:(CGPoint)a4;
-- (CGAffineTransform)transformForRenderingLabel:(SEL)a3 outElementSize:(unint64_t)a4 outClipRect:(CGSize *)a5;
-- (CGAffineTransform)transformForRenderingLabel:(SEL)a3 range:(unint64_t)a4 outElementSize:(_NSRange)a5 outClipRect:(CGSize *)a6;
-- (CGAffineTransform)transformForRenderingLabel:(SEL)a3 usingString:(unint64_t)a4 outElementSize:(id)a5 outClipRect:(CGSize *)a6 useAngle:(CGRect *)a7;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
-- (CGPoint)axisAnchorForPosition:(int)a3 degrees:(float)a4 inLayoutSize:(CGSize)a5 unrotatedSize:(CGSize)a6 unitSpaceValue:(double)a7;
-- (CGPoint)labelAnchorForPosition:(int)a3 degrees:(float)a4;
-- (CGPoint)p_pointWithLowerYOfPoint:(CGPoint)result andPoint:(CGPoint)a4 whenTransformedBy:(CGAffineTransform *)a5;
-- (CGPoint)p_relativeAnchorMidpointForLabelGeometry:(id)a3;
-- (CGPoint)p_relativeAnchorPointForLabelGeometry:(id)a3 useMidpoints:(BOOL)a4;
+- (BOOL)p_circularStridingLabelAtIndex:(unint64_t)index inLayoutSize:(CGSize)size intersectsLabelAtIndex:(unint64_t)atIndex extraTransform:(CGAffineTransform *)transform;
+- (CGAffineTransform)i_localTransformForLabel:(SEL)label range:(unint64_t)range inLayoutSize:(_NSRange *)size outElementSize:(CGSize)elementSize outClipRect:(CGSize *)rect usingString:(CGRect *)string stride:(id)stride useAngle:(unint64_t *)self0;
+- (CGAffineTransform)p_localTransformForAxisLabelWithInfo:(SEL)info;
+- (CGAffineTransform)p_localTransformForCartesianAxisLabelWithInfo:(SEL)info;
+- (CGAffineTransform)p_localTransformForLabel:(SEL)label range:(unint64_t)range inLayoutSize:(_NSRange *)size outElementSize:(CGSize)elementSize outClipRect:(CGSize *)rect usingString:(CGRect *)string useAngle:(id)angle;
+- (CGAffineTransform)p_localTransformForPolarAngleAxisLabelWithInfo:(SEL)info;
+- (CGAffineTransform)p_localTransformForPolarAxisLabelWithInfo:(SEL)info;
+- (CGAffineTransform)p_localTransformForPolarRadiusAxisLabelWithInfo:(SEL)info;
+- (CGAffineTransform)p_rootedTransformFromLocalTransform:(SEL)transform;
+- (CGAffineTransform)p_transformForLabelWithPaddingPerSide:(SEL)side outwardOrigin:(double)origin outwardDirection:(CGPoint)direction boundaryPosition:(CGPoint)position boundaryNormal:(CGPoint)normal alignWithMaxSizeAtClosestMidpoint:(CGPoint)midpoint anchorMaxSizeAtClosestMidpoint:(BOOL)closestMidpoint info:(BOOL)self0;
+- (CGAffineTransform)p_transformWithOrigin:(SEL)origin verticalDirection:(CGPoint)direction;
+- (CGAffineTransform)transformForRenderingLabel:(SEL)label outElementSize:(unint64_t)size outClipRect:(CGSize *)rect;
+- (CGAffineTransform)transformForRenderingLabel:(SEL)label range:(unint64_t)range outElementSize:(_NSRange)size outClipRect:(CGSize *)rect;
+- (CGAffineTransform)transformForRenderingLabel:(SEL)label usingString:(unint64_t)string outElementSize:(id)size outClipRect:(CGSize *)rect useAngle:(CGRect *)angle;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
+- (CGPoint)axisAnchorForPosition:(int)position degrees:(float)degrees inLayoutSize:(CGSize)size unrotatedSize:(CGSize)unrotatedSize unitSpaceValue:(double)value;
+- (CGPoint)labelAnchorForPosition:(int)position degrees:(float)degrees;
+- (CGPoint)p_pointWithLowerYOfPoint:(CGPoint)result andPoint:(CGPoint)point whenTransformedBy:(CGAffineTransform *)by;
+- (CGPoint)p_relativeAnchorMidpointForLabelGeometry:(id)geometry;
+- (CGPoint)p_relativeAnchorPointForLabelGeometry:(id)geometry useMidpoints:(BOOL)midpoints;
 - (CGRect)calcDrawingRect;
 - (CGRect)calcOverhangRect;
 - (CGRect)layoutSpaceRectForAllLabels;
-- (CGRect)p_rectOfCircularStridingLabelAtIndex:(unint64_t)a3 inLayoutSize:(CGSize)a4 extraTransform:(CGAffineTransform *)a5;
+- (CGRect)p_rectOfCircularStridingLabelAtIndex:(unint64_t)index inLayoutSize:(CGSize)size extraTransform:(CGAffineTransform *)transform;
 - (CGSize)calcMinSize;
 - (CGSize)maxLabelSizeInPoints;
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4;
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index;
 - (id)axisLayoutItem;
 - (id)i_axisFromLayoutItem;
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4;
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index;
 - (id)layoutSpaceHalosForAllLabels;
 - (id)layoutSpaceKnobsForAllLabels;
 - (id)p_axis;
@@ -37,24 +37,24 @@
 - (id)p_overrideLabelStringForHitTestingEmptyLabel;
 - (id)selectionPathLabelType;
 - (int64_t)p_labelBaselineDirectionRelativeToSpoke;
-- (int64_t)p_smallestSecondValueLabelIndex:(int64_t)a3 start:(int64_t)a4 end:(int64_t)a5 inLayoutSize:(CGSize)a6 paragraphStyle:(id)a7 isTop:(BOOL)a8;
-- (unint64_t)numberOfLabelsForAxis:(id)a3;
-- (unint64_t)p_computeAutoStrideInLayoutSize:(CGSize)a3;
-- (unint64_t)p_computeCircularAutoStrideForInvariantAngleLabelsInLayoutSize:(CGSize)a3;
-- (unint64_t)p_computeCircularAutoStrideForLabelDimensionPerpendicularOnSpoke:(double)a3 inLayoutSize:(CGSize)a4;
-- (unint64_t)p_computeCircularAutoStrideInLayoutSize:(CGSize)a3;
-- (unint64_t)p_computeLinearAutoStrideInLayoutSize:(CGSize)a3;
+- (int64_t)p_smallestSecondValueLabelIndex:(int64_t)index start:(int64_t)start end:(int64_t)end inLayoutSize:(CGSize)size paragraphStyle:(id)style isTop:(BOOL)top;
+- (unint64_t)numberOfLabelsForAxis:(id)axis;
+- (unint64_t)p_computeAutoStrideInLayoutSize:(CGSize)size;
+- (unint64_t)p_computeCircularAutoStrideForInvariantAngleLabelsInLayoutSize:(CGSize)size;
+- (unint64_t)p_computeCircularAutoStrideForLabelDimensionPerpendicularOnSpoke:(double)spoke inLayoutSize:(CGSize)size;
+- (unint64_t)p_computeCircularAutoStrideInLayoutSize:(CGSize)size;
+- (unint64_t)p_computeLinearAutoStrideInLayoutSize:(CGSize)size;
 - (unint64_t)p_numberOfAxisLabels;
-- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)a3 axis:(id)a4;
-- (unint64_t)snappedLabelAngleInDegree:(float)a3;
+- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)index axis:(id)axis;
+- (unint64_t)snappedLabelAngleInDegree:(float)degree;
 - (unint64_t)stride;
-- (unint64_t)strideInLayoutSize:(CGSize)a3;
+- (unint64_t)strideInLayoutSize:(CGSize)size;
 - (void)clearAll;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 - (void)p_calcMaxLabelSize;
-- (void)p_enumerateAxisLabelRectsWithBlock:(id)a3;
-- (void)p_rect:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 inLayoutSize:(CGSize)a5 forIndex:(unint64_t)a6 paragraphStyle:(id)a7;
-- (void)setLayoutSize:(CGSize)a3;
+- (void)p_enumerateAxisLabelRectsWithBlock:(id)block;
+- (void)p_rect:(CGRect *)p_rect andTransform:(CGAffineTransform *)transform inLayoutSize:(CGSize)size forIndex:(unint64_t)index paragraphStyle:(id)style;
+- (void)setLayoutSize:(CGSize)size;
 @end
 
 @implementation TSCHChartAxisLabelsLayoutItem
@@ -105,12 +105,12 @@
   return result;
 }
 
-- (void)setLayoutSize:(CGSize)a3
+- (void)setLayoutSize:(CGSize)size
 {
   self->_stride = 0;
   v3.receiver = self;
   v3.super_class = TSCHChartAxisLabelsLayoutItem;
-  [(TSCHChartLayoutItem *)&v3 setLayoutSize:a3.width, a3.height];
+  [(TSCHChartLayoutItem *)&v3 setLayoutSize:size.width, size.height];
 }
 
 - (void)clearAll
@@ -721,7 +721,7 @@ LABEL_25:
   return v20;
 }
 
-- (unint64_t)numberOfLabelsForAxis:(id)a3
+- (unint64_t)numberOfLabelsForAxis:(id)axis
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHChartAxisLabelsLayoutItem numberOfLabelsForAxis:]");
@@ -733,10 +733,10 @@ LABEL_25:
   return 0;
 }
 
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartAxisLabelsLayoutItem unitSpaceValueForAxis:index:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartAxisLabelsLayoutItem unitSpaceValueForAxis:index:]", index);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxisLabelsLayoutItem.m");
   v15 = NSStringFromSelector(a2);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v9, v14, 416, 0, "%@ must be implemented by the superclass", v15);
@@ -745,10 +745,10 @@ LABEL_25:
   return NAN;
 }
 
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartAxisLabelsLayoutItem labelStringForAxis:index:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartAxisLabelsLayoutItem labelStringForAxis:index:]", index);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxisLabelsLayoutItem.m");
   v15 = NSStringFromSelector(a2);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v9, v14, 421, 0, "%@ must be implemented by the superclass", v15);
@@ -757,10 +757,10 @@ LABEL_25:
   return 0;
 }
 
-- (CGPoint)axisAnchorForPosition:(int)a3 degrees:(float)a4 inLayoutSize:(CGSize)a5 unrotatedSize:(CGSize)a6 unitSpaceValue:(double)a7
+- (CGPoint)axisAnchorForPosition:(int)position degrees:(float)degrees inLayoutSize:(CGSize)size unrotatedSize:(CGSize)unrotatedSize unitSpaceValue:(double)value
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&a4, a5.width, a5.height, "[TSCHChartAxisLabelsLayoutItem axisAnchorForPosition:degrees:inLayoutSize:unrotatedSize:unitSpaceValue:]", a6.width, a6.height, a7);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&degrees, size.width, size.height, "[TSCHChartAxisLabelsLayoutItem axisAnchorForPosition:degrees:inLayoutSize:unrotatedSize:unitSpaceValue:]", unrotatedSize.width, unrotatedSize.height, value);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxisLabelsLayoutItem.m");
   v15 = NSStringFromSelector(a2);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v9, v14, 426, 0, "%@ must be implemented by the superclass", v15);
@@ -773,10 +773,10 @@ LABEL_25:
   return result;
 }
 
-- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)a3 axis:(id)a4
+- (unint64_t)selectionPathLabelIndexForIndex:(unint64_t)index axis:(id)axis
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartAxisLabelsLayoutItem selectionPathLabelIndexForIndex:axis:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartAxisLabelsLayoutItem selectionPathLabelIndexForIndex:axis:]", axis);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxisLabelsLayoutItem.m");
   v15 = NSStringFromSelector(a2);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v9, v14, 431, 0, "%@ must be implemented by the superclass", v15);
@@ -785,10 +785,10 @@ LABEL_25:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (CGPoint)labelAnchorForPosition:(int)a3 degrees:(float)a4
+- (CGPoint)labelAnchorForPosition:(int)position degrees:(float)degrees
 {
   v7 = MEMORY[0x277D81150];
-  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&a4, v4, v5, "[TSCHChartAxisLabelsLayoutItem labelAnchorForPosition:degrees:]");
+  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&degrees, v4, v5, "[TSCHChartAxisLabelsLayoutItem labelAnchorForPosition:degrees:]");
   v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxisLabelsLayoutItem.m");
   v14 = NSStringFromSelector(a2);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v15, v16, v17, v18, v8, v13, 436, 0, "%@ must be implemented by the superclass", v14);
@@ -813,12 +813,12 @@ LABEL_25:
   return 0;
 }
 
-- (unint64_t)strideInLayoutSize:(CGSize)a3
+- (unint64_t)strideInLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   stride = self->_stride;
-  objc_msgSend_layoutSize(self, a2, a3.width, a3.height, v3);
+  objc_msgSend_layoutSize(self, a2, size.width, size.height, v3);
   v8 = TSUNearlyEqualSizes();
   v13 = v8;
   if (!v8 || !self->_stride)
@@ -858,9 +858,9 @@ LABEL_25:
   return objc_msgSend_strideInLayoutSize_(self, v6, v7, v8, v7);
 }
 
-- (unint64_t)snappedLabelAngleInDegree:(float)a3
+- (unint64_t)snappedLabelAngleInDegree:(float)degree
 {
-  v7 = objc_msgSend_axisLayoutItem(self, a2, *&a3, v3, v4);
+  v7 = objc_msgSend_axisLayoutItem(self, a2, *&degree, v3, v4);
   v12 = objc_msgSend_axisPosition(v7, v8, v9, v10, v11);
 
   if (v12 > 5 || ((1 << v12) & 0x2A) == 0)
@@ -869,7 +869,7 @@ LABEL_25:
     objc_msgSend_intValueForProperty_defaultValue_(v18, v19, v20, v21, v22, 1075, 0);
   }
 
-  *&v14 = a3;
+  *&v14 = degree;
 
   return MEMORY[0x2821F9670](TSCHChartAxisLayoutUtilities, sel_snappedLabelAngleInDegrees_prefersVerticalAngles_, v14, v15, v16);
 }
@@ -890,11 +890,11 @@ LABEL_25:
   return v11;
 }
 
-- (unint64_t)p_computeAutoStrideInLayoutSize:(CGSize)a3
+- (unint64_t)p_computeAutoStrideInLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_msgSend_axisLayoutItem(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  v7 = objc_msgSend_axisLayoutItem(self, a2, size.width, size.height, v3);
   v12 = objc_msgSend_axisID(v7, v8, v9, v10, v11);
   v17 = objc_msgSend_type(v12, v13, v14, v15, v16);
 
@@ -911,34 +911,34 @@ LABEL_25:
   }
 }
 
-- (void)p_rect:(CGRect *)a3 andTransform:(CGAffineTransform *)a4 inLayoutSize:(CGSize)a5 forIndex:(unint64_t)a6 paragraphStyle:(id)a7
+- (void)p_rect:(CGRect *)p_rect andTransform:(CGAffineTransform *)transform inLayoutSize:(CGSize)size forIndex:(unint64_t)index paragraphStyle:(id)style
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v78 = *MEMORY[0x277D85DE8];
-  v13 = a7;
+  styleCopy = style;
   v14 = *(MEMORY[0x277CBF3A0] + 16);
-  a3->origin = *MEMORY[0x277CBF3A0];
-  a3->size = v14;
+  p_rect->origin = *MEMORY[0x277CBF3A0];
+  p_rect->size = v14;
   v15 = MEMORY[0x277CBF2C0];
   v16 = *(MEMORY[0x277CBF2C0] + 16);
-  *&a4->a = *MEMORY[0x277CBF2C0];
-  *&a4->c = v16;
+  *&transform->a = *MEMORY[0x277CBF2C0];
+  *&transform->c = v16;
   v17 = *(v15 + 32);
-  *&a4->tx = v17;
+  *&transform->tx = v17;
   v20 = objc_msgSend_axisLayoutItem(self, v18, *&v17, *&v16, v19);
   v25 = objc_msgSend_model(self, v21, v22, v23, v24);
   v30 = objc_msgSend_axisID(v20, v26, v27, v28, v29);
   v35 = objc_msgSend_axisForID_(v25, v31, v32, v33, v34, v30);
 
   v40 = objc_msgSend_axisPosition(v20, v36, v37, v38, v39);
-  objc_msgSend_unitSpaceValueForAxis_index_(self, v41, v42, v43, v44, v35, a6);
+  objc_msgSend_unitSpaceValueForAxis_index_(self, v41, v42, v43, v44, v35, index);
   v46 = v45;
-  v51 = objc_msgSend_labelStringForAxis_index_(self, v47, v45, v48, v49, v35, a6);
+  v51 = objc_msgSend_labelStringForAxis_index_(self, v47, v45, v48, v49, v35, index);
   if (v51)
   {
     v55 = objc_msgSend_sharedText(TSCHText, v50, v52, v53, v54);
-    objc_msgSend_measureText_paragraphStyle_(v55, v56, v57, v58, v59, v51, v13);
+    objc_msgSend_measureText_paragraphStyle_(v55, v56, v57, v58, v59, v51, styleCopy);
     v61 = v60;
     v63 = v62;
 
@@ -948,39 +948,39 @@ LABEL_25:
     v69 = v68;
     *&v66 = self->_angleInDegrees;
     objc_msgSend_labelAnchorForPosition_degrees_(self, v70, v66, v68, v71, v40);
-    a3->origin.x = -(v61 * v72);
-    a3->origin.y = -(v63 * v73);
-    a3->size.width = v61;
-    a3->size.height = v63;
+    p_rect->origin.x = -(v61 * v72);
+    p_rect->origin.y = -(v63 * v73);
+    p_rect->size.width = v61;
+    p_rect->size.height = v63;
     CGAffineTransformMakeRotation(&v76, self->_angleInRadians);
     CGAffineTransformMakeTranslation(&v77, v67, v69);
     sub_27628CF0C(&v76, 2, v75);
     v74 = v75[1];
-    *&a4->a = v75[0];
-    *&a4->c = v74;
-    *&a4->tx = v75[2];
+    *&transform->a = v75[0];
+    *&transform->c = v74;
+    *&transform->tx = v75[2];
   }
 }
 
-- (int64_t)p_smallestSecondValueLabelIndex:(int64_t)a3 start:(int64_t)a4 end:(int64_t)a5 inLayoutSize:(CGSize)a6 paragraphStyle:(id)a7 isTop:(BOOL)a8
+- (int64_t)p_smallestSecondValueLabelIndex:(int64_t)index start:(int64_t)start end:(int64_t)end inLayoutSize:(CGSize)size paragraphStyle:(id)style isTop:(BOOL)top
 {
-  height = a6.height;
-  width = a6.width;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  styleCopy = style;
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
   v42 = 0u;
-  objc_msgSend_p_rect_andTransform_inLayoutSize_forIndex_paragraphStyle_(self, v16, width, height, v17, &v45, &v42, a3, v15);
-  if (a8)
+  objc_msgSend_p_rect_andTransform_inLayoutSize_forIndex_paragraphStyle_(self, v16, width, height, v17, &v45, &v42, index, styleCopy);
+  if (top)
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
     v37 = 0u;
-    objc_msgSend_p_rect_andTransform_inLayoutSize_forIndex_paragraphStyle_(self, v18, width, height, v19, &v40, &v37, a5, v15);
+    objc_msgSend_p_rect_andTransform_inLayoutSize_forIndex_paragraphStyle_(self, v18, width, height, v19, &v40, &v37, end, styleCopy);
     v20 = *MEMORY[0x277CBF3A8];
     v21 = *(MEMORY[0x277CBF3A8] + 8);
     if (*MEMORY[0x277CBF3A8] != *&v41 || v21 != *(&v41 + 1))
@@ -1005,16 +1005,16 @@ LABEL_25:
     v21 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v23 = (a4 + (a5 - a4) * 0.5);
+  v23 = (start + (end - start) * 0.5);
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
-  objc_msgSend_p_rect_andTransform_inLayoutSize_forIndex_paragraphStyle_(self, v18, width, height, 0.5, &v40, &v37, v23, v15);
+  objc_msgSend_p_rect_andTransform_inLayoutSize_forIndex_paragraphStyle_(self, v18, width, height, 0.5, &v40, &v37, v23, styleCopy);
   if (v20 == *&v41 && v21 == *(&v41 + 1))
   {
-    if (a5 == a4)
+    if (end == start)
     {
       goto LABEL_28;
     }
@@ -1029,27 +1029,27 @@ LABEL_25:
   v32 = v38;
   v33 = v39;
   v27 = sub_2762A1784(&v34, &v31, *&v45, *(&v45 + 1), *&v46, *(&v46 + 1), *&v40, *(&v40 + 1), *&v41, *(&v41 + 1));
-  if (a5 != a4)
+  if (end != start)
   {
     if (v27)
     {
-      if (v23 == a4)
+      if (v23 == start)
       {
         v28 = v23 + 1;
-        isTop = objc_msgSend_p_smallestSecondValueLabelIndex_start_end_inLayoutSize_paragraphStyle_isTop_(self, v24, width, height, v25, a3, v23 + 1, a5, v15, 0);
+        isTop = objc_msgSend_p_smallestSecondValueLabelIndex_start_end_inLayoutSize_paragraphStyle_isTop_(self, v24, width, height, v25, index, v23 + 1, end, styleCopy, 0);
       }
 
       else
       {
-        v28 = (a4 + (a5 - a4) * 0.5);
-        isTop = objc_msgSend_p_smallestSecondValueLabelIndex_start_end_inLayoutSize_paragraphStyle_isTop_(self, v24, width, height, v25, a3, v28, a5, v15, 0);
+        v28 = (start + (end - start) * 0.5);
+        isTop = objc_msgSend_p_smallestSecondValueLabelIndex_start_end_inLayoutSize_paragraphStyle_isTop_(self, v24, width, height, v25, index, v28, end, styleCopy, 0);
       }
 
       goto LABEL_25;
     }
 
 LABEL_24:
-    isTop = objc_msgSend_p_smallestSecondValueLabelIndex_start_end_inLayoutSize_paragraphStyle_isTop_(self, v24, width, height, v25, a3, a4, v23 - (v23 == a5), v15, 0);
+    isTop = objc_msgSend_p_smallestSecondValueLabelIndex_start_end_inLayoutSize_paragraphStyle_isTop_(self, v24, width, height, v25, index, start, v23 - (v23 == end), styleCopy, 0);
     v28 = -1;
 LABEL_25:
     if (isTop >= 0)
@@ -1075,11 +1075,11 @@ LABEL_28:
   return v23;
 }
 
-- (unint64_t)p_computeLinearAutoStrideInLayoutSize:(CGSize)a3
+- (unint64_t)p_computeLinearAutoStrideInLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_msgSend_p_numberOfAxisLabels(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  v7 = objc_msgSend_p_numberOfAxisLabels(self, a2, size.width, size.height, v3);
   if (v7 < 2)
   {
     return 1;
@@ -1172,12 +1172,12 @@ LABEL_17:
   return v12;
 }
 
-- (CGRect)p_rectOfCircularStridingLabelAtIndex:(unint64_t)a3 inLayoutSize:(CGSize)a4 extraTransform:(CGAffineTransform *)a5
+- (CGRect)p_rectOfCircularStridingLabelAtIndex:(unint64_t)index inLayoutSize:(CGSize)size extraTransform:(CGAffineTransform *)transform
 {
   v6 = MEMORY[0x277CBF3A8];
   v65 = *MEMORY[0x277CBF3A8];
   memset(&v64, 0, sizeof(v64));
-  objc_msgSend_p_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_useAngle_(self, a2, a4.width, a4.height, *&v65, a3, 0, &v65, 0, 0, 1);
+  objc_msgSend_p_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_useAngle_(self, a2, size.width, size.height, *&v65, index, 0, &v65, 0, 0, 1);
   v8 = *v6;
   if (*&v65 == *v6 && *(&v65 + 1) == v6[1])
   {
@@ -1196,10 +1196,10 @@ LABEL_17:
   v32 = v31;
   t1 = v64;
   memset(&v63, 0, sizeof(v63));
-  v33 = *&a5->c;
-  *&v61.a = *&a5->a;
+  v33 = *&transform->c;
+  *&v61.a = *&transform->a;
   *&v61.c = v33;
-  *&v61.tx = *&a5->tx;
+  *&v61.tx = *&transform->tx;
   CGAffineTransformConcat(&v63, &t1, &v61);
   t1 = v63;
   v66.origin.x = v26;
@@ -1232,24 +1232,24 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)p_circularStridingLabelAtIndex:(unint64_t)a3 inLayoutSize:(CGSize)a4 intersectsLabelAtIndex:(unint64_t)a5 extraTransform:(CGAffineTransform *)a6
+- (BOOL)p_circularStridingLabelAtIndex:(unint64_t)index inLayoutSize:(CGSize)size intersectsLabelAtIndex:(unint64_t)atIndex extraTransform:(CGAffineTransform *)transform
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = *&a6->c;
-  v28 = *&a6->a;
+  height = size.height;
+  width = size.width;
+  v12 = *&transform->c;
+  v28 = *&transform->a;
   v29 = v12;
-  v30 = *&a6->tx;
-  objc_msgSend_p_rectOfCircularStridingLabelAtIndex_inLayoutSize_extraTransform_(self, a2, a4.width, height, v6, a3, &v28);
+  v30 = *&transform->tx;
+  objc_msgSend_p_rectOfCircularStridingLabelAtIndex_inLayoutSize_extraTransform_(self, a2, size.width, height, v6, index, &v28);
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = *&a6->c;
-  v28 = *&a6->a;
+  v21 = *&transform->c;
+  v28 = *&transform->a;
   v29 = v21;
-  v30 = *&a6->tx;
-  objc_msgSend_p_rectOfCircularStridingLabelAtIndex_inLayoutSize_extraTransform_(self, v22, width, height, v17, a5, &v28);
+  v30 = *&transform->tx;
+  objc_msgSend_p_rectOfCircularStridingLabelAtIndex_inLayoutSize_extraTransform_(self, v22, width, height, v17, atIndex, &v28);
   v33.origin.x = v23;
   v33.origin.y = v24;
   v33.size.width = v25;
@@ -1262,11 +1262,11 @@ LABEL_17:
   return !CGRectIsNull(v32);
 }
 
-- (unint64_t)p_computeCircularAutoStrideInLayoutSize:(CGSize)a3
+- (unint64_t)p_computeCircularAutoStrideInLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (objc_msgSend_p_numberOfAxisLabels(self, a2, a3.width, a3.height, v3) < 2)
+  height = size.height;
+  width = size.width;
+  if (objc_msgSend_p_numberOfAxisLabels(self, a2, size.width, size.height, v3) < 2)
   {
     return 1;
   }
@@ -1290,11 +1290,11 @@ LABEL_7:
   return MEMORY[0x2821F9670](self, sel_p_computeCircularAutoStrideForInvariantAngleLabelsInLayoutSize_, width, height, v16);
 }
 
-- (unint64_t)p_computeCircularAutoStrideForLabelDimensionPerpendicularOnSpoke:(double)a3 inLayoutSize:(CGSize)a4
+- (unint64_t)p_computeCircularAutoStrideForLabelDimensionPerpendicularOnSpoke:(double)spoke inLayoutSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = objc_msgSend_p_numberOfAxisLabels(self, a2, a3, a4.width, a4.height);
+  height = size.height;
+  width = size.width;
+  v9 = objc_msgSend_p_numberOfAxisLabels(self, a2, spoke, size.width, size.height);
   if (width >= height)
   {
     v11 = height;
@@ -1312,7 +1312,7 @@ LABEL_7:
   v28 = objc_msgSend_axisForID_(v18, v24, v25, v26, v27, v23);
 
   objc_msgSend_floatValueForProperty_defaultValue_(v28, v29, 0.0, v30, v31, 1033);
-  v33 = atan(a3 / (v12 * (v32 + 1.0) + v12 * (v32 + 1.0)));
+  v33 = atan(spoke / (v12 * (v32 + 1.0) + v12 * (v32 + 1.0)));
   v34 = v33 * 57.2957795 + v33 * 57.2957795;
   v35 = (360.0 / v34);
   if (v35)
@@ -1354,11 +1354,11 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)p_computeCircularAutoStrideForInvariantAngleLabelsInLayoutSize:(CGSize)a3
+- (unint64_t)p_computeCircularAutoStrideForInvariantAngleLabelsInLayoutSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = objc_msgSend_p_numberOfAxisLabels(self, a2, a3.width, a3.height, v3);
+  height = size.height;
+  width = size.width;
+  v7 = objc_msgSend_p_numberOfAxisLabels(self, a2, size.width, size.height, v3);
   memset(&v47, 0, sizeof(v47));
   objc_msgSend_p_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_useAngle_(self, v8, width, height, v9, 0, 0, 0, 0, 0, 1);
   v45 = v47;
@@ -1463,10 +1463,10 @@ LABEL_18:
   return v7;
 }
 
-- (CGAffineTransform)p_transformWithOrigin:(SEL)a3 verticalDirection:(CGPoint)a4
+- (CGAffineTransform)p_transformWithOrigin:(SEL)origin verticalDirection:(CGPoint)direction
 {
-  x = a4.x;
-  y = a4.y;
+  x = direction.x;
+  y = direction.y;
   if ((TSUPointIsFinite() & 1) == 0)
   {
     v10 = MEMORY[0x277D81150];
@@ -1556,27 +1556,27 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)p_pointWithLowerYOfPoint:(CGPoint)result andPoint:(CGPoint)a4 whenTransformedBy:(CGAffineTransform *)a5
+- (CGPoint)p_pointWithLowerYOfPoint:(CGPoint)result andPoint:(CGPoint)point whenTransformedBy:(CGAffineTransform *)by
 {
-  if (a5->ty + a4.y * a5->d + a5->b * a4.x < a5->ty + result.y * a5->d + a5->b * result.x)
+  if (by->ty + point.y * by->d + by->b * point.x < by->ty + result.y * by->d + by->b * result.x)
   {
-    return a4;
+    return point;
   }
 
   return result;
 }
 
-- (CGPoint)p_relativeAnchorMidpointForLabelGeometry:(id)a3
+- (CGPoint)p_relativeAnchorMidpointForLabelGeometry:(id)geometry
 {
-  v4 = a3;
-  v8 = v4;
+  geometryCopy = geometry;
+  v8 = geometryCopy;
   v9 = 0.0;
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
-  if (v4)
+  if (geometryCopy)
   {
-    objc_msgSend_transform(v4, v5, 0.0, v6, v7);
+    objc_msgSend_transform(geometryCopy, v5, 0.0, v6, v7);
   }
 
   objc_msgSend_angle(v8, v5, v9, v6, v7);
@@ -1610,9 +1610,9 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)p_relativeAnchorPointForLabelGeometry:(id)a3 useMidpoints:(BOOL)a4
+- (CGPoint)p_relativeAnchorPointForLabelGeometry:(id)geometry useMidpoints:(BOOL)midpoints
 {
-  if (a4)
+  if (midpoints)
   {
     (MEMORY[0x2821F9670])(self, sel_p_relativeAnchorMidpointForLabelGeometry_);
   }
@@ -1628,10 +1628,10 @@ LABEL_18:
   return result;
 }
 
-- (CGAffineTransform)p_transformForLabelWithPaddingPerSide:(SEL)a3 outwardOrigin:(double)a4 outwardDirection:(CGPoint)a5 boundaryPosition:(CGPoint)a6 boundaryNormal:(CGPoint)a7 alignWithMaxSizeAtClosestMidpoint:(CGPoint)a8 anchorMaxSizeAtClosestMidpoint:(BOOL)a9 info:(BOOL)a10
+- (CGAffineTransform)p_transformForLabelWithPaddingPerSide:(SEL)side outwardOrigin:(double)origin outwardDirection:(CGPoint)direction boundaryPosition:(CGPoint)position boundaryNormal:(CGPoint)normal alignWithMaxSizeAtClosestMidpoint:(CGPoint)midpoint anchorMaxSizeAtClosestMidpoint:(BOOL)closestMidpoint info:(BOOL)self0
 {
-  v11 = a10;
-  v12 = a9;
+  infoCopy = info;
+  closestMidpointCopy = closestMidpoint;
   v15 = a11;
   objc_msgSend_maxLabelSizeInPoints(v15, v16, v17, v18, v19);
   TSUAddSizes();
@@ -1647,7 +1647,7 @@ LABEL_18:
   TSUMultiplyPointScalar();
   TSUAddPoints();
   memset(&v129, 0, sizeof(v129));
-  objc_msgSend_p_transformWithOrigin_verticalDirection_(self, v36, v37, v38, a8.x, a8.y);
+  objc_msgSend_p_transformWithOrigin_verticalDirection_(self, v36, v37, v38, midpoint.x, midpoint.y);
   TSUAddPoints();
   v40 = v39;
   v42 = v41;
@@ -1662,7 +1662,7 @@ LABEL_18:
   MinY = CGRectGetMinY(v130);
   CGAffineTransformMakeTranslation(&v128, 0.0, -MinY);
   v59 = objc_msgSend_geometryByAppendingTransform_(v49, v55, v56, v57, v58, &v128);
-  objc_msgSend_p_relativeAnchorPointForLabelGeometry_useMidpoints_(self, v60, v61, v62, v63, v49, v11);
+  objc_msgSend_p_relativeAnchorPointForLabelGeometry_useMidpoints_(self, v60, v61, v62, v63, v49, infoCopy);
   TSUMultiplyPointBySize();
   v67 = 0uLL;
   v68 = 0uLL;
@@ -1684,9 +1684,9 @@ LABEL_18:
   v75 = objc_msgSend_geometryByAppendingTransform_(v59, v71, v72, v73, v74, &v128);
   v128 = v129;
   v79 = objc_msgSend_geometryByAppendingTransform_(v75, v76, v129.tx, v129.c, v77, &v128);
-  if (v12 != v11)
+  if (closestMidpointCopy != infoCopy)
   {
-    objc_msgSend_p_relativeAnchorPointForLabelGeometry_useMidpoints_(self, v78, v80, v81, v82, v49, v12);
+    objc_msgSend_p_relativeAnchorPointForLabelGeometry_useMidpoints_(self, v78, v80, v81, v82, v49, closestMidpointCopy);
   }
 
   TSUMultiplyPointBySize();
@@ -1717,7 +1717,7 @@ LABEL_18:
   return result;
 }
 
-- (CGAffineTransform)p_localTransformForCartesianAxisLabelWithInfo:(SEL)a3
+- (CGAffineTransform)p_localTransformForCartesianAxisLabelWithInfo:(SEL)info
 {
   v6 = MEMORY[0x277CBF2C0];
   v97 = *(MEMORY[0x277CBF2C0] + 16);
@@ -1809,7 +1809,7 @@ LABEL_18:
   return result;
 }
 
-- (CGAffineTransform)p_localTransformForPolarAxisLabelWithInfo:(SEL)a3
+- (CGAffineTransform)p_localTransformForPolarAxisLabelWithInfo:(SEL)info
 {
   v6 = a4;
   v11 = objc_msgSend_axis(v6, v7, v8, v9, v10);
@@ -1884,7 +1884,7 @@ LABEL_18:
   return result;
 }
 
-- (CGAffineTransform)p_localTransformForPolarRadiusAxisLabelWithInfo:(SEL)a3
+- (CGAffineTransform)p_localTransformForPolarRadiusAxisLabelWithInfo:(SEL)info
 {
   v6 = a4;
   objc_msgSend_distanceFromAxis(self, v7, v8, v9, v10);
@@ -1953,7 +1953,7 @@ LABEL_18:
   return v25;
 }
 
-- (CGAffineTransform)p_localTransformForPolarAngleAxisLabelWithInfo:(SEL)a3
+- (CGAffineTransform)p_localTransformForPolarAngleAxisLabelWithInfo:(SEL)info
 {
   v6 = a4;
   v11 = objc_msgSend_chartModel(v6, v7, v8, v9, v10);
@@ -2114,7 +2114,7 @@ LABEL_20:
   return result;
 }
 
-- (CGAffineTransform)p_localTransformForAxisLabelWithInfo:(SEL)a3
+- (CGAffineTransform)p_localTransformForAxisLabelWithInfo:(SEL)info
 {
   v64 = a4;
   v10 = objc_msgSend_axisLayoutItem(v64, v6, v7, v8, v9);
@@ -2157,10 +2157,10 @@ LABEL_20:
   return result;
 }
 
-- (CGAffineTransform)p_localTransformForLabel:(SEL)a3 range:(unint64_t)a4 inLayoutSize:(_NSRange *)a5 outElementSize:(CGSize)a6 outClipRect:(CGSize *)a7 usingString:(CGRect *)a8 useAngle:(id)a9
+- (CGAffineTransform)p_localTransformForLabel:(SEL)label range:(unint64_t)range inLayoutSize:(_NSRange *)size outElementSize:(CGSize)elementSize outClipRect:(CGSize *)rect usingString:(CGRect *)string useAngle:(id)angle
 {
   v205 = a10;
-  v13 = a9;
+  angleCopy = angle;
   v14 = MEMORY[0x277CBF2C0];
   v199 = *(MEMORY[0x277CBF2C0] + 16);
   v200 = *MEMORY[0x277CBF2C0];
@@ -2211,24 +2211,24 @@ LABEL_20:
   v211 = objc_msgSend_paragraphStyleAtIndex_(v133, v134, v135, v136, v137, v123);
 
   v143 = objc_msgSend_sharedText(TSCHText, v138, v139, v140, v141);
-  if (v13)
+  if (angleCopy)
   {
-    v147 = v13;
-    v149 = v13;
+    v147 = angleCopy;
+    v149 = angleCopy;
   }
 
   else
   {
     v147 = 0;
     v153 = objc_msgSend_axis(v15, v142, v144, v145, v146);
-    v149 = objc_msgSend_labelStringForAxis_index_(self, v154, v155, v156, v157, v153, a4);
+    v149 = objc_msgSend_labelStringForAxis_index_(self, v154, v155, v156, v157, v153, range);
   }
 
   v158 = MEMORY[0x277CBF398];
-  if (a5)
+  if (size)
   {
-    location = a5->location;
-    length = a5->length;
+    location = size->location;
+    length = size->length;
   }
 
   else
@@ -2265,8 +2265,8 @@ LABEL_20:
   else
   {
     objc_msgSend_setLabelSizeInPoints_(v15, v174, width, height, v175);
-    objc_msgSend_setLabelIndex_(v15, v176, v177, v178, v179, a4);
-    objc_msgSend_setLabelLayoutSize_(v15, v180, a6.width, a6.height, v181);
+    objc_msgSend_setLabelIndex_(v15, v176, v177, v178, v179, range);
+    objc_msgSend_setLabelLayoutSize_(v15, v180, elementSize.width, elementSize.height, v181);
     objc_msgSend_setUseAngle_(v15, v182, v183, v184, v185, v205);
     objc_msgSend_p_localTransformForAxisLabelWithInfo_(self, v186, v187, v188, v189, v15);
     if (v168.location || v167 != v168.length)
@@ -2333,49 +2333,49 @@ LABEL_20:
     v164 = v221.size.height;
   }
 
-  if (a8)
+  if (string)
   {
-    a8->origin.x = v161;
-    a8->origin.y = v162;
-    a8->size.width = v163;
-    a8->size.height = v164;
+    string->origin.x = v161;
+    string->origin.y = v162;
+    string->size.width = v163;
+    string->size.height = v164;
   }
 
-  if (a7)
+  if (rect)
   {
-    a7->width = width;
-    a7->height = height;
+    rect->width = width;
+    rect->height = height;
   }
 
   return result;
 }
 
-- (CGAffineTransform)i_localTransformForLabel:(SEL)a3 range:(unint64_t)a4 inLayoutSize:(_NSRange *)a5 outElementSize:(CGSize)a6 outClipRect:(CGSize *)a7 usingString:(CGRect *)a8 stride:(id)a9 useAngle:(unint64_t *)a10
+- (CGAffineTransform)i_localTransformForLabel:(SEL)label range:(unint64_t)range inLayoutSize:(_NSRange *)size outElementSize:(CGSize)elementSize outClipRect:(CGSize *)rect usingString:(CGRect *)string stride:(id)stride useAngle:(unint64_t *)self0
 {
-  height = a6.height;
-  width = a6.width;
-  v75 = a9;
+  height = elementSize.height;
+  width = elementSize.width;
+  strideCopy = stride;
   v21 = MEMORY[0x277CBF2C0];
   v22 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v22;
   v23 = *(v21 + 32);
   *&retstr->tx = v23;
-  if (a8)
+  if (string)
   {
     v23 = *MEMORY[0x277CBF398];
     v22 = *(MEMORY[0x277CBF398] + 16);
-    a8->origin = *MEMORY[0x277CBF398];
-    a8->size = v22;
+    string->origin = *MEMORY[0x277CBF398];
+    string->size = v22;
   }
 
-  if (a7)
+  if (rect)
   {
     v23 = *MEMORY[0x277CBF3A8];
-    *a7 = *MEMORY[0x277CBF3A8];
+    *rect = *MEMORY[0x277CBF3A8];
   }
 
-  v74 = a10;
+  angleCopy = angle;
   v24 = objc_msgSend_axisLayoutItem(self, v19, *&v23, v22.width, v20);
   v29 = objc_msgSend_model(v24, v25, v26, v27, v28);
   v34 = objc_msgSend_axisID(v24, v30, v31, v32, v33);
@@ -2385,11 +2385,11 @@ LABEL_20:
   {
     v44 = MEMORY[0x277D81150];
     objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, v41, v42, v43, "[TSCHChartAxisLabelsLayoutItem i_localTransformForLabel:range:inLayoutSize:outElementSize:outClipRect:usingString:stride:useAngle:]");
-    v45 = v72 = a7;
+    v45 = v72 = rect;
     v50 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v46, v47, v48, v49, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartAxisLabelsLayoutItem.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v44, v51, v52, v53, v54, v45, v50, 1310, 0, "invalid nil value for '%{public}s'", "axis");
 
-    a7 = v72;
+    rect = v72;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v55, v56, v57, v58);
   }
 
@@ -2398,17 +2398,17 @@ LABEL_20:
   if (v59)
   {
     v69 = v64;
-    if (v64 > a4)
+    if (v64 > range)
     {
-      if (v74)
+      if (angleCopy)
       {
-        v70 = *v74;
-        if (*v74 == 0x7FFFFFFFFFFFFFFFLL)
+        v70 = *angleCopy;
+        if (*angleCopy == 0x7FFFFFFFFFFFFFFFLL)
         {
           v70 = objc_msgSend_strideInLayoutSize_(self, v65, width, height, v68);
         }
 
-        *v74 = v70;
+        *angleCopy = v70;
       }
 
       else
@@ -2416,9 +2416,9 @@ LABEL_20:
         v70 = objc_msgSend_strideInLayoutSize_(self, v65, width, height, v68);
       }
 
-      if (!(a4 % v70) || a4 + 1 == v69 && objc_msgSend_intValueForProperty_defaultValue_(v39, v65, v66, v67, v68, 1053, 0))
+      if (!(range % v70) || range + 1 == v69 && objc_msgSend_intValueForProperty_defaultValue_(v39, v65, v66, v67, v68, 1053, 0))
       {
-        objc_msgSend_p_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_useAngle_(self, v65, width, height, v68, a4, a5, a7, a8, v75, a11);
+        objc_msgSend_p_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_useAngle_(self, v65, width, height, v68, range, size, rect, string, strideCopy, a11);
       }
     }
   }
@@ -2426,10 +2426,10 @@ LABEL_20:
   return result;
 }
 
-- (CGAffineTransform)p_rootedTransformFromLocalTransform:(SEL)a3
+- (CGAffineTransform)p_rootedTransformFromLocalTransform:(SEL)transform
 {
   memset(&v12, 0, sizeof(v12));
-  objc_msgSend_transformToRoot(self, a3, 0.0, v4, v5);
+  objc_msgSend_transformToRoot(self, transform, 0.0, v4, v5);
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
@@ -2441,14 +2441,14 @@ LABEL_20:
   return CGAffineTransformConcat(retstr, &t1, &v10);
 }
 
-- (CGAffineTransform)transformForRenderingLabel:(SEL)a3 outElementSize:(unint64_t)a4 outClipRect:(CGSize *)a5
+- (CGAffineTransform)transformForRenderingLabel:(SEL)label outElementSize:(unint64_t)size outClipRect:(CGSize *)rect
 {
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  objc_msgSend_layoutSize(self, a3, 0.0, v6, v7);
+  objc_msgSend_layoutSize(self, label, 0.0, v6, v7);
   v20 = 1;
-  objc_msgSend_i_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_stride_useAngle_(self, v13, v14, v15, v16, a4, 0, a5, a6, 0, 0, v20);
+  objc_msgSend_i_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_stride_useAngle_(self, v13, v14, v15, v16, size, 0, rect, a6, 0, 0, v20);
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
@@ -2458,15 +2458,15 @@ LABEL_20:
   return objc_msgSend_p_rootedTransformFromLocalTransform_(self, v17, *&v24, *&v23, v18, v21);
 }
 
-- (CGAffineTransform)transformForRenderingLabel:(SEL)a3 usingString:(unint64_t)a4 outElementSize:(id)a5 outClipRect:(CGSize *)a6 useAngle:(CGRect *)a7
+- (CGAffineTransform)transformForRenderingLabel:(SEL)label usingString:(unint64_t)string outElementSize:(id)size outClipRect:(CGSize *)rect useAngle:(CGRect *)angle
 {
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
-  v14 = a5;
+  sizeCopy = size;
   objc_msgSend_layoutSize(self, v15, v16, v17, v18);
   v26 = a8;
-  objc_msgSend_i_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_stride_useAngle_(self, v19, v20, v21, v22, a4, 0, a6, a7, v14, 0, v26);
+  objc_msgSend_i_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_stride_useAngle_(self, v19, v20, v21, v22, string, 0, rect, angle, sizeCopy, 0, v26);
 
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
@@ -2477,14 +2477,14 @@ LABEL_20:
   return objc_msgSend_p_rootedTransformFromLocalTransform_(self, v23, *&v30, *&v29, v24, v27);
 }
 
-- (CGAffineTransform)transformForRenderingLabel:(SEL)a3 range:(unint64_t)a4 outElementSize:(_NSRange)a5 outClipRect:(CGSize *)a6
+- (CGAffineTransform)transformForRenderingLabel:(SEL)label range:(unint64_t)range outElementSize:(_NSRange)size outClipRect:(CGSize *)rect
 {
-  v25 = a5;
+  sizeCopy = size;
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  objc_msgSend_layoutSize(self, a3, 0.0, v7, v8);
-  objc_msgSend_i_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_stride_useAngle_(self, v14, v15, v16, v17, a4, &v25, a6, a7, 0, 0, 1);
+  objc_msgSend_layoutSize(self, label, 0.0, v7, v8);
+  objc_msgSend_i_localTransformForLabel_range_inLayoutSize_outElementSize_outClipRect_usingString_stride_useAngle_(self, v14, v15, v16, v17, range, &sizeCopy, rect, a7, 0, 0, 1);
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
@@ -2494,9 +2494,9 @@ LABEL_20:
   return objc_msgSend_p_rootedTransformFromLocalTransform_(self, v18, *&v24, *&v23, v19, v21);
 }
 
-- (void)p_enumerateAxisLabelRectsWithBlock:(id)a3
+- (void)p_enumerateAxisLabelRectsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = objc_msgSend_parent(self, v5, v6, v7, v8);
   v14 = objc_msgSend_axisID(v9, v10, v11, v12, v13);
   v19 = objc_msgSend_model(self, v15, v16, v17, v18);
@@ -2521,11 +2521,11 @@ LABEL_20:
       if (!CGRectIsNull(v43))
       {
         objc_msgSend_labelRectFromClipRect_elementSize_(TSCHRenderUtilities, v30, v43.origin.x, v43.origin.y, v43.size.width, v43.size.height, v42);
-        v34 = v4[2];
+        v34 = blockCopy[2];
         v38[0] = v39;
         v38[1] = v40;
         v38[2] = v41;
-        v34(v4, v38);
+        v34(blockCopy, v38);
       }
 
       ++v33;
@@ -2640,13 +2640,13 @@ LABEL_20:
   return v30;
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
+  y = elements.y;
+  x = elements.x;
   v70[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
     objc_msgSend_layoutSpaceRectForAllLabels(self, v7, v9, v10, v11);
     v71.x = x;
@@ -2719,7 +2719,7 @@ LABEL_20:
 
         v61 = objc_msgSend_selectionPathLabelType(self, v51, v53, v54, v55);
         v66 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v62, v63, v64, v65, v61, v52);
-        v8[2](v8, v66, 0);
+        blockCopy[2](blockCopy, v66, 0);
 
 LABEL_17:
         v22 = v67;
@@ -2728,15 +2728,15 @@ LABEL_17:
   }
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v61 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   v67.receiver = self;
   v67.super_class = TSCHChartAxisLabelsLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v67 newDragAndDropHighlightPathForSelection:v4];
-  if (objc_msgSend_count(v4, v6, v7, v8, v9))
+  v5 = [(TSCHChartLayoutItem *)&v67 newDragAndDropHighlightPathForSelection:selectionCopy];
+  if (objc_msgSend_count(selectionCopy, v6, v7, v8, v9))
   {
     if (v5)
     {
@@ -2754,8 +2754,8 @@ LABEL_17:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v59 = v4;
-    obj = v4;
+    v59 = selectionCopy;
+    obj = selectionCopy;
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, v12, v13, v14, &v63, v68, 16);
     if (v15)
     {
@@ -2776,14 +2776,14 @@ LABEL_17:
           v29 = objc_msgSend_pathType(v23, v25, v26, v27, v28);
           if (objc_msgSend_isEqual_(v24, v30, v31, v32, v33, v29) && objc_msgSend_argumentsCount(v23, v34, v35, v36, v37))
           {
-            v42 = objc_msgSend_axisLayoutItem(v61, v38, v39, v40, v41);
+            v42 = objc_msgSend_axisLayoutItem(selfCopy, v38, v39, v40, v41);
             v47 = objc_msgSend_axisID(v42, v43, v44, v45, v46);
             v52 = objc_msgSend_argumentAtIndex_(v23, v48, v49, v50, v51, 0);
             isEqual = objc_msgSend_isEqual_(v47, v53, v54, v55, v56, v52);
 
             if (isEqual)
             {
-              objc_msgSend_rootedDrawingRect(v61, v16, v17, v18, v19);
+              objc_msgSend_rootedDrawingRect(selfCopy, v16, v17, v18, v19);
               CGPathAddRectSafe();
             }
           }
@@ -2802,7 +2802,7 @@ LABEL_17:
       while (v20);
     }
 
-    v4 = v59;
+    selectionCopy = v59;
     v5 = Mutable;
   }
 

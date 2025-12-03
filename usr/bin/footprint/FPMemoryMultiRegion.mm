@@ -20,17 +20,17 @@
   auxDataName = self->_auxDataName;
   if (auxDataName)
   {
-    v3 = auxDataName;
+    auxDataName = auxDataName;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = FPMemoryMultiRegion;
-    v3 = [(FPMemoryRegion *)&v5 auxDataName];
+    auxDataName = [(FPMemoryRegion *)&v5 auxDataName];
   }
 
-  return v3;
+  return auxDataName;
 }
 
 @end

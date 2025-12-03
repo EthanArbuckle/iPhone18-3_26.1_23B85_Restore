@@ -1,16 +1,16 @@
 @interface PHSOSNumberTableViewCell
-- (PHSOSNumberTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHSOSNumberTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)commonInit;
-- (void)populate:(id)a3;
+- (void)populate:(id)populate;
 @end
 
 @implementation PHSOSNumberTableViewCell
 
-- (PHSOSNumberTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHSOSNumberTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PHSOSNumberTableViewCell;
-  v4 = [(PHSOSNumberTableViewCell *)&v7 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(PHSOSNumberTableViewCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -27,37 +27,37 @@
   [(PHSOSNumberTableViewCell *)self setBackgroundColor:v3];
 
   v4 = +[UIColor whiteColor];
-  v5 = [(PHSOSNumberTableViewCell *)self textLabel];
-  [v5 setTextColor:v4];
+  textLabel = [(PHSOSNumberTableViewCell *)self textLabel];
+  [textLabel setTextColor:v4];
 
   v6 = +[UIColor whiteColor];
-  v7 = [(PHSOSNumberTableViewCell *)self detailTextLabel];
-  [v7 setTextColor:v6];
+  detailTextLabel = [(PHSOSNumberTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v6];
 
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v9 = [(PHSOSNumberTableViewCell *)self textLabel];
-  [v9 setFont:v8];
+  textLabel2 = [(PHSOSNumberTableViewCell *)self textLabel];
+  [textLabel2 setFont:v8];
 
   v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v11 = [(PHSOSNumberTableViewCell *)self detailTextLabel];
-  [v11 setFont:v10];
+  detailTextLabel2 = [(PHSOSNumberTableViewCell *)self detailTextLabel];
+  [detailTextLabel2 setFont:v10];
 
   [(PHSOSNumberTableViewCell *)self setSelectionStyle:0];
 
   [(PHSOSNumberTableViewCell *)self setAccessoryType:1];
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
-  v4 = a3;
-  v5 = [v4 sosTitle];
-  v6 = [(PHSOSNumberTableViewCell *)self textLabel];
-  [v6 setText:v5];
+  populateCopy = populate;
+  sosTitle = [populateCopy sosTitle];
+  textLabel = [(PHSOSNumberTableViewCell *)self textLabel];
+  [textLabel setText:sosTitle];
 
-  v8 = [v4 sosSubtitle];
+  sosSubtitle = [populateCopy sosSubtitle];
 
-  v7 = [(PHSOSNumberTableViewCell *)self detailTextLabel];
-  [v7 setText:v8];
+  detailTextLabel = [(PHSOSNumberTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:sosSubtitle];
 }
 
 @end

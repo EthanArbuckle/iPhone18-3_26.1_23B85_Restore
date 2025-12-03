@@ -1,10 +1,10 @@
 @interface NTKRichComplicationCornerTextSwiftUIView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (id)_outerView;
 - (void)_editingDidEnd;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -15,9 +15,9 @@
   swiftUIView = self->_swiftUIView;
   if (!swiftUIView)
   {
-    v4 = [off_27877BE70 async];
+    async = [off_27877BE70 async];
     v5 = self->_swiftUIView;
-    self->_swiftUIView = v4;
+    self->_swiftUIView = async;
 
     [(CDComplicationHostingView *)self->_swiftUIView setFilterProvider:self];
     [(CDComplicationHostingView *)self->_swiftUIView setShouldAccentDesaturatedView:1];
@@ -43,56 +43,56 @@ void __54__NTKRichComplicationCornerTextSwiftUIView__outerView__block_invoke(uin
   [v5 complicationDisplay:WeakRetained renderStatsWithTime:a2 cost:a3];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationCornerTextSwiftUIView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDComplicationHostingView *)self->_swiftUIView setPaused:v3];
+  [(CDComplicationHostingView *)self->_swiftUIView setPaused:pausedCopy];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 textProvider];
-  v7 = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
-  [v7 setTextProvider:v6];
+  templateCopy = template;
+  textProvider = [templateCopy textProvider];
+  innerLabel = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
+  [innerLabel setTextProvider:textProvider];
 
-  v8 = [v5 labelData];
+  labelData = [templateCopy labelData];
 
-  [(CDComplicationHostingView *)self->_swiftUIView setViewData:v8];
+  [(CDComplicationHostingView *)self->_swiftUIView setViewData:labelData];
 }
 
 - (void)_editingDidEnd
 {
-  v2 = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
-  [v2 editingDidEnd];
+  innerLabel = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
+  [innerLabel editingDidEnd];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
-  [v5 transitionToMonochromeWithFraction:2 style:a3];
+  innerLabel = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
+  [innerLabel transitionToMonochromeWithFraction:2 style:fraction];
 
   swiftUIView = self->_swiftUIView;
 
-  [(CDComplicationHostingView *)swiftUIView transitionToMonochromeWithFraction:a3];
+  [(CDComplicationHostingView *)swiftUIView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
 {
-  v3 = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
-  [v3 updateMonochromeColorWithStyle:2];
+  innerLabel = [(CDRichComplicationCornerBaseTextView *)self innerLabel];
+  [innerLabel updateMonochromeColorWithStyle:2];
 
   swiftUIView = self->_swiftUIView;
 

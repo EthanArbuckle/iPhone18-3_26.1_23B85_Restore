@@ -1,30 +1,30 @@
 @interface SXWebContentComponentInteractionManager
 - (SXComponentInteractionHandlerManager)interactionHandlerManager;
 - (SXComponentView)componentView;
-- (SXWebContentComponentInteractionManager)initWithComponentView:(id)a3 interactionProvider:(id)a4 interactionHandlerManager:(id)a5 componentInteractionHandlerFactory:(id)a6;
-- (void)manageInteractionHandlerForInteraction:(id)a3;
+- (SXWebContentComponentInteractionManager)initWithComponentView:(id)view interactionProvider:(id)provider interactionHandlerManager:(id)manager componentInteractionHandlerFactory:(id)factory;
+- (void)manageInteractionHandlerForInteraction:(id)interaction;
 @end
 
 @implementation SXWebContentComponentInteractionManager
 
-- (SXWebContentComponentInteractionManager)initWithComponentView:(id)a3 interactionProvider:(id)a4 interactionHandlerManager:(id)a5 componentInteractionHandlerFactory:(id)a6
+- (SXWebContentComponentInteractionManager)initWithComponentView:(id)view interactionProvider:(id)provider interactionHandlerManager:(id)manager componentInteractionHandlerFactory:(id)factory
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  providerCopy = provider;
+  managerCopy = manager;
+  factoryCopy = factory;
   v21.receiver = self;
   v21.super_class = SXWebContentComponentInteractionManager;
   v14 = [(SXWebContentComponentInteractionManager *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_componentView, v10);
-    objc_storeStrong(&v15->_interactionProvider, a4);
-    objc_storeWeak(&v15->_interactionHandlerManager, v12);
-    objc_storeStrong(&v15->_componentInteractionHandlerFactory, a6);
-    v16 = [v11 interaction];
-    [(SXWebContentComponentInteractionManager *)v15 manageInteractionHandlerForInteraction:v16];
+    objc_storeWeak(&v14->_componentView, viewCopy);
+    objc_storeStrong(&v15->_interactionProvider, provider);
+    objc_storeWeak(&v15->_interactionHandlerManager, managerCopy);
+    objc_storeStrong(&v15->_componentInteractionHandlerFactory, factory);
+    interaction = [providerCopy interaction];
+    [(SXWebContentComponentInteractionManager *)v15 manageInteractionHandlerForInteraction:interaction];
 
     objc_initWeak(&location, v15);
     v18[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@
     v18[2] = __146__SXWebContentComponentInteractionManager_initWithComponentView_interactionProvider_interactionHandlerManager_componentInteractionHandlerFactory___block_invoke;
     v18[3] = &unk_1E84FFA90;
     objc_copyWeak(&v19, &location);
-    [v11 onChange:v18];
+    [providerCopy onChange:v18];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
   }
@@ -47,26 +47,26 @@ void __146__SXWebContentComponentInteractionManager_initWithComponentView_intera
   [WeakRetained manageInteractionHandlerForInteraction:v3];
 }
 
-- (void)manageInteractionHandlerForInteraction:(id)a3
+- (void)manageInteractionHandlerForInteraction:(id)interaction
 {
-  v12 = a3;
-  if (v12)
+  interactionCopy = interaction;
+  if (interactionCopy)
   {
-    v4 = [(SXWebContentComponentInteractionManager *)self interactionHandlerManager];
-    v5 = [(SXWebContentComponentInteractionManager *)self currentInteractionHandler];
-    v6 = [(SXWebContentComponentInteractionManager *)self componentView];
-    [v4 removeInteractionHandler:v5 componentView:v6];
+    interactionHandlerManager = [(SXWebContentComponentInteractionManager *)self interactionHandlerManager];
+    currentInteractionHandler = [(SXWebContentComponentInteractionManager *)self currentInteractionHandler];
+    componentView = [(SXWebContentComponentInteractionManager *)self componentView];
+    [interactionHandlerManager removeInteractionHandler:currentInteractionHandler componentView:componentView];
 
-    if ([v12 type] == 2)
+    if ([interactionCopy type] == 2)
     {
-      v7 = [(SXWebContentComponentInteractionManager *)self componentInteractionHandlerFactory];
-      v8 = [v7 componentInteractionHandlerForInteraction:v12];
+      componentInteractionHandlerFactory = [(SXWebContentComponentInteractionManager *)self componentInteractionHandlerFactory];
+      v8 = [componentInteractionHandlerFactory componentInteractionHandlerForInteraction:interactionCopy];
       [(SXWebContentComponentInteractionManager *)self setCurrentInteractionHandler:v8];
 
-      v9 = [(SXWebContentComponentInteractionManager *)self interactionHandlerManager];
-      v10 = [(SXWebContentComponentInteractionManager *)self currentInteractionHandler];
-      v11 = [(SXWebContentComponentInteractionManager *)self componentView];
-      [v9 addInteractionHandler:v10 componentView:v11 types:2];
+      interactionHandlerManager2 = [(SXWebContentComponentInteractionManager *)self interactionHandlerManager];
+      currentInteractionHandler2 = [(SXWebContentComponentInteractionManager *)self currentInteractionHandler];
+      componentView2 = [(SXWebContentComponentInteractionManager *)self componentView];
+      [interactionHandlerManager2 addInteractionHandler:currentInteractionHandler2 componentView:componentView2 types:2];
     }
   }
 }

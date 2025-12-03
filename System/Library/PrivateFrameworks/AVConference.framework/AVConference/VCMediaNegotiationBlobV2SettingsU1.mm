@@ -1,22 +1,22 @@
 @interface VCMediaNegotiationBlobV2SettingsU1
-+ (id)appendCipherSuiteFlags:(unsigned int)a3 toDescription:(id)a4;
-+ (id)mediaStreamCipherSuitesFromNegotiationCipherSuites:(int)a3;
-+ (int)negotiationCipherSuiteFromMediaStreamCipherSuite:(int64_t)a3;
-+ (int)negotiationCipherSuitesFromMediaStreamCipherSuites:(id)a3;
-+ (int64_t)mediaStreamCipherSuiteFromNegotiationCipherSuite:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)loadEncodeDecodeFeatures:(id)a3;
-- (VCMediaNegotiationBlobV2SettingsU1)initWithU1Config:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)appendCipherSuiteFlags:(unsigned int)flags toDescription:(id)description;
++ (id)mediaStreamCipherSuitesFromNegotiationCipherSuites:(int)suites;
++ (int)negotiationCipherSuiteFromMediaStreamCipherSuite:(int64_t)suite;
++ (int)negotiationCipherSuitesFromMediaStreamCipherSuites:(id)suites;
++ (int64_t)mediaStreamCipherSuiteFromNegotiationCipherSuite:(int)suite;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)loadEncodeDecodeFeatures:(id)features;
+- (VCMediaNegotiationBlobV2SettingsU1)initWithU1Config:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)u1Config;
 - (unint64_t)hash;
-- (void)addEncodeDecodeFeatures:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addEncodeDecodeFeatures:(id)features;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2SettingsU1
@@ -30,7 +30,7 @@
   [(VCMediaNegotiationBlobV2SettingsU1 *)&v3 dealloc];
 }
 
-- (void)addEncodeDecodeFeatures:(id)a3
+- (void)addEncodeDecodeFeatures:(id)features
 {
   encodeDecodeFeatures = self->_encodeDecodeFeatures;
   if (!encodeDecodeFeatures)
@@ -39,7 +39,7 @@
     self->_encodeDecodeFeatures = encodeDecodeFeatures;
   }
 
-  [(NSMutableArray *)encodeDecodeFeatures addObject:a3];
+  [(NSMutableArray *)encodeDecodeFeatures addObject:features];
 }
 
 - (id)description
@@ -53,10 +53,10 @@
 - (id)dictionaryRepresentation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
   }
 
   if ([(NSMutableArray *)self->_encodeDecodeFeatures count])
@@ -92,13 +92,13 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"encodeDecodeFeatures"];
+    [dictionary setObject:v4 forKey:@"encodeDecodeFeatures"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v14 = *MEMORY[0x1E69E9840];
   if (*&self->_has)
@@ -138,33 +138,33 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_rtpSSRC;
-    *(a3 + 20) |= 1u;
+    *(to + 4) = self->_rtpSSRC;
+    *(to + 20) |= 1u;
   }
 
   if ([(VCMediaNegotiationBlobV2SettingsU1 *)self encodeDecodeFeaturesCount])
   {
-    [a3 clearEncodeDecodeFeatures];
-    v5 = [(VCMediaNegotiationBlobV2SettingsU1 *)self encodeDecodeFeaturesCount];
-    if (v5)
+    [to clearEncodeDecodeFeatures];
+    encodeDecodeFeaturesCount = [(VCMediaNegotiationBlobV2SettingsU1 *)self encodeDecodeFeaturesCount];
+    if (encodeDecodeFeaturesCount)
     {
-      v6 = v5;
+      v6 = encodeDecodeFeaturesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addEncodeDecodeFeatures:{-[VCMediaNegotiationBlobV2SettingsU1 encodeDecodeFeaturesAtIndex:](self, "encodeDecodeFeaturesAtIndex:", i)}];
+        [to addEncodeDecodeFeatures:{-[VCMediaNegotiationBlobV2SettingsU1 encodeDecodeFeaturesAtIndex:](self, "encodeDecodeFeaturesAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -192,7 +192,7 @@
           objc_enumerationMutation(encodeDecodeFeatures);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addEncodeDecodeFeatures:v12];
 
         ++v11;
@@ -208,20 +208,20 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_rtpSSRC != *(a3 + 4))
+      if ((*(equal + 20) & 1) == 0 || self->_rtpSSRC != *(equal + 4))
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(a3 + 20))
+    else if (*(equal + 20))
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -229,7 +229,7 @@ LABEL_9:
     }
 
     encodeDecodeFeatures = self->_encodeDecodeFeatures;
-    if (encodeDecodeFeatures | *(a3 + 1))
+    if (encodeDecodeFeatures | *(equal + 1))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)encodeDecodeFeatures isEqual:?];
@@ -259,12 +259,12 @@ LABEL_9:
   return [(NSMutableArray *)self->_encodeDecodeFeatures hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 20))
+  if (*(from + 20))
   {
-    self->_rtpSSRC = *(a3 + 4);
+    self->_rtpSSRC = *(from + 4);
     *&self->_has |= 1u;
   }
 
@@ -272,7 +272,7 @@ LABEL_9:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
@@ -299,15 +299,15 @@ LABEL_9:
   }
 }
 
-- (VCMediaNegotiationBlobV2SettingsU1)initWithU1Config:(id)a3
+- (VCMediaNegotiationBlobV2SettingsU1)initWithU1Config:(id)config
 {
   v4 = [(VCMediaNegotiationBlobV2SettingsU1 *)self init];
   if (v4)
   {
-    if (a3)
+    if (config)
     {
-      -[VCMediaNegotiationBlobV2SettingsU1 setRtpSSRC:](v4, "setRtpSSRC:", [a3 ssrc]);
-      if ([(VCMediaNegotiationBlobV2SettingsU1 *)v4 loadEncodeDecodeFeatures:a3])
+      -[VCMediaNegotiationBlobV2SettingsU1 setRtpSSRC:](v4, "setRtpSSRC:", [config ssrc]);
+      if ([(VCMediaNegotiationBlobV2SettingsU1 *)v4 loadEncodeDecodeFeatures:config])
       {
         return v4;
       }
@@ -343,8 +343,8 @@ LABEL_9:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(VCMediaNegotiationBlobV2SettingsU1 *)self encodeDecodeFeatures];
-    v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    encodeDecodeFeatures = [(VCMediaNegotiationBlobV2SettingsU1 *)self encodeDecodeFeatures];
+    v6 = [(NSMutableArray *)encodeDecodeFeatures countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v6)
     {
       v7 = v6;
@@ -355,7 +355,7 @@ LABEL_9:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(encodeDecodeFeatures);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
@@ -364,7 +364,7 @@ LABEL_9:
           [v4 setObject:v11 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", objc_msgSend(v10, "rtpPayload"))}];
         }
 
-        v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v7 = [(NSMutableArray *)encodeDecodeFeatures countByEnumeratingWithState:&v14 objects:v13 count:16];
       }
 
       while (v7);
@@ -376,15 +376,15 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)loadEncodeDecodeFeatures:(id)a3
+- (BOOL)loadEncodeDecodeFeatures:(id)features
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 videoFeatureStringsFixedPosition];
+  videoFeatureStringsFixedPosition = [features videoFeatureStringsFixedPosition];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v5 = [videoFeatureStringsFixedPosition countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -395,24 +395,24 @@ LABEL_9:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(videoFeatureStringsFixedPosition);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        [v4 objectForKeyedSubscript:v9];
+        [videoFeatureStringsFixedPosition objectForKeyedSubscript:v9];
         v10 = VCPCreateCompressedFLS();
         v11 = [[VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures alloc] initWithPayload:v9 encodeDecodeFeatures:v10];
 
         if (!v11)
         {
-          [(VCMediaNegotiationBlobV2SettingsU1(Utils) *)v9 loadEncodeDecodeFeatures:v4, &v13];
+          [(VCMediaNegotiationBlobV2SettingsU1(Utils) *)v9 loadEncodeDecodeFeatures:videoFeatureStringsFixedPosition, &v13];
           return v13;
         }
 
         [(VCMediaNegotiationBlobV2SettingsU1 *)self addEncodeDecodeFeatures:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v6 = [videoFeatureStringsFixedPosition countByEnumeratingWithState:&v15 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -425,21 +425,21 @@ LABEL_9:
   return 1;
 }
 
-+ (id)mediaStreamCipherSuitesFromNegotiationCipherSuites:(int)a3
++ (id)mediaStreamCipherSuitesFromNegotiationCipherSuites:(int)suites
 {
-  v5 = [MEMORY[0x1E695DFA0] orderedSet];
-  if (a3)
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  if (suites)
   {
     v6 = 1;
     do
     {
-      if ((v6 & a3) != 0)
+      if ((v6 & suites) != 0)
       {
-        [v5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(a1, "mediaStreamCipherSuiteFromNegotiationCipherSuite:", v6))}];
+        [orderedSet addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(self, "mediaStreamCipherSuiteFromNegotiationCipherSuite:", v6))}];
       }
 
-      a3 &= ~v6;
-      if (!a3)
+      suites &= ~v6;
+      if (!suites)
       {
         break;
       }
@@ -451,13 +451,13 @@ LABEL_9:
     while (v7);
   }
 
-  return v5;
+  return orderedSet;
 }
 
-+ (int64_t)mediaStreamCipherSuiteFromNegotiationCipherSuite:(int)a3
++ (int64_t)mediaStreamCipherSuiteFromNegotiationCipherSuite:(int)suite
 {
-  HIDWORD(v4) = a3 - 2;
-  LODWORD(v4) = a3 - 2;
+  HIDWORD(v4) = suite - 2;
+  LODWORD(v4) = suite - 2;
   v3 = v4 >> 1;
   if (v3 > 7)
   {
@@ -470,13 +470,13 @@ LABEL_9:
   }
 }
 
-+ (int)negotiationCipherSuiteFromMediaStreamCipherSuite:(int64_t)a3
++ (int)negotiationCipherSuiteFromMediaStreamCipherSuite:(int64_t)suite
 {
-  if (a3 <= 3)
+  if (suite <= 3)
   {
-    if ((a3 + 1) >= 4)
+    if ((suite + 1) >= 4)
     {
-      return a3 == 3;
+      return suite == 3;
     }
 
 LABEL_7:
@@ -495,19 +495,19 @@ LABEL_7:
     return 0;
   }
 
-  if (a3 < 8)
+  if (suite < 8)
   {
     goto LABEL_7;
   }
 
-  if (a3 > 9)
+  if (suite > 9)
   {
-    if (a3 == 10)
+    if (suite == 10)
     {
       return 8;
     }
 
-    if (a3 == 11)
+    if (suite == 11)
     {
       return 16;
     }
@@ -515,7 +515,7 @@ LABEL_7:
     return 0;
   }
 
-  if (a3 == 8)
+  if (suite == 8)
   {
     return 2;
   }
@@ -526,14 +526,14 @@ LABEL_7:
   }
 }
 
-+ (int)negotiationCipherSuitesFromMediaStreamCipherSuites:(id)a3
++ (int)negotiationCipherSuitesFromMediaStreamCipherSuites:(id)suites
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v5 = [suites countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (!v5)
   {
     return 0;
@@ -548,30 +548,30 @@ LABEL_7:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(suites);
       }
 
-      v7 |= [a1 negotiationCipherSuiteFromMediaStreamCipherSuite:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "integerValue")}];
+      v7 |= [self negotiationCipherSuiteFromMediaStreamCipherSuite:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "integerValue")}];
     }
 
-    v6 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    v6 = [suites countByEnumeratingWithState:&v12 objects:v11 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-+ (id)appendCipherSuiteFlags:(unsigned int)a3 toDescription:(id)a4
++ (id)appendCipherSuiteFlags:(unsigned int)flags toDescription:(id)description
 {
-  v5 = a3;
-  [a4 appendFormat:@"cipherSuites=0x%x [", *&a3];
-  if (v5)
+  flagsCopy = flags;
+  [description appendFormat:@"cipherSuites=0x%x [", *&flags];
+  if (flagsCopy)
   {
     v6 = @"%@";
     v7 = 1;
     while (1)
     {
-      if ((v7 & v5) == 0)
+      if ((v7 & flagsCopy) == 0)
       {
         goto LABEL_19;
       }
@@ -614,11 +614,11 @@ LABEL_15:
         }
       }
 
-      [a4 appendFormat:v6, v8];
+      [description appendFormat:v6, v8];
       v6 = @",%@";
 LABEL_19:
-      v5 &= ~v7;
-      if (v5)
+      flagsCopy &= ~v7;
+      if (flagsCopy)
       {
         v9 = v7 & 0xF;
         v7 = (2 * v7);
@@ -632,8 +632,8 @@ LABEL_19:
     }
   }
 
-  [a4 appendString:@"]"];
-  return a4;
+  [description appendString:@"]"];
+  return description;
 }
 
 @end

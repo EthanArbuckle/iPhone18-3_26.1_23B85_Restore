@@ -1,6 +1,6 @@
 @interface HighlightsOverlayView
 - (NSArray)automationElements;
-- (_TtC22UserNotificationsUIKit21HighlightsOverlayView)initWithFrame:(CGRect)a3;
+- (_TtC22UserNotificationsUIKit21HighlightsOverlayView)initWithFrame:(CGRect)frame;
 - (void)backlightChanged;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -10,27 +10,27 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8DD21C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8DD5FC();
 }
 
 - (void)backlightChanged
 {
-  v4 = self;
-  v2 = [(HighlightsOverlayView *)v4 traitCollection];
-  v3 = [v2 _backlightLuminance];
+  selfCopy = self;
+  traitCollection = [(HighlightsOverlayView *)selfCopy traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  *(&v4->super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKit21HighlightsOverlayView_lightEffectDisabledForAOD) = v3 != 2;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKit21HighlightsOverlayView_lightEffectDisabledForAOD) = _backlightLuminance != 2;
   sub_21E8DDBD8();
 }
 
-- (_TtC22UserNotificationsUIKit21HighlightsOverlayView)initWithFrame:(CGRect)a3
+- (_TtC22UserNotificationsUIKit21HighlightsOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

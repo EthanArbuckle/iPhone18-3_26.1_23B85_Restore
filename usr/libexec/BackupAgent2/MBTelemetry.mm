@@ -1,20 +1,20 @@
 @interface MBTelemetry
-+ (BOOL)submitEngineCompletedEventName:(id)a3 engineStarted:(double)a4 engineError:(id)a5;
-+ (BOOL)submitEventName:(id)a3 event:(id)a4;
++ (BOOL)submitEngineCompletedEventName:(id)name engineStarted:(double)started engineError:(id)error;
++ (BOOL)submitEventName:(id)name event:(id)event;
 @end
 
 @implementation MBTelemetry
 
-+ (BOOL)submitEventName:(id)a3 event:(id)a4
++ (BOOL)submitEventName:(id)name event:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || (v7 = v6) == 0)
+  nameCopy = name;
+  eventCopy = event;
+  if (!nameCopy || (v7 = eventCopy) == 0)
   {
     sub_10009B980();
   }
 
-  if ([v6 count])
+  if ([eventCopy count])
   {
     v8 = [v7 objectForKeyedSubscript:@"successes"];
     if (v8)
@@ -41,7 +41,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v19 = v5;
+      v19 = nameCopy;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "=analytics= Submitting %{public}@: %@", buf, 0x16u);
@@ -57,7 +57,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v19 = v5;
+        v19 = nameCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "=analytics= Successfully submitted %{public}@", buf, 0xCu);
 LABEL_17:
         _MBLog();
@@ -67,7 +67,7 @@ LABEL_17:
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v19 = v5;
+      v19 = nameCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "=analytics= Failed to submit %{public}@", buf, 0xCu);
       goto LABEL_17;
     }
@@ -84,34 +84,34 @@ LABEL_20:
   return v12;
 }
 
-+ (BOOL)submitEngineCompletedEventName:(id)a3 engineStarted:(double)a4 engineError:(id)a5
++ (BOOL)submitEngineCompletedEventName:(id)name engineStarted:(double)started engineError:(id)error
 {
-  v8 = a5;
-  v9 = a3;
+  errorCopy = error;
+  nameCopy = name;
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:&off_100109398 forKeyedSubscript:@"total"];
   v11 = [NSNumber numberWithUnsignedLongLong:MBPeakProcessMemoryUsage()];
   [v10 setObject:v11 forKeyedSubscript:@"peakMemoryUsage"];
 
-  if (v8)
+  if (errorCopy)
   {
     [v10 setObject:&off_100109398 forKeyedSubscript:@"failed"];
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v10 setObject:v12 forKeyedSubscript:@"errorCode"];
 
-    v13 = [v8 domain];
-    [v10 setObject:v13 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v10 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v14 = [v8 underlyingErrors];
-    v15 = [v14 firstObject];
+    underlyingErrors = [errorCopy underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
-    if (v15)
+    if (firstObject)
     {
-      v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 code]);
+      v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject code]);
       [v10 setObject:v16 forKeyedSubscript:@"underlyingErrorCode"];
 
-      v17 = [v15 domain];
-      [v10 setObject:v17 forKeyedSubscript:@"underlyingErrorDomain"];
+      domain2 = [firstObject domain];
+      [v10 setObject:domain2 forKeyedSubscript:@"underlyingErrorDomain"];
     }
   }
 
@@ -119,11 +119,11 @@ LABEL_20:
   {
     [v10 setObject:&off_100109398 forKeyedSubscript:@"successes"];
     +[NSDate timeIntervalSinceReferenceDate];
-    v15 = [NSNumber numberWithDouble:v18 - a4];
-    [v10 setObject:v15 forKeyedSubscript:@"duration"];
+    firstObject = [NSNumber numberWithDouble:v18 - started];
+    [v10 setObject:firstObject forKeyedSubscript:@"duration"];
   }
 
-  v19 = [a1 submitEventName:v9 event:v10];
+  v19 = [self submitEventName:nameCopy event:v10];
   return v19;
 }
 

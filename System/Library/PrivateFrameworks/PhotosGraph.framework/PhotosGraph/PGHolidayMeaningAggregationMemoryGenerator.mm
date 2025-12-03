@@ -1,29 +1,29 @@
 @interface PGHolidayMeaningAggregationMemoryGenerator
 + (id)supportedMeaningLabels;
-- (PGHolidayMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)a3;
+- (PGHolidayMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)context;
 @end
 
 @implementation PGHolidayMeaningAggregationMemoryGenerator
 
-- (PGHolidayMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)a3
+- (PGHolidayMeaningAggregationMemoryGenerator)initWithMemoryGenerationContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = PGHolidayMeaningAggregationMemoryGenerator;
-  v3 = [(PGMeaningAggregationMemoryGenerator *)&v10 initWithMemoryGenerationContext:a3];
+  v3 = [(PGMeaningAggregationMemoryGenerator *)&v10 initWithMemoryGenerationContext:context];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PGHolidayMeaningAggregationMemoryGenerator *)v3 momentRequirements];
-    [v5 setMinimumNumberOfAssetsInExtendedCuration:5];
+    momentRequirements = [(PGHolidayMeaningAggregationMemoryGenerator *)v3 momentRequirements];
+    [momentRequirements setMinimumNumberOfAssetsInExtendedCuration:5];
 
-    v6 = [(PGMeaningAggregationMemoryGenerator *)v4 overTheYearsConfiguration];
-    [v6 setMinimumNumberOfYears:2];
+    overTheYearsConfiguration = [(PGMeaningAggregationMemoryGenerator *)v4 overTheYearsConfiguration];
+    [overTheYearsConfiguration setMinimumNumberOfYears:2];
 
-    v7 = [(PGMeaningAggregationMemoryGenerator *)v4 overTheYearsConfiguration];
-    [v7 setMinimumNumberOfMoments:2];
+    overTheYearsConfiguration2 = [(PGMeaningAggregationMemoryGenerator *)v4 overTheYearsConfiguration];
+    [overTheYearsConfiguration2 setMinimumNumberOfMoments:2];
 
-    v8 = [(PGMeaningAggregationMemoryGenerator *)v4 overTheYearsConfiguration];
-    [v8 setMinimumNumberOfMomentsForTwoConsecutiveYears:2];
+    overTheYearsConfiguration3 = [(PGMeaningAggregationMemoryGenerator *)v4 overTheYearsConfiguration];
+    [overTheYearsConfiguration3 setMinimumNumberOfMomentsForTwoConsecutiveYears:2];
 
     [(PGMeaningAggregationMemoryGenerator *)v4 setFeaturedYearConfiguration:0];
   }

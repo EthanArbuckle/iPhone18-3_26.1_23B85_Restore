@@ -1,18 +1,18 @@
 @interface CTXPCNotificationProxy
-- (BOOL)_resolvePlaceholders_sync:(id)a3;
+- (BOOL)_resolvePlaceholders_sync:(id)placeholders_sync;
 - (CTXPCDataProviderInterface)dataProviderDelegate;
-- (CTXPCNotificationProxy)initWithRegistry:(const void *)a3 queue:(queue)a4;
+- (CTXPCNotificationProxy)initWithRegistry:(const void *)registry queue:(queue)queue;
 - (CTXPCNotificationSinkInterface)sinkDelegate;
 - (id).cxx_construct;
-- (id)_contextForSlotIDPlaceholder_sync:(id)a3;
-- (id)_contextForUUIDPlaceholder_sync:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)_contextForSlotIDPlaceholder_sync:(id)placeholder_sync;
+- (id)_contextForUUIDPlaceholder_sync:(id)placeholder_sync;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (queue)queue;
 - (shared_ptr<const)registry;
-- (void)anyClientRespondsToSelector:(SEL)a3 completion:(id)a4;
-- (void)forwardInvocation:(id)a3;
-- (void)setQueue:(queue)a3;
-- (void)setRegistry:(shared_ptr<const Registry>)a3;
+- (void)anyClientRespondsToSelector:(SEL)selector completion:(id)completion;
+- (void)forwardInvocation:(id)invocation;
+- (void)setQueue:(queue)queue;
+- (void)setRegistry:(shared_ptr<const Registry>)registry;
 @end
 
 @implementation CTXPCNotificationProxy
@@ -31,11 +31,11 @@
   return WeakRetained;
 }
 
-- (CTXPCNotificationProxy)initWithRegistry:(const void *)a3 queue:(queue)a4
+- (CTXPCNotificationProxy)initWithRegistry:(const void *)registry queue:(queue)queue
 {
   p_registry = &self->_registry;
-  v8 = *a3;
-  v7 = *(a3 + 1);
+  v8 = *registry;
+  v7 = *(registry + 1);
   if (v7)
   {
     atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);
@@ -49,8 +49,8 @@
     sub_100004A34(cntrl);
   }
 
-  v10 = *a4.fObj.fObj;
-  *a4.fObj.fObj = 0;
+  v10 = *queue.fObj.fObj;
+  *queue.fObj.fObj = 0;
   fObj = self->_queue.fObj.fObj;
   self->_queue.fObj.fObj = v10;
   if (fObj)
@@ -62,31 +62,31 @@
   return self;
 }
 
-- (id)_contextForSlotIDPlaceholder_sync:(id)a3
+- (id)_contextForSlotIDPlaceholder_sync:(id)placeholder_sync
 {
-  v4 = a3;
-  v5 = [(CTXPCNotificationProxy *)self dataProviderDelegate];
-  v6 = [v5 contextForSlot:{objc_msgSend(v4, "slot")}];
+  placeholder_syncCopy = placeholder_sync;
+  dataProviderDelegate = [(CTXPCNotificationProxy *)self dataProviderDelegate];
+  v6 = [dataProviderDelegate contextForSlot:{objc_msgSend(placeholder_syncCopy, "slot")}];
 
   return v6;
 }
 
-- (id)_contextForUUIDPlaceholder_sync:(id)a3
+- (id)_contextForUUIDPlaceholder_sync:(id)placeholder_sync
 {
-  v4 = a3;
-  v5 = [(CTXPCNotificationProxy *)self dataProviderDelegate];
-  v6 = [v4 uuid];
-  v7 = [v5 contextForUUID:v6];
+  placeholder_syncCopy = placeholder_sync;
+  dataProviderDelegate = [(CTXPCNotificationProxy *)self dataProviderDelegate];
+  uuid = [placeholder_syncCopy uuid];
+  v7 = [dataProviderDelegate contextForUUID:uuid];
 
   return v7;
 }
 
-- (BOOL)_resolvePlaceholders_sync:(id)a3
+- (BOOL)_resolvePlaceholders_sync:(id)placeholders_sync
 {
-  v3 = a3;
-  v4 = [v3 methodSignature];
-  v5 = [v4 numberOfArguments];
-  if (v5 >= 3)
+  placeholders_syncCopy = placeholders_sync;
+  methodSignature = [placeholders_syncCopy methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  if (numberOfArguments >= 3)
   {
     v6 = 0;
     v7 = 2;
@@ -95,7 +95,7 @@
       __dst = 0;
       v19 = 0;
       v20 = 0;
-      v8 = [v4 getArgumentTypeAtIndex:v7];
+      v8 = [methodSignature getArgumentTypeAtIndex:v7];
       v9 = strlen(v8);
       if (v9 >= 0x7FFFFFFFFFFFFFF8)
       {
@@ -128,8 +128,8 @@
       }
 
 LABEL_30:
-      v6 = ++v7 >= v5;
-      if (v5 == v7)
+      v6 = ++v7 >= numberOfArguments;
+      if (numberOfArguments == v7)
       {
         goto LABEL_31;
       }
@@ -163,7 +163,7 @@ LABEL_14:
     }
 
     v17 = 0;
-    [v3 getArgument:&v17 atIndex:v7];
+    [placeholders_syncCopy getArgument:&v17 atIndex:v7];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -173,7 +173,7 @@ LABEL_14:
         goto LABEL_26;
       }
 
-      [v3 setArgument:&v16 atIndex:v7];
+      [placeholders_syncCopy setArgument:&v16 atIndex:v7];
     }
 
     objc_opt_class();
@@ -185,7 +185,7 @@ LABEL_14:
     v16 = [(CTXPCNotificationProxy *)self _contextForUUIDPlaceholder_sync:v17];
     if (v16)
     {
-      [v3 setArgument:&v16 atIndex:v7];
+      [placeholders_syncCopy setArgument:&v16 atIndex:v7];
 
 LABEL_21:
       v13 = 0;
@@ -215,22 +215,22 @@ LABEL_31:
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 retainArguments];
-  v5 = self;
-  v6 = v4;
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
+  selfCopy = self;
+  v6 = invocationCopy;
   operator new();
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v5 = &byte_1017D2143;
   v6 = 8;
   while (1)
   {
-    MethodDescription = protocol_getMethodDescription(self->_protocol, a3, *(v5 - 1), *v5);
+    MethodDescription = protocol_getMethodDescription(self->_protocol, selector, *(v5 - 1), *v5);
     if (MethodDescription.name)
     {
       break;
@@ -251,19 +251,19 @@ LABEL_6:
   return v8;
 }
 
-- (void)anyClientRespondsToSelector:(SEL)a3 completion:(id)a4
+- (void)anyClientRespondsToSelector:(SEL)selector completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100125B40;
   v9[3] = &unk_101E2A5F0;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  v10 = v6;
+  v11[1] = selector;
+  v10 = completionCopy;
   fObj = self->_queue.fObj.fObj;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(fObj, v9);
 
   objc_destroyWeak(v11);
@@ -285,11 +285,11 @@ LABEL_6:
   return result;
 }
 
-- (void)setRegistry:(shared_ptr<const Registry>)a3
+- (void)setRegistry:(shared_ptr<const Registry>)registry
 {
   p_registry = &self->_registry;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *registry.__ptr_;
+  v4 = *(registry.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -316,12 +316,12 @@ LABEL_6:
   return fObj;
 }
 
-- (void)setQueue:(queue)a3
+- (void)setQueue:(queue)queue
 {
-  v4 = *a3.fObj.fObj;
-  if (*a3.fObj.fObj)
+  v4 = *queue.fObj.fObj;
+  if (*queue.fObj.fObj)
   {
-    dispatch_retain(*a3.fObj.fObj);
+    dispatch_retain(*queue.fObj.fObj);
   }
 
   fObj = self->_queue.fObj.fObj;

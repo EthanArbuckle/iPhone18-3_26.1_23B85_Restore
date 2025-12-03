@@ -1,35 +1,35 @@
 @interface FCPuzzleOverrides
-- (FCPuzzleOverrides)initWithTitle:(id)a3 subtitle:(id)a4 description:(id)a5 author:(id)a6 teaserClue:(id)a7 teaserAnswer:(id)a8 teaserInfo:(id)a9 teaserDirection:(id)a10 teaserNumber:(id)a11;
+- (FCPuzzleOverrides)initWithTitle:(id)title subtitle:(id)subtitle description:(id)description author:(id)author teaserClue:(id)clue teaserAnswer:(id)answer teaserInfo:(id)info teaserDirection:(id)self0 teaserNumber:(id)self1;
 @end
 
 @implementation FCPuzzleOverrides
 
-- (FCPuzzleOverrides)initWithTitle:(id)a3 subtitle:(id)a4 description:(id)a5 author:(id)a6 teaserClue:(id)a7 teaserAnswer:(id)a8 teaserInfo:(id)a9 teaserDirection:(id)a10 teaserNumber:(id)a11
+- (FCPuzzleOverrides)initWithTitle:(id)title subtitle:(id)subtitle description:(id)description author:(id)author teaserClue:(id)clue teaserAnswer:(id)answer teaserInfo:(id)info teaserDirection:(id)self0 teaserNumber:(id)self1
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  descriptionCopy = description;
+  authorCopy = author;
+  clueCopy = clue;
+  answerCopy = answer;
+  infoCopy = info;
+  directionCopy = direction;
+  numberCopy = number;
   v30.receiver = self;
   v30.super_class = FCPuzzleOverrides;
   v19 = [(FCPuzzleOverrides *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_title, a3);
-    objc_storeStrong(&v20->_subtitle, a4);
-    objc_storeStrong(&v20->_puzzleDescription, a5);
-    objc_storeStrong(&v20->_author, a6);
-    objc_storeStrong(&v20->_teaserClue, a7);
-    objc_storeStrong(&v20->_teaserAnswer, a8);
-    objc_storeStrong(&v20->_teaserInfo, a9);
-    objc_storeStrong(&v20->_teaserDirection, a10);
-    objc_storeStrong(&v20->_teaserNumber, a11);
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v20->_subtitle, subtitle);
+    objc_storeStrong(&v20->_puzzleDescription, description);
+    objc_storeStrong(&v20->_author, author);
+    objc_storeStrong(&v20->_teaserClue, clue);
+    objc_storeStrong(&v20->_teaserAnswer, answer);
+    objc_storeStrong(&v20->_teaserInfo, info);
+    objc_storeStrong(&v20->_teaserDirection, direction);
+    objc_storeStrong(&v20->_teaserNumber, number);
   }
 
   return v20;

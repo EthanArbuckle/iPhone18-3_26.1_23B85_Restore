@@ -1,22 +1,22 @@
 @interface SearchUIListenToAsyncSectionLoader
-+ (BOOL)supportsSectionModel:(id)a3;
-- (SearchUIListenToAsyncSectionLoader)initWithSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5;
++ (BOOL)supportsSectionModel:(id)model;
+- (SearchUIListenToAsyncSectionLoader)initWithSectionModel:(id)model result:(id)result queryId:(unint64_t)id;
 - (id)cacheIdentifier;
 - (id)placeholderCardSections;
-- (void)fetchCardSectionsWithCompletionHandler:(id)a3;
+- (void)fetchCardSectionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchUIListenToAsyncSectionLoader
 
-+ (BOOL)supportsSectionModel:(id)a3
++ (BOOL)supportsSectionModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 rowModels];
-  if ([v4 count] == 1)
+  modelCopy = model;
+  rowModels = [modelCopy rowModels];
+  if ([rowModels count] == 1)
   {
-    v5 = [v3 rowModels];
-    v6 = [v5 firstObject];
-    v7 = [v6 cardSection];
+    rowModels2 = [modelCopy rowModels];
+    firstObject = [rowModels2 firstObject];
+    cardSection = [firstObject cardSection];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -32,39 +32,39 @@
 - (id)placeholderCardSections
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
-  v4 = [v3 fallbackCardSection];
+  listenToCardSection = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
+  fallbackCardSection = [listenToCardSection fallbackCardSection];
 
-  if (v4)
+  if (fallbackCardSection)
   {
-    v5 = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
-    v6 = [v5 fallbackCardSection];
-    v10[0] = v6;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
+    listenToCardSection2 = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
+    fallbackCardSection2 = [listenToCardSection2 fallbackCardSection];
+    v10[0] = fallbackCardSection2;
+    placeholderCardSections = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SearchUIListenToAsyncSectionLoader;
-    v7 = [(SearchUIAsyncSectionLoader *)&v9 placeholderCardSections];
+    placeholderCardSections = [(SearchUIAsyncSectionLoader *)&v9 placeholderCardSections];
   }
 
-  return v7;
+  return placeholderCardSections;
 }
 
-- (SearchUIListenToAsyncSectionLoader)initWithSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5
+- (SearchUIListenToAsyncSectionLoader)initWithSectionModel:(id)model result:(id)result queryId:(unint64_t)id
 {
-  v8 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = SearchUIListenToAsyncSectionLoader;
-  v9 = [(SearchUIAsyncSectionLoader *)&v14 initWithSectionModel:v8 result:a4 queryId:a5];
+  v9 = [(SearchUIAsyncSectionLoader *)&v14 initWithSectionModel:modelCopy result:result queryId:id];
   if (v9)
   {
-    v10 = [v8 rowModels];
-    v11 = [v10 firstObject];
-    v12 = [v11 cardSection];
-    [(SearchUIListenToAsyncSectionLoader *)v9 setListenToCardSection:v12];
+    rowModels = [modelCopy rowModels];
+    firstObject = [rowModels firstObject];
+    cardSection = [firstObject cardSection];
+    [(SearchUIListenToAsyncSectionLoader *)v9 setListenToCardSection:cardSection];
   }
 
   return v9;
@@ -72,22 +72,22 @@
 
 - (id)cacheIdentifier
 {
-  v2 = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
-  v3 = [v2 resultIdentifier];
+  listenToCardSection = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
+  resultIdentifier = [listenToCardSection resultIdentifier];
 
-  return v3;
+  return resultIdentifier;
 }
 
-- (void)fetchCardSectionsWithCompletionHandler:(id)a3
+- (void)fetchCardSectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_opt_new();
-  v5 = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
-  v6 = [SearchUIMediaUtilities cardSectionsForListenToCardSection:v5];
+  listenToCardSection = [(SearchUIListenToAsyncSectionLoader *)self listenToCardSection];
+  v6 = [SearchUIMediaUtilities cardSectionsForListenToCardSection:listenToCardSection];
   [v7 setCardSection:v6];
 
   [v7 setAnimated:1];
-  v4[2](v4, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
 @end

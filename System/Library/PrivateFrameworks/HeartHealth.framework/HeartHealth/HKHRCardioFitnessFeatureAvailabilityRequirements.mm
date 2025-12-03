@@ -44,65 +44,65 @@
   v28[20] = *MEMORY[0x277D85DE8];
   v21 = objc_alloc(MEMORY[0x277CCD420]);
   v27[0] = *MEMORY[0x277CCBE00];
-  v26 = [objc_opt_class() _backgroundDelivery];
-  v28[0] = v26;
+  _backgroundDelivery = [objc_opt_class() _backgroundDelivery];
+  v28[0] = _backgroundDelivery;
   v27[1] = *MEMORY[0x277CCBE38];
-  v25 = [objc_opt_class() _onboardingInitiation];
-  v28[1] = v25;
+  _onboardingInitiation = [objc_opt_class() _onboardingInitiation];
+  v28[1] = _onboardingInitiation;
   v27[2] = *MEMORY[0x277CCBE50];
-  v24 = [objc_opt_class() _promotion];
-  v28[2] = v24;
+  _promotion = [objc_opt_class() _promotion];
+  v28[2] = _promotion;
   v27[3] = *MEMORY[0x277CCBDF0];
-  v23 = [objc_opt_class() _advertiseableFeature];
-  v28[3] = v23;
+  _advertiseableFeature = [objc_opt_class() _advertiseableFeature];
+  v28[3] = _advertiseableFeature;
   v27[4] = *MEMORY[0x277CCBEA0];
-  v22 = [objc_opt_class() _usage];
-  v28[4] = v22;
+  _usage = [objc_opt_class() _usage];
+  v28[4] = _usage;
   v27[5] = *MEMORY[0x277CCBE30];
-  v20 = [objc_opt_class() _notInPregnancyMode];
-  v28[5] = v20;
+  _notInPregnancyMode = [objc_opt_class() _notInPregnancyMode];
+  v28[5] = _notInPregnancyMode;
   v27[6] = *MEMORY[0x277CCBE60];
-  v19 = [objc_opt_class() _pregnancyAdjustmentEligibility];
-  v28[6] = v19;
+  _pregnancyAdjustmentEligibility = [objc_opt_class() _pregnancyAdjustmentEligibility];
+  v28[6] = _pregnancyAdjustmentEligibility;
   v27[7] = *MEMORY[0x277CCBE58];
-  v18 = [objc_opt_class() _postPregnancyAdjustmentEligibility];
-  v28[7] = v18;
+  _postPregnancyAdjustmentEligibility = [objc_opt_class() _postPregnancyAdjustmentEligibility];
+  v28[7] = _postPregnancyAdjustmentEligibility;
   v27[8] = @"CardioFitnessNotification";
-  v17 = [objc_opt_class() _notificationGeneration];
-  v28[8] = v17;
+  _notificationGeneration = [objc_opt_class() _notificationGeneration];
+  v28[8] = _notificationGeneration;
   v27[9] = @"CardioFitnessClassification";
-  v16 = [objc_opt_class() _classification];
-  v28[9] = v16;
+  _classification = [objc_opt_class() _classification];
+  v28[9] = _classification;
   v27[10] = @"CardioFitnessHealthChecklistSettingsFooter";
-  v15 = [objc_opt_class() _healthChecklistSettingsFooter];
-  v28[10] = v15;
+  _healthChecklistSettingsFooter = [objc_opt_class() _healthChecklistSettingsFooter];
+  v28[10] = _healthChecklistSettingsFooter;
   v27[11] = @"CardioFitnessBridgeSettingsVisibility";
-  v14 = [objc_opt_class() _bridgeSettingsVisibility];
-  v28[11] = v14;
+  _bridgeSettingsVisibility = [objc_opt_class() _bridgeSettingsVisibility];
+  v28[11] = _bridgeSettingsVisibility;
   v27[12] = @"CardioFitnessBridgeOnboardingVisibility";
-  v2 = [objc_opt_class() _bridgeOnboardingVisibility];
-  v28[12] = v2;
+  _bridgeOnboardingVisibility = [objc_opt_class() _bridgeOnboardingVisibility];
+  v28[12] = _bridgeOnboardingVisibility;
   v27[13] = @"CardioFitnessBridgeOnboardingEnablement";
-  v3 = [objc_opt_class() _bridgeOnboardingEnablement];
-  v28[13] = v3;
+  _bridgeOnboardingEnablement = [objc_opt_class() _bridgeOnboardingEnablement];
+  v28[13] = _bridgeOnboardingEnablement;
   v27[14] = @"CardioFitnessBridgeNotificationsEnablement";
-  v4 = [objc_opt_class() _bridgeNotificationsEnablement];
-  v28[14] = v4;
+  _bridgeNotificationsEnablement = [objc_opt_class() _bridgeNotificationsEnablement];
+  v28[14] = _bridgeNotificationsEnablement;
   v27[15] = @"CardioFitnessBridgeNotificationsFooter";
-  v5 = [objc_opt_class() _bridgeNotificationsFooter];
-  v28[15] = v5;
+  _bridgeNotificationsFooter = [objc_opt_class() _bridgeNotificationsFooter];
+  v28[15] = _bridgeNotificationsFooter;
   v27[16] = @"CardioFitnessNanoSettingsVisibility";
-  v6 = [objc_opt_class() _nanoSettingsVisibility];
-  v28[16] = v6;
+  _nanoSettingsVisibility = [objc_opt_class() _nanoSettingsVisibility];
+  v28[16] = _nanoSettingsVisibility;
   v27[17] = @"CardioFitnessNanoSettingsEnablement";
-  v7 = [objc_opt_class() _nanoSettingsEnablement];
-  v28[17] = v7;
+  _nanoSettingsEnablement = [objc_opt_class() _nanoSettingsEnablement];
+  v28[17] = _nanoSettingsEnablement;
   v27[18] = @"CardioFitnessOnboardedHealthChecklist";
-  v8 = [objc_opt_class() _onboardedHealthChecklist];
-  v28[18] = v8;
+  _onboardedHealthChecklist = [objc_opt_class() _onboardedHealthChecklist];
+  v28[18] = _onboardedHealthChecklist;
   v27[19] = @"CardioFitnessNotOnboardedHealthChecklist";
-  v9 = [objc_opt_class() _notOnboardedHealthChecklist];
-  v28[19] = v9;
+  _notOnboardedHealthChecklist = [objc_opt_class() _notOnboardedHealthChecklist];
+  v28[19] = _notOnboardedHealthChecklist;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:20];
   v11 = [v21 initWithRequirementsByContext:v10];
 
@@ -113,120 +113,120 @@
 
 + (id)backgroundDelivery
 {
-  v3 = [a1 _backgroundDelivery];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _backgroundDelivery = [self _backgroundDelivery];
+  v4 = [self _requirementIdentifiersForRequirements:_backgroundDelivery];
 
   return v4;
 }
 
 + (id)onboardingInitiationRequirementIdentifiers
 {
-  v3 = [a1 _onboardingInitiation];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _onboardingInitiation = [self _onboardingInitiation];
+  v4 = [self _requirementIdentifiersForRequirements:_onboardingInitiation];
 
   return v4;
 }
 
 + (id)promotionRequirementIdentifiers
 {
-  v3 = [a1 _promotion];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _promotion = [self _promotion];
+  v4 = [self _requirementIdentifiersForRequirements:_promotion];
 
   return v4;
 }
 
 + (id)usageRequirementIdentifiers
 {
-  v3 = [a1 _usage];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _usage = [self _usage];
+  v4 = [self _requirementIdentifiersForRequirements:_usage];
 
   return v4;
 }
 
 + (id)notificationGeneration
 {
-  v3 = [a1 _notificationGeneration];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _notificationGeneration = [self _notificationGeneration];
+  v4 = [self _requirementIdentifiersForRequirements:_notificationGeneration];
 
   return v4;
 }
 
 + (id)classificationGeneration
 {
-  v3 = [a1 _classification];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _classification = [self _classification];
+  v4 = [self _requirementIdentifiersForRequirements:_classification];
 
   return v4;
 }
 
 + (id)healthChecklistSettingsFooter
 {
-  v3 = [a1 _healthChecklistSettingsFooter];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _healthChecklistSettingsFooter = [self _healthChecklistSettingsFooter];
+  v4 = [self _requirementIdentifiersForRequirements:_healthChecklistSettingsFooter];
 
   return v4;
 }
 
 + (id)bridgeSettingsVisibilityRequirementIdentifiers
 {
-  v3 = [a1 _bridgeSettingsVisibility];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _bridgeSettingsVisibility = [self _bridgeSettingsVisibility];
+  v4 = [self _requirementIdentifiersForRequirements:_bridgeSettingsVisibility];
 
   return v4;
 }
 
 + (id)bridgeOnboardingVisibilityRequirementIdentifiers
 {
-  v3 = [a1 _bridgeOnboardingVisibility];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _bridgeOnboardingVisibility = [self _bridgeOnboardingVisibility];
+  v4 = [self _requirementIdentifiersForRequirements:_bridgeOnboardingVisibility];
 
   return v4;
 }
 
 + (id)bridgeOnboardingEnablementRequirementIdentifiers
 {
-  v3 = [a1 _bridgeOnboardingEnablement];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _bridgeOnboardingEnablement = [self _bridgeOnboardingEnablement];
+  v4 = [self _requirementIdentifiersForRequirements:_bridgeOnboardingEnablement];
 
   return v4;
 }
 
 + (id)bridgeNotificationsEnablementRequirementIdentifiers
 {
-  v3 = [a1 _bridgeNotificationsEnablement];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _bridgeNotificationsEnablement = [self _bridgeNotificationsEnablement];
+  v4 = [self _requirementIdentifiersForRequirements:_bridgeNotificationsEnablement];
 
   return v4;
 }
 
 + (id)bridgeNotificationsFooterRequirementIdentifiers
 {
-  v3 = [a1 _bridgeNotificationsFooter];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _bridgeNotificationsFooter = [self _bridgeNotificationsFooter];
+  v4 = [self _requirementIdentifiersForRequirements:_bridgeNotificationsFooter];
 
   return v4;
 }
 
 + (id)nanoSettingsVisibilityRequirementIdentifiers
 {
-  v3 = [a1 _nanoSettingsVisibility];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _nanoSettingsVisibility = [self _nanoSettingsVisibility];
+  v4 = [self _requirementIdentifiersForRequirements:_nanoSettingsVisibility];
 
   return v4;
 }
 
 + (id)nanoSettingsEnablementRequirementIdentifiers
 {
-  v3 = [a1 _nanoSettingsEnablement];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _nanoSettingsEnablement = [self _nanoSettingsEnablement];
+  v4 = [self _requirementIdentifiersForRequirements:_nanoSettingsEnablement];
 
   return v4;
 }
 
 + (id)notInPregnancyModeRequirementIdentifiers
 {
-  v3 = [a1 _notInPregnancyMode];
-  v4 = [a1 _requirementIdentifiersForRequirements:v3];
+  _notInPregnancyMode = [self _notInPregnancyMode];
+  v4 = [self _requirementIdentifiersForRequirements:_notInPregnancyMode];
 
   return v4;
 }
@@ -234,8 +234,8 @@
 + (id)_backgroundDelivery
 {
   v2 = MEMORY[0x277CCD428];
-  v3 = [objc_opt_class() _featureIdentifier];
-  v4 = [v2 defaultOnboardingEligibilityRequirementsForFeatureIdentifier:v3];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v4 = [v2 defaultOnboardingEligibilityRequirementsForFeatureIdentifier:_featureIdentifier];
 
   return v4;
 }
@@ -243,35 +243,35 @@
 + (id)_onboardingInitiation
 {
   v25[10] = *MEMORY[0x277D85DE8];
-  v24 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v25[0] = v24;
+  profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v25[0] = profileIsNotFamilySetupPairingProfile;
   v23 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC218]];
   v25[1] = v23;
   v2 = MEMORY[0x277CCD428];
-  v22 = [objc_opt_class() _featureIdentifier];
-  v21 = [v2 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v22 supportedOnLocalDevice:1];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v21 = [v2 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier supportedOnLocalDevice:1];
   v25[2] = v21;
-  v20 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v25[3] = v20;
-  v19 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v25[4] = v19;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v25[3] = heartRateIsEnabledInPrivacy;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v25[4] = healthAppIsNotHidden;
   v3 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v25[5] = v3;
   v4 = MEMORY[0x277CCD428];
-  v5 = [objc_opt_class() _featureIdentifier];
-  v6 = [v4 onboardingRecordIsPresentForFeatureWithIdentifier:v5];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v6 = [v4 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier2];
   v25[6] = v6;
   v7 = MEMORY[0x277CCD428];
-  v8 = [objc_opt_class() _featureIdentifier];
-  v9 = [v7 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v8];
+  _featureIdentifier3 = [objc_opt_class() _featureIdentifier];
+  v9 = [v7 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier3];
   v25[7] = v9;
   v10 = MEMORY[0x277CCD428];
-  v11 = [objc_opt_class() _featureIdentifier];
-  v12 = [v10 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v11 isSupportedIfCountryListMissing:1];
+  _featureIdentifier4 = [objc_opt_class() _featureIdentifier];
+  v12 = [v10 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier4 isSupportedIfCountryListMissing:1];
   v25[8] = v12;
   v13 = MEMORY[0x277CCD428];
-  v14 = [objc_opt_class() _featureIdentifier];
-  v15 = [v13 onboardingNotAcknowledgedWithIdentifier:v14 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
+  _featureIdentifier5 = [objc_opt_class() _featureIdentifier];
+  v15 = [v13 onboardingNotAcknowledgedWithIdentifier:_featureIdentifier5 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
   v25[9] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:10];
 
@@ -282,11 +282,11 @@
 
 + (id)_promotion
 {
-  v3 = [objc_opt_class() _onboardingInitiation];
-  v4 = [v3 mutableCopy];
+  _onboardingInitiation = [objc_opt_class() _onboardingInitiation];
+  v4 = [_onboardingInitiation mutableCopy];
 
-  v5 = [a1 _notInPregnancyMode];
-  [v4 addObjectsFromArray:v5];
+  _notInPregnancyMode = [self _notInPregnancyMode];
+  [v4 addObjectsFromArray:_notInPregnancyMode];
 
   return v4;
 }
@@ -294,21 +294,21 @@
 + (id)_advertiseableFeature
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _onboardingInitiation];
-  v4 = [v3 mutableCopy];
+  _onboardingInitiation = [objc_opt_class() _onboardingInitiation];
+  v4 = [_onboardingInitiation mutableCopy];
 
   [v4 hk_removeObjectsPassingTest:&__block_literal_global_3];
-  v5 = [MEMORY[0x277CCD428] ageIsPresent];
-  v13[0] = v5;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v13[0] = ageIsPresent;
   v6 = MEMORY[0x277CCD428];
-  v7 = [objc_opt_class() _featureIdentifier];
-  v8 = [v6 featureIsOffWithIdentifier:v7 isOffIfSettingIsAbsent:1];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v8 = [v6 featureIsOffWithIdentifier:_featureIdentifier isOffIfSettingIsAbsent:1];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   [v4 addObjectsFromArray:v9];
 
-  v10 = [a1 _notInPregnancyMode];
-  [v4 addObjectsFromArray:v10];
+  _notInPregnancyMode = [self _notInPregnancyMode];
+  [v4 addObjectsFromArray:_notInPregnancyMode];
 
   v11 = *MEMORY[0x277D85DE8];
 
@@ -336,39 +336,39 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_usage
 {
   v28[11] = *MEMORY[0x277D85DE8];
-  v27 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v28[0] = v27;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v28[0] = healthAppIsNotHidden;
   v26 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v28[1] = v26;
   v25 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCE240]];
   v28[2] = v25;
   v2 = MEMORY[0x277CCD428];
-  v24 = [objc_opt_class() _featureIdentifier];
-  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v24];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v28[3] = v23;
   v3 = MEMORY[0x277CCD428];
-  v22 = [objc_opt_class() _featureIdentifier];
-  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v22 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v28[4] = v21;
   v4 = MEMORY[0x277CCD428];
-  v20 = [objc_opt_class() _featureIdentifier];
-  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v20 supportedOnLocalDevice:1];
+  _featureIdentifier3 = [objc_opt_class() _featureIdentifier];
+  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier3 supportedOnLocalDevice:1];
   v28[5] = v5;
-  v6 = [MEMORY[0x277CCD428] ageIsPresent];
-  v28[6] = v6;
-  v7 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v28[7] = v7;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v28[6] = ageIsPresent;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v28[7] = heartRateIsEnabledInPrivacy;
   v8 = MEMORY[0x277CCD428];
-  v9 = [objc_opt_class() _featureIdentifier];
-  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:v9];
+  _featureIdentifier4 = [objc_opt_class() _featureIdentifier];
+  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier4];
   v28[8] = v10;
   v11 = MEMORY[0x277CCD428];
-  v12 = [objc_opt_class() _featureIdentifier];
-  v13 = [v11 onboardingAcknowledgedWithIdentifier:v12 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
+  _featureIdentifier5 = [objc_opt_class() _featureIdentifier];
+  v13 = [v11 onboardingAcknowledgedWithIdentifier:_featureIdentifier5 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
   v28[9] = v13;
   v14 = MEMORY[0x277CCD428];
-  v15 = [objc_opt_class() _featureIdentifier];
-  v16 = [v14 featureIsOnWithIdentifier:v15 isOnIfSettingIsAbsent:1];
+  _featureIdentifier6 = [objc_opt_class() _featureIdentifier];
+  v16 = [v14 featureIsOnWithIdentifier:_featureIdentifier6 isOnIfSettingIsAbsent:1];
   v28[10] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:11];
 
@@ -379,8 +379,8 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 
 + (id)_notificationGeneration
 {
-  v2 = [objc_opt_class() _usage];
-  v3 = [v2 mutableCopy];
+  _usage = [objc_opt_class() _usage];
+  v3 = [_usage mutableCopy];
 
   return v3;
 }
@@ -389,15 +389,15 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 {
   v13[4] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCD428];
-  v3 = [objc_opt_class() _featureIdentifier];
-  v4 = [v2 onboardingRecordIsPresentForFeatureWithIdentifier:v3];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v4 = [v2 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier];
   v13[0] = v4;
   v5 = MEMORY[0x277CCD428];
-  v6 = [objc_opt_class() _featureIdentifier];
-  v7 = [v5 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v6];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v7 = [v5 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier2];
   v13[1] = v7;
-  v8 = [MEMORY[0x277CCD428] ageIsPresent];
-  v13[2] = v8;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v13[2] = ageIsPresent;
   v9 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC218]];
   v13[3] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:4];
@@ -410,11 +410,11 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_healthChecklistSettingsFooter
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() _usage];
-  v3 = [v2 mutableCopy];
+  _usage = [objc_opt_class() _usage];
+  v3 = [_usage mutableCopy];
 
-  v4 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-  v8[0] = v4;
+  wristDetectionIsEnabledForActiveWatch = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+  v8[0] = wristDetectionIsEnabledForActiveWatch;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   [v3 addObjectsFromArray:v5];
 
@@ -426,16 +426,16 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_bridgeSettingsVisibility
 {
   v13[5] = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() _featureIdentifier];
-  v3 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v2];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v3 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier];
   v4 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:{*MEMORY[0x277CCE248], v3}];
   v13[1] = v4;
   v5 = MEMORY[0x277CCD428];
-  v6 = [objc_opt_class() _featureIdentifier];
-  v7 = [v5 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v6 supportedOnLocalDevice:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v7 = [v5 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier2 supportedOnLocalDevice:1];
   v13[2] = v7;
-  v8 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v13[3] = v8;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v13[3] = healthAppIsNotHidden;
   v9 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v13[4] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:5];
@@ -449,8 +449,8 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCD428];
-  v3 = [objc_opt_class() _featureIdentifier];
-  v4 = [v2 onboardingNotAcknowledgedWithIdentifier:v3 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v4 = [v2 onboardingNotAcknowledgedWithIdentifier:_featureIdentifier settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -463,14 +463,14 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCD428];
-  v3 = [objc_opt_class() _featureIdentifier];
-  v4 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v3];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v4 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v5 = MEMORY[0x277CCD428];
-  v6 = [objc_opt_class() _featureIdentifier];
-  v7 = [v5 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v6 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v7 = [v5 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v12[1] = v7;
-  v8 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v12[2] = v8;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v12[2] = heartRateIsEnabledInPrivacy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -482,18 +482,18 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 {
   v14[5] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC218]];
-  v3 = [MEMORY[0x277CCD428] ageIsPresent];
-  v14[1] = v3;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v14[1] = ageIsPresent;
   v4 = MEMORY[0x277CCD428];
-  v5 = [objc_opt_class() _featureIdentifier];
-  v6 = [v4 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v5];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v6 = [v4 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v14[2] = v6;
   v7 = MEMORY[0x277CCD428];
-  v8 = [objc_opt_class() _featureIdentifier];
-  v9 = [v7 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v8 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v9 = [v7 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v14[3] = v9;
-  v10 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v14[4] = v10;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v14[4] = heartRateIsEnabledInPrivacy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:5];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -504,11 +504,11 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_bridgeNotificationsFooter
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() _bridgeNotificationsEnablement];
-  v3 = [v2 mutableCopy];
+  _bridgeNotificationsEnablement = [objc_opt_class() _bridgeNotificationsEnablement];
+  v3 = [_bridgeNotificationsEnablement mutableCopy];
 
-  v4 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-  v8[0] = v4;
+  wristDetectionIsEnabledForActiveWatch = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+  v8[0] = wristDetectionIsEnabledForActiveWatch;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   [v3 addObjectsFromArray:v5];
 
@@ -519,16 +519,16 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 
 + (id)_nanoSettingsVisibility
 {
-  v2 = [objc_opt_class() _notificationGeneration];
-  v3 = [v2 mutableCopy];
+  _notificationGeneration = [objc_opt_class() _notificationGeneration];
+  v3 = [_notificationGeneration mutableCopy];
 
   v4 = MEMORY[0x277CCD428];
-  v5 = [objc_opt_class() _featureIdentifier];
-  v6 = [v4 featureIsOnWithIdentifier:v5 isOnIfSettingIsAbsent:1];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v6 = [v4 featureIsOnWithIdentifier:_featureIdentifier isOnIfSettingIsAbsent:1];
   [v3 removeObject:v6];
 
-  v7 = [MEMORY[0x277CCD428] ageIsPresent];
-  [v3 removeObject:v7];
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  [v3 removeObject:ageIsPresent];
 
   v8 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC218]];
   [v3 removeObject:v8];
@@ -544,8 +544,8 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
   v7[2] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC218]];
   v7[0] = v2;
-  v3 = [MEMORY[0x277CCD428] ageIsPresent];
-  v7[1] = v3;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v7[1] = ageIsPresent;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -556,39 +556,39 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_onboardedHealthChecklist
 {
   v28[11] = *MEMORY[0x277D85DE8];
-  v27 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v28[0] = v27;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v28[0] = healthAppIsNotHidden;
   v26 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v28[1] = v26;
   v25 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCE240]];
   v28[2] = v25;
   v2 = MEMORY[0x277CCD428];
-  v24 = [objc_opt_class() _featureIdentifier];
-  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v24];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v28[3] = v23;
   v3 = MEMORY[0x277CCD428];
-  v22 = [objc_opt_class() _featureIdentifier];
-  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v22 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v28[4] = v21;
   v4 = MEMORY[0x277CCD428];
-  v20 = [objc_opt_class() _featureIdentifier];
-  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v20 supportedOnLocalDevice:1];
+  _featureIdentifier3 = [objc_opt_class() _featureIdentifier];
+  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier3 supportedOnLocalDevice:1];
   v28[5] = v5;
-  v6 = [MEMORY[0x277CCD428] ageIsPresent];
-  v28[6] = v6;
-  v7 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v28[7] = v7;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v28[6] = ageIsPresent;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v28[7] = heartRateIsEnabledInPrivacy;
   v8 = MEMORY[0x277CCD428];
-  v9 = [objc_opt_class() _featureIdentifier];
-  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:v9];
+  _featureIdentifier4 = [objc_opt_class() _featureIdentifier];
+  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier4];
   v28[8] = v10;
   v11 = MEMORY[0x277CCD428];
-  v12 = [objc_opt_class() _featureIdentifier];
-  v13 = [v11 onboardingAcknowledgedWithIdentifier:v12 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
+  _featureIdentifier5 = [objc_opt_class() _featureIdentifier];
+  v13 = [v11 onboardingAcknowledgedWithIdentifier:_featureIdentifier5 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
   v28[9] = v13;
   v14 = MEMORY[0x277CCD428];
-  v15 = [objc_opt_class() _featureIdentifier];
-  v16 = [v14 featureIsOnWithIdentifier:v15 isOnIfSettingIsAbsent:1];
+  _featureIdentifier6 = [objc_opt_class() _featureIdentifier];
+  v16 = [v14 featureIsOnWithIdentifier:_featureIdentifier6 isOnIfSettingIsAbsent:1];
   v28[10] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:11];
 
@@ -600,29 +600,29 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_notOnboardedHealthChecklist
 {
   v21[8] = *MEMORY[0x277D85DE8];
-  v20 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v21[0] = v20;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v21[0] = healthAppIsNotHidden;
   v19 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v21[1] = v19;
   v18 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCE240]];
   v21[2] = v18;
   v2 = MEMORY[0x277CCD428];
-  v3 = [objc_opt_class() _featureIdentifier];
-  v4 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v3];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v4 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v21[3] = v4;
   v5 = MEMORY[0x277CCD428];
-  v6 = [objc_opt_class() _featureIdentifier];
-  v7 = [v5 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v6 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v7 = [v5 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v21[4] = v7;
   v8 = MEMORY[0x277CCD428];
-  v9 = [objc_opt_class() _featureIdentifier];
-  v10 = [v8 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v9 supportedOnLocalDevice:1];
+  _featureIdentifier3 = [objc_opt_class() _featureIdentifier];
+  v10 = [v8 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier3 supportedOnLocalDevice:1];
   v21[5] = v10;
-  v11 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v21[6] = v11;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v21[6] = heartRateIsEnabledInPrivacy;
   v12 = MEMORY[0x277CCD428];
-  v13 = [objc_opt_class() _featureIdentifier];
-  v14 = [v12 onboardingRecordIsPresentForFeatureWithIdentifier:v13];
+  _featureIdentifier4 = [objc_opt_class() _featureIdentifier];
+  v14 = [v12 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier4];
   v21[7] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:8];
 
@@ -634,10 +634,10 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_notInPregnancyMode
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCD428] isNotInPostPregnancy];
-  v7[0] = v2;
-  v3 = [MEMORY[0x277CCD428] noOngoingPregnancy];
-  v7[1] = v3;
+  isNotInPostPregnancy = [MEMORY[0x277CCD428] isNotInPostPregnancy];
+  v7[0] = isNotInPostPregnancy;
+  noOngoingPregnancy = [MEMORY[0x277CCD428] noOngoingPregnancy];
+  v7[1] = noOngoingPregnancy;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -648,39 +648,39 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_pregnancyAdjustmentEligibility
 {
   v28[11] = *MEMORY[0x277D85DE8];
-  v27 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v28[0] = v27;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v28[0] = healthAppIsNotHidden;
   v26 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v28[1] = v26;
   v25 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCE240]];
   v28[2] = v25;
   v2 = MEMORY[0x277CCD428];
-  v24 = [objc_opt_class() _featureIdentifier];
-  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v24];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v28[3] = v23;
   v3 = MEMORY[0x277CCD428];
-  v22 = [objc_opt_class() _featureIdentifier];
-  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v22 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v28[4] = v21;
   v4 = MEMORY[0x277CCD428];
-  v20 = [objc_opt_class() _featureIdentifier];
-  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v20 supportedOnLocalDevice:1];
+  _featureIdentifier3 = [objc_opt_class() _featureIdentifier];
+  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier3 supportedOnLocalDevice:1];
   v28[5] = v5;
-  v6 = [MEMORY[0x277CCD428] ageIsPresent];
-  v28[6] = v6;
-  v7 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v28[7] = v7;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v28[6] = ageIsPresent;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v28[7] = heartRateIsEnabledInPrivacy;
   v8 = MEMORY[0x277CCD428];
-  v9 = [objc_opt_class() _featureIdentifier];
-  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:v9];
+  _featureIdentifier4 = [objc_opt_class() _featureIdentifier];
+  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier4];
   v28[8] = v10;
   v11 = MEMORY[0x277CCD428];
-  v12 = [objc_opt_class() _featureIdentifier];
-  v13 = [v11 onboardingAcknowledgedWithIdentifier:v12 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
+  _featureIdentifier5 = [objc_opt_class() _featureIdentifier];
+  v13 = [v11 onboardingAcknowledgedWithIdentifier:_featureIdentifier5 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
   v28[9] = v13;
   v14 = MEMORY[0x277CCD428];
-  v15 = [objc_opt_class() _featureIdentifier];
-  v16 = [v14 featureIsOnWithIdentifier:v15 isOnIfSettingIsAbsent:1];
+  _featureIdentifier6 = [objc_opt_class() _featureIdentifier];
+  v16 = [v14 featureIsOnWithIdentifier:_featureIdentifier6 isOnIfSettingIsAbsent:1];
   v28[10] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:11];
 
@@ -692,39 +692,39 @@ uint64_t __73__HKHRCardioFitnessFeatureAvailabilityRequirements__advertiseableFe
 + (id)_postPregnancyAdjustmentEligibility
 {
   v28[11] = *MEMORY[0x277D85DE8];
-  v27 = [MEMORY[0x277CCD428] healthAppIsNotHidden];
-  v28[0] = v27;
+  healthAppIsNotHidden = [MEMORY[0x277CCD428] healthAppIsNotHidden];
+  v28[0] = healthAppIsNotHidden;
   v26 = [MEMORY[0x277CCD428] watchAppIsInstalledForBundleIdentifier:@"com.apple.HeartRate"];
   v28[1] = v26;
   v25 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCE240]];
   v28[2] = v25;
   v2 = MEMORY[0x277CCD428];
-  v24 = [objc_opt_class() _featureIdentifier];
-  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v24];
+  _featureIdentifier = [objc_opt_class() _featureIdentifier];
+  v23 = [v2 countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:_featureIdentifier];
   v28[3] = v23;
   v3 = MEMORY[0x277CCD428];
-  v22 = [objc_opt_class() _featureIdentifier];
-  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:v22 isSupportedIfCountryListMissing:1];
+  _featureIdentifier2 = [objc_opt_class() _featureIdentifier];
+  v21 = [v3 countryIsSupportedOnActiveRemoteDeviceForFeatureWithIdentifier:_featureIdentifier2 isSupportedIfCountryListMissing:1];
   v28[4] = v21;
   v4 = MEMORY[0x277CCD428];
-  v20 = [objc_opt_class() _featureIdentifier];
-  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v20 supportedOnLocalDevice:1];
+  _featureIdentifier3 = [objc_opt_class() _featureIdentifier];
+  v5 = [v4 capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:_featureIdentifier3 supportedOnLocalDevice:1];
   v28[5] = v5;
-  v6 = [MEMORY[0x277CCD428] ageIsPresent];
-  v28[6] = v6;
-  v7 = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
-  v28[7] = v7;
+  ageIsPresent = [MEMORY[0x277CCD428] ageIsPresent];
+  v28[6] = ageIsPresent;
+  heartRateIsEnabledInPrivacy = [MEMORY[0x277CCD428] heartRateIsEnabledInPrivacy];
+  v28[7] = heartRateIsEnabledInPrivacy;
   v8 = MEMORY[0x277CCD428];
-  v9 = [objc_opt_class() _featureIdentifier];
-  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:v9];
+  _featureIdentifier4 = [objc_opt_class() _featureIdentifier];
+  v10 = [v8 onboardingRecordIsPresentForFeatureWithIdentifier:_featureIdentifier4];
   v28[8] = v10;
   v11 = MEMORY[0x277CCD428];
-  v12 = [objc_opt_class() _featureIdentifier];
-  v13 = [v11 onboardingAcknowledgedWithIdentifier:v12 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
+  _featureIdentifier5 = [objc_opt_class() _featureIdentifier];
+  v13 = [v11 onboardingAcknowledgedWithIdentifier:_featureIdentifier5 settingsKey:@"CardioFitnessFeatureSettingsKeyNotificationDetailsEntered"];
   v28[9] = v13;
   v14 = MEMORY[0x277CCD428];
-  v15 = [objc_opt_class() _featureIdentifier];
-  v16 = [v14 featureIsOffWithIdentifier:v15 isOffIfSettingIsAbsent:1];
+  _featureIdentifier6 = [objc_opt_class() _featureIdentifier];
+  v16 = [v14 featureIsOffWithIdentifier:_featureIdentifier6 isOffIfSettingIsAbsent:1];
   v28[10] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:11];
 

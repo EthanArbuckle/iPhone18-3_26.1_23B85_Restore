@@ -96,10 +96,10 @@
 - (id)fc_onlyObject
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a1 count] != 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ([self count] != 1 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "count")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "count")}];
     v7 = [v5 initWithFormat:@"expected one element; got %@", v6];
     *buf = 136315906;
     v9 = "[NSArray(FCAdditions) fc_onlyObject]";
@@ -112,24 +112,24 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v2 = [a1 firstObject];
+  firstObject = [self firstObject];
   v3 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)fc_arrayByFlattening
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  FCFlattenArrayToArray(a1, v2);
+  array = [MEMORY[0x1E695DF70] array];
+  FCFlattenArrayToArray(self, array);
 
-  return v2;
+  return array;
 }
 
 - (void)fc_enumerateObjectsInReverse:()FCAdditions usingSkipAheadBlock:
 {
   v6 = a4;
-  v7 = [a1 count];
+  v7 = [self count];
   v8 = v7;
   v13 = 0;
   if (a3)
@@ -139,7 +139,7 @@
     {
       do
       {
-        v10 = [a1 objectAtIndexedSubscript:v9];
+        v10 = [self objectAtIndexedSubscript:v9];
         v9 -= v6[2](v6, v10, v9, &v13);
       }
 
@@ -152,7 +152,7 @@
     v11 = 0;
     do
     {
-      v12 = [a1 objectAtIndexedSubscript:v11];
+      v12 = [self objectAtIndexedSubscript:v11];
       v11 += v6[2](v6, v12, v11, &v13);
     }
 
@@ -164,8 +164,8 @@
 {
   v6 = MEMORY[0x1E696AC90];
   v7 = a4;
-  v8 = [v6 indexSetWithIndexesInRange:{a3, objc_msgSend(a1, "count") - a3}];
-  [a1 enumerateObjectsAtIndexes:v8 options:0 usingBlock:v7];
+  v8 = [v6 indexSetWithIndexesInRange:{a3, objc_msgSend(self, "count") - a3}];
+  [self enumerateObjectsAtIndexes:v8 options:0 usingBlock:v7];
 }
 
 - (void)fc_enumerateSideBySideWithArray:()FCAdditions reverse:block:
@@ -179,37 +179,37 @@
     {
       if (a4)
       {
-        v10 = [a1 reverseObjectEnumerator];
+        reverseObjectEnumerator = [self reverseObjectEnumerator];
         [v8 reverseObjectEnumerator];
       }
 
       else
       {
-        v10 = [a1 objectEnumerator];
+        reverseObjectEnumerator = [self objectEnumerator];
         [v8 objectEnumerator];
       }
       v11 = ;
-      v12 = [v10 nextObject];
-      v13 = [v11 nextObject];
-      if (v12 | v13)
+      nextObject = [reverseObjectEnumerator nextObject];
+      nextObject2 = [v11 nextObject];
+      if (nextObject | nextObject2)
       {
-        v14 = v13;
+        v14 = nextObject2;
         while (1)
         {
           buf[0] = 0;
-          v9[2](v9, v12, v14, buf);
+          v9[2](v9, nextObject, v14, buf);
           if (buf[0] == 1)
           {
             break;
           }
 
-          v15 = [v10 nextObject];
+          nextObject3 = [reverseObjectEnumerator nextObject];
 
-          v16 = [v11 nextObject];
+          nextObject4 = [v11 nextObject];
 
-          v14 = v16;
-          v12 = v15;
-          if (!(v15 | v16))
+          v14 = nextObject4;
+          nextObject = nextObject3;
+          if (!(nextObject3 | nextObject4))
           {
             goto LABEL_14;
           }
@@ -224,7 +224,7 @@ LABEL_14:
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "block != nil"];
+    reverseObjectEnumerator = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "block != nil"];
     *buf = 136315906;
     v19 = "[NSArray(FCAdditions) fc_enumerateSideBySideWithArray:reverse:block:]";
     v20 = 2080;
@@ -232,7 +232,7 @@ LABEL_14:
     v22 = 1024;
     v23 = 59;
     v24 = 2114;
-    v25 = v10;
+    v25 = reverseObjectEnumerator;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_15:
   }
@@ -244,7 +244,7 @@ LABEL_15:
 {
   v4 = MEMORY[0x1E695DF70];
   v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count") + objc_msgSend(a1, "count")}];
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count") + objc_msgSend(self, "count")}];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__NSArray_FCAdditions__fc_randomlyMergeWithArray___block_invoke;
@@ -258,7 +258,7 @@ LABEL_15:
   v15 = &unk_1E7C43A58;
   v16 = v8;
   v9 = v8;
-  [a1 fc_enumerateSideBySideWithArray:v5 reverse:0 block:&v12];
+  [self fc_enumerateSideBySideWithArray:v5 reverse:0 block:&v12];
 
   v10 = [v7 copy];
 
@@ -270,13 +270,13 @@ LABEL_15:
   v29 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -287,18 +287,18 @@ LABEL_15:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = ([v11 methodForSelector:a3])(v11, a3);
           if (v12)
           {
-            [v5 setObject:v11 forKeyedSubscript:v12];
+            [dictionary setObject:v11 forKeyedSubscript:v12];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -321,12 +321,12 @@ LABEL_15:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v5 = 0;
+    dictionary = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
 - (id)fc_dictionaryWithKeyBlock:()FCAdditions valueBlock:
@@ -373,13 +373,13 @@ LABEL_15:
   }
 
 LABEL_6:
-  v22 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = a1;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  selfCopy = self;
+  v9 = [selfCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -390,7 +390,7 @@ LABEL_6:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
@@ -409,11 +409,11 @@ LABEL_6:
 
         if (!v17)
         {
-          [v22 setObject:v15 forKeyedSubscript:v14];
+          [dictionary setObject:v15 forKeyedSubscript:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [selfCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
@@ -421,7 +421,7 @@ LABEL_6:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return dictionary;
 }
 
 - (id)fc_dictionaryWithKeySelector:()FCAdditions valueSelector:
@@ -466,7 +466,7 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v7 = 0;
+    dictionary = 0;
     goto LABEL_21;
   }
 
@@ -475,13 +475,13 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = a1;
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  selfCopy = self;
+  v9 = [selfCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -492,7 +492,7 @@ LABEL_18:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
@@ -511,11 +511,11 @@ LABEL_18:
 
         if (!v17)
         {
-          [v7 setObject:v15 forKeyedSubscript:v14];
+          [dictionary setObject:v15 forKeyedSubscript:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [selfCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -524,7 +524,7 @@ LABEL_18:
 LABEL_21:
   v18 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return dictionary;
 }
 
 - (id)fc_dictionaryWithKeyBlock:()FCAdditions
@@ -545,13 +545,13 @@ LABEL_21:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -562,18 +562,18 @@ LABEL_21:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = v4[2](v4, v11);
         if (v12)
         {
-          [v5 setObject:v11 forKeyedSubscript:v12];
+          [dictionary setObject:v11 forKeyedSubscript:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -581,7 +581,7 @@ LABEL_21:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
 - (id)fc_dictionaryWithValueBlock:()FCAdditions
@@ -602,13 +602,13 @@ LABEL_21:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -619,18 +619,18 @@ LABEL_21:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = v4[2](v4, v11);
         if (v12)
         {
-          [v5 setObject:v12 forKeyedSubscript:v11];
+          [dictionary setObject:v12 forKeyedSubscript:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -638,7 +638,7 @@ LABEL_21:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
 - (id)fc_dictionaryOfSortedObjectsWithKeyBlock:()FCAdditions
@@ -659,7 +659,7 @@ LABEL_21:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [a1 fc_dictionaryOfTransformedSortedObjectsWithKeyBlock:v4 valueBlock:&__block_literal_global_125];
+  v5 = [self fc_dictionaryOfTransformedSortedObjectsWithKeyBlock:v4 valueBlock:&__block_literal_global_125];
 
   v6 = *MEMORY[0x1E69E9840];
 
@@ -705,7 +705,7 @@ LABEL_21:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a1;
+  obj = self;
   v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -755,8 +755,8 @@ LABEL_21:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -766,7 +766,7 @@ LABEL_21:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -777,7 +777,7 @@ LABEL_21:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -825,7 +825,7 @@ LABEL_11:
   v7 = v6;
   v13 = v7;
   v14 = buf;
-  [a1 fc_enumerateObjectsFromIndex:a3 usingBlock:v12];
+  [self fc_enumerateObjectsFromIndex:a3 usingBlock:v12];
   v8 = *(*&buf[8] + 40);
 
   _Block_object_dispose(buf, 8);
@@ -846,7 +846,7 @@ LABEL_11:
   v14 = v6;
   v8 = v6;
   v9 = v7;
-  v10 = [a1 fc_firstObjectPassingTest:v12];
+  v10 = [self fc_firstObjectPassingTest:v12];
 
   return v10;
 }
@@ -858,7 +858,7 @@ LABEL_11:
   v5[2] = __46__NSArray_FCAdditions__fc_firstObjectOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e8_B16__0_8lu32l8;
   v5[4] = a3;
-  v3 = [a1 fc_firstObjectPassingTest:v5];
+  v3 = [self fc_firstObjectPassingTest:v5];
 
   return v3;
 }
@@ -871,8 +871,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -884,7 +884,7 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -896,7 +896,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -914,10 +914,10 @@ LABEL_11:
 
 - (id)fc_randomObject
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v2 = [a1 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(a1, "count"))}];
+    v2 = [self objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(self, "count"))}];
   }
 
   return v2;
@@ -925,7 +925,7 @@ LABEL_11:
 
 - (BOOL)fc_containsObjectPassingTest:()FCAdditions
 {
-  v1 = [a1 fc_firstObjectPassingTest:?];
+  v1 = [self fc_firstObjectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -934,10 +934,10 @@ LABEL_11:
 - (uint64_t)fc_containsObjectsAtFront:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= [v4 count])
   {
-    v7 = [a1 fc_safeSubarrayWithCountFromFront:{objc_msgSend(v4, "count")}];
+    v7 = [self fc_safeSubarrayWithCountFromFront:{objc_msgSend(v4, "count")}];
     v6 = [v7 isEqualToArray:v4];
   }
 
@@ -952,10 +952,10 @@ LABEL_11:
 - (uint64_t)fc_containsObjectsAtBack:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= [v4 count])
   {
-    v7 = [a1 fc_safeSubarrayWithCountFromBack:{objc_msgSend(v4, "count")}];
+    v7 = [self fc_safeSubarrayWithCountFromBack:{objc_msgSend(v4, "count")}];
     v6 = [v7 isEqualToArray:v4];
   }
 
@@ -969,7 +969,7 @@ LABEL_11:
 
 - (BOOL)fc_containsObjectsWithValue:()FCAdditions forKey:
 {
-  v1 = [a1 fc_firstObjectWithValue:? forKey:?];
+  v1 = [self fc_firstObjectWithValue:? forKey:?];
   v2 = v1 != 0;
 
   return v2;
@@ -984,15 +984,15 @@ LABEL_11:
   v7[3] = &unk_1E7C40740;
   v8 = v4;
   v5 = v4;
-  LODWORD(a1) = [a1 fc_containsObjectPassingTest:v7];
+  LODWORD(self) = [self fc_containsObjectPassingTest:v7];
 
-  return a1 ^ 1;
+  return self ^ 1;
 }
 
 - (id)fc_arrayByTransformingWithBlockWithIndex:()FCAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__NSArray_FCAdditions__fc_arrayByTransformingWithBlockWithIndex___block_invoke;
@@ -1001,7 +1001,7 @@ LABEL_11:
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -1017,7 +1017,7 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __70__NSArray_FCAdditions__fc_objectsOfMaxValueWithValueBlock_comparator___block_invoke;
   v13[3] = &unk_1E7C43AF0;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v6;
   v15 = v7;
   v9 = v7;
@@ -1036,7 +1036,7 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __70__NSArray_FCAdditions__fc_objectsOfMinValueWithValueBlock_comparator___block_invoke;
   v13[3] = &unk_1E7C43AF0;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v6;
   v15 = v7;
   v9 = v7;
@@ -1055,7 +1055,7 @@ LABEL_11:
   v8[3] = &unk_1E7C43B18;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 fc_arrayByTransformingWithBlockWithIndex:v8];
+  v6 = [self fc_arrayByTransformingWithBlockWithIndex:v8];
 
   return v6;
 }
@@ -1072,7 +1072,7 @@ LABEL_11:
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -1091,7 +1091,7 @@ LABEL_11:
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -1110,7 +1110,7 @@ LABEL_11:
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -1126,16 +1126,16 @@ LABEL_11:
   v11[3] = &unk_1E7C43B40;
   v12 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v11];
+  v6 = [self indexesOfObjectsPassingTest:v11];
   v7 = [v6 count];
-  if (v7 == [a1 count])
+  if (v7 == [self count])
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
   }
 
   else
   {
-    v8 = [a1 objectsAtIndexes:v6];
+    v8 = [self objectsAtIndexes:v6];
   }
 
   v9 = v8;
@@ -1152,16 +1152,16 @@ LABEL_11:
   v11[3] = &unk_1E7C43B40;
   v12 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v11];
+  v6 = [self indexesOfObjectsPassingTest:v11];
   v7 = [v6 count];
-  if (v7 == [a1 count])
+  if (v7 == [self count])
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
   }
 
   else
   {
-    v8 = [a1 objectsAtIndexes:v6];
+    v8 = [self objectsAtIndexes:v6];
   }
 
   v9 = v8;
@@ -1177,8 +1177,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1190,13 +1190,13 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 += v4[2](v4, *(*(&v13 + 1) + 8 * i));
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1215,7 +1215,7 @@ LABEL_11:
 {
   v4 = MEMORY[0x1E695DF70];
   v5 = a3;
-  v6 = [v4 arrayWithArray:a1];
+  v6 = [v4 arrayWithArray:self];
   [v6 removeObject:v5];
 
   return v6;
@@ -1225,7 +1225,7 @@ LABEL_11:
 {
   v4 = MEMORY[0x1E695DF70];
   v5 = a3;
-  v6 = [v4 arrayWithArray:a1];
+  v6 = [v4 arrayWithArray:self];
   [v6 removeObjectIdenticalTo:v5];
 
   return v6;
@@ -1235,7 +1235,7 @@ LABEL_11:
 {
   v4 = MEMORY[0x1E695DF70];
   v5 = a3;
-  v6 = [v4 arrayWithArray:a1];
+  v6 = [v4 arrayWithArray:self];
   [v6 removeObjectsInArray:v5];
 
   return v6;
@@ -1250,7 +1250,7 @@ LABEL_11:
   v8[3] = &unk_1E7C3F858;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 fc_arrayOfObjectsPassingTest:v8];
+  v6 = [self fc_arrayOfObjectsPassingTest:v8];
 
   return v6;
 }
@@ -1260,8 +1260,8 @@ LABEL_11:
   v6 = a4;
   v7 = MEMORY[0x1E695DF70];
   v8 = a3;
-  v9 = [v7 arrayWithArray:a1];
-  v10 = [a1 indexOfObjectIdenticalTo:v8];
+  v9 = [v7 arrayWithArray:self];
+  v10 = [self indexOfObjectIdenticalTo:v8];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1282,7 +1282,7 @@ LABEL_11:
 - (id)fc_arrayByReplacingObjectAtIndex:()FCAdditions withObject:
 {
   v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithArray:a1];
+  v7 = [MEMORY[0x1E695DF70] arrayWithArray:self];
   v8 = v7;
   if (a3 != 0x7FFFFFFFFFFFFFFFLL && v6)
   {
@@ -1294,22 +1294,22 @@ LABEL_11:
 
 - (id)fc_arrayByRemovingFirstObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 fc_arrayByRemovingObjectsInRange:{0, 1}];
+    selfCopy = [self fc_arrayByRemovingObjectsInRange:{0, 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)fc_arrayByRemovingObjectsInRange:()FCAdditions
 {
-  v6 = [MEMORY[0x1E695DF70] arrayWithArray:a1];
+  v6 = [MEMORY[0x1E695DF70] arrayWithArray:self];
   [v6 removeObjectsInRange:{a3, a4}];
 
   return v6;
@@ -1319,7 +1319,7 @@ LABEL_11:
 {
   v4 = MEMORY[0x1E695DF70];
   v5 = a3;
-  v6 = [v4 arrayWithArray:a1];
+  v6 = [v4 arrayWithArray:self];
   [v6 removeObjectsAtIndexes:v5];
 
   return v6;
@@ -1334,19 +1334,19 @@ LABEL_11:
   v9[3] = &unk_1E7C43B40;
   v5 = v4;
   v10 = v5;
-  v6 = [a1 indexesOfObjectsPassingTest:v9];
+  v6 = [self indexesOfObjectsPassingTest:v9];
   if ([v6 count])
   {
-    v7 = [MEMORY[0x1E695DF70] arrayWithArray:a1];
-    [v7 removeObjectsAtIndexes:v6];
+    selfCopy = [MEMORY[0x1E695DF70] arrayWithArray:self];
+    [selfCopy removeObjectsAtIndexes:v6];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)fc_arrayByReplacingObjectsInRange:()FCAdditions withObject:
@@ -1354,7 +1354,7 @@ LABEL_11:
   v14[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DF70];
   v9 = a5;
-  v10 = [v8 arrayWithArray:a1];
+  v10 = [v8 arrayWithArray:self];
   v14[0] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 
@@ -1368,7 +1368,7 @@ LABEL_11:
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = a3 + a4;
-  v7 = [a1 count];
+  v7 = [self count];
   if (v7 < v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "maxRange <= count"];
@@ -1383,7 +1383,7 @@ LABEL_11:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v8 = [a1 subarrayWithRange:{0, a3}];
+  v8 = [self subarrayWithRange:{0, a3}];
   v14[0] = v8;
   if (v7 == v6)
   {
@@ -1392,7 +1392,7 @@ LABEL_11:
 
   else
   {
-    v9 = [a1 subarrayWithRange:{v6, v7 - v6}];
+    v9 = [self subarrayWithRange:{v6, v7 - v6}];
   }
 
   v14[1] = v9;
@@ -1429,8 +1429,8 @@ LABEL_11:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1442,7 +1442,7 @@ LABEL_11:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -1467,7 +1467,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v8);
@@ -1599,7 +1599,7 @@ LABEL_11:
   v24 = v13;
   v41 = v24;
   v43 = v47;
-  [a1 enumerateObjectsUsingBlock:v36];
+  [self enumerateObjectsUsingBlock:v36];
   v25 = v22;
   *a4 = v22;
   v26 = v41;
@@ -1625,7 +1625,7 @@ LABEL_11:
   v14 = v6;
   v8 = v6;
   v9 = v7;
-  v10 = [a1 indexOfObjectPassingTest:v12];
+  v10 = [self indexOfObjectPassingTest:v12];
 
   return v10;
 }
@@ -1669,7 +1669,7 @@ LABEL_11:
   v15[3] = &unk_1E7C43C08;
   v16 = v5;
   v11 = v5;
-  v12 = [a1 indexesOfObjectsPassingTest:v15];
+  v12 = [self indexesOfObjectsPassingTest:v15];
 
   v13 = *MEMORY[0x1E69E9840];
 
@@ -1685,7 +1685,7 @@ LABEL_11:
   v8[3] = &unk_1E7C43B40;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v8];
+  v6 = [self indexesOfObjectsPassingTest:v8];
 
   return v6;
 }
@@ -1699,8 +1699,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1711,14 +1711,14 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
         [v5 addObjectsFromArray:{v11, v14}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1752,8 +1752,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1764,14 +1764,14 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
         [v5 fc_safelyUnionSet:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1794,12 +1794,12 @@ LABEL_11:
     do
     {
       v10 = [v5 objectAtIndex:v9];
-      if (([a1 containsObject:v10] & 1) == 0)
+      if (([self containsObject:v10] & 1) == 0)
       {
         if (!v8)
         {
-          v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count") + v7}];
-          [v8 addObjectsFromArray:a1];
+          v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count") + v7}];
+          [v8 addObjectsFromArray:self];
         }
 
         [v8 addObject:v10];
@@ -1819,24 +1819,24 @@ LABEL_11:
 
   if (v8)
   {
-    a1 = v8;
+    self = v8;
   }
 
-  v11 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 - (id)fc_subarrayUpToCountInclusive:()FCAdditions
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
-    v5 = [a1 copy];
+    v5 = [self copy];
   }
 
   else
   {
-    v5 = [a1 subarrayWithRange:{0, a3}];
+    v5 = [self subarrayWithRange:{0, a3}];
   }
 
   return v5;
@@ -1844,7 +1844,7 @@ LABEL_11:
 
 - (uint64_t)fc_subarrayWithMaxCount:()FCAdditions
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= a3)
   {
     v6 = a3;
@@ -1855,19 +1855,19 @@ LABEL_11:
     v6 = v5;
   }
 
-  return [a1 fc_subarrayUpToCountInclusive:v6];
+  return [self fc_subarrayUpToCountInclusive:v6];
 }
 
 - (id)fc_subarrayFromCount:()FCAdditions
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v5 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = [a1 subarrayWithRange:{a3, objc_msgSend(a1, "count") - a3}];
+    v5 = [self subarrayWithRange:{a3, objc_msgSend(self, "count") - a3}];
   }
 
   return v5;
@@ -1877,7 +1877,7 @@ LABEL_11:
 {
   if (a3 == 1)
   {
-    v5 = [a1 fc_subarrayFromIndex:a4 inclusive:a5];
+    v5 = [self fc_subarrayFromIndex:a4 inclusive:a5];
   }
 
   else if (a3)
@@ -1887,7 +1887,7 @@ LABEL_11:
 
   else
   {
-    v5 = [a1 fc_subarrayUpToIndex:a4 inclusive:a5];
+    v5 = [self fc_subarrayUpToIndex:a4 inclusive:a5];
   }
 
   return v5;
@@ -1897,7 +1897,7 @@ LABEL_11:
 {
   if (a3 == 1)
   {
-    v6 = [a1 fc_subarrayFromIndex:a4 withMaxCount:a5 range:a6];
+    v6 = [self fc_subarrayFromIndex:a4 withMaxCount:a5 range:a6];
   }
 
   else if (a3)
@@ -1907,7 +1907,7 @@ LABEL_11:
 
   else
   {
-    v6 = [a1 fc_subarrayToIndex:a4 withMaxCount:a5 range:a6];
+    v6 = [self fc_subarrayToIndex:a4 withMaxCount:a5 range:a6];
   }
 
   return v6;
@@ -1916,7 +1916,7 @@ LABEL_11:
 - (id)fc_subarrayFromIndex:()FCAdditions withMaxCount:range:
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = [a1 count];
+  v9 = [self count];
   v10 = v9 - a3;
   if (v9 <= a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -1948,7 +1948,7 @@ LABEL_11:
     a5[1] = v11;
   }
 
-  v12 = [a1 subarrayWithRange:{a3, v11}];
+  v12 = [self subarrayWithRange:{a3, v11}];
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
@@ -1957,7 +1957,7 @@ LABEL_11:
 - (id)fc_subarrayToIndex:()FCAdditions withMaxCount:range:
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a1 count] <= a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ([self count] <= a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "index < count"];
     *buf = 136315906;
@@ -1988,7 +1988,7 @@ LABEL_11:
     a5[1] = v10;
   }
 
-  v11 = [a1 subarrayWithRange:{v9, v10}];
+  v11 = [self subarrayWithRange:{v9, v10}];
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
@@ -2028,7 +2028,7 @@ LABEL_11:
   }
 
   v8 = objc_opt_new();
-  v9 = [a1 count];
+  v9 = [self count];
   if (v9)
   {
     *buf = 0;
@@ -2036,7 +2036,7 @@ LABEL_11:
     *&buf[16] = 0x3032000000;
     *&v24 = __Block_byref_object_copy__59;
     *(&v24 + 1) = __Block_byref_object_dispose__59;
-    v25 = [a1 firstObject];
+    firstObject = [self firstObject];
     v10 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{1, v9 - 1}];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -2047,11 +2047,11 @@ LABEL_11:
     v21 = v7;
     v11 = v8;
     v19 = v11;
-    [a1 enumerateObjectsAtIndexes:v10 options:0 usingBlock:v18];
+    [self enumerateObjectsAtIndexes:v10 options:0 usingBlock:v18];
 
     v12 = *(*&buf[8] + 40);
-    v13 = [v11 lastObject];
-    LOBYTE(v12) = v12 == v13;
+    lastObject = [v11 lastObject];
+    LOBYTE(v12) = v12 == lastObject;
 
     if ((v12 & 1) == 0)
     {
@@ -2068,14 +2068,14 @@ LABEL_11:
 
 - (id)fc_safeObjectAtIndex:()FCAdditions
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 objectAtIndex:a3];
+    v5 = [self objectAtIndex:a3];
   }
 
   return v5;
@@ -2083,7 +2083,7 @@ LABEL_11:
 
 - (uint64_t)fc_safeSubarrayWithCountFromFront:()FCAdditions
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= a3)
   {
     v6 = a3;
@@ -2094,34 +2094,34 @@ LABEL_11:
     v6 = v5;
   }
 
-  return [a1 subarrayWithRange:{0, v6}];
+  return [self subarrayWithRange:{0, v6}];
 }
 
 - (uint64_t)fc_safeSubarrayWithCountFromBack:()FCAdditions
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 < a3)
   {
     a3 = v5;
   }
 
-  v6 = [a1 count] - a3;
+  v6 = [self count] - a3;
 
-  return [a1 subarrayWithRange:{v6, a3}];
+  return [self subarrayWithRange:{v6, a3}];
 }
 
 - (void)fc_subarrayWithCount:()FCAdditions result:
 {
   v11 = a4;
-  if ([a1 count])
+  if ([self count])
   {
-    v6 = [a1 count];
+    v6 = [self count];
     if (v6 < a3)
     {
       a3 = v6;
     }
 
-    if (a3 >= [a1 count])
+    if (a3 >= [self count])
     {
       v7 = 0;
       v8 = 0x7FFFFFFFFFFFFFFFLL;
@@ -2129,11 +2129,11 @@ LABEL_11:
 
     else
     {
-      v7 = [a1 count] - a3;
+      v7 = [self count] - a3;
       v8 = a3;
     }
 
-    v9 = [a1 subarrayWithRange:{0, a3}];
+    v9 = [self subarrayWithRange:{0, a3}];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v11[2](v11, v9, MEMORY[0x1E695E0F0]);
@@ -2141,7 +2141,7 @@ LABEL_11:
 
     else
     {
-      v10 = [a1 subarrayWithRange:{v8, v7}];
+      v10 = [self subarrayWithRange:{v8, v7}];
       (v11)[2](v11, v9, v10);
     }
   }
@@ -2165,7 +2165,7 @@ LABEL_11:
     v4 = 0.0;
   }
 
-  v5 = [a1 count];
+  v5 = [self count];
   if (v4 == 0.0 || v5 == 0)
   {
     v7 = MEMORY[0x1E695E0F0];
@@ -2173,15 +2173,15 @@ LABEL_11:
 
   else
   {
-    v8 = round(v4 * [a1 count]);
-    v9 = [a1 count];
+    v8 = round(v4 * [self count]);
+    v9 = [self count];
     v10 = v9;
     if (v8 < v9)
     {
       v10 = v8;
     }
 
-    v7 = [a1 subarrayWithRange:{0, v10}];
+    v7 = [self subarrayWithRange:{0, v10}];
   }
 
   return v7;
@@ -2200,21 +2200,21 @@ LABEL_11:
     v4 = 0.0;
   }
 
-  v5 = [a1 count];
+  v5 = [self count];
   if (v4 == 0.0 || v5 == 0)
   {
     goto LABEL_12;
   }
 
-  v7 = round(v4 * [a1 count]);
-  v8 = [a1 count];
+  v7 = round(v4 * [self count]);
+  v8 = [self count];
   if (v7 < v8)
   {
     v8 = v7;
   }
 
   v9 = v8;
-  if ([a1 count] <= v8)
+  if ([self count] <= v8)
   {
 LABEL_12:
     v10 = MEMORY[0x1E695E0F0];
@@ -2222,7 +2222,7 @@ LABEL_12:
 
   else
   {
-    v10 = [a1 subarrayWithRange:{v9, objc_msgSend(a1, "count") - v9}];
+    v10 = [self subarrayWithRange:{v9, objc_msgSend(self, "count") - v9}];
   }
 
   return v10;
@@ -2233,7 +2233,7 @@ LABEL_12:
   v12 = a4;
   if (a3)
   {
-    v6 = [a1 count];
+    v6 = [self count];
     if (v6)
     {
       v7 = v6;
@@ -2253,7 +2253,7 @@ LABEL_12:
 
         if (v12)
         {
-          v11 = [a1 subarrayWithRange:{v8, v10}];
+          v11 = [self subarrayWithRange:{v8, v10}];
           v12[2](v12, v11);
         }
 
@@ -2276,8 +2276,8 @@ LABEL_12:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = a1;
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v10 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   v11 = v8;
   if (v10)
   {
@@ -2292,7 +2292,7 @@ LABEL_12:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v7[2](v7, v15, *(*(&v18 + 1) + 8 * v14));
@@ -2302,7 +2302,7 @@ LABEL_12:
       }
 
       while (v12 != v14);
-      v12 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -2321,8 +2321,8 @@ LABEL_12:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2334,14 +2334,14 @@ LABEL_12:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         a2 = v6[2](v6, *(*(&v14 + 1) + 8 * v11++), a2);
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -2356,12 +2356,12 @@ LABEL_12:
   v5 = MEMORY[0x1E695DF70];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 array];
-  [v8 addObjectsFromArray:v6];
+  array = [v5 array];
+  [array addObjectsFromArray:v6];
 
-  [v8 addObjectsFromArray:v7];
+  [array addObjectsFromArray:v7];
 
-  return v8;
+  return array;
 }
 
 + (id)fc_arrayByAddingObjectsFromArray:()FCAdditions toArray:inRelativeOrder:
@@ -2370,7 +2370,7 @@ LABEL_12:
   v9 = a4;
   if (!a5)
   {
-    v10 = a1;
+    selfCopy2 = self;
     v11 = v9;
     v12 = v8;
     goto LABEL_5;
@@ -2378,11 +2378,11 @@ LABEL_12:
 
   if (a5 == 1)
   {
-    v10 = a1;
+    selfCopy2 = self;
     v11 = v8;
     v12 = v9;
 LABEL_5:
-    v13 = [v10 fc_arrayByAddingObjectsFromArray:v11 toArray:v12];
+    v13 = [selfCopy2 fc_arrayByAddingObjectsFromArray:v11 toArray:v12];
     goto LABEL_7;
   }
 
@@ -2401,9 +2401,9 @@ LABEL_7:
   [v8 addObjectsFromArray:v6];
 
   [v8 addObjectsFromArray:v7];
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
 + (void)fc_array:()FCAdditions
@@ -2472,15 +2472,15 @@ LABEL_7:
 
 - (id)fc_arrayByReversingObjects
 {
-  v1 = [a1 reverseObjectEnumerator];
-  v2 = [v1 allObjects];
+  reverseObjectEnumerator = [self reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v2;
+  return allObjects;
 }
 
 - (uint64_t)fc_uniqueCount
 {
-  v1 = [MEMORY[0x1E695DFD8] setWithArray:a1];
+  v1 = [MEMORY[0x1E695DFD8] setWithArray:self];
   v2 = [v1 count];
 
   return v2;
@@ -2490,7 +2490,7 @@ LABEL_7:
 {
   v4 = MEMORY[0x1E695DFD8];
   v5 = a3;
-  v6 = [v4 setWithArray:a1];
+  v6 = [v4 setWithArray:self];
   v7 = [MEMORY[0x1E695DFD8] setWithArray:v5];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -2498,7 +2498,7 @@ LABEL_7:
   v15[3] = &unk_1E7C3F858;
   v16 = v7;
   v8 = v7;
-  v9 = [a1 fc_countOfObjectsPassingTest:v15];
+  v9 = [self fc_countOfObjectsPassingTest:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __45__NSArray_FCAdditions__fc_distanceFromArray___block_invoke_2;
@@ -2522,7 +2522,7 @@ LABEL_7:
   v12 = v4;
   v6 = v5;
   v7 = v4;
-  v8 = [a1 fc_arrayOfObjectsPassingTest:v10];
+  v8 = [self fc_arrayOfObjectsPassingTest:v10];
 
   return v8;
 }
@@ -2596,14 +2596,14 @@ LABEL_8:
       }
 
       --v8;
-      v11 = [a1 objectAtIndexedSubscript:v9 - 1];
+      v11 = [self objectAtIndexedSubscript:v9 - 1];
       v12 = v6[2](v6, v11);
 
       v7 = v10 + 1;
     }
 
     while ((v12 & 1) != 0);
-    v13 = [a1 count];
+    v13 = [self count];
     v14 = a3 + 1;
     do
     {
@@ -2612,7 +2612,7 @@ LABEL_8:
         break;
       }
 
-      v15 = [a1 objectAtIndexedSubscript:v14];
+      v15 = [self objectAtIndexedSubscript:v14];
       v16 = v6[2](v6, v15);
 
       ++v10;
@@ -2642,7 +2642,7 @@ LABEL_8:
   v10 = v8;
   v11 = v9;
   v12 = v6;
-  [a1 enumerateObjectsUsingBlock:v13];
+  [self enumerateObjectsUsingBlock:v13];
   v7[2](v7, v10, v11);
 }
 
@@ -2690,7 +2690,7 @@ LABEL_8:
   }
 
 LABEL_6:
-  v8 = [a1 count];
+  v8 = [self count];
   v9 = 0;
   do
   {
@@ -2699,7 +2699,7 @@ LABEL_6:
       break;
     }
 
-    v10 = [a1 objectAtIndexedSubscript:v9];
+    v10 = [self objectAtIndexedSubscript:v9];
     v11 = v6[2](v6, v10);
 
     v12 = v9 + 1;
@@ -2717,14 +2717,14 @@ LABEL_6:
       v21[3] = &unk_1E7C43CA8;
       v23 = v6;
       v22 = v11;
-      v14 = [a1 indexOfObjectAtIndexes:v13 options:0 passingTest:v21];
+      v14 = [self indexOfObjectAtIndexes:v13 options:0 passingTest:v21];
 
       v12 = v14 == 0x7FFFFFFFFFFFFFFFLL ? v8 : v14;
       v15 = v12 - 1;
     }
 
     v16 = v15 - v9;
-    v17 = [a1 subarrayWithRange:{v9, v15 - v9 + 1}];
+    v17 = [self subarrayWithRange:{v9, v15 - v9 + 1}];
     buf[0] = 0;
     v7[2](v7, v17, v11, v9, v16 + 1, buf);
     LODWORD(v16) = buf[0];
@@ -2768,7 +2768,7 @@ LABEL_6:
   v15[1] = 3221225472;
   v15[2] = __78__NSArray_FCAdditions__fc_sortedArrayStartingWithElementsSatisfying_sortedBy___block_invoke_3;
   v15[3] = &unk_1E7C43AF0;
-  v15[4] = a1;
+  v15[4] = self;
   v16 = v7;
   v17 = v9;
   v11 = v9;
@@ -2781,7 +2781,7 @@ LABEL_6:
 - (id)fc_rotateElementsFromTheIndexOfSelectedItem:()FCAdditions
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a1 count] <= a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ([self count] <= a3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"indexOfSelectedItem must be within range of array length"];
     v13 = 136315906;
@@ -2795,26 +2795,26 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
-    v5 = 0;
+    array = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    if ([a1 count] > a3)
+    array = [MEMORY[0x1E695DF70] array];
+    if ([self count] > a3)
     {
       v6 = a3;
       do
       {
-        v7 = [a1 objectAtIndexedSubscript:v6];
-        [v5 addObject:v7];
+        v7 = [self objectAtIndexedSubscript:v6];
+        [array addObject:v7];
 
         ++v6;
       }
 
-      while (v6 < [a1 count]);
+      while (v6 < [self count]);
     }
 
     if (a3)
@@ -2822,8 +2822,8 @@ LABEL_6:
       v8 = 0;
       do
       {
-        v9 = [a1 objectAtIndexedSubscript:v8];
-        [v5 addObject:v9];
+        v9 = [self objectAtIndexedSubscript:v8];
+        [array addObject:v9];
 
         ++v8;
       }
@@ -2834,14 +2834,14 @@ LABEL_6:
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 - (BOOL)fc_isEqualToArray:()FCAdditions inRange:
 {
   v8 = a3;
-  v18 = a1;
-  v9 = [a1 count];
+  selfCopy = self;
+  v9 = [self count];
   v10 = [v8 count];
   v11 = a4 + a5;
   if (a4 >= a4 + a5)
@@ -2862,7 +2862,7 @@ LABEL_6:
 
       else
       {
-        v14 = [v18 objectAtIndexedSubscript:a4];
+        v14 = [selfCopy objectAtIndexedSubscript:a4];
       }
 
       if (a4 >= v12)
@@ -2895,10 +2895,10 @@ LABEL_6:
 - (uint64_t)fc_isEqualToArray:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 == [v4 count])
   {
-    v6 = [a1 fc_isEqualToArray:v4 inRange:{0, v5}];
+    v6 = [self fc_isEqualToArray:v4 inRange:{0, v5}];
   }
 
   else
@@ -2913,7 +2913,7 @@ LABEL_6:
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 != [v4 count] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Lengths of vectors should be the same when computing euclidean distance."];
@@ -2928,13 +2928,13 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v16, 0x26u);
   }
 
-  if ([a1 count])
+  if ([self count])
   {
     v6 = 0;
     v7 = 0.0;
     do
     {
-      v8 = [a1 objectAtIndexedSubscript:v6];
+      v8 = [self objectAtIndexedSubscript:v6];
       [v8 doubleValue];
       v10 = v9;
       v11 = [v4 objectAtIndexedSubscript:v6];
@@ -2944,7 +2944,7 @@ LABEL_6:
       ++v6;
     }
 
-    while ([a1 count] > v6);
+    while ([self count] > v6);
   }
 
   else
@@ -2960,7 +2960,7 @@ LABEL_6:
 {
   v29 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 != [v4 count] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Lengths of vectors should be the same when computing cosine distance."];
@@ -2978,12 +2978,12 @@ LABEL_6:
   v6 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
-  if ([a1 count])
+  if ([self count])
   {
     v9 = 0;
     do
     {
-      v10 = [a1 objectAtIndexedSubscript:v9];
+      v10 = [self objectAtIndexedSubscript:v9];
       [v10 doubleValue];
       v12 = v11;
 
@@ -2997,7 +2997,7 @@ LABEL_6:
       v6 = v6 + v15 * v15;
     }
 
-    while ([a1 count] > v9);
+    while ([self count] > v9);
   }
 
   v16 = sqrt(v6) * sqrt(v7);

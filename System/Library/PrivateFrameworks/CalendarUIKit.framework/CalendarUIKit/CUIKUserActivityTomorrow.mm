@@ -1,17 +1,17 @@
 @interface CUIKUserActivityTomorrow
-- (CUIKUserActivityTomorrow)initWithDate:(id)a3 view:(unint64_t)a4 calendar:(id)a5;
-- (CUIKUserActivityTomorrow)initWithDictionary:(id)a3;
+- (CUIKUserActivityTomorrow)initWithDate:(id)date view:(unint64_t)view calendar:(id)calendar;
+- (CUIKUserActivityTomorrow)initWithDictionary:(id)dictionary;
 - (id)dictionary;
-- (void)updateActivity:(id)a3;
+- (void)updateActivity:(id)activity;
 @end
 
 @implementation CUIKUserActivityTomorrow
 
-- (CUIKUserActivityTomorrow)initWithDate:(id)a3 view:(unint64_t)a4 calendar:(id)a5
+- (CUIKUserActivityTomorrow)initWithDate:(id)date view:(unint64_t)view calendar:(id)calendar
 {
   v9.receiver = self;
   v9.super_class = CUIKUserActivityTomorrow;
-  v5 = [(CUIKUserActivityCalendarDate *)&v9 initWithDate:a3 view:a4 calendar:a5];
+  v5 = [(CUIKUserActivityCalendarDate *)&v9 initWithDate:date view:view calendar:calendar];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -22,16 +22,16 @@
   return v5;
 }
 
-- (CUIKUserActivityTomorrow)initWithDictionary:(id)a3
+- (CUIKUserActivityTomorrow)initWithDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
   v5 = [v4 valueForKey:@"com.apple.calendarUIKit.userActivity.date"];
 
   if (!v5)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v8 = [v6 numberWithDouble:?];
     [v4 setValue:v8 forKey:@"com.apple.calendarUIKit.userActivity.date"];
   }
@@ -48,8 +48,8 @@
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v8.receiver = self;
   v8.super_class = CUIKUserActivityTomorrow;
-  v4 = [(CUIKUserActivityCalendarDate *)&v8 dictionary];
-  v5 = [v3 initWithDictionary:v4];
+  dictionary = [(CUIKUserActivityCalendarDate *)&v8 dictionary];
+  v5 = [v3 initWithDictionary:dictionary];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:1];
   [v5 setObject:v6 forKey:@"com.apple.calendarUIKit.userActivity.tomorrow"];
@@ -57,22 +57,22 @@
   return v5;
 }
 
-- (void)updateActivity:(id)a3
+- (void)updateActivity:(id)activity
 {
   v9.receiver = self;
   v9.super_class = CUIKUserActivityTomorrow;
-  v4 = a3;
-  [(CUIKUserActivityCalendarDate *)&v9 updateActivity:v4];
-  [v4 _setEligibleForPrediction:{1, v9.receiver, v9.super_class}];
-  [v4 setEligibleForSearch:1];
+  activityCopy = activity;
+  [(CUIKUserActivityCalendarDate *)&v9 updateActivity:activityCopy];
+  [activityCopy _setEligibleForPrediction:{1, v9.receiver, v9.super_class}];
+  [activityCopy setEligibleForSearch:1];
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [(CUIKUserActivityTomorrow *)self dictionary];
-  v7 = [v6 allKeys];
-  v8 = [v5 setWithArray:v7];
+  dictionary = [(CUIKUserActivityTomorrow *)self dictionary];
+  allKeys = [dictionary allKeys];
+  v8 = [v5 setWithArray:allKeys];
 
   [v8 removeObject:@"com.apple.calendarUIKit.userActivity.date"];
   [v8 removeObject:@"com.apple.calendarUIKit.userActivity.view"];
-  [v4 setRequiredUserInfoKeys:v8];
+  [activityCopy setRequiredUserInfoKeys:v8];
 }
 
 @end

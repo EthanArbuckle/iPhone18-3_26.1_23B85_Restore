@@ -1,23 +1,23 @@
 @interface PKPeerPaymentUpdateUserInfoResponse
-- (PKPeerPaymentUpdateUserInfoResponse)initWithData:(id)a3;
+- (PKPeerPaymentUpdateUserInfoResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentUpdateUserInfoResponse
 
-- (PKPeerPaymentUpdateUserInfoResponse)initWithData:(id)a3
+- (PKPeerPaymentUpdateUserInfoResponse)initWithData:(id)data
 {
   v65 = *MEMORY[0x1E69E9840];
   v58.receiver = self;
   v58.super_class = PKPeerPaymentUpdateUserInfoResponse;
-  v3 = [(PKWebServiceResponse *)&v58 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v58 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKStringForKey:@"state"];
       v4->_state = PKPeerPaymentUpdateUserInfoResponseStateFromString(v7);
 
@@ -48,7 +48,7 @@
 
       v49 = v4;
       v18 = [v6 PKArrayContaining:objc_opt_class() forKey:@"requiredFieldsByPage"];
-      v19 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v48 = v6;
       v20 = [v6 PKDictionaryForKey:@"requiredFieldOptions"];
       v54 = 0u;
@@ -71,7 +71,7 @@
             }
 
             v26 = [[PKPeerPaymentRequiredFieldsPage alloc] initWithDictionary:*(*(&v54 + 1) + 8 * i) fieldOptions:v20];
-            [v19 safelyAddObject:v26];
+            [array safelyAddObject:v26];
           }
 
           v23 = [v21 countByEnumeratingWithState:&v54 objects:v64 count:16];
@@ -82,12 +82,12 @@
 
       v46 = v15;
 
-      v27 = [MEMORY[0x1E695DEC8] arrayWithArray:v19];
+      v27 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
       requiredFieldsByPage = v49->_requiredFieldsByPage;
       v49->_requiredFieldsByPage = v27;
 
       v49->_useDeviceValidation = [v48 PKBoolForKey:@"useDeviceValidation"];
-      v29 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
@@ -108,7 +108,7 @@
             }
 
             v35 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:*(*(&v50 + 1) + 8 * j) options:0];
-            [v29 safelyAddObject:v35];
+            [array2 safelyAddObject:v35];
           }
 
           v32 = [v30 countByEnumeratingWithState:&v50 objects:v63 count:16];
@@ -117,7 +117,7 @@
         while (v32);
       }
 
-      v36 = [MEMORY[0x1E695DEC8] arrayWithArray:v29];
+      v36 = [MEMORY[0x1E695DEC8] arrayWithArray:array2];
       v4 = v49;
       encryptionCertificates = v49->_encryptionCertificates;
       v49->_encryptionCertificates = v36;

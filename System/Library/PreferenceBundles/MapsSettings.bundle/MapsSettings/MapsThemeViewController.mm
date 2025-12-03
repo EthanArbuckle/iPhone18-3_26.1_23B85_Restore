@@ -1,29 +1,29 @@
 @interface MapsThemeViewController
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MapsThemeViewController
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MapsThemeViewController;
-  [(MapsThemeViewController *)&v9 traitCollectionDidChange:v5];
-  if (v5 && (v6 = [v5 userInterfaceStyle], -[MapsThemeViewController traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
+  [(MapsThemeViewController *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy && (v6 = [changeCopy userInterfaceStyle], -[MapsThemeViewController traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v6 == objc_msgSend(v3, "userInterfaceStyle")))
   {
   }
 
   else
   {
-    v7 = [(MapsThemeViewController *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(MapsThemeViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5)
+    if (changeCopy)
     {
     }
 
-    if (v8)
+    if (userInterfaceStyle)
     {
       [(MapsThemeViewController *)self updateTheme];
     }

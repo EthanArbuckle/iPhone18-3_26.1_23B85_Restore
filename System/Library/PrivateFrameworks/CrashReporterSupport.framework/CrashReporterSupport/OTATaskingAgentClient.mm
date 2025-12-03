@@ -1,11 +1,11 @@
 @interface OTATaskingAgentClient
 + (id)sharedClient;
-- (BOOL)deletePreference:(id)a3 forUser:(id)a4 inDomain:(id)a5;
-- (BOOL)setPreference:(id)a3 forUser:(id)a4 inDomain:(id)a5 toValue:(void *)a6;
+- (BOOL)deletePreference:(id)preference forUser:(id)user inDomain:(id)domain;
+- (BOOL)setPreference:(id)preference forUser:(id)user inDomain:(id)domain toValue:(void *)value;
 - (OTATaskingAgentClient)init;
 - (id)awdKey;
 - (id)crashreporterKey;
-- (unsigned)uidForUser:(id)a3;
+- (unsigned)uidForUser:(id)user;
 @end
 
 @implementation OTATaskingAgentClient
@@ -65,16 +65,16 @@ void __29__OTATaskingAgentClient_init__block_invoke(uint64_t a1, uint64_t a2)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setPreference:(id)a3 forUser:(id)a4 inDomain:(id)a5 toValue:(void *)a6
+- (BOOL)setPreference:(id)preference forUser:(id)user inDomain:(id)domain toValue:(void *)value
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  preferenceCopy = preference;
+  userCopy = user;
+  domainCopy = domain;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v13 = [(OTATaskingAgentClient *)self uidForUser:v11];
+  v13 = [(OTATaskingAgentClient *)self uidForUser:userCopy];
   if (v13)
   {
     synchRemoteObjectProxy = self->_synchRemoteObjectProxy;
@@ -83,7 +83,7 @@ void __29__OTATaskingAgentClient_init__block_invoke(uint64_t a1, uint64_t a2)
     v17[2] = __64__OTATaskingAgentClient_setPreference_forUser_inDomain_toValue___block_invoke;
     v17[3] = &unk_278EDF500;
     v17[4] = &v18;
-    [(OTATaskingAgent *)synchRemoteObjectProxy setPreferenceForDomain:v12 preference:v10 value:a6 UID:v13 withReply:v17];
+    [(OTATaskingAgent *)synchRemoteObjectProxy setPreferenceForDomain:domainCopy preference:preferenceCopy value:value UID:v13 withReply:v17];
   }
 
   v15 = *(v19 + 24);
@@ -92,16 +92,16 @@ void __29__OTATaskingAgentClient_init__block_invoke(uint64_t a1, uint64_t a2)
   return v15;
 }
 
-- (BOOL)deletePreference:(id)a3 forUser:(id)a4 inDomain:(id)a5
+- (BOOL)deletePreference:(id)preference forUser:(id)user inDomain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preferenceCopy = preference;
+  userCopy = user;
+  domainCopy = domain;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v11 = [(OTATaskingAgentClient *)self uidForUser:v9];
+  v11 = [(OTATaskingAgentClient *)self uidForUser:userCopy];
   if (v11)
   {
     synchRemoteObjectProxy = self->_synchRemoteObjectProxy;
@@ -110,7 +110,7 @@ void __29__OTATaskingAgentClient_init__block_invoke(uint64_t a1, uint64_t a2)
     v15[2] = __59__OTATaskingAgentClient_deletePreference_forUser_inDomain___block_invoke;
     v15[3] = &unk_278EDF500;
     v15[4] = &v16;
-    [(OTATaskingAgent *)synchRemoteObjectProxy deletePreferenceForDomain:v10 preference:v8 UID:v11 withReply:v15];
+    [(OTATaskingAgent *)synchRemoteObjectProxy deletePreferenceForDomain:domainCopy preference:preferenceCopy UID:v11 withReply:v15];
   }
 
   v13 = *(v17 + 24);
@@ -211,17 +211,17 @@ void __31__OTATaskingAgentClient_awdKey__block_invoke_66()
   }
 }
 
-- (unsigned)uidForUser:(id)a3
+- (unsigned)uidForUser:(id)user
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = getpwnam([v3 UTF8String]);
+  userCopy = user;
+  v4 = getpwnam([userCopy UTF8String]);
   if (!v4)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = userCopy;
       v6 = MEMORY[0x277D86220];
       v7 = "Unknown user '%@', skipping request";
       v8 = 12;

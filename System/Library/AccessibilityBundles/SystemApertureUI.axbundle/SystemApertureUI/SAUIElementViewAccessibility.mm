@@ -1,5 +1,5 @@
 @interface SAUIElementViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)isAccessibilityElement;
@@ -16,24 +16,24 @@
 
 @implementation SAUIElementViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SAUIElementView" hasInstanceMethod:@"elementViewProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SAUIElementView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_containerViewForLegacyFocusRing" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"_expandToCustomLayoutModeFromUserActionIfPossible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"_axCollapseIfExpandedByUserInteraction" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"_containerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"layoutMode" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SAUIElementView" hasInstanceMethod:@"elementViewProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SAUIElementView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_containerViewForLegacyFocusRing" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"_expandToCustomLayoutModeFromUserActionIfPossible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"_axCollapseIfExpandedByUserInteraction" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"_containerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SAUILayoutSpecifyingElementViewController" hasInstanceMethod:@"layoutMode" withFullSignature:{"q", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
   v2 = [(SAUIElementViewAccessibility *)self safeUIViewForKey:@"superview"];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  v4 = [v3 safeIntForKey:@"layoutMode"] == 1 || objc_msgSend(v3, "safeIntForKey:", @"layoutMode") == 2;
+  v4 = [_accessibilityViewController safeIntForKey:@"layoutMode"] == 1 || objc_msgSend(_accessibilityViewController, "safeIntForKey:", @"layoutMode") == 2;
   return v4;
 }
 
@@ -56,8 +56,8 @@ uint64_t __69__SAUIElementViewAccessibility__accessibilityRemoteElementDescendan
 
 - (void)_accessibilityPrefetchPropertiesIfNecessary
 {
-  v3 = [(SAUIElementViewAccessibility *)self _accessibilityRemoteElementDescendant];
-  if (v3 && ![(SAUIElementViewAccessibility *)self _axRemoteContentIsGettingElements])
+  _accessibilityRemoteElementDescendant = [(SAUIElementViewAccessibility *)self _accessibilityRemoteElementDescendant];
+  if (_accessibilityRemoteElementDescendant && ![(SAUIElementViewAccessibility *)self _axRemoteContentIsGettingElements])
   {
     [(SAUIElementViewAccessibility *)self _axSetRemoteContentIsGettingElements:1];
     _AXShouldDispatchNonMainThreadCallbacksOnMainThreadPushReason();
@@ -66,8 +66,8 @@ uint64_t __69__SAUIElementViewAccessibility__accessibilityRemoteElementDescendan
     v5[1] = 3221225472;
     v5[2] = __75__SAUIElementViewAccessibility__accessibilityPrefetchPropertiesIfNecessary__block_invoke;
     v5[3] = &unk_29F3064D8;
-    v6 = v3;
-    v7 = self;
+    v6 = _accessibilityRemoteElementDescendant;
+    selfCopy = self;
     dispatch_async(v4, v5);
   }
 }
@@ -118,55 +118,55 @@ uint64_t __75__SAUIElementViewAccessibility__accessibilityPrefetchPropertiesIfNe
   v3 = [(SAUIElementViewAccessibility *)self safeValueForKey:@"elementViewProvider"];
   if ([v3 conformsToProtocol:&unk_2A23348F8])
   {
-    v4 = [v3 leadingView];
-    v5 = [v3 trailingView];
-    v6 = [v3 minimalView];
+    leadingView = [v3 leadingView];
+    trailingView = [v3 trailingView];
+    minimalView = [v3 minimalView];
     MEMORY[0x29ED3A9D0](@"SBFlashlightActivityElement");
     if (objc_opt_isKindOfClass() & 1) != 0 || (MEMORY[0x29ED3A9D0](@"SBDynamicFlashlightActivityElement"), (objc_opt_isKindOfClass()))
     {
-      v7 = accessibilityLocalizedString(@"flashlight.on");
+      accessibilityLabel = accessibilityLocalizedString(@"flashlight.on");
     }
 
     else
     {
-      v9 = [(SAUIElementViewAccessibility *)self accessibilityIdentifier];
-      v10 = [v9 isEqualToString:@"minimal.view"];
+      accessibilityIdentifier = [(SAUIElementViewAccessibility *)self accessibilityIdentifier];
+      v10 = [accessibilityIdentifier isEqualToString:@"minimal.view"];
 
       if (v10)
       {
-        v7 = [v6 accessibilityLabel];
+        accessibilityLabel = [minimalView accessibilityLabel];
       }
 
       else
       {
-        v11 = [v5 accessibilityLabel];
-        if (![v11 length])
+        accessibilityLabel2 = [trailingView accessibilityLabel];
+        if (![accessibilityLabel2 length])
         {
           v12 = UIAXStringForAllChildren();
 
-          v11 = v12;
+          accessibilityLabel2 = v12;
         }
 
-        v14 = v11;
+        v14 = accessibilityLabel2;
         v15 = @"__AXStringForVariablesSentinel";
-        v7 = __UIAXStringForVariables();
+        accessibilityLabel = __UIAXStringForVariables();
       }
 
-      if (![v7 length])
+      if (![accessibilityLabel length])
       {
-        v13 = [(SAUIElementViewAccessibility *)self _axGetRemoteContentLabel];
+        _axGetRemoteContentLabel = [(SAUIElementViewAccessibility *)self _axGetRemoteContentLabel];
 
-        v7 = v13;
+        accessibilityLabel = _axGetRemoteContentLabel;
       }
     }
   }
 
   else
   {
-    v7 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
@@ -185,9 +185,9 @@ uint64_t __75__SAUIElementViewAccessibility__accessibilityPrefetchPropertiesIfNe
     v6 = [v3 safeStringForKey:@"elementIdentifier"];
     if ([v6 isEqualToString:@"systemApertureElementIdentifierUnknown"])
     {
-      v7 = [(SAUIElementViewAccessibility *)self accessibilityLabel];
+      accessibilityLabel = [(SAUIElementViewAccessibility *)self accessibilityLabel];
       v8 = accessibilityLocalizedString(@"system.aperture.detection.label");
-      v9 = [v7 isEqualToString:v8];
+      v9 = [accessibilityLabel isEqualToString:v8];
 
       if (v9)
       {
@@ -224,7 +224,7 @@ LABEL_11:
   }
 
   v5 = [(SAUIElementViewAccessibility *)self safeUIViewForKey:@"superview"];
-  v6 = [v5 _accessibilityViewController];
+  _accessibilityViewController = [v5 _accessibilityViewController];
 
   v7 = objc_alloc(MEMORY[0x29EDC78E0]);
   v8 = accessibilityLocalizedString(@"window.expand");
@@ -232,7 +232,7 @@ LABEL_11:
   v28[1] = 3221225472;
   v28[2] = __58__SAUIElementViewAccessibility_accessibilityCustomActions__block_invoke;
   v28[3] = &unk_29F306550;
-  v9 = v6;
+  v9 = _accessibilityViewController;
   v29 = v9;
   v10 = [v7 initWithName:v8 actionHandler:v28];
 
@@ -372,18 +372,18 @@ void __58__SAUIElementViewAccessibility_accessibilityCustomActions__block_invoke
 - (BOOL)accessibilityPerformEscape
 {
   v3 = [(SAUIElementViewAccessibility *)self safeUIViewForKey:@"superview"];
-  v4 = [v3 _accessibilityViewController];
+  _accessibilityViewController = [v3 _accessibilityViewController];
 
-  if ([v4 safeIntForKey:@"layoutMode"] == 3)
+  if ([_accessibilityViewController safeIntForKey:@"layoutMode"] == 3)
   {
     v5 = [(SAUIElementViewAccessibility *)self safeUIViewForKey:@"superview"];
-    v6 = [v5 _accessibilityViewController];
+    _accessibilityViewController2 = [v5 _accessibilityViewController];
 
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v10 = v6;
+    v10 = _accessibilityViewController2;
     AXPerformSafeBlock();
     v7 = *(v12 + 24);
 
@@ -416,11 +416,11 @@ void __58__SAUIElementViewAccessibility_accessibilityPerformEscape__block_invoke
 
 - (id)accessibilityPath
 {
-  v3 = [(SAUIElementViewAccessibility *)self _accessibilityContainerView];
-  v4 = v3;
-  if (v3)
+  _accessibilityContainerView = [(SAUIElementViewAccessibility *)self _accessibilityContainerView];
+  v4 = _accessibilityContainerView;
+  if (_accessibilityContainerView)
   {
-    [v3 accessibilityFrame];
+    [_accessibilityContainerView accessibilityFrame];
     x = v26.origin.x;
     y = v26.origin.y;
     width = v26.size.width;
@@ -447,31 +447,31 @@ void __58__SAUIElementViewAccessibility_accessibilityPerformEscape__block_invoke
     v30.size.width = width;
     v30.size.height = height;
     v14 = v13 / CGRectGetHeight(v30);
-    v15 = [v4 layer];
-    [v15 cornerRadius];
+    layer = [v4 layer];
+    [layer cornerRadius];
     v17 = fmax(v22, v14) * v16;
 
-    v18 = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
+    accessibilityPath = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = SAUIElementViewAccessibility;
-    v18 = [(SAUIElementViewAccessibility *)&v24 accessibilityPath];
+    accessibilityPath = [(SAUIElementViewAccessibility *)&v24 accessibilityPath];
   }
 
-  v19 = v18;
+  v19 = accessibilityPath;
 
   return v19;
 }
 
 - (id)_containerViewForLegacyFocusRing
 {
-  v2 = [(SAUIElementViewAccessibility *)self _accessibilityContainerView];
-  v3 = [v2 superview];
+  _accessibilityContainerView = [(SAUIElementViewAccessibility *)self _accessibilityContainerView];
+  superview = [_accessibilityContainerView superview];
 
-  return v3;
+  return superview;
 }
 
 - (id)_accessibilityContainerView
@@ -485,9 +485,9 @@ void __58__SAUIElementViewAccessibility_accessibilityPerformEscape__block_invoke
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 subviews];
+  subviews = [v2 subviews];
 
-  return v3;
+  return subviews;
 }
 
 - (int64_t)_accessibilitySortPriority

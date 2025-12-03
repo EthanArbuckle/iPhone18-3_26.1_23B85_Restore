@@ -51,10 +51,10 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(OrgApacheLuceneIndexPostingsEnum *)postingsEnum docID];
+  docID = [(OrgApacheLuceneIndexPostingsEnum *)postingsEnum docID];
   *&v6 = [(OrgApacheLuceneIndexPostingsEnum *)self->postingsEnum_ freq];
 
-  [(OrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer *)docScorer scoreWithInt:v5 withFloat:v6];
+  [(OrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer *)docScorer scoreWithInt:docID withFloat:v6];
   return result;
 }
 

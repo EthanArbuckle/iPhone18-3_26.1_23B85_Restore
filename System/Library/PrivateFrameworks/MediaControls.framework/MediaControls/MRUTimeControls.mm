@@ -1,20 +1,20 @@
 @interface MRUTimeControls
 - ($04B05C73ED6AEEF31C5815932084562D)durationSnapshot;
-- (BOOL)isEqual:(id)a3;
-- (MRUTimeControls)initWithResponseItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRUTimeControls)initWithResponseItem:(id)item;
 - (double)elapsedTime;
-- (double)elapsedTimeForDate:(id)a3;
+- (double)elapsedTimeForDate:(id)date;
 - (double)startTime;
 - (id)description;
-- (void)setDurationSnapshot:(id *)a3;
-- (void)setElapsedTime:(double)a3;
+- (void)setDurationSnapshot:(id *)snapshot;
+- (void)setElapsedTime:(double)time;
 @end
 
 @implementation MRUTimeControls
 
-- (MRUTimeControls)initWithResponseItem:(id)a3
+- (MRUTimeControls)initWithResponseItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v26.receiver = self;
   v26.super_class = MRUTimeControls;
   v5 = [(MRUTimeControls *)&v26 init];
@@ -23,9 +23,9 @@
     goto LABEL_13;
   }
 
-  v6 = [v4 seekCommand];
+  seekCommand = [itemCopy seekCommand];
   seekCommand = v5->_seekCommand;
-  v5->_seekCommand = v6;
+  v5->_seekCommand = seekCommand;
 
   v8 = [(MPCPlayerSeekCommand *)v5->_seekCommand changePositionToElapsedInterval:0.0];
   v9 = v8;
@@ -33,7 +33,7 @@
   {
     v5->_scrubbable = 0;
 
-    if (v4)
+    if (itemCopy)
     {
       goto LABEL_6;
     }
@@ -52,33 +52,33 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!itemCopy)
   {
     v5->_scrubbable = 1;
 
     goto LABEL_8;
   }
 
-  [v4 duration];
+  [itemCopy duration];
   v5->_scrubbable = (v25 & 1) == 0;
 
 LABEL_6:
-  [v4 duration];
+  [itemCopy duration];
   v5->_isEnabled = v24 > 0.0;
-  [v4 duration];
+  [itemCopy duration];
   *&v5->_durationSnapshot.snapshotTime = v20;
   *&v5->_durationSnapshot.endTime = v21;
   *&v5->_durationSnapshot.elapsedDuration = v22;
   *&v5->_durationSnapshot.isLiveContent = v23;
-  [v4 duration];
+  [itemCopy duration];
   v10 = v19;
 LABEL_9:
   v5->_isLive = v10;
-  v11 = [v4 localizedDurationString];
-  v12 = v11;
-  if (v11)
+  localizedDurationString = [itemCopy localizedDurationString];
+  v12 = localizedDurationString;
+  if (localizedDurationString)
   {
-    v13 = v11;
+    v13 = localizedDurationString;
   }
 
   else
@@ -129,10 +129,10 @@ LABEL_13:
   return [v3 stringWithFormat:@"%@ start: %f | duration: %f | elapsed: %f | scrubbable: %@ | enabled: %@ | live: %@ - %@", v4, v6, v7, *&self->_durationSnapshot.elapsedDuration, v9, v10, v8, self->_liveText];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -142,7 +142,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5)
       {
@@ -208,16 +208,16 @@ LABEL_13:
       }
 
       v20 = self->_isLive == [(MRUTimeControls *)v6 isLive]&& v9;
-      v21 = [(MRUTimeControls *)v6 liveText];
-      v22 = v21;
-      if (v21 == self->_liveText)
+      liveText = [(MRUTimeControls *)v6 liveText];
+      v22 = liveText;
+      if (liveText == self->_liveText)
       {
         v23 = 1;
       }
 
       else
       {
-        v23 = [(NSString *)v21 isEqual:?];
+        v23 = [(NSString *)liveText isEqual:?];
       }
 
       v8 = v20 & v23;
@@ -270,7 +270,7 @@ LABEL_13:
   return result;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
   v16 = *MEMORY[0x1E69E9840];
   [(MRUTimeControls *)self duration];
@@ -281,11 +281,11 @@ LABEL_13:
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2050;
-    *&buf[14] = a3;
+    *&buf[14] = time;
     _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ set time to: %{public}f", buf, 0x16u);
   }
 
-  v8 = fmax(a3, 0.0);
+  v8 = fmax(time, 0.0);
   if (v8 < v6)
   {
     v6 = v8;
@@ -297,7 +297,7 @@ LABEL_13:
   v13[2] = __34__MRUTimeControls_setElapsedTime___block_invoke;
   v13[3] = &unk_1E7664118;
   v13[4] = self;
-  *&v13[5] = a3;
+  *&v13[5] = time;
   [MEMORY[0x1E69B0848] performRequest:v9 completion:v13];
   v10 = *&self->_durationSnapshot.startTime;
   *&buf[16] = self->_durationSnapshot.duration;
@@ -331,15 +331,15 @@ void __34__MRUTimeControls_setElapsedTime___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (double)elapsedTimeForDate:(id)a3
+- (double)elapsedTimeForDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v4 = [MEMORY[0x1E695DF00] now];
+    dateCopy = [MEMORY[0x1E695DF00] now];
   }
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   duration = self->_durationSnapshot.elapsedDuration + (v5 - self->_durationSnapshot.snapshotTime) * self->_durationSnapshot.rate;
   if (duration >= self->_durationSnapshot.duration)
   {
@@ -361,12 +361,12 @@ void __34__MRUTimeControls_setElapsedTime___block_invoke(uint64_t a1, void *a2)
   return self;
 }
 
-- (void)setDurationSnapshot:(id *)a3
+- (void)setDurationSnapshot:(id *)snapshot
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  v5 = *&a3->var4;
-  *&self->_durationSnapshot.isLiveContent = *&a3->var7;
+  v3 = *&snapshot->var0;
+  v4 = *&snapshot->var2;
+  v5 = *&snapshot->var4;
+  *&self->_durationSnapshot.isLiveContent = *&snapshot->var7;
   *&self->_durationSnapshot.endTime = v4;
   *&self->_durationSnapshot.elapsedDuration = v5;
   *&self->_durationSnapshot.snapshotTime = v3;

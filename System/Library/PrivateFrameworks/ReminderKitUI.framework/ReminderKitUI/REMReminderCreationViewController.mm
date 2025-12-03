@@ -1,37 +1,37 @@
 @interface REMReminderCreationViewController
-- (REMReminderCreationViewController)initWithDelegate:(id)a3;
-- (void)remoteViewControllerDidLoad:(id)a3 setupCompletion:(id)a4;
+- (REMReminderCreationViewController)initWithDelegate:(id)delegate;
+- (void)remoteViewControllerDidLoad:(id)load setupCompletion:(id)completion;
 - (void)viewServiceDidCancel;
-- (void)viewServiceDidFailWithError:(id)a3;
+- (void)viewServiceDidFailWithError:(id)error;
 - (void)viewServiceDidFinish;
 @end
 
 @implementation REMReminderCreationViewController
 
-- (REMReminderCreationViewController)initWithDelegate:(id)a3
+- (REMReminderCreationViewController)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = REMReminderCreationViewController;
   v6 = [(REMReminderCreationViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
   }
 
   return v7;
 }
 
-- (void)remoteViewControllerDidLoad:(id)a3 setupCompletion:(id)a4
+- (void)remoteViewControllerDidLoad:(id)load setupCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  loadCopy = load;
   v8 = [REMReminderCreationContext alloc];
-  v9 = [(REMReminderCreationViewController *)self delegate];
-  v10 = [(REMReminderCreationContext *)v8 initWithDelegate:v9];
+  delegate = [(REMReminderCreationViewController *)self delegate];
+  v10 = [(REMReminderCreationContext *)v8 initWithDelegate:delegate];
 
-  [v7 displayForCreationWithContext:v10 completion:v6];
+  [loadCopy displayForCreationWithContext:v10 completion:completionCopy];
 }
 
 - (void)viewServiceDidCancel
@@ -42,13 +42,13 @@
   [(REMReminderCreationViewController *)self sendDidCreate:0 error:0];
 }
 
-- (void)viewServiceDidFailWithError:(id)a3
+- (void)viewServiceDidFailWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = REMReminderCreationViewController;
-  v4 = a3;
-  [(REMReminderServiceViewController *)&v5 viewServiceDidFailWithError:v4];
-  [(REMReminderCreationViewController *)self sendDidCreate:0 error:v4, v5.receiver, v5.super_class];
+  errorCopy = error;
+  [(REMReminderServiceViewController *)&v5 viewServiceDidFailWithError:errorCopy];
+  [(REMReminderCreationViewController *)self sendDidCreate:0 error:errorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)viewServiceDidFinish

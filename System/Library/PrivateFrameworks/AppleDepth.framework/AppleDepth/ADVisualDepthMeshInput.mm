@@ -1,14 +1,14 @@
 @interface ADVisualDepthMeshInput
 - (ADVisualDepthMeshInput)init;
-- (BOOL)removeChunkWithUUID:(id)a3;
+- (BOOL)removeChunkWithUUID:(id)d;
 @end
 
 @implementation ADVisualDepthMeshInput
 
-- (BOOL)removeChunkWithUUID:(id)a3
+- (BOOL)removeChunkWithUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -28,8 +28,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:dCopy];
 
         if (v11)
         {

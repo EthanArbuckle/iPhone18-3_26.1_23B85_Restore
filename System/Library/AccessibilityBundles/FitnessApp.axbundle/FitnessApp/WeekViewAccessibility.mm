@@ -6,14 +6,14 @@
 
 - (id)accessibilityElements
 {
-  v3 = [(WeekViewAccessibility *)self layer];
-  v4 = [v3 sublayers];
+  layer = [(WeekViewAccessibility *)self layer];
+  sublayers = [layer sublayers];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = sublayers;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

@@ -1,8 +1,8 @@
 @interface VCPSongDetector
 - (VCPSongDetector)init;
 - (id)results;
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4;
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andSampleBatchSize:(int)a4;
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp;
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andSampleBatchSize:(int)size;
 @end
 
 @implementation VCPSongDetector
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 andSampleBatchSize:(int)a4
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample andSampleBatchSize:(int)size
 {
-  v4 = *&a4;
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  v4 = *&size;
+  FormatDescription = CMSampleBufferGetFormatDescription(sample);
   StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription);
   if (!StreamBasicDescription)
   {
@@ -92,7 +92,7 @@
   return v17;
 }
 
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
   if ((self->_startTime.flags & 1) == 0)
@@ -109,9 +109,9 @@
     return 0;
   }
 
-  mData = a3->mBuffers[0].mData;
-  mDataByteSize = a3->mBuffers[0].mDataByteSize;
-  if (mDataByteSize != 4 * [(AVAudioPCMBuffer *)self->_pcmBuffer frameLength:a3])
+  mData = samples->mBuffers[0].mData;
+  mDataByteSize = samples->mBuffers[0].mDataByteSize;
+  if (mDataByteSize != 4 * [(AVAudioPCMBuffer *)self->_pcmBuffer frameLength:samples])
   {
     return -50;
   }
@@ -154,9 +154,9 @@
   {
     v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
     [v3 encodeObject:self->_signature forKey:@"songSignature"];
-    v4 = [v3 encodedData];
+    encodedData = [v3 encodedData];
 
-    if (v4)
+    if (encodedData)
     {
       v19 = @"SongResults";
       v16[0] = @"start";
@@ -169,8 +169,8 @@
       v17[1] = v6;
       v16[2] = @"attributes";
       v14 = @"songSignature";
-      v7 = [v3 encodedData];
-      v15 = v7;
+      encodedData2 = [v3 encodedData];
+      v15 = encodedData2;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
       v17[2] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];

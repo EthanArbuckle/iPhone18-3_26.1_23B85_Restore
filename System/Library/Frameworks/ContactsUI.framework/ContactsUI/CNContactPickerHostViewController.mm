@@ -1,36 +1,36 @@
 @interface CNContactPickerHostViewController
-+ (BOOL)getViewController:(id)a3;
++ (BOOL)getViewController:(id)controller;
 + (id)contactPickerExtension;
-+ (id)contextForIdentifier:(id)a3;
++ (id)contextForIdentifier:(id)identifier;
 - (CNContactPickerContentDelegate)delegate;
 - (void)invalidate;
-- (void)invalidateSelectionAnimated:(BOOL)a3;
+- (void)invalidateSelectionAnimated:(BOOL)animated;
 - (void)pickerDidCancel;
-- (void)pickerDidCompleteWithNewContact:(id)a3;
+- (void)pickerDidCompleteWithNewContact:(id)contact;
 - (void)pickerDidSelectAddNewContact;
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4;
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4;
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)pickerDidSelectContact:(id)contact property:(id)property;
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties;
+- (void)setupWithOptions:(id)options readyBlock:(id)block;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation CNContactPickerHostViewController
 
-+ (BOOL)getViewController:(id)a3
++ (BOOL)getViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [a1 contactPickerExtension];
-  v10 = v5;
-  if (v5)
+  controllerCopy = controller;
+  contactPickerExtension = [self contactPickerExtension];
+  v10 = contactPickerExtension;
+  if (contactPickerExtension)
   {
-    _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 90, 7, @"Instantiate view controller from extension %@", v6, v7, v8, v9, v5);
+    _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 90, 7, @"Instantiate view controller from extension %@", v6, v7, v8, v9, contactPickerExtension);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__CNContactPickerHostViewController_getViewController___block_invoke;
     v12[3] = &unk_1E74E4DE8;
-    v14 = v4;
+    v14 = controllerCopy;
     v13 = v10;
-    v15 = a1;
+    selfCopy = self;
     [v13 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] listenerEndpoint:0 connectionHandler:v12];
   }
 
@@ -68,11 +68,11 @@ void __55__CNContactPickerHostViewController_getViewController___block_invoke(ui
   }
 }
 
-+ (id)contextForIdentifier:(id)a3
++ (id)contextForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 contactPickerExtension];
-  v6 = [v5 _extensionContextForUUID:v4];
+  identifierCopy = identifier;
+  contactPickerExtension = [self contactPickerExtension];
+  v6 = [contactPickerExtension _extensionContextForUUID:identifierCopy];
 
   return v6;
 }
@@ -117,76 +117,76 @@ void __59__CNContactPickerHostViewController_contactPickerExtension__block_invok
 
 - (void)pickerDidCancel
 {
-  v2 = [(CNContactPickerHostViewController *)self delegate];
-  [v2 pickerDidCancel];
+  delegate = [(CNContactPickerHostViewController *)self delegate];
+  [delegate pickerDidCancel];
 }
 
-- (void)pickerDidCompleteWithNewContact:(id)a3
+- (void)pickerDidCompleteWithNewContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactPickerHostViewController *)self delegate];
-  [v5 pickerDidCompleteWithNewContact:v4];
+  contactCopy = contact;
+  delegate = [(CNContactPickerHostViewController *)self delegate];
+  [delegate pickerDidCompleteWithNewContact:contactCopy];
 }
 
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNContactPickerHostViewController *)self delegate];
-  [v8 pickerDidSelectContacts:v7 properties:v6];
+  propertiesCopy = properties;
+  contactsCopy = contacts;
+  delegate = [(CNContactPickerHostViewController *)self delegate];
+  [delegate pickerDidSelectContacts:contactsCopy properties:propertiesCopy];
 }
 
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4
+- (void)pickerDidSelectContact:(id)contact property:(id)property
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNContactPickerHostViewController *)self delegate];
-  [v8 pickerDidSelectContact:v7 property:v6];
+  propertyCopy = property;
+  contactCopy = contact;
+  delegate = [(CNContactPickerHostViewController *)self delegate];
+  [delegate pickerDidSelectContact:contactCopy property:propertyCopy];
 }
 
 - (void)pickerDidSelectAddNewContact
 {
-  v2 = [(CNContactPickerHostViewController *)self delegate];
-  [v2 pickerDidSelectAddNewContact];
+  delegate = [(CNContactPickerHostViewController *)self delegate];
+  [delegate pickerDidSelectAddNewContact];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 141, 7, @"view service did terminate with error: %@", v3, v4, v5, v6, a3);
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 141, 7, @"view service did terminate with error: %@", v3, v4, v5, v6, error);
 
   [(CNContactPickerHostViewController *)self pickerDidCancel];
 }
 
 - (void)invalidate
 {
-  v3 = [(CNContactPickerHostViewController *)self extension];
-  v9 = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 133, 7, @"Invalidate extension %@ identifier %@", v4, v5, v6, v7, v3);
+  extension = [(CNContactPickerHostViewController *)self extension];
+  currentRequestIdentifier = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerHostViewController.m", 133, 7, @"Invalidate extension %@ identifier %@", v4, v5, v6, v7, extension);
 
-  v10 = [(CNContactPickerHostViewController *)self extension];
-  v8 = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
-  [v10 cancelExtensionRequestWithIdentifier:v8];
+  extension2 = [(CNContactPickerHostViewController *)self extension];
+  currentRequestIdentifier2 = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
+  [extension2 cancelExtensionRequestWithIdentifier:currentRequestIdentifier2];
 }
 
-- (void)invalidateSelectionAnimated:(BOOL)a3
+- (void)invalidateSelectionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_opt_class();
-  v6 = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
-  v7 = [v5 contextForIdentifier:v6];
+  currentRequestIdentifier = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
+  v7 = [v5 contextForIdentifier:currentRequestIdentifier];
 
-  [v7 invalidateSelectionAnimated:v3];
+  [v7 invalidateSelectionAnimated:animatedCopy];
 }
 
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4
+- (void)setupWithOptions:(id)options readyBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  optionsCopy = options;
   v8 = objc_opt_class();
-  v9 = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
-  v10 = [v8 contextForIdentifier:v9];
+  currentRequestIdentifier = [(CNContactPickerHostViewController *)self currentRequestIdentifier];
+  v10 = [v8 contextForIdentifier:currentRequestIdentifier];
 
-  [v10 setupWithOptions:v7 readyBlock:v6];
+  [v10 setupWithOptions:optionsCopy readyBlock:blockCopy];
 }
 
 @end

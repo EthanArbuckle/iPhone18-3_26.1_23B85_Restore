@@ -4,17 +4,17 @@
 - (BOOL)centerRegistrationValid;
 - (BOOL)displaysWidestCameraOnly;
 - (BOOL)hasNonLiveConfigurationChanges;
-- (BWPreviewStitcherNode)initWithCameraInfoByPortType:(id)a3 sensorBinningFactor:(id)a4 inputBuffersHaveHorizontalOverscanOnly:(BOOL)a5 registrationType:(int)a6 registrationMetalCommandQueue:(id)a7 excludeStaticComponentFromAlignmentShifts:(BOOL)a8 propagateDepth:(BOOL)a9 propagateStyles:(BOOL)a10 smartFramingZoomFactorsByFieldOfView:(id)a11 sensorOrientationByPortType:(id)a12 singleCameraOverCaptureEnabled:(BOOL)a13 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)a14 zoomPIPOverlayEnabled:(BOOL)a15 zoomPIPMinimumUIZoomFactor:(float)a16 zoomPIPSingleStreamModeEnabled:(BOOL)a17 preallocateOutputBufferPool:(BOOL)a18 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)a19 propagatePrimaryPreviewSource:(BOOL)a20;
-- (BWPreviewStitcherNode)initWithStitchingDisabledAndZoomPIPOverlayEnabled:(BOOL)a3 zoomPIPMinimumUIZoomFactor:(float)a4 zoomPIPSingleStreamModeEnabled:(BOOL)a5 propagateDepth:(BOOL)a6 propagateStyles:(BOOL)a7 smartFramingZoomFactorsByFieldOfView:(id)a8 sensorOrientationByPortType:(id)a9 singleCameraOverCaptureEnabled:(BOOL)a10 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)a11 preallocateOutputBufferPool:(BOOL)a12 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)a13 propagatePrimaryPreviewSource:(BOOL)a14;
+- (BWPreviewStitcherNode)initWithCameraInfoByPortType:(id)type sensorBinningFactor:(id)factor inputBuffersHaveHorizontalOverscanOnly:(BOOL)only registrationType:(int)registrationType registrationMetalCommandQueue:(id)queue excludeStaticComponentFromAlignmentShifts:(BOOL)shifts propagateDepth:(BOOL)depth propagateStyles:(BOOL)self0 smartFramingZoomFactorsByFieldOfView:(id)self1 sensorOrientationByPortType:(id)self2 singleCameraOverCaptureEnabled:(BOOL)self3 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)self4 zoomPIPOverlayEnabled:(BOOL)self5 zoomPIPMinimumUIZoomFactor:(float)self6 zoomPIPSingleStreamModeEnabled:(BOOL)self7 preallocateOutputBufferPool:(BOOL)self8 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)self9 propagatePrimaryPreviewSource:(BOOL)source;
+- (BWPreviewStitcherNode)initWithStitchingDisabledAndZoomPIPOverlayEnabled:(BOOL)enabled zoomPIPMinimumUIZoomFactor:(float)factor zoomPIPSingleStreamModeEnabled:(BOOL)modeEnabled propagateDepth:(BOOL)depth propagateStyles:(BOOL)styles smartFramingZoomFactorsByFieldOfView:(id)view sensorOrientationByPortType:(id)type singleCameraOverCaptureEnabled:(BOOL)self0 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)self1 preallocateOutputBufferPool:(BOOL)self2 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)self3 propagatePrimaryPreviewSource:(BOOL)self4;
 - (CGPoint)primaryCaptureRectCenter;
-- (CMSampleBufferRef)_copySampleBufferToAttachForZoomPIPFromWiderCameraSampleBuffer:(const void *)a3 narrowerCameraSampleBuffer:;
-- (CMSampleBufferRef)_newStitchedSampleBufferFromWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(float64x2_t *)a4 widerCameraRegionsShifts:(double *)a5 teleShift:(double *)a6 primaryCaptureRectOut:(double *)a7 primaryCaptureRectBeforeCroppingOut:(void *)a8 centerWiderCameraShiftOut:(float64_t)a9 currentFrameRate:(float64_t)a10 inputCropRectOut:(float)a11;
+- (CMSampleBufferRef)_copySampleBufferToAttachForZoomPIPFromWiderCameraSampleBuffer:(const void *)buffer narrowerCameraSampleBuffer:;
+- (CMSampleBufferRef)_newStitchedSampleBufferFromWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(float64x2_t *)narrowerCamera widerCameraRegionsShifts:(double *)shifts teleShift:(double *)shift primaryCaptureRectOut:(double *)out primaryCaptureRectBeforeCroppingOut:(void *)croppingOut centerWiderCameraShiftOut:(float64_t)shiftOut currentFrameRate:(float64_t)self0 inputCropRectOut:(float)self1;
 - (CMSampleBufferRef)copySampleBufferToAttachForPropagatePrimaryPreviewSourceFromWiderCameraSampleBuffer:(CMSampleBufferRef)sbuf narrowerCameraSampleBuffer:;
-- (_BYTE)_updateOverCaptureStatusWithWiderCameraSampleBuffer:(const void *)a3 narrowerCameraSampleBuffer:;
+- (_BYTE)_updateOverCaptureStatusWithWiderCameraSampleBuffer:(const void *)buffer narrowerCameraSampleBuffer:;
 - (_DWORD)_setOverCaptureStatus:(_DWORD *)result;
 - (__CFString)_displayStringForPortType:(__CFString *)result;
-- (double)_computeBravoWiderToNarrowerCameraShiftFromWiderCameraSampleBuffer:(uint64_t)a3 narrowerCameraSampleBuffer:;
-- (double)_scaleFactorAppliedForPixelBuffer:(void *)a3 usedSourceRect:(double)result primaryCaptureRectAspectRatio:(double)a5 metadata:(double)a6;
+- (double)_computeBravoWiderToNarrowerCameraShiftFromWiderCameraSampleBuffer:(uint64_t)buffer narrowerCameraSampleBuffer:;
+- (double)_scaleFactorAppliedForPixelBuffer:(void *)buffer usedSourceRect:(double)result primaryCaptureRectAspectRatio:(double)ratio metadata:(double)metadata;
 - (double)_wideBaseZoomFactorWithOverride;
 - (double)_wideBaseZoomFactorWithOverrideLocked;
 - (double)primaryCameraAspectRatio;
@@ -26,44 +26,44 @@
 - (id)wideFallbackDescription;
 - (int32x2_t)_cameraTransitionPool;
 - (opaqueCMSampleBuffer)trueVideoTransitionReferenceSampleBuffer;
-- (uint64_t)_applyBrightnessCompensationToImage:(void *)a3 referenceImage:(double)a4 bounds:(double)a5 compensationLevel:(double)a6;
-- (uint64_t)_cameraDisplayTransitionFrameCountForCameraFallbackChange:(float)a3 currentFrameRate:;
-- (uint64_t)_compensateForMissingFOVUsingPixelBuffer:(__CVBuffer *)a3 sourceRect:(int)a4 destinationContainingRect:(int)a5 destinationInsetRect:(int)a6 outputPixelBuffer:(int)a7;
-- (uint64_t)_featheredImageWithNarrowerCameraImage:(uint64_t)a3 widerCameraImage:(int)a4 narrowerCameraClipRect:(int)a5 widerCameraClipRect:(int)a6 zoomingIn:(int)a7 progress:(void *)a8 featherEdges:(double)a9 rampCameraTransition:(double)a10 renderEnhancedFeathering:(CGFloat)a11 narrowerCameraEdgeExpansionRamp:(CGFloat)a12 qsubToQsumEdgeOpacityRamp:(double)a13 qsubToQsumEdgeOpacityRampFromProgress:(double)a14;
+- (uint64_t)_applyBrightnessCompensationToImage:(void *)image referenceImage:(double)referenceImage bounds:(double)bounds compensationLevel:(double)level;
+- (uint64_t)_cameraDisplayTransitionFrameCountForCameraFallbackChange:(float)change currentFrameRate:;
+- (uint64_t)_compensateForMissingFOVUsingPixelBuffer:(__CVBuffer *)buffer sourceRect:(int)rect destinationContainingRect:(int)containingRect destinationInsetRect:(int)insetRect outputPixelBuffer:(int)pixelBuffer;
+- (uint64_t)_featheredImageWithNarrowerCameraImage:(uint64_t)image widerCameraImage:(int)cameraImage narrowerCameraClipRect:(int)rect widerCameraClipRect:(int)clipRect zoomingIn:(int)in progress:(void *)progress featherEdges:(double)edges rampCameraTransition:(double)self0 renderEnhancedFeathering:(CGFloat)self1 narrowerCameraEdgeExpansionRamp:(CGFloat)self2 qsubToQsumEdgeOpacityRamp:(double)self3 qsubToQsumEdgeOpacityRampFromProgress:(double)self4;
 - (uint64_t)_primaryCameraPortType;
-- (uint64_t)_rectangularFeatheredImageWithNarrowerCameraImage:(uint64_t)a3 widerCameraImage:(int)a4 narrowerCameraClipRect:(int)a5 zoomingIn:(void *)a6 progress:(CGFloat)a7 rampCameraTransition:(CGFloat)a8 narrowerCameraEdgeExpansionRamp:(CGFloat)a9;
-- (uint64_t)_renderCameraTransitionRampToPixelBuffer:(__CVBuffer *)a3 bounds:(__CVBuffer *)a4 withWiderCameraPixelBuffer:(int)a5 narrowerCameraPixelBuffer:(int)a6 zoomingIn:(int)a7 progress:(int)a8 narrowerCameraBounds:(double)a9 narrowerCameraShift:(double)a10 featherEdges:(double)a11 rampCameraTransition:(double)a12 renderEnhancedFeathering:(float)a13 narrowerCameraEdgeExpansionRamp:(double)a14 qsubToQsumEdgeOpacityRamp:(double)a15 qsubToQsumEdgeOpacityRampFromProgress:(double)a16 renderBrightnessCompensation:(double)a17;
-- (uint64_t)_renderHDRPixelBufferToSDR:(uint64_t)a3 toOutputPixelBuffer:(float)a4 progress:;
-- (uint64_t)_transferPixelBuffer:(CVPixelBufferRef)pixelBuffer rect:(int)a4 intoPixelBuffer:(_OWORD *)a5 rect:(int)a6 isFinalOutput:(int)a7 withInputShift:(int)a8 scale:(uint64_t)a9 inputSourceRectOut:(uint64_t)a10;
+- (uint64_t)_rectangularFeatheredImageWithNarrowerCameraImage:(uint64_t)image widerCameraImage:(int)cameraImage narrowerCameraClipRect:(int)rect zoomingIn:(void *)in progress:(CGFloat)progress rampCameraTransition:(CGFloat)transition narrowerCameraEdgeExpansionRamp:(CGFloat)ramp;
+- (uint64_t)_renderCameraTransitionRampToPixelBuffer:(__CVBuffer *)buffer bounds:(__CVBuffer *)bounds withWiderCameraPixelBuffer:(int)pixelBuffer narrowerCameraPixelBuffer:(int)cameraPixelBuffer zoomingIn:(int)in progress:(int)progress narrowerCameraBounds:(double)cameraBounds narrowerCameraShift:(double)self0 featherEdges:(double)self1 rampCameraTransition:(double)self2 renderEnhancedFeathering:(float)self3 narrowerCameraEdgeExpansionRamp:(double)self4 qsubToQsumEdgeOpacityRamp:(double)self5 qsubToQsumEdgeOpacityRampFromProgress:(double)self6 renderBrightnessCompensation:(double)self7;
+- (uint64_t)_renderHDRPixelBufferToSDR:(uint64_t)r toOutputPixelBuffer:(float)buffer progress:;
+- (uint64_t)_transferPixelBuffer:(CVPixelBufferRef)pixelBuffer rect:(int)rect intoPixelBuffer:(_OWORD *)buffer rect:(int)a6 isFinalOutput:(int)output withInputShift:(int)shift scale:(uint64_t)scale inputSourceRectOut:(uint64_t)self0;
 - (uint64_t)_updateInputRequirements;
-- (uint64_t)_updateShiftCorrectionsAsyncFromComputedShift:(void *)a3 byRegisteringWiderCamera:(uint64_t)a4 narrowerCamera:(double)a5 macroTransitionType:(double)a6;
-- (unint64_t)_scaleCameraTransitionFrameCount:(int)a3 forCameraFallbackFromWideToTele:(double)a4 recenteringShiftOffset:(double)a5 recenteringStrength:(float)a6 registrationShiftOffset:(double)a7;
-- (void)_callDelegateWithAppliedWiderCameraShift:(CVPixelBufferRef)a3 narrowerCameraShift:(int)a4 widerCameraScaleFactor:(int)a5 narrowerCameraScaleFactor:(int)a6 widerCameraPixelBuffer:(int)a7 narrowerCameraPixelBuffer:(int)a8 widerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)a9 narrowerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)a10 widerCameraPortType:narrowerCameraPortType:inSuperWideMacroMode:widerCameraShiftAtBaseZoom:;
+- (uint64_t)_updateShiftCorrectionsAsyncFromComputedShift:(void *)shift byRegisteringWiderCamera:(uint64_t)camera narrowerCamera:(double)narrowerCamera macroTransitionType:(double)type;
+- (unint64_t)_scaleCameraTransitionFrameCount:(int)count forCameraFallbackFromWideToTele:(double)tele recenteringShiftOffset:(double)offset recenteringStrength:(float)strength registrationShiftOffset:(double)shiftOffset;
+- (void)_callDelegateWithAppliedWiderCameraShift:(CVPixelBufferRef)shift narrowerCameraShift:(int)cameraShift widerCameraScaleFactor:(int)factor narrowerCameraScaleFactor:(int)scaleFactor widerCameraPixelBuffer:(int)buffer narrowerCameraPixelBuffer:(int)pixelBuffer widerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)zoomFactor narrowerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)self0 widerCameraPortType:narrowerCameraPortType:inSuperWideMacroMode:widerCameraShiftAtBaseZoom:;
 - (void)_coreImageMetalLibraryURL;
-- (void)_getInputRect:(uint64_t)a3 outputRect:(uint64_t)a4 inputShiftAppliedInOutputRect:(uint64_t)a5 toTransferPixelBuffer:(uint64_t)a6 rect:(uint64_t)a7 intoPixelBufferDimensions:(uint64_t)a8 rect:(double)a9 withInputShift:(double)a10 shiftOutsideBoundingRectAllowed:(double)a11 ignoreBounds:(double)a12 scale:(double)a13 forFinalOutput:(double)a14;
-- (void)_initCameraTransitionCIContextWithColorManagementEnabled:(void *)a1;
+- (void)_getInputRect:(uint64_t)rect outputRect:(uint64_t)outputRect inputShiftAppliedInOutputRect:(uint64_t)inOutputRect toTransferPixelBuffer:(uint64_t)buffer rect:(uint64_t)a7 intoPixelBufferDimensions:(uint64_t)dimensions rect:(double)a9 withInputShift:(double)self0 shiftOutsideBoundingRectAllowed:(double)self1 ignoreBounds:(double)self2 scale:(double)self3 forFinalOutput:(double)self4;
+- (void)_initCameraTransitionCIContextWithColorManagementEnabled:(void *)enabled;
 - (void)_preheatCIRenderingAsync;
 - (void)_releaseResources;
 - (void)_restitchAndEmitLastInputForAspectAndCenterChange;
-- (void)_updateAndGetWiderCameraRegionShifts:(double *)a3 teleShift:(int)a4 widerCameraIsSuperWide:(int)a5 forComputedShift:(double)a6 registrationEnabled:(double)a7 currentFrameRate:(float)a8;
-- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)a1;
+- (void)_updateAndGetWiderCameraRegionShifts:(double *)shifts teleShift:(int)shift widerCameraIsSuperWide:(int)wide forComputedShift:(double)computedShift registrationEnabled:(double)enabled currentFrameRate:(float)rate;
+- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)needed;
 - (void)_updateZoomStatusFromWiderCameraSampleBuffer:narrowerCameraSampleBuffer:;
 - (void)_waitForCIPreheatingToFinish;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
 - (void)markDelayedEndOfData;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)rampToAdditionalZoomFactor:(double)a3 momentMovieRecordingRecenteringEnabled:(BOOL)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setDisplaysWidestCameraOnly:(BOOL)a3;
-- (void)setEmitSampleBufferSemaphore:(id)a3;
-- (void)setMaxLossyCompressionLevel:(int)a3;
-- (void)setPrimaryCameraAspectRatio:(double)a3;
-- (void)setPrimaryCaptureRectAspectRatio:(double)a3 center:(CGPoint)a4 trueVideoTransitionPercentComplete:(double)a5 trueVideoTransitionReferenceSampleBuffer:(opaqueCMSampleBuffer *)a6 smartFramingTransitionPercentComplete:(double)a7 smartFramingTransitionTargetFieldOfView:(int)a8 fencePortSendRight:(id)a9;
-- (void)setStoppingForModeSwitch:(BOOL)a3 delayedEndOfDataEnabled:(BOOL)a4 ispFastSwitchEnabled:(BOOL)a5 smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)a6;
+- (void)rampToAdditionalZoomFactor:(double)factor momentMovieRecordingRecenteringEnabled:(BOOL)enabled;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setDisplaysWidestCameraOnly:(BOOL)only;
+- (void)setEmitSampleBufferSemaphore:(id)semaphore;
+- (void)setMaxLossyCompressionLevel:(int)level;
+- (void)setPrimaryCameraAspectRatio:(double)ratio;
+- (void)setPrimaryCaptureRectAspectRatio:(double)ratio center:(CGPoint)center trueVideoTransitionPercentComplete:(double)complete trueVideoTransitionReferenceSampleBuffer:(opaqueCMSampleBuffer *)buffer smartFramingTransitionPercentComplete:(double)percentComplete smartFramingTransitionTargetFieldOfView:(int)view fencePortSendRight:(id)right;
+- (void)setStoppingForModeSwitch:(BOOL)switch delayedEndOfDataEnabled:(BOOL)enabled ispFastSwitchEnabled:(BOOL)switchEnabled smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)graph;
 @end
 
 @implementation BWPreviewStitcherNode
@@ -73,14 +73,14 @@
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 8) formatRequirements];
+    formatRequirements = [*(result + 8) formatRequirements];
     v3 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F2248328];
     FigCaptureSupportedPixelFormatsForCompressionType(1, 1, 1, 0);
     [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
     FigCaptureSupportedPixelFormatsForCompressionType(4, 1, 1, *(v1 + 196));
     [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
 
-    return [v2 setSupportedPixelFormats:v3];
+    return [formatRequirements setSupportedPixelFormats:v3];
   }
 
   return result;
@@ -148,9 +148,9 @@
       [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
     }
 
-    v12 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
+    height = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height];
     primaryCaptureRectPixelInset = self->_primaryCaptureRectPixelInset;
-    if (primaryCaptureRectPixelInset > (v12 - 2) >> 1)
+    if (primaryCaptureRectPixelInset > (height - 2) >> 1)
     {
       primaryCaptureRectPixelInset = ([(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] height]+ 0x1FFFFFFFELL) >> 1;
     }
@@ -274,43 +274,43 @@
 
 - (double)_wideBaseZoomFactorWithOverride
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = a1[62];
+  v1 = self[62];
   if (v1 <= 0.0)
   {
-    v1 = a1[61];
+    v1 = self[61];
     if (v1 <= 0.0)
     {
-      v1 = a1[59];
+      v1 = self[59];
       if (v1 <= 0.0)
       {
-        v1 = a1[56];
+        v1 = self[56];
       }
     }
   }
 
-  *&result = OUTLINED_FUNCTION_16_12(a1, 288, v1);
+  *&result = OUTLINED_FUNCTION_16_12(self, 288, v1);
   return result;
 }
 
 - (void)_restitchAndEmitLastInputForAspectAndCenterChange
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 476));
-    v2 = *(a1 + 1192);
+    os_unfair_lock_lock((self + 476));
+    v2 = *(self + 1192);
     if (v2)
     {
       v3 = CFRetain(v2);
-      os_unfair_lock_unlock((a1 + 476));
+      os_unfair_lock_unlock((self + 476));
       if (v3)
       {
         v4 = [BWNodeSampleBufferMessage newMessageWithSampleBuffer:v3];
-        [objc_msgSend(*(a1 + 8) "connection")];
+        [objc_msgSend(*(self + 8) "connection")];
 
         CFRelease(v3);
       }
@@ -319,7 +319,7 @@
     else
     {
 
-      os_unfair_lock_unlock((a1 + 476));
+      os_unfair_lock_unlock((self + 476));
     }
   }
 }
@@ -332,21 +332,21 @@
   [v2 loadArchiveWithName:@"BWPreviewStitcherNodeCoreImageArchive" fromURL:v3];
 }
 
-- (BWPreviewStitcherNode)initWithStitchingDisabledAndZoomPIPOverlayEnabled:(BOOL)a3 zoomPIPMinimumUIZoomFactor:(float)a4 zoomPIPSingleStreamModeEnabled:(BOOL)a5 propagateDepth:(BOOL)a6 propagateStyles:(BOOL)a7 smartFramingZoomFactorsByFieldOfView:(id)a8 sensorOrientationByPortType:(id)a9 singleCameraOverCaptureEnabled:(BOOL)a10 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)a11 preallocateOutputBufferPool:(BOOL)a12 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)a13 propagatePrimaryPreviewSource:(BOOL)a14
+- (BWPreviewStitcherNode)initWithStitchingDisabledAndZoomPIPOverlayEnabled:(BOOL)enabled zoomPIPMinimumUIZoomFactor:(float)factor zoomPIPSingleStreamModeEnabled:(BOOL)modeEnabled propagateDepth:(BOOL)depth propagateStyles:(BOOL)styles smartFramingZoomFactorsByFieldOfView:(id)view sensorOrientationByPortType:(id)type singleCameraOverCaptureEnabled:(BOOL)self0 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)self1 preallocateOutputBufferPool:(BOOL)self2 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)self3 propagatePrimaryPreviewSource:(BOOL)self4
 {
-  *(&v16 + 5) = __PAIR16__(a14, a13);
-  BYTE4(v16) = a12;
-  BYTE3(v16) = a5;
-  BYTE2(v16) = a3;
-  LOWORD(v16) = __PAIR16__(a11, a10);
-  BYTE1(v15) = a7;
-  LOBYTE(v15) = a6;
-  return [BWPreviewStitcherNode initWithCameraInfoByPortType:"initWithCameraInfoByPortType:sensorBinningFactor:inputBuffersHaveHorizontalOverscanOnly:registrationType:registrationMetalCommandQueue:excludeStaticComponentFromAlignmentShifts:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:zoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:" sensorBinningFactor:0 inputBuffersHaveHorizontalOverscanOnly:0 registrationType:0 registrationMetalCommandQueue:0 excludeStaticComponentFromAlignmentShifts:0 propagateDepth:0 propagateStyles:v15 smartFramingZoomFactorsByFieldOfView:a8 sensorOrientationByPortType:a9 singleCameraOverCaptureEnabled:v16 parallaxMitigationBasedOnZoomFactorEnabled:? zoomPIPOverlayEnabled:? zoomPIPMinimumUIZoomFactor:? zoomPIPSingleStreamModeEnabled:? preallocateOutputBufferPool:? primaryCaptureRectCenterYPixelOffsetEnabled:? propagatePrimaryPreviewSource:?];
+  *(&v16 + 5) = __PAIR16__(source, offsetEnabled);
+  BYTE4(v16) = pool;
+  BYTE3(v16) = modeEnabled;
+  BYTE2(v16) = enabled;
+  LOWORD(v16) = __PAIR16__(factorEnabled, captureEnabled);
+  BYTE1(v15) = styles;
+  LOBYTE(v15) = depth;
+  return [BWPreviewStitcherNode initWithCameraInfoByPortType:"initWithCameraInfoByPortType:sensorBinningFactor:inputBuffersHaveHorizontalOverscanOnly:registrationType:registrationMetalCommandQueue:excludeStaticComponentFromAlignmentShifts:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:zoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:" sensorBinningFactor:0 inputBuffersHaveHorizontalOverscanOnly:0 registrationType:0 registrationMetalCommandQueue:0 excludeStaticComponentFromAlignmentShifts:0 propagateDepth:0 propagateStyles:v15 smartFramingZoomFactorsByFieldOfView:view sensorOrientationByPortType:type singleCameraOverCaptureEnabled:v16 parallaxMitigationBasedOnZoomFactorEnabled:? zoomPIPOverlayEnabled:? zoomPIPMinimumUIZoomFactor:? zoomPIPSingleStreamModeEnabled:? preallocateOutputBufferPool:? primaryCaptureRectCenterYPixelOffsetEnabled:? propagatePrimaryPreviewSource:?];
 }
 
-- (BWPreviewStitcherNode)initWithCameraInfoByPortType:(id)a3 sensorBinningFactor:(id)a4 inputBuffersHaveHorizontalOverscanOnly:(BOOL)a5 registrationType:(int)a6 registrationMetalCommandQueue:(id)a7 excludeStaticComponentFromAlignmentShifts:(BOOL)a8 propagateDepth:(BOOL)a9 propagateStyles:(BOOL)a10 smartFramingZoomFactorsByFieldOfView:(id)a11 sensorOrientationByPortType:(id)a12 singleCameraOverCaptureEnabled:(BOOL)a13 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)a14 zoomPIPOverlayEnabled:(BOOL)a15 zoomPIPMinimumUIZoomFactor:(float)a16 zoomPIPSingleStreamModeEnabled:(BOOL)a17 preallocateOutputBufferPool:(BOOL)a18 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)a19 propagatePrimaryPreviewSource:(BOOL)a20
+- (BWPreviewStitcherNode)initWithCameraInfoByPortType:(id)type sensorBinningFactor:(id)factor inputBuffersHaveHorizontalOverscanOnly:(BOOL)only registrationType:(int)registrationType registrationMetalCommandQueue:(id)queue excludeStaticComponentFromAlignmentShifts:(BOOL)shifts propagateDepth:(BOOL)depth propagateStyles:(BOOL)self0 smartFramingZoomFactorsByFieldOfView:(id)self1 sensorOrientationByPortType:(id)self2 singleCameraOverCaptureEnabled:(BOOL)self3 parallaxMitigationBasedOnZoomFactorEnabled:(BOOL)self4 zoomPIPOverlayEnabled:(BOOL)self5 zoomPIPMinimumUIZoomFactor:(float)self6 zoomPIPSingleStreamModeEnabled:(BOOL)self7 preallocateOutputBufferPool:(BOOL)self8 primaryCaptureRectCenterYPixelOffsetEnabled:(BOOL)self9 propagatePrimaryPreviewSource:(BOOL)source
 {
-  v21 = a8;
+  shiftsCopy = shifts;
   v74.receiver = self;
   v74.super_class = BWPreviewStitcherNode;
   v27 = [(BWNode *)&v74 init];
@@ -356,17 +356,17 @@
     return v28;
   }
 
-  v72 = v21;
-  LOBYTE(v27->_lastInputPTS.epoch) = a3 != 0;
+  v72 = shiftsCopy;
+  LOBYTE(v27->_lastInputPTS.epoch) = type != 0;
   v27->_additionalZoomFactorSpring = objc_alloc_init(MEMORY[0x1E695DF90]);
   v30 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v28];
   v71 = objc_alloc_init(BWVideoFormatRequirements);
   [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v30 primaryMediaConfiguration] setFormatRequirements:v71];
   [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v30 primaryMediaConfiguration] setRetainedBufferCount:1];
-  *(v28 + 1676) = a15;
-  *(v28 + 1680) = a16;
-  *(v28 + 1677) = a17;
-  *(v28 + 1678) = a17;
+  *(v28 + 1676) = overlayEnabled;
+  *(v28 + 1680) = zoomFactor;
+  *(v28 + 1677) = modeEnabled;
+  *(v28 + 1678) = modeEnabled;
   v31 = *(v28 + 1224);
   if (v31 & 1) != 0 || (*(v28 + 1676))
   {
@@ -383,8 +383,8 @@
     }
   }
 
-  *(v28 + 1687) = a9;
-  if (a9)
+  *(v28 + 1687) = depth;
+  if (depth)
   {
     v34 = objc_alloc_init(BWNodeInputMediaConfiguration);
     [(BWNodeInputMediaConfiguration *)v34 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
@@ -393,8 +393,8 @@
     [(BWNodeInput *)v30 setMediaConfiguration:v34 forAttachedMediaKey:@"Depth"];
   }
 
-  *(v28 + 1688) = a10;
-  if (a10)
+  *(v28 + 1688) = styles;
+  if (styles)
   {
     v35 = objc_alloc_init(BWNodeInputMediaConfiguration);
     [(BWNodeInputMediaConfiguration *)v35 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
@@ -418,9 +418,9 @@
   [(BWPreviewStitcherNode *)v28 _updateInputRequirements];
   v38 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v28];
   [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v38 primaryMediaConfiguration] setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-  [(BWNodeOutput *)v38 setPoolPreallocationEnabled:a18];
-  *(v28 + 1686) = a20;
-  if (a20)
+  [(BWNodeOutput *)v38 setPoolPreallocationEnabled:pool];
+  *(v28 + 1686) = source;
+  if (source)
   {
     v39 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     [(BWNodeOutputMediaConfiguration *)v39 setPassthroughMode:1];
@@ -439,12 +439,12 @@
   *(v28 + 348) = 1065353216;
   *(v28 + 352) = 1;
   v45 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
-  if (!a3)
+  if (!type)
   {
     goto LABEL_35;
   }
 
-  v46 = [a3 objectForKeyedSubscript:*off_1E798A0D0];
+  v46 = [type objectForKeyedSubscript:*off_1E798A0D0];
   v47 = v46;
   if (v46)
   {
@@ -461,7 +461,7 @@
     *(v28 + 308) = 0;
   }
 
-  v51 = [a3 objectForKeyedSubscript:*off_1E798A0C0];
+  v51 = [type objectForKeyedSubscript:*off_1E798A0C0];
   if (v51)
   {
     v52 = v51;
@@ -505,7 +505,7 @@ LABEL_27:
   }
 
 LABEL_29:
-  v58 = [a3 objectForKeyedSubscript:*off_1E798A0D8];
+  v58 = [type objectForKeyedSubscript:*off_1E798A0D8];
   v45 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
   if (v58)
   {
@@ -525,40 +525,40 @@ LABEL_29:
     *(v28 + 336) = 0;
   }
 
-  *(v28 + 340) = a4;
-  if (a4.var0 < 1 || *&a4 <= 0)
+  *(v28 + 340) = factor;
+  if (factor.var0 < 1 || *&factor <= 0)
   {
     [BWPreviewStitcherNode initWithCameraInfoByPortType:sensorBinningFactor:inputBuffersHaveHorizontalOverscanOnly:registrationType:registrationMetalCommandQueue:excludeStaticComponentFromAlignmentShifts:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:zoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:];
     goto LABEL_62;
   }
 
-  *(v28 + 268) = a5;
+  *(v28 + 268) = only;
   *(v28 + 272) = 1084227584;
 LABEL_35:
-  *(v28 + 1872) = a11 != 0;
-  if (a11)
+  *(v28 + 1872) = view != 0;
+  if (view)
   {
-    *(v28 + 1904) = a11;
-    if (a12)
+    *(v28 + 1904) = view;
+    if (portType)
     {
-      *(v28 + 1912) = a12;
+      *(v28 + 1912) = portType;
     }
   }
 
   *(v28 + 1921) = 1;
   *(v28 + 1920) = 1;
-  *(v28 + 1922) = a13;
-  if (a13 && (*(v28 + 1872) & 1) == 0)
+  *(v28 + 1922) = enabled;
+  if (enabled && (*(v28 + 1872) & 1) == 0)
   {
     [BWPreviewStitcherNode initWithCameraInfoByPortType:sensorBinningFactor:inputBuffersHaveHorizontalOverscanOnly:registrationType:registrationMetalCommandQueue:excludeStaticComponentFromAlignmentShifts:propagateDepth:propagateStyles:smartFramingZoomFactorsByFieldOfView:sensorOrientationByPortType:singleCameraOverCaptureEnabled:parallaxMitigationBasedOnZoomFactorEnabled:zoomPIPOverlayEnabled:zoomPIPMinimumUIZoomFactor:zoomPIPSingleStreamModeEnabled:preallocateOutputBufferPool:primaryCaptureRectCenterYPixelOffsetEnabled:propagatePrimaryPreviewSource:];
     goto LABEL_62;
   }
 
   *(v28 + 476) = 0;
-  if (a3 && (*(v28 + 1224) & 1) != 0)
+  if (type && (*(v28 + 1224) & 1) != 0)
   {
-    *(v28 + 492) = a6;
-    v61 = [[BWPreviewRegistration alloc] initWithCameraInfoByPortType:a3 sensorBinningFactor:a4 registrationType:*(v28 + 492) metalCommandQueue:a7 excludeStaticComponentFromAlignmentShifts:v72];
+    *(v28 + 492) = registrationType;
+    v61 = [[BWPreviewRegistration alloc] initWithCameraInfoByPortType:type sensorBinningFactor:factor registrationType:*(v28 + 492) metalCommandQueue:queue excludeStaticComponentFromAlignmentShifts:v72];
     *(v28 + 504) = v61;
     if (v61)
     {
@@ -585,7 +585,7 @@ LABEL_44:
   *(v28 + 905) = 0;
   *(v28 + 184) = 0;
   *(v28 + 188) = 0;
-  *(v28 + 192) = a19;
+  *(v28 + 192) = offsetEnabled;
   *(v28 + 1040) = 1;
   *(v28 + 1048) = FigDispatchQueueCreateWithPriority();
   *(v28 + 1092) = 1;
@@ -681,7 +681,7 @@ LABEL_44:
   *(v28 + 328) = *(v28 + 280) != 0;
   *(v28 + 329) = *(v28 + v45[330]) != 0;
   *(v28 + 1685) = FigCapturePlatformIdentifier() > 8;
-  *(v28 + 1696) = a14;
+  *(v28 + 1696) = factorEnabled;
   BWSmartCameraSceneInitialize(v28 + 1704, 1, 16, 0, "Narrower Camera FoV Fills Over Capture", 0.99, 0.0, 0.9);
   *(v28 + 1705) = 1;
   *(v28 + 1776) = 1;
@@ -713,11 +713,11 @@ LABEL_44:
   }
 
   v6 = 3;
-  v7 = self;
+  selfCopy = self;
   do
   {
 
-    v7 = (v7 + 56);
+    selfCopy = (selfCopy + 56);
     --v6;
   }
 
@@ -746,7 +746,7 @@ LABEL_44:
   [(BWNode *)&v11 dealloc];
 }
 
-- (void)setPrimaryCaptureRectAspectRatio:(double)a3 center:(CGPoint)a4 trueVideoTransitionPercentComplete:(double)a5 trueVideoTransitionReferenceSampleBuffer:(opaqueCMSampleBuffer *)a6 smartFramingTransitionPercentComplete:(double)a7 smartFramingTransitionTargetFieldOfView:(int)a8 fencePortSendRight:(id)a9
+- (void)setPrimaryCaptureRectAspectRatio:(double)ratio center:(CGPoint)center trueVideoTransitionPercentComplete:(double)complete trueVideoTransitionReferenceSampleBuffer:(opaqueCMSampleBuffer *)buffer smartFramingTransitionPercentComplete:(double)percentComplete smartFramingTransitionTargetFieldOfView:(int)view fencePortSendRight:(id)right
 {
   v84.i32[0] = [(BWVideoFormat *)[(BWNodeOutput *)self->super._output videoFormat] width];
   v84.i32[1] = [(BWVideoFormat *)[(BWNodeOutput *)self->super._output videoFormat] height];
@@ -754,29 +754,29 @@ LABEL_44:
   v77 = v84;
   if (!BYTE2(self->_blackFilledBorderRectsBySurfaceID))
   {
-    a6 = 0;
+    buffer = 0;
   }
 
-  v15 = a3;
+  ratioCopy = ratio;
   os_unfair_lock_lock(&self->_configurationLock);
   primaryCameraAspectRatio = self->_primaryCameraAspectRatio;
   if (FigCaptureMetadataUtilitiesSizeIsInLandscapeOrientation(v84.i32[0], v84.i32[1]))
   {
-    v17 = a3;
+    ratioCopy2 = ratio;
   }
 
   else
   {
-    v17 = 1.0 / a3;
-    if (v17 >= 1.0)
+    ratioCopy2 = 1.0 / ratio;
+    if (ratioCopy2 >= 1.0)
     {
-      v15 = 1.0 / v15;
+      ratioCopy = 1.0 / ratioCopy;
       primaryCameraAspectRatio = 1.0 / primaryCameraAspectRatio;
     }
   }
 
   v74 = 1749;
-  if (v15 >= primaryCameraAspectRatio)
+  if (ratioCopy >= primaryCameraAspectRatio)
   {
     v18 = BYTE5(self->_narrowerCameraFoVFillsOverCapture.name);
   }
@@ -788,7 +788,7 @@ LABEL_44:
 
   v19 = BYTE3(self->_blackFilledBorderRectsBySurfaceID);
   v20 = v18 & (v19 ^ 1);
-  if (a5 < 0.999 && (v19 & 1) != 0)
+  if (complete < 0.999 && (v19 & 1) != 0)
   {
     goto LABEL_12;
   }
@@ -800,7 +800,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a5 > 0.0)
+  if (complete > 0.0)
   {
 LABEL_12:
     v21 = 1;
@@ -810,7 +810,7 @@ LABEL_12:
   v21 = BYTE1(self->_lastInputPTS.epoch);
   if (v21 != 1)
   {
-    if (a6)
+    if (buffer)
     {
       goto LABEL_12;
     }
@@ -818,10 +818,10 @@ LABEL_12:
     goto LABEL_157;
   }
 
-  if (!a6 && (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) == 0)
+  if (!buffer && (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) == 0)
   {
 LABEL_157:
-    if (self->_primaryCameraAspectRatio == a3 || (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) == 0)
+    if (self->_primaryCameraAspectRatio == ratio || (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -831,12 +831,12 @@ LABEL_157:
 
 LABEL_15:
   v22 = 0;
-  if (!a8)
+  if (!view)
   {
     if (v21)
     {
       v22 = 1;
-      if (v17 < 1.33233333 && v17 > 0.751 && (LOBYTE(self->_restitchingQueue) != 1 || (BYTE2(self->_restitchingQueue) & 1) == 0 && (BYTE1(self->_restitchingQueue) & 1) == 0 && !LODWORD(self->_smartFramingTransitionPercentComplete)))
+      if (ratioCopy2 < 1.33233333 && ratioCopy2 > 0.751 && (LOBYTE(self->_restitchingQueue) != 1 || (BYTE2(self->_restitchingQueue) & 1) == 0 && (BYTE1(self->_restitchingQueue) & 1) == 0 && !LODWORD(self->_smartFramingTransitionPercentComplete)))
       {
         v22 = 0;
       }
@@ -844,7 +844,7 @@ LABEL_15:
   }
 
   v75 = v20;
-  v23 = CMGetAttachment(a6, @"LandscapeAspectRatioBeforeTrueVideoTransition", 0);
+  v23 = CMGetAttachment(buffer, @"LandscapeAspectRatioBeforeTrueVideoTransition", 0);
   if (v23)
   {
     [v23 floatValue];
@@ -867,7 +867,7 @@ LABEL_15:
     v26 = v22 ^ 1;
     if (BYTE3(self->_blackFilledBorderRectsBySurfaceID) == 1)
     {
-      v76 = !v22 || self->_landscapeAspectRatioBeforeTrueVideoTransition > a5;
+      v76 = !v22 || self->_landscapeAspectRatioBeforeTrueVideoTransition > complete;
     }
 
     else
@@ -877,7 +877,7 @@ LABEL_15:
     }
 
     v27 = fmin(fabs(v25 + -1.77777778), fabs(v25 + -0.5625)) >= 0.001;
-    if (fmin(fabs(v17 + -1.77777778), fabs(v17 + -0.5625)) >= 0.001)
+    if (fmin(fabs(ratioCopy2 + -1.77777778), fabs(ratioCopy2 + -0.5625)) >= 0.001)
     {
       v26 = 1;
     }
@@ -912,10 +912,10 @@ LABEL_15:
     }
   }
 
-  v35 = [CMGetAttachment(a6 *off_1E798A3C8];
-  if (a6)
+  v35 = [CMGetAttachment(buffer *off_1E798A3C8];
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a6);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (ImageBuffer)
     {
       v37 = !BWPixelBufferIsHDR(ImageBuffer);
@@ -930,9 +930,9 @@ LABEL_15:
     trueVideo16x9ZoomRamp = self->_trueVideo16x9ZoomRamp;
     if (!*&self->_allowEdgeInsetDuringTrueVideoTransitions && !*&self->_transitionReferenceLearnedCoefficientsSampleBufferApplyCount && (self->_trueVideo16x9ZoomRamp & 1) == 0 && ((v38 | v37) & 1) != 0)
     {
-      *&self->_allowEdgeInsetDuringTrueVideoTransitions = CFRetain(a6);
+      *&self->_allowEdgeInsetDuringTrueVideoTransitions = CFRetain(buffer);
       *&self->_transitionReferenceLearnedCoefficientsSampleBufferApplyCount = [[BWRamp alloc] initWithName:@"TrueVideoTransitionOpacityRamp"];
-      AttachedMedia = BWSampleBufferGetAttachedMedia(a6, 0x1F21AB070);
+      AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AB070);
       if (BYTE1(self->_zoomPIPMinimumUIZoomFactor) == 1 && AttachedMedia)
       {
         transitionReferenceSampleBuffer = self->_transitionReferenceSampleBuffer;
@@ -956,7 +956,7 @@ LABEL_15:
         v52 = 166.0;
       }
 
-      v53 = [CMGetAttachment(a6 @"TrueVideoTransitionLargeSphereTravelDetected"];
+      v53 = [CMGetAttachment(buffer @"TrueVideoTransitionLargeSphereTravelDetected"];
       if (BYTE4(self->_blackFilledBorderRectsBySurfaceID) & 1) != 0 || (v58 = v53, ([v35 isEqual:*off_1E798A0E0]) || objc_msgSend(v35, "isEqual:", *off_1E798A0F8))
       {
         v59 = v52 * 0.843373494;
@@ -988,7 +988,7 @@ LABEL_15:
     trueVideo16x9ZoomRamp = self->_trueVideo16x9ZoomRamp;
   }
 
-  if ((v22 & BYTE3(self->_blackFilledBorderRectsBySurfaceID)) == 1 && ((self->_landscapeAspectRatioBeforeTrueVideoTransition > a5) & v38) == 1 && !self->_transitionReferenceOpacityRamp && !(trueVideo16x9ZoomRamp & 1 | (*&self->_transitionReferenceLearnedCoefficientsSampleBufferApplyCount != 0)))
+  if ((v22 & BYTE3(self->_blackFilledBorderRectsBySurfaceID)) == 1 && ((self->_landscapeAspectRatioBeforeTrueVideoTransition > complete) & v38) == 1 && !self->_transitionReferenceOpacityRamp && !(trueVideo16x9ZoomRamp & 1 | (*&self->_transitionReferenceLearnedCoefficientsSampleBufferApplyCount != 0)))
   {
     if (BYTE4(self->_blackFilledBorderRectsBySurfaceID))
     {
@@ -1009,7 +1009,7 @@ LABEL_15:
 
 LABEL_62:
   landscapeAspectRatioBeforeTrueVideoTransition = self->_landscapeAspectRatioBeforeTrueVideoTransition;
-  if (landscapeAspectRatioBeforeTrueVideoTransition > a5 && (setPrimaryCaptureRectAspectRatio_center_trueVideoTransitionPercentComplete_trueVideoTransitionReferenceSampleBuffer_smartFramingTransitionPercentComplete_smartFramingTransitionTargetFieldOfView_fencePortSendRight__trueVideoTransitionExitObservedForSignpost & 1) == 0)
+  if (landscapeAspectRatioBeforeTrueVideoTransition > complete && (setPrimaryCaptureRectAspectRatio_center_trueVideoTransitionPercentComplete_trueVideoTransitionReferenceSampleBuffer_smartFramingTransitionPercentComplete_smartFramingTransitionTargetFieldOfView_fencePortSendRight__trueVideoTransitionExitObservedForSignpost & 1) == 0)
   {
     if (*MEMORY[0x1E695FF58])
     {
@@ -1028,16 +1028,16 @@ LABEL_62:
     goto LABEL_70;
   }
 
-  if (landscapeAspectRatioBeforeTrueVideoTransition < a5)
+  if (landscapeAspectRatioBeforeTrueVideoTransition < complete)
   {
     v45 = 0;
 LABEL_70:
     setPrimaryCaptureRectAspectRatio_center_trueVideoTransitionPercentComplete_trueVideoTransitionReferenceSampleBuffer_smartFramingTransitionPercentComplete_smartFramingTransitionTargetFieldOfView_fencePortSendRight__trueVideoTransitionExitObservedForSignpost = v45;
   }
 
-  if (a6 && (BYTE3(self->_blackFilledBorderRectsBySurfaceID) & 1) != 0 && (([v35 isEqual:*off_1E798A0E0] & 1) != 0 || objc_msgSend(v35, "isEqual:", *off_1E798A0F8)))
+  if (buffer && (BYTE3(self->_blackFilledBorderRectsBySurfaceID) & 1) != 0 && (([v35 isEqual:*off_1E798A0E0] & 1) != 0 || objc_msgSend(v35, "isEqual:", *off_1E798A0F8)))
   {
-    v47 = CMGetAttachment(a6, @"TotalZoomFactor", 0);
+    v47 = CMGetAttachment(buffer, @"TotalZoomFactor", 0);
     if (v47)
     {
       [v47 floatValue];
@@ -1062,12 +1062,12 @@ LABEL_70:
   else
   {
     v61 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
-    v62 = v60 < a5 || a5 == 1.0 && v60 == 1.0;
+    v62 = v60 < complete || complete == 1.0 && v60 == 1.0;
   }
 
-  if ((BYTE3(self->_blackFilledBorderRectsBySurfaceID) & 1) != 0 || (v62 & BYTE4(self->_narrowerCameraFoVFillsOverCapture.name)) != 1 || v15 <= primaryCameraAspectRatio)
+  if ((BYTE3(self->_blackFilledBorderRectsBySurfaceID) & 1) != 0 || (v62 & BYTE4(self->_narrowerCameraFoVFillsOverCapture.name)) != 1 || ratioCopy <= primaryCameraAspectRatio)
   {
-    if (*(&self->super.super.isa + v74) == 1 && *&self->_superWideSensorCenterOffsetEnabled > v15)
+    if (*(&self->super.super.isa + v74) == 1 && *&self->_superWideSensorCenterOffsetEnabled > ratioCopy)
     {
       *(&self->super.super.isa + v74) = 0;
     }
@@ -1076,16 +1076,16 @@ LABEL_70:
   else
   {
     *(&self->super.super.isa + v74) = 1;
-    *&self->_superWideSensorCenterOffsetEnabled = v15;
+    *&self->_superWideSensorCenterOffsetEnabled = ratioCopy;
   }
 
-  v64 = v22 && (v63 = self->_landscapeAspectRatioBeforeTrueVideoTransition, v63 <= a5) && v63 != 0.0;
+  v64 = v22 && (v63 = self->_landscapeAspectRatioBeforeTrueVideoTransition, v63 <= complete) && v63 != 0.0;
   if (((v64 | BYTE3(self->_blackFilledBorderRectsBySurfaceID) | v75) & 1) == 0)
   {
-    self->_trueVideoTransitionEnteringAspectRatio = v17;
+    self->_trueVideoTransitionEnteringAspectRatio = ratioCopy2;
   }
 
-  self->_landscapeAspectRatioBeforeTrueVideoTransition = a5;
+  self->_landscapeAspectRatioBeforeTrueVideoTransition = complete;
   restitchingQueue_low = LOBYTE(self->_restitchingQueue);
   if (restitchingQueue_low == 1)
   {
@@ -1106,7 +1106,7 @@ LABEL_70:
   }
 
   v66 = 0;
-  if (a8 && a7 > 0.0 && a7 < 0.999 && (restitchingQueue_low & 1) != 0)
+  if (view && percentComplete > 0.0 && percentComplete < 0.999 && (restitchingQueue_low & 1) != 0)
   {
     if (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name))
     {
@@ -1116,19 +1116,19 @@ LABEL_70:
     else
     {
       smartFramingTransitionPercentComplete_low = LODWORD(self->_smartFramingTransitionPercentComplete);
-      if (smartFramingTransitionPercentComplete_low != a8)
+      if (smartFramingTransitionPercentComplete_low != view)
       {
         if (smartFramingTransitionPercentComplete_low)
         {
           HIDWORD(self->_smartFramingTransitionPercentComplete) = smartFramingTransitionPercentComplete_low;
         }
 
-        LODWORD(self->_smartFramingTransitionPercentComplete) = a8;
+        LODWORD(self->_smartFramingTransitionPercentComplete) = view;
       }
 
-      if (*&self->_smartFramingEnabled != a7)
+      if (*&self->_smartFramingEnabled != percentComplete)
       {
-        *&self->_smartFramingEnabled = a7;
+        *&self->_smartFramingEnabled = percentComplete;
       }
 
       v66 = 1;
@@ -1139,7 +1139,7 @@ LABEL_70:
   {
     if (v66)
     {
-      if (a7 != 1.0 || !a8)
+      if (percentComplete != 1.0 || !view)
       {
         goto LABEL_147;
       }
@@ -1147,9 +1147,9 @@ LABEL_70:
 
     else
     {
-      if (a8)
+      if (view)
       {
-        v68 = a7 == 1.0;
+        v68 = percentComplete == 1.0;
       }
 
       else
@@ -1163,33 +1163,33 @@ LABEL_70:
       }
     }
 
-    if (LODWORD(self->_smartFramingTransitionPercentComplete) != a8)
+    if (LODWORD(self->_smartFramingTransitionPercentComplete) != view)
     {
-      LODWORD(self->_smartFramingTransitionPercentComplete) = a8;
+      LODWORD(self->_smartFramingTransitionPercentComplete) = view;
     }
   }
 
 LABEL_147:
-  v69 = ((a4.x + -0.5) * v77.i32[0]);
-  v70 = ((a4.y + -0.5) * v77.i32[1]);
+  v69 = ((center.x + -0.5) * v77.i32[0]);
+  v70 = ((center.y + -0.5) * v77.i32[1]);
   v71 = v61[461];
   if (*(&self->super.super.isa + v71) != v66)
   {
     *(&self->super.super.isa + v71) = v66;
   }
 
-  self->_primaryCameraAspectRatio = a3;
-  self->_primaryCaptureRectCenter = a4;
+  self->_primaryCameraAspectRatio = ratio;
+  self->_primaryCaptureRectCenter = center;
   self->_primaryCaptureRectCenterXPixelOffset = v69;
   self->_primaryCaptureRectCenterYPixelOffset = v70;
   os_unfair_lock_unlock(&self->_configurationLock);
-  if (a9)
+  if (right)
   {
-    [*&self->_superMacroEdgeFeatheringShowBlurMask enqueueFencedAnimation:{+[BWPreviewStitcherFencedAnimationInfo fencedAnimationInfoWithAspectRatio:center:centerXPixelOffset:centerYPixelOffset:fencePortSendRight:](BWPreviewStitcherFencedAnimationInfo, "fencedAnimationInfoWithAspectRatio:center:centerXPixelOffset:centerYPixelOffset:fencePortSendRight:", v69, v70, a9, a3, a4.x, a4.y)}];
+    [*&self->_superMacroEdgeFeatheringShowBlurMask enqueueFencedAnimation:{+[BWPreviewStitcherFencedAnimationInfo fencedAnimationInfoWithAspectRatio:center:centerXPixelOffset:centerYPixelOffset:fencePortSendRight:](BWPreviewStitcherFencedAnimationInfo, "fencedAnimationInfoWithAspectRatio:center:centerXPixelOffset:centerYPixelOffset:fencePortSendRight:", v69, v70, right, ratio, center.x, center.y)}];
     if (*MEMORY[0x1E695FF58] == 1)
     {
       [*&self->_superMacroEdgeFeatheringShowBlurMask count];
-      [a9 port];
+      [right port];
       kdebug_trace();
     }
 
@@ -1254,19 +1254,19 @@ LABEL_147:
   return v4;
 }
 
-- (void)setDisplaysWidestCameraOnly:(BOOL)a3
+- (void)setDisplaysWidestCameraOnly:(BOOL)only
 {
   os_unfair_lock_lock(&self->_configurationLock);
-  self->_displaysWidestCameraOnly = a3;
+  self->_displaysWidestCameraOnly = only;
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)rampToAdditionalZoomFactor:(double)a3 momentMovieRecordingRecenteringEnabled:(BOOL)a4
+- (void)rampToAdditionalZoomFactor:(double)factor momentMovieRecordingRecenteringEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_configurationLock);
   epoch = self->_additionalZoomFactorSpringStartPTS.epoch;
-  if (*&self->_lastRenderTime >= a3)
+  if (*&self->_lastRenderTime >= factor)
   {
     v8 = 22.0;
   }
@@ -1276,34 +1276,34 @@ LABEL_147:
     v8 = 24.0;
   }
 
-  [self->_additionalZoomFactorSpringStartPTS.epoch setTension:dbl_1AD046ED0[*&self->_lastRenderTime < a3]];
+  [self->_additionalZoomFactorSpringStartPTS.epoch setTension:dbl_1AD046ED0[*&self->_lastRenderTime < factor]];
   [epoch setFriction:v8];
   [epoch resetWithInput:1.0 initialOutput:0.0 initialVelocity:0.0 convergedSpeed:0.001];
   HIDWORD(self->_lastRenderTime) = self->_lastRenderTime;
-  v9 = a3;
-  *&self->_lastRenderTime = v9;
+  factorCopy = factor;
+  *&self->_lastRenderTime = factorCopy;
   v10 = MEMORY[0x1E6960C70];
   *&self->_additionalZoomFactor = *MEMORY[0x1E6960C70];
   *&self->_additionalZoomFactorSpringStartPTS.timescale = *(v10 + 16);
-  LOBYTE(self->_fencedAnimationQueue) = a4;
+  LOBYTE(self->_fencedAnimationQueue) = enabled;
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)setStoppingForModeSwitch:(BOOL)a3 delayedEndOfDataEnabled:(BOOL)a4 ispFastSwitchEnabled:(BOOL)a5 smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)a6
+- (void)setStoppingForModeSwitch:(BOOL)switch delayedEndOfDataEnabled:(BOOL)enabled ispFastSwitchEnabled:(BOOL)switchEnabled smartStyleRenderingEnabledInTrueVideoGraph:(BOOL)graph
 {
-  v6 = a4;
-  self->_stoppingForModeSwitch = a3;
-  BYTE1(self->_narrowerCameraFoVFillsOverCapture.name) = a4;
-  BYTE3(self->_narrowerCameraFoVFillsOverCapture.name) = a5;
-  BYTE1(self->_zoomPIPMinimumUIZoomFactor) = a6;
-  v8 = LOBYTE(self->_lastInputPTS.epoch) != 1 || !a3;
-  if (!v8 && ((BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) != 0 || a4))
+  enabledCopy = enabled;
+  self->_stoppingForModeSwitch = switch;
+  BYTE1(self->_narrowerCameraFoVFillsOverCapture.name) = enabled;
+  BYTE3(self->_narrowerCameraFoVFillsOverCapture.name) = switchEnabled;
+  BYTE1(self->_zoomPIPMinimumUIZoomFactor) = graph;
+  v8 = LOBYTE(self->_lastInputPTS.epoch) != 1 || !switch;
+  if (!v8 && ((BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) != 0 || enabled))
   {
     [(BWPreviewStitcherNode *)self _setOverCaptureStatus:?];
   }
 
-  if ((BYTE3(self->_blackFilledBorderRectsBySurfaceID) & 1) == 0 && ((BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) != 0 || v6))
+  if ((BYTE3(self->_blackFilledBorderRectsBySurfaceID) & 1) == 0 && ((BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) != 0 || enabledCopy))
   {
     LOBYTE(self->_fencedAnimationQueue) = 1;
   }
@@ -1326,30 +1326,30 @@ LABEL_147:
   }
 }
 
-- (void)setPrimaryCameraAspectRatio:(double)a3
+- (void)setPrimaryCameraAspectRatio:(double)ratio
 {
   os_unfair_lock_lock(&self->_configurationLock);
-  self->_primaryCameraAspectRatio = a3;
+  self->_primaryCameraAspectRatio = ratio;
 
   os_unfair_lock_unlock(&self->_configurationLock);
 }
 
-- (void)setMaxLossyCompressionLevel:(int)a3
+- (void)setMaxLossyCompressionLevel:(int)level
 {
-  if (self->_maxLossyCompressionLevel != a3)
+  if (self->_maxLossyCompressionLevel != level)
   {
-    self->_maxLossyCompressionLevel = a3;
+    self->_maxLossyCompressionLevel = level;
     [(BWPreviewStitcherNode *)self _updateInputRequirements];
   }
 }
 
-- (void)setEmitSampleBufferSemaphore:(id)a3
+- (void)setEmitSampleBufferSemaphore:(id)semaphore
 {
   emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
-  if (emitSampleBufferSemaphore != a3)
+  if (emitSampleBufferSemaphore != semaphore)
   {
 
-    self->_emitSampleBufferSemaphore = a3;
+    self->_emitSampleBufferSemaphore = semaphore;
   }
 }
 
@@ -1397,9 +1397,9 @@ LABEL_147:
 
 - (id)primaryCameraShortDisplayName
 {
-  v3 = [(BWPreviewStitcherNode *)self _primaryCameraPortType];
+  _primaryCameraPortType = [(BWPreviewStitcherNode *)self _primaryCameraPortType];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(BWPreviewStitcherNode *)self _displayStringForPortType:v3];
+  v5 = [(BWPreviewStitcherNode *)self _displayStringForPortType:_primaryCameraPortType];
   return [v4 stringWithFormat:@"%@ (Rec %@)", v5, -[BWPreviewStitcherNode _displayStringForPortType:](self, self->_lastRecommendedMasterPortType)];
 }
 
@@ -1471,18 +1471,18 @@ LABEL_147:
 {
   v4.receiver = self;
   v4.super_class = BWPreviewStitcherNode;
-  v2 = [(BWNode *)&v4 hasNonLiveConfigurationChanges];
-  if (v2)
+  hasNonLiveConfigurationChanges = [(BWNode *)&v4 hasNonLiveConfigurationChanges];
+  if (hasNonLiveConfigurationChanges)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Live reconfiguring BWPreviewStitcherNode with changing formats is not supported", 0}]);
   }
 
-  return v2;
+  return hasNonLiveConfigurationChanges;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v7 = [(BWNodeOutput *)self->super._output formatRequirements];
+  formatRequirements = [(BWNodeOutput *)self->super._output formatRequirements];
   v8 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F2248310];
   v9 = v8;
   if ((self->_lastInputPTS.epoch & 1) == 0)
@@ -1490,9 +1490,9 @@ LABEL_147:
     [v8 insertObject:&unk_1F2242EC8 atIndex:0];
   }
 
-  v10 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelFormat];
-  IsFullRange = FigCapturePixelFormatIsFullRange(v10);
-  IsTenBit = FigCapturePixelFormatIsTenBit(v10);
+  pixelFormat = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelFormat];
+  IsFullRange = FigCapturePixelFormatIsFullRange(pixelFormat);
+  IsTenBit = FigCapturePixelFormatIsTenBit(pixelFormat);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __50__BWPreviewStitcherNode_didSelectFormat_forInput___block_invoke;
@@ -1500,26 +1500,26 @@ LABEL_147:
   v20 = IsFullRange;
   v21 = IsTenBit;
   [v9 filterUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v19)}];
-  [(BWFormatRequirements *)v7 setSupportedPixelFormats:v9];
+  [(BWFormatRequirements *)formatRequirements setSupportedPixelFormats:v9];
   outputDimensions = self->_outputDimensions;
   if (outputDimensions.width < 1 || outputDimensions.height < 1)
   {
-    -[BWFormatRequirements setWidth:](v7, "setWidth:", [objc_msgSend(a4 "videoFormat")]);
-    height = [objc_msgSend(a4 "videoFormat")];
+    -[BWFormatRequirements setWidth:](formatRequirements, "setWidth:", [objc_msgSend(input "videoFormat")]);
+    height = [objc_msgSend(input "videoFormat")];
   }
 
   else
   {
-    [(BWFormatRequirements *)v7 setWidth:*&self->_outputDimensions & 0x7FFFFFFFLL];
+    [(BWFormatRequirements *)formatRequirements setWidth:*&self->_outputDimensions & 0x7FFFFFFFLL];
     height = self->_outputDimensions.height;
   }
 
-  [(BWFormatRequirements *)v7 setHeight:height];
-  v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
-  -[BWFormatRequirements setSupportedColorSpaceProperties:](v7, "setSupportedColorSpaceProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1]);
+  [(BWFormatRequirements *)formatRequirements setHeight:height];
+  v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
+  -[BWFormatRequirements setSupportedColorSpaceProperties:](formatRequirements, "setSupportedColorSpaceProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1]);
   if (self->_zoomPIPUseNarrowerCamera)
   {
-    v16 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [a4 index]);
+    v16 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [input index]);
     v17 = [v16 mediaPropertiesForAttachedMediaKey:0x1F21AAAD0];
     if (!v17)
     {
@@ -1527,11 +1527,11 @@ LABEL_147:
       [v16 _setMediaProperties:v17 forAttachedMediaKey:0x1F21AAAD0];
     }
 
-    [(BWNodeOutputMediaProperties *)v17 setResolvedFormat:a3];
+    [(BWNodeOutputMediaProperties *)v17 setResolvedFormat:format];
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (LOBYTE(self->_lastInputPTS.epoch) == 1)
   {
@@ -1540,21 +1540,21 @@ LABEL_147:
 
   v9.receiver = self;
   v9.super_class = BWPreviewStitcherNode;
-  [(BWNode *)&v9 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v9 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v148 = 0;
   v149 = 0;
   if (self->_superMacroEdgeFeatheringBlurEnabled)
   {
-    [(BWPreviewRegistration *)self->_registration waitForRegistrationToComplete:a3];
+    [(BWPreviewRegistration *)self->_registration waitForRegistrationToComplete:buffer];
   }
 
   memset(&v147, 0, sizeof(v147));
-  CMSampleBufferGetPresentationTimeStamp(&v147, a3);
-  v6 = CMGetAttachment(a3, @"UIZoomFactor", 0);
+  CMSampleBufferGetPresentationTimeStamp(&v147, buffer);
+  v6 = CMGetAttachment(buffer, @"UIZoomFactor", 0);
   if (v6)
   {
     [v6 floatValue];
@@ -1563,7 +1563,7 @@ LABEL_147:
   v7 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    BWGetOriginalPresentationTimeStampFromBuffer(a3, &time2);
+    BWGetOriginalPresentationTimeStampFromBuffer(buffer, &time2);
     time = time2;
     CMTimeGetSeconds(&time);
     kdebug_trace();
@@ -1578,9 +1578,9 @@ LABEL_147:
   time2 = *&self->_lastSampleBuffer;
   if ((CMTimeCompare(&time, &time2) & 0x80000000) == 0)
   {
-    if (LOBYTE(self->_lastInputPTS.epoch) == 1 && !BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame"))
+    if (LOBYTE(self->_lastInputPTS.epoch) == 1 && !BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame"))
     {
-      v17 = [CMGetAttachment(a3 @"OverCaptureSlaveStreamStatus"];
+      v17 = [CMGetAttachment(buffer @"OverCaptureSlaveStreamStatus"];
       if (v17 == 4 || v17 == 1 && !self->_previewsWideBeforeSlaveStreamStarts)
       {
 LABEL_71:
@@ -1596,18 +1596,18 @@ LABEL_71:
     os_unfair_lock_lock(&self->_configurationLock);
     v8 = *&self->_cameraTransitionBrightnessCompensationInsetPercentage;
     time.value = 0;
-    BWCMSampleBufferCreateCopyIncludingMetadata(a3, &time);
+    BWCMSampleBufferCreateCopyIncludingMetadata(buffer, &time);
     *&v134.origin.x = v8;
-    if (v8 == a3)
+    if (v8 == buffer)
     {
       if (!time.value)
       {
         os_unfair_lock_unlock(&self->_configurationLock);
-        v11 = 0;
+        bufferCopy = 0;
         goto LABEL_38;
       }
 
-      v11 = CFRetain(time.value);
+      bufferCopy = CFRetain(time.value);
     }
 
     else
@@ -1626,7 +1626,7 @@ LABEL_71:
       }
 
       *&self->_lastSampleBuffer = v147;
-      v11 = a3;
+      bufferCopy = buffer;
     }
 
     if (time.value)
@@ -1635,7 +1635,7 @@ LABEL_71:
     }
 
     os_unfair_lock_unlock(&self->_configurationLock);
-    if (*&v134.origin.x != a3)
+    if (*&v134.origin.x != buffer)
     {
       if ((self->_lastInputPTS.epoch & 0x100) != 0 || self->_trueVideoHDRtoSDRBlendRamp || BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) == 1)
       {
@@ -1650,12 +1650,12 @@ LABEL_71:
         trueVideoHDRtoSDRBlendRamp = self->_trueVideoHDRtoSDRBlendRamp;
         if (trueVideoHDRtoSDRBlendRamp)
         {
-          v16 = [(BWRamp *)trueVideoHDRtoSDRBlendRamp isRamping];
+          isRamping = [(BWRamp *)trueVideoHDRtoSDRBlendRamp isRamping];
         }
 
         else
         {
-          v16 = self->_landscapeAspectRatioBeforeTrueVideoTransition > 0.002;
+          isRamping = self->_landscapeAspectRatioBeforeTrueVideoTransition > 0.002;
         }
 
         if (BYTE3(self->_blackFilledBorderRectsBySurfaceID) == 1)
@@ -1668,7 +1668,7 @@ LABEL_71:
 
         else
         {
-          if (!v16 && (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) != 0 && (BYTE5(self->_narrowerCameraFoVFillsOverCapture.name) & 1) == 0)
+          if (!isRamping && (BYTE4(self->_narrowerCameraFoVFillsOverCapture.name) & 1) != 0 && (BYTE5(self->_narrowerCameraFoVFillsOverCapture.name) & 1) == 0)
           {
             if (v14 - *&self->_multiCameraStitchingEnabled > 110000000)
             {
@@ -1738,7 +1738,7 @@ LABEL_57:
               BYTE1(self->_trueVideoCaptureAdditionalZoomFactor) = 0;
             }
 
-            if (*(&self->_zoomPIPUseNarrowerCamera + 1) && (AttachedMedia = BWSampleBufferGetAttachedMedia(v11, @"Depth")) != 0)
+            if (*(&self->_zoomPIPUseNarrowerCamera + 1) && (AttachedMedia = BWSampleBufferGetAttachedMedia(bufferCopy, @"Depth")) != 0)
             {
               v131 = CFRetain(AttachedMedia);
             }
@@ -1751,7 +1751,7 @@ LABEL_57:
             zoomPIPMinimumUIZoomFactor_low = LOBYTE(self->_zoomPIPMinimumUIZoomFactor);
             if ((self->_lastInputPTS.epoch & 1) != 0 || LOBYTE(self->_borderStretchScaleFactor) == 1)
             {
-              BWOverCaptureSampleBufferUnpackAndRetain(v11, zoomPIPMinimumUIZoomFactor_low ^ 1, &v149, &v148, 0, 0);
+              BWOverCaptureSampleBufferUnpackAndRetain(bufferCopy, zoomPIPMinimumUIZoomFactor_low ^ 1, &v149, &v148, 0, 0);
               if (v148)
               {
 LABEL_78:
@@ -1835,11 +1835,11 @@ LABEL_104:
                 v41 = CMGetAttachment(v149, *off_1E798A3C8, 0);
                 v129 = CMGetAttachment(v148, v35, 0);
                 v42 = *off_1E798B730;
-                v43 = [v41 objectForKeyedSubscript:*off_1E798B730];
-                if (!v43)
+                dictionary = [v41 objectForKeyedSubscript:*off_1E798B730];
+                if (!dictionary)
                 {
-                  v43 = [MEMORY[0x1E695DF90] dictionary];
-                  [v41 setObject:v43 forKeyedSubscript:v42];
+                  dictionary = [MEMORY[0x1E695DF90] dictionary];
+                  [v41 setObject:dictionary forKeyedSubscript:v42];
                 }
 
                 v125 = *off_1E798B540;
@@ -1847,12 +1847,12 @@ LABEL_104:
                 if (v44)
                 {
                   v45 = v44;
-                  if (![v43 objectForKeyedSubscript:v44])
+                  if (![dictionary objectForKeyedSubscript:v44])
                   {
-                    v46 = [MEMORY[0x1E695DF90] dictionary];
-                    [v46 setObject:objc_msgSend(v129 forKeyedSubscript:{"objectForKeyedSubscript:"), *off_1E798B3C0}];
-                    [v46 setObject:objc_msgSend(v129 forKeyedSubscript:{"objectForKeyedSubscript:"), *off_1E798B3C8}];
-                    [v43 setObject:v46 forKeyedSubscript:v45];
+                    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+                    [dictionary2 setObject:objc_msgSend(v129 forKeyedSubscript:{"objectForKeyedSubscript:"), *off_1E798B3C0}];
+                    [dictionary2 setObject:objc_msgSend(v129 forKeyedSubscript:{"objectForKeyedSubscript:"), *off_1E798B3C8}];
+                    [dictionary setObject:dictionary2 forKeyedSubscript:v45];
                   }
 
                   v40 = [(BWPreviewStitcherNode *)self _computeBravoWiderToNarrowerCameraShiftFromWiderCameraSampleBuffer:v149 narrowerCameraSampleBuffer:v148];
@@ -1934,7 +1934,7 @@ LABEL_111:
 
                   key = v35;
                   v127 = v18;
-                  v128 = v11;
+                  v128 = bufferCopy;
                   if (LOBYTE(self->_lastInputPTS.epoch) == 1 && registrationEnabled)
                   {
                     if (v149)
@@ -1960,7 +1960,7 @@ LABEL_111:
                     v67 = 1;
                   }
 
-                  if (!v67 && (!self->_lastRegistrationEnabled || *&v134.origin.x != a3))
+                  if (!v67 && (!self->_lastRegistrationEnabled || *&v134.origin.x != buffer))
                   {
                     if (v124 & 1 | ![(BWPreviewStitcherNode *)self _currentlyZoomingOrSwitchingCameras])
                     {
@@ -2133,7 +2133,7 @@ LABEL_203:
                   v29 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
                   emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
                   v28 = emitSampleBufferSemaphore != 0;
-                  v11 = v128;
+                  bufferCopy = v128;
                   v18 = v127;
                   if (emitSampleBufferSemaphore)
                   {
@@ -2176,13 +2176,13 @@ LABEL_213:
                       v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v134.size.height count:1];
                     }
 
-                    CMSampleBufferGetPresentationTimeStamp(&time, v11);
+                    CMSampleBufferGetPresentationTimeStamp(&time, bufferCopy);
                     [(BWNodeOutput *)self->super._output emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219BF70 pts:&time backPressureSemaphoresToIgnore:v90]];
                     v91 = 0;
                     transitionReferenceSampleBuffer = 0;
                     v93 = 1;
 LABEL_217:
-                    if (v11)
+                    if (bufferCopy)
                     {
                       v94 = v18;
                     }
@@ -2194,7 +2194,7 @@ LABEL_217:
 
                     if (v94 == 1)
                     {
-                      CFRelease(v11);
+                      CFRelease(bufferCopy);
                     }
 
                     if (v149)
@@ -2379,7 +2379,7 @@ LABEL_272:
                     [(BWNodeOutput *)self->super._output emitSampleBuffer:v91];
                     v93 = 0;
                     v7 = MEMORY[0x1E695FF58];
-                    v11 = v128;
+                    bufferCopy = v128;
                     goto LABEL_217;
                   }
 
@@ -2441,9 +2441,9 @@ LABEL_92:
 
             else
             {
-              if (v11)
+              if (bufferCopy)
               {
-                v69 = CFRetain(v11);
+                v69 = CFRetain(bufferCopy);
                 v148 = v69;
                 if (v69)
                 {
@@ -2516,26 +2516,26 @@ LABEL_38:
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (self->_emitSampleBufferSemaphore)
   {
     emitSampleBufferSemaphore = self->_emitSampleBufferSemaphore;
-    v6 = +[BWDroppedSample newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:](BWDroppedSample, "newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:", a3, [MEMORY[0x1E695DEC8] arrayWithObjects:&emitSampleBufferSemaphore count:1]);
-    [(BWNodeOutput *)self->super._output emitDroppedSample:a3];
+    v6 = +[BWDroppedSample newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:](BWDroppedSample, "newDroppedSampleFromDroppedSample:backPressureSemaphoresToIgnore:", sample, [MEMORY[0x1E695DEC8] arrayWithObjects:&emitSampleBufferSemaphore count:1]);
+    [(BWNodeOutput *)self->super._output emitDroppedSample:sample];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = BWPreviewStitcherNode;
-    [(BWNode *)&v7 handleDroppedSample:a3 forInput:a4];
+    [(BWNode *)&v7 handleDroppedSample:sample forInput:input];
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (a3)
+  if (d)
   {
     [(BWNode *)&v6 didReachEndOfDataForConfigurationID:v5.receiver input:v5.super_class, self, BWPreviewStitcherNode];
   }
@@ -2647,37 +2647,37 @@ void __131__BWPreviewStitcherNode__updateShiftCorrectionsAsyncFromComputedShift_
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 504) cleanupResources];
-    *(a1 + 512) = 0;
-    VTPixelRotationSessionInvalidate(*(a1 + 392));
-    v2 = *(a1 + 392);
+    [*(self + 504) cleanupResources];
+    *(self + 512) = 0;
+    VTPixelRotationSessionInvalidate(*(self + 392));
+    v2 = *(self + 392);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 392) = 0;
+      *(self + 392) = 0;
     }
 
-    VTPixelRotationSessionInvalidate(*(a1 + 400));
-    v3 = *(a1 + 400);
+    VTPixelRotationSessionInvalidate(*(self + 400));
+    v3 = *(self + 400);
     if (v3)
     {
       CFRelease(v3);
-      *(a1 + 400) = 0;
+      *(self + 400) = 0;
     }
 
-    v4 = *(a1 + 1192);
+    v4 = *(self + 1192);
     if (v4)
     {
       CFRelease(v4);
-      *(a1 + 1192) = 0;
+      *(self + 1192) = 0;
     }
 
-    *(a1 + 960) = 0;
-    *(a1 + 984) = 0;
+    *(self + 960) = 0;
+    *(self + 984) = 0;
 
-    *(a1 + 968) = 0;
+    *(self + 968) = 0;
   }
 }
 
@@ -2701,15 +2701,15 @@ void __131__BWPreviewStitcherNode__updateShiftCorrectionsAsyncFromComputedShift_
 
 - (double)_wideBaseZoomFactorWithOverrideLocked
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  os_unfair_lock_lock((a1 + 476));
-  v2 = [(BWPreviewStitcherNode *)a1 _wideBaseZoomFactorWithOverride];
-  v3 = LODWORD(v2);
-  os_unfair_lock_unlock((a1 + 476));
+  os_unfair_lock_lock((self + 476));
+  _wideBaseZoomFactorWithOverride = [(BWPreviewStitcherNode *)self _wideBaseZoomFactorWithOverride];
+  v3 = LODWORD(_wideBaseZoomFactorWithOverride);
+  os_unfair_lock_unlock((self + 476));
   LODWORD(result) = v3;
   return result;
 }
@@ -2745,22 +2745,22 @@ void __131__BWPreviewStitcherNode__updateShiftCorrectionsAsyncFromComputedShift_
 
 - (void)_preheatCIRenderingAsync
 {
-  if (a1 && (*(a1 + 1832) & 1) == 0 && ((*(a1 + 1290) | *(a1 + 1224)) & 1) != 0 && !*(a1 + 1056) && (*(a1 + 1064) & 1) == 0)
+  if (self && (*(self + 1832) & 1) == 0 && ((*(self + 1290) | *(self + 1224)) & 1) != 0 && !*(self + 1056) && (*(self + 1064) & 1) == 0)
   {
-    *(a1 + 1056) = dispatch_group_create();
+    *(self + 1056) = dispatch_group_create();
     OUTLINED_FUNCTION_21_4(1064);
-    v2 = *(a1 + 1056);
-    v3 = *(a1 + 1048);
+    v2 = *(self + 1056);
+    v3 = *(self + 1048);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__BWPreviewStitcherNode__preheatCIRenderingAsync__block_invoke;
     block[3] = &unk_1E798F870;
-    block[4] = a1;
+    block[4] = self;
     dispatch_group_async(v2, v3, block);
   }
 }
 
-- (CMSampleBufferRef)_copySampleBufferToAttachForZoomPIPFromWiderCameraSampleBuffer:(const void *)a3 narrowerCameraSampleBuffer:
+- (CMSampleBufferRef)_copySampleBufferToAttachForZoomPIPFromWiderCameraSampleBuffer:(const void *)buffer narrowerCameraSampleBuffer:
 {
   if (result)
   {
@@ -2771,7 +2771,7 @@ void __131__BWPreviewStitcherNode__updateShiftCorrectionsAsyncFromComputedShift_
       return 0;
     }
 
-    v6 = ((a2 == 0) | (*(result + 1678) & 1) ? a3 : a2);
+    v6 = ((a2 == 0) | (*(result + 1678) & 1) ? buffer : a2);
     v7 = OUTLINED_FUNCTION_69();
     v10 = CMGetAttachment(v7, v8, v9);
     if (v10)
@@ -2785,7 +2785,7 @@ void __131__BWPreviewStitcherNode__updateShiftCorrectionsAsyncFromComputedShift_
       v12 = 1.0;
     }
 
-    v13 = OUTLINED_FUNCTION_22(a3);
+    v13 = OUTLINED_FUNCTION_22(buffer);
     v14 = *off_1E798B540;
     v15 = [v13 objectForKeyedSubscript:*off_1E798B540];
     v16 = OUTLINED_FUNCTION_22(a2);
@@ -3519,10 +3519,10 @@ LABEL_222:
   v107 = *(v8 + v105[443]);
   if (v107)
   {
-    v108 = [v107 isRampingUp];
+    isRampingUp = [v107 isRampingUp];
     if ((v13 & 1) == 0)
     {
-      if (v108)
+      if (isRampingUp)
       {
         if (v21 < v15 && v21 > v83)
         {
@@ -3700,9 +3700,9 @@ LABEL_289:
   OUTLINED_FUNCTION_68();
 }
 
-- (double)_computeBravoWiderToNarrowerCameraShiftFromWiderCameraSampleBuffer:(uint64_t)a3 narrowerCameraSampleBuffer:
+- (double)_computeBravoWiderToNarrowerCameraShiftFromWiderCameraSampleBuffer:(uint64_t)buffer narrowerCameraSampleBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -3711,17 +3711,17 @@ LABEL_289:
   v7 = [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0D0}];
   if (v7)
   {
-    v10 = [(BWPreviewStitcherNode *)a1 _wideBaseZoomFactorWithOverrideLocked];
+    _wideBaseZoomFactorWithOverrideLocked = [(BWPreviewStitcherNode *)self _wideBaseZoomFactorWithOverrideLocked];
     v11 = &OBJC_IVAR___BWPreviewStitcherNode__superWideNondisruptiveSwitchingScaleFactor;
     v12 = &OBJC_IVAR___BWPreviewStitcherNode__superWideBaseZoomFactor;
   }
 
   else
   {
-    v8 = *(a1 + 336);
+    v8 = *(self + 336);
     if (v8 <= 0.0)
     {
-      v8 = *(a1 + 228);
+      v8 = *(self + 228);
       v9 = &OBJC_IVAR___BWPreviewStitcherNode__teleNondisruptiveSwitchingScaleFactor;
     }
 
@@ -3730,13 +3730,13 @@ LABEL_289:
       v9 = &OBJC_IVAR___BWPreviewStitcherNode__wideBaseZoomFactor;
     }
 
-    *&v10 = v8 * *(a1 + *v9);
+    *&_wideBaseZoomFactorWithOverrideLocked = v8 * *(self + *v9);
     v11 = &OBJC_IVAR___BWPreviewStitcherNode__wideNondisruptiveSwitchingScaleFactor;
     v12 = &OBJC_IVAR___BWPreviewStitcherNode__wideBaseZoomFactor;
   }
 
-  [*(a1 + 504) computeCameraShiftForWiderCamera:target narrowerCamera:a3 widerToNarrowerCameraScale:(*&v10 / (*(a1 + *v12) * *(a1 + *v11)))];
-  if (*(a1 + 352))
+  [*(self + 504) computeCameraShiftForWiderCamera:target narrowerCamera:buffer widerToNarrowerCameraScale:(*&_wideBaseZoomFactorWithOverrideLocked / (*(self + *v12) * *(self + *v11)))];
+  if (*(self + 352))
   {
     v15 = v14;
   }
@@ -3746,7 +3746,7 @@ LABEL_289:
     v15 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (*(a1 + 352))
+  if (*(self + 352))
   {
     v16 = v13;
   }
@@ -3776,13 +3776,13 @@ LABEL_289:
 
   if ((v7 & v18 & v22) == 1)
   {
-    v16 = *(a1 + 360);
-    v15 = *(a1 + 368);
+    v16 = *(self + 360);
+    v15 = *(self + 368);
   }
 
-  v23 = *(a1 + 348);
+  v23 = *(self + 348);
   OUTLINED_FUNCTION_117();
-  v25 = (a1 + v24);
+  v25 = (self + v24);
   v26 = v16;
   v27 = *v25;
   *v25 = BWModifiedMovingAverage(v26, v27, v23);
@@ -3792,7 +3792,7 @@ LABEL_289:
   return *v25;
 }
 
-- (uint64_t)_updateShiftCorrectionsAsyncFromComputedShift:(void *)a3 byRegisteringWiderCamera:(uint64_t)a4 narrowerCamera:(double)a5 macroTransitionType:(double)a6
+- (uint64_t)_updateShiftCorrectionsAsyncFromComputedShift:(void *)shift byRegisteringWiderCamera:(uint64_t)camera narrowerCamera:(double)narrowerCamera macroTransitionType:(double)type
 {
   if (result)
   {
@@ -3803,8 +3803,8 @@ LABEL_289:
     v15 = v14;
     if (v14)
     {
-      v25 = [(BWPreviewStitcherNode *)v11 _wideBaseZoomFactorWithOverrideLocked];
-      v18 = *&v25;
+      _wideBaseZoomFactorWithOverrideLocked = [(BWPreviewStitcherNode *)v11 _wideBaseZoomFactorWithOverrideLocked];
+      v18 = *&_wideBaseZoomFactorWithOverrideLocked;
     }
 
     else
@@ -3826,7 +3826,7 @@ LABEL_289:
 
     [objc_msgSend(v13 objectForKeyedSubscript:{*off_1E798B508), "floatValue"}];
     v20 = v19;
-    v21 = [objc_msgSend(CMGetAttachment(a3 v12];
+    v21 = [objc_msgSend(CMGetAttachment(shift v12];
     if (*(v11 + 1417) == 1)
     {
       v22 = *(v11 + 1313) ^ 1;
@@ -3841,7 +3841,7 @@ LABEL_289:
     if ((*(v11 + 512) & 1) == 0)
     {
       memset(&v30, 0, sizeof(v30));
-      CMSampleBufferGetPresentationTimeStamp(&v30, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v30, shift);
       if (*MEMORY[0x1E695FF58] == 1)
       {
         time = v30;
@@ -3861,20 +3861,20 @@ LABEL_289:
     v29 = v15;
     v26[4] = v11;
     v27 = v20;
-    *&v26[5] = a5;
-    *&v26[6] = a6;
+    *&v26[5] = narrowerCamera;
+    *&v26[6] = type;
     v28 = v21;
-    return [v24 registerWiderCamera:target narrowerCamera:a3 widerToNarrowerCameraScale:v22 & 1 isMacroScene:a4 macroTransitionType:v26 completionHandler:v23];
+    return [v24 registerWiderCamera:target narrowerCamera:shift widerToNarrowerCameraScale:v22 & 1 isMacroScene:camera macroTransitionType:v26 completionHandler:v23];
   }
 
   return result;
 }
 
-- (void)_updateAndGetWiderCameraRegionShifts:(double *)a3 teleShift:(int)a4 widerCameraIsSuperWide:(int)a5 forComputedShift:(double)a6 registrationEnabled:(double)a7 currentFrameRate:(float)a8
+- (void)_updateAndGetWiderCameraRegionShifts:(double *)shifts teleShift:(int)shift widerCameraIsSuperWide:(int)wide forComputedShift:(double)computedShift registrationEnabled:(double)enabled currentFrameRate:(float)rate
 {
-  *(&v185 + 1) = a8;
-  HIDWORD(v182) = a4;
-  if (!a1)
+  *(&v185 + 1) = rate;
+  HIDWORD(v182) = shift;
+  if (!self)
   {
     return;
   }
@@ -3887,19 +3887,19 @@ LABEL_289:
   v13 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
   v14 = MEMORY[0x1E695FF58];
   v178 = a2;
-  v179 = a3;
-  if (a5)
+  shiftsCopy = shifts;
+  if (wide)
   {
-    v15 = *(a1 + 513);
+    v15 = *(self + 513);
     v16 = v15 ^ 1;
-    if (*(a1 + 488))
+    if (*(self + 488))
     {
       HIDWORD(v175) = v15 ^ 1;
     }
 
-    else if ((*(a1 + 514) & 1) != 0 || (v15 & 1) != 0 || (OUTLINED_FUNCTION_38_0(), v17))
+    else if ((*(self + 514) & 1) != 0 || (v15 & 1) != 0 || (OUTLINED_FUNCTION_38_0(), v17))
     {
-      [*(a1 + v13[345]) waitForRegistrationToComplete];
+      [*(self + v13[345]) waitForRegistrationToComplete];
       OUTLINED_FUNCTION_115(513);
       HIDWORD(v175) = v16;
       if (*v14 == 1)
@@ -3919,22 +3919,22 @@ LABEL_289:
     HIDWORD(v175) = 0;
   }
 
-  v18 = [a1 displaysWidestCameraOnly];
-  v19 = *(a1 + 906);
-  os_unfair_lock_lock((a1 + 516));
-  if (!a5)
+  displaysWidestCameraOnly = [self displaysWidestCameraOnly];
+  v19 = *(self + 906);
+  os_unfair_lock_lock((self + 516));
+  if (!wide)
   {
     goto LABEL_19;
   }
 
-  if (*(a1 + 513))
+  if (*(self + 513))
   {
 LABEL_14:
     v20 = 1;
     goto LABEL_20;
   }
 
-  v20 = *(a1 + 484);
+  v20 = *(self + 484);
   if (v20)
   {
     v21 = &OBJC_IVAR___BWPreviewStitcherNode__wideToTeleShiftCorrections;
@@ -3943,7 +3943,7 @@ LABEL_14:
       v21 = &OBJC_IVAR___BWPreviewStitcherNode__superWideToWideShiftCorrections;
     }
 
-    if (*(a1 + *v21 + 148) < v20)
+    if (*(self + *v21 + 148) < v20)
     {
 LABEL_19:
       v20 = 0;
@@ -3959,12 +3959,12 @@ LABEL_19:
   }
 
 LABEL_20:
-  LODWORD(v181) = *(a1 + 488);
+  LODWORD(v181) = *(self + 488);
   v22 = v20;
   if (v181 != v20)
   {
-    *(a1 + 488) = v20;
-    v23 = a1 + 32;
+    *(self + 488) = v20;
+    v23 = self + 32;
     v24 = 3;
     do
     {
@@ -3981,9 +3981,9 @@ LABEL_20:
   v25 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
   v26 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
   v27 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
-  if (!v18)
+  if (!displaysWidestCameraOnly)
   {
-    if ((*(a1 + 906) & 1) == 0)
+    if ((*(self + 906) & 1) == 0)
     {
       v29 = OUTLINED_FUNCTION_86_1();
       if (v29)
@@ -4000,14 +4000,14 @@ LABEL_20:
             OUTLINED_FUNCTION_115(906);
 
             OUTLINED_FUNCTION_64_2();
-            *(a1 + v30[443]) = 0;
-            *(a1 + v26[538]) = 0;
+            *(self + v30[443]) = 0;
+            *(self + v26[538]) = 0;
           }
         }
       }
     }
 
-    if (*(a1 + 906) != 1)
+    if (*(self + 906) != 1)
     {
       goto LABEL_41;
     }
@@ -4016,40 +4016,40 @@ LABEL_20:
     {
       HIDWORD(v180) = 0;
 LABEL_254:
-      *(a1 + 906) = 0;
-      if (!*(a1 + v25[443]))
+      *(self + 906) = 0;
+      if (!*(self + v25[443]))
       {
         v165 = v27;
         v166 = BYTE4(v180);
-        *(a1 + v26[538]) = BYTE4(v180) & BYTE4(v182);
+        *(self + v26[538]) = BYTE4(v180) & BYTE4(v182);
         v167 = v25;
-        *(a1 + v25[443]) = [[BWRamp alloc] initWithName:@"CameraTransitionRamp"];
-        v168 = [(BWPreviewStitcherNode *)a1 _cameraDisplayTransitionFrameCountForCameraFallbackChange:*(&v185 + 1) currentFrameRate:?];
+        *(self + v25[443]) = [[BWRamp alloc] initWithName:@"CameraTransitionRamp"];
+        v168 = [(BWPreviewStitcherNode *)self _cameraDisplayTransitionFrameCountForCameraFallbackChange:*(&v185 + 1) currentFrameRate:?];
         LODWORD(v169) = 1065017672;
         LODWORD(v170) = 1.0;
-        [*(a1 + v167[443]) startRampFrom:v168 to:2 iterations:0.0 shape:v170 exponentialConvergenceFraction:v169];
-        if (*(a1 + 1092) == 1)
+        [*(self + v167[443]) startRampFrom:v168 to:2 iterations:0.0 shape:v170 exponentialConvergenceFraction:v169];
+        if (*(self + 1092) == 1)
         {
-          v171 = *(a1 + 912);
+          v171 = *(self + 912);
           v166 = BYTE4(v180);
           if (v171 != 0.0)
           {
             v166 = BYTE4(v180);
-            if ((v171 / *(a1 + 916)) > 1.1)
+            if ((v171 / *(self + 916)) > 1.1)
             {
               v166 = 1;
             }
           }
         }
 
-        *(a1 + v165[545]) = v166;
+        *(self + v165[545]) = v166;
         goto LABEL_260;
       }
 
       goto LABEL_42;
     }
 
-    v34 = *(a1 + 484);
+    v34 = *(self + 484);
     if (v34)
     {
       v71 = &OBJC_IVAR___BWPreviewStitcherNode__wideToTeleShiftCorrections;
@@ -4058,15 +4058,15 @@ LABEL_254:
         v71 = &OBJC_IVAR___BWPreviewStitcherNode__superWideToWideShiftCorrections;
       }
 
-      v34 = *(a1 + *v71 + 148) >= v34;
+      v34 = *(self + *v71 + 148) >= v34;
       if ((v182 & 0x100000000) == 0)
       {
 LABEL_39:
-        if ((*(a1 + 1488) & 1) == 0)
+        if ((*(self + 1488) & 1) == 0)
         {
           v35 = &OBJC_IVAR___BWPreviewStitcherNode__wideFallbackShiftRampTargetValueIsWide;
 LABEL_248:
-          HIDWORD(v180) = *(a1 + *v35);
+          HIDWORD(v180) = *(self + *v35);
           goto LABEL_249;
         }
 
@@ -4079,7 +4079,7 @@ LABEL_248:
       goto LABEL_39;
     }
 
-    if ((*(a1 + 1572) & 1) == 0)
+    if ((*(self + 1572) & 1) == 0)
     {
       v35 = &OBJC_IVAR___BWPreviewStitcherNode__superWideFallbackShiftRampTargetValueIsSuperWide;
       goto LABEL_248;
@@ -4088,7 +4088,7 @@ LABEL_248:
 LABEL_114:
     HIDWORD(v180) = 0;
 LABEL_249:
-    if ((*(a1 + 1490) & 1) != 0 || *(a1 + 912) != *(a1 + 228))
+    if ((*(self + 1490) & 1) != 0 || *(self + 912) != *(self + 228))
     {
       if (!v34)
       {
@@ -4108,7 +4108,7 @@ LABEL_249:
     goto LABEL_254;
   }
 
-  if (*(a1 + 906))
+  if (*(self + 906))
   {
 LABEL_41:
     HIDWORD(v180) = 0;
@@ -4121,7 +4121,7 @@ LABEL_41:
     goto LABEL_116;
   }
 
-  v28 = *(a1 + 484);
+  v28 = *(self + 484);
   if (!v28)
   {
     if ((v182 & 0x100000000) == 0)
@@ -4130,7 +4130,7 @@ LABEL_41:
     }
 
 LABEL_104:
-    if (*(a1 + 1572) == 1)
+    if (*(self + 1572) == 1)
     {
       goto LABEL_105;
     }
@@ -4144,14 +4144,14 @@ LABEL_104:
     v68 = &OBJC_IVAR___BWPreviewStitcherNode__superWideToWideShiftCorrections;
   }
 
-  v28 = *(a1 + *v68 + 148) >= v28;
+  v28 = *(self + *v68 + 148) >= v28;
   if ((v182 & 0x100000000) != 0)
   {
     goto LABEL_104;
   }
 
 LABEL_28:
-  if ((*(a1 + 1488) & 1) == 0)
+  if ((*(self + 1488) & 1) == 0)
   {
 LABEL_115:
     HIDWORD(v180) = 0;
@@ -4161,7 +4161,7 @@ LABEL_115:
     }
 
 LABEL_42:
-    os_unfair_lock_unlock((a1 + 516));
+    os_unfair_lock_unlock((self + 516));
     v36 = 0;
     v37 = v182;
     goto LABEL_43;
@@ -4231,21 +4231,21 @@ LABEL_116:
     goto LABEL_42;
   }
 
-  *(a1 + *(v78 + 2152)) = BYTE4(v180) & BYTE4(v182);
+  *(self + *(v78 + 2152)) = BYTE4(v180) & BYTE4(v182);
   v80 = v76;
-  *(a1 + *(v77 + 1772)) = [[BWRamp alloc] initWithName:@"CameraTransitionRamp"];
-  v81 = [(BWPreviewStitcherNode *)a1 _cameraDisplayTransitionFrameCountForCameraFallbackChange:*(&v185 + 1) currentFrameRate:?];
+  *(self + *(v77 + 1772)) = [[BWRamp alloc] initWithName:@"CameraTransitionRamp"];
+  v81 = [(BWPreviewStitcherNode *)self _cameraDisplayTransitionFrameCountForCameraFallbackChange:*(&v185 + 1) currentFrameRate:?];
   LODWORD(v82) = 1065017672;
   LODWORD(v83) = 1.0;
-  [*(a1 + *(v79 + 1772)) startRampFrom:v81 to:2 iterations:v83 shape:0.0 exponentialConvergenceFraction:v82];
-  *(a1 + *(v80 + 2180)) = *(a1 + 1092);
+  [*(self + *(v79 + 1772)) startRampFrom:v81 to:2 iterations:v83 shape:0.0 exponentialConvergenceFraction:v82];
+  *(self + *(v80 + 2180)) = *(self + 1092);
 LABEL_260:
   v37 = v182;
-  os_unfair_lock_unlock((a1 + 516));
-  [*(a1 + 504) waitForRegistrationToComplete];
+  os_unfair_lock_unlock((self + 516));
+  [*(self + 504) waitForRegistrationToComplete];
   v36 = 1;
 LABEL_43:
-  os_unfair_lock_lock((a1 + 516));
+  os_unfair_lock_lock((self + 516));
   v44 = v37 ^ 1;
   v45 = &OBJC_IVAR___BWPreviewStitcherNode__wideToTeleShiftCorrections;
   if (HIDWORD(v182))
@@ -4253,7 +4253,7 @@ LABEL_43:
     v45 = &OBJC_IVAR___BWPreviewStitcherNode__superWideToWideShiftCorrections;
   }
 
-  v46 = a1 + *v45;
+  v46 = self + *v45;
   if (v36)
   {
     *(v46 + 32) = 1;
@@ -4265,7 +4265,7 @@ LABEL_43:
   v187 = *v12;
   v47 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
   HIDWORD(v181) = v36;
-  if (v18)
+  if (displaysWidestCameraOnly)
   {
     if (!v37)
     {
@@ -4280,14 +4280,14 @@ LABEL_43:
       }
 
 LABEL_59:
-      v50 = v19 == v18;
-      v51 = *(a1 + 1489);
+      v50 = v19 == displaysWidestCameraOnly;
+      v51 = *(self + 1489);
       v52 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
       goto LABEL_77;
     }
   }
 
-  else if (!HIDWORD(v182) || ((v44 | *(a1 + 1313)) & 1) != 0)
+  else if (!HIDWORD(v182) || ((v44 | *(self + 1313)) & 1) != 0)
   {
     v48.f64[0] = v12[1];
     v49.f64[0] = *v12;
@@ -4317,7 +4317,7 @@ LABEL_57:
 LABEL_62:
     for (i = 0; i != 168; i += 56)
     {
-      if (!v18 || i == 112 || (*(a1 + 1573) & 1) != 0)
+      if (!displaysWidestCameraOnly || i == 112 || (*(self + 1573) & 1) != 0)
       {
         v54 = v46 + i;
 
@@ -4347,9 +4347,9 @@ LABEL_62:
       }
     }
 
-    *(a1 + 1573) = 0;
-    v50 = v19 == v18;
-    v51 = *(a1 + 1489);
+    *(self + 1573) = 0;
+    v50 = v19 == displaysWidestCameraOnly;
+    v51 = *(self + 1489);
     v52 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
     v47 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
     if ((v181 & 0x100000000) != 0)
@@ -4360,30 +4360,30 @@ LABEL_62:
     goto LABEL_74;
   }
 
-  if (!((v181 == v37) | v18 & 1 | v44 & 1))
+  if (!((v181 == v37) | displaysWidestCameraOnly & 1 | v44 & 1))
   {
     goto LABEL_62;
   }
 
 LABEL_61:
-  v50 = v19 == v18;
-  v51 = *(a1 + 1489);
+  v50 = v19 == displaysWidestCameraOnly;
+  v51 = *(self + 1489);
   v52 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
 LABEL_74:
-  if (((HIDWORD(v182) | v18) & 1) == 0 || !v50)
+  if (((HIDWORD(v182) | displaysWidestCameraOnly) & 1) == 0 || !v50)
   {
-    v62 = *(a1 + v47[519]);
+    v62 = *(self + v47[519]);
     v63 = HIDWORD(v182);
     goto LABEL_158;
   }
 
   v50 = 1;
 LABEL_77:
-  if (v51 != *(a1 + 1488))
+  if (v51 != *(self + 1488))
   {
-    if (*(a1 + 1488))
+    if (*(self + 1488))
     {
-      *(a1 + 1472) = *(a1 + 648);
+      *(self + 1472) = *(self + 648);
       OUTLINED_FUNCTION_89_0();
       v58 = 0.699999988;
       if (!v17)
@@ -4391,12 +4391,12 @@ LABEL_77:
         v58 = *(v57 + 3616);
       }
 
-      v49 = *(a1 + v56);
+      v49 = *(self + v56);
       v48 = vmulq_n_f64(v49, v58);
-      *(a1 + v56) = v48;
+      *(self + v56) = v48;
     }
 
-    OUTLINED_FUNCTION_104(v48.f64[0], v49.f64[0], v38, v39, v40, v41, v42, v43, *&v172, *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&v179, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
+    OUTLINED_FUNCTION_104(v48.f64[0], v49.f64[0], v38, v39, v40, v41, v42, v43, *&v172, *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&shiftsCopy, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
     if (v59 ^ v60 | v17)
     {
       OUTLINED_FUNCTION_103_0();
@@ -4416,7 +4416,7 @@ LABEL_77:
       OUTLINED_FUNCTION_38_0();
       if (v17)
       {
-        v61 = OUTLINED_FUNCTION_11_15(90.0, v172, v175, v176, *(&v176 + 1), v177, v178, v179, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
+        v61 = OUTLINED_FUNCTION_11_15(90.0, v172, v175, v176, *(&v176 + 1), v177, v178, shiftsCopy, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
         FigCaptureRoundFloatToMultipleOf(1, v61);
       }
 
@@ -4436,7 +4436,7 @@ LABEL_77:
         OUTLINED_FUNCTION_38_0();
         if (v17)
         {
-          v67 = OUTLINED_FUNCTION_11_15(55.0, v172, v175, v176, *(&v176 + 1), v177, v178, v179, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
+          v67 = OUTLINED_FUNCTION_11_15(55.0, v172, v175, v176, *(&v176 + 1), v177, v178, shiftsCopy, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
           v64 = FigCaptureRoundFloatToMultipleOf(1, v67);
         }
 
@@ -4448,7 +4448,7 @@ LABEL_77:
     }
 
     v84 = 0.0;
-    if ((*(a1 + 1488) & 1) == 0)
+    if ((*(self + 1488) & 1) == 0)
     {
       [OUTLINED_FUNCTION_99() currentValue];
       v84 = v85;
@@ -4458,7 +4458,7 @@ LABEL_77:
     {
       [OUTLINED_FUNCTION_99() currentValue];
       v84 = *v86.f64;
-      v89 = *(a1 + 1488);
+      v89 = *(self + 1488);
       if ((v89 & 1) == 0 && *v86.f64 != 0.0)
       {
         OUTLINED_FUNCTION_89_0();
@@ -4469,15 +4469,15 @@ LABEL_77:
         }
 
         v87 = (1.0 - v84) / v84;
-        v88 = *(a1 + 1472);
-        v86 = vsubq_f64(v88, vmulq_n_f64(vsubq_f64(*(a1 + 648), vdivq_f64(v88, vdupq_lane_s64(*&v90, 0))), v87));
-        *(a1 + 1472) = v86;
+        v88 = *(self + 1472);
+        v86 = vsubq_f64(v88, vmulq_n_f64(vsubq_f64(*(self + 648), vdivq_f64(v88, vdupq_lane_s64(*&v90, 0))), v87));
+        *(self + 1472) = v86;
       }
     }
 
     else
     {
-      v89 = *(a1 + 1488);
+      v89 = *(self + 1488);
     }
 
     LODWORD(v86.f64[0]) = 1.0;
@@ -4486,7 +4486,7 @@ LABEL_77:
       *v86.f64 = v84;
     }
 
-    if (*(a1 + 496) == 1)
+    if (*(self + 496) == 1)
     {
       OUTLINED_FUNCTION_89_0();
       LODWORD(v97) = 20.0;
@@ -4510,7 +4510,7 @@ LABEL_77:
       }
 
       LODWORD(v96) = HIDWORD(v185);
-      [*(a1 + 1464) startSpringRampFrom:v92 to:v93 withTension:v97 friction:v94 snapFraction:v95 frameRate:v96];
+      [*(self + 1464) startSpringRampFrom:v92 to:v93 withTension:v97 friction:v94 snapFraction:v95 frameRate:v96];
     }
 
     else
@@ -4527,7 +4527,7 @@ LABEL_77:
         *v86.f64 = v84;
       }
 
-      [*(a1 + 1464) startRampFrom:v64 to:2 iterations:v86.f64[0] shape:v87 exponentialConvergenceFraction:v88.f64[0]];
+      [*(self + 1464) startRampFrom:v64 to:2 iterations:v86.f64[0] shape:v87 exponentialConvergenceFraction:v88.f64[0]];
     }
 
     v52 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
@@ -4537,24 +4537,24 @@ LABEL_77:
       [OUTLINED_FUNCTION_99() updateRampForNextIteration];
     }
 
-    *(a1 + 1489) = *(a1 + 1488);
+    *(self + 1489) = *(self + 1488);
     v47 = &OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled;
   }
 
-  v62 = *(a1 + v47[519]);
+  v62 = *(self + v47[519]);
   v63 = HIDWORD(v182);
   if ((v181 & 0x100000000) == 0)
   {
 LABEL_158:
-    if ((v63 & (v18 ^ 1) & 1) != 0 || !v50)
+    if ((v63 & (displaysWidestCameraOnly ^ 1) & 1) != 0 || !v50)
     {
       goto LABEL_194;
     }
   }
 
-  if (v62 != *(a1 + v52[518]))
+  if (v62 != *(self + v52[518]))
   {
-    if (*(a1 + v52[518]))
+    if (*(self + v52[518]))
     {
       OUTLINED_FUNCTION_38_0();
       if (v17)
@@ -4564,33 +4564,33 @@ LABEL_158:
 
       else
       {
-        *(a1 + 1568) = 1050253722;
-        if ((*(a1 + 1575) | HIDWORD(v175)))
+        *(self + 1568) = 1050253722;
+        if ((*(self + 1575) | HIDWORD(v175)))
         {
-          *(a1 + 1568) = 0;
+          *(self + 1568) = 0;
         }
 
-        *(a1 + 1552) = *(a1 + 816);
-        v49 = *(a1 + 1552);
-        v48 = vmulq_n_f64(v49, 1.0 - *(a1 + 1568));
+        *(self + 1552) = *(self + 816);
+        v49 = *(self + 1552);
+        v48 = vmulq_n_f64(v49, 1.0 - *(self + 1568));
       }
 
-      *(a1 + 1552) = v48;
+      *(self + 1552) = v48;
     }
 
-    OUTLINED_FUNCTION_104(v48.f64[0], v49.f64[0], v38, v39, v40, v41, v42, v43, *&v172, *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&v179, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
+    OUTLINED_FUNCTION_104(v48.f64[0], v49.f64[0], v38, v39, v40, v41, v42, v43, *&v172, *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&shiftsCopy, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
     if (!(v59 ^ v60 | v17))
     {
       OUTLINED_FUNCTION_38_0();
       if (v17)
       {
-        v98 = OUTLINED_FUNCTION_11_15(90.0, v173, v175, v176, *(&v176 + 1), v177, v178, v179, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
+        v98 = OUTLINED_FUNCTION_11_15(90.0, v173, v175, v176, *(&v176 + 1), v177, v178, shiftsCopy, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
         FigCaptureRoundFloatToMultipleOf(1, v98);
       }
     }
 
     OUTLINED_FUNCTION_81_0();
-    if (v99 == 1 && (*(a1 + 1648) & 1) == 0 && *(a1 + 1568) == 0.0)
+    if (v99 == 1 && (*(self + 1648) & 1) == 0 && *(self + 1568) == 0.0)
     {
       v100 = 1;
       v101 = 1;
@@ -4609,12 +4609,12 @@ LABEL_158:
         v101 = 55;
       }
 
-      OUTLINED_FUNCTION_104(v103, v104, v105, v106, v107, v108, v109, v110, *&v173, *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&v179, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
+      OUTLINED_FUNCTION_104(v103, v104, v105, v106, v107, v108, v109, v110, *&v173, *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&shiftsCopy, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
       if (!(v59 ^ v60 | v17) && v111)
       {
-        if (*(a1 + 1040) == 1)
+        if (*(self + 1040) == 1)
         {
-          v112 = OUTLINED_FUNCTION_11_15(55.0, v174, v175, v176, *(&v176 + 1), v177, v178, v179, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
+          v112 = OUTLINED_FUNCTION_11_15(55.0, v174, v175, v176, *(&v176 + 1), v177, v178, shiftsCopy, v180, v181, v182, *&v183, *&v184, v185, *(&v185 + 1));
           v101 = FigCaptureRoundFloatToMultipleOf(1, v112);
           OUTLINED_FUNCTION_81_0();
           if (v113)
@@ -4638,7 +4638,7 @@ LABEL_188:
         OUTLINED_FUNCTION_81_0();
         if ((v115 & 1) == 0 && v114 != 0.0)
         {
-          *(a1 + 1552) = vsubq_f64(*(a1 + 1552), vmulq_n_f64(vsubq_f64(*(a1 + 816), vdivq_f64(*(a1 + 1552), vdupq_lane_s64(COERCE__INT64(1.0 - *(a1 + 1568)), 0))), (1.0 - v114) / v114));
+          *(self + 1552) = vsubq_f64(*(self + 1552), vmulq_n_f64(vsubq_f64(*(self + 816), vdivq_f64(*(self + 1552), vdupq_lane_s64(COERCE__INT64(1.0 - *(self + 1568)), 0))), (1.0 - v114) / v114));
         }
       }
 
@@ -4649,7 +4649,7 @@ LABEL_188:
 
       [OUTLINED_FUNCTION_80_0() startRampFrom:v101 to:2 iterations:? shape:? exponentialConvergenceFraction:?];
       OUTLINED_FUNCTION_81_0();
-      *(a1 + 1544) = v116;
+      *(self + 1544) = v116;
       goto LABEL_194;
     }
 
@@ -4678,7 +4678,7 @@ LABEL_194:
       v123 = v118;
     }
 
-    v124 = a1 + *v122 + 56 * v123;
+    v124 = self + *v122 + 56 * v123;
     if (*(v124 + 32) == 1)
     {
       v125 = v123 != 2;
@@ -4721,7 +4721,7 @@ LABEL_194:
       v133 = -[BWRamp initWithName:](v132, "initWithName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"ShiftCorrectionRampX[%d]", v118 + 3]);
       v134 = [BWRamp alloc];
       v135 = -[BWRamp initWithName:](v134, "initWithName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"ShiftCorrectionRampY[%d]"]);
-      OUTLINED_FUNCTION_104(v136, v137, v138, v139, v140, v141, v142, v143, COERCE_DOUBLE((v118 + 3)), *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&v179, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
+      OUTLINED_FUNCTION_104(v136, v137, v138, v139, v140, v141, v142, v143, COERCE_DOUBLE((v118 + 3)), *&v175, *&v176, *(&v176 + 1), *&v177, *&v178, *&shiftsCopy, *&v180, *&v181, *&v182, v183, v184, *&v185, *(&v185 + 1));
       if (!(v59 ^ v60 | v17))
       {
         OUTLINED_FUNCTION_38_0();
@@ -4732,14 +4732,14 @@ LABEL_194:
         }
       }
 
-      if (*(a1 + 1308) == 3)
+      if (*(self + 1308) == 3)
       {
         v144 = (v144 * 1.7);
       }
 
       if (HIDWORD(v181))
       {
-        v144 = [(BWPreviewStitcherNode *)a1 _cameraDisplayTransitionFrameCountForCameraFallbackChange:*(&v185 + 1) currentFrameRate:?];
+        v144 = [(BWPreviewStitcherNode *)self _cameraDisplayTransitionFrameCountForCameraFallbackChange:*(&v185 + 1) currentFrameRate:?];
       }
 
       if (v181 == v182)
@@ -4772,8 +4772,8 @@ LABEL_194:
 
     if (v121 >= 3 && v63)
     {
-      a6 = *(a1 + 376);
-      a7 = *(a1 + 384);
+      computedShift = *(self + 376);
+      enabled = *(self + 384);
     }
 
     v154 = *(v124 + 40);
@@ -4818,16 +4818,16 @@ LABEL_229:
     }
 
 LABEL_234:
-    v161 = a7 + v159;
-    v162 = a6 + v156;
+    v161 = enabled + v159;
+    v162 = computedShift + v156;
     if (v63)
     {
       if (v121 > 2)
       {
         if (v118 == 2)
         {
-          v120 = a7 + v159;
-          v119 = a6 + v156;
+          v120 = enabled + v159;
+          v119 = computedShift + v156;
         }
       }
 
@@ -4857,8 +4857,8 @@ LABEL_234:
   }
 
   while (v118 != 3);
-  *(a1 + 908) = [(BWPreviewStitcherNode *)a1 _currentlyZoomingOrSwitchingCameras];
-  os_unfair_lock_unlock((a1 + 516));
+  *(self + 908) = [(BWPreviewStitcherNode *)self _currentlyZoomingOrSwitchingCameras];
+  os_unfair_lock_unlock((self + 516));
   if (v178)
   {
     v164 = v190;
@@ -4867,14 +4867,14 @@ LABEL_234:
     v178[2] = v191;
   }
 
-  if (v179)
+  if (shiftsCopy)
   {
-    *v179 = v119;
-    v179[1] = v120;
+    *shiftsCopy = v119;
+    shiftsCopy[1] = v120;
   }
 }
 
-- (_BYTE)_updateOverCaptureStatusWithWiderCameraSampleBuffer:(const void *)a3 narrowerCameraSampleBuffer:
+- (_BYTE)_updateOverCaptureStatusWithWiderCameraSampleBuffer:(const void *)buffer narrowerCameraSampleBuffer:
 {
   if (!result)
   {
@@ -4963,15 +4963,15 @@ LABEL_234:
     v15 = [objc_msgSend(CMGetAttachment(a2 *off_1E798A3C8];
     if (v15)
     {
-      v16 = a3;
+      bufferCopy = buffer;
     }
 
     else
     {
-      v16 = a2;
+      bufferCopy = a2;
     }
 
-    v17 = CMGetAttachment(v16, v14, 0);
+    v17 = CMGetAttachment(bufferCopy, v14, 0);
     psn_updateFocusDistanceBasedScene((v3 + 1312), v17);
     v18 = v3[1356];
     if (!v15)
@@ -5104,23 +5104,23 @@ LABEL_63:
   return [(BWPreviewStitcherNode *)v3 _setOverCaptureStatus:v4];
 }
 
-- (CMSampleBufferRef)_newStitchedSampleBufferFromWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(float64x2_t *)a4 widerCameraRegionsShifts:(double *)a5 teleShift:(double *)a6 primaryCaptureRectOut:(double *)a7 primaryCaptureRectBeforeCroppingOut:(void *)a8 centerWiderCameraShiftOut:(float64_t)a9 currentFrameRate:(float64_t)a10 inputCropRectOut:(float)a11
+- (CMSampleBufferRef)_newStitchedSampleBufferFromWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(float64x2_t *)narrowerCamera widerCameraRegionsShifts:(double *)shifts teleShift:(double *)shift primaryCaptureRectOut:(double *)out primaryCaptureRectBeforeCroppingOut:(void *)croppingOut centerWiderCameraShiftOut:(float64_t)shiftOut currentFrameRate:(float64_t)self0 inputCropRectOut:(float)self1
 {
-  *&v1535 = a11;
+  *&v1535 = rectOut;
   if (!result)
   {
     return result;
   }
 
-  v15 = a2;
+  cameraCopy = a2;
   v16 = result;
-  v1565 = a8;
+  croppingOutCopy = croppingOut;
   if (a2)
   {
     OUTLINED_FUNCTION_18_7();
     if (!_ZF || (*(v16 + 513) & 1) != 0 || (OUTLINED_FUNCTION_18_7(), _ZF))
     {
-      pixelBuffer = CMSampleBufferGetImageBuffer(v15);
+      pixelBuffer = CMSampleBufferGetImageBuffer(cameraCopy);
       v72 = 1;
     }
 
@@ -5135,16 +5135,16 @@ LABEL_63:
   {
     v72 = 0;
     pixelBuffer = 0;
-    v15 = a3;
+    cameraCopy = camera;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(camera);
   v18 = [objc_msgSend(*(v16 + 16) "livePixelBufferPool")];
   v1736.i32[0] = CVPixelBufferGetWidth(v18);
   v1736.i32[1] = CVPixelBufferGetHeight(v18);
   FigCaptureSwapVideoDimensionsFor90Or270Rotation(&v1736, *(v16 + 136));
   v1735 = 0;
-  v19 = CMGetAttachment(v15, @"TotalZoomFactor", 0);
+  v19 = CMGetAttachment(cameraCopy, @"TotalZoomFactor", 0);
   if (v19)
   {
     [v19 floatValue];
@@ -5157,7 +5157,7 @@ LABEL_63:
   }
 
   v22 = *off_1E798A3C8;
-  v1722 = OUTLINED_FUNCTION_71_0(a3);
+  v1722 = OUTLINED_FUNCTION_71_0(camera);
   v1700 = 0;
   if (v72)
   {
@@ -5169,23 +5169,23 @@ LABEL_63:
     v1572 = v22;
     v1504 = *&v11;
     v1721 = ImageBuffer;
-    v1564 = a7;
+    outCopy = out;
     v1609 = v18;
     LODWORD(v1667) = *(v16 + 1685);
     v23 = [objc_msgSend(v1722 objectForKeyedSubscript:{*off_1E798A8A8), "intValue"}];
     os_unfair_lock_lock((v16 + 476));
     v24 = objc_autoreleasePoolPush();
-    v25 = [*(v16 + 1640) dequeueFencedAnimation];
-    v1687 = a3;
-    if (v25)
+    dequeueFencedAnimation = [*(v16 + 1640) dequeueFencedAnimation];
+    cameraCopy2 = camera;
+    if (dequeueFencedAnimation)
     {
-      v26 = v25;
-      [v25 primaryCaptureAspectRatio];
+      v26 = dequeueFencedAnimation;
+      [dequeueFencedAnimation primaryCaptureAspectRatio];
       v1701 = v27;
-      v1646 = [v26 primaryCaptureRectCenterXPixelOffset];
-      v1683 = [v26 primaryCaptureRectCenterYPixelOffset];
+      primaryCaptureRectCenterXPixelOffset = [v26 primaryCaptureRectCenterXPixelOffset];
+      primaryCaptureRectCenterYPixelOffset = [v26 primaryCaptureRectCenterYPixelOffset];
       *(v16 + 896) = [v26 fencePortSendRight];
-      v1563 = [v26 fencePortGenerationCount];
+      fencePortGenerationCount = [v26 fencePortGenerationCount];
       if (*MEMORY[0x1E695FF58] == 1)
       {
         [*(v16 + 1640) count];
@@ -5196,10 +5196,10 @@ LABEL_63:
 
     else
     {
-      v1563 = 0;
+      fencePortGenerationCount = 0;
       v1701 = *(v16 + 880);
-      v1646 = *(v16 + 176);
-      v1683 = *(v16 + 180);
+      primaryCaptureRectCenterXPixelOffset = *(v16 + 176);
+      primaryCaptureRectCenterYPixelOffset = *(v16 + 180);
     }
 
     objc_autoreleasePoolPop(v24);
@@ -5214,22 +5214,22 @@ LABEL_63:
 
     if ((*(v16 + 1260) & 1) == 0)
     {
-      CMSampleBufferGetPresentationTimeStamp(propertyValueOut, a3);
+      CMSampleBufferGetPresentationTimeStamp(propertyValueOut, camera);
       *(v16 + 1248) = *&propertyValueOut[0].a;
       *(v16 + 1264) = propertyValueOut[0].c;
     }
 
     memset(propertyValueOut, 0, 24);
-    CMSampleBufferGetPresentationTimeStamp(propertyValueOut, a3);
+    CMSampleBufferGetPresentationTimeStamp(propertyValueOut, camera);
     *lhs = *&propertyValueOut[0].a;
     *&lhs[16] = propertyValueOut[0].c;
     rhs = *(v16 + 1248);
     CMTimeSubtract(&time, lhs, &rhs);
     Seconds = CMTimeGetSeconds(&time);
     v29 = FigCaptureRoundFloatToMultipleOf(1, Seconds * 60.0);
-    v30 = [OUTLINED_FUNCTION_110() updateCount];
-    _VF = __OFSUB__(v29, v30);
-    v32 = v29 - v30;
+    updateCount = [OUTLINED_FUNCTION_110() updateCount];
+    _VF = __OFSUB__(v29, updateCount);
+    v32 = v29 - updateCount;
     if (!((v32 < 0) ^ _VF | (v32 == 0)))
     {
       do
@@ -5546,10 +5546,10 @@ LABEL_109:
             }
 
             v99 = *(v16 + *v98);
-            v1653 = vmulq_n_f64(*a4, v99);
-            v1657 = vmulq_n_f64(a4[1], v99);
-            v100 = a4[2].f64[0] * v99;
-            v101 = a4[2].f64[1] * v99;
+            v1653 = vmulq_n_f64(*narrowerCamera, v99);
+            v1657 = vmulq_n_f64(narrowerCamera[1], v99);
+            v100 = narrowerCamera[2].f64[0] * v99;
+            v101 = narrowerCamera[2].f64[1] * v99;
             v1617 = *(v16 + 288);
             x = v52->x;
             y = v52->y;
@@ -5699,7 +5699,7 @@ LABEL_109:
             v141 = OUTLINED_FUNCTION_124_0();
             FigCaptureMetadataUtilitiesDenormalizeCropRect(v141, v142, v143, v144);
             OUTLINED_FUNCTION_4_25(v145, v146, v147, v148);
-            v149 = CMGetAttachment(v1687, *off_1E798A428, 0);
+            v149 = CMGetAttachment(cameraCopy2, *off_1E798A428, 0);
             *v1520 = *v52;
             point = *v52;
             v1671 = v21;
@@ -5766,8 +5766,8 @@ LABEL_177:
               v179 = (v1604 / v77);
 LABEL_178:
               v1598 = v179;
-              v181.f64[0] = a9;
-              v181.f64[1] = a10;
+              v181.f64[0] = shiftOut;
+              v181.f64[1] = rate;
               if (v170 >= v21)
               {
                 v182 = v21;
@@ -5812,8 +5812,8 @@ LABEL_178:
                 }
 
                 *v1631 = v188;
-                v190 = [(BWPreviewStitcherNode *)v16 _wideBaseZoomFactorWithOverride];
-                v1669 = (*&v190 / *(v16 + 220));
+                _wideBaseZoomFactorWithOverride = [(BWPreviewStitcherNode *)v16 _wideBaseZoomFactorWithOverride];
+                v1669 = (*&_wideBaseZoomFactorWithOverride / *(v16 + 220));
                 [*(v16 + 1536) currentValue];
                 v1707 = v191;
                 [*(v16 + 1536) currentValue];
@@ -5947,7 +5947,7 @@ LABEL_203:
                       FigCaptureMetadataUtilitiesScaleRect2D(v565, v566, v567, v568, 1.0 / (v1702 * v1585));
                       v222 = v1721;
                       OUTLINED_FUNCTION_85_1();
-                      v224 = v1687;
+                      v224 = cameraCopy2;
                     }
 
                     else
@@ -5971,7 +5971,7 @@ LABEL_203:
                       }
 
                       OUTLINED_FUNCTION_85_1();
-                      v224 = v1687;
+                      v224 = cameraCopy2;
                       v562 = recta.origin.x;
                       v561 = recta.origin.y;
                       width = recta.size.width;
@@ -6000,9 +6000,9 @@ LABEL_203:
 
                   v222 = v1721;
                   OUTLINED_FUNCTION_85_1();
-                  v254 = v1683;
+                  v254 = primaryCaptureRectCenterYPixelOffset;
                   v255 = v1673;
-                  v224 = v1687;
+                  v224 = cameraCopy2;
 LABEL_306:
                   v363 = v255 + v254;
                   v364 = OUTLINED_FUNCTION_0_29();
@@ -6016,7 +6016,7 @@ LABEL_306:
                     v368 = psn_conformRectForMSR420vfBoundedByRect(0, v364, v365, v366, v367, recta.origin.x, recta.origin.y, recta.size.width, recta.size.height);
                   }
 
-                  v1593 = v1644 + v1646;
+                  v1593 = v1644 + primaryCaptureRectCenterXPixelOffset;
                   OUTLINED_FUNCTION_4_25(v368, v369, v370, v371);
                   v1779.origin.x = OUTLINED_FUNCTION_58_4();
                   v1780 = CGRectInset(v1779, v372, v372);
@@ -6070,17 +6070,17 @@ LABEL_306:
                   v384 = OUTLINED_FUNCTION_41_3((v16 + 416), v383);
                   v388 = v386;
                   v389 = v387;
-                  if (a5)
+                  if (shifts)
                   {
-                    *a5 = v384;
-                    a5[1] = v385;
-                    a5[2] = v386;
-                    a5[3] = v387;
+                    *shifts = v384;
+                    shifts[1] = v385;
+                    shifts[2] = v386;
+                    shifts[3] = v387;
                   }
 
                   v1684 = v385;
                   v1686 = v384;
-                  if (a6)
+                  if (shift)
                   {
                     v390 = v1600;
                     v391 = *&v209;
@@ -6096,10 +6096,10 @@ LABEL_306:
                       v393 = v391 / v390;
                     }
 
-                    *a6 = (1.0 - v392) * 0.5;
-                    a6[1] = (1.0 - v393) * 0.5;
-                    a6[2] = v392;
-                    a6[3] = v393;
+                    *shift = (1.0 - v392) * 0.5;
+                    shift[1] = (1.0 - v393) * 0.5;
+                    shift[2] = v392;
+                    shift[3] = v393;
                   }
 
                   LODWORD(v1507) = v363;
@@ -6828,7 +6828,7 @@ LABEL_718:
 
                               else
                               {
-                                v1179 = v1687;
+                                v1179 = cameraCopy2;
                               }
 
                               if (!BWCMSampleBufferCreateCopyWithNewPixelBuffer(v1179, v18, (v16 + 408), &v1735))
@@ -6955,9 +6955,9 @@ LABEL_718:
                                   CMSetAttachment(v1735, @"CAContextFencePortSendRight", value, 1u);
                                 }
 
-                                if (v1563 >= 1)
+                                if (fencePortGenerationCount >= 1)
                                 {
-                                  [MEMORY[0x1E696AD98] numberWithLongLong:v1563];
+                                  [MEMORY[0x1E696AD98] numberWithLongLong:fencePortGenerationCount];
                                   v1230 = OUTLINED_FUNCTION_4();
                                   CMSetAttachment(v1230, @"CAContextFencePortGenerationID", v1231, 1u);
                                 }
@@ -7044,16 +7044,16 @@ LABEL_780:
                                   pixelBuffer = v222;
                                 }
 
-                                if (v1565)
+                                if (croppingOutCopy)
                                 {
                                   CVPixelBufferGetWidth(pixelBuffer);
                                   CVPixelBufferGetHeight(pixelBuffer);
                                   v1256 = OUTLINED_FUNCTION_3();
                                   FigCaptureMetadataUtilitiesNormalizeCropRect(v1256, v1257, v1258, v1259);
-                                  *v1565 = v1260;
-                                  v1565[1] = v1261;
-                                  v1565[2] = v1262;
-                                  v1565[3] = v1263;
+                                  *croppingOutCopy = v1260;
+                                  croppingOutCopy[1] = v1261;
+                                  croppingOutCopy[2] = v1262;
+                                  croppingOutCopy[3] = v1263;
                                 }
 
                                 LOBYTE(time.a) = 0;
@@ -7069,10 +7069,10 @@ LABEL_780:
                                 OUTLINED_FUNCTION_3();
                                 OUTLINED_FUNCTION_105();
                                 BWUpdateTrackedFacesMetadataOnSampleBuffer(v1280, v1284, v1285, v1286, v1287, v1288, v1289, v1290, v1674, v1281, v1282, v1283);
-                                if (v1564)
+                                if (outCopy)
                                 {
-                                  *v1564 = v1619;
-                                  v1564[1] = v1618;
+                                  *outCopy = v1619;
+                                  outCopy[1] = v1618;
                                 }
 
                                 OUTLINED_FUNCTION_18_7();
@@ -7284,8 +7284,8 @@ LABEL_627:
                                 v1509 = v1817.origin.x;
                                 [(BWPreviewStitcherNode *)v16 _waitForCIPreheatingToFinish];
                                 *&v608 = COERCE_DOUBLE([(int32x2_t *)[(BWPreviewStitcherNode *)v16 _cameraTransitionPool] newPixelBuffer]);
-                                v920 = [(int32x2_t *)[(BWPreviewStitcherNode *)v16 _cameraTransitionPool] newPixelBuffer];
-                                v224 = v920;
+                                newPixelBuffer = [(int32x2_t *)[(BWPreviewStitcherNode *)v16 _cameraTransitionPool] newPixelBuffer];
+                                v224 = newPixelBuffer;
                                 v1667 = *&v608;
                                 if (*&v608 == 0.0)
                                 {
@@ -7297,7 +7297,7 @@ LABEL_627:
                                   goto LABEL_808;
                                 }
 
-                                if (!v920 || (*&v1491 = v918, v1496 = v917, v1698 = v919, OUTLINED_FUNCTION_101(), OUTLINED_FUNCTION_22_3(), v921 = v1656, v922 = *&r2_16, *&v608 = COERCE_DOUBLE(&OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled), VTPixelRotationSessionRotateSubImage()))
+                                if (!newPixelBuffer || (*&v1491 = v918, v1496 = v917, v1698 = v919, OUTLINED_FUNCTION_101(), OUTLINED_FUNCTION_22_3(), v921 = v1656, v922 = *&r2_16, *&v608 = COERCE_DOUBLE(&OBJC_IVAR___BWInferenceEngineControllerConfiguration__fastMattingEnabled), VTPixelRotationSessionRotateSubImage()))
                                 {
                                   fig_log_get_emitter();
                                   OUTLINED_FUNCTION_1_35();
@@ -7459,9 +7459,9 @@ LABEL_839:
                                 v1319 = OUTLINED_FUNCTION_70_0();
                                 if (v1319)
                                 {
-                                  v1321 = [v1319 isRampingUp];
+                                  isRampingUp = [v1319 isRampingUp];
                                   [OUTLINED_FUNCTION_70_0() currentValue];
-                                  if (v1321)
+                                  if (isRampingUp)
                                   {
                                     v1320 = v1322;
                                   }
@@ -7479,7 +7479,7 @@ LABEL_839:
                                   {
                                     OUTLINED_FUNCTION_117();
                                     [objc_msgSend(*(v16 + v1323) "firstObject")];
-                                    v1321 = 0;
+                                    isRampingUp = 0;
                                     v1325 = v1671;
                                     if (v1324 < v1671)
                                     {
@@ -7496,7 +7496,7 @@ LABEL_839:
 
                                   else
                                   {
-                                    v1321 = 1;
+                                    isRampingUp = 1;
                                   }
                                 }
 
@@ -7508,7 +7508,7 @@ LABEL_839:
                                 v1466 = *(v16 + 1008);
                                 v1472 = *(v16 + 1024);
                                 v1326 = OUTLINED_FUNCTION_36_4();
-                                [(BWPreviewStitcherNode *)v1327 _renderCameraTransitionRampToPixelBuffer:v1328 bounds:v224 withWiderCameraPixelBuffer:*&v1667 narrowerCameraPixelBuffer:v1321 zoomingIn:v1329 progress:v1330 narrowerCameraBounds:v1535 narrowerCameraShift:v1326 featherEdges:v1331 rampCameraTransition:v979 renderEnhancedFeathering:v1621 narrowerCameraEdgeExpansionRamp:v1320 qsubToQsumEdgeOpacityRamp:v1332 qsubToQsumEdgeOpacityRampFromProgress:v1333 renderBrightnessCompensation:v1334, v1594, v1577, v921, v922, v1608, v1607, v1466, v1472, v1478, v1480];
+                                [(BWPreviewStitcherNode *)v1327 _renderCameraTransitionRampToPixelBuffer:v1328 bounds:v224 withWiderCameraPixelBuffer:*&v1667 narrowerCameraPixelBuffer:isRampingUp zoomingIn:v1329 progress:v1330 narrowerCameraBounds:v1535 narrowerCameraShift:v1326 featherEdges:v1331 rampCameraTransition:v979 renderEnhancedFeathering:v1621 narrowerCameraEdgeExpansionRamp:v1320 qsubToQsumEdgeOpacityRamp:v1332 qsubToQsumEdgeOpacityRampFromProgress:v1333 renderBrightnessCompensation:v1334, v1594, v1577, v921, v922, v1608, v1607, v1466, v1472, v1478, v1480];
                                 *(v16 + 1064) = 1;
                                 v1335 = OUTLINED_FUNCTION_70_0();
                                 if (v1335)
@@ -7548,9 +7548,9 @@ LABEL_839:
                                 v1337 = *(v16 + 1024);
                                 if (v1337)
                                 {
-                                  v1338 = [v1337 isRamping];
+                                  isRamping = [v1337 isRamping];
                                   v1339 = *(v16 + 1024);
-                                  if (v1338)
+                                  if (isRamping)
                                   {
                                     [v1339 updateRampForNextIteration];
                                   }
@@ -7641,10 +7641,10 @@ LABEL_911:
                             {
                               [(BWPreviewStitcherNode *)v16 _waitForCIPreheatingToFinish];
                               v925 = COERCE_DOUBLE([(int32x2_t *)[(BWPreviewStitcherNode *)v16 _cameraTransitionPool] newPixelBuffer]);
-                              v926 = [(int32x2_t *)[(BWPreviewStitcherNode *)v16 _cameraTransitionPool] newPixelBuffer];
-                              v224 = v926;
+                              newPixelBuffer2 = [(int32x2_t *)[(BWPreviewStitcherNode *)v16 _cameraTransitionPool] newPixelBuffer];
+                              v224 = newPixelBuffer2;
                               v18 = v1609;
-                              if (v925 == 0.0 || !v926 || (OUTLINED_FUNCTION_101(), OUTLINED_FUNCTION_22_3(), VTPixelRotationSessionRotateSubImage()))
+                              if (v925 == 0.0 || !newPixelBuffer2 || (OUTLINED_FUNCTION_101(), OUTLINED_FUNCTION_22_3(), VTPixelRotationSessionRotateSubImage()))
                               {
                                 fig_log_get_emitter();
                                 OUTLINED_FUNCTION_1_35();
@@ -8625,7 +8625,7 @@ LABEL_561:
               {
                 v222 = v1721;
                 v223 = *&v1623;
-                v224 = v1687;
+                v224 = cameraCopy2;
               }
 
               else
@@ -8633,10 +8633,10 @@ LABEL_561:
                 v225 = v221;
                 v222 = v1721;
                 v223 = *&v1623;
-                v224 = v1687;
+                v224 = cameraCopy2;
                 if (([v221 isEqual:*off_1E798A0E0] & 1) != 0 || objc_msgSend(v225, "isEqual:", *off_1E798A0F8))
                 {
-                  v226 = CMGetAttachment(v1687, @"TotalZoomFactor", 0);
+                  v226 = CMGetAttachment(cameraCopy2, @"TotalZoomFactor", 0);
                   if (v226)
                   {
                     [v226 floatValue];
@@ -8678,9 +8678,9 @@ LABEL_561:
 
                   v262 = v223;
                   v1661 = v256 + ((v262 - v256) * v261);
-                  v263 = [OUTLINED_FUNCTION_84_0() isRampingUp];
+                  isRampingUp2 = [OUTLINED_FUNCTION_84_0() isRampingUp];
                   [OUTLINED_FUNCTION_84_0() updateRampForNextIteration];
-                  if (v263 && ([OUTLINED_FUNCTION_84_0() isRamping] & 1) == 0)
+                  if (isRampingUp2 && ([OUTLINED_FUNCTION_84_0() isRamping] & 1) == 0)
                   {
 
                     *(v16 + 1824) = 0;
@@ -8747,7 +8747,7 @@ LABEL_561:
                 v1731[1] = v320;
                 v245 = 1.0;
 LABEL_284:
-                v254 = v1683;
+                v254 = primaryCaptureRectCenterYPixelOffset;
                 v255 = v1673;
                 goto LABEL_306;
               }
@@ -8845,7 +8845,7 @@ LABEL_284:
 
               else
               {
-                v1764.origin.x = OUTLINED_FUNCTION_63_0(v306, 0.5, v307, v308, v309, v310, v311, v312, *&v1413, *&v1424, *&v1435, *&v1447, *&v1452, *&v1457, *&v1462, *&v1468, *&v1474, *&v1481, *&v1484, *&v1488, *&v1493, *&v1498, v11, *&v1507, *&v1511, *&v1516, *v1520, *&v1520[1], *&v1525, *&v1528, v1532, *&v1535, 1.0, 1.0, 0.0, 0.0, *&v1540, *&v1541, v1545, *&v1546, *&v1549, *&v1552, v1559, *&v1563, *&v1564, *&v1565, *v1567, *&v1567[1], v1569.x, v1569.y, *&v1570, *&v1572, *v1573, *&v1573[1], *&v1579, v1582, *&v1586);
+                v1764.origin.x = OUTLINED_FUNCTION_63_0(v306, 0.5, v307, v308, v309, v310, v311, v312, *&v1413, *&v1424, *&v1435, *&v1447, *&v1452, *&v1457, *&v1462, *&v1468, *&v1474, *&v1481, *&v1484, *&v1488, *&v1493, *&v1498, v11, *&v1507, *&v1511, *&v1516, *v1520, *&v1520[1], *&v1525, *&v1528, v1532, *&v1535, 1.0, 1.0, 0.0, 0.0, *&v1540, *&v1541, v1545, *&v1546, *&v1549, *&v1552, v1559, *&fencePortGenerationCount, *&outCopy, *&croppingOutCopy, *v1567, *&v1567[1], v1569.x, v1569.y, *&v1570, *&v1572, *v1573, *&v1573[1], *&v1579, v1582, *&v1586);
                 v1764.size.height = v273;
                 v313 = CGRectGetMaxX(v1764) - v287;
               }
@@ -8874,7 +8874,7 @@ LABEL_284:
                   goto LABEL_292;
                 }
 
-                v1769.origin.x = OUTLINED_FUNCTION_63_0(v326, v327, v328, v329, v330, v331, v332, v333, *&v1413, *&v1424, *&v1435, *&v1447, *&v1452, *&v1457, *&v1462, *&v1468, *&v1474, *&v1481, *&v1484, *&v1488, *&v1493, *&v1498, *&v1504, *&v1507, *&v1511, *&v1516, *v1520, *&v1520[1], *&v1525, *&v1528, v1532, *&v1535, *&r2, *(&r2 + 1), *&r2_16, *(&r2_16 + 1), *&v1540, *&v1541, v1545, *&v1546, *&v1549, *&v1552, v1559, *&v1563, *&v1564, *&v1565, *v1567, *&v1567[1], v1569.x, v1569.y, *&v1570, *&v1572, v287, *&v1573[1], *&v1579, v1582, *&v1586);
+                v1769.origin.x = OUTLINED_FUNCTION_63_0(v326, v327, v328, v329, v330, v331, v332, v333, *&v1413, *&v1424, *&v1435, *&v1447, *&v1452, *&v1457, *&v1462, *&v1468, *&v1474, *&v1481, *&v1484, *&v1488, *&v1493, *&v1498, *&v1504, *&v1507, *&v1511, *&v1516, *v1520, *&v1520[1], *&v1525, *&v1528, v1532, *&v1535, *&r2, *(&r2 + 1), *&r2_16, *(&r2_16 + 1), *&v1540, *&v1541, v1545, *&v1546, *&v1549, *&v1552, v1559, *&fencePortGenerationCount, *&outCopy, *&croppingOutCopy, *v1567, *&v1567[1], v1569.x, v1569.y, *&v1570, *&v1572, v287, *&v1573[1], *&v1579, v1582, *&v1586);
                 v1769.size.height = v273;
                 v324 = CGRectGetMaxX(v1769) - v287;
               }
@@ -8897,7 +8897,7 @@ LABEL_292:
               v334 = v1582;
               v335 = CGRectGetMaxY(v1772) - v1582;
               v336 = OUTLINED_FUNCTION_102();
-              if (v335 >= OUTLINED_FUNCTION_95_1(v336, v337, v338, v339, v340, v341, v342, v343, v344, v1413, v1424, v1435, v1447, v1452, v1457, v1462, v1468, v1474, v1481, v1484, v1488, v1493, v1498, v1504, v1507, v1511, v1516, v1520[0], v1520[1], v1525, v1528, *&v1532, v1535, r2, *(&r2 + 1), r2_16, *(&r2_16 + 1), v1540, v1541, *&v1545, v1546, v1549, v1553, *&v1560, v1563, v1564, v1565, v1567[0], v1567[1], *&v1569.x, *&v1569.y, v1570, v1572, v1573[0], v1573[1], v1579, *&v1582, v1586, v1589, *&v290, *&v279) - v334 * 0.5)
+              if (v335 >= OUTLINED_FUNCTION_95_1(v336, v337, v338, v339, v340, v341, v342, v343, v344, v1413, v1424, v1435, v1447, v1452, v1457, v1462, v1468, v1474, v1481, v1484, v1488, v1493, v1498, v1504, v1507, v1511, v1516, v1520[0], v1520[1], v1525, v1528, *&v1532, v1535, r2, *(&r2 + 1), r2_16, *(&r2_16 + 1), v1540, v1541, *&v1545, v1546, v1549, v1553, *&v1560, fencePortGenerationCount, outCopy, croppingOutCopy, v1567[0], v1567[1], *&v1569.x, *&v1569.y, v1570, v1572, v1573[0], v1573[1], v1579, *&v1582, v1586, v1589, *&v290, *&v279) - v334 * 0.5)
               {
                 v1774.origin.x = OUTLINED_FUNCTION_50_2();
                 v1774.size.height = v287;
@@ -8927,7 +8927,7 @@ LABEL_292:
                 *&v1776.size.height = v1624;
                 v352 = CGRectGetMaxY(v1776) - v348;
                 v353 = OUTLINED_FUNCTION_102();
-                if (v352 >= OUTLINED_FUNCTION_95_1(v353, v354, v355, v356, v357, v358, v359, v360, v361, v1413, v1424, v1435, v1447, v1452, v1457, v1462, v1468, v1474, v1481, v1484, v1488, v1493, v1498, v1504, v1507, v1512, v1516, v1520[0], v1520[1], v1525, v1528, *&v1532, v1535, r2, *(&r2 + 1), r2_16, *(&r2_16 + 1), v1540, v1541, *&v1545, v1547, v1550, v1554, v1561, v1563, v1564, v1565, v1567[0], v1567[1], *&v1569.x, *&v1569.y, v1571, v1572, v1574, v1578, v1580, v1583, v1587, v1589, v1592, key) - v351)
+                if (v352 >= OUTLINED_FUNCTION_95_1(v353, v354, v355, v356, v357, v358, v359, v360, v361, v1413, v1424, v1435, v1447, v1452, v1457, v1462, v1468, v1474, v1481, v1484, v1488, v1493, v1498, v1504, v1507, v1512, v1516, v1520[0], v1520[1], v1525, v1528, *&v1532, v1535, r2, *(&r2 + 1), r2_16, *(&r2_16 + 1), v1540, v1541, *&v1545, v1547, v1550, v1554, v1561, fencePortGenerationCount, outCopy, croppingOutCopy, v1567[0], v1567[1], *&v1569.x, *&v1569.y, v1571, v1572, v1574, v1578, v1580, v1583, v1587, v1589, v1592, key) - v351)
                 {
                   v1778.origin.x = OUTLINED_FUNCTION_50_2();
                   v1778.size.height = v345;
@@ -8962,7 +8962,7 @@ LABEL_292:
 
               v245 = 1.0;
               *&v209 = v1670;
-              v254 = v1683;
+              v254 = primaryCaptureRectCenterYPixelOffset;
               v255 = v1673;
               if (v264)
               {
@@ -9129,8 +9129,8 @@ LABEL_158:
 
       v74 = *(v16 + 224);
       v1694 = v74 * *(v16 + 288);
-      v643 = [(BWPreviewStitcherNode *)v16 _wideBaseZoomFactorWithOverride];
-      v77 = *&v643;
+      _wideBaseZoomFactorWithOverride2 = [(BWPreviewStitcherNode *)v16 _wideBaseZoomFactorWithOverride];
+      v77 = *&_wideBaseZoomFactorWithOverride2;
       v78 = &OBJC_IVAR___BWPreviewStitcherNode__wideNondisruptiveSwitchingZoomFactors;
     }
 
@@ -9174,19 +9174,19 @@ LABEL_808:
 
 - (void)_waitForCIPreheatingToFinish
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1056);
+    v2 = *(self + 1056);
     if (v2)
     {
       dispatch_group_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
 
-      *(a1 + 1056) = 0;
+      *(self + 1056) = 0;
     }
   }
 }
 
-- (void)_getInputRect:(uint64_t)a3 outputRect:(uint64_t)a4 inputShiftAppliedInOutputRect:(uint64_t)a5 toTransferPixelBuffer:(uint64_t)a6 rect:(uint64_t)a7 intoPixelBufferDimensions:(uint64_t)a8 rect:(double)a9 withInputShift:(double)a10 shiftOutsideBoundingRectAllowed:(double)a11 ignoreBounds:(double)a12 scale:(double)a13 forFinalOutput:(double)a14
+- (void)_getInputRect:(uint64_t)rect outputRect:(uint64_t)outputRect inputShiftAppliedInOutputRect:(uint64_t)inOutputRect toTransferPixelBuffer:(uint64_t)buffer rect:(uint64_t)a7 intoPixelBufferDimensions:(uint64_t)dimensions rect:(double)a9 withInputShift:(double)self0 shiftOutsideBoundingRectAllowed:(double)self1 ignoreBounds:(double)self2 scale:(double)self3 forFinalOutput:(double)self4
 {
   OUTLINED_FUNCTION_135();
   v105 = v27;
@@ -9422,7 +9422,7 @@ LABEL_42:
   FigDebugAssert3();
 }
 
-- (uint64_t)_transferPixelBuffer:(CVPixelBufferRef)pixelBuffer rect:(int)a4 intoPixelBuffer:(_OWORD *)a5 rect:(int)a6 isFinalOutput:(int)a7 withInputShift:(int)a8 scale:(uint64_t)a9 inputSourceRectOut:(uint64_t)a10
+- (uint64_t)_transferPixelBuffer:(CVPixelBufferRef)pixelBuffer rect:(int)rect intoPixelBuffer:(_OWORD *)buffer rect:(int)a6 isFinalOutput:(int)output withInputShift:(int)shift scale:(uint64_t)scale inputSourceRectOut:(uint64_t)self0
 {
   if (result)
   {
@@ -9434,21 +9434,21 @@ LABEL_42:
     v41 = v15;
     v39.i32[0] = CVPixelBufferGetWidth(pixelBuffer);
     v39.i32[1] = CVPixelBufferGetHeight(pixelBuffer);
-    if (a4)
+    if (rect)
     {
       FigCaptureSwapVideoDimensionsFor90Or270Rotation(&v39, *(v14 + 136));
     }
 
     OUTLINED_FUNCTION_112_1();
-    [(BWPreviewStitcherNode *)v16 _getInputRect:v17 outputRect:v18 inputShiftAppliedInOutputRect:v19 toTransferPixelBuffer:v20 rect:v21 intoPixelBufferDimensions:v22 rect:v23 withInputShift:v24 shiftOutsideBoundingRectAllowed:v25 ignoreBounds:v26 scale:v27 forFinalOutput:v28, v29, v30, v31, *&a9, *&a10, *&a11, a4];
-    if (a5)
+    [(BWPreviewStitcherNode *)v16 _getInputRect:v17 outputRect:v18 inputShiftAppliedInOutputRect:v19 toTransferPixelBuffer:v20 rect:v21 intoPixelBufferDimensions:v22 rect:v23 withInputShift:v24 shiftOutsideBoundingRectAllowed:v25 ignoreBounds:v26 scale:v27 forFinalOutput:v28, v29, v30, v31, *&scale, *&out, *&a11, rect];
+    if (buffer)
     {
       v32 = v41;
-      *a5 = v40;
-      a5[1] = v32;
+      *buffer = v40;
+      buffer[1] = v32;
     }
 
-    if (a4)
+    if (rect)
     {
       v44.origin.y = *(&v42 + 1);
       v44.size = v43;
@@ -9476,15 +9476,15 @@ LABEL_42:
   return result;
 }
 
-- (uint64_t)_compensateForMissingFOVUsingPixelBuffer:(__CVBuffer *)a3 sourceRect:(int)a4 destinationContainingRect:(int)a5 destinationInsetRect:(int)a6 outputPixelBuffer:(int)a7
+- (uint64_t)_compensateForMissingFOVUsingPixelBuffer:(__CVBuffer *)buffer sourceRect:(int)rect destinationContainingRect:(int)containingRect destinationInsetRect:(int)insetRect outputPixelBuffer:(int)pixelBuffer
 {
   if (result)
   {
     v28 = result;
     CVPixelBufferGetWidth(pixelBuffer);
     v29 = CVPixelBufferGetHeight(pixelBuffer) - (a10 + a12);
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetHeight(a3);
+    CVPixelBufferGetWidth(buffer);
+    CVPixelBufferGetHeight(buffer);
     v226 = *MEMORY[0x1E695F9C0];
     v227 = MEMORY[0x1E695E118];
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v227 forKeys:&v226 count:1];
@@ -9570,9 +9570,9 @@ LABEL_42:
     OUTLINED_FUNCTION_8_3();
     v112 = OUTLINED_FUNCTION_13_11();
     v121 = psn_imageWithBlurredEdges(v113, 0, v112, v114, v115, v116, v117, v118, v119, v120, 0.0, 0.5);
-    v122 = [v33 colorSpace];
-    v123 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:a3];
-    [v123 setColorSpace:v122];
+    colorSpace = [v33 colorSpace];
+    v123 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:buffer];
+    [v123 setColorSpace:colorSpace];
     v124 = *(v28 + 984);
     [v20 extent];
     v125 = [v124 startTaskToRender:v121 fromRect:v123 toDestination:0 atPoint:? error:?];
@@ -9594,18 +9594,18 @@ LABEL_42:
       v8.i32[0] = [OUTLINED_FUNCTION_131() width];
       v8.i32[1] = [OUTLINED_FUNCTION_131() height];
       FigCaptureSwapVideoDimensionsFor90Or270Rotation(&v8, v1[17].i32[0]);
-      v2 = [OUTLINED_FUNCTION_131() pixelFormat];
-      if (v2 == 1882468912)
+      pixelFormat = [OUTLINED_FUNCTION_131() pixelFormat];
+      if (pixelFormat == 1882468912)
       {
         v3 = 2016686640;
       }
 
       else
       {
-        v3 = v2;
+        v3 = pixelFormat;
       }
 
-      v4 = [OUTLINED_FUNCTION_131() colorSpaceProperties];
+      colorSpaceProperties = [OUTLINED_FUNCTION_131() colorSpaceProperties];
       v5 = +[BWMemoryPool sharedMemoryPool];
       v6 = v8;
       v7 = objc_alloc_init(BWVideoFormatRequirements);
@@ -9614,7 +9614,7 @@ LABEL_42:
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
       [OUTLINED_FUNCTION_8() setSupportedPixelFormats:?];
-      v10 = [MEMORY[0x1E696AD98] numberWithInt:v4];
+      v10 = [MEMORY[0x1E696AD98] numberWithInt:colorSpaceProperties];
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
       [OUTLINED_FUNCTION_8() setSupportedColorSpaceProperties:?];
       v9 = v7;
@@ -9628,7 +9628,7 @@ LABEL_42:
   return result;
 }
 
-- (uint64_t)_renderCameraTransitionRampToPixelBuffer:(__CVBuffer *)a3 bounds:(__CVBuffer *)a4 withWiderCameraPixelBuffer:(int)a5 narrowerCameraPixelBuffer:(int)a6 zoomingIn:(int)a7 progress:(int)a8 narrowerCameraBounds:(double)a9 narrowerCameraShift:(double)a10 featherEdges:(double)a11 rampCameraTransition:(double)a12 renderEnhancedFeathering:(float)a13 narrowerCameraEdgeExpansionRamp:(double)a14 qsubToQsumEdgeOpacityRamp:(double)a15 qsubToQsumEdgeOpacityRampFromProgress:(double)a16 renderBrightnessCompensation:(double)a17
+- (uint64_t)_renderCameraTransitionRampToPixelBuffer:(__CVBuffer *)buffer bounds:(__CVBuffer *)bounds withWiderCameraPixelBuffer:(int)pixelBuffer narrowerCameraPixelBuffer:(int)cameraPixelBuffer zoomingIn:(int)in progress:(int)progress narrowerCameraBounds:(double)cameraBounds narrowerCameraShift:(double)self0 featherEdges:(double)self1 rampCameraTransition:(double)self2 renderEnhancedFeathering:(float)self3 narrowerCameraEdgeExpansionRamp:(double)self4 qsubToQsumEdgeOpacityRamp:(double)self5 qsubToQsumEdgeOpacityRampFromProgress:(double)self6 renderBrightnessCompensation:(double)self7
 {
   if (result)
   {
@@ -9637,14 +9637,14 @@ LABEL_42:
     v71 = *MEMORY[0x1E695F9C0];
     v72 = MEMORY[0x1E695E118];
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-    v31 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a3 options:v30];
-    v32 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a4 options:v30];
-    v33 = [v32 colorSpace];
-    v63 = a12;
-    v34 = CVPixelBufferGetHeight(a3) - a12;
-    Height = CVPixelBufferGetHeight(a4);
-    v36 = v34 - a10;
-    if (a8)
+    featheringCopy = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:buffer options:v30];
+    v32 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:bounds options:v30];
+    colorSpace = [v32 colorSpace];
+    transitionCopy = transition;
+    v34 = CVPixelBufferGetHeight(buffer) - transition;
+    Height = CVPixelBufferGetHeight(bounds);
+    v36 = v34 - shift;
+    if (progress)
     {
       v37 = Height - a20 - a18;
     }
@@ -9654,7 +9654,7 @@ LABEL_42:
       v37 = Height - a20;
     }
 
-    if (a8)
+    if (progress)
     {
       v38 = v36;
     }
@@ -9664,31 +9664,31 @@ LABEL_42:
       v38 = v34;
     }
 
-    v39 = [v32 imageByCroppingToRect:{a17, v37, a19, a20}];
+    v39 = [v32 imageByCroppingToRect:{compensation, v37, a19, a20}];
     CGAffineTransformMakeTranslation(&v70, a21, -a22);
     v40 = [v39 imageByApplyingTransform:&v70];
     if (a26)
     {
       LODWORD(v41) = 1.0;
-      *&v42 = a13;
-      if (a7)
+      *&v42 = feathering;
+      if (in)
       {
-        v45 = a13;
+        featheringCopy = feathering;
       }
 
       else
       {
-        v45 = 1.0;
+        featheringCopy = 1.0;
       }
 
-      if ((a5 & 1) != 0 || (*(v29 + 331) & 1) != 0 || *(v29 + 1024))
+      if ((pixelBuffer & 1) != 0 || (*(v29 + 331) & 1) != 0 || *(v29 + 1024))
       {
-        v31 = [(BWPreviewStitcherNode *)v29 _applyBrightnessCompensationToImage:v31 referenceImage:v40 bounds:v41 compensationLevel:v42, v43, v44, v45];
+        featheringCopy = [(BWPreviewStitcherNode *)v29 _applyBrightnessCompensationToImage:featheringCopy referenceImage:v40 bounds:v41 compensationLevel:v42, v43, v44, featheringCopy];
       }
 
       else
       {
-        [(BWPreviewStitcherNode *)v29 _applyBrightnessCompensationToImage:v40 referenceImage:v31 bounds:v41 compensationLevel:v42, v43, v44, v45];
+        [(BWPreviewStitcherNode *)v29 _applyBrightnessCompensationToImage:v40 referenceImage:featheringCopy bounds:v41 compensationLevel:v42, v43, v44, featheringCopy];
       }
     }
 
@@ -9699,20 +9699,20 @@ LABEL_42:
       [OUTLINED_FUNCTION_4() imageWithColor:?];
     }
 
-    if (a8)
+    if (progress)
     {
-      v47 = a6;
+      cameraPixelBufferCopy2 = cameraPixelBuffer;
       v48 = a19;
-      if ((a7 & ~a6 & 1) == 0)
+      if ((in & ~cameraPixelBuffer & 1) == 0)
       {
-        v49 = v63;
-        if (v63 > a20)
+        v49 = transitionCopy;
+        if (transitionCopy > a20)
         {
           OUTLINED_FUNCTION_33();
           if (v46)
           {
             v50 = OUTLINED_FUNCTION_36_4();
-            [(BWPreviewStitcherNode *)v51 _rectangularFeatheredImageWithNarrowerCameraImage:v52 widerCameraImage:v53 narrowerCameraClipRect:a5 zoomingIn:0 progress:a23 rampCameraTransition:v50 narrowerCameraEdgeExpansionRamp:v54, a19, a20, a13];
+            [(BWPreviewStitcherNode *)v51 _rectangularFeatheredImageWithNarrowerCameraImage:v52 widerCameraImage:v53 narrowerCameraClipRect:pixelBuffer zoomingIn:0 progress:a23 rampCameraTransition:v50 narrowerCameraEdgeExpansionRamp:v54, a19, a20, feathering];
             v55 = OUTLINED_FUNCTION_36_4();
             [v56 imageByCroppingToRect:v55];
           }
@@ -9724,24 +9724,24 @@ LABEL_42:
 
     else
     {
-      v47 = a6;
+      cameraPixelBufferCopy2 = cameraPixelBuffer;
       v48 = a19;
     }
 
-    v49 = v63;
+    v49 = transitionCopy;
 LABEL_28:
     v57 = OUTLINED_FUNCTION_36_4();
-    v61 = [(BWPreviewStitcherNode *)v58 _featheredImageWithNarrowerCameraImage:v59 widerCameraImage:v31 narrowerCameraClipRect:a5 widerCameraClipRect:v47 zoomingIn:a7 progress:a8 featherEdges:a23 rampCameraTransition:v57 renderEnhancedFeathering:v60 narrowerCameraEdgeExpansionRamp:v48 qsubToQsumEdgeOpacityRamp:a20 qsubToQsumEdgeOpacityRampFromProgress:a9, v38, a11, v49, a13, a24, a25];
+    v61 = [(BWPreviewStitcherNode *)v58 _featheredImageWithNarrowerCameraImage:v59 widerCameraImage:featheringCopy narrowerCameraClipRect:pixelBuffer widerCameraClipRect:cameraPixelBufferCopy2 zoomingIn:in progress:progress featherEdges:a23 rampCameraTransition:v57 renderEnhancedFeathering:v60 narrowerCameraEdgeExpansionRamp:v48 qsubToQsumEdgeOpacityRamp:a20 qsubToQsumEdgeOpacityRampFromProgress:cameraBounds, v38, edges, v49, feathering, a24, a25];
     v62 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:a2];
-    [v62 setColorSpace:v33];
+    [v62 setColorSpace:colorSpace];
     v70.a = 0.0;
-    return [objc_msgSend(*(v29 + 984) startTaskToRender:v61 fromRect:v62 toDestination:0 atPoint:a9 error:{v38, a11, v49, a9, v38), "waitUntilCompletedAndReturnError:", &v70}];
+    return [objc_msgSend(*(v29 + 984) startTaskToRender:v61 fromRect:v62 toDestination:0 atPoint:cameraBounds error:{v38, edges, v49, cameraBounds, v38), "waitUntilCompletedAndReturnError:", &v70}];
   }
 
   return result;
 }
 
-- (uint64_t)_renderHDRPixelBufferToSDR:(uint64_t)a3 toOutputPixelBuffer:(float)a4 progress:
+- (uint64_t)_renderHDRPixelBufferToSDR:(uint64_t)r toOutputPixelBuffer:(float)buffer progress:
 {
   if (result)
   {
@@ -9764,8 +9764,8 @@ LABEL_28:
     Height = CVPixelBufferGetHeight(a2);
     OUTLINED_FUNCTION_58_4();
     OUTLINED_FUNCTION_55_2();
-    v21 = [(BWPreviewStitcherNode *)v7 _featheredImageWithNarrowerCameraImage:v11 widerCameraImage:v13 narrowerCameraClipRect:0 widerCameraClipRect:0 zoomingIn:1 progress:0 featherEdges:0 rampCameraTransition:v17 renderEnhancedFeathering:v18 narrowerCameraEdgeExpansionRamp:Width qsubToQsumEdgeOpacityRamp:Height qsubToQsumEdgeOpacityRampFromProgress:v19, v20, Width, Height, a4, 0, 0.0];
-    v22 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:a3];
+    v21 = [(BWPreviewStitcherNode *)v7 _featheredImageWithNarrowerCameraImage:v11 widerCameraImage:v13 narrowerCameraClipRect:0 widerCameraClipRect:0 zoomingIn:1 progress:0 featherEdges:0 rampCameraTransition:v17 renderEnhancedFeathering:v18 narrowerCameraEdgeExpansionRamp:Width qsubToQsumEdgeOpacityRamp:Height qsubToQsumEdgeOpacityRampFromProgress:v19, v20, Width, Height, buffer, 0, 0.0];
+    v22 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:r];
     [v13 colorSpace];
     [OUTLINED_FUNCTION_4() setColorSpace:?];
     v25 = 0;
@@ -9776,9 +9776,9 @@ LABEL_28:
   return result;
 }
 
-- (void)_initCameraTransitionCIContextWithColorManagementEnabled:(void *)a1
+- (void)_initCameraTransitionCIContextWithColorManagementEnabled:(void *)enabled
 {
-  if (a1 && !a1[123])
+  if (enabled && !enabled[123])
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4 = [MEMORY[0x1E696AD98] numberWithInt:*MEMORY[0x1E695F910]];
@@ -9789,34 +9789,34 @@ LABEL_28:
     [v9 setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithUnsignedLongLong:"), @"kCIContextIOSurfaceMemoryPoolID"}];
     if ((a2 & 1) == 0)
     {
-      v5 = [MEMORY[0x1E695DFB0] null];
-      [v9 setObject:v5 forKeyedSubscript:*MEMORY[0x1E695F868]];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v9 setObject:null forKeyedSubscript:*MEMORY[0x1E695F868]];
     }
 
     v6 = [objc_msgSend(MEMORY[0x1E6991778] "metalDevice")];
-    v7 = a1[231];
+    v7 = enabled[231];
     if (!v7)
     {
       v7 = OUTLINED_FUNCTION_132_0();
-      a1[231] = v7;
+      enabled[231] = v7;
     }
 
     [v6 setCompletionQueue:v7];
-    v8 = a1[232];
+    v8 = enabled[232];
     if (!v8)
     {
       v8 = OUTLINED_FUNCTION_132_0();
-      a1[232] = v8;
+      enabled[232] = v8;
     }
 
     [v6 setSubmissionQueue:v8];
-    a1[123] = [MEMORY[0x1E695F620] contextWithMTLCommandQueue:v6 options:v9];
+    enabled[123] = [MEMORY[0x1E695F620] contextWithMTLCommandQueue:v6 options:v9];
   }
 }
 
-- (double)_scaleFactorAppliedForPixelBuffer:(void *)a3 usedSourceRect:(double)result primaryCaptureRectAspectRatio:(double)a5 metadata:(double)a6
+- (double)_scaleFactorAppliedForPixelBuffer:(void *)buffer usedSourceRect:(double)result primaryCaptureRectAspectRatio:(double)ratio metadata:(double)metadata
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -9824,7 +9824,7 @@ LABEL_28:
   if (a2)
   {
     v15 = *ymmword_1AD046EE0;
-    CGRectMakeWithDictionaryRepresentation([a3 objectForKeyedSubscript:*off_1E798A5C8], &v15);
+    CGRectMakeWithDictionaryRepresentation([buffer objectForKeyedSubscript:*off_1E798A5C8], &v15);
     CVPixelBufferGetWidth(a2);
     CVPixelBufferGetHeight(a2);
     FigCaptureMetadataUtilitiesDenormalizeCropRect(v15.origin.x, v15.origin.y, v15.size.width, v15.size.height);
@@ -9852,9 +9852,9 @@ LABEL_28:
   return result;
 }
 
-- (void)_callDelegateWithAppliedWiderCameraShift:(CVPixelBufferRef)a3 narrowerCameraShift:(int)a4 widerCameraScaleFactor:(int)a5 narrowerCameraScaleFactor:(int)a6 widerCameraPixelBuffer:(int)a7 narrowerCameraPixelBuffer:(int)a8 widerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)a9 narrowerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)a10 widerCameraPortType:narrowerCameraPortType:inSuperWideMacroMode:widerCameraShiftAtBaseZoom:
+- (void)_callDelegateWithAppliedWiderCameraShift:(CVPixelBufferRef)shift narrowerCameraShift:(int)cameraShift widerCameraScaleFactor:(int)factor narrowerCameraScaleFactor:(int)scaleFactor widerCameraPixelBuffer:(int)buffer narrowerCameraPixelBuffer:(int)pixelBuffer widerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)zoomFactor narrowerCameraNondisruptiveSwitchingZoomFactor:(uint64_t)self0 widerCameraPortType:narrowerCameraPortType:inSuperWideMacroMode:widerCameraShiftAtBaseZoom:
 {
-  if (!a1 || (*(a1 + 1746) & 1) != 0 || (*(a1 + 472) & 1) != 0)
+  if (!self || (*(self + 1746) & 1) != 0 || (*(self + 472) & 1) != 0)
   {
     OUTLINED_FUNCTION_127();
   }
@@ -9867,10 +9867,10 @@ LABEL_28:
       CVPixelBufferGetHeight(pixelBuffer);
     }
 
-    if (a3)
+    if (shift)
     {
-      CVPixelBufferGetWidth(a3);
-      CVPixelBufferGetHeight(a3);
+      CVPixelBufferGetWidth(shift);
+      CVPixelBufferGetHeight(shift);
     }
 
     OUTLINED_FUNCTION_127();
@@ -9879,15 +9879,15 @@ LABEL_28:
   }
 }
 
-- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)a1
+- (void)_updateUprightExifOrientationOnSampleBufferIfNeeded:(uint64_t)needed
 {
-  if (a1)
+  if (needed)
   {
-    v4 = [OUTLINED_FUNCTION_71_0(a2) intValue];
-    if (*(a1 + 136) || (*(a1 + 140) & 1) != 0)
+    intValue = [OUTLINED_FUNCTION_71_0(a2) intValue];
+    if (*(needed + 136) || (*(needed + 140) & 1) != 0)
     {
       v5 = 0;
-      if (!v4)
+      if (!intValue)
       {
         return;
       }
@@ -9895,8 +9895,8 @@ LABEL_28:
 
     else
     {
-      v5 = *(a1 + 141) ^ 1;
-      if (!v4)
+      v5 = *(needed + 141) ^ 1;
+      if (!intValue)
       {
         return;
       }
@@ -9905,9 +9905,9 @@ LABEL_28:
     if ((v5 & 1) == 0)
     {
       v12 = 0;
-      v6 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(v4, &v12);
+      v6 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(intValue, &v12);
       v11 = 0;
-      v7 = ptn_rotationDegreesAndMirroringFromLiveConfiguration(*(a1 + 136), *(a1 + 140), *(a1 + 141), &v11);
+      v7 = ptn_rotationDegreesAndMirroringFromLiveConfiguration(*(needed + 136), *(needed + 140), *(needed + 141), &v11);
       if (v12 != v11 && (v7 == 270 || v7 == 90))
       {
         v6 += 180;
@@ -9921,23 +9921,23 @@ LABEL_28:
   }
 }
 
-- (uint64_t)_featheredImageWithNarrowerCameraImage:(uint64_t)a3 widerCameraImage:(int)a4 narrowerCameraClipRect:(int)a5 widerCameraClipRect:(int)a6 zoomingIn:(int)a7 progress:(void *)a8 featherEdges:(double)a9 rampCameraTransition:(double)a10 renderEnhancedFeathering:(CGFloat)a11 narrowerCameraEdgeExpansionRamp:(CGFloat)a12 qsubToQsumEdgeOpacityRamp:(double)a13 qsubToQsumEdgeOpacityRampFromProgress:(double)a14
+- (uint64_t)_featheredImageWithNarrowerCameraImage:(uint64_t)image widerCameraImage:(int)cameraImage narrowerCameraClipRect:(int)rect widerCameraClipRect:(int)clipRect zoomingIn:(int)in progress:(void *)progress featherEdges:(double)edges rampCameraTransition:(double)self0 renderEnhancedFeathering:(CGFloat)self1 narrowerCameraEdgeExpansionRamp:(CGFloat)self2 qsubToQsumEdgeOpacityRamp:(double)self3 qsubToQsumEdgeOpacityRampFromProgress:(double)self4
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (!a8)
+  if (!progress)
   {
-    if (a4)
+    if (cameraImage)
     {
-      v35 = *(a1 + 1100);
-      v36 = *(a1 + 1108);
-      if ((a7 & 1) == 0)
+      v35 = *(self + 1100);
+      v36 = *(self + 1108);
+      if ((in & 1) == 0)
       {
-        v39 = *(a1 + 1104);
-        v40 = *(a1 + 1112);
+        v39 = *(self + 1104);
+        v40 = *(self + 1112);
         goto LABEL_29;
       }
 
@@ -9947,15 +9947,15 @@ LABEL_28:
 
     else
     {
-      v35 = *(a1 + 1116);
-      v36 = *(a1 + 1124);
+      v35 = *(self + 1116);
+      v36 = *(self + 1124);
       v37 = &OBJC_IVAR___BWPreviewStitcherNode__zoomOutFeatheringInnerRadiusEnd;
       v38 = &OBJC_IVAR___BWPreviewStitcherNode__zoomOutFeatheringOuterRadiusEnd;
     }
 
-    v39 = *(a1 + *v37);
-    v40 = *(a1 + *v38);
-    if (a18 && a7)
+    v39 = *(self + *v37);
+    v40 = *(self + *v38);
+    if (a18 && in)
     {
       v41 = a19;
       if (a17 <= 1.0)
@@ -10006,11 +10006,11 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  v27 = *(a1 + 1132);
-  v28 = *(a1 + 1140);
-  v29 = *(a1 + 1136);
-  v30 = *(a1 + 1144);
-  [a8 currentValue];
+  v27 = *(self + 1132);
+  v28 = *(self + 1140);
+  v29 = *(self + 1136);
+  v30 = *(self + 1144);
+  [progress currentValue];
   if (v31 > 1.0)
   {
     v31 = 1.0;
@@ -10022,7 +10022,7 @@ LABEL_29:
   }
 
   v32 = v27 + ((v28 - v27) * v31);
-  [a8 currentValue];
+  [progress currentValue];
   if (v33 > 1.0)
   {
     v33 = 1.0;
@@ -10036,15 +10036,15 @@ LABEL_29:
   v34 = v29 + ((v30 - v29) * v33);
 LABEL_34:
   v168 = v34;
-  if (a6)
+  if (clipRect)
   {
     v45 = 1.0 - a17;
-    if (a4)
+    if (cameraImage)
     {
       v45 = a17;
     }
 
-    if (a5)
+    if (rect)
     {
       v46 = 0.0;
     }
@@ -10061,89 +10061,89 @@ LABEL_34:
   {
     v47 = 1.0;
     v46 = 0.0;
-    if (a18 && a7)
+    if (a18 && in)
     {
       [a18 currentValue];
       v46 = v48;
     }
   }
 
-  v49 = [MEMORY[0x1E695F648] radialGradientFilter];
+  radialGradientFilter = [MEMORY[0x1E695F648] radialGradientFilter];
   v231.origin.x = OUTLINED_FUNCTION_120();
-  v231.size.width = a11;
-  v231.size.height = a12;
+  v231.size.width = feathering;
+  v231.size.height = ramp;
   MidX = CGRectGetMidX(v231);
   v232.origin.x = OUTLINED_FUNCTION_120();
-  v232.size.width = a11;
-  v232.size.height = a12;
-  [v49 setCenter:{MidX, CGRectGetMidY(v232)}];
-  if (a11 >= a12)
+  v232.size.width = feathering;
+  v232.size.height = ramp;
+  [radialGradientFilter setCenter:{MidX, CGRectGetMidY(v232)}];
+  if (feathering >= ramp)
   {
-    v51 = a12;
+    featheringCopy = ramp;
   }
 
   else
   {
-    v51 = a11;
+    featheringCopy = feathering;
   }
 
-  v52 = v51 * v32 * 0.5;
+  v52 = featheringCopy * v32 * 0.5;
   *&v52 = v52;
-  [v49 setRadius0:v52];
-  v53 = v51 * v168 * 0.5;
+  [radialGradientFilter setRadius0:v52];
+  v53 = featheringCopy * v168 * 0.5;
   *&v53 = v53;
-  [v49 setRadius1:v53];
+  [radialGradientFilter setRadius1:v53];
   v54 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1B0]);
   [MEMORY[0x1E695F610] colorWithRed:v54 green:v47 blue:v47 colorSpace:v47];
   [OUTLINED_FUNCTION_7() setColor0:?];
   [MEMORY[0x1E695F610] colorWithRed:v54 green:v46 blue:v46 colorSpace:v46];
   [OUTLINED_FUNCTION_7() setColor1:?];
-  v55 = [v49 outputImage];
+  outputImage = [radialGradientFilter outputImage];
   CGColorSpaceRelease(v54);
-  v56 = fmax(a11 / v51 * 0.949999988, 1.0);
-  v57 = fmax(a12 / v51 * 0.949999988, 1.0);
+  v56 = fmax(feathering / featheringCopy * 0.949999988, 1.0);
+  v57 = fmax(ramp / featheringCopy * 0.949999988, 1.0);
   v159 = *(MEMORY[0x1E695EFD0] + 16);
   v228 = *MEMORY[0x1E695EFD0];
   v169 = v228;
   v229 = v159;
   v230 = *(MEMORY[0x1E695EFD0] + 32);
   v150 = v230;
-  [v49 center];
+  [radialGradientFilter center];
   v59 = -v58;
-  [v49 center];
+  [radialGradientFilter center];
   Translation = CGAffineTransformMakeTranslation(&v227, v59, -v60);
-  OUTLINED_FUNCTION_128_1(Translation, v62, v63, v64, v65, v66, v67, v68, v150, v116, v121, *&a13, *&a14, *&a15, *&a16, v150.n128_i64[0], v150.n128_i64[1], v159, *(&v159 + 1), v169, *(&v169 + 1), *&a11, *&a12, *&a10, *&a9, v202, v207, v210, v215, v218, v223, v169, *(&v169 + 1), v159, *(&v159 + 1), v69, *&v226.tx);
+  OUTLINED_FUNCTION_128_1(Translation, v62, v63, v64, v65, v66, v67, v68, v150, v116, v121, *&opacityRamp, *&fromProgress, *&a15, *&a16, v150.n128_i64[0], v150.n128_i64[1], v159, *(&v159 + 1), v169, *(&v169 + 1), *&feathering, *&ramp, *&transition, *&edges, v202, v207, v210, v215, v218, v223, v169, *(&v169 + 1), v159, *(&v159 + 1), v69, *&v226.tx);
   Scale = CGAffineTransformMakeScale(&v226, v56, v57);
   v78 = OUTLINED_FUNCTION_12_11(Scale, v71, v72, v73, v74, v75, v76, v77, v117, v122, v127, v133, v139, v145, v151, v155, v160, v164, v170, v174, v179, v185, v191, v197, v203, v211, v219, *&v226.a, *&v226.b, *&v226.c, *&v226.d, *&v226.tx, *&v226.ty, *&v227.a);
-  [v49 center];
+  [radialGradientFilter center];
   v88 = v87;
-  [v49 center];
+  [radialGradientFilter center];
   v90 = CGAffineTransformMakeTranslation(&v226, v88, v89);
   v98 = OUTLINED_FUNCTION_12_11(v90, v91, v92, v93, v94, v95, v96, v97, v119, v124, v129, v135, v141, v147, v153, v157, v162, v166, v172, v176, v181, v187, v193, v199, v205, v213, v221, *&v226.a, *&v226.b, *&v226.c, *&v226.d, *&v226.tx, *&v226.ty, *&v227.a);
-  [v55 imageByApplyingTransform:{OUTLINED_FUNCTION_60_3(v98, v99, v100, v101, v102, v103, v104, v105, v120, v125, v130, v136, v142, v148, v154, v158, v163, v167, v173, v177, v182, v188, v194, v200, v206, v209, v214, v217, v222, v225, *&v226.a, *&v226.b, *&v226.c, *&v226.d, *&v226.tx, *&v226.ty, *&v227.a, *&v227.c, v106).n128_f64[0]}];
+  [outputImage imageByApplyingTransform:{OUTLINED_FUNCTION_60_3(v98, v99, v100, v101, v102, v103, v104, v105, v120, v125, v130, v136, v142, v148, v154, v158, v163, v167, v173, v177, v182, v188, v194, v200, v206, v209, v214, v217, v222, v225, *&v226.a, *&v226.b, *&v226.c, *&v226.d, *&v226.tx, *&v226.ty, *&v227.a, *&v227.c, v106).n128_f64[0]}];
   v107 = OUTLINED_FUNCTION_120();
   v109 = [v108 imageByCroppingToRect:v107];
-  v110 = [MEMORY[0x1E695F648] blendWithMaskFilter];
-  [v110 setInputImage:a2];
-  [v110 setMaskImage:v109];
-  [v110 setBackgroundImage:a3];
-  v111 = [v110 outputImage];
+  blendWithMaskFilter = [MEMORY[0x1E695F648] blendWithMaskFilter];
+  [blendWithMaskFilter setInputImage:a2];
+  [blendWithMaskFilter setMaskImage:v109];
+  [blendWithMaskFilter setBackgroundImage:image];
+  outputImage2 = [blendWithMaskFilter outputImage];
   OUTLINED_FUNCTION_33();
   if (v112)
   {
     OUTLINED_FUNCTION_33();
     if (v112)
     {
-      if ((*(a1 + 1572) & 1) == 0)
+      if ((*(self + 1572) & 1) == 0)
       {
-        v113 = *(a1 + 1628);
-        [*(a1 + 1536) currentValue];
-        return psn_imageWithBlurredEdges(v111, *(a1 + 1632), v201, v195, v183, v189, v131, v137, v143, v149, v113, v114);
+        v113 = *(self + 1628);
+        [*(self + 1536) currentValue];
+        return psn_imageWithBlurredEdges(outputImage2, *(self + 1632), v201, v195, v183, v189, v131, v137, v143, v149, v113, v114);
       }
     }
   }
 
-  return v111;
+  return outputImage2;
 }
 
 - (void)_coreImageMetalLibraryURL
@@ -10163,28 +10163,28 @@ LABEL_34:
   return result;
 }
 
-- (uint64_t)_applyBrightnessCompensationToImage:(void *)a3 referenceImage:(double)a4 bounds:(double)a5 compensationLevel:(double)a6
+- (uint64_t)_applyBrightnessCompensationToImage:(void *)image referenceImage:(double)referenceImage bounds:(double)bounds compensationLevel:(double)level
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12 = [(BWPreviewStitcherNode *)a1 _coreImageMetalLibraryURL];
+  _coreImageMetalLibraryURL = [(BWPreviewStitcherNode *)self _coreImageMetalLibraryURL];
   v42 = 0;
-  [MEMORY[0x1E695F618] cachedKernelWithFunctionName:@"TwoY" fromMetalLibrary:v12 error:&v42];
+  [MEMORY[0x1E695F618] cachedKernelWithFunctionName:@"TwoY" fromMetalLibrary:_coreImageMetalLibraryURL error:&v42];
   if (!v42)
   {
-    [MEMORY[0x1E695F618] cachedKernelWithFunctionName:@"ComputeGamma" fromMetalLibrary:v12 error:&v42];
+    [MEMORY[0x1E695F618] cachedKernelWithFunctionName:@"ComputeGamma" fromMetalLibrary:_coreImageMetalLibraryURL error:&v42];
     if (!v42)
     {
-      [MEMORY[0x1E695F618] cachedKernelWithFunctionName:@"AdjustGamma" fromMetalLibrary:v12 error:&v42];
+      [MEMORY[0x1E695F618] cachedKernelWithFunctionName:@"AdjustGamma" fromMetalLibrary:_coreImageMetalLibraryURL error:&v42];
       if (!v42)
       {
         memset(&v41, 0, sizeof(v41));
         CGAffineTransformMakeScale(&v41, 0.25, 0.25);
         v13 = [a2 imageByApplyingTransform:OUTLINED_FUNCTION_88().n128_f64[0] highQualityDownsample:?];
-        v14 = [a3 imageByApplyingTransform:OUTLINED_FUNCTION_88().n128_f64[0] highQualityDownsample:?];
+        v14 = [image imageByApplyingTransform:OUTLINED_FUNCTION_88().n128_f64[0] highQualityDownsample:?];
         [v13 extent];
         OUTLINED_FUNCTION_21_5();
         [v14 extent];
@@ -10195,7 +10195,7 @@ LABEL_34:
         y = v44.origin.y;
         width = v44.size.width;
         height = v44.size.height;
-        v44.origin.x = *(a1 + 1188);
+        v44.origin.x = *(self + 1188);
         v19 = v44.size.width * v44.origin.x;
         v44.origin.x = v44.size.height * v44.origin.x;
         v20 = v44.origin.x;
@@ -10247,7 +10247,7 @@ LABEL_34:
   return a2;
 }
 
-- (uint64_t)_rectangularFeatheredImageWithNarrowerCameraImage:(uint64_t)a3 widerCameraImage:(int)a4 narrowerCameraClipRect:(int)a5 zoomingIn:(void *)a6 progress:(CGFloat)a7 rampCameraTransition:(CGFloat)a8 narrowerCameraEdgeExpansionRamp:(CGFloat)a9
+- (uint64_t)_rectangularFeatheredImageWithNarrowerCameraImage:(uint64_t)image widerCameraImage:(int)cameraImage narrowerCameraClipRect:(int)rect zoomingIn:(void *)in progress:(CGFloat)progress rampCameraTransition:(CGFloat)transition narrowerCameraEdgeExpansionRamp:(CGFloat)ramp
 {
   if (result)
   {
@@ -10268,7 +10268,7 @@ LABEL_34:
       v21 = 0.0;
     }
 
-    if (a4)
+    if (cameraImage)
     {
       v22 = &OBJC_IVAR___BWPreviewStitcherNode__cameraTransitionEdgeFeatheringZoomInStartSigma;
       v23 = &OBJC_IVAR___BWPreviewStitcherNode__cameraTransitionEdgeFeatheringZoomInEndSigma;
@@ -10281,49 +10281,49 @@ LABEL_34:
 
     v24 = *(result + *v22);
     v25 = v24 + ((*(result + *v23) - v24) * v21);
-    if (a6)
+    if (in)
     {
-      [a6 currentValue];
+      [in currentValue];
       v25 = OUTLINED_FUNCTION_46_3(v26) * v25;
     }
 
     v27 = v25 * *(v20 + 1168);
     v28 = 1.0 - a11;
-    if (a4)
+    if (cameraImage)
     {
       v28 = a11;
     }
 
     v29 = v28;
-    v30 = [MEMORY[0x1E695F648] blurredRectangleGeneratorFilter];
-    v37.origin.x = a7;
-    v37.origin.y = a8;
-    v37.size.width = a9;
+    blurredRectangleGeneratorFilter = [MEMORY[0x1E695F648] blurredRectangleGeneratorFilter];
+    v37.origin.x = progress;
+    v37.origin.y = transition;
+    v37.size.width = ramp;
     v37.size.height = a10;
     v38 = CGRectInset(v37, v27, v27);
-    [v30 setExtent:{v38.origin.x, v38.origin.y, v38.size.width, v38.size.height}];
+    [blurredRectangleGeneratorFilter setExtent:{v38.origin.x, v38.origin.y, v38.size.width, v38.size.height}];
     *&v31 = v25;
-    [v30 setSigma:v31];
+    [blurredRectangleGeneratorFilter setSigma:v31];
     v32 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1B0]);
     v33 = 1.0;
-    if (a5)
+    if (rect)
     {
       v33 = v29;
     }
 
-    [v30 setColor:{objc_msgSend(MEMORY[0x1E695F610], "colorWithRed:green:blue:colorSpace:", v32, v33, v33, v33)}];
-    v34 = [v30 outputImage];
+    [blurredRectangleGeneratorFilter setColor:{objc_msgSend(MEMORY[0x1E695F610], "colorWithRed:green:blue:colorSpace:", v32, v33, v33, v33)}];
+    outputImage = [blurredRectangleGeneratorFilter outputImage];
     if (v32)
     {
       CFRelease(v32);
     }
 
-    v35 = [MEMORY[0x1E695F648] blendWithMaskFilter];
-    [v35 setInputImage:a2];
-    [v35 setMaskImage:v34];
-    [v35 setBackgroundImage:a3];
+    blendWithMaskFilter = [MEMORY[0x1E695F648] blendWithMaskFilter];
+    [blendWithMaskFilter setInputImage:a2];
+    [blendWithMaskFilter setMaskImage:outputImage];
+    [blendWithMaskFilter setBackgroundImage:image];
 
-    return [v35 outputImage];
+    return [blendWithMaskFilter outputImage];
   }
 
   return result;
@@ -10425,24 +10425,24 @@ LABEL_13:
   objc_autoreleasePoolPop(v10);
 }
 
-- (uint64_t)_cameraDisplayTransitionFrameCountForCameraFallbackChange:(float)a3 currentFrameRate:
+- (uint64_t)_cameraDisplayTransitionFrameCountForCameraFallbackChange:(float)change currentFrameRate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6 = [a1 displaysWidestCameraOnly];
+  displaysWidestCameraOnly = [self displaysWidestCameraOnly];
   if (a2)
   {
-    if (*(a1 + 1575) != 1 || (*(a1 + 944) & 1) != 0 || *(a1 + 1572) == *(a1 + 1544))
+    if (*(self + 1575) != 1 || (*(self + 944) & 1) != 0 || *(self + 1572) == *(self + 1544))
     {
-      if (*(a1 + 1491) == 1)
+      if (*(self + 1491) == 1)
       {
         v7 = 22;
-        if (*(a1 + 944) == 1)
+        if (*(self + 944) == 1)
         {
-          if (*(a1 + 1488) == *(a1 + 1489))
+          if (*(self + 1488) == *(self + 1489))
           {
             v7 = 22;
           }
@@ -10465,9 +10465,9 @@ LABEL_13:
       v7 = 16;
     }
 
-    if (*(a1 + 200) == 1 && ((v6 | *(a1 + 1572)) & 1) == 0)
+    if (*(self + 200) == 1 && ((displaysWidestCameraOnly | *(self + 1572)) & 1) == 0)
     {
-      v11 = *(a1 + 944) ^ 1;
+      v11 = *(self + 944) ^ 1;
     }
 
     else
@@ -10475,7 +10475,7 @@ LABEL_13:
       v11 = 0;
     }
 
-    if (*(a1 + 1488))
+    if (*(self + 1488))
     {
       if (v11)
       {
@@ -10492,7 +10492,7 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if (*(a1 + 944))
+      if (*(self + 944))
       {
         OUTLINED_FUNCTION_33();
         if (v12)
@@ -10506,15 +10506,15 @@ LABEL_34:
     }
   }
 
-  else if ((*(a1 + 217) & 1) != 0 && *(a1 + 218) == 1 && *(a1 + 912) == *(a1 + 228))
+  else if ((*(self + 217) & 1) != 0 && *(self + 218) == 1 && *(self + 912) == *(self + 228))
   {
     v7 = 13;
   }
 
   else
   {
-    v8 = *(a1 + 912);
-    if (v8 == 0.0 || vabds_f32(1.0, *(a1 + 916) / v8) < 0.1)
+    v8 = *(self + 912);
+    if (v8 == 0.0 || vabds_f32(1.0, *(self + 916) / v8) < 0.1)
     {
       OUTLINED_FUNCTION_123_0();
       OUTLINED_FUNCTION_44_3();
@@ -10527,7 +10527,7 @@ LABEL_34:
     }
   }
 
-  if (a3 <= 0.0)
+  if (change <= 0.0)
   {
     return v7;
   }
@@ -10543,11 +10543,11 @@ LABEL_34:
   return FigCaptureRoundFloatToMultipleOf(v21, v22);
 }
 
-- (unint64_t)_scaleCameraTransitionFrameCount:(int)a3 forCameraFallbackFromWideToTele:(double)a4 recenteringShiftOffset:(double)a5 recenteringStrength:(float)a6 registrationShiftOffset:(double)a7
+- (unint64_t)_scaleCameraTransitionFrameCount:(int)count forCameraFallbackFromWideToTele:(double)tele recenteringShiftOffset:(double)offset recenteringStrength:(float)strength registrationShiftOffset:(double)shiftOffset
 {
   if (result)
   {
-    v10 = (a8 - a5 / (1.0 - a6)) * (a8 - a5 / (1.0 - a6)) + (a7 - a4 / (1.0 - a6)) * (a7 - a4 / (1.0 - a6));
+    v10 = (a8 - offset / (1.0 - strength)) * (a8 - offset / (1.0 - strength)) + (shiftOffset - tele / (1.0 - strength)) * (shiftOffset - tele / (1.0 - strength));
     v11 = sqrtf(v10);
     v12 = [objc_msgSend(objc_msgSend(*(result + 8) "primaryMediaProperties")];
     v13 = v11 / v12;
@@ -10567,7 +10567,7 @@ LABEL_34:
       v15 = 0.035;
     }
 
-    if (a3)
+    if (count)
     {
       if (v13 > 0.035)
       {

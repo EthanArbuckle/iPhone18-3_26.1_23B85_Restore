@@ -12,9 +12,9 @@
 
 - (NSURLSession)session
 {
-  v2 = [(NSURLSessionTask *)self _taskGroup];
+  _taskGroup = [(NSURLSessionTask *)self _taskGroup];
 
-  return [(__NSURLSessionTaskGroupForConfiguration *)v2 _groupSession];
+  return [(__NSURLSessionTaskGroupForConfiguration *)_taskGroup _groupSession];
 }
 
 - (OS_dispatch_queue)workQueue
@@ -30,23 +30,23 @@
 
 - (int64_t)computeAdjustedPoolPriority
 {
-  v3 = [(NSURLSessionTask *)self _priorityValue];
+  _priorityValue = [(NSURLSessionTask *)self _priorityValue];
   [(NSURLSessionTask *)self _loadingPriorityValue];
-  return (v3 + (0.5 - v4) * 50.0);
+  return (_priorityValue + (0.5 - v4) * 50.0);
 }
 
 - (NSString)_description
 {
-  v3 = [(NSURLSessionTask *)self session];
-  if (v3)
+  session = [(NSURLSessionTask *)self session];
+  if (session)
   {
     v4 = @"Local";
-    if (CFEqual([(NSURLSessionConfiguration *)v3->_local_immutable_configuration_ivar disposition], &unk_1EE5B0C00))
+    if (CFEqual([(NSURLSessionConfiguration *)session->_local_immutable_configuration_ivar disposition], &unk_1EE5B0C00))
     {
-      v5 = [(NSURLSessionTask *)self session];
-      if (v5)
+      session2 = [(NSURLSessionTask *)self session];
+      if (session2)
       {
-        if (![(NSURLSessionConfiguration *)v5->_local_immutable_configuration_ivar _isProxySession])
+        if (![(NSURLSessionConfiguration *)session2->_local_immutable_configuration_ivar _isProxySession])
         {
           v4 = @"Background";
         }
@@ -138,8 +138,8 @@
   objc_sync_enter(self);
   if (!self->_loggableDescription)
   {
-    v3 = [(NSURLSessionTask *)self session];
-    if (v3 && [(NSURLSessionConfiguration *)v3->_local_immutable_configuration_ivar _isProxySession])
+    session = [(NSURLSessionTask *)self session];
+    if (session && [(NSURLSessionConfiguration *)session->_local_immutable_configuration_ivar _isProxySession])
     {
       v7 = 0;
       v8 = 0;
@@ -178,9 +178,9 @@ void __26__NSURLSessionTask_resume__block_invoke(uint64_t a1)
 
 - (NSURL)currentRequest_URL
 {
-  v2 = [(NSURLSessionTask *)self currentRequest];
+  currentRequest = [(NSURLSessionTask *)self currentRequest];
 
-  return [(NSURLRequest *)v2 URL];
+  return [(NSURLRequest *)currentRequest URL];
 }
 
 - (void)resume
@@ -212,12 +212,12 @@ void __26__NSURLSessionTask_resume__block_invoke(uint64_t a1)
   v3 = CFNLog::logger;
   if (os_log_type_enabled(CFNLog::logger, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NSURLSessionTask *)self _loggableDescription];
+    _loggableDescription = [(NSURLSessionTask *)self _loggableDescription];
     [(NSURLSessionTask *)self _timeoutInterval];
     v6 = v5;
     [(NSURLSessionTask *)self _timeoutIntervalForResource];
     *buf = 138544898;
-    *v70 = v4;
+    *v70 = _loggableDescription;
     *&v70[8] = 2048;
     *&v70[10] = v6;
     *&v70[18] = 2048;
@@ -233,25 +233,25 @@ void __26__NSURLSessionTask_resume__block_invoke(uint64_t a1)
     _os_log_impl(&dword_197BA3000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ resuming, timeouts(%.1f, %.1f) qos(0x%x) voucher(%@) activity(%{public,uuid_t}.16P)", buf, 0x40u);
   }
 
-  v8 = self;
-  v9 = [(NSURLSessionTask *)v8 _effectiveConfiguration];
-  v10 = HARLoggingEnabled([v9 _pidForHAR]);
+  selfCopy = self;
+  _effectiveConfiguration = [(NSURLSessionTask *)selfCopy _effectiveConfiguration];
+  v10 = HARLoggingEnabled([_effectiveConfiguration _pidForHAR]);
 
-  if (!v10 || [(NSURLSessionTask *)v8 _isAVAssetTask])
+  if (!v10 || [(NSURLSessionTask *)selfCopy _isAVAssetTask])
   {
     goto LABEL_32;
   }
 
   v11 = instrumentsTaskLog();
-  v12 = [(NSURLSessionTask *)v8 _uniqueIdentifier];
-  spid = os_signpost_id_make_with_pointer(v11, v12);
+  _uniqueIdentifier = [(NSURLSessionTask *)selfCopy _uniqueIdentifier];
+  spid = os_signpost_id_make_with_pointer(v11, _uniqueIdentifier);
 
-  v13 = v8;
-  v14 = [(NSURLSessionTask *)v13 session];
-  v15 = v14;
-  if (v14)
+  v13 = selfCopy;
+  session = [(NSURLSessionTask *)v13 session];
+  v15 = session;
+  if (session)
   {
-    v16 = *(v14 + 112);
+    v16 = *(session + 112);
   }
 
   else
@@ -260,26 +260,26 @@ void __26__NSURLSessionTask_resume__block_invoke(uint64_t a1)
   }
 
   v17 = v16;
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSURLSessionTask taskIdentifier](v13, "taskIdentifier")}];
-  [v18 setObject:v19 forKeyedSubscript:@"taskIdentifier"];
+  [dictionary setObject:v19 forKeyedSubscript:@"taskIdentifier"];
 
-  v20 = [(NSURLSessionTask *)v13 taskDescription];
-  [v18 setObject:v20 forKeyedSubscript:@"taskDescription"];
+  taskDescription = [(NSURLSessionTask *)v13 taskDescription];
+  [dictionary setObject:taskDescription forKeyedSubscript:@"taskDescription"];
 
-  v21 = [(NSURLSessionTask *)v13 originalRequest];
-  v22 = [v21 URL];
-  v23 = [v22 absoluteString];
-  [v18 setObject:v23 forKeyedSubscript:@"url"];
+  originalRequest = [(NSURLSessionTask *)v13 originalRequest];
+  v22 = [originalRequest URL];
+  absoluteString = [v22 absoluteString];
+  [dictionary setObject:absoluteString forKeyedSubscript:@"url"];
 
-  v24 = [(NSURLSessionTask *)v13 originalRequest];
-  v25 = [v24 HTTPMethod];
-  [v18 setObject:v25 forKeyedSubscript:@"method"];
+  originalRequest2 = [(NSURLSessionTask *)v13 originalRequest];
+  hTTPMethod = [originalRequest2 HTTPMethod];
+  [dictionary setObject:hTTPMethod forKeyedSubscript:@"method"];
 
   v26 = MEMORY[0x1E696AD98];
-  v27 = [(NSURLSessionTask *)v13 originalRequest];
-  v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v27, "attribution")}];
-  [v18 setObject:v28 forKeyedSubscript:@"attribution"];
+  originalRequest3 = [(NSURLSessionTask *)v13 originalRequest];
+  v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(originalRequest3, "attribution")}];
+  [dictionary setObject:v28 forKeyedSubscript:@"attribution"];
 
   if (v15)
   {
@@ -292,25 +292,25 @@ void __26__NSURLSessionTask_resume__block_invoke(uint64_t a1)
   }
 
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{v29 & 1, spid}];
-  [v18 setObject:v30 forKeyedSubscript:@"isSharedSession"];
+  [dictionary setObject:v30 forKeyedSubscript:@"isSharedSession"];
 
-  v31 = [v15 sessionDescription];
-  [v18 setObject:v31 forKeyedSubscript:@"sessionDescription"];
+  sessionDescription = [v15 sessionDescription];
+  [dictionary setObject:sessionDescription forKeyedSubscript:@"sessionDescription"];
 
   v32 = MEMORY[0x1E696AD98];
-  v33 = [v17 disposition];
-  v34 = [v32 numberWithBool:{objc_msgSend(v33, "isEqualToString:", 0x1EE5B0CA8)}];
-  [v18 setObject:v34 forKeyedSubscript:@"isEphemeralSession"];
+  disposition = [v17 disposition];
+  v34 = [v32 numberWithBool:{objc_msgSend(disposition, "isEqualToString:", 0x1EE5B0CA8)}];
+  [dictionary setObject:v34 forKeyedSubscript:@"isEphemeralSession"];
 
-  v35 = [v17 identifier];
-  [v18 setObject:v35 forKeyedSubscript:@"backgroundIdentifier"];
+  identifier = [v17 identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"backgroundIdentifier"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v36 = @"Data";
 LABEL_25:
-    [v18 setObject:v36 forKeyedSubscript:@"taskType"];
+    [dictionary setObject:v36 forKeyedSubscript:@"taskType"];
     goto LABEL_26;
   }
 
@@ -343,23 +343,23 @@ LABEL_25:
   }
 
 LABEL_26:
-  v37 = [(NSURLSessionTask *)v13 _effectiveConfiguration];
-  v38 = [v37 _sourceApplicationBundleIdentifier];
-  [v18 setObject:v38 forKeyedSubscript:@"sourceApplicationBundleIdentifier"];
+  _effectiveConfiguration2 = [(NSURLSessionTask *)v13 _effectiveConfiguration];
+  _sourceApplicationBundleIdentifier = [_effectiveConfiguration2 _sourceApplicationBundleIdentifier];
+  [dictionary setObject:_sourceApplicationBundleIdentifier forKeyedSubscript:@"sourceApplicationBundleIdentifier"];
 
-  v39 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v18 options:0 error:0];
+  v39 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:0];
   v79[0] = 0;
   v79[1] = 0;
-  v40 = [(NSURLSessionTask *)v13 _uniqueIdentifier];
-  [v40 getUUIDBytes:v79];
+  _uniqueIdentifier2 = [(NSURLSessionTask *)v13 _uniqueIdentifier];
+  [_uniqueIdentifier2 getUUIDBytes:v79];
 
   v78[0] = 0;
   v78[1] = 0;
-  v41 = [(NSURLSessionTask *)v13 session];
-  v42 = v41;
-  if (v41)
+  session2 = [(NSURLSessionTask *)v13 session];
+  v42 = session2;
+  if (session2)
   {
-    v43 = *(v41 + 128);
+    v43 = *(session2 + 128);
   }
 
   else
@@ -376,7 +376,7 @@ LABEL_26:
   {
     v47 = [v39 length];
     v48 = v39;
-    v49 = [v39 bytes];
+    bytes = [v39 bytes];
     *buf = 68290050;
     *v70 = 16;
     *&v70[4] = 2098;
@@ -388,49 +388,49 @@ LABEL_26:
     *v72 = 1040;
     *&v72[2] = v47;
     *v73 = 2082;
-    *&v73[2] = v49;
+    *&v73[2] = bytes;
     _os_signpost_emit_with_name_impl(&dword_197BA3000, v46, OS_SIGNPOST_EVENT, spida, "Task Resume", "Task UUID: %{public,uuid_t}.16P, Session UUID: %{public,uuid_t}.16P, Additional Info: %{public,xcode:data}.*s", buf, 0x32u);
   }
 
 LABEL_32:
-  objc_sync_enter(v8);
-  progress = v8->_progress;
-  if (progress && ![(NSProgress *)progress isCancelled]&& [(NSProgress *)v8->_progress isPaused])
+  objc_sync_enter(selfCopy);
+  progress = selfCopy->_progress;
+  if (progress && ![(NSProgress *)progress isCancelled]&& [(NSProgress *)selfCopy->_progress isPaused])
   {
-    [(NSProgress *)v8->_progress resume];
+    [(NSProgress *)selfCopy->_progress resume];
   }
 
-  if (v8->_seenFirstResume)
+  if (selfCopy->_seenFirstResume)
   {
     goto LABEL_74;
   }
 
-  v8->_seenFirstResume = 1;
-  v51 = [(NSURLSessionTask *)v8 session];
-  if (v51 && CFEqual([*(v51 + 112) disposition], &unk_1EE5B0C00) || (-[NSURLSessionTask set_private_nw_activity:](v8, "set_private_nw_activity:", -[NSURLSessionTask _nw_activity](v8, "_nw_activity")), !-[NSURLSessionTask _nw_activity](v8, "_nw_activity")))
+  selfCopy->_seenFirstResume = 1;
+  session3 = [(NSURLSessionTask *)selfCopy session];
+  if (session3 && CFEqual([*(session3 + 112) disposition], &unk_1EE5B0C00) || (-[NSURLSessionTask set_private_nw_activity:](selfCopy, "set_private_nw_activity:", -[NSURLSessionTask _nw_activity](selfCopy, "_nw_activity")), !-[NSURLSessionTask _nw_activity](selfCopy, "_nw_activity")))
   {
-    [(NSURLSessionTask *)v8 set_private_nw_activity:nw_activity_create()];
+    [(NSURLSessionTask *)selfCopy set_private_nw_activity:nw_activity_create()];
   }
 
-  if ([(NSURLSessionTask *)v8 _nw_activity])
+  if ([(NSURLSessionTask *)selfCopy _nw_activity])
   {
-    v52 = [(NSURLSessionTask *)v8 session];
-    if (v52)
+    session4 = [(NSURLSessionTask *)selfCopy session];
+    if (session4)
     {
-      if (CFEqual([*(v52 + 112) disposition], &unk_1EE5B0C00))
+      if (CFEqual([*(session4 + 112) disposition], &unk_1EE5B0C00))
       {
-        [(NSURLSessionTask *)v8 _private_nw_activity];
-        [(NSURLSessionTask *)v8 _nw_activity];
+        [(NSURLSessionTask *)selfCopy _private_nw_activity];
+        [(NSURLSessionTask *)selfCopy _nw_activity];
         nw_activity_set_parent_activity();
       }
     }
   }
 
-  if ([(NSURLSessionTask *)v8 _private_nw_activity])
+  if ([(NSURLSessionTask *)selfCopy _private_nw_activity])
   {
-    [(NSURLSessionTask *)v8 _private_nw_activity];
+    [(NSURLSessionTask *)selfCopy _private_nw_activity];
     nw_activity_activate();
-    [(NSURLSessionTask *)v8 _private_nw_activity];
+    [(NSURLSessionTask *)selfCopy _private_nw_activity];
     is_selected_for_reporting = nw_activity_is_selected_for_reporting();
     if (CFNLog::onceToken != -1)
     {
@@ -443,12 +443,12 @@ LABEL_32:
     {
       if (v55)
       {
-        v58 = [(NSURLSessionTask *)v8 _private_nw_activity];
-        v59 = [(NSURLSessionTask *)v8 _loggableDescription];
+        _private_nw_activity = [(NSURLSessionTask *)selfCopy _private_nw_activity];
+        _loggableDescription2 = [(NSURLSessionTask *)selfCopy _loggableDescription];
         *buf = 138543618;
-        *v70 = v58;
+        *v70 = _private_nw_activity;
         *&v70[8] = 2114;
-        *&v70[10] = v59;
+        *&v70[10] = _loggableDescription2;
         _os_log_debug_impl(&dword_197BA3000, v54, OS_LOG_TYPE_DEBUG, "[Telemetry]: Activity %{public}@ on %{public}@ was not selected for reporting", buf, 0x16u);
       }
 
@@ -457,33 +457,33 @@ LABEL_32:
 
     if (v55)
     {
-      v64 = [(NSURLSessionTask *)v8 _private_nw_activity];
-      v65 = [(NSURLSessionTask *)v8 _loggableDescription];
+      _private_nw_activity2 = [(NSURLSessionTask *)selfCopy _private_nw_activity];
+      _loggableDescription3 = [(NSURLSessionTask *)selfCopy _loggableDescription];
       *buf = 138543618;
-      *v70 = v64;
+      *v70 = _private_nw_activity2;
       *&v70[8] = 2114;
-      *&v70[10] = v65;
+      *&v70[10] = _loggableDescription3;
       _os_log_debug_impl(&dword_197BA3000, v54, OS_LOG_TYPE_DEBUG, "[Telemetry]: Activity %{public}@ on %{public}@ was selected for reporting", buf, 0x16u);
     }
 
-    if ([(NSURLSessionTask *)v8 _DuetActivityProperties])
+    if ([(NSURLSessionTask *)selfCopy _DuetActivityProperties])
     {
-      if ([-[NSDictionary objectForKeyedSubscript:](-[NSURLSessionTask _legacySocketStreamProperties](v8 "_legacySocketStreamProperties")])
+      if ([-[NSDictionary objectForKeyedSubscript:](-[NSURLSessionTask _legacySocketStreamProperties](selfCopy "_legacySocketStreamProperties")])
       {
-        v56 = [(NSURLSessionTask *)v8 _metrics];
-        if (v56)
+        _metrics = [(NSURLSessionTask *)selfCopy _metrics];
+        if (_metrics)
         {
           v57 = 5;
 LABEL_66:
-          *(v56 + 13) = v57;
+          *(_metrics + 13) = v57;
         }
       }
 
       else
       {
-        if ([(NSURLSessionConfiguration *)v8->_effectiveConfiguration isDiscretionary])
+        if ([(NSURLSessionConfiguration *)selfCopy->_effectiveConfiguration isDiscretionary])
         {
-          if ([(NSURLSessionConfiguration *)v8->_effectiveConfiguration _clientIsNotExplicitlyDiscretionary])
+          if ([(NSURLSessionConfiguration *)selfCopy->_effectiveConfiguration _clientIsNotExplicitlyDiscretionary])
           {
             v60 = 3;
           }
@@ -493,17 +493,17 @@ LABEL_66:
             v60 = 2;
           }
 
-          v61 = [(NSURLSessionTask *)v8 _metrics];
-          if (v61)
+          _metrics2 = [(NSURLSessionTask *)selfCopy _metrics];
+          if (_metrics2)
           {
-            *(v61 + 13) = v60;
+            *(_metrics2 + 13) = v60;
           }
 
           goto LABEL_67;
         }
 
-        v56 = [(NSURLSessionTask *)v8 _metrics];
-        if (v56)
+        _metrics = [(NSURLSessionTask *)selfCopy _metrics];
+        if (_metrics)
         {
           v57 = 4;
           goto LABEL_66;
@@ -513,7 +513,7 @@ LABEL_66:
   }
 
 LABEL_67:
-  if (![(NSURLSessionTask *)v8 _isAVAssetTask]&& [(NSURLSessionTask *)v8 originalRequest]&& ![(NSURLSessionTask *)v8 currentRequest_URL])
+  if (![(NSURLSessionTask *)selfCopy _isAVAssetTask]&& [(NSURLSessionTask *)selfCopy originalRequest]&& ![(NSURLSessionTask *)selfCopy currentRequest_URL])
   {
     if (__CFNAPIMisuseFaultLogHandle::onceToken != -1)
     {
@@ -529,19 +529,19 @@ LABEL_67:
   }
 
 LABEL_74:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (nw_settings_get_signposts_enabled())
   {
     kdebug_trace();
   }
 
-  v63 = [(NSURLSessionTask *)v8 workQueue];
+  workQueue = [(NSURLSessionTask *)selfCopy workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __26__NSURLSessionTask_resume__block_invoke;
   block[3] = &unk_1E74D6B30;
-  block[4] = v8;
-  dispatch_async(v63, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 }
 
 @end

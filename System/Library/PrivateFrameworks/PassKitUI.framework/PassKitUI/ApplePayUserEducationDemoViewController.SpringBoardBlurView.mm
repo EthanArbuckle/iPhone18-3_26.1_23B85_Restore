@@ -1,12 +1,12 @@
 @interface ApplePayUserEducationDemoViewController.SpringBoardBlurView
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithCoder:(id)a3;
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithFrame:(CGRect)a3;
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithCoder:(id)coder;
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ApplePayUserEducationDemoViewController.SpringBoardBlurView
 
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithCoder:(id)a3
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView_previousFilterLevel) = 0;
   v4 = OBJC_IVAR____TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView_wallpaperView;
@@ -32,7 +32,7 @@
   [v4 setFrame_];
 }
 
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithFrame:(CGRect)a3
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F19SpringBoardBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

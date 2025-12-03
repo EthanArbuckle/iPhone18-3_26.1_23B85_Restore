@@ -1,12 +1,12 @@
 @interface WBSFileLogger
-+ (BOOL)collectLogsInDirectory:(id)a3 withName:(id)a4 intoFile:(id)a5 error:(id *)a6;
-- (WBSFileLogger)initWithDirectoryURL:(id)a3 logName:(id)a4 maximumLogAge:(unint64_t)a5;
++ (BOOL)collectLogsInDirectory:(id)directory withName:(id)name intoFile:(id)file error:(id *)error;
+- (WBSFileLogger)initWithDirectoryURL:(id)l logName:(id)name maximumLogAge:(unint64_t)age;
 - (void)_closeStream;
-- (void)_logMessage:(id)a3 date:(id)a4;
+- (void)_logMessage:(id)message date:(id)date;
 - (void)_removeOldLogs;
 - (void)dealloc;
-- (void)logFormat:(id)a3;
-- (void)logMessage:(id)a3;
+- (void)logFormat:(id)format;
+- (void)logMessage:(id)message;
 - (void)tearDown;
 @end
 
@@ -17,10 +17,10 @@
   v36 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
   v4 = -self->_maximumLogAgeInDays;
-  v5 = [MEMORY[0x1E695DF00] date];
-  v25 = [v3 dateByAddingUnit:16 value:v4 toDate:v5 options:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v25 = [v3 dateByAddingUnit:16 value:v4 toDate:date options:0];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v26 = v3;
   [v7 setCalendar:v3];
@@ -31,8 +31,8 @@
   v10 = [@".log" length];
   v29 = [(NSString *)self->_logName length];
   v28 = [@"_yyyy-MM-dd" length];
-  v24 = v6;
-  v11 = [v6 contentsOfDirectoryAtURL:self->_directoryURL includingPropertiesForKeys:0 options:0 error:0];
+  v24 = defaultManager;
+  v11 = [defaultManager contentsOfDirectoryAtURL:self->_directoryURL includingPropertiesForKeys:0 options:0 error:0];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -55,11 +55,11 @@
         }
 
         v18 = *(*(&v31 + 1) + 8 * i);
-        v19 = [v18 lastPathComponent];
-        if ([v19 length] == v14 && objc_msgSend(v19, "hasPrefix:", self->_logName) && objc_msgSend(v19, "hasSuffix:", v16))
+        lastPathComponent = [v18 lastPathComponent];
+        if ([lastPathComponent length] == v14 && objc_msgSend(lastPathComponent, "hasPrefix:", self->_logName) && objc_msgSend(lastPathComponent, "hasSuffix:", v16))
         {
           v20 = v16;
-          v21 = [v19 substringWithRange:{v29, v28}];
+          v21 = [lastPathComponent substringWithRange:{v29, v28}];
           v22 = [v30 dateFromString:v21];
           if (v22 && [v26 compareDate:v22 toDate:v25 toUnitGranularity:16] == -1)
           {
@@ -80,21 +80,21 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (WBSFileLogger)initWithDirectoryURL:(id)a3 logName:(id)a4 maximumLogAge:(unint64_t)a5
+- (WBSFileLogger)initWithDirectoryURL:(id)l logName:(id)name maximumLogAge:(unint64_t)age
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = WBSFileLogger;
   v11 = [(WBSFileLogger *)&v23 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [nameCopy copy];
     logName = v11->_logName;
     v11->_logName = v12;
 
-    v11->_maximumLogAgeInDays = a5;
-    objc_storeStrong(&v11->_directoryURL, a3);
+    v11->_maximumLogAgeInDays = age;
+    objc_storeStrong(&v11->_directoryURL, l);
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v15 = dispatch_queue_create("com.apple.SafariShared.Logger", v14);
     logQueue = v11->_logQueue;
@@ -162,21 +162,21 @@ uint64_t __60__WBSFileLogger_initWithDirectoryURL_logName_maximumLogAge___block_
   }
 }
 
-- (void)logFormat:(id)a3
+- (void)logFormat:(id)format
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(WBSFileLogger *)self logMessage:v6];
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [v5 copy];
+  messageCopy = message;
+  date = [v4 date];
+  v7 = [messageCopy copy];
 
   logQueue = self->_logQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -185,26 +185,26 @@ uint64_t __60__WBSFileLogger_initWithDirectoryURL_logName_maximumLogAge___block_
   block[3] = &unk_1E7CF2308;
   block[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = date;
+  v9 = date;
   v10 = v7;
   dispatch_async(logQueue, block);
 }
 
-- (void)_logMessage:(id)a3 date:(id)a4
+- (void)_logMessage:(id)message date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dateCopy = date;
   objc_initWeak(&location, self);
   v8 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
   v9 = v8;
-  if (!self->_logStartDate || ([v8 isDate:v7 inSameDayAsDate:?] & 1) == 0)
+  if (!self->_logStartDate || ([v8 isDate:dateCopy inSameDayAsDate:?] & 1) == 0)
   {
     [(WBSFileLogger *)self _closeStream];
     [(WBSFileLogger *)self _removeOldLogs];
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     logStartDate = self->_logStartDate;
-    self->_logStartDate = v10;
+    self->_logStartDate = date;
   }
 
   if (!self->_outputStream)
@@ -214,7 +214,7 @@ uint64_t __60__WBSFileLogger_initWithDirectoryURL_logName_maximumLogAge___block_
     [v12 setDateFormat:@"_yyyy-MM-dd"];
     v13 = MEMORY[0x1E696AEC0];
     logName = self->_logName;
-    v15 = [v12 stringFromDate:v7];
+    v15 = [v12 stringFromDate:dateCopy];
     v16 = [v13 stringWithFormat:@"%@%@%@", logName, v15, @".log"];
 
     v17 = MEMORY[0x1E695DFC0];
@@ -226,8 +226,8 @@ uint64_t __60__WBSFileLogger_initWithDirectoryURL_logName_maximumLogAge___block_
     [(NSOutputStream *)self->_outputStream open];
   }
 
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@\n", v7, v6];
-  v22 = [v21 dataUsingEncoding:4];
+  messageCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@\n", dateCopy, messageCopy];
+  v22 = [messageCopy dataUsingEncoding:4];
   -[NSOutputStream write:maxLength:](self->_outputStream, "write:maxLength:", [v22 bytes], objc_msgSend(v22, "length"));
   WeakRetained = objc_loadWeakRetained(&self->_closeStreamTimer);
   [WeakRetained invalidate];
@@ -240,8 +240,8 @@ uint64_t __60__WBSFileLogger_initWithDirectoryURL_logName_maximumLogAge___block_
   objc_copyWeak(&v28, &location);
   v25 = [v24 timerWithTimeInterval:0 repeats:v27 block:5.0];
   objc_storeWeak(&self->_closeStreamTimer, v25);
-  v26 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v26 addTimer:v25 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:v25 forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -274,17 +274,17 @@ void __34__WBSFileLogger__logMessage_date___block_invoke(uint64_t a1)
   self->_outputStream = 0;
 }
 
-+ (BOOL)collectLogsInDirectory:(id)a3 withName:(id)a4 intoFile:(id)a5 error:(id *)a6
++ (BOOL)collectLogsInDirectory:(id)directory withName:(id)name intoFile:(id)file error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  v13 = [v12 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:0 options:0 error:a6];
+  directoryCopy = directory;
+  nameCopy = name;
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v13 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:0 error:error];
   if (v13)
   {
-    v14 = [v10 length];
+    v14 = [nameCopy length];
     v15 = [@"_yyyy-MM-dd" length] + v14;
     v16 = [@".log" length];
     v35[0] = MEMORY[0x1E69E9820];
@@ -292,17 +292,17 @@ void __34__WBSFileLogger__logMessage_date___block_invoke(uint64_t a1)
     v35[2] = __64__WBSFileLogger_collectLogsInDirectory_withName_intoFile_error___block_invoke;
     v35[3] = &unk_1E7CF2358;
     v37 = v15 + v16;
-    v36 = v10;
+    v36 = nameCopy;
     v17 = [v13 safari_filterObjectsUsingBlock:v35];
     v18 = [v17 count];
     v19 = v18 != 0;
     if (v18)
     {
-      v29 = v12;
-      v30 = v9;
+      v29 = defaultManager;
+      v30 = directoryCopy;
       v20 = [v17 sortedArrayUsingComparator:&__block_literal_global_16];
 
-      v21 = [MEMORY[0x1E695DFC0] outputStreamWithURL:v11 append:1];
+      v21 = [MEMORY[0x1E695DFC0] outputStreamWithURL:fileCopy append:1];
       [v21 open];
       v33 = 0u;
       v34 = 0u;
@@ -334,13 +334,13 @@ void __34__WBSFileLogger__logMessage_date___block_invoke(uint64_t a1)
       }
 
       [v21 close];
-      v9 = v30;
-      v12 = v29;
+      directoryCopy = v30;
+      defaultManager = v29;
     }
 
-    else if (a6)
+    else if (error)
     {
-      *a6 = 0;
+      *error = 0;
     }
   }
 

@@ -1,8 +1,8 @@
 @interface _PASTuple2
-+ (id)tupleWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTuple2:(id)a3;
-- (_PASTuple2)initWithFirst:(id)a3 second:(id)a4;
++ (id)tupleWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTuple2:(id)tuple2;
+- (_PASTuple2)initWithFirst:(id)first second:(id)second;
 - (id)description;
 @end
 
@@ -15,17 +15,17 @@
   return v2;
 }
 
-- (BOOL)isEqualToTuple2:(id)a3
+- (BOOL)isEqualToTuple2:(id)tuple2
 {
-  v4 = a3;
-  if (!v4)
+  tuple2Copy = tuple2;
+  if (!tuple2Copy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_first;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == tuple2Copy[1])
   {
   }
 
@@ -43,7 +43,7 @@ LABEL_4:
 
   v9 = self->_second;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == tuple2Copy[2])
   {
     v8 = 1;
   }
@@ -57,45 +57,45 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_PASTuple2 *)self isEqualToTuple2:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_PASTuple2 *)self isEqualToTuple2:v5];
   }
 
   return v6;
 }
 
-- (_PASTuple2)initWithFirst:(id)a3 second:(id)a4
+- (_PASTuple2)initWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = _PASTuple2;
   v9 = [(_PASTuple2 *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(&v10->_second, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(&v10->_second, second);
   }
 
   return v10;
 }
 
-+ (id)tupleWithFirst:(id)a3 second:(id)a4
++ (id)tupleWithFirst:(id)first second:(id)second
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_PASTuple2 alloc] initWithFirst:v6 second:v5];
+  secondCopy = second;
+  firstCopy = first;
+  v7 = [[_PASTuple2 alloc] initWithFirst:firstCopy second:secondCopy];
 
   return v7;
 }

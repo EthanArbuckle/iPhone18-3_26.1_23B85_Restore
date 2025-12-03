@@ -1,26 +1,26 @@
 @interface WBSCacheRetainReleasePolicy
-- (BOOL)isEntryRetainedForKeyString:(id)a3;
+- (BOOL)isEntryRetainedForKeyString:(id)string;
 - (NSSet)retainedKeyStrings;
-- (WBSCacheRetainReleasePolicy)initWithPurgeBlock:(id)a3;
-- (void)_releaseEntryForKeyString:(id)a3;
-- (void)_retainEntryForKeyString:(id)a3;
-- (void)releaseEntriesForKeyStrings:(id)a3;
-- (void)releaseEntryWithKeyStringProvider:(id)a3;
-- (void)retainEntriesForKeyStrings:(id)a3;
-- (void)retainEntryWithKeyStringProvider:(id)a3;
+- (WBSCacheRetainReleasePolicy)initWithPurgeBlock:(id)block;
+- (void)_releaseEntryForKeyString:(id)string;
+- (void)_retainEntryForKeyString:(id)string;
+- (void)releaseEntriesForKeyStrings:(id)strings;
+- (void)releaseEntryWithKeyStringProvider:(id)provider;
+- (void)retainEntriesForKeyStrings:(id)strings;
+- (void)retainEntryWithKeyStringProvider:(id)provider;
 @end
 
 @implementation WBSCacheRetainReleasePolicy
 
-- (WBSCacheRetainReleasePolicy)initWithPurgeBlock:(id)a3
+- (WBSCacheRetainReleasePolicy)initWithPurgeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = WBSCacheRetainReleasePolicy;
   v5 = [(WBSCacheRetainReleasePolicy *)&v14 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     purgeBlock = v5->_purgeBlock;
     v5->_purgeBlock = v6;
 
@@ -38,15 +38,15 @@
   return v5;
 }
 
-- (void)retainEntriesForKeyStrings:(id)a3
+- (void)retainEntriesForKeyStrings:(id)strings
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [stringsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -58,52 +58,52 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stringsCopy);
         }
 
         [(WBSCacheRetainReleasePolicy *)self _retainEntryForKeyString:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [stringsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)retainEntryWithKeyStringProvider:(id)a3
+- (void)retainEntryWithKeyStringProvider:(id)provider
 {
-  v4 = (*(a3 + 2))(a3, a2);
+  v4 = (*(provider + 2))(provider, a2);
   [(WBSCacheRetainReleasePolicy *)self _retainEntryForKeyString:v4];
 }
 
-- (void)_retainEntryForKeyString:(id)a3
+- (void)_retainEntryForKeyString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    if ([(NSCountedSet *)self->_negativeEntryRetainCounts containsObject:v4])
+    if ([(NSCountedSet *)self->_negativeEntryRetainCounts containsObject:stringCopy])
     {
-      [(NSCountedSet *)self->_negativeEntryRetainCounts removeObject:v4];
+      [(NSCountedSet *)self->_negativeEntryRetainCounts removeObject:stringCopy];
     }
 
     else
     {
-      [(NSCountedSet *)self->_entryRetainCounts addObject:v4];
+      [(NSCountedSet *)self->_entryRetainCounts addObject:stringCopy];
     }
   }
 }
 
-- (void)releaseEntriesForKeyStrings:(id)a3
+- (void)releaseEntriesForKeyStrings:(id)strings
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringsCopy = strings;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [stringsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -115,35 +115,35 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stringsCopy);
         }
 
         [(WBSCacheRetainReleasePolicy *)self _releaseEntryForKeyString:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [stringsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)releaseEntryWithKeyStringProvider:(id)a3
+- (void)releaseEntryWithKeyStringProvider:(id)provider
 {
-  v4 = (*(a3 + 2))(a3, a2);
+  v4 = (*(provider + 2))(provider, a2);
   [(WBSCacheRetainReleasePolicy *)self _releaseEntryForKeyString:v4];
 }
 
-- (void)_releaseEntryForKeyString:(id)a3
+- (void)_releaseEntryForKeyString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    if (([(NSCountedSet *)self->_entryRetainCounts containsObject:v4]& 1) != 0)
+    if (([(NSCountedSet *)self->_entryRetainCounts containsObject:stringCopy]& 1) != 0)
     {
-      [(NSCountedSet *)self->_entryRetainCounts removeObject:v4];
-      if (([(NSCountedSet *)self->_entryRetainCounts containsObject:v4]& 1) == 0)
+      [(NSCountedSet *)self->_entryRetainCounts removeObject:stringCopy];
+      if (([(NSCountedSet *)self->_entryRetainCounts containsObject:stringCopy]& 1) == 0)
       {
         (*(self->_purgeBlock + 2))();
       }
@@ -151,17 +151,17 @@
 
     else
     {
-      [(NSCountedSet *)self->_negativeEntryRetainCounts addObject:v4];
+      [(NSCountedSet *)self->_negativeEntryRetainCounts addObject:stringCopy];
     }
   }
 }
 
-- (BOOL)isEntryRetainedForKeyString:(id)a3
+- (BOOL)isEntryRetainedForKeyString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [(NSCountedSet *)self->_entryRetainCounts containsObject:v4];
+    v5 = [(NSCountedSet *)self->_entryRetainCounts containsObject:stringCopy];
   }
 
   else

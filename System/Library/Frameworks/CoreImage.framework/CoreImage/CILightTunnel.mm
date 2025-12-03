@@ -59,7 +59,7 @@
     return 0;
   }
 
-  v3 = [(CILightTunnel *)self _kernel];
+  _kernel = [(CILightTunnel *)self _kernel];
   [(NSNumber *)self->inputRotation floatValue];
   v5 = v4 / 6.28318531;
   [(NSNumber *)self->inputRadius doubleValue];
@@ -100,7 +100,7 @@
   v34 = v32;
   inputImage = self->inputImage;
   v39[0] = v11;
-  return [v3 applyWithExtent:v33 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 1), v23, v24, v25, v26}];
+  return [_kernel applyWithExtent:v33 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 1), v23, v24, v25, v26}];
 }
 
 void __28__CILightTunnel_outputImage__block_invoke(float32x2_t *a1, CGFloat a2, CGFloat a3, CGFloat a4, CGFloat a5)

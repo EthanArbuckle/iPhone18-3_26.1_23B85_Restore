@@ -1,19 +1,19 @@
 @interface DownloadPolicyChangeset
-- (DownloadPolicyChangeset)initWithPolicyIdentifiers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DownloadPolicyChangeset)initWithPolicyIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation DownloadPolicyChangeset
 
-- (DownloadPolicyChangeset)initWithPolicyIdentifiers:(id)a3
+- (DownloadPolicyChangeset)initWithPolicyIdentifiers:(id)identifiers
 {
   v6.receiver = self;
   v6.super_class = DownloadPolicyChangeset;
   v4 = [(DownloadPolicyChangeset *)&v6 init];
   if (v4)
   {
-    v4->_policyIDs = [a3 copy];
+    v4->_policyIDs = [identifiers copy];
   }
 
   return v4;
@@ -26,11 +26,11 @@
   [(DownloadPolicyChangeset *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[2] = [(NSDictionary *)self->_downloadProperties copyWithZone:a3];
-  v5[4] = [(NSSet *)self->_policyIDs copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[2] = [(NSDictionary *)self->_downloadProperties copyWithZone:zone];
+  v5[4] = [(NSSet *)self->_policyIDs copyWithZone:zone];
   return v5;
 }
 

@@ -1,47 +1,47 @@
 @interface AssetTaskInfo
-+ (id)newTaskInfoForTask:(id)a3;
-+ (id)taskInfoForTask:(id)a3;
-+ (void)recordTaskInfo:(id)a3 forTask:(id)a4;
++ (id)newTaskInfoForTask:(id)task;
++ (id)taskInfoForTask:(id)task;
++ (void)recordTaskInfo:(id)info forTask:(id)task;
 + (void)removeAllTaskInfo;
-+ (void)removeTaskInfo:(id)a3;
++ (void)removeTaskInfo:(id)info;
 - (AssetPromise)promise;
-- (AssetTaskInfo)initWithTask:(id)a3;
+- (AssetTaskInfo)initWithTask:(id)task;
 - (NSURLSession)session;
 @end
 
 @implementation AssetTaskInfo
 
-+ (id)newTaskInfoForTask:(id)a3
++ (id)newTaskInfoForTask:(id)task
 {
-  v4 = a3;
-  v5 = [[AssetTaskInfo alloc] initWithTask:v4];
-  [a1 recordTaskInfo:v5 forTask:v4];
+  taskCopy = task;
+  v5 = [[AssetTaskInfo alloc] initWithTask:taskCopy];
+  [self recordTaskInfo:v5 forTask:taskCopy];
 
   return v5;
 }
 
-- (AssetTaskInfo)initWithTask:(id)a3
+- (AssetTaskInfo)initWithTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v11.receiver = self;
   v11.super_class = AssetTaskInfo;
   v6 = [(AssetTaskInfo *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_task, a3);
-    v8 = [v5 originalRequest];
+    objc_storeStrong(&v6->_task, task);
+    originalRequest = [taskCopy originalRequest];
     request = v7->_request;
-    v7->_request = v8;
+    v7->_request = originalRequest;
   }
 
   return v7;
 }
 
-+ (void)recordTaskInfo:(id)a3 forTask:(id)a4
++ (void)recordTaskInfo:(id)info forTask:(id)task
 {
-  v15 = a3;
-  v5 = a4;
+  infoCopy = info;
+  taskCopy = task;
   os_unfair_lock_lock(&unk_1003D4BD0);
   if (!qword_1003D4BC8)
   {
@@ -50,22 +50,22 @@
     qword_1003D4BC8 = v6;
   }
 
-  v8 = [v15 task];
+  task = [infoCopy task];
 
-  if (v8)
+  if (task)
   {
     v9 = qword_1003D4BC8;
-    v10 = [v15 task];
-    [v9 removeObjectForKey:v10];
+    task2 = [infoCopy task];
+    [v9 removeObjectForKey:task2];
   }
 
-  v11 = v15[17];
-  v15[17] = v5;
-  v12 = v5;
+  v11 = infoCopy[17];
+  infoCopy[17] = taskCopy;
+  v12 = taskCopy;
 
   v13 = qword_1003D4BC8;
-  v14 = [v15 task];
-  [v13 setObject:v15 forKey:v14];
+  task3 = [infoCopy task];
+  [v13 setObject:infoCopy forKey:task3];
 
   os_unfair_lock_unlock(&unk_1003D4BD0);
 }
@@ -79,27 +79,27 @@
   os_unfair_lock_unlock(&unk_1003D4BD0);
 }
 
-+ (void)removeTaskInfo:(id)a3
++ (void)removeTaskInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&unk_1003D4BD0);
   v3 = qword_1003D4BC8;
   if (qword_1003D4BC8)
   {
-    v4 = [v5 task];
-    [v3 removeObjectForKey:v4];
+    task = [infoCopy task];
+    [v3 removeObjectForKey:task];
   }
 
   os_unfair_lock_unlock(&unk_1003D4BD0);
 }
 
-+ (id)taskInfoForTask:(id)a3
++ (id)taskInfoForTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&unk_1003D4BD0);
   if (qword_1003D4BC8)
   {
-    v4 = [qword_1003D4BC8 objectForKey:v3];
+    v4 = [qword_1003D4BC8 objectForKey:taskCopy];
   }
 
   else

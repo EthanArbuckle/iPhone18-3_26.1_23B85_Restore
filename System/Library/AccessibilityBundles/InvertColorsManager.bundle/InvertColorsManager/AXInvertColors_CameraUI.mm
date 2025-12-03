@@ -1,31 +1,31 @@
 @interface AXInvertColors_CameraUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_CameraUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMPreviewView"];
-  [v3 validateClass:@"CAMVideoPreviewView"];
-  [v3 validateClass:@"CAMViewfinderView"];
-  [v3 validateClass:@"CAMCameraViewControllerContainerView"];
-  [v3 validateClass:@"CAMFullscreenViewfinder"];
-  [v3 validateClass:@"CAMSemanticStyleSettingsView" hasInstanceVariable:@"__semanticStyleImageViews" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMPreviewView"];
+  [validationsCopy validateClass:@"CAMVideoPreviewView"];
+  [validationsCopy validateClass:@"CAMViewfinderView"];
+  [validationsCopy validateClass:@"CAMCameraViewControllerContainerView"];
+  [validationsCopy validateClass:@"CAMFullscreenViewfinder"];
+  [validationsCopy validateClass:@"CAMSemanticStyleSettingsView" hasInstanceVariable:@"__semanticStyleImageViews" withType:"NSArray"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"CAMPreviewViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CAMVideoPreviewViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CAMCameraViewControllerContainerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CAMViewfinderViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CAMSecureWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CAMFullscreenViewfinderInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"CAMSemanticStyleSettingsViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"CAMPreviewViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CAMVideoPreviewViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CAMCameraViewControllerContainerViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CAMViewfinderViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CAMSecureWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CAMFullscreenViewfinderInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"CAMSemanticStyleSettingsViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

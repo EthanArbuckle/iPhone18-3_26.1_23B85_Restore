@@ -1,17 +1,17 @@
 @interface HMDHomeNFCReaderKey
 + (id)createRandomKey;
-+ (id)createWithDictionaryRepresentation:(id)a3;
-+ (id)createWithExternalRepresentation:(id)a3;
-+ (id)identifierForKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDHomeNFCReaderKey)initWithCoder:(id)a3;
-- (HMDHomeNFCReaderKey)initWithIdentifier:(id)a3 privateKey:(id)a4 publicKeyExternalRepresentation:(id)a5;
++ (id)createWithDictionaryRepresentation:(id)representation;
++ (id)createWithExternalRepresentation:(id)representation;
++ (id)identifierForKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (HMDHomeNFCReaderKey)initWithCoder:(id)coder;
+- (HMDHomeNFCReaderKey)initWithIdentifier:(id)identifier privateKey:(id)key publicKeyExternalRepresentation:(id)representation;
 - (NSData)externalRepresentation;
 - (NSData)publicKey;
 - (NSDictionary)dictionaryRepresentation;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDHomeNFCReaderKey
@@ -19,82 +19,82 @@
 - (id)attributeDescriptions
 {
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMDHomeNFCReaderKey *)self identifier];
-  v5 = [v4 hmf_hexadecimalRepresentation];
-  v6 = [v3 initWithName:@"Identifier" value:v5];
+  identifier = [(HMDHomeNFCReaderKey *)self identifier];
+  hmf_hexadecimalRepresentation = [identifier hmf_hexadecimalRepresentation];
+  v6 = [v3 initWithName:@"Identifier" value:hmf_hexadecimalRepresentation];
   v7 = [HMFAttributeDescription alloc];
-  v8 = [(HMDHomeNFCReaderKey *)self privateKey];
+  privateKey = [(HMDHomeNFCReaderKey *)self privateKey];
   v9 = HMFBooleanToString();
   v10 = [v7 initWithName:@"Has Private Key" value:v9];
   v17[1] = v10;
   v11 = [HMFAttributeDescription alloc];
-  v12 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-  v13 = [v12 hmf_hexadecimalRepresentation];
-  v14 = [v11 initWithName:@"Public Key External Representation" value:v13];
+  publicKeyExternalRepresentation = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+  hmf_hexadecimalRepresentation2 = [publicKeyExternalRepresentation hmf_hexadecimalRepresentation];
+  v14 = [v11 initWithName:@"Public Key External Representation" value:hmf_hexadecimalRepresentation2];
   v17[2] = v14;
   v15 = [NSArray arrayWithObjects:v17 count:3];
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDHomeNFCReaderKey *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HMDHomeNFCReaderIdentifierCodingKey"];
+  coderCopy = coder;
+  identifier = [(HMDHomeNFCReaderKey *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMDHomeNFCReaderIdentifierCodingKey"];
 
-  v6 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-  [v4 encodeObject:v6 forKey:@"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey"];
+  publicKeyExternalRepresentation = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+  [coderCopy encodeObject:publicKeyExternalRepresentation forKey:@"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey"];
 }
 
-- (HMDHomeNFCReaderKey)initWithCoder:(id)a3
+- (HMDHomeNFCReaderKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDHomeNFCReaderIdentifierCodingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDHomeNFCReaderIdentifierCodingKey"];
     if (v6)
     {
       self = [(HMDHomeNFCReaderKey *)self initWithIdentifier:v6 privateKey:0 publicKeyExternalRepresentation:v5];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-  v4 = [v3 hash];
+  publicKeyExternalRepresentation = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+  v4 = [publicKeyExternalRepresentation hash];
 
-  v5 = [(HMDHomeNFCReaderKey *)self privateKey];
-  v6 = [v5 hash] ^ v4;
+  privateKey = [(HMDHomeNFCReaderKey *)self privateKey];
+  v6 = [privateKey hash] ^ v4;
 
-  v7 = [(HMDHomeNFCReaderKey *)self identifier];
-  v8 = [v7 hash];
+  identifier = [(HMDHomeNFCReaderKey *)self identifier];
+  v8 = [identifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -106,13 +106,13 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 publicKeyExternalRepresentation];
-    v9 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-    if ([v8 isEqual:v9] && (objc_msgSend(v7, "privateKey"), v10 = objc_claimAutoreleasedReturnValue(), -[HMDHomeNFCReaderKey privateKey](self, "privateKey"), v11 = objc_claimAutoreleasedReturnValue(), v12 = HMFEqualObjects(), v11, v10, v12))
+    publicKeyExternalRepresentation = [v6 publicKeyExternalRepresentation];
+    publicKeyExternalRepresentation2 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+    if ([publicKeyExternalRepresentation isEqual:publicKeyExternalRepresentation2] && (objc_msgSend(v7, "privateKey"), v10 = objc_claimAutoreleasedReturnValue(), -[HMDHomeNFCReaderKey privateKey](self, "privateKey"), v11 = objc_claimAutoreleasedReturnValue(), v12 = HMFEqualObjects(), v11, v10, v12))
     {
-      v13 = [v7 identifier];
-      v14 = [(HMDHomeNFCReaderKey *)self identifier];
-      v15 = [v13 isEqualToData:v14];
+      identifier = [v7 identifier];
+      identifier2 = [(HMDHomeNFCReaderKey *)self identifier];
+      v15 = [identifier isEqualToData:identifier2];
     }
 
     else
@@ -132,11 +132,11 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v7[0] = @"HMDHomeNFCReaderIdentifierCodingKey";
-  v3 = [(HMDHomeNFCReaderKey *)self identifier];
+  identifier = [(HMDHomeNFCReaderKey *)self identifier];
   v7[1] = @"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey";
-  v8[0] = v3;
-  v4 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-  v8[1] = v4;
+  v8[0] = identifier;
+  publicKeyExternalRepresentation = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+  v8[1] = publicKeyExternalRepresentation;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   return v5;
@@ -144,13 +144,13 @@
 
 - (NSData)externalRepresentation
 {
-  v3 = [(HMDHomeNFCReaderKey *)self privateKey];
-  if (v3)
+  privateKey = [(HMDHomeNFCReaderKey *)self privateKey];
+  if (privateKey)
   {
-    v4 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-    v5 = [v4 mutableCopy];
+    publicKeyExternalRepresentation = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+    v5 = [publicKeyExternalRepresentation mutableCopy];
 
-    [v5 appendData:v3];
+    [v5 appendData:privateKey];
     v6 = [v5 copy];
   }
 
@@ -164,29 +164,29 @@
 
 - (NSData)publicKey
 {
-  v2 = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
-  v3 = [HMDHomeNFCReaderKey publicKeyWithPublicKeyExternalRepresentation:v2];
+  publicKeyExternalRepresentation = [(HMDHomeNFCReaderKey *)self publicKeyExternalRepresentation];
+  v3 = [HMDHomeNFCReaderKey publicKeyWithPublicKeyExternalRepresentation:publicKeyExternalRepresentation];
 
   return v3;
 }
 
-- (HMDHomeNFCReaderKey)initWithIdentifier:(id)a3 privateKey:(id)a4 publicKeyExternalRepresentation:(id)a5
+- (HMDHomeNFCReaderKey)initWithIdentifier:(id)identifier privateKey:(id)key publicKeyExternalRepresentation:(id)representation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  representationCopy = representation;
   v19.receiver = self;
   v19.super_class = HMDHomeNFCReaderKey;
   v12 = [(HMDHomeNFCReaderKey *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_identifier, identifier);
+    v14 = [keyCopy copy];
     privateKey = v13->_privateKey;
     v13->_privateKey = v14;
 
-    v16 = [v11 copy];
+    v16 = [representationCopy copy];
     publicKeyExternalRepresentation = v13->_publicKeyExternalRepresentation;
     v13->_publicKeyExternalRepresentation = v16;
   }
@@ -194,13 +194,13 @@
   return v13;
 }
 
-+ (id)identifierForKey:(id)a3
++ (id)identifierForKey:(id)key
 {
   memset(&v7, 0, sizeof(v7));
-  v3 = a3;
+  keyCopy = key;
   CC_SHA256_Init(&v7);
   v4 = [NSMutableData dataWithBytes:"key-identifier" length:14, *v7.count, *&v7.hash[2], *&v7.hash[6], *&v7.wbuf[2], *&v7.wbuf[6], *&v7.wbuf[10], *&v7.wbuf[14]];
-  [v4 appendData:v3];
+  [v4 appendData:keyCopy];
 
   CC_SHA256_Update(&v7, [v4 bytes], objc_msgSend(v4, "length"));
   CC_SHA256_Final(md, &v7);
@@ -209,13 +209,13 @@
   return v5;
 }
 
-+ (id)createWithDictionaryRepresentation:(id)a3
++ (id)createWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 hmf_dataForKey:@"HMDHomeNFCReaderIdentifierCodingKey"];
+  representationCopy = representation;
+  v4 = [representationCopy hmf_dataForKey:@"HMDHomeNFCReaderIdentifierCodingKey"];
   if (v4)
   {
-    v5 = [v3 hmf_dataForKey:@"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey"];
+    v5 = [representationCopy hmf_dataForKey:@"HMDHomeNFCReaderPublicKeyExternalRepresentationCodingKey"];
     if (v5)
     {
       v6 = [[HMDHomeNFCReaderKey alloc] initWithIdentifier:v4 privateKey:0 publicKeyExternalRepresentation:v5];
@@ -235,13 +235,13 @@
   return v6;
 }
 
-+ (id)createWithExternalRepresentation:(id)a3
++ (id)createWithExternalRepresentation:(id)representation
 {
-  v3 = a3;
-  if ([v3 length] == 97)
+  representationCopy = representation;
+  if ([representationCopy length] == 97)
   {
-    v4 = [v3 subdataWithRange:{0, 65}];
-    v5 = [v3 subdataWithRange:{65, 32}];
+    v4 = [representationCopy subdataWithRange:{0, 65}];
+    v5 = [representationCopy subdataWithRange:{65, 32}];
     v6 = [HMDHomeNFCReaderKey identifierForKey:v5];
     v7 = [[HMDHomeNFCReaderKey alloc] initWithIdentifier:v6 privateKey:v5 publicKeyExternalRepresentation:v4];
   }
@@ -256,7 +256,7 @@
       v12 = 138543618;
       v13 = v10;
       v14 = 2048;
-      v15 = [v3 length];
+      v15 = [representationCopy length];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@Unexpected nfc reader key external representation length %lu", &v12, 0x16u);
     }
 

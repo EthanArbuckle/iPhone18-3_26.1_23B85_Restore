@@ -1,8 +1,8 @@
 @interface OPTTSTextToSpeechResource
 - (NSString)language;
 - (NSString)version;
-- (OPTTSTextToSpeechResource)initWithFlatbuffData:(id)a3 root:(const TextToSpeechResource *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechResource>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechResource)initWithFlatbuffData:(id)data root:(const TextToSpeechResource *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechResource>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
@@ -37,38 +37,38 @@ apple::aiml::flatbuffers2::DetachedBuffer *__41__OPTTSTextToSpeechResource_flatb
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechResource>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechResource>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSTextToSpeechResource *)self language];
-  v6 = v5;
-  if (!v5)
+  language = [(OPTTSTextToSpeechResource *)self language];
+  v6 = language;
+  if (!language)
   {
-    v5 = &stru_1F28C4E90;
+    language = &stru_1F28C4E90;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)language UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(OPTTSTextToSpeechResource *)self version];
-  v11 = v10;
-  if (!v10)
+  version = [(OPTTSTextToSpeechResource *)self version];
+  v11 = version;
+  if (!version)
   {
-    v10 = &stru_1F28C4E90;
+    version = &stru_1F28C4E90;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v12) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)version UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 6, v12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 6, uTF8String2);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (NSString)version
@@ -117,10 +117,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__41__OPTTSTextToSpeechResource_flatb
   return v6;
 }
 
-- (OPTTSTextToSpeechResource)initWithFlatbuffData:(id)a3 root:(const TextToSpeechResource *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechResource)initWithFlatbuffData:(id)data root:(const TextToSpeechResource *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTextToSpeechResource;
   v10 = [(OPTTSTextToSpeechResource *)&v25 init];
@@ -129,35 +129,35 @@ apple::aiml::flatbuffers2::DetachedBuffer *__41__OPTTSTextToSpeechResource_flatb
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

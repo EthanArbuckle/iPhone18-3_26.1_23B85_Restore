@@ -1,36 +1,36 @@
 @interface CalDAVCalendarServerDeletedDetailsItem
 - (id)copyParseRules;
-- (void)setComponentTypeItem:(id)a3;
-- (void)setDisplayNameItem:(id)a3;
-- (void)setNextInstanceItem:(id)a3;
-- (void)setSummaryItem:(id)a3;
+- (void)setComponentTypeItem:(id)item;
+- (void)setDisplayNameItem:(id)item;
+- (void)setNextInstanceItem:(id)item;
+- (void)setSummaryItem:(id)item;
 @end
 
 @implementation CalDAVCalendarServerDeletedDetailsItem
 
-- (void)setComponentTypeItem:(id)a3
+- (void)setComponentTypeItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerDeletedDetailsItem *)self setComponentType:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerDeletedDetailsItem *)self setComponentType:payloadAsString];
 }
 
-- (void)setSummaryItem:(id)a3
+- (void)setSummaryItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerDeletedDetailsItem *)self setSummary:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerDeletedDetailsItem *)self setSummary:payloadAsString];
 }
 
-- (void)setDisplayNameItem:(id)a3
+- (void)setDisplayNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerDeletedDetailsItem *)self setDisplayName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerDeletedDetailsItem *)self setDisplayName:payloadAsString];
 }
 
-- (void)setNextInstanceItem:(id)a3
+- (void)setNextInstanceItem:(id)item
 {
   v4 = MEMORY[0x277D7F100];
-  v6 = [a3 payloadAsString];
-  v5 = [v4 dateFromICSString:v6];
+  payloadAsString = [item payloadAsString];
+  v5 = [v4 dateFromICSString:payloadAsString];
   [(CalDAVCalendarServerDeletedDetailsItem *)self setNextInstance:v5];
 }
 

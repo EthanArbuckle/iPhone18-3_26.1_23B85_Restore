@@ -1,30 +1,30 @@
 @interface AWDSymptomsNetworkDebuggabilityFrameworkIssue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNdfAppSymptoms:(id)a3;
-- (int)StringAsNdfNetworkTypes:(id)a3;
-- (int)StringAsNdfSessionType:(id)a3;
-- (int)StringAsNdfTriggerType:(id)a3;
-- (int)ndfAppSymptomAtIndex:(unint64_t)a3;
-- (int)ndfNetworkTypeAtIndex:(unint64_t)a3;
+- (int)StringAsNdfAppSymptoms:(id)symptoms;
+- (int)StringAsNdfNetworkTypes:(id)types;
+- (int)StringAsNdfSessionType:(id)type;
+- (int)StringAsNdfTriggerType:(id)type;
+- (int)ndfAppSymptomAtIndex:(unint64_t)index;
+- (int)ndfNetworkTypeAtIndex:(unint64_t)index;
 - (int)ndfSessionType;
 - (int)ndfTriggerType;
 - (unint64_t)hash;
-- (void)addNdfAppName:(id)a3;
-- (void)addNdfSignature:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addNdfAppName:(id)name;
+- (void)addNdfSignature:(id)signature;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNdfDampeningFactor:(BOOL)a3;
-- (void)setHasNdfDuration:(BOOL)a3;
-- (void)setHasNdfLQM:(BOOL)a3;
-- (void)setHasNdfSessionType:(BOOL)a3;
-- (void)setHasNdfSymptomPoint:(BOOL)a3;
-- (void)setHasNdfTriggerType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNdfDampeningFactor:(BOOL)factor;
+- (void)setHasNdfDuration:(BOOL)duration;
+- (void)setHasNdfLQM:(BOOL)m;
+- (void)setHasNdfSessionType:(BOOL)type;
+- (void)setHasNdfSymptomPoint:(BOOL)point;
+- (void)setHasNdfTriggerType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkDebuggabilityFrameworkIssue
@@ -38,9 +38,9 @@
   [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 32;
   }
@@ -53,36 +53,36 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)ndfNetworkTypeAtIndex:(unint64_t)a3
+- (int)ndfNetworkTypeAtIndex:(unint64_t)index
 {
   p_ndfNetworkTypes = &self->_ndfNetworkTypes;
   count = self->_ndfNetworkTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_ndfNetworkTypes->list[a3];
+  return p_ndfNetworkTypes->list[index];
 }
 
-- (int)StringAsNdfNetworkTypes:(id)a3
+- (int)StringAsNdfNetworkTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typesCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typesCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)setHasNdfDuration:(BOOL)a3
+- (void)setHasNdfDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNdfDampeningFactor:(BOOL)a3
+- (void)setHasNdfDampeningFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 2;
   }
@@ -138,9 +138,9 @@
   }
 }
 
-- (void)setHasNdfTriggerType:(BOOL)a3
+- (void)setHasNdfTriggerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x80;
   }
@@ -153,20 +153,20 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (int)StringAsNdfTriggerType:(id)a3
+- (int)StringAsNdfTriggerType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Functional"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Functional"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Operational"])
+  else if ([typeCopy isEqualToString:@"Operational"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Performance"])
+  else if ([typeCopy isEqualToString:@"Performance"])
   {
     v4 = 3;
   }
@@ -179,139 +179,139 @@
   return v4;
 }
 
-- (void)addNdfAppName:(id)a3
+- (void)addNdfAppName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   ndfAppNames = self->_ndfAppNames;
-  v8 = v4;
+  v8 = nameCopy;
   if (!ndfAppNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ndfAppNames;
     self->_ndfAppNames = v6;
 
-    v4 = v8;
+    nameCopy = v8;
     ndfAppNames = self->_ndfAppNames;
   }
 
-  [(NSMutableArray *)ndfAppNames addObject:v4];
+  [(NSMutableArray *)ndfAppNames addObject:nameCopy];
 }
 
-- (int)ndfAppSymptomAtIndex:(unint64_t)a3
+- (int)ndfAppSymptomAtIndex:(unint64_t)index
 {
   p_ndfAppSymptoms = &self->_ndfAppSymptoms;
   count = self->_ndfAppSymptoms.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_ndfAppSymptoms->list[a3];
+  return p_ndfAppSymptoms->list[index];
 }
 
-- (int)StringAsNdfAppSymptoms:(id)a3
+- (int)StringAsNdfAppSymptoms:(id)symptoms
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Crash"])
+  symptomsCopy = symptoms;
+  if ([symptomsCopy isEqualToString:@"Crash"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DataStall"])
+  else if ([symptomsCopy isEqualToString:@"DataStall"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AdaptiveWriteTimeout"])
+  else if ([symptomsCopy isEqualToString:@"AdaptiveWriteTimeout"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DNSFailed"])
+  else if ([symptomsCopy isEqualToString:@"DNSFailed"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TLSHandshakeFailed"])
+  else if ([symptomsCopy isEqualToString:@"TLSHandshakeFailed"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AddressAcquisitionFailed"])
+  else if ([symptomsCopy isEqualToString:@"AddressAcquisitionFailed"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AddressAcquisitionSucceeded"])
+  else if ([symptomsCopy isEqualToString:@"AddressAcquisitionSucceeded"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundRRCExcDuration"])
+  else if ([symptomsCopy isEqualToString:@"BackgroundRRCExcDuration"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FlowCountExceededPeriodicThreshold"])
+  else if ([symptomsCopy isEqualToString:@"FlowCountExceededPeriodicThreshold"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"MbufPeakUsage"])
+  else if ([symptomsCopy isEqualToString:@"MbufPeakUsage"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"RNFFlowWhenDisabled"])
+  else if ([symptomsCopy isEqualToString:@"RNFFlowWhenDisabled"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"RNFWrongUsageCount"])
+  else if ([symptomsCopy isEqualToString:@"RNFWrongUsageCount"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"RNFExceededPeriodicThreshold"])
+  else if ([symptomsCopy isEqualToString:@"RNFExceededPeriodicThreshold"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"RNFFlowUsageThreshold"])
+  else if ([symptomsCopy isEqualToString:@"RNFFlowUsageThreshold"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"DNSNoReplies"])
+  else if ([symptomsCopy isEqualToString:@"DNSNoReplies"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"DNSResumedResponding"])
+  else if ([symptomsCopy isEqualToString:@"DNSResumedResponding"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"LibtraceOSLog"])
+  else if ([symptomsCopy isEqualToString:@"LibtraceOSLog"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"ARPFailure"])
+  else if ([symptomsCopy isEqualToString:@"ARPFailure"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ND6Failure"])
+  else if ([symptomsCopy isEqualToString:@"ND6Failure"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Stall"])
+  else if ([symptomsCopy isEqualToString:@"Stall"])
   {
     v4 = 99;
   }
@@ -324,9 +324,9 @@
   return v4;
 }
 
-- (void)setHasNdfLQM:(BOOL)a3
+- (void)setHasNdfLQM:(BOOL)m
 {
-  if (a3)
+  if (m)
   {
     v3 = 8;
   }
@@ -352,9 +352,9 @@
   }
 }
 
-- (void)setHasNdfSessionType:(BOOL)a3
+- (void)setHasNdfSessionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -367,13 +367,13 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsNdfSessionType:(id)a3
+- (int)StringAsNdfSessionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"Foreground"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"Foreground"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Background"])
+    if ([typeCopy isEqualToString:@"Background"])
     {
       v4 = 2;
     }
@@ -387,27 +387,27 @@
   return v4;
 }
 
-- (void)addNdfSignature:(id)a3
+- (void)addNdfSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   ndfSignatures = self->_ndfSignatures;
-  v8 = v4;
+  v8 = signatureCopy;
   if (!ndfSignatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ndfSignatures;
     self->_ndfSignatures = v6;
 
-    v4 = v8;
+    signatureCopy = v8;
     ndfSignatures = self->_ndfSignatures;
   }
 
-  [(NSMutableArray *)ndfSignatures addObject:v4];
+  [(NSMutableArray *)ndfSignatures addObject:signatureCopy];
 }
 
-- (void)setHasNdfSymptomPoint:(BOOL)a3
+- (void)setHasNdfSymptomPoint:(BOOL)point
 {
-  if (a3)
+  if (point)
   {
     v3 = 16;
   }
@@ -426,19 +426,19 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkDebuggabilityFrameworkIssue;
   v4 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)&v8 description];
-  v5 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 0x20) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   p_ndfNetworkTypes = &self->_ndfNetworkTypes;
@@ -469,14 +469,14 @@
       while (v7 < self->_ndfNetworkTypes.count);
     }
 
-    [v3 setObject:v6 forKey:@"ndfNetworkType"];
+    [dictionary setObject:v6 forKey:@"ndfNetworkType"];
   }
 
   has = self->_has;
   if (has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ndfCount];
-    [v3 setObject:v11 forKey:@"ndfCount"];
+    [dictionary setObject:v11 forKey:@"ndfCount"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -489,7 +489,7 @@ LABEL_13:
 
 LABEL_18:
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ndfDampeningFactor];
-      [v3 setObject:v13 forKey:@"ndfDampeningFactor"];
+      [dictionary setObject:v13 forKey:@"ndfDampeningFactor"];
 
       if ((*&self->_has & 0x80) == 0)
       {
@@ -506,7 +506,7 @@ LABEL_18:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ndfDuration];
-  [v3 setObject:v12 forKey:@"ndfDuration"];
+  [dictionary setObject:v12 forKey:@"ndfDuration"];
 
   has = self->_has;
   if ((has & 2) != 0)
@@ -532,13 +532,13 @@ LABEL_19:
     v15 = off_27898F268[v14];
   }
 
-  [v3 setObject:v15 forKey:@"ndfTriggerType"];
+  [dictionary setObject:v15 forKey:@"ndfTriggerType"];
 
 LABEL_23:
   ndfAppNames = self->_ndfAppNames;
   if (ndfAppNames)
   {
-    [v3 setObject:ndfAppNames forKey:@"ndfAppName"];
+    [dictionary setObject:ndfAppNames forKey:@"ndfAppName"];
   }
 
   p_ndfAppSymptoms = &self->_ndfAppSymptoms;
@@ -632,14 +632,14 @@ LABEL_23:
       while (v19 < self->_ndfAppSymptoms.count);
     }
 
-    [v3 setObject:v18 forKey:@"ndfAppSymptom"];
+    [dictionary setObject:v18 forKey:@"ndfAppSymptom"];
   }
 
   v22 = self->_has;
   if ((v22 & 8) != 0)
   {
     v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_ndfLQM];
-    [v3 setObject:v23 forKey:@"ndfLQM"];
+    [dictionary setObject:v23 forKey:@"ndfLQM"];
 
     v22 = self->_has;
   }
@@ -662,28 +662,28 @@ LABEL_23:
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_ndfSessionType];
     }
 
-    [v3 setObject:v25 forKey:@"ndfSessionType"];
+    [dictionary setObject:v25 forKey:@"ndfSessionType"];
   }
 
   ndfSignatures = self->_ndfSignatures;
   if (ndfSignatures)
   {
-    [v3 setObject:ndfSignatures forKey:@"ndfSignature"];
+    [dictionary setObject:ndfSignatures forKey:@"ndfSignature"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v27 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_ndfSymptomPoint];
-    [v3 setObject:v27 forKey:@"ndfSymptomPoint"];
+    [dictionary setObject:v27 forKey:@"ndfSymptomPoint"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
     timestamp = self->_timestamp;
@@ -846,23 +846,23 @@ LABEL_10:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[12] = self->_timestamp;
-    *(v4 + 132) |= 0x20u;
+    toCopy[12] = self->_timestamp;
+    *(toCopy + 132) |= 0x20u;
   }
 
-  v21 = v4;
+  v21 = toCopy;
   if ([(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfNetworkTypesCount])
   {
     [v21 clearNdfNetworkTypes];
-    v5 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfNetworkTypesCount];
-    if (v5)
+    ndfNetworkTypesCount = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfNetworkTypesCount];
+    if (ndfNetworkTypesCount)
     {
-      v6 = v5;
+      v6 = ndfNetworkTypesCount;
       for (i = 0; i != v6; ++i)
       {
         [v21 addNdfNetworkType:{-[AWDSymptomsNetworkDebuggabilityFrameworkIssue ndfNetworkTypeAtIndex:](self, "ndfNetworkTypeAtIndex:", i)}];
@@ -922,10 +922,10 @@ LABEL_11:
   if ([(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppNamesCount])
   {
     [v21 clearNdfAppNames];
-    v9 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppNamesCount];
-    if (v9)
+    ndfAppNamesCount = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppNamesCount];
+    if (ndfAppNamesCount)
     {
-      v10 = v9;
+      v10 = ndfAppNamesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppNameAtIndex:j];
@@ -937,10 +937,10 @@ LABEL_11:
   if ([(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppSymptomsCount])
   {
     [v21 clearNdfAppSymptoms];
-    v13 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppSymptomsCount];
-    if (v13)
+    ndfAppSymptomsCount = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfAppSymptomsCount];
+    if (ndfAppSymptomsCount)
     {
-      v14 = v13;
+      v14 = ndfAppSymptomsCount;
       for (k = 0; k != v14; ++k)
       {
         [v21 addNdfAppSymptom:{-[AWDSymptomsNetworkDebuggabilityFrameworkIssue ndfAppSymptomAtIndex:](self, "ndfAppSymptomAtIndex:", k)}];
@@ -965,10 +965,10 @@ LABEL_11:
   if ([(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfSignaturesCount])
   {
     [v21 clearNdfSignatures];
-    v17 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfSignaturesCount];
-    if (v17)
+    ndfSignaturesCount = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfSignaturesCount];
+    if (ndfSignaturesCount)
     {
-      v18 = v17;
+      v18 = ndfSignaturesCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(AWDSymptomsNetworkDebuggabilityFrameworkIssue *)self ndfSignatureAtIndex:m];
@@ -984,10 +984,10 @@ LABEL_11:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x20) != 0)
   {
@@ -1064,7 +1064,7 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v6 addNdfAppName:v13];
       }
 
@@ -1108,7 +1108,7 @@ LABEL_7:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{a3, v23}];
+        v20 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{zone, v23}];
         [v6 addNdfSignature:v20];
       }
 
@@ -1128,24 +1128,24 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
-  v5 = *(v4 + 132);
+  v5 = *(equalCopy + 132);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 132) & 0x20) == 0 || self->_timestamp != *(v4 + 12))
+    if ((*(equalCopy + 132) & 0x20) == 0 || self->_timestamp != *(equalCopy + 12))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 132) & 0x20) != 0)
+  else if ((*(equalCopy + 132) & 0x20) != 0)
   {
     goto LABEL_49;
   }
@@ -1155,95 +1155,95 @@ LABEL_7:
     goto LABEL_49;
   }
 
-  v6 = *(v4 + 132);
+  v6 = *(equalCopy + 132);
   if (*&self->_has)
   {
-    if ((*(v4 + 132) & 1) == 0 || self->_ndfCount != *(v4 + 7))
+    if ((*(equalCopy + 132) & 1) == 0 || self->_ndfCount != *(equalCopy + 7))
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 132))
+  else if (*(equalCopy + 132))
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 132) & 4) == 0 || self->_ndfDuration != *(v4 + 9))
+    if ((*(equalCopy + 132) & 4) == 0 || self->_ndfDuration != *(equalCopy + 9))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 132) & 4) != 0)
+  else if ((*(equalCopy + 132) & 4) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 132) & 2) == 0 || self->_ndfDampeningFactor != *(v4 + 8))
+    if ((*(equalCopy + 132) & 2) == 0 || self->_ndfDampeningFactor != *(equalCopy + 8))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 132) & 2) != 0)
+  else if ((*(equalCopy + 132) & 2) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 132) & 0x80) == 0 || self->_ndfTriggerType != *(v4 + 32))
+    if ((*(equalCopy + 132) & 0x80) == 0 || self->_ndfTriggerType != *(equalCopy + 32))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 132) & 0x80) != 0)
+  else if ((*(equalCopy + 132) & 0x80) != 0)
   {
     goto LABEL_49;
   }
 
   ndfAppNames = self->_ndfAppNames;
-  if (ndfAppNames | *(v4 + 13) && ![(NSMutableArray *)ndfAppNames isEqual:?]|| !PBRepeatedInt32IsEqual())
+  if (ndfAppNames | *(equalCopy + 13) && ![(NSMutableArray *)ndfAppNames isEqual:?]|| !PBRepeatedInt32IsEqual())
   {
     goto LABEL_49;
   }
 
   has = self->_has;
-  v9 = *(v4 + 132);
+  v9 = *(equalCopy + 132);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 132) & 8) == 0 || self->_ndfLQM != *(v4 + 10))
+    if ((*(equalCopy + 132) & 8) == 0 || self->_ndfLQM != *(equalCopy + 10))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 132) & 8) != 0)
+  else if ((*(equalCopy + 132) & 8) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 132) & 0x40) == 0 || self->_ndfSessionType != *(v4 + 28))
+    if ((*(equalCopy + 132) & 0x40) == 0 || self->_ndfSessionType != *(equalCopy + 28))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 132) & 0x40) != 0)
+  else if ((*(equalCopy + 132) & 0x40) != 0)
   {
     goto LABEL_49;
   }
 
   ndfSignatures = self->_ndfSignatures;
-  if (ndfSignatures | *(v4 + 15))
+  if (ndfSignatures | *(equalCopy + 15))
   {
     if ([(NSMutableArray *)ndfSignatures isEqual:?])
     {
@@ -1259,7 +1259,7 @@ LABEL_49:
 LABEL_44:
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 132) & 0x10) == 0 || self->_ndfSymptomPoint != *(v4 + 11))
+    if ((*(equalCopy + 132) & 0x10) == 0 || self->_ndfSymptomPoint != *(equalCopy + 11))
     {
       goto LABEL_49;
     }
@@ -1269,7 +1269,7 @@ LABEL_44:
 
   else
   {
-    v11 = (*(v4 + 132) & 0x10) == 0;
+    v11 = (*(equalCopy + 132) & 0x10) == 0;
   }
 
 LABEL_50:
@@ -1378,21 +1378,21 @@ LABEL_18:
   return v14 ^ v15 ^ v13 ^ v3 ^ v4 ^ v5 ^ v7 ^ v8 ^ v6 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 132) & 0x20) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 132) & 0x20) != 0)
   {
-    self->_timestamp = v4[12];
+    self->_timestamp = fromCopy[12];
     *&self->_has |= 0x20u;
   }
 
-  v6 = [v4 ndfNetworkTypesCount];
-  if (v6)
+  ndfNetworkTypesCount = [fromCopy ndfNetworkTypesCount];
+  if (ndfNetworkTypesCount)
   {
-    v7 = v6;
+    v7 = ndfNetworkTypesCount;
     for (i = 0; i != v7; ++i)
     {
       -[AWDSymptomsNetworkDebuggabilityFrameworkIssue addNdfNetworkType:](self, "addNdfNetworkType:", [v5 ndfNetworkTypeAtIndex:i]);
@@ -1476,10 +1476,10 @@ LABEL_10:
     while (v12);
   }
 
-  v15 = [v5 ndfAppSymptomsCount];
-  if (v15)
+  ndfAppSymptomsCount = [v5 ndfAppSymptomsCount];
+  if (ndfAppSymptomsCount)
   {
-    v16 = v15;
+    v16 = ndfAppSymptomsCount;
     for (k = 0; k != v16; ++k)
     {
       -[AWDSymptomsNetworkDebuggabilityFrameworkIssue addNdfAppSymptom:](self, "addNdfAppSymptom:", [v5 ndfAppSymptomAtIndex:k]);

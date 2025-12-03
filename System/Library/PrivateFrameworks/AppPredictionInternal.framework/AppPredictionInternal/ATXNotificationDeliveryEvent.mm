@@ -1,10 +1,10 @@
 @interface ATXNotificationDeliveryEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXNotificationDeliveryEvent)initWithDeliveryUI:(unint64_t)a3 suggestionUUIDs:(id)a4;
-- (ATXNotificationDeliveryEvent)initWithProto:(id)a3;
-- (ATXNotificationDeliveryEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXNotificationDeliveryEvent:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXNotificationDeliveryEvent)initWithDeliveryUI:(unint64_t)i suggestionUUIDs:(id)ds;
+- (ATXNotificationDeliveryEvent)initWithProto:(id)proto;
+- (ATXNotificationDeliveryEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXNotificationDeliveryEvent:(id)event;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonRawData;
@@ -15,10 +15,10 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXNotificationDeliveryEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXNotificationDeliveryEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -32,47 +32,47 @@
   return v3;
 }
 
-- (ATXNotificationDeliveryEvent)initWithDeliveryUI:(unint64_t)a3 suggestionUUIDs:(id)a4
+- (ATXNotificationDeliveryEvent)initWithDeliveryUI:(unint64_t)i suggestionUUIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = ATXNotificationDeliveryEvent;
   v8 = [(ATXNotificationDeliveryEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_deliveryUI = a3;
-    objc_storeStrong(&v8->_suggestionUUIDs, a4);
+    v8->_deliveryUI = i;
+    objc_storeStrong(&v8->_suggestionUUIDs, ds);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXNotificationDeliveryEvent *)self isEqualToATXNotificationDeliveryEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXNotificationDeliveryEvent *)self isEqualToATXNotificationDeliveryEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXNotificationDeliveryEvent:(id)a3
+- (BOOL)isEqualToATXNotificationDeliveryEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 deliveryUI] == self->_deliveryUI)
+  eventCopy = event;
+  if ([eventCopy deliveryUI] == self->_deliveryUI)
   {
     v5 = self->_suggestionUUIDs;
     v6 = v5;
-    if (v5 == v4[2])
+    if (v5 == eventCopy[2])
     {
       v7 = 1;
     }
@@ -91,10 +91,10 @@
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -137,38 +137,38 @@
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXNotificationDeliveryEvent *)self jsonRawData];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonRawData = [(ATXNotificationDeliveryEvent *)self jsonRawData];
+  v4 = [v2 dataWithJSONObject:jsonRawData options:1 error:0];
 
   return v4;
 }
 
-- (ATXNotificationDeliveryEvent)initWithProtoData:(id)a3
+- (ATXNotificationDeliveryEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBNotificationDeliveryEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBNotificationDeliveryEvent alloc] initWithData:dataCopy];
 
     self = [(ATXNotificationDeliveryEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXNotificationDeliveryEvent)initWithProto:(id)a3
+- (ATXNotificationDeliveryEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -184,17 +184,17 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 deliveryUI];
-  v7 = [v5 suggestionUUIDs];
+  v5 = protoCopy;
+  deliveryUI = [v5 deliveryUI];
+  suggestionUUIDs = [v5 suggestionUUIDs];
 
-  v8 = [v7 _pas_mappedArrayWithTransform:&__block_literal_global_177];
-  self = [(ATXNotificationDeliveryEvent *)self initWithDeliveryUI:v6 suggestionUUIDs:v8];
+  v8 = [suggestionUUIDs _pas_mappedArrayWithTransform:&__block_literal_global_177];
+  self = [(ATXNotificationDeliveryEvent *)self initWithDeliveryUI:deliveryUI suggestionUUIDs:v8];
 
-  v9 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 id __46__ATXNotificationDeliveryEvent_initWithProto___block_invoke(uint64_t a1, void *a2)

@@ -1,15 +1,15 @@
 @interface EPSagaTransactionHealthSync
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionHealthSync
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [registryCopy serviceFromClass:objc_opt_class()];
   if ([v8 isIDSConnected])
   {
     v33 = 0;
@@ -30,7 +30,7 @@
 
     v10 = v9;
     _Block_object_dispose(&v33, 8);
-    v11 = objc_opt_new();
+    delegate = objc_opt_new();
     v33 = 0;
     v34 = &v33;
     v35 = 0x2050000000;
@@ -49,8 +49,8 @@
 
     v13 = v12;
     _Block_object_dispose(&v33, 8);
-    v14 = [[v12 alloc] initWithHealthStore:v11];
-    v15 = [v6 objectForKeyedSubscript:@"completeHealthSyncForUnpairing"];
+    v14 = [[v12 alloc] initWithHealthStore:delegate];
+    v15 = [entryCopy objectForKeyedSubscript:@"completeHealthSyncForUnpairing"];
     if ([v15 BOOLValue])
     {
       v16 = nr_daemon_log();
@@ -76,7 +76,7 @@
 
     else
     {
-      v22 = [v6 objectForKeyedSubscript:@"nrDeviceIdentifier"];
+      v22 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
       v23 = nr_daemon_log();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
 
@@ -114,8 +114,8 @@
       }
     }
 
-    v11 = [(EPSagaTransactionHealthSync *)self delegate];
-    [v11 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionHealthSync *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 

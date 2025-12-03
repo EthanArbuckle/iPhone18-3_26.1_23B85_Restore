@@ -2,9 +2,9 @@
 + (BOOL)sensitiveLoggingEnabled;
 + (id)sharedInstance;
 - (YeQHj6zXMU2P8KDh)init;
-- (void)a38gKmeUT3DQp3zY:(id)a3 vyKTnPNvILkFENv4:(id)a4;
-- (void)cGauGmZFPJJkT1d3:(id)a3;
-- (void)zQehSLHqShQPYsHo:(id)a3 kidVYacbY8LCJT8v:(const _eipjLVDiD7LNwlPc *)a4;
+- (void)cGauGmZFPJJkT1d3:(id)t1d3;
+- (void)y8gKmeUT3DQp3zY:(id)y vyKTnPNvILkFENv4:(id)nv4;
+- (void)zQehSLHqShQPYsHo:(id)ho kidVYacbY8LCJT8v:(const _eipjLVDiD7LNwlPc *)t8v;
 @end
 
 @implementation YeQHj6zXMU2P8KDh
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002C89C;
   block[3] = &unk_10068EEE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006D7CE8 != -1)
   {
     dispatch_once(&qword_1006D7CE8, block);
@@ -43,13 +43,13 @@
   return v3;
 }
 
-- (void)cGauGmZFPJJkT1d3:(id)a3
+- (void)cGauGmZFPJJkT1d3:(id)t1d3
 {
-  v4 = a3;
+  t1d3Copy = t1d3;
   if (+[YeQHj6zXMU2P8KDh sensitiveLoggingEnabled])
   {
-    v18 = v4;
-    v5 = [v4 description];
+    v18 = t1d3Copy;
+    v5 = [t1d3Copy description];
     v6 = [v5 length];
     if (v6)
     {
@@ -90,7 +90,7 @@
       while (v8 < v7);
     }
 
-    v4 = v18;
+    t1d3Copy = v18;
   }
 
   else
@@ -99,59 +99,59 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v4 allKeys];
+      allKeys = [t1d3Copy allKeys];
       *buf = 138412290;
-      v20 = v17;
+      v20 = allKeys;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "InVal keys for IB: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)a38gKmeUT3DQp3zY:(id)a3 vyKTnPNvILkFENv4:(id)a4
+- (void)y8gKmeUT3DQp3zY:(id)y vyKTnPNvILkFENv4:(id)nv4
 {
-  v6 = a3;
-  v7 = a4;
+  yCopy = y;
+  nv4Copy = nv4;
   pqeBGOQoC53XfqEz = self->pqeBGOQoC53XfqEz;
   if (os_log_type_enabled(pqeBGOQoC53XfqEz, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v7;
+    v10 = nv4Copy;
     v11 = 2112;
-    v12 = v6;
+    v12 = yCopy;
     _os_log_impl(&_mh_execute_header, pqeBGOQoC53XfqEz, OS_LOG_TYPE_INFO, "c: %@, f: %@", &v9, 0x16u);
   }
 }
 
-- (void)zQehSLHqShQPYsHo:(id)a3 kidVYacbY8LCJT8v:(const _eipjLVDiD7LNwlPc *)a4
+- (void)zQehSLHqShQPYsHo:(id)ho kidVYacbY8LCJT8v:(const _eipjLVDiD7LNwlPc *)t8v
 {
-  v6 = a3;
+  hoCopy = ho;
   pqeBGOQoC53XfqEz = self->pqeBGOQoC53XfqEz;
   v8 = os_log_type_enabled(pqeBGOQoC53XfqEz, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (hoCopy)
   {
     if (v8)
     {
-      profileIDPrefix = a4->profileIDPrefix;
-      dataframeIndex = a4->dataframeIndex;
+      profileIDPrefix = t8v->profileIDPrefix;
+      dataframeIndex = t8v->dataframeIndex;
       v11 = pqeBGOQoC53XfqEz;
-      v12 = [v6 qfSDGTGvqd3Hruzg];
-      v13 = [v6 GyF0atX3JpCKc9pK];
+      qfSDGTGvqd3Hruzg = [hoCopy qfSDGTGvqd3Hruzg];
+      gyF0atX3JpCKc9pK = [hoCopy GyF0atX3JpCKc9pK];
       v16 = 67109890;
       v17 = profileIDPrefix;
       v18 = 1024;
       v19 = dataframeIndex;
       v20 = 2048;
-      v21 = v12;
+      v21 = qfSDGTGvqd3Hruzg;
       v22 = 2112;
-      v23 = v13;
+      v23 = gyF0atX3JpCKc9pK;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "DF[%x, %d]: EC %ld, V: %@", &v16, 0x22u);
     }
   }
 
   else if (v8)
   {
-    v14 = a4->profileIDPrefix;
-    v15 = a4->dataframeIndex;
+    v14 = t8v->profileIDPrefix;
+    v15 = t8v->dataframeIndex;
     v16 = 67109376;
     v17 = v14;
     v18 = 1024;

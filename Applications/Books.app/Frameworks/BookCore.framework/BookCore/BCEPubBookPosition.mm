@@ -1,39 +1,39 @@
 @interface BCEPubBookPosition
-+ (id)positionWithCFI:(id)a3;
++ (id)positionWithCFI:(id)i;
 - (NSString)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation BCEPubBookPosition
 
-+ (id)positionWithCFI:(id)a3
++ (id)positionWithCFI:(id)i
 {
-  v3 = a3;
+  iCopy = i;
   v4 = objc_alloc_init(BCEPubBookPosition);
-  v5 = [v3 tailCFI];
+  tailCFI = [iCopy tailCFI];
 
-  [(BCEPubBookPosition *)v4 setCfiPosition:v5];
+  [(BCEPubBookPosition *)v4 setCfiPosition:tailCFI];
 
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v5 = BUDynamicCast();
 
-  v6 = [(BCEPubBookPosition *)self cfiPosition];
-  v7 = [v5 cfiPosition];
-  v8 = [v6 compare:v7];
+  cfiPosition = [(BCEPubBookPosition *)self cfiPosition];
+  cfiPosition2 = [v5 cfiPosition];
+  v8 = [cfiPosition compare:cfiPosition2];
 
   return v8;
 }
 
 - (NSString)description
 {
-  v2 = [(BCEPubBookPosition *)self cfiPosition];
-  v3 = [NSString stringWithFormat:@"BCEPubBookPosition(%@)", v2];
+  cfiPosition = [(BCEPubBookPosition *)self cfiPosition];
+  v3 = [NSString stringWithFormat:@"BCEPubBookPosition(%@)", cfiPosition];
 
   return v3;
 }

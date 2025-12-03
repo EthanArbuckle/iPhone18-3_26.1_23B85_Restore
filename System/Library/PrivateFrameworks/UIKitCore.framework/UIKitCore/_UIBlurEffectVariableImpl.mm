@@ -1,68 +1,68 @@
 @interface _UIBlurEffectVariableImpl
-- (BOOL)isEqual:(id)a3;
-- (_UIBlurEffectVariableImpl)initWithBaseRadius:(double)a3 imageMask:(id)a4 scale:(double)a5 allowAXAdaptation:(BOOL)a6;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
-- (void)appendDescriptionTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIBlurEffectVariableImpl)initWithBaseRadius:(double)radius imageMask:(id)mask scale:(double)scale allowAXAdaptation:(BOOL)adaptation;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
+- (void)appendDescriptionTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIBlurEffectVariableImpl
 
-- (_UIBlurEffectVariableImpl)initWithBaseRadius:(double)a3 imageMask:(id)a4 scale:(double)a5 allowAXAdaptation:(BOOL)a6
+- (_UIBlurEffectVariableImpl)initWithBaseRadius:(double)radius imageMask:(id)mask scale:(double)scale allowAXAdaptation:(BOOL)adaptation
 {
-  v11 = a4;
+  maskCopy = mask;
   v16.receiver = self;
   v16.super_class = _UIBlurEffectVariableImpl;
   v12 = [(_UIBlurEffectVariableImpl *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    if (a3 >= 0.0)
+    if (radius >= 0.0)
     {
-      v14 = a3;
+      radiusCopy = radius;
     }
 
     else
     {
-      v14 = 0.0;
+      radiusCopy = 0.0;
     }
 
-    v12->_blurRadius = v14;
-    v12->_blurScale = fmax(fmin(a5, 1.0), 0.0);
-    objc_storeStrong(&v12->_imageMask, a4);
-    v13->_allowAXAdaptation = a6;
+    v12->_blurRadius = radiusCopy;
+    v12->_blurScale = fmax(fmin(scale, 1.0), 0.0);
+    objc_storeStrong(&v12->_imageMask, mask);
+    v13->_allowAXAdaptation = adaptation;
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_blurRadius > 0.0)
   {
-    [v4 encodeDouble:@"UIBlurEffectRadius" forKey:?];
+    [coderCopy encodeDouble:@"UIBlurEffectRadius" forKey:?];
   }
 
   if (self->_blurScale > 0.0)
   {
-    [v4 encodeDouble:@"UIBlurEffectScale" forKey:?];
+    [coderCopy encodeDouble:@"UIBlurEffectScale" forKey:?];
   }
 
   if (!self->_allowAXAdaptation)
   {
-    [v4 encodeBool:0 forKey:@"UIBlurEffectAllowAXAdaptation"];
+    [coderCopy encodeBool:0 forKey:@"UIBlurEffectAllowAXAdaptation"];
   }
 
-  [v4 encodeObject:self->_imageMask forKey:@"UIBlurEffectImageMask"];
+  [coderCopy encodeObject:self->_imageMask forKey:@"UIBlurEffectImageMask"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (*(v5 + 1) == self->_blurRadius && *(v5 + 2) == self->_blurScale)
     {
@@ -115,14 +115,14 @@ LABEL_17:
   return v12;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v7 = a4;
-  if ([v7 reducedTransperancy] && self->_allowAXAdaptation)
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  if ([environmentCopy reducedTransperancy] && self->_allowAXAdaptation)
   {
-    _UIBlurEffectAddAverageColorFilterEntry(v35, v7, fmax(self->_blurScale, 0.25));
+    _UIBlurEffectAddAverageColorFilterEntry(descriptorCopy, environmentCopy, fmax(self->_blurScale, 0.25));
   }
 
   else
@@ -130,8 +130,8 @@ LABEL_17:
     blurRadius = self->_blurRadius;
     imageMask = self->_imageMask;
     blurScale = self->_blurScale;
-    v11 = v35;
-    v12 = v7;
+    v11 = descriptorCopy;
+    v12 = environmentCopy;
     v13 = imageMask;
     if ([v12 allowsBlurring])
     {
@@ -150,23 +150,23 @@ LABEL_17:
       }
 
       v34 = [v14 dictionaryWithObjects:&v40 forKeys:v41 count:v15];
-      v16 = [v12 traitCollection];
+      traitCollection = [v12 traitCollection];
       v17 = v13;
-      v18 = [(UIImage *)v17 _primitiveImageAsset];
-      v19 = v18;
-      if (v18)
+      _primitiveImageAsset = [(UIImage *)v17 _primitiveImageAsset];
+      v19 = _primitiveImageAsset;
+      if (_primitiveImageAsset)
       {
-        v20 = [v18 imageWithTraitCollection:v16];
+        v20 = [_primitiveImageAsset imageWithTraitCollection:traitCollection];
 
         v17 = v20;
       }
 
-      v21 = [(UIImage *)v17 CGImage];
-      if (!v21)
+      cGImage = [(UIImage *)v17 CGImage];
+      if (!cGImage)
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGImageRef _imageRefFromUIImage(UIImage *__strong, UITraitCollection *__strong)"}];
-        [v32 handleFailureInFunction:v33 file:@"UIBlurEffect.m" lineNumber:1320 description:{@"UIImage (%@) returned NULL from -CGImage.", v17}];
+        [currentHandler handleFailureInFunction:v33 file:@"UIBlurEffect.m" lineNumber:1320 description:{@"UIImage (%@) returned NULL from -CGImage.", v17}];
       }
 
       v22 = [_UIVisualEffectFilterEntry alloc];
@@ -176,12 +176,12 @@ LABEL_17:
       v25 = [MEMORY[0x1E696AD98] numberWithDouble:blurRadius];
       v38[1] = @"inputMaskImage";
       v39[0] = v25;
-      v39[1] = v21;
+      v39[1] = cGImage;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
       v36[0] = v24;
       v36[1] = @"inputMaskImage";
       v37[0] = &unk_1EFE2E1F8;
-      v37[1] = v21;
+      v37[1] = cGImage;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
       v28 = [(_UIVisualEffectFilterEntry *)v22 initWithFilterType:v23 configurationValues:v34 requestedValues:v26 identityValues:v27];
 
@@ -207,19 +207,19 @@ LABEL_17:
   }
 }
 
-- (void)appendDescriptionTo:(id)a3
+- (void)appendDescriptionTo:(id)to
 {
-  v4 = a3;
-  [v4 appendFormat:@" blurRadius=%f", *&self->_blurRadius];
+  toCopy = to;
+  [toCopy appendFormat:@" blurRadius=%f", *&self->_blurRadius];
   if (self->_blurScale > 0.0)
   {
-    [v4 appendFormat:@" blurScale=%f", *&self->_blurScale];
+    [toCopy appendFormat:@" blurScale=%f", *&self->_blurScale];
   }
 
-  [v4 appendFormat:@" imageMask=%@", self->_imageMask];
+  [toCopy appendFormat:@" imageMask=%@", self->_imageMask];
   if (!self->_allowAXAdaptation)
   {
-    [v4 appendString:@" allowAXAdaptation=NO"];
+    [toCopy appendString:@" allowAXAdaptation=NO"];
   }
 }
 

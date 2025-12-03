@@ -3,32 +3,32 @@
 + (id)propertyHashTable;
 + (id)protocolPropertyDefinitions;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SXJSONObject)init;
-- (SXJSONObject)initWithJSONData:(id)a3 andVersion:(id)a4;
-- (SXJSONObject)initWithJSONObject:(id)a3 andVersion:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForLookupKey:(uint64_t)a1;
-- (id)valueForLookupKey:(id)a3;
-- (void)storeObject:(id)a3 forLookupKey:(id)a4;
-- (void)storeValue:(id)a3 forLookupKey:(id)a4;
+- (SXJSONObject)initWithJSONData:(id)data andVersion:(id)version;
+- (SXJSONObject)initWithJSONObject:(id)object andVersion:(id)version;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForLookupKey:(uint64_t)key;
+- (id)valueForLookupKey:(id)key;
+- (void)storeObject:(id)object forLookupKey:(id)key;
+- (void)storeValue:(id)value forLookupKey:(id)key;
 @end
 
 @implementation SXJSONObject
 
-- (SXJSONObject)initWithJSONData:(id)a3 andVersion:(id)a4
+- (SXJSONObject)initWithJSONData:(id)data andVersion:(id)version
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dataCopy = data;
+  versionCopy = version;
+  if (!dataCopy)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:@"InvalidJSON" reason:@"No JSON to parse" userInfo:0];
     objc_exception_throw(v12);
   }
 
   v17 = 0;
-  v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:&v17];
+  v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v17];
   v9 = v17;
   if (v9)
   {
@@ -42,16 +42,16 @@
     objc_exception_throw(v15);
   }
 
-  v10 = [(SXJSONObject *)self initWithJSONObject:v8 andVersion:v7];
+  v10 = [(SXJSONObject *)self initWithJSONObject:v8 andVersion:versionCopy];
 
   return v10;
 }
 
-- (SXJSONObject)initWithJSONObject:(id)a3 andVersion:(id)a4
+- (SXJSONObject)initWithJSONObject:(id)object andVersion:(id)version
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  objectCopy = object;
+  versionCopy = version;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v15.receiver = self;
     v15.super_class = SXJSONObject;
@@ -60,23 +60,23 @@
     if (v9)
     {
       v9->_unfairLock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v9->_specificationVersion, a4);
-      objc_storeStrong(&v10->_jsonDictionary, a3);
+      objc_storeStrong(&v9->_specificationVersion, version);
+      objc_storeStrong(&v10->_jsonDictionary, object);
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
       objectStorage = v10->_objectStorage;
       v10->_objectStorage = v11;
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (SXJSONObject)init
@@ -92,10 +92,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_5;
   }
@@ -107,7 +107,7 @@
     goto LABEL_7;
   }
 
-  jsonDictionary = v4->_jsonDictionary;
+  jsonDictionary = equalCopy->_jsonDictionary;
   if (jsonDictionary == self->_jsonDictionary)
   {
 LABEL_5:
@@ -126,7 +126,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     unfairLock = 0;
     +[SXJSONPrimitives initializePrimitives];
@@ -200,42 +200,42 @@ uint64_t __43__SXJSONObject_protocolPropertyDefinitions__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   jsonDictionary = self->_jsonDictionary;
   specificationVersion = self->_specificationVersion;
 
   return [v4 initWithJSONObject:jsonDictionary andVersion:specificationVersion];
 }
 
-- (void)storeObject:(id)a3 forLookupKey:(id)a4
+- (void)storeObject:(id)object forLookupKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
   objectStorage = self->_objectStorage;
-  if (v8)
+  if (objectCopy)
   {
-    [(NSMutableDictionary *)objectStorage setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)objectStorage setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)objectStorage removeObjectForKey:v6];
+    [(NSMutableDictionary *)objectStorage removeObjectForKey:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (id)objectForLookupKey:(uint64_t)a1
+- (id)objectForLookupKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
     os_unfair_lock_lock_with_options();
-    v4 = [*(a1 + 32) objectForKey:v3];
-    os_unfair_lock_unlock((a1 + 8));
+    v4 = [*(key + 32) objectForKey:v3];
+    os_unfair_lock_unlock((key + 8));
   }
 
   else
@@ -246,17 +246,17 @@ uint64_t __43__SXJSONObject_protocolPropertyDefinitions__block_invoke()
   return v4;
 }
 
-- (void)storeValue:(id)a3 forLookupKey:(id)a4
+- (void)storeValue:(id)value forLookupKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v7 = [MEMORY[0x1E695DF30] exceptionWithName:@"NotImplemented" reason:@"Currently not implemented yet" userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (id)valueForLookupKey:(id)a3
+- (id)valueForLookupKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_jsonDictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_jsonDictionary objectForKey:key];
 
   return v3;
 }

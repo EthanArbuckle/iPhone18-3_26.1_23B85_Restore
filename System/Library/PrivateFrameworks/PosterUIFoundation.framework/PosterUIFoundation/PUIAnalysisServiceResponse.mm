@@ -1,27 +1,27 @@
 @interface PUIAnalysisServiceResponse
 - (NSSet)requestedAnalyses;
-- (PUIAnalysisServiceResponse)initWithCoder:(id)a3;
-- (PUIAnalysisServiceResponse)initWithRequestIdentifier:(id)a3 reports:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (PUIAnalysisServiceResponse)initWithCoder:(id)coder;
+- (PUIAnalysisServiceResponse)initWithRequestIdentifier:(id)identifier reports:(id)reports;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIAnalysisServiceResponse
 
-- (PUIAnalysisServiceResponse)initWithRequestIdentifier:(id)a3 reports:(id)a4
+- (PUIAnalysisServiceResponse)initWithRequestIdentifier:(id)identifier reports:(id)reports
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  reportsCopy = reports;
   v14.receiver = self;
   v14.super_class = PUIAnalysisServiceResponse;
   v9 = [(PUIAnalysisServiceResponse *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestIdentifier, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_requestIdentifier, identifier);
+    v11 = [reportsCopy copy];
     reports = v10->_reports;
     v10->_reports = v11;
   }
@@ -32,23 +32,23 @@
 - (NSSet)requestedAnalyses
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSDictionary *)self->_reports allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSDictionary *)self->_reports allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_requestIdentifier forKey:@"_requestIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"_requestIdentifier"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PUIAnalysisServiceResponse_encodeWithCoder___block_invoke;
   v6[3] = &unk_1E7855EE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = coderCopy;
+  v5 = coderCopy;
   PUIAnalysisEnumerate(v6);
 }
 
@@ -62,21 +62,21 @@ void __46__PUIAnalysisServiceResponse_encodeWithCoder___block_invoke(uint64_t a1
   }
 }
 
-- (PUIAnalysisServiceResponse)initWithCoder:(id)a3
+- (PUIAnalysisServiceResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_requestIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_requestIdentifier"];
 
   v7 = objc_opt_new();
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __44__PUIAnalysisServiceResponse_initWithCoder___block_invoke;
   v15 = &unk_1E7855EE8;
-  v16 = v4;
+  v16 = coderCopy;
   v17 = v7;
   v8 = v7;
-  v9 = v4;
+  v9 = coderCopy;
   PUIAnalysisEnumerate(&v12);
   v10 = [(PUIAnalysisServiceResponse *)self initWithRequestIdentifier:v6 reports:v8, v12, v13, v14, v15];
 
@@ -97,31 +97,31 @@ void __44__PUIAnalysisServiceResponse_initWithCoder___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PUIAnalysisServiceResponse *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PUIAnalysisServiceResponse *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v7 = [v6 appendObject:self->_requestIdentifier withName:@"_requestIdentifier"];
-  [v6 appendDictionarySection:self->_reports withName:@"reports" multilinePrefix:v5 skipIfEmpty:0];
+  [v6 appendDictionarySection:self->_reports withName:@"reports" multilinePrefix:prefixCopy skipIfEmpty:0];
 
   return v6;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PUIAnalysisServiceResponse *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PUIAnalysisServiceResponse *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

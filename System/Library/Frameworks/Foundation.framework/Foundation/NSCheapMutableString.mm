@@ -1,13 +1,13 @@
 @interface NSCheapMutableString
-- (BOOL)getBytes:(void *)a3 maxLength:(unint64_t)a4 usedLength:(unint64_t *)a5 encoding:(unint64_t)a6 options:(unint64_t)a7 range:(_NSRange)a8 remainingRange:(_NSRange *)a9;
+- (BOOL)getBytes:(void *)bytes maxLength:(unint64_t)length usedLength:(unint64_t *)usedLength encoding:(unint64_t)encoding options:(unint64_t)options range:(_NSRange)range remainingRange:(_NSRange *)remainingRange;
 - (const)cString;
 - (const)lossyCString;
 - (unint64_t)cStringLength;
 - (unint64_t)fastestEncoding;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
-- (void)setContentsNoCopy:(void *)a3 length:(unint64_t)a4 freeWhenDone:(BOOL)a5 isUnicode:(BOOL)a6;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
+- (void)setContentsNoCopy:(void *)copy length:(unint64_t)length freeWhenDone:(BOOL)done isUnicode:(BOOL)unicode;
 @end
 
 @implementation NSCheapMutableString
@@ -40,97 +40,97 @@
   [(NSCheapMutableString *)&v3 dealloc];
 }
 
-- (void)setContentsNoCopy:(void *)a3 length:(unint64_t)a4 freeWhenDone:(BOOL)a5 isUnicode:(BOOL)a6
+- (void)setContentsNoCopy:(void *)copy length:(unint64_t)length freeWhenDone:(BOOL)done isUnicode:(BOOL)unicode
 {
-  v6 = a6;
+  unicodeCopy = unicode;
   if ((*&self->flags & 2) != 0)
   {
     free(self->contents.fat);
   }
 
-  self->contents.fat = a3;
-  self->flags = (*&self->flags & 0xFFFFFFFE | v6);
-  self->numCharacters = a4;
+  self->contents.fat = copy;
+  self->flags = (*&self->flags & 0xFFFFFFFE | unicodeCopy);
+  self->numCharacters = length;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   fat = self->contents.fat;
   if (*&self->flags)
   {
-    return fat[a3];
+    return fat[index];
   }
 
   else
   {
-    return *(fat + a3);
+    return *(fat + index);
   }
 }
 
-- (BOOL)getBytes:(void *)a3 maxLength:(unint64_t)a4 usedLength:(unint64_t *)a5 encoding:(unint64_t)a6 options:(unint64_t)a7 range:(_NSRange)a8 remainingRange:(_NSRange *)a9
+- (BOOL)getBytes:(void *)bytes maxLength:(unint64_t)length usedLength:(unint64_t *)usedLength encoding:(unint64_t)encoding options:(unint64_t)options range:(_NSRange)range remainingRange:(_NSRange *)remainingRange
 {
   v20 = *MEMORY[0x1E69E9840];
-  if ((*&self->flags & 1) != 0 || +[NSString defaultCStringEncoding]!= a6)
+  if ((*&self->flags & 1) != 0 || +[NSString defaultCStringEncoding]!= encoding)
   {
     v19.receiver = self;
     v19.super_class = NSCheapMutableString;
-    return [(NSString *)&v19 getBytes:a3 maxLength:a4 usedLength:a5 encoding:a6 options:a7 range:a8.location remainingRange:a8.length, a9];
+    return [(NSString *)&v19 getBytes:bytes maxLength:length usedLength:usedLength encoding:encoding options:options range:range.location remainingRange:range.length, remainingRange];
   }
 
   else
   {
-    if (a8.length >= a4)
+    if (range.length >= length)
     {
-      length = a4;
+      length = length;
     }
 
     else
     {
-      length = a8.length;
+      length = range.length;
     }
 
-    if (a3 && length)
+    if (bytes && length)
     {
-      location = a8.location;
-      v17 = length;
+      location = range.location;
+      lengthCopy = length;
       do
       {
-        *a3 = *(self->contents.fat + location);
-        a3 = a3 + 1;
+        *bytes = *(self->contents.fat + location);
+        bytes = bytes + 1;
         ++location;
-        --v17;
+        --lengthCopy;
       }
 
-      while (v17);
+      while (lengthCopy);
     }
 
-    if (a5)
+    if (usedLength)
     {
-      *a5 = length;
+      *usedLength = length;
     }
 
-    if (a9)
+    if (remainingRange)
     {
-      a9->location = length + a8.location;
-      a9->length = a8.length - length;
+      remainingRange->location = length + range.location;
+      remainingRange->length = range.length - length;
     }
 
     return 1;
   }
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
   if (*&self->flags)
   {
-    memmove(a3, &self->contents.fat[a4.location], 2 * a4.length);
+    memmove(characters, &self->contents.fat[range.location], 2 * range.length);
   }
 
   else
   {
-    for (; a4.length; --a4.length)
+    for (; range.length; --range.length)
     {
-      *a3++ = *(self->contents.fat + a4.location++);
+      *characters++ = *(self->contents.fat + range.location++);
     }
   }
 }

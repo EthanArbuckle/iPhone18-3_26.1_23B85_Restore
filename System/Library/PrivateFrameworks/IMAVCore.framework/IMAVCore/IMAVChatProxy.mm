@@ -1,5 +1,5 @@
 @interface IMAVChatProxy
-- (BOOL)_isCallUpgradeTo:(id)a3;
+- (BOOL)_isCallUpgradeTo:(id)to;
 - (BOOL)hasReceivedFirstFrame;
 - (BOOL)isCaller;
 - (BOOL)isMute;
@@ -25,13 +25,13 @@
 - (void)declineInvitation;
 - (void)endChat;
 - (void)finalUpdate;
-- (void)forwardInvocation:(id)a3;
-- (void)invite:(id)a3 additionalPeers:(id)a4 excludingPushTokens:(id)a5;
+- (void)forwardInvocation:(id)invocation;
+- (void)invite:(id)invite additionalPeers:(id)peers excludingPushTokens:(id)tokens;
 - (void)inviteAll;
-- (void)setConnectionTimeoutTime:(double)a3;
-- (void)setInvitationTimeoutTime:(double)a3;
-- (void)setMute:(BOOL)a3;
-- (void)updateWithInfo:(id)a3;
+- (void)setConnectionTimeoutTime:(double)time;
+- (void)setInvitationTimeoutTime:(double)time;
+- (void)setMute:(BOOL)mute;
+- (void)updateWithInfo:(id)info;
 @end
 
 @implementation IMAVChatProxy
@@ -236,23 +236,23 @@
   return v9;
 }
 
-- (void)setMute:(BOOL)a3
+- (void)setMute:(BOOL)mute
 {
-  v3 = a3;
+  muteCopy = mute;
   v38 = *MEMORY[0x277D85DE8];
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v35[0] = 67109378;
-    v35[1] = v3;
+    v35[1] = muteCopy;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "Client called setMute %d on chat proxy %@", v35, 0x12u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = objc_alloc(MEMORY[0x277CCABB0]);
-  v16 = objc_msgSend_initWithDouble_(v7, v8, v9, v10, v11, v3);
+  v16 = objc_msgSend_initWithDouble_(v7, v8, v9, v10, v11, muteCopy);
   if (v16)
   {
     CFDictionarySetValue(v6, @"IsMute", v16);
@@ -292,22 +292,22 @@
   return v10;
 }
 
-- (void)setInvitationTimeoutTime:(double)a3
+- (void)setInvitationTimeoutTime:(double)time
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v35 = 134218242;
-    v36 = a3;
+    timeCopy = time;
     v37 = 2112;
-    v38 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "Client called setInvitationTimeoutTime %f on chat proxy %@", &v35, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = objc_alloc(MEMORY[0x277CCABB0]);
-  v16 = objc_msgSend_initWithDouble_(v7, v8, v9, v10, v11, a3);
+  v16 = objc_msgSend_initWithDouble_(v7, v8, v9, v10, v11, time);
   if (v16)
   {
     CFDictionarySetValue(v6, @"InvitationTimeoutTime", v16);
@@ -331,22 +331,22 @@
   return v10;
 }
 
-- (void)setConnectionTimeoutTime:(double)a3
+- (void)setConnectionTimeoutTime:(double)time
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = sub_254761764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v35 = 134218242;
-    v36 = a3;
+    timeCopy = time;
     v37 = 2112;
-    v38 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v5, OS_LOG_TYPE_DEFAULT, "Client called setConnectionTimeoutTime %f on chat proxy %@", &v35, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = objc_alloc(MEMORY[0x277CCABB0]);
-  v16 = objc_msgSend_initWithDouble_(v7, v8, v9, v10, v11, a3);
+  v16 = objc_msgSend_initWithDouble_(v7, v8, v9, v10, v11, time);
   if (v16)
   {
     CFDictionarySetValue(v6, @"ConnectionTimeoutTime", v16);
@@ -369,15 +369,15 @@
   return v9;
 }
 
-- (BOOL)_isCallUpgradeTo:(id)a3
+- (BOOL)_isCallUpgradeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v9 = objc_msgSend_otherIMHandle(self, v5, v6, v7, v8);
   v14 = objc_msgSend_ID(v9, v10, v11, v12, v13);
-  v19 = objc_msgSend_ID(v4, v15, v16, v17, v18);
+  v19 = objc_msgSend_ID(toCopy, v15, v16, v17, v18);
 
-  LOBYTE(v4) = MEMORY[0x259C18A30](v14, v19);
-  return v4;
+  LOBYTE(toCopy) = MEMORY[0x259C18A30](v14, v19);
+  return toCopy;
 }
 
 - (void)inviteAll
@@ -387,7 +387,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v3, OS_LOG_TYPE_DEFAULT, "Client called inviteAll on chat proxy %@", &v26, 0xCu);
   }
 
@@ -400,41 +400,41 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invite:(id)a3 additionalPeers:(id)a4 excludingPushTokens:(id)a5
+- (void)invite:(id)invite additionalPeers:(id)peers excludingPushTokens:(id)tokens
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  inviteCopy = invite;
+  peersCopy = peers;
+  tokensCopy = tokens;
   v11 = sub_254761764();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v39 = 138413058;
-    v40 = v8;
+    v40 = inviteCopy;
     v41 = 2112;
-    v42 = v9;
+    v42 = peersCopy;
     v43 = 2112;
-    v44 = v10;
+    v44 = tokensCopy;
     v45 = 2112;
-    v46 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v11, OS_LOG_TYPE_DEFAULT, "Client called invite %@ additionalPeers %@ excludingPushTokens %@ on chat proxy %@", &v39, 0x2Au);
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v20 = objc_msgSend__proxyRepresentationForIMHandle_(IMAVChat, v13, v8, v14, v15);
+  v20 = objc_msgSend__proxyRepresentationForIMHandle_(IMAVChat, v13, inviteCopy, v14, v15);
   if (v20)
   {
     CFDictionarySetValue(v12, @"Buddy", v20);
   }
 
-  if (v9)
+  if (peersCopy)
   {
-    CFDictionarySetValue(v12, @"AdditionalPeers", v9);
+    CFDictionarySetValue(v12, @"AdditionalPeers", peersCopy);
   }
 
-  if (v10)
+  if (tokensCopy)
   {
-    CFDictionarySetValue(v12, @"ExcludingPushTokens", v10);
+    CFDictionarySetValue(v12, @"ExcludingPushTokens", tokensCopy);
   }
 
   v21 = objc_msgSend_sharedInstance(MEMORY[0x277D18D68], v16, v17, v18, v19);
@@ -453,7 +453,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v3, OS_LOG_TYPE_DEFAULT, "Client called acceptInvitation on chat proxy %@", &v26, 0xCu);
   }
 
@@ -473,7 +473,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v3, OS_LOG_TYPE_DEFAULT, "Client called cancelInvitation on chat proxy %@", &v26, 0xCu);
   }
 
@@ -493,7 +493,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v3, OS_LOG_TYPE_DEFAULT, "Client called declineInvitation on chat proxy %@", &v26, 0xCu);
   }
 
@@ -513,7 +513,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_254743000, v3, OS_LOG_TYPE_DEFAULT, "Client called endChat on chat proxy %@", &v8, 0xCu);
   }
 
@@ -540,17 +540,17 @@
   objc_msgSend_updateWithInfo_(self, v21, v8, v22, v23);
 }
 
-- (void)updateWithInfo:(id)a3
+- (void)updateWithInfo:(id)info
 {
   v264 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infoCopy = info;
   v6 = sub_254761764();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *v262 = self;
     *&v262[8] = 2112;
-    v263 = v5;
+    v263 = infoCopy;
     _os_log_impl(&dword_254743000, v6, OS_LOG_TYPE_DEFAULT, "Updating proxy %@ with info %@", buf, 0x16u);
   }
 
@@ -567,7 +567,7 @@
   v44 = objc_msgSend_objectForKey_(self->_info, v41, @"HasReceivedFirstFrame", v42, v43);
   v49 = objc_msgSend_BOOLValue(v44, v45, v46, v47, v48);
 
-  objc_storeStrong(&self->_info, a3);
+  objc_storeStrong(&self->_info, info);
   v54 = objc_msgSend_state(self, v50, v51, v52, v53);
   v59 = objc_msgSend_remoteParticipants(self, v55, v56, v57, v58);
   v64 = objc_msgSend_lastObject(v59, v60, v61, v62, v63);
@@ -575,8 +575,8 @@
 
   v247 = objc_msgSend_isMute(self, v69, v70, v71, v72);
   v254 = objc_msgSend_isSendingAudio(self, v73, v74, v75, v76);
-  v77 = v5;
-  v81 = objc_msgSend_objectForKey_(v5, v78, @"MetadataFinalized", v79, v80);
+  v77 = infoCopy;
+  v81 = objc_msgSend_objectForKey_(infoCopy, v78, @"MetadataFinalized", v79, v80);
   v251 = objc_msgSend_BOOLValue(v81, v82, v83, v84, v85);
 
   v86 = v54;
@@ -775,7 +775,7 @@
         {
           v154 = v153;
           v244 = v95;
-          v155 = self;
+          selfCopy = self;
           v245 = v77;
           v156 = *v257;
           do
@@ -808,7 +808,7 @@
                   _os_log_impl(&dword_254743000, v161, OS_LOG_TYPE_DEFAULT, " => Dispatching to delegate: %@", buf, 0xCu);
                 }
 
-                objc_msgSend_invitedToIMAVChat_(v158, v163, v155, v164, v165);
+                objc_msgSend_invitedToIMAVChat_(v158, v163, selfCopy, v164, v165);
               }
 
               else
@@ -827,7 +827,7 @@
 
           while (v154);
           v77 = v245;
-          self = v155;
+          self = selfCopy;
           LOBYTE(v103) = v246;
           v86 = v86;
           LOBYTE(v95) = v244;
@@ -948,14 +948,14 @@
   v243 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  invocationCopy = invocation;
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = objc_msgSend_selector(v3, v5, v6, v7, v8);
+    v9 = objc_msgSend_selector(invocationCopy, v5, v6, v7, v8);
     v10 = NSStringFromSelector(v9);
     v12 = 138412290;
     v13 = v10;

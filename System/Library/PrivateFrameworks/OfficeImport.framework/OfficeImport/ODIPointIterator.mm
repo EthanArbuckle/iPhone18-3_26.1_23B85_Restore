@@ -1,32 +1,32 @@
 @interface ODIPointIterator
-+ (BOOL)addPoint:(id)a3 state:(ODIPointIteratorState *)a4;
-+ (BOOL)isPoint:(id)a3 ofType:(int)a4;
-+ (id)pointsForSpecification:(id)a3 startingPoint:(id)a4 isLast:(BOOL)a5;
-+ (id)processAttributes:(id)a3 startingPoint:(id)a4 isLast:(BOOL)a5;
-+ (void)processChildAxisFromPoint:(id)a3 state:(ODIPointIteratorState *)a4;
-+ (void)processFollowingSiblingAxisFromPoint:(id)a3 state:(ODIPointIteratorState *)a4;
++ (BOOL)addPoint:(id)point state:(ODIPointIteratorState *)state;
++ (BOOL)isPoint:(id)point ofType:(int)type;
++ (id)pointsForSpecification:(id)specification startingPoint:(id)point isLast:(BOOL)last;
++ (id)processAttributes:(id)attributes startingPoint:(id)point isLast:(BOOL)last;
++ (void)processChildAxisFromPoint:(id)point state:(ODIPointIteratorState *)state;
++ (void)processFollowingSiblingAxisFromPoint:(id)point state:(ODIPointIteratorState *)state;
 @end
 
 @implementation ODIPointIterator
 
-+ (id)pointsForSpecification:(id)a3 startingPoint:(id)a4 isLast:(BOOL)a5
++ (id)pointsForSpecification:(id)specification startingPoint:(id)point isLast:(BOOL)last
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 attributesList];
-  v11 = [v10 objectEnumerator];
+  lastCopy = last;
+  specificationCopy = specification;
+  pointCopy = point;
+  attributesList = [specificationCopy attributesList];
+  objectEnumerator = [attributesList objectEnumerator];
   v12 = 0;
   while (1)
   {
 
-    v10 = [v11 nextObject];
-    if (!v10)
+    attributesList = [objectEnumerator nextObject];
+    if (!attributesList)
     {
       break;
     }
 
-    v13 = [a1 processAttributes:v10 startingPoint:v9 isLast:v5];
+    v13 = [self processAttributes:attributesList startingPoint:pointCopy isLast:lastCopy];
     v14 = v13;
     if (v12)
     {
@@ -42,44 +42,44 @@
   return v12;
 }
 
-+ (id)processAttributes:(id)a3 startingPoint:(id)a4 isLast:(BOOL)a5
++ (id)processAttributes:(id)attributes startingPoint:(id)point isLast:(BOOL)last
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [v8 start];
-  if (v11 <= 1)
+  lastCopy = last;
+  attributesCopy = attributes;
+  pointCopy = point;
+  array = [MEMORY[0x277CBEB18] array];
+  start = [attributesCopy start];
+  if (start <= 1)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = start;
   }
 
-  v20[0] = [v8 pointType];
+  v20[0] = [attributesCopy pointType];
   v13 = (v12 - 1);
-  v20[1] = [v8 count] + v13;
-  v21 = [v8 step];
+  v20[1] = [attributesCopy count] + v13;
+  step = [attributesCopy step];
   v22 = 0;
-  v14 = v10;
+  v14 = array;
   v23 = v14;
   v15 = v14;
-  if (v21 >= 1)
+  if (step >= 1)
   {
-    v16 = [v8 axis];
-    switch(v16)
+    axis = [attributesCopy axis];
+    switch(axis)
     {
       case 7:
-        [a1 processFollowingSiblingAxisFromPoint:v9 state:v20];
+        [self processFollowingSiblingAxisFromPoint:pointCopy state:v20];
         break;
       case 1:
-        [a1 processChildAxisFromPoint:v9 state:v20];
+        [self processChildAxisFromPoint:pointCopy state:v20];
         break;
       case 0:
-        [a1 processSelfAxisFromPoint:v9 state:v20];
+        [self processSelfAxisFromPoint:pointCopy state:v20];
         break;
     }
 
@@ -88,16 +88,16 @@
       [v14 removeObjectsInRange:{0, v13}];
     }
 
-    if (v5)
+    if (lastCopy)
     {
-      if ([v8 hideLastTransition])
+      if ([attributesCopy hideLastTransition])
       {
         if ([v14 count])
         {
-          v17 = [v14 lastObject];
-          v18 = [v17 type];
+          lastObject = [v14 lastObject];
+          type = [lastObject type];
 
-          if (v18 == 5 || v18 == 3)
+          if (type == 5 || type == 3)
           {
             [v14 removeLastObject];
           }
@@ -111,28 +111,28 @@
   return v14;
 }
 
-+ (BOOL)addPoint:(id)a3 state:(ODIPointIteratorState *)a4
++ (BOOL)addPoint:(id)point state:(ODIPointIteratorState *)state
 {
-  v6 = a3;
-  if ([a1 isDoneForState:a4])
+  pointCopy = point;
+  if ([self isDoneForState:state])
   {
     v7 = 1;
   }
 
-  else if ([a1 isPoint:v6 ofType:a4->var0])
+  else if ([self isPoint:pointCopy ofType:state->var0])
   {
-    var3 = a4->var3;
+    var3 = state->var3;
     if (var3)
     {
       v7 = 0;
-      a4->var3 = var3 - 1;
+      state->var3 = var3 - 1;
     }
 
     else
     {
-      [a4->var4 addObject:v6];
-      a4->var3 = a4->var2 - 1;
-      v7 = [a1 isDoneForState:a4];
+      [state->var4 addObject:pointCopy];
+      state->var3 = state->var2 - 1;
+      v7 = [self isDoneForState:state];
     }
   }
 
@@ -144,73 +144,73 @@
   return v7;
 }
 
-+ (BOOL)isPoint:(id)a3 ofType:(int)a4
++ (BOOL)isPoint:(id)point ofType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  pointCopy = point;
+  v6 = pointCopy;
+  if (pointCopy)
   {
-    v7 = [v5 type];
-    v8 = v7 == 3;
-    v9 = v7 == 4;
-    v10 = v7 == 5;
-    if (a4 != 9)
+    type = [pointCopy type];
+    v8 = type == 3;
+    v9 = type == 4;
+    v10 = type == 5;
+    if (type != 9)
     {
       v10 = 0;
     }
 
-    if (a4 != 8)
+    if (type != 8)
     {
       v9 = v10;
     }
 
-    if (a4 != 7)
+    if (type != 7)
     {
       v8 = v9;
     }
 
-    v11 = v7 == 0;
-    v12 = v7 != 0;
-    if (a4 != 6)
+    v11 = type == 0;
+    v12 = type != 0;
+    if (type != 6)
     {
       v12 = 0;
     }
 
-    if (a4 != 5)
+    if (type != 5)
     {
       v11 = v12;
     }
 
-    if (a4 <= 6)
+    if (type <= 6)
     {
       v8 = v11;
     }
 
-    v13 = v7 == 2;
-    v15 = v7 == 5 || (v7 - 1) < 3;
-    v16 = (v7 & 0xFFFFFFFB) == 0;
-    if (a4 != 4)
+    v13 = type == 2;
+    v15 = type == 5 || (type - 1) < 3;
+    v16 = (type & 0xFFFFFFFB) == 0;
+    if (type != 4)
     {
       v16 = 0;
     }
 
-    if (a4 != 3)
+    if (type != 3)
     {
       v15 = v16;
     }
 
-    if (a4 != 2)
+    if (type != 2)
     {
       v13 = v15;
     }
 
-    v17 = v7 == 1;
-    if (a4 != 1)
+    v17 = type == 1;
+    if (type != 1)
     {
       v17 = 0;
     }
 
-    if (a4)
+    if (type)
     {
       v18 = v17;
     }
@@ -220,12 +220,12 @@
       v18 = 1;
     }
 
-    if (a4 <= 1)
+    if (type <= 1)
     {
       v13 = v18;
     }
 
-    if (a4 <= 4)
+    if (type <= 4)
     {
       v19 = v13;
     }
@@ -244,41 +244,41 @@
   return v19;
 }
 
-+ (void)processChildAxisFromPoint:(id)a3 state:(ODIPointIteratorState *)a4
++ (void)processChildAxisFromPoint:(id)point state:(ODIPointIteratorState *)state
 {
-  v11 = a3;
+  pointCopy = point;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v11 children];
-    v7 = [v6 objectEnumerator];
+    children = [pointCopy children];
+    objectEnumerator = [children objectEnumerator];
 
     v8 = 0;
     v9 = 0;
     while ((v8 & 1) == 0)
     {
-      v10 = [v7 nextObject];
+      nextObject = [objectEnumerator nextObject];
 
-      if (!v10)
+      if (!nextObject)
       {
         v9 = 0;
         break;
       }
 
-      v9 = v10;
-      v8 = [a1 addPoint:v10 state:a4];
+      v9 = nextObject;
+      v8 = [self addPoint:nextObject state:state];
     }
   }
 }
 
-+ (void)processFollowingSiblingAxisFromPoint:(id)a3 state:(ODIPointIteratorState *)a4
++ (void)processFollowingSiblingAxisFromPoint:(id)point state:(ODIPointIteratorState *)state
 {
-  v7 = a3;
+  pointCopy = point;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v7 siblingTransition];
-    [a1 addPoint:v6 state:a4];
+    siblingTransition = [pointCopy siblingTransition];
+    [self addPoint:siblingTransition state:state];
   }
 }
 

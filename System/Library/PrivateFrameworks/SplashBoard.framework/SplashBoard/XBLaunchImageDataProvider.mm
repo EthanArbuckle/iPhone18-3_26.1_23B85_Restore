@@ -1,16 +1,16 @@
 @interface XBLaunchImageDataProvider
-- (XBLaunchImageDataProvider)initWithRequest:(id)a3 contextID:(unsigned int)a4 opaque:(BOOL)a5;
+- (XBLaunchImageDataProvider)initWithRequest:(id)request contextID:(unsigned int)d opaque:(BOOL)opaque;
 - (id)fetchImage;
 - (void)invalidateImage;
 @end
 
 @implementation XBLaunchImageDataProvider
 
-- (XBLaunchImageDataProvider)initWithRequest:(id)a3 contextID:(unsigned int)a4 opaque:(BOOL)a5
+- (XBLaunchImageDataProvider)initWithRequest:(id)request contextID:(unsigned int)d opaque:(BOOL)opaque
 {
-  v5 = a5;
-  v6 = *&a4;
-  v9 = a3;
+  opaqueCopy = opaque;
+  v6 = *&d;
+  requestCopy = request;
   if (!v6)
   {
     [XBLaunchImageDataProvider initWithRequest:a2 contextID:self opaque:?];
@@ -19,13 +19,13 @@
   if (v6 == -1)
   {
     [XBLaunchImageDataProvider initWithRequest:a2 contextID:self opaque:?];
-    if (v9)
+    if (requestCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v9)
+  else if (requestCopy)
   {
     goto LABEL_5;
   }
@@ -37,8 +37,8 @@ LABEL_5:
   v10 = [(XBLaunchImageDataProvider *)&v34 init];
   if (v10)
   {
-    v11 = [v9 displayConfiguration];
-    [v11 scale];
+    displayConfiguration = [requestCopy displayConfiguration];
+    [displayConfiguration scale];
     v13 = v12;
     memset(&v33, 0, sizeof(v33));
     CGAffineTransformMakeScale(&v33, v12, v12);
@@ -48,15 +48,15 @@ LABEL_5:
     v15 = [v14 initWithContextID:v6 baseTransform:&v32];
     v16 = objc_alloc(MEMORY[0x277D0AE38]);
     v17 = [MEMORY[0x277CBEB70] orderedSetWithObject:v15];
-    v18 = [v16 initWithDisplayConfiguration:v11 layers:v17];
+    v18 = [v16 initWithDisplayConfiguration:displayConfiguration layers:v17];
 
-    [v18 setOpaque:v5];
+    [v18 setOpaque:opaqueCopy];
     [v18 setScale:v13];
-    [v9 referenceSize];
+    [requestCopy referenceSize];
     v20 = v19;
     v22 = v21;
-    v23 = [v9 interfaceOrientation];
-    if ((v23 - 3) >= 2)
+    interfaceOrientation = [requestCopy interfaceOrientation];
+    if ((interfaceOrientation - 3) >= 2)
     {
       v24 = v22;
     }
@@ -66,7 +66,7 @@ LABEL_5:
       v24 = v20;
     }
 
-    if ((v23 - 3) >= 2)
+    if ((interfaceOrientation - 3) >= 2)
     {
       v25 = v20;
     }
@@ -86,7 +86,7 @@ LABEL_5:
     v10->_context = v28;
 
     [(XBSnapshotDataProviderContext *)v10->_context setScale:v13];
-    [(XBSnapshotDataProviderContext *)v10->_context setOpaque:v5];
+    [(XBSnapshotDataProviderContext *)v10->_context setOpaque:opaqueCopy];
   }
 
   return v10;
@@ -94,43 +94,43 @@ LABEL_5:
 
 - (id)fetchImage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_cachedImage)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_cachedImage)
   {
-    if ([(_FBSSnapshot *)v2->_snapshot hasProtectedContent])
+    if ([(_FBSSnapshot *)selfCopy->_snapshot hasProtectedContent])
     {
-      v3 = [objc_alloc(MEMORY[0x277D755B8]) initWithIOSurface:{-[_FBSSnapshot IOSurface](v2->_snapshot, "IOSurface")}];
+      v3 = [objc_alloc(MEMORY[0x277D755B8]) initWithIOSurface:{-[_FBSSnapshot IOSurface](selfCopy->_snapshot, "IOSurface")}];
     }
 
     else
     {
-      v4 = [(_FBSSnapshot *)v2->_snapshot CGImage];
-      if (!v4)
+      cGImage = [(_FBSSnapshot *)selfCopy->_snapshot CGImage];
+      if (!cGImage)
       {
 LABEL_7:
-        [(_FBSSnapshot *)v2->_snapshot invalidate];
-        snapshot = v2->_snapshot;
-        v2->_snapshot = 0;
+        [(_FBSSnapshot *)selfCopy->_snapshot invalidate];
+        snapshot = selfCopy->_snapshot;
+        selfCopy->_snapshot = 0;
 
         goto LABEL_8;
       }
 
       v5 = objc_alloc(MEMORY[0x277D755B8]);
-      [(XBSnapshotDataProviderContext *)v2->_context scale];
-      v3 = [v5 initWithCGImage:v4 scale:0 orientation:?];
+      [(XBSnapshotDataProviderContext *)selfCopy->_context scale];
+      v3 = [v5 initWithCGImage:cGImage scale:0 orientation:?];
     }
 
-    cachedImage = v2->_cachedImage;
-    v2->_cachedImage = v3;
+    cachedImage = selfCopy->_cachedImage;
+    selfCopy->_cachedImage = v3;
 
     goto LABEL_7;
   }
 
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v8 = v2->_cachedImage;
+  v8 = selfCopy->_cachedImage;
 
   return v8;
 }

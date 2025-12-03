@@ -1,22 +1,22 @@
 @interface PGRelationshipSocialGroupAnalyzer
-- (PGRelationshipSocialGroupAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipSocialGroupAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipSocialGroupAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v8 = [WeakRetained graph];
-    v9 = [WeakRetained personNodes];
-    v10 = [PGPeopleInferencesConveniences topPersonNodeIdentifierForTwoPersonSocialGroupsFromPersonNodes:v8 personNodes:v9];
+    graph = [WeakRetained graph];
+    personNodes = [WeakRetained personNodes];
+    v10 = [PGPeopleInferencesConveniences topPersonNodeIdentifierForTwoPersonSocialGroupsFromPersonNodes:graph personNodes:personNodes];
 
     if ([v10 length])
     {
@@ -127,16 +127,16 @@ LABEL_29:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipSocialGroupAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipSocialGroupAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipSocialGroupAnalyzer;
   v5 = [(PGRelationshipSocialGroupAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

@@ -1,7 +1,7 @@
 @interface WAGreetingView
 - (WAGreetingView)init;
-- (WAGreetingView)initWithColor:(id)a3;
-- (WAGreetingView)initWithFrame:(CGRect)a3;
+- (WAGreetingView)initWithColor:(id)color;
+- (WAGreetingView)initWithFrame:(CGRect)frame;
 - (id)_conditionsImage;
 - (id)_temperature;
 - (void)_setupWeatherModel;
@@ -17,17 +17,17 @@
 
 @implementation WAGreetingView
 
-- (WAGreetingView)initWithFrame:(CGRect)a3
+- (WAGreetingView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = WAGreetingView;
-  v3 = [(WAGreetingView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WAGreetingView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(WAGreetingView *)v3 setIsViewCreated:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(WAGreetingView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WAGreetingView *)v4 setBackgroundColor:clearColor];
 
     [(WAGreetingView *)v4 createViews];
     [(WAGreetingView *)v4 startService];
@@ -36,16 +36,16 @@
   return v4;
 }
 
-- (WAGreetingView)initWithColor:(id)a3
+- (WAGreetingView)initWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v8.receiver = self;
   v8.super_class = WAGreetingView;
   v5 = [(WAGreetingView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WAGreetingView *)v5 setLabelColor:v4];
+    [(WAGreetingView *)v5 setLabelColor:colorCopy];
     [(WAGreetingView *)v6 updateLabelColors];
   }
 
@@ -61,8 +61,8 @@
   if (v2)
   {
     [(WAGreetingView *)v2 setIsViewCreated:0];
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(WAGreetingView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WAGreetingView *)v3 setBackgroundColor:clearColor];
 
     [(WAGreetingView *)v3 createViews];
     [(WAGreetingView *)v3 startService];
@@ -73,21 +73,21 @@
 
 - (void)startService
 {
-  v3 = [(WAGreetingView *)self todayModel];
+  todayModel = [(WAGreetingView *)self todayModel];
 
-  if (!v3)
+  if (!todayModel)
   {
     [(WAGreetingView *)self _setupWeatherModel];
   }
 
   objc_initWeak(&location, self);
-  v4 = [(WAGreetingView *)self todayModel];
+  todayModel2 = [(WAGreetingView *)self todayModel];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __30__WAGreetingView_startService__block_invoke;
   v5[3] = &unk_279E682F0;
   objc_copyWeak(&v6, &location);
-  [v4 executeModelUpdateWithCompletion:v5];
+  [todayModel2 executeModelUpdateWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -133,30 +133,30 @@ void __30__WAGreetingView_startService__block_invoke(uint64_t a1, uint64_t a2, v
   v5 = [(WATodayAutoupdatingLocationModel *)v3 initWithPreferences:v4 effectiveBundleIdentifier:@"com.apple.weather"];
   [(WAGreetingView *)self setTodayModel:v5];
 
-  v6 = [(WAGreetingView *)self todayModel];
-  [v6 configureWithInitialCitySource:1 locationServicesActive:1];
+  todayModel = [(WAGreetingView *)self todayModel];
+  [todayModel configureWithInitialCitySource:1 locationServicesActive:1];
 
-  v7 = [(WAGreetingView *)self todayModel];
-  [v7 addObserver:self];
+  todayModel2 = [(WAGreetingView *)self todayModel];
+  [todayModel2 addObserver:self];
 }
 
 - (void)_teardownWeatherModel
 {
-  v3 = [(WAGreetingView *)self todayModel];
-  [v3 removeObserver:self];
+  todayModel = [(WAGreetingView *)self todayModel];
+  [todayModel removeObserver:self];
 
   [(WAGreetingView *)self setTodayModel:0];
 }
 
 - (void)updateLabelColors
 {
-  v3 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-  v4 = [(WAGreetingView *)self labelColor];
-  [v3 setTextColor:v4];
+  natualLanguageDescriptionLabel = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+  labelColor = [(WAGreetingView *)self labelColor];
+  [natualLanguageDescriptionLabel setTextColor:labelColor];
 
-  v6 = [(WAGreetingView *)self temperatureLabel];
-  v5 = [(WAGreetingView *)self labelColor];
-  [v6 setTextColor:v5];
+  temperatureLabel = [(WAGreetingView *)self temperatureLabel];
+  labelColor2 = [(WAGreetingView *)self labelColor];
+  [temperatureLabel setTextColor:labelColor2];
 }
 
 - (void)createViews
@@ -167,8 +167,8 @@ void __30__WAGreetingView_startService__block_invoke(uint64_t a1, uint64_t a2, v
     natualLanguageDescriptionLabel = self->_natualLanguageDescriptionLabel;
     self->_natualLanguageDescriptionLabel = v3;
 
-    v5 = [(WAGreetingView *)self labelColor];
-    if (v5)
+    labelColor = [(WAGreetingView *)self labelColor];
+    if (labelColor)
     {
       [(WAGreetingView *)self labelColor];
     }
@@ -205,8 +205,8 @@ void __30__WAGreetingView_startService__block_invoke(uint64_t a1, uint64_t a2, v
     temperatureLabel = self->_temperatureLabel;
     self->_temperatureLabel = v10;
 
-    v12 = [(WAGreetingView *)self labelColor];
-    if (v12)
+    labelColor2 = [(WAGreetingView *)self labelColor];
+    if (labelColor2)
     {
       [(WAGreetingView *)self labelColor];
     }
@@ -248,80 +248,80 @@ void __30__WAGreetingView_startService__block_invoke(uint64_t a1, uint64_t a2, v
     self->_constraints = v3;
 
     v5 = self->_constraints;
-    v6 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-    v7 = [v6 centerXAnchor];
-    v8 = [(WAGreetingView *)self centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    natualLanguageDescriptionLabel = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+    centerXAnchor = [natualLanguageDescriptionLabel centerXAnchor];
+    centerXAnchor2 = [(WAGreetingView *)self centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [(NSMutableArray *)v5 addObject:v9];
 
     v10 = self->_constraints;
-    v11 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-    v12 = [v11 firstBaselineAnchor];
-    v13 = [(WAGreetingView *)self topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:32.0];
+    natualLanguageDescriptionLabel2 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+    firstBaselineAnchor = [natualLanguageDescriptionLabel2 firstBaselineAnchor];
+    topAnchor = [(WAGreetingView *)self topAnchor];
+    v14 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:32.0];
     [(NSMutableArray *)v10 addObject:v14];
 
     v15 = self->_constraints;
-    v16 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-    v17 = [v16 leadingAnchor];
-    v18 = [(WAGreetingView *)self leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:25.0];
+    natualLanguageDescriptionLabel3 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+    leadingAnchor = [natualLanguageDescriptionLabel3 leadingAnchor];
+    leadingAnchor2 = [(WAGreetingView *)self leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:25.0];
     [(NSMutableArray *)v15 addObject:v19];
 
     v20 = self->_constraints;
-    v21 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-    v22 = [v21 trailingAnchor];
-    v23 = [(WAGreetingView *)self trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:-25.0];
+    natualLanguageDescriptionLabel4 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+    trailingAnchor = [natualLanguageDescriptionLabel4 trailingAnchor];
+    trailingAnchor2 = [(WAGreetingView *)self trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-25.0];
     [(NSMutableArray *)v20 addObject:v24];
 
     v25 = self->_constraints;
-    v26 = [(WAGreetingView *)self conditionImageView];
-    v27 = [v26 widthAnchor];
-    v28 = [v27 constraintEqualToConstant:65.0];
+    conditionImageView = [(WAGreetingView *)self conditionImageView];
+    widthAnchor = [conditionImageView widthAnchor];
+    v28 = [widthAnchor constraintEqualToConstant:65.0];
     [(NSMutableArray *)v25 addObject:v28];
 
     v29 = self->_constraints;
-    v30 = [(WAGreetingView *)self conditionImageView];
-    v31 = [v30 heightAnchor];
-    v32 = [v31 constraintEqualToConstant:65.0];
+    conditionImageView2 = [(WAGreetingView *)self conditionImageView];
+    heightAnchor = [conditionImageView2 heightAnchor];
+    v32 = [heightAnchor constraintEqualToConstant:65.0];
     [(NSMutableArray *)v29 addObject:v32];
 
     v33 = self->_constraints;
-    v34 = [(WAGreetingView *)self conditionImageView];
-    v35 = [v34 trailingAnchor];
-    v36 = [(WAGreetingView *)self centerXAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    conditionImageView3 = [(WAGreetingView *)self conditionImageView];
+    trailingAnchor3 = [conditionImageView3 trailingAnchor];
+    centerXAnchor3 = [(WAGreetingView *)self centerXAnchor];
+    v37 = [trailingAnchor3 constraintEqualToAnchor:centerXAnchor3];
     [(NSMutableArray *)v33 addObject:v37];
 
     v38 = self->_constraints;
-    v39 = [(WAGreetingView *)self conditionImageView];
-    v40 = [v39 centerYAnchor];
-    v41 = [(WAGreetingView *)self temperatureLabel];
-    v42 = [v41 centerYAnchor];
-    v43 = [v40 constraintEqualToAnchor:v42];
+    conditionImageView4 = [(WAGreetingView *)self conditionImageView];
+    centerYAnchor = [conditionImageView4 centerYAnchor];
+    temperatureLabel = [(WAGreetingView *)self temperatureLabel];
+    centerYAnchor2 = [temperatureLabel centerYAnchor];
+    v43 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(NSMutableArray *)v38 addObject:v43];
 
     v44 = self->_constraints;
-    v45 = [(WAGreetingView *)self temperatureLabel];
-    v46 = [v45 firstBaselineAnchor];
-    v47 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-    v48 = [v47 lastBaselineAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48 constant:68.0];
+    temperatureLabel2 = [(WAGreetingView *)self temperatureLabel];
+    firstBaselineAnchor2 = [temperatureLabel2 firstBaselineAnchor];
+    natualLanguageDescriptionLabel5 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+    lastBaselineAnchor = [natualLanguageDescriptionLabel5 lastBaselineAnchor];
+    v49 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:68.0];
     [(NSMutableArray *)v44 addObject:v49];
 
     v50 = self->_constraints;
-    v51 = [(WAGreetingView *)self temperatureLabel];
-    v52 = [v51 leadingAnchor];
-    v53 = [(WAGreetingView *)self centerXAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    temperatureLabel3 = [(WAGreetingView *)self temperatureLabel];
+    leadingAnchor3 = [temperatureLabel3 leadingAnchor];
+    centerXAnchor4 = [(WAGreetingView *)self centerXAnchor];
+    v54 = [leadingAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [(NSMutableArray *)v50 addObject:v54];
 
     v55 = self->_constraints;
-    v56 = [(WAGreetingView *)self temperatureLabel];
-    v57 = [v56 trailingAnchor];
-    v58 = [(WAGreetingView *)self trailingAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
+    temperatureLabel4 = [(WAGreetingView *)self temperatureLabel];
+    trailingAnchor4 = [temperatureLabel4 trailingAnchor];
+    trailingAnchor5 = [(WAGreetingView *)self trailingAnchor];
+    v59 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     [(NSMutableArray *)v55 addObject:v59];
 
     v60 = MEMORY[0x277CCAAD0];
@@ -333,20 +333,20 @@ void __30__WAGreetingView_startService__block_invoke(uint64_t a1, uint64_t a2, v
 
 - (void)updateView
 {
-  v3 = [(WAGreetingView *)self natualLanguageDescriptionLabel];
-  v4 = [(WAGreetingView *)self todayModel];
-  v5 = [v4 forecastModel];
-  v6 = [v5 city];
-  v7 = [v6 naturalLanguageDescription];
-  [v3 setText:v7];
+  natualLanguageDescriptionLabel = [(WAGreetingView *)self natualLanguageDescriptionLabel];
+  todayModel = [(WAGreetingView *)self todayModel];
+  forecastModel = [todayModel forecastModel];
+  city = [forecastModel city];
+  naturalLanguageDescription = [city naturalLanguageDescription];
+  [natualLanguageDescriptionLabel setText:naturalLanguageDescription];
 
-  v8 = [(WAGreetingView *)self conditionImageView];
-  v9 = [(WAGreetingView *)self _conditionsImage];
-  [v8 setImage:v9];
+  conditionImageView = [(WAGreetingView *)self conditionImageView];
+  _conditionsImage = [(WAGreetingView *)self _conditionsImage];
+  [conditionImageView setImage:_conditionsImage];
 
-  v11 = [(WAGreetingView *)self temperatureLabel];
-  v10 = [(WAGreetingView *)self _temperature];
-  [v11 setText:v10];
+  temperatureLabel = [(WAGreetingView *)self temperatureLabel];
+  _temperature = [(WAGreetingView *)self _temperature];
+  [temperatureLabel setText:_temperature];
 }
 
 - (id)_temperature
@@ -356,17 +356,17 @@ void __30__WAGreetingView_startService__block_invoke(uint64_t a1, uint64_t a2, v
     [WAGreetingView _temperature];
   }
 
-  v3 = [MEMORY[0x277D7B2D8] sharedObserver];
-  v4 = [v3 temperatureUnit];
-  [_temperature_temperatureFormatter_0 setOutputUnit:v4];
+  mEMORY[0x277D7B2D8] = [MEMORY[0x277D7B2D8] sharedObserver];
+  temperatureUnit = [mEMORY[0x277D7B2D8] temperatureUnit];
+  [_temperature_temperatureFormatter_0 setOutputUnit:temperatureUnit];
 
   [_temperature_temperatureFormatter_0 setSymbolType:!WAIsChinaSKUAndSimplifiedChinese()];
   v5 = _temperature_temperatureFormatter_0;
-  v6 = [(WAGreetingView *)self todayModel];
-  v7 = [v6 forecastModel];
-  v8 = [v7 currentConditions];
-  v9 = [v8 temperature];
-  v10 = [v5 stringForObjectValue:v9];
+  todayModel = [(WAGreetingView *)self todayModel];
+  forecastModel = [todayModel forecastModel];
+  currentConditions = [forecastModel currentConditions];
+  temperature = [currentConditions temperature];
+  v10 = [v5 stringForObjectValue:temperature];
 
   return v10;
 }
@@ -382,10 +382,10 @@ uint64_t __30__WAGreetingView__temperature__block_invoke()
 
 - (id)_conditionsImage
 {
-  v2 = [(WAGreetingView *)self todayModel];
-  v3 = [v2 forecastModel];
-  v4 = [v3 currentConditions];
-  v5 = WAImageForLegacyConditionCode([v4 conditionCode], 0);
+  todayModel = [(WAGreetingView *)self todayModel];
+  forecastModel = [todayModel forecastModel];
+  currentConditions = [forecastModel currentConditions];
+  v5 = WAImageForLegacyConditionCode([currentConditions conditionCode], 0);
 
   return v5;
 }

@@ -1,19 +1,19 @@
 @interface NRPairingClient
 - (NSString)description;
 - (void)dealloc;
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8;
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock;
 @end
 
 @implementation NRPairingClient
 
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  listenerCopy = listener;
+  sessionCopy = session;
+  configCopy = config;
+  childConfigCopy = childConfig;
+  blockCopy = block;
+  responseBlockCopy = responseBlock;
   if (qword_100228E78 != -1)
   {
     dispatch_once(&qword_100228E78, &stru_1001FA0E8);
@@ -26,12 +26,12 @@
       dispatch_once(&qword_100228E78, &stru_1001FA0E8);
     }
 
-    v149 = v16;
-    v151 = v17;
+    v149 = configCopy;
+    v151 = childConfigCopy;
     v142 = 1621;
-    v143 = self;
-    v144 = v14;
-    v146 = v15;
+    selfCopy = self;
+    v144 = listenerCopy;
+    v146 = sessionCopy;
     v140 = "";
     v141 = "[NRPairingClient requestConfigurationForListener:session:sessionConfig:childConfig:validateAuthBlock:responseBlock:]";
     _NRLogWithArgs();
@@ -39,89 +39,89 @@
 
   if ((self->_state & 0xFE) != 6)
   {
-    v169 = v15;
-    v170 = v19;
-    v20 = [v16 localIdentifier];
-    v21 = [v20 identifierType];
+    v169 = sessionCopy;
+    v170 = responseBlockCopy;
+    localIdentifier = [configCopy localIdentifier];
+    identifierType = [localIdentifier identifierType];
 
-    if (v21 == 11)
+    if (identifierType == 11)
     {
-      v22 = [v16 remoteIdentifier];
-      v23 = [v22 identifierType];
+      remoteIdentifier = [configCopy remoteIdentifier];
+      identifierType2 = [remoteIdentifier identifierType];
 
-      if (v23 == 11)
+      if (identifierType2 == 11)
       {
-        v167 = self;
+        selfCopy2 = self;
         v165 = sub_100163A30(NRDLocalDevice, self->_nrUUID);
-        v24 = [v16 localIdentifier];
-        v25 = [v16 remoteIdentifier];
-        v26 = [v24 isEqual:v25];
+        localIdentifier2 = [configCopy localIdentifier];
+        remoteIdentifier2 = [configCopy remoteIdentifier];
+        v26 = [localIdentifier2 isEqual:remoteIdentifier2];
 
-        v166 = v18;
+        v166 = blockCopy;
         v163 = v26;
-        v164 = v14;
+        v164 = listenerCopy;
         if (v26)
         {
           goto LABEL_29;
         }
 
-        v27 = [v16 localIdentifier];
+        localIdentifier3 = [configCopy localIdentifier];
         if (qword_1002292E8 != -1)
         {
           dispatch_once(&qword_1002292E8, &stru_1001FC558);
         }
 
-        v28 = v167;
+        v28 = selfCopy2;
         v29 = qword_1002292E0;
-        if (([v27 isEqual:v29] & 1) == 0)
+        if (([localIdentifier3 isEqual:v29] & 1) == 0)
         {
-          v30 = [v16 localIdentifier];
+          localIdentifier4 = [configCopy localIdentifier];
           if (qword_1002292F8 != -1)
           {
             dispatch_once(&qword_1002292F8, &stru_1001FC578);
           }
 
           v31 = qword_1002292F0;
-          if (([v30 isEqual:v31] & 1) == 0)
+          if (([localIdentifier4 isEqual:v31] & 1) == 0)
           {
-            v84 = [v16 localIdentifier];
-            v158 = v30;
+            localIdentifier5 = [configCopy localIdentifier];
+            v158 = localIdentifier4;
             v85 = sub_100145B5C();
-            v161 = [v84 isEqual:v85];
+            v161 = [localIdentifier5 isEqual:v85];
 
-            v28 = v167;
+            v28 = selfCopy2;
             if ((v161 & 1) == 0)
             {
-              v15 = v169;
+              sessionCopy = v169;
               if (qword_100228E78 != -1)
               {
                 dispatch_once(&qword_100228E78, &stru_1001FA0E8);
               }
 
-              v14 = v164;
+              listenerCopy = v164;
               v44 = v165;
-              v18 = v166;
-              v19 = v170;
+              blockCopy = v166;
+              responseBlockCopy = v170;
               if (!_NRLogIsLevelEnabled())
               {
                 goto LABEL_131;
               }
 
               v86 = sub_10000A838();
-              v87 = [v16 localIdentifier];
-              v147 = [v16 remoteIdentifier];
+              localIdentifier6 = [configCopy localIdentifier];
+              remoteIdentifier3 = [configCopy remoteIdentifier];
               _NRLogWithArgs();
 
-              v15 = v169;
-              v18 = v166;
+              sessionCopy = v169;
+              blockCopy = v166;
 
               goto LABEL_130;
             }
 
 LABEL_19:
-            v32 = [v16 remoteIdentifier];
-            v33 = [v16 localIdentifier];
-            v34 = sub_1001646B4(NRDLocalDevice, v32, v33, v169);
+            remoteIdentifier4 = [configCopy remoteIdentifier];
+            localIdentifier7 = [configCopy localIdentifier];
+            v34 = sub_1001646B4(NRDLocalDevice, remoteIdentifier4, localIdentifier7, v169);
 
             if (v34)
             {
@@ -138,7 +138,7 @@ LABEL_19:
                 }
 
                 v35 = qword_100228E70;
-                v143 = v28;
+                selfCopy = v28;
                 v144 = v34->_identity;
                 v142 = 1658;
                 v140 = "";
@@ -157,21 +157,21 @@ LABEL_19:
                 {
 
 LABEL_29:
-                  v39 = [v16 localIdentifier];
+                  localIdentifier8 = [configCopy localIdentifier];
                   if (qword_100229328 != -1)
                   {
                     dispatch_once(&qword_100229328, &stru_1001FC5D8);
                   }
 
-                  v40 = v167;
+                  v40 = selfCopy2;
                   v41 = qword_100229320;
-                  v42 = [v39 isEqual:v41];
+                  v42 = [localIdentifier8 isEqual:v41];
 
                   if (v42)
                   {
-                    sub_10000A944(v167, &v167->_ikeSessionPairing);
-                    objc_storeStrong(&v167->_ikeSessionPairing, a4);
-                    sub_10000AAB8(v167);
+                    sub_10000A944(selfCopy2, &selfCopy2->_ikeSessionPairing);
+                    objc_storeStrong(&selfCopy2->_ikeSessionPairing, session);
+                    sub_10000AAB8(selfCopy2);
                     v43 = [[NEIKEv2AuthenticationProtocol alloc] initWithMethod:2];
                     if (qword_100229328 != -1)
                     {
@@ -200,9 +200,9 @@ LABEL_29:
 
                     [v46 setSharedSecret:v48];
 
-                    v49 = [v46 sharedSecret];
+                    sharedSecret = [v46 sharedSecret];
 
-                    if (v49)
+                    if (sharedSecret)
                     {
                       if (v46)
                       {
@@ -217,23 +217,23 @@ LABEL_29:
                           _NRLogWithArgs();
                         }
 
-                        nrUUID = v167->_nrUUID;
+                        nrUUID = selfCopy2->_nrUUID;
                         v171[0] = _NSConcreteStackBlock;
                         v171[1] = 3221225472;
                         v171[2] = sub_10000B048;
                         v171[3] = &unk_1001FB178;
-                        v171[4] = v167;
+                        v171[4] = selfCopy2;
                         v172 = v46;
-                        v173 = v17;
+                        v173 = childConfigCopy;
                         v174 = v170;
                         v52 = v46;
-                        v19 = v170;
+                        responseBlockCopy = v170;
                         sub_10016D738(NRDLocalDevice, nrUUID, 1, 0, v171);
 
                         goto LABEL_89;
                       }
 
-                      v19 = v170;
+                      responseBlockCopy = v170;
                       v170[2](v170, 0, 0, 0);
                     }
 
@@ -242,77 +242,77 @@ LABEL_29:
                       v121 = sub_10000A838();
                       IsLevelEnabled = _NRLogIsLevelEnabled();
 
-                      v19 = v170;
+                      responseBlockCopy = v170;
                       if (IsLevelEnabled)
                       {
                         v123 = sub_10000A838();
                         _NRLogWithArgs();
 
-                        v19 = v170;
+                        responseBlockCopy = v170;
                       }
                     }
 
 LABEL_89:
-                    v14 = v164;
-                    v15 = v169;
-                    v18 = v166;
+                    listenerCopy = v164;
+                    sessionCopy = v169;
+                    blockCopy = v166;
 LABEL_131:
 
                     goto LABEL_132;
                   }
 
-                  v55 = [v16 localIdentifier];
+                  localIdentifier9 = [configCopy localIdentifier];
                   if (qword_1002292E8 != -1)
                   {
                     dispatch_once(&qword_1002292E8, &stru_1001FC558);
                   }
 
                   v56 = qword_1002292E0;
-                  if (([v55 isEqual:v56] & 1) == 0)
+                  if (([localIdentifier9 isEqual:v56] & 1) == 0)
                   {
-                    v57 = [v16 localIdentifier];
+                    localIdentifier10 = [configCopy localIdentifier];
                     if (qword_1002292F8 != -1)
                     {
                       dispatch_once(&qword_1002292F8, &stru_1001FC578);
                     }
 
                     v58 = qword_1002292F0;
-                    if (([v57 isEqual:v58] & 1) == 0)
+                    if (([localIdentifier10 isEqual:v58] & 1) == 0)
                     {
-                      v88 = [v16 localIdentifier];
+                      localIdentifier11 = [configCopy localIdentifier];
                       v89 = sub_100145B5C();
-                      v162 = [v88 isEqual:v89];
+                      v162 = [localIdentifier11 isEqual:v89];
 
                       if ((v162 & 1) == 0)
                       {
                         v90 = sub_10000A838();
                         v91 = _NRLogIsLevelEnabled();
 
-                        v14 = v164;
-                        v15 = v169;
+                        listenerCopy = v164;
+                        sessionCopy = v169;
                         if (v91)
                         {
                           v92 = sub_10000A838();
-                          v145 = [v16 localIdentifier];
+                          localIdentifier12 = [configCopy localIdentifier];
                           _NRLogWithArgs();
                         }
 
-                        v19 = v170;
+                        responseBlockCopy = v170;
                         v170[2](v170, 0, 0, 0);
-                        v18 = v166;
+                        blockCopy = v166;
                         v44 = v165;
                         goto LABEL_131;
                       }
 
 LABEL_66:
-                      v59 = [v16 localIdentifier];
+                      localIdentifier13 = [configCopy localIdentifier];
                       if (qword_1002292F8 != -1)
                       {
                         dispatch_once(&qword_1002292F8, &stru_1001FC578);
                       }
 
                       v60 = qword_1002292F0;
-                      v61 = [v59 isEqual:v60];
+                      v61 = [localIdentifier13 isEqual:v60];
 
                       if (v61)
                       {
@@ -321,14 +321,14 @@ LABEL_66:
 
                       else
                       {
-                        v63 = [v16 localIdentifier];
+                        localIdentifier14 = [configCopy localIdentifier];
                         if (qword_100229308 != -1)
                         {
                           dispatch_once(&qword_100229308, &stru_1001FC598);
                         }
 
                         v64 = qword_100229300;
-                        v65 = [v63 isEqual:v64];
+                        v65 = [localIdentifier14 isEqual:v64];
 
                         if (v65)
                         {
@@ -341,17 +341,17 @@ LABEL_66:
                         }
                       }
 
-                      v18 = v166;
-                      v15 = v169;
+                      blockCopy = v166;
+                      sessionCopy = v169;
                       v66 = v169;
                       v67 = v166;
-                      if ((v167->_state & 0xFE) == 6)
+                      if ((selfCopy2->_state & 0xFE) == 6)
                       {
                         v68 = 0;
                         v44 = v165;
 LABEL_113:
 
-                        if (v17)
+                        if (childConfigCopy)
                         {
                           v114 = *(v40 + 40);
                           if (v114 && (v115 = v114[11], v114, v115 == 1))
@@ -399,7 +399,7 @@ LABEL_113:
                           (v170[2])(v170, v68, 0);
                         }
 
-                        v14 = v164;
+                        listenerCopy = v164;
                         goto LABEL_130;
                       }
 
@@ -415,15 +415,15 @@ LABEL_113:
                         }
 
                         v68 = 0;
-                        v40 = v167;
-                        v15 = v169;
-                        v18 = v166;
+                        v40 = selfCopy2;
+                        sessionCopy = v169;
+                        blockCopy = v166;
                         v44 = v165;
                         goto LABEL_113;
                       }
 
                       String = NRDataProtectionClassCreateString();
-                      v168 = sub_100163A30(NRDLocalDevice, v167->_nrUUID);
+                      v168 = sub_100163A30(NRDLocalDevice, selfCopy2->_nrUUID);
                       v70 = sub_100164D70(v168, v62);
                       v155 = String;
                       v156 = v70;
@@ -475,7 +475,7 @@ LABEL_105:
                           v100 = [v97 initWithWithAttributes:v99];
                           [v153 setConfigurationReply:v100];
 
-                          v18 = v166;
+                          blockCopy = v166;
                         }
 
                         v101 = sub_10000B384(v40, 1);
@@ -486,7 +486,7 @@ LABEL_105:
                           v107 = sub_10000BA30(v40, v62);
                           sub_10000A944(v40, v107);
                           v108 = sub_10000BA30(v40, v62);
-                          objc_storeStrong(v108, a4);
+                          objc_storeStrong(v108, session);
                           sub_10000BBA4(v40, v62);
                           sub_10000A88C(v40, 3016, @"%@ %@", v109, v110, v111, v112, v113, v155);
                           v68 = v153;
@@ -501,7 +501,7 @@ LABEL_105:
                         v44 = v165;
 
                         v93 = v168;
-                        v15 = v169;
+                        sessionCopy = v169;
                         goto LABEL_112;
                       }
 
@@ -544,7 +544,7 @@ LABEL_151:
 LABEL_103:
                             v159 = v83;
 LABEL_104:
-                            v18 = v166;
+                            blockCopy = v166;
                             goto LABEL_105;
                           }
 
@@ -564,13 +564,13 @@ LABEL_104:
                 v135 = sub_10000A838();
                 v136 = _NRLogIsLevelEnabled();
 
-                v28 = v167;
+                v28 = selfCopy2;
                 if (v136)
                 {
                   v131 = sub_10000A838();
                   v134 = v34->_identity;
                   v148 = v34->_nrUUID;
-                  v150 = v167->_nrUUID;
+                  v150 = selfCopy2->_nrUUID;
                   _NRLogWithArgs();
 
                   goto LABEL_141;
@@ -605,18 +605,18 @@ LABEL_141:
                 _NRLogWithArgs();
 LABEL_142:
 
-                v28 = v167;
+                v28 = selfCopy2;
               }
             }
 
             v44 = v165;
             sub_10000A88C(v28, 3023, @"%@ %@", v126, v127, v128, v129, v130, v169);
 
-            v15 = v169;
-            v14 = v164;
-            v18 = v166;
+            sessionCopy = v169;
+            listenerCopy = v164;
+            blockCopy = v166;
 LABEL_130:
-            v19 = v170;
+            responseBlockCopy = v170;
             goto LABEL_131;
           }
         }
@@ -629,8 +629,8 @@ LABEL_130:
         dispatch_once(&qword_100228E78, &stru_1001FA0E8);
       }
 
-      v15 = v169;
-      v19 = v170;
+      sessionCopy = v169;
+      responseBlockCopy = v170;
       if (_NRLogIsLevelEnabled())
       {
         if (qword_100228E78 != -1)
@@ -639,13 +639,13 @@ LABEL_130:
         }
 
         v53 = qword_100228E70;
-        v54 = [v16 remoteIdentifier];
-        [v54 identifierType];
+        remoteIdentifier5 = [configCopy remoteIdentifier];
+        [remoteIdentifier5 identifierType];
 LABEL_57:
         _NRLogWithArgs();
 
-        v15 = v169;
-        v19 = v170;
+        sessionCopy = v169;
+        responseBlockCopy = v170;
       }
     }
 
@@ -656,8 +656,8 @@ LABEL_57:
         dispatch_once(&qword_100228E78, &stru_1001FA0E8);
       }
 
-      v15 = v169;
-      v19 = v170;
+      sessionCopy = v169;
+      responseBlockCopy = v170;
       if (_NRLogIsLevelEnabled())
       {
         if (qword_100228E78 != -1)
@@ -666,8 +666,8 @@ LABEL_57:
         }
 
         v53 = qword_100228E70;
-        v54 = [v16 localIdentifier];
-        [v54 identifierType];
+        remoteIdentifier5 = [configCopy localIdentifier];
+        [remoteIdentifier5 identifierType];
         goto LABEL_57;
       }
     }

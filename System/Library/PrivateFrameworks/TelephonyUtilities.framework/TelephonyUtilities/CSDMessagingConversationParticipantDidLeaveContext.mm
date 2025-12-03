@@ -1,22 +1,22 @@
 @interface CSDMessagingConversationParticipantDidLeaveContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLeaveReason:(id)a3;
+- (int)StringAsLeaveReason:(id)reason;
 - (int)leaveReason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationParticipantDidLeaveContext
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -42,25 +42,25 @@
   }
 }
 
-- (int)StringAsLeaveReason:(id)a3
+- (int)StringAsLeaveReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unspecified"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Unspecified"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Handoff"])
+  else if ([reasonCopy isEqualToString:@"Handoff"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GreenTea"])
+  else if ([reasonCopy isEqualToString:@"GreenTea"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ExitScreenMode"])
+  else if ([reasonCopy isEqualToString:@"ExitScreenMode"])
   {
     v4 = 3;
   }
@@ -78,8 +78,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationParticipantDidLeaveContext;
   v3 = [(CSDMessagingConversationParticipantDidLeaveContext *)&v7 description];
-  v4 = [(CSDMessagingConversationParticipantDidLeaveContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationParticipantDidLeaveContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -115,16 +115,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -132,31 +132,31 @@
   {
     leaveReason = self->_leaveReason;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_version;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_version;
+    *(toCopy + 16) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_leaveReason;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_leaveReason;
+    *(toCopy + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -174,33 +174,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_version != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_version != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_leaveReason != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_leaveReason != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
@@ -239,20 +239,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_version = *(v4 + 3);
+    self->_version = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_leaveReason = *(v4 + 2);
+    self->_leaveReason = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

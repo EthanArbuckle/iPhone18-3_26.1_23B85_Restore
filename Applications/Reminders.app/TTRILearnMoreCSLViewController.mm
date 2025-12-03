@@ -1,5 +1,5 @@
 @interface TTRILearnMoreCSLViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range;
 - (UIImageView)filterImageView;
 - (UIStackView)smartListStackView;
 - (UITextView)addRemindersTextView;
@@ -9,8 +9,8 @@
 - (UITextView)makeSmartListBodyTextView;
 - (UITextView)whySmartListsExampleBodyTextView;
 - (UITextView)whySmartListsTextView;
-- (_TtC9Reminders30TTRILearnMoreCSLViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapDoneButton:(id)a3;
+- (_TtC9Reminders30TTRILearnMoreCSLViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapDoneButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -88,11 +88,11 @@
   return Strong;
 }
 
-- (void)didTapDoneButton:(id)a3
+- (void)didTapDoneButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -101,30 +101,30 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1001840F0();
   sub_10000B070(v6);
 }
 
-- (_TtC9Reminders30TTRILearnMoreCSLViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders30TTRILearnMoreCSLViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  LOBYTE(self) = sub_1002F250C(v11);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = sub_1002F250C(viewCopy);
 
   (*(v8 + 8))(v10, v7);
   return self & 1;

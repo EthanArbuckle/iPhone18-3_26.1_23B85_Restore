@@ -1,7 +1,7 @@
 @interface MBIgnoredAccountsTracker
-+ (BOOL)_isEnterpriseAccount:(id)a3;
-- (BOOL)addAccountWithDSID:(id)a3;
-- (BOOL)isIgnoredAppleID:(id)a3;
++ (BOOL)_isEnterpriseAccount:(id)account;
+- (BOOL)addAccountWithDSID:(id)d;
+- (BOOL)isIgnoredAppleID:(id)d;
 - (MBIgnoredAccountsTracker)init;
 @end
 
@@ -34,21 +34,21 @@
   return v2;
 }
 
-+ (BOOL)_isEnterpriseAccount:(id)a3
++ (BOOL)_isEnterpriseAccount:(id)account
 {
-  v3 = a3;
-  if (!v3)
+  accountCopy = account;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBIgnoredAccountsTracker _isEnterpriseAccount:]", "MBIgnoredAccountsTracker.m", 37, "account");
   }
 
-  v4 = v3;
-  if (![v3 aa_isManagedAppleID])
+  v4 = accountCopy;
+  if (![accountCopy aa_isManagedAppleID])
   {
-    v5 = [v4 personaIdentifier];
-    if (v5)
+    personaIdentifier = [v4 personaIdentifier];
+    if (personaIdentifier)
     {
-      v7 = [UMUserPersonaAttributes personaAttributesForPersonaUniqueString:v5];
+      v7 = [UMUserPersonaAttributes personaAttributesForPersonaUniqueString:personaIdentifier];
       v6 = v7 != 0;
       v8 = MBGetDefaultLog();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -57,7 +57,7 @@
         if (v9)
         {
           *buf = 138543362;
-          v13 = v5;
+          v13 = personaIdentifier;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Failed to fetch the persona attributes for persona %{public}@", buf, 0xCu);
           goto LABEL_19;
         }
@@ -70,15 +70,15 @@ LABEL_20:
       if (v9)
       {
         *buf = 138543618;
-        v13 = v5;
+        v13 = personaIdentifier;
         v14 = 2112;
         v15 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetched the attributes for persona %{public}@: %@", buf, 0x16u);
         _MBLog();
       }
 
-      v10 = [v7 userPersonaUniqueString];
-      if (([v5 isEqualToString:v10]& 1) == 0)
+      userPersonaUniqueString = [v7 userPersonaUniqueString];
+      if (([personaIdentifier isEqualToString:userPersonaUniqueString]& 1) == 0)
       {
         __assert_rtn("+[MBIgnoredAccountsTracker _isEnterpriseAccount:]", "MBIgnoredAccountsTracker.m", 53, "[personaIdentifier isEqualToString:attributes.userPersonaUniqueString]");
       }
@@ -89,7 +89,7 @@ LABEL_20:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v13 = v5;
+          v13 = personaIdentifier;
           v14 = 2112;
           v15 = v4;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Found an enterprise persona (%@) for account %@", buf, 0x16u);
@@ -120,12 +120,12 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v5 = MBGetDefaultLog();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  personaIdentifier = MBGetDefaultLog();
+  if (os_log_type_enabled(personaIdentifier, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v13 = v4;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Account is marked as managed %@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, personaIdentifier, OS_LOG_TYPE_DEFAULT, "Account is marked as managed %@", buf, 0xCu);
     _MBLog();
   }
 
@@ -135,34 +135,34 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)addAccountWithDSID:(id)a3
+- (BOOL)addAccountWithDSID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToNumber:&off_1003E0F78] & 1) == 0)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && ([dCopy isEqualToNumber:&off_1003E0F78] & 1) == 0)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    if ([(NSMutableSet *)v8->_ignoredDSIDs containsObject:v5])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(NSMutableSet *)selfCopy->_ignoredDSIDs containsObject:v5])
     {
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
 
       v6 = 0;
       goto LABEL_4;
     }
 
-    v9 = [(NSMutableSet *)v8->_allowedDSIDs containsObject:v5];
-    objc_sync_exit(v8);
+    v9 = [(NSMutableSet *)selfCopy->_allowedDSIDs containsObject:v5];
+    objc_sync_exit(selfCopy);
 
     if ((v9 & 1) == 0)
     {
       v10 = +[ACAccountStore defaultStore];
-      v11 = [v5 stringValue];
-      v12 = [v10 aa_appleAccountWithPersonID:v11];
+      stringValue = [v5 stringValue];
+      v12 = [v10 aa_appleAccountWithPersonID:stringValue];
 
       if (v12)
       {
-        v13 = [v12 username];
+        username = [v12 username];
         v14 = [objc_opt_class() _isEnterpriseAccount:v12];
         v15 = MBGetDefaultLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -180,29 +180,29 @@ LABEL_22:
 
           v23 = v16;
           v24 = 2112;
-          v25 = v13;
+          v25 = username;
           v26 = 2112;
           v27 = v5;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s account: %@/%@", buf, 0x20u);
-          v20 = v13;
+          v20 = username;
           v21 = v5;
           v19 = v16;
           _MBLog();
         }
 
-        v17 = v8;
+        v17 = selfCopy;
         objc_sync_enter(v17);
         if (v14)
         {
-          [(NSMutableSet *)v8->_ignoredDSIDs addObject:v5];
-          if (v13)
+          [(NSMutableSet *)selfCopy->_ignoredDSIDs addObject:v5];
+          if (username)
           {
-            [v17[4] addObject:v13];
+            [v17[4] addObject:username];
           }
 
           v6 = 0;
 LABEL_24:
-          objc_sync_exit(v8);
+          objc_sync_exit(selfCopy);
 
           goto LABEL_4;
         }
@@ -220,14 +220,14 @@ LABEL_24:
           _MBLog();
         }
 
-        objc_sync_enter(v8);
-        v13 = 0;
+        objc_sync_enter(selfCopy);
+        username = 0;
       }
 
-      [(NSMutableSet *)v8->_allowedDSIDs addObject:v5, v19, v20, v21];
-      if (v13)
+      [(NSMutableSet *)selfCopy->_allowedDSIDs addObject:v5, v19, v20, v21];
+      if (username)
       {
-        [(NSMutableSet *)v8->_allowedAppleIDs addObject:v13];
+        [(NSMutableSet *)selfCopy->_allowedAppleIDs addObject:username];
       }
 
       v6 = 1;
@@ -241,20 +241,20 @@ LABEL_4:
   return v6;
 }
 
-- (BOOL)isIgnoredAppleID:(id)a3
+- (BOOL)isIgnoredAppleID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableSet *)v5->_ignoredAppleIDs containsObject:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableSet *)selfCopy->_ignoredAppleIDs containsObject:dCopy];
     if ((v6 & 1) == 0)
     {
-      [(NSMutableSet *)v5->_allowedAppleIDs containsObject:v4];
+      [(NSMutableSet *)selfCopy->_allowedAppleIDs containsObject:dCopy];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else

@@ -1,10 +1,10 @@
 @interface PGGraphHighlightNodeCollection
-+ (id)dayHighlightNodesInGraph:(id)a3;
-+ (id)highlightNodeAsCollectionByHighlightUUIDForArrayOfHighlightUUIDs:(id)a3 inGraph:(id)a4;
-+ (id)highlightNodeAsCollectionByHighlightUUIDForHighlightUUIDs:(id)a3 inGraph:(id)a4;
-+ (id)highlightNodeForUUID:(id)a3 inGraph:(id)a4;
-+ (id)highlightNodesForArrayOfUUIDs:(id)a3 inGraph:(id)a4;
-+ (id)highlightNodesForUUIDs:(id)a3 inGraph:(id)a4;
++ (id)dayHighlightNodesInGraph:(id)graph;
++ (id)highlightNodeAsCollectionByHighlightUUIDForArrayOfHighlightUUIDs:(id)ds inGraph:(id)graph;
++ (id)highlightNodeAsCollectionByHighlightUUIDForHighlightUUIDs:(id)ds inGraph:(id)graph;
++ (id)highlightNodeForUUID:(id)d inGraph:(id)graph;
++ (id)highlightNodesForArrayOfUUIDs:(id)ds inGraph:(id)graph;
++ (id)highlightNodesForUUIDs:(id)ds inGraph:(id)graph;
 - (NSSet)localIdentifiers;
 - (NSSet)uuids;
 - (PGGraphHighlightGroupNodeCollection)highlightGroupNodes;
@@ -143,26 +143,26 @@ void __39__PGGraphHighlightNodeCollection_uuids__block_invoke(uint64_t a1, uint6
 
 - (id)searchConfidenceSceneNodes
 {
-  v2 = [(PGGraphHighlightNodeCollection *)self momentNodes];
-  v3 = [v2 searchConfidenceSceneNodes];
+  momentNodes = [(PGGraphHighlightNodeCollection *)self momentNodes];
+  searchConfidenceSceneNodes = [momentNodes searchConfidenceSceneNodes];
 
-  return v3;
+  return searchConfidenceSceneNodes;
 }
 
 - (id)highConfidenceSceneNodes
 {
-  v2 = [(PGGraphHighlightNodeCollection *)self momentNodes];
-  v3 = [v2 highConfidenceSceneNodes];
+  momentNodes = [(PGGraphHighlightNodeCollection *)self momentNodes];
+  highConfidenceSceneNodes = [momentNodes highConfidenceSceneNodes];
 
-  return v3;
+  return highConfidenceSceneNodes;
 }
 
 - (id)sceneNodes
 {
-  v2 = [(PGGraphHighlightNodeCollection *)self momentNodes];
-  v3 = [v2 sceneNodes];
+  momentNodes = [(PGGraphHighlightNodeCollection *)self momentNodes];
+  sceneNodes = [momentNodes sceneNodes];
 
-  return v3;
+  return sceneNodes;
 }
 
 - (PGGraphHighlightGroupNodeCollection)highlightGroupNodes
@@ -181,54 +181,54 @@ void __39__PGGraphHighlightNodeCollection_uuids__block_invoke(uint64_t a1, uint6
   return v4;
 }
 
-+ (id)highlightNodeAsCollectionByHighlightUUIDForArrayOfHighlightUUIDs:(id)a3 inGraph:(id)a4
++ (id)highlightNodeAsCollectionByHighlightUUIDForArrayOfHighlightUUIDs:(id)ds inGraph:(id)graph
 {
-  v4 = [PGGraphHighlightNodeCollection highlightNodesForArrayOfUUIDs:a3 inGraph:a4];
-  v5 = [v4 highlightNodeAsCollectionByHighlightUUID];
+  v4 = [PGGraphHighlightNodeCollection highlightNodesForArrayOfUUIDs:ds inGraph:graph];
+  highlightNodeAsCollectionByHighlightUUID = [v4 highlightNodeAsCollectionByHighlightUUID];
 
-  return v5;
+  return highlightNodeAsCollectionByHighlightUUID;
 }
 
-+ (id)highlightNodeAsCollectionByHighlightUUIDForHighlightUUIDs:(id)a3 inGraph:(id)a4
++ (id)highlightNodeAsCollectionByHighlightUUIDForHighlightUUIDs:(id)ds inGraph:(id)graph
 {
-  v4 = [PGGraphHighlightNodeCollection highlightNodesForUUIDs:a3 inGraph:a4];
-  v5 = [v4 highlightNodeAsCollectionByHighlightUUID];
+  v4 = [PGGraphHighlightNodeCollection highlightNodesForUUIDs:ds inGraph:graph];
+  highlightNodeAsCollectionByHighlightUUID = [v4 highlightNodeAsCollectionByHighlightUUID];
 
-  return v5;
+  return highlightNodeAsCollectionByHighlightUUID;
 }
 
-+ (id)dayHighlightNodesInGraph:(id)a3
++ (id)dayHighlightNodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphHighlightNode filter];
-  v6 = [a1 nodesMatchingFilter:v5 inGraph:v4];
+  v6 = [self nodesMatchingFilter:v5 inGraph:graphCopy];
 
   return v6;
 }
 
-+ (id)highlightNodeForUUID:(id)a3 inGraph:(id)a4
++ (id)highlightNodeForUUID:(id)d inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHighlightNode filterWithUUID:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHighlightNode filterWithUUID:d];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)highlightNodesForArrayOfUUIDs:(id)a3 inGraph:(id)a4
++ (id)highlightNodesForArrayOfUUIDs:(id)ds inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHighlightNode filterWithUUIDs:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHighlightNode filterWithUUIDs:ds];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }
 
-+ (id)highlightNodesForUUIDs:(id)a3 inGraph:(id)a4
++ (id)highlightNodesForUUIDs:(id)ds inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphHighlightNode filterWithUUIDs:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphHighlightNode filterWithUUIDs:ds];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

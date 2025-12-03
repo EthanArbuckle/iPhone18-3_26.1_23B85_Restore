@@ -2,18 +2,18 @@
 + (NSArray)subscribedVoices;
 + (SiriTTSDaemonSession)siriTTSSession;
 + (id)_allTTSAssets;
-+ (id)_preferredNameForLanguage:(id)a3;
++ (id)_preferredNameForLanguage:(id)language;
 + (id)_queue;
-+ (id)_siriVoiceForTTSAsset:(id)a3;
-+ (id)ttsAssetForLocaleIdentifier:(id)a3 onDeviceOnly:(BOOL)a4;
-+ (id)voiceForLocaleIdentifier:(id)a3;
-+ (int64_t)_genderForLocaleIdentifier:(id)a3;
++ (id)_siriVoiceForTTSAsset:(id)asset;
++ (id)ttsAssetForLocaleIdentifier:(id)identifier onDeviceOnly:(BOOL)only;
++ (id)voiceForLocaleIdentifier:(id)identifier;
++ (int64_t)_genderForLocaleIdentifier:(id)identifier;
 + (int64_t)_preferredGender;
 + (int64_t)preferredVoiceType;
-+ (void)_subscribeToVoice:(id)a3;
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6;
-+ (void)downloadVoiceAssetsForLanguagePair:(id)a3;
-+ (void)setSubscribedVoices:(id)a3;
++ (void)_subscribeToVoice:(id)voice;
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion;
++ (void)downloadVoiceAssetsForLanguagePair:(id)pair;
++ (void)setSubscribedVoices:(id)voices;
 + (void)subscribedVoices;
 @end
 
@@ -34,46 +34,46 @@
 + (int64_t)_preferredGender
 {
   v2 = _AFPreferencesOutputVoice();
-  v3 = [v2 gender];
+  gender = [v2 gender];
 
-  return v3;
+  return gender;
 }
 
-+ (id)_preferredNameForLanguage:(id)a3
++ (id)_preferredNameForLanguage:(id)language
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  v3 = [language stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
   v4 = _AFPreferencesOutputVoice();
-  v5 = [v4 languageCode];
-  if ([v5 isEqualToString:v3])
+  languageCode = [v4 languageCode];
+  if ([languageCode isEqualToString:v3])
   {
-    v6 = [v4 name];
+    name = [v4 name];
   }
 
   else
   {
-    v6 = 0;
+    name = 0;
   }
 
-  return v6;
+  return name;
 }
 
 + (int64_t)preferredVoiceType
 {
-  v2 = [a1 _preferredGender];
-  if (v2 == 1)
+  _preferredGender = [self _preferredGender];
+  if (_preferredGender == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 2);
+    return 2 * (_preferredGender == 2);
   }
 }
 
-+ (int64_t)_genderForLocaleIdentifier:(id)a3
++ (int64_t)_genderForLocaleIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CBEAF8] lt_localeWithLTIdentifier:a3];
+  v3 = [MEMORY[0x277CBEAF8] lt_localeWithLTIdentifier:identifier];
   v4 = _LTPreferredVoiceTypeForLocale(v3);
   v5 = 2;
   if (v4 != 2)
@@ -94,17 +94,17 @@
   return v6;
 }
 
-+ (id)ttsAssetForLocaleIdentifier:(id)a3 onDeviceOnly:(BOOL)a4
++ (id)ttsAssetForLocaleIdentifier:(id)identifier onDeviceOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v53[2] = *MEMORY[0x277D85DE8];
-  v6 = [a1 _mapIdentifierForSiriTTS:a3];
+  v6 = [self _mapIdentifierForSiriTTS:identifier];
   v7 = [v6 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
-  v8 = [a1 _preferredNameForLanguage:v7];
+  v8 = [self _preferredNameForLanguage:v7];
   v52[0] = &unk_284868020;
   v52[1] = &unk_284868038;
   v53[0] = v7;
-  v45 = [a1 _genderForLocaleIdentifier:v6];
+  v45 = [self _genderForLocaleIdentifier:v6];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v53[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
@@ -115,19 +115,19 @@
     [v11 setObject:v8 forKey:&unk_284868050];
   }
 
-  if (v4)
+  if (onlyCopy)
   {
     [v11 setObject:&unk_284868068 forKey:&unk_284868080];
   }
 
-  v12 = [MEMORY[0x277D61490] gryphonVoice];
-  v51[0] = v12;
-  v13 = [MEMORY[0x277D61490] customVoice];
-  v51[1] = v13;
-  v14 = [MEMORY[0x277D61490] combinedVoice];
-  v51[2] = v14;
-  v15 = [MEMORY[0x277D61490] vocalizerVoice];
-  v51[3] = v15;
+  gryphonVoice = [MEMORY[0x277D61490] gryphonVoice];
+  v51[0] = gryphonVoice;
+  customVoice = [MEMORY[0x277D61490] customVoice];
+  v51[1] = customVoice;
+  combinedVoice = [MEMORY[0x277D61490] combinedVoice];
+  v51[2] = combinedVoice;
+  vocalizerVoice = [MEMORY[0x277D61490] vocalizerVoice];
+  v51[3] = vocalizerVoice;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:4];
 
   v17 = [MEMORY[0x277D61480] bestAssetOfTypes:v16 matching:v11];
@@ -150,12 +150,12 @@
     [_LTDTTSAssetService ttsAssetForLocaleIdentifier:v20 onDeviceOnly:?];
   }
 
-  v21 = [a1 _allTTSAssets];
+  _allTTSAssets = [self _allTTSAssets];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v22 = [v21 objectForKeyedSubscript:v6];
+  v22 = [_allTTSAssets objectForKeyedSubscript:v6];
   v23 = [v22 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (!v23)
   {
@@ -164,7 +164,7 @@
   }
 
   v24 = v23;
-  v39 = v21;
+  v39 = _allTTSAssets;
   v40 = v16;
   v41 = v6;
   v25 = 0;
@@ -182,18 +182,18 @@
       }
 
       v28 = *(*(&v46 + 1) + 8 * v27);
-      v29 = [v28 gender];
+      gender = [v28 gender];
       if (v8)
       {
-        v30 = [v28 name];
-        v31 = [v30 caseInsensitiveCompare:v8];
+        name = [v28 name];
+        v31 = [name caseInsensitiveCompare:v8];
 
-        if (v29 == v45 && v31 == 0)
+        if (gender == v45 && v31 == 0)
         {
           v25 = 3;
 LABEL_28:
-          v33 = [v28 weight];
-          if (v33 <= [v17 weight])
+          weight = [v28 weight];
+          if (weight <= [v17 weight])
           {
             v28 = v17;
           }
@@ -212,7 +212,7 @@ LABEL_30:
         }
       }
 
-      if (v25 < 2 && v29 == v45)
+      if (v25 < 2 && gender == v45)
       {
         v25 = 1;
         goto LABEL_28;
@@ -260,15 +260,15 @@ LABEL_42:
   return v19;
 }
 
-+ (id)voiceForLocaleIdentifier:(id)a3
++ (id)voiceForLocaleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 ttsAssetForLocaleIdentifier:v4 onDeviceOnly:1];
-  v6 = [v5 provider];
-  if (v6)
+  identifierCopy = identifier;
+  v5 = [self ttsAssetForLocaleIdentifier:identifierCopy onDeviceOnly:1];
+  provider = [v5 provider];
+  if (provider)
   {
-    v7 = [a1 _siriVoiceForTTSAsset:v6];
+    v7 = [self _siriVoiceForTTSAsset:provider];
     if (v7)
     {
       goto LABEL_6;
@@ -279,15 +279,15 @@ LABEL_42:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v6 identifier];
+    identifier = [provider identifier];
     v15 = 138543618;
-    v16 = v10;
+    v16 = identifier;
     v17 = 2114;
-    v18 = v4;
+    v18 = identifierCopy;
     _os_log_impl(&dword_232E53000, v9, OS_LOG_TYPE_INFO, "SiriTTS cannot load voice for TTS asset %{public}@, attempt default voice for language %{public}@", &v15, 0x16u);
   }
 
-  v7 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:v4 name:0];
+  v7 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:identifierCopy name:0];
   if ([v7 footprint])
   {
 LABEL_6:
@@ -311,29 +311,29 @@ LABEL_6:
   return v11;
 }
 
-+ (id)_siriVoiceForTTSAsset:(id)a3
++ (id)_siriVoiceForTTSAsset:(id)asset
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  assetCopy = asset;
+  v4 = assetCopy;
+  if (assetCopy)
   {
-    v5 = [v3 supportedLanguages];
-    v6 = [v5 firstObject];
+    supportedLanguages = [assetCopy supportedLanguages];
+    firstObject = [supportedLanguages firstObject];
 
-    v7 = [v4 name];
-    v8 = [v4 gender];
-    if (v8 > 3)
+    name = [v4 name];
+    gender = [v4 gender];
+    if (gender > 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = qword_233005C50[v8];
+      v9 = qword_233005C50[gender];
     }
 
-    v12 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:v6 name:v7];
-    if (v12 || (v12 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:v6 name:0]) != 0)
+    v12 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:firstObject name:name];
+    if (v12 || (v12 = [objc_alloc(MEMORY[0x277D61478]) initWithLanguage:firstObject name:0]) != 0)
     {
       v11 = v12;
       [v12 setGender:v9];
@@ -370,16 +370,16 @@ LABEL_6:
   v40[2] = *MEMORY[0x277D85DE8];
   if (_cachedTTSAssets)
   {
-    v2 = _cachedTTSAssets;
+    dictionary = _cachedTTSAssets;
   }
 
   else
   {
     v4 = MEMORY[0x277D61480];
-    v5 = [MEMORY[0x277D61490] gryphonVoice];
-    v40[0] = v5;
-    v6 = [MEMORY[0x277D61490] vocalizerVoice];
-    v40[1] = v6;
+    gryphonVoice = [MEMORY[0x277D61490] gryphonVoice];
+    v40[0] = gryphonVoice;
+    vocalizerVoice = [MEMORY[0x277D61490] vocalizerVoice];
+    v40[1] = vocalizerVoice;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
     v8 = [v4 listAssetsOfTypes:v7 matching:MEMORY[0x277CBEC10]];
 
@@ -388,10 +388,10 @@ LABEL_6:
     v37[1] = 3221225472;
     v37[2] = __36___LTDTTSAssetService__allTTSAssets__block_invoke;
     v37[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8l;
-    v37[4] = a1;
+    v37[4] = self;
     v10 = [v9 _ltCompactMap:v37];
 
-    v2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -412,8 +412,8 @@ LABEL_6:
           }
 
           v16 = *(*(&v33 + 1) + 8 * i);
-          v17 = [MEMORY[0x277CBEB18] array];
-          [v2 setObject:v17 forKeyedSubscript:v16];
+          array = [MEMORY[0x277CBEB18] array];
+          [dictionary setObject:array forKeyedSubscript:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v33 objects:v39 count:16];
@@ -442,10 +442,10 @@ LABEL_6:
           }
 
           v23 = *(*(&v29 + 1) + 8 * j);
-          v24 = [v23 primaryLanguage];
-          v25 = [v24 lt_localeIdentifier];
+          primaryLanguage = [v23 primaryLanguage];
+          lt_localeIdentifier = [primaryLanguage lt_localeIdentifier];
 
-          v26 = [v2 objectForKeyedSubscript:v25];
+          v26 = [dictionary objectForKeyedSubscript:lt_localeIdentifier];
           [v26 addObject:v23];
         }
 
@@ -455,12 +455,12 @@ LABEL_6:
       while (v20);
     }
 
-    objc_storeStrong(&_cachedTTSAssets, v2);
+    objc_storeStrong(&_cachedTTSAssets, dictionary);
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return dictionary;
 }
 
 + (SiriTTSDaemonSession)siriTTSSession
@@ -468,56 +468,56 @@ LABEL_6:
   v3 = _siriTTSSession;
   if (_siriTTSSession)
   {
-    [a1 setSiriTTSSession:_siriTTSSession];
+    [self setSiriTTSSession:_siriTTSSession];
     v4 = v3;
   }
 
   else
   {
     v4 = objc_opt_new();
-    [a1 setSiriTTSSession:v4];
+    [self setSiriTTSSession:v4];
   }
 
   return v4;
 }
 
-+ (void)setSubscribedVoices:(id)a3
++ (void)setSubscribedVoices:(id)voices
 {
-  v4 = a3;
+  voicesCopy = voices;
   v5 = _LTOSLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     +[_LTDTTSAssetService setSubscribedVoices:];
   }
 
-  v6 = [a1 siriTTSSession];
+  siriTTSSession = [self siriTTSSession];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43___LTDTTSAssetService_setSubscribedVoices___block_invoke;
   v7[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v7[4] = a1;
-  [v6 subscribeWithVoices:v4 reply:v7];
+  v7[4] = self;
+  [siriTTSSession subscribeWithVoices:voicesCopy reply:v7];
 }
 
-+ (void)_subscribeToVoice:(id)a3
++ (void)_subscribeToVoice:(id)voice
 {
-  v4 = a3;
+  voiceCopy = voice;
   v5 = _LTOSLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     +[_LTDTTSAssetService _subscribeToVoice:];
   }
 
-  v6 = [a1 subscribedVoices];
-  v7 = [v6 arrayByAddingObject:v4];
+  subscribedVoices = [self subscribedVoices];
+  v7 = [subscribedVoices arrayByAddingObject:voiceCopy];
 
-  v8 = [a1 siriTTSSession];
+  siriTTSSession = [self siriTTSSession];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41___LTDTTSAssetService__subscribeToVoice___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a1;
-  [v8 subscribeWithVoices:v7 reply:v9];
+  v9[4] = self;
+  [siriTTSSession subscribeWithVoices:v7 reply:v9];
 }
 
 + (NSArray)subscribedVoices
@@ -543,7 +543,7 @@ LABEL_6:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [a1 voiceForLocaleIdentifier:*(*(&v13 + 1) + 8 * i)];
+        v9 = [self voiceForLocaleIdentifier:*(*(&v13 + 1) + 8 * i)];
         if (v9)
         {
           [v3 addObject:v9];
@@ -567,44 +567,44 @@ LABEL_6:
   return v3;
 }
 
-+ (void)downloadVoiceAssetsForLanguagePair:(id)a3
++ (void)downloadVoiceAssetsForLanguagePair:(id)pair
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pairCopy = pair;
   v4 = _LTOSLogAssets();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v20 = v3;
+    v20 = pairCopy;
     _os_log_impl(&dword_232E53000, v4, OS_LOG_TYPE_INFO, "SiriTTS downloaded voice assets for pair %{public}@", buf, 0xCu);
   }
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v3 sourceLocale];
-  v7 = [v6 _ltLocaleIdentifier];
-  v8 = [v5 stringWithFormat:@"TTS-%@", v7];
+  sourceLocale = [pairCopy sourceLocale];
+  _ltLocaleIdentifier = [sourceLocale _ltLocaleIdentifier];
+  v8 = [v5 stringWithFormat:@"TTS-%@", _ltLocaleIdentifier];
 
   v9 = [[_LTDTTSAssetModel alloc] initWithAssetIdentifier:v8];
   v10 = [[_LTDAssetModel alloc] initWithProvider:v9];
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v3 targetLocale];
-  v13 = [v12 _ltLocaleIdentifier];
-  v14 = [v11 stringWithFormat:@"TTS-%@", v13];
+  targetLocale = [pairCopy targetLocale];
+  _ltLocaleIdentifier2 = [targetLocale _ltLocaleIdentifier];
+  v14 = [v11 stringWithFormat:@"TTS-%@", _ltLocaleIdentifier2];
 
   v15 = [[_LTDTTSAssetModel alloc] initWithAssetIdentifier:v14];
   v16 = [[_LTDAssetModel alloc] initWithProvider:v15];
-  [a1 downloadAsset:v10 options:0 progress:0 completion:0];
-  [a1 downloadAsset:v16 options:0 progress:0 completion:0];
+  [self downloadAsset:v10 options:0 progress:0 completion:0];
+  [self downloadAsset:v16 options:0 progress:0 completion:0];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)downloadAsset:(id)a3 options:(unint64_t)a4 progress:(id)a5 completion:(id)a6
++ (void)downloadAsset:(id)asset options:(unint64_t)options progress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v10;
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
+  v13 = assetCopy;
   if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -616,20 +616,20 @@ LABEL_6:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       +[_LTDTTSAssetService downloadAsset:options:progress:completion:];
-      if (!v12)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v12)
+    else if (!completionCopy)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v12[2](v12, v17);
+    completionCopy[2](completionCopy, v17);
     goto LABEL_9;
   }
 
@@ -639,18 +639,18 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v15 = [a1 _queue];
+  _queue = [self _queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65___LTDTTSAssetService_downloadAsset_options_progress_completion___block_invoke;
   block[3] = &unk_2789B6600;
   v14 = v13;
   v20 = v14;
-  v21 = v12;
-  v23 = a4;
-  v22 = v11;
-  v24 = a1;
-  dispatch_async(v15, block);
+  v21 = completionCopy;
+  optionsCopy = options;
+  v22 = progressCopy;
+  selfCopy = self;
+  dispatch_async(_queue, block);
 
   v16 = v20;
 LABEL_10:

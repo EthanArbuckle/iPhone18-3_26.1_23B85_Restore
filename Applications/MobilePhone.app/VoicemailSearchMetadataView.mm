@@ -1,7 +1,7 @@
 @interface VoicemailSearchMetadataView
-- (_TtC11MobilePhone27VoicemailSearchMetadataView)initWithFrame:(CGRect)a3;
+- (_TtC11MobilePhone27VoicemailSearchMetadataView)initWithFrame:(CGRect)frame;
 - (void)didTapCall;
-- (void)handleContentSizeCategoryDidChange:(id)a3;
+- (void)handleContentSizeCategoryDidChange:(id)change;
 @end
 
 @implementation VoicemailSearchMetadataView
@@ -17,7 +17,7 @@
     swift_beginAccess();
     v7 = *v4;
     v6 = *(v4 + 8);
-    v8 = self;
+    selfCopy = self;
     outlined copy of (@escaping @callee_guaranteed () -> ())?(v7, v6);
 
     if (v7)
@@ -33,12 +33,12 @@
   }
 }
 
-- (void)handleContentSizeCategoryDidChange:(id)a3
+- (void)handleContentSizeCategoryDidChange:(id)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation12NotificationVSgMd);
   __chkstk_darwin(v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (change)
   {
     static Notification._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Notification();
@@ -51,13 +51,13 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   VoicemailSearchMetadataView.updateLayoutForAccessibility()();
 
   outlined destroy of Notification?(v7);
 }
 
-- (_TtC11MobilePhone27VoicemailSearchMetadataView)initWithFrame:(CGRect)a3
+- (_TtC11MobilePhone27VoicemailSearchMetadataView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

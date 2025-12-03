@@ -7,7 +7,7 @@
 
 - (uint64_t)centerSubviewInBounds:()SUAdditions
 {
-  [a1 bounds];
+  [self bounds];
   v5 = v4;
   v7 = v6;
   [a3 frame];
@@ -22,16 +22,16 @@
 {
   while (1)
   {
-    v1 = [a1 superview];
-    if (!v1 || (objc_opt_isKindOfClass() & 1) != 0)
+    superview = [self superview];
+    if (!superview || (objc_opt_isKindOfClass() & 1) != 0)
     {
       break;
     }
 
-    a1 = v1;
+    self = superview;
   }
 
-  return v1;
+  return superview;
 }
 
 @end

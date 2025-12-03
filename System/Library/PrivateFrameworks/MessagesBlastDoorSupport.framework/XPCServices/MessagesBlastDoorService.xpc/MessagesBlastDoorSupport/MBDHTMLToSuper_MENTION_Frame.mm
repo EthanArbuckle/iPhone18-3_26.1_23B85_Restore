@@ -1,35 +1,35 @@
 @interface MBDHTMLToSuper_MENTION_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDHTMLToSuper_MENTION_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v14 = a4;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = MBDHTMLToSuper_MENTION_Frame;
-  v15 = a8;
-  [(MBDToSuperParserFrame *)&v19 parser:a3 context:v14 didStartElement:a5 namespaceURI:a6 qualifiedName:a7 attributes:v15];
-  v16 = MBDIMCopyNormalizedAttributes(v15, 1, 0);
+  attributesCopy = attributes;
+  [(MBDToSuperParserFrame *)&v19 parser:parser context:contextCopy didStartElement:element namespaceURI:i qualifiedName:name attributes:attributesCopy];
+  v16 = MBDIMCopyNormalizedAttributes(attributesCopy, 1, 0);
 
   v17 = [v16 _stringForKey:@"uri"];
-  v18 = [v17 bd_stringByRemovingURLEscapes];
+  bd_stringByRemovingURLEscapes = [v17 bd_stringByRemovingURLEscapes];
 
-  if ([v18 length])
+  if ([bd_stringByRemovingURLEscapes length])
   {
-    [v14 pushMentionAttributeWithURI:v18];
+    [contextCopy pushMentionAttributeWithURI:bd_stringByRemovingURLEscapes];
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   v12.receiver = self;
   v12.super_class = MBDHTMLToSuper_MENTION_Frame;
-  v11 = a4;
-  [(MBDToSuperParserFrame *)&v12 parser:a3 context:v11 didEndElement:a5 namespaceURI:a6 qualifiedName:a7];
-  [v11 popMentionAttribute];
+  contextCopy = context;
+  [(MBDToSuperParserFrame *)&v12 parser:parser context:contextCopy didEndElement:element namespaceURI:i qualifiedName:name];
+  [contextCopy popMentionAttribute];
 }
 
 @end

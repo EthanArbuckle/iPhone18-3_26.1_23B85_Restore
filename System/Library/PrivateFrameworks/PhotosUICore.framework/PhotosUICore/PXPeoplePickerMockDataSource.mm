@@ -1,13 +1,13 @@
 @interface PXPeoplePickerMockDataSource
-- (PXPeoplePickerMockDataSource)initWithMocks:(id)a3;
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)personAtItemIndexPath:(PXSimpleIndexPath *)a3;
+- (PXPeoplePickerMockDataSource)initWithMocks:(id)mocks;
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)personAtItemIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXPeoplePickerMockDataSource
 
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference
 {
   v7 = a4;
   v8 = v7;
@@ -20,8 +20,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a3 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"objectReference"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:reference object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"objectReference"}];
 
     v10 = 0;
     v9 = 0;
@@ -31,12 +31,12 @@
   v11 = v9 != *off_1E7721F68 && !v10;
   if (!v11 || *(&v24 + 1) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a3 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsItem(objectReference.indexPath)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:reference object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsItem(objectReference.indexPath)"}];
   }
 
-  v12 = [v8 itemObject];
-  if (v12)
+  itemObject = [v8 itemObject];
+  if (itemObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -44,27 +44,27 @@
       goto LABEL_11;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v19 = NSStringFromClass(v21);
-    v22 = [v12 px_descriptionForAssertionMessage];
-    [v17 handleFailureInMethod:a3 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"objectReference.itemObject", v19, v22}];
+    px_descriptionForAssertionMessage = [itemObject px_descriptionForAssertionMessage];
+    [currentHandler3 handleFailureInMethod:reference object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"objectReference.itemObject", v19, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    [v17 handleFailureInMethod:a3 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"objectReference.itemObject", v19}];
+    [currentHandler3 handleFailureInMethod:reference object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:56 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"objectReference.itemObject", v19}];
   }
 
 LABEL_11:
-  v13 = [(NSArray *)self->_mocks indexOfObject:v12];
+  v13 = [(NSArray *)self->_mocks indexOfObject:itemObject];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a3 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:reference object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
   }
 
   retstr->dataSourceIdentifier = [(PXPeoplePickerMockDataSource *)self identifier];
@@ -75,19 +75,19 @@ LABEL_11:
   return result;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXPeoplePickerMockDataSource *)self identifier])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  if (a3->dataSourceIdentifier == *off_1E7721F68 || a3->item == 0x7FFFFFFFFFFFFFFFLL || a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->dataSourceIdentifier == *off_1E7721F68 || path->item == 0x7FFFFFFFFFFFFFFFLL || path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsItem(indexPath)"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsItem(indexPath)"}];
   }
 
   mocks = self->_mocks;
@@ -95,10 +95,10 @@ LABEL_11:
   return [(NSArray *)mocks objectAtIndexedSubscript:?];
 }
 
-- (id)personAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)personAtItemIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = *&a3->item;
-  v13[0] = *&a3->dataSourceIdentifier;
+  v5 = *&path->item;
+  v13[0] = *&path->dataSourceIdentifier;
   v13[1] = v5;
   v6 = [(PXPeoplePickerMockDataSource *)self objectAtIndexPath:v13];
   if (v6)
@@ -109,19 +109,19 @@ LABEL_11:
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v6 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:29 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self objectAtIndexPath:indexPath]", v10, v12}];
+    px_descriptionForAssertionMessage = [v6 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:29 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self objectAtIndexPath:indexPath]", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:29 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self objectAtIndexPath:indexPath]", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:29 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self objectAtIndexPath:indexPath]", v10}];
   }
 
 LABEL_3:
@@ -129,13 +129,13 @@ LABEL_3:
   return v6;
 }
 
-- (PXPeoplePickerMockDataSource)initWithMocks:(id)a3
+- (PXPeoplePickerMockDataSource)initWithMocks:(id)mocks
 {
-  v6 = a3;
-  if (!v6)
+  mocksCopy = mocks;
+  if (!mocksCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"mocks"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockDataSourceManager.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"mocks"}];
   }
 
   v11.receiver = self;
@@ -144,7 +144,7 @@ LABEL_3:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_mocks, a3);
+    objc_storeStrong(&v7->_mocks, mocks);
   }
 
   return v8;

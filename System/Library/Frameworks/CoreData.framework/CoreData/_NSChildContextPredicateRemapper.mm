@@ -1,10 +1,10 @@
 @interface _NSChildContextPredicateRemapper
 - (_NSChildContextPredicateRemapper)init;
-- (_NSChildContextPredicateRemapper)initWithContext:(id)a3;
-- (id)createPredicateForFetchFromPredicate:(id)a3 withContext:(id)a4;
-- (id)replacementValueForValue:(uint64_t)a1;
+- (_NSChildContextPredicateRemapper)initWithContext:(id)context;
+- (id)createPredicateForFetchFromPredicate:(id)predicate withContext:(id)context;
+- (id)replacementValueForValue:(uint64_t)value;
 - (void)dealloc;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation _NSChildContextPredicateRemapper
@@ -23,22 +23,22 @@
   [(_NSChildContextPredicateRemapper *)&v3 dealloc];
 }
 
-- (_NSChildContextPredicateRemapper)initWithContext:(id)a3
+- (_NSChildContextPredicateRemapper)initWithContext:(id)context
 {
   v4 = [(_NSChildContextPredicateRemapper *)self init];
   if (v4)
   {
-    v4->_context = a3;
+    v4->_context = context;
   }
 
   return v4;
 }
 
-- (id)createPredicateForFetchFromPredicate:(id)a3 withContext:(id)a4
+- (id)createPredicateForFetchFromPredicate:(id)predicate withContext:(id)context
 {
-  if (a3 && a4)
+  if (predicate && context)
   {
-    v6 = [a3 copy];
+    v6 = [predicate copy];
     [v6 acceptVisitor:self flags:1];
     return v6;
   }
@@ -46,15 +46,15 @@
   else
   {
 
-    return [a3 copy];
+    return [predicate copy];
   }
 }
 
-- (id)replacementValueForValue:(uint64_t)a1
+- (id)replacementValueForValue:(uint64_t)value
 {
   v2 = 0;
   v44 = *MEMORY[0x1E69E9840];
-  if (!a1 || !a2)
+  if (!value || !a2)
   {
 LABEL_41:
     v25 = *MEMORY[0x1E69E9840];
@@ -71,7 +71,7 @@ LABEL_41:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = *(a1 + 8);
+    v4 = *(value + 8);
     if (v4)
     {
       v5 = *(*(v4 + 168) + 8);
@@ -118,7 +118,7 @@ LABEL_41:
             objc_enumerationMutation(obj);
           }
 
-          v12 = [(_NSChildContextPredicateRemapper *)a1 replacementValueForValue:?];
+          v12 = [(_NSChildContextPredicateRemapper *)value replacementValueForValue:?];
           [v2 addObject:v12];
         }
 
@@ -152,7 +152,7 @@ LABEL_41:
             objc_enumerationMutation(obj);
           }
 
-          v17 = [(_NSChildContextPredicateRemapper *)a1 replacementValueForValue:?];
+          v17 = [(_NSChildContextPredicateRemapper *)value replacementValueForValue:?];
           [v2 addObject:v17];
         }
 
@@ -186,7 +186,7 @@ LABEL_41:
             objc_enumerationMutation(obj);
           }
 
-          v24 = [(_NSChildContextPredicateRemapper *)a1 replacementValueForValue:?];
+          v24 = [(_NSChildContextPredicateRemapper *)value replacementValueForValue:?];
           [v2 addObject:v24];
         }
 
@@ -214,21 +214,21 @@ LABEL_41:
   }
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 constantValue];
-    if (v5)
+    constantValue = [expression constantValue];
+    if (constantValue)
     {
-      v6 = v5;
-      v7 = [(_NSChildContextPredicateRemapper *)self replacementValueForValue:v5];
+      v6 = constantValue;
+      v7 = [(_NSChildContextPredicateRemapper *)self replacementValueForValue:constantValue];
       if (v7)
       {
         if (v7 != v6)
         {
-          object_setInstanceVariableWithStrongDefault(a3, "constantValue", v7);
+          object_setInstanceVariableWithStrongDefault(expression, "constantValue", v7);
         }
       }
     }

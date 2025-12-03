@@ -1,52 +1,52 @@
 @interface GKGameRecordInternal
-- (void)updateWithCacheObject:(id)a3;
+- (void)updateWithCacheObject:(id)object;
 @end
 
 @implementation GKGameRecordInternal
 
-- (void)updateWithCacheObject:(id)a3
+- (void)updateWithCacheObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 game];
+  objectCopy = object;
+  game = [objectCopy game];
   v19.receiver = self;
   v19.super_class = GKGameRecordInternal;
-  [(GKGameRecordInternal *)&v19 updateWithCacheObject:v5];
+  [(GKGameRecordInternal *)&v19 updateWithCacheObject:game];
 
-  v6 = [v4 lastPlayedDate];
-  [(GKGameRecordInternal *)self setLastPlayedDate:v6];
+  lastPlayedDate = [objectCopy lastPlayedDate];
+  [(GKGameRecordInternal *)self setLastPlayedDate:lastPlayedDate];
 
-  v7 = [v4 purchaseDate];
-  [(GKGameRecordInternal *)self setPurchaseDate:v7];
+  purchaseDate = [objectCopy purchaseDate];
+  [(GKGameRecordInternal *)self setPurchaseDate:purchaseDate];
 
-  v8 = [v4 rank];
-  -[GKGameRecordInternal setRank:](self, "setRank:", [v8 unsignedIntegerValue]);
+  rank = [objectCopy rank];
+  -[GKGameRecordInternal setRank:](self, "setRank:", [rank unsignedIntegerValue]);
 
-  v9 = [v4 maxRank];
-  -[GKGameRecordInternal setMaxRank:](self, "setMaxRank:", [v9 unsignedIntegerValue]);
+  maxRank = [objectCopy maxRank];
+  -[GKGameRecordInternal setMaxRank:](self, "setMaxRank:", [maxRank unsignedIntegerValue]);
 
-  v10 = [v4 friendRank];
-  -[GKGameRecordInternal setFriendRank:](self, "setFriendRank:", [v10 unsignedIntegerValue]);
+  friendRank = [objectCopy friendRank];
+  -[GKGameRecordInternal setFriendRank:](self, "setFriendRank:", [friendRank unsignedIntegerValue]);
 
-  v11 = [v4 maxFriendRank];
-  -[GKGameRecordInternal setMaxFriendRank:](self, "setMaxFriendRank:", [v11 unsignedIntegerValue]);
+  maxFriendRank = [objectCopy maxFriendRank];
+  -[GKGameRecordInternal setMaxFriendRank:](self, "setMaxFriendRank:", [maxFriendRank unsignedIntegerValue]);
 
-  v12 = [v4 achievements];
-  -[GKGameRecordInternal setAchievements:](self, "setAchievements:", [v12 unsignedIntegerValue]);
+  achievements = [objectCopy achievements];
+  -[GKGameRecordInternal setAchievements:](self, "setAchievements:", [achievements unsignedIntegerValue]);
 
-  v13 = [v4 achievementPoints];
-  -[GKGameRecordInternal setAchievementPoints:](self, "setAchievementPoints:", [v13 unsignedIntegerValue]);
+  achievementPoints = [objectCopy achievementPoints];
+  -[GKGameRecordInternal setAchievementPoints:](self, "setAchievementPoints:", [achievementPoints unsignedIntegerValue]);
 
-  v14 = [v4 defaultLeaderboardIdentifier];
-  if (!v14)
+  defaultLeaderboardIdentifier = [objectCopy defaultLeaderboardIdentifier];
+  if (!defaultLeaderboardIdentifier)
   {
-    v15 = [v4 game];
-    v14 = [v15 defaultCategory];
+    game2 = [objectCopy game];
+    defaultLeaderboardIdentifier = [game2 defaultCategory];
   }
 
-  [(GKGameRecordInternal *)self setDefaultLeaderboardIdentifier:v14];
-  v16 = [v4 expirationDate];
+  [(GKGameRecordInternal *)self setDefaultLeaderboardIdentifier:defaultLeaderboardIdentifier];
+  expirationDate = [objectCopy expirationDate];
   v17 = +[NSDate distantPast];
-  [v16 timeIntervalSinceDate:v17];
+  [expirationDate timeIntervalSinceDate:v17];
   [(GKGameRecordInternal *)self setValid:v18 > 0.0];
 }
 

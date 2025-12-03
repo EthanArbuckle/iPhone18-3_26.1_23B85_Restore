@@ -1,22 +1,22 @@
 @interface REMTTParagraphStyle
-- (REMTTParagraphStyle)initWithContents:(id)a3;
-- (REMTTParagraphStyle)initWithStyle:(int64_t)a3;
-- (id)listBulletInAttributedString:(id)a3 atIndex:(unint64_t)a4;
+- (REMTTParagraphStyle)initWithContents:(id)contents;
+- (REMTTParagraphStyle)initWithStyle:(int64_t)style;
+- (id)listBulletInAttributedString:(id)string atIndex:(unint64_t)index;
 - (int64_t)remParagraphStyle;
 @end
 
 @implementation REMTTParagraphStyle
 
-- (REMTTParagraphStyle)initWithContents:(id)a3
+- (REMTTParagraphStyle)initWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v11.receiver = self;
   v11.super_class = REMTTParagraphStyle;
   v5 = [(REMTTParagraphStyle *)&v11 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = REMDynamicCast(v6, v4);
+    v7 = REMDynamicCast(v6, contentsCopy);
     if (!v7)
     {
       v9 = 0;
@@ -33,29 +33,29 @@ LABEL_6:
   return v9;
 }
 
-- (REMTTParagraphStyle)initWithStyle:(int64_t)a3
+- (REMTTParagraphStyle)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = REMTTParagraphStyle;
   v4 = [(REMTTParagraphStyle *)&v9 init];
   if (v4)
   {
-    if (a3 > 1)
+    if (style > 1)
     {
-      if (a3 == 2)
+      if (style == 2)
       {
         v5 = 101;
         goto LABEL_10;
       }
 
-      if (a3 == 3)
+      if (style == 3)
       {
         v5 = 102;
         goto LABEL_10;
       }
     }
 
-    else if (a3 == 1)
+    else if (style == 1)
     {
       v5 = 100;
 LABEL_10:
@@ -74,10 +74,10 @@ LABEL_11:
 
 - (int64_t)remParagraphStyle
 {
-  v2 = [(REMTTParagraphStyle *)self innerStyle];
-  v3 = [v2 style];
+  innerStyle = [(REMTTParagraphStyle *)self innerStyle];
+  style = [innerStyle style];
 
-  v4 = (v3 - 100);
+  v4 = (style - 100);
   if (v4 < 3)
   {
     return v4 + 1;
@@ -89,11 +89,11 @@ LABEL_11:
   }
 }
 
-- (id)listBulletInAttributedString:(id)a3 atIndex:(unint64_t)a4
+- (id)listBulletInAttributedString:(id)string atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(REMTTParagraphStyle *)self innerStyle];
-  v8 = [v7 listBulletInAttributedString:v6 atIndex:a4];
+  stringCopy = string;
+  innerStyle = [(REMTTParagraphStyle *)self innerStyle];
+  v8 = [innerStyle listBulletInAttributedString:stringCopy atIndex:index];
 
   return v8;
 }

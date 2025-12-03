@@ -7,19 +7,19 @@
 
 - (BOOL)hasPhoneNumber
 {
-  v2 = [(NSUserActivity *)self contentAttributeSet];
-  v3 = [v2 phoneNumbers];
-  v4 = [v3 count] != 0;
+  contentAttributeSet = [(NSUserActivity *)self contentAttributeSet];
+  phoneNumbers = [contentAttributeSet phoneNumbers];
+  v4 = [phoneNumbers count] != 0;
 
   return v4;
 }
 
 - (BOOL)hasLocationData
 {
-  v2 = [(NSUserActivity *)self contentAttributeSet];
-  v3 = [v2 hasLocationData];
+  contentAttributeSet = [(NSUserActivity *)self contentAttributeSet];
+  hasLocationData = [contentAttributeSet hasLocationData];
 
-  return v3;
+  return hasLocationData;
 }
 
 @end

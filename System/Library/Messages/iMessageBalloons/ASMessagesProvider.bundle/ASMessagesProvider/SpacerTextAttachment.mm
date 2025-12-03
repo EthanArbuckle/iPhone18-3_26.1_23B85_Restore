@@ -1,19 +1,19 @@
 @interface SpacerTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6;
-- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index;
+- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation SpacerTextAttachment
 
-- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
   return result;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index
 {
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment_width);
   v7 = 0.0;
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC18ASMessagesProviderP33_75E758F81AC50D744B9F822CE8FE04E120SpacerTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = sub_7570C0();
     sub_30CC30(v5, v6);
   }

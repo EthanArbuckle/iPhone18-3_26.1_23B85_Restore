@@ -1,32 +1,32 @@
 @interface BCCloudDataSyncManager
-- (BCCloudDataSyncManager)initWithCloudKitController:(id)a3 dataMapper:(id)a4;
+- (BCCloudDataSyncManager)initWithCloudKitController:(id)controller dataMapper:(id)mapper;
 - (BCCloudDataSyncManagerDelegate)delegate;
-- (id)_batchFromCloudData:(id)a3;
-- (id)_modifyRecordsCompletionBlockWithDispatchGroup:(id)a3 cloudDataMap:(id)a4 recordCount:(unint64_t)a5 operation:(id)a6;
+- (id)_batchFromCloudData:(id)data;
+- (id)_modifyRecordsCompletionBlockWithDispatchGroup:(id)group cloudDataMap:(id)map recordCount:(unint64_t)count operation:(id)operation;
 - (id)privacyDelegate;
 - (unint64_t)_maxCloudDataPerBatch;
-- (void)_enterDispatchGroup:(id)a3 times:(unint64_t)a4;
-- (void)_fromBatch:(id)a3 getRecordsToSave:(id *)a4 recordIDsToDelete:(id *)a5 buildingMap:(id *)a6;
-- (void)_leaveDispatchGroup:(id)a3 times:(unint64_t)a4;
-- (void)_syncQueueSyncForCloudData:(id)a3 completion:(id)a4;
-- (void)_updateRetryParametersFromModifyRecordsOperationError:(id)a3 batchSize:(unint64_t)a4;
-- (void)databaseController:(id)a3 attachmentChanged:(BOOL)a4;
-- (void)databaseController:(id)a3 fetchedAllRecordsInZone:(id)a4;
-- (void)databaseController:(id)a3 reachabilityChanged:(BOOL)a4;
-- (void)databaseController:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5;
-- (void)databaseController:(id)a3 recordsChanged:(id)a4;
-- (void)fetchRecordForRecordID:(id)a3 completion:(id)a4;
+- (void)_enterDispatchGroup:(id)group times:(unint64_t)times;
+- (void)_fromBatch:(id)batch getRecordsToSave:(id *)save recordIDsToDelete:(id *)delete buildingMap:(id *)map;
+- (void)_leaveDispatchGroup:(id)group times:(unint64_t)times;
+- (void)_syncQueueSyncForCloudData:(id)data completion:(id)completion;
+- (void)_updateRetryParametersFromModifyRecordsOperationError:(id)error batchSize:(unint64_t)size;
+- (void)databaseController:(id)controller attachmentChanged:(BOOL)changed;
+- (void)databaseController:(id)controller fetchedAllRecordsInZone:(id)zone;
+- (void)databaseController:(id)controller reachabilityChanged:(BOOL)changed;
+- (void)databaseController:(id)controller recordWithIDWasDeleted:(id)deleted recordType:(id)type;
+- (void)databaseController:(id)controller recordsChanged:(id)changed;
+- (void)fetchRecordForRecordID:(id)d completion:(id)completion;
 - (void)signalSyncToCK;
-- (void)startSyncToCKWithCompletion:(id)a3;
-- (void)syncCloudData:(id)a3 completion:(id)a4;
+- (void)startSyncToCKWithCompletion:(id)completion;
+- (void)syncCloudData:(id)data completion:(id)completion;
 @end
 
 @implementation BCCloudDataSyncManager
 
-- (BCCloudDataSyncManager)initWithCloudKitController:(id)a3 dataMapper:(id)a4
+- (BCCloudDataSyncManager)initWithCloudKitController:(id)controller dataMapper:(id)mapper
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  mapperCopy = mapper;
   v15.receiver = self;
   v15.super_class = BCCloudDataSyncManager;
   v9 = [(BCCloudDataSyncManager *)&v15 init];
@@ -39,23 +39,23 @@
     syncQueue = v9->_syncQueue;
     v9->_syncQueue = v12;
 
-    objc_storeStrong(&v9->_cloudKitController, a3);
-    objc_storeStrong(&v9->_dataMapper, a4);
+    objc_storeStrong(&v9->_cloudKitController, controller);
+    objc_storeStrong(&v9->_dataMapper, mapper);
     v9->_tooBigBatch = 400;
   }
 
   return v9;
 }
 
-- (void)syncCloudData:(id)a3 completion:(id)a4
+- (void)syncCloudData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(BCCloudDataSyncManager *)self cloudKitController];
-  v9 = [v8 privateCloudDatabaseController];
+  cloudKitController = [(BCCloudDataSyncManager *)self cloudKitController];
+  privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
 
-  if (v9)
+  if (privateCloudDatabaseController)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -63,16 +63,16 @@
     v12[3] = &unk_1E875AC80;
     v12[4] = self;
     objc_copyWeak(&v15, &location);
-    v13 = v6;
-    v14 = v7;
-    [v9 getAttached:v12];
+    v13 = dataCopy;
+    v14 = completionCopy;
+    [privateCloudDatabaseController getAttached:v12];
 
     objc_destroyWeak(&v15);
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -83,159 +83,159 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchRecordForRecordID:(id)a3 completion:(id)a4
+- (void)fetchRecordForRecordID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BCCloudDataSyncManager *)self cloudKitController];
-  v8 = [v7 privateCloudDatabaseController];
+  dCopy = d;
+  completionCopy = completion;
+  cloudKitController = [(BCCloudDataSyncManager *)self cloudKitController];
+  privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
 
-  if (v8)
+  if (privateCloudDatabaseController)
   {
-    [v8 fetchRecordForRecordID:v10 completion:v6];
+    [privateCloudDatabaseController fetchRecordForRecordID:dCopy completion:completionCopy];
   }
 
   else
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(completionCopy);
 
     if (v9)
     {
       v9[2](v9, 0);
     }
 
-    v6 = v9;
+    completionCopy = v9;
   }
 }
 
-- (void)databaseController:(id)a3 attachmentChanged:(BOOL)a4
+- (void)databaseController:(id)controller attachmentChanged:(BOOL)changed
 {
-  if (a4)
+  if (changed)
   {
-    v8 = [(BCCloudDataSyncManager *)self cloudKitController];
-    v5 = [v8 transactionManager];
-    v6 = [(BCCloudDataSyncManager *)self delegate];
-    v7 = [v6 entityName];
-    [v5 signalSyncToCKTransactionForEntityName:v7 syncManager:self];
+    cloudKitController = [(BCCloudDataSyncManager *)self cloudKitController];
+    transactionManager = [cloudKitController transactionManager];
+    delegate = [(BCCloudDataSyncManager *)self delegate];
+    entityName = [delegate entityName];
+    [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:self];
   }
 }
 
-- (void)databaseController:(id)a3 reachabilityChanged:(BOOL)a4
+- (void)databaseController:(id)controller reachabilityChanged:(BOOL)changed
 {
-  if (a4)
+  if (changed)
   {
-    v8 = [(BCCloudDataSyncManager *)self cloudKitController];
-    v5 = [v8 transactionManager];
-    v6 = [(BCCloudDataSyncManager *)self delegate];
-    v7 = [v6 entityName];
-    [v5 signalSyncToCKTransactionForEntityName:v7 syncManager:self];
+    cloudKitController = [(BCCloudDataSyncManager *)self cloudKitController];
+    transactionManager = [cloudKitController transactionManager];
+    delegate = [(BCCloudDataSyncManager *)self delegate];
+    entityName = [delegate entityName];
+    [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:self];
   }
 }
 
-- (void)databaseController:(id)a3 recordsChanged:(id)a4
+- (void)databaseController:(id)controller recordsChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(BCCloudDataSyncManager *)self delegate];
+  changedCopy = changed;
+  delegate = [(BCCloudDataSyncManager *)self delegate];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E463154C;
   v7[3] = &unk_1E875ABE8;
   v7[4] = self;
-  [v6 syncManager:self resolveConflictsForRecords:v5 completion:v7];
+  [delegate syncManager:self resolveConflictsForRecords:changedCopy completion:v7];
 }
 
-- (void)databaseController:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5
+- (void)databaseController:(id)controller recordWithIDWasDeleted:(id)deleted recordType:(id)type
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(BCCloudDataSyncManager *)self delegate];
-  v10[0] = v6;
+  deletedCopy = deleted;
+  delegate = [(BCCloudDataSyncManager *)self delegate];
+  v10[0] = deletedCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
-  [v7 syncManager:self removeCloudDataForIDs:v8 completion:&unk_1F5E62108];
+  [delegate syncManager:self removeCloudDataForIDs:v8 completion:&unk_1F5E62108];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)databaseController:(id)a3 fetchedAllRecordsInZone:(id)a4
+- (void)databaseController:(id)controller fetchedAllRecordsInZone:(id)zone
 {
-  v8 = a4;
-  v5 = [(BCCloudDataSyncManager *)self delegate];
+  zoneCopy = zone;
+  delegate = [(BCCloudDataSyncManager *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(BCCloudDataSyncManager *)self delegate];
-    [v7 syncManager:self fetchedAllRecordsInZone:v8];
+    delegate2 = [(BCCloudDataSyncManager *)self delegate];
+    [delegate2 syncManager:self fetchedAllRecordsInZone:zoneCopy];
   }
 }
 
 - (id)privacyDelegate
 {
-  v2 = [(BCCloudDataSyncManager *)self cloudKitController];
-  v3 = [v2 privateCloudDatabaseController];
+  cloudKitController = [(BCCloudDataSyncManager *)self cloudKitController];
+  privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
 
-  return v3;
+  return privateCloudDatabaseController;
 }
 
-- (void)startSyncToCKWithCompletion:(id)a3
+- (void)startSyncToCKWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudDataSyncManager *)self syncQueue];
+  completionCopy = completion;
+  syncQueue = [(BCCloudDataSyncManager *)self syncQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E46318B8;
   v7[3] = &unk_1E875A3D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(syncQueue, v7);
 }
 
 - (void)signalSyncToCK
 {
-  v3 = [(BCCloudDataSyncManager *)self delegate];
-  [v3 signalSyncToCKForSyncManager:self];
+  delegate = [(BCCloudDataSyncManager *)self delegate];
+  [delegate signalSyncToCKForSyncManager:self];
 }
 
 - (unint64_t)_maxCloudDataPerBatch
 {
-  v2 = [(BCCloudDataSyncManager *)self tooBigBatch];
-  if (v2 >> 1 <= 1)
+  tooBigBatch = [(BCCloudDataSyncManager *)self tooBigBatch];
+  if (tooBigBatch >> 1 <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v2 >> 1;
+    return tooBigBatch >> 1;
   }
 }
 
-- (id)_batchFromCloudData:(id)a3
+- (id)_batchFromCloudData:(id)data
 {
-  v4 = a3;
-  v5 = [(BCCloudDataSyncManager *)self _maxCloudDataPerBatch];
-  v6 = v4;
-  if ([v4 count] > v5)
+  dataCopy = data;
+  _maxCloudDataPerBatch = [(BCCloudDataSyncManager *)self _maxCloudDataPerBatch];
+  v6 = dataCopy;
+  if ([dataCopy count] > _maxCloudDataPerBatch)
   {
-    v6 = [v4 subarrayWithRange:{0, v5}];
+    v6 = [dataCopy subarrayWithRange:{0, _maxCloudDataPerBatch}];
   }
 
   return v6;
 }
 
-- (void)_fromBatch:(id)a3 getRecordsToSave:(id *)a4 recordIDsToDelete:(id *)a5 buildingMap:(id *)a6
+- (void)_fromBatch:(id)batch getRecordsToSave:(id *)save recordIDsToDelete:(id *)delete buildingMap:(id *)map
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v37 = [MEMORY[0x1E695DF70] array];
-  v36 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  batchCopy = batch;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = v7;
+  v9 = batchCopy;
   v10 = [v9 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v10)
   {
@@ -254,21 +254,21 @@
         v14 = *(*(&v38 + 1) + 8 * v13);
         if ([v14 deletedFlag])
         {
-          v15 = [v14 systemFields];
-          v16 = v15;
-          if (v15)
+          systemFields = [v14 systemFields];
+          configuredRecordFromAttributes = systemFields;
+          if (systemFields)
           {
-            v17 = [v15 recordID];
-            v18 = [v8 objectForKey:v17];
+            recordID = [systemFields recordID];
+            v18 = [dictionary objectForKey:recordID];
 
             if (v18)
             {
-              v19 = BDSCloudKitLog();
-              if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+              recordID3 = BDSCloudKitLog();
+              if (os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 v43 = v14;
-                v20 = v19;
+                v20 = recordID3;
                 v21 = "BCCloudDataSyncManager: cloudDataMap already contans an entry for deleting %@";
                 goto LABEL_22;
               }
@@ -276,11 +276,11 @@
 
             else
             {
-              v28 = [v16 recordID];
-              [v8 setObject:v14 forKeyedSubscript:v28];
+              recordID2 = [configuredRecordFromAttributes recordID];
+              [dictionary setObject:v14 forKeyedSubscript:recordID2];
 
-              v19 = [v16 recordID];
-              [v36 addObject:v19];
+              recordID3 = [configuredRecordFromAttributes recordID];
+              [array2 addObject:recordID3];
             }
 
 LABEL_24:
@@ -288,29 +288,29 @@ LABEL_24:
             goto LABEL_25;
           }
 
-          v19 = BDSCloudKitLog();
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          recordID3 = BDSCloudKitLog();
+          if (!os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_24;
           }
 
           *buf = 138412290;
           v43 = v14;
-          v20 = v19;
+          v20 = recordID3;
           v21 = "BCCloudDataSyncManager: Unable to retrieve systemFields from %@";
 LABEL_22:
           _os_log_error_impl(&dword_1E45E0000, v20, OS_LOG_TYPE_ERROR, v21, buf, 0xCu);
           goto LABEL_24;
         }
 
-        v22 = [(BCCloudDataSyncManager *)self dataMapper];
+        dataMapper = [(BCCloudDataSyncManager *)self dataMapper];
 
-        if (v22)
+        if (dataMapper)
         {
-          v23 = [(BCCloudDataSyncManager *)self dataMapper];
-          v16 = [v23 recordFromCloudData:v14];
+          dataMapper2 = [(BCCloudDataSyncManager *)self dataMapper];
+          configuredRecordFromAttributes = [dataMapper2 recordFromCloudData:v14];
 
-          if (!v16)
+          if (!configuredRecordFromAttributes)
           {
             goto LABEL_19;
           }
@@ -318,54 +318,54 @@ LABEL_22:
 
         else
         {
-          v16 = [v14 configuredRecordFromAttributes];
-          if (!v16)
+          configuredRecordFromAttributes = [v14 configuredRecordFromAttributes];
+          if (!configuredRecordFromAttributes)
           {
 LABEL_19:
-            v26 = [v14 privacyDelegate];
-            v27 = [v26 establishedSalt];
+            privacyDelegate = [v14 privacyDelegate];
+            establishedSalt = [privacyDelegate establishedSalt];
 
-            if (!v27)
+            if (!establishedSalt)
             {
               goto LABEL_25;
             }
 
-            v19 = BDSCloudKitLog();
-            if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+            recordID3 = BDSCloudKitLog();
+            if (!os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
             {
               goto LABEL_24;
             }
 
             *buf = 138412290;
             v43 = v14;
-            v20 = v19;
+            v20 = recordID3;
             v21 = "BCCloudDataSyncManager: Unable to configure CKRecord to save from %@";
             goto LABEL_22;
           }
         }
 
-        v24 = [v16 recordID];
-        v25 = [v8 objectForKey:v24];
+        recordID4 = [configuredRecordFromAttributes recordID];
+        v25 = [dictionary objectForKey:recordID4];
 
         if (v25)
         {
-          v19 = BDSCloudKitLog();
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          recordID3 = BDSCloudKitLog();
+          if (!os_log_type_enabled(recordID3, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_24;
           }
 
           *buf = 138412290;
           v43 = v14;
-          v20 = v19;
+          v20 = recordID3;
           v21 = "BCCloudDataSyncManager: cloudDataMap already contans an entry for saving %@";
           goto LABEL_22;
         }
 
-        v29 = [v16 recordID];
-        [v8 setObject:v14 forKeyedSubscript:v29];
+        recordID5 = [configuredRecordFromAttributes recordID];
+        [dictionary setObject:v14 forKeyedSubscript:recordID5];
 
-        [v37 addObject:v16];
+        [array addObject:configuredRecordFromAttributes];
 LABEL_25:
 
         ++v13;
@@ -379,78 +379,78 @@ LABEL_25:
     while (v30);
   }
 
-  if (a4)
+  if (save)
   {
-    *a4 = v37;
+    *save = array;
   }
 
-  if (a5)
+  if (delete)
   {
-    *a5 = v36;
+    *delete = array2;
   }
 
-  if (a6)
+  if (map)
   {
-    v31 = v8;
-    *a6 = v8;
+    v31 = dictionary;
+    *map = dictionary;
   }
 
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enterDispatchGroup:(id)a3 times:(unint64_t)a4
+- (void)_enterDispatchGroup:(id)group times:(unint64_t)times
 {
-  if (a4)
+  if (times)
   {
-    v4 = a4;
+    timesCopy = times;
     do
     {
-      dispatch_group_enter(a3);
-      --v4;
+      dispatch_group_enter(group);
+      --timesCopy;
     }
 
-    while (v4);
+    while (timesCopy);
   }
 }
 
-- (void)_leaveDispatchGroup:(id)a3 times:(unint64_t)a4
+- (void)_leaveDispatchGroup:(id)group times:(unint64_t)times
 {
-  if (a4)
+  if (times)
   {
-    v4 = a4;
+    timesCopy = times;
     do
     {
-      dispatch_group_leave(a3);
-      --v4;
+      dispatch_group_leave(group);
+      --timesCopy;
     }
 
-    while (v4);
+    while (timesCopy);
   }
 }
 
-- (void)_updateRetryParametersFromModifyRecordsOperationError:(id)a3 batchSize:(unint64_t)a4
+- (void)_updateRetryParametersFromModifyRecordsOperationError:(id)error batchSize:(unint64_t)size
 {
-  v21 = a3;
-  v6 = [(BCCloudDataSyncManager *)self syncQueue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  syncQueue = [(BCCloudDataSyncManager *)self syncQueue];
+  dispatch_assert_queue_V2(syncQueue);
 
-  v7 = [v21 domain];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E695B740]];
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
-  v9 = v21;
+  v9 = errorCopy;
   if (v8)
   {
     objc_opt_class();
-    v10 = [v21 userInfo];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695B748]];
+    userInfo = [errorCopy userInfo];
+    v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B748]];
     v12 = BUDynamicCast();
     [v12 doubleValue];
     v14 = v13;
 
     if (v14 <= 0.0)
     {
-      v15 = [v21 code];
-      if ((v15 - 6) < 2)
+      code = [errorCopy code];
+      if ((code - 6) < 2)
       {
 LABEL_7:
         [(BCCloudDataSyncManager *)self backOffInterval];
@@ -464,10 +464,10 @@ LABEL_7:
         goto LABEL_13;
       }
 
-      if (v15 != 27)
+      if (code != 27)
       {
-        v16 = v15 == 23;
-        v9 = v21;
+        v16 = code == 23;
+        v9 = errorCopy;
         if (!v16)
         {
           goto LABEL_14;
@@ -476,48 +476,48 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v19 = [(BCCloudDataSyncManager *)self tooBigBatch];
-      if (v19 >= a4)
+      tooBigBatch = [(BCCloudDataSyncManager *)self tooBigBatch];
+      if (tooBigBatch >= size)
       {
-        v20 = a4;
+        sizeCopy = size;
       }
 
       else
       {
-        v20 = v19;
+        sizeCopy = tooBigBatch;
       }
 
-      [(BCCloudDataSyncManager *)self setTooBigBatch:v20];
+      [(BCCloudDataSyncManager *)self setTooBigBatch:sizeCopy];
       v14 = 0.0;
     }
 
 LABEL_13:
     [(BCCloudDataSyncManager *)self setBackOffInterval:v14];
-    v9 = v21;
+    v9 = errorCopy;
   }
 
 LABEL_14:
 }
 
-- (id)_modifyRecordsCompletionBlockWithDispatchGroup:(id)a3 cloudDataMap:(id)a4 recordCount:(unint64_t)a5 operation:(id)a6
+- (id)_modifyRecordsCompletionBlockWithDispatchGroup:(id)group cloudDataMap:(id)map recordCount:(unint64_t)count operation:(id)operation
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  groupCopy = group;
+  mapCopy = map;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1E46323A4;
   aBlock[3] = &unk_1E875AD70;
   objc_copyWeak(v23, &location);
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23[1] = a5;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v19 = groupCopy;
+  v20 = mapCopy;
+  v21 = operationCopy;
+  selfCopy = self;
+  v23[1] = count;
+  v13 = operationCopy;
+  v14 = mapCopy;
+  v15 = groupCopy;
   v16 = _Block_copy(aBlock);
 
   objc_destroyWeak(v23);
@@ -526,29 +526,29 @@ LABEL_14:
   return v16;
 }
 
-- (void)_syncQueueSyncForCloudData:(id)a3 completion:(id)a4
+- (void)_syncQueueSyncForCloudData:(id)data completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  aBlock = a4;
+  dataCopy = data;
+  aBlock = completion;
   [(BCCloudDataSyncManager *)self setProcessingCloudData:1];
-  v6 = [(BCCloudDataSyncManager *)self cloudKitController];
-  v7 = [v6 privateCloudDatabaseController];
+  cloudKitController = [(BCCloudDataSyncManager *)self cloudKitController];
+  privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
 
-  if (v7)
+  if (privateCloudDatabaseController)
   {
-    v29 = [v7 database];
+    database = [privateCloudDatabaseController database];
     v8 = dispatch_group_create();
     dispatch_group_enter(v8);
-    v31 = [(BCCloudDataSyncManager *)self _batchFromCloudData:v33];
+    v31 = [(BCCloudDataSyncManager *)self _batchFromCloudData:dataCopy];
     v9 = [v31 count];
-    v28 = v9 < [v33 count];
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    v39 = v10;
-    v40 = v11;
-    v38 = v12;
+    v28 = v9 < [dataCopy count];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v39 = array;
+    v40 = array2;
+    v38 = dictionary;
     [(BCCloudDataSyncManager *)self _fromBatch:v31 getRecordsToSave:&v40 recordIDsToDelete:&v39 buildingMap:&v38];
     v13 = v40;
 
@@ -561,8 +561,8 @@ LABEL_14:
     if (v16)
     {
       v17 = [objc_alloc(MEMORY[0x1E695B9B8]) initWithRecordsToSave:v13 recordIDsToDelete:v14];
-      v18 = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
-      [v17 setConfiguration:v18];
+      bds_defaultConfiguration = [MEMORY[0x1E695BA00] bds_defaultConfiguration];
+      [v17 setConfiguration:bds_defaultConfiguration];
 
       [v17 setSavePolicy:0];
       v19 = [(BCCloudDataSyncManager *)self _modifyRecordsCompletionBlockWithDispatchGroup:v8 cloudDataMap:v30 recordCount:v16 operation:v17];
@@ -571,21 +571,21 @@ LABEL_14:
       v20 = BDSCloudKitLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(BCCloudDataSyncManager *)self delegate];
-        v22 = [v21 entityName];
-        v23 = [v17 operationID];
+        delegate = [(BCCloudDataSyncManager *)self delegate];
+        entityName = [delegate entityName];
+        operationID = [v17 operationID];
         *buf = 138543618;
-        v42 = v22;
+        v42 = entityName;
         v43 = 2114;
-        v44 = v23;
+        v44 = operationID;
         _os_log_impl(&dword_1E45E0000, v20, OS_LOG_TYPE_DEFAULT, "Adding CKModifyRecordsOperation to database for: %{public}@.  Operation ID: %{public}@", buf, 0x16u);
       }
 
-      [v29 addOperation:v17];
+      [database addOperation:v17];
     }
 
     objc_initWeak(buf, self);
-    v24 = [(BCCloudDataSyncManager *)self syncQueue];
+    syncQueue = [(BCCloudDataSyncManager *)self syncQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E4634048;
@@ -594,7 +594,7 @@ LABEL_14:
     v37 = v28;
     block[4] = self;
     v35 = aBlock;
-    dispatch_group_notify(v8, v24, block);
+    dispatch_group_notify(v8, syncQueue, block);
 
     dispatch_group_leave(v8);
     objc_destroyWeak(&v36);

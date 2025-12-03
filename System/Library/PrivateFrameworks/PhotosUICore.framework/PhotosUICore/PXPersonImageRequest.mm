@@ -1,8 +1,8 @@
 @interface PXPersonImageRequest
-- (PXPersonImageRequest)initWithPerson:(id)a3;
+- (PXPersonImageRequest)initWithPerson:(id)person;
 - (void)cancel;
 - (void)dealloc;
-- (void)requestFaceCropWithOptions:(id)a3 timeout:(double)a4 resultHandler:(id)a5;
+- (void)requestFaceCropWithOptions:(id)options timeout:(double)timeout resultHandler:(id)handler;
 @end
 
 @implementation PXPersonImageRequest
@@ -11,26 +11,26 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(PXPersonImageRequest *)obj imageLoadInvalidationTimer];
-  [v2 invalidate];
+  imageLoadInvalidationTimer = [(PXPersonImageRequest *)obj imageLoadInvalidationTimer];
+  [imageLoadInvalidationTimer invalidate];
 
   [(PXPersonImageRequest *)obj setImageLoadInvalidationTimer:0];
   [(PXPersonImageRequest *)obj setImageRequestTag:[(PXPersonImageRequest *)obj imageRequestTag]+ 1];
   objc_sync_exit(obj);
 }
 
-- (void)requestFaceCropWithOptions:(id)a3 timeout:(double)a4 resultHandler:(id)a5
+- (void)requestFaceCropWithOptions:(id)options timeout:(double)timeout resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXPersonImageRequest *)self imageLoadInvalidationTimer];
+  optionsCopy = options;
+  handlerCopy = handler;
+  imageLoadInvalidationTimer = [(PXPersonImageRequest *)self imageLoadInvalidationTimer];
 
-  if (v10)
+  if (imageLoadInvalidationTimer)
   {
     [(PXPersonImageRequest *)self cancel];
   }
 
-  v11 = [(PXPersonImageRequest *)self imageRequestTag];
+  imageRequestTag = [(PXPersonImageRequest *)self imageRequestTag];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -43,13 +43,13 @@
   v22[3] = &unk_1E772FAB0;
   objc_copyWeak(v25, &location);
   v24 = v27;
-  v13 = v9;
+  v13 = handlerCopy;
   v23 = v13;
-  v25[1] = v11;
-  v14 = [v12 timerWithTimeInterval:0 repeats:v22 block:a4];
+  v25[1] = imageRequestTag;
+  v14 = [v12 timerWithTimeInterval:0 repeats:v22 block:timeout];
   [(PXPersonImageRequest *)self setImageLoadInvalidationTimer:v14];
-  v15 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v15 addTimer:v14 forMode:*MEMORY[0x1E695D918]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:v14 forMode:*MEMORY[0x1E695D918]];
 
   v16 = +[PXPeopleFaceCropManager sharedManager];
   v18[0] = MEMORY[0x1E69E9820];
@@ -60,8 +60,8 @@
   v20 = v27;
   v17 = v13;
   v19 = v17;
-  v21[1] = v11;
-  [v16 requestFaceCropForOptions:v8 resultHandler:v18];
+  v21[1] = imageRequestTag;
+  [v16 requestFaceCropForOptions:optionsCopy resultHandler:v18];
 
   objc_destroyWeak(v21);
   objc_destroyWeak(v25);
@@ -143,24 +143,24 @@ void __73__PXPersonImageRequest_requestFaceCropWithOptions_timeout_resultHandler
 
 - (void)dealloc
 {
-  v3 = [(PXPersonImageRequest *)self imageLoadInvalidationTimer];
-  [v3 invalidate];
+  imageLoadInvalidationTimer = [(PXPersonImageRequest *)self imageLoadInvalidationTimer];
+  [imageLoadInvalidationTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = PXPersonImageRequest;
   [(PXPersonImageRequest *)&v4 dealloc];
 }
 
-- (PXPersonImageRequest)initWithPerson:(id)a3
+- (PXPersonImageRequest)initWithPerson:(id)person
 {
-  v5 = a3;
+  personCopy = person;
   v9.receiver = self;
   v9.super_class = PXPersonImageRequest;
   v6 = [(PXPersonImageRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_person, a3);
+    objc_storeStrong(&v6->_person, person);
     v7->_imageRequestTag = 0;
   }
 

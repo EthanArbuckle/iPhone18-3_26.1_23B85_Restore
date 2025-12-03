@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000EDB28;
   block[3] = &unk_1004D86F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100583C80 != -1)
   {
     dispatch_once(&qword_100583C80, block);
@@ -43,9 +43,9 @@
   v2->_queue = v3;
 
   objc_initWeak(&location, v2);
-  v5 = [objc_opt_class() hasPerformedLegacyBadgeMigration];
+  hasPerformedLegacyBadgeMigration = [objc_opt_class() hasPerformedLegacyBadgeMigration];
   v6 = 2;
-  if (!v5)
+  if (!hasPerformedLegacyBadgeMigration)
   {
     v6 = 0;
   }
@@ -89,8 +89,8 @@ LABEL_6:
 + (BOOL)hasPerformedLegacyBadgeMigration
 {
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  v4 = [a1 hasPerformedLegacyBadgeMigrationKey];
-  v5 = [v3 BOOLForKey:v4];
+  hasPerformedLegacyBadgeMigrationKey = [self hasPerformedLegacyBadgeMigrationKey];
+  v5 = [v3 BOOLForKey:hasPerformedLegacyBadgeMigrationKey];
 
   return v5;
 }
@@ -98,8 +98,8 @@ LABEL_6:
 + (void)commitHasPerformedLegacyBadgeMigration
 {
   v4 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  v3 = [a1 hasPerformedLegacyBadgeMigrationKey];
-  [v4 setBool:1 forKey:v3];
+  hasPerformedLegacyBadgeMigrationKey = [self hasPerformedLegacyBadgeMigrationKey];
+  [v4 setBool:1 forKey:hasPerformedLegacyBadgeMigrationKey];
 }
 
 - (void)performMigrationIfNecessary

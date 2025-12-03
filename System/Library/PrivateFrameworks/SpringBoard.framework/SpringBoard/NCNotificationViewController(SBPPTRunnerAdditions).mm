@@ -16,7 +16,7 @@
   if (a3)
   {
     v4 = MEMORY[0x223D6F7F0](a3);
-    objc_setAssociatedObject(a1, &_SBPPTRunnerBannerLongLookWillPresentCompletion, v4, 3);
+    objc_setAssociatedObject(self, &_SBPPTRunnerBannerLongLookWillPresentCompletion, v4, 3);
   }
 }
 
@@ -25,7 +25,7 @@
   if (a3)
   {
     v4 = MEMORY[0x223D6F7F0](a3);
-    objc_setAssociatedObject(a1, &_SBPPTRunnerBannerLongLookDidPresentCompletion, v4, 3);
+    objc_setAssociatedObject(self, &_SBPPTRunnerBannerLongLookDidPresentCompletion, v4, 3);
   }
 }
 
@@ -34,7 +34,7 @@
   if (a3)
   {
     v4 = MEMORY[0x223D6F7F0](a3);
-    objc_setAssociatedObject(a1, &_SBPPTRunnerBannerLongLookWillDismissCompletion, v4, 3);
+    objc_setAssociatedObject(self, &_SBPPTRunnerBannerLongLookWillDismissCompletion, v4, 3);
   }
 }
 
@@ -43,18 +43,18 @@
   if (a3)
   {
     v4 = MEMORY[0x223D6F7F0](a3);
-    objc_setAssociatedObject(a1, &_SBPPTRunnerBannerLongLookDidDismissCompletion, v4, 3);
+    objc_setAssociatedObject(self, &_SBPPTRunnerBannerLongLookDidDismissCompletion, v4, 3);
   }
 }
 
 - (void)_recapSwipePresentLongLook
 {
-  v1 = [a1 view];
-  v2 = [v1 window];
-  [v1 bounds];
+  view = [self view];
+  window = [view window];
+  [view bounds];
   UIRectGetCenter();
-  [v1 convertPoint:0 toView:?];
-  [v2 _convertPointToSceneReferenceSpace:?];
+  [view convertPoint:0 toView:?];
+  [window _convertPointToSceneReferenceSpace:?];
   v4 = v3;
   v6 = v5;
 
@@ -69,32 +69,32 @@
 
 - (id)_dismissControlOfPresentedLongLook
 {
-  v1 = [a1 _presentedLongLookViewController];
-  v2 = [v1 _lookView];
+  _presentedLongLookViewController = [self _presentedLongLookViewController];
+  _lookView = [_presentedLongLookViewController _lookView];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v1 _lookView];
-    v4 = [v3 dismissControl];
+    _lookView2 = [_presentedLongLookViewController _lookView];
+    dismissControl = [_lookView2 dismissControl];
   }
 
   else
   {
-    v4 = 0;
+    dismissControl = 0;
   }
 
-  return v4;
+  return dismissControl;
 }
 
 - (void)_recapDismissLongLookViaPullDown
 {
-  v1 = [a1 _presentedLongLookViewController];
-  v2 = [v1 _lookView];
+  _presentedLongLookViewController = [self _presentedLongLookViewController];
+  _lookView = [_presentedLongLookViewController _lookView];
 
-  v3 = [v2 window];
-  [v2 bounds];
+  window = [_lookView window];
+  [_lookView bounds];
   UIRectGetCenter();
-  [v2 convertPoint:0 toView:?];
-  [v3 _convertPointToSceneReferenceSpace:?];
+  [_lookView convertPoint:0 toView:?];
+  [window _convertPointToSceneReferenceSpace:?];
   v5 = v4;
   v7 = v6;
 
@@ -109,13 +109,13 @@
 
 - (void)_recapDismissLongLookViaTapOutside
 {
-  v1 = [a1 view];
-  v2 = [v1 window];
-  [v1 bounds];
+  view = [self view];
+  window = [view window];
+  [view bounds];
   MinX = CGRectGetMinX(v9);
-  [v1 bounds];
-  [v1 convertPoint:0 toView:{MinX, CGRectGetMaxY(v10)}];
-  [v2 _convertPointToSceneReferenceSpace:?];
+  [view bounds];
+  [view convertPoint:0 toView:{MinX, CGRectGetMaxY(v10)}];
+  [window _convertPointToSceneReferenceSpace:?];
   v5 = v4;
   v7 = v6;
 

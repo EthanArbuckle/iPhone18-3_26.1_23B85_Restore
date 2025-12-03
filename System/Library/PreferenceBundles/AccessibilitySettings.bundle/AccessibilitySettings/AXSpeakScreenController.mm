@@ -1,15 +1,15 @@
 @interface AXSpeakScreenController
-- (id)highlightWord:(id)a3;
-- (id)showSpeechController:(id)a3;
-- (id)speakThisEnabled:(id)a3;
+- (id)highlightWord:(id)word;
+- (id)showSpeechController:(id)controller;
+- (id)speakThisEnabled:(id)enabled;
 - (id)specifiers;
-- (id)speechControllerDoubleTapActionSummary:(id)a3;
-- (id)speechControllerIdleOpacitySummary:(id)a3;
-- (id)speechControllerLongPressActionSummary:(id)a3;
+- (id)speechControllerDoubleTapActionSummary:(id)summary;
+- (id)speechControllerIdleOpacitySummary:(id)summary;
+- (id)speechControllerLongPressActionSummary:(id)summary;
 - (void)_reloadQuickSpeakHighlightSpecifier;
 - (void)loadView;
-- (void)setShowSpeechController:(id)a3 specifier:(id)a4;
-- (void)setSpeakThisEnabled:(id)a3 specifier:(id)a4;
+- (void)setShowSpeechController:(id)controller specifier:(id)specifier;
+- (void)setSpeakThisEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AXSpeakScreenController
@@ -31,26 +31,26 @@
   return v4;
 }
 
-- (id)speakThisEnabled:(id)a3
+- (id)speakThisEnabled:(id)enabled
 {
   v3 = _AXSSpeakThisEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setSpeakThisEnabled:(id)a3 specifier:(id)a4
+- (void)setSpeakThisEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
-  [v4 BOOLValue];
+  enabledCopy = enabled;
+  [enabledCopy BOOLValue];
   _AXSSetSpeakThisEnabled();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 showSpeechController];
+    showSpeechController = [v6 showSpeechController];
 
-    if (v7)
+    if (showSpeechController)
     {
       v8 = +[SpeakThisServices sharedInstance];
       [v8 showSpeechController:&__block_literal_global_72];
@@ -71,7 +71,7 @@ void __57__AXSpeakScreenController_setSpeakThisEnabled_specifier___block_invoke(
   }
 }
 
-- (id)showSpeechController:(id)a3
+- (id)showSpeechController:(id)controller
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 showSpeechController]);
@@ -79,14 +79,14 @@ void __57__AXSpeakScreenController_setSpeakThisEnabled_specifier___block_invoke(
   return v4;
 }
 
-- (void)setShowSpeechController:(id)a3 specifier:(id)a4
+- (void)setShowSpeechController:(id)controller specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [controller BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setShowSpeechController:v4];
+  [v5 setShowSpeechController:bOOLValue];
 }
 
-- (id)speechControllerLongPressActionSummary:(id)a3
+- (id)speechControllerLongPressActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSpeechControllerAction([v3 speechControllerLongPressAction]);
@@ -94,7 +94,7 @@ void __57__AXSpeakScreenController_setSpeakThisEnabled_specifier___block_invoke(
   return v4;
 }
 
-- (id)speechControllerDoubleTapActionSummary:(id)a3
+- (id)speechControllerDoubleTapActionSummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   v4 = AXLocalizedTitleForSpeechControllerAction([v3 speechControllerDoubleTapAction]);
@@ -102,7 +102,7 @@ void __57__AXSpeakScreenController_setSpeakThisEnabled_specifier___block_invoke(
   return v4;
 }
 
-- (id)speechControllerIdleOpacitySummary:(id)a3
+- (id)speechControllerIdleOpacitySummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   [v3 speechControllerIdleOpacity];
@@ -111,7 +111,7 @@ void __57__AXSpeakScreenController_setSpeakThisEnabled_specifier___block_invoke(
   return v4;
 }
 
-- (id)highlightWord:(id)a3
+- (id)highlightWord:(id)word
 {
   if (_AXSQuickSpeakHighlightTextEnabled())
   {

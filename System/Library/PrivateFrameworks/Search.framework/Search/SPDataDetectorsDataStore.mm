@@ -1,12 +1,12 @@
 @interface SPDataDetectorsDataStore
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPDataDetectorsDataStore
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v41 = *v5;
@@ -23,18 +23,18 @@
   *(v5 + 32) = "[SPDataDetectorsDataStore performQuery:]";
   si_tracing_log_span_begin();
   v11 = SPLogForSPLogCategoryTelemetry();
-  v12 = [v4 externalID];
-  if (v12 && os_signpost_enabled(v11))
+  externalID = [queryCopy externalID];
+  if (externalID && os_signpost_enabled(v11))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_BEGIN, v12, "dataDetectorsLatency", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_BEGIN, externalID, "dataDetectorsLatency", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v13 = [v4 queryContext];
-  v14 = [v13 searchString];
-  v15 = [v14 mutableCopy];
+  queryContext = [queryCopy queryContext];
+  searchString = [queryContext searchString];
+  v15 = [searchString mutableCopy];
 
-  objc_initWeak(&location, v4);
+  objc_initWeak(&location, queryCopy);
   v16 = [[DDStoreToken alloc] initWithStore:self];
   v17 = objc_alloc_init(SSDataDetectorResultGenerator);
   generator = self->_generator;
@@ -45,7 +45,7 @@
   v38 = v19;
   v39 = *(v5 + 32);
   v20 = self->_generator;
-  v21 = [v4 queryIdent];
+  queryIdent = [queryCopy queryIdent];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100055EAC;
@@ -56,7 +56,7 @@
   objc_copyWeak(&v33, &location);
   v22 = v16;
   v32 = v22;
-  [(SSDataDetectorResultGenerator *)v20 getResultSections:v15 queryId:v21 completion:v31];
+  [(SSDataDetectorResultGenerator *)v20 getResultSections:v15 queryId:queryIdent completion:v31];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&location);

@@ -8,7 +8,7 @@
 {
   v32 = *MEMORY[0x1E69E9840];
   v14 = a9;
-  v15 = [a1 layoutAttributesForElementsInRect:{a4, a5, a6, a7}];
+  v15 = [self layoutAttributesForElementsInRect:{a4, a5, a6, a7}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;

@@ -1,22 +1,22 @@
 @interface CSDMessagingConversationActivityMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPreferredBroadcastingAttributes:(BOOL)a3;
-- (void)setHasSupportsActivityPreviews:(BOOL)a3;
-- (void)setHasSupportsContinuationOnTV:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPreferredBroadcastingAttributes:(BOOL)attributes;
+- (void)setHasSupportsActivityPreviews:(BOOL)previews;
+- (void)setHasSupportsContinuationOnTV:(BOOL)v;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationActivityMetadata
 
-- (void)setHasSupportsContinuationOnTV:(BOOL)a3
+- (void)setHasSupportsContinuationOnTV:(BOOL)v
 {
-  if (a3)
+  if (v)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPreferredBroadcastingAttributes:(BOOL)a3
+- (void)setHasPreferredBroadcastingAttributes:(BOOL)attributes
 {
-  if (a3)
+  if (attributes)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSupportsActivityPreviews:(BOOL)a3
+- (void)setHasSupportsActivityPreviews:(BOOL)previews
 {
-  if (a3)
+  if (previews)
   {
     v3 = 4;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationActivityMetadata;
   v3 = [(CSDMessagingConversationActivityMetadata *)&v7 description];
-  v4 = [(CSDMessagingConversationActivityMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationActivityMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -113,8 +113,8 @@
   sceneAssociationBehavior = self->_sceneAssociationBehavior;
   if (sceneAssociationBehavior)
   {
-    v12 = [(CSDMessagingConversationActivitySceneAssociationBehavior *)sceneAssociationBehavior dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"sceneAssociationBehavior"];
+    dictionaryRepresentation = [(CSDMessagingConversationActivitySceneAssociationBehavior *)sceneAssociationBehavior dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"sceneAssociationBehavior"];
   }
 
   has = self->_has;
@@ -135,52 +135,52 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_fallbackURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     supportsContinuationOnTV = self->_supportsContinuationOnTV;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_subtitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_image)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     preferredBroadcastingAttributes = self->_preferredBroadcastingAttributes;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_sceneAssociationBehavior)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -188,7 +188,7 @@
   {
     supportsActivityPreviews = self->_supportsActivityPreviews;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -196,75 +196,75 @@
   {
     lifetimePolicy = self->_lifetimePolicy;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_fallbackURL)
   {
-    [v4 setFallbackURL:?];
-    v4 = v6;
+    [toCopy setFallbackURL:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 57) = self->_supportsContinuationOnTV;
-    *(v4 + 60) |= 8u;
+    *(toCopy + 57) = self->_supportsContinuationOnTV;
+    *(toCopy + 60) |= 8u;
   }
 
   if (self->_title)
   {
     [v6 setTitle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_subtitle)
   {
     [v6 setSubtitle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_image)
   {
     [v6 setImage:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 7) = self->_preferredBroadcastingAttributes;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 7) = self->_preferredBroadcastingAttributes;
+    *(toCopy + 60) |= 2u;
   }
 
   if (self->_sceneAssociationBehavior)
   {
     [v6 setSceneAssociationBehavior:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 56) = self->_supportsActivityPreviews;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 56) = self->_supportsActivityPreviews;
+    *(toCopy + 60) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 6) = self->_lifetimePolicy;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 6) = self->_lifetimePolicy;
+    *(toCopy + 60) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_fallbackURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_fallbackURL copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -274,15 +274,15 @@
     *(v5 + 60) |= 8u;
   }
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSData *)self->_image copyWithZone:a3];
+  v12 = [(NSData *)self->_image copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -292,7 +292,7 @@
     *(v5 + 60) |= 2u;
   }
 
-  v14 = [(CSDMessagingConversationActivitySceneAssociationBehavior *)self->_sceneAssociationBehavior copyWithZone:a3];
+  v14 = [(CSDMessagingConversationActivitySceneAssociationBehavior *)self->_sceneAssociationBehavior copyWithZone:zone];
   v15 = v5[4];
   v5[4] = v14;
 
@@ -313,16 +313,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   fallbackURL = self->_fallbackURL;
-  if (fallbackURL | *(v4 + 1))
+  if (fallbackURL | *(equalCopy + 1))
   {
     if (![(NSString *)fallbackURL isEqual:?])
     {
@@ -330,42 +330,42 @@
     }
   }
 
-  v6 = *(v4 + 60);
+  v6 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0)
+    if ((*(equalCopy + 60) & 8) == 0)
     {
       goto LABEL_16;
     }
 
-    v14 = *(v4 + 57);
+    v14 = *(equalCopy + 57);
     if (self->_supportsContinuationOnTV)
     {
-      if ((*(v4 + 57) & 1) == 0)
+      if ((*(equalCopy + 57) & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(v4 + 57))
+    else if (*(equalCopy + 57))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_16;
   }
 
   title = self->_title;
-  if (title | *(v4 + 6) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 6) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_16;
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 5))
+  if (subtitle | *(equalCopy + 5))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -374,7 +374,7 @@
   }
 
   image = self->_image;
-  if (image | *(v4 + 2))
+  if (image | *(equalCopy + 2))
   {
     if (![(NSData *)image isEqual:?])
     {
@@ -383,22 +383,22 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 60);
+  v11 = *(equalCopy + 60);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_preferredBroadcastingAttributes != *(v4 + 7))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_preferredBroadcastingAttributes != *(equalCopy + 7))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   sceneAssociationBehavior = self->_sceneAssociationBehavior;
-  if (sceneAssociationBehavior | *(v4 + 4))
+  if (sceneAssociationBehavior | *(equalCopy + 4))
   {
     if (![(CSDMessagingConversationActivitySceneAssociationBehavior *)sceneAssociationBehavior isEqual:?])
     {
@@ -410,38 +410,38 @@
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0)
+    if ((*(equalCopy + 60) & 4) == 0)
     {
       goto LABEL_16;
     }
 
-    v16 = *(v4 + 56);
+    v16 = *(equalCopy + 56);
     if (self->_supportsActivityPreviews)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_16;
   }
 
-  v12 = (*(v4 + 60) & 1) == 0;
+  v12 = (*(equalCopy + 60) & 1) == 0;
   if ((has & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  if ((*(v4 + 60) & 1) != 0 && self->_lifetimePolicy == *(v4 + 6))
+  if ((*(equalCopy + 60) & 1) != 0 && self->_lifetimePolicy == *(equalCopy + 6))
   {
     v12 = 1;
     goto LABEL_17;
@@ -505,48 +505,48 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(CSDMessagingConversationActivityMetadata *)self setFallbackURL:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 60) & 8) != 0)
+  if ((*(fromCopy + 60) & 8) != 0)
   {
-    self->_supportsContinuationOnTV = *(v4 + 57);
+    self->_supportsContinuationOnTV = *(fromCopy + 57);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(CSDMessagingConversationActivityMetadata *)self setTitle:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(CSDMessagingConversationActivityMetadata *)self setSubtitle:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(CSDMessagingConversationActivityMetadata *)self setImage:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 60) & 2) != 0)
+  if ((*(fromCopy + 60) & 2) != 0)
   {
-    self->_preferredBroadcastingAttributes = *(v4 + 7);
+    self->_preferredBroadcastingAttributes = *(fromCopy + 7);
     *&self->_has |= 2u;
   }
 
   sceneAssociationBehavior = self->_sceneAssociationBehavior;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (sceneAssociationBehavior)
   {
     if (!v6)
@@ -567,19 +567,19 @@ LABEL_9:
     [(CSDMessagingConversationActivityMetadata *)self setSceneAssociationBehavior:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_19:
-  v7 = *(v4 + 60);
+  v7 = *(fromCopy + 60);
   if ((v7 & 4) != 0)
   {
-    self->_supportsActivityPreviews = *(v4 + 56);
+    self->_supportsActivityPreviews = *(fromCopy + 56);
     *&self->_has |= 4u;
-    v7 = *(v4 + 60);
+    v7 = *(fromCopy + 60);
   }
 
   if (v7)
   {
-    self->_lifetimePolicy = *(v4 + 6);
+    self->_lifetimePolicy = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 }

@@ -9,18 +9,18 @@
   v32[2] = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = objc_opt_new();
-  v5 = [v3 identifier];
-  [v4 setNotificationIdentifier:v5];
+  identifier = [v3 identifier];
+  [v4 setNotificationIdentifier:identifier];
 
-  v6 = [v3 categoryIdentifier];
-  [v4 setCategoryIdentifier:v6];
+  categoryIdentifier = [v3 categoryIdentifier];
+  [v4 setCategoryIdentifier:categoryIdentifier];
 
   [v4 setSectionIdentifier:@"com.apple.springboard.pass"];
-  v7 = [v3 identifier];
-  [v4 setThreadIdentifier:v7];
+  identifier2 = [v3 identifier];
+  [v4 setThreadIdentifier:identifier2];
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [v4 setTimestamp:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v4 setTimestamp:date];
 
   v9 = MEMORY[0x277CBEB98];
   v10 = *MEMORY[0x277D77FD8];
@@ -31,24 +31,24 @@
   [v4 setRequestDestinations:v12];
 
   v13 = objc_opt_new();
-  v14 = [v3 title];
-  [v13 setTitle:v14];
+  title = [v3 title];
+  [v13 setTitle:title];
 
-  v15 = [v3 subtitle];
-  [v13 setSubtitle:v15];
+  subtitle = [v3 subtitle];
+  [v13 setSubtitle:subtitle];
 
-  v16 = [v3 body];
-  [v13 setMessage:v16];
+  body = [v3 body];
+  [v13 setMessage:body];
 
   v17 = objc_alloc(MEMORY[0x277D755B8]);
-  v18 = [v3 iconData];
-  v19 = [MEMORY[0x277D759A0] mainScreen];
-  [v19 scale];
-  v20 = [v17 _initWithData:v18 scale:?];
+  iconData = [v3 iconData];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v20 = [v17 _initWithData:iconData scale:?];
   [v13 setIcon:v20];
 
-  v21 = [v3 thumbnail];
-  [v13 setAttachmentImage:v21];
+  thumbnail = [v3 thumbnail];
+  [v13 setAttachmentImage:thumbnail];
 
   [v4 setContent:v13];
   v22 = objc_opt_new();

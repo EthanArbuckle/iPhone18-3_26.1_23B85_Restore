@@ -36,14 +36,14 @@
 
 - (id)description
 {
-  v2 = [(NRFeatureFlags *)self _dictionaryRepresentation];
+  _dictionaryRepresentation = [(NRFeatureFlags *)self _dictionaryRepresentation];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100052A5C;
   v11 = &unk_1001778F0;
   v12 = objc_alloc_init(NSMutableArray);
   v3 = v12;
-  [v2 enumerateKeysAndObjectsUsingBlock:&v8];
+  [_dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:&v8];
   v4 = [NSString alloc];
   v5 = [v3 componentsJoinedByString:{@", "}];
   v6 = [v4 initWithFormat:@"NRFeatureFlags:- %@", v5, v8, v9, v10, v11];

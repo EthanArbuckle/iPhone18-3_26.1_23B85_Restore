@@ -1,15 +1,15 @@
 @interface TUICandidateGroupHeader
 - (CGRect)virtualLabelContainerFrame;
 - (CGRect)visibleBounds;
-- (TUICandidateGroupHeader)initWithCoder:(id)a3;
-- (TUICandidateGroupHeader)initWithFrame:(CGRect)a3;
+- (TUICandidateGroupHeader)initWithCoder:(id)coder;
+- (TUICandidateGroupHeader)initWithFrame:(CGRect)frame;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setAlignment:(int64_t)a3;
-- (void)setStyle:(id)a3;
-- (void)setText:(id)a3;
-- (void)setVirtualLabelContainerFrame:(CGRect)a3;
-- (void)setVisibleBounds:(CGRect)a3;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setStyle:(id)style;
+- (void)setText:(id)text;
+- (void)setVirtualLabelContainerFrame:(CGRect)frame;
+- (void)setVisibleBounds:(CGRect)bounds;
 - (void)updateGroupHeaderLabelPosition;
 @end
 
@@ -41,30 +41,30 @@
   return result;
 }
 
-- (void)setVirtualLabelContainerFrame:(CGRect)a3
+- (void)setVirtualLabelContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_virtualLabelContainerFrame = a3;
-  v21 = [(TUICandidateGroupHeader *)self style];
-  [v21 extraCellPadding];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  self->_virtualLabelContainerFrame = frame;
+  style = [(TUICandidateGroupHeader *)self style];
+  [style extraCellPadding];
   v9 = x + v8;
   v11 = y + v10;
   v13 = width - (v8 + v12);
   v15 = height - (v10 + v14);
   if (objc_opt_respondsToSelector())
   {
-    [v21 groupHeaderPadding];
+    [style groupHeaderPadding];
     v9 = v9 + v16;
     v11 = v11 + v17;
     v13 = v13 - (v16 + v18);
     v15 = v15 - (v17 + v19);
   }
 
-  v20 = [(TUICandidateGroupHeader *)self textLabel];
-  [v20 setFrame:{v9, v11, v13, v15}];
+  textLabel = [(TUICandidateGroupHeader *)self textLabel];
+  [textLabel setFrame:{v9, v11, v13, v15}];
 }
 
 - (void)updateGroupHeaderLabelPosition
@@ -84,11 +84,11 @@
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(TUICandidateGroupHeader *)self style];
-  v24 = [v23 layoutOrientation];
+  style = [(TUICandidateGroupHeader *)self style];
+  layoutOrientation = [style layoutOrientation];
 
   [(TUICandidateGroupHeader *)self rowHeight];
-  if (v24 == 1)
+  if (layoutOrientation == 1)
   {
     v16 = (v25 - v20) * 0.5;
     v36.origin.x = v4;
@@ -154,14 +154,14 @@
   }
 }
 
-- (void)setVisibleBounds:(CGRect)a3
+- (void)setVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_visibleBounds = &self->_visibleBounds;
-  if (!CGRectEqualToRect(self->_visibleBounds, a3))
+  if (!CGRectEqualToRect(self->_visibleBounds, bounds))
   {
     p_visibleBounds->origin.x = x;
     p_visibleBounds->origin.y = y;
@@ -172,52 +172,52 @@
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v13 = a3;
+  styleCopy = style;
   if (([(TUICandidateViewStyle *)self->_style isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_style, a3);
-    [v13 rowHeight];
+    objc_storeStrong(&self->_style, style);
+    [styleCopy rowHeight];
     self->_rowHeight = v5;
-    v6 = [v13 candidateFont];
-    v7 = [(TUICandidateGroupHeader *)self textLabel];
-    [v7 setFont:v6];
+    candidateFont = [styleCopy candidateFont];
+    textLabel = [(TUICandidateGroupHeader *)self textLabel];
+    [textLabel setFont:candidateFont];
 
-    v8 = [v13 textColor];
-    v9 = [(TUICandidateGroupHeader *)self textLabel];
-    [v9 setTextColor:v8];
+    textColor = [styleCopy textColor];
+    textLabel2 = [(TUICandidateGroupHeader *)self textLabel];
+    [textLabel2 setTextColor:textColor];
 
-    v10 = [v13 groupHeaderBackgroundColor];
-    [(TUICandidateGroupHeader *)self setBackgroundColor:v10];
+    groupHeaderBackgroundColor = [styleCopy groupHeaderBackgroundColor];
+    [(TUICandidateGroupHeader *)self setBackgroundColor:groupHeaderBackgroundColor];
 
-    v11 = [v13 layoutOrientation] == 1;
-    v12 = [(TUICandidateGroupHeader *)self textLabel];
-    [v12 setTextAlignment:v11];
+    v11 = [styleCopy layoutOrientation] == 1;
+    textLabel3 = [(TUICandidateGroupHeader *)self textLabel];
+    [textLabel3 setTextAlignment:v11];
   }
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  if (self->_alignment != a3)
+  if (self->_alignment != alignment)
   {
-    v5 = [(TUICandidateGroupHeader *)self textLabel];
-    [v5 setTextAlignment:a3];
+    textLabel = [(TUICandidateGroupHeader *)self textLabel];
+    [textLabel setTextAlignment:alignment];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     text = self->_text;
     self->_text = v4;
 
     v6 = self->_text;
-    v7 = [(TUICandidateGroupHeader *)self textLabel];
-    [v7 setText:v6];
+    textLabel = [(TUICandidateGroupHeader *)self textLabel];
+    [textLabel setText:v6];
   }
 }
 
@@ -231,14 +231,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUICandidateGroupHeader *)self style];
-  v12 = [v11 layoutOrientation];
+  style = [(TUICandidateGroupHeader *)self style];
+  layoutOrientation = [style layoutOrientation];
 
   v13 = v4;
   v14 = v6;
   v15 = v8;
   v16 = v10;
-  if (v12 == 1)
+  if (layoutOrientation == 1)
   {
     v27 = CGRectInset(*&v13, 0.0, 10.0);
     x = v27.origin.x;
@@ -273,11 +273,11 @@
   [(TUICandidateGroupHeader *)self setVirtualLabelContainerFrame:v24, y, v21, height];
 }
 
-- (TUICandidateGroupHeader)initWithCoder:(id)a3
+- (TUICandidateGroupHeader)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateGroupHeader;
-  v3 = [(TUICandidateGroupHeader *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateGroupHeader *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -287,11 +287,11 @@
   return v4;
 }
 
-- (TUICandidateGroupHeader)initWithFrame:(CGRect)a3
+- (TUICandidateGroupHeader)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateGroupHeader;
-  v3 = [(TUICandidateGroupHeader *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateGroupHeader *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

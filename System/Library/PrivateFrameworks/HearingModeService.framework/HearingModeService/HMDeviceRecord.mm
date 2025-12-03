@@ -1,44 +1,44 @@
 @interface HMDeviceRecord
-+ (char)getHMMultiStateFromPMEState:(unsigned __int8)a3;
-+ (char)multiStateForAAFeatureCapability:(unsigned __int8)a3;
-- (BOOL)updateWithAADevice:(id)a3;
-- (BOOL)updateWithCloudRecordInfo:(id)a3;
-- (BOOL)updateWithHearingAidConfigData:(id)a3;
-- (BOOL)updateWithHearingProtectionValue:(unsigned __int8)a3;
-- (BOOL)updateWithPMEConfigData:(id)a3;
++ (char)getHMMultiStateFromPMEState:(unsigned __int8)state;
++ (char)multiStateForAAFeatureCapability:(unsigned __int8)capability;
+- (BOOL)updateWithAADevice:(id)device;
+- (BOOL)updateWithCloudRecordInfo:(id)info;
+- (BOOL)updateWithHearingAidConfigData:(id)data;
+- (BOOL)updateWithHearingProtectionValue:(unsigned __int8)value;
+- (BOOL)updateWithPMEConfigData:(id)data;
 - (HMDeviceRecord)init;
-- (HMDeviceRecord)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (HMDeviceRecord)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
 - (void)_deriveMediaAssistStateIfNeeded;
-- (void)encodeWithCoder:(id)a3;
-- (void)invokePendingOcclusionCompletionsWithError:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)invokePendingOcclusionCompletionsWithError:(id)error;
 @end
 
 @implementation HMDeviceRecord
 
-+ (char)getHMMultiStateFromPMEState:(unsigned __int8)a3
++ (char)getHMMultiStateFromPMEState:(unsigned __int8)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (state == 2);
   }
 }
 
-+ (char)multiStateForAAFeatureCapability:(unsigned __int8)a3
++ (char)multiStateForAAFeatureCapability:(unsigned __int8)capability
 {
-  if (a3 == 2)
+  if (capability == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (capability == 1);
   }
 }
 
@@ -68,15 +68,15 @@
   return v3;
 }
 
-- (HMDeviceRecord)initWithCoder:(id)a3
+- (HMDeviceRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMDeviceRecord *)self init];
   if (v5)
   {
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -290,283 +290,283 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   amplification = self->_amplification;
-  v24 = v4;
+  v24 = coderCopy;
   if (amplification)
   {
-    [v4 encodeObject:amplification forKey:@"ampl"];
-    v4 = v24;
+    [coderCopy encodeObject:amplification forKey:@"ampl"];
+    coderCopy = v24;
   }
 
   audiogramEnrolledTimestamp = self->_audiogramEnrolledTimestamp;
   if (audiogramEnrolledTimestamp)
   {
     [v24 encodeObject:audiogramEnrolledTimestamp forKey:@"agET"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   balance = self->_balance;
   if (balance)
   {
     [v24 encodeObject:balance forKey:@"balc"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   beamFormer = self->_beamFormer;
   if (beamFormer)
   {
     [v24 encodeObject:beamFormer forKey:@"bmFm"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   bluetoothUUID = self->_bluetoothUUID;
   if (bluetoothUUID)
   {
     [v24 encodeObject:bluetoothUUID forKey:@"btUUID"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   bluetoothAddress = self->_bluetoothAddress;
   if (bluetoothAddress)
   {
     [v24 encodeObject:bluetoothAddress forKey:@"btAdS"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   bluetoothAddressData = self->_bluetoothAddressData;
   if (bluetoothAddressData)
   {
     [v24 encodeObject:bluetoothAddressData forKey:@"btAd"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_earTipFitTestCapability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   earLossDataLeft = self->_earLossDataLeft;
   if (earLossDataLeft)
   {
     [v24 encodeObject:earLossDataLeft forKey:@"ElLT"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   earLossDataRight = self->_earLossDataRight;
   if (earLossDataRight)
   {
     [v24 encodeObject:earLossDataRight forKey:@"ELRT"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAidV2Capability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAidEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAssistCapability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAssistEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAssistEnrolled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAssistRegionStatus)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingProtectionCapability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingProtectionEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   hearingProtectionOcclusionResult = self->_hearingProtectionOcclusionResult;
   if (hearingProtectionOcclusionResult)
   {
     [v24 encodeInteger:hearingProtectionOcclusionResult forKey:@"hPOc"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingProtectionPPECapability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   hearingProtectionPPECapLevel = self->_hearingProtectionPPECapLevel;
   if (hearingProtectionPPECapLevel)
   {
     [v24 encodeObject:hearingProtectionPPECapLevel forKey:@"ppeL"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingProtectionPPEEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingProtectionRegionStatus)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingTestCapability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingTestRegionStatus)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hideOffModeCapability)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_listeningModeOffAllowed)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_mediaAssistEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   noiseSuppression = self->_noiseSuppression;
   if (noiseSuppression)
   {
     [v24 encodeObject:noiseSuppression forKey:@"nsSp"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingAidV2RegionStatus)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hearingProtectionPPERegionStatus)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_pmeMediaEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   pmeMediaLossDataLeft = self->_pmeMediaLossDataLeft;
   if (pmeMediaLossDataLeft)
   {
     [v24 encodeObject:pmeMediaLossDataLeft forKey:@"pmML"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   pmeMediaLossDataRight = self->_pmeMediaLossDataRight;
   if (pmeMediaLossDataRight)
   {
     [v24 encodeObject:pmeMediaLossDataRight forKey:@"pmMR"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   pmeVoiceLossDataLeft = self->_pmeVoiceLossDataLeft;
   if (pmeVoiceLossDataLeft)
   {
     [v24 encodeObject:pmeVoiceLossDataLeft forKey:@"pmVL"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   pmeVoiceLossDataRight = self->_pmeVoiceLossDataRight;
   if (pmeVoiceLossDataRight)
   {
     [v24 encodeObject:pmeVoiceLossDataRight forKey:@"pmVR"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_pmeVoiceEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_pmeVoiceEnrolled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_swipeGainEnabled)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   tone = self->_tone;
   if (tone)
   {
     [v24 encodeObject:tone forKey:@"tone"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   safetyInformation = self->_safetyInformation;
   if (safetyInformation)
   {
     [v24 encodeObject:safetyInformation forKey:@"sInf"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   ownVoiceLevelGain = self->_ownVoiceLevelGain;
   if (ownVoiceLevelGain)
   {
     [v24 encodeObject:ownVoiceLevelGain forKey:@"oVLG"];
-    v4 = v24;
+    coderCopy = v24;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v68 = [objc_opt_class() description];
   NSAppendPrintF_safe();
@@ -922,7 +922,7 @@
     v5 = v64;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     NSAppendPrintF_safe();
     v65 = v5;
@@ -935,17 +935,17 @@
   return v5;
 }
 
-- (void)invokePendingOcclusionCompletionsWithError:(id)a3
+- (void)invokePendingOcclusionCompletionsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   pendingOcclusionCompletionsMap = self->_pendingOcclusionCompletionsMap;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__HMDeviceRecord_invokePendingOcclusionCompletionsWithError___block_invoke;
   v11 = &unk_2796EE880;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = errorCopy;
+  v6 = errorCopy;
   [(NSMutableDictionary *)pendingOcclusionCompletionsMap enumerateKeysAndObjectsUsingBlock:&v8];
   [(NSMutableDictionary *)self->_pendingOcclusionCompletionsMap removeAllObjects:v8];
   v7 = self->_pendingOcclusionCompletionsMap;
@@ -998,12 +998,12 @@ void __61__HMDeviceRecord_invokePendingOcclusionCompletionsWithError___block_inv
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateWithAADevice:(id)a3
+- (BOOL)updateWithAADevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddressData];
+  deviceCopy = device;
+  bluetoothAddressData = [deviceCopy bluetoothAddressData];
   bluetoothAddress = self->_bluetoothAddressData;
-  v7 = v5;
+  v7 = bluetoothAddressData;
   v8 = v7;
   v9 = bluetoothAddress != v7;
   if (bluetoothAddress == v7)
@@ -1027,16 +1027,16 @@ void __61__HMDeviceRecord_invokePendingOcclusionCompletionsWithError___block_inv
     {
     }
 
-    objc_storeStrong(&self->_bluetoothAddressData, v5);
+    objc_storeStrong(&self->_bluetoothAddressData, bluetoothAddressData);
     v11 = CUPrintNSDataAddress();
     bluetoothAddress = self->_bluetoothAddress;
     self->_bluetoothAddress = v11;
   }
 
 LABEL_9:
-  v12 = [v4 identifier];
+  identifier = [deviceCopy identifier];
   bluetoothUUID = self->_bluetoothUUID;
-  v14 = v12;
+  v14 = identifier;
   v15 = v14;
   if (bluetoothUUID == v14)
   {
@@ -1065,18 +1065,18 @@ LABEL_9:
   }
 
 LABEL_17:
-  v18 = [v4 audiogramEnrolledTimestamp];
-  v19 = v18;
-  if (v18 && ([v18 isEqualToDate:self->_audiogramEnrolledTimestamp] & 1) == 0)
+  audiogramEnrolledTimestamp = [deviceCopy audiogramEnrolledTimestamp];
+  v19 = audiogramEnrolledTimestamp;
+  if (audiogramEnrolledTimestamp && ([audiogramEnrolledTimestamp isEqualToDate:self->_audiogramEnrolledTimestamp] & 1) == 0)
   {
     objc_storeStrong(&self->_audiogramEnrolledTimestamp, v19);
     v9 = 1;
   }
 
-  v20 = [v4 audioStreamState];
-  v21 = v20 != [(AudioAccessoryDevice *)self->_aaDevice audioStreamState]|| v9;
-  v22 = [v4 hearingAidCapability];
-  if (v22 == 1)
+  audioStreamState = [deviceCopy audioStreamState];
+  v21 = audioStreamState != [(AudioAccessoryDevice *)self->_aaDevice audioStreamState]|| v9;
+  hearingAidCapability = [deviceCopy hearingAidCapability];
+  if (hearingAidCapability == 1)
   {
     hearingAssistCapability = 2;
   }
@@ -1086,7 +1086,7 @@ LABEL_17:
     hearingAssistCapability = self->_hearingAssistCapability;
   }
 
-  if (v22 == 2)
+  if (hearingAidCapability == 2)
   {
     hearingAssistCapability = 1;
   }
@@ -1097,30 +1097,30 @@ LABEL_17:
     v21 = 1;
   }
 
-  v24 = [v4 hearingAidEnabled];
-  if (self->_hearingAidEnabled != v24)
+  hearingAidEnabled = [deviceCopy hearingAidEnabled];
+  if (self->_hearingAidEnabled != hearingAidEnabled)
   {
-    self->_hearingAidEnabled = v24;
+    self->_hearingAidEnabled = hearingAidEnabled;
     v21 = 1;
   }
 
-  v25 = [v4 hearingAssistEnabled];
-  if (self->_hearingAssistEnabled != v25)
+  hearingAssistEnabled = [deviceCopy hearingAssistEnabled];
+  if (self->_hearingAssistEnabled != hearingAssistEnabled)
   {
-    self->_hearingAssistEnabled = v25;
+    self->_hearingAssistEnabled = hearingAssistEnabled;
     v21 = 1;
   }
 
-  v26 = [v4 hearingAidEnrolled];
-  if (self->_hearingAssistEnrolled != v26)
+  hearingAidEnrolled = [deviceCopy hearingAidEnrolled];
+  if (self->_hearingAssistEnrolled != hearingAidEnrolled)
   {
-    self->_hearingAssistEnrolled = v26;
+    self->_hearingAssistEnrolled = hearingAidEnrolled;
     v21 = 1;
   }
 
-  v27 = [v4 hearingProtectionCapability];
-  v28 = 2 * (v27 == 1);
-  if (v27 == 2)
+  hearingProtectionCapability = [deviceCopy hearingProtectionCapability];
+  v28 = 2 * (hearingProtectionCapability == 1);
+  if (hearingProtectionCapability == 2)
   {
     v28 = 1;
   }
@@ -1133,9 +1133,9 @@ LABEL_17:
 
   if (_os_feature_enabled_impl())
   {
-    v29 = [v4 hearingAidV2Capability];
-    v30 = 2 * (v29 == 1);
-    if (v29 == 2)
+    hearingAidV2Capability = [deviceCopy hearingAidV2Capability];
+    v30 = 2 * (hearingAidV2Capability == 1);
+    if (hearingAidV2Capability == 2)
     {
       v30 = 1;
     }
@@ -1149,9 +1149,9 @@ LABEL_17:
 
   if (_os_feature_enabled_impl())
   {
-    v31 = [v4 hearingProtectionPPECapability];
-    v32 = 2 * (v31 == 1);
-    if (v31 == 2)
+    hearingProtectionPPECapability = [deviceCopy hearingProtectionPPECapability];
+    v32 = 2 * (hearingProtectionPPECapability == 1);
+    if (hearingProtectionPPECapability == 2)
     {
       v32 = 1;
     }
@@ -1163,7 +1163,7 @@ LABEL_17:
     }
   }
 
-  if ([v4 hearingProtectionPPEEnabled] == 1)
+  if ([deviceCopy hearingProtectionPPEEnabled] == 1)
   {
     v33 = 1;
   }
@@ -1179,21 +1179,21 @@ LABEL_17:
     v21 = 1;
   }
 
-  v34 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "hearingProtectionPPECapLevel")}];
+  v34 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(deviceCopy, "hearingProtectionPPECapLevel")}];
   if (_os_feature_enabled_impl())
   {
-    v35 = [(HMDeviceRecord *)self hearingProtectionPPECapLevel];
+    hearingProtectionPPECapLevel = [(HMDeviceRecord *)self hearingProtectionPPECapLevel];
 
-    if (v34 != v35)
+    if (v34 != hearingProtectionPPECapLevel)
     {
       objc_storeStrong(&self->_hearingProtectionPPECapLevel, v34);
       v21 = 1;
     }
   }
 
-  v36 = [v4 hearingTestCapability];
-  v37 = 2 * (v36 == 1);
-  if (v36 == 2)
+  hearingTestCapability = [deviceCopy hearingTestCapability];
+  v37 = 2 * (hearingTestCapability == 1);
+  if (hearingTestCapability == 2)
   {
     v37 = 1;
   }
@@ -1204,7 +1204,7 @@ LABEL_17:
     v21 = 1;
   }
 
-  v38 = +[HMDeviceRecord multiStateForAAFeatureCapability:](HMDeviceRecord, "multiStateForAAFeatureCapability:", [v4 hideOffListeningModeCapability]);
+  v38 = +[HMDeviceRecord multiStateForAAFeatureCapability:](HMDeviceRecord, "multiStateForAAFeatureCapability:", [deviceCopy hideOffListeningModeCapability]);
   if (self->_hideOffModeCapability != v38)
   {
     self->_hideOffModeCapability = v38;
@@ -1212,42 +1212,42 @@ LABEL_17:
   }
 
   v56 = v15;
-  v39 = [v4 listeningModeOffAllowed];
+  listeningModeOffAllowed = [deviceCopy listeningModeOffAllowed];
   v40 = v19;
   v41 = v8;
-  if (_os_feature_enabled_impl() && self->_listeningModeOffAllowed != v39)
+  if (_os_feature_enabled_impl() && self->_listeningModeOffAllowed != listeningModeOffAllowed)
   {
-    self->_listeningModeOffAllowed = v39;
+    self->_listeningModeOffAllowed = listeningModeOffAllowed;
     v21 = 1;
   }
 
-  v42 = [v4 placementMode];
-  v43 = [(AudioAccessoryDevice *)self->_aaDevice placementMode];
-  v44 = [v4 primaryPlacement];
-  v45 = [(AudioAccessoryDevice *)self->_aaDevice primaryPlacement];
-  v46 = [v4 secondaryPlacement];
-  v49 = v46 != [(AudioAccessoryDevice *)self->_aaDevice secondaryPlacement]|| v44 != v45 || v42 != v43;
-  v50 = [v4 hearingAidGainSwipeEnabled];
-  if (self->_swipeGainEnabled == v50)
+  placementMode = [deviceCopy placementMode];
+  placementMode2 = [(AudioAccessoryDevice *)self->_aaDevice placementMode];
+  primaryPlacement = [deviceCopy primaryPlacement];
+  primaryPlacement2 = [(AudioAccessoryDevice *)self->_aaDevice primaryPlacement];
+  secondaryPlacement = [deviceCopy secondaryPlacement];
+  v49 = secondaryPlacement != [(AudioAccessoryDevice *)self->_aaDevice secondaryPlacement]|| primaryPlacement != primaryPlacement2 || placementMode != placementMode2;
+  hearingAidGainSwipeEnabled = [deviceCopy hearingAidGainSwipeEnabled];
+  if (self->_swipeGainEnabled == hearingAidGainSwipeEnabled)
   {
     v51 = v49 | v21;
   }
 
   else
   {
-    self->_swipeGainEnabled = v50;
+    self->_swipeGainEnabled = hearingAidGainSwipeEnabled;
     v51 = 1;
   }
 
   [(HMDeviceRecord *)self _deriveMediaAssistStateIfNeeded];
-  if ([v4 earTipFitTestCapability] == 2)
+  if ([deviceCopy earTipFitTestCapability] == 2)
   {
     v52 = 1;
   }
 
   else
   {
-    v52 = 2 * ([v4 earTipFitTestCapability] == 1);
+    v52 = 2 * ([deviceCopy earTipFitTestCapability] == 1);
   }
 
   if (v52 != self->_earTipFitTestCapability)
@@ -1257,14 +1257,14 @@ LABEL_17:
   }
 
   aaDevice = self->_aaDevice;
-  self->_aaDevice = v4;
+  self->_aaDevice = deviceCopy;
 
   return v51 & 1;
 }
 
-- (BOOL)updateWithCloudRecordInfo:(id)a3
+- (BOOL)updateWithCloudRecordInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (!self->_cloudRecord)
   {
     v5 = [objc_alloc(MEMORY[0x277CEF830]) initWithBluetoothAddress:self->_bluetoothAddress];
@@ -1272,10 +1272,10 @@ LABEL_17:
     self->_cloudRecord = v5;
   }
 
-  v7 = [v4 mediaAssistEnabled];
-  if (v7 && self->_mediaAssistEnabled != v7)
+  mediaAssistEnabled = [infoCopy mediaAssistEnabled];
+  if (mediaAssistEnabled && self->_mediaAssistEnabled != mediaAssistEnabled)
   {
-    self->_mediaAssistEnabled = v7;
+    self->_mediaAssistEnabled = mediaAssistEnabled;
     [(HMDeviceCloudRecordInfo *)self->_cloudRecord setMediaAssistEnabled:?];
     v8 = 1;
   }
@@ -1285,185 +1285,185 @@ LABEL_17:
     v8 = 0;
   }
 
-  if ([v4 pmeMediaEnabled])
+  if ([infoCopy pmeMediaEnabled])
   {
-    -[HMDeviceCloudRecordInfo setPmeMediaEnabled:](self->_cloudRecord, "setPmeMediaEnabled:", [v4 pmeMediaEnabled]);
+    -[HMDeviceCloudRecordInfo setPmeMediaEnabled:](self->_cloudRecord, "setPmeMediaEnabled:", [infoCopy pmeMediaEnabled]);
   }
 
-  if ([v4 pmeVoiceEnabled])
+  if ([infoCopy pmeVoiceEnabled])
   {
-    -[HMDeviceCloudRecordInfo setPmeVoiceEnabled:](self->_cloudRecord, "setPmeVoiceEnabled:", [v4 pmeVoiceEnabled]);
+    -[HMDeviceCloudRecordInfo setPmeVoiceEnabled:](self->_cloudRecord, "setPmeVoiceEnabled:", [infoCopy pmeVoiceEnabled]);
   }
 
-  if ([v4 swipeGainEnabled])
+  if ([infoCopy swipeGainEnabled])
   {
-    -[HMDeviceCloudRecordInfo setSwipeGainEnabled:](self->_cloudRecord, "setSwipeGainEnabled:", [v4 swipeGainEnabled]);
+    -[HMDeviceCloudRecordInfo setSwipeGainEnabled:](self->_cloudRecord, "setSwipeGainEnabled:", [infoCopy swipeGainEnabled]);
   }
 
-  v9 = [v4 diagnosticMeasurementsCount];
+  diagnosticMeasurementsCount = [infoCopy diagnosticMeasurementsCount];
 
-  if (v9)
+  if (diagnosticMeasurementsCount)
   {
-    v10 = [v4 diagnosticMeasurementsCount];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setDiagnosticMeasurementsCount:v10];
+    diagnosticMeasurementsCount2 = [infoCopy diagnosticMeasurementsCount];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setDiagnosticMeasurementsCount:diagnosticMeasurementsCount2];
   }
 
-  v11 = [v4 bottomMicFaultCountLeft];
+  bottomMicFaultCountLeft = [infoCopy bottomMicFaultCountLeft];
 
-  if (v11)
+  if (bottomMicFaultCountLeft)
   {
-    v12 = [v4 bottomMicFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setBottomMicFaultCountLeft:v12];
+    bottomMicFaultCountLeft2 = [infoCopy bottomMicFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setBottomMicFaultCountLeft:bottomMicFaultCountLeft2];
   }
 
-  v13 = [v4 topMicFaultCountLeft];
+  topMicFaultCountLeft = [infoCopy topMicFaultCountLeft];
 
-  if (v13)
+  if (topMicFaultCountLeft)
   {
-    v14 = [v4 topMicFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTopMicFaultCountLeft:v14];
+    topMicFaultCountLeft2 = [infoCopy topMicFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTopMicFaultCountLeft:topMicFaultCountLeft2];
   }
 
-  v15 = [v4 innerMicFaultCountLeft];
+  innerMicFaultCountLeft = [infoCopy innerMicFaultCountLeft];
 
-  if (v15)
+  if (innerMicFaultCountLeft)
   {
-    v16 = [v4 innerMicFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setInnerMicFaultCountLeft:v16];
+    innerMicFaultCountLeft2 = [infoCopy innerMicFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setInnerMicFaultCountLeft:innerMicFaultCountLeft2];
   }
 
-  v17 = [v4 speakerFaultCountLeft];
+  speakerFaultCountLeft = [infoCopy speakerFaultCountLeft];
 
-  if (v17)
+  if (speakerFaultCountLeft)
   {
-    v18 = [v4 speakerFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setSpeakerFaultCountLeft:v18];
+    speakerFaultCountLeft2 = [infoCopy speakerFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setSpeakerFaultCountLeft:speakerFaultCountLeft2];
   }
 
-  v19 = [v4 frontVentFaultCountLeft];
+  frontVentFaultCountLeft = [infoCopy frontVentFaultCountLeft];
 
-  if (v19)
+  if (frontVentFaultCountLeft)
   {
-    v20 = [v4 frontVentFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFrontVentFaultCountLeft:v20];
+    frontVentFaultCountLeft2 = [infoCopy frontVentFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFrontVentFaultCountLeft:frontVentFaultCountLeft2];
   }
 
-  v21 = [v4 rearVentFaultCountLeft];
+  rearVentFaultCountLeft = [infoCopy rearVentFaultCountLeft];
 
-  if (v21)
+  if (rearVentFaultCountLeft)
   {
-    v22 = [v4 rearVentFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setRearVentFaultCountLeft:v22];
+    rearVentFaultCountLeft2 = [infoCopy rearVentFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setRearVentFaultCountLeft:rearVentFaultCountLeft2];
   }
 
-  v23 = [v4 totalHarmonicDistortionFaultCountLeft];
+  totalHarmonicDistortionFaultCountLeft = [infoCopy totalHarmonicDistortionFaultCountLeft];
 
-  if (v23)
+  if (totalHarmonicDistortionFaultCountLeft)
   {
-    v24 = [v4 totalHarmonicDistortionFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTotalHarmonicDistortionFaultCountLeft:v24];
+    totalHarmonicDistortionFaultCountLeft2 = [infoCopy totalHarmonicDistortionFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTotalHarmonicDistortionFaultCountLeft:totalHarmonicDistortionFaultCountLeft2];
   }
 
-  v25 = [v4 freqAccuracyFaultCountLeft];
+  freqAccuracyFaultCountLeft = [infoCopy freqAccuracyFaultCountLeft];
 
-  if (v25)
+  if (freqAccuracyFaultCountLeft)
   {
-    v26 = [v4 freqAccuracyFaultCountLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFreqAccuracyFaultCountLeft:v26];
+    freqAccuracyFaultCountLeft2 = [infoCopy freqAccuracyFaultCountLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFreqAccuracyFaultCountLeft:freqAccuracyFaultCountLeft2];
   }
 
-  v27 = [v4 latestDiagnosticTimestampLeft];
+  latestDiagnosticTimestampLeft = [infoCopy latestDiagnosticTimestampLeft];
 
-  if (v27)
+  if (latestDiagnosticTimestampLeft)
   {
-    v28 = [v4 latestDiagnosticTimestampLeft];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setLatestDiagnosticTimestampLeft:v28];
+    latestDiagnosticTimestampLeft2 = [infoCopy latestDiagnosticTimestampLeft];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setLatestDiagnosticTimestampLeft:latestDiagnosticTimestampLeft2];
   }
 
-  v29 = [v4 bottomMicFaultCountRight];
+  bottomMicFaultCountRight = [infoCopy bottomMicFaultCountRight];
 
-  if (v29)
+  if (bottomMicFaultCountRight)
   {
-    v30 = [v4 bottomMicFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setBottomMicFaultCountRight:v30];
+    bottomMicFaultCountRight2 = [infoCopy bottomMicFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setBottomMicFaultCountRight:bottomMicFaultCountRight2];
   }
 
-  v31 = [v4 topMicFaultCountRight];
+  topMicFaultCountRight = [infoCopy topMicFaultCountRight];
 
-  if (v31)
+  if (topMicFaultCountRight)
   {
-    v32 = [v4 topMicFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTopMicFaultCountRight:v32];
+    topMicFaultCountRight2 = [infoCopy topMicFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTopMicFaultCountRight:topMicFaultCountRight2];
   }
 
-  v33 = [v4 innerMicFaultCountRight];
+  innerMicFaultCountRight = [infoCopy innerMicFaultCountRight];
 
-  if (v33)
+  if (innerMicFaultCountRight)
   {
-    v34 = [v4 innerMicFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setInnerMicFaultCountRight:v34];
+    innerMicFaultCountRight2 = [infoCopy innerMicFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setInnerMicFaultCountRight:innerMicFaultCountRight2];
   }
 
-  v35 = [v4 speakerFaultCountRight];
+  speakerFaultCountRight = [infoCopy speakerFaultCountRight];
 
-  if (v35)
+  if (speakerFaultCountRight)
   {
-    v36 = [v4 speakerFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setSpeakerFaultCountRight:v36];
+    speakerFaultCountRight2 = [infoCopy speakerFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setSpeakerFaultCountRight:speakerFaultCountRight2];
   }
 
-  v37 = [v4 frontVentFaultCountRight];
+  frontVentFaultCountRight = [infoCopy frontVentFaultCountRight];
 
-  if (v37)
+  if (frontVentFaultCountRight)
   {
-    v38 = [v4 frontVentFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFrontVentFaultCountRight:v38];
+    frontVentFaultCountRight2 = [infoCopy frontVentFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFrontVentFaultCountRight:frontVentFaultCountRight2];
   }
 
-  v39 = [v4 rearVentFaultCountRight];
+  rearVentFaultCountRight = [infoCopy rearVentFaultCountRight];
 
-  if (v39)
+  if (rearVentFaultCountRight)
   {
-    v40 = [v4 rearVentFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setRearVentFaultCountRight:v40];
+    rearVentFaultCountRight2 = [infoCopy rearVentFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setRearVentFaultCountRight:rearVentFaultCountRight2];
   }
 
-  v41 = [v4 totalHarmonicDistortionFaultCountRight];
+  totalHarmonicDistortionFaultCountRight = [infoCopy totalHarmonicDistortionFaultCountRight];
 
-  if (v41)
+  if (totalHarmonicDistortionFaultCountRight)
   {
-    v42 = [v4 totalHarmonicDistortionFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTotalHarmonicDistortionFaultCountRight:v42];
+    totalHarmonicDistortionFaultCountRight2 = [infoCopy totalHarmonicDistortionFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setTotalHarmonicDistortionFaultCountRight:totalHarmonicDistortionFaultCountRight2];
   }
 
-  v43 = [v4 freqAccuracyFaultCountRight];
+  freqAccuracyFaultCountRight = [infoCopy freqAccuracyFaultCountRight];
 
-  if (v43)
+  if (freqAccuracyFaultCountRight)
   {
-    v44 = [v4 freqAccuracyFaultCountRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFreqAccuracyFaultCountRight:v44];
+    freqAccuracyFaultCountRight2 = [infoCopy freqAccuracyFaultCountRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setFreqAccuracyFaultCountRight:freqAccuracyFaultCountRight2];
   }
 
-  v45 = [v4 latestDiagnosticTimestampRight];
+  latestDiagnosticTimestampRight = [infoCopy latestDiagnosticTimestampRight];
 
-  if (v45)
+  if (latestDiagnosticTimestampRight)
   {
-    v46 = [v4 latestDiagnosticTimestampRight];
-    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setLatestDiagnosticTimestampRight:v46];
+    latestDiagnosticTimestampRight2 = [infoCopy latestDiagnosticTimestampRight];
+    [(HMDeviceCloudRecordInfo *)self->_cloudRecord setLatestDiagnosticTimestampRight:latestDiagnosticTimestampRight2];
   }
 
   return v8;
 }
 
-- (BOOL)updateWithPMEConfigData:(id)a3
+- (BOOL)updateWithPMEConfigData:(id)data
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy)
   {
     v46 = 0;
     memset(v45, 0, sizeof(v45));
-    [v5 getBytes:v45 length:132];
+    [dataCopy getBytes:v45 length:132];
     v7 = [HMDeviceRecord getHMMultiStateFromPMEState:BYTE3(v45[0])];
     pmeMediaEnabled = self->_pmeMediaEnabled;
     v9 = v7 != pmeMediaEnabled;
@@ -1586,7 +1586,7 @@ LABEL_37:
 
 LABEL_45:
 LABEL_46:
-                      objc_storeStrong(&self->_configDataPME, a3);
+                      objc_storeStrong(&self->_configDataPME, data);
                       [(HMDeviceRecord *)self _deriveMediaAssistStateIfNeeded];
                       goto LABEL_47;
                     }
@@ -1699,15 +1699,15 @@ LABEL_47:
   }
 }
 
-- (BOOL)updateWithHearingAidConfigData:(id)a3
+- (BOOL)updateWithHearingAidConfigData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_81;
   }
 
-  if (!v5)
+  if (!dataCopy)
   {
     if (gLogCategory_HMDeviceRecord > 90 || gLogCategory_HMDeviceRecord == -1 && !_LogCategory_Initialize())
     {
@@ -1723,7 +1723,7 @@ LABEL_14:
   memset(v136, 0, 100);
   v135 = 0;
   memset(v134, 0, sizeof(v134));
-  [v5 getBytes:v136 length:100];
+  [dataCopy getBytes:v136 length:100];
   *&v6 = LOBYTE(v136[0]);
   version = self->_version;
   v8 = LOBYTE(v136[0]) != version;
@@ -1905,7 +1905,7 @@ LABEL_74:
                                                     goto LABEL_78;
                                                   }
 
-                                                  [v5 getBytes:v134 length:104];
+                                                  [dataCopy getBytes:v134 length:104];
                                                   *&v94 = OUTLINED_FUNCTION_6();
                                                   v96 = [v95 numberWithFloat:v94];
                                                   ownVoiceLevelGain = self->_ownVoiceLevelGain;
@@ -1980,7 +1980,7 @@ LABEL_97:
 LABEL_83:
                                                       v102 = 0;
 LABEL_98:
-                                                      objc_storeStrong(&self->_configDataHearingAid, a3);
+                                                      objc_storeStrong(&self->_configDataHearingAid, data);
 
                                                       goto LABEL_99;
                                                     }
@@ -2141,13 +2141,13 @@ LABEL_99:
   return v102;
 }
 
-- (BOOL)updateWithHearingProtectionValue:(unsigned __int8)a3
+- (BOOL)updateWithHearingProtectionValue:(unsigned __int8)value
 {
-  v3 = a3;
+  valueCopy = value;
   v5 = _os_feature_enabled_impl();
   if (v5)
   {
-    if (v3 == 1)
+    if (valueCopy == 1)
     {
       v6 = 1;
     }

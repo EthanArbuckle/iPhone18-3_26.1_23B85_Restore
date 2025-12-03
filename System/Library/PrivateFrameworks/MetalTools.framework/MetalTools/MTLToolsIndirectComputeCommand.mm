@@ -5,48 +5,48 @@
 - (id)dispatchThreadsArguments;
 - (id)getImageBlockSize;
 - (unint64_t)getCommandType;
-- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)a3;
-- (unint64_t)getKernelBufferAddressAtIndex:(unint64_t)a3;
+- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)index;
+- (unint64_t)getKernelBufferAddressAtIndex:(unint64_t)index;
 - (unint64_t)getOptimizedStatus;
 - (unint64_t)getPipelineStateUniqueIdentifier;
-- (unint64_t)getThreadgroupMemoryLengthAtIndex:(unint64_t)a3;
+- (unint64_t)getThreadgroupMemoryLengthAtIndex:(unint64_t)index;
 - (void)clearBarrier;
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)getKernelBufferAtIndex:(unint64_t)a3;
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
+- (void)getKernelBufferAtIndex:(unint64_t)index;
 - (void)reset;
 - (void)setBarrier;
-- (void)setComputePipelineState:(id)a3;
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setStageInRegion:(id *)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)setComputePipelineState:(id)state;
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height;
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setStageInRegion:(id *)region;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
 @end
 
 @implementation MTLToolsIndirectComputeCommand
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v4 setComputePipelineState:v5];
+  [baseObject setComputePipelineState:baseObject2];
 }
 
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v8 = *a3;
-  v7 = *a4;
-  [v6 concurrentDispatchThreads:&v8 threadsPerThreadgroup:&v7];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v8 = *threads;
+  v7 = *threadgroup;
+  [baseObject concurrentDispatchThreads:&v8 threadsPerThreadgroup:&v7];
 }
 
-- (unint64_t)getThreadgroupMemoryLengthAtIndex:(unint64_t)a3
+- (unint64_t)getThreadgroupMemoryLengthAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getThreadgroupMemoryLengthAtIndex:a3];
+  return [baseObject getThreadgroupMemoryLengthAtIndex:index];
 }
 
 - ($CF338659D5433EA76F6CDE9A95D8964A)getStageInRegion
@@ -70,140 +70,140 @@
 
 - (BOOL)hasBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 hasBarrier];
+  return [baseObject hasBarrier];
 }
 
 - (id)getImageBlockSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getImageBlockSize];
+  return [baseObject getImageBlockSize];
 }
 
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setImageblockWidth:a3 height:a4];
+  [baseObject setImageblockWidth:width height:height];
 }
 
 - (void)setBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 setBarrier];
+  [baseObject setBarrier];
 }
 
 - (void)clearBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 clearBarrier];
+  [baseObject clearBarrier];
 }
 
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v8 = *a3;
-  v7 = *a4;
-  [v6 concurrentDispatchThreadgroups:&v8 threadsPerThreadgroup:&v7];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v8 = *threadgroups;
+  v7 = *threadgroup;
+  [baseObject concurrentDispatchThreadgroups:&v8 threadsPerThreadgroup:&v7];
 }
 
 - (id)dispatchThreadgroupsArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 dispatchThreadgroupsArguments];
+  return [baseObject dispatchThreadgroupsArguments];
 }
 
 - (id)dispatchThreadsArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 dispatchThreadsArguments];
+  return [baseObject dispatchThreadsArguments];
 }
 
 - (void)reset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 reset];
+  [baseObject reset];
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setThreadgroupMemoryLength:a3 atIndex:a4];
+  [baseObject setThreadgroupMemoryLength:length atIndex:index];
 }
 
-- (void)setStageInRegion:(id *)a3
+- (void)setStageInRegion:(id *)region
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = *&a3->var0.var2;
-  v6[0] = *&a3->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v5 = *&region->var0.var2;
+  v6[0] = *&region->var0.var0;
   v6[1] = v5;
-  v6[2] = *&a3->var1.var1;
-  [v4 setStageInRegion:v6];
+  v6[2] = *&region->var1.var1;
+  [baseObject setStageInRegion:v6];
 }
 
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  v9 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v8 setKernelBuffer:v9 offset:a4 atIndex:a5];
+  [baseObject setKernelBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v10 setKernelBuffer:a3 offset:a4 attributeStride:a5 atIndex:a6];
+  [baseObject setKernelBuffer:buffer offset:offset attributeStride:stride atIndex:index];
 }
 
 - (unint64_t)getPipelineStateUniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getPipelineStateUniqueIdentifier];
+  return [baseObject getPipelineStateUniqueIdentifier];
 }
 
-- (void)getKernelBufferAtIndex:(unint64_t)a3
+- (void)getKernelBufferAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getKernelBufferAtIndex:a3];
+  return [baseObject getKernelBufferAtIndex:index];
 }
 
-- (unint64_t)getKernelBufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)getKernelBufferAddressAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getKernelBufferAddressAtIndex:a3];
+  return [baseObject getKernelBufferAddressAtIndex:index];
 }
 
 - (unint64_t)getCommandType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getCommandType];
+  return [baseObject getCommandType];
 }
 
 - (unint64_t)getOptimizedStatus
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getOptimizedStatus];
+  return [baseObject getOptimizedStatus];
 }
 
-- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)a3
+- (unint64_t)getKernelAttributeStrideAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getKernelAttributeStrideAtIndex:a3];
+  return [baseObject getKernelAttributeStrideAtIndex:index];
 }
 
 @end

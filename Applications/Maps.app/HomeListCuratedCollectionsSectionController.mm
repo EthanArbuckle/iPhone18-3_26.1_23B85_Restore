@@ -1,16 +1,16 @@
 @interface HomeListCuratedCollectionsSectionController
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionsCarouselDidRouteToCollectionId:(id)a3 atIndex:(int64_t)a4 isSaved:(BOOL)a5;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionsCarouselDidRouteToCollectionId:(id)id atIndex:(int64_t)index isSaved:(BOOL)saved;
 - (void)collectionsCarouselDidScrollBackward;
 - (void)collectionsCarouselDidScrollForward;
 - (void)exploreGuidesButtonTapped;
-- (void)routeToCuratedCollection:(id)a3;
-- (void)routeToGuidesHomeFromExploreGuides:(id)a3;
+- (void)routeToCuratedCollection:(id)collection;
+- (void)routeToGuidesHomeFromExploreGuides:(id)guides;
 @end
 
 @implementation HomeListCuratedCollectionsSectionController
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -22,7 +22,7 @@
   if (v10 && (v11 = OBJC_IVAR____TtC4Maps43HomeListCuratedCollectionsSectionController_needsResetScrollOffset, (*(&self->super.super.isa + OBJC_IVAR____TtC4Maps43HomeListCuratedCollectionsSectionController_needsResetScrollOffset) & 1) != 0))
   {
     v12 = v10;
-    v13 = self;
+    selfCopy = self;
     [v12 resetScrollOffset];
     (*(v7 + 8))(v9, v6);
     *(&self->super.super.isa + v11) = 0;
@@ -34,42 +34,42 @@
   }
 }
 
-- (void)routeToCuratedCollection:(id)a3
+- (void)routeToCuratedCollection:(id)collection
 {
   sub_10003E48C(self + OBJC_IVAR____TtC4Maps25HomeListSectionController_configuration, v8);
   Strong = swift_unknownObjectWeakLoadStrong();
-  v6 = a3;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_10003E4E8(v8);
   if (Strong)
   {
-    [Strong homeItemTapped:v6];
+    [Strong homeItemTapped:collectionCopy];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)routeToGuidesHomeFromExploreGuides:(id)a3
+- (void)routeToGuidesHomeFromExploreGuides:(id)guides
 {
   sub_10003E48C(self + OBJC_IVAR____TtC4Maps25HomeListSectionController_configuration, v9);
   Strong = swift_unknownObjectWeakLoadStrong();
-  v6 = a3;
-  v7 = self;
+  guidesCopy = guides;
+  selfCopy = self;
   sub_10003E4E8(v9);
   if (Strong)
   {
-    v8 = [v6 guideLocation];
-    [Strong homeItemTapped:v8];
+    guideLocation = [guidesCopy guideLocation];
+    [Strong homeItemTapped:guideLocation];
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)collectionsCarouselDidRouteToCollectionId:(id)a3 atIndex:(int64_t)a4 isSaved:(BOOL)a5
+- (void)collectionsCarouselDidRouteToCollectionId:(id)id atIndex:(int64_t)index isSaved:(BOOL)saved
 {
-  v5 = a5;
+  savedCopy = saved;
   v8 = objc_opt_self();
 
-  [v8 captureCuratedCollectionCarouselTapCollectionWithIdentifier:a3 atIndex:a4 isSaved:v5];
+  [v8 captureCuratedCollectionCarouselTapCollectionWithIdentifier:id atIndex:index isSaved:savedCopy];
 }
 
 - (void)collectionsCarouselDidScrollForward

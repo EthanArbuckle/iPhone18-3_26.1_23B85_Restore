@@ -1,6 +1,6 @@
 @interface EFProcessTransaction
-+ (id)transactionWithDescription:(id)a3;
-- (EFProcessTransaction)initWithDescription:(id)a3;
++ (id)transactionWithDescription:(id)description;
+- (EFProcessTransaction)initWithDescription:(id)description;
 - (id)description;
 - (void)invalidate;
 @end
@@ -13,31 +13,31 @@
   self->_transaction = 0;
 }
 
-+ (id)transactionWithDescription:(id)a3
++ (id)transactionWithDescription:(id)description
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDescription:v4];
+  descriptionCopy = description;
+  v5 = [[self alloc] initWithDescription:descriptionCopy];
 
   return v5;
 }
 
-- (EFProcessTransaction)initWithDescription:(id)a3
+- (EFProcessTransaction)initWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v11.receiver = self;
   v11.super_class = EFProcessTransaction;
   v5 = [(EFProcessTransaction *)&v11 init];
   if (v5)
   {
     v6 = @"<unnamed>";
-    if (v4)
+    if (descriptionCopy)
     {
-      v6 = v4;
+      v6 = descriptionCopy;
     }
 
     v7 = v6;
 
-    v4 = v7;
+    descriptionCopy = v7;
     [(__CFString *)v7 UTF8String];
     v8 = os_transaction_create();
     transaction = v5->_transaction;

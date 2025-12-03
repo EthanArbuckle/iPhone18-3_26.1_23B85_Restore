@@ -1,28 +1,28 @@
 @interface WBSPasswordBreachManager
-+ (id)testableManagerWithTestCredentialSource:(id)a3 store:(id)a4 configuration:(id)a5;
-+ (void)_getStandardContextWithCompletionHandler:(id)a3;
-+ (void)getSharedManagerWithCompletionHandler:(id)a3;
-- (BOOL)_canPerformSessionIgnoringMinimumDelay:(BOOL)a3;
-- (WBSPasswordBreachManager)initWithContext:(id)a3 credentialSource:(id)a4;
++ (id)testableManagerWithTestCredentialSource:(id)source store:(id)store configuration:(id)configuration;
++ (void)_getStandardContextWithCompletionHandler:(id)handler;
++ (void)getSharedManagerWithCompletionHandler:(id)handler;
+- (BOOL)_canPerformSessionIgnoringMinimumDelay:(BOOL)delay;
+- (WBSPasswordBreachManager)initWithContext:(id)context credentialSource:(id)source;
 - (id)_checker;
 - (id)recentlyBreachedSavedAccounts;
-- (void)_addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler:(id)a3;
-- (void)_completeSessionWithResults:(id)a3 completionHandler:(id)a4;
-- (void)_showActiveWarningsIfNecessaryWithInitialBagFillState:(int64_t)a3 completionHandler:(id)a4;
-- (void)addResultRecords:(id)a3;
-- (void)clearAllRecordsWithCompletionHandler:(id)a3;
+- (void)_addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler:(id)handler;
+- (void)_completeSessionWithResults:(id)results completionHandler:(id)handler;
+- (void)_showActiveWarningsIfNecessaryWithInitialBagFillState:(int64_t)state completionHandler:(id)handler;
+- (void)addResultRecords:(id)records;
+- (void)clearAllRecordsWithCompletionHandler:(id)handler;
 - (void)clearRecentlyBreachedResultRecords;
-- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)performNextSessionLookupIgnoringMinimumDelay:(BOOL)a3 completionHandler:(id)a4;
-- (void)writePasswordEvaluationsToStore:(id)a3 completionHandler:(id)a4;
+- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)performNextSessionLookupIgnoringMinimumDelay:(BOOL)delay completionHandler:(id)handler;
+- (void)writePasswordEvaluationsToStore:(id)store completionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachManager
 
-- (WBSPasswordBreachManager)initWithContext:(id)a3 credentialSource:(id)a4
+- (WBSPasswordBreachManager)initWithContext:(id)context credentialSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = WBSPasswordBreachManager;
   v9 = [(WBSPasswordBreachManager *)&v15 init];
@@ -30,8 +30,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_credentialSource, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_credentialSource, source);
     v11 = [objc_alloc(MEMORY[0x1E69C8940]) initWithContext:v10->_context];
     results = v10->_results;
     v10->_results = v11;
@@ -65,9 +65,9 @@
   return v7;
 }
 
-+ (void)_getStandardContextWithCompletionHandler:(id)a3
++ (void)_getStandardContextWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (!_getStandardContextWithCompletionHandler__configurationBagLoader)
   {
     v4 = objc_alloc_init(WBSPasswordBreachConfigurationBagLoader);
@@ -75,9 +75,9 @@
     _getStandardContextWithCompletionHandler__configurationBagLoader = v4;
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 safari_settingsDirectoryURL];
-  v8 = [v7 URLByAppendingPathComponent:@"PasswordBreachStore.plist" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v8 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"PasswordBreachStore.plist" isDirectory:0];
 
   v9 = [objc_alloc(MEMORY[0x1E69C8950]) initWithBackingStoreURL:v8];
   v10 = _getStandardContextWithCompletionHandler__configurationBagLoader;
@@ -86,8 +86,8 @@
   v13[2] = __69__WBSPasswordBreachManager__getStandardContextWithCompletionHandler___block_invoke;
   v13[3] = &unk_1E7FC9140;
   v14 = v9;
-  v15 = v3;
-  v11 = v3;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v9;
   [v10 getConfigurationBagWithCompletionHandler:v13];
 }
@@ -111,15 +111,15 @@ void __69__WBSPasswordBreachManager__getStandardContextWithCompletionHandler___b
   }
 }
 
-+ (void)getSharedManagerWithCompletionHandler:(id)a3
++ (void)getSharedManagerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&getSharedManagerWithCompletionHandler__sharedLock);
   v5 = getSharedManagerWithCompletionHandler__sharedBreachManager;
   os_unfair_lock_unlock(&getSharedManagerWithCompletionHandler__sharedLock);
   if (v5)
   {
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, v5);
   }
 
   else
@@ -128,7 +128,7 @@ void __69__WBSPasswordBreachManager__getStandardContextWithCompletionHandler___b
     block[1] = 3221225472;
     block[2] = __66__WBSPasswordBreachManager_getSharedManagerWithCompletionHandler___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (getSharedManagerWithCompletionHandler__onceToken != -1)
     {
       dispatch_once(&getSharedManagerWithCompletionHandler__onceToken, block);
@@ -139,7 +139,7 @@ void __69__WBSPasswordBreachManager__getStandardContextWithCompletionHandler___b
     v7[1] = 3221225472;
     v7[2] = __66__WBSPasswordBreachManager_getSharedManagerWithCompletionHandler___block_invoke_5;
     v7[3] = &unk_1E7FB7350;
-    v8 = v4;
+    v8 = handlerCopy;
     dispatch_async(v6, v7);
   }
 }
@@ -202,23 +202,23 @@ void __66__WBSPasswordBreachManager_getSharedManagerWithCompletionHandler___bloc
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (id)testableManagerWithTestCredentialSource:(id)a3 store:(id)a4 configuration:(id)a5
++ (id)testableManagerWithTestCredentialSource:(id)source store:(id)store configuration:(id)configuration
 {
   v7 = MEMORY[0x1E69C8910];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithConfiguration:v8 store:v9];
+  configurationCopy = configuration;
+  storeCopy = store;
+  sourceCopy = source;
+  v11 = [[v7 alloc] initWithConfiguration:configurationCopy store:storeCopy];
 
-  v12 = [[WBSPasswordBreachManager alloc] initWithContext:v11 credentialSource:v10];
+  v12 = [[WBSPasswordBreachManager alloc] initWithContext:v11 credentialSource:sourceCopy];
 
   return v12;
 }
 
-- (void)performNextSessionLookupIgnoringMinimumDelay:(BOOL)a3 completionHandler:(id)a4
+- (void)performNextSessionLookupIgnoringMinimumDelay:(BOOL)delay completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  delayCopy = delay;
+  handlerCopy = handler;
   if (!+[WBSPasswordBreachManager isPasswordBreachDetectionOn])
   {
     v9 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
@@ -247,7 +247,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![(WBSPasswordBreachManager *)self _canPerformSessionIgnoringMinimumDelay:v4])
+  if (![(WBSPasswordBreachManager *)self _canPerformSessionIgnoringMinimumDelay:delayCopy])
   {
     v7 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -260,7 +260,7 @@ LABEL_11:
 LABEL_12:
     os_unfair_lock_unlock(&self->_lock);
 LABEL_13:
-    v6[2](v6, MEMORY[0x1E695E0F8]);
+    handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F8]);
     goto LABEL_14;
   }
 
@@ -269,16 +269,16 @@ LABEL_13:
   self->_sessionTransaction = v10;
 
   os_unfair_lock_unlock(&self->_lock);
-  v12 = [(WBSPasswordBreachManager *)self _checker];
-  v13 = [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager fillState];
+  _checker = [(WBSPasswordBreachManager *)self _checker];
+  fillState = [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager fillState];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __91__WBSPasswordBreachManager_performNextSessionLookupIgnoringMinimumDelay_completionHandler___block_invoke;
   v14[3] = &unk_1E7FC9190;
   v14[4] = self;
-  v16 = v13;
-  v15 = v6;
-  [v12 checkPasswordBatchesWithCompletionHandler:v14];
+  v16 = fillState;
+  v15 = handlerCopy;
+  [_checker checkPasswordBatchesWithCompletionHandler:v14];
 
 LABEL_14:
 }
@@ -299,11 +299,11 @@ void __91__WBSPasswordBreachManager_performNextSessionLookupIgnoringMinimumDelay
   [v4 _showActiveWarningsIfNecessaryWithInitialBagFillState:v5 completionHandler:v7];
 }
 
-- (void)_showActiveWarningsIfNecessaryWithInitialBagFillState:(int64_t)a3 completionHandler:(id)a4
+- (void)_showActiveWarningsIfNecessaryWithInitialBagFillState:(int64_t)state completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager fillState];
-  if (a3 != 2 && v7 == 2)
+  handlerCopy = handler;
+  fillState = [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager fillState];
+  if (state != 2 && fillState == 2)
   {
     [(WBSPasswordBreachResults *)self->_results markAllCompromisedResultRecordsAsRecentlyBreached];
   }
@@ -312,28 +312,28 @@ void __91__WBSPasswordBreachManager_performNextSessionLookupIgnoringMinimumDelay
   v9[1] = 3221225472;
   v9[2] = __100__WBSPasswordBreachManager__showActiveWarningsIfNecessaryWithInitialBagFillState_completionHandler___block_invoke;
   v9[3] = &unk_1E7FB7350;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(WBSPasswordBreachManager *)self _addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler:v9];
 }
 
-- (BOOL)_canPerformSessionIgnoringMinimumDelay:(BOOL)a3
+- (BOOL)_canPerformSessionIgnoringMinimumDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     return 1;
   }
 
-  v5 = [(WBSPasswordBreachContext *)self->_context store];
-  v6 = [v5 lastSessionCompletionDate];
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  lastSessionCompletionDate = [store lastSessionCompletionDate];
 
-  if (v6)
+  if (lastSessionCompletionDate)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:lastSessionCompletionDate];
     v9 = v8;
-    v10 = [(WBSPasswordBreachContext *)self->_context configuration];
-    [v10 minimumDelayBetweenSessions];
+    configuration = [(WBSPasswordBreachContext *)self->_context configuration];
+    [configuration minimumDelayBetweenSessions];
     v3 = v9 > v11;
   }
 
@@ -345,20 +345,20 @@ void __91__WBSPasswordBreachManager_performNextSessionLookupIgnoringMinimumDelay
   return v3;
 }
 
-- (void)_completeSessionWithResults:(id)a3 completionHandler:(id)a4
+- (void)_completeSessionWithResults:(id)results completionHandler:(id)handler
 {
-  v6 = a3;
+  resultsCopy = results;
   context = self->_context;
-  v8 = a4;
-  v9 = [(WBSPasswordBreachContext *)context store];
+  handlerCopy = handler;
+  store = [(WBSPasswordBreachContext *)context store];
   [(WBSPasswordBreachQueuedPasswordBagManager *)self->_bagManager saveBagToStore];
-  if ([v6 count])
+  if ([resultsCopy count])
   {
-    v10 = [MEMORY[0x1E695DF00] date];
-    [v9 setLastSessionCompletionDate:v10];
+    date = [MEMORY[0x1E695DF00] date];
+    [store setLastSessionCompletionDate:date];
   }
 
-  [v9 saveStoreSynchronously];
+  [store saveStoreSynchronously];
   os_unfair_lock_lock(&self->_lock);
   sessionTransaction = self->_sessionTransaction;
   self->_sessionTransaction = 0;
@@ -371,14 +371,14 @@ void __91__WBSPasswordBreachManager_performNextSessionLookupIgnoringMinimumDelay
     _os_log_impl(&dword_1BB6F3000, v12, OS_LOG_TYPE_INFO, "Lookup session completed.", v13, 2u);
   }
 
-  v8[2](v8, v6);
+  handlerCopy[2](handlerCopy, resultsCopy);
 }
 
-- (void)_addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler:(id)a3
+- (void)_addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSPasswordBreachManager *)self recentlyBreachedSavedAccounts];
-  if ([v5 count])
+  handlerCopy = handler;
+  recentlyBreachedSavedAccounts = [(WBSPasswordBreachManager *)self recentlyBreachedSavedAccounts];
+  if ([recentlyBreachedSavedAccounts count])
   {
     v6 = objc_alloc_init(WBSPasswordBreachNotificationManager);
     v7[0] = MEMORY[0x1E69E9820];
@@ -386,13 +386,13 @@ void __91__WBSPasswordBreachManager_performNextSessionLookupIgnoringMinimumDelay
     v7[2] = __93__WBSPasswordBreachManager__addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7FB8208;
     v7[4] = self;
-    v8 = v4;
-    [(WBSPasswordBreachNotificationManager *)v6 addBreachNotificationForSavedAccounts:v5 withCompletionHandler:v7];
+    v8 = handlerCopy;
+    [(WBSPasswordBreachNotificationManager *)v6 addBreachNotificationForSavedAccounts:recentlyBreachedSavedAccounts withCompletionHandler:v7];
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -414,10 +414,10 @@ void __93__WBSPasswordBreachManager__addRecentlyBreachedNotificationIfNecessaryW
 
 - (id)recentlyBreachedSavedAccounts
 {
-  v3 = [(WBSPasswordBreachManager *)self recentlyBreachedResultRecords];
-  if ([v3 count])
+  recentlyBreachedResultRecords = [(WBSPasswordBreachManager *)self recentlyBreachedResultRecords];
+  if ([recentlyBreachedResultRecords count])
   {
-    v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_21];
+    v4 = [recentlyBreachedResultRecords safari_mapObjectsUsingBlock:&__block_literal_global_21];
     v5 = [(WBSPasswordBreachCredentialSource *)self->_credentialSource savedAccountsForPersistentIdentifiers:v4];
   }
 
@@ -432,21 +432,21 @@ void __93__WBSPasswordBreachManager__addRecentlyBreachedNotificationIfNecessaryW
 - (void)clearRecentlyBreachedResultRecords
 {
   [(WBSPasswordBreachResults *)self->_results clearRecentlyBreachedResultRecords];
-  v3 = [(WBSPasswordBreachContext *)self->_context store];
-  [v3 saveStoreSynchronously];
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  [store saveStoreSynchronously];
 }
 
-- (void)clearAllRecordsWithCompletionHandler:(id)a3
+- (void)clearAllRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__WBSPasswordBreachManager_clearAllRecordsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -458,28 +458,28 @@ uint64_t __65__WBSPasswordBreachManager_clearAllRecordsWithCompletionHandler___b
   return v2();
 }
 
-- (void)addResultRecords:(id)a3
+- (void)addResultRecords:(id)records
 {
-  [(WBSPasswordBreachResults *)self->_results addResultRecords:a3];
-  v4 = [(WBSPasswordBreachContext *)self->_context store];
-  [v4 saveStoreSynchronously];
+  [(WBSPasswordBreachResults *)self->_results addResultRecords:records];
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  [store saveStoreSynchronously];
 
   [(WBSPasswordBreachManager *)self _showActiveWarningsIfNecessaryWithInitialBagFillState:2 completionHandler:&__block_literal_global_23_0];
 }
 
-- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v22 = a4;
-  v5 = [(WBSPasswordBreachContext *)self->_context store];
-  v6 = [v5 passwordEvaluationResuts];
+  handlerCopy = handler;
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  passwordEvaluationResuts = [store passwordEvaluationResuts];
 
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v6 allKeys];
+  obj = [passwordEvaluationResuts allKeys];
   v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -498,13 +498,13 @@ uint64_t __65__WBSPasswordBreachManager_clearAllRecordsWithCompletionHandler___b
 
         v12 = *(*(&v25 + 1) + 8 * v11);
         v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v12 options:0];
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v14 = [passwordEvaluationResuts objectForKeyedSubscript:v12];
         v15 = [objc_alloc(MEMORY[0x1E69C8960]) initWithDictionaryRepresentation:v14];
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 versionNumber];
-          [v17 doubleValue];
+          versionNumber = [v15 versionNumber];
+          [versionNumber doubleValue];
           v19 = v18;
           [v10 doubleValue];
           v21 = v20;
@@ -525,22 +525,22 @@ uint64_t __65__WBSPasswordBreachManager_clearAllRecordsWithCompletionHandler___b
     while (v8);
   }
 
-  v22[2](v22, v23);
+  handlerCopy[2](handlerCopy, v23);
 }
 
-- (void)writePasswordEvaluationsToStore:(id)a3 completionHandler:(id)a4
+- (void)writePasswordEvaluationsToStore:(id)store completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v22 = a4;
+  storeCopy = store;
+  handlerCopy = handler;
   v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [MEMORY[0x1E69C8A38] sharedStore];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v5 savedAccountsWithPasswords];
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  savedAccountsWithPasswords = [mEMORY[0x1E69C8A38] savedAccountsWithPasswords];
+  v7 = [savedAccountsWithPasswords countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -552,45 +552,45 @@ uint64_t __65__WBSPasswordBreachManager_clearAllRecordsWithCompletionHandler___b
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(savedAccountsWithPasswords);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v5 persistentIdentifierForSavedAccount:v11];
+        v12 = [mEMORY[0x1E69C8A38] persistentIdentifierForSavedAccount:v11];
         if (v12)
         {
-          v13 = [v11 password];
-          if ([v13 length])
+          password = [v11 password];
+          if ([password length])
           {
-            v14 = [v25 objectForKeyedSubscript:v13];
+            v14 = [storeCopy objectForKeyedSubscript:password];
             if (v14)
             {
-              v15 = v5;
+              v15 = mEMORY[0x1E69C8A38];
               v16 = [objc_alloc(MEMORY[0x1E69C8960]) initWithPasswordEvaluation:v14];
-              v17 = [v16 dictionaryRepresentation];
+              dictionaryRepresentation = [v16 dictionaryRepresentation];
               v18 = [v12 base64EncodedStringWithOptions:0];
-              [v24 setObject:v17 forKeyedSubscript:v18];
+              [v24 setObject:dictionaryRepresentation forKeyedSubscript:v18];
 
-              v5 = v15;
+              mEMORY[0x1E69C8A38] = v15;
               v9 = v23;
             }
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [savedAccountsWithPasswords countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v8);
   }
 
-  v19 = [(WBSPasswordBreachContext *)self->_context store];
-  [v19 setPasswordEvaluationResuts:v24];
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  [store setPasswordEvaluationResuts:v24];
 
-  v20 = [(WBSPasswordBreachContext *)self->_context store];
-  [v20 saveStoreSynchronously];
+  store2 = [(WBSPasswordBreachContext *)self->_context store];
+  [store2 saveStoreSynchronously];
 
-  v22[2](v22, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
 void __93__WBSPasswordBreachManager__addRecentlyBreachedNotificationIfNecessaryWithCompletionHandler___block_invoke_cold_1(void *a1, void *a2)

@@ -1,19 +1,19 @@
 @interface FCFeedItemFeature
 + (id)featureForAllArticles;
-+ (id)featureForTopicID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FCFeedItemFeature)initWithCoder:(id)a3;
-- (FCFeedItemFeature)initWithType:(int64_t)a3 key:(id)a4;
++ (id)featureForTopicID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (FCFeedItemFeature)initWithCoder:(id)coder;
+- (FCFeedItemFeature)initWithType:(int64_t)type key:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCFeedItemFeature
 
-+ (id)featureForTopicID:(id)a3
++ (id)featureForTopicID:(id)d
 {
-  v3 = a3;
-  v4 = [[FCFeedItemFeature alloc] initWithType:1 key:v3];
+  dCopy = d;
+  v4 = [[FCFeedItemFeature alloc] initWithType:1 key:dCopy];
 
   return v4;
 }
@@ -39,31 +39,31 @@ uint64_t __42__FCFeedItemFeature_featureForAllArticles__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (FCFeedItemFeature)initWithType:(int64_t)a3 key:(id)a4
+- (FCFeedItemFeature)initWithType:(int64_t)type key:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = FCFeedItemFeature;
   v8 = [(FCFeedItemFeature *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_key, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_key, key);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -94,23 +94,23 @@ uint64_t __42__FCFeedItemFeature_featureForAllArticles__block_invoke()
   return v3;
 }
 
-- (FCFeedItemFeature)initWithCoder:(id)a3
+- (FCFeedItemFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeIntegerForKey:@"type"];
 
   v7 = [[FCFeedItemFeature alloc] initWithType:v6 key:v5];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [(FCFeedItemFeature *)self key];
-  [v5 encodeObject:v4 forKey:@"key"];
+  [coderCopy encodeObject:v4 forKey:@"key"];
 
-  [v5 encodeInteger:-[FCFeedItemFeature type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[FCFeedItemFeature type](self forKey:{"type"), @"type"}];
 }
 
 @end

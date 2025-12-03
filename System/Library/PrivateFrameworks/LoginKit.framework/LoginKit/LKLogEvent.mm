@@ -1,98 +1,98 @@
 @interface LKLogEvent
-- (BOOL)containsMessage:(id)a3;
-- (BOOL)loggedByFramework:(id)a3;
-- (BOOL)loggedByProcess:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)containsMessage:(id)message;
+- (BOOL)loggedByFramework:(id)framework;
+- (BOOL)loggedByProcess:(id)process;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (void)setActivityIdentifier:(unint64_t)a3;
-- (void)setComposedMessage:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setProcess:(id)a3;
-- (void)setSenderImagePath:(id)a3;
+- (void)setActivityIdentifier:(unint64_t)identifier;
+- (void)setComposedMessage:(id)message;
+- (void)setDate:(id)date;
+- (void)setProcess:(id)process;
+- (void)setSenderImagePath:(id)path;
 @end
 
 @implementation LKLogEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(LKLogEvent *)self process];
-  v6 = [v5 copy];
+  process = [(LKLogEvent *)self process];
+  v6 = [process copy];
   [v4 setProcess:v6];
 
-  v7 = [(LKLogEvent *)self date];
-  v8 = [v7 copy];
+  date = [(LKLogEvent *)self date];
+  v8 = [date copy];
   [v4 setDate:v8];
 
-  v9 = [(LKLogEvent *)self senderImagePath];
-  v10 = [v9 copy];
+  senderImagePath = [(LKLogEvent *)self senderImagePath];
+  v10 = [senderImagePath copy];
   [v4 setSenderImagePath:v10];
 
   [v4 setActivityIdentifier:{-[LKLogEvent activityIdentifier](self, "activityIdentifier")}];
-  v11 = [(LKLogEvent *)self composedMessage];
-  v12 = [v11 copy];
+  composedMessage = [(LKLogEvent *)self composedMessage];
+  v12 = [composedMessage copy];
   [v4 setComposedMessage:v12];
 
   return v4;
 }
 
-- (void)setProcess:(id)a3
+- (void)setProcess:(id)process
 {
-  v5 = a3;
+  processCopy = process;
   process = self->_process;
   p_process = &self->_process;
-  if (process != v5)
+  if (process != processCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_process, a3);
-    v5 = v8;
+    v8 = processCopy;
+    objc_storeStrong(p_process, process);
+    processCopy = v8;
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   date = self->_date;
   p_date = &self->_date;
-  if (date != v5)
+  if (date != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_date, a3);
-    v5 = v8;
+    v8 = dateCopy;
+    objc_storeStrong(p_date, date);
+    dateCopy = v8;
   }
 }
 
-- (void)setComposedMessage:(id)a3
+- (void)setComposedMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   composedMessage = self->_composedMessage;
   p_composedMessage = &self->_composedMessage;
-  if (composedMessage != v5)
+  if (composedMessage != messageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_composedMessage, a3);
-    v5 = v8;
+    v8 = messageCopy;
+    objc_storeStrong(p_composedMessage, message);
+    messageCopy = v8;
   }
 }
 
-- (void)setSenderImagePath:(id)a3
+- (void)setSenderImagePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   senderImagePath = self->_senderImagePath;
   p_senderImagePath = &self->_senderImagePath;
-  if (senderImagePath != v5)
+  if (senderImagePath != pathCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_senderImagePath, a3);
-    v5 = v8;
+    v8 = pathCopy;
+    objc_storeStrong(p_senderImagePath, path);
+    pathCopy = v8;
   }
 }
 
-- (void)setActivityIdentifier:(unint64_t)a3
+- (void)setActivityIdentifier:(unint64_t)identifier
 {
-  if (self->_activityIdentifier != a3)
+  if (self->_activityIdentifier != identifier)
   {
-    self->_activityIdentifier = a3;
+    self->_activityIdentifier = identifier;
   }
 }
 
@@ -101,10 +101,10 @@
   v3 = objc_opt_new();
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS"];
-  v5 = [(LKLogEvent *)self process];
-  if (v5)
+  process = [(LKLogEvent *)self process];
+  if (process)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"process"];
+    [v3 setObject:process forKeyedSubscript:@"process"];
   }
 
   else
@@ -113,8 +113,8 @@
     [v3 setObject:v6 forKeyedSubscript:@"process"];
   }
 
-  v7 = [(LKLogEvent *)self date];
-  v8 = [v4 stringFromDate:v7];
+  date = [(LKLogEvent *)self date];
+  v8 = [v4 stringFromDate:date];
   if (v8)
   {
     [v3 setObject:v8 forKeyedSubscript:@"date"];
@@ -126,10 +126,10 @@
     [v3 setObject:v9 forKeyedSubscript:@"date"];
   }
 
-  v10 = [(LKLogEvent *)self composedMessage];
-  if (v10)
+  composedMessage = [(LKLogEvent *)self composedMessage];
+  if (composedMessage)
   {
-    [v3 setObject:v10 forKeyedSubscript:@"composedMessage"];
+    [v3 setObject:composedMessage forKeyedSubscript:@"composedMessage"];
   }
 
   else
@@ -138,10 +138,10 @@
     [v3 setObject:v11 forKeyedSubscript:@"composedMessage"];
   }
 
-  v12 = [(LKLogEvent *)self senderImagePath];
-  if (v12)
+  senderImagePath = [(LKLogEvent *)self senderImagePath];
+  if (senderImagePath)
   {
-    [v3 setObject:v12 forKeyedSubscript:@"sender"];
+    [v3 setObject:senderImagePath forKeyedSubscript:@"sender"];
   }
 
   else
@@ -167,29 +167,29 @@
   return v16;
 }
 
-- (BOOL)loggedByProcess:(id)a3
+- (BOOL)loggedByProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(LKLogEvent *)self process];
-  v6 = [v5 isEqualToString:v4];
+  processCopy = process;
+  process = [(LKLogEvent *)self process];
+  v6 = [process isEqualToString:processCopy];
 
   return v6;
 }
 
-- (BOOL)loggedByFramework:(id)a3
+- (BOOL)loggedByFramework:(id)framework
 {
-  v4 = a3;
-  v5 = [(LKLogEvent *)self senderImagePath];
-  v6 = [v5 isEqualToString:v4];
+  frameworkCopy = framework;
+  senderImagePath = [(LKLogEvent *)self senderImagePath];
+  v6 = [senderImagePath isEqualToString:frameworkCopy];
 
   return v6;
 }
 
-- (BOOL)containsMessage:(id)a3
+- (BOOL)containsMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(LKLogEvent *)self composedMessage];
-  v6 = [v5 containsString:v4];
+  messageCopy = message;
+  composedMessage = [(LKLogEvent *)self composedMessage];
+  v6 = [composedMessage containsString:messageCopy];
 
   return v6;
 }

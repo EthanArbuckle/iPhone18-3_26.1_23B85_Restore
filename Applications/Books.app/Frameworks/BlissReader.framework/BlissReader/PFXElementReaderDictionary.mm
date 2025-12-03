@@ -1,22 +1,22 @@
 @interface PFXElementReaderDictionary
-- (PFXElementReaderDictionary)initWithFallThroughAllowed:(BOOL)a3;
+- (PFXElementReaderDictionary)initWithFallThroughAllowed:(BOOL)allowed;
 - (id).cxx_construct;
-- (id)elementInfoForElementName:(const char *)a3 elementNamespace:(const char *)a4;
-- (id)p_elementInfoForElementName:(const char *)a3 elementNamespace:(const char *)a4;
-- (void)addEntryWithElementName:(const char *)a3 elementNamespace:(const char *)a4 mappingClass:(Class)a5;
+- (id)elementInfoForElementName:(const char *)name elementNamespace:(const char *)namespace;
+- (id)p_elementInfoForElementName:(const char *)name elementNamespace:(const char *)namespace;
+- (void)addEntryWithElementName:(const char *)name elementNamespace:(const char *)namespace mappingClass:(Class)class;
 - (void)dealloc;
 @end
 
 @implementation PFXElementReaderDictionary
 
-- (PFXElementReaderDictionary)initWithFallThroughAllowed:(BOOL)a3
+- (PFXElementReaderDictionary)initWithFallThroughAllowed:(BOOL)allowed
 {
   v5.receiver = self;
   v5.super_class = PFXElementReaderDictionary;
   result = [(PFXElementReaderDictionary *)&v5 init];
   if (result)
   {
-    result->mAllowFallThrough = a3;
+    result->mAllowFallThrough = allowed;
   }
 
   return result;
@@ -72,13 +72,13 @@
   [(PFXElementReaderDictionary *)&v9 dealloc];
 }
 
-- (void)addEntryWithElementName:(const char *)a3 elementNamespace:(const char *)a4 mappingClass:(Class)a5
+- (void)addEntryWithElementName:(const char *)name elementNamespace:(const char *)namespace mappingClass:(Class)class
 {
-  v13 = a3;
-  if (a5)
+  nameCopy = name;
+  if (class)
   {
-    v7 = [[PFXElementReaderInfo alloc] initWithElementName:a3 elementNamespace:a4 mappingClass:a5];
-    v8 = sub_1EB018(&self->mMap, &v13);
+    v7 = [[PFXElementReaderInfo alloc] initWithElementName:name elementNamespace:namespace mappingClass:class];
+    v8 = sub_1EB018(&self->mMap, &nameCopy);
     if (&self->mMap.__tree_.__end_node_ == v8)
     {
       operator new();
@@ -98,7 +98,7 @@
           break;
         }
 
-        if (xmlStrEqual(a4, [*(v12 + 16) elementNamespace]))
+        if (xmlStrEqual(namespace, [*(v12 + 16) elementNamespace]))
         {
           goto LABEL_11;
         }
@@ -112,10 +112,10 @@ LABEL_11:
   }
 }
 
-- (id)p_elementInfoForElementName:(const char *)a3 elementNamespace:(const char *)a4
+- (id)p_elementInfoForElementName:(const char *)name elementNamespace:(const char *)namespace
 {
-  v12 = a3;
-  v6 = sub_1EB018(&self->mMap, &v12);
+  nameCopy = name;
+  v6 = sub_1EB018(&self->mMap, &nameCopy);
   if (&self->mMap.__tree_.__end_node_ == v6)
   {
     return 0;
@@ -123,7 +123,7 @@ LABEL_11:
 
   isa = v6[1].super.isa;
   v8 = *isa;
-  if (!*isa || !xmlStrEqual(a4, [*isa elementNamespace]))
+  if (!*isa || !xmlStrEqual(namespace, [*isa elementNamespace]))
   {
     v9 = *(isa + 1);
     if (v9)
@@ -138,7 +138,7 @@ LABEL_11:
         }
 
         v8 = *(v10 + 16);
-        if (xmlStrEqual(a4, [v8 elementNamespace]))
+        if (xmlStrEqual(namespace, [v8 elementNamespace]))
         {
           return v8;
         }
@@ -151,16 +151,16 @@ LABEL_11:
   return v8;
 }
 
-- (id)elementInfoForElementName:(const char *)a3 elementNamespace:(const char *)a4
+- (id)elementInfoForElementName:(const char *)name elementNamespace:(const char *)namespace
 {
   objc_sync_enter(self);
-  v7 = [(PFXElementReaderDictionary *)self p_elementInfoForElementName:a3 elementNamespace:a4];
+  v7 = [(PFXElementReaderDictionary *)self p_elementInfoForElementName:name elementNamespace:namespace];
   if (!v7)
   {
     if (self->mAllowFallThrough)
     {
-      [(PFXElementReaderDictionary *)self addEntryWithElementName:a3 elementNamespace:a4 mappingClass:objc_opt_class()];
-      v7 = [(PFXElementReaderDictionary *)self p_elementInfoForElementName:a3 elementNamespace:a4];
+      [(PFXElementReaderDictionary *)self addEntryWithElementName:name elementNamespace:namespace mappingClass:objc_opt_class()];
+      v7 = [(PFXElementReaderDictionary *)self p_elementInfoForElementName:name elementNamespace:namespace];
     }
 
     else

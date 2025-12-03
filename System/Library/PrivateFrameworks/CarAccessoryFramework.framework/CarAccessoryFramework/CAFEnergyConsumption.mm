@@ -19,25 +19,25 @@
 - (NSMeasurement)averageEnergyEfficiency;
 - (NSMeasurement)energyEfficiency;
 - (NSMeasurement)energyEfficiencyMax;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFEnergyConsumption
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFEnergyConsumption;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,12 +50,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -71,13 +71,13 @@
 - (CAFMeasurementCharacteristic)energyEfficiencyCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000035000012"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000035000012"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000035000012"];
@@ -96,49 +96,49 @@
 
 - (NSMeasurement)energyEfficiency
 {
-  v2 = [(CAFEnergyConsumption *)self energyEfficiencyCharacteristic];
-  v3 = [v2 measurementValue];
+  energyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self energyEfficiencyCharacteristic];
+  measurementValue = [energyEfficiencyCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFInt32Range)energyEfficiencyRange
 {
-  v2 = [(CAFEnergyConsumption *)self energyEfficiencyCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 int32Range];
+  energyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self energyEfficiencyCharacteristic];
+  range = [energyEfficiencyCharacteristic range];
+  int32Range = [range int32Range];
 
-  return v4;
+  return int32Range;
 }
 
 - (CAFMeasurementRange)energyEfficiencyMeasurementRange
 {
-  v3 = [(CAFEnergyConsumption *)self energyEfficiencyRange];
-  v4 = [(CAFEnergyConsumption *)self energyEfficiency];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  energyEfficiencyRange = [(CAFEnergyConsumption *)self energyEfficiencyRange];
+  energyEfficiency = [(CAFEnergyConsumption *)self energyEfficiency];
+  unit = [energyEfficiency unit];
+  v6 = [energyEfficiencyRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)energyEfficiencyInvalid
 {
-  v2 = [(CAFEnergyConsumption *)self energyEfficiencyCharacteristic];
-  v3 = [v2 isInvalid];
+  energyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self energyEfficiencyCharacteristic];
+  isInvalid = [energyEfficiencyCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFMeasurementCharacteristic)averageEnergyEfficiencyCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000035000017"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000035000017"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000035000017"];
@@ -157,57 +157,57 @@
 
 - (NSMeasurement)averageEnergyEfficiency
 {
-  v2 = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
-  v3 = [v2 measurementValue];
+  averageEnergyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
+  measurementValue = [averageEnergyEfficiencyCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFInt32Range)averageEnergyEfficiencyRange
 {
-  v2 = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 int32Range];
+  averageEnergyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
+  range = [averageEnergyEfficiencyCharacteristic range];
+  int32Range = [range int32Range];
 
-  return v4;
+  return int32Range;
 }
 
 - (CAFMeasurementRange)averageEnergyEfficiencyMeasurementRange
 {
-  v3 = [(CAFEnergyConsumption *)self averageEnergyEfficiencyRange];
-  v4 = [(CAFEnergyConsumption *)self averageEnergyEfficiency];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  averageEnergyEfficiencyRange = [(CAFEnergyConsumption *)self averageEnergyEfficiencyRange];
+  averageEnergyEfficiency = [(CAFEnergyConsumption *)self averageEnergyEfficiency];
+  unit = [averageEnergyEfficiency unit];
+  v6 = [averageEnergyEfficiencyRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasAverageEnergyEfficiency
 {
-  v2 = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
-  v3 = v2 != 0;
+  averageEnergyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
+  v3 = averageEnergyEfficiencyCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)averageEnergyEfficiencyInvalid
 {
-  v2 = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
-  v3 = [v2 isInvalid];
+  averageEnergyEfficiencyCharacteristic = [(CAFEnergyConsumption *)self averageEnergyEfficiencyCharacteristic];
+  isInvalid = [averageEnergyEfficiencyCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFMeasurementCharacteristic)energyEfficiencyMaxCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000021"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000021"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000021"];
@@ -226,35 +226,35 @@
 
 - (NSMeasurement)energyEfficiencyMax
 {
-  v2 = [(CAFEnergyConsumption *)self energyEfficiencyMaxCharacteristic];
-  v3 = [v2 measurementValue];
+  energyEfficiencyMaxCharacteristic = [(CAFEnergyConsumption *)self energyEfficiencyMaxCharacteristic];
+  measurementValue = [energyEfficiencyMaxCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt32Range)energyEfficiencyMaxRange
 {
-  v2 = [(CAFEnergyConsumption *)self energyEfficiencyMaxCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt32Range];
+  energyEfficiencyMaxCharacteristic = [(CAFEnergyConsumption *)self energyEfficiencyMaxCharacteristic];
+  range = [energyEfficiencyMaxCharacteristic range];
+  uInt32Range = [range uInt32Range];
 
-  return v4;
+  return uInt32Range;
 }
 
 - (CAFMeasurementRange)energyEfficiencyMaxMeasurementRange
 {
-  v3 = [(CAFEnergyConsumption *)self energyEfficiencyMaxRange];
-  v4 = [(CAFEnergyConsumption *)self energyEfficiencyMax];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  energyEfficiencyMaxRange = [(CAFEnergyConsumption *)self energyEfficiencyMaxRange];
+  energyEfficiencyMax = [(CAFEnergyConsumption *)self energyEfficiencyMax];
+  unit = [energyEfficiencyMax unit];
+  v6 = [energyEfficiencyMaxRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasEnergyEfficiencyMax
 {
-  v2 = [(CAFEnergyConsumption *)self energyEfficiencyMaxCharacteristic];
-  v3 = v2 != 0;
+  energyEfficiencyMaxCharacteristic = [(CAFEnergyConsumption *)self energyEfficiencyMaxCharacteristic];
+  v3 = energyEfficiencyMaxCharacteristic != 0;
 
   return v3;
 }
@@ -262,13 +262,13 @@
 - (BOOL)registeredForEnergyEfficiency
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000035000012"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000035000012"];
 
   return v10;
 }
@@ -276,13 +276,13 @@
 - (BOOL)registeredForAverageEnergyEfficiency
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000035000017"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000035000017"];
 
   return v10;
 }
@@ -290,13 +290,13 @@
 - (BOOL)registeredForEnergyEfficiencyMax
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000021"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000021"];
 
   return v10;
 }

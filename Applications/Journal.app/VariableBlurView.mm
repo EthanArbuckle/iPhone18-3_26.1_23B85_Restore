@@ -1,6 +1,6 @@
 @interface VariableBlurView
 + (Class)layerClass;
-- (_TtC7Journal16VariableBlurView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal16VariableBlurView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VariableBlurView
@@ -12,7 +12,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC7Journal16VariableBlurView)initWithFrame:(CGRect)a3
+- (_TtC7Journal16VariableBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

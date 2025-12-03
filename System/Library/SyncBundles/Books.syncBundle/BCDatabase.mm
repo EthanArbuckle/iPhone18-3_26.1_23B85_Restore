@@ -1,5 +1,5 @@
 @interface BCDatabase
-- (BCDatabase)initWithDatabasePath:(id)a3;
+- (BCDatabase)initWithDatabasePath:(id)path;
 - (id)databaseURL;
 - (id)model;
 - (id)newManagedObjectContext;
@@ -9,14 +9,14 @@
 
 @implementation BCDatabase
 
-- (BCDatabase)initWithDatabasePath:(id)a3
+- (BCDatabase)initWithDatabasePath:(id)path
 {
   v6.receiver = self;
   v6.super_class = BCDatabase;
   v4 = [(BCDatabase *)&v6 init];
   if (v4)
   {
-    v4->_path = a3;
+    v4->_path = path;
   }
 
   return v4;
@@ -67,15 +67,15 @@
   if (!result)
   {
     v5 = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:1], NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:1], NSInferMappingModelAutomaticallyOption, NSFileProtectionNone, NSPersistentStoreFileProtectionKey, 0];
-    v6 = [(BCDatabase *)self model];
-    if (!v6)
+    model = [(BCDatabase *)self model];
+    if (!model)
     {
       sub_138A4();
     }
 
-    self->_psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:v6];
-    v7 = [(BCDatabase *)self databaseURL];
-    if (!v7)
+    self->_psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    databaseURL = [(BCDatabase *)self databaseURL];
+    if (!databaseURL)
     {
       sub_138FC();
     }
@@ -83,7 +83,7 @@
     while (1)
     {
       v21 = 0;
-      if ([(NSPersistentStoreCoordinator *)self->_psc addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:v7 options:v5 error:&v21])
+      if ([(NSPersistentStoreCoordinator *)self->_psc addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:databaseURL options:v5 error:&v21])
       {
         break;
       }
@@ -112,7 +112,7 @@
       }
 
       v18 = 0;
-      if (([(NSPersistentStoreCoordinator *)self->_psc _destroyPersistentStoreAtURL:v7 withType:NSSQLiteStoreType options:0 error:&v18]& 1) == 0)
+      if (([(NSPersistentStoreCoordinator *)self->_psc _destroyPersistentStoreAtURL:databaseURL withType:NSSQLiteStoreType options:0 error:&v18]& 1) == 0)
       {
         v11 = v18;
         v12 = BCDefaultLog();
@@ -132,18 +132,18 @@
           sub_13994(&v16, v17, v12);
         }
 
-        [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"BCDatabase.m" description:111, @"_destroyPersistentStoreAtURL failed: %@ -- URL: %@", self, v7];
+        [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"BCDatabase.m" description:111, @"_destroyPersistentStoreAtURL failed: %@ -- URL: %@", self, databaseURL];
       }
 
       if (![(BCDatabase *)self shouldRetryAddingPersistentStoreAfterError:v21])
       {
-        [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"BCDatabase.m" description:116, @"invalid Persistent Store: %@ -- URL: %@", self, v7];
+        [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"BCDatabase.m" description:116, @"invalid Persistent Store: %@ -- URL: %@", self, databaseURL];
         break;
       }
     }
 
     v14 = objc_alloc_init(NSFileManager);
-    v15 = [v14 attributesOfItemAtPath:objc_msgSend(v7 error:{"path"), 0}];
+    v15 = [v14 attributesOfItemAtPath:objc_msgSend(databaseURL error:{"path"), 0}];
     if (v15)
     {
       if (([objc_msgSend(v15 "fileOwnerAccountName")] & 1) == 0)
@@ -152,7 +152,7 @@
         v22[1] = NSFileGroupOwnerAccountName;
         v23[0] = @"mobile";
         v23[1] = @"mobile";
-        [v14 setAttributes:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary ofItemAtPath:"dictionaryWithObjects:forKeys:count:" error:{v23, v22, 2), objc_msgSend(v7, "path"), 0}];
+        [v14 setAttributes:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary ofItemAtPath:"dictionaryWithObjects:forKeys:count:" error:{v23, v22, 2), objc_msgSend(databaseURL, "path"), 0}];
       }
     }
 

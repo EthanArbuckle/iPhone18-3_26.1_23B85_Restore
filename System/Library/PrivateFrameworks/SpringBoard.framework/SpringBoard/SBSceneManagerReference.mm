@@ -1,26 +1,26 @@
 @interface SBSceneManagerReference
 - (BOOL)isDefunct;
 - (BOOL)isRetaining;
-- (SBSceneManagerReference)initWithDisplayIdentity:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
+- (SBSceneManagerReference)initWithDisplayIdentity:(id)identity;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
 - (id)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)manager;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_autoreleaseManager:(id)a3;
-- (void)_updateRetainWithBlock:(id)a3;
+- (void)_autoreleaseManager:(id)manager;
+- (void)_updateRetainWithBlock:(id)block;
 - (void)delegate;
 - (void)invalidate;
 - (void)isDefunct;
 - (void)isRetaining;
 - (void)manager;
-- (void)releaseForScene:(id)a3;
-- (void)retainForScene:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisplayIsConnected:(BOOL)a3;
-- (void)setManager:(id)a3;
+- (void)releaseForScene:(id)scene;
+- (void)retainForScene:(id)scene;
+- (void)setDelegate:(id)delegate;
+- (void)setDisplayIsConnected:(BOOL)connected;
+- (void)setManager:(id)manager;
 @end
 
 @implementation SBSceneManagerReference
@@ -58,8 +58,8 @@
     return 0;
   }
 
-  v3 = [(SBSceneManagerReference *)self manager];
-  v4 = v3 == 0;
+  manager = [(SBSceneManagerReference *)self manager];
+  v4 = manager == 0;
 
   return v4;
 }
@@ -84,10 +84,10 @@
   return [(NSMutableSet *)self->_retainingScenes count]!= 0;
 }
 
-- (SBSceneManagerReference)initWithDisplayIdentity:(id)a3
+- (SBSceneManagerReference)initWithDisplayIdentity:(id)identity
 {
-  v6 = a3;
-  if (!v6)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [(SBSceneManagerReference *)a2 initWithDisplayIdentity:?];
   }
@@ -98,32 +98,32 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_displayIdentity, a3);
+    objc_storeStrong(&v7->_displayIdentity, identity);
   }
 
   return v8;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneManagerReference *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneManagerReference *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSceneManagerReference *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSceneManagerReference *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__SBSceneManagerReference_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -138,10 +138,10 @@ void __65__SBSceneManagerReference_descriptionBuilderWithMultilinePrefix___block
 
 - (id)succinctDescription
 {
-  v2 = [(SBSceneManagerReference *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSceneManagerReference *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -154,22 +154,22 @@ void __65__SBSceneManagerReference_descriptionBuilderWithMultilinePrefix___block
   return v3;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSceneManagerReference *)self descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(SBSceneManagerReference *)self descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __63__SBSceneManagerReference_debugDescriptionWithMultilinePrefix___block_invoke;
   v12 = &unk_2783A92D8;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v6 = v5;
-  [v6 appendBodySectionWithName:@"retaining reasons" multilinePrefix:v4 block:&v9];
+  [v6 appendBodySectionWithName:@"retaining reasons" multilinePrefix:prefixCopy block:&v9];
 
-  v7 = [v6 build];
+  build = [v6 build];
 
-  return v7;
+  return build;
 }
 
 void __63__SBSceneManagerReference_debugDescriptionWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -217,15 +217,15 @@ void __63__SBSceneManagerReference_debugDescriptionWithMultilinePrefix___block_i
   }
 }
 
-- (void)_updateRetainWithBlock:(id)a3
+- (void)_updateRetainWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBSceneManagerReference *)self isRetaining];
-  v4[2](v4);
+  blockCopy = block;
+  isRetaining = [(SBSceneManagerReference *)self isRetaining];
+  blockCopy[2](blockCopy);
 
   if ([(SBSceneManagerReference *)self isRetaining])
   {
-    if (v5)
+    if (isRetaining)
     {
       return;
     }
@@ -235,13 +235,13 @@ void __63__SBSceneManagerReference_debugDescriptionWithMultilinePrefix___block_i
 
   else
   {
-    if (!v5)
+    if (!isRetaining)
     {
       return;
     }
 
-    v7 = [(SBSceneManagerReference *)self manager];
-    [(SBSceneManagerReference *)self _autoreleaseManager:v7];
+    manager = [(SBSceneManagerReference *)self manager];
+    [(SBSceneManagerReference *)self _autoreleaseManager:manager];
 
     WeakRetained = 0;
   }
@@ -250,21 +250,21 @@ void __63__SBSceneManagerReference_debugDescriptionWithMultilinePrefix___block_i
   self->_manager = WeakRetained;
 }
 
-- (void)_autoreleaseManager:(id)a3
+- (void)_autoreleaseManager:(id)manager
 {
-  v3 = a3;
-  if (v3)
+  managerCopy = manager;
+  if (managerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [SBSceneManagerReference _autoreleaseManager:v3];
+      [SBSceneManagerReference _autoreleaseManager:managerCopy];
     }
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SBSceneManagerReference__autoreleaseManager___block_invoke;
     block[3] = &unk_2783A8C18;
-    v5 = v3;
+    v5 = managerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -289,35 +289,35 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke(uint64_t a
   return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneManagerReference setDelegate:];
   }
 
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 }
 
-- (void)setManager:(id)a3
+- (void)setManager:(id)manager
 {
-  obj = a3;
+  obj = manager;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneManagerReference setManager:];
   }
 
-  v5 = [(SBSceneManagerReference *)self manager];
-  if (v5 != obj)
+  manager = [(SBSceneManagerReference *)self manager];
+  if (manager != obj)
   {
     if (obj && self->_invalidated)
     {
       [(SBSceneManagerReference *)a2 setManager:obj];
     }
 
-    [(SBSceneManagerReference *)self _autoreleaseManager:v5];
+    [(SBSceneManagerReference *)self _autoreleaseManager:manager];
     [(SBSceneManagerReference *)self _autoreleaseManager:obj];
     objc_storeWeak(&self->_weak_manager, obj);
     if ([(SBSceneManagerReference *)self isRetaining])
@@ -331,7 +331,7 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke(uint64_t a
   }
 }
 
-- (void)setDisplayIsConnected:(BOOL)a3
+- (void)setDisplayIsConnected:(BOOL)connected
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -343,16 +343,16 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke(uint64_t a
   v5[2] = __49__SBSceneManagerReference_setDisplayIsConnected___block_invoke;
   v5[3] = &unk_2783A9F58;
   v5[4] = self;
-  v6 = a3;
+  connectedCopy = connected;
   [(SBSceneManagerReference *)self _updateRetainWithBlock:v5];
 }
 
-- (void)retainForScene:(id)a3
+- (void)retainForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    if (!v4)
+    if (!sceneCopy)
     {
       goto LABEL_5;
     }
@@ -361,20 +361,20 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke(uint64_t a
   else
   {
     [SBSceneManagerReference retainForScene:];
-    if (!v4)
+    if (!sceneCopy)
     {
       goto LABEL_5;
     }
   }
 
-  if (([(NSMutableSet *)self->_retainingScenes containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_retainingScenes containsObject:sceneCopy]& 1) == 0)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __42__SBSceneManagerReference_retainForScene___block_invoke;
     v5[3] = &unk_2783A92D8;
     v5[4] = self;
-    v6 = v4;
+    v6 = sceneCopy;
     [(SBSceneManagerReference *)self _updateRetainWithBlock:v5];
   }
 
@@ -400,13 +400,13 @@ void __42__SBSceneManagerReference_retainForScene___block_invoke(uint64_t a1)
   }
 }
 
-- (void)releaseForScene:(id)a3
+- (void)releaseForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneManagerReference releaseForScene:];
-    if (!v4)
+    if (!sceneCopy)
     {
       goto LABEL_4;
     }
@@ -414,7 +414,7 @@ void __42__SBSceneManagerReference_retainForScene___block_invoke(uint64_t a1)
     goto LABEL_3;
   }
 
-  if (v4)
+  if (sceneCopy)
   {
 LABEL_3:
     v5[0] = MEMORY[0x277D85DD0];
@@ -422,7 +422,7 @@ LABEL_3:
     v5[2] = __43__SBSceneManagerReference_releaseForScene___block_invoke;
     v5[3] = &unk_2783A92D8;
     v5[4] = self;
-    v6 = v4;
+    v6 = sceneCopy;
     [(SBSceneManagerReference *)self _updateRetainWithBlock:v5];
   }
 
@@ -431,7 +431,7 @@ LABEL_4:
 
 - (void)invalidate
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneManagerReference invalidate]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -461,7 +461,7 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke_cold_1(uin
 
 - (void)delegate
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneManagerReference delegate]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -475,7 +475,7 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke_cold_1(uin
 
 - (void)manager
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneManagerReference manager]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
@@ -495,14 +495,14 @@ void __47__SBSceneManagerReference__autoreleaseManager___block_invoke_cold_1(uin
 
 - (void)isRetaining
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneManagerReference isRetaining]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }
 
 - (void)isDefunct
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneManagerReference isDefunct]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }

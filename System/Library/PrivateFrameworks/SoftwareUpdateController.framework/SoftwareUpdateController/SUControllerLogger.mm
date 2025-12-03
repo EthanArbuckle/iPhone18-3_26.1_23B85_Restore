@@ -1,7 +1,7 @@
 @interface SUControllerLogger
 + (id)sharedLogger;
 - (SUControllerLogger)init;
-- (void)logAtLevel:(int64_t)a3 label:(const char *)a4 format:(id)a5;
+- (void)logAtLevel:(int64_t)level label:(const char *)label format:(id)format;
 @end
 
 @implementation SUControllerLogger
@@ -50,14 +50,14 @@ uint64_t __34__SUControllerLogger_sharedLogger__block_invoke()
   return v3;
 }
 
-- (void)logAtLevel:(int64_t)a3 label:(const char *)a4 format:(id)a5
+- (void)logAtLevel:(int64_t)level label:(const char *)label format:(id)format
 {
   v21 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = [[v8 alloc] initWithFormat:v9 arguments:&v22];
+  formatCopy = format;
+  v10 = [[v8 alloc] initWithFormat:formatCopy arguments:&v22];
 
-  if (a3 == 1)
+  if (level == 1)
   {
     logNotice = self->_logNotice;
     if (!os_log_type_enabled(logNotice, OS_LOG_TYPE_DEFAULT))
@@ -66,7 +66,7 @@ uint64_t __34__SUControllerLogger_sharedLogger__block_invoke()
     }
 
     *buf = 136446466;
-    v18 = a4;
+    labelCopy2 = label;
     v19 = 2114;
     v20 = v10;
     v13 = logNotice;
@@ -76,7 +76,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a3)
+  if (level)
   {
     logInfo = self->_logInfo;
     if (!os_log_type_enabled(logInfo, OS_LOG_TYPE_INFO))
@@ -85,7 +85,7 @@ LABEL_9:
     }
 
     *buf = 136446466;
-    v18 = a4;
+    labelCopy2 = label;
     v19 = 2114;
     v20 = v10;
     v13 = logInfo;
@@ -96,7 +96,7 @@ LABEL_9:
   logError = self->_logError;
   if (os_log_type_enabled(logError, OS_LOG_TYPE_ERROR))
   {
-    [SUControllerLogger logAtLevel:a4 label:v10 format:logError];
+    [SUControllerLogger logAtLevel:label label:v10 format:logError];
   }
 
 LABEL_10:

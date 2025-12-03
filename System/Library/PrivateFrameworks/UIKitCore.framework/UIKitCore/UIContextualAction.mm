@@ -1,10 +1,10 @@
 @interface UIContextualAction
 + (UIContextualAction)contextualActionWithStyle:(UIContextualActionStyle)style title:(NSString *)title handler:(UIContextualActionHandler)handler;
 - (id)description;
-- (void)_completeWithResult:(BOOL)a3;
+- (void)_completeWithResult:(BOOL)result;
 - (void)cancel;
-- (void)executeHandlerWithView:(id)a3 completionHandler:(id)a4;
-- (void)executePreHandlerWithView:(id)a3;
+- (void)executeHandlerWithView:(id)view completionHandler:(id)handler;
+- (void)executePreHandlerWithView:(id)view;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 @end
 
@@ -14,7 +14,7 @@
 {
   v8 = handler;
   v9 = title;
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
   v10[2] = style;
   [v10 setTitle:v9];
 
@@ -97,32 +97,32 @@
   self->_backgroundColor = v5;
 }
 
-- (void)executePreHandlerWithView:(id)a3
+- (void)executePreHandlerWithView:(id)view
 {
-  v6 = a3;
-  v4 = [(UIContextualAction *)self preHandler];
+  viewCopy = view;
+  preHandler = [(UIContextualAction *)self preHandler];
 
-  if (v4)
+  if (preHandler)
   {
-    v5 = [(UIContextualAction *)self preHandler];
-    (v5)[2](v5, self, v6);
+    preHandler2 = [(UIContextualAction *)self preHandler];
+    (preHandler2)[2](preHandler2, self, viewCopy);
   }
 }
 
-- (void)executeHandlerWithView:(id)a3 completionHandler:(id)a4
+- (void)executeHandlerWithView:(id)view completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  viewCopy = view;
+  v7 = _Block_copy(handler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v7;
 
-  v9 = [(UIContextualAction *)self handler];
+  handler = [(UIContextualAction *)self handler];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__UIContextualAction_executeHandlerWithView_completionHandler___block_invoke;
   v10[3] = &unk_1E70F5AC0;
   v10[4] = self;
-  (v9)[2](v9, self, v6, v10);
+  (handler)[2](handler, self, viewCopy, v10);
 }
 
 - (void)cancel
@@ -131,17 +131,17 @@
   self->_completionHandler = 0;
 }
 
-- (void)_completeWithResult:(BOOL)a3
+- (void)_completeWithResult:(BOOL)result
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v5 = a3;
+    resultCopy = result;
     v7 = _Block_copy(completionHandler);
     v6 = self->_completionHandler;
     self->_completionHandler = 0;
 
-    v7[2](v7, v5);
+    v7[2](v7, resultCopy);
   }
 }
 

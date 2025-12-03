@@ -1,15 +1,15 @@
 @interface HMDHAPMetricsLogEvent
-- (void)updateWithHAPAccessoryServer:(id)a3;
+- (void)updateWithHAPAccessoryServer:(id)server;
 @end
 
 @implementation HMDHAPMetricsLogEvent
 
-- (void)updateWithHAPAccessoryServer:(id)a3
+- (void)updateWithHAPAccessoryServer:(id)server
 {
-  v16 = a3;
-  if ([v16 conformsToProtocol:&unk_2840169A8])
+  serverCopy = server;
+  if ([serverCopy conformsToProtocol:&unk_2840169A8])
   {
-    v4 = v16;
+    v4 = serverCopy;
   }
 
   else
@@ -24,7 +24,7 @@
     v6 = [v5 readAndResetHAPMetrics:1];
     if (v6)
     {
-      if ([v16 linkType] == 1)
+      if ([serverCopy linkType] == 1)
       {
         p_lock = &self->_lock;
         os_unfair_lock_lock_with_options();
@@ -38,16 +38,16 @@
         self->_receivedHTTPResponses += [v10 unsignedIntegerValue];
 
         v11 = [v6 hmf_numberForKey:&unk_283E731C0];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
         v13 = &OBJC_IVAR___HMDHAPMetricsLogEvent__receivedHTTPEvents;
 LABEL_10:
-        *(&self->super.super.isa + *v13) = (*(&self->super.super.isa + *v13) + v12);
+        *(&self->super.super.isa + *v13) = (*(&self->super.super.isa + *v13) + unsignedIntegerValue);
 
         os_unfair_lock_unlock(p_lock);
         goto LABEL_11;
       }
 
-      if ([v16 linkType] == 2)
+      if ([serverCopy linkType] == 2)
       {
         p_lock = &self->_lock;
         os_unfair_lock_lock_with_options();
@@ -58,7 +58,7 @@ LABEL_10:
         self->_btleDiscoveries += [v15 unsignedIntegerValue];
 
         v11 = [v6 hmf_numberForKey:&unk_283E731A8];
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
         v13 = &OBJC_IVAR___HMDHAPMetricsLogEvent__btleConnectionPerReasons;
         goto LABEL_10;
       }

@@ -5,19 +5,19 @@
 - (BOOL)hasUserIgnoredTipTooMuch;
 - (GEOObserverHashTable)observers;
 - (NearbyTransitFeatureDiscoverySource)init;
-- (NearbyTransitFeatureDiscoverySource)initWithDataStore:(id)a3;
-- (id)discoveryModelWithActionHandler:(id)a3 displayHandler:(id)a4 cancelHandler:(id)a5;
-- (unint64_t)_daysSinceDate:(id)a3;
+- (NearbyTransitFeatureDiscoverySource)initWithDataStore:(id)store;
+- (id)discoveryModelWithActionHandler:(id)handler displayHandler:(id)displayHandler cancelHandler:(id)cancelHandler;
+- (unint64_t)_daysSinceDate:(id)date;
 - (void)_checkForExistingNearbyTransitFavorite;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
 - (void)_updateIsTransitUserHere;
 - (void)_updateShouldShowFeature;
 - (void)dismissedTipNotification;
-- (void)setActive:(BOOL)a3;
-- (void)setAddedFavorite:(BOOL)a3;
-- (void)setHasInitialData:(BOOL)a3;
-- (void)setShowFeature:(BOOL)a3;
-- (void)setTransitUserHere:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setAddedFavorite:(BOOL)favorite;
+- (void)setHasInitialData:(BOOL)data;
+- (void)setShowFeature:(BOOL)feature;
+- (void)setTransitUserHere:(BOOL)here;
 - (void)updateFeatureAvailabilityIfNecessary;
 @end
 
@@ -53,13 +53,13 @@
 
 - (BOOL)_isUserEligibleForNotification
 {
-  v4 = [(NearbyTransitFeatureDiscoverySource *)self hasInitialData];
-  if (v4)
+  hasInitialData = [(NearbyTransitFeatureDiscoverySource *)self hasInitialData];
+  if (hasInitialData)
   {
-    v5 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-    v6 = [v5 hasUserEverAddedFavorite];
+    dataStore = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+    hasUserEverAddedFavorite = [dataStore hasUserEverAddedFavorite];
 
-    if (v6)
+    if (hasUserEverAddedFavorite)
     {
       v7 = sub_10005F62C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -99,8 +99,8 @@ LABEL_11:
 
 LABEL_12:
 
-      LOBYTE(v4) = 0;
-      return v4;
+      LOBYTE(hasInitialData) = 0;
+      return hasInitialData;
     }
 
     if ([(NearbyTransitFeatureDiscoverySource *)self hasUserIgnoredTipTooMuch])
@@ -122,18 +122,18 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    LOBYTE(v4) = 1;
+    LOBYTE(hasInitialData) = 1;
   }
 
-  return v4;
+  return hasInitialData;
 }
 
 - (void)_checkForExistingNearbyTransitFavorite
 {
-  v3 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v4 = [v3 hasUserEverAddedFavorite];
+  dataStore = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  hasUserEverAddedFavorite = [dataStore hasUserEverAddedFavorite];
 
-  if (v4)
+  if (hasUserEverAddedFavorite)
   {
     [(NearbyTransitFeatureDiscoverySource *)self setAddedFavorite:1];
   }
@@ -141,9 +141,9 @@ LABEL_12:
   else
   {
     v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v6 = [v5 hasInitialData];
+    hasInitialData = [v5 hasInitialData];
 
-    if (!v6)
+    if (!hasInitialData)
     {
       return;
     }
@@ -157,52 +157,52 @@ LABEL_12:
 
 - (void)_updateShouldShowFeature
 {
-  v3 = [(NearbyTransitFeatureDiscoverySource *)self _shouldShowNearbyTransitBanner];
+  _shouldShowNearbyTransitBanner = [(NearbyTransitFeatureDiscoverySource *)self _shouldShowNearbyTransitBanner];
 
-  [(NearbyTransitFeatureDiscoverySource *)self setShowFeature:v3];
+  [(NearbyTransitFeatureDiscoverySource *)self setShowFeature:_shouldShowNearbyTransitBanner];
 }
 
 - (BOOL)_shouldShowNearbyTransitBanner
 {
-  v3 = [(NearbyTransitFeatureDiscoverySource *)self _isUserEligibleForNotification];
-  if (v3)
+  _isUserEligibleForNotification = [(NearbyTransitFeatureDiscoverySource *)self _isUserEligibleForNotification];
+  if (_isUserEligibleForNotification)
   {
     if ([(NearbyTransitFeatureDiscoverySource *)self isTransitUserHere])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_isUserEligibleForNotification) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(NearbyTransitFeatureDiscoverySource *)self shouldForceTransitUser];
+      LOBYTE(_isUserEligibleForNotification) = [(NearbyTransitFeatureDiscoverySource *)self shouldForceTransitUser];
     }
   }
 
-  return v3;
+  return _isUserEligibleForNotification;
 }
 
 - (BOOL)hasDismissedNotificationRecently
 {
-  v3 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v4 = [v3 numberOfTimesDismissed];
+  dataStore = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  numberOfTimesDismissed = [dataStore numberOfTimesDismissed];
 
-  if (!v4)
+  if (!numberOfTimesDismissed)
   {
     return 0;
   }
 
-  if (v4 >= GEOConfigGetUInteger())
+  if (numberOfTimesDismissed >= GEOConfigGetUInteger())
   {
     return 1;
   }
 
-  v5 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v6 = [v5 lastDismissedDate];
+  dataStore2 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  lastDismissedDate = [dataStore2 lastDismissedDate];
 
-  if (v6)
+  if (lastDismissedDate)
   {
-    v7 = [(NearbyTransitFeatureDiscoverySource *)self _daysSinceDate:v6];
+    v7 = [(NearbyTransitFeatureDiscoverySource *)self _daysSinceDate:lastDismissedDate];
     v8 = v7 < GEOConfigGetUInteger();
   }
 
@@ -221,33 +221,33 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v4 = [v3 hasUserEverAddedFavorite];
+  dataStore = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  hasUserEverAddedFavorite = [dataStore hasUserEverAddedFavorite];
 
-  if (v4)
+  if (hasUserEverAddedFavorite)
   {
     return 1;
   }
 
-  v6 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v7 = [v6 numberOfTimesDismissed];
+  dataStore2 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  numberOfTimesDismissed = [dataStore2 numberOfTimesDismissed];
 
-  if (v7)
+  if (numberOfTimesDismissed)
   {
     return 0;
   }
 
-  v9 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v10 = [v9 numberOfSessionsShown];
+  dataStore3 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  numberOfSessionsShown = [dataStore3 numberOfSessionsShown];
 
   UInteger = GEOConfigGetUInteger();
-  v12 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  v13 = [v12 initialTipDisplayDate];
+  dataStore4 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  initialTipDisplayDate = [dataStore4 initialTipDisplayDate];
 
-  if (v13)
+  if (initialTipDisplayDate)
   {
-    v14 = [(NearbyTransitFeatureDiscoverySource *)self _daysSinceDate:v13];
-    v5 = v14 > GEOConfigGetUInteger() && v10 > UInteger;
+    v14 = [(NearbyTransitFeatureDiscoverySource *)self _daysSinceDate:initialTipDisplayDate];
+    v5 = v14 > GEOConfigGetUInteger() && numberOfSessionsShown > UInteger;
   }
 
   else
@@ -296,11 +296,11 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (id)discoveryModelWithActionHandler:(id)a3 displayHandler:(id)a4 cancelHandler:(id)a5
+- (id)discoveryModelWithActionHandler:(id)handler displayHandler:(id)displayHandler cancelHandler:(id)cancelHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handlerCopy = handler;
+  displayHandlerCopy = displayHandler;
+  cancelHandlerCopy = cancelHandler;
   v12 = +[NSBundle mainBundle];
   v33 = [v12 localizedStringForKey:@"[Feature Discoverability] Nearby Transit title" value:@"localized string not found" table:0];
 
@@ -326,8 +326,8 @@ LABEL_12:
   v17 = +[UIScreen mainScreen];
   [v17 scale];
   v19 = v18;
-  v20 = [v17 traitCollection];
-  v21 = [v20 userInterfaceStyle] == 2;
+  traitCollection = [v17 traitCollection];
+  v21 = [traitCollection userInterfaceStyle] == 2;
 
   v22 = [MKIconManager imageForStyle:v30 size:4 forScale:0 format:v21 nightMode:v19];
   v23 = [FeatureDiscoveryModel alloc];
@@ -335,7 +335,7 @@ LABEL_12:
   v40[1] = 3221225472;
   v40[2] = sub_10068C35C;
   v40[3] = &unk_1016589F8;
-  v41 = v9;
+  v41 = handlerCopy;
   v42 = a2;
   v40[4] = self;
   v36 = a2;
@@ -343,7 +343,7 @@ LABEL_12:
   v37[1] = 3221225472;
   v37[2] = sub_10068C46C;
   v37[3] = &unk_1016589F8;
-  v38 = v10;
+  v38 = displayHandlerCopy;
   v39 = a2;
   v37[4] = self;
   v34[0] = _NSConcreteStackBlock;
@@ -351,10 +351,10 @@ LABEL_12:
   v34[2] = sub_10068C5A0;
   v34[3] = &unk_1016589F8;
   v34[4] = self;
-  v35 = v11;
-  v24 = v11;
-  v25 = v10;
-  v26 = v9;
+  v35 = cancelHandlerCopy;
+  v24 = cancelHandlerCopy;
+  v25 = displayHandlerCopy;
+  v26 = handlerCopy;
   LOBYTE(v29) = 0;
   v27 = [(FeatureDiscoveryModel *)v23 initWithImage:v22 title:v33 subtitle:v32 actionTitle:v31 actionHandler:v40 bodyTapHandler:0 displayedHandler:v37 dismissHandler:v34 disableAffordanceAfterAction:v29];
 
@@ -363,18 +363,18 @@ LABEL_12:
 
 - (void)dismissedTipNotification
 {
-  v3 = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
-  [v3 userDismissedTip];
+  dataStore = [(NearbyTransitFeatureDiscoverySource *)self dataStore];
+  [dataStore userDismissedTip];
 
   [(NearbyTransitFeatureDiscoverySource *)self _updateShouldShowFeature];
 }
 
-- (unint64_t)_daysSinceDate:(id)a3
+- (unint64_t)_daysSinceDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSDate date];
-  v6 = [v4 components:16 fromDate:v3 toDate:v5 options:0];
+  v6 = [v4 components:16 fromDate:dateCopy toDate:v5 options:0];
 
   v7 = [v6 day];
   if (v7 >= 0)
@@ -390,16 +390,16 @@ LABEL_12:
   return v8;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     [(NearbyTransitFeatureDiscoverySource *)self updateFeatureAvailabilityIfNecessary];
     v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
     v6 = v5;
-    if (v3)
+    if (activeCopy)
     {
       [v5 registerObserver:self];
 
@@ -413,11 +413,11 @@ LABEL_12:
   }
 }
 
-- (void)setHasInitialData:(BOOL)a3
+- (void)setHasInitialData:(BOOL)data
 {
-  if (self->_hasInitialData != a3)
+  if (self->_hasInitialData != data)
   {
-    self->_hasInitialData = a3;
+    self->_hasInitialData = data;
     [(NearbyTransitFeatureDiscoverySource *)self _updateShouldShowFeature];
     [(NearbyTransitFeatureDiscoverySource *)self updateFeatureAvailabilityIfNecessary];
 
@@ -425,21 +425,21 @@ LABEL_12:
   }
 }
 
-- (void)setTransitUserHere:(BOOL)a3
+- (void)setTransitUserHere:(BOOL)here
 {
-  if (self->_transitUserHere != a3)
+  if (self->_transitUserHere != here)
   {
-    self->_transitUserHere = a3;
+    self->_transitUserHere = here;
     [(NearbyTransitFeatureDiscoverySource *)self _updateShouldShowFeature];
   }
 }
 
-- (void)setAddedFavorite:(BOOL)a3
+- (void)setAddedFavorite:(BOOL)favorite
 {
-  if (self->_addedFavorite != a3)
+  if (self->_addedFavorite != favorite)
   {
-    self->_addedFavorite = a3;
-    if (a3)
+    self->_addedFavorite = favorite;
+    if (favorite)
     {
       [(NearbyTransitFeatureDiscoveryDataStore *)self->_dataStore setUserEverAddedFavorite:1];
       v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
@@ -450,26 +450,26 @@ LABEL_12:
   }
 }
 
-- (void)setShowFeature:(BOOL)a3
+- (void)setShowFeature:(BOOL)feature
 {
-  if (self->_showFeature != a3)
+  if (self->_showFeature != feature)
   {
-    self->_showFeature = a3;
+    self->_showFeature = feature;
     [(NearbyTransitFeatureDiscoverySource *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
-  if (self->_active && a3)
+  if (self->_active && observers)
   {
     [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
   }
 }
 
-- (NearbyTransitFeatureDiscoverySource)initWithDataStore:(id)a3
+- (NearbyTransitFeatureDiscoverySource)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = NearbyTransitFeatureDiscoverySource;
   v6 = [(NearbyTransitFeatureDiscoverySource *)&v13 init];
@@ -480,7 +480,7 @@ LABEL_12:
     mapsSuggestionsHomeFeatureDiscoveryQueue = v6->_mapsSuggestionsHomeFeatureDiscoveryQueue;
     v6->_mapsSuggestionsHomeFeatureDiscoveryQueue = v8;
 
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
     v6->_addedFavorite = [(NearbyTransitFeatureDiscoveryDataStore *)v6->_dataStore hasUserEverAddedFavorite];
     v6->_showFeature = 0;
     v6->_hasInitialData = [(NearbyTransitFeatureDiscoveryDataStore *)v6->_dataStore hasUserEverAddedFavorite];

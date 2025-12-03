@@ -1,20 +1,20 @@
 @interface SDAutoUnlockRegistrationLockSession
-- (SDAutoUnlockRegistrationLockSession)initWithDevice:(id)a3 sessionID:(id)a4;
-- (void)handleFinalize:(id)a3;
-- (void)handleInitialResponse:(id)a3;
+- (SDAutoUnlockRegistrationLockSession)initWithDevice:(id)device sessionID:(id)d;
+- (void)handleFinalize:(id)finalize;
+- (void)handleInitialResponse:(id)response;
 - (void)onQueue_start;
 - (void)sendInitialRequest;
 - (void)start;
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6;
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d;
 @end
 
 @implementation SDAutoUnlockRegistrationLockSession
 
-- (SDAutoUnlockRegistrationLockSession)initWithDevice:(id)a3 sessionID:(id)a4
+- (SDAutoUnlockRegistrationLockSession)initWithDevice:(id)device sessionID:(id)d
 {
   v5.receiver = self;
   v5.super_class = SDAutoUnlockRegistrationLockSession;
-  result = [(SDAutoUnlockPairingSession *)&v5 initWithDevice:a3 sessionID:a4];
+  result = [(SDAutoUnlockPairingSession *)&v5 initWithDevice:device sessionID:d];
   if (result)
   {
     result->_state = 0;
@@ -25,26 +25,26 @@
 
 - (void)start
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10026C618;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)onQueue_start
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
-  v4 = [(SDAutoUnlockRegistrationLockSession *)self requestData];
+  requestData = [(SDAutoUnlockRegistrationLockSession *)self requestData];
 
-  if (v4)
+  if (requestData)
   {
-    v5 = [(SDAutoUnlockRegistrationLockSession *)self requestData];
-    [(SDAutoUnlockRegistrationLockSession *)self handleInitialResponse:v5];
+    requestData2 = [(SDAutoUnlockRegistrationLockSession *)self requestData];
+    [(SDAutoUnlockRegistrationLockSession *)self handleInitialResponse:requestData2];
   }
 
   else
@@ -56,56 +56,56 @@
 
 - (void)sendInitialRequest
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   v4 = objc_alloc_init(SDAutoUnlockDeviceRegistrationRequest);
   v5 = +[SDAutoUnlockTransport sharedTransport];
-  v6 = [(SDAutoUnlockDeviceRegistrationRequest *)v4 data];
-  v7 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v8 = [(SDAutoUnlockPairingSession *)self sessionID];
+  data = [(SDAutoUnlockDeviceRegistrationRequest *)v4 data];
+  deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+  sessionID = [(SDAutoUnlockPairingSession *)self sessionID];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10026C804;
   v9[3] = &unk_1008CDF90;
   v9[4] = self;
-  [v5 sendPayload:v6 toDevice:v7 type:501 sessionID:v8 timeout:&off_10090C4C8 errorHandler:v9];
+  [v5 sendPayload:data toDevice:deviceID type:501 sessionID:sessionID timeout:&off_10090C4C8 errorHandler:v9];
 
   [(SDAutoUnlockPairingSession *)self restartResponseTimer:sub_1001F0530(20.0)];
 }
 
-- (void)handleInitialResponse:(id)a3
+- (void)handleInitialResponse:(id)response
 {
-  v4 = a3;
-  v5 = [[SDAutoUnlockDeviceRegistrationStep alloc] initWithData:v4];
+  responseCopy = response;
+  v5 = [[SDAutoUnlockDeviceRegistrationStep alloc] initWithData:responseCopy];
 
   if ([(SDAutoUnlockDeviceRegistrationStep *)v5 errorCode])
   {
     v6 = SFAutoUnlockErrorDomain;
-    v7 = [(SDAutoUnlockDeviceRegistrationStep *)v5 errorCode];
+    errorCode = [(SDAutoUnlockDeviceRegistrationStep *)v5 errorCode];
     v31 = NSLocalizedDescriptionKey;
     v32 = @"Error during registration";
     v8 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    v9 = [NSError errorWithDomain:v6 code:v7 userInfo:v8];
+    v9 = [NSError errorWithDomain:v6 code:errorCode userInfo:v8];
     [(SDAutoUnlockRegistrationSession *)self notifyDelegateWithError:v9];
   }
 
   else if ([(SDAutoUnlockDeviceRegistrationStep *)v5 hasStepData])
   {
     v10 = +[SDAutoUnlockAKSManager sharedManager];
-    v11 = [(SDAutoUnlockPairingSession *)self deviceID];
-    v12 = [v10 aksRegistrationSessionForDeviceID:v11 originator:0];
+    deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+    v12 = [v10 aksRegistrationSessionForDeviceID:deviceID originator:0];
     [(SDAutoUnlockPairingSession *)self setAksSession:v12];
 
-    v13 = [(SDAutoUnlockPairingSession *)self aksSession];
-    LODWORD(v11) = [v13 sessionIsValid];
+    aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+    LODWORD(deviceID) = [aksSession sessionIsValid];
 
-    if (v11)
+    if (deviceID)
     {
-      v14 = [(SDAutoUnlockPairingSession *)self aksSession];
-      v15 = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
+      aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
+      stepData = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
       v28 = 0;
-      v16 = [v14 stepSessionWithData:v15 outputData:&v28];
+      v16 = [aksSession2 stepSessionWithData:stepData outputData:&v28];
       v17 = v28;
 
       if (v16)
@@ -113,15 +113,15 @@
         v18 = objc_alloc_init(SDAutoUnlockDeviceRegistrationStep);
         [(SDAutoUnlockDeviceRegistrationStep *)v18 setStepData:v17];
         v19 = +[SDAutoUnlockTransport sharedTransport];
-        v20 = [(SDAutoUnlockDeviceRegistrationStep *)v18 data];
-        v21 = [(SDAutoUnlockPairingSession *)self deviceID];
-        v22 = [(SDAutoUnlockPairingSession *)self sessionID];
+        data = [(SDAutoUnlockDeviceRegistrationStep *)v18 data];
+        deviceID2 = [(SDAutoUnlockPairingSession *)self deviceID];
+        sessionID = [(SDAutoUnlockPairingSession *)self sessionID];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_10026CC98;
         v27[3] = &unk_1008CDF90;
         v27[4] = self;
-        [v19 sendPayload:v20 toDevice:v21 type:503 sessionID:v22 timeout:&off_10090C4C8 errorHandler:v27];
+        [v19 sendPayload:data toDevice:deviceID2 type:503 sessionID:sessionID timeout:&off_10090C4C8 errorHandler:v27];
 
         [(SDAutoUnlockPairingSession *)self restartResponseTimer:sub_1001F0530(20.0)];
       }
@@ -151,29 +151,29 @@
   }
 }
 
-- (void)handleFinalize:(id)a3
+- (void)handleFinalize:(id)finalize
 {
-  v4 = a3;
-  v5 = [[SDAutoUnlockDeviceRegistrationStep alloc] initWithData:v4];
+  finalizeCopy = finalize;
+  v5 = [[SDAutoUnlockDeviceRegistrationStep alloc] initWithData:finalizeCopy];
 
   if (![(SDAutoUnlockDeviceRegistrationStep *)v5 errorCode])
   {
     if ([(SDAutoUnlockDeviceRegistrationStep *)v5 hasStepData])
     {
-      v10 = [(SDAutoUnlockPairingSession *)self aksSession];
-      v11 = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
-      v12 = [v10 stepSessionWithData:v11 outputData:0];
+      aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+      stepData = [(SDAutoUnlockDeviceRegistrationStep *)v5 stepData];
+      v12 = [aksSession stepSessionWithData:stepData outputData:0];
 
       if (v12)
       {
-        v13 = [(SDAutoUnlockPairingSession *)self aksSession];
-        v14 = [v13 finalizeRegistration];
+        aksSession2 = [(SDAutoUnlockPairingSession *)self aksSession];
+        finalizeRegistration = [aksSession2 finalizeRegistration];
 
-        if (!v14)
+        if (!finalizeRegistration)
         {
           v22 = +[SDAutoUnlockAKSManager sharedManager];
-          v23 = [(SDAutoUnlockPairingSession *)self deviceID];
-          v8 = [v22 remoteLTKForDeviceID:v23];
+          deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+          v8 = [v22 remoteLTKForDeviceID:deviceID];
 
           v24 = sub_100021BD4(v8);
           v25 = auto_unlock_log();
@@ -185,7 +185,7 @@
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Device has been registered (peer state is %@)", &v27, 0xCu);
           }
 
-          v20 = self;
+          selfCopy2 = self;
           v21 = 0;
           goto LABEL_17;
         }
@@ -223,37 +223,37 @@
     }
 
     v8 = [NSError errorWithDomain:v17 code:v18 userInfo:0];
-    v20 = self;
+    selfCopy2 = self;
     v21 = v8;
 LABEL_17:
-    [(SDAutoUnlockRegistrationSession *)v20 notifyDelegateWithError:v21];
+    [(SDAutoUnlockRegistrationSession *)selfCopy2 notifyDelegateWithError:v21];
     goto LABEL_18;
   }
 
   v6 = SFAutoUnlockErrorDomain;
-  v7 = [(SDAutoUnlockDeviceRegistrationStep *)v5 errorCode];
+  errorCode = [(SDAutoUnlockDeviceRegistrationStep *)v5 errorCode];
   v29 = NSLocalizedDescriptionKey;
   v30 = @"Error during registration";
   v8 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-  v9 = [NSError errorWithDomain:v6 code:v7 userInfo:v8];
+  v9 = [NSError errorWithDomain:v6 code:errorCode userInfo:v8];
   [(SDAutoUnlockRegistrationSession *)self notifyDelegateWithError:v9];
 
 LABEL_18:
 }
 
-- (void)transport:(id)a3 didReceivePayload:(id)a4 type:(unsigned __int16)a5 deviceID:(id)a6
+- (void)transport:(id)transport didReceivePayload:(id)payload type:(unsigned __int16)type deviceID:(id)d
 {
-  v8 = a4;
-  v9 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  payloadCopy = payload;
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10026D15C;
   block[3] = &unk_1008CFBD8;
-  v13 = a5;
+  typeCopy = type;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v9, block);
+  v12 = payloadCopy;
+  v10 = payloadCopy;
+  dispatch_async(sessionQueue, block);
 }
 
 @end

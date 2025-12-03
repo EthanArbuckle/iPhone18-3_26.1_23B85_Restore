@@ -1,26 +1,26 @@
 @interface PXGridInlineSpatialPhotoAssetPlaybackRecord
 - (BOOL)isPlaying;
 - (CGAffineTransform)preferredTransform;
-- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5;
-- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
+- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference;
+- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
 - (__CVBuffer)currentPixelBuffer;
 - (int64_t)desiredPlayState;
 - (void)dealloc;
 - (void)prepareForInvisible;
-- (void)setCurrentPixelBuffer:(__CVBuffer *)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setPixelBufferDidChangeHandler:(id)a3;
-- (void)setProvidePlaceholderHandler:(id)a3;
+- (void)setCurrentPixelBuffer:(__CVBuffer *)buffer;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setPixelBufferDidChangeHandler:(id)handler;
+- (void)setProvidePlaceholderHandler:(id)handler;
 @end
 
 @implementation PXGridInlineSpatialPhotoAssetPlaybackRecord
 
-- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5
+- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference
 {
-  if (a5)
+  if (reference)
   {
     swift_unknownObjectRetain();
-    v7 = a4;
+    providerCopy = provider;
     swift_unknownObjectRetain();
     sub_1A524E0B4();
     swift_unknownObjectRelease();
@@ -30,23 +30,23 @@
   {
     memset(v11, 0, sizeof(v11));
     swift_unknownObjectRetain();
-    v8 = a4;
+    providerCopy2 = provider;
   }
 
-  v9 = sub_1A46A182C(a3, a4, v11);
+  v9 = sub_1A46A182C(asset, provider, v11);
   swift_unknownObjectRelease();
 
   return v9;
 }
 
-- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (_TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  height = a6.height;
-  width = a6.width;
-  if (a5)
+  height = size.height;
+  width = size.width;
+  if (reference)
   {
     swift_unknownObjectRetain();
-    v12 = a4;
+    providerCopy = provider;
     swift_unknownObjectRetain();
     sub_1A524E0B4();
     swift_unknownObjectRelease();
@@ -56,10 +56,10 @@
   {
     memset(v16, 0, sizeof(v16));
     swift_unknownObjectRetain();
-    v13 = a4;
+    providerCopy2 = provider;
   }
 
-  v14 = sub_1A46A1AD8(a3, a4, v16, width, height, a7);
+  v14 = sub_1A46A1AD8(asset, provider, v16, width, height, scale);
   swift_unknownObjectRelease();
 
   return v14;
@@ -68,7 +68,7 @@
 - (int64_t)desiredPlayState
 {
   v2 = *(self + OBJC_IVAR____TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord__desiredPlayState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   v4 = *(v2 + 16);
   os_unfair_lock_unlock((v2 + 24));
@@ -76,16 +76,16 @@
   return v4;
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  v4 = self;
-  sub_1A469C630(a3);
+  selfCopy = self;
+  sub_1A469C630(state);
 }
 
 - (BOOL)isPlaying
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0xA8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   if (v4)
@@ -98,14 +98,14 @@
 - (void)prepareForInvisible
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0xB0);
-  v3 = self;
+  selfCopy = self;
   v2(0);
 }
 
 - (__CVBuffer)currentPixelBuffer
 {
   v2 = *(self + OBJC_IVAR____TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord__currentPixelBuffer);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   v4 = *(v2 + 16);
   os_unfair_lock_unlock((v2 + 24));
@@ -113,10 +113,10 @@
   return v4;
 }
 
-- (void)setCurrentPixelBuffer:(__CVBuffer *)a3
+- (void)setCurrentPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = a3;
-  v4 = self;
+  bufferCopy = buffer;
+  selfCopy = self;
   sub_1A46A1DE8();
 }
 
@@ -131,9 +131,9 @@
   return self;
 }
 
-- (void)setPixelBufferDidChangeHandler:(id)a3
+- (void)setPixelBufferDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -152,13 +152,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A3C784D4(v7, v8);
 }
 
-- (void)setProvidePlaceholderHandler:(id)a3
+- (void)setProvidePlaceholderHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -177,7 +177,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A3C784D4(v7, v8);
 }
 
@@ -185,14 +185,14 @@
 {
   if (*(self + OBJC_IVAR____TtC12PhotosUICore43PXGridInlineSpatialPhotoAssetPlaybackRecord_playbackQueue_generationTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1A524CD94();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;

@@ -1,7 +1,7 @@
 @interface EXXPCUtil
 + (id)sharedInstance;
-+ (int)addExternalServiceForPid:(int)a3 path:(id)a4 overlay:(id)a5;
-+ (int)servicePidFromXPCConnection:(id)a3;
++ (int)addExternalServiceForPid:(int)pid path:(id)path overlay:(id)overlay;
++ (int)servicePidFromXPCConnection:(id)connection;
 + (void)assertIsExtensionProcess;
 @end
 
@@ -44,9 +44,9 @@ EXXPCUtil *__27__EXXPCUtil_sharedInstance__block_invoke()
   return result;
 }
 
-+ (int)addExternalServiceForPid:(int)a3 path:(id)a4 overlay:(id)a5
++ (int)addExternalServiceForPid:(int)pid path:(id)path overlay:(id)overlay
 {
-  [a4 UTF8String];
+  [path UTF8String];
   v5 = _CFXPCCreateXPCObjectFromCFObject();
   if (!v5)
   {
@@ -59,7 +59,7 @@ EXXPCUtil *__27__EXXPCUtil_sharedInstance__block_invoke()
   return v7;
 }
 
-+ (int)servicePidFromXPCConnection:(id)a3
++ (int)servicePidFromXPCConnection:(id)connection
 {
   v3 = launch_copy_extension_properties();
   if (!v3)

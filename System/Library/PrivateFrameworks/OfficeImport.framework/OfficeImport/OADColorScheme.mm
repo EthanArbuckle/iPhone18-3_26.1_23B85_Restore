@@ -1,11 +1,11 @@
 @interface OADColorScheme
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADColorScheme)init;
-- (id)colorForIndex:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)colorForIndex:(int)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addColor:(id)a3 index:(int)a4;
-- (void)setColor:(id)a3 index:(int)a4;
+- (void)addColor:(id)color index:(int)index;
+- (void)setColor:(id)color index:(int)index;
 - (void)validateColorScheme;
 @end
 
@@ -26,36 +26,36 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(OADColorScheme);
   [(NSMutableDictionary *)v4->mColors setDictionary:self->mColors];
   return v4;
 }
 
-- (id)colorForIndex:(int)a3
+- (id)colorForIndex:(int)index
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&index];
   v5 = [(NSMutableDictionary *)self->mColors objectForKey:v4];
 
   return v5;
 }
 
-- (void)addColor:(id)a3 index:(int)a4
+- (void)addColor:(id)color index:(int)index
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&index;
+  colorCopy = color;
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v4];
-  [(NSMutableDictionary *)self->mColors setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->mColors setObject:colorCopy forKey:v6];
 }
 
-- (void)setColor:(id)a3 index:(int)a4
+- (void)setColor:(id)color index:(int)index
 {
-  v4 = *&a4;
-  v8 = a3;
+  v4 = *&index;
+  colorCopy = color;
   mColors = self->mColors;
   v7 = [MEMORY[0x277CCABB0] numberWithInt:v4];
-  [(NSMutableDictionary *)mColors setObject:v8 forKey:v7];
+  [(NSMutableDictionary *)mColors setObject:colorCopy forKey:v7];
 }
 
 - (void)validateColorScheme
@@ -69,13 +69,13 @@
   {
     [OAXColorScheme readFromXmlNode:v6 toColorScheme:v3];
     xmlFreeDoc(v5);
-    v7 = [(OADColorScheme *)self name];
-    v8 = [v7 length];
+    name = [(OADColorScheme *)self name];
+    v8 = [name length];
 
     if (!v8)
     {
-      v9 = [v3 name];
-      [(OADColorScheme *)self setName:v9];
+      name2 = [v3 name];
+      [(OADColorScheme *)self setName:name2];
     }
 
     v10 = v3[2];
@@ -116,12 +116,12 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(NSMutableDictionary *)self->mColors isEqualToDictionary:v4[2]];
+    v5 = [(NSMutableDictionary *)self->mColors isEqualToDictionary:equalCopy[2]];
   }
 
   else

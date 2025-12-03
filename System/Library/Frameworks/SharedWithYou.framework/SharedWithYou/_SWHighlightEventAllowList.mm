@@ -1,8 +1,8 @@
 @interface _SWHighlightEventAllowList
-+ (Class)eventClassForType:(int64_t)a3;
++ (Class)eventClassForType:(int64_t)type;
 + (id)_eventClassToTypeMap;
 + (id)allowedClasses;
-+ (int64_t)eventTypeForClass:(Class)a3;
++ (int64_t)eventTypeForClass:(Class)class;
 @end
 
 @implementation _SWHighlightEventAllowList
@@ -44,27 +44,27 @@
 + (id)allowedClasses
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [a1 _eventClassToTypeMap];
-  v4 = [v3 allKeys];
-  v5 = [v2 setWithArray:v4];
+  _eventClassToTypeMap = [self _eventClassToTypeMap];
+  allKeys = [_eventClassToTypeMap allKeys];
+  v5 = [v2 setWithArray:allKeys];
 
   return v5;
 }
 
-+ (Class)eventClassForType:(int64_t)a3
++ (Class)eventClassForType:(int64_t)type
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
   v11 = 0;
-  v4 = [a1 _eventClassToTypeMap];
+  _eventClassToTypeMap = [self _eventClassToTypeMap];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48___SWHighlightEventAllowList_eventClassForType___block_invoke;
   v7[3] = &unk_1E7FDE128;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  v7[5] = type;
+  [_eventClassToTypeMap enumerateKeysAndObjectsUsingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -72,10 +72,10 @@
   return v5;
 }
 
-+ (int64_t)eventTypeForClass:(Class)a3
++ (int64_t)eventTypeForClass:(Class)class
 {
-  v4 = [a1 _eventClassToTypeMap];
-  v5 = [v4 objectForKey:a3];
+  _eventClassToTypeMap = [self _eventClassToTypeMap];
+  v5 = [_eventClassToTypeMap objectForKey:class];
   v6 = v5;
   v7 = &unk_1F3ABFA50;
   if (v5)
@@ -85,8 +85,8 @@
 
   v8 = v7;
 
-  v9 = [v8 integerValue];
-  return v9;
+  integerValue = [v8 integerValue];
+  return integerValue;
 }
 
 @end

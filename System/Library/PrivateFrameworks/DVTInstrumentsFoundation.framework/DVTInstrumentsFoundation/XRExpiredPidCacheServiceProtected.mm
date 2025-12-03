@@ -1,6 +1,6 @@
 @interface XRExpiredPidCacheServiceProtected
 - (XRExpiredPidCacheServiceProtected)init;
-- (void)_performOnCache:(id)a3;
+- (void)_performOnCache:(id)cache;
 @end
 
 @implementation XRExpiredPidCacheServiceProtected
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (void)_performOnCache:(id)a3
+- (void)_performOnCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = sub_247F6ABB4;
   block[3] = &unk_278EF0F70;
-  v6 = v4;
+  v6 = cacheCopy;
   block[4] = self;
   v9 = v6;
   v10 = &v11;

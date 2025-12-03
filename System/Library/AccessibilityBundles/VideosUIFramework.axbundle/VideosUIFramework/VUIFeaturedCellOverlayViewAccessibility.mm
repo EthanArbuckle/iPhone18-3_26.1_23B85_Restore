@@ -1,17 +1,17 @@
 @interface VUIFeaturedCellOverlayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VUIFeaturedCellOverlayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"appleTVChannelLogoView" withType:"@"];
-  [v3 validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"titleLabel" withType:"@"];
-  [v3 validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"subtitleLabel" withType:"@"];
-  [v3 validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"buttons" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"appleTVChannelLogoView" withType:"@"];
+  [validationsCopy validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"titleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"subtitleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIFeaturedCellOverlayView" hasProperty:@"buttons" withType:"@"];
 }
 
 - (id)accessibilityLabel

@@ -1,15 +1,15 @@
 @interface ExtremeDisparity
-- (id)computeWithLeftBuffer:(__CVBuffer *)a3 rightBuffer:(__CVBuffer *)a4 percentile:(float)a5;
+- (id)computeWithLeftBuffer:(__CVBuffer *)buffer rightBuffer:(__CVBuffer *)rightBuffer percentile:(float)percentile;
 @end
 
 @implementation ExtremeDisparity
 
-- (id)computeWithLeftBuffer:(__CVBuffer *)a3 rightBuffer:(__CVBuffer *)a4 percentile:(float)a5
+- (id)computeWithLeftBuffer:(__CVBuffer *)buffer rightBuffer:(__CVBuffer *)rightBuffer percentile:(float)percentile
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_264319F7C(v8, v9, a5);
+  bufferCopy = buffer;
+  rightBufferCopy = rightBuffer;
+  selfCopy = self;
+  sub_264319F7C(bufferCopy, rightBufferCopy, percentile);
   v12 = v11;
 
   return v12;

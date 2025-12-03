@@ -3,26 +3,26 @@
 - (BOOL)startMonitoring;
 - (BOOL)stopMonitoring;
 - (BOOL)upgradeToBestAccuracyMonitoring;
-- (PRCoreLocationClient)initWithQueue:(id)a3;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (PRCoreLocationClient)initWithQueue:(id)queue;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)updateLocationAuthorized;
 @end
 
 @implementation PRCoreLocationClient
 
-- (PRCoreLocationClient)initWithQueue:(id)a3
+- (PRCoreLocationClient)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = PRCoreLocationClient;
   v6 = [(PRCoreLocationClient *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [[CLLocationManager alloc] initWithEffectiveBundlePath:@"/System/Library/LocationBundles/UWBRegulatory.bundle" delegate:v7 onQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [[CLLocationManager alloc] initWithEffectiveBundlePath:@"/System/Library/LocationBundles/UWBRegulatory.bundle" delegate:v7 onQueue:queueCopy];
     manager = v7->_manager;
     v7->_manager = v8;
 
@@ -169,60 +169,60 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  if (v5)
+  locationsCopy = locations;
+  if (locationsCopy)
   {
-    v22 = v5;
-    v6 = [v5 lastObject];
-    [(PRCoreLocationClient *)self setLocation:v6];
+    v22 = locationsCopy;
+    lastObject = [locationsCopy lastObject];
+    [(PRCoreLocationClient *)self setLocation:lastObject];
     if (self->_regulatoryLocationHandler)
     {
-      v7 = [(PRCoreLocationClient *)self location];
-      [v7 coordinate];
+      location = [(PRCoreLocationClient *)self location];
+      [location coordinate];
       v9 = v8;
 
-      v10 = [(PRCoreLocationClient *)self location];
-      [v10 coordinate];
+      location2 = [(PRCoreLocationClient *)self location];
+      [location2 coordinate];
       v12 = v11;
 
-      v13 = [(PRCoreLocationClient *)self location];
-      [v13 altitude];
+      location3 = [(PRCoreLocationClient *)self location];
+      [location3 altitude];
       v15 = v14;
 
-      v16 = [(PRCoreLocationClient *)self location];
-      [v16 horizontalAccuracy];
+      location4 = [(PRCoreLocationClient *)self location];
+      [location4 horizontalAccuracy];
       v18 = v17;
 
       regulatoryLocationHandler = self->_regulatoryLocationHandler;
-      v20 = [v6 timestamp];
-      [v20 timeIntervalSinceReferenceDate];
+      timestamp = [lastObject timestamp];
+      [timestamp timeIntervalSinceReferenceDate];
       regulatoryLocationHandler[2](regulatoryLocationHandler, 0, v9, v12, v15, v18, v21);
     }
 
-    v5 = v22;
+    locationsCopy = v22;
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   if (os_log_type_enabled(qword_1009F5380, OS_LOG_TYPE_DEBUG))
   {
     sub_1004BF9A0();
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
+  managerCopy = manager;
   if (os_log_type_enabled(qword_1009F5380, OS_LOG_TYPE_DEBUG))
   {
     sub_1004BFA14();
   }
 
-  v8 = a4 == 3 || a4 == 0;
+  v8 = status == 3 || status == 0;
   self->_isLocationAuthorized = v8;
   if (self->_isMonitoringLocation)
   {

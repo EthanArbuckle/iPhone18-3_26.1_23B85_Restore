@@ -1,38 +1,38 @@
 @interface KCellularLqmStateChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsHiPowerEvent:(id)a3;
-- (int)StringAsHiPowerExitReason:(id)a3;
+- (int)StringAsHiPowerEvent:(id)event;
+- (int)StringAsHiPowerExitReason:(id)reason;
 - (int)hiPowerEvent;
 - (int)hiPowerExitReason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHiPowerEvent:(BOOL)a3;
-- (void)setHasHiPowerExitReason:(BOOL)a3;
-- (void)setHasIsScreenOn:(BOOL)a3;
-- (void)setHasLqmState:(BOOL)a3;
-- (void)setHasLteRsrp:(BOOL)a3;
-- (void)setHasLteRsrq:(BOOL)a3;
-- (void)setHasLteRssi:(BOOL)a3;
-- (void)setHasLteRssnr:(BOOL)a3;
-- (void)setHasPrevIsScreenOn:(BOOL)a3;
-- (void)setHasPrevLqmState:(BOOL)a3;
-- (void)setHasPrevStateDurationSec:(BOOL)a3;
-- (void)setHasPrevSysMode:(BOOL)a3;
-- (void)setHasSysMode:(BOOL)a3;
-- (void)setHasWcdmaEcio:(BOOL)a3;
-- (void)setHasWcdmaRscp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHiPowerEvent:(BOOL)event;
+- (void)setHasHiPowerExitReason:(BOOL)reason;
+- (void)setHasIsScreenOn:(BOOL)on;
+- (void)setHasLqmState:(BOOL)state;
+- (void)setHasLteRsrp:(BOOL)rsrp;
+- (void)setHasLteRsrq:(BOOL)rsrq;
+- (void)setHasLteRssi:(BOOL)rssi;
+- (void)setHasLteRssnr:(BOOL)rssnr;
+- (void)setHasPrevIsScreenOn:(BOOL)on;
+- (void)setHasPrevLqmState:(BOOL)state;
+- (void)setHasPrevStateDurationSec:(BOOL)sec;
+- (void)setHasPrevSysMode:(BOOL)mode;
+- (void)setHasSysMode:(BOOL)mode;
+- (void)setHasWcdmaEcio:(BOOL)ecio;
+- (void)setHasWcdmaRscp:(BOOL)rscp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularLqmStateChange
 
-- (void)setHasPrevStateDurationSec:(BOOL)a3
+- (void)setHasPrevStateDurationSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 512;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLqmState:(BOOL)a3
+- (void)setHasLqmState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSysMode:(BOOL)a3
+- (void)setHasSysMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2048;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsScreenOn:(BOOL)a3
+- (void)setHasIsScreenOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 0x4000;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasPrevLqmState:(BOOL)a3
+- (void)setHasPrevLqmState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPrevSysMode:(BOOL)a3
+- (void)setHasPrevSysMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 1024;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasPrevIsScreenOn:(BOOL)a3
+- (void)setHasPrevIsScreenOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 0x8000;
   }
@@ -148,9 +148,9 @@
   }
 }
 
-- (void)setHasHiPowerEvent:(BOOL)a3
+- (void)setHasHiPowerEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 2;
   }
@@ -163,70 +163,70 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsHiPowerEvent:(id)a3
+- (int)StringAsHiPowerEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LQM_EVENT_NONE"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"LQM_EVENT_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_POOR_SIGNAL"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_POOR_SIGNAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_LTE_UL_TRICKLING_GRANT"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_LTE_UL_TRICKLING_GRANT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_EUTRA_RRC_CONN_FAIL"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_EUTRA_RRC_CONN_FAIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_UTRA_RRC_CONN_FAIL"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_UTRA_RRC_CONN_FAIL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_ERLC_MAX_RETX"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_ERLC_MAX_RETX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_URLC_MAX_RETX"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_URLC_MAX_RETX"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_HIGH_POW_COST"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_HIGH_POW_COST"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_PHY_ABORT"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_PHY_ABORT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_RF_CONDITION"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_RF_CONDITION"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_GUARD_TIMER_EXPIRY"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_GUARD_TIMER_EXPIRY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_RF_SIGNAL_IMPROVEMENT"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_RF_SIGNAL_IMPROVEMENT"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_MAX"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_MAX"])
   {
     v4 = 12;
   }
@@ -252,9 +252,9 @@
   }
 }
 
-- (void)setHasHiPowerExitReason:(BOOL)a3
+- (void)setHasHiPowerExitReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -267,70 +267,70 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsHiPowerExitReason:(id)a3
+- (int)StringAsHiPowerExitReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LQM_EVENT_NONE"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"LQM_EVENT_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_POOR_SIGNAL"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_POOR_SIGNAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_LTE_UL_TRICKLING_GRANT"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_LTE_UL_TRICKLING_GRANT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_EUTRA_RRC_CONN_FAIL"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_EUTRA_RRC_CONN_FAIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_UTRA_RRC_CONN_FAIL"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_UTRA_RRC_CONN_FAIL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_ERLC_MAX_RETX"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_ERLC_MAX_RETX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_URLC_MAX_RETX"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_URLC_MAX_RETX"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_HIGH_POW_COST"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_HIGH_POW_COST"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_PHY_ABORT"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_PHY_ABORT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_RF_CONDITION"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_RF_CONDITION"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_GUARD_TIMER_EXPIRY"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_GUARD_TIMER_EXPIRY"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_RF_SIGNAL_IMPROVEMENT"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_RF_SIGNAL_IMPROVEMENT"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_MAX"])
+  else if ([reasonCopy isEqualToString:@"LQM_EVENT_MAX"])
   {
     v4 = 12;
   }
@@ -343,9 +343,9 @@
   return v4;
 }
 
-- (void)setHasWcdmaEcio:(BOOL)a3
+- (void)setHasWcdmaEcio:(BOOL)ecio
 {
-  if (a3)
+  if (ecio)
   {
     v3 = 4096;
   }
@@ -358,9 +358,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasWcdmaRscp:(BOOL)a3
+- (void)setHasWcdmaRscp:(BOOL)rscp
 {
-  if (a3)
+  if (rscp)
   {
     v3 = 0x2000;
   }
@@ -373,9 +373,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasLteRssi:(BOOL)a3
+- (void)setHasLteRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 64;
   }
@@ -388,9 +388,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasLteRsrp:(BOOL)a3
+- (void)setHasLteRsrp:(BOOL)rsrp
 {
-  if (a3)
+  if (rsrp)
   {
     v3 = 16;
   }
@@ -403,9 +403,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLteRsrq:(BOOL)a3
+- (void)setHasLteRsrq:(BOOL)rsrq
 {
-  if (a3)
+  if (rsrq)
   {
     v3 = 32;
   }
@@ -418,9 +418,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLteRssnr:(BOOL)a3
+- (void)setHasLteRssnr:(BOOL)rssnr
 {
-  if (a3)
+  if (rssnr)
   {
     v3 = 128;
   }
@@ -439,20 +439,20 @@
   v8.receiver = self;
   v8.super_class = KCellularLqmStateChange;
   v4 = [(KCellularLqmStateChange *)&v8 description];
-  v5 = [(KCellularLqmStateChange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularLqmStateChange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x200) == 0)
@@ -473,7 +473,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevStateDurationSec];
-  [v3 setObject:v8 forKey:@"prev_state_duration_sec"];
+  [dictionary setObject:v8 forKey:@"prev_state_duration_sec"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -489,7 +489,7 @@ LABEL_4:
 
 LABEL_23:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lqmState];
-  [v3 setObject:v9 forKey:@"lqm_state"];
+  [dictionary setObject:v9 forKey:@"lqm_state"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -505,7 +505,7 @@ LABEL_5:
 
 LABEL_24:
   v10 = [MEMORY[0x277CCABB0] numberWithInt:self->_sysMode];
-  [v3 setObject:v10 forKey:@"sys_mode"];
+  [dictionary setObject:v10 forKey:@"sys_mode"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -521,7 +521,7 @@ LABEL_6:
 
 LABEL_25:
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_isScreenOn];
-  [v3 setObject:v11 forKey:@"is_screen_on"];
+  [dictionary setObject:v11 forKey:@"is_screen_on"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -537,7 +537,7 @@ LABEL_7:
 
 LABEL_26:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevLqmState];
-  [v3 setObject:v12 forKey:@"prev_lqm_state"];
+  [dictionary setObject:v12 forKey:@"prev_lqm_state"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -553,7 +553,7 @@ LABEL_8:
 
 LABEL_27:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prevSysMode];
-  [v3 setObject:v13 forKey:@"prev_sys_mode"];
+  [dictionary setObject:v13 forKey:@"prev_sys_mode"];
 
   has = self->_has;
   if ((has & 0x8000) == 0)
@@ -569,7 +569,7 @@ LABEL_9:
 
 LABEL_28:
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_prevIsScreenOn];
-  [v3 setObject:v14 forKey:@"prev_is_screen_on"];
+  [dictionary setObject:v14 forKey:@"prev_is_screen_on"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -595,7 +595,7 @@ LABEL_29:
     v16 = off_27825E678[hiPowerEvent];
   }
 
-  [v3 setObject:v16 forKey:@"hi_power_event"];
+  [dictionary setObject:v16 forKey:@"hi_power_event"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -621,7 +621,7 @@ LABEL_33:
     v18 = off_27825E678[hiPowerExitReason];
   }
 
-  [v3 setObject:v18 forKey:@"hi_power_exit_reason"];
+  [dictionary setObject:v18 forKey:@"hi_power_exit_reason"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -637,7 +637,7 @@ LABEL_12:
 
 LABEL_37:
   v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_wcdmaEcio];
-  [v3 setObject:v19 forKey:@"wcdma_ecio"];
+  [dictionary setObject:v19 forKey:@"wcdma_ecio"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -653,7 +653,7 @@ LABEL_13:
 
 LABEL_38:
   v20 = [MEMORY[0x277CCABB0] numberWithInt:self->_wcdmaRscp];
-  [v3 setObject:v20 forKey:@"wcdma_rscp"];
+  [dictionary setObject:v20 forKey:@"wcdma_rscp"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -669,7 +669,7 @@ LABEL_14:
 
 LABEL_39:
   v21 = [MEMORY[0x277CCABB0] numberWithInt:self->_lteRssi];
-  [v3 setObject:v21 forKey:@"lte_rssi"];
+  [dictionary setObject:v21 forKey:@"lte_rssi"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -685,7 +685,7 @@ LABEL_15:
 
 LABEL_40:
   v22 = [MEMORY[0x277CCABB0] numberWithInt:self->_lteRsrp];
-  [v3 setObject:v22 forKey:@"lte_rsrp"];
+  [dictionary setObject:v22 forKey:@"lte_rsrp"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -701,23 +701,23 @@ LABEL_16:
 
 LABEL_41:
   v23 = [MEMORY[0x277CCABB0] numberWithInt:self->_lteRsrq];
-  [v3 setObject:v23 forKey:@"lte_rsrq"];
+  [dictionary setObject:v23 forKey:@"lte_rsrq"];
 
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_17:
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_lteRssnr];
-    [v3 setObject:v5 forKey:@"lte_rssnr"];
+    [dictionary setObject:v5 forKey:@"lte_rssnr"];
   }
 
 LABEL_18:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -948,14 +948,14 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -974,8 +974,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 12) = self->_prevStateDurationSec;
-  *(v4 + 36) |= 0x200u;
+  *(toCopy + 12) = self->_prevStateDurationSec;
+  *(toCopy + 36) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -989,8 +989,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(v4 + 6) = self->_lqmState;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 6) = self->_lqmState;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -1004,8 +1004,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(v4 + 14) = self->_sysMode;
-  *(v4 + 36) |= 0x800u;
+  *(toCopy + 14) = self->_sysMode;
+  *(toCopy + 36) |= 0x800u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -1019,8 +1019,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  *(v4 + 68) = self->_isScreenOn;
-  *(v4 + 36) |= 0x4000u;
+  *(toCopy + 68) = self->_isScreenOn;
+  *(toCopy + 36) |= 0x4000u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1034,8 +1034,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(v4 + 11) = self->_prevLqmState;
-  *(v4 + 36) |= 0x100u;
+  *(toCopy + 11) = self->_prevLqmState;
+  *(toCopy + 36) |= 0x100u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1049,8 +1049,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(v4 + 13) = self->_prevSysMode;
-  *(v4 + 36) |= 0x400u;
+  *(toCopy + 13) = self->_prevSysMode;
+  *(toCopy + 36) |= 0x400u;
   has = self->_has;
   if ((has & 0x8000) == 0)
   {
@@ -1064,8 +1064,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(v4 + 69) = self->_prevIsScreenOn;
-  *(v4 + 36) |= 0x8000u;
+  *(toCopy + 69) = self->_prevIsScreenOn;
+  *(toCopy + 36) |= 0x8000u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1079,8 +1079,8 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(v4 + 4) = self->_hiPowerEvent;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 4) = self->_hiPowerEvent;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1094,8 +1094,8 @@ LABEL_11:
   }
 
 LABEL_30:
-  *(v4 + 5) = self->_hiPowerExitReason;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 5) = self->_hiPowerExitReason;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -1109,8 +1109,8 @@ LABEL_12:
   }
 
 LABEL_31:
-  *(v4 + 15) = self->_wcdmaEcio;
-  *(v4 + 36) |= 0x1000u;
+  *(toCopy + 15) = self->_wcdmaEcio;
+  *(toCopy + 36) |= 0x1000u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -1124,8 +1124,8 @@ LABEL_13:
   }
 
 LABEL_32:
-  *(v4 + 16) = self->_wcdmaRscp;
-  *(v4 + 36) |= 0x2000u;
+  *(toCopy + 16) = self->_wcdmaRscp;
+  *(toCopy + 36) |= 0x2000u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1139,8 +1139,8 @@ LABEL_14:
   }
 
 LABEL_33:
-  *(v4 + 9) = self->_lteRssi;
-  *(v4 + 36) |= 0x40u;
+  *(toCopy + 9) = self->_lteRssi;
+  *(toCopy + 36) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1154,8 +1154,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  *(v4 + 7) = self->_lteRsrp;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 7) = self->_lteRsrp;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1169,21 +1169,21 @@ LABEL_16:
   }
 
 LABEL_35:
-  *(v4 + 8) = self->_lteRsrq;
-  *(v4 + 36) |= 0x20u;
+  *(toCopy + 8) = self->_lteRsrq;
+  *(toCopy + 36) |= 0x20u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_17:
-    *(v4 + 10) = self->_lteRssnr;
-    *(v4 + 36) |= 0x80u;
+    *(toCopy + 10) = self->_lteRssnr;
+    *(toCopy + 36) |= 0x80u;
   }
 
 LABEL_18:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -1415,19 +1415,19 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_88;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_88;
     }
@@ -1440,20 +1440,20 @@ LABEL_17:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 36) & 0x200) == 0 || self->_prevStateDurationSec != *(v4 + 12))
+    if ((*(equalCopy + 36) & 0x200) == 0 || self->_prevStateDurationSec != *(equalCopy + 12))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x200) != 0)
+  else if ((*(equalCopy + 36) & 0x200) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_lqmState != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_lqmState != *(equalCopy + 6))
     {
       goto LABEL_88;
     }
@@ -1466,73 +1466,73 @@ LABEL_17:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 36) & 0x800) == 0 || self->_sysMode != *(v4 + 14))
+    if ((*(equalCopy + 36) & 0x800) == 0 || self->_sysMode != *(equalCopy + 14))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x800) != 0)
+  else if ((*(equalCopy + 36) & 0x800) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 36) & 0x4000) == 0)
+    if ((*(equalCopy + 36) & 0x4000) == 0)
     {
       goto LABEL_88;
     }
 
-    v7 = *(v4 + 68);
+    v7 = *(equalCopy + 68);
     if (self->_isScreenOn)
     {
-      if ((*(v4 + 68) & 1) == 0)
+      if ((*(equalCopy + 68) & 1) == 0)
       {
         goto LABEL_88;
       }
     }
 
-    else if (*(v4 + 68))
+    else if (*(equalCopy + 68))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x4000) != 0)
+  else if ((*(equalCopy + 36) & 0x4000) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 36) & 0x100) == 0 || self->_prevLqmState != *(v4 + 11))
+    if ((*(equalCopy + 36) & 0x100) == 0 || self->_prevLqmState != *(equalCopy + 11))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x100) != 0)
+  else if ((*(equalCopy + 36) & 0x100) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 36) & 0x400) == 0 || self->_prevSysMode != *(v4 + 13))
+    if ((*(equalCopy + 36) & 0x400) == 0 || self->_prevSysMode != *(equalCopy + 13))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x400) != 0)
+  else if ((*(equalCopy + 36) & 0x400) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x8000) == 0)
   {
-    if ((*(v4 + 36) & 0x8000) == 0)
+    if ((*(equalCopy + 36) & 0x8000) == 0)
     {
       goto LABEL_42;
     }
@@ -1542,21 +1542,21 @@ LABEL_88:
     goto LABEL_89;
   }
 
-  if ((*(v4 + 36) & 0x8000) == 0)
+  if ((*(equalCopy + 36) & 0x8000) == 0)
   {
     goto LABEL_88;
   }
 
-  v8 = *(v4 + 69);
+  v8 = *(equalCopy + 69);
   if (self->_prevIsScreenOn)
   {
-    if ((*(v4 + 69) & 1) == 0)
+    if ((*(equalCopy + 69) & 1) == 0)
     {
       goto LABEL_88;
     }
   }
 
-  else if (*(v4 + 69))
+  else if (*(equalCopy + 69))
   {
     goto LABEL_88;
   }
@@ -1564,7 +1564,7 @@ LABEL_88:
 LABEL_42:
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_hiPowerEvent != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_hiPowerEvent != *(equalCopy + 4))
     {
       goto LABEL_88;
     }
@@ -1577,7 +1577,7 @@ LABEL_42:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_hiPowerExitReason != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_hiPowerExitReason != *(equalCopy + 5))
     {
       goto LABEL_88;
     }
@@ -1590,33 +1590,33 @@ LABEL_42:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 36) & 0x1000) == 0 || self->_wcdmaEcio != *(v4 + 15))
+    if ((*(equalCopy + 36) & 0x1000) == 0 || self->_wcdmaEcio != *(equalCopy + 15))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x1000) != 0)
+  else if ((*(equalCopy + 36) & 0x1000) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 36) & 0x2000) == 0 || self->_wcdmaRscp != *(v4 + 16))
+    if ((*(equalCopy + 36) & 0x2000) == 0 || self->_wcdmaRscp != *(equalCopy + 16))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 36) & 0x2000) != 0)
+  else if ((*(equalCopy + 36) & 0x2000) != 0)
   {
     goto LABEL_88;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_lteRssi != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_lteRssi != *(equalCopy + 9))
     {
       goto LABEL_88;
     }
@@ -1629,7 +1629,7 @@ LABEL_42:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_lteRsrp != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_lteRsrp != *(equalCopy + 7))
     {
       goto LABEL_88;
     }
@@ -1642,7 +1642,7 @@ LABEL_42:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_lteRsrq != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_lteRsrq != *(equalCopy + 8))
     {
       goto LABEL_88;
     }
@@ -1655,7 +1655,7 @@ LABEL_42:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_lteRssnr != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_lteRssnr != *(equalCopy + 10))
     {
       goto LABEL_88;
     }
@@ -1896,15 +1896,15 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x200) == 0)
     {
 LABEL_3:
@@ -1917,14 +1917,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x200) == 0)
+  else if ((*(fromCopy + 36) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_prevStateDurationSec = *(v4 + 12);
+  self->_prevStateDurationSec = *(fromCopy + 12);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -1937,9 +1937,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_lqmState = *(v4 + 6);
+  self->_lqmState = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x800) == 0)
   {
 LABEL_5:
@@ -1952,9 +1952,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_sysMode = *(v4 + 14);
+  self->_sysMode = *(fromCopy + 14);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_6:
@@ -1967,9 +1967,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_isScreenOn = *(v4 + 68);
+  self->_isScreenOn = *(fromCopy + 68);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -1982,9 +1982,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_prevLqmState = *(v4 + 11);
+  self->_prevLqmState = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x400) == 0)
   {
 LABEL_8:
@@ -1997,9 +1997,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_prevSysMode = *(v4 + 13);
+  self->_prevSysMode = *(fromCopy + 13);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_9:
@@ -2012,9 +2012,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_prevIsScreenOn = *(v4 + 69);
+  self->_prevIsScreenOn = *(fromCopy + 69);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -2027,9 +2027,9 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_hiPowerEvent = *(v4 + 4);
+  self->_hiPowerEvent = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -2042,9 +2042,9 @@ LABEL_11:
   }
 
 LABEL_30:
-  self->_hiPowerExitReason = *(v4 + 5);
+  self->_hiPowerExitReason = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_12:
@@ -2057,9 +2057,9 @@ LABEL_12:
   }
 
 LABEL_31:
-  self->_wcdmaEcio = *(v4 + 15);
+  self->_wcdmaEcio = *(fromCopy + 15);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_13:
@@ -2072,9 +2072,9 @@ LABEL_13:
   }
 
 LABEL_32:
-  self->_wcdmaRscp = *(v4 + 16);
+  self->_wcdmaRscp = *(fromCopy + 16);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x40) == 0)
   {
 LABEL_14:
@@ -2087,9 +2087,9 @@ LABEL_14:
   }
 
 LABEL_33:
-  self->_lteRssi = *(v4 + 9);
+  self->_lteRssi = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_15:
@@ -2102,9 +2102,9 @@ LABEL_15:
   }
 
 LABEL_34:
-  self->_lteRsrp = *(v4 + 7);
+  self->_lteRsrp = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x20) == 0)
   {
 LABEL_16:
@@ -2117,12 +2117,12 @@ LABEL_16:
   }
 
 LABEL_35:
-  self->_lteRsrq = *(v4 + 8);
+  self->_lteRsrq = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 36) & 0x80) != 0)
+  if ((*(fromCopy + 36) & 0x80) != 0)
   {
 LABEL_17:
-    self->_lteRssnr = *(v4 + 10);
+    self->_lteRssnr = *(fromCopy + 10);
     *&self->_has |= 0x80u;
   }
 

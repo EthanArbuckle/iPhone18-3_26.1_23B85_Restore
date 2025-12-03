@@ -1,36 +1,36 @@
 @interface HUUtilityOnboardingOTPSelectionItemManager
-- (HUUtilityOnboardingOTPSelectionItemManager)initWithDelegate:(id)a3 context:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUUtilityOnboardingOTPSelectionItemManager)initWithDelegate:(id)delegate context:(id)context;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUUtilityOnboardingOTPSelectionItemManager
 
-- (HUUtilityOnboardingOTPSelectionItemManager)initWithDelegate:(id)a3 context:(id)a4
+- (HUUtilityOnboardingOTPSelectionItemManager)initWithDelegate:(id)delegate context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = HUUtilityOnboardingOTPSelectionItemManager;
-  v8 = [(HFItemManager *)&v22 initWithDelegate:a3 sourceItem:0];
+  v8 = [(HFItemManager *)&v22 initWithDelegate:delegate sourceItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a4);
-    v10 = [v7 otpFactors];
-    v11 = [v10 na_firstObjectPassingTest:&__block_literal_global_8];
+    objc_storeStrong(&v8->_context, context);
+    otpFactors = [contextCopy otpFactors];
+    v11 = [otpFactors na_firstObjectPassingTest:&__block_literal_global_8];
 
     if (v11)
     {
       v12 = MEMORY[0x277CBEB58];
-      v13 = [v7 otpFactors];
-      v14 = [v12 setWithArray:v13];
+      otpFactors2 = [contextCopy otpFactors];
+      v14 = [v12 setWithArray:otpFactors2];
 
       v15 = objc_opt_new();
       [v15 addObject:v11];
       [v14 removeObject:v11];
-      v16 = [v14 allObjects];
-      [v15 addObjectsFromArray:v16];
+      allObjects = [v14 allObjects];
+      [v15 addObjectsFromArray:allObjects];
 
       objc_storeStrong(&v9->_factors, v15);
       v17 = HFLogForCategory();
@@ -49,9 +49,9 @@
 
     else
     {
-      v18 = [v7 otpFactors];
+      otpFactors3 = [contextCopy otpFactors];
       v14 = v9->_factors;
-      v9->_factors = v18;
+      v9->_factors = otpFactors3;
     }
 
     v19 = HFLogForCategory();
@@ -76,22 +76,22 @@ uint64_t __71__HUUtilityOnboardingOTPSelectionItemManager_initWithDelegate_conte
   return v3;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   v16 = 0;
-  v5 = [(HUUtilityOnboardingOTPSelectionItemManager *)self factors];
+  factors = [(HUUtilityOnboardingOTPSelectionItemManager *)self factors];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__HUUtilityOnboardingOTPSelectionItemManager__buildItemProvidersForHome___block_invoke;
   v14[3] = &unk_277DB78B0;
   v14[4] = self;
   v14[5] = v15;
-  v6 = [v5 na_map:v14];
+  v6 = [factors na_map:v14];
 
   v7 = objc_alloc(MEMORY[0x277D14B40]);
   v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
@@ -100,15 +100,15 @@ uint64_t __71__HUUtilityOnboardingOTPSelectionItemManager_initWithDelegate_conte
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 items];
+    items = [v9 items];
     *buf = 138413314;
-    v19 = self;
+    selfCopy = self;
     v20 = 2080;
     v21 = "[HUUtilityOnboardingOTPSelectionItemManager _buildItemProvidersForHome:]";
     v22 = 2112;
     v23 = v9;
     v24 = 2112;
-    v25 = v11;
+    v25 = items;
     v26 = 2112;
     v27 = v6;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%s item provider: %@ with items %@\nfield items %@", buf, 0x34u);
@@ -190,34 +190,34 @@ id __73__HUUtilityOnboardingOTPSelectionItemManager__buildItemProvidersForHome__
   return v22;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HFItemManager *)self allItems];
+    allItems = [(HFItemManager *)self allItems];
     *buf = 138413058;
-    v30 = self;
+    selfCopy3 = self;
     v31 = 2080;
     v32 = "[HUUtilityOnboardingOTPSelectionItemManager _buildSectionsWithDisplayedItems:]";
     v33 = 2112;
-    v34 = v4;
+    v34 = itemsCopy;
     v35 = 2112;
-    v36 = v6;
+    v36 = allItems;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s with displayed items %@\n%@", buf, 0x2Au);
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(HFItemManager *)self allItems];
-  v9 = [v8 allObjects];
-  v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_118];
+  array = [MEMORY[0x277CBEB18] array];
+  allItems2 = [(HFItemManager *)self allItems];
+  allObjects = [allItems2 allObjects];
+  v10 = [allObjects sortedArrayUsingComparator:&__block_literal_global_118];
 
   v11 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"field-identifier"];
-  v12 = [v4 na_firstObjectPassingTest:&__block_literal_global_123];
+  v12 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_123];
 
-  v13 = [v4 na_firstObjectPassingTest:&__block_literal_global_125];
+  v13 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_125];
 
   if (v12 | v13)
   {
@@ -247,9 +247,9 @@ id __73__HUUtilityOnboardingOTPSelectionItemManager__buildItemProvidersForHome__
       v16 = @"HUUtilityOnboardingOTPSelectionFooterEmail";
     }
 
-    v17 = [(UtilityOnboardingContext *)self->_context config];
-    v18 = [v17 name];
-    v25 = HULocalizedStringWithFormat(v16, @"%@", v19, v20, v21, v22, v23, v24, v18);
+    config = [(UtilityOnboardingContext *)self->_context config];
+    name = [config name];
+    v25 = HULocalizedStringWithFormat(v16, @"%@", v19, v20, v21, v22, v23, v24, name);
 
     if (v25)
     {
@@ -262,7 +262,7 @@ id __73__HUUtilityOnboardingOTPSelectionItemManager__buildItemProvidersForHome__
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v30 = self;
+    selfCopy3 = self;
     v31 = 2080;
     v32 = "[HUUtilityOnboardingOTPSelectionItemManager _buildSectionsWithDisplayedItems:]";
     v33 = 2112;
@@ -270,20 +270,20 @@ id __73__HUUtilityOnboardingOTPSelectionItemManager__buildItemProvidersForHome__
     _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "%@:%s created field section %@", buf, 0x20u);
   }
 
-  [v7 addObject:v11];
+  [array addObject:v11];
   v27 = HFLogForCategory();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v30 = self;
+    selfCopy3 = self;
     v31 = 2080;
     v32 = "[HUUtilityOnboardingOTPSelectionItemManager _buildSectionsWithDisplayedItems:]";
     v33 = 2112;
-    v34 = v7;
+    v34 = array;
     _os_log_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_DEFAULT, "%@:%s All sections %@", buf, 0x20u);
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __79__HUUtilityOnboardingOTPSelectionItemManager__buildSectionsWithDisplayedItems___block_invoke(uint64_t a1, void *a2, void *a3)

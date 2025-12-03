@@ -1,18 +1,18 @@
 @interface ASFriendListDisplayContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASFriendListDisplayContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   displayMode = self->_displayMode;
-  if (displayMode == [v4 displayMode])
+  if (displayMode == [equalCopy displayMode])
   {
     displayFilter = self->_displayFilter;
-    v7 = displayFilter == [v4 displayFilter];
+    v7 = displayFilter == [equalCopy displayFilter];
   }
 
   else
@@ -23,9 +23,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDisplayMode:{-[ASFriendListDisplayContext displayMode](self, "displayMode")}];
   [v4 setDisplayFilter:{-[ASFriendListDisplayContext displayFilter](self, "displayFilter")}];
   return v4;

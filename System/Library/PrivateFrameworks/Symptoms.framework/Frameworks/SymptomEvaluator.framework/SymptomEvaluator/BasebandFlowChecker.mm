@@ -4,9 +4,9 @@
 - (void)_administrativeDisable;
 - (void)_administrativeEnable;
 - (void)activate;
-- (void)flowDispositionChangeTo:(unsigned int)a3 flowIdentifier:(id)a4 ledger:(id)a5 snapshot:(id)a6;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setEnabled:(BOOL)a3;
+- (void)flowDispositionChangeTo:(unsigned int)to flowIdentifier:(id)identifier ledger:(id)ledger snapshot:(id)snapshot;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setEnabled:(BOOL)enabled;
 - (void)willPollFlows;
 @end
 
@@ -35,12 +35,12 @@
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       if (!self->_informer)
       {
@@ -73,24 +73,24 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)flowDispositionChangeTo:(unsigned int)a3 flowIdentifier:(id)a4 ledger:(id)a5 snapshot:(id)a6
+- (void)flowDispositionChangeTo:(unsigned int)to flowIdentifier:(id)identifier ledger:(id)ledger snapshot:(id)snapshot
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 reportedDisposition];
-  if (v13 == a3)
+  identifierCopy = identifier;
+  ledgerCopy = ledger;
+  snapshotCopy = snapshot;
+  reportedDisposition = [ledgerCopy reportedDisposition];
+  if (reportedDisposition == to)
   {
     v14 = flowScrutinyLogHandle;
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v25 = 138412802;
-      v26 = v10;
+      v26 = identifierCopy;
       v27 = 1024;
-      v28 = a3;
+      toCopy = to;
       v29 = 1024;
-      v30 = a3;
+      toCopy6 = to;
       v15 = "BasebandFlowChecker flowClassificationChange no change on %@  %d -> %d";
 LABEL_4:
       v16 = v14;
@@ -101,8 +101,8 @@ LABEL_5:
 
   else
   {
-    v17 = v13;
-    if (([v12 interfaceCellular] & 1) == 0 && !objc_msgSend(v12, "rxCellularBytes") && !objc_msgSend(v12, "txCellularBytes"))
+    v17 = reportedDisposition;
+    if (([snapshotCopy interfaceCellular] & 1) == 0 && !objc_msgSend(snapshotCopy, "rxCellularBytes") && !objc_msgSend(snapshotCopy, "txCellularBytes"))
     {
       v14 = flowScrutinyLogHandle;
       if (!os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
@@ -111,17 +111,17 @@ LABEL_5:
       }
 
       v25 = 138412802;
-      v26 = v10;
+      v26 = identifierCopy;
       v27 = 1024;
-      v28 = v17;
+      toCopy = v17;
       v29 = 1024;
-      v30 = a3;
+      toCopy6 = to;
       v15 = "BasebandFlowChecker non-cell flowClassificationChange %@  %d -> %d, new is reportable";
       goto LABEL_4;
     }
 
     v18 = v17 - 32;
-    if (a3 - 32 > 2)
+    if (to - 32 > 2)
     {
       v21 = flowScrutinyLogHandle;
       if (v18 > 2)
@@ -132,11 +132,11 @@ LABEL_5:
         }
 
         v25 = 138412802;
-        v26 = v10;
+        v26 = identifierCopy;
         v27 = 1024;
-        v28 = v17;
+        toCopy = v17;
         v29 = 1024;
-        v30 = a3;
+        toCopy6 = to;
         v15 = "BasebandFlowChecker flowClassificationChange %@  %d -> %d, nothing reportable";
         v16 = v21;
         goto LABEL_5;
@@ -145,15 +145,15 @@ LABEL_5:
       if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138412802;
-        v26 = v10;
+        v26 = identifierCopy;
         v27 = 1024;
-        v28 = v17;
+        toCopy = v17;
         v29 = 1024;
-        v30 = a3;
+        toCopy6 = to;
         _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker flow stop for %@  %d -> %d", &v25, 0x18u);
       }
 
-      [(BasebandFlowInformer *)self->_informer flowStop:v10];
+      [(BasebandFlowInformer *)self->_informer flowStop:identifierCopy];
     }
 
     else
@@ -164,22 +164,22 @@ LABEL_5:
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           v25 = 138412290;
-          v26 = v10;
+          v26 = identifierCopy;
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker flow stop prior to change %@", &v25, 0xCu);
         }
 
-        [(BasebandFlowInformer *)self->_informer flowStop:v10];
+        [(BasebandFlowInformer *)self->_informer flowStop:identifierCopy];
       }
 
       v20 = objc_alloc_init(BasebandFlowDigest);
-      if ([(BasebandFlowDigest *)v20 primeFromSnapshot:v12])
+      if ([(BasebandFlowDigest *)v20 primeFromSnapshot:snapshotCopy])
       {
-        if (a3 == 34)
+        if (to == 34)
         {
           [(BasebandFlowDigest *)v20 setIsBalanced:1];
         }
 
-        else if (a3 == 33)
+        else if (to == 33)
         {
           [(BasebandFlowDigest *)v20 setIsUpload:1];
         }
@@ -194,17 +194,17 @@ LABEL_5:
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           v25 = 138413058;
-          v26 = v10;
+          v26 = identifierCopy;
           v27 = 1024;
-          v28 = v17;
+          toCopy = v17;
           v29 = 1024;
-          v30 = a3;
+          toCopy6 = to;
           v31 = 2112;
-          v32 = v12;
+          v32 = snapshotCopy;
           _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker flow start for %@ %d -> %d %@", &v25, 0x22u);
         }
 
-        [(BasebandFlowInformer *)self->_informer flowStart:v10 digest:v20];
+        [(BasebandFlowInformer *)self->_informer flowStart:identifierCopy digest:v20];
       }
 
       else
@@ -213,7 +213,7 @@ LABEL_5:
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
         {
           v25 = 138412290;
-          v26 = v12;
+          v26 = snapshotCopy;
           _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "BasebandFlowChecker can't create digest from snapshot: %@", &v25, 0xCu);
         }
       }
@@ -273,30 +273,30 @@ LABEL_32:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 isEqualToString:@"enabled"];
+  pathCopy = path;
+  changeCopy = change;
+  v10 = [pathCopy isEqualToString:@"enabled"];
   v11 = flowScrutinyLogHandle;
   if (v10)
   {
     if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v9;
+      v24 = changeCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker: keyPath: enabled, change: %@", buf, 0xCu);
     }
 
-    v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = v12;
-      v14 = [v13 BOOLValue];
-      v15 = [(BasebandFlowChecker *)self queue];
-      v16 = v15;
-      if (v14)
+      bOOLValue = [v13 BOOLValue];
+      queue = [(BasebandFlowChecker *)self queue];
+      v16 = queue;
+      if (bOOLValue)
       {
         v17 = v22;
         v22[0] = MEMORY[0x277D85DD0];
@@ -315,7 +315,7 @@ LABEL_32:
       v17[2] = v18;
       v17[3] = &unk_27898A0C8;
       v17[4] = self;
-      dispatch_async(v15, v17);
+      dispatch_async(queue, v17);
     }
 
     else
@@ -333,9 +333,9 @@ LABEL_32:
   else if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v24 = v8;
+    v24 = pathCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = changeCopy;
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "BasebandFlowChecker: unrecognized keyPath: %@, change: %@", buf, 0x16u);
   }
 
@@ -369,7 +369,7 @@ LABEL_32:
   block[1] = 3221225472;
   block[2] = __37__BasebandFlowChecker_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_21 != -1)
   {
     dispatch_once(&sharedInstance_pred_21, block);

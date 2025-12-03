@@ -1,25 +1,25 @@
 @interface PICompositionSidecarData
-+ (id)_loadContentsDictionaryFromData:(id)a3 error:(id *)a4;
-+ (id)dataForImageBuffer:(__CVBuffer *)a3 error:(id *)a4;
-+ (id)imageBufferFromData:(id)a3 error:(id *)a4;
-+ (id)loadFromDictionary:(id)a3 error:(id *)a4;
-+ (id)loadFromURL:(id)a3 error:(id *)a4;
++ (id)_loadContentsDictionaryFromData:(id)data error:(id *)error;
++ (id)dataForImageBuffer:(__CVBuffer *)buffer error:(id *)error;
++ (id)imageBufferFromData:(id)data error:(id *)error;
++ (id)loadFromDictionary:(id)dictionary error:(id *)error;
++ (id)loadFromURL:(id)l error:(id *)error;
 - (BOOL)isEmpty;
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
-- (PICompositionSidecarData)initWithComposition:(id)a3;
-- (PICompositionSidecarData)initWithSourceIdentifier:(id)a3 maskSources:(id)a4;
+- (BOOL)saveToURL:(id)l error:(id *)error;
+- (PICompositionSidecarData)initWithComposition:(id)composition;
+- (PICompositionSidecarData)initWithSourceIdentifier:(id)identifier maskSources:(id)sources;
 - (id)contentsDictionary;
-- (id)serialize:(id *)a3;
+- (id)serialize:(id *)serialize;
 @end
 
 @implementation PICompositionSidecarData
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
   v6 = buf;
   v120 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
     v49 = NUAssertLogger_10729();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@
       _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v44 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v46 = NUAssertLogger_10729();
     v52 = os_log_type_enabled(v46, OS_LOG_TYPE_ERROR);
@@ -39,11 +39,11 @@
 LABEL_56:
       if (v52)
       {
-        v64 = dispatch_get_specific(*v44);
+        v64 = dispatch_get_specific(*callStackSymbols);
         v65 = MEMORY[0x1E696AF00];
         v66 = v64;
-        v44 = [v65 callStackSymbols];
-        v67 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v65 callStackSymbols];
+        v67 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *(v6 + 4) = v64;
         v118 = 2114;
@@ -54,10 +54,10 @@ LABEL_56:
 
     else if (v52)
     {
-      v53 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v44 = [v53 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v117 = v44;
+      v117 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -65,7 +65,7 @@ LABEL_56:
     goto LABEL_59;
   }
 
-  if (!a4)
+  if (!error)
   {
     v54 = NUAssertLogger_10729();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@ LABEL_56:
       _os_log_error_impl(&dword_1C7694000, v54, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v44 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v56 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v46 = NUAssertLogger_10729();
     v57 = os_log_type_enabled(v46, OS_LOG_TYPE_ERROR);
@@ -84,8 +84,8 @@ LABEL_56:
     {
       if (v57)
       {
-        v58 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v59 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v117 = v59;
         _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -97,11 +97,11 @@ LABEL_56:
 LABEL_59:
     if (v57)
     {
-      v68 = dispatch_get_specific(*v44);
+      v68 = dispatch_get_specific(*callStackSymbols);
       v69 = MEMORY[0x1E696AF00];
       v70 = v68;
-      v71 = [v69 callStackSymbols];
-      v72 = [v71 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v69 callStackSymbols];
+      v72 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *(v6 + 4) = v68;
       v118 = 2114;
@@ -115,24 +115,24 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  v8 = v7;
-  v9 = [(PICompositionSidecarData *)self serialize:a4];
+  v8 = lCopy;
+  v9 = [(PICompositionSidecarData *)self serialize:error];
   if (!v9)
   {
     v36 = 0;
     goto LABEL_37;
   }
 
-  v10 = [v8 URLByDeletingLastPathComponent];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  uRLByDeletingLastPathComponent = [v8 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v114 = 0;
-  v12 = [v11 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v114];
+  v12 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v114];
   v13 = v114;
 
   if ((v12 & 1) == 0)
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create archive parent directory" object:v8 underlyingError:v13];
-    *a4 = v36 = 0;
+    *error = v36 = 0;
     goto LABEL_36;
   }
 
@@ -145,11 +145,11 @@ LABEL_61:
   if ((v15 & 1) == 0)
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to open sidecar data archive for writing" object:v8 underlyingError:v16];
-    *a4 = v36 = 0;
+    *error = v36 = 0;
     goto LABEL_35;
   }
 
-  v102 = self;
+  selfCopy = self;
   v17 = [v9 objectForKeyedSubscript:@"contents.plist"];
   if (!v17)
   {
@@ -174,8 +174,8 @@ LABEL_62:
         v81 = dispatch_get_specific(*v75);
         v82 = MEMORY[0x1E696AF00];
         v83 = v81;
-        v84 = [v82 callStackSymbols];
-        v85 = [v84 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v82 callStackSymbols];
+        v85 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v117 = v81;
         v118 = 2114;
@@ -186,8 +186,8 @@ LABEL_62:
 
     else if (v78)
     {
-      v79 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v80 = [v79 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v80 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v117 = v80;
       _os_log_error_impl(&dword_1C7694000, v77, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -205,19 +205,19 @@ LABEL_62:
   if ((v19 & 1) == 0)
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to archive contents plist data" object:v18 underlyingError:v20];
-    *a4 = v36 = 0;
+    *error = v36 = 0;
     goto LABEL_34;
   }
 
   v99 = v18;
-  v100 = v10;
+  v100 = uRLByDeletingLastPathComponent;
   v104 = v14;
-  v101 = a4;
+  errorCopy = error;
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  obj = [(PICompositionSidecarData *)v102 maskSources];
+  obj = [(PICompositionSidecarData *)selfCopy maskSources];
   v21 = [obj countByEnumeratingWithState:&v108 objects:v115 count:16];
   if (!v21)
   {
@@ -238,8 +238,8 @@ LABEL_62:
       }
 
       v25 = MEMORY[0x1E696AEC0];
-      v26 = [*(*(&v108 + 1) + 8 * v6) maskIdentifier];
-      v27 = [v25 stringWithFormat:@"masks/%@", v26];
+      maskIdentifier = [*(*(&v108 + 1) + 8 * v6) maskIdentifier];
+      v27 = [v25 stringWithFormat:@"masks/%@", maskIdentifier];
 
       v28 = [v9 objectForKeyedSubscript:v27];
       if (!v28)
@@ -253,7 +253,7 @@ LABEL_62:
           _os_log_error_impl(&dword_1C7694000, v42, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
         }
 
-        v44 = MEMORY[0x1E69B38E8];
+        callStackSymbols = MEMORY[0x1E69B38E8];
         v45 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
         v46 = NUAssertLogger_10729();
         v47 = os_log_type_enabled(v46, OS_LOG_TYPE_ERROR);
@@ -261,11 +261,11 @@ LABEL_62:
         {
           if (v47)
           {
-            v60 = dispatch_get_specific(*v44);
+            v60 = dispatch_get_specific(*callStackSymbols);
             v61 = MEMORY[0x1E696AF00];
             v62 = v60;
-            v44 = [v61 callStackSymbols];
-            v63 = [v44 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v61 callStackSymbols];
+            v63 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v117 = v60;
             v118 = 2114;
@@ -276,10 +276,10 @@ LABEL_62:
 
         else if (v47)
         {
-          v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v44 = [v48 componentsJoinedByString:@"\n"];
+          callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+          callStackSymbols = [callStackSymbols7 componentsJoinedByString:@"\n"];
           *buf = 138543362;
-          v117 = v44;
+          v117 = callStackSymbols;
           _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
         }
 
@@ -294,10 +294,10 @@ LABEL_62:
 
       if (!v30)
       {
-        *v101 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to archive mask data" object:v29 underlyingError:v20];
+        *errorCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to archive mask data" object:v29 underlyingError:v20];
 
         v36 = 0;
-        v10 = v100;
+        uRLByDeletingLastPathComponent = v100;
         goto LABEL_33;
       }
 
@@ -313,18 +313,18 @@ LABEL_62:
 LABEL_17:
 
   v31 = [v9 objectForKeyedSubscript:@"BrushStrokeHistory.plist"];
-  v32 = [(PICompositionSidecarData *)v102 brushStrokeHistory];
+  brushStrokeHistory = [(PICompositionSidecarData *)selfCopy brushStrokeHistory];
 
-  if (v32)
+  if (brushStrokeHistory)
   {
-    v33 = v101;
+    v33 = errorCopy;
     if (v31)
     {
       v106 = v20;
       v34 = [v104 encodeData:v31 filename:@"BrushStrokeHistory.plist" error:&v106];
       v35 = v106;
 
-      v10 = v100;
+      uRLByDeletingLastPathComponent = v100;
       if (v34)
       {
         v20 = v35;
@@ -361,8 +361,8 @@ LABEL_70:
         v94 = dispatch_get_specific(*v88);
         v95 = MEMORY[0x1E696AF00];
         v96 = v94;
-        v97 = [v95 callStackSymbols];
-        v98 = [v97 componentsJoinedByString:@"\n"];
+        callStackSymbols8 = [v95 callStackSymbols];
+        v98 = [callStackSymbols8 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v117 = v94;
         v118 = 2114;
@@ -373,8 +373,8 @@ LABEL_70:
 
     else if (v91)
     {
-      v92 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v93 = [v92 componentsJoinedByString:@"\n"];
+      callStackSymbols9 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v93 = [callStackSymbols9 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v117 = v93;
       _os_log_error_impl(&dword_1C7694000, v90, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -383,8 +383,8 @@ LABEL_70:
     _NUAssertFailHandler();
   }
 
-  v10 = v100;
-  v33 = v101;
+  uRLByDeletingLastPathComponent = v100;
+  v33 = errorCopy;
 LABEL_27:
   v105 = v20;
   v37 = [v104 close:&v105];
@@ -417,34 +417,34 @@ LABEL_37:
   return v36;
 }
 
-- (id)serialize:(id *)a3
+- (id)serialize:(id *)serialize
 {
   v3 = buf;
   v79 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!serialize)
   {
     goto LABEL_37;
   }
 
-  v6 = [(PICompositionSidecarData *)self contentsDictionary];
+  contentsDictionary = [(PICompositionSidecarData *)self contentsDictionary];
   v73 = 0;
-  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:&v73];
+  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:contentsDictionary format:200 options:0 error:&v73];
   v8 = v73;
   if (!v7)
   {
-    [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to serialize contents plist" object:v6 underlyingError:v8];
-    *a3 = v32 = 0;
+    [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to serialize contents plist" object:contentsDictionary underlyingError:v8];
+    *serialize = v32 = 0;
     goto LABEL_26;
   }
 
-  v63 = a3;
+  serializeCopy = serialize;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v9 setObject:v7 forKeyedSubscript:@"contents.plist"];
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v65 = self;
+  selfCopy = self;
   obj = [(PICompositionSidecarData *)self maskSources];
   v10 = [obj countByEnumeratingWithState:&v69 objects:v74 count:16];
   if (!v10)
@@ -455,7 +455,7 @@ LABEL_37:
   v11 = v10;
   v12 = *v70;
   v61 = v7;
-  v62 = v6;
+  v62 = contentsDictionary;
   do
   {
     for (i = 0; i != v11; ++i)
@@ -472,19 +472,19 @@ LABEL_37:
 
       if (!v15)
       {
-        *v63 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create new mask image from source" object:v14 underlyingError:v16];
+        *serializeCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create new mask image from source" object:v14 underlyingError:v16];
         goto LABEL_21;
       }
 
-      v17 = [v15 pixelBuffer];
-      if (!v17)
+      pixelBuffer = [v15 pixelBuffer];
+      if (!pixelBuffer)
       {
-        v21 = [v14 definition];
+        definition = [v14 definition];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v22 = MEMORY[0x1E695DEF0];
-          v23 = v21;
+          v23 = definition;
           v24 = [v22 alloc];
           v25 = [v23 url];
 
@@ -514,8 +514,8 @@ LABEL_37:
             v44 = dispatch_get_specific(*v38);
             v45 = MEMORY[0x1E696AF00];
             v3 = v44;
-            v46 = [v45 callStackSymbols];
-            v47 = [v46 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v45 callStackSymbols];
+            v47 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v76 = v44;
             v77 = 2114;
@@ -526,8 +526,8 @@ LABEL_37:
 
         else if (v41)
         {
-          v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v43 = [v42 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v43 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v76 = v43;
           _os_log_error_impl(&dword_1C7694000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -555,8 +555,8 @@ LABEL_37:
             v56 = dispatch_get_specific(*v50);
             v57 = MEMORY[0x1E696AF00];
             v58 = v56;
-            v59 = [v57 callStackSymbols];
-            v60 = [v59 componentsJoinedByString:@"\n"];
+            callStackSymbols3 = [v57 callStackSymbols];
+            v60 = [callStackSymbols3 componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v76 = v56;
             v77 = 2114;
@@ -567,8 +567,8 @@ LABEL_37:
 
         else if (v53)
         {
-          v54 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v55 = [v54 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v55 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           *(v3 + 4) = v55;
           _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -577,7 +577,7 @@ LABEL_37:
         _NUAssertFailHandler();
       }
 
-      v18 = v17;
+      v18 = pixelBuffer;
       v19 = objc_opt_class();
       v67 = 0;
       v20 = [v19 dataForImageBuffer:v18 error:&v67];
@@ -585,40 +585,40 @@ LABEL_37:
 
       if (!v20)
       {
-        *v63 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to encode mask" object:v15 underlyingError:v8];
+        *serializeCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to encode mask" object:v15 underlyingError:v8];
 
         v16 = v8;
 LABEL_21:
 
         v32 = 0;
         v7 = v61;
-        v6 = v62;
+        contentsDictionary = v62;
         goto LABEL_25;
       }
 
 LABEL_14:
       v26 = MEMORY[0x1E696AEC0];
-      v27 = [v14 maskIdentifier];
-      v28 = [v26 stringWithFormat:@"masks/%@", v27];
+      maskIdentifier = [v14 maskIdentifier];
+      v28 = [v26 stringWithFormat:@"masks/%@", maskIdentifier];
 
       [v9 setObject:v20 forKeyedSubscript:v28];
     }
 
     v11 = [obj countByEnumeratingWithState:&v69 objects:v74 count:16];
     v7 = v61;
-    v6 = v62;
+    contentsDictionary = v62;
   }
 
   while (v11);
 LABEL_16:
 
-  v29 = [(PICompositionSidecarData *)v65 brushStrokeHistory];
+  brushStrokeHistory = [(PICompositionSidecarData *)selfCopy brushStrokeHistory];
 
-  if (v29)
+  if (brushStrokeHistory)
   {
-    v30 = [(PICompositionSidecarData *)v65 brushStrokeHistory];
+    brushStrokeHistory2 = [(PICompositionSidecarData *)selfCopy brushStrokeHistory];
     v66 = 0;
-    v31 = [v30 exportDataWithError:&v66];
+    v31 = [brushStrokeHistory2 exportDataWithError:&v66];
     v16 = v66;
 
     if (v31)
@@ -629,8 +629,8 @@ LABEL_16:
     }
 
     v33 = MEMORY[0x1E69B3A48];
-    v34 = [(PICompositionSidecarData *)v65 brushStrokeHistory];
-    *v63 = [v33 errorWithCode:1 reason:@"Failed to export brush stroke history data" object:v34 underlyingError:v16];
+    brushStrokeHistory3 = [(PICompositionSidecarData *)selfCopy brushStrokeHistory];
+    *serializeCopy = [v33 errorWithCode:1 reason:@"Failed to export brush stroke history data" object:brushStrokeHistory3 underlyingError:v16];
 
     v32 = 0;
   }
@@ -664,7 +664,7 @@ LABEL_26:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v22 = self;
+  selfCopy = self;
   obj = [(PICompositionSidecarData *)self maskSources];
   v7 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v7)
@@ -682,8 +682,8 @@ LABEL_26:
 
         v11 = *(*(&v25 + 1) + 8 * i);
         v29[0] = @"identifier";
-        v12 = [v11 maskIdentifier];
-        v30[0] = v12;
+        maskIdentifier = [v11 maskIdentifier];
+        v30[0] = maskIdentifier;
         v29[1] = @"extent";
         if (v11)
         {
@@ -698,11 +698,11 @@ LABEL_26:
         v30[2] = v14;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
 
-        v16 = [v11 maskIdentifier];
-        [v6 setObject:v15 forKeyedSubscript:v16];
+        maskIdentifier2 = [v11 maskIdentifier];
+        [v6 setObject:v15 forKeyedSubscript:maskIdentifier2];
 
-        v17 = [v11 maskIdentifier];
-        [v5 addObject:v17];
+        maskIdentifier3 = [v11 maskIdentifier];
+        [v5 addObject:maskIdentifier3];
       }
 
       v8 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
@@ -714,8 +714,8 @@ LABEL_26:
   [v23 setObject:v6 forKeyedSubscript:@"maskSources"];
   [v23 setObject:v5 forKeyedSubscript:@"maskIdentifiers"];
   v18 = MEMORY[0x1E696AD98];
-  v19 = [(PICompositionSidecarData *)v22 brushStrokeHistory];
-  v20 = [v18 numberWithInt:v19 != 0];
+  brushStrokeHistory = [(PICompositionSidecarData *)selfCopy brushStrokeHistory];
+  v20 = [v18 numberWithInt:brushStrokeHistory != 0];
   [v23 setObject:v20 forKeyedSubscript:@"hasBrushStrokeHistory"];
 
   return v23;
@@ -723,25 +723,25 @@ LABEL_26:
 
 - (BOOL)isEmpty
 {
-  v3 = [(PICompositionSidecarData *)self maskSources];
-  v4 = [v3 count];
+  maskSources = [(PICompositionSidecarData *)self maskSources];
+  v4 = [maskSources count];
 
   if (v4)
   {
     return 0;
   }
 
-  v6 = [(PICompositionSidecarData *)self brushStrokeHistory];
-  v5 = [v6 entryCount] == 0;
+  brushStrokeHistory = [(PICompositionSidecarData *)self brushStrokeHistory];
+  v5 = [brushStrokeHistory entryCount] == 0;
 
   return v5;
 }
 
-- (PICompositionSidecarData)initWithComposition:(id)a3
+- (PICompositionSidecarData)initWithComposition:(id)composition
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  compositionCopy = composition;
+  if (!compositionCopy)
   {
     v12 = NUAssertLogger_10729();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -752,7 +752,7 @@ LABEL_26:
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v16 = NUAssertLogger_10729();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -760,11 +760,11 @@ LABEL_26:
     {
       if (v17)
       {
-        v25 = dispatch_get_specific(*v14);
+        v25 = dispatch_get_specific(*callStackSymbols);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v14 = [v26 callStackSymbols];
-        v28 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v25;
         v36 = 2114;
@@ -775,10 +775,10 @@ LABEL_26:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v35 = v14;
+      v35 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -786,8 +786,8 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  v5 = v4;
-  v6 = [v4 objectForKeyedSubscript:@"source"];
+  v5 = compositionCopy;
+  v6 = [compositionCopy objectForKeyedSubscript:@"source"];
   if (!v6)
   {
     v19 = NUAssertLogger_10729();
@@ -799,7 +799,7 @@ LABEL_26:
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v21 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v16 = NUAssertLogger_10729();
     v22 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -807,8 +807,8 @@ LABEL_26:
     {
       if (v22)
       {
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v35 = v24;
         _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -820,11 +820,11 @@ LABEL_26:
 LABEL_17:
     if (v22)
     {
-      v29 = dispatch_get_specific(*v14);
+      v29 = dispatch_get_specific(*callStackSymbols);
       v30 = MEMORY[0x1E696AF00];
       v31 = v29;
-      v32 = [v30 callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v30 callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v35 = v29;
       v36 = 2114;
@@ -839,26 +839,26 @@ LABEL_19:
 
   v7 = v6;
   v8 = [v5 objectForKeyedSubscript:@"inpaintMasks"];
-  v9 = [v7 assetIdentifier];
-  v10 = [(PICompositionSidecarData *)self initWithSourceIdentifier:v9 maskSources:v8];
+  assetIdentifier = [v7 assetIdentifier];
+  v10 = [(PICompositionSidecarData *)self initWithSourceIdentifier:assetIdentifier maskSources:v8];
 
   return v10;
 }
 
-- (PICompositionSidecarData)initWithSourceIdentifier:(id)a3 maskSources:(id)a4
+- (PICompositionSidecarData)initWithSourceIdentifier:(id)identifier maskSources:(id)sources
 {
   v13.receiver = self;
   v13.super_class = PICompositionSidecarData;
-  v5 = a4;
-  v6 = a3;
+  sourcesCopy = sources;
+  identifierCopy = identifier;
   v7 = [(PICompositionSidecarData *)&v13 init];
-  v8 = [v6 copy];
+  v8 = [identifierCopy copy];
 
   sourceIdentifier = v7->_sourceIdentifier;
   v7->_sourceIdentifier = v8;
 
   v7->_version = 2;
-  v10 = [v5 copy];
+  v10 = [sourcesCopy copy];
 
   maskSources = v7->_maskSources;
   v7->_maskSources = v10;
@@ -866,11 +866,11 @@ LABEL_19:
   return v7;
 }
 
-+ (id)imageBufferFromData:(id)a3 error:(id *)a4
++ (id)imageBufferFromData:(id)data error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v12 = NUAssertLogger_10729();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -881,7 +881,7 @@ LABEL_19:
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Fail: %{public}@", texture, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v16 = NUAssertLogger_10729();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -889,11 +889,11 @@ LABEL_19:
     {
       if (v17)
       {
-        v25 = dispatch_get_specific(*v14);
+        v25 = dispatch_get_specific(*callStackSymbols);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v14 = [v26 callStackSymbols];
-        v28 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *texture = 138543618;
         *&texture[4] = v25;
         v35 = 2114;
@@ -904,10 +904,10 @@ LABEL_19:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *texture = 138543362;
-      *&texture[4] = v14;
+      *&texture[4] = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", texture, 0xCu);
     }
 
@@ -915,7 +915,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!error)
   {
     v19 = NUAssertLogger_10729();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -926,7 +926,7 @@ LABEL_19:
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Fail: %{public}@", texture, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v21 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v16 = NUAssertLogger_10729();
     v22 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -934,8 +934,8 @@ LABEL_19:
     {
       if (v22)
       {
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *texture = 138543362;
         *&texture[4] = v24;
         _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", texture, 0xCu);
@@ -947,11 +947,11 @@ LABEL_19:
 LABEL_22:
     if (v22)
     {
-      v29 = dispatch_get_specific(*v14);
+      v29 = dispatch_get_specific(*callStackSymbols);
       v30 = MEMORY[0x1E696AF00];
       v31 = v29;
-      v32 = [v30 callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v30 callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *texture = 138543618;
       *&texture[4] = v29;
       v35 = 2114;
@@ -964,14 +964,14 @@ LABEL_24:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
+  v6 = dataCopy;
   *texture = 0;
   CVPixelBufferFromImageData = PFFigCreateCVPixelBufferFromImageData();
   if (CVPixelBufferFromImageData)
   {
     v8 = MEMORY[0x1E69B3A48];
     v9 = [MEMORY[0x1E696AD98] numberWithInt:CVPixelBufferFromImageData];
-    *a4 = [v8 failureError:@"Failed to decode pixel buffer" object:v9];
+    *error = [v8 failureError:@"Failed to decode pixel buffer" object:v9];
 
     v10 = 0;
   }
@@ -985,10 +985,10 @@ LABEL_24:
   return v10;
 }
 
-+ (id)dataForImageBuffer:(__CVBuffer *)a3 error:(id *)a4
++ (id)dataForImageBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     v12 = NUAssertLogger_10729();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -999,7 +999,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v16 = NUAssertLogger_10729();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -1007,11 +1007,11 @@ LABEL_24:
     {
       if (v17)
       {
-        v25 = dispatch_get_specific(*v14);
+        v25 = dispatch_get_specific(*callStackSymbols);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v14 = [v26 callStackSymbols];
-        v28 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v25;
         v36 = 2114;
@@ -1022,10 +1022,10 @@ LABEL_24:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v35 = v14;
+      v35 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1033,7 +1033,7 @@ LABEL_24:
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!error)
   {
     v19 = NUAssertLogger_10729();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1044,7 +1044,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v21 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v16 = NUAssertLogger_10729();
     v22 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -1052,8 +1052,8 @@ LABEL_24:
     {
       if (v22)
       {
-        v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v24 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v35 = v24;
         _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1065,11 +1065,11 @@ LABEL_24:
 LABEL_22:
     if (v22)
     {
-      v29 = dispatch_get_specific(*v14);
+      v29 = dispatch_get_specific(*callStackSymbols);
       v30 = MEMORY[0x1E696AF00];
       v31 = v29;
-      v32 = [v30 callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v30 callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v35 = v29;
       v36 = 2114;
@@ -1089,7 +1089,7 @@ LABEL_24:
   {
     v8 = MEMORY[0x1E69B3A48];
     v9 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-    *a4 = [v8 failureError:@"Failed to encode pixel buffer" object:v9];
+    *error = [v8 failureError:@"Failed to encode pixel buffer" object:v9];
 
     v10 = 0;
   }
@@ -1102,11 +1102,11 @@ LABEL_24:
   return v10;
 }
 
-+ (id)loadFromDictionary:(id)a3 error:(id *)a4
++ (id)loadFromDictionary:(id)dictionary error:(id *)error
 {
   v105 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v57 = NUAssertLogger_10729();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -1117,7 +1117,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v57, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v59 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v61 = NUAssertLogger_10729();
     v62 = os_log_type_enabled(v61, OS_LOG_TYPE_ERROR);
@@ -1125,11 +1125,11 @@ LABEL_24:
     {
       if (v62)
       {
-        v70 = dispatch_get_specific(*v59);
+        v70 = dispatch_get_specific(*callStackSymbols);
         v71 = MEMORY[0x1E696AF00];
         v72 = v70;
-        v59 = [v71 callStackSymbols];
-        v73 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v71 callStackSymbols];
+        v73 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v70;
         *&buf[12] = 2114;
@@ -1140,10 +1140,10 @@ LABEL_24:
 
     else if (v62)
     {
-      v63 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v59 = [v63 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      *&buf[4] = v59;
+      *&buf[4] = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v61, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1151,7 +1151,7 @@ LABEL_24:
     goto LABEL_86;
   }
 
-  if (!a4)
+  if (!error)
   {
     v64 = NUAssertLogger_10729();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -1162,7 +1162,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v64, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v59 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v66 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v61 = NUAssertLogger_10729();
     v67 = os_log_type_enabled(v61, OS_LOG_TYPE_ERROR);
@@ -1170,8 +1170,8 @@ LABEL_24:
     {
       if (v67)
       {
-        v68 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v69 = [v68 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v69 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v69;
         _os_log_error_impl(&dword_1C7694000, v61, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1183,11 +1183,11 @@ LABEL_24:
 LABEL_86:
     if (v67)
     {
-      v74 = dispatch_get_specific(*v59);
+      v74 = dispatch_get_specific(*callStackSymbols);
       v75 = MEMORY[0x1E696AF00];
       v76 = v74;
-      v77 = [v75 callStackSymbols];
-      v78 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v75 callStackSymbols];
+      v78 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v74;
       *&buf[12] = 2114;
@@ -1200,26 +1200,26 @@ LABEL_88:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = dictionaryCopy;
   v8 = objc_alloc_init(PICompositionSidecarData);
   v9 = [v7 objectForKeyedSubscript:@"contents.plist"];
   if (!v9)
   {
     [MEMORY[0x1E69B3A48] missingError:@"Missing contents manifest data" object:v7];
-    *a4 = v42 = 0;
+    *error = v42 = 0;
     goto LABEL_62;
   }
 
-  v95 = [a1 _loadContentsDictionaryFromData:v9 error:a4];
+  v95 = [self _loadContentsDictionaryFromData:v9 error:error];
   if (!v95)
   {
     v42 = 0;
     goto LABEL_61;
   }
 
-  v88 = a4;
+  errorCopy = error;
   v86 = [v95 objectForKeyedSubscript:@"version"];
-  v81 = [v86 unsignedIntegerValue];
+  unsignedIntegerValue = [v86 unsignedIntegerValue];
   [(PICompositionSidecarData *)v8 setVersion:?];
   v10 = [v95 objectForKeyedSubscript:@"maskIdentifiers"];
   v11 = [v95 objectForKeyedSubscript:@"maskSources"];
@@ -1241,7 +1241,7 @@ LABEL_88:
   v80 = v8;
   v84 = v11;
   v85 = v12;
-  v83 = a1;
+  selfCopy = self;
   while (2)
   {
     v14 = 0;
@@ -1257,7 +1257,7 @@ LABEL_88:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         [MEMORY[0x1E69B3A48] invalidError:@"Invalid mask identifier" object:v15];
-        *v88 = v42 = 0;
+        *errorCopy = v42 = 0;
 LABEL_59:
         v38 = v12;
         v9 = v79;
@@ -1278,7 +1278,7 @@ LABEL_59:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        *v88 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid mask source metadata" object:v16];
+        *errorCopy = [MEMORY[0x1E69B3A48] invalidError:@"Invalid mask source metadata" object:v16];
 LABEL_58:
 
         v42 = 0;
@@ -1301,7 +1301,7 @@ LABEL_46:
       {
         v47 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid mask source identifier" object:v17];
 LABEL_49:
-        *v88 = v47;
+        *errorCopy = v47;
 LABEL_57:
 
         goto LABEL_58;
@@ -1319,7 +1319,7 @@ LABEL_57:
       {
         v48 = [MEMORY[0x1E69B3A48] missingError:@"Missing mask source extent" object:v16];
 LABEL_53:
-        *v88 = v48;
+        *errorCopy = v48;
 
         goto LABEL_57;
       }
@@ -1339,7 +1339,7 @@ LABEL_53:
       {
         v50 = [MEMORY[0x1E69B3A48] missingError:@"Missing mask source scale" object:0];
 LABEL_56:
-        *v88 = v50;
+        *errorCopy = v50;
 
         goto LABEL_57;
       }
@@ -1362,7 +1362,7 @@ LABEL_56:
       {
         v52 = [MEMORY[0x1E69B3A48] missingError:@"Missing mask" object:v25];
 LABEL_67:
-        *v88 = v52;
+        *errorCopy = v52;
 
         v42 = 0;
         v12 = v85;
@@ -1378,7 +1378,7 @@ LABEL_67:
 
       v90 = v25;
       v98 = 0;
-      v27 = [a1 imageBufferFromData:v26 error:&v98];
+      v27 = [self imageBufferFromData:v26 error:&v98];
       if (v27)
       {
         v28 = v7;
@@ -1401,7 +1401,7 @@ LABEL_67:
         v35 = [v33 errorWithCode:1 reason:@"Failed to read mask image data" object:v26 underlyingError:v34];
         v36 = v35;
 
-        *v88 = v35;
+        *errorCopy = v35;
       }
 
       v13 = 0x1E696A000;
@@ -1417,7 +1417,7 @@ LABEL_67:
       v14 = v92 + 1;
       v11 = v84;
       v12 = v85;
-      a1 = v83;
+      self = selfCopy;
     }
 
     while (v87 != v92 + 1);
@@ -1437,7 +1437,7 @@ LABEL_28:
   [(PICompositionSidecarData *)v8 setMaskSources:v94];
   v37 = [v95 objectForKeyedSubscript:@"hasBrushStrokeHistory"];
   v38 = v37;
-  if (v81 < 2)
+  if (unsignedIntegerValue < 2)
   {
 LABEL_31:
     if (![v38 BOOLValue])
@@ -1468,7 +1468,7 @@ LABEL_36:
         v55 = [v53 errorWithCode:1 reason:@"Failed to initialize brush stroke history from data" object:v39 underlyingError:v54];
         v56 = v55;
 
-        *v88 = v55;
+        *errorCopy = v55;
 LABEL_71:
 
         v42 = 0;
@@ -1483,7 +1483,7 @@ LABEL_71:
       v49 = [MEMORY[0x1E69B3A48] missingError:@"Missing brush stroke history data" object:v95];
     }
 
-    *v88 = v49;
+    *errorCopy = v49;
     goto LABEL_71;
   }
 
@@ -1504,7 +1504,7 @@ LABEL_71:
   }
 
   v42 = 0;
-  *v88 = v43;
+  *errorCopy = v43;
 LABEL_60:
 
 LABEL_61:
@@ -1513,11 +1513,11 @@ LABEL_62:
   return v42;
 }
 
-+ (id)_loadContentsDictionaryFromData:(id)a3 error:(id *)a4
++ (id)_loadContentsDictionaryFromData:(id)data error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v22 = NUAssertLogger_10729();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1528,7 +1528,7 @@ LABEL_62:
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v24 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v26 = NUAssertLogger_10729();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
@@ -1536,11 +1536,11 @@ LABEL_62:
     {
       if (v27)
       {
-        v35 = dispatch_get_specific(*v24);
+        v35 = dispatch_get_specific(*callStackSymbols);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v24 = [v36 callStackSymbols];
-        v38 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v35;
         v47 = 2114;
@@ -1551,10 +1551,10 @@ LABEL_62:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v46 = v24;
+      v46 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1562,7 +1562,7 @@ LABEL_62:
     goto LABEL_52;
   }
 
-  if (!a4)
+  if (!error)
   {
     v29 = NUAssertLogger_10729();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1573,7 +1573,7 @@ LABEL_62:
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v24 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v31 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v26 = NUAssertLogger_10729();
     v32 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
@@ -1581,8 +1581,8 @@ LABEL_62:
     {
       if (v32)
       {
-        v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v34 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v46 = v34;
         _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1594,11 +1594,11 @@ LABEL_62:
 LABEL_52:
     if (v32)
     {
-      v39 = dispatch_get_specific(*v24);
+      v39 = dispatch_get_specific(*callStackSymbols);
       v40 = MEMORY[0x1E696AF00];
       v41 = v39;
-      v42 = [v40 callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v40 callStackSymbols];
+      v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v46 = v39;
       v47 = 2114;
@@ -1611,16 +1611,16 @@ LABEL_54:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
+  v6 = dataCopy;
   v44 = 0;
-  v7 = [MEMORY[0x1E696AE40] propertyListWithData:v5 options:0 format:0 error:&v44];
+  v7 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v44];
   v8 = v44;
   if (!v7)
   {
     v12 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to deserialize contents plist" object:v6 underlyingError:v8];
 LABEL_11:
     v13 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_16;
   }
 
@@ -1645,10 +1645,10 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v10 = [v9 unsignedIntegerValue];
-  if (v10 < 3)
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
+  if (unsignedIntegerValue < 3)
   {
-    v15 = v10;
+    v15 = unsignedIntegerValue;
     v16 = [v7 objectForKeyedSubscript:@"maskIdentifiers"];
     if (v16)
     {
@@ -1681,7 +1681,7 @@ LABEL_11:
                 v21 = [MEMORY[0x1E69B3A48] missingError:@"Missing brush stroke history value" object:v7];
               }
 
-              *a4 = v21;
+              *error = v21;
 
               v13 = 0;
               goto LABEL_34;
@@ -1703,7 +1703,7 @@ LABEL_34:
         }
 
         v13 = 0;
-        *a4 = v20;
+        *error = v20;
         goto LABEL_34;
       }
 
@@ -1716,7 +1716,7 @@ LABEL_34:
     }
 
     v13 = 0;
-    *a4 = v19;
+    *error = v19;
 LABEL_35:
 
     goto LABEL_15;
@@ -1725,7 +1725,7 @@ LABEL_35:
   v11 = [MEMORY[0x1E69B3A48] unsupportedError:@"Unsupported version" object:v9];
 LABEL_14:
   v13 = 0;
-  *a4 = v11;
+  *error = v11;
 LABEL_15:
 
 LABEL_16:
@@ -1733,11 +1733,11 @@ LABEL_16:
   return v13;
 }
 
-+ (id)loadFromURL:(id)a3 error:(id *)a4
++ (id)loadFromURL:(id)l error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v39 = NUAssertLogger_10729();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -1748,7 +1748,7 @@ LABEL_16:
       _os_log_error_impl(&dword_1C7694000, v39, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v41 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v43 = NUAssertLogger_10729();
     v44 = os_log_type_enabled(v43, OS_LOG_TYPE_ERROR);
@@ -1756,11 +1756,11 @@ LABEL_16:
     {
       if (v44)
       {
-        v52 = dispatch_get_specific(*v41);
+        v52 = dispatch_get_specific(*callStackSymbols);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v41 = [v53 callStackSymbols];
-        v55 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v53 callStackSymbols];
+        v55 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v88 = v52;
         v89 = 2114;
@@ -1771,10 +1771,10 @@ LABEL_16:
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v88 = v41;
+      v88 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1782,7 +1782,7 @@ LABEL_16:
     goto LABEL_52;
   }
 
-  if (!a4)
+  if (!error)
   {
     v46 = NUAssertLogger_10729();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -1793,7 +1793,7 @@ LABEL_16:
       _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v41 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v48 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v43 = NUAssertLogger_10729();
     v49 = os_log_type_enabled(v43, OS_LOG_TYPE_ERROR);
@@ -1801,8 +1801,8 @@ LABEL_16:
     {
       if (v49)
       {
-        v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v51 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v88 = v51;
         _os_log_error_impl(&dword_1C7694000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1814,11 +1814,11 @@ LABEL_16:
 LABEL_52:
     if (v49)
     {
-      v56 = dispatch_get_specific(*v41);
+      v56 = dispatch_get_specific(*callStackSymbols);
       v57 = MEMORY[0x1E696AF00];
       v58 = v56;
-      v59 = [v57 callStackSymbols];
-      v60 = [v59 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v57 callStackSymbols];
+      v60 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v88 = v56;
       v89 = 2114;
@@ -1831,7 +1831,7 @@ LABEL_54:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = lCopy;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = [objc_alloc(MEMORY[0x1E69C0648]) initWithArchiveURL:v7];
   [v9 setCompression:-1];
@@ -1842,7 +1842,7 @@ LABEL_54:
   if ((v10 & 1) == 0)
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to open sidecar data archive for reading" object:v7 underlyingError:v11];
-    *a4 = v33 = 0;
+    *error = v33 = 0;
     goto LABEL_36;
   }
 
@@ -1859,7 +1859,7 @@ LABEL_54:
     v34 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to decode contents plist data" object:v9 underlyingError:v16];
 LABEL_24:
     v33 = 0;
-    *a4 = v34;
+    *error = v34;
     goto LABEL_35;
   }
 
@@ -1870,8 +1870,8 @@ LABEL_24:
   }
 
   v81 = 0;
-  v62 = a1;
-  v17 = [a1 _loadContentsDictionaryFromData:v14 error:&v81];
+  selfCopy = self;
+  v17 = [self _loadContentsDictionaryFromData:v14 error:&v81];
   v18 = v81;
 
   if (!v17)
@@ -1894,7 +1894,7 @@ LABEL_24:
   }
 
   v69 = *v78;
-  v61 = a4;
+  errorCopy = error;
   v63 = v14;
   v65 = v15;
   while (2)
@@ -1920,7 +1920,7 @@ LABEL_24:
 
       if ((v23 & 1) == 0)
       {
-        *v61 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to decode mask image data" object:v9 underlyingError:v18];
+        *errorCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to decode mask image data" object:v9 underlyingError:v18];
 LABEL_28:
         v8 = v21;
         v14 = v63;
@@ -1936,7 +1936,7 @@ LABEL_28:
       if (([v25 isEqualToString:v26] & 1) == 0)
       {
         v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected %@ data", v26];
-        *v61 = [MEMORY[0x1E69B3A48] invalidError:v35 object:v25];
+        *errorCopy = [MEMORY[0x1E69B3A48] invalidError:v35 object:v25];
 
         goto LABEL_28;
       }
@@ -1949,7 +1949,7 @@ LABEL_28:
     }
 
     while (v70 != v19);
-    a4 = v61;
+    error = errorCopy;
     v14 = v63;
     v15 = v65;
     v17 = v67;
@@ -2000,7 +2000,7 @@ LABEL_16:
     }
 
     v14 = v64;
-    *a4 = v37;
+    *error = v37;
 
     v33 = 0;
     v18 = v32;
@@ -2011,7 +2011,7 @@ LABEL_16:
   else
   {
 LABEL_20:
-    v33 = [v62 loadFromDictionary:v8 error:a4];
+    v33 = [selfCopy loadFromDictionary:v8 error:error];
   }
 
   v36 = obj;

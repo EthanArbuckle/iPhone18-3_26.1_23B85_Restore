@@ -1,6 +1,6 @@
 @interface MapsSuggestionsMutableWeakEntries
 - (MapsSuggestionsMutableWeakEntries)init;
-- (MapsSuggestionsMutableWeakEntries)initWithEntries:(id)a3;
+- (MapsSuggestionsMutableWeakEntries)initWithEntries:(id)entries;
 - (NSArray)strongArray;
 - (unint64_t)count;
 @end
@@ -14,9 +14,9 @@
   v2 = [(MapsSuggestionsMutableWeakEntries *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     array = v2->_array;
-    v2->_array = v3;
+    v2->_array = weakObjectsPointerArray;
 
     v2->_dirty = 0;
     v5 = v2;
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (MapsSuggestionsMutableWeakEntries)initWithEntries:(id)a3
+- (MapsSuggestionsMutableWeakEntries)initWithEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = [(MapsSuggestionsMutableWeakEntries *)self init];
   if (v5)
   {
@@ -36,7 +36,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = entriesCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {

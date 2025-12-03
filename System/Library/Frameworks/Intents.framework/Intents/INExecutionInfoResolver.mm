@@ -3,19 +3,19 @@
 + (void)initialize;
 - (INExecutionCounterpartMapper)_counterpartMapper;
 - (INExecutionFrameworkMapper)_frameworkMapper;
-- (id)_resolveExecutionInfo:(id)a3;
-- (id)_resolveExecutionInfoByLinkingExtensionToApp:(id)a3;
-- (id)_resolveExecutionInfoBySwappingIdentifiers:(id)a3;
-- (id)_resolveIntentExecutionInfoByLinkingExtensionToApp:(id)a3;
-- (id)_resolveIntentExecutionInfoBySwappingIdentifiers:(id)a3;
-- (id)_resolveIntentExecutionInfoUsingCounterparts:(id)a3;
-- (id)_resolveUserActivityExecutionInfoByLinkingFileProvidersToFilesApp:(id)a3;
-- (id)_resolveUserActivityExecutionInfoBySwappingIdentifiers:(id)a3;
-- (id)_resolveUserActivityExecutionInfoUsingCounterparts:(id)a3;
-- (id)counterpartIdentifiersForLocalIdentifier:(id)a3;
-- (id)localIdentifiersForCounterpartIdentifier:(id)a3;
-- (id)resolveIntentExecutionInfo:(id)a3;
-- (id)resolveUserActivityExecutionInfo:(id)a3;
+- (id)_resolveExecutionInfo:(id)info;
+- (id)_resolveExecutionInfoByLinkingExtensionToApp:(id)app;
+- (id)_resolveExecutionInfoBySwappingIdentifiers:(id)identifiers;
+- (id)_resolveIntentExecutionInfoByLinkingExtensionToApp:(id)app;
+- (id)_resolveIntentExecutionInfoBySwappingIdentifiers:(id)identifiers;
+- (id)_resolveIntentExecutionInfoUsingCounterparts:(id)counterparts;
+- (id)_resolveUserActivityExecutionInfoByLinkingFileProvidersToFilesApp:(id)app;
+- (id)_resolveUserActivityExecutionInfoBySwappingIdentifiers:(id)identifiers;
+- (id)_resolveUserActivityExecutionInfoUsingCounterparts:(id)counterparts;
+- (id)counterpartIdentifiersForLocalIdentifier:(id)identifier;
+- (id)localIdentifiersForCounterpartIdentifier:(id)identifier;
+- (id)resolveIntentExecutionInfo:(id)info;
+- (id)resolveUserActivityExecutionInfo:(id)info;
 @end
 
 @implementation INExecutionInfoResolver
@@ -50,53 +50,53 @@
   return counterpartMapper;
 }
 
-- (id)_resolveUserActivityExecutionInfoUsingCounterparts:(id)a3
+- (id)_resolveUserActivityExecutionInfoUsingCounterparts:(id)counterparts
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 launchableAppBundleId];
-  v6 = [v4 userActivityType];
-  v7 = [(INExecutionInfoResolver *)self localIdentifiersForCounterpartIdentifier:v5];
+  counterpartsCopy = counterparts;
+  launchableAppBundleId = [counterpartsCopy launchableAppBundleId];
+  userActivityType = [counterpartsCopy userActivityType];
+  v7 = [(INExecutionInfoResolver *)self localIdentifiersForCounterpartIdentifier:launchableAppBundleId];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __78__INExecutionInfoResolver__resolveUserActivityExecutionInfoUsingCounterparts___block_invoke;
   v23[3] = &unk_1E727FD90;
-  v8 = v6;
+  v8 = userActivityType;
   v24 = v8;
   v9 = [v7 if_compactMap:v23];
   if ([v9 count] < 2)
   {
-    v12 = [v9 anyObject];
+    anyObject = [v9 anyObject];
   }
 
   else
   {
-    v10 = [v9 allObjects];
-    v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_13];
-    v12 = [v11 firstObject];
+    allObjects = [v9 allObjects];
+    v11 = [allObjects sortedArrayUsingComparator:&__block_literal_global_13];
+    anyObject = [v11 firstObject];
 
     v13 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
     {
       v14 = v13;
-      v15 = [v12 bundleIdentifier];
+      bundleIdentifier = [anyObject bundleIdentifier];
       *buf = 136315650;
       v26 = "[INExecutionInfoResolver _resolveUserActivityExecutionInfoUsingCounterparts:]";
       v27 = 2114;
-      v28 = v5;
+      v28 = launchableAppBundleId;
       v29 = 2114;
-      v30 = v15;
+      v30 = bundleIdentifier;
       _os_log_error_impl(&dword_18E991000, v14, OS_LOG_TYPE_ERROR, "%s Matched multiple counterpart applications for %{public}@, choosing %{public}@", buf, 0x20u);
     }
   }
 
-  if (v12)
+  if (anyObject)
   {
     v16 = [INUserActivityExecutionInfo alloc];
-    v17 = [v12 bundleIdentifier];
-    v18 = [v12 URL];
-    v19 = [v4 extensionBundleId];
-    v20 = [(INUserActivityExecutionInfo *)v16 _initWithUserActivityType:v8 launchableAppBundleId:v17 containingAppBundleURL:v18 extensionBundleId:v19];
+    bundleIdentifier2 = [anyObject bundleIdentifier];
+    v18 = [anyObject URL];
+    extensionBundleId = [counterpartsCopy extensionBundleId];
+    v20 = [(INUserActivityExecutionInfo *)v16 _initWithUserActivityType:v8 launchableAppBundleId:bundleIdentifier2 containingAppBundleURL:v18 extensionBundleId:extensionBundleId];
   }
 
   else
@@ -148,25 +148,25 @@ uint64_t __78__INExecutionInfoResolver__resolveUserActivityExecutionInfoUsingCou
   return v7;
 }
 
-- (id)_resolveUserActivityExecutionInfoByLinkingFileProvidersToFilesApp:(id)a3
+- (id)_resolveUserActivityExecutionInfoByLinkingFileProvidersToFilesApp:(id)app
 {
-  v3 = a3;
-  v4 = [v3 extensionBundleId];
-  if (v4)
+  appCopy = app;
+  extensionBundleId = [appCopy extensionBundleId];
+  if (extensionBundleId)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v4 error:0];
-    v6 = [v5 extensionPointRecord];
-    v7 = [v6 name];
-    v8 = [v7 isEqualToString:@"com.apple.fileprovider-nonui"];
+    v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:extensionBundleId error:0];
+    extensionPointRecord = [v5 extensionPointRecord];
+    name = [extensionPointRecord name];
+    v8 = [name isEqualToString:@"com.apple.fileprovider-nonui"];
 
     v9 = 0;
     if (v8)
     {
       v10 = [INUserActivityExecutionInfo alloc];
-      v11 = [v3 userActivityType];
-      v12 = [v3 containingAppBundleURL];
-      v13 = [v3 extensionBundleId];
-      v9 = [(INUserActivityExecutionInfo *)v10 _initWithUserActivityType:v11 launchableAppBundleId:@"com.apple.DocumentsApp" containingAppBundleURL:v12 extensionBundleId:v13];
+      userActivityType = [appCopy userActivityType];
+      containingAppBundleURL = [appCopy containingAppBundleURL];
+      extensionBundleId2 = [appCopy extensionBundleId];
+      v9 = [(INUserActivityExecutionInfo *)v10 _initWithUserActivityType:userActivityType launchableAppBundleId:@"com.apple.DocumentsApp" containingAppBundleURL:containingAppBundleURL extensionBundleId:extensionBundleId2];
     }
   }
 
@@ -178,18 +178,18 @@ uint64_t __78__INExecutionInfoResolver__resolveUserActivityExecutionInfoUsingCou
   return v9;
 }
 
-- (id)_resolveUserActivityExecutionInfoBySwappingIdentifiers:(id)a3
+- (id)_resolveUserActivityExecutionInfoBySwappingIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoBySwappingIdentifiers:v4];
+  identifiersCopy = identifiers;
+  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoBySwappingIdentifiers:identifiersCopy];
   if (v5)
   {
     v6 = [INUserActivityExecutionInfo alloc];
-    v7 = [v4 userActivityType];
-    v8 = [v5 launchableAppBundleId];
-    v9 = [v5 containingAppBundleURL];
-    v10 = [v5 extensionBundleId];
-    v11 = [(INUserActivityExecutionInfo *)v6 _initWithUserActivityType:v7 launchableAppBundleId:v8 containingAppBundleURL:v9 extensionBundleId:v10];
+    userActivityType = [identifiersCopy userActivityType];
+    launchableAppBundleId = [v5 launchableAppBundleId];
+    containingAppBundleURL = [v5 containingAppBundleURL];
+    extensionBundleId = [v5 extensionBundleId];
+    v11 = [(INUserActivityExecutionInfo *)v6 _initWithUserActivityType:userActivityType launchableAppBundleId:launchableAppBundleId containingAppBundleURL:containingAppBundleURL extensionBundleId:extensionBundleId];
   }
 
   else
@@ -200,65 +200,65 @@ uint64_t __78__INExecutionInfoResolver__resolveUserActivityExecutionInfoUsingCou
   return v11;
 }
 
-- (id)_resolveIntentExecutionInfoUsingCounterparts:(id)a3
+- (id)_resolveIntentExecutionInfoUsingCounterparts:(id)counterparts
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 launchableAppBundleId];
-  v6 = [v4 intentClassName];
-  v7 = [(INExecutionInfoResolver *)self localIdentifiersForCounterpartIdentifier:v5];
+  counterpartsCopy = counterparts;
+  launchableAppBundleId = [counterpartsCopy launchableAppBundleId];
+  intentClassName = [counterpartsCopy intentClassName];
+  v7 = [(INExecutionInfoResolver *)self localIdentifiersForCounterpartIdentifier:launchableAppBundleId];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __72__INExecutionInfoResolver__resolveIntentExecutionInfoUsingCounterparts___block_invoke;
   v44[3] = &unk_1E727FD48;
-  v8 = v4;
+  v8 = counterpartsCopy;
   v45 = v8;
-  v9 = v6;
+  v9 = intentClassName;
   v46 = v9;
   v10 = [v7 if_compactMap:v44];
   if ([v10 count] < 2)
   {
-    v13 = [v10 anyObject];
+    anyObject = [v10 anyObject];
   }
 
   else
   {
-    v11 = [v10 allObjects];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_31213];
-    v13 = [v12 firstObject];
+    allObjects = [v10 allObjects];
+    v12 = [allObjects sortedArrayUsingComparator:&__block_literal_global_31213];
+    anyObject = [v12 firstObject];
 
     v14 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
     {
       v15 = v14;
-      v16 = [v13 bundleIdentifier];
+      bundleIdentifier = [anyObject bundleIdentifier];
       *buf = 136315650;
       v48 = "[INExecutionInfoResolver _resolveIntentExecutionInfoUsingCounterparts:]";
       v49 = 2114;
-      v50 = v5;
+      v50 = launchableAppBundleId;
       v51 = 2114;
-      v52 = v16;
+      v52 = bundleIdentifier;
       _os_log_error_impl(&dword_18E991000, v15, OS_LOG_TYPE_ERROR, "%s Matched multiple launchable counterpart applications for %{public}@, choosing %{public}@", buf, 0x20u);
     }
   }
 
-  v17 = [v8 displayableAppBundleId];
-  v18 = self;
-  v19 = v17;
-  v20 = [(INExecutionInfoResolver *)v18 localIdentifiersForCounterpartIdentifier:v17];
+  displayableAppBundleId = [v8 displayableAppBundleId];
+  selfCopy = self;
+  v19 = displayableAppBundleId;
+  v20 = [(INExecutionInfoResolver *)selfCopy localIdentifiersForCounterpartIdentifier:displayableAppBundleId];
   v43 = v20;
   if ([v20 count] < 2)
   {
-    v25 = [v20 anyObject];
+    anyObject2 = [v20 anyObject];
   }
 
   else
   {
-    v21 = v13;
+    v21 = anyObject;
     v22 = v10;
-    v23 = [v20 allObjects];
-    v24 = [v23 sortedArrayUsingSelector:sel_compare_];
-    v25 = [v24 firstObject];
+    allObjects2 = [v20 allObjects];
+    v24 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
+    anyObject2 = [v24 firstObject];
 
     v26 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -268,38 +268,38 @@ uint64_t __78__INExecutionInfoResolver__resolveUserActivityExecutionInfoUsingCou
       v49 = 2114;
       v50 = v19;
       v51 = 2114;
-      v52 = v25;
+      v52 = anyObject2;
       _os_log_error_impl(&dword_18E991000, v26, OS_LOG_TYPE_ERROR, "%s Matched multiple displayable counterpart applications for %{public}@, choosing %{public}@", buf, 0x20u);
     }
 
     v10 = v22;
-    v13 = v21;
+    anyObject = v21;
   }
 
-  if (v13 | v25)
+  if (anyObject | anyObject2)
   {
     v40 = [INIntentExecutionInfo alloc];
-    v39 = [v8 preferredCallProvider];
-    v38 = [v13 bundleIdentifier];
+    preferredCallProvider = [v8 preferredCallProvider];
+    bundleIdentifier2 = [anyObject bundleIdentifier];
     [v8 extensionBundleId];
     v28 = v27 = v9;
     [v8 uiExtensionBundleId];
-    v29 = v42 = v5;
-    [v13 URL];
+    v29 = v42 = launchableAppBundleId;
+    [anyObject URL];
     v41 = v19;
-    v30 = v13;
+    v30 = anyObject;
     v31 = v10;
     v32 = v8;
     v34 = v33 = v7;
-    v35 = [(INIntentExecutionInfo *)v40 _initWithIntentClassName:v27 preferredCallProvider:v39 launchableAppBundleId:v38 displayableAppBundleId:v25 extensionBundleId:v28 uiExtensionBundleId:v29 containingAppBundleURL:v34];
+    v35 = [(INIntentExecutionInfo *)v40 _initWithIntentClassName:v27 preferredCallProvider:preferredCallProvider launchableAppBundleId:bundleIdentifier2 displayableAppBundleId:anyObject2 extensionBundleId:v28 uiExtensionBundleId:v29 containingAppBundleURL:v34];
 
     v7 = v33;
     v8 = v32;
     v10 = v31;
-    v13 = v30;
+    anyObject = v30;
     v19 = v41;
 
-    v5 = v42;
+    launchableAppBundleId = v42;
     v9 = v27;
   }
 
@@ -408,28 +408,28 @@ uint64_t __72__INExecutionInfoResolver__resolveIntentExecutionInfoUsingCounterpa
   return v7;
 }
 
-- (id)_resolveIntentExecutionInfoByLinkingExtensionToApp:(id)a3
+- (id)_resolveIntentExecutionInfoByLinkingExtensionToApp:(id)app
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoByLinkingExtensionToApp:v4];
+  appCopy = app;
+  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoByLinkingExtensionToApp:appCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 displayableAppBundleId];
-    if ([v4 preferredCallProvider] == 2)
+    displayableAppBundleId = [v5 displayableAppBundleId];
+    if ([appCopy preferredCallProvider] == 2)
     {
 
-      v7 = @"com.apple.facetime";
+      displayableAppBundleId = @"com.apple.facetime";
     }
 
     v8 = [INIntentExecutionInfo alloc];
-    v9 = [v4 intentClassName];
-    v10 = [v4 preferredCallProvider];
-    v11 = [v6 launchableAppBundleId];
-    v12 = [v6 extensionBundleId];
-    v13 = [v4 uiExtensionBundleId];
-    v14 = [v4 containingAppBundleURL];
-    v15 = [(INIntentExecutionInfo *)v8 _initWithIntentClassName:v9 preferredCallProvider:v10 launchableAppBundleId:v11 displayableAppBundleId:v7 extensionBundleId:v12 uiExtensionBundleId:v13 containingAppBundleURL:v14];
+    intentClassName = [appCopy intentClassName];
+    preferredCallProvider = [appCopy preferredCallProvider];
+    launchableAppBundleId = [v6 launchableAppBundleId];
+    extensionBundleId = [v6 extensionBundleId];
+    uiExtensionBundleId = [appCopy uiExtensionBundleId];
+    containingAppBundleURL = [appCopy containingAppBundleURL];
+    v15 = [(INIntentExecutionInfo *)v8 _initWithIntentClassName:intentClassName preferredCallProvider:preferredCallProvider launchableAppBundleId:launchableAppBundleId displayableAppBundleId:displayableAppBundleId extensionBundleId:extensionBundleId uiExtensionBundleId:uiExtensionBundleId containingAppBundleURL:containingAppBundleURL];
   }
 
   else
@@ -440,21 +440,21 @@ uint64_t __72__INExecutionInfoResolver__resolveIntentExecutionInfoUsingCounterpa
   return v15;
 }
 
-- (id)_resolveIntentExecutionInfoBySwappingIdentifiers:(id)a3
+- (id)_resolveIntentExecutionInfoBySwappingIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoBySwappingIdentifiers:v4];
+  identifiersCopy = identifiers;
+  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoBySwappingIdentifiers:identifiersCopy];
   if (v5)
   {
     v6 = [INIntentExecutionInfo alloc];
-    v7 = [v4 intentClassName];
-    v8 = [v4 preferredCallProvider];
-    v9 = [v5 launchableAppBundleId];
-    v10 = [v5 displayableAppBundleId];
-    v11 = [v5 extensionBundleId];
-    v12 = [v4 uiExtensionBundleId];
-    v13 = [v5 containingAppBundleURL];
-    v14 = [(INIntentExecutionInfo *)v6 _initWithIntentClassName:v7 preferredCallProvider:v8 launchableAppBundleId:v9 displayableAppBundleId:v10 extensionBundleId:v11 uiExtensionBundleId:v12 containingAppBundleURL:v13];
+    intentClassName = [identifiersCopy intentClassName];
+    preferredCallProvider = [identifiersCopy preferredCallProvider];
+    launchableAppBundleId = [v5 launchableAppBundleId];
+    displayableAppBundleId = [v5 displayableAppBundleId];
+    extensionBundleId = [v5 extensionBundleId];
+    uiExtensionBundleId = [identifiersCopy uiExtensionBundleId];
+    containingAppBundleURL = [v5 containingAppBundleURL];
+    v14 = [(INIntentExecutionInfo *)v6 _initWithIntentClassName:intentClassName preferredCallProvider:preferredCallProvider launchableAppBundleId:launchableAppBundleId displayableAppBundleId:displayableAppBundleId extensionBundleId:extensionBundleId uiExtensionBundleId:uiExtensionBundleId containingAppBundleURL:containingAppBundleURL];
   }
 
   else
@@ -465,23 +465,23 @@ uint64_t __72__INExecutionInfoResolver__resolveIntentExecutionInfoUsingCounterpa
   return v14;
 }
 
-- (id)_resolveExecutionInfoByLinkingExtensionToApp:(id)a3
+- (id)_resolveExecutionInfoByLinkingExtensionToApp:(id)app
 {
-  v4 = a3;
-  v5 = [v4 extensionBundleId];
-  if (v5)
+  appCopy = app;
+  extensionBundleId = [appCopy extensionBundleId];
+  if (extensionBundleId)
   {
-    v6 = [(INExecutionInfoResolver *)self _frameworkMapper];
-    v7 = [v6 launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:v5];
+    _frameworkMapper = [(INExecutionInfoResolver *)self _frameworkMapper];
+    v7 = [_frameworkMapper launchableAppBundleIdentifierForSystemExtensionBundleIdentifier:extensionBundleId];
 
-    v8 = [(INExecutionInfoResolver *)self _frameworkMapper];
-    v9 = [v8 displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:v5];
+    _frameworkMapper2 = [(INExecutionInfoResolver *)self _frameworkMapper];
+    v9 = [_frameworkMapper2 displayableAppBundleIdentifierForSystemExtensionBundleIdentifier:extensionBundleId];
 
     if (v9 | v7)
     {
       v10 = [INExecutionInfo alloc];
-      v11 = [v4 containingAppBundleURL];
-      v12 = [(INExecutionInfo *)v10 _initWithLaunchableAppBundleId:v7 displayableAppBundleId:v9 containingAppBundleURL:v11 extensionBundleId:v5];
+      containingAppBundleURL = [appCopy containingAppBundleURL];
+      v12 = [(INExecutionInfo *)v10 _initWithLaunchableAppBundleId:v7 displayableAppBundleId:v9 containingAppBundleURL:containingAppBundleURL extensionBundleId:extensionBundleId];
     }
 
     else
@@ -498,10 +498,10 @@ uint64_t __72__INExecutionInfoResolver__resolveIntentExecutionInfoUsingCounterpa
   return v12;
 }
 
-- (id)_resolveExecutionInfoBySwappingIdentifiers:(id)a3
+- (id)_resolveExecutionInfoBySwappingIdentifiers:(id)identifiers
 {
-  v3 = [a3 launchableAppBundleId];
-  if (!v3)
+  launchableAppBundleId = [identifiers launchableAppBundleId];
+  if (!launchableAppBundleId)
   {
     v7 = 0;
     goto LABEL_22;
@@ -509,17 +509,17 @@ uint64_t __72__INExecutionInfoResolver__resolveIntentExecutionInfoUsingCounterpa
 
   if (INThisProcessCanMapLSDatabase(0))
   {
-    v4 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v3 error:0];
+    v4 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:launchableAppBundleId error:0];
     if (v4)
     {
 LABEL_4:
-      v5 = [v4 containingBundleRecord];
-      if (v5)
+      containingBundleRecord = [v4 containingBundleRecord];
+      if (containingBundleRecord)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = v5;
+          v6 = containingBundleRecord;
         }
 
         else
@@ -536,12 +536,12 @@ LABEL_4:
       v13 = v6;
 
       v14 = [INExecutionInfo alloc];
-      v15 = [v13 bundleIdentifier];
-      v16 = [v13 bundleIdentifier];
+      bundleIdentifier = [v13 bundleIdentifier];
+      bundleIdentifier2 = [v13 bundleIdentifier];
       v17 = [v13 URL];
 
-      v18 = [v4 bundleIdentifier];
-      v7 = [(INExecutionInfo *)v14 _initWithLaunchableAppBundleId:v15 displayableAppBundleId:v16 containingAppBundleURL:v17 extensionBundleId:v18];
+      bundleIdentifier3 = [v4 bundleIdentifier];
+      v7 = [(INExecutionInfo *)v14 _initWithLaunchableAppBundleId:bundleIdentifier displayableAppBundleId:bundleIdentifier2 containingAppBundleURL:v17 extensionBundleId:bundleIdentifier3];
 
       goto LABEL_21;
     }
@@ -549,13 +549,13 @@ LABEL_4:
 
   else
   {
-    v8 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-    v9 = [v8 bundleIdentifier];
-    v10 = [v3 isEqualToString:v9];
+    bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+    bundleIdentifier4 = [bundleRecordForCurrentProcess bundleIdentifier];
+    v10 = [launchableAppBundleId isEqualToString:bundleIdentifier4];
 
     if (v10)
     {
-      v11 = v8;
+      v11 = bundleRecordForCurrentProcess;
       if (v11)
       {
         objc_opt_class();
@@ -597,10 +597,10 @@ LABEL_22:
   return v7;
 }
 
-- (id)_resolveExecutionInfo:(id)a3
+- (id)_resolveExecutionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoBySwappingIdentifiers:v4];
+  infoCopy = info;
+  v5 = [(INExecutionInfoResolver *)self _resolveExecutionInfoBySwappingIdentifiers:infoCopy];
   v6 = v5;
   if (v5)
   {
@@ -609,7 +609,7 @@ LABEL_22:
 
   else
   {
-    v7 = v4;
+    v7 = infoCopy;
   }
 
   v8 = v7;
@@ -631,28 +631,28 @@ LABEL_22:
   return v11;
 }
 
-- (id)counterpartIdentifiersForLocalIdentifier:(id)a3
+- (id)counterpartIdentifiersForLocalIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _counterpartMapper];
-  v6 = [v5 counterpartIdentifiersForLocalIdentifier:v4];
+  identifierCopy = identifier;
+  _counterpartMapper = [(INExecutionInfoResolver *)self _counterpartMapper];
+  v6 = [_counterpartMapper counterpartIdentifiersForLocalIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)localIdentifiersForCounterpartIdentifier:(id)a3
+- (id)localIdentifiersForCounterpartIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _counterpartMapper];
-  v6 = [v5 localIdentifiersForCounterpartIdentifier:v4];
+  identifierCopy = identifier;
+  _counterpartMapper = [(INExecutionInfoResolver *)self _counterpartMapper];
+  v6 = [_counterpartMapper localIdentifiersForCounterpartIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)resolveUserActivityExecutionInfo:(id)a3
+- (id)resolveUserActivityExecutionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _resolveUserActivityExecutionInfoBySwappingIdentifiers:v4];
+  infoCopy = info;
+  v5 = [(INExecutionInfoResolver *)self _resolveUserActivityExecutionInfoBySwappingIdentifiers:infoCopy];
   v6 = v5;
   if (v5)
   {
@@ -661,7 +661,7 @@ LABEL_22:
 
   else
   {
-    v7 = v4;
+    v7 = infoCopy;
   }
 
   v8 = v7;
@@ -697,10 +697,10 @@ LABEL_22:
   return v15;
 }
 
-- (id)resolveIntentExecutionInfo:(id)a3
+- (id)resolveIntentExecutionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(INExecutionInfoResolver *)self _resolveIntentExecutionInfoBySwappingIdentifiers:v4];
+  infoCopy = info;
+  v5 = [(INExecutionInfoResolver *)self _resolveIntentExecutionInfoBySwappingIdentifiers:infoCopy];
   v6 = v5;
   if (v5)
   {
@@ -709,7 +709,7 @@ LABEL_22:
 
   else
   {
-    v7 = v4;
+    v7 = infoCopy;
   }
 
   v8 = v7;
@@ -751,7 +751,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __42__INExecutionInfoResolver_defaultResolver__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultResolver_onceToken != -1)
   {
     dispatch_once(&defaultResolver_onceToken, block);
@@ -774,7 +774,7 @@ uint64_t __42__INExecutionInfoResolver_defaultResolver__block_invoke(uint64_t a1
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);

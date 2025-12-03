@@ -1,80 +1,80 @@
 @interface PKPaymentOffersControllerRequest
-- (BOOL)coalesceWithRequest:(id)a3;
-- (PKPaymentOffersControllerRequest)initWithType:(unint64_t)a3 completion:(id)a4;
+- (BOOL)coalesceWithRequest:(id)request;
+- (PKPaymentOffersControllerRequest)initWithType:(unint64_t)type completion:(id)completion;
 - (id)description;
-- (id)initCancelRequestWithCriteriaIdentifier:(id)a3 completion:(id)a4;
-- (id)initConfirmRequestWithCriteriaIdentifier:(id)a3 rewardsRedemptionIntent:(id)a4 completion:(id)a5;
-- (id)initDynamicContentRequestWithCriteriaIdentifier:(id)a3 pageTypes:(id)a4 completion:(id)a5;
-- (id)initPaymentOfferCatalogRequestWithCatalogUpdateReason:(unint64_t)a3 completion:(id)a4;
-- (id)initPaymentOfferRequestWithCriteriaIdentifierIdentifier:(id)a3 selectedPassDetails:(id)a4 reason:(unint64_t)a5 completion:(id)a6;
-- (id)initRewardsBalanceWithCriteriaIdentifier:(id)a3 selectedPassDetails:(id)a4 completion:(id)a5;
-- (id)initSelectRequestWithCriteriaIdentifier:(id)a3 completion:(id)a4;
-- (void)addCompletions:(id)a3;
+- (id)initCancelRequestWithCriteriaIdentifier:(id)identifier completion:(id)completion;
+- (id)initConfirmRequestWithCriteriaIdentifier:(id)identifier rewardsRedemptionIntent:(id)intent completion:(id)completion;
+- (id)initDynamicContentRequestWithCriteriaIdentifier:(id)identifier pageTypes:(id)types completion:(id)completion;
+- (id)initPaymentOfferCatalogRequestWithCatalogUpdateReason:(unint64_t)reason completion:(id)completion;
+- (id)initPaymentOfferRequestWithCriteriaIdentifierIdentifier:(id)identifier selectedPassDetails:(id)details reason:(unint64_t)reason completion:(id)completion;
+- (id)initRewardsBalanceWithCriteriaIdentifier:(id)identifier selectedPassDetails:(id)details completion:(id)completion;
+- (id)initSelectRequestWithCriteriaIdentifier:(id)identifier completion:(id)completion;
+- (void)addCompletions:(id)completions;
 @end
 
 @implementation PKPaymentOffersControllerRequest
 
-- (PKPaymentOffersControllerRequest)initWithType:(unint64_t)a3 completion:(id)a4
+- (PKPaymentOffersControllerRequest)initWithType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = PKPaymentOffersControllerRequest;
   v7 = [(PKPaymentOffersControllerRequest *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
+    v7->_type = type;
     v9 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     completions = v8->_completions;
     v8->_completions = v9;
 
     v11 = v8->_completions;
-    v12 = _Block_copy(v6);
+    v12 = _Block_copy(completionCopy);
     [(NSMutableOrderedSet *)v11 pk_safelyAddObject:v12];
   }
 
   return v8;
 }
 
-- (id)initPaymentOfferCatalogRequestWithCatalogUpdateReason:(unint64_t)a3 completion:(id)a4
+- (id)initPaymentOfferCatalogRequestWithCatalogUpdateReason:(unint64_t)reason completion:(id)completion
 {
-  result = [(PKPaymentOffersControllerRequest *)self initWithType:0 completion:a4];
+  result = [(PKPaymentOffersControllerRequest *)self initWithType:0 completion:completion];
   if (result)
   {
-    *(result + 3) = a3;
+    *(result + 3) = reason;
   }
 
   return result;
 }
 
-- (id)initPaymentOfferRequestWithCriteriaIdentifierIdentifier:(id)a3 selectedPassDetails:(id)a4 reason:(unint64_t)a5 completion:(id)a6
+- (id)initPaymentOfferRequestWithCriteriaIdentifierIdentifier:(id)identifier selectedPassDetails:(id)details reason:(unint64_t)reason completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [(PKPaymentOffersControllerRequest *)self initWithType:1 completion:a6];
+  identifierCopy = identifier;
+  detailsCopy = details;
+  v13 = [(PKPaymentOffersControllerRequest *)self initWithType:1 completion:completion];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_criteriaIdentifier, a3);
-    objc_storeStrong(&v14->_selectedPassDetails, a4);
-    v14->_updateReason = a5;
+    objc_storeStrong(&v13->_criteriaIdentifier, identifier);
+    objc_storeStrong(&v14->_selectedPassDetails, details);
+    v14->_updateReason = reason;
   }
 
   return v14;
 }
 
-- (id)initDynamicContentRequestWithCriteriaIdentifier:(id)a3 pageTypes:(id)a4 completion:(id)a5
+- (id)initDynamicContentRequestWithCriteriaIdentifier:(id)identifier pageTypes:(id)types completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKPaymentOffersControllerRequest *)self initWithType:2 completion:a5];
+  identifierCopy = identifier;
+  typesCopy = types;
+  v10 = [(PKPaymentOffersControllerRequest *)self initWithType:2 completion:completion];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     criteriaIdentifier = v10->_criteriaIdentifier;
     v10->_criteriaIdentifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [typesCopy copy];
     dynamicPageTypes = v10->_dynamicPageTypes;
     v10->_dynamicPageTypes = v13;
   }
@@ -82,30 +82,30 @@
   return v10;
 }
 
-- (id)initConfirmRequestWithCriteriaIdentifier:(id)a3 rewardsRedemptionIntent:(id)a4 completion:(id)a5
+- (id)initConfirmRequestWithCriteriaIdentifier:(id)identifier rewardsRedemptionIntent:(id)intent completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKPaymentOffersControllerRequest *)self initWithType:3 completion:a5];
+  identifierCopy = identifier;
+  intentCopy = intent;
+  v10 = [(PKPaymentOffersControllerRequest *)self initWithType:3 completion:completion];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     criteriaIdentifier = v10->_criteriaIdentifier;
     v10->_criteriaIdentifier = v11;
 
-    objc_storeStrong(&v10->_rewardsRedemptionIntent, a4);
+    objc_storeStrong(&v10->_rewardsRedemptionIntent, intent);
   }
 
   return v10;
 }
 
-- (id)initSelectRequestWithCriteriaIdentifier:(id)a3 completion:(id)a4
+- (id)initSelectRequestWithCriteriaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(PKPaymentOffersControllerRequest *)self initWithType:4 completion:a4];
+  identifierCopy = identifier;
+  v7 = [(PKPaymentOffersControllerRequest *)self initWithType:4 completion:completion];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     criteriaIdentifier = v7->_criteriaIdentifier;
     v7->_criteriaIdentifier = v8;
   }
@@ -113,13 +113,13 @@
   return v7;
 }
 
-- (id)initCancelRequestWithCriteriaIdentifier:(id)a3 completion:(id)a4
+- (id)initCancelRequestWithCriteriaIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(PKPaymentOffersControllerRequest *)self initWithType:5 completion:a4];
+  identifierCopy = identifier;
+  v7 = [(PKPaymentOffersControllerRequest *)self initWithType:5 completion:completion];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     criteriaIdentifier = v7->_criteriaIdentifier;
     v7->_criteriaIdentifier = v8;
   }
@@ -127,45 +127,45 @@
   return v7;
 }
 
-- (id)initRewardsBalanceWithCriteriaIdentifier:(id)a3 selectedPassDetails:(id)a4 completion:(id)a5
+- (id)initRewardsBalanceWithCriteriaIdentifier:(id)identifier selectedPassDetails:(id)details completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKPaymentOffersControllerRequest *)self initWithType:6 completion:a5];
+  identifierCopy = identifier;
+  detailsCopy = details;
+  v10 = [(PKPaymentOffersControllerRequest *)self initWithType:6 completion:completion];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     criteriaIdentifier = v10->_criteriaIdentifier;
     v10->_criteriaIdentifier = v11;
 
-    objc_storeStrong(&v10->_selectedPassDetails, a4);
+    objc_storeStrong(&v10->_selectedPassDetails, details);
   }
 
   return v10;
 }
 
-- (BOOL)coalesceWithRequest:(id)a3
+- (BOOL)coalesceWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 type] != self->_type)
+  requestCopy = request;
+  if ([requestCopy type] != self->_type)
   {
     goto LABEL_27;
   }
 
-  v5 = [v4 criteriaIdentifier];
+  criteriaIdentifier = [requestCopy criteriaIdentifier];
   criteriaIdentifier = self->_criteriaIdentifier;
-  v7 = v5;
+  completions = criteriaIdentifier;
   v8 = criteriaIdentifier;
   v9 = v8;
-  if (v7 == v8)
+  if (completions == v8)
   {
 
     goto LABEL_8;
   }
 
-  if (v7 && v8)
+  if (completions && v8)
   {
-    v10 = [(NSString *)v7 isEqualToString:v8];
+    v10 = [(NSString *)completions isEqualToString:v8];
 
     if (!v10)
     {
@@ -173,12 +173,12 @@
     }
 
 LABEL_8:
-    v11 = [v4 selectedPassDetails];
-    v12 = v11;
+    selectedPassDetails = [requestCopy selectedPassDetails];
+    v12 = selectedPassDetails;
     selectedPassDetails = self->_selectedPassDetails;
-    if (v11 && selectedPassDetails)
+    if (selectedPassDetails && selectedPassDetails)
     {
-      v14 = [(PKSelectedPaymentOfferPaymentPassDetails *)v11 isEqual:self->_selectedPassDetails];
+      v14 = [(PKSelectedPaymentOfferPaymentPassDetails *)selectedPassDetails isEqual:self->_selectedPassDetails];
 
       if (!v14)
       {
@@ -195,12 +195,12 @@ LABEL_8:
       }
     }
 
-    v16 = [v4 dynamicPageTypes];
-    v17 = v16;
+    dynamicPageTypes = [requestCopy dynamicPageTypes];
+    v17 = dynamicPageTypes;
     dynamicPageTypes = self->_dynamicPageTypes;
-    if (v16 && dynamicPageTypes)
+    if (dynamicPageTypes && dynamicPageTypes)
     {
-      v19 = [(NSSet *)v16 isEqual:self->_dynamicPageTypes];
+      v19 = [(NSSet *)dynamicPageTypes isEqual:self->_dynamicPageTypes];
 
       if ((v19 & 1) == 0)
       {
@@ -217,12 +217,12 @@ LABEL_8:
       }
     }
 
-    v20 = [v4 rewardsRedemptionIntent];
-    v21 = v20;
+    rewardsRedemptionIntent = [requestCopy rewardsRedemptionIntent];
+    v21 = rewardsRedemptionIntent;
     rewardsRedemptionIntent = self->_rewardsRedemptionIntent;
-    if (v20 && rewardsRedemptionIntent)
+    if (rewardsRedemptionIntent && rewardsRedemptionIntent)
     {
-      v23 = [(PKPaymentOfferRewardsRedemptionIntent *)v20 isEqual:self->_rewardsRedemptionIntent];
+      v23 = [(PKPaymentOfferRewardsRedemptionIntent *)rewardsRedemptionIntent isEqual:self->_rewardsRedemptionIntent];
 
       if (!v23)
       {
@@ -239,10 +239,10 @@ LABEL_8:
       }
     }
 
-    if ([v4 updateReason] == self->_updateReason)
+    if ([requestCopy updateReason] == self->_updateReason)
     {
-      v7 = [v4 completions];
-      [(PKPaymentOffersControllerRequest *)self addCompletions:v7];
+      completions = [requestCopy completions];
+      [(PKPaymentOffersControllerRequest *)self addCompletions:completions];
       v15 = 1;
       goto LABEL_13;
     }
@@ -259,11 +259,11 @@ LABEL_28:
   return v15;
 }
 
-- (void)addCompletions:(id)a3
+- (void)addCompletions:(id)completions
 {
   completions = self->_completions;
-  v4 = [a3 array];
-  [(NSMutableOrderedSet *)completions addObjectsFromArray:v4];
+  array = [completions array];
+  [(NSMutableOrderedSet *)completions addObjectsFromArray:array];
 }
 
 - (id)description
@@ -297,8 +297,8 @@ LABEL_28:
   selectedPassDetails = self->_selectedPassDetails;
   if (selectedPassDetails)
   {
-    v9 = [(PKSelectedPaymentOfferPaymentPassDetails *)selectedPassDetails passUniqueID];
-    [v3 appendFormat:@"passUniqueID: '%@'; ", v9];
+    passUniqueID = [(PKSelectedPaymentOfferPaymentPassDetails *)selectedPassDetails passUniqueID];
+    [v3 appendFormat:@"passUniqueID: '%@'; ", passUniqueID];
   }
 
   if ([(NSSet *)self->_dynamicPageTypes count])

@@ -1,32 +1,32 @@
 @interface APPBPolicyData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPolicyValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPolicyValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBPolicyData
 
-- (void)addPolicyValues:(id)a3
+- (void)addPolicyValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   policyValues = self->_policyValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!policyValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_policyValues;
     self->_policyValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     policyValues = self->_policyValues;
   }
 
-  [(NSMutableArray *)policyValues addObject:v4];
+  [(NSMutableArray *)policyValues addObject:valuesCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = APPBPolicyData;
   v3 = [(APPBPolicyData *)&v7 description];
-  v4 = [(APPBPolicyData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBPolicyData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -88,9 +88,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -128,34 +128,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v8 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if ([(APPBPolicyData *)self policyValuesCount])
   {
-    [v8 clearPolicyValues];
-    v4 = [(APPBPolicyData *)self policyValuesCount];
-    if (v4)
+    [toCopy clearPolicyValues];
+    policyValuesCount = [(APPBPolicyData *)self policyValuesCount];
+    if (policyValuesCount)
     {
-      v5 = v4;
+      v5 = policyValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBPolicyData *)self policyValuesAtIndex:i];
-        [v8 addPolicyValues:v7];
+        [toCopy addPolicyValues:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -179,7 +179,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addPolicyValues:v13];
 
         v12 = v12 + 1;
@@ -195,13 +195,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[1])) || -[NSString isEqual:](identifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[1])) || -[NSString isEqual:](identifier, "isEqual:")))
   {
     policyValues = self->_policyValues;
-    if (policyValues | v4[2])
+    if (policyValues | equalCopy[2])
     {
       v7 = [(NSMutableArray *)policyValues isEqual:?];
     }
@@ -220,10 +220,10 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(APPBPolicyData *)self setIdentifier:?];
   }
@@ -232,7 +232,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

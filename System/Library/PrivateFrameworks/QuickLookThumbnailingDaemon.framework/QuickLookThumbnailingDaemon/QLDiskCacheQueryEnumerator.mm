@@ -1,11 +1,11 @@
 @interface QLDiskCacheQueryEnumerator
-- (QLDiskCacheQueryEnumerator)initWithDiskCache:(id)a3 thumbnailRequests:(id)a4;
-- (id)nextThumbnailRequestWithThumbnailData:(id *)a3;
+- (QLDiskCacheQueryEnumerator)initWithDiskCache:(id)cache thumbnailRequests:(id)requests;
+- (id)nextThumbnailRequestWithThumbnailData:(id *)data;
 - (void)_cleanUpValues;
 - (void)_createNewCacheIndexDatabaseEnumerator;
 - (void)_findThumbnailRequestsToProcess;
 - (void)dealloc;
-- (void)moveThumbnailRequestsFromBeingProcessedToSameRequestIfTheyMatch:(id)a3;
+- (void)moveThumbnailRequestsFromBeingProcessedToSameRequestIfTheyMatch:(id)match;
 @end
 
 @implementation QLDiskCacheQueryEnumerator
@@ -18,14 +18,14 @@
   v10 = 3221225472;
   v11 = __68__QLDiskCacheQueryEnumerator__createNewCacheIndexDatabaseEnumerator__block_invoke;
   v12 = &unk_279ADD4B0;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   v14 = v5;
   [(NSDictionary *)generatorRequests enumerateKeysAndObjectsUsingBlock:&v9];
   if ([v5 count])
   {
-    v6 = [(QLDiskCache *)self->super._diskCache indexDatabase];
-    v7 = [v6 queryCacheForFileRequests:v5];
+    indexDatabase = [(QLDiskCache *)self->super._diskCache indexDatabase];
+    v7 = [indexDatabase queryCacheForFileRequests:v5];
     cacheIndexDatabaseEnumerator = self->_cacheIndexDatabaseEnumerator;
     self->_cacheIndexDatabaseEnumerator = v7;
   }
@@ -151,9 +151,9 @@ void __68__QLDiskCacheQueryEnumerator__createNewCacheIndexDatabaseEnumerator__bl
 - (void)_findThumbnailRequestsToProcess
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
+  fileIdentifier = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
 
-  if (v4 || (v5 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator nextThumbnailInfo], self->_valueFound = v5, v5))
+  if (fileIdentifier || (v5 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator nextThumbnailInfo], self->_valueFound = v5, v5))
   {
     if (![(NSMutableArray *)self->_sameGeneratorRequests count])
     {
@@ -168,12 +168,12 @@ void __68__QLDiskCacheQueryEnumerator__createNewCacheIndexDatabaseEnumerator__bl
 
         if (self->_fileIdentifier)
         {
-          v8 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
-          if (v8)
+          fileIdentifier2 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
+          if (fileIdentifier2)
           {
             fileIdentifier = self->_fileIdentifier;
-            v2 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
-            if (![(QLCacheFileIdentifier *)fileIdentifier isEqual:v2]|| (iconMode = self->_iconMode, iconMode != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator iconMode]) || (badgeType = self->_badgeType, badgeType != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator badgeType]) || (iconVariant = self->_iconVariant, iconVariant != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator iconVariant]) || (interpolationQuality = self->_interpolationQuality, interpolationQuality != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator interpolationQuality]) || (externalGeneratorDataHash = self->_externalGeneratorDataHash, externalGeneratorDataHash != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator externalGeneratorDataHash]))
+            fileIdentifier3 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
+            if (![(QLCacheFileIdentifier *)fileIdentifier isEqual:fileIdentifier3]|| (iconMode = self->_iconMode, iconMode != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator iconMode]) || (badgeType = self->_badgeType, badgeType != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator badgeType]) || (iconVariant = self->_iconVariant, iconVariant != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator iconVariant]) || (interpolationQuality = self->_interpolationQuality, interpolationQuality != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator interpolationQuality]) || (externalGeneratorDataHash = self->_externalGeneratorDataHash, externalGeneratorDataHash != [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator externalGeneratorDataHash]))
             {
 
 LABEL_20:
@@ -187,21 +187,21 @@ LABEL_20:
             }
           }
 
-          v15 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
+          fileIdentifier4 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
 
-          if (v8)
+          if (fileIdentifier2)
           {
           }
 
-          if (!v15)
+          if (!fileIdentifier4)
           {
             goto LABEL_20;
           }
         }
 
 LABEL_21:
-        v16 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
-        if (v16)
+        fileIdentifier5 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
+        if (fileIdentifier5)
         {
 
 LABEL_24:
@@ -209,26 +209,26 @@ LABEL_24:
           {
             [(QLDiskCacheQueryEnumerator *)self _cleanUpValues];
             self->_cacheId = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator cacheId];
-            v17 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
+            fileIdentifier6 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator fileIdentifier];
             v18 = self->_fileIdentifier;
-            self->_fileIdentifier = v17;
+            self->_fileIdentifier = fileIdentifier6;
 
             self->_iconMode = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator iconMode]!= 0;
             self->_iconVariant = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator iconVariant];
             self->_interpolationQuality = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator interpolationQuality];
             [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator size];
             self->_size = v19;
-            v20 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator bitmapFormat];
+            bitmapFormat = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator bitmapFormat];
             bitmapFormat = self->_bitmapFormat;
-            self->_bitmapFormat = v20;
+            self->_bitmapFormat = bitmapFormat;
 
-            v22 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator bitmapDataBlobInfo];
+            bitmapDataBlobInfo = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator bitmapDataBlobInfo];
             bitmapDataBlobInfo = self->_bitmapDataBlobInfo;
-            self->_bitmapDataBlobInfo = v22;
+            self->_bitmapDataBlobInfo = bitmapDataBlobInfo;
 
-            v24 = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator metadataBlobInfo];
+            metadataBlobInfo = [(QLCacheIndexDatabaseQueryEnumerator *)self->_cacheIndexDatabaseEnumerator metadataBlobInfo];
             metadataBlobInfo = self->_metadataBlobInfo;
-            self->_metadataBlobInfo = v24;
+            self->_metadataBlobInfo = metadataBlobInfo;
 
             metadata = self->_metadata;
             self->_metadata = 0;
@@ -377,15 +377,15 @@ LABEL_12:
   [(QLDiskCacheQueryEnumerator *)&v3 dealloc];
 }
 
-- (QLDiskCacheQueryEnumerator)initWithDiskCache:(id)a3 thumbnailRequests:(id)a4
+- (QLDiskCacheQueryEnumerator)initWithDiskCache:(id)cache thumbnailRequests:(id)requests
 {
-  v7 = a4;
-  v8 = [(QLDiskCacheEnumerator *)self initWithDiskCache:a3];
+  requestsCopy = requests;
+  v8 = [(QLDiskCacheEnumerator *)self initWithDiskCache:cache];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_generatorRequests, a4);
-    v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    objc_storeStrong(&v8->_generatorRequests, requests);
+    v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
     generatorRequestBeingProcessed = v9->_generatorRequestBeingProcessed;
     v9->_generatorRequestBeingProcessed = v10;
 
@@ -411,9 +411,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)moveThumbnailRequestsFromBeingProcessedToSameRequestIfTheyMatch:(id)a3
+- (void)moveThumbnailRequestsFromBeingProcessedToSameRequestIfTheyMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   v5 = [(NSMutableDictionary *)self->_generatorRequestBeingProcessed objectForKeyedSubscript:self->_fileIdentifier];
   if (v5)
   {
@@ -430,7 +430,7 @@ LABEL_12:
       do
       {
         v9 = [v5 objectAtIndexedSubscript:v8];
-        if (v4[2](v4, v9))
+        if (matchCopy[2](matchCopy, v9))
         {
           [(NSMutableArray *)self->_sameGeneratorRequests addObject:v9];
           [v5 removeObjectAtIndex:v8];
@@ -481,7 +481,7 @@ BOOL __61__QLDiskCacheQueryEnumerator__findThumbnailRequestsToProcess__block_inv
   return v11;
 }
 
-- (id)nextThumbnailRequestWithThumbnailData:(id *)a3
+- (id)nextThumbnailRequestWithThumbnailData:(id *)data
 {
   v74 = *MEMORY[0x277D85DE8];
   generatorRequest = self->_generatorRequest;
@@ -511,9 +511,9 @@ BOOL __61__QLDiskCacheQueryEnumerator__findThumbnailRequestsToProcess__block_inv
 
   if ([(NSMutableArray *)self->_sameGeneratorRequests count])
   {
-    v6 = [(NSMutableArray *)self->_sameGeneratorRequests lastObject];
+    lastObject = [(NSMutableArray *)self->_sameGeneratorRequests lastObject];
     v7 = self->_generatorRequest;
-    self->_generatorRequest = v6;
+    self->_generatorRequest = lastObject;
 
     [(NSMutableArray *)self->_sameGeneratorRequests removeLastObject];
   }
@@ -532,16 +532,16 @@ BOOL __61__QLDiskCacheQueryEnumerator__findThumbnailRequestsToProcess__block_inv
         {
           if (!self->_bitmapData && [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo length])
           {
-            v15 = [(QLDiskCache *)self->super._diskCache blobDatabase];
-            v16 = [v15 copyBlobWithInfo:self->_bitmapDataBlobInfo];
+            blobDatabase = [(QLDiskCache *)self->super._diskCache blobDatabase];
+            v16 = [blobDatabase copyBlobWithInfo:self->_bitmapDataBlobInfo];
             bitmapData = self->_bitmapData;
             self->_bitmapData = v16;
           }
 
           if (!self->_metadata && [(QLCacheBlobInfo *)self->_metadataBlobInfo length])
           {
-            v18 = [(QLDiskCache *)self->super._diskCache blobDatabase];
-            v19 = [v18 copyBlobWithInfo:self->_metadataBlobInfo];
+            blobDatabase2 = [(QLDiskCache *)self->super._diskCache blobDatabase];
+            v19 = [blobDatabase2 copyBlobWithInfo:self->_metadataBlobInfo];
             metadata = self->_metadata;
             self->_metadata = v19;
           }
@@ -550,18 +550,18 @@ BOOL __61__QLDiskCacheQueryEnumerator__findThumbnailRequestsToProcess__block_inv
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             fileIdentifier = self->_fileIdentifier;
-            v59 = [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo location];
+            location = [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo location];
             v58 = [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo length];
-            v22 = [(QLCacheBlobInfo *)self->_metadataBlobInfo location];
+            location2 = [(QLCacheBlobInfo *)self->_metadataBlobInfo location];
             v23 = [(QLCacheBlobInfo *)self->_metadataBlobInfo length];
             *buf = 138413314;
             v65 = fileIdentifier;
             v66 = 2048;
-            v67 = v59;
+            v67 = location;
             v68 = 2048;
             v69 = v58;
             v70 = 2048;
-            v71 = v22;
+            v71 = location2;
             v72 = 2048;
             v73 = v23;
             _os_log_impl(&dword_2615D3000, v21, OS_LOG_TYPE_INFO, "data for %@ thumbnail location : %llu length : %llu contentRect location : %llu length : %llu", buf, 0x34u);
@@ -569,15 +569,15 @@ BOOL __61__QLDiskCacheQueryEnumerator__findThumbnailRequestsToProcess__block_inv
 
           if (!self->_metadata && [(QLCacheBlobInfo *)self->_metadataBlobInfo length])
           {
-            v25 = _log_5();
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+            request = _log_5();
+            if (os_log_type_enabled(request, OS_LOG_TYPE_INFO))
             {
-              v49 = [(NSData *)self->_metadata bytes];
+              bytes = [(NSData *)self->_metadata bytes];
               v50 = [(QLCacheBlobInfo *)self->_metadataBlobInfo length];
               v51 = self->_bitmapData;
               v52 = [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo length];
               *buf = 134218752;
-              v65 = v49;
+              v65 = bytes;
               v66 = 2048;
               v67 = v50;
               v68 = 2048;
@@ -586,7 +586,7 @@ BOOL __61__QLDiskCacheQueryEnumerator__findThumbnailRequestsToProcess__block_inv
               v71 = v52;
               v53 = "We can't get the plist buffer, so we will pretend we don't have this thumbnail plist %p length %llu bitmap data %p length %llu";
 LABEL_41:
-              _os_log_impl(&dword_2615D3000, v25, OS_LOG_TYPE_INFO, v53, buf, 0x2Au);
+              _os_log_impl(&dword_2615D3000, request, OS_LOG_TYPE_INFO, v53, buf, 0x2Au);
               goto LABEL_31;
             }
 
@@ -595,19 +595,19 @@ LABEL_41:
 
           if (!self->_bitmapData && [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo length])
           {
-            v25 = _log_5();
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+            request = _log_5();
+            if (os_log_type_enabled(request, OS_LOG_TYPE_INFO))
             {
-              v54 = [(NSData *)self->_metadata bytes];
+              bytes2 = [(NSData *)self->_metadata bytes];
               v55 = [(QLCacheBlobInfo *)self->_metadataBlobInfo length];
-              v56 = [(NSData *)self->_bitmapData bytes];
+              bytes3 = [(NSData *)self->_bitmapData bytes];
               v57 = [(QLCacheBlobInfo *)self->_bitmapDataBlobInfo length];
               *buf = 134218752;
-              v65 = v54;
+              v65 = bytes2;
               v66 = 2048;
               v67 = v55;
               v68 = 2048;
-              v69 = v56;
+              v69 = bytes3;
               v70 = 2048;
               v71 = v57;
               v53 = "We can't get the bitmap data, so we will pretend we don't have this thumbnail plist %p length %llu bitmap data %p length %llu";
@@ -622,15 +622,15 @@ LABEL_31:
           v24 = [QLCacheThumbnailData alloc];
           cacheId = self->_cacheId;
           v62 = v24;
-          v25 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest request];
+          request = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest request];
           size = self->_size;
           bitmapFormat = self->_bitmapFormat;
           v28 = self->_bitmapData;
           v29 = self->_metadata;
           flavor = self->_flavor;
-          v31 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest badgeType];
+          badgeType = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest badgeType];
           *&v32 = size;
-          v33 = [(QLCacheThumbnailData *)v62 initWithCacheId:cacheId thumbnailRequest:v25 size:bitmapFormat bitmapFormat:v28 bitmapData:v29 metadata:flavor flavor:v32 contentRect:self->_contentRect.origin.x badgeType:self->_contentRect.origin.y, self->_contentRect.size.width, self->_contentRect.size.height, v31];
+          v33 = [(QLCacheThumbnailData *)v62 initWithCacheId:cacheId thumbnailRequest:request size:bitmapFormat bitmapFormat:v28 bitmapData:v29 metadata:flavor flavor:v32 contentRect:self->_contentRect.origin.x badgeType:self->_contentRect.origin.y, self->_contentRect.size.width, self->_contentRect.size.height, badgeType];
         }
 
         else
@@ -640,8 +640,8 @@ LABEL_31:
           {
             v36 = self->_fileIdentifier;
             v37 = objc_opt_class();
-            v38 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest request];
-            [v37 _expectedThumbnailSizeForRequest:v38];
+            request2 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest request];
+            [v37 _expectedThumbnailSizeForRequest:request2];
             *buf = 138412546;
             v65 = v36;
             v66 = 2048;
@@ -651,11 +651,11 @@ LABEL_31:
 
           v40 = [QLCacheThumbnailData alloc];
           v41 = self->_cacheId;
-          v25 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest request];
+          request = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest request];
           v42 = self->_size;
-          v43 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest badgeType];
+          badgeType2 = [(QLTGeneratorThumbnailRequest *)self->_generatorRequest badgeType];
           *&v44 = v42;
-          v33 = [(QLCacheThumbnailData *)v40 initWithCacheId:v41 thumbnailRequest:v25 size:v43 badgeType:v44];
+          v33 = [(QLCacheThumbnailData *)v40 initWithCacheId:v41 thumbnailRequest:request size:badgeType2 badgeType:v44];
         }
 
         v45 = self->_thumbnailData;
@@ -667,7 +667,7 @@ LABEL_31:
   }
 
 LABEL_32:
-  *a3 = self->_thumbnailData;
+  *data = self->_thumbnailData;
   v46 = self->_generatorRequest;
   v47 = *MEMORY[0x277D85DE8];
 

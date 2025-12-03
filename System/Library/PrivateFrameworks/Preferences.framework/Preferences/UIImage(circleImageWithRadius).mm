@@ -8,22 +8,22 @@
 {
   v5 = MEMORY[0x1E69DCEB0];
   v6 = a4;
-  v7 = [v5 mainScreen];
-  [v7 scale];
+  mainScreen = [v5 mainScreen];
+  [mainScreen scale];
   v9 = v8;
-  v15.width = a1;
-  v15.height = a1;
+  v15.width = self;
+  v15.height = self;
   UIGraphicsBeginImageContextWithOptions(v15, 0, v9);
 
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v11 = [v6 CGColor];
+  cGColor = [v6 CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v11);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v16.origin.x = 0.0;
   v16.origin.y = 0.0;
-  v16.size.width = a1;
-  v16.size.height = a1;
+  v16.size.width = self;
+  v16.size.height = self;
   CGContextFillEllipseInRect(CurrentContext, v16);
   CGContextRestoreGState(CurrentContext);
   v12 = UIGraphicsGetImageFromCurrentImageContext();

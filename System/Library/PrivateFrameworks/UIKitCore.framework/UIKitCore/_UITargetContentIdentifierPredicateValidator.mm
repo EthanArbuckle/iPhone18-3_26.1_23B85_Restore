@@ -1,21 +1,21 @@
 @interface _UITargetContentIdentifierPredicateValidator
-- (BOOL)validatePredicate:(id)a3 compileTimeIssues:(id *)a4 runTimeIssues:(id *)a5;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (BOOL)validatePredicate:(id)predicate compileTimeIssues:(id *)issues runTimeIssues:(id *)timeIssues;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation _UITargetContentIdentifierPredicateValidator
 
-- (BOOL)validatePredicate:(id)a3 compileTimeIssues:(id *)a4 runTimeIssues:(id *)a5
+- (BOOL)validatePredicate:(id)predicate compileTimeIssues:(id *)issues runTimeIssues:(id *)timeIssues
 {
-  v8 = a3;
+  predicateCopy = predicate;
   compileTimeIssues = self->_compileTimeIssues;
   self->_compileTimeIssues = 0;
 
-  [v8 acceptVisitor:self flags:3];
-  if (a4)
+  [predicateCopy acceptVisitor:self flags:3];
+  if (issues)
   {
-    *a4 = self->_compileTimeIssues;
+    *issues = self->_compileTimeIssues;
   }
 
   if (self->_compileTimeIssues)
@@ -27,17 +27,17 @@
   else
   {
     v17 = 0;
-    v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v17];
+    v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:predicateCopy requiringSecureCoding:1 error:&v17];
     v13 = v17;
     v11 = 0;
     if ([v12 length] >= 0x186A1)
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"predicate will be ignored because it is too large"];
       v11 = v14;
-      if (a5)
+      if (timeIssues)
       {
         v15 = v14;
-        *a5 = v11;
+        *timeIssues = v11;
       }
     }
 
@@ -48,7 +48,7 @@
 
     else
     {
-      [v8 allowEvaluation];
+      [predicateCopy allowEvaluation];
       v11 = 0;
       v10 = 1;
     }
@@ -57,29 +57,29 @@
   return v10;
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
-  v11 = a3;
-  v4 = [v11 operatorType];
-  if (v4 > 98)
+  operatorCopy = operator;
+  operatorType = [operatorCopy operatorType];
+  if (operatorType > 98)
   {
-    if (v4 > 1099)
+    if (operatorType > 1099)
     {
-      if ((v4 - 1100) < 2 || v4 == 2000)
+      if ((operatorType - 1100) < 2 || operatorType == 2000)
       {
         goto LABEL_4;
       }
     }
 
-    else if ((v4 - 99) < 2 || v4 == 1000)
+    else if ((operatorType - 99) < 2 || operatorType == 1000)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v4 <= 0xB)
+  else if (operatorType <= 0xB)
   {
-    if (((1 << v4) & 0x7BF) != 0)
+    if (((1 << operatorType) & 0x7BF) != 0)
     {
       goto LABEL_4;
     }
@@ -88,14 +88,14 @@
     goto LABEL_18;
   }
 
-  v5 = [v11 operatorType];
-  if ((v5 - 1100) >= 2 && v5 != 1000 && v5 != 2000)
+  operatorType2 = [operatorCopy operatorType];
+  if ((operatorType2 - 1100) >= 2 && operatorType2 != 1000 && operatorType2 != 2000)
   {
     v6 = @"operator '%@' is not recognized";
 LABEL_18:
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v11 symbol];
-    v9 = [v7 stringWithFormat:v6, v8];
+    symbol = [operatorCopy symbol];
+    v9 = [v7 stringWithFormat:v6, symbol];
     compileTimeIssues = self->_compileTimeIssues;
     self->_compileTimeIssues = v9;
   }
@@ -103,21 +103,21 @@ LABEL_18:
 LABEL_4:
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v8 = a3;
-  v4 = [v8 expressionType];
-  if (v4 > 0x14)
+  expressionCopy = expression;
+  expressionType = [expressionCopy expressionType];
+  if (expressionType > 0x14)
   {
     goto LABEL_9;
   }
 
-  if (((1 << v4) & 0x10E0E3) != 0)
+  if (((1 << expressionType) & 0x10E0E3) != 0)
   {
     goto LABEL_6;
   }
 
-  if (((1 << v4) & 0x8001C) != 0)
+  if (((1 << expressionType) & 0x8001C) != 0)
   {
     v5 = @"expression '%@' is not allowed";
   }
@@ -128,9 +128,9 @@ LABEL_9:
     v5 = @"expression '%@' is not recognized";
   }
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v8];
+  expressionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:v5, expressionCopy];
   compileTimeIssues = self->_compileTimeIssues;
-  self->_compileTimeIssues = v6;
+  self->_compileTimeIssues = expressionCopy;
 
 LABEL_6:
 }

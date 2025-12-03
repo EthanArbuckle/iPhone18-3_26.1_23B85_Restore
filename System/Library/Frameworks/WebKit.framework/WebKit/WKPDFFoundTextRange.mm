@@ -1,14 +1,14 @@
 @interface WKPDFFoundTextRange
-+ (id)foundTextRangeWithIndex:(unint64_t)a3;
++ (id)foundTextRangeWithIndex:(unint64_t)index;
 - (id)start;
 @end
 
 @implementation WKPDFFoundTextRange
 
-+ (id)foundTextRangeWithIndex:(unint64_t)a3
++ (id)foundTextRangeWithIndex:(unint64_t)index
 {
   v4 = objc_alloc_init(WKPDFFoundTextRange);
-  [(WKPDFFoundTextRange *)v4 setIndex:a3];
+  [(WKPDFFoundTextRange *)v4 setIndex:index];
   if (v4)
   {
     v5 = v4;
@@ -19,9 +19,9 @@
 
 - (id)start
 {
-  v2 = [(WKPDFFoundTextRange *)self index];
+  index = [(WKPDFFoundTextRange *)self index];
 
-  return [WKPDFFoundTextPosition textPositionWithIndex:v2];
+  return [WKPDFFoundTextPosition textPositionWithIndex:index];
 }
 
 @end

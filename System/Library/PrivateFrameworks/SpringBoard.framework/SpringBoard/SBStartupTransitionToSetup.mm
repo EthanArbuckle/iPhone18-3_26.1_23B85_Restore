@@ -1,31 +1,31 @@
 @interface SBStartupTransitionToSetup
-- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)a3 context:(id)a4;
-- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)a3 context:(id)a4 initialRestartState:(id)a5;
-- (void)_activateSetupWithCompletion:(id)a3 underLock:(BOOL)a4 fromSnapshot:(BOOL)a5;
-- (void)performTransitionWithCompletionBlock:(id)a3;
+- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)destination context:(id)context;
+- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)destination context:(id)context initialRestartState:(id)state;
+- (void)_activateSetupWithCompletion:(id)completion underLock:(BOOL)lock fromSnapshot:(BOOL)snapshot;
+- (void)performTransitionWithCompletionBlock:(id)block;
 @end
 
 @implementation SBStartupTransitionToSetup
 
-- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)a3 context:(id)a4 initialRestartState:(id)a5
+- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)destination context:(id)context initialRestartState:(id)state
 {
-  v9 = a5;
+  stateCopy = state;
   v22.receiver = self;
   v22.super_class = SBStartupTransitionToSetup;
-  v10 = [(SBBaseStartupTransition *)&v22 initWithDestination:a3 context:a4];
+  v10 = [(SBBaseStartupTransition *)&v22 initWithDestination:destination context:context];
   if (v10)
   {
-    v11 = [SBApp bannerManager];
+    bannerManager = [SBApp bannerManager];
     bannerManager = v10->_bannerManager;
-    v10->_bannerManager = v11;
+    v10->_bannerManager = bannerManager;
 
     v13 = +[SBLockScreenManager sharedInstance];
     lockScreenManager = v10->_lockScreenManager;
     v10->_lockScreenManager = v13;
 
-    v15 = [SBApp authenticationController];
+    authenticationController = [SBApp authenticationController];
     authController = v10->_authController;
-    v10->_authController = v15;
+    v10->_authController = authenticationController;
 
     v17 = +[SBApplicationController sharedInstance];
     appController = v10->_appController;
@@ -35,30 +35,30 @@
     setupManager = v10->_setupManager;
     v10->_setupManager = v19;
 
-    objc_storeStrong(&v10->_initialRestartState, a5);
+    objc_storeStrong(&v10->_initialRestartState, state);
   }
 
   return v10;
 }
 
-- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)a3 context:(id)a4
+- (SBStartupTransitionToSetup)initWithDestination:(unint64_t)destination context:(id)context
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBStartupTransitionToSetup.m" lineNumber:55 description:@"use initWithDestination:context:initialRestartState:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBStartupTransitionToSetup.m" lineNumber:55 description:@"use initWithDestination:context:initialRestartState:"];
 
   return 0;
 }
 
-- (void)performTransitionWithCompletionBlock:(id)a3
+- (void)performTransitionWithCompletionBlock:(id)block
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBStartupTransitionToSetup *)a2 performTransitionWithCompletionBlock:?];
   }
 
-  v6 = [(SBBaseStartupTransition *)self context];
+  context = [(SBBaseStartupTransition *)self context];
   if (__sb__runningInSpringBoard())
   {
     if (SBFEffectiveDeviceClass() == 2)
@@ -69,10 +69,10 @@
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 != 1)
+  if (userInterfaceIdiom != 1)
   {
 LABEL_7:
     [SBApp updateNativeOrientationWithOrientation:1 updateMirroredDisplays:1 animated:0 logMessage:@"Setting orientation to Portrait for boot to Setup."];
@@ -80,20 +80,20 @@ LABEL_7:
   }
 
 LABEL_8:
-  v9 = [v6 overlay];
+  overlay = [context overlay];
 
   [(SBBannerManager *)self->_bannerManager setSuspended:1 forReason:@"com.apple.purplebuddy"];
-  v10 = [v6 isLogin];
-  v11 = [(SBInitialRestartState *)self->_initialRestartState hasPasscodeSet];
-  v12 = [v6 fromUserPowerDown];
-  v13 = [MEMORY[0x277D29520] sharedInstance];
+  isLogin = [context isLogin];
+  hasPasscodeSet = [(SBInitialRestartState *)self->_initialRestartState hasPasscodeSet];
+  fromUserPowerDown = [context fromUserPowerDown];
+  mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
   v25 = 0;
-  v14 = [v13 needOwnershipWarning:&v25];
+  v14 = [mEMORY[0x277D29520] needOwnershipWarning:&v25];
   v15 = v25;
 
-  if ((v10 & 1) != 0 || v9 || !((v11 || (v12 & 1) == 0) | v14 & 1))
+  if ((isLogin & 1) != 0 || overlay || !((hasPasscodeSet || (fromUserPowerDown & 1) == 0) | v14 & 1))
   {
-    [(SBStartupTransitionToSetup *)self _activateSetupWithCompletion:v5 underLock:0 fromSnapshot:v9 != 0];
+    [(SBStartupTransitionToSetup *)self _activateSetupWithCompletion:blockCopy underLock:0 fromSnapshot:overlay != 0];
   }
 
   else
@@ -122,37 +122,37 @@ LABEL_8:
     v22[2] = __67__SBStartupTransitionToSetup_performTransitionWithCompletionBlock___block_invoke;
     v22[3] = &unk_2783A9C98;
     v22[4] = self;
-    v23 = v5;
+    v23 = blockCopy;
     [(SBLockScreenManager *)lockScreenManager lockUIFromSource:16 withOptions:v21 completion:v22];
   }
 }
 
-- (void)_activateSetupWithCompletion:(id)a3 underLock:(BOOL)a4 fromSnapshot:(BOOL)a5
+- (void)_activateSetupWithCompletion:(id)completion underLock:(BOOL)lock fromSnapshot:(BOOL)snapshot
 {
-  v9 = a3;
-  if (!v9)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [SBStartupTransitionToSetup _activateSetupWithCompletion:a2 underLock:self fromSnapshot:?];
   }
 
-  v10 = [(SBBaseStartupTransition *)self context];
-  v11 = [v10 isLogin];
-  v12 = [(SBApplicationController *)self->_appController setupApplication];
-  v13 = [(SBBaseStartupTransition *)self mainWorkspace];
+  context = [(SBBaseStartupTransition *)self context];
+  isLogin = [context isLogin];
+  setupApplication = [(SBApplicationController *)self->_appController setupApplication];
+  mainWorkspace = [(SBBaseStartupTransition *)self mainWorkspace];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__SBStartupTransitionToSetup__activateSetupWithCompletion_underLock_fromSnapshot___block_invoke;
   v17[3] = &unk_2783C4DB0;
-  v21 = a4;
-  v22 = v11;
-  v18 = v12;
-  v19 = v10;
-  v23 = a5;
-  v20 = v9;
-  v14 = v9;
-  v15 = v10;
-  v16 = v12;
-  [v13 requestTransitionWithOptions:0 builder:v17 validator:&__block_literal_global_453];
+  lockCopy = lock;
+  v22 = isLogin;
+  v18 = setupApplication;
+  v19 = context;
+  snapshotCopy = snapshot;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = context;
+  v16 = setupApplication;
+  [mainWorkspace requestTransitionWithOptions:0 builder:v17 validator:&__block_literal_global_453];
 }
 
 void __82__SBStartupTransitionToSetup__activateSetupWithCompletion_underLock_fromSnapshot___block_invoke(uint64_t a1, void *a2)

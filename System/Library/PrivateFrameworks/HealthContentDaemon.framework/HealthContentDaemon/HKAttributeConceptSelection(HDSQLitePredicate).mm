@@ -7,11 +7,11 @@
 - (id)predicateWithProfile:()HDSQLitePredicate
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v2 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeType([a1 type], 1);
-  v3 = [a1 value];
-  [a1 operatorType];
+  v2 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeType([self type], 1);
+  value = [self value];
+  [self operatorType];
   v4 = HDSQLiteComparisonTypeForPredicateOperator();
-  v5 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeValue(v3, v4);
+  v5 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeValue(value, v4);
   v6 = MEMORY[0x277D10B20];
   v11[0] = v2;
   v11[1] = v5;

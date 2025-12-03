@@ -1,33 +1,33 @@
 @interface ICASCollaborationItemType
-- (ICASCollaborationItemType)initWithCollaborationItemType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollaborationItemType)initWithCollaborationItemType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollaborationItemType
 
-- (ICASCollaborationItemType)initWithCollaborationItemType:(int64_t)a3
+- (ICASCollaborationItemType)initWithCollaborationItemType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASCollaborationItemType;
   result = [(ICASCollaborationItemType *)&v5 init];
   if (result)
   {
-    result->_collaborationItemType = a3;
+    result->_collaborationItemType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollaborationItemType *)self collaborationItemType];
+  collaborationItemType = [(ICASCollaborationItemType *)self collaborationItemType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (collaborationItemType == 1)
   {
     v4 = @"note";
   }
 
-  if (v3 == 2)
+  if (collaborationItemType == 2)
   {
     return @"folder";
   }

@@ -1,18 +1,18 @@
 @interface SFPrivateBrowsingExplanationModuleCell
-- (SFPrivateBrowsingExplanationModuleCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_setExplanationView:(id)a3 animated:(BOOL)a4;
-- (void)configureUsingBanner:(id)a3;
+- (SFPrivateBrowsingExplanationModuleCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_setExplanationView:(id)view animated:(BOOL)animated;
+- (void)configureUsingBanner:(id)banner;
 - (void)layoutSubviews;
 @end
 
 @implementation SFPrivateBrowsingExplanationModuleCell
 
-- (SFPrivateBrowsingExplanationModuleCell)initWithFrame:(CGRect)a3
+- (SFPrivateBrowsingExplanationModuleCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SFPrivateBrowsingExplanationModuleCell;
-  v3 = [(SFPrivateBrowsingExplanationModuleCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivateBrowsingExplanationModuleCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [(UIVisualEffectView *)SFBannerBackgroundView sf_startPageCellBackgroundEffectViewWithShadow:1];
@@ -30,44 +30,44 @@
   return v3;
 }
 
-- (void)configureUsingBanner:(id)a3
+- (void)configureUsingBanner:(id)banner
 {
-  v9 = a3;
+  bannerCopy = banner;
   [(SFPrivateBrowsingExplanationModuleCell *)self invalidateIntrinsicContentSize];
   explanationView = self->_explanationView;
-  if (explanationView && (-[SFPrivateBrowsingExplanationModuleContentView banner](explanationView, "banner"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 privateBrowsingExplanationState], v7 = objc_msgSend(v9, "privateBrowsingExplanationState"), v5, v6 == v7))
+  if (explanationView && (-[SFPrivateBrowsingExplanationModuleContentView banner](explanationView, "banner"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 privateBrowsingExplanationState], v7 = objc_msgSend(bannerCopy, "privateBrowsingExplanationState"), v5, v6 == v7))
   {
-    [(SFPrivateBrowsingExplanationModuleContentView *)self->_explanationView setBanner:v9];
+    [(SFPrivateBrowsingExplanationModuleContentView *)self->_explanationView setBanner:bannerCopy];
   }
 
   else
   {
-    v8 = [[SFPrivateBrowsingExplanationModuleContentView alloc] initWithBanner:v9];
+    v8 = [[SFPrivateBrowsingExplanationModuleContentView alloc] initWithBanner:bannerCopy];
     [(SFPrivateBrowsingExplanationModuleCell *)self _setExplanationView:v8 animated:self->_explanationView != 0];
   }
 }
 
-- (void)_setExplanationView:(id)a3 animated:(BOOL)a4
+- (void)_setExplanationView:(id)view animated:(BOOL)animated
 {
-  v7 = a3;
+  viewCopy = view;
   v8 = self->_explanationView;
-  if (v8 != v7)
+  if (v8 != viewCopy)
   {
-    objc_storeStrong(&self->_explanationView, a3);
-    v9 = [(SFPrivateBrowsingExplanationModuleCell *)self contentView];
-    [v9 addSubview:v7];
+    objc_storeStrong(&self->_explanationView, view);
+    contentView = [(SFPrivateBrowsingExplanationModuleCell *)self contentView];
+    [contentView addSubview:viewCopy];
 
     [(SFPrivateBrowsingExplanationModuleCell *)self setNeedsLayout];
-    if (a4)
+    if (animated)
     {
       v10 = MEMORY[0x1E69DD250];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __71__SFPrivateBrowsingExplanationModuleCell__setExplanationView_animated___block_invoke;
       v20[3] = &unk_1E721B400;
-      v11 = v7;
+      v11 = viewCopy;
       v21 = v11;
-      v22 = self;
+      selfCopy = self;
       [v10 performWithoutAnimation:v20];
       v12 = MEMORY[0x1E69DD250];
       v18[0] = MEMORY[0x1E69E9820];
@@ -110,16 +110,16 @@ uint64_t __71__SFPrivateBrowsingExplanationModuleCell__setExplanationView_animat
   v4.receiver = self;
   v4.super_class = SFPrivateBrowsingExplanationModuleCell;
   [(SFPrivateBrowsingExplanationModuleCell *)&v4 layoutSubviews];
-  v3 = [(SFPrivateBrowsingExplanationModuleCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SFPrivateBrowsingExplanationModuleCell *)self contentView];
+  [contentView bounds];
   [(SFPrivateBrowsingExplanationModuleContentView *)self->_explanationView setFrame:?];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v12.receiver = self;
   v12.super_class = SFPrivateBrowsingExplanationModuleCell;
-  v4 = [(SFPrivateBrowsingExplanationModuleCell *)&v12 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(SFPrivateBrowsingExplanationModuleCell *)&v12 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 bounds];
   [(SFPrivateBrowsingExplanationModuleContentView *)self->_explanationView setFrame:0.0, 0.0, CGRectGetWidth(v14), 2000.0];
   [(SFPrivateBrowsingExplanationModuleContentView *)self->_explanationView layoutIfNeeded];

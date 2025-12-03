@@ -6,13 +6,13 @@
 
 + (NSURL)accessoryStoreURL
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
-  v4 = v3;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
+  v4 = countryCode;
   v5 = &stru_2823E0EE8;
-  if (v3)
+  if (countryCode)
   {
-    v5 = v3;
+    v5 = countryCode;
   }
 
   v6 = v5;

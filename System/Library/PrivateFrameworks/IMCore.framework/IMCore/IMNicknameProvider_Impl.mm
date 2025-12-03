@@ -1,31 +1,31 @@
 @interface IMNicknameProvider_Impl
-- (BOOL)hasObservedTransitionForHandleID:(id)a3;
-- (id)allNicknamesForContact:(id)a3;
-- (id)currentNicknameForContact:(id)a3;
-- (id)nicknameForContact:(id)a3;
-- (id)nicknameForHandleID:(id)a3;
-- (id)pendingNicknameForContact:(id)a3;
-- (id)unknownSenderRecordInfoFor:(id)a3;
-- (void)bannerActionTappedFrom:(id)a3 on:(unint64_t)a4;
-- (void)connectionStartedWithNotification:(id)a3;
-- (void)markTransitionAsObservedForHandleID:(id)a3 isAutoUpdate:(BOOL)a4;
-- (void)nicknameForCurrentUserWithCompletionHandler:(id)a3;
-- (void)nicknamesDidChangeWithNotification:(id)a3;
-- (void)sendNameOnlyTo:(id)a3 from:(id)a4;
-- (void)sendPersonalNicknameTo:(id)a3;
-- (void)sendPersonalNicknameTo:(id)a3 from:(id)a4;
-- (void)setNicknameListener:(id)a3;
-- (void)setPersonalNicknameWith:(id)a3;
-- (void)updatePendingNicknameWith:(id)a3;
+- (BOOL)hasObservedTransitionForHandleID:(id)d;
+- (id)allNicknamesForContact:(id)contact;
+- (id)currentNicknameForContact:(id)contact;
+- (id)nicknameForContact:(id)contact;
+- (id)nicknameForHandleID:(id)d;
+- (id)pendingNicknameForContact:(id)contact;
+- (id)unknownSenderRecordInfoFor:(id)for;
+- (void)bannerActionTappedFrom:(id)from on:(unint64_t)on;
+- (void)connectionStartedWithNotification:(id)notification;
+- (void)markTransitionAsObservedForHandleID:(id)d isAutoUpdate:(BOOL)update;
+- (void)nicknameForCurrentUserWithCompletionHandler:(id)handler;
+- (void)nicknamesDidChangeWithNotification:(id)notification;
+- (void)sendNameOnlyTo:(id)to from:(id)from;
+- (void)sendPersonalNicknameTo:(id)to;
+- (void)sendPersonalNicknameTo:(id)to from:(id)from;
+- (void)setNicknameListener:(id)listener;
+- (void)setPersonalNicknameWith:(id)with;
+- (void)updatePendingNicknameWith:(id)with;
 @end
 
 @implementation IMNicknameProvider_Impl
 
-- (id)allNicknamesForContact:(id)a3
+- (id)allNicknamesForContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A8248AE8(v4);
+  contactCopy = contact;
+  selfCopy = self;
+  sub_1A8248AE8(contactCopy);
 
   sub_1A8249548();
   v6 = sub_1A84E5D2C();
@@ -33,7 +33,7 @@
   return v6;
 }
 
-- (void)setNicknameListener:(id)a3
+- (void)setNicknameListener:(id)listener
 {
   v4 = *(&self->super.isa + OBJC_IVAR___IMNicknameProvider_Impl_daemonConnection);
   v7[4] = nullsub_4;
@@ -44,21 +44,21 @@
   v7[3] = &unk_1F1B76770;
   v5 = _Block_copy(v7);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   [v4 connectWithCompletion_];
   _Block_release(v5);
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRelease();
 }
 
-- (void)nicknamesDidChangeWithNotification:(id)a3
+- (void)nicknamesDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A824A700(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1A824A700(notificationCopy);
 }
 
-- (void)connectionStartedWithNotification:(id)a3
+- (void)connectionStartedWithNotification:(id)notification
 {
   v4 = sub_1A84E535C();
   v5 = *(v4 - 8);
@@ -66,28 +66,28 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1A84E533C();
-  v9 = self;
+  selfCopy = self;
   sub_1A824FD40();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (id)currentNicknameForContact:(id)a3
+- (id)currentNicknameForContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A8263714(v4);
+  contactCopy = contact;
+  selfCopy = self;
+  v6 = sub_1A8263714(contactCopy);
 
   return v6;
 }
 
-- (void)nicknameForCurrentUserWithCompletionHandler:(id)a3
+- (void)nicknameForCurrentUserWithCompletionHandler:(id)handler
 {
   v5 = sub_1A83EA2FC(&qword_1EB2E6600, &qword_1A8507BA0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -103,39 +103,39 @@
   v13[3] = 0;
   v13[4] = &unk_1A85008C0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1A84CF9DC(0, 0, v8, &unk_1A8507BC0, v13);
 }
 
-- (id)nicknameForHandleID:(id)a3
+- (id)nicknameForHandleID:(id)d
 {
   v4 = sub_1A84E5DBC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A84CD0C4(v4, v6);
 
   return v8;
 }
 
-- (id)nicknameForContact:(id)a3
+- (id)nicknameForContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A84CD2B4(v4);
+  contactCopy = contact;
+  selfCopy = self;
+  v6 = sub_1A84CD2B4(contactCopy);
 
   return v6;
 }
 
-- (id)pendingNicknameForContact:(id)a3
+- (id)pendingNicknameForContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A84CD328(v4);
+  contactCopy = contact;
+  selfCopy = self;
+  v6 = sub_1A84CD328(contactCopy);
 
   return v6;
 }
 
-- (BOOL)hasObservedTransitionForHandleID:(id)a3
+- (BOOL)hasObservedTransitionForHandleID:(id)d
 {
   v5 = *(&self->super.isa + OBJC_IVAR___IMNicknameProvider_Impl_daemonConnection);
   v10[4] = nullsub_4;
@@ -145,69 +145,69 @@
   v10[2] = sub_1A824B720;
   v10[3] = &unk_1F1B76798;
   v6 = _Block_copy(v10);
-  v7 = a3;
-  v8 = self;
+  dCopy = d;
+  selfCopy = self;
   [v5 connectWithCompletion_];
   _Block_release(v6);
-  LOBYTE(v5) = [*(&v8->super.isa + OBJC_IVAR___IMNicknameProvider_Impl_nicknameController) hasObservedTransitionForHandleID_];
+  LOBYTE(v5) = [*(&selfCopy->super.isa + OBJC_IVAR___IMNicknameProvider_Impl_nicknameController) hasObservedTransitionForHandleID_];
 
   return v5;
 }
 
-- (void)markTransitionAsObservedForHandleID:(id)a3 isAutoUpdate:(BOOL)a4
+- (void)markTransitionAsObservedForHandleID:(id)d isAutoUpdate:(BOOL)update
 {
   v6 = sub_1A84E5DBC();
   v8 = v7;
-  v9 = self;
-  sub_1A84CD59C(v6, v8, a4);
+  selfCopy = self;
+  sub_1A84CD59C(v6, v8, update);
 }
 
-- (void)updatePendingNicknameWith:(id)a3
+- (void)updatePendingNicknameWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A84CD834(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_1A84CD834(withCopy);
 }
 
-- (void)setPersonalNicknameWith:(id)a3
+- (void)setPersonalNicknameWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A84CDC2C(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_1A84CDC2C(withCopy);
 }
 
-- (void)sendPersonalNicknameTo:(id)a3
+- (void)sendPersonalNicknameTo:(id)to
 {
   v4 = sub_1A84E5DBC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1A84CDF7C(v4, v6);
 }
 
-- (void)sendPersonalNicknameTo:(id)a3 from:(id)a4
+- (void)sendPersonalNicknameTo:(id)to from:(id)from
 {
   v5 = sub_1A84E5DBC();
   v7 = v6;
   v8 = sub_1A84E5DBC();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_1A84CE1F8(v5, v7, v8, v10);
 }
 
-- (void)sendNameOnlyTo:(id)a3 from:(id)a4
+- (void)sendNameOnlyTo:(id)to from:(id)from
 {
   v5 = sub_1A84E5FFC();
   v6 = sub_1A84E5DBC();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1A84CE500(v5, v6, v8);
 }
 
-- (id)unknownSenderRecordInfoFor:(id)a3
+- (id)unknownSenderRecordInfoFor:(id)for
 {
   v4 = sub_1A84E5DBC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A84CE7BC(v4, v6);
 
   if (v8)
@@ -224,12 +224,12 @@
   return v9;
 }
 
-- (void)bannerActionTappedFrom:(id)a3 on:(unint64_t)a4
+- (void)bannerActionTappedFrom:(id)from on:(unint64_t)on
 {
   v6 = sub_1A84E5DBC();
   v8 = v7;
-  v9 = self;
-  sub_1A84CEAB4(v6, v8, a4);
+  selfCopy = self;
+  sub_1A84CEAB4(v6, v8, on);
 }
 
 @end

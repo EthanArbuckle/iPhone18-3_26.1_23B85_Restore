@@ -1,38 +1,38 @@
 @interface ANLocalPlaybackSessionInterfaceDelegateProxy
 - (ANLocalPlaybackSessionServiceInterfaceDelegate)delegate;
-- (void)announcementsStateUpdate:(unint64_t)a3;
-- (void)announcementsWillStartPlaying:(unint64_t)a3;
-- (void)didReceiveAnnouncement:(id)a3 forGroupID:(id)a4;
-- (void)didUpdatePlaybackInfo:(id)a3;
+- (void)announcementsStateUpdate:(unint64_t)update;
+- (void)announcementsWillStartPlaying:(unint64_t)playing;
+- (void)didReceiveAnnouncement:(id)announcement forGroupID:(id)d;
+- (void)didUpdatePlaybackInfo:(id)info;
 @end
 
 @implementation ANLocalPlaybackSessionInterfaceDelegateProxy
 
-- (void)announcementsWillStartPlaying:(unint64_t)a3
+- (void)announcementsWillStartPlaying:(unint64_t)playing
 {
-  v4 = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
-  [v4 announcementsWillStartPlaying:a3];
+  delegate = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
+  [delegate announcementsWillStartPlaying:playing];
 }
 
-- (void)announcementsStateUpdate:(unint64_t)a3
+- (void)announcementsStateUpdate:(unint64_t)update
 {
-  v4 = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
-  [v4 announcementsStateUpdate:a3];
+  delegate = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
+  [delegate announcementsStateUpdate:update];
 }
 
-- (void)didReceiveAnnouncement:(id)a3 forGroupID:(id)a4
+- (void)didReceiveAnnouncement:(id)announcement forGroupID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
-  [v8 didReceiveAnnouncement:v7 forGroupID:v6];
+  dCopy = d;
+  announcementCopy = announcement;
+  delegate = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
+  [delegate didReceiveAnnouncement:announcementCopy forGroupID:dCopy];
 }
 
-- (void)didUpdatePlaybackInfo:(id)a3
+- (void)didUpdatePlaybackInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
-  [v5 didUpdatePlaybackInfo:v4];
+  infoCopy = info;
+  delegate = [(ANLocalPlaybackSessionInterfaceDelegateProxy *)self delegate];
+  [delegate didUpdatePlaybackInfo:infoCopy];
 }
 
 - (ANLocalPlaybackSessionServiceInterfaceDelegate)delegate

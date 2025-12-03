@@ -29,39 +29,39 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)musicKit_commandDialog_localizedTitle
 {
-  v1 = [a1 _musicKit_self_commandDialog];
-  v2 = [v1 localizedTitle];
+  _musicKit_self_commandDialog = [self _musicKit_self_commandDialog];
+  localizedTitle = [_musicKit_self_commandDialog localizedTitle];
 
-  return v2;
+  return localizedTitle;
 }
 
 - (id)musicKit_commandDialog_localizedMessage
 {
-  v1 = [a1 _musicKit_self_commandDialog];
-  v2 = [v1 localizedMessage];
+  _musicKit_self_commandDialog = [self _musicKit_self_commandDialog];
+  localizedMessage = [_musicKit_self_commandDialog localizedMessage];
 
-  return v2;
+  return localizedMessage;
 }
 
 - (id)musicKit_commandDialog_actions
 {
-  v1 = [a1 _musicKit_self_commandDialog];
-  v2 = [v1 actions];
+  _musicKit_self_commandDialog = [self _musicKit_self_commandDialog];
+  actions = [_musicKit_self_commandDialog actions];
 
-  return v2;
+  return actions;
 }
 
 @end

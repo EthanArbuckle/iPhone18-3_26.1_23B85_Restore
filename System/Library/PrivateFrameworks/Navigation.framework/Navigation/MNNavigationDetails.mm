@@ -1,26 +1,26 @@
 @interface MNNavigationDetails
 - (BOOL)isFollowingOriginalRoute;
-- (MNNavigationDetails)initWithCoder:(id)a3;
+- (MNNavigationDetails)initWithCoder:(id)coder;
 - (NSArray)alternateRoutes;
 - (NSArray)previewRoutes;
 - (NSMapTable)routeIDLookup;
 - (id)description;
-- (id)initForServer:(BOOL)a3;
-- (id)routeInfoForID:(id)a3;
-- (id)routeInfoForRoute:(id)a3;
+- (id)initForServer:(BOOL)server;
+- (id)routeInfoForID:(id)d;
+- (id)routeInfoForRoute:(id)route;
 - (id)routeLookupIDs;
 - (unint64_t)segmentIndex;
-- (void)_handleTrafficIncidentAlertUpdate:(id)a3;
+- (void)_handleTrafficIncidentAlertUpdate:(id)update;
 - (void)_updateRouteIDLookup;
-- (void)copySerializableValuesFrom:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)markAnnouncementSpoken:(id)a3;
-- (void)setAlternateRoutes:(id)a3;
-- (void)setCurrentRoute:(id)a3 withAlternateRoutes:(id)a4;
-- (void)setLocation:(id)a3;
-- (void)setPreviewRoutes:(id)a3 withSelectedRouteIndex:(unint64_t)a4;
-- (void)updateETATrafficForRoute:(id)a3;
-- (void)updateWithNavigationServiceCallbackParameters:(id)a3;
+- (void)copySerializableValuesFrom:(id)from;
+- (void)encodeWithCoder:(id)coder;
+- (void)markAnnouncementSpoken:(id)spoken;
+- (void)setAlternateRoutes:(id)routes;
+- (void)setCurrentRoute:(id)route withAlternateRoutes:(id)routes;
+- (void)setLocation:(id)location;
+- (void)setPreviewRoutes:(id)routes withSelectedRouteIndex:(unint64_t)index;
+- (void)updateETATrafficForRoute:(id)route;
+- (void)updateWithNavigationServiceCallbackParameters:(id)parameters;
 @end
 
 @implementation MNNavigationDetails
@@ -87,9 +87,9 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
-        v12 = [v11 route];
+        route = [v11 route];
 
-        if (!v12)
+        if (!route)
         {
           v15 = v8;
           v16 = [*(v8 + 3776) stringWithFormat:@"No route in alternate route info."];
@@ -112,12 +112,12 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
           v8 = v15;
         }
 
-        v13 = [v11 route];
+        route2 = [v11 route];
 
-        if (v13)
+        if (route2)
         {
-          v14 = [v11 route];
-          [v3 addObject:v14];
+          route3 = [v11 route];
+          [v3 addObject:route3];
         }
 
         ++v10;
@@ -142,16 +142,16 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
   v19.receiver = self;
   v19.super_class = MNNavigationDetails;
   v3 = [(MNNavigationDetails *)&v19 description];
-  v17 = [(MNNavigationDetails *)self state];
-  v4 = [(MNNavigationDetails *)self desiredNavigationType];
-  if ((v4 - 1) > 3)
+  state = [(MNNavigationDetails *)self state];
+  desiredNavigationType = [(MNNavigationDetails *)self desiredNavigationType];
+  if ((desiredNavigationType - 1) > 3)
   {
     v5 = @"None";
   }
 
   else
   {
-    v5 = *(&off_1E842FDC8 + v4 - 1);
+    v5 = *(&off_1E842FDC8 + desiredNavigationType - 1);
   }
 
   v16 = v5;
@@ -166,22 +166,22 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
     v7 = *(&off_1E842FDC8 + v6);
   }
 
-  v8 = [(MNNavigationDetails *)self location];
-  v9 = [(MNNavigationDetails *)self guidancePromptsEnabled];
-  v10 = [(MNNavigationDetails *)self isDetour];
-  v11 = [(MNNavigationDetails *)self navigationState];
-  if (v11 >= 9)
+  location = [(MNNavigationDetails *)self location];
+  guidancePromptsEnabled = [(MNNavigationDetails *)self guidancePromptsEnabled];
+  isDetour = [(MNNavigationDetails *)self isDetour];
+  navigationState = [(MNNavigationDetails *)self navigationState];
+  if (navigationState >= 9)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", navigationState];
   }
 
   else
   {
-    v12 = *(&off_1E842FDE8 + v11);
+    v12 = *(&off_1E842FDE8 + navigationState);
   }
 
-  v13 = [(MNNavigationDetails *)self guidanceState];
-  v14 = [v18 stringWithFormat:@"%@ [state=%lu, \n             desiredNavigationType:%@, \n             navigationType=%@, \n             location=%@, \n             guidancePromptsEnabled=%d, \n             isDetour=%d, \n             navigationState=%@, \n             guidanceState=%@, \n             reconnectionRouteIndex=%lu, \n             stepIndex=%lu, \n             segmentIndex=%lu]", v3, v17, v16, v7, v8, v9, v10, v12, v13, -[MNNavigationDetails reconnectionRouteIndex](self, "reconnectionRouteIndex"), -[MNNavigationDetails stepIndex](self, "stepIndex"), -[MNNavigationDetails segmentIndex](self, "segmentIndex")];
+  guidanceState = [(MNNavigationDetails *)self guidanceState];
+  v14 = [v18 stringWithFormat:@"%@ [state=%lu, \n             desiredNavigationType:%@, \n             navigationType=%@, \n             location=%@, \n             guidancePromptsEnabled=%d, \n             isDetour=%d, \n             navigationState=%@, \n             guidanceState=%@, \n             reconnectionRouteIndex=%lu, \n             stepIndex=%lu, \n             segmentIndex=%lu]", v3, state, v16, v7, location, guidancePromptsEnabled, isDetour, v12, guidanceState, -[MNNavigationDetails reconnectionRouteIndex](self, "reconnectionRouteIndex"), -[MNNavigationDetails stepIndex](self, "stepIndex"), -[MNNavigationDetails segmentIndex](self, "segmentIndex")];
 
   return v14;
 }
@@ -203,8 +203,8 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
 
 - (void)_updateRouteIDLookup
 {
-  v3 = [(MNNavigationDetails *)self routeIDLookup];
-  [v3 removeAllObjects];
+  routeIDLookup = [(MNNavigationDetails *)self routeIDLookup];
+  [routeIDLookup removeAllObjects];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -216,7 +216,7 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
   v10 = 3221225472;
   v11 = __43__MNNavigationDetails__updateRouteIDLookup__block_invoke;
   v12 = &unk_1E8430960;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   geo_isolate_sync();
   v5 = v16[5];
@@ -224,7 +224,7 @@ void __37__MNNavigationDetails_routeLookupIDs__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __43__MNNavigationDetails__updateRouteIDLookup__block_invoke_2;
   v7[3] = &unk_1E842FDA8;
-  v6 = v3;
+  v6 = routeIDLookup;
   v8 = v6;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -269,49 +269,49 @@ void __43__MNNavigationDetails__updateRouteIDLookup__block_invoke_2(uint64_t a1,
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markAnnouncementSpoken:(id)a3
+- (void)markAnnouncementSpoken:(id)spoken
 {
-  v4 = a3;
-  if (v4)
+  spokenCopy = spoken;
+  if (spokenCopy)
   {
     spokenAnnouncements = self->_spokenAnnouncements;
-    v8 = v4;
+    v8 = spokenCopy;
     if (!spokenAnnouncements)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v7 = self->_spokenAnnouncements;
-      self->_spokenAnnouncements = v6;
+      self->_spokenAnnouncements = array;
 
       spokenAnnouncements = self->_spokenAnnouncements;
     }
 
     [(NSMutableArray *)spokenAnnouncements addObject:v8];
-    v4 = v8;
+    spokenCopy = v8;
   }
 }
 
 - (BOOL)isFollowingOriginalRoute
 {
-  v3 = [(MNNavigationDetails *)self originalRoute];
-  v4 = [v3 uniqueRouteID];
-  v5 = [(MNNavigationDetails *)self currentRoute];
-  v6 = [v5 uniqueRouteID];
-  v7 = [v4 isEqual:v6];
+  originalRoute = [(MNNavigationDetails *)self originalRoute];
+  uniqueRouteID = [originalRoute uniqueRouteID];
+  currentRoute = [(MNNavigationDetails *)self currentRoute];
+  uniqueRouteID2 = [currentRoute uniqueRouteID];
+  v7 = [uniqueRouteID isEqual:uniqueRouteID2];
 
   return v7;
 }
 
-- (id)routeInfoForRoute:(id)a3
+- (id)routeInfoForRoute:(id)route
 {
-  v4 = [(NSMapTable *)self->_routeIDLookup objectForKey:a3];
+  v4 = [(NSMapTable *)self->_routeIDLookup objectForKey:route];
   v5 = [(MNNavigationDetails *)self routeInfoForID:v4];
 
   return v5;
 }
 
-- (id)routeInfoForID:(id)a3
+- (id)routeInfoForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -319,7 +319,7 @@ void __43__MNNavigationDetails__updateRouteIDLookup__block_invoke_2(uint64_t a1,
   v13 = __Block_byref_object_dispose__15834;
   v14 = 0;
   routeLookupLock = self->_routeLookupLock;
-  v8 = v4;
+  v8 = dCopy;
   geo_isolate_sync();
   v6 = v10[5];
 
@@ -337,30 +337,30 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)updateETATrafficForRoute:(id)a3
+- (void)updateETATrafficForRoute:(id)route
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 routeID];
-  v6 = [(MNNavigationDetails *)self routeInfoForID:v5];
+  routeCopy = route;
+  routeID = [routeCopy routeID];
+  v6 = [(MNNavigationDetails *)self routeInfoForID:routeID];
 
   if (v6)
   {
-    v7 = [v4 etaRoute];
-    v8 = [v4 etaResponse];
-    [v6 updateWithETARoute:v7 etaResponse:v8];
+    etaRoute = [routeCopy etaRoute];
+    etaResponse = [routeCopy etaResponse];
+    [v6 updateWithETARoute:etaRoute etaResponse:etaResponse];
 
-    v9 = [v4 route];
-    v10 = [v9 mutableData];
-    v11 = [v6 route];
-    [v11 setMutableData:v10];
+    route = [routeCopy route];
+    mutableData = [route mutableData];
+    route2 = [v6 route];
+    [route2 setMutableData:mutableData];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected an existing route but did not find it"];
-    v10 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    route = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected an existing route but did not find it"];
+    mutableData = GEOFindOrCreateLog();
+    if (os_log_type_enabled(mutableData, OS_LOG_TYPE_ERROR))
     {
       v13 = 136316162;
       v14 = "[MNNavigationDetails updateETATrafficForRoute:]";
@@ -371,18 +371,18 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
       v19 = 2080;
       v20 = "existingRoute != nil";
       v21 = 2112;
-      v22 = v9;
-      _os_log_impl(&dword_1D311E000, v10, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: (%s) %@", &v13, 0x30u);
+      v22 = route;
+      _os_log_impl(&dword_1D311E000, mutableData, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: (%s) %@", &v13, 0x30u);
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAlternateRoutes:(id)a3
+- (void)setAlternateRoutes:(id)routes
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   v5 = MNGetMNNavigationDetailsLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -408,22 +408,22 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
   v78 = 3221225472;
   v79 = __42__MNNavigationDetails_setAlternateRoutes___block_invoke;
   v80 = &unk_1E8430960;
-  v81 = self;
+  selfCopy = self;
   v82 = buf;
   geo_isolate_sync();
-  v10 = [(MNActiveRouteInfo *)self->_currentRoute routeID];
+  routeID = [(MNActiveRouteInfo *)self->_currentRoute routeID];
 
-  if (v10)
+  if (routeID)
   {
     v11 = *(v84 + 5);
-    v12 = [(MNActiveRouteInfo *)self->_currentRoute routeID];
-    [v11 removeObject:v12];
+    routeID2 = [(MNActiveRouteInfo *)self->_currentRoute routeID];
+    [v11 removeObject:routeID2];
   }
 
   else
   {
-    v12 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    routeID2 = GEOFindOrCreateLog();
+    if (os_log_type_enabled(routeID2, OS_LOG_TYPE_ERROR))
     {
       *v96 = 136315650;
       *&v96[4] = "[MNNavigationDetails setAlternateRoutes:]";
@@ -431,17 +431,17 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
       *&v96[14] = "/Library/Caches/com.apple.xbs/Sources/Navigation/Session/MNNavigationDetails.m";
       *&v96[22] = 1024;
       LODWORD(v97) = 617;
-      _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: Hit an unreachable code path", v96, 0x1Cu);
+      _os_log_impl(&dword_1D311E000, routeID2, OS_LOG_TYPE_ERROR, "*** Assertion failure in %s, %s:%d: Hit an unreachable code path", v96, 0x1Cu);
     }
   }
 
   v13 = [MEMORY[0x1E695DFA8] set];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v4;
+  obj = routesCopy;
   v15 = [obj countByEnumeratingWithState:&v73 objects:v99 count:16];
   if (v15)
   {
@@ -459,13 +459,13 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
         }
 
         v19 = *(*(&v73 + 1) + 8 * v18);
-        v20 = [v19 routeID];
-        v21 = v20 == 0;
+        routeID3 = [v19 routeID];
+        v21 = routeID3 == 0;
 
         if (v21)
         {
-          v26 = [v19 routeID];
-          v27 = v26 == 0;
+          routeID4 = [v19 routeID];
+          v27 = routeID4 == 0;
 
           if (v27)
           {
@@ -497,8 +497,8 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
 
         else
         {
-          v22 = [v19 routeID];
-          [v13 addObject:v22];
+          routeID5 = [v19 routeID];
+          [v13 addObject:routeID5];
 
           *v96 = 0;
           *&v96[8] = v96;
@@ -513,15 +513,15 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
           v69 = &unk_1E842FD80;
           v71 = v19;
           v72 = v96;
-          v70 = self;
+          selfCopy2 = self;
           geo_isolate_sync();
           if (*(*&v96[8] + 40))
           {
-            v24 = [v19 displayETAInfo];
-            [*(*&v96[8] + 40) setDisplayETAInfo:v24];
+            displayETAInfo = [v19 displayETAInfo];
+            [*(*&v96[8] + 40) setDisplayETAInfo:displayETAInfo];
 
-            v25 = [v19 remainingDistanceInfo];
-            [*(*&v96[8] + 40) setRemainingDistanceInfo:v25];
+            remainingDistanceInfo = [v19 remainingDistanceInfo];
+            [*(*&v96[8] + 40) setRemainingDistanceInfo:remainingDistanceInfo];
           }
 
           else
@@ -534,7 +534,7 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
               v61 = 3221225472;
               v62 = __42__MNNavigationDetails_setAlternateRoutes___block_invoke_2;
               v63 = &unk_1E8430D50;
-              v64 = self;
+              selfCopy3 = self;
               v65 = v19;
               geo_isolate_sync();
             }
@@ -555,7 +555,7 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
             }
           }
 
-          [v14 addObject:*(*&v96[8] + 40)];
+          [array addObject:*(*&v96[8] + 40)];
           _Block_object_dispose(v96, 8);
         }
 
@@ -576,10 +576,10 @@ void __38__MNNavigationDetails_routeInfoForID___block_invoke(uint64_t a1)
   v55 = 3221225472;
   v56 = __42__MNNavigationDetails_setAlternateRoutes___block_invoke_177;
   v57 = &unk_1E8430960;
-  v58 = self;
+  selfCopy4 = self;
   v59 = buf;
   geo_isolate_sync();
-  objc_storeStrong(&self->_alternateRoutes, v14);
+  objc_storeStrong(&self->_alternateRoutes, array);
   v53 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -721,11 +721,11 @@ void __42__MNNavigationDetails_setAlternateRoutes___block_invoke_183(uint64_t a1
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCurrentRoute:(id)a3 withAlternateRoutes:(id)a4
+- (void)setCurrentRoute:(id)route withAlternateRoutes:(id)routes
 {
   v116 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v81 = a4;
+  routeCopy = route;
+  routesCopy = routes;
   v7 = MNGetMNNavigationDetailsLog();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -744,7 +744,7 @@ void __42__MNNavigationDetails_setAlternateRoutes___block_invoke_183(uint64_t a1
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v84 = self;
+  selfCopy = self;
   v11 = self->_alternateRoutes;
   v12 = [(NSArray *)v11 countByEnumeratingWithState:&v100 objects:v115 count:16];
   if (v12)
@@ -762,9 +762,9 @@ void __42__MNNavigationDetails_setAlternateRoutes___block_invoke_183(uint64_t a1
         }
 
         v16 = *(*(&v100 + 1) + 8 * v15);
-        v17 = [v16 routeID];
+        routeID = [v16 routeID];
 
-        if (!v17)
+        if (!routeID)
         {
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Alternate route ID is nil"];
           v23 = GEOFindOrCreateLog();
@@ -784,35 +784,35 @@ void __42__MNNavigationDetails_setAlternateRoutes___block_invoke_183(uint64_t a1
           }
         }
 
-        v18 = [v16 routeID];
-        v19 = v6;
-        v20 = [(MNActiveRouteInfo *)v6 routeID];
-        v21 = [v18 isEqual:v20];
+        routeID2 = [v16 routeID];
+        v19 = routeCopy;
+        routeID3 = [(MNActiveRouteInfo *)routeCopy routeID];
+        v21 = [routeID2 isEqual:routeID3];
 
         if (v21)
         {
           v25 = v16;
 
-          v6 = v19;
+          routeCopy = v19;
           if (!v25)
           {
             goto LABEL_28;
           }
 
-          v26 = [(MNActiveRouteInfo *)v19 displayETAInfo];
-          [v25 setDisplayETAInfo:v26];
+          displayETAInfo = [(MNActiveRouteInfo *)v19 displayETAInfo];
+          [v25 setDisplayETAInfo:displayETAInfo];
 
-          v27 = [(MNActiveRouteInfo *)v19 remainingDistanceInfo];
-          [v25 setRemainingDistanceInfo:v27];
+          remainingDistanceInfo = [(MNActiveRouteInfo *)v19 remainingDistanceInfo];
+          [v25 setRemainingDistanceInfo:remainingDistanceInfo];
 
           v28 = v25;
           v87 = 0u;
           v88 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v29 = v81;
+          v29 = routesCopy;
           v30 = [v29 countByEnumeratingWithState:&v85 objects:v104 count:16];
-          v31 = v84;
+          v31 = selfCopy;
           v78 = v28;
           if (v30)
           {
@@ -828,9 +828,9 @@ void __42__MNNavigationDetails_setAlternateRoutes___block_invoke_183(uint64_t a1
                 }
 
                 v35 = *(*(&v85 + 1) + 8 * i);
-                v36 = [(MNActiveRouteInfo *)v84->_currentRoute routeID];
-                v37 = [v35 routeID];
-                v38 = [v36 isEqual:v37];
+                routeID4 = [(MNActiveRouteInfo *)selfCopy->_currentRoute routeID];
+                routeID5 = [v35 routeID];
+                v38 = [routeID4 isEqual:routeID5];
 
                 if (v38)
                 {
@@ -849,15 +849,15 @@ void __42__MNNavigationDetails_setAlternateRoutes___block_invoke_183(uint64_t a1
             }
           }
 
-          routeLookupLock = v84->_routeLookupLock;
+          routeLookupLock = selfCopy->_routeLookupLock;
           geo_isolate_sync();
 LABEL_38:
-          v6 = v28;
+          routeCopy = v28;
           goto LABEL_39;
         }
 
         ++v15;
-        v6 = v19;
+        routeCopy = v19;
       }
 
       while (v13 != v15);
@@ -873,30 +873,30 @@ LABEL_38:
   }
 
 LABEL_28:
-  v31 = v84;
-  v40 = [(MNActiveRouteInfo *)v84->_currentRoute routeID];
+  v31 = selfCopy;
+  routeID6 = [(MNActiveRouteInfo *)selfCopy->_currentRoute routeID];
 
-  if (v40)
+  if (routeID6)
   {
-    v41 = v84->_routeLookupLock;
+    v41 = selfCopy->_routeLookupLock;
     v95 = MEMORY[0x1E69E9820];
     v96 = 3221225472;
     v97 = __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invoke;
     v98 = &unk_1E8430ED8;
-    v99 = v84;
+    v99 = selfCopy;
     geo_isolate_sync();
   }
 
-  if (v6 && ([(MNActiveRouteInfo *)v6 routeID], v42 = objc_claimAutoreleasedReturnValue(), v42, v42))
+  if (routeCopy && ([(MNActiveRouteInfo *)routeCopy routeID], v42 = objc_claimAutoreleasedReturnValue(), v42, v42))
   {
-    v43 = v84->_routeLookupLock;
+    v43 = selfCopy->_routeLookupLock;
     v89 = MEMORY[0x1E69E9820];
     v90 = 3221225472;
     v91 = __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invoke_2;
     v92 = &unk_1E8430D50;
-    v93 = v84;
-    v6 = v6;
-    v94 = v6;
+    v93 = selfCopy;
+    routeCopy = routeCopy;
+    v94 = routeCopy;
     geo_isolate_sync();
   }
 
@@ -913,54 +913,54 @@ LABEL_28:
   v78 = 0;
 LABEL_39:
   p_currentRoute = &v31->_currentRoute;
-  if (v31->_currentRoute != v6)
+  if (v31->_currentRoute != routeCopy)
   {
     spokenAnnouncements = v31->_spokenAnnouncements;
     v31->_spokenAnnouncements = 0;
 
-    v47 = [(MNActiveRouteInfo *)v31->_currentRoute route];
-    v48 = [v47 waypoints];
-    v49 = [v48 count];
-    v50 = [(MNActiveRouteInfo *)v6 route];
-    v51 = [v50 waypoints];
-    v52 = [v51 count];
+    route = [(MNActiveRouteInfo *)v31->_currentRoute route];
+    waypoints = [route waypoints];
+    v49 = [waypoints count];
+    route2 = [(MNActiveRouteInfo *)routeCopy route];
+    waypoints2 = [route2 waypoints];
+    v52 = [waypoints2 count];
 
     if (v49 == v52)
     {
-      v53 = [*p_currentRoute route];
-      v54 = [v53 waypoints];
-      v55 = [v54 count];
+      route3 = [*p_currentRoute route];
+      waypoints3 = [route3 waypoints];
+      v55 = [waypoints3 count];
 
       if (v55 >= 2)
       {
         v56 = 1;
         v82 = &v31->_currentRoute;
-        v83 = v6;
+        v83 = routeCopy;
         do
         {
-          v57 = [*p_currentRoute route];
-          v58 = [v57 waypoints];
-          v59 = [v58 objectAtIndexedSubscript:v56];
-          v60 = [v59 uniqueWaypointID];
-          v61 = [(MNActiveRouteInfo *)v6 route];
-          v62 = [v61 waypoints];
-          v63 = [v62 objectAtIndexedSubscript:v56];
-          v64 = [v63 uniqueWaypointID];
-          v65 = [v60 isEqualToData:v64];
+          route4 = [*p_currentRoute route];
+          waypoints4 = [route4 waypoints];
+          v59 = [waypoints4 objectAtIndexedSubscript:v56];
+          uniqueWaypointID = [v59 uniqueWaypointID];
+          route5 = [(MNActiveRouteInfo *)routeCopy route];
+          waypoints5 = [route5 waypoints];
+          v63 = [waypoints5 objectAtIndexedSubscript:v56];
+          uniqueWaypointID2 = [v63 uniqueWaypointID];
+          v65 = [uniqueWaypointID isEqualToData:uniqueWaypointID2];
 
-          v31 = v84;
+          v31 = selfCopy;
           if ((v65 & 1) == 0)
           {
-            v84->_isApproachingWaypoint = 0;
+            selfCopy->_isApproachingWaypoint = 0;
           }
 
           ++v56;
           p_currentRoute = v82;
-          v66 = [*v82 route];
-          v67 = [v66 waypoints];
-          v68 = [v67 count];
+          route6 = [*v82 route];
+          waypoints6 = [route6 waypoints];
+          v68 = [waypoints6 count];
 
-          v6 = v83;
+          routeCopy = v83;
         }
 
         while (v56 < v68);
@@ -968,23 +968,23 @@ LABEL_39:
     }
   }
 
-  if (v6)
+  if (routeCopy)
   {
-    v69 = [(MNActiveRouteInfo *)v6 route];
+    route7 = [(MNActiveRouteInfo *)routeCopy route];
 
-    if (v69)
+    if (route7)
     {
-      objc_storeStrong(p_currentRoute, v6);
-      v70 = [(MNActiveRouteInfo *)v6 route];
-      v71 = [v70 routeInitializerData];
-      v72 = [v71 directionsResponse];
+      objc_storeStrong(p_currentRoute, routeCopy);
+      route8 = [(MNActiveRouteInfo *)routeCopy route];
+      routeInitializerData = [route8 routeInitializerData];
+      directionsResponse = [routeInitializerData directionsResponse];
       directionsResponse = v31->_directionsResponse;
-      v31->_directionsResponse = v72;
+      v31->_directionsResponse = directionsResponse;
     }
   }
 
   [(MNNavigationDetails *)v31 _updateRouteIDLookup];
-  [(MNNavigationDetails *)v31 setAlternateRoutes:v81];
+  [(MNNavigationDetails *)v31 setAlternateRoutes:routesCopy];
   v74 = v79;
   v75 = v74;
   if (v80 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v74))
@@ -1018,11 +1018,11 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
   [v3 removeObjectForKey:v2];
 }
 
-- (void)setPreviewRoutes:(id)a3 withSelectedRouteIndex:(unint64_t)a4
+- (void)setPreviewRoutes:(id)routes withSelectedRouteIndex:(unint64_t)index
 {
   v57 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a3;
+  routesCopy = routes;
+  routesCopy2 = routes;
   v5 = MNGetMNNavigationDetailsLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -1042,7 +1042,7 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v35 = self;
+  selfCopy = self;
   p_previewRoutes = &self->_previewRoutes;
   v10 = self->_previewRoutes;
   v11 = [(NSArray *)v10 countByEnumeratingWithState:&v41 objects:v56 count:16];
@@ -1059,10 +1059,10 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v41 + 1) + 8 * i) routeID];
-        if (v15)
+        routeID = [*(*(&v41 + 1) + 8 * i) routeID];
+        if (routeID)
         {
-          [v9 addObject:v15];
+          [v9 addObject:routeID];
         }
 
         else
@@ -1097,7 +1097,7 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v19 = v33;
+  v19 = routesCopy2;
   v20 = [v19 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v20)
   {
@@ -1112,10 +1112,10 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v37 + 1) + 8 * j) routeID];
-        if (v24)
+        routeID2 = [*(*(&v37 + 1) + 8 * j) routeID];
+        if (routeID2)
         {
-          [v18 addObject:v24];
+          [v18 addObject:routeID2];
         }
 
         else
@@ -1147,10 +1147,10 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
 
   if (([v9 isEqualToSet:v18] & 1) == 0)
   {
-    objc_storeStrong(p_previewRoutes, v32);
+    objc_storeStrong(p_previewRoutes, routesCopy);
   }
 
-  v35->_selectedPreviewRouteIndex = a4;
+  selfCopy->_selectedPreviewRouteIndex = index;
   v27 = v34;
   v28 = v27;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
@@ -1164,15 +1164,15 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
 
 - (unint64_t)segmentIndex
 {
-  v3 = [(MNNavigationDetails *)self stepIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  stepIndex = [(MNNavigationDetails *)self stepIndex];
+  if (stepIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = v3;
-  v6 = [(MNActiveRouteInfo *)self->_currentRoute route];
-  v7 = [v6 segmentIndexForStepIndex:v5];
+  v5 = stepIndex;
+  route = [(MNActiveRouteInfo *)self->_currentRoute route];
+  v7 = [route segmentIndexForStepIndex:v5];
 
   return v7;
 }
@@ -1214,9 +1214,9 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
-        v12 = [v11 route];
+        route = [v11 route];
 
-        if (!v12)
+        if (!route)
         {
           v15 = v8;
           v16 = [*(v8 + 3776) stringWithFormat:@"No route in preview route info."];
@@ -1239,12 +1239,12 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
           v8 = v15;
         }
 
-        v13 = [v11 route];
+        route2 = [v11 route];
 
-        if (v13)
+        if (route2)
         {
-          v14 = [v11 route];
-          [v3 addObject:v14];
+          route3 = [v11 route];
+          [v3 addObject:route3];
         }
 
         ++v10;
@@ -1263,20 +1263,20 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
   return v3;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MNLocation *)v4 routeID];
-  if (v5)
+  locationCopy = location;
+  routeID = [(MNLocation *)locationCopy routeID];
+  if (routeID)
   {
-    v6 = v5;
-    v7 = [(MNLocation *)v4 routeMatch];
+    v6 = routeID;
+    routeMatch = [(MNLocation *)locationCopy routeMatch];
 
-    if (v7)
+    if (routeMatch)
     {
-      v8 = [(MNLocation *)v4 routeID];
-      v9 = [(MNNavigationDetails *)self routeInfoForID:v8];
+      routeID2 = [(MNLocation *)locationCopy routeID];
+      v9 = [(MNNavigationDetails *)self routeInfoForID:routeID2];
 
       if (!v9 || ([v9 route], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
       {
@@ -1298,25 +1298,25 @@ void __59__MNNavigationDetails_setCurrentRoute_withAlternateRoutes___block_invok
         }
       }
 
-      v13 = [v9 route];
-      v14 = [(MNLocation *)v4 routeMatch];
-      [v14 setRoute:v13];
+      route = [v9 route];
+      routeMatch2 = [(MNLocation *)locationCopy routeMatch];
+      [routeMatch2 setRoute:route];
 
-      v15 = [(MNLocation *)v4 routeID];
-      v16 = [(GEOComposedRoute *)self->_originalRoute uniqueRouteID];
-      if ([v15 isEqual:v16])
+      routeID3 = [(MNLocation *)locationCopy routeID];
+      uniqueRouteID = [(GEOComposedRoute *)self->_originalRoute uniqueRouteID];
+      if ([routeID3 isEqual:uniqueRouteID])
       {
-        v17 = [(MNLocation *)v4 state];
+        state = [(MNLocation *)locationCopy state];
 
-        if (v17 != 1)
+        if (state != 1)
         {
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        v15 = [(MNLocation *)v4 routeMatch];
-        self->_lastOriginalRouteCoordinate = [v15 routeCoordinate];
+        routeID3 = [(MNLocation *)locationCopy routeMatch];
+        self->_lastOriginalRouteCoordinate = [routeID3 routeCoordinate];
       }
 
       else
@@ -1329,39 +1329,39 @@ LABEL_13:
 
 LABEL_14:
   location = self->_location;
-  self->_location = v4;
+  self->_location = locationCopy;
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleTrafficIncidentAlertUpdate:(id)a3
+- (void)_handleTrafficIncidentAlertUpdate:(id)update
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 trafficIncidentAlert];
-  v6 = v5;
-  if (!v5 || ([v5 alertID], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  updateCopy = update;
+  trafficIncidentAlert = [updateCopy trafficIncidentAlert];
+  v6 = trafficIncidentAlert;
+  if (!trafficIncidentAlert || ([trafficIncidentAlert alertID], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v12 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    alertID6 = GEOFindOrCreateLog();
+    if (os_log_type_enabled(alertID6, OS_LOG_TYPE_FAULT))
     {
-      v13 = [v6 alertID];
+      alertID = [v6 alertID];
       v28 = 134218240;
       v29 = v6;
       v30 = 2048;
-      v31 = v13;
-      _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_FAULT, "Received an alert callback with no valid alert (%p) or ID (%p).", &v28, 0x16u);
+      v31 = alertID;
+      _os_log_impl(&dword_1D311E000, alertID6, OS_LOG_TYPE_FAULT, "Received an alert callback with no valid alert (%p) or ID (%p).", &v28, 0x16u);
     }
 
     goto LABEL_11;
   }
 
-  v8 = [v4 updateType];
-  if ((v8 - 2) < 2)
+  updateType = [updateCopy updateType];
+  if ((updateType - 2) < 2)
   {
     trafficIncidentAlerts = self->_trafficIncidentAlerts;
-    v16 = [v6 alertID];
-    v17 = [(NSMutableDictionary *)trafficIncidentAlerts objectForKeyedSubscript:v16];
+    alertID2 = [v6 alertID];
+    v17 = [(NSMutableDictionary *)trafficIncidentAlerts objectForKeyedSubscript:alertID2];
 
     if (!v17)
     {
@@ -1374,8 +1374,8 @@ LABEL_14:
     }
 
     v19 = self->_trafficIncidentAlerts;
-    v20 = [v6 alertID];
-    [(NSMutableDictionary *)v19 removeObjectForKey:v20];
+    alertID3 = [v6 alertID];
+    [(NSMutableDictionary *)v19 removeObjectForKey:alertID3];
 
     if (![(NSMutableDictionary *)self->_trafficIncidentAlerts count])
     {
@@ -1384,11 +1384,11 @@ LABEL_14:
     }
   }
 
-  else if (v8 == 1)
+  else if (updateType == 1)
   {
     v22 = self->_trafficIncidentAlerts;
-    v23 = [v6 alertID];
-    v24 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v23];
+    alertID4 = [v6 alertID];
+    v24 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:alertID4];
 
     if (!v24)
     {
@@ -1401,11 +1401,11 @@ LABEL_14:
     }
 
     v26 = self->_trafficIncidentAlerts;
-    v27 = [v6 alertID];
-    [(NSMutableDictionary *)v26 setObject:v6 forKeyedSubscript:v27];
+    alertID5 = [v6 alertID];
+    [(NSMutableDictionary *)v26 setObject:v6 forKeyedSubscript:alertID5];
   }
 
-  else if (!v8)
+  else if (!updateType)
   {
     v9 = self->_trafficIncidentAlerts;
     if (!v9)
@@ -1417,141 +1417,141 @@ LABEL_14:
       v9 = self->_trafficIncidentAlerts;
     }
 
-    v12 = [v6 alertID];
-    [(NSMutableDictionary *)v9 setObject:v6 forKeyedSubscript:v12];
+    alertID6 = [v6 alertID];
+    [(NSMutableDictionary *)v9 setObject:v6 forKeyedSubscript:alertID6];
 LABEL_11:
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithNavigationServiceCallbackParameters:(id)a3
+- (void)updateWithNavigationServiceCallbackParameters:(id)parameters
 {
-  v25 = a3;
-  v4 = [v25 type];
-  if (v4 <= 10)
+  parametersCopy = parameters;
+  type = [parametersCopy type];
+  if (type <= 10)
   {
-    if (v4 > 7)
+    if (type > 7)
     {
-      v5 = v25;
-      if (v4 == 8)
+      v5 = parametersCopy;
+      if (type == 8)
       {
-        v23 = [v25 navTrayGuidanceEvent];
+        navTrayGuidanceEvent = [parametersCopy navTrayGuidanceEvent];
         activeNavTrayGuidanceEvent = self->_activeNavTrayGuidanceEvent;
-        self->_activeNavTrayGuidanceEvent = v23;
+        self->_activeNavTrayGuidanceEvent = navTrayGuidanceEvent;
       }
 
       else
       {
-        if (v4 != 9)
+        if (type != 9)
         {
           goto LABEL_23;
         }
 
-        v7 = [v25 resumeRouteHandle];
+        resumeRouteHandle = [parametersCopy resumeRouteHandle];
         activeNavTrayGuidanceEvent = self->_resumeRouteHandle;
-        self->_resumeRouteHandle = v7;
+        self->_resumeRouteHandle = resumeRouteHandle;
       }
 
       goto LABEL_22;
     }
 
-    v5 = v25;
-    if (v4 == 1)
+    v5 = parametersCopy;
+    if (type == 1)
     {
-      v20 = [v25 voiceGuidanceLevel];
-      v5 = v25;
-      self->_voiceGuidanceLevel = v20;
+      voiceGuidanceLevel = [parametersCopy voiceGuidanceLevel];
+      v5 = parametersCopy;
+      self->_voiceGuidanceLevel = voiceGuidanceLevel;
       goto LABEL_23;
     }
 
-    if (v4 != 7)
+    if (type != 7)
     {
       goto LABEL_23;
     }
 
-    v6 = [v25 location];
-    [(MNNavigationDetails *)self setLocation:v6];
+    location = [parametersCopy location];
+    [(MNNavigationDetails *)self setLocation:location];
     goto LABEL_17;
   }
 
-  if (v4 <= 12)
+  if (type <= 12)
   {
-    if (v4 == 11)
+    if (type == 11)
     {
-      v21 = v25;
+      v21 = parametersCopy;
       self->_targetLegIndex = [v21 targetLegIndex];
-      v22 = [v21 targetLegIndex];
+      targetLegIndex = [v21 targetLegIndex];
 
-      [(MNArrivalInfo *)self->_arrivalInfo setLegIndex:v22];
+      [(MNArrivalInfo *)self->_arrivalInfo setLegIndex:targetLegIndex];
     }
 
     else
     {
-      [(MNNavigationDetails *)self _handleTrafficIncidentAlertUpdate:v25];
+      [(MNNavigationDetails *)self _handleTrafficIncidentAlertUpdate:parametersCopy];
     }
 
     goto LABEL_22;
   }
 
-  v5 = v25;
-  if (v4 != 13)
+  v5 = parametersCopy;
+  if (type != 13)
   {
-    if (v4 != 16)
+    if (type != 16)
     {
       goto LABEL_23;
     }
 
-    v6 = v25;
-    v9 = [v6 routeInfo];
-    v10 = [v9 route];
-    [(MNNavigationDetails *)self setCurrentRoute:v9 withAlternateRoutes:0];
-    self->_desiredNavigationType = [v6 navigationType];
-    self->_navigationType = [v6 navigationType];
-    self->_simulationType = [v6 simulationType];
-    self->_initialRouteSource = [v6 initialRouteSource];
-    v11 = [v10 routeInitializerData];
-    v12 = [v11 directionsRequest];
+    location = parametersCopy;
+    routeInfo = [location routeInfo];
+    route = [routeInfo route];
+    [(MNNavigationDetails *)self setCurrentRoute:routeInfo withAlternateRoutes:0];
+    self->_desiredNavigationType = [location navigationType];
+    self->_navigationType = [location navigationType];
+    self->_simulationType = [location simulationType];
+    self->_initialRouteSource = [location initialRouteSource];
+    routeInitializerData = [route routeInitializerData];
+    directionsRequest = [routeInitializerData directionsRequest];
     directionsRequest = self->_directionsRequest;
-    self->_directionsRequest = v12;
+    self->_directionsRequest = directionsRequest;
 
-    v14 = [v10 routeInitializerData];
-    v15 = [v14 directionsResponse];
+    routeInitializerData2 = [route routeInitializerData];
+    directionsResponse = [routeInitializerData2 directionsResponse];
     directionsResponse = self->_directionsResponse;
-    self->_directionsResponse = v15;
+    self->_directionsResponse = directionsResponse;
 
     if (!self->_isServer)
     {
-      objc_storeStrong(&self->_originalRoute, v10);
+      objc_storeStrong(&self->_originalRoute, route);
     }
 
-    v17 = [v6 voiceLanguage];
-    v18 = [v17 copy];
+    voiceLanguage = [location voiceLanguage];
+    v18 = [voiceLanguage copy];
     currentVoiceLanguage = self->_currentVoiceLanguage;
     self->_currentVoiceLanguage = v18;
 
-    self->_isResumingMultipointRoute = [v6 isResumingMultiStopRoute];
+    self->_isResumingMultipointRoute = [location isResumingMultiStopRoute];
 LABEL_17:
 
 LABEL_22:
-    v5 = v25;
+    v5 = parametersCopy;
     goto LABEL_23;
   }
 
-  v24 = [v25 anchorPointIndex];
-  v5 = v25;
-  self->_upcomingAnchorPointIndex = v24;
+  anchorPointIndex = [parametersCopy anchorPointIndex];
+  v5 = parametersCopy;
+  self->_upcomingAnchorPointIndex = anchorPointIndex;
 LABEL_23:
 }
 
-- (void)copySerializableValuesFrom:(id)a3
+- (void)copySerializableValuesFrom:(id)from
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy)
   {
-    self->_state = [v4 state];
+    self->_state = [fromCopy state];
     self->_navigationType = [v5 navigationType];
     self->_desiredNavigationType = [v5 desiredNavigationType];
     self->_desiredTransportType = [v5 desiredTransportType];
@@ -1560,9 +1560,9 @@ LABEL_23:
     self->_navigationState = [v5 navigationState];
     [v5 proceedToRouteDistance];
     self->_proceedToRouteDistance = v6;
-    v7 = [v5 displayString];
+    displayString = [v5 displayString];
     displayString = self->_displayString;
-    self->_displayString = v7;
+    self->_displayString = displayString;
 
     self->_closestStepIndex = [v5 closestStepIndex];
     [v5 distanceUntilSign];
@@ -1573,9 +1573,9 @@ LABEL_23:
     self->_distanceUntilManeuver = v11;
     [v5 timeUntilManeuver];
     self->_timeUntilManeuver = v12;
-    v13 = [v5 currentVoiceLanguage];
+    currentVoiceLanguage = [v5 currentVoiceLanguage];
     currentVoiceLanguage = self->_currentVoiceLanguage;
-    self->_currentVoiceLanguage = v13;
+    self->_currentVoiceLanguage = currentVoiceLanguage;
 
     self->_voiceGuidanceLevel = *(v5 + 38);
     self->_routeIndex = [v5 routeIndex];
@@ -1641,9 +1641,9 @@ LABEL_23:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MNGetMNNavigationDetailsLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -1654,79 +1654,79 @@ LABEL_23:
     _os_signpost_emit_with_name_impl(&dword_1D311E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "NavigationDetailsEncoding", "", buf, 2u);
   }
 
-  [v4 encodeInteger:-[MNNavigationDetails state](self forKey:{"state"), @"State"}];
-  [v4 encodeInteger:self->_desiredNavigationType forKey:@"_desiredNavigationType"];
-  [v4 encodeInteger:self->_navigationType forKey:@"_navigationType"];
-  [v4 encodeInteger:self->_desiredTransportType forKey:@"_desiredTransportType"];
-  [v4 encodeInteger:self->_initialRouteSource forKey:@"_initialRouteSource"];
-  [v4 encodeBool:-[MNNavigationDetails guidancePromptsEnabled](self forKey:{"guidancePromptsEnabled"), @"GuidancePromptsEnabled"}];
-  [v4 encodeInt32:-[MNNavigationDetails navigationState](self forKey:{"navigationState"), @"NavigationState"}];
+  [coderCopy encodeInteger:-[MNNavigationDetails state](self forKey:{"state"), @"State"}];
+  [coderCopy encodeInteger:self->_desiredNavigationType forKey:@"_desiredNavigationType"];
+  [coderCopy encodeInteger:self->_navigationType forKey:@"_navigationType"];
+  [coderCopy encodeInteger:self->_desiredTransportType forKey:@"_desiredTransportType"];
+  [coderCopy encodeInteger:self->_initialRouteSource forKey:@"_initialRouteSource"];
+  [coderCopy encodeBool:-[MNNavigationDetails guidancePromptsEnabled](self forKey:{"guidancePromptsEnabled"), @"GuidancePromptsEnabled"}];
+  [coderCopy encodeInt32:-[MNNavigationDetails navigationState](self forKey:{"navigationState"), @"NavigationState"}];
   [(MNNavigationDetails *)self proceedToRouteDistance];
-  [v4 encodeDouble:@"ProceedToRouteDistance" forKey:?];
-  v9 = [(MNNavigationDetails *)self displayString];
+  [coderCopy encodeDouble:@"ProceedToRouteDistance" forKey:?];
+  displayString = [(MNNavigationDetails *)self displayString];
 
-  if (v9)
+  if (displayString)
   {
-    v10 = [(MNNavigationDetails *)self displayString];
-    [v4 encodeObject:v10 forKey:@"DisplayString"];
+    displayString2 = [(MNNavigationDetails *)self displayString];
+    [coderCopy encodeObject:displayString2 forKey:@"DisplayString"];
   }
 
-  [v4 encodeInteger:-[MNNavigationDetails closestStepIndex](self forKey:{"closestStepIndex"), @"ClosestStepIndex"}];
+  [coderCopy encodeInteger:-[MNNavigationDetails closestStepIndex](self forKey:{"closestStepIndex"), @"ClosestStepIndex"}];
   [(MNNavigationDetails *)self distanceUntilSign];
-  [v4 encodeDouble:@"DistanceUntilSign" forKey:?];
+  [coderCopy encodeDouble:@"DistanceUntilSign" forKey:?];
   [(MNNavigationDetails *)self timeUntilSign];
-  [v4 encodeDouble:@"TimeUntilSign" forKey:?];
+  [coderCopy encodeDouble:@"TimeUntilSign" forKey:?];
   [(MNNavigationDetails *)self distanceUntilManeuver];
-  [v4 encodeDouble:@"DistanceUntilManeuver" forKey:?];
+  [coderCopy encodeDouble:@"DistanceUntilManeuver" forKey:?];
   [(MNNavigationDetails *)self timeUntilManeuver];
-  [v4 encodeDouble:@"TimeUntilManeuver" forKey:?];
-  v11 = [(MNNavigationDetails *)self currentVoiceLanguage];
+  [coderCopy encodeDouble:@"TimeUntilManeuver" forKey:?];
+  currentVoiceLanguage = [(MNNavigationDetails *)self currentVoiceLanguage];
 
-  if (v11)
+  if (currentVoiceLanguage)
   {
-    v12 = [(MNNavigationDetails *)self currentVoiceLanguage];
-    [v4 encodeObject:v12 forKey:@"CurrentVoiceLanguage"];
+    currentVoiceLanguage2 = [(MNNavigationDetails *)self currentVoiceLanguage];
+    [coderCopy encodeObject:currentVoiceLanguage2 forKey:@"CurrentVoiceLanguage"];
   }
 
-  [v4 encodeInteger:self->_voiceGuidanceLevel forKey:@"_voiceGuidanceLevel"];
+  [coderCopy encodeInteger:self->_voiceGuidanceLevel forKey:@"_voiceGuidanceLevel"];
   currentRoute = self->_currentRoute;
   if (currentRoute)
   {
-    [v4 encodeObject:currentRoute forKey:@"CurrentRoute"];
+    [coderCopy encodeObject:currentRoute forKey:@"CurrentRoute"];
   }
 
-  [v4 encodeInteger:-[MNNavigationDetails routeIndex](self forKey:{"routeIndex"), @"RouteIndex"}];
-  [v4 encodeObject:self->_alternateRoutes forKey:@"AlternateRoutes"];
-  [v4 encodeObject:self->_previewRoutes forKey:@"PreviewRoutes"];
-  [v4 encodeInteger:-[MNNavigationDetails selectedPreviewRouteIndex](self forKey:{"selectedPreviewRouteIndex"), @"SelectePreviewRouteIndex"}];
-  [v4 encodeBytes:&self->_lastOriginalRouteCoordinate length:8 forKey:@"_lastOriginalRouteCoordinate"];
-  [v4 encodeInteger:self->_targetLegIndex forKey:@"_targetLegIndex"];
-  [v4 encodeInteger:self->_upcomingAnchorPointIndex forKey:@"_upcomingAnchorPointIndex"];
+  [coderCopy encodeInteger:-[MNNavigationDetails routeIndex](self forKey:{"routeIndex"), @"RouteIndex"}];
+  [coderCopy encodeObject:self->_alternateRoutes forKey:@"AlternateRoutes"];
+  [coderCopy encodeObject:self->_previewRoutes forKey:@"PreviewRoutes"];
+  [coderCopy encodeInteger:-[MNNavigationDetails selectedPreviewRouteIndex](self forKey:{"selectedPreviewRouteIndex"), @"SelectePreviewRouteIndex"}];
+  [coderCopy encodeBytes:&self->_lastOriginalRouteCoordinate length:8 forKey:@"_lastOriginalRouteCoordinate"];
+  [coderCopy encodeInteger:self->_targetLegIndex forKey:@"_targetLegIndex"];
+  [coderCopy encodeInteger:self->_upcomingAnchorPointIndex forKey:@"_upcomingAnchorPointIndex"];
   if ([(MNNavigationDetails *)self displayedStepIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = -1;
+    displayedStepIndex = -1;
   }
 
   else
   {
-    v14 = [(MNNavigationDetails *)self displayedStepIndex];
+    displayedStepIndex = [(MNNavigationDetails *)self displayedStepIndex];
   }
 
-  [v4 encodeInteger:v14 forKey:@"DisplayedStepIndex"];
-  [v4 encodeObject:self->_activeLaneInfo forKey:@"_activeLaneInfo"];
-  [v4 encodeObject:self->_activeNavTrayGuidanceEvent forKey:@"_activeNavTrayGuidanceEvent"];
-  [v4 encodeObject:self->_arrivalInfo forKey:@"_arrivalInfo"];
-  [v4 encodeObject:self->_backgroundWalkingRouteInfo forKey:@"_backgroundWalkingRouteInfo"];
-  [v4 encodeObject:self->_vehicleParkingInfo forKey:@"_vehicleParkingInfo"];
-  [v4 encodeObject:self->_resumeRouteHandle forKey:@"_resumeRouteHandle"];
-  [v4 encodeObject:self->_tracePath forKey:@"_tracePath"];
-  [v4 encodeObject:self->_traceBookmarks forKey:@"_traceBookmarks"];
-  [v4 encodeDouble:@"_traceDuration" forKey:self->_traceDuration];
-  [v4 encodeDouble:@"_tracePosition" forKey:self->_tracePosition];
-  [v4 encodeBool:self->_traceIsPlaying forKey:@"_traceIsPlaying"];
-  [v4 encodeInteger:self->_simulationType forKey:@"_simulationType"];
-  [v4 encodeBool:self->_isResumingMultipointRoute forKey:@"_isResumingMultipointRoute"];
-  [v4 encodeBool:self->_isApproachingWaypoint forKey:@"_isApproachingWaypoint"];
+  [coderCopy encodeInteger:displayedStepIndex forKey:@"DisplayedStepIndex"];
+  [coderCopy encodeObject:self->_activeLaneInfo forKey:@"_activeLaneInfo"];
+  [coderCopy encodeObject:self->_activeNavTrayGuidanceEvent forKey:@"_activeNavTrayGuidanceEvent"];
+  [coderCopy encodeObject:self->_arrivalInfo forKey:@"_arrivalInfo"];
+  [coderCopy encodeObject:self->_backgroundWalkingRouteInfo forKey:@"_backgroundWalkingRouteInfo"];
+  [coderCopy encodeObject:self->_vehicleParkingInfo forKey:@"_vehicleParkingInfo"];
+  [coderCopy encodeObject:self->_resumeRouteHandle forKey:@"_resumeRouteHandle"];
+  [coderCopy encodeObject:self->_tracePath forKey:@"_tracePath"];
+  [coderCopy encodeObject:self->_traceBookmarks forKey:@"_traceBookmarks"];
+  [coderCopy encodeDouble:@"_traceDuration" forKey:self->_traceDuration];
+  [coderCopy encodeDouble:@"_tracePosition" forKey:self->_tracePosition];
+  [coderCopy encodeBool:self->_traceIsPlaying forKey:@"_traceIsPlaying"];
+  [coderCopy encodeInteger:self->_simulationType forKey:@"_simulationType"];
+  [coderCopy encodeBool:self->_isResumingMultipointRoute forKey:@"_isResumingMultipointRoute"];
+  [coderCopy encodeBool:self->_isApproachingWaypoint forKey:@"_isApproachingWaypoint"];
   v15 = v8;
   v16 = v15;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -1736,9 +1736,9 @@ LABEL_23:
   }
 }
 
-- (MNNavigationDetails)initWithCoder:(id)a3
+- (MNNavigationDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MNGetMNNavigationDetailsLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -1754,55 +1754,55 @@ LABEL_23:
   v9 = [(MNNavigationDetails *)&v60 init];
   if (v9)
   {
-    v9->_state = [v4 decodeIntegerForKey:@"State"];
-    v9->_desiredNavigationType = [v4 decodeIntegerForKey:@"_desiredNavigationType"];
-    v9->_navigationType = [v4 decodeIntegerForKey:@"_navigationType"];
-    v9->_desiredTransportType = [v4 decodeIntegerForKey:@"_desiredTransportType"];
-    v9->_initialRouteSource = [v4 decodeIntegerForKey:@"_initialRouteSource"];
-    v9->_guidancePromptsEnabled = [v4 decodeBoolForKey:@"GuidancePromptsEnabled"];
-    v9->_navigationState = [v4 decodeInt32ForKey:@"NavigationState"];
-    [v4 decodeDoubleForKey:@"ProceedToRouteDistance"];
+    v9->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v9->_desiredNavigationType = [coderCopy decodeIntegerForKey:@"_desiredNavigationType"];
+    v9->_navigationType = [coderCopy decodeIntegerForKey:@"_navigationType"];
+    v9->_desiredTransportType = [coderCopy decodeIntegerForKey:@"_desiredTransportType"];
+    v9->_initialRouteSource = [coderCopy decodeIntegerForKey:@"_initialRouteSource"];
+    v9->_guidancePromptsEnabled = [coderCopy decodeBoolForKey:@"GuidancePromptsEnabled"];
+    v9->_navigationState = [coderCopy decodeInt32ForKey:@"NavigationState"];
+    [coderCopy decodeDoubleForKey:@"ProceedToRouteDistance"];
     v9->_proceedToRouteDistance = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayString"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayString"];
     displayString = v9->_displayString;
     v9->_displayString = v11;
 
-    v9->_closestStepIndex = [v4 decodeIntegerForKey:@"ClosestStepIndex"];
-    [v4 decodeDoubleForKey:@"DistanceUntilSign"];
+    v9->_closestStepIndex = [coderCopy decodeIntegerForKey:@"ClosestStepIndex"];
+    [coderCopy decodeDoubleForKey:@"DistanceUntilSign"];
     v9->_distanceUntilSign = v13;
-    [v4 decodeDoubleForKey:@"TimeUntilSign"];
+    [coderCopy decodeDoubleForKey:@"TimeUntilSign"];
     v9->_timeUntilSign = v14;
-    [v4 decodeDoubleForKey:@"DistanceUntilManeuver"];
+    [coderCopy decodeDoubleForKey:@"DistanceUntilManeuver"];
     v9->_distanceUntilManeuver = v15;
-    [v4 decodeDoubleForKey:@"TimeUntilManeuver"];
+    [coderCopy decodeDoubleForKey:@"TimeUntilManeuver"];
     v9->_timeUntilManeuver = v16;
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CurrentVoiceLanguage"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CurrentVoiceLanguage"];
     currentVoiceLanguage = v9->_currentVoiceLanguage;
     v9->_currentVoiceLanguage = v17;
 
-    v9->_voiceGuidanceLevel = [v4 decodeIntegerForKey:@"_voiceGuidanceLevel"];
-    v9->_routeIndex = [v4 decodeIntegerForKey:@"RouteIndex"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CurrentRoute"];
+    v9->_voiceGuidanceLevel = [coderCopy decodeIntegerForKey:@"_voiceGuidanceLevel"];
+    v9->_routeIndex = [coderCopy decodeIntegerForKey:@"RouteIndex"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CurrentRoute"];
     currentRoute = v9->_currentRoute;
     v9->_currentRoute = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"AlternateRoutes"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"AlternateRoutes"];
     alternateRoutes = v9->_alternateRoutes;
     v9->_alternateRoutes = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"AlternateRoutes"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"AlternateRoutes"];
     previewRoutes = v9->_previewRoutes;
     v9->_previewRoutes = v29;
 
-    v9->_selectedPreviewRouteIndex = [v4 decodeIntegerForKey:@"SelectePreviewRouteIndex"];
+    v9->_selectedPreviewRouteIndex = [coderCopy decodeIntegerForKey:@"SelectePreviewRouteIndex"];
     *buf = 0;
-    v31 = [v4 decodeBytesForKey:@"_lastOriginalRouteCoordinate" returnedLength:buf];
+    v31 = [coderCopy decodeBytesForKey:@"_lastOriginalRouteCoordinate" returnedLength:buf];
     if (*buf && v31)
     {
       if (*buf >= 8uLL)
@@ -1818,9 +1818,9 @@ LABEL_23:
       memcpy(&v9->_lastOriginalRouteCoordinate, v31, v32);
     }
 
-    v9->_targetLegIndex = [v4 decodeIntegerForKey:@"_targetLegIndex"];
-    v9->_upcomingAnchorPointIndex = [v4 decodeIntegerForKey:@"_upcomingAnchorPointIndex"];
-    v33 = [v4 decodeIntegerForKey:@"DisplayedStepIndex"];
+    v9->_targetLegIndex = [coderCopy decodeIntegerForKey:@"_targetLegIndex"];
+    v9->_upcomingAnchorPointIndex = [coderCopy decodeIntegerForKey:@"_upcomingAnchorPointIndex"];
+    v33 = [coderCopy decodeIntegerForKey:@"DisplayedStepIndex"];
     v34 = 0x7FFFFFFFFFFFFFFFLL;
     if (v33 >= 0)
     {
@@ -1828,49 +1828,49 @@ LABEL_23:
     }
 
     v9->_displayedStepIndex = v34;
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_activeLaneInfo"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_activeLaneInfo"];
     activeLaneInfo = v9->_activeLaneInfo;
     v9->_activeLaneInfo = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_activeNavTrayGuidanceEvent"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_activeNavTrayGuidanceEvent"];
     activeNavTrayGuidanceEvent = v9->_activeNavTrayGuidanceEvent;
     v9->_activeNavTrayGuidanceEvent = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_arrivalInfo"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_arrivalInfo"];
     arrivalInfo = v9->_arrivalInfo;
     v9->_arrivalInfo = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundWalkingRouteInfo"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundWalkingRouteInfo"];
     backgroundWalkingRouteInfo = v9->_backgroundWalkingRouteInfo;
     v9->_backgroundWalkingRouteInfo = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_vehicleParkingInfo"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_vehicleParkingInfo"];
     vehicleParkingInfo = v9->_vehicleParkingInfo;
     v9->_vehicleParkingInfo = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_resumeRouteHandle"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_resumeRouteHandle"];
     resumeRouteHandle = v9->_resumeRouteHandle;
     v9->_resumeRouteHandle = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tracePath"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tracePath"];
     tracePath = v9->_tracePath;
     v9->_tracePath = v47;
 
     v49 = MEMORY[0x1E695DFD8];
     v50 = objc_opt_class();
     v51 = [v49 setWithObjects:{v50, objc_opt_class(), 0}];
-    v52 = [v4 decodeObjectOfClasses:v51 forKey:@"_traceBookmarks"];
+    v52 = [coderCopy decodeObjectOfClasses:v51 forKey:@"_traceBookmarks"];
     traceBookmarks = v9->_traceBookmarks;
     v9->_traceBookmarks = v52;
 
-    [v4 decodeDoubleForKey:@"_traceDuration"];
+    [coderCopy decodeDoubleForKey:@"_traceDuration"];
     v9->_traceDuration = v54;
-    [v4 decodeDoubleForKey:@"_tracePosition"];
+    [coderCopy decodeDoubleForKey:@"_tracePosition"];
     v9->_tracePosition = v55;
-    v9->_traceIsPlaying = [v4 decodeBoolForKey:@"_traceIsPlaying"];
-    v9->_simulationType = [v4 decodeIntegerForKey:@"_simulationType"];
-    v9->_isResumingMultipointRoute = [v4 decodeBoolForKey:@"_isResumingMultipointRoute"];
-    v9->_isApproachingWaypoint = [v4 decodeBoolForKey:@"_isApproachingWaypoint"];
+    v9->_traceIsPlaying = [coderCopy decodeBoolForKey:@"_traceIsPlaying"];
+    v9->_simulationType = [coderCopy decodeIntegerForKey:@"_simulationType"];
+    v9->_isResumingMultipointRoute = [coderCopy decodeBoolForKey:@"_isResumingMultipointRoute"];
+    v9->_isApproachingWaypoint = [coderCopy decodeBoolForKey:@"_isApproachingWaypoint"];
   }
 
   v56 = v8;
@@ -1884,7 +1884,7 @@ LABEL_23:
   return v9;
 }
 
-- (id)initForServer:(BOOL)a3
+- (id)initForServer:(BOOL)server
 {
   v13.receiver = self;
   v13.super_class = MNNavigationDetails;
@@ -1892,14 +1892,14 @@ LABEL_23:
   v5 = v4;
   if (v4)
   {
-    v4->_isServer = a3;
+    v4->_isServer = server;
     v4->_navigationType = 0;
     v4->_desiredNavigationType = 0;
     v4->_state = 0;
     v4->_desiredTransportType = 4;
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     routeLookup = v5->_routeLookup;
-    v5->_routeLookup = v6;
+    v5->_routeLookup = dictionary;
 
     v8 = geo_isolater_create();
     routeLookupLock = v5->_routeLookupLock;

@@ -1,15 +1,15 @@
 @interface BuddyAccessibilityUtilities
 + (id)accessibilityViewController;
 + (id)navigationBarButton;
-+ (id)navigationBarButtonItemWithButton:(id)a3;
-+ (id)navigationBarButtonItemWithTarget:(id)a3 selector:(SEL)a4;
++ (id)navigationBarButtonItemWithButton:(id)button;
++ (id)navigationBarButtonItemWithTarget:(id)target selector:(SEL)selector;
 @end
 
 @implementation BuddyAccessibilityUtilities
 
 + (id)accessibilityViewController
 {
-  v20[2] = a1;
+  v20[2] = self;
   v20[1] = a2;
   v20[0] = [NSBundle bundleWithPath:@"/System/Library/AccessibilityBundles/AXBuddyBundle.bundle"];
   location = 0;
@@ -52,9 +52,9 @@ LABEL_12:
 
   v16 = objc_alloc_init(aClass);
   v3 = +[BYDevice currentDevice];
-  v4 = [v3 type];
+  type = [v3 type];
 
-  if (v4 == 1)
+  if (type == 1)
   {
     [v16 setModalPresentationStyle:2];
     +[OBBaseWelcomeController preferredContentSize];
@@ -77,7 +77,7 @@ LABEL_13:
 
 + (id)navigationBarButton
 {
-  v14[2] = a1;
+  v14[2] = self;
   v14[1] = a2;
   v2 = [UIImage imageNamed:@"AccessibilityButtonItem"];
   v14[0] = [(UIImage *)v2 _imageThatSuppressesAccessibilityHairlineThickening];
@@ -85,14 +85,14 @@ LABEL_13:
   location = [UIButton buttonWithType:0];
   [location setBackgroundImage:v14[0] forState:0];
   v3 = +[UIColor systemWhiteColor];
-  v4 = [v3 CGColor];
-  v5 = [location layer];
-  [v5 setBackgroundColor:v4];
+  cGColor = [v3 CGColor];
+  layer = [location layer];
+  [layer setBackgroundColor:cGColor];
 
   [v14[0] size];
   v7 = v6 / 2.0;
-  v9 = [location layer];
-  [v9 setCornerRadius:v7];
+  layer2 = [location layer];
+  [layer2 setCornerRadius:v7];
 
   v10 = +[UIColor systemBlueColor];
   [location setTintColor:v10];
@@ -103,12 +103,12 @@ LABEL_13:
   return v11;
 }
 
-+ (id)navigationBarButtonItemWithButton:(id)a3
++ (id)navigationBarButtonItemWithButton:(id)button
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   v3 = [UIBarButtonItem alloc];
   v6 = [v3 initWithCustomView:location[0]];
   [v6 setStyle:0];
@@ -118,16 +118,16 @@ LABEL_13:
   return v4;
 }
 
-+ (id)navigationBarButtonItemWithTarget:(id)a3 selector:(SEL)a4
++ (id)navigationBarButtonItemWithTarget:(id)target selector:(SEL)selector
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8[1] = a4;
+  objc_storeStrong(location, target);
+  v8[1] = selector;
   v8[0] = [UIImage systemImageNamed:@"figure"];
   v5 = [UIBarButtonItem alloc];
-  v6 = [v5 initWithImage:v8[0] style:0 target:location[0] action:a4];
+  v6 = [v5 initWithImage:v8[0] style:0 target:location[0] action:selector];
   objc_storeStrong(v8, 0);
   objc_storeStrong(location, 0);
 

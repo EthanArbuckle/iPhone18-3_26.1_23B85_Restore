@@ -1,9 +1,9 @@
 @interface SecureCloudRelationshipDelegate
 - (_TtC23ActivitySharingServices31SecureCloudRelationshipDelegate)init;
-- (void)relationshipManager:(ASRelationshipManager *)a3 acceptedInviteForFriend:(NSUUID *)a4 completion:(id)a5;
-- (void)relationshipManager:(ASRelationshipManager *)a3 relationshipBeganForFriend:(NSUUID *)a4 completion:(id)a5;
-- (void)relationshipManager:(ASRelationshipManager *)a3 removeFriendWithUUID:(NSUUID *)a4 eventType:(unsigned __int16)a5 cloudKitGroup:(CKOperationGroup *)a6 completion:(id)a7;
-- (void)relationshipManager:(ASRelationshipManager *)a3 updateActiveFriendWithUUID:(NSUUID *)a4 eventType:(unsigned __int16)a5 cloudKitGroup:(CKOperationGroup *)a6 completion:(id)a7;
+- (void)relationshipManager:(ASRelationshipManager *)manager acceptedInviteForFriend:(NSUUID *)friend completion:(id)completion;
+- (void)relationshipManager:(ASRelationshipManager *)manager relationshipBeganForFriend:(NSUUID *)friend completion:(id)completion;
+- (void)relationshipManager:(ASRelationshipManager *)manager removeFriendWithUUID:(NSUUID *)d eventType:(unsigned __int16)type cloudKitGroup:(CKOperationGroup *)group completion:(id)completion;
+- (void)relationshipManager:(ASRelationshipManager *)manager updateActiveFriendWithUUID:(NSUUID *)d eventType:(unsigned __int16)type cloudKitGroup:(CKOperationGroup *)group completion:(id)completion;
 @end
 
 @implementation SecureCloudRelationshipDelegate
@@ -15,16 +15,16 @@
   return result;
 }
 
-- (void)relationshipManager:(ASRelationshipManager *)a3 relationshipBeganForFriend:(NSUUID *)a4 completion:(id)a5
+- (void)relationshipManager:(ASRelationshipManager *)manager relationshipBeganForFriend:(NSUUID *)friend completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = manager;
+  v14[3] = friend;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_221FB64C8();
@@ -39,24 +39,24 @@
   v17[3] = 0;
   v17[4] = &unk_221FBE1F8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  managerCopy = manager;
+  friendCopy = friend;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v12, &unk_221FBE200, v17);
 }
 
-- (void)relationshipManager:(ASRelationshipManager *)a3 updateActiveFriendWithUUID:(NSUUID *)a4 eventType:(unsigned __int16)a5 cloudKitGroup:(CKOperationGroup *)a6 completion:(id)a7
+- (void)relationshipManager:(ASRelationshipManager *)manager updateActiveFriendWithUUID:(NSUUID *)d eventType:(unsigned __int16)type cloudKitGroup:(CKOperationGroup *)group completion:(id)completion
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v26 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(completion);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 40) = a6;
+  *(v18 + 16) = manager;
+  *(v18 + 24) = d;
+  *(v18 + 32) = type;
+  *(v18 + 40) = group;
   *(v18 + 48) = v17;
   *(v18 + 56) = self;
   v19 = sub_221FB64C8();
@@ -71,25 +71,25 @@
   v21[3] = 0;
   v21[4] = &unk_221FB9BA8;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a6;
-  v25 = self;
+  managerCopy = manager;
+  dCopy = d;
+  groupCopy = group;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v16, &unk_221FB9BB0, v21);
 }
 
-- (void)relationshipManager:(ASRelationshipManager *)a3 removeFriendWithUUID:(NSUUID *)a4 eventType:(unsigned __int16)a5 cloudKitGroup:(CKOperationGroup *)a6 completion:(id)a7
+- (void)relationshipManager:(ASRelationshipManager *)manager removeFriendWithUUID:(NSUUID *)d eventType:(unsigned __int16)type cloudKitGroup:(CKOperationGroup *)group completion:(id)completion
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v26 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(completion);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 40) = a6;
+  *(v18 + 16) = manager;
+  *(v18 + 24) = d;
+  *(v18 + 32) = type;
+  *(v18 + 40) = group;
   *(v18 + 48) = v17;
   *(v18 + 56) = self;
   v19 = sub_221FB64C8();
@@ -104,23 +104,23 @@
   v21[3] = 0;
   v21[4] = &unk_221FB9B88;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a6;
-  v25 = self;
+  managerCopy = manager;
+  dCopy = d;
+  groupCopy = group;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v16, &unk_221FB9B90, v21);
 }
 
-- (void)relationshipManager:(ASRelationshipManager *)a3 acceptedInviteForFriend:(NSUUID *)a4 completion:(id)a5
+- (void)relationshipManager:(ASRelationshipManager *)manager acceptedInviteForFriend:(NSUUID *)friend completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = manager;
+  v14[3] = friend;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_221FB64C8();
@@ -135,9 +135,9 @@
   v17[3] = 0;
   v17[4] = &unk_221FC0690;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  managerCopy = manager;
+  friendCopy = friend;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v12, &unk_221FB9B70, v17);
 }
 

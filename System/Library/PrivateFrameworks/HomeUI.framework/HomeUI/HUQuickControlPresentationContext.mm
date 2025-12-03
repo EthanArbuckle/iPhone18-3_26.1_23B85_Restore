@@ -1,52 +1,52 @@
 @interface HUQuickControlPresentationContext
 - (CGRect)sourceRect;
 - (UIViewController)sourceViewController;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUQuickControlPresentationContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setColorStyle:{-[HUQuickControlPresentationContext colorStyle](self, "colorStyle")}];
-  v5 = [(HUQuickControlPresentationContext *)self item];
-  if (v5)
+  item = [(HUQuickControlPresentationContext *)self item];
+  if (item)
   {
     goto LABEL_4;
   }
 
-  v6 = [(HUQuickControlPresentationContext *)self itemManager];
+  itemManager = [(HUQuickControlPresentationContext *)self itemManager];
 
-  if (v6)
+  if (itemManager)
   {
     v7 = [HUQuickControlPresentationItemManager alloc];
-    v5 = [(HUQuickControlPresentationContext *)self itemManager];
-    v8 = [v5 homeKitObjectUUID];
-    v9 = [(HUQuickControlPresentationContext *)self itemManager];
-    v10 = -[HUQuickControlPresentationItemManager initWithHomeKitObjectUUID:type:](v7, "initWithHomeKitObjectUUID:type:", v8, [v9 presentationItemType]);
+    item = [(HUQuickControlPresentationContext *)self itemManager];
+    homeKitObjectUUID = [item homeKitObjectUUID];
+    itemManager2 = [(HUQuickControlPresentationContext *)self itemManager];
+    v10 = -[HUQuickControlPresentationItemManager initWithHomeKitObjectUUID:type:](v7, "initWithHomeKitObjectUUID:type:", homeKitObjectUUID, [itemManager2 presentationItemType]);
     [v4 setItemManager:v10];
 
 LABEL_4:
   }
 
-  v11 = [(HUQuickControlPresentationContext *)self item];
-  [v4 setItem:v11];
+  item2 = [(HUQuickControlPresentationContext *)self item];
+  [v4 setItem:item2];
 
-  v12 = [(HUQuickControlPresentationContext *)self controlItems];
-  [v4 setControlItems:v12];
+  controlItems = [(HUQuickControlPresentationContext *)self controlItems];
+  [v4 setControlItems:controlItems];
 
-  v13 = [(HUQuickControlPresentationContext *)self home];
-  [v4 setHome:v13];
+  home = [(HUQuickControlPresentationContext *)self home];
+  [v4 setHome:home];
 
   [(HUQuickControlPresentationContext *)self sourceRect];
   [v4 setSourceRect:?];
-  v14 = [(HUQuickControlPresentationContext *)self sourceViewController];
-  [v4 setSourceViewController:v14];
+  sourceViewController = [(HUQuickControlPresentationContext *)self sourceViewController];
+  [v4 setSourceViewController:sourceViewController];
 
   [v4 setDidAuthenticate:{-[HUQuickControlPresentationContext didAuthenticate](self, "didAuthenticate")}];
-  v15 = [(HUQuickControlPresentationContext *)self tappedArea];
-  [v4 setTappedArea:v15];
+  tappedArea = [(HUQuickControlPresentationContext *)self tappedArea];
+  [v4 setTappedArea:tappedArea];
 
   [v4 setPrefersSystemTransitions:{-[HUQuickControlPresentationContext prefersSystemTransitions](self, "prefersSystemTransitions")}];
   [v4 setShouldIncludeRoomNameInHeaderTitle:{-[HUQuickControlPresentationContext shouldIncludeRoomNameInHeaderTitle](self, "shouldIncludeRoomNameInHeaderTitle")}];

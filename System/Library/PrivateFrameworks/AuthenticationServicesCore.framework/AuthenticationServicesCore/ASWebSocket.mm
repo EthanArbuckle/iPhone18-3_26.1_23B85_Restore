@@ -1,15 +1,15 @@
 @interface ASWebSocket
 - (_TtC26AuthenticationServicesCore11ASWebSocket)init;
-- (void)URLSession:(NSURLSession *)a3 task:(NSURLSessionTask *)a4 didReceiveChallenge:(NSURLAuthenticationChallenge *)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didOpenWithProtocol:(id)a5;
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session webSocketTask:(id)task didOpenWithProtocol:(id)protocol;
 @end
 
 @implementation ASWebSocket
 
-- (void)URLSession:(id)a3 webSocketTask:(id)a4 didOpenWithProtocol:(id)a5
+- (void)URLSession:(id)session webSocketTask:(id)task didOpenWithProtocol:(id)protocol
 {
-  if (a5)
+  if (protocol)
   {
     v8 = sub_1C2170914();
     v10 = v9;
@@ -21,32 +21,32 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
   sub_1C21537F4(v8, v10);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1C215393C(a5);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1C215393C(error);
 }
 
-- (void)URLSession:(NSURLSession *)a3 task:(NSURLSessionTask *)a4 didReceiveChallenge:(NSURLAuthenticationChallenge *)a5 completionHandler:(id)a6
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = session;
+  v16[3] = task;
+  v16[4] = challenge;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_1C2170BE4();
@@ -61,10 +61,10 @@
   v19[3] = 0;
   v19[4] = &unk_1C21799C0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  selfCopy = self;
   sub_1C2166D88(0, 0, v14, &unk_1C21768B0, v19);
 }
 

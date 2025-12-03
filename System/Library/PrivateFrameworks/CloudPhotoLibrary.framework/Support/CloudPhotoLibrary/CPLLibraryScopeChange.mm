@@ -1,23 +1,23 @@
 @interface CPLLibraryScopeChange
-+ (id)sharedCloudKitScopeFromLibraryInfoRecord:(id)a3 userRecordID:(id)a4;
-- (void)updateWithLibraryInfoCKRecord:(id)a3 zone:(id)a4 userRecordID:(id)a5;
++ (id)sharedCloudKitScopeFromLibraryInfoRecord:(id)record userRecordID:(id)d;
+- (void)updateWithLibraryInfoCKRecord:(id)record zone:(id)zone userRecordID:(id)d;
 @end
 
 @implementation CPLLibraryScopeChange
 
-- (void)updateWithLibraryInfoCKRecord:(id)a3 zone:(id)a4 userRecordID:(id)a5
+- (void)updateWithLibraryInfoCKRecord:(id)record zone:(id)zone userRecordID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v30 = v9;
-  v31 = self;
+  recordCopy = record;
+  zoneCopy = zone;
+  dCopy = d;
+  v30 = zoneCopy;
+  selfCopy = self;
   v38.receiver = self;
   v38.super_class = CPLLibraryScopeChange;
-  [(CPLLibraryScopeChange *)&v38 updateWithLibraryInfoCKRecord:v8 zone:v9 userRecordID:v10];
-  v29 = [v8 objectForKeyedSubscript:@"linkedShareZoneJoinContinuationToken"];
-  v11 = [v8 objectForKeyedSubscript:@"linkedShareZoneNameList"];
-  v32 = [v8 objectForKeyedSubscript:@"linkedShareZoneOwnerList"];
+  [(CPLLibraryScopeChange *)&v38 updateWithLibraryInfoCKRecord:recordCopy zone:zoneCopy userRecordID:dCopy];
+  v29 = [recordCopy objectForKeyedSubscript:@"linkedShareZoneJoinContinuationToken"];
+  v11 = [recordCopy objectForKeyedSubscript:@"linkedShareZoneNameList"];
+  v32 = [recordCopy objectForKeyedSubscript:@"linkedShareZoneOwnerList"];
   if ([v11 count])
   {
     v12 = [v11 count];
@@ -29,27 +29,27 @@
       v33[2] = sub_10019E1A4;
       v33[3] = &unk_100274B98;
       v34 = v32;
-      v35 = v10;
+      v35 = dCopy;
       v36 = v29;
       v15 = v14;
       v37 = v15;
       [v11 enumerateObjectsUsingBlock:v33];
-      [(CPLLibraryScopeChange *)v31 setRewindAnchorsPerSharingScopes:v15];
+      [(CPLLibraryScopeChange *)selfCopy setRewindAnchorsPerSharingScopes:v15];
     }
 
     else
     {
-      sub_10019E3A4(v9, v8);
+      sub_10019E3A4(zoneCopy, recordCopy);
     }
   }
 
   else
   {
-    [(CPLLibraryScopeChange *)v31 setRewindAnchorsPerSharingScopes:0];
+    [(CPLLibraryScopeChange *)selfCopy setRewindAnchorsPerSharingScopes:0];
   }
 
-  v16 = [v8 objectForKeyedSubscript:@"quarantinedSharedLibraryExitZoneName"];
-  v17 = [v8 objectForKeyedSubscript:@"quarantinedSharedLibraryExitZoneOwner"];
+  v16 = [recordCopy objectForKeyedSubscript:@"quarantinedSharedLibraryExitZoneName"];
+  v17 = [recordCopy objectForKeyedSubscript:@"quarantinedSharedLibraryExitZoneOwner"];
   v18 = +[NSUserDefaults standardUserDefaults];
   v19 = [v18 stringForKey:@"CPLSimulateQuarantinedSharedLibraryExitZoneName"];
 
@@ -62,15 +62,15 @@
 
   else if (!v16)
   {
-    [(CPLLibraryScopeChange *)v31 setProblematicFormerSharedScopeIdentifier:0];
+    [(CPLLibraryScopeChange *)selfCopy setProblematicFormerSharedScopeIdentifier:0];
     v16 = 0;
     goto LABEL_16;
   }
 
-  v21 = [v17 recordID];
-  v22 = [v21 recordName];
-  v23 = [v10 recordName];
-  v24 = [v22 isEqualToString:v23];
+  recordID = [v17 recordID];
+  recordName = [recordID recordName];
+  recordName2 = [dCopy recordName];
+  v24 = [recordName isEqualToString:recordName2];
 
   if (v24)
   {
@@ -80,32 +80,32 @@
   else
   {
     v26 = [NSString alloc];
-    v27 = [v17 recordID];
-    v28 = [v27 recordName];
-    v25 = [v26 initWithFormat:@"%@#%@", v16, v28];
+    recordID2 = [v17 recordID];
+    recordName3 = [recordID2 recordName];
+    v25 = [v26 initWithFormat:@"%@#%@", v16, recordName3];
   }
 
-  [(CPLLibraryScopeChange *)v31 setProblematicFormerSharedScopeIdentifier:v25];
+  [(CPLLibraryScopeChange *)selfCopy setProblematicFormerSharedScopeIdentifier:v25];
 
 LABEL_16:
 }
 
-+ (id)sharedCloudKitScopeFromLibraryInfoRecord:(id)a3 userRecordID:(id)a4
++ (id)sharedCloudKitScopeFromLibraryInfoRecord:(id)record userRecordID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"linkedShareZoneNameList"];
-  v8 = [v6 objectForKeyedSubscript:@"linkedShareZoneOwnerList"];
+  dCopy = d;
+  recordCopy = record;
+  v7 = [recordCopy objectForKeyedSubscript:@"linkedShareZoneNameList"];
+  v8 = [recordCopy objectForKeyedSubscript:@"linkedShareZoneOwnerList"];
 
   if ([v7 count] && (v9 = objc_msgSend(v7, "count"), v9 == objc_msgSend(v8, "count")))
   {
-    v10 = [v7 firstObject];
-    v11 = [v8 firstObject];
-    v12 = [v11 recordID];
-    v13 = [v12 recordName];
+    firstObject = [v7 firstObject];
+    firstObject2 = [v8 firstObject];
+    recordID = [firstObject2 recordID];
+    recordName = [recordID recordName];
 
-    v14 = [v5 recordName];
-    v15 = [v13 isEqualToString:v14];
+    recordName2 = [dCopy recordName];
+    v15 = [recordName isEqualToString:recordName2];
 
     v16 = [CKRecordZoneID alloc];
     if (v15)
@@ -115,7 +115,7 @@ LABEL_16:
 
     else
     {
-      v17 = v13;
+      v17 = recordName;
     }
 
     if (v15)
@@ -128,7 +128,7 @@ LABEL_16:
       v18 = 6;
     }
 
-    v19 = [v16 initWithZoneName:v10 ownerName:v17];
+    v19 = [v16 initWithZoneName:firstObject ownerName:v17];
     v20 = [[CPLCloudKitScope alloc] initWithZoneID:v19 options:v18];
   }
 

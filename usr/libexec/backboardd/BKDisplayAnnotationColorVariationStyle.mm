@@ -1,70 +1,70 @@
 @interface BKDisplayAnnotationColorVariationStyle
-+ (id)colorVariationWithIndex:(int64_t)a3;
-- (BKDisplayAnnotationColorVariationStyle)initWithRed:(double)a3 green:(double)a4 blue:(double)a5;
-- (void)applyAppearanceToShapeLayer:(id)a3;
-- (void)applyAppearanceToTextLayer:(id)a3;
-- (void)applyToLayer:(id)a3 forContent:(id)a4;
++ (id)colorVariationWithIndex:(int64_t)index;
+- (BKDisplayAnnotationColorVariationStyle)initWithRed:(double)red green:(double)green blue:(double)blue;
+- (void)applyAppearanceToShapeLayer:(id)layer;
+- (void)applyAppearanceToTextLayer:(id)layer;
+- (void)applyToLayer:(id)layer forContent:(id)content;
 @end
 
 @implementation BKDisplayAnnotationColorVariationStyle
 
-- (void)applyAppearanceToTextLayer:(id)a3
+- (void)applyAppearanceToTextLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v4 = CTFontCreateWithName(@"Helvetica", 0.0, 0);
   if (v4)
   {
-    [v5 setFont:v4];
+    [layerCopy setFont:v4];
   }
 
   CFRelease(v4);
-  [v5 setFontSize:14.0];
-  [v5 bk_setForegroundColorRed:1.0 green:1.0 blue:1.0 alpha:0.9];
-  [v5 bk_setBackgroundColorRed:fmin(self->_r green:0.5) blue:fmin(self->_g alpha:{0.5), fmin(self->_b, 0.5), 0.8}];
+  [layerCopy setFontSize:14.0];
+  [layerCopy bk_setForegroundColorRed:1.0 green:1.0 blue:1.0 alpha:0.9];
+  [layerCopy bk_setBackgroundColorRed:fmin(self->_r green:0.5) blue:fmin(self->_g alpha:{0.5), fmin(self->_b, 0.5), 0.8}];
 }
 
-- (void)applyAppearanceToShapeLayer:(id)a3
+- (void)applyAppearanceToShapeLayer:(id)layer
 {
-  v4 = a3;
-  [v4 setLineWidth:3.0];
-  [v4 bk_setForegroundColorRed:self->_r green:self->_g blue:self->_b alpha:0.9];
-  [v4 bk_setBackgroundColorRed:self->_r green:self->_g blue:self->_b alpha:0.2];
+  layerCopy = layer;
+  [layerCopy setLineWidth:3.0];
+  [layerCopy bk_setForegroundColorRed:self->_r green:self->_g blue:self->_b alpha:0.9];
+  [layerCopy bk_setBackgroundColorRed:self->_r green:self->_g blue:self->_b alpha:0.2];
 }
 
-- (void)applyToLayer:(id)a3 forContent:(id)a4
+- (void)applyToLayer:(id)layer forContent:(id)content
 {
-  v5 = a3;
+  layerCopy = layer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BKDisplayAnnotationColorVariationStyle *)self applyAppearanceToShapeLayer:v5];
+    [(BKDisplayAnnotationColorVariationStyle *)self applyAppearanceToShapeLayer:layerCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BKDisplayAnnotationColorVariationStyle *)self applyAppearanceToTextLayer:v5];
+    [(BKDisplayAnnotationColorVariationStyle *)self applyAppearanceToTextLayer:layerCopy];
   }
 }
 
-- (BKDisplayAnnotationColorVariationStyle)initWithRed:(double)a3 green:(double)a4 blue:(double)a5
+- (BKDisplayAnnotationColorVariationStyle)initWithRed:(double)red green:(double)green blue:(double)blue
 {
   v9.receiver = self;
   v9.super_class = BKDisplayAnnotationColorVariationStyle;
   result = [(BKDisplayAnnotationColorVariationStyle *)&v9 init];
   if (result)
   {
-    result->_r = a3;
-    result->_g = a4;
-    result->_b = a5;
+    result->_r = red;
+    result->_g = green;
+    result->_b = blue;
   }
 
   return result;
 }
 
-+ (id)colorVariationWithIndex:(int64_t)a3
++ (id)colorVariationWithIndex:(int64_t)index
 {
-  v3 = (&unk_1000BFB50 + 24 * (a3 % 6));
+  v3 = (&unk_1000BFB50 + 24 * (index % 6));
   v4 = [[BKDisplayAnnotationColorVariationStyle alloc] initWithRed:*v3 green:v3[1] blue:v3[2]];
 
   return v4;

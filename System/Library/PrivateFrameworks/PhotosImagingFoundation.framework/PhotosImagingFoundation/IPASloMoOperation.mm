@@ -1,11 +1,11 @@
 @interface IPASloMoOperation
-+ (id)operationFromFileURL:(id)a3;
++ (id)operationFromFileURL:(id)l;
 - ($222789CE95D16A76D31543149FD45E96)timeRange;
-- (BOOL)isEqualToOperation:(id)a3;
-- (IPASloMoOperation)initWithOperation:(id)a3;
-- (IPASloMoOperation)initWithSettingsDictionary:(id)a3;
-- (IPASloMoOperation)initWithTimeRange:(id *)a3 rate:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToOperation:(id)operation;
+- (IPASloMoOperation)initWithOperation:(id)operation;
+- (IPASloMoOperation)initWithSettingsDictionary:(id)dictionary;
+- (IPASloMoOperation)initWithTimeRange:(id *)range rate:(float)rate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)internalRepresentation;
 - (id)settingsDictionary;
@@ -36,7 +36,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [(IPAEditOperation *)[IPASloMoOperation allocWithZone:?]];
   v6 = *&self->_timeRange.start.epoch;
@@ -48,13 +48,13 @@
   return result;
 }
 
-- (BOOL)isEqualToOperation:(id)a3
+- (BOOL)isEqualToOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = operationCopy;
     [(IPASloMoOperation *)self timeRange];
     [(IPASloMoOperation *)self rate];
     v7 = v6;
@@ -112,12 +112,12 @@
 - (id)settingsDictionary
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(IPASloMoOperation *)self internalRepresentation];
-  v3 = [v2 propertyListDictionary];
-  v4 = v3;
-  if (v3)
+  internalRepresentation = [(IPASloMoOperation *)self internalRepresentation];
+  propertyListDictionary = [internalRepresentation propertyListDictionary];
+  v4 = propertyListDictionary;
+  if (propertyListDictionary)
   {
-    v5 = [v3 objectForKeyedSubscript:@"adjustmentData"];
+    v5 = [propertyListDictionary objectForKeyedSubscript:@"adjustmentData"];
     if (v5)
     {
       v10 = 0;
@@ -150,20 +150,20 @@
   return v6;
 }
 
-- (IPASloMoOperation)initWithSettingsDictionary:(id)a3
+- (IPASloMoOperation)initWithSettingsDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IPASloMoOperation;
   v5 = [(IPAEditOperation *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"slowMotion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"slowMotion"];
     if (v6)
     {
       v15 = 0;
-      v7 = [IPAAdjustmentStackSerializer dataFromPropertyList:v4 error:&v15];
+      v7 = [IPAAdjustmentStackSerializer dataFromPropertyList:dictionaryCopy error:&v15];
       v8 = v15;
       if (v7)
       {
@@ -191,7 +191,7 @@ LABEL_10:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *&buf[4] = v4;
+          *&buf[4] = dictionaryCopy;
           _os_log_impl(&dword_25E5BB000, v13, OS_LOG_TYPE_DEFAULT, "unable to serialize %@ to data", buf, 0xCu);
         }
       }
@@ -207,29 +207,29 @@ LABEL_11:
   return v5;
 }
 
-- (IPASloMoOperation)initWithOperation:(id)a3
+- (IPASloMoOperation)initWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = IPASloMoOperation;
-  v5 = [(IPAEditOperation *)&v10 initWithOperation:v4];
+  v5 = [(IPAEditOperation *)&v10 initWithOperation:operationCopy];
   v6 = v5;
   if (v5)
   {
-    v8 = *(v4 + 24);
-    v7 = *(v4 + 40);
-    *(v5 + 8) = *(v4 + 8);
+    v8 = *(operationCopy + 24);
+    v7 = *(operationCopy + 40);
+    *(v5 + 8) = *(operationCopy + 8);
     *(v5 + 24) = v8;
     *(v5 + 40) = v7;
-    *(v5 + 14) = *(v4 + 14);
+    *(v5 + 14) = *(operationCopy + 14);
   }
 
   return v6;
 }
 
-- (IPASloMoOperation)initWithTimeRange:(id *)a3 rate:(float)a4
+- (IPASloMoOperation)initWithTimeRange:(id *)range rate:(float)rate
 {
-  if (a4 <= 0.0 || a4 > 1.0)
+  if (rate <= 0.0 || rate > 1.0)
   {
     _PFAssertContinueHandler();
 LABEL_11:
@@ -237,12 +237,12 @@ LABEL_11:
     return 0;
   }
 
-  if ((a3->var0.var2 & 1) == 0 || (a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
-    v8 = *&a3->var0.var3;
-    *&range.start.value = *&a3->var0.var0;
+    v8 = *&range->var0.var3;
+    *&range.start.value = *&range->var0.var0;
     *&range.start.epoch = v8;
-    *&range.duration.timescale = *&a3->var1.var1;
+    *&range.duration.timescale = *&range->var1.var1;
     v12 = CMTimeRangeCopyDescription(*MEMORY[0x277CBECE8], &range);
     _PFAssertContinueHandler();
 
@@ -254,22 +254,22 @@ LABEL_11:
   result = [(IPAEditOperation *)&v13 init];
   if (result)
   {
-    v11 = *&a3->var0.var3;
-    v10 = *&a3->var1.var1;
-    *&result->_timeRange.start.value = *&a3->var0.var0;
+    v11 = *&range->var0.var3;
+    v10 = *&range->var1.var1;
+    *&result->_timeRange.start.value = *&range->var0.var0;
     *&result->_timeRange.start.epoch = v11;
     *&result->_timeRange.duration.timescale = v10;
-    result->_rate = a4;
+    result->_rate = rate;
   }
 
   return result;
 }
 
-+ (id)operationFromFileURL:(id)a3
++ (id)operationFromFileURL:(id)l
 {
   v3 = MEMORY[0x277D3B518];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[v3 alloc] initWithURL:lCopy];
 
   if (v5)
   {

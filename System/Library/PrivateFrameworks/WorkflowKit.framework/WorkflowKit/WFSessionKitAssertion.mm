@@ -1,11 +1,11 @@
 @interface WFSessionKitAssertion
-- (BOOL)takeWithError:(id *)a3;
+- (BOOL)takeWithError:(id *)error;
 - (id)failureHandler;
 - (id)resultHandler;
-- (void)addCompletionHandlerIfRunning:(id)a3;
+- (void)addCompletionHandlerIfRunning:(id)running;
 - (void)cancel;
-- (void)setFailureHandler:(id)a3;
-- (void)setResultHandler:(id)a3;
+- (void)setFailureHandler:(id)handler;
+- (void)setResultHandler:(id)handler;
 - (void)startTimeoutTimer;
 @end
 
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)setResultHandler:(id)a3
+- (void)setResultHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -48,7 +48,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   SessionKitAssertion.resultHandler.setter(v4, v5);
 }
 
@@ -74,9 +74,9 @@
   return v4;
 }
 
-- (void)setFailureHandler:(id)a3
+- (void)setFailureHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -89,23 +89,23 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   SessionKitAssertion.failureHandler.setter(v4, v5);
 }
 
-- (BOOL)takeWithError:(id *)a3
+- (BOOL)takeWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   SessionKitAssertion.take()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = sub_1CA948AC8();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -118,22 +118,22 @@
 
 - (void)startTimeoutTimer
 {
-  v2 = self;
+  selfCopy = self;
   SessionKitAssertion.startTimeoutTimer()();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   SessionKitAssertion.cancel()();
 }
 
-- (void)addCompletionHandlerIfRunning:(id)a3
+- (void)addCompletionHandlerIfRunning:(id)running
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(running);
   _Block_copy(v4);
-  v5 = self;
-  sub_1CA51E210(v5, v4);
+  selfCopy = self;
+  sub_1CA51E210(selfCopy, v4);
   _Block_release(v4);
 }
 

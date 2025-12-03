@@ -1,46 +1,46 @@
 @interface _INPBLocalTime
-- (BOOL)isEqual:(id)a3;
-- (_INPBLocalTime)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBLocalTime)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasMillisOfSecond:(BOOL)a3;
-- (void)setHasMinuteOfHour:(BOOL)a3;
-- (void)setHasSecondOfMinute:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasMillisOfSecond:(BOOL)second;
+- (void)setHasMinuteOfHour:(BOOL)hour;
+- (void)setHasSecondOfMinute:(BOOL)minute;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBLocalTime
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBLocalTime *)self hasHourOfDay])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBLocalTime hourOfDay](self, "hourOfDay")}];
-    [v3 setObject:v4 forKeyedSubscript:@"hourOfDay"];
+    [dictionary setObject:v4 forKeyedSubscript:@"hourOfDay"];
   }
 
   if ([(_INPBLocalTime *)self hasMillisOfSecond])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBLocalTime millisOfSecond](self, "millisOfSecond")}];
-    [v3 setObject:v5 forKeyedSubscript:@"millisOfSecond"];
+    [dictionary setObject:v5 forKeyedSubscript:@"millisOfSecond"];
   }
 
   if ([(_INPBLocalTime *)self hasMinuteOfHour])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBLocalTime minuteOfHour](self, "minuteOfHour")}];
-    [v3 setObject:v6 forKeyedSubscript:@"minuteOfHour"];
+    [dictionary setObject:v6 forKeyedSubscript:@"minuteOfHour"];
   }
 
   if ([(_INPBLocalTime *)self hasSecondOfMinute])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBLocalTime secondOfMinute](self, "secondOfMinute")}];
-    [v3 setObject:v7 forKeyedSubscript:@"secondOfMinute"];
+    [dictionary setObject:v7 forKeyedSubscript:@"secondOfMinute"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -88,33 +88,33 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(_INPBLocalTime *)self hasHourOfDay];
-  if (v5 != [v4 hasHourOfDay])
+  hasHourOfDay = [(_INPBLocalTime *)self hasHourOfDay];
+  if (hasHourOfDay != [equalCopy hasHourOfDay])
   {
     goto LABEL_15;
   }
 
   if ([(_INPBLocalTime *)self hasHourOfDay])
   {
-    if ([v4 hasHourOfDay])
+    if ([equalCopy hasHourOfDay])
     {
       hourOfDay = self->_hourOfDay;
-      if (hourOfDay != [v4 hourOfDay])
+      if (hourOfDay != [equalCopy hourOfDay])
       {
         goto LABEL_15;
       }
     }
   }
 
-  if ((v7 = -[_INPBLocalTime hasMillisOfSecond](self, "hasMillisOfSecond"), v7 == [v4 hasMillisOfSecond]) && (!-[_INPBLocalTime hasMillisOfSecond](self, "hasMillisOfSecond") || !objc_msgSend(v4, "hasMillisOfSecond") || (millisOfSecond = self->_millisOfSecond, millisOfSecond == objc_msgSend(v4, "millisOfSecond"))) && (v9 = -[_INPBLocalTime hasMinuteOfHour](self, "hasMinuteOfHour"), v9 == objc_msgSend(v4, "hasMinuteOfHour")) && (!-[_INPBLocalTime hasMinuteOfHour](self, "hasMinuteOfHour") || !objc_msgSend(v4, "hasMinuteOfHour") || (minuteOfHour = self->_minuteOfHour, minuteOfHour == objc_msgSend(v4, "minuteOfHour"))) && (v11 = -[_INPBLocalTime hasSecondOfMinute](self, "hasSecondOfMinute"), v11 == objc_msgSend(v4, "hasSecondOfMinute")) && (!-[_INPBLocalTime hasSecondOfMinute](self, "hasSecondOfMinute") || !objc_msgSend(v4, "hasSecondOfMinute") || (secondOfMinute = self->_secondOfMinute, secondOfMinute == objc_msgSend(v4, "secondOfMinute"))))
+  if ((v7 = -[_INPBLocalTime hasMillisOfSecond](self, "hasMillisOfSecond"), v7 == [equalCopy hasMillisOfSecond]) && (!-[_INPBLocalTime hasMillisOfSecond](self, "hasMillisOfSecond") || !objc_msgSend(equalCopy, "hasMillisOfSecond") || (millisOfSecond = self->_millisOfSecond, millisOfSecond == objc_msgSend(equalCopy, "millisOfSecond"))) && (v9 = -[_INPBLocalTime hasMinuteOfHour](self, "hasMinuteOfHour"), v9 == objc_msgSend(equalCopy, "hasMinuteOfHour")) && (!-[_INPBLocalTime hasMinuteOfHour](self, "hasMinuteOfHour") || !objc_msgSend(equalCopy, "hasMinuteOfHour") || (minuteOfHour = self->_minuteOfHour, minuteOfHour == objc_msgSend(equalCopy, "minuteOfHour"))) && (v11 = -[_INPBLocalTime hasSecondOfMinute](self, "hasSecondOfMinute"), v11 == objc_msgSend(equalCopy, "hasSecondOfMinute")) && (!-[_INPBLocalTime hasSecondOfMinute](self, "hasSecondOfMinute") || !objc_msgSend(equalCopy, "hasSecondOfMinute") || (secondOfMinute = self->_secondOfMinute, secondOfMinute == objc_msgSend(equalCopy, "secondOfMinute"))))
   {
     v12 = 1;
   }
@@ -128,7 +128,7 @@ LABEL_15:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBLocalTime allocWithZone:?]];
   if ([(_INPBLocalTime *)self hasHourOfDay])
@@ -154,33 +154,33 @@ LABEL_15:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBLocalTime *)self data];
+  coderCopy = coder;
+  data = [(_INPBLocalTime *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBLocalTime)initWithCoder:(id)a3
+- (_INPBLocalTime)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBLocalTime *)self initWithData:v6];
+    self = [(_INPBLocalTime *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBLocalTime *)self hasHourOfDay])
   {
     hourOfDay = self->_hourOfDay;
@@ -206,9 +206,9 @@ LABEL_15:
   }
 }
 
-- (void)setHasSecondOfMinute:(BOOL)a3
+- (void)setHasSecondOfMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 8;
   }
@@ -221,9 +221,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMinuteOfHour:(BOOL)a3
+- (void)setHasMinuteOfHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 4;
   }
@@ -236,9 +236,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMillisOfSecond:(BOOL)a3
+- (void)setHasMillisOfSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 2;
   }

@@ -1,35 +1,35 @@
 @interface SXComponentInsertionAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXComponentInsertionAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53AC020 scope:v5 callbackBlock:&__block_literal_global_82];
+  [callback whenResolvingProtocol:&unk_1F53AC020 scope:v5 callbackBlock:&__block_literal_global_82];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerClass:objc_opt_class() factory:&__block_literal_global_58];
+  publicContainer = [registryCopy publicContainer];
+  v7 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_58];
 
-  v8 = [v3 privateContainer];
-  v9 = [v8 registerProtocol:&unk_1F54290C0 factory:&__block_literal_global_65];
+  privateContainer = [registryCopy privateContainer];
+  v9 = [privateContainer registerProtocol:&unk_1F54290C0 factory:&__block_literal_global_65];
 
-  v10 = [v3 privateContainer];
-  v11 = [v10 registerProtocol:&unk_1F53E70E8 factory:&__block_literal_global_96_0];
+  privateContainer2 = [registryCopy privateContainer];
+  v11 = [privateContainer2 registerProtocol:&unk_1F53E70E8 factory:&__block_literal_global_96_0];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerProtocol:&unk_1F53E7178 factory:&__block_literal_global_99];
+  publicContainer2 = [registryCopy publicContainer];
+  v13 = [publicContainer2 registerProtocol:&unk_1F53E7178 factory:&__block_literal_global_99];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerProtocol:&unk_1F54053A0 name:@"general" factory:&__block_literal_global_103_0];
+  publicContainer3 = [registryCopy publicContainer];
+  v15 = [publicContainer3 registerProtocol:&unk_1F54053A0 name:@"general" factory:&__block_literal_global_103_0];
   v16 = [v15 withConfiguration:&__block_literal_global_107_0];
 
-  v18 = [v3 privateContainer];
+  privateContainer3 = [registryCopy privateContainer];
 
-  v17 = [v18 registerProtocol:&unk_1F53D06D8 factory:&__block_literal_global_111_1];
+  v17 = [privateContainer3 registerProtocol:&unk_1F53D06D8 factory:&__block_literal_global_111_1];
 }
 
 void __47__SXComponentInsertionAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

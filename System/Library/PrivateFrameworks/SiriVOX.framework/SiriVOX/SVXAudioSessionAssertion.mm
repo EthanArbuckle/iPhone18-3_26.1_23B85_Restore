@@ -1,5 +1,5 @@
 @interface SVXAudioSessionAssertion
-- (SVXAudioSessionAssertion)initWithReason:(id)a3 audioSessionID:(unsigned int)a4 taskTracker:(id)a5 relinquishHandler:(id)a6;
+- (SVXAudioSessionAssertion)initWithReason:(id)reason audioSessionID:(unsigned int)d taskTracker:(id)tracker relinquishHandler:(id)handler;
 - (id)description;
 - (void)dealloc;
 - (void)relinquish;
@@ -16,7 +16,7 @@
     v6 = 136315394;
     v7 = "[SVXAudioSessionAssertion relinquish]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2695B9000, v3, OS_LOG_TYPE_INFO, "%s %@", &v6, 0x16u);
   }
 
@@ -27,29 +27,29 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXAudioSessionAssertion)initWithReason:(id)a3 audioSessionID:(unsigned int)a4 taskTracker:(id)a5 relinquishHandler:(id)a6
+- (SVXAudioSessionAssertion)initWithReason:(id)reason audioSessionID:(unsigned int)d taskTracker:(id)tracker relinquishHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  reasonCopy = reason;
+  trackerCopy = tracker;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = SVXAudioSessionAssertion;
   v13 = [(SVXAudioSessionAssertion *)&v24 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v14;
 
-    v13->_audioSessionID = a4;
-    objc_storeStrong(&v13->_taskTracker, a5);
+    v13->_audioSessionID = d;
+    objc_storeStrong(&v13->_taskTracker, tracker);
     v16 = objc_alloc(MEMORY[0x277CEF380]);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __88__SVXAudioSessionAssertion_initWithReason_audioSessionID_taskTracker_relinquishHandler___block_invoke;
     v22[3] = &unk_279C68BA0;
-    v23 = v12;
+    v23 = handlerCopy;
     v17 = [v16 initWithBlock:v22];
     relinquishHandler = v13->_relinquishHandler;
     v13->_relinquishHandler = v17;
@@ -91,7 +91,7 @@ uint64_t __88__SVXAudioSessionAssertion_initWithReason_audioSessionID_taskTracke
       *buf = 136315394;
       v7 = "[SVXAudioSessionAssertion dealloc]";
       v8 = 2112;
-      v9 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_2695B9000, v3, OS_LOG_TYPE_ERROR, "%s %@ is released without explicitly calling -relinquish.", buf, 0x16u);
     }
   }

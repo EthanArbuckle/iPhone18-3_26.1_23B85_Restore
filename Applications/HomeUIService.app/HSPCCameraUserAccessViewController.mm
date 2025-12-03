@@ -1,21 +1,21 @@
 @interface HSPCCameraUserAccessViewController
-- (HSPCCameraUserAccessViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCCameraUserAccessViewController)initWithCoordinator:(id)coordinator config:(id)config;
 @end
 
 @implementation HSPCCameraUserAccessViewController
 
-- (HSPCCameraUserAccessViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCCameraUserAccessViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = HSPCCameraUserAccessViewController;
   v9 = [(HSPCMVVMShellViewController *)&v15 initWithTableViewStyle:2 moduleCreator:&stru_1000C7C78 moduleControllerBuilder:&stru_1000C7C98];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
     v11 = HULocalizedString();
     [(HSPCCameraUserAccessViewController *)v10 setTitle:v11];
 

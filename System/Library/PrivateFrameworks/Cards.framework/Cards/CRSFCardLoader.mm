@@ -1,7 +1,7 @@
 @interface CRSFCardLoader
 + (id)sharedLoader;
 - (CRSFCardLoader)init;
-- (void)loadSFCard:(id)a3 completion:(id)a4;
+- (void)loadSFCard:(id)card completion:(id)completion;
 @end
 
 @implementation CRSFCardLoader
@@ -40,17 +40,17 @@ uint64_t __30__CRSFCardLoader_sharedLoader__block_invoke()
   return v2;
 }
 
-- (void)loadSFCard:(id)a3 completion:(id)a4
+- (void)loadSFCard:(id)card completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cardId];
-  v9 = [(NSCache *)self->_loadedCards objectForKey:v8];
+  cardCopy = card;
+  completionCopy = completion;
+  cardId = [cardCopy cardId];
+  v9 = [(NSCache *)self->_loadedCards objectForKey:cardId];
   if (v9)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v9);
+      completionCopy[2](completionCopy, v9);
     }
   }
 
@@ -58,8 +58,8 @@ uint64_t __30__CRSFCardLoader_sharedLoader__block_invoke()
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
+    v10 = cardCopy;
+    v11 = completionCopy;
     SFResourceLoaderLoadCard();
 
     objc_destroyWeak(&v12);

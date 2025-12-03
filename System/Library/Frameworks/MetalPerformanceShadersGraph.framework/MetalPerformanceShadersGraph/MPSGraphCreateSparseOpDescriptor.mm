@@ -1,6 +1,6 @@
 @interface MPSGraphCreateSparseOpDescriptor
 + (MPSGraphCreateSparseOpDescriptor)descriptorWithStorageType:(MPSGraphSparseStorageType)sparseStorageType dataType:(MPSDataType)dataType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphCreateSparseOpDescriptor
@@ -15,7 +15,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphCreateSparseOpDescriptor alloc];
   [(MPSGraphCreateSparseOpDescriptor *)v4 setSparseStorageType:self->_sparseStorageType];

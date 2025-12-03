@@ -1,16 +1,16 @@
 @interface PDSharingMailboxPayload
-- (PDSharingMailboxPayload)initWithData:(id)a3 scheme:(unint64_t)a4;
-- (PDSharingMailboxPayload)initWithDictionary:(id)a3;
+- (PDSharingMailboxPayload)initWithData:(id)data scheme:(unint64_t)scheme;
+- (PDSharingMailboxPayload)initWithDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation PDSharingMailboxPayload
 
-- (PDSharingMailboxPayload)initWithData:(id)a3 scheme:(unint64_t)a4
+- (PDSharingMailboxPayload)initWithData:(id)data scheme:(unint64_t)scheme
 {
-  v7 = a3;
-  v8 = 0;
-  if (v7 && a4)
+  dataCopy = data;
+  selfCopy = 0;
+  if (dataCopy && scheme)
   {
     v12.receiver = self;
     v12.super_class = PDSharingMailboxPayload;
@@ -18,27 +18,27 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_data, a3);
-      v10->_scheme = a4;
+      objc_storeStrong(&v9->_data, data);
+      v10->_scheme = scheme;
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PDSharingMailboxPayload)initWithDictionary:(id)a3
+- (PDSharingMailboxPayload)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"data"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"data"];
   if (v5)
   {
     v6 = [[NSData alloc] initWithBase64EncodedString:v5 options:0];
     if (v6)
     {
-      v7 = [v4 PKStringForKey:@"type"];
+      v7 = [dictionaryCopy PKStringForKey:@"type"];
       v8 = v7;
       if (v7 == @"AEAD_AES_128_GCM")
       {
@@ -47,7 +47,7 @@ LABEL_6:
 LABEL_7:
 
         self = [(PDSharingMailboxPayload *)self initWithData:v6 scheme:v10];
-        v11 = self;
+        selfCopy = self;
 LABEL_14:
 
         goto LABEL_15;
@@ -71,14 +71,14 @@ LABEL_14:
       }
     }
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation

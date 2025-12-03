@@ -1,24 +1,24 @@
 @interface _LTDAssetModel
-+ (id)descriptionForAssetState:(unint64_t)a3;
-+ (id)localeIdentifiersForLanguageName:(id)a3;
-+ (int64_t)_offlineStateForAssetState:(unint64_t)a3;
-+ (unint64_t)_assetStateForOfflineState:(int64_t)a3;
++ (id)descriptionForAssetState:(unint64_t)state;
++ (id)localeIdentifiersForLanguageName:(id)name;
++ (int64_t)_offlineStateForAssetState:(unint64_t)state;
++ (unint64_t)_assetStateForOfflineState:(int64_t)state;
 - (BOOL)_isCompatibleWithThisDevice;
-- (BOOL)addComponentAsset:(id)a3;
+- (BOOL)addComponentAsset:(id)asset;
 - (BOOL)canBePurged;
-- (BOOL)isASRModelSupportingTaskHint:(int64_t)a3;
+- (BOOL)isASRModelSupportingTaskHint:(int64_t)hint;
 - (BOOL)isAvailable;
 - (BOOL)isDownloading;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
 - (BOOL)isMultiLocaleAsset;
-- (BOOL)isNewerCompatibleVersionThan:(id)a3;
-- (BOOL)isNewerVersionThan:(id)a3;
+- (BOOL)isNewerCompatibleVersionThan:(id)than;
+- (BOOL)isNewerVersionThan:(id)than;
 - (BOOL)isPremiumTextLID;
 - (BOOL)refreshState;
 - (BOOL)shouldPurgeWithLocale;
-- (BOOL)supportsLocale:(id)a3;
-- (BOOL)supportsTaskHint:(int64_t)a3;
+- (BOOL)supportsLocale:(id)locale;
+- (BOOL)supportsTaskHint:(int64_t)hint;
 - (NSArray)localeIdentifiers;
 - (NSArray)supportedLanguages;
 - (NSString)assetBuild;
@@ -31,14 +31,14 @@
 - (NSString)identifier;
 - (NSString)managedAssetType;
 - (NSURL)getLocalFileUrl;
-- (_LTDAssetModel)initWithProvider:(id)a3;
+- (_LTDAssetModel)initWithProvider:(id)provider;
 - (_LTDAssetModelProtocol)provider;
-- (id)firstComponentAssetWithAssetSubtype:(unint64_t)a3;
-- (id)getLocalFileUrlForTaskHint:(int64_t)a3;
+- (id)firstComponentAssetWithAssetSubtype:(unint64_t)subtype;
+- (id)getLocalFileUrlForTaskHint:(int64_t)hint;
 - (id)stateDescription;
 - (id)status;
 - (int64_t)assetVersion;
-- (int64_t)compareAssetVersionReversed:(id)a3;
+- (int64_t)compareAssetVersionReversed:(id)reversed;
 - (int64_t)contentVersion;
 - (int64_t)downloadSize;
 - (int64_t)formatVersion;
@@ -49,15 +49,15 @@
 - (unint64_t)hash;
 - (unint64_t)managedAssetProvider;
 - (unint64_t)state;
-- (void)_addComponentAsset:(id)a3;
-- (void)setAssetSubtype:(unint64_t)a3;
+- (void)_addComponentAsset:(id)asset;
+- (void)setAssetSubtype:(unint64_t)subtype;
 @end
 
 @implementation _LTDAssetModel
 
-- (_LTDAssetModel)initWithProvider:(id)a3
+- (_LTDAssetModel)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = _LTDAssetModel;
   v5 = [(_LTDAssetModel *)&v19 init];
@@ -69,7 +69,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v4)
+  if (!providerCopy)
   {
     v17 = _LTOSLogAssets();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -81,20 +81,20 @@ LABEL_6:
   }
 
   v5->_lock._os_unfair_lock_opaque = 0;
-  v7 = [MEMORY[0x277CBEB18] arrayWithObject:v4];
+  v7 = [MEMORY[0x277CBEB18] arrayWithObject:providerCopy];
   components = v6->_components;
   v6->_components = v7;
 
-  v9 = [objc_opt_class() _offlineStateForAssetState:{objc_msgSend(v4, "state")}];
+  v9 = [objc_opt_class() _offlineStateForAssetState:{objc_msgSend(providerCopy, "state")}];
   v10 = MEMORY[0x277CE1AC0];
-  v11 = [v4 identifier];
-  v12 = [v10 discreteProgressWithIdentifier:v11 offlineState:v9];
+  identifier = [providerCopy identifier];
+  v12 = [v10 discreteProgressWithIdentifier:identifier offlineState:v9];
   progress = v6->_progress;
   v6->_progress = v12;
 
   v14 = v6->_progress;
-  v15 = [v4 progress];
-  [(_LTAssetProgress *)v14 addComponent:v15];
+  progress = [providerCopy progress];
+  [(_LTAssetProgress *)v14 addComponent:progress];
 
   v16 = v6;
 LABEL_7:
@@ -105,29 +105,29 @@ LABEL_7:
 - (_LTDAssetModelProtocol)provider
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_LTDAssetModel *)self components];
-  v4 = [v3 firstObject];
+  components = [(_LTDAssetModel *)self components];
+  firstObject = [components firstObject];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return firstObject;
 }
 
-- (void)_addComponentAsset:(id)a3
+- (void)_addComponentAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_components addObject:v4];
+  [(NSMutableArray *)self->_components addObject:assetCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [(_LTDAssetModel *)self progress];
-  v5 = [v4 progress];
+  progress = [(_LTDAssetModel *)self progress];
+  progress2 = [assetCopy progress];
 
-  [v6 addComponent:v5];
+  [progress addComponent:progress2];
 }
 
-- (BOOL)addComponentAsset:(id)a3
+- (BOOL)addComponentAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -142,8 +142,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [(_LTDAssetModel *)self assetType];
-  if (v6 != [v4 assetType])
+  assetType = [(_LTDAssetModel *)self assetType];
+  if (assetType != [assetCopy assetType])
   {
     v13 = _LTOSLogAssets();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -155,21 +155,21 @@ LABEL_11:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(_LTDAssetModel *)self components];
-  v8 = [v7 count];
+  components = [(_LTDAssetModel *)self components];
+  v8 = [components count];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v8)
   {
     os_unfair_lock_lock(&self->_lock);
-    v9 = [(_LTDAssetModel *)self components];
+    components2 = [(_LTDAssetModel *)self components];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __36___LTDAssetModel_addComponentAsset___block_invoke;
     v16[3] = &unk_2789B5A08;
-    v10 = v4;
+    v10 = assetCopy;
     v17 = v10;
-    v11 = [v9 lt_hasObjectPassingTest:v16];
+    v11 = [components2 lt_hasObjectPassingTest:v16];
 
     os_unfair_lock_unlock(&self->_lock);
     if (v11)
@@ -191,7 +191,7 @@ LABEL_11:
 
   else
   {
-    [(_LTDAssetModel *)self _addComponentAsset:v4];
+    [(_LTDAssetModel *)self _addComponentAsset:assetCopy];
     v14 = 1;
   }
 
@@ -200,28 +200,28 @@ LABEL_12:
   return v14;
 }
 
-- (id)firstComponentAssetWithAssetSubtype:(unint64_t)a3
+- (id)firstComponentAssetWithAssetSubtype:(unint64_t)subtype
 {
-  v4 = [(_LTDAssetModel *)self components];
+  components = [(_LTDAssetModel *)self components];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54___LTDAssetModel_firstComponentAssetWithAssetSubtype___block_invoke;
   v7[3] = &__block_descriptor_40_e34_B16__0____LTDAssetModelProtocol__8l;
-  v7[4] = a3;
-  v5 = [v4 lt_firstObjectPassingTest:v7];
+  v7[4] = subtype;
+  v5 = [components lt_firstObjectPassingTest:v7];
 
   return v5;
 }
 
-+ (unint64_t)_assetStateForOfflineState:(int64_t)a3
++ (unint64_t)_assetStateForOfflineState:(int64_t)state
 {
   v3 = 2;
-  if (a3 != 1)
+  if (state != 1)
   {
     v3 = 3;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return 1;
   }
@@ -232,228 +232,228 @@ LABEL_12:
   }
 }
 
-+ (int64_t)_offlineStateForAssetState:(unint64_t)a3
++ (int64_t)_offlineStateForAssetState:(unint64_t)state
 {
-  if (a3 - 1 > 5)
+  if (state - 1 > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_233005B18[a3 - 1];
+    return qword_233005B18[state - 1];
   }
 }
 
-+ (id)descriptionForAssetState:(unint64_t)a3
++ (id)descriptionForAssetState:(unint64_t)state
 {
-  if (a3 > 6)
+  if (state > 6)
   {
     return @"Undefined";
   }
 
   else
   {
-    return off_2789B5A68[a3];
+    return off_2789B5A68[state];
   }
 }
 
 - (NSString)identifier
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 identifier];
+  provider = [(_LTDAssetModel *)self provider];
+  identifier = [provider identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)assetId
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetId];
+  provider = [(_LTDAssetModel *)self provider];
+  assetId = [provider assetId];
 
-  return v3;
+  return assetId;
 }
 
 - (NSString)assetLanguage
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetLanguage];
+  provider = [(_LTDAssetModel *)self provider];
+  assetLanguage = [provider assetLanguage];
 
-  return v3;
+  return assetLanguage;
 }
 
 - (NSString)assetName
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetName];
+  provider = [(_LTDAssetModel *)self provider];
+  assetName = [provider assetName];
 
-  return v3;
+  return assetName;
 }
 
 - (NSString)coreAssetName
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 coreAssetName];
+  provider = [(_LTDAssetModel *)self provider];
+  coreAssetName = [provider coreAssetName];
 
-  return v3;
+  return coreAssetName;
 }
 
 - (NSString)assetTypeName
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetTypeName];
+  provider = [(_LTDAssetModel *)self provider];
+  assetTypeName = [provider assetTypeName];
 
-  return v3;
+  return assetTypeName;
 }
 
 - (int64_t)assetVersion
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetVersion];
+  provider = [(_LTDAssetModel *)self provider];
+  assetVersion = [provider assetVersion];
 
-  return v3;
+  return assetVersion;
 }
 
 - (NSString)assetBuild
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetBuild];
+  provider = [(_LTDAssetModel *)self provider];
+  assetBuild = [provider assetBuild];
 
-  return v3;
+  return assetBuild;
 }
 
 - (int64_t)contentVersion
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 contentVersion];
+  provider = [(_LTDAssetModel *)self provider];
+  contentVersion = [provider contentVersion];
 
-  return v3;
+  return contentVersion;
 }
 
 - (int64_t)downloadSize
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 downloadSize];
+  provider = [(_LTDAssetModel *)self provider];
+  downloadSize = [provider downloadSize];
 
-  return v3;
+  return downloadSize;
 }
 
 - (int64_t)formatVersion
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 formatVersion];
+  provider = [(_LTDAssetModel *)self provider];
+  formatVersion = [provider formatVersion];
 
-  return v3;
+  return formatVersion;
 }
 
 - (NSURL)getLocalFileUrl
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 getLocalFileUrl];
+  provider = [(_LTDAssetModel *)self provider];
+  getLocalFileUrl = [provider getLocalFileUrl];
 
-  return v3;
+  return getLocalFileUrl;
 }
 
-- (id)getLocalFileUrlForTaskHint:(int64_t)a3
+- (id)getLocalFileUrlForTaskHint:(int64_t)hint
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(_LTDAssetModel *)self components];
+  components = [(_LTDAssetModel *)self components];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45___LTDAssetModel_getLocalFileUrlForTaskHint___block_invoke;
   v9[3] = &__block_descriptor_40_e34_B16__0____LTDAssetModelProtocol__8l;
-  v9[4] = a3;
-  v6 = [v5 lt_firstObjectPassingTest:v9];
+  v9[4] = hint;
+  v6 = [components lt_firstObjectPassingTest:v9];
 
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [v6 getLocalFileUrl];
+  getLocalFileUrl = [v6 getLocalFileUrl];
 
-  return v7;
+  return getLocalFileUrl;
 }
 
 - (BOOL)isPremiumTextLID
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 isPremiumTextLID];
+  provider = [(_LTDAssetModel *)self provider];
+  isPremiumTextLID = [provider isPremiumTextLID];
 
-  return v3;
+  return isPremiumTextLID;
 }
 
 - (unint64_t)managedAssetProvider
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 managedAssetProvider];
+  provider = [(_LTDAssetModel *)self provider];
+  managedAssetProvider = [provider managedAssetProvider];
 
-  return v3;
+  return managedAssetProvider;
 }
 
 - (NSString)managedAssetType
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 managedAssetType];
+  provider = [(_LTDAssetModel *)self provider];
+  managedAssetType = [provider managedAssetType];
 
-  return v3;
+  return managedAssetType;
 }
 
 - (int64_t)requiredCapabilityIdentifier
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 requiredCapabilityIdentifier];
+  provider = [(_LTDAssetModel *)self provider];
+  requiredCapabilityIdentifier = [provider requiredCapabilityIdentifier];
 
-  return v3;
+  return requiredCapabilityIdentifier;
 }
 
 - (unint64_t)state
 {
   v3 = objc_opt_class();
-  v4 = [(_LTDAssetModel *)self progress];
-  v5 = [v3 _assetStateForOfflineState:{objc_msgSend(v4, "offlineState")}];
+  progress = [(_LTDAssetModel *)self progress];
+  v5 = [v3 _assetStateForOfflineState:{objc_msgSend(progress, "offlineState")}];
 
   return v5;
 }
 
 - (NSArray)supportedLanguages
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 supportedLanguages];
+  provider = [(_LTDAssetModel *)self provider];
+  supportedLanguages = [provider supportedLanguages];
 
-  return v3;
+  return supportedLanguages;
 }
 
 - (int64_t)unarchivedSize
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 unarchivedSize];
+  provider = [(_LTDAssetModel *)self provider];
+  unarchivedSize = [provider unarchivedSize];
 
-  return v3;
+  return unarchivedSize;
 }
 
 - (unint64_t)assetSubtype
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetSubtype];
+  provider = [(_LTDAssetModel *)self provider];
+  assetSubtype = [provider assetSubtype];
 
-  return v3;
+  return assetSubtype;
 }
 
-- (void)setAssetSubtype:(unint64_t)a3
+- (void)setAssetSubtype:(unint64_t)subtype
 {
-  v4 = [(_LTDAssetModel *)self provider];
-  [v4 setAssetSubtype:a3];
+  provider = [(_LTDAssetModel *)self provider];
+  [provider setAssetSubtype:subtype];
 }
 
 - (unint64_t)assetType
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 assetType];
+  provider = [(_LTDAssetModel *)self provider];
+  assetType = [provider assetType];
 
-  return v3;
+  return assetType;
 }
 
 - (BOOL)shouldPurgeWithLocale
 {
-  v3 = [(_LTDAssetModel *)self assetType];
-  if (v3 > 0xB || ((1 << v3) & 0xD04) == 0)
+  assetType = [(_LTDAssetModel *)self assetType];
+  if (assetType > 0xB || ((1 << assetType) & 0xD04) == 0)
   {
     return 0;
   }
@@ -463,29 +463,29 @@ LABEL_12:
 
 - (BOOL)isMultiLocaleAsset
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 isMultiLocaleAsset];
+  provider = [(_LTDAssetModel *)self provider];
+  isMultiLocaleAsset = [provider isMultiLocaleAsset];
 
-  return v3;
+  return isMultiLocaleAsset;
 }
 
-- (BOOL)isASRModelSupportingTaskHint:(int64_t)a3
+- (BOOL)isASRModelSupportingTaskHint:(int64_t)hint
 {
-  v5 = [(_LTDAssetModel *)self isASRModel];
-  if (v5)
+  isASRModel = [(_LTDAssetModel *)self isASRModel];
+  if (isASRModel)
   {
 
-    LOBYTE(v5) = [(_LTDAssetModel *)self supportsTaskHint:a3];
+    LOBYTE(isASRModel) = [(_LTDAssetModel *)self supportsTaskHint:hint];
   }
 
-  return v5;
+  return isASRModel;
 }
 
 - (id)stateDescription
 {
   v3 = objc_opt_class();
-  v4 = [(_LTDAssetModel *)self provider];
-  v5 = [v3 descriptionForAssetState:{objc_msgSend(v4, "state")}];
+  provider = [(_LTDAssetModel *)self provider];
+  v5 = [v3 descriptionForAssetState:{objc_msgSend(provider, "state")}];
 
   return v5;
 }
@@ -493,25 +493,25 @@ LABEL_12:
 - (id)status
 {
   v3 = objc_alloc(MEMORY[0x277CE1B10]);
-  v4 = [(_LTDAssetModel *)self identifier];
-  v5 = [(_LTDAssetModel *)self progress];
-  v6 = [v3 initWithLocaleIdentifier:v4 progress:v5];
+  identifier = [(_LTDAssetModel *)self identifier];
+  progress = [(_LTDAssetModel *)self progress];
+  v6 = [v3 initWithLocaleIdentifier:identifier progress:progress];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(_LTDAssetModel *)self assetName];
-  v3 = [v2 hash];
+  assetName = [(_LTDAssetModel *)self assetName];
+  v3 = [assetName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -521,7 +521,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5)
       {
         objc_opt_class();
@@ -544,11 +544,11 @@ LABEL_12:
       v8 = v6;
 
       os_unfair_lock_lock(&self->_lock);
-      v9 = [(_LTDAssetModel *)self components];
-      v10 = [v9 copy];
+      components = [(_LTDAssetModel *)self components];
+      v10 = [components copy];
 
-      v11 = [(_LTDAssetModel *)v8 components];
-      v12 = [v11 copy];
+      components2 = [(_LTDAssetModel *)v8 components];
+      v12 = [components2 copy];
 
       os_unfair_lock_unlock(&self->_lock);
       v13 = [v10 count];
@@ -602,7 +602,7 @@ LABEL_12:
 
 - (BOOL)refreshState
 {
-  v3 = [(_LTDAssetModel *)self provider];
+  provider = [(_LTDAssetModel *)self provider];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -610,24 +610,24 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(_LTDAssetModel *)self provider];
-  v6 = [v5 refreshState];
+  provider2 = [(_LTDAssetModel *)self provider];
+  refreshState = [provider2 refreshState];
 
-  return v6;
+  return refreshState;
 }
 
 - (BOOL)isAvailable
 {
-  v2 = [(_LTDAssetModel *)self progress];
-  v3 = [v2 offlineState] == 0;
+  progress = [(_LTDAssetModel *)self progress];
+  v3 = [progress offlineState] == 0;
 
   return v3;
 }
 
 - (BOOL)isDownloading
 {
-  v2 = [(_LTDAssetModel *)self progress];
-  v3 = [v2 offlineState] == 1;
+  progress = [(_LTDAssetModel *)self progress];
+  v3 = [progress offlineState] == 1;
 
   return v3;
 }
@@ -635,8 +635,8 @@ LABEL_12:
 - (BOOL)isInstalled
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_LTDAssetModel *)self components];
-  v4 = [v3 lt_hasObjectPassingTest:&__block_literal_global_4];
+  components = [(_LTDAssetModel *)self components];
+  v4 = [components lt_hasObjectPassingTest:&__block_literal_global_4];
 
   os_unfair_lock_unlock(&self->_lock);
   return v4 ^ 1;
@@ -644,44 +644,44 @@ LABEL_12:
 
 - (BOOL)canBePurged
 {
-  v2 = [(_LTDAssetModel *)self provider];
-  v3 = [v2 canBePurged];
+  provider = [(_LTDAssetModel *)self provider];
+  canBePurged = [provider canBePurged];
 
-  return v3;
+  return canBePurged;
 }
 
-- (BOOL)supportsTaskHint:(int64_t)a3
+- (BOOL)supportsTaskHint:(int64_t)hint
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(_LTDAssetModel *)self components];
+  components = [(_LTDAssetModel *)self components];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35___LTDAssetModel_supportsTaskHint___block_invoke;
   v7[3] = &__block_descriptor_40_e34_B16__0____LTDAssetModelProtocol__8l;
-  v7[4] = a3;
-  LOBYTE(a3) = [v5 lt_hasObjectPassingTest:v7];
+  v7[4] = hint;
+  LOBYTE(hint) = [components lt_hasObjectPassingTest:v7];
 
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return hint;
 }
 
-- (BOOL)supportsLocale:(id)a3
+- (BOOL)supportsLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   if (([(_LTDAssetModel *)self assetType]& 0xFFFFFFFFFFFFFFFELL) == 6)
   {
-    v5 = [(_LTDAssetModel *)self supportedLanguages];
-    v6 = [v4 _ltCsLocaleIdentifier];
+    supportedLanguages = [(_LTDAssetModel *)self supportedLanguages];
+    _ltCsLocaleIdentifier = [localeCopy _ltCsLocaleIdentifier];
 
-    v7 = [v5 containsObject:v6];
+    v7 = [supportedLanguages containsObject:_ltCsLocaleIdentifier];
   }
 
   else
   {
-    v5 = [(_LTDAssetModel *)self assetLanguage];
-    v6 = [v4 _ltLocaleIdentifier];
+    supportedLanguages = [(_LTDAssetModel *)self assetLanguage];
+    _ltCsLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
 
-    v7 = [v5 isEqualToString:v6];
+    v7 = [supportedLanguages isEqualToString:_ltCsLocaleIdentifier];
   }
 
   v8 = v7;
@@ -689,30 +689,30 @@ LABEL_12:
   return v8;
 }
 
-- (int64_t)compareAssetVersionReversed:(id)a3
+- (int64_t)compareAssetVersionReversed:(id)reversed
 {
-  v4 = a3;
-  v5 = [(_LTDAssetModel *)self assetVersion];
-  if (v5 == [v4 assetVersion])
+  reversedCopy = reversed;
+  assetVersion = [(_LTDAssetModel *)self assetVersion];
+  if (assetVersion == [reversedCopy assetVersion])
   {
-    v6 = [(_LTDAssetModel *)self requiredCapabilityIdentifier];
-    if (v6 == [v4 requiredCapabilityIdentifier])
+    requiredCapabilityIdentifier = [(_LTDAssetModel *)self requiredCapabilityIdentifier];
+    if (requiredCapabilityIdentifier == [reversedCopy requiredCapabilityIdentifier])
     {
       v7 = 0;
       goto LABEL_9;
     }
 
-    v8 = [(_LTDAssetModel *)self requiredCapabilityIdentifier];
-    v9 = [v4 requiredCapabilityIdentifier];
+    requiredCapabilityIdentifier2 = [(_LTDAssetModel *)self requiredCapabilityIdentifier];
+    requiredCapabilityIdentifier3 = [reversedCopy requiredCapabilityIdentifier];
   }
 
   else
   {
-    v8 = [(_LTDAssetModel *)self assetVersion];
-    v9 = [v4 assetVersion];
+    requiredCapabilityIdentifier2 = [(_LTDAssetModel *)self assetVersion];
+    requiredCapabilityIdentifier3 = [reversedCopy assetVersion];
   }
 
-  if (v8 > v9)
+  if (requiredCapabilityIdentifier2 > requiredCapabilityIdentifier3)
   {
     v7 = -1;
   }
@@ -727,13 +727,13 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isNewerVersionThan:(id)a3
+- (BOOL)isNewerVersionThan:(id)than
 {
-  v4 = a3;
-  if ([(_LTDAssetModel *)self isEqual:v4])
+  thanCopy = than;
+  if ([(_LTDAssetModel *)self isEqual:thanCopy])
   {
-    v5 = [(_LTDAssetModel *)self assetVersion];
-    v6 = v5 > [v4 assetVersion];
+    assetVersion = [(_LTDAssetModel *)self assetVersion];
+    v6 = assetVersion > [thanCopy assetVersion];
   }
 
   else
@@ -744,12 +744,12 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isNewerCompatibleVersionThan:(id)a3
+- (BOOL)isNewerCompatibleVersionThan:(id)than
 {
-  v4 = a3;
+  thanCopy = than;
   if ([(_LTDAssetModel *)self _isCompatibleWithThisDevice])
   {
-    v5 = [(_LTDAssetModel *)self isNewerVersionThan:v4];
+    v5 = [(_LTDAssetModel *)self isNewerVersionThan:thanCopy];
   }
 
   else
@@ -762,35 +762,35 @@ LABEL_9:
 
 - (BOOL)_isCompatibleWithThisDevice
 {
-  v3 = [(_LTDAssetModel *)self requiredCapabilityIdentifier];
-  if (v3 > +[_LTDANEService capability])
+  requiredCapabilityIdentifier = [(_LTDAssetModel *)self requiredCapabilityIdentifier];
+  if (requiredCapabilityIdentifier > +[_LTDANEService capability])
   {
     return 0;
   }
 
-  v5 = [(_LTDAssetModel *)self formatVersion];
-  if (!v5)
+  formatVersion = [(_LTDAssetModel *)self formatVersion];
+  if (!formatVersion)
   {
     return 1;
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x277D07278] minimumSupportedConfigurationVersion];
-  v8 = [v7 integerValue];
+  v6 = formatVersion;
+  minimumSupportedConfigurationVersion = [MEMORY[0x277D07278] minimumSupportedConfigurationVersion];
+  integerValue = [minimumSupportedConfigurationVersion integerValue];
 
-  v9 = [MEMORY[0x277D07278] maximumSupportedConfigurationVersion];
-  v10 = [v9 integerValue];
+  maximumSupportedConfigurationVersion = [MEMORY[0x277D07278] maximumSupportedConfigurationVersion];
+  integerValue2 = [maximumSupportedConfigurationVersion integerValue];
 
-  return v6 >= v8 && v6 <= v10;
+  return v6 >= integerValue && v6 <= integerValue2;
 }
 
-+ (id)localeIdentifiersForLanguageName:(id)a3
++ (id)localeIdentifiersForLanguageName:(id)name
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = _LTPreferencesSupportedLocales(1);
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v3 componentsSeparatedByString:@"_"];
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [nameCopy componentsSeparatedByString:@"_"];
   if ([v6 count] == 2)
   {
     v7 = [v6 objectAtIndexedSubscript:1];
@@ -798,22 +798,22 @@ LABEL_9:
 
     if (!v8)
     {
-      v30[0] = v3;
+      v30[0] = nameCopy;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
       goto LABEL_16;
     }
 
-    v24 = v5;
+    v24 = array;
     v22 = v6;
     v9 = [v6 objectAtIndexedSubscript:0];
 
-    v3 = v9;
+    nameCopy = v9;
   }
 
   else
   {
     v22 = v6;
-    v24 = v5;
+    v24 = array;
   }
 
   v27 = 0u;
@@ -836,14 +836,14 @@ LABEL_9:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v25 + 1) + 8 * i) _ltLocaleIdentifier];
-        v16 = [v15 componentsSeparatedByString:@"_"];
+        _ltLocaleIdentifier = [*(*(&v25 + 1) + 8 * i) _ltLocaleIdentifier];
+        v16 = [_ltLocaleIdentifier componentsSeparatedByString:@"_"];
         v17 = [v16 objectAtIndexedSubscript:0];
-        v18 = [v3 isEqualToString:v17];
+        v18 = [nameCopy isEqualToString:v17];
 
         if (v18)
         {
-          [v24 addObject:v15];
+          [v24 addObject:_ltLocaleIdentifier];
         }
       }
 
@@ -853,7 +853,7 @@ LABEL_9:
     while (v12);
   }
 
-  v5 = v24;
+  array = v24;
   v19 = [v24 copy];
   v6 = v22;
   v4 = v23;
@@ -873,18 +873,18 @@ LABEL_16:
     goto LABEL_2;
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = self->_localeIdentifiers;
   if (!v6)
   {
-    v9 = [(_LTDAssetModel *)v5 identifier];
-    v47 = [v9 componentsSeparatedByString:@"-"];
+    identifier = [(_LTDAssetModel *)selfCopy identifier];
+    v47 = [identifier componentsSeparatedByString:@"-"];
 
-    v10 = [(_LTDAssetModel *)v5 assetType];
-    if (v10 > 7)
+    assetType = [(_LTDAssetModel *)selfCopy assetType];
+    if (assetType > 7)
     {
-      if (v10 == 8)
+      if (assetType == 8)
       {
         v22 = objc_opt_new();
         v23 = [v47 indexOfObject:@"partial"];
@@ -904,8 +904,8 @@ LABEL_16:
             }
 
             v27 = [v47 objectAtIndexedSubscript:i];
-            v28 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-            v29 = [v27 rangeOfCharacterFromSet:v28];
+            decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+            v29 = [v27 rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
             if (v29 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -934,7 +934,7 @@ LABEL_16:
         goto LABEL_44;
       }
 
-      if (v10 == 10)
+      if (assetType == 10)
       {
         if ([v47 count] == 2)
         {
@@ -960,7 +960,7 @@ LABEL_16:
         goto LABEL_36;
       }
 
-      if (v10 != 11)
+      if (assetType != 11)
       {
 LABEL_36:
         v37 = self->_localeIdentifiers;
@@ -972,15 +972,15 @@ LABEL_36:
 
     else
     {
-      if ((v10 - 6) < 2)
+      if ((assetType - 6) < 2)
       {
         v11 = objc_opt_new();
         v50 = 0u;
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v12 = [(_LTDAssetModel *)v5 supportedLanguages];
-        v13 = [v12 countByEnumeratingWithState:&v48 objects:v52 count:16];
+        supportedLanguages = [(_LTDAssetModel *)selfCopy supportedLanguages];
+        v13 = [supportedLanguages countByEnumeratingWithState:&v48 objects:v52 count:16];
         if (v13)
         {
           v14 = *v49;
@@ -990,14 +990,14 @@ LABEL_36:
             {
               if (*v49 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(supportedLanguages);
               }
 
               v16 = [*(*(&v48 + 1) + 8 * j) stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
               [v11 addObject:v16];
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v48 objects:v52 count:16];
+            v13 = [supportedLanguages countByEnumeratingWithState:&v48 objects:v52 count:16];
           }
 
           while (v13);
@@ -1010,7 +1010,7 @@ LABEL_36:
         goto LABEL_44;
       }
 
-      if (v10 != 2)
+      if (assetType != 2)
       {
         goto LABEL_36;
       }
@@ -1025,7 +1025,7 @@ LABEL_36:
       self->_localeIdentifiers = v20;
 
 LABEL_44:
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
 
       localeIdentifiers = self->_localeIdentifiers;
 LABEL_2:
@@ -1037,7 +1037,7 @@ LABEL_2:
   }
 
   v3 = v6;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
 LABEL_5:
   v7 = *MEMORY[0x277D85DE8];
@@ -1050,11 +1050,11 @@ LABEL_5:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LTDAssetModel *)self identifier];
-  v7 = [(_LTDAssetModel *)self assetTypeName];
-  v8 = [(_LTDAssetModel *)self stateDescription];
-  v9 = [(_LTDAssetModel *)self progress];
-  v10 = [v3 stringWithFormat:@"<%@: %p %@ (%@) %@ %@>", v5, self, v6, v7, v8, v9];;
+  identifier = [(_LTDAssetModel *)self identifier];
+  assetTypeName = [(_LTDAssetModel *)self assetTypeName];
+  stateDescription = [(_LTDAssetModel *)self stateDescription];
+  progress = [(_LTDAssetModel *)self progress];
+  v10 = [v3 stringWithFormat:@"<%@: %p %@ (%@) %@ %@>", v5, self, identifier, assetTypeName, stateDescription, progress];;
 
   return v10;
 }

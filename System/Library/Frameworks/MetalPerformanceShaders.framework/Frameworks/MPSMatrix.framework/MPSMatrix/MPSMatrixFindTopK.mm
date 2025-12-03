@@ -4,7 +4,7 @@
 - (MPSMatrixFindTopK)initWithDevice:(id)device numberOfTopKValues:(NSUInteger)numberOfTopKValues;
 - (id)debugDescription;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputMatrix:(MPSMatrix *)inputMatrix resultIndexMatrix:(MPSMatrix *)resultIndexMatrix resultValueMatrix:(MPSMatrix *)resultValueMatrix;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSMatrixFindTopK
@@ -61,17 +61,17 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v30.receiver = self;
   v30.super_class = MPSMatrixFindTopK;
   [(MPSMatrixUnaryKernel *)&v30 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_sourceColumns, @"MPMatrixFindTopK._sourceColumns;", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_sourceRows, @"MPMatrixFindTopK._sourceRows", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_numberOfTopKValues, @"MPMatrixFindTopK._numberOfTopKValues;", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_indexOffset, @"MPMatrixFindTopK._indexOffset", v21, v22, v23, v24);
-  objc_msgSend_encodeBool_forKey_(a3, v25, self->_alongColumns, @"MPSMatrixFindTopK._alongColumns", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_sourceColumns, @"MPMatrixFindTopK._sourceColumns;", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_sourceRows, @"MPMatrixFindTopK._sourceRows", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_numberOfTopKValues, @"MPMatrixFindTopK._numberOfTopKValues;", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_indexOffset, @"MPMatrixFindTopK._indexOffset", v21, v22, v23, v24);
+  objc_msgSend_encodeBool_forKey_(coder, v25, self->_alongColumns, @"MPSMatrixFindTopK._alongColumns", v26, v27, v28, v29);
 }
 
 - (MPSMatrixFindTopK)copyWithZone:(NSZone *)zone device:(id)device

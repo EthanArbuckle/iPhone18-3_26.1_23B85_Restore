@@ -1,48 +1,48 @@
 @interface CCPeerToPeerMessage
-- (CCPeerToPeerMessage)initWithSyncReason:(unsigned __int8)a3 senderDeviceUUID:(id)a4 protocolVersion:(unint64_t)a5 wallTime:(double)a6;
+- (CCPeerToPeerMessage)initWithSyncReason:(unsigned __int8)reason senderDeviceUUID:(id)d protocolVersion:(unint64_t)version wallTime:(double)time;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation CCPeerToPeerMessage
 
-- (CCPeerToPeerMessage)initWithSyncReason:(unsigned __int8)a3 senderDeviceUUID:(id)a4 protocolVersion:(unint64_t)a5 wallTime:(double)a6
+- (CCPeerToPeerMessage)initWithSyncReason:(unsigned __int8)reason senderDeviceUUID:(id)d protocolVersion:(unint64_t)version wallTime:(double)time
 {
-  v11 = a4;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = CCPeerToPeerMessage;
   v12 = [(CCPeerToPeerMessage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_syncReason = a3;
-    objc_storeStrong(&v12->_senderDeviceUUID, a4);
-    v13->_protocolVersion = a5;
-    v13->_walltime = a6;
+    v12->_syncReason = reason;
+    objc_storeStrong(&v12->_senderDeviceUUID, d);
+    v13->_protocolVersion = version;
+    v13->_walltime = time;
   }
 
   return v13;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CCPeerToPeerMessage;
   v5 = [(CCPeerToPeerMessage *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"syncReason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"syncReason"];
     v5->_syncReason = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"senderDeviceUUID"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"senderDeviceUUID"];
     senderDeviceUUID = v5->_senderDeviceUUID;
     v5->_senderDeviceUUID = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"protocolVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"protocolVersion"];
     v5->_protocolVersion = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"walltime"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"walltime"];
     [v10 doubleValue];
     v5->_walltime = v11;
   }

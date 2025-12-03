@@ -1,15 +1,15 @@
 @interface CoreDataChapterIngester
-- (id)unsafeIngestFeedChapter:(id)a3 withManagedObjectContext:(id)a4;
+- (id)unsafeIngestFeedChapter:(id)chapter withManagedObjectContext:(id)context;
 @end
 
 @implementation CoreDataChapterIngester
 
-- (id)unsafeIngestFeedChapter:(id)a3 withManagedObjectContext:(id)a4
+- (id)unsafeIngestFeedChapter:(id)chapter withManagedObjectContext:(id)context
 {
   swift_unknownObjectRetain();
-  v6 = a4;
+  contextCopy = context;
 
-  v7 = _s8Podcasts23CoreDataChapterIngesterC12unsafeIngest04feedD03ctx0A10Foundation9MTChapterCSgSo06MTFeedD0_p_So22NSManagedObjectContextCtF_0(a3, v6);
+  v7 = _s8Podcasts23CoreDataChapterIngesterC12unsafeIngest04feedD03ctx0A10Foundation9MTChapterCSgSo06MTFeedD0_p_So22NSManagedObjectContextCtF_0(chapter, contextCopy);
   swift_unknownObjectRelease();
 
   return v7;

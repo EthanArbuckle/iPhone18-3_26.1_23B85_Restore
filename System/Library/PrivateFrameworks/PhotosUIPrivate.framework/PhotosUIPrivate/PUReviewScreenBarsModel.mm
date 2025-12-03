@@ -1,15 +1,15 @@
 @interface PUReviewScreenBarsModel
 - (CGPoint)controlCenterAlignmentPoint;
 - (void)_updateAvailableControls;
-- (void)invokeCallbackForBarButtonItemWithIdentifier:(int64_t)a3;
-- (void)performChanges:(id)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setAvailableItemsByIdentifier:(id)a3;
-- (void)setControlCenterAlignmentPoint:(CGPoint)a3 forceLayout:(BOOL)a4;
-- (void)setShouldBarsCounterrotate:(BOOL)a3;
-- (void)setShouldPlaceScrubberInScrubberBar:(BOOL)a3;
-- (void)setTransitioningWithCamera:(BOOL)a3;
-- (void)setUseVerticalControlLayout:(BOOL)a3;
+- (void)invokeCallbackForBarButtonItemWithIdentifier:(int64_t)identifier;
+- (void)performChanges:(id)changes;
+- (void)setAccessoryView:(id)view;
+- (void)setAvailableItemsByIdentifier:(id)identifier;
+- (void)setControlCenterAlignmentPoint:(CGPoint)point forceLayout:(BOOL)layout;
+- (void)setShouldBarsCounterrotate:(BOOL)counterrotate;
+- (void)setShouldPlaceScrubberInScrubberBar:(BOOL)bar;
+- (void)setTransitioningWithCamera:(BOOL)camera;
+- (void)setUseVerticalControlLayout:(BOOL)layout;
 @end
 
 @implementation PUReviewScreenBarsModel
@@ -23,92 +23,92 @@
   return result;
 }
 
-- (void)setShouldBarsCounterrotate:(BOOL)a3
+- (void)setShouldBarsCounterrotate:(BOOL)counterrotate
 {
-  if (self->_shouldBarsCounterrotate != a3)
+  if (self->_shouldBarsCounterrotate != counterrotate)
   {
-    self->_shouldBarsCounterrotate = a3;
+    self->_shouldBarsCounterrotate = counterrotate;
     [(PUReviewScreenBarsModel *)self signalChange:64];
   }
 }
 
-- (void)setUseVerticalControlLayout:(BOOL)a3
+- (void)setUseVerticalControlLayout:(BOOL)layout
 {
-  if (self->_useVerticalControlLayout != a3)
+  if (self->_useVerticalControlLayout != layout)
   {
-    self->_useVerticalControlLayout = a3;
+    self->_useVerticalControlLayout = layout;
     [(PUReviewScreenBarsModel *)self signalChange:16];
   }
 }
 
-- (void)setControlCenterAlignmentPoint:(CGPoint)a3 forceLayout:(BOOL)a4
+- (void)setControlCenterAlignmentPoint:(CGPoint)point forceLayout:(BOOL)layout
 {
-  if (a3.x != self->_controlCenterAlignmentPoint.x || a3.y != self->_controlCenterAlignmentPoint.y)
+  if (point.x != self->_controlCenterAlignmentPoint.x || point.y != self->_controlCenterAlignmentPoint.y)
   {
-    self->_controlCenterAlignmentPoint = a3;
+    self->_controlCenterAlignmentPoint = point;
     self->_lastControlAlignmentChangeForcedLayout = 1;
     [(PUReviewScreenBarsModel *)self signalChange:32];
   }
 }
 
-- (void)setTransitioningWithCamera:(BOOL)a3
+- (void)setTransitioningWithCamera:(BOOL)camera
 {
-  if (self->_transitioningWithCamera != a3)
+  if (self->_transitioningWithCamera != camera)
   {
-    self->_transitioningWithCamera = a3;
+    self->_transitioningWithCamera = camera;
     [(PUReviewScreenBarsModel *)self signalChange:8];
   }
 }
 
-- (void)setShouldPlaceScrubberInScrubberBar:(BOOL)a3
+- (void)setShouldPlaceScrubberInScrubberBar:(BOOL)bar
 {
-  if (self->_shouldPlaceScrubberInScrubberBar != a3)
+  if (self->_shouldPlaceScrubberInScrubberBar != bar)
   {
-    self->_shouldPlaceScrubberInScrubberBar = a3;
+    self->_shouldPlaceScrubberInScrubberBar = bar;
     [(PUReviewScreenBarsModel *)self signalChange:4];
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_accessoryView != v5)
+  viewCopy = view;
+  if (self->_accessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accessoryView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_accessoryView, view);
     [(PUReviewScreenBarsModel *)self signalChange:4];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setAvailableItemsByIdentifier:(id)a3
+- (void)setAvailableItemsByIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_availableItemsByIdentifier != v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_availableItemsByIdentifier != identifierCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = identifierCopy;
+    identifierCopy = [identifierCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((identifierCopy & 1) == 0)
     {
       v6 = [v8 copy];
       availableItemsByIdentifier = self->_availableItemsByIdentifier;
       self->_availableItemsByIdentifier = v6;
 
-      v4 = [(PUReviewScreenBarsModel *)self _updateAvailableControls];
+      identifierCopy = [(PUReviewScreenBarsModel *)self _updateAvailableControls];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](identifierCopy, v5);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUReviewScreenBarsModel;
-  [(PUReviewScreenBarsModel *)&v3 performChanges:a3];
+  [(PUReviewScreenBarsModel *)&v3 performChanges:changes];
 }
 
 - (void)_updateAvailableControls
@@ -141,8 +141,8 @@
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [(PUReviewScreenBarsModel *)self availableItemsByIdentifier];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        availableItemsByIdentifier = [(PUReviewScreenBarsModel *)self availableItemsByIdentifier];
+        v11 = [availableItemsByIdentifier objectForKeyedSubscript:v9];
 
         if (v11)
         {
@@ -161,8 +161,8 @@
     while (v6);
   }
 
-  v13 = [(PUReviewScreenBarsModel *)self availableControls];
-  v14 = [v3 isEqual:v13];
+  availableControls = [(PUReviewScreenBarsModel *)self availableControls];
+  v14 = [v3 isEqual:availableControls];
 
   if ((v14 & 1) == 0)
   {
@@ -170,8 +170,8 @@
     [(PUReviewScreenBarsModel *)self signalChange:1];
   }
 
-  v15 = [(PUReviewScreenBarsModel *)self enabledControls];
-  v16 = [v17 isEqual:v15];
+  enabledControls = [(PUReviewScreenBarsModel *)self enabledControls];
+  v16 = [v17 isEqual:enabledControls];
 
   if ((v16 & 1) == 0)
   {
@@ -198,18 +198,18 @@ void __51__PUReviewScreenBarsModel__updateAvailableControls__block_invoke()
   _updateAvailableControls_controlsByIdentifier = v0;
 }
 
-- (void)invokeCallbackForBarButtonItemWithIdentifier:(int64_t)a3
+- (void)invokeCallbackForBarButtonItemWithIdentifier:(int64_t)identifier
 {
-  v6 = [(PUReviewScreenBarsModel *)self availableItemsByIdentifier];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v16 = [v6 objectForKeyedSubscript:v7];
+  availableItemsByIdentifier = [(PUReviewScreenBarsModel *)self availableItemsByIdentifier];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
+  v16 = [availableItemsByIdentifier objectForKeyedSubscript:v7];
 
-  v8 = [v16 action];
-  v9 = [v16 target];
-  v10 = v9;
-  if (v9)
+  action = [v16 action];
+  target = [v16 target];
+  v10 = target;
+  if (target)
   {
-    v11 = v8 == 0;
+    v11 = action == 0;
   }
 
   else
@@ -219,16 +219,16 @@ void __51__PUReviewScreenBarsModel__updateAvailableControls__block_invoke()
 
   if (!v11)
   {
-    v12 = [v9 methodSignatureForSelector:v8];
+    v12 = [target methodSignatureForSelector:action];
     if (!v12)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      v15 = NSStringFromSelector(v8);
-      [v14 handleFailureInMethod:a2 object:self file:@"PUReviewScreenBarsModel.m" lineNumber:33 description:{@"target %@ does not appear to respond to selector %@", v10, v15}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v15 = NSStringFromSelector(action);
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewScreenBarsModel.m" lineNumber:33 description:{@"target %@ does not appear to respond to selector %@", v10, v15}];
     }
 
     v13 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v12];
-    [v13 setSelector:v8];
+    [v13 setSelector:action];
     [v13 setTarget:v10];
     [v13 setArgument:&v16 atIndex:2];
     [v13 invoke];

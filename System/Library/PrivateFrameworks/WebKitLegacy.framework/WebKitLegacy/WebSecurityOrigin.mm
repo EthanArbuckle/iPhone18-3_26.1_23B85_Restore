@@ -1,9 +1,9 @@
 @interface WebSecurityOrigin
-+ (id)webSecurityOriginFromDatabaseIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WebSecurityOrigin)initWithURL:(id)a3;
-- (id)_initWithString:(id)a3;
-- (id)_initWithWebCoreSecurityOrigin:(void *)a3;
++ (id)webSecurityOriginFromDatabaseIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (WebSecurityOrigin)initWithURL:(id)l;
+- (id)_initWithString:(id)string;
+- (id)_initWithWebCoreSecurityOrigin:(void *)origin;
 - (id)databaseIdentifier;
 - (id)databaseQuotaManager;
 - (id)host;
@@ -14,16 +14,16 @@
 - (unint64_t)usage;
 - (unsigned)port;
 - (void)dealloc;
-- (void)setQuota:(unint64_t)a3;
+- (void)setQuota:(unint64_t)quota;
 @end
 
 @implementation WebSecurityOrigin
 
-+ (id)webSecurityOriginFromDatabaseIdentifier:(id)a3
++ (id)webSecurityOriginFromDatabaseIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  WTF::initializeMainThread(a1);
-  MEMORY[0x1CCA63A40](&v16, a3);
+  WTF::initializeMainThread(self);
+  MEMORY[0x1CCA63A40](&v16, identifier);
   WebCore::SecurityOriginData::fromDatabaseIdentifier();
   v5 = v16;
   v16 = 0;
@@ -79,7 +79,7 @@
   return v10;
 }
 
-- (WebSecurityOrigin)initWithURL:(id)a3
+- (WebSecurityOrigin)initWithURL:(id)l
 {
   WTF::initializeMainThread(self);
   v12.receiver = self;
@@ -87,7 +87,7 @@
   v5 = [(WebSecurityOrigin *)&v12 init];
   if (v5)
   {
-    MEMORY[0x1CCA63960](v10, [a3 absoluteURL]);
+    MEMORY[0x1CCA63960](v10, [l absoluteURL]);
     WebCore::SecurityOrigin::create(&v11, v10, v6);
     v5->_private = v11;
     v11 = 0;
@@ -351,15 +351,15 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = [(WebSecurityOrigin *)self _core];
-    v7 = [a3 _core];
+    _core = [(WebSecurityOrigin *)self _core];
+    _core2 = [equal _core];
 
-    LOBYTE(v5) = MEMORY[0x1EEE5CC08](v6, v7);
+    LOBYTE(v5) = MEMORY[0x1EEE5CC08](_core, _core2);
   }
 
   return v5;
@@ -383,23 +383,23 @@ LABEL_9:
   [(WebSecurityOrigin *)&v5 dealloc];
 }
 
-- (id)_initWithWebCoreSecurityOrigin:(void *)a3
+- (id)_initWithWebCoreSecurityOrigin:(void *)origin
 {
   v5.receiver = self;
   v5.super_class = WebSecurityOrigin;
   result = [(WebSecurityOrigin *)&v5 init];
   if (result)
   {
-    atomic_fetch_add(a3, 1u);
-    *(result + 1) = a3;
+    atomic_fetch_add(origin, 1u);
+    *(result + 1) = origin;
   }
 
   return result;
 }
 
-- (id)_initWithString:(id)a3
+- (id)_initWithString:(id)string
 {
-  MEMORY[0x1CCA63A40](&v13, a3);
+  MEMORY[0x1CCA63A40](&v13, string);
   WebCore::SecurityOrigin::createFromString(&v14, &v13, v3);
   v5 = v13;
   v13 = 0;
@@ -454,12 +454,12 @@ LABEL_9:
   return MEMORY[0x1EEE55DC0](v3, v4);
 }
 
-- (void)setQuota:(unint64_t)a3
+- (void)setQuota:(unint64_t)quota
 {
   v5 = WebCore::DatabaseTracker::singleton(self);
   v6 = self->_private + 8;
 
-  MEMORY[0x1EEE55DD8](v5, v6, a3);
+  MEMORY[0x1EEE55DD8](v5, v6, quota);
 }
 
 @end

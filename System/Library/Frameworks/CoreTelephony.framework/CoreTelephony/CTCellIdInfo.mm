@@ -1,8 +1,8 @@
 @interface CTCellIdInfo
-- (CTCellIdInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTCellIdInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCellIdInfo
@@ -10,54 +10,54 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCellIdInfo *)self cellId];
-  [v3 appendFormat:@", cellId=%@", v4];
+  cellId = [(CTCellIdInfo *)self cellId];
+  [v3 appendFormat:@", cellId=%@", cellId];
 
-  v5 = [(CTCellIdInfo *)self baseId];
-  [v3 appendFormat:@", baseId=%@", v5];
+  baseId = [(CTCellIdInfo *)self baseId];
+  [v3 appendFormat:@", baseId=%@", baseId];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTCellIdInfo *)self cellId];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  cellId = [(CTCellIdInfo *)self cellId];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = cellId;
 
-  v7 = [(CTCellIdInfo *)self baseId];
+  baseId = [(CTCellIdInfo *)self baseId];
   v8 = v4[2];
-  v4[2] = v7;
+  v4[2] = baseId;
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTCellIdInfo *)self cellId];
-  [v4 encodeObject:v5 forKey:@"cellId"];
+  coderCopy = coder;
+  cellId = [(CTCellIdInfo *)self cellId];
+  [coderCopy encodeObject:cellId forKey:@"cellId"];
 
-  v6 = [(CTCellIdInfo *)self baseId];
-  [v4 encodeObject:v6 forKey:@"baseId"];
+  baseId = [(CTCellIdInfo *)self baseId];
+  [coderCopy encodeObject:baseId forKey:@"baseId"];
 }
 
-- (CTCellIdInfo)initWithCoder:(id)a3
+- (CTCellIdInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTCellIdInfo;
   v5 = [(CTCellIdInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cellId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cellId"];
     cellId = v5->_cellId;
     v5->_cellId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseId"];
     baseId = v5->_baseId;
     v5->_baseId = v8;
   }

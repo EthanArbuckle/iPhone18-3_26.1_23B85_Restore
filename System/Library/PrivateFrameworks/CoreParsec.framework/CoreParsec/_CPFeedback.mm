@@ -1,19 +1,19 @@
 @interface _CPFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPFeedback)init;
-- (_CPFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    v6 = timestamp == [v4 timestamp];
+    v6 = timestamp == [equalCopy timestamp];
   }
 
   else
@@ -24,9 +24,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_CPFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -48,15 +48,15 @@
   return v2;
 }
 
-- (_CPFeedback)initWithFacade:(id)a3
+- (_CPFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v8.receiver = self;
   v8.super_class = _CPFeedback;
   v5 = [(_CPFeedback *)&v8 init];
   if (v5)
   {
-    -[_CPFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
+    -[_CPFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
     v6 = v5;
   }
 

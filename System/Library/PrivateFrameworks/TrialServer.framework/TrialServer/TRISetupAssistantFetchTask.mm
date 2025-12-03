@@ -1,11 +1,11 @@
 @interface TRISetupAssistantFetchTask
-+ (id)parseFromData:(id)a3;
++ (id)parseFromData:(id)data;
 + (id)task;
-- (TRISetupAssistantFetchTask)initWithCoder:(id)a3;
+- (TRISetupAssistantFetchTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRISetupAssistantFetchTask
@@ -17,23 +17,23 @@
   return v2;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v7 = objc_opt_new();
   v8 = MEMORY[0x277D73750];
-  v9 = [v5 paths];
-  v10 = [v9 namespaceDescriptorsDefaultDir];
-  v11 = [v8 descriptorsForDirectory:v10 filterBlock:&__block_literal_global_43];
+  paths = [contextCopy paths];
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v11 = [v8 descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:&__block_literal_global_43];
 
   v12 = [v11 count];
   v13 = TRILogCategory_Server();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
   if (v12)
   {
-    v43 = v5;
+    v43 = contextCopy;
     if (v14)
     {
       *buf = 134217984;
@@ -42,7 +42,7 @@
     }
 
     v44 = v7;
-    v42 = v6;
+    v42 = queueCopy;
 
     v15 = objc_opt_new();
     v16 = objc_opt_new();
@@ -69,16 +69,16 @@
           v23 = *(*(&v45 + 1) + 8 * i);
           if (![(__CFString *)v20 length])
           {
-            v24 = [v23 resourceAttributionIdentifier];
+            resourceAttributionIdentifier = [v23 resourceAttributionIdentifier];
 
-            v20 = v24;
+            v20 = resourceAttributionIdentifier;
           }
 
-          v25 = [v23 namespaceName];
-          [v16 addObject:v25];
+          namespaceName = [v23 namespaceName];
+          [v16 addObject:namespaceName];
 
-          v26 = [v23 namespaceName];
-          [v15 addObject:v26];
+          namespaceName2 = [v23 namespaceName];
+          [v15 addObject:namespaceName2];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -98,7 +98,7 @@
       v20 = @"com.apple.triald";
     }
 
-    v5 = v43;
+    contextCopy = v43;
     v7 = v44;
     if ([TRISetupAssistantFetchUtils removeNamespaceNamesWithRolloutForServerContext:v43 namespaceNames:v16])
     {
@@ -110,12 +110,12 @@
           v28 = TRILogCategory_Server();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v15 allObjects];
-            v30 = [v16 allObjects];
+            allObjects = [v15 allObjects];
+            allObjects2 = [v16 allObjects];
             *buf = 138412546;
-            v50 = v29;
+            v50 = allObjects;
             v51 = 2114;
-            v52 = v30;
+            v52 = allObjects2;
             _os_log_impl(&dword_26F567000, v28, OS_LOG_TYPE_DEFAULT, "TRISetupAssistantFetchTask: ncv-compatible rollout v2 are present for namespace names: %@ and are NOT present for  namespace names: %{public}@", buf, 0x16u);
           }
         }
@@ -169,7 +169,7 @@
     v27 = [TRITaskRunResult resultWithRunStatus:v38 reportResultToServer:1 nextTasks:v37 earliestRetryDate:0];
 LABEL_36:
 
-    v6 = v42;
+    queueCopy = v42;
     goto LABEL_37;
   }
 
@@ -196,25 +196,25 @@ LABEL_37:
 
 - (id)serialize
 {
-  v4 = [(TRISetupAssistantFetchTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRISetupAssistantFetchTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRISetupAssistantFetchTask.m" lineNumber:141 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISetupAssistantFetchTask.m" lineNumber:141 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
-  v3 = [(TRIPBMessage *)TRISetupAssistantFetchPersistedTask parseFromData:a3 error:&v9];
+  v3 = [(TRIPBMessage *)TRISetupAssistantFetchPersistedTask parseFromData:data error:&v9];
   v4 = v9;
   if (v3)
   {
@@ -239,15 +239,15 @@ LABEL_37:
   return v5;
 }
 
-- (TRISetupAssistantFetchTask)initWithCoder:(id)a3
+- (TRISetupAssistantFetchTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRISetupAssistantFetchTask;
   v5 = [(TRISetupAssistantFetchTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -267,18 +267,18 @@ LABEL_37:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRISetupAssistantFetchTask.m" lineNumber:158 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISetupAssistantFetchTask.m" lineNumber:158 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRISetupAssistantFetchTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRISetupAssistantFetchTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

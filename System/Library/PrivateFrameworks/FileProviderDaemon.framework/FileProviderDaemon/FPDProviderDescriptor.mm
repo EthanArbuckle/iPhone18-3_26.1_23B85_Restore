@@ -1,86 +1,86 @@
 @interface FPDProviderDescriptor
-+ (id)personaFromExtensionRecord:(id)a3 managedPersona:(BOOL *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)personaFromExtensionRecord:(id)record managedPersona:(BOOL *)persona;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPersonaLegit;
-- (FPDProviderDescriptor)initWithCoder:(id)a3;
-- (FPDProviderDescriptor)initWithExtensionRecord:(id)a3;
+- (FPDProviderDescriptor)initWithCoder:(id)coder;
+- (FPDProviderDescriptor)initWithExtensionRecord:(id)record;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPDProviderDescriptor
 
-- (FPDProviderDescriptor)initWithCoder:(id)a3
+- (FPDProviderDescriptor)initWithCoder:(id)coder
 {
   v73[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v69.receiver = self;
   v69.super_class = FPDProviderDescriptor;
   v5 = [(FPDProviderDescriptor *)&v69 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localizedName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localizedName"];
     localizedName = v5->_localizedName;
     v5->_localizedName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleIdentifier"];
     topLevelBundleIdentifier = v5->_topLevelBundleIdentifier;
     v5->_topLevelBundleIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleURL"];
     topLevelBundleURL = v5->_topLevelBundleURL;
     v5->_topLevelBundleURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleVersion"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionPointVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionPointVersion"];
     extensionPointVersion = v5->_extensionPointVersion;
     v5->_extensionPointVersion = v16;
 
-    v5->_readonly = [v4 decodeBoolForKey:@"_readonly"];
-    v5->_enabledByDefault = [v4 decodeBoolForKey:@"_enabledByDefault"];
-    v5->_supportsEnumeration = [v4 decodeBoolForKey:@"_supportsEnumeration"];
-    v5->_defaultDomainVisible = [v4 decodeBoolForKey:@"_defaultDomainVisible"];
-    v5->_shouldHideExtensionName = [v4 decodeBoolForKey:@"_shouldHideExtensionName"];
-    v5->_canToggleDomainVisibility = [v4 decodeBoolForKey:@"_canToggleDomainVisibility"];
-    v5->_isAvailableSystemWide = [v4 decodeBoolForKey:@"_isAvailableSystemWide"];
-    v5->_supportsUnzippedPackages = [v4 decodeBoolForKey:@"_supportsUnzippedPackages"];
-    v5->_supportsPickingFolders = [v4 decodeBoolForKey:@"_supportsPickingFolders"];
-    v5->_wantsFlattenedPackages = [v4 decodeBoolForKey:@"_wantsFlattenedPackages"];
-    v5->_allowsUserControlledEviction = [v4 decodeBoolForKey:@"_allowsUserControlledEviction"];
-    v5->_allowsSystemDeleteAlerts = [v4 decodeBoolForKey:@"_allowsSystemDeleteAlerts"];
-    v5->_allowsContextualMenuDownloadEntry = [v4 decodeBoolForKey:@"_allowsContextualMenuDownloadEntry"];
-    v5->_appliesChangesAtomically = [v4 decodeBoolForKey:@"_appliesChangesAtomically"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_downloadPipelineDepth"];
+    v5->_readonly = [coderCopy decodeBoolForKey:@"_readonly"];
+    v5->_enabledByDefault = [coderCopy decodeBoolForKey:@"_enabledByDefault"];
+    v5->_supportsEnumeration = [coderCopy decodeBoolForKey:@"_supportsEnumeration"];
+    v5->_defaultDomainVisible = [coderCopy decodeBoolForKey:@"_defaultDomainVisible"];
+    v5->_shouldHideExtensionName = [coderCopy decodeBoolForKey:@"_shouldHideExtensionName"];
+    v5->_canToggleDomainVisibility = [coderCopy decodeBoolForKey:@"_canToggleDomainVisibility"];
+    v5->_isAvailableSystemWide = [coderCopy decodeBoolForKey:@"_isAvailableSystemWide"];
+    v5->_supportsUnzippedPackages = [coderCopy decodeBoolForKey:@"_supportsUnzippedPackages"];
+    v5->_supportsPickingFolders = [coderCopy decodeBoolForKey:@"_supportsPickingFolders"];
+    v5->_wantsFlattenedPackages = [coderCopy decodeBoolForKey:@"_wantsFlattenedPackages"];
+    v5->_allowsUserControlledEviction = [coderCopy decodeBoolForKey:@"_allowsUserControlledEviction"];
+    v5->_allowsSystemDeleteAlerts = [coderCopy decodeBoolForKey:@"_allowsSystemDeleteAlerts"];
+    v5->_allowsContextualMenuDownloadEntry = [coderCopy decodeBoolForKey:@"_allowsContextualMenuDownloadEntry"];
+    v5->_appliesChangesAtomically = [coderCopy decodeBoolForKey:@"_appliesChangesAtomically"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_downloadPipelineDepth"];
     downloadPipelineDepth = v5->_downloadPipelineDepth;
     v5->_downloadPipelineDepth = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uploadPipelineDepth"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uploadPipelineDepth"];
     uploadPipelineDepth = v5->_uploadPipelineDepth;
     v5->_uploadPipelineDepth = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_metadataOnlyUploadPipelineDepth"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_metadataOnlyUploadPipelineDepth"];
     metadataOnlyUploadPipelineDepth = v5->_metadataOnlyUploadPipelineDepth;
     v5->_metadataOnlyUploadPipelineDepth = v22;
 
-    v5->_owningApplicationIsManaged = [v4 decodeBoolForKey:@"_owningApplicationIsManaged"];
-    v5->_owningApplicationIsHidden = [v4 decodeBoolForKey:@"_owningApplicationIsHidden"];
-    v5->_usesUniqueItemIdentifiersAcrossDevices = [v4 decodeBoolForKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionBundleURL"];
+    v5->_owningApplicationIsManaged = [coderCopy decodeBoolForKey:@"_owningApplicationIsManaged"];
+    v5->_owningApplicationIsHidden = [coderCopy decodeBoolForKey:@"_owningApplicationIsHidden"];
+    v5->_usesUniqueItemIdentifiersAcrossDevices = [coderCopy decodeBoolForKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionBundleURL"];
     extensionBundleURL = v5->_extensionBundleURL;
     v5->_extensionBundleURL = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_purposeIdentifier"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_purposeIdentifier"];
     purposeIdentifier = v5->_purposeIdentifier;
     v5->_purposeIdentifier = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifierForPushes"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifierForPushes"];
     bundleIdentifierForPushes = v5->_bundleIdentifierForPushes;
     v5->_bundleIdentifierForPushes = v28;
 
@@ -89,7 +89,7 @@
     v73[1] = objc_opt_class();
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:2];
     v32 = [v30 setWithArray:v31];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"_supportedFileTypes"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"_supportedFileTypes"];
     supportedFileTypes = v5->_supportedFileTypes;
     v5->_supportedFileTypes = v33;
 
@@ -98,7 +98,7 @@
     v72[1] = objc_opt_class();
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
     v37 = [v35 setWithArray:v36];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"_supportedSearchFilters"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"_supportedSearchFilters"];
     supportedSearchFilters = v5->_supportedSearchFilters;
     v5->_supportedSearchFilters = v38;
 
@@ -107,7 +107,7 @@
     v71[1] = objc_opt_class();
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:2];
     v42 = [v40 setWithArray:v41];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"_requestedExtendedAttributes"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"_requestedExtendedAttributes"];
     requestedExtendedAttributes = v5->_requestedExtendedAttributes;
     v5->_requestedExtendedAttributes = v43;
 
@@ -116,32 +116,32 @@
     v70[1] = objc_opt_class();
     v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
     v47 = [v45 setWithArray:v46];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"_extensionStorageURLs"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"_extensionStorageURLs"];
     extensionStorageURLs = v5->_extensionStorageURLs;
     v5->_extensionStorageURLs = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionUUID"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionUUID"];
     extensionUUID = v5->_extensionUUID;
     v5->_extensionUUID = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_documentGroupName"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_documentGroupName"];
     documentGroupName = v5->_documentGroupName;
     v5->_documentGroupName = v52;
 
-    v5->_managedPersona = [v4 decodeBoolForKey:@"_managedPersona"];
+    v5->_managedPersona = [coderCopy decodeBoolForKey:@"_managedPersona"];
     if ([(NSString *)v5->_identifier isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"]|| v5->_managedPersona)
     {
       v54 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:2];
-      v55 = [v54 userPersonaUniqueString];
+      userPersonaUniqueString = [v54 userPersonaUniqueString];
       personaIdentifier = v5->_personaIdentifier;
-      v5->_personaIdentifier = v55;
+      v5->_personaIdentifier = userPersonaUniqueString;
 
       v5->_managedPersona = 1;
     }
 
     else
     {
-      v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_personaIdentifier"];
+      v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_personaIdentifier"];
       if (v57)
       {
         v58 = [MEMORY[0x1E69DF088] personaAttributesForPersonaUniqueString:v57];
@@ -149,9 +149,9 @@
         if (v58 && [v58 isEnterprisePersona])
         {
           v60 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:2];
-          v61 = [v60 userPersonaUniqueString];
+          userPersonaUniqueString2 = [v60 userPersonaUniqueString];
           v62 = v5->_personaIdentifier;
-          v5->_personaIdentifier = v61;
+          v5->_personaIdentifier = userPersonaUniqueString2;
 
           v5->_managedPersona = 1;
         }
@@ -160,9 +160,9 @@
       if (!v5->_managedPersona)
       {
         v63 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:0];
-        v64 = [v63 userPersonaUniqueString];
+        userPersonaUniqueString3 = [v63 userPersonaUniqueString];
         v65 = v5->_personaIdentifier;
-        v5->_personaIdentifier = v64;
+        v5->_personaIdentifier = userPersonaUniqueString3;
       }
     }
 
@@ -172,9 +172,9 @@
       goto LABEL_17;
     }
 
-    v5->_wantsBundleBitOnlyPackageDetection = [v4 decodeBoolForKey:@"_wantsBundleBitOnlyPackageDetection"];
-    v5->_allowsExternalVolumes = [v4 decodeBoolForKey:@"_allowsExternalVolumes"];
-    v5->_supportsFailingUploadOnConflict = [v4 decodeBoolForKey:@"_supportsFailingUploadOnConflict"];
+    v5->_wantsBundleBitOnlyPackageDetection = [coderCopy decodeBoolForKey:@"_wantsBundleBitOnlyPackageDetection"];
+    v5->_allowsExternalVolumes = [coderCopy decodeBoolForKey:@"_allowsExternalVolumes"];
+    v5->_supportsFailingUploadOnConflict = [coderCopy decodeBoolForKey:@"_supportsFailingUploadOnConflict"];
   }
 
   v66 = v5;
@@ -184,55 +184,55 @@ LABEL_17:
   return v66;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_localizedName forKey:@"_localizedName"];
-  [v5 encodeObject:self->_topLevelBundleIdentifier forKey:@"_topLevelBundleIdentifier"];
-  [v5 encodeObject:self->_topLevelBundleURL forKey:@"_topLevelBundleURL"];
-  [v5 encodeObject:self->_bundleVersion forKey:@"_bundleVersion"];
-  [v5 encodeObject:self->_extensionPointVersion forKey:@"_extensionPointVersion"];
-  [v5 encodeBool:self->_readonly forKey:@"_readonly"];
-  [v5 encodeBool:self->_enabledByDefault forKey:@"_enabledByDefault"];
-  [v5 encodeBool:self->_supportsEnumeration forKey:@"_supportsEnumeration"];
-  [v5 encodeBool:self->_defaultDomainVisible forKey:@"_defaultDomainVisible"];
-  [v5 encodeBool:self->_shouldHideExtensionName forKey:@"_shouldHideExtensionName"];
-  [v5 encodeBool:self->_canToggleDomainVisibility forKey:@"_canToggleDomainVisibility"];
-  [v5 encodeBool:self->_isAvailableSystemWide forKey:@"_isAvailableSystemWide"];
-  [v5 encodeBool:self->_supportsUnzippedPackages forKey:@"_supportsUnzippedPackages"];
-  [v5 encodeBool:self->_usesUniqueItemIdentifiersAcrossDevices forKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
-  [v5 encodeBool:self->_supportsPickingFolders forKey:@"_supportsPickingFolders"];
-  [v5 encodeBool:self->_wantsFlattenedPackages forKey:@"_wantsFlattenedPackages"];
-  [v5 encodeBool:self->_allowsUserControlledEviction forKey:@"_allowsUserControlledEviction"];
-  [v5 encodeBool:self->_allowsSystemDeleteAlerts forKey:@"_allowsSystemDeleteAlerts"];
-  [v5 encodeBool:self->_allowsContextualMenuDownloadEntry forKey:@"_allowsContextualMenuDownloadEntry"];
-  [v5 encodeBool:self->_appliesChangesAtomically forKey:@"_appliesChangesAtomically"];
-  [v5 encodeObject:self->_downloadPipelineDepth forKey:@"_downloadPipelineDepth"];
-  [v5 encodeObject:self->_uploadPipelineDepth forKey:@"_uploadPipelineDepth"];
-  [v5 encodeObject:self->_metadataOnlyUploadPipelineDepth forKey:@"_metadataOnlyUploadPipelineDepth"];
-  [v5 encodeBool:self->_owningApplicationIsManaged forKey:@"_owningApplicationIsManaged"];
-  [v5 encodeBool:self->_owningApplicationIsHidden forKey:@"_owningApplicationIsHidden"];
-  [v5 encodeObject:self->_extensionBundleURL forKey:@"_extensionBundleURL"];
-  [v5 encodeObject:self->_purposeIdentifier forKey:@"_purposeIdentifier"];
-  [v5 encodeObject:self->_bundleIdentifierForPushes forKey:@"_bundleIdentifierForPushes"];
-  [v5 encodeObject:self->_supportedFileTypes forKey:@"_supportedFileTypes"];
-  [v5 encodeObject:self->_supportedSearchFilters forKey:@"_supportedSearchFilters"];
-  [v5 encodeObject:self->_requestedExtendedAttributes forKey:@"_requestedExtendedAttributes"];
-  [v5 encodeObject:self->_extensionStorageURLs forKey:@"_extensionStorageURLs"];
-  [v5 encodeObject:self->_extensionUUID forKey:@"_extensionUUID"];
-  [v5 encodeObject:self->_documentGroupName forKey:@"_documentGroupName"];
-  [v5 encodeBool:self->_managedPersona forKey:@"_managedPersona"];
-  [v5 encodeBool:self->_wantsBundleBitOnlyPackageDetection forKey:@"_wantsBundleBitOnlyPackageDetection"];
-  [v5 encodeBool:self->_allowsExternalVolumes forKey:@"_allowsExternalVolumes"];
-  [v5 encodeBool:self->_supportsFailingUploadOnConflict forKey:@"_supportsFailingUploadOnConflict"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_localizedName forKey:@"_localizedName"];
+  [coderCopy encodeObject:self->_topLevelBundleIdentifier forKey:@"_topLevelBundleIdentifier"];
+  [coderCopy encodeObject:self->_topLevelBundleURL forKey:@"_topLevelBundleURL"];
+  [coderCopy encodeObject:self->_bundleVersion forKey:@"_bundleVersion"];
+  [coderCopy encodeObject:self->_extensionPointVersion forKey:@"_extensionPointVersion"];
+  [coderCopy encodeBool:self->_readonly forKey:@"_readonly"];
+  [coderCopy encodeBool:self->_enabledByDefault forKey:@"_enabledByDefault"];
+  [coderCopy encodeBool:self->_supportsEnumeration forKey:@"_supportsEnumeration"];
+  [coderCopy encodeBool:self->_defaultDomainVisible forKey:@"_defaultDomainVisible"];
+  [coderCopy encodeBool:self->_shouldHideExtensionName forKey:@"_shouldHideExtensionName"];
+  [coderCopy encodeBool:self->_canToggleDomainVisibility forKey:@"_canToggleDomainVisibility"];
+  [coderCopy encodeBool:self->_isAvailableSystemWide forKey:@"_isAvailableSystemWide"];
+  [coderCopy encodeBool:self->_supportsUnzippedPackages forKey:@"_supportsUnzippedPackages"];
+  [coderCopy encodeBool:self->_usesUniqueItemIdentifiersAcrossDevices forKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
+  [coderCopy encodeBool:self->_supportsPickingFolders forKey:@"_supportsPickingFolders"];
+  [coderCopy encodeBool:self->_wantsFlattenedPackages forKey:@"_wantsFlattenedPackages"];
+  [coderCopy encodeBool:self->_allowsUserControlledEviction forKey:@"_allowsUserControlledEviction"];
+  [coderCopy encodeBool:self->_allowsSystemDeleteAlerts forKey:@"_allowsSystemDeleteAlerts"];
+  [coderCopy encodeBool:self->_allowsContextualMenuDownloadEntry forKey:@"_allowsContextualMenuDownloadEntry"];
+  [coderCopy encodeBool:self->_appliesChangesAtomically forKey:@"_appliesChangesAtomically"];
+  [coderCopy encodeObject:self->_downloadPipelineDepth forKey:@"_downloadPipelineDepth"];
+  [coderCopy encodeObject:self->_uploadPipelineDepth forKey:@"_uploadPipelineDepth"];
+  [coderCopy encodeObject:self->_metadataOnlyUploadPipelineDepth forKey:@"_metadataOnlyUploadPipelineDepth"];
+  [coderCopy encodeBool:self->_owningApplicationIsManaged forKey:@"_owningApplicationIsManaged"];
+  [coderCopy encodeBool:self->_owningApplicationIsHidden forKey:@"_owningApplicationIsHidden"];
+  [coderCopy encodeObject:self->_extensionBundleURL forKey:@"_extensionBundleURL"];
+  [coderCopy encodeObject:self->_purposeIdentifier forKey:@"_purposeIdentifier"];
+  [coderCopy encodeObject:self->_bundleIdentifierForPushes forKey:@"_bundleIdentifierForPushes"];
+  [coderCopy encodeObject:self->_supportedFileTypes forKey:@"_supportedFileTypes"];
+  [coderCopy encodeObject:self->_supportedSearchFilters forKey:@"_supportedSearchFilters"];
+  [coderCopy encodeObject:self->_requestedExtendedAttributes forKey:@"_requestedExtendedAttributes"];
+  [coderCopy encodeObject:self->_extensionStorageURLs forKey:@"_extensionStorageURLs"];
+  [coderCopy encodeObject:self->_extensionUUID forKey:@"_extensionUUID"];
+  [coderCopy encodeObject:self->_documentGroupName forKey:@"_documentGroupName"];
+  [coderCopy encodeBool:self->_managedPersona forKey:@"_managedPersona"];
+  [coderCopy encodeBool:self->_wantsBundleBitOnlyPackageDetection forKey:@"_wantsBundleBitOnlyPackageDetection"];
+  [coderCopy encodeBool:self->_allowsExternalVolumes forKey:@"_allowsExternalVolumes"];
+  [coderCopy encodeBool:self->_supportsFailingUploadOnConflict forKey:@"_supportsFailingUploadOnConflict"];
 }
 
-- (FPDProviderDescriptor)initWithExtensionRecord:(id)a3
+- (FPDProviderDescriptor)initWithExtensionRecord:(id)record
 {
   v190[3] = *MEMORY[0x1E69E9840];
-  v164 = a3;
+  recordCopy = record;
   v182.receiver = self;
   v182.super_class = FPDProviderDescriptor;
   v165 = [(FPDProviderDescriptor *)&v182 init];
@@ -245,11 +245,11 @@ LABEL_206:
     goto LABEL_207;
   }
 
-  v5 = [v164 URL];
+  v5 = [recordCopy URL];
   [(FPDProviderDescriptor *)v165 setExtensionBundleURL:v5];
 
-  v163 = [v164 uniqueIdentifier];
-  if (!v163)
+  uniqueIdentifier = [recordCopy uniqueIdentifier];
+  if (!uniqueIdentifier)
   {
     v15 = fp_current_or_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -260,15 +260,15 @@ LABEL_206:
     goto LABEL_61;
   }
 
-  v6 = [v164 bundleVersion];
-  [(FPDProviderDescriptor *)v165 setBundleVersion:v6];
+  bundleVersion = [recordCopy bundleVersion];
+  [(FPDProviderDescriptor *)v165 setBundleVersion:bundleVersion];
 
-  [(FPDProviderDescriptor *)v165 setExtensionUUID:v163];
-  v7 = [v164 bundleIdentifier];
-  [(FPDProviderDescriptor *)v165 setIdentifier:v7];
+  [(FPDProviderDescriptor *)v165 setExtensionUUID:uniqueIdentifier];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  [(FPDProviderDescriptor *)v165 setIdentifier:bundleIdentifier];
 
-  v8 = [(FPDProviderDescriptor *)v165 identifier];
-  v9 = [v8 hasPrefix:@"com.apple."];
+  identifier = [(FPDProviderDescriptor *)v165 identifier];
+  v9 = [identifier hasPrefix:@"com.apple."];
 
   v10 = *MEMORY[0x1E6967128];
   v11 = MEMORY[0x1E6967130];
@@ -281,15 +281,15 @@ LABEL_206:
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v190 count:3];
     v14 = [v12 setWithArray:v13];
 
-    v161 = [v164 entitlements];
+    entitlements = [recordCopy entitlements];
   }
 
   else
   {
-    v161 = 0;
+    entitlements = 0;
   }
 
-  v16 = [v161 objectForKey:v10 ofClass:objc_opt_class()];
+  v16 = [entitlements objectForKey:v10 ofClass:objc_opt_class()];
   if (v16)
   {
     [(FPDProviderDescriptor *)v165 setPurposeIdentifier:v16];
@@ -297,45 +297,45 @@ LABEL_206:
 
   else
   {
-    v17 = [(FPDProviderDescriptor *)v165 identifier];
-    [(FPDProviderDescriptor *)v165 setPurposeIdentifier:v17];
+    identifier2 = [(FPDProviderDescriptor *)v165 identifier];
+    [(FPDProviderDescriptor *)v165 setPurposeIdentifier:identifier2];
   }
 
-  v18 = [v164 containingBundleRecord];
-  v162 = v18;
-  if (v18)
+  containingBundleRecord = [recordCopy containingBundleRecord];
+  v162 = containingBundleRecord;
+  if (containingBundleRecord)
   {
-    v19 = [v18 bundleIdentifier];
-    [(FPDProviderDescriptor *)v165 setTopLevelBundleIdentifier:v19];
+    bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
+    [(FPDProviderDescriptor *)v165 setTopLevelBundleIdentifier:bundleIdentifier2];
 
     v20 = [v162 URL];
     [(FPDProviderDescriptor *)v165 setTopLevelBundleURL:v20];
 
     if (v9)
     {
-      v21 = [v164 infoDictionary];
-      v22 = [v21 objectForKey:@"CFBundleDisplayName" ofClass:objc_opt_class()];
+      infoDictionary = [recordCopy infoDictionary];
+      localizedName2 = [infoDictionary objectForKey:@"CFBundleDisplayName" ofClass:objc_opt_class()];
 
-      if (v22)
+      if (localizedName2)
       {
-        [(FPDProviderDescriptor *)v165 setLocalizedName:v22];
+        [(FPDProviderDescriptor *)v165 setLocalizedName:localizedName2];
       }
 
       else
       {
-        v29 = [v162 localizedName];
-        [(FPDProviderDescriptor *)v165 setLocalizedName:v29];
+        localizedName = [v162 localizedName];
+        [(FPDProviderDescriptor *)v165 setLocalizedName:localizedName];
       }
     }
 
     else
     {
-      v22 = [v162 localizedName];
-      [(FPDProviderDescriptor *)v165 setLocalizedName:v22];
+      localizedName2 = [v162 localizedName];
+      [(FPDProviderDescriptor *)v165 setLocalizedName:localizedName2];
     }
 
-    v30 = [(FPDProviderDescriptor *)v165 localizedName];
-    v31 = [v30 length] == 0;
+    localizedName3 = [(FPDProviderDescriptor *)v165 localizedName];
+    v31 = [localizedName3 length] == 0;
 
     if (v31)
     {
@@ -346,23 +346,23 @@ LABEL_206:
       }
     }
 
-    v33 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v34 = [(FPDProviderDescriptor *)v165 topLevelBundleIdentifier];
-    v165->_owningApplicationIsManaged = [v33 isAppManaged:v34];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    topLevelBundleIdentifier = [(FPDProviderDescriptor *)v165 topLevelBundleIdentifier];
+    v165->_owningApplicationIsManaged = [mEMORY[0x1E69ADFB8] isAppManaged:topLevelBundleIdentifier];
 
     v35 = MEMORY[0x1E698B0D0];
-    v28 = [(FPDProviderDescriptor *)v165 topLevelBundleIdentifier];
-    v36 = [v35 applicationWithBundleIdentifier:v28];
+    topLevelBundleIdentifier2 = [(FPDProviderDescriptor *)v165 topLevelBundleIdentifier];
+    v36 = [v35 applicationWithBundleIdentifier:topLevelBundleIdentifier2];
     v165->_owningApplicationIsHidden = [v36 isHidden];
   }
 
   else
   {
-    v23 = [v164 localizedName];
-    [(FPDProviderDescriptor *)v165 setLocalizedName:v23];
+    localizedName4 = [recordCopy localizedName];
+    [(FPDProviderDescriptor *)v165 setLocalizedName:localizedName4];
 
-    v24 = [(FPDProviderDescriptor *)v165 localizedName];
-    v25 = v24 == 0;
+    localizedName5 = [(FPDProviderDescriptor *)v165 localizedName];
+    v25 = localizedName5 == 0;
 
     if (v25)
     {
@@ -373,14 +373,14 @@ LABEL_206:
       }
     }
 
-    v27 = [(FPDProviderDescriptor *)v165 identifier];
-    [(FPDProviderDescriptor *)v165 setTopLevelBundleIdentifier:v27];
+    identifier3 = [(FPDProviderDescriptor *)v165 identifier];
+    [(FPDProviderDescriptor *)v165 setTopLevelBundleIdentifier:identifier3];
 
-    v28 = [(FPDProviderDescriptor *)v165 extensionBundleURL];
-    [(FPDProviderDescriptor *)v165 setTopLevelBundleURL:v28];
+    topLevelBundleIdentifier2 = [(FPDProviderDescriptor *)v165 extensionBundleURL];
+    [(FPDProviderDescriptor *)v165 setTopLevelBundleURL:topLevelBundleIdentifier2];
   }
 
-  v37 = [v161 objectForKey:*v11 ofClass:objc_opt_class()];
+  v37 = [entitlements objectForKey:*v11 ofClass:objc_opt_class()];
   if (v37)
   {
     [(FPDProviderDescriptor *)v165 setBundleIdentifierForPushes:v37];
@@ -388,12 +388,12 @@ LABEL_206:
 
   else
   {
-    v38 = [(FPDProviderDescriptor *)v165 topLevelBundleIdentifier];
-    [(FPDProviderDescriptor *)v165 setBundleIdentifierForPushes:v38];
+    topLevelBundleIdentifier3 = [(FPDProviderDescriptor *)v165 topLevelBundleIdentifier];
+    [(FPDProviderDescriptor *)v165 setBundleIdentifierForPushes:topLevelBundleIdentifier3];
   }
 
   v181 = 0;
-  v39 = [FPDProviderDescriptor personaFromExtensionRecord:v164 managedPersona:&v181];
+  v39 = [FPDProviderDescriptor personaFromExtensionRecord:recordCopy managedPersona:&v181];
   [(FPDProviderDescriptor *)v165 setPersonaIdentifier:v39];
 
   [(FPDProviderDescriptor *)v165 setManagedPersona:v181];
@@ -405,22 +405,22 @@ LABEL_206:
 
   if (v9)
   {
-    v41 = [(FPDProviderDescriptor *)v165 personaIdentifier];
-    v42 = v41 == 0;
+    personaIdentifier = [(FPDProviderDescriptor *)v165 personaIdentifier];
+    v42 = personaIdentifier == 0;
 
     if (v42)
     {
-      v43 = [v164 bundleIdentifier];
-      v44 = [v43 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
+      bundleIdentifier3 = [recordCopy bundleIdentifier];
+      v44 = [bundleIdentifier3 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
 
       if (v44)
       {
         v45 = fp_current_or_default_log();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [(FPDProviderDescriptor *)v165 identifier];
+          identifier4 = [(FPDProviderDescriptor *)v165 identifier];
           *buf = 138543362;
-          v185 = v46;
+          v185 = identifier4;
           _os_log_impl(&dword_1CEFC7000, v45, OS_LOG_TYPE_DEFAULT, "[NOTICE] No enterprise enrolment, dropping %{public}@ registration", buf, 0xCu);
         }
 
@@ -435,8 +435,8 @@ LABEL_43:
   {
     if (fpfs_supports_local_storage_less())
     {
-      v47 = [v164 bundleIdentifier];
-      v48 = [v47 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
+      bundleIdentifier4 = [recordCopy bundleIdentifier];
+      v48 = [bundleIdentifier4 isEqualToString:@"com.apple.FileProvider.LocalStorage"];
 
       if (v48)
       {
@@ -451,9 +451,9 @@ LABEL_43:
       }
     }
 
-    v158 = [MEMORY[0x1E696AC08] defaultManager];
-    v49 = [v164 infoDictionary];
-    v160 = [v49 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    infoDictionary2 = [recordCopy infoDictionary];
+    v160 = [infoDictionary2 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
     if (v160)
     {
@@ -495,71 +495,71 @@ LABEL_53:
         v153 = v54;
         if (v54)
         {
-          v55 = [v54 BOOLValue];
+          bOOLValue = [v54 BOOLValue];
         }
 
         else
         {
-          v55 = 0;
+          bOOLValue = 0;
         }
 
-        [(FPDProviderDescriptor *)v165 setEnabledByDefault:v55];
+        [(FPDProviderDescriptor *)v165 setEnabledByDefault:bOOLValue];
         objc_opt_class();
         v58 = objectForKeyOfClass(v160, @"NSExtensionFileProviderWantsFlattenedPackages");
         v152 = v58;
         if (v58)
         {
-          v59 = [v58 BOOLValue];
+          bOOLValue2 = [v58 BOOLValue];
         }
 
         else
         {
-          v59 = 0;
+          bOOLValue2 = 0;
         }
 
-        [(FPDProviderDescriptor *)v165 setWantsFlattenedPackages:v59];
+        [(FPDProviderDescriptor *)v165 setWantsFlattenedPackages:bOOLValue2];
         objc_opt_class();
         v60 = objectForKeyOfClass(v160, @"NSExtensionFileProviderAllowsUserControlledEviction");
         v151 = v60;
         if (v60)
         {
-          v61 = [v60 BOOLValue];
+          bOOLValue3 = [v60 BOOLValue];
         }
 
         else
         {
-          v61 = 1;
+          bOOLValue3 = 1;
         }
 
-        [(FPDProviderDescriptor *)v165 setAllowsUserControlledEviction:v61];
+        [(FPDProviderDescriptor *)v165 setAllowsUserControlledEviction:bOOLValue3];
         objc_opt_class();
         v62 = objectForKeyOfClass(v160, @"NSExtensionFileProviderAllowsSystemDeleteAlerts");
         v150 = v62;
         if (v62)
         {
-          v63 = [v62 BOOLValue];
+          bOOLValue4 = [v62 BOOLValue];
         }
 
         else
         {
-          v63 = 1;
+          bOOLValue4 = 1;
         }
 
-        [(FPDProviderDescriptor *)v165 setAllowsSystemDeleteAlerts:v63];
+        [(FPDProviderDescriptor *)v165 setAllowsSystemDeleteAlerts:bOOLValue4];
         objc_opt_class();
         v64 = objectForKeyOfClass(v160, @"NSExtensionFileProviderAllowsContextualMenuDownloadEntry");
         v149 = v64;
         if (v64)
         {
-          v65 = [v64 BOOLValue];
+          bOOLValue5 = [v64 BOOLValue];
         }
 
         else
         {
-          v65 = 1;
+          bOOLValue5 = 1;
         }
 
-        [(FPDProviderDescriptor *)v165 setAllowsContextualMenuDownloadEntry:v65];
+        [(FPDProviderDescriptor *)v165 setAllowsContextualMenuDownloadEntry:bOOLValue5];
         objc_opt_class();
         v148 = objectForKeyOfClass(v160, @"NSExtensionFileProviderAppliesChangesAtomically");
         -[FPDProviderDescriptor setAppliesChangesAtomically:](v165, "setAppliesChangesAtomically:", [v148 BOOLValue]);
@@ -571,8 +571,8 @@ LABEL_53:
           v155 = objectForKeyOfClass(v160, @"NSFileProviderDefaultDomainEnabled");
         }
 
-        v66 = [(FPDProviderDescriptor *)v165 identifier];
-        v67 = [v66 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"];
+        identifier5 = [(FPDProviderDescriptor *)v165 identifier];
+        v67 = [identifier5 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"];
 
         if (v67)
         {
@@ -584,9 +584,9 @@ LABEL_53:
           v68 = v155;
           if (!v155)
           {
-            v69 = 1;
+            bOOLValue12 = 1;
 LABEL_81:
-            [(FPDProviderDescriptor *)v165 setDefaultDomainVisible:v69];
+            [(FPDProviderDescriptor *)v165 setDefaultDomainVisible:bOOLValue12];
             objc_opt_class();
             v70 = objectForKeyOfClass(v160, @"NSFileProviderHideExtensionName");
             -[FPDProviderDescriptor setShouldHideExtensionName:](v165, "setShouldHideExtensionName:", [v70 BOOLValue]);
@@ -596,15 +596,15 @@ LABEL_81:
             v147 = v71;
             if (v71)
             {
-              v72 = [v71 BOOLValue];
+              bOOLValue6 = [v71 BOOLValue];
             }
 
             else
             {
-              v72 = 1;
+              bOOLValue6 = 1;
             }
 
-            [(FPDProviderDescriptor *)v165 setCanToggleDomainVisibility:v72];
+            [(FPDProviderDescriptor *)v165 setCanToggleDomainVisibility:bOOLValue6];
             objc_opt_class();
             v146 = objectForKeyOfClass(v160, @"NSExtensionPointVersion");
             if ([v146 isEqualToString:@"2.0"])
@@ -618,84 +618,84 @@ LABEL_81:
             v145 = v73;
             if (v73)
             {
-              v74 = [v73 BOOLValue];
+              bOOLValue7 = [v73 BOOLValue];
             }
 
             else
             {
-              v74 = 0;
+              bOOLValue7 = 0;
             }
 
-            [(FPDProviderDescriptor *)v165 setSupportsUnzippedPackages:v74];
+            [(FPDProviderDescriptor *)v165 setSupportsUnzippedPackages:bOOLValue7];
             objc_opt_class();
             v75 = objectForKeyOfClass(v160, @"NSExtensionFileProviderSupportsPickingFolders");
             v144 = v75;
             if (v75)
             {
-              v76 = [v75 BOOLValue];
+              bOOLValue8 = [v75 BOOLValue];
             }
 
             else
             {
-              v76 = 0;
+              bOOLValue8 = 0;
             }
 
-            [(FPDProviderDescriptor *)v165 setSupportsPickingFolders:v76];
+            [(FPDProviderDescriptor *)v165 setSupportsPickingFolders:bOOLValue8];
             objc_opt_class();
             v154 = objectForKeyOfClass(v160, @"NSExtensionWantsBundleBitOnlyPackageDetection");
-            if (v154 && ([v164 bundleIdentifier], v77 = objc_claimAutoreleasedReturnValue(), v78 = objc_msgSend(v77, "hasPrefix:", @"com.apple."), v77, v78))
+            if (v154 && ([recordCopy bundleIdentifier], v77 = objc_claimAutoreleasedReturnValue(), v78 = objc_msgSend(v77, "hasPrefix:", @"com.apple."), v77, v78))
             {
-              v79 = [v154 BOOLValue];
+              bOOLValue9 = [v154 BOOLValue];
             }
 
             else
             {
-              v79 = 0;
+              bOOLValue9 = 0;
             }
 
-            [(FPDProviderDescriptor *)v165 setWantsBundleBitOnlyPackageDetection:v79];
+            [(FPDProviderDescriptor *)v165 setWantsBundleBitOnlyPackageDetection:bOOLValue9];
             objc_opt_class();
             v80 = objectForKeyOfClass(v160, @"NSExtensionFileProviderAllowsExternalVolumes");
             v143 = v80;
             if (v80)
             {
-              v81 = [v80 BOOLValue];
+              bOOLValue10 = [v80 BOOLValue];
             }
 
             else
             {
-              v81 = 0;
+              bOOLValue10 = 0;
             }
 
-            [(FPDProviderDescriptor *)v165 setAllowsExternalVolumes:v81];
+            [(FPDProviderDescriptor *)v165 setAllowsExternalVolumes:bOOLValue10];
             objc_opt_class();
             v82 = objectForKeyOfClass(v160, @"NSExtensionFileProviderSupportsFailingUploadOnConflict");
             v142 = v82;
             if (v82)
             {
-              v83 = [v82 BOOLValue];
+              bOOLValue11 = [v82 BOOLValue];
             }
 
             else
             {
-              v83 = 0;
+              bOOLValue11 = 0;
             }
 
-            [(FPDProviderDescriptor *)v165 setSupportsFailingUploadOnConflict:v83];
+            [(FPDProviderDescriptor *)v165 setSupportsFailingUploadOnConflict:bOOLValue11];
             objc_opt_class();
             v84 = objectForKeyOfClass(v160, @"NSExtensionFileProviderAdditionalSyncableExtendedAttributes");
             [(FPDProviderDescriptor *)v165 setRequestedExtendedAttributes:v84];
 
-            v85 = [(FPDProviderDescriptor *)v165 requestedExtendedAttributes];
+            requestedExtendedAttributes = [(FPDProviderDescriptor *)v165 requestedExtendedAttributes];
 
-            if (v85)
+            if (requestedExtendedAttributes)
             {
               v179 = 0u;
               v180 = 0u;
               v177 = 0u;
               v178 = 0u;
-              v86 = [(FPDProviderDescriptor *)v165 requestedExtendedAttributes];
-              v87 = [v86 countByEnumeratingWithState:&v177 objects:v189 count:16];
+              requestedExtendedAttributes2 = [(FPDProviderDescriptor *)v165 requestedExtendedAttributes];
+              v87 = [requestedExtendedAttributes2 countByEnumeratingWithState:&v177 objects:v189 count:16];
               if (v87)
               {
                 v88 = *v178;
@@ -705,7 +705,7 @@ LABEL_81:
                   {
                     if (*v178 != v88)
                     {
-                      objc_enumerationMutation(v86);
+                      objc_enumerationMutation(requestedExtendedAttributes2);
                     }
 
                     v90 = *(*(&v177 + 1) + 8 * i);
@@ -723,7 +723,7 @@ LABEL_81:
                     }
                   }
 
-                  v87 = [v86 countByEnumeratingWithState:&v177 objects:v189 count:16];
+                  v87 = [requestedExtendedAttributes2 countByEnumeratingWithState:&v177 objects:v189 count:16];
                   if (v87)
                   {
                     continue;
@@ -770,8 +770,8 @@ LABEL_115:
                           [FPDProviderDescriptor initWithExtensionRecord:];
                         }
 
-                        v98 = [*MEMORY[0x1E6982E48] identifier];
-                        v187 = v98;
+                        identifier6 = [*MEMORY[0x1E6982E48] identifier];
+                        v187 = identifier6;
                         v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v187 count:1];
                         [(FPDProviderDescriptor *)v165 setSupportedFileTypes:v99];
 
@@ -809,7 +809,7 @@ LABEL_133:
             }
 
             v140 = objc_opt_new();
-            v100 = [v161 objectForKey:*MEMORY[0x1E6967150] ofClass:objc_opt_class()];
+            v100 = [entitlements objectForKey:*MEMORY[0x1E6967150] ofClass:objc_opt_class()];
             v141 = v100;
             if (v100)
             {
@@ -823,16 +823,16 @@ LABEL_140:
                 goto LABEL_160;
               }
 
-              v101 = **(&v172[0] + 1);
-              if ([v101 hasPrefix:@"/"])
+              v145 = **(&v172[0] + 1);
+              if ([v145 hasPrefix:@"/"])
               {
-                v102 = [v101 substringFromIndex:1];
+                v102 = [v145 substringFromIndex:1];
 
-                v101 = v102;
+                v145 = v102;
               }
 
-              v103 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
-              v104 = [v103 URLByAppendingPathComponent:v101 isDirectory:1];
+              fp_homeDirectory = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+              v104 = [fp_homeDirectory URLByAppendingPathComponent:v145 isDirectory:1];
 
               if (v104)
               {
@@ -841,8 +841,8 @@ LABEL_140:
                 goto LABEL_140;
               }
 
-              v106 = fp_current_or_default_log();
-              if (os_log_type_enabled(v106, OS_LOG_TYPE_FAULT))
+              currentPersona = fp_current_or_default_log();
+              if (os_log_type_enabled(currentPersona, OS_LOG_TYPE_FAULT))
               {
                 [FPDProviderDescriptor initWithExtensionRecord:];
               }
@@ -853,22 +853,22 @@ LABEL_201:
             }
 
             v156 = [v160 objectForKeyedSubscript:@"NSExtensionFileProviderDocumentGroup"];
-            v105 = [MEMORY[0x1E69DF068] sharedManager];
-            v106 = [v105 currentPersona];
+            mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+            currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
             v171 = 0;
-            v107 = [v106 userPersonaUniqueString];
-            v108 = v107;
+            userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+            v108 = userPersonaUniqueString;
             p_personaIdentifier = &v165->_personaIdentifier;
-            if (v107 == v165->_personaIdentifier || [(NSString *)v107 isEqualToString:?]|| !voucher_process_can_use_arbitrary_personas())
+            if (userPersonaUniqueString == v165->_personaIdentifier || [(NSString *)userPersonaUniqueString isEqualToString:?]|| !voucher_process_can_use_arbitrary_personas())
             {
-              v101 = 0;
+              v145 = 0;
             }
 
             else
             {
               v170 = 0;
-              v110 = [v106 copyCurrentPersonaContextWithError:&v170];
+              v110 = [currentPersona copyCurrentPersonaContextWithError:&v170];
               v111 = v170;
               v112 = v171;
               v171 = v110;
@@ -882,9 +882,9 @@ LABEL_201:
                 }
               }
 
-              v101 = [v106 generateAndRestorePersonaContextWithPersonaUniqueString:*p_personaIdentifier, v140, 0, v142, v143, v144, v145];
+              v145 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:*p_personaIdentifier, v140, 0, v142, v143, v144, v145];
 
-              if (v101)
+              if (v145)
               {
                 v114 = fp_current_or_default_log();
                 if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
@@ -902,8 +902,8 @@ LABEL_201:
                 v115 = [MEMORY[0x1E695DFF8] fp_uncachedContainerURLForSecurityApplicationGroupIdentifier:v156];
                 if (v115)
                 {
-                  v116 = [v164 groupContainerURLs];
-                  v117 = [v116 objectForKeyedSubscript:v156];
+                  groupContainerURLs = [recordCopy groupContainerURLs];
+                  v117 = [groupContainerURLs objectForKeyedSubscript:v156];
 
                   if (v117)
                   {
@@ -949,8 +949,8 @@ LABEL_201:
                 if (os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
                 {
                   v133 = objc_opt_class();
-                  v134 = [(FPDProviderDescriptor *)v165 identifier];
-                  [(FPDProviderDescriptor *)v133 initWithExtensionRecord:v134, buf, v115];
+                  identifier7 = [(FPDProviderDescriptor *)v165 identifier];
+                  [(FPDProviderDescriptor *)v133 initWithExtensionRecord:identifier7, buf, v115];
                 }
               }
 
@@ -969,8 +969,8 @@ LABEL_160:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v119 = [MEMORY[0x1E695DF70] array];
-                [v119 addObject:*MEMORY[0x1E6967268]];
+                array = [MEMORY[0x1E695DF70] array];
+                [array addObject:*MEMORY[0x1E6967268]];
                 v168 = 0u;
                 v169 = 0u;
                 v166 = 0u;
@@ -1004,7 +1004,7 @@ LABEL_160:
                         }
                       }
 
-                      [v119 addObject:*v128];
+                      [array addObject:*v128];
                     }
 
                     v121 = [v120 countByEnumeratingWithState:&v166 objects:v183 count:16];
@@ -1013,27 +1013,27 @@ LABEL_160:
                   while (v121);
                 }
 
-                [(FPDProviderDescriptor *)v165 setSupportedSearchFilters:v119];
+                [(FPDProviderDescriptor *)v165 setSupportedSearchFilters:array];
               }
             }
 
-            v101 = [v160 objectForKeyedSubscript:@"NSFileProviderUsesUniqueItemIdentifiersAcrossDevices"];
-            if (v101)
+            v145 = [v160 objectForKeyedSubscript:@"NSFileProviderUsesUniqueItemIdentifiersAcrossDevices"];
+            if (v145)
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                -[FPDProviderDescriptor setUsesUniqueItemIdentifiersAcrossDevices:](v165, "setUsesUniqueItemIdentifiersAcrossDevices:", [v101 BOOLValue]);
+                -[FPDProviderDescriptor setUsesUniqueItemIdentifiersAcrossDevices:](v165, "setUsesUniqueItemIdentifiersAcrossDevices:", [v145 BOOLValue]);
               }
             }
 
-            v106 = [v160 objectForKeyedSubscript:@"NSExtensionFileProviderDownloadPipelineDepth"];
-            if (v106)
+            currentPersona = [v160 objectForKeyedSubscript:@"NSExtensionFileProviderDownloadPipelineDepth"];
+            if (currentPersona)
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [(FPDProviderDescriptor *)v165 setDownloadPipelineDepth:v106];
+                [(FPDProviderDescriptor *)v165 setDownloadPipelineDepth:currentPersona];
               }
             }
 
@@ -1078,7 +1078,7 @@ LABEL_60:
           }
         }
 
-        v69 = [v68 BOOLValue];
+        bOOLValue12 = [v68 BOOLValue];
         goto LABEL_81;
       }
 
@@ -1111,10 +1111,10 @@ LABEL_207:
   return v57;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_14;
@@ -1123,28 +1123,28 @@ LABEL_207:
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     extensionUUID = self->_extensionUUID;
-    v9 = [(FPDProviderDescriptor *)v7 extensionUUID];
-    LODWORD(extensionUUID) = [(NSUUID *)extensionUUID isEqual:v9];
+    extensionUUID = [(FPDProviderDescriptor *)v7 extensionUUID];
+    LODWORD(extensionUUID) = [(NSUUID *)extensionUUID isEqual:extensionUUID];
 
     if (extensionUUID)
     {
-      v10 = [(FPDProviderDescriptor *)self personaIdentifier];
-      if (!v10)
+      personaIdentifier = [(FPDProviderDescriptor *)self personaIdentifier];
+      if (!personaIdentifier)
       {
-        v9 = [(FPDProviderDescriptor *)v7 personaIdentifier];
-        if (!v9)
+        extensionUUID = [(FPDProviderDescriptor *)v7 personaIdentifier];
+        if (!extensionUUID)
         {
           goto LABEL_10;
         }
       }
 
-      v11 = [(FPDProviderDescriptor *)self personaIdentifier];
-      v12 = [(FPDProviderDescriptor *)v7 personaIdentifier];
-      v13 = [v11 isEqual:v12];
+      personaIdentifier2 = [(FPDProviderDescriptor *)self personaIdentifier];
+      personaIdentifier3 = [(FPDProviderDescriptor *)v7 personaIdentifier];
+      v13 = [personaIdentifier2 isEqual:personaIdentifier3];
 
-      if (v10)
+      if (personaIdentifier)
       {
 
         if (v13)
@@ -1178,13 +1178,13 @@ LABEL_14:
   return v6;
 }
 
-+ (id)personaFromExtensionRecord:(id)a3 managedPersona:(BOOL *)a4
++ (id)personaFromExtensionRecord:(id)record managedPersona:(BOOL *)persona
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  *a4 = 0;
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
+  recordCopy = record;
+  *persona = 0;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
 
   if (v7)
   {
@@ -1192,13 +1192,13 @@ LABEL_14:
     v9 = 2;
 LABEL_14:
     v20 = [v8 personaAttributesForPersonaType:v9];
-    v15 = [v20 userPersonaUniqueString];
+    userPersonaUniqueString = [v20 userPersonaUniqueString];
 
     goto LABEL_15;
   }
 
-  v10 = [v5 managedPersonas];
-  v11 = [v10 count];
+  managedPersonas = [recordCopy managedPersonas];
+  v11 = [managedPersonas count];
 
   v8 = MEMORY[0x1E69DF088];
   if (!v11)
@@ -1208,51 +1208,51 @@ LABEL_14:
   }
 
   v12 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:2];
-  v13 = [v12 userPersonaUniqueString];
+  userPersonaUniqueString2 = [v12 userPersonaUniqueString];
 
-  v14 = [v5 managedPersonas];
-  v15 = [v14 firstObject];
+  managedPersonas2 = [recordCopy managedPersonas];
+  userPersonaUniqueString = [managedPersonas2 firstObject];
 
-  v16 = [v5 managedPersonas];
-  v17 = [v16 count];
+  managedPersonas3 = [recordCopy managedPersonas];
+  v17 = [managedPersonas3 count];
 
   if (v17 >= 2)
   {
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      [FPDProviderDescriptor personaFromExtensionRecord:v5 managedPersona:v18];
+      [FPDProviderDescriptor personaFromExtensionRecord:recordCopy managedPersona:v18];
     }
   }
 
-  if (([v15 isEqualToString:v13] & 1) == 0)
+  if (([userPersonaUniqueString isEqualToString:userPersonaUniqueString2] & 1) == 0)
   {
     v19 = fp_current_or_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
       v23 = 138412802;
-      v24 = v5;
+      v24 = recordCopy;
       v25 = 2112;
-      v26 = v15;
+      v26 = userPersonaUniqueString;
       v27 = 2112;
-      v28 = v13;
+      v28 = userPersonaUniqueString2;
       _os_log_fault_impl(&dword_1CEFC7000, v19, OS_LOG_TYPE_FAULT, "[CRIT] extension record %@ has a persona %@ not matching the managed persona %@", &v23, 0x20u);
     }
   }
 
-  *a4 = 1;
+  *persona = 1;
 
 LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return userPersonaUniqueString;
 }
 
 - (BOOL)isPersonaLegit
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(FPDProviderDescriptor *)self personaIdentifier];
-  if (v3)
+  personaIdentifier = [(FPDProviderDescriptor *)self personaIdentifier];
+  if (personaIdentifier)
   {
 
 LABEL_4:
@@ -1260,10 +1260,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  v5 = [v4 isSharedIPad];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  isSharedIPad = [mEMORY[0x1E69DF068] isSharedIPad];
 
-  if (v5)
+  if (isSharedIPad)
   {
     goto LABEL_4;
   }
@@ -1271,9 +1271,9 @@ LABEL_4:
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(FPDProviderDescriptor *)self identifier];
+    identifier = [(FPDProviderDescriptor *)self identifier];
     v10 = 138543362;
-    v11 = v9;
+    v11 = identifier;
     _os_log_impl(&dword_1CEFC7000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] Extension without persona out of the EDU case, dropping %{public}@ registration", &v10, 0xCu);
   }
 
@@ -1287,8 +1287,8 @@ LABEL_5:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPDProviderDescriptor *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p, %@>", v4, self, v5];
+  identifier = [(FPDProviderDescriptor *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p, %@>", v4, self, identifier];
 
   return v6;
 }

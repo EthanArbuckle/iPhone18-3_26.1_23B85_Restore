@@ -4,22 +4,22 @@
 - (BOOL)isSpatialPhotoPlaybackEnabled;
 - (BOOL)shouldEnablePlayback;
 - (CGRect)currentVisibleRect;
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4;
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size;
 - (NSString)debugDescription;
 - (PXPhotosContentInlinePlaybackController)init;
 - (PXPhotosContentInlinePlaybackControllerDelegate)delegate;
 - (PXScrollViewSpeedometer)scrollViewSpeedometer;
 - (UIEdgeInsets)criticallyVisibleEdgeInsets;
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
-- (id)filterSortedRecordsToPlay:(id)a3;
-- (id)pixelBufferSourceForDisplayAsset:(id)a3 mediaProvider:(id)a4 spriteReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7;
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
+- (id)filterSortedRecordsToPlay:(id)play;
+- (id)pixelBufferSourceForDisplayAsset:(id)asset mediaProvider:(id)provider spriteReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale;
 - (int64_t)maxNumberOfPlayingItems;
 - (int64_t)numberOfItemsToPlay;
-- (void)recyclePixelBufferSourceForDisplayAssets:(id)a3 pixelBufferSource:(id)a4;
-- (void)setEnableSpatialPhotoPlayback:(BOOL)a3;
-- (void)setIsContentViewVisible:(BOOL)a3;
-- (void)setNumberOfItemsToPlay:(int64_t)a3;
-- (void)setScrollViewSpeedometer:(id)a3;
+- (void)recyclePixelBufferSourceForDisplayAssets:(id)assets pixelBufferSource:(id)source;
+- (void)setEnableSpatialPhotoPlayback:(BOOL)playback;
+- (void)setIsContentViewVisible:(BOOL)visible;
+- (void)setNumberOfItemsToPlay:(int64_t)play;
+- (void)setScrollViewSpeedometer:(id)speedometer;
 @end
 
 @implementation PXPhotosContentInlinePlaybackController
@@ -31,17 +31,17 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfItemsToPlay:(int64_t)a3
+- (void)setNumberOfItemsToPlay:(int64_t)play
 {
   v5 = OBJC_IVAR___PXPhotosContentInlinePlaybackController_numberOfItemsToPlay;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = play;
   v7 = *((*MEMORY[0x1E69E7D40] & *self) + 0x78);
-  v8 = self;
+  selfCopy = self;
   if (v6 < 1 == v7() > 0)
   {
-    [(PXGridInlinePlaybackController *)v8 invalidatePlaybackEnabled];
+    [(PXGridInlinePlaybackController *)selfCopy invalidatePlaybackEnabled];
   }
 }
 
@@ -52,14 +52,14 @@
   return *(self + v3);
 }
 
-- (void)setEnableSpatialPhotoPlayback:(BOOL)a3
+- (void)setEnableSpatialPhotoPlayback:(BOOL)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   v5 = OBJC_IVAR___PXPhotosContentInlinePlaybackController_enableSpatialPhotoPlayback;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = playbackCopy;
+  if (v6 != playbackCopy)
   {
     [(PXGridInlinePlaybackController *)self removeAllRecords];
   }
@@ -68,7 +68,7 @@
 - (BOOL)isSpatialPhotoPlaybackEnabled
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x90);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return v2 & 1;
@@ -81,14 +81,14 @@
   return *(self + v3);
 }
 
-- (void)setScrollViewSpeedometer:(id)a3
+- (void)setScrollViewSpeedometer:(id)speedometer
 {
   v5 = OBJC_IVAR___PXPhotosContentInlinePlaybackController_scrollViewSpeedometer;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = speedometer;
+  speedometerCopy = speedometer;
+  selfCopy = self;
   sub_1A4911F1C(v6);
 }
 
@@ -100,49 +100,49 @@
   return Strong;
 }
 
-- (id)pixelBufferSourceForDisplayAsset:(id)a3 mediaProvider:(id)a4 spriteReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (id)pixelBufferSourceForDisplayAsset:(id)asset mediaProvider:(id)provider spriteReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  v7 = [(PXGridInlinePlaybackController *)self checkOutPlaybackRecordForDisplayAsset:a3 mediaProvider:a4 geometryReference:a5 spriteSize:a6.width displayScale:a6.height, a7];
-  if (v7)
+  scale = [(PXGridInlinePlaybackController *)self checkOutPlaybackRecordForDisplayAsset:asset mediaProvider:provider geometryReference:reference spriteSize:size.width displayScale:size.height, scale];
+  if (scale)
   {
-    v8 = v7;
-    v7 = swift_dynamicCastObjCProtocolConditional();
-    if (!v7)
+    v8 = scale;
+    scale = swift_dynamicCastObjCProtocolConditional();
+    if (!scale)
     {
 
-      v7 = 0;
+      scale = 0;
     }
   }
 
-  return v7;
+  return scale;
 }
 
-- (void)recyclePixelBufferSourceForDisplayAssets:(id)a3 pixelBufferSource:(id)a4
+- (void)recyclePixelBufferSourceForDisplayAssets:(id)assets pixelBufferSource:(id)source
 {
-  if (a4)
+  if (source)
   {
-    v4 = self;
-    v5 = a3;
+    selfCopy = self;
+    assetsCopy = assets;
     objc_opt_self();
     v6 = swift_dynamicCastObjCClass();
     if (v6)
     {
       v7 = v6;
       swift_unknownObjectRetain();
-      a4 = v7;
+      source = v7;
     }
 
     else
     {
-      a4 = 0;
+      source = 0;
     }
 
-    a3 = v5;
-    self = v4;
+    assets = assetsCopy;
+    self = selfCopy;
   }
 
-  v8 = a4;
-  [(PXGridInlinePlaybackController *)self checkInPlaybackRecordForDisplayAssets:a3 record:?];
+  sourceCopy = source;
+  [(PXGridInlinePlaybackController *)self checkInPlaybackRecordForDisplayAssets:assets record:?];
 }
 
 - (BOOL)isContentViewVisible
@@ -152,25 +152,25 @@
   return [(PXGridInlinePlaybackController *)&v3 isContentViewVisible];
 }
 
-- (void)setIsContentViewVisible:(BOOL)a3
+- (void)setIsContentViewVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4.receiver = self;
   v4.super_class = type metadata accessor for PhotosContentInlinePlaybackController();
-  [(PXGridInlinePlaybackController *)&v4 setIsContentViewVisible:v3];
+  [(PXGridInlinePlaybackController *)&v4 setIsContentViewVisible:visibleCopy];
 }
 
-- (id)createPlaybackRecordForDisplayAsset:(id)a3 mediaProvider:(id)a4 geometryReference:(id)a5 spriteSize:(CGSize)a6 displayScale:(double)a7
+- (id)createPlaybackRecordForDisplayAsset:(id)asset mediaProvider:(id)provider geometryReference:(id)reference spriteSize:(CGSize)size displayScale:(double)scale
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v13 = a4;
+  providerCopy = provider;
   swift_unknownObjectRetain();
-  v14 = self;
+  selfCopy = self;
   sub_1A524E0B4();
   swift_unknownObjectRelease();
-  v15 = sub_1A4912768(a3, a4, v17, width, height, a7);
+  v15 = sub_1A4912768(asset, provider, v17, width, height, scale);
   swift_unknownObjectRelease();
 
   __swift_destroy_boxed_opaque_existential_0(v17);
@@ -182,8 +182,8 @@
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & *self) + 0x78);
-  v4 = self;
-  if (v3() < 1 || (v5 = (*((*v2 & *v4) + 0xC0))()) != 0 && (v6 = [v5 shouldEnablePlaybackFor_], swift_unknownObjectRelease(), (v6 & 1) == 0))
+  selfCopy = self;
+  if (v3() < 1 || (v5 = (*((*v2 & *selfCopy) + 0xC0))()) != 0 && (v6 = [v5 shouldEnablePlaybackFor_], swift_unknownObjectRelease(), (v6 & 1) == 0))
   {
 
     return 0;
@@ -191,15 +191,15 @@
 
   else
   {
-    v7 = [objc_opt_self() px_accessibilityIsReduceMotionEnabled];
+    px_accessibilityIsReduceMotionEnabled = [objc_opt_self() px_accessibilityIsReduceMotionEnabled];
 
-    return v7 ^ 1;
+    return px_accessibilityIsReduceMotionEnabled ^ 1;
   }
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4912B8C();
 
   v3 = sub_1A524C634();
@@ -210,7 +210,7 @@
 - (CGRect)currentVisibleRect
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0xC0);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -244,11 +244,11 @@
   return result;
 }
 
-- (CGRect)frameForPlaybackRecord:(id)a3 minPlayableSize:(CGSize *)a4
+- (CGRect)frameForPlaybackRecord:(id)record minPlayableSize:(CGSize *)size
 {
-  v6 = a3;
-  v7 = self;
-  sub_1A4912EE4(v6, a4);
+  recordCopy = record;
+  selfCopy = self;
+  sub_1A4912EE4(recordCopy, size);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -265,11 +265,11 @@
   return result;
 }
 
-- (id)filterSortedRecordsToPlay:(id)a3
+- (id)filterSortedRecordsToPlay:(id)play
 {
   sub_1A3C52C70(0, &qword_1EB145058);
   v4 = sub_1A524CA34();
-  v5 = self;
+  selfCopy = self;
   sub_1A4913180(v4);
 
   v6 = sub_1A524CA14();
@@ -280,7 +280,7 @@
 - (int64_t)maxNumberOfPlayingItems
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;

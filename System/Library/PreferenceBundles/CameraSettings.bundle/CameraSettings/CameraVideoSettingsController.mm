@@ -1,28 +1,28 @@
 @interface CameraVideoSettingsController
-+ (id)_titleForVideoConfiguration:(int64_t)a3 isHEVCEnabled:(BOOL)a4 isHDR10BitVideoEnabled:(BOOL)a5;
-+ (id)_videoConfigurationFooterForPrefixString:(id)a3 useHEVC:(BOOL)a4 useDolbyVision:(BOOL)a5;
-+ (id)shortTitleForVideoConfiguration:(id)a3;
-- (id)_isAutoLowLightVideoEnabled:(id)a3;
-- (id)_isHDRVideoEnabled:(id)a3;
-- (id)_isPALVideoEnabled:(id)a3;
-- (id)_shouldDisableCameraSwitchingDuringVideoRecording:(id)a3;
-- (id)_vfrVideoMode:(id)a3;
++ (id)_titleForVideoConfiguration:(int64_t)configuration isHEVCEnabled:(BOOL)enabled isHDR10BitVideoEnabled:(BOOL)videoEnabled;
++ (id)_videoConfigurationFooterForPrefixString:(id)string useHEVC:(BOOL)c useDolbyVision:(BOOL)vision;
++ (id)shortTitleForVideoConfiguration:(id)configuration;
+- (id)_isAutoLowLightVideoEnabled:(id)enabled;
+- (id)_isHDRVideoEnabled:(id)enabled;
+- (id)_isPALVideoEnabled:(id)enabled;
+- (id)_shouldDisableCameraSwitchingDuringVideoRecording:(id)recording;
+- (id)_vfrVideoMode:(id)mode;
 - (id)specifiers;
 - (int64_t)_cinematicConfiguration;
 - (int64_t)_slomoConfiguration;
 - (int64_t)_videoConfiguration;
-- (void)_handleConfirmHDRVideoHighEfficiencyLearnMore:(id)a3;
-- (void)_handleConfirmHighEfficiencyLearnMore:(id)a3;
-- (void)_handleHDR10BitVideoMostCompatibleConfirmed:(id)a3;
-- (void)_handleVideoMostCompatibleConfirmed:(id)a3;
-- (void)_setAutoLowLightVideoEnabled:(id)a3 specifier:(id)a4;
-- (void)_setHDR10BitVideoEnabled:(id)a3 specifier:(id)a4;
-- (void)_setPALVideoEnabled:(id)a3 specifier:(id)a4;
-- (void)_setRecordVideoConfiguration:(id)a3;
-- (void)_setShouldDisableCameraSwitchingDuringVideoRecording:(id)a3 specifier:(id)a4;
-- (void)_showConfirmationSpecifierWithTitle:(id)a3 prompt:(id)a4 cancelText:(id)a5 okText:(id)a6 target:(id)a7 confirmationAction:(SEL)a8 cancelAction:(SEL)a9 value:(id)a10;
+- (void)_handleConfirmHDRVideoHighEfficiencyLearnMore:(id)more;
+- (void)_handleConfirmHighEfficiencyLearnMore:(id)more;
+- (void)_handleHDR10BitVideoMostCompatibleConfirmed:(id)confirmed;
+- (void)_handleVideoMostCompatibleConfirmed:(id)confirmed;
+- (void)_setAutoLowLightVideoEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setHDR10BitVideoEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setPALVideoEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setRecordVideoConfiguration:(id)configuration;
+- (void)_setShouldDisableCameraSwitchingDuringVideoRecording:(id)recording specifier:(id)specifier;
+- (void)_showConfirmationSpecifierWithTitle:(id)title prompt:(id)prompt cancelText:(id)text okText:(id)okText target:(id)target confirmationAction:(SEL)action cancelAction:(SEL)cancelAction value:(id)self0;
 - (void)emitNavigationEvent;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -46,39 +46,39 @@
   {
     v65 = OBJC_IVAR___PSListController__specifiers;
     v70 = objc_alloc_init(NSMutableArray);
-    v71 = [(CameraVideoSettingsController *)self _videoConfiguration];
-    v5 = [v3 back720pMaxFPS];
-    v6 = [v3 back1080pMaxFPS];
-    v7 = [v3 front1080pMaxFPS];
-    v66 = v7;
-    v9 = v6 > 59 || v7 > 59;
-    v11 = v5 > 29 && v6 > 29;
+    _videoConfiguration = [(CameraVideoSettingsController *)self _videoConfiguration];
+    back720pMaxFPS = [v3 back720pMaxFPS];
+    back1080pMaxFPS = [v3 back1080pMaxFPS];
+    front1080pMaxFPS = [v3 front1080pMaxFPS];
+    v66 = front1080pMaxFPS;
+    v9 = back1080pMaxFPS > 59 || front1080pMaxFPS > 59;
+    v11 = back720pMaxFPS > 29 && back1080pMaxFPS > 29;
     if ([v3 isHEVCEncodingSupported])
     {
-      v73 = [(CameraVideoSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
+      _showHEVCOnlyFormatsOnCapableDevices = [(CameraVideoSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
     }
 
     else
     {
-      v73 = 0;
+      _showHEVCOnlyFormatsOnCapableDevices = 0;
     }
 
-    v67 = [v3 isBack4k30VideoSupported];
-    v12 = [v3 isBack4k24VideoSupported];
-    v68 = [v3 isBack4k60VideoSupported];
-    v72 = [v3 isBack4k120VideoSupported];
-    v13 = [v3 isBack4k120VideoSupported];
+    isBack4k30VideoSupported = [v3 isBack4k30VideoSupported];
+    isBack4k24VideoSupported = [v3 isBack4k24VideoSupported];
+    isBack4k60VideoSupported = [v3 isBack4k60VideoSupported];
+    isBack4k120VideoSupported = [v3 isBack4k120VideoSupported];
+    isBack4k120VideoSupported2 = [v3 isBack4k120VideoSupported];
     v14 = [(CameraVideoSettingsController *)self _isHDRVideoEnabled:0];
-    v69 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
 
     if ([v3 isPALVideoSupported])
     {
-      v15 = [(CameraVideoSettingsController *)self _isPALVideoEnabled];
+      _isPALVideoEnabled = [(CameraVideoSettingsController *)self _isPALVideoEnabled];
     }
 
     else
     {
-      v15 = 0;
+      _isPALVideoEnabled = 0;
     }
 
     v75 = [PSSpecifier groupSpecifierWithID:@"VideoConfigurationGroupSpecifierID"];
@@ -119,7 +119,7 @@ LABEL_29:
       [v76 addObject:&off_322C0];
     }
 
-    if (v15 && (v74[2])(v74, 11))
+    if (_isPALVideoEnabled && (v74[2])(v74, 11))
     {
       [v76 addObject:&off_322D8];
     }
@@ -128,30 +128,30 @@ LABEL_29:
     if (v9)
     {
       [v76 addObject:&off_32308];
-      if (!v13)
+      if (!isBack4k120VideoSupported2)
       {
 LABEL_36:
-        if (!v12)
+        if (!isBack4k24VideoSupported)
         {
 LABEL_38:
-          if (v15 && (v74[2])(v74, 12))
+          if (_isPALVideoEnabled && (v74[2])(v74, 12))
           {
             [v76 addObject:&off_32350];
           }
 
-          if (v67)
+          if (isBack4k30VideoSupported)
           {
             [v76 addObject:&off_32368];
           }
 
-          if (v68)
+          if (isBack4k60VideoSupported)
           {
             [v76 addObject:&off_32380];
           }
 
-          if (v72)
+          if (isBack4k120VideoSupported)
           {
-            if (v15)
+            if (_isPALVideoEnabled)
             {
               [v76 addObject:&off_32398];
             }
@@ -170,19 +170,19 @@ LABEL_38:
           v77[1] = 3221225472;
           v77[2] = sub_BEC8;
           v77[3] = &unk_2CD18;
-          v84 = v69;
+          v84 = bOOLValue;
           v21 = v20;
-          v85 = v73;
+          v85 = _showHEVCOnlyFormatsOnCapableDevices;
           v78 = v21;
-          v79 = self;
+          selfCopy = self;
           v22 = v70;
           v82 = &v86;
-          v83 = v71;
+          v83 = _videoConfiguration;
           v80 = v22;
           v23 = v16;
           v81 = v23;
           [v76 enumerateObjectsUsingBlock:v77];
-          if (v66 >= 60 && v6 <= 59)
+          if (v66 >= 60 && back1080pMaxFPS <= 59)
           {
             v24 = sub_BCD8(@"CAM_FORMATS_CAPTURE_FOOTER_1080p60_FRONT_ONLY");
             [v23 appendFormat:@"\n%@", v24];
@@ -237,9 +237,9 @@ LABEL_38:
 
           if ([v21 isHDR10BitVideoSupported])
           {
-            v38 = [v21 isHDR10BitVideoSupports60FPS];
-            v39 = [v21 isCinematicModeSupported];
-            if (v73)
+            isHDR10BitVideoSupports60FPS = [v21 isHDR10BitVideoSupports60FPS];
+            isCinematicModeSupported = [v21 isCinematicModeSupported];
+            if (_showHEVCOnlyFormatsOnCapableDevices)
             {
               v40 = @"CAM_HDR_VIDEO_TITLE";
             }
@@ -251,17 +251,17 @@ LABEL_38:
 
             v41 = sub_BCD8(v40);
             v42 = @"CAM_HDR_VIDEO_FOOTER";
-            if (v39)
+            if (isCinematicModeSupported)
             {
               v42 = @"CAM_HDR_VIDEO_AND_CINEMATIC_FOOTER";
             }
 
-            if (!v38)
+            if (!isHDR10BitVideoSupports60FPS)
             {
               v42 = @"CAM_HDR_VIDEO_60FPS_UNSUPPORTED_FOOTER";
             }
 
-            if (v72)
+            if (isBack4k120VideoSupported)
             {
               v43 = @"CAM_HDR_VIDEO_FOOTER_4k120";
             }
@@ -296,7 +296,7 @@ LABEL_38:
 
           else
           {
-            if (![v21 isAutoLowLightVideoSupportedForMode:1 videoConfiguration:v71 videoEncodingBehavior:1])
+            if (![v21 isAutoLowLightVideoSupportedForMode:1 videoConfiguration:_videoConfiguration videoEncodingBehavior:1])
             {
               goto LABEL_78;
             }
@@ -356,13 +356,13 @@ LABEL_37:
       }
     }
 
-    else if (!v13)
+    else if (!isBack4k120VideoSupported2)
     {
       goto LABEL_36;
     }
 
     [v76 addObject:&off_32320];
-    if (!v12)
+    if (!isBack4k24VideoSupported)
     {
       goto LABEL_38;
     }
@@ -391,14 +391,14 @@ LABEL_84:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"CAM_RECORD_VIDEO_TITLE" table:@"CameraSettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"CAM_RECORD_VIDEO_TITLE" table:@"CameraSettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];
@@ -408,48 +408,48 @@ LABEL_84:
 - (int64_t)_videoConfiguration
 {
   v2 = [NSNumber numberWithLong:CFPreferencesGetAppIntegerValue(CAMUserPreferenceVideoConfiguration, @"com.apple.camera", 0)];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)_cinematicConfiguration
 {
   v2 = [NSNumber numberWithLong:CFPreferencesGetAppIntegerValue(CAMUserPreferenceCinematicConfiguration, @"com.apple.camera", 0)];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)_slomoConfiguration
 {
   v2 = [NSNumber numberWithLong:CFPreferencesGetAppIntegerValue(CAMUserPreferenceSlomoConfiguration, @"com.apple.camera", 0)];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CameraVideoSettingsController;
-  [(CameraVideoSettingsController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CameraVideoSettingsController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CameraVideoSettingsController *)self specifierForID:@"VideoConfigurationGroupSpecifierID"];
   if (v7)
   {
     v8 = [(CameraVideoSettingsController *)self indexPathForSpecifier:v7];
-    v9 = [v8 section];
+    section = [v8 section];
   }
 
   else
   {
-    v9 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v9)
+  if ([pathCopy section] == section)
   {
-    v10 = [(CameraVideoSettingsController *)self specifierAtIndexPath:v6];
+    v10 = [(CameraVideoSettingsController *)self specifierAtIndexPath:pathCopy];
     v11 = [v10 propertyForKey:PSValueKey];
     [(CameraVideoSettingsController *)self _setRecordVideoConfiguration:v11];
   }
@@ -457,15 +457,15 @@ LABEL_84:
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-+ (id)_titleForVideoConfiguration:(int64_t)a3 isHEVCEnabled:(BOOL)a4 isHDR10BitVideoEnabled:(BOOL)a5
++ (id)_titleForVideoConfiguration:(int64_t)configuration isHEVCEnabled:(BOOL)enabled isHDR10BitVideoEnabled:(BOOL)videoEnabled
 {
   v6 = 0;
-  v7 = a5 & ~a4;
-  if (a3 > 8)
+  v7 = videoEnabled & ~enabled;
+  if (configuration > 8)
   {
-    if (a3 > 11)
+    if (configuration > 11)
     {
-      switch(a3)
+      switch(configuration)
       {
         case 12:
           v8 = @"CAM_RECORD_VIDEO_4K_25";
@@ -486,9 +486,9 @@ LABEL_84:
 
     else
     {
-      if (a3 != 9)
+      if (configuration != 9)
       {
-        if (a3 == 10)
+        if (configuration == 10)
         {
           v8 = @"CAM_RECORD_VIDEO_4K_24";
           v9 = @"CAM_RECORD_VIDEO_4K_24_MOST_COMPATIBLE";
@@ -507,7 +507,7 @@ LABEL_84:
       v11 = @"CAM_RECORD_VIDEO_4K_60";
     }
 
-    if (a4)
+    if (enabled)
     {
       v12 = v11;
     }
@@ -520,11 +520,11 @@ LABEL_84:
     goto LABEL_32;
   }
 
-  if (a3 <= 4)
+  if (configuration <= 4)
   {
-    if (a3)
+    if (configuration)
     {
-      if (a3 == 1)
+      if (configuration == 1)
       {
         v8 = @"CAM_RECORD_VIDEO_1080p_60";
         v9 = @"CAM_RECORD_VIDEO_1080p_60_MOST_COMPATIBLE";
@@ -532,12 +532,12 @@ LABEL_84:
 
       else
       {
-        if (a3 != 4)
+        if (configuration != 4)
         {
           goto LABEL_33;
         }
 
-        v7 = !a5 || a4;
+        v7 = !videoEnabled || enabled;
         v8 = @"CAM_RECORD_VIDEO_1080P_120_MOST_COMPATIBLE";
         v9 = @"CAM_RECORD_VIDEO_1080P_120";
       }
@@ -548,7 +548,7 @@ LABEL_84:
     goto LABEL_14;
   }
 
-  switch(a3)
+  switch(configuration)
   {
     case 5:
       v8 = @"CAM_RECORD_VIDEO_4K_30";
@@ -585,12 +585,12 @@ LABEL_33:
   return v6;
 }
 
-+ (id)shortTitleForVideoConfiguration:(id)a3
++ (id)shortTitleForVideoConfiguration:(id)configuration
 {
-  v3 = [a3 integerValue];
-  if (v3 <= 0xE && ((0x7EF3u >> v3) & 1) != 0)
+  integerValue = [configuration integerValue];
+  if (integerValue <= 0xE && ((0x7EF3u >> integerValue) & 1) != 0)
   {
-    v4 = sub_BCD8(off_2CD38[v3]);
+    v4 = sub_BCD8(off_2CD38[integerValue]);
   }
 
   else
@@ -601,15 +601,15 @@ LABEL_33:
   return v4;
 }
 
-+ (id)_videoConfigurationFooterForPrefixString:(id)a3 useHEVC:(BOOL)a4 useDolbyVision:(BOOL)a5
++ (id)_videoConfigurationFooterForPrefixString:(id)string useHEVC:(BOOL)c useDolbyVision:(BOOL)vision
 {
   v6 = @"_HEVC";
-  if (!a4)
+  if (!c)
   {
     v6 = &stru_2DB58;
   }
 
-  if (a5)
+  if (vision)
   {
     v7 = @"_DOLBY";
   }
@@ -620,19 +620,19 @@ LABEL_33:
   }
 
   v8 = v6;
-  v9 = [NSString stringWithFormat:@"%@%@%@_FOOTER", a3, v8, v7];
+  v9 = [NSString stringWithFormat:@"%@%@%@_FOOTER", string, v8, v7];
 
   return v9;
 }
 
-- (void)_setRecordVideoConfiguration:(id)a3
+- (void)_setRecordVideoConfiguration:(id)configuration
 {
-  v14 = a3;
-  v4 = [v14 integerValue];
-  v5 = v4 > 0xE || ((1 << v4) & 0x6210) == 0;
-  if (v5 || (v6 = v4, +[CameraSettingsBaseController capabilities](CameraSettingsBaseController, "capabilities"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHEVCEncodingSupported], v7, v9 = -[CameraVideoSettingsController _showHEVCOnlyFormatsOnCapableDevices](self, "_showHEVCOnlyFormatsOnCapableDevices"), !v8) || (v9 & 1) != 0 || v6 > 0xE || ((1 << v6) & 0x6210) == 0 || CFPreferencesGetAppBooleanValue(CAMUserPreferencesDidConfirmVideoMostCompatible, @"com.apple.camera", 0))
+  configurationCopy = configuration;
+  integerValue = [configurationCopy integerValue];
+  v5 = integerValue > 0xE || ((1 << integerValue) & 0x6210) == 0;
+  if (v5 || (v6 = integerValue, +[CameraSettingsBaseController capabilities](CameraSettingsBaseController, "capabilities"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isHEVCEncodingSupported], v7, v9 = -[CameraVideoSettingsController _showHEVCOnlyFormatsOnCapableDevices](self, "_showHEVCOnlyFormatsOnCapableDevices"), !v8) || (v9 & 1) != 0 || v6 > 0xE || ((1 << v6) & 0x6210) == 0 || CFPreferencesGetAppBooleanValue(CAMUserPreferencesDidConfirmVideoMostCompatible, @"com.apple.camera", 0))
   {
-    [PFMediaCapabilities setRecordVideoConfiguration:v14];
+    [PFMediaCapabilities setRecordVideoConfiguration:configurationCopy];
     CFPreferencesAppSynchronize(@"com.apple.camera");
   }
 
@@ -649,46 +649,46 @@ LABEL_33:
           v11 = sub_BCD8(@"CAM_CONFIRM_HIGH_EFFICIENCY_VIDEO_TITLE");
           v12 = sub_BCD8(@"CAM_CONFIRM_HIGH_EFFICIENCY_VIDEO_LEARN_MORE");
           v13 = sub_BCD8(@"CAM_CONFIRM_HIGH_EFFICIENCY_VIDEO_OK");
-          [(CameraVideoSettingsController *)self _showConfirmationSpecifierWithTitle:v11 prompt:v10 cancelText:v12 okText:v13 target:self confirmationAction:"_handleVideoMostCompatibleConfirmed:" cancelAction:"_handleConfirmHighEfficiencyLearnMore:" value:v14];
+          [(CameraVideoSettingsController *)self _showConfirmationSpecifierWithTitle:v11 prompt:v10 cancelText:v12 okText:v13 target:self confirmationAction:"_handleVideoMostCompatibleConfirmed:" cancelAction:"_handleConfirmHighEfficiencyLearnMore:" value:configurationCopy];
         }
       }
     }
   }
 }
 
-- (void)_showConfirmationSpecifierWithTitle:(id)a3 prompt:(id)a4 cancelText:(id)a5 okText:(id)a6 target:(id)a7 confirmationAction:(SEL)a8 cancelAction:(SEL)a9 value:(id)a10
+- (void)_showConfirmationSpecifierWithTitle:(id)title prompt:(id)prompt cancelText:(id)text okText:(id)okText target:(id)target confirmationAction:(SEL)action cancelAction:(SEL)cancelAction value:(id)self0
 {
-  v17 = a10;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  valueCopy = value;
+  targetCopy = target;
+  okTextCopy = okText;
+  textCopy = text;
+  promptCopy = prompt;
+  titleCopy = title;
   v23 = objc_alloc_init(PSConfirmationSpecifier);
-  [v23 setTitle:v22];
+  [v23 setTitle:titleCopy];
 
-  [v23 setPrompt:v21];
-  [v23 setCancelButton:v20];
+  [v23 setPrompt:promptCopy];
+  [v23 setCancelButton:textCopy];
 
-  [v23 setOkButton:v19];
-  [v23 setUserInfo:v17];
+  [v23 setOkButton:okTextCopy];
+  [v23 setUserInfo:valueCopy];
 
-  [v23 setTarget:v18];
-  [v23 setConfirmationAction:a8];
-  [v23 setConfirmationCancelAction:a9];
+  [v23 setTarget:targetCopy];
+  [v23 setConfirmationAction:action];
+  [v23 setConfirmationCancelAction:cancelAction];
   [(CameraVideoSettingsController *)self showConfirmationViewForSpecifier:v23 useAlert:1];
 }
 
-- (void)_handleVideoMostCompatibleConfirmed:(id)a3
+- (void)_handleVideoMostCompatibleConfirmed:(id)confirmed
 {
-  v4 = [a3 userInfo];
-  [PFMediaCapabilities setRecordVideoConfiguration:v4];
+  userInfo = [confirmed userInfo];
+  [PFMediaCapabilities setRecordVideoConfiguration:userInfo];
   CFPreferencesSetAppValue(CAMUserPreferencesDidConfirmVideoMostCompatible, &__kCFBooleanTrue, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (void)_handleConfirmHighEfficiencyLearnMore:(id)a3
+- (void)_handleConfirmHighEfficiencyLearnMore:(id)more
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v3 localizedStringForKey:@"CAM_CONFIRM_HIGH_EFFICIENCY_VIDEO_LEARN_MORE_URL" value:&stru_2DB58 table:@"CameraSettings"];
@@ -706,9 +706,9 @@ LABEL_33:
   _objc_release_x2();
 }
 
-- (void)_setHDR10BitVideoEnabled:(id)a3 specifier:(id)a4
+- (void)_setHDR10BitVideoEnabled:(id)enabled specifier:(id)specifier
 {
-  value = a3;
+  value = enabled;
   if ([value BOOLValue] && (+[CameraSettingsBaseController capabilities](CameraSettingsBaseController, "capabilities"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isHEVCEncodingSupported"), v5, v7 = -[CameraVideoSettingsController _showHEVCOnlyFormatsOnCapableDevices](self, "_showHEVCOnlyFormatsOnCapableDevices"), v6) && (v7 & 1) == 0 && !CFPreferencesGetAppBooleanValue(didConfirmHDR10BitVideoMostCompatiblePreference, @"com.apple.camera", 0))
   {
     v8 = sub_BCD8(@"CAM_CONFIRM_HIGH_EFFICIENCY_HDR_VIDEO_TITLE");
@@ -726,7 +726,7 @@ LABEL_33:
   }
 }
 
-- (void)_handleHDR10BitVideoMostCompatibleConfirmed:(id)a3
+- (void)_handleHDR10BitVideoMostCompatibleConfirmed:(id)confirmed
 {
   CFPreferencesSetAppValue(@"CAMUserPreferenceHDR10BitVideoEnabled", &__kCFBooleanTrue, @"com.apple.camera");
   CFPreferencesSetAppValue(didConfirmHDR10BitVideoMostCompatiblePreference, &__kCFBooleanTrue, @"com.apple.camera");
@@ -735,7 +735,7 @@ LABEL_33:
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (void)_handleConfirmHDRVideoHighEfficiencyLearnMore:(id)a3
+- (void)_handleConfirmHDRVideoHighEfficiencyLearnMore:(id)more
 {
   v3 = sub_BCD8(@"CAM_CONFIRM_HIGH_EFFICIENCY_HDR_VIDEO_LEARN_MORE_URL");
   if (v3)
@@ -751,43 +751,43 @@ LABEL_33:
   _objc_release_x1();
 }
 
-- (id)_isHDRVideoEnabled:(id)a3
+- (id)_isHDRVideoEnabled:(id)enabled
 {
-  v3 = [(CameraVideoSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
+  _showHEVCOnlyFormatsOnCapableDevices = [(CameraVideoSettingsController *)self _showHEVCOnlyFormatsOnCapableDevices];
   v4 = +[CameraSettingsBaseController capabilities];
-  v5 = [NSNumber numberWithBool:[CAMUserPreferences shouldEnableHDR10BitVideoForHEVCEnabled:v3 capabilities:v4]];
+  v5 = [NSNumber numberWithBool:[CAMUserPreferences shouldEnableHDR10BitVideoForHEVCEnabled:_showHEVCOnlyFormatsOnCapableDevices capabilities:v4]];
 
   return v5;
 }
 
-- (id)_isPALVideoEnabled:(id)a3
+- (id)_isPALVideoEnabled:(id)enabled
 {
-  v3 = [(CameraVideoSettingsController *)self _isPALVideoEnabled];
+  _isPALVideoEnabled = [(CameraVideoSettingsController *)self _isPALVideoEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_isPALVideoEnabled];
 }
 
-- (void)_setPALVideoEnabled:(id)a3 specifier:(id)a4
+- (void)_setPALVideoEnabled:(id)enabled specifier:(id)specifier
 {
   v5 = CAMUserPreferenceEnablePALVideoFormats;
-  v6 = a3;
-  CFPreferencesSetAppValue(v5, v6, @"com.apple.camera");
-  LOBYTE(v5) = [v6 BOOLValue];
+  enabledCopy = enabled;
+  CFPreferencesSetAppValue(v5, enabledCopy, @"com.apple.camera");
+  LOBYTE(v5) = [enabledCopy BOOLValue];
 
   if ((v5 & 1) == 0)
   {
-    v7 = [(CameraVideoSettingsController *)self _videoConfiguration];
-    if ([CAMCaptureCapabilities isPALVideoConfiguration:v7])
+    _videoConfiguration = [(CameraVideoSettingsController *)self _videoConfiguration];
+    if ([CAMCaptureCapabilities isPALVideoConfiguration:_videoConfiguration])
     {
       v8 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 0;
-        if (v7 > 9999)
+        if (_videoConfiguration > 9999)
         {
-          if (v7 > 10002)
+          if (_videoConfiguration > 10002)
           {
-            switch(v7)
+            switch(_videoConfiguration)
             {
               case 10003:
                 v9 = @"ImagePickerVGA";
@@ -801,12 +801,12 @@ LABEL_33:
             }
           }
 
-          else if (v7 == 10000)
+          else if (_videoConfiguration == 10000)
           {
             v9 = @"ImagePickerHigh";
           }
 
-          else if (v7 == 10001)
+          else if (_videoConfiguration == 10001)
           {
             v9 = @"ImagePickerMedium";
           }
@@ -819,7 +819,7 @@ LABEL_33:
 
         else
         {
-          switch(v7)
+          switch(_videoConfiguration)
           {
             case 0:
               v9 = @"Auto";
@@ -879,18 +879,18 @@ LABEL_33:
       CFPreferencesSetAppValue(CAMUserPreferenceVideoConfiguration, &off_322F0, @"com.apple.camera");
     }
 
-    v10 = [(CameraVideoSettingsController *)self _cinematicConfiguration];
-    if ([CAMCaptureCapabilities isPALVideoConfiguration:v10])
+    _cinematicConfiguration = [(CameraVideoSettingsController *)self _cinematicConfiguration];
+    if ([CAMCaptureCapabilities isPALVideoConfiguration:_cinematicConfiguration])
     {
       v11 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 0;
-        if (v10 > 9999)
+        if (_cinematicConfiguration > 9999)
         {
-          if (v10 > 10002)
+          if (_cinematicConfiguration > 10002)
           {
-            switch(v10)
+            switch(_cinematicConfiguration)
             {
               case 10003:
                 v12 = @"ImagePickerVGA";
@@ -904,12 +904,12 @@ LABEL_33:
             }
           }
 
-          else if (v10 == 10000)
+          else if (_cinematicConfiguration == 10000)
           {
             v12 = @"ImagePickerHigh";
           }
 
-          else if (v10 == 10001)
+          else if (_cinematicConfiguration == 10001)
           {
             v12 = @"ImagePickerMedium";
           }
@@ -922,7 +922,7 @@ LABEL_33:
 
         else
         {
-          switch(v10)
+          switch(_cinematicConfiguration)
           {
             case 0:
               v12 = @"Auto";
@@ -988,11 +988,11 @@ LABEL_33:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 0;
-        if (v10 > 9999)
+        if (_cinematicConfiguration > 9999)
         {
-          if (v10 > 10002)
+          if (_cinematicConfiguration > 10002)
           {
-            switch(v10)
+            switch(_cinematicConfiguration)
             {
               case 10003:
                 v14 = @"ImagePickerVGA";
@@ -1006,12 +1006,12 @@ LABEL_33:
             }
           }
 
-          else if (v10 == 10000)
+          else if (_cinematicConfiguration == 10000)
           {
             v14 = @"ImagePickerHigh";
           }
 
-          else if (v10 == 10001)
+          else if (_cinematicConfiguration == 10001)
           {
             v14 = @"ImagePickerMedium";
           }
@@ -1024,7 +1024,7 @@ LABEL_33:
 
         else
         {
-          switch(v10)
+          switch(_cinematicConfiguration)
           {
             case 0:
               v14 = @"Auto";
@@ -1089,7 +1089,7 @@ LABEL_33:
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (id)_isAutoLowLightVideoEnabled:(id)a3
+- (id)_isAutoLowLightVideoEnabled:(id)enabled
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceAutoLowLightVideoEnabled", @"com.apple.camera", &keyExistsAndHasValidFormat);
@@ -1109,14 +1109,14 @@ LABEL_33:
   return v6;
 }
 
-- (void)_setAutoLowLightVideoEnabled:(id)a3 specifier:(id)a4
+- (void)_setAutoLowLightVideoEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"CAMUserPreferenceAutoLowLightVideoEnabled", a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(@"CAMUserPreferenceAutoLowLightVideoEnabled", enabled, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-- (id)_vfrVideoMode:(id)a3
+- (id)_vfrVideoMode:(id)mode
 {
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"CAMUserPreferenceVFRMode", @"com.apple.camera", 0);
   v4 = 0;
@@ -1128,16 +1128,16 @@ LABEL_33:
   return v4;
 }
 
-- (id)_shouldDisableCameraSwitchingDuringVideoRecording:(id)a3
+- (id)_shouldDisableCameraSwitchingDuringVideoRecording:(id)recording
 {
   v3 = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceDisableCameraSwitchingDuringVideoRecording", @"com.apple.camera", 0) != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)_setShouldDisableCameraSwitchingDuringVideoRecording:(id)a3 specifier:(id)a4
+- (void)_setShouldDisableCameraSwitchingDuringVideoRecording:(id)recording specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"CAMUserPreferenceDisableCameraSwitchingDuringVideoRecording", a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(@"CAMUserPreferenceDisableCameraSwitchingDuringVideoRecording", recording, @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }

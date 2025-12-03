@@ -1,52 +1,52 @@
 @interface SFEndLocalSearchFeedback
-- (SFEndLocalSearchFeedback)initWithCoder:(id)a3;
-- (SFEndLocalSearchFeedback)initWithStartSearch:(id)a3;
-- (SFEndLocalSearchFeedback)initWithStartSearch:(id)a3 queryUnderstandingParse:(id)a4;
-- (SFEndLocalSearchFeedback)initWithStartSearch:(id)a3 queryUnderstandingParse:(id)a4 l1ToL2ResultCount:(unsigned int)a5 coreSpotlightIndexCount:(unsigned int)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SFEndLocalSearchFeedback)initWithCoder:(id)coder;
+- (SFEndLocalSearchFeedback)initWithStartSearch:(id)search;
+- (SFEndLocalSearchFeedback)initWithStartSearch:(id)search queryUnderstandingParse:(id)parse;
+- (SFEndLocalSearchFeedback)initWithStartSearch:(id)search queryUnderstandingParse:(id)parse l1ToL2ResultCount:(unsigned int)count coreSpotlightIndexCount:(unsigned int)indexCount;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFEndLocalSearchFeedback
 
-- (SFEndLocalSearchFeedback)initWithStartSearch:(id)a3
+- (SFEndLocalSearchFeedback)initWithStartSearch:(id)search
 {
   v4.receiver = self;
   v4.super_class = SFEndLocalSearchFeedback;
-  return [(SFEndSearchFeedback *)&v4 initWithStartSearch:a3];
+  return [(SFEndSearchFeedback *)&v4 initWithStartSearch:search];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFEndLocalSearchFeedback;
-  v4 = a3;
-  [(SFEndSearchFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_quParse forKey:{@"query_understanding_parse", v5.receiver, v5.super_class}];
-  [v4 encodeInt32:self->_l1ToL2ResultCount forKey:@"_l1ToL2ResultCount"];
-  [v4 encodeInt32:self->_coreSpotlightIndexCount forKey:@"_coreSpotlightIndexCount"];
-  [v4 encodeObject:self->_photosRankingInfo forKey:@"_photosRankingInfo"];
-  [v4 encodeObject:self->_embeddingState forKey:@"_embeddingState"];
+  coderCopy = coder;
+  [(SFEndSearchFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_quParse forKey:{@"query_understanding_parse", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt32:self->_l1ToL2ResultCount forKey:@"_l1ToL2ResultCount"];
+  [coderCopy encodeInt32:self->_coreSpotlightIndexCount forKey:@"_coreSpotlightIndexCount"];
+  [coderCopy encodeObject:self->_photosRankingInfo forKey:@"_photosRankingInfo"];
+  [coderCopy encodeObject:self->_embeddingState forKey:@"_embeddingState"];
 }
 
-- (SFEndLocalSearchFeedback)initWithCoder:(id)a3
+- (SFEndLocalSearchFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SFEndLocalSearchFeedback;
-  v5 = [(SFEndSearchFeedback *)&v13 initWithCoder:v4];
+  v5 = [(SFEndSearchFeedback *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"query_understanding_parse"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"query_understanding_parse"];
     quParse = v5->_quParse;
     v5->_quParse = v6;
 
-    v5->_l1ToL2ResultCount = [v4 decodeInt32ForKey:@"_l1ToL2ResultCount"];
-    v5->_coreSpotlightIndexCount = [v4 decodeInt32ForKey:@"_coreSpotlightIndexCount"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_photosRankingInfo"];
+    v5->_l1ToL2ResultCount = [coderCopy decodeInt32ForKey:@"_l1ToL2ResultCount"];
+    v5->_coreSpotlightIndexCount = [coderCopy decodeInt32ForKey:@"_coreSpotlightIndexCount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_photosRankingInfo"];
     photosRankingInfo = v5->_photosRankingInfo;
     v5->_photosRankingInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_embeddingState"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_embeddingState"];
     embeddingState = v5->_embeddingState;
     v5->_embeddingState = v10;
   }
@@ -54,28 +54,28 @@
   return v5;
 }
 
-- (SFEndLocalSearchFeedback)initWithStartSearch:(id)a3 queryUnderstandingParse:(id)a4 l1ToL2ResultCount:(unsigned int)a5 coreSpotlightIndexCount:(unsigned int)a6
+- (SFEndLocalSearchFeedback)initWithStartSearch:(id)search queryUnderstandingParse:(id)parse l1ToL2ResultCount:(unsigned int)count coreSpotlightIndexCount:(unsigned int)indexCount
 {
-  result = [(SFEndLocalSearchFeedback *)self initWithStartSearch:a3 queryUnderstandingParse:a4];
+  result = [(SFEndLocalSearchFeedback *)self initWithStartSearch:search queryUnderstandingParse:parse];
   if (result)
   {
-    result->_l1ToL2ResultCount = a5;
-    result->_coreSpotlightIndexCount = a6;
+    result->_l1ToL2ResultCount = count;
+    result->_coreSpotlightIndexCount = indexCount;
   }
 
   return result;
 }
 
-- (SFEndLocalSearchFeedback)initWithStartSearch:(id)a3 queryUnderstandingParse:(id)a4
+- (SFEndLocalSearchFeedback)initWithStartSearch:(id)search queryUnderstandingParse:(id)parse
 {
-  v7 = a4;
+  parseCopy = parse;
   v11.receiver = self;
   v11.super_class = SFEndLocalSearchFeedback;
-  v8 = [(SFEndSearchFeedback *)&v11 initWithStartSearch:a3];
+  v8 = [(SFEndSearchFeedback *)&v11 initWithStartSearch:search];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_quParse, a4);
+    objc_storeStrong(&v8->_quParse, parse);
   }
 
   return v9;

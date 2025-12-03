@@ -1,6 +1,6 @@
 @interface HRInteractiveChartMedicalRecordFormatter
 - (HRInteractiveChartMedicalRecordFormatter)init;
-- (id)unitStringFromUnit:(id)a3 number:(id)a4;
+- (id)unitStringFromUnit:(id)unit number:(id)number;
 @end
 
 @implementation HRInteractiveChartMedicalRecordFormatter
@@ -19,29 +19,29 @@
   return v3;
 }
 
-- (id)unitStringFromUnit:(id)a3 number:(id)a4
+- (id)unitStringFromUnit:(id)unit number:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  unitCopy = unit;
+  numberCopy = number;
+  if (!unitCopy)
   {
     goto LABEL_7;
   }
 
-  v8 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v9 = [v8 localizedDisplayNameForUnit:v6 value:v7];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  v9 = [unitController localizedDisplayNameForUnit:unitCopy value:numberCopy];
 
-  if (![v9 length] && (objc_msgSend(v6, "isNull") & 1) == 0)
+  if (![v9 length] && (objc_msgSend(unitCopy, "isNull") & 1) == 0)
   {
-    v10 = [v6 unitString];
+    unitString = [unitCopy unitString];
 
-    v9 = v10;
+    v9 = unitString;
   }
 
   if (v9)
   {
-    v11 = [MEMORY[0x1E696C508] sharedConverter];
-    v12 = [v11 synonymForUCUMUnitString:v9];
+    mEMORY[0x1E696C508] = [MEMORY[0x1E696C508] sharedConverter];
+    v12 = [mEMORY[0x1E696C508] synonymForUCUMUnitString:v9];
   }
 
   else

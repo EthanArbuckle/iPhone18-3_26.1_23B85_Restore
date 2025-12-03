@@ -1,44 +1,44 @@
 @interface PREditingLookProperties
-+ (PREditingLookProperties)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
++ (PREditingLookProperties)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PREditingLookProperties)initWithProperties:(id)a3;
-- (PREditingLookProperties)initWithTimeFontConfiguration:(id)a3 titlePosterColor:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PREditingLookProperties)initWithProperties:(id)properties;
+- (PREditingLookProperties)initWithTimeFontConfiguration:(id)configuration titlePosterColor:(id)color;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation PREditingLookProperties
 
-+ (PREditingLookProperties)allocWithZone:(_NSZone *)a3
++ (PREditingLookProperties)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(PREditingLookProperties *)PRImmutableEditingLookProperties allocWithZone:a3];
+    return [(PREditingLookProperties *)PRImmutableEditingLookProperties allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___PREditingLookProperties;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (PREditingLookProperties)initWithTimeFontConfiguration:(id)a3 titlePosterColor:(id)a4
+- (PREditingLookProperties)initWithTimeFontConfiguration:(id)configuration titlePosterColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  colorCopy = color;
   v8 = objc_opt_self();
   v9 = [(PREditingLookProperties *)self isMemberOfClass:v8];
 
   if (v9)
   {
-    v10 = [[PRImmutableEditingLookProperties alloc] initWithTimeFontConfiguration:v6 titlePosterColor:v7];
+    v10 = [[PRImmutableEditingLookProperties alloc] initWithTimeFontConfiguration:configurationCopy titlePosterColor:colorCopy];
   }
 
   else
@@ -54,20 +54,20 @@
   return p_super;
 }
 
-- (PREditingLookProperties)initWithProperties:(id)a3
+- (PREditingLookProperties)initWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 timeFontConfiguration];
-  v6 = [v4 titlePosterColor];
+  propertiesCopy = properties;
+  timeFontConfiguration = [propertiesCopy timeFontConfiguration];
+  titlePosterColor = [propertiesCopy titlePosterColor];
 
-  v7 = [(PREditingLookProperties *)self initWithTimeFontConfiguration:v5 titlePosterColor:v6];
+  v7 = [(PREditingLookProperties *)self initWithTimeFontConfiguration:timeFontConfiguration titlePosterColor:titlePosterColor];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -79,15 +79,15 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PREditingLookProperties *)self timeFontConfiguration];
-      v9 = [(PREditingLookProperties *)v7 timeFontConfiguration];
+      v7 = equalCopy;
+      timeFontConfiguration = [(PREditingLookProperties *)self timeFontConfiguration];
+      timeFontConfiguration2 = [(PREditingLookProperties *)v7 timeFontConfiguration];
       v10 = BSEqualObjects();
 
       if (v10)
       {
-        v11 = [(PREditingLookProperties *)self titlePosterColor];
-        v12 = [(PREditingLookProperties *)v7 titlePosterColor];
+        titlePosterColor = [(PREditingLookProperties *)self titlePosterColor];
+        titlePosterColor2 = [(PREditingLookProperties *)v7 titlePosterColor];
         v13 = BSEqualObjects();
       }
 
@@ -108,10 +108,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PREditingLookProperties *)self timeFontConfiguration];
-  v4 = [v3 hash];
-  v5 = [(PREditingLookProperties *)self titlePosterColor];
-  v6 = [v5 hash];
+  timeFontConfiguration = [(PREditingLookProperties *)self timeFontConfiguration];
+  v4 = [timeFontConfiguration hash];
+  titlePosterColor = [(PREditingLookProperties *)self titlePosterColor];
+  v6 = [titlePosterColor hash];
 
   return v6 ^ v4;
 }
@@ -123,7 +123,7 @@
   v8 = 3221225472;
   v9 = __38__PREditingLookProperties_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -132,21 +132,21 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(PREditingLookProperties *)PRMutableEditingLookProperties allocWithZone:a3];
+  v4 = [(PREditingLookProperties *)PRMutableEditingLookProperties allocWithZone:zone];
 
   return [(PREditingLookProperties *)v4 initWithProperties:self];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v8 = a3;
-  v4 = [(PREditingLookProperties *)self timeFontConfiguration];
-  v5 = [v8 appendObject:v4 withName:@"timeFontConfiguration"];
+  formatterCopy = formatter;
+  timeFontConfiguration = [(PREditingLookProperties *)self timeFontConfiguration];
+  v5 = [formatterCopy appendObject:timeFontConfiguration withName:@"timeFontConfiguration"];
 
-  v6 = [(PREditingLookProperties *)self titlePosterColor];
-  v7 = [v8 appendObject:v6 withName:@"titlePosterColor"];
+  titlePosterColor = [(PREditingLookProperties *)self titlePosterColor];
+  v7 = [formatterCopy appendObject:titlePosterColor withName:@"titlePosterColor"];
 }
 
 @end

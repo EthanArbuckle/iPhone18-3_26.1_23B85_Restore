@@ -1,13 +1,13 @@
 @interface CPPointOfInterest
 + (CGSize)pinImageSize;
 + (CGSize)selectedPinImageSize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPointOfInterest:(id)a3;
-- (CPPointOfInterest)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPointOfInterest:(id)interest;
+- (CPPointOfInterest)initWithCoder:(id)coder;
 - (CPPointOfInterest)initWithLocation:(MKMapItem *)location title:(NSString *)title subtitle:(NSString *)subtitle summary:(NSString *)summary detailTitle:(NSString *)detailTitle detailSubtitle:(NSString *)detailSubtitle detailSummary:(NSString *)detailSummary pinImage:(UIImage *)pinImage selectedPinImage:(UIImage *)selectedPinImage;
 - (UIImage)pinImage;
 - (UIImage)selectedPinImage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setPinImage:(UIImage *)pinImage;
 - (void)setSelectedPinImage:(UIImage *)selectedPinImage;
 @end
@@ -48,9 +48,9 @@
   v26 = [(CPPointOfInterest *)&v43 init];
   if (v26)
   {
-    v27 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v26->_identifier;
-    v26->_identifier = v27;
+    v26->_identifier = uUID;
 
     objc_storeStrong(&v26->_location, location);
     v29 = [(NSString *)v18 copy];
@@ -84,57 +84,57 @@
   return v26;
 }
 
-- (CPPointOfInterest)initWithCoder:(id)a3
+- (CPPointOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPPointOfInterest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestLocation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestLocation"];
     location = v5->_location;
     v5->_location = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestTitle"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestSubtitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestSubtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestSummaryKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestSummaryKey"];
     summary = v5->_summary;
     v5->_summary = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestMapMarkerKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestMapMarkerKey"];
     pinImageSet = v5->_pinImageSet;
     v5->_pinImageSet = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestSelectedMapMarkerKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestSelectedMapMarkerKey"];
     selectedPinImageSet = v5->_selectedPinImageSet;
     v5->_selectedPinImageSet = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailTitleKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailTitleKey"];
     detailTitle = v5->_detailTitle;
     v5->_detailTitle = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailSubtitleKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailSubtitleKey"];
     detailSubtitle = v5->_detailSubtitle;
     v5->_detailSubtitle = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailSummaryKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailSummaryKey"];
     detailSummary = v5->_detailSummary;
     v5->_detailSummary = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailPrimaryButtonKey"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailPrimaryButtonKey"];
     primaryButton = v5->_primaryButton;
     v5->_primaryButton = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailSecondayButtonKey"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPPointOfInterestDetailSecondayButtonKey"];
     secondaryButton = v5->_secondaryButton;
     v5->_secondaryButton = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPPointOfInterestIdentifierKey"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPPointOfInterestIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v28;
   }
@@ -142,44 +142,44 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPPointOfInterest *)self location];
-  [v4 encodeObject:v5 forKey:@"CPPointOfInterestLocation"];
+  coderCopy = coder;
+  location = [(CPPointOfInterest *)self location];
+  [coderCopy encodeObject:location forKey:@"CPPointOfInterestLocation"];
 
-  v6 = [(CPPointOfInterest *)self title];
-  [v4 encodeObject:v6 forKey:@"CPPointOfInterestTitle"];
+  title = [(CPPointOfInterest *)self title];
+  [coderCopy encodeObject:title forKey:@"CPPointOfInterestTitle"];
 
-  v7 = [(CPPointOfInterest *)self subtitle];
-  [v4 encodeObject:v7 forKey:@"CPPointOfInterestSubtitle"];
+  subtitle = [(CPPointOfInterest *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"CPPointOfInterestSubtitle"];
 
-  v8 = [(CPPointOfInterest *)self summary];
-  [v4 encodeObject:v8 forKey:@"CPPointOfInterestSummaryKey"];
+  summary = [(CPPointOfInterest *)self summary];
+  [coderCopy encodeObject:summary forKey:@"CPPointOfInterestSummaryKey"];
 
-  v9 = [(CPPointOfInterest *)self pinImageSet];
-  [v4 encodeObject:v9 forKey:@"CPPointOfInterestMapMarkerKey"];
+  pinImageSet = [(CPPointOfInterest *)self pinImageSet];
+  [coderCopy encodeObject:pinImageSet forKey:@"CPPointOfInterestMapMarkerKey"];
 
-  v10 = [(CPPointOfInterest *)self selectedPinImageSet];
-  [v4 encodeObject:v10 forKey:@"CPPointOfInterestSelectedMapMarkerKey"];
+  selectedPinImageSet = [(CPPointOfInterest *)self selectedPinImageSet];
+  [coderCopy encodeObject:selectedPinImageSet forKey:@"CPPointOfInterestSelectedMapMarkerKey"];
 
-  v11 = [(CPPointOfInterest *)self detailTitle];
-  [v4 encodeObject:v11 forKey:@"CPPointOfInterestDetailTitleKey"];
+  detailTitle = [(CPPointOfInterest *)self detailTitle];
+  [coderCopy encodeObject:detailTitle forKey:@"CPPointOfInterestDetailTitleKey"];
 
-  v12 = [(CPPointOfInterest *)self detailSubtitle];
-  [v4 encodeObject:v12 forKey:@"CPPointOfInterestDetailSubtitleKey"];
+  detailSubtitle = [(CPPointOfInterest *)self detailSubtitle];
+  [coderCopy encodeObject:detailSubtitle forKey:@"CPPointOfInterestDetailSubtitleKey"];
 
-  v13 = [(CPPointOfInterest *)self detailSummary];
-  [v4 encodeObject:v13 forKey:@"CPPointOfInterestDetailSummaryKey"];
+  detailSummary = [(CPPointOfInterest *)self detailSummary];
+  [coderCopy encodeObject:detailSummary forKey:@"CPPointOfInterestDetailSummaryKey"];
 
-  v14 = [(CPPointOfInterest *)self primaryButton];
-  [v4 encodeObject:v14 forKey:@"CPPointOfInterestDetailPrimaryButtonKey"];
+  primaryButton = [(CPPointOfInterest *)self primaryButton];
+  [coderCopy encodeObject:primaryButton forKey:@"CPPointOfInterestDetailPrimaryButtonKey"];
 
-  v15 = [(CPPointOfInterest *)self secondaryButton];
-  [v4 encodeObject:v15 forKey:@"CPPointOfInterestDetailSecondayButtonKey"];
+  secondaryButton = [(CPPointOfInterest *)self secondaryButton];
+  [coderCopy encodeObject:secondaryButton forKey:@"CPPointOfInterestDetailSecondayButtonKey"];
 
-  v16 = [(CPPointOfInterest *)self identifier];
-  [v4 encodeObject:v16 forKey:@"kCPPointOfInterestIdentifierKey"];
+  identifier = [(CPPointOfInterest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPPointOfInterestIdentifierKey"];
 }
 
 - (void)setPinImage:(UIImage *)pinImage
@@ -217,10 +217,10 @@ id __33__CPPointOfInterest_setPinImage___block_invoke(uint64_t a1, void *a2)
 
 - (UIImage)pinImage
 {
-  v2 = [(CPPointOfInterest *)self pinImageSet];
-  v3 = [v2 image];
+  pinImageSet = [(CPPointOfInterest *)self pinImageSet];
+  image = [pinImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setSelectedPinImage:(UIImage *)selectedPinImage
@@ -258,96 +258,96 @@ id __41__CPPointOfInterest_setSelectedPinImage___block_invoke(uint64_t a1, void 
 
 - (UIImage)selectedPinImage
 {
-  v2 = [(CPPointOfInterest *)self selectedPinImageSet];
-  v3 = [v2 image];
+  selectedPinImageSet = [(CPPointOfInterest *)self selectedPinImageSet];
+  image = [selectedPinImageSet image];
 
-  return v3;
+  return image;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPPointOfInterest *)self isEqualToPointOfInterest:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPPointOfInterest *)self isEqualToPointOfInterest:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPointOfInterest:(id)a3
+- (BOOL)isEqualToPointOfInterest:(id)interest
 {
-  v4 = a3;
-  v5 = [(CPPointOfInterest *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqual:v6];
+  interestCopy = interest;
+  identifier = [(CPPointOfInterest *)self identifier];
+  identifier2 = [interestCopy identifier];
+  v7 = [identifier isEqual:identifier2];
 
   if (!v7)
   {
     goto LABEL_10;
   }
 
-  v8 = [(CPPointOfInterest *)self title];
-  v9 = [v4 title];
-  v10 = [v8 isEqual:v9];
+  title = [(CPPointOfInterest *)self title];
+  title2 = [interestCopy title];
+  v10 = [title isEqual:title2];
 
   if (!v10)
   {
     goto LABEL_10;
   }
 
-  v11 = [(CPPointOfInterest *)self subtitle];
-  v12 = [v4 subtitle];
-  v13 = [v11 isEqual:v12];
+  subtitle = [(CPPointOfInterest *)self subtitle];
+  subtitle2 = [interestCopy subtitle];
+  v13 = [subtitle isEqual:subtitle2];
 
   if (!v13)
   {
     goto LABEL_10;
   }
 
-  v14 = [(CPPointOfInterest *)self summary];
-  v15 = [v4 summary];
-  v16 = [v14 isEqual:v15];
+  summary = [(CPPointOfInterest *)self summary];
+  summary2 = [interestCopy summary];
+  v16 = [summary isEqual:summary2];
 
   if (!v16)
   {
     goto LABEL_10;
   }
 
-  v17 = [(CPPointOfInterest *)self detailTitle];
-  v18 = [v4 detailTitle];
-  v19 = [v17 isEqual:v18];
+  detailTitle = [(CPPointOfInterest *)self detailTitle];
+  detailTitle2 = [interestCopy detailTitle];
+  v19 = [detailTitle isEqual:detailTitle2];
 
   if (!v19)
   {
     goto LABEL_10;
   }
 
-  v20 = [(CPPointOfInterest *)self detailSubtitle];
-  v21 = [v4 detailSubtitle];
-  v22 = [v20 isEqual:v21];
+  detailSubtitle = [(CPPointOfInterest *)self detailSubtitle];
+  detailSubtitle2 = [interestCopy detailSubtitle];
+  v22 = [detailSubtitle isEqual:detailSubtitle2];
 
   if (!v22)
   {
     goto LABEL_10;
   }
 
-  v23 = [(CPPointOfInterest *)self detailSummary];
-  v24 = [v4 detailSummary];
-  v25 = [v23 isEqual:v24];
+  detailSummary = [(CPPointOfInterest *)self detailSummary];
+  detailSummary2 = [interestCopy detailSummary];
+  v25 = [detailSummary isEqual:detailSummary2];
 
   if (!v25)
   {
     goto LABEL_10;
   }
 
-  v26 = [(CPPointOfInterest *)self pinImageSet];
-  v27 = [v4 pinImageSet];
-  v28 = [v26 isEqual:v27];
+  pinImageSet = [(CPPointOfInterest *)self pinImageSet];
+  pinImageSet2 = [interestCopy pinImageSet];
+  v28 = [pinImageSet isEqual:pinImageSet2];
 
   if (v28)
   {
-    v29 = [(CPPointOfInterest *)self location];
-    v30 = [v4 location];
-    v31 = [v29 isEqual:v30];
+    location = [(CPPointOfInterest *)self location];
+    location2 = [interestCopy location];
+    v31 = [location isEqual:location2];
   }
 
   else

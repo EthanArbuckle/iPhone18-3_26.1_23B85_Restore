@@ -1,19 +1,19 @@
 @interface BKDirectoryContent
 - (BKDirectoryContentDelegate)directoryDelegate;
-- (id)locationForPageNumber:(int64_t)a3;
-- (id)pageTitleForPageNumber:(int64_t)a3;
-- (int64_t)pageNumberForLocation:(id)a3;
-- (void)didSelectBookmarkForLocation:(id)a3 annotationUUID:(id)a4;
-- (void)didSelectHighlightForLocation:(id)a3 annotationUUID:(id)a4;
-- (void)didSelectLocation:(id)a3;
-- (void)setDirectoryDelegate:(id)a3;
+- (id)locationForPageNumber:(int64_t)number;
+- (id)pageTitleForPageNumber:(int64_t)number;
+- (int64_t)pageNumberForLocation:(id)location;
+- (void)didSelectBookmarkForLocation:(id)location annotationUUID:(id)d;
+- (void)didSelectHighlightForLocation:(id)location annotationUUID:(id)d;
+- (void)didSelectLocation:(id)location;
+- (void)setDirectoryDelegate:(id)delegate;
 @end
 
 @implementation BKDirectoryContent
 
-- (void)setDirectoryDelegate:(id)a3
+- (void)setDirectoryDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_directoryDelegate);
 
   if (WeakRetained != obj)
@@ -23,77 +23,77 @@
   }
 }
 
-- (void)didSelectLocation:(id)a3
+- (void)didSelectLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(BKDirectoryContent *)self directoryDelegate];
-  [v5 directoryContent:self didSelectLocation:v4];
+  locationCopy = location;
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  [directoryDelegate directoryContent:self didSelectLocation:locationCopy];
 }
 
-- (void)didSelectBookmarkForLocation:(id)a3 annotationUUID:(id)a4
+- (void)didSelectBookmarkForLocation:(id)location annotationUUID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
+  locationCopy = location;
+  dCopy = d;
   objc_opt_class();
   v7 = BUDynamicCast();
   if (v7)
   {
-    v8 = [(BKDirectoryContent *)self directoryDelegate];
-    [v8 directoryContent:self didSelectBookmarkForLocation:v7 annotationUUID:v6];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    [directoryDelegate directoryContent:self didSelectBookmarkForLocation:v7 annotationUUID:dCopy];
   }
 
   else
   {
-    [(BKDirectoryContent *)self didSelectLocation:v9];
+    [(BKDirectoryContent *)self didSelectLocation:locationCopy];
   }
 }
 
-- (void)didSelectHighlightForLocation:(id)a3 annotationUUID:(id)a4
+- (void)didSelectHighlightForLocation:(id)location annotationUUID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
+  locationCopy = location;
+  dCopy = d;
   objc_opt_class();
   v7 = BUDynamicCast();
   if (v7)
   {
-    v8 = [(BKDirectoryContent *)self directoryDelegate];
-    [v8 directoryContent:self didSelectHighlightForLocation:v7 annotationUUID:v6];
+    directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+    [directoryDelegate directoryContent:self didSelectHighlightForLocation:v7 annotationUUID:dCopy];
   }
 
   else
   {
-    [(BKDirectoryContent *)self didSelectLocation:v9];
+    [(BKDirectoryContent *)self didSelectLocation:locationCopy];
   }
 }
 
-- (int64_t)pageNumberForLocation:(id)a3
+- (int64_t)pageNumberForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(BKDirectoryContent *)self directoryDelegate];
-  v6 = [v5 directoryContent:self pageNumberForLocation:v4];
+  locationCopy = location;
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  v6 = [directoryDelegate directoryContent:self pageNumberForLocation:locationCopy];
 
   return v6;
 }
 
-- (id)pageTitleForPageNumber:(int64_t)a3
+- (id)pageTitleForPageNumber:(int64_t)number
 {
-  if ((a3 - 1) > 0x7FFFFFFFFFFFFFFDLL)
+  if ((number - 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
-    v6 = 0;
+    number = 0;
   }
 
-  else if ((*&self->_directoryContentFlags & 1) == 0 || (-[BKDirectoryContent directoryDelegate](self, "directoryDelegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 directoryContent:self pageTitleForPageNumber:a3], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  else if ((*&self->_directoryContentFlags & 1) == 0 || (-[BKDirectoryContent directoryDelegate](self, "directoryDelegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 directoryContent:self pageTitleForPageNumber:number], number = objc_claimAutoreleasedReturnValue(), v5, !number))
   {
-    v6 = [NSString stringWithFormat:@"%lu", a3];
+    number = [NSString stringWithFormat:@"%lu", number];
   }
 
-  return v6;
+  return number;
 }
 
-- (id)locationForPageNumber:(int64_t)a3
+- (id)locationForPageNumber:(int64_t)number
 {
-  v5 = [(BKDirectoryContent *)self directoryDelegate];
-  v6 = [v5 directoryContent:self locationForPageNumber:a3];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  v6 = [directoryDelegate directoryContent:self locationForPageNumber:number];
 
   return v6;
 }

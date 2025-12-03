@@ -1,31 +1,31 @@
 @interface PLMergePolicy
-- (BOOL)resolveConflicts:(id)a3 error:(id *)a4;
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4;
+- (BOOL)resolveConflicts:(id)conflicts error:(id *)error;
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error;
 @end
 
 @implementation PLMergePolicy
 
-- (BOOL)resolveConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveConflicts:(id)conflicts error:(id *)error
 {
   self->_isResolvingConflicts = 1;
   v6.receiver = self;
   v6.super_class = PLMergePolicy;
-  result = [(NSMergePolicy *)&v6 resolveConflicts:a3 error:a4];
+  result = [(NSMergePolicy *)&v6 resolveConflicts:conflicts error:error];
   self->_isResolvingConflicts = 0;
   return result;
 }
 
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  conflictsCopy = conflicts;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  [PLUnintendedChangeChecker checkForUnintendedChangeOnMergeConflicts:v6 withBlock:&__block_literal_global_61577];
+  [PLUnintendedChangeChecker checkForUnintendedChangeOnMergeConflicts:conflictsCopy withBlock:&__block_literal_global_61577];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v6;
+  v8 = conflictsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
@@ -43,11 +43,11 @@
         v13 = *(*(&v31 + 1) + 8 * i);
         if ([v13 newVersionNumber])
         {
-          v14 = [v13 sourceObject];
+          sourceObject = [v13 sourceObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 addObject:v14];
+            [v7 addObject:sourceObject];
           }
         }
       }
@@ -60,7 +60,7 @@
 
   v30.receiver = self;
   v30.super_class = PLMergePolicy;
-  v15 = [(NSMergePolicy *)&v30 resolveOptimisticLockingVersionConflicts:v8 error:a4];
+  v15 = [(NSMergePolicy *)&v30 resolveOptimisticLockingVersionConflicts:v8 error:error];
   [PLUnintendedChangeChecker checkForUnintendedChangeOnMergeConflicts:v8 withBlock:&__block_literal_global_44_61580];
   v28 = 0u;
   v29 = 0u;
@@ -82,12 +82,12 @@
         }
 
         v21 = *(*(&v26 + 1) + 8 * j);
-        v22 = [v21 managedObjectContext];
-        v23 = [v22 delayedSaveActions];
-        [v23 recordAlbumForCountsAndDateRangeUpdate:v21];
+        managedObjectContext = [v21 managedObjectContext];
+        delayedSaveActions = [managedObjectContext delayedSaveActions];
+        [delayedSaveActions recordAlbumForCountsAndDateRangeUpdate:v21];
 
-        v24 = [v22 delayedSaveActions];
-        [v24 recordAlbumForKeyAssetsUpdate:v21];
+        delayedSaveActions2 = [managedObjectContext delayedSaveActions];
+        [delayedSaveActions2 recordAlbumForKeyAssetsUpdate:v21];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v26 objects:v35 count:16];

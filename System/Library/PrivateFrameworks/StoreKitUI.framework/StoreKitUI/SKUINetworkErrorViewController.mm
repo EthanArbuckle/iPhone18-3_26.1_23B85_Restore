@@ -1,17 +1,17 @@
 @interface SKUINetworkErrorViewController
-+ (BOOL)canDisplayError:(id)a3;
-- (SKUINetworkErrorViewController)initWithError:(id)a3;
++ (BOOL)canDisplayError:(id)error;
+- (SKUINetworkErrorViewController)initWithError:(id)error;
 - (id)delegate;
-- (void)_networkTypeChanged:(id)a3;
+- (void)_networkTypeChanged:(id)changed;
 - (void)dealloc;
 - (void)loadView;
 @end
 
 @implementation SKUINetworkErrorViewController
 
-- (SKUINetworkErrorViewController)initWithError:(id)a3
+- (SKUINetworkErrorViewController)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUINetworkErrorViewController initWithError:];
@@ -23,11 +23,11 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v6->_error, error);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277D7FCC0];
-    v10 = [MEMORY[0x277D7FD00] sharedInstance];
-    [v8 addObserver:v7 selector:sel__networkTypeChanged_ name:v9 object:v10];
+    mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+    [defaultCenter addObserver:v7 selector:sel__networkTypeChanged_ name:v9 object:mEMORY[0x277D7FD00]];
   }
 
   return v7;
@@ -35,28 +35,28 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
 
   v4.receiver = self;
   v4.super_class = SKUINetworkErrorViewController;
   [(SKUINetworkErrorViewController *)&v4 dealloc];
 }
 
-+ (BOOL)canDisplayError:(id)a3
++ (BOOL)canDisplayError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
+  errorCopy = error;
+  code = [errorCopy code];
+  domain = [errorCopy domain];
 
-  if (v4 == -1009)
+  if (code == -1009)
   {
     v6 = MEMORY[0x277CCA738];
   }
 
   else
   {
-    if (v4 != 110)
+    if (code != 110)
     {
       v7 = 0;
       goto LABEL_7;
@@ -65,7 +65,7 @@
     v6 = MEMORY[0x277D6A110];
   }
 
-  v7 = [v5 isEqualToString:*v6];
+  v7 = [domain isEqualToString:*v6];
 LABEL_7:
 
   return v7;
@@ -76,11 +76,11 @@ LABEL_7:
   v3 = MGGetBoolAnswer();
   v4 = MGGetBoolAnswer();
   v5 = MGGetBoolAnswer();
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   clientContext = self->_clientContext;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if (clientContext)
     {
@@ -180,7 +180,7 @@ LABEL_23:
   [(SKUINetworkErrorViewController *)self setView:v18];
 }
 
-- (void)_networkTypeChanged:(id)a3
+- (void)_networkTypeChanged:(id)changed
 {
   v4 = dispatch_time(0, 5000000000);
   block[0] = MEMORY[0x277D85DD0];

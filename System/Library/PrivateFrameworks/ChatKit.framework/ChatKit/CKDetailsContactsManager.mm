@@ -1,99 +1,99 @@
 @interface CKDetailsContactsManager
-- (BOOL)_hasLinkedTelephoneNumbersForEntity:(id)a3;
-- (BOOL)_isHandleActiveParticipantInTUConversation:(id)a3;
+- (BOOL)_hasLinkedTelephoneNumbersForEntity:(id)entity;
+- (BOOL)_isHandleActiveParticipantInTUConversation:(id)conversation;
 - (BOOL)_preferredRoutesDisabledViaServerBag;
-- (BOOL)_showMessageButtonForEntity:(id)a3;
-- (BOOL)_showPhoneButtonForEntity:(id)a3;
-- (BOOL)hasPreferredCallServiceForEntity:(id)a3;
-- (BOOL)isFaceTimeAudioAvailableForEntity:(id)a3;
-- (BOOL)isFaceTimeVideoAvailableForEntity:(id)a3;
-- (BOOL)isTelephonyCallAvailableForEntity:(id)a3;
-- (BOOL)shouldAlwaysShowCallMenuForEntity:(id)a3;
-- (BOOL)showScreenSharingButtonForEntity:(id)a3;
-- (CKDetailsContactsManager)initWithConversation:(id)a3 delegate:(id)a4;
+- (BOOL)_showMessageButtonForEntity:(id)entity;
+- (BOOL)_showPhoneButtonForEntity:(id)entity;
+- (BOOL)hasPreferredCallServiceForEntity:(id)entity;
+- (BOOL)isFaceTimeAudioAvailableForEntity:(id)entity;
+- (BOOL)isFaceTimeVideoAvailableForEntity:(id)entity;
+- (BOOL)isTelephonyCallAvailableForEntity:(id)entity;
+- (BOOL)shouldAlwaysShowCallMenuForEntity:(id)entity;
+- (BOOL)showScreenSharingButtonForEntity:(id)entity;
+- (CKDetailsContactsManager)initWithConversation:(id)conversation delegate:(id)delegate;
 - (CKDetailsContactsManagerDelegate)delegate;
 - (NSArray)contacts;
 - (id)_preferredCallServiceToIDMap;
-- (id)callActionsForEntity:(id)a3;
-- (id)callMenuForEntity:(id)a3;
-- (id)contextMenuForEntity:(id)a3 atom:(id)a4;
-- (id)conversationContextMenuConfigForEntity:(id)a3 allowConversationRemoval:(BOOL)a4;
-- (id)conversationContextMenuForUnknownEntity:(id)a3 allowConversationRemoval:(BOOL)a4 showUnknownContactActionInPopover:(BOOL)a5 unknownContactActionHandler:(id)a6;
-- (id)recipientsSortedByIsContact:(BOOL)a3 alphabetically:(BOOL)a4;
-- (id)viewModelsSortedByIsContact:(BOOL)a3 alphabetically:(BOOL)a4;
-- (int64_t)_facetimeAudioIDStatusForEntity:(id)a3;
-- (int64_t)_facetimeIDStatusForEntity:(id)a3;
-- (int64_t)_screenSharingStatusForEntity:(id)a3;
-- (unint64_t)preferredCallServiceForID:(id)a3;
-- (void)_callButtonPressedWithVideoEnabled:(BOOL)a3;
-- (void)_handleLocationChanged:(id)a3;
+- (id)callActionsForEntity:(id)entity;
+- (id)callMenuForEntity:(id)entity;
+- (id)contextMenuForEntity:(id)entity atom:(id)atom;
+- (id)conversationContextMenuConfigForEntity:(id)entity allowConversationRemoval:(BOOL)removal;
+- (id)conversationContextMenuForUnknownEntity:(id)entity allowConversationRemoval:(BOOL)removal showUnknownContactActionInPopover:(BOOL)popover unknownContactActionHandler:(id)handler;
+- (id)recipientsSortedByIsContact:(BOOL)contact alphabetically:(BOOL)alphabetically;
+- (id)viewModelsSortedByIsContact:(BOOL)contact alphabetically:(BOOL)alphabetically;
+- (int64_t)_facetimeAudioIDStatusForEntity:(id)entity;
+- (int64_t)_facetimeIDStatusForEntity:(id)entity;
+- (int64_t)_screenSharingStatusForEntity:(id)entity;
+- (unint64_t)preferredCallServiceForID:(id)d;
+- (void)_callButtonPressedWithVideoEnabled:(BOOL)enabled;
+- (void)_handleLocationChanged:(id)changed;
 - (void)_performUpdateViewModels;
-- (void)_refreshIDSStatusWithCompletion:(id)a3;
-- (void)_setPreferredCallServiceToIDMap:(id)a3;
-- (void)_startCallWithEntity:(id)a3 phoneAddress:(id)a4;
-- (void)_startCommunicationForEntity:(id)a3 usePreferredRouteIfAvailable:(BOOL)a4;
-- (void)_startFacetimeCommunicationForEntity:(id)a3 audioOnly:(BOOL)a4;
-- (void)_startMessageWithEntity:(id)a3;
-- (void)_updateViewModelsWithDelay:(BOOL)a3;
-- (void)beginFacetimeCallWithVideo:(BOOL)a3;
-- (void)callableAddressesForEntity:(id)a3 withResult:(id)a4;
+- (void)_refreshIDSStatusWithCompletion:(id)completion;
+- (void)_setPreferredCallServiceToIDMap:(id)map;
+- (void)_startCallWithEntity:(id)entity phoneAddress:(id)address;
+- (void)_startCommunicationForEntity:(id)entity usePreferredRouteIfAvailable:(BOOL)available;
+- (void)_startFacetimeCommunicationForEntity:(id)entity audioOnly:(BOOL)only;
+- (void)_startMessageWithEntity:(id)entity;
+- (void)_updateViewModelsWithDelay:(BOOL)delay;
+- (void)beginFacetimeCallWithVideo:(BOOL)video;
+- (void)callableAddressesForEntity:(id)entity withResult:(id)result;
 - (void)dealloc;
-- (void)inviteEntityToShareTheirScreen:(id)a3;
+- (void)inviteEntityToShareTheirScreen:(id)screen;
 - (void)sendEmail;
-- (void)setPreferredCallService:(unint64_t)a3 forID:(id)a4;
-- (void)shareMyScreenWithEntity:(id)a3;
-- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)a3;
-- (void)startCommunicationForEntity:(id)a3 action:(unint64_t)a4 address:(id)a5 usePreferredRouteIfAvailable:(BOOL)a6;
-- (void)startCommunicationForViewModel:(id)a3 action:(unint64_t)a4 address:(id)a5;
+- (void)setPreferredCallService:(unint64_t)service forID:(id)d;
+- (void)shareMyScreenWithEntity:(id)entity;
+- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)available;
+- (void)startCommunicationForEntity:(id)entity action:(unint64_t)action address:(id)address usePreferredRouteIfAvailable:(BOOL)available;
+- (void)startCommunicationForViewModel:(id)model action:(unint64_t)action address:(id)address;
 @end
 
 @implementation CKDetailsContactsManager
 
-- (CKDetailsContactsManager)initWithConversation:(id)a3 delegate:(id)a4
+- (CKDetailsContactsManager)initWithConversation:(id)conversation delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  conversationCopy = conversation;
+  delegateCopy = delegate;
   v8 = [(CKDetailsContactsManager *)self init];
   v9 = v8;
   if (v8)
   {
-    [(CKDetailsContactsManager *)v8 setConversation:v6];
+    [(CKDetailsContactsManager *)v8 setConversation:conversationCopy];
     v10 = [MEMORY[0x1E696AEC0] stringGUIDForObject:v9];
     [(CKDetailsContactsManager *)v9 setServiceAvailabilityKey:v10];
 
-    [(CKDetailsContactsManager *)v9 setDelegate:v7];
-    v11 = [MEMORY[0x1E699BE68] sharedInstance];
-    v12 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
-    [v11 addListenerID:v12 forService:0];
+    [(CKDetailsContactsManager *)v9 setDelegate:delegateCopy];
+    mEMORY[0x1E699BE68] = [MEMORY[0x1E699BE68] sharedInstance];
+    serviceAvailabilityKey = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
+    [mEMORY[0x1E699BE68] addListenerID:serviceAvailabilityKey forService:0];
 
-    v13 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
-    [v11 addListenerID:v13 forService:2];
+    serviceAvailabilityKey2 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
+    [mEMORY[0x1E699BE68] addListenerID:serviceAvailabilityKey2 forService:2];
 
-    v14 = [MEMORY[0x1E69A4878] sharedInstance];
-    v15 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
-    [v14 addListenerID:v15 forService:*MEMORY[0x1E69A47F0]];
+    mEMORY[0x1E69A4878] = [MEMORY[0x1E69A4878] sharedInstance];
+    serviceAvailabilityKey3 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
+    [mEMORY[0x1E69A4878] addListenerID:serviceAvailabilityKey3 forService:*MEMORY[0x1E69A47F0]];
 
-    v16 = [MEMORY[0x1E69A4878] sharedInstance];
-    v17 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
-    [v16 addListenerID:v17 forService:*MEMORY[0x1E69A47E8]];
+    mEMORY[0x1E69A4878]2 = [MEMORY[0x1E69A4878] sharedInstance];
+    serviceAvailabilityKey4 = [(CKDetailsContactsManager *)v9 serviceAvailabilityKey];
+    [mEMORY[0x1E69A4878]2 addListenerID:serviceAvailabilityKey4 forService:*MEMORY[0x1E69A47E8]];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v9 selector:sel__handleConversationRecipientsDidChange_ name:@"CKConversationParticipantsDidChangeNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleConversationRecipientsDidChange_ name:@"CKConversationParticipantsDidChangeNotification" object:conversationCopy];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v9 selector:sel__handleConversationRecipientsDidChange_ name:@"CKConversationJoinStateDidChangeNotification" object:v6];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__handleConversationRecipientsDidChange_ name:@"CKConversationJoinStateDidChangeNotification" object:conversationCopy];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v9 selector:sel__handleAddressBookChange_ name:*MEMORY[0x1E69A6828] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel__handleAddressBookChange_ name:*MEMORY[0x1E69A6828] object:0];
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v9 selector:sel__handleLocationChanged_ name:*MEMORY[0x1E69A5988] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v9 selector:sel__handleLocationChanged_ name:*MEMORY[0x1E69A5988] object:0];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v9 selector:sel__handleConversationPendingRecipientsDidChange_ name:@"CKConversationPendingRecipientsUpdatedNotification" object:v6];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v9 selector:sel__handleConversationPendingRecipientsDidChange_ name:@"CKConversationPendingRecipientsUpdatedNotification" object:conversationCopy];
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v9 selector:sel__handleMultiwayStateChanged_ name:*MEMORY[0x1E69A5840] object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v9 selector:sel__handleMultiwayStateChanged_ name:*MEMORY[0x1E69A5840] object:0];
 
     [(CKDetailsContactsManager *)v9 _updateViewModelsWithDelay:0];
     objc_initWeak(&location, v9);
@@ -116,7 +116,7 @@ void __58__CKDetailsContactsManager_initWithConversation_delegate___block_invoke
   [WeakRetained _updateViewModelsWithDelay:1];
 }
 
-- (void)_updateViewModelsWithDelay:(BOOL)a3
+- (void)_updateViewModelsWithDelay:(BOOL)delay
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__performUpdateViewModels object:0];
 
@@ -141,13 +141,13 @@ void __58__CKDetailsContactsManager_initWithConversation_delegate___block_invoke
   [v3 enumerateObjectsUsingBlock:v7];
 
   [(CKDetailsContactsManager *)self setContactsViewModels:v9[5]];
-  v4 = [(CKDetailsContactsManager *)self delegate];
+  delegate = [(CKDetailsContactsManager *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKDetailsContactsManager *)self delegate];
-    [v6 contactsManagerViewModelsDidChange:self];
+    delegate2 = [(CKDetailsContactsManager *)self delegate];
+    [delegate2 contactsManagerViewModelsDidChange:self];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -299,19 +299,19 @@ void __52__CKDetailsContactsManager__performUpdateViewModels__block_invoke(uint6
   [*(*(*(a1 + 40) + 8) + 40) addObject:v42];
 }
 
-- (BOOL)_isHandleActiveParticipantInTUConversation:(id)a3
+- (BOOL)_isHandleActiveParticipantInTUConversation:(id)conversation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKDetailsContactsManager *)self conversation];
-  v6 = [v5 chat];
-  v7 = [v6 activeParticipantsForTUConversation];
+  conversationCopy = conversation;
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  chat = [conversation chat];
+  activeParticipantsForTUConversation = [chat activeParticipantsForTUConversation];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v7;
+  v8 = activeParticipantsForTUConversation;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -325,9 +325,9 @@ void __52__CKDetailsContactsManager__performUpdateViewModels__block_invoke(uint6
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) handle];
-        v13 = [v12 value];
-        v14 = [v13 isEqualToString:v4];
+        handle = [*(*(&v16 + 1) + 8 * i) handle];
+        value = [handle value];
+        v14 = [value isEqualToString:conversationCopy];
 
         if (v14)
         {
@@ -353,83 +353,83 @@ LABEL_11:
 
 - (NSArray)contacts
 {
-  v2 = [(CKDetailsContactsManager *)self conversation];
-  v3 = [v2 recipients];
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  recipients = [conversation recipients];
 
-  return v3;
+  return recipients;
 }
 
-- (id)viewModelsSortedByIsContact:(BOOL)a3 alphabetically:(BOOL)a4
+- (id)viewModelsSortedByIsContact:(BOOL)contact alphabetically:(BOOL)alphabetically
 {
-  v4 = a4;
-  v5 = a3;
+  alphabeticallyCopy = alphabetically;
+  contactCopy = contact;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5)
+  if (contactCopy)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"entity.defaultIMHandle.isContact" ascending:0];
     [v7 addObject:v8];
   }
 
-  if (v4)
+  if (alphabeticallyCopy)
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"entity.fullName" ascending:1 selector:sel_caseInsensitiveCompare_];
     [v7 addObject:v9];
   }
 
-  v10 = [(CKDetailsContactsManager *)self contactsViewModels];
-  v11 = [v10 sortedArrayUsingDescriptors:v7];
+  contactsViewModels = [(CKDetailsContactsManager *)self contactsViewModels];
+  v11 = [contactsViewModels sortedArrayUsingDescriptors:v7];
 
   return v11;
 }
 
-- (id)recipientsSortedByIsContact:(BOOL)a3 alphabetically:(BOOL)a4
+- (id)recipientsSortedByIsContact:(BOOL)contact alphabetically:(BOOL)alphabetically
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(CKDetailsContactsManager *)self conversation];
-  v7 = [v6 recipientsSortedByIsContact:v5 alphabetically:v4];
+  alphabeticallyCopy = alphabetically;
+  contactCopy = contact;
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  v7 = [conversation recipientsSortedByIsContact:contactCopy alphabetically:alphabeticallyCopy];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E699BE68] sharedInstance];
-  v4 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
-  [v3 removeListenerID:v4 forService:0];
+  mEMORY[0x1E699BE68] = [MEMORY[0x1E699BE68] sharedInstance];
+  serviceAvailabilityKey = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+  [mEMORY[0x1E699BE68] removeListenerID:serviceAvailabilityKey forService:0];
 
-  v5 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
-  [v3 removeListenerID:v5 forService:2];
+  serviceAvailabilityKey2 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+  [mEMORY[0x1E699BE68] removeListenerID:serviceAvailabilityKey2 forService:2];
 
-  v6 = [MEMORY[0x1E69A4878] sharedInstance];
-  v7 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
-  [v6 removeListenerID:v7 forService:*MEMORY[0x1E69A47F0]];
+  mEMORY[0x1E69A4878] = [MEMORY[0x1E69A4878] sharedInstance];
+  serviceAvailabilityKey3 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+  [mEMORY[0x1E69A4878] removeListenerID:serviceAvailabilityKey3 forService:*MEMORY[0x1E69A47F0]];
 
-  v8 = [MEMORY[0x1E69A4878] sharedInstance];
-  v9 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
-  [v8 removeListenerID:v9 forService:*MEMORY[0x1E69A47E8]];
+  mEMORY[0x1E69A4878]2 = [MEMORY[0x1E69A4878] sharedInstance];
+  serviceAvailabilityKey4 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+  [mEMORY[0x1E69A4878]2 removeListenerID:serviceAvailabilityKey4 forService:*MEMORY[0x1E69A47E8]];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v11.receiver = self;
   v11.super_class = CKDetailsContactsManager;
   [(CKDetailsContactsManager *)&v11 dealloc];
 }
 
-- (void)_handleLocationChanged:(id)a3
+- (void)_handleLocationChanged:(id)changed
 {
-  v9 = [a3 object];
+  object = [changed object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v9 fmfHandle];
-    if (v4)
+    fmfHandle = [object fmfHandle];
+    if (fmfHandle)
     {
-      v5 = [(CKDetailsContactsManager *)self conversation];
-      v6 = [v5 chat];
-      v7 = [v6 allSiblingFMFHandles];
-      v8 = [v7 containsObject:v4];
+      conversation = [(CKDetailsContactsManager *)self conversation];
+      chat = [conversation chat];
+      allSiblingFMFHandles = [chat allSiblingFMFHandles];
+      v8 = [allSiblingFMFHandles containsObject:fmfHandle];
 
       if (v8)
       {
@@ -440,13 +440,13 @@ LABEL_11:
 
   else
   {
-    v4 = 0;
+    fmfHandle = 0;
   }
 }
 
-- (id)conversationContextMenuConfigForEntity:(id)a3 allowConversationRemoval:(BOOL)a4
+- (id)conversationContextMenuConfigForEntity:(id)entity allowConversationRemoval:(BOOL)removal
 {
-  v4 = [(CKDetailsContactsManager *)self conversationContextMenuForEntity:a3 allowConversationRemoval:a4];
+  v4 = [(CKDetailsContactsManager *)self conversationContextMenuForEntity:entity allowConversationRemoval:removal];
   v5 = v4;
   if (v4)
   {
@@ -467,31 +467,31 @@ LABEL_11:
   return v7;
 }
 
-- (id)conversationContextMenuForUnknownEntity:(id)a3 allowConversationRemoval:(BOOL)a4 showUnknownContactActionInPopover:(BOOL)a5 unknownContactActionHandler:(id)a6
+- (id)conversationContextMenuForUnknownEntity:(id)entity allowConversationRemoval:(BOOL)removal showUnknownContactActionInPopover:(BOOL)popover unknownContactActionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a3;
+  popoverCopy = popover;
+  removalCopy = removal;
+  entityCopy = entity;
   v10 = objc_opt_new();
-  v11 = [v9 defaultIMHandle];
-  v12 = [CKContextMenuGenerator recipientSubmenuForHandle:v11];
+  defaultIMHandle = [entityCopy defaultIMHandle];
+  v12 = [CKContextMenuGenerator recipientSubmenuForHandle:defaultIMHandle];
   if (v12)
   {
     [v10 addObject:v12];
   }
 
-  v13 = [(CKDetailsContactsManager *)self conversation];
-  v14 = [CKContextMenuGenerator submenuForIndividualParticipantWithHandle:v11 forConversation:v13 includeAddToContactsAction:!v6 includeRemoveAction:v7];
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  v14 = [CKContextMenuGenerator submenuForIndividualParticipantWithHandle:defaultIMHandle forConversation:conversation includeAddToContactsAction:!popoverCopy includeRemoveAction:removalCopy];
 
   if (v14)
   {
     [v10 addObject:v14];
   }
 
-  if ([(CKDetailsContactsManager *)self showScreenSharingButtonForEntity:v9])
+  if ([(CKDetailsContactsManager *)self showScreenSharingButtonForEntity:entityCopy])
   {
-    v15 = [(CKDetailsContactsManager *)self conversation];
-    v16 = [CKContextMenuGenerator subMenuForScreenSharingOptionsWithHandle:v11 conversation:v15 andContactsManager:self];
+    conversation2 = [(CKDetailsContactsManager *)self conversation];
+    v16 = [CKContextMenuGenerator subMenuForScreenSharingOptionsWithHandle:defaultIMHandle conversation:conversation2 andContactsManager:self];
 
     if (v16)
     {
@@ -500,10 +500,10 @@ LABEL_11:
   }
 
   v17 = objc_opt_new();
-  if ([(CKDetailsContactsManager *)self _showFaceTimeVideoButtonForEntity:v9])
+  if ([(CKDetailsContactsManager *)self _showFaceTimeVideoButtonForEntity:entityCopy])
   {
-    v18 = [CKContextMenuGenerator menuActionToInitiateFaceTimeVideoWithHandle:v11 andContactsManager:self];
-    v19 = [CKContextMenuGenerator menuActionToInitiateFaceTimeAudioWithHandle:v11 andContactsManager:self];
+    v18 = [CKContextMenuGenerator menuActionToInitiateFaceTimeVideoWithHandle:defaultIMHandle andContactsManager:self];
+    v19 = [CKContextMenuGenerator menuActionToInitiateFaceTimeAudioWithHandle:defaultIMHandle andContactsManager:self];
     if (v18)
     {
       [v17 addObject:v18];
@@ -515,7 +515,7 @@ LABEL_11:
     }
   }
 
-  v20 = [CKContextMenuGenerator menuActionsToInitiateRelayPhoneCallWithHandle:v11];
+  v20 = [CKContextMenuGenerator menuActionsToInitiateRelayPhoneCallWithHandle:defaultIMHandle];
   if ([v20 count])
   {
     [v17 addObjectsFromArray:v20];
@@ -540,21 +540,21 @@ LABEL_11:
   return v22;
 }
 
-- (id)contextMenuForEntity:(id)a3 atom:(id)a4
+- (id)contextMenuForEntity:(id)entity atom:(id)atom
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 defaultIMHandle];
-  v9 = [v8 isContact];
+  atomCopy = atom;
+  entityCopy = entity;
+  defaultIMHandle = [entityCopy defaultIMHandle];
+  isContact = [defaultIMHandle isContact];
 
-  if (v9)
+  if (isContact)
   {
-    [(CKDetailsContactsManager *)self conversationContextMenuForEntity:v7 allowConversationRemoval:0];
+    [(CKDetailsContactsManager *)self conversationContextMenuForEntity:entityCopy allowConversationRemoval:0];
   }
 
   else
   {
-    [(CKDetailsContactsManager *)self contextMenuForUnknownRecipient:v7 atom:v6];
+    [(CKDetailsContactsManager *)self contextMenuForUnknownRecipient:entityCopy atom:atomCopy];
   }
   v10 = ;
 
@@ -564,34 +564,34 @@ LABEL_11:
 - (void)sendEmail
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKDetailsContactsManager *)self conversation];
+  conversation = [(CKDetailsContactsManager *)self conversation];
 
-  if (v3)
+  if (conversation)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695CEF0]);
-    v5 = [MEMORY[0x1E695D1E0] descriptorForRequiredKeys];
-    v21[0] = v5;
+    descriptorForRequiredKeys = [MEMORY[0x1E695D1E0] descriptorForRequiredKeys];
+    v21[0] = descriptorForRequiredKeys;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
 
-    v7 = [(CKDetailsContactsManager *)self conversation];
-    v8 = [v7 chat];
-    v9 = [v8 participants];
-    v10 = [v9 count];
+    conversation2 = [(CKDetailsContactsManager *)self conversation];
+    chat = [conversation2 chat];
+    participants = [chat participants];
+    v10 = [participants count];
 
-    v11 = [(CKDetailsContactsManager *)self conversation];
-    v12 = [v11 conversationVisualIdentityWithKeys:v6 requestedNumberOfContactsToFetch:v10];
+    conversation3 = [(CKDetailsContactsManager *)self conversation];
+    v12 = [conversation3 conversationVisualIdentityWithKeys:v6 requestedNumberOfContactsToFetch:v10];
 
-    v13 = [v12 contacts];
-    v14 = [v4 mailUrlForContacts:v13];
+    contacts = [v12 contacts];
+    v14 = [v4 mailUrlForContacts:contacts];
 
-    v15 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __37__CKDetailsContactsManager_sendEmail__block_invoke;
     v19[3] = &unk_1E72EB9C8;
     v20 = v14;
     v16 = v14;
-    [v15 openURL:v16 options:MEMORY[0x1E695E0F8] completionHandler:v19];
+    [mEMORY[0x1E69DC668] openURL:v16 options:MEMORY[0x1E695E0F8] completionHandler:v19];
   }
 
   else if (IMOSLoggingEnabled())
@@ -629,27 +629,27 @@ void __37__CKDetailsContactsManager_sendEmail__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)callableAddressesForEntity:(id)a3 withResult:(id)a4
+- (void)callableAddressesForEntity:(id)entity withResult:(id)result
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  resultCopy = result;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v5 defaultIMHandle];
-  v10 = [v9 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+  defaultIMHandle = [entityCopy defaultIMHandle];
+  v10 = [defaultIMHandle cnContactWithKeys:MEMORY[0x1E695E0F0]];
 
-  v11 = [v10 phoneNumbers];
-  if ([v11 count])
+  phoneNumbers = [v10 phoneNumbers];
+  if ([phoneNumbers count])
   {
     v25 = v10;
-    v26 = v5;
+    v26 = entityCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v24 = v11;
-    obj = v11;
+    v24 = phoneNumbers;
+    obj = phoneNumbers;
     v12 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v12)
     {
@@ -665,15 +665,15 @@ void __37__CKDetailsContactsManager_sendEmail__block_invoke(uint64_t a1, int a2)
           }
 
           v16 = *(*(&v28 + 1) + 8 * i);
-          v17 = [v16 value];
-          v18 = [v17 stringValue];
+          value = [v16 value];
+          stringValue = [value stringValue];
 
-          [v7 addObject:v18];
-          v19 = [v16 label];
-          v20 = [MEMORY[0x1E695CEE0] localizedStringForLabel:v19];
+          [v7 addObject:stringValue];
+          label = [v16 label];
+          v20 = [MEMORY[0x1E695CEE0] localizedStringForLabel:label];
           if (![(__CFString *)v20 length])
           {
-            v21 = v19;
+            v21 = label;
 
             v20 = v21;
           }
@@ -693,29 +693,29 @@ void __37__CKDetailsContactsManager_sendEmail__block_invoke(uint64_t a1, int a2)
       while (v13);
     }
 
-    v5 = v26;
-    v11 = v24;
+    entityCopy = v26;
+    phoneNumbers = v24;
     v10 = v25;
   }
 
   v22 = [v7 copy];
   v23 = [v8 copy];
-  v6[2](v6, v22, v23);
+  resultCopy[2](resultCopy, v22, v23);
 }
 
-- (BOOL)hasPreferredCallServiceForEntity:(id)a3
+- (BOOL)hasPreferredCallServiceForEntity:(id)entity
 {
-  v4 = [a3 rawAddress];
-  v5 = [(CKDetailsContactsManager *)self preferredCallServiceForID:v4];
+  rawAddress = [entity rawAddress];
+  v5 = [(CKDetailsContactsManager *)self preferredCallServiceForID:rawAddress];
 
   return v5 != 0;
 }
 
-- (BOOL)shouldAlwaysShowCallMenuForEntity:(id)a3
+- (BOOL)shouldAlwaysShowCallMenuForEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:v4];
-  v6 = [v4 propertyType];
+  entityCopy = entity;
+  v5 = [(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:entityCopy];
+  propertyType = [entityCopy propertyType];
 
   v11 = 0;
   v12 = &v11;
@@ -726,9 +726,9 @@ void __37__CKDetailsContactsManager_sendEmail__block_invoke(uint64_t a1, int a2)
   v10[2] = __62__CKDetailsContactsManager_shouldAlwaysShowCallMenuForEntity___block_invoke;
   v10[3] = &unk_1E72F8950;
   v10[4] = &v11;
-  [(CKDetailsContactsManager *)self callableAddressesForEntity:v4 withResult:v10];
-  v7 = [(CKDetailsContactsManager *)self hasPreferredCallServiceForEntity:v4];
-  if (v6 == *MEMORY[0x1E695C330])
+  [(CKDetailsContactsManager *)self callableAddressesForEntity:entityCopy withResult:v10];
+  v7 = [(CKDetailsContactsManager *)self hasPreferredCallServiceForEntity:entityCopy];
+  if (propertyType == *MEMORY[0x1E695C330])
   {
     v8 = v5 && !v7;
   }
@@ -785,29 +785,29 @@ void __62__CKDetailsContactsManager_shouldAlwaysShowCallMenuForEntity___block_in
 LABEL_11:
 }
 
-- (id)callMenuForEntity:(id)a3
+- (id)callMenuForEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(CKDetailsContactsManager *)self callActionsForEntity:v4];
+  entityCopy = entity;
+  v5 = [(CKDetailsContactsManager *)self callActionsForEntity:entityCopy];
   if ([v5 count])
   {
-    v6 = [v4 propertyType];
+    propertyType = [entityCopy propertyType];
     v7 = *MEMORY[0x1E695C330];
 
-    if (v6 == v7)
+    if (propertyType == v7)
     {
-      v10 = [v4 defaultIMHandle];
-      v8 = [v10 displayID];
+      defaultIMHandle = [entityCopy defaultIMHandle];
+      displayID = [defaultIMHandle displayID];
     }
 
     else
     {
-      v8 = 0;
+      displayID = 0;
     }
 
     v11 = MEMORY[0x1E69DCC60];
     v12 = [v5 copy];
-    v9 = [v11 menuWithTitle:v8 children:v12];
+    v9 = [v11 menuWithTitle:displayID children:v12];
   }
 
   else
@@ -818,9 +818,9 @@ LABEL_11:
   return v9;
 }
 
-- (id)callActionsForEntity:(id)a3
+- (id)callActionsForEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -840,11 +840,11 @@ LABEL_11:
   v35[3] = &unk_1E72F8978;
   v35[4] = &v39;
   v35[5] = v37;
-  [(CKDetailsContactsManager *)self callableAddressesForEntity:v4 withResult:v35];
+  [(CKDetailsContactsManager *)self callableAddressesForEntity:entityCopy withResult:v35];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 propertyType];
+  propertyType = [entityCopy propertyType];
 
-  if ([(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:v4])
+  if ([(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:entityCopy])
   {
     v7 = CKFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"FACE_TIME_AUDIO" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -855,7 +855,7 @@ LABEL_11:
     v31[1] = 3221225472;
     v31[2] = __49__CKDetailsContactsManager_callActionsForEntity___block_invoke_2;
     v31[3] = &unk_1E72F89A0;
-    v32 = v4;
+    v32 = entityCopy;
     objc_copyWeak(&v34, &location);
     v33 = &v39;
     v11 = [v10 actionWithTitle:v8 image:v9 identifier:v8 handler:v31];
@@ -864,7 +864,7 @@ LABEL_11:
     objc_destroyWeak(&v34);
   }
 
-  if (v6 == *MEMORY[0x1E695C330])
+  if (propertyType == *MEMORY[0x1E695C330])
   {
     v13 = CKFrameworkBundle();
     v14 = [v13 localizedStringForKey:@"VOICE_CALL" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -875,7 +875,7 @@ LABEL_11:
     v28[1] = 3221225472;
     v28[2] = __49__CKDetailsContactsManager_callActionsForEntity___block_invoke_3;
     v28[3] = &unk_1E72F4F58;
-    v29 = v4;
+    v29 = entityCopy;
     objc_copyWeak(&v30, &location);
     v17 = [v16 actionWithTitle:v14 image:v15 identifier:v14 handler:v28];
     [v5 addObject:v17];
@@ -892,7 +892,7 @@ LABEL_11:
     v23 = &unk_1E72F89C8;
     v26 = v37;
     objc_copyWeak(&v27, &location);
-    v24 = v4;
+    v24 = entityCopy;
     v25 = v5;
     [v12 enumerateObjectsUsingBlock:&v20];
 
@@ -1002,119 +1002,119 @@ void __49__CKDetailsContactsManager_callActionsForEntity___block_invoke_5(uint64
   [WeakRetained startCommunicationForEntity:*(a1 + 32) action:3 address:*(a1 + 40)];
 }
 
-- (void)startCommunicationForEntity:(id)a3 action:(unint64_t)a4 address:(id)a5 usePreferredRouteIfAvailable:(BOOL)a6
+- (void)startCommunicationForEntity:(id)entity action:(unint64_t)action address:(id)address usePreferredRouteIfAvailable:(BOOL)available
 {
-  v6 = a6;
-  v14 = a3;
-  v10 = a5;
-  if (a4 > 2)
+  availableCopy = available;
+  entityCopy = entity;
+  addressCopy = address;
+  if (action > 2)
   {
-    if (a4 > 4)
+    if (action > 4)
     {
-      if (a4 == 5)
+      if (action == 5)
       {
-        [(CKDetailsContactsManager *)self shareMyScreenWithEntity:v14];
+        [(CKDetailsContactsManager *)self shareMyScreenWithEntity:entityCopy];
       }
 
-      else if (a4 == 6)
+      else if (action == 6)
       {
-        [(CKDetailsContactsManager *)self inviteEntityToShareTheirScreen:v14];
+        [(CKDetailsContactsManager *)self inviteEntityToShareTheirScreen:entityCopy];
       }
     }
 
-    else if (a4 == 3)
+    else if (action == 3)
     {
-      [(CKDetailsContactsManager *)self _startCallWithEntity:v14 phoneAddress:v10];
+      [(CKDetailsContactsManager *)self _startCallWithEntity:entityCopy phoneAddress:addressCopy];
     }
 
     else
     {
-      [(CKDetailsContactsManager *)self _startMessageWithEntity:v14];
+      [(CKDetailsContactsManager *)self _startMessageWithEntity:entityCopy];
     }
 
     goto LABEL_17;
   }
 
-  switch(a4)
+  switch(action)
   {
     case 0uLL:
-      v11 = self;
-      v12 = v14;
+      selfCopy2 = self;
+      v12 = entityCopy;
       v13 = 0;
 LABEL_16:
-      [(CKDetailsContactsManager *)v11 _startFacetimeCommunicationForEntity:v12 audioOnly:v13];
+      [(CKDetailsContactsManager *)selfCopy2 _startFacetimeCommunicationForEntity:v12 audioOnly:v13];
       break;
     case 1uLL:
-      v11 = self;
-      v12 = v14;
+      selfCopy2 = self;
+      v12 = entityCopy;
       v13 = 1;
       goto LABEL_16;
     case 2uLL:
-      [(CKDetailsContactsManager *)self _startCommunicationForEntity:v14 usePreferredRouteIfAvailable:v6];
+      [(CKDetailsContactsManager *)self _startCommunicationForEntity:entityCopy usePreferredRouteIfAvailable:availableCopy];
       break;
   }
 
 LABEL_17:
 }
 
-- (void)startCommunicationForViewModel:(id)a3 action:(unint64_t)a4 address:(id)a5
+- (void)startCommunicationForViewModel:(id)model action:(unint64_t)action address:(id)address
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = [v11 entity];
+  modelCopy = model;
+  addressCopy = address;
+  entity = [modelCopy entity];
 
-  if (v9)
+  if (entity)
   {
-    v10 = [v11 entity];
-    [(CKDetailsContactsManager *)self startCommunicationForEntity:v10 action:a4 address:v8];
+    entity2 = [modelCopy entity];
+    [(CKDetailsContactsManager *)self startCommunicationForEntity:entity2 action:action address:addressCopy];
   }
 }
 
-- (void)_startMessageWithEntity:(id)a3
+- (void)_startMessageWithEntity:(id)entity
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 defaultIMHandle];
-  v5 = [v4 ID];
+  defaultIMHandle = [entity defaultIMHandle];
+  v5 = [defaultIMHandle ID];
   v7 = [v3 stringWithFormat:@"messages://open?addresses=%@", v5];
 
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v7];
   [*MEMORY[0x1E69DDA98] openURL:v6];
 }
 
-- (void)_startCommunicationForEntity:(id)a3 usePreferredRouteIfAvailable:(BOOL)a4
+- (void)_startCommunicationForEntity:(id)entity usePreferredRouteIfAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  entityCopy = entity;
   v7 = +[CKFaceTimeUtilities isTelephonyAvailable];
-  v8 = [(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:v6];
-  v9 = [v6 propertyType];
+  v8 = [(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:entityCopy];
+  propertyType = [entityCopy propertyType];
   v10 = *MEMORY[0x1E695C330];
 
   if (v8)
   {
-    if (!v7 || v9 != v10)
+    if (!v7 || propertyType != v10)
     {
       goto LABEL_4;
     }
 
-    if (v4)
+    if (availableCopy)
     {
-      v13 = [v6 rawAddress];
-      v14 = [(CKDetailsContactsManager *)self preferredCallServiceForID:v13];
+      rawAddress = [entityCopy rawAddress];
+      v14 = [(CKDetailsContactsManager *)self preferredCallServiceForID:rawAddress];
 
       if (v14 == 2)
       {
 LABEL_4:
-        [(CKDetailsContactsManager *)self _startFacetimeCommunicationForEntity:v6 audioOnly:1];
+        [(CKDetailsContactsManager *)self _startFacetimeCommunicationForEntity:entityCopy audioOnly:1];
         goto LABEL_21;
       }
 
       if (v14 == 1)
       {
 LABEL_10:
-        v12 = [v6 originalAddress];
-        [(CKDetailsContactsManager *)self _startCallWithEntity:v6 phoneAddress:v12];
+        originalAddress = [entityCopy originalAddress];
+        [(CKDetailsContactsManager *)self _startCallWithEntity:entityCopy phoneAddress:originalAddress];
 
         goto LABEL_21;
       }
@@ -1136,13 +1136,13 @@ LABEL_10:
       }
     }
 
-    v16 = [v6 originalAddress];
-    [(CKDetailsContactsManager *)self _startCallWithEntity:v6 phoneAddress:v16];
+    originalAddress2 = [entityCopy originalAddress];
+    [(CKDetailsContactsManager *)self _startCallWithEntity:entityCopy phoneAddress:originalAddress2];
   }
 
   else
   {
-    if (v9 == v10)
+    if (propertyType == v10)
     {
       goto LABEL_10;
     }
@@ -1161,40 +1161,40 @@ LABEL_10:
 LABEL_21:
 }
 
-- (void)_startCallWithEntity:(id)a3 phoneAddress:(id)a4
+- (void)_startCallWithEntity:(id)entity phoneAddress:(id)address
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69D8A58] sharedInstance];
-  v9 = [v8 providerManager];
-  v10 = [v9 telephonyProvider];
+  entityCopy = entity;
+  addressCopy = address;
+  mEMORY[0x1E69D8A58] = [MEMORY[0x1E69D8A58] sharedInstance];
+  providerManager = [mEMORY[0x1E69D8A58] providerManager];
+  telephonyProvider = [providerManager telephonyProvider];
 
-  v11 = [objc_alloc(MEMORY[0x1E69D8BD0]) initWithProvider:v10];
-  v12 = [objc_alloc(MEMORY[0x1E69D8C00]) initWithType:2 value:v7];
+  v11 = [objc_alloc(MEMORY[0x1E69D8BD0]) initWithProvider:telephonyProvider];
+  v12 = [objc_alloc(MEMORY[0x1E69D8C00]) initWithType:2 value:addressCopy];
   [v11 setHandle:v12];
 
-  v13 = [v6 cnContactWithKeys:MEMORY[0x1E695E0F0]];
-  v14 = [v13 identifier];
-  [v11 setContactIdentifier:v14];
+  v13 = [entityCopy cnContactWithKeys:MEMORY[0x1E695E0F0]];
+  identifier = [v13 identifier];
+  [v11 setContactIdentifier:identifier];
 
   [v11 setPerformDialAssist:1];
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
   {
-    v30 = v7;
-    v31 = v6;
-    v15 = [(CKDetailsContactsManager *)self conversation];
-    v16 = [v15 chat];
-    v17 = [v16 lastAddressedSIMID];
+    v30 = addressCopy;
+    v31 = entityCopy;
+    conversation = [(CKDetailsContactsManager *)self conversation];
+    chat = [conversation chat];
+    lastAddressedSIMID = [chat lastAddressedSIMID];
 
-    v29 = v17;
-    v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v17];
+    v29 = lastAddressedSIMID;
+    v18 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:lastAddressedSIMID];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v19 = [v10 prioritizedSenderIdentities];
-    v20 = [v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+    v20 = [prioritizedSenderIdentities countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1205,23 +1205,23 @@ LABEL_21:
         {
           if (*v33 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(prioritizedSenderIdentities);
           }
 
           v24 = *(*(&v32 + 1) + 8 * i);
-          v25 = [v24 accountUUID];
-          v26 = [v25 isEqual:v18];
+          accountUUID = [v24 accountUUID];
+          v26 = [accountUUID isEqual:v18];
 
           if (v26)
           {
-            v27 = [v24 UUID];
-            [v11 setLocalSenderIdentityUUID:v27];
+            uUID = [v24 UUID];
+            [v11 setLocalSenderIdentityUUID:uUID];
 
             goto LABEL_12;
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v21 = [prioritizedSenderIdentities countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v21)
         {
           continue;
@@ -1233,12 +1233,12 @@ LABEL_21:
 
 LABEL_12:
 
-    v7 = v30;
-    v6 = v31;
+    addressCopy = v30;
+    entityCopy = v31;
   }
 
-  v28 = [MEMORY[0x1E69D8A58] sharedInstance];
-  [v28 launchAppForDialRequest:v11 completion:&__block_literal_global_298];
+  mEMORY[0x1E69D8A58]2 = [MEMORY[0x1E69D8A58] sharedInstance];
+  [mEMORY[0x1E69D8A58]2 launchAppForDialRequest:v11 completion:&__block_literal_global_298];
 }
 
 void __62__CKDetailsContactsManager__startCallWithEntity_phoneAddress___block_invoke(uint64_t a1, void *a2)
@@ -1257,22 +1257,22 @@ void __62__CKDetailsContactsManager__startCallWithEntity_phoneAddress___block_in
   }
 }
 
-- (void)_startFacetimeCommunicationForEntity:(id)a3 audioOnly:(BOOL)a4
+- (void)_startFacetimeCommunicationForEntity:(id)entity audioOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 defaultIMHandle];
-  v8 = v7;
-  if (v7)
+  entityCopy = entity;
+  defaultIMHandle = [entityCopy defaultIMHandle];
+  v8 = defaultIMHandle;
+  if (defaultIMHandle)
   {
     v9 = MEMORY[0x1E69A5B78];
-    v15 = v7;
+    v15 = defaultIMHandle;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
-    v11 = [(CKDetailsContactsManager *)self conversation];
-    v12 = [v11 chat];
-    v13 = [v12 lastAddressedHandleID];
-    [v9 initiateTUConversationForParticipants:v10 senderAddress:v13 videoEnabled:!v4 groupID:0 displayName:0 screenShareType:0];
+    conversation = [(CKDetailsContactsManager *)self conversation];
+    chat = [conversation chat];
+    lastAddressedHandleID = [chat lastAddressedHandleID];
+    [v9 initiateTUConversationForParticipants:v10 senderAddress:lastAddressedHandleID videoEnabled:!onlyCopy groupID:0 displayName:0 screenShareType:0];
   }
 
   else if (IMOSLoggingEnabled())
@@ -1281,23 +1281,23 @@ void __62__CKDetailsContactsManager__startCallWithEntity_phoneAddress___block_in
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = entityCopy;
       _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "No handle found for %@. FaceTime could not be initiated.", buf, 0xCu);
     }
   }
 }
 
-- (void)shareMyScreenWithEntity:(id)a3
+- (void)shareMyScreenWithEntity:(id)entity
 {
-  v12 = a3;
-  v4 = [(CKDetailsContactsManager *)self modernScreenSharingCapabilities];
-  v5 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:v12 capabilities:v4];
+  entityCopy = entity;
+  modernScreenSharingCapabilities = [(CKDetailsContactsManager *)self modernScreenSharingCapabilities];
+  v5 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:entityCopy capabilities:modernScreenSharingCapabilities];
 
   if (v5)
   {
-    v6 = [(CKDetailsContactsManager *)self conversation];
-    v7 = [v6 chat];
-    [v7 initiateTUConversationWithScreenShareType:1];
+    conversation = [(CKDetailsContactsManager *)self conversation];
+    chat = [conversation chat];
+    [chat initiateTUConversationWithScreenShareType:1];
   }
 
   else
@@ -1307,39 +1307,39 @@ void __62__CKDetailsContactsManager__startCallWithEntity_phoneAddress___block_in
       goto LABEL_9;
     }
 
-    v8 = [v12 defaultIMHandle];
-    v6 = [v8 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+    defaultIMHandle = [entityCopy defaultIMHandle];
+    conversation = [defaultIMHandle cnContactWithKeys:MEMORY[0x1E695E0F0]];
 
-    v9 = [MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v6];
+    v9 = [MEMORY[0x1E69A7FD0] isCNContactAKnownContact:conversation];
     if (v9)
     {
-      [v6 identifier];
+      [conversation identifier];
     }
 
     else
     {
-      [v12 rawAddress];
+      [entityCopy rawAddress];
     }
-    v7 = ;
-    v10 = [MEMORY[0x1E69A5B50] sharedController];
-    v11 = [v10 remoteDaemon];
-    [v11 inviteHandleIDToShareMyScreen:v7 isContact:v9];
+    chat = ;
+    mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+    remoteDaemon = [mEMORY[0x1E69A5B50] remoteDaemon];
+    [remoteDaemon inviteHandleIDToShareMyScreen:chat isContact:v9];
   }
 
 LABEL_9:
 }
 
-- (void)inviteEntityToShareTheirScreen:(id)a3
+- (void)inviteEntityToShareTheirScreen:(id)screen
 {
-  v12 = a3;
-  v4 = [(CKDetailsContactsManager *)self modernScreenSharingCapabilities];
-  v5 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:v12 capabilities:v4];
+  screenCopy = screen;
+  modernScreenSharingCapabilities = [(CKDetailsContactsManager *)self modernScreenSharingCapabilities];
+  v5 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:screenCopy capabilities:modernScreenSharingCapabilities];
 
   if (v5)
   {
-    v6 = [(CKDetailsContactsManager *)self conversation];
-    v7 = [v6 chat];
-    [v7 initiateTUConversationWithScreenShareType:2];
+    conversation = [(CKDetailsContactsManager *)self conversation];
+    chat = [conversation chat];
+    [chat initiateTUConversationWithScreenShareType:2];
   }
 
   else
@@ -1349,34 +1349,34 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v8 = [v12 defaultIMHandle];
-    v6 = [v8 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+    defaultIMHandle = [screenCopy defaultIMHandle];
+    conversation = [defaultIMHandle cnContactWithKeys:MEMORY[0x1E695E0F0]];
 
-    v9 = [MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v6];
+    v9 = [MEMORY[0x1E69A7FD0] isCNContactAKnownContact:conversation];
     if (v9)
     {
-      [v6 identifier];
+      [conversation identifier];
     }
 
     else
     {
-      [v12 rawAddress];
+      [screenCopy rawAddress];
     }
-    v7 = ;
-    v10 = [MEMORY[0x1E69A5B50] sharedController];
-    v11 = [v10 remoteDaemon];
-    [v11 askHandleIDToShareTheirScreen:v7 isContact:v9];
+    chat = ;
+    mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+    remoteDaemon = [mEMORY[0x1E69A5B50] remoteDaemon];
+    [remoteDaemon askHandleIDToShareTheirScreen:chat isContact:v9];
   }
 
 LABEL_9:
 }
 
-- (BOOL)_showPhoneButtonForEntity:(id)a3
+- (BOOL)_showPhoneButtonForEntity:(id)entity
 {
-  v4 = a3;
-  if (v4)
+  entityCopy = entity;
+  if (entityCopy)
   {
-    v5 = [(CKDetailsContactsManager *)self isTelephonyCallAvailableForEntity:v4]|| [(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:v4];
+    v5 = [(CKDetailsContactsManager *)self isTelephonyCallAvailableForEntity:entityCopy]|| [(CKDetailsContactsManager *)self isFaceTimeAudioAvailableForEntity:entityCopy];
   }
 
   else
@@ -1387,22 +1387,22 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isTelephonyCallAvailableForEntity:(id)a3
+- (BOOL)isTelephonyCallAvailableForEntity:(id)entity
 {
-  v4 = a3;
-  if (v4)
+  entityCopy = entity;
+  if (entityCopy)
   {
     v5 = +[CKFaceTimeUtilities isTelephonyAvailable];
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 phoneIsAllowlisted];
+    phoneIsAllowlisted = [v6 phoneIsAllowlisted];
 
-    v8 = [v4 propertyType];
+    propertyType = [entityCopy propertyType];
     v9 = *MEMORY[0x1E695C330];
 
-    v10 = v5 & v7;
-    if (v10 == 1 && v8 != v9)
+    v10 = v5 & phoneIsAllowlisted;
+    if (v10 == 1 && propertyType != v9)
     {
-      LOBYTE(v10) = [(CKDetailsContactsManager *)self _hasLinkedTelephoneNumbersForEntity:v4];
+      LOBYTE(v10) = [(CKDetailsContactsManager *)self _hasLinkedTelephoneNumbersForEntity:entityCopy];
     }
   }
 
@@ -1414,62 +1414,62 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)isFaceTimeVideoAvailableForEntity:(id)a3
+- (BOOL)isFaceTimeVideoAvailableForEntity:(id)entity
 {
-  v4 = a3;
-  if (!v4)
+  entityCopy = entity;
+  if (!entityCopy)
   {
     goto LABEL_6;
   }
 
-  v5 = [(CKDetailsContactsManager *)self conversation];
-  if (![CKFaceTimeUtilities isFaceTimeVideoAvailable:v5])
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  if (![CKFaceTimeUtilities isFaceTimeVideoAvailable:conversation])
   {
 
     goto LABEL_6;
   }
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 faceTimeVideoIsAllowlisted];
+  faceTimeVideoIsAllowlisted = [v6 faceTimeVideoIsAllowlisted];
 
-  if (!v7)
+  if (!faceTimeVideoIsAllowlisted)
   {
 LABEL_6:
     v8 = 0;
     goto LABEL_7;
   }
 
-  v8 = [(CKDetailsContactsManager *)self _facetimeIDStatusForEntity:v4]== 1;
+  v8 = [(CKDetailsContactsManager *)self _facetimeIDStatusForEntity:entityCopy]== 1;
 LABEL_7:
 
   return v8;
 }
 
-- (BOOL)isFaceTimeAudioAvailableForEntity:(id)a3
+- (BOOL)isFaceTimeAudioAvailableForEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   if ([CKFaceTimeUtilities isFaceTimeAudioAvailable:self->_conversation])
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 faceTimeAudioIsAllowlisted];
+    faceTimeAudioIsAllowlisted = [v5 faceTimeAudioIsAllowlisted];
   }
 
   else
   {
-    v6 = 0;
+    faceTimeAudioIsAllowlisted = 0;
   }
 
-  v7 = [v4 IDSCanonicalAddress];
-  v8 = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
-  v9 = [v8 objectForKey:v7];
+  iDSCanonicalAddress = [entityCopy IDSCanonicalAddress];
+  facetimeAudioIDStatuses = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
+  v9 = [facetimeAudioIDStatuses objectForKey:iDSCanonicalAddress];
 
   if (v9)
   {
-    v10 = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
-    v11 = [v10 objectForKey:v7];
-    v12 = [v11 integerValue];
+    facetimeAudioIDStatuses2 = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
+    v11 = [facetimeAudioIDStatuses2 objectForKey:iDSCanonicalAddress];
+    integerValue = [v11 integerValue];
 
-    v13 = v12 == 1;
+    v13 = integerValue == 1;
   }
 
   else
@@ -1477,14 +1477,14 @@ LABEL_7:
     v13 = 0;
   }
 
-  return v6 & v13;
+  return faceTimeAudioIsAllowlisted & v13;
 }
 
-- (BOOL)showScreenSharingButtonForEntity:(id)a3
+- (BOOL)showScreenSharingButtonForEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(CKDetailsContactsManager *)self modernScreenSharingCapabilities];
-  v6 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:v4 capabilities:v5];
+  entityCopy = entity;
+  modernScreenSharingCapabilities = [(CKDetailsContactsManager *)self modernScreenSharingCapabilities];
+  v6 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:entityCopy capabilities:modernScreenSharingCapabilities];
 
   if (v6)
   {
@@ -1493,7 +1493,7 @@ LABEL_7:
 
   else if (CKIsRunningInMacCatalyst())
   {
-    v7 = [(CKDetailsContactsManager *)self _screenSharingStatusForEntity:v4]== 1;
+    v7 = [(CKDetailsContactsManager *)self _screenSharingStatusForEntity:entityCopy]== 1;
   }
 
   else
@@ -1504,111 +1504,111 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)_showMessageButtonForEntity:(id)a3
+- (BOOL)_showMessageButtonForEntity:(id)entity
 {
-  v3 = [(CKConversation *)self->_conversation recipients];
-  v4 = [v3 count] >= 2 && CKIsRunningInMacCatalyst() == 0;
+  recipients = [(CKConversation *)self->_conversation recipients];
+  v4 = [recipients count] >= 2 && CKIsRunningInMacCatalyst() == 0;
 
   return v4;
 }
 
-- (BOOL)_hasLinkedTelephoneNumbersForEntity:(id)a3
+- (BOOL)_hasLinkedTelephoneNumbersForEntity:(id)entity
 {
   v3 = MEMORY[0x1E69A7FD0];
-  v4 = [a3 defaultIMHandle];
-  v5 = [v4 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+  defaultIMHandle = [entity defaultIMHandle];
+  v5 = [defaultIMHandle cnContactWithKeys:MEMORY[0x1E695E0F0]];
   v6 = [v3 phoneNumbersForCNContact:v5];
 
-  LOBYTE(v4) = [v6 count] != 0;
-  return v4;
+  LOBYTE(defaultIMHandle) = [v6 count] != 0;
+  return defaultIMHandle;
 }
 
-- (int64_t)_facetimeIDStatusForEntity:(id)a3
+- (int64_t)_facetimeIDStatusForEntity:(id)entity
 {
-  v4 = [a3 IDSCanonicalAddress];
-  v5 = [(CKDetailsContactsManager *)self facetimeIDStatuses];
-  v6 = [v5 objectForKey:v4];
+  iDSCanonicalAddress = [entity IDSCanonicalAddress];
+  facetimeIDStatuses = [(CKDetailsContactsManager *)self facetimeIDStatuses];
+  v6 = [facetimeIDStatuses objectForKey:iDSCanonicalAddress];
 
   if (v6)
   {
-    v7 = [(CKDetailsContactsManager *)self facetimeIDStatuses];
-    v8 = [v7 objectForKey:v4];
-    v9 = [v8 integerValue];
+    facetimeIDStatuses2 = [(CKDetailsContactsManager *)self facetimeIDStatuses];
+    v8 = [facetimeIDStatuses2 objectForKey:iDSCanonicalAddress];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v9 = 0;
+    integerValue = 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (int64_t)_facetimeAudioIDStatusForEntity:(id)a3
+- (int64_t)_facetimeAudioIDStatusForEntity:(id)entity
 {
-  v4 = [a3 IDSCanonicalAddress];
-  v5 = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
-  v6 = [v5 objectForKey:v4];
+  iDSCanonicalAddress = [entity IDSCanonicalAddress];
+  facetimeAudioIDStatuses = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
+  v6 = [facetimeAudioIDStatuses objectForKey:iDSCanonicalAddress];
 
   if (v6)
   {
-    v7 = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
-    v8 = [v7 objectForKey:v4];
-    v9 = [v8 integerValue];
+    facetimeAudioIDStatuses2 = [(CKDetailsContactsManager *)self facetimeAudioIDStatuses];
+    v8 = [facetimeAudioIDStatuses2 objectForKey:iDSCanonicalAddress];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v9 = 0;
+    integerValue = 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (int64_t)_screenSharingStatusForEntity:(id)a3
+- (int64_t)_screenSharingStatusForEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   if (CKIsRunningInMacCatalyst())
   {
-    v5 = [v4 IDSCanonicalAddress];
-    v6 = [(CKDetailsContactsManager *)self screenSharingIDSStatuses];
-    v7 = [v6 objectForKey:v5];
+    iDSCanonicalAddress = [entityCopy IDSCanonicalAddress];
+    screenSharingIDSStatuses = [(CKDetailsContactsManager *)self screenSharingIDSStatuses];
+    v7 = [screenSharingIDSStatuses objectForKey:iDSCanonicalAddress];
 
     if (v7)
     {
-      v8 = [(CKDetailsContactsManager *)self screenSharingIDSStatuses];
-      v9 = [v8 objectForKey:v5];
-      v10 = [v9 integerValue];
+      screenSharingIDSStatuses2 = [(CKDetailsContactsManager *)self screenSharingIDSStatuses];
+      v9 = [screenSharingIDSStatuses2 objectForKey:iDSCanonicalAddress];
+      integerValue = [v9 integerValue];
     }
 
     else
     {
-      v10 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
-  return v10;
+  return integerValue;
 }
 
-- (void)_refreshIDSStatusWithCompletion:(id)a3
+- (void)_refreshIDSStatusWithCompletion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKDetailsContactsManager *)self conversation];
-  v6 = [v5 recipients];
-  v7 = [v6 __imArrayByApplyingBlock:&__block_literal_global_128_1];
+  completionCopy = completion;
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  recipients = [conversation recipients];
+  v7 = [recipients __imArrayByApplyingBlock:&__block_literal_global_128_1];
 
   if ([v7 count])
   {
     v8 = dispatch_group_create();
     dispatch_group_enter(v8);
     v9 = MEMORY[0x1E69A80B0];
-    v10 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+    serviceAvailabilityKey = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
     v11 = *MEMORY[0x1E69A47F0];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
@@ -1617,7 +1617,7 @@ LABEL_7:
     v36[4] = self;
     v12 = v8;
     v37 = v12;
-    LOBYTE(v9) = [v9 refreshIDStatusForDestinations:v7 service:v11 listenerID:v10 queue:MEMORY[0x1E69E96A0] completionBlock:v36];
+    LOBYTE(v9) = [v9 refreshIDStatusForDestinations:v7 service:v11 listenerID:serviceAvailabilityKey queue:MEMORY[0x1E69E96A0] completionBlock:v36];
 
     if ((v9 & 1) == 0)
     {
@@ -1639,7 +1639,7 @@ LABEL_7:
 
     dispatch_group_enter(v12);
     v14 = MEMORY[0x1E69A80B0];
-    v15 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+    serviceAvailabilityKey2 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
     v16 = *MEMORY[0x1E69A47E8];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
@@ -1648,7 +1648,7 @@ LABEL_7:
     v34[4] = self;
     v17 = v12;
     v35 = v17;
-    LOBYTE(v14) = [v14 refreshIDStatusForDestinations:v7 service:v16 listenerID:v15 queue:MEMORY[0x1E69E96A0] completionBlock:v34];
+    LOBYTE(v14) = [v14 refreshIDStatusForDestinations:v7 service:v16 listenerID:serviceAvailabilityKey2 queue:MEMORY[0x1E69E96A0] completionBlock:v34];
 
     if ((v14 & 1) == 0)
     {
@@ -1668,8 +1668,8 @@ LABEL_7:
       dispatch_group_leave(v17);
     }
 
-    v19 = [(CKDetailsContactsManager *)self conversation];
-    v20 = [CKFaceTimeUtilities isModernScreenSharingAvailable:v19];
+    conversation2 = [(CKDetailsContactsManager *)self conversation];
+    v20 = [CKFaceTimeUtilities isModernScreenSharingAvailable:conversation2];
 
     if (v20)
     {
@@ -1687,7 +1687,7 @@ LABEL_7:
     {
       dispatch_group_enter(v17);
       v21 = MEMORY[0x1E69A80B0];
-      v22 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
+      serviceAvailabilityKey3 = [(CKDetailsContactsManager *)self serviceAvailabilityKey];
       v23 = *MEMORY[0x1E69A4810];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
@@ -1696,7 +1696,7 @@ LABEL_7:
       v30[4] = self;
       v24 = v17;
       v31 = v24;
-      LOBYTE(v21) = [v21 refreshIDStatusForDestinations:v7 service:v23 listenerID:v22 queue:MEMORY[0x1E69E96A0] completionBlock:v30];
+      LOBYTE(v21) = [v21 refreshIDStatusForDestinations:v7 service:v23 listenerID:serviceAvailabilityKey3 queue:MEMORY[0x1E69E96A0] completionBlock:v30];
 
       if ((v21 & 1) == 0)
       {
@@ -1721,7 +1721,7 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = __60__CKDetailsContactsManager__refreshIDSStatusWithCompletion___block_invoke_134;
     block[3] = &unk_1E72EBDB8;
-    v29 = v4;
+    v29 = completionCopy;
     v26 = MEMORY[0x1E69E96A0];
     dispatch_group_notify(v17, MEMORY[0x1E69E96A0], block);
   }
@@ -1741,7 +1741,7 @@ LABEL_7:
       }
     }
 
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1777,20 +1777,20 @@ void __60__CKDetailsContactsManager__refreshIDSStatusWithCompletion___block_invo
   dispatch_group_leave(v3);
 }
 
-- (unint64_t)preferredCallServiceForID:(id)a3
+- (unint64_t)preferredCallServiceForID:(id)d
 {
-  v4 = a3;
-  if (v4 && ![(CKDetailsContactsManager *)self _preferredRoutesDisabledViaServerBag])
+  dCopy = d;
+  if (dCopy && ![(CKDetailsContactsManager *)self _preferredRoutesDisabledViaServerBag])
   {
-    v6 = [(CKDetailsContactsManager *)self _preferredCallServiceToIDMap];
-    v7 = [v6 objectForKey:v4];
+    _preferredCallServiceToIDMap = [(CKDetailsContactsManager *)self _preferredCallServiceToIDMap];
+    v7 = [_preferredCallServiceToIDMap objectForKey:dCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 unsignedIntegerValue];
-      if (v9 <= 2)
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
+      if (unsignedIntegerValue <= 2)
       {
-        v5 = v9;
+        v5 = unsignedIntegerValue;
       }
 
       else
@@ -1813,22 +1813,22 @@ void __60__CKDetailsContactsManager__refreshIDSStatusWithCompletion___block_invo
   return v5;
 }
 
-- (void)setPreferredCallService:(unint64_t)a3 forID:(id)a4
+- (void)setPreferredCallService:(unint64_t)service forID:(id)d
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 <= 2)
+  dCopy = d;
+  v7 = dCopy;
+  if (service <= 2)
   {
-    if (v6)
+    if (dCopy)
     {
-      v13 = v6;
-      v8 = [(CKDetailsContactsManager *)self _preferredRoutesDisabledViaServerBag];
+      v13 = dCopy;
+      _preferredRoutesDisabledViaServerBag = [(CKDetailsContactsManager *)self _preferredRoutesDisabledViaServerBag];
       v7 = v13;
-      if (!v8)
+      if (!_preferredRoutesDisabledViaServerBag)
       {
-        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-        v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-        v11 = [v10 objectForKey:@"CKCallPreferredServiceToIDMap"];
+        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:service];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        v11 = [standardUserDefaults objectForKey:@"CKCallPreferredServiceToIDMap"];
         v12 = [v11 mutableCopy];
 
         if (!v12)
@@ -1836,7 +1836,7 @@ void __60__CKDetailsContactsManager__refreshIDSStatusWithCompletion___block_invo
           v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
         }
 
-        if (a3)
+        if (service)
         {
           [v12 setObject:v9 forKey:v13];
         }
@@ -1861,37 +1861,37 @@ void __60__CKDetailsContactsManager__refreshIDSStatusWithCompletion___block_invo
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)_preferredCallServiceToIDMap
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"CKCallPreferredServiceToIDMap"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"CKCallPreferredServiceToIDMap"];
 
   return v3;
 }
 
-- (void)_setPreferredCallServiceToIDMap:(id)a3
+- (void)_setPreferredCallServiceToIDMap:(id)map
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"CKCallPreferredServiceToIDMap"];
+  mapCopy = map;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:mapCopy forKey:@"CKCallPreferredServiceToIDMap"];
 }
 
-- (void)beginFacetimeCallWithVideo:(BOOL)a3
+- (void)beginFacetimeCallWithVideo:(BOOL)video
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (video)
   {
     v4 = 1;
 LABEL_5:
@@ -1900,61 +1900,61 @@ LABEL_5:
     return;
   }
 
-  v5 = [(CKDetailsContactsManager *)self conversation];
-  v6 = [v5 recipients];
-  v7 = [v6 count];
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  recipients = [conversation recipients];
+  v7 = [recipients count];
 
-  self = v3;
+  self = selfCopy;
   if (v7 >= 2)
   {
     v4 = 0;
     goto LABEL_5;
   }
 
-  [(CKDetailsContactsManager *)v3 startAudioCommunicationUsingPreferredRouteIfAvailable:1];
+  [(CKDetailsContactsManager *)selfCopy startAudioCommunicationUsingPreferredRouteIfAvailable:1];
 }
 
-- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)a3
+- (void)startAudioCommunicationUsingPreferredRouteIfAvailable:(BOOL)available
 {
-  v3 = a3;
-  v5 = [(CKDetailsContactsManager *)self conversation];
-  v7 = [v5 recipient];
+  availableCopy = available;
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  recipient = [conversation recipient];
 
-  v6 = v7;
-  if (v7)
+  v6 = recipient;
+  if (recipient)
   {
-    [(CKDetailsContactsManager *)self startCommunicationForEntity:v7 action:2 address:0 usePreferredRouteIfAvailable:v3];
-    v6 = v7;
+    [(CKDetailsContactsManager *)self startCommunicationForEntity:recipient action:2 address:0 usePreferredRouteIfAvailable:availableCopy];
+    v6 = recipient;
   }
 }
 
-- (void)_callButtonPressedWithVideoEnabled:(BOOL)a3
+- (void)_callButtonPressedWithVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CKDetailsContactsManager *)self conversation];
-  v6 = [v5 chat];
-  v11 = [v6 conversation];
+  enabledCopy = enabled;
+  conversation = [(CKDetailsContactsManager *)self conversation];
+  chat = [conversation chat];
+  conversation2 = [chat conversation];
 
-  if (v11)
+  if (conversation2)
   {
-    if ([v11 state])
+    if ([conversation2 state])
     {
-      [CKFaceTimeUtilities showCallControlsForConversation:v11];
+      [CKFaceTimeUtilities showCallControlsForConversation:conversation2];
     }
 
     else
     {
-      v9 = [(CKDetailsContactsManager *)self conversation];
-      v10 = [v9 chat];
-      [v10 joinExistingTUConversation];
+      conversation3 = [(CKDetailsContactsManager *)self conversation];
+      chat2 = [conversation3 chat];
+      [chat2 joinExistingTUConversation];
     }
   }
 
   else
   {
-    v7 = [(CKDetailsContactsManager *)self conversation];
-    v8 = [v7 chat];
-    [v8 initiateTUConversationWithVideoEnabled:v3];
+    conversation4 = [(CKDetailsContactsManager *)self conversation];
+    chat3 = [conversation4 chat];
+    [chat3 initiateTUConversationWithVideoEnabled:enabledCopy];
   }
 }
 

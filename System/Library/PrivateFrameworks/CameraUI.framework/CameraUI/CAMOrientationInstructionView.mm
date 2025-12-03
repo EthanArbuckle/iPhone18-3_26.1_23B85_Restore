@@ -1,18 +1,18 @@
 @interface CAMOrientationInstructionView
-- (CAMOrientationInstructionView)initWithFrame:(CGRect)a3;
+- (CAMOrientationInstructionView)initWithFrame:(CGRect)frame;
 - (void)_formatLabel;
 - (void)layoutSubviews;
-- (void)setHasBlurredBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)setHasBlurredBackground:(BOOL)background animated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
 @end
 
 @implementation CAMOrientationInstructionView
 
-- (CAMOrientationInstructionView)initWithFrame:(CGRect)a3
+- (CAMOrientationInstructionView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CAMOrientationInstructionView;
-  v3 = [(CAMOrientationInstructionView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMOrientationInstructionView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,8 +46,8 @@
   [v2 setLineBreakMode:0];
   [v2 setLineBreakStrategy:0xFFFFLL];
   v3 = objc_alloc_init(MEMORY[0x1E69DB7D8]);
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  v5 = [v4 colorWithAlphaComponent:0.35];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v5 = [blackColor colorWithAlphaComponent:0.35];
   [v3 setShadowColor:v5];
 
   [v3 setShadowOffset:{0.0, 0.0}];
@@ -90,23 +90,23 @@
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:4];
   [v13 addAttributes:v20 range:{0, objc_msgSend(v13, "length")}];
   [v8 appendAttributedString:v13];
-  v21 = [(CAMOrientationInstructionView *)self _label];
-  [v21 setAttributedText:v8];
+  _label = [(CAMOrientationInstructionView *)self _label];
+  [_label setAttributedText:v8];
 }
 
-- (void)setHasBlurredBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)setHasBlurredBackground:(BOOL)background animated:(BOOL)animated
 {
-  if (self->_hasBlurredBackground != a3)
+  if (self->_hasBlurredBackground != background)
   {
     v8 = v4;
     v9 = v5;
-    self->_hasBlurredBackground = a3;
+    self->_hasBlurredBackground = background;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __66__CAMOrientationInstructionView_setHasBlurredBackground_animated___block_invoke;
     v6[3] = &unk_1E76F7850;
     v6[4] = self;
-    v7 = a3;
+    backgroundCopy = background;
     [CAMView animateIfNeededWithDuration:v6 animations:0 completion:0.25];
   }
 }
@@ -127,19 +127,19 @@ void __66__CAMOrientationInstructionView_setHasBlurredBackground_animated___bloc
   [v2 setAlpha:v1];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v5 = a4;
-    self->_orientation = a3;
-    if ((a3 - 1) <= 1)
+    animatedCopy = animated;
+    self->_orientation = orientation;
+    if ((orientation - 1) <= 1)
     {
       [(CAMOrientationInstructionView *)self set_interfaceOrientation:?];
     }
 
-    v7 = [(CAMOrientationInstructionView *)self _label];
-    [CAMView rotateView:v7 toInterfaceOrientation:[(CAMOrientationInstructionView *)self _interfaceOrientation] animated:v5];
+    _label = [(CAMOrientationInstructionView *)self _label];
+    [CAMView rotateView:_label toInterfaceOrientation:[(CAMOrientationInstructionView *)self _interfaceOrientation] animated:animatedCopy];
   }
 }
 
@@ -172,20 +172,20 @@ void __66__CAMOrientationInstructionView_setHasBlurredBackground_animated___bloc
   v10 = v24.origin.y;
   v11 = v24.size.width;
   v12 = v24.size.height;
-  v13 = [(CAMOrientationInstructionView *)self _label];
-  [v13 setBounds:{v9, v10, v11, v12}];
+  _label = [(CAMOrientationInstructionView *)self _label];
+  [_label setBounds:{v9, v10, v11, v12}];
 
-  v14 = [(CAMOrientationInstructionView *)self _label];
-  [v14 setCenter:{v19, v18}];
+  _label2 = [(CAMOrientationInstructionView *)self _label];
+  [_label2 setCenter:{v19, v18}];
 
-  v15 = [(CAMOrientationInstructionView *)self _effectView];
-  [v15 setCenter:{v19, v18}];
+  _effectView = [(CAMOrientationInstructionView *)self _effectView];
+  [_effectView setCenter:{v19, v18}];
 
-  v16 = [(CAMOrientationInstructionView *)self _effectView];
-  [v16 setBounds:{x, y, width, height}];
+  _effectView2 = [(CAMOrientationInstructionView *)self _effectView];
+  [_effectView2 setBounds:{x, y, width, height}];
 
-  v17 = [(CAMOrientationInstructionView *)self _label];
-  [CAMView rotateView:v17 toInterfaceOrientation:[(CAMOrientationInstructionView *)self _interfaceOrientation] animated:0];
+  _label3 = [(CAMOrientationInstructionView *)self _label];
+  [CAMView rotateView:_label3 toInterfaceOrientation:[(CAMOrientationInstructionView *)self _interfaceOrientation] animated:0];
 }
 
 @end

@@ -14,14 +14,14 @@
 - (double)sbh_SBIconImageInfoValue
 {
   memset(v2, 0, sizeof(v2));
-  [a1 getValue:v2 size:32];
+  [self getValue:v2 size:32];
   return *v2;
 }
 
 - (uint64_t)sbh_SBHIconGridSizeValue
 {
   v2 = 0;
-  [a1 getValue:&v2 size:4];
+  [self getValue:&v2 size:4];
   return v2;
 }
 
@@ -35,7 +35,7 @@
 
 + (id)sbh_valueWithSBIconImageInfo:()SBIconTypes
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;
@@ -57,7 +57,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return v2[0];
 }
 
@@ -74,7 +74,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return v2[0];
 }
 

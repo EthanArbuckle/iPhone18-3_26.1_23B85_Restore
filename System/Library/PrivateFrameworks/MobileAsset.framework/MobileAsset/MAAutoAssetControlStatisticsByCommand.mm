@@ -1,206 +1,206 @@
 @interface MAAutoAssetControlStatisticsByCommand
-- (MAAutoAssetControlStatisticsByCommand)initWithCoder:(id)a3;
-- (MAAutoAssetControlStatisticsByCommand)initWithInitialValue:(int64_t)a3;
+- (MAAutoAssetControlStatisticsByCommand)initWithCoder:(id)coder;
+- (MAAutoAssetControlStatisticsByCommand)initWithInitialValue:(int64_t)value;
 - (id)copy;
 - (int64_t)total;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementForClientRequestMessage:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementForClientRequestMessage:(id)message;
 @end
 
 @implementation MAAutoAssetControlStatisticsByCommand
 
-- (MAAutoAssetControlStatisticsByCommand)initWithInitialValue:(int64_t)a3
+- (MAAutoAssetControlStatisticsByCommand)initWithInitialValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = MAAutoAssetControlStatisticsByCommand;
   result = [(MAAutoAssetControlStatisticsByCommand *)&v5 init];
   if (result)
   {
-    result->_interestInContent = a3;
-    result->_checkForNewer = a3;
-    result->_determineIfAvailable = a3;
-    result->_currentStatus = a3;
-    result->_lockContent = a3;
-    result->_mapLockedContent = a3;
-    result->_continueLockUsage = a3;
-    result->_endLockUsage = a3;
-    result->_endPreviousLocks = a3;
-    result->_endAllPreviousLocks = a3;
-    result->_eliminateAllForSelector = a3;
-    result->_eliminateAllForAssetType = a3;
-    result->_eliminatePromotedNeverLockedForSelector = a3;
-    result->_stageDetermineAllAvailable = a3;
-    result->_stageDownloadAll = a3;
-    result->_stagePurgeAll = a3;
-    result->_stageEraseAll = a3;
-    result->_estimateEvictableBytesForSoftwareUpdate = a3;
-    result->_suspendForSoftwareUpdate = a3;
-    result->_resumeFromSoftwareUpdate = a3;
-    result->_suspendResumeStatusForSoftwareUpdate = a3;
+    result->_interestInContent = value;
+    result->_checkForNewer = value;
+    result->_determineIfAvailable = value;
+    result->_currentStatus = value;
+    result->_lockContent = value;
+    result->_mapLockedContent = value;
+    result->_continueLockUsage = value;
+    result->_endLockUsage = value;
+    result->_endPreviousLocks = value;
+    result->_endAllPreviousLocks = value;
+    result->_eliminateAllForSelector = value;
+    result->_eliminateAllForAssetType = value;
+    result->_eliminatePromotedNeverLockedForSelector = value;
+    result->_stageDetermineAllAvailable = value;
+    result->_stageDownloadAll = value;
+    result->_stagePurgeAll = value;
+    result->_stageEraseAll = value;
+    result->_estimateEvictableBytesForSoftwareUpdate = value;
+    result->_suspendForSoftwareUpdate = value;
+    result->_resumeFromSoftwareUpdate = value;
+    result->_suspendResumeStatusForSoftwareUpdate = value;
   }
 
   return result;
 }
 
-- (MAAutoAssetControlStatisticsByCommand)initWithCoder:(id)a3
+- (MAAutoAssetControlStatisticsByCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MAAutoAssetControlStatisticsByCommand;
   v5 = [(MAAutoAssetControlStatisticsByCommand *)&v7 init];
   if (v5)
   {
-    v5->_interestInContent = [v4 decodeInt64ForKey:@"interestInContent"];
-    v5->_checkForNewer = [v4 decodeInt64ForKey:@"checkForNewer"];
-    v5->_determineIfAvailable = [v4 decodeInt64ForKey:@"determineIfAvailable"];
-    v5->_currentStatus = [v4 decodeInt64ForKey:@"currentStatus"];
-    v5->_lockContent = [v4 decodeInt64ForKey:@"lockContent"];
-    v5->_mapLockedContent = [v4 decodeInt64ForKey:@"mapLockedContent"];
-    v5->_continueLockUsage = [v4 decodeInt64ForKey:@"continueLockUsage"];
-    v5->_endLockUsage = [v4 decodeInt64ForKey:@"endLockUsage"];
-    v5->_endPreviousLocks = [v4 decodeInt64ForKey:@"endPreviousLocks"];
-    v5->_endAllPreviousLocks = [v4 decodeInt64ForKey:@"endAllPreviousLocks"];
-    v5->_eliminateAllForSelector = [v4 decodeInt64ForKey:@"eliminateAllForSelector"];
-    v5->_eliminateAllForAssetType = [v4 decodeInt64ForKey:@"eliminateAllForAssetType"];
-    v5->_eliminatePromotedNeverLockedForSelector = [v4 decodeInt64ForKey:@"eliminatePromotedNeverLockedForSelector"];
-    v5->_stageDetermineAllAvailable = [v4 decodeInt64ForKey:@"stageDetermineAllAvailable"];
-    v5->_stageDownloadAll = [v4 decodeInt64ForKey:@"stageDownloadAll"];
-    v5->_stagePurgeAll = [v4 decodeInt64ForKey:@"stagePurgeAll"];
-    v5->_stageEraseAll = [v4 decodeInt64ForKey:@"stageEraseAll"];
-    v5->_estimateEvictableBytesForSoftwareUpdate = [v4 decodeInt64ForKey:@"estimateEvictableBytesForSoftwareUpdate"];
-    v5->_suspendForSoftwareUpdate = [v4 decodeInt64ForKey:@"suspendForSoftwareUpdate"];
-    v5->_resumeFromSoftwareUpdate = [v4 decodeInt64ForKey:@"resumeFromSoftwareUpdate"];
-    v5->_suspendResumeStatusForSoftwareUpdate = [v4 decodeInt64ForKey:@"suspendResumeStatusForSoftwareUpdate"];
+    v5->_interestInContent = [coderCopy decodeInt64ForKey:@"interestInContent"];
+    v5->_checkForNewer = [coderCopy decodeInt64ForKey:@"checkForNewer"];
+    v5->_determineIfAvailable = [coderCopy decodeInt64ForKey:@"determineIfAvailable"];
+    v5->_currentStatus = [coderCopy decodeInt64ForKey:@"currentStatus"];
+    v5->_lockContent = [coderCopy decodeInt64ForKey:@"lockContent"];
+    v5->_mapLockedContent = [coderCopy decodeInt64ForKey:@"mapLockedContent"];
+    v5->_continueLockUsage = [coderCopy decodeInt64ForKey:@"continueLockUsage"];
+    v5->_endLockUsage = [coderCopy decodeInt64ForKey:@"endLockUsage"];
+    v5->_endPreviousLocks = [coderCopy decodeInt64ForKey:@"endPreviousLocks"];
+    v5->_endAllPreviousLocks = [coderCopy decodeInt64ForKey:@"endAllPreviousLocks"];
+    v5->_eliminateAllForSelector = [coderCopy decodeInt64ForKey:@"eliminateAllForSelector"];
+    v5->_eliminateAllForAssetType = [coderCopy decodeInt64ForKey:@"eliminateAllForAssetType"];
+    v5->_eliminatePromotedNeverLockedForSelector = [coderCopy decodeInt64ForKey:@"eliminatePromotedNeverLockedForSelector"];
+    v5->_stageDetermineAllAvailable = [coderCopy decodeInt64ForKey:@"stageDetermineAllAvailable"];
+    v5->_stageDownloadAll = [coderCopy decodeInt64ForKey:@"stageDownloadAll"];
+    v5->_stagePurgeAll = [coderCopy decodeInt64ForKey:@"stagePurgeAll"];
+    v5->_stageEraseAll = [coderCopy decodeInt64ForKey:@"stageEraseAll"];
+    v5->_estimateEvictableBytesForSoftwareUpdate = [coderCopy decodeInt64ForKey:@"estimateEvictableBytesForSoftwareUpdate"];
+    v5->_suspendForSoftwareUpdate = [coderCopy decodeInt64ForKey:@"suspendForSoftwareUpdate"];
+    v5->_resumeFromSoftwareUpdate = [coderCopy decodeInt64ForKey:@"resumeFromSoftwareUpdate"];
+    v5->_suspendResumeStatusForSoftwareUpdate = [coderCopy decodeInt64ForKey:@"suspendResumeStatusForSoftwareUpdate"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand interestInContent](self forKey:{"interestInContent"), @"interestInContent"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand checkForNewer](self forKey:{"checkForNewer"), @"checkForNewer"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand determineIfAvailable](self forKey:{"determineIfAvailable"), @"determineIfAvailable"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand currentStatus](self forKey:{"currentStatus"), @"currentStatus"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand lockContent](self forKey:{"lockContent"), @"lockContent"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand mapLockedContent](self forKey:{"mapLockedContent"), @"mapLockedContent"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand continueLockUsage](self forKey:{"continueLockUsage"), @"continueLockUsage"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand endLockUsage](self forKey:{"endLockUsage"), @"endLockUsage"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand endPreviousLocks](self forKey:{"endPreviousLocks"), @"endPreviousLocks"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand endAllPreviousLocks](self forKey:{"endAllPreviousLocks"), @"endAllPreviousLocks"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand eliminateAllForSelector](self forKey:{"eliminateAllForSelector"), @"eliminateAllForSelector"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand eliminateAllForAssetType](self forKey:{"eliminateAllForAssetType"), @"eliminateAllForAssetType"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand eliminatePromotedNeverLockedForSelector](self forKey:{"eliminatePromotedNeverLockedForSelector"), @"eliminatePromotedNeverLockedForSelector"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand stageDetermineAllAvailable](self forKey:{"stageDetermineAllAvailable"), @"stageDetermineAllAvailable"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand stageDownloadAll](self forKey:{"stageDownloadAll"), @"stageDownloadAll"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand stagePurgeAll](self forKey:{"stagePurgeAll"), @"stagePurgeAll"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand stageEraseAll](self forKey:{"stageEraseAll"), @"stageEraseAll"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand estimateEvictableBytesForSoftwareUpdate](self forKey:{"estimateEvictableBytesForSoftwareUpdate"), @"estimateEvictableBytesForSoftwareUpdate"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand suspendForSoftwareUpdate](self forKey:{"suspendForSoftwareUpdate"), @"suspendForSoftwareUpdate"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand resumeFromSoftwareUpdate](self forKey:{"resumeFromSoftwareUpdate"), @"resumeFromSoftwareUpdate"}];
-  [v4 encodeInt64:-[MAAutoAssetControlStatisticsByCommand suspendResumeStatusForSoftwareUpdate](self forKey:{"suspendResumeStatusForSoftwareUpdate"), @"suspendResumeStatusForSoftwareUpdate"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand interestInContent](self forKey:{"interestInContent"), @"interestInContent"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand checkForNewer](self forKey:{"checkForNewer"), @"checkForNewer"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand determineIfAvailable](self forKey:{"determineIfAvailable"), @"determineIfAvailable"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand currentStatus](self forKey:{"currentStatus"), @"currentStatus"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand lockContent](self forKey:{"lockContent"), @"lockContent"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand mapLockedContent](self forKey:{"mapLockedContent"), @"mapLockedContent"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand continueLockUsage](self forKey:{"continueLockUsage"), @"continueLockUsage"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand endLockUsage](self forKey:{"endLockUsage"), @"endLockUsage"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand endPreviousLocks](self forKey:{"endPreviousLocks"), @"endPreviousLocks"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand endAllPreviousLocks](self forKey:{"endAllPreviousLocks"), @"endAllPreviousLocks"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand eliminateAllForSelector](self forKey:{"eliminateAllForSelector"), @"eliminateAllForSelector"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand eliminateAllForAssetType](self forKey:{"eliminateAllForAssetType"), @"eliminateAllForAssetType"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand eliminatePromotedNeverLockedForSelector](self forKey:{"eliminatePromotedNeverLockedForSelector"), @"eliminatePromotedNeverLockedForSelector"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand stageDetermineAllAvailable](self forKey:{"stageDetermineAllAvailable"), @"stageDetermineAllAvailable"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand stageDownloadAll](self forKey:{"stageDownloadAll"), @"stageDownloadAll"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand stagePurgeAll](self forKey:{"stagePurgeAll"), @"stagePurgeAll"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand stageEraseAll](self forKey:{"stageEraseAll"), @"stageEraseAll"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand estimateEvictableBytesForSoftwareUpdate](self forKey:{"estimateEvictableBytesForSoftwareUpdate"), @"estimateEvictableBytesForSoftwareUpdate"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand suspendForSoftwareUpdate](self forKey:{"suspendForSoftwareUpdate"), @"suspendForSoftwareUpdate"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand resumeFromSoftwareUpdate](self forKey:{"resumeFromSoftwareUpdate"), @"resumeFromSoftwareUpdate"}];
+  [coderCopy encodeInt64:-[MAAutoAssetControlStatisticsByCommand suspendResumeStatusForSoftwareUpdate](self forKey:{"suspendResumeStatusForSoftwareUpdate"), @"suspendResumeStatusForSoftwareUpdate"}];
 }
 
-- (void)incrementForClientRequestMessage:(id)a3
+- (void)incrementForClientRequestMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if ([MEMORY[0x1E69D3880] stringIsEqual:? to:?])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setInterestInContent:[(MAAutoAssetControlStatisticsByCommand *)self interestInContent]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:CHECK_FOR_NEWER"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:CHECK_FOR_NEWER"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setCheckForNewer:[(MAAutoAssetControlStatisticsByCommand *)self checkForNewer]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:DETERMINE_IF_AVAILABLE"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:DETERMINE_IF_AVAILABLE"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setDetermineIfAvailable:[(MAAutoAssetControlStatisticsByCommand *)self determineIfAvailable]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:LOCK_CONTENT"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:LOCK_CONTENT"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setLockContent:[(MAAutoAssetControlStatisticsByCommand *)self lockContent]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:MAP_LOCKED_CONTENT_TO_EXCLAVE"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:MAP_LOCKED_CONTENT_TO_EXCLAVE"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setMapLockedContent:[(MAAutoAssetControlStatisticsByCommand *)self mapLockedContent]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:CONTINUE_LOCK_USAGE"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:CONTINUE_LOCK_USAGE"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setContinueLockUsage:[(MAAutoAssetControlStatisticsByCommand *)self continueLockUsage]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:END_LOCK_USAGE"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:END_LOCK_USAGE"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEndLockUsage:[(MAAutoAssetControlStatisticsByCommand *)self endLockUsage]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:END_PREVIOUS_LOCKS"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:END_PREVIOUS_LOCKS"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEndPreviousLocks:[(MAAutoAssetControlStatisticsByCommand *)self endPreviousLocks]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:END_ALL_PREVIOUS_LOCKS"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:END_ALL_PREVIOUS_LOCKS"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEndAllPreviousLocks:[(MAAutoAssetControlStatisticsByCommand *)self endAllPreviousLocks]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:ELIMINATE_ALL_FOR_SELECTOR"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:ELIMINATE_ALL_FOR_SELECTOR"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEliminateAllForSelector:[(MAAutoAssetControlStatisticsByCommand *)self eliminateAllForSelector]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:ELIMINATE_ALL_FOR_ASSET_TYPE"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:ELIMINATE_ALL_FOR_ASSET_TYPE"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEliminateAllForAssetType:[(MAAutoAssetControlStatisticsByCommand *)self eliminateAllForAssetType]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO:ELIMINATE_PROMOTED_NEVER_LOCKED_FOR_SELECTOR"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO:ELIMINATE_PROMOTED_NEVER_LOCKED_FOR_SELECTOR"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEliminatePromotedNeverLockedForSelector:[(MAAutoAssetControlStatisticsByCommand *)self eliminatePromotedNeverLockedForSelector]+ 1];
   }
 
-  else if (([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-STAGE:DETERMINE_GROUPS_AVAILABLE_FOR_UPDATE"] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69D3880], "stringIsEqual:to:", v4, @"MA-AUTO-STAGE:DETERMINE_ALL_AVAILABLE_FOR_UPDATE") & 1) != 0 || objc_msgSend(MEMORY[0x1E69D3880], "stringIsEqual:to:", v4, @"MA-AUTO-STAGE:DETERMINE_ALL_AVAILABLE"))
+  else if (([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-STAGE:DETERMINE_GROUPS_AVAILABLE_FOR_UPDATE"] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69D3880], "stringIsEqual:to:", messageCopy, @"MA-AUTO-STAGE:DETERMINE_ALL_AVAILABLE_FOR_UPDATE") & 1) != 0 || objc_msgSend(MEMORY[0x1E69D3880], "stringIsEqual:to:", messageCopy, @"MA-AUTO-STAGE:DETERMINE_ALL_AVAILABLE"))
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setStageDetermineAllAvailable:[(MAAutoAssetControlStatisticsByCommand *)self stageDetermineAllAvailable]+ 1];
   }
 
-  else if (([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-STAGE:DOWNLOAD_GROUPS"] & 1) != 0 || objc_msgSend(MEMORY[0x1E69D3880], "stringIsEqual:to:", v4, @"MA-AUTO-STAGE:DOWNLOAD_ALL"))
+  else if (([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-STAGE:DOWNLOAD_GROUPS"] & 1) != 0 || objc_msgSend(MEMORY[0x1E69D3880], "stringIsEqual:to:", messageCopy, @"MA-AUTO-STAGE:DOWNLOAD_ALL"))
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setStageDownloadAll:[(MAAutoAssetControlStatisticsByCommand *)self stageDownloadAll]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-STAGE:PURGE_ALL"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-STAGE:PURGE_ALL"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setStagePurgeAll:[(MAAutoAssetControlStatisticsByCommand *)self stagePurgeAll]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-STAGE:ERASE_ALL"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-STAGE:ERASE_ALL"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setStageEraseAll:[(MAAutoAssetControlStatisticsByCommand *)self stageEraseAll]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-SUSPEND-RESUME-SU:EVICTABLE_BYTES"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-SUSPEND-RESUME-SU:EVICTABLE_BYTES"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setEstimateEvictableBytesForSoftwareUpdate:[(MAAutoAssetControlStatisticsByCommand *)self estimateEvictableBytesForSoftwareUpdate]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-SUSPEND-RESUME-SU:SUSPEND"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-SUSPEND-RESUME-SU:SUSPEND"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setSuspendForSoftwareUpdate:[(MAAutoAssetControlStatisticsByCommand *)self suspendForSoftwareUpdate]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-SUSPEND-RESUME-SU:RESUME"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-SUSPEND-RESUME-SU:RESUME"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setResumeFromSoftwareUpdate:[(MAAutoAssetControlStatisticsByCommand *)self resumeFromSoftwareUpdate]+ 1];
   }
 
-  else if ([MEMORY[0x1E69D3880] stringIsEqual:v4 to:@"MA-AUTO-SUSPEND-RESUME-SU:STATUS"])
+  else if ([MEMORY[0x1E69D3880] stringIsEqual:messageCopy to:@"MA-AUTO-SUSPEND-RESUME-SU:STATUS"])
   {
     [(MAAutoAssetControlStatisticsByCommand *)self setSuspendResumeStatusForSoftwareUpdate:[(MAAutoAssetControlStatisticsByCommand *)self suspendResumeStatusForSoftwareUpdate]+ 1];
   }
@@ -235,24 +235,24 @@
 
 - (int64_t)total
 {
-  v3 = [(MAAutoAssetControlStatisticsByCommand *)self interestInContent];
-  v4 = [(MAAutoAssetControlStatisticsByCommand *)self checkForNewer]+ v3;
-  v5 = [(MAAutoAssetControlStatisticsByCommand *)self determineIfAvailable];
-  v6 = v4 + v5 + [(MAAutoAssetControlStatisticsByCommand *)self currentStatus];
-  v7 = [(MAAutoAssetControlStatisticsByCommand *)self lockContent];
-  v8 = v7 + [(MAAutoAssetControlStatisticsByCommand *)self mapLockedContent];
+  interestInContent = [(MAAutoAssetControlStatisticsByCommand *)self interestInContent];
+  v4 = [(MAAutoAssetControlStatisticsByCommand *)self checkForNewer]+ interestInContent;
+  determineIfAvailable = [(MAAutoAssetControlStatisticsByCommand *)self determineIfAvailable];
+  v6 = v4 + determineIfAvailable + [(MAAutoAssetControlStatisticsByCommand *)self currentStatus];
+  lockContent = [(MAAutoAssetControlStatisticsByCommand *)self lockContent];
+  v8 = lockContent + [(MAAutoAssetControlStatisticsByCommand *)self mapLockedContent];
   v9 = v6 + v8 + [(MAAutoAssetControlStatisticsByCommand *)self continueLockUsage];
-  v10 = [(MAAutoAssetControlStatisticsByCommand *)self endLockUsage];
-  v11 = v10 + [(MAAutoAssetControlStatisticsByCommand *)self endPreviousLocks];
+  endLockUsage = [(MAAutoAssetControlStatisticsByCommand *)self endLockUsage];
+  v11 = endLockUsage + [(MAAutoAssetControlStatisticsByCommand *)self endPreviousLocks];
   v12 = v11 + [(MAAutoAssetControlStatisticsByCommand *)self endAllPreviousLocks];
   v13 = v9 + v12 + [(MAAutoAssetControlStatisticsByCommand *)self eliminateAllForSelector];
-  v14 = [(MAAutoAssetControlStatisticsByCommand *)self eliminateAllForAssetType];
-  v15 = v14 + [(MAAutoAssetControlStatisticsByCommand *)self eliminatePromotedNeverLockedForSelector];
+  eliminateAllForAssetType = [(MAAutoAssetControlStatisticsByCommand *)self eliminateAllForAssetType];
+  v15 = eliminateAllForAssetType + [(MAAutoAssetControlStatisticsByCommand *)self eliminatePromotedNeverLockedForSelector];
   v16 = v15 + [(MAAutoAssetControlStatisticsByCommand *)self stageDetermineAllAvailable];
   v17 = v16 + [(MAAutoAssetControlStatisticsByCommand *)self stageDownloadAll];
   v18 = v13 + v17 + [(MAAutoAssetControlStatisticsByCommand *)self stagePurgeAll];
-  v19 = [(MAAutoAssetControlStatisticsByCommand *)self stageEraseAll];
-  v20 = v19 + [(MAAutoAssetControlStatisticsByCommand *)self estimateEvictableBytesForSoftwareUpdate];
+  stageEraseAll = [(MAAutoAssetControlStatisticsByCommand *)self stageEraseAll];
+  v20 = stageEraseAll + [(MAAutoAssetControlStatisticsByCommand *)self estimateEvictableBytesForSoftwareUpdate];
   v21 = v20 + [(MAAutoAssetControlStatisticsByCommand *)self suspendForSoftwareUpdate];
   v22 = v21 + [(MAAutoAssetControlStatisticsByCommand *)self resumeFromSoftwareUpdate];
   return v18 + v22 + [(MAAutoAssetControlStatisticsByCommand *)self suspendResumeStatusForSoftwareUpdate];

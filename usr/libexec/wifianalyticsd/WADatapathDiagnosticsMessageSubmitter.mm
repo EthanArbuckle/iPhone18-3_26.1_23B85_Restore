@@ -1,17 +1,17 @@
 @interface WADatapathDiagnosticsMessageSubmitter
-- (WADatapathDiagnosticsMessageSubmitter)initWithMessageGroupType:(int64_t)a3;
+- (WADatapathDiagnosticsMessageSubmitter)initWithMessageGroupType:(int64_t)type;
 - (id)diagnosticMessagePayload;
-- (id)submitDPEMessage:(id)a3;
-- (id)submitDPSRMessage:(id)a3;
-- (id)submitMessage:(id)a3;
-- (id)submitSlowWiFiMessage:(id)a3;
-- (int)findTxCompletionFailureWithMaxCount:(id)a3;
-- (void)computeAggregateTxCompletionStatus:(id)a3 source:(id)a4;
+- (id)submitDPEMessage:(id)message;
+- (id)submitDPSRMessage:(id)message;
+- (id)submitMessage:(id)message;
+- (id)submitSlowWiFiMessage:(id)message;
+- (int)findTxCompletionFailureWithMaxCount:(id)count;
+- (void)computeAggregateTxCompletionStatus:(id)status source:(id)source;
 @end
 
 @implementation WADatapathDiagnosticsMessageSubmitter
 
-- (WADatapathDiagnosticsMessageSubmitter)initWithMessageGroupType:(int64_t)a3
+- (WADatapathDiagnosticsMessageSubmitter)initWithMessageGroupType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = WADatapathDiagnosticsMessageSubmitter;
@@ -38,17 +38,17 @@
   ABCReporter = v4->_ABCReporter;
   v4->_ABCReporter = v7;
 
-  v4->_groupTypeForThisSubmitter = a3;
+  v4->_groupTypeForThisSubmitter = type;
   return v4;
 }
 
-- (id)submitMessage:(id)a3
+- (id)submitMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 key];
+    v6 = [messageCopy key];
     v16 = 136446722;
     v17 = "[WADatapathDiagnosticsMessageSubmitter submitMessage:]";
     v18 = 1024;
@@ -58,30 +58,30 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Attempting to submit: %@", &v16, 0x1Cu);
   }
 
-  v7 = [v4 key];
+  v7 = [messageCopy key];
   v8 = [v7 isEqualToString:@"DPSR"];
 
   if (v8)
   {
-    v9 = [(WADatapathDiagnosticsMessageSubmitter *)self submitDPEMessage:v4];
+    v9 = [(WADatapathDiagnosticsMessageSubmitter *)self submitDPEMessage:messageCopy];
 LABEL_7:
     v12 = v9;
     goto LABEL_11;
   }
 
-  v10 = [v4 key];
+  v10 = [messageCopy key];
   v11 = [v10 isEqualToString:@"SWFR"];
 
   if (v11)
   {
-    v9 = [(WADatapathDiagnosticsMessageSubmitter *)self submitSlowWiFiMessage:v4];
+    v9 = [(WADatapathDiagnosticsMessageSubmitter *)self submitSlowWiFiMessage:messageCopy];
     goto LABEL_7;
   }
 
   v13 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [v4 key];
+    v14 = [messageCopy key];
     v16 = 136446722;
     v17 = "[WADatapathDiagnosticsMessageSubmitter submitMessage:]";
     v18 = 1024;
@@ -106,13 +106,13 @@ LABEL_11:
   return v2;
 }
 
-- (id)submitSlowWiFiMessage:(id)a3
+- (id)submitSlowWiFiMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 key];
+    v6 = [messageCopy key];
     *buf = 136446722;
     v39 = "[WADatapathDiagnosticsMessageSubmitter submitSlowWiFiMessage:]";
     v40 = 1024;
@@ -123,7 +123,7 @@ LABEL_11:
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:v4];
+  v8 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:messageCopy];
   v9 = v8;
   if (!v8)
   {
@@ -141,7 +141,7 @@ LABEL_11:
     v37 = @"WAErrorCodeSubmissionModelFailure";
     v16 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v26 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9007 userInfo:v16];
-    v11 = 0;
+    slowNotice = 0;
     v18 = 0;
     v25 = 0;
     v24 = 0;
@@ -150,7 +150,7 @@ LABEL_11:
 
   v10 = v8;
   v31 = v7;
-  v32 = v4;
+  v32 = messageCopy;
   v30 = v9;
   if (![v10 hasSlowNotice])
   {
@@ -159,22 +159,22 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v11 = [v10 slowNotice];
-  v12 = [v11 recoveryReason];
-  if (v12 <= 0x11)
+  slowNotice = [v10 slowNotice];
+  recoveryReason = [slowNotice recoveryReason];
+  if (recoveryReason <= 0x11)
   {
-    v13 = v12;
-    v29 = v11;
+    v13 = recoveryReason;
+    v29 = slowNotice;
 LABEL_8:
     v14 = [NSString stringWithFormat:@"Slow WiFi"];
     v15 = [NSString stringWithFormat:@"recoveryReason 0x%x", v13];
     v16 = [v14 stringByReplacingOccurrencesOfString:@"%" withString:&stru_1000F04E0];
     v17 = [v15 stringByReplacingOccurrencesOfString:@"%" withString:&stru_1000F04E0];
     v18 = [(SDRDiagnosticReporter *)self->_ABCReporter signatureWithDomain:@"WiFi" type:@"Slow WiFi" subType:v16 subtypeContext:v17 detectedProcess:@"wifianalyticsd" triggerThresholdValues:0];
-    v19 = [(WADatapathDiagnosticsMessageSubmitter *)self diagnosticMessagePayload];
+    diagnosticMessagePayload = [(WADatapathDiagnosticsMessageSubmitter *)self diagnosticMessagePayload];
     v20 = [NSArray alloc];
-    v21 = [v10 dictionaryRepresentation];
-    v22 = [v20 initWithObjects:{v21, 0}];
+    dictionaryRepresentation = [v10 dictionaryRepresentation];
+    v22 = [v20 initWithObjects:{dictionaryRepresentation, 0}];
 
     ABCReporter = self->_ABCReporter;
     v33[0] = _NSConcreteStackBlock;
@@ -185,12 +185,12 @@ LABEL_8:
     v34 = v24;
     v25 = v15;
     v35 = v25;
-    [(SDRDiagnosticReporter *)ABCReporter snapshotWithSignature:v18 duration:v22 events:v19 payload:0 actions:v33 reply:10.0];
+    [(SDRDiagnosticReporter *)ABCReporter snapshotWithSignature:v18 duration:v22 events:diagnosticMessagePayload payload:0 actions:v33 reply:10.0];
 
     v26 = 0;
     v7 = v31;
-    v4 = v32;
-    v11 = v29;
+    messageCopy = v32;
+    slowNotice = v29;
     v9 = v30;
 LABEL_9:
 
@@ -208,28 +208,28 @@ LABEL_10:
   return v26;
 }
 
-- (void)computeAggregateTxCompletionStatus:(id)a3 source:(id)a4
+- (void)computeAggregateTxCompletionStatus:(id)status source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setDropped:{objc_msgSend(v6, "dropped") + objc_msgSend(v5, "dropped")}];
-  [v6 setNoBuf:{objc_msgSend(v6, "noBuf") + objc_msgSend(v5, "noBuf")}];
-  [v6 setNoResources:{objc_msgSend(v6, "noResources") + objc_msgSend(v5, "noResources")}];
-  [v6 setNoAck:{objc_msgSend(v6, "noAck") + objc_msgSend(v5, "noAck")}];
-  [v6 setChipModeError:{objc_msgSend(v6, "chipModeError") + objc_msgSend(v5, "chipModeError")}];
-  [v6 setExpired:{objc_msgSend(v6, "expired") + objc_msgSend(v5, "expired")}];
-  [v6 setTxFailure:{objc_msgSend(v6, "txFailure") + objc_msgSend(v5, "txFailure")}];
-  [v6 setFirmwareFreePacket:{objc_msgSend(v6, "firmwareFreePacket") + objc_msgSend(v5, "firmwareFreePacket")}];
-  [v6 setMaxRetries:{objc_msgSend(v6, "maxRetries") + objc_msgSend(v5, "maxRetries")}];
-  LODWORD(a3) = [v5 forceLifetimeExp];
+  sourceCopy = source;
+  statusCopy = status;
+  [statusCopy setDropped:{objc_msgSend(statusCopy, "dropped") + objc_msgSend(sourceCopy, "dropped")}];
+  [statusCopy setNoBuf:{objc_msgSend(statusCopy, "noBuf") + objc_msgSend(sourceCopy, "noBuf")}];
+  [statusCopy setNoResources:{objc_msgSend(statusCopy, "noResources") + objc_msgSend(sourceCopy, "noResources")}];
+  [statusCopy setNoAck:{objc_msgSend(statusCopy, "noAck") + objc_msgSend(sourceCopy, "noAck")}];
+  [statusCopy setChipModeError:{objc_msgSend(statusCopy, "chipModeError") + objc_msgSend(sourceCopy, "chipModeError")}];
+  [statusCopy setExpired:{objc_msgSend(statusCopy, "expired") + objc_msgSend(sourceCopy, "expired")}];
+  [statusCopy setTxFailure:{objc_msgSend(statusCopy, "txFailure") + objc_msgSend(sourceCopy, "txFailure")}];
+  [statusCopy setFirmwareFreePacket:{objc_msgSend(statusCopy, "firmwareFreePacket") + objc_msgSend(sourceCopy, "firmwareFreePacket")}];
+  [statusCopy setMaxRetries:{objc_msgSend(statusCopy, "maxRetries") + objc_msgSend(sourceCopy, "maxRetries")}];
+  LODWORD(status) = [sourceCopy forceLifetimeExp];
 
-  [v6 setForceLifetimeExp:{objc_msgSend(v6, "forceLifetimeExp") + a3}];
+  [statusCopy setForceLifetimeExp:{objc_msgSend(statusCopy, "forceLifetimeExp") + status}];
 }
 
-- (int)findTxCompletionFailureWithMaxCount:(id)a3
+- (int)findTxCompletionFailureWithMaxCount:(id)count
 {
-  v3 = a3;
-  v4 = 0;
+  countCopy = count;
+  dropped = 0;
   v5 = 0;
   for (i = 1; ; ++i)
   {
@@ -239,41 +239,41 @@ LABEL_10:
       {
         if (i == 1)
         {
-          if ([v3 dropped] > v4)
+          if ([countCopy dropped] > dropped)
           {
-            v4 = [v3 dropped];
+            dropped = [countCopy dropped];
             v5 = 1;
           }
         }
 
-        else if (i == 2 && [v3 noBuf] > v4)
+        else if (i == 2 && [countCopy noBuf] > dropped)
         {
-          v4 = [v3 noBuf];
+          dropped = [countCopy noBuf];
           v5 = 2;
         }
       }
 
       else if (i == 3)
       {
-        if ([v3 noResources] > v4)
+        if ([countCopy noResources] > dropped)
         {
-          v4 = [v3 noResources];
+          dropped = [countCopy noResources];
           v5 = 3;
         }
       }
 
       else if (i == 4)
       {
-        if ([v3 noAck] > v4)
+        if ([countCopy noAck] > dropped)
         {
-          v4 = [v3 noAck];
+          dropped = [countCopy noAck];
           v5 = 4;
         }
       }
 
-      else if ([v3 chipModeError] > v4)
+      else if ([countCopy chipModeError] > dropped)
       {
-        v4 = [v3 chipModeError];
+        dropped = [countCopy chipModeError];
         v5 = 5;
       }
 
@@ -287,16 +287,16 @@ LABEL_10:
 
     if (i == 6)
     {
-      if ([v3 expired] > v4)
+      if ([countCopy expired] > dropped)
       {
-        v4 = [v3 expired];
+        dropped = [countCopy expired];
         v5 = 6;
       }
     }
 
-    else if ([v3 txFailure] > v4)
+    else if ([countCopy txFailure] > dropped)
     {
-      v4 = [v3 txFailure];
+      dropped = [countCopy txFailure];
       v5 = 7;
     }
 
@@ -306,9 +306,9 @@ LABEL_31:
 
   if (i == 8)
   {
-    if ([v3 firmwareFreePacket] > v4)
+    if ([countCopy firmwareFreePacket] > dropped)
     {
-      v4 = [v3 firmwareFreePacket];
+      dropped = [countCopy firmwareFreePacket];
       v5 = 8;
     }
 
@@ -317,9 +317,9 @@ LABEL_31:
 
   if (i == 9)
   {
-    if ([v3 maxRetries] > v4)
+    if ([countCopy maxRetries] > dropped)
     {
-      v4 = [v3 maxRetries];
+      dropped = [countCopy maxRetries];
       v5 = 9;
     }
 
@@ -331,7 +331,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if ([v3 forceLifetimeExp] <= v4)
+  if ([countCopy forceLifetimeExp] <= dropped)
   {
     if (v5)
     {
@@ -346,20 +346,20 @@ LABEL_31:
 
   else
   {
-    [v3 forceLifetimeExp];
+    [countCopy forceLifetimeExp];
     v7 = 10;
   }
 
   return v7;
 }
 
-- (id)submitDPEMessage:(id)a3
+- (id)submitDPEMessage:(id)message
 {
-  v51 = a3;
+  messageCopy = message;
   v4 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v51 key];
+    v5 = [messageCopy key];
     *buf = 136446722;
     *&buf[4] = "[WADatapathDiagnosticsMessageSubmitter submitDPEMessage:]";
     *&buf[12] = 1024;
@@ -382,18 +382,18 @@ LABEL_31:
   v57 = sub_100093EC0;
   v58 = sub_100093ED0;
   v59 = 0;
-  v6 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:v51];
+  v6 = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:messageCopy];
   v52 = v6;
   if (v6)
   {
     v7 = v6;
-    v8 = [v7 dpsEpiloge];
+    dpsEpiloge = [v7 dpsEpiloge];
 
-    if (v8)
+    if (dpsEpiloge)
     {
-      v9 = [v7 dpsEpiloge];
-      v10 = [v9 action];
-      if ((v10 & 2) != 0)
+      dpsEpiloge2 = [v7 dpsEpiloge];
+      action = [dpsEpiloge2 action];
+      if ((action & 2) != 0)
       {
         v11 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -410,7 +410,7 @@ LABEL_31:
         v13 = 0;
       }
 
-      else if (([v9 action] & 4) != 0)
+      else if (([dpsEpiloge2 action] & 4) != 0)
       {
         v11 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -427,7 +427,7 @@ LABEL_31:
         v13 = 1;
       }
 
-      else if (([v9 action] & 0x40) != 0)
+      else if (([dpsEpiloge2 action] & 0x40) != 0)
       {
         v11 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -446,10 +446,10 @@ LABEL_31:
 
       else
       {
-        v15 = [v9 action];
+        action2 = [dpsEpiloge2 action];
         v16 = WALogCategoryDefaultHandle();
         v11 = v16;
-        if ((v15 & 0x80) == 0)
+        if ((action2 & 0x80) == 0)
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
@@ -478,7 +478,7 @@ LABEL_31:
         v12 = 1;
       }
 
-      v14 = (v10 >> 1) & 1;
+      v14 = (action >> 1) & 1;
     }
 
     else
@@ -489,11 +489,11 @@ LABEL_31:
       v14 = 0;
     }
 
-    v18 = [v7 snapshot];
+    snapshot = [v7 snapshot];
 
     v19 = WALogCategoryDefaultHandle();
-    v20 = v19;
-    if (v18)
+    snapshot2 = v19;
+    if (snapshot)
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
@@ -501,10 +501,10 @@ LABEL_31:
         v63 = "[WADatapathDiagnosticsMessageSubmitter submitDPEMessage:]";
         v64 = 1024;
         v65 = 299;
-        _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found - snapshot submessage", v62, 0x12u);
+        _os_log_impl(&_mh_execute_header, snapshot2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found - snapshot submessage", v62, 0x12u);
       }
 
-      v20 = [v7 snapshot];
+      snapshot2 = [v7 snapshot];
       v21 = 0;
       v22 = 0;
       v23 = 0;
@@ -515,23 +515,23 @@ LABEL_31:
         {
           if (v21 == 2)
           {
-            [v20 txCompletionSnapshotVI];
+            [snapshot2 txCompletionSnapshotVI];
           }
 
           else
           {
-            [v20 txCompletionSnapshotVO];
+            [snapshot2 txCompletionSnapshotVO];
           }
         }
 
         else if (v21)
         {
-          [v20 txCompletionSnapshotBK];
+          [snapshot2 txCompletionSnapshotBK];
         }
 
         else
         {
-          [v20 txCompletionSnapshotBE];
+          [snapshot2 txCompletionSnapshotBE];
         }
         v25 = ;
         v22 = v25;
@@ -564,7 +564,7 @@ LABEL_31:
         v63 = "[WADatapathDiagnosticsMessageSubmitter submitDPEMessage:]";
         v64 = 1024;
         v65 = 333;
-        _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}s::%d:snapshot submessage not found", v62, 0x12u);
+        _os_log_impl(&_mh_execute_header, snapshot2, OS_LOG_TYPE_ERROR, "%{public}s::%d:snapshot submessage not found", v62, 0x12u);
       }
 
       v26 = 0xFFFFFFFFLL;
@@ -599,14 +599,14 @@ LABEL_62:
         v35 = v55[5];
         v55[5] = v33;
 
-        v9 = [NSString stringWithFormat:v34];
+        dpsEpiloge2 = [NSString stringWithFormat:v34];
         v36 = [*(*&buf[8] + 40) stringByReplacingOccurrencesOfString:@"%" withString:&stru_1000F04E0];
         v37 = [v55[5] stringByReplacingOccurrencesOfString:@"%" withString:&stru_1000F04E0];
-        v11 = [(SDRDiagnosticReporter *)self->_ABCReporter signatureWithDomain:@"WiFi" type:v9 subType:v36 subtypeContext:v37 detectedProcess:@"wifianalyticsd" triggerThresholdValues:0];
-        v38 = [(WADatapathDiagnosticsMessageSubmitter *)self diagnosticMessagePayload];
+        v11 = [(SDRDiagnosticReporter *)self->_ABCReporter signatureWithDomain:@"WiFi" type:dpsEpiloge2 subType:v36 subtypeContext:v37 detectedProcess:@"wifianalyticsd" triggerThresholdValues:0];
+        diagnosticMessagePayload = [(WADatapathDiagnosticsMessageSubmitter *)self diagnosticMessagePayload];
         v39 = [NSArray alloc];
-        v40 = [v7 dictionaryRepresentation];
-        v41 = [v39 initWithObjects:{v40, 0}];
+        dictionaryRepresentation = [v7 dictionaryRepresentation];
+        v41 = [v39 initWithObjects:{dictionaryRepresentation, 0}];
 
         ABCReporter = self->_ABCReporter;
         v53[0] = _NSConcreteStackBlock;
@@ -615,7 +615,7 @@ LABEL_62:
         v53[3] = &unk_1000EE978;
         v53[4] = buf;
         v53[5] = &v54;
-        [(SDRDiagnosticReporter *)ABCReporter snapshotWithSignature:v11 duration:v41 events:v38 payload:0 actions:v53 reply:10.0];
+        [(SDRDiagnosticReporter *)ABCReporter snapshotWithSignature:v11 duration:v41 events:diagnosticMessagePayload payload:0 actions:v53 reply:10.0];
 
         v17 = 1;
 LABEL_66:
@@ -673,8 +673,8 @@ LABEL_66:
 
   v60 = NSLocalizedFailureReasonErrorKey;
   v61 = @"WAErrorCodeSubmissionModelFailure";
-  v9 = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-  v43 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9007 userInfo:v9];
+  dpsEpiloge2 = [NSDictionary dictionaryWithObjects:&v61 forKeys:&v60 count:1];
+  v43 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9007 userInfo:dpsEpiloge2];
   v17 = 0;
 LABEL_67:
 
@@ -687,7 +687,7 @@ LABEL_67:
     v44 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
-      v45 = [v51 key];
+      v45 = [messageCopy key];
       *buf = 136446722;
       *&buf[4] = "[WADatapathDiagnosticsMessageSubmitter submitDPEMessage:]";
       *&buf[12] = 1024;
@@ -701,14 +701,14 @@ LABEL_67:
   return v43;
 }
 
-- (id)submitDPSRMessage:(id)a3
+- (id)submitDPSRMessage:(id)message
 {
-  v369 = self;
-  v368 = a3;
+  selfCopy = self;
+  messageCopy = message;
   v3 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v368 key];
+    v4 = [messageCopy key];
     *buf = 136446722;
     v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
     v432 = 1024;
@@ -731,7 +731,7 @@ LABEL_67:
   v419 = sub_100093EC0;
   v420 = sub_100093ED0;
   v421 = 0;
-  v5 = [(WAProtobufMessageSubmitter *)v369 instantiateAWDProtobufAndPopulateValues:v368];
+  v5 = [(WAProtobufMessageSubmitter *)selfCopy instantiateAWDProtobufAndPopulateValues:messageCopy];
   v370 = v5;
   if (!v5)
   {
@@ -756,8 +756,8 @@ LABEL_67:
   }
 
   v392 = v5;
-  v6 = [v392 stallNotifications];
-  v367 = [v6 count] != 0;
+  stallNotifications = [v392 stallNotifications];
+  v367 = [stallNotifications count] != 0;
 
   if (v367)
   {
@@ -765,8 +765,8 @@ LABEL_67:
     v415 = 0u;
     v412 = 0u;
     v413 = 0u;
-    v7 = [v392 stallNotifications];
-    v8 = [v7 countByEnumeratingWithState:&v412 objects:v446 count:16];
+    stallNotifications2 = [v392 stallNotifications];
+    v8 = [stallNotifications2 countByEnumeratingWithState:&v412 objects:v446 count:16];
     if (!v8)
     {
       goto LABEL_13;
@@ -779,13 +779,13 @@ LABEL_67:
       {
         if (*v413 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(stallNotifications2);
         }
 
         v11 = *(*(&v412 + 1) + 8 * i);
         if (![v11 symptom])
         {
-          v351 = [v11 problemAC];
+          problemAC = [v11 problemAC];
           v12 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
@@ -794,7 +794,7 @@ LABEL_67:
             v432 = 1024;
             v433 = 495;
             v434 = 1024;
-            *v435 = v351;
+            *v435 = problemAC;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:**** Found first DPS on AC bitfield %x", buf, 0x18u);
           }
 
@@ -805,8 +805,8 @@ LABEL_17:
           v411 = 0u;
           v408 = 0u;
           v409 = 0u;
-          v13 = [v392 stallNotifications];
-          v14 = [v13 countByEnumeratingWithState:&v408 objects:v445 count:16];
+          stallNotifications3 = [v392 stallNotifications];
+          v14 = [stallNotifications3 countByEnumeratingWithState:&v408 objects:v445 count:16];
           if (!v14)
           {
             LOBYTE(v381) = 0;
@@ -827,17 +827,17 @@ LABEL_17:
 LABEL_20:
             if (*v409 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(stallNotifications3);
             }
 
             v17 = *(*(&v408 + 1) + 8 * v16);
             v18 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v392 stallNotifications];
-              v20 = [v19 indexOfObject:v17];
-              v21 = [v392 stallNotifications];
-              v22 = [v21 count];
+              stallNotifications4 = [v392 stallNotifications];
+              v20 = [stallNotifications4 indexOfObject:v17];
+              stallNotifications5 = [v392 stallNotifications];
+              v22 = [stallNotifications5 count];
               *buf = 136446978;
               v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
               v432 = 1024;
@@ -919,7 +919,7 @@ LABEL_39:
 
             if (v14 == ++v16)
             {
-              v14 = [v13 countByEnumeratingWithState:&v408 objects:v445 count:16];
+              v14 = [stallNotifications3 countByEnumeratingWithState:&v408 objects:v445 count:16];
               if (!v14)
               {
 LABEL_50:
@@ -935,38 +935,38 @@ LABEL_50:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v412 objects:v446 count:16];
+      v8 = [stallNotifications2 countByEnumeratingWithState:&v412 objects:v446 count:16];
       if (!v8)
       {
 LABEL_13:
-        v351 = 0;
+        problemAC = 0;
         v361 = 0;
         goto LABEL_17;
       }
     }
   }
 
-  v13 = WALogCategoryDefaultHandle();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  stallNotifications3 = WALogCategoryDefaultHandle();
+  if (os_log_type_enabled(stallNotifications3, OS_LOG_TYPE_ERROR))
   {
     *buf = 136446466;
     v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
     v432 = 1024;
     v433 = 526;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}s::%d:Missing DPS Notificaiton", buf, 0x12u);
+    _os_log_impl(&_mh_execute_header, stallNotifications3, OS_LOG_TYPE_ERROR, "%{public}s::%d:Missing DPS Notificaiton", buf, 0x12u);
   }
 
   LOBYTE(v381) = 0;
   v385 = 0;
   v375 = 0;
   v376 = 0;
-  v351 = 0;
+  problemAC = 0;
   v361 = 0;
   v353 = 1;
 LABEL_51:
 
-  v26 = [v392 probeResults];
-  v366 = [v26 count] != 0;
+  probeResults = [v392 probeResults];
+  v366 = [probeResults count] != 0;
 
   if (!v366)
   {
@@ -1058,8 +1058,8 @@ LABEL_75:
     v359 = 0;
   }
 
-  v32 = [v392 probeResults];
-  v33 = [v32 count] > 1;
+  probeResults2 = [v392 probeResults];
+  v33 = [probeResults2 count] > 1;
 
   if (!v33)
   {
@@ -1069,8 +1069,8 @@ LABEL_75:
     goto LABEL_115;
   }
 
-  v34 = [v392 probeResults];
-  v31 = [v392 probeResultAtIndex:{objc_msgSend(v34, "count") - 1}];
+  probeResults3 = [v392 probeResults];
+  v31 = [v392 probeResultAtIndex:{objc_msgSend(probeResults3, "count") - 1}];
 
   v350 = [v31 hasRttGatewayBE] && objc_msgSend(v31, "rttGatewayBE") && objc_msgSend(v31, "hasRttGatewayBK") && objc_msgSend(v31, "rttGatewayBK") && objc_msgSend(v31, "hasRttGatewayVO") && objc_msgSend(v31, "rttGatewayVO") && objc_msgSend(v31, "hasRttGatewayVI") && objc_msgSend(v31, "rttGatewayVI") != 0;
   if ((![v31 hasRttGatewayBE] || ((objc_msgSend(v31, "rttGatewayBE") != 0) & BYTE4(v376)) == 0) && (!objc_msgSend(v31, "hasRttGatewayBE") || ((objc_msgSend(v31, "rttGatewayBK") != 0) & v376) == 0) && (!objc_msgSend(v31, "hasRttGatewayBE") || ((objc_msgSend(v31, "rttGatewayVO") != 0) & v375) == 0) && (!objc_msgSend(v31, "hasRttGatewayBE") || !objc_msgSend(v31, "rttGatewayVI") || (v375 & 0x100000000) == 0))
@@ -1096,9 +1096,9 @@ LABEL_113:
 LABEL_114:
   v371 = v31;
 LABEL_115:
-  v35 = [v392 dpsEpiloge];
+  dpsEpiloge = [v392 dpsEpiloge];
 
-  if (!v35)
+  if (!dpsEpiloge)
   {
     memset(v354, 0, sizeof(v354));
     v380 = 0;
@@ -1171,8 +1171,8 @@ LABEL_126:
     v36 = v385;
   }
 
-  v391 = [log[0] action];
-  if ((v391 & 0x10) != 0)
+  action = [log[0] action];
+  if ((action & 0x10) != 0)
   {
     v40 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -1215,10 +1215,10 @@ LABEL_126:
     }
   }
 
-  v43 = [log[0] associationChanges];
+  associationChanges = [log[0] associationChanges];
   v385 = v36;
 
-  if (!v43)
+  if (!associationChanges)
   {
     v380 = 0;
     LODWORD(v384) = 0;
@@ -1232,8 +1232,8 @@ LABEL_126:
   v407 = 0u;
   v404 = 0u;
   v405 = 0u;
-  v44 = [log[0] associationChanges];
-  v45 = [v44 countByEnumeratingWithState:&v404 objects:v444 count:16];
+  associationChanges2 = [log[0] associationChanges];
+  v45 = [associationChanges2 countByEnumeratingWithState:&v404 objects:v444 count:16];
   if (!v45)
   {
     v380 = 0;
@@ -1256,17 +1256,17 @@ LABEL_126:
     {
       if (*v405 != v396)
       {
-        objc_enumerationMutation(v44);
+        objc_enumerationMutation(associationChanges2);
       }
 
       v47 = *(*(&v404 + 1) + 8 * j);
       v48 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [log[0] associationChanges];
-        v50 = [v49 indexOfObject:v47];
-        v51 = [log[0] associationChanges];
-        v52 = [v51 count];
+        associationChanges3 = [log[0] associationChanges];
+        v50 = [associationChanges3 indexOfObject:v47];
+        associationChanges4 = [log[0] associationChanges];
+        v52 = [associationChanges4 count];
         *buf = 136446978;
         v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
         v432 = 1024;
@@ -1278,10 +1278,10 @@ LABEL_126:
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Change %lu of %lu", buf, 0x26u);
       }
 
-      v53 = [v47 newBSSID];
+      newBSSID = [v47 newBSSID];
       v54 = WALogCategoryDefaultHandle();
       v55 = os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT);
-      if (v53)
+      if (newBSSID)
       {
         if (v55)
         {
@@ -1332,8 +1332,8 @@ LABEL_126:
           _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found Change - changedMAC - meaning user toggled WiFi", buf, 0x12u);
         }
 
-        v58 = [v392 probeResults];
-        v59 = [v58 count] > 1;
+        probeResults4 = [v392 probeResults];
+        v59 = [probeResults4 count] > 1;
 
         if (v59)
         {
@@ -1371,8 +1371,8 @@ LABEL_126:
 
       else
       {
-        v61 = [v392 probeResults];
-        v62 = [v61 count] == 1;
+        probeResults5 = [v392 probeResults];
+        v62 = [probeResults5 count] == 1;
 
         if (v62)
         {
@@ -1411,19 +1411,19 @@ LABEL_178:
       }
     }
 
-    v45 = [v44 countByEnumeratingWithState:&v404 objects:v444 count:16];
+    v45 = [associationChanges2 countByEnumeratingWithState:&v404 objects:v444 count:16];
   }
 
   while (v45);
 LABEL_187:
 
 LABEL_188:
-  v65 = [log[0] qDpsStats];
+  qDpsStats = [log[0] qDpsStats];
 
-  if (v65)
+  if (qDpsStats)
   {
-    v66 = [log[0] qDpsStats];
-    *&v354[8] = [v66 quickDpsResetRecommendation];
+    qDpsStats2 = [log[0] qDpsStats];
+    *&v354[8] = [qDpsStats2 quickDpsResetRecommendation];
     v67 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
     {
@@ -1442,7 +1442,7 @@ LABEL_188:
       _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found qDpsStat -- quickDpsResetRecommendation -- %@", buf, 0x1Cu);
     }
 
-    if ([v66 screenStateOn])
+    if ([qDpsStats2 screenStateOn])
     {
       v69 = @"ON";
     }
@@ -1466,7 +1466,7 @@ LABEL_188:
       _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found qDpsStat -- screenState -- %@", buf, 0x1Cu);
     }
 
-    v71 = [v66 suppressedReasonAsString:{objc_msgSend(v66, "suppressedReason")}];
+    v71 = [qDpsStats2 suppressedReasonAsString:{objc_msgSend(qDpsStats2, "suppressedReason")}];
     v364 = [NSString stringWithString:v71];
 
     v72 = WALogCategoryDefaultHandle();
@@ -1490,12 +1490,12 @@ LABEL_188:
   }
 
   HIDWORD(v363) = (obj >> 1) & 1;
-  *v354 = (v391 >> 4) & 1;
+  *v354 = (action >> 4) & 1;
   *&v354[4] = (v393 >> 3) & 1;
 LABEL_203:
-  v73 = [v392 snapshot];
+  snapshot = [v392 snapshot];
 
-  if (v73)
+  if (snapshot)
   {
     v74 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
@@ -1508,8 +1508,8 @@ LABEL_203:
     }
   }
 
-  v75 = [v392 dpsCounterSamples];
-  v76 = [v75 count];
+  dpsCounterSamples = [v392 dpsCounterSamples];
+  v76 = [dpsCounterSamples count];
 
   v77 = v76 - 1;
   if (v76 > 5)
@@ -1557,8 +1557,8 @@ LABEL_203:
     while (1)
     {
       v81 = [v392 dpsCounterSampleAtIndex:0];
-      v82 = [v81 peerStats];
-      v83 = [v82 ccasCount] > v80;
+      peerStats = [v81 peerStats];
+      v83 = [peerStats ccasCount] > v80;
 
       if (!v83)
       {
@@ -1566,23 +1566,23 @@ LABEL_203:
       }
 
       v84 = [v392 dpsCounterSampleAtIndex:v398];
-      v85 = [v84 peerStats];
-      v86 = [v85 ccaAtIndex:v80];
-      v87 = [v86 residentTime];
+      peerStats2 = [v84 peerStats];
+      v86 = [peerStats2 ccaAtIndex:v80];
+      residentTime = [v86 residentTime];
       v88 = [v392 dpsCounterSampleAtIndex:0];
-      v89 = [v88 peerStats];
-      v90 = [v89 ccaAtIndex:v80];
-      v91 = [v90 residentTime];
+      peerStats3 = [v88 peerStats];
+      v90 = [peerStats3 ccaAtIndex:v80];
+      residentTime2 = [v90 residentTime];
 
-      v92 = v87 - v91;
-      if (v87 - v91 > v396)
+      v92 = residentTime - residentTime2;
+      if (residentTime - residentTime2 > v396)
       {
         v93 = [v392 dpsCounterSampleAtIndex:0];
-        v94 = [v93 peerStats];
-        v95 = [v94 ccaAtIndex:v80];
-        v96 = [v95 state];
+        peerStats4 = [v93 peerStats];
+        v95 = [peerStats4 ccaAtIndex:v80];
+        state = [v95 state];
 
-        v374 = v96;
+        v374 = state;
         *&v396 = v92;
       }
 
@@ -1595,18 +1595,18 @@ LABEL_203:
       if (os_log_type_enabled(v209, OS_LOG_TYPE_ERROR))
       {
         v210 = [v392 dpsCounterSampleAtIndex:0];
-        v211 = [v210 peerStats];
-        v212 = [v211 ccasCount];
+        peerStats5 = [v210 peerStats];
+        ccasCount = [peerStats5 ccasCount];
         v213 = [v392 dpsCounterSampleAtIndex:0];
-        v214 = [v213 peerStats];
-        v215 = [v214 ccas];
-        v216 = [v215 description];
+        peerStats6 = [v213 peerStats];
+        ccas = [peerStats6 ccas];
+        v216 = [ccas description];
         *buf = 136446978;
         v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
         v432 = 1024;
         v433 = 703;
         v434 = 2048;
-        *v435 = v212;
+        *v435 = ccasCount;
         *&v435[8] = 2112;
         *v436 = v216;
         _os_log_impl(&_mh_execute_header, v209, OS_LOG_TYPE_ERROR, "%{public}s::%d:Median CCA not found nCCA %lu %@", buf, 0x26u);
@@ -1615,8 +1615,8 @@ LABEL_203:
       for (LODWORD(v395) = 0; ; LODWORD(v395) = v395 + 1)
       {
         v217 = [v392 dpsCounterSampleAtIndex:0];
-        v218 = [v217 peerStats];
-        v219 = [v218 ccasCount] > v395;
+        peerStats7 = [v217 peerStats];
+        v219 = [peerStats7 ccasCount] > v395;
 
         if (!v219)
         {
@@ -1624,18 +1624,18 @@ LABEL_203:
         }
 
         v220 = [v392 dpsCounterSampleAtIndex:v398];
-        v221 = [v220 peerStats];
-        v222 = [v221 ccaAtIndex:v395];
-        v223 = [v222 residentTime];
+        peerStats8 = [v220 peerStats];
+        v222 = [peerStats8 ccaAtIndex:v395];
+        residentTime3 = [v222 residentTime];
         v224 = [v392 dpsCounterSampleAtIndex:0];
-        v225 = [v224 peerStats];
-        v226 = [v225 ccaAtIndex:v395];
-        v227 = [v226 residentTime];
+        peerStats9 = [v224 peerStats];
+        v226 = [peerStats9 ccaAtIndex:v395];
+        residentTime4 = [v226 residentTime];
 
         if (v398)
         {
           v228 = 0;
-          obj = (v223 - v227);
+          obj = (residentTime3 - residentTime4);
           v229 = 1;
           do
           {
@@ -1644,12 +1644,12 @@ LABEL_203:
             {
               log[0] = v230;
               v231 = [v392 dpsCounterSampleAtIndex:v228];
-              v232 = [v231 peerStats];
-              v233 = [v232 ccaAtIndex:v395];
-              v234 = [v233 residentTime];
+              peerStats10 = [v231 peerStats];
+              v233 = [peerStats10 ccaAtIndex:v395];
+              residentTime5 = [v233 residentTime];
               v235 = [v392 dpsCounterSampleAtIndex:v228];
-              v236 = [v235 peerStats];
-              v237 = [v236 ccaAtIndex:v395];
+              peerStats11 = [v235 peerStats];
+              v237 = [peerStats11 ccaAtIndex:v395];
               *buf = 136448002;
               v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
               v432 = 1024;
@@ -1663,7 +1663,7 @@ LABEL_203:
               *&v436[10] = 2048;
               *&v436[12] = obj;
               *v437 = 2048;
-              *&v437[2] = v234;
+              *&v437[2] = residentTime5;
               *v438 = 2112;
               *&v438[2] = v237;
               v230 = log[0];
@@ -1685,8 +1685,8 @@ LABEL_203:
     while (1)
     {
       v102 = [v392 dpsCounterSampleAtIndex:0];
-      v103 = [v102 peerStats];
-      v104 = [v103 rssisCount] > v101;
+      peerStats12 = [v102 peerStats];
+      v104 = [peerStats12 rssisCount] > v101;
 
       if (!v104)
       {
@@ -1694,23 +1694,23 @@ LABEL_203:
       }
 
       v105 = [v392 dpsCounterSampleAtIndex:v398];
-      v106 = [v105 peerStats];
-      v107 = [v106 rssiAtIndex:v101];
-      v108 = [v107 residentTime];
+      peerStats13 = [v105 peerStats];
+      v107 = [peerStats13 rssiAtIndex:v101];
+      residentTime6 = [v107 residentTime];
       v109 = [v392 dpsCounterSampleAtIndex:0];
-      v110 = [v109 peerStats];
-      v111 = [v110 rssiAtIndex:v101];
-      v112 = [v111 residentTime];
+      peerStats14 = [v109 peerStats];
+      v111 = [peerStats14 rssiAtIndex:v101];
+      residentTime7 = [v111 residentTime];
 
-      v113 = v108 - v112;
-      if (v108 - v112 > v396)
+      v113 = residentTime6 - residentTime7;
+      if (residentTime6 - residentTime7 > v396)
       {
         v114 = [v392 dpsCounterSampleAtIndex:0];
-        v115 = [v114 peerStats];
-        v116 = [v115 rssiAtIndex:v101];
-        v117 = [v116 state];
+        peerStats15 = [v114 peerStats];
+        v116 = [peerStats15 rssiAtIndex:v101];
+        state2 = [v116 state];
 
-        v373 = v117;
+        v373 = state2;
         *&v396 = v113;
       }
 
@@ -1723,18 +1723,18 @@ LABEL_203:
       if (os_log_type_enabled(v239, OS_LOG_TYPE_ERROR))
       {
         v240 = [v392 dpsCounterSampleAtIndex:0];
-        v241 = [v240 peerStats];
-        v242 = [v241 rssisCount];
+        peerStats16 = [v240 peerStats];
+        rssisCount = [peerStats16 rssisCount];
         v243 = [v392 dpsCounterSampleAtIndex:0];
-        v244 = [v243 peerStats];
-        v245 = [v244 rssis];
-        v246 = [v245 description];
+        peerStats17 = [v243 peerStats];
+        rssis = [peerStats17 rssis];
+        v246 = [rssis description];
         *buf = 136446978;
         v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
         v432 = 1024;
         v433 = 725;
         v434 = 2048;
-        *v435 = v242;
+        *v435 = rssisCount;
         *&v435[8] = 2112;
         *v436 = v246;
         _os_log_impl(&_mh_execute_header, v239, OS_LOG_TYPE_ERROR, "%{public}s::%d:Median RSSI not found nRSSI %lu %@", buf, 0x26u);
@@ -1743,8 +1743,8 @@ LABEL_203:
       for (LODWORD(v395) = 0; ; LODWORD(v395) = v395 + 1)
       {
         v247 = [v392 dpsCounterSampleAtIndex:0];
-        v248 = [v247 peerStats];
-        v249 = [v248 rssisCount] > v395;
+        peerStats18 = [v247 peerStats];
+        v249 = [peerStats18 rssisCount] > v395;
 
         if (!v249)
         {
@@ -1752,18 +1752,18 @@ LABEL_203:
         }
 
         v250 = [v392 dpsCounterSampleAtIndex:v398];
-        v251 = [v250 peerStats];
-        v252 = [v251 rssiAtIndex:v395];
-        v253 = [v252 residentTime];
+        peerStats19 = [v250 peerStats];
+        v252 = [peerStats19 rssiAtIndex:v395];
+        residentTime8 = [v252 residentTime];
         v254 = [v392 dpsCounterSampleAtIndex:0];
-        v255 = [v254 peerStats];
-        v256 = [v255 rssiAtIndex:v395];
-        v257 = [v256 residentTime];
+        peerStats20 = [v254 peerStats];
+        v256 = [peerStats20 rssiAtIndex:v395];
+        residentTime9 = [v256 residentTime];
 
         if (v398)
         {
           v258 = 0;
-          obj = (v253 - v257);
+          obj = (residentTime8 - residentTime9);
           v259 = 1;
           do
           {
@@ -1772,12 +1772,12 @@ LABEL_203:
             {
               log[0] = v260;
               v261 = [v392 dpsCounterSampleAtIndex:v258];
-              v262 = [v261 peerStats];
-              v263 = [v262 rssiAtIndex:v395];
-              v264 = [v263 residentTime];
+              peerStats21 = [v261 peerStats];
+              v263 = [peerStats21 rssiAtIndex:v395];
+              residentTime10 = [v263 residentTime];
               v265 = [v392 dpsCounterSampleAtIndex:v258];
-              v266 = [v265 peerStats];
-              v267 = [v266 rssiAtIndex:v395];
+              peerStats22 = [v265 peerStats];
+              v267 = [peerStats22 rssiAtIndex:v395];
               *buf = 136448002;
               v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
               v432 = 1024;
@@ -1791,7 +1791,7 @@ LABEL_203:
               *&v436[10] = 2048;
               *&v436[12] = obj;
               *v437 = 2048;
-              *&v437[2] = v264;
+              *&v437[2] = residentTime10;
               *v438 = 2112;
               *&v438[2] = v267;
               v260 = log[0];
@@ -1813,8 +1813,8 @@ LABEL_203:
     while (1)
     {
       v119 = [v392 dpsCounterSampleAtIndex:0];
-      v120 = [v119 peerStats];
-      v121 = [v120 snrsCount] > v118;
+      peerStats23 = [v119 peerStats];
+      v121 = [peerStats23 snrsCount] > v118;
 
       if (!v121)
       {
@@ -1822,23 +1822,23 @@ LABEL_203:
       }
 
       v122 = [v392 dpsCounterSampleAtIndex:v398];
-      v123 = [v122 peerStats];
-      v124 = [v123 snrAtIndex:v118];
-      v125 = [v124 residentTime];
+      peerStats24 = [v122 peerStats];
+      v124 = [peerStats24 snrAtIndex:v118];
+      residentTime11 = [v124 residentTime];
       v126 = [v392 dpsCounterSampleAtIndex:0];
-      v127 = [v126 peerStats];
-      v128 = [v127 snrAtIndex:v118];
-      v129 = [v128 residentTime];
+      peerStats25 = [v126 peerStats];
+      v128 = [peerStats25 snrAtIndex:v118];
+      residentTime12 = [v128 residentTime];
 
-      v130 = v125 - v129;
-      if (v125 - v129 > v396)
+      v130 = residentTime11 - residentTime12;
+      if (residentTime11 - residentTime12 > v396)
       {
         v131 = [v392 dpsCounterSampleAtIndex:0];
-        v132 = [v131 peerStats];
-        v133 = [v132 snrAtIndex:v118];
-        v134 = [v133 state];
+        peerStats26 = [v131 peerStats];
+        v133 = [peerStats26 snrAtIndex:v118];
+        state3 = [v133 state];
 
-        v372 = v134;
+        v372 = state3;
         *&v396 = v130;
       }
 
@@ -1851,18 +1851,18 @@ LABEL_203:
       if (os_log_type_enabled(v268, OS_LOG_TYPE_ERROR))
       {
         v269 = [v392 dpsCounterSampleAtIndex:0];
-        v270 = [v269 peerStats];
-        v271 = [v270 snrsCount];
+        peerStats27 = [v269 peerStats];
+        snrsCount = [peerStats27 snrsCount];
         v272 = [v392 dpsCounterSampleAtIndex:0];
-        v273 = [v272 peerStats];
-        v274 = [v273 snrs];
-        v275 = [v274 description];
+        peerStats28 = [v272 peerStats];
+        snrs = [peerStats28 snrs];
+        v275 = [snrs description];
         *buf = 136446978;
         v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
         v432 = 1024;
         v433 = 747;
         v434 = 2048;
-        *v435 = v271;
+        *v435 = snrsCount;
         *&v435[8] = 2112;
         *v436 = v275;
         _os_log_impl(&_mh_execute_header, v268, OS_LOG_TYPE_ERROR, "%{public}s::%d:Median SNR not found nSNR %lu %@", buf, 0x26u);
@@ -1871,8 +1871,8 @@ LABEL_203:
       for (LODWORD(v395) = 0; ; LODWORD(v395) = v395 + 1)
       {
         v276 = [v392 dpsCounterSampleAtIndex:0];
-        v277 = [v276 peerStats];
-        v278 = [v277 snrsCount] > v395;
+        peerStats29 = [v276 peerStats];
+        v278 = [peerStats29 snrsCount] > v395;
 
         if (!v278)
         {
@@ -1880,18 +1880,18 @@ LABEL_203:
         }
 
         v279 = [v392 dpsCounterSampleAtIndex:v398];
-        v280 = [v279 peerStats];
-        v281 = [v280 snrAtIndex:v395];
-        v282 = [v281 residentTime];
+        peerStats30 = [v279 peerStats];
+        v281 = [peerStats30 snrAtIndex:v395];
+        residentTime13 = [v281 residentTime];
         v283 = [v392 dpsCounterSampleAtIndex:0];
-        v284 = [v283 peerStats];
-        v285 = [v284 snrAtIndex:v395];
-        v286 = [v285 residentTime];
+        peerStats31 = [v283 peerStats];
+        v285 = [peerStats31 snrAtIndex:v395];
+        residentTime14 = [v285 residentTime];
 
         if (v398)
         {
           v287 = 0;
-          obj = (v282 - v286);
+          obj = (residentTime13 - residentTime14);
           v288 = 1;
           do
           {
@@ -1900,12 +1900,12 @@ LABEL_203:
             {
               log[0] = v289;
               v290 = [v392 dpsCounterSampleAtIndex:v287];
-              v291 = [v290 peerStats];
-              v292 = [v291 snrAtIndex:v395];
-              v293 = [v292 residentTime];
+              peerStats32 = [v290 peerStats];
+              v292 = [peerStats32 snrAtIndex:v395];
+              residentTime15 = [v292 residentTime];
               v294 = [v392 dpsCounterSampleAtIndex:v287];
-              v295 = [v294 peerStats];
-              v296 = [v295 snrAtIndex:v395];
+              peerStats33 = [v294 peerStats];
+              v296 = [peerStats33 snrAtIndex:v395];
               *buf = 136448002;
               v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
               v432 = 1024;
@@ -1919,7 +1919,7 @@ LABEL_203:
               *&v436[10] = 2048;
               *&v436[12] = obj;
               *v437 = 2048;
-              *&v437[2] = v293;
+              *&v437[2] = residentTime15;
               *v438 = 2112;
               *&v438[2] = v296;
               v289 = log[0];
@@ -1936,47 +1936,47 @@ LABEL_203:
     }
 
     v135 = [v392 dpsCounterSampleAtIndex:v398];
-    v136 = [v135 controllerStats];
-    v137 = [v136 aggregateMetrics];
-    v138 = [v137 kRxCRCGlitch];
+    controllerStats = [v135 controllerStats];
+    aggregateMetrics = [controllerStats aggregateMetrics];
+    kRxCRCGlitch = [aggregateMetrics kRxCRCGlitch];
     v139 = [v392 dpsCounterSampleAtIndex:0];
-    v140 = [v139 controllerStats];
-    v141 = [v140 aggregateMetrics];
-    v142 = [v141 kRxCRCGlitch];
+    controllerStats2 = [v139 controllerStats];
+    aggregateMetrics2 = [controllerStats2 aggregateMetrics];
+    kRxCRCGlitch2 = [aggregateMetrics2 kRxCRCGlitch];
 
-    v358 = (v138 - v142) > 0xE15;
+    v358 = (kRxCRCGlitch - kRxCRCGlitch2) > 0xE15;
     v143 = [v392 dpsCounterSampleAtIndex:v398];
-    v144 = [v143 controllerStats];
-    v145 = [v144 scanActivity];
-    LODWORD(v138) = [v145 roamCount];
+    controllerStats3 = [v143 controllerStats];
+    scanActivity = [controllerStats3 scanActivity];
+    LODWORD(kRxCRCGlitch) = [scanActivity roamCount];
     v146 = [v392 dpsCounterSampleAtIndex:0];
-    v147 = [v146 controllerStats];
-    v148 = [v147 scanActivity];
-    LODWORD(v142) = [v148 roamCount];
+    controllerStats4 = [v146 controllerStats];
+    scanActivity2 = [controllerStats4 scanActivity];
+    LODWORD(kRxCRCGlitch2) = [scanActivity2 roamCount];
 
-    v357 = v138 != v142;
+    v357 = kRxCRCGlitch != kRxCRCGlitch2;
     v149 = [v392 dpsCounterSampleAtIndex:v398];
-    v150 = [v149 controllerStats];
-    v151 = [v150 btCoex];
-    LODWORD(v138) = [v151 duration];
+    controllerStats5 = [v149 controllerStats];
+    btCoex = [controllerStats5 btCoex];
+    LODWORD(kRxCRCGlitch) = [btCoex duration];
     v152 = [v392 dpsCounterSampleAtIndex:0];
-    v153 = [v152 controllerStats];
-    v154 = [v153 btCoex];
-    LODWORD(v142) = [v154 duration];
+    controllerStats6 = [v152 controllerStats];
+    btCoex2 = [controllerStats6 btCoex];
+    LODWORD(kRxCRCGlitch2) = [btCoex2 duration];
 
-    v356 = v138 != v142;
+    v356 = kRxCRCGlitch != kRxCRCGlitch2;
     v155 = [v392 dpsCounterSampleAtIndex:v398];
-    v156 = [v155 controllerStats];
-    LODWORD(log[0]) = [v156 channelsVisited0];
+    controllerStats7 = [v155 controllerStats];
+    LODWORD(log[0]) = [controllerStats7 channelsVisited0];
     v157 = [v392 dpsCounterSampleAtIndex:v398];
-    v158 = [v157 controllerStats];
-    LODWORD(v398) = [v158 channelsVisited1];
+    controllerStats8 = [v157 controllerStats];
+    LODWORD(v398) = [controllerStats8 channelsVisited1];
     v159 = [v392 dpsCounterSampleAtIndex:0];
-    v160 = [v159 controllerStats];
-    v161 = [v160 channelsVisited0];
+    controllerStats9 = [v159 controllerStats];
+    channelsVisited0 = [controllerStats9 channelsVisited0];
     v162 = [v392 dpsCounterSampleAtIndex:0];
-    v163 = [v162 controllerStats];
-    LODWORD(v153) = [v163 channelsVisited1];
+    controllerStats10 = [v162 controllerStats];
+    LODWORD(controllerStats6) = [controllerStats10 channelsVisited1];
 
     v164 = 0;
     v382 = 0;
@@ -1986,36 +1986,36 @@ LABEL_203:
     v386 = 0;
     v387 = 0;
     LODWORD(v395) = 0;
-    v355 = v398 + LODWORD(log[0]) != v153 + v161;
+    v355 = v398 + LODWORD(log[0]) != controllerStats6 + channelsVisited0;
 LABEL_232:
     v165 = [v392 dpsCounterSampleAtIndex:0];
-    v166 = [v165 peerStats];
+    peerStats34 = [v165 peerStats];
     *&v398 = v164;
-    v167 = [v166 acCompletionsCount] > v164;
+    v167 = [peerStats34 acCompletionsCount] > v164;
 
     if (v167)
     {
       v168 = [v392 dpsCounterSampleAtIndex:0];
-      v169 = [v168 peerStats];
-      v170 = [v169 acCompletionsAtIndex:v398];
-      v391 = [v170 success];
+      peerStats35 = [v168 peerStats];
+      v170 = [peerStats35 acCompletionsAtIndex:v398];
+      action = [v170 success];
 
       v171 = [v392 dpsCounterSampleAtIndex:0];
-      v390 = [v171 timestamp];
+      timestamp = [v171 timestamp];
 
       v402 = 0u;
       v403 = 0u;
       v400 = 0u;
       v401 = 0u;
-      v172 = [v392 dpsCounterSamples];
-      v173 = [v172 countByEnumeratingWithState:&v400 objects:v443 count:16];
+      dpsCounterSamples2 = [v392 dpsCounterSamples];
+      v173 = [dpsCounterSamples2 countByEnumeratingWithState:&v400 objects:v443 count:16];
       if (!v173)
       {
         goto LABEL_318;
       }
 
       *&v396 = *v401;
-      obj = v172;
+      obj = dpsCounterSamples2;
       while (1)
       {
         log[0] = v173;
@@ -2028,8 +2028,8 @@ LABEL_232:
           }
 
           v175 = *(*(&v400 + 1) + 8 * v174);
-          v176 = [v175 peerStats];
-          v177 = [v176 acCompletionsCount] > v398;
+          peerStats36 = [v175 peerStats];
+          v177 = [peerStats36 acCompletionsCount] > v398;
 
           if (!v177)
           {
@@ -2037,20 +2037,20 @@ LABEL_232:
             if (os_log_type_enabled(v196, OS_LOG_TYPE_DEFAULT))
             {
               v197 = [v392 dpsCounterSampleAtIndex:0];
-              v198 = [v197 peerStats];
-              v199 = [v198 acCompletionsAtIndex:v398];
+              peerStats37 = [v197 peerStats];
+              v199 = [peerStats37 acCompletionsAtIndex:v398];
               v200 = [v199 ac];
               if (v200 >= 0xC)
               {
-                v201 = [NSString stringWithFormat:@"(unknown: %i)", v200];
+                v200 = [NSString stringWithFormat:@"(unknown: %i)", v200];
               }
 
               else
               {
-                v201 = off_1000EE9B0[v200];
+                v200 = off_1000EE9B0[v200];
               }
 
-              v202 = v201;
+              v202 = v200;
               *buf = 136446722;
               v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
               v432 = 1024;
@@ -2063,24 +2063,24 @@ LABEL_232:
             goto LABEL_249;
           }
 
-          v178 = [v175 peerStats];
-          v179 = [v178 acCompletionsAtIndex:v398];
-          v180 = [v179 qeuedPackets];
+          peerStats38 = [v175 peerStats];
+          v179 = [peerStats38 acCompletionsAtIndex:v398];
+          qeuedPackets = [v179 qeuedPackets];
 
-          v181 = [v175 peerStats];
-          v182 = [v181 acCompletionsAtIndex:v398];
-          v183 = [v182 success];
+          peerStats39 = [v175 peerStats];
+          v182 = [peerStats39 acCompletionsAtIndex:v398];
+          success = [v182 success];
 
-          v184 = [v175 timestamp];
-          v185 = [v175 peerStats];
-          v186 = [v185 acCompletionsAtIndex:v398];
+          timestamp2 = [v175 timestamp];
+          peerStats40 = [v175 peerStats];
+          v186 = [peerStats40 acCompletionsAtIndex:v398];
           v187 = [v186 ac];
 
           v188 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v188, OS_LOG_TYPE_DEFAULT))
           {
-            v189 = [v175 peerStats];
-            v190 = [v189 acCompletionsAtIndex:v398];
+            peerStats41 = [v175 peerStats];
+            v190 = [peerStats41 acCompletionsAtIndex:v398];
             v191 = [v190 acAsString:v187];
             *buf = 136447234;
             v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
@@ -2089,16 +2089,16 @@ LABEL_232:
             v434 = 2112;
             *v435 = v191;
             *&v435[8] = 1024;
-            *v436 = v183;
+            *v436 = success;
             *&v436[4] = 1024;
-            *&v436[6] = v180;
+            *&v436[6] = qeuedPackets;
             _os_log_impl(&_mh_execute_header, v188, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: %@ TxSuccess %d qp %d", buf, 0x28u);
           }
 
           if ((v395 & 1) == 0)
           {
-            v192 = [v175 peerStats];
-            v193 = [v192 acCompletionsAtIndex:v398];
+            peerStats42 = [v175 peerStats];
+            v193 = [peerStats42 acCompletionsAtIndex:v398];
             v194 = [v193 acAsString:v187];
             v195 = [v194 length] == 0;
 
@@ -2125,7 +2125,7 @@ LABEL_256:
           {
             if (v187 == 4)
             {
-              if (!((v183 <= v391) | BYTE4(v387) & 1))
+              if (!((success <= action) | BYTE4(v387) & 1))
               {
                 v207 = WALogCategoryDefaultHandle();
                 if (os_log_type_enabled(v207, OS_LOG_TYPE_DEFAULT))
@@ -2135,14 +2135,14 @@ LABEL_256:
                   v432 = 1024;
                   v433 = 834;
                   v434 = 2048;
-                  *v435 = v184 - v390;
+                  *v435 = timestamp2 - timestamp;
                   _os_log_impl(&_mh_execute_header, v207, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC VO Successful Tx status after %llu ms", buf, 0x1Cu);
                 }
 
                 HIDWORD(v387) = 1;
               }
 
-              if (!((v180 == 0) | v389 & 1))
+              if (!((qeuedPackets == 0) | v389 & 1))
               {
                 v196 = WALogCategoryDefaultHandle();
                 if (os_log_type_enabled(v196, OS_LOG_TYPE_DEFAULT))
@@ -2152,7 +2152,7 @@ LABEL_256:
                   v432 = 1024;
                   v433 = 838;
                   v434 = 2048;
-                  *v435 = v184 - v390;
+                  *v435 = timestamp2 - timestamp;
                   _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC VO Tx has Queued Data at %llu ms", buf, 0x1Cu);
                 }
 
@@ -2163,7 +2163,7 @@ LABEL_249:
                 goto LABEL_250;
               }
 
-              if (v180 == 0 && (v389 & 1) != 0)
+              if (qeuedPackets == 0 && (v389 & 1) != 0)
               {
                 if ((v383 & 1) == 0)
                 {
@@ -2175,7 +2175,7 @@ LABEL_249:
                     v432 = 1024;
                     v433 = 842;
                     v434 = 2048;
-                    *v435 = v184 - v390;
+                    *v435 = timestamp2 - timestamp;
                     _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC VO Tx Queue has emptied queue at %llu ms", buf, 0x1Cu);
                   }
 
@@ -2190,7 +2190,7 @@ LABEL_249:
 
             else if (v187 == 5)
             {
-              if (!((v183 <= v391) | v386 & 1))
+              if (!((success <= action) | v386 & 1))
               {
                 v205 = WALogCategoryDefaultHandle();
                 if (os_log_type_enabled(v205, OS_LOG_TYPE_DEFAULT))
@@ -2200,14 +2200,14 @@ LABEL_249:
                   v432 = 1024;
                   v433 = 847;
                   v434 = 2048;
-                  *v435 = v184 - v390;
+                  *v435 = timestamp2 - timestamp;
                   _os_log_impl(&_mh_execute_header, v205, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC VI Successful Tx status after %llu ms", buf, 0x1Cu);
                 }
 
                 LOBYTE(v386) = 1;
               }
 
-              if (!((v180 == 0) | BYTE4(v389) & 1))
+              if (!((qeuedPackets == 0) | BYTE4(v389) & 1))
               {
                 v196 = WALogCategoryDefaultHandle();
                 if (os_log_type_enabled(v196, OS_LOG_TYPE_DEFAULT))
@@ -2217,14 +2217,14 @@ LABEL_249:
                   v432 = 1024;
                   v433 = 851;
                   v434 = 2048;
-                  *v435 = v184 - v390;
+                  *v435 = timestamp2 - timestamp;
                   _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC VO Tx has Queued Data at %llu ms", buf, 0x1Cu);
                 }
 
                 goto LABEL_298;
               }
 
-              if (v180 == 0 && (v389 & 0x100000000) != 0)
+              if (qeuedPackets == 0 && (v389 & 0x100000000) != 0)
               {
                 if ((v383 & 0x100000000) == 0)
                 {
@@ -2236,7 +2236,7 @@ LABEL_249:
                     v432 = 1024;
                     v433 = 855;
                     v434 = 2048;
-                    *v435 = v184 - v390;
+                    *v435 = timestamp2 - timestamp;
                     _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC VI Tx Queue has emptied queue at %llu ms", buf, 0x1Cu);
                   }
 
@@ -2254,7 +2254,7 @@ LABEL_298:
 
           else if (v187 == 2)
           {
-            if (!((v183 <= v391) | v387 & 1))
+            if (!((success <= action) | v387 & 1))
             {
               v206 = WALogCategoryDefaultHandle();
               if (os_log_type_enabled(v206, OS_LOG_TYPE_DEFAULT))
@@ -2264,14 +2264,14 @@ LABEL_298:
                 v432 = 1024;
                 v433 = 821;
                 v434 = 2048;
-                *v435 = v184 - v390;
+                *v435 = timestamp2 - timestamp;
                 _os_log_impl(&_mh_execute_header, v206, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC BK Successful Tx status after %llu ms", buf, 0x1Cu);
               }
 
               LODWORD(v387) = 1;
             }
 
-            if (!((v180 == 0) | BYTE4(v388) & 1))
+            if (!((qeuedPackets == 0) | BYTE4(v388) & 1))
             {
               v196 = WALogCategoryDefaultHandle();
               if (os_log_type_enabled(v196, OS_LOG_TYPE_DEFAULT))
@@ -2281,14 +2281,14 @@ LABEL_298:
                 v432 = 1024;
                 v433 = 825;
                 v434 = 2048;
-                *v435 = v184 - v390;
+                *v435 = timestamp2 - timestamp;
                 _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC BK Tx has Queued Data at %llu ms", buf, 0x1Cu);
               }
 
               goto LABEL_301;
             }
 
-            if (v180 == 0 && (v388 & 0x100000000) != 0)
+            if (qeuedPackets == 0 && (v388 & 0x100000000) != 0)
             {
               if ((v382 & 0x100000000) == 0)
               {
@@ -2300,7 +2300,7 @@ LABEL_298:
                   v432 = 1024;
                   v433 = 829;
                   v434 = 2048;
-                  *v435 = v184 - v390;
+                  *v435 = timestamp2 - timestamp;
                   _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC BK Tx Queue has emptied queue at %llu ms", buf, 0x1Cu);
                 }
 
@@ -2317,7 +2317,7 @@ LABEL_301:
 
           else if (v187 == 3)
           {
-            if (!((v183 <= v391) | BYTE4(v386) & 1))
+            if (!((success <= action) | BYTE4(v386) & 1))
             {
               v204 = WALogCategoryDefaultHandle();
               if (os_log_type_enabled(v204, OS_LOG_TYPE_DEFAULT))
@@ -2327,14 +2327,14 @@ LABEL_301:
                 v432 = 1024;
                 v433 = 808;
                 v434 = 2048;
-                *v435 = v184 - v390;
+                *v435 = timestamp2 - timestamp;
                 _os_log_impl(&_mh_execute_header, v204, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC BE Successful Tx status after %llu ms", buf, 0x1Cu);
               }
 
               HIDWORD(v386) = 1;
             }
 
-            if (!((v180 == 0) | v388 & 1))
+            if (!((qeuedPackets == 0) | v388 & 1))
             {
               v196 = WALogCategoryDefaultHandle();
               if (os_log_type_enabled(v196, OS_LOG_TYPE_DEFAULT))
@@ -2344,14 +2344,14 @@ LABEL_301:
                 v432 = 1024;
                 v433 = 812;
                 v434 = 2048;
-                *v435 = v184 - v390;
+                *v435 = timestamp2 - timestamp;
                 _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC BE Tx has Queued Data at %llu ms", buf, 0x1Cu);
               }
 
               goto LABEL_295;
             }
 
-            if (v180 == 0 && (v388 & 1) != 0)
+            if (qeuedPackets == 0 && (v388 & 1) != 0)
             {
               if ((v382 & 1) == 0)
               {
@@ -2363,7 +2363,7 @@ LABEL_301:
                   v432 = 1024;
                   v433 = 816;
                   v434 = 2048;
-                  *v435 = v184 - v390;
+                  *v435 = timestamp2 - timestamp;
                   _os_log_impl(&_mh_execute_header, v196, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AC BE Tx Queue has emptied queue at %llu ms", buf, 0x1Cu);
                 }
 
@@ -2383,7 +2383,7 @@ LABEL_250:
         }
 
         while (log[0] != v174);
-        v172 = obj;
+        dpsCounterSamples2 = obj;
         v173 = [obj countByEnumeratingWithState:&v400 objects:v443 count:16];
         if (!v173)
         {
@@ -2525,7 +2525,7 @@ LABEL_318:
       v432 = 1024;
       v433 = 904;
       v434 = 1024;
-      *v435 = v351;
+      *v435 = problemAC;
       *&v435[4] = 1024;
       *&v435[6] = BYTE4(v376) & 1;
       *v436 = 1024;
@@ -2854,20 +2854,20 @@ LABEL_457:
 
   v337 = [v423[5] stringByReplacingOccurrencesOfString:@"%" withString:&stru_1000F04E0];
   v338 = [v417[5] stringByReplacingOccurrencesOfString:@"%" withString:&stru_1000F04E0];
-  v339 = [(SDRDiagnosticReporter *)v369->_ABCReporter signatureWithDomain:@"WiFi" type:@"WiFi DatapathStall" subType:v337 subtypeContext:v338 detectedProcess:@"wifianalyticsd" triggerThresholdValues:0];
-  v340 = [(WADatapathDiagnosticsMessageSubmitter *)v369 diagnosticMessagePayload];
+  v339 = [(SDRDiagnosticReporter *)selfCopy->_ABCReporter signatureWithDomain:@"WiFi" type:@"WiFi DatapathStall" subType:v337 subtypeContext:v338 detectedProcess:@"wifianalyticsd" triggerThresholdValues:0];
+  diagnosticMessagePayload = [(WADatapathDiagnosticsMessageSubmitter *)selfCopy diagnosticMessagePayload];
   v341 = [NSArray alloc];
-  v342 = [v392 dictionaryRepresentation];
-  v343 = [v341 initWithObjects:{v342, 0}];
+  dictionaryRepresentation = [v392 dictionaryRepresentation];
+  v343 = [v341 initWithObjects:{dictionaryRepresentation, 0}];
 
-  ABCReporter = v369->_ABCReporter;
+  ABCReporter = selfCopy->_ABCReporter;
   v399[0] = _NSConcreteStackBlock;
   v399[1] = 3221225472;
   v399[2] = sub_100098630;
   v399[3] = &unk_1000EE978;
   v399[4] = &v422;
   v399[5] = &v416;
-  [(SDRDiagnosticReporter *)ABCReporter snapshotWithSignature:v339 duration:v343 events:v340 payload:0 actions:v399 reply:10.0];
+  [(SDRDiagnosticReporter *)ABCReporter snapshotWithSignature:v339 duration:v343 events:diagnosticMessagePayload payload:0 actions:v399 reply:10.0];
 
 LABEL_458:
   _Block_object_dispose(&v416, 8);
@@ -2879,7 +2879,7 @@ LABEL_458:
     v345 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v345, OS_LOG_TYPE_DEFAULT))
     {
-      v346 = [v368 key];
+      v346 = [messageCopy key];
       *buf = 136446722;
       v431 = "[WADatapathDiagnosticsMessageSubmitter submitDPSRMessage:]";
       v432 = 1024;

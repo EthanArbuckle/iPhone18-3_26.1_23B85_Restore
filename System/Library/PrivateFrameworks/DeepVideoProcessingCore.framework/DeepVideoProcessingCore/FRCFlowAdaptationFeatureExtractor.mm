@@ -1,27 +1,27 @@
 @interface FRCFlowAdaptationFeatureExtractor
-- (BOOL)extractFeaturesFromImage:(__CVBuffer *)a3 toFeatures:(id *)a4 callback:(id)a5;
-- (FRCFlowAdaptationFeatureExtractor)initWithMode:(int64_t)a3 revision:(int64_t)a4;
-- (void)getOutputTensorSize:(id *)a3 level:(unsigned int)a4;
+- (BOOL)extractFeaturesFromImage:(__CVBuffer *)image toFeatures:(id *)features callback:(id)callback;
+- (FRCFlowAdaptationFeatureExtractor)initWithMode:(int64_t)mode revision:(int64_t)revision;
+- (void)getOutputTensorSize:(id *)size level:(unsigned int)level;
 - (void)setupNetworkModel;
 @end
 
 @implementation FRCFlowAdaptationFeatureExtractor
 
-- (FRCFlowAdaptationFeatureExtractor)initWithMode:(int64_t)a3 revision:(int64_t)a4
+- (FRCFlowAdaptationFeatureExtractor)initWithMode:(int64_t)mode revision:(int64_t)revision
 {
   [(VEEspressoModel *)self setUsage:?];
-  [(OFFeatureExtractor *)self setRevision:a4];
+  [(OFFeatureExtractor *)self setRevision:revision];
   [(FRCFlowAdaptationFeatureExtractor *)self setupNetworkModel];
   espresso_file = self->super._espresso_file;
   v11.receiver = self;
   v11.super_class = FRCFlowAdaptationFeatureExtractor;
-  v8 = [(VEEspressoModel *)&v11 initWithModelName:espresso_file usage:a3];
+  v8 = [(VEEspressoModel *)&v11 initWithModelName:espresso_file usage:mode];
   if (!v8 && (global_logLevel & 0x10) != 0)
   {
     v9 = global_logger;
     if (os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
     {
-      [FRCFlowAdaptationFeatureExtractor initWithMode:a3 revision:v9];
+      [FRCFlowAdaptationFeatureExtractor initWithMode:mode revision:v9];
     }
   }
 
@@ -43,9 +43,9 @@
   }
 }
 
-- (BOOL)extractFeaturesFromImage:(__CVBuffer *)a3 toFeatures:(id *)a4 callback:(id)a5
+- (BOOL)extractFeaturesFromImage:(__CVBuffer *)image toFeatures:(id *)features callback:(id)callback
 {
-  v6 = a5;
+  callbackCopy = callback;
   if (!espresso_network_bind_direct_cvpixelbuffer())
   {
     if (espresso_network_bind_direct_cvpixelbuffer())
@@ -62,9 +62,9 @@
       goto LABEL_14;
     }
 
-    if (v6)
+    if (callbackCopy)
     {
-      v13 = v6;
+      v13 = callbackCopy;
       v9 = espresso_plan_submit();
 
       if (v9)
@@ -108,13 +108,13 @@ LABEL_15:
   return v11;
 }
 
-- (void)getOutputTensorSize:(id *)a3 level:(unsigned int)a4
+- (void)getOutputTensorSize:(id *)size level:(unsigned int)level
 {
   v5.receiver = self;
   v5.super_class = FRCFlowAdaptationFeatureExtractor;
-  [(OFFeatureExtractor *)&v5 getOutputTensorSize:a3 level:0];
-  *&a3->var0 = vshrq_n_u64(*&a3->var0, 1uLL);
-  a3->var2 = 64;
+  [(OFFeatureExtractor *)&v5 getOutputTensorSize:size level:0];
+  *&size->var0 = vshrq_n_u64(*&size->var0, 1uLL);
+  size->var2 = 64;
 }
 
 - (void)initWithMode:(int)a1 revision:(NSObject *)a2 .cold.1(int a1, NSObject *a2)

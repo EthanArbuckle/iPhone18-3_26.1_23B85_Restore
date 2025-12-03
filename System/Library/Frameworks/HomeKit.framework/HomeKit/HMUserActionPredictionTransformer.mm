@@ -1,12 +1,12 @@
 @interface HMUserActionPredictionTransformer
 + (id)logCategory;
-- (BOOL)isValidPredictionForAccessory:(id)a3 targetServiceIdentifier:(id)a4;
-- (id)matchingAccessoryForDuetAccessoryPrediction:(id)a3 home:(id)a4;
-- (id)matchingServiceForDuetAccessoryPrediction:(id)a3 onAccessory:(id)a4 home:(id)a5;
-- (id)predictionForDuetAccessoryPrediction:(id)a3 home:(id)a4;
-- (id)predictionForDuetScenePrediction:(id)a3 home:(id)a4;
-- (id)predictionWithSameTargetGroupAsPrediction:(id)a3 inPredictions:(id)a4;
-- (id)predictionsWithDuetPredictions:(id)a3 forHome:(id)a4;
+- (BOOL)isValidPredictionForAccessory:(id)accessory targetServiceIdentifier:(id)identifier;
+- (id)matchingAccessoryForDuetAccessoryPrediction:(id)prediction home:(id)home;
+- (id)matchingServiceForDuetAccessoryPrediction:(id)prediction onAccessory:(id)accessory home:(id)home;
+- (id)predictionForDuetAccessoryPrediction:(id)prediction home:(id)home;
+- (id)predictionForDuetScenePrediction:(id)prediction home:(id)home;
+- (id)predictionWithSameTargetGroupAsPrediction:(id)prediction inPredictions:(id)predictions;
+- (id)predictionsWithDuetPredictions:(id)predictions forHome:(id)home;
 @end
 
 @implementation HMUserActionPredictionTransformer
@@ -33,24 +33,24 @@ uint64_t __48__HMUserActionPredictionTransformer_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (BOOL)isValidPredictionForAccessory:(id)a3 targetServiceIdentifier:(id)a4
+- (BOOL)isValidPredictionForAccessory:(id)accessory targetServiceIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
+  if (accessoryCopy)
   {
-    v7 = v6;
-    v8 = [v5 mediaProfile];
+    v7 = identifierCopy;
+    mediaProfile = [accessoryCopy mediaProfile];
 
     if (v7)
     {
-      v9 = [v5 services];
+      services = [accessoryCopy services];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __91__HMUserActionPredictionTransformer_isValidPredictionForAccessory_targetServiceIdentifier___block_invoke;
       v16[3] = &unk_1E7548460;
       v17 = v7;
-      v10 = [v9 na_any:v16];
+      v10 = [services na_any:v16];
     }
 
     else
@@ -65,7 +65,7 @@ uint64_t __48__HMUserActionPredictionTransformer_logCategory__block_invoke()
 
     else
     {
-      v11 = v8 == 0;
+      v11 = mediaProfile == 0;
     }
 
     if (v11)
@@ -96,49 +96,49 @@ uint64_t __91__HMUserActionPredictionTransformer_isValidPredictionForAccessory_t
   return v4;
 }
 
-- (id)matchingServiceForDuetAccessoryPrediction:(id)a3 onAccessory:(id)a4 home:(id)a5
+- (id)matchingServiceForDuetAccessoryPrediction:(id)prediction onAccessory:(id)accessory home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 predictionType] != 2)
+  predictionCopy = prediction;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  if ([predictionCopy predictionType] != 2)
   {
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v8)
+  if (!accessoryCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!homeCopy)
   {
 LABEL_13:
     v18 = _HMFPreconditionFailure();
     return __96__HMUserActionPredictionTransformer_matchingServiceForDuetAccessoryPrediction_onAccessory_home___block_invoke(v18, v19);
   }
 
-  v10 = [v7 targetAccessoryServiceIdentifier];
-  if (v10)
+  targetAccessoryServiceIdentifier = [predictionCopy targetAccessoryServiceIdentifier];
+  if (targetAccessoryServiceIdentifier)
   {
-    v11 = v10;
+    v11 = targetAccessoryServiceIdentifier;
     v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v13 = [v7 targetAccessoryServiceIdentifier];
-    v14 = [v12 initWithUUIDString:v13];
+    targetAccessoryServiceIdentifier2 = [predictionCopy targetAccessoryServiceIdentifier];
+    v14 = [v12 initWithUUIDString:targetAccessoryServiceIdentifier2];
 
     if (v14)
     {
-      v15 = [v8 services];
+      services = [accessoryCopy services];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __96__HMUserActionPredictionTransformer_matchingServiceForDuetAccessoryPrediction_onAccessory_home___block_invoke;
       v20[3] = &unk_1E7548460;
       v21 = v14;
       v16 = v14;
-      v14 = [v15 na_firstObjectPassingTest:v20];
+      v14 = [services na_firstObjectPassingTest:v20];
     }
   }
 
@@ -158,25 +158,25 @@ uint64_t __96__HMUserActionPredictionTransformer_matchingServiceForDuetAccessory
   return v4;
 }
 
-- (id)matchingAccessoryForDuetAccessoryPrediction:(id)a3 home:(id)a4
+- (id)matchingAccessoryForDuetAccessoryPrediction:(id)prediction home:(id)home
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 predictionType] != 2)
+  predictionCopy = prediction;
+  homeCopy = home;
+  if ([predictionCopy predictionType] != 2)
   {
     _HMFPreconditionFailure();
 LABEL_45:
     _HMFPreconditionFailure();
   }
 
-  if (!v6)
+  if (!homeCopy)
   {
     goto LABEL_45;
   }
 
-  v7 = [v5 targetIdentifier];
-  v8 = [HMUserActionPredictionTransformerMatter matchingMatterAccessoryForTargetIdentifier:v7 home:v6];
+  targetIdentifier = [predictionCopy targetIdentifier];
+  v8 = [HMUserActionPredictionTransformerMatter matchingMatterAccessoryForTargetIdentifier:targetIdentifier home:homeCopy];
 
   if (v8)
   {
@@ -186,15 +186,15 @@ LABEL_45:
   else
   {
     v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v11 = [v5 targetIdentifier];
-    v12 = [v10 initWithUUIDString:v11];
+    targetIdentifier2 = [predictionCopy targetIdentifier];
+    v12 = [v10 initWithUUIDString:targetIdentifier2];
 
-    v13 = [v5 targetAccessoryServiceIdentifier];
-    if (v13)
+    targetAccessoryServiceIdentifier = [predictionCopy targetAccessoryServiceIdentifier];
+    if (targetAccessoryServiceIdentifier)
     {
       v14 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v15 = [v5 targetAccessoryServiceIdentifier];
-      v46 = [v14 initWithUUIDString:v15];
+      targetAccessoryServiceIdentifier2 = [predictionCopy targetAccessoryServiceIdentifier];
+      v46 = [v14 initWithUUIDString:targetAccessoryServiceIdentifier2];
     }
 
     else
@@ -206,13 +206,13 @@ LABEL_45:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v16 = [v6 accessories];
-    v17 = [v16 countByEnumeratingWithState:&v53 objects:v66 count:16];
+    accessories = [homeCopy accessories];
+    v17 = [accessories countByEnumeratingWithState:&v53 objects:v66 count:16];
     v43 = v12;
     if (v17)
     {
       v18 = v17;
-      v42 = v5;
+      v42 = predictionCopy;
       v19 = *v54;
 LABEL_10:
       v20 = 0;
@@ -220,15 +220,15 @@ LABEL_10:
       {
         if (*v54 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(accessories);
         }
 
         v21 = *(*(&v53 + 1) + 8 * v20);
-        v22 = [v21 uniqueIdentifier];
-        v23 = [v22 hmf_isEqualToUUID:v12];
+        uniqueIdentifier = [v21 uniqueIdentifier];
+        v23 = [uniqueIdentifier hmf_isEqualToUUID:v12];
 
-        v24 = [v21 uniqueIdentifiersForBridgedAccessories];
-        v25 = [v24 count];
+        uniqueIdentifiersForBridgedAccessories = [v21 uniqueIdentifiersForBridgedAccessories];
+        v25 = [uniqueIdentifiersForBridgedAccessories count];
 
         if (v25 && v23 != 0)
         {
@@ -239,14 +239,14 @@ LABEL_10:
         {
           v9 = v21;
 LABEL_39:
-          v5 = v42;
+          predictionCopy = v42;
           v8 = 0;
           goto LABEL_40;
         }
 
         if (v18 == ++v20)
         {
-          v18 = [v16 countByEnumeratingWithState:&v53 objects:v66 count:16];
+          v18 = [accessories countByEnumeratingWithState:&v53 objects:v66 count:16];
           if (v18)
           {
             goto LABEL_10;
@@ -257,7 +257,7 @@ LABEL_39:
         }
       }
 
-      v41 = v16;
+      v41 = accessories;
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
@@ -278,20 +278,20 @@ LABEL_39:
             }
 
             v31 = *(*(&v49 + 1) + 8 * i);
-            v32 = [v31 services];
+            services = [v31 services];
             v47[0] = MEMORY[0x1E69E9820];
             v47[1] = 3221225472;
             v47[2] = __86__HMUserActionPredictionTransformer_matchingAccessoryForDuetAccessoryPrediction_home___block_invoke;
             v47[3] = &unk_1E7548460;
             v33 = v46;
             v48 = v33;
-            v34 = [v32 na_any:v47];
+            v34 = [services na_any:v47];
 
             if (v34 && [(HMUserActionPredictionTransformer *)self isValidPredictionForAccessory:v31 targetServiceIdentifier:v33])
             {
               v9 = v31;
 
-              v5 = v42;
+              predictionCopy = v42;
               goto LABEL_37;
             }
           }
@@ -307,9 +307,9 @@ LABEL_39:
       }
 
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy = self;
       v37 = HMFGetOSLogHandle();
-      v5 = v42;
+      predictionCopy = v42;
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         v38 = HMFGetLogIdentifier();
@@ -318,7 +318,7 @@ LABEL_39:
         v59 = 2112;
         v60 = v21;
         v61 = 2112;
-        v62 = v6;
+        v62 = homeCopy;
         v63 = 2112;
         v64 = v42;
         _os_log_impl(&dword_19BB39000, v37, OS_LOG_TYPE_ERROR, "%{public}@Bad accessory prediction from duet, found bridge: %@ but couldn't find accessory in home (%@) for prediction: %@", buf, 0x2Au);
@@ -327,7 +327,7 @@ LABEL_39:
       objc_autoreleasePoolPop(v35);
       v9 = 0;
 LABEL_37:
-      v16 = v41;
+      accessories = v41;
       v8 = 0;
     }
 
@@ -352,75 +352,75 @@ uint64_t __86__HMUserActionPredictionTransformer_matchingAccessoryForDuetAccesso
   return v4;
 }
 
-- (id)predictionForDuetAccessoryPrediction:(id)a3 home:(id)a4
+- (id)predictionForDuetAccessoryPrediction:(id)prediction home:(id)home
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 predictionType] != 2)
+  predictionCopy = prediction;
+  homeCopy = home;
+  if ([predictionCopy predictionType] != 2)
   {
     _HMFPreconditionFailure();
 LABEL_20:
     _HMFPreconditionFailure();
   }
 
-  if (!v8)
+  if (!homeCopy)
   {
     goto LABEL_20;
   }
 
-  v9 = [(HMUserActionPredictionTransformer *)self matchingAccessoryForDuetAccessoryPrediction:v7 home:v8];
+  v9 = [(HMUserActionPredictionTransformer *)self matchingAccessoryForDuetAccessoryPrediction:predictionCopy home:homeCopy];
   if (v9)
   {
-    v10 = [(HMUserActionPredictionTransformer *)self matchingServiceForDuetAccessoryPrediction:v7 onAccessory:v9 home:v8];
+    v10 = [(HMUserActionPredictionTransformer *)self matchingServiceForDuetAccessoryPrediction:predictionCopy onAccessory:v9 home:homeCopy];
     if (!v10)
     {
       goto LABEL_10;
     }
 
-    v11 = [v8 serviceGroups];
+    serviceGroups = [homeCopy serviceGroups];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __79__HMUserActionPredictionTransformer_predictionForDuetAccessoryPrediction_home___block_invoke;
     v34[3] = &unk_1E7548488;
     v4 = &v35;
     v35 = v10;
-    v12 = [v11 na_firstObjectPassingTest:v34];
-    v13 = [v12 uniqueIdentifier];
+    v12 = [serviceGroups na_firstObjectPassingTest:v34];
+    uniqueIdentifier = [v12 uniqueIdentifier];
 
-    if (v13)
+    if (uniqueIdentifier)
     {
       v14 = [HMUserActionPrediction alloc];
-      [v7 score];
-      v15 = [(HMUserActionPrediction *)v14 initWithPredictionTargetUUID:v13 predictionType:3 predictionScore:?];
+      [predictionCopy score];
+      v15 = [(HMUserActionPrediction *)v14 initWithPredictionTargetUUID:uniqueIdentifier predictionType:3 predictionScore:?];
     }
 
     else
     {
 LABEL_10:
-      v20 = [v8 mediaSystems];
+      mediaSystems = [homeCopy mediaSystems];
       v29 = MEMORY[0x1E69E9820];
       v30 = 3221225472;
       v31 = __79__HMUserActionPredictionTransformer_predictionForDuetAccessoryPrediction_home___block_invoke_3;
       v32 = &unk_1E75484D8;
       v21 = v9;
       v33 = v21;
-      v22 = [v20 na_firstObjectPassingTest:&v29];
-      v23 = [v22 uniqueIdentifier];
+      v22 = [mediaSystems na_firstObjectPassingTest:&v29];
+      uniqueIdentifier2 = [v22 uniqueIdentifier];
 
       v24 = [HMUserActionPrediction alloc];
-      if (v23)
+      if (uniqueIdentifier2)
       {
-        [v7 score];
-        v15 = [(HMUserActionPrediction *)v24 initWithPredictionTargetUUID:v23 predictionType:4 predictionScore:?];
+        [predictionCopy score];
+        v15 = [(HMUserActionPrediction *)v24 initWithPredictionTargetUUID:uniqueIdentifier2 predictionType:4 predictionScore:?];
       }
 
       else
       {
-        v25 = [v21 uniqueIdentifier];
-        v26 = [v10 uniqueIdentifier];
-        [v7 score];
-        v15 = [(HMUserActionPrediction *)v24 initWithPredictionTargetUUID:v25 targetServiceUUID:v26 predictionType:2 predictionScore:?];
+        uniqueIdentifier3 = [v21 uniqueIdentifier];
+        uniqueIdentifier4 = [v10 uniqueIdentifier];
+        [predictionCopy score];
+        v15 = [(HMUserActionPrediction *)v24 initWithPredictionTargetUUID:uniqueIdentifier3 targetServiceUUID:uniqueIdentifier4 predictionType:2 predictionScore:?];
       }
 
       if (!v10)
@@ -434,7 +434,7 @@ LABEL_15:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
@@ -442,7 +442,7 @@ LABEL_15:
     *buf = 138543618;
     v37 = v19;
     v38 = 2112;
-    v39 = v7;
+    v39 = predictionCopy;
     _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_ERROR, "%{public}@Bad service prediction retrieved from duet, missing predicted service in home (%@)", buf, 0x16u);
   }
 
@@ -500,48 +500,48 @@ uint64_t __79__HMUserActionPredictionTransformer_predictionForDuetAccessoryPredi
   return v5;
 }
 
-- (id)predictionForDuetScenePrediction:(id)a3 home:(id)a4
+- (id)predictionForDuetScenePrediction:(id)prediction home:(id)home
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 predictionType] != 1)
+  predictionCopy = prediction;
+  homeCopy = home;
+  if ([predictionCopy predictionType] != 1)
   {
     _HMFPreconditionFailure();
 LABEL_12:
     _HMFPreconditionFailure();
   }
 
-  if (!v7)
+  if (!homeCopy)
   {
     goto LABEL_12;
   }
 
   v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v9 = [v6 targetIdentifier];
-  v10 = [v8 initWithUUIDString:v9];
+  targetIdentifier = [predictionCopy targetIdentifier];
+  v10 = [v8 initWithUUIDString:targetIdentifier];
 
-  v11 = [v7 actionSets];
+  actionSets = [homeCopy actionSets];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __75__HMUserActionPredictionTransformer_predictionForDuetScenePrediction_home___block_invoke;
   v23[3] = &unk_1E7548438;
   v12 = v10;
   v24 = v12;
-  v13 = [v11 na_firstObjectPassingTest:v23];
+  v13 = [actionSets na_firstObjectPassingTest:v23];
 
   if (v13)
   {
     v14 = [HMUserActionPrediction alloc];
-    v15 = [v13 uniqueIdentifier];
-    [v6 score];
-    v16 = [(HMUserActionPrediction *)v14 initWithPredictionTargetUUID:v15 predictionType:1 predictionScore:?];
+    uniqueIdentifier = [v13 uniqueIdentifier];
+    [predictionCopy score];
+    v16 = [(HMUserActionPrediction *)v14 initWithPredictionTargetUUID:uniqueIdentifier predictionType:1 predictionScore:?];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -549,7 +549,7 @@ LABEL_12:
       *buf = 138543618;
       v26 = v20;
       v27 = 2112;
-      v28 = v6;
+      v28 = predictionCopy;
       _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_ERROR, "%{public}@Bad scene prediction from duet, missing predicted action set in home (%@)", buf, 0x16u);
     }
 
@@ -577,26 +577,26 @@ uint64_t __75__HMUserActionPredictionTransformer_predictionForDuetScenePredictio
   return v5;
 }
 
-- (id)predictionWithSameTargetGroupAsPrediction:(id)a3 inPredictions:(id)a4
+- (id)predictionWithSameTargetGroupAsPrediction:(id)prediction inPredictions:(id)predictions
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  predictionCopy = prediction;
+  predictionsCopy = predictions;
+  if (!predictionCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = predictionsCopy;
+  if (!predictionsCopy)
   {
 LABEL_13:
     v13 = _HMFPreconditionFailure();
     return __93__HMUserActionPredictionTransformer_predictionWithSameTargetGroupAsPrediction_inPredictions___block_invoke(v13, v14);
   }
 
-  v8 = [v5 predictionType];
-  if (v8 == 3)
+  predictionType = [predictionCopy predictionType];
+  if (predictionType == 3)
   {
     v9 = v15;
     v15[0] = MEMORY[0x1E69E9820];
@@ -606,7 +606,7 @@ LABEL_13:
 
   else
   {
-    if (v8 != 4)
+    if (predictionType != 4)
     {
       v11 = 0;
       goto LABEL_9;
@@ -620,7 +620,7 @@ LABEL_13:
 
   v9[2] = v10;
   v9[3] = &unk_1E7548410;
-  v9[4] = v5;
+  v9[4] = predictionCopy;
   v11 = [v7 na_firstObjectPassingTest:v9];
 
 LABEL_9:
@@ -664,30 +664,30 @@ uint64_t __93__HMUserActionPredictionTransformer_predictionWithSameTargetGroupAs
   return v6;
 }
 
-- (id)predictionsWithDuetPredictions:(id)a3 forHome:(id)a4
+- (id)predictionsWithDuetPredictions:(id)predictions forHome:(id)home
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  predictionsCopy = predictions;
+  homeCopy = home;
+  if (!predictionsCopy)
   {
     _HMFPreconditionFailure();
 LABEL_35:
     _HMFPreconditionFailure();
   }
 
-  if (!v7)
+  if (!homeCopy)
   {
     goto LABEL_35;
   }
 
-  v37 = v7;
-  v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v37 = homeCopy;
+  v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(predictionsCopy, "count")}];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = predictionsCopy;
   v8 = [obj countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (!v8)
   {
@@ -709,13 +709,13 @@ LABEL_35:
 
       v13 = *(*(&v38 + 1) + 8 * v12);
       v14 = objc_alloc(*(v11 + 4016));
-      v15 = [v13 targetIdentifier];
-      v16 = [v14 initWithUUIDString:v15];
+      targetIdentifier = [v13 targetIdentifier];
+      v16 = [v14 initWithUUIDString:targetIdentifier];
 
       if (!v16)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy2 = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -740,7 +740,7 @@ LABEL_20:
       if (([v13 hasPredictionType] & 1) == 0)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy2 = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -762,8 +762,8 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v17 = [v13 predictionType];
-      if (v17 == 2)
+      predictionType = [v13 predictionType];
+      if (predictionType == 2)
       {
         v25 = [(HMUserActionPredictionTransformer *)self predictionForDuetAccessoryPrediction:v13 home:v37];
         if (v25)
@@ -791,7 +791,7 @@ LABEL_27:
         goto LABEL_21;
       }
 
-      if (v17 == 1)
+      if (predictionType == 1)
       {
         v18 = [(HMUserActionPredictionTransformer *)self predictionForDuetScenePrediction:v13 home:v37];
         if (v18)

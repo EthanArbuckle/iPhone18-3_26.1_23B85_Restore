@@ -7,8 +7,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TPLCDViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(TPLCDViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
@@ -16,10 +16,10 @@
 - (id)accessibilityLabel
 {
   v3 = [(TPLCDViewAccessibility *)self safeValueForKey:@"_textView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(TPLCDViewAccessibility *)self safeValueForKey:@"_labelView"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = __UIAXStringForVariables();
 

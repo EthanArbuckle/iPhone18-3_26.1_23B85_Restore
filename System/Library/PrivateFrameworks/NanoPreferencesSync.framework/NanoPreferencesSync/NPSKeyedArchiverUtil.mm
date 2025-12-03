@@ -1,17 +1,17 @@
 @interface NPSKeyedArchiverUtil
-+ (id)archiveObject:(id)a3;
-+ (id)unarchiveObjectOfClasses:(id)a3 withData:(id)a4;
-+ (id)unarchiveObjectOfClasses:(id)a3 withFile:(id)a4;
++ (id)archiveObject:(id)object;
++ (id)unarchiveObjectOfClasses:(id)classes withData:(id)data;
++ (id)unarchiveObjectOfClasses:(id)classes withFile:(id)file;
 @end
 
 @implementation NPSKeyedArchiverUtil
 
-+ (id)unarchiveObjectOfClasses:(id)a3 withFile:(id)a4
++ (id)unarchiveObjectOfClasses:(id)classes withFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  fileCopy = file;
   v13 = 0;
-  v8 = [NSData dataWithContentsOfFile:v7 options:0 error:&v13];
+  v8 = [NSData dataWithContentsOfFile:fileCopy options:0 error:&v13];
   v9 = v13;
   if (v9)
   {
@@ -21,14 +21,14 @@
       *buf = 138412546;
       v15 = v9;
       v16 = 2112;
-      v17 = v7;
+      v17 = fileCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Error (%@) reading data from (%@)", buf, 0x16u);
     }
   }
 
   if (v8)
   {
-    v11 = [a1 unarchiveObjectOfClasses:v6 withData:v8];
+    v11 = [self unarchiveObjectOfClasses:classesCopy withData:v8];
   }
 
   else
@@ -39,14 +39,14 @@
   return v11;
 }
 
-+ (id)unarchiveObjectOfClasses:(id)a3 withData:(id)a4
++ (id)unarchiveObjectOfClasses:(id)classes withData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  classesCopy = classes;
+  dataCopy = data;
+  if (dataCopy)
   {
     v13 = 0;
-    v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v5 fromData:v6 error:&v13];
+    v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:classesCopy fromData:dataCopy error:&v13];
     v8 = v13;
     if (v8)
     {
@@ -54,11 +54,11 @@
       if (os_log_type_enabled(nps_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 length]);
+        v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy length]);
         *buf = 138412802;
         v15 = v8;
         v16 = 2112;
-        v17 = v5;
+        v17 = classesCopy;
         v18 = 2112;
         v19 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Error (%@) unarchiving expected classes (%@) with (%@) bytes data", buf, 0x20u);
@@ -74,13 +74,13 @@
   return v7;
 }
 
-+ (id)archiveObject:(id)a3
++ (id)archiveObject:(id)object
 {
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     v11 = 0;
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v11];
+    v4 = [NSKeyedArchiver archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:&v11];
     v5 = v11;
     if (v5)
     {

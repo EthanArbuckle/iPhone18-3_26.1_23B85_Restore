@@ -1,13 +1,13 @@
 @interface LumaTrackingView.Coordinator
-- (void)lumaTrackingView:(id)a3 didTransitionToLevel:(int64_t)a4;
+- (void)lumaTrackingView:(id)view didTransitionToLevel:(int64_t)level;
 @end
 
 @implementation LumaTrackingView.Coordinator
 
-- (void)lumaTrackingView:(id)a3 didTransitionToLevel:(int64_t)a4
+- (void)lumaTrackingView:(id)view didTransitionToLevel:(int64_t)level
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1C1013CFC();
 }
 

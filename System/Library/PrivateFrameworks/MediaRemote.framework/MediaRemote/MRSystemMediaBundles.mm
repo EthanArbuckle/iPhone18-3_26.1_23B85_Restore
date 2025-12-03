@@ -1,33 +1,33 @@
 @interface MRSystemMediaBundles
 + (BOOL)isBundleCurrentApplicationAirPlayReceiver;
-+ (BOOL)isBundleID:(id)a3 systemMediaBundle:(unint64_t)a4;
-+ (BOOL)isProcessNameAirPlayReceiver:(id)a3;
-+ (BOOL)isSystemMediaBundle:(id)a3;
++ (BOOL)isBundleID:(id)d systemMediaBundle:(unint64_t)bundle;
++ (BOOL)isProcessNameAirPlayReceiver:(id)receiver;
++ (BOOL)isSystemMediaBundle:(id)bundle;
 + (id)_allSystemMediaBundles;
-+ (id)_playbackProcessBundleIDForBundle:(unint64_t)a3;
-+ (id)_uiApplicationBundleIDForBundle:(unint64_t)a3;
++ (id)_playbackProcessBundleIDForBundle:(unint64_t)bundle;
++ (id)_uiApplicationBundleIDForBundle:(unint64_t)bundle;
 + (id)airPlayBundleID;
-+ (id)systemMediaBundleIDForBundle:(unint64_t)a3 type:(unint64_t)a4;
-+ (id)systemMediaBundleIDForBundleID:(id)a3 type:(unint64_t)a4;
++ (id)systemMediaBundleIDForBundle:(unint64_t)bundle type:(unint64_t)type;
++ (id)systemMediaBundleIDForBundleID:(id)d type:(unint64_t)type;
 @end
 
 @implementation MRSystemMediaBundles
 
-+ (BOOL)isSystemMediaBundle:(id)a3
++ (BOOL)isSystemMediaBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [a1 _allSystemMediaBundles];
+  bundleCopy = bundle;
+  _allSystemMediaBundles = [self _allSystemMediaBundles];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__MRSystemMediaBundles_isSystemMediaBundle___block_invoke;
   v9[3] = &unk_1E769C9C0;
-  v10 = v4;
-  v11 = a1;
-  v6 = v4;
-  v7 = [v5 msv_firstWhere:v9];
-  LOBYTE(v4) = v7 != 0;
+  v10 = bundleCopy;
+  selfCopy = self;
+  v6 = bundleCopy;
+  v7 = [_allSystemMediaBundles msv_firstWhere:v9];
+  LOBYTE(bundleCopy) = v7 != 0;
 
-  return v4;
+  return bundleCopy;
 }
 
 uint64_t __44__MRSystemMediaBundles_isSystemMediaBundle___block_invoke(uint64_t a1, void *a2)
@@ -39,12 +39,12 @@ uint64_t __44__MRSystemMediaBundles_isSystemMediaBundle___block_invoke(uint64_t 
   return [v4 isBundleID:v5 systemMediaBundle:v3];
 }
 
-+ (BOOL)isBundleID:(id)a3 systemMediaBundle:(unint64_t)a4
++ (BOOL)isBundleID:(id)d systemMediaBundle:(unint64_t)bundle
 {
-  v6 = a3;
-  if (a4 <= 1)
+  dCopy = d;
+  if (bundle <= 1)
   {
-    if (!a4)
+    if (!bundle)
     {
       if (isBundleID_systemMediaBundle____once != -1)
       {
@@ -55,7 +55,7 @@ uint64_t __44__MRSystemMediaBundles_isSystemMediaBundle___block_invoke(uint64_t 
       goto LABEL_22;
     }
 
-    if (a4 == 1)
+    if (bundle == 1)
     {
       if (isBundleID_systemMediaBundle____once_15 != -1)
       {
@@ -69,7 +69,7 @@ uint64_t __44__MRSystemMediaBundles_isSystemMediaBundle___block_invoke(uint64_t 
 
   else
   {
-    switch(a4)
+    switch(bundle)
     {
       case 2uLL:
         if (isBundleID_systemMediaBundle____once_21 != -1)
@@ -95,7 +95,7 @@ uint64_t __44__MRSystemMediaBundles_isSystemMediaBundle___block_invoke(uint64_t 
 
         v7 = &isBundleID_systemMediaBundle____allKnownSystemBooksBundleIDs;
 LABEL_22:
-        v4 = [*v7 containsObject:v6];
+        v4 = [*v7 containsObject:dCopy];
         break;
     }
   }
@@ -138,11 +138,11 @@ void __53__MRSystemMediaBundles_isBundleID_systemMediaBundle___block_invoke_5()
   isBundleID_systemMediaBundle____allKnownSystemBooksBundleIDs = v0;
 }
 
-+ (id)systemMediaBundleIDForBundleID:(id)a3 type:(unint64_t)a4
++ (id)systemMediaBundleIDForBundleID:(id)d type:(unint64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [a1 _allSystemMediaBundles];
+  dCopy = d;
+  [self _allSystemMediaBundles];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -161,10 +161,10 @@ void __53__MRSystemMediaBundles_isBundleID_systemMediaBundle___block_invoke_5()
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) integerValue];
-        if ([a1 isBundleID:v6 systemMediaBundle:v12])
+        integerValue = [*(*(&v16 + 1) + 8 * i) integerValue];
+        if ([self isBundleID:dCopy systemMediaBundle:integerValue])
         {
-          v13 = [a1 systemMediaBundleIDForBundle:v12 type:a4];
+          v13 = [self systemMediaBundleIDForBundle:integerValue type:type];
 
           goto LABEL_11;
         }
@@ -180,7 +180,7 @@ void __53__MRSystemMediaBundles_isBundleID_systemMediaBundle___block_invoke_5()
     }
   }
 
-  v13 = v6;
+  v13 = dCopy;
 LABEL_11:
 
   v14 = *MEMORY[0x1E69E9840];
@@ -188,21 +188,21 @@ LABEL_11:
   return v13;
 }
 
-+ (id)systemMediaBundleIDForBundle:(unint64_t)a3 type:(unint64_t)a4
++ (id)systemMediaBundleIDForBundle:(unint64_t)bundle type:(unint64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
-    v4 = [a1 _uiApplicationBundleIDForBundle:a3];
+    v4 = [self _uiApplicationBundleIDForBundle:bundle];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v4 = [a1 _playbackProcessBundleIDForBundle:a3];
+    v4 = [self _playbackProcessBundleIDForBundle:bundle];
   }
 
   a2 = v4;
@@ -214,22 +214,22 @@ LABEL_6:
 + (id)airPlayBundleID
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 airPlayProcessName];
-  v4 = [v2 stringWithFormat:@"com.apple.%@", v3];
+  airPlayProcessName = [self airPlayProcessName];
+  v4 = [v2 stringWithFormat:@"com.apple.%@", airPlayProcessName];
 
   return v4;
 }
 
-+ (BOOL)isProcessNameAirPlayReceiver:(id)a3
++ (BOOL)isProcessNameAirPlayReceiver:(id)receiver
 {
   v3 = isProcessNameAirPlayReceiver____once;
-  v4 = a3;
+  receiverCopy = receiver;
   if (v3 != -1)
   {
     +[MRSystemMediaBundles isProcessNameAirPlayReceiver:];
   }
 
-  v5 = [isProcessNameAirPlayReceiver____receivers containsObject:v4];
+  v5 = [isProcessNameAirPlayReceiver____receivers containsObject:receiverCopy];
 
   return v5;
 }
@@ -247,7 +247,7 @@ void __53__MRSystemMediaBundles_isProcessNameAirPlayReceiver___block_invoke()
   block[1] = 3221225472;
   block[2] = __65__MRSystemMediaBundles_isBundleCurrentApplicationAirPlayReceiver__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isBundleCurrentApplicationAirPlayReceiver___once != -1)
   {
     dispatch_once(&isBundleCurrentApplicationAirPlayReceiver___once, block);
@@ -283,48 +283,48 @@ void __46__MRSystemMediaBundles__allSystemMediaBundles__block_invoke()
   _allSystemMediaBundles___allSystemMediaBundles = &unk_1F15774E8;
 }
 
-+ (id)_playbackProcessBundleIDForBundle:(unint64_t)a3
++ (id)_playbackProcessBundleIDForBundle:(unint64_t)bundle
 {
-  if (a3 == 2)
+  if (bundle == 2)
   {
     v8 = +[MRUserSettings currentSettings];
-    v9 = [v8 sonicPodcastsEnabled];
+    sonicPodcastsEnabled = [v8 sonicPodcastsEnabled];
 
-    if (v9)
+    if (sonicPodcastsEnabled)
     {
       v7 = @"com.apple.sonic.podcasts";
       goto LABEL_8;
     }
   }
 
-  else if (!a3)
+  else if (!bundle)
   {
     v5 = +[MRUserSettings currentSettings];
-    v6 = [v5 sonicMusicEnabled];
+    sonicMusicEnabled = [v5 sonicMusicEnabled];
 
-    if (v6)
+    if (sonicMusicEnabled)
     {
       v7 = @"com.apple.sonic.music";
       goto LABEL_8;
     }
   }
 
-  v7 = [a1 _uiApplicationBundleIDForBundle:a3];
+  v7 = [self _uiApplicationBundleIDForBundle:bundle];
 LABEL_8:
 
   return v7;
 }
 
-+ (id)_uiApplicationBundleIDForBundle:(unint64_t)a3
++ (id)_uiApplicationBundleIDForBundle:(unint64_t)bundle
 {
-  if (a3 - 1 > 3)
+  if (bundle - 1 > 3)
   {
     return @"com.apple.Music";
   }
 
   else
   {
-    return off_1E769C9E0[a3 - 1];
+    return off_1E769C9E0[bundle - 1];
   }
 }
 

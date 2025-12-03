@@ -1,53 +1,53 @@
 @interface PLSpotlightDonationUtilities
-+ (BOOL)shouldUseSpotlightPrivateIndexForLibraryIdentifier:(int64_t)a3;
-+ (id)bundleIdentifierForAsset:(id)a3;
-+ (id)bundleIdentifierForAsset:(id)a3 wellKnownLibraryIdentifier:(int64_t)a4;
-+ (id)domainIdentifierForPhotoLibraryIdentifier:(int64_t)a3;
-+ (id)spotlightUniqueIdentifierForAsset:(id)a3;
-+ (int64_t)wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:(id)a3;
++ (BOOL)shouldUseSpotlightPrivateIndexForLibraryIdentifier:(int64_t)identifier;
++ (id)bundleIdentifierForAsset:(id)asset;
++ (id)bundleIdentifierForAsset:(id)asset wellKnownLibraryIdentifier:(int64_t)identifier;
++ (id)domainIdentifierForPhotoLibraryIdentifier:(int64_t)identifier;
++ (id)spotlightUniqueIdentifierForAsset:(id)asset;
++ (int64_t)wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:(id)library;
 @end
 
 @implementation PLSpotlightDonationUtilities
 
-+ (BOOL)shouldUseSpotlightPrivateIndexForLibraryIdentifier:(int64_t)a3
++ (BOOL)shouldUseSpotlightPrivateIndexForLibraryIdentifier:(int64_t)identifier
 {
-  if (a3 > 1)
+  if (identifier > 1)
   {
     return 0;
   }
 
   else
   {
-    return [a1 spotlightPrivateIndexEnabled];
+    return [self spotlightPrivateIndexEnabled];
   }
 }
 
-+ (id)spotlightUniqueIdentifierForAsset:(id)a3
++ (id)spotlightUniqueIdentifierForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [a1 wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:v5];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  v6 = [self wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:photoLibrary];
 
   if (v6 == 3)
   {
-    v7 = [v4 additionalAttributes];
+    additionalAttributes = [assetCopy additionalAttributes];
 
-    v8 = [v7 syndicationIdentifier];
-    v4 = v7;
+    syndicationIdentifier = [additionalAttributes syndicationIdentifier];
+    assetCopy = additionalAttributes;
   }
 
   else
   {
-    v8 = [v4 uuid];
+    syndicationIdentifier = [assetCopy uuid];
   }
 
-  return v8;
+  return syndicationIdentifier;
 }
 
-+ (id)domainIdentifierForPhotoLibraryIdentifier:(int64_t)a3
++ (id)domainIdentifierForPhotoLibraryIdentifier:(int64_t)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(identifier)
   {
     case 0:
       return @"com.apple.mobileslideshow.search";
@@ -69,14 +69,14 @@
   }
 }
 
-+ (id)bundleIdentifierForAsset:(id)a3
++ (id)bundleIdentifierForAsset:(id)asset
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  if (v5)
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  if (photoLibrary)
   {
-    v6 = [a1 bundleIdentifierForAsset:v4 wellKnownLibraryIdentifier:{objc_msgSend(a1, "wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:", v5)}];
+    v6 = [self bundleIdentifierForAsset:assetCopy wellKnownLibraryIdentifier:{objc_msgSend(self, "wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:", photoLibrary)}];
   }
 
   else
@@ -84,9 +84,9 @@
     v7 = PLSearchBackendDonationsGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 uuid];
+      uuid = [assetCopy uuid];
       v10 = 138543362;
-      v11 = v8;
+      v11 = uuid;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "No PhotoLibrary for asset %{public}@", &v10, 0xCu);
     }
 
@@ -96,19 +96,19 @@
   return v6;
 }
 
-+ (id)bundleIdentifierForAsset:(id)a3 wellKnownLibraryIdentifier:(int64_t)a4
++ (id)bundleIdentifierForAsset:(id)asset wellKnownLibraryIdentifier:(int64_t)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a4 < 2)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (identifier < 2)
   {
-    v7 = @"com.apple.mobileslideshow";
+    importedByBundleIdentifier = @"com.apple.mobileslideshow";
   }
 
   else
   {
-    if (a4 == 2)
+    if (identifier == 2)
     {
       v8 = PLSearchBackendDonationsGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -120,47 +120,47 @@
       }
     }
 
-    else if (a4 == 3)
+    else if (identifier == 3)
     {
-      v7 = [v5 importedByBundleIdentifier];
+      importedByBundleIdentifier = [assetCopy importedByBundleIdentifier];
       goto LABEL_10;
     }
 
-    v7 = 0;
+    importedByBundleIdentifier = 0;
   }
 
 LABEL_10:
 
-  return v7;
+  return importedByBundleIdentifier;
 }
 
-+ (int64_t)wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:(id)a3
++ (int64_t)wellKnownPhotoLibraryIdentifierFromPLPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 libraryServicesManager];
-  v5 = v4;
-  if (v4)
+  libraryCopy = library;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  v5 = libraryServicesManager;
+  if (libraryServicesManager)
   {
-    v6 = [v4 wellKnownPhotoLibraryIdentifier];
+    wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
   }
 
   else
   {
     v7 = MEMORY[0x1E69BF2A0];
-    v8 = [v3 pathManager];
-    v9 = [v8 libraryURL];
-    v6 = [v7 wellKnownPhotoLibraryIdentifierForURL:v9];
+    pathManager = [libraryCopy pathManager];
+    libraryURL = [pathManager libraryURL];
+    wellKnownPhotoLibraryIdentifier = [v7 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
-    if (!v6)
+    if (!wellKnownPhotoLibraryIdentifier)
     {
-      v10 = [v3 pathManager];
-      v11 = [v10 isSystemPhotoLibraryPathManager];
+      pathManager2 = [libraryCopy pathManager];
+      isSystemPhotoLibraryPathManager = [pathManager2 isSystemPhotoLibraryPathManager];
 
-      v6 = v11;
+      wellKnownPhotoLibraryIdentifier = isSystemPhotoLibraryPathManager;
     }
   }
 
-  return v6;
+  return wellKnownPhotoLibraryIdentifier;
 }
 
 @end

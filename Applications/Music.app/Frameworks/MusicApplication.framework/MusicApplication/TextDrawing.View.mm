@@ -1,12 +1,12 @@
 @interface TextDrawing.View
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtCV16MusicApplication11TextDrawing4View)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtCV16MusicApplication11TextDrawing4View)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TextDrawing.View
 
-- (_TtCV16MusicApplication11TextDrawing4View)initWithCoder:(id)a3
+- (_TtCV16MusicApplication11TextDrawing4View)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCV16MusicApplication11TextDrawing4View_isDisabled) = 0;
   v3 = (self + OBJC_IVAR____TtCV16MusicApplication11TextDrawing4View__textDrawingContext);
@@ -28,20 +28,20 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   _s16MusicApplication11TextDrawingV4ViewC4drawyySo6CGRectVF_0();
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
   v5 = sub_AB92A0();
   v7 = v6;
   v11.receiver = self;
   v11.super_class = type metadata accessor for TextDrawing.View();
-  v8 = self;
-  if ([(TextDrawing.View *)&v11 _shouldAnimatePropertyWithKey:a3]|| v5 == 0x73746E65746E6F63 && v7 == 0xE800000000000000)
+  selfCopy = self;
+  if ([(TextDrawing.View *)&v11 _shouldAnimatePropertyWithKey:key]|| v5 == 0x73746E65746E6F63 && v7 == 0xE800000000000000)
   {
 
     v9 = 1;

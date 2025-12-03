@@ -1,8 +1,8 @@
 @interface CKAccountInfoBuilder
 - (CKAccountInfoBuilder)init;
 - (id)build;
-- (void)setAccountStatus:(int64_t)a3;
-- (void)setIdentifier:(id)a3;
+- (void)setAccountStatus:(int64_t)status;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation CKAccountInfoBuilder
@@ -65,10 +65,10 @@
   return hasValidCredentials_bypassPCSEncryption_deviceToDeviceEncryptionAvailability_walrusStatus_needsToVerifyTerms_accountAccessAuthorization_identifier;
 }
 
-- (void)setAccountStatus:(int64_t)a3
+- (void)setAccountStatus:(int64_t)status
 {
-  self->_accountStatus = a3;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  self->_accountStatus = status;
+  if ((status & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     identifier = self->_identifier;
     self->_identifier = 0;
@@ -76,9 +76,9 @@
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v12 = a3;
+  identifierCopy = identifier;
   if (objc_msgSend_accountStatus(self, v4, v5) == 3 || objc_msgSend_accountStatus(self, v6, v7) == 2)
   {
     v10 = 0;
@@ -86,7 +86,7 @@
 
   else
   {
-    v10 = objc_msgSend_copy(v12, v8, v9);
+    v10 = objc_msgSend_copy(identifierCopy, v8, v9);
   }
 
   identifier = self->_identifier;

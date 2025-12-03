@@ -1,12 +1,12 @@
 @interface PKDynamicContentView
-- (PKDynamicContentView)initWithImage:(id)a3 emitterImage:(id)a4 dynamicLayerEmitterConfiguration:(id)a5;
-- (void)_configureEmitterLayerWithImage:(id)a3;
+- (PKDynamicContentView)initWithImage:(id)image emitterImage:(id)emitterImage dynamicLayerEmitterConfiguration:(id)configuration;
+- (void)_configureEmitterLayerWithImage:(id)image;
 - (void)_pauseEmitters;
 - (void)_startEmitters;
 - (void)dealloc;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation PKDynamicContentView
@@ -54,8 +54,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIImageView *)self->_imageView image];
-  [v11 size];
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
 
   PKSizeAspectFit();
   imageView = self->_imageView;
@@ -70,12 +70,12 @@
   }
 }
 
-- (PKDynamicContentView)initWithImage:(id)a3 emitterImage:(id)a4 dynamicLayerEmitterConfiguration:(id)a5
+- (PKDynamicContentView)initWithImage:(id)image emitterImage:(id)emitterImage dynamicLayerEmitterConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 | v9)
+  imageCopy = image;
+  emitterImageCopy = emitterImage;
+  configurationCopy = configuration;
+  if (imageCopy | emitterImageCopy)
   {
     v17.receiver = self;
     v17.super_class = PKDynamicContentView;
@@ -83,10 +83,10 @@
     p_isa = &v11->super.super.super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_dynamicLayerEmitterConfiguration, a5);
-      if (v8)
+      objc_storeStrong(&v11->_dynamicLayerEmitterConfiguration, configuration);
+      if (imageCopy)
       {
-        v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
+        v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
         v14 = p_isa[51];
         p_isa[51] = v13;
 
@@ -94,48 +94,48 @@
         [p_isa addSubview:p_isa[51]];
       }
 
-      [p_isa _configureEmitterLayerWithImage:v9];
+      [p_isa _configureEmitterLayerWithImage:emitterImageCopy];
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)_configureEmitterLayerWithImage:(id)a3
+- (void)_configureEmitterLayerWithImage:(id)image
 {
-  if (a3 && self->_dynamicLayerEmitterConfiguration)
+  if (image && self->_dynamicLayerEmitterConfiguration)
   {
     v4 = MEMORY[0x1E6979368];
-    v5 = a3;
-    v6 = [v4 layer];
+    imageCopy = image;
+    layer = [v4 layer];
     emitterLayer = self->_emitterLayer;
-    self->_emitterLayer = v6;
+    self->_emitterLayer = layer;
 
     dynamicLayerEmitterConfiguration = self->_dynamicLayerEmitterConfiguration;
     v9 = self->_emitterLayer;
-    v10 = [v5 CGImage];
+    cGImage = [imageCopy CGImage];
 
-    [(PKDynamicLayerEmitterConfiguration *)dynamicLayerEmitterConfiguration configureEmitterLayer:v9 withImage:v10];
-    v12 = [(PKDynamicContentView *)self layer];
-    v11 = [(UIImageView *)self->_imageView layer];
-    [v12 insertSublayer:self->_emitterLayer below:v11];
+    [(PKDynamicLayerEmitterConfiguration *)dynamicLayerEmitterConfiguration configureEmitterLayer:v9 withImage:cGImage];
+    layer2 = [(PKDynamicContentView *)self layer];
+    layer3 = [(UIImageView *)self->_imageView layer];
+    [layer2 insertSublayer:self->_emitterLayer below:layer3];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused == !a3)
+  if (self->_paused == !paused)
   {
-    self->_paused = a3;
-    if (a3)
+    self->_paused = paused;
+    if (paused)
     {
       [(PKDynamicContentView *)self _pauseEmitters];
     }

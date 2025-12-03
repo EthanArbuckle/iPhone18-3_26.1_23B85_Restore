@@ -1,42 +1,42 @@
 @interface CNFoundationSocialProfile
 + (id)emptySocialProfile;
-- (BOOL)isEqual:(id)a3;
-- (CNFoundationSocialProfile)initWithUrlString:(id)a3 username:(id)a4 userIdentifier:(id)a5 service:(id)a6 displayName:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (CNFoundationSocialProfile)initWithUrlString:(id)string username:(id)username userIdentifier:(id)identifier service:(id)service displayName:(id)name;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CNFoundationSocialProfile
 
-- (CNFoundationSocialProfile)initWithUrlString:(id)a3 username:(id)a4 userIdentifier:(id)a5 service:(id)a6 displayName:(id)a7
+- (CNFoundationSocialProfile)initWithUrlString:(id)string username:(id)username userIdentifier:(id)identifier service:(id)service displayName:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  nameCopy = name;
   v30.receiver = self;
   v30.super_class = CNFoundationSocialProfile;
   v17 = [(CNFoundationSocialProfile *)&v30 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [stringCopy copy];
     urlString = v17->_urlString;
     v17->_urlString = v18;
 
-    v20 = [v13 copy];
+    v20 = [usernameCopy copy];
     username = v17->_username;
     v17->_username = v20;
 
-    v22 = [v14 copy];
+    v22 = [identifierCopy copy];
     userIdentifier = v17->_userIdentifier;
     v17->_userIdentifier = v22;
 
-    v24 = [v15 copy];
+    v24 = [serviceCopy copy];
     service = v17->_service;
     v17->_service = v24;
 
-    v26 = [v16 copy];
+    v26 = [nameCopy copy];
     displayName = v17->_displayName;
     v17->_displayName = v26;
 
@@ -48,7 +48,7 @@
 
 + (id)emptySocialProfile
 {
-  v2 = [[a1 alloc] initWithUrlString:0 username:0 userIdentifier:0 service:0 displayName:0];
+  v2 = [[self alloc] initWithUrlString:0 username:0 userIdentifier:0 service:0 displayName:0];
 
   return v2;
 }
@@ -57,20 +57,20 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendNamesAndObjects:{@"urlString", self->_urlString, @"username", self->_username, @"userIdentifier", self->_userIdentifier, @"service", self->_service, @"displayName", self->_displayName, 0}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __37__CNFoundationSocialProfile_isEqual___block_invoke;
   v22[3] = &unk_1E6ED60C8;
   v22[4] = self;
-  v23 = v4;
+  v23 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __37__CNFoundationSocialProfile_isEqual___block_invoke_2;

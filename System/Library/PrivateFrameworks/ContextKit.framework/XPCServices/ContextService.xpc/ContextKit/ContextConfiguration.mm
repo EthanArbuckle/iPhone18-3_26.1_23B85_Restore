@@ -2,22 +2,22 @@
 + (id)desiredLanguageTags;
 + (id)sharedInstance;
 + (void)_triggerConfigurationUpdate;
-+ (void)_updateConfiguration:(id)a3;
++ (void)_updateConfiguration:(id)configuration;
 + (void)initialize;
-+ (void)registerUpdateHandler:(id)a3;
-+ (void)reloadFromGlobalPlist:(id)a3 indexSpecificPlist:(id)a4 developerPlist:(id)a5 indexVersionId:(id)a6;
++ (void)registerUpdateHandler:(id)handler;
++ (void)reloadFromGlobalPlist:(id)plist indexSpecificPlist:(id)specificPlist developerPlist:(id)developerPlist indexVersionId:(id)id;
 - (ContextConfiguration)init;
-- (id)abGroupOfDictionary:(id)a3;
+- (id)abGroupOfDictionary:(id)dictionary;
 - (id)debugStatus;
-- (void)_performReinitWithIndexVersion:(id)a3;
-- (void)_updateFromPlist:(id)a3;
+- (void)_performReinitWithIndexVersion:(id)version;
+- (void)_updateFromPlist:(id)plist;
 @end
 
 @implementation ContextConfiguration
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_alloc_init(ContextConfiguration);
     v4 = qword_100557138;
@@ -49,7 +49,7 @@
     }
 
     byte_100557148 = v7;
-    [a1 registerUpdateHandler:&stru_1004839A8];
+    [self registerUpdateHandler:&stru_1004839A8];
     if (+[_PASDeviceInfo isInternalBuild])
     {
       v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -209,20 +209,20 @@
         }
 
         v8 = [[NSLocale alloc] initWithLocaleIdentifier:*(*(&v17 + 1) + 8 * i)];
-        v9 = [v8 languageCode];
-        v10 = [v8 scriptCode];
-        v11 = [v10 length];
+        languageCode = [v8 languageCode];
+        scriptCode = [v8 scriptCode];
+        v11 = [scriptCode length];
 
         if (v11)
         {
-          v12 = [v8 languageCode];
-          v13 = [v8 scriptCode];
-          v14 = [NSString stringWithFormat:@"%@-%@", v12, v13];
+          languageCode2 = [v8 languageCode];
+          scriptCode2 = [v8 scriptCode];
+          v14 = [NSString stringWithFormat:@"%@-%@", languageCode2, scriptCode2];
 
-          v9 = v14;
+          languageCode = v14;
         }
 
-        [v2 addObject:v9];
+        [v2 addObject:languageCode];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -236,54 +236,54 @@
   return v15;
 }
 
-- (void)_performReinitWithIndexVersion:(id)a3
+- (void)_performReinitWithIndexVersion:(id)version
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = dispatch_semaphore_create(v4->_maxConcurrency);
-  [(ContextConfiguration *)v4 setMaxConcurrencySemaphore:v5];
+  versionCopy = version;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = dispatch_semaphore_create(selfCopy->_maxConcurrency);
+  [(ContextConfiguration *)selfCopy setMaxConcurrencySemaphore:v5];
 
-  indexVersionIdSuffix = v4->_indexVersionIdSuffix;
+  indexVersionIdSuffix = selfCopy->_indexVersionIdSuffix;
   if (indexVersionIdSuffix)
   {
-    v7 = [NSString stringWithFormat:@"%@%@", v9, indexVersionIdSuffix];
+    indexVersionIdSuffix = [NSString stringWithFormat:@"%@%@", versionCopy, indexVersionIdSuffix];
   }
 
   else
   {
-    v7 = v9;
+    indexVersionIdSuffix = versionCopy;
   }
 
-  indexVersionId = v4->_indexVersionId;
-  v4->_indexVersionId = v7;
+  indexVersionId = selfCopy->_indexVersionId;
+  selfCopy->_indexVersionId = indexVersionIdSuffix;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)reloadFromGlobalPlist:(id)a3 indexSpecificPlist:(id)a4 developerPlist:(id)a5 indexVersionId:(id)a6
++ (void)reloadFromGlobalPlist:(id)plist indexSpecificPlist:(id)specificPlist developerPlist:(id)developerPlist indexVersionId:(id)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  plistCopy = plist;
+  specificPlistCopy = specificPlist;
+  developerPlistCopy = developerPlist;
+  idCopy = id;
   v14 = qword_100557140;
   if (os_log_type_enabled(qword_100557140, OS_LOG_TYPE_DEBUG))
   {
     v20 = 138412802;
-    v21 = v10;
+    v21 = plistCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = specificPlistCopy;
     v24 = 2112;
-    v25 = v12;
+    v25 = developerPlistCopy;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "reloadFromPlist, global plist:%@, index-specific plist:%@, developer:%@", &v20, 0x20u);
   }
 
   v15 = objc_alloc_init(ContextConfiguration);
   v16 = v15;
-  if (v10)
+  if (plistCopy)
   {
-    [(ContextConfiguration *)v15 _updateFromPlist:v10];
+    [(ContextConfiguration *)v15 _updateFromPlist:plistCopy];
   }
 
   else
@@ -296,7 +296,7 @@
     }
   }
 
-  if (!v11 || v11 == v10)
+  if (!specificPlistCopy || specificPlistCopy == plistCopy)
   {
     v18 = qword_100557140;
     if (os_log_type_enabled(qword_100557140, OS_LOG_TYPE_DEBUG))
@@ -307,10 +307,10 @@
 
   else
   {
-    [(ContextConfiguration *)v16 _updateFromPlist:v11];
+    [(ContextConfiguration *)v16 _updateFromPlist:specificPlistCopy];
   }
 
-  if (v12 == v10 || !v12 || v12 == v11)
+  if (developerPlistCopy == plistCopy || !developerPlistCopy || developerPlistCopy == specificPlistCopy)
   {
     v19 = qword_100557140;
     if (os_log_type_enabled(qword_100557140, OS_LOG_TYPE_DEBUG))
@@ -321,24 +321,24 @@
 
   else
   {
-    [(ContextConfiguration *)v16 _updateFromPlist:v12];
+    [(ContextConfiguration *)v16 _updateFromPlist:developerPlistCopy];
   }
 
-  [(ContextConfiguration *)v16 _performReinitWithIndexVersion:v13];
-  [a1 _updateConfiguration:v16];
+  [(ContextConfiguration *)v16 _performReinitWithIndexVersion:idCopy];
+  [self _updateConfiguration:v16];
 }
 
-+ (void)_updateConfiguration:(id)a3
++ (void)_updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_opt_class();
   objc_sync_enter(v5);
   v6 = qword_100557138;
-  qword_100557138 = v4;
+  qword_100557138 = configurationCopy;
 
   objc_sync_exit(v5);
 
-  [a1 _triggerConfigurationUpdate];
+  [self _triggerConfigurationUpdate];
 }
 
 + (void)_triggerConfigurationUpdate
@@ -347,32 +347,32 @@
   [v2 postNotificationName:@"contextConfigurationDidChange" object:0];
 }
 
-- (id)abGroupOfDictionary:(id)a3
+- (id)abGroupOfDictionary:(id)dictionary
 {
-  v29 = self;
-  v3 = a3;
-  if ([v3 count])
+  selfCopy = self;
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     v30 = objc_opt_new();
-    v4 = [v3 objectForKeyedSubscript:@"Salt"];
+    v4 = [dictionaryCopy objectForKeyedSubscript:@"Salt"];
     v5 = sub_1002966B4(v4);
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v7 = [v3 allKeys];
-    v8 = [v7 sortedArrayUsingSelector:"compare:"];
+    allKeys = [dictionaryCopy allKeys];
+    v8 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     v9 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v9)
     {
       v10 = v9;
-      v31 = v6 + 1;
+      v31 = unsignedIntegerValue + 1;
       v32 = v8;
       v11 = *v36;
-      v33 = v3;
+      v33 = dictionaryCopy;
       v34 = *v36;
       do
       {
@@ -384,7 +384,7 @@
           }
 
           v13 = *(*(&v35 + 1) + 8 * i);
-          v14 = [v3 objectForKeyedSubscript:{v13, v29}];
+          v14 = [dictionaryCopy objectForKeyedSubscript:{v13, selfCopy}];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -421,12 +421,12 @@
                   if (v25 >= v26.location && v25 - v26.location < v26.length)
                   {
                     [v30 addEntriesFromDictionary:v15];
-                    [(NSArray *)v29->_matchedABGroups addObject:v13];
+                    [(NSArray *)selfCopy->_matchedABGroups addObject:v13];
                   }
                 }
 
                 v8 = v32;
-                v3 = v33;
+                dictionaryCopy = v33;
               }
 
               v11 = v34;
@@ -449,16 +449,16 @@
   return v30;
 }
 
-- (void)_updateFromPlist:(id)a3
+- (void)_updateFromPlist:(id)plist
 {
-  v4 = a3;
-  if (!v4)
+  plistCopy = plist;
+  if (!plistCopy)
   {
     goto LABEL_36;
   }
 
-  v146 = v4;
-  if (![v4 count])
+  v146 = plistCopy;
+  if (![plistCopy count])
   {
     goto LABEL_36;
   }
@@ -906,16 +906,16 @@ LABEL_36:
   _objc_release_x1();
 }
 
-+ (void)registerUpdateHandler:(id)a3
++ (void)registerUpdateHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NSNotificationCenter defaultCenter];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100298020;
   v7[3] = &unk_100483A10;
-  v8 = v3;
-  v5 = v3;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [v4 addObserverForName:@"contextConfigurationDidChange" object:0 queue:0 usingBlock:v7];
 }
 
@@ -926,7 +926,7 @@ LABEL_36:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = self;
+  selfCopy = self;
   v5 = objc_opt_class();
   outCount = 0;
   v6 = class_copyPropertyList(v5, &outCount);
@@ -959,7 +959,7 @@ LABEL_36:
         }
 
         v15 = *(*(&v21 + 1) + 8 * j);
-        v16 = [(ContextConfiguration *)v4 valueForKey:v15];
+        v16 = [(ContextConfiguration *)selfCopy valueForKey:v15];
         v17 = [NSString stringWithFormat:@"%@", v16];
 
         v19 = v15;

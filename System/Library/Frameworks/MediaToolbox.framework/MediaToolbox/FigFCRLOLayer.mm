@@ -3,7 +3,7 @@
 - (void)compose;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setCallbacks:(id)a3 viewportChanged:(void *)a4 drawInContext:(void *)a5;
+- (void)setCallbacks:(id)callbacks viewportChanged:(void *)changed drawInContext:(void *)context;
 @end
 
 @implementation FigFCRLOLayer
@@ -62,11 +62,11 @@
   [(FigBaseCALayer *)&v4 dealloc];
 }
 
-- (void)setCallbacks:(id)a3 viewportChanged:(void *)a4 drawInContext:(void *)a5
+- (void)setCallbacks:(id)callbacks viewportChanged:(void *)changed drawInContext:(void *)context
 {
-  self->layerInternal->var2 = a3;
-  self->layerInternal->var3 = a4;
-  self->layerInternal->var4 = a5;
+  self->layerInternal->var2 = callbacks;
+  self->layerInternal->var3 = changed;
+  self->layerInternal->var4 = context;
 }
 
 - (void)compose

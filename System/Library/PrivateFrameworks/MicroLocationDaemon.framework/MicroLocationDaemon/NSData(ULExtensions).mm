@@ -48,7 +48,7 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v7 = [v5 setWithArray:v6];
   v14 = 0;
-  v8 = [v4 unarchivedArrayOfObjectsOfClasses:v7 fromData:a1 error:&v14];
+  v8 = [v4 unarchivedArrayOfObjectsOfClasses:v7 fromData:self error:&v14];
   v9 = v14;
 
   if (v9)

@@ -2,8 +2,8 @@
 - (WKIdentityDocumentPresentmentController)init;
 - (WKIdentityDocumentPresentmentDelegate)delegate;
 - (void)cancelRequest;
-- (void)performRequest:(WKIdentityDocumentPresentmentRequest *)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)performRequest:(WKIdentityDocumentPresentmentRequest *)request completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation WKIdentityDocumentPresentmentController
@@ -24,7 +24,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   sub_23B59D8F0();
   sub_23B59D8E0();
@@ -38,15 +38,15 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (void)performRequest:(WKIdentityDocumentPresentmentRequest *)a3 completionHandler:(id)a4
+- (void)performRequest:(WKIdentityDocumentPresentmentRequest *)request completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E15A970, &qword_23B59F4E0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23B59D910();
@@ -61,8 +61,8 @@
   v15[3] = 0;
   v15[4] = &unk_23B59F728;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_23B56B930(0, 0, v10, &unk_23B59F738, v15);
 }
 
@@ -78,7 +78,7 @@
 
   if ((*(&self->super.isa + OBJC_IVAR___WKIdentityDocumentPresentmentController_base))[3])
   {
-    v3 = self;
+    selfCopy = self;
 
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E15A8D8, &unk_23B59F640);
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E15A8E0, &qword_23B59F9C0);

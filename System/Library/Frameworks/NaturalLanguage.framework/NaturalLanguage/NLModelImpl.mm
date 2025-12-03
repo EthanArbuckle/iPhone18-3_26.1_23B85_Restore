@@ -1,6 +1,6 @@
 @interface NLModelImpl
 - (NSDictionary)trainingInfo;
-- (id)predictedLabelArraysForTokenArrays:(id)a3;
+- (id)predictedLabelArraysForTokenArrays:(id)arrays;
 @end
 
 @implementation NLModelImpl
@@ -18,16 +18,16 @@
   return v3;
 }
 
-- (id)predictedLabelArraysForTokenArrays:(id)a3
+- (id)predictedLabelArraysForTokenArrays:(id)arrays
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  arraysCopy = arrays;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = arraysCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -43,7 +43,7 @@
         }
 
         v11 = [(NLModelImpl *)self predictedLabelsForTokens:*(*(&v14 + 1) + 8 * i), v14];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -54,7 +54,7 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 @end

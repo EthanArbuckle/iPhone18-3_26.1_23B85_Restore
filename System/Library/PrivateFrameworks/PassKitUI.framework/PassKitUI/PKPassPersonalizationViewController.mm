@@ -1,36 +1,36 @@
 @interface PKPassPersonalizationViewController
 - (BOOL)_contactReadyForPersonalization;
-- (BOOL)personalizationCellShouldReturn:(id)a3;
-- (PKPassPersonalizationViewController)initWithPass:(id)a3 personalizationToken:(id)a4 personalizationSource:(unint64_t)a5;
+- (BOOL)personalizationCellShouldReturn:(id)return;
+- (PKPassPersonalizationViewController)initWithPass:(id)pass personalizationToken:(id)token personalizationSource:(unint64_t)source;
 - (PKPassPersonalizationViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (id)_nextCellForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (void)_configureHeaderViewForState:(unint64_t)a3;
-- (void)_personalizeNowButtonPressed:(id)a3;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (id)_nextCellForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (void)_configureHeaderViewForState:(unint64_t)state;
+- (void)_personalizeNowButtonPressed:(id)pressed;
 - (void)_personalizePass;
 - (void)_positionFooterView;
 - (void)_presentPersonalizationErrorAlert;
 - (void)_scrollToCellsIfNeeded;
-- (void)finishPersonalizationOfPassWithUniqueID:(id)a3 result:(BOOL)a4;
-- (void)passPersonalizationTermsViewControllerDidAcceptTerms:(id)a3;
-- (void)personalizationCellDidChangeValue:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)finishPersonalizationOfPassWithUniqueID:(id)d result:(BOOL)result;
+- (void)passPersonalizationTermsViewControllerDidAcceptTerms:(id)terms;
+- (void)personalizationCellDidChangeValue:(id)value;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPassPersonalizationViewController
 
-- (PKPassPersonalizationViewController)initWithPass:(id)a3 personalizationToken:(id)a4 personalizationSource:(unint64_t)a5
+- (PKPassPersonalizationViewController)initWithPass:(id)pass personalizationToken:(id)token personalizationSource:(unint64_t)source
 {
   v62[16] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 personalization];
-  if (!v11)
+  passCopy = pass;
+  tokenCopy = token;
+  personalization = [passCopy personalization];
+  if (!personalization)
   {
 
     v13 = 0;
@@ -43,12 +43,12 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pass, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_pass, pass);
+    v14 = [tokenCopy copy];
     personalizationToken = v13->_personalizationToken;
     v13->_personalizationToken = v14;
 
-    v13->_personalizationSource = a5;
+    v13->_personalizationSource = source;
     v16 = objc_alloc_init(MEMORY[0x1E695CE18]);
     v17 = *MEMORY[0x1E695C208];
     v62[0] = *MEMORY[0x1E695C360];
@@ -75,10 +75,10 @@
     contact = v13->_contact;
     v13->_contact = v22;
 
-    v24 = [v11 requiredPersonalizationFields];
+    requiredPersonalizationFields = [personalization requiredPersonalizationFields];
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v26 = 0.0;
-    if (v24)
+    if (requiredPersonalizationFields)
     {
       v27 = objc_alloc_init(PKPassPersonalizationCellContext);
       v28 = PKLocalizedString(&cfstr_Personalizatio_4.isa);
@@ -96,10 +96,10 @@
       [(PKPassPersonalizationCellContext *)v27 setContactUpdateBlock:&__block_literal_global_207];
       [v25 addObject:v27];
 
-      if ((v24 & 2) == 0)
+      if ((requiredPersonalizationFields & 2) == 0)
       {
 LABEL_9:
-        if ((v24 & 4) == 0)
+        if ((requiredPersonalizationFields & 4) == 0)
         {
           goto LABEL_10;
         }
@@ -108,7 +108,7 @@ LABEL_9:
       }
     }
 
-    else if ((v24 & 2) == 0)
+    else if ((requiredPersonalizationFields & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -129,10 +129,10 @@ LABEL_9:
     [(PKPassPersonalizationCellContext *)v31 setContactUpdateBlock:&__block_literal_global_219];
     [v25 addObject:v31];
 
-    if ((v24 & 4) == 0)
+    if ((requiredPersonalizationFields & 4) == 0)
     {
 LABEL_10:
-      if ((v24 & 8) == 0)
+      if ((requiredPersonalizationFields & 8) == 0)
       {
 LABEL_24:
         v60 = 0u;
@@ -168,9 +168,9 @@ LABEL_24:
 
         if ((_UISolariumEnabled() & 1) == 0)
         {
-          v49 = [(PKPassPersonalizationViewController *)v13 navigationItem];
-          [v49 pkui_setupScrollEdgeChromelessAppearance];
-          [v49 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+          navigationItem = [(PKPassPersonalizationViewController *)v13 navigationItem];
+          [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+          [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
         }
 
         v50 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:1];
@@ -180,11 +180,11 @@ LABEL_24:
         [(PKPassPersonalizationViewController *)v13 addChildViewController:v13->_privacyController];
         v52 = objc_alloc(MEMORY[0x1E69DD250]);
         v53 = [v52 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-        v54 = [(OBPrivacyLinkController *)v13->_privacyController view];
-        [v53 addSubview:v54];
+        view = [(OBPrivacyLinkController *)v13->_privacyController view];
+        [v53 addSubview:view];
 
-        v55 = [(PKPassPersonalizationViewController *)v13 tableView];
-        [v55 setTableFooterView:v53];
+        tableView = [(PKPassPersonalizationViewController *)v13 tableView];
+        [tableView setTableFooterView:v53];
 
         [(OBPrivacyLinkController *)v13->_privacyController didMoveToParentViewController:v13];
         goto LABEL_34;
@@ -227,7 +227,7 @@ LABEL_18:
     [(PKPassPersonalizationCellContext *)v35 setContactUpdateBlock:&__block_literal_global_227];
     [v25 addObject:v35];
 
-    if ((v24 & 8) == 0)
+    if ((requiredPersonalizationFields & 8) == 0)
     {
       goto LABEL_24;
     }
@@ -246,13 +246,13 @@ LABEL_34:
   v29.super_class = PKPassPersonalizationViewController;
   [(PKPassPersonalizationViewController *)&v29 viewDidLoad];
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [(PKPass *)self->_pass personalizationLogoImage];
-  v5 = [v3 imageWithPKImage:v4];
+  personalizationLogoImage = [(PKPass *)self->_pass personalizationLogoImage];
+  v5 = [v3 imageWithPKImage:personalizationLogoImage];
 
-  v6 = [(PKPass *)self->_pass personalization];
-  v7 = [v6 localizedDescription];
+  personalization = [(PKPass *)self->_pass personalization];
+  localizedDescription = [personalization localizedDescription];
 
-  v8 = [[PKPassPersonalizationHeaderView alloc] initWithLogoImage:v5 description:v7];
+  v8 = [[PKPassPersonalizationHeaderView alloc] initWithLogoImage:v5 description:localizedDescription];
   headerView = self->_headerView;
   self->_headerView = v8;
 
@@ -267,8 +267,8 @@ LABEL_34:
   v16 = [v13 pkui_plainConfigurationWithTitle:v14 font:v15];
 
   [v16 setContentInsets:{23.0, 0.0, 5.0, 0.0}];
-  v17 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v16 setBaseForegroundColor:v17];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [v16 setBaseForegroundColor:systemBlueColor];
 
   objc_initWeak(&location, self);
   v18 = MEMORY[0x1E69DC628];
@@ -284,18 +284,18 @@ LABEL_34:
   self->_personalizeLaterButton = v20;
 
   [(UIButton *)self->_personalizeLaterButton setConfigurationUpdateHandler:&__block_literal_global_45];
-  v22 = [(PKPassPersonalizationViewController *)self tableView];
-  [v22 setTableHeaderView:self->_headerView];
+  tableView = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView setTableHeaderView:self->_headerView];
 
-  v23 = [(PKPassPersonalizationViewController *)self tableView];
-  [v23 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPassPersonalizationCellReuseIdentifier"];
+  tableView2 = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPassPersonalizationCellReuseIdentifier"];
 
   [(UIBarButtonItem *)self->_personalizeNowButton setEnabled:[(PKPassPersonalizationViewController *)self _contactReadyForPersonalization]];
-  v24 = [(PKPassPersonalizationViewController *)self navigationItem];
-  [v24 setRightBarButtonItem:self->_personalizeNowButton];
+  navigationItem = [(PKPassPersonalizationViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:self->_personalizeNowButton];
 
-  v25 = [(PKPassPersonalizationViewController *)self navigationItem];
-  [v25 setHidesBackButton:1];
+  navigationItem2 = [(PKPassPersonalizationViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -317,11 +317,11 @@ void __50__PKPassPersonalizationViewController_viewDidLoad__block_invoke_2(uint6
   [v3 setTextAlignment:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPassPersonalizationViewController;
-  [(PKPassPersonalizationViewController *)&v4 viewWillAppear:a3];
+  [(PKPassPersonalizationViewController *)&v4 viewWillAppear:appear];
   [(PKPassPersonalizationViewController *)self _configureHeaderViewForState:[(PKPassPersonalizationHeaderView *)self->_headerView state]];
 }
 
@@ -330,24 +330,24 @@ void __50__PKPassPersonalizationViewController_viewDidLoad__block_invoke_2(uint6
   v5.receiver = self;
   v5.super_class = PKPassPersonalizationViewController;
   [(PKPassPersonalizationViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKPassPersonalizationViewController *)self tableView];
-  [v3 layoutIfNeeded];
+  tableView = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView layoutIfNeeded];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v4 = [(PKPassPersonalizationViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    navigationItem = [(PKPassPersonalizationViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 
   [(PKPassPersonalizationViewController *)self _positionFooterView];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   cellContexts = self->_cellContexts;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndexedSubscript:](cellContexts, "objectAtIndexedSubscript:", [v7 row]);
-  v10 = [v8 dequeueReusableCellWithIdentifier:@"PKPassPersonalizationCellReuseIdentifier" forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndexedSubscript:](cellContexts, "objectAtIndexedSubscript:", [pathCopy row]);
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"PKPassPersonalizationCellReuseIdentifier" forIndexPath:pathCopy];
 
   [v10 setContext:v9 andContact:self->_contact];
   [v10 setDelegate:self];
@@ -355,12 +355,12 @@ void __50__PKPassPersonalizationViewController_viewDidLoad__block_invoke_2(uint6
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   result = 0.0;
-  if (!a4)
+  if (!section)
   {
-    [a3 bounds];
+    [view bounds];
     [(UIButton *)self->_personalizeLaterButton sizeThatFits:v6, v7];
     return v8;
   }
@@ -368,9 +368,9 @@ void __50__PKPassPersonalizationViewController_viewDidLoad__block_invoke_2(uint6
   return result;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v5 = 0;
   }
@@ -383,19 +383,19 @@ void __50__PKPassPersonalizationViewController_viewDidLoad__block_invoke_2(uint6
   return v5;
 }
 
-- (void)personalizationCellDidChangeValue:(id)a3
+- (void)personalizationCellDidChangeValue:(id)value
 {
   personalizeNowButton = self->_personalizeNowButton;
-  v4 = [(PKPassPersonalizationViewController *)self _contactReadyForPersonalization];
+  _contactReadyForPersonalization = [(PKPassPersonalizationViewController *)self _contactReadyForPersonalization];
 
-  [(UIBarButtonItem *)personalizeNowButton setEnabled:v4];
+  [(UIBarButtonItem *)personalizeNowButton setEnabled:_contactReadyForPersonalization];
 }
 
-- (BOOL)personalizationCellShouldReturn:(id)a3
+- (BOOL)personalizationCellShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(PKPassPersonalizationViewController *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  returnCopy = return;
+  tableView = [(PKPassPersonalizationViewController *)self tableView];
+  v6 = [tableView indexPathForCell:returnCopy];
 
   v7 = [(PKPassPersonalizationViewController *)self _nextCellForIndexPath:v6];
   v8 = v7;
@@ -421,13 +421,13 @@ LABEL_6:
   return v9;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKPassPersonalizationViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKPassPersonalizationViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)passPersonalizationTermsViewControllerDidAcceptTerms:(id)a3
+- (void)passPersonalizationTermsViewControllerDidAcceptTerms:(id)terms
 {
   self->_termsAndConditionsAccepted = 1;
   v3[0] = MEMORY[0x1E69E9820];
@@ -438,18 +438,18 @@ LABEL_6:
   [(PKPassPersonalizationViewController *)self dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)_personalizeNowButtonPressed:(id)a3
+- (void)_personalizeNowButtonPressed:(id)pressed
 {
-  v9 = [(PKPass *)self->_pass personalization];
-  if (self->_termsAndConditionsAccepted || ([v9 termsAndConditions], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, !v5))
+  personalization = [(PKPass *)self->_pass personalization];
+  if (self->_termsAndConditionsAccepted || ([personalization termsAndConditions], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, !v5))
   {
     [(PKPassPersonalizationViewController *)self _personalizePass];
   }
 
   else
   {
-    v6 = [v9 termsAndConditions];
-    v7 = [[PKPassPersonalizationTermsViewController alloc] initWithTermsAndConditions:v6];
+    termsAndConditions = [personalization termsAndConditions];
+    v7 = [[PKPassPersonalizationTermsViewController alloc] initWithTermsAndConditions:termsAndConditions];
     v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
     [(PKPassPersonalizationTermsViewController *)v7 setDelegate:self];
     [(PKPassPersonalizationViewController *)self presentViewController:v8 animated:1 completion:0];
@@ -458,20 +458,20 @@ LABEL_6:
 
 - (void)_personalizePass
 {
-  v3 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v4 = [(PKPass *)self->_pass uniqueID];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
   [(UIBarButtonItem *)self->_personalizeNowButton setEnabled:0];
   [(UIButton *)self->_personalizeLaterButton setEnabled:0];
   [(PKPassPersonalizationViewController *)self _configureHeaderViewForState:1];
-  v5 = [(PKPassPersonalizationViewController *)self tableView];
-  [v5 safeAreaInsets];
+  tableView = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView safeAreaInsets];
   v7 = -v6;
 
-  v8 = [(PKPassPersonalizationViewController *)self tableView];
-  [v8 setContentOffset:1 animated:{0.0, v7}];
+  tableView2 = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView2 setContentOffset:1 animated:{0.0, v7}];
 
-  v9 = [(PKPassPersonalizationViewController *)self tableView];
-  [v9 setUserInteractionEnabled:0];
+  tableView3 = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView3 setUserInteractionEnabled:0];
 
   v10 = dispatch_time(0, 300000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -480,8 +480,8 @@ LABEL_6:
   block[3] = &unk_1E8010970;
   block[4] = self;
   dispatch_after(v10, MEMORY[0x1E69E96A0], block);
-  v11 = [(PKPass *)self->_pass personalization];
-  v12 = [v11 requiredPersonalizationFields];
+  personalization = [(PKPass *)self->_pass personalization];
+  requiredPersonalizationFields = [personalization requiredPersonalizationFields];
 
   personalizationSource = self->_personalizationSource;
   v14 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -491,8 +491,8 @@ LABEL_6:
     v31[1] = 3221225472;
     v31[2] = __55__PKPassPersonalizationViewController__personalizePass__block_invoke_2;
     v31[3] = &unk_1E80145B0;
-    v32 = v3;
-    v33 = self;
+    v32 = mEMORY[0x1E69B8A58];
+    selfCopy = self;
     [v14 addOperation:v31];
   }
 
@@ -500,14 +500,14 @@ LABEL_6:
   v26[1] = 3221225472;
   v26[2] = __55__PKPassPersonalizationViewController__personalizePass__block_invoke_4;
   v26[3] = &unk_1E80145D8;
-  v15 = v3;
+  v15 = mEMORY[0x1E69B8A58];
   v27 = v15;
-  v16 = v4;
+  v16 = uniqueID;
   v28 = v16;
-  v29 = self;
-  v30 = v12;
+  selfCopy2 = self;
+  v30 = requiredPersonalizationFields;
   [v14 addOperation:v26];
-  v17 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __55__PKPassPersonalizationViewController__personalizePass__block_invoke_6;
@@ -515,10 +515,10 @@ LABEL_6:
   v25 = personalizationSource < 2;
   v22 = v15;
   v23 = v16;
-  v24 = self;
+  selfCopy3 = self;
   v18 = v16;
   v19 = v15;
-  v20 = [v14 evaluateWithInput:v17 completion:v21];
+  v20 = [v14 evaluateWithInput:null completion:v21];
 }
 
 void __55__PKPassPersonalizationViewController__personalizePass__block_invoke(uint64_t a1)
@@ -589,17 +589,17 @@ void __55__PKPassPersonalizationViewController__personalizePass__block_invoke_6(
   [*(a1 + 48) finishPersonalizationOfPassWithUniqueID:*(a1 + 40) result:{objc_msgSend(v6, "isCanceled") ^ 1}];
 }
 
-- (void)finishPersonalizationOfPassWithUniqueID:(id)a3 result:(BOOL)a4
+- (void)finishPersonalizationOfPassWithUniqueID:(id)d result:(BOOL)result
 {
-  v6 = a3;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__PKPassPersonalizationViewController_finishPersonalizationOfPassWithUniqueID_result___block_invoke;
   block[3] = &unk_1E8013D60;
-  v11 = a4;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  resultCopy = result;
+  v9 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -645,20 +645,20 @@ void __86__PKPassPersonalizationViewController_finishPersonalizationOfPassWithUn
 
 - (BOOL)_contactReadyForPersonalization
 {
-  v3 = [(PKPass *)self->_pass personalization];
-  v4 = [v3 requiredPersonalizationFields];
+  personalization = [(PKPass *)self->_pass personalization];
+  requiredPersonalizationFields = [personalization requiredPersonalizationFields];
 
-  v5 = [(PKContact *)self->_contact name];
-  v6 = [v5 givenName];
+  name = [(PKContact *)self->_contact name];
+  givenName = [name givenName];
 
-  v7 = [(PKContact *)self->_contact postalAddress];
-  v8 = [v7 postalCode];
+  postalAddress = [(PKContact *)self->_contact postalAddress];
+  postalCode = [postalAddress postalCode];
 
-  v9 = [(PKContact *)self->_contact phoneNumber];
-  v10 = [v9 stringValue];
+  phoneNumber = [(PKContact *)self->_contact phoneNumber];
+  stringValue = [phoneNumber stringValue];
 
-  v11 = [(PKContact *)self->_contact emailAddress];
-  v12 = ((v4 & 1) == 0 || [v6 length]) && ((v4 & 2) == 0 || objc_msgSend(v8, "length")) && ((v4 & 8) == 0 || objc_msgSend(v10, "length")) && ((v4 & 4) == 0 || objc_msgSend(v11, "length") != 0);
+  emailAddress = [(PKContact *)self->_contact emailAddress];
+  v12 = ((requiredPersonalizationFields & 1) == 0 || [givenName length]) && ((requiredPersonalizationFields & 2) == 0 || objc_msgSend(postalCode, "length")) && ((requiredPersonalizationFields & 8) == 0 || objc_msgSend(stringValue, "length")) && ((requiredPersonalizationFields & 4) == 0 || objc_msgSend(emailAddress, "length") != 0);
 
   return v12;
 }
@@ -684,11 +684,11 @@ void __61__PKPassPersonalizationViewController__scrollToCellsIfNeeded__block_inv
   [v2 scrollToRowAtIndexPath:v3 atScrollPosition:1 animated:1];
 }
 
-- (void)_configureHeaderViewForState:(unint64_t)a3
+- (void)_configureHeaderViewForState:(unint64_t)state
 {
-  [(PKPassPersonalizationHeaderView *)self->_headerView setState:a3];
-  v4 = [(PKPassPersonalizationViewController *)self tableView];
-  [v4 bounds];
+  [(PKPassPersonalizationHeaderView *)self->_headerView setState:state];
+  tableView = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView bounds];
   v6 = v5;
   v8 = v7;
 
@@ -696,20 +696,20 @@ void __61__PKPassPersonalizationViewController__scrollToCellsIfNeeded__block_inv
   v10 = v9;
   [(PKPassPersonalizationHeaderView *)self->_headerView frame];
   [(PKPassPersonalizationHeaderView *)self->_headerView setFrame:?];
-  v11 = [(PKPassPersonalizationViewController *)self tableView];
-  [v11 _tableHeaderHeightDidChangeToHeight:v10];
+  tableView2 = [(PKPassPersonalizationViewController *)self tableView];
+  [tableView2 _tableHeaderHeightDidChangeToHeight:v10];
 }
 
 - (void)_positionFooterView
 {
-  v3 = [(PKPassPersonalizationViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(PKPassPersonalizationViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
 
-  v24 = [(PKPassPersonalizationViewController *)self tableView];
-  v6 = [v24 tableFooterView];
-  [v24 bounds];
-  if (v6)
+  tableView = [(PKPassPersonalizationViewController *)self tableView];
+  tableFooterView = [tableView tableFooterView];
+  [tableView bounds];
+  if (tableFooterView)
   {
     v8 = v7;
     if (PKUIGetMinScreenWidthType())
@@ -722,22 +722,22 @@ void __61__PKPassPersonalizationViewController__scrollToCellsIfNeeded__block_inv
       v9 = 5.0;
     }
 
-    [v24 pkui_readableContentBoundsWithMargins:{0.0, v9, 11.0, v9}];
+    [tableView pkui_readableContentBoundsWithMargins:{0.0, v9, 11.0, v9}];
     v11 = v10;
-    v12 = [(OBPrivacyLinkController *)self->_privacyController view];
+    view2 = [(OBPrivacyLinkController *)self->_privacyController view];
     LODWORD(v13) = 1148846080;
     LODWORD(v14) = 1112014848;
-    [v12 systemLayoutSizeFittingSize:v11 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v13, v14}];
+    [view2 systemLayoutSizeFittingSize:v11 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v13, v14}];
     v16 = v15;
     v18 = v17;
-    [v12 frame];
+    [view2 frame];
     v29.origin.y = 0.0;
     v29.origin.x = v9;
     v29.size.width = v16;
     v29.size.height = v18;
     if (!CGRectEqualToRect(v26, v29))
     {
-      [v12 setFrame:{v9, 0.0, v16, v18}];
+      [view2 setFrame:{v9, 0.0, v16, v18}];
     }
 
     v27.origin.y = 0.0;
@@ -745,18 +745,18 @@ void __61__PKPassPersonalizationViewController__scrollToCellsIfNeeded__block_inv
     v27.size.width = v16;
     v27.size.height = v18;
     v19 = CGRectGetMaxY(v27) + 11.0;
-    [v24 layoutIfNeeded];
-    [v24 _rectForTableFooterView];
+    [tableView layoutIfNeeded];
+    [tableView _rectForTableFooterView];
     v21 = v20;
     v23 = v22;
-    [v24 pkui_naturalRestingBounds];
-    [v6 setFrame:{v21, fmax(v23, CGRectGetMaxY(v28) - v19 - v5), v8, v19}];
+    [tableView pkui_naturalRestingBounds];
+    [tableFooterView setFrame:{v21, fmax(v23, CGRectGetMaxY(v28) - v19 - v5), v8, v19}];
   }
 }
 
-- (id)_nextCellForIndexPath:(id)a3
+- (id)_nextCellForIndexPath:(id)path
 {
-  v4 = [a3 row] + 1;
+  v4 = [path row] + 1;
   if (v4 >= [(NSArray *)self->_cellContexts count])
   {
     v7 = 0;
@@ -765,8 +765,8 @@ void __61__PKPassPersonalizationViewController__scrollToCellsIfNeeded__block_inv
   else
   {
     v5 = [MEMORY[0x1E696AC88] indexPathForRow:v4 inSection:0];
-    v6 = [(PKPassPersonalizationViewController *)self tableView];
-    v7 = [v6 cellForRowAtIndexPath:v5];
+    tableView = [(PKPassPersonalizationViewController *)self tableView];
+    v7 = [tableView cellForRowAtIndexPath:v5];
   }
 
   return v7;

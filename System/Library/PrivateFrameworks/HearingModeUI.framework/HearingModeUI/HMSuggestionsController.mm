@@ -1,6 +1,6 @@
 @interface HMSuggestionsController
-- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (uint64_t)earTipSuggestionTapped;
 - (void)buttonTapped;
 - (void)viewDidLoad;
@@ -10,29 +10,29 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520469E8();
 }
 
 - (void)buttonTapped
 {
-  v4 = self;
-  v2 = [(HMSuggestionsController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(HMSuggestionsController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = navigationController;
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13HearingModeUI23HMSuggestionsController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -57,14 +57,14 @@
   }
 
   (*(v5 + 32))(v8, v3, v4);
-  v10 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   v11 = sub_252063D74();
   sub_25203A508(MEMORY[0x277D84F90]);
   type metadata accessor for OpenExternalURLOptionsKey();
   sub_25203A77C(&qword_27F4C9958);
   v12 = sub_252064654();
 
-  [v10 openURL:v11 options:v12 completionHandler:0];
+  [sharedApplication openURL:v11 options:v12 completionHandler:0];
 
   return (*(v5 + 8))(v8, v4);
 }

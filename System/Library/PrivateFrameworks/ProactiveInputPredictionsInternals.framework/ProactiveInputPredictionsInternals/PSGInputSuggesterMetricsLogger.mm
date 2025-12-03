@@ -1,28 +1,28 @@
 @interface PSGInputSuggesterMetricsLogger
 - (PSGInputSuggesterMetricsLogger)init;
-- (PSGInputSuggesterMetricsLogger)initWithTracker:(id)a3;
-- (int)_errorTypeProto:(unsigned __int8)a3;
-- (int)_predictionDataSourceTypeProto:(unsigned __int8)a3;
-- (int)_triggerSourceTypeProto:(unint64_t)a3;
-- (void)_populatePredictionItems:(id)a3 proto:(id)a4;
-- (void)_populateQueryFields:(id)a3 proto:(id)a4;
-- (void)_populateTreatmentFields:(id)a3 proto:(id)a4;
-- (void)_populateTriggerAttributeFields:(id)a3 proto:(id)a4;
-- (void)_populateTriggerFields:(id)a3 proto:(id)a4;
-- (void)logEngagement:(id)a3 request:(id)a4 position:(unint64_t)a5 config:(id)a6;
-- (void)logImpression:(id)a3 request:(id)a4 config:(id)a5;
-- (void)logPrediction:(id)a3 request:(id)a4 latencyMillis:(double)a5 config:(id)a6;
-- (void)logQuery:(id)a3 config:(id)a4;
-- (void)logTrigger:(id)a3 request:(id)a4 config:(id)a5;
+- (PSGInputSuggesterMetricsLogger)initWithTracker:(id)tracker;
+- (int)_errorTypeProto:(unsigned __int8)proto;
+- (int)_predictionDataSourceTypeProto:(unsigned __int8)proto;
+- (int)_triggerSourceTypeProto:(unint64_t)proto;
+- (void)_populatePredictionItems:(id)items proto:(id)proto;
+- (void)_populateQueryFields:(id)fields proto:(id)proto;
+- (void)_populateTreatmentFields:(id)fields proto:(id)proto;
+- (void)_populateTriggerAttributeFields:(id)fields proto:(id)proto;
+- (void)_populateTriggerFields:(id)fields proto:(id)proto;
+- (void)logEngagement:(id)engagement request:(id)request position:(unint64_t)position config:(id)config;
+- (void)logImpression:(id)impression request:(id)request config:(id)config;
+- (void)logPrediction:(id)prediction request:(id)request latencyMillis:(double)millis config:(id)config;
+- (void)logQuery:(id)query config:(id)config;
+- (void)logTrigger:(id)trigger request:(id)request config:(id)config;
 @end
 
 @implementation PSGInputSuggesterMetricsLogger
 
-- (int)_errorTypeProto:(unsigned __int8)a3
+- (int)_errorTypeProto:(unsigned __int8)proto
 {
-  if (a3 < 4u)
+  if (proto < 4u)
   {
-    return a3 + 1;
+    return proto + 1;
   }
 
   else
@@ -31,28 +31,28 @@
   }
 }
 
-- (void)_populateTriggerAttributeFields:(id)a3 proto:(id)a4
+- (void)_populateTriggerAttributeFields:(id)fields proto:(id)proto
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fieldsCopy = fields;
+  protoCopy = proto;
   if (_populateTriggerAttributeFields_proto__once != -1)
   {
     dispatch_once(&_populateTriggerAttributeFields_proto__once, &__block_literal_global_1755);
   }
 
-  v7 = [v5 valueForKey:*MEMORY[0x277D23050]];
-  v8 = [v5 valueForKey:*MEMORY[0x277D23028]];
-  [v6 setTriggerAttributeType:v7];
-  [v6 setTriggerAttributeSubtype:v8];
-  v9 = [v5 valueForKey:*MEMORY[0x277D41EE8]];
+  v7 = [fieldsCopy valueForKey:*MEMORY[0x277D23050]];
+  v8 = [fieldsCopy valueForKey:*MEMORY[0x277D23028]];
+  [protoCopy setTriggerAttributeType:v7];
+  [protoCopy setTriggerAttributeSubtype:v8];
+  v9 = [fieldsCopy valueForKey:*MEMORY[0x277D41EE8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = [_populateTriggerAttributeFields_proto__map objectForKeyedSubscript:v9];
     if ([(__CFString *)v10 length])
     {
-      v11 = v6;
+      v11 = protoCopy;
       v12 = v10;
     }
 
@@ -62,12 +62,12 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         v18 = 138412290;
-        v19 = v5;
+        v19 = fieldsCopy;
         _os_log_fault_impl(&dword_260D36000, v14, OS_LOG_TYPE_FAULT, "Invalid search field for Contacts Autocomplete trigger: %@", &v18, 0xCu);
       }
 
       v12 = @"Invalid";
-      v11 = v6;
+      v11 = protoCopy;
     }
 
     [v11 setTriggerAttributeField:v12];
@@ -75,15 +75,15 @@
 
   else
   {
-    v13 = [v5 valueForKey:*MEMORY[0x277D23010]];
+    v13 = [fieldsCopy valueForKey:*MEMORY[0x277D23010]];
 
     if (!v13)
     {
-      v9 = [v5 valueForKey:*MEMORY[0x277D22F30]];
+      v9 = [fieldsCopy valueForKey:*MEMORY[0x277D22F30]];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v6;
+        v15 = protoCopy;
         v16 = v9;
       }
 
@@ -96,14 +96,14 @@
         }
 
         v16 = @"NSNull";
-        v15 = v6;
+        v15 = protoCopy;
       }
 
       [v15 setTriggerAttributeField:v16];
       goto LABEL_17;
     }
 
-    [v6 setTriggerAttributeField:v13];
+    [protoCopy setTriggerAttributeField:v13];
     v9 = v13;
   }
 
@@ -130,11 +130,11 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_predictionDataSourceTypeProto:(unsigned __int8)a3
+- (int)_predictionDataSourceTypeProto:(unsigned __int8)proto
 {
-  if ((a3 - 1) < 0xA)
+  if ((proto - 1) < 0xA)
   {
-    return (a3 - 1) + 1;
+    return (proto - 1) + 1;
   }
 
   else
@@ -143,11 +143,11 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
   }
 }
 
-- (int)_triggerSourceTypeProto:(unint64_t)a3
+- (int)_triggerSourceTypeProto:(unint64_t)proto
 {
-  if (a3 < 6)
+  if (proto < 6)
   {
-    return a3 + 1;
+    return proto + 1;
   }
 
   else
@@ -156,62 +156,62 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
   }
 }
 
-- (void)_populateTriggerFields:(id)a3 proto:(id)a4
+- (void)_populateTriggerFields:(id)fields proto:(id)proto
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 setTriggerSourceType:{-[PSGInputSuggesterMetricsLogger _triggerSourceTypeProto:](self, "_triggerSourceTypeProto:", objc_msgSend(v7, "triggerSourceType"))}];
-  v8 = [v7 triggerCategory];
-  [v6 setTriggerCategory:v8];
+  protoCopy = proto;
+  fieldsCopy = fields;
+  [protoCopy setTriggerSourceType:{-[PSGInputSuggesterMetricsLogger _triggerSourceTypeProto:](self, "_triggerSourceTypeProto:", objc_msgSend(fieldsCopy, "triggerSourceType"))}];
+  triggerCategory = [fieldsCopy triggerCategory];
+  [protoCopy setTriggerCategory:triggerCategory];
 
-  v9 = [v7 triggerAttributes];
+  triggerAttributes = [fieldsCopy triggerAttributes];
 
-  [(PSGInputSuggesterMetricsLogger *)self _populateTriggerAttributeFields:v9 proto:v6];
+  [(PSGInputSuggesterMetricsLogger *)self _populateTriggerAttributeFields:triggerAttributes proto:protoCopy];
 }
 
-- (void)_populateQueryFields:(id)a3 proto:(id)a4
+- (void)_populateQueryFields:(id)fields proto:(id)proto
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 responseContext];
-  [v5 setHasResponseContext:{objc_msgSend(v7, "length") != 0}];
+  protoCopy = proto;
+  fieldsCopy = fields;
+  responseContext = [fieldsCopy responseContext];
+  [protoCopy setHasResponseContext:{objc_msgSend(responseContext, "length") != 0}];
 
-  [v5 setIsResponseContextBlacklisted:{objc_msgSend(v6, "isResponseContextBlacklisted")}];
-  [v5 setIsDocumentEmpty:{objc_msgSend(v6, "isDocumentEmpty")}];
-  v8 = [v6 textContentType];
-  [v5 setTextContentType:v8];
+  [protoCopy setIsResponseContextBlacklisted:{objc_msgSend(fieldsCopy, "isResponseContextBlacklisted")}];
+  [protoCopy setIsDocumentEmpty:{objc_msgSend(fieldsCopy, "isDocumentEmpty")}];
+  textContentType = [fieldsCopy textContentType];
+  [protoCopy setTextContentType:textContentType];
 
-  v9 = [v6 contextBeforeInput];
-  [v5 setHasContextBeforeInput:{objc_msgSend(v9, "length") != 0}];
+  contextBeforeInput = [fieldsCopy contextBeforeInput];
+  [protoCopy setHasContextBeforeInput:{objc_msgSend(contextBeforeInput, "length") != 0}];
 
-  v10 = [v6 recipientNames];
-  [v5 setHasRecipientNames:{objc_msgSend(v10, "count") != 0}];
+  recipientNames = [fieldsCopy recipientNames];
+  [protoCopy setHasRecipientNames:{objc_msgSend(recipientNames, "count") != 0}];
 
-  v11 = [v6 localeIdentifier];
-  [v5 setLocaleIdentifier:v11];
+  localeIdentifier = [fieldsCopy localeIdentifier];
+  [protoCopy setLocaleIdentifier:localeIdentifier];
 
-  v12 = [v6 bundleIdentifier];
-  [v5 setBundleIdentifier:v12];
+  bundleIdentifier = [fieldsCopy bundleIdentifier];
+  [protoCopy setBundleIdentifier:bundleIdentifier];
 
-  [v5 setMaxTextualResponseItems:{objc_msgSend(v6, "textualResponseLimit")}];
-  [v5 setMaxStructuredInfoItems:{objc_msgSend(v6, "structuredInfoLimit")}];
-  [v5 setMaxPredictionItems:{objc_msgSend(v6, "totalSuggestionsLimit")}];
-  v13 = [v6 initiatingProcess];
+  [protoCopy setMaxTextualResponseItems:{objc_msgSend(fieldsCopy, "textualResponseLimit")}];
+  [protoCopy setMaxStructuredInfoItems:{objc_msgSend(fieldsCopy, "structuredInfoLimit")}];
+  [protoCopy setMaxPredictionItems:{objc_msgSend(fieldsCopy, "totalSuggestionsLimit")}];
+  initiatingProcess = [fieldsCopy initiatingProcess];
 
-  [v5 setInitiatingProcess:v13];
+  [protoCopy setInitiatingProcess:initiatingProcess];
 }
 
-- (void)_populatePredictionItems:(id)a3 proto:(id)a4
+- (void)_populatePredictionItems:(id)items proto:(id)proto
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  protoCopy = proto;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  obj = itemsCopy;
+  v7 = [itemsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -231,9 +231,9 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 textualResponseSuggestion];
+        textualResponseSuggestion = [v15 textualResponseSuggestion];
 
-        if (v16)
+        if (textualResponseSuggestion)
         {
           v11 = (v11 + 1);
           if (v9)
@@ -242,17 +242,17 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
             continue;
           }
 
-          v18 = [v15 textualResponseSuggestion];
-          v19 = [v18 responseCategory];
-          [v6 setTextualResponseCategory:v19];
+          textualResponseSuggestion2 = [v15 textualResponseSuggestion];
+          responseCategory = [textualResponseSuggestion2 responseCategory];
+          [protoCopy setTextualResponseCategory:responseCategory];
           v9 = 1;
         }
 
         else
         {
-          v17 = [v15 structuredInfoSuggestion];
+          structuredInfoSuggestion = [v15 structuredInfoSuggestion];
 
-          if (!v17)
+          if (!structuredInfoSuggestion)
           {
             continue;
           }
@@ -264,14 +264,14 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
             continue;
           }
 
-          v20 = [v15 structuredInfoSuggestion];
-          v21 = [v20 proactiveTrigger];
-          [(PSGInputSuggesterMetricsLogger *)self _populateTriggerFields:v21 proto:v6];
+          structuredInfoSuggestion2 = [v15 structuredInfoSuggestion];
+          proactiveTrigger = [structuredInfoSuggestion2 proactiveTrigger];
+          [(PSGInputSuggesterMetricsLogger *)self _populateTriggerFields:proactiveTrigger proto:protoCopy];
 
-          v18 = [v15 structuredInfoSuggestion];
-          v19 = [v18 portraitItem];
+          textualResponseSuggestion2 = [v15 structuredInfoSuggestion];
+          responseCategory = [textualResponseSuggestion2 portraitItem];
           v13 = v23;
-          [v6 setDataSourceType:{-[PSGInputSuggesterMetricsLogger _predictionDataSourceTypeProto:](self, "_predictionDataSourceTypeProto:", objc_msgSend(v19, "source"))}];
+          [protoCopy setDataSourceType:{-[PSGInputSuggesterMetricsLogger _predictionDataSourceTypeProto:](self, "_predictionDataSourceTypeProto:", objc_msgSend(responseCategory, "source"))}];
           v10 = 1;
         }
       }
@@ -287,41 +287,41 @@ void __72__PSGInputSuggesterMetricsLogger__populateTriggerAttributeFields_proto_
   v11 = 0;
   v12 = 0;
 LABEL_19:
-  [v6 setNumTextualResponseItems:v11];
-  [v6 setNumStructuredInfoItems:v12];
+  [protoCopy setNumTextualResponseItems:v11];
+  [protoCopy setNumStructuredInfoItems:v12];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_populateTreatmentFields:(id)a3 proto:(id)a4
+- (void)_populateTreatmentFields:(id)fields proto:(id)proto
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 experimentIdentifiers];
-  v8 = [v7 experimentId];
-  [v5 setExperimentId:v8];
+  protoCopy = proto;
+  fieldsCopy = fields;
+  experimentIdentifiers = [fieldsCopy experimentIdentifiers];
+  experimentId = [experimentIdentifiers experimentId];
+  [protoCopy setExperimentId:experimentId];
 
-  v9 = [v6 experimentIdentifiers];
-  v10 = [v9 treatmentId];
-  [v5 setTreatmentId:v10];
+  experimentIdentifiers2 = [fieldsCopy experimentIdentifiers];
+  treatmentId = [experimentIdentifiers2 treatmentId];
+  [protoCopy setTreatmentId:treatmentId];
 
-  v11 = [v6 treatmentName];
+  treatmentName = [fieldsCopy treatmentName];
 
-  [v5 setTreatmentName:v11];
+  [protoCopy setTreatmentName:treatmentName];
 }
 
-- (void)logEngagement:(id)a3 request:(id)a4 position:(unint64_t)a5 config:(id)a6
+- (void)logEngagement:(id)engagement request:(id)request position:(unint64_t)position config:(id)config
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 count])
+  engagementCopy = engagement;
+  requestCopy = request;
+  configCopy = config;
+  if ([engagementCopy count])
   {
     v13 = objc_opt_new();
-    [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:v12 proto:v13];
-    [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:v11 proto:v13];
-    [(PSGInputSuggesterMetricsLogger *)self _populatePredictionItems:v10 proto:v13];
-    [v13 setPosition:a5];
+    [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:configCopy proto:v13];
+    [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:requestCopy proto:v13];
+    [(PSGInputSuggesterMetricsLogger *)self _populatePredictionItems:engagementCopy proto:v13];
+    [v13 setPosition:position];
     [(PETEventTracker2 *)self->_tracker trackScalarForMessage:v13];
   }
 
@@ -336,17 +336,17 @@ LABEL_19:
   }
 }
 
-- (void)logImpression:(id)a3 request:(id)a4 config:(id)a5
+- (void)logImpression:(id)impression request:(id)request config:(id)config
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  impressionCopy = impression;
+  requestCopy = request;
+  configCopy = config;
+  if ([impressionCopy count])
   {
     v11 = objc_opt_new();
-    [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:v10 proto:v11];
-    [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:v9 proto:v11];
-    [(PSGInputSuggesterMetricsLogger *)self _populatePredictionItems:v8 proto:v11];
+    [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:configCopy proto:v11];
+    [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:requestCopy proto:v11];
+    [(PSGInputSuggesterMetricsLogger *)self _populatePredictionItems:impressionCopy proto:v11];
     [(PETEventTracker2 *)self->_tracker trackScalarForMessage:v11];
   }
 
@@ -361,42 +361,42 @@ LABEL_19:
   }
 }
 
-- (void)logPrediction:(id)a3 request:(id)a4 latencyMillis:(double)a5 config:(id)a6
+- (void)logPrediction:(id)prediction request:(id)request latencyMillis:(double)millis config:(id)config
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  predictionCopy = prediction;
+  configCopy = config;
+  requestCopy = request;
   v13 = objc_opt_new();
-  [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:v11 proto:v13];
+  [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:configCopy proto:v13];
 
-  [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:v12 proto:v13];
-  v14 = [v10 responseItems];
-  v15 = [v14 count];
+  [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:requestCopy proto:v13];
+  responseItems = [predictionCopy responseItems];
+  v15 = [responseItems count];
 
   if (v15)
   {
-    v16 = [v10 responseItems];
-    [(PSGInputSuggesterMetricsLogger *)self _populatePredictionItems:v16 proto:v13];
+    responseItems2 = [predictionCopy responseItems];
+    [(PSGInputSuggesterMetricsLogger *)self _populatePredictionItems:responseItems2 proto:v13];
   }
 
   else
   {
-    v17 = [v10 explanationSet];
-    v18 = [v17 count];
+    explanationSet = [predictionCopy explanationSet];
+    v18 = [explanationSet count];
 
     if (v18)
     {
-      v19 = [v10 explanationSet];
+      explanationSet2 = [predictionCopy explanationSet];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __77__PSGInputSuggesterMetricsLogger_logPrediction_request_latencyMillis_config___block_invoke;
       v20[3] = &unk_279ABE478;
       v21 = v13;
-      [v19 enumerateExplanationCodeWithBlock:v20];
+      [explanationSet2 enumerateExplanationCodeWithBlock:v20];
     }
   }
 
-  [(PETEventTracker2 *)self->_tracker trackDistributionForMessage:v13 value:a5];
+  [(PETEventTracker2 *)self->_tracker trackDistributionForMessage:v13 value:millis];
 }
 
 uint64_t __77__PSGInputSuggesterMetricsLogger_logPrediction_request_latencyMillis_config___block_invoke(uint64_t result, int a2)
@@ -414,41 +414,41 @@ uint64_t __77__PSGInputSuggesterMetricsLogger_logPrediction_request_latencyMilli
   return result;
 }
 
-- (void)logTrigger:(id)a3 request:(id)a4 config:(id)a5
+- (void)logTrigger:(id)trigger request:(id)request config:(id)config
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  configCopy = config;
+  requestCopy = request;
+  triggerCopy = trigger;
   v11 = objc_opt_new();
-  [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:v8 proto:v11];
+  [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:configCopy proto:v11];
 
-  [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:v9 proto:v11];
-  [(PSGInputSuggesterMetricsLogger *)self _populateTriggerFields:v10 proto:v11];
+  [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:requestCopy proto:v11];
+  [(PSGInputSuggesterMetricsLogger *)self _populateTriggerFields:triggerCopy proto:v11];
 
   [(PETEventTracker2 *)self->_tracker trackScalarForMessage:v11];
 }
 
-- (void)logQuery:(id)a3 config:(id)a4
+- (void)logQuery:(id)query config:(id)config
 {
-  v6 = a4;
-  v7 = a3;
+  configCopy = config;
+  queryCopy = query;
   v8 = objc_opt_new();
-  [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:v6 proto:v8];
+  [(PSGInputSuggesterMetricsLogger *)self _populateTreatmentFields:configCopy proto:v8];
 
-  [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:v7 proto:v8];
+  [(PSGInputSuggesterMetricsLogger *)self _populateQueryFields:queryCopy proto:v8];
   [(PETEventTracker2 *)self->_tracker trackScalarForMessage:v8];
 }
 
-- (PSGInputSuggesterMetricsLogger)initWithTracker:(id)a3
+- (PSGInputSuggesterMetricsLogger)initWithTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = PSGInputSuggesterMetricsLogger;
   v6 = [(PSGInputSuggesterMetricsLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tracker, a3);
+    objc_storeStrong(&v6->_tracker, tracker);
   }
 
   return v7;
@@ -456,8 +456,8 @@ uint64_t __77__PSGInputSuggesterMetricsLogger_logPrediction_request_latencyMilli
 
 - (PSGInputSuggesterMetricsLogger)init
 {
-  v3 = [MEMORY[0x277D41DA8] sharedInstance];
-  v4 = [(PSGInputSuggesterMetricsLogger *)self initWithTracker:v3];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  v4 = [(PSGInputSuggesterMetricsLogger *)self initWithTracker:mEMORY[0x277D41DA8]];
 
   return v4;
 }

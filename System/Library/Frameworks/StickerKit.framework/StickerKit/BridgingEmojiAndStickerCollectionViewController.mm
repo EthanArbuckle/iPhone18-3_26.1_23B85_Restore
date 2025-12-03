@@ -1,13 +1,13 @@
 @interface BridgingEmojiAndStickerCollectionViewController
-- (BOOL)handleKeyEvent:(id)a3;
+- (BOOL)handleKeyEvent:(id)event;
 - (NSArray)searchResults;
 - (NSString)bundleId;
-- (_TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_UIKeyboardEmojiKeyDisplayController)emojiKeyManager;
-- (void)setBundleId:(id)a3;
-- (void)setSearchResults:(id)a3;
+- (void)setBundleId:(id)id;
+- (void)setSearchResults:(id)results;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
-  if (a3)
+  if (results)
   {
     v4 = sub_19A7AB254();
   }
@@ -49,7 +49,7 @@
   }
 
   *(self + OBJC_IVAR____TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController_searchResults) = v4;
-  v5 = self;
+  selfCopy = self;
 
   sub_19A65F838();
 }
@@ -70,9 +70,9 @@
   return v2;
 }
 
-- (void)setBundleId:(id)a3
+- (void)setBundleId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_19A7AB014();
     v6 = v5;
@@ -87,41 +87,41 @@
   v7 = (self + OBJC_IVAR____TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController_bundleId);
   *v7 = v4;
   v7[1] = v6;
-  v8 = self;
+  selfCopy = self;
 
-  v9 = (*(v8 + OBJC_IVAR____TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController_collectionInputView) + OBJC_IVAR____TtC10StickerKit34EmojiAndStickerCollectionInputView_hostAppID);
+  v9 = (*(selfCopy + OBJC_IVAR____TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController_collectionInputView) + OBJC_IVAR____TtC10StickerKit34EmojiAndStickerCollectionInputView_hostAppID);
   *v9 = v4;
   v9[1] = v6;
 }
 
-- (BOOL)handleKeyEvent:(id)a3
+- (BOOL)handleKeyEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_19A66C64C(v4);
+  eventCopy = event;
+  selfCopy = self;
+  v6 = sub_19A66C64C(eventCopy);
 
   return v6 & 1;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A65FC50();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_19A6603B4(a3);
+  selfCopy = self;
+  sub_19A6603B4(appearing);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A66051C();
 }
 
-- (_TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit47BridgingEmojiAndStickerCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

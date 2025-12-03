@@ -1,7 +1,7 @@
 @interface VoiceOverCommandsOverviewController
 - (VOSCommandManager)commandManager;
 - (id)specifiers;
-- (void)_resetVoiceOverCommandsButtonTapped:(id)a3;
+- (void)_resetVoiceOverCommandsButtonTapped:(id)tapped;
 @end
 
 @implementation VoiceOverCommandsOverviewController
@@ -11,9 +11,9 @@
   commandManager = self->_commandManager;
   if (!commandManager)
   {
-    v4 = [[VOSCommandManager alloc] initPreferringUserProfile];
+    initPreferringUserProfile = [[VOSCommandManager alloc] initPreferringUserProfile];
     v5 = self->_commandManager;
-    self->_commandManager = v4;
+    self->_commandManager = initPreferringUserProfile;
 
     commandManager = self->_commandManager;
   }
@@ -27,14 +27,14 @@
   if (!v3)
   {
     v54 = OBJC_IVAR___PSListController__specifiers;
-    v55 = self;
-    v4 = [(VoiceOverCommandsOverviewController *)self commandManager];
+    selfCopy = self;
+    commandManager = [(VoiceOverCommandsOverviewController *)self commandManager];
     v5 = objc_opt_new();
     v6 = +[PSSpecifier emptyGroupSpecifier];
     [v5 addObject:v6];
     v7 = +[VOSCommandResolver resolverForCurrentHost];
     v8 = settingsLocString(@"vo.all.commands", @"VoiceOverSettings");
-    v9 = [PSSpecifier voGenericSubmenuWithTitle:v8 childViewControllerClass:objc_opt_class() commandManager:v4 resolver:v7];
+    v9 = [PSSpecifier voGenericSubmenuWithTitle:v8 childViewControllerClass:objc_opt_class() commandManager:commandManager resolver:v7];
 
     v10 = PSIDKey;
     [v9 setProperty:@"AllCommands" forKey:PSIDKey];
@@ -43,12 +43,12 @@
 
     [v5 addObject:v11];
     v12 = settingsLocString(@"vo.touch.gestures", @"VoiceOverSettings");
-    v13 = [PSSpecifier voGenericSubmenuWithTitle:v12 childViewControllerClass:objc_opt_class() commandManager:v4 resolver:v7];
+    v13 = [PSSpecifier voGenericSubmenuWithTitle:v12 childViewControllerClass:objc_opt_class() commandManager:commandManager resolver:v7];
 
     [v13 setProperty:@"TouchGestures" forKey:v10];
     [v5 addObject:v13];
     v14 = settingsLocString(@"vo.keyboard.shortcuts", @"VoiceOverSettings");
-    v15 = [PSSpecifier voGenericSubmenuWithTitle:v14 childViewControllerClass:objc_opt_class() commandManager:v4 resolver:v7];
+    v15 = [PSSpecifier voGenericSubmenuWithTitle:v14 childViewControllerClass:objc_opt_class() commandManager:commandManager resolver:v7];
 
     [v15 setProperty:@"KeyboardShortcuts" forKey:v10];
     [v5 addObject:v15];
@@ -59,7 +59,7 @@
 
     [v5 addObject:v17];
     v18 = settingsLocString(@"VO_MAGIC_TAP", @"VoiceOverSettings");
-    v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:v55 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+    v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     [v19 setProperty:@"MagicTap" forKey:v10];
     [v5 addObject:v19];
@@ -71,7 +71,7 @@
 
     v22 = settingsLocString(@"vo.handwriting", @"VoiceOverSettings");
     v50 = v21;
-    v23 = [PSSpecifier voGenericSubmenuWithTitle:v22 childViewControllerClass:objc_opt_class() commandManager:v4 resolver:v21];
+    v23 = [PSSpecifier voGenericSubmenuWithTitle:v22 childViewControllerClass:objc_opt_class() commandManager:commandManager resolver:v21];
 
     [v23 setProperty:@"Handwriting" forKey:v10];
     [v5 addObject:v23];
@@ -81,12 +81,12 @@
 
     v26 = settingsLocString(@"vo.bsi", @"VoiceOverSettings");
     v49 = v25;
-    v27 = [PSSpecifier voGenericSubmenuWithTitle:v26 childViewControllerClass:objc_opt_class() commandManager:v4 resolver:v25];
+    v27 = [PSSpecifier voGenericSubmenuWithTitle:v26 childViewControllerClass:objc_opt_class() commandManager:commandManager resolver:v25];
 
     [v27 setProperty:@"BrailleScreenInput" forKey:v10];
     [v5 addObject:v27];
     v28 = +[VOSBluetoothManager sharedInstance];
-    v29 = [v28 pairedBrailleDevices];
+    pairedBrailleDevices = [v28 pairedBrailleDevices];
 
     v30 = settingsLocString(@"vo.braille.devices", @"VoiceOverSettings");
     v31 = [PSSpecifier groupSpecifierWithName:v30];
@@ -106,7 +106,7 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v35 = v29;
+    v35 = pairedBrailleDevices;
     v36 = [v35 countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v36)
     {
@@ -124,8 +124,8 @@
           }
 
           v41 = *(*(&v56 + 1) + 8 * v39);
-          v42 = [v41 name];
-          v33 = [PSSpecifier preferenceSpecifierNamed:v42 target:v55 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+          name = [v41 name];
+          v33 = [PSSpecifier preferenceSpecifierNamed:name target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           [v33 setVoBrailleDevice:v41];
           [v34 addObject:v33];
@@ -144,21 +144,21 @@
 
     [v34 addObject:v43];
     v44 = settingsLocString(@"vo.reset.commands.title", @"VoiceOverSettings");
-    v45 = [PSSpecifier deleteButtonSpecifierWithName:v44 target:v55 action:"_resetVoiceOverCommandsButtonTapped:"];
+    v45 = [PSSpecifier deleteButtonSpecifierWithName:v44 target:selfCopy action:"_resetVoiceOverCommandsButtonTapped:"];
 
     [v45 setProperty:@"ResetVoiceOverCommands" forKey:v52];
     [v34 addObject:v45];
-    [(VoiceOverCommandsOverviewController *)v55 setAllSpecifiersUnsearchable:v34];
-    v46 = *&v55->AXUISettingsBaseListController_opaque[v54];
-    *&v55->AXUISettingsBaseListController_opaque[v54] = v34;
+    [(VoiceOverCommandsOverviewController *)selfCopy setAllSpecifiersUnsearchable:v34];
+    v46 = *&selfCopy->AXUISettingsBaseListController_opaque[v54];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v54] = v34;
 
-    v3 = *&v55->AXUISettingsBaseListController_opaque[v54];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v54];
   }
 
   return v3;
 }
 
-- (void)_resetVoiceOverCommandsButtonTapped:(id)a3
+- (void)_resetVoiceOverCommandsButtonTapped:(id)tapped
 {
   v8 = objc_alloc_init(PSConfirmationSpecifier);
   v4 = settingsLocString(@"vo.reset.commands.prompt.title", @"VoiceOverSettings");

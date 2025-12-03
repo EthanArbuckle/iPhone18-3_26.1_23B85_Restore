@@ -1,28 +1,28 @@
 @interface HUShortcutsTriggerViewUtilities
-+ (id)accessoryPickerViewControllerInHome:(id)a3 withConfiguration:(id)a4;
-+ (id)getServicesOnAccessoryPicker:(id)a3;
-+ (id)triggerActionPickerViewControllerWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5;
-+ (void)setServices:(id)a3 onAccessoryPicker:(id)a4;
++ (id)accessoryPickerViewControllerInHome:(id)home withConfiguration:(id)configuration;
++ (id)getServicesOnAccessoryPicker:(id)picker;
++ (id)triggerActionPickerViewControllerWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate;
++ (void)setServices:(id)services onAccessoryPicker:(id)picker;
 @end
 
 @implementation HUShortcutsTriggerViewUtilities
 
-+ (id)accessoryPickerViewControllerInHome:(id)a3 withConfiguration:(id)a4
++ (id)accessoryPickerViewControllerInHome:(id)home withConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HUShortcutsAccessoryPickerViewController alloc] initWithHome:v6 configuration:v5];
+  configurationCopy = configuration;
+  homeCopy = home;
+  v7 = [[HUShortcutsAccessoryPickerViewController alloc] initWithHome:homeCopy configuration:configurationCopy];
 
   [(HUShortcutsAccessoryPickerViewController *)v7 configureWithDefaultSelectionController];
 
   return v7;
 }
 
-+ (id)getServicesOnAccessoryPicker:(id)a3
++ (id)getServicesOnAccessoryPicker:(id)picker
 {
-  v3 = a3;
+  pickerCopy = picker;
   objc_opt_class();
-  v4 = v3;
+  v4 = pickerCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -35,11 +35,11 @@
 
   v6 = v5;
 
-  v7 = [v6 getServices];
-  v8 = v7;
-  if (v7)
+  getServices = [v6 getServices];
+  v8 = getServices;
+  if (getServices)
   {
-    v9 = v7;
+    v9 = getServices;
   }
 
   else
@@ -52,12 +52,12 @@
   return v10;
 }
 
-+ (void)setServices:(id)a3 onAccessoryPicker:(id)a4
++ (void)setServices:(id)services onAccessoryPicker:(id)picker
 {
-  v5 = a4;
-  v6 = a3;
+  pickerCopy = picker;
+  servicesCopy = services;
   objc_opt_class();
-  v9 = v5;
+  v9 = pickerCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v9;
@@ -70,15 +70,15 @@
 
   v8 = v7;
 
-  [v8 setServices:v6];
+  [v8 setServices:servicesCopy];
 }
 
-+ (id)triggerActionPickerViewControllerWithTriggerBuilder:(id)a3 flow:(id)a4 delegate:(id)a5
++ (id)triggerActionPickerViewControllerWithTriggerBuilder:(id)builder flow:(id)flow delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HUTriggerActionPickerViewController alloc] initWithTriggerBuilder:v9 flow:v8 delegate:v7];
+  delegateCopy = delegate;
+  flowCopy = flow;
+  builderCopy = builder;
+  v10 = [[HUTriggerActionPickerViewController alloc] initWithTriggerBuilder:builderCopy flow:flowCopy delegate:delegateCopy];
 
   return v10;
 }

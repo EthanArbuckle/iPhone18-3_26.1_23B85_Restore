@@ -5,10 +5,10 @@
 - (NSUUID)identifier;
 - (_TtC9SEService18CredentialInternal)init;
 - (int64_t)accessLevel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessLevel:(int64_t)a3;
-- (void)setConfigUUID:(id)a3;
-- (void)setLastUsedDate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessLevel:(int64_t)level;
+- (void)setConfigUUID:(id)d;
+- (void)setLastUsedDate:(id)date;
 @end
 
 @implementation CredentialInternal
@@ -53,7 +53,7 @@
   return v9;
 }
 
-- (void)setConfigUUID:(id)a3
+- (void)setConfigUUID:(id)d
 {
   v4 = sub_1C7C7D104();
   v5 = *(v4 - 8);
@@ -64,7 +64,7 @@
   v9 = OBJC_IVAR____TtC9SEService18CredentialInternal_configUUID;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
@@ -76,11 +76,11 @@
   return *(self + v3);
 }
 
-- (void)setAccessLevel:(int64_t)a3
+- (void)setAccessLevel:(int64_t)level
 {
   v5 = OBJC_IVAR____TtC9SEService18CredentialInternal_accessLevel;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = level;
 }
 
 - (NSDate)lastUsedDate
@@ -106,13 +106,13 @@
   return v11;
 }
 
-- (void)setLastUsedDate:(id)a3
+- (void)setLastUsedDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC263450, &unk_1C7C89EA0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (date)
   {
     sub_1C7C7D074();
     v9 = sub_1C7C7D084();
@@ -127,16 +127,16 @@
 
   v11 = OBJC_IVAR____TtC9SEService18CredentialInternal_lastUsedDate;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1C7BF6BFC(v8, self + v11);
   swift_endAccess();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CredentialInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CredentialInternal.encode(with:)(coderCopy);
 }
 
 - (_TtC9SEService18CredentialInternal)init

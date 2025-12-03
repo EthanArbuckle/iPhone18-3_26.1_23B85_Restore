@@ -1,15 +1,15 @@
 @interface NPKProtoAutomaticProvisioningRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCardType:(id)a3;
+- (int)StringAsCardType:(id)type;
 - (int)cardType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCardType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCardType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoAutomaticProvisioningRequest
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasCardType:(BOOL)a3
+- (void)setHasCardType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,25 +42,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCardType:(id)a3
+- (int)StringAsCardType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Payment"])
+  else if ([typeCopy isEqualToString:@"Payment"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Transit"])
+  else if ([typeCopy isEqualToString:@"Transit"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Access"])
+  else if ([typeCopy isEqualToString:@"Access"])
   {
     v4 = 3;
   }
@@ -79,20 +79,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoAutomaticProvisioningRequest;
   v4 = [(NPKProtoAutomaticProvisioningRequest *)&v8 description];
-  v5 = [(NPKProtoAutomaticProvisioningRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoAutomaticProvisioningRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passTypeIdentifier = self->_passTypeIdentifier;
   if (passTypeIdentifier)
   {
-    [v3 setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
+    [dictionary setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
   }
 
   serialNumber = self->_serialNumber;
@@ -138,98 +138,98 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_passTypeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_serialNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     credentialType = self->_credentialType;
     PBDataWriterWriteUint64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_primaryAccountNumberSuffix)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_localizedName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     cardType = self->_cardType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_passTypeIdentifier)
   {
-    [v4 setPassTypeIdentifier:?];
-    v4 = v5;
+    [toCopy setPassTypeIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_serialNumber)
   {
     [v5 setSerialNumber:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_credentialType;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = self->_credentialType;
+    *(toCopy + 56) |= 1u;
   }
 
   if (self->_primaryAccountNumberSuffix)
   {
     [v5 setPrimaryAccountNumberSuffix:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_localizedName)
   {
     [v5 setLocalizedName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 4) = self->_cardType;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 4) = self->_cardType;
+    *(toCopy + 56) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -239,11 +239,11 @@
     *(v5 + 56) |= 1u;
   }
 
-  v10 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:a3];
+  v10 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_localizedName copyWithZone:a3];
+  v12 = [(NSString *)self->_localizedName copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
@@ -256,16 +256,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   passTypeIdentifier = self->_passTypeIdentifier;
-  if (passTypeIdentifier | *(v4 + 4))
+  if (passTypeIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)passTypeIdentifier isEqual:?])
     {
@@ -274,7 +274,7 @@
   }
 
   serialNumber = self->_serialNumber;
-  if (serialNumber | *(v4 + 6))
+  if (serialNumber | *(equalCopy + 6))
   {
     if (![(NSString *)serialNumber isEqual:?])
     {
@@ -282,16 +282,16 @@
     }
   }
 
-  v7 = *(v4 + 56);
+  v7 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_credentialType != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_credentialType != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_19:
     v10 = 0;
@@ -299,13 +299,13 @@ LABEL_19:
   }
 
   primaryAccountNumberSuffix = self->_primaryAccountNumberSuffix;
-  if (primaryAccountNumberSuffix | *(v4 + 5) && ![(NSString *)primaryAccountNumberSuffix isEqual:?])
+  if (primaryAccountNumberSuffix | *(equalCopy + 5) && ![(NSString *)primaryAccountNumberSuffix isEqual:?])
   {
     goto LABEL_19;
   }
 
   localizedName = self->_localizedName;
-  if (localizedName | *(v4 + 3))
+  if (localizedName | *(equalCopy + 3))
   {
     if (![(NSString *)localizedName isEqual:?])
     {
@@ -313,10 +313,10 @@ LABEL_19:
     }
   }
 
-  v10 = (*(v4 + 56) & 2) == 0;
+  v10 = (*(equalCopy + 56) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_cardType != *(v4 + 4))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_cardType != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
@@ -358,43 +358,43 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NPKProtoAutomaticProvisioningRequest *)self setPassTypeIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NPKProtoAutomaticProvisioningRequest *)self setSerialNumber:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_credentialType = *(v4 + 1);
+    self->_credentialType = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NPKProtoAutomaticProvisioningRequest *)self setPrimaryAccountNumberSuffix:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoAutomaticProvisioningRequest *)self setLocalizedName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 56) & 2) != 0)
+  if ((*(fromCopy + 56) & 2) != 0)
   {
-    self->_cardType = *(v4 + 4);
+    self->_cardType = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

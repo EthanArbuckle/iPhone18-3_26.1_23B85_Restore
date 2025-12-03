@@ -1,28 +1,28 @@
 @interface _UIActivityHelper
-+ (id)activityTypeForBundleIdentifier:(id)a3;
++ (id)activityTypeForBundleIdentifier:(id)identifier;
 + (id)builtinActivityClasses;
-+ (id)transportImageForBundleIdentifier:(id)a3;
-- (_UIActivityHelper)initWithDelegate:(id)a3 sessionID:(id)a4 fetchShortcutsBlock:(id)a5;
++ (id)transportImageForBundleIdentifier:(id)identifier;
+- (_UIActivityHelper)initWithDelegate:(id)delegate sessionID:(id)d fetchShortcutsBlock:(id)block;
 - (_UIActivityHelperDelegate)delegate;
-- (id)_activitiesByApplyingBeforeTypePinningToActivities:(id)a3 activitiesToBeforeTypePin:(id)a4;
-- (id)_activitiesByApplyingDefaultOrdering:(id)a3;
-- (id)_activitiesByApplyingFavoriteOrderingToActivities:(id)a3 favoriteActivityTypes:(id)a4;
-- (id)_activitiesByDuetOrderingActivities:(id)a3;
-- (id)_activitiesByTypeOrderingActivities:(id)a3 activityTypeOrdering:(id)a4;
-- (id)_defaultOrderingDescriptorForActivity:(id)a3;
-- (id)_defaultSortItemForBuiltinActivity:(id)a3;
-- (id)_defaultSortOrderForApplicationDefinedActivity:(id)a3;
-- (id)_defaultSortOrderForBuiltInElevatedActivity:(id)a3;
-- (id)_defaultSortOrderForExtensionBasedActivity:(id)a3;
-- (id)_defaultSortOrderForOpenInAppActivity:(id)a3;
-- (id)_defaultSortOrderForOtherActivity:(id)a3;
-- (id)_defaultSortOrderForShortcutActivity:(id)a3;
-- (id)activitiesByOrderingActivities:(id)a3 applyDefaultOrdering:(BOOL)a4 applyBeforeTypePinning:(BOOL)a5 activityTypeOrdering:(id)a6 bypassDuet:(BOOL)a7;
-- (id)orderedAvailableActivitiesForMatchingContext:(id)a3;
+- (id)_activitiesByApplyingBeforeTypePinningToActivities:(id)activities activitiesToBeforeTypePin:(id)pin;
+- (id)_activitiesByApplyingDefaultOrdering:(id)ordering;
+- (id)_activitiesByApplyingFavoriteOrderingToActivities:(id)activities favoriteActivityTypes:(id)types;
+- (id)_activitiesByDuetOrderingActivities:(id)activities;
+- (id)_activitiesByTypeOrderingActivities:(id)activities activityTypeOrdering:(id)ordering;
+- (id)_defaultOrderingDescriptorForActivity:(id)activity;
+- (id)_defaultSortItemForBuiltinActivity:(id)activity;
+- (id)_defaultSortOrderForApplicationDefinedActivity:(id)activity;
+- (id)_defaultSortOrderForBuiltInElevatedActivity:(id)activity;
+- (id)_defaultSortOrderForExtensionBasedActivity:(id)activity;
+- (id)_defaultSortOrderForOpenInAppActivity:(id)activity;
+- (id)_defaultSortOrderForOtherActivity:(id)activity;
+- (id)_defaultSortOrderForShortcutActivity:(id)activity;
+- (id)activitiesByOrderingActivities:(id)activities applyDefaultOrdering:(BOOL)ordering applyBeforeTypePinning:(BOOL)pinning activityTypeOrdering:(id)typeOrdering bypassDuet:(BOOL)duet;
+- (id)orderedAvailableActivitiesForMatchingContext:(id)context;
 - (id)reportExtensionsCacheResult;
-- (void)_enumerateAvailableActivitiesForMatchingContext:(id)a3 intoMatchingResults:(id)a4 matchingResultsUpdateBlock:(id)a5 enumerateActivityBlock:(id)a6;
-- (void)preheatAvailableActivitiesForMatchingContext:(id)a3;
-- (void)primeWithDiscoveryContext:(id)a3;
+- (void)_enumerateAvailableActivitiesForMatchingContext:(id)context intoMatchingResults:(id)results matchingResultsUpdateBlock:(id)block enumerateActivityBlock:(id)activityBlock;
+- (void)preheatAvailableActivitiesForMatchingContext:(id)context;
+- (void)primeWithDiscoveryContext:(id)context;
 @end
 
 @implementation _UIActivityHelper
@@ -55,24 +55,24 @@
   return v2;
 }
 
-- (_UIActivityHelper)initWithDelegate:(id)a3 sessionID:(id)a4 fetchShortcutsBlock:(id)a5
+- (_UIActivityHelper)initWithDelegate:(id)delegate sessionID:(id)d fetchShortcutsBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  dCopy = d;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = _UIActivityHelper;
   v11 = [(_UIActivityHelper *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_sessionID, a4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_sessionID, d);
     v13 = _UIActivityGetBuiltinActivities();
     cachedBuiltinActivities = v12->_cachedBuiltinActivities;
     v12->_cachedBuiltinActivities = v13;
 
-    v15 = MEMORY[0x18CFF58E0](v10);
+    v15 = MEMORY[0x18CFF58E0](blockCopy);
     fetchShortcutsBlock = v12->_fetchShortcutsBlock;
     v12->_fetchShortcutsBlock = v15;
   }
@@ -80,13 +80,13 @@
   return v12;
 }
 
-+ (id)activityTypeForBundleIdentifier:(id)a3
++ (id)activityTypeForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   if (activityTypeForBundleIdentifier__onceToken == -1)
   {
-    if (v3)
+    if (identifierCopy)
     {
 LABEL_3:
       v5 = [activityTypeForBundleIdentifier__activityTypesForIdentifiers objectForKeyedSubscript:v4];
@@ -109,90 +109,90 @@ LABEL_6:
   return v5;
 }
 
-+ (id)transportImageForBundleIdentifier:(id)a3
++ (id)transportImageForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (transportImageForBundleIdentifier__onceToken != -1)
   {
     +[_UIActivityHelper transportImageForBundleIdentifier:];
   }
 
-  v4 = [transportImageForBundleIdentifier__transportImagesForIdentifiers objectForKeyedSubscript:v3];
-  if ([(__CFString *)v3 hasPrefix:@"com.apple.InCallService"])
+  v4 = [transportImageForBundleIdentifier__transportImagesForIdentifiers objectForKeyedSubscript:identifierCopy];
+  if ([(__CFString *)identifierCopy hasPrefix:@"com.apple.InCallService"])
   {
 
-    v3 = @"com.apple.facetime";
+    identifierCopy = @"com.apple.facetime";
   }
 
   if (!v4)
   {
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
-    v4 = [v5 _applicationIconImageForBundleIdentifier:v3 format:5 scale:?];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v4 = [v5 _applicationIconImageForBundleIdentifier:identifierCopy format:5 scale:?];
   }
 
   return v4;
 }
 
-- (void)primeWithDiscoveryContext:(id)a3
+- (void)primeWithDiscoveryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(_UIActivityApplicationExtensionDiscovery);
-  v5 = [(_UIActivityHelper *)self fetchShortcutsBlock];
-  [(_UIActivityApplicationExtensionDiscovery *)v6 setFetchShortcutsBlock:v5];
+  fetchShortcutsBlock = [(_UIActivityHelper *)self fetchShortcutsBlock];
+  [(_UIActivityApplicationExtensionDiscovery *)v6 setFetchShortcutsBlock:fetchShortcutsBlock];
 
   [(_UIActivityHelper *)self setApplicationExtensionDiscovery:v6];
   [(_UIActivityHelper *)self setPrimed:1];
-  [(_UIActivityApplicationExtensionDiscovery *)v6 primeWithDiscoveryContext:v4];
+  [(_UIActivityApplicationExtensionDiscovery *)v6 primeWithDiscoveryContext:contextCopy];
 }
 
 - (id)reportExtensionsCacheResult
 {
-  v2 = [(_UIActivityHelper *)self applicationExtensionDiscovery];
-  v3 = [v2 reportExtensionsCacheResult];
+  applicationExtensionDiscovery = [(_UIActivityHelper *)self applicationExtensionDiscovery];
+  reportExtensionsCacheResult = [applicationExtensionDiscovery reportExtensionsCacheResult];
 
-  return v3;
+  return reportExtensionsCacheResult;
 }
 
-- (void)_enumerateAvailableActivitiesForMatchingContext:(id)a3 intoMatchingResults:(id)a4 matchingResultsUpdateBlock:(id)a5 enumerateActivityBlock:(id)a6
+- (void)_enumerateAvailableActivitiesForMatchingContext:(id)context intoMatchingResults:(id)results matchingResultsUpdateBlock:(id)block enumerateActivityBlock:(id)activityBlock
 {
   v118 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v81 = a6;
+  contextCopy = context;
+  resultsCopy = results;
+  activityBlockCopy = activityBlock;
   v11 = share_sheet_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [_UIActivityHelper _enumerateAvailableActivitiesForMatchingContext:v9 intoMatchingResults:v11 matchingResultsUpdateBlock:? enumerateActivityBlock:?];
+    [_UIActivityHelper _enumerateAvailableActivitiesForMatchingContext:contextCopy intoMatchingResults:v11 matchingResultsUpdateBlock:? enumerateActivityBlock:?];
   }
 
-  v12 = [v9 excludedActivityTypes];
-  v88 = v10;
-  [v10 addExcludedActivityTypes:v12];
+  excludedActivityTypes = [contextCopy excludedActivityTypes];
+  v88 = resultsCopy;
+  [resultsCopy addExcludedActivityTypes:excludedActivityTypes];
 
-  v13 = [v9 activityItemValues];
-  v84 = [v9 isContentManaged];
-  v83 = [v9 whitelistActionActivitiesOnly];
-  v93 = [v9 activityItems];
-  v80 = [v9 applicationActivities];
-  v85 = [v9 includedActivityTypes];
-  v86 = [v9 excludedActivityCategories];
-  v79 = v13;
-  _UIActivityItemTypesSet(v13);
-  v91 = [MEMORY[0x1E695DF70] array];
-  v94 = [(_UIActivityHelper *)self cachedBuiltinActivities];
-  if ([v9 allowMatchingBuiltInActivities])
+  activityItemValues = [contextCopy activityItemValues];
+  isContentManaged = [contextCopy isContentManaged];
+  whitelistActionActivitiesOnly = [contextCopy whitelistActionActivitiesOnly];
+  activityItems = [contextCopy activityItems];
+  applicationActivities = [contextCopy applicationActivities];
+  includedActivityTypes = [contextCopy includedActivityTypes];
+  excludedActivityCategories = [contextCopy excludedActivityCategories];
+  v79 = activityItemValues;
+  _UIActivityItemTypesSet(activityItemValues);
+  array = [MEMORY[0x1E695DF70] array];
+  cachedBuiltinActivities = [(_UIActivityHelper *)self cachedBuiltinActivities];
+  if ([contextCopy allowMatchingBuiltInActivities])
   {
-    [v91 addObjectsFromArray:v94];
+    [array addObjectsFromArray:cachedBuiltinActivities];
   }
 
   v102 = 0u;
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v14 = [v9 activityTypesGeneratedByDelegate];
-  v15 = [v14 countByEnumeratingWithState:&v100 objects:v117 count:16];
+  activityTypesGeneratedByDelegate = [contextCopy activityTypesGeneratedByDelegate];
+  v15 = [activityTypesGeneratedByDelegate countByEnumeratingWithState:&v100 objects:v117 count:16];
   if (v15)
   {
     v16 = v15;
@@ -203,23 +203,23 @@ LABEL_6:
       {
         if (*v101 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(activityTypesGeneratedByDelegate);
         }
 
         v19 = *(*(&v100 + 1) + 8 * i);
-        v20 = [(_UIActivityHelper *)self delegate];
-        v21 = [(_UIActivityHelper *)self sessionID];
-        v22 = [v20 activityHelper:self matchingWithContext:v9 shouldIncludeSystemActivityType:v19 sessionID:v21];
+        delegate = [(_UIActivityHelper *)self delegate];
+        sessionID = [(_UIActivityHelper *)self sessionID];
+        v22 = [delegate activityHelper:self matchingWithContext:contextCopy shouldIncludeSystemActivityType:v19 sessionID:sessionID];
 
         if (v22)
         {
-          v23 = [(_UIActivityHelper *)self delegate];
-          v24 = [(_UIActivityHelper *)self sessionID];
-          v25 = [v23 activityHelper:self activitiesForActivityType:v19 matchingContext:v9 sessionID:v24];
+          delegate2 = [(_UIActivityHelper *)self delegate];
+          sessionID2 = [(_UIActivityHelper *)self sessionID];
+          v25 = [delegate2 activityHelper:self activitiesForActivityType:v19 matchingContext:contextCopy sessionID:sessionID2];
 
           if (v25)
           {
-            [v91 addObjectsFromArray:v25];
+            [array addObjectsFromArray:v25];
           }
         }
 
@@ -231,26 +231,26 @@ LABEL_6:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v100 objects:v117 count:16];
+      v16 = [activityTypesGeneratedByDelegate countByEnumeratingWithState:&v100 objects:v117 count:16];
     }
 
     while (v16);
   }
 
-  v26 = [v9 prematchedExtensionActivities];
-  v78 = v26;
-  if (v26)
+  prematchedExtensionActivities = [contextCopy prematchedExtensionActivities];
+  v78 = prematchedExtensionActivities;
+  if (prematchedExtensionActivities)
   {
-    [v91 addObjectsFromArray:v26];
+    [array addObjectsFromArray:prematchedExtensionActivities];
     v27 = v88;
-    v28 = v93;
+    v28 = activityItems;
   }
 
   else
   {
     v27 = v88;
-    v28 = v93;
-    if (a5 && [v9 allowMatchingExtensionActivities])
+    v28 = activityItems;
+    if (block && [contextCopy allowMatchingExtensionActivities])
     {
       if ([(_UIActivityHelper *)self primed])
       {
@@ -262,19 +262,19 @@ LABEL_6:
         v71 = objc_alloc_init(_UIActivityApplicationExtensionDiscovery);
         [(_UIActivityHelper *)self setApplicationExtensionDiscovery:v71];
 
-        v72 = [(_UIActivityHelper *)self fetchShortcutsBlock];
-        v73 = [(_UIActivityHelper *)self applicationExtensionDiscovery];
-        [v73 setFetchShortcutsBlock:v72];
+        fetchShortcutsBlock = [(_UIActivityHelper *)self fetchShortcutsBlock];
+        applicationExtensionDiscovery = [(_UIActivityHelper *)self applicationExtensionDiscovery];
+        [applicationExtensionDiscovery setFetchShortcutsBlock:fetchShortcutsBlock];
       }
 
-      v74 = [(_UIActivityHelper *)self applicationExtensionDiscovery];
+      applicationExtensionDiscovery2 = [(_UIActivityHelper *)self applicationExtensionDiscovery];
       v99 = 0;
-      v75 = [v74 activitiesForMatchingContext:v9 error:&v99];
+      v75 = [applicationExtensionDiscovery2 activitiesForMatchingContext:contextCopy error:&v99];
       v76 = v99;
 
       if (v75)
       {
-        [v91 addObjectsFromArray:v75];
+        [array addObjectsFromArray:v75];
       }
 
       else
@@ -288,8 +288,8 @@ LABEL_6:
     }
   }
 
-  [v91 addObjectsFromArray:v80];
-  v82 = v91;
+  [array addObjectsFromArray:applicationActivities];
+  v82 = array;
   v29 = [v82 count];
   if (v29)
   {
@@ -297,8 +297,8 @@ LABEL_6:
     do
     {
       v31 = [v82 objectAtIndexedSubscript:v30];
-      v32 = [v31 activityType];
-      v33 = [@"com.apple.UIKit.activity.OpenWithApp-com.apple.DocumentsApp" isEqualToString:v32];
+      activityType = [v31 activityType];
+      v33 = [@"com.apple.UIKit.activity.OpenWithApp-com.apple.DocumentsApp" isEqualToString:activityType];
 
       if (v33)
       {
@@ -312,7 +312,7 @@ LABEL_6:
   }
 
   v34 = _UIActivityGetOrderedBuiltinActivitiesFromActivities(v82);
-  v35 = [(_UIActivityHelper *)self _activitiesByApplyingBeforeTypePinningToActivities:v34 activitiesToBeforeTypePin:v80];
+  v35 = [(_UIActivityHelper *)self _activitiesByApplyingBeforeTypePinningToActivities:v34 activitiesToBeforeTypePin:applicationActivities];
 
   v97 = 0u;
   v98 = 0u;
@@ -336,23 +336,23 @@ LABEL_6:
         }
 
         v39 = *(*(&v95 + 1) + 8 * v38);
-        if ([v94 containsObject:v39])
+        if ([cachedBuiltinActivities containsObject:v39])
         {
-          v40 = [v39 activityType];
-          v41 = [v40 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
+          activityType2 = [v39 activityType];
+          v41 = [activityType2 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
 
           if ((v41 & 1) == 0)
           {
-            v42 = [(_UIActivityHelper *)self delegate];
-            v43 = [v39 activityType];
-            v44 = [(_UIActivityHelper *)self sessionID];
-            v45 = [v42 activityHelper:self matchingWithContext:v9 shouldIncludeSystemActivityType:v43 sessionID:v44];
+            delegate3 = [(_UIActivityHelper *)self delegate];
+            activityType3 = [v39 activityType];
+            sessionID3 = [(_UIActivityHelper *)self sessionID];
+            v45 = [delegate3 activityHelper:self matchingWithContext:contextCopy shouldIncludeSystemActivityType:activityType3 sessionID:sessionID3];
 
             v37 = v87;
             if ((v45 & 1) == 0)
             {
-              v50 = [v39 activityType];
-              v114 = v50;
+              activityType4 = [v39 activityType];
+              v114 = activityType4;
               v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v114 count:1];
               [v27 addExcludedActivityTypes:v51];
 
@@ -367,10 +367,10 @@ LABEL_6:
           }
         }
 
-        if ([v9 shouldExcludeActivity:v39])
+        if ([contextCopy shouldExcludeActivity:v39])
         {
-          v46 = [v39 activityType];
-          v112 = v46;
+          activityType5 = [v39 activityType];
+          v112 = activityType5;
           v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v112 count:1];
           [v27 addExcludedActivityTypes:v47];
 
@@ -385,7 +385,7 @@ LABEL_42:
           goto LABEL_43;
         }
 
-        if ((v86 & (1 << [objc_opt_class() activityCategory])) != 0)
+        if ((excludedActivityCategories & (1 << [objc_opt_class() activityCategory])) != 0)
         {
           v48 = share_sheet_log();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -396,17 +396,17 @@ LABEL_42:
           goto LABEL_42;
         }
 
-        if (v85)
+        if (includedActivityTypes)
         {
-          v49 = [v39 activityType];
-          if (([v85 containsObject:v49] & 1) != 0 || v83 && objc_msgSend(objc_opt_class(), "activityCategory") == 1)
+          activityType6 = [v39 activityType];
+          if (([includedActivityTypes containsObject:activityType6] & 1) != 0 || whitelistActionActivitiesOnly && objc_msgSend(objc_opt_class(), "activityCategory") == 1)
           {
           }
 
           else
           {
-            v52 = [v39 activityType];
-            v53 = [v52 isEqualToString:@"com.apple.UIKit.activity.Share"];
+            activityType7 = [v39 activityType];
+            v53 = [activityType7 isEqualToString:@"com.apple.UIKit.activity.Share"];
 
             if ((v53 & 1) == 0)
             {
@@ -421,9 +421,9 @@ LABEL_42:
           }
         }
 
-        _setIsContentManagedIfResctrictableActivity(v39, v84);
-        v54 = [v39 activityType];
-        if ([v54 isEqualToString:@"com.apple.UIKit.activity.CopyToPasteboard"] && objc_msgSend(v28, "count"))
+        _setIsContentManagedIfResctrictableActivity(v39, isContentManaged);
+        activityType8 = [v39 activityType];
+        if ([activityType8 isEqualToString:@"com.apple.UIKit.activity.CopyToPasteboard"] && objc_msgSend(v28, "count"))
         {
           v55 = [v28 objectAtIndex:0];
           v56 = objc_opt_class();
@@ -455,8 +455,8 @@ LABEL_66:
           v37 = v87;
         }
 
-        v58 = [v39 activityType];
-        v59 = [v58 isEqualToString:@"com.apple.UIKit.activity.SharePlay"];
+        activityType9 = [v39 activityType];
+        v59 = [activityType9 isEqualToString:@"com.apple.UIKit.activity.SharePlay"];
 
         if (v59)
         {
@@ -464,7 +464,7 @@ LABEL_66:
           v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v108 count:1];
           [v27 addHiddenActivities:v60];
 
-          if ([v9 showSharePlayProminently])
+          if ([contextCopy showSharePlayProminently])
           {
             v48 = share_sheet_log();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -476,8 +476,8 @@ LABEL_66:
           }
         }
 
-        v61 = [v39 activityType];
-        v62 = [v61 isEqualToString:@"com.apple.InCallService.ShareExtension"];
+        activityType10 = [v39 activityType];
+        v62 = [activityType10 isEqualToString:@"com.apple.InCallService.ShareExtension"];
 
         if (v62)
         {
@@ -488,19 +488,19 @@ LABEL_66:
           v48 = share_sheet_log();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
           {
-            v64 = [v39 activityType];
+            activityType11 = [v39 activityType];
             *buf = 138412290;
-            v105 = v64;
+            v105 = activityType11;
             _os_log_impl(&dword_18B359000, v48, OS_LOG_TYPE_DEFAULT, "Excluding activityType %@ because it should only ever be shown as a suggestion", buf, 0xCu);
           }
 
           goto LABEL_42;
         }
 
-        v81[2](v81, v39);
+        activityBlockCopy[2](activityBlockCopy, v39);
 LABEL_43:
         ++v38;
-        v28 = v93;
+        v28 = activityItems;
       }
 
       while (v37 != v38);
@@ -512,10 +512,10 @@ LABEL_43:
   }
 }
 
-- (void)preheatAvailableActivitiesForMatchingContext:(id)a3
+- (void)preheatAvailableActivitiesForMatchingContext:(id)context
 {
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-  v6 = a3;
+  contextCopy = context;
   v7 = dispatch_queue_create("com.apple.ShareUI.activityPreheating", v5);
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -524,24 +524,24 @@ LABEL_43:
   v9[3] = &unk_1E71FB3C8;
   v10 = v7;
   v8 = v7;
-  [(_UIActivityHelper *)self _enumerateAvailableActivitiesForMatchingContext:v6 intoMatchingResults:0 matchingResultsUpdateBlock:0 enumerateActivityBlock:v9];
+  [(_UIActivityHelper *)self _enumerateAvailableActivitiesForMatchingContext:contextCopy intoMatchingResults:0 matchingResultsUpdateBlock:0 enumerateActivityBlock:v9];
 }
 
-- (id)orderedAvailableActivitiesForMatchingContext:(id)a3
+- (id)orderedAvailableActivitiesForMatchingContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 activityItemValues];
-  v6 = [v4 isContentManaged];
-  v7 = [v4 sourceApplicationIdentifier];
-  v45 = self;
-  v8 = [(_UIActivityHelper *)self cachedBuiltinActivities];
-  v9 = [_UIActivityPlaceholderItemProxy unproxiedItemsForItems:v5];
-  v10 = [v4 allowMatchingExtensionActivities];
+  contextCopy = context;
+  activityItemValues = [contextCopy activityItemValues];
+  isContentManaged = [contextCopy isContentManaged];
+  sourceApplicationIdentifier = [contextCopy sourceApplicationIdentifier];
+  selfCopy = self;
+  cachedBuiltinActivities = [(_UIActivityHelper *)self cachedBuiltinActivities];
+  v9 = [_UIActivityPlaceholderItemProxy unproxiedItemsForItems:activityItemValues];
+  allowMatchingExtensionActivities = [contextCopy allowMatchingExtensionActivities];
   v11 = share_sheet_log();
   v12 = share_sheet_log();
-  v13 = os_signpost_id_make_with_pointer(v12, v4);
+  v13 = os_signpost_id_make_with_pointer(v12, contextCopy);
 
-  if (v10)
+  if (allowMatchingExtensionActivities)
   {
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
@@ -559,32 +559,32 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v15 = [[_UIActivityMatchingResults alloc] initWithActivityMatchingContext:v4];
+  v15 = [[_UIActivityMatchingResults alloc] initWithActivityMatchingContext:contextCopy];
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __66___UIActivityHelper_orderedAvailableActivitiesForMatchingContext___block_invoke_2;
   v46[3] = &unk_1E71FB410;
-  v47 = v8;
-  v48 = v5;
+  v47 = cachedBuiltinActivities;
+  v48 = activityItemValues;
   v49 = v9;
-  v17 = v4;
+  v17 = contextCopy;
   v50 = v17;
-  v51 = v7;
+  v51 = sourceApplicationIdentifier;
   v18 = v16;
   v52 = v18;
-  v53 = v6;
-  v44 = v7;
+  v53 = isContentManaged;
+  v44 = sourceApplicationIdentifier;
   v43 = v9;
-  v19 = v5;
-  v20 = v8;
-  [(_UIActivityHelper *)v45 _enumerateAvailableActivitiesForMatchingContext:v17 intoMatchingResults:v15 matchingResultsUpdateBlock:&__block_literal_global_221 enumerateActivityBlock:v46];
+  v19 = activityItemValues;
+  v20 = cachedBuiltinActivities;
+  [(_UIActivityHelper *)selfCopy _enumerateAvailableActivitiesForMatchingContext:v17 intoMatchingResults:v15 matchingResultsUpdateBlock:&__block_literal_global_221 enumerateActivityBlock:v46];
   v21 = share_sheet_log();
   v22 = share_sheet_log();
   v23 = os_signpost_id_make_with_pointer(v22, v17);
 
   v24 = v23 - 1;
-  if (v10)
+  if (allowMatchingExtensionActivities)
   {
     if (v24 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
     {
@@ -625,12 +625,12 @@ LABEL_22:
     }
   }
 
-  v30 = [v17 externalMatchBuiltinOrderedActivities];
-  v31 = v30;
+  externalMatchBuiltinOrderedActivities = [v17 externalMatchBuiltinOrderedActivities];
+  v31 = externalMatchBuiltinOrderedActivities;
   v32 = MEMORY[0x1E695E0F0];
-  if (v30)
+  if (externalMatchBuiltinOrderedActivities)
   {
-    v32 = v30;
+    v32 = externalMatchBuiltinOrderedActivities;
   }
 
   v33 = v32;
@@ -638,15 +638,15 @@ LABEL_22:
   v34 = [v33 arrayByAddingObjectsFromArray:v18];
 
   v35 = ([v17 excludedActivityCategories] & 2) != 0 || objc_msgSend(v17, "sharingStyle") == 2;
-  v36 = [v17 activityTypeOrder];
-  v37 = [(_UIActivityHelper *)v45 activitiesByOrderingActivities:v34 applyDefaultOrdering:1 applyBeforeTypePinning:1 activityTypeOrdering:v36 bypassDuet:v35];
+  activityTypeOrder = [v17 activityTypeOrder];
+  v37 = [(_UIActivityHelper *)selfCopy activitiesByOrderingActivities:v34 applyDefaultOrdering:1 applyBeforeTypePinning:1 activityTypeOrdering:activityTypeOrder bypassDuet:v35];
   [(_UIActivityMatchingResults *)v15 setOrderedActivities:v37];
 
   v38 = share_sheet_log();
   v39 = share_sheet_log();
   v40 = os_signpost_id_make_with_pointer(v39, v17);
 
-  if (v10)
+  if (allowMatchingExtensionActivities)
   {
     if (v40 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v38))
     {
@@ -667,23 +667,23 @@ LABEL_35:
   return v15;
 }
 
-- (id)activitiesByOrderingActivities:(id)a3 applyDefaultOrdering:(BOOL)a4 applyBeforeTypePinning:(BOOL)a5 activityTypeOrdering:(id)a6 bypassDuet:(BOOL)a7
+- (id)activitiesByOrderingActivities:(id)activities applyDefaultOrdering:(BOOL)ordering applyBeforeTypePinning:(BOOL)pinning activityTypeOrdering:(id)typeOrdering bypassDuet:(BOOL)duet
 {
-  v9 = a5;
-  v10 = a4;
+  pinningCopy = pinning;
+  orderingCopy = ordering;
   v29[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = v12;
+  activitiesCopy = activities;
+  typeOrderingCopy = typeOrdering;
+  v14 = activitiesCopy;
   v15 = v14;
-  if (v10)
+  if (orderingCopy)
   {
     v15 = [(_UIActivityHelper *)self _activitiesByApplyingDefaultOrdering:v14];
 
-    if (!v9)
+    if (!pinningCopy)
     {
 LABEL_3:
-      if (!v13)
+      if (!typeOrderingCopy)
       {
         goto LABEL_5;
       }
@@ -692,7 +692,7 @@ LABEL_3:
     }
   }
 
-  else if (!v9)
+  else if (!pinningCopy)
   {
     goto LABEL_3;
   }
@@ -700,16 +700,16 @@ LABEL_3:
   v27 = [(_UIActivityHelper *)self _activitiesByApplyingBeforeTypePinningToActivities:v15 activitiesToBeforeTypePin:v15];
 
   v15 = v27;
-  if (v13)
+  if (typeOrderingCopy)
   {
 LABEL_4:
-    v16 = [(_UIActivityHelper *)self _activitiesByTypeOrderingActivities:v15 activityTypeOrdering:v13];
+    v16 = [(_UIActivityHelper *)self _activitiesByTypeOrderingActivities:v15 activityTypeOrdering:typeOrderingCopy];
 
     v15 = v16;
   }
 
 LABEL_5:
-  if (([v13 containsObject:@"com.apple.UIKit.activity.Share"] & 1) == 0)
+  if (([typeOrderingCopy containsObject:@"com.apple.UIKit.activity.Share"] & 1) == 0)
   {
     v29[0] = @"com.apple.UIKit.activity.Share";
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -718,7 +718,7 @@ LABEL_5:
     v15 = v18;
   }
 
-  if (!a7)
+  if (!duet)
   {
     v19 = share_sheet_log();
     v20 = share_sheet_log();
@@ -748,71 +748,71 @@ LABEL_5:
   return v15;
 }
 
-- (id)_activitiesByApplyingDefaultOrdering:(id)a3
+- (id)_activitiesByApplyingDefaultOrdering:(id)ordering
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58___UIActivityHelper__activitiesByApplyingDefaultOrdering___block_invoke;
   v7[3] = &unk_1E71FB438;
   v7[4] = self;
-  v3 = _mapArray(a3, v7);
+  v3 = _mapArray(ordering, v7);
   v4 = [v3 sortedArrayUsingSelector:sel_compare_];
   v5 = _mapArray(v4, &__block_literal_global_227);
 
   return v5;
 }
 
-- (id)_defaultOrderingDescriptorForActivity:(id)a3
+- (id)_defaultOrderingDescriptorForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 _defaultSortGroup];
+  activityCopy = activity;
+  _defaultSortGroup = [activityCopy _defaultSortGroup];
   v6 = 0;
-  if (v5 <= 3)
+  if (_defaultSortGroup <= 3)
   {
-    switch(v5)
+    switch(_defaultSortGroup)
     {
       case 1:
-        v7 = [(_UIActivityHelper *)self _defaultSortOrderForBuiltInElevatedActivity:v4];
+        v7 = [(_UIActivityHelper *)self _defaultSortOrderForBuiltInElevatedActivity:activityCopy];
         break;
       case 2:
-        v7 = [(_UIActivityHelper *)self _defaultSortItemForBuiltinActivity:v4];
+        v7 = [(_UIActivityHelper *)self _defaultSortItemForBuiltinActivity:activityCopy];
         break;
       case 3:
-        v7 = [(_UIActivityHelper *)self _defaultSortOrderForApplicationDefinedActivity:v4];
+        v7 = [(_UIActivityHelper *)self _defaultSortOrderForApplicationDefinedActivity:activityCopy];
         break;
       default:
         goto LABEL_18;
     }
   }
 
-  else if (v5 > 5)
+  else if (_defaultSortGroup > 5)
   {
-    if (v5 == 6)
+    if (_defaultSortGroup == 6)
     {
-      v7 = [(_UIActivityHelper *)self _defaultSortOrderForShortcutActivity:v4];
+      v7 = [(_UIActivityHelper *)self _defaultSortOrderForShortcutActivity:activityCopy];
     }
 
     else
     {
-      if (v5 != 7)
+      if (_defaultSortGroup != 7)
       {
         goto LABEL_18;
       }
 
-      v7 = [(_UIActivityHelper *)self _defaultSortOrderForOtherActivity:v4];
+      v7 = [(_UIActivityHelper *)self _defaultSortOrderForOtherActivity:activityCopy];
     }
   }
 
   else
   {
-    if (v5 == 4)
+    if (_defaultSortGroup == 4)
     {
-      [(_UIActivityHelper *)self _defaultSortOrderForExtensionBasedActivity:v4];
+      [(_UIActivityHelper *)self _defaultSortOrderForExtensionBasedActivity:activityCopy];
     }
 
     else
     {
-      [(_UIActivityHelper *)self _defaultSortOrderForOpenInAppActivity:v4];
+      [(_UIActivityHelper *)self _defaultSortOrderForOpenInAppActivity:activityCopy];
     }
     v7 = ;
   }
@@ -823,77 +823,77 @@ LABEL_18:
   return v6;
 }
 
-- (id)_defaultSortOrderForBuiltInElevatedActivity:(id)a3
+- (id)_defaultSortOrderForBuiltInElevatedActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = +[_UIActivityUserDefaults builtinActivityOrder];
-  v5 = [v3 activityType];
-  v6 = [v4 indexOfObject:v5];
+  activityType = [activityCopy activityType];
+  v6 = [v4 indexOfObject:activityType];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:1 secondarySortValue:&unk_1EFEC9710];
+    v7 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:1 secondarySortValue:&unk_1EFEC9710];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 1000];
-    v7 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:1 secondarySortValue:v8];
+    1000 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 1000];
+    v7 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:1 secondarySortValue:1000];
   }
 
   return v7;
 }
 
-- (id)_defaultSortItemForBuiltinActivity:(id)a3
+- (id)_defaultSortItemForBuiltinActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = +[_UIActivityUserDefaults builtinActivityOrder];
-  v5 = [v3 activityType];
-  v6 = [v4 indexOfObject:v5];
+  activityType = [activityCopy activityType];
+  v6 = [v4 indexOfObject:activityType];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:2 secondarySortValue:&unk_1EFEC9710];
+    v7 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:2 secondarySortValue:&unk_1EFEC9710];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 1000];
-    v7 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:2 secondarySortValue:v8];
+    1000 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 1000];
+    v7 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:2 secondarySortValue:1000];
   }
 
   return v7;
 }
 
-- (id)_defaultSortOrderForExtensionBasedActivity:(id)a3
+- (id)_defaultSortOrderForExtensionBasedActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = +[_UIActivityUserDefaults builtinActivityOrder];
-  v5 = [v3 activityType];
-  v6 = [v4 indexOfObject:v5];
+  activityType = [activityCopy activityType];
+  v6 = [v4 indexOfObject:activityType];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 3000];
-    v17 = v3;
+    3000 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 + 3000];
+    v17 = activityCopy;
     v18 = 2;
 LABEL_8:
-    v16 = [_UIActivitySortItem sortDescriptorForActivity:v17 withGroup:v18 secondarySortValue:v7];
+    v16 = [_UIActivitySortItem sortDescriptorForActivity:v17 withGroup:v18 secondarySortValue:3000];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [v3 activityTitle];
-    v17 = v3;
+    3000 = [activityCopy activityTitle];
+    v17 = activityCopy;
     v18 = 7;
     goto LABEL_8;
   }
 
-  v7 = v3;
-  v8 = [v7 installationDate];
-  [v8 timeIntervalSinceReferenceDate];
+  3000 = activityCopy;
+  installationDate = [3000 installationDate];
+  [installationDate timeIntervalSinceReferenceDate];
   v10 = v9;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v12 = v10 / v11;
@@ -907,27 +907,27 @@ LABEL_8:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:v12 + v14];
-  v16 = [_UIActivitySortItem sortDescriptorForActivity:v7 withGroup:4 secondarySortValue:v15];
+  v16 = [_UIActivitySortItem sortDescriptorForActivity:3000 withGroup:4 secondarySortValue:v15];
 
 LABEL_9:
 
   return v16;
 }
 
-- (id)_defaultSortOrderForApplicationDefinedActivity:(id)a3
+- (id)_defaultSortOrderForApplicationDefinedActivity:(id)activity
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
-  v5 = [v3 numberWithUnsignedInteger:{objc_msgSend(v4, "indexInApplicationDefinedActivities")}];
-  v6 = [_UIActivitySortItem sortDescriptorForActivity:v4 withGroup:3 secondarySortValue:v5];
+  activityCopy = activity;
+  v5 = [v3 numberWithUnsignedInteger:{objc_msgSend(activityCopy, "indexInApplicationDefinedActivities")}];
+  v6 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:3 secondarySortValue:v5];
 
   return v6;
 }
 
-- (id)_defaultSortOrderForOpenInAppActivity:(id)a3
+- (id)_defaultSortOrderForOpenInAppActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 _appIsDocumentTypeOwner])
+  activityCopy = activity;
+  if ([activityCopy _appIsDocumentTypeOwner])
   {
     v4 = 0;
   }
@@ -937,52 +937,52 @@ LABEL_9:
     v4 = 10;
   }
 
-  v5 = [v3 _supportsOpenInPlace];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4 | v5 ^ 1u];
-  v7 = [v3 activityTitle];
-  v8 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:5 secondarySortValue:v6 tertiarySortValue:v7];
+  _supportsOpenInPlace = [activityCopy _supportsOpenInPlace];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4 | _supportsOpenInPlace ^ 1u];
+  activityTitle = [activityCopy activityTitle];
+  v8 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:5 secondarySortValue:v6 tertiarySortValue:activityTitle];
 
   return v8;
 }
 
-- (id)_defaultSortOrderForShortcutActivity:(id)a3
+- (id)_defaultSortOrderForShortcutActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 sortValue];
+    sortValue = [activityCopy sortValue];
   }
 
   else
   {
-    v4 = &unk_1EFEC9728;
+    sortValue = &unk_1EFEC9728;
   }
 
-  v5 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:6 secondarySortValue:v4];
+  v5 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:6 secondarySortValue:sortValue];
 
   return v5;
 }
 
-- (id)_defaultSortOrderForOtherActivity:(id)a3
+- (id)_defaultSortOrderForOtherActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 activityTitle];
-  v5 = [_UIActivitySortItem sortDescriptorForActivity:v3 withGroup:7 secondarySortValue:v4];
+  activityCopy = activity;
+  activityTitle = [activityCopy activityTitle];
+  v5 = [_UIActivitySortItem sortDescriptorForActivity:activityCopy withGroup:7 secondarySortValue:activityTitle];
 
   return v5;
 }
 
-- (id)_activitiesByApplyingBeforeTypePinningToActivities:(id)a3 activitiesToBeforeTypePin:(id)a4
+- (id)_activitiesByApplyingBeforeTypePinningToActivities:(id)activities activitiesToBeforeTypePin:(id)pin
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  pinCopy = pin;
+  v6 = [activities mutableCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
+  obj = pinCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v7)
   {
@@ -998,11 +998,11 @@ LABEL_9:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 _beforeActivity];
-        v13 = v12;
-        if (v12)
+        _beforeActivity = [v11 _beforeActivity];
+        v13 = _beforeActivity;
+        if (_beforeActivity)
         {
-          v14 = v12;
+          v14 = _beforeActivity;
           v24[0] = MEMORY[0x1E69E9820];
           v24[1] = 3221225472;
           v24[2] = ___UIIndexOfActivityType_block_invoke;
@@ -1037,20 +1037,20 @@ LABEL_9:
   return v6;
 }
 
-- (id)_activitiesByTypeOrderingActivities:(id)a3 activityTypeOrdering:(id)a4
+- (id)_activitiesByTypeOrderingActivities:(id)activities activityTypeOrdering:(id)ordering
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  activitiesCopy = activities;
+  orderingCopy = ordering;
+  if ([orderingCopy count])
   {
-    v7 = [v5 mutableCopy];
+    v7 = [activitiesCopy mutableCopy];
     v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = v6;
+    obj = orderingCopy;
     v8 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v8)
     {
@@ -1094,22 +1094,22 @@ LABEL_9:
 
   else
   {
-    v17 = v5;
+    v17 = activitiesCopy;
   }
 
   return v17;
 }
 
-- (id)_activitiesByApplyingFavoriteOrderingToActivities:(id)a3 favoriteActivityTypes:(id)a4
+- (id)_activitiesByApplyingFavoriteOrderingToActivities:(id)activities favoriteActivityTypes:(id)types
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  typesCopy = types;
+  v6 = [activities mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [v5 reverseObjectEnumerator];
+  obj = [typesCopy reverseObjectEnumerator];
   v7 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
@@ -1150,11 +1150,11 @@ LABEL_9:
   return v6;
 }
 
-- (id)_activitiesByDuetOrderingActivities:(id)a3
+- (id)_activitiesByDuetOrderingActivities:(id)activities
 {
   v70 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v4 = [(_UIActivityHelper *)self delegate];
+  activitiesCopy = activities;
+  delegate = [(_UIActivityHelper *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -1177,8 +1177,8 @@ LABEL_9:
 
     v7 = v6;
     _Block_object_dispose(&v59, 8);
-    v42 = [v6 defaultConfiguration];
-    [v42 setMaximumNumberOfSuggestions:8];
+    defaultConfiguration = [v6 defaultConfiguration];
+    [defaultConfiguration setMaximumNumberOfSuggestions:8];
     v59 = 0;
     v60 = &v59;
     v61 = 0x2050000000;
@@ -1197,17 +1197,17 @@ LABEL_9:
 
     v9 = v8;
     _Block_object_dispose(&v59, 8);
-    v39 = [[v8 alloc] initWithDaemonUsingConfiguration:v42];
-    v10 = [(_UIActivityHelper *)self delegate];
-    v11 = [(_UIActivityHelper *)self sessionID];
-    v41 = [v10 activityHelper:self predictionContextForSessionID:v11];
+    v39 = [[v8 alloc] initWithDaemonUsingConfiguration:defaultConfiguration];
+    delegate2 = [(_UIActivityHelper *)self delegate];
+    sessionID = [(_UIActivityHelper *)self sessionID];
+    v41 = [delegate2 activityHelper:self predictionContextForSessionID:sessionID];
 
-    v46 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v43, "count")}];
+    v46 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v12 = v43;
+    v12 = activitiesCopy;
     v13 = [v12 countByEnumeratingWithState:&v55 objects:v65 count:16];
     if (v13)
     {
@@ -1225,30 +1225,30 @@ LABEL_9:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = [v16 containingAppBundleIdentifier];
-            v18 = [v16 activityType];
-            v19 = [v46 objectForKeyedSubscript:v17];
+            containingAppBundleIdentifier = [v16 containingAppBundleIdentifier];
+            activityType = [v16 activityType];
+            v19 = [v46 objectForKeyedSubscript:containingAppBundleIdentifier];
             v20 = v19;
             if (v19)
             {
-              if (([v19 containsObject:v18] & 1) == 0)
+              if (([v19 containsObject:activityType] & 1) == 0)
               {
-                [v20 addObject:v18];
+                [v20 addObject:activityType];
               }
 
-              if (!v17)
+              if (!containingAppBundleIdentifier)
               {
                 goto LABEL_19;
               }
 
 LABEL_18:
-              [v46 setObject:v20 forKeyedSubscript:v17];
+              [v46 setObject:v20 forKeyedSubscript:containingAppBundleIdentifier];
             }
 
             else
             {
-              v20 = [MEMORY[0x1E695DF70] arrayWithObject:v18];
-              if (v17)
+              v20 = [MEMORY[0x1E695DF70] arrayWithObject:activityType];
+              if (containingAppBundleIdentifier)
               {
                 goto LABEL_18;
               }
@@ -1292,9 +1292,9 @@ LABEL_19:
             v26 = share_sheet_log();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v25 bundleID];
+              bundleID = [v25 bundleID];
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v27;
+              *(&buf + 4) = bundleID;
               _os_log_impl(&dword_18B359000, v26, OS_LOG_TYPE_DEFAULT, "duet ordering suggestion for bundle ID: %@", &buf, 0xCu);
             }
           }
@@ -1358,13 +1358,13 @@ LABEL_19:
       v44 = v12;
     }
 
-    v37 = v43;
+    v37 = activitiesCopy;
   }
 
   else
   {
-    v37 = v43;
-    v44 = v43;
+    v37 = activitiesCopy;
+    v44 = activitiesCopy;
   }
 
   return v44;

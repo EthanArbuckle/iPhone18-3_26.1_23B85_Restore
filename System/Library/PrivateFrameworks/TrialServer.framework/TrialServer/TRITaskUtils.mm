@@ -1,96 +1,96 @@
 @interface TRITaskUtils
-+ (BOOL)updateExperimentHistoryDatabaseWithAllocationStatus:(unsigned __int8)a3 forExperiment:(id)a4 treatment:(id)a5 deployment:(int)a6 experimentRecord:(id)a7 isBecomingObsolete:(BOOL)a8 categoricalMetric:(id)a9 context:(id)a10;
-+ (void)addAttribution:(id)a3 toTaskTags:(id)a4;
-+ (void)updateRolloutHistoryDatabaseWithAllocationStatus:(unsigned __int8)a3 forRollout:(id)a4 ramp:(id)a5 deployment:(int)a6 fps:(id)a7 namespaces:(id)a8 telemetryMetric:(id)a9 rolloutRecord:(id)a10 isBecomingObsolete:(BOOL)a11 context:(id)a12;
++ (BOOL)updateExperimentHistoryDatabaseWithAllocationStatus:(unsigned __int8)status forExperiment:(id)experiment treatment:(id)treatment deployment:(int)deployment experimentRecord:(id)record isBecomingObsolete:(BOOL)obsolete categoricalMetric:(id)metric context:(id)self0;
++ (void)addAttribution:(id)attribution toTaskTags:(id)tags;
++ (void)updateRolloutHistoryDatabaseWithAllocationStatus:(unsigned __int8)status forRollout:(id)rollout ramp:(id)ramp deployment:(int)deployment fps:(id)fps namespaces:(id)namespaces telemetryMetric:(id)metric rolloutRecord:(id)self0 isBecomingObsolete:(BOOL)self1 context:(id)self2;
 @end
 
 @implementation TRITaskUtils
 
-+ (void)addAttribution:(id)a3 toTaskTags:(id)a4
++ (void)addAttribution:(id)attribution toTaskTags:(id)tags
 {
-  v19 = a3;
-  v7 = a4;
-  if (v19)
+  attributionCopy = attribution;
+  tagsCopy = tags;
+  if (attributionCopy)
   {
-    if (!v7)
+    if (!tagsCopy)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"TRITaskUtils.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"tags"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskUtils.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"tags"}];
     }
 
-    v8 = [v19 teamIdentifier];
+    teamIdentifier = [attributionCopy teamIdentifier];
 
-    if (v8)
+    if (teamIdentifier)
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v19 teamIdentifier];
-      v11 = [v9 stringWithFormat:@"teamId=%@", v10];
-      [v7 addObject:v11];
+      teamIdentifier2 = [attributionCopy teamIdentifier];
+      v11 = [v9 stringWithFormat:@"teamId=%@", teamIdentifier2];
+      [tagsCopy addObject:v11];
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v19 networkOptions];
-    v14 = [v12 stringWithFormat:@"netopt.cellular=%d", objc_msgSend(v13, "allowsCellularAccess")];
-    [v7 addObject:v14];
+    networkOptions = [attributionCopy networkOptions];
+    v14 = [v12 stringWithFormat:@"netopt.cellular=%d", objc_msgSend(networkOptions, "allowsCellularAccess")];
+    [tagsCopy addObject:v14];
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v19 networkOptions];
-    v17 = [v15 stringWithFormat:@"netopt.discretion=%lu", objc_msgSend(v16, "discretionaryBehavior")];
-    [v7 addObject:v17];
+    networkOptions2 = [attributionCopy networkOptions];
+    v17 = [v15 stringWithFormat:@"netopt.discretion=%lu", objc_msgSend(networkOptions2, "discretionaryBehavior")];
+    [tagsCopy addObject:v17];
   }
 }
 
-+ (BOOL)updateExperimentHistoryDatabaseWithAllocationStatus:(unsigned __int8)a3 forExperiment:(id)a4 treatment:(id)a5 deployment:(int)a6 experimentRecord:(id)a7 isBecomingObsolete:(BOOL)a8 categoricalMetric:(id)a9 context:(id)a10
++ (BOOL)updateExperimentHistoryDatabaseWithAllocationStatus:(unsigned __int8)status forExperiment:(id)experiment treatment:(id)treatment deployment:(int)deployment experimentRecord:(id)record isBecomingObsolete:(BOOL)obsolete categoricalMetric:(id)metric context:(id)self0
 {
-  v92 = a8;
-  log = a3;
+  obsoleteCopy = obsolete;
+  log = status;
   v126 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a9;
-  v105 = a10;
-  v17 = v13;
-  v18 = v14;
+  experimentCopy = experiment;
+  treatmentCopy = treatment;
+  recordCopy = record;
+  metricCopy = metric;
+  contextCopy = context;
+  v17 = experimentCopy;
+  v18 = treatmentCopy;
   v19 = v18;
   v106 = v17;
   v99 = v18;
-  v102 = v15;
-  if (v15)
+  v102 = recordCopy;
+  if (recordCopy)
   {
-    v20 = v17;
+    experimentId = v17;
     if (!v17)
     {
-      v21 = [v15 experimentDeployment];
-      v20 = [v21 experimentId];
+      experimentDeployment = [recordCopy experimentDeployment];
+      experimentId = [experimentDeployment experimentId];
     }
 
-    v22 = v19;
+    treatmentId = v19;
     if ([v19 isEqualToString:@"unspecified-or-default-treatment"])
     {
-      v22 = [v15 treatmentId];
+      treatmentId = [recordCopy treatmentId];
     }
 
-    v107 = v20;
-    v94 = v16;
-    if (a6 == -1)
+    v107 = experimentId;
+    v94 = metricCopy;
+    if (deployment == -1)
     {
-      v23 = [v15 experimentDeployment];
-      a6 = [v23 deploymentId];
+      experimentDeployment2 = [recordCopy experimentDeployment];
+      deployment = [experimentDeployment2 deploymentId];
     }
 
-    v103 = a6;
-    v97 = [v15 deploymentEnvironment];
+    deploymentCopy2 = deployment;
+    deploymentEnvironment = [recordCopy deploymentEnvironment];
     v24 = objc_alloc(MEMORY[0x277CBEB18]);
-    v25 = [v15 namespaces];
-    v26 = [v24 initWithCapacity:{objc_msgSend(v25, "count")}];
+    namespaces = [recordCopy namespaces];
+    v26 = [v24 initWithCapacity:{objc_msgSend(namespaces, "count")}];
 
     v111 = 0u;
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v27 = [v15 namespaces];
-    v28 = [v27 countByEnumeratingWithState:&v109 objects:v125 count:16];
+    namespaces2 = [recordCopy namespaces];
+    v28 = [namespaces2 countByEnumeratingWithState:&v109 objects:v125 count:16];
     if (v28)
     {
       v29 = v28;
@@ -101,18 +101,18 @@
         {
           if (*v110 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(namespaces2);
           }
 
           v32 = *(*(&v109 + 1) + 8 * i);
           v33 = objc_alloc(MEMORY[0x277D73808]);
-          v34 = [v32 name];
-          v35 = [v33 initWithName:v34 compatibilityVersion:{objc_msgSend(v32, "compatibilityVersion")}];
+          name = [v32 name];
+          v35 = [v33 initWithName:name compatibilityVersion:{objc_msgSend(v32, "compatibilityVersion")}];
 
           [v26 addObject:v35];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v109 objects:v125 count:16];
+        v29 = [namespaces2 countByEnumeratingWithState:&v109 objects:v125 count:16];
       }
 
       while (v29);
@@ -120,27 +120,27 @@
 
     v17 = v106;
     v36 = v107;
-    v16 = v94;
+    metricCopy = v94;
     v19 = v99;
   }
 
   else
   {
-    v103 = a6;
+    deploymentCopy2 = deployment;
     v26 = 0;
-    v97 = 0;
-    v22 = v18;
+    deploymentEnvironment = 0;
+    treatmentId = v18;
     v36 = v17;
   }
 
-  v37 = v105;
+  v37 = contextCopy;
   v108 = v36;
   if (v36)
   {
-    v38 = v16;
-    if (v22)
+    v38 = metricCopy;
+    if (treatmentId)
     {
-      v39 = v22;
+      v39 = treatmentId;
     }
 
     else
@@ -150,16 +150,16 @@
 
     v40 = objc_alloc(MEMORY[0x277D736C8]);
     v41 = objc_opt_new();
-    v42 = v103;
-    v43 = [v40 initWithEventDate:v41 eventType:log deploymentEnvironment:v97 experimentId:v36 deploymentId:v103 treatmentId:v39 errorOrDeactivationReason:0 namespaces:v26];
+    v42 = deploymentCopy2;
+    v43 = [v40 initWithEventDate:v41 eventType:log deploymentEnvironment:deploymentEnvironment experimentId:v36 deploymentId:deploymentCopy2 treatmentId:v39 errorOrDeactivationReason:0 namespaces:v26];
 
-    v44 = [v105 experimentHistoryDatabase];
+    experimentHistoryDatabase = [contextCopy experimentHistoryDatabase];
     v45 = v36;
     v46 = v43;
-    v47 = [v44 getAllAllocationStatusesForExperimentId:v45 deploymentId:v103 treatmentId:v39];
+    v47 = [experimentHistoryDatabase getAllAllocationStatusesForExperimentId:v45 deploymentId:deploymentCopy2 treatmentId:v39];
 
-    v48 = [v105 experimentHistoryDatabase];
-    v49 = [v48 addRecord:v46];
+    experimentHistoryDatabase2 = [contextCopy experimentHistoryDatabase];
+    v49 = [experimentHistoryDatabase2 addRecord:v46];
 
     v50 = v49;
     v96 = v47;
@@ -178,23 +178,23 @@
         *&v117[8] = 2114;
         *&v117[10] = v108;
         *&v117[18] = 1024;
-        v118[0] = v103;
+        v118[0] = deploymentCopy2;
         _os_log_error_impl(&dword_26F567000, v65, OS_LOG_TYPE_ERROR, "Failed to update experiment history database while marking %{public}@ of treatment %@ : experiment %{public}@ : deployment %d. Note: this allocation status will not be logged to analytics.", buf, 0x26u);
 
         v50 = v87;
       }
 
-      v16 = v38;
+      metricCopy = v38;
       v17 = v106;
       goto LABEL_64;
     }
 
     v89 = v49;
-    if (v92)
+    if (obsoleteCopy)
     {
       v51 = [v47 count];
       v52 = v47;
-      v16 = v38;
+      metricCopy = v38;
       if (v51)
       {
         v123[0] = &unk_287FC4AE0;
@@ -215,7 +215,7 @@
         v59 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:log];
         v60 = [v57 objectForKey:v59];
 
-        v16 = v38;
+        metricCopy = v38;
         v17 = v106;
         v93 = v60;
         if (!v60)
@@ -224,23 +224,23 @@
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
           {
             v62 = [v96 objectAtIndexedSubscript:0];
-            v63 = [v62 intValue];
+            intValue = [v62 intValue];
             *buf = 138413314;
             v115 = v108;
             v116 = 2112;
             *v117 = v39;
             *&v117[8] = 1024;
-            *&v117[10] = v103;
+            *&v117[10] = deploymentCopy2;
             *&v117[14] = 1024;
-            *&v117[16] = v63;
+            *&v117[16] = intValue;
             LOWORD(v118[0]) = 1024;
             *(v118 + 2) = log;
             _os_log_impl(&dword_26F567000, v61, OS_LOG_TYPE_DEFAULT, "Experiment - Treatment - Deployment: %@ - %@ - %d. Previous state: %d, Current state: %d", buf, 0x28u);
           }
         }
 
-        v37 = v105;
-        v42 = v103;
+        v37 = contextCopy;
+        v42 = deploymentCopy2;
 LABEL_37:
         v66 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v58];
         v67 = [v96 containsObject:v66];
@@ -265,7 +265,7 @@ LABEL_64:
 
         else
         {
-          v68 = [a1 _experimentStateForAnalyticsFromInternalState:v58];
+          v68 = [self _experimentStateForAnalyticsFromInternalState:v58];
           if (!v68)
           {
             loga = TRILogCategory_Server();
@@ -307,9 +307,9 @@ LABEL_64:
 
         else
         {
-          if (v16)
+          if (metricCopy)
           {
-            [MEMORY[0x277D73B40] metricWithName:v68 categoricalValue:v16];
+            [MEMORY[0x277D73B40] metricWithName:v68 categoricalValue:metricCopy];
           }
 
           else
@@ -317,10 +317,10 @@ LABEL_64:
             [MEMORY[0x277D73B40] metricWithName:v68];
           }
           v91 = ;
-          v69 = v97;
+          v69 = deploymentEnvironment;
           v70 = objc_opt_new();
-          v71 = [v70 ensureExperimentFields];
-          [v71 setClientExperimentId:v108];
+          ensureExperimentFields = [v70 ensureExperimentFields];
+          [ensureExperimentFields setClientExperimentId:v108];
 
           if (v39 == @"unspecified-or-default-treatment")
           {
@@ -332,8 +332,8 @@ LABEL_64:
             v72 = v39;
           }
 
-          v73 = [v70 ensureExperimentFields];
-          [v73 setClientTreatmentId:v72];
+          ensureExperimentFields2 = [v70 ensureExperimentFields];
+          [ensureExperimentFields2 setClientTreatmentId:v72];
 
           if (v42 == -1)
           {
@@ -346,14 +346,14 @@ LABEL_64:
           }
 
           v98 = v46;
-          v75 = [v74 stringValue];
-          [v70 setClientDeploymentId:v75];
+          stringValue = [v74 stringValue];
+          [v70 setClientDeploymentId:stringValue];
 
           if (v42 != -1)
           {
           }
 
-          v95 = v16;
+          v95 = metricCopy;
           v76 = TRIDeploymentEnvironment_EnumDescriptor();
           v77 = [v76 textFormatNameForValue:v69];
 
@@ -363,18 +363,18 @@ LABEL_64:
           }
 
           [v70 setClientDeploymentEnv:v77];
-          v37 = v105;
-          v104 = [v105 client];
-          v78 = [v104 logger];
-          v79 = [v105 client];
-          [v79 trackingId];
+          v37 = contextCopy;
+          client = [contextCopy client];
+          logger = [client logger];
+          client2 = [contextCopy client];
+          [client2 trackingId];
           v81 = v80 = v70;
           v113 = v91;
           v82 = [MEMORY[0x277CBEA60] arrayWithObjects:&v113 count:1];
-          [v78 logWithTrackingId:v81 metrics:v82 dimensions:0 trialSystemTelemetry:v80];
+          [logger logWithTrackingId:v81 metrics:v82 dimensions:0 trialSystemTelemetry:v80];
 
           v17 = v106;
-          v16 = v95;
+          metricCopy = v95;
           v46 = v98;
           v19 = v99;
         }
@@ -392,7 +392,7 @@ LABEL_62:
     else
     {
       v93 = 0;
-      v16 = v38;
+      metricCopy = v38;
     }
 
     v17 = v106;
@@ -406,10 +406,10 @@ LABEL_62:
   {
     v86 = [MEMORY[0x277D73648] categoricalValueForExperimentAllocationStatus:log];
     *buf = 138412802;
-    v39 = v22;
-    v115 = v22;
+    v39 = treatmentId;
+    v115 = treatmentId;
     v116 = 1024;
-    *v117 = v103;
+    *v117 = deploymentCopy2;
     *&v117[4] = 2114;
     *&v117[6] = v86;
     _os_log_error_impl(&dword_26F567000, v46, OS_LOG_TYPE_ERROR, "ExperimentID was found to be empty while creating a record for the Experiment History Database. Treatment %@ : Deployment %d; Allocation Status: %{public}@", buf, 0x1Cu);
@@ -420,7 +420,7 @@ LABEL_62:
   else
   {
     v50 = 0;
-    v39 = v22;
+    v39 = treatmentId;
   }
 
 LABEL_65:
@@ -429,21 +429,21 @@ LABEL_65:
   return v50;
 }
 
-+ (void)updateRolloutHistoryDatabaseWithAllocationStatus:(unsigned __int8)a3 forRollout:(id)a4 ramp:(id)a5 deployment:(int)a6 fps:(id)a7 namespaces:(id)a8 telemetryMetric:(id)a9 rolloutRecord:(id)a10 isBecomingObsolete:(BOOL)a11 context:(id)a12
++ (void)updateRolloutHistoryDatabaseWithAllocationStatus:(unsigned __int8)status forRollout:(id)rollout ramp:(id)ramp deployment:(int)deployment fps:(id)fps namespaces:(id)namespaces telemetryMetric:(id)metric rolloutRecord:(id)self0 isBecomingObsolete:(BOOL)self1 context:(id)self2
 {
-  v91 = a3;
+  statusCopy = status;
   v115 = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v96 = a12;
-  v22 = v18;
-  v23 = v16;
-  v24 = v17;
-  if (v18)
+  rolloutCopy = rollout;
+  rampCopy = ramp;
+  fpsCopy = fps;
+  namespacesCopy = namespaces;
+  metricCopy = metric;
+  recordCopy = record;
+  contextCopy = context;
+  v22 = fpsCopy;
+  v23 = rolloutCopy;
+  v24 = rampCopy;
+  if (fpsCopy)
   {
     v25 = TRIValidateFactorPackSetId();
   }
@@ -453,14 +453,14 @@ LABEL_65:
     v25 = 0;
   }
 
-  v26 = v19;
+  v26 = namespacesCopy;
   v93 = v26;
-  v80 = a1;
-  if (!v21)
+  selfCopy = self;
+  if (!recordCopy)
   {
     v29 = 0;
     v30 = v26;
-    v97 = v24;
+    rampId = v24;
     v31 = v23;
     if (v23)
     {
@@ -470,20 +470,20 @@ LABEL_65:
     goto LABEL_13;
   }
 
-  v27 = v23;
+  rolloutId = v23;
   if (!v23)
   {
-    v28 = [v21 deployment];
-    v27 = [v28 rolloutId];
+    deployment = [recordCopy deployment];
+    rolloutId = [deployment rolloutId];
   }
 
-  v97 = v24;
+  rampId = v24;
   if (!v24)
   {
-    v97 = [v21 rampId];
+    rampId = [recordCopy rampId];
   }
 
-  if (a6)
+  if (deployment)
   {
     if (v25)
     {
@@ -493,8 +493,8 @@ LABEL_65:
 
   else
   {
-    v35 = [v21 deployment];
-    a6 = [v35 deploymentId];
+    deployment2 = [recordCopy deployment];
+    deployment = [deployment2 deploymentId];
 
     if (v25)
     {
@@ -502,11 +502,11 @@ LABEL_65:
     }
   }
 
-  v36 = [v21 activeFactorPackSetId];
+  activeFactorPackSetId = [recordCopy activeFactorPackSetId];
 
-  if (v36)
+  if (activeFactorPackSetId)
   {
-    v37 = [v21 activeFactorPackSetId];
+    activeFactorPackSetId2 = [recordCopy activeFactorPackSetId];
     v25 = TRIValidateFactorPackSetId();
   }
 
@@ -516,29 +516,29 @@ LABEL_65:
   }
 
 LABEL_18:
-  v88 = v20;
-  v38 = v27;
+  v88 = metricCopy;
+  v38 = rolloutId;
   v39 = v25;
   v40 = v24;
   v41 = v23;
-  v42 = [v21 namespaces];
+  namespaces = [recordCopy namespaces];
 
-  if (!v42)
+  if (!namespaces)
   {
-    v78 = [MEMORY[0x277CCA890] currentHandler];
-    [v78 handleFailureInMethod:a2 object:a1 file:@"TRITaskUtils.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"rolloutRecord.namespaces"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRITaskUtils.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"rolloutRecord.namespaces"}];
   }
 
   v43 = MEMORY[0x277CBEA60];
-  v29 = v21;
-  v44 = [v21 namespaces];
-  v30 = [v43 arrayWithArray:v44];
+  v29 = recordCopy;
+  namespaces2 = [recordCopy namespaces];
+  v30 = [v43 arrayWithArray:namespaces2];
 
   v23 = v41;
   v24 = v40;
   v25 = v39;
   v31 = v38;
-  v20 = v88;
+  metricCopy = v88;
   if (v31)
   {
 LABEL_21:
@@ -549,14 +549,14 @@ LABEL_21:
     v46 = objc_alloc(MEMORY[0x277D737D0]);
     v47 = [MEMORY[0x277CBEAA8] now];
     v87 = v30;
-    v48 = [v46 initWithEventLogTime:v47 eventType:v91 rolloutId:v31 rampId:v97 factorPackSetId:v25 deploymentId:a6 namespaces:v30];
+    v48 = [v46 initWithEventLogTime:v47 eventType:statusCopy rolloutId:v31 rampId:rampId factorPackSetId:v25 deploymentId:deployment namespaces:v30];
 
-    v49 = [v96 rolloutHistoryDatabase];
-    v50 = [v49 getAllAllocationStatusesForRolloutId:v31 rampId:v97 deploymentId:a6 factorPackSetId:v25];
+    rolloutHistoryDatabase = [contextCopy rolloutHistoryDatabase];
+    v50 = [rolloutHistoryDatabase getAllAllocationStatusesForRolloutId:v31 rampId:rampId deploymentId:deployment factorPackSetId:v25];
 
-    v51 = [v96 rolloutHistoryDatabase];
+    rolloutHistoryDatabase2 = [contextCopy rolloutHistoryDatabase];
     v82 = v48;
-    LOBYTE(v47) = [v51 addRecord:v48];
+    LOBYTE(v47) = [rolloutHistoryDatabase2 addRecord:v48];
 
     if (v47)
     {
@@ -585,7 +585,7 @@ LABEL_21:
       }
 
       v57 = 0x277CCA000uLL;
-      if (v20)
+      if (metricCopy)
       {
         v33 = v79;
         v32 = v85;
@@ -597,7 +597,7 @@ LABEL_21:
         v33 = v79;
         v32 = v85;
         v30 = v87;
-        if (a11)
+        if (obsolete)
         {
           if ([v52 count])
           {
@@ -615,8 +615,8 @@ LABEL_21:
 
             v60 = [v52 objectAtIndexedSubscript:0];
             v61 = [v89 objectForKeyedSubscript:v60];
-            v62 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v91];
-            v20 = [v61 objectForKey:v62];
+            v62 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:statusCopy];
+            metricCopy = [v61 objectForKey:v62];
 
             v30 = v87;
             v33 = v79;
@@ -626,28 +626,28 @@ LABEL_21:
 
           else
           {
-            v20 = 0;
+            metricCopy = 0;
           }
         }
       }
 
-      v63 = [*(v57 + 2992) numberWithUnsignedChar:v91];
+      v63 = [*(v57 + 2992) numberWithUnsignedChar:statusCopy];
       v64 = [v52 containsObject:v63];
 
       if ((v64 & 1) == 0)
       {
-        if (v20)
+        if (metricCopy)
         {
-          v65 = v20;
+          v65 = metricCopy;
         }
 
         else
         {
-          v65 = [v80 _rolloutStateForAnalyticsFromInternalState:v91];
+          v65 = [selfCopy _rolloutStateForAnalyticsFromInternalState:statusCopy];
           v24 = v84;
           if (!v65)
           {
-            v20 = 0;
+            metricCopy = 0;
             goto LABEL_46;
           }
         }
@@ -655,46 +655,46 @@ LABEL_21:
         v92 = v65;
         v81 = [MEMORY[0x277D73B40] metricWithName:v65];
         v66 = objc_opt_new();
-        v67 = [v66 ensureRolloutFields];
-        [v67 setClientRolloutId:v31];
+        ensureRolloutFields = [v66 ensureRolloutFields];
+        [ensureRolloutFields setClientRolloutId:v31];
 
-        v68 = [v66 ensureRolloutFields];
-        [v68 setClientRampId:v97];
+        ensureRolloutFields2 = [v66 ensureRolloutFields];
+        [ensureRolloutFields2 setClientRampId:rampId];
 
-        v69 = [v66 ensureRolloutFields];
-        [v69 setClientFactorPackSetId:v25];
+        ensureRolloutFields3 = [v66 ensureRolloutFields];
+        [ensureRolloutFields3 setClientFactorPackSetId:v25];
 
-        if (a6 == -1)
+        if (deployment == -1)
         {
           v70 = 0;
         }
 
         else
         {
-          v70 = [MEMORY[0x277CCABB0] numberWithInt:a6];
+          v70 = [MEMORY[0x277CCABB0] numberWithInt:deployment];
         }
 
-        v90 = v20;
-        v71 = [v70 stringValue];
-        [v66 setClientDeploymentId:v71];
+        v90 = metricCopy;
+        stringValue = [v70 stringValue];
+        [v66 setClientDeploymentId:stringValue];
 
-        if (a6 != -1)
+        if (deployment != -1)
         {
         }
 
-        v95 = [v96 client];
-        v72 = [v95 logger];
-        v73 = [v96 client];
-        v74 = [v73 trackingId];
+        client = [contextCopy client];
+        logger = [client logger];
+        client2 = [contextCopy client];
+        trackingId = [client2 trackingId];
         v98 = v81;
         v75 = [MEMORY[0x277CBEA60] arrayWithObjects:&v98 count:1];
-        [v72 logWithTrackingId:v74 metrics:v75 dimensions:0 trialSystemTelemetry:v66];
+        [logger logWithTrackingId:trackingId metrics:v75 dimensions:0 trialSystemTelemetry:v66];
 
         v33 = v79;
         v24 = v84;
         v32 = v85;
         v30 = v87;
-        v20 = v90;
+        metricCopy = v90;
         goto LABEL_46;
       }
     }
@@ -705,7 +705,7 @@ LABEL_21:
       v33 = v45;
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
-        v77 = [MEMORY[0x277D73648] categoricalValueForRolloutAllocationStatus:v91];
+        v77 = [MEMORY[0x277D73648] categoricalValueForRolloutAllocationStatus:statusCopy];
         *buf = 138544386;
         v106 = v77;
         v107 = 2112;
@@ -713,9 +713,9 @@ LABEL_21:
         v109 = 2114;
         v110 = v31;
         v111 = 2114;
-        v112 = v97;
+        v112 = rampId;
         v113 = 1024;
-        v114 = a6;
+        deploymentCopy = deployment;
         _os_log_error_impl(&dword_26F567000, v52, OS_LOG_TYPE_ERROR, "Failed to update rollout history database while marking %{public}@ of fps %@ : rollout %{public}@ : ramp %{public}@ : deployment %d. Note: this allocation status will not be logged to analytics.", buf, 0x30u);
       }
 
@@ -725,7 +725,7 @@ LABEL_21:
     v24 = v84;
 LABEL_46:
 
-    v34 = v96;
+    v34 = contextCopy;
     v23 = v83;
     goto LABEL_47;
   }
@@ -733,7 +733,7 @@ LABEL_46:
 LABEL_13:
   v32 = v29;
   v33 = v22;
-  v34 = v96;
+  v34 = contextCopy;
 LABEL_47:
 
   v76 = *MEMORY[0x277D85DE8];

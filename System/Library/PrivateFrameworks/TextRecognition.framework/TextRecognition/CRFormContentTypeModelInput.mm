@@ -1,28 +1,28 @@
 @interface CRFormContentTypeModelInput
-- (CRFormContentTypeModelInput)initWithFieldArray:(id)a3 labelArray:(id)a4 fieldCount:(unint64_t)a5 labelCount:(unint64_t)a6 useFloatOnly:(BOOL)a7;
-- (id)featureValueForName:(id)a3;
+- (CRFormContentTypeModelInput)initWithFieldArray:(id)array labelArray:(id)labelArray fieldCount:(unint64_t)count labelCount:(unint64_t)labelCount useFloatOnly:(BOOL)only;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CRFormContentTypeModelInput
 
-- (CRFormContentTypeModelInput)initWithFieldArray:(id)a3 labelArray:(id)a4 fieldCount:(unint64_t)a5 labelCount:(unint64_t)a6 useFloatOnly:(BOOL)a7
+- (CRFormContentTypeModelInput)initWithFieldArray:(id)array labelArray:(id)labelArray fieldCount:(unint64_t)count labelCount:(unint64_t)labelCount useFloatOnly:(BOOL)only
 {
-  v7 = a7;
+  onlyCopy = only;
   v41[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
+  arrayCopy = array;
+  labelArrayCopy = labelArray;
   v37.receiver = self;
   v37.super_class = CRFormContentTypeModelInput;
   v15 = [(CRFormContentTypeModelInput *)&v37 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fields, a3);
-    objc_storeStrong(&v16->_labels, a4);
+    objc_storeStrong(&v15->_fields, array);
+    objc_storeStrong(&v16->_labels, labelArray);
     v17 = objc_alloc(MEMORY[0x1E695FED0]);
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
     v19 = v18;
-    if (v7)
+    if (onlyCopy)
     {
       v41[0] = v18;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
@@ -31,7 +31,7 @@
       v16->_length = v21;
 
       v23 = objc_alloc(MEMORY[0x1E695FED0]);
-      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:labelCount];
       v40 = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
       v26 = &unk_1F2BFB110;
@@ -49,7 +49,7 @@
       v16->_length = v31;
 
       v33 = objc_alloc(MEMORY[0x1E695FED0]);
-      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+      v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:labelCount];
       v38 = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
       v26 = &unk_1F2BFB140;
@@ -66,38 +66,38 @@
   return v16;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"fields"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"fields"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormContentTypeModelInput *)self fields];
+    fields = [(CRFormContentTypeModelInput *)self fields];
 LABEL_9:
-    v7 = v6;
-    v8 = [v5 featureValueWithMultiArray:v6];
+    v7 = fields;
+    v8 = [v5 featureValueWithMultiArray:fields];
 
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"labels"])
+  if ([nameCopy isEqualToString:@"labels"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormContentTypeModelInput *)self labels];
+    fields = [(CRFormContentTypeModelInput *)self labels];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"length"])
+  if ([nameCopy isEqualToString:@"length"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormContentTypeModelInput *)self length];
+    fields = [(CRFormContentTypeModelInput *)self length];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"num_labels"])
+  if ([nameCopy isEqualToString:@"num_labels"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormContentTypeModelInput *)self num_labels];
+    fields = [(CRFormContentTypeModelInput *)self num_labels];
     goto LABEL_9;
   }
 

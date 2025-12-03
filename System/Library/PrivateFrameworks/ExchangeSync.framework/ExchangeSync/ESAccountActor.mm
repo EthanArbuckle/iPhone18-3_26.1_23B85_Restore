@@ -1,18 +1,18 @@
 @interface ESAccountActor
-- (ESAccountActor)initWithDAAccount:(id)a3;
+- (ESAccountActor)initWithDAAccount:(id)account;
 @end
 
 @implementation ESAccountActor
 
-- (ESAccountActor)initWithDAAccount:(id)a3
+- (ESAccountActor)initWithDAAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[ESAccountLoader sharedInstance];
   v6 = sharedDAAccountStore();
   v7 = [v6 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8C00]];
   [v5 loadFrameworkForACAccountType:v7];
 
-  v8 = [objc_alloc(NSClassFromString(&cfstr_Asconcreteacco.isa)) initWithDAAccount:v4];
+  v8 = [objc_alloc(NSClassFromString(&cfstr_Asconcreteacco.isa)) initWithDAAccount:accountCopy];
   return v8;
 }
 

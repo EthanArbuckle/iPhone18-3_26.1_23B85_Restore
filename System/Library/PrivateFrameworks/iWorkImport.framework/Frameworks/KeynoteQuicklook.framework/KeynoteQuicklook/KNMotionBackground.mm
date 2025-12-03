@@ -1,42 +1,42 @@
 @interface KNMotionBackground
 + (id)serialQueue;
-- (CGImage)newPosterFrameWithSize:(CGSize)a3;
-- (CGImage)p_newPosterFrameWithWidth:(double)a3 height:(double)a4;
-- (CGSize)p_adjustedPosterFrameSize:(CGSize)a3;
-- (KNMotionBackground)initWithStyle:(id)a3;
-- (id)fillWithSize:(CGSize)a3;
-- (void)drawInContext:(CGContext *)a3 inRect:(CGRect)a4;
+- (CGImage)newPosterFrameWithSize:(CGSize)size;
+- (CGImage)p_newPosterFrameWithWidth:(double)width height:(double)height;
+- (CGSize)p_adjustedPosterFrameSize:(CGSize)size;
+- (KNMotionBackground)initWithStyle:(id)style;
+- (id)fillWithSize:(CGSize)size;
+- (void)drawInContext:(CGContext *)context inRect:(CGRect)rect;
 @end
 
 @implementation KNMotionBackground
 
-- (KNMotionBackground)initWithStyle:(id)a3
+- (KNMotionBackground)initWithStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v9.receiver = self;
   v9.super_class = KNMotionBackground;
   v6 = [(KNMotionBackground *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_style, a3);
+    objc_storeStrong(&v6->_style, style);
   }
 
   return v7;
 }
 
-- (void)drawInContext:(CGContext *)a3 inRect:(CGRect)a4
+- (void)drawInContext:(CGContext *)context inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  objc_msgSend_p_adjustedPosterFrameSize_(self, a2, a3, a4.size.width, a4.size.height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  objc_msgSend_p_adjustedPosterFrameSize_(self, a2, context, rect.size.width, rect.size.height);
   v12 = objc_msgSend_p_newPosterFrameWithWidth_height_(self, v10, v11);
   if (v12)
   {
     v15 = v12;
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v28.origin.x = x;
     v28.origin.y = y;
     v28.size.width = width;
@@ -47,21 +47,21 @@
     v29.size.width = width;
     v29.size.height = height;
     MaxY = CGRectGetMaxY(v29);
-    CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-    CGContextScaleCTM(a3, 1.0, -1.0);
+    CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+    CGContextScaleCTM(context, 1.0, -1.0);
     v25 = 0u;
     v26 = 0u;
     v24 = 0u;
     TSUImageOrientationTransform();
     memset(&transform, 0, sizeof(transform));
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(context, &transform);
     v30.origin.x = x;
     v30.origin.y = y;
     v30.size.width = width;
     v30.size.height = height;
-    CGContextDrawImage(a3, v30, v15);
+    CGContextDrawImage(context, v30, v15);
     CGImageRelease(v15);
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 
   else
@@ -69,13 +69,13 @@
     v18 = objc_msgSend_style(self, v13, v14);
     v22 = objc_msgSend_makeAlternateFill(v18, v19, v20);
 
-    objc_msgSend_paintRect_inContext_(v22, v21, a3, x, y, width, height);
+    objc_msgSend_paintRect_inContext_(v22, v21, context, x, y, width, height);
   }
 }
 
-- (CGImage)newPosterFrameWithSize:(CGSize)a3
+- (CGImage)newPosterFrameWithSize:(CGSize)size
 {
-  objc_msgSend_p_adjustedPosterFrameSize_(self, a2, v3, a3.width, a3.height);
+  objc_msgSend_p_adjustedPosterFrameSize_(self, a2, v3, size.width, size.height);
 
   return objc_msgSend_p_newPosterFrameWithWidth_height_(self, v5, v6);
 }
@@ -92,7 +92,7 @@
   return v3;
 }
 
-- (CGImage)p_newPosterFrameWithWidth:(double)a3 height:(double)a4
+- (CGImage)p_newPosterFrameWithWidth:(double)width height:(double)height
 {
   v6 = objc_msgSend_posterFrameData(self->_style, a2, v4);
   if (!v6)
@@ -116,7 +116,7 @@
   return v21;
 }
 
-- (CGSize)p_adjustedPosterFrameSize:(CGSize)a3
+- (CGSize)p_adjustedPosterFrameSize:(CGSize)size
 {
   TSUSizeIsEmpty();
   if (TSDPlatformRisksMemoryCrashFromLargeImages())
@@ -132,10 +132,10 @@
   return result;
 }
 
-- (id)fillWithSize:(CGSize)a3
+- (id)fillWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_msgSend_newPosterFrameWithSize_(self, a2, v3);
   if (v7)
   {

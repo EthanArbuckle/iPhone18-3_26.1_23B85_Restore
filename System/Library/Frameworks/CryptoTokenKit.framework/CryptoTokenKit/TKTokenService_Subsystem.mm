@@ -14,7 +14,7 @@
   }
 
   [MEMORY[0x1E696B0F8] _startListening];
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
 
   return v4;
 }

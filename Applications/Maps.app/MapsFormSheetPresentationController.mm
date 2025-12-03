@@ -1,13 +1,13 @@
 @interface MapsFormSheetPresentationController
-- (MapsFormSheetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (int64_t)adaptivePresentationStyleForTraitCollection:(id)a3;
+- (MapsFormSheetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (int64_t)adaptivePresentationStyleForTraitCollection:(id)collection;
 @end
 
 @implementation MapsFormSheetPresentationController
 
-- (int64_t)adaptivePresentationStyleForTraitCollection:(id)a3
+- (int64_t)adaptivePresentationStyleForTraitCollection:(id)collection
 {
-  if ([a3 userInterfaceIdiom])
+  if ([collection userInterfaceIdiom])
   {
     return 2;
   }
@@ -18,13 +18,13 @@
   }
 }
 
-- (MapsFormSheetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (MapsFormSheetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v19.receiver = self;
   v19.super_class = MapsFormSheetPresentationController;
-  v8 = [(MapsFormSheetPresentationController *)&v19 initWithPresentedViewController:v6 presentingViewController:v7];
+  v8 = [(MapsFormSheetPresentationController *)&v19 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   v9 = v8;
   if (v8)
   {

@@ -4,20 +4,20 @@
 - (void)invalidatePinningGroup;
 - (void)invalidatePinningStyle;
 - (void)invalidatePinningTransitionStyle;
-- (void)setPinningContentInset:(UIEdgeInsets)a3;
-- (void)setPinningGroup:(int64_t)a3;
-- (void)setPinningStyle:(int64_t)a3;
-- (void)setPinningTransitionStyle:(int64_t)a3;
+- (void)setPinningContentInset:(UIEdgeInsets)inset;
+- (void)setPinningGroup:(int64_t)group;
+- (void)setPinningStyle:(int64_t)style;
+- (void)setPinningTransitionStyle:(int64_t)style;
 @end
 
 @implementation SKUIStorePageItemPinningConfiguration
 
-- (void)setPinningContentInset:(UIEdgeInsets)a3
+- (void)setPinningContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -37,7 +37,7 @@
   self->_hasValidPinningContentInset = 1;
 }
 
-- (void)setPinningStyle:(int64_t)a3
+- (void)setPinningStyle:(int64_t)style
 {
   if (os_variant_has_internal_content())
   {
@@ -51,11 +51,11 @@
     }
   }
 
-  self->_pinningStyle = a3;
+  self->_pinningStyle = style;
   self->_hasValidPinningStyle = 1;
 }
 
-- (void)setPinningGroup:(int64_t)a3
+- (void)setPinningGroup:(int64_t)group
 {
   if (os_variant_has_internal_content())
   {
@@ -69,11 +69,11 @@
     }
   }
 
-  self->_pinningGroup = a3;
+  self->_pinningGroup = group;
   self->_hasValidPinningGroup = 1;
 }
 
-- (void)setPinningTransitionStyle:(int64_t)a3
+- (void)setPinningTransitionStyle:(int64_t)style
 {
   if (os_variant_has_internal_content())
   {
@@ -87,7 +87,7 @@
     }
   }
 
-  self->_pinningTransitionStyle = a3;
+  self->_pinningTransitionStyle = style;
   self->_hasValidPinningTransitionStyle = 1;
 }
 

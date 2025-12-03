@@ -1,17 +1,17 @@
 @interface ATStoreMusicDownloadAssetsOperation
-- (unint64_t)_maximumSampleRateForResolutionPreference:(int64_t)a3;
-- (unint64_t)_minimumBitrateForResolutionPreference:(int64_t)a3;
-- (void)_getStorageSpaceAvailableForMediaResponseItem:(id)a3 completion:(id)a4;
+- (unint64_t)_maximumSampleRateForResolutionPreference:(int64_t)preference;
+- (unint64_t)_minimumBitrateForResolutionPreference:(int64_t)preference;
+- (void)_getStorageSpaceAvailableForMediaResponseItem:(id)item completion:(id)completion;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3 operationResult:(id)a4;
+- (void)finishWithError:(id)error operationResult:(id)result;
 @end
 
 @implementation ATStoreMusicDownloadAssetsOperation
 
-- (unint64_t)_maximumSampleRateForResolutionPreference:(int64_t)a3
+- (unint64_t)_maximumSampleRateForResolutionPreference:(int64_t)preference
 {
-  if (a3 == 48000)
+  if (preference == 48000)
   {
     v3 = 48000;
   }
@@ -21,7 +21,7 @@
     v3 = 0;
   }
 
-  if (a3 == 192000)
+  if (preference == 192000)
   {
     return 192000;
   }
@@ -32,20 +32,20 @@
   }
 }
 
-- (unint64_t)_minimumBitrateForResolutionPreference:(int64_t)a3
+- (unint64_t)_minimumBitrateForResolutionPreference:(int64_t)preference
 {
-  result = a3;
-  if (a3 <= 255)
+  result = preference;
+  if (preference <= 255)
   {
-    if (a3 && a3 != 64)
+    if (preference && preference != 64)
     {
       return 256;
     }
   }
 
-  else if (a3 != 256)
+  else if (preference != 256)
   {
-    if (a3 != 192000)
+    if (preference != 192000)
     {
       return 256;
     }
@@ -56,38 +56,38 @@
   return result;
 }
 
-- (void)_getStorageSpaceAvailableForMediaResponseItem:(id)a3 completion:(id)a4
+- (void)_getStorageSpaceAvailableForMediaResponseItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D7FA80] currentDeviceInfo];
-  v8 = [v7 isWatch];
+  itemCopy = item;
+  completionCopy = completion;
+  currentDeviceInfo = [MEMORY[0x277D7FA80] currentDeviceInfo];
+  isWatch = [currentDeviceInfo isWatch];
 
-  if (v8)
+  if (isWatch)
   {
-    v9 = [MEMORY[0x277D7FC00] sharedManager];
-    v6[2](v6, [v9 storageSpaceAvailable]);
+    mEMORY[0x277D7FC00] = [MEMORY[0x277D7FC00] sharedManager];
+    completionCopy[2](completionCopy, [mEMORY[0x277D7FC00] storageSpaceAvailable]);
   }
 
   else
   {
-    v9 = [v5 downloadableAsset];
-    v10 = [v9 fileSize];
-    v11 = [MEMORY[0x277D7FC00] sharedManager];
+    mEMORY[0x277D7FC00] = [itemCopy downloadableAsset];
+    fileSize = [mEMORY[0x277D7FC00] fileSize];
+    mEMORY[0x277D7FC00]2 = [MEMORY[0x277D7FC00] sharedManager];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __96__ATStoreMusicDownloadAssetsOperation__getStorageSpaceAvailableForMediaResponseItem_completion___block_invoke;
     v12[3] = &unk_2784E5AF0;
-    v13 = v6;
-    [v11 ensureStorageIsAvailable:v10 withCompletionHandler:v12];
+    v13 = completionCopy;
+    [mEMORY[0x277D7FC00]2 ensureStorageIsAvailable:fileSize withCompletionHandler:v12];
   }
 }
 
-- (void)finishWithError:(id)a3 operationResult:(id)a4
+- (void)finishWithError:(id)error operationResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  errorCopy = error;
+  resultCopy = result;
+  v8 = errorCopy;
   v9 = v8;
   if (!v8)
   {
@@ -104,7 +104,7 @@
 
   v11.receiver = self;
   v11.super_class = ATStoreMusicDownloadAssetsOperation;
-  [(ATStoreDownloadOperation *)&v11 finishWithError:v9 operationResult:v7];
+  [(ATStoreDownloadOperation *)&v11 finishWithError:v9 operationResult:resultCopy];
   assetDownloadRequest = self->_assetDownloadRequest;
   self->_assetDownloadRequest = 0;
 }
@@ -128,36 +128,36 @@
 
   else
   {
-    v3 = [(ATStoreDownloadOperation *)self asset];
+    asset = [(ATStoreDownloadOperation *)self asset];
     v4 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
-      v28 = v3;
+      v28 = asset;
       _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ starting download phase for asset %{public}@", buf, 0x16u);
     }
 
-    v5 = [(ATStoreDownloadAssetsOperation *)self prepareOperationResult];
-    v6 = [v5 requestContext];
+    prepareOperationResult = [(ATStoreDownloadAssetsOperation *)self prepareOperationResult];
+    requestContext = [prepareOperationResult requestContext];
 
-    v7 = [(ATStoreDownloadAssetsOperation *)self prepareOperationResult];
-    v8 = [v7 storeMediaResponseItem];
+    prepareOperationResult2 = [(ATStoreDownloadAssetsOperation *)self prepareOperationResult];
+    storeMediaResponseItem = [prepareOperationResult2 storeMediaResponseItem];
 
-    v9 = [v8 downloadableAsset];
-    v10 = [v8 hlsAsset];
-    v11 = v10;
-    if (v9 || ([v10 playlistURL], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    downloadableAsset = [storeMediaResponseItem downloadableAsset];
+    hlsAsset = [storeMediaResponseItem hlsAsset];
+    v11 = hlsAsset;
+    if (downloadableAsset || ([hlsAsset playlistURL], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
-      v13 = [v9 fileSize];
+      fileSize = [downloadableAsset fileSize];
       v14 = _ATLogCategoryStoreDownloads();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v26 = self;
+        selfCopy3 = self;
         v27 = 2048;
-        v28 = v13;
+        v28 = fileSize;
         _os_log_impl(&dword_223819000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ downloadable asset size=%lld", buf, 0x16u);
       }
 
@@ -165,13 +165,13 @@
       v18[1] = 3221225472;
       v18[2] = __46__ATStoreMusicDownloadAssetsOperation_execute__block_invoke;
       v18[3] = &unk_2784E5700;
-      v24 = v13;
+      v24 = fileSize;
       v18[4] = self;
-      v19 = v6;
-      v20 = v8;
-      v21 = v3;
+      v19 = requestContext;
+      v20 = storeMediaResponseItem;
+      v21 = asset;
       v22 = v11;
-      v23 = v9;
+      v23 = downloadableAsset;
       [(ATStoreMusicDownloadAssetsOperation *)self _getStorageSpaceAvailableForMediaResponseItem:v20 completion:v18];
     }
 
@@ -181,7 +181,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_223819000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ no asset found in prepare response - stopping", buf, 0xCu);
       }
 

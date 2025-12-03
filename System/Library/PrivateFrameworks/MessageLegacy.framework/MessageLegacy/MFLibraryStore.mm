@@ -1,88 +1,88 @@
 @interface MFLibraryStore
-+ (BOOL)createEmptyStoreForPath:(id)a3;
-+ (BOOL)storeAtPathIsWritable:(id)a3;
++ (BOOL)createEmptyStoreForPath:(id)path;
++ (BOOL)storeAtPathIsWritable:(id)writable;
 + (id)sharedInstance;
-+ (id)storeWithCriterion:(id)a3;
-+ (id)storeWithMailbox:(id)a3;
++ (id)storeWithCriterion:(id)criterion;
++ (id)storeWithMailbox:(id)mailbox;
 - (BOOL)canCompact;
-- (BOOL)hasCompleteDataForMimePart:(id)a3;
-- (BOOL)hasMessageForAccount:(id)a3;
+- (BOOL)hasCompleteDataForMimePart:(id)part;
+- (BOOL)hasMessageForAccount:(id)account;
 - (BOOL)shouldGrowFetchWindow;
 - (id)URLString;
-- (id)_cachedBodyDataContainerForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_cachedHeaderDataForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_cachedHeadersForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_memberMessagesWithCompactionNotification:(id)a3;
-- (id)copyMessagesMatchingCriterion:(id)a3 options:(unsigned int)a4;
-- (id)copyMessagesMatchingText:(id)a3 options:(unsigned int)a4;
-- (id)copyMessagesWithRemoteIDs:(id)a3 options:(unsigned int)a4 inMailbox:(id)a5;
+- (id)_cachedBodyDataContainerForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_cachedHeaderDataForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_cachedHeadersForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_memberMessagesWithCompactionNotification:(id)notification;
+- (id)copyMessagesMatchingCriterion:(id)criterion options:(unsigned int)options;
+- (id)copyMessagesMatchingText:(id)text options:(unsigned int)options;
+- (id)copyMessagesWithRemoteIDs:(id)ds options:(unsigned int)options inMailbox:(id)mailbox;
 - (id)criterion;
 - (id)dateOfNewestNonSearchResultMessage;
 - (id)dateOfOldestNonIndexedNonSearchResultMessage;
-- (id)filterMessagesByMembership:(id)a3;
+- (id)filterMessagesByMembership:(id)membership;
 - (id)mutableCopyOfAllMessages;
 - (id)newObjectCache;
 - (id)serverSearchResults;
-- (id)storeData:(id)a3 forMimePart:(id)a4 isComplete:(BOOL)a5;
-- (unint64_t)_calculateFetchWindowWithAdditionalMultiple:(BOOL)a3;
+- (id)storeData:(id)data forMimePart:(id)part isComplete:(BOOL)complete;
+- (unint64_t)_calculateFetchWindowWithAdditionalMultiple:(BOOL)multiple;
 - (unint64_t)_fetchWindowMinimum;
 - (unint64_t)_fetchWindowMultiple;
-- (unint64_t)appendMessages:(id)a3 unsuccessfulOnes:(id)a4 newMessageIDs:(id)a5 newMessages:(id)a6 flagsToSet:(id)a7;
+- (unint64_t)appendMessages:(id)messages unsuccessfulOnes:(id)ones newMessageIDs:(id)ds newMessages:(id)newMessages flagsToSet:(id)set;
 - (unint64_t)fetchWindow;
 - (unint64_t)fetchWindowCap;
 - (unint64_t)growFetchWindow;
 - (unint64_t)serverUnreadOnlyOnServerCount;
 - (unint64_t)unreadCount;
-- (unint64_t)unreadCountMatchingCriterion:(id)a3;
-- (void)_addInvocationToQueue:(id)a3;
-- (void)_handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5;
-- (void)_queueMessageFlagsChanged:(id)a3;
-- (void)_queueMessagesAdded:(id)a3;
-- (void)_queueMessagesWereCompacted:(id)a3;
-- (void)_queueMessagesWillBeCompacted:(id)a3;
-- (void)compactMessages:(id)a3;
+- (unint64_t)unreadCountMatchingCriterion:(id)criterion;
+- (void)_addInvocationToQueue:(id)queue;
+- (void)_handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message;
+- (void)_queueMessageFlagsChanged:(id)changed;
+- (void)_queueMessagesAdded:(id)added;
+- (void)_queueMessagesWereCompacted:(id)compacted;
+- (void)_queueMessagesWillBeCompacted:(id)compacted;
+- (void)compactMessages:(id)messages;
 - (void)dealloc;
-- (void)deleteBodyDataForMessage:(id)a3;
-- (void)deleteMessages:(id)a3 moveToTrash:(BOOL)a4;
+- (void)deleteBodyDataForMessage:(id)message;
+- (void)deleteMessages:(id)messages moveToTrash:(BOOL)trash;
 - (void)doCompact;
-- (void)handleMessageFlagsChanged:(id)a3;
-- (void)handleMessagesAdded:(id)a3 earliestReceivedDate:(id)a4;
-- (void)handleMessagesCompacted:(id)a3;
-- (void)handleMessagesWillBeCompacted:(id)a3;
+- (void)handleMessageFlagsChanged:(id)changed;
+- (void)handleMessagesAdded:(id)added earliestReceivedDate:(id)date;
+- (void)handleMessagesCompacted:(id)compacted;
+- (void)handleMessagesWillBeCompacted:(id)compacted;
 - (void)invalidateFetchWindow;
-- (void)messagesWereAdded:(id)a3 earliestReceivedDate:(id)a4;
+- (void)messagesWereAdded:(id)added earliestReceivedDate:(id)date;
 - (void)openSynchronously;
-- (void)purgeMessagesBeyondLimit:(unint64_t)a3 keepingMessage:(id)a4;
-- (void)setFlagsForAllMessagesFromDictionary:(id)a3;
-- (void)setLibrary:(id)a3;
+- (void)purgeMessagesBeyondLimit:(unint64_t)limit keepingMessage:(id)message;
+- (void)setFlagsForAllMessagesFromDictionary:(id)dictionary;
+- (void)setLibrary:(id)library;
 - (void)willFetchMessages;
 @end
 
 @implementation MFLibraryStore
 
-+ (id)storeWithCriterion:(id)a3
++ (id)storeWithCriterion:(id)criterion
 {
-  v3 = [[MFLibraryStore alloc] initWithCriterion:a3];
+  v3 = [[MFLibraryStore alloc] initWithCriterion:criterion];
 
   return v3;
 }
 
-+ (id)storeWithMailbox:(id)a3
++ (id)storeWithMailbox:(id)mailbox
 {
-  v3 = [[MFLibraryStore alloc] initWithMailbox:a3];
+  v3 = [[MFLibraryStore alloc] initWithMailbox:mailbox];
 
   return v3;
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  if (self->_library != a3)
+  if (self->_library != library)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
     if (self->_library)
     {
-      [v5 removeObserver:self name:0 object:?];
+      [defaultCenter removeObserver:self name:0 object:?];
       library = self->_library;
     }
 
@@ -91,11 +91,11 @@
       library = 0;
     }
 
-    v8 = a3;
-    self->_library = v8;
-    if (a3)
+    libraryCopy = library;
+    self->_library = libraryCopy;
+    if (library)
     {
-      [v6 addObserver:self selector:sel__queueMessagesAdded_ name:@"MailMessageStoreMessagesAdded" object:v8];
+      [v6 addObserver:self selector:sel__queueMessagesAdded_ name:@"MailMessageStoreMessagesAdded" object:libraryCopy];
       [v6 addObserver:self selector:sel__queueMessageFlagsChanged_ name:@"MailMessageStoreMessageFlagsChanged" object:self->_library];
       [v6 addObserver:self selector:sel__queueMessagesWillBeCompacted_ name:@"MailMessageStoreMessagesWillBeCompacted" object:self->_library];
       [v6 addObserver:self selector:sel__queueMessagesWereCompacted_ name:@"MailMessageStoreMessagesRemoved" object:self->_library];
@@ -109,10 +109,10 @@
 {
   pthread_once(&sharedInstanceInitializer, initializeSharedInstance);
 
-  return [a1 sharedInstanceIfExists];
+  return [self sharedInstanceIfExists];
 }
 
-- (void)_addInvocationToQueue:(id)a3
+- (void)_addInvocationToQueue:(id)queue
 {
   if (_addInvocationToQueue__onceToken != -1)
   {
@@ -121,7 +121,7 @@
 
   v4 = _addInvocationToQueue__sInvocationQueue;
 
-  [v4 addInvocation:a3];
+  [v4 addInvocation:queue];
 }
 
 uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
@@ -154,17 +154,17 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
 
 - (id)mutableCopyOfAllMessages
 {
-  v2 = [(MFLibraryStore *)self copyOfAllMessages];
+  copyOfAllMessages = [(MFLibraryStore *)self copyOfAllMessages];
 
-  return [v2 mutableCopy];
+  return [copyOfAllMessages mutableCopy];
 }
 
-- (id)copyMessagesMatchingText:(id)a3 options:(unsigned int)a4
+- (id)copyMessagesMatchingText:(id)text options:(unsigned int)options
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v7 = [[MFMessageCriterion alloc] initWithType:34 qualifier:0 expression:a3];
-  v8 = [[MFMessageCriterion alloc] initWithType:9 qualifier:0 expression:a3];
-  v9 = [[MFMessageCriterion alloc] initWithType:1 qualifier:0 expression:a3];
+  v7 = [[MFMessageCriterion alloc] initWithType:34 qualifier:0 expression:text];
+  v8 = [[MFMessageCriterion alloc] initWithType:9 qualifier:0 expression:text];
+  v9 = [[MFMessageCriterion alloc] initWithType:1 qualifier:0 expression:text];
   [(MFMessageCriterion *)v9 setCriterionIdentifier:*MEMORY[0x277D07030]];
   v14[0] = v7;
   v14[1] = v8;
@@ -178,10 +178,10 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
   return result;
 }
 
-- (id)copyMessagesMatchingCriterion:(id)a3 options:(unsigned int)a4
+- (id)copyMessagesMatchingCriterion:(id)criterion options:(unsigned int)options
 {
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{-[MFLibraryStore criterion](self, "criterion"), a3, 0}];
-  if ((a4 & 0x80) != 0)
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{-[MFLibraryStore criterion](self, "criterion"), criterion, 0}];
+  if ((options & 0x80) != 0)
   {
     [v6 addObject:{+[MFMessageCriterion messageIsDeletedCriterion:](MFMessageCriterion, "messageIsDeletedCriterion:", 0)}];
   }
@@ -194,7 +194,7 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
   return v9;
 }
 
-- (id)copyMessagesWithRemoteIDs:(id)a3 options:(unsigned int)a4 inMailbox:(id)a5
+- (id)copyMessagesWithRemoteIDs:(id)ds options:(unsigned int)options inMailbox:(id)mailbox
 {
   v6 = [-[MFLibraryStore library](self "library")];
   [v6 makeObjectsPerformSelector:sel_setMessageStore_ withObject:self];
@@ -263,16 +263,16 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
   return 50;
 }
 
-- (unint64_t)_calculateFetchWindowWithAdditionalMultiple:(BOOL)a3
+- (unint64_t)_calculateFetchWindowWithAdditionalMultiple:(BOOL)multiple
 {
-  v3 = a3;
-  v5 = [(MFLibraryStore *)self _fetchWindowMultiple];
-  v6 = [(MFLibraryStore *)self _fetchWindowMinimum];
-  v7 = [(MFLibraryStore *)self allNonDeletedCountIncludingServerSearch:0 andThreadSearch:0]/ v5;
-  v8 = ceilf(v7) * v5;
-  if (v3)
+  multipleCopy = multiple;
+  _fetchWindowMultiple = [(MFLibraryStore *)self _fetchWindowMultiple];
+  _fetchWindowMinimum = [(MFLibraryStore *)self _fetchWindowMinimum];
+  v7 = [(MFLibraryStore *)self allNonDeletedCountIncludingServerSearch:0 andThreadSearch:0]/ _fetchWindowMultiple;
+  v8 = ceilf(v7) * _fetchWindowMultiple;
+  if (multipleCopy)
   {
-    v9 = v5;
+    v9 = _fetchWindowMultiple;
   }
 
   else
@@ -280,14 +280,14 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
     v9 = 0;
   }
 
-  if (v6 <= v9 + v8)
+  if (_fetchWindowMinimum <= v9 + v8)
   {
     v10 = v9 + v8;
   }
 
   else
   {
-    v10 = v6;
+    v10 = _fetchWindowMinimum;
   }
 
   result = [(MFLibraryStore *)self fetchWindowCap];
@@ -309,8 +309,8 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
 
 - (BOOL)shouldGrowFetchWindow
 {
-  v3 = [(MFLibraryStore *)self fetchWindow];
-  if (v3 >= [(MFLibraryStore *)self fetchWindowCap])
+  fetchWindow = [(MFLibraryStore *)self fetchWindow];
+  if (fetchWindow >= [(MFLibraryStore *)self fetchWindowCap])
   {
     return 0;
   }
@@ -356,18 +356,18 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
   }
 }
 
-- (id)filterMessagesByMembership:(id)a3
+- (id)filterMessagesByMembership:(id)membership
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [membership countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v15;
     do
     {
@@ -375,7 +375,7 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(membership);
         }
 
         mailboxUid = self->super._mailboxUid;
@@ -384,17 +384,17 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
           v11 = *(*(&v14 + 1) + 8 * i);
           if (mailboxUid == [v11 mailbox])
           {
-            if (!v7)
+            if (!array)
             {
-              v7 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
             }
 
-            [v7 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [membership countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -402,22 +402,22 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v7;
+  return array;
 }
 
-- (void)handleMessagesAdded:(id)a3 earliestReceivedDate:(id)a4
+- (void)handleMessagesAdded:(id)added earliestReceivedDate:(id)date
 {
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKey:@"messages"];
-  v8 = [v6 objectForKey:@"mailboxes"];
-  v9 = [(MFMailMessageStore *)self mailboxUid];
-  if (v9)
+  userInfo = [added userInfo];
+  v7 = [userInfo objectForKey:@"messages"];
+  v8 = [userInfo objectForKey:@"mailboxes"];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
+  if (mailboxUid)
   {
-    if ([v8 indexOfObject:v9] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([v8 indexOfObject:mailboxUid] != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_7;
     }
@@ -427,10 +427,10 @@ uint64_t __40__MFLibraryStore__addInvocationToQueue___block_invoke()
 
   else
   {
-    v10 = [(MFLibraryStore *)self criterion];
-    if (v10)
+    criterion = [(MFLibraryStore *)self criterion];
+    if (criterion)
     {
-      v7 = [(MFMessageLibrary *)self->_library filterContiguousMessages:v7 forCriterion:v10 options:3];
+      v7 = [(MFMessageLibrary *)self->_library filterContiguousMessages:v7 forCriterion:criterion options:3];
       goto LABEL_7;
     }
   }
@@ -441,34 +441,34 @@ LABEL_7:
   {
     [(MFLibraryStore *)self addCountsForMessages:v7 shouldUpdateUnreadCount:0];
 
-    [(MFLibraryStore *)self messagesWereAdded:v7 earliestReceivedDate:a4];
+    [(MFLibraryStore *)self messagesWereAdded:v7 earliestReceivedDate:date];
   }
 }
 
-- (void)messagesWereAdded:(id)a3 earliestReceivedDate:(id)a4
+- (void)messagesWereAdded:(id)added earliestReceivedDate:(id)date
 {
-  [a3 makeObjectsPerformSelector:sel_setMessageStore_ withObject:self];
+  [added makeObjectsPerformSelector:sel_setMessageStore_ withObject:self];
   v7.receiver = self;
   v7.super_class = MFLibraryStore;
-  [(MFMailMessageStore *)&v7 messagesWereAdded:a3 earliestReceivedDate:a4];
+  [(MFMailMessageStore *)&v7 messagesWereAdded:added earliestReceivedDate:date];
 }
 
-- (void)_handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5
+- (void)_handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = [(MFMailboxUid *)self->super._mailboxUid type];
+  type = [(MFMailboxUid *)self->super._mailboxUid type];
   [(MFLibraryStore *)self mf_lock];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a3;
-  v10 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = messages;
+  v10 = [messages countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v28;
-    v25 = v9 - 5;
+    v25 = type - 5;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -479,34 +479,34 @@ LABEL_7:
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [objc_msgSend(a5 objectForKey:{v14), "intValue"}];
+        v15 = [objc_msgSend(message objectForKey:{v14), "intValue"}];
         v16 = v15;
-        if (a4)
+        if (flags)
         {
-          v17 = MFMessageFlagsByApplyingDictionary(v15, a4);
+          messageFlags = MFMessageFlagsByApplyingDictionary(v15, flags);
         }
 
         else
         {
-          v17 = [v14 messageFlags];
+          messageFlags = [v14 messageFlags];
         }
 
-        v18 = v17;
-        if (((v16 >> 1) & 1) != ((v17 >> 1) & 1))
+        v18 = messageFlags;
+        if (((v16 >> 1) & 1) != ((messageFlags >> 1) & 1))
         {
-          v19 = [v14 messageSize];
+          messageSize = [v14 messageSize];
           deletedMessageCount = self->super._deletedMessageCount;
           if ((v16 & 2) != 0)
           {
             self->super._deletedMessageCount = deletedMessageCount - 1;
             v21 = 56;
-            v22 = (self->super._deletedMessagesSize - v19);
+            v22 = (self->super._deletedMessagesSize - messageSize);
           }
 
           else
           {
             self->super._deletedMessageCount = deletedMessageCount + 1;
-            self->super._deletedMessagesSize += v19;
+            self->super._deletedMessagesSize += messageSize;
             if (v25 > 1)
             {
               goto LABEL_15;
@@ -550,15 +550,15 @@ LABEL_22:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMessageFlagsChanged:(id)a3
+- (void)handleMessageFlagsChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"mailboxes"];
-  v6 = -[MFLibraryStore filterMessagesByMembership:](self, "filterMessagesByMembership:", [v4 objectForKey:@"messages"]);
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"mailboxes"];
+  v6 = -[MFLibraryStore filterMessagesByMembership:](self, "filterMessagesByMembership:", [userInfo objectForKey:@"messages"]);
   if ([v6 count])
   {
-    v7 = [v4 objectForKey:@"flags"];
-    v8 = [v4 objectForKey:@"oldFlagsByMessage"];
+    v7 = [userInfo objectForKey:@"flags"];
+    v8 = [userInfo objectForKey:@"oldFlagsByMessage"];
     if (v8)
     {
       [(MFLibraryStore *)self _handleFlagsChangedForMessages:v6 flags:v7 oldFlagsByMessage:v8];
@@ -569,22 +569,22 @@ LABEL_22:
 
   else if (self->super._mailboxUid && [v5 containsObject:?])
   {
-    v9 = [v4 objectForKeyedSubscript:@"flags"];
+    v9 = [userInfo objectForKeyedSubscript:@"flags"];
 
     [(MFMailMessageStore *)self allMessageFlagsDidChange:v9];
   }
 }
 
-- (id)_memberMessagesWithCompactionNotification:(id)a3
+- (id)_memberMessagesWithCompactionNotification:(id)notification
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"messages"];
-  v6 = [v4 objectForKey:@"mailboxes"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"messages"];
+  v6 = [userInfo objectForKey:@"mailboxes"];
   if ([v5 count] && self->super._mailboxUid && objc_msgSend(v6, "indexOfObject:") != 0x7FFFFFFFFFFFFFFFLL && (v18 = 0u, v19 = 0u, v16 = 0u, v17 = 0u, (v7 = objc_msgSend(v5, "countByEnumeratingWithState:objects:count:", &v16, v20, 16)) != 0))
   {
     v8 = v7;
-    v9 = 0;
+    array = 0;
     v10 = *v17;
     do
     {
@@ -599,12 +599,12 @@ LABEL_22:
         mailboxUid = self->super._mailboxUid;
         if (mailboxUid == [v12 mailbox])
         {
-          if (!v9)
+          if (!array)
           {
-            v9 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v9 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -616,17 +616,17 @@ LABEL_22:
 
   else
   {
-    v9 = 0;
+    array = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v9;
+  return array;
 }
 
-- (void)handleMessagesCompacted:(id)a3
+- (void)handleMessagesCompacted:(id)compacted
 {
   [(MFLibraryStore *)self mf_lock];
-  v5 = [(MFLibraryStore *)self _memberMessagesWithCompactionNotification:a3];
+  v5 = [(MFLibraryStore *)self _memberMessagesWithCompactionNotification:compacted];
   if ([v5 count])
   {
     self->super._deletedMessagesSize = 0;
@@ -638,9 +638,9 @@ LABEL_22:
   [(MFMailMessageStore *)self messagesWereCompacted:v5];
 }
 
-- (void)handleMessagesWillBeCompacted:(id)a3
+- (void)handleMessagesWillBeCompacted:(id)compacted
 {
-  v4 = [(MFLibraryStore *)self _memberMessagesWithCompactionNotification:a3];
+  v4 = [(MFLibraryStore *)self _memberMessagesWithCompactionNotification:compacted];
 
   [(MFMailMessageStore *)self messagesWillBeCompacted:v4];
 }
@@ -654,45 +654,45 @@ LABEL_22:
   [(MFMailMessageStore *)&v3 dealloc];
 }
 
-- (id)storeData:(id)a3 forMimePart:(id)a4 isComplete:(BOOL)a5
+- (id)storeData:(id)data forMimePart:(id)part isComplete:(BOOL)complete
 {
-  v5 = a5;
-  v9 = [objc_msgSend(a4 "mimeBody")];
+  completeCopy = complete;
+  v9 = [objc_msgSend(part "mimeBody")];
   if (![v9 isLibraryMessage])
   {
     return 0;
   }
 
   v10 = [-[MFLibraryStore library](self "library")];
-  [v10 appendData:a3];
+  [v10 appendData:data];
   [v10 done];
 
   return [v10 data];
 }
 
-- (void)deleteBodyDataForMessage:(id)a3
+- (void)deleteBodyDataForMessage:(id)message
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     library = self->_library;
 
-    [(MFMessageLibrary *)library deleteDataForMessage:a3];
+    [(MFMessageLibrary *)library deleteDataForMessage:message];
   }
 }
 
-- (void)deleteMessages:(id)a3 moveToTrash:(BOOL)a4
+- (void)deleteMessages:(id)messages moveToTrash:(BOOL)trash
 {
-  v4 = a4;
+  trashCopy = trash;
   v63 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v42 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   Current = CFAbsoluteTimeGetCurrent();
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v47 objects:v62 count:16];
+  v8 = [messages countByEnumeratingWithState:&v47 objects:v62 count:16];
   if (v8)
   {
     v9 = v8;
@@ -703,79 +703,79 @@ LABEL_22:
       {
         if (*v48 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(messages);
         }
 
         v12 = *(*(&v47 + 1) + 8 * i);
-        v13 = [v12 account];
-        v14 = [v12 mailbox];
-        if (v4)
+        account = [v12 account];
+        mailbox = [v12 mailbox];
+        if (trashCopy)
         {
-          v15 = v14;
-          v16 = [v13 path];
-          if (v15 != [v13 mailboxUidOfType:3 createIfNeeded:0])
+          v15 = mailbox;
+          path = [account path];
+          if (v15 != [account mailboxUidOfType:3 createIfNeeded:0])
           {
-            if (![v6 objectForKey:v16])
+            if (![dictionary objectForKey:path])
             {
-              [v6 setObject:objc_msgSend(MEMORY[0x277CBEB18] forKey:{"array"), v16}];
+              [dictionary setObject:objc_msgSend(MEMORY[0x277CBEB18] forKey:{"array"), path}];
             }
 
-            [objc_msgSend(v6 objectForKey:{v16), "addObject:", v12}];
+            [objc_msgSend(dictionary objectForKey:{path), "addObject:", v12}];
           }
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v47 objects:v62 count:16];
+      v9 = [messages countByEnumeratingWithState:&v47 objects:v62 count:16];
     }
 
     while (v9);
   }
 
-  v17 = [v6 count];
+  v17 = [dictionary count];
   v18 = MEMORY[0x277CBEC38];
   v19 = 0x277CBE000uLL;
   if (v17)
   {
     v60 = @"MessageIsRead";
     v61 = MEMORY[0x277CBEC38];
-    v20 = self;
-    -[MFLibraryStore setFlagsFromDictionary:forMessages:](self, "setFlagsFromDictionary:forMessages:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1], a3);
-    v21 = [v6 keyEnumerator];
-    v22 = [v21 nextObject];
-    v23 = v42;
-    if (v22)
+    selfCopy3 = self;
+    -[MFLibraryStore setFlagsFromDictionary:forMessages:](self, "setFlagsFromDictionary:forMessages:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1], messages);
+    keyEnumerator = [dictionary keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    v23 = array;
+    if (nextObject)
     {
-      v24 = v22;
+      nextObject2 = nextObject;
       do
       {
-        v25 = [MailAccount accountWithPath:v24];
+        v25 = [MailAccount accountWithPath:nextObject2];
         v26 = [(MailAccount *)v25 storeForMailboxUid:[(MailAccount *)v25 mailboxUidOfType:3 createIfNeeded:1]];
         if (v26)
         {
           v27 = v26;
-          v28 = [v6 objectForKey:v24];
+          v28 = [dictionary objectForKey:nextObject2];
           v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
           [v27 mf_lock];
           [v27 appendMessages:v28 unsuccessfulOnes:v29];
           [v27 mf_unlock];
 
-          v23 = v42;
+          v23 = array;
         }
 
-        v24 = [v21 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v24);
+      while (nextObject2);
     }
 
     if ([v23 count])
     {
-      v30 = [MEMORY[0x277CBEB18] array];
+      messagesCopy2 = [MEMORY[0x277CBEB18] array];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v31 = [a3 countByEnumeratingWithState:&v43 objects:v59 count:16];
+      v31 = [messages countByEnumeratingWithState:&v43 objects:v59 count:16];
       if (v31)
       {
         v32 = v31;
@@ -786,51 +786,51 @@ LABEL_22:
           {
             if (*v44 != v33)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(messages);
             }
 
             v35 = *(*(&v43 + 1) + 8 * j);
             if ([v23 indexOfObject:v35] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              [v30 addObject:v35];
+              [messagesCopy2 addObject:v35];
             }
           }
 
-          v32 = [a3 countByEnumeratingWithState:&v43 objects:v59 count:16];
+          v32 = [messages countByEnumeratingWithState:&v43 objects:v59 count:16];
         }
 
         while (v32);
       }
 
-      v20 = self;
+      selfCopy3 = self;
       [(MFMailMessageStore *)self setFlag:@"MessageIsDeleted" state:0 forMessages:v23];
       v19 = 0x277CBE000;
     }
 
     else
     {
-      v30 = a3;
+      messagesCopy2 = messages;
       v19 = 0x277CBE000uLL;
     }
   }
 
   else
   {
-    v30 = a3;
-    v20 = self;
+    messagesCopy2 = messages;
+    selfCopy3 = self;
   }
 
   v57[0] = @"MessageIsRead";
   v57[1] = @"MessageIsDeleted";
   v58[0] = v18;
   v58[1] = v18;
-  -[MFLibraryStore setFlagsFromDictionary:forMessages:](v20, "setFlagsFromDictionary:forMessages:", [*(v19 + 2752) dictionaryWithObjects:v58 forKeys:v57 count:2], v30);
+  -[MFLibraryStore setFlagsFromDictionary:forMessages:](selfCopy3, "setFlagsFromDictionary:forMessages:", [*(v19 + 2752) dictionaryWithObjects:v58 forKeys:v57 count:2], messagesCopy2);
   v36 = CFAbsoluteTimeGetCurrent();
   v37 = MFLogGeneral();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
   {
-    v39 = [v30 count];
-    v40 = [v30 count];
+    v39 = [messagesCopy2 count];
+    v40 = [messagesCopy2 count];
     *buf = 134218496;
     v52 = v39;
     v53 = 2048;
@@ -843,35 +843,35 @@ LABEL_22:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFlagsForAllMessagesFromDictionary:(id)a3
+- (void)setFlagsForAllMessagesFromDictionary:(id)dictionary
 {
   library = self->_library;
-  v5 = [(MFLibraryStore *)self URLString];
+  uRLString = [(MFLibraryStore *)self URLString];
 
-  [(MFMessageLibrary *)library setFlagsFromDictionary:a3 forMessagesInMailboxURLString:v5];
+  [(MFMessageLibrary *)library setFlagsFromDictionary:dictionary forMessagesInMailboxURLString:uRLString];
 }
 
-- (unint64_t)appendMessages:(id)a3 unsuccessfulOnes:(id)a4 newMessageIDs:(id)a5 newMessages:(id)a6 flagsToSet:(id)a7
+- (unint64_t)appendMessages:(id)messages unsuccessfulOnes:(id)ones newMessageIDs:(id)ds newMessages:(id)newMessages flagsToSet:(id)set
 {
   if ([(MFLibraryStore *)self allowsAppend])
   {
     LOWORD(v16) = 1;
-    v13 = [(MFMessageLibrary *)self->_library addMessages:a3 withMailbox:[(MFMailMessageStore *)self mailboxUid] fetchBodies:1 newMessagesByOldMessage:0 remoteIDs:0 setFlags:0 clearFlags:0 messageFlagsForMessages:a7 copyFiles:v16 addPOPUIDs:0 dataSectionsByMessage:?];
+    v13 = [(MFMessageLibrary *)self->_library addMessages:messages withMailbox:[(MFMailMessageStore *)self mailboxUid] fetchBodies:1 newMessagesByOldMessage:0 remoteIDs:0 setFlags:0 clearFlags:0 messageFlagsForMessages:set copyFiles:v16 addPOPUIDs:0 dataSectionsByMessage:?];
     v14 = [v13 count];
     if (v14)
     {
-      [a5 addObjectsFromArray:{objc_msgSend(v13, "arrayByApplyingSelector:", sel_messageID)}];
-      [a6 addObjectsFromArray:v13];
+      [ds addObjectsFromArray:{objc_msgSend(v13, "arrayByApplyingSelector:", sel_messageID)}];
+      [newMessages addObjectsFromArray:v13];
       [(MFMailMessageStore *)self updateMessages:v13 updateNumberOfAttachments:0];
     }
 
-    if (v14 == [a3 count])
+    if (v14 == [messages count])
     {
       return 1;
     }
   }
 
-  [a4 addObjectsFromArray:a3];
+  [ones addObjectsFromArray:messages];
   return 0;
 }
 
@@ -879,25 +879,25 @@ LABEL_22:
 {
   v5.receiver = self;
   v5.super_class = MFLibraryStore;
-  v3 = [(MFMailMessageStore *)&v5 canCompact];
-  if (v3)
+  canCompact = [(MFMailMessageStore *)&v5 canCompact];
+  if (canCompact)
   {
-    LOBYTE(v3) = [(MFMailMessageStore *)self isOpened];
+    LOBYTE(canCompact) = [(MFMailMessageStore *)self isOpened];
   }
 
-  return v3;
+  return canCompact;
 }
 
 - (void)doCompact
 {
   if ([(MFLibraryStore *)self canCompact])
   {
-    v3 = [(MFLibraryStore *)self URLString];
-    if (v3)
+    uRLString = [(MFLibraryStore *)self URLString];
+    if (uRLString)
     {
       if (self->super._deletedMessageCount)
       {
-        v4 = v3;
+        v4 = uRLString;
         library = self->_library;
 
         [(MFMessageLibrary *)library compactMailbox:v4];
@@ -906,69 +906,69 @@ LABEL_22:
   }
 }
 
-- (void)compactMessages:(id)a3
+- (void)compactMessages:(id)messages
 {
-  if ([a3 count])
+  if ([messages count])
   {
     library = self->_library;
 
-    [(MFMessageLibrary *)library compactMessages:a3];
+    [(MFMessageLibrary *)library compactMessages:messages];
   }
 }
 
 - (id)criterion
 {
-  v2 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
 
-  return [v2 criterion];
+  return [mailboxUid criterion];
 }
 
 - (id)URLString
 {
-  v2 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
 
-  return [v2 URLString];
+  return [mailboxUid URLString];
 }
 
-+ (BOOL)createEmptyStoreForPath:(id)a3
++ (BOOL)createEmptyStoreForPath:(id)path
 {
-  v4 = [a3 hasPrefix:@"/"];
+  v4 = [path hasPrefix:@"/"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
 
-    LOBYTE(v4) = [v5 mf_makeCompletePath:a3 mode:448];
+    LOBYTE(v4) = [defaultManager mf_makeCompletePath:path mode:448];
   }
 
   return v4;
 }
 
-+ (BOOL)storeAtPathIsWritable:(id)a3
++ (BOOL)storeAtPathIsWritable:(id)writable
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
 
-  return [v4 mf_canWriteToDirectoryAtPath:a3];
+  return [defaultManager mf_canWriteToDirectoryAtPath:writable];
 }
 
 - (unint64_t)serverUnreadOnlyOnServerCount
 {
-  v2 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
 
-  return [v2 serverUnreadOnlyOnServerCount];
+  return [mailboxUid serverUnreadOnlyOnServerCount];
 }
 
 - (unint64_t)unreadCount
 {
-  v2 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
 
-  return [v2 unreadCount];
+  return [mailboxUid unreadCount];
 }
 
-- (unint64_t)unreadCountMatchingCriterion:(id)a3
+- (unint64_t)unreadCountMatchingCriterion:(id)criterion
 {
-  v4 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
 
-  return [v4 unreadCountMatchingCriterion:a3];
+  return [mailboxUid unreadCountMatchingCriterion:criterion];
 }
 
 - (id)newObjectCache
@@ -1027,48 +1027,48 @@ uint64_t __32__MFLibraryStore_newObjectCache__block_invoke_2(uint64_t a1, uint64
   return result;
 }
 
-- (id)_cachedHeadersForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedHeadersForMessage:(id)message valueIfNotPresent:(id)present
 {
-  if ([a3 isLibraryMessage])
+  if ([message isLibraryMessage])
   {
     v8.receiver = self;
     v8.super_class = MFLibraryStore;
-    return [(MFLibraryStore *)&v8 _cachedHeadersForMessage:a3 valueIfNotPresent:a4];
+    return [(MFLibraryStore *)&v8 _cachedHeadersForMessage:message valueIfNotPresent:present];
   }
 
-  return a4;
+  return present;
 }
 
-- (id)_cachedHeaderDataForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedHeaderDataForMessage:(id)message valueIfNotPresent:(id)present
 {
-  if ([a3 isLibraryMessage])
+  if ([message isLibraryMessage])
   {
     v8.receiver = self;
     v8.super_class = MFLibraryStore;
-    return [(MFLibraryStore *)&v8 _cachedHeaderDataForMessage:a3 valueIfNotPresent:a4];
+    return [(MFLibraryStore *)&v8 _cachedHeaderDataForMessage:message valueIfNotPresent:present];
   }
 
-  return a4;
+  return present;
 }
 
-- (id)_cachedBodyDataContainerForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedBodyDataContainerForMessage:(id)message valueIfNotPresent:(id)present
 {
-  if ([a3 isLibraryMessage])
+  if ([message isLibraryMessage])
   {
     v8.receiver = self;
     v8.super_class = MFLibraryStore;
-    return [(MFLibraryStore *)&v8 _cachedBodyDataContainerForMessage:a3 valueIfNotPresent:a4];
+    return [(MFLibraryStore *)&v8 _cachedBodyDataContainerForMessage:message valueIfNotPresent:present];
   }
 
-  return a4;
+  return present;
 }
 
-- (void)purgeMessagesBeyondLimit:(unint64_t)a3 keepingMessage:(id)a4
+- (void)purgeMessagesBeyondLimit:(unint64_t)limit keepingMessage:(id)message
 {
   v7 = -[MFMessageLibrary nonDeletedCountForMailbox:](self->_library, "nonDeletedCountForMailbox:", [-[MFMailMessageStore mailboxUid](self "mailboxUid")]);
-  if (v7 > a3)
+  if (v7 > limit)
   {
-    if (a4)
+    if (message)
     {
       v8 = 144;
     }
@@ -1078,11 +1078,11 @@ uint64_t __32__MFLibraryStore_newObjectCache__block_invoke_2(uint64_t a1, uint64
       v8 = 128;
     }
 
-    v9 = [(MFLibraryStore *)self copyOfMessagesInRange:a3 options:v7 - a3, v8];
-    if (a4)
+    v9 = [(MFLibraryStore *)self copyOfMessagesInRange:limit options:v7 - limit, v8];
+    if (message)
     {
       v12 = v9;
-      v10 = [v9 indexOfObject:a4];
+      v10 = [v9 indexOfObject:message];
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = v12;
@@ -1104,53 +1104,53 @@ uint64_t __32__MFLibraryStore_newObjectCache__block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (BOOL)hasMessageForAccount:(id)a3
+- (BOOL)hasMessageForAccount:(id)account
 {
   v5 = -[MFMessageLibrary nonDeletedCountForMailbox:](self->_library, "nonDeletedCountForMailbox:", [-[MFMailMessageStore mailboxUid](self "mailboxUid")]);
   if (v5)
   {
     v7.receiver = self;
     v7.super_class = MFLibraryStore;
-    LOBYTE(v5) = [(MFMailMessageStore *)&v7 hasMessageForAccount:a3];
+    LOBYTE(v5) = [(MFMailMessageStore *)&v7 hasMessageForAccount:account];
   }
 
   return v5;
 }
 
-- (void)_queueMessagesAdded:(id)a3
+- (void)_queueMessagesAdded:(id)added
 {
   v4 = 0;
-  [-[MFLibraryStore pep_getInvocation:](self pep_getInvocation:{&v4), "handleMessagesAdded:earliestReceivedDate:", a3, self->_earliestReceivedDate}];
+  [-[MFLibraryStore pep_getInvocation:](self pep_getInvocation:{&v4), "handleMessagesAdded:earliestReceivedDate:", added, self->_earliestReceivedDate}];
   [v4 retainArguments];
   [(MFLibraryStore *)self _addInvocationToQueue:v4];
 }
 
-- (void)_queueMessageFlagsChanged:(id)a3
+- (void)_queueMessageFlagsChanged:(id)changed
 {
-  v4 = [MEMORY[0x277CBEAE8] mf_invocationWithSelector:sel_handleMessageFlagsChanged_ target:self object:a3];
+  v4 = [MEMORY[0x277CBEAE8] mf_invocationWithSelector:sel_handleMessageFlagsChanged_ target:self object:changed];
 
   [(MFLibraryStore *)self _addInvocationToQueue:v4];
 }
 
-- (void)_queueMessagesWillBeCompacted:(id)a3
+- (void)_queueMessagesWillBeCompacted:(id)compacted
 {
-  v4 = [MEMORY[0x277CBEAE8] mf_invocationWithSelector:sel_handleMessagesWillBeCompacted_ target:self object:a3];
+  v4 = [MEMORY[0x277CBEAE8] mf_invocationWithSelector:sel_handleMessagesWillBeCompacted_ target:self object:compacted];
 
   [(MFLibraryStore *)self _addInvocationToQueue:v4];
 }
 
-- (void)_queueMessagesWereCompacted:(id)a3
+- (void)_queueMessagesWereCompacted:(id)compacted
 {
-  v4 = [MEMORY[0x277CBEAE8] mf_invocationWithSelector:sel_handleMessagesCompacted_ target:self object:a3];
+  v4 = [MEMORY[0x277CBEAE8] mf_invocationWithSelector:sel_handleMessagesCompacted_ target:self object:compacted];
 
   [(MFLibraryStore *)self _addInvocationToQueue:v4];
 }
 
-- (BOOL)hasCompleteDataForMimePart:(id)a3
+- (BOOL)hasCompleteDataForMimePart:(id)part
 {
   v6.receiver = self;
   v6.super_class = MFLibraryStore;
-  return [(MFLibraryStore *)&v6 hasCompleteDataForMimePart:?]|| [(MFMessageLibrary *)self->_library hasCompleteDataForMimePart:a3];
+  return [(MFLibraryStore *)&v6 hasCompleteDataForMimePart:?]|| [(MFMessageLibrary *)self->_library hasCompleteDataForMimePart:part];
 }
 
 @end

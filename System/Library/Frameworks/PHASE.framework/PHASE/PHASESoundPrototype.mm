@@ -1,8 +1,8 @@
 @interface PHASESoundPrototype
 - (NSArray)mixerInformation;
 - (PHASESoundPrototype)init;
-- (PHASESoundPrototype)initWithEngine:(id)a3 actionTreeRootNode:(id)a4 error:(id *)a5;
-- (PHASESoundPrototype)initWithEngine:(id)a3 registeredActionTreeIdentifier:(id)a4 error:(id *)a5;
+- (PHASESoundPrototype)initWithEngine:(id)engine actionTreeRootNode:(id)node error:(id *)error;
+- (PHASESoundPrototype)initWithEngine:(id)engine registeredActionTreeIdentifier:(id)identifier error:(id *)error;
 - (void)deRegister;
 - (void)dealloc;
 @end
@@ -16,17 +16,17 @@
   return 0;
 }
 
-- (PHASESoundPrototype)initWithEngine:(id)a3 registeredActionTreeIdentifier:(id)a4 error:(id *)a5
+- (PHASESoundPrototype)initWithEngine:(id)engine registeredActionTreeIdentifier:(id)identifier error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  engineCopy = engine;
+  identifierCopy = identifier;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  if (v8)
+  if (engineCopy)
   {
     v22.receiver = self;
     v22.super_class = PHASESoundPrototype;
@@ -34,14 +34,14 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeWeak(&v10->_engine, v8);
-      objc_storeStrong(&v11->_assetIdentifier, a4);
+      objc_storeWeak(&v10->_engine, engineCopy);
+      objc_storeStrong(&v11->_assetIdentifier, identifier);
       programmaticAPIAsset = v11->_programmaticAPIAsset;
       v11->_programmaticAPIAsset = 0;
     }
 
     self = v11;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -62,37 +62,37 @@
       v25 = 1024;
       v26 = 47;
       v27 = 2080;
-      v28 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
       _os_log_impl(&dword_23A302000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913633 userInfo:v16];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913633 userInfo:v16];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (PHASESoundPrototype)initWithEngine:(id)a3 actionTreeRootNode:(id)a4 error:(id *)a5
+- (PHASESoundPrototype)initWithEngine:(id)engine actionTreeRootNode:(id)node error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 && ((v21.receiver = self, v21.super_class = PHASESoundPrototype, v10 = -[PHASESoundPrototype init](&v21, sel_init), (self = v10) == 0) || (v11 = objc_storeWeak(&v10->_engine, v8), [v8 assetRegistry], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "getUniqueIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), assetIdentifier = self->_assetIdentifier, self->_assetIdentifier = v13, assetIdentifier, v12, v8, WeakRetained = objc_loadWeakRetained(&self->_engine), objc_msgSend(WeakRetained, "assetRegistry"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "registerSoundEventAssetWithRootNode:identifier:error:", v9, self->_assetIdentifier, a5), v17 = objc_claimAutoreleasedReturnValue(), programmaticAPIAsset = self->_programmaticAPIAsset, self->_programmaticAPIAsset = v17, programmaticAPIAsset, v16, WeakRetained, self->_programmaticAPIAsset)))
+  engineCopy = engine;
+  nodeCopy = node;
+  if (engineCopy && ((v21.receiver = self, v21.super_class = PHASESoundPrototype, v10 = -[PHASESoundPrototype init](&v21, sel_init), (self = v10) == 0) || (v11 = objc_storeWeak(&v10->_engine, engineCopy), [engineCopy assetRegistry], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "getUniqueIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), assetIdentifier = self->_assetIdentifier, self->_assetIdentifier = v13, assetIdentifier, v12, engineCopy, WeakRetained = objc_loadWeakRetained(&self->_engine), objc_msgSend(WeakRetained, "assetRegistry"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "registerSoundEventAssetWithRootNode:identifier:error:", nodeCopy, self->_assetIdentifier, error), v17 = objc_claimAutoreleasedReturnValue(), programmaticAPIAsset = self->_programmaticAPIAsset, self->_programmaticAPIAsset = v17, programmaticAPIAsset, v16, WeakRetained, self->_programmaticAPIAsset)))
   {
     self = self;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)deRegister
@@ -100,9 +100,9 @@
   if (self->_programmaticAPIAsset)
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
-    v4 = [WeakRetained assetRegistry];
-    v5 = [(PHASEAsset *)self->_programmaticAPIAsset identifier];
-    [v4 unregisterAssetWithIdentifier:v5 completion:0];
+    assetRegistry = [WeakRetained assetRegistry];
+    identifier = [(PHASEAsset *)self->_programmaticAPIAsset identifier];
+    [assetRegistry unregisterAssetWithIdentifier:identifier completion:0];
 
     programmaticAPIAsset = self->_programmaticAPIAsset;
     self->_programmaticAPIAsset = 0;
@@ -124,8 +124,8 @@
 - (NSArray)mixerInformation
 {
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v4 = [WeakRetained assetRegistry];
-  v5 = [v4 mixerInformationForActionTreeWithIdentifier:self->_assetIdentifier];
+  assetRegistry = [WeakRetained assetRegistry];
+  v5 = [assetRegistry mixerInformationForActionTreeWithIdentifier:self->_assetIdentifier];
 
   return v5;
 }

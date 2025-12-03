@@ -1,11 +1,11 @@
 @interface MSVXPCTransaction
 + (id)activeTransactions;
 - (BOOL)isActive;
-- (MSVXPCTransaction)initWithName:(id)a3;
+- (MSVXPCTransaction)initWithName:(id)name;
 - (id)description;
 - (void)beginTransaction;
 - (void)endTransaction;
-- (void)endTransactionOnDate:(id)a3;
+- (void)endTransactionOnDate:(id)date;
 @end
 
 @implementation MSVXPCTransaction
@@ -19,8 +19,8 @@
     os_unfair_lock_lock(&_MSVXPCTransactionLock);
     v4 = MEMORY[0x1E696AEC0];
     name = self->_name;
-    v6 = [(NSUUID *)self->_identifier UUIDString];
-    v7 = [v4 stringWithFormat:@"%@:%@", name, v6];
+    uUIDString = [(NSUUID *)self->_identifier UUIDString];
+    v7 = [v4 stringWithFormat:@"%@:%@", name, uUIDString];
     [v7 UTF8String];
     v8 = os_transaction_create();
     transaction = self->_transaction;
@@ -39,8 +39,8 @@
   self->_transactionCount = transactionCount - 1;
   if (transactionCount <= 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MSVXPCTransaction.m" lineNumber:113 description:@"Unbalanced calls to -[MSVXPCTransaction endTransaction]"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVXPCTransaction.m" lineNumber:113 description:@"Unbalanced calls to -[MSVXPCTransaction endTransaction]"];
 
     if (self->_transactionCount)
     {
@@ -66,9 +66,9 @@
   }
 }
 
-- (void)endTransactionOnDate:(id)a3
+- (void)endTransactionOnDate:(id)date
 {
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v5 = dispatch_time(0, (v4 * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -91,8 +91,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   name = self->_name;
-  v6 = [(NSUUID *)self->_identifier UUIDString];
-  v7 = v6;
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v7 = uUIDString;
   if (self->_transaction)
   {
     v8 = @"YES";
@@ -103,20 +103,20 @@
     v8 = @"NO";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@:%p, name=%@:%@ isActive=%@>", v4, self, name, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@:%p, name=%@:%@ isActive=%@>", v4, self, name, uUIDString, v8];
 
   return v9;
 }
 
-- (MSVXPCTransaction)initWithName:(id)a3
+- (MSVXPCTransaction)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = MSVXPCTransaction;
   v5 = [(MSVXPCTransaction *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -143,14 +143,14 @@
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&_MSVXPCTransactionLock);
   v2 = _MSVXPCTransactionsGet();
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(allObjects, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {

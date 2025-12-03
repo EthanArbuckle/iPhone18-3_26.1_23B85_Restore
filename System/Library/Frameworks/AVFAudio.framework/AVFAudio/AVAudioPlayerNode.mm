@@ -2,8 +2,8 @@
 - (AVAudioTime)nodeTimeForPlayerTime:(AVAudioTime *)playerTime;
 - (AVAudioTime)playerTimeForNodeTime:(AVAudioTime *)nodeTime;
 - (BOOL)isPlaying;
-- (void)callLegacyCompletionHandlerForType:(int64_t)a3 legacyHandler:(id)a4;
-- (void)didAttachToEngine:(id)a3;
+- (void)callLegacyCompletionHandlerForType:(int64_t)type legacyHandler:(id)handler;
+- (void)didAttachToEngine:(id)engine;
 - (void)pause;
 - (void)play;
 - (void)playAtTime:(AVAudioTime *)when;
@@ -17,14 +17,14 @@
 
 @implementation AVAudioPlayerNode
 
-- (void)didAttachToEngine:(id)a3
+- (void)didAttachToEngine:(id)engine
 {
-  v5 = [a3 implementation];
+  implementation = [engine implementation];
   impl = self->super._impl;
-  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (v5 + 112));
+  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (implementation + 112));
   v10.receiver = self;
   v10.super_class = AVAudioPlayerNode;
-  [(AVAudioNode *)&v10 didAttachToEngine:a3];
+  [(AVAudioNode *)&v10 didAttachToEngine:engine];
   v7 = self->super._impl;
 
   v7[22] = 0;
@@ -32,7 +32,7 @@
   v7[22] = v8;
   v9 = v8;
   std::recursive_mutex::unlock((impl + 96));
-  std::recursive_mutex::unlock((v5 + 112));
+  std::recursive_mutex::unlock((implementation + 112));
 }
 
 - (BOOL)isPlaying
@@ -545,8 +545,8 @@
   }
 
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v13, self->super._impl);
-  v11 = [*(self->super._impl + 22) channelCount];
-  if (v11 != [(AVAudioFormat *)[(AVAudioBuffer *)buffer format] channelCount])
+  channelCount = [*(self->super._impl + 22) channelCount];
+  if (channelCount != [(AVAudioFormat *)[(AVAudioBuffer *)buffer format] channelCount])
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -588,13 +588,13 @@
   [(AVAudioPlayerNode *)self scheduleBuffer:buffer atTime:when options:options completionCallbackType:0 completionHandler:v6];
 }
 
-- (void)callLegacyCompletionHandlerForType:(int64_t)a3 legacyHandler:(id)a4
+- (void)callLegacyCompletionHandlerForType:(int64_t)type legacyHandler:(id)handler
 {
-  if (!a3)
+  if (!type)
   {
-    if (a4)
+    if (handler)
     {
-      (*(a4 + 2))(a4);
+      (*(handler + 2))(handler);
     }
   }
 }

@@ -1,26 +1,26 @@
 @interface EKEventAttendeesDetailItem
-- (EKEventAttendeesDetailItem)initWithModel:(id)a3;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
-- (void)eventDetailAttendeeCellDidCompleteLoad:(id)a3;
+- (EKEventAttendeesDetailItem)initWithModel:(id)model;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
+- (void)eventDetailAttendeeCellDidCompleteLoad:(id)load;
 - (void)eventDetailAttendeeCellWantsRefreshForHeightChange;
-- (void)eventViewController:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)eventViewController:(id)controller didSelectSubitem:(unint64_t)subitem;
 - (void)reset;
 @end
 
 @implementation EKEventAttendeesDetailItem
 
-- (EKEventAttendeesDetailItem)initWithModel:(id)a3
+- (EKEventAttendeesDetailItem)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = EKEventAttendeesDetailItem;
   v6 = [(EKEventAttendeesDetailItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
@@ -45,23 +45,23 @@
   self->_cell = 0;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
-  v5 = [(EKEventAttendeesDetailItem *)self cellForSubitemAtIndex:a3, a5, a4];
-  [v5 displayHeight];
+  width = [(EKEventAttendeesDetailItem *)self cellForSubitemAtIndex:index, update, width];
+  [width displayHeight];
   v7 = v6;
 
   return v7;
 }
 
-- (void)eventViewController:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)eventViewController:(id)controller didSelectSubitem:(unint64_t)subitem
 {
   v4.receiver = self;
   v4.super_class = EKEventAttendeesDetailItem;
-  [(EKEventDetailItem *)&v4 eventViewController:a3 didSelectSubitem:a4];
+  [(EKEventDetailItem *)&v4 eventViewController:controller didSelectSubitem:subitem];
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -87,9 +87,9 @@
     cell = self->_cell;
   }
 
-  v10 = [(EKEventDetailAttendeesCell *)cell loadingAttendees];
+  loadingAttendees = [(EKEventDetailAttendeesCell *)cell loadingAttendees];
   oldCell = self->_oldCell;
-  if (v10)
+  if (loadingAttendees)
   {
     if (oldCell)
     {
@@ -109,32 +109,32 @@ LABEL_11:
   return v12;
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
   v5 = [[EKUIEventInviteesViewController alloc] initWithEvent:self->super._event fromDetail:1 model:self->_model];
-  v6 = [(EKEventDetailItem *)self viewControllerToPresentFrom];
-  v7 = [v6 navigationDelegate];
-  [(EKUIEventInviteesViewController *)v5 setNavigationDelegate:v7];
+  viewControllerToPresentFrom = [(EKEventDetailItem *)self viewControllerToPresentFrom];
+  navigationDelegate = [viewControllerToPresentFrom navigationDelegate];
+  [(EKUIEventInviteesViewController *)v5 setNavigationDelegate:navigationDelegate];
 
   return v5;
 }
 
 - (void)eventDetailAttendeeCellWantsRefreshForHeightChange
 {
-  v2 = [(EKEventDetailItem *)self delegate];
-  [v2 eventDetailItemWantsRefeshForHeightChange];
+  delegate = [(EKEventDetailItem *)self delegate];
+  [delegate eventDetailItemWantsRefeshForHeightChange];
 }
 
-- (void)eventDetailAttendeeCellDidCompleteLoad:(id)a3
+- (void)eventDetailAttendeeCellDidCompleteLoad:(id)load
 {
-  v4 = a3;
-  if (self->_oldCell && self->_cell == v4)
+  loadCopy = load;
+  if (self->_oldCell && self->_cell == loadCopy)
   {
-    v6 = v4;
-    v5 = [(EKEventDetailItem *)self delegate];
-    [v5 eventDetailItemWantsRefresh:self];
+    v6 = loadCopy;
+    delegate = [(EKEventDetailItem *)self delegate];
+    [delegate eventDetailItemWantsRefresh:self];
 
-    v4 = v6;
+    loadCopy = v6;
   }
 }
 

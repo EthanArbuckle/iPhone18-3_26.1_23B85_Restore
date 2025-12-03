@@ -1,32 +1,32 @@
 @interface WFAppToAppDescriptorMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
-- (BOOL)actionDictionaryContainsSystemIntentAction:(id)a3;
-- (void)migrateAppToAppDescriptorForParameterKey:(id)a3 parameters:(id)a4;
-- (void)migrateOpenAppWithParameters:(id)a3;
-- (void)migrateOpenInWithParameters:(id)a3;
-- (void)migrateSplitScreenWithParameters:(id)a3;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
+- (BOOL)actionDictionaryContainsSystemIntentAction:(id)action;
+- (void)migrateAppToAppDescriptorForParameterKey:(id)key parameters:(id)parameters;
+- (void)migrateOpenAppWithParameters:(id)parameters;
+- (void)migrateOpenInWithParameters:(id)parameters;
+- (void)migrateSplitScreenWithParameters:(id)parameters;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFAppToAppDescriptorMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  v6 = a4;
-  HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.openapp", v5);
-  v8 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.openin", v5);
-  v9 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.quit.app", v5);
-  v10 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.hide.app", v5);
-  v11 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.splitscreen", v5);
-  if (WFWorkflowHasActionsWithIdentifier(@"com.apple.mobilenotes.SharingExtension", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.appendnote", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.ride.requestride", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.sendmessage", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.mobilephone.call", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.facetime.facetime", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.venmo.pay", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.workout.start", v5) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.venmo.request", v5))
+  migrationCopy = migration;
+  versionCopy = version;
+  HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.openapp", migrationCopy);
+  v8 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.openin", migrationCopy);
+  v9 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.quit.app", migrationCopy);
+  v10 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.hide.app", migrationCopy);
+  v11 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.splitscreen", migrationCopy);
+  if (WFWorkflowHasActionsWithIdentifier(@"com.apple.mobilenotes.SharingExtension", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.appendnote", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.ride.requestride", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.sendmessage", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.mobilephone.call", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"com.apple.facetime.facetime", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.venmo.pay", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.workout.start", migrationCopy) & 1) != 0 || (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.venmo.request", migrationCopy))
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.timer.start", v5);
+    v12 = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.timer.start", migrationCopy);
   }
 
   if (((HasActionsWithIdentifier | v8) | (v9 | v10)))
@@ -39,9 +39,9 @@
     v13 = v11 | v12;
   }
 
-  if (WFCompareBundleVersions(v6, @"0") == 2)
+  if (WFCompareBundleVersions(versionCopy, @"0") == 2)
   {
-    if (WFCompareBundleVersions(v6, @"1136") != 3)
+    if (WFCompareBundleVersions(versionCopy, @"1136") != 3)
     {
       v13 = 0;
     }
@@ -55,57 +55,57 @@
   return v13;
 }
 
-- (void)migrateAppToAppDescriptorForParameterKey:(id)a3 parameters:(id)a4
+- (void)migrateAppToAppDescriptorForParameterKey:(id)key parameters:(id)parameters
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v5 objectForKey:v12];
+  keyCopy = key;
+  parametersCopy = parameters;
+  v6 = [parametersCopy objectForKey:keyCopy];
 
   if (v6)
   {
-    v7 = [v5 objectForKey:v12];
+    v7 = [parametersCopy objectForKey:keyCopy];
     if (v7)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:v7];
-        v9 = [MEMORY[0x1E696E748] sharedResolver];
-        v10 = [v9 resolvedAppMatchingDescriptor:v8];
+        mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+        v10 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v8];
 
         if (v10)
         {
-          v11 = [v10 serializedRepresentation];
-          [v5 setObject:v11 forKey:v12];
+          serializedRepresentation = [v10 serializedRepresentation];
+          [parametersCopy setObject:serializedRepresentation forKey:keyCopy];
         }
       }
     }
   }
 }
 
-- (void)migrateSplitScreenWithParameters:(id)a3
+- (void)migrateSplitScreenWithParameters:(id)parameters
 {
-  v5 = a3;
-  [(WFAppToAppDescriptorMigration *)self migrateAppToAppDescriptorForParameterKey:@"WFPrimaryAppIdentifier" parameters:v5];
-  v4 = [v5 objectForKey:@"WFSecondaryAppIdentifier"];
+  parametersCopy = parameters;
+  [(WFAppToAppDescriptorMigration *)self migrateAppToAppDescriptorForParameterKey:@"WFPrimaryAppIdentifier" parameters:parametersCopy];
+  v4 = [parametersCopy objectForKey:@"WFSecondaryAppIdentifier"];
 
   if (v4)
   {
-    [(WFAppToAppDescriptorMigration *)self migrateAppToAppDescriptorForParameterKey:@"WFSecondaryAppIdentifier" parameters:v5];
+    [(WFAppToAppDescriptorMigration *)self migrateAppToAppDescriptorForParameterKey:@"WFSecondaryAppIdentifier" parameters:parametersCopy];
   }
 }
 
-- (void)migrateOpenInWithParameters:(id)a3
+- (void)migrateOpenInWithParameters:(id)parameters
 {
-  v10 = a3;
-  v3 = [v10 objectForKey:@"WFOpenInAppIdentifier"];
+  parametersCopy = parameters;
+  v3 = [parametersCopy objectForKey:@"WFOpenInAppIdentifier"];
   if (v3)
   {
   }
 
   else
   {
-    v9 = [v10 objectForKey:@"WFSelectedApp"];
+    v9 = [parametersCopy objectForKey:@"WFSelectedApp"];
 
     if (v9)
     {
@@ -113,20 +113,20 @@
     }
   }
 
-  v4 = [v10 objectForKey:@"WFOpenInAppIdentifier"];
+  v4 = [parametersCopy objectForKey:@"WFOpenInAppIdentifier"];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:v4];
-      v6 = [MEMORY[0x1E696E748] sharedResolver];
-      v7 = [v6 resolvedAppMatchingDescriptor:v5];
+      mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+      v7 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v5];
 
       if (v7)
       {
-        v8 = [v7 serializedRepresentation];
-        [v10 setObject:v8 forKey:@"WFSelectedApp"];
+        serializedRepresentation = [v7 serializedRepresentation];
+        [parametersCopy setObject:serializedRepresentation forKey:@"WFSelectedApp"];
       }
     }
   }
@@ -134,17 +134,17 @@
 LABEL_10:
 }
 
-- (void)migrateOpenAppWithParameters:(id)a3
+- (void)migrateOpenAppWithParameters:(id)parameters
 {
-  v10 = a3;
-  v3 = [v10 objectForKey:@"WFAppIdentifier"];
+  parametersCopy = parameters;
+  v3 = [parametersCopy objectForKey:@"WFAppIdentifier"];
   if (v3)
   {
   }
 
   else
   {
-    v9 = [v10 objectForKey:@"WFSelectedApp"];
+    v9 = [parametersCopy objectForKey:@"WFSelectedApp"];
 
     if (v9)
     {
@@ -152,20 +152,20 @@ LABEL_10:
     }
   }
 
-  v4 = [v10 objectForKey:@"WFAppIdentifier"];
+  v4 = [parametersCopy objectForKey:@"WFAppIdentifier"];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = [objc_alloc(MEMORY[0x1E696E720]) initWithBundleIdentifier:v4];
-      v6 = [MEMORY[0x1E696E748] sharedResolver];
-      v7 = [v6 resolvedAppMatchingDescriptor:v5];
+      mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+      v7 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v5];
 
       if (v7)
       {
-        v8 = [v7 serializedRepresentation];
-        [v10 setObject:v8 forKey:@"WFSelectedApp"];
+        serializedRepresentation = [v7 serializedRepresentation];
+        [parametersCopy setObject:serializedRepresentation forKey:@"WFSelectedApp"];
       }
     }
   }
@@ -175,13 +175,13 @@ LABEL_10:
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self actions];
+  actions = [(WFWorkflowMigration *)self actions];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__WFAppToAppDescriptorMigration_migrateWorkflow__block_invoke;
   v4[3] = &unk_1E837F7F8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [actions enumerateObjectsUsingBlock:v4];
 
   [(WFWorkflowMigration *)self finish];
 }
@@ -260,7 +260,7 @@ void __48__WFAppToAppDescriptorMigration_migrateWorkflow__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)actionDictionaryContainsSystemIntentAction:(id)a3
+- (BOOL)actionDictionaryContainsSystemIntentAction:(id)action
 {
   v11[10] = *MEMORY[0x1E69E9840];
   v11[0] = @"com.apple.mobilenotes.SharingExtension";
@@ -274,14 +274,14 @@ void __48__WFAppToAppDescriptorMigration_migrateWorkflow__block_invoke(uint64_t 
   v11[8] = @"is.workflow.actions.venmo.request";
   v11[9] = @"is.workflow.actions.timer.start";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  actionCopy = action;
   v6 = [v4 arrayWithObjects:v11 count:10];
-  v7 = [(WFWorkflowMigration *)self actionIdentifierKey];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+  v8 = [actionCopy objectForKeyedSubscript:actionIdentifierKey];
 
-  LOBYTE(v7) = [v6 containsObject:v8];
+  LOBYTE(actionIdentifierKey) = [v6 containsObject:v8];
   v9 = *MEMORY[0x1E69E9840];
-  return v7;
+  return actionIdentifierKey;
 }
 
 @end

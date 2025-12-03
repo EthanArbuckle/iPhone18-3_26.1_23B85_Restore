@@ -1,30 +1,30 @@
 @interface CRSUIClusterPressBSActionsHandler
 - (CRSUIClusterPressBSActionActionDelegate)delegate;
-- (CRSUIClusterPressBSActionsHandler)initWithDelegate:(id)a3;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (CRSUIClusterPressBSActionsHandler)initWithDelegate:(id)delegate;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation CRSUIClusterPressBSActionsHandler
 
-- (CRSUIClusterPressBSActionsHandler)initWithDelegate:(id)a3
+- (CRSUIClusterPressBSActionsHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CRSUIClusterPressBSActionsHandler;
   v5 = [(CRSUIClusterPressBSActionsHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v7 = a3;
-  v8 = [v7 objectsPassingTest:&__block_literal_global_13];
+  actionsCopy = actions;
+  v8 = [actionsCopy objectsPassingTest:&__block_literal_global_13];
   if ([v8 count])
   {
     v11[0] = MEMORY[0x277D85DD0];
@@ -35,7 +35,7 @@
     [v8 enumerateObjectsUsingBlock:v11];
   }
 
-  v9 = [v7 mutableCopy];
+  v9 = [actionsCopy mutableCopy];
   [v9 minusSet:v8];
 
   return v9;

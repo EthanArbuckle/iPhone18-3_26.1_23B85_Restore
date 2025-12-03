@@ -1,24 +1,24 @@
 @interface BBSmartPL
 - (PLSmartPLService)operator;
 - (PLTelephonyConnection)connection;
-- (void)handleMavBBHwOtherCallback:(id)a3;
-- (void)startWithOperator:(id)a3;
+- (void)handleMavBBHwOtherCallback:(id)callback;
+- (void)startWithOperator:(id)operator;
 - (void)triggerBBCoreDump;
 @end
 
 @implementation BBSmartPL
 
-- (void)startWithOperator:(id)a3
+- (void)startWithOperator:(id)operator
 {
-  v4 = a3;
-  [(BBSmartPL *)self setOperator:v4];
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(BBSmartPL *)self setLastLogDate:v5];
+  operatorCopy = operator;
+  [(BBSmartPL *)self setOperator:operatorCopy];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(BBSmartPL *)self setLastLogDate:monotonicDate];
 
   [(BBSmartPL *)self setLogDuration:0.0];
   [(BBSmartPL *)self setCxoDuration:0.0];
-  v6 = [MEMORY[0x277D3F6D8] sharedTelephonyConnection];
-  [(BBSmartPL *)self setConnection:v6];
+  mEMORY[0x277D3F6D8] = [MEMORY[0x277D3F6D8] sharedTelephonyConnection];
+  [(BBSmartPL *)self setConnection:mEMORY[0x277D3F6D8]];
 
   v7 = [MEMORY[0x277D3F680] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F748]];
   v8 = objc_alloc(MEMORY[0x277D3F1A8]);
@@ -27,7 +27,7 @@
   v10[2] = __31__BBSmartPL_startWithOperator___block_invoke;
   v10[3] = &unk_279A58F10;
   v10[4] = self;
-  v9 = [v8 initWithOperator:v4 forEntryKey:v7 withBlock:v10];
+  v9 = [v8 initWithOperator:operatorCopy forEntryKey:v7 withBlock:v10];
 
   [(BBSmartPL *)self setBbHwOtherCallback:v9];
 }
@@ -44,18 +44,18 @@ uint64_t __31__BBSmartPL_startWithOperator___block_invoke(uint64_t result, uint6
 
 - (void)triggerBBCoreDump
 {
-  v2 = [(BBSmartPL *)self connection];
+  connection = [(BBSmartPL *)self connection];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Auto-trigger of core dump by Powerlog: smartPL"];
-  v4 = [v2 requestBasebandCoreDump:v3];
+  v4 = [connection requestBasebandCoreDump:v3];
 
   if ((v4 & 1) == 0)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Core dump failed"];
     v6 = MEMORY[0x277D3F178];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/SmartPL/BBSmartPL.m"];
-    v8 = [v7 lastPathComponent];
+    lastPathComponent = [v7 lastPathComponent];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[BBSmartPL triggerBBCoreDump]"];
-    [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:52];
+    [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:52];
 
     v10 = PLLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -65,9 +65,9 @@ uint64_t __31__BBSmartPL_startWithOperator___block_invoke(uint64_t result, uint6
   }
 }
 
-- (void)handleMavBBHwOtherCallback:(id)a3
+- (void)handleMavBBHwOtherCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F728]];
   [v5 doubleValue];
   v7 = v6;
@@ -80,17 +80,17 @@ uint64_t __31__BBSmartPL_startWithOperator___block_invoke(uint64_t result, uint6
   [(BBSmartPL *)self cxoDuration];
   [(BBSmartPL *)self setCxoDuration:v11 + v12];
 
-  v13 = [v4 entryDate];
-  v14 = [(BBSmartPL *)self lastLogDate];
-  [v13 timeIntervalSinceDate:v14];
+  entryDate = [v4 entryDate];
+  lastLogDate = [(BBSmartPL *)self lastLogDate];
+  [entryDate timeIntervalSinceDate:lastLogDate];
   v16 = v15;
 
   if (v16 >= 1200.0)
   {
     v17 = [MEMORY[0x277D3F680] entryKeyForType:*MEMORY[0x277D3F5E8] andName:*MEMORY[0x277D3F700]];
-    v18 = [(BBSmartPL *)self operator];
-    v19 = [v18 storage];
-    v20 = [v19 lastEntryForKey:v17];
+    operator = [(BBSmartPL *)self operator];
+    storage = [operator storage];
+    v20 = [storage lastEntryForKey:v17];
 
     v21 = [v20 objectForKeyedSubscript:@"callStatus"];
     if ([v21 isEqualToString:@"Inactive"])
@@ -122,9 +122,9 @@ uint64_t __31__BBSmartPL_startWithOperator___block_invoke(uint64_t result, uint6
             v30 = [v26 stringWithFormat:@"SMARTPL - trigger Core Dump%f", v28 / v29, block, v45, v46, v47, v48];
             v31 = MEMORY[0x277D3F178];
             v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/SmartPL/BBSmartPL.m"];
-            v33 = [v32 lastPathComponent];
+            lastPathComponent = [v32 lastPathComponent];
             v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[BBSmartPL handleMavBBHwOtherCallback:]"];
-            [v31 logMessage:v30 fromFile:v33 fromFunction:v34 fromLineNumber:74];
+            [v31 logMessage:v30 fromFile:lastPathComponent fromFunction:v34 fromLineNumber:74];
 
             v35 = PLLogCommon();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -135,19 +135,19 @@ uint64_t __31__BBSmartPL_startWithOperator___block_invoke(uint64_t result, uint6
         }
 
         [(BBSmartPL *)self triggerBBCoreDump];
-        v36 = [(BBSmartPL *)self operator];
+        operator2 = [(BBSmartPL *)self operator];
         v37 = objc_opt_class();
         v38 = MEMORY[0x277CCACA8];
         [(BBSmartPL *)self cxoDuration];
         v40 = v39;
         [(BBSmartPL *)self logDuration];
         v42 = [v38 stringWithFormat:@"cxoDuration/logDuration=%f", v40 / v41];
-        [v36 logEventPointSmartPLFiredFromAuxilary:v37 withReason:v42];
+        [operator2 logEventPointSmartPLFiredFromAuxilary:v37 withReason:v42];
       }
     }
 
-    v43 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [(BBSmartPL *)self setLastLogDate:v43];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [(BBSmartPL *)self setLastLogDate:monotonicDate];
 
     [(BBSmartPL *)self setLogDuration:0.0];
     [(BBSmartPL *)self setCxoDuration:0.0];

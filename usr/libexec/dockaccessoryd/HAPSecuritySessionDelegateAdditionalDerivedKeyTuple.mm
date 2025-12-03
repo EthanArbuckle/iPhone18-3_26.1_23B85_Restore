@@ -1,7 +1,7 @@
 @interface HAPSecuritySessionDelegateAdditionalDerivedKeyTuple
 + (id)new;
 - (HAPSecuritySessionDelegateAdditionalDerivedKeyTuple)init;
-- (HAPSecuritySessionDelegateAdditionalDerivedKeyTuple)initWithName:(id)a3 saltData:(id)a4 infoData:(id)a5;
+- (HAPSecuritySessionDelegateAdditionalDerivedKeyTuple)initWithName:(id)name saltData:(id)data infoData:(id)infoData;
 @end
 
 @implementation HAPSecuritySessionDelegateAdditionalDerivedKeyTuple
@@ -26,25 +26,25 @@
   objc_exception_throw(v4);
 }
 
-- (HAPSecuritySessionDelegateAdditionalDerivedKeyTuple)initWithName:(id)a3 saltData:(id)a4 infoData:(id)a5
+- (HAPSecuritySessionDelegateAdditionalDerivedKeyTuple)initWithName:(id)name saltData:(id)data infoData:(id)infoData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dataCopy = data;
+  infoDataCopy = infoData;
   v19.receiver = self;
   v19.super_class = HAPSecuritySessionDelegateAdditionalDerivedKeyTuple;
   v11 = [(HAPSecuritySessionDelegateAdditionalDerivedKeyTuple *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [dataCopy copy];
     saltData = v11->_saltData;
     v11->_saltData = v14;
 
-    v16 = [v10 copy];
+    v16 = [infoDataCopy copy];
     infoData = v11->_infoData;
     v11->_infoData = v16;
   }

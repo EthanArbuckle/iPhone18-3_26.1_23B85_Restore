@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterDoubleNestedStructList
 - (MTRUnitTestingClusterDoubleNestedStructList)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,15 +13,15 @@
   v2 = [(MTRUnitTestingClusterDoubleNestedStructList *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     a = v2->_a;
-    v2->_a = v3;
+    v2->_a = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterDoubleNestedStructList);
   v5 = [(MTRUnitTestingClusterDoubleNestedStructList *)self a];

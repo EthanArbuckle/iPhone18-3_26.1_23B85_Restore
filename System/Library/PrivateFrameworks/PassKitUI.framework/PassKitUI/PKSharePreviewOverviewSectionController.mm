@@ -1,22 +1,22 @@
 @interface PKSharePreviewOverviewSectionController
 - (PKSharePreviewOverviewSectionControllerDelegate)delegate;
-- (id)_initWithMode:(unint64_t)a3 accessType:(int64_t)a4 entitlementComposer:(id)a5 context:(id)a6 delegate:(id)a7;
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4;
-- (id)headerAttributedStringForIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_shareabilitySwitchValueChanged:(id)a3;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
+- (id)_initWithMode:(unint64_t)mode accessType:(int64_t)type entitlementComposer:(id)composer context:(id)context delegate:(id)delegate;
+- (id)decorateListCell:(id)cell forRowItem:(id)item;
+- (id)headerAttributedStringForIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_shareabilitySwitchValueChanged:(id)changed;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
 @end
 
 @implementation PKSharePreviewOverviewSectionController
 
-- (id)_initWithMode:(unint64_t)a3 accessType:(int64_t)a4 entitlementComposer:(id)a5 context:(id)a6 delegate:(id)a7
+- (id)_initWithMode:(unint64_t)mode accessType:(int64_t)type entitlementComposer:(id)composer context:(id)context delegate:(id)delegate
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  composerCopy = composer;
+  contextCopy = context;
+  delegateCopy = delegate;
   v26[0] = @"RecipientSection";
   v26[1] = @"EntitlementsSection";
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
@@ -26,11 +26,11 @@
 
   if (v17)
   {
-    v17->_mode = a3;
-    v17->_accessType = a4;
-    objc_storeWeak(&v17->_delegate, v15);
-    objc_storeStrong(&v17->_context, a6);
-    objc_storeStrong(&v17->_entitlementComposer, a5);
+    v17->_mode = mode;
+    v17->_accessType = type;
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v17->_context, context);
+    objc_storeStrong(&v17->_entitlementComposer, composer);
     objc_initWeak(&location, v17);
     v18 = MEMORY[0x1E69DC800];
     v19 = objc_opt_class();
@@ -62,25 +62,25 @@ void __105__PKSharePreviewOverviewSectionController__initWithMode_accessType_ent
   }
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v43 = a3;
+  animatedCopy = animated;
   v45[1] = *MEMORY[0x1E69E9840];
   mode = self->_mode;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(PKPassShareInitiationContext *)self->_context requiresContactSelection];
-  if (!mode && (v7 & 1) != 0 && v8)
+  requiresContactSelection = [(PKPassShareInitiationContext *)self->_context requiresContactSelection];
+  if (!mode && (v7 & 1) != 0 && requiresContactSelection)
   {
     v9 = [[PKSharePreviewRowItem alloc] initWithIdentifier:@"RecipientRowItemIdentifier"];
-    v10 = [(PKPassShareInitiationContext *)self->_context composedShare];
-    v11 = [v10 recipientNickname];
+    composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+    recipientNickname = [composedShare recipientNickname];
 
-    if ([v11 length])
+    if ([recipientNickname length])
     {
-      [(PKSharePreviewRowItem *)v9 setTitle:v11];
+      [(PKSharePreviewRowItem *)v9 setTitle:recipientNickname];
       [MEMORY[0x1E69DC888] systemBlueColor];
     }
 
@@ -102,30 +102,30 @@ void __105__PKSharePreviewOverviewSectionController__initWithMode_accessType_ent
   self->_recipientItems = v14;
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v17 = [(PKPassEntitlementsComposer *)self->_entitlementComposer predefinedEntitlementEntries];
-  v18 = [v17 count];
+  predefinedEntitlementEntries = [(PKPassEntitlementsComposer *)self->_entitlementComposer predefinedEntitlementEntries];
+  v18 = [predefinedEntitlementEntries count];
 
   if (!v18 && [(PKPassEntitlementsComposer *)self->_entitlementComposer canAllowResharing])
   {
-    v19 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-    if ([(PKSharePreviewRowItem *)v19 isManagingEntitlementConfiguration])
+    globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+    if ([(PKSharePreviewRowItem *)globalView isManagingEntitlementConfiguration])
     {
-      v20 = [(PKPassEntitlementsComposer *)self->_entitlementComposer preferDetailedCapabilityDisplay];
+      preferDetailedCapabilityDisplay = [(PKPassEntitlementsComposer *)self->_entitlementComposer preferDetailedCapabilityDisplay];
 
-      if (v20)
+      if (preferDetailedCapabilityDisplay)
       {
         goto LABEL_17;
       }
 
-      v19 = [[PKSharePreviewRowItem alloc] initWithIdentifier:@"ShareabilityRowItem"];
+      globalView = [[PKSharePreviewRowItem alloc] initWithIdentifier:@"ShareabilityRowItem"];
       v21 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.2.fill" withConfiguration:0];
-      [(PKSharePreviewRowItem *)v19 setIcon:v21];
+      [(PKSharePreviewRowItem *)globalView setIcon:v21];
 
       v22 = PKLocalizedShareableCredentialString(&cfstr_ShareOverviewS_2.isa);
-      [(PKSharePreviewRowItem *)v19 setTitle:v22];
+      [(PKSharePreviewRowItem *)globalView setTitle:v22];
 
-      v23 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-      [v23 shareability];
+      globalView2 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+      [globalView2 shareability];
       CanAllowResharing = PKSharingCapabilityShareabilityCanAllowResharing();
 
       if (CanAllowResharing)
@@ -138,9 +138,9 @@ void __105__PKSharePreviewOverviewSectionController__initWithMode_accessType_ent
         v25 = 2;
       }
 
-      [(PKSharePreviewRowItem *)v19 setDisplayToggleState:v25];
-      [(PKSharePreviewRowItem *)v19 setAccessoryEnabled:[(PKPassEntitlementsComposer *)self->_entitlementComposer editable]];
-      [v16 addObject:v19];
+      [(PKSharePreviewRowItem *)globalView setDisplayToggleState:v25];
+      [(PKSharePreviewRowItem *)globalView setAccessoryEnabled:[(PKPassEntitlementsComposer *)self->_entitlementComposer editable]];
+      [v16 addObject:globalView];
     }
   }
 
@@ -174,8 +174,8 @@ LABEL_17:
   {
     if (self->_mode == 1)
     {
-      v33 = PKLocalizedShareableCredentialString(&cfstr_ShareOverviewS_5.isa);
-      [(PKSharePreviewRowItem *)v26 setTitle:v33];
+      _localizedEntitlementSummary = PKLocalizedShareableCredentialString(&cfstr_ShareOverviewS_5.isa);
+      [(PKSharePreviewRowItem *)v26 setTitle:_localizedEntitlementSummary];
       goto LABEL_31;
     }
 
@@ -188,8 +188,8 @@ LABEL_17:
   v35 = PKLocalizedShareableCredentialString(&v32->isa);
   [(PKSharePreviewRowItem *)v26 setTitle:v35];
 
-  v33 = [(PKSharePreviewOverviewSectionController *)self _localizedEntitlementSummary];
-  [(PKSharePreviewRowItem *)v26 setSubtitle:v33];
+  _localizedEntitlementSummary = [(PKSharePreviewOverviewSectionController *)self _localizedEntitlementSummary];
+  [(PKSharePreviewRowItem *)v26 setSubtitle:_localizedEntitlementSummary];
 LABEL_31:
 
   [(PKSharePreviewRowItem *)v26 setDisplayChevron:1];
@@ -219,41 +219,41 @@ LABEL_31:
   [(PKPaymentSetupListSectionController *)self setIdentifiers:v41];
 
   v42 = objc_loadWeakRetained(&self->_delegate);
-  [v42 reloadDataAnimated:v43];
+  [v42 reloadDataAnimated:animatedCopy];
 }
 
-- (id)decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)decorateListCell:(id)cell forRowItem:(id)item
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v9 = [v7 title];
-  [v8 setText:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  title = [itemCopy title];
+  [valueCellConfiguration setText:title];
 
-  v10 = [v7 titleColor];
-  if (v10)
+  titleColor = [itemCopy titleColor];
+  if (titleColor)
   {
-    v11 = [v8 textProperties];
-    [v11 setColor:v10];
+    textProperties = [valueCellConfiguration textProperties];
+    [textProperties setColor:titleColor];
   }
 
-  v12 = [v7 subtitle];
-  [v8 setSecondaryText:v12];
+  subtitle = [itemCopy subtitle];
+  [valueCellConfiguration setSecondaryText:subtitle];
 
-  v13 = [v8 secondaryTextProperties];
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v13 setColor:v14];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  [v8 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
-  v15 = [v7 icon];
-  [v8 setImage:v15];
+  [valueCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
+  icon = [itemCopy icon];
+  [valueCellConfiguration setImage:icon];
 
-  v16 = [v8 imageProperties];
-  v17 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v16 setTintColor:v17];
+  imageProperties = [valueCellConfiguration imageProperties];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [imageProperties setTintColor:systemBlueColor];
 
-  [v6 setContentConfiguration:v8];
+  [cellCopy setContentConfiguration:valueCellConfiguration];
   if (self->_mode == 2)
   {
     [MEMORY[0x1E69DC888] systemBackgroundColor];
@@ -270,18 +270,18 @@ LABEL_31:
   v28[3] = &unk_1E8012AC8;
   v19 = v18;
   v29 = v19;
-  [v6 setConfigurationUpdateHandler:v28];
-  if (![v7 displayChevron])
+  [cellCopy setConfigurationUpdateHandler:v28];
+  if (![itemCopy displayChevron])
   {
-    v21 = [v7 displayToggleState];
-    if (!v21)
+    displayToggleState = [itemCopy displayToggleState];
+    if (!displayToggleState)
     {
       goto LABEL_14;
     }
 
-    v22 = v21;
+    v22 = displayToggleState;
     v23 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-    v24 = [v7 identifier];
+    identifier = [itemCopy identifier];
     v25 = PKEqualObjects();
 
     if (v25)
@@ -290,7 +290,7 @@ LABEL_31:
     }
 
     [v23 setOn:v22 == 1];
-    [v23 setEnabled:{objc_msgSend(v7, "accessoryEnabled")}];
+    [v23 setEnabled:{objc_msgSend(itemCopy, "accessoryEnabled")}];
     v20 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v23 placement:1];
     [v20 setMaintainsFixedSize:1];
 
@@ -302,7 +302,7 @@ LABEL_31:
 LABEL_13:
     v30[0] = v20;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-    [v6 setAccessories:v26];
+    [cellCopy setAccessories:v26];
 
     goto LABEL_15;
   }
@@ -314,10 +314,10 @@ LABEL_13:
   }
 
 LABEL_14:
-  [v6 setAccessories:MEMORY[0x1E695E0F0]];
+  [cellCopy setAccessories:MEMORY[0x1E695E0F0]];
 LABEL_15:
 
-  return v8;
+  return valueCellConfiguration;
 }
 
 void __71__PKSharePreviewOverviewSectionController_decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -340,7 +340,7 @@ void __71__PKSharePreviewOverviewSectionController_decorateListCell_forRowItem__
   [v6 setBackgroundConfiguration:v7];
 }
 
-- (id)headerAttributedStringForIdentifier:(id)a3
+- (id)headerAttributedStringForIdentifier:(id)identifier
 {
   v15[2] = *MEMORY[0x1E69E9840];
   if (self->_mode == 1)
@@ -366,8 +366,8 @@ void __71__PKSharePreviewOverviewSectionController_decorateListCell_forRowItem__
     v10 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC58], 2, 0);
     v15[0] = v10;
     v14[1] = *MEMORY[0x1E69DB650];
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v15[1] = v11;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v15[1] = secondaryLabelColor;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
     v3 = [v8 initWithString:v9 attributes:v12];
   }
@@ -375,9 +375,9 @@ void __71__PKSharePreviewOverviewSectionController_decorateListCell_forRowItem__
   return v3;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   if (PKEqualObjects() && self->_recipientItems || PKEqualObjects() && self->_entitlementItems)
   {
@@ -387,9 +387,9 @@ void __71__PKSharePreviewOverviewSectionController_decorateListCell_forRowItem__
   return v6;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v9 = [a3 identifier];
+  identifier = [item identifier];
   if (PKEqualObjects())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -412,11 +412,11 @@ void __71__PKSharePreviewOverviewSectionController_decorateListCell_forRowItem__
   [v8 deselectCells];
 }
 
-- (void)_shareabilitySwitchValueChanged:(id)a3
+- (void)_shareabilitySwitchValueChanged:(id)changed
 {
-  v4 = [a3 isOn];
-  v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-  [v5 setShareability:v4];
+  isOn = [changed isOn];
+  globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+  [globalView setShareability:isOn];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sharePreviewSectionControllerDidUpdateEntitlements:self];

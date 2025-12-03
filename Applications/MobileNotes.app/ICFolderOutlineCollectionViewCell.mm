@@ -7,7 +7,7 @@
 - (BOOL)isSmartFolder;
 - (BOOL)shouldUseAccompaniedSidebarCellConfiguration;
 - (ICAccessibilityCustomActionsDelegate)accessibilityCustomActionsDelegate;
-- (ICFolderOutlineCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ICFolderOutlineCollectionViewCell)initWithFrame:(CGRect)frame;
 - (ICNAViewController)presentingViewController;
 - (id)accessibilityCustomActions;
 - (id)accessibilityDragSourceDescriptors;
@@ -15,28 +15,28 @@
 - (id)accessibilityValue;
 - (id)createActionMenu;
 - (unint64_t)accessibilityTraits;
-- (void)onUnsupportedFolderInfoPressed:(id)a3;
-- (void)setNoteCollection:(id)a3;
-- (void)setNoteContainer:(id)a3;
-- (void)setRecentlyCreated:(BOOL)a3;
-- (void)setVirtualSmartFolder:(id)a3;
+- (void)onUnsupportedFolderInfoPressed:(id)pressed;
+- (void)setNoteCollection:(id)collection;
+- (void)setNoteContainer:(id)container;
+- (void)setRecentlyCreated:(BOOL)created;
+- (void)setVirtualSmartFolder:(id)folder;
 - (void)updateAccessories;
-- (void)updateAccessoriesUsingState:(id)a3;
+- (void)updateAccessoriesUsingState:(id)state;
 - (void)updateActionMenu;
-- (void)updateBackgroundConfigurationUsingState:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
-- (void)updateContentConfigurationUsingState:(id)a3;
+- (void)updateBackgroundConfigurationUsingState:(id)state;
+- (void)updateConfigurationUsingState:(id)state;
+- (void)updateContentConfigurationUsingState:(id)state;
 - (void)updateNoteCount;
 - (void)updateSubfolderCount;
 @end
 
 @implementation ICFolderOutlineCollectionViewCell
 
-- (ICFolderOutlineCollectionViewCell)initWithFrame:(CGRect)a3
+- (ICFolderOutlineCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICFolderOutlineCollectionViewCell;
-  v3 = [(ICFolderOutlineCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICFolderOutlineCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,22 +48,22 @@
   return v4;
 }
 
-- (void)setRecentlyCreated:(BOOL)a3
+- (void)setRecentlyCreated:(BOOL)created
 {
-  v3 = a3;
-  self->_recentlyCreated = a3;
+  createdCopy = created;
+  self->_recentlyCreated = created;
   [(ICFolderOutlineCollectionViewCell *)self setNeedsUpdateConfiguration];
-  if (v3)
+  if (createdCopy)
   {
     dispatchMainAfterDelay();
   }
 }
 
-- (void)setNoteCollection:(id)a3
+- (void)setNoteCollection:(id)collection
 {
-  v7 = a3;
-  objc_storeStrong(&self->_noteCollection, a3);
-  if (v7)
+  collectionCopy = collection;
+  objc_storeStrong(&self->_noteCollection, collection);
+  if (collectionCopy)
   {
     noteContainer = self->_noteContainer;
     self->_noteContainer = 0;
@@ -72,17 +72,17 @@
     self->_virtualSmartFolder = 0;
   }
 
-  [(ICFolderOutlineCollectionViewCell *)self ic_annotateWithNoteCollection:v7];
+  [(ICFolderOutlineCollectionViewCell *)self ic_annotateWithNoteCollection:collectionCopy];
   [(ICFolderOutlineCollectionViewCell *)self updateTextAndStatus];
   [(ICFolderOutlineCollectionViewCell *)self updateSubfolderCount];
   [(ICFolderOutlineCollectionViewCell *)self updateNoteCount];
 }
 
-- (void)setNoteContainer:(id)a3
+- (void)setNoteContainer:(id)container
 {
-  v7 = a3;
-  objc_storeStrong(&self->_noteContainer, a3);
-  if (v7)
+  containerCopy = container;
+  objc_storeStrong(&self->_noteContainer, container);
+  if (containerCopy)
   {
     noteCollection = self->_noteCollection;
     self->_noteCollection = 0;
@@ -91,17 +91,17 @@
     self->_virtualSmartFolder = 0;
   }
 
-  [(ICFolderOutlineCollectionViewCell *)self ic_annotateWithNoteContainer:v7];
+  [(ICFolderOutlineCollectionViewCell *)self ic_annotateWithNoteContainer:containerCopy];
   [(ICFolderOutlineCollectionViewCell *)self updateTextAndStatus];
   [(ICFolderOutlineCollectionViewCell *)self updateSubfolderCount];
   [(ICFolderOutlineCollectionViewCell *)self updateNoteCount];
 }
 
-- (void)setVirtualSmartFolder:(id)a3
+- (void)setVirtualSmartFolder:(id)folder
 {
-  v7 = a3;
-  objc_storeStrong(&self->_virtualSmartFolder, a3);
-  if (v7)
+  folderCopy = folder;
+  objc_storeStrong(&self->_virtualSmartFolder, folder);
+  if (folderCopy)
   {
     noteCollection = self->_noteCollection;
     self->_noteCollection = 0;
@@ -117,49 +117,49 @@
 
 - (void)updateSubfolderCount
 {
-  v3 = [objc_opt_class() updateCountsQueue];
+  updateCountsQueue = [objc_opt_class() updateCountsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CF0C4;
   block[3] = &unk_100645E30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(updateCountsQueue, block);
 }
 
 - (void)updateNoteCount
 {
-  v3 = [objc_opt_class() updateCountsQueue];
+  updateCountsQueue = [objc_opt_class() updateCountsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CF654;
   block[3] = &unk_100645E30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(updateCountsQueue, block);
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  if (([v4 isReordering] & 1) == 0)
+  stateCopy = state;
+  if (([stateCopy isReordering] & 1) == 0)
   {
-    [(ICFolderOutlineCollectionViewCell *)self updateAccessoriesUsingState:v4];
+    [(ICFolderOutlineCollectionViewCell *)self updateAccessoriesUsingState:stateCopy];
     [(ICFolderOutlineCollectionViewCell *)self updateSubfolderCount];
   }
 
-  [(ICFolderOutlineCollectionViewCell *)self updateContentConfigurationUsingState:v4];
-  [(ICFolderOutlineCollectionViewCell *)self updateBackgroundConfigurationUsingState:v4];
+  [(ICFolderOutlineCollectionViewCell *)self updateContentConfigurationUsingState:stateCopy];
+  [(ICFolderOutlineCollectionViewCell *)self updateBackgroundConfigurationUsingState:stateCopy];
 }
 
 - (void)updateAccessories
 {
-  v3 = [(ICFolderOutlineCollectionViewCell *)self configurationState];
-  [(ICFolderOutlineCollectionViewCell *)self updateAccessoriesUsingState:v3];
+  configurationState = [(ICFolderOutlineCollectionViewCell *)self configurationState];
+  [(ICFolderOutlineCollectionViewCell *)self updateAccessoriesUsingState:configurationState];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICFolderOutlineCollectionViewCell *)self noteCollection];
-  if (v3)
+  noteCollection = [(ICFolderOutlineCollectionViewCell *)self noteCollection];
+  if (noteCollection)
   {
     [(ICFolderOutlineCollectionViewCell *)self noteCollection];
   }
@@ -169,25 +169,25 @@
     [(ICFolderOutlineCollectionViewCell *)self noteContainer];
   }
   v4 = ;
-  v5 = [v4 titleForTableViewCell];
+  titleForTableViewCell = [v4 titleForTableViewCell];
 
-  v6 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
-  v7 = [v6 title];
+  virtualSmartFolder = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
+  title = [virtualSmartFolder title];
 
-  v8 = [(ICFolderOutlineCollectionViewCell *)self isSmartFolder];
+  isSmartFolder = [(ICFolderOutlineCollectionViewCell *)self isSmartFolder];
   v9 = @"Smart Folder";
-  if (!v8)
+  if (!isSmartFolder)
   {
     v9 = 0;
   }
 
   v10 = v9;
-  v11 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-  v12 = 0;
-  if ([v11 isSharedViaICloud])
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  shareDescription = 0;
+  if ([noteContainer isSharedViaICloud])
   {
-    v13 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-    v12 = [v13 shareDescription];
+    noteContainer2 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+    shareDescription = [noteContainer2 shareDescription];
   }
 
   v14 = __ICAccessibilityStringForVariables();
@@ -201,15 +201,15 @@
   v4 = [v3 localizedStringForKey:@"Subfolder of %@" value:&stru_100661CF0 table:0];
 
   objc_opt_class();
-  v5 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
   v6 = ICDynamicCast();
 
-  v7 = [v6 parent];
-  v8 = [v7 title];
+  parent = [v6 parent];
+  title = [parent title];
 
-  if (v8)
+  if (title)
   {
-    v9 = [NSString localizedStringWithFormat:v4, v8];
+    v9 = [NSString localizedStringWithFormat:v4, title];
   }
 
   else
@@ -222,8 +222,8 @@
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"ICAX_NUM_NOTES_%lu" value:&stru_100661CF0 table:0];
 
-    v12 = [(ICFolderOutlineCollectionViewCell *)self noteCount];
-    v13 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v11, [v12 unsignedIntValue]);
+    noteCount = [(ICFolderOutlineCollectionViewCell *)self noteCount];
+    v13 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v11, [noteCount unsignedIntValue]);
   }
 
   else
@@ -231,16 +231,16 @@
     v13 = 0;
   }
 
-  v14 = [(ICFolderOutlineCollectionViewCell *)self subfoldersCount];
-  v15 = [v14 unsignedIntValue];
+  subfoldersCount = [(ICFolderOutlineCollectionViewCell *)self subfoldersCount];
+  unsignedIntValue = [subfoldersCount unsignedIntValue];
 
-  if (v15)
+  if (unsignedIntValue)
   {
     v16 = +[NSBundle mainBundle];
     v17 = [v16 localizedStringForKey:@"NUM_SUBFOLDERS_%lu" value:&stru_100661CF0 table:0];
 
-    v18 = [(ICFolderOutlineCollectionViewCell *)self subfoldersCount];
-    v19 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v17, [v18 unsignedIntValue]);
+    subfoldersCount2 = [(ICFolderOutlineCollectionViewCell *)self subfoldersCount];
+    v19 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v17, [subfoldersCount2 unsignedIntValue]);
   }
 
   else
@@ -257,15 +257,15 @@
 {
   v8.receiver = self;
   v8.super_class = ICFolderOutlineCollectionViewCell;
-  v3 = [(ICFolderOutlineCollectionViewCell *)&v8 accessibilityTraits];
-  v4 = [(ICFolderOutlineCollectionViewCell *)self isSelected];
+  accessibilityTraits = [(ICFolderOutlineCollectionViewCell *)&v8 accessibilityTraits];
+  isSelected = [(ICFolderOutlineCollectionViewCell *)self isSelected];
   v5 = UIAccessibilityTraitSelected;
-  if (!v4)
+  if (!isSelected)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | accessibilityTraits;
   if (![(ICFolderOutlineCollectionViewCell *)self allowsEditing]&& [(ICFolderOutlineCollectionViewCell *)self isEditing])
   {
     v6 |= UIAccessibilityTraitNotEnabled;
@@ -280,26 +280,26 @@
   {
     v5.receiver = self;
     v5.super_class = ICFolderOutlineCollectionViewCell;
-    v3 = [(ICFolderOutlineCollectionViewCell *)&v5 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(ICFolderOutlineCollectionViewCell *)&v5 accessibilityDragSourceDescriptors];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityDragSourceDescriptors = 0;
   }
 
-  return v3;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(ICFolderOutlineCollectionViewCell *)self accessibilityCustomActionsDelegate];
+  accessibilityCustomActionsDelegate = [(ICFolderOutlineCollectionViewCell *)self accessibilityCustomActionsDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-    if (v5)
+    noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+    if (noteContainer)
     {
       [(ICFolderOutlineCollectionViewCell *)self noteContainer];
     }
@@ -309,10 +309,10 @@
       [(ICFolderOutlineCollectionViewCell *)self noteCollection];
     }
     v7 = ;
-    v8 = [v7 objectID];
+    objectID = [v7 objectID];
 
-    v9 = [(ICFolderOutlineCollectionViewCell *)self accessibilityCustomActionsDelegate];
-    v6 = [v9 customAccessibilityActionsForObjectID:v8 galleryView:0];
+    accessibilityCustomActionsDelegate2 = [(ICFolderOutlineCollectionViewCell *)self accessibilityCustomActionsDelegate];
+    v6 = [accessibilityCustomActionsDelegate2 customAccessibilityActionsForObjectID:objectID galleryView:0];
   }
 
   else
@@ -359,9 +359,9 @@
   return v3;
 }
 
-- (void)updateAccessoriesUsingState:(id)a3
+- (void)updateAccessoriesUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[NSMutableArray array];
   if ([(ICFolderOutlineCollectionViewCell *)self showsCheckmark])
   {
@@ -377,11 +377,11 @@
 
   else
   {
-    v43 = [(ICFolderOutlineCollectionViewCell *)self noteCount];
-    if (v43)
+    noteCount = [(ICFolderOutlineCollectionViewCell *)self noteCount];
+    if (noteCount)
     {
-      v44 = [(ICFolderOutlineCollectionViewCell *)self noteCount];
-      v45 = [NSString localizedStringWithFormat:@"%@", v44];
+      noteCount2 = [(ICFolderOutlineCollectionViewCell *)self noteCount];
+      v45 = [NSString localizedStringWithFormat:@"%@", noteCount2];
     }
 
     else
@@ -398,13 +398,13 @@
 
   if ([(ICFolderOutlineCollectionViewCell *)self allowsExpandCollapse])
   {
-    v10 = [(ICFolderOutlineCollectionViewCell *)self subfoldersCount];
-    if ([v10 unsignedIntValue])
+    subfoldersCount = [(ICFolderOutlineCollectionViewCell *)self subfoldersCount];
+    if ([subfoldersCount unsignedIntValue])
     {
-      v11 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-      v12 = [v11 isUnsupported];
+      noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+      isUnsupported = [noteContainer isUnsupported];
 
-      if ((v12 & 1) == 0)
+      if ((isUnsupported & 1) == 0)
       {
         v13 = objc_alloc_init(UICellAccessoryOutlineDisclosure);
         [v13 setStyle:2];
@@ -425,10 +425,10 @@ LABEL_19:
 
   if ([(ICFolderOutlineCollectionViewCell *)self hasDisclosureIndicator])
   {
-    v15 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-    v16 = [v15 isUnsupported];
+    noteContainer2 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+    isUnsupported2 = [noteContainer2 isUnsupported];
 
-    if (v16)
+    if (isUnsupported2)
     {
       goto LABEL_20;
     }
@@ -454,19 +454,19 @@ LABEL_19:
   }
 
 LABEL_20:
-  v21 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-  if ([v21 isUnsupported])
+  noteContainer3 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  if ([noteContainer3 isUnsupported])
   {
-    v22 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderInfoButtonTapHandler];
+    unsupportedFolderInfoButtonTapHandler = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderInfoButtonTapHandler];
 
-    if (!v22)
+    if (!unsupportedFolderInfoButtonTapHandler)
     {
       goto LABEL_26;
     }
 
-    v23 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderButton];
+    unsupportedFolderButton = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderButton];
 
-    if (!v23)
+    if (!unsupportedFolderButton)
     {
       v24 = +[UIButtonConfiguration plainButtonConfiguration];
       v25 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -494,11 +494,11 @@ LABEL_20:
     }
 
     v32 = [UICellAccessoryCustomView alloc];
-    v33 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderButton];
-    v21 = [v32 initWithCustomView:v33 placement:1];
+    unsupportedFolderButton2 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderButton];
+    noteContainer3 = [v32 initWithCustomView:unsupportedFolderButton2 placement:1];
 
-    [v21 setDisplayedState:2];
-    [v5 addObject:v21];
+    [noteContainer3 setDisplayedState:2];
+    [v5 addObject:noteContainer3];
   }
 
 LABEL_26:
@@ -511,48 +511,48 @@ LABEL_26:
 
   if ([(ICFolderOutlineCollectionViewCell *)self allowsEditing])
   {
-    v35 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-    if ([v35 isUnsupported])
+    noteContainer4 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+    if ([noteContainer4 isUnsupported])
     {
 LABEL_41:
 
       goto LABEL_42;
     }
 
-    v36 = [(ICFolderOutlineCollectionViewCell *)self isEditing];
+    isEditing = [(ICFolderOutlineCollectionViewCell *)self isEditing];
 
-    if (v36)
+    if (isEditing)
     {
       v37 = [UIFont ic_preferredFontForBodyTextWithMaximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
-      v35 = [UIImageSymbolConfiguration configurationWithFont:v37];
+      noteContainer4 = [UIImageSymbolConfiguration configurationWithFont:v37];
 
-      v38 = [UIImage systemImageNamed:@"ellipsis.circle" withConfiguration:v35];
-      v39 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
+      v38 = [UIImage systemImageNamed:@"ellipsis.circle" withConfiguration:noteContainer4];
+      actionButton = [(ICFolderOutlineCollectionViewCell *)self actionButton];
 
-      if (v39)
+      if (actionButton)
       {
-        v40 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
-        v41 = [v40 configuration];
+        actionButton2 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
+        configuration = [actionButton2 configuration];
 
-        [v41 setImage:v38];
-        v42 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
-        [v42 setConfiguration:v41];
+        [configuration setImage:v38];
+        actionButton3 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
+        [actionButton3 setConfiguration:configuration];
       }
 
       else
       {
-        v41 = +[UIButtonConfiguration plainButtonConfiguration];
-        [v41 setImage:v38];
-        [v41 setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
+        configuration = +[UIButtonConfiguration plainButtonConfiguration];
+        [configuration setImage:v38];
+        [configuration setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
         v47 = +[NSBundle mainBundle];
         v48 = [v47 localizedStringForKey:@"Folder Actions" value:&stru_100661CF0 table:0];
-        [v41 setAccessibilityLabel:v48];
+        [configuration setAccessibilityLabel:v48];
 
-        v49 = [UIButton buttonWithConfiguration:v41 primaryAction:0];
+        v49 = [UIButton buttonWithConfiguration:configuration primaryAction:0];
         [(ICFolderOutlineCollectionViewCell *)self setActionButton:v49];
 
-        v42 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
-        [v42 setShowsMenuAsPrimaryAction:1];
+        actionButton3 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
+        [actionButton3 setShowsMenuAsPrimaryAction:1];
       }
 
       [(ICFolderOutlineCollectionViewCell *)self updateActionMenu];
@@ -570,8 +570,8 @@ LABEL_41:
       }
 
       v52 = [UICellAccessoryCustomView alloc];
-      v53 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
-      v54 = [v52 initWithCustomView:v53 placement:1];
+      actionButton4 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
+      v54 = [v52 initWithCustomView:actionButton4 placement:1];
 
       [v54 setDisplayedState:1];
       [v54 setMaintainsFixedSize:v51 ^ 1];
@@ -588,31 +588,31 @@ LABEL_42:
 
 - (id)createActionMenu
 {
-  v3 = [(ICFolderOutlineCollectionViewCell *)self ic_viewControllerManager];
-  v4 = [(ICFolderOutlineCollectionViewCell *)self presentingViewController];
+  ic_viewControllerManager = [(ICFolderOutlineCollectionViewCell *)self ic_viewControllerManager];
+  presentingViewController = [(ICFolderOutlineCollectionViewCell *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
-    v5 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+    noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
 
-    if (v5)
+    if (noteContainer)
     {
-      v6 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-      v7 = [(ICFolderOutlineCollectionViewCell *)self presentingViewController];
-      v8 = [(ICNoteContainerActionMenu *)ICFolderListActionMenu menuWithNoteContainer:v6 presentingViewController:v7 presentingBarButtonItem:0 viewControllerManager:v3 completion:0];
+      noteContainer2 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+      presentingViewController2 = [(ICFolderOutlineCollectionViewCell *)self presentingViewController];
+      v8 = [(ICNoteContainerActionMenu *)ICFolderListActionMenu menuWithNoteContainer:noteContainer2 presentingViewController:presentingViewController2 presentingBarButtonItem:0 viewControllerManager:ic_viewControllerManager completion:0];
 LABEL_6:
       v10 = v8;
 
       goto LABEL_8;
     }
 
-    v9 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
+    virtualSmartFolder = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
 
-    if (v9)
+    if (virtualSmartFolder)
     {
-      v6 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
-      v7 = [(ICFolderOutlineCollectionViewCell *)self presentingViewController];
-      v8 = [(ICNoteContainerActionMenu *)ICFolderListActionMenu menuWithVirtualSmartFolder:v6 presentingViewController:v7 presentingBarButtonItem:0 viewControllerManager:v3 completion:0];
+      noteContainer2 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
+      presentingViewController2 = [(ICFolderOutlineCollectionViewCell *)self presentingViewController];
+      v8 = [(ICNoteContainerActionMenu *)ICFolderListActionMenu menuWithVirtualSmartFolder:noteContainer2 presentingViewController:presentingViewController2 presentingBarButtonItem:0 viewControllerManager:ic_viewControllerManager completion:0];
       goto LABEL_6;
     }
   }
@@ -625,16 +625,16 @@ LABEL_8:
 
 - (void)updateActionMenu
 {
-  v4 = [(ICFolderOutlineCollectionViewCell *)self createActionMenu];
-  v3 = [(ICFolderOutlineCollectionViewCell *)self actionButton];
-  [v3 setMenu:v4];
+  createActionMenu = [(ICFolderOutlineCollectionViewCell *)self createActionMenu];
+  actionButton = [(ICFolderOutlineCollectionViewCell *)self actionButton];
+  [actionButton setMenu:createActionMenu];
 }
 
-- (void)onUnsupportedFolderInfoPressed:(id)a3
+- (void)onUnsupportedFolderInfoPressed:(id)pressed
 {
-  v9 = a3;
-  v4 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-  if (v4)
+  pressedCopy = pressed;
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  if (noteContainer)
   {
     [(ICFolderOutlineCollectionViewCell *)self noteContainer];
   }
@@ -644,21 +644,21 @@ LABEL_8:
     [(ICFolderOutlineCollectionViewCell *)self noteCollection];
   }
   v5 = ;
-  v6 = [v5 objectID];
+  objectID = [v5 objectID];
 
-  v7 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderInfoButtonTapHandler];
+  unsupportedFolderInfoButtonTapHandler = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderInfoButtonTapHandler];
 
-  if (v7)
+  if (unsupportedFolderInfoButtonTapHandler)
   {
-    v8 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderInfoButtonTapHandler];
-    (v8)[2](v8, v6, v9);
+    unsupportedFolderInfoButtonTapHandler2 = [(ICFolderOutlineCollectionViewCell *)self unsupportedFolderInfoButtonTapHandler];
+    (unsupportedFolderInfoButtonTapHandler2)[2](unsupportedFolderInfoButtonTapHandler2, objectID, pressedCopy);
   }
 }
 
 - (BOOL)allowsEditing
 {
   objc_opt_class();
-  v3 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
   v4 = ICDynamicCast();
 
   if (!v4)
@@ -667,10 +667,10 @@ LABEL_8:
   }
 
   LOBYTE(v5) = 0;
-  v6 = [v4 folderType];
-  if (v6 <= 1)
+  folderType = [v4 folderType];
+  if (folderType <= 1)
   {
-    if (!v6)
+    if (!folderType)
     {
       v5 = [v4 isDefaultFolderForAccount] ^ 1;
     }
@@ -678,18 +678,18 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (v6 == 2)
+  if (folderType == 2)
   {
     LOBYTE(v5) = 1;
     goto LABEL_8;
   }
 
-  if (v6 != 3)
+  if (folderType != 3)
   {
 LABEL_7:
-    v7 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
+    virtualSmartFolder = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
 
-    LOBYTE(v5) = v7 != 0;
+    LOBYTE(v5) = virtualSmartFolder != 0;
   }
 
 LABEL_8:
@@ -700,7 +700,7 @@ LABEL_8:
 - (BOOL)isSmartFolder
 {
   objc_opt_class();
-  v3 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
   v4 = ICDynamicCast();
 
   if (v4)
@@ -719,39 +719,39 @@ LABEL_8:
 - (BOOL)allowsReordering
 {
   objc_opt_class();
-  v3 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
   v4 = ICDynamicCast();
 
   if (v4 && [(ICFolderOutlineCollectionViewCell *)self allowsEditing])
   {
-    v5 = [v4 isMovable];
+    isMovable = [v4 isMovable];
   }
 
   else
   {
-    v5 = 0;
+    isMovable = 0;
   }
 
-  return v5;
+  return isMovable;
 }
 
 - (BOOL)shouldUseAccompaniedSidebarCellConfiguration
 {
-  v2 = [(ICFolderOutlineCollectionViewCell *)self traitCollection];
-  v3 = [v2 _splitViewControllerContext] == 2;
+  traitCollection = [(ICFolderOutlineCollectionViewCell *)self traitCollection];
+  v3 = [traitCollection _splitViewControllerContext] == 2;
 
   return v3;
 }
 
-- (void)updateContentConfigurationUsingState:(id)a3
+- (void)updateContentConfigurationUsingState:(id)state
 {
-  v52 = a3;
+  stateCopy = state;
   if ([(ICFolderOutlineCollectionViewCell *)self hasGroupInset])
   {
     v4 = +[UIListContentConfiguration subtitleCellConfiguration];
     v5 = +[UIColor secondaryLabelColor];
-    v6 = [v4 secondaryTextProperties];
-    [v6 setColor:v5];
+    secondaryTextProperties = [v4 secondaryTextProperties];
+    [secondaryTextProperties setColor:v5];
   }
 
   else
@@ -768,72 +768,72 @@ LABEL_8:
     v4 = ;
   }
 
-  if (+[UIDevice ic_isVision](UIDevice, "ic_isVision") && [v52 cellDropState] == 2)
+  if (+[UIDevice ic_isVision](UIDevice, "ic_isVision") && [stateCopy cellDropState] == 2)
   {
-    [v52 setCellDropState:1];
+    [stateCopy setCellDropState:1];
   }
 
-  if (-[ICFolderOutlineCollectionViewCell forceDisabledAppearance](self, "forceDisabledAppearance") || [v52 isEditing] && !-[ICFolderOutlineCollectionViewCell allowsEditing](self, "allowsEditing") || (-[ICFolderOutlineCollectionViewCell noteContainer](self, "noteContainer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isUnsupported"), v7, v8))
+  if (-[ICFolderOutlineCollectionViewCell forceDisabledAppearance](self, "forceDisabledAppearance") || [stateCopy isEditing] && !-[ICFolderOutlineCollectionViewCell allowsEditing](self, "allowsEditing") || (-[ICFolderOutlineCollectionViewCell noteContainer](self, "noteContainer"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isUnsupported"), v7, v8))
   {
-    [v52 setDisabled:1];
-    v9 = [(ICFolderOutlineCollectionViewCell *)self accessibilityTraits];
-    [(ICFolderOutlineCollectionViewCell *)self setAccessibilityTraits:UIAccessibilityTraitNotEnabled | v9];
+    [stateCopy setDisabled:1];
+    accessibilityTraits = [(ICFolderOutlineCollectionViewCell *)self accessibilityTraits];
+    [(ICFolderOutlineCollectionViewCell *)self setAccessibilityTraits:UIAccessibilityTraitNotEnabled | accessibilityTraits];
   }
 
   [v4 setTextToSecondaryTextHorizontalPadding:0.0];
   [v4 setTextToSecondaryTextVerticalPadding:0.0];
   v10 = ICAccessibilityAccessibilityLargerTextSizesEnabled() ^ 1;
-  v11 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-  v12 = [v11 titleForTableViewCell];
-  v13 = v12;
-  if (v12)
+  noteContainer = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  titleForTableViewCell = [noteContainer titleForTableViewCell];
+  v13 = titleForTableViewCell;
+  if (titleForTableViewCell)
   {
-    v14 = v12;
+    title = titleForTableViewCell;
   }
 
   else
   {
-    v15 = [(ICFolderOutlineCollectionViewCell *)self noteCollection];
-    v16 = [v15 titleForTableViewCell];
-    v17 = v16;
-    if (v16)
+    noteCollection = [(ICFolderOutlineCollectionViewCell *)self noteCollection];
+    titleForTableViewCell2 = [noteCollection titleForTableViewCell];
+    v17 = titleForTableViewCell2;
+    if (titleForTableViewCell2)
     {
-      v14 = v16;
+      title = titleForTableViewCell2;
     }
 
     else
     {
-      v18 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
-      v14 = [v18 title];
+      virtualSmartFolder = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
+      title = [virtualSmartFolder title];
     }
   }
 
-  [v4 setText:v14];
+  [v4 setText:title];
   v19 = [UIFont ic_preferredSingleLineAFontForTextStyle:UIFontTextStyleBody];
-  v20 = [v4 textProperties];
-  [v20 setFont:v19];
+  textProperties = [v4 textProperties];
+  [textProperties setFont:v19];
 
-  v21 = [v4 textProperties];
-  [v21 setNumberOfLines:v10];
+  textProperties2 = [v4 textProperties];
+  [textProperties2 setNumberOfLines:v10];
 
-  v22 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-  LODWORD(v20) = [v22 isSharedRootObject];
+  noteContainer2 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+  LODWORD(textProperties) = [noteContainer2 isSharedRootObject];
 
-  if (v20)
+  if (textProperties)
   {
-    v23 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
-    v24 = [v23 shareDescription];
+    noteContainer3 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+    shareDescription = [noteContainer3 shareDescription];
   }
 
   else
   {
-    v24 = 0;
+    shareDescription = 0;
   }
 
   if (![(ICFolderOutlineCollectionViewCell *)self showsNoteCount]|| !ICAccessibilityAccessibilityLargerTextSizesEnabled())
   {
 LABEL_28:
-    if (!v24)
+    if (!shareDescription)
     {
       goto LABEL_30;
     }
@@ -841,59 +841,59 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v25 = [(ICFolderOutlineCollectionViewCell *)self noteCount];
-  v26 = v25;
-  if (v24)
+  noteCount = [(ICFolderOutlineCollectionViewCell *)self noteCount];
+  v26 = noteCount;
+  if (shareDescription)
   {
-    v27 = [(__CFString *)v24 stringByAppendingFormat:@"\n%@", v25];
+    v27 = [(__CFString *)shareDescription stringByAppendingFormat:@"\n%@", noteCount];
 
-    v24 = v27;
+    shareDescription = v27;
     goto LABEL_28;
   }
 
-  v41 = [v25 stringValue];
-  v42 = v41;
+  stringValue = [noteCount stringValue];
+  v42 = stringValue;
   v43 = @" ";
-  if (v41)
+  if (stringValue)
   {
-    v43 = v41;
+    v43 = stringValue;
   }
 
-  v24 = v43;
+  shareDescription = v43;
 
 LABEL_29:
-  [v4 setSecondaryText:v24];
+  [v4 setSecondaryText:shareDescription];
   v28 = [UIFont ic_preferredSingleLineAFontForTextStyle:UIFontTextStyleCaption1];
-  v29 = [v4 secondaryTextProperties];
-  [v29 setFont:v28];
+  secondaryTextProperties2 = [v4 secondaryTextProperties];
+  [secondaryTextProperties2 setFont:v28];
 
-  v30 = [v4 secondaryTextProperties];
-  [v30 setNumberOfLines:v10];
+  secondaryTextProperties3 = [v4 secondaryTextProperties];
+  [secondaryTextProperties3 setNumberOfLines:v10];
 
-  v31 = [v4 secondaryTextProperties];
-  [v31 setAdjustsFontSizeToFitWidth:0];
+  secondaryTextProperties4 = [v4 secondaryTextProperties];
+  [secondaryTextProperties4 setAdjustsFontSizeToFitWidth:0];
 
 LABEL_30:
   if ((ICAccessibilityAccessibilityLargerTextSizesEnabled() & 1) == 0)
   {
-    v32 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
-    v33 = [v32 systemImageName];
-    v34 = v33;
-    if (v33)
+    virtualSmartFolder2 = [(ICFolderOutlineCollectionViewCell *)self virtualSmartFolder];
+    systemImageName = [virtualSmartFolder2 systemImageName];
+    v34 = systemImageName;
+    if (systemImageName)
     {
-      v35 = v33;
+      v35 = systemImageName;
     }
 
     else
     {
       objc_opt_class();
-      v36 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
+      noteContainer4 = [(ICFolderOutlineCollectionViewCell *)self noteContainer];
       v37 = ICDynamicCast();
-      v38 = [v37 systemImageName];
-      v39 = v38;
-      if (v38)
+      systemImageName2 = [v37 systemImageName];
+      v39 = systemImageName2;
+      if (systemImageName2)
       {
-        v40 = v38;
+        v40 = systemImageName2;
       }
 
       else
@@ -910,12 +910,12 @@ LABEL_30:
 
   if (+[UIDevice ic_isVision])
   {
-    v45 = [(ICFolderOutlineCollectionViewCell *)self traitCollection];
-    v46 = [v45 userInterfaceLevel];
+    traitCollection = [(ICFolderOutlineCollectionViewCell *)self traitCollection];
+    userInterfaceLevel = [traitCollection userInterfaceLevel];
 
-    if (v46 == 1)
+    if (userInterfaceLevel == 1)
     {
-      if ([v52 isDisabled])
+      if ([stateCopy isDisabled])
       {
         +[UIColor secondaryLabelColor];
       }
@@ -925,10 +925,10 @@ LABEL_30:
         +[UIColor labelColor];
       }
       v47 = ;
-      v48 = [v4 textProperties];
-      [v48 setColor:v47];
+      textProperties3 = [v4 textProperties];
+      [textProperties3 setColor:v47];
 
-      if ([v52 isDisabled])
+      if ([stateCopy isDisabled])
       {
         +[UIColor secondaryLabelColor];
       }
@@ -938,18 +938,18 @@ LABEL_30:
         +[UIColor labelColor];
       }
       v49 = ;
-      v50 = [v4 imageProperties];
-      [v50 setTintColor:v49];
+      imageProperties = [v4 imageProperties];
+      [imageProperties setTintColor:v49];
     }
   }
 
-  v51 = [v4 updatedConfigurationForState:v52];
+  v51 = [v4 updatedConfigurationForState:stateCopy];
   [(ICFolderOutlineCollectionViewCell *)self setContentConfiguration:v51];
 }
 
-- (void)updateBackgroundConfigurationUsingState:(id)a3
+- (void)updateBackgroundConfigurationUsingState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   if ([(ICFolderOutlineCollectionViewCell *)self hasGroupInset])
   {
     v4 = +[UIBackgroundConfiguration _listInsetGroupedCellConfiguration];
@@ -970,18 +970,18 @@ LABEL_30:
   }
 
   v5 = v4;
-  if (-[ICFolderOutlineCollectionViewCell isRecentlyCreated](self, "isRecentlyCreated") && ([v9 isSelected] & 1) == 0)
+  if (-[ICFolderOutlineCollectionViewCell isRecentlyCreated](self, "isRecentlyCreated") && ([stateCopy isSelected] & 1) == 0)
   {
-    [v9 setSwiped:1];
+    [stateCopy setSwiped:1];
     v6 = +[UIBackgroundConfiguration listSidebarCellConfiguration];
-    v7 = [v6 updatedConfigurationForState:v9];
-    v8 = [v7 backgroundColor];
-    [v5 setBackgroundColor:v8];
+    v7 = [v6 updatedConfigurationForState:stateCopy];
+    backgroundColor = [v7 backgroundColor];
+    [v5 setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    [v5 updatedConfigurationForState:v9];
+    [v5 updatedConfigurationForState:stateCopy];
     v5 = v6 = v5;
   }
 

@@ -1,53 +1,53 @@
 @interface CSRemoteRequestClient
-- (BOOL)remoteDisplayIdentifierIsLocal:(id)a3;
-- (CSRemoteRequestClient)initWithRemoteDisplayIdentifier:(id)a3 participantInfo:(id)a4 disconnectHandler:(id)a5 connectionCompletionHandler:(id)a6;
-- (void)_activateAudioLatencyEstimatorIfNeeded:(id)a3;
-- (void)_activateMessageClientIfNeeded:(id)a3;
-- (void)_handleHandshakeResponse:(id)a3 error:(id)a4;
-- (void)_handleReactionEvent:(id)a3;
+- (BOOL)remoteDisplayIdentifierIsLocal:(id)local;
+- (CSRemoteRequestClient)initWithRemoteDisplayIdentifier:(id)identifier participantInfo:(id)info disconnectHandler:(id)handler connectionCompletionHandler:(id)completionHandler;
+- (void)_activateAudioLatencyEstimatorIfNeeded:(id)needed;
+- (void)_activateMessageClientIfNeeded:(id)needed;
+- (void)_handleHandshakeResponse:(id)response error:(id)error;
+- (void)_handleReactionEvent:(id)event;
 - (void)_registerCheckinTimer;
 - (void)_registerForReactions;
-- (void)_resolvePendingActivationCompletionsWithError:(id)a3;
+- (void)_resolvePendingActivationCompletionsWithError:(id)error;
 - (void)_sendCheckinRequest;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)cancelAudioLatencyEstimator;
 - (void)dealloc;
-- (void)decreaseMicrophoneVolume:(id)a3;
-- (void)increaseMicrophoneVolume:(id)a3;
-- (void)retrieveAttributionsForQueueIdentifiers:(id)a3 handler:(id)a4;
-- (void)retrieveAvatarForParticipant:(id)a3 handler:(id)a4;
-- (void)retrieveMicrophoneVolume:(id)a3;
-- (void)retrieveReverb:(id)a3;
-- (void)retrieveSessionState:(id)a3;
-- (void)sendDisconnectMessageWithCompletion:(id)a3;
-- (void)sendEnableMicRequest:(id)a3;
-- (void)sendEventMessage:(id)a3 completion:(id)a4;
-- (void)sendReaction:(id)a3;
-- (void)sendRequestMessage:(id)a3 completion:(id)a4;
-- (void)sendReverb:(int64_t)a3;
+- (void)decreaseMicrophoneVolume:(id)volume;
+- (void)increaseMicrophoneVolume:(id)volume;
+- (void)retrieveAttributionsForQueueIdentifiers:(id)identifiers handler:(id)handler;
+- (void)retrieveAvatarForParticipant:(id)participant handler:(id)handler;
+- (void)retrieveMicrophoneVolume:(id)volume;
+- (void)retrieveReverb:(id)reverb;
+- (void)retrieveSessionState:(id)state;
+- (void)sendDisconnectMessageWithCompletion:(id)completion;
+- (void)sendEnableMicRequest:(id)request;
+- (void)sendEventMessage:(id)message completion:(id)completion;
+- (void)sendReaction:(id)reaction;
+- (void)sendRequestMessage:(id)message completion:(id)completion;
+- (void)sendReverb:(int64_t)reverb;
 - (void)sendStartSingingEvent;
-- (void)sendVocalLevel:(double)a3;
-- (void)startAudioLatencyEstimator:(id)a3;
+- (void)sendVocalLevel:(double)level;
+- (void)startAudioLatencyEstimator:(id)estimator;
 @end
 
 @implementation CSRemoteRequestClient
 
-- (CSRemoteRequestClient)initWithRemoteDisplayIdentifier:(id)a3 participantInfo:(id)a4 disconnectHandler:(id)a5 connectionCompletionHandler:(id)a6
+- (CSRemoteRequestClient)initWithRemoteDisplayIdentifier:(id)identifier participantInfo:(id)info disconnectHandler:(id)handler connectionCompletionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  infoCopy = info;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v43.receiver = self;
   v43.super_class = CSRemoteRequestClient;
   v15 = [(CSRemoteRequestClient *)&v43 init];
   if (v15)
   {
-    v16 = _Block_copy(v13);
+    v16 = _Block_copy(handlerCopy);
     disconnectHandler = v15->_disconnectHandler;
     v15->_disconnectHandler = v16;
 
-    v18 = _Block_copy(v14);
+    v18 = _Block_copy(completionHandlerCopy);
     connectionCompletionHandler = v15->_connectionCompletionHandler;
     v15->_connectionCompletionHandler = v18;
 
@@ -63,7 +63,7 @@
 
     [(RPCompanionLinkClient *)v15->_companionLink setDispatchQueue:v15->_companionLinkQueue];
     [(RPCompanionLinkClient *)v15->_companionLink setControlFlags:[(RPCompanionLinkClient *)v15->_companionLink controlFlags]| 0x18000000380CLL];
-    objc_storeStrong(&v15->_remoteDisplayIdentifier, a3);
+    objc_storeStrong(&v15->_remoteDisplayIdentifier, identifier);
     objc_initWeak(&location, v15);
     v25 = v15->_companionLink;
     v26 = CSIdentifierForMessageID(15);
@@ -96,7 +96,7 @@
     v33[2] = __119__CSRemoteRequestClient_initWithRemoteDisplayIdentifier_participantInfo_disconnectHandler_connectionCompletionHandler___block_invoke_14;
     v33[3] = &unk_278E0AF38;
     objc_copyWeak(&v35, &location);
-    v34 = v12;
+    v34 = infoCopy;
     [(RPCompanionLinkClient *)v15->_companionLink setLocalDeviceUpdatedHandler:v33];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
@@ -302,23 +302,23 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   companionLinkQueue = self->_companionLinkQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CSRemoteRequestClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_278E0AF88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(companionLinkQueue, v7);
 }
 
-- (void)_activateMessageClientIfNeeded:(id)a3
+- (void)_activateMessageClientIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_companionLinkQueue);
   if (self->_activeDeviceActivationState == 2)
   {
@@ -330,7 +330,7 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
       _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_INFO, "%s: Message client previously activated", buf, 0xCu);
     }
 
-    v4[2](v4, 0);
+    neededCopy[2](neededCopy, 0);
   }
 
   else
@@ -342,10 +342,10 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
       self->_pendingCompletionBlocks = v6;
     }
 
-    if (v4)
+    if (neededCopy)
     {
       v8 = self->_pendingCompletionBlocks;
-      v9 = _Block_copy(v4);
+      v9 = _Block_copy(neededCopy);
       [(NSMutableArray *)v8 addObject:v9];
     }
 
@@ -376,14 +376,14 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         remoteDisplayIdentifier = self->_remoteDisplayIdentifier;
-        v23 = [(CSRemoteRequestClient *)self companionLink];
-        v24 = [v23 activeDevices];
+        companionLink = [(CSRemoteRequestClient *)self companionLink];
+        activeDevices = [companionLink activeDevices];
         *buf = 136315650;
         v41 = "[CSRemoteRequestClient _activateMessageClientIfNeeded:]";
         v42 = 2112;
         v43 = remoteDisplayIdentifier;
         v44 = 2112;
-        v45 = v24;
+        v45 = activeDevices;
         _os_log_impl(&dword_2441FB000, v21, OS_LOG_TYPE_INFO, "%s: Activating message client to %@ with %@", buf, 0x20u);
       }
 
@@ -391,10 +391,10 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v25 = [(CSRemoteRequestClient *)self companionLink];
-      v26 = [v25 activeDevices];
+      companionLink2 = [(CSRemoteRequestClient *)self companionLink];
+      activeDevices2 = [companionLink2 activeDevices];
 
-      v27 = [v26 countByEnumeratingWithState:&v36 objects:v35 count:16];
+      v27 = [activeDevices2 countByEnumeratingWithState:&v36 objects:v35 count:16];
       if (v27)
       {
         v28 = *v37;
@@ -404,7 +404,7 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
           {
             if (*v37 != v28)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(activeDevices2);
             }
 
             v30 = *(*(&v36 + 1) + 8 * i);
@@ -415,7 +415,7 @@ void __32__CSRemoteRequestClient_dealloc__block_invoke(uint64_t a1)
             }
           }
 
-          v27 = [v26 countByEnumeratingWithState:&v36 objects:v35 count:16];
+          v27 = [activeDevices2 countByEnumeratingWithState:&v36 objects:v35 count:16];
           if (v27)
           {
             continue;
@@ -575,9 +575,9 @@ void __56__CSRemoteRequestClient__activateMessageClientIfNeeded___block_invoke_3
   }
 }
 
-- (void)_resolvePendingActivationCompletionsWithError:(id)a3
+- (void)_resolvePendingActivationCompletionsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_companionLinkQueue);
   v14 = 0u;
   v15 = 0u;
@@ -613,33 +613,33 @@ void __56__CSRemoteRequestClient__activateMessageClientIfNeeded___block_invoke_3
   self->_pendingCompletionBlocks = 0;
 }
 
-- (BOOL)remoteDisplayIdentifierIsLocal:(id)a3
+- (BOOL)remoteDisplayIdentifierIsLocal:(id)local
 {
-  if (!a3)
+  if (!local)
   {
     return 0;
   }
 
   companionLink = self->_companionLink;
-  v4 = a3;
-  v5 = [(RPCompanionLinkClient *)companionLink localDevice];
-  v6 = [v5 compareWithDeviceIdentifier:v4];
+  localCopy = local;
+  localDevice = [(RPCompanionLinkClient *)companionLink localDevice];
+  v6 = [localDevice compareWithDeviceIdentifier:localCopy];
 
   return v6;
 }
 
-- (void)sendRequestMessage:(id)a3 completion:(id)a4
+- (void)sendRequestMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__CSRemoteRequestClient_sendRequestMessage_completion___block_invoke;
   v10[3] = &unk_278E0B020;
-  v8 = v6;
+  v8 = messageCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   objc_copyWeak(&v13, &location);
   [(CSRemoteRequestClient *)self activateWithCompletion:v10];
@@ -725,19 +725,19 @@ void __55__CSRemoteRequestClient_sendRequestMessage_completion___block_invoke_29
   }
 }
 
-- (void)sendEventMessage:(id)a3 completion:(id)a4
+- (void)sendEventMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__CSRemoteRequestClient_sendEventMessage_completion___block_invoke;
   v10[3] = &unk_278E0B070;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = messageCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(CSRemoteRequestClient *)self activateWithCompletion:v10];
 
@@ -785,9 +785,9 @@ void __53__CSRemoteRequestClient_sendEventMessage_completion___block_invoke(id *
   }
 }
 
-- (void)retrieveMicrophoneVolume:(id)a3
+- (void)retrieveMicrophoneVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = objc_alloc_init(CSMessageVolumeRequest);
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -795,7 +795,7 @@ void __53__CSRemoteRequestClient_sendEventMessage_completion___block_invoke(id *
   v8[2] = __50__CSRemoteRequestClient_retrieveMicrophoneVolume___block_invoke;
   v8[3] = &unk_278E0B098;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = volumeCopy;
   v10 = v6;
   v7 = v5;
   v9 = v7;
@@ -856,9 +856,9 @@ void __50__CSRemoteRequestClient_retrieveMicrophoneVolume___block_invoke(uint64_
   objc_destroyWeak(&to);
 }
 
-- (void)increaseMicrophoneVolume:(id)a3
+- (void)increaseMicrophoneVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = objc_alloc_init(CSMessageVolumeIncreaseRequest);
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -866,7 +866,7 @@ void __50__CSRemoteRequestClient_retrieveMicrophoneVolume___block_invoke(uint64_
   v8[2] = __50__CSRemoteRequestClient_increaseMicrophoneVolume___block_invoke;
   v8[3] = &unk_278E0B098;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = volumeCopy;
   v10 = v6;
   v7 = v5;
   v9 = v7;
@@ -927,9 +927,9 @@ void __50__CSRemoteRequestClient_increaseMicrophoneVolume___block_invoke(uint64_
   objc_destroyWeak(&to);
 }
 
-- (void)decreaseMicrophoneVolume:(id)a3
+- (void)decreaseMicrophoneVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = objc_alloc_init(CSMessageVolumeDecreaseRequest);
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -937,7 +937,7 @@ void __50__CSRemoteRequestClient_increaseMicrophoneVolume___block_invoke(uint64_
   v8[2] = __50__CSRemoteRequestClient_decreaseMicrophoneVolume___block_invoke;
   v8[3] = &unk_278E0B098;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = volumeCopy;
   v10 = v6;
   v7 = v5;
   v9 = v7;
@@ -998,9 +998,9 @@ void __50__CSRemoteRequestClient_decreaseMicrophoneVolume___block_invoke(uint64_
   objc_destroyWeak(&to);
 }
 
-- (void)retrieveReverb:(id)a3
+- (void)retrieveReverb:(id)reverb
 {
-  v4 = a3;
+  reverbCopy = reverb;
   v5 = objc_alloc_init(CSReverbRequest);
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -1008,7 +1008,7 @@ void __50__CSRemoteRequestClient_decreaseMicrophoneVolume___block_invoke(uint64_
   v8[2] = __40__CSRemoteRequestClient_retrieveReverb___block_invoke;
   v8[3] = &unk_278E0B0C0;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = reverbCopy;
   v10 = v6;
   v7 = v5;
   v9 = v7;
@@ -1069,12 +1069,12 @@ void __40__CSRemoteRequestClient_retrieveReverb___block_invoke(uint64_t a1, void
   objc_destroyWeak(&to);
 }
 
-- (void)sendReverb:(int64_t)a3
+- (void)sendReverb:(int64_t)reverb
 {
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromCSReverbLevel(a3);
+    v6 = NSStringFromCSReverbLevel(reverb);
     *buf = 136315394;
     v11 = "[CSRemoteRequestClient sendReverb:]";
     v12 = 2112;
@@ -1082,7 +1082,7 @@ void __40__CSRemoteRequestClient_retrieveReverb___block_invoke(uint64_t a1, void
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: Got Reverb %@", buf, 0x16u);
   }
 
-  v7 = [[CSReverbMessage alloc] initWithReverbLevel:a3];
+  v7 = [[CSReverbMessage alloc] initWithReverbLevel:reverb];
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1097,7 +1097,7 @@ void __40__CSRemoteRequestClient_retrieveReverb___block_invoke(uint64_t a1, void
   v9[1] = 3221225472;
   v9[2] = __36__CSRemoteRequestClient_sendReverb___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
+  v9[4] = reverb;
   [(CSRemoteRequestClient *)self sendEventMessage:v7 completion:v9];
 }
 
@@ -1125,14 +1125,14 @@ void __36__CSRemoteRequestClient_sendReverb___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)sendVocalLevel:(double)a3
+- (void)sendVocalLevel:(double)level
 {
-  v5 = [[CSVocalMessage alloc] initWithVocalLevel:a3];
+  v5 = [[CSVocalMessage alloc] initWithVocalLevel:level];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__CSRemoteRequestClient_sendVocalLevel___block_invoke;
   v6[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  *&v6[4] = a3;
+  *&v6[4] = level;
   [(CSRemoteRequestClient *)self sendEventMessage:v5 completion:v6];
 }
 
@@ -1160,20 +1160,20 @@ void __40__CSRemoteRequestClient_sendVocalLevel___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)sendReaction:(id)a3
+- (void)sendReaction:(id)reaction
 {
-  v4 = a3;
+  reactionCopy = reaction;
   v5 = [CSReactionMessage alloc];
-  v6 = [(RPCompanionLinkClient *)self->_companionLink localDevice];
-  v7 = [v6 idsDeviceIdentifier];
-  v8 = [(CSReactionMessage *)v5 initWithReaction:v4 senderIDSIdentifier:v7];
+  localDevice = [(RPCompanionLinkClient *)self->_companionLink localDevice];
+  idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
+  v8 = [(CSReactionMessage *)v5 initWithReaction:reactionCopy senderIDSIdentifier:idsDeviceIdentifier];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __38__CSRemoteRequestClient_sendReaction___block_invoke;
   v10[3] = &unk_278E0ADC8;
-  v11 = v4;
-  v9 = v4;
+  v11 = reactionCopy;
+  v9 = reactionCopy;
   [(CSRemoteRequestClient *)self sendEventMessage:v8 completion:v10];
 }
 
@@ -1224,11 +1224,11 @@ void __46__CSRemoteRequestClient__registerForReactions__block_invoke(uint64_t a1
   [WeakRetained _handleReactionEvent:v3];
 }
 
-- (void)_handleReactionEvent:(id)a3
+- (void)_handleReactionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_companionLinkQueue);
-  v5 = [[CSReactionMessage alloc] initWithMessage:v4];
+  v5 = [[CSReactionMessage alloc] initWithMessage:eventCopy];
   v6 = ContinuitySingLog();
   p_super = v6;
   if (v5)
@@ -1242,10 +1242,10 @@ void __46__CSRemoteRequestClient__registerForReactions__block_invoke(uint64_t a1
       _os_log_impl(&dword_2441FB000, p_super, OS_LOG_TYPE_DEFAULT, "%s: Received reaction event %@", buf, 0x16u);
     }
 
-    v8 = [(CSReactionMessage *)v5 senderIDSIdentifier];
-    v9 = [(RPCompanionLinkClient *)self->_companionLink localDevice];
-    v10 = [v9 idsDeviceIdentifier];
-    v11 = [v8 isEqualToString:v10];
+    senderIDSIdentifier = [(CSReactionMessage *)v5 senderIDSIdentifier];
+    localDevice = [(RPCompanionLinkClient *)self->_companionLink localDevice];
+    idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
+    v11 = [senderIDSIdentifier isEqualToString:idsDeviceIdentifier];
 
     if (v11)
     {
@@ -1265,7 +1265,7 @@ void __46__CSRemoteRequestClient__registerForReactions__block_invoke(uint64_t a1
       v12[2] = __46__CSRemoteRequestClient__handleReactionEvent___block_invoke;
       v12[3] = &unk_278E0AD78;
       v13 = v5;
-      v14 = self;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v12);
       p_super = &v13->super.super;
     }
@@ -1339,7 +1339,7 @@ void __46__CSRemoteRequestClient__registerCheckinTimer__block_invoke_2(uint64_t 
   v5[2] = __44__CSRemoteRequestClient__sendCheckinRequest__block_invoke;
   v5[3] = &unk_278E0B150;
   v6 = v3;
-  v7 = self;
+  selfCopy = self;
   v4 = v3;
   [(CSRemoteRequestClient *)self sendRequestMessage:v4 completion:v5];
 }
@@ -1398,17 +1398,17 @@ void __44__CSRemoteRequestClient__sendCheckinRequest__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)sendEnableMicRequest:(id)a3
+- (void)sendEnableMicRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(CSEnableMicRequest);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__CSRemoteRequestClient_sendEnableMicRequest___block_invoke;
   v8[3] = &unk_278E0B178;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = requestCopy;
+  v6 = requestCopy;
   v7 = v5;
   [(CSRemoteRequestClient *)self sendRequestMessage:v7 completion:v8];
 }
@@ -1447,17 +1447,17 @@ void __46__CSRemoteRequestClient_sendEnableMicRequest___block_invoke(uint64_t a1
   }
 }
 
-- (void)retrieveSessionState:(id)a3
+- (void)retrieveSessionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(CSSessionStateUpdateRequest);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__CSRemoteRequestClient_retrieveSessionState___block_invoke;
   v8[3] = &unk_278E0B1A0;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = stateCopy;
+  v6 = stateCopy;
   v7 = v5;
   [(CSRemoteRequestClient *)self sendRequestMessage:v7 completion:v8];
 }
@@ -1528,31 +1528,31 @@ void __83__CSRemoteRequestClient_sendQueuedSongsNotificationWithTracks_shouldQue
   }
 }
 
-- (void)startAudioLatencyEstimator:(id)a3
+- (void)startAudioLatencyEstimator:(id)estimator
 {
-  v4 = a3;
+  estimatorCopy = estimator;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__CSRemoteRequestClient_startAudioLatencyEstimator___block_invoke;
   v6[3] = &unk_278E0B1E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = estimatorCopy;
+  v5 = estimatorCopy;
   [(CSRemoteRequestClient *)self _activateAudioLatencyEstimatorIfNeeded:v6];
 }
 
 - (void)cancelAudioLatencyEstimator
 {
-  v2 = [(CSRemoteRequestClient *)self audioLatencyEstimatorClient];
-  [v2 cancel];
+  audioLatencyEstimatorClient = [(CSRemoteRequestClient *)self audioLatencyEstimatorClient];
+  [audioLatencyEstimatorClient cancel];
 }
 
-- (void)_activateAudioLatencyEstimatorIfNeeded:(id)a3
+- (void)_activateAudioLatencyEstimatorIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(CSRemoteRequestClient *)self audioLatencyEstimatorClient];
-  if (v5)
+  neededCopy = needed;
+  audioLatencyEstimatorClient = [(CSRemoteRequestClient *)self audioLatencyEstimatorClient];
+  if (audioLatencyEstimatorClient)
   {
-    v4[2](v4, v5);
+    neededCopy[2](neededCopy, audioLatencyEstimatorClient);
   }
 
   else
@@ -1562,7 +1562,7 @@ void __83__CSRemoteRequestClient_sendQueuedSongsNotificationWithTracks_shouldQue
     v6[1] = 3221225472;
     v6[2] = __64__CSRemoteRequestClient__activateAudioLatencyEstimatorIfNeeded___block_invoke;
     v6[3] = &unk_278E0B210;
-    v7 = v4;
+    v7 = neededCopy;
     objc_copyWeak(&v8, &location);
     [(CSRemoteRequestClient *)self activateWithCompletion:v6];
     objc_destroyWeak(&v8);
@@ -1654,17 +1654,17 @@ void __41__CSRemoteRequestClient_sendDisplayMode___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)sendDisconnectMessageWithCompletion:(id)a3
+- (void)sendDisconnectMessageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   companionLinkQueue = self->_companionLinkQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__CSRemoteRequestClient_sendDisconnectMessageWithCompletion___block_invoke;
   v7[3] = &unk_278E0AF88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(companionLinkQueue, v7);
 }
 
@@ -1681,10 +1681,10 @@ void __61__CSRemoteRequestClient_sendDisconnectMessageWithCompletion___block_inv
   }
 }
 
-- (void)_handleHandshakeResponse:(id)a3 error:(id)a4
+- (void)_handleHandshakeResponse:(id)response error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v9 = _Block_copy(self->_connectionCompletionHandler);
   connectionCompletionHandler = self->_connectionCompletionHandler;
   self->_connectionCompletionHandler = 0;
@@ -1693,21 +1693,21 @@ void __61__CSRemoteRequestClient_sendDisconnectMessageWithCompletion___block_inv
   {
     v11 = ContinuitySingLog();
     v12 = v11;
-    if (v8)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         [CSRemoteRequestClient _handleHandshakeResponse:error:];
       }
 
-      v13 = [v8 domain];
-      if ([v13 isEqualToString:0x2857980B0])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:0x2857980B0])
       {
-        v14 = [v8 code];
+        code = [errorCopy code];
 
-        if (v14 == 3)
+        if (code == 3)
         {
-          v15 = [MEMORY[0x277CCAB98] defaultCenter];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
           v41 = @"CSRemoteRequestClientErrorCode";
           v42 = &unk_2857A1738;
           v16 = MEMORY[0x277CBEAC0];
@@ -1715,9 +1715,9 @@ void __61__CSRemoteRequestClient_sendDisconnectMessageWithCompletion___block_inv
           v18 = &v41;
 LABEL_24:
           v31 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
-          [v15 postNotificationName:@"CSRemoteRequestClientErrorNotification" object:self userInfo:v31];
+          [defaultCenter postNotificationName:@"CSRemoteRequestClientErrorNotification" object:self userInfo:v31];
 
-          v9[2](v9, v8);
+          v9[2](v9, errorCopy);
           goto LABEL_25;
         }
       }
@@ -1726,14 +1726,14 @@ LABEL_24:
       {
       }
 
-      v29 = [v8 domain];
-      if ([v29 isEqualToString:0x2857980B0])
+      domain2 = [errorCopy domain];
+      if ([domain2 isEqualToString:0x2857980B0])
       {
-        v30 = [v8 code];
+        code2 = [errorCopy code];
 
-        if (v30 == 4)
+        if (code2 == 4)
         {
-          v15 = [MEMORY[0x277CCAB98] defaultCenter];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
           v39 = @"CSRemoteRequestClientErrorCode";
           v40 = &unk_2857A1750;
           v16 = MEMORY[0x277CBEAC0];
@@ -1747,7 +1747,7 @@ LABEL_24:
       {
       }
 
-      v15 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v37 = @"CSRemoteRequestClientErrorCode";
       v38 = &unk_2857A1768;
       v16 = MEMORY[0x277CBEAC0];
@@ -1761,14 +1761,14 @@ LABEL_24:
       *buf = 136315394;
       v34 = "[CSRemoteRequestClient _handleHandshakeResponse:error:]";
       v35 = 2112;
-      v36 = v7;
+      v36 = responseCopy;
       _os_log_impl(&dword_2441FB000, v12, OS_LOG_TYPE_DEFAULT, "%s: Server handshake successful: %@", buf, 0x16u);
     }
 
     v9[2](v9, 0);
-    objc_storeStrong(&self->_serverHandshake, a3);
+    objc_storeStrong(&self->_serverHandshake, response);
     [(CSRemoteRequestClient *)self _registerForReactions];
-    if ([v7 shouldActivateMicrophone])
+    if ([responseCopy shouldActivateMicrophone])
     {
       v27 = ContinuitySingLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1802,19 +1802,19 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)retrieveAttributionsForQueueIdentifiers:(id)a3 handler:(id)a4
+- (void)retrieveAttributionsForQueueIdentifiers:(id)identifiers handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CSAttributionRequestMessage alloc] initWithQueueIdentifiers:v7];
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  v8 = [[CSAttributionRequestMessage alloc] initWithQueueIdentifiers:identifiersCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__CSRemoteRequestClient_retrieveAttributionsForQueueIdentifiers_handler___block_invoke;
   v11[3] = &unk_278E0B238;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v8;
   [(CSRemoteRequestClient *)self sendRequestMessage:v10 completion:v11];
 }
@@ -1842,21 +1842,21 @@ void __73__CSRemoteRequestClient_retrieveAttributionsForQueueIdentifiers_handler
   }
 }
 
-- (void)retrieveAvatarForParticipant:(id)a3 handler:(id)a4
+- (void)retrieveAvatarForParticipant:(id)participant handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  participantCopy = participant;
   v8 = [CSAvatarRequestMessage alloc];
-  v9 = [v7 socialProfileIdentifier];
+  socialProfileIdentifier = [participantCopy socialProfileIdentifier];
 
-  v10 = [(CSAvatarRequestMessage *)v8 initWithSocialProfileIdentifier:v9];
+  v10 = [(CSAvatarRequestMessage *)v8 initWithSocialProfileIdentifier:socialProfileIdentifier];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__CSRemoteRequestClient_retrieveAvatarForParticipant_handler___block_invoke;
   v13[3] = &unk_278E0B260;
   v14 = v10;
-  v15 = v6;
-  v11 = v6;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
   v12 = v10;
   [(CSRemoteRequestClient *)self sendRequestMessage:v12 completion:v13];
 }

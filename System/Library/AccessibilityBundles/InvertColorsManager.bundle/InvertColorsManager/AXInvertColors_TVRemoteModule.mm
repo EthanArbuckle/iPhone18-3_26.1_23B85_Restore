@@ -1,15 +1,15 @@
 @interface AXInvertColors_TVRemoteModule
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_TVRemoteModule
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TVRMContentViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTMaterialView" hasInstanceMethod:@"_materialLayer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TVRMContentViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTMaterialView" hasInstanceMethod:@"_materialLayer" withFullSignature:{"@", 0}];
 }
 
 @end

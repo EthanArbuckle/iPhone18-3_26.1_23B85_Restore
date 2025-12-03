@@ -1,22 +1,22 @@
 @interface CTUIListWithHeaderLoadingGroup
-- (CTUIListWithHeaderLoadingGroup)initWithHostController:(id)a3;
+- (CTUIListWithHeaderLoadingGroup)initWithHostController:(id)controller;
 - (PSListController)hostController;
 - (id)specifiers;
-- (void)setContentSpecifiers:(id)a3;
+- (void)setContentSpecifiers:(id)specifiers;
 @end
 
 @implementation CTUIListWithHeaderLoadingGroup
 
-- (CTUIListWithHeaderLoadingGroup)initWithHostController:(id)a3
+- (CTUIListWithHeaderLoadingGroup)initWithHostController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CTUIListWithHeaderLoadingGroup;
   v5 = [(CTUIListWithHeaderLoadingGroup *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostController, v4);
+    objc_storeWeak(&v5->_hostController, controllerCopy);
     v7 = [objc_alloc(MEMORY[0x277D3FAD8]) initWithName:&stru_287733598 target:0 set:0 get:0 detail:0 cell:15 edit:0];
     spinnerSpecifier = v6->_spinnerSpecifier;
     v6->_spinnerSpecifier = v7;
@@ -25,18 +25,18 @@
   return v6;
 }
 
-- (void)setContentSpecifiers:(id)a3
+- (void)setContentSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  specifiersCopy = specifiers;
+  v7 = specifiersCopy;
+  if (specifiersCopy)
   {
-    v5 = v4;
-    v4 = v7;
+    v5 = specifiersCopy;
+    specifiersCopy = v7;
   }
 
   contentSpecifiers = self->_contentSpecifiers;
-  self->_contentSpecifiers = v4;
+  self->_contentSpecifiers = specifiersCopy;
 }
 
 - (id)specifiers

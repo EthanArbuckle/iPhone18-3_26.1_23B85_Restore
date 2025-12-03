@@ -26,12 +26,12 @@
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = [CIKernel kernelWithInternalRepresentation:&CI::_gabor];
-  v4 = [(CIImage *)self->inputImage imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
   v5 = *MEMORY[0x1E695F040];
   v6 = *(MEMORY[0x1E695F040] + 8);
   v7 = *(MEMORY[0x1E695F040] + 16);
   v8 = *(MEMORY[0x1E695F040] + 24);
-  v11[0] = v4;
+  v11[0] = imageByClampingToExtent;
   v9 = -[CIKernel applyWithExtent:roiCallback:arguments:](v3, "applyWithExtent:roiCallback:arguments:", &__block_literal_global_36, [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1], v5, v6, v7, v8);
   [(CIImage *)self->inputImage extent];
   return [(CIImage *)v9 imageByCroppingToRect:?];

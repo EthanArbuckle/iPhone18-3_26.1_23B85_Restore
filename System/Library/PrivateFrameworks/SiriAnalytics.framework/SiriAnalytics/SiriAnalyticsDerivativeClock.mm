@@ -1,23 +1,23 @@
 @interface SiriAnalyticsDerivativeClock
-- (SiriAnalyticsDerivativeClock)initWithClockIdentifier:(id)a3 isolatedStreamUUID:(id)a4 timestampOffset:(unint64_t)a5 rootClock:(id)a6;
+- (SiriAnalyticsDerivativeClock)initWithClockIdentifier:(id)identifier isolatedStreamUUID:(id)d timestampOffset:(unint64_t)offset rootClock:(id)clock;
 @end
 
 @implementation SiriAnalyticsDerivativeClock
 
-- (SiriAnalyticsDerivativeClock)initWithClockIdentifier:(id)a3 isolatedStreamUUID:(id)a4 timestampOffset:(unint64_t)a5 rootClock:(id)a6
+- (SiriAnalyticsDerivativeClock)initWithClockIdentifier:(id)identifier isolatedStreamUUID:(id)d timestampOffset:(unint64_t)offset rootClock:(id)clock
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a3;
+  dCopy = d;
+  clockCopy = clock;
+  identifierCopy = identifier;
   v14 = mach_absolute_time();
   v17.receiver = self;
   v17.super_class = SiriAnalyticsDerivativeClock;
-  v15 = [(SiriAnalyticsLogicalClock *)&v17 initWithClockIdentifier:v13 timestampOffset:a5 startedOn:v14];
+  v15 = [(SiriAnalyticsLogicalClock *)&v17 initWithClockIdentifier:identifierCopy timestampOffset:offset startedOn:v14];
 
   if (v15)
   {
-    objc_storeWeak(&v15->_rootClock, v12);
-    objc_storeStrong(&v15->_isolatedStreamUUID, a4);
+    objc_storeWeak(&v15->_rootClock, clockCopy);
+    objc_storeStrong(&v15->_isolatedStreamUUID, d);
   }
 
   return v15;

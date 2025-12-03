@@ -2,20 +2,20 @@
 + (id)entryEventBackwardDefinitionBBIceEventMetrics;
 + (id)entryEventBackwardDefinitionBBIcePeriodicMetrics;
 - (PLICEBBHardwareMessage)init;
-- (id)decodeEventPayload:(id)a3 forMetricId:(id)a4;
-- (id)decodePayload:(id)a3 forMetricId:(id)a4;
-- (id)initEntryWithBBTS:(id)a3 triggerId:(id)a4 seqnum:(id)a5 payload:(id)a6 logAgent:(id)a7;
-- (void)addToListMetric:(id)a3 payload:(id)a4;
-- (void)componentCarrierForClass:(id)a3 forEntry:(id)a4;
-- (void)cpcStatsForClass:(id)a3 forEntry:(id)a4;
-- (void)duplexModeForClass:(id)a3 forEntry:(id)a4;
+- (id)decodeEventPayload:(id)payload forMetricId:(id)id;
+- (id)decodePayload:(id)payload forMetricId:(id)id;
+- (id)initEntryWithBBTS:(id)s triggerId:(id)id seqnum:(id)seqnum payload:(id)payload logAgent:(id)agent;
+- (void)addToListMetric:(id)metric payload:(id)payload;
+- (void)componentCarrierForClass:(id)class forEntry:(id)entry;
+- (void)cpcStatsForClass:(id)class forEntry:(id)entry;
+- (void)duplexModeForClass:(id)class forEntry:(id)entry;
 - (void)logBBIceAperiodicMetrics;
 - (void)logBBIcePeriodicMetrics;
-- (void)pdcchStateStatsFor:(id)a3 forEntry:(id)a4;
-- (void)protocolHist2ForClass:(id)a3 forEntry:(id)a4;
-- (void)protocolHistForClass:(id)a3 forEntry:(id)a4;
-- (void)protocolPerStateForClass:(id)a3 forEntry:(id)a4;
-- (void)rrcModeHistForClass:(id)a3 forEntry:(id)a4;
+- (void)pdcchStateStatsFor:(id)for forEntry:(id)entry;
+- (void)protocolHist2ForClass:(id)class forEntry:(id)entry;
+- (void)protocolHistForClass:(id)class forEntry:(id)entry;
+- (void)protocolPerStateForClass:(id)class forEntry:(id)entry;
+- (void)rrcModeHistForClass:(id)class forEntry:(id)entry;
 @end
 
 @implementation PLICEBBHardwareMessage
@@ -30,27 +30,27 @@
   return 0;
 }
 
-- (id)initEntryWithBBTS:(id)a3 triggerId:(id)a4 seqnum:(id)a5 payload:(id)a6 logAgent:(id)a7
+- (id)initEntryWithBBTS:(id)s triggerId:(id)id seqnum:(id)seqnum payload:(id)payload logAgent:(id)agent
 {
-  v13 = a3;
-  v28 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sCopy = s;
+  idCopy = id;
+  seqnumCopy = seqnum;
+  payloadCopy = payload;
+  agentCopy = agent;
   v29.receiver = self;
   v29.super_class = PLICEBBHardwareMessage;
   v17 = [(PLICEBBHardwareMessage *)&v29 init];
   if (v17)
   {
-    v18 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{(objc_msgSend(v13, "integerValue") / 1000)}];
-    v19 = [v18 convertFromBasebandToMonotonic];
+    v18 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{(objc_msgSend(sCopy, "integerValue") / 1000)}];
+    convertFromBasebandToMonotonic = [v18 convertFromBasebandToMonotonic];
     bbMonotonic = v17->_bbMonotonic;
-    v17->_bbMonotonic = v19;
+    v17->_bbMonotonic = convertFromBasebandToMonotonic;
 
-    objc_storeStrong(&v17->_triggerId, a4);
-    objc_storeStrong(&v17->_bbtimestamp, a3);
-    objc_storeStrong(&v17->_triggerCnt, a5);
-    v21 = [PLICEBBMetricUtility convertToStringData:v15];
+    objc_storeStrong(&v17->_triggerId, id);
+    objc_storeStrong(&v17->_bbtimestamp, s);
+    objc_storeStrong(&v17->_triggerCnt, seqnum);
+    v21 = [PLICEBBMetricUtility convertToStringData:payloadCopy];
     metricData = v17->_metricData;
     v17->_metricData = v21;
 
@@ -62,7 +62,7 @@
     metricDataArr = v17->_metricDataArr;
     v17->_metricDataArr = v25;
 
-    objc_storeStrong(&v17->_logAgent, a7);
+    objc_storeStrong(&v17->_logAgent, agent);
   }
 
   return v17;
@@ -81,17 +81,17 @@
   v29[0] = v18;
   v28[1] = *MEMORY[0x277D3F540];
   v24[0] = @"triggerId";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v25[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v25[0] = commonTypeDict_IntegerFormat;
   v24[1] = @"triggerCnt";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat];
-  v25[1] = v3;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v25[1] = commonTypeDict_IntegerFormat2;
   v24[2] = @"bbtimestamp";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v25[2] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v25[2] = commonTypeDict_IntegerFormat3;
   v24[3] = @"mid";
   v7 = *MEMORY[0x277D3F598];
   v21[0] = *MEMORY[0x277D3F5A8];
@@ -135,21 +135,21 @@
   v21[0] = v15;
   v20[1] = *MEMORY[0x277D3F540];
   v16[0] = @"triggerCnt";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v17[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v17[0] = commonTypeDict_IntegerFormat;
   v16[1] = @"bbtimestamp";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v17[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v17[1] = commonTypeDict_IntegerFormat2;
   v16[2] = @"metricId";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v17[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v17[2] = commonTypeDict_IntegerFormat3;
   v16[3] = @"metricData";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v17[3] = v10;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v17[3] = commonTypeDict_StringFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v21[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -188,9 +188,9 @@
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLICEBBHardwareMessage logBBIceAperiodicMetrics]", block, v15, v16, v17, v18];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage logBBIceAperiodicMetrics]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:193];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:193];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -249,9 +249,9 @@ uint64_t __50__PLICEBBHardwareMessage_logBBIceAperiodicMetrics__block_invoke(uin
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLICEBBHardwareMessage logBBIcePeriodicMetrics]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage logBBIcePeriodicMetrics]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:214];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:214];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -290,12 +290,12 @@ uint64_t __49__PLICEBBHardwareMessage_logBBIcePeriodicMetrics__block_invoke(uint
   return result;
 }
 
-- (void)addToListMetric:(id)a3 payload:(id)a4
+- (void)addToListMetric:(id)metric payload:(id)payload
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  metricCopy = metric;
   v7 = MEMORY[0x277D3F180];
-  v8 = a4;
+  payloadCopy = payload;
   if ([v7 debugEnabled])
   {
     v9 = objc_opt_class();
@@ -314,9 +314,9 @@ uint64_t __49__PLICEBBHardwareMessage_logBBIcePeriodicMetrics__block_invoke(uint
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLICEBBHardwareMessage addToListMetric:payload:]", block, v20, v21, v22, v23];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage addToListMetric:payload:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:236];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:236];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -328,9 +328,9 @@ uint64_t __49__PLICEBBHardwareMessage_logBBIcePeriodicMetrics__block_invoke(uint
     }
   }
 
-  [(NSMutableArray *)self->_metricIdArr addObject:v6];
+  [(NSMutableArray *)self->_metricIdArr addObject:metricCopy];
   metricDataArr = self->_metricDataArr;
-  v17 = [PLICEBBMetricUtility convertToStringData:v8];
+  v17 = [PLICEBBMetricUtility convertToStringData:payloadCopy];
 
   [(NSMutableArray *)metricDataArr addObject:v17];
   v18 = *MEMORY[0x277D85DE8];
@@ -343,21 +343,21 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
   return result;
 }
 
-- (id)decodeEventPayload:(id)a3 forMetricId:(id)a4
+- (id)decodeEventPayload:(id)payload forMetricId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  idCopy = id;
   v7 = objc_opt_new();
-  [v7 setObject:v6 forKeyedSubscript:@"metricId"];
-  v8 = [v6 integerValue];
+  [v7 setObject:idCopy forKeyedSubscript:@"metricId"];
+  integerValue = [idCopy integerValue];
   v9 = 0;
-  if (v8 > 3985682)
+  if (integerValue > 3985682)
   {
-    if (v8 <= 3985947)
+    if (integerValue <= 3985947)
     {
-      if (v8 <= 3985684)
+      if (integerValue <= 3985684)
       {
-        if (v8 == 3985683)
+        if (integerValue == 3985683)
         {
           v10 = KCellularWcdmaRrcConfiguration;
         }
@@ -370,13 +370,13 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
         goto LABEL_39;
       }
 
-      if (v8 == 3985685)
+      if (integerValue == 3985685)
       {
         v10 = KCellularWcdmaL1State;
         goto LABEL_39;
       }
 
-      if (v8 != 3985686)
+      if (integerValue != 3985686)
       {
         goto LABEL_43;
       }
@@ -384,16 +384,16 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
       goto LABEL_25;
     }
 
-    if (v8 > 3986693)
+    if (integerValue > 3986693)
     {
-      if (v8 == 3986694)
+      if (integerValue == 3986694)
       {
         v10 = KCellularCellPlmnSearchCount;
       }
 
       else
       {
-        if (v8 != 3986696)
+        if (integerValue != 3986696)
         {
           goto LABEL_43;
         }
@@ -402,14 +402,14 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
       }
     }
 
-    else if (v8 == 3985948)
+    else if (integerValue == 3985948)
     {
       v10 = KCellularTdsL1State;
     }
 
     else
     {
-      if (v8 != 3986196)
+      if (integerValue != 3986196)
       {
         goto LABEL_43;
       }
@@ -418,18 +418,18 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
     }
   }
 
-  else if (v8 > 3952164)
+  else if (integerValue > 3952164)
   {
-    if (v8 <= 3985415)
+    if (integerValue <= 3985415)
     {
-      if (v8 != 3952165)
+      if (integerValue != 3952165)
       {
-        if (v8 != 3973391)
+        if (integerValue != 3973391)
         {
           goto LABEL_43;
         }
 
-        v11 = [[KCellularServingCellLost alloc] initWithData:v5];
+        v11 = [[KCellularServingCellLost alloc] initWithData:payloadCopy];
         if (![(KCellularServingCellLost *)v11 hasTimestamp])
         {
           goto LABEL_41;
@@ -441,14 +441,14 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
       goto LABEL_25;
     }
 
-    if (v8 == 3985416)
+    if (integerValue == 3985416)
     {
       v10 = KCellularGsmL1State;
     }
 
     else
     {
-      if (v8 != 3985682)
+      if (integerValue != 3985682)
       {
         goto LABEL_43;
       }
@@ -459,11 +459,11 @@ uint64_t __50__PLICEBBHardwareMessage_addToListMetric_payload___block_invoke(uin
 
   else
   {
-    if (v8 <= 3952137)
+    if (integerValue <= 3952137)
     {
-      if (v8 != 3945603)
+      if (integerValue != 3945603)
       {
-        if (v8 != 3952132)
+        if (integerValue != 3952132)
         {
           goto LABEL_43;
         }
@@ -477,7 +477,7 @@ LABEL_25:
       goto LABEL_39;
     }
 
-    if (v8 == 3952138)
+    if (integerValue == 3952138)
     {
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
@@ -487,7 +487,7 @@ LABEL_25:
       goto LABEL_42;
     }
 
-    if (v8 != 3952152)
+    if (integerValue != 3952152)
     {
       goto LABEL_43;
     }
@@ -496,7 +496,7 @@ LABEL_25:
   }
 
 LABEL_39:
-  v11 = [[v10 alloc] initWithData:v5];
+  v11 = [[v10 alloc] initWithData:payloadCopy];
   if ([(KCellularServingCellLost *)v11 hasTimestamp])
   {
 LABEL_40:
@@ -514,29 +514,29 @@ LABEL_43:
   return v9;
 }
 
-- (id)decodePayload:(id)a3 forMetricId:(id)a4
+- (id)decodePayload:(id)payload forMetricId:(id)id
 {
   v111 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  idCopy = id;
   v8 = objc_opt_new();
-  [v8 setObject:v7 forKeyedSubscript:@"metricId"];
-  v9 = [[PowerlogMetricLog alloc] initWithData:v6];
+  [v8 setObject:idCopy forKeyedSubscript:@"metricId"];
+  v9 = [[PowerlogMetricLog alloc] initWithData:payloadCopy];
   if ([(PowerlogMetricLog *)v9 kCellularPerClientProfileTriggerCountsCount]>= 2)
   {
     [MEMORY[0x277D3F180] debugEnabled];
   }
 
-  v10 = [v7 integerValue];
-  if (v10 <= 3985930)
+  integerValue = [idCopy integerValue];
+  if (integerValue <= 3985930)
   {
-    if (v10 <= 3985674)
+    if (integerValue <= 3985674)
     {
-      if (v10 <= 3985414)
+      if (integerValue <= 3985414)
       {
-        if (v10 <= 3985411)
+        if (integerValue <= 3985411)
         {
-          if (v10 == 3932163)
+          if (integerValue == 3932163)
           {
             if ([MEMORY[0x277D3F180] debugEnabled])
             {
@@ -546,7 +546,7 @@ LABEL_43:
             goto LABEL_160;
           }
 
-          if (v10 != 3952496)
+          if (integerValue != 3952496)
           {
             goto LABEL_164;
           }
@@ -556,13 +556,13 @@ LABEL_43:
           goto LABEL_159;
         }
 
-        if (v10 == 3985412)
+        if (integerValue == 3985412)
         {
           v13 = [(PowerlogMetricLog *)v9 kCellularGsmServingCellRssiHistAtIndex:0];
           goto LABEL_158;
         }
 
-        if (v10 == 3985413)
+        if (integerValue == 3985413)
         {
           [(PowerlogMetricLog *)v9 kCellularGsmServingCellSnrHistAtIndex:0];
         }
@@ -576,22 +576,22 @@ LABEL_43:
         goto LABEL_158;
       }
 
-      if (v10 <= 3985671)
+      if (integerValue <= 3985671)
       {
-        if (v10 == 3985415)
+        if (integerValue == 3985415)
         {
           v13 = [(PowerlogMetricLog *)v9 kCellularGsmConnectedModeHistAtIndex:0];
           goto LABEL_158;
         }
 
-        if (v10 == 3985670)
+        if (integerValue == 3985670)
         {
           v11 = [(PowerlogMetricLog *)v9 kCellularWcdmaCpcStatAtIndex:0];
           [(PLICEBBHardwareMessage *)self cpcStatsForClass:v11 forEntry:v8];
           goto LABEL_159;
         }
 
-        if (v10 != 3985671)
+        if (integerValue != 3985671)
         {
           goto LABEL_164;
         }
@@ -600,13 +600,13 @@ LABEL_43:
         goto LABEL_155;
       }
 
-      if (v10 == 3985672)
+      if (integerValue == 3985672)
       {
         v12 = [(PowerlogMetricLog *)v9 kCellularWcdmaServingCellRx0RssiHistAtIndex:0];
         goto LABEL_155;
       }
 
-      if (v10 == 3985673)
+      if (integerValue == 3985673)
       {
         [(PowerlogMetricLog *)v9 kCellularWcdmaServingCellRx1RssiHistAtIndex:0];
       }
@@ -619,17 +619,17 @@ LABEL_43:
 
     else
     {
-      if (v10 <= 3985680)
+      if (integerValue <= 3985680)
       {
-        if (v10 > 3985677)
+        if (integerValue > 3985677)
         {
-          if (v10 == 3985678)
+          if (integerValue == 3985678)
           {
             v13 = [(PowerlogMetricLog *)v9 kCellularWcdmaReceiverStatusOnC1HistAtIndex:0];
             goto LABEL_158;
           }
 
-          if (v10 == 3985679)
+          if (integerValue == 3985679)
           {
             [(PowerlogMetricLog *)v9 kCellularWcdmaCarrierStatusHistAtIndex:0];
           }
@@ -642,9 +642,9 @@ LABEL_43:
           goto LABEL_64;
         }
 
-        if (v10 != 3985675)
+        if (integerValue != 3985675)
         {
-          if (v10 == 3985676)
+          if (integerValue == 3985676)
           {
             [(PowerlogMetricLog *)v9 kCellularWcdmaTxPowerHistAtIndex:0];
           }
@@ -664,9 +664,9 @@ LABEL_155:
         goto LABEL_159;
       }
 
-      if (v10 <= 3985927)
+      if (integerValue <= 3985927)
       {
-        switch(v10)
+        switch(integerValue)
         {
           case 3985681:
             v13 = [(PowerlogMetricLog *)v9 kCellularWcdmaRabTypeHistAtIndex:0];
@@ -684,13 +684,13 @@ LABEL_155:
         goto LABEL_155;
       }
 
-      if (v10 == 3985928)
+      if (integerValue == 3985928)
       {
         v12 = [(PowerlogMetricLog *)v9 kCellularTdsServingCellRx1RssiHistAtIndex:0];
         goto LABEL_155;
       }
 
-      if (v10 == 3985929)
+      if (integerValue == 3985929)
       {
         [(PowerlogMetricLog *)v9 kCellularTdsServingCellRx0RscpHistAtIndex:0];
       }
@@ -704,11 +704,11 @@ LABEL_155:
     goto LABEL_155;
   }
 
-  if (v10 <= 3986692)
+  if (integerValue <= 3986692)
   {
-    if (v10 > 3986178)
+    if (integerValue > 3986178)
     {
-      switch(v10)
+      switch(integerValue)
       {
         case 3986179:
           v11 = [(PowerlogMetricLog *)v9 kCellularLteFwDuplexModeAtIndex:0];
@@ -760,7 +760,7 @@ LABEL_155:
       goto LABEL_159;
     }
 
-    switch(v10)
+    switch(integerValue)
     {
       case 3985931:
         v13 = [(PowerlogMetricLog *)v9 kCellularTdsTxPowerHistAtIndex:0];
@@ -776,17 +776,17 @@ LABEL_155:
     goto LABEL_164;
   }
 
-  if (v10 > 3987205)
+  if (integerValue > 3987205)
   {
-    if (v10 > 3987332)
+    if (integerValue > 3987332)
     {
-      if (v10 == 3987333)
+      if (integerValue == 3987333)
       {
         v13 = [(PowerlogMetricLog *)v9 kCellularCdmaEvdoTxPowerHistAtIndex:0];
         goto LABEL_158;
       }
 
-      if (v10 == 3987334)
+      if (integerValue == 3987334)
       {
         if ([MEMORY[0x277D3F180] debugEnabled])
         {
@@ -806,9 +806,9 @@ LABEL_155:
             v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_EVDO_HIST - plMetricLog %@", v9];
             v94 = MEMORY[0x277D3F178];
             v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-            v39 = [v38 lastPathComponent];
+            lastPathComponent = [v38 lastPathComponent];
             v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-            [v94 logMessage:v37 fromFile:v39 fromFunction:v40 fromLineNumber:700];
+            [v94 logMessage:v37 fromFile:lastPathComponent fromFunction:v40 fromLineNumber:700];
 
             v41 = v37;
             v42 = PLLogCommon();
@@ -841,9 +841,9 @@ LABEL_155:
             v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_EVDO_HIST - myClass %@", v43];
             v89 = MEMORY[0x277D3F178];
             v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-            v47 = [v46 lastPathComponent];
+            lastPathComponent2 = [v46 lastPathComponent];
             v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-            [v89 logMessage:v45 fromFile:v47 fromFunction:v48 fromLineNumber:702];
+            [v89 logMessage:v45 fromFile:lastPathComponent2 fromFunction:v48 fromLineNumber:702];
 
             v49 = v45;
             v50 = PLLogCommon();
@@ -878,9 +878,9 @@ LABEL_155:
             v52 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_EVDO_HIST - entry %@", v8];
             v53 = MEMORY[0x277D3F178];
             v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-            v55 = [v54 lastPathComponent];
+            lastPathComponent3 = [v54 lastPathComponent];
             v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-            [v53 logMessage:v52 fromFile:v55 fromFunction:v56 fromLineNumber:704];
+            [v53 logMessage:v52 fromFile:lastPathComponent3 fromFunction:v56 fromLineNumber:704];
 
             v57 = PLLogCommon();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
@@ -900,7 +900,7 @@ LABEL_155:
       goto LABEL_164;
     }
 
-    if (v10 == 3987206)
+    if (integerValue == 3987206)
     {
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
@@ -920,9 +920,9 @@ LABEL_155:
           v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_CDMA1X_HIST - plMetricLog %@", v9];
           v97 = MEMORY[0x277D3F178];
           v61 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-          v62 = [v61 lastPathComponent];
+          lastPathComponent4 = [v61 lastPathComponent];
           v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-          [v97 logMessage:v60 fromFile:v62 fromFunction:v63 fromLineNumber:685];
+          [v97 logMessage:v60 fromFile:lastPathComponent4 fromFunction:v63 fromLineNumber:685];
 
           v64 = v60;
           v65 = PLLogCommon();
@@ -955,9 +955,9 @@ LABEL_155:
           v67 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_CDMA1X_HIST - myClass %@", v21];
           v90 = MEMORY[0x277D3F178];
           v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-          v69 = [v68 lastPathComponent];
+          lastPathComponent5 = [v68 lastPathComponent];
           v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-          [v90 logMessage:v67 fromFile:v69 fromFunction:v70 fromLineNumber:687];
+          [v90 logMessage:v67 fromFile:lastPathComponent5 fromFunction:v70 fromLineNumber:687];
 
           v71 = v67;
           v72 = PLLogCommon();
@@ -998,9 +998,9 @@ LABEL_155:
       v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_CDMA1X_HIST - entry %@", v8];
       v74 = MEMORY[0x277D3F178];
       v75 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-      v76 = [v75 lastPathComponent];
+      lastPathComponent6 = [v75 lastPathComponent];
       v77 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-      [v74 logMessage:v30 fromFile:v76 fromFunction:v77 fromLineNumber:689];
+      [v74 logMessage:v30 fromFile:lastPathComponent6 fromFunction:v77 fromLineNumber:689];
 
       v35 = PLLogCommon();
       if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -1014,7 +1014,7 @@ LABEL_155:
 
     else
     {
-      if (v10 != 3987207)
+      if (integerValue != 3987207)
       {
         goto LABEL_164;
       }
@@ -1037,9 +1037,9 @@ LABEL_155:
           v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_CDMA1X_CONN_HIST - plMetricLog %@", v9];
           v91 = MEMORY[0x277D3F178];
           v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-          v17 = [v16 lastPathComponent];
+          lastPathComponent7 = [v16 lastPathComponent];
           v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-          [v91 logMessage:v15 fromFile:v17 fromFunction:v18 fromLineNumber:709];
+          [v91 logMessage:v15 fromFile:lastPathComponent7 fromFunction:v18 fromLineNumber:709];
 
           v19 = v15;
           v20 = PLLogCommon();
@@ -1072,9 +1072,9 @@ LABEL_155:
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_CDMA1X_CONN_HIST - myClass %@", v21];
           v88 = MEMORY[0x277D3F178];
           v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-          v25 = [v24 lastPathComponent];
+          lastPathComponent8 = [v24 lastPathComponent];
           v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-          [v88 logMessage:v23 fromFile:v25 fromFunction:v26 fromLineNumber:711];
+          [v88 logMessage:v23 fromFile:lastPathComponent8 fromFunction:v26 fromLineNumber:711];
 
           v27 = v23;
           v28 = PLLogCommon();
@@ -1119,9 +1119,9 @@ LABEL_160:
       v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"ICE_HW_RF_CDMA1X_CONN_HIST - entry %@", v8];
       v31 = MEMORY[0x277D3F178];
       v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-      v33 = [v32 lastPathComponent];
+      lastPathComponent9 = [v32 lastPathComponent];
       v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-      [v31 logMessage:v30 fromFile:v33 fromFunction:v34 fromLineNumber:713];
+      [v31 logMessage:v30 fromFile:lastPathComponent9 fromFunction:v34 fromLineNumber:713];
 
       v35 = PLLogCommon();
       if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -1140,11 +1140,11 @@ LABEL_135:
     goto LABEL_135;
   }
 
-  if (v10 > 3986705)
+  if (integerValue > 3986705)
   {
-    if (v10 != 3986706)
+    if (integerValue != 3986706)
     {
-      if (v10 == 3987205)
+      if (integerValue == 3987205)
       {
         v13 = [(PowerlogMetricLog *)v9 kCellularCdma1XTxPowerHistAtIndex:0];
         goto LABEL_158;
@@ -1160,13 +1160,13 @@ LABEL_159:
     goto LABEL_160;
   }
 
-  if (v10 == 3986693)
+  if (integerValue == 3986693)
   {
     v13 = [(PowerlogMetricLog *)v9 kCellularProtocolStackStateHistAtIndex:0];
     goto LABEL_158;
   }
 
-  if (v10 == 3986695)
+  if (integerValue == 3986695)
   {
     v13 = [(PowerlogMetricLog *)v9 kCellularCellPlmnSearchHistAtIndex:0];
 LABEL_158:
@@ -1194,9 +1194,9 @@ LABEL_164:
       v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: unexpected metric Id"];
       v83 = MEMORY[0x277D3F178];
       v84 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBHardwareMessage.m"];
-      v85 = [v84 lastPathComponent];
+      lastPathComponent10 = [v84 lastPathComponent];
       v86 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBHardwareMessage decodePayload:forMetricId:]"];
-      [v83 logMessage:v82 fromFile:v85 fromFunction:v86 fromLineNumber:730];
+      [v83 logMessage:v82 fromFile:lastPathComponent10 fromFunction:v86 fromLineNumber:730];
 
       v87 = PLLogCommon();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
@@ -1286,805 +1286,805 @@ uint64_t __52__PLICEBBHardwareMessage_decodePayload_forMetricId___block_invoke_1
   return result;
 }
 
-- (void)rrcModeHistForClass:(id)a3 forEntry:(id)a4
+- (void)rrcModeHistForClass:(id)class forEntry:(id)entry
 {
-  v32 = a3;
-  v5 = a4;
-  if ([v32 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v32, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v32 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
-  }
-
-  if ([v32 hasIdleDurBin0])
-  {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin0")}];
-    [v5 setObject:v8 forKeyedSubscript:@"idle_dur_bin_0"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_0"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
   }
 
-  if ([v32 hasIdleDurBin1])
+  if ([classCopy hasIdleDurBin0])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin1")}];
-    [v5 setObject:v9 forKeyedSubscript:@"idle_dur_bin_1"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_1"];
-  }
-
-  if ([v32 hasIdleDurBin2])
-  {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin2")}];
-    [v5 setObject:v10 forKeyedSubscript:@"idle_dur_bin_2"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin0")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"idle_dur_bin_0"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_2"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_0"];
   }
 
-  if ([v32 hasIdleDurBin3])
+  if ([classCopy hasIdleDurBin1])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin3")}];
-    [v5 setObject:v11 forKeyedSubscript:@"idle_dur_bin_3"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_3"];
-  }
-
-  if ([v32 hasIdleDurBin4])
-  {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin4")}];
-    [v5 setObject:v12 forKeyedSubscript:@"idle_dur_bin_4"];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin1")}];
+    [entryCopy setObject:v9 forKeyedSubscript:@"idle_dur_bin_1"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_4"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_1"];
   }
 
-  if ([v32 hasIdleDurBin5])
+  if ([classCopy hasIdleDurBin2])
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin5")}];
-    [v5 setObject:v13 forKeyedSubscript:@"idle_dur_bin_5"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_5"];
-  }
-
-  if ([v32 hasIdleDurBin6])
-  {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin6")}];
-    [v5 setObject:v14 forKeyedSubscript:@"idle_dur_bin_6"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin2")}];
+    [entryCopy setObject:v10 forKeyedSubscript:@"idle_dur_bin_2"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_6"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_2"];
   }
 
-  if ([v32 hasIdleDurBin7])
+  if ([classCopy hasIdleDurBin3])
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin7")}];
-    [v5 setObject:v15 forKeyedSubscript:@"idle_dur_bin_7"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_7"];
-  }
-
-  if ([v32 hasIdleDurBin8])
-  {
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin8")}];
-    [v5 setObject:v16 forKeyedSubscript:@"idle_dur_bin_8"];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin3")}];
+    [entryCopy setObject:v11 forKeyedSubscript:@"idle_dur_bin_3"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_8"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_3"];
   }
 
-  if ([v32 hasIdleDurBin9])
+  if ([classCopy hasIdleDurBin4])
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin9")}];
-    [v5 setObject:v17 forKeyedSubscript:@"idle_dur_bin_9"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_9"];
-  }
-
-  if ([v32 hasIdleDurBin10])
-  {
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin10")}];
-    [v5 setObject:v18 forKeyedSubscript:@"idle_dur_bin_10"];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin4")}];
+    [entryCopy setObject:v12 forKeyedSubscript:@"idle_dur_bin_4"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_10"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_4"];
   }
 
-  if ([v32 hasIdleDurBin11])
+  if ([classCopy hasIdleDurBin5])
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "idleDurBin11")}];
-    [v5 setObject:v19 forKeyedSubscript:@"idle_dur_bin_11"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_11"];
-  }
-
-  if ([v32 hasConnDurBin0])
-  {
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin0")}];
-    [v5 setObject:v20 forKeyedSubscript:@"conn_dur_bin_0"];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin5")}];
+    [entryCopy setObject:v13 forKeyedSubscript:@"idle_dur_bin_5"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_0"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_5"];
   }
 
-  if ([v32 hasConnDurBin1])
+  if ([classCopy hasIdleDurBin6])
   {
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin1")}];
-    [v5 setObject:v21 forKeyedSubscript:@"conn_dur_bin_1"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_1"];
-  }
-
-  if ([v32 hasConnDurBin2])
-  {
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin2")}];
-    [v5 setObject:v22 forKeyedSubscript:@"conn_dur_bin_2"];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin6")}];
+    [entryCopy setObject:v14 forKeyedSubscript:@"idle_dur_bin_6"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_2"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_6"];
   }
 
-  if ([v32 hasConnDurBin3])
+  if ([classCopy hasIdleDurBin7])
   {
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin3")}];
-    [v5 setObject:v23 forKeyedSubscript:@"conn_dur_bin_3"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_3"];
-  }
-
-  if ([v32 hasConnDurBin4])
-  {
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin4")}];
-    [v5 setObject:v24 forKeyedSubscript:@"conn_dur_bin_4"];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin7")}];
+    [entryCopy setObject:v15 forKeyedSubscript:@"idle_dur_bin_7"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_4"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_7"];
   }
 
-  if ([v32 hasConnDurBin5])
+  if ([classCopy hasIdleDurBin8])
   {
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin5")}];
-    [v5 setObject:v25 forKeyedSubscript:@"conn_dur_bin_5"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_5"];
-  }
-
-  if ([v32 hasConnDurBin6])
-  {
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin6")}];
-    [v5 setObject:v26 forKeyedSubscript:@"conn_dur_bin_6"];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin8")}];
+    [entryCopy setObject:v16 forKeyedSubscript:@"idle_dur_bin_8"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_6"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_8"];
   }
 
-  if ([v32 hasConnDurBin7])
+  if ([classCopy hasIdleDurBin9])
   {
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin7")}];
-    [v5 setObject:v27 forKeyedSubscript:@"conn_dur_bin_7"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_7"];
-  }
-
-  if ([v32 hasConnDurBin8])
-  {
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin8")}];
-    [v5 setObject:v28 forKeyedSubscript:@"conn_dur_bin_8"];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin9")}];
+    [entryCopy setObject:v17 forKeyedSubscript:@"idle_dur_bin_9"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_8"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_9"];
   }
 
-  if ([v32 hasConnDurBin9])
+  if ([classCopy hasIdleDurBin10])
   {
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin9")}];
-    [v5 setObject:v29 forKeyedSubscript:@"conn_dur_bin_9"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_9"];
-  }
-
-  if ([v32 hasConnDurBin10])
-  {
-    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin10")}];
-    [v5 setObject:v30 forKeyedSubscript:@"conn_dur_bin_10"];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin10")}];
+    [entryCopy setObject:v18 forKeyedSubscript:@"idle_dur_bin_10"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_10"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_10"];
   }
 
-  if ([v32 hasConnDurBin11])
+  if ([classCopy hasIdleDurBin11])
   {
-    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v32, "connDurBin11")}];
-    [v5 setObject:v31 forKeyedSubscript:@"conn_dur_bin_11"];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "idleDurBin11")}];
+    [entryCopy setObject:v19 forKeyedSubscript:@"idle_dur_bin_11"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_11"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"idle_dur_bin_11"];
+  }
+
+  if ([classCopy hasConnDurBin0])
+  {
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin0")}];
+    [entryCopy setObject:v20 forKeyedSubscript:@"conn_dur_bin_0"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_0"];
+  }
+
+  if ([classCopy hasConnDurBin1])
+  {
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin1")}];
+    [entryCopy setObject:v21 forKeyedSubscript:@"conn_dur_bin_1"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_1"];
+  }
+
+  if ([classCopy hasConnDurBin2])
+  {
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin2")}];
+    [entryCopy setObject:v22 forKeyedSubscript:@"conn_dur_bin_2"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_2"];
+  }
+
+  if ([classCopy hasConnDurBin3])
+  {
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin3")}];
+    [entryCopy setObject:v23 forKeyedSubscript:@"conn_dur_bin_3"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_3"];
+  }
+
+  if ([classCopy hasConnDurBin4])
+  {
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin4")}];
+    [entryCopy setObject:v24 forKeyedSubscript:@"conn_dur_bin_4"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_4"];
+  }
+
+  if ([classCopy hasConnDurBin5])
+  {
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin5")}];
+    [entryCopy setObject:v25 forKeyedSubscript:@"conn_dur_bin_5"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_5"];
+  }
+
+  if ([classCopy hasConnDurBin6])
+  {
+    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin6")}];
+    [entryCopy setObject:v26 forKeyedSubscript:@"conn_dur_bin_6"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_6"];
+  }
+
+  if ([classCopy hasConnDurBin7])
+  {
+    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin7")}];
+    [entryCopy setObject:v27 forKeyedSubscript:@"conn_dur_bin_7"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_7"];
+  }
+
+  if ([classCopy hasConnDurBin8])
+  {
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin8")}];
+    [entryCopy setObject:v28 forKeyedSubscript:@"conn_dur_bin_8"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_8"];
+  }
+
+  if ([classCopy hasConnDurBin9])
+  {
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin9")}];
+    [entryCopy setObject:v29 forKeyedSubscript:@"conn_dur_bin_9"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_9"];
+  }
+
+  if ([classCopy hasConnDurBin10])
+  {
+    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin10")}];
+    [entryCopy setObject:v30 forKeyedSubscript:@"conn_dur_bin_10"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_10"];
+  }
+
+  if ([classCopy hasConnDurBin11])
+  {
+    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "connDurBin11")}];
+    [entryCopy setObject:v31 forKeyedSubscript:@"conn_dur_bin_11"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"conn_dur_bin_11"];
   }
 }
 
-- (void)protocolHistForClass:(id)a3 forEntry:(id)a4
+- (void)protocolHistForClass:(id)class forEntry:(id)entry
 {
-  v41 = a3;
-  v5 = a4;
-  if ([v41 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v41, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v41 hasDurationMs])
+  if ([classCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
-  }
-
-  if ([v41 hasSubsId])
-  {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
-  }
-
-  if ([v41 hasDurBin0])
-  {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin0")}];
-    [v5 setObject:v9 forKeyedSubscript:@"dur_bin_0"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_0"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
   }
 
-  if ([v41 hasDurBin1])
+  if ([classCopy hasSubsId])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin1")}];
-    [v5 setObject:v10 forKeyedSubscript:@"dur_bin_1"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
   }
 
-  else
+  if ([classCopy hasDurBin0])
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_1"];
-  }
-
-  if ([v41 hasDurBin2])
-  {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin2")}];
-    [v5 setObject:v11 forKeyedSubscript:@"dur_bin_2"];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin0")}];
+    [entryCopy setObject:v9 forKeyedSubscript:@"dur_bin_0"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_2"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_0"];
   }
 
-  if ([v41 hasDurBin3])
+  if ([classCopy hasDurBin1])
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin3")}];
-    [v5 setObject:v12 forKeyedSubscript:@"dur_bin_3"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_3"];
-  }
-
-  if ([v41 hasDurBin4])
-  {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin4")}];
-    [v5 setObject:v13 forKeyedSubscript:@"dur_bin_4"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin1")}];
+    [entryCopy setObject:v10 forKeyedSubscript:@"dur_bin_1"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_4"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_1"];
   }
 
-  if ([v41 hasDurBin5])
+  if ([classCopy hasDurBin2])
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin5")}];
-    [v5 setObject:v14 forKeyedSubscript:@"dur_bin_5"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_5"];
-  }
-
-  if ([v41 hasDurBin6])
-  {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin6")}];
-    [v5 setObject:v15 forKeyedSubscript:@"dur_bin_6"];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin2")}];
+    [entryCopy setObject:v11 forKeyedSubscript:@"dur_bin_2"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_6"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_2"];
   }
 
-  if ([v41 hasDurBin7])
+  if ([classCopy hasDurBin3])
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin7")}];
-    [v5 setObject:v16 forKeyedSubscript:@"dur_bin_7"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_7"];
-  }
-
-  if ([v41 hasDurBin8])
-  {
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin8")}];
-    [v5 setObject:v17 forKeyedSubscript:@"dur_bin_8"];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin3")}];
+    [entryCopy setObject:v12 forKeyedSubscript:@"dur_bin_3"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_8"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_3"];
   }
 
-  if ([v41 hasDurBin9])
+  if ([classCopy hasDurBin4])
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin9")}];
-    [v5 setObject:v18 forKeyedSubscript:@"dur_bin_9"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_9"];
-  }
-
-  if ([v41 hasDurBin10])
-  {
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin10")}];
-    [v5 setObject:v19 forKeyedSubscript:@"dur_bin_10"];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin4")}];
+    [entryCopy setObject:v13 forKeyedSubscript:@"dur_bin_4"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_10"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_4"];
   }
 
-  if ([v41 hasDurBin11])
+  if ([classCopy hasDurBin5])
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin11")}];
-    [v5 setObject:v20 forKeyedSubscript:@"dur_bin_11"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_11"];
-  }
-
-  if ([v41 hasDurBin12])
-  {
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin12")}];
-    [v5 setObject:v21 forKeyedSubscript:@"dur_bin_12"];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin5")}];
+    [entryCopy setObject:v14 forKeyedSubscript:@"dur_bin_5"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_12"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_5"];
   }
 
-  if ([v41 hasDurBin13])
+  if ([classCopy hasDurBin6])
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin13")}];
-    [v5 setObject:v22 forKeyedSubscript:@"dur_bin_13"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_13"];
-  }
-
-  if ([v41 hasDurBin14])
-  {
-    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin14")}];
-    [v5 setObject:v23 forKeyedSubscript:@"dur_bin_14"];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin6")}];
+    [entryCopy setObject:v15 forKeyedSubscript:@"dur_bin_6"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_14"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_6"];
   }
 
-  if ([v41 hasDurBin15])
+  if ([classCopy hasDurBin7])
   {
-    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin15")}];
-    [v5 setObject:v24 forKeyedSubscript:@"dur_bin_15"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_15"];
-  }
-
-  if ([v41 hasDurBin16])
-  {
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin16")}];
-    [v5 setObject:v25 forKeyedSubscript:@"dur_bin_16"];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin7")}];
+    [entryCopy setObject:v16 forKeyedSubscript:@"dur_bin_7"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_16"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_7"];
   }
 
-  if ([v41 hasDurBin17])
+  if ([classCopy hasDurBin8])
   {
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin17")}];
-    [v5 setObject:v26 forKeyedSubscript:@"dur_bin_17"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_17"];
-  }
-
-  if ([v41 hasDurBin18])
-  {
-    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin18")}];
-    [v5 setObject:v27 forKeyedSubscript:@"dur_bin_18"];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin8")}];
+    [entryCopy setObject:v17 forKeyedSubscript:@"dur_bin_8"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_18"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_8"];
   }
 
-  if ([v41 hasDurBin19])
+  if ([classCopy hasDurBin9])
   {
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin19")}];
-    [v5 setObject:v28 forKeyedSubscript:@"dur_bin_19"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_19"];
-  }
-
-  if ([v41 hasDurBin20])
-  {
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin20")}];
-    [v5 setObject:v29 forKeyedSubscript:@"dur_bin_20"];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin9")}];
+    [entryCopy setObject:v18 forKeyedSubscript:@"dur_bin_9"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_20"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_9"];
   }
 
-  if ([v41 hasDurBin21])
+  if ([classCopy hasDurBin10])
   {
-    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin21")}];
-    [v5 setObject:v30 forKeyedSubscript:@"dur_bin_21"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_21"];
-  }
-
-  if ([v41 hasDurBin22])
-  {
-    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin22")}];
-    [v5 setObject:v31 forKeyedSubscript:@"dur_bin_22"];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin10")}];
+    [entryCopy setObject:v19 forKeyedSubscript:@"dur_bin_10"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_22"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_10"];
   }
 
-  if ([v41 hasDurBin23])
+  if ([classCopy hasDurBin11])
   {
-    v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin23")}];
-    [v5 setObject:v32 forKeyedSubscript:@"dur_bin_23"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_23"];
-  }
-
-  if ([v41 hasDurBin24])
-  {
-    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin24")}];
-    [v5 setObject:v33 forKeyedSubscript:@"dur_bin_24"];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin11")}];
+    [entryCopy setObject:v20 forKeyedSubscript:@"dur_bin_11"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_24"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_11"];
   }
 
-  if ([v41 hasDurBin25])
+  if ([classCopy hasDurBin12])
   {
-    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin25")}];
-    [v5 setObject:v34 forKeyedSubscript:@"dur_bin_25"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_25"];
-  }
-
-  if ([v41 hasDurBin26])
-  {
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin26")}];
-    [v5 setObject:v35 forKeyedSubscript:@"dur_bin_26"];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin12")}];
+    [entryCopy setObject:v21 forKeyedSubscript:@"dur_bin_12"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_26"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_12"];
   }
 
-  if ([v41 hasDurBin27])
+  if ([classCopy hasDurBin13])
   {
-    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin27")}];
-    [v5 setObject:v36 forKeyedSubscript:@"dur_bin_27"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_27"];
-  }
-
-  if ([v41 hasDurBin28])
-  {
-    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin28")}];
-    [v5 setObject:v37 forKeyedSubscript:@"dur_bin_28"];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin13")}];
+    [entryCopy setObject:v22 forKeyedSubscript:@"dur_bin_13"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_28"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_13"];
   }
 
-  if ([v41 hasDurBin29])
+  if ([classCopy hasDurBin14])
   {
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin29")}];
-    [v5 setObject:v38 forKeyedSubscript:@"dur_bin_29"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_29"];
-  }
-
-  if ([v41 hasDurBin30])
-  {
-    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin30")}];
-    [v5 setObject:v39 forKeyedSubscript:@"dur_bin_30"];
+    v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin14")}];
+    [entryCopy setObject:v23 forKeyedSubscript:@"dur_bin_14"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_30"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_14"];
   }
 
-  if ([v41 hasDurBin31])
+  if ([classCopy hasDurBin15])
   {
-    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v41, "durBin31")}];
-    [v5 setObject:v40 forKeyedSubscript:@"dur_bin_31"];
+    v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin15")}];
+    [entryCopy setObject:v24 forKeyedSubscript:@"dur_bin_15"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_31"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_15"];
+  }
+
+  if ([classCopy hasDurBin16])
+  {
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin16")}];
+    [entryCopy setObject:v25 forKeyedSubscript:@"dur_bin_16"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_16"];
+  }
+
+  if ([classCopy hasDurBin17])
+  {
+    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin17")}];
+    [entryCopy setObject:v26 forKeyedSubscript:@"dur_bin_17"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_17"];
+  }
+
+  if ([classCopy hasDurBin18])
+  {
+    v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin18")}];
+    [entryCopy setObject:v27 forKeyedSubscript:@"dur_bin_18"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_18"];
+  }
+
+  if ([classCopy hasDurBin19])
+  {
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin19")}];
+    [entryCopy setObject:v28 forKeyedSubscript:@"dur_bin_19"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_19"];
+  }
+
+  if ([classCopy hasDurBin20])
+  {
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin20")}];
+    [entryCopy setObject:v29 forKeyedSubscript:@"dur_bin_20"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_20"];
+  }
+
+  if ([classCopy hasDurBin21])
+  {
+    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin21")}];
+    [entryCopy setObject:v30 forKeyedSubscript:@"dur_bin_21"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_21"];
+  }
+
+  if ([classCopy hasDurBin22])
+  {
+    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin22")}];
+    [entryCopy setObject:v31 forKeyedSubscript:@"dur_bin_22"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_22"];
+  }
+
+  if ([classCopy hasDurBin23])
+  {
+    v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin23")}];
+    [entryCopy setObject:v32 forKeyedSubscript:@"dur_bin_23"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_23"];
+  }
+
+  if ([classCopy hasDurBin24])
+  {
+    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin24")}];
+    [entryCopy setObject:v33 forKeyedSubscript:@"dur_bin_24"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_24"];
+  }
+
+  if ([classCopy hasDurBin25])
+  {
+    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin25")}];
+    [entryCopy setObject:v34 forKeyedSubscript:@"dur_bin_25"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_25"];
+  }
+
+  if ([classCopy hasDurBin26])
+  {
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin26")}];
+    [entryCopy setObject:v35 forKeyedSubscript:@"dur_bin_26"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_26"];
+  }
+
+  if ([classCopy hasDurBin27])
+  {
+    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin27")}];
+    [entryCopy setObject:v36 forKeyedSubscript:@"dur_bin_27"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_27"];
+  }
+
+  if ([classCopy hasDurBin28])
+  {
+    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin28")}];
+    [entryCopy setObject:v37 forKeyedSubscript:@"dur_bin_28"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_28"];
+  }
+
+  if ([classCopy hasDurBin29])
+  {
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin29")}];
+    [entryCopy setObject:v38 forKeyedSubscript:@"dur_bin_29"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_29"];
+  }
+
+  if ([classCopy hasDurBin30])
+  {
+    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin30")}];
+    [entryCopy setObject:v39 forKeyedSubscript:@"dur_bin_30"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_30"];
+  }
+
+  if ([classCopy hasDurBin31])
+  {
+    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "durBin31")}];
+    [entryCopy setObject:v40 forKeyedSubscript:@"dur_bin_31"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"dur_bin_31"];
   }
 }
 
-- (void)protocolHist2ForClass:(id)a3 forEntry:(id)a4
+- (void)protocolHist2ForClass:(id)class forEntry:(id)entry
 {
-  v16 = a3;
-  v5 = a4;
-  if ([v16 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v16, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v16 hasDuration])
+  if ([classCopy hasDuration])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v16, "duration")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
-  }
-
-  if ([v16 hasSubsId])
-  {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v16, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "duration")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
+  }
+
+  if ([classCopy hasSubsId])
+  {
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"subs_id"];
   }
 
   v9 = objc_opt_new();
-  [v5 setObject:v9 forKeyedSubscript:@"bin"];
+  [entryCopy setObject:v9 forKeyedSubscript:@"bin"];
 
   v10 = 35;
   do
   {
-    v11 = [v5 objectForKeyedSubscript:@"bin"];
+    v11 = [entryCopy objectForKeyedSubscript:@"bin"];
     [v11 addObject:&unk_282C12E88];
 
     --v10;
   }
 
   while (v10);
-  if ([v16 binsCount])
+  if ([classCopy binsCount])
   {
     v12 = 0;
     do
     {
-      v13 = [v16 binAtIndex:v12];
+      v13 = [classCopy binAtIndex:v12];
       if ([v13 hasIds] && objc_msgSend(v13, "hasValue"))
       {
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v13, "value")}];
-        v15 = [v5 objectForKeyedSubscript:@"bin"];
+        v15 = [entryCopy objectForKeyedSubscript:@"bin"];
         [v15 setObject:v14 atIndexedSubscript:{objc_msgSend(v13, "ids")}];
       }
 
       ++v12;
     }
 
-    while ([v16 binsCount] > v12);
+    while ([classCopy binsCount] > v12);
   }
 }
 
-- (void)protocolPerStateForClass:(id)a3 forEntry:(id)a4
+- (void)protocolPerStateForClass:(id)class forEntry:(id)entry
 {
-  v23 = a3;
-  v5 = a4;
-  if ([v23 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v23, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v23 hasDuration])
+  if ([classCopy hasDuration])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "duration")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
-  }
-
-  else
-  {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
-  }
-
-  if ([v23 hasSubsId])
-  {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v23, "subsId")}];
-    [v5 setObject:v8 forKeyedSubscript:@"subs_id"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "duration")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
   else
   {
-    [v5 setObject:&unk_282C12E88 forKeyedSubscript:@"subs_id"];
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"duration"];
+  }
+
+  if ([classCopy hasSubsId])
+  {
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "subsId")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"subs_id"];
+  }
+
+  else
+  {
+    [entryCopy setObject:&unk_282C12E88 forKeyedSubscript:@"subs_id"];
   }
 
   v9 = objc_opt_new();
-  [v5 setObject:v9 forKeyedSubscript:@"hist"];
+  [entryCopy setObject:v9 forKeyedSubscript:@"hist"];
 
-  if ([v23 histsCount])
+  if ([classCopy histsCount])
   {
     v10 = 0;
     do
     {
       v11 = objc_opt_new();
-      v12 = [v5 objectForKeyedSubscript:@"hist"];
+      v12 = [entryCopy objectForKeyedSubscript:@"hist"];
       [v12 addObject:v11];
 
       v13 = 8;
       do
       {
-        v14 = [v5 objectForKeyedSubscript:@"hist"];
+        v14 = [entryCopy objectForKeyedSubscript:@"hist"];
         v15 = [v14 objectAtIndexedSubscript:v10];
         [v15 addObject:&unk_282C12E88];
 
@@ -2096,15 +2096,15 @@ uint64_t __52__PLICEBBHardwareMessage_decodePayload_forMetricId___block_invoke_1
       ++v10;
     }
 
-    while ([v23 histsCount] > v10);
+    while ([classCopy histsCount] > v10);
   }
 
-  if ([v23 histsCount])
+  if ([classCopy histsCount])
   {
     v16 = 0;
     do
     {
-      v17 = [v23 histAtIndex:v16];
+      v17 = [classCopy histAtIndex:v16];
       if ([v17 binsCount])
       {
         v18 = 0;
@@ -2114,7 +2114,7 @@ uint64_t __52__PLICEBBHardwareMessage_decodePayload_forMetricId___block_invoke_1
           if ([v19 hasIds] && objc_msgSend(v19, "hasValue"))
           {
             v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v19, "value")}];
-            v21 = [v5 objectForKeyedSubscript:@"hist"];
+            v21 = [entryCopy objectForKeyedSubscript:@"hist"];
             v22 = [v21 objectAtIndexedSubscript:v16];
             [v22 setObject:v20 atIndexedSubscript:{objc_msgSend(v19, "ids")}];
           }
@@ -2128,198 +2128,198 @@ uint64_t __52__PLICEBBHardwareMessage_decodePayload_forMetricId___block_invoke_1
       ++v16;
     }
 
-    while ([v23 histsCount] > v16);
+    while ([classCopy histsCount] > v16);
   }
 }
 
-- (void)componentCarrierForClass:(id)a3 forEntry:(id)a4
+- (void)componentCarrierForClass:(id)class forEntry:(id)entry
 {
-  v21 = a3;
-  v5 = a4;
-  if ([v21 carrierInfosCount])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy carrierInfosCount])
   {
     v6 = 0;
     do
     {
-      v7 = [v21 carrierInfoAtIndex:v6];
+      v7 = [classCopy carrierInfoAtIndex:v6];
       if ([v7 hasDlEarfcn])
       {
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"dl_earfcn_%d", v6];
         v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "dlEarfcn")}];
-        [v5 setObject:v9 forKeyedSubscript:v8];
+        [entryCopy setObject:v9 forKeyedSubscript:v8];
       }
 
       if ([v7 hasDlBandwidth])
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"dl_bandwidth_%d", v6];
         v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "dlBandwidth")}];
-        [v5 setObject:v11 forKeyedSubscript:v10];
+        [entryCopy setObject:v11 forKeyedSubscript:v10];
       }
 
       if ([v7 hasDlRfBand])
       {
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"dl_rf_band_%d", v6];
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "dlRfBand")}];
-        [v5 setObject:v13 forKeyedSubscript:v12];
+        [entryCopy setObject:v13 forKeyedSubscript:v12];
       }
 
       ++v6;
     }
 
-    while ([v21 carrierInfosCount] > v6);
+    while ([classCopy carrierInfosCount] > v6);
   }
 
-  if ([v21 hasTimestamp])
+  if ([classCopy hasTimestamp])
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v21, "timestamp")}];
-    [v5 setObject:v14 forKeyedSubscript:@"bbtimestamp"];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v14 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v21 hasPccEarfcn])
+  if ([classCopy hasPccEarfcn])
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v21, "pccEarfcn")}];
-    [v5 setObject:v15 forKeyedSubscript:@"pcc_earfcn"];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "pccEarfcn")}];
+    [entryCopy setObject:v15 forKeyedSubscript:@"pcc_earfcn"];
   }
 
-  if ([v21 hasScc0Earfcn])
+  if ([classCopy hasScc0Earfcn])
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v21, "scc0Earfcn")}];
-    [v5 setObject:v16 forKeyedSubscript:@"scc0_earfcn"];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "scc0Earfcn")}];
+    [entryCopy setObject:v16 forKeyedSubscript:@"scc0_earfcn"];
   }
 
-  if ([v21 hasScc1Earfcn])
+  if ([classCopy hasScc1Earfcn])
   {
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v21, "scc1Earfcn")}];
-    [v5 setObject:v17 forKeyedSubscript:@"scc1_earfcn"];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "scc1Earfcn")}];
+    [entryCopy setObject:v17 forKeyedSubscript:@"scc1_earfcn"];
   }
 
-  if ([v21 hasPccBandwidth])
+  if ([classCopy hasPccBandwidth])
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v21, "pccBandwidth")}];
-    [v5 setObject:v18 forKeyedSubscript:@"pcc_bandwidth"];
+    v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(classCopy, "pccBandwidth")}];
+    [entryCopy setObject:v18 forKeyedSubscript:@"pcc_bandwidth"];
   }
 
-  if ([v21 hasScc0Bandwidth])
+  if ([classCopy hasScc0Bandwidth])
   {
-    v19 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v21, "scc0Bandwidth")}];
-    [v5 setObject:v19 forKeyedSubscript:@"scc0_bandwidth"];
+    v19 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(classCopy, "scc0Bandwidth")}];
+    [entryCopy setObject:v19 forKeyedSubscript:@"scc0_bandwidth"];
   }
 
-  if ([v21 hasScc1Bandwidth])
+  if ([classCopy hasScc1Bandwidth])
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v21, "scc1Bandwidth")}];
-    [v5 setObject:v20 forKeyedSubscript:@"scc1_bandwidth"];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(classCopy, "scc1Bandwidth")}];
+    [entryCopy setObject:v20 forKeyedSubscript:@"scc1_bandwidth"];
   }
 }
 
-- (void)duplexModeForClass:(id)a3 forEntry:(id)a4
+- (void)duplexModeForClass:(id)class forEntry:(id)entry
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v8 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v8, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "isInTddMode")}];
-  [v5 setObject:v7 forKeyedSubscript:@"is_in_tdd_mode"];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(classCopy, "isInTddMode")}];
+  [entryCopy setObject:v7 forKeyedSubscript:@"is_in_tdd_mode"];
 }
 
-- (void)pdcchStateStatsFor:(id)a3 forEntry:(id)a4
+- (void)pdcchStateStatsFor:(id)for forEntry:(id)entry
 {
-  v17 = a3;
-  v5 = a4;
-  if ([v17 hasTimestamp])
+  forCopy = for;
+  entryCopy = entry;
+  if ([forCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v17, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(forCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v17 hasDurationMs])
+  if ([forCopy hasDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v17, "durationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(forCopy, "durationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
-  if ([v17 pccPdcchStatesCount])
+  if ([forCopy pccPdcchStatesCount])
   {
     v8 = 0;
     do
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"pcc_%d", v8];
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v17, "pccPdcchStateAtIndex:", v8)}];
-      [v5 setObject:v10 forKeyedSubscript:v9];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(forCopy, "pccPdcchStateAtIndex:", v8)}];
+      [entryCopy setObject:v10 forKeyedSubscript:v9];
 
       ++v8;
     }
 
-    while ([v17 pccPdcchStatesCount] > v8);
+    while ([forCopy pccPdcchStatesCount] > v8);
   }
 
-  if ([v17 scc0PdcchStatesCount])
+  if ([forCopy scc0PdcchStatesCount])
   {
     v11 = 0;
     do
     {
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"scc0_%d", v11];
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v17, "scc0PdcchStateAtIndex:", v11)}];
-      [v5 setObject:v13 forKeyedSubscript:v12];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(forCopy, "scc0PdcchStateAtIndex:", v11)}];
+      [entryCopy setObject:v13 forKeyedSubscript:v12];
 
       ++v11;
     }
 
-    while ([v17 scc0PdcchStatesCount] > v11);
+    while ([forCopy scc0PdcchStatesCount] > v11);
   }
 
-  if ([v17 scc1PdcchStatesCount])
+  if ([forCopy scc1PdcchStatesCount])
   {
     v14 = 0;
     do
     {
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"scc1_%d", v14];
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v17, "scc1PdcchStateAtIndex:", v14)}];
-      [v5 setObject:v16 forKeyedSubscript:v15];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(forCopy, "scc1PdcchStateAtIndex:", v14)}];
+      [entryCopy setObject:v16 forKeyedSubscript:v15];
 
       ++v14;
     }
 
-    while ([v17 scc1PdcchStatesCount] > v14);
+    while ([forCopy scc1PdcchStatesCount] > v14);
   }
 }
 
-- (void)cpcStatsForClass:(id)a3 forEntry:(id)a4
+- (void)cpcStatsForClass:(id)class forEntry:(id)entry
 {
-  v11 = a3;
-  v5 = a4;
-  if ([v11 hasTimestamp])
+  classCopy = class;
+  entryCopy = entry;
+  if ([classCopy hasTimestamp])
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "timestamp")}];
-    [v5 setObject:v6 forKeyedSubscript:@"bbtimestamp"];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(classCopy, "timestamp")}];
+    [entryCopy setObject:v6 forKeyedSubscript:@"bbtimestamp"];
   }
 
-  if ([v11 hasTotalDurationMs])
+  if ([classCopy hasTotalDurationMs])
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v11, "totalDurationMs")}];
-    [v5 setObject:v7 forKeyedSubscript:@"duration"];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "totalDurationMs")}];
+    [entryCopy setObject:v7 forKeyedSubscript:@"duration"];
   }
 
-  if ([v11 hasRxTxOffDurationMs])
+  if ([classCopy hasRxTxOffDurationMs])
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v11, "energy")}];
-    [v5 setObject:v8 forKeyedSubscript:@"rx_tx_off_duration_ms"];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "energy")}];
+    [entryCopy setObject:v8 forKeyedSubscript:@"rx_tx_off_duration_ms"];
   }
 
-  if ([v11 hasRxOnDurationMs])
+  if ([classCopy hasRxOnDurationMs])
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v11, "energy")}];
-    [v5 setObject:v9 forKeyedSubscript:@"rx_on_duration_ms"];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "energy")}];
+    [entryCopy setObject:v9 forKeyedSubscript:@"rx_on_duration_ms"];
   }
 
-  if ([v11 hasEnergy])
+  if ([classCopy hasEnergy])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v11, "energy")}];
-    [v5 setObject:v10 forKeyedSubscript:@"energy"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(classCopy, "energy")}];
+    [entryCopy setObject:v10 forKeyedSubscript:@"energy"];
   }
 }
 

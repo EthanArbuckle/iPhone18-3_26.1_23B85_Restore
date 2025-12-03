@@ -1,11 +1,11 @@
 @interface ToolbarStyleButtonBase
-- (_TtC5Books22ToolbarStyleButtonBase)initWithCoder:(id)a3;
-- (void)didHover:(id)a3;
+- (_TtC5Books22ToolbarStyleButtonBase)initWithCoder:(id)coder;
+- (void)didHover:(id)hover;
 @end
 
 @implementation ToolbarStyleButtonBase
 
-- (_TtC5Books22ToolbarStyleButtonBase)initWithCoder:(id)a3
+- (_TtC5Books22ToolbarStyleButtonBase)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books22ToolbarStyleButtonBase_isHovering) = 0;
   result = sub_1007A38A4();
@@ -13,14 +13,14 @@
   return result;
 }
 
-- (void)didHover:(id)a3
+- (void)didHover:(id)hover
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 state];
-  if ((v5 - 1) <= 3)
+  hoverCopy = hover;
+  selfCopy = self;
+  state = [hoverCopy state];
+  if ((state - 1) <= 3)
   {
-    (*((swift_isaMask & v6->super.super.super.super.super.isa) + 0x80))((3u >> ((v5 - 1) & 0xF)) & 1);
+    (*((swift_isaMask & selfCopy->super.super.super.super.super.isa) + 0x80))((3u >> ((state - 1) & 0xF)) & 1);
   }
 }
 

@@ -1,18 +1,18 @@
 @interface PBUIPortalReplicaView
 - (BOOL)_traitsArbiterActive;
-- (PBUIPortalReplicaView)initWithFrame:(CGRect)a3;
+- (PBUIPortalReplicaView)initWithFrame:(CGRect)frame;
 - (PBUIPosterReplicaPortalProviding)provider;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)setHidesSourceView:(BOOL)a3;
+- (void)setHidesSourceView:(BOOL)view;
 - (void)setNeedsProviderUpdate;
 - (void)setNeedsSourceUpdate;
-- (void)setProvider:(id)a3;
-- (void)setReason:(id)a3;
-- (void)setSubscribed:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setProvider:(id)provider;
+- (void)setReason:(id)reason;
+- (void)setSubscribed:(BOOL)subscribed;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PBUIPortalReplicaView
@@ -30,8 +30,8 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(PBUIPortalReplicaView *)self window];
-  [(PBUIPortalReplicaView *)self setSubscribed:v3 != 0];
+  window = [(PBUIPortalReplicaView *)self window];
+  [(PBUIPortalReplicaView *)self setSubscribed:window != 0];
 }
 
 - (void)dealloc
@@ -43,12 +43,12 @@
   [(PBUIPortalReplicaView *)&v3 dealloc];
 }
 
-- (PBUIPortalReplicaView)initWithFrame:(CGRect)a3
+- (PBUIPortalReplicaView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22.receiver = self;
   v22.super_class = PBUIPortalReplicaView;
   v7 = [(PBUIPortalReplicaView *)&v22 initWithFrame:?];
@@ -73,9 +73,9 @@
     [(PBUIPortalReplicaView *)v8 setShouldMatchWallpaperPosition:1];
     if (PBUIReplicaDebugModeIsEnabled())
     {
-      v12 = [[PBUIReplicaDebugView alloc] initWithFrame:x, y, width, height];
+      height = [[PBUIReplicaDebugView alloc] initWithFrame:x, y, width, height];
       debugView = v8->_debugView;
-      v8->_debugView = v12;
+      v8->_debugView = height;
 
       if ([(PBUIPortalReplicaView *)v8 _traitsArbiterActive])
       {
@@ -89,8 +89,8 @@
 
       [(PBUIReplicaDebugView *)v8->_debugView setTitle:v17];
       v18 = v8->_debugView;
-      v19 = [MEMORY[0x277D75348] blueColor];
-      v20 = [v19 colorWithAlphaComponent:0.4];
+      blueColor = [MEMORY[0x277D75348] blueColor];
+      v20 = [blueColor colorWithAlphaComponent:0.4];
       [(PBUIReplicaDebugView *)v18 setColor:v20];
 
       [(PBUIPortalReplicaView *)v8 addSubview:v8->_debugView];
@@ -106,20 +106,20 @@
   return v8;
 }
 
-- (void)setHidesSourceView:(BOOL)a3
+- (void)setHidesSourceView:(BOOL)view
 {
-  v3 = a3;
-  if ([(_UIPortalView *)self->_portalView hidesSourceView]!= a3)
+  viewCopy = view;
+  if ([(_UIPortalView *)self->_portalView hidesSourceView]!= view)
   {
     portalView = self->_portalView;
 
-    [(_UIPortalView *)portalView setHidesSourceView:v3];
+    [(_UIPortalView *)portalView setHidesSourceView:viewCopy];
   }
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v4 = [a3 copy];
+  v4 = [reason copy];
   reason = self->_reason;
   self->_reason = v4;
 
@@ -129,9 +129,9 @@
   [(PBUIReplicaDebugView *)debugView setTitle:v7];
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   v5 = BSEqualObjects();
 
@@ -147,9 +147,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   obj = [WeakRetained portalSourceForReplicaView:self];
 
-  v4 = [obj legibilitySettings];
+  legibilitySettings = [obj legibilitySettings];
   legibilitySettings = self->_legibilitySettings;
-  self->_legibilitySettings = v4;
+  self->_legibilitySettings = legibilitySettings;
 
   if ((BSEqualObjects() & 1) == 0)
   {
@@ -183,20 +183,20 @@
   }
 
 LABEL_9:
-  v12 = [obj targetView];
-  v13 = [(_UIPortalView *)self->_portalView sourceView];
+  targetView = [obj targetView];
+  sourceView = [(_UIPortalView *)self->_portalView sourceView];
   v14 = BSEqualObjects();
 
   if ((v14 & 1) == 0)
   {
     [(_UIPortalView *)self->_portalView setSourceView:0];
-    [(_UIPortalView *)self->_portalView setSourceView:v12];
+    [(_UIPortalView *)self->_portalView setSourceView:targetView];
     [(_UIPortalView *)self->_portalView setMatchesPosition:self->_shouldMatchWallpaperPosition];
   }
 
-  v15 = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
+  _isInAnimationBlockWithAnimationsEnabled = [MEMORY[0x277D75D18] _isInAnimationBlockWithAnimationsEnabled];
   [(PBUIPortalReplicaView *)self setNeedsLayout];
-  if (v15)
+  if (_isInAnimationBlockWithAnimationsEnabled)
   {
     [(PBUIPortalReplicaView *)self layoutIfNeeded];
   }
@@ -206,29 +206,29 @@ LABEL_9:
 {
   if (![(PBUIPortalReplicaView *)self _traitsArbiterActive])
   {
-    v15 = [(_UIPortalView *)self->_portalView sourceView];
-    if (v15)
+    sourceView = [(_UIPortalView *)self->_portalView sourceView];
+    if (sourceView)
     {
-      v3 = [(PBUIPortalReplicaView *)self superview];
+      superview = [(PBUIPortalReplicaView *)self superview];
 
-      if (v3)
+      if (superview)
       {
-        v4 = [v15 window];
-        v5 = [(PBUIPortalReplicaView *)self window];
+        window = [sourceView window];
+        window2 = [(PBUIPortalReplicaView *)self window];
 
-        if (v4 == v5)
+        if (window == window2)
         {
-          [v15 bounds];
+          [sourceView bounds];
           [(PBUIPortalReplicaView *)self setBounds:?];
-          [v15 center];
+          [sourceView center];
           [(PBUIPortalReplicaView *)self setCenter:?];
         }
       }
 
       if (self->_debugView)
       {
-        [v15 bounds];
-        [v15 convertRect:self toView:?];
+        [sourceView bounds];
+        [sourceView convertRect:self toView:?];
         v7 = v6;
         v9 = v8;
         v11 = v10;
@@ -283,12 +283,12 @@ LABEL_9:
   }
 }
 
-- (void)setSubscribed:(BOOL)a3
+- (void)setSubscribed:(BOOL)subscribed
 {
-  if (!self->_invalidated && self->_subscribed != a3)
+  if (!self->_invalidated && self->_subscribed != subscribed)
   {
-    self->_subscribed = a3;
-    if (a3)
+    self->_subscribed = subscribed;
+    if (subscribed)
     {
 
       [(PBUIPortalReplicaView *)self setNeedsProviderUpdate];
@@ -318,13 +318,13 @@ LABEL_9:
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (!v4 || (-[PBUIPortalReplicaView setSubscribed:](self, "setSubscribed:", 1), [v4 screen], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
+  windowCopy = window;
+  if (!windowCopy || (-[PBUIPortalReplicaView setSubscribed:](self, "setSubscribed:", 1), [windowCopy screen], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D759A0], "mainScreen"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
   {
-    v8 = [(_UIPortalView *)self->_portalView portalLayer];
-    v9 = v8;
+    portalLayer = [(_UIPortalView *)self->_portalView portalLayer];
+    v9 = portalLayer;
     v10 = 0;
   }
 
@@ -336,12 +336,12 @@ LABEL_9:
       [(PBUIPortalReplicaView *)self willMoveToWindow:v7];
     }
 
-    v8 = [(_UIPortalView *)self->_portalView portalLayer];
-    v9 = v8;
+    portalLayer = [(_UIPortalView *)self->_portalView portalLayer];
+    v9 = portalLayer;
     v10 = 1;
   }
 
-  [v8 setCrossDisplay:v10];
+  [portalLayer setCrossDisplay:v10];
 }
 
 - (PBUIPosterReplicaPortalProviding)provider

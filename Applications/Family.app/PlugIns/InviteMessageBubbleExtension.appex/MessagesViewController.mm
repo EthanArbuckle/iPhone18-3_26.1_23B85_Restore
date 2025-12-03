@@ -1,20 +1,20 @@
 @interface MessagesViewController
 - (BOOL)displaysAfterAppearance;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
-- (_TtC28InviteMessageBubbleExtension22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
+- (_TtC28InviteMessageBubbleExtension22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleFamilyDidUpdate;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willBecomeActiveWithConversation:(id)a3;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willBecomeActiveWithConversation:(id)conversation;
 @end
 
 @implementation MessagesViewController
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_10000235C(width);
   v6 = v5;
   v8 = v7;
@@ -26,31 +26,31 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100002AE0(a3);
+  selfCopy = self;
+  sub_100002AE0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100002CEC(a3);
+  selfCopy = self;
+  sub_100002CEC(disappear);
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_100002EF0(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_100002EF0(conversationCopy);
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_1000080B0(v5, v4);
+  selfCopy = self;
+  sub_1000080B0(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
@@ -62,24 +62,24 @@
   __chkstk_darwin(v3 - 8);
   v6 = &v11 - v5;
   v7 = *((swift_isaMask & self->super.super.super.super.super.isa) + 0xB0);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = type metadata accessor for InviteMessageDetails();
-  LOBYTE(v8) = (*(*(v9 - 8) + 48))(v6, 1, v9) != 1;
+  LOBYTE(selfCopy) = (*(*(v9 - 8) + 48))(v6, 1, v9) != 1;
   sub_100008800(v6, &qword_100034798, &qword_100029618);
-  return v8;
+  return selfCopy;
 }
 
 - (void)handleFamilyDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005658();
 }
 
-- (_TtC28InviteMessageBubbleExtension22MessagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC28InviteMessageBubbleExtension22MessagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000283EC();
     v7 = v6;
@@ -91,8 +91,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100005A90(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100005A90(v5, v7, bundle);
 }
 
 @end

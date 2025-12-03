@@ -1,61 +1,61 @@
 @interface SFUZipEntry
 - (BOOL)isBackedByFile;
 - (BOOL)isReadable;
-- (SFUZipEntry)initWithDataRepresentation:(id)a3 compressionMethod:(int)a4 compressedSize:(unint64_t)a5 uncompressedSize:(unint64_t)a6 offset:(unint64_t)a7 crc:(unsigned int)a8;
+- (SFUZipEntry)initWithDataRepresentation:(id)representation compressionMethod:(int)method compressedSize:(unint64_t)size uncompressedSize:(unint64_t)uncompressedSize offset:(unint64_t)offset crc:(unsigned int)crc;
 - (id)backingFilePath;
 - (id)data;
-- (id)initFromCentralFileHeader:(const char *)a3 dataRepresentation:(id)a4;
+- (id)initFromCentralFileHeader:(const char *)header dataRepresentation:(id)representation;
 - (id)inputStream;
 - (unint64_t)backingFileDataOffset;
 - (unint64_t)calculateEncodedLength;
 - (unint64_t)dataOffset;
-- (void)copyToFile:(id)a3;
+- (void)copyToFile:(id)file;
 - (void)dealloc;
-- (void)readZip64ExtraField:(const char *)a3 size:(unint64_t)a4;
-- (void)setCompressionFlags:(unsigned __int16)a3;
-- (void)setCryptoKey:(id)a3;
-- (void)setDataLength:(int64_t)a3;
+- (void)readZip64ExtraField:(const char *)field size:(unint64_t)size;
+- (void)setCompressionFlags:(unsigned __int16)flags;
+- (void)setCryptoKey:(id)key;
+- (void)setDataLength:(int64_t)length;
 @end
 
 @implementation SFUZipEntry
 
-- (id)initFromCentralFileHeader:(const char *)a3 dataRepresentation:(id)a4
+- (id)initFromCentralFileHeader:(const char *)header dataRepresentation:(id)representation
 {
   v6 = [(SFUZipEntry *)self init];
   if (v6)
   {
-    v6->mArchiveDataRepresentation = a4;
-    if (*(a3 + 2))
+    v6->mArchiveDataRepresentation = representation;
+    if (*(header + 2))
     {
       [SFUZipException raise:@"SFUZipCentralFileHeaderError" format:@"Encrypted files are not supported"];
     }
 
-    [(SFUZipEntry *)v6 setCompressionFlags:*(a3 + 3)];
-    v6->mCrc = *(a3 + 3);
-    v6->mCompressedSize = *(a3 + 4);
-    v6->mUncompressedSize = *(a3 + 5);
-    if (*(a3 + 15))
+    [(SFUZipEntry *)v6 setCompressionFlags:*(header + 3)];
+    v6->mCrc = *(header + 3);
+    v6->mCompressedSize = *(header + 4);
+    v6->mUncompressedSize = *(header + 5);
+    if (*(header + 15))
     {
       [SFUZipException raise:@"SFUZipCentralFileHeaderError" format:@"No multi-disk support"];
     }
 
-    v6->mOffset = *(a3 + 38);
+    v6->mOffset = *(header + 38);
   }
 
   return v6;
 }
 
-- (SFUZipEntry)initWithDataRepresentation:(id)a3 compressionMethod:(int)a4 compressedSize:(unint64_t)a5 uncompressedSize:(unint64_t)a6 offset:(unint64_t)a7 crc:(unsigned int)a8
+- (SFUZipEntry)initWithDataRepresentation:(id)representation compressionMethod:(int)method compressedSize:(unint64_t)size uncompressedSize:(unint64_t)uncompressedSize offset:(unint64_t)offset crc:(unsigned int)crc
 {
   v14 = [(SFUZipEntry *)self init];
   if (v14)
   {
-    v14->mArchiveDataRepresentation = a3;
-    v14->mCompressionMethod = a4;
-    v14->mCompressedSize = a5;
-    v14->mUncompressedSize = a6;
-    v14->mOffset = a7;
-    v14->mCrc = a8;
+    v14->mArchiveDataRepresentation = representation;
+    v14->mCompressionMethod = method;
+    v14->mCompressedSize = size;
+    v14->mUncompressedSize = uncompressedSize;
+    v14->mOffset = offset;
+    v14->mCrc = crc;
   }
 
   return v14;
@@ -70,32 +70,32 @@
 
 - (BOOL)isReadable
 {
-  v3 = [(SFUZipArchiveDataRepresentation *)self->mArchiveDataRepresentation isReadable];
-  if (v3)
+  isReadable = [(SFUZipArchiveDataRepresentation *)self->mArchiveDataRepresentation isReadable];
+  if (isReadable)
   {
-    LOBYTE(v3) = [(SFUZipEntry *)self dataOffset]!= 0;
+    LOBYTE(isReadable) = [(SFUZipEntry *)self dataOffset]!= 0;
   }
 
-  return v3;
+  return isReadable;
 }
 
 - (id)inputStream
 {
-  v3 = [(SFUZipEntry *)self dataOffset];
-  if (!v3)
+  dataOffset = [(SFUZipEntry *)self dataOffset];
+  if (!dataOffset)
   {
-    return v3;
+    return dataOffset;
   }
 
   if (self->mCryptoKey)
   {
-    v3 = [(SFUZipArchiveDataRepresentation *)self->mArchiveDataRepresentation inputStreamWithOffset:v3 length:self->mCompressedSize];
-    v4 = [[SFUCryptoInputStream alloc] initForDecryptionWithInputStream:v3 key:self->mCryptoKey];
+    dataOffset = [(SFUZipArchiveDataRepresentation *)self->mArchiveDataRepresentation inputStreamWithOffset:dataOffset length:self->mCompressedSize];
+    v4 = [[SFUCryptoInputStream alloc] initForDecryptionWithInputStream:dataOffset key:self->mCryptoKey];
     v5 = v4;
     mCompressionMethod = self->mCompressionMethod;
     if (mCompressionMethod == 1)
     {
-      v3 = [[SFUZipInflateInputStream alloc] initWithInput:v4];
+      dataOffset = [[SFUZipInflateInputStream alloc] initWithInput:v4];
     }
 
     else
@@ -120,13 +120,13 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    return v3;
+    return dataOffset;
   }
 
   v7 = self->mCompressionMethod;
   if (v7 == 1)
   {
-    v4 = [[SFUZipInflateInputStream alloc] initWithOffset:v3 end:v3 + self->mCompressedSize uncompressedSize:self->mUncompressedSize crc:self->mCrc dataRepresentation:self->mArchiveDataRepresentation];
+    v4 = [[SFUZipInflateInputStream alloc] initWithOffset:dataOffset end:dataOffset + self->mCompressedSize uncompressedSize:self->mUncompressedSize crc:self->mCrc dataRepresentation:self->mArchiveDataRepresentation];
 LABEL_19:
 
     return v4;
@@ -151,45 +151,45 @@ LABEL_19:
   }
 
   mArchiveDataRepresentation = self->mArchiveDataRepresentation;
-  v9 = [(SFUZipEntry *)self dataLength];
+  dataLength = [(SFUZipEntry *)self dataLength];
 
-  return [(SFUZipArchiveDataRepresentation *)mArchiveDataRepresentation inputStreamWithOffset:v3 length:v9];
+  return [(SFUZipArchiveDataRepresentation *)mArchiveDataRepresentation inputStreamWithOffset:dataOffset length:dataLength];
 }
 
 - (id)data
 {
-  v3 = [(SFUZipEntry *)self dataLength];
-  if (v3 < 0)
+  dataLength = [(SFUZipEntry *)self dataLength];
+  if (dataLength < 0)
   {
-    [SFUZipException raise:@"SFUZipEntryError" format:@"Couldn't allocate NSMutableData with size: %qu", v3];
+    [SFUZipException raise:@"SFUZipEntryError" format:@"Couldn't allocate NSMutableData with size: %qu", dataLength];
   }
 
-  v4 = [NSMutableData dataWithLength:v3];
+  v4 = [NSMutableData dataWithLength:dataLength];
   if (!v4)
   {
-    [SFUZipException raise:@"SFUZipEntryError" format:@"Couldn't allocate NSMutableData with size: %qu", v3];
+    [SFUZipException raise:@"SFUZipEntryError" format:@"Couldn't allocate NSMutableData with size: %qu", dataLength];
   }
 
   v5 = objc_autoreleasePoolPush();
-  if ([-[SFUZipEntry inputStream](self "inputStream")] != v3)
+  if ([-[SFUZipEntry inputStream](self "inputStream")] != dataLength)
   {
-    [SFUZipException raise:@"SFUZipEntryError" format:@"Couldn't read data with size: %qu", v3];
+    [SFUZipException raise:@"SFUZipEntryError" format:@"Couldn't read data with size: %qu", dataLength];
   }
 
   objc_autoreleasePoolPop(v5);
   return v4;
 }
 
-- (void)copyToFile:(id)a3
+- (void)copyToFile:(id)file
 {
   v5 = objc_autoreleasePoolPush();
-  unlink([a3 fileSystemRepresentation]);
-  v6 = SFUFileOpen(a3, "w");
-  v7 = [(SFUDataRepresentation *)self bufferedInputStream];
+  unlink([file fileSystemRepresentation]);
+  v6 = SFUFileOpen(file, "w");
+  bufferedInputStream = [(SFUDataRepresentation *)self bufferedInputStream];
   while (1)
   {
     __ptr = 0;
-    v8 = [v7 readToOwnBuffer:&__ptr size:-1];
+    v8 = [bufferedInputStream readToOwnBuffer:&__ptr size:-1];
     if (!v8)
     {
       break;
@@ -201,7 +201,7 @@ LABEL_19:
     }
   }
 
-  [v7 close];
+  [bufferedInputStream close];
   fclose(v6);
   objc_autoreleasePoolPop(v5);
 }
@@ -268,50 +268,50 @@ LABEL_19:
   }
 }
 
-- (void)readZip64ExtraField:(const char *)a3 size:(unint64_t)a4
+- (void)readZip64ExtraField:(const char *)field size:(unint64_t)size
 {
-  v7 = a3;
+  fieldCopy = field;
   if (self->mUncompressedSize == 0xFFFFFFFF)
   {
-    if (a4 <= 7)
+    if (size <= 7)
     {
       [SFUZipException raise:@"SFUZipCentralFileHeaderError" format:@"Not enough room for Zip64 uncompressed size"];
     }
 
-    v7 = a3 + 8;
-    self->mUncompressedSize = *a3;
+    fieldCopy = field + 8;
+    self->mUncompressedSize = *field;
   }
 
-  v8 = &a3[a4];
+  v8 = &field[size];
   if (self->mCompressedSize == 0xFFFFFFFF)
   {
-    if (v7 + 8 > v8)
+    if (fieldCopy + 8 > v8)
     {
       [SFUZipException raise:@"SFUZipCentralFileHeaderError" format:@"Not enough room for Zip64 compressed size"];
     }
 
-    self->mCompressedSize = *v7;
-    v7 += 8;
+    self->mCompressedSize = *fieldCopy;
+    fieldCopy += 8;
   }
 
   if (self->mOffset == 0xFFFFFFFF)
   {
-    if (v7 + 8 > v8)
+    if (fieldCopy + 8 > v8)
     {
       [SFUZipException raise:@"SFUZipCentralFileHeaderError" format:@"Not enough room for Zip64 offset"];
     }
 
-    self->mOffset = *v7;
+    self->mOffset = *fieldCopy;
   }
 }
 
-- (void)setCompressionFlags:(unsigned __int16)a3
+- (void)setCompressionFlags:(unsigned __int16)flags
 {
-  if (a3 <= 25450)
+  if (flags <= 25450)
   {
-    if (a3)
+    if (flags)
     {
-      if (a3 != 8)
+      if (flags != 8)
       {
         goto LABEL_9;
       }
@@ -324,12 +324,12 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (a3 == 25452)
+  if (flags == 25452)
   {
     goto LABEL_8;
   }
 
-  if (a3 == 25451)
+  if (flags == 25451)
   {
 LABEL_7:
     self->mCompressionMethod = 0;
@@ -340,19 +340,19 @@ LABEL_9:
   [SFUZipException raise:@"SFUZipCentralFileHeaderError" format:@"Unsupported compression method"];
 }
 
-- (void)setCryptoKey:(id)a3
+- (void)setCryptoKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
 
-  self->mCryptoKey = a3;
+  self->mCryptoKey = key;
 }
 
-- (void)setDataLength:(int64_t)a3
+- (void)setDataLength:(int64_t)length
 {
   if (self->mCryptoKey)
   {
     self->mHasEncodedLength = 0;
-    self->mUncompressedSize = a3;
+    self->mUncompressedSize = length;
   }
 
   else

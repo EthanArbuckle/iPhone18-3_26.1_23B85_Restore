@@ -1,5 +1,5 @@
 @interface SGSuggestionPresenter
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (NSArray)suggestions;
 - (SGBannerProtocol)banner;
 - (SGSuggestionPresenter)init;
@@ -7,36 +7,36 @@
 - (id)_presentedControllerCancelButtonItem;
 - (id)_presentedControllerDoneButtonItem;
 - (id)_presentingViewController;
-- (id)_sortSuggestionByCategoryUsing:(id)a3;
+- (id)_sortSuggestionByCategoryUsing:(id)using;
 - (id)_viewControllerForPresentingFromBanner;
-- (id)icsPreviewControllerForData:(id)a3 andEventStore:(id)a4;
+- (id)icsPreviewControllerForData:(id)data andEventStore:(id)store;
 - (id)tableViewController;
 - (int64_t)_bannerAccessoryType;
 - (void)_bannerPrimaryAction;
-- (void)_dismissViewControllerAnimated:(BOOL)a3;
+- (void)_dismissViewControllerAnimated:(BOOL)animated;
 - (void)_filterSuggestions;
-- (void)_listDidChangeNotification:(id)a3;
-- (void)_presentModalViewController:(id)a3 fromSourceView:(id)a4;
-- (void)_presentModalViewControllerFromButton:(id)a3;
+- (void)_listDidChangeNotification:(id)notification;
+- (void)_presentModalViewController:(id)controller fromSourceView:(id)view;
+- (void)_presentModalViewControllerFromButton:(id)button;
 - (void)_removeBanner;
 - (void)_restoreSuggestions;
 - (void)_updateBanner;
-- (void)addSuggestion:(id)a3;
+- (void)addSuggestion:(id)suggestion;
 - (void)dealloc;
 - (void)dismissAllSuggestions;
-- (void)dismissICSPreviewController:(id)a3;
-- (void)dismissViewController:(id)a3;
-- (void)presentViewController:(id)a3;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)dismissICSPreviewController:(id)controller;
+- (void)dismissViewController:(id)controller;
+- (void)presentViewController:(id)controller;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)reloadSuggestionsFromSearchableItems;
-- (void)removeSuggestion:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSuggestions:(id)a3;
-- (void)setWantsToShowBanner:(BOOL)a3;
-- (void)suggestion:(id)a3 actionFinished:(BOOL)a4;
+- (void)removeSuggestion:(id)suggestion;
+- (void)setDelegate:(id)delegate;
+- (void)setSuggestions:(id)suggestions;
+- (void)setWantsToShowBanner:(BOOL)banner;
+- (void)suggestion:(id)suggestion actionFinished:(BOOL)finished;
 - (void)suggestionBatchDismissal;
-- (void)suggestionWasUpdated:(id)a3;
+- (void)suggestionWasUpdated:(id)updated;
 @end
 
 @implementation SGSuggestionPresenter
@@ -48,61 +48,61 @@
   return WeakRetained;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v8 = a3;
-  v4 = [(SGSuggestionPresenter *)self delegate];
+  dismissCopy = dismiss;
+  delegate = [(SGSuggestionPresenter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SGSuggestionPresenter *)self delegate];
-    v7 = [v8 presentedViewController];
-    [v6 suggestionPresenter:self didDismissViewController:v7];
+    delegate2 = [(SGSuggestionPresenter *)self delegate];
+    presentedViewController = [dismissCopy presentedViewController];
+    [delegate2 suggestionPresenter:self didDismissViewController:presentedViewController];
   }
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [(SGSuggestionPresenter *)self delegate];
+  dismissCopy = dismiss;
+  delegate = [(SGSuggestionPresenter *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SGSuggestionPresenter *)self delegate];
-    v8 = [v4 presentedViewController];
-    [v7 suggestionPresenter:self willDismissViewController:v8];
+    delegate2 = [(SGSuggestionPresenter *)self delegate];
+    presentedViewController = [dismissCopy presentedViewController];
+    [delegate2 suggestionPresenter:self willDismissViewController:presentedViewController];
   }
 
   return 1;
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v10 = [a3 presentedViewController];
+  presentedViewController = [controller presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v10 topViewController];
+    topViewController = [presentedViewController topViewController];
 
-    v10 = v7;
+    presentedViewController = topViewController;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4 == -1 || a4 == 7)
+    if (style == -1 || style == 7)
     {
-      v8 = [v10 navigationItem];
-      [v8 setRightBarButtonItem:0];
+      navigationItem = [presentedViewController navigationItem];
+      [navigationItem setRightBarButtonItem:0];
     }
 
     else
     {
-      v8 = [(SGSuggestionPresenter *)self _presentedControllerDoneButtonItem];
-      v9 = [v10 navigationItem];
-      [v9 setRightBarButtonItem:v8];
+      navigationItem = [(SGSuggestionPresenter *)self _presentedControllerDoneButtonItem];
+      navigationItem2 = [presentedViewController navigationItem];
+      [navigationItem2 setRightBarButtonItem:navigationItem];
     }
   }
 }
@@ -121,19 +121,19 @@
   return v2;
 }
 
-- (void)_dismissViewControllerAnimated:(BOOL)a3
+- (void)_dismissViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self->_presentedViewController presentingViewController];
-  if (v5)
+  animatedCopy = animated;
+  presentingViewController = [(UIViewController *)self->_presentedViewController presentingViewController];
+  if (presentingViewController)
   {
-    v6 = [(SGSuggestionPresenter *)self delegate];
+    delegate = [(SGSuggestionPresenter *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(SGSuggestionPresenter *)self delegate];
-      [v8 suggestionPresenter:self willDismissViewController:self->_presentedViewController];
+      delegate2 = [(SGSuggestionPresenter *)self delegate];
+      [delegate2 suggestionPresenter:self willDismissViewController:self->_presentedViewController];
     }
 
     v9[0] = MEMORY[0x1E69E9820];
@@ -141,7 +141,7 @@
     v9[2] = __56__SGSuggestionPresenter__dismissViewControllerAnimated___block_invoke;
     v9[3] = &unk_1E7CD96B8;
     v9[4] = self;
-    [v5 dismissViewControllerAnimated:v3 completion:v9];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v9];
   }
 }
 
@@ -157,25 +157,25 @@ void __56__SGSuggestionPresenter__dismissViewControllerAnimated___block_invoke(u
   }
 }
 
-- (void)_presentModalViewController:(id)a3 fromSourceView:(id)a4
+- (void)_presentModalViewController:(id)controller fromSourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = controllerCopy;
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
-      v9 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-      v10 = [v8 view];
-      [v10 setBackgroundColor:v9];
+      v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:controllerCopy];
+      systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+      view = [v8 view];
+      [view setBackgroundColor:systemGroupedBackgroundColor];
 
       v11 = NSClassFromString(&cfstr_Remremindercre.isa);
       v12 = NSClassFromString(&cfstr_Pkaddpassesvie.isa);
@@ -186,47 +186,47 @@ void __56__SGSuggestionPresenter__dismissViewControllerAnimated___block_invoke(u
         [v8 setNavigationBarHidden:1];
       }
 
-      v6 = v8;
+      controllerCopy = v8;
     }
 
     [v8 setModalPresentationStyle:7];
   }
 
-  objc_storeStrong(&self->_presentedViewController, v6);
-  v15 = [v6 popoverPresentationController];
-  [v15 setDelegate:self];
-  if (!v7)
+  objc_storeStrong(&self->_presentedViewController, controllerCopy);
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
+  if (!viewCopy)
   {
-    v7 = [(SGSuggestionPresenter *)self banner];
+    viewCopy = [(SGSuggestionPresenter *)self banner];
   }
 
-  [v15 setSourceView:v7];
-  v16 = [(SGSuggestionPresenter *)self banner];
-  [v16 popoverSourceRect];
+  [popoverPresentationController setSourceView:viewCopy];
+  banner = [(SGSuggestionPresenter *)self banner];
+  [banner popoverSourceRect];
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v7 actionButtonLeadingEdgeOffset];
-  [v15 setSourceRect:{v20 - v23, v18, v20, v22}];
-  v24 = [(SGSuggestionPresenter *)self delegate];
+  [viewCopy actionButtonLeadingEdgeOffset];
+  [popoverPresentationController setSourceRect:{v20 - v23, v18, v20, v22}];
+  delegate = [(SGSuggestionPresenter *)self delegate];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(SGSuggestionPresenter *)self delegate];
-    [v26 suggestionPresenter:self willPresentViewController:v6];
+    delegate2 = [(SGSuggestionPresenter *)self delegate];
+    [delegate2 suggestionPresenter:self willPresentViewController:controllerCopy];
   }
 
-  v27 = [(SGSuggestionPresenter *)self _presentingViewController];
+  _presentingViewController = [(SGSuggestionPresenter *)self _presentingViewController];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___block_invoke;
   v29[3] = &unk_1E7CD9668;
   v29[4] = self;
-  v30 = v6;
-  v28 = v6;
-  [v27 presentViewController:v28 animated:1 completion:v29];
+  v30 = controllerCopy;
+  v28 = controllerCopy;
+  [_presentingViewController presentViewController:v28 animated:1 completion:v29];
 }
 
 void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___block_invoke(uint64_t a1)
@@ -241,55 +241,55 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
   }
 }
 
-- (void)_presentModalViewControllerFromButton:(id)a3
+- (void)_presentModalViewControllerFromButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SGSuggestionPresenter *)self banner];
-  [(SGSuggestionPresenter *)self _presentModalViewController:v4 fromSourceView:v5];
+  buttonCopy = button;
+  banner = [(SGSuggestionPresenter *)self banner];
+  [(SGSuggestionPresenter *)self _presentModalViewController:buttonCopy fromSourceView:banner];
 }
 
 - (id)_presentingViewController
 {
-  v3 = [(SGSuggestionPresenter *)self delegate];
-  v4 = [v3 viewControllerForPresentingFromBannerByPresenter:self];
+  delegate = [(SGSuggestionPresenter *)self delegate];
+  v4 = [delegate viewControllerForPresentingFromBannerByPresenter:self];
 
   return v4;
 }
 
 - (id)_viewControllerForPresentingFromBanner
 {
-  v3 = [(SGSuggestionPresenter *)self delegate];
-  v4 = [v3 viewControllerForPresentingFromBannerByPresenter:self];
+  delegate = [(SGSuggestionPresenter *)self delegate];
+  v4 = [delegate viewControllerForPresentingFromBannerByPresenter:self];
 
   return v4;
 }
 
-- (void)suggestionWasUpdated:(id)a3
+- (void)suggestionWasUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__SGSuggestionPresenter_suggestionWasUpdated___block_invoke;
   v6[3] = &unk_1E7CD9668;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatedCopy;
+  v5 = updatedCopy;
   runOnMainThread(v6);
 }
 
-- (void)suggestion:(id)a3 actionFinished:(BOOL)a4
+- (void)suggestion:(id)suggestion actionFinished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
-    [(SGSuggestionPresenter *)self removeSuggestion:a3];
+    [(SGSuggestionPresenter *)self removeSuggestion:suggestion];
   }
 }
 
-- (void)dismissViewController:(id)a3
+- (void)dismissViewController:(id)controller
 {
   if (_suggestionViewControllerPresenter)
   {
-    [_suggestionViewControllerPresenter dismissViewController:a3];
+    [_suggestionViewControllerPresenter dismissViewController:controller];
   }
 
   else
@@ -298,20 +298,20 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
   }
 }
 
-- (void)dismissICSPreviewController:(id)a3
+- (void)dismissICSPreviewController:(id)controller
 {
   icsPreviewController = self->_icsPreviewController;
   if (icsPreviewController)
   {
-    v5 = [(EKICSPreviewController *)icsPreviewController viewController];
-    [(SGSuggestionPresenter *)self dismissViewController:v5];
+    viewController = [(EKICSPreviewController *)icsPreviewController viewController];
+    [(SGSuggestionPresenter *)self dismissViewController:viewController];
   }
 }
 
-- (id)icsPreviewControllerForData:(id)a3 andEventStore:(id)a4
+- (id)icsPreviewControllerForData:(id)data andEventStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  storeCopy = store;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -330,7 +330,7 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
 
   v9 = v8;
   _Block_object_dispose(&v16, 8);
-  v10 = [[v8 alloc] initWithData:v6 eventStore:v7];
+  v10 = [[v8 alloc] initWithData:dataCopy eventStore:storeCopy];
   icsPreviewController = self->_icsPreviewController;
   self->_icsPreviewController = v10;
 
@@ -340,13 +340,13 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
   return v12;
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   if (_suggestionViewControllerPresenter)
   {
-    [_suggestionViewControllerPresenter presentViewController:v4];
+    [_suggestionViewControllerPresenter presentViewController:controllerCopy];
   }
 
   else
@@ -354,22 +354,22 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SGSuggestionPresenter *)self _presentedControllerCancelButtonItem];
-      v8[0] = v5;
+      _presentedControllerCancelButtonItem = [(SGSuggestionPresenter *)self _presentedControllerCancelButtonItem];
+      v8[0] = _presentedControllerCancelButtonItem;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-      v7 = [v4 navigationItem];
-      [v7 setLeftBarButtonItems:v6];
+      navigationItem = [controllerCopy navigationItem];
+      [navigationItem setLeftBarButtonItems:v6];
     }
 
-    [(SGSuggestionPresenter *)self _presentModalViewControllerFromButton:v4];
+    [(SGSuggestionPresenter *)self _presentModalViewControllerFromButton:controllerCopy];
   }
 }
 
 - (void)_updateBanner
 {
   v152 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   bannerPrimaryAction = self->_bannerPrimaryAction;
   self->_bannerPrimaryAction = 0;
@@ -403,57 +403,57 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
     *buf = 134349312;
     v149 = v7;
     v150 = 1024;
-    v151 = v4 == 6;
+    v151 = userInterfaceIdiom == 6;
     _os_log_impl(&dword_1B8182000, v11, OS_LOG_TYPE_DEFAULT, "SGSuggestionPresenter - Banner update initiated with %{public}lu item(s) Banner For Vision: %{BOOL}d", buf, 0x12u);
   }
 
-  v12 = [(SGSuggestionPresenter *)self banner];
-  [v12 setSuggestionStore:self->_suggestionStore];
+  banner = [(SGSuggestionPresenter *)self banner];
+  [banner setSuggestionStore:self->_suggestionStore];
   if (!v7)
   {
     goto LABEL_175;
   }
 
-  v121 = v12;
+  v121 = banner;
   if (v7 != 1)
   {
-    v20 = objc_opt_new();
+    suggestionAttributedSubtitle = objc_opt_new();
     v21 = objc_opt_new();
     v22 = objc_opt_new();
     if ([(SGList *)self->_suggestionStore count])
     {
       v119 = v22;
       v122 = v21;
-      v123 = 0;
+      suggestionCategoryBackgroundColor = 0;
       v23 = 0;
-      v125 = 0;
-      v127 = 0;
+      suggestionCategoryBackgroundVisualEffectView = 0;
+      suggestionCategoryDivider = 0;
       v24 = 6;
-      v129 = self;
+      selfCopy = self;
       do
       {
         v25 = [(SGList *)self->_suggestionStore objectAtIndexedSubscript:v23];
-        v26 = [v25 items];
+        items = [v25 items];
 
         v27 = [(SGList *)self->_suggestionStore objectAtIndexedSubscript:v23];
-        v28 = [v27 category];
+        category = [v27 category];
 
-        v29 = [v28 suggestionCategoryTitle];
-        v30 = v20;
-        [v20 addObject:v29];
+        suggestionCategoryTitle = [category suggestionCategoryTitle];
+        v30 = suggestionAttributedSubtitle;
+        [suggestionAttributedSubtitle addObject:suggestionCategoryTitle];
 
-        v31 = [v28 suggestionCategoryId];
+        suggestionCategoryId = [category suggestionCategoryId];
         v32 = &unk_1F3016430;
-        if (([v31 isEqualToString:@"com.apple.suggestions.SGContactSuggestion"] & 1) == 0)
+        if (([suggestionCategoryId isEqualToString:@"com.apple.suggestions.SGContactSuggestion"] & 1) == 0)
         {
           v32 = &unk_1F3016448;
-          if (([v31 isEqualToString:@"com.apple.suggestions.SGEventSuggestion"] & 1) == 0)
+          if (([suggestionCategoryId isEqualToString:@"com.apple.suggestions.SGEventSuggestion"] & 1) == 0)
           {
             v32 = &unk_1F3016460;
-            if (([v31 isEqualToString:@"com.apple.suggestions.SGReminderSuggestion"] & 1) == 0)
+            if (([suggestionCategoryId isEqualToString:@"com.apple.suggestions.SGReminderSuggestion"] & 1) == 0)
             {
               v32 = &unk_1F3016478;
-              if (([v31 isEqualToString:@"com.apple.suggestions.SGRadarSuggestion"] & 1) == 0)
+              if (([suggestionCategoryId isEqualToString:@"com.apple.suggestions.SGRadarSuggestion"] & 1) == 0)
               {
                 v33 = sgLogHandle();
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -470,48 +470,48 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
 
         if (([v32 isEqual:&unk_1F3016418] & 1) == 0)
         {
-          v34 = [v28 suggestionCategoryLocalizedCountOfItems:v26];
+          v34 = [category suggestionCategoryLocalizedCountOfItems:items];
           [v122 setObject:v34 forKeyedSubscript:v32];
 
-          v35 = [v28 suggestionCategoryImage];
-          if (v35)
+          suggestionCategoryImage = [category suggestionCategoryImage];
+          if (suggestionCategoryImage)
           {
-            [v119 setObject:v35 forKeyedSubscript:v32];
+            [v119 setObject:suggestionCategoryImage forKeyedSubscript:v32];
           }
 
-          if ((objc_opt_respondsToSelector() & 1) != 0 && !v125)
+          if ((objc_opt_respondsToSelector() & 1) != 0 && !suggestionCategoryBackgroundVisualEffectView)
           {
-            v125 = [v28 suggestionCategoryBackgroundVisualEffectView];
+            suggestionCategoryBackgroundVisualEffectView = [category suggestionCategoryBackgroundVisualEffectView];
           }
 
-          v36 = 0;
+          suggestionCategoryActionButtonType = 0;
           if ((objc_opt_respondsToSelector() & 1) != 0 && v24 == 6)
           {
-            v36 = [v28 suggestionCategoryActionButtonType];
+            suggestionCategoryActionButtonType = [category suggestionCategoryActionButtonType];
           }
 
-          if ((objc_opt_respondsToSelector() & 1) != 0 && !v123)
+          if ((objc_opt_respondsToSelector() & 1) != 0 && !suggestionCategoryBackgroundColor)
           {
-            v123 = [v28 suggestionCategoryBackgroundColor];
+            suggestionCategoryBackgroundColor = [category suggestionCategoryBackgroundColor];
           }
 
-          if ((objc_opt_respondsToSelector() & 1) != 0 && !v127)
+          if ((objc_opt_respondsToSelector() & 1) != 0 && !suggestionCategoryDivider)
           {
-            v127 = [v28 suggestionCategoryDivider];
+            suggestionCategoryDivider = [category suggestionCategoryDivider];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v37 = [v28 suggestionCategorySupportsBatchDismissal];
+            suggestionCategorySupportsBatchDismissal = [category suggestionCategorySupportsBatchDismissal];
           }
 
           else
           {
-            v37 = 0;
+            suggestionCategorySupportsBatchDismissal = 0;
           }
 
-          [v12 setSuggestionCategorySupportsBatchDismissal:v37];
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ([v28 suggestionCategoryIconSFSymbol], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+          [banner setSuggestionCategorySupportsBatchDismissal:suggestionCategorySupportsBatchDismissal];
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ([category suggestionCategoryIconSFSymbol], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v39 = v38;
             v138[0] = v38;
@@ -519,42 +519,42 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
             v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v138 count:2];
             [v121 setIconSFSymbols:v40];
 
-            v12 = v121;
+            banner = v121;
           }
 
           else
           {
-            [v12 setIconSFSymbols:0];
+            [banner setIconSFSymbols:0];
           }
 
-          v24 = v36;
+          v24 = suggestionCategoryActionButtonType;
         }
 
         ++v23;
-        self = v129;
-        v20 = v30;
+        self = selfCopy;
+        suggestionAttributedSubtitle = v30;
       }
 
-      while (v23 < [(SGList *)v129->_suggestionStore count]);
-      if (v123)
+      while (v23 < [(SGList *)selfCopy->_suggestionStore count]);
+      if (suggestionCategoryBackgroundColor)
       {
-        [v12 setBackgroundColor:v123];
+        [banner setBackgroundColor:suggestionCategoryBackgroundColor];
       }
 
-      if (v127)
+      if (suggestionCategoryDivider)
       {
-        [v12 setBannerDivider:v127];
+        [banner setBannerDivider:suggestionCategoryDivider];
       }
 
       v21 = v122;
-      if (v125)
+      if (suggestionCategoryBackgroundVisualEffectView)
       {
-        [v12 setBackgroundVisualEffectView:?];
+        [banner setBackgroundVisualEffectView:?];
       }
 
       else
       {
-        v125 = 0;
+        suggestionCategoryBackgroundVisualEffectView = 0;
       }
 
       v22 = v119;
@@ -562,40 +562,40 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
 
     else
     {
-      v125 = 0;
-      v127 = 0;
-      v123 = 0;
+      suggestionCategoryBackgroundVisualEffectView = 0;
+      suggestionCategoryDivider = 0;
+      suggestionCategoryBackgroundColor = 0;
       v24 = 6;
     }
 
     v46 = [(SGSuggestionPresenter *)self _sortSuggestionByCategoryUsing:v22];
-    [v12 setImages:v46];
+    [banner setImages:v46];
 
-    v47 = [(SGSuggestionPresenter *)self formatMixedCategoriesTitle:v20];
-    [v12 setTitle:v47];
+    v47 = [(SGSuggestionPresenter *)self formatMixedCategoriesTitle:suggestionAttributedSubtitle];
+    [banner setTitle:v47];
 
-    [v12 setAttributedSubtitle:0];
+    [banner setAttributedSubtitle:0];
     v48 = [(SGSuggestionPresenter *)self _sortSuggestionByCategoryUsing:v21];
     v49 = [(SGSuggestionPresenter *)self formatMixedCategoriesSubtitle:v48];
-    [v12 setSubtitle:v49];
+    [banner setSubtitle:v49];
 
-    [v12 setActionButtonType:v24];
-    [v12 setAccessoryType:1];
+    [banner setActionButtonType:v24];
+    [banner setAccessoryType:1];
     v50 = [(SGList *)self->_suggestionStore objectAtIndexedSubscript:0];
-    v51 = [v50 items];
-    v52 = [v51 firstObject];
-    v53 = [v52 suggestionDelegate];
-    [v121 setDelegate:v53];
+    items2 = [v50 items];
+    firstObject = [items2 firstObject];
+    suggestionDelegate = [firstObject suggestionDelegate];
+    [v121 setDelegate:suggestionDelegate];
 
-    v12 = v121;
+    banner = v121;
     v54 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
     v55 = [v54 localizedStringForKey:@"SuggestionsBannerButtonReview" value:&stru_1F3012140 table:0];
     [v121 setActionTitle:v55];
 
-    v56 = v22;
+    suggestionFeedbackAction = v22;
     [v121 setSuggestion:0];
-    v14 = v123;
-    v57 = v125;
+    v14 = suggestionCategoryBackgroundColor;
+    v57 = suggestionCategoryBackgroundVisualEffectView;
     goto LABEL_173;
   }
 
@@ -608,41 +608,41 @@ void __68__SGSuggestionPresenter__presentModalViewController_fromSourceView___bl
       v15 = [v13 objectAtIndexedSubscript:0];
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v15 suggestionBackgroundVisualEffectView];
-        if (v16)
+        suggestionBackgroundVisualEffectView = [v15 suggestionBackgroundVisualEffectView];
+        if (suggestionBackgroundVisualEffectView)
         {
-          [v12 setBackgroundVisualEffectView:v16];
+          [banner setBackgroundVisualEffectView:suggestionBackgroundVisualEffectView];
         }
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v15 suggestionBackgroundColor];
-        [v12 setBackgroundColor:v17];
+        suggestionBackgroundColor = [v15 suggestionBackgroundColor];
+        [banner setBackgroundColor:suggestionBackgroundColor];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v18 = [v15 suggestionDivider];
-        if (v18)
+        suggestionDivider = [v15 suggestionDivider];
+        if (suggestionDivider)
         {
-          [v12 setBannerDivider:v18];
+          [banner setBannerDivider:suggestionDivider];
         }
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v12 setActionButtonType:{objc_msgSend(v15, "suggestionActionButtonType")}];
-        if ([v12 actionButtonType])
+        [banner setActionButtonType:{objc_msgSend(v15, "suggestionActionButtonType")}];
+        if ([banner actionButtonType])
         {
-          v19 = [v12 actionButtonType];
-          if (v4 == 6)
+          actionButtonType = [banner actionButtonType];
+          if (userInterfaceIdiom == 6)
           {
             goto LABEL_97;
           }
 
 LABEL_94:
-          if (v19 == 5)
+          if (actionButtonType == 5)
           {
             goto LABEL_101;
           }
@@ -650,7 +650,7 @@ LABEL_94:
           goto LABEL_95;
         }
 
-        if (v4 != 6)
+        if (userInterfaceIdiom != 6)
         {
           goto LABEL_101;
         }
@@ -658,27 +658,27 @@ LABEL_94:
 
       else
       {
-        if (v4 != 6)
+        if (userInterfaceIdiom != 6)
         {
-          [v12 setActionButtonType:1];
-          if (![v12 actionButtonType])
+          [banner setActionButtonType:1];
+          if (![banner actionButtonType])
           {
             goto LABEL_101;
           }
 
-          v19 = [v12 actionButtonType];
+          actionButtonType = [banner actionButtonType];
           goto LABEL_94;
         }
 
-        [v12 setActionButtonType:2];
-        if ([v12 actionButtonType])
+        [banner setActionButtonType:2];
+        if ([banner actionButtonType])
         {
-          [v12 actionButtonType];
+          [banner actionButtonType];
         }
       }
 
 LABEL_97:
-      if (![v12 actionButtonType] || objc_msgSend(v12, "actionButtonType") == 5 || objc_msgSend(v12, "actionButtonType") == 3 || objc_msgSend(v12, "actionButtonType") == 4)
+      if (![banner actionButtonType] || objc_msgSend(banner, "actionButtonType") == 5 || objc_msgSend(banner, "actionButtonType") == 3 || objc_msgSend(banner, "actionButtonType") == 4)
       {
 LABEL_101:
         v70 = suggestionImage(v15);
@@ -687,12 +687,12 @@ LABEL_101:
         {
           v147 = v70;
           v72 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v147 count:1];
-          [v12 setImages:v72];
+          [banner setImages:v72];
         }
 
         else
         {
-          [v12 setImages:0];
+          [banner setImages:0];
         }
 
 LABEL_105:
@@ -702,47 +702,47 @@ LABEL_105:
           v74 = v73;
           v146 = v73;
           v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v146 count:1];
-          [v12 setImageSGViews:v75];
+          [banner setImageSGViews:v75];
         }
 
         else
         {
           v74 = 0;
-          [v12 setImageSGViews:0];
+          [banner setImageSGViews:0];
         }
 
-        v76 = [v15 suggestionTitle];
-        [v12 setTitle:v76];
+        suggestionTitle = [v15 suggestionTitle];
+        [banner setTitle:suggestionTitle];
 
         v77 = v15;
         if (objc_opt_respondsToSelector())
         {
-          v20 = [v77 suggestionAttributedSubtitle];
+          suggestionAttributedSubtitle = [v77 suggestionAttributedSubtitle];
 
-          if (v20)
+          if (suggestionAttributedSubtitle)
           {
-            [v12 setAttributedSubtitle:v20];
+            [banner setAttributedSubtitle:suggestionAttributedSubtitle];
 LABEL_116:
-            v80 = [v77 suggestionPrimaryAction];
+            suggestionPrimaryAction = [v77 suggestionPrimaryAction];
             v81 = self->_bannerPrimaryAction;
-            self->_bannerPrimaryAction = v80;
+            self->_bannerPrimaryAction = suggestionPrimaryAction;
 
             if (objc_opt_respondsToSelector())
             {
-              v82 = [v77 suggestionDismissAction];
+              suggestionDismissAction = [v77 suggestionDismissAction];
             }
 
             else
             {
-              v82 = 0;
+              suggestionDismissAction = 0;
             }
 
             v83 = self->_bannerDismissAction;
-            self->_bannerDismissAction = v82;
+            self->_bannerDismissAction = suggestionDismissAction;
 
             if (objc_opt_respondsToSelector())
             {
-              [v12 setProminentActionButton:{objc_msgSend(v77, "suggestionProminentActionButton")}];
+              [banner setProminentActionButton:{objc_msgSend(v77, "suggestionProminentActionButton")}];
             }
 
             if ((objc_opt_respondsToSelector() & 1) != 0 && ([v77 suggestionIconSFSymbol], (v84 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -750,37 +750,37 @@ LABEL_116:
               v21 = v84;
               v145 = v84;
               v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v145 count:1];
-              [v12 setIconSFSymbols:v85];
+              [banner setIconSFSymbols:v85];
             }
 
             else
             {
-              [v12 setIconSFSymbols:0];
+              [banner setIconSFSymbols:0];
               v21 = 0;
             }
 
-            v86 = [(SGSuggestionAction *)self->_bannerPrimaryAction title];
-            [v12 setActionTitle:v86];
+            title = [(SGSuggestionAction *)self->_bannerPrimaryAction title];
+            [banner setActionTitle:title];
 
-            [v12 setAccessoryType:self->_bannerDismissAction != 0];
-            [v12 setSuggestion:v77];
-            v87 = [v77 suggestionDelegate];
-            [v12 setDelegate:v87];
+            [banner setAccessoryType:self->_bannerDismissAction != 0];
+            [banner setSuggestion:v77];
+            suggestionDelegate2 = [v77 suggestionDelegate];
+            [banner setDelegate:suggestionDelegate2];
 
-            v127 = v77;
+            suggestionCategoryDivider = v77;
             if ((objc_opt_respondsToSelector() & 1) == 0)
             {
               v57 = v74;
 LABEL_174:
 
 LABEL_175:
-              [v12 reload];
+              [banner reload];
               [(SGSuggestionPresenter *)self setWantsToShowBanner:v7 != 0];
               goto LABEL_176;
             }
 
-            v56 = [v77 suggestionFeedbackAction];
-            [v12 setFeedbackAction:v56];
+            suggestionFeedbackAction = [v77 suggestionFeedbackAction];
+            [banner setFeedbackAction:suggestionFeedbackAction];
             v57 = v74;
 LABEL_173:
 
@@ -795,35 +795,35 @@ LABEL_173:
         v78 = v77;
         if (objc_opt_respondsToSelector())
         {
-          v79 = [v78 suggestionSubtitle];
+          suggestionSubtitle = [v78 suggestionSubtitle];
         }
 
         else
         {
-          v79 = 0;
+          suggestionSubtitle = 0;
         }
 
-        [v12 setSubtitle:v79];
-        v20 = 0;
+        [banner setSubtitle:suggestionSubtitle];
+        suggestionAttributedSubtitle = 0;
         goto LABEL_116;
       }
 
 LABEL_95:
-      [v12 setImages:0];
+      [banner setImages:0];
       goto LABEL_105;
     }
 
-    v41 = [v13 items];
+    items3 = [v13 items];
     v124 = v13;
-    v42 = [v13 category];
+    category2 = [v13 category];
     v43 = objc_opt_new();
     v21 = objc_opt_new();
     v44 = v43;
-    v126 = v42;
+    v126 = category2;
     if (objc_opt_respondsToSelector())
     {
-      v128 = [v42 suggestionCategoryCoalesceImages];
-      if (v128)
+      suggestionCategoryCoalesceImages = [category2 suggestionCategoryCoalesceImages];
+      if (suggestionCategoryCoalesceImages)
       {
         v45 = 1;
       }
@@ -836,7 +836,7 @@ LABEL_95:
 
     else
     {
-      LOBYTE(v128) = 0;
+      LOBYTE(suggestionCategoryCoalesceImages) = 0;
       v45 = 2;
     }
 
@@ -844,7 +844,7 @@ LABEL_95:
     v137 = 0u;
     v134 = 0u;
     v135 = 0u;
-    v58 = v41;
+    v58 = items3;
     v59 = [v58 countByEnumeratingWithState:&v134 objects:v144 count:16];
     if (v59)
     {
@@ -893,12 +893,12 @@ LABEL_80:
 
     else
     {
-      v65 = [v126 suggestionCategoryImage];
-      v66 = v65;
-      if (v65)
+      suggestionCategoryImage2 = [v126 suggestionCategoryImage];
+      v66 = suggestionCategoryImage2;
+      if (suggestionCategoryImage2)
       {
-        v143[0] = v65;
-        v143[1] = v65;
+        v143[0] = suggestionCategoryImage2;
+        v143[1] = suggestionCategoryImage2;
         v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v143 count:2];
         v68 = v121;
         [v121 setImages:v67];
@@ -974,23 +974,23 @@ LABEL_136:
 
     if ([v21 count] >= v45)
     {
-      v12 = v121;
+      banner = v121;
       [v121 setImageSGViews:v21];
       v97 = v126;
       goto LABEL_154;
     }
 
     v97 = v126;
-    v12 = v121;
+    banner = v121;
     if (objc_opt_respondsToSelector())
     {
-      v98 = [v126 suggestionCategoryImageSGView];
-      v99 = v98;
-      if (v128)
+      suggestionCategoryImageSGView = [v126 suggestionCategoryImageSGView];
+      v99 = suggestionCategoryImageSGView;
+      if (suggestionCategoryCoalesceImages)
       {
-        if (v98)
+        if (suggestionCategoryImageSGView)
         {
-          v140 = v98;
+          v140 = suggestionCategoryImageSGView;
           v100 = MEMORY[0x1E695DEC8];
           v101 = &v140;
           v102 = 1;
@@ -1000,90 +1000,90 @@ LABEL_153:
 
           v97 = v126;
 LABEL_154:
-          v104 = [v124 list];
-          if (v104 && (objc_opt_respondsToSelector() & 1) != 0)
+          list = [v124 list];
+          if (list && (objc_opt_respondsToSelector() & 1) != 0)
           {
             suggestionCategoryList = self->_suggestionCategoryList;
-            v106 = [v104 suggestionListTitle];
-            [(SGSuggestionCategoryList *)suggestionCategoryList setListTitle:v106];
+            suggestionListTitle = [list suggestionListTitle];
+            [(SGSuggestionCategoryList *)suggestionCategoryList setListTitle:suggestionListTitle];
 
             v97 = v126;
           }
 
           v107 = [v97 suggestionCategoryTitleForItems:v90];
-          [v12 setTitle:v107];
+          [banner setTitle:v107];
 
-          [v12 setAttributedSubtitle:0];
+          [banner setAttributedSubtitle:0];
           v108 = [v97 suggestionCategorySubtitleForItems:v90];
-          [v12 setSubtitle:v108];
+          [banner setSubtitle:v108];
 
-          [v12 setAccessoryType:{-[SGSuggestionPresenter _bannerAccessoryType](self, "_bannerAccessoryType")}];
-          v127 = v90;
-          v109 = [v90 firstObject];
-          v110 = [v109 suggestionDelegate];
-          [v12 setDelegate:v110];
+          [banner setAccessoryType:{-[SGSuggestionPresenter _bannerAccessoryType](self, "_bannerAccessoryType")}];
+          suggestionCategoryDivider = v90;
+          firstObject2 = [v90 firstObject];
+          suggestionDelegate3 = [firstObject2 suggestionDelegate];
+          [banner setDelegate:suggestionDelegate3];
 
           v111 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
           v112 = [v111 localizedStringForKey:@"SuggestionsBannerButtonReview" value:&stru_1F3012140 table:0];
-          [v12 setActionTitle:v112];
+          [banner setActionTitle:v112];
 
           v57 = v126;
-          [v12 setSuggestion:0];
+          [banner setSuggestion:0];
           v113 = objc_opt_respondsToSelector();
-          v114 = 0;
-          v20 = v44;
+          suggestionCategoryActionButtonType2 = 0;
+          suggestionAttributedSubtitle = v44;
           if (v113)
           {
-            v114 = [v126 suggestionCategoryActionButtonType];
+            suggestionCategoryActionButtonType2 = [v126 suggestionCategoryActionButtonType];
           }
 
-          [v12 setActionButtonType:v114];
+          [banner setActionButtonType:suggestionCategoryActionButtonType2];
           v14 = v124;
-          v56 = v120;
+          suggestionFeedbackAction = v120;
           if (objc_opt_respondsToSelector())
           {
-            v115 = [v126 suggestionCategoryBackgroundVisualEffectView];
-            if (v115)
+            suggestionCategoryBackgroundVisualEffectView2 = [v126 suggestionCategoryBackgroundVisualEffectView];
+            if (suggestionCategoryBackgroundVisualEffectView2)
             {
-              [v12 setBackgroundVisualEffectView:v115];
+              [banner setBackgroundVisualEffectView:suggestionCategoryBackgroundVisualEffectView2];
             }
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v116 = [v126 suggestionCategoryBackgroundColor];
-            [v12 setBackgroundColor:v116];
+            suggestionCategoryBackgroundColor2 = [v126 suggestionCategoryBackgroundColor];
+            [banner setBackgroundColor:suggestionCategoryBackgroundColor2];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v117 = [v126 suggestionCategoryDivider];
-            if (v117)
+            suggestionCategoryDivider2 = [v126 suggestionCategoryDivider];
+            if (suggestionCategoryDivider2)
             {
-              [v12 setBannerDivider:v117];
+              [banner setBannerDivider:suggestionCategoryDivider2];
             }
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v118 = [v126 suggestionCategorySupportsBatchDismissal];
+            suggestionCategorySupportsBatchDismissal2 = [v126 suggestionCategorySupportsBatchDismissal];
           }
 
           else
           {
-            v118 = 0;
+            suggestionCategorySupportsBatchDismissal2 = 0;
           }
 
-          [v12 setSuggestionCategorySupportsBatchDismissal:v118];
+          [banner setSuggestionCategorySupportsBatchDismissal:suggestionCategorySupportsBatchDismissal2];
 
           goto LABEL_173;
         }
       }
 
-      else if (v98)
+      else if (suggestionCategoryImageSGView)
       {
-        v139[0] = v98;
-        v139[1] = v98;
+        v139[0] = suggestionCategoryImageSGView;
+        v139[1] = suggestionCategoryImageSGView;
         v100 = MEMORY[0x1E695DEC8];
         v101 = v139;
         v102 = 2;
@@ -1105,8 +1105,8 @@ LABEL_176:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(SGSuggestionStore *)self->_suggestionStore suggestions];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  suggestions = [(SGSuggestionStore *)self->_suggestionStore suggestions];
+  v3 = [suggestions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1117,14 +1117,14 @@ LABEL_176:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(suggestions);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 suggestionCategory];
-        v9 = [v8 suggestionCategoryId];
+        suggestionCategory = [v7 suggestionCategory];
+        suggestionCategoryId = [suggestionCategory suggestionCategoryId];
 
-        if ([v9 isEqualToString:@"com.apple.suggestions.SGEventSuggestion"])
+        if ([suggestionCategoryId isEqualToString:@"com.apple.suggestions.SGEventSuggestion"])
         {
           v10 = getRealtimeSuggestion(v7);
           objc_opt_class();
@@ -1145,13 +1145,13 @@ LABEL_17:
           }
         }
 
-        else if ([v9 isEqualToString:@"CKCollaborationNoticeSuggestion"])
+        else if ([suggestionCategoryId isEqualToString:@"CKCollaborationNoticeSuggestion"])
         {
           goto LABEL_17;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [suggestions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -1167,19 +1167,19 @@ LABEL_18:
   return v11;
 }
 
-- (id)_sortSuggestionByCategoryUsing:(id)a3
+- (id)_sortSuggestionByCategoryUsing:(id)using
 {
-  v3 = a3;
+  usingCopy = using;
   v4 = objc_opt_new();
   for (i = 0; i != 5; ++i)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-    v7 = [v3 objectForKey:v6];
+    v7 = [usingCopy objectForKey:v6];
 
     if (v7)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-      v9 = [v3 objectForKey:v8];
+      v9 = [usingCopy objectForKey:v8];
       [v4 addObject:v9];
     }
   }
@@ -1237,8 +1237,8 @@ LABEL_18:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v3 = [(SGList *)self->_suggestionStore items];
-    v4 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    items = [(SGList *)self->_suggestionStore items];
+    v4 = [items countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (!v4)
     {
 LABEL_23:
@@ -1255,7 +1255,7 @@ LABEL_23:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         if ([*(*(&v22 + 1) + 8 * i) count])
@@ -1264,7 +1264,7 @@ LABEL_23:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [items countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -1275,8 +1275,8 @@ LABEL_23:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v3 = [(SGSuggestionStore *)self->_suggestionStore suggestions];
-      v9 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      items = [(SGSuggestionStore *)self->_suggestionStore suggestions];
+      v9 = [items countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1287,17 +1287,17 @@ LABEL_23:
           {
             if (*v19 != v11)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(items);
             }
 
             v13 = *(*(&v18 + 1) + 8 * j);
-            v14 = [v13 suggestionCategory];
-            v15 = [v14 suggestionCategoryId];
+            suggestionCategory = [v13 suggestionCategory];
+            suggestionCategoryId = [suggestionCategory suggestionCategoryId];
 
             v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.CoreSuggestionsUI"];
             v17 = [v16 localizedStringForKey:@"SuggestionsCategorySubscriptions" value:&stru_1F3012140 table:0];
 
-            if (v17 && ([v15 isEqualToString:v17] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"Subscriptions"))
+            if (v17 && ([suggestionCategoryId isEqualToString:v17] & 1) != 0 || objc_msgSend(suggestionCategoryId, "isEqualToString:", @"Subscriptions"))
             {
               [(SGSuggestionPresenter *)self _removeBanner];
               [(SGSuggestionPresenter *)self setWantsToShowBanner:0];
@@ -1305,7 +1305,7 @@ LABEL_23:
             }
           }
 
-          v10 = [v3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          v10 = [items countByEnumeratingWithState:&v18 objects:v26 count:16];
         }
 
         while (v10);
@@ -1330,13 +1330,13 @@ LABEL_23:
 
 - (void)reloadSuggestionsFromSearchableItems
 {
-  v3 = [(SGSuggestionPresenter *)self delegate];
+  delegate = [(SGSuggestionPresenter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SGSuggestionPresenter *)self delegate];
-    [v5 reloadSuggestionsFromSearchableItems];
+    delegate2 = [(SGSuggestionPresenter *)self delegate];
+    [delegate2 reloadSuggestionsFromSearchableItems];
   }
 }
 
@@ -1344,13 +1344,13 @@ LABEL_23:
 {
   v3 = [_TtC17CoreSuggestionsUI27SGSuggestionTableController alloc];
   suggestionStore = self->_suggestionStore;
-  v5 = [(SGSuggestionPresenter *)self delegate];
-  v6 = [(SGSuggestionTableController *)v3 initWithStore:suggestionStore delegate:v5 suggestionPresenter:self suggestionList:self->_suggestionCategoryList];
+  delegate = [(SGSuggestionPresenter *)self delegate];
+  v6 = [(SGSuggestionTableController *)v3 initWithStore:suggestionStore delegate:delegate suggestionPresenter:self suggestionList:self->_suggestionCategoryList];
 
   v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
-  v8 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v9 = [v7 view];
-  [v9 setBackgroundColor:v8];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  view = [v7 view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
   [v7 setModalPresentationStyle:7];
   objc_storeStrong(&self->_presentedViewController, v7);
@@ -1371,22 +1371,22 @@ LABEL_23:
 - (void)suggestionBatchDismissal
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(SGSuggestionPresenter *)self delegate];
+  delegate = [(SGSuggestionPresenter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SGSuggestionPresenter *)self suggestions];
+    suggestions = [(SGSuggestionPresenter *)self suggestions];
     v6 = sgLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [v5 count];
+      v9 = [suggestions count];
       _os_log_impl(&dword_1B8182000, v6, OS_LOG_TYPE_DEFAULT, "SGSuggestionPresenter: Delegate method called to dismiss all suggestions (Suggestions to dismiss: %lu)", &v8, 0xCu);
     }
 
-    v7 = [(SGSuggestionPresenter *)self delegate];
-    [v7 suggestionPresenterDismissAllSuggestions:v5];
+    delegate2 = [(SGSuggestionPresenter *)self delegate];
+    [delegate2 suggestionPresenterDismissAllSuggestions:suggestions];
   }
 }
 
@@ -1399,15 +1399,15 @@ LABEL_23:
   }
 }
 
-- (void)setWantsToShowBanner:(BOOL)a3
+- (void)setWantsToShowBanner:(BOOL)banner
 {
-  v3 = a3;
+  bannerCopy = banner;
   v14 = *MEMORY[0x1E69E9840];
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"No";
-    if (v3)
+    if (bannerCopy)
     {
       v6 = @"Yes";
     }
@@ -1417,10 +1417,10 @@ LABEL_23:
     _os_log_impl(&dword_1B8182000, v5, OS_LOG_TYPE_DEFAULT, "SGSuggestionPresenter - Show banner: (%{public}@)", buf, 0xCu);
   }
 
-  if (self->_wantsToShowBanner != v3 || self->_forceUpdate)
+  if (self->_wantsToShowBanner != bannerCopy || self->_forceUpdate)
   {
-    self->_wantsToShowBanner = v3;
-    if (v3)
+    self->_wantsToShowBanner = bannerCopy;
+    if (bannerCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v8 = objc_opt_respondsToSelector();
@@ -1470,14 +1470,14 @@ uint64_t __46__SGSuggestionPresenter_setWantsToShowBanner___block_invoke(uint64_
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    v6 = objc_storeWeak(&self->_delegate, v4);
+    v6 = objc_storeWeak(&self->_delegate, delegateCopy);
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
@@ -1529,43 +1529,43 @@ uint64_t __37__SGSuggestionPresenter_setDelegate___block_invoke(uint64_t a1, voi
   return banner;
 }
 
-- (void)removeSuggestion:(id)a3
+- (void)removeSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__SGSuggestionPresenter_removeSuggestion___block_invoke;
   v6[3] = &unk_1E7CD9668;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = suggestionCopy;
+  v5 = suggestionCopy;
   runOnMainThread(v6);
 }
 
-- (void)addSuggestion:(id)a3
+- (void)addSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__SGSuggestionPresenter_addSuggestion___block_invoke;
   v6[3] = &unk_1E7CD9668;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = suggestionCopy;
+  v5 = suggestionCopy;
   runOnMainThread(v6);
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
-  v4 = a3;
-  if ([v4 count])
+  suggestionsCopy = suggestions;
+  if ([suggestionsCopy count])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __40__SGSuggestionPresenter_setSuggestions___block_invoke;
     v5[3] = &unk_1E7CD9668;
     v5[4] = self;
-    v6 = v4;
+    v6 = suggestionsCopy;
     runOnMainThread(v5);
   }
 
@@ -1621,40 +1621,40 @@ uint64_t __36__SGSuggestionPresenter_suggestions__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_listDidChangeNotification:(id)a3
+- (void)_listDidChangeNotification:(id)notification
 {
-  v26 = a3;
-  v4 = [v26 object];
-  v5 = v4;
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  v5 = object;
   suggestionStore = self->_suggestionStore;
-  if (v4 == suggestionStore)
+  if (object == suggestionStore)
   {
 
-    v9 = v26;
+    v9 = notificationCopy;
   }
 
   else
   {
-    v7 = [v26 object];
-    v8 = [(SGList *)suggestionStore indexOfItem:v7];
+    object2 = [notificationCopy object];
+    v8 = [(SGList *)suggestionStore indexOfItem:object2];
 
-    v9 = v26;
+    v9 = notificationCopy;
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_21;
     }
   }
 
-  v10 = [v9 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"SGListNotificationKeyItemUpdated"];
+  userInfo = [v9 userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"SGListNotificationKeyItemUpdated"];
 
   if (v11)
   {
     [(SGSuggestionPresenter *)self reloadSuggestionsFromSearchableItems];
   }
 
-  v12 = [v26 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"SGListNotificationKeyItemAdded"];
+  userInfo2 = [notificationCopy userInfo];
+  v13 = [userInfo2 objectForKeyedSubscript:@"SGListNotificationKeyItemAdded"];
 
   if (v13)
   {
@@ -1670,8 +1670,8 @@ uint64_t __36__SGSuggestionPresenter_suggestions__block_invoke(uint64_t a1)
     [(SGSuggestionPresenter *)self _filterSuggestions];
   }
 
-  v15 = [v26 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"SGListNotificationKeyItemRemoved"];
+  userInfo3 = [notificationCopy userInfo];
+  v16 = [userInfo3 objectForKeyedSubscript:@"SGListNotificationKeyItemRemoved"];
 
   if (v16)
   {
@@ -1690,14 +1690,14 @@ uint64_t __36__SGSuggestionPresenter_suggestions__block_invoke(uint64_t a1)
     }
   }
 
-  v18 = [(SGSuggestionStore *)self->_suggestionStore suggestions];
-  v19 = [v18 count];
+  suggestions = [(SGSuggestionStore *)self->_suggestionStore suggestions];
+  v19 = [suggestions count];
   currentSuggestionsCount = self->_currentSuggestionsCount;
 
   if (v19 != currentSuggestionsCount)
   {
-    v21 = [(SGSuggestionStore *)self->_suggestionStore suggestions];
-    self->_currentSuggestionsCount = [v21 count];
+    suggestions2 = [(SGSuggestionStore *)self->_suggestionStore suggestions];
+    self->_currentSuggestionsCount = [suggestions2 count];
 
     self->_forceUpdate = 1;
     v22 = self->_banner;
@@ -1708,17 +1708,17 @@ uint64_t __36__SGSuggestionPresenter_suggestions__block_invoke(uint64_t a1)
   }
 
   [(SGSuggestionPresenter *)self _updateBanner];
-  v9 = v26;
+  v9 = notificationCopy;
 LABEL_21:
-  v23 = [v9 object];
-  if (v23)
+  object3 = [v9 object];
+  if (object3)
   {
   }
 
   else
   {
-    v24 = [v26 userInfo];
-    v25 = [v24 objectForKeyedSubscript:@"SGListNotificationKeyChangedReorientation"];
+    userInfo4 = [notificationCopy userInfo];
+    v25 = [userInfo4 objectForKeyedSubscript:@"SGListNotificationKeyChangedReorientation"];
 
     if (v25 && [(SGList *)self->_suggestionStore count])
     {
@@ -1753,8 +1753,8 @@ LABEL_21:
     icsPreviewController = v2->_icsPreviewController;
     v2->_icsPreviewController = 0;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel__listDidChangeNotification_ name:@"com.apple.coresuggestionsui.SGListDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__listDidChangeNotification_ name:@"com.apple.coresuggestionsui.SGListDidChangeNotification" object:0];
   }
 
   return v2;
@@ -1762,8 +1762,8 @@ LABEL_21:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SGSuggestionPresenter;

@@ -1,9 +1,9 @@
 @interface CPLScopeFilter
-- (BOOL)filterOnScopeIdentifier:(id)a3;
-- (CPLScopeFilter)initWithExcludedScopeIdentifiers:(id)a3;
-- (CPLScopeFilter)initWithIncludedScopeIdentifiers:(id)a3;
+- (BOOL)filterOnScopeIdentifier:(id)identifier;
+- (CPLScopeFilter)initWithExcludedScopeIdentifiers:(id)identifiers;
+- (CPLScopeFilter)initWithIncludedScopeIdentifiers:(id)identifiers;
 - (NSString)simpleDescription;
-- (id)_setOfScopeIdentifiersFromEnumeration:(id)a3;
+- (id)_setOfScopeIdentifiersFromEnumeration:(id)enumeration;
 - (id)description;
 @end
 
@@ -14,8 +14,8 @@
   includedScopeIdentifiers = self->_includedScopeIdentifiers;
   if (includedScopeIdentifiers)
   {
-    v4 = [(NSSet *)includedScopeIdentifiers allObjects];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)includedScopeIdentifiers allObjects];
+    v5 = [allObjects componentsJoinedByString:{@", "}];
 LABEL_5:
 
     goto LABEL_6;
@@ -24,8 +24,8 @@ LABEL_5:
   if (self->_excludedScopeIdentifiers)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v4 = [(NSSet *)self->_excludedScopeIdentifiers allObjects];
-    v7 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)self->_excludedScopeIdentifiers allObjects];
+    v7 = [allObjects componentsJoinedByString:{@", "}];
     v5 = [v6 initWithFormat:@"All Scopes but %@", v7];
 
     goto LABEL_5;
@@ -45,8 +45,8 @@ LABEL_6:
     v3 = @"[incl: %@]";
 LABEL_5:
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [(NSSet *)*p_includedScopeIdentifiers allObjects];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    allObjects = [(NSSet *)*p_includedScopeIdentifiers allObjects];
+    v8 = [allObjects componentsJoinedByString:{@", "}];
     v9 = [v6 initWithFormat:v3, v8];
 
     goto LABEL_6;
@@ -67,13 +67,13 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)filterOnScopeIdentifier:(id)a3
+- (BOOL)filterOnScopeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   includedScopeIdentifiers = self->_includedScopeIdentifiers;
   if (includedScopeIdentifiers)
   {
-    LOBYTE(v6) = [(NSSet *)includedScopeIdentifiers containsObject:v4];
+    LOBYTE(v6) = [(NSSet *)includedScopeIdentifiers containsObject:identifierCopy];
   }
 
   else
@@ -81,7 +81,7 @@ LABEL_6:
     excludedScopeIdentifiers = self->_excludedScopeIdentifiers;
     if (excludedScopeIdentifiers)
     {
-      v6 = ![(NSSet *)excludedScopeIdentifiers containsObject:v4];
+      v6 = ![(NSSet *)excludedScopeIdentifiers containsObject:identifierCopy];
     }
 
     else
@@ -93,16 +93,16 @@ LABEL_6:
   return v6;
 }
 
-- (CPLScopeFilter)initWithExcludedScopeIdentifiers:(id)a3
+- (CPLScopeFilter)initWithExcludedScopeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v10.receiver = self;
   v10.super_class = CPLScopeFilter;
   v5 = [(CPLScopeFilter *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CPLScopeFilter *)v5 _setOfScopeIdentifiersFromEnumeration:v4];
+    v7 = [(CPLScopeFilter *)v5 _setOfScopeIdentifiersFromEnumeration:identifiersCopy];
     excludedScopeIdentifiers = v6->_excludedScopeIdentifiers;
     v6->_excludedScopeIdentifiers = v7;
   }
@@ -110,16 +110,16 @@ LABEL_6:
   return v6;
 }
 
-- (CPLScopeFilter)initWithIncludedScopeIdentifiers:(id)a3
+- (CPLScopeFilter)initWithIncludedScopeIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v10.receiver = self;
   v10.super_class = CPLScopeFilter;
   v5 = [(CPLScopeFilter *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CPLScopeFilter *)v5 _setOfScopeIdentifiersFromEnumeration:v4];
+    v7 = [(CPLScopeFilter *)v5 _setOfScopeIdentifiersFromEnumeration:identifiersCopy];
     includedScopeIdentifiers = v6->_includedScopeIdentifiers;
     v6->_includedScopeIdentifiers = v7;
   }
@@ -127,14 +127,14 @@ LABEL_6:
   return v6;
 }
 
-- (id)_setOfScopeIdentifiersFromEnumeration:(id)a3
+- (id)_setOfScopeIdentifiersFromEnumeration:(id)enumeration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  enumerationCopy = enumeration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 copy];
+    v4 = [enumerationCopy copy];
   }
 
   else
@@ -144,7 +144,7 @@ LABEL_6:
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = enumerationCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {

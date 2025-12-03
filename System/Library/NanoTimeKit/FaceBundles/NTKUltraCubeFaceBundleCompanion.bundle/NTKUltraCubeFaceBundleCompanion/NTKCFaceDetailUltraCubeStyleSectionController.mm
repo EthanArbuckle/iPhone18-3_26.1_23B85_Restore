@@ -1,17 +1,17 @@
 @interface NTKCFaceDetailUltraCubeStyleSectionController
-+ (BOOL)hasSectionForFace:(id)a3 forEditMode:(int64_t)a4;
++ (BOOL)hasSectionForFace:(id)face forEditMode:(int64_t)mode;
 @end
 
 @implementation NTKCFaceDetailUltraCubeStyleSectionController
 
-+ (BOOL)hasSectionForFace:(id)a3 forEditMode:(int64_t)a4
++ (BOOL)hasSectionForFace:(id)face forEditMode:(int64_t)mode
 {
-  v5 = a3;
+  faceCopy = face;
   v6 = +[NTKUltraCubeFaceBundle identifier];
-  v7 = [v5 bundleIdentifier];
+  bundleIdentifier = [faceCopy bundleIdentifier];
 
-  v8 = [v7 isEqualToString:v6];
-  if (a4 == 15)
+  v8 = [bundleIdentifier isEqualToString:v6];
+  if (mode == 15)
   {
     v9 = v8;
   }

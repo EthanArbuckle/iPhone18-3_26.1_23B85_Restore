@@ -1,24 +1,24 @@
 @interface WHASetupRoomPickerViewController
-- (id)pickerView:(id)a3 attributedTitleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (void)handleChooseButton:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)pickerView:(id)view attributedTitleForRow:(int64_t)row forComponent:(int64_t)component;
+- (void)handleChooseButton:(id)button;
+- (void)handleDismissButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WHASetupRoomPickerViewController
 
-- (id)pickerView:(id)a3 attributedTitleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view attributedTitleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  if (a4 < 0 || [*(&self->_firstSuggestedIndex + 1) count] <= a4)
+  if (row < 0 || [*(&self->_firstSuggestedIndex + 1) count] <= row)
   {
     v12 = 0;
   }
 
   else
   {
-    v7 = [*(&self->_firstSuggestedIndex + 1) objectAtIndexedSubscript:a4];
-    if (*(&self->_progressLabel + 1) <= a4)
+    v7 = [*(&self->_firstSuggestedIndex + 1) objectAtIndexedSubscript:row];
+    if (*(&self->_progressLabel + 1) <= row)
     {
       v8 = 0.2;
     }
@@ -39,9 +39,9 @@
   return v12;
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -50,9 +50,9 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)handleChooseButton:(id)a3
+- (void)handleChooseButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -72,7 +72,7 @@
       v9[2] = sub_1001328E8;
       v9[3] = &unk_100195A70;
       v10 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-      v11 = self;
+      selfCopy = self;
       v5 = v10;
       dispatch_source_set_event_handler(v5, v9);
       SFDispatchTimerSet();
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -105,12 +105,12 @@
 
   v5.receiver = self;
   v5.super_class = WHASetupRoomPickerViewController;
-  [(WHASetupRoomPickerViewController *)&v5 viewDidDisappear:v3];
+  [(WHASetupRoomPickerViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BF408 <= 30 && (dword_1001BF408 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -118,7 +118,7 @@
 
   v5.receiver = self;
   v5.super_class = WHASetupRoomPickerViewController;
-  [(SVSBaseViewController *)&v5 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v5 viewWillAppear:appearCopy];
   if (sub_100127CC4())
   {
     [*(&self->_titleLabel + 1) _setUsesDynamicRowHeight:1];

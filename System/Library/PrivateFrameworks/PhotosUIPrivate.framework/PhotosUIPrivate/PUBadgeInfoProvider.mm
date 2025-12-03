@@ -1,22 +1,22 @@
 @interface PUBadgeInfoProvider
 - (PUBadgeInfoProvider)init;
-- (PXAssetBadgeInfo)_filteredBadgeInfoForTime:(SEL)a3 outShouldAnimate:(double)a4;
+- (PXAssetBadgeInfo)_filteredBadgeInfoForTime:(SEL)time outShouldAnimate:(double)animate;
 - (PXAssetBadgeInfo)badgeInfo;
 - (PXAssetBadgeInfo)outputBadgeInfo;
-- (void)_setOutputBadgeInfo:(PXAssetBadgeInfo *)a3 shouldAnimate:(BOOL)a4;
+- (void)_setOutputBadgeInfo:(PXAssetBadgeInfo *)info shouldAnimate:(BOOL)animate;
 - (void)_updateIfNeeded;
 - (void)_updateOutputIfNeeded;
 - (void)_updatePlaying;
-- (void)assetEditOperationManager:(id)a3 didChangeEditOperationStatusForAsset:(id)a4 context:(void *)a5;
+- (void)assetEditOperationManager:(id)manager didChangeEditOperationStatusForAsset:(id)asset context:(void *)context;
 - (void)didPerformChanges;
 - (void)invalidateOutput;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 - (void)prepareForReuse;
-- (void)setAssetViewModel:(id)a3;
-- (void)setBadgeInfo:(PXAssetBadgeInfo *)a3;
-- (void)setLastPlayingTime:(double)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)setAssetViewModel:(id)model;
+- (void)setBadgeInfo:(PXAssetBadgeInfo *)info;
+- (void)setLastPlayingTime:(double)time;
+- (void)setPlaying:(BOOL)playing;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUBadgeInfoProvider
@@ -37,25 +37,25 @@
   return self;
 }
 
-- (void)assetEditOperationManager:(id)a3 didChangeEditOperationStatusForAsset:(id)a4 context:(void *)a5
+- (void)assetEditOperationManager:(id)manager didChangeEditOperationStatusForAsset:(id)asset context:(void *)context
 {
-  v12 = a3;
-  v9 = a4;
-  if (PUBadgeTileEditOperationManagerObservationContext != a5)
+  managerCopy = manager;
+  assetCopy = asset;
+  if (PUBadgeTileEditOperationManagerObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUBadgeInfoProvider.m" lineNumber:244 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeInfoProvider.m" lineNumber:244 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
+  v10 = assetCopy;
   [(PUBadgeInfoProvider *)self invalidateOutput];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if ([a4 playStateDidChange])
+  if ([change playStateDidChange])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -66,22 +66,22 @@
   }
 }
 
-- (void)_setOutputBadgeInfo:(PXAssetBadgeInfo *)a3 shouldAnimate:(BOOL)a4
+- (void)_setOutputBadgeInfo:(PXAssetBadgeInfo *)info shouldAnimate:(BOOL)animate
 {
   p_outputBadgeInfo = &self->_outputBadgeInfo;
   outputBadgeInfo = self->_outputBadgeInfo;
-  v9 = *a3;
+  v9 = *info;
   if ((PXAssetBadgeInfoEqualToBadgeInfo() & 1) == 0)
   {
-    v8 = *&a3->count;
-    *&p_outputBadgeInfo->badges = *&a3->badges;
+    v8 = *&info->count;
+    *&p_outputBadgeInfo->badges = *&info->badges;
     *&p_outputBadgeInfo->count = v8;
-    self->_outputShouldAnimate = a4;
+    self->_outputShouldAnimate = animate;
     [(PUBadgeInfoProvider *)self signalChange:1, *&v9.badges, *&v9.count, *&outputBadgeInfo.badges, *&outputBadgeInfo.count];
   }
 }
 
-- (PXAssetBadgeInfo)_filteredBadgeInfoForTime:(SEL)a3 outShouldAnimate:(double)a4
+- (PXAssetBadgeInfo)_filteredBadgeInfoForTime:(SEL)time outShouldAnimate:(double)animate
 {
   *&retstr->badges = 0u;
   *&retstr->count = 0u;
@@ -95,12 +95,12 @@
 
   else
   {
-    v12 = [(PUBadgeInfoProvider *)self assetViewModel];
-    v13 = [v12 asset];
-    v14 = ([v13 mediaSubtypes] >> 20) & 1;
+    assetViewModel = [(PUBadgeInfoProvider *)self assetViewModel];
+    asset = [assetViewModel asset];
+    v14 = ([asset mediaSubtypes] >> 20) & 1;
 
     v15 = v10 + 2.5;
-    if (v15 < a4)
+    if (v15 < animate)
     {
       v11 = v14;
     }
@@ -115,32 +115,32 @@
       retstr->badges &= ~0x400uLL;
     }
 
-    v16 = [(PUBadgeInfoProvider *)self assetViewModel];
-    v17 = [v16 asset];
-    v18 = [v17 mediaSubtypes] & 0x200000;
+    assetViewModel2 = [(PUBadgeInfoProvider *)self assetViewModel];
+    asset2 = [assetViewModel2 asset];
+    v18 = [asset2 mediaSubtypes] & 0x200000;
 
-    if (v15 < a4 && v18 != 0)
+    if (v15 < animate && v18 != 0)
     {
       retstr->badges &= ~0x800000000uLL;
       LOBYTE(v11) = 1;
     }
 
-    v20 = [(PUBadgeInfoProvider *)self assetViewModel];
-    v21 = [v20 asset];
+    assetViewModel3 = [(PUBadgeInfoProvider *)self assetViewModel];
+    asset3 = [assetViewModel3 asset];
 
-    v22 = [v21 isProRes];
-    if (v15 < a4 && v22)
+    isProRes = [asset3 isProRes];
+    if (v15 < animate && isProRes)
     {
       retstr->badges &= ~0x400000000uLL;
       LOBYTE(v11) = 1;
     }
 
-    if ([v21 isSpatialMedia])
+    if ([asset3 isSpatialMedia])
     {
-      v23 = [v21 isVideo];
-      if (v15 < a4)
+      isVideo = [asset3 isVideo];
+      if (v15 < animate)
       {
-        if (v23)
+        if (isVideo)
         {
           retstr->badges &= ~0x20000000000uLL;
           LOBYTE(v11) = 1;
@@ -149,10 +149,10 @@
     }
   }
 
-  v24 = [MEMORY[0x1E69C3360] sharedManager];
-  v25 = [(PUBadgeInfoProvider *)self assetViewModel];
-  v26 = [v25 asset];
-  v27 = [v24 editOperationStatusForAsset:v26];
+  mEMORY[0x1E69C3360] = [MEMORY[0x1E69C3360] sharedManager];
+  assetViewModel4 = [(PUBadgeInfoProvider *)self assetViewModel];
+  asset4 = [assetViewModel4 asset];
+  v27 = [mEMORY[0x1E69C3360] editOperationStatusForAsset:asset4];
 
   badges = retstr->badges;
   if ((retstr->badges & 0x2000) != 0 && v27 == 3)
@@ -217,8 +217,8 @@ LABEL_34:
     [(PUBadgeInfoProvider *)self _updateOutputIfNeeded];
     if ([(PUBadgeInfoProvider *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUBadgeInfoProvider.m" lineNumber:134 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBadgeInfoProvider.m" lineNumber:134 description:@"update still needed after update pass"];
     }
   }
 }
@@ -231,11 +231,11 @@ LABEL_34:
   [(PUBadgeInfoProvider *)self _updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUBadgeInfoProvider;
-  [(PUBadgeInfoProvider *)&v3 performChanges:a3];
+  [(PUBadgeInfoProvider *)&v3 performChanges:changes];
 }
 
 - (void)invalidateOutput
@@ -248,21 +248,21 @@ LABEL_34:
   [(PUBadgeInfoProvider *)self performChanges:v2];
 }
 
-- (void)setLastPlayingTime:(double)a3
+- (void)setLastPlayingTime:(double)time
 {
-  if (self->_lastPlayingTime != a3)
+  if (self->_lastPlayingTime != time)
   {
-    self->_lastPlayingTime = a3;
+    self->_lastPlayingTime = time;
     [(PUBadgeInfoProvider *)self _invalidateOutput];
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
-    if (a3)
+    self->_playing = playing;
+    if (playing)
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       [(PUBadgeInfoProvider *)self setLastPlayingTime:?];
@@ -294,43 +294,43 @@ void __34__PUBadgeInfoProvider_setPlaying___block_invoke(uint64_t a1)
 
 - (void)_updatePlaying
 {
-  v3 = [(PUAssetViewModel *)self->_assetViewModel videoPlayer];
-  -[PUBadgeInfoProvider setPlaying:](self, "setPlaying:", [v3 playState] == 3);
+  videoPlayer = [(PUAssetViewModel *)self->_assetViewModel videoPlayer];
+  -[PUBadgeInfoProvider setPlaying:](self, "setPlaying:", [videoPlayer playState] == 3);
 }
 
-- (void)setBadgeInfo:(PXAssetBadgeInfo *)a3
+- (void)setBadgeInfo:(PXAssetBadgeInfo *)info
 {
   p_badgeInfo = &self->_badgeInfo;
   badgeInfo = self->_badgeInfo;
-  v7 = *a3;
+  v7 = *info;
   if ((PXAssetBadgeInfoEqualToBadgeInfo() & 1) == 0)
   {
-    v6 = *&a3->count;
-    *&p_badgeInfo->badges = *&a3->badges;
+    v6 = *&info->count;
+    *&p_badgeInfo->badges = *&info->badges;
     *&p_badgeInfo->count = v6;
     [(PUBadgeInfoProvider *)self _invalidateOutput:*&v7.badges];
   }
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetViewModel = self->_assetViewModel;
-  if (assetViewModel != v5)
+  if (assetViewModel != modelCopy)
   {
-    v9 = v5;
-    v7 = [(PUAssetViewModel *)assetViewModel videoPlayer];
-    [v7 unregisterChangeObserver:self];
+    v9 = modelCopy;
+    videoPlayer = [(PUAssetViewModel *)assetViewModel videoPlayer];
+    [videoPlayer unregisterChangeObserver:self];
 
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     [(PUBadgeInfoProvider *)self _updatePlaying];
-    v8 = [(PUAssetViewModel *)self->_assetViewModel videoPlayer];
-    [v8 registerChangeObserver:self];
+    videoPlayer2 = [(PUAssetViewModel *)self->_assetViewModel videoPlayer];
+    [videoPlayer2 registerChangeObserver:self];
 
-    v5 = v9;
+    modelCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](assetViewModel, v5);
+  MEMORY[0x1EEE66BB8](assetViewModel, modelCopy);
 }
 
 - (void)prepareForReuse
@@ -352,8 +352,8 @@ void __34__PUBadgeInfoProvider_setPlaying___block_invoke(uint64_t a1)
   if (v2)
   {
     v2->_lastPlayingTime = -1.79769313e308;
-    v4 = [MEMORY[0x1E69C3360] sharedManager];
-    [v4 registerObserver:v3 context:PUBadgeTileEditOperationManagerObservationContext];
+    mEMORY[0x1E69C3360] = [MEMORY[0x1E69C3360] sharedManager];
+    [mEMORY[0x1E69C3360] registerObserver:v3 context:PUBadgeTileEditOperationManagerObservationContext];
   }
 
   return v3;

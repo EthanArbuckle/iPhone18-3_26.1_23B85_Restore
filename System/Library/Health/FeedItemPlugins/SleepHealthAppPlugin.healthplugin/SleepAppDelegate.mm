@@ -1,11 +1,11 @@
 @interface SleepAppDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (_TtC20SleepHealthAppPlugin16SleepAppDelegate)init;
 @end
 
 @implementation SleepAppDelegate
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -15,10 +15,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (!a4)
+  if (!test)
   {
     v9 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_6;
     }
@@ -27,17 +27,17 @@
   }
 
   v9 = sub_29E7541D8();
-  a4 = v10;
-  if (a5)
+  test = v10;
+  if (options)
   {
 LABEL_5:
-    a5 = sub_29E754078();
+    options = sub_29E754078();
   }
 
 LABEL_6:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_29E6BB770(a3, v9, a4, a5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_29E6BB770(application, v9, test, options);
 
   return v13 & 1;
 }

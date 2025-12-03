@@ -1,28 +1,28 @@
 @interface WBSLinkPresentationIconCache
-- (WBSLinkPresentationIconCache)initWithImageDirectoryURL:(id)a3;
+- (WBSLinkPresentationIconCache)initWithImageDirectoryURL:(id)l;
 - (WBSSiteMetadataProviderDelegate)providerDelegate;
-- (id)imageForHost:(id)a3;
-- (void)_historyItemsWereRemoved:(id)a3;
+- (id)imageForHost:(id)host;
+- (void)_historyItemsWereRemoved:(id)removed;
 - (void)dealloc;
 @end
 
 @implementation WBSLinkPresentationIconCache
 
-- (WBSLinkPresentationIconCache)initWithImageDirectoryURL:(id)a3
+- (WBSLinkPresentationIconCache)initWithImageDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = WBSLinkPresentationIconCache;
   v5 = [(WBSLinkPresentationIconCache *)&v11 init];
   if (v5)
   {
-    v6 = [[WBSSiteMetadataImageCache alloc] initWithImageDirectoryURL:v4 imageType:0];
+    v6 = [[WBSSiteMetadataImageCache alloc] initWithImageDirectoryURL:lCopy imageType:0];
     imageCache = v5->_imageCache;
     v5->_imageCache = v6;
 
     [(WBSSiteMetadataImageCache *)v5->_imageCache setUpImageCache];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v5 selector:sel__historyItemsWereRemoved_ name:*MEMORY[0x1E69C9358] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__historyItemsWereRemoved_ name:*MEMORY[0x1E69C9358] object:0];
 
     v9 = v5;
   }
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (id)imageForHost:(id)a3
+- (id)imageForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v14 = 0;
@@ -49,7 +49,7 @@
   v13 = &v14;
   v7 = v5;
   v12 = v7;
-  [(WBSSiteMetadataImageCache *)imageCache getImageForKeyString:v4 completionHandler:v11];
+  [(WBSSiteMetadataImageCache *)imageCache getImageForKeyString:hostCopy completionHandler:v11];
   v8 = dispatch_time(0, 100000000);
   dispatch_group_wait(v7, v8);
   v9 = v15[5];
@@ -74,17 +74,17 @@ void __45__WBSLinkPresentationIconCache_imageForHost___block_invoke(uint64_t a1,
   [(WBSLinkPresentationIconCache *)&v3 dealloc];
 }
 
-- (void)_historyItemsWereRemoved:(id)a3
+- (void)_historyItemsWereRemoved:(id)removed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C9340]];
+  userInfo = [removed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69C9340]];
   v8 = [v5 safari_setByApplyingBlock:&__block_literal_global_23];
 
   if ([v8 count])
   {
     imageCache = self->_imageCache;
-    v7 = [v8 allObjects];
-    [(WBSSiteMetadataImageCache *)imageCache removeImagesFromCacheForKeyStrings:v7];
+    allObjects = [v8 allObjects];
+    [(WBSSiteMetadataImageCache *)imageCache removeImagesFromCacheForKeyStrings:allObjects];
   }
 }
 

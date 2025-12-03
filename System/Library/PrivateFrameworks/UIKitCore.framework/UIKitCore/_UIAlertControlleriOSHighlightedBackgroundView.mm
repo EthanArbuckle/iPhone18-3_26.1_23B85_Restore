@@ -1,14 +1,14 @@
 @interface _UIAlertControlleriOSHighlightedBackgroundView
-- (_UIAlertControlleriOSHighlightedBackgroundView)initWithStyle:(int64_t)a3;
-- (void)_configureWithStyle:(int64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRoundedCornerPosition:(unint64_t)a3;
+- (_UIAlertControlleriOSHighlightedBackgroundView)initWithStyle:(int64_t)style;
+- (void)_configureWithStyle:(int64_t)style;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRoundedCornerPosition:(unint64_t)position;
 @end
 
 @implementation _UIAlertControlleriOSHighlightedBackgroundView
 
-- (_UIAlertControlleriOSHighlightedBackgroundView)initWithStyle:(int64_t)a3
+- (_UIAlertControlleriOSHighlightedBackgroundView)initWithStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = _UIAlertControlleriOSHighlightedBackgroundView;
@@ -16,16 +16,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
-    [(_UIAlertControlleriOSHighlightedBackgroundView *)v4 _configureWithStyle:a3];
+    v4->_style = style;
+    [(_UIAlertControlleriOSHighlightedBackgroundView *)v4 _configureWithStyle:style];
   }
 
   return v5;
 }
 
-- (void)_configureWithStyle:(int64_t)a3
+- (void)_configureWithStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(UIView *)self setHidden:?];
     v9 = +[UIColor whiteColor];
@@ -38,8 +38,8 @@
     v4 = [UIVibrancyEffect _effectForBlurEffect:"_effectForBlurEffect:vibrancyStyle:" vibrancyStyle:?];
     v5 = [[UIVisualEffectView alloc] initWithEffect:v4];
     v6 = +[UIColor whiteColor];
-    v7 = [(UIVisualEffectView *)v5 contentView];
-    [v7 setBackgroundColor:v6];
+    contentView = [(UIVisualEffectView *)v5 contentView];
+    [contentView setBackgroundColor:v6];
 
     [(UIView *)self bounds];
     [(UIView *)v5 setFrame:?];
@@ -51,26 +51,26 @@
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(UIView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setRoundedCornerPosition:(unint64_t)a3
+- (void)setRoundedCornerPosition:(unint64_t)position
 {
-  v4 = [(UIView *)self layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(UIView *)self layer];
+  [layer setMaskedCorners:position];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   if (self->_style != 1)
   {
     self = self->_effectView;
   }
 
-  [(UIView *)self setHidden:!a3];
+  [(UIView *)self setHidden:!highlighted];
 }
 
 @end

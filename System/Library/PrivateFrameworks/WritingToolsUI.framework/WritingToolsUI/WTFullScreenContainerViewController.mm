@@ -2,68 +2,68 @@
 - (CGRect)_offScreenFrame;
 - (CGRect)_onScreenFrame;
 - (CGRect)_startFrameForAnimation;
-- (CGRect)keyboardFrameInWindow:(id)a3;
+- (CGRect)keyboardFrameInWindow:(id)window;
 - (UIResponder)sourceResponder;
-- (WTFullScreenContainerViewController)initWithWritingToolsDelegate:(id)a3 startupOptions:(id)a4;
+- (WTFullScreenContainerViewController)initWithWritingToolsDelegate:(id)delegate startupOptions:(id)options;
 - (WTWritingToolsController)writingToolsController;
 - (WTWritingToolsDelegate_Internal)writingToolsDelegate;
-- (id)_screenForWindow:(id)a3;
+- (id)_screenForWindow:(id)window;
 - (id)_sourceResponderWindow;
-- (void)_sendKeyboardTrackingNotificationsForReason:(id)a3;
-- (void)_setShouldEndWritingToolsOnSourceResign:(BOOL)a3;
+- (void)_sendKeyboardTrackingNotificationsForReason:(id)reason;
+- (void)_setShouldEndWritingToolsOnSourceResign:(BOOL)resign;
 - (void)_setupSceneHosting;
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6;
+- (void)_showAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action;
 - (void)beginTextPlaceholder;
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)copyText:(id)a3;
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4;
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4;
-- (void)endTextPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4;
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)copyText:(id)text;
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts;
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted;
+- (void)endTextPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion;
 - (void)endWritingTools;
-- (void)endWritingToolsWithError:(id)a3;
+- (void)endWritingToolsWithError:(id)error;
 - (void)enrollmentBegan;
-- (void)enrollmentDismissedWithCompletion:(id)a3;
-- (void)handoffFromUCBFromTool:(int64_t)a3 withPrompt:(id)a4;
+- (void)enrollmentDismissedWithCompletion:(id)completion;
+- (void)handoffFromUCBFromTool:(int64_t)tool withPrompt:(id)prompt;
 - (void)invalidateConnection;
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6;
-- (void)proofreadingSessionWithUUID:(id)a3 updateState:(int64_t)a4 forSuggestionWithUUID:(id)a5;
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context;
+- (void)proofreadingSessionWithUUID:(id)d updateState:(int64_t)state forSuggestionWithUUID:(id)iD;
 - (void)redo;
-- (void)replaceSelectionWithText:(id)a3;
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6;
-- (void)showContentWarningWithTitle:(id)a3 message:(id)a4;
-- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)a3;
+- (void)replaceSelectionWithText:(id)text;
+- (void)showAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action;
+- (void)showContentWarningWithTitle:(id)title message:(id)message;
+- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)changed;
 - (void)undo;
-- (void)updateKeyboardTrackingHeight:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4;
-- (void)windowingModeEnabledChanged:(BOOL)a3;
-- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)a3 preferredContentSizeChanging:(BOOL)a4;
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4;
+- (void)updateKeyboardTrackingHeight:(double)height;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts;
+- (void)windowingModeEnabledChanged:(BOOL)changed;
+- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)position preferredContentSizeChanging:(BOOL)changing;
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action;
 @end
 
 @implementation WTFullScreenContainerViewController
 
-- (WTFullScreenContainerViewController)initWithWritingToolsDelegate:(id)a3 startupOptions:(id)a4
+- (WTFullScreenContainerViewController)initWithWritingToolsDelegate:(id)delegate startupOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = WTFullScreenContainerViewController;
   v8 = [(WTFullScreenContainerViewController *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_writingToolsDelegate, v6);
-    objc_storeWeak(&v9->_writingToolsController, v6);
-    v10 = [v7 sessionUUID];
+    objc_storeWeak(&v8->_writingToolsDelegate, delegateCopy);
+    objc_storeWeak(&v9->_writingToolsController, delegateCopy);
+    sessionUUID = [optionsCopy sessionUUID];
     sessionUUID = v9->_sessionUUID;
-    v9->_sessionUUID = v10;
+    v9->_sessionUUID = sessionUUID;
 
-    objc_storeStrong(&v9->_startupOptions, a4);
+    objc_storeStrong(&v9->_startupOptions, options);
     [(WTFullScreenContainerViewController *)v9 _setupSceneHosting];
-    v12 = [(WTFullScreenContainerViewController *)v9 view];
-    [v12 setUserInteractionEnabled:0];
+    view = [(WTFullScreenContainerViewController *)v9 view];
+    [view setUserInteractionEnabled:0];
 
     v13 = NSClassFromString(&cfstr_Uiwtinputviews.isa);
     if (v13)
@@ -80,9 +80,9 @@
 - (void)_setupSceneHosting
 {
   v39[4] = *MEMORY[0x1E69E9840];
-  v3 = [(WTFullScreenContainerViewController *)self hostingController];
+  hostingController = [(WTFullScreenContainerViewController *)self hostingController];
 
-  if (!v3)
+  if (!hostingController)
   {
     [(WTFullScreenContainerViewController *)self _beginDelayingPresentation:&__block_literal_global_9 cancellationHandler:3.0];
     v33 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:@"com.apple.WritingToolsUIService"];
@@ -91,13 +91,13 @@
     v6 = [v4 initWithProcessIdentity:v33 sceneSpecification:v5];
     [(WTFullScreenContainerViewController *)self setHostingController:v6];
 
-    v7 = [(WTFullScreenContainerViewController *)self hostingController];
-    v8 = [v7 _eventDeferringComponent];
-    [v8 setMaintainHostFirstResponderWhenClientWantsKeyboard:1];
+    hostingController2 = [(WTFullScreenContainerViewController *)self hostingController];
+    _eventDeferringComponent = [hostingController2 _eventDeferringComponent];
+    [_eventDeferringComponent setMaintainHostFirstResponderWhenClientWantsKeyboard:1];
 
-    v9 = [(WTFullScreenContainerViewController *)self startupOptions];
+    startupOptions = [(WTFullScreenContainerViewController *)self startupOptions];
     v38 = 0;
-    v32 = [v9 asBSActionAndReturnError:&v38];
+    v32 = [startupOptions asBSActionAndReturnError:&v38];
     v24 = v38;
 
     objc_initWeak(&location, self);
@@ -108,41 +108,41 @@
     v35[3] = &unk_1E8480B20;
     objc_copyWeak(&v36, &location);
     v11 = [(WTUISceneHostingActivationController *)v10 initWithStartupAction:v32 invalidationHandler:v35];
-    v12 = [(WTFullScreenContainerViewController *)self hostingController];
-    [v12 setActivationController:v11];
+    hostingController3 = [(WTFullScreenContainerViewController *)self hostingController];
+    [hostingController3 setActivationController:v11];
 
-    v13 = [(WTFullScreenContainerViewController *)self hostingController];
-    [v13 setDelegate:self];
+    hostingController4 = [(WTFullScreenContainerViewController *)self hostingController];
+    [hostingController4 setDelegate:self];
 
-    v14 = [(WTFullScreenContainerViewController *)self hostingController];
-    v34 = [v14 sceneViewController];
+    hostingController5 = [(WTFullScreenContainerViewController *)self hostingController];
+    sceneViewController = [hostingController5 sceneViewController];
 
-    [(WTFullScreenContainerViewController *)self addChildViewController:v34];
-    v15 = [v34 view];
-    v16 = [(WTFullScreenContainerViewController *)self view];
-    [v16 addSubview:v15];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(WTFullScreenContainerViewController *)self addChildViewController:sceneViewController];
+    view = [sceneViewController view];
+    view2 = [(WTFullScreenContainerViewController *)self view];
+    [view2 addSubview:view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     v25 = MEMORY[0x1E696ACD8];
-    v31 = [v15 leadingAnchor];
-    v30 = [v16 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    leadingAnchor = [view leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v39[0] = v29;
-    v28 = [v15 trailingAnchor];
-    v27 = [v16 trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v39[1] = v26;
-    v17 = [v15 topAnchor];
-    v18 = [v16 topAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v39[2] = v19;
-    v20 = [v15 bottomAnchor];
-    v21 = [v16 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39[3] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
     [v25 activateConstraints:v23];
 
-    [v34 didMoveToParentViewController:self];
+    [sceneViewController didMoveToParentViewController:self];
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
   }
@@ -157,55 +157,55 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
 
 - (void)invalidateConnection
 {
-  v2 = [(WTFullScreenContainerViewController *)self hostingController];
-  [v2 invalidate];
+  hostingController = [(WTFullScreenContainerViewController *)self hostingController];
+  [hostingController invalidate];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = WTFullScreenContainerViewController;
-  [(WTFullScreenContainerViewController *)&v8 viewDidAppear:a3];
+  [(WTFullScreenContainerViewController *)&v8 viewDidAppear:appear];
   v4 = _WTVCLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(WTFullScreenContainerViewController *)self pendingHandoffHandler];
+    pendingHandoffHandler = [(WTFullScreenContainerViewController *)self pendingHandoffHandler];
     *buf = 67109120;
-    v10 = v5 != 0;
+    v10 = pendingHandoffHandler != 0;
     _os_log_impl(&dword_1D451D000, v4, OS_LOG_TYPE_DEFAULT, "Fullscreen view controller didAppear, with pending handler: %d", buf, 8u);
   }
 
-  v6 = [(WTFullScreenContainerViewController *)self pendingHandoffHandler];
+  pendingHandoffHandler2 = [(WTFullScreenContainerViewController *)self pendingHandoffHandler];
 
-  if (v6)
+  if (pendingHandoffHandler2)
   {
-    v7 = [(WTFullScreenContainerViewController *)self pendingHandoffHandler];
-    v7[2]();
+    pendingHandoffHandler3 = [(WTFullScreenContainerViewController *)self pendingHandoffHandler];
+    pendingHandoffHandler3[2]();
 
     [(WTFullScreenContainerViewController *)self setPendingHandoffHandler:0];
   }
 }
 
-- (void)updateKeyboardTrackingHeight:(double)a3
+- (void)updateKeyboardTrackingHeight:(double)height
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = _WTSizingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    heightCopy = height;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "Client handling updateKeyboardTrackingHeight: %f", &v6, 0xCu);
   }
 
-  [(WTFullScreenContainerViewController *)self setKeyboardTrackingHeight:a3];
+  [(WTFullScreenContainerViewController *)self setKeyboardTrackingHeight:height];
   [(WTFullScreenContainerViewController *)self _sendKeyboardTrackingNotificationsForReason:@"updateKeyboardTrackingHeight-Fullscreen"];
 }
 
-- (void)_sendKeyboardTrackingNotificationsForReason:(id)a3
+- (void)_sendKeyboardTrackingNotificationsForReason:(id)reason
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   [(WTFullScreenContainerViewController *)self _startFrameForAnimation];
   v6 = v5;
   v8 = v7;
@@ -244,12 +244,12 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
       v27 = 2112;
       v28 = v23;
       v29 = 2112;
-      v30 = v4;
+      v30 = reasonCopy;
       _os_log_impl(&dword_1D451D000, v21, OS_LOG_TYPE_DEFAULT, "Send keyboard tracking notification now (start:%@, end:%@, reason:%@)", &v25, 0x20u);
     }
 
-    v24 = [(WTFullScreenContainerViewController *)self ivsPlacementController];
-    [v24 animateTrackingElementsFromStart:1 toEnd:v6 forShow:{v8, v10, v12, v14, v16, v18, v20}];
+    ivsPlacementController = [(WTFullScreenContainerViewController *)self ivsPlacementController];
+    [ivsPlacementController animateTrackingElementsFromStart:1 toEnd:v6 forShow:{v8, v10, v12, v14, v16, v18, v20}];
   }
 }
 
@@ -285,11 +285,11 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
 
 - (CGRect)_onScreenFrame
 {
-  v3 = [(WTFullScreenContainerViewController *)self _sourceResponderWindow];
+  _sourceResponderWindow = [(WTFullScreenContainerViewController *)self _sourceResponderWindow];
   v4 = 0.0;
   if (+[WTWritingToolsController _isWritingToolsHandlingKeyboardTracking])
   {
-    [(WTFullScreenContainerViewController *)self keyboardFrameInWindow:v3];
+    [(WTFullScreenContainerViewController *)self keyboardFrameInWindow:_sourceResponderWindow];
     v4 = v5;
   }
 
@@ -300,22 +300,22 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
     v4 = v7;
   }
 
-  [v3 bounds];
+  [_sourceResponderWindow bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(WTFullScreenContainerViewController *)self _screenForWindow:v3];
-  v17 = [v3 windowScene];
-  v18 = [v17 coordinateSpace];
+  v16 = [(WTFullScreenContainerViewController *)self _screenForWindow:_sourceResponderWindow];
+  windowScene = [_sourceResponderWindow windowScene];
+  coordinateSpace = [windowScene coordinateSpace];
 
-  if (!v18)
+  if (!coordinateSpace)
   {
-    v18 = [v3 coordinateSpace];
+    coordinateSpace = [_sourceResponderWindow coordinateSpace];
   }
 
-  v19 = [v16 coordinateSpace];
-  [v18 convertRect:v19 toCoordinateSpace:{v9, v11 + v15 - v4, v13, v4}];
+  coordinateSpace2 = [v16 coordinateSpace];
+  [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{v9, v11 + v15 - v4, v13, v4}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -345,38 +345,38 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
 
 - (id)_sourceResponderWindow
 {
-  v2 = [(WTFullScreenContainerViewController *)self writingToolsController];
-  v3 = [v2 sourceResponderViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  writingToolsController = [(WTFullScreenContainerViewController *)self writingToolsController];
+  sourceResponderViewController = [writingToolsController sourceResponderViewController];
+  view = [sourceResponderViewController view];
+  window = [view window];
 
-  return v5;
+  return window;
 }
 
-- (id)_screenForWindow:(id)a3
+- (id)_screenForWindow:(id)window
 {
-  v3 = a3;
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
-  v6 = v5;
-  if (v5)
+  windowCopy = window;
+  windowScene = [windowCopy windowScene];
+  screen = [windowScene screen];
+  v6 = screen;
+  if (screen)
   {
-    v7 = v5;
+    screen2 = screen;
   }
 
   else
   {
-    v7 = [v3 screen];
+    screen2 = [windowCopy screen];
   }
 
-  v8 = v7;
+  v8 = screen2;
 
   return v8;
 }
 
-- (CGRect)keyboardFrameInWindow:(id)a3
+- (CGRect)keyboardFrameInWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   x = *MEMORY[0x1E695F058];
   y = *(MEMORY[0x1E695F058] + 8);
   v7 = *(MEMORY[0x1E695F058] + 16);
@@ -397,7 +397,7 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
     v42.size.height = v8;
     if (!CGRectEqualToRect(v34, v42))
     {
-      v9 = [(WTFullScreenContainerViewController *)self _screenForWindow:v4];
+      v9 = [(WTFullScreenContainerViewController *)self _screenForWindow:windowCopy];
       v35.origin.x = x;
       v35.origin.y = y;
       v35.size.width = v7;
@@ -409,22 +409,22 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
       v12 = CGRectGetMaxY(v37) - Height;
       [v9 bounds];
       Width = CGRectGetWidth(v38);
-      v14 = [v4 windowScene];
-      v15 = [v14 coordinateSpace];
+      windowScene = [windowCopy windowScene];
+      coordinateSpace = [windowScene coordinateSpace];
 
-      if (!v15)
+      if (!coordinateSpace)
       {
-        v15 = [v4 coordinateSpace];
+        coordinateSpace = [windowCopy coordinateSpace];
       }
 
-      v16 = [v9 coordinateSpace];
-      [v16 convertRect:v15 toCoordinateSpace:{MinX, v12, Width, Height}];
+      coordinateSpace2 = [v9 coordinateSpace];
+      [coordinateSpace2 convertRect:coordinateSpace toCoordinateSpace:{MinX, v12, Width, Height}];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
 
-      [v4 bounds];
+      [windowCopy bounds];
       v43.origin.x = v25;
       v43.origin.y = v26;
       v43.size.width = v27;
@@ -452,154 +452,154 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
   return result;
 }
 
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextsCopy = contexts;
   v8 = _WTVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     v13 = 136315906;
     v14 = "[WTFullScreenContainerViewController willBeginWritingToolsSession:requestContexts:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v9;
+    v18 = uuid;
     v19 = 2048;
-    v20 = [v6 type];
+    type = [sessionCopy type];
     _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu)", &v13, 0x2Au);
   }
 
-  v10 = [(WTFullScreenContainerViewController *)self sessionUUID];
+  sessionUUID = [(WTFullScreenContainerViewController *)self sessionUUID];
 
-  if (!v10)
+  if (!sessionUUID)
   {
-    v11 = [v6 uuid];
-    [(WTFullScreenContainerViewController *)self setSessionUUID:v11];
+    uuid2 = [sessionCopy uuid];
+    [(WTFullScreenContainerViewController *)self setSessionUUID:uuid2];
   }
 
-  v12 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v12 willBeginWritingToolsSession:v6 requestContexts:v7];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate willBeginWritingToolsSession:sessionCopy requestContexts:contextsCopy];
 }
 
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextsCopy = contexts;
   v8 = _WTVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     v11 = 136316162;
     v12 = "[WTFullScreenContainerViewController didBeginWritingToolsSession:contexts:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v9;
+    v16 = uuid;
     v17 = 2048;
-    v18 = [v6 type];
+    type = [sessionCopy type];
     v19 = 2048;
-    v20 = [v7 count];
+    v20 = [contextsCopy count];
     _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_INFO, "%s (%@, sessUUID: %@, sessType: %lu, #contexts: %lu)", &v11, 0x34u);
   }
 
-  v10 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v10 didBeginWritingToolsSession:v6 contexts:v7];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate didBeginWritingToolsSession:sessionCopy contexts:contextsCopy];
 }
 
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     v10 = 136316162;
     v11 = "[WTFullScreenContainerViewController writingToolsSession:didReceiveAction:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = uuid;
     v16 = 2048;
-    v17 = [v6 type];
+    type = [sessionCopy type];
     v18 = 2048;
-    v19 = a4;
+    actionCopy = action;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu, action: %lu)", &v10, 0x34u);
   }
 
-  v9 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v9 writingToolsSession:v6 didReceiveAction:a4];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate writingToolsSession:sessionCopy didReceiveAction:action];
 }
 
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted
 {
-  v4 = a4;
+  acceptedCopy = accepted;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 uuid];
-    v9 = [v6 type];
+    uuid = [sessionCopy uuid];
+    type = [sessionCopy type];
     v13 = 136316162;
     v14 = "[WTFullScreenContainerViewController didEndWritingToolsSession:accepted:]";
     v10 = "no";
-    if (v4)
+    if (acceptedCopy)
     {
       v10 = "yes";
     }
 
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v8;
+    v18 = uuid;
     v19 = 2048;
-    v20 = v9;
+    v20 = type;
     v21 = 2080;
     v22 = v10;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu, accepted: %s)", &v13, 0x34u);
   }
 
-  v11 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v11 didEndWritingToolsSession:v6 accepted:v4];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate didEndWritingToolsSession:sessionCopy accepted:acceptedCopy];
 
-  v12 = [(WTFullScreenContainerViewController *)self hostingController];
-  [v12 invalidate];
+  hostingController = [(WTFullScreenContainerViewController *)self hostingController];
+  [hostingController invalidate];
 }
 
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  sessionCopy = session;
+  textCopy = text;
+  contextCopy = context;
   v16 = _WTVCLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v13 uuid];
-    v18 = [v13 type];
-    v19 = [v14 length];
+    uuid = [sessionCopy uuid];
+    type = [sessionCopy type];
+    v19 = [textCopy length];
     v22 = 136316930;
     v23 = "[WTFullScreenContainerViewController compositionSession:didReceiveText:replacementRange:inContext:finished:]";
     v20 = "no";
-    if (v7)
+    if (finishedCopy)
     {
       v20 = "yes";
     }
 
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v17;
+    v27 = uuid;
     v28 = 2048;
-    v29 = v18;
+    v29 = type;
     v30 = 2048;
     v31 = v19;
     v32 = 2048;
@@ -611,56 +611,56 @@ void __57__WTFullScreenContainerViewController__setupSceneHosting__block_invoke_
     _os_log_impl(&dword_1D451D000, v16, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu, textLen: %lu, replaceRange: {%lu,%lu}, finished: %s)", &v22, 0x52u);
   }
 
-  v21 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v21 compositionSession:v13 didReceiveText:v14 replacementRange:location inContext:length finished:{v15, v7}];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate compositionSession:sessionCopy didReceiveText:textCopy replacementRange:location inContext:length finished:{contextCopy, finishedCopy}];
 }
 
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v16 proofreadingSession:v15 didReceiveSuggestions:v14 processedRange:location inContext:length finished:{v13, v7}];
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  suggestionsCopy = suggestions;
+  sessionCopy = session;
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate proofreadingSession:sessionCopy didReceiveSuggestions:suggestionsCopy processedRange:location inContext:length finished:{contextCopy, finishedCopy}];
 }
 
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v13 proofreadingSession:v12 didUpdateState:a4 forSuggestionWithUUID:v11 inContext:v10];
+  contextCopy = context;
+  dCopy = d;
+  sessionCopy = session;
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate proofreadingSession:sessionCopy didUpdateState:state forSuggestionWithUUID:dCopy inContext:contextCopy];
 }
 
-- (void)endWritingToolsWithError:(id)a3
+- (void)endWritingToolsWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[WTFullScreenContainerViewController endWritingToolsWithError:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s (%@, error: %@)", &v7, 0x20u);
   }
 
-  v6 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v6 endWritingToolsWithError:v4];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate endWritingToolsWithError:errorCopy];
 }
 
-- (void)showContentWarningWithTitle:(id)a3 message:(id)a4
+- (void)showContentWarningWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  titleCopy = title;
+  messageCopy = message;
+  v8 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69DC648];
   v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -718,15 +718,15 @@ void __75__WTFullScreenContainerViewController_showContentWarningWithTitle_messa
   [WeakRetained _setShouldEndWritingToolsOnSourceResign:1];
 }
 
-- (void)showAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6
+- (void)showAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  actionCopy = action;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v14 = [(WTFullScreenContainerViewController *)self presentingViewController];
-  if (v14 && (v15 = v14, v16 = [(WTFullScreenContainerViewController *)self isBeingPresented], v15, (v16 & 1) == 0))
+  presentingViewController = [(WTFullScreenContainerViewController *)self presentingViewController];
+  if (presentingViewController && (v15 = presentingViewController, v16 = [(WTFullScreenContainerViewController *)self isBeingPresented], v15, (v16 & 1) == 0))
   {
     v18 = _WTVCLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -735,7 +735,7 @@ void __75__WTFullScreenContainerViewController_showContentWarningWithTitle_messa
       _os_log_impl(&dword_1D451D000, v18, OS_LOG_TYPE_DEFAULT, "Received show alert request, proceeding...", buf, 2u);
     }
 
-    [(WTFullScreenContainerViewController *)self _showAlertWithTitle:v10 message:v11 buttonTitle:v12 buttonAction:v13];
+    [(WTFullScreenContainerViewController *)self _showAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy buttonAction:actionCopy];
   }
 
   else
@@ -753,10 +753,10 @@ void __75__WTFullScreenContainerViewController_showContentWarningWithTitle_messa
     v19[2] = __91__WTFullScreenContainerViewController_showAlertWithTitle_message_buttonTitle_buttonAction___block_invoke;
     v19[3] = &unk_1E84811D8;
     objc_copyWeak(&v24, buf);
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    v23 = v13;
+    v20 = titleCopy;
+    v21 = messageCopy;
+    v22 = buttonTitleCopy;
+    v23 = actionCopy;
     [(WTFullScreenContainerViewController *)self setPendingHandoffHandler:v19];
 
     objc_destroyWeak(&v24);
@@ -775,17 +775,17 @@ void __91__WTFullScreenContainerViewController_showAlertWithTitle_message_button
   }
 }
 
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6
+- (void)_showAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v23 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  actionCopy = action;
+  v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
   objc_initWeak(location, self);
   v14 = MEMORY[0x1E69DC648];
-  v15 = [MEMORY[0x1E696AAE8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"Cancel" value:&stru_1F4FC5520 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v16 = [mainBundle localizedStringForKey:@"Cancel" value:&stru_1F4FC5520 table:0];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __92__WTFullScreenContainerViewController__showAlertWithTitle_message_buttonTitle_buttonAction___block_invoke;
@@ -795,14 +795,14 @@ void __91__WTFullScreenContainerViewController_showAlertWithTitle_message_button
   [v13 addAction:v17];
 
   v18 = MEMORY[0x1E69DC648];
-  v19 = [MEMORY[0x1E696AAE8] mainBundle];
-  v20 = [v19 localizedStringForKey:@"Continue" value:&stru_1F4FC5520 table:0];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  v20 = [mainBundle2 localizedStringForKey:@"Continue" value:&stru_1F4FC5520 table:0];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __92__WTFullScreenContainerViewController__showAlertWithTitle_message_buttonTitle_buttonAction___block_invoke_2;
   v26[3] = &unk_1E8481200;
   v26[4] = self;
-  v21 = v12;
+  v21 = actionCopy;
   v27 = v21;
   v22 = [v18 actionWithTitle:v20 style:0 handler:v26];
   [v13 addAction:v22];
@@ -844,22 +844,22 @@ void __92__WTFullScreenContainerViewController__showAlertWithTitle_message_butto
   [WeakRetained _setShouldEndWritingToolsOnSourceResign:1];
 }
 
-- (void)handoffFromUCBFromTool:(int64_t)a3 withPrompt:(id)a4
+- (void)handoffFromUCBFromTool:(int64_t)tool withPrompt:(id)prompt
 {
-  v6 = a4;
-  v7 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v7 handoffFromUCBFromTool:a3 withPrompt:v6];
+  promptCopy = prompt;
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate handoffFromUCBFromTool:tool withPrompt:promptCopy];
 }
 
-- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)a3 preferredContentSizeChanging:(BOOL)a4
+- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)position preferredContentSizeChanging:(BOOL)changing
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v9 writingToolsDidUpdateKeyboardPosition:v4 preferredContentSizeChanging:{x, y, width, height}];
+  changingCopy = changing;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate writingToolsDidUpdateKeyboardPosition:changingCopy preferredContentSizeChanging:{x, y, width, height}];
 }
 
 - (void)endWritingTools
@@ -871,7 +871,7 @@ void __92__WTFullScreenContainerViewController__showAlertWithTitle_message_butto
     v4 = 136315394;
     v5 = "[WTFullScreenContainerViewController endWritingTools]";
     v6 = 2112;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v4, 0x16u);
   }
 
@@ -887,12 +887,12 @@ void __92__WTFullScreenContainerViewController__showAlertWithTitle_message_butto
     v5 = 136315394;
     v6 = "[WTFullScreenContainerViewController undo]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v5, 0x16u);
   }
 
-  v4 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v4 undo];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate undo];
 }
 
 - (void)redo
@@ -904,52 +904,52 @@ void __92__WTFullScreenContainerViewController__showAlertWithTitle_message_butto
     v5 = 136315394;
     v6 = "[WTFullScreenContainerViewController redo]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v5, 0x16u);
   }
 
-  v4 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v4 redo];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate redo];
 }
 
-- (void)replaceSelectionWithText:(id)a3
+- (void)replaceSelectionWithText:(id)text
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[WTFullScreenContainerViewController replaceSelectionWithText:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = [v4 length];
+    v12 = [textCopy length];
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s (%@, textLen=%lu)", &v7, 0x20u);
   }
 
-  v6 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v6 replaceSelectionWithText:v4];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate replaceSelectionWithText:textCopy];
 }
 
-- (void)copyText:(id)a3
+- (void)copyText:(id)text
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[WTFullScreenContainerViewController copyText:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = [v4 length];
+    v12 = [textCopy length];
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s (%@, textLen: %lu)", &v7, 0x20u);
   }
 
-  v6 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v6 copyText:v4];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate copyText:textCopy];
 }
 
 - (void)beginTextPlaceholder
@@ -961,83 +961,83 @@ void __92__WTFullScreenContainerViewController__showAlertWithTitle_message_butto
     v5 = 136315394;
     v6 = "[WTFullScreenContainerViewController beginTextPlaceholder]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v5, 0x16u);
   }
 
-  v4 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v4 beginTextPlaceholder];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate beginTextPlaceholder];
 }
 
-- (void)endTextPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4
+- (void)endTextPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion
 {
-  v4 = a3;
+  textCopy = text;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = "no";
     v11 = "[WTFullScreenContainerViewController endTextPlaceholderAndWillInsertText:completion:]";
     v10 = 136315650;
-    if (v4)
+    if (textCopy)
     {
       v8 = "yes";
     }
 
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = v8;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_INFO, "%s (%@, willInsertText: %s)", &v10, 0x20u);
   }
 
-  v9 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v9 endTextPlaceholderAndWillInsertText:v4 completion:v6];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate endTextPlaceholderAndWillInsertText:textCopy completion:completionCopy];
 }
 
-- (void)proofreadingSessionWithUUID:(id)a3 updateState:(int64_t)a4 forSuggestionWithUUID:(id)a5
+- (void)proofreadingSessionWithUUID:(id)d updateState:(int64_t)state forSuggestionWithUUID:(id)iD
 {
-  v7 = [WTUIActionHostToClient actionForProofreadingSessionWithUUID:a3 updateState:a4 forSuggestionWithUUID:a5];
-  v6 = [(WTFullScreenContainerViewController *)self hostingController];
-  [v6 sendAction:v7];
+  v7 = [WTUIActionHostToClient actionForProofreadingSessionWithUUID:d updateState:state forSuggestionWithUUID:iD];
+  hostingController = [(WTFullScreenContainerViewController *)self hostingController];
+  [hostingController sendAction:v7];
 }
 
 - (void)enrollmentBegan
 {
-  v2 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v2 enrollmentBegan];
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate enrollmentBegan];
 }
 
-- (void)enrollmentDismissedWithCompletion:(id)a3
+- (void)enrollmentDismissedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
-  [v5 enrollmentDismissedWithCompletion:v4];
+  completionCopy = completion;
+  writingToolsDelegate = [(WTFullScreenContainerViewController *)self writingToolsDelegate];
+  [writingToolsDelegate enrollmentDismissedWithCompletion:completionCopy];
 }
 
-- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)a3
+- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)changed
 {
-  v5 = [WTUIActionHostToClient actionForSourceResponderHorizontalSizeClassChanged:a3];
-  v4 = [(WTFullScreenContainerViewController *)self hostingController];
-  [v4 sendAction:v5];
+  v5 = [WTUIActionHostToClient actionForSourceResponderHorizontalSizeClassChanged:changed];
+  hostingController = [(WTFullScreenContainerViewController *)self hostingController];
+  [hostingController sendAction:v5];
 }
 
-- (void)windowingModeEnabledChanged:(BOOL)a3
+- (void)windowingModeEnabledChanged:(BOOL)changed
 {
-  v5 = [WTUIActionHostToClient actionForWindowingModeEnabledChanged:a3];
-  v4 = [(WTFullScreenContainerViewController *)self hostingController];
-  [v4 sendAction:v5];
+  v5 = [WTUIActionHostToClient actionForWindowingModeEnabledChanged:changed];
+  hostingController = [(WTFullScreenContainerViewController *)self hostingController];
+  [hostingController sendAction:v5];
 }
 
-- (void)_setShouldEndWritingToolsOnSourceResign:(BOOL)a3
+- (void)_setShouldEndWritingToolsOnSourceResign:(BOOL)resign
 {
-  v3 = a3;
+  resignCopy = resign;
   v13 = *MEMORY[0x1E69E9840];
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:resignCopy];
     v9 = 136315394;
     v10 = "[WTFullScreenContainerViewController _setShouldEndWritingToolsOnSourceResign:]";
     v11 = 2112;
@@ -1045,12 +1045,12 @@ void __92__WTFullScreenContainerViewController__showAlertWithTitle_message_butto
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s : %@", &v9, 0x16u);
   }
 
-  v7 = [(WTFullScreenContainerViewController *)self writingToolsController];
-  v8 = [v7 sourceResponder];
+  writingToolsController = [(WTFullScreenContainerViewController *)self writingToolsController];
+  sourceResponder = [writingToolsController sourceResponder];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 _setShouldEndWritingToolsOnResign:v3];
+    [sourceResponder _setShouldEndWritingToolsOnResign:resignCopy];
   }
 }
 

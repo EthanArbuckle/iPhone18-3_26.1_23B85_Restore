@@ -1,11 +1,11 @@
 @interface CLIndoorCommonHooks
-+ (id)filterLocationGroups:(id)a3 isRegionalSupported:(BOOL)a4;
-+ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)a3 :(id)a4 ratio<1 :(id)a5 chrono:(double)a6 :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:;
++ (id)filterLocationGroups:(id)groups isRegionalSupported:(BOOL)supported;
++ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)std :(id)a4 ratio<1 :(id)a5 chrono:(double)chrono :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:;
 @end
 
 @implementation CLIndoorCommonHooks
 
-+ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)a3 :(id)a4 ratio<1 :(id)a5 chrono:(double)a6 :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:
++ (id)nearestVenues:()time_point<std:(std:()std:(1000000000>>>)std :(id)a4 ratio<1 :(id)a5 chrono:(double)chrono :(const NearestVenueSettings *)a7 duration<long)long :(BOOL)a8 chrono::steady_clock availableVenues:latestPosition:availabilityZScoreConfidenceInterval:settings:isAllowedMultipleVenues:
 {
   v45 = a4;
   v44 = a5;
@@ -15,7 +15,7 @@
     goto LABEL_45;
   }
 
-  if (!a7->var2 && ([v44 isStaleFix:a3.var0.__rep_] & 1) != 0)
+  if (!a7->var2 && ([v44 isStaleFix:std.var0.__rep_] & 1) != 0)
   {
     v13 = 0;
     goto LABEL_45;
@@ -39,7 +39,7 @@
     v15 = [[GeographicCoordinate alloc] initWithLatitude:*(v57 + 4) longitude:0.0 andAltitude:?];
     v16 = [ECEFCoordinate fromLatLon:v15];
 
-    v17 = *(&v57[1] + 4) * a6;
+    v17 = *(&v57[1] + 4) * chrono;
     if (a8)
     {
       v13 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v43, "count")}];
@@ -62,8 +62,8 @@
             }
 
             v22 = *(*(&v47 + 1) + 8 * i);
-            v23 = [v22 groupId];
-            v24 = [@"G" stringByAppendingString:v23];
+            groupId = [v22 groupId];
+            v24 = [@"G" stringByAppendingString:groupId];
 
             if (([v13 containsObject:v24] & 1) == 0)
             {
@@ -114,9 +114,9 @@
             [v33 tolerance];
             if (v35 <= v17 + v36)
             {
-              v37 = [v33 groupId];
-              v38 = v37;
-              std::string::assign(&v56, [v37 UTF8String]);
+              groupId2 = [v33 groupId];
+              v38 = groupId2;
+              std::string::assign(&v56, [groupId2 UTF8String]);
 
               v31 = v35;
             }
@@ -186,14 +186,14 @@ LABEL_45:
   return v13;
 }
 
-+ (id)filterLocationGroups:(id)a3 isRegionalSupported:(BOOL)a4
++ (id)filterLocationGroups:(id)groups isRegionalSupported:(BOOL)supported
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  supportedCopy = supported;
+  groupsCopy = groups;
+  v6 = groupsCopy;
+  if (supportedCopy)
   {
-    v7 = [v5 copy];
+    v7 = [groupsCopy copy];
   }
 
   else

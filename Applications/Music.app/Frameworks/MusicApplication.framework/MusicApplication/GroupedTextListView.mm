@@ -1,20 +1,20 @@
 @interface GroupedTextListView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityListGroupStrings;
 - (NSArray)accessibilityStackViews;
-- (_TtC16MusicApplication19GroupedTextListView)initWithCoder:(id)a3;
+- (_TtC16MusicApplication19GroupedTextListView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GroupedTextListView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_3EE5E8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_3EE5E8(change);
 }
 
 - (void)music_inheritedLayoutInsetsDidChange
@@ -33,11 +33,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_3EE9E8(width, height);
   v7 = v6;
   v9 = v8;
@@ -51,7 +51,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3EEEA8();
 }
 
@@ -67,7 +67,7 @@
 
 - (NSArray)accessibilityListGroupStrings
 {
-  v2 = self;
+  selfCopy = self;
   sub_3F083C();
 
   v3.super.isa = sub_AB9740().super.isa;
@@ -75,10 +75,10 @@
   return v3.super.isa;
 }
 
-- (_TtC16MusicApplication19GroupedTextListView)initWithCoder:(id)a3
+- (_TtC16MusicApplication19GroupedTextListView)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_3F0F08(v3);
+  coderCopy = coder;
+  v4 = sub_3F0F08(coderCopy);
 
   return v4;
 }

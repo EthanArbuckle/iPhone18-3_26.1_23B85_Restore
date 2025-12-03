@@ -3,33 +3,33 @@
 - (_TtC10Navigation22MNRemainingTimeUpdater)init;
 - (_TtP10Navigation30MNRemainingTimeUpdaterDelegate_)delegate;
 - (void)dealloc;
-- (void)setDateOverride:(id)a3;
-- (void)setNavigationSessionState:(id)a3;
+- (void)setDateOverride:(id)override;
+- (void)setNavigationSessionState:(id)state;
 - (void)updateForNewETAUResponse;
 @end
 
 @implementation MNRemainingTimeUpdater
 
-- (void)setNavigationSessionState:(id)a3
+- (void)setNavigationSessionState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  MNRemainingTimeUpdater.navigationSessionState.setter(v4);
+  stateCopy = state;
+  selfCopy = self;
+  MNRemainingTimeUpdater.navigationSessionState.setter(stateCopy);
 }
 
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR____TtC10Navigation22MNRemainingTimeUpdater__timerToNextMinute);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for MNRemainingTimeUpdater(0);
   [(MNRemainingTimeUpdater *)&v4 dealloc];
 }
 
 - (void)updateForNewETAUResponse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D3131CE0();
 }
 
@@ -64,13 +64,13 @@
   return v11;
 }
 
-- (void)setDateOverride:(id)a3
+- (void)setDateOverride:(id)override
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC75C4F0, &qword_1D328B580);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (override)
   {
     sub_1D3276D00();
     v9 = sub_1D3276D30();
@@ -85,7 +85,7 @@
 
   v11 = OBJC_IVAR____TtC10Navigation22MNRemainingTimeUpdater_dateOverride;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1D3128E74(v8, self + v11);
   swift_endAccess();
 }

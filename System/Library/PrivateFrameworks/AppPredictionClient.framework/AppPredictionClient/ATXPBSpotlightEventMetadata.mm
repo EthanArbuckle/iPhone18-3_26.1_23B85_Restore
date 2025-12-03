@@ -2,8 +2,8 @@
 - (BOOL)hasEngagedAppString;
 - (BOOL)hasQueryAtEngagement;
 - (BOOL)hasSearchEngagedBundleId;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)didSearchDuringSession;
@@ -18,12 +18,12 @@
 - (uint64_t)setHasSearchEngagedActionType:(uint64_t)result;
 - (uint64_t)setSearchEngagedActionType:(uint64_t)result;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setEngagedAppString:(uint64_t)a1;
-- (void)setQueryAtEngagement:(uint64_t)a1;
-- (void)setSearchEngagedBundleId:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setEngagedAppString:(uint64_t)string;
+- (void)setQueryAtEngagement:(uint64_t)engagement;
+- (void)setSearchEngagedBundleId:(uint64_t)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBSpotlightEventMetadata
@@ -34,20 +34,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBSpotlightEventMetadata;
   v4 = [(ATXPBSpotlightEventMetadata *)&v8 description];
-  v5 = [(ATXPBSpotlightEventMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBSpotlightEventMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   queryAtEngagement = self->_queryAtEngagement;
   if (queryAtEngagement)
   {
-    [v3 setObject:queryAtEngagement forKey:@"queryAtEngagement"];
+    [dictionary setObject:queryAtEngagement forKey:@"queryAtEngagement"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -77,45 +77,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_queryAtEngagement)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_searchEngagedBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_engagedAppString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_queryAtEngagement copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_queryAtEngagement copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -125,7 +125,7 @@
     *(v5 + 44) |= 2u;
   }
 
-  v8 = [(NSString *)self->_searchEngagedBundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_searchEngagedBundleId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -135,23 +135,23 @@
     *(v5 + 44) |= 1u;
   }
 
-  v10 = [(NSString *)self->_engagedAppString copyWithZone:a3];
+  v10 = [(NSString *)self->_engagedAppString copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   queryAtEngagement = self->_queryAtEngagement;
-  if (queryAtEngagement | *(v4 + 3))
+  if (queryAtEngagement | *(equalCopy + 3))
   {
     if (![(NSString *)queryAtEngagement isEqual:?])
     {
@@ -162,32 +162,32 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_21;
     }
 
     if (self->_didSearchDuringSession)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   searchEngagedBundleId = self->_searchEngagedBundleId;
-  if (!(searchEngagedBundleId | *(v4 + 4)))
+  if (!(searchEngagedBundleId | *(equalCopy + 4)))
   {
     goto LABEL_9;
   }
@@ -203,19 +203,19 @@ LABEL_21:
 LABEL_9:
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_searchEngagedActionType != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_searchEngagedActionType != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_21;
   }
 
   engagedAppString = self->_engagedAppString;
-  if (engagedAppString | *(v4 + 2))
+  if (engagedAppString | *(equalCopy + 2))
   {
     v9 = [(NSString *)engagedAppString isEqual:?];
   }
@@ -359,12 +359,12 @@ LABEL_22:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    v4 = *(a1 + 24);
+    v4 = *(to + 24);
     if (v4)
     {
       v7 = v3;
@@ -372,13 +372,13 @@ LABEL_22:
       v3 = v7;
     }
 
-    if ((*(a1 + 44) & 2) != 0)
+    if ((*(to + 44) & 2) != 0)
     {
-      v3[40] = *(a1 + 40);
+      v3[40] = *(to + 40);
       v3[44] |= 2u;
     }
 
-    v5 = *(a1 + 32);
+    v5 = *(to + 32);
     if (v5)
     {
       v8 = v3;
@@ -386,13 +386,13 @@ LABEL_22:
       v3 = v8;
     }
 
-    if (*(a1 + 44))
+    if (*(to + 44))
     {
-      *(v3 + 1) = *(a1 + 8);
+      *(v3 + 1) = *(to + 8);
       v3[44] |= 1u;
     }
 
-    v6 = *(a1 + 16);
+    v6 = *(to + 16);
     if (v6)
     {
       v9 = v3;
@@ -402,66 +402,66 @@ LABEL_22:
   }
 }
 
-- (void)setQueryAtEngagement:(uint64_t)a1
+- (void)setQueryAtEngagement:(uint64_t)engagement
 {
-  if (a1)
+  if (engagement)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(engagement, a2, 24);
   }
 }
 
-- (void)setSearchEngagedBundleId:(uint64_t)a1
+- (void)setSearchEngagedBundleId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(id, a2, 32);
   }
 }
 
-- (void)setEngagedAppString:(uint64_t)a1
+- (void)setEngagedAppString:(uint64_t)string
 {
-  if (a1)
+  if (string)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(string, a2, 16);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     v4 = v3[3];
     v7 = v3;
     if (v4)
     {
-      objc_storeStrong((a1 + 24), v4);
+      objc_storeStrong((from + 24), v4);
       v3 = v7;
     }
 
     if ((*(v3 + 44) & 2) != 0)
     {
-      *(a1 + 40) = *(v3 + 40);
-      *(a1 + 44) |= 2u;
+      *(from + 40) = *(v3 + 40);
+      *(from + 44) |= 2u;
     }
 
     v5 = v3[4];
     if (v5)
     {
-      objc_storeStrong((a1 + 32), v5);
+      objc_storeStrong((from + 32), v5);
       v3 = v7;
     }
 
     if (*(v3 + 44))
     {
-      *(a1 + 8) = v3[1];
-      *(a1 + 44) |= 1u;
+      *(from + 8) = v3[1];
+      *(from + 44) |= 1u;
     }
 
     v6 = v3[2];
     if (v6)
     {
-      objc_storeStrong((a1 + 16), v6);
+      objc_storeStrong((from + 16), v6);
       v3 = v7;
     }
   }
@@ -479,9 +479,9 @@ LABEL_22:
 
 - (uint64_t)didSearchDuringSession
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else

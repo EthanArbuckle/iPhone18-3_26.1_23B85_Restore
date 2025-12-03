@@ -1,21 +1,21 @@
 @interface TermsDelegate
 - (_TtC14AppleIDSetupUI13TermsDelegate)init;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
 @end
 
 @implementation TermsDelegate
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v6 = a3;
-  v7 = self;
-  sub_240A268A8(a4);
+  iCopy = i;
+  selfCopy = self;
+  sub_240A268A8(success);
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = sub_240A2BEBC();
   }
@@ -25,8 +25,8 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  iCopy = i;
+  selfCopy = self;
   sub_240A26A50(v6);
 }
 

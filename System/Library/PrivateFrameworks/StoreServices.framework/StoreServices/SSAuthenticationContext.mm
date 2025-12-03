@@ -1,16 +1,16 @@
 @interface SSAuthenticationContext
 + (id)contextForSignIn;
 - (NSString)description;
-- (SSAuthenticationContext)initWithAccount:(id)a3;
-- (SSAuthenticationContext)initWithAccountIdentifier:(id)a3;
-- (SSAuthenticationContext)initWithXPCEncoding:(id)a3;
+- (SSAuthenticationContext)initWithAccount:(id)account;
+- (SSAuthenticationContext)initWithAccountIdentifier:(id)identifier;
+- (SSAuthenticationContext)initWithXPCEncoding:(id)encoding;
 - (SSURLBagContext)URLBagContext;
 - (id)_initSSAuthenticationContext;
 - (id)accountStoreOptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_copyIvarsToCopy:(id)a3 withZone:(_NSZone *)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_copyIvarsToCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation SSAuthenticationContext
@@ -38,61 +38,61 @@
   return v3;
 }
 
-- (SSAuthenticationContext)initWithAccount:(id)a3
+- (SSAuthenticationContext)initWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(SSAuthenticationContext *)self _initSSAuthenticationContext];
-  if (v5)
+  accountCopy = account;
+  _initSSAuthenticationContext = [(SSAuthenticationContext *)self _initSSAuthenticationContext];
+  if (_initSSAuthenticationContext)
   {
-    v6 = [v4 accountName];
-    accountName = v5->_accountName;
-    v5->_accountName = v6;
+    accountName = [accountCopy accountName];
+    accountName = _initSSAuthenticationContext->_accountName;
+    _initSSAuthenticationContext->_accountName = accountName;
 
-    v5->_accountNameEditable = [(NSString *)v5->_accountName length]== 0;
-    v5->_accountScope = [v4 accountScope];
-    v8 = [v4 altDSID];
-    altDSID = v5->_altDSID;
-    v5->_altDSID = v8;
+    _initSSAuthenticationContext->_accountNameEditable = [(NSString *)_initSSAuthenticationContext->_accountName length]== 0;
+    _initSSAuthenticationContext->_accountScope = [accountCopy accountScope];
+    altDSID = [accountCopy altDSID];
+    altDSID = _initSSAuthenticationContext->_altDSID;
+    _initSSAuthenticationContext->_altDSID = altDSID;
 
-    v10 = v5->_canCreateNewAccount && v5->_accountNameEditable;
-    v5->_canCreateNewAccount = v10;
-    v11 = [v4 uniqueIdentifier];
-    requiredUniqueIdentifier = v5->_requiredUniqueIdentifier;
-    v5->_requiredUniqueIdentifier = v11;
+    v10 = _initSSAuthenticationContext->_canCreateNewAccount && _initSSAuthenticationContext->_accountNameEditable;
+    _initSSAuthenticationContext->_canCreateNewAccount = v10;
+    uniqueIdentifier = [accountCopy uniqueIdentifier];
+    requiredUniqueIdentifier = _initSSAuthenticationContext->_requiredUniqueIdentifier;
+    _initSSAuthenticationContext->_requiredUniqueIdentifier = uniqueIdentifier;
   }
 
-  return v5;
+  return _initSSAuthenticationContext;
 }
 
-- (SSAuthenticationContext)initWithAccountIdentifier:(id)a3
+- (SSAuthenticationContext)initWithAccountIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[SSAccountStore defaultStore];
-  if (v5 && [v5 integerValue])
+  if (identifierCopy && [identifierCopy integerValue])
   {
-    v7 = [v6 accountWithUniqueIdentifier:v5];
+    activeAccount = [v6 accountWithUniqueIdentifier:identifierCopy];
   }
 
   else
   {
-    v7 = [v6 activeAccount];
+    activeAccount = [v6 activeAccount];
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = activeAccount;
+  if (activeAccount)
   {
-    v9 = [(SSAuthenticationContext *)self initWithAccount:v7];
+    v9 = [(SSAuthenticationContext *)self initWithAccount:activeAccount];
   }
 
   else
   {
-    v10 = [(SSAuthenticationContext *)self _initSSAuthenticationContext];
-    v9 = v10;
-    if (v10)
+    _initSSAuthenticationContext = [(SSAuthenticationContext *)self _initSSAuthenticationContext];
+    v9 = _initSSAuthenticationContext;
+    if (_initSSAuthenticationContext)
     {
-      v10->_accountNameEditable = 1;
-      v10->_canCreateNewAccount &= v5 == 0;
-      objc_storeStrong(&v10->_requiredUniqueIdentifier, a3);
+      _initSSAuthenticationContext->_accountNameEditable = 1;
+      _initSSAuthenticationContext->_canCreateNewAccount &= identifierCopy == 0;
+      objc_storeStrong(&_initSSAuthenticationContext->_requiredUniqueIdentifier, identifier);
     }
   }
 
@@ -101,7 +101,7 @@
 
 + (id)contextForSignIn
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[18] = 1;
   v3 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"signIn", @"why", 0}];
   v4 = v2[20];
@@ -117,22 +117,22 @@
   [v4 setObject:v5 forKeyedSubscript:@"SSAccountStoreAuthKitAllowSilentAuth"];
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(SSAuthenticationContext *)self password];
-  if (v7)
+  password = [(SSAuthenticationContext *)self password];
+  if (password)
   {
     v8 = 1;
   }
 
   else
   {
-    v2 = [(SSAuthenticationContext *)self passwordEquivalentToken];
-    v8 = v2 != 0;
+    passwordEquivalentToken = [(SSAuthenticationContext *)self passwordEquivalentToken];
+    v8 = passwordEquivalentToken != 0;
   }
 
   v9 = [v6 numberWithInt:v8];
   [v4 setObject:v9 forKeyedSubscript:@"SSAccountStoreAuthKitAllowPasswordReuse"];
 
-  if (!v7)
+  if (!password)
   {
   }
 
@@ -154,98 +154,98 @@
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SSAuthenticationContext accountScope](self, "accountScope")}];
   [v4 setObject:v15 forKeyedSubscript:SSVerifyCredentialsAccountScope];
 
-  v16 = [(SSAuthenticationContext *)self reasonDescription];
-  v17 = [v16 length];
+  reasonDescription = [(SSAuthenticationContext *)self reasonDescription];
+  v17 = [reasonDescription length];
 
   if (v17)
   {
-    v18 = [(SSAuthenticationContext *)self reasonDescription];
-    [v4 setObject:v18 forKeyedSubscript:@"SSAccountStoreAuthKitReasonKey"];
+    reasonDescription2 = [(SSAuthenticationContext *)self reasonDescription];
+    [v4 setObject:reasonDescription2 forKeyedSubscript:@"SSAccountStoreAuthKitReasonKey"];
   }
 
-  v19 = [(SSAuthenticationContext *)self promptTitle];
-  v20 = [v19 length];
+  promptTitle = [(SSAuthenticationContext *)self promptTitle];
+  v20 = [promptTitle length];
 
   if (v20)
   {
-    v21 = [(SSAuthenticationContext *)self promptTitle];
-    [v4 setObject:v21 forKeyedSubscript:@"SSAccountStoreAuthKitPromptTitle"];
+    promptTitle2 = [(SSAuthenticationContext *)self promptTitle];
+    [v4 setObject:promptTitle2 forKeyedSubscript:@"SSAccountStoreAuthKitPromptTitle"];
   }
 
-  v22 = [(SSAuthenticationContext *)self okButtonLabel];
-  v23 = [v22 length];
+  okButtonLabel = [(SSAuthenticationContext *)self okButtonLabel];
+  v23 = [okButtonLabel length];
 
   if (v23)
   {
-    v24 = [(SSAuthenticationContext *)self okButtonLabel];
-    [v4 setObject:v24 forKeyedSubscript:@"SSAccountStoreAuthKitOKButtonLabel"];
+    okButtonLabel2 = [(SSAuthenticationContext *)self okButtonLabel];
+    [v4 setObject:okButtonLabel2 forKeyedSubscript:@"SSAccountStoreAuthKitOKButtonLabel"];
   }
 
-  v25 = [(SSAuthenticationContext *)self requiredUniqueIdentifier];
+  requiredUniqueIdentifier = [(SSAuthenticationContext *)self requiredUniqueIdentifier];
 
-  if (v25)
+  if (requiredUniqueIdentifier)
   {
-    v26 = [(SSAuthenticationContext *)self requiredUniqueIdentifier];
-    [v4 setObject:v26 forKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountDSIDKey"];
+    requiredUniqueIdentifier2 = [(SSAuthenticationContext *)self requiredUniqueIdentifier];
+    [v4 setObject:requiredUniqueIdentifier2 forKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountDSIDKey"];
   }
 
-  v27 = [(SSAuthenticationContext *)self signupRequestParameters];
+  signupRequestParameters = [(SSAuthenticationContext *)self signupRequestParameters];
 
-  if (v27)
+  if (signupRequestParameters)
   {
-    v28 = [(SSAuthenticationContext *)self signupRequestParameters];
-    [v4 setObject:v28 forKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountQueryParamsKey"];
+    signupRequestParameters2 = [(SSAuthenticationContext *)self signupRequestParameters];
+    [v4 setObject:signupRequestParameters2 forKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountQueryParamsKey"];
   }
 
-  v29 = [(SSAuthenticationContext *)self preferredITunesStoreClient];
+  preferredITunesStoreClient = [(SSAuthenticationContext *)self preferredITunesStoreClient];
 
-  if (v29)
+  if (preferredITunesStoreClient)
   {
-    v30 = [(SSAuthenticationContext *)self preferredITunesStoreClient];
-    [v4 setObject:v30 forKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountTargetIdentifierKey"];
+    preferredITunesStoreClient2 = [(SSAuthenticationContext *)self preferredITunesStoreClient];
+    [v4 setObject:preferredITunesStoreClient2 forKeyedSubscript:@"SSAccountStoreAuthKitCreateAccountTargetIdentifierKey"];
   }
 
-  v31 = [(SSAuthenticationContext *)self HTTPHeaders];
-  v32 = [v31 count];
+  hTTPHeaders = [(SSAuthenticationContext *)self HTTPHeaders];
+  v32 = [hTTPHeaders count];
 
   if (v32)
   {
-    v33 = [(SSAuthenticationContext *)self HTTPHeaders];
-    v34 = [v33 mutableCopy];
+    hTTPHeaders2 = [(SSAuthenticationContext *)self HTTPHeaders];
+    v34 = [hTTPHeaders2 mutableCopy];
 
     [v34 removeObjectForKey:@"User-Agent"];
     v35 = [v34 copy];
     [v4 setObject:v35 forKeyedSubscript:@"SSAccountStoreAuthKitHTTPHeadersKey"];
   }
 
-  v36 = [(SSAuthenticationContext *)self HTTPHeaders];
-  v37 = [v36 count];
+  hTTPHeaders3 = [(SSAuthenticationContext *)self HTTPHeaders];
+  v37 = [hTTPHeaders3 count];
 
   if (v37)
   {
-    v38 = [(SSAuthenticationContext *)self HTTPHeaders];
-    v39 = [v38 mutableCopy];
+    hTTPHeaders4 = [(SSAuthenticationContext *)self HTTPHeaders];
+    v39 = [hTTPHeaders4 mutableCopy];
 
     [v39 removeObjectForKey:@"User-Agent"];
     v40 = [v39 copy];
     [v4 setObject:v40 forKeyedSubscript:@"SSAccountStoreAuthKitHTTPHeadersKey"];
   }
 
-  v41 = [(SSAuthenticationContext *)self HTTPHeaders];
-  v42 = [v41 objectForKeyedSubscript:@"User-Agent"];
+  hTTPHeaders5 = [(SSAuthenticationContext *)self HTTPHeaders];
+  v42 = [hTTPHeaders5 objectForKeyedSubscript:@"User-Agent"];
 
   if ([v42 length])
   {
-    v43 = v42;
+    userAgent = v42;
   }
 
   else
   {
     v44 = +[SSDevice currentDevice];
-    v43 = [v44 userAgent];
+    userAgent = [v44 userAgent];
 
-    v42 = v43;
-    if (![v43 length])
+    v42 = userAgent;
+    if (![userAgent length])
     {
       goto LABEL_26;
     }
@@ -253,13 +253,13 @@
 
   [v4 setObject:v42 forKeyedSubscript:@"SSAccountStoreAuthKitUserAgentKey"];
 LABEL_26:
-  v45 = [(SSAuthenticationContext *)self userAgentComponents];
-  v46 = [v45 count];
+  userAgentComponents = [(SSAuthenticationContext *)self userAgentComponents];
+  v46 = [userAgentComponents count];
 
   if (v46)
   {
-    v47 = [(SSAuthenticationContext *)self userAgentComponents];
-    [v4 setObject:v47 forKeyedSubscript:@"SSAccountStoreAuthKitUserAgentSuffixesKey"];
+    userAgentComponents2 = [(SSAuthenticationContext *)self userAgentComponents];
+    [v4 setObject:userAgentComponents2 forKeyedSubscript:@"SSAccountStoreAuthKitUserAgentSuffixesKey"];
   }
 
   v48 = [v4 copy];
@@ -271,8 +271,8 @@ LABEL_26:
 {
   v3 = [SSURLBagContext contextWithBagType:SSURLBagTypeForAccountScope([(SSAuthenticationContext *)self accountScope])];
   [v3 setAllowsBootstrapCellularData:{-[SSAuthenticationContext allowsBootstrapCellularData](self, "allowsBootstrapCellularData")}];
-  v4 = [(SSAuthenticationContext *)self HTTPHeaders];
-  v5 = [v4 objectForKey:@"User-Agent"];
+  hTTPHeaders = [(SSAuthenticationContext *)self HTTPHeaders];
+  v5 = [hTTPHeaders objectForKey:@"User-Agent"];
 
   if (v5)
   {
@@ -325,11 +325,11 @@ LABEL_26:
   return v3;
 }
 
-- (SSAuthenticationContext)initWithXPCEncoding:(id)a3
+- (SSAuthenticationContext)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v59.receiver = self;
     v59.super_class = SSAuthenticationContext;
@@ -451,184 +451,184 @@ LABEL_26:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [+[SSAuthenticationContext allocWithZone:](SSAuthenticationContext _initSSAuthenticationContext];
-  [(SSAuthenticationContext *)self _copyIvarsToCopy:v5 withZone:a3];
-  return v5;
+  _initSSAuthenticationContext = [+[SSAuthenticationContext allocWithZone:](SSAuthenticationContext _initSSAuthenticationContext];
+  [(SSAuthenticationContext *)self _copyIvarsToCopy:_initSSAuthenticationContext withZone:zone];
+  return _initSSAuthenticationContext;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [(SSAuthenticationContext *)+[SSMutableAuthenticationContext allocWithZone:](SSMutableAuthenticationContext _initSSAuthenticationContext];
-  [(SSAuthenticationContext *)self _copyIvarsToCopy:v5 withZone:a3];
-  return v5;
+  _initSSAuthenticationContext = [(SSAuthenticationContext *)+[SSMutableAuthenticationContext allocWithZone:](SSMutableAuthenticationContext _initSSAuthenticationContext];
+  [(SSAuthenticationContext *)self _copyIvarsToCopy:_initSSAuthenticationContext withZone:zone];
+  return _initSSAuthenticationContext;
 }
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v22.receiver = self;
   v22.super_class = SSAuthenticationContext;
   v4 = [(SSAuthenticationContext *)&v22 description];
-  [v3 appendFormat:@"%@:\n", v4];
+  [string appendFormat:@"%@:\n", v4];
 
-  v5 = [(SSAuthenticationContext *)self accountName];
-  [v3 appendFormat:@"  accountName = %@\n", v5];
+  accountName = [(SSAuthenticationContext *)self accountName];
+  [string appendFormat:@"  accountName = %@\n", accountName];
 
-  [v3 appendFormat:@"  accountScope = %ld\n", -[SSAuthenticationContext accountScope](self, "accountScope")];
-  [v3 appendFormat:@"  allowsBootstrapCellularData = %d\n", -[SSAuthenticationContext allowsBootstrapCellularData](self, "allowsBootstrapCellularData")];
-  [v3 appendFormat:@"  allowsRetry = %d\n", -[SSAuthenticationContext allowsRetry](self, "allowsRetry")];
-  [v3 appendFormat:@"  allowsSilentAuthentication = %d\n", -[SSAuthenticationContext allowsSilentAuthentication](self, "allowsSilentAuthentication")];
-  v6 = [(SSAuthenticationContext *)self altDSID];
-  [v3 appendFormat:@"  altDSID = %@\n", v6];
+  [string appendFormat:@"  accountScope = %ld\n", -[SSAuthenticationContext accountScope](self, "accountScope")];
+  [string appendFormat:@"  allowsBootstrapCellularData = %d\n", -[SSAuthenticationContext allowsBootstrapCellularData](self, "allowsBootstrapCellularData")];
+  [string appendFormat:@"  allowsRetry = %d\n", -[SSAuthenticationContext allowsRetry](self, "allowsRetry")];
+  [string appendFormat:@"  allowsSilentAuthentication = %d\n", -[SSAuthenticationContext allowsSilentAuthentication](self, "allowsSilentAuthentication")];
+  altDSID = [(SSAuthenticationContext *)self altDSID];
+  [string appendFormat:@"  altDSID = %@\n", altDSID];
 
-  v7 = [(SSAuthenticationContext *)self cancelButtonLabel];
-  [v3 appendFormat:@"  cancelButtonLabel = %@\n", v7];
+  cancelButtonLabel = [(SSAuthenticationContext *)self cancelButtonLabel];
+  [string appendFormat:@"  cancelButtonLabel = %@\n", cancelButtonLabel];
 
-  [v3 appendFormat:@"  canCreateNewAccount = %d\n", -[SSAuthenticationContext canCreateNewAccount](self, "canCreateNewAccount")];
-  [v3 appendFormat:@"  canSetActiveAccount = %d\n", -[SSAuthenticationContext canSetActiveAccount](self, "canSetActiveAccount")];
-  v8 = [(SSAuthenticationContext *)self clientIdentifierHeader];
-  [v3 appendFormat:@"  clientIdentifierHeader = %@\n", v8];
+  [string appendFormat:@"  canCreateNewAccount = %d\n", -[SSAuthenticationContext canCreateNewAccount](self, "canCreateNewAccount")];
+  [string appendFormat:@"  canSetActiveAccount = %d\n", -[SSAuthenticationContext canSetActiveAccount](self, "canSetActiveAccount")];
+  clientIdentifierHeader = [(SSAuthenticationContext *)self clientIdentifierHeader];
+  [string appendFormat:@"  clientIdentifierHeader = %@\n", clientIdentifierHeader];
 
-  [v3 appendFormat:@"  displaysOnLockScreen = %d\n", -[SSAuthenticationContext displaysOnLockScreen](self, "displaysOnLockScreen")];
-  v9 = [(SSAuthenticationContext *)self HTTPHeaders];
-  [v3 appendFormat:@"  HTTPHeaders = %@\n", v9];
+  [string appendFormat:@"  displaysOnLockScreen = %d\n", -[SSAuthenticationContext displaysOnLockScreen](self, "displaysOnLockScreen")];
+  hTTPHeaders = [(SSAuthenticationContext *)self HTTPHeaders];
+  [string appendFormat:@"  HTTPHeaders = %@\n", hTTPHeaders];
 
-  [v3 appendFormat:@"  isAccountNameEditable = %d\n", -[SSAuthenticationContext isAccountNameEditable](self, "isAccountNameEditable")];
-  v10 = [(SSAuthenticationContext *)self logUUID];
-  [v3 appendFormat:@"  logUUID = %@\n", v10];
+  [string appendFormat:@"  isAccountNameEditable = %d\n", -[SSAuthenticationContext isAccountNameEditable](self, "isAccountNameEditable")];
+  logUUID = [(SSAuthenticationContext *)self logUUID];
+  [string appendFormat:@"  logUUID = %@\n", logUUID];
 
-  v11 = [(SSAuthenticationContext *)self okButtonLabel];
-  [v3 appendFormat:@"  okButtonLabel = %@\n", v11];
+  okButtonLabel = [(SSAuthenticationContext *)self okButtonLabel];
+  [string appendFormat:@"  okButtonLabel = %@\n", okButtonLabel];
 
-  [v3 appendFormat:@"  persistsAcrossDeviceLock = %d\n", -[SSAuthenticationContext persistsAcrossDeviceLock](self, "persistsAcrossDeviceLock")];
-  [v3 appendFormat:@"  persistsPasswordFallback = %d\n", -[SSAuthenticationContext persistsPasswordFallback](self, "persistsPasswordFallback")];
-  v12 = [(SSAuthenticationContext *)self preferredITunesStoreClient];
-  [v3 appendFormat:@"  preferrediTunesStoreClient = %@\n", v12];
+  [string appendFormat:@"  persistsAcrossDeviceLock = %d\n", -[SSAuthenticationContext persistsAcrossDeviceLock](self, "persistsAcrossDeviceLock")];
+  [string appendFormat:@"  persistsPasswordFallback = %d\n", -[SSAuthenticationContext persistsPasswordFallback](self, "persistsPasswordFallback")];
+  preferredITunesStoreClient = [(SSAuthenticationContext *)self preferredITunesStoreClient];
+  [string appendFormat:@"  preferrediTunesStoreClient = %@\n", preferredITunesStoreClient];
 
-  [v3 appendFormat:@"  promptStyle = %ld\n", -[SSAuthenticationContext promptStyle](self, "promptStyle")];
-  v13 = [(SSAuthenticationContext *)self promptTitle];
-  [v3 appendFormat:@"  promptTitle = %@\n", v13];
+  [string appendFormat:@"  promptStyle = %ld\n", -[SSAuthenticationContext promptStyle](self, "promptStyle")];
+  promptTitle = [(SSAuthenticationContext *)self promptTitle];
+  [string appendFormat:@"  promptTitle = %@\n", promptTitle];
 
-  v14 = [(SSAuthenticationContext *)self reasonDescription];
-  [v3 appendFormat:@"  reasonDescription = %@\n", v14];
+  reasonDescription = [(SSAuthenticationContext *)self reasonDescription];
+  [string appendFormat:@"  reasonDescription = %@\n", reasonDescription];
 
-  v15 = [(SSAuthenticationContext *)self requestParameters];
-  [v3 appendFormat:@"  requestParameters = %@\n", v15];
+  requestParameters = [(SSAuthenticationContext *)self requestParameters];
+  [string appendFormat:@"  requestParameters = %@\n", requestParameters];
 
-  v16 = [(SSAuthenticationContext *)self requiredUniqueIdentifier];
-  [v3 appendFormat:@"  requiredUniqueIdentifier = %@\n", v16];
+  requiredUniqueIdentifier = [(SSAuthenticationContext *)self requiredUniqueIdentifier];
+  [string appendFormat:@"  requiredUniqueIdentifier = %@\n", requiredUniqueIdentifier];
 
-  [v3 appendFormat:@"  shouldCreateNewSession = %d\n", -[SSAuthenticationContext shouldCreateNewSession](self, "shouldCreateNewSession")];
-  [v3 appendFormat:@"  shouldFollowAccountButtons = %d\n", -[SSAuthenticationContext shouldFollowAccountButtons](self, "shouldFollowAccountButtons")];
-  [v3 appendFormat:@"  shouldIgnoreAccountConversion = %d\n", -[SSAuthenticationContext shouldIgnoreAccountConversion](self, "shouldIgnoreAccountConversion")];
-  [v3 appendFormat:@"  shouldIgnoreProtocol = %d\n", -[SSAuthenticationContext shouldIgnoreProtocol](self, "shouldIgnoreProtocol")];
-  [v3 appendFormat:@"  shouldSuppressDialogs = %d\n", -[SSAuthenticationContext shouldSuppressDialogs](self, "shouldSuppressDialogs")];
-  v17 = [(SSAuthenticationContext *)self signupRequestParameters];
-  [v3 appendFormat:@"  signupRequestParameters = %@\n", v17];
+  [string appendFormat:@"  shouldCreateNewSession = %d\n", -[SSAuthenticationContext shouldCreateNewSession](self, "shouldCreateNewSession")];
+  [string appendFormat:@"  shouldFollowAccountButtons = %d\n", -[SSAuthenticationContext shouldFollowAccountButtons](self, "shouldFollowAccountButtons")];
+  [string appendFormat:@"  shouldIgnoreAccountConversion = %d\n", -[SSAuthenticationContext shouldIgnoreAccountConversion](self, "shouldIgnoreAccountConversion")];
+  [string appendFormat:@"  shouldIgnoreProtocol = %d\n", -[SSAuthenticationContext shouldIgnoreProtocol](self, "shouldIgnoreProtocol")];
+  [string appendFormat:@"  shouldSuppressDialogs = %d\n", -[SSAuthenticationContext shouldSuppressDialogs](self, "shouldSuppressDialogs")];
+  signupRequestParameters = [(SSAuthenticationContext *)self signupRequestParameters];
+  [string appendFormat:@"  signupRequestParameters = %@\n", signupRequestParameters];
 
-  [v3 appendFormat:@"  tokenType = %ld\n", -[SSAuthenticationContext tokenType](self, "tokenType")];
-  v18 = [(SSAuthenticationContext *)self touchIDContinueToken];
-  [v3 appendFormat:@"  touchIDContinueToken = %@\n", v18];
+  [string appendFormat:@"  tokenType = %ld\n", -[SSAuthenticationContext tokenType](self, "tokenType")];
+  touchIDContinueToken = [(SSAuthenticationContext *)self touchIDContinueToken];
+  [string appendFormat:@"  touchIDContinueToken = %@\n", touchIDContinueToken];
 
-  v19 = [(SSAuthenticationContext *)self URLBagContext];
-  [v3 appendFormat:@"  URLBagContext = %@\n", v19];
+  uRLBagContext = [(SSAuthenticationContext *)self URLBagContext];
+  [string appendFormat:@"  URLBagContext = %@\n", uRLBagContext];
 
-  v20 = [(SSAuthenticationContext *)self userAgentComponents];
-  [v3 appendFormat:@"  userAgentComponents = %@", v20];
+  userAgentComponents = [(SSAuthenticationContext *)self userAgentComponents];
+  [string appendFormat:@"  userAgentComponents = %@", userAgentComponents];
 
-  return v3;
+  return string;
 }
 
-- (void)_copyIvarsToCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)_copyIvarsToCopy:(id)copy withZone:(_NSZone *)zone
 {
   accountName = self->_accountName;
-  v7 = a3;
-  v8 = [(NSString *)accountName copyWithZone:a4];
-  v9 = *(v7 + 1);
-  *(v7 + 1) = v8;
+  copyCopy = copy;
+  v8 = [(NSString *)accountName copyWithZone:zone];
+  v9 = *(copyCopy + 1);
+  *(copyCopy + 1) = v8;
 
-  *(v7 + 16) = self->_accountNameEditable;
-  *(v7 + 3) = self->_accountScope;
-  *(v7 + 32) = self->_allowsBioAuthentication;
-  *(v7 + 33) = self->_allowsBootstrapCellularData;
-  *(v7 + 34) = self->_allowsRetry;
-  *(v7 + 35) = self->_allowsSilentAuthentication;
-  v10 = [(NSString *)self->_altDSID copyWithZone:a4];
-  v11 = *(v7 + 5);
-  *(v7 + 5) = v10;
+  *(copyCopy + 16) = self->_accountNameEditable;
+  *(copyCopy + 3) = self->_accountScope;
+  *(copyCopy + 32) = self->_allowsBioAuthentication;
+  *(copyCopy + 33) = self->_allowsBootstrapCellularData;
+  *(copyCopy + 34) = self->_allowsRetry;
+  *(copyCopy + 35) = self->_allowsSilentAuthentication;
+  v10 = [(NSString *)self->_altDSID copyWithZone:zone];
+  v11 = *(copyCopy + 5);
+  *(copyCopy + 5) = v10;
 
-  v12 = [(NSString *)self->_cancelButtonLabel copyWithZone:a4];
-  v13 = *(v7 + 6);
-  *(v7 + 6) = v12;
+  v12 = [(NSString *)self->_cancelButtonLabel copyWithZone:zone];
+  v13 = *(copyCopy + 6);
+  *(copyCopy + 6) = v12;
 
-  *(v7 + 56) = self->_canCreateNewAccount;
-  *(v7 + 57) = self->_canSetActiveAccount;
-  v14 = [(NSString *)self->_clientIdentifierHeader copyWithZone:a4];
-  v15 = *(v7 + 8);
-  *(v7 + 8) = v14;
+  *(copyCopy + 56) = self->_canCreateNewAccount;
+  *(copyCopy + 57) = self->_canSetActiveAccount;
+  v14 = [(NSString *)self->_clientIdentifierHeader copyWithZone:zone];
+  v15 = *(copyCopy + 8);
+  *(copyCopy + 8) = v14;
 
-  *(v7 + 72) = self->_displaysOnLockScreen;
-  *(v7 + 73) = self->_forceDaemonAuthentication;
-  v16 = [(NSDictionary *)self->_httpHeaders copyWithZone:a4];
-  v17 = *(v7 + 10);
-  *(v7 + 10) = v16;
+  *(copyCopy + 72) = self->_displaysOnLockScreen;
+  *(copyCopy + 73) = self->_forceDaemonAuthentication;
+  v16 = [(NSDictionary *)self->_httpHeaders copyWithZone:zone];
+  v17 = *(copyCopy + 10);
+  *(copyCopy + 10) = v16;
 
-  v18 = [(NSString *)self->_okButtonLabel copyWithZone:a4];
-  v19 = *(v7 + 14);
-  *(v7 + 14) = v18;
+  v18 = [(NSString *)self->_okButtonLabel copyWithZone:zone];
+  v19 = *(copyCopy + 14);
+  *(copyCopy + 14) = v18;
 
-  v20 = [(NSString *)self->_logUUID copyWithZone:a4];
-  v21 = *(v7 + 11);
-  *(v7 + 11) = v20;
+  v20 = [(NSString *)self->_logUUID copyWithZone:zone];
+  v21 = *(copyCopy + 11);
+  *(copyCopy + 11) = v20;
 
-  v22 = [(NSString *)self->_password copyWithZone:a4];
-  v23 = *(v7 + 12);
-  *(v7 + 12) = v22;
+  v22 = [(NSString *)self->_password copyWithZone:zone];
+  v23 = *(copyCopy + 12);
+  *(copyCopy + 12) = v22;
 
-  v24 = [(NSString *)self->_passwordEquivalentToken copyWithZone:a4];
-  v25 = *(v7 + 13);
-  *(v7 + 13) = v24;
+  v24 = [(NSString *)self->_passwordEquivalentToken copyWithZone:zone];
+  v25 = *(copyCopy + 13);
+  *(copyCopy + 13) = v24;
 
-  *(v7 + 120) = self->_persistsAcrossDeviceLock;
-  v26 = [(NSString *)self->_preferredITunesStoreClient copyWithZone:a4];
-  v27 = *(v7 + 16);
-  *(v7 + 16) = v26;
+  *(copyCopy + 120) = self->_persistsAcrossDeviceLock;
+  v26 = [(NSString *)self->_preferredITunesStoreClient copyWithZone:zone];
+  v27 = *(copyCopy + 16);
+  *(copyCopy + 16) = v26;
 
-  *(v7 + 18) = self->_promptStyle;
-  objc_storeStrong(v7 + 17, self->_promptTitle);
-  *(v7 + 121) = self->_persistsPasswordFallback;
-  v28 = [(NSString *)self->_reasonDescription copyWithZone:a4];
-  v29 = *(v7 + 19);
-  *(v7 + 19) = v28;
+  *(copyCopy + 18) = self->_promptStyle;
+  objc_storeStrong(copyCopy + 17, self->_promptTitle);
+  *(copyCopy + 121) = self->_persistsPasswordFallback;
+  v28 = [(NSString *)self->_reasonDescription copyWithZone:zone];
+  v29 = *(copyCopy + 19);
+  *(copyCopy + 19) = v28;
 
-  v30 = [(NSDictionary *)self->_requestParameters copyWithZone:a4];
-  v31 = *(v7 + 20);
-  *(v7 + 20) = v30;
+  v30 = [(NSDictionary *)self->_requestParameters copyWithZone:zone];
+  v31 = *(copyCopy + 20);
+  *(copyCopy + 20) = v30;
 
-  v32 = [(NSNumber *)self->_requiredUniqueIdentifier copyWithZone:a4];
-  v33 = *(v7 + 21);
-  *(v7 + 21) = v32;
+  v32 = [(NSNumber *)self->_requiredUniqueIdentifier copyWithZone:zone];
+  v33 = *(copyCopy + 21);
+  *(copyCopy + 21) = v32;
 
-  *(v7 + 176) = self->_shouldCreateNewSession;
-  *(v7 + 177) = self->_shouldFollowAccountButtons;
-  *(v7 + 178) = self->_shouldIgnoreAccountConversion;
-  *(v7 + 179) = self->_shouldIgnoreProtocol;
-  *(v7 + 180) = self->_shouldPersonalizeResponseActions;
-  *(v7 + 181) = self->_shouldSuppressDialogs;
-  v34 = [(NSDictionary *)self->_signupRequestParameters copyWithZone:a4];
-  v35 = *(v7 + 23);
-  *(v7 + 23) = v34;
+  *(copyCopy + 176) = self->_shouldCreateNewSession;
+  *(copyCopy + 177) = self->_shouldFollowAccountButtons;
+  *(copyCopy + 178) = self->_shouldIgnoreAccountConversion;
+  *(copyCopy + 179) = self->_shouldIgnoreProtocol;
+  *(copyCopy + 180) = self->_shouldPersonalizeResponseActions;
+  *(copyCopy + 181) = self->_shouldSuppressDialogs;
+  v34 = [(NSDictionary *)self->_signupRequestParameters copyWithZone:zone];
+  v35 = *(copyCopy + 23);
+  *(copyCopy + 23) = v34;
 
-  *(v7 + 24) = self->_tokenType;
-  v36 = [(NSString *)self->_touchIDContinueToken copyWithZone:a4];
-  v37 = *(v7 + 25);
-  *(v7 + 25) = v36;
+  *(copyCopy + 24) = self->_tokenType;
+  v36 = [(NSString *)self->_touchIDContinueToken copyWithZone:zone];
+  v37 = *(copyCopy + 25);
+  *(copyCopy + 25) = v36;
 
-  v38 = [(NSArray *)self->_userAgentComponents copyWithZone:a4];
-  v39 = *(v7 + 26);
-  *(v7 + 26) = v38;
+  v38 = [(NSArray *)self->_userAgentComponents copyWithZone:zone];
+  v39 = *(copyCopy + 26);
+  *(copyCopy + 26) = v38;
 }
 
 @end

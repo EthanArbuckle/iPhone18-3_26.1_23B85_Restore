@@ -1,10 +1,10 @@
 @interface WFFolderAction
-- (void)runWithInput:(id)a3 error:(id *)a4;
+- (void)runWithInput:(id)input error:(id *)error;
 @end
 
 @implementation WFFolderAction
 
-- (void)runWithInput:(id)a3 error:(id *)a4
+- (void)runWithInput:(id)input error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = [(WFFolderAction *)self parameterValueForKey:@"WFFolder" ofClass:objc_opt_class()];
@@ -28,8 +28,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(WFFolderAction *)self output];
-        [v11 addFileWithOriginAttribution:v10];
+        output = [(WFFolderAction *)self output];
+        [output addFileWithOriginAttribution:v10];
 
         ++v9;
       }

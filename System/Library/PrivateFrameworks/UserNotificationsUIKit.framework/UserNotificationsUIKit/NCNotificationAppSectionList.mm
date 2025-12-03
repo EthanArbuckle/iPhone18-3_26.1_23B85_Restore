@@ -1,62 +1,62 @@
 @interface NCNotificationAppSectionList
-- (BOOL)_shouldShowContentForNotificationRequest:(id)a3;
+- (BOOL)_shouldShowContentForNotificationRequest:(id)request;
 - (BOOL)_showSummarizedFooterView;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)isAttachmentImageFeaturedForNotificationGroupList:(id)a3;
-- (BOOL)removeNotificationRequest:(id)a3;
-- (NCNotificationAppSectionList)initWithTitle:(id)a3 sectionType:(unint64_t)a4;
+- (BOOL)isAttachmentImageFeaturedForNotificationGroupList:(id)list;
+- (BOOL)removeNotificationRequest:(id)request;
+- (NCNotificationAppSectionList)initWithTitle:(id)title sectionType:(unint64_t)type;
 - (NSArray)groupListsForSmartOrdering;
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
-- (double)headerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width;
+- (double)headerViewHeightForNotificationList:(id)list withWidth:(double)width;
 - (id)_applicationIconRecipe;
-- (id)_attachmentImageViewForSummaryForNotificationRequest:(id)a3;
-- (id)_extractFeaturedNotificationRequestsFromGroupLists:(id)a3;
+- (id)_attachmentImageViewForSummaryForNotificationRequest:(id)request;
+- (id)_extractFeaturedNotificationRequestsFromGroupLists:(id)lists;
 - (id)_localizedDefaultHiddenPreviewsBodyPlaceholder;
-- (id)_newAttachmentImageViewForImage:(id)a3;
-- (id)_newGroupListForNotificationRequest:(id)a3;
+- (id)_newAttachmentImageViewForImage:(id)image;
+- (id)_newGroupListForNotificationRequest:(id)request;
 - (id)_nonFeaturedGroupLists;
 - (id)_notificationGroupsForInsertion;
 - (id)_summarizedAttachmentImageViews;
 - (id)_summarizedContentStrings;
-- (id)_summarizedStringsForNotificationRequest:(id)a3;
-- (id)backgroundGroupNameBaseForAppSectionListSummarizedContentView:(id)a3;
-- (id)footerViewForNotificationList:(id)a3;
-- (id)headerViewForNotificationList:(id)a3;
-- (id)notificationGroupList:(id)a3 requestsContentProviderForNotificationRequest:(id)a4;
-- (id)requestCustomPlatterBackgroundViewForNotificationGroupList:(id)a3;
-- (int64_t)insertNotificationRequest:(id)a3;
-- (unint64_t)_insertionIndexForGroup:(id)a3;
+- (id)_summarizedStringsForNotificationRequest:(id)request;
+- (id)backgroundGroupNameBaseForAppSectionListSummarizedContentView:(id)view;
+- (id)footerViewForNotificationList:(id)list;
+- (id)headerViewForNotificationList:(id)list;
+- (id)notificationGroupList:(id)list requestsContentProviderForNotificationRequest:(id)request;
+- (id)requestCustomPlatterBackgroundViewForNotificationGroupList:(id)list;
+- (int64_t)insertNotificationRequest:(id)request;
+- (unint64_t)_insertionIndexForGroup:(id)group;
 - (unint64_t)_summarizedCount;
-- (unint64_t)notificationListViewNumberOfItems:(id)a3;
-- (void)_clearContentProviderForRequest:(id)a3;
+- (unint64_t)notificationListViewNumberOfItems:(id)items;
+- (void)_clearContentProviderForRequest:(id)request;
 - (void)_configureFooterViewIfNecessary;
 - (void)_configureHeaderViewIfNecessary;
-- (void)_configureSectionListView:(id)a3;
+- (void)_configureSectionListView:(id)view;
 - (void)_mergeFeaturedGroupLists;
-- (void)_removeFeaturedGroupListIfNecessary:(id)a3;
-- (void)_updateFeaturedGroupListsForFeaturedNotificationRequests:(id)a3;
+- (void)_removeFeaturedGroupListIfNecessary:(id)necessary;
+- (void)_updateFeaturedGroupListsForFeaturedNotificationRequests:(id)requests;
 - (void)_updateSummarizedFooterViewContent;
-- (void)appSectionListHeaderView:(id)a3 didRequestPresentingOptionsMenuFromView:(id)a4;
-- (void)appSectionListSummarizedContentViewDidRecognizeTapGesture:(id)a3;
+- (void)appSectionListHeaderView:(id)view didRequestPresentingOptionsMenuFromView:(id)fromView;
+- (void)appSectionListSummarizedContentViewDidRecognizeTapGesture:(id)gesture;
 - (void)clearAll;
-- (void)modifyNotificationRequest:(id)a3;
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3;
-- (void)notificationListComponent:(id)a3 didRemoveNotificationRequest:(id)a4;
-- (void)notificationListPresentableGroup:(id)a3 didReceivedHorizontalTranslation:(double)a4 forCell:(id)a5;
-- (void)setDeviceAuthenticated:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setGroupListsForSmartOrdering:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)modifyNotificationRequest:(id)request;
+- (void)notificationListBaseComponentDidRemoveAll:(id)all;
+- (void)notificationListComponent:(id)component didRemoveNotificationRequest:(id)request;
+- (void)notificationListPresentableGroup:(id)group didReceivedHorizontalTranslation:(double)translation forCell:(id)cell;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setGroupListsForSmartOrdering:(id)ordering;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)unmergeNotificationGroupListsIfNecessary;
 @end
 
 @implementation NCNotificationAppSectionList
 
-- (NCNotificationAppSectionList)initWithTitle:(id)a3 sectionType:(unint64_t)a4
+- (NCNotificationAppSectionList)initWithTitle:(id)title sectionType:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = NCNotificationAppSectionList;
-  v4 = [(NCNotificationStructuredSectionList *)&v12 initWithTitle:a3 sectionType:a4];
+  v4 = [(NCNotificationStructuredSectionList *)&v12 initWithTitle:title sectionType:type];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -68,9 +68,9 @@
     v4->_richContentProviders = v7;
 
     v4->_expanded = 0;
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    v10 = [v9 preferredContentSizeCategory];
-    [(NCNotificationAppSectionList *)v4 setPreferredContentSizeCategory:v10];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    [(NCNotificationAppSectionList *)v4 setPreferredContentSizeCategory:preferredContentSizeCategory];
   }
 
   return v4;
@@ -80,105 +80,105 @@
 {
   [(NCNotificationAppSectionList *)self _mergeFeaturedGroupLists];
   [(NCNotificationAppSectionList *)self setMerged:1];
-  v3 = [(NCNotificationStructuredSectionList *)self notificationGroups];
-  v4 = [v3 copy];
+  notificationGroups = [(NCNotificationStructuredSectionList *)self notificationGroups];
+  v4 = [notificationGroups copy];
 
   return v4;
 }
 
-- (void)setGroupListsForSmartOrdering:(id)a3
+- (void)setGroupListsForSmartOrdering:(id)ordering
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  orderingCopy = ordering;
+  if ([orderingCopy count])
   {
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NCNotificationStructuredSectionList *)self logDescription];
+      logDescription = [(NCNotificationStructuredSectionList *)self logDescription];
       v14 = 138543618;
-      v15 = v7;
+      v15 = logDescription;
       v16 = 2048;
-      v17 = [v4 count];
+      v17 = [orderingCopy count];
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ setting group lists for smart ordering with count %lu", &v14, 0x16u);
     }
 
-    v8 = [(NCNotificationAppSectionList *)self _extractFeaturedNotificationRequestsFromGroupLists:v4];
+    v8 = [(NCNotificationAppSectionList *)self _extractFeaturedNotificationRequestsFromGroupLists:orderingCopy];
     [(NCNotificationAppSectionList *)self _updateFeaturedGroupListsForFeaturedNotificationRequests:v8];
-    v9 = [v4 bs_filter:&__block_literal_global_7];
+    v9 = [orderingCopy bs_filter:&__block_literal_global_7];
     v10 = objc_alloc(MEMORY[0x277CBEB18]);
-    v11 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-    v12 = [v10 initWithArray:v11];
+    featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
+    v12 = [v10 initWithArray:featuredGroupLists];
 
     [v12 addObjectsFromArray:v9];
     [(NCNotificationStructuredSectionList *)self setNotificationGroups:v12];
     [(NCNotificationAppSectionList *)self setMerged:0];
-    v13 = [(NCNotificationStructuredSectionList *)self listView];
-    [v13 invalidateData];
+    listView = [(NCNotificationStructuredSectionList *)self listView];
+    [listView invalidateData];
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v3 = a3;
+    expandedCopy = expanded;
     v5 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NCNotificationStructuredSectionList *)self logDescription];
+      logDescription = [(NCNotificationStructuredSectionList *)self logDescription];
       *buf = 138543618;
-      v26 = v7;
+      v26 = logDescription;
       v27 = 1024;
-      v28 = v3;
+      v28 = expandedCopy;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ setting expanded = %{BOOL}d", buf, 0x12u);
     }
 
-    self->_expanded = v3;
-    v22 = v3;
-    if (v3)
+    self->_expanded = expandedCopy;
+    v22 = expandedCopy;
+    if (expandedCopy)
     {
-      v8 = [(NCNotificationStructuredSectionList *)self listView];
-      [v8 reloadFooterViewAnimated:1];
+      listView = [(NCNotificationStructuredSectionList *)self listView];
+      [listView reloadFooterViewAnimated:1];
 
       v9 = [(NSMutableArray *)self->_featuredGroupLists count];
-      v10 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-      v11 = [v10 count];
+      _nonFeaturedGroupLists = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+      v11 = [_nonFeaturedGroupLists count];
 
       if (v11)
       {
         for (i = 0; i != v11; ++i)
         {
-          v13 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-          v14 = [v13 objectAtIndex:i];
-          v15 = [v14 listView];
-          [v15 setNeedsLayout];
+          _nonFeaturedGroupLists2 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+          v14 = [_nonFeaturedGroupLists2 objectAtIndex:i];
+          listView2 = [v14 listView];
+          [listView2 setNeedsLayout];
 
-          v16 = [(NCNotificationStructuredSectionList *)self listView];
-          [v16 insertViewAtIndex:v9 + i animated:1];
+          listView3 = [(NCNotificationStructuredSectionList *)self listView];
+          [listView3 insertViewAtIndex:v9 + i animated:1];
 
-          v17 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-          v18 = [v17 objectAtIndex:i];
-          v19 = [v18 allNotificationRequests];
+          _nonFeaturedGroupLists3 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+          v18 = [_nonFeaturedGroupLists3 objectAtIndex:i];
+          allNotificationRequests = [v18 allNotificationRequests];
           v23[0] = MEMORY[0x277D85DD0];
           v23[1] = 3221225472;
           v23[2] = __44__NCNotificationAppSectionList_setExpanded___block_invoke;
           v23[3] = &unk_278370958;
           v23[4] = self;
           v24 = i;
-          [v19 enumerateObjectsUsingBlock:v23];
+          [allNotificationRequests enumerateObjectsUsingBlock:v23];
         }
       }
     }
 
-    v20 = [(NCNotificationStructuredSectionList *)self listView];
-    [v20 setNeedsLayout];
+    listView4 = [(NCNotificationStructuredSectionList *)self listView];
+    [listView4 setNeedsLayout];
 
-    v21 = [(NCNotificationStructuredSectionList *)self delegate];
-    [v21 notificationStructuredSectionList:self transitionedGroupedStateIsGrouped:!v22];
+    delegate = [(NCNotificationStructuredSectionList *)self delegate];
+    [delegate notificationStructuredSectionList:self transitionedGroupedStateIsGrouped:!v22];
   }
 }
 
@@ -200,21 +200,21 @@ void __44__NCNotificationAppSectionList_setExpanded___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(NCNotificationStructuredSectionList *)self logDescription];
+      logDescription = [(NCNotificationStructuredSectionList *)self logDescription];
       v7 = 138543362;
-      v8 = v5;
+      v8 = logDescription;
       _os_log_impl(&dword_21E77E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ unmerging group lists", &v7, 0xCu);
     }
 
-    v6 = [(NCNotificationStructuredSectionList *)self allNotificationGroups];
-    [(NCNotificationAppSectionList *)self setGroupListsForSmartOrdering:v6];
+    allNotificationGroups = [(NCNotificationStructuredSectionList *)self allNotificationGroups];
+    [(NCNotificationAppSectionList *)self setGroupListsForSmartOrdering:allNotificationGroups];
   }
 }
 
-- (int64_t)insertNotificationRequest:(id)a3
+- (int64_t)insertNotificationRequest:(id)request
 {
-  v4 = a3;
-  [(NCNotificationAppSectionList *)self _clearContentProviderForRequest:v4];
+  requestCopy = request;
+  [(NCNotificationAppSectionList *)self _clearContentProviderForRequest:requestCopy];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -223,17 +223,17 @@ void __44__NCNotificationAppSectionList_setExpanded___block_invoke(uint64_t a1, 
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+  featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__NCNotificationAppSectionList_insertNotificationRequest___block_invoke;
   v11[3] = &unk_278370980;
-  v6 = v4;
+  v6 = requestCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v20;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [featuredGroupLists enumerateObjectsUsingBlock:v11];
 
   if ((v21[3] & 1) == 0)
   {
@@ -282,24 +282,24 @@ void __58__NCNotificationAppSectionList_insertNotificationRequest___block_invoke
   }
 }
 
-- (void)modifyNotificationRequest:(id)a3
+- (void)modifyNotificationRequest:(id)request
 {
-  v4 = a3;
-  [(NCNotificationAppSectionList *)self _clearContentProviderForRequest:v4];
+  requestCopy = request;
+  [(NCNotificationAppSectionList *)self _clearContentProviderForRequest:requestCopy];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+  featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__NCNotificationAppSectionList_modifyNotificationRequest___block_invoke;
   v9[3] = &unk_2783709A8;
-  v6 = v4;
+  v6 = requestCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [featuredGroupLists enumerateObjectsUsingBlock:v9];
 
   if ((v14[3] & 1) == 0)
   {
@@ -346,22 +346,22 @@ void __58__NCNotificationAppSectionList_modifyNotificationRequest___block_invoke
   }
 }
 
-- (BOOL)removeNotificationRequest:(id)a3
+- (BOOL)removeNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+  featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke;
   v11[3] = &unk_27836F7F8;
   v13 = &v14;
-  v6 = v4;
+  v6 = requestCopy;
   v12 = v6;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [featuredGroupLists enumerateObjectsUsingBlock:v11];
 
   v10.receiver = self;
   v10.super_class = NCNotificationAppSectionList;
@@ -370,8 +370,8 @@ void __58__NCNotificationAppSectionList_modifyNotificationRequest___block_invoke
   [(NCNotificationAppSectionList *)self _clearContentProviderForRequest:v6];
   if (*(v15 + 24) == 1)
   {
-    v8 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-    [v8 enumerateObjectsUsingBlock:&__block_literal_global_12];
+    featuredGroupLists2 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+    [featuredGroupLists2 enumerateObjectsUsingBlock:&__block_literal_global_12];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -393,19 +393,19 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   [v2 reloadNotificationRequest:v3];
 }
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
   v9.receiver = self;
   v9.super_class = NCNotificationAppSectionList;
   [(NCNotificationStructuredSectionList *)&v9 setDeviceAuthenticated:?];
-  v5 = [(NCNotificationAppSectionList *)self richContentProviders];
-  v6 = [v5 allValues];
+  richContentProviders = [(NCNotificationAppSectionList *)self richContentProviders];
+  allValues = [richContentProviders allValues];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__NCNotificationAppSectionList_setDeviceAuthenticated___block_invoke;
   v7[3] = &__block_descriptor_33_e57_v32__0__NCNotificationRequestRichContentProvider_8Q16_B24l;
-  v8 = a3;
-  [v6 enumerateObjectsUsingBlock:v7];
+  authenticatedCopy = authenticated;
+  [allValues enumerateObjectsUsingBlock:v7];
 }
 
 - (void)clearAll
@@ -413,13 +413,13 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   v4.receiver = self;
   v4.super_class = NCNotificationAppSectionList;
   [(NCNotificationStructuredSectionList *)&v4 clearAll];
-  v3 = [(NCNotificationStructuredSectionList *)self delegate];
-  [v3 notificationListBaseComponentDidRemoveAll:self];
+  delegate = [(NCNotificationStructuredSectionList *)self delegate];
+  [delegate notificationListBaseComponentDidRemoveAll:self];
 }
 
-- (unint64_t)notificationListViewNumberOfItems:(id)a3
+- (unint64_t)notificationListViewNumberOfItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if ([(NCNotificationAppSectionList *)self _showSummarizedFooterView])
   {
     v5 = [(NSMutableArray *)self->_featuredGroupLists count];
@@ -429,7 +429,7 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   {
     v8.receiver = self;
     v8.super_class = NCNotificationAppSectionList;
-    v5 = [(NCNotificationStructuredSectionList *)&v8 notificationListViewNumberOfItems:v4];
+    v5 = [(NCNotificationStructuredSectionList *)&v8 notificationListViewNumberOfItems:itemsCopy];
   }
 
   v6 = v5;
@@ -437,7 +437,7 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   return v6;
 }
 
-- (id)headerViewForNotificationList:(id)a3
+- (id)headerViewForNotificationList:(id)list
 {
   [(NCNotificationAppSectionList *)self _configureHeaderViewIfNecessary];
   headerView = self->_headerView;
@@ -445,21 +445,21 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   return headerView;
 }
 
-- (double)headerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)headerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
   [(NCNotificationAppSectionList *)self _configureHeaderViewIfNecessary];
-  v6 = [(NCNotificationAppSectionList *)self isCombinedAppSectionList];
+  isCombinedAppSectionList = [(NCNotificationAppSectionList *)self isCombinedAppSectionList];
   result = 10.0;
-  if (!v6)
+  if (!isCombinedAppSectionList)
   {
-    [(NCNotificationAppSectionListHeaderView *)self->_headerView sizeThatFits:a4, 0.0];
+    [(NCNotificationAppSectionListHeaderView *)self->_headerView sizeThatFits:width, 0.0];
     return v8;
   }
 
   return result;
 }
 
-- (id)footerViewForNotificationList:(id)a3
+- (id)footerViewForNotificationList:(id)list
 {
   if ([(NCNotificationAppSectionList *)self _showSummarizedFooterView])
   {
@@ -473,8 +473,8 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
     {
       self->_footerView = 0;
 
-      v5 = [(NCNotificationStructuredSectionList *)self listView];
-      [v5 reloadFooterViewAnimated:1];
+      listView = [(NCNotificationStructuredSectionList *)self listView];
+      [listView reloadFooterViewAnimated:1];
     }
   }
 
@@ -483,25 +483,25 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   return v6;
 }
 
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
   [(NCNotificationAppSectionList *)self _configureFooterViewIfNecessary];
-  v6 = [(NCNotificationAppSectionList *)self _showSummarizedFooterView];
+  _showSummarizedFooterView = [(NCNotificationAppSectionList *)self _showSummarizedFooterView];
   result = 0.0;
-  if (v6)
+  if (_showSummarizedFooterView)
   {
-    [(NCNotificationAppSectionListSummarizedContentView *)self->_footerView sizeThatFits:a4, 0.0];
+    [(NCNotificationAppSectionListSummarizedContentView *)self->_footerView sizeThatFits:width, 0.0];
     return v8;
   }
 
   return result;
 }
 
-- (BOOL)isAttachmentImageFeaturedForNotificationGroupList:(id)a3
+- (BOOL)isAttachmentImageFeaturedForNotificationGroupList:(id)list
 {
-  v4 = a3;
-  v5 = [(NCNotificationStructuredSectionList *)self allNotificationGroups];
-  v6 = [v5 indexOfObject:v4];
+  listCopy = list;
+  allNotificationGroups = [(NCNotificationStructuredSectionList *)self allNotificationGroups];
+  v6 = [allNotificationGroups indexOfObject:listCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -511,16 +511,16 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   return [(NCNotificationAppSectionList *)self _isViewFeaturedAtIndex:v6];
 }
 
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3
+- (void)notificationListBaseComponentDidRemoveAll:(id)all
 {
   v6.receiver = self;
   v6.super_class = NCNotificationAppSectionList;
-  v4 = a3;
-  [(NCNotificationStructuredSectionList *)&v6 notificationListBaseComponentDidRemoveAll:v4];
+  allCopy = all;
+  [(NCNotificationStructuredSectionList *)&v6 notificationListBaseComponentDidRemoveAll:allCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = allCopy;
   }
 
   else
@@ -531,16 +531,16 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   [(NCNotificationAppSectionList *)self _removeFeaturedGroupListIfNecessary:v5, v6.receiver, v6.super_class];
 }
 
-- (void)notificationListComponent:(id)a3 didRemoveNotificationRequest:(id)a4
+- (void)notificationListComponent:(id)component didRemoveNotificationRequest:(id)request
 {
   v8.receiver = self;
   v8.super_class = NCNotificationAppSectionList;
-  v6 = a3;
-  [(NCNotificationStructuredSectionList *)&v8 notificationListComponent:v6 didRemoveNotificationRequest:a4];
+  componentCopy = component;
+  [(NCNotificationStructuredSectionList *)&v8 notificationListComponent:componentCopy didRemoveNotificationRequest:request];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = componentCopy;
   }
 
   else
@@ -551,22 +551,22 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   [(NCNotificationAppSectionList *)self _removeFeaturedGroupListIfNecessary:v7, v8.receiver, v8.super_class];
 }
 
-- (id)notificationGroupList:(id)a3 requestsContentProviderForNotificationRequest:(id)a4
+- (id)notificationGroupList:(id)list requestsContentProviderForNotificationRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(NSMutableDictionary *)self->_richContentProviders objectForKey:v5];
+  requestCopy = request;
+  v6 = [(NSMutableDictionary *)self->_richContentProviders objectForKey:requestCopy];
   if (!v6)
   {
-    v6 = [(NCNotificationRequestCoalescingContentProvider *)[NCNotificationRequestRichContentProvider alloc] initWithNotificationRequest:v5];
+    v6 = [(NCNotificationRequestCoalescingContentProvider *)[NCNotificationRequestRichContentProvider alloc] initWithNotificationRequest:requestCopy];
     [(NCNotificationRequestCoalescingContentProvider *)v6 setDeviceAuthenticated:[(NCNotificationStructuredSectionList *)self deviceAuthenticated]];
     [(NCNotificationRequestRichContentProvider *)v6 setIconVisible:[(NCNotificationAppSectionList *)self isCombinedAppSectionList]];
-    [(NSMutableDictionary *)self->_richContentProviders bs_setSafeObject:v6 forKey:v5];
+    [(NSMutableDictionary *)self->_richContentProviders bs_setSafeObject:v6 forKey:requestCopy];
   }
 
   return v6;
 }
 
-- (id)requestCustomPlatterBackgroundViewForNotificationGroupList:(id)a3
+- (id)requestCustomPlatterBackgroundViewForNotificationGroupList:(id)list
 {
   if ([(NCNotificationStructuredSectionList *)self sectionType]== 7)
   {
@@ -581,84 +581,84 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   return v3;
 }
 
-- (void)notificationListPresentableGroup:(id)a3 didReceivedHorizontalTranslation:(double)a4 forCell:(id)a5
+- (void)notificationListPresentableGroup:(id)group didReceivedHorizontalTranslation:(double)translation forCell:(id)cell
 {
-  v10 = a3;
+  groupCopy = group;
   if ([(NCNotificationAppSectionList *)self _shouldFeatureLeadingViews])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-      v8 = [v7 indexOfObject:v10];
+      featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
+      v8 = [featuredGroupLists indexOfObject:groupCopy];
 
       if (v8 == 1)
       {
-        v9 = [(NCNotificationStructuredSectionList *)self listView];
-        [v9 setFeaturedLeadingViewOcclusionTranslation:a4];
+        listView = [(NCNotificationStructuredSectionList *)self listView];
+        [listView setFeaturedLeadingViewOcclusionTranslation:translation];
       }
     }
   }
 }
 
-- (void)appSectionListHeaderView:(id)a3 didRequestPresentingOptionsMenuFromView:(id)a4
+- (void)appSectionListHeaderView:(id)view didRequestPresentingOptionsMenuFromView:(id)fromView
 {
-  v5 = a4;
-  v6 = [(NCNotificationStructuredSectionList *)self allNotificationRequests];
-  v7 = [v6 firstObject];
+  fromViewCopy = fromView;
+  allNotificationRequests = [(NCNotificationStructuredSectionList *)self allNotificationRequests];
+  firstObject = [allNotificationRequests firstObject];
 
-  v8 = [(NCNotificationStructuredSectionList *)self delegate];
+  delegate = [(NCNotificationStructuredSectionList *)self delegate];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __97__NCNotificationAppSectionList_appSectionListHeaderView_didRequestPresentingOptionsMenuFromView___block_invoke;
   v10[3] = &unk_2783709F0;
-  v11 = v5;
-  v9 = v5;
-  [v8 notificationListComponent:self requestsPresentingOptionsMenuForNotificationRequest:v7 presentingViewProvider:v10 optionsForSection:1 completion:0];
+  v11 = fromViewCopy;
+  v9 = fromViewCopy;
+  [delegate notificationListComponent:self requestsPresentingOptionsMenuForNotificationRequest:firstObject presentingViewProvider:v10 optionsForSection:1 completion:0];
 }
 
-- (void)appSectionListSummarizedContentViewDidRecognizeTapGesture:(id)a3
+- (void)appSectionListSummarizedContentViewDidRecognizeTapGesture:(id)gesture
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationStructuredSectionList *)self logDescription];
+    logDescription = [(NCNotificationStructuredSectionList *)self logDescription];
     v11 = 138543362;
-    v12 = v7;
+    v12 = logDescription;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ is expanding on summarized view tap", &v11, 0xCu);
   }
 
   [(NCNotificationAppSectionList *)self setExpanded:1];
-  v8 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-  if ([v8 count] == 1)
+  _nonFeaturedGroupLists = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+  if ([_nonFeaturedGroupLists count] == 1)
   {
-    v9 = [v8 firstObject];
-    v10 = [v9 listView];
-    [v10 setGrouped:0];
+    firstObject = [_nonFeaturedGroupLists firstObject];
+    listView = [firstObject listView];
+    [listView setGrouped:0];
   }
 }
 
-- (id)backgroundGroupNameBaseForAppSectionListSummarizedContentView:(id)a3
+- (id)backgroundGroupNameBaseForAppSectionListSummarizedContentView:(id)view
 {
-  v4 = [(NCNotificationStructuredSectionList *)self delegate];
-  v5 = [v4 backgroundGroupNameBaseForNotificationListBaseComponent:self];
+  delegate = [(NCNotificationStructuredSectionList *)self delegate];
+  v5 = [delegate backgroundGroupNameBaseForNotificationListBaseComponent:self];
 
   return v5;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  if (self->_strokeVisualStylingProvider != v6)
+  providerCopy = provider;
+  if (self->_strokeVisualStylingProvider != providerCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_strokeVisualStylingProvider, a3);
+    v7 = providerCopy;
+    objc_storeStrong(&self->_strokeVisualStylingProvider, provider);
     [(NCNotificationListBaseContentView *)self->_headerView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:1];
     [(NCNotificationListBaseContentView *)self->_footerView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:1];
-    v6 = v7;
+    providerCopy = v7;
   }
 }
 
@@ -667,14 +667,14 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   v7.receiver = self;
   v7.super_class = NCNotificationAppSectionList;
   [(NCNotificationStructuredSectionList *)&v7 adjustForContentSizeCategoryChange];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  [(NCNotificationAppSectionList *)self setPreferredContentSizeCategory:v4];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  [(NCNotificationAppSectionList *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
 
   [(NCNotificationAppSectionListHeaderView *)self->_headerView adjustForContentSizeCategoryChange];
   [(NCNotificationListBaseContentView *)self->_footerView adjustForContentSizeCategoryChange];
-  v5 = [(NCNotificationStructuredSectionList *)self listView];
-  [v5 invalidateData];
+  listView = [(NCNotificationStructuredSectionList *)self listView];
+  [listView invalidateData];
 
   return 1;
 }
@@ -695,44 +695,44 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
   return v3;
 }
 
-- (unint64_t)_insertionIndexForGroup:(id)a3
+- (unint64_t)_insertionIndexForGroup:(id)group
 {
   v8.receiver = self;
   v8.super_class = NCNotificationAppSectionList;
-  v4 = [(NCNotificationStructuredSectionList *)&v8 _insertionIndexForGroup:a3];
+  v4 = [(NCNotificationStructuredSectionList *)&v8 _insertionIndexForGroup:group];
   v5 = v4;
   if (![(NCNotificationAppSectionList *)self isMerged])
   {
-    v6 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-    v5 = [v6 count];
+    featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
+    v5 = [featuredGroupLists count];
   }
 
   return v4 + v5;
 }
 
-- (void)_configureSectionListView:(id)a3
+- (void)_configureSectionListView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NCNotificationAppSectionList;
-  v3 = a3;
-  [(NCNotificationStructuredSectionList *)&v4 _configureSectionListView:v3];
-  [v3 setHorizontalInsetMargin:{14.0, v4.receiver, v4.super_class}];
-  [v3 setNumberOfFeaturedLeadingViews:2];
-  [v3 setFooterViewVerticalMargin:10.0];
-  [v3 setGroupingAnimationStyle:1];
-  [v3 setPreferredBottomTransitionTransformer:0];
+  viewCopy = view;
+  [(NCNotificationStructuredSectionList *)&v4 _configureSectionListView:viewCopy];
+  [viewCopy setHorizontalInsetMargin:{14.0, v4.receiver, v4.super_class}];
+  [viewCopy setNumberOfFeaturedLeadingViews:2];
+  [viewCopy setFooterViewVerticalMargin:10.0];
+  [viewCopy setGroupingAnimationStyle:1];
+  [viewCopy setPreferredBottomTransitionTransformer:0];
 }
 
-- (id)_newGroupListForNotificationRequest:(id)a3
+- (id)_newGroupListForNotificationRequest:(id)request
 {
   v7.receiver = self;
   v7.super_class = NCNotificationAppSectionList;
-  v3 = [(NCNotificationStructuredSectionList *)&v7 _newGroupListForNotificationRequest:a3];
-  v4 = [v3 listView];
-  [v4 setLeadingContentShouldFillList:1];
+  v3 = [(NCNotificationStructuredSectionList *)&v7 _newGroupListForNotificationRequest:request];
+  listView = [v3 listView];
+  [listView setLeadingContentShouldFillList:1];
 
-  v5 = [v3 listView];
-  [v5 setPreferredBottomTransitionTransformer:0];
+  listView2 = [v3 listView];
+  [listView2 setPreferredBottomTransitionTransformer:0];
 
   return v3;
 }
@@ -744,28 +744,28 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
     return 0;
   }
 
-  v5 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-  v6 = [v5 count];
-  v7 = [v5 firstObject];
-  v8 = [v7 notificationCount];
+  _nonFeaturedGroupLists = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+  v6 = [_nonFeaturedGroupLists count];
+  firstObject = [_nonFeaturedGroupLists firstObject];
+  notificationCount = [firstObject notificationCount];
 
-  v10 = v6 == 1 && v8 > 1;
+  v10 = v6 == 1 && notificationCount > 1;
   v3 = v6 > 1 || v10;
 
   return v3;
 }
 
-- (void)_clearContentProviderForRequest:(id)a3
+- (void)_clearContentProviderForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_richContentProviders allKeys];
-  v6 = [v5 copy];
+  requestCopy = request;
+  allKeys = [(NSMutableDictionary *)self->_richContentProviders allKeys];
+  v6 = [allKeys copy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__NCNotificationAppSectionList__clearContentProviderForRequest___block_invoke;
   v10[3] = &unk_278370180;
-  v7 = v4;
+  v7 = requestCopy;
   v11 = v7;
   v8 = [v6 indexOfObjectPassingTest:v10];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
@@ -785,17 +785,17 @@ void __58__NCNotificationAppSectionList_removeNotificationRequest___block_invoke
 
     [(NCNotificationAppSectionListHeaderView *)self->_headerView setDelegate:self];
     v5 = self->_headerView;
-    v6 = [(NCNotificationStructuredSectionList *)self title];
-    [(NCNotificationAppSectionListHeaderView *)v5 setTitle:v6];
+    title = [(NCNotificationStructuredSectionList *)self title];
+    [(NCNotificationAppSectionListHeaderView *)v5 setTitle:title];
 
     objc_initWeak(&location, self);
-    v7 = [(NCNotificationAppSectionList *)self _applicationIconRecipe];
+    _applicationIconRecipe = [(NCNotificationAppSectionList *)self _applicationIconRecipe];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__NCNotificationAppSectionList__configureHeaderViewIfNecessary__block_invoke;
     v9[3] = &unk_278370A18;
     objc_copyWeak(&v11, &location);
-    v8 = v7;
+    v8 = _applicationIconRecipe;
     v10 = v8;
     [v8 imageForPointSize:1 interfaceStyle:v9 completionOnMain:38.0];
     [(NCNotificationListBaseContentView *)self->_headerView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:1];
@@ -831,23 +831,23 @@ void __63__NCNotificationAppSectionList__configureHeaderViewIfNecessary__block_i
 
 - (id)_applicationIconRecipe
 {
-  v3 = [(NCNotificationStructuredSectionList *)self allNotificationRequests];
-  v4 = [v3 firstObject];
-  v5 = [v4 subordinateIconRecipe];
-  v6 = v5;
-  if (v5)
+  allNotificationRequests = [(NCNotificationStructuredSectionList *)self allNotificationRequests];
+  firstObject = [allNotificationRequests firstObject];
+  subordinateIconRecipe = [firstObject subordinateIconRecipe];
+  v6 = subordinateIconRecipe;
+  if (subordinateIconRecipe)
   {
-    v7 = v5;
+    iconRecipe = subordinateIconRecipe;
   }
 
   else
   {
-    v8 = [(NCNotificationStructuredSectionList *)self allNotificationRequests];
-    v9 = [v8 firstObject];
-    v7 = [v9 iconRecipe];
+    allNotificationRequests2 = [(NCNotificationStructuredSectionList *)self allNotificationRequests];
+    firstObject2 = [allNotificationRequests2 firstObject];
+    iconRecipe = [firstObject2 iconRecipe];
   }
 
-  return v7;
+  return iconRecipe;
 }
 
 - (void)_configureFooterViewIfNecessary
@@ -865,39 +865,39 @@ void __63__NCNotificationAppSectionList__configureHeaderViewIfNecessary__block_i
   }
 }
 
-- (void)_removeFeaturedGroupListIfNecessary:(id)a3
+- (void)_removeFeaturedGroupListIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (v4)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
-    v12 = v4;
-    v4 = [v4 count];
-    if (!v4)
+    v12 = necessaryCopy;
+    necessaryCopy = [necessaryCopy count];
+    if (!necessaryCopy)
     {
-      v5 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-      v6 = [v5 containsObject:v12];
+      featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
+      v6 = [featuredGroupLists containsObject:v12];
 
       if (v6)
       {
-        v7 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-        [v7 removeObject:v12];
+        featuredGroupLists2 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+        [featuredGroupLists2 removeObject:v12];
       }
 
-      v8 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-      v9 = [v8 count];
+      featuredGroupLists3 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+      v9 = [featuredGroupLists3 count];
 
       if (v9)
       {
-        v10 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-        [v10 enumerateObjectsUsingBlock:&__block_literal_global_43];
+        featuredGroupLists4 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+        [featuredGroupLists4 enumerateObjectsUsingBlock:&__block_literal_global_43];
 
-        v11 = [(NCNotificationStructuredSectionList *)self listView];
-        [v11 setNeedsLayout];
+        listView = [(NCNotificationStructuredSectionList *)self listView];
+        [listView setNeedsLayout];
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](necessaryCopy);
 }
 
 void __68__NCNotificationAppSectionList__removeFeaturedGroupListIfNecessary___block_invoke(uint64_t a1, void *a2)
@@ -907,17 +907,17 @@ void __68__NCNotificationAppSectionList__removeFeaturedGroupListIfNecessary___bl
   [v2 reloadNotificationRequest:v3];
 }
 
-- (id)_extractFeaturedNotificationRequestsFromGroupLists:(id)a3
+- (id)_extractFeaturedNotificationRequestsFromGroupLists:(id)lists
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  listsCopy = lists;
   v6 = objc_alloc_init(v4);
-  if ([v5 count] == 1)
+  if ([listsCopy count] == 1)
   {
-    v7 = [v5 objectAtIndex:0];
+    v7 = [listsCopy objectAtIndex:0];
 
-    v8 = [v7 allNotificationRequests];
-    v9 = [v8 copy];
+    allNotificationRequests = [v7 allNotificationRequests];
+    v9 = [allNotificationRequests copy];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -925,7 +925,7 @@ void __68__NCNotificationAppSectionList__removeFeaturedGroupListIfNecessary___bl
     v15[3] = &unk_2783708E0;
     v16 = v6;
     v17 = v7;
-    v18 = self;
+    selfCopy = self;
     v10 = v7;
     [v9 enumerateObjectsUsingBlock:v15];
   }
@@ -937,8 +937,8 @@ void __68__NCNotificationAppSectionList__removeFeaturedGroupListIfNecessary___bl
     v12[2] = __83__NCNotificationAppSectionList__extractFeaturedNotificationRequestsFromGroupLists___block_invoke_2;
     v12[3] = &unk_278370628;
     v13 = v6;
-    v14 = self;
-    [v5 enumerateObjectsUsingBlock:v12];
+    selfCopy2 = self;
+    [listsCopy enumerateObjectsUsingBlock:v12];
 
     v9 = v13;
   }
@@ -984,10 +984,10 @@ uint64_t __83__NCNotificationAppSectionList__extractFeaturedNotificationRequests
   return MEMORY[0x2821F96F8](v7);
 }
 
-- (void)_updateFeaturedGroupListsForFeaturedNotificationRequests:(id)a3
+- (void)_updateFeaturedGroupListsForFeaturedNotificationRequests:(id)requests
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  requestsCopy = requests;
   v6 = objc_alloc_init(v4);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -996,17 +996,17 @@ uint64_t __83__NCNotificationAppSectionList__extractFeaturedNotificationRequests
   v16[4] = self;
   v7 = v6;
   v17 = v7;
-  [v5 enumerateObjectsUsingBlock:v16];
+  [requestsCopy enumerateObjectsUsingBlock:v16];
 
-  v8 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+  featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __89__NCNotificationAppSectionList__updateFeaturedGroupListsForFeaturedNotificationRequests___block_invoke_3;
   v13 = &unk_278370628;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v9 = v7;
-  [v8 enumerateObjectsUsingBlock:&v10];
+  [featuredGroupLists enumerateObjectsUsingBlock:&v10];
 
   [(NCNotificationAppSectionList *)self setFeaturedGroupLists:v9, v10, v11, v12, v13];
 }
@@ -1064,8 +1064,8 @@ void __89__NCNotificationAppSectionList__updateFeaturedGroupListsForFeaturedNoti
 - (void)_mergeFeaturedGroupLists
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-  v4 = [v3 count];
+  featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
+  v4 = [featuredGroupLists count];
 
   if (v4)
   {
@@ -1073,14 +1073,14 @@ void __89__NCNotificationAppSectionList__updateFeaturedGroupListsForFeaturedNoti
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(NCNotificationStructuredSectionList *)self logDescription];
+      logDescription = [(NCNotificationStructuredSectionList *)self logDescription];
       *buf = 138543362;
-      v14 = v7;
+      v14 = logDescription;
       _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ merging featured group lists", buf, 0xCu);
     }
 
-    v8 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-    v9 = [v8 copy];
+    featuredGroupLists2 = [(NCNotificationAppSectionList *)self featuredGroupLists];
+    v9 = [featuredGroupLists2 copy];
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     featuredGroupLists = self->_featuredGroupLists;
@@ -1117,26 +1117,26 @@ void __56__NCNotificationAppSectionList__mergeFeaturedGroupLists__block_invoke(u
 - (id)_nonFeaturedGroupLists
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationStructuredSectionList *)self allNotificationGroups];
-  v5 = [v3 initWithArray:v4];
+  allNotificationGroups = [(NCNotificationStructuredSectionList *)self allNotificationGroups];
+  v5 = [v3 initWithArray:allNotificationGroups];
 
-  v6 = [(NCNotificationAppSectionList *)self featuredGroupLists];
-  [v5 removeObjectsInArray:v6];
+  featuredGroupLists = [(NCNotificationAppSectionList *)self featuredGroupLists];
+  [v5 removeObjectsInArray:featuredGroupLists];
 
   return v5;
 }
 
-- (BOOL)_shouldShowContentForNotificationRequest:(id)a3
+- (BOOL)_shouldShowContentForNotificationRequest:(id)request
 {
-  v4 = [a3 options];
-  v5 = [v4 contentPreviewSetting];
+  options = [request options];
+  contentPreviewSetting = [options contentPreviewSetting];
 
-  if (!v5)
+  if (!contentPreviewSetting)
   {
     return 1;
   }
 
-  if (v5 != 1)
+  if (contentPreviewSetting != 1)
   {
     return 0;
   }
@@ -1156,15 +1156,15 @@ void __56__NCNotificationAppSectionList__mergeFeaturedGroupLists__block_invoke(u
     [(NCNotificationAppSectionListSummarizedContentView *)v4 setTitle:v6];
 
     v7 = self->_footerView;
-    v8 = [(NCNotificationAppSectionList *)self _summarizedContentStrings];
-    [(NCNotificationAppSectionListSummarizedContentView *)v7 setTitleAndContentStrings:v8];
+    _summarizedContentStrings = [(NCNotificationAppSectionList *)self _summarizedContentStrings];
+    [(NCNotificationAppSectionListSummarizedContentView *)v7 setTitleAndContentStrings:_summarizedContentStrings];
 
     v9 = self->_footerView;
-    v10 = [(NCNotificationAppSectionList *)self _summarizedAttachmentImageViews];
-    [(NCNotificationAppSectionListSummarizedContentView *)v9 setAttachmentImageViews:v10];
+    _summarizedAttachmentImageViews = [(NCNotificationAppSectionList *)self _summarizedAttachmentImageViews];
+    [(NCNotificationAppSectionListSummarizedContentView *)v9 setAttachmentImageViews:_summarizedAttachmentImageViews];
 
-    v11 = [(NCNotificationStructuredSectionList *)self listView];
-    [v11 setNeedsLayout];
+    listView = [(NCNotificationStructuredSectionList *)self listView];
+    [listView setNeedsLayout];
   }
 }
 
@@ -1174,13 +1174,13 @@ void __56__NCNotificationAppSectionList__mergeFeaturedGroupLists__block_invoke(u
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+  _nonFeaturedGroupLists = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__NCNotificationAppSectionList__summarizedCount__block_invoke;
   v5[3] = &unk_278370650;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [_nonFeaturedGroupLists enumerateObjectsUsingBlock:v5];
   v3 = v7[3];
 
   _Block_object_dispose(&v6, 8);
@@ -1194,36 +1194,36 @@ uint64_t __48__NCNotificationAppSectionList__summarizedCount__block_invoke(uint6
   return result;
 }
 
-- (id)_summarizedStringsForNotificationRequest:(id)a3
+- (id)_summarizedStringsForNotificationRequest:(id)request
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationAppSectionList *)self _shouldShowContentForNotificationRequest:v4];
-  v6 = [v4 content];
-  v7 = v6;
+  requestCopy = request;
+  v5 = [(NCNotificationAppSectionList *)self _shouldShowContentForNotificationRequest:requestCopy];
+  content = [requestCopy content];
+  v7 = content;
   if (v5)
   {
-    v8 = [v6 title];
+    title = [content title];
   }
 
   else
   {
-    v9 = [v4 content];
-    v8 = [v9 defaultHeader];
+    content2 = [requestCopy content];
+    title = [content2 defaultHeader];
   }
 
-  if (v8)
+  if (title)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = NCUserNotificationsUIKitFrameworkBundle();
     v12 = [v11 localizedStringForKey:@"NOTIFICATION_SUMMARY_APP_SECTION_TITLE_FORMAT" value:&stru_282FE84F8 table:0];
-    v13 = [v10 stringWithFormat:v12, v8];
+    v13 = [v10 stringWithFormat:v12, title];
 
     if (v5)
     {
 LABEL_6:
-      v14 = [v7 message];
-      v15 = [v14 copy];
+      message = [v7 message];
+      v15 = [message copy];
       goto LABEL_12;
     }
   }
@@ -1237,20 +1237,20 @@ LABEL_6:
     }
   }
 
-  v14 = [v4 content];
-  v16 = [v14 hiddenPreviewsBodyPlaceholder];
-  v17 = v16;
-  if (v16)
+  message = [requestCopy content];
+  hiddenPreviewsBodyPlaceholder = [message hiddenPreviewsBodyPlaceholder];
+  v17 = hiddenPreviewsBodyPlaceholder;
+  if (hiddenPreviewsBodyPlaceholder)
   {
-    v18 = v16;
+    _localizedDefaultHiddenPreviewsBodyPlaceholder = hiddenPreviewsBodyPlaceholder;
   }
 
   else
   {
-    v18 = [(NCNotificationAppSectionList *)self _localizedDefaultHiddenPreviewsBodyPlaceholder];
+    _localizedDefaultHiddenPreviewsBodyPlaceholder = [(NCNotificationAppSectionList *)self _localizedDefaultHiddenPreviewsBodyPlaceholder];
   }
 
-  v15 = v18;
+  v15 = _localizedDefaultHiddenPreviewsBodyPlaceholder;
 
 LABEL_12:
   if (v15)
@@ -1275,12 +1275,12 @@ LABEL_12:
 - (id)_summarizedContentStrings
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-  if ([v4 count] == 1)
+  _nonFeaturedGroupLists = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+  if ([_nonFeaturedGroupLists count] == 1)
   {
-    v5 = [v4 objectAtIndex:0];
-    v6 = [v5 allNotificationRequests];
-    v7 = [v6 copy];
+    v5 = [_nonFeaturedGroupLists objectAtIndex:0];
+    allNotificationRequests = [v5 allNotificationRequests];
+    v7 = [allNotificationRequests copy];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -1299,7 +1299,7 @@ LABEL_12:
     v9[3] = &unk_278370628;
     v9[4] = self;
     v10 = v3;
-    [v4 enumerateObjectsUsingBlock:v9];
+    [_nonFeaturedGroupLists enumerateObjectsUsingBlock:v9];
   }
 
   return v3;
@@ -1346,33 +1346,33 @@ void __57__NCNotificationAppSectionList__summarizedContentStrings__block_invoke_
   return v5;
 }
 
-- (id)_attachmentImageViewForSummaryForNotificationRequest:(id)a3
+- (id)_attachmentImageViewForSummaryForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_richContentProviders objectForKey:v4];
+  requestCopy = request;
+  v5 = [(NSMutableDictionary *)self->_richContentProviders objectForKey:requestCopy];
   if (!v5)
   {
-    v5 = [(NCNotificationRequestCoalescingContentProvider *)[NCNotificationRequestRichContentProvider alloc] initWithNotificationRequest:v4];
+    v5 = [(NCNotificationRequestCoalescingContentProvider *)[NCNotificationRequestRichContentProvider alloc] initWithNotificationRequest:requestCopy];
     [(NCNotificationRequestCoalescingContentProvider *)v5 setDeviceAuthenticated:[(NCNotificationStructuredSectionList *)self deviceAuthenticated]];
-    [(NSMutableDictionary *)self->_richContentProviders bs_setSafeObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_richContentProviders bs_setSafeObject:v5 forKey:requestCopy];
   }
 
-  v6 = [(NCNotificationRequestCoalescingContentProvider *)v5 notificationRequest];
-  v7 = [v6 content];
-  v8 = [v7 communicationContext];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)v5 notificationRequest];
+  content = [notificationRequest content];
+  communicationContext = [content communicationContext];
 
-  if (!v8 || (v9 = [NCAvatarView alloc], -[NCNotificationRequestCoalescingContentProvider notificationRequest](v5, "notificationRequest"), v10 = objc_claimAutoreleasedReturnValue(), [v10 topLevelSectionIdentifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[NCAvatarView initWithBundleIdentifier:communicationContext:pointSize:](v9, "initWithBundleIdentifier:communicationContext:pointSize:", v11, v8, 38.0), v11, v10, !v12))
+  if (!communicationContext || (v9 = [NCAvatarView alloc], -[NCNotificationRequestCoalescingContentProvider notificationRequest](v5, "notificationRequest"), v10 = objc_claimAutoreleasedReturnValue(), [v10 topLevelSectionIdentifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[NCAvatarView initWithBundleIdentifier:communicationContext:pointSize:](v9, "initWithBundleIdentifier:communicationContext:pointSize:", v11, communicationContext, 38.0), v11, v10, !v12))
   {
-    v13 = [v4 content];
-    v14 = [v13 attachmentImage];
+    content2 = [requestCopy content];
+    attachmentImage = [content2 attachmentImage];
 
-    if (v14)
+    if (attachmentImage)
     {
       if ([(NCNotificationRequestRichContentProvider *)v5 hasLoadedRichAttachmentImage])
       {
-        v15 = [(NCNotificationRequestRichContentProvider *)v5 thumbnail];
+        thumbnail = [(NCNotificationRequestRichContentProvider *)v5 thumbnail];
 
-        v14 = v15;
+        attachmentImage = thumbnail;
       }
 
       else
@@ -1385,7 +1385,7 @@ void __57__NCNotificationAppSectionList__summarizedContentStrings__block_invoke_
         [(NCNotificationRequestRichContentProvider *)v5 fetchRichAttachmentImageIsFeatured:0 withCompletion:v17];
       }
 
-      v12 = [(NCNotificationAppSectionList *)self _newAttachmentImageViewForImage:v14];
+      v12 = [(NCNotificationAppSectionList *)self _newAttachmentImageViewForImage:attachmentImage];
     }
 
     else
@@ -1407,16 +1407,16 @@ uint64_t __85__NCNotificationAppSectionList__attachmentImageViewForSummaryForNot
   return result;
 }
 
-- (id)_newAttachmentImageViewForImage:(id)a3
+- (id)_newAttachmentImageViewForImage:(id)image
 {
   v3 = MEMORY[0x277D75D18];
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x277D755E8]);
   [v6 setContentMode:2];
   [v6 _setContinuousCornerRadius:10.0];
   [v6 setClipsToBounds:1];
-  [v6 setImage:v4];
+  [v6 setImage:imageCopy];
 
   [v5 addSubview:v6];
   [v6 setAutoresizingMask:18];
@@ -1427,19 +1427,19 @@ uint64_t __85__NCNotificationAppSectionList__attachmentImageViewForSummaryForNot
 - (id)_summarizedAttachmentImageViews
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
-  if ([v4 count] == 1)
+  _nonFeaturedGroupLists = [(NCNotificationAppSectionList *)self _nonFeaturedGroupLists];
+  if ([_nonFeaturedGroupLists count] == 1)
   {
-    v5 = [v4 objectAtIndex:0];
-    v6 = [v5 allNotificationRequests];
-    v7 = [v6 copy];
+    v5 = [_nonFeaturedGroupLists objectAtIndex:0];
+    allNotificationRequests = [v5 allNotificationRequests];
+    v7 = [allNotificationRequests copy];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__NCNotificationAppSectionList__summarizedAttachmentImageViews__block_invoke;
     v12[3] = &unk_2783705B0;
     v13 = v3;
-    v14 = self;
+    selfCopy = self;
     [v7 enumerateObjectsUsingBlock:v12];
   }
 
@@ -1450,8 +1450,8 @@ uint64_t __85__NCNotificationAppSectionList__attachmentImageViewForSummaryForNot
     v9[2] = __63__NCNotificationAppSectionList__summarizedAttachmentImageViews__block_invoke_2;
     v9[3] = &unk_278370628;
     v10 = v3;
-    v11 = self;
-    [v4 enumerateObjectsUsingBlock:v9];
+    selfCopy2 = self;
+    [_nonFeaturedGroupLists enumerateObjectsUsingBlock:v9];
     v5 = v10;
   }
 

@@ -1,31 +1,31 @@
 @interface COMeshLocalNode
 - (COCompanionLinkClientFactoryProtocol)companionLinkClientFactory;
-- (COMeshLocalNode)initWithCompanionLinkClient:(id)a3 source:(id)a4;
+- (COMeshLocalNode)initWithCompanionLinkClient:(id)client source:(id)source;
 - (id)IDSIdentifier;
-- (id)_createNodeForDevice:(id)a3 IDSIdentifier:(id)a4 configure:(id)a5;
-- (id)_handleDiscoveryRecord:(id)a3;
-- (id)_nodeForIDSIdentifier:(id)a3;
-- (void)_handleActivation:(id)a3;
-- (void)_handleEventIdentifier:(id)a3 rapportRepresentation:(id)a4 options:(id)a5 fromNode:(id)a6;
-- (void)_handleFoundDevice:(id)a3;
-- (void)_handleLostDevice:(id)a3;
-- (void)_handleLostNode:(id)a3;
-- (void)_handleRequestIdentifier:(id)a3 rapportRepresentation:(id)a4 options:(id)a5 responseHandler:(id)a6 fromNode:(id)a7 at:(unint64_t)a8;
-- (void)_invalidateAndReintroduceNode:(id)a3;
-- (void)_updateListeningPort:(id)a3;
+- (id)_createNodeForDevice:(id)device IDSIdentifier:(id)identifier configure:(id)configure;
+- (id)_handleDiscoveryRecord:(id)record;
+- (id)_nodeForIDSIdentifier:(id)identifier;
+- (void)_handleActivation:(id)activation;
+- (void)_handleEventIdentifier:(id)identifier rapportRepresentation:(id)representation options:(id)options fromNode:(id)node;
+- (void)_handleFoundDevice:(id)device;
+- (void)_handleLostDevice:(id)device;
+- (void)_handleLostNode:(id)node;
+- (void)_handleRequestIdentifier:(id)identifier rapportRepresentation:(id)representation options:(id)options responseHandler:(id)handler fromNode:(id)node at:(unint64_t)at;
+- (void)_invalidateAndReintroduceNode:(id)node;
+- (void)_updateListeningPort:(id)port;
 - (void)activate;
-- (void)setAcceptableCommands:(id)a3;
-- (void)setCommands:(id)a3;
+- (void)setAcceptableCommands:(id)commands;
+- (void)setCommands:(id)commands;
 @end
 
 @implementation COMeshLocalNode
 
-- (COMeshLocalNode)initWithCompanionLinkClient:(id)a3 source:(id)a4
+- (COMeshLocalNode)initWithCompanionLinkClient:(id)client source:(id)source
 {
-  v6 = a3;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = COMeshLocalNode;
-  v7 = [(COMeshNode *)&v18 initWithCompanionLinkClient:v6 source:a4];
+  v7 = [(COMeshNode *)&v18 initWithCompanionLinkClient:clientCopy source:source];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEAC0]);
@@ -36,11 +36,11 @@
     nodes = v7->_nodes;
     v7->_nodes = v10;
 
-    v12 = [v6 localDevice];
-    [(COMeshLocalNode *)v7 _updateListeningPort:v12];
+    localDevice = [clientCopy localDevice];
+    [(COMeshLocalNode *)v7 _updateListeningPort:localDevice];
 
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 stringArrayForKey:@"IgnoredIDSIdentifiers"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults stringArrayForKey:@"IgnoredIDSIdentifiers"];
 
     if ([v14 count])
     {
@@ -53,27 +53,27 @@
   return v7;
 }
 
-- (void)_updateListeningPort:(id)a3
+- (void)_updateListeningPort:(id)port
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  portCopy = port;
+  v5 = portCopy;
+  if (portCopy)
   {
-    v6 = [v4 listeningPort];
-    if (v6 >= 1)
+    listeningPort = [portCopy listeningPort];
+    if (listeningPort >= 1)
     {
-      v7 = v6;
-      if (v6 != [(COMeshLocalNode *)self listeningPort])
+      v7 = listeningPort;
+      if (listeningPort != [(COMeshLocalNode *)self listeningPort])
       {
         self->_listeningPort = v7;
         v8 = COCoreLogForCategory(0);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v10 = 138412546;
-          v11 = self;
+          selfCopy = self;
           v12 = 1024;
-          v13 = [(COMeshLocalNode *)self listeningPort];
+          listeningPort2 = [(COMeshLocalNode *)self listeningPort];
           _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%@ listening port updated to %hu", &v10, 0x12u);
         }
 
@@ -85,21 +85,21 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCommands:(id)a3
+- (void)setCommands:(id)commands
 {
-  v4 = a3;
-  v5 = [(COMeshLocalNode *)self commands];
-  if (([v5 isEqualToDictionary:v4] & 1) == 0)
+  commandsCopy = commands;
+  commands = [(COMeshLocalNode *)self commands];
+  if (([commands isEqualToDictionary:commandsCopy] & 1) == 0)
   {
-    v6 = [(COMeshNode *)self client];
+    client = [(COMeshNode *)self client];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __31__COMeshLocalNode_setCommands___block_invoke;
     v16[3] = &unk_278E179F0;
-    v7 = v6;
+    v7 = client;
     v17 = v7;
-    [v5 enumerateKeysAndObjectsUsingBlock:v16];
-    v8 = [v4 copy];
+    [commands enumerateKeysAndObjectsUsingBlock:v16];
+    v8 = [commandsCopy copy];
     commands = self->_commands;
     self->_commands = v8;
 
@@ -334,11 +334,11 @@ void __31__COMeshLocalNode_setCommands___block_invoke_2_255(uint64_t a1)
 
 - (id)IDSIdentifier
 {
-  v2 = [(COMeshNode *)self client];
-  v3 = [v2 localDevice];
-  v4 = [v3 idsDeviceIdentifier];
+  client = [(COMeshNode *)self client];
+  localDevice = [client localDevice];
+  idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
 
-  return v4;
+  return idsDeviceIdentifier;
 }
 
 - (COCompanionLinkClientFactoryProtocol)companionLinkClientFactory
@@ -356,16 +356,16 @@ void __31__COMeshLocalNode_setCommands___block_invoke_2_255(uint64_t a1)
   return companionLinkClientFactory;
 }
 
-- (void)setAcceptableCommands:(id)a3
+- (void)setAcceptableCommands:(id)commands
 {
-  v4 = a3;
-  v5 = [(COMeshLocalNode *)self acceptableCommands];
-  v6 = [v5 isEqualToSet:v4];
+  commandsCopy = commands;
+  acceptableCommands = [(COMeshLocalNode *)self acceptableCommands];
+  v6 = [acceptableCommands isEqualToSet:commandsCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
-    v8 = [v4 copy];
+    v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(commandsCopy, "count")}];
+    v8 = [commandsCopy copy];
     acceptableCommands = self->_acceptableCommands;
     self->_acceptableCommands = v8;
 
@@ -375,7 +375,7 @@ void __31__COMeshLocalNode_setCommands___block_invoke_2_255(uint64_t a1)
     v14 = __41__COMeshLocalNode_setAcceptableCommands___block_invoke;
     v15 = &unk_278E17A68;
     v16 = v7;
-    v17 = self;
+    selfCopy = self;
     v11 = v7;
     [(NSSet *)v10 enumerateObjectsUsingBlock:&v12];
     [(COMeshLocalNode *)self setCommands:v11, v12, v13, v14, v15];
@@ -391,26 +391,26 @@ void __41__COMeshLocalNode_setAcceptableCommands___block_invoke(uint64_t a1, uin
 
 - (void)activate
 {
-  v3 = [(COMeshNode *)self client];
+  client = [(COMeshNode *)self client];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__COMeshLocalNode_activate__block_invoke;
   v9[3] = &unk_278E158D8;
   objc_copyWeak(&v10, &location);
-  [v3 setDeviceFoundHandler:v9];
+  [client setDeviceFoundHandler:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__COMeshLocalNode_activate__block_invoke_2;
   v7[3] = &unk_278E158D8;
   objc_copyWeak(&v8, &location);
-  [v3 setDeviceLostHandler:v7];
+  [client setDeviceLostHandler:v7];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__COMeshLocalNode_activate__block_invoke_3;
   v5[3] = &unk_278E158D8;
   objc_copyWeak(&v6, &location);
-  [v3 setLocalDeviceUpdatedHandler:v5];
+  [client setLocalDeviceUpdatedHandler:v5];
   v4.receiver = self;
   v4.super_class = COMeshLocalNode;
   [(COMeshNode *)&v4 activate];
@@ -453,21 +453,21 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)_handleActivation:(id)a3
+- (void)_handleActivation:(id)activation
 {
   v38 = *MEMORY[0x277D85DE8];
   v31.receiver = self;
   v31.super_class = COMeshLocalNode;
-  [(COMeshNode *)&v31 _handleActivation:a3];
-  v4 = [(COMeshNode *)self client];
-  v5 = [v4 activeDevices];
+  [(COMeshNode *)&v31 _handleActivation:activation];
+  client = [(COMeshNode *)self client];
+  activeDevices = [client activeDevices];
 
   v6 = COCoreLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 count];
+    v7 = [activeDevices count];
     *buf = 138412546;
-    v35 = self;
+    selfCopy2 = self;
     v36 = 2048;
     v37 = v7;
     _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%@ triggering found events for %lu devices post-activation", buf, 0x16u);
@@ -477,7 +477,7 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v5;
+  v8 = activeDevices;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v9)
   {
@@ -503,16 +503,16 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
     while (v10);
   }
 
-  v13 = [(COMeshLocalNode *)self pendingActivation];
+  pendingActivation = [(COMeshLocalNode *)self pendingActivation];
   pendingActivation = self->_pendingActivation;
   self->_pendingActivation = 0;
 
   v15 = COCoreLogForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v13 count];
+    v16 = [pendingActivation count];
     *buf = 138412546;
-    v35 = self;
+    selfCopy2 = self;
     v36 = 2048;
     v37 = v16;
     _os_log_impl(&dword_244378000, v15, OS_LOG_TYPE_DEFAULT, "%@ triggering %lu pending actions post-activation", buf, 0x16u);
@@ -522,7 +522,7 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = v13;
+  v17 = pendingActivation;
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v18)
   {
@@ -552,9 +552,9 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nodeForIDSIdentifier:(id)a3
+- (id)_nodeForIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = 0;
   v21 = 0;
   v22 = &v21;
@@ -565,25 +565,25 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
   v6 = 1;
   while (1)
   {
-    v7 = [(COMeshLocalNode *)self nodes];
+    nodes = [(COMeshLocalNode *)self nodes];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __41__COMeshLocalNode__nodeForIDSIdentifier___block_invoke;
     v18[3] = &unk_278E17A90;
-    v8 = v4;
+    v8 = identifierCopy;
     v19 = v8;
     v20 = &v21;
-    [v7 enumerateObjectsUsingBlock:v18];
+    [nodes enumerateObjectsUsingBlock:v18];
     if (v22[5])
     {
       break;
     }
 
-    v9 = [(COMeshNode *)self client];
-    v10 = [v9 activeDevices];
+    client = [(COMeshNode *)self client];
+    activeDevices = [client activeDevices];
 
-    if (![v10 count])
+    if (![activeDevices count])
     {
 
       break;
@@ -594,11 +594,11 @@ void __27__COMeshLocalNode_activate__block_invoke_3(uint64_t a1, void *a2)
     v15[2] = __41__COMeshLocalNode__nodeForIDSIdentifier___block_invoke_2;
     v15[3] = &unk_278E17AB8;
     v16 = v8;
-    v17 = self;
-    v11 = [v10 indexOfObjectPassingTest:v15] == 0x7FFFFFFFFFFFFFFFLL;
+    selfCopy = self;
+    v11 = [activeDevices indexOfObjectPassingTest:v15] == 0x7FFFFFFFFFFFFFFFLL;
 
     v12 = v11 & v6;
-    v5 = v7;
+    v5 = nodes;
     v6 = 0;
     if ((v12 & 1) == 0)
     {
@@ -650,24 +650,24 @@ BOOL __41__COMeshLocalNode__nodeForIDSIdentifier___block_invoke_2(uint64_t a1, v
   return v10;
 }
 
-- (void)_handleFoundDevice:(id)a3
+- (void)_handleFoundDevice:(id)device
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 idsDeviceIdentifier];
-  v6 = [(COMeshNode *)self nodeActivated];
-  v7 = [v5 length];
-  if (v6)
+  deviceCopy = device;
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  nodeActivated = [(COMeshNode *)self nodeActivated];
+  v7 = [idsDeviceIdentifier length];
+  if (nodeActivated)
   {
     if (v7)
     {
-      v8 = [(COMeshLocalNode *)self ignoredIDSIdentifiers];
-      v9 = [v8 containsObject:v5];
+      ignoredIDSIdentifiers = [(COMeshLocalNode *)self ignoredIDSIdentifiers];
+      v9 = [ignoredIDSIdentifiers containsObject:idsDeviceIdentifier];
 
       if (v9)
       {
-        v10 = COCoreLogForCategory(0);
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        nodes = COCoreLogForCategory(0);
+        if (os_log_type_enabled(nodes, OS_LOG_TYPE_ERROR))
         {
           [COMeshLocalNode _handleFoundDevice:];
         }
@@ -675,7 +675,7 @@ BOOL __41__COMeshLocalNode__nodeForIDSIdentifier___block_invoke_2(uint64_t a1, v
 
       else
       {
-        v10 = [(COMeshLocalNode *)self nodes];
+        nodes = [(COMeshLocalNode *)self nodes];
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x3032000000;
@@ -686,22 +686,22 @@ BOOL __41__COMeshLocalNode__nodeForIDSIdentifier___block_invoke_2(uint64_t a1, v
         v19 = 3221225472;
         v20 = __38__COMeshLocalNode__handleFoundDevice___block_invoke;
         v21 = &unk_278E17A90;
-        v11 = v5;
+        v11 = idsDeviceIdentifier;
         v22 = v11;
         v23 = buf;
-        [v10 enumerateObjectsUsingBlock:&v18];
+        [nodes enumerateObjectsUsingBlock:&v18];
         v12 = *(*&buf[8] + 40);
         if (v12)
         {
-          v13 = [v12 discoveryType];
-          [*(*&buf[8] + 40) setDiscoveryType:v13 | 1];
+          discoveryType = [v12 discoveryType];
+          [*(*&buf[8] + 40) setDiscoveryType:discoveryType | 1];
           if (![*(*&buf[8] + 40) connectionType])
           {
             v14 = COCoreLogForCategory(0);
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *v24 = 138412546;
-              v25 = self;
+              selfCopy2 = self;
               v26 = 2112;
               v27 = v11;
               _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%@ updating unknown connection type for %@", v24, 0x16u);
@@ -717,13 +717,13 @@ BOOL __41__COMeshLocalNode__nodeForIDSIdentifier___block_invoke_2(uint64_t a1, v
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *v24 = 138412546;
-            v25 = self;
+            selfCopy2 = self;
             v26 = 2112;
             v27 = v11;
             _os_log_impl(&dword_244378000, v15, OS_LOG_TYPE_DEFAULT, "%@ found %@", v24, 0x16u);
           }
 
-          v16 = [(COMeshLocalNode *)self _createNodeForDevice:v4 IDSIdentifier:v11 configure:&__block_literal_global_267, v18, v19, v20, v21];
+          v16 = [(COMeshLocalNode *)self _createNodeForDevice:deviceCopy IDSIdentifier:v11 configure:&__block_literal_global_267, v18, v19, v20, v21];
         }
 
         _Block_object_dispose(buf, 8);
@@ -735,14 +735,14 @@ LABEL_18:
 
   else if (v7)
   {
-    v10 = COCoreLogForCategory(0);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    nodes = COCoreLogForCategory(0);
+    if (os_log_type_enabled(nodes, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2112;
-      *&buf[14] = v5;
-      _os_log_impl(&dword_244378000, v10, OS_LOG_TYPE_DEFAULT, "%@ ignore found %@, not fully activated", buf, 0x16u);
+      *&buf[14] = idsDeviceIdentifier;
+      _os_log_impl(&dword_244378000, nodes, OS_LOG_TYPE_DEFAULT, "%@ ignore found %@, not fully activated", buf, 0x16u);
     }
 
     goto LABEL_18;
@@ -771,37 +771,37 @@ void __38__COMeshLocalNode__handleFoundDevice___block_invoke_264(uint64_t a1, vo
   [v2 setConnectionType:1];
 }
 
-- (void)_handleLostDevice:(id)a3
+- (void)_handleLostDevice:(id)device
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 idsDeviceIdentifier];
-  v5 = [(COMeshNode *)self nodeActivated];
-  v6 = [v4 length];
-  if (v5)
+  idsDeviceIdentifier = [device idsDeviceIdentifier];
+  nodeActivated = [(COMeshNode *)self nodeActivated];
+  v6 = [idsDeviceIdentifier length];
+  if (nodeActivated)
   {
     if (v6)
     {
-      v7 = [(COMeshLocalNode *)self _nodeForIDSIdentifier:v4];
+      v7 = [(COMeshLocalNode *)self _nodeForIDSIdentifier:idsDeviceIdentifier];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 connectionType];
-        v10 = [v8 discoveryType];
-        if (v9 == 1)
+        connectionType = [v7 connectionType];
+        discoveryType = [v8 discoveryType];
+        if (connectionType == 1)
         {
           [(COMeshLocalNode *)self _handleLostNode:v8];
         }
 
         else
         {
-          v11 = v10;
+          v11 = discoveryType;
           v12 = COCoreLogForCategory(0);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             v14 = 138412546;
-            v15 = self;
+            selfCopy2 = self;
             v16 = 2112;
-            v17 = v4;
+            v17 = idsDeviceIdentifier;
             _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%@ ignoring loss %@", &v14, 0x16u);
           }
 
@@ -819,9 +819,9 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v4;
+      v17 = idsDeviceIdentifier;
       _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%@ ignore lost %@, not fully activated", &v14, 0x16u);
     }
 
@@ -831,52 +831,52 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleLostNode:(id)a3
+- (void)_handleLostNode:(id)node
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 IDSIdentifier];
-  v6 = [(COMeshLocalNode *)self nodes];
+  nodeCopy = node;
+  iDSIdentifier = [nodeCopy IDSIdentifier];
+  nodes = [(COMeshLocalNode *)self nodes];
   v7 = COCoreLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v5;
+    v14 = iDSIdentifier;
     _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%@ lost %@", &v11, 0x16u);
   }
 
-  [v4 setParent:0];
-  v8 = [v6 mutableCopy];
-  [v8 removeObject:v4];
+  [nodeCopy setParent:0];
+  v8 = [nodes mutableCopy];
+  [v8 removeObject:nodeCopy];
   [(COMeshLocalNode *)self setNodes:v8];
-  v9 = [(COMeshNode *)self delegate];
+  delegate = [(COMeshNode *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 didRemoveNode:v4];
+    [delegate didRemoveNode:nodeCopy];
   }
 
   else
   {
-    [v4 invalidate];
+    [nodeCopy invalidate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 didInvalidateNode:v4];
+      [delegate didInvalidateNode:nodeCopy];
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_handleDiscoveryRecord:(id)a3
+- (id)_handleDiscoveryRecord:(id)record
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 IDSIdentifier];
-  if ([v5 length])
+  recordCopy = record;
+  iDSIdentifier = [recordCopy IDSIdentifier];
+  if ([iDSIdentifier length])
   {
-    v6 = [(COMeshLocalNode *)self nodes];
+    nodes = [(COMeshLocalNode *)self nodes];
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
@@ -887,32 +887,32 @@ LABEL_12:
     v17[1] = 3221225472;
     v17[2] = __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke;
     v17[3] = &unk_278E17A90;
-    v7 = v5;
+    v7 = iDSIdentifier;
     v18 = v7;
     v19 = &v20;
-    [v6 enumerateObjectsUsingBlock:v17];
+    [nodes enumerateObjectsUsingBlock:v17];
     v8 = v21[5];
     if (v8)
     {
-      v9 = [v8 discoveryType];
-      [v21[5] setDiscoveryType:v9 | 2];
+      discoveryType = [v8 discoveryType];
+      [v21[5] setDiscoveryType:discoveryType | 2];
       v10 = v21[5];
     }
 
     else
     {
-      v11 = [v4 companionLinkDevice];
+      companionLinkDevice = [recordCopy companionLinkDevice];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke_2;
       v15[3] = &unk_278E17B00;
-      v16 = v4;
-      v10 = [(COMeshLocalNode *)self _createNodeForDevice:v11 IDSIdentifier:v7 configure:v15];
+      v16 = recordCopy;
+      v10 = [(COMeshLocalNode *)self _createNodeForDevice:companionLinkDevice IDSIdentifier:v7 configure:v15];
       v12 = COCoreLogForCategory(0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v27 = self;
+        selfCopy = self;
         v28 = 2112;
         v29 = v7;
         v30 = 2112;
@@ -956,43 +956,43 @@ void __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke_2(uint64_t a1, 
   [v3 setConnectionType:0];
 }
 
-- (id)_createNodeForDevice:(id)a3 IDSIdentifier:(id)a4 configure:(id)a5
+- (id)_createNodeForDevice:(id)device IDSIdentifier:(id)identifier configure:(id)configure
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(COMeshNode *)self client];
-  v12 = [(COMeshLocalNode *)self companionLinkClientFactory];
-  v13 = [v12 companionLinkClientForDevice:v10 withIDSIdentifier:v9];
+  configureCopy = configure;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  client = [(COMeshNode *)self client];
+  companionLinkClientFactory = [(COMeshLocalNode *)self companionLinkClientFactory];
+  v13 = [companionLinkClientFactory companionLinkClientForDevice:deviceCopy withIDSIdentifier:identifierCopy];
 
-  v14 = [v11 dispatchQueue];
-  [v13 setDispatchQueue:v14];
+  dispatchQueue = [client dispatchQueue];
+  [v13 setDispatchQueue:dispatchQueue];
 
   v15 = [COMeshNode alloc];
-  v16 = [(COMeshNode *)self source];
-  v17 = [(COMeshNode *)v15 initWithCompanionLinkClient:v13 source:v16];
+  source = [(COMeshNode *)self source];
+  v17 = [(COMeshNode *)v15 initWithCompanionLinkClient:v13 source:source];
 
   [(COMeshNode *)v17 setParent:self];
-  v18 = [(COMeshNode *)self meshName];
-  [(COMeshNode *)v17 setMeshName:v18];
+  meshName = [(COMeshNode *)self meshName];
+  [(COMeshNode *)v17 setMeshName:meshName];
 
-  v19 = [(COMeshNode *)self label];
-  [(COMeshNode *)v17 setLabel:v19];
+  label = [(COMeshNode *)self label];
+  [(COMeshNode *)v17 setLabel:label];
 
-  v20 = [(COMeshNode *)self recorder];
-  [(COMeshNode *)v17 setRecorder:v20];
+  recorder = [(COMeshNode *)self recorder];
+  [(COMeshNode *)v17 setRecorder:recorder];
 
-  [(COMeshNode *)v17 _setIDSIdentifier:v9];
-  v8[2](v8, v17);
+  [(COMeshNode *)v17 _setIDSIdentifier:identifierCopy];
+  configureCopy[2](configureCopy, v17);
 
-  v21 = [(COMeshLocalNode *)self nodes];
-  v22 = [v21 arrayByAddingObject:v17];
+  nodes = [(COMeshLocalNode *)self nodes];
+  v22 = [nodes arrayByAddingObject:v17];
   [(COMeshLocalNode *)self setNodes:v22];
 
-  v23 = [(COMeshNode *)self delegate];
+  delegate = [(COMeshNode *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v23 didAddNode:v17];
+    [delegate didAddNode:v17];
   }
 
   else
@@ -1003,18 +1003,18 @@ void __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke_2(uint64_t a1, 
   return v17;
 }
 
-- (void)_handleEventIdentifier:(id)a3 rapportRepresentation:(id)a4 options:(id)a5 fromNode:(id)a6
+- (void)_handleEventIdentifier:(id)identifier rapportRepresentation:(id)representation options:(id)options fromNode:(id)node
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  representationCopy = representation;
+  optionsCopy = options;
   v79 = 0;
   v80[0] = &v79;
   v80[1] = 0x3032000000;
   v80[2] = __Block_byref_object_copy__15;
   v80[3] = __Block_byref_object_dispose__15;
-  v13 = a6;
-  v81 = v13;
+  nodeCopy = node;
+  v81 = nodeCopy;
   v73 = 0;
   v74 = &v73;
   v75 = 0x3032000000;
@@ -1050,11 +1050,11 @@ void __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke_2(uint64_t a1, 
   v50[3] = &unk_278E15DF0;
   v50[4] = &v57;
   v50[5] = &v51;
-  [v14 _commandPayloadFromRapportRepresentation:v11 result:v50];
+  [v14 _commandPayloadFromRapportRepresentation:representationCopy result:v50];
   if (v52[5])
   {
-    v15 = [(COMeshLocalNode *)self commands];
-    v16 = [v15 objectForKey:v10];
+    commands = [(COMeshLocalNode *)self commands];
+    v16 = [commands objectForKey:identifierCopy];
 
     if (v16)
     {
@@ -1103,7 +1103,7 @@ void __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke_2(uint64_t a1, 
       v23 = v68;
     }
 
-    [v23[5] _setRapportOptions:v12];
+    [v23[5] _setRapportOptions:optionsCopy];
   }
 
   v44 = 0;
@@ -1128,7 +1128,7 @@ void __42__COMeshLocalNode__handleDiscoveryRecord___block_invoke_2(uint64_t a1, 
   v35[3] = &unk_278E17B28;
   v37 = &v79;
   v35[4] = self;
-  v26 = v10;
+  v26 = identifierCopy;
   v36 = v26;
   v38 = &v44;
   v39 = &v57;
@@ -1299,19 +1299,19 @@ void __81__COMeshLocalNode__handleEventIdentifier_rapportRepresentation_options_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRequestIdentifier:(id)a3 rapportRepresentation:(id)a4 options:(id)a5 responseHandler:(id)a6 fromNode:(id)a7 at:(unint64_t)a8
+- (void)_handleRequestIdentifier:(id)identifier rapportRepresentation:(id)representation options:(id)options responseHandler:(id)handler fromNode:(id)node at:(unint64_t)at
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identifierCopy = identifier;
+  representationCopy = representation;
+  optionsCopy = options;
+  handlerCopy = handler;
   v89 = 0;
   v90[0] = &v89;
   v90[1] = 0x3032000000;
   v90[2] = __Block_byref_object_copy__15;
   v90[3] = __Block_byref_object_dispose__15;
-  v18 = a7;
-  v91 = v18;
+  nodeCopy = node;
+  v91 = nodeCopy;
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
@@ -1347,11 +1347,11 @@ void __81__COMeshLocalNode__handleEventIdentifier_rapportRepresentation_options_
   v60[3] = &unk_278E15DF0;
   v60[4] = &v67;
   v60[5] = &v61;
-  [v19 _commandPayloadFromRapportRepresentation:v15 result:v60];
+  [v19 _commandPayloadFromRapportRepresentation:representationCopy result:v60];
   if (v62[5])
   {
-    v20 = [(COMeshLocalNode *)self commands];
-    v21 = [v20 objectForKey:v14];
+    commands = [(COMeshLocalNode *)self commands];
+    v21 = [commands objectForKey:identifierCopy];
 
     if (!v21)
     {
@@ -1410,7 +1410,7 @@ LABEL_10:
       v30 = v78;
     }
 
-    [v30[5] _setRapportOptions:v16];
+    [v30[5] _setRapportOptions:optionsCopy];
   }
 
   v54 = 0;
@@ -1435,17 +1435,17 @@ LABEL_10:
   v43[3] = &unk_278E17BA0;
   v46 = &v89;
   v43[4] = self;
-  v33 = v14;
+  v33 = identifierCopy;
   v44 = v33;
   v47 = &v83;
-  v34 = v17;
+  v34 = handlerCopy;
   v45 = v34;
   v48 = &v54;
   v49 = &v67;
   v50 = &v73;
   v51 = &v77;
   v52 = &v61;
-  v53 = a8;
+  atCopy = at;
   v35 = MEMORY[0x245D5FF10](v43);
   if (!*(v90[0] + 40) && v68[5] && v78[5] && (v36 = v55[5], (objc_opt_respondsToSelector() & 1) != 0))
   {
@@ -1684,16 +1684,16 @@ void __102__COMeshLocalNode__handleRequestIdentifier_rapportRepresentation_optio
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateAndReintroduceNode:(id)a3
+- (void)_invalidateAndReintroduceNode:(id)node
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 IDSIdentifier];
-  v6 = [v4 discoveryRecord];
-  [v4 invalidate];
-  if ([v5 length])
+  nodeCopy = node;
+  iDSIdentifier = [nodeCopy IDSIdentifier];
+  discoveryRecord = [nodeCopy discoveryRecord];
+  [nodeCopy invalidate];
+  if ([iDSIdentifier length])
   {
-    v7 = [(COMeshLocalNode *)self _nodeForIDSIdentifier:v5];
+    v7 = [(COMeshLocalNode *)self _nodeForIDSIdentifier:iDSIdentifier];
     if (v7)
     {
       v8 = v7;
@@ -1701,11 +1701,11 @@ void __102__COMeshLocalNode__handleRequestIdentifier_rapportRepresentation_optio
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412802;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
         v16 = v8;
         v17 = 2112;
-        v18 = v4;
+        v18 = nodeCopy;
         v10 = "%@ reintroduced node %@ for %@";
 LABEL_9:
         _os_log_impl(&dword_244378000, v9, OS_LOG_TYPE_DEFAULT, v10, &v13, 0x20u);
@@ -1716,9 +1716,9 @@ LABEL_9:
     }
   }
 
-  if (v6)
+  if (discoveryRecord)
   {
-    v11 = [(COMeshLocalNode *)self _handleDiscoveryRecord:v6];
+    v11 = [(COMeshLocalNode *)self _handleDiscoveryRecord:discoveryRecord];
     if (v11)
     {
       v8 = v11;
@@ -1726,11 +1726,11 @@ LABEL_9:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412802;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
         v16 = v8;
         v17 = 2112;
-        v18 = v4;
+        v18 = nodeCopy;
         v10 = "%@ reintroduced (IP) node %@ for %@";
         goto LABEL_9;
       }

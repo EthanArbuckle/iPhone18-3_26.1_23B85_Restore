@@ -1,17 +1,17 @@
 @interface _DPPrivacyBudgetRecord
-+ (id)createRecordFromManagedObject:(id)a3;
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPrivacyBudgetRecord:(id)a3;
++ (id)createRecordFromManagedObject:(id)object;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPrivacyBudgetRecord:(id)record;
 - (_DPPrivacyBudgetRecord)init;
-- (_DPPrivacyBudgetRecord)initWithCoder:(id)a3;
-- (_DPPrivacyBudgetRecord)initWithKey:(id)a3 creationDate:(double)a4 lastUpdate:(double)a5 balance:(int64_t)a6 cohortAggregateBalance:(double)a7 objectId:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DPPrivacyBudgetRecord)initWithCoder:(id)coder;
+- (_DPPrivacyBudgetRecord)initWithKey:(id)key creationDate:(double)date lastUpdate:(double)update balance:(int64_t)balance cohortAggregateBalance:(double)aggregateBalance objectId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)entityName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DPPrivacyBudgetRecord
@@ -25,72 +25,72 @@
   return [(_DPPrivacyBudgetRecord *)self initWithKey:@"com.apple.DifferentialPrivacy.default" creationDate:0 lastUpdate:0 balance:v5 cohortAggregateBalance:v5 objectId:0.0];
 }
 
-- (_DPPrivacyBudgetRecord)initWithKey:(id)a3 creationDate:(double)a4 lastUpdate:(double)a5 balance:(int64_t)a6 cohortAggregateBalance:(double)a7 objectId:(id)a8
+- (_DPPrivacyBudgetRecord)initWithKey:(id)key creationDate:(double)date lastUpdate:(double)update balance:(int64_t)balance cohortAggregateBalance:(double)aggregateBalance objectId:(id)id
 {
-  v15 = a3;
-  v16 = a8;
+  keyCopy = key;
+  idCopy = id;
   v20.receiver = self;
   v20.super_class = _DPPrivacyBudgetRecord;
   v17 = [(_DPPrivacyBudgetRecord *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_key, a3);
-    v18->_creationDate = a4;
-    v18->_lastUpdate = a5;
-    v18->_balance = a6;
-    v18->_cohortAggregateBalance = a7;
+    objc_storeStrong(&v17->_key, key);
+    v18->_creationDate = date;
+    v18->_lastUpdate = update;
+    v18->_balance = balance;
+    v18->_cohortAggregateBalance = aggregateBalance;
     v18->_submitted = 0;
-    objc_storeStrong(&v18->_objectId, a8);
+    objc_storeStrong(&v18->_objectId, id);
   }
 
   return v18;
 }
 
-- (_DPPrivacyBudgetRecord)initWithCoder:(id)a3
+- (_DPPrivacyBudgetRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdate"];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
-  v13 = [v12 longLongValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+  longLongValue = [v12 longLongValue];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cohortAggregateBalance"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cohortAggregateBalance"];
 
   [v14 doubleValue];
   v16 = v15;
 
-  v17 = [(_DPPrivacyBudgetRecord *)self initWithKey:v5 creationDate:v13 lastUpdate:0 balance:v8 cohortAggregateBalance:v11 objectId:v16];
+  v17 = [(_DPPrivacyBudgetRecord *)self initWithKey:v5 creationDate:longLongValue lastUpdate:0 balance:v8 cohortAggregateBalance:v11 objectId:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeObject:self->_key forKey:@"key"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_key forKey:@"key"];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creationDate];
-  [v9 encodeObject:v4 forKey:@"creationDate"];
+  [coderCopy encodeObject:v4 forKey:@"creationDate"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastUpdate];
-  [v9 encodeObject:v5 forKey:@"lastUpdate"];
+  [coderCopy encodeObject:v5 forKey:@"lastUpdate"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_balance];
-  [v9 encodeObject:v6 forKey:@"balance"];
+  [coderCopy encodeObject:v6 forKey:@"balance"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_cohortAggregateBalance];
-  [v9 encodeObject:v7 forKey:@"cohortAggregateBalance"];
+  [coderCopy encodeObject:v7 forKey:@"cohortAggregateBalance"];
 
   objectId = self->_objectId;
   if (objectId)
   {
-    [v9 encodeObject:objectId forKey:@"objectId"];
+    [coderCopy encodeObject:objectId forKey:@"objectId"];
   }
 }
 
@@ -115,7 +115,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(_DPPrivacyBudgetRecord *)self key];
@@ -123,56 +123,56 @@
   v7 = v6;
   [(_DPPrivacyBudgetRecord *)self lastUpdate];
   v9 = v8;
-  v10 = [(_DPPrivacyBudgetRecord *)self balance];
+  balance = [(_DPPrivacyBudgetRecord *)self balance];
   [(_DPPrivacyBudgetRecord *)self cohortAggregateBalance];
   v12 = v11;
-  v13 = [(_DPPrivacyBudgetRecord *)self objectId];
-  v14 = [v4 initWithKey:v5 creationDate:v10 lastUpdate:v13 balance:v7 cohortAggregateBalance:v9 objectId:v12];
+  objectId = [(_DPPrivacyBudgetRecord *)self objectId];
+  v14 = [v4 initWithKey:v5 creationDate:balance lastUpdate:objectId balance:v7 cohortAggregateBalance:v9 objectId:v12];
 
   return v14;
 }
 
-- (BOOL)isEqualToPrivacyBudgetRecord:(id)a3
+- (BOOL)isEqualToPrivacyBudgetRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v5 = [(_DPPrivacyBudgetRecord *)self key];
-    v6 = [v4 key];
+    v6 = [recordCopy key];
     v7 = [v5 isEqualToString:v6];
 
     [(_DPPrivacyBudgetRecord *)self creationDate];
     v9 = v8;
-    [v4 creationDate];
+    [recordCopy creationDate];
     v11 = areEqualTimeIntervals(v9, v10);
     [(_DPPrivacyBudgetRecord *)self lastUpdate];
     v13 = v12;
-    [v4 lastUpdate];
+    [recordCopy lastUpdate];
     v15 = areEqualTimeIntervals(v13, v14);
-    v16 = [(_DPPrivacyBudgetRecord *)self balance];
-    v17 = [v4 balance];
+    balance = [(_DPPrivacyBudgetRecord *)self balance];
+    balance2 = [recordCopy balance];
     [(_DPPrivacyBudgetRecord *)self cohortAggregateBalance];
     v19 = v18;
-    [v4 cohortAggregateBalance];
+    [recordCopy cohortAggregateBalance];
     v21 = vabdd_f64(v19, v20);
-    v22 = [(_DPPrivacyBudgetRecord *)self objectId];
+    objectId = [(_DPPrivacyBudgetRecord *)self objectId];
 
-    if (v22)
+    if (objectId)
     {
-      v23 = [(_DPPrivacyBudgetRecord *)self objectId];
-      v24 = [v4 objectId];
-      v25 = [v23 isEqual:v24];
+      objectId2 = [(_DPPrivacyBudgetRecord *)self objectId];
+      objectId3 = [recordCopy objectId];
+      v25 = [objectId2 isEqual:objectId3];
     }
 
     else
     {
-      v27 = [v4 objectId];
+      objectId4 = [recordCopy objectId];
 
-      v25 = v27 == 0;
+      v25 = objectId4 == 0;
     }
 
     v28 = v7 & v11 & v15;
-    if (v16 != v17)
+    if (balance != balance2)
     {
       v28 = 0;
     }
@@ -193,18 +193,18 @@
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPPrivacyBudgetRecord *)self isEqualToPrivacyBudgetRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPPrivacyBudgetRecord *)self isEqualToPrivacyBudgetRecord:v5];
   }
 
   return v6;
@@ -218,17 +218,17 @@
   v6 = v4 ^ v5;
   [(_DPPrivacyBudgetRecord *)self lastUpdate];
   v8 = v6 ^ v7 ^ [(_DPPrivacyBudgetRecord *)self balance];
-  v9 = [(_DPPrivacyBudgetRecord *)self objectId];
-  v10 = [v9 hash];
+  objectId = [(_DPPrivacyBudgetRecord *)self objectId];
+  v10 = [objectId hash];
 
   return v8 ^ v10;
 }
 
-+ (id)createRecordFromManagedObject:(id)a3
++ (id)createRecordFromManagedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
-  v5 = [v4 copyFromManagedObject:v3];
+  v5 = [v4 copyFromManagedObject:objectCopy];
 
   if (v5)
   {
@@ -250,14 +250,14 @@
   return [v2 entityName];
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [(_DPPrivacyBudgetRecord *)self key];
     [v6 setKey:v7];
 
@@ -268,27 +268,27 @@
     [v6 setBalance:{-[_DPPrivacyBudgetRecord balance](self, "balance")}];
     [(_DPPrivacyBudgetRecord *)self cohortAggregateBalance];
     [v6 setCohortAggregateBalance:?];
-    v8 = [(_DPPrivacyBudgetRecord *)self objectId];
-    v9 = [v6 objectID];
+    objectId = [(_DPPrivacyBudgetRecord *)self objectId];
+    objectID = [v6 objectID];
 
-    if (v8 != v9)
+    if (objectId != objectID)
     {
-      v10 = [v6 objectID];
-      [(_DPPrivacyBudgetRecord *)self setObjectId:v10];
+      objectID2 = [v6 objectID];
+      [(_DPPrivacyBudgetRecord *)self setObjectId:objectID2];
     }
   }
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 key];
     [(_DPPrivacyBudgetRecord *)self setKey:v7];
 
@@ -299,9 +299,9 @@
     -[_DPPrivacyBudgetRecord setBalance:](self, "setBalance:", [v6 balance]);
     [v6 cohortAggregateBalance];
     [(_DPPrivacyBudgetRecord *)self setCohortAggregateBalance:?];
-    v8 = [v6 objectID];
+    objectID = [v6 objectID];
 
-    [(_DPPrivacyBudgetRecord *)self setObjectId:v8];
+    [(_DPPrivacyBudgetRecord *)self setObjectId:objectID];
   }
 
   return isKindOfClass & 1;

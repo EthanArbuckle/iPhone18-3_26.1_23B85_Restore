@@ -1,36 +1,36 @@
 @interface TextViewWithPlaceholderText
-- (TextViewWithPlaceholderText)initWithFrame:(CGRect)a3;
+- (TextViewWithPlaceholderText)initWithFrame:(CGRect)frame;
 - (void)_updatePlaceholderVisibility;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation TextViewWithPlaceholderText
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = TextViewWithPlaceholderText;
-  [(TextViewWithPlaceholderText *)&v4 setText:a3];
+  [(TextViewWithPlaceholderText *)&v4 setText:text];
   [(TextViewWithPlaceholderText *)self _updatePlaceholderVisibility];
 }
 
 - (void)_updatePlaceholderVisibility
 {
-  v3 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-  v4 = [v3 isHidden];
+  placeholderLabel = [(TextViewWithPlaceholderText *)self placeholderLabel];
+  isHidden = [placeholderLabel isHidden];
 
-  v5 = [(TextViewWithPlaceholderText *)self text];
-  v6 = [v5 length] != 0;
-  v7 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-  [v7 setHidden:v6];
+  text = [(TextViewWithPlaceholderText *)self text];
+  v6 = [text length] != 0;
+  placeholderLabel2 = [(TextViewWithPlaceholderText *)self placeholderLabel];
+  [placeholderLabel2 setHidden:v6];
 
-  if (v4)
+  if (isHidden)
   {
-    v8 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-    v9 = [v8 isHidden];
+    placeholderLabel3 = [(TextViewWithPlaceholderText *)self placeholderLabel];
+    isHidden2 = [placeholderLabel3 isHidden];
 
-    if ((v9 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
 
       [(TextViewWithPlaceholderText *)self setNeedsLayout];
@@ -43,25 +43,25 @@
   v32.receiver = self;
   v32.super_class = TextViewWithPlaceholderText;
   [(TextViewWithPlaceholderText *)&v32 layoutSubviews];
-  v3 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-  v4 = [v3 isHidden];
+  placeholderLabel = [(TextViewWithPlaceholderText *)self placeholderLabel];
+  isHidden = [placeholderLabel isHidden];
 
-  if ((v4 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v5 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-    [(TextViewWithPlaceholderText *)self bringSubviewToFront:v5];
+    placeholderLabel2 = [(TextViewWithPlaceholderText *)self placeholderLabel];
+    [(TextViewWithPlaceholderText *)self bringSubviewToFront:placeholderLabel2];
 
     [(TextViewWithPlaceholderText *)self textContainerInset];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(TextViewWithPlaceholderText *)self textContainer];
-    [v14 lineFragmentPadding];
+    textContainer = [(TextViewWithPlaceholderText *)self textContainer];
+    [textContainer lineFragmentPadding];
     v16 = v15 + v9;
 
-    v17 = [(TextViewWithPlaceholderText *)self textContainer];
-    [v17 lineFragmentPadding];
+    textContainer2 = [(TextViewWithPlaceholderText *)self textContainer];
+    [textContainer2 lineFragmentPadding];
     v19 = v18;
 
     [(TextViewWithPlaceholderText *)self bounds];
@@ -69,20 +69,20 @@
     v23 = v22 + v7;
     v25 = v24 - (v19 + v13 + v16);
     v27 = v26 - (v7 + v11);
-    v28 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-    [v28 sizeThatFits:{v25, 0.0}];
+    placeholderLabel3 = [(TextViewWithPlaceholderText *)self placeholderLabel];
+    [placeholderLabel3 sizeThatFits:{v25, 0.0}];
     v30 = v29;
 
-    v31 = [(TextViewWithPlaceholderText *)self placeholderLabel];
-    [v31 setFrame:{v21, v23, v25, fmin(v27, v30)}];
+    placeholderLabel4 = [(TextViewWithPlaceholderText *)self placeholderLabel];
+    [placeholderLabel4 setFrame:{v21, v23, v25, fmin(v27, v30)}];
   }
 }
 
-- (TextViewWithPlaceholderText)initWithFrame:(CGRect)a3
+- (TextViewWithPlaceholderText)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = TextViewWithPlaceholderText;
-  v3 = [(TextViewWithPlaceholderText *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TextViewWithPlaceholderText *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -92,8 +92,8 @@
     placeholderLabel = v3->_placeholderLabel;
     v3->_placeholderLabel = v5;
 
-    v7 = [(TextViewWithPlaceholderText *)v3 font];
-    [(UILabel *)v3->_placeholderLabel setFont:v7];
+    font = [(TextViewWithPlaceholderText *)v3 font];
+    [(UILabel *)v3->_placeholderLabel setFont:font];
 
     v8 = +[UIColor tertiaryLabelColor];
     [(UILabel *)v3->_placeholderLabel setTextColor:v8];

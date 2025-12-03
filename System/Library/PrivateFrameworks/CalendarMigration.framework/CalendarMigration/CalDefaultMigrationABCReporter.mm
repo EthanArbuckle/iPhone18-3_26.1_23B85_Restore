@@ -1,6 +1,6 @@
 @interface CalDefaultMigrationABCReporter
 + (id)sharedInstance;
-- (void)reportIssueWithType:(id)a3 subtype:(id)a4 context:(id)a5 events:(id)a6;
+- (void)reportIssueWithType:(id)type subtype:(id)subtype context:(id)context events:(id)events;
 @end
 
 @implementation CalDefaultMigrationABCReporter
@@ -24,16 +24,16 @@ uint64_t __48__CalDefaultMigrationABCReporter_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)reportIssueWithType:(id)a3 subtype:(id)a4 context:(id)a5 events:(id)a6
+- (void)reportIssueWithType:(id)type subtype:(id)subtype context:(id)context events:(id)events
 {
   v9 = MEMORY[0x277CF7758];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v9 alloc] initWithType:v13 subtype:v12 context:v11];
+  eventsCopy = events;
+  contextCopy = context;
+  subtypeCopy = subtype;
+  typeCopy = type;
+  v14 = [[v9 alloc] initWithType:typeCopy subtype:subtypeCopy context:contextCopy];
 
-  [v14 setEvents:v10];
+  [v14 setEvents:eventsCopy];
   [v14 setIgnoreRateLimiting:1];
   [v14 report];
 }

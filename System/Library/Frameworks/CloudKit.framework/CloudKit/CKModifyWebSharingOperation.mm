@@ -1,40 +1,40 @@
 @interface CKModifyWebSharingOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKModifyWebSharingOperation)initWithRecordIDsToWebShare:(id)a3 recordIDsToUnshare:(id)a4;
+- (CKModifyWebSharingOperation)initWithRecordIDsToWebShare:(id)share recordIDsToUnshare:(id)unshare;
 - (id)activityCreate;
 - (id)recordSharedBlock;
 - (id)recordUnsharedBlock;
 - (id)webShareRecordsCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleWebSharingInitiationForRecordID:(id)a3 sharingKey:(id)a4 baseSharingToken:(id)a5 error:(id)a6;
-- (void)handleWebSharingRevocationForRecordID:(id)a3 error:(id)a4;
-- (void)setRecordSharedBlock:(id)a3;
-- (void)setRecordUnsharedBlock:(id)a3;
-- (void)setWebShareRecordsCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleWebSharingInitiationForRecordID:(id)d sharingKey:(id)key baseSharingToken:(id)token error:(id)error;
+- (void)handleWebSharingRevocationForRecordID:(id)d error:(id)error;
+- (void)setRecordSharedBlock:(id)block;
+- (void)setRecordUnsharedBlock:(id)block;
+- (void)setWebShareRecordsCompletionBlock:(id)block;
 @end
 
 @implementation CKModifyWebSharingOperation
 
-- (CKModifyWebSharingOperation)initWithRecordIDsToWebShare:(id)a3 recordIDsToUnshare:(id)a4
+- (CKModifyWebSharingOperation)initWithRecordIDsToWebShare:(id)share recordIDsToUnshare:(id)unshare
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  unshareCopy = unshare;
   v24.receiver = self;
   v24.super_class = CKModifyWebSharingOperation;
   v10 = [(CKOperation *)&v24 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(shareCopy, v8, v9);
     recordIDsToShare = v10->_recordIDsToShare;
     v10->_recordIDsToShare = v11;
 
-    v15 = objc_msgSend_copy(v7, v13, v14);
+    v15 = objc_msgSend_copy(unshareCopy, v13, v14);
     recordIDsToUnshare = v10->_recordIDsToUnshare;
     v10->_recordIDsToUnshare = v15;
 
@@ -54,9 +54,9 @@
   return v10;
 }
 
-- (void)setRecordSharedBlock:(id)a3
+- (void)setRecordSharedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -70,16 +70,16 @@
     v12[2] = sub_1885DD484;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     recordSharedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_recordSharedBlock != v6)
+  if (self->_recordSharedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     recordSharedBlock = self->_recordSharedBlock;
     self->_recordSharedBlock = v9;
 LABEL_9:
@@ -122,9 +122,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setRecordUnsharedBlock:(id)a3
+- (void)setRecordUnsharedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -138,16 +138,16 @@ LABEL_9:
     v12[2] = sub_1885DD810;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     recordUnsharedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_recordUnsharedBlock != v6)
+  if (self->_recordUnsharedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     recordUnsharedBlock = self->_recordUnsharedBlock;
     self->_recordUnsharedBlock = v9;
 LABEL_9:
@@ -190,9 +190,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setWebShareRecordsCompletionBlock:(id)a3
+- (void)setWebShareRecordsCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -206,16 +206,16 @@ LABEL_9:
     v12[2] = sub_1885DDB9C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     webShareRecordsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_webShareRecordsCompletionBlock != v6)
+  if (self->_webShareRecordsCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     webShareRecordsCompletionBlock = self->_webShareRecordsCompletionBlock;
     self->_webShareRecordsCompletionBlock = v9;
 LABEL_9:
@@ -258,36 +258,36 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordIDsToShare(self, v5, v6);
-  objc_msgSend_setRecordIDsToShare_(v4, v8, v7);
+  objc_msgSend_setRecordIDsToShare_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_recordIDsToUnshare(self, v9, v10);
-  objc_msgSend_setRecordIDsToUnshare_(v4, v12, v11);
+  objc_msgSend_setRecordIDsToUnshare_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_recordIDsToShareReadWrite(self, v13, v14);
-  objc_msgSend_setRecordIDsToShareReadWrite_(v4, v16, v15);
+  objc_msgSend_setRecordIDsToShareReadWrite_(infoCopy, v16, v15);
 
   v17.receiver = self;
   v17.super_class = CKModifyWebSharingOperation;
-  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v17.receiver = self;
   v17.super_class = CKModifyWebSharingOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordIDsToShare(v4, v5, v6, v17.receiver, v17.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordIDsToShare(infoCopy, v5, v6, v17.receiver, v17.super_class);
   objc_msgSend_setRecordIDsToShare_(self, v8, v7);
 
-  v11 = objc_msgSend_recordIDsToUnshare(v4, v9, v10);
+  v11 = objc_msgSend_recordIDsToUnshare(infoCopy, v9, v10);
   objc_msgSend_setRecordIDsToUnshare_(self, v12, v11);
 
-  v15 = objc_msgSend_recordIDsToShareReadWrite(v4, v13, v14);
+  v15 = objc_msgSend_recordIDsToShareReadWrite(infoCopy, v13, v14);
 
   objc_msgSend_setRecordIDsToShareReadWrite_(self, v16, v15);
 }
@@ -325,11 +325,11 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v3 = a3;
+  runCopy = run;
   v77 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_recordIDsToShare(self, a2, a3);
+  v5 = objc_msgSend_recordIDsToShare(self, a2, run);
   if (objc_msgSend_count(v5, v6, v7))
   {
   }
@@ -360,7 +360,7 @@ LABEL_9:
     obj = v19;
     do
     {
-      v24 = v3;
+      v24 = runCopy;
       for (i = 0; i != v22; ++i)
       {
         if (*v72 != v23)
@@ -410,7 +410,7 @@ LABEL_30:
       }
 
       v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v34, &v71, v76, 16);
-      v3 = v24;
+      runCopy = v24;
       v19 = obj;
     }
 
@@ -444,18 +444,18 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v3)
+        if (runCopy)
         {
           v59 = objc_opt_class();
           v60 = NSStringFromClass(v59);
-          *v3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v61, @"CKErrorDomain", 12, @"Unexpected recordID to unshare passed to %@: %@", v60, v45);
+          *runCopy = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v61, @"CKErrorDomain", 12, @"Unexpected recordID to unshare passed to %@: %@", v60, v45);
         }
 
         goto LABEL_40;
       }
 
       v48 = objc_msgSend_zoneID(v45, v46, v47);
-      v50 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v49, v48, v3);
+      v50 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v49, v48, runCopy);
 
       if (!v50)
       {
@@ -464,7 +464,7 @@ LABEL_30:
 
       if (objc_msgSend_containsObject_(v16, v51, v45))
       {
-        if (v3)
+        if (runCopy)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v52, @"CKErrorDomain", 12, @"You can't share and unshare the same record ID in a single operation: %@", v45);
           goto LABEL_39;
@@ -478,10 +478,10 @@ LABEL_40:
 
       if (objc_msgSend_containsObject_(v37, v52, v45))
       {
-        if (v3)
+        if (runCopy)
         {
           objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v53, @"CKErrorDomain", 12, @"You can't unshare the same record ID twice in a single operation: %@", v45);
-          *v3 = LABEL_39:;
+          *runCopy = LABEL_39:;
         }
 
         goto LABEL_40;
@@ -503,7 +503,7 @@ LABEL_25:
 
   v66.receiver = self;
   v66.super_class = CKModifyWebSharingOperation;
-  v55 = [(CKDatabaseOperation *)&v66 CKOperationShouldRun:v3];
+  v55 = [(CKDatabaseOperation *)&v66 CKOperationShouldRun:runCopy];
 LABEL_41:
 
 LABEL_42:
@@ -511,13 +511,13 @@ LABEL_42:
   return v55;
 }
 
-- (void)handleWebSharingInitiationForRecordID:(id)a3 sharingKey:(id)a4 baseSharingToken:(id)a5 error:(id)a6
+- (void)handleWebSharingInitiationForRecordID:(id)d sharingKey:(id)key baseSharingToken:(id)token error:(id)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v15 = objc_msgSend_CKClientSuitableError(a6, v13, v14);
+  dCopy = d;
+  keyCopy = key;
+  tokenCopy = token;
+  v15 = objc_msgSend_CKClientSuitableError(error, v13, v14);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -563,7 +563,7 @@ LABEL_42:
       if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
       {
         v50 = 138412546;
-        v51 = v10;
+        v51 = dCopy;
         v52 = 2112;
         v53 = v15;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v24, OS_SIGNPOST_EVENT, v29, "CKModifyWebSharingOperation", "Record %@ shared with error: %@", &v50, 0x16u);
@@ -571,7 +571,7 @@ LABEL_42:
     }
 
     v30 = objc_msgSend_recordErrors(self, v18, v19);
-    objc_msgSend_setObject_forKeyedSubscript_(v30, v31, v15, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v30, v31, v15, dCopy);
   }
 
   else
@@ -607,13 +607,13 @@ LABEL_42:
       if (v41 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
       {
         v50 = 138412290;
-        v51 = v10;
+        v51 = dCopy;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v36, OS_SIGNPOST_EVENT, v41, "CKModifyWebSharingOperation", "Record %@ shared", &v50, 0xCu);
       }
     }
 
     v30 = objc_msgSend_sharedRecordIDs(self, v18, v19);
-    objc_msgSend_addObject_(v30, v42, v10);
+    objc_msgSend_addObject_(v30, v42, dCopy);
   }
 
   v45 = objc_msgSend_recordSharedBlock(self, v43, v44);
@@ -621,17 +621,17 @@ LABEL_42:
   if (v45)
   {
     v48 = objc_msgSend_recordSharedBlock(self, v46, v47);
-    (v48)[2](v48, v10, v11, v12, v15);
+    (v48)[2](v48, dCopy, keyCopy, tokenCopy, v15);
   }
 
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleWebSharingRevocationForRecordID:(id)a3 error:(id)a4
+- (void)handleWebSharingRevocationForRecordID:(id)d error:(id)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_CKClientSuitableError(a4, v7, v8);
+  dCopy = d;
+  v9 = objc_msgSend_CKClientSuitableError(error, v7, v8);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -677,7 +677,7 @@ LABEL_42:
       if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
       {
         v44 = 138412546;
-        v45 = v6;
+        v45 = dCopy;
         v46 = 2112;
         v47 = v9;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v18, OS_SIGNPOST_EVENT, v23, "CKModifyWebSharingOperation", "Record %@ unshared with error: %@", &v44, 0x16u);
@@ -685,7 +685,7 @@ LABEL_42:
     }
 
     v24 = objc_msgSend_recordErrors(self, v12, v13);
-    objc_msgSend_setObject_forKeyedSubscript_(v24, v25, v9, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(v24, v25, v9, dCopy);
   }
 
   else
@@ -721,13 +721,13 @@ LABEL_42:
       if (v35 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
       {
         v44 = 138412290;
-        v45 = v6;
+        v45 = dCopy;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v30, OS_SIGNPOST_EVENT, v35, "CKModifyWebSharingOperation", "Record %@ unshared", &v44, 0xCu);
       }
     }
 
     v24 = objc_msgSend_unsharedRecordIDs(self, v12, v13);
-    objc_msgSend_addObject_(v24, v36, v6);
+    objc_msgSend_addObject_(v24, v36, dCopy);
   }
 
   v39 = objc_msgSend_recordUnsharedBlock(self, v37, v38);
@@ -735,16 +735,16 @@ LABEL_42:
   if (v39)
   {
     v42 = objc_msgSend_recordUnsharedBlock(self, v40, v41);
-    (v42)[2](v42, v6, v9);
+    (v42)[2](v42, dCopy, v9);
   }
 
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -792,7 +792,7 @@ LABEL_42:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_recordErrors(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -803,12 +803,12 @@ LABEL_42:
       v28 = objc_msgSend_recordErrors(self, v26, v27);
       objc_msgSend_setObject_forKeyedSubscript_(v25, v29, v28, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v30, @"CKInternalErrorDomain", 1011, v25, @"Failed to share/unshare some records");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v30, @"CKInternalErrorDomain", 1011, v25, @"Failed to share/unshare some records");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -926,7 +926,7 @@ LABEL_42:
     v80 = objc_msgSend_webShareRecordsCompletionBlock(self, v78, v79);
     v83 = objc_msgSend_sharedRecordIDs(self, v81, v82);
     v86 = objc_msgSend_unsharedRecordIDs(self, v84, v85);
-    v89 = objc_msgSend_CKClientSuitableError(v4, v87, v88);
+    v89 = objc_msgSend_CKClientSuitableError(errorCopy, v87, v88);
     (v80)[2](v80, v83, v86, v89);
 
     objc_msgSend_setWebShareRecordsCompletionBlock_(self, v90, 0);
@@ -936,7 +936,7 @@ LABEL_42:
   objc_msgSend_setRecordUnsharedBlock_(self, v91, 0);
   v93.receiver = self;
   v93.super_class = CKModifyWebSharingOperation;
-  [(CKOperation *)&v93 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v93 _finishOnCallbackQueueWithError:errorCopy];
 
   v92 = *MEMORY[0x1E69E9840];
 }
@@ -1015,10 +1015,10 @@ LABEL_42:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -1062,7 +1062,7 @@ LABEL_42:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKModifyWebSharingOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -1077,18 +1077,18 @@ LABEL_42:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleWebSharingInitiationForRecordID_sharingKey_baseSharingToken_error_, 3, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleWebSharingInitiationForRecordID_sharingKey_baseSharingToken_error_, 3, 0);
 
   v7 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v8, v7, sel_handleWebSharingRevocationForRecordID_error_, 1, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v8, v7, sel_handleWebSharingRevocationForRecordID_error_, 1, 0);
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___CKModifyWebSharingOperation;
-  objc_msgSendSuper2(&v9, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v9, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

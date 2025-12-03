@@ -1,50 +1,50 @@
 @interface CMContinuityCaptureAVCaptureAudioSession
-- (CMContinuityCaptureAVCaptureAudioSession)initWithQueue:(id)a3;
-- (void)configureSessionWithInput:(id)a3 andOutput:(id)a4;
+- (CMContinuityCaptureAVCaptureAudioSession)initWithQueue:(id)queue;
+- (void)configureSessionWithInput:(id)input andOutput:(id)output;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CMContinuityCaptureAVCaptureAudioSession
 
-- (void)configureSessionWithInput:(id)a3 andOutput:(id)a4
+- (void)configureSessionWithInput:(id)input andOutput:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CMContinuityCaptureAVCaptureBaseSession *)self queue];
-  dispatch_assert_queue_V2(v8);
+  inputCopy = input;
+  outputCopy = output;
+  queue = [(CMContinuityCaptureAVCaptureBaseSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
-  v10 = [v9 canAddInput:v6];
+  captureSession = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
+  v10 = [captureSession canAddInput:inputCopy];
 
   if (v10)
   {
-    v11 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
-    [v11 addInput:v6];
+    captureSession2 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
+    [captureSession2 addInput:inputCopy];
   }
 
   else
   {
-    v11 = CMContinuityCaptureLog(2);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    captureSession2 = CMContinuityCaptureLog(2);
+    if (os_log_type_enabled(captureSession2, OS_LOG_TYPE_ERROR))
     {
       [CMContinuityCaptureAVCaptureAudioSession configureSessionWithInput:? andOutput:?];
     }
   }
 
-  v12 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
-  v13 = [v12 canAddOutput:v7];
+  captureSession3 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
+  v13 = [captureSession3 canAddOutput:outputCopy];
 
   if (v13)
   {
-    v14 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
-    [v14 addOutput:v7];
+    captureSession4 = [(CMContinuityCaptureAVCaptureBaseSession *)self captureSession];
+    [captureSession4 addOutput:outputCopy];
   }
 
   else
   {
-    v14 = CMContinuityCaptureLog(2);
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    captureSession4 = CMContinuityCaptureLog(2);
+    if (os_log_type_enabled(captureSession4, OS_LOG_TYPE_ERROR))
     {
       [CMContinuityCaptureAVCaptureAudioSession configureSessionWithInput:? andOutput:?];
     }
@@ -53,8 +53,8 @@
 
 - (void)start
 {
-  v3 = [(CMContinuityCaptureAVCaptureBaseSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureAVCaptureBaseSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CMContinuityCaptureAVCaptureBaseSession *)self state])
   {
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v7 = [(CMContinuityCaptureAVCaptureBaseSession *)self state];
+      state = [(CMContinuityCaptureAVCaptureBaseSession *)self state];
       v8 = 2080;
       v9 = "[CMContinuityCaptureAVCaptureAudioSession start]";
       _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "Invalid state %d for %s", buf, 0x12u);
@@ -79,8 +79,8 @@
 
 - (void)stop
 {
-  v3 = [(CMContinuityCaptureAVCaptureBaseSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureAVCaptureBaseSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(CMContinuityCaptureAVCaptureBaseSession *)self state]== 2)
   {
@@ -95,7 +95,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v7 = [(CMContinuityCaptureAVCaptureBaseSession *)self state];
+      state = [(CMContinuityCaptureAVCaptureBaseSession *)self state];
       v8 = 2080;
       v9 = "[CMContinuityCaptureAVCaptureAudioSession stop]";
       _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "Invalid state %d for %s", buf, 0x12u);
@@ -103,9 +103,9 @@
   }
 }
 
-- (CMContinuityCaptureAVCaptureAudioSession)initWithQueue:(id)a3
+- (CMContinuityCaptureAVCaptureAudioSession)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(MEMORY[0x277CE5B38]);
   if (!v5)
   {
@@ -114,20 +114,20 @@
 
   v9.receiver = self;
   v9.super_class = CMContinuityCaptureAVCaptureAudioSession;
-  v6 = [(CMContinuityCaptureAVCaptureBaseSession *)&v9 initWithCaptureSession:v5 queue:v4];
+  v6 = [(CMContinuityCaptureAVCaptureBaseSession *)&v9 initWithCaptureSession:v5 queue:queueCopy];
   if (!v6)
   {
     self = 0;
 LABEL_6:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_4;
   }
 
   self = v6;
-  v7 = self;
+  selfCopy = self;
 LABEL_4:
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)configureSessionWithInput:(void *)a1 andOutput:.cold.1(void *a1)

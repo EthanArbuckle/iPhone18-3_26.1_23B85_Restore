@@ -1,9 +1,9 @@
 @interface AMLFeaturesConfiguration
-- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 featuresDescription:(id)a7;
-- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 featuresDescription:(id)a7 configurationId:(id)a8;
+- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy featuresDescription:(id)description;
+- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy featuresDescription:(id)description configurationId:(id)configurationId;
 - (AMLFeaturesSpecification)featuresDescription;
 - (NSString)modelName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMLFeaturesConfiguration
@@ -31,13 +31,13 @@
   return v2;
 }
 
-- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 featuresDescription:(id)a7
+- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy featuresDescription:(id)description
 {
   v10 = sub_21AF097CC();
   v12 = v11;
-  if (a4)
+  if (name)
   {
-    a4 = sub_21AF097CC();
+    name = sub_21AF097CC();
     v14 = v13;
   }
 
@@ -47,16 +47,16 @@
   }
 
   v15 = sub_21AF097CC();
-  return AMLFeaturesConfiguration.init(bundleIdentifier:modelName:versionId:expirationPolicy:featuresDescription:)(v10, v12, a4, v14, v15, v16, a6, a7);
+  return AMLFeaturesConfiguration.init(bundleIdentifier:modelName:versionId:expirationPolicy:featuresDescription:)(v10, v12, name, v14, v15, v16, policy, description);
 }
 
-- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 featuresDescription:(id)a7 configurationId:(id)a8
+- (AMLFeaturesConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy featuresDescription:(id)description configurationId:(id)configurationId
 {
   v10 = sub_21AF097CC();
   v12 = v11;
-  if (a4)
+  if (name)
   {
-    a4 = sub_21AF097CC();
+    name = sub_21AF097CC();
     v14 = v13;
   }
 
@@ -68,14 +68,14 @@
   v15 = sub_21AF097CC();
   v17 = v16;
   v18 = sub_21AF097CC();
-  return sub_21AEED1A4(v10, v12, a4, v14, v15, v17, a6, a7, v18, v19);
+  return sub_21AEED1A4(v10, v12, name, v14, v15, v17, policy, description, v18, v19);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AMLFeaturesConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AMLFeaturesConfiguration.encode(with:)(coderCopy);
 }
 
 @end

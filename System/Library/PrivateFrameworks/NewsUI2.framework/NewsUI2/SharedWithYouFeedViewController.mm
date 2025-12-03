@@ -1,26 +1,26 @@
 @interface SharedWithYouFeedViewController
-- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SharedWithYouFeedViewController
 
-- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithCoder:(id)coder
 {
   result = sub_219BF7514();
   __break(1u);
   return result;
 }
 
-- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI231SharedWithYouFeedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219146F2C();
 }
 
@@ -39,15 +39,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(SharedWithYouFeedViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI231SharedWithYouFeedViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI231SharedWithYouFeedViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -66,59 +66,59 @@
   __break(1u);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2191475C4(a3);
+  selfCopy = self;
+  sub_2191475C4(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_219147A60(a3);
+  selfCopy = self;
+  sub_219147A60(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(SharedWithYouFeedViewController *)&v5 viewWillDisappear:v3];
+  [(SharedWithYouFeedViewController *)&v5 viewWillDisappear:disappearCopy];
   swift_getObjectType();
   sub_219BE7534();
   sub_219BE6AB4();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(SharedWithYouFeedViewController *)&v5 viewDidDisappear:v3];
+  [(SharedWithYouFeedViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_219BE7864();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(SharedWithYouFeedViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(SharedWithYouFeedViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_2191495D4();
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   sub_219BE8664();
   v4 = sub_219BE7BC4();
 
-  [v4 ts:v3 scrollToTop:?];
+  [v4 ts:animatedCopy scrollToTop:?];
 }
 
 @end

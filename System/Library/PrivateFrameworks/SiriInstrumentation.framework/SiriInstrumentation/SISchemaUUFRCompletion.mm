@@ -1,35 +1,35 @@
 @interface SISchemaUUFRCompletion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUUFRCompletion)initWithDictionary:(id)a3;
-- (SISchemaUUFRCompletion)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUUFRCompletion)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRCompletion)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHomeKitAccessoryResponse:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addHomeKitAccessoryResponse:(id)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRCompletion
 
-- (SISchemaUUFRCompletion)initWithDictionary:(id)a3
+- (SISchemaUUFRCompletion)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = SISchemaUUFRCompletion;
   v5 = [(SISchemaUUFRCompletion *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"completionStatus"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"completionStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUUFRCompletion setCompletionStatus:](v5, "setCompletionStatus:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"homeKitAccessoryResponse"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"homeKitAccessoryResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       v6 = v19;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"siriResponseContext"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (SISchemaUUFRCompletion)initWithJSON:(id)a3
+- (SISchemaUUFRCompletion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRCompletion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRCompletion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRCompletion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,7 +126,7 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(SISchemaUUFRCompletion *)self completionStatus]- 2;
@@ -140,12 +140,12 @@
       v5 = off_1E78E6DF0[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"completionStatus"];
+    [dictionary setObject:v5 forKeyedSubscript:@"completionStatus"];
   }
 
   if ([(NSArray *)self->_homeKitAccessoryResponses count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -165,16 +165,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -184,28 +184,28 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"homeKitAccessoryResponse"];
+    [dictionary setObject:array forKeyedSubscript:@"homeKitAccessoryResponse"];
   }
 
   if (self->_siriResponseContext)
   {
-    v14 = [(SISchemaUUFRCompletion *)self siriResponseContext];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    siriResponseContext = [(SISchemaUUFRCompletion *)self siriResponseContext];
+    dictionaryRepresentation2 = [siriResponseContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"siriResponseContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"siriResponseContext"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"siriResponseContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"siriResponseContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -224,15 +224,15 @@
   return v4 ^ [(SISchemaSiriResponseContext *)self->_siriResponseContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -240,26 +240,26 @@
   if (*&self->_has)
   {
     completionStatus = self->_completionStatus;
-    if (completionStatus != [v4 completionStatus])
+    if (completionStatus != [equalCopy completionStatus])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses];
-  v7 = [v4 homeKitAccessoryResponses];
-  if ((v6 != 0) == (v7 == 0))
+  homeKitAccessoryResponses = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses];
+  homeKitAccessoryResponses2 = [equalCopy homeKitAccessoryResponses];
+  if ((homeKitAccessoryResponses != 0) == (homeKitAccessoryResponses2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses];
-  if (v8)
+  homeKitAccessoryResponses3 = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses];
+  if (homeKitAccessoryResponses3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses];
-    v11 = [v4 homeKitAccessoryResponses];
-    v12 = [v10 isEqual:v11];
+    v9 = homeKitAccessoryResponses3;
+    homeKitAccessoryResponses4 = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses];
+    homeKitAccessoryResponses5 = [equalCopy homeKitAccessoryResponses];
+    v12 = [homeKitAccessoryResponses4 isEqual:homeKitAccessoryResponses5];
 
     if (!v12)
     {
@@ -271,12 +271,12 @@
   {
   }
 
-  v6 = [(SISchemaUUFRCompletion *)self siriResponseContext];
-  v7 = [v4 siriResponseContext];
-  if ((v6 != 0) != (v7 == 0))
+  homeKitAccessoryResponses = [(SISchemaUUFRCompletion *)self siriResponseContext];
+  homeKitAccessoryResponses2 = [equalCopy siriResponseContext];
+  if ((homeKitAccessoryResponses != 0) != (homeKitAccessoryResponses2 == 0))
   {
-    v13 = [(SISchemaUUFRCompletion *)self siriResponseContext];
-    if (!v13)
+    siriResponseContext = [(SISchemaUUFRCompletion *)self siriResponseContext];
+    if (!siriResponseContext)
     {
 
 LABEL_18:
@@ -284,10 +284,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SISchemaUUFRCompletion *)self siriResponseContext];
-    v16 = [v4 siriResponseContext];
-    v17 = [v15 isEqual:v16];
+    v14 = siriResponseContext;
+    siriResponseContext2 = [(SISchemaUUFRCompletion *)self siriResponseContext];
+    siriResponseContext3 = [equalCopy siriResponseContext];
+    v17 = [siriResponseContext2 isEqual:siriResponseContext3];
 
     if (v17)
     {
@@ -307,10 +307,10 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -347,48 +347,48 @@ LABEL_16:
     while (v7);
   }
 
-  v10 = [(SISchemaUUFRCompletion *)self siriResponseContext];
+  siriResponseContext = [(SISchemaUUFRCompletion *)self siriResponseContext];
 
-  if (v10)
+  if (siriResponseContext)
   {
-    v11 = [(SISchemaUUFRCompletion *)self siriResponseContext];
+    siriResponseContext2 = [(SISchemaUUFRCompletion *)self siriResponseContext];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addHomeKitAccessoryResponse:(id)a3
+- (void)addHomeKitAccessoryResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   homeKitAccessoryResponses = self->_homeKitAccessoryResponses;
-  v8 = v4;
+  v8 = responseCopy;
   if (!homeKitAccessoryResponses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_homeKitAccessoryResponses;
-    self->_homeKitAccessoryResponses = v6;
+    self->_homeKitAccessoryResponses = array;
 
-    v4 = v8;
+    responseCopy = v8;
     homeKitAccessoryResponses = self->_homeKitAccessoryResponses;
   }
 
-  [(NSArray *)homeKitAccessoryResponses addObject:v4];
+  [(NSArray *)homeKitAccessoryResponses addObject:responseCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = SISchemaUUFRCompletion;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaUUFRCompletion *)self homeKitAccessoryResponses:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(SISchemaUUFRCompletion *)self setHomeKitAccessoryResponses:v7];
 
-  v8 = [(SISchemaUUFRCompletion *)self siriResponseContext];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  siriResponseContext = [(SISchemaUUFRCompletion *)self siriResponseContext];
+  v9 = [siriResponseContext applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaUUFRCompletion *)self deleteSiriResponseContext];
   }

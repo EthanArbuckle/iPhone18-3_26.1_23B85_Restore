@@ -1,9 +1,9 @@
 @interface HKUserAnnotatedMedication
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKUserAnnotatedMedication)init;
-- (HKUserAnnotatedMedication)initWithCoder:(id)a3;
-- (HKUserAnnotatedMedication)initWithNickname:(id)a3 isArchived:(BOOL)a4 hasSchedule:(BOOL)a5 medication:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (HKUserAnnotatedMedication)initWithCoder:(id)coder;
+- (HKUserAnnotatedMedication)initWithNickname:(id)nickname isArchived:(BOOL)archived hasSchedule:(BOOL)schedule medication:(id)medication;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKUserAnnotatedMedication
@@ -18,11 +18,11 @@
   return 0;
 }
 
-- (HKUserAnnotatedMedication)initWithNickname:(id)a3 isArchived:(BOOL)a4 hasSchedule:(BOOL)a5 medication:(id)a6
+- (HKUserAnnotatedMedication)initWithNickname:(id)nickname isArchived:(BOOL)archived hasSchedule:(BOOL)schedule medication:(id)medication
 {
-  v11 = a3;
-  v12 = a6;
-  if (!v12)
+  nicknameCopy = nickname;
+  medicationCopy = medication;
+  if (!medicationCopy)
   {
     [HKUserAnnotatedMedication initWithNickname:a2 isArchived:self hasSchedule:? medication:?];
   }
@@ -32,13 +32,13 @@
   v13 = [(HKUserAnnotatedMedication *)&v19 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [nicknameCopy copy];
     nickname = v13->_nickname;
     v13->_nickname = v14;
 
-    v13->_isArchived = a4;
-    v13->_hasSchedule = a5;
-    v16 = [v12 copy];
+    v13->_isArchived = archived;
+    v13->_hasSchedule = schedule;
+    v16 = [medicationCopy copy];
     medication = v13->_medication;
     v13->_medication = v16;
   }
@@ -46,10 +46,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -59,26 +59,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKUserAnnotatedMedication *)v5 nickname];
-      v7 = [(HKUserAnnotatedMedication *)self nickname];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      nickname = [(HKUserAnnotatedMedication *)v5 nickname];
+      nickname2 = [(HKUserAnnotatedMedication *)self nickname];
+      v8 = nickname2;
+      if (nickname == nickname2)
       {
       }
 
       else
       {
-        v9 = [(HKUserAnnotatedMedication *)self nickname];
-        if (!v9)
+        nickname3 = [(HKUserAnnotatedMedication *)self nickname];
+        if (!nickname3)
         {
           goto LABEL_16;
         }
 
-        v10 = v9;
-        v11 = [(HKUserAnnotatedMedication *)v5 nickname];
-        v12 = [(HKUserAnnotatedMedication *)self nickname];
-        v13 = [v11 isEqualToString:v12];
+        v10 = nickname3;
+        nickname4 = [(HKUserAnnotatedMedication *)v5 nickname];
+        nickname5 = [(HKUserAnnotatedMedication *)self nickname];
+        v13 = [nickname4 isEqualToString:nickname5];
 
         if (!v13)
         {
@@ -86,22 +86,22 @@
         }
       }
 
-      v15 = [(HKUserAnnotatedMedication *)v5 isArchived];
-      if (v15 != [(HKUserAnnotatedMedication *)self isArchived])
+      isArchived = [(HKUserAnnotatedMedication *)v5 isArchived];
+      if (isArchived != [(HKUserAnnotatedMedication *)self isArchived])
       {
         goto LABEL_17;
       }
 
-      v16 = [(HKUserAnnotatedMedication *)v5 hasSchedule];
-      if (v16 != [(HKUserAnnotatedMedication *)self hasSchedule])
+      hasSchedule = [(HKUserAnnotatedMedication *)v5 hasSchedule];
+      if (hasSchedule != [(HKUserAnnotatedMedication *)self hasSchedule])
       {
         goto LABEL_17;
       }
 
-      v6 = [(HKUserAnnotatedMedication *)v5 medication];
-      v17 = [(HKUserAnnotatedMedication *)self medication];
-      v8 = v17;
-      if (v6 == v17)
+      nickname = [(HKUserAnnotatedMedication *)v5 medication];
+      medication = [(HKUserAnnotatedMedication *)self medication];
+      v8 = medication;
+      if (nickname == medication)
       {
 
 LABEL_21:
@@ -109,13 +109,13 @@ LABEL_21:
         goto LABEL_18;
       }
 
-      v18 = [(HKUserAnnotatedMedication *)self medication];
-      if (v18)
+      medication2 = [(HKUserAnnotatedMedication *)self medication];
+      if (medication2)
       {
-        v19 = v18;
-        v20 = [(HKUserAnnotatedMedication *)v5 medication];
-        v21 = [(HKUserAnnotatedMedication *)self medication];
-        v22 = [v20 isEqual:v21];
+        v19 = medication2;
+        medication3 = [(HKUserAnnotatedMedication *)v5 medication];
+        medication4 = [(HKUserAnnotatedMedication *)self medication];
+        v22 = [medication3 isEqual:medication4];
 
         if (v22)
         {
@@ -142,21 +142,21 @@ LABEL_19:
   return v14;
 }
 
-- (HKUserAnnotatedMedication)initWithCoder:(id)a3
+- (HKUserAnnotatedMedication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKUserAnnotatedMedication;
   v5 = [(HKUserAnnotatedMedication *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NicknameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NicknameKey"];
     nickname = v5->_nickname;
     v5->_nickname = v6;
 
-    v5->_isArchived = [v4 decodeBoolForKey:@"IsArchivedKey"];
-    v5->_hasSchedule = [v4 decodeBoolForKey:@"HasScheduleKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationKey"];
+    v5->_isArchived = [coderCopy decodeBoolForKey:@"IsArchivedKey"];
+    v5->_hasSchedule = [coderCopy decodeBoolForKey:@"HasScheduleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationKey"];
     medication = v5->_medication;
     v5->_medication = v8;
   }
@@ -164,14 +164,14 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nickname = self->_nickname;
-  v5 = a3;
-  [v5 encodeObject:nickname forKey:@"NicknameKey"];
-  [v5 encodeBool:self->_isArchived forKey:@"IsArchivedKey"];
-  [v5 encodeBool:self->_hasSchedule forKey:@"HasScheduleKey"];
-  [v5 encodeObject:self->_medication forKey:@"MedicationKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nickname forKey:@"NicknameKey"];
+  [coderCopy encodeBool:self->_isArchived forKey:@"IsArchivedKey"];
+  [coderCopy encodeBool:self->_hasSchedule forKey:@"HasScheduleKey"];
+  [coderCopy encodeObject:self->_medication forKey:@"MedicationKey"];
 }
 
 - (void)initWithNickname:(uint64_t)a1 isArchived:(uint64_t)a2 hasSchedule:medication:.cold.1(uint64_t a1, uint64_t a2)

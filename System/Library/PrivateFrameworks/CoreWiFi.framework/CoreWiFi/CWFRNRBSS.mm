@@ -1,82 +1,82 @@
 @interface CWFRNRBSS
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRNRBSS:(id)a3;
-- (CWFRNRBSS)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRNRBSS:(id)s;
+- (CWFRNRBSS)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFRNRBSS
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"ssid=%lu, ", -[CWFRNRBSS shortSSID](self, "shortSSID")];
-  v4 = [(CWFRNRBSS *)self BSSID];
-  v5 = CWFCorrectEthernetAddressString(v4);
-  v6 = [v5 redactedForWiFi];
-  [v3 appendFormat:@"bssid=%@, ", v6];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"ssid=%lu, ", -[CWFRNRBSS shortSSID](self, "shortSSID")];
+  bSSID = [(CWFRNRBSS *)self BSSID];
+  v5 = CWFCorrectEthernetAddressString(bSSID);
+  redactedForWiFi = [v5 redactedForWiFi];
+  [string appendFormat:@"bssid=%@, ", redactedForWiFi];
 
-  v7 = [(CWFRNRBSS *)self channel];
-  [v3 appendFormat:@"channel=%@, ", v7];
+  channel = [(CWFRNRBSS *)self channel];
+  [string appendFormat:@"channel=%@, ", channel];
 
   if ([(CWFRNRBSS *)self isSameSSID])
   {
-    [v3 appendString:{@"same=yes, "}];
+    [string appendString:{@"same=yes, "}];
   }
 
   if ([(CWFRNRBSS *)self isUPRActive])
   {
-    [v3 appendString:{@"upr=yes, "}];
+    [string appendString:{@"upr=yes, "}];
   }
 
   if ([(CWFRNRBSS *)self isMultipleBSSID])
   {
-    [v3 appendString:{@"multiBSS=yes, "}];
+    [string appendString:{@"multiBSS=yes, "}];
   }
 
   if ([(CWFRNRBSS *)self isTransmittedBSSID])
   {
-    [v3 appendString:{@"transmit=yes, "}];
+    [string appendString:{@"transmit=yes, "}];
   }
 
   if ([(CWFRNRBSS *)self isMultiband6GHz])
   {
-    [v3 appendString:{@"multiband=yes, "}];
+    [string appendString:{@"multiband=yes, "}];
   }
 
   if ([(CWFRNRBSS *)self isColocatedAP])
   {
-    [v3 appendString:{@"colocated=yes, "}];
+    [string appendString:{@"colocated=yes, "}];
   }
 
-  [v3 appendFormat:@"tbtt=%lu, ", -[CWFRNRBSS TBTTOffset](self, "TBTTOffset")];
-  [v3 appendFormat:@"psd=%lu, ", -[CWFRNRBSS primary20MHzPSD](self, "primary20MHzPSD")];
-  if ([v3 hasSuffix:{@", "}])
+  [string appendFormat:@"tbtt=%lu, ", -[CWFRNRBSS TBTTOffset](self, "TBTTOffset")];
+  [string appendFormat:@"psd=%lu, ", -[CWFRNRBSS primary20MHzPSD](self, "primary20MHzPSD")];
+  if ([string hasSuffix:{@", "}])
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToRNRBSS:(id)a3
+- (BOOL)isEqualToRNRBSS:(id)s
 {
-  v6 = a3;
+  sCopy = s;
   shortSSID = self->_shortSSID;
-  if (shortSSID == [v6 shortSSID])
+  if (shortSSID == [sCopy shortSSID])
   {
     BSSID = self->_BSSID;
-    v9 = [v6 BSSID];
-    if (BSSID == v9)
+    bSSID = [sCopy BSSID];
+    if (BSSID == bSSID)
     {
       goto LABEL_9;
     }
 
-    if (!self->_BSSID || ([v6 BSSID], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_BSSID || ([sCopy BSSID], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v13 = 0;
 LABEL_20:
@@ -86,15 +86,15 @@ LABEL_20:
 
     v3 = v10;
     v11 = self->_BSSID;
-    v4 = [v6 BSSID];
-    if ([(NSString *)v11 isEqual:v4])
+    bSSID2 = [sCopy BSSID];
+    if ([(NSString *)v11 isEqual:bSSID2])
     {
 LABEL_9:
       sameSSID = self->_sameSSID;
-      if (sameSSID == [v6 isSameSSID] && (UPRActive = self->_UPRActive, UPRActive == objc_msgSend(v6, "isUPRActive")) && (multipleBSSID = self->_multipleBSSID, multipleBSSID == objc_msgSend(v6, "isMultipleBSSID")) && (transmittedBSSID = self->_transmittedBSSID, transmittedBSSID == objc_msgSend(v6, "isTransmittedBSSID")) && (multiband6GHz = self->_multiband6GHz, multiband6GHz == objc_msgSend(v6, "isMultiband6GHz")) && (colocatedAP = self->_colocatedAP, colocatedAP == objc_msgSend(v6, "isColocatedAP")) && (TBTTOffset = self->_TBTTOffset, TBTTOffset == objc_msgSend(v6, "TBTTOffset")))
+      if (sameSSID == [sCopy isSameSSID] && (UPRActive = self->_UPRActive, UPRActive == objc_msgSend(sCopy, "isUPRActive")) && (multipleBSSID = self->_multipleBSSID, multipleBSSID == objc_msgSend(sCopy, "isMultipleBSSID")) && (transmittedBSSID = self->_transmittedBSSID, transmittedBSSID == objc_msgSend(sCopy, "isTransmittedBSSID")) && (multiband6GHz = self->_multiband6GHz, multiband6GHz == objc_msgSend(sCopy, "isMultiband6GHz")) && (colocatedAP = self->_colocatedAP, colocatedAP == objc_msgSend(sCopy, "isColocatedAP")) && (TBTTOffset = self->_TBTTOffset, TBTTOffset == objc_msgSend(sCopy, "TBTTOffset")))
       {
         primary20MHzPSD = self->_primary20MHzPSD;
-        v12 = primary20MHzPSD == [v6 primary20MHzPSD];
+        v12 = primary20MHzPSD == [sCopy primary20MHzPSD];
         v13 = v12;
       }
 
@@ -104,7 +104,7 @@ LABEL_9:
         v13 = 0;
       }
 
-      if (BSSID == v9)
+      if (BSSID == bSSID)
       {
         goto LABEL_20;
       }
@@ -125,18 +125,18 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRNRBSS *)self isEqualToRNRBSS:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRNRBSS *)self isEqualToRNRBSS:v5];
   }
 
   return v6;
@@ -153,7 +153,7 @@ LABEL_21:
   return v6 ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFRNRBSS allocWithZone:?]];
   [(CWFRNRBSS *)v4 setShortSSID:self->_shortSSID];
@@ -170,58 +170,58 @@ LABEL_21:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   shortSSID = self->_shortSSID;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:shortSSID];
-  [v6 encodeObject:v7 forKey:@"_shortSSID"];
+  [coderCopy encodeObject:v7 forKey:@"_shortSSID"];
 
-  [v6 encodeObject:self->_BSSID forKey:@"_BSSID"];
-  [v6 encodeObject:self->_channel forKey:@"_channel"];
-  [v6 encodeBool:self->_sameSSID forKey:@"_sameSSID"];
-  [v6 encodeBool:self->_UPRActive forKey:@"_UPRActive"];
-  [v6 encodeBool:self->_multipleBSSID forKey:@"_multipleBSSID"];
-  [v6 encodeBool:self->_transmittedBSSID forKey:@"_transmittedBSSID"];
-  [v6 encodeBool:self->_multiband6GHz forKey:@"_multiband6GHz"];
-  [v6 encodeBool:self->_colocatedAP forKey:@"_colocatedAP"];
+  [coderCopy encodeObject:self->_BSSID forKey:@"_BSSID"];
+  [coderCopy encodeObject:self->_channel forKey:@"_channel"];
+  [coderCopy encodeBool:self->_sameSSID forKey:@"_sameSSID"];
+  [coderCopy encodeBool:self->_UPRActive forKey:@"_UPRActive"];
+  [coderCopy encodeBool:self->_multipleBSSID forKey:@"_multipleBSSID"];
+  [coderCopy encodeBool:self->_transmittedBSSID forKey:@"_transmittedBSSID"];
+  [coderCopy encodeBool:self->_multiband6GHz forKey:@"_multiband6GHz"];
+  [coderCopy encodeBool:self->_colocatedAP forKey:@"_colocatedAP"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_TBTTOffset];
-  [v6 encodeObject:v8 forKey:@"_TBTTOffset"];
+  [coderCopy encodeObject:v8 forKey:@"_TBTTOffset"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_primary20MHzPSD];
-  [v6 encodeObject:v9 forKey:@"_primary20MHzPSD"];
+  [coderCopy encodeObject:v9 forKey:@"_primary20MHzPSD"];
 }
 
-- (CWFRNRBSS)initWithCoder:(id)a3
+- (CWFRNRBSS)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CWFRNRBSS;
   v5 = [(CWFRNRBSS *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shortSSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shortSSID"];
     v5->_shortSSID = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_BSSID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_BSSID"];
     BSSID = v5->_BSSID;
     v5->_BSSID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
     channel = v5->_channel;
     v5->_channel = v9;
 
-    v5->_sameSSID = [v4 decodeBoolForKey:@"_sameSSID"];
-    v5->_UPRActive = [v4 decodeBoolForKey:@"_UPRActive"];
-    v5->_multipleBSSID = [v4 decodeBoolForKey:@"_multipleBSSID"];
-    v5->_transmittedBSSID = [v4 decodeBoolForKey:@"_transmittedBSSID"];
-    v5->_multiband6GHz = [v4 decodeBoolForKey:@"_multiband6GHz"];
-    v5->_colocatedAP = [v4 decodeBoolForKey:@"_colocatedAP"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_TBTTOffset"];
+    v5->_sameSSID = [coderCopy decodeBoolForKey:@"_sameSSID"];
+    v5->_UPRActive = [coderCopy decodeBoolForKey:@"_UPRActive"];
+    v5->_multipleBSSID = [coderCopy decodeBoolForKey:@"_multipleBSSID"];
+    v5->_transmittedBSSID = [coderCopy decodeBoolForKey:@"_transmittedBSSID"];
+    v5->_multiband6GHz = [coderCopy decodeBoolForKey:@"_multiband6GHz"];
+    v5->_colocatedAP = [coderCopy decodeBoolForKey:@"_colocatedAP"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_TBTTOffset"];
     v5->_TBTTOffset = [v11 unsignedIntegerValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_primary20MHzPSD"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_primary20MHzPSD"];
     v5->_primary20MHzPSD = [v12 unsignedIntegerValue];
   }
 
@@ -231,12 +231,12 @@ LABEL_21:
 - (id)JSONCompatibleKeyValueMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CWFRNRBSS *)self BSSID];
-  [v3 setObject:v4 forKeyedSubscript:@"BSSID"];
+  bSSID = [(CWFRNRBSS *)self BSSID];
+  [v3 setObject:bSSID forKeyedSubscript:@"BSSID"];
 
-  v5 = [(CWFRNRBSS *)self channel];
-  v6 = [v5 JSONCompatibleKeyValueMap];
-  [v3 setObject:v6 forKeyedSubscript:@"channel"];
+  channel = [(CWFRNRBSS *)self channel];
+  jSONCompatibleKeyValueMap = [channel JSONCompatibleKeyValueMap];
+  [v3 setObject:jSONCompatibleKeyValueMap forKeyedSubscript:@"channel"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFRNRBSS isUPRActive](self, "isUPRActive")}];
   [v3 setObject:v7 forKeyedSubscript:@"upr_active"];

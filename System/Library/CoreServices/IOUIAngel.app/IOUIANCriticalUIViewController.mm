@@ -3,14 +3,14 @@
 - (IOUIANCriticalUIViewController)init;
 - (IOUIANCriticalUIViewControllerDelegate)delegate;
 - (void)dismissEmergencyDialer;
-- (void)emergencyCallHostViewControllerDidRequestDismiss:(id)a3;
-- (void)emergencyCallHostViewControllerDidTerminate:(id)a3 withError:(id)a4;
-- (void)handleButtonAction:(id)a3;
+- (void)emergencyCallHostViewControllerDidRequestDismiss:(id)dismiss;
+- (void)emergencyCallHostViewControllerDidTerminate:(id)terminate withError:(id)error;
+- (void)handleButtonAction:(id)action;
 - (void)presentEmergencyDialer;
-- (void)setHeaderText:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageWithSystemImageNamed:(id)a3 andConfiguration:(id)a4;
-- (void)setMessageText:(id)a3;
+- (void)setHeaderText:(id)text;
+- (void)setImage:(id)image;
+- (void)setImageWithSystemImageNamed:(id)named andConfiguration:(id)configuration;
+- (void)setMessageText:(id)text;
 - (void)viewDidLoad;
 @end
 
@@ -38,52 +38,52 @@
   return v2;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = a3;
-  v4 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  imageCopy = image;
+  criticalUIView = [(IOUIANCriticalUIViewController *)self criticalUIView];
 
-  if (v4)
+  if (criticalUIView)
   {
-    v5 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-    [v5 setImage:v6];
+    criticalUIView2 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+    [criticalUIView2 setImage:imageCopy];
   }
 }
 
-- (void)setImageWithSystemImageNamed:(id)a3 andConfiguration:(id)a4
+- (void)setImageWithSystemImageNamed:(id)named andConfiguration:(id)configuration
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  namedCopy = named;
+  configurationCopy = configuration;
+  criticalUIView = [(IOUIANCriticalUIViewController *)self criticalUIView];
 
-  if (v7)
+  if (criticalUIView)
   {
-    v8 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-    [v8 setImageWithSystemImageNamed:v9 andConfiguration:v6];
+    criticalUIView2 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+    [criticalUIView2 setImageWithSystemImageNamed:namedCopy andConfiguration:configurationCopy];
   }
 }
 
-- (void)setHeaderText:(id)a3
+- (void)setHeaderText:(id)text
 {
-  v6 = a3;
-  v4 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  textCopy = text;
+  criticalUIView = [(IOUIANCriticalUIViewController *)self criticalUIView];
 
-  if (v4)
+  if (criticalUIView)
   {
-    v5 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-    [v5 setHeaderText:v6];
+    criticalUIView2 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+    [criticalUIView2 setHeaderText:textCopy];
   }
 }
 
-- (void)setMessageText:(id)a3
+- (void)setMessageText:(id)text
 {
-  v6 = a3;
-  v4 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  textCopy = text;
+  criticalUIView = [(IOUIANCriticalUIViewController *)self criticalUIView];
 
-  if (v4)
+  if (criticalUIView)
   {
-    v5 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-    [v5 setMessageText:v6];
+    criticalUIView2 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+    [criticalUIView2 setMessageText:textCopy];
   }
 }
 
@@ -100,44 +100,44 @@
 
   if (![(IOUIANCriticalUIViewController *)self debugViews])
   {
-    v3 = [(IOUIANCriticalUIViewController *)self view];
-    v4 = [(IOUIANCriticalUIViewController *)self backdropView];
-    [v3 insertSubview:v4 atIndex:0];
+    view = [(IOUIANCriticalUIViewController *)self view];
+    backdropView = [(IOUIANCriticalUIViewController *)self backdropView];
+    [view insertSubview:backdropView atIndex:0];
   }
 
-  v5 = [(IOUIANCriticalUIViewController *)self view];
-  v6 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-  [v5 addSubview:v6];
+  view2 = [(IOUIANCriticalUIViewController *)self view];
+  criticalUIView = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  [view2 addSubview:criticalUIView];
 
-  v7 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  criticalUIView2 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  [criticalUIView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v31 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-  v29 = [v31 bottomAnchor];
-  v30 = [(IOUIANCriticalUIViewController *)self view];
-  v28 = [v30 safeAreaLayoutGuide];
-  v27 = [v28 bottomAnchor];
-  v26 = [v29 constraintEqualToAnchor:v27];
+  criticalUIView3 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  bottomAnchor = [criticalUIView3 bottomAnchor];
+  view3 = [(IOUIANCriticalUIViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[0] = v26;
-  v25 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-  v23 = [v25 centerYAnchor];
-  v24 = [(IOUIANCriticalUIViewController *)self view];
-  v22 = [v24 centerYAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  criticalUIView4 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  centerYAnchor = [criticalUIView4 centerYAnchor];
+  view4 = [(IOUIANCriticalUIViewController *)self view];
+  centerYAnchor2 = [view4 centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v34[1] = v21;
-  v20 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-  v18 = [v20 leadingAnchor];
-  v19 = [(IOUIANCriticalUIViewController *)self view];
-  v8 = [v19 readableContentGuide];
-  v9 = [v8 leadingAnchor];
-  v10 = [v18 constraintEqualToAnchor:v9];
+  criticalUIView5 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  leadingAnchor = [criticalUIView5 leadingAnchor];
+  view5 = [(IOUIANCriticalUIViewController *)self view];
+  readableContentGuide = [view5 readableContentGuide];
+  leadingAnchor2 = [readableContentGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[2] = v10;
-  v11 = [(IOUIANCriticalUIViewController *)self criticalUIView];
-  v12 = [v11 trailingAnchor];
-  v13 = [(IOUIANCriticalUIViewController *)self view];
-  v14 = [v13 readableContentGuide];
-  v15 = [v14 trailingAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  criticalUIView6 = [(IOUIANCriticalUIViewController *)self criticalUIView];
+  trailingAnchor = [criticalUIView6 trailingAnchor];
+  view6 = [(IOUIANCriticalUIViewController *)self view];
+  readableContentGuide2 = [view6 readableContentGuide];
+  trailingAnchor2 = [readableContentGuide2 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[3] = v16;
   v17 = [NSArray arrayWithObjects:v34 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -149,27 +149,27 @@
   v3 = [_UIBackdropViewSettings settingsForPrivateStyle:-2];
   [v3 setBackdropVisible:1];
   v4 = [[_UIBackdropView alloc] initWithSettings:v3];
-  v5 = [v4 inputSettings];
-  [v5 setBlurRadius:5.0];
+  inputSettings = [v4 inputSettings];
+  [inputSettings setBlurRadius:5.0];
 
   v6 = [v2 colorWithAlphaComponent:1.0];
-  v7 = [v4 inputSettings];
-  [v7 setColorTint:v6];
+  inputSettings2 = [v4 inputSettings];
+  [inputSettings2 setColorTint:v6];
 
   [v2 alphaComponent];
   v9 = v8;
-  v10 = [v4 inputSettings];
-  [v10 setColorTintAlpha:v9];
+  inputSettings3 = [v4 inputSettings];
+  [inputSettings3 setColorTintAlpha:v9];
 
   return v4;
 }
 
-- (void)handleButtonAction:(id)a3
+- (void)handleButtonAction:(id)action
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = a3;
+    actionCopy = action;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Button action handler fired! (view: %@)", &v5, 0xCu);
   }
 
@@ -184,9 +184,9 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Presenting emergency call dialer...", buf, 2u);
   }
 
-  v3 = [(IOUIANCriticalUIViewController *)self emergencyCallHostVC];
+  emergencyCallHostVC = [(IOUIANCriticalUIViewController *)self emergencyCallHostVC];
 
-  if (!v3)
+  if (!emergencyCallHostVC)
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
@@ -199,42 +199,42 @@
 
 - (void)dismissEmergencyDialer
 {
-  v3 = [(IOUIANCriticalUIViewController *)self emergencyCallHostVC];
+  emergencyCallHostVC = [(IOUIANCriticalUIViewController *)self emergencyCallHostVC];
 
-  if (v3)
+  if (emergencyCallHostVC)
   {
-    v4 = [(IOUIANCriticalUIViewController *)self emergencyCallHostVC];
+    emergencyCallHostVC2 = [(IOUIANCriticalUIViewController *)self emergencyCallHostVC];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100003B88;
     v5[3] = &unk_10000C500;
     v5[4] = self;
-    [v4 dismissViewControllerAnimated:1 completion:v5];
+    [emergencyCallHostVC2 dismissViewControllerAnimated:1 completion:v5];
 
     [(IOUIANCriticalUIViewController *)self setEmergencyCallHostVC:0];
   }
 }
 
-- (void)emergencyCallHostViewControllerDidRequestDismiss:(id)a3
+- (void)emergencyCallHostViewControllerDidRequestDismiss:(id)dismiss
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a3;
+    dismissCopy = dismiss;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "emergencyCallHostViewControllerDidRequestDismiss! (emergencyCallHostViewController: %@)", &v5, 0xCu);
   }
 
   [(IOUIANCriticalUIViewController *)self dismissEmergencyDialer];
 }
 
-- (void)emergencyCallHostViewControllerDidTerminate:(id)a3 withError:(id)a4
+- (void)emergencyCallHostViewControllerDidTerminate:(id)terminate withError:(id)error
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = a3;
+    terminateCopy = terminate;
     v9 = 2112;
-    v10 = a4;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "emergencyCallHostViewControllerDidTerminate! (emergencyCallHostViewController: %@, error: %@)", &v7, 0x16u);
   }
 

@@ -1,11 +1,11 @@
 @interface UARPTLVPayloadCompressionAlgorithm
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPayloadCompressionAlgorithm)init;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setCompressionAlgorithm:(int)a3;
+- (void)setCompressionAlgorithm:(int)algorithm;
 @end
 
 @implementation UARPTLVPayloadCompressionAlgorithm
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)setCompressionAlgorithm:(int)a3
+- (void)setCompressionAlgorithm:(int)algorithm
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_tlvLength = a3;
+  obj->_tlvLength = algorithm;
   objc_sync_exit(obj);
 }
 
@@ -39,8 +39,8 @@
   [v3 appendBytes:&v8 length:4];
   v7 = uarpHtonl(self->_tlvType);
   [v3 appendBytes:&v7 length:4];
-  v4 = [(UARPTLVPayloadCompressionAlgorithm *)self tlvValue];
-  [v3 appendData:v4];
+  tlvValue = [(UARPTLVPayloadCompressionAlgorithm *)self tlvValue];
+  [v3 appendData:tlvValue];
 
   v5 = [MEMORY[0x277CBEA90] dataWithData:v3];
 
@@ -65,13 +65,13 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
     if ([v4 compare:@"LZBitmapFast2"])
     {
@@ -94,12 +94,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 4)
+  if (length == 4)
   {
     v5 = objc_opt_new();
-    [v5 setCompressionAlgorithm:uarpHtonl(*a4)];
+    [v5 setCompressionAlgorithm:uarpHtonl(*value)];
   }
 
   else

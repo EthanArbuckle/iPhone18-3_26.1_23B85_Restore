@@ -1,10 +1,10 @@
 @interface CNContact
 - (BOOL)canExceedUnifyingThreshold;
 - (BOOL)mp_isBlocked;
-- (id)labeledValueForEmailAddress:(id)a3;
-- (id)labeledValueForPhoneNumber:(id)a3;
-- (id)labeledValueForSocialProfileWithUsername:(id)a3;
-- (id)labeledValueForTelephoneNumber:(id)a3;
+- (id)labeledValueForEmailAddress:(id)address;
+- (id)labeledValueForPhoneNumber:(id)number;
+- (id)labeledValueForSocialProfileWithUsername:(id)username;
+- (id)labeledValueForTelephoneNumber:(id)number;
 - (void)mp_unblock;
 @end
 
@@ -12,31 +12,31 @@
 
 - (BOOL)canExceedUnifyingThreshold
 {
-  v3 = [(CNContact *)self phoneNumbers];
-  if ([v3 count] > 0x14)
+  phoneNumbers = [(CNContact *)self phoneNumbers];
+  if ([phoneNumbers count] > 0x14)
   {
     v5 = 1;
   }
 
   else
   {
-    v4 = [(CNContact *)self emailAddresses];
-    if ([v4 count] <= 0x14)
+    emailAddresses = [(CNContact *)self emailAddresses];
+    if ([emailAddresses count] <= 0x14)
     {
-      v6 = [(CNContact *)self postalAddresses];
-      if ([v6 count] <= 0x14)
+      postalAddresses = [(CNContact *)self postalAddresses];
+      if ([postalAddresses count] <= 0x14)
       {
-        v7 = [(CNContact *)self urlAddresses];
-        if ([v7 count] <= 0x14)
+        urlAddresses = [(CNContact *)self urlAddresses];
+        if ([urlAddresses count] <= 0x14)
         {
-          v8 = [(CNContact *)self contactRelations];
-          if ([v8 count] <= 0x14)
+          contactRelations = [(CNContact *)self contactRelations];
+          if ([contactRelations count] <= 0x14)
           {
-            v9 = [(CNContact *)self socialProfiles];
-            if ([v9 count] <= 0x14)
+            socialProfiles = [(CNContact *)self socialProfiles];
+            if ([socialProfiles count] <= 0x14)
             {
-              v10 = [(CNContact *)self instantMessageAddresses];
-              v5 = [v10 count] > 0x14;
+              instantMessageAddresses = [(CNContact *)self instantMessageAddresses];
+              v5 = [instantMessageAddresses count] > 0x14;
             }
 
             else
@@ -72,9 +72,9 @@
   return v5;
 }
 
-- (id)labeledValueForEmailAddress:(id)a3
+- (id)labeledValueForEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   if ([(CNContact *)self isKeyAvailable:CNContactEmailAddressesKey])
   {
     [(CNContact *)self emailAddresses];
@@ -98,8 +98,8 @@
           v9 = *(*(&v13 + 1) + 8 * i);
           if (([v9 isSuggested] & 1) == 0)
           {
-            v10 = [v9 value];
-            v11 = [v10 isEqualToString:v4];
+            value = [v9 value];
+            v11 = [value isEqualToString:addressCopy];
 
             if (v11)
             {
@@ -130,9 +130,9 @@ LABEL_14:
   return v6;
 }
 
-- (id)labeledValueForPhoneNumber:(id)a3
+- (id)labeledValueForPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CNContact *)self isKeyAvailable:CNContactPhoneNumbersKey])
   {
     [(CNContact *)self phoneNumbers];
@@ -156,8 +156,8 @@ LABEL_14:
           v9 = *(*(&v13 + 1) + 8 * i);
           if (([v9 isSuggested] & 1) == 0)
           {
-            v10 = [v9 value];
-            v11 = [v10 isLikePhoneNumber:v4];
+            value = [v9 value];
+            v11 = [value isLikePhoneNumber:numberCopy];
 
             if (v11)
             {
@@ -188,9 +188,9 @@ LABEL_14:
   return v6;
 }
 
-- (id)labeledValueForSocialProfileWithUsername:(id)a3
+- (id)labeledValueForSocialProfileWithUsername:(id)username
 {
-  v4 = a3;
+  usernameCopy = username;
   if ([(CNContact *)self isKeyAvailable:CNContactSocialProfilesKey])
   {
     [(CNContact *)self socialProfiles];
@@ -212,9 +212,9 @@ LABEL_14:
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 value];
-          v11 = [v10 username];
-          v12 = [v11 isEqualToString:v4];
+          value = [v9 value];
+          username = [value username];
+          v12 = [username isEqualToString:usernameCopy];
 
           if (v12)
           {
@@ -245,10 +245,10 @@ LABEL_13:
   return v6;
 }
 
-- (id)labeledValueForTelephoneNumber:(id)a3
+- (id)labeledValueForTelephoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [CNPhoneNumber phoneNumberWithStringValue:v4];
+  numberCopy = number;
+  v5 = [CNPhoneNumber phoneNumberWithStringValue:numberCopy];
   if (v5)
   {
     v6 = [(CNContact *)self labeledValueForPhoneNumber:v5];
@@ -259,7 +259,7 @@ LABEL_13:
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(CNContact(PhoneKit) *)v4 labeledValueForTelephoneNumber:v7];
+      [(CNContact(PhoneKit) *)numberCopy labeledValueForTelephoneNumber:v7];
     }
 
     v6 = 0;
@@ -270,13 +270,13 @@ LABEL_13:
 
 - (void)mp_unblock
 {
-  v2 = self;
+  selfCopy = self;
   CNContact.mp_unblock()();
 }
 
 - (BOOL)mp_isBlocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNContact.mp_isBlocked()();
 
   return v3;

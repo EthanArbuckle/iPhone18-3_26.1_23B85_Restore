@@ -1,16 +1,16 @@
 @interface _UI3DPanGestureRecognizer
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3;
+- (BOOL)_shouldTryToBeginWithEvent:(id)event;
 - (BOOL)isVisionIdiom;
 - (BOOL)willPanZ;
-- (CAPoint3D)centroid3DOfTouches:(id)a3 excludingEnded:(BOOL)a4;
+- (CAPoint3D)centroid3DOfTouches:(id)touches excludingEnded:(BOOL)ended;
 - (CAPoint3D)current3DLocationInScene;
 - (CAPoint3D)initial3DLocationInScene;
 - (NSArray)movingTouches;
-- (_UI3DPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_didUpdateCentroidWithTouches:(id)a3 event:(id)a4;
-- (void)handleTouchesEndedWithOldMovingTouches:(id)a3;
-- (void)process3DTouchesMoved:(id)a3 withEvent:(id)a4;
-- (void)update3DTouchesCentroid:(id)a3;
+- (_UI3DPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_didUpdateCentroidWithTouches:(id)touches event:(id)event;
+- (void)handleTouchesEndedWithOldMovingTouches:(id)touches;
+- (void)process3DTouchesMoved:(id)moved withEvent:(id)event;
+- (void)update3DTouchesCentroid:(id)centroid;
 @end
 
 @implementation _UI3DPanGestureRecognizer
@@ -39,12 +39,12 @@
 
 - (BOOL)willPanZ
 {
-  v2 = self;
-  [(_UI3DPanGestureRecognizer *)v2 current3DLocationInScene];
+  selfCopy = self;
+  [(_UI3DPanGestureRecognizer *)selfCopy current3DLocationInScene];
   v4 = v3;
-  [(_UI3DPanGestureRecognizer *)v2 initial3DLocationInScene];
+  [(_UI3DPanGestureRecognizer *)selfCopy initial3DLocationInScene];
   v6 = vabdd_f64(v4, v5);
-  [(UIPanGestureRecognizer *)v2 _hysteresis];
+  [(UIPanGestureRecognizer *)selfCopy _hysteresis];
   v8 = v7;
 
   return v8 <= v6;
@@ -52,15 +52,15 @@
 
 - (BOOL)isVisionIdiom
 {
-  v2 = self;
-  v3 = [(UIGestureRecognizer *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(UIGestureRecognizer *)selfCopy view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [(UIView *)v3 traitCollection];
+    v4 = view;
+    traitCollection = [(UIView *)view traitCollection];
 
-    v6 = [(UITraitCollection *)v5 userInterfaceIdiom];
-    return v6 == 6;
+    userInterfaceIdiom = [(UITraitCollection *)traitCollection userInterfaceIdiom];
+    return userInterfaceIdiom == 6;
   }
 
   else
@@ -70,18 +70,18 @@
   }
 }
 
-- (void)_didUpdateCentroidWithTouches:(id)a3 event:(id)a4
+- (void)_didUpdateCentroidWithTouches:(id)touches event:(id)event
 {
   sub_188A34624(0, &qword_1EA9342F0);
   sub_188E405E8();
   sub_18A4A77A8();
-  v6 = a4;
-  v8 = self;
-  if ([(_UI3DPanGestureRecognizer *)v8 isVisionIdiom])
+  eventCopy = event;
+  selfCopy = self;
+  if ([(_UI3DPanGestureRecognizer *)selfCopy isVisionIdiom])
   {
     v7 = sub_18A4A7798();
 
-    [(_UI3DPanGestureRecognizer *)v8 process3DTouchesMoved:v7 withEvent:v6];
+    [(_UI3DPanGestureRecognizer *)selfCopy process3DTouchesMoved:v7 withEvent:eventCopy];
   }
 
   else
@@ -91,15 +91,15 @@
 
 - (NSArray)movingTouches
 {
-  v2 = self;
-  v3 = [(UIPanGestureRecognizer *)v2 _movingTouches];
-  if (v3)
+  selfCopy = self;
+  _movingTouches = [(UIPanGestureRecognizer *)selfCopy _movingTouches];
+  if (_movingTouches)
   {
-    v4 = v3;
+    v4 = _movingTouches;
     sub_188A34624(0, &qword_1EA9342F0);
     sub_18A4A7548();
 
-    v2 = v4;
+    selfCopy = v4;
   }
 
   sub_188A34624(0, &qword_1EA9342F0);
@@ -108,17 +108,17 @@
   return v5;
 }
 
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3
+- (BOOL)_shouldTryToBeginWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = _UI3DPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v4 _shouldTryToBeginWithEvent:a3];
+  [(UIPanGestureRecognizer *)&v4 _shouldTryToBeginWithEvent:event];
   return 1;
 }
 
-- (void)handleTouchesEndedWithOldMovingTouches:(id)a3
+- (void)handleTouchesEndedWithOldMovingTouches:(id)touches
 {
-  if (a3)
+  if (touches)
   {
     sub_188A34624(0, &qword_1EA9342F0);
     v4 = sub_18A4A7548();
@@ -129,38 +129,38 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_188EC3F6C(v4);
 }
 
-- (void)process3DTouchesMoved:(id)a3 withEvent:(id)a4
+- (void)process3DTouchesMoved:(id)moved withEvent:(id)event
 {
   sub_188A34624(0, &qword_1EA9342F0);
   sub_188E405E8();
   v6 = sub_18A4A77A8();
-  v7 = a4;
-  v8 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_188EC48C4(v6);
 }
 
-- (void)update3DTouchesCentroid:(id)a3
+- (void)update3DTouchesCentroid:(id)centroid
 {
   sub_188A34624(0, &qword_1EA9342F0);
   sub_188E405E8();
   sub_18A4A77A8();
-  v4 = self;
+  selfCopy = self;
   sub_188EC4208();
 }
 
-- (CAPoint3D)centroid3DOfTouches:(id)a3 excludingEnded:(BOOL)a4
+- (CAPoint3D)centroid3DOfTouches:(id)touches excludingEnded:(BOOL)ended
 {
-  v4 = a4;
+  endedCopy = ended;
   sub_188A34624(0, &qword_1EA9342F0);
   sub_188E405E8();
   sub_18A4A77A8();
   v5 = sub_18A4A7798();
 
-  v6 = _CentroidOfTouches(v5, v4);
+  v6 = _CentroidOfTouches(v5, endedCopy);
   v8 = v7;
 
   v9 = 0.0;
@@ -172,9 +172,9 @@
   return result;
 }
 
-- (_UI3DPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UI3DPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
@@ -186,7 +186,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return _UI3DPanGestureRecognizer.init(target:action:)(v6, a4);
+  return _UI3DPanGestureRecognizer.init(target:action:)(v6, action);
 }
 
 @end

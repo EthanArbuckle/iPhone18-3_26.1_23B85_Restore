@@ -1,29 +1,29 @@
 @interface _UIFluidSliderElasticPanDriver
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (NSString)name;
 - (UIView)view;
 - (_UIFluidSliderDirectDrivingDelegate)delegate;
 - (_UIFluidSliderDrivable)drivable;
 - (void)cancel;
-- (void)handleGesture:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setPanGestureRecognizer:(id)a3;
-- (void)setView:(id)a3;
+- (void)handleGesture:(id)gesture;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setName:(id)name;
+- (void)setPanGestureRecognizer:(id)recognizer;
+- (void)setView:(id)view;
 @end
 
 @implementation _UIFluidSliderElasticPanDriver
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188BFDAE0(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188BFDAE0(view);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  *(self + OBJC_IVAR____UIFluidSliderElasticPanDriver_enabled) = a3;
+  *(self + OBJC_IVAR____UIFluidSliderElasticPanDriver_enabled) = enabled;
   v3 = *(self + OBJC_IVAR____UIFluidSliderElasticPanDriver_panGestureRecognizer);
   if (v3)
   {
@@ -38,11 +38,11 @@
   return Strong;
 }
 
-- (void)setPanGestureRecognizer:(id)a3
+- (void)setPanGestureRecognizer:(id)recognizer
 {
   v4 = *(self + OBJC_IVAR____UIFluidSliderElasticPanDriver_panGestureRecognizer);
-  *(self + OBJC_IVAR____UIFluidSliderElasticPanDriver_panGestureRecognizer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIFluidSliderElasticPanDriver_panGestureRecognizer) = recognizer;
+  recognizerCopy = recognizer;
 }
 
 - (_UIFluidSliderDirectDrivingDelegate)delegate
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_18A4A7288();
   v5 = (self + OBJC_IVAR____UIFluidSliderElasticPanDriver_name);
@@ -70,7 +70,7 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F10EFC();
 }
 
@@ -81,18 +81,18 @@
   return Strong;
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_188F11020(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_188F11020(gestureCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_188F12244(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_188F12244(beginCopy);
 
   return self & 1;
 }

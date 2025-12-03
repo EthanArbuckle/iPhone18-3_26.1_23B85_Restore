@@ -1,27 +1,27 @@
 @interface BWDeskCamNode
 + (void)initialize;
-- (BWDeskCamNode)initWithOutputDimensions:(id)a3 cameraInfoByPortType:(id)a4 horizontalSensorBinningFactor:(int)a5 verticalSensorBinningFactor:(int)a6 stillImageCaptureEnabled:(BOOL)a7 objectMetadataIdentifiers:(id)a8 maxLossyCompressionLevel:(int)a9 portType:(id)a10 overheadCameraMode:(int)a11 captureDevice:(id)a12 downStreamRequires10BitPixelFormat:(BOOL)a13;
+- (BWDeskCamNode)initWithOutputDimensions:(id)dimensions cameraInfoByPortType:(id)type horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor stillImageCaptureEnabled:(BOOL)enabled objectMetadataIdentifiers:(id)identifiers maxLossyCompressionLevel:(int)level portType:(id)self0 overheadCameraMode:(int)self1 captureDevice:(id)self2 downStreamRequires10BitPixelFormat:(BOOL)self3;
 - (uint64_t)_initDeskCamSession;
 - (uint64_t)_updateFocusIfNeededWithFocusPoint:(uint64_t)result;
 - (uint64_t)_updateOutputRequirements;
 - (uint64_t)_updateTransportLayerAttachmentsForOutputSampleBuffer:(uint64_t)result;
-- (void)_createMatchingPixelBufferFromSavedVideoBuffersWithTargetPts:(uint64_t)a1;
-- (void)_newStillImageOutputPixelBufferFromVideoPixelBuffer:(uint64_t)a1;
-- (void)_savePixelBufferForStillImageCaptureRequests:(__int128 *)a3 withPts:;
+- (void)_createMatchingPixelBufferFromSavedVideoBuffersWithTargetPts:(uint64_t)pts;
+- (void)_newStillImageOutputPixelBufferFromVideoPixelBuffer:(uint64_t)buffer;
+- (void)_savePixelBufferForStillImageCaptureRequests:(__int128 *)requests withPts:;
 - (void)_supportedOutputPixelFormats;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didChangeOverheadCameraMode:(int)a3;
-- (void)didReachEndOfDataForInput:(id)a3;
+- (void)didChangeOverheadCameraMode:(int)mode;
+- (void)didReachEndOfDataForInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWDeskCamNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -30,24 +30,24 @@
   }
 }
 
-- (BWDeskCamNode)initWithOutputDimensions:(id)a3 cameraInfoByPortType:(id)a4 horizontalSensorBinningFactor:(int)a5 verticalSensorBinningFactor:(int)a6 stillImageCaptureEnabled:(BOOL)a7 objectMetadataIdentifiers:(id)a8 maxLossyCompressionLevel:(int)a9 portType:(id)a10 overheadCameraMode:(int)a11 captureDevice:(id)a12 downStreamRequires10BitPixelFormat:(BOOL)a13
+- (BWDeskCamNode)initWithOutputDimensions:(id)dimensions cameraInfoByPortType:(id)type horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor stillImageCaptureEnabled:(BOOL)enabled objectMetadataIdentifiers:(id)identifiers maxLossyCompressionLevel:(int)level portType:(id)self0 overheadCameraMode:(int)self1 captureDevice:(id)self2 downStreamRequires10BitPixelFormat:(BOOL)self3
 {
-  v14 = a7;
+  enabledCopy = enabled;
   v33.receiver = self;
   v33.super_class = BWDeskCamNode;
   v19 = [(BWNode *)&v33 init];
   v20 = v19;
   if (v19)
   {
-    v19->_outputDimensions = a3;
-    v19->_cameraInfoByPortType = a4;
+    v19->_outputDimensions = dimensions;
+    v19->_cameraInfoByPortType = type;
     *(v20 + 296) = objc_alloc_init(BWDeviceOrientationMonitor);
     *(v20 + 184) = 0;
-    if ((a5 - 3) >= 0xFFFFFFFE && (*(v20 + 188) = a5, (a6 - 3) >= 0xFFFFFFFE))
+    if ((factor - 3) >= 0xFFFFFFFE && (*(v20 + 188) = factor, (binningFactor - 3) >= 0xFFFFFFFE))
     {
-      *(v20 + 192) = a6;
-      *(v20 + 328) = a9;
-      *(v20 + 368) = a13;
+      *(v20 + 192) = binningFactor;
+      *(v20 + 328) = level;
+      *(v20 + 368) = format;
       v22 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v20 index:0];
       v23 = objc_alloc_init(BWVideoFormatRequirements);
       [(BWVideoFormatRequirements *)v23 setSupportedPixelFormats:FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248868, *(v20 + 328))];
@@ -65,8 +65,8 @@
       *(v20 + 136) = v24;
       [v20 addOutput:v24];
 
-      *(v20 + 316) = v14;
-      if (v14)
+      *(v20 + 316) = enabledCopy;
+      if (enabledCopy)
       {
         v26 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v20 index:1];
         v27 = objc_alloc_init(BWVideoFormatRequirements);
@@ -92,24 +92,24 @@
         *(v20 + 280) = 0;
       }
 
-      if (a8)
+      if (identifiers)
       {
         v30 = [[BWNodeInput alloc] initWithMediaType:1835365473 node:v20 index:2];
         *(v20 + 160) = v30;
         [v20 addInput:v30];
 
         v31 = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:v20];
-        [(BWNodeOutput *)v31 setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:a8]];
+        [(BWNodeOutput *)v31 setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:identifiers]];
         *(v20 + 168) = v31;
         [v20 addOutput:v31];
       }
 
       *(v20 + 312) = 5;
-      *(v20 + 336) = [a10 copy];
-      *(v20 + 344) = a11;
-      v32 = a12;
-      *(v20 + 352) = v32;
-      [v32 setOverheadCameraModeChangeDelegate:v20];
+      *(v20 + 336) = [portType copy];
+      *(v20 + 344) = mode;
+      deviceCopy = device;
+      *(v20 + 352) = deviceCopy;
+      [deviceCopy setOverheadCameraModeChangeDelegate:v20];
       [(BWDeskCamNode *)v20 _updateOutputRequirements];
       *(v20 + 360) = 6;
       *(v20 + 362) = 0;
@@ -177,9 +177,9 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (self->_videoCaptureInput == a5)
+  if (self->_videoCaptureInput == input)
   {
     v5 = &OBJC_IVAR___BWDeskCamNode__videoCaptureOutput;
 LABEL_8:
@@ -187,22 +187,22 @@ LABEL_8:
     return;
   }
 
-  if (self->_stillImageInput == a5)
+  if (self->_stillImageInput == input)
   {
     v5 = &OBJC_IVAR___BWDeskCamNode__stillImageOutput;
     goto LABEL_8;
   }
 
-  if (self->_detectionMetadataInput == a5)
+  if (self->_detectionMetadataInput == input)
   {
     v5 = &OBJC_IVAR___BWDeskCamNode__detectionMetadataOutput;
     goto LABEL_8;
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
-  if (self->_videoCaptureInput == a3)
+  if (self->_videoCaptureInput == input)
   {
     [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor stop];
     [(BWNodeOutput *)self->_videoCaptureOutput markEndOfLiveOutput];
@@ -212,14 +212,14 @@ LABEL_8:
 
   else
   {
-    if (self->_stillImageInput == a3)
+    if (self->_stillImageInput == input)
     {
       v4 = 152;
     }
 
     else
     {
-      if (self->_detectionMetadataInput != a3)
+      if (self->_detectionMetadataInput != input)
       {
         return;
       }
@@ -233,7 +233,7 @@ LABEL_8:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v6 = v5;
@@ -382,9 +382,9 @@ LABEL_44:
 
       v33 = FigCaptureSensorIDFromSampleBufferMetadata(v13, *(v9 + 200));
       v34 = objc_alloc(MEMORY[0x1E6994578]);
-      v35 = [*(v9 + 296) mostRecentPortraitLandscapeOrientation];
+      mostRecentPortraitLandscapeOrientation = [*(v9 + 296) mostRecentPortraitLandscapeOrientation];
       v47 = v48;
-      v36 = [v34 initWithDetectedObjectsInfo:v44 cameraCalibrationData:v28 cameraOrientation:v35 timestamp:&v47 aspectRatio:v33 sensorID:COERCE_DOUBLE(__PAIR64__(HIDWORD(v48.value) gravity:{LODWORD(v29))), *&v42}];
+      v36 = [v34 initWithDetectedObjectsInfo:v44 cameraCalibrationData:v28 cameraOrientation:mostRecentPortraitLandscapeOrientation timestamp:&v47 aspectRatio:v33 sensorID:COERCE_DOUBLE(__PAIR64__(HIDWORD(v48.value) gravity:{LODWORD(v29))), *&v42}];
       v37 = [*(v9 + 288) processPixelBuffer:v32 withMetadata:v36 outputPixelBuffer:v15];
       if ([objc_msgSend(*(v9 + 352) "captureStream")])
       {
@@ -439,29 +439,29 @@ LABEL_33:
   }
 }
 
-- (void)didChangeOverheadCameraMode:(int)a3
+- (void)didChangeOverheadCameraMode:(int)mode
 {
-  if (self->_overheadCameraMode != a3)
+  if (self->_overheadCameraMode != mode)
   {
-    self->_overheadCameraMode = a3;
+    self->_overheadCameraMode = mode;
     [(DeskCamSession *)self->_deskCamSession setOutputType:?];
   }
 }
 
 - (void)_supportedOutputPixelFormats
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*(a1 + 368))
+  if (*(self + 368))
   {
     return &unk_1F2248880;
   }
 
-  v2 = [MEMORY[0x1E695DF70] arrayWithArray:{FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248868, *(a1 + 328))}];
-  v3 = [objc_msgSend(*(a1 + 128) "videoFormat")];
+  v2 = [MEMORY[0x1E695DF70] arrayWithArray:{FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2248868, *(self + 328))}];
+  v3 = [objc_msgSend(*(self + 128) "videoFormat")];
   if (v3)
   {
     IsFullRange = FigCapturePixelFormatIsFullRange(v3);
@@ -494,17 +494,17 @@ LABEL_33:
     }
 
     [objc_msgSend(*(v1 + 144) "videoFormat")];
-    v4 = [(BWDeskCamNode *)v1 _supportedOutputPixelFormats];
-    v5 = [*(v1 + 136) formatRequirements];
-    [v5 setWidth:*(v1 + 208)];
+    _supportedOutputPixelFormats = [(BWDeskCamNode *)v1 _supportedOutputPixelFormats];
+    formatRequirements = [*(v1 + 136) formatRequirements];
+    [formatRequirements setWidth:*(v1 + 208)];
     OUTLINED_FUNCTION_3_50();
-    [v5 setSupportedColorSpaceProperties:v3];
-    [v5 setSupportedPixelFormats:v4];
-    v6 = [*(v1 + 152) formatRequirements];
-    [v6 setWidth:*(v1 + 208)];
+    [formatRequirements setSupportedColorSpaceProperties:v3];
+    [formatRequirements setSupportedPixelFormats:_supportedOutputPixelFormats];
+    formatRequirements2 = [*(v1 + 152) formatRequirements];
+    [formatRequirements2 setWidth:*(v1 + 208)];
     OUTLINED_FUNCTION_3_50();
-    [v6 setSupportedColorSpaceProperties:v3];
-    return [v6 setSupportedPixelFormats:v4];
+    [formatRequirements2 setSupportedColorSpaceProperties:v3];
+    return [formatRequirements2 setSupportedPixelFormats:_supportedOutputPixelFormats];
   }
 
   return result;
@@ -556,28 +556,28 @@ LABEL_33:
   return result;
 }
 
-- (void)_savePixelBufferForStillImageCaptureRequests:(__int128 *)a3 withPts:
+- (void)_savePixelBufferForStillImageCaptureRequests:(__int128 *)requests withPts:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 216 + 32 * *(a1 + 280));
+    v6 = *(self + 216 + 32 * *(self + 280));
     if (v6)
     {
       CFRelease(v6);
     }
 
-    v10 = *a3;
-    v11 = *(a3 + 2);
+    v10 = *requests;
+    v11 = *(requests + 2);
     if (cf)
     {
       CFRetain(cf);
     }
 
-    v7 = a1 + 216 + 32 * *(a1 + 280);
+    v7 = self + 216 + 32 * *(self + 280);
     *v7 = cf;
     *(v7 + 8) = v10;
     *(v7 + 24) = v11;
-    v8 = *(a1 + 280);
+    v8 = *(self + 280);
     if (v8 == 1)
     {
       v9 = 0;
@@ -588,13 +588,13 @@ LABEL_33:
       v9 = v8 + 1;
     }
 
-    *(a1 + 280) = v9;
+    *(self + 280) = v9;
   }
 }
 
-- (void)_createMatchingPixelBufferFromSavedVideoBuffersWithTargetPts:(uint64_t)a1
+- (void)_createMatchingPixelBufferFromSavedVideoBuffersWithTargetPts:(uint64_t)pts
 {
-  if (!a1)
+  if (!pts)
   {
     return 0;
   }
@@ -607,7 +607,7 @@ LABEL_33:
   while (1)
   {
     v8 = v7;
-    v9 = (a1 + 216 + 32 * v3);
+    v9 = (pts + 216 + 32 * v3);
     v11 = *v9;
     v10 = v9[1];
     v12 = v5 - v10;
@@ -640,7 +640,7 @@ LABEL_33:
         return 0;
       }
 
-      return [(BWDeskCamNode *)a1 _newStillImageOutputPixelBufferFromVideoPixelBuffer:v4];
+      return [(BWDeskCamNode *)pts _newStillImageOutputPixelBufferFromVideoPixelBuffer:v4];
     }
   }
 
@@ -650,7 +650,7 @@ LABEL_33:
     return 0;
   }
 
-  return [(BWDeskCamNode *)a1 _newStillImageOutputPixelBufferFromVideoPixelBuffer:v4];
+  return [(BWDeskCamNode *)pts _newStillImageOutputPixelBufferFromVideoPixelBuffer:v4];
 }
 
 - (uint64_t)_updateTransportLayerAttachmentsForOutputSampleBuffer:(uint64_t)result
@@ -659,23 +659,23 @@ LABEL_33:
   {
     v3 = result;
     v4 = *off_1E798A518;
-    v5 = CMGetAttachment(target, *off_1E798A518, 0);
-    if (!v5)
+    dictionary = CMGetAttachment(target, *off_1E798A518, 0);
+    if (!dictionary)
     {
-      v5 = [MEMORY[0x1E695DF90] dictionary];
-      CMSetAttachment(target, v4, v5, 1u);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      CMSetAttachment(target, v4, dictionary, 1u);
     }
 
     [*(v3 + 288) transformMatrix];
-    [v5 setObject:BWRowMajorArrayFrom3x3Matrix(v6 forKeyedSubscript:{v7, v8), *off_1E798CD70}];
+    [dictionary setObject:BWRowMajorArrayFrom3x3Matrix(v6 forKeyedSubscript:{v7, v8), *off_1E798CD70}];
     [OUTLINED_FUNCTION_0_53() transformIsValid];
-    [v5 setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithBool:"), *off_1E798CD68}];
+    [dictionary setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithBool:"), *off_1E798CD68}];
     [OUTLINED_FUNCTION_0_53() isFrontFacingCamera];
-    [v5 setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithBool:"), *off_1E798CD58}];
+    [dictionary setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithBool:"), *off_1E798CD58}];
     [OUTLINED_FUNCTION_0_53() exifOrientation];
-    [v5 setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithUnsignedInt:"), *MEMORY[0x1E696DE78]}];
+    [dictionary setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithUnsignedInt:"), *MEMORY[0x1E696DE78]}];
     [OUTLINED_FUNCTION_0_53() outputType];
-    [v5 setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithInt:"), *off_1E798CD60}];
+    [dictionary setObject:objc_msgSend(OUTLINED_FUNCTION_8() forKeyedSubscript:{"numberWithInt:"), *off_1E798CD60}];
     result = [*(v3 + 288) autoZoomSupported];
     if (result)
     {
@@ -683,16 +683,16 @@ LABEL_33:
       v9 = [target numberWithFloat:?];
       v10 = *off_1E798CD50;
 
-      return [v5 setObject:v9 forKeyedSubscript:v10];
+      return [dictionary setObject:v9 forKeyedSubscript:v10];
     }
   }
 
   return result;
 }
 
-- (void)_newStillImageOutputPixelBufferFromVideoPixelBuffer:(uint64_t)a1
+- (void)_newStillImageOutputPixelBufferFromVideoPixelBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
@@ -700,12 +700,12 @@ LABEL_33:
   v3 = 0;
   if (a2)
   {
-    if (*(a1 + 320))
+    if (*(buffer + 320))
     {
-      v3 = [objc_msgSend(objc_msgSend(*(a1 + 152) "primaryMediaProperties")];
+      v3 = [objc_msgSend(objc_msgSend(*(buffer + 152) "primaryMediaProperties")];
       if (v3)
       {
-        if (VTPixelTransferSessionTransferImage(*(a1 + 320), a2, v3))
+        if (VTPixelTransferSessionTransferImage(*(buffer + 320), a2, v3))
         {
           CFRelease(v3);
           return 0;

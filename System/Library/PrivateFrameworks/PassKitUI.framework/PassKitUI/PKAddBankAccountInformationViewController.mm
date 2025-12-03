@@ -1,87 +1,87 @@
 @interface PKAddBankAccountInformationViewController
 - (BOOL)_allCellsHavePastedContent;
 - (BOOL)_cellValuesAreValid;
-- (BOOL)_isCellValidAtRow:(unint64_t)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (PKAddBankAccountInformationViewController)initWithState:(unint64_t)a3 delegate:(id)a4 bankInformation:(id)a5 accountCountryCode:(id)a6 featureAccount:(id)a7;
+- (BOOL)_isCellValidAtRow:(unint64_t)row;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (PKAddBankAccountInformationViewController)initWithState:(unint64_t)state delegate:(id)delegate bankInformation:(id)information accountCountryCode:(id)code featureAccount:(id)account;
 - (PKAddBankAccountInformationViewControllerDelegate)delegate;
-- (double)_minimumRequiredWidthForCellText:(id)a3 withFont:(id)a4;
-- (id)_bankInformationTextForRow:(unint64_t)a3;
+- (double)_minimumRequiredWidthForCellText:(id)text withFont:(id)font;
+- (id)_bankInformationTextForRow:(unint64_t)row;
 - (id)_cellHasPastedContent;
-- (id)_countrySpecificLocalizedStringKeyForKey:(id)a3;
-- (id)_countrySpecificLocalizedStringKeyForKey:(id)a3 minDigits:(unint64_t)a4 maxDigits:(unint64_t)a5;
-- (id)_countrySpecificLocalizedStringKeyForKey:(id)a3 numberOfDigits:(unint64_t)a4;
+- (id)_countrySpecificLocalizedStringKeyForKey:(id)key;
+- (id)_countrySpecificLocalizedStringKeyForKey:(id)key minDigits:(unint64_t)digits maxDigits:(unint64_t)maxDigits;
+- (id)_countrySpecificLocalizedStringKeyForKey:(id)key numberOfDigits:(unint64_t)digits;
 - (id)_footerView;
 - (id)_headerSubTitle;
 - (id)_headerTitle;
-- (id)_placeholderTextForRow:(unint64_t)a3;
-- (id)_textForRow:(unint64_t)a3;
-- (id)_userEnteredTextForCellAtRow:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_maxTextLengthForRow:(unint64_t)a3;
-- (unint64_t)_minTextLengthForRow:(unint64_t)a3;
-- (unint64_t)_rowWithTextField:(id)a3;
-- (void)_addPaymentFundingSourceWithCompletion:(id)a3;
+- (id)_placeholderTextForRow:(unint64_t)row;
+- (id)_textForRow:(unint64_t)row;
+- (id)_userEnteredTextForCellAtRow:(unint64_t)row;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_maxTextLengthForRow:(unint64_t)row;
+- (unint64_t)_minTextLengthForRow:(unint64_t)row;
+- (unint64_t)_rowWithTextField:(id)field;
+- (void)_addPaymentFundingSourceWithCompletion:(id)completion;
 - (void)_addToBankCredentialCenter;
 - (void)_deleteBankInformation;
 - (void)_reloadTableSection;
-- (void)_setCellHasPastedContent:(BOOL)a3 forRow:(unint64_t)a4;
-- (void)_setContentHidden:(BOOL)a3;
-- (void)_setIdleTimerDisabled:(BOOL)a3 title:(id)a4 subtitle:(id)a5;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
-- (void)_setNavigationBarItemsHidden:(BOOL)a3;
-- (void)_setState:(unint64_t)a3;
+- (void)_setCellHasPastedContent:(BOOL)content forRow:(unint64_t)row;
+- (void)_setContentHidden:(BOOL)hidden;
+- (void)_setIdleTimerDisabled:(BOOL)disabled title:(id)title subtitle:(id)subtitle;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
+- (void)_setNavigationBarItemsHidden:(BOOL)hidden;
+- (void)_setState:(unint64_t)state;
 - (void)_setTableFooterView;
-- (void)_setTableViewHeaderActivitySpinnerAnimated:(BOOL)a3 title:(id)a4 subtitle:(id)a5;
-- (void)_setText:(id)a3 forForCellAtRow:(unint64_t)a4;
+- (void)_setTableViewHeaderActivitySpinnerAnimated:(BOOL)animated title:(id)title subtitle:(id)subtitle;
+- (void)_setText:(id)text forForCellAtRow:(unint64_t)row;
 - (void)_showHeaderActivitySpinner;
-- (void)_showHowToFindAccountInformationViewController:(id)a3;
-- (void)_updateBankAccountInformationWithValues:(id)a3 completion:(id)a4;
+- (void)_showHowToFindAccountInformationViewController:(id)controller;
+- (void)_updateBankAccountInformationWithValues:(id)values completion:(id)completion;
 - (void)_updateHeaderAndNavigationItems;
-- (void)cancel:(id)a3;
+- (void)cancel:(id)cancel;
 - (void)dealloc;
 - (void)loadView;
-- (void)setHeaderViewTitle:(id)a3 subtitle:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)textFieldDidClear:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setHeaderViewTitle:(id)title subtitle:(id)subtitle;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChange:(id)change;
+- (void)textFieldDidClear:(id)clear;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAddBankAccountInformationViewController
 
-- (PKAddBankAccountInformationViewController)initWithState:(unint64_t)a3 delegate:(id)a4 bankInformation:(id)a5 accountCountryCode:(id)a6 featureAccount:(id)a7
+- (PKAddBankAccountInformationViewController)initWithState:(unint64_t)state delegate:(id)delegate bankInformation:(id)information accountCountryCode:(id)code featureAccount:(id)account
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  delegateCopy = delegate;
+  informationCopy = information;
+  codeCopy = code;
+  accountCopy = account;
   v43.receiver = self;
   v43.super_class = PKAddBankAccountInformationViewController;
   v16 = [(PKPaymentSetupTableViewController *)&v43 initWithContext:0];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_featureAccount, a7);
-    v17->_state = a3;
-    objc_storeWeak(&v17->_delegate, v12);
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v16->_featureAccount, account);
+    v17->_state = state;
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cells = v17->_cells;
-    v17->_cells = v18;
+    v17->_cells = dictionary;
 
-    v20 = v13;
-    if (!v13)
+    v20 = informationCopy;
+    if (!informationCopy)
     {
       v20 = objc_alloc_init(MEMORY[0x1E69B86A8]);
     }
 
     objc_storeStrong(&v17->_bankInformation, v20);
-    if (!v13)
+    if (!informationCopy)
     {
     }
 
@@ -94,13 +94,13 @@
       v17->_fkCredentialImporter = v21;
     }
 
-    v23 = [v14 uppercaseString];
+    uppercaseString = [codeCopy uppercaseString];
     accountCountryCode = v17->_accountCountryCode;
-    v17->_accountCountryCode = v23;
+    v17->_accountCountryCode = uppercaseString;
 
-    v25 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     userEnteredValues = v17->_userEnteredValues;
-    v17->_userEnteredValues = v25;
+    v17->_userEnteredValues = dictionary2;
 
     v17->_isEditingBankInformation = [(PKBankAccountInformation *)v17->_bankInformation isValid];
     [(PKAddBankAccountInformationViewController *)v17 _setNavigationBarItemsHidden:0];
@@ -108,35 +108,35 @@
     {
       v27 = v17->_userEnteredValues;
       v44[0] = @"PKAddBankAccountRoutingNumberKey";
-      v28 = [(PKBankAccountInformation *)v17->_bankInformation routingNumber];
+      routingNumber = [(PKBankAccountInformation *)v17->_bankInformation routingNumber];
       v44[1] = @"PKAddBankAccountAccountNumberKey";
-      v45[0] = v28;
-      v29 = [(PKBankAccountInformation *)v17->_bankInformation accountNumber];
-      v45[1] = v29;
+      v45[0] = routingNumber;
+      accountNumber = [(PKBankAccountInformation *)v17->_bankInformation accountNumber];
+      v45[1] = accountNumber;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
       v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17->_state];
       [(NSMutableDictionary *)v27 setObject:v30 forKey:v31];
     }
 
-    v32 = [MEMORY[0x1E695DF70] array];
-    v33 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v34 = [(PKAddBankAccountInformationViewController *)v17 _textForRow:0];
-    [v32 addObject:v34];
+    [array addObject:v34];
 
     v35 = [(PKAddBankAccountInformationViewController *)v17 _placeholderTextForRow:0];
-    [v33 addObject:v35];
+    [array2 addObject:v35];
 
     v36 = [(PKAddBankAccountInformationViewController *)v17 _textForRow:1];
-    [v32 addObject:v36];
+    [array addObject:v36];
 
     v37 = [(PKAddBankAccountInformationViewController *)v17 _placeholderTextForRow:1];
-    [v33 addObject:v37];
+    [array2 addObject:v37];
 
-    v38 = [v32 copy];
+    v38 = [array copy];
     cellText = v17->_cellText;
     v17->_cellText = v38;
 
-    v40 = [v33 copy];
+    v40 = [array2 copy];
     cellPlaceholderText = v17->_cellPlaceholderText;
     v17->_cellPlaceholderText = v40;
   }
@@ -146,8 +146,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKAddBankAccountInformationViewController;
@@ -159,27 +159,27 @@
   v25.receiver = self;
   v25.super_class = PKAddBankAccountInformationViewController;
   [(PKPaymentSetupTableViewController *)&v25 loadView];
-  v3 = [(PKPaymentSetupTableViewController *)self tableView];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
   v4 = [PKCollapsibleHeaderView alloc];
   v5 = [(PKCollapsibleHeaderView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   headerView = self->_headerView;
   self->_headerView = v5;
 
   v7 = self->_headerView;
-  v8 = [(PKAddBankAccountInformationViewController *)self _headerTitle];
-  v9 = [(PKAddBankAccountInformationViewController *)self _headerSubTitle];
-  [(PKCollapsibleHeaderView *)v7 setTitle:v8 subtitle:v9];
+  _headerTitle = [(PKAddBankAccountInformationViewController *)self _headerTitle];
+  _headerSubTitle = [(PKAddBankAccountInformationViewController *)self _headerSubTitle];
+  [(PKCollapsibleHeaderView *)v7 setTitle:_headerTitle subtitle:_headerSubTitle];
 
   [(PKCollapsibleHeaderView *)self->_headerView setTitleAccessoriesEnabled:0];
   [(PKCollapsibleHeaderView *)self->_headerView setAdditionalBottomPadding:11.0];
-  [v3 setTableHeaderView:self->_headerView];
-  v10 = [(PKPaymentSetupTableViewController *)self dockView];
-  v11 = [v10 footerView];
+  [tableView setTableHeaderView:self->_headerView];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  footerView = [dockView footerView];
 
-  v12 = [v11 primaryButton];
-  v13 = [v12 titleLabel];
+  primaryButton = [footerView primaryButton];
+  titleLabel = [primaryButton titleLabel];
   v14 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v13 setText:v14];
+  [titleLabel setText:v14];
 
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69DC628];
@@ -189,15 +189,15 @@
   v22 = &unk_1E8010A60;
   objc_copyWeak(&v23, &location);
   v16 = [v15 actionWithHandler:&v19];
-  [v12 addAction:v16 forControlEvents:{0x2000, v19, v20, v21, v22}];
-  [v12 setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
+  [primaryButton addAction:v16 forControlEvents:{0x2000, v19, v20, v21, v22}];
+  [primaryButton setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
   if (self->_isEditingBankInformation && self->_showDeleteButton)
   {
-    v17 = [v11 secondaryActionButton];
+    secondaryActionButton = [footerView secondaryActionButton];
     v18 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBan_4.isa);
-    [v17 setTitle:v18 forState:0];
+    [secondaryActionButton setTitle:v18 forState:0];
 
-    [v17 addTarget:self action:sel__deleteBankInformation forControlEvents:0x2000];
+    [secondaryActionButton addTarget:self action:sel__deleteBankInformation forControlEvents:0x2000];
   }
 
   [(PKAddBankAccountInformationViewController *)self _setTableFooterView];
@@ -222,8 +222,8 @@ void __53__PKAddBankAccountInformationViewController_loadView__block_invoke(uint
   v22.receiver = self;
   v22.super_class = PKAddBankAccountInformationViewController;
   [(PKPaymentSetupTableViewController *)&v22 viewWillLayoutSubviews];
-  v3 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v3 bounds];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView bounds];
   v5 = v4;
   [(PKCollapsibleHeaderView *)self->_headerView frame];
   v7 = v6;
@@ -234,47 +234,47 @@ void __53__PKAddBankAccountInformationViewController_loadView__block_invoke(uint
   if (v7 != v12 || v9 != v11)
   {
     headerView = self->_headerView;
-    [v3 _rectForTableHeaderView];
+    [tableView _rectForTableHeaderView];
     [(PKCollapsibleHeaderView *)headerView setFrame:?];
-    [v3 setTableHeaderView:0];
-    [v3 setTableHeaderView:self->_headerView];
+    [tableView setTableHeaderView:0];
+    [tableView setTableHeaderView:self->_headerView];
   }
 
-  v15 = [v3 tableFooterView];
-  [v15 frame];
+  tableFooterView = [tableView tableFooterView];
+  [tableFooterView frame];
   v17 = v16;
   v19 = v18;
-  [v15 sizeThatFits:{v5, 1.79769313e308}];
-  if (v15 && (v17 != v20 || v19 != v21))
+  [tableFooterView sizeThatFits:{v5, 1.79769313e308}];
+  if (tableFooterView && (v17 != v20 || v19 != v21))
   {
-    [v3 _rectForTableFooterView];
-    [v15 setFrame:?];
-    [v3 setTableFooterView:0];
-    [v3 setTableFooterView:v15];
+    [tableView _rectForTableFooterView];
+    [tableFooterView setFrame:?];
+    [tableView setTableFooterView:0];
+    [tableView setTableFooterView:tableFooterView];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKAddBankAccountInformationViewController;
-  [(PKPaymentSetupTableViewController *)&v7 viewWillAppear:a3];
-  v4 = [(PKPaymentSetupTableViewController *)self dockView];
-  v5 = [v4 footerView];
-  v6 = [v5 primaryButton];
-  [v6 setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
+  [(PKPaymentSetupTableViewController *)&v7 viewWillAppear:appear];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  footerView = [dockView footerView];
+  primaryButton = [footerView primaryButton];
+  [primaryButton setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v25.receiver = self;
   v25.super_class = PKAddBankAccountInformationViewController;
-  [(PKPaymentSetupTableViewController *)&v25 viewDidAppear:a3];
+  [(PKPaymentSetupTableViewController *)&v25 viewDidAppear:appear];
   if (!self->_isEditingBankInformation)
   {
     v4 = [(NSMutableDictionary *)self->_cells objectForKey:&unk_1F3CC7CB8];
-    v5 = [v4 editableTextField];
-    [v5 becomeFirstResponder];
+    editableTextField = [v4 editableTextField];
+    [editableTextField becomeFirstResponder];
   }
 
   if ([(PKBankAccountInformation *)self->_bankInformation type]== 1 && [(PKAddBankAccountInformationViewController *)self offerKeychainPreFill])
@@ -300,7 +300,7 @@ void __53__PKAddBankAccountInformationViewController_loadView__block_invoke(uint
       v21 = __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invoke;
       v22 = &unk_1E8011310;
       v23 = v6;
-      v24 = self;
+      selfCopy = self;
       v16 = [v14 actionWithTitle:v15 style:0 handler:&v19];
 
       [v10 addAction:{v16, v19, v20, v21, v22}];
@@ -339,7 +339,7 @@ void __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invok
   [*(a1 + 40) _setState:*(*(a1 + 40) + 1128)];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_shouldHideContent)
   {
@@ -352,48 +352,48 @@ void __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invok
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKPeerPaymentBankAccountDetailCell"];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKPeerPaymentBankAccountDetailCell"];
+  v8 = [pathCopy row];
 
   if (v7)
   {
-    v9 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
-    [v9 setEnabled:1];
+    editableTextField = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+    [editableTextField setEnabled:1];
   }
 
   else
   {
     v7 = [[PKPeerPaymentBankAccountDetailCell alloc] initWithStyle:1000 reuseIdentifier:@"PKPeerPaymentBankAccountDetailCell"];
-    v10 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
-    [v10 setDelegate:self];
+    editableTextField2 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+    [editableTextField2 setDelegate:self];
 
-    v11 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
-    [v11 setKeyboardType:11];
+    editableTextField3 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+    [editableTextField3 setKeyboardType:11];
 
     [(PKPeerPaymentBankAccountDetailCell *)v7 setShouldDrawSeperator:1];
   }
 
-  v12 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+  editableTextField4 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
   v13 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0, 0, 4);
-  [v12 setFont:v13];
+  [editableTextField4 setFont:v13];
 
-  v14 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+  editableTextField5 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
   v15 = [(PKAddBankAccountInformationViewController *)self _bankInformationTextForRow:v8];
-  [v14 setText:v15];
+  [editableTextField5 setText:v15];
 
-  v16 = [(PKPeerPaymentBankAccountDetailCell *)v7 textLabel];
+  textLabel = [(PKPeerPaymentBankAccountDetailCell *)v7 textLabel];
   v17 = [(NSArray *)self->_cellText objectAtIndex:v8];
-  [v16 setText:v17];
+  [textLabel setText:v17];
 
-  v18 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+  editableTextField6 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
   v19 = [(NSArray *)self->_cellPlaceholderText objectAtIndex:v8];
-  [v18 setPlaceholder:v19];
+  [editableTextField6 setPlaceholder:v19];
 
-  v20 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
-  v21 = v20;
+  editableTextField7 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+  v21 = editableTextField7;
   v22 = MEMORY[0x1E69B9BA8];
   v23 = MEMORY[0x1E69B93B0];
   if (v8 != 1)
@@ -407,19 +407,19 @@ void __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invok
   }
 
   v24 = *v22;
-  [v20 setAccessibilityIdentifier:*v22];
+  [editableTextField7 setAccessibilityIdentifier:*v22];
 
-  v25 = [(PKPeerPaymentBankAccountDetailCell *)v7 textLabel];
-  v26 = [v25 font];
+  textLabel2 = [(PKPeerPaymentBankAccountDetailCell *)v7 textLabel];
+  font = [textLabel2 font];
 
-  [(PKAddBankAccountInformationViewController *)self _minimumRequiredWidthForCellText:self->_cellText withFont:v26];
+  [(PKAddBankAccountInformationViewController *)self _minimumRequiredWidthForCellText:self->_cellText withFont:font];
   PKFloatCeilToPixel(v27, v28);
   [(PKPeerPaymentBankAccountDetailCell *)v7 setMinimumTextLabelWidth:?];
   [(PKPeerPaymentBankAccountDetailCell *)v7 setAccessibilityIdentifier:v24];
-  v29 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v30 = *MEMORY[0x1E69DE5C0];
-  v31 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
-  [v29 addObserver:self selector:sel_textFieldDidChange_ name:v30 object:v31];
+  editableTextField8 = [(PKPeerPaymentBankAccountDetailCell *)v7 editableTextField];
+  [defaultCenter addObserver:self selector:sel_textFieldDidChange_ name:v30 object:editableTextField8];
 
   cells = self->_cells;
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
@@ -428,32 +428,32 @@ void __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invok
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = PKAddBankAccountInformationViewController;
-  v8 = a4;
-  [(PKPaymentSetupTableViewController *)&v13 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
-  v9 = [v8 textLabel];
-  v10 = [v9 font];
+  cellCopy = cell;
+  [(PKPaymentSetupTableViewController *)&v13 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
+  textLabel = [cellCopy textLabel];
+  font = [textLabel font];
 
-  [(PKAddBankAccountInformationViewController *)self _minimumRequiredWidthForCellText:self->_cellText withFont:v10];
+  [(PKAddBankAccountInformationViewController *)self _minimumRequiredWidthForCellText:self->_cellText withFont:font];
   PKFloatCeilToPixel(v11, v12);
-  [v8 setMinimumTextLabelWidth:?];
+  [cellCopy setMinimumTextLabelWidth:?];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if (self->_isEditingBankInformation && self->_state == 1)
   {
-    v8 = v4;
-    v5 = [(PKPaymentSetupTableViewController *)self tableView];
-    v6 = [(PKAddBankAccountInformationViewController *)self _footerView];
-    [v5 setTableFooterView:v6];
+    v8 = editingCopy;
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    _footerView = [(PKAddBankAccountInformationViewController *)self _footerView];
+    [tableView setTableFooterView:_footerView];
 
-    v7 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v7 setNeedsLayout];
+    tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView2 setNeedsLayout];
 
     if (!self->_hasInteractedWithCell)
     {
@@ -462,34 +462,34 @@ void __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invok
     }
 
     self->_hasInteractedWithCell = 1;
-    v4 = v8;
+    editingCopy = v8;
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v6 = [(PKPaymentSetupTableViewController *)self dockView];
-  v4 = [v6 footerView];
-  v5 = [v4 primaryButton];
-  [v5 setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  footerView = [dockView footerView];
+  primaryButton = [footerView primaryButton];
+  [primaryButton setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 text];
-  v12 = [v11 stringByReplacingCharactersInRange:location withString:{length, v9}];
-  v13 = [v12 pk_zString];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  fieldCopy = field;
+  text = [fieldCopy text];
+  v12 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
+  pk_zString = [v12 pk_zString];
 
-  v14 = [(PKAddBankAccountInformationViewController *)self _rowWithTextField:v10];
-  v15 = [v13 length];
+  v14 = [(PKAddBankAccountInformationViewController *)self _rowWithTextField:fieldCopy];
+  v15 = [pk_zString length];
   v16 = [(PKAddBankAccountInformationViewController *)self _maxTextLengthForRow:v14];
-  v17 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v18 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:v9];
-  v19 = [v17 isSupersetOfSet:v18];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v18 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:stringCopy];
+  v19 = [decimalDigitCharacterSet isSupersetOfSet:v18];
   if (v15 <= v16)
   {
     v20 = v19;
@@ -502,8 +502,8 @@ void __59__PKAddBankAccountInformationViewController_viewDidAppear___block_invok
 
   if (v20)
   {
-    v21 = v13;
-    v22 = v9;
+    v21 = pk_zString;
+    v22 = stringCopy;
     v23 = v22;
     if (v21 == v22)
     {
@@ -535,7 +535,7 @@ LABEL_14:
   return v20;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained bankAccountInformationViewControllerChangedBankAccountInformation:self];
@@ -546,8 +546,8 @@ LABEL_14:
 
   else
   {
-    v4 = [(PKAddBankAccountInformationViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKAddBankAccountInformationViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -573,57 +573,57 @@ LABEL_14:
   return cellHasPastedContent;
 }
 
-- (void)_setCellHasPastedContent:(BOOL)a3 forRow:(unint64_t)a4
+- (void)_setCellHasPastedContent:(BOOL)content forRow:(unint64_t)row
 {
-  if (a4 <= 1)
+  if (row <= 1)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    v7 = [(PKAddBankAccountInformationViewController *)self _cellHasPastedContent];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [v7 setObject:v9 forKeyedSubscript:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:content];
+    _cellHasPastedContent = [(PKAddBankAccountInformationViewController *)self _cellHasPastedContent];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:row];
+    [_cellHasPastedContent setObject:v9 forKeyedSubscript:v8];
   }
 }
 
 - (BOOL)_allCellsHavePastedContent
 {
-  v3 = [(PKAddBankAccountInformationViewController *)self _cellHasPastedContent];
-  v4 = [v3 objectForKeyedSubscript:&unk_1F3CC7CD0];
+  _cellHasPastedContent = [(PKAddBankAccountInformationViewController *)self _cellHasPastedContent];
+  v4 = [_cellHasPastedContent objectForKeyedSubscript:&unk_1F3CC7CD0];
 
-  v5 = [(PKAddBankAccountInformationViewController *)self _cellHasPastedContent];
-  v6 = [v5 objectForKeyedSubscript:&unk_1F3CC7CB8];
+  _cellHasPastedContent2 = [(PKAddBankAccountInformationViewController *)self _cellHasPastedContent];
+  v6 = [_cellHasPastedContent2 objectForKeyedSubscript:&unk_1F3CC7CB8];
 
   if ([v4 BOOLValue])
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)_setTableFooterView
 {
   if (self->_state != 1 || self->_isEditingBankInformation || self->_shouldHideContent)
   {
-    v4 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v4 setTableFooterView:0];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView setTableFooterView:0];
   }
 
   else
   {
-    v4 = [(PKPaymentSetupTableViewController *)self tableView];
-    v3 = [(PKAddBankAccountInformationViewController *)self _footerView];
-    [v4 setTableFooterView:v3];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    _footerView = [(PKAddBankAccountInformationViewController *)self _footerView];
+    [tableView setTableFooterView:_footerView];
   }
 }
 
-- (unint64_t)_rowWithTextField:(id)a3
+- (unint64_t)_rowWithTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -633,7 +633,7 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = __63__PKAddBankAccountInformationViewController__rowWithTextField___block_invoke;
   v9[3] = &unk_1E801F2E0;
-  v6 = v4;
+  v6 = fieldCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)cells enumerateKeysAndObjectsUsingBlock:v9];
@@ -656,19 +656,19 @@ void __63__PKAddBankAccountInformationViewController__rowWithTextField___block_i
   }
 }
 
-- (double)_minimumRequiredWidthForCellText:(id)a3 withFont:(id)a4
+- (double)_minimumRequiredWidthForCellText:(id)text withFont:(id)font
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  fontCopy = font;
   v21 = *MEMORY[0x1E69DB648];
-  v22[0] = v6;
+  v22[0] = fontCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = textCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -705,33 +705,33 @@ void __63__PKAddBankAccountInformationViewController__rowWithTextField___block_i
   return v12;
 }
 
-- (void)textFieldDidClear:(id)a3
+- (void)textFieldDidClear:(id)clear
 {
-  v4 = [(PKAddBankAccountInformationViewController *)self _rowWithTextField:a3];
+  v4 = [(PKAddBankAccountInformationViewController *)self _rowWithTextField:clear];
 
   [(PKAddBankAccountInformationViewController *)self _setCellHasPastedContent:0 forRow:v4];
 }
 
 - (BOOL)_cellValuesAreValid
 {
-  v3 = [(PKAddBankAccountInformationViewController *)self _isAccountNumberCellValid];
-  if (v3)
+  _isAccountNumberCellValid = [(PKAddBankAccountInformationViewController *)self _isAccountNumberCellValid];
+  if (_isAccountNumberCellValid)
   {
 
-    LOBYTE(v3) = [(PKAddBankAccountInformationViewController *)self _isRoutingNumberCellValid];
+    LOBYTE(_isAccountNumberCellValid) = [(PKAddBankAccountInformationViewController *)self _isRoutingNumberCellValid];
   }
 
-  return v3;
+  return _isAccountNumberCellValid;
 }
 
-- (BOOL)_isCellValidAtRow:(unint64_t)a3
+- (BOOL)_isCellValidAtRow:(unint64_t)row
 {
   v5 = [(PKAddBankAccountInformationViewController *)self _userEnteredTextForCellAtRow:?];
   v6 = [v5 length];
-  if (v6 >= [(PKAddBankAccountInformationViewController *)self _minTextLengthForRow:a3])
+  if (v6 >= [(PKAddBankAccountInformationViewController *)self _minTextLengthForRow:row])
   {
     v8 = [v5 length];
-    v7 = v8 <= [(PKAddBankAccountInformationViewController *)self _maxTextLengthForRow:a3];
+    v7 = v8 <= [(PKAddBankAccountInformationViewController *)self _maxTextLengthForRow:row];
   }
 
   else
@@ -742,45 +742,45 @@ void __63__PKAddBankAccountInformationViewController__rowWithTextField___block_i
   return v7;
 }
 
-- (id)_userEnteredTextForCellAtRow:(unint64_t)a3
+- (id)_userEnteredTextForCellAtRow:(unint64_t)row
 {
   cells = self->_cells;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:row];
   v5 = [(NSMutableDictionary *)cells objectForKey:v4];
 
-  v6 = [v5 editableTextField];
-  v7 = [v6 text];
+  editableTextField = [v5 editableTextField];
+  text = [editableTextField text];
 
-  return v7;
+  return text;
 }
 
-- (void)_setText:(id)a3 forForCellAtRow:(unint64_t)a4
+- (void)_setText:(id)text forForCellAtRow:(unint64_t)row
 {
   cells = self->_cells;
   v7 = MEMORY[0x1E696AD98];
-  v8 = a3;
-  v9 = [v7 numberWithUnsignedInteger:a4];
+  textCopy = text;
+  v9 = [v7 numberWithUnsignedInteger:row];
   v11 = [(NSMutableDictionary *)cells objectForKey:v9];
 
-  v10 = [v11 editableTextField];
-  [v10 setText:v8];
+  editableTextField = [v11 editableTextField];
+  [editableTextField setText:textCopy];
 
-  [(PKAddBankAccountInformationViewController *)self _setCellHasPastedContent:0 forRow:a4];
+  [(PKAddBankAccountInformationViewController *)self _setCellHasPastedContent:0 forRow:row];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  state = a3;
+  state = state;
   v60[2] = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = [(PKAddBankAccountInformationViewController *)self _userEnteredTextForCellAtRow:1];
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v8 = [(PKAddBankAccountInformationViewController *)self _userEnteredTextForCellAtRow:0];
-    v9 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v10 = [v8 stringByTrimmingCharactersInSet:v9];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v10 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
     if (state == 1)
     {
@@ -842,24 +842,24 @@ void __63__PKAddBankAccountInformationViewController__rowWithTextField___block_i
     [(NSMutableDictionary *)v17 enumerateKeysAndObjectsUsingBlock:v49];
     if (v54[24])
     {
-      v20 = [(PKPaymentSetupTableViewController *)self tableView];
+      tableView = [(PKPaymentSetupTableViewController *)self tableView];
       [(PKAddBankAccountInformationViewController *)self _showHeaderActivitySpinner];
       [(PKAddBankAccountInformationViewController *)self _setNavigationBarItemsHidden:1];
-      [v20 setUserInteractionEnabled:0];
+      [tableView setUserInteractionEnabled:0];
       v21 = [(NSMutableDictionary *)self->_cells objectForKey:&unk_1F3CC7CD0];
-      v22 = [v21 editableTextField];
-      [v22 setEnabled:0];
+      editableTextField = [v21 editableTextField];
+      [editableTextField setEnabled:0];
 
       v23 = [(NSMutableDictionary *)self->_cells objectForKey:&unk_1F3CC7CB8];
-      v24 = [v23 editableTextField];
-      [v24 setEnabled:0];
+      editableTextField2 = [v23 editableTextField];
+      [editableTextField2 setEnabled:0];
 
       v57[0] = @"PKAddBankAccountAccountNumberKey";
-      v25 = [v18 anyObject];
+      anyObject = [v18 anyObject];
       v57[1] = @"PKAddBankAccountRoutingNumberKey";
-      v58[0] = v25;
-      v26 = [v19 anyObject];
-      v58[1] = v26;
+      v58[0] = anyObject;
+      anyObject2 = [v19 anyObject];
+      v58[1] = anyObject2;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:2];
 
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -867,14 +867,14 @@ void __63__PKAddBankAccountInformationViewController__rowWithTextField___block_i
       aBlock[2] = __55__PKAddBankAccountInformationViewController__setState___block_invoke_3;
       aBlock[3] = &unk_1E801F330;
       aBlock[4] = self;
-      v28 = v20;
+      v28 = tableView;
       v47 = v28;
       v29 = _Block_copy(aBlock);
       v40 = MEMORY[0x1E69E9820];
       v41 = 3221225472;
       v42 = __55__PKAddBankAccountInformationViewController__setState___block_invoke_6;
       v43 = &unk_1E8010DD0;
-      v44 = self;
+      selfCopy = self;
       v30 = v29;
       v45 = v30;
       [(PKAddBankAccountInformationViewController *)self _updateBankAccountInformationWithValues:v27 completion:&v40];
@@ -911,11 +911,11 @@ void __63__PKAddBankAccountInformationViewController__rowWithTextField___block_i
   }
 
   v37 = [(PKPaymentSetupTableViewController *)self dockView:v40];
-  v38 = [v37 footerView];
+  footerView = [v37 footerView];
 
-  [v38 setSecondaryActionButton:0];
-  v39 = [v38 primaryButton];
-  [v39 setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
+  [footerView setSecondaryActionButton:0];
+  primaryButton = [footerView primaryButton];
+  [primaryButton setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
 }
 
 void __55__PKAddBankAccountInformationViewController__setState___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -1060,28 +1060,28 @@ uint64_t __55__PKAddBankAccountInformationViewController__setState___block_invok
 
 - (void)_reloadTableSection
 {
-  v3 = [(PKPaymentSetupTableViewController *)self tableView];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
   v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:0];
-  [v3 reloadSections:v4 withRowAnimation:2];
+  [tableView reloadSections:v4 withRowAnimation:2];
 
   v6 = [(NSMutableDictionary *)self->_cells objectForKey:&unk_1F3CC7CB8];
-  v5 = [v6 editableTextField];
-  [v5 becomeFirstResponder];
+  editableTextField = [v6 editableTextField];
+  [editableTextField becomeFirstResponder];
 }
 
-- (id)_bankInformationTextForRow:(unint64_t)a3
+- (id)_bankInformationTextForRow:(unint64_t)row
 {
   userEnteredValues = self->_userEnteredValues;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_state];
   v7 = [(NSMutableDictionary *)userEnteredValues objectForKey:v6];
 
-  if (!a3)
+  if (!row)
   {
     v8 = @"PKAddBankAccountRoutingNumberKey";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (row == 1)
   {
     v8 = @"PKAddBankAccountAccountNumberKey";
 LABEL_5:
@@ -1101,9 +1101,9 @@ LABEL_7:
   return v9;
 }
 
-- (id)_textForRow:(unint64_t)a3
+- (id)_textForRow:(unint64_t)row
 {
-  if (!a3)
+  if (!row)
   {
     v5 = @"PEER_PAYMENT_BANK_INFO_ROUTING_NUMBER_FIELD_TITLE";
 LABEL_5:
@@ -1112,7 +1112,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 1)
+  if (row == 1)
   {
     v5 = @"PEER_PAYMENT_BANK_INFO_ACCOUNT_NUMBER_FIELD_TITLE";
     goto LABEL_5;
@@ -1123,14 +1123,14 @@ LABEL_5:
   return v6;
 }
 
-- (id)_placeholderTextForRow:(unint64_t)a3
+- (id)_placeholderTextForRow:(unint64_t)row
 {
-  if (a3 == 1)
+  if (row == 1)
   {
     v3 = [(PKAddBankAccountInformationViewController *)self _countrySpecificLocalizedStringKeyForKey:@"PEER_PAYMENT_BANK_INFO_ACCOUNT_NUMBER_FIELD_PLACEHOLDER" minDigits:4 maxDigits:17];
   }
 
-  else if (a3)
+  else if (row)
   {
     v3 = 0;
   }
@@ -1149,14 +1149,14 @@ LABEL_5:
   [(PKAddBankAccountInformationViewController *)self _setTableViewHeaderActivitySpinnerAnimated:1 title:v3 subtitle:&stru_1F3BD7330];
 }
 
-- (void)_setTableViewHeaderActivitySpinnerAnimated:(BOOL)a3 title:(id)a4 subtitle:(id)a5
+- (void)_setTableViewHeaderActivitySpinnerAnimated:(BOOL)animated title:(id)title subtitle:(id)subtitle
 {
-  v6 = a3;
-  v8 = !a3;
-  v9 = a5;
-  v11 = a4;
-  v10 = [(PKAddBankAccountInformationViewController *)self view];
-  [v10 setUserInteractionEnabled:v8];
+  animatedCopy = animated;
+  v8 = !animated;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  view = [(PKAddBankAccountInformationViewController *)self view];
+  [view setUserInteractionEnabled:v8];
 
   [(PKAddBankAccountInformationViewController *)self _setNavigationBarEnabled:v8];
   if (!v8)
@@ -1164,38 +1164,38 @@ LABEL_5:
     [(PKAddBankAccountInformationViewController *)self _setContentHidden:1];
   }
 
-  if ([(PKCollapsibleHeaderView *)self->_headerView showSpinner]!= v6)
+  if ([(PKCollapsibleHeaderView *)self->_headerView showSpinner]!= animatedCopy)
   {
-    [(PKCollapsibleHeaderView *)self->_headerView setTitleAccessoriesEnabled:v6];
+    [(PKCollapsibleHeaderView *)self->_headerView setTitleAccessoriesEnabled:animatedCopy];
   }
 
-  [(PKCollapsibleHeaderView *)self->_headerView setShowSpinner:v6];
-  [(PKAddBankAccountInformationViewController *)self setHeaderViewTitle:v11 subtitle:v9];
-  [(PKAddBankAccountInformationViewController *)self _setIdleTimerDisabled:v6 title:v11 subtitle:v9];
+  [(PKCollapsibleHeaderView *)self->_headerView setShowSpinner:animatedCopy];
+  [(PKAddBankAccountInformationViewController *)self setHeaderViewTitle:titleCopy subtitle:subtitleCopy];
+  [(PKAddBankAccountInformationViewController *)self _setIdleTimerDisabled:animatedCopy title:titleCopy subtitle:subtitleCopy];
 }
 
-- (void)setHeaderViewTitle:(id)a3 subtitle:(id)a4
+- (void)setHeaderViewTitle:(id)title subtitle:(id)subtitle
 {
-  [(PKCollapsibleHeaderView *)self->_headerView setTitle:a3 subtitle:a4];
-  v10 = [(PKPaymentSetupTableViewController *)self tableView];
+  [(PKCollapsibleHeaderView *)self->_headerView setTitle:title subtitle:subtitle];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
   headerView = self->_headerView;
-  [v10 bounds];
+  [tableView bounds];
   [(PKCollapsibleHeaderView *)headerView sizeThatFits:v6, 1.79769313e308];
   v8 = v7;
   v9 = self->_headerView;
-  [v10 _rectForTableHeaderView];
+  [tableView _rectForTableHeaderView];
   [(PKCollapsibleHeaderView *)v9 setFrame:?];
-  [v10 _tableHeaderHeightDidChangeToHeight:v8];
+  [tableView _tableHeaderHeightDidChangeToHeight:v8];
   [(PKCollapsibleHeaderView *)self->_headerView setNeedsLayout];
 }
 
-- (void)_setContentHidden:(BOOL)a3
+- (void)_setContentHidden:(BOOL)hidden
 {
-  if (self->_shouldHideContent != a3)
+  if (self->_shouldHideContent != hidden)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_shouldHideContent = a3;
+    self->_shouldHideContent = hidden;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __63__PKAddBankAccountInformationViewController__setContentHidden___block_invoke;
@@ -1216,65 +1216,65 @@ uint64_t __63__PKAddBankAccountInformationViewController__setContentHidden___blo
   return [v4 _setTableFooterView];
 }
 
-- (void)_setIdleTimerDisabled:(BOOL)a3 title:(id)a4 subtitle:(id)a5
+- (void)_setIdleTimerDisabled:(BOOL)disabled title:(id)title subtitle:(id)subtitle
 {
-  v6 = a3;
+  disabledCopy = disabled;
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"enabled";
     v12 = 138413058;
-    if (v6)
+    if (disabledCopy)
     {
       v10 = @"disabled";
     }
 
     v13 = v10;
     v14 = 2112;
-    v15 = v7;
+    v15 = titleCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = subtitleCopy;
     v18 = 2112;
     v19 = @"PKAddBankAccountInformation";
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Payment Setup has %@ the Idle Timer. (For: %@ - %@) - %@.", &v12, 0x2Au);
   }
 
-  v11 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v11 _setIdleTimerDisabled:v6 forReason:@"PKAddBankAccountInformation"];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _setIdleTimerDisabled:disabledCopy forReason:@"PKAddBankAccountInformation"];
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKAddBankAccountInformationViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKAddBankAccountInformationViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKAddBankAccountInformationViewController *)self navigationItem];
-  v8 = v7;
-  v9 = !v3 || self->_state == 3;
-  [v7 setHidesBackButton:v9 animated:1];
+  navigationItem = [(PKAddBankAccountInformationViewController *)self navigationItem];
+  v8 = navigationItem;
+  v9 = !enabledCopy || self->_state == 3;
+  [navigationItem setHidesBackButton:v9 animated:1];
 }
 
-- (void)_setNavigationBarItemsHidden:(BOOL)a3
+- (void)_setNavigationBarItemsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v6 = [(PKAddBankAccountInformationViewController *)self navigationItem];
-  if (v3)
+  hiddenCopy = hidden;
+  navigationItem = [(PKAddBankAccountInformationViewController *)self navigationItem];
+  if (hiddenCopy)
   {
-    [v6 setLeftBarButtonItem:0];
+    [navigationItem setLeftBarButtonItem:0];
   }
 
   else
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-    [v6 setLeftBarButtonItem:v5];
+    [navigationItem setLeftBarButtonItem:v5];
   }
 }
 
@@ -1312,12 +1312,12 @@ void __67__PKAddBankAccountInformationViewController__deleteBankInformation__blo
   [v2 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_updateBankAccountInformationWithValues:(id)a3 completion:(id)a4
+- (void)_updateBankAccountInformationWithValues:(id)values completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"PKAddBankAccountAccountNumberKey"];
-  v9 = [v7 objectForKey:@"PKAddBankAccountRoutingNumberKey"];
+  completionCopy = completion;
+  valuesCopy = values;
+  v8 = [valuesCopy objectForKey:@"PKAddBankAccountAccountNumberKey"];
+  v9 = [valuesCopy objectForKey:@"PKAddBankAccountRoutingNumberKey"];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1328,32 +1328,32 @@ void __67__PKAddBankAccountInformationViewController__deleteBankInformation__blo
   v27 = v10;
   v11 = v8;
   v28 = v11;
-  v12 = v6;
+  v12 = completionCopy;
   v29 = v12;
   v13 = _Block_copy(aBlock);
   if (self->_featureAccount)
   {
-    v14 = objc_alloc_init(MEMORY[0x1E69B8478]);
-    [v14 setCountryCode:self->_accountCountryCode];
-    [v14 setQuery:v10];
-    v15 = [(PKAccount *)self->_featureAccount accountBaseURL];
-    [v14 setBaseURL:v15];
+    mEMORY[0x1E69B9020] = objc_alloc_init(MEMORY[0x1E69B8478]);
+    [mEMORY[0x1E69B9020] setCountryCode:self->_accountCountryCode];
+    [mEMORY[0x1E69B9020] setQuery:v10];
+    accountBaseURL = [(PKAccount *)self->_featureAccount accountBaseURL];
+    [mEMORY[0x1E69B9020] setBaseURL:accountBaseURL];
 
-    v16 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __96__PKAddBankAccountInformationViewController__updateBankAccountInformationWithValues_completion___block_invoke_2;
     v22[3] = &unk_1E801F380;
     v23 = v10;
-    v24 = self;
+    selfCopy = self;
     v25 = v13;
     v17 = v13;
-    [v16 accountBankLookupWithRequest:v14 completion:v22];
+    [mEMORY[0x1E69B8EF8] accountBankLookupWithRequest:mEMORY[0x1E69B9020] completion:v22];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     accountCountryCode = self->_accountCountryCode;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -1361,8 +1361,8 @@ void __67__PKAddBankAccountInformationViewController__deleteBankInformation__blo
     v19[3] = &unk_1E801F3A8;
     v20 = v10;
     v21 = v13;
-    v16 = v13;
-    [v14 peerPaymentBankLookupWithCountryCode:accountCountryCode query:v20 completion:v19];
+    mEMORY[0x1E69B8EF8] = v13;
+    [mEMORY[0x1E69B9020] peerPaymentBankLookupWithCountryCode:accountCountryCode query:v20 completion:v19];
 
     v17 = v20;
   }
@@ -1461,24 +1461,24 @@ void __96__PKAddBankAccountInformationViewController__updateBankAccountInformati
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_addPaymentFundingSourceWithCompletion:(id)a3
+- (void)_addPaymentFundingSourceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
+  completionCopy = completion;
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v6 = objc_alloc_init(MEMORY[0x1E69B8488]);
   [v6 setDestination:2];
-  v7 = [(PKAccount *)self->_featureAccount accountBaseURL];
-  [v6 setBaseURL:v7];
+  accountBaseURL = [(PKAccount *)self->_featureAccount accountBaseURL];
+  [v6 setBaseURL:accountBaseURL];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PKAddBankAccountInformationViewController__addPaymentFundingSourceWithCompletion___block_invoke;
   v10[3] = &unk_1E801F498;
   v10[4] = self;
-  v11 = v5;
-  v12 = v4;
-  v8 = v4;
-  v9 = v5;
+  v11 = mEMORY[0x1E69B8EF8];
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = mEMORY[0x1E69B8EF8];
   [v9 accountServiceCertificatesWithRequest:v6 completion:v10];
 }
 
@@ -1712,13 +1712,13 @@ void __84__PKAddBankAccountInformationViewController__addPaymentFundingSourceWit
   if (self->_saveToBankCredentialCenter)
   {
     v4 = objc_alloc(MEMORY[0x1E6967D78]);
-    v5 = [(PKBankAccountInformation *)self->_bankInformation accountNumber];
-    v6 = [(PKBankAccountInformation *)self->_bankInformation routingNumber];
-    v9 = [v4 initWithAccountNumber:v5 routingNumber:v6];
+    accountNumber = [(PKBankAccountInformation *)self->_bankInformation accountNumber];
+    routingNumber = [(PKBankAccountInformation *)self->_bankInformation routingNumber];
+    v9 = [v4 initWithAccountNumber:accountNumber routingNumber:routingNumber];
 
     fkCredentialImporter = self->_fkCredentialImporter;
-    v8 = [(PKBankAccountInformation *)self->_bankInformation bankName];
-    [(FKWalletBankCredentialImporter *)fkCredentialImporter insertCredentialFromACHPaymentInformation:v9 bankName:v8 completion:&__block_literal_global_185];
+    bankName = [(PKBankAccountInformation *)self->_bankInformation bankName];
+    [(FKWalletBankCredentialImporter *)fkCredentialImporter insertCredentialFromACHPaymentInformation:v9 bankName:bankName completion:&__block_literal_global_185];
   }
 }
 
@@ -1763,14 +1763,14 @@ LABEL_5:
 
 - (void)_updateHeaderAndNavigationItems
 {
-  v3 = [(PKAddBankAccountInformationViewController *)self _headerTitle];
-  v4 = [(PKAddBankAccountInformationViewController *)self _headerSubTitle];
-  [(PKAddBankAccountInformationViewController *)self setHeaderViewTitle:v3 subtitle:v4];
+  _headerTitle = [(PKAddBankAccountInformationViewController *)self _headerTitle];
+  _headerSubTitle = [(PKAddBankAccountInformationViewController *)self _headerSubTitle];
+  [(PKAddBankAccountInformationViewController *)self setHeaderViewTitle:_headerTitle subtitle:_headerSubTitle];
 
-  v7 = [(PKPaymentSetupTableViewController *)self dockView];
-  v5 = [v7 footerView];
-  v6 = [v5 primaryButton];
-  [v6 setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  footerView = [dockView footerView];
+  primaryButton = [footerView primaryButton];
+  [primaryButton setEnabled:{-[PKAddBankAccountInformationViewController _cellValuesAreValid](self, "_cellValuesAreValid")}];
 }
 
 - (id)_headerTitle
@@ -1809,8 +1809,8 @@ LABEL_5:
     self->_footerView = v7;
 
     v9 = self->_footerView;
-    v10 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v10 bounds];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView bounds];
     [(PKFindBankAccountInformationFooterView *)v9 sizeThatFits:CGRectGetWidth(v23), 3.40282347e38];
     v12 = v11;
     v14 = v13;
@@ -1833,28 +1833,28 @@ void __56__PKAddBankAccountInformationViewController__footerView__block_invoke(u
   [WeakRetained _showHowToFindAccountInformationViewController:v4];
 }
 
-- (void)_showHowToFindAccountInformationViewController:(id)a3
+- (void)_showHowToFindAccountInformationViewController:(id)controller
 {
   v12 = [[PKExplanationViewController alloc] initWithContext:0];
-  v4 = [(PKExplanationViewController *)v12 explanationView];
+  explanationView = [(PKExplanationViewController *)v12 explanationView];
   v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBan_21.isa);
-  [v4 setTitleText:v5];
+  [explanationView setTitleText:v5];
 
   v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentBan_22.isa);
-  [v4 setBodyText:v6];
+  [explanationView setBodyText:v6];
 
   v7 = PKOBKHeaderTitleFont();
-  [v4 setTitleFont:v7];
+  [explanationView setTitleFont:v7];
 
-  [v4 setBodyTextAlignment:PKOBKTextAlignment()];
+  [explanationView setBodyTextAlignment:PKOBKTextAlignment()];
   [(PKExplanationViewController *)v12 setShowDoneButton:1];
   [(PKExplanationViewController *)v12 setShowCancelButton:0];
-  [v4 setShowPrivacyView:0];
-  v8 = [v4 dockView];
-  [v8 setPrimaryButton:0];
+  [explanationView setShowPrivacyView:0];
+  dockView = [explanationView dockView];
+  [dockView setPrimaryButton:0];
 
   v9 = PKUIImageNamed(@"CheckInfo");
-  [v4 setImage:v9];
+  [explanationView setImage:v9];
 
   v10 = [[PKNavigationController alloc] initWithRootViewController:v12];
   [(PKNavigationController *)v10 setSupportedInterfaceOrientations:2];
@@ -1863,15 +1863,15 @@ void __56__PKAddBankAccountInformationViewController__footerView__block_invoke(u
     [(PKNavigationController *)v10 setModalPresentationStyle:2];
   }
 
-  v11 = [(PKAddBankAccountInformationViewController *)self navigationController];
-  [v11 presentViewController:v10 animated:1 completion:0];
+  navigationController = [(PKAddBankAccountInformationViewController *)self navigationController];
+  [navigationController presentViewController:v10 animated:1 completion:0];
 }
 
-- (unint64_t)_minTextLengthForRow:(unint64_t)a3
+- (unint64_t)_minTextLengthForRow:(unint64_t)row
 {
-  if (a3)
+  if (row)
   {
-    return 4 * (a3 == 1);
+    return 4 * (row == 1);
   }
 
   else
@@ -1880,15 +1880,15 @@ void __56__PKAddBankAccountInformationViewController__footerView__block_invoke(u
   }
 }
 
-- (unint64_t)_maxTextLengthForRow:(unint64_t)a3
+- (unint64_t)_maxTextLengthForRow:(unint64_t)row
 {
   v3 = 17;
-  if (a3 != 1)
+  if (row != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (row)
   {
     return v3;
   }
@@ -1899,49 +1899,49 @@ void __56__PKAddBankAccountInformationViewController__footerView__block_invoke(u
   }
 }
 
-- (id)_countrySpecificLocalizedStringKeyForKey:(id)a3
+- (id)_countrySpecificLocalizedStringKeyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingFormat:@"_%@", self->_accountCountryCode];
+  keyCopy = key;
+  v5 = [keyCopy stringByAppendingFormat:@"_%@", self->_accountCountryCode];
   v6 = PKLocalizedPeerPaymentString(v5);
 
   if (!v6)
   {
-    v7 = [v4 stringByAppendingString:@"_DEFAULT"];
+    v7 = [keyCopy stringByAppendingString:@"_DEFAULT"];
     v6 = PKLocalizedPeerPaymentString(v7);
   }
 
   return v6;
 }
 
-- (id)_countrySpecificLocalizedStringKeyForKey:(id)a3 numberOfDigits:(unint64_t)a4
+- (id)_countrySpecificLocalizedStringKeyForKey:(id)key numberOfDigits:(unint64_t)digits
 {
   v6 = MEMORY[0x1E696ADA0];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a3;
-  v9 = [v7 numberWithUnsignedInteger:a4];
+  keyCopy = key;
+  v9 = [v7 numberWithUnsignedInteger:digits];
   v10 = [v6 localizedStringFromNumber:v9 numberStyle:0];
 
-  v11 = [(PKAddBankAccountInformationViewController *)self _countrySpecificLocalizedStringKeyForKey:v8];
+  v11 = [(PKAddBankAccountInformationViewController *)self _countrySpecificLocalizedStringKeyForKey:keyCopy];
 
   v12 = PKStringWithValidatedFormat();
 
   return v12;
 }
 
-- (id)_countrySpecificLocalizedStringKeyForKey:(id)a3 minDigits:(unint64_t)a4 maxDigits:(unint64_t)a5
+- (id)_countrySpecificLocalizedStringKeyForKey:(id)key minDigits:(unint64_t)digits maxDigits:(unint64_t)maxDigits
 {
   v8 = MEMORY[0x1E696ADA0];
   v9 = MEMORY[0x1E696AD98];
-  v10 = a3;
-  v11 = [v9 numberWithUnsignedInteger:a4];
+  keyCopy = key;
+  v11 = [v9 numberWithUnsignedInteger:digits];
   v12 = [v8 localizedStringFromNumber:v11 numberStyle:0];
 
   v13 = MEMORY[0x1E696ADA0];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maxDigits];
   v15 = [v13 localizedStringFromNumber:v14 numberStyle:0];
 
-  v16 = [(PKAddBankAccountInformationViewController *)self _countrySpecificLocalizedStringKeyForKey:v10];
+  v16 = [(PKAddBankAccountInformationViewController *)self _countrySpecificLocalizedStringKeyForKey:keyCopy];
 
   v17 = PKStringWithValidatedFormat();
 

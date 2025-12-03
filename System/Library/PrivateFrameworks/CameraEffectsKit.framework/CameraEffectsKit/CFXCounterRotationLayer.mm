@@ -1,14 +1,14 @@
 @interface CFXCounterRotationLayer
-- (void)addAnimation:(id)a3 forKey:(id)a4;
+- (void)addAnimation:(id)animation forKey:(id)key;
 @end
 
 @implementation CFXCounterRotationLayer
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"transform"])
+  animationCopy = animation;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"transform"])
   {
     v20 = 0u;
     v21 = 0u;
@@ -18,12 +18,12 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v6;
-    v9 = [v8 fromValue];
-    v10 = v9;
-    if (v9)
+    v8 = animationCopy;
+    fromValue = [v8 fromValue];
+    v10 = fromValue;
+    if (fromValue)
     {
-      [v9 CATransform3DValue];
+      [fromValue CATransform3DValue];
     }
 
     else
@@ -48,7 +48,7 @@
 
   v13.receiver = self;
   v13.super_class = CFXCounterRotationLayer;
-  [(CFXCounterRotationLayer *)&v13 addAnimation:v6 forKey:v7];
+  [(CFXCounterRotationLayer *)&v13 addAnimation:animationCopy forKey:keyCopy];
 }
 
 @end

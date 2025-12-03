@@ -1,7 +1,7 @@
 @interface VoiceOverBrailleCommandCategoryController
 - (VoiceOverBrailleCommandCategoryController)init;
-- (id)_getCommandDescription:(id)a3;
-- (id)_specifierForCommand:(id)a3;
+- (id)_getCommandDescription:(id)description;
+- (id)_specifierForCommand:(id)command;
 - (id)specifiers;
 @end
 
@@ -28,23 +28,23 @@
 - (id)specifiers
 {
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v4 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v5 = [v4 objectForKey:@"bt-device"];
+  userInfo = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v5 = [userInfo objectForKey:@"bt-device"];
   device = self->_device;
   self->_device = v5;
 
-  v7 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
-  v8 = [v7 objectForKey:@"braille-category"];
+  userInfo2 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
+  v8 = [userInfo2 objectForKey:@"braille-category"];
   category = self->_category;
   self->_category = v8;
 
-  v10 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
-  v11 = [v10 objectForKey:@"input-manager"];
+  userInfo3 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
+  v11 = [userInfo3 objectForKey:@"input-manager"];
   inputManager = self->_inputManager;
   self->_inputManager = v11;
 
-  v13 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
-  v14 = [v13 objectForKey:@"display-token"];
+  userInfo4 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
+  v14 = [userInfo4 objectForKey:@"display-token"];
   self->_token = [v14 intValue];
 
   v15 = OBJC_IVAR___PSListController__specifiers;
@@ -125,9 +125,9 @@ id __55__VoiceOverBrailleCommandCategoryController_specifiers__block_invoke(uint
   return v9;
 }
 
-- (id)_getCommandDescription:(id)a3
+- (id)_getCommandDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -139,9 +139,9 @@ id __55__VoiceOverBrailleCommandCategoryController_specifiers__block_invoke(uint
   v9[1] = 3221225472;
   v9[2] = __68__VoiceOverBrailleCommandCategoryController__getCommandDescription___block_invoke;
   v9[3] = &unk_257038;
-  v6 = v4;
+  v6 = descriptionCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v14[5];
@@ -180,11 +180,11 @@ void __68__VoiceOverBrailleCommandCategoryController__getCommandDescription___bl
   }
 }
 
-- (id)_specifierForCommand:(id)a3
+- (id)_specifierForCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = objc_alloc_init(VOSVoiceOverCommandInfo);
-  v6 = [v5 localizedNameForCommand:v4];
+  v6 = [v5 localizedNameForCommand:commandCopy];
 
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:"_getCommandDescription:" detail:objc_opt_class() cell:2 edit:0];
   v8 = [objc_allocWithZone(NSMutableDictionary) init];
@@ -196,7 +196,7 @@ void __68__VoiceOverBrailleCommandCategoryController__getCommandDescription___bl
   }
 
   [v9 setObject:self->_inputManager forKey:@"input-manager"];
-  [v9 setObject:v4 forKey:@"braille-command"];
+  [v9 setObject:commandCopy forKey:@"braille-command"];
   v11 = [NSNumber numberWithInt:self->_token];
   [v9 setObject:v11 forKey:@"display-token"];
 

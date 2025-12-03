@@ -1,5 +1,5 @@
 @interface ShadowView
-- (_TtC9SeymourUI10ShadowView)initWithCoder:(id)a3;
+- (_TtC9SeymourUI10ShadowView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -20,7 +20,7 @@
   [v3 commit];
 }
 
-- (_TtC9SeymourUI10ShadowView)initWithCoder:(id)a3
+- (_TtC9SeymourUI10ShadowView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC9SeymourUI10ShadowView_shadowGradient;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x277CD9EB0]) init];

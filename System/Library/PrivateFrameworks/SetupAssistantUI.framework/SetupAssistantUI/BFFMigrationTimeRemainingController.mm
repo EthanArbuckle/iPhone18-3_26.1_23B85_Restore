@@ -1,18 +1,18 @@
 @interface BFFMigrationTimeRemainingController
-- (BFFMigrationTimeRemainingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (id)timeRemainingString:(double)a3;
-- (void)setDeviceConnectionInformation:(id)a3;
-- (void)setDeviceTransferProgress:(id)a3;
+- (BFFMigrationTimeRemainingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (id)timeRemainingString:(double)string;
+- (void)setDeviceConnectionInformation:(id)information;
+- (void)setDeviceTransferProgress:(id)progress;
 - (void)updateProgressSubtext;
 @end
 
 @implementation BFFMigrationTimeRemainingController
 
-- (BFFMigrationTimeRemainingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (BFFMigrationTimeRemainingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   v9.receiver = self;
   v9.super_class = BFFMigrationTimeRemainingController;
-  v5 = [(BFFTimeRemainingController *)&v9 initWithTitle:a3 detailText:a4 icon:a5];
+  v5 = [(BFFTimeRemainingController *)&v9 initWithTitle:title detailText:text icon:icon];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCA958]);
@@ -26,64 +26,64 @@
   return v5;
 }
 
-- (void)setDeviceConnectionInformation:(id)a3
+- (void)setDeviceConnectionInformation:(id)information
 {
-  [(BFFMigrationTimeRemainingController *)self setConnectionInfo:a3];
+  [(BFFMigrationTimeRemainingController *)self setConnectionInfo:information];
 
   [(BFFMigrationTimeRemainingController *)self updateProgressSubtext];
 }
 
-- (void)setDeviceTransferProgress:(id)a3
+- (void)setDeviceTransferProgress:(id)progress
 {
-  v4 = a3;
-  [v4 progress];
+  progressCopy = progress;
+  [progressCopy progress];
   [(BFFTimeRemainingController *)self setProgress:?];
-  [(BFFMigrationTimeRemainingController *)self setMigrationProgress:v4];
+  [(BFFMigrationTimeRemainingController *)self setMigrationProgress:progressCopy];
 
   [(BFFMigrationTimeRemainingController *)self updateProgressSubtext];
 }
 
 - (void)updateProgressSubtext
 {
-  v3 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
-  v32 = -[BFFMigrationTimeRemainingController timeRemainingString:](self, "timeRemainingString:", [v3 minutesRemaining] * 60.0);
+  migrationProgress = [(BFFMigrationTimeRemainingController *)self migrationProgress];
+  v32 = -[BFFMigrationTimeRemainingController timeRemainingString:](self, "timeRemainingString:", [migrationProgress minutesRemaining] * 60.0);
 
   if (os_variant_has_internal_ui())
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
-    v6 = [v5 phaseDescription];
-    v7 = [v4 stringWithFormat:@"Internal: %@\n", v6];
+    migrationProgress2 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
+    phaseDescription = [migrationProgress2 phaseDescription];
+    v7 = [v4 stringWithFormat:@"Internal: %@\n", phaseDescription];
     [(BFFMigrationTimeRemainingController *)self setInternalProgressText:v7];
 
     v8 = MEMORY[0x277CCABB8];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
-    v11 = [v9 numberWithUnsignedLongLong:{objc_msgSend(v10, "filesTransferred")}];
+    migrationProgress3 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
+    v11 = [v9 numberWithUnsignedLongLong:{objc_msgSend(migrationProgress3, "filesTransferred")}];
     v12 = [v8 localizedStringFromNumber:v11 numberStyle:1];
 
     v13 = MEMORY[0x277CCABB8];
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
-    v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(v15, "bytesTransferred")}];
+    migrationProgress4 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
+    v16 = [v14 numberWithUnsignedLongLong:{objc_msgSend(migrationProgress4, "bytesTransferred")}];
     v17 = [v13 localizedStringFromNumber:v16 numberStyle:1];
 
-    v18 = [(BFFMigrationTimeRemainingController *)self elapsedDurationFormatter];
-    v19 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
-    v20 = [v19 fileTransferStartDate];
-    [v20 timeIntervalSinceNow];
-    v22 = [v18 stringFromTimeInterval:-v21];
+    elapsedDurationFormatter = [(BFFMigrationTimeRemainingController *)self elapsedDurationFormatter];
+    migrationProgress5 = [(BFFMigrationTimeRemainingController *)self migrationProgress];
+    fileTransferStartDate = [migrationProgress5 fileTransferStartDate];
+    [fileTransferStartDate timeIntervalSinceNow];
+    v22 = [elapsedDurationFormatter stringFromTimeInterval:-v21];
 
-    v23 = [(BFFMigrationTimeRemainingController *)self connectionInfo];
-    v24 = [v23 connectionType];
+    connectionInfo = [(BFFMigrationTimeRemainingController *)self connectionInfo];
+    connectionType = [connectionInfo connectionType];
 
     v25 = @"Unknown";
-    if (v24 == 2)
+    if (connectionType == 2)
     {
       v25 = @"Wireless";
     }
 
-    if (v24 == 1)
+    if (connectionType == 1)
     {
       v26 = @"Wired";
     }
@@ -93,17 +93,17 @@
       v26 = v25;
     }
 
-    v27 = [(BFFMigrationTimeRemainingController *)self internalProgressText];
-    v28 = [v27 stringByAppendingFormat:@"%@ files (%@ bytes)\nElapsed Time: %@\nConnection Type: %@", v12, v17, v22, v26];
+    internalProgressText = [(BFFMigrationTimeRemainingController *)self internalProgressText];
+    v28 = [internalProgressText stringByAppendingFormat:@"%@ files (%@ bytes)\nElapsed Time: %@\nConnection Type: %@", v12, v17, v22, v26];
     [(BFFMigrationTimeRemainingController *)self setInternalProgressText:v28];
 
-    v29 = [MEMORY[0x277D4DA50] buddyPreferencesEphemeral];
-    LODWORD(v28) = [v29 BOOLForKey:@"showInternalUI"];
+    buddyPreferencesEphemeral = [MEMORY[0x277D4DA50] buddyPreferencesEphemeral];
+    LODWORD(v28) = [buddyPreferencesEphemeral BOOLForKey:@"showInternalUI"];
 
     if (v28)
     {
-      v30 = [(BFFMigrationTimeRemainingController *)self internalProgressText];
-      v31 = [v32 stringByAppendingFormat:@"\n%@", v30];
+      internalProgressText2 = [(BFFMigrationTimeRemainingController *)self internalProgressText];
+      v31 = [v32 stringByAppendingFormat:@"\n%@", internalProgressText2];
 
       v32 = v31;
     }
@@ -112,9 +112,9 @@
   [(OBSetupAssistantProgressController *)self setProgressText:v32];
 }
 
-- (id)timeRemainingString:(double)a3
+- (id)timeRemainingString:(double)string
 {
-  if (a3 >= 0.0)
+  if (string >= 0.0)
   {
     v9.receiver = self;
     v9.super_class = BFFMigrationTimeRemainingController;

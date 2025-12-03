@@ -1,24 +1,24 @@
 @interface IMTraitCollectionConfigurationPredicate
-+ (id)predicateWithTraitCollection:(id)a3;
-- (BOOL)evaluateWithContext:(id)a3;
++ (id)predicateWithTraitCollection:(id)collection;
+- (BOOL)evaluateWithContext:(id)context;
 @end
 
 @implementation IMTraitCollectionConfigurationPredicate
 
-+ (id)predicateWithTraitCollection:(id)a3
++ (id)predicateWithTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(IMTraitCollectionConfigurationPredicate);
-  [(IMTraitCollectionConfigurationPredicate *)v4 setTraitCollection:v3];
+  [(IMTraitCollectionConfigurationPredicate *)v4 setTraitCollection:collectionCopy];
 
   return v4;
 }
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
-  v4 = [a3 traitCollection];
-  v5 = [(IMTraitCollectionConfigurationPredicate *)self traitCollection];
-  v6 = [v4 containsTraitsInCollection:v5];
+  traitCollection = [context traitCollection];
+  traitCollection2 = [(IMTraitCollectionConfigurationPredicate *)self traitCollection];
+  v6 = [traitCollection containsTraitsInCollection:traitCollection2];
 
   return v6;
 }

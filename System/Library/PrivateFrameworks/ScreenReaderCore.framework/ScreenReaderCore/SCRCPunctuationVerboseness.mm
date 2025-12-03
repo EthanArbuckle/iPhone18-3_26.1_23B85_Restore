@@ -1,18 +1,18 @@
 @interface SCRCPunctuationVerboseness
-+ (id)punctuationDictionaryForLevel:(int64_t)a3;
-+ (id)punctuationKeyForString:(id)a3;
++ (id)punctuationDictionaryForLevel:(int64_t)level;
++ (id)punctuationKeyForString:(id)string;
 + (id)userExposedPunctuationCharacters;
-+ (id)verbosenessDictionaryForLevel:(int64_t)a3;
++ (id)verbosenessDictionaryForLevel:(int64_t)level;
 @end
 
 @implementation SCRCPunctuationVerboseness
 
-+ (id)punctuationKeyForString:(id)a3
++ (id)punctuationKeyForString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04hx", objc_msgSend(v3, "characterAtIndex:", 0)];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04hx", objc_msgSend(stringCopy, "characterAtIndex:", 0)];
   }
 
   else
@@ -23,16 +23,16 @@
   return v4;
 }
 
-+ (id)punctuationDictionaryForLevel:(int64_t)a3
++ (id)punctuationDictionaryForLevel:(int64_t)level
 {
-  if (a3 > 2)
+  if (level > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279B71650[a3];
+    v3 = off_279B71650[level];
   }
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __62__SCRCPunctuationVerboseness_userExposedPunctuationCharacters__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userExposedPunctuationCharacters_onceToken != -1)
   {
     dispatch_once(&userExposedPunctuationCharacters_onceToken, block);
@@ -71,20 +71,20 @@ void __62__SCRCPunctuationVerboseness_userExposedPunctuationCharacters__block_in
   userExposedPunctuationCharacters_Keys = v3;
 }
 
-+ (id)verbosenessDictionaryForLevel:(int64_t)a3
++ (id)verbosenessDictionaryForLevel:(int64_t)level
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SCRCPunctuationVerboseness_verbosenessDictionaryForLevel___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (verbosenessDictionaryForLevel__once != -1)
   {
     dispatch_once(&verbosenessDictionaryForLevel__once, block);
   }
 
   v4 = verbosenessDictionaryForLevel__verbosenessDictionariesForLevels;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:level];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;

@@ -1,40 +1,40 @@
 @interface PKIdentityReplaceFingerprintHelper
-- (PKIdentityReplaceFingerprintHelper)initWithPass:(id)a3 isRemote:(BOOL)a4;
-- (void)isEligibleWithCompletion:(id)a3;
-- (void)viewControllerWithCompletion:(id)a3;
+- (PKIdentityReplaceFingerprintHelper)initWithPass:(id)pass isRemote:(BOOL)remote;
+- (void)isEligibleWithCompletion:(id)completion;
+- (void)viewControllerWithCompletion:(id)completion;
 @end
 
 @implementation PKIdentityReplaceFingerprintHelper
 
-- (PKIdentityReplaceFingerprintHelper)initWithPass:(id)a3 isRemote:(BOOL)a4
+- (PKIdentityReplaceFingerprintHelper)initWithPass:(id)pass isRemote:(BOOL)remote
 {
-  v7 = a3;
+  passCopy = pass;
   v11.receiver = self;
   v11.super_class = PKIdentityReplaceFingerprintHelper;
   v8 = [(PKIdentityReplaceFingerprintHelper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pass, a3);
-    v9->_isRemote = a4;
+    objc_storeStrong(&v8->_pass, pass);
+    v9->_isRemote = remote;
     v9->_loading = 0;
   }
 
   return v9;
 }
 
-- (void)isEligibleWithCompletion:(id)a3
+- (void)isEligibleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (-[PKSecureElementPass isIdentityPass](self->_pass, "isIdentityPass") && ([MEMORY[0x1E69BC740] currentStateForPolicy:0] & 4) != 0 && !self->_loading)
   {
     self->_loading = 1;
-    v5 = [(PKSecureElementPass *)self->_pass devicePrimaryContactlessPaymentApplication];
-    v6 = [v5 subcredentials];
-    v7 = [v6 anyObject];
-    v8 = [v7 identifier];
+    devicePrimaryContactlessPaymentApplication = [(PKSecureElementPass *)self->_pass devicePrimaryContactlessPaymentApplication];
+    subcredentials = [devicePrimaryContactlessPaymentApplication subcredentials];
+    anyObject = [subcredentials anyObject];
+    identifier = [anyObject identifier];
 
-    if (v8)
+    if (identifier)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69B8658]);
       [v9 addOperation:&__block_literal_global_209];
@@ -44,32 +44,32 @@
         v14[1] = 3221225472;
         v14[2] = __63__PKIdentityReplaceFingerprintHelper_isEligibleWithCompletion___block_invoke_15;
         v14[3] = &unk_1E8019220;
-        v15 = v8;
+        v15 = identifier;
         [v9 addOperation:v14];
       }
 
       [v9 addOperation:&__block_literal_global_21];
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __63__PKIdentityReplaceFingerprintHelper_isEligibleWithCompletion___block_invoke_26;
       v12[3] = &unk_1E8020E68;
       v12[4] = self;
-      v13 = v4;
-      v11 = [v9 evaluateWithInput:v10 completion:v12];
+      v13 = completionCopy;
+      v11 = [v9 evaluateWithInput:null completion:v12];
     }
 
     else
     {
       self->_loading = 2;
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else
   {
     self->_loading = 2;
-    (*(v4 + 2))(v4, self->_canReplace);
+    (*(completionCopy + 2))(completionCopy, self->_canReplace);
   }
 }
 
@@ -279,9 +279,9 @@ uint64_t __63__PKIdentityReplaceFingerprintHelper_isEligibleWithCompletion___blo
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)viewControllerWithCompletion:(id)a3
+- (void)viewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E6997E68]);
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -289,7 +289,7 @@ uint64_t __63__PKIdentityReplaceFingerprintHelper_isEligibleWithCompletion___blo
   v7[2] = __67__PKIdentityReplaceFingerprintHelper_viewControllerWithCompletion___block_invoke;
   v7[3] = &unk_1E8020E90;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [v5 beginBiometricReplacement:v7];
 

@@ -1,21 +1,21 @@
 @interface BCMutableAssetDetail
-- (BCMutableAssetDetail)initWithAssetID:(id)a3;
-- (BCMutableAssetDetail)initWithCloudData:(id)a3;
-- (BCMutableAssetDetail)initWithCoder:(id)a3;
-- (BCMutableAssetDetail)initWithRecord:(id)a3;
+- (BCMutableAssetDetail)initWithAssetID:(id)d;
+- (BCMutableAssetDetail)initWithCloudData:(id)data;
+- (BCMutableAssetDetail)initWithCoder:(id)coder;
+- (BCMutableAssetDetail)initWithRecord:(id)record;
 - (BOOL)isAudiobook;
 - (NSString)description;
 - (id)configuredRecordFromAttributes;
-- (void)encodeWithCoder:(id)a3;
-- (void)setReadingProgressHighWaterMark:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setReadingProgressHighWaterMark:(float)mark;
 @end
 
 @implementation BCMutableAssetDetail
 
-- (BCMutableAssetDetail)initWithAssetID:(id)a3
+- (BCMutableAssetDetail)initWithAssetID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = sub_100002660();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
   v5 = [(BCMutableCloudData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     self = *(v5 + 12);
     *(v5 + 12) = v6;
 LABEL_7:
@@ -41,20 +41,20 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableAssetDetail)initWithCloudData:(id)a3
+- (BCMutableAssetDetail)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v43.receiver = self;
   v43.super_class = BCMutableAssetDetail;
-  v5 = [(BCMutableCloudData *)&v43 initWithCloudData:v4];
+  v5 = [(BCMutableCloudData *)&v43 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 assetID];
-      v9 = [v8 copy];
+      assetID = [v6 assetID];
+      v9 = [assetID copy];
       assetID = v5->_assetID;
       v5->_assetID = v9;
 
@@ -62,14 +62,14 @@ LABEL_7:
       v5->_notFinished = [v7 notFinished];
       v5->_taste = [v7 taste];
       v5->_tasteSyncedToStore = [v7 tasteSyncedToStore];
-      v11 = [v7 dateFinished];
-      v12 = [v11 copy];
+      dateFinished = [v7 dateFinished];
+      v12 = [dateFinished copy];
       dateFinished = v5->_dateFinished;
       v5->_dateFinished = v12;
 
       v5->_finishedDateKind = [v7 finishedDateKind];
-      v14 = [v7 lastOpenDate];
-      v15 = [v14 copy];
+      lastOpenDate = [v7 lastOpenDate];
+      v15 = [lastOpenDate copy];
       lastOpenDate = v5->_lastOpenDate;
       v5->_lastOpenDate = v15;
 
@@ -77,41 +77,41 @@ LABEL_7:
       v5->_readingProgress = v17;
       [v7 readingProgressHighWaterMark];
       v5->_readingProgressHighWaterMark = v18;
-      v19 = [v7 readingPositionCFIString];
-      v20 = [v19 copy];
+      readingPositionCFIString = [v7 readingPositionCFIString];
+      v20 = [readingPositionCFIString copy];
       readingPositionCFIString = v5->_readingPositionCFIString;
       v5->_readingPositionCFIString = v20;
 
-      v22 = [v7 readingPositionAnnotationVersion];
-      v23 = [v22 copy];
+      readingPositionAnnotationVersion = [v7 readingPositionAnnotationVersion];
+      v23 = [readingPositionAnnotationVersion copy];
       readingPositionAnnotationVersion = v5->_readingPositionAnnotationVersion;
       v5->_readingPositionAnnotationVersion = v23;
 
-      v25 = [v7 readingPositionAssetVersion];
-      v26 = [v25 copy];
+      readingPositionAssetVersion = [v7 readingPositionAssetVersion];
+      v26 = [readingPositionAssetVersion copy];
       readingPositionAssetVersion = v5->_readingPositionAssetVersion;
       v5->_readingPositionAssetVersion = v26;
 
-      v28 = [v7 readingPositionUserData];
-      v29 = [v28 copy];
+      readingPositionUserData = [v7 readingPositionUserData];
+      v29 = [readingPositionUserData copy];
       readingPositionUserData = v5->_readingPositionUserData;
       v5->_readingPositionUserData = v29;
 
       v5->_readingPositionLocationRangeStart = [v7 readingPositionLocationRangeStart];
       v5->_readingPositionLocationRangeEnd = [v7 readingPositionLocationRangeEnd];
       v5->_readingPositionAbsolutePhysicalLocation = [v7 readingPositionAbsolutePhysicalLocation];
-      v31 = [v7 readingPositionStorageUUID];
-      v32 = [v31 copy];
+      readingPositionStorageUUID = [v7 readingPositionStorageUUID];
+      v32 = [readingPositionStorageUUID copy];
       readingPositionStorageUUID = v5->_readingPositionStorageUUID;
       v5->_readingPositionStorageUUID = v32;
 
-      v34 = [v7 readingPositionLocationUpdateDate];
-      v35 = [v34 copy];
+      readingPositionLocationUpdateDate = [v7 readingPositionLocationUpdateDate];
+      v35 = [readingPositionLocationUpdateDate copy];
       readingPositionLocationUpdateDate = v5->_readingPositionLocationUpdateDate;
       v5->_readingPositionLocationUpdateDate = v35;
 
-      v37 = [v7 datePlaybackTimeUpdated];
-      v38 = [v37 copy];
+      datePlaybackTimeUpdated = [v7 datePlaybackTimeUpdated];
+      v38 = [datePlaybackTimeUpdated copy];
       datePlaybackTimeUpdated = v5->_datePlaybackTimeUpdated;
       v5->_datePlaybackTimeUpdated = v38;
 
@@ -134,10 +134,10 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableAssetDetail)initWithRecord:(id)a3
+- (BCMutableAssetDetail)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     v8 = sub_100002660();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -151,66 +151,66 @@ LABEL_7:
 
   v37.receiver = self;
   v37.super_class = BCMutableAssetDetail;
-  v5 = [(BCMutableCloudData *)&v37 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v37 initWithRecord:recordCopy];
   if (v5)
   {
-    v6 = [BCCloudData localIdentifierFromRecord:v4];
+    v6 = [BCCloudData localIdentifierFromRecord:recordCopy];
     assetID = v5->_assetID;
     v5->_assetID = v6;
 
-    self = [v4 objectForKey:@"isFinished"];
+    self = [recordCopy objectForKey:@"isFinished"];
     v5->_isFinished = [(BCMutableAssetDetail *)self BOOLValue];
-    v8 = [v4 objectForKey:@"notFinished"];
+    v8 = [recordCopy objectForKey:@"notFinished"];
     v5->_notFinished = [v8 BOOLValue];
-    v36 = [v4 objectForKey:@"taste"];
+    v36 = [recordCopy objectForKey:@"taste"];
     v5->_taste = [v36 integerValue];
-    v35 = [v4 objectForKey:@"tasteSyncedToStore"];
+    v35 = [recordCopy objectForKey:@"tasteSyncedToStore"];
     v5->_tasteSyncedToStore = [v35 integerValue];
-    v9 = [v4 objectForKey:@"dateFinished"];
+    v9 = [recordCopy objectForKey:@"dateFinished"];
     dateFinished = v5->_dateFinished;
     v5->_dateFinished = v9;
 
-    v11 = [v4 encryptedValues];
-    v34 = [v11 objectForKeyedSubscript:@"finishedDateKind"];
+    encryptedValues = [recordCopy encryptedValues];
+    v34 = [encryptedValues objectForKeyedSubscript:@"finishedDateKind"];
 
     v5->_finishedDateKind = [v34 integerValue];
-    v12 = [v4 objectForKey:@"lastOpenDate"];
+    v12 = [recordCopy objectForKey:@"lastOpenDate"];
     lastOpenDate = v5->_lastOpenDate;
     v5->_lastOpenDate = v12;
 
-    v14 = [v4 objectForKey:@"readingProgress"];
+    v14 = [recordCopy objectForKey:@"readingProgress"];
     [v14 floatValue];
     v5->_readingProgress = v15;
-    v16 = [v4 objectForKey:@"readingProgressHighWaterMark"];
+    v16 = [recordCopy objectForKey:@"readingProgressHighWaterMark"];
     [v16 floatValue];
     v5->_readingProgressHighWaterMark = v17;
-    v18 = [v4 objectForKey:@"readingPositionCFIString"];
+    v18 = [recordCopy objectForKey:@"readingPositionCFIString"];
     readingPositionCFIString = v5->_readingPositionCFIString;
     v5->_readingPositionCFIString = v18;
 
-    v20 = [v4 objectForKey:@"readingPositionUserData"];
+    v20 = [recordCopy objectForKey:@"readingPositionUserData"];
     readingPositionUserData = v5->_readingPositionUserData;
     v5->_readingPositionUserData = v20;
 
-    v22 = [v4 objectForKey:@"readingPositionLocationRangeStart"];
+    v22 = [recordCopy objectForKey:@"readingPositionLocationRangeStart"];
     v5->_readingPositionLocationRangeStart = [v22 intValue];
-    v23 = [v4 objectForKey:@"readingPositionLocationRangeEnd"];
+    v23 = [recordCopy objectForKey:@"readingPositionLocationRangeEnd"];
     v5->_readingPositionLocationRangeEnd = [v23 intValue];
-    v24 = [v4 objectForKey:@"readingPositionAbsolutePhysicalLocation"];
+    v24 = [recordCopy objectForKey:@"readingPositionAbsolutePhysicalLocation"];
     v5->_readingPositionAbsolutePhysicalLocation = [v24 intValue];
-    v25 = [v4 objectForKey:@"readingPositionStorageUUID"];
+    v25 = [recordCopy objectForKey:@"readingPositionStorageUUID"];
     readingPositionStorageUUID = v5->_readingPositionStorageUUID;
     v5->_readingPositionStorageUUID = v25;
 
-    v27 = [v4 objectForKey:@"readingPositionLocationUpdateDate"];
+    v27 = [recordCopy objectForKey:@"readingPositionLocationUpdateDate"];
     readingPositionLocationUpdateDate = v5->_readingPositionLocationUpdateDate;
     v5->_readingPositionLocationUpdateDate = v27;
 
-    v29 = [v4 objectForKey:@"datePlaybackTimeUpdated"];
+    v29 = [recordCopy objectForKey:@"datePlaybackTimeUpdated"];
     datePlaybackTimeUpdated = v5->_datePlaybackTimeUpdated;
     v5->_datePlaybackTimeUpdated = v29;
 
-    v31 = [v4 objectForKey:@"bookmarkTime"];
+    v31 = [recordCopy objectForKey:@"bookmarkTime"];
     [v31 doubleValue];
     v5->_bookmarkTime = v32;
 
@@ -222,7 +222,7 @@ LABEL_7:
 
 - (NSString)description
 {
-  v29 = [(BCMutableAssetDetail *)self assetID];
+  assetID = [(BCMutableAssetDetail *)self assetID];
   if ([(BCMutableAssetDetail *)self isFinished])
   {
     v3 = @"YES";
@@ -245,49 +245,49 @@ LABEL_7:
   }
 
   v27 = v4;
-  v26 = [(BCMutableAssetDetail *)self dateFinished];
-  v25 = [(BCMutableAssetDetail *)self finishedDateKind];
-  v24 = [(BCMutableAssetDetail *)self lastOpenDate];
-  v23 = [(BCMutableAssetDetail *)self taste];
-  v22 = [(BCMutableAssetDetail *)self tasteSyncedToStore];
+  dateFinished = [(BCMutableAssetDetail *)self dateFinished];
+  finishedDateKind = [(BCMutableAssetDetail *)self finishedDateKind];
+  lastOpenDate = [(BCMutableAssetDetail *)self lastOpenDate];
+  taste = [(BCMutableAssetDetail *)self taste];
+  tasteSyncedToStore = [(BCMutableAssetDetail *)self tasteSyncedToStore];
   [(BCMutableAssetDetail *)self readingProgress];
   v6 = v5;
   [(BCMutableAssetDetail *)self readingProgressHighWaterMark];
   v8 = v7;
-  v9 = [(BCMutableAssetDetail *)self readingPositionCFIString];
-  v10 = [(BCMutableAssetDetail *)self readingPositionAnnotationVersion];
-  v11 = [(BCMutableAssetDetail *)self readingPositionAssetVersion];
-  v21 = [(BCMutableAssetDetail *)self readingPositionUserData];
-  v20 = [(BCMutableAssetDetail *)self readingPositionLocationRangeStart];
-  v12 = [(BCMutableAssetDetail *)self readingPositionLocationRangeEnd];
-  v13 = [(BCMutableAssetDetail *)self readingPositionAbsolutePhysicalLocation];
-  v14 = [(BCMutableAssetDetail *)self readingPositionStorageUUID];
-  v15 = [(BCMutableAssetDetail *)self readingPositionLocationUpdateDate];
-  v16 = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
+  readingPositionCFIString = [(BCMutableAssetDetail *)self readingPositionCFIString];
+  readingPositionAnnotationVersion = [(BCMutableAssetDetail *)self readingPositionAnnotationVersion];
+  readingPositionAssetVersion = [(BCMutableAssetDetail *)self readingPositionAssetVersion];
+  readingPositionUserData = [(BCMutableAssetDetail *)self readingPositionUserData];
+  readingPositionLocationRangeStart = [(BCMutableAssetDetail *)self readingPositionLocationRangeStart];
+  readingPositionLocationRangeEnd = [(BCMutableAssetDetail *)self readingPositionLocationRangeEnd];
+  readingPositionAbsolutePhysicalLocation = [(BCMutableAssetDetail *)self readingPositionAbsolutePhysicalLocation];
+  readingPositionStorageUUID = [(BCMutableAssetDetail *)self readingPositionStorageUUID];
+  readingPositionLocationUpdateDate = [(BCMutableAssetDetail *)self readingPositionLocationUpdateDate];
+  datePlaybackTimeUpdated = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
   [(BCMutableAssetDetail *)self bookmarkTime];
-  v18 = [NSString stringWithFormat:@"BCMutableAssetDetail assetID: %@\n  (isFinished: %@, notFinished: %@, dateFinished: %@, finishedDateKind: %d, lastOpenDate: %@)  (taste: %x, tasteSyncedToStore: %d)  readingPosition=(\n    readingProgress:%.2f\n    readingProgressHighWaterMark:%.2f\n    cfi:%@\n    annotationVersion=%@\n    assetVersion=%@\n    userData=%@\n    locationRangeStart=%d    locationRangeEnd=%d    absolutePhysicalLocation=%d    storageUUID=%@\n    locationUpdateDate=%@)\n  playbackPosition=(\n    datePlaybackTimeUpdated=%@\n    bookmarkTime = %.2f)", v29, v28, v27, v26, v25, v24, v23, v22, *&v6, *&v8, v9, v10, v11, v21, v20, v12, v13, v14, v15, v16, v17];
+  v18 = [NSString stringWithFormat:@"BCMutableAssetDetail assetID: %@\n  (isFinished: %@, notFinished: %@, dateFinished: %@, finishedDateKind: %d, lastOpenDate: %@)  (taste: %x, tasteSyncedToStore: %d)  readingPosition=(\n    readingProgress:%.2f\n    readingProgressHighWaterMark:%.2f\n    cfi:%@\n    annotationVersion=%@\n    assetVersion=%@\n    userData=%@\n    locationRangeStart=%d    locationRangeEnd=%d    absolutePhysicalLocation=%d    storageUUID=%@\n    locationUpdateDate=%@)\n  playbackPosition=(\n    datePlaybackTimeUpdated=%@\n    bookmarkTime = %.2f)", assetID, v28, v27, dateFinished, finishedDateKind, lastOpenDate, taste, tasteSyncedToStore, *&v6, *&v8, readingPositionCFIString, readingPositionAnnotationVersion, readingPositionAssetVersion, readingPositionUserData, readingPositionLocationRangeStart, readingPositionLocationRangeEnd, readingPositionAbsolutePhysicalLocation, readingPositionStorageUUID, readingPositionLocationUpdateDate, datePlaybackTimeUpdated, v17];
 
   return v18;
 }
 
-- (void)setReadingProgressHighWaterMark:(float)a3
+- (void)setReadingProgressHighWaterMark:(float)mark
 {
   readingProgressHighWaterMark = self->_readingProgressHighWaterMark;
-  if (readingProgressHighWaterMark >= a3)
+  if (readingProgressHighWaterMark >= mark)
   {
-    if (readingProgressHighWaterMark > a3)
+    if (readingProgressHighWaterMark > mark)
     {
       v6 = sub_100002660();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(BCMutableAssetDetail *)self assetID];
+        assetID = [(BCMutableAssetDetail *)self assetID];
         v8 = self->_readingProgressHighWaterMark;
         v9 = 138412802;
-        v10 = v7;
+        v10 = assetID;
         v11 = 2048;
         v12 = v8;
         v13 = 2048;
-        v14 = a3;
+        markCopy = mark;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "BCMutableAssetDetail %@ attempt to move readingProgressHighWaterMark backwards from %f to %f", &v9, 0x20u);
       }
     }
@@ -295,7 +295,7 @@ LABEL_7:
 
   else
   {
-    self->_readingProgressHighWaterMark = a3;
+    self->_readingProgressHighWaterMark = mark;
   }
 }
 
@@ -303,190 +303,190 @@ LABEL_7:
 {
   v26.receiver = self;
   v26.super_class = BCMutableAssetDetail;
-  v3 = [(BCMutableCloudData *)&v26 configuredRecordFromAttributes];
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v26 configuredRecordFromAttributes];
   v4 = [NSNumber numberWithBool:[(BCMutableAssetDetail *)self isFinished]];
-  [v3 setObject:v4 forKey:@"isFinished"];
+  [configuredRecordFromAttributes setObject:v4 forKey:@"isFinished"];
 
   v5 = [NSNumber numberWithBool:[(BCMutableAssetDetail *)self notFinished]];
-  [v3 setObject:v5 forKey:@"notFinished"];
+  [configuredRecordFromAttributes setObject:v5 forKey:@"notFinished"];
 
   v6 = [NSNumber numberWithShort:[(BCMutableAssetDetail *)self taste]];
-  [v3 setObject:v6 forKey:@"taste"];
+  [configuredRecordFromAttributes setObject:v6 forKey:@"taste"];
 
   v7 = [NSNumber numberWithShort:[(BCMutableAssetDetail *)self tasteSyncedToStore]];
-  [v3 setObject:v7 forKey:@"tasteSyncedToStore"];
+  [configuredRecordFromAttributes setObject:v7 forKey:@"tasteSyncedToStore"];
 
-  v8 = [(BCMutableAssetDetail *)self lastOpenDate];
-  [v3 setObject:v8 forKey:@"lastOpenDate"];
+  lastOpenDate = [(BCMutableAssetDetail *)self lastOpenDate];
+  [configuredRecordFromAttributes setObject:lastOpenDate forKey:@"lastOpenDate"];
 
-  v9 = [(BCMutableAssetDetail *)self dateFinished];
-  [v3 setObject:v9 forKey:@"dateFinished"];
+  dateFinished = [(BCMutableAssetDetail *)self dateFinished];
+  [configuredRecordFromAttributes setObject:dateFinished forKey:@"dateFinished"];
 
   if (_os_feature_enabled_impl())
   {
     v10 = [NSNumber numberWithShort:[(BCMutableAssetDetail *)self finishedDateKind]];
-    v11 = [v3 encryptedValues];
-    [v11 setObject:v10 forKeyedSubscript:@"finishedDateKind"];
+    encryptedValues = [configuredRecordFromAttributes encryptedValues];
+    [encryptedValues setObject:v10 forKeyedSubscript:@"finishedDateKind"];
   }
 
   [(BCMutableAssetDetail *)self readingProgress];
   v12 = [NSNumber numberWithFloat:?];
-  [v3 setObject:v12 forKey:@"readingProgress"];
+  [configuredRecordFromAttributes setObject:v12 forKey:@"readingProgress"];
 
   [(BCMutableAssetDetail *)self readingProgressHighWaterMark];
   v13 = [NSNumber numberWithFloat:?];
-  [v3 setObject:v13 forKey:@"readingProgressHighWaterMark"];
+  [configuredRecordFromAttributes setObject:v13 forKey:@"readingProgressHighWaterMark"];
 
-  v14 = [(BCMutableAssetDetail *)self readingPositionCFIString];
-  [v3 setObject:v14 forKey:@"readingPositionCFIString"];
+  readingPositionCFIString = [(BCMutableAssetDetail *)self readingPositionCFIString];
+  [configuredRecordFromAttributes setObject:readingPositionCFIString forKey:@"readingPositionCFIString"];
 
-  v15 = [(BCMutableAssetDetail *)self readingPositionAnnotationVersion];
-  [v3 setObject:v15 forKey:@"readingPositionAnnotationVersion"];
+  readingPositionAnnotationVersion = [(BCMutableAssetDetail *)self readingPositionAnnotationVersion];
+  [configuredRecordFromAttributes setObject:readingPositionAnnotationVersion forKey:@"readingPositionAnnotationVersion"];
 
-  v16 = [(BCMutableAssetDetail *)self readingPositionAssetVersion];
-  [v3 setObject:v16 forKey:@"readingPositionAssetVersion"];
+  readingPositionAssetVersion = [(BCMutableAssetDetail *)self readingPositionAssetVersion];
+  [configuredRecordFromAttributes setObject:readingPositionAssetVersion forKey:@"readingPositionAssetVersion"];
 
-  v17 = [(BCMutableAssetDetail *)self readingPositionUserData];
-  [v3 setObject:v17 forKey:@"readingPositionUserData"];
+  readingPositionUserData = [(BCMutableAssetDetail *)self readingPositionUserData];
+  [configuredRecordFromAttributes setObject:readingPositionUserData forKey:@"readingPositionUserData"];
 
   v18 = [NSNumber numberWithInt:[(BCMutableAssetDetail *)self readingPositionLocationRangeStart]];
-  [v3 setObject:v18 forKey:@"readingPositionLocationRangeStart"];
+  [configuredRecordFromAttributes setObject:v18 forKey:@"readingPositionLocationRangeStart"];
 
   v19 = [NSNumber numberWithInt:[(BCMutableAssetDetail *)self readingPositionLocationRangeEnd]];
-  [v3 setObject:v19 forKey:@"readingPositionLocationRangeEnd"];
+  [configuredRecordFromAttributes setObject:v19 forKey:@"readingPositionLocationRangeEnd"];
 
   v20 = [NSNumber numberWithInt:[(BCMutableAssetDetail *)self readingPositionAbsolutePhysicalLocation]];
-  [v3 setObject:v20 forKey:@"readingPositionAbsolutePhysicalLocation"];
+  [configuredRecordFromAttributes setObject:v20 forKey:@"readingPositionAbsolutePhysicalLocation"];
 
-  v21 = [(BCMutableAssetDetail *)self readingPositionStorageUUID];
-  [v3 setObject:v21 forKey:@"readingPositionStorageUUID"];
+  readingPositionStorageUUID = [(BCMutableAssetDetail *)self readingPositionStorageUUID];
+  [configuredRecordFromAttributes setObject:readingPositionStorageUUID forKey:@"readingPositionStorageUUID"];
 
-  v22 = [(BCMutableAssetDetail *)self readingPositionLocationUpdateDate];
-  [v3 setObject:v22 forKey:@"readingPositionLocationUpdateDate"];
+  readingPositionLocationUpdateDate = [(BCMutableAssetDetail *)self readingPositionLocationUpdateDate];
+  [configuredRecordFromAttributes setObject:readingPositionLocationUpdateDate forKey:@"readingPositionLocationUpdateDate"];
 
-  v23 = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
-  [v3 setObject:v23 forKey:@"datePlaybackTimeUpdated"];
+  datePlaybackTimeUpdated = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
+  [configuredRecordFromAttributes setObject:datePlaybackTimeUpdated forKey:@"datePlaybackTimeUpdated"];
 
   [(BCMutableAssetDetail *)self bookmarkTime];
   v24 = [NSNumber numberWithDouble:?];
-  [v3 setObject:v24 forKey:@"bookmarkTime"];
+  [configuredRecordFromAttributes setObject:v24 forKey:@"bookmarkTime"];
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = BCMutableAssetDetail;
-  v4 = a3;
-  [(BCMutableCloudData *)&v16 encodeWithCoder:v4];
-  [v4 encodeBool:-[BCMutableAssetDetail isFinished](self forKey:{"isFinished", v16.receiver, v16.super_class), @"isFinished"}];
-  [v4 encodeBool:-[BCMutableAssetDetail notFinished](self forKey:{"notFinished"), @"notFinished"}];
-  [v4 encodeInt32:-[BCMutableAssetDetail taste](self forKey:{"taste"), @"taste"}];
-  [v4 encodeInt32:-[BCMutableAssetDetail tasteSyncedToStore](self forKey:{"tasteSyncedToStore"), @"tasteSyncedToStore"}];
-  v5 = [(BCMutableAssetDetail *)self dateFinished];
-  [v4 encodeObject:v5 forKey:@"dateFinished"];
+  coderCopy = coder;
+  [(BCMutableCloudData *)&v16 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[BCMutableAssetDetail isFinished](self forKey:{"isFinished", v16.receiver, v16.super_class), @"isFinished"}];
+  [coderCopy encodeBool:-[BCMutableAssetDetail notFinished](self forKey:{"notFinished"), @"notFinished"}];
+  [coderCopy encodeInt32:-[BCMutableAssetDetail taste](self forKey:{"taste"), @"taste"}];
+  [coderCopy encodeInt32:-[BCMutableAssetDetail tasteSyncedToStore](self forKey:{"tasteSyncedToStore"), @"tasteSyncedToStore"}];
+  dateFinished = [(BCMutableAssetDetail *)self dateFinished];
+  [coderCopy encodeObject:dateFinished forKey:@"dateFinished"];
 
-  [v4 encodeInt32:-[BCMutableAssetDetail finishedDateKind](self forKey:{"finishedDateKind"), @"finishedDateKind"}];
-  v6 = [(BCMutableAssetDetail *)self lastOpenDate];
-  [v4 encodeObject:v6 forKey:@"lastOpenDate"];
+  [coderCopy encodeInt32:-[BCMutableAssetDetail finishedDateKind](self forKey:{"finishedDateKind"), @"finishedDateKind"}];
+  lastOpenDate = [(BCMutableAssetDetail *)self lastOpenDate];
+  [coderCopy encodeObject:lastOpenDate forKey:@"lastOpenDate"];
 
   [(BCMutableAssetDetail *)self readingProgress];
-  [v4 encodeDouble:@"readingProgress" forKey:v7];
+  [coderCopy encodeDouble:@"readingProgress" forKey:v7];
   [(BCMutableAssetDetail *)self readingProgressHighWaterMark];
-  [v4 encodeDouble:@"readingProgressHighWaterMark" forKey:v8];
-  v9 = [(BCMutableAssetDetail *)self readingPositionCFIString];
-  [v4 encodeObject:v9 forKey:@"readingPositionCFIString"];
+  [coderCopy encodeDouble:@"readingProgressHighWaterMark" forKey:v8];
+  readingPositionCFIString = [(BCMutableAssetDetail *)self readingPositionCFIString];
+  [coderCopy encodeObject:readingPositionCFIString forKey:@"readingPositionCFIString"];
 
-  v10 = [(BCMutableAssetDetail *)self readingPositionAnnotationVersion];
-  [v4 encodeObject:v10 forKey:@"readingPositionAnnotationVersion"];
+  readingPositionAnnotationVersion = [(BCMutableAssetDetail *)self readingPositionAnnotationVersion];
+  [coderCopy encodeObject:readingPositionAnnotationVersion forKey:@"readingPositionAnnotationVersion"];
 
-  v11 = [(BCMutableAssetDetail *)self readingPositionAssetVersion];
-  [v4 encodeObject:v11 forKey:@"readingPositionAssetVersion"];
+  readingPositionAssetVersion = [(BCMutableAssetDetail *)self readingPositionAssetVersion];
+  [coderCopy encodeObject:readingPositionAssetVersion forKey:@"readingPositionAssetVersion"];
 
-  v12 = [(BCMutableAssetDetail *)self readingPositionUserData];
-  [v4 encodeObject:v12 forKey:@"readingPositionUserData"];
+  readingPositionUserData = [(BCMutableAssetDetail *)self readingPositionUserData];
+  [coderCopy encodeObject:readingPositionUserData forKey:@"readingPositionUserData"];
 
-  [v4 encodeInt32:-[BCMutableAssetDetail readingPositionLocationRangeStart](self forKey:{"readingPositionLocationRangeStart"), @"readingPositionLocationRangeStart"}];
-  [v4 encodeInt32:-[BCMutableAssetDetail readingPositionLocationRangeEnd](self forKey:{"readingPositionLocationRangeEnd"), @"readingPositionLocationRangeEnd"}];
-  [v4 encodeInt32:-[BCMutableAssetDetail readingPositionAbsolutePhysicalLocation](self forKey:{"readingPositionAbsolutePhysicalLocation"), @"readingPositionAbsolutePhysicalLocation"}];
-  v13 = [(BCMutableAssetDetail *)self readingPositionStorageUUID];
-  [v4 encodeObject:v13 forKey:@"readingPositionStorageUUID"];
+  [coderCopy encodeInt32:-[BCMutableAssetDetail readingPositionLocationRangeStart](self forKey:{"readingPositionLocationRangeStart"), @"readingPositionLocationRangeStart"}];
+  [coderCopy encodeInt32:-[BCMutableAssetDetail readingPositionLocationRangeEnd](self forKey:{"readingPositionLocationRangeEnd"), @"readingPositionLocationRangeEnd"}];
+  [coderCopy encodeInt32:-[BCMutableAssetDetail readingPositionAbsolutePhysicalLocation](self forKey:{"readingPositionAbsolutePhysicalLocation"), @"readingPositionAbsolutePhysicalLocation"}];
+  readingPositionStorageUUID = [(BCMutableAssetDetail *)self readingPositionStorageUUID];
+  [coderCopy encodeObject:readingPositionStorageUUID forKey:@"readingPositionStorageUUID"];
 
-  v14 = [(BCMutableAssetDetail *)self readingPositionLocationUpdateDate];
-  [v4 encodeObject:v14 forKey:@"readingPositionLocationUpdateDate"];
+  readingPositionLocationUpdateDate = [(BCMutableAssetDetail *)self readingPositionLocationUpdateDate];
+  [coderCopy encodeObject:readingPositionLocationUpdateDate forKey:@"readingPositionLocationUpdateDate"];
 
-  v15 = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
-  [v4 encodeObject:v15 forKey:@"datePlaybackTimeUpdated"];
+  datePlaybackTimeUpdated = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
+  [coderCopy encodeObject:datePlaybackTimeUpdated forKey:@"datePlaybackTimeUpdated"];
 
   [(BCMutableAssetDetail *)self bookmarkTime];
-  [v4 encodeDouble:@"bookmarkTime" forKey:?];
+  [coderCopy encodeDouble:@"bookmarkTime" forKey:?];
 }
 
-- (BCMutableAssetDetail)initWithCoder:(id)a3
+- (BCMutableAssetDetail)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = BCMutableAssetDetail;
-  v5 = [(BCMutableCloudData *)&v31 initWithCoder:v4];
+  v5 = [(BCMutableCloudData *)&v31 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(BCMutableCloudData *)v5 localRecordID];
+    localRecordID = [(BCMutableCloudData *)v5 localRecordID];
     assetID = v6->_assetID;
-    v6->_assetID = v7;
+    v6->_assetID = localRecordID;
 
-    v6->_isFinished = [v4 decodeBoolForKey:@"isFinished"];
-    v6->_notFinished = [v4 decodeBoolForKey:@"notFinished"];
-    v6->_taste = [v4 decodeInt32ForKey:@"taste"];
-    v6->_tasteSyncedToStore = [v4 decodeInt32ForKey:@"tasteSyncedToStore"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateFinished"];
+    v6->_isFinished = [coderCopy decodeBoolForKey:@"isFinished"];
+    v6->_notFinished = [coderCopy decodeBoolForKey:@"notFinished"];
+    v6->_taste = [coderCopy decodeInt32ForKey:@"taste"];
+    v6->_tasteSyncedToStore = [coderCopy decodeInt32ForKey:@"tasteSyncedToStore"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateFinished"];
     dateFinished = v6->_dateFinished;
     v6->_dateFinished = v9;
 
-    v6->_finishedDateKind = [v4 decodeInt32ForKey:@"finishedDateKind"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastOpenDate"];
+    v6->_finishedDateKind = [coderCopy decodeInt32ForKey:@"finishedDateKind"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastOpenDate"];
     lastOpenDate = v6->_lastOpenDate;
     v6->_lastOpenDate = v11;
 
-    [v4 decodeDoubleForKey:@"readingProgress"];
+    [coderCopy decodeDoubleForKey:@"readingProgress"];
     *&v13 = v13;
     v6->_readingProgress = *&v13;
-    [v4 decodeDoubleForKey:@"readingProgressHighWaterMark"];
+    [coderCopy decodeDoubleForKey:@"readingProgressHighWaterMark"];
     *&v14 = v14;
     v6->_readingProgressHighWaterMark = *&v14;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionCFIString"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionCFIString"];
     readingPositionCFIString = v6->_readingPositionCFIString;
     v6->_readingPositionCFIString = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionAnnotationVersion"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionAnnotationVersion"];
     readingPositionAnnotationVersion = v6->_readingPositionAnnotationVersion;
     v6->_readingPositionAnnotationVersion = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionAssetVersion"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionAssetVersion"];
     readingPositionAssetVersion = v6->_readingPositionAssetVersion;
     v6->_readingPositionAssetVersion = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionUserData"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionUserData"];
     readingPositionUserData = v6->_readingPositionUserData;
     v6->_readingPositionUserData = v21;
 
-    v6->_readingPositionLocationRangeStart = [v4 decodeInt32ForKey:@"readingPositionLocationRangeStart"];
-    v6->_readingPositionLocationRangeEnd = [v4 decodeInt32ForKey:@"readingPositionLocationRangeEnd"];
-    v6->_readingPositionAbsolutePhysicalLocation = [v4 decodeInt32ForKey:@"readingPositionAbsolutePhysicalLocation"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionStorageUUID"];
+    v6->_readingPositionLocationRangeStart = [coderCopy decodeInt32ForKey:@"readingPositionLocationRangeStart"];
+    v6->_readingPositionLocationRangeEnd = [coderCopy decodeInt32ForKey:@"readingPositionLocationRangeEnd"];
+    v6->_readingPositionAbsolutePhysicalLocation = [coderCopy decodeInt32ForKey:@"readingPositionAbsolutePhysicalLocation"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionStorageUUID"];
     readingPositionStorageUUID = v6->_readingPositionStorageUUID;
     v6->_readingPositionStorageUUID = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionLocationUpdateDate"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingPositionLocationUpdateDate"];
     readingPositionLocationUpdateDate = v6->_readingPositionLocationUpdateDate;
     v6->_readingPositionLocationUpdateDate = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"datePlaybackTimeUpdated"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"datePlaybackTimeUpdated"];
     datePlaybackTimeUpdated = v6->_datePlaybackTimeUpdated;
     v6->_datePlaybackTimeUpdated = v27;
 
-    [v4 decodeDoubleForKey:@"bookmarkTime"];
+    [coderCopy decodeDoubleForKey:@"bookmarkTime"];
     v6->_bookmarkTime = v29;
   }
 
@@ -495,8 +495,8 @@ LABEL_7:
 
 - (BOOL)isAudiobook
 {
-  v2 = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
-  v3 = v2 != 0;
+  datePlaybackTimeUpdated = [(BCMutableAssetDetail *)self datePlaybackTimeUpdated];
+  v3 = datePlaybackTimeUpdated != 0;
 
   return v3;
 }

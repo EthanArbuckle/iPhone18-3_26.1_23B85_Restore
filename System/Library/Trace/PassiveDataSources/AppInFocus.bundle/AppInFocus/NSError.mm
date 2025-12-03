@@ -1,13 +1,13 @@
 @interface NSError
-+ (NSError)errorWithCode:(unint64_t)a3 description:(id)a4;
++ (NSError)errorWithCode:(unint64_t)code description:(id)description;
 @end
 
 @implementation NSError
 
-+ (NSError)errorWithCode:(unint64_t)a3 description:(id)a4
++ (NSError)errorWithCode:(unint64_t)code description:(id)description
 {
-  v5 = [NSDictionary dictionaryWithObject:a4 forKey:NSLocalizedDescriptionKey];
-  v6 = [NSError errorWithDomain:@"AppInFocusPassiveDataSource" code:a3 userInfo:v5];
+  v5 = [NSDictionary dictionaryWithObject:description forKey:NSLocalizedDescriptionKey];
+  v6 = [NSError errorWithDomain:@"AppInFocusPassiveDataSource" code:code userInfo:v5];
 
   return v6;
 }

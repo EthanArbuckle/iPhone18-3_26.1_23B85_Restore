@@ -1,23 +1,23 @@
 @interface IMReplySuggestion
-- (IMReplySuggestion)initWithType:(int64_t)a3 text:(id)a4 version:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)trackSentAtIndex:(unint64_t)a3 isNotification:(BOOL)a4;
+- (IMReplySuggestion)initWithType:(int64_t)type text:(id)text version:(int64_t)version;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)trackSentAtIndex:(unint64_t)index isNotification:(BOOL)notification;
 @end
 
 @implementation IMReplySuggestion
 
-- (IMReplySuggestion)initWithType:(int64_t)a3 text:(id)a4 version:(int64_t)a5
+- (IMReplySuggestion)initWithType:(int64_t)type text:(id)text version:(int64_t)version
 {
-  v8 = a4;
+  textCopy = text;
   v15.receiver = self;
   v15.super_class = IMReplySuggestion;
   v9 = [(IMReplySuggestion *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    v9->_version = a5;
-    v11 = [v8 copy];
+    v9->_type = type;
+    v9->_version = version;
+    v11 = [textCopy copy];
     text = v10->_text;
     v10->_text = v11;
 
@@ -28,7 +28,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[IMReplySuggestion alloc] initWithType:self->_type text:self->_text version:self->_version];
   v5 = [(NSString *)self->_stringRepresentation copy];
@@ -43,19 +43,19 @@
   return v4;
 }
 
-- (void)trackSentAtIndex:(unint64_t)a3 isNotification:(BOOL)a4
+- (void)trackSentAtIndex:(unint64_t)index isNotification:(BOOL)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   v15[5] = *MEMORY[0x1E69E9840];
   v7 = +[IMMetricsCollector sharedInstance];
   v14[0] = @"IMMetricsCollectorEventWatchQuickReplyKey";
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IMReplySuggestion type](self, "type")}];
   v15[0] = v8;
   v14[1] = @"IMMetricsCollectorEventWatchQuickReplyIndex";
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v15[1] = v9;
   v14[2] = @"IMMetricsCollectorEventWatchQuickReplySourceKey";
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:notificationCopy];
   v15[2] = v10;
   v14[3] = @"IMMetricsCollectorEventWatchQuickModelVersionKey";
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:self->_version];

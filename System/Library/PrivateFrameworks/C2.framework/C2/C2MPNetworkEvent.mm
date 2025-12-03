@@ -1,44 +1,44 @@
 @interface C2MPNetworkEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addNetworkPathInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNetworkConnectionReused:(BOOL)a3;
-- (void)setHasNetworkIsDiscretionary:(BOOL)a3;
-- (void)setHasNetworkPreviousAttemptCount:(BOOL)a3;
-- (void)setHasNetworkRequestHeaderSize:(BOOL)a3;
-- (void)setHasNetworkResponseBodyBytesReceived:(BOOL)a3;
-- (void)setHasNetworkResponseHeaderSize:(BOOL)a3;
-- (void)setHasNetworkStatusCode:(BOOL)a3;
-- (void)setHasOptionsAllowCellularAccess:(BOOL)a3;
-- (void)setHasOptionsAllowExpensiveAccess:(BOOL)a3;
-- (void)setHasOptionsAllowPowerNapScheduling:(BOOL)a3;
-- (void)setHasOptionsAppleIdContext:(BOOL)a3;
-- (void)setHasOptionsOutOfProcess:(BOOL)a3;
-- (void)setHasOptionsOutOfProcessForceDiscretionary:(BOOL)a3;
-- (void)setHasOptionsTimeoutIntervalForRequest:(BOOL)a3;
-- (void)setHasOptionsTimeoutIntervalForResource:(BOOL)a3;
-- (void)setHasOptionsTlsPinningRequired:(BOOL)a3;
-- (void)setHasReportFrequency:(BOOL)a3;
-- (void)setHasReportFrequencyBase:(BOOL)a3;
-- (void)setHasTimestampC2Init:(BOOL)a3;
-- (void)setHasTimestampC2Now:(BOOL)a3;
-- (void)setHasTimestampC2Start:(BOOL)a3;
-- (void)setHasTimestampDnsEnd:(BOOL)a3;
-- (void)setHasTimestampDnsStart:(BOOL)a3;
-- (void)setHasTimestampRequestEnd:(BOOL)a3;
-- (void)setHasTimestampRequestStart:(BOOL)a3;
-- (void)setHasTimestampResponseEnd:(BOOL)a3;
-- (void)setHasTimestampResponseStart:(BOOL)a3;
-- (void)setHasTimestampSslStart:(BOOL)a3;
-- (void)setHasTimestampTcpEnd:(BOOL)a3;
-- (void)setHasTimestampTcpStart:(BOOL)a3;
-- (void)setHasTriggers:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNetworkPathInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNetworkConnectionReused:(BOOL)reused;
+- (void)setHasNetworkIsDiscretionary:(BOOL)discretionary;
+- (void)setHasNetworkPreviousAttemptCount:(BOOL)count;
+- (void)setHasNetworkRequestHeaderSize:(BOOL)size;
+- (void)setHasNetworkResponseBodyBytesReceived:(BOOL)received;
+- (void)setHasNetworkResponseHeaderSize:(BOOL)size;
+- (void)setHasNetworkStatusCode:(BOOL)code;
+- (void)setHasOptionsAllowCellularAccess:(BOOL)access;
+- (void)setHasOptionsAllowExpensiveAccess:(BOOL)access;
+- (void)setHasOptionsAllowPowerNapScheduling:(BOOL)scheduling;
+- (void)setHasOptionsAppleIdContext:(BOOL)context;
+- (void)setHasOptionsOutOfProcess:(BOOL)process;
+- (void)setHasOptionsOutOfProcessForceDiscretionary:(BOOL)discretionary;
+- (void)setHasOptionsTimeoutIntervalForRequest:(BOOL)request;
+- (void)setHasOptionsTimeoutIntervalForResource:(BOOL)resource;
+- (void)setHasOptionsTlsPinningRequired:(BOOL)required;
+- (void)setHasReportFrequency:(BOOL)frequency;
+- (void)setHasReportFrequencyBase:(BOOL)base;
+- (void)setHasTimestampC2Init:(BOOL)init;
+- (void)setHasTimestampC2Now:(BOOL)now;
+- (void)setHasTimestampC2Start:(BOOL)start;
+- (void)setHasTimestampDnsEnd:(BOOL)end;
+- (void)setHasTimestampDnsStart:(BOOL)start;
+- (void)setHasTimestampRequestEnd:(BOOL)end;
+- (void)setHasTimestampRequestStart:(BOOL)start;
+- (void)setHasTimestampResponseEnd:(BOOL)end;
+- (void)setHasTimestampResponseStart:(BOOL)start;
+- (void)setHasTimestampSslStart:(BOOL)start;
+- (void)setHasTimestampTcpEnd:(BOOL)end;
+- (void)setHasTimestampTcpStart:(BOOL)start;
+- (void)setHasTriggers:(BOOL)triggers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation C2MPNetworkEvent
@@ -46,12 +46,12 @@
 - (id)dictionaryRepresentation
 {
   v71 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x20000) != 0)
   {
     v44 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_triggers];
-    [v3 setObject:v44 forKey:@"triggers"];
+    [dictionary setObject:v44 forKey:@"triggers"];
 
     has = self->_has;
     if ((*&has & 8) == 0)
@@ -72,63 +72,63 @@ LABEL_3:
   }
 
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_reportFrequency];
-  [v3 setObject:v45 forKey:@"report_frequency"];
+  [dictionary setObject:v45 forKey:@"report_frequency"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_reportFrequencyBase];
-    [v3 setObject:v5 forKey:@"report_frequency_base"];
+    [dictionary setObject:v5 forKey:@"report_frequency_base"];
   }
 
 LABEL_5:
   networkTaskDescription = self->_networkTaskDescription;
   if (networkTaskDescription)
   {
-    [v3 setObject:networkTaskDescription forKey:@"network_task_description"];
+    [dictionary setObject:networkTaskDescription forKey:@"network_task_description"];
   }
 
   networkHostname = self->_networkHostname;
   if (networkHostname)
   {
-    [v3 setObject:networkHostname forKey:@"network_hostname"];
+    [dictionary setObject:networkHostname forKey:@"network_hostname"];
   }
 
   networkRemoteAddresssAndPort = self->_networkRemoteAddresssAndPort;
   if (networkRemoteAddresssAndPort)
   {
-    [v3 setObject:networkRemoteAddresssAndPort forKey:@"network_remote_addresss_and_port"];
+    [dictionary setObject:networkRemoteAddresssAndPort forKey:@"network_remote_addresss_and_port"];
   }
 
   networkConnectionUuid = self->_networkConnectionUuid;
   if (networkConnectionUuid)
   {
-    [v3 setObject:networkConnectionUuid forKey:@"network_connection_uuid"];
+    [dictionary setObject:networkConnectionUuid forKey:@"network_connection_uuid"];
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_networkConnectionReused];
-    [v3 setObject:v10 forKey:@"network_connection_reused"];
+    [dictionary setObject:v10 forKey:@"network_connection_reused"];
   }
 
   networkInterfaceIdentifier = self->_networkInterfaceIdentifier;
   if (networkInterfaceIdentifier)
   {
-    [v3 setObject:networkInterfaceIdentifier forKey:@"network_interface_identifier"];
+    [dictionary setObject:networkInterfaceIdentifier forKey:@"network_interface_identifier"];
   }
 
   networkProtocolName = self->_networkProtocolName;
   if (networkProtocolName)
   {
-    [v3 setObject:networkProtocolName forKey:@"network_protocol_name"];
+    [dictionary setObject:networkProtocolName forKey:@"network_protocol_name"];
   }
 
   v13 = self->_has;
   if ((*&v13 & 0x80000) != 0)
   {
     v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_networkRequestHeaderSize];
-    [v3 setObject:v46 forKey:@"network_request_header_size"];
+    [dictionary setObject:v46 forKey:@"network_request_header_size"];
 
     v13 = self->_has;
     if ((*&v13 & 1) == 0)
@@ -149,7 +149,7 @@ LABEL_21:
   }
 
   v47 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_networkRequestBodyBytesSent];
-  [v3 setObject:v47 forKey:@"network_request_body_bytes_sent"];
+  [dictionary setObject:v47 forKey:@"network_request_body_bytes_sent"];
 
   v13 = self->_has;
   if ((*&v13 & 0x100000) == 0)
@@ -165,7 +165,7 @@ LABEL_22:
 
 LABEL_86:
   v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_networkResponseHeaderSize];
-  [v3 setObject:v48 forKey:@"network_response_header_size"];
+  [dictionary setObject:v48 forKey:@"network_response_header_size"];
 
   v13 = self->_has;
   if ((*&v13 & 2) == 0)
@@ -181,45 +181,45 @@ LABEL_23:
 
 LABEL_87:
   v49 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_networkResponseBodyBytesReceived];
-  [v3 setObject:v49 forKey:@"network_response_body_bytes_received"];
+  [dictionary setObject:v49 forKey:@"network_response_body_bytes_received"];
 
   if ((*&self->_has & 0x40000) != 0)
   {
 LABEL_24:
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_networkPreviousAttemptCount];
-    [v3 setObject:v14 forKey:@"network_previous_attempt_count"];
+    [dictionary setObject:v14 forKey:@"network_previous_attempt_count"];
   }
 
 LABEL_25:
   networkFatalError = self->_networkFatalError;
   if (networkFatalError)
   {
-    v16 = [(C2MPError *)networkFatalError dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"network_fatal_error"];
+    dictionaryRepresentation = [(C2MPError *)networkFatalError dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"network_fatal_error"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_networkStatusCode];
-    [v3 setObject:v17 forKey:@"network_status_code"];
+    [dictionary setObject:v17 forKey:@"network_status_code"];
   }
 
   networkRequestUri = self->_networkRequestUri;
   if (networkRequestUri)
   {
-    [v3 setObject:networkRequestUri forKey:@"network_request_uri"];
+    [dictionary setObject:networkRequestUri forKey:@"network_request_uri"];
   }
 
   if (*(&self->_has + 3))
   {
     v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_networkIsDiscretionary];
-    [v3 setObject:v19 forKey:@"network_is_discretionary"];
+    [dictionary setObject:v19 forKey:@"network_is_discretionary"];
   }
 
   networkNegotiatedTlsProtocolVersion = self->_networkNegotiatedTlsProtocolVersion;
   if (networkNegotiatedTlsProtocolVersion)
   {
-    [v3 setObject:networkNegotiatedTlsProtocolVersion forKey:@"network_negotiated_tls_protocol_version"];
+    [dictionary setObject:networkNegotiatedTlsProtocolVersion forKey:@"network_negotiated_tls_protocol_version"];
   }
 
   if ([(NSMutableArray *)self->_networkPathInfos count])
@@ -244,8 +244,8 @@ LABEL_25:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v66 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation2 = [*(*(&v66 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation2];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v66 objects:v70 count:16];
@@ -254,14 +254,14 @@ LABEL_25:
       while (v24);
     }
 
-    [v3 setObject:v21 forKey:@"network_path_info"];
+    [dictionary setObject:v21 forKey:@"network_path_info"];
   }
 
   v28 = self->_has;
   if ((*&v28 & 0x20) != 0)
   {
     v50 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestampC2Init];
-    [v3 setObject:v50 forKey:@"timestamp_c2_init"];
+    [dictionary setObject:v50 forKey:@"timestamp_c2_init"];
 
     v28 = self->_has;
     if ((*&v28 & 0x80) == 0)
@@ -282,7 +282,7 @@ LABEL_46:
   }
 
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampC2Start, v66}];
-  [v3 setObject:v51 forKey:@"timestamp_c2_start"];
+  [dictionary setObject:v51 forKey:@"timestamp_c2_start"];
 
   v28 = self->_has;
   if ((*&v28 & 0x40) == 0)
@@ -298,7 +298,7 @@ LABEL_47:
 
 LABEL_91:
   v52 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampC2Now, v66}];
-  [v3 setObject:v52 forKey:@"timestamp_c2_now"];
+  [dictionary setObject:v52 forKey:@"timestamp_c2_now"];
 
   v28 = self->_has;
   if ((*&v28 & 0x200) == 0)
@@ -314,7 +314,7 @@ LABEL_48:
 
 LABEL_92:
   v53 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampDnsStart, v66}];
-  [v3 setObject:v53 forKey:@"timestamp_dns_start"];
+  [dictionary setObject:v53 forKey:@"timestamp_dns_start"];
 
   v28 = self->_has;
   if ((*&v28 & 0x100) == 0)
@@ -330,7 +330,7 @@ LABEL_49:
 
 LABEL_93:
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampDnsEnd, v66}];
-  [v3 setObject:v54 forKey:@"timestamp_dns_end"];
+  [dictionary setObject:v54 forKey:@"timestamp_dns_end"];
 
   v28 = self->_has;
   if ((*&v28 & 0x10000) == 0)
@@ -346,7 +346,7 @@ LABEL_50:
 
 LABEL_94:
   v55 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampTcpStart, v66}];
-  [v3 setObject:v55 forKey:@"timestamp_tcp_start"];
+  [dictionary setObject:v55 forKey:@"timestamp_tcp_start"];
 
   v28 = self->_has;
   if ((*&v28 & 0x8000) == 0)
@@ -362,7 +362,7 @@ LABEL_51:
 
 LABEL_95:
   v56 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampTcpEnd, v66}];
-  [v3 setObject:v56 forKey:@"timestamp_tcp_end"];
+  [dictionary setObject:v56 forKey:@"timestamp_tcp_end"];
 
   v28 = self->_has;
   if ((*&v28 & 0x4000) == 0)
@@ -378,7 +378,7 @@ LABEL_52:
 
 LABEL_96:
   v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampSslStart, v66}];
-  [v3 setObject:v57 forKey:@"timestamp_ssl_start"];
+  [dictionary setObject:v57 forKey:@"timestamp_ssl_start"];
 
   v28 = self->_has;
   if ((*&v28 & 0x800) == 0)
@@ -394,7 +394,7 @@ LABEL_53:
 
 LABEL_97:
   v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampRequestStart, v66}];
-  [v3 setObject:v58 forKey:@"timestamp_request_start"];
+  [dictionary setObject:v58 forKey:@"timestamp_request_start"];
 
   v28 = self->_has;
   if ((*&v28 & 0x400) == 0)
@@ -410,7 +410,7 @@ LABEL_54:
 
 LABEL_98:
   v59 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampRequestEnd, v66}];
-  [v3 setObject:v59 forKey:@"timestamp_request_end"];
+  [dictionary setObject:v59 forKey:@"timestamp_request_end"];
 
   v28 = self->_has;
   if ((*&v28 & 0x2000) == 0)
@@ -426,27 +426,27 @@ LABEL_55:
 
 LABEL_99:
   v60 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampResponseStart, v66}];
-  [v3 setObject:v60 forKey:@"timestamp_response_start"];
+  [dictionary setObject:v60 forKey:@"timestamp_response_start"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_56:
     v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{self->_timestampResponseEnd, v66}];
-    [v3 setObject:v29 forKey:@"timestamp_response_end"];
+    [dictionary setObject:v29 forKey:@"timestamp_response_end"];
   }
 
 LABEL_57:
   optionsQualityOfService = self->_optionsQualityOfService;
   if (optionsQualityOfService)
   {
-    [v3 setObject:optionsQualityOfService forKey:@"options_quality_of_service"];
+    [dictionary setObject:optionsQualityOfService forKey:@"options_quality_of_service"];
   }
 
   v31 = self->_has;
   if ((*&v31 & 0x20000000) != 0)
   {
     v61 = [MEMORY[0x277CCABB0] numberWithBool:self->_optionsOutOfProcess];
-    [v3 setObject:v61 forKey:@"options_out_of_process"];
+    [dictionary setObject:v61 forKey:@"options_out_of_process"];
 
     v31 = self->_has;
     if ((*&v31 & 0x40000000) == 0)
@@ -467,7 +467,7 @@ LABEL_61:
   }
 
   v62 = [MEMORY[0x277CCABB0] numberWithBool:{self->_optionsOutOfProcessForceDiscretionary, v66}];
-  [v3 setObject:v62 forKey:@"options_out_of_process_force_discretionary"];
+  [dictionary setObject:v62 forKey:@"options_out_of_process_force_discretionary"];
 
   v31 = self->_has;
   if ((*&v31 & 0x4000000) == 0)
@@ -483,7 +483,7 @@ LABEL_62:
 
 LABEL_103:
   v63 = [MEMORY[0x277CCABB0] numberWithBool:{self->_optionsAllowExpensiveAccess, v66}];
-  [v3 setObject:v63 forKey:@"options_allow_expensive_access"];
+  [dictionary setObject:v63 forKey:@"options_allow_expensive_access"];
 
   v31 = self->_has;
   if ((*&v31 & 0x8000000) == 0)
@@ -499,7 +499,7 @@ LABEL_63:
 
 LABEL_104:
   v64 = [MEMORY[0x277CCABB0] numberWithBool:{self->_optionsAllowPowerNapScheduling, v66}];
-  [v3 setObject:v64 forKey:@"options_allow_power_nap_scheduling"];
+  [dictionary setObject:v64 forKey:@"options_allow_power_nap_scheduling"];
 
   v31 = self->_has;
   if ((*&v31 & 0x200000) == 0)
@@ -515,33 +515,33 @@ LABEL_64:
 
 LABEL_105:
   v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_optionsTimeoutIntervalForRequest, v66}];
-  [v3 setObject:v65 forKey:@"options_timeout_interval_for_request"];
+  [dictionary setObject:v65 forKey:@"options_timeout_interval_for_request"];
 
   if ((*&self->_has & 0x400000) != 0)
   {
 LABEL_65:
     v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_optionsTimeoutIntervalForResource, v66}];
-    [v3 setObject:v32 forKey:@"options_timeout_interval_for_resource"];
+    [dictionary setObject:v32 forKey:@"options_timeout_interval_for_resource"];
   }
 
 LABEL_66:
   optionsSourceApplicationBundleIdentifier = self->_optionsSourceApplicationBundleIdentifier;
   if (optionsSourceApplicationBundleIdentifier)
   {
-    [v3 setObject:optionsSourceApplicationBundleIdentifier forKey:@"options_source_application_bundle_identifier"];
+    [dictionary setObject:optionsSourceApplicationBundleIdentifier forKey:@"options_source_application_bundle_identifier"];
   }
 
   optionsSourceApplicationSecondaryIdentifier = self->_optionsSourceApplicationSecondaryIdentifier;
   if (optionsSourceApplicationSecondaryIdentifier)
   {
-    [v3 setObject:optionsSourceApplicationSecondaryIdentifier forKey:@"options_source_application_secondary_identifier"];
+    [dictionary setObject:optionsSourceApplicationSecondaryIdentifier forKey:@"options_source_application_secondary_identifier"];
   }
 
   v35 = self->_has;
   if ((*&v35 & 0x10000000) != 0)
   {
     v36 = [MEMORY[0x277CCABB0] numberWithBool:self->_optionsAppleIdContext];
-    [v3 setObject:v36 forKey:@"options_apple_id_context"];
+    [dictionary setObject:v36 forKey:@"options_apple_id_context"];
 
     v35 = self->_has;
   }
@@ -549,36 +549,36 @@ LABEL_66:
   if ((*&v35 & 0x80000000) != 0)
   {
     v37 = [MEMORY[0x277CCABB0] numberWithBool:self->_optionsTlsPinningRequired];
-    [v3 setObject:v37 forKey:@"options_tls_pinning_required"];
+    [dictionary setObject:v37 forKey:@"options_tls_pinning_required"];
   }
 
   optionsDiscretionaryNetworkBehavior = self->_optionsDiscretionaryNetworkBehavior;
   if (optionsDiscretionaryNetworkBehavior)
   {
-    [v3 setObject:optionsDiscretionaryNetworkBehavior forKey:@"options_discretionary_network_behavior"];
+    [dictionary setObject:optionsDiscretionaryNetworkBehavior forKey:@"options_discretionary_network_behavior"];
   }
 
   optionsDuetPreClearedMode = self->_optionsDuetPreClearedMode;
   if (optionsDuetPreClearedMode)
   {
-    [v3 setObject:optionsDuetPreClearedMode forKey:@"options_duet_pre_cleared_mode"];
+    [dictionary setObject:optionsDuetPreClearedMode forKey:@"options_duet_pre_cleared_mode"];
   }
 
   if ((*(&self->_has + 3) & 2) != 0)
   {
     v40 = [MEMORY[0x277CCABB0] numberWithBool:self->_optionsAllowCellularAccess];
-    [v3 setObject:v40 forKey:@"options_allow_cellular_access"];
+    [dictionary setObject:v40 forKey:@"options_allow_cellular_access"];
   }
 
-  v41 = v3;
+  v41 = dictionary;
 
   v42 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dictionary;
 }
 
-- (void)setHasTriggers:(BOOL)a3
+- (void)setHasTriggers:(BOOL)triggers
 {
-  if (a3)
+  if (triggers)
   {
     v3 = 0x20000;
   }
@@ -591,9 +591,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasReportFrequency:(BOOL)a3
+- (void)setHasReportFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 8;
   }
@@ -606,9 +606,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasReportFrequencyBase:(BOOL)a3
+- (void)setHasReportFrequencyBase:(BOOL)base
 {
-  if (a3)
+  if (base)
   {
     v3 = 16;
   }
@@ -621,9 +621,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasNetworkConnectionReused:(BOOL)a3
+- (void)setHasNetworkConnectionReused:(BOOL)reused
 {
-  if (a3)
+  if (reused)
   {
     v3 = 0x800000;
   }
@@ -636,9 +636,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasNetworkRequestHeaderSize:(BOOL)a3
+- (void)setHasNetworkRequestHeaderSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 0x80000;
   }
@@ -651,9 +651,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasNetworkResponseHeaderSize:(BOOL)a3
+- (void)setHasNetworkResponseHeaderSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 0x100000;
   }
@@ -666,9 +666,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasNetworkResponseBodyBytesReceived:(BOOL)a3
+- (void)setHasNetworkResponseBodyBytesReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 2;
   }
@@ -681,9 +681,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasNetworkPreviousAttemptCount:(BOOL)a3
+- (void)setHasNetworkPreviousAttemptCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x40000;
   }
@@ -696,9 +696,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasNetworkStatusCode:(BOOL)a3
+- (void)setHasNetworkStatusCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -711,9 +711,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasNetworkIsDiscretionary:(BOOL)a3
+- (void)setHasNetworkIsDiscretionary:(BOOL)discretionary
 {
-  if (a3)
+  if (discretionary)
   {
     v3 = 0x1000000;
   }
@@ -726,27 +726,27 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)addNetworkPathInfo:(id)a3
+- (void)addNetworkPathInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   networkPathInfos = self->_networkPathInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!networkPathInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_networkPathInfos;
     self->_networkPathInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     networkPathInfos = self->_networkPathInfos;
   }
 
-  [(NSMutableArray *)networkPathInfos addObject:v4];
+  [(NSMutableArray *)networkPathInfos addObject:infoCopy];
 }
 
-- (void)setHasTimestampC2Init:(BOOL)a3
+- (void)setHasTimestampC2Init:(BOOL)init
 {
-  if (a3)
+  if (init)
   {
     v3 = 32;
   }
@@ -759,9 +759,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasTimestampC2Start:(BOOL)a3
+- (void)setHasTimestampC2Start:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 128;
   }
@@ -774,9 +774,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasTimestampC2Now:(BOOL)a3
+- (void)setHasTimestampC2Now:(BOOL)now
 {
-  if (a3)
+  if (now)
   {
     v3 = 64;
   }
@@ -789,9 +789,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTimestampDnsStart:(BOOL)a3
+- (void)setHasTimestampDnsStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 512;
   }
@@ -804,9 +804,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTimestampDnsEnd:(BOOL)a3
+- (void)setHasTimestampDnsEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 256;
   }
@@ -819,9 +819,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasTimestampTcpStart:(BOOL)a3
+- (void)setHasTimestampTcpStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x10000;
   }
@@ -834,9 +834,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasTimestampTcpEnd:(BOOL)a3
+- (void)setHasTimestampTcpEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 0x8000;
   }
@@ -849,9 +849,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasTimestampSslStart:(BOOL)a3
+- (void)setHasTimestampSslStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x4000;
   }
@@ -864,9 +864,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasTimestampRequestStart:(BOOL)a3
+- (void)setHasTimestampRequestStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2048;
   }
@@ -879,9 +879,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTimestampRequestEnd:(BOOL)a3
+- (void)setHasTimestampRequestEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 1024;
   }
@@ -894,9 +894,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasTimestampResponseStart:(BOOL)a3
+- (void)setHasTimestampResponseStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 0x2000;
   }
@@ -909,9 +909,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasTimestampResponseEnd:(BOOL)a3
+- (void)setHasTimestampResponseEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 4096;
   }
@@ -924,9 +924,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasOptionsOutOfProcess:(BOOL)a3
+- (void)setHasOptionsOutOfProcess:(BOOL)process
 {
-  if (a3)
+  if (process)
   {
     v3 = 0x20000000;
   }
@@ -939,9 +939,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasOptionsOutOfProcessForceDiscretionary:(BOOL)a3
+- (void)setHasOptionsOutOfProcessForceDiscretionary:(BOOL)discretionary
 {
-  if (a3)
+  if (discretionary)
   {
     v3 = 0x40000000;
   }
@@ -954,9 +954,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xBFFFFFFF | v3);
 }
 
-- (void)setHasOptionsAllowExpensiveAccess:(BOOL)a3
+- (void)setHasOptionsAllowExpensiveAccess:(BOOL)access
 {
-  if (a3)
+  if (access)
   {
     v3 = 0x4000000;
   }
@@ -969,9 +969,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasOptionsAllowPowerNapScheduling:(BOOL)a3
+- (void)setHasOptionsAllowPowerNapScheduling:(BOOL)scheduling
 {
-  if (a3)
+  if (scheduling)
   {
     v3 = 0x8000000;
   }
@@ -984,9 +984,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasOptionsTimeoutIntervalForRequest:(BOOL)a3
+- (void)setHasOptionsTimeoutIntervalForRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 0x200000;
   }
@@ -999,9 +999,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasOptionsTimeoutIntervalForResource:(BOOL)a3
+- (void)setHasOptionsTimeoutIntervalForResource:(BOOL)resource
 {
-  if (a3)
+  if (resource)
   {
     v3 = 0x400000;
   }
@@ -1014,9 +1014,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasOptionsAppleIdContext:(BOOL)a3
+- (void)setHasOptionsAppleIdContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 0x10000000;
   }
@@ -1029,9 +1029,9 @@ LABEL_66:
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (void)setHasOptionsTlsPinningRequired:(BOOL)a3
+- (void)setHasOptionsTlsPinningRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 0x80000000;
   }
@@ -1044,9 +1044,9 @@ LABEL_66:
   self->_has = (v3 & 0x80000000 | *&self->_has & 0x7FFFFFFF);
 }
 
-- (void)setHasOptionsAllowCellularAccess:(BOOL)a3
+- (void)setHasOptionsAllowCellularAccess:(BOOL)access
 {
-  if (a3)
+  if (access)
   {
     v3 = 0x2000000;
   }
@@ -1065,16 +1065,16 @@ LABEL_66:
   v8.receiver = self;
   v8.super_class = C2MPNetworkEvent;
   v4 = [(C2MPNetworkEvent *)&v8 description];
-  v5 = [(C2MPNetworkEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(C2MPNetworkEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x20000) != 0)
   {
@@ -1560,14 +1560,14 @@ LABEL_64:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x20000) != 0)
   {
-    v4[18] = self->_triggers;
-    *(v4 + 79) |= 0x20000u;
+    toCopy[18] = self->_triggers;
+    *(toCopy + 79) |= 0x20000u;
     has = self->_has;
     if ((*&has & 8) == 0)
     {
@@ -1586,64 +1586,64 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_reportFrequency;
-  *(v4 + 79) |= 8u;
+  toCopy[4] = self->_reportFrequency;
+  *(toCopy + 79) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_4:
-    v4[5] = self->_reportFrequencyBase;
-    *(v4 + 79) |= 0x10u;
+    toCopy[5] = self->_reportFrequencyBase;
+    *(toCopy + 79) |= 0x10u;
   }
 
 LABEL_5:
-  v15 = v4;
+  v15 = toCopy;
   if (self->_networkTaskDescription)
   {
-    [v4 setNetworkTaskDescription:?];
-    v4 = v15;
+    [toCopy setNetworkTaskDescription:?];
+    toCopy = v15;
   }
 
   if (self->_networkHostname)
   {
     [v15 setNetworkHostname:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_networkRemoteAddresssAndPort)
   {
     [v15 setNetworkRemoteAddresssAndPort:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_networkConnectionUuid)
   {
     [v15 setNetworkConnectionUuid:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
-    *(v4 + 304) = self->_networkConnectionReused;
-    *(v4 + 79) |= 0x800000u;
+    *(toCopy + 304) = self->_networkConnectionReused;
+    *(toCopy + 79) |= 0x800000u;
   }
 
   if (self->_networkInterfaceIdentifier)
   {
     [v15 setNetworkInterfaceIdentifier:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_networkProtocolName)
   {
     [v15 setNetworkProtocolName:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x80000) != 0)
   {
-    *(v4 + 56) = self->_networkRequestHeaderSize;
-    *(v4 + 79) |= 0x80000u;
+    *(toCopy + 56) = self->_networkRequestHeaderSize;
+    *(toCopy + 79) |= 0x80000u;
     v6 = self->_has;
     if ((*&v6 & 1) == 0)
     {
@@ -1662,8 +1662,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v4[1] = self->_networkRequestBodyBytesSent;
-  *(v4 + 79) |= 1u;
+  toCopy[1] = self->_networkRequestBodyBytesSent;
+  *(toCopy + 79) |= 1u;
   v6 = self->_has;
   if ((*&v6 & 0x100000) == 0)
   {
@@ -1677,8 +1677,8 @@ LABEL_22:
   }
 
 LABEL_83:
-  *(v4 + 60) = self->_networkResponseHeaderSize;
-  *(v4 + 79) |= 0x100000u;
+  *(toCopy + 60) = self->_networkResponseHeaderSize;
+  *(toCopy + 79) |= 0x100000u;
   v6 = self->_has;
   if ((*&v6 & 2) == 0)
   {
@@ -1692,38 +1692,38 @@ LABEL_23:
   }
 
 LABEL_84:
-  v4[2] = self->_networkResponseBodyBytesReceived;
-  *(v4 + 79) |= 2u;
+  toCopy[2] = self->_networkResponseBodyBytesReceived;
+  *(toCopy + 79) |= 2u;
   if ((*&self->_has & 0x40000) != 0)
   {
 LABEL_24:
-    *(v4 + 50) = self->_networkPreviousAttemptCount;
-    *(v4 + 79) |= 0x40000u;
+    *(toCopy + 50) = self->_networkPreviousAttemptCount;
+    *(toCopy + 79) |= 0x40000u;
   }
 
 LABEL_25:
   if (self->_networkFatalError)
   {
     [v15 setNetworkFatalError:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[3] = self->_networkStatusCode;
-    *(v4 + 79) |= 4u;
+    toCopy[3] = self->_networkStatusCode;
+    *(toCopy + 79) |= 4u;
   }
 
   if (self->_networkRequestUri)
   {
     [v15 setNetworkRequestUri:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (*(&self->_has + 3))
   {
-    *(v4 + 305) = self->_networkIsDiscretionary;
-    *(v4 + 79) |= 0x1000000u;
+    *(toCopy + 305) = self->_networkIsDiscretionary;
+    *(toCopy + 79) |= 0x1000000u;
   }
 
   if (self->_networkNegotiatedTlsProtocolVersion)
@@ -1734,10 +1734,10 @@ LABEL_25:
   if ([(C2MPNetworkEvent *)self networkPathInfosCount])
   {
     [v15 clearNetworkPathInfos];
-    v7 = [(C2MPNetworkEvent *)self networkPathInfosCount];
-    if (v7)
+    networkPathInfosCount = [(C2MPNetworkEvent *)self networkPathInfosCount];
+    if (networkPathInfosCount)
     {
-      v8 = v7;
+      v8 = networkPathInfosCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(C2MPNetworkEvent *)self networkPathInfoAtIndex:i];
@@ -2044,10 +2044,10 @@ LABEL_61:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x20000) != 0)
@@ -2082,19 +2082,19 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_networkTaskDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_networkTaskDescription copyWithZone:zone];
   v9 = *(v6 + 248);
   *(v6 + 248) = v8;
 
-  v10 = [(NSString *)self->_networkHostname copyWithZone:a3];
+  v10 = [(NSString *)self->_networkHostname copyWithZone:zone];
   v11 = *(v6 + 168);
   *(v6 + 168) = v10;
 
-  v12 = [(NSString *)self->_networkRemoteAddresssAndPort copyWithZone:a3];
+  v12 = [(NSString *)self->_networkRemoteAddresssAndPort copyWithZone:zone];
   v13 = *(v6 + 216);
   *(v6 + 216) = v12;
 
-  v14 = [(NSString *)self->_networkConnectionUuid copyWithZone:a3];
+  v14 = [(NSString *)self->_networkConnectionUuid copyWithZone:zone];
   v15 = *(v6 + 152);
   *(v6 + 152) = v14;
 
@@ -2104,11 +2104,11 @@ LABEL_5:
     *(v6 + 316) |= 0x800000u;
   }
 
-  v16 = [(NSString *)self->_networkInterfaceIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_networkInterfaceIdentifier copyWithZone:zone];
   v17 = *(v6 + 176);
   *(v6 + 176) = v16;
 
-  v18 = [(NSString *)self->_networkProtocolName copyWithZone:a3];
+  v18 = [(NSString *)self->_networkProtocolName copyWithZone:zone];
   v19 = *(v6 + 208);
   *(v6 + 208) = v18;
 
@@ -2175,7 +2175,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v21 = [(C2MPError *)self->_networkFatalError copyWithZone:a3];
+  v21 = [(C2MPError *)self->_networkFatalError copyWithZone:zone];
   v22 = *(v6 + 160);
   *(v6 + 160) = v21;
 
@@ -2185,7 +2185,7 @@ LABEL_13:
     *(v6 + 316) |= 4u;
   }
 
-  v23 = [(NSString *)self->_networkRequestUri copyWithZone:a3];
+  v23 = [(NSString *)self->_networkRequestUri copyWithZone:zone];
   v24 = *(v6 + 232);
   *(v6 + 232) = v23;
 
@@ -2195,7 +2195,7 @@ LABEL_13:
     *(v6 + 316) |= 0x1000000u;
   }
 
-  v25 = [(NSString *)self->_networkNegotiatedTlsProtocolVersion copyWithZone:a3];
+  v25 = [(NSString *)self->_networkNegotiatedTlsProtocolVersion copyWithZone:zone];
   v26 = *(v6 + 184);
   *(v6 + 184) = v25;
 
@@ -2219,7 +2219,7 @@ LABEL_13:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v49 + 1) + 8 * v31) copyWithZone:{a3, v49}];
+        v32 = [*(*(&v49 + 1) + 8 * v31) copyWithZone:{zone, v49}];
         [v6 addNetworkPathInfo:v32];
 
         ++v31;
@@ -2400,7 +2400,7 @@ LABEL_36:
   }
 
 LABEL_37:
-  v34 = [(NSString *)self->_optionsQualityOfService copyWithZone:a3, v49];
+  v34 = [(NSString *)self->_optionsQualityOfService copyWithZone:zone, v49];
   v35 = *(v6 + 272);
   *(v6 + 272) = v34;
 
@@ -2482,11 +2482,11 @@ LABEL_43:
   }
 
 LABEL_44:
-  v37 = [(NSString *)self->_optionsSourceApplicationBundleIdentifier copyWithZone:a3];
+  v37 = [(NSString *)self->_optionsSourceApplicationBundleIdentifier copyWithZone:zone];
   v38 = *(v6 + 280);
   *(v6 + 280) = v37;
 
-  v39 = [(NSString *)self->_optionsSourceApplicationSecondaryIdentifier copyWithZone:a3];
+  v39 = [(NSString *)self->_optionsSourceApplicationSecondaryIdentifier copyWithZone:zone];
   v40 = *(v6 + 288);
   *(v6 + 288) = v39;
 
@@ -2504,11 +2504,11 @@ LABEL_44:
     *(v6 + 316) |= 0x80000000;
   }
 
-  v42 = [(NSString *)self->_optionsDiscretionaryNetworkBehavior copyWithZone:a3];
+  v42 = [(NSString *)self->_optionsDiscretionaryNetworkBehavior copyWithZone:zone];
   v43 = *(v6 + 256);
   *(v6 + 256) = v42;
 
-  v44 = [(NSString *)self->_optionsDuetPreClearedMode copyWithZone:a3];
+  v44 = [(NSString *)self->_optionsDuetPreClearedMode copyWithZone:zone];
   v45 = *(v6 + 264);
   *(v6 + 264) = v44;
 
@@ -2524,19 +2524,19 @@ LABEL_44:
   return v46;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   has = self->_has;
-  v6 = *(v4 + 79);
+  v6 = *(equalCopy + 79);
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_triggers != *(v4 + 18))
+    if ((v6 & 0x20000) == 0 || self->_triggers != *(equalCopy + 18))
     {
       goto LABEL_35;
     }
@@ -2549,7 +2549,7 @@ LABEL_44:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_reportFrequency != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_reportFrequency != *(equalCopy + 4))
     {
       goto LABEL_35;
     }
@@ -2562,7 +2562,7 @@ LABEL_44:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_reportFrequencyBase != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_reportFrequencyBase != *(equalCopy + 5))
     {
       goto LABEL_35;
     }
@@ -2574,13 +2574,13 @@ LABEL_44:
   }
 
   networkTaskDescription = self->_networkTaskDescription;
-  if (networkTaskDescription | *(v4 + 31) && ![(NSString *)networkTaskDescription isEqual:?])
+  if (networkTaskDescription | *(equalCopy + 31) && ![(NSString *)networkTaskDescription isEqual:?])
   {
     goto LABEL_35;
   }
 
   networkHostname = self->_networkHostname;
-  if (networkHostname | *(v4 + 21))
+  if (networkHostname | *(equalCopy + 21))
   {
     if (![(NSString *)networkHostname isEqual:?])
     {
@@ -2589,7 +2589,7 @@ LABEL_44:
   }
 
   networkRemoteAddresssAndPort = self->_networkRemoteAddresssAndPort;
-  if (networkRemoteAddresssAndPort | *(v4 + 27))
+  if (networkRemoteAddresssAndPort | *(equalCopy + 27))
   {
     if (![(NSString *)networkRemoteAddresssAndPort isEqual:?])
     {
@@ -2598,7 +2598,7 @@ LABEL_44:
   }
 
   networkConnectionUuid = self->_networkConnectionUuid;
-  if (networkConnectionUuid | *(v4 + 19))
+  if (networkConnectionUuid | *(equalCopy + 19))
   {
     if (![(NSString *)networkConnectionUuid isEqual:?])
     {
@@ -2606,7 +2606,7 @@ LABEL_44:
     }
   }
 
-  v11 = *(v4 + 79);
+  v11 = *(equalCopy + 79);
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
     if ((v11 & 0x800000) == 0)
@@ -2614,16 +2614,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v18 = *(v4 + 304);
+    v18 = *(equalCopy + 304);
     if (self->_networkConnectionReused)
     {
-      if ((*(v4 + 304) & 1) == 0)
+      if ((*(equalCopy + 304) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 304))
+    else if (*(equalCopy + 304))
     {
       goto LABEL_35;
     }
@@ -2635,13 +2635,13 @@ LABEL_44:
   }
 
   networkInterfaceIdentifier = self->_networkInterfaceIdentifier;
-  if (networkInterfaceIdentifier | *(v4 + 22) && ![(NSString *)networkInterfaceIdentifier isEqual:?])
+  if (networkInterfaceIdentifier | *(equalCopy + 22) && ![(NSString *)networkInterfaceIdentifier isEqual:?])
   {
     goto LABEL_35;
   }
 
   networkProtocolName = self->_networkProtocolName;
-  if (networkProtocolName | *(v4 + 26))
+  if (networkProtocolName | *(equalCopy + 26))
   {
     if (![(NSString *)networkProtocolName isEqual:?])
     {
@@ -2650,10 +2650,10 @@ LABEL_44:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 79);
+  v15 = *(equalCopy + 79);
   if ((*&v14 & 0x80000) != 0)
   {
-    if ((v15 & 0x80000) == 0 || self->_networkRequestHeaderSize != *(v4 + 56))
+    if ((v15 & 0x80000) == 0 || self->_networkRequestHeaderSize != *(equalCopy + 56))
     {
       goto LABEL_35;
     }
@@ -2666,7 +2666,7 @@ LABEL_44:
 
   if (*&v14)
   {
-    if ((v15 & 1) == 0 || self->_networkRequestBodyBytesSent != *(v4 + 1))
+    if ((v15 & 1) == 0 || self->_networkRequestBodyBytesSent != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
@@ -2679,7 +2679,7 @@ LABEL_44:
 
   if ((*&v14 & 0x100000) != 0)
   {
-    if ((v15 & 0x100000) == 0 || self->_networkResponseHeaderSize != *(v4 + 60))
+    if ((v15 & 0x100000) == 0 || self->_networkResponseHeaderSize != *(equalCopy + 60))
     {
       goto LABEL_35;
     }
@@ -2692,7 +2692,7 @@ LABEL_44:
 
   if ((*&v14 & 2) != 0)
   {
-    if ((v15 & 2) == 0 || self->_networkResponseBodyBytesReceived != *(v4 + 2))
+    if ((v15 & 2) == 0 || self->_networkResponseBodyBytesReceived != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
@@ -2705,7 +2705,7 @@ LABEL_44:
 
   if ((*&v14 & 0x40000) != 0)
   {
-    if ((v15 & 0x40000) == 0 || self->_networkPreviousAttemptCount != *(v4 + 50))
+    if ((v15 & 0x40000) == 0 || self->_networkPreviousAttemptCount != *(equalCopy + 50))
     {
       goto LABEL_35;
     }
@@ -2717,7 +2717,7 @@ LABEL_44:
   }
 
   networkFatalError = self->_networkFatalError;
-  if (networkFatalError | *(v4 + 20))
+  if (networkFatalError | *(equalCopy + 20))
   {
     if (![(C2MPError *)networkFatalError isEqual:?])
     {
@@ -2727,10 +2727,10 @@ LABEL_44:
     v14 = self->_has;
   }
 
-  v20 = *(v4 + 79);
+  v20 = *(equalCopy + 79);
   if ((*&v14 & 4) != 0)
   {
-    if ((v20 & 4) == 0 || self->_networkStatusCode != *(v4 + 3))
+    if ((v20 & 4) == 0 || self->_networkStatusCode != *(equalCopy + 3))
     {
       goto LABEL_35;
     }
@@ -2742,7 +2742,7 @@ LABEL_44:
   }
 
   networkRequestUri = self->_networkRequestUri;
-  if (networkRequestUri | *(v4 + 29))
+  if (networkRequestUri | *(equalCopy + 29))
   {
     if (![(NSString *)networkRequestUri isEqual:?])
     {
@@ -2752,7 +2752,7 @@ LABEL_44:
     v14 = self->_has;
   }
 
-  v22 = *(v4 + 79);
+  v22 = *(equalCopy + 79);
   if ((*&v14 & 0x1000000) != 0)
   {
     if ((v22 & 0x1000000) == 0)
@@ -2760,16 +2760,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v27 = *(v4 + 305);
+    v27 = *(equalCopy + 305);
     if (self->_networkIsDiscretionary)
     {
-      if ((*(v4 + 305) & 1) == 0)
+      if ((*(equalCopy + 305) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 305))
+    else if (*(equalCopy + 305))
     {
       goto LABEL_35;
     }
@@ -2781,13 +2781,13 @@ LABEL_44:
   }
 
   networkNegotiatedTlsProtocolVersion = self->_networkNegotiatedTlsProtocolVersion;
-  if (networkNegotiatedTlsProtocolVersion | *(v4 + 23) && ![(NSString *)networkNegotiatedTlsProtocolVersion isEqual:?])
+  if (networkNegotiatedTlsProtocolVersion | *(equalCopy + 23) && ![(NSString *)networkNegotiatedTlsProtocolVersion isEqual:?])
   {
     goto LABEL_35;
   }
 
   networkPathInfos = self->_networkPathInfos;
-  if (networkPathInfos | *(v4 + 24))
+  if (networkPathInfos | *(equalCopy + 24))
   {
     if (![(NSMutableArray *)networkPathInfos isEqual:?])
     {
@@ -2796,10 +2796,10 @@ LABEL_44:
   }
 
   v25 = self->_has;
-  v26 = *(v4 + 79);
+  v26 = *(equalCopy + 79);
   if ((*&v25 & 0x20) != 0)
   {
-    if ((v26 & 0x20) == 0 || self->_timestampC2Init != *(v4 + 6))
+    if ((v26 & 0x20) == 0 || self->_timestampC2Init != *(equalCopy + 6))
     {
       goto LABEL_35;
     }
@@ -2812,7 +2812,7 @@ LABEL_44:
 
   if ((*&v25 & 0x80) != 0)
   {
-    if ((v26 & 0x80) == 0 || self->_timestampC2Start != *(v4 + 8))
+    if ((v26 & 0x80) == 0 || self->_timestampC2Start != *(equalCopy + 8))
     {
       goto LABEL_35;
     }
@@ -2825,7 +2825,7 @@ LABEL_44:
 
   if ((*&v25 & 0x40) != 0)
   {
-    if ((v26 & 0x40) == 0 || self->_timestampC2Now != *(v4 + 7))
+    if ((v26 & 0x40) == 0 || self->_timestampC2Now != *(equalCopy + 7))
     {
       goto LABEL_35;
     }
@@ -2838,7 +2838,7 @@ LABEL_44:
 
   if ((*&v25 & 0x200) != 0)
   {
-    if ((v26 & 0x200) == 0 || self->_timestampDnsStart != *(v4 + 10))
+    if ((v26 & 0x200) == 0 || self->_timestampDnsStart != *(equalCopy + 10))
     {
       goto LABEL_35;
     }
@@ -2851,7 +2851,7 @@ LABEL_44:
 
   if ((*&v25 & 0x100) != 0)
   {
-    if ((v26 & 0x100) == 0 || self->_timestampDnsEnd != *(v4 + 9))
+    if ((v26 & 0x100) == 0 || self->_timestampDnsEnd != *(equalCopy + 9))
     {
       goto LABEL_35;
     }
@@ -2864,7 +2864,7 @@ LABEL_44:
 
   if ((*&v25 & 0x10000) != 0)
   {
-    if ((v26 & 0x10000) == 0 || self->_timestampTcpStart != *(v4 + 17))
+    if ((v26 & 0x10000) == 0 || self->_timestampTcpStart != *(equalCopy + 17))
     {
       goto LABEL_35;
     }
@@ -2877,7 +2877,7 @@ LABEL_44:
 
   if ((*&v25 & 0x8000) != 0)
   {
-    if ((v26 & 0x8000) == 0 || self->_timestampTcpEnd != *(v4 + 16))
+    if ((v26 & 0x8000) == 0 || self->_timestampTcpEnd != *(equalCopy + 16))
     {
       goto LABEL_35;
     }
@@ -2890,7 +2890,7 @@ LABEL_44:
 
   if ((*&v25 & 0x4000) != 0)
   {
-    if ((v26 & 0x4000) == 0 || self->_timestampSslStart != *(v4 + 15))
+    if ((v26 & 0x4000) == 0 || self->_timestampSslStart != *(equalCopy + 15))
     {
       goto LABEL_35;
     }
@@ -2903,7 +2903,7 @@ LABEL_44:
 
   if ((*&v25 & 0x800) != 0)
   {
-    if ((v26 & 0x800) == 0 || self->_timestampRequestStart != *(v4 + 12))
+    if ((v26 & 0x800) == 0 || self->_timestampRequestStart != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
@@ -2916,7 +2916,7 @@ LABEL_44:
 
   if ((*&v25 & 0x400) != 0)
   {
-    if ((v26 & 0x400) == 0 || self->_timestampRequestEnd != *(v4 + 11))
+    if ((v26 & 0x400) == 0 || self->_timestampRequestEnd != *(equalCopy + 11))
     {
       goto LABEL_35;
     }
@@ -2929,7 +2929,7 @@ LABEL_44:
 
   if ((*&v25 & 0x2000) != 0)
   {
-    if ((v26 & 0x2000) == 0 || self->_timestampResponseStart != *(v4 + 14))
+    if ((v26 & 0x2000) == 0 || self->_timestampResponseStart != *(equalCopy + 14))
     {
       goto LABEL_35;
     }
@@ -2942,7 +2942,7 @@ LABEL_44:
 
   if ((*&v25 & 0x1000) != 0)
   {
-    if ((v26 & 0x1000) == 0 || self->_timestampResponseEnd != *(v4 + 13))
+    if ((v26 & 0x1000) == 0 || self->_timestampResponseEnd != *(equalCopy + 13))
     {
       goto LABEL_35;
     }
@@ -2954,7 +2954,7 @@ LABEL_44:
   }
 
   optionsQualityOfService = self->_optionsQualityOfService;
-  if (optionsQualityOfService | *(v4 + 34))
+  if (optionsQualityOfService | *(equalCopy + 34))
   {
     if (![(NSString *)optionsQualityOfService isEqual:?])
     {
@@ -2964,7 +2964,7 @@ LABEL_44:
     v25 = self->_has;
   }
 
-  v29 = *(v4 + 79);
+  v29 = *(equalCopy + 79);
   if ((*&v25 & 0x20000000) != 0)
   {
     if ((v29 & 0x20000000) == 0)
@@ -2972,16 +2972,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v30 = *(v4 + 310);
+    v30 = *(equalCopy + 310);
     if (self->_optionsOutOfProcess)
     {
-      if ((*(v4 + 310) & 1) == 0)
+      if ((*(equalCopy + 310) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 310))
+    else if (*(equalCopy + 310))
     {
       goto LABEL_35;
     }
@@ -2999,16 +2999,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v31 = *(v4 + 311);
+    v31 = *(equalCopy + 311);
     if (self->_optionsOutOfProcessForceDiscretionary)
     {
-      if ((*(v4 + 311) & 1) == 0)
+      if ((*(equalCopy + 311) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 311))
+    else if (*(equalCopy + 311))
     {
       goto LABEL_35;
     }
@@ -3026,16 +3026,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v32 = *(v4 + 307);
+    v32 = *(equalCopy + 307);
     if (self->_optionsAllowExpensiveAccess)
     {
-      if ((*(v4 + 307) & 1) == 0)
+      if ((*(equalCopy + 307) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 307))
+    else if (*(equalCopy + 307))
     {
       goto LABEL_35;
     }
@@ -3053,16 +3053,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v33 = *(v4 + 308);
+    v33 = *(equalCopy + 308);
     if (self->_optionsAllowPowerNapScheduling)
     {
-      if ((*(v4 + 308) & 1) == 0)
+      if ((*(equalCopy + 308) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 308))
+    else if (*(equalCopy + 308))
     {
       goto LABEL_35;
     }
@@ -3075,7 +3075,7 @@ LABEL_44:
 
   if ((*&v25 & 0x200000) != 0)
   {
-    if ((v29 & 0x200000) == 0 || self->_optionsTimeoutIntervalForRequest != *(v4 + 74))
+    if ((v29 & 0x200000) == 0 || self->_optionsTimeoutIntervalForRequest != *(equalCopy + 74))
     {
       goto LABEL_35;
     }
@@ -3088,7 +3088,7 @@ LABEL_44:
 
   if ((*&v25 & 0x400000) != 0)
   {
-    if ((v29 & 0x400000) == 0 || self->_optionsTimeoutIntervalForResource != *(v4 + 75))
+    if ((v29 & 0x400000) == 0 || self->_optionsTimeoutIntervalForResource != *(equalCopy + 75))
     {
       goto LABEL_35;
     }
@@ -3100,13 +3100,13 @@ LABEL_44:
   }
 
   optionsSourceApplicationBundleIdentifier = self->_optionsSourceApplicationBundleIdentifier;
-  if (optionsSourceApplicationBundleIdentifier | *(v4 + 35) && ![(NSString *)optionsSourceApplicationBundleIdentifier isEqual:?])
+  if (optionsSourceApplicationBundleIdentifier | *(equalCopy + 35) && ![(NSString *)optionsSourceApplicationBundleIdentifier isEqual:?])
   {
     goto LABEL_35;
   }
 
   optionsSourceApplicationSecondaryIdentifier = self->_optionsSourceApplicationSecondaryIdentifier;
-  if (optionsSourceApplicationSecondaryIdentifier | *(v4 + 36))
+  if (optionsSourceApplicationSecondaryIdentifier | *(equalCopy + 36))
   {
     if (![(NSString *)optionsSourceApplicationSecondaryIdentifier isEqual:?])
     {
@@ -3115,7 +3115,7 @@ LABEL_44:
   }
 
   v36 = self->_has;
-  v37 = *(v4 + 79);
+  v37 = *(equalCopy + 79);
   if ((*&v36 & 0x10000000) != 0)
   {
     if ((v37 & 0x10000000) == 0)
@@ -3123,16 +3123,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v41 = *(v4 + 309);
+    v41 = *(equalCopy + 309);
     if (self->_optionsAppleIdContext)
     {
-      if ((*(v4 + 309) & 1) == 0)
+      if ((*(equalCopy + 309) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 309))
+    else if (*(equalCopy + 309))
     {
       goto LABEL_35;
     }
@@ -3150,16 +3150,16 @@ LABEL_44:
       goto LABEL_35;
     }
 
-    v42 = *(v4 + 312);
+    v42 = *(equalCopy + 312);
     if (self->_optionsTlsPinningRequired)
     {
-      if ((*(v4 + 312) & 1) == 0)
+      if ((*(equalCopy + 312) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 312))
+    else if (*(equalCopy + 312))
     {
       goto LABEL_35;
     }
@@ -3171,12 +3171,12 @@ LABEL_44:
   }
 
   optionsDiscretionaryNetworkBehavior = self->_optionsDiscretionaryNetworkBehavior;
-  if (!(optionsDiscretionaryNetworkBehavior | *(v4 + 32)) || [(NSString *)optionsDiscretionaryNetworkBehavior isEqual:?])
+  if (!(optionsDiscretionaryNetworkBehavior | *(equalCopy + 32)) || [(NSString *)optionsDiscretionaryNetworkBehavior isEqual:?])
   {
     optionsDuetPreClearedMode = self->_optionsDuetPreClearedMode;
-    if (!(optionsDuetPreClearedMode | *(v4 + 33)) || [(NSString *)optionsDuetPreClearedMode isEqual:?])
+    if (!(optionsDuetPreClearedMode | *(equalCopy + 33)) || [(NSString *)optionsDuetPreClearedMode isEqual:?])
     {
-      v40 = *(v4 + 79);
+      v40 = *(equalCopy + 79);
       if ((*(&self->_has + 3) & 2) == 0)
       {
         v16 = (v40 & 0x2000000) == 0;
@@ -3187,13 +3187,13 @@ LABEL_44:
       {
         if (self->_optionsAllowCellularAccess)
         {
-          if (*(v4 + 306))
+          if (*(equalCopy + 306))
           {
             goto LABEL_223;
           }
         }
 
-        else if (!*(v4 + 306))
+        else if (!*(equalCopy + 306))
         {
 LABEL_223:
           v16 = 1;
@@ -3637,17 +3637,17 @@ LABEL_71:
   return v54 ^ v55 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 79);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 79);
   if ((v6 & 0x20000) != 0)
   {
-    self->_triggers = v4[18];
+    self->_triggers = fromCopy[18];
     *&self->_has |= 0x20000u;
-    v6 = *(v4 + 79);
+    v6 = *(fromCopy + 79);
     if ((v6 & 8) == 0)
     {
 LABEL_3:
@@ -3665,17 +3665,17 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_reportFrequency = v4[4];
+  self->_reportFrequency = fromCopy[4];
   *&self->_has |= 8u;
-  if ((*(v4 + 79) & 0x10) != 0)
+  if ((*(fromCopy + 79) & 0x10) != 0)
   {
 LABEL_4:
-    self->_reportFrequencyBase = v4[5];
+    self->_reportFrequencyBase = fromCopy[5];
     *&self->_has |= 0x10u;
   }
 
 LABEL_5:
-  if (v4[31])
+  if (fromCopy[31])
   {
     [(C2MPNetworkEvent *)self setNetworkTaskDescription:?];
   }

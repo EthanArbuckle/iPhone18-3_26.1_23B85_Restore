@@ -17,7 +17,7 @@
 
     else if (a4 == 2)
     {
-      v7 = [a1 isEqual:v6];
+      v7 = [self isEqual:v6];
     }
   }
 
@@ -26,10 +26,10 @@
     switch(a4)
     {
       case 3:
-        v7 = [a1 isEqual:v6] ^ 1;
+        v7 = [self isEqual:v6] ^ 1;
         break;
       case 9:
-        v8 = [MEMORY[0x1E695DFD8] setWithArray:a1];
+        v8 = [MEMORY[0x1E695DFD8] setWithArray:self];
         v12 = MEMORY[0x1E695DFD8];
         v13 = v6;
         if (v13)
@@ -58,7 +58,7 @@
         v7 = [v8 isSubsetOfSet:v16];
         goto LABEL_22;
       case 10:
-        v8 = [MEMORY[0x1E695DFD8] setWithArray:a1];
+        v8 = [MEMORY[0x1E695DFD8] setWithArray:self];
         v9 = MEMORY[0x1E695DFD8];
         v10 = v6;
         if (v10)

@@ -19,10 +19,10 @@
   v5 = [v4 dateFromString:self->_releaseDate];
   [(LPiTunesMediaPodcastEpisodeMetadata *)v3 setReleaseDate:v5];
 
-  v6 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaPodcastEpisodeMetadata *)v3 setArtworkMetadata:v6];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaPodcastEpisodeMetadata *)v3 setArtworkMetadata:metadata];
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -44,8 +44,8 @@
         v12 = *(*(&v15 + 1) + 8 * i);
         if (([v12 hasAudio] & 1) != 0 || objc_msgSend(v12, "hasVideo"))
         {
-          v13 = [v12 type];
-          [v7 addObject:v13];
+          type = [v12 type];
+          [array addObject:type];
         }
       }
 
@@ -55,7 +55,7 @@
     while (v9);
   }
 
-  [(LPiTunesMediaPodcastEpisodeMetadata *)v3 setOffers:v7];
+  [(LPiTunesMediaPodcastEpisodeMetadata *)v3 setOffers:array];
 
   return v3;
 }

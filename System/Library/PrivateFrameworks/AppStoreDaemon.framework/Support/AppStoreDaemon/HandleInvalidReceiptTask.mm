@@ -1,12 +1,12 @@
 @interface HandleInvalidReceiptTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation HandleInvalidReceiptTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v42 = a3;
+  handlerCopy = handler;
   v4 = *(&self->super._finished + 1);
   v5 = +[FBSSystemService sharedService];
   [v5 terminateApplication:v4 forReason:5 andReport:0 withDescription:@"StoreKit invalid receipt"];
@@ -33,38 +33,38 @@
     v10 = [ASFReceipt receiptFromBundleAtURL:v11];
   }
 
-  v12 = [v10 expirationDate];
+  expirationDate = [v10 expirationDate];
   v13 = +[NSDate date];
-  v14 = [v12 compare:v13];
+  v14 = [expirationDate compare:v13];
 
   if (v9)
   {
-    v15 = [v9[15] localizedName];
+    localizedName = [v9[15] localizedName];
     v41 = sub_1003D26D4(v9);
-    v16 = [v9[15] iTunesMetadata];
-    v17 = [v16 storeItemIdentifier];
+    iTunesMetadata = [v9[15] iTunesMetadata];
+    storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-    v18 = [NSString stringWithFormat:@"%lld", v17];
-    v19 = [v9[15] iTunesMetadata];
-    v20 = [v19 storeItemIdentifier];
+    v18 = [NSString stringWithFormat:@"%lld", storeItemIdentifier];
+    iTunesMetadata2 = [v9[15] iTunesMetadata];
+    storeItemIdentifier2 = [iTunesMetadata2 storeItemIdentifier];
 
-    v21 = v20 != 0;
+    v21 = storeItemIdentifier2 != 0;
   }
 
   else
   {
     v41 = 0;
     v18 = 0;
-    v15 = 0;
+    localizedName = 0;
     v21 = 1;
   }
 
   if ([v10 isVPPLicensed] && (objc_msgSend(v10, "isRevoked") & 1) != 0 || objc_msgSend(v10, "isVPPLicensed") && v14 == -1)
   {
     ASDLocalizedString();
-    if (v15)
+    if (localizedName)
       v22 = {;
-      v39 = [NSString localizedStringWithFormat:v22, v15];
+      v39 = [NSString localizedStringWithFormat:v22, localizedName];
     }
 
     else
@@ -81,7 +81,7 @@
       v24 = {;
     }
 
-    v40 = v15;
+    v40 = localizedName;
     if (v21)
     {
       v25 = [NSString stringWithFormat:@"itms-apps:///app/%@", v18];
@@ -94,7 +94,7 @@
     }
 
     v27 = v26;
-    v28 = v42;
+    v28 = handlerCopy;
     v29 = [AMSDialogRequest requestWithTitle:v39 message:v24];
     ASDLocalizedString();
     v31 = v30 = v24;
@@ -107,7 +107,7 @@
     [v29 addButtonAction:v34];
 
     v35 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v29];
-    v36 = [v35 present];
+    present = [v35 present];
     *&buf = _NSConcreteStackBlock;
     *(&buf + 1) = 3221225472;
     v44 = sub_10039F5A8;
@@ -116,14 +116,14 @@
     v47 = v37;
     v38 = v27;
     v46 = v38;
-    [v36 addFinishBlock:&buf];
+    [present addFinishBlock:&buf];
 
-    v15 = v40;
+    localizedName = v40;
   }
 
   else
   {
-    (*(v42 + 2))(v42, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

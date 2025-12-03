@@ -1,12 +1,12 @@
 @interface HeroCarouselScrollView
 - (CGRect)frame;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation HeroCarouselScrollView
@@ -23,32 +23,32 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for HeroCarouselScrollView();
   v19.receiver = self;
   v19.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(HeroCarouselScrollView *)&v19 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18.receiver = v9;
+  v18.receiver = selfCopy;
   v18.super_class = v8;
   [(HeroCarouselScrollView *)&v18 setFrame:x, y, width, height];
-  [(HeroCarouselScrollView *)v9 frame];
+  [(HeroCarouselScrollView *)selfCopy frame];
   v21.origin.x = v11;
   v21.origin.y = v13;
   v21.size.width = v15;
   v21.size.height = v17;
   if (!CGRectEqualToRect(v20, v21))
   {
-    *(&v9->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider22HeroCarouselScrollView_needsPageViewLayout) = 1;
+    *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider22HeroCarouselScrollView_needsPageViewLayout) = 1;
   }
 }
 
@@ -61,40 +61,40 @@
   sub_54453C();
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_54655C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_54670C();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v5 = self;
+    selfCopy = self;
     sub_545AB8(1);
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v3 = self;
+  selfCopy = self;
   sub_545AB8(1);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
-  sub_545984(v4);
+  animationCopy = animation;
+  selfCopy = self;
+  sub_545984(animationCopy);
 }
 
 @end

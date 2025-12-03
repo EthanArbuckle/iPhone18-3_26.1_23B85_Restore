@@ -1,24 +1,24 @@
 @interface TSUProgressGroup
 - (BOOL)isIndeterminate;
-- (TSUProgressGroup)initWithChildren:(id)a3;
+- (TSUProgressGroup)initWithChildren:(id)children;
 - (double)maxValue;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
 - (void)p_updateChildrenProgressObservers;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation TSUProgressGroup
 
-- (TSUProgressGroup)initWithChildren:(id)a3
+- (TSUProgressGroup)initWithChildren:(id)children
 {
   v6.receiver = self;
   v6.super_class = TSUProgressGroup;
   v4 = [(TSUProgress *)&v6 init];
   if (v4)
   {
-    v4->mChildren = [a3 copy];
+    v4->mChildren = [children copy];
     v4->mChildrenProgressObserversQueue = dispatch_queue_create("con.apple.iWork.TSUProgressGroup", 0);
   }
 
@@ -163,20 +163,20 @@ LABEL_4:
   return v4;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = TSUProgressGroup;
-  v6 = [(TSUProgress *)&v8 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(TSUProgress *)&v8 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   [(TSUProgressGroup *)self p_updateChildrenProgressObservers];
   return v6;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v4.receiver = self;
   v4.super_class = TSUProgressGroup;
-  [(TSUProgress *)&v4 removeProgressObserver:a3];
+  [(TSUProgress *)&v4 removeProgressObserver:observer];
   [(TSUProgressGroup *)self p_updateChildrenProgressObservers];
 }
 

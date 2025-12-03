@@ -1,24 +1,24 @@
 @interface ATXBackupService
 + (BOOL)isBackupRestore;
-+ (BOOL)isCloudKitError:(id)a3;
-+ (BOOL)isManateeDecryptionError:(id)a3;
-+ (id)allErrorsFromCloudKitError:(id)a3;
++ (BOOL)isCloudKitError:(id)error;
++ (BOOL)isManateeDecryptionError:(id)error;
++ (id)allErrorsFromCloudKitError:(id)error;
 + (id)backupService;
-+ (id)queryForBackupsWithDeviceID:(id)a3;
-- (ATXBackupService)initWithContainerIdentifier:(id)a3 backupFileManager:(id)a4;
++ (id)queryForBackupsWithDeviceID:(id)d;
+- (ATXBackupService)initWithContainerIdentifier:(id)identifier backupFileManager:(id)manager;
 - (ATXCloudStorageSettingsListener)cloudStorageSettingsListener;
-- (BOOL)retryIfNeededInResponseToError:(id)a3 withBlock:(id)a4;
-- (void)backupWithCompletionHandler:(id)a3;
-- (void)fetchBackupAssetWithCompletionHandler:(id)a3;
-- (void)getDeviceIDWithCompletionHandler:(id)a3;
+- (BOOL)retryIfNeededInResponseToError:(id)error withBlock:(id)block;
+- (void)backupWithCompletionHandler:(id)handler;
+- (void)fetchBackupAssetWithCompletionHandler:(id)handler;
+- (void)getDeviceIDWithCompletionHandler:(id)handler;
 - (void)handleDeleteDataRequest;
-- (void)initializeCloudKitClientWithCompletionHandler:(id)a3 withRetryBlock:(id)a4;
-- (void)isManateeAvailableWithCompletionHandler:(id)a3 withRetryBlock:(id)a4;
-- (void)restoreFromBackupIfNeccessary:(id)a3;
-- (void)restoreFromBackupWithRetries:(unint64_t)a3 fromContainerID:(id)a4 completionHandler:(id)a5;
-- (void)saveBackupAsset:(id)a3 completionHandler:(id)a4;
-- (void)setupRecordZoneWithName:(id)a3 completionHandler:(id)a4;
-- (void)writeBackupToiCloud:(id)a3;
+- (void)initializeCloudKitClientWithCompletionHandler:(id)handler withRetryBlock:(id)block;
+- (void)isManateeAvailableWithCompletionHandler:(id)handler withRetryBlock:(id)block;
+- (void)restoreFromBackupIfNeccessary:(id)neccessary;
+- (void)restoreFromBackupWithRetries:(unint64_t)retries fromContainerID:(id)d completionHandler:(id)handler;
+- (void)saveBackupAsset:(id)asset completionHandler:(id)handler;
+- (void)setupRecordZoneWithName:(id)name completionHandler:(id)handler;
+- (void)writeBackupToiCloud:(id)cloud;
 @end
 
 @implementation ATXBackupService
@@ -43,18 +43,18 @@
   return (AppBooleanValue != 0) | v3 & 1;
 }
 
-- (ATXBackupService)initWithContainerIdentifier:(id)a3 backupFileManager:(id)a4
+- (ATXBackupService)initWithContainerIdentifier:(id)identifier backupFileManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = ATXBackupService;
   v9 = [(ATXBackupService *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_containerIdentifier, a3);
-    objc_storeStrong(&v10->_backupFileManager, a4);
+    objc_storeStrong(&v9->_containerIdentifier, identifier);
+    objc_storeStrong(&v10->_backupFileManager, manager);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.duetexpertd.atxbackup", v11);
     serialQueue = v10->_serialQueue;
@@ -77,17 +77,17 @@
   return v10;
 }
 
-- (void)backupWithCompletionHandler:(id)a3
+- (void)backupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ATXBackupService_backupWithCompletionHandler___block_invoke;
   v7[3] = &unk_2785968C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -114,17 +114,17 @@ id __48__ATXBackupService_backupWithCompletionHandler___block_invoke_2(uint64_t 
   return objc_opt_self();
 }
 
-- (void)restoreFromBackupIfNeccessary:(id)a3
+- (void)restoreFromBackupIfNeccessary:(id)neccessary
 {
-  v4 = a3;
+  neccessaryCopy = neccessary;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ATXBackupService_restoreFromBackupIfNeccessary___block_invoke;
   v7[3] = &unk_2785968C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neccessaryCopy;
+  v6 = neccessaryCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -221,21 +221,21 @@ void __50__ATXBackupService_restoreFromBackupIfNeccessary___block_invoke_28(uint
   v3 = objc_opt_self();
 }
 
-- (void)writeBackupToiCloud:(id)a3
+- (void)writeBackupToiCloud:(id)cloud
 {
-  v4 = a3;
+  cloudCopy = cloud;
   dispatch_assert_queue_V2(self->_serialQueue);
   WeakRetained = objc_loadWeakRetained(&self->_cloudStorageSettingsListener);
-  v6 = [objc_opt_class() isBackupForSiriEnabled];
+  isBackupForSiriEnabled = [objc_opt_class() isBackupForSiriEnabled];
 
-  if (v6)
+  if (isBackupForSiriEnabled)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __40__ATXBackupService_writeBackupToiCloud___block_invoke;
     v8[3] = &unk_278596968;
     v8[4] = self;
-    v9 = v4;
+    v9 = cloudCopy;
     [(ATXBackupService *)self initializeCloudKitClientWithCompletionHandler:v8 withRetryBlock:&__block_literal_global_2];
   }
 
@@ -248,7 +248,7 @@ void __50__ATXBackupService_restoreFromBackupIfNeccessary___block_invoke_28(uint
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "iCloud backup is not enabled for Siri dataclass, not backing up...", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(cloudCopy + 2))(cloudCopy, 0);
   }
 }
 
@@ -318,11 +318,11 @@ void __40__ATXBackupService_writeBackupToiCloud___block_invoke_3(void *a1, int a
   (*(a1[6] + 16))();
 }
 
-- (void)initializeCloudKitClientWithCompletionHandler:(id)a3 withRetryBlock:(id)a4
+- (void)initializeCloudKitClientWithCompletionHandler:(id)handler withRetryBlock:(id)block
 {
-  v6 = a3;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
-  v8 = a4;
+  blockCopy = block;
   dispatch_assert_queue_V2(serialQueue);
   v9 = [ATXCloudKitClient clientWithContainerIdentifier:self->_containerIdentifier useManatee:1 callbackQueue:self->_serialQueue];
   ckClient = self->_ckClient;
@@ -333,9 +333,9 @@ void __40__ATXBackupService_writeBackupToiCloud___block_invoke_3(void *a1, int a
   v12[2] = __81__ATXBackupService_initializeCloudKitClientWithCompletionHandler_withRetryBlock___block_invoke;
   v12[3] = &unk_278596990;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [(ATXBackupService *)self isManateeAvailableWithCompletionHandler:v12 withRetryBlock:v8];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(ATXBackupService *)self isManateeAvailableWithCompletionHandler:v12 withRetryBlock:blockCopy];
 }
 
 void __81__ATXBackupService_initializeCloudKitClientWithCompletionHandler_withRetryBlock___block_invoke(uint64_t a1, int a2, void *a3)
@@ -373,10 +373,10 @@ void __81__ATXBackupService_initializeCloudKitClientWithCompletionHandler_withRe
   }
 }
 
-- (void)isManateeAvailableWithCompletionHandler:(id)a3 withRetryBlock:(id)a4
+- (void)isManateeAvailableWithCompletionHandler:(id)handler withRetryBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_serialQueue);
   ckClient = self->_ckClient;
   v11[0] = MEMORY[0x277D85DD0];
@@ -384,10 +384,10 @@ void __81__ATXBackupService_initializeCloudKitClientWithCompletionHandler_withRe
   v11[2] = __75__ATXBackupService_isManateeAvailableWithCompletionHandler_withRetryBlock___block_invoke;
   v11[3] = &unk_278596A08;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handlerCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = handlerCopy;
   [(ATXCloudKitClient *)ckClient fetchAccountInfoWithCompletionHandler:v11];
 }
 
@@ -533,14 +533,14 @@ void __75__ATXBackupService_isManateeAvailableWithCompletionHandler_withRetryBlo
   dispatch_async(v4, block);
 }
 
-- (void)setupRecordZoneWithName:(id)a3 completionHandler:(id)a4
+- (void)setupRecordZoneWithName:(id)name completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
-  v8 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(serialQueue);
   v9 = objc_alloc(MEMORY[0x277CBC5F8]);
-  v10 = [v9 initWithZoneName:v8 ownerName:*MEMORY[0x277CBBF28]];
+  v10 = [v9 initWithZoneName:nameCopy ownerName:*MEMORY[0x277CBBF28]];
 
   ckClient = self->_ckClient;
   v14[0] = MEMORY[0x277D85DD0];
@@ -548,9 +548,9 @@ void __75__ATXBackupService_isManateeAvailableWithCompletionHandler_withRetryBlo
   v14[2] = __62__ATXBackupService_setupRecordZoneWithName_completionHandler___block_invoke;
   v14[3] = &unk_278596A30;
   v15 = v10;
-  v16 = self;
-  v17 = v6;
-  v12 = v6;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v10;
   [(ATXCloudKitClient *)ckClient fetchRecordZone:v13 completionHandler:v14];
 }
@@ -611,27 +611,27 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)saveBackupAsset:(id)a3 completionHandler:(id)a4
+- (void)saveBackupAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v6)
+  if (assetCopy)
   {
     deviceID = self->_deviceID;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __54__ATXBackupService_saveBackupAsset_completionHandler___block_invoke;
     v9[3] = &unk_278596A80;
-    v11 = v7;
+    v11 = handlerCopy;
     v9[4] = self;
-    v10 = v6;
+    v10 = assetCopy;
     [(ATXBackupService *)self setupRecordZoneWithName:deviceID completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -720,10 +720,10 @@ void __54__ATXBackupService_saveBackupAsset_completionHandler___block_invoke_57(
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBackupAssetWithCompletionHandler:(id)a3
+- (void)fetchBackupAssetWithCompletionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = __atxlog_handle_backup();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -731,17 +731,17 @@ void __54__ATXBackupService_saveBackupAsset_completionHandler___block_invoke_57(
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "fetching backup asset", buf, 2u);
   }
 
-  v6 = [(ATXBackupFileManager *)self->_backupFileManager deviceID];
-  if ([v6 length])
+  deviceID = [(ATXBackupFileManager *)self->_backupFileManager deviceID];
+  if ([deviceID length])
   {
-    v7 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneName:v6];
-    v8 = [ATXBackupService queryForBackupsWithDeviceID:v6];
+    v7 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneName:deviceID];
+    v8 = [ATXBackupService queryForBackupsWithDeviceID:deviceID];
     ckClient = self->_ckClient;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __58__ATXBackupService_fetchBackupAssetWithCompletionHandler___block_invoke;
     v12[3] = &unk_278596AA8;
-    v13 = v4;
+    v13 = handlerCopy;
     [(ATXCloudKitClient *)ckClient fetchRecords:v8 inZone:v7 completionHandler:v12];
     v10 = v13;
   }
@@ -752,7 +752,7 @@ void __54__ATXBackupService_saveBackupAsset_completionHandler___block_invoke_57(
     v16[0] = @"Unable to fetch backup asset. No device identifier set or is empty string";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v8 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ATXBackupService" code:1 userInfo:v7];
-    (*(v4 + 2))(v4, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
     v10 = __atxlog_handle_backup();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
@@ -800,22 +800,22 @@ void __58__ATXBackupService_fetchBackupAssetWithCompletionHandler___block_invoke
 LABEL_7:
 }
 
-- (void)restoreFromBackupWithRetries:(unint64_t)a3 fromContainerID:(id)a4 completionHandler:(id)a5
+- (void)restoreFromBackupWithRetries:(unint64_t)retries fromContainerID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (a3)
+  if (retries)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__ATXBackupService_restoreFromBackupWithRetries_fromContainerID_completionHandler___block_invoke;
     aBlock[3] = &unk_278596AD0;
     aBlock[4] = self;
-    v29 = a3;
-    v10 = v8;
+    retriesCopy = retries;
+    v10 = dCopy;
     v27 = v10;
-    v11 = v9;
+    v11 = handlerCopy;
     v28 = v11;
     v12 = _Block_copy(aBlock);
     if (v10)
@@ -877,7 +877,7 @@ LABEL_7:
       [ATXBackupService restoreFromBackupWithRetries:fromContainerID:completionHandler:];
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -935,13 +935,13 @@ void __83__ATXBackupService_restoreFromBackupWithRetries_fromContainerID_complet
   }
 }
 
-- (void)getDeviceIDWithCompletionHandler:(id)a3
+- (void)getDeviceIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_serialQueue);
   if (self->_deviceID)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -952,7 +952,7 @@ void __83__ATXBackupService_restoreFromBackupWithRetries_fromContainerID_complet
     v6[2] = __53__ATXBackupService_getDeviceIDWithCompletionHandler___block_invoke;
     v6[3] = &unk_278596B48;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(ATXCloudKitClient *)ckClient fetchCurrentDeviceIDWithCompletionHandler:v6];
   }
 }
@@ -991,24 +991,24 @@ LABEL_7:
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)queryForBackupsWithDeviceID:(id)a3
++ (id)queryForBackupsWithDeviceID:(id)d
 {
-  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceUUID == %@", a3];
+  v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceUUID == %@", d];
   v4 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:@"backups" predicate:v3];
 
   return v4;
 }
 
-- (BOOL)retryIfNeededInResponseToError:(id)a3 withBlock:(id)a4
+- (BOOL)retryIfNeededInResponseToError:(id)error withBlock:(id)block
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  errorCopy = error;
+  blockCopy = block;
+  if (errorCopy)
   {
-    if ([ATXBackupService isCloudKitError:v6])
+    if ([ATXBackupService isCloudKitError:errorCopy])
     {
-      [objc_opt_class() allErrorsFromCloudKitError:v6];
+      [objc_opt_class() allErrorsFromCloudKitError:errorCopy];
       v8 = memset(v52, 0, 64);
       v9 = [v8 countByEnumeratingWithState:v52 objects:v53 count:16];
       v10 = v9 != 0;
@@ -1029,7 +1029,7 @@ LABEL_7:
           v49 = __Block_byref_object_copy_;
           v50 = __Block_byref_object_dispose_;
           v51 = 0;
-          v13 = [MEMORY[0x277CCAB98] defaultCenter];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
           v14 = *MEMORY[0x277CBBF90];
           v43[0] = MEMORY[0x277D85DD0];
           v43[1] = 3221225472;
@@ -1037,8 +1037,8 @@ LABEL_7:
           v43[3] = &unk_2785969E0;
           v45 = &v46;
           v43[4] = self;
-          v44 = v7;
-          v15 = [v13 addObserverForName:v14 object:0 queue:0 usingBlock:v43];
+          v44 = blockCopy;
+          v15 = [defaultCenter addObserverForName:v14 object:0 queue:0 usingBlock:v43];
           v16 = v47[5];
           v47[5] = v15;
 
@@ -1059,7 +1059,7 @@ LABEL_7:
           v49 = __Block_byref_object_copy_;
           v50 = __Block_byref_object_dispose_;
           v51 = 0;
-          v18 = [MEMORY[0x277CCAB98] defaultCenter];
+          defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
           v19 = *MEMORY[0x277CBBF00];
           v40[0] = MEMORY[0x277D85DD0];
           v40[1] = 3221225472;
@@ -1067,8 +1067,8 @@ LABEL_7:
           v40[3] = &unk_2785969E0;
           v42 = &v46;
           v40[4] = self;
-          v41 = v7;
-          v20 = [v18 addObserverForName:v19 object:0 queue:0 usingBlock:v40];
+          v41 = blockCopy;
+          v20 = [defaultCenter2 addObserverForName:v19 object:0 queue:0 usingBlock:v40];
           v21 = v47[5];
           v47[5] = v20;
 
@@ -1100,7 +1100,7 @@ LABEL_7:
           v38[1] = 3221225472;
           v38[2] = __61__ATXBackupService_retryIfNeededInResponseToError_withBlock___block_invoke_86;
           v38[3] = &unk_2785969B8;
-          v39 = v7;
+          v39 = blockCopy;
           [v25 runAsyncOnQueue:serialQueue afterDelaySeconds:v38 block:v23];
         }
 
@@ -1112,7 +1112,7 @@ LABEL_7:
           v36[1] = 3221225472;
           v36[2] = __61__ATXBackupService_retryIfNeededInResponseToError_withBlock___block_invoke_2;
           v36[3] = &unk_2785969B8;
-          v37 = v7;
+          v37 = blockCopy;
           [v27 runAsyncOnQueue:v28 afterDelaySeconds:v36 block:1.0];
         }
 
@@ -1130,7 +1130,7 @@ LABEL_7:
           v34[1] = 3221225472;
           v34[2] = __61__ATXBackupService_retryIfNeededInResponseToError_withBlock___block_invoke_87;
           v34[3] = &unk_2785969B8;
-          v35 = v7;
+          v35 = blockCopy;
           [v30 runAsyncOnQueue:v31 afterDelaySeconds:v34 block:10.0];
         }
       }
@@ -1199,105 +1199,105 @@ void __61__ATXBackupService_retryIfNeededInResponseToError_withBlock___block_inv
   dispatch_async(v4, block);
 }
 
-+ (id)allErrorsFromCloudKitError:(id)a3
++ (id)allErrorsFromCloudKitError:(id)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 code] == 2)
+  errorCopy = error;
+  if ([errorCopy code] == 2)
   {
-    v4 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
     v5 = *MEMORY[0x277CBBFB0];
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v3 userInfo];
-      v9 = [v8 objectForKeyedSubscript:v5];
-      v10 = [v9 allValues];
+      userInfo2 = [errorCopy userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:v5];
+      allValues = [v9 allValues];
     }
 
     else
     {
-      v10 = 0;
+      allValues = 0;
     }
   }
 
-  else if ([v3 code] == 1)
+  else if ([errorCopy code] == 1)
   {
-    v11 = [v3 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo3 = [errorCopy userInfo];
+    v12 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v13 = [v12 domain];
-    v14 = [v13 isEqualToString:*MEMORY[0x277CBBF50]];
+    domain = [v12 domain];
+    v14 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
     if (v14)
     {
       v18[0] = v12;
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
+      allValues = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     }
 
     else
     {
-      v10 = 0;
+      allValues = 0;
     }
   }
 
   else
   {
-    v17 = v3;
-    v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
+    v17 = errorCopy;
+    allValues = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return allValues;
 }
 
-+ (BOOL)isCloudKitError:(id)a3
++ (BOOL)isCloudKitError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CBC120]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CBC120]])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 domain];
-    v5 = [v6 isEqualToString:*MEMORY[0x277CBBF50]];
+    domain2 = [errorCopy domain];
+    v5 = [domain2 isEqualToString:*MEMORY[0x277CBBF50]];
   }
 
   return v5;
 }
 
-+ (BOOL)isManateeDecryptionError:(id)a3
++ (BOOL)isManateeDecryptionError:(id)error
 {
-  v3 = a3;
-  if (![ATXBackupService isCloudKitError:v3])
+  errorCopy = error;
+  if (![ATXBackupService isCloudKitError:errorCopy])
   {
     v4 = 0;
     goto LABEL_14;
   }
 
-  if ([v3 code] != 112)
+  if ([errorCopy code] != 112)
   {
-    v5 = v3;
-    v6 = [v5 domain];
-    if ([v6 isEqualToString:*MEMORY[0x277CBBF50]])
+    v5 = errorCopy;
+    domain = [v5 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CBBF50]])
     {
-      v7 = [v5 code];
+      code = [v5 code];
 
-      if (v7 == 1)
+      if (code == 1)
       {
-        v8 = [v5 userInfo];
-        v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+        userInfo = [v5 userInfo];
+        v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-        v10 = [v9 code];
+        code2 = [v9 code];
         v4 = 1;
-        if ((v10 - 5000) < 5 || v10 == 112)
+        if ((code2 - 5000) < 5 || code2 == 112)
         {
           goto LABEL_13;
         }
@@ -1416,11 +1416,11 @@ void __43__ATXBackupService_handleDeleteDataRequest__block_invoke_90(uint64_t a1
 + (id)backupService
 {
   v3 = [ATXBackupFileManager alloc];
-  v4 = [MEMORY[0x277CEBCB0] appPredictionDirectory];
+  appPredictionDirectory = [MEMORY[0x277CEBCB0] appPredictionDirectory];
   v5 = +[_ATXDataStore sharedInstance];
-  v6 = [(ATXBackupFileManager *)v3 initWithBackupDirectory:v4 dataProviderDelegate:v5];
+  v6 = [(ATXBackupFileManager *)v3 initWithBackupDirectory:appPredictionDirectory dataProviderDelegate:v5];
 
-  v7 = [[a1 alloc] initWithContainerIdentifier:@"com.apple.ProactivePredictionsBackup" backupFileManager:v6];
+  v7 = [[self alloc] initWithContainerIdentifier:@"com.apple.ProactivePredictionsBackup" backupFileManager:v6];
 
   return v7;
 }

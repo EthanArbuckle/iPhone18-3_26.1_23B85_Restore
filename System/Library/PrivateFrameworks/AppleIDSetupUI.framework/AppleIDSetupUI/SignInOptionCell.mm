@@ -1,15 +1,15 @@
 @interface SignInOptionCell
-- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithCoder:(id)a3;
-- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithCoder:(id)coder;
+- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation SignInOptionCell
 
-- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_240A2BF4C();
+    identifier = sub_240A2BF4C();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_240A0F1A4(a3, a4, v6);
+  return sub_240A0F1A4(style, identifier, v6);
 }
 
-- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithCoder:(id)a3
+- (_TtC14AppleIDSetupUI16SignInOptionCell)initWithCoder:(id)coder
 {
   result = sub_240A2C58C();
   __break(1u);

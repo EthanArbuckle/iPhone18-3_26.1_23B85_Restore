@@ -1,17 +1,17 @@
 @interface HUIDarkTextView
-- (HUIDarkTextView)initWithFrame:(CGRect)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)updateLayout:(BOOL)a3;
+- (HUIDarkTextView)initWithFrame:(CGRect)frame;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)updateLayout:(BOOL)layout;
 @end
 
 @implementation HUIDarkTextView
 
-- (HUIDarkTextView)initWithFrame:(CGRect)a3
+- (HUIDarkTextView)initWithFrame:(CGRect)frame
 {
   v29[4] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = HUIDarkTextView;
-  v3 = [(HUIDarkTextView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIDarkTextView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(HACCCapsuleDarkBackground);
@@ -41,21 +41,21 @@
     [(UILabel *)v3->_valueLabel setTextAlignment:2];
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_valueLabel];
     v23 = MEMORY[0x277CCAAD0];
-    v27 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v26 = [(HUIDarkTextView *)v3 leadingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UIStackView *)v3->_stackView leadingAnchor];
+    leadingAnchor2 = [(HUIDarkTextView *)v3 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[0] = v25;
-    v24 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v12 = [(HUIDarkTextView *)v3 trailingAnchor];
-    v13 = [v24 constraintEqualToAnchor:v12];
+    trailingAnchor = [(UIStackView *)v3->_stackView trailingAnchor];
+    trailingAnchor2 = [(HUIDarkTextView *)v3 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[1] = v13;
-    v14 = [(UIStackView *)v3->_stackView topAnchor];
-    v15 = [(HUIDarkTextView *)v3 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [(UIStackView *)v3->_stackView topAnchor];
+    topAnchor2 = [(HUIDarkTextView *)v3 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[2] = v16;
-    v17 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v18 = [(HUIDarkTextView *)v3 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(UIStackView *)v3->_stackView bottomAnchor];
+    bottomAnchor2 = [(HUIDarkTextView *)v3 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[3] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     [v23 activateConstraints:v20];
@@ -68,12 +68,12 @@
   return v3;
 }
 
-- (void)updateLayout:(BOOL)a3
+- (void)updateLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(HUIDarkTextView *)self valueLabel];
-  v6 = v5;
-  if (v3)
+  layoutCopy = layout;
+  valueLabel = [(HUIDarkTextView *)self valueLabel];
+  v6 = valueLabel;
+  if (layoutCopy)
   {
     v7 = 0;
   }
@@ -83,7 +83,7 @@
     v7 = 2;
   }
 
-  if (v3)
+  if (layoutCopy)
   {
     v8 = 10.0;
   }
@@ -93,9 +93,9 @@
     v8 = 0.0;
   }
 
-  [v5 setTextAlignment:v7];
+  [valueLabel setTextAlignment:v7];
 
-  [(UIStackView *)self->_stackView setAxis:v3];
+  [(UIStackView *)self->_stackView setAxis:layoutCopy];
   CCUILayoutGutter();
   v10 = v9;
   CCUILayoutGutter();
@@ -104,12 +104,12 @@
   [(UIStackView *)stackView setLayoutMargins:v8, v10, v8, v11];
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = [(HUIDarkTextView *)self requiredVisualStyleCategories];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(HUIDarkTextView *)self requiredVisualStyleCategories];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if (v9)
   {
@@ -117,8 +117,8 @@
     v10[1] = 3221225472;
     v10[2] = __56__HUIDarkTextView_setVisualStylingProvider_forCategory___block_invoke;
     v10[3] = &unk_2796F6CA8;
-    v11 = v6;
-    v12 = self;
+    v11 = providerCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }

@@ -1,24 +1,24 @@
 @interface SGSignatureDissector
 + (id)singleLineSignatureLeadingCharacterSet;
-- (BOOL)_paragraphWithContent:(id)a3 range:(_NSRange)a4 exceedsLineLimit:(unint64_t)a5 orCharacterLimit:(unint64_t)a6;
-- (BOOL)shouldIgnoreSignature:(id)a3 signatureRange:(_NSRange *)a4 isInhuman:(BOOL *)a5;
-- (_NSRange)findSignaturePrefix:(id)a3;
-- (_NSRange)findValediction:(id)a3;
-- (_NSRange)hmmPlausibleSignatureRange:(id)a3;
-- (_NSRange)hmmSignatureRange:(id)a3;
-- (_NSRange)hmmSignatureRangeWithContent:(id)a3 detectedData:(id)a4 quotedRegions:(id)a5 authorName:(id)a6;
-- (_NSRange)miniSignatureRange:(id)a3;
-- (_NSRange)rangeOfSenderName:(id)a3 inRange:(_NSRange)a4 restrictLength:(BOOL)a5 forMessage:(id)a6;
-- (_NSRange)rangeOfSenderNameComponents:(id)a3 withFullname:(id)a4 inSubstring:(id)a5;
-- (_NSRange)signatureRange:(id)a3;
-- (_NSRange)trailingSenderNameLineRange:(id)a3;
-- (id)authorFirstname:(id)a3;
-- (id)authorName:(id)a3;
-- (id)findRejectSig:(id)a3;
-- (id)findSignaturePrefixesInMessage:(id)a3 withSignaturePrefixes:(id)a4;
-- (id)findValedictionCommencedSignatureRanges:(id)a3;
+- (BOOL)_paragraphWithContent:(id)content range:(_NSRange)range exceedsLineLimit:(unint64_t)limit orCharacterLimit:(unint64_t)characterLimit;
+- (BOOL)shouldIgnoreSignature:(id)signature signatureRange:(_NSRange *)range isInhuman:(BOOL *)inhuman;
+- (_NSRange)findSignaturePrefix:(id)prefix;
+- (_NSRange)findValediction:(id)valediction;
+- (_NSRange)hmmPlausibleSignatureRange:(id)range;
+- (_NSRange)hmmSignatureRange:(id)range;
+- (_NSRange)hmmSignatureRangeWithContent:(id)content detectedData:(id)data quotedRegions:(id)regions authorName:(id)name;
+- (_NSRange)miniSignatureRange:(id)range;
+- (_NSRange)rangeOfSenderName:(id)name inRange:(_NSRange)range restrictLength:(BOOL)length forMessage:(id)message;
+- (_NSRange)rangeOfSenderNameComponents:(id)components withFullname:(id)fullname inSubstring:(id)substring;
+- (_NSRange)signatureRange:(id)range;
+- (_NSRange)trailingSenderNameLineRange:(id)range;
+- (id)authorFirstname:(id)firstname;
+- (id)authorName:(id)name;
+- (id)findRejectSig:(id)sig;
+- (id)findSignaturePrefixesInMessage:(id)message withSignaturePrefixes:(id)prefixes;
+- (id)findValedictionCommencedSignatureRanges:(id)ranges;
 - (id)initIgnoringDataDetectors;
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5;
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context;
 @end
 
 @implementation SGSignatureDissector
@@ -51,21 +51,21 @@ void __62__SGSignatureDissector_singleLineSignatureLeadingCharacterSet__block_in
   singleLineSignatureLeadingCharacterSet_charset = v3;
 }
 
-- (BOOL)shouldIgnoreSignature:(id)a3 signatureRange:(_NSRange *)a4 isInhuman:(BOOL *)a5
+- (BOOL)shouldIgnoreSignature:(id)signature signatureRange:(_NSRange *)range isInhuman:(BOOL *)inhuman
 {
   v245 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  signatureCopy = signature;
   context = objc_autoreleasePoolPush();
-  v197 = a4;
-  length = a4->length;
-  location = a4->location;
-  *a5 = 0;
-  v198 = v7;
+  rangeCopy = range;
+  length = range->length;
+  location = range->location;
+  *inhuman = 0;
+  v198 = signatureCopy;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v185 = a5;
-    v9 = [v7 textContent];
-    v10 = [v9 length];
+    inhumanCopy = inhuman;
+    textContent = [signatureCopy textContent];
+    v10 = [textContent length];
 
     if (location > v10)
     {
@@ -79,8 +79,8 @@ void __62__SGSignatureDissector_singleLineSignatureLeadingCharacterSet__block_in
       goto LABEL_12;
     }
 
-    v11 = [v7 textContent];
-    v12 = [v11 length];
+    textContent2 = [signatureCopy textContent];
+    v12 = [textContent2 length];
 
     if (length + location > v12)
     {
@@ -99,7 +99,7 @@ void __62__SGSignatureDissector_singleLineSignatureLeadingCharacterSet__block_in
     v237 = buf;
     v238 = 0x2020000000;
     v239 = 0;
-    v17 = [v7 quotedRegions];
+    quotedRegions = [signatureCopy quotedRegions];
     v232[0] = MEMORY[0x277D85DD0];
     v232[1] = 3221225472;
     v232[2] = __71__SGSignatureDissector_shouldIgnoreSignature_signatureRange_isInhuman___block_invoke;
@@ -107,29 +107,29 @@ void __62__SGSignatureDissector_singleLineSignatureLeadingCharacterSet__block_in
     v235 = buf;
     v18 = v16;
     v233 = v18;
-    v192 = v7;
+    v192 = signatureCopy;
     v234 = v192;
-    [v17 enumerateRangesUsingBlock:v232];
+    [quotedRegions enumerateRangesUsingBlock:v232];
 
     v19 = *(v237 + 3);
-    v20 = [v192 textContent];
-    LODWORD(v19) = v19 < [v20 length];
+    textContent3 = [v192 textContent];
+    LODWORD(v19) = v19 < [textContent3 length];
 
     if (v19)
     {
-      v21 = [v192 textContent];
-      v22 = [v21 substringFromIndex:*(v237 + 3)];
+      textContent4 = [v192 textContent];
+      v22 = [textContent4 substringFromIndex:*(v237 + 3)];
       [v18 addObject:v22];
 
-      v23 = [v192 textContent];
-      v24 = [v23 length];
+      textContent5 = [v192 textContent];
+      v24 = [textContent5 length];
       *(v237 + 3) = v24;
     }
 
     v184 = [MEMORY[0x277CCACA8] _pas_proxyStringByConcatenatingStrings:v18];
 
     v25 = objc_autoreleasePoolPush();
-    v26 = [v184 substringWithRange:{v197->location, v197->length}];
+    v26 = [v184 substringWithRange:{rangeCopy->location, rangeCopy->length}];
     v27 = patterns_23118();
     v28 = [v27 regex2ForKey:@"InhumanSig"];
     v29 = [v28 existsInString:v26];
@@ -150,7 +150,7 @@ void __62__SGSignatureDissector_singleLineSignatureLeadingCharacterSet__block_in
         _os_log_debug_impl(&dword_231E60000, v31, OS_LOG_TYPE_DEBUG, "Ignoring signature: Inhuman pattern.", v205, 2u);
       }
 
-      *v185 = 1;
+      *inhumanCopy = 1;
     }
 
     objc_autoreleasePoolPop(v25);
@@ -166,20 +166,20 @@ LABEL_200:
     v32 = [(SGSignatureDissector *)self findSignaturePrefix:v192];
     if (v33)
     {
-      v34 = v197->location - v32;
-      if (v197->location < v32)
+      v34 = rangeCopy->location - v32;
+      if (rangeCopy->location < v32)
       {
-        v35 = v197->length;
-        if (v32 + v33 < v35 + v197->location)
+        v35 = rangeCopy->length;
+        if (v32 + v33 < v35 + rangeCopy->location)
         {
-          v197->location = v32;
-          v197->length = v34 + v35;
+          rangeCopy->location = v32;
+          rangeCopy->length = v34 + v35;
         }
       }
     }
 
     v36 = [(SGSignatureDissector *)self findValediction:v192];
-    if (v37 && v197->length + v197->location <= v36)
+    if (v37 && rangeCopy->length + rangeCopy->location <= v36)
     {
       v60 = sgLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
@@ -195,14 +195,14 @@ LABEL_200:
     v38 = +[SGContactStoreFactory contactStore];
     v186 = [SGCuratedContactMatcher fetchMeContactFromContactStore:v38];
 
-    v40 = v197->location;
-    v39 = v197->length;
+    v40 = rangeCopy->location;
+    v39 = rangeCopy->length;
     obj = [v186 givenName];
     if (!obj)
     {
 LABEL_44:
-      v59 = [v186 phoneNumbers];
-      if ([v59 count])
+      phoneNumbers = [v186 phoneNumbers];
+      if ([phoneNumbers count])
       {
 
 LABEL_50:
@@ -210,9 +210,9 @@ LABEL_50:
         v231 = 0u;
         v228 = 0u;
         v229 = 0u;
-        v63 = [v192 plainTextDetectedData];
-        v64 = [v63 countByEnumeratingWithState:&v228 objects:v244 count:16];
-        obj = v63;
+        plainTextDetectedData = [v192 plainTextDetectedData];
+        v64 = [plainTextDetectedData countByEnumeratingWithState:&v228 objects:v244 count:16];
+        obj = plainTextDetectedData;
         if (!v64)
         {
           goto LABEL_90;
@@ -233,22 +233,22 @@ LABEL_50:
             v66 = *(*(&v228 + 1) + 8 * v65);
             v67 = objc_autoreleasePoolPush();
             v246.location = [v66 range];
-            if (NSIntersectionRange(v246, *v197).length)
+            if (NSIntersectionRange(v246, *rangeCopy).length)
             {
               if ([v66 matchType])
               {
                 if ([v66 matchType] == 1)
                 {
-                  v68 = [v192 textContent];
-                  v69 = [v66 valueRange];
-                  v71 = [v68 substringWithRange:{v69, v70}];
+                  textContent6 = [v192 textContent];
+                  valueRange = [v66 valueRange];
+                  v71 = [textContent6 substringWithRange:{valueRange, v70}];
 
                   v226 = 0u;
                   v227 = 0u;
                   v224 = 0u;
                   v225 = 0u;
-                  v72 = [v186 postalAddresses];
-                  v73 = [v72 countByEnumeratingWithState:&v224 objects:v243 count:16];
+                  postalAddresses = [v186 postalAddresses];
+                  v73 = [postalAddresses countByEnumeratingWithState:&v224 objects:v243 count:16];
                   if (v73)
                   {
                     v74 = *v225;
@@ -258,7 +258,7 @@ LABEL_60:
                     {
                       if (*v225 != v74)
                       {
-                        objc_enumerationMutation(v72);
+                        objc_enumerationMutation(postalAddresses);
                       }
 
                       v76 = *(*(&v224 + 1) + 8 * v75);
@@ -283,7 +283,7 @@ LABEL_60:
 
                       if (v73 == ++v75)
                       {
-                        v73 = [v72 countByEnumeratingWithState:&v224 objects:v243 count:16];
+                        v73 = [postalAddresses countByEnumeratingWithState:&v224 objects:v243 count:16];
                         if (v73)
                         {
                           goto LABEL_60;
@@ -313,24 +313,24 @@ LABEL_81:
                   goto LABEL_82;
                 }
 
-                v90 = [v192 textContent];
-                v91 = [v66 valueRange];
-                v71 = [v90 substringWithRange:{v91, v92}];
+                textContent7 = [v192 textContent];
+                valueRange2 = [v66 valueRange];
+                v71 = [textContent7 substringWithRange:{valueRange2, v92}];
 
-                v93 = [v186 emailAddresses];
+                emailAddresses = [v186 emailAddresses];
                 v94 = SGNormalizeEmailAddress();
-                v95 = [v93 containsObject:v94];
+                v95 = [emailAddresses containsObject:v94];
 
                 if (v95)
                 {
-                  v72 = sgLogHandle();
-                  if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
+                  postalAddresses = sgLogHandle();
+                  if (!os_log_type_enabled(postalAddresses, OS_LOG_TYPE_DEBUG))
                   {
                     goto LABEL_78;
                   }
 
                   *v205 = 0;
-                  v88 = v72;
+                  v88 = postalAddresses;
                   v89 = "Ignoring signature: Recipient's email.";
                   goto LABEL_88;
                 }
@@ -338,24 +338,24 @@ LABEL_81:
 
               else
               {
-                v82 = [v192 textContent];
-                v83 = [v66 valueRange];
-                v71 = [v82 substringWithRange:{v83, v84}];
+                textContent8 = [v192 textContent];
+                valueRange3 = [v66 valueRange];
+                v71 = [textContent8 substringWithRange:{valueRange3, v84}];
 
-                v85 = [v186 phoneNumbers];
+                phoneNumbers2 = [v186 phoneNumbers];
                 v86 = SGNormalizePhoneNumber();
-                v87 = [v85 containsObject:v86];
+                v87 = [phoneNumbers2 containsObject:v86];
 
                 if (v87)
                 {
-                  v72 = sgLogHandle();
-                  if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
+                  postalAddresses = sgLogHandle();
+                  if (!os_log_type_enabled(postalAddresses, OS_LOG_TYPE_DEBUG))
                   {
                     goto LABEL_78;
                   }
 
                   *v205 = 0;
-                  v88 = v72;
+                  v88 = postalAddresses;
                   v89 = "Ignoring signature: Recipient's phone.";
 LABEL_88:
                   _os_log_debug_impl(&dword_231E60000, v88, OS_LOG_TYPE_DEBUG, v89, v205, 2u);
@@ -389,8 +389,8 @@ LABEL_90:
         }
       }
 
-      v61 = [v186 postalAddresses];
-      v62 = [v61 count] == 0;
+      postalAddresses2 = [v186 postalAddresses];
+      v62 = [postalAddresses2 count] == 0;
 
       if (!v62)
       {
@@ -411,13 +411,13 @@ LABEL_91:
 
       else
       {
-        v99 = v197->location;
+        v99 = rangeCopy->location;
         v100 = [[SGPlainTextContentCursor alloc] initWithMailMessage:v192];
-        [(SGPlainTextContentCursor *)v100 setPos:v197->location];
+        [(SGPlainTextContentCursor *)v100 setPos:rangeCopy->location];
         if ([(SGPlainTextContentCursor *)v100 pos])
         {
-          v101 = [v192 textContent];
-          v102 = [v101 characterAtIndex:{-[SGPlainTextContentCursor pos](v100, "pos")}] == 10;
+          textContent9 = [v192 textContent];
+          v102 = [textContent9 characterAtIndex:{-[SGPlainTextContentCursor pos](v100, "pos")}] == 10;
 
           if (!v102)
           {
@@ -438,8 +438,8 @@ LABEL_91:
           v104 = 1;
         }
 
-        v106 = [v192 textContent];
-        v107 = [v106 length];
+        textContent10 = [v192 textContent];
+        v107 = [textContent10 length];
 
         if (v104 >= v107)
         {
@@ -448,8 +448,8 @@ LABEL_91:
 
         [(SGPlainTextContentCursor *)v100 setPos:v103];
         [(SGPlainTextContentCursor *)v100 backwardToString:@"\n\n" consume:1];
-        v108 = [v192 textContent];
-        v109 = [(SGSignatureDissector *)self _paragraphWithContent:v108 range:[(SGPlainTextContentCursor *)v100 pos] exceedsLineLimit:v103 - [(SGPlainTextContentCursor *)v100 pos] orCharacterLimit:4, 125];
+        textContent11 = [v192 textContent];
+        v109 = [(SGSignatureDissector *)self _paragraphWithContent:textContent11 range:[(SGPlainTextContentCursor *)v100 pos] exceedsLineLimit:v103 - [(SGPlainTextContentCursor *)v100 pos] orCharacterLimit:4, 125];
 
         if (v109)
         {
@@ -469,8 +469,8 @@ LABEL_91:
           [(SGPlainTextContentCursor *)v100 backwardWhile:&__block_literal_global_109];
           v99 = [(SGPlainTextContentCursor *)v100 pos];
           [(SGPlainTextContentCursor *)v100 backwardToString:@"\n\n" consume:0];
-          v110 = [v192 textContent];
-          v111 = [(SGSignatureDissector *)self _paragraphWithContent:v110 range:[(SGPlainTextContentCursor *)v100 pos] exceedsLineLimit:v99 - [(SGPlainTextContentCursor *)v100 pos] orCharacterLimit:2, 75];
+          textContent12 = [v192 textContent];
+          v111 = [(SGSignatureDissector *)self _paragraphWithContent:textContent12 range:[(SGPlainTextContentCursor *)v100 pos] exceedsLineLimit:v99 - [(SGPlainTextContentCursor *)v100 pos] orCharacterLimit:2, 75];
 
           if (!v111)
           {
@@ -486,10 +486,10 @@ LABEL_91:
         [(SGPlainTextContentCursor *)v100 setPos:v99];
         [(SGPlainTextContentCursor *)v100 forwardWhile:&__block_literal_global_111];
         v112 = [(SGPlainTextContentCursor *)v100 pos];
-        v113 = v197->length;
-        if (v112 - v99 >= v197->location - v99 + v113)
+        v113 = rangeCopy->length;
+        if (v112 - v99 >= rangeCopy->location - v99 + v113)
         {
-          v114 = v197->location - v99 + v113;
+          v114 = rangeCopy->location - v99 + v113;
         }
 
         else
@@ -497,31 +497,31 @@ LABEL_91:
           v114 = v112 - v99;
         }
 
-        v116 = [(SGSignatureDissector *)self rangeOfSenderName:obj inRange:v99 restrictLength:v114 forMessage:0, v192];
-        if (v116 == 0x7FFFFFFFFFFFFFFFLL)
+        v192 = [(SGSignatureDissector *)self rangeOfSenderName:obj inRange:v99 restrictLength:v114 forMessage:0, v192];
+        if (v192 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v117 = [v192 author];
-          v118 = [v117 sg_emailAddress];
-          v119 = v118 == 0;
+          author = [v192 author];
+          sg_emailAddress = [author sg_emailAddress];
+          v119 = sg_emailAddress == 0;
 
           if (v119)
           {
             goto LABEL_125;
           }
 
-          v120 = [v192 textContent];
-          v121 = [v192 author];
-          v122 = [v121 sg_emailAddress];
-          v123 = [v120 rangeOfString:v122 options:1 range:{v99, v114}] == 0x7FFFFFFFFFFFFFFFLL;
+          textContent13 = [v192 textContent];
+          author2 = [v192 author];
+          sg_emailAddress2 = [author2 sg_emailAddress];
+          v123 = [textContent13 rangeOfString:sg_emailAddress2 options:1 range:{v99, v114}] == 0x7FFFFFFFFFFFFFFFLL;
 
           if (v123)
           {
 LABEL_125:
-            v124 = sgLogHandle();
-            if (os_log_type_enabled(v124, OS_LOG_TYPE_DEBUG))
+            plainTextDetectedData3 = sgLogHandle();
+            if (os_log_type_enabled(plainTextDetectedData3, OS_LOG_TYPE_DEBUG))
             {
               *v205 = 0;
-              _os_log_debug_impl(&dword_231E60000, v124, OS_LOG_TYPE_DEBUG, "Ignoring signature: No sender's name or email.", v205, 2u);
+              _os_log_debug_impl(&dword_231E60000, plainTextDetectedData3, OS_LOG_TYPE_DEBUG, "Ignoring signature: No sender's name or email.", v205, 2u);
             }
 
             goto LABEL_127;
@@ -532,14 +532,14 @@ LABEL_125:
         {
           v125 = v115;
           v189 = objc_autoreleasePoolPush();
-          v191 = v116 + v99;
+          v191 = v192 + v99;
           [(SGPlainTextContentCursor *)v100 setPos:?];
           v222 = 0u;
           v223 = 0u;
           v220 = 0u;
           v221 = 0u;
-          v126 = [v192 plainTextDetectedData];
-          v127 = [v126 countByEnumeratingWithState:&v220 objects:v242 count:16];
+          plainTextDetectedData2 = [v192 plainTextDetectedData];
+          v127 = [plainTextDetectedData2 countByEnumeratingWithState:&v220 objects:v242 count:16];
           if (v127)
           {
             v128 = *v221;
@@ -549,15 +549,15 @@ LABEL_125:
               {
                 if (*v221 != v128)
                 {
-                  objc_enumerationMutation(v126);
+                  objc_enumerationMutation(plainTextDetectedData2);
                 }
 
                 v130 = *(*(&v220 + 1) + 8 * i);
-                v131 = [v130 range];
-                if (v131 > [(SGPlainTextContentCursor *)v100 pos])
+                range = [v130 range];
+                if (range > [(SGPlainTextContentCursor *)v100 pos])
                 {
-                  v132 = [v130 range];
-                  if (v132 >= v197->location && v132 - v197->location < v197->length)
+                  range2 = [v130 range];
+                  if (range2 >= rangeCopy->location && range2 - rangeCopy->location < rangeCopy->length)
                   {
                     v134 = 1;
                     goto LABEL_142;
@@ -565,7 +565,7 @@ LABEL_125:
                 }
               }
 
-              v127 = [v126 countByEnumeratingWithState:&v220 objects:v242 count:16];
+              v127 = [plainTextDetectedData2 countByEnumeratingWithState:&v220 objects:v242 count:16];
             }
 
             while (v127);
@@ -574,9 +574,9 @@ LABEL_125:
           v134 = 0;
 LABEL_142:
 
-          v135 = [v192 textContent];
+          textContent14 = [v192 textContent];
           v136 = v191 + v125;
-          if (v191 + v125 == [v135 length])
+          if (v191 + v125 == [textContent14 length])
           {
             v137 = 1;
           }
@@ -584,30 +584,30 @@ LABEL_142:
           else
           {
             v138 = [obj length];
-            v139 = [v192 textContent];
-            if (v138 + v191 >= [v139 length])
+            textContent15 = [v192 textContent];
+            if (v138 + v191 >= [textContent15 length])
             {
               v137 = 1;
             }
 
             else
             {
-              v140 = [v192 textContent];
-              if ([v140 characterAtIndex:v136] == 10)
+              textContent16 = [v192 textContent];
+              if ([textContent16 characterAtIndex:v136] == 10)
               {
                 v137 = 1;
               }
 
               else
               {
-                v142 = [v192 textContent];
+                textContent17 = [v192 textContent];
                 v143 = [obj stringByAppendingString:@"\n"];
-                v144 = [v192 textContent];
-                v183 = v140;
-                v145 = v142;
-                v137 = [v142 rangeOfString:v143 options:1 range:{v191, objc_msgSend(v144, "length") - v191}] == v191;
+                textContent18 = [v192 textContent];
+                v183 = textContent16;
+                v145 = textContent17;
+                v137 = [textContent17 rangeOfString:v143 options:1 range:{v191, objc_msgSend(textContent18, "length") - v191}] == v191;
 
-                v140 = v183;
+                textContent16 = v183;
               }
             }
           }
@@ -623,21 +623,21 @@ LABEL_142:
               v148 = v147 - v146;
             }
 
-            v197->location = v146;
-            v197->length = v148;
+            rangeCopy->location = v146;
+            rangeCopy->length = v148;
           }
 
           objc_autoreleasePoolPop(v189);
         }
 
-        if (v197->location == location && v197->length == length)
+        if (rangeCopy->location == location && rangeCopy->length == length)
         {
           goto LABEL_170;
         }
 
         v149 = objc_autoreleasePoolPush();
-        v150 = v197->location;
-        v151 = v197->length;
+        v150 = rangeCopy->location;
+        v151 = rangeCopy->length;
         v152 = objc_autoreleasePoolPush();
         v153 = patterns_23118();
         v154 = [v153 regex2ForKey:@"InhumanSig"];
@@ -663,7 +663,7 @@ LABEL_142:
             _os_log_debug_impl(&dword_231E60000, v159, OS_LOG_TYPE_DEBUG, "Ignoring signature after adjusting range: Inhuman pattern.", v205, 2u);
           }
 
-          *v185 = 1;
+          *inhumanCopy = 1;
         }
 
         objc_autoreleasePoolPop(v149);
@@ -674,8 +674,8 @@ LABEL_170:
           v219 = 0u;
           v216 = 0u;
           v217 = 0u;
-          v124 = [v192 plainTextDetectedData];
-          v160 = [v124 countByEnumeratingWithState:&v216 objects:v241 count:16];
+          plainTextDetectedData3 = [v192 plainTextDetectedData];
+          v160 = [plainTextDetectedData3 countByEnumeratingWithState:&v216 objects:v241 count:16];
           if (!v160)
           {
 LABEL_179:
@@ -685,8 +685,8 @@ LABEL_179:
             v215 = 0u;
             v212 = 0u;
             v213 = 0u;
-            v124 = v164;
-            v165 = [v124 countByEnumeratingWithState:&v212 objects:v240 count:16];
+            plainTextDetectedData3 = v164;
+            v165 = [plainTextDetectedData3 countByEnumeratingWithState:&v212 objects:v240 count:16];
             if (v165)
             {
               v166 = *v213;
@@ -696,11 +696,11 @@ LABEL_179:
                 {
                   if (*v213 != v166)
                   {
-                    objc_enumerationMutation(v124);
+                    objc_enumerationMutation(plainTextDetectedData3);
                   }
 
                   v247.location = [*(*(&v212 + 1) + 8 * j) rangeValue];
-                  if (NSIntersectionRange(v247, *v197).length)
+                  if (NSIntersectionRange(v247, *rangeCopy).length)
                   {
                     v176 = sgLogHandle();
                     if (os_log_type_enabled(v176, OS_LOG_TYPE_DEBUG))
@@ -710,12 +710,12 @@ LABEL_179:
                     }
 
                     v13 = 1;
-                    v181 = v124;
+                    v181 = plainTextDetectedData3;
                     goto LABEL_195;
                   }
                 }
 
-                v165 = [v124 countByEnumeratingWithState:&v212 objects:v240 count:16];
+                v165 = [plainTextDetectedData3 countByEnumeratingWithState:&v212 objects:v240 count:16];
                 if (v165)
                 {
                   continue;
@@ -727,16 +727,16 @@ LABEL_179:
 
             v168 = [SGIdentityName nameWithString:obj];
             v169 = objc_opt_new();
-            v170 = v197->location;
-            v171 = v197->length;
-            v172 = [v192 textContent];
-            v173 = [v172 length];
-            v174 = v197->location;
-            v175 = v197->length;
+            v170 = rangeCopy->location;
+            v171 = rangeCopy->length;
+            textContent19 = [v192 textContent];
+            v173 = [textContent19 length];
+            v174 = rangeCopy->location;
+            v175 = rangeCopy->length;
 
             v176 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{v171 + v170, v173 - (v174 + v175)}];
-            v177 = [v192 quotedRegions];
-            [v176 removeIndexes:v177];
+            quotedRegions2 = [v192 quotedRegions];
+            [v176 removeIndexes:quotedRegions2];
 
             v209[0] = MEMORY[0x277D85DD0];
             v209[1] = 3221225472;
@@ -758,7 +758,7 @@ LABEL_179:
             v200[2] = __71__SGSignatureDissector_shouldIgnoreSignature_signatureRange_isInhuman___block_invoke_2_116;
             v200[3] = &unk_27894F680;
             v201 = obj;
-            v202 = self;
+            selfCopy = self;
             v181 = v168;
             v203 = v181;
             v204 = v205;
@@ -788,7 +788,7 @@ LABEL_172:
           {
             if (*v217 != v162)
             {
-              objc_enumerationMutation(v124);
+              objc_enumerationMutation(plainTextDetectedData3);
             }
 
             if ([*(*(&v216 + 1) + 8 * v163) matchType] == 2 && ++v161 > 3)
@@ -798,7 +798,7 @@ LABEL_172:
 
             if (v160 == ++v163)
             {
-              v160 = [v124 countByEnumeratingWithState:&v216 objects:v241 count:16];
+              v160 = [plainTextDetectedData3 countByEnumeratingWithState:&v216 objects:v241 count:16];
               if (v160)
               {
                 goto LABEL_172;
@@ -822,11 +822,11 @@ LABEL_197:
       goto LABEL_198;
     }
 
-    v41 = [v186 familyName];
-    if (v41)
+    familyName = [v186 familyName];
+    if (familyName)
     {
-      v42 = [v186 formattedName];
-      v43 = v42 == 0;
+      formattedName = [v186 formattedName];
+      v43 = formattedName == 0;
 
       if (v43)
       {
@@ -853,29 +853,29 @@ LABEL_197:
         v45 = 0;
       }
 
-      v46 = [v192 textContent];
-      v47 = [v186 formattedName];
-      v48 = [v46 rangeOfString:v47 options:0 range:{v45, v39 + v44}] == 0x7FFFFFFFFFFFFFFFLL;
+      textContent20 = [v192 textContent];
+      formattedName2 = [v186 formattedName];
+      v48 = [textContent20 rangeOfString:formattedName2 options:0 range:{v45, v39 + v44}] == 0x7FFFFFFFFFFFFFFFLL;
 
       if (v48)
       {
         v49 = objc_alloc(MEMORY[0x277CCACA8]);
-        v50 = [v186 givenName];
-        v51 = [v186 familyName];
-        obj = [v49 initWithFormat:@"%@ %@", v50, v51];
+        givenName = [v186 givenName];
+        familyName2 = [v186 familyName];
+        obj = [v49 initWithFormat:@"%@ %@", givenName, familyName2];
 
-        v52 = [v192 textContent];
-        LOBYTE(v49) = [v52 rangeOfString:obj options:0 range:{v45, v39 + v44}] == 0x7FFFFFFFFFFFFFFFLL;
+        textContent21 = [v192 textContent];
+        LOBYTE(v49) = [textContent21 rangeOfString:obj options:0 range:{v45, v39 + v44}] == 0x7FFFFFFFFFFFFFFFLL;
 
         if (v49)
         {
           v53 = objc_alloc(MEMORY[0x277CCACA8]);
-          v54 = [v186 familyName];
-          v55 = [v186 givenName];
-          v56 = [v53 initWithFormat:@"%@ %@", v54, v55];
+          familyName3 = [v186 familyName];
+          givenName2 = [v186 givenName];
+          v56 = [v53 initWithFormat:@"%@ %@", familyName3, givenName2];
 
-          v57 = [v192 textContent];
-          v58 = [v57 rangeOfString:v56 options:0 range:{v45, v39 + v44}] == 0x7FFFFFFFFFFFFFFFLL;
+          textContent22 = [v192 textContent];
+          v58 = [textContent22 rangeOfString:v56 options:0 range:{v45, v39 + v44}] == 0x7FFFFFFFFFFFFFFFLL;
 
           if (v58)
           {
@@ -1059,12 +1059,12 @@ uint64_t __71__SGSignatureDissector_shouldIgnoreSignature_signatureRange_isInhum
   }
 }
 
-- (BOOL)_paragraphWithContent:(id)a3 range:(_NSRange)a4 exceedsLineLimit:(unint64_t)a5 orCharacterLimit:(unint64_t)a6
+- (BOOL)_paragraphWithContent:(id)content range:(_NSRange)range exceedsLineLimit:(unint64_t)limit orCharacterLimit:(unint64_t)characterLimit
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  if (length <= a6)
+  length = range.length;
+  location = range.location;
+  contentCopy = content;
+  if (length <= characterLimit)
   {
     if (!length)
     {
@@ -1074,7 +1074,7 @@ LABEL_8:
     }
 
     v12 = 0;
-    while ([v10 characterAtIndex:location] != 10 || ++v12 <= a5)
+    while ([contentCopy characterAtIndex:location] != 10 || ++v12 <= limit)
     {
       ++location;
       if (!--length)
@@ -1090,15 +1090,15 @@ LABEL_9:
   return v11;
 }
 
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v8 textContent];
-  v13 = [v12 length];
+  textContent = [messageCopy textContent];
+  v13 = [textContent length];
 
   if (!v13)
   {
@@ -1123,10 +1123,10 @@ LABEL_29:
   }
 
   v34 = 0uLL;
-  [v9 releaseDissectorLock];
-  if (-[NSNumber BOOLValue](self->_ignoreDataDetectorsForTesting, "BOOLValue") || [v8 detectedDataSignatureRange] == 0x7FFFFFFFFFFFFFFFLL)
+  [entityCopy releaseDissectorLock];
+  if (-[NSNumber BOOLValue](self->_ignoreDataDetectorsForTesting, "BOOLValue") || [messageCopy detectedDataSignatureRange] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [(SGSignatureDissector *)self signatureRange:v8];
+    v14 = [(SGSignatureDissector *)self signatureRange:messageCopy];
     *&v34 = v14;
     *(&v34 + 1) = v15;
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1153,12 +1153,12 @@ LABEL_29:
       _os_log_debug_impl(&dword_231E60000, v21, OS_LOG_TYPE_DEBUG, "Signature found by DataDetectors.", buf, 2u);
     }
 
-    v22 = [v8 detectedDataSignatureRange];
-    *&v34 = v22;
+    detectedDataSignatureRange = [messageCopy detectedDataSignatureRange];
+    *&v34 = detectedDataSignatureRange;
     *(&v34 + 1) = v23;
-    if (v22 != 0x7FFFFFFFFFFFFFFFLL)
+    if (detectedDataSignatureRange != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = v22;
+      v16 = detectedDataSignatureRange;
       v17 = v23;
 LABEL_18:
       v25 = objc_autoreleasePoolPush();
@@ -1166,8 +1166,8 @@ LABEL_18:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         v32 = v17 + v16;
-        v30 = [v8 textContent];
-        v31 = [v30 substringWithRange:{v16, v17}];
+        textContent2 = [messageCopy textContent];
+        v31 = [textContent2 substringWithRange:{v16, v17}];
         *buf = 134218498;
         v36 = v16;
         v37 = 2048;
@@ -1179,7 +1179,7 @@ LABEL_18:
 
       objc_autoreleasePoolPop(v25);
       v33 = 0;
-      if ([(SGSignatureDissector *)self shouldIgnoreSignature:v8 signatureRange:&v34 isInhuman:&v33])
+      if ([(SGSignatureDissector *)self shouldIgnoreSignature:messageCopy signatureRange:&v34 isInhuman:&v33])
       {
         v34 = xmmword_232106CE0;
       }
@@ -1197,8 +1197,8 @@ LABEL_18:
 
   v33 = 0;
 LABEL_22:
-  [v9 acquireDissectorLock];
-  [v9 setPlainTextSigRange:v34];
+  [entityCopy acquireDissectorLock];
+  [entityCopy setPlainTextSigRange:v34];
   if (v33 == 1)
   {
     v27 = sgLogHandle();
@@ -1208,8 +1208,8 @@ LABEL_22:
       _os_log_debug_impl(&dword_231E60000, v27, OS_LOG_TYPE_DEBUG, "Tagging as inhuman after adjusting range: Signature pattern", buf, 2u);
     }
 
-    v28 = [MEMORY[0x277D01FA0] inhuman];
-    [v9 addTag:v28];
+    inhuman = [MEMORY[0x277D01FA0] inhuman];
+    [entityCopy addTag:inhuman];
 
     v19 = sgLogHandle();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1228,14 +1228,14 @@ LABEL_27:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (_NSRange)rangeOfSenderNameComponents:(id)a3 withFullname:(id)a4 inSubstring:(id)a5
+- (_NSRange)rangeOfSenderNameComponents:(id)components withFullname:(id)fullname inSubstring:(id)substring
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  componentsCopy = components;
+  substringCopy = substring;
   v26 = 0u;
   v27 = 0u;
-  if ([SGNames isProbablyShortCJKName:a4])
+  if ([SGNames isProbablyShortCJKName:fullname])
   {
     v9 = 1;
   }
@@ -1247,7 +1247,7 @@ LABEL_27:
 
   v28 = 0uLL;
   v29 = 0uLL;
-  v10 = v7;
+  v10 = componentsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -1266,7 +1266,7 @@ LABEL_6:
       v15 = *(*(&v26 + 1) + 8 * v14);
       if ([v15 length] >= v9)
       {
-        v16 = [v8 rangeOfString:v15 options:1];
+        v16 = [substringCopy rangeOfString:v15 options:1];
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v18 = v16;
@@ -1285,7 +1285,7 @@ LABEL_6:
               break;
             }
 
-            if ([v8 characterAtIndex:v21] == 10)
+            if ([substringCopy characterAtIndex:v21] == 10)
             {
               goto LABEL_21;
             }
@@ -1296,7 +1296,7 @@ LABEL_6:
 
           while (v20 < 3);
           v9 = v25;
-          if ([v8 characterAtIndex:v18 - 1] == 32)
+          if ([substringCopy characterAtIndex:v18 - 1] == 32)
           {
             break;
           }
@@ -1334,19 +1334,19 @@ LABEL_21:
   return result;
 }
 
-- (_NSRange)rangeOfSenderName:(id)a3 inRange:(_NSRange)a4 restrictLength:(BOOL)a5 forMessage:(id)a6
+- (_NSRange)rangeOfSenderName:(id)name inRange:(_NSRange)range restrictLength:(BOOL)length forMessage:(id)message
 {
-  v7 = a5;
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a6;
+  lengthCopy = length;
+  length = range.length;
+  location = range.location;
+  nameCopy = name;
+  messageCopy = message;
   v13 = objc_autoreleasePoolPush();
-  v14 = [v12 textContent];
-  v15 = [v14 substringWithRange:{location, length}];
+  textContent = [messageCopy textContent];
+  v15 = [textContent substringWithRange:{location, length}];
 
   objc_autoreleasePoolPop(v13);
-  if (!v7)
+  if (!lengthCopy)
   {
     goto LABEL_4;
   }
@@ -1367,40 +1367,40 @@ LABEL_21:
   else
   {
 LABEL_4:
-    v22 = [SGNames stripHonorifics:v11];
+    v22 = [SGNames stripHonorifics:nameCopy];
     v23 = [SGIdentityName nameWithString:v22];
     v24 = objc_opt_new();
-    v25 = [v23 firstname];
+    firstname = [v23 firstname];
 
-    if (v25)
+    if (firstname)
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = [v23 firstname];
-      v28 = [v27 componentsSeparatedByString:@" "];
+      firstname2 = [v23 firstname];
+      v28 = [firstname2 componentsSeparatedByString:@" "];
 
       objc_autoreleasePoolPop(v26);
       [v24 addObjectsFromArray:v28];
     }
 
-    v29 = [v23 surname];
+    surname = [v23 surname];
 
-    if (v29)
+    if (surname)
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = [v23 surname];
-      v32 = [v31 componentsSeparatedByString:@" "];
+      surname2 = [v23 surname];
+      v32 = [surname2 componentsSeparatedByString:@" "];
 
       objc_autoreleasePoolPop(v30);
       [v24 addObjectsFromArray:v32];
     }
 
-    v33 = [v23 middlename];
+    middlename = [v23 middlename];
 
-    if (v33)
+    if (middlename)
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = [v23 middlename];
-      v36 = [v35 componentsSeparatedByString:@" "];
+      middlename2 = [v23 middlename];
+      v36 = [middlename2 componentsSeparatedByString:@" "];
 
       objc_autoreleasePoolPop(v34);
       [v24 addObjectsFromArray:v36];
@@ -1410,17 +1410,17 @@ LABEL_4:
     v20 = v38;
     if (v37 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v39 = [v23 firstname];
+      firstname3 = [v23 firstname];
 
-      if (v39)
+      if (firstname3)
       {
-        v40 = [v23 firstname];
-        v41 = [SGNicknames nicknamesForName:v40];
+        firstname4 = [v23 firstname];
+        v41 = [SGNicknames nicknamesForName:firstname4];
 
-        v42 = [v41 allObjects];
-        v43 = self;
-        v44 = v42;
-        v21 = [(SGSignatureDissector *)v43 rangeOfSenderNameComponents:v42 withFullname:v22 inSubstring:v15];
+        allObjects = [v41 allObjects];
+        selfCopy = self;
+        v44 = allObjects;
+        v21 = [(SGSignatureDissector *)selfCopy rangeOfSenderNameComponents:allObjects withFullname:v22 inSubstring:v15];
         v20 = v45;
       }
 
@@ -1443,24 +1443,24 @@ LABEL_4:
   return result;
 }
 
-- (id)authorFirstname:(id)a3
+- (id)authorFirstname:(id)firstname
 {
-  v3 = [(SGSignatureDissector *)self authorName:a3];
+  v3 = [(SGSignatureDissector *)self authorName:firstname];
   if (v3)
   {
     v4 = [SGIdentityName nameWithString:v3];
-    v5 = [v4 firstname];
-    if ([v5 length])
+    firstname = [v4 firstname];
+    if ([firstname length])
     {
-      v6 = [v4 firstname];
+      firstname2 = [v4 firstname];
     }
 
     else
     {
-      v6 = v3;
+      firstname2 = v3;
     }
 
-    v7 = v6;
+    v7 = firstname2;
   }
 
   else
@@ -1471,27 +1471,27 @@ LABEL_4:
   return v7;
 }
 
-- (id)authorName:(id)a3
+- (id)authorName:(id)name
 {
-  v3 = [a3 author];
-  v4 = [v3 displayName];
+  author = [name author];
+  displayName = [author displayName];
 
-  return v4;
+  return displayName;
 }
 
-- (_NSRange)trailingSenderNameLineRange:(id)a3
+- (_NSRange)trailingSenderNameLineRange:(id)range
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v40 = self;
-  v41 = [(SGSignatureDissector *)self authorName:v4];
+  rangeCopy = range;
+  selfCopy = self;
+  v41 = [(SGSignatureDissector *)self authorName:rangeCopy];
   if (![v41 length])
   {
     goto LABEL_10;
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [[SGPlainTextContentCursor alloc] initWithMailMessage:v4];
+  v6 = [[SGPlainTextContentCursor alloc] initWithMailMessage:rangeCopy];
   [(SGPlainTextContentCursor *)v6 seekToEnd];
   [(SGPlainTextContentCursor *)v6 backwardWhile:&__block_literal_global_73_23190];
   v7 = [(SGPlainTextContentCursor *)v6 pos];
@@ -1507,8 +1507,8 @@ LABEL_4:
   }
 
   v8 = [(SGPlainTextContentCursor *)v6 pos];
-  v9 = [v4 textContent];
-  v10 = [v9 characterAtIndex:v7];
+  textContent = [rangeCopy textContent];
+  v10 = [textContent characterAtIndex:v7];
 
   if (v10 == 65306 || v10 == 58)
   {
@@ -1527,7 +1527,7 @@ LABEL_9:
     objc_autoreleasePoolPop(v5);
 LABEL_10:
     v12 = 0;
-    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    rangeValue = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_11;
   }
 
@@ -1537,21 +1537,21 @@ LABEL_10:
   [(SGPlainTextContentCursor *)v6 backwardToString:@"\n" consume:0];
   v18 = [(SGPlainTextContentCursor *)v6 pos];
   context = v5;
-  v39 = v4;
+  v39 = rangeCopy;
   if ([(SGPlainTextContentCursor *)v6 pos]< 2)
   {
     goto LABEL_17;
   }
 
-  v19 = [v4 textContent];
-  if ([v19 characterAtIndex:{-[SGPlainTextContentCursor pos](v6, "pos") - 1}] != 10)
+  textContent2 = [rangeCopy textContent];
+  if ([textContent2 characterAtIndex:{-[SGPlainTextContentCursor pos](v6, "pos") - 1}] != 10)
   {
 
     goto LABEL_17;
   }
 
-  v20 = [v4 textContent];
-  v21 = [v20 characterAtIndex:{-[SGPlainTextContentCursor pos](v6, "pos") - 2}];
+  textContent3 = [rangeCopy textContent];
+  v21 = [textContent3 characterAtIndex:{-[SGPlainTextContentCursor pos](v6, "pos") - 2}];
 
   if (v21 != 10)
   {
@@ -1597,9 +1597,9 @@ LABEL_18:
 
         v33 = *(*(&v42 + 1) + 8 * i);
         v34 = objc_autoreleasePoolPush();
-        v13 = [v33 rangeValue];
+        rangeValue = [v33 rangeValue];
         v12 = v35;
-        v36 = [(SGSignatureDissector *)v40 rangeOfSenderName:v41 inRange:v13 restrictLength:v35 forMessage:1, v39];
+        v36 = [(SGSignatureDissector *)selfCopy rangeOfSenderName:v41 inRange:rangeValue restrictLength:v35 forMessage:1, v39];
         objc_autoreleasePoolPop(v34);
         if (v36 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -1621,13 +1621,13 @@ LABEL_18:
 
   objc_autoreleasePoolPop(contexta);
   v12 = 0;
-  v13 = 0x7FFFFFFFFFFFFFFFLL;
+  rangeValue = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_30:
-  v4 = v39;
+  rangeCopy = v39;
 LABEL_11:
 
   v14 = *MEMORY[0x277D85DE8];
-  v15 = v13;
+  v15 = rangeValue;
   v16 = v12;
   result.length = v16;
   result.location = v15;
@@ -1647,11 +1647,11 @@ uint64_t __52__SGSignatureDissector_trailingSenderNameLineRange___block_invoke(u
   }
 }
 
-- (_NSRange)miniSignatureRange:(id)a3
+- (_NSRange)miniSignatureRange:(id)range
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SGSignatureDissector *)self trailingSenderNameLineRange:v4];
+  rangeCopy = range;
+  v5 = [(SGSignatureDissector *)self trailingSenderNameLineRange:rangeCopy];
   if (v6)
   {
     v7 = v5;
@@ -1660,8 +1660,8 @@ uint64_t __52__SGSignatureDissector_trailingSenderNameLineRange___block_invoke(u
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = [v4 plainTextDetectedData];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    plainTextDetectedData = [rangeCopy plainTextDetectedData];
+    v10 = [plainTextDetectedData countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1672,15 +1672,15 @@ uint64_t __52__SGSignatureDissector_trailingSenderNameLineRange___block_invoke(u
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(plainTextDetectedData);
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 range];
-          if (v15 >= v7 && v15 - v7 < v8)
+          range = [v14 range];
+          if (range >= v7 && range - v7 < v8)
           {
-            v17 = [v14 matchType];
-            if (v17 <= 5 && v17 != 4)
+            matchType = [v14 matchType];
+            if (matchType <= 5 && matchType != 4)
             {
               v19 = v7;
               v20 = v8;
@@ -1689,7 +1689,7 @@ uint64_t __52__SGSignatureDissector_trailingSenderNameLineRange___block_invoke(u
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v11 = [plainTextDetectedData countByEnumeratingWithState:&v24 objects:v28 count:16];
         v20 = 0;
         v19 = 0x7FFFFFFFFFFFFFFFLL;
       }
@@ -1720,30 +1720,30 @@ LABEL_21:
   return result;
 }
 
-- (_NSRange)hmmSignatureRangeWithContent:(id)a3 detectedData:(id)a4 quotedRegions:(id)a5 authorName:(id)a6
+- (_NSRange)hmmSignatureRangeWithContent:(id)content detectedData:(id)data quotedRegions:(id)regions authorName:(id)name
 {
   v133 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v109 = a6;
-  if (!v10)
+  contentCopy = content;
+  dataCopy = data;
+  regionsCopy = regions;
+  nameCopy = name;
+  if (!contentCopy)
   {
     v55 = 0;
     v56 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_107;
   }
 
-  v107 = v10;
-  v108 = v12;
+  v107 = contentCopy;
+  v108 = regionsCopy;
   v110 = _PASTrimTrailingWhitespace();
   v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:16];
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v106 = v11;
-  v14 = v11;
+  v106 = dataCopy;
+  v14 = dataCopy;
   v15 = [v14 countByEnumeratingWithState:&v126 objects:v132 count:16];
   if (v15)
   {
@@ -1760,21 +1760,21 @@ LABEL_21:
         }
 
         v19 = *(*(&v126 + 1) + 8 * v18);
-        v20 = [v19 matchType];
-        if (v20 <= 3)
+        matchType = [v19 matchType];
+        if (matchType <= 3)
         {
           v21 = 4;
-          if (v20 != 3)
+          if (matchType != 3)
           {
             v21 = 0;
           }
 
-          if (v20 == 1)
+          if (matchType == 1)
           {
             v21 = 1;
           }
 
-          if (v20)
+          if (matchType)
           {
             v22 = v21;
           }
@@ -1787,9 +1787,9 @@ LABEL_21:
           goto LABEL_15;
         }
 
-        if ((v20 - 6) >= 4 && v20 != 4)
+        if ((matchType - 6) >= 4 && matchType != 4)
         {
-          if (v20 == 5)
+          if (matchType == 5)
           {
             v22 = 3;
           }
@@ -1800,9 +1800,9 @@ LABEL_21:
           }
 
 LABEL_15:
-          v23 = [v19 range];
+          range = [v19 range];
           v6 = v22 | v6 & 0xFFFFFFFF00000000;
-          v25 = [SGSlice sliceWithType:v6 range:v23, v24];
+          v25 = [SGSlice sliceWithType:v6 range:range, v24];
           [v13 addObject:v25];
         }
 
@@ -1854,11 +1854,11 @@ LABEL_15:
           v38 = *(*(&v120 + 1) + 8 * i);
           if (v32 == [v38 type])
           {
-            v39 = [v38 range];
+            range2 = [v38 range];
             v41 = v40;
-            if (([v29 intersectsIndexesInRange:{v39, v40}] & 1) == 0)
+            if (([v29 intersectsIndexesInRange:{range2, v40}] & 1) == 0)
             {
-              [v29 addIndexesInRange:{v39, v41}];
+              [v29 addIndexesInRange:{range2, v41}];
               [v30 addObject:v38];
             }
           }
@@ -1915,26 +1915,26 @@ LABEL_43:
       }
 
       v51 = *(*(&v114 + 1) + 8 * v50);
-      v52 = [v51 start];
-      if (v52 >= [v110 length])
+      start = [v51 start];
+      if (start >= [v110 length])
       {
         break;
       }
 
       if ([v51 start] > v48)
       {
-        tokenize(v110, v118, v48, [v51 start] - v48, v109);
+        tokenize(v110, v118, v48, [v51 start] - v48, nameCopy);
       }
 
-      v53 = [v51 type];
-      if (v53 >= 6u)
+      type = [v51 type];
+      if (type >= 6u)
       {
         v54 = 7;
       }
 
       else
       {
-        v54 = v53 + 12;
+        v54 = type + 12;
       }
 
       emitToken(v118, v54, [v51 start]);
@@ -1960,7 +1960,7 @@ LABEL_43:
   v57 = v110;
   if (v48 < [v110 length])
   {
-    tokenize(v110, v118, v48, [v110 length] - v48, v109);
+    tokenize(v110, v118, v48, [v110 length] - v48, nameCopy);
   }
 
   v58 = v119[0];
@@ -2072,16 +2072,16 @@ LABEL_79:
   {
     v55 = 0;
     v56 = 0x7FFFFFFFFFFFFFFFLL;
-    v11 = v106;
-    v10 = v107;
-    v12 = v108;
+    dataCopy = v106;
+    contentCopy = v107;
+    regionsCopy = v108;
     goto LABEL_106;
   }
 
   v89 = 0;
-  v11 = v106;
-  v10 = v107;
-  v12 = v108;
+  dataCopy = v106;
+  contentCopy = v107;
+  regionsCopy = v108;
   while (1)
   {
     v90 = (v89 + 1);
@@ -2202,15 +2202,15 @@ void __91__SGSignatureDissector_hmmSignatureRangeWithContent_detectedData_quoted
   [v3 addObject:v4];
 }
 
-- (_NSRange)hmmSignatureRange:(id)a3
+- (_NSRange)hmmSignatureRange:(id)range
 {
-  v4 = a3;
-  v5 = [v4 textContent];
-  v6 = [v4 plainTextDetectedData];
-  v7 = [v4 quotedRegions];
-  v8 = [(SGSignatureDissector *)self authorFirstname:v4];
+  rangeCopy = range;
+  textContent = [rangeCopy textContent];
+  plainTextDetectedData = [rangeCopy plainTextDetectedData];
+  quotedRegions = [rangeCopy quotedRegions];
+  v8 = [(SGSignatureDissector *)self authorFirstname:rangeCopy];
 
-  v9 = [(SGSignatureDissector *)self hmmSignatureRangeWithContent:v5 detectedData:v6 quotedRegions:v7 authorName:v8];
+  v9 = [(SGSignatureDissector *)self hmmSignatureRangeWithContent:textContent detectedData:plainTextDetectedData quotedRegions:quotedRegions authorName:v8];
   v11 = v10;
 
   v12 = v9;
@@ -2220,34 +2220,34 @@ void __91__SGSignatureDissector_hmmSignatureRangeWithContent_detectedData_quoted
   return result;
 }
 
-- (_NSRange)hmmPlausibleSignatureRange:(id)a3
+- (_NSRange)hmmPlausibleSignatureRange:(id)range
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SGSignatureDissector *)self findValedictionCommencedSignatureRanges:v4];
-  v6 = [v5 firstObject];
-  v7 = [v6 rangeValue];
+  rangeCopy = range;
+  v5 = [(SGSignatureDissector *)self findValedictionCommencedSignatureRanges:rangeCopy];
+  firstObject = [v5 firstObject];
+  rangeValue = [firstObject rangeValue];
   v9 = v8;
 
   if (v9)
   {
     context = objc_autoreleasePoolPush();
-    v10 = [v4 textContent];
-    v11 = [v10 substringToIndex:v7 + v9];
+    textContent = [rangeCopy textContent];
+    v11 = [textContent substringToIndex:rangeValue + v9];
 
-    v12 = [v4 quotedRegions];
-    v31 = [v12 indexesInRange:0 options:objc_msgSend(v11 passingTest:{"length"), 0, &__block_literal_global_23237}];
+    quotedRegions = [rangeCopy quotedRegions];
+    v31 = [quotedRegions indexesInRange:0 options:objc_msgSend(v11 passingTest:{"length"), 0, &__block_literal_global_23237}];
 
     v13 = objc_alloc(MEMORY[0x277CBEB18]);
-    v14 = [v4 plainTextDetectedData];
-    v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+    plainTextDetectedData = [rangeCopy plainTextDetectedData];
+    v15 = [v13 initWithCapacity:{objc_msgSend(plainTextDetectedData, "count")}];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [v4 plainTextDetectedData];
-    v17 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    plainTextDetectedData2 = [rangeCopy plainTextDetectedData];
+    v17 = [plainTextDetectedData2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v17)
     {
       v18 = v17;
@@ -2258,25 +2258,25 @@ void __91__SGSignatureDissector_hmmSignatureRangeWithContent_detectedData_quoted
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(plainTextDetectedData2);
           }
 
           v21 = *(*(&v33 + 1) + 8 * i);
-          v22 = [v21 range];
+          range = [v21 range];
           [v21 range];
-          if (v23 + v22 <= [v11 length])
+          if (v23 + range <= [v11 length])
           {
             [v15 addObject:v21];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v18 = [plainTextDetectedData2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v18);
     }
 
-    v24 = [(SGSignatureDissector *)self authorFirstname:v4];
+    v24 = [(SGSignatureDissector *)self authorFirstname:rangeCopy];
     v25 = [(SGSignatureDissector *)self hmmSignatureRangeWithContent:v11 detectedData:v15 quotedRegions:v31 authorName:v24];
     v27 = v26;
 
@@ -2297,13 +2297,13 @@ void __91__SGSignatureDissector_hmmSignatureRangeWithContent_detectedData_quoted
   return result;
 }
 
-- (_NSRange)findSignaturePrefix:(id)a3
+- (_NSRange)findSignaturePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SGSignatureDissector *)self findValediction:v4];
+  prefixCopy = prefix;
+  v5 = [(SGSignatureDissector *)self findValediction:prefixCopy];
   if (v6)
   {
-    v7 = v5;
+    rangeValue = v5;
     v8 = v6;
   }
 
@@ -2311,31 +2311,31 @@ void __91__SGSignatureDissector_hmmSignatureRangeWithContent_detectedData_quoted
   {
     v9 = patterns_23118();
     v10 = [v9 regex2ForKey:@"SymbolicSig"];
-    v11 = [(SGSignatureDissector *)self findSignaturePrefixesInMessage:v4 withSignaturePrefixes:v10];
-    v12 = [v11 firstObject];
-    v7 = [v12 rangeValue];
+    v11 = [(SGSignatureDissector *)self findSignaturePrefixesInMessage:prefixCopy withSignaturePrefixes:v10];
+    firstObject = [v11 firstObject];
+    rangeValue = [firstObject rangeValue];
     v8 = v13;
   }
 
-  v14 = v7;
+  v14 = rangeValue;
   v15 = v8;
   result.length = v15;
   result.location = v14;
   return result;
 }
 
-- (id)findRejectSig:(id)a3
+- (id)findRejectSig:(id)sig
 {
-  v3 = a3;
+  sigCopy = sig;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__23243;
   v20 = __Block_byref_object_dispose__23244;
   v21 = objc_opt_new();
-  v4 = [v3 quotedRegions];
-  v5 = [v3 textContent];
-  if ([v5 length])
+  quotedRegions = [sigCopy quotedRegions];
+  textContent = [sigCopy textContent];
+  if ([textContent length])
   {
     v6 = patterns_23118();
     v7 = [v6 regex2ForKey:@"RejetedSig/F"];
@@ -2343,9 +2343,9 @@ void __91__SGSignatureDissector_hmmSignatureRangeWithContent_detectedData_quoted
     v11 = 3221225472;
     v12 = __38__SGSignatureDissector_findRejectSig___block_invoke;
     v13 = &unk_27894F5F0;
-    v14 = v4;
+    v14 = quotedRegions;
     v15 = &v16;
-    [v7 enumerateMatchesInString:v5 ngroups:0 block:&v10];
+    [v7 enumerateMatchesInString:textContent ngroups:0 block:&v10];
   }
 
   v8 = [v17[5] copy];
@@ -2367,38 +2367,38 @@ uint64_t __38__SGSignatureDissector_findRejectSig___block_invoke(uint64_t a1, vo
   return 1;
 }
 
-- (_NSRange)findValediction:(id)a3
+- (_NSRange)findValediction:(id)valediction
 {
-  v4 = a3;
+  valedictionCopy = valediction;
   v5 = patterns_23118();
   v6 = [v5 regex2ForKey:@"ValedictionSig/F"];
-  v7 = [(SGSignatureDissector *)self findSignaturePrefixesInMessage:v4 withSignaturePrefixes:v6];
+  v7 = [(SGSignatureDissector *)self findSignaturePrefixesInMessage:valedictionCopy withSignaturePrefixes:v6];
 
-  v8 = [v7 firstObject];
-  v9 = [v8 rangeValue];
+  firstObject = [v7 firstObject];
+  rangeValue = [firstObject rangeValue];
   v11 = v10;
 
-  v12 = v9;
+  v12 = rangeValue;
   v13 = v11;
   result.length = v13;
   result.location = v12;
   return result;
 }
 
-- (id)findSignaturePrefixesInMessage:(id)a3 withSignaturePrefixes:(id)a4
+- (id)findSignaturePrefixesInMessage:(id)message withSignaturePrefixes:(id)prefixes
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 textContent];
-  if (v7)
+  messageCopy = message;
+  prefixesCopy = prefixes;
+  textContent = [messageCopy textContent];
+  if (textContent)
   {
     v8 = objc_opt_new();
-    v9 = [v5 quotedRegions];
-    v13 = v7;
-    v14 = v6;
-    v15 = v9;
+    quotedRegions = [messageCopy quotedRegions];
+    v13 = textContent;
+    v14 = prefixesCopy;
+    v15 = quotedRegions;
     v16 = v8;
-    v10 = v9;
+    v10 = quotedRegions;
     _PASEnumerateSimpleLinesInString();
     v11 = v16;
   }
@@ -2440,18 +2440,18 @@ uint64_t __77__SGSignatureDissector_findSignaturePrefixesInMessage_withSignature
   return 1;
 }
 
-- (id)findValedictionCommencedSignatureRanges:(id)a3
+- (id)findValedictionCommencedSignatureRanges:(id)ranges
 {
-  v3 = a3;
-  v4 = [v3 textContent];
-  if (v4)
+  rangesCopy = ranges;
+  textContent = [rangesCopy textContent];
+  if (textContent)
   {
     v5 = objc_opt_new();
-    v6 = [v3 quotedRegions];
-    v10 = v4;
-    v11 = v6;
+    quotedRegions = [rangesCopy quotedRegions];
+    v10 = textContent;
+    v11 = quotedRegions;
     v12 = v5;
-    v7 = v6;
+    v7 = quotedRegions;
     _PASEnumerateSimpleLinesInString();
     v8 = v12;
   }
@@ -2688,18 +2688,18 @@ LABEL_53:
   return 1;
 }
 
-- (_NSRange)signatureRange:(id)a3
+- (_NSRange)signatureRange:(id)range
 {
-  v4 = a3;
-  v5 = [v4 htmlParser];
-  v6 = [v5 signatureRegions];
-  if ([v6 count])
+  rangeCopy = range;
+  htmlParser = [rangeCopy htmlParser];
+  signatureRegions = [htmlParser signatureRegions];
+  if ([signatureRegions count])
   {
-    v7 = [v6 firstIndex];
-    v8 = [v6 lastIndex];
-    if (v8 >= v7)
+    firstIndex = [signatureRegions firstIndex];
+    lastIndex = [signatureRegions lastIndex];
+    if (lastIndex >= firstIndex)
     {
-      v9 = v7;
+      v9 = firstIndex;
     }
 
     else
@@ -2707,9 +2707,9 @@ LABEL_53:
       v9 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v8 >= v7)
+    if (lastIndex >= firstIndex)
     {
-      v10 = v8 - v7 + 1;
+      v10 = lastIndex - firstIndex + 1;
     }
 
     else
@@ -2726,13 +2726,13 @@ LABEL_53:
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(SGSignatureDissector *)self miniSignatureRange:v4];
+    v11 = [(SGSignatureDissector *)self miniSignatureRange:rangeCopy];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(SGSignatureDissector *)self hmmPlausibleSignatureRange:v4];
+      v11 = [(SGSignatureDissector *)self hmmPlausibleSignatureRange:rangeCopy];
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [(SGSignatureDissector *)self hmmSignatureRange:v4];
+        v11 = [(SGSignatureDissector *)self hmmSignatureRange:rangeCopy];
       }
     }
 

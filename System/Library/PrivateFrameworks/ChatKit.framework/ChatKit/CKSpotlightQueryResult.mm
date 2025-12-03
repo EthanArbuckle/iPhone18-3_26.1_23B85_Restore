@@ -1,7 +1,7 @@
 @interface CKSpotlightQueryResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromMe;
-- (CKSpotlightQueryResult)initWithSearchableItem:(id)a3 queryType:(id)a4 withConversation:(id)a5;
+- (CKSpotlightQueryResult)initWithSearchableItem:(id)item queryType:(id)type withConversation:(id)conversation;
 - (NSString)description;
 - (NSString)messageGUID;
 - (NSString)previewItemTitle;
@@ -10,27 +10,27 @@
 
 @implementation CKSpotlightQueryResult
 
-- (CKSpotlightQueryResult)initWithSearchableItem:(id)a3 queryType:(id)a4 withConversation:(id)a5
+- (CKSpotlightQueryResult)initWithSearchableItem:(id)item queryType:(id)type withConversation:(id)conversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  typeCopy = type;
+  conversationCopy = conversation;
   v20.receiver = self;
   v20.super_class = CKSpotlightQueryResult;
   v11 = [(CKSpotlightQueryResult *)&v20 init];
   if (v11)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v8 uniqueIdentifier];
-    v14 = [v12 stringWithFormat:@"%@-%@", v9, v13];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    v14 = [v12 stringWithFormat:@"%@-%@", typeCopy, uniqueIdentifier];
 
     [(CKSpotlightQueryResult *)v11 setIdentifier:v14];
-    [(CKSpotlightQueryResult *)v11 setItem:v8];
-    [(CKSpotlightQueryResult *)v11 setConversation:v10];
+    [(CKSpotlightQueryResult *)v11 setItem:itemCopy];
+    [(CKSpotlightQueryResult *)v11 setConversation:conversationCopy];
     v15 = MEMORY[0x1E69A5C90];
-    v16 = [v8 attributeSet];
-    v17 = [v16 messageService];
-    v18 = [v15 serviceWithName:v17];
+    attributeSet = [itemCopy attributeSet];
+    messageService = [attributeSet messageService];
+    v18 = [v15 serviceWithName:messageService];
     [(CKSpotlightQueryResult *)v11 setService:v18];
   }
 
@@ -39,56 +39,56 @@
 
 - (NSString)messageGUID
 {
-  v3 = [(CKSpotlightQueryResult *)self item];
-  v4 = [v3 domainIdentifier];
-  v5 = [v4 isEqualToString:@"chatDomain"];
+  item = [(CKSpotlightQueryResult *)self item];
+  domainIdentifier = [item domainIdentifier];
+  v5 = [domainIdentifier isEqualToString:@"chatDomain"];
 
   if (v5)
   {
-    v6 = 0;
+    ownerIdentifier = 0;
   }
 
   else
   {
-    v7 = [(CKSpotlightQueryResult *)self item];
-    v8 = [v7 domainIdentifier];
-    v9 = [v8 isEqualToString:@"attachmentDomain"];
+    item2 = [(CKSpotlightQueryResult *)self item];
+    domainIdentifier2 = [item2 domainIdentifier];
+    v9 = [domainIdentifier2 isEqualToString:@"attachmentDomain"];
 
-    v10 = [(CKSpotlightQueryResult *)self item];
-    v11 = v10;
+    item3 = [(CKSpotlightQueryResult *)self item];
+    v11 = item3;
     if (v9)
     {
-      v12 = [v10 attributeSet];
-      v6 = [v12 ownerIdentifier];
+      attributeSet = [item3 attributeSet];
+      ownerIdentifier = [attributeSet ownerIdentifier];
     }
 
     else
     {
-      v6 = [v10 uniqueIdentifier];
+      ownerIdentifier = [item3 uniqueIdentifier];
     }
   }
 
-  return v6;
+  return ownerIdentifier;
 }
 
 - (NSURL)previewItemURL
 {
-  v3 = [(CKSpotlightQueryResult *)self item];
-  v4 = [v3 domainIdentifier];
-  v5 = [v4 isEqualToString:@"attachmentDomain"];
+  item = [(CKSpotlightQueryResult *)self item];
+  domainIdentifier = [item domainIdentifier];
+  v5 = [domainIdentifier isEqualToString:@"attachmentDomain"];
 
   if (v5)
   {
-    v6 = [(CKSpotlightQueryResult *)self item];
-    v7 = [v6 attributeSet];
+    item2 = [(CKSpotlightQueryResult *)self item];
+    attributeSet = [item2 attributeSet];
 
-    v8 = [v7 contentURL];
-    v9 = [v7 messageType];
-    v10 = [v9 isEqualToString:@"pto"];
+    contentURL = [attributeSet contentURL];
+    messageType = [attributeSet messageType];
+    v10 = [messageType isEqualToString:@"pto"];
 
     if (v10)
     {
-      v11 = [CKLivePhotoBundleUtilities getLivePhotoBundleURL:v8];
+      v11 = [CKLivePhotoBundleUtilities getLivePhotoBundleURL:contentURL];
       if (v11)
       {
         v12 = v11;
@@ -100,11 +100,11 @@
 
   else
   {
-    v8 = 0;
+    contentURL = 0;
   }
 
-  v8 = v8;
-  v12 = v8;
+  contentURL = contentURL;
+  v12 = contentURL;
 LABEL_8:
 
   return v12;
@@ -112,36 +112,36 @@ LABEL_8:
 
 - (NSString)previewItemTitle
 {
-  v3 = [(CKSpotlightQueryResult *)self item];
-  v4 = [v3 domainIdentifier];
-  v5 = [v4 isEqualToString:@"attachmentDomain"];
+  item = [(CKSpotlightQueryResult *)self item];
+  domainIdentifier = [item domainIdentifier];
+  v5 = [domainIdentifier isEqualToString:@"attachmentDomain"];
 
   if (v5)
   {
-    v6 = [(CKSpotlightQueryResult *)self item];
-    v7 = [v6 attributeSet];
-    v8 = [v7 __ck_spotlightItemSnippet];
+    item2 = [(CKSpotlightQueryResult *)self item];
+    attributeSet = [item2 attributeSet];
+    __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
   }
 
   else
   {
-    v8 = 0;
+    __ck_spotlightItemSnippet = 0;
   }
 
-  return v8;
+  return __ck_spotlightItemSnippet;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
-    v8 = [(CKSpotlightQueryResult *)self identifier];
-    v9 = [v7 identifier];
+    v7 = equalCopy;
+    identifier = [(CKSpotlightQueryResult *)self identifier];
+    identifier2 = [v7 identifier];
 
-    v6 = [v8 isEqualToString:v9];
+    v6 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -158,27 +158,27 @@ LABEL_8:
   v14.receiver = self;
   v14.super_class = CKSpotlightQueryResult;
   v4 = [(CKSpotlightQueryResult *)&v14 description];
-  v5 = [(CKSpotlightQueryResult *)self messageGUID];
-  v6 = [(CKSpotlightQueryResult *)self previewItemTitle];
-  v7 = [(CKSpotlightQueryResult *)self previewItemURL];
-  v8 = [(CKSpotlightQueryResult *)self item];
-  v9 = [(CKSpotlightQueryResult *)self item];
-  v10 = [v9 attributeSet];
-  v11 = [v10 attributeDictionary];
-  v12 = [v3 stringWithFormat:@"%@: messageGUID: %@, title: %@, url: %@, item: %@, item attributes: %@", v4, v5, v6, v7, v8, v11];
+  messageGUID = [(CKSpotlightQueryResult *)self messageGUID];
+  previewItemTitle = [(CKSpotlightQueryResult *)self previewItemTitle];
+  previewItemURL = [(CKSpotlightQueryResult *)self previewItemURL];
+  item = [(CKSpotlightQueryResult *)self item];
+  item2 = [(CKSpotlightQueryResult *)self item];
+  attributeSet = [item2 attributeSet];
+  attributeDictionary = [attributeSet attributeDictionary];
+  v12 = [v3 stringWithFormat:@"%@: messageGUID: %@, title: %@, url: %@, item: %@, item attributes: %@", v4, messageGUID, previewItemTitle, previewItemURL, item, attributeDictionary];
 
   return v12;
 }
 
 - (BOOL)isFromMe
 {
-  v2 = [(CKSpotlightQueryResult *)self item];
-  v3 = [v2 attributeSet];
+  item = [(CKSpotlightQueryResult *)self item];
+  attributeSet = [item attributeSet];
 
-  v4 = [v3 isFromMe];
-  v5 = [v4 BOOLValue];
+  isFromMe = [attributeSet isFromMe];
+  bOOLValue = [isFromMe BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

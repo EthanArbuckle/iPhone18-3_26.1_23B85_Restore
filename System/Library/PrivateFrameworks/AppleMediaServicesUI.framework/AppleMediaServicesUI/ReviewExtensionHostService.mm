@@ -1,22 +1,22 @@
 @interface ReviewExtensionHostService
 - (void)cancel;
-- (void)dismissWithData:(id)a3 error:(id)a4;
+- (void)dismissWithData:(id)data error:(id)error;
 @end
 
 @implementation ReviewExtensionHostService
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB1B38C4();
 }
 
-- (void)dismissWithData:(id)a3 error:(id)a4
+- (void)dismissWithData:(id)data error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1BB1B3AA4(a3, a4);
+  dataCopy = data;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1BB1B3AA4(data, error);
 }
 
 @end

@@ -1,54 +1,54 @@
 @interface FIUIModel
 + (BOOL)isWheelchairUser;
-+ (id)_dailyTotalsQueryFromDate:(id)a3 toDate:(id)a4 dataType:(id)a5 predicate:(id)a6 sendUpdates:(BOOL)a7 handler:(id)a8;
-+ (id)dailyTotalQueryForDate:(id)a3 dataType:(id)a4 predicate:(id)a5 sendUpdates:(BOOL)a6 handler:(id)a7;
-- (FIUIModel)initWithHealthStore:(id)a3;
++ (id)_dailyTotalsQueryFromDate:(id)date toDate:(id)toDate dataType:(id)type predicate:(id)predicate sendUpdates:(BOOL)updates handler:(id)handler;
++ (id)dailyTotalQueryForDate:(id)date dataType:(id)type predicate:(id)predicate sendUpdates:(BOOL)updates handler:(id)handler;
+- (FIUIModel)initWithHealthStore:(id)store;
 - (FIUIWeeklyGoalModel)weeklyGoalModel;
 - (id)_createCurrentActivitySummaryQuery;
-- (id)startCurrentActivitySummaryQueryWithHandler:(id)a3;
-- (void)_printStatisticsCollection:(id)a3;
-- (void)_printUpdatedStatistics:(id)a3;
+- (id)startCurrentActivitySummaryQueryWithHandler:(id)handler;
+- (void)_printStatisticsCollection:(id)collection;
+- (void)_printUpdatedStatistics:(id)statistics;
 - (void)_queue_restartCurrentActivitySummaryQueryAfterError;
-- (void)stopCurrentActivitySummaryQueryForClientToken:(id)a3;
+- (void)stopCurrentActivitySummaryQueryForClientToken:(id)token;
 @end
 
 @implementation FIUIModel
 
-+ (id)dailyTotalQueryForDate:(id)a3 dataType:(id)a4 predicate:(id)a5 sendUpdates:(BOOL)a6 handler:(id)a7
++ (id)dailyTotalQueryForDate:(id)date dataType:(id)type predicate:(id)predicate sendUpdates:(BOOL)updates handler:(id)handler
 {
-  v7 = a6;
+  updatesCopy = updates;
   v12 = MEMORY[0x1E695DEE8];
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v12 currentCalendar];
-  v18 = [v17 startOfDayForDate:v16];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  typeCopy = type;
+  dateCopy = date;
+  currentCalendar = [v12 currentCalendar];
+  v18 = [currentCalendar startOfDayForDate:dateCopy];
 
-  v19 = [v17 hk_startOfDateByAddingDays:1 toDate:v18];
-  v20 = [a1 _dailyTotalsQueryFromDate:v18 toDate:v19 dataType:v15 predicate:v14 sendUpdates:v7 handler:v13];
+  v19 = [currentCalendar hk_startOfDateByAddingDays:1 toDate:v18];
+  v20 = [self _dailyTotalsQueryFromDate:v18 toDate:v19 dataType:typeCopy predicate:predicateCopy sendUpdates:updatesCopy handler:handlerCopy];
 
   return v20;
 }
 
-+ (id)_dailyTotalsQueryFromDate:(id)a3 toDate:(id)a4 dataType:(id)a5 predicate:(id)a6 sendUpdates:(BOOL)a7 handler:(id)a8
++ (id)_dailyTotalsQueryFromDate:(id)date toDate:(id)toDate dataType:(id)type predicate:(id)predicate sendUpdates:(BOOL)updates handler:(id)handler
 {
-  v9 = a7;
+  updatesCopy = updates;
   v31[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a8;
+  dateCopy = date;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v16 = MEMORY[0x1E695DF10];
-  v17 = a5;
-  v18 = a4;
+  typeCopy = type;
+  toDateCopy = toDate;
   v19 = objc_alloc_init(v16);
   [v19 setDay:1];
-  v20 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:v13 endDate:v18 options:0];
+  v20 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:dateCopy endDate:toDateCopy options:0];
 
-  if (v14)
+  if (predicateCopy)
   {
     v21 = MEMORY[0x1E696AB28];
-    v31[0] = v14;
+    v31[0] = predicateCopy;
     v31[1] = v20;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
     v23 = [v21 andPredicateWithSubpredicates:v22];
@@ -59,16 +59,16 @@
     v23 = v20;
   }
 
-  v24 = [objc_alloc(MEMORY[0x1E696C4D8]) initWithQuantityType:v17 quantitySamplePredicate:v23 options:16 anchorDate:v13 intervalComponents:v19];
+  v24 = [objc_alloc(MEMORY[0x1E696C4D8]) initWithQuantityType:typeCopy quantitySamplePredicate:v23 options:16 anchorDate:dateCopy intervalComponents:v19];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sendUpdates_handler___block_invoke;
   v29[3] = &unk_1E878BEF0;
-  v25 = v15;
+  v25 = handlerCopy;
   v30 = v25;
   [v24 setInitialResultsHandler:v29];
-  if (v9)
+  if (updatesCopy)
   {
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -146,16 +146,16 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
   return result;
 }
 
-- (FIUIModel)initWithHealthStore:(id)a3
+- (FIUIModel)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v20.receiver = self;
   v20.super_class = FIUIModel;
   v6 = [(FIUIModel *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     if (!v7->_healthStore)
     {
       v8 = objc_alloc_init(MEMORY[0x1E696C1C0]);
@@ -166,17 +166,17 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
     currentActivitySummaryQueryCollectionIntervalOverrides = v7->_currentActivitySummaryQueryCollectionIntervalOverrides;
     v7->_currentActivitySummaryQueryCollectionIntervalOverrides = 0;
 
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v11;
+    v7->_observers = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     currentActivitySummaryQueryClients = v7->_currentActivitySummaryQueryClients;
-    v7->_currentActivitySummaryQueryClients = v13;
+    v7->_currentActivitySummaryQueryClients = dictionary;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     currentActivityCacheQueryClients = v7->_currentActivityCacheQueryClients;
-    v7->_currentActivityCacheQueryClients = v15;
+    v7->_currentActivityCacheQueryClients = dictionary2;
 
     v17 = HKCreateSerialDispatchQueue();
     activityQueryClientQueue = v7->_activityQueryClientQueue;
@@ -201,10 +201,10 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
   return weeklyGoalModel;
 }
 
-- (void)_printStatisticsCollection:(id)a3
+- (void)_printStatisticsCollection:(id)collection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   _HKInitializeLogging();
   v5 = MEMORY[0x1E696B928];
   v6 = *MEMORY[0x1E696B928];
@@ -219,9 +219,9 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v4;
-    v7 = [v4 statistics];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    v18 = collectionCopy;
+    statistics = [collectionCopy statistics];
+    v8 = [statistics countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -233,7 +233,7 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(statistics);
           }
 
           v12 = *(*(&v19 + 1) + 8 * v11);
@@ -242,12 +242,12 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
           if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEBUG))
           {
             v14 = v13;
-            v15 = [v12 startDate];
-            v16 = [v12 sumQuantity];
+            startDate = [v12 startDate];
+            sumQuantity = [v12 sumQuantity];
             *buf = 138412546;
-            v24 = v15;
+            v24 = startDate;
             v25 = 2112;
-            v26 = v16;
+            v26 = sumQuantity;
             _os_log_debug_impl(&dword_1E5D0F000, v14, OS_LOG_TYPE_DEBUG, "Date:%@ %@", buf, 0x16u);
           }
 
@@ -255,13 +255,13 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v9 = [statistics countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v9);
     }
 
-    v4 = v18;
+    collectionCopy = v18;
   }
 
   _HKInitializeLogging();
@@ -272,9 +272,9 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
   }
 }
 
-- (void)_printUpdatedStatistics:(id)a3
+- (void)_printUpdatedStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   _HKInitializeLogging();
   v5 = MEMORY[0x1E696B928];
   v6 = *MEMORY[0x1E696B928];
@@ -289,7 +289,7 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
     v7 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEBUG))
     {
-      [(FIUIModel *)v7 _printUpdatedStatistics:v4];
+      [(FIUIModel *)v7 _printUpdatedStatistics:statisticsCopy];
     }
   }
 
@@ -310,9 +310,9 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
   return v4;
 }
 
-- (id)startCurrentActivitySummaryQueryWithHandler:(id)a3
+- (id)startCurrentActivitySummaryQueryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(FIUIClientToken);
   activityQueryClientQueue = self->_activityQueryClientQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -320,10 +320,10 @@ uint64_t __85__FIUIModel__dailyTotalsQueryFromDate_toDate_dataType_predicate_sen
   block[2] = __57__FIUIModel_startCurrentActivitySummaryQueryWithHandler___block_invoke;
   block[3] = &unk_1E878BF90;
   block[4] = self;
-  v14 = v4;
+  v14 = handlerCopy;
   v7 = v5;
   v13 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   dispatch_sync(activityQueryClientQueue, block);
   v9 = v13;
   v10 = v7;
@@ -367,17 +367,17 @@ void __57__FIUIModel_startCurrentActivitySummaryQueryWithHandler___block_invoke(
   }
 }
 
-- (void)stopCurrentActivitySummaryQueryForClientToken:(id)a3
+- (void)stopCurrentActivitySummaryQueryForClientToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   activityQueryClientQueue = self->_activityQueryClientQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__FIUIModel_stopCurrentActivitySummaryQueryForClientToken___block_invoke;
   v7[3] = &unk_1E878BFB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_sync(activityQueryClientQueue, v7);
 }
 

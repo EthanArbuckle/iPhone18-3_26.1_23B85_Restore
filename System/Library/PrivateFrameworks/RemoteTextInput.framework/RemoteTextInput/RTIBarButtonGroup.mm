@@ -1,17 +1,17 @@
 @interface RTIBarButtonGroup
-- (BOOL)isEqual:(id)a3;
-- (RTIBarButtonGroup)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTIBarButtonGroup)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTIBarButtonGroup
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  if (([v6 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
@@ -19,21 +19,21 @@
   itemWidths = self->_itemWidths;
   if (itemWidths)
   {
-    [v6 encodeObject:itemWidths forKey:@"items"];
+    [coderCopy encodeObject:itemWidths forKey:@"items"];
   }
 
-  v5 = v6;
+  v5 = coderCopy;
   if (self->_representativeItemWidth != 0.0)
   {
-    [v6 encodeFloat:@"rpItem" forKey:?];
-    v5 = v6;
+    [coderCopy encodeFloat:@"rpItem" forKey:?];
+    v5 = coderCopy;
   }
 }
 
-- (RTIBarButtonGroup)initWithCoder:(id)a3
+- (RTIBarButtonGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -46,18 +46,18 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
     itemWidths = v5->_itemWidths;
     v5->_itemWidths = v9;
 
-    [v4 decodeFloatForKey:@"rpItem"];
+    [coderCopy decodeFloatForKey:@"rpItem"];
     v5->_representativeItemWidth = v11;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RTIBarButtonGroup allocWithZone:?]];
   v5 = [(NSArray *)self->_itemWidths copy];
@@ -71,12 +71,12 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(RTIBarButtonGroup *)self itemWidths];
+  itemWidths = [(RTIBarButtonGroup *)self itemWidths];
 
-  if (v4)
+  if (itemWidths)
   {
-    v5 = [(RTIBarButtonGroup *)self itemWidths];
-    [v3 appendFormat:@"; leadingBarButtonGroupWidths = %@", v5];
+    itemWidths2 = [(RTIBarButtonGroup *)self itemWidths];
+    [v3 appendFormat:@"; leadingBarButtonGroupWidths = %@", itemWidths2];
   }
 
   [(RTIBarButtonGroup *)self representativeItemWidth];
@@ -89,10 +89,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -102,19 +102,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTIBarButtonGroup *)self itemWidths];
-      v7 = [(RTIBarButtonGroup *)v5 itemWidths];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      itemWidths = [(RTIBarButtonGroup *)self itemWidths];
+      itemWidths2 = [(RTIBarButtonGroup *)v5 itemWidths];
+      v8 = itemWidths2;
+      if (itemWidths == itemWidths2)
       {
       }
 
       else
       {
-        v9 = [(RTIBarButtonGroup *)self itemWidths];
-        v10 = [(RTIBarButtonGroup *)v5 itemWidths];
-        v11 = [v9 isEqual:v10];
+        itemWidths3 = [(RTIBarButtonGroup *)self itemWidths];
+        itemWidths4 = [(RTIBarButtonGroup *)v5 itemWidths];
+        v11 = [itemWidths3 isEqual:itemWidths4];
 
         if (!v11)
         {

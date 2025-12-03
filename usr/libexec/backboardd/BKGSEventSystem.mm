@@ -1,18 +1,18 @@
 @interface BKGSEventSystem
 + (id)sharedInstance;
 - (BKGSEventSystem)init;
-- (void)_handleEvent:(__GSEvent *)a3;
+- (void)_handleEvent:(__GSEvent *)event;
 @end
 
 @implementation BKGSEventSystem
 
-- (void)_handleEvent:(__GSEvent *)a3
+- (void)_handleEvent:(__GSEvent *)event
 {
   Type = GSEventGetType();
   if (Type == 50)
   {
     v7 = +[BKHIDSystemInterface sharedInstance];
-    [v7 injectGSEvent:a3];
+    [v7 injectGSEvent:event];
   }
 
   else
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = sub_100036C30;
   block[3] = &unk_1000FC018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100125E40 != -1)
   {
     dispatch_once(&qword_100125E40, block);

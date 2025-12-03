@@ -4,19 +4,19 @@
 - (_TtC4Maps16ParkedCarContext)init;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)parkedCarInfoCardViewController:(id)a3 showDirectionsForItem:(id)a4 userInfo:(id)a5;
-- (void)parkedCarInfoCardViewControllerWantsDismiss:(id)a3;
-- (void)shareItem:(id)a3 presentationOptions:(id)a4 completion:(id)a5;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)parkedCarInfoCardViewController:(id)controller showDirectionsForItem:(id)item userInfo:(id)info;
+- (void)parkedCarInfoCardViewControllerWantsDismiss:(id)dismiss;
+- (void)shareItem:(id)item presentationOptions:(id)options completion:(id)completion;
 @end
 
 @implementation ParkedCarContext
 
-- (void)shareItem:(id)a3 presentationOptions:(id)a4 completion:(id)a5
+- (void)shareItem:(id)item presentationOptions:(id)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -30,9 +30,9 @@
   }
 
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = self;
-  sub_10020403C(a3, a4, v8, v9);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10020403C(item, options, v8, v9);
   sub_1000D3B90(v8, v9);
   swift_unknownObjectRelease();
 }
@@ -67,7 +67,7 @@
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002680E8();
 
   sub_1000E2690();
@@ -76,60 +76,60 @@
   return v3.super.isa;
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002683CC(v6, v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1002683CC(controllerCopy, animationCopy);
 }
 
 - (BOOL)chromeDidClearMapSelection
 {
-  v2 = self;
-  v3 = [(ParkedCarContext *)v2 iosChromeViewController];
-  if (v3)
+  selfCopy = self;
+  iosChromeViewController = [(ParkedCarContext *)selfCopy iosChromeViewController];
+  if (iosChromeViewController)
   {
-    v4 = v3;
-    if ([v3 isTopContext:v2])
+    v4 = iosChromeViewController;
+    if ([iosChromeViewController isTopContext:selfCopy])
     {
-      [v4 popContext:v2 animated:1 completion:0];
+      [v4 popContext:selfCopy animated:1 completion:0];
     }
   }
 
   return 1;
 }
 
-- (void)parkedCarInfoCardViewControllerWantsDismiss:(id)a3
+- (void)parkedCarInfoCardViewControllerWantsDismiss:(id)dismiss
 {
-  v6 = self;
-  v3 = [(ParkedCarContext *)v6 iosChromeViewController];
-  v4 = v6;
-  if (v3)
+  selfCopy = self;
+  iosChromeViewController = [(ParkedCarContext *)selfCopy iosChromeViewController];
+  v4 = selfCopy;
+  if (iosChromeViewController)
   {
-    v5 = v3;
-    if ([v3 isTopContext:v6])
+    v5 = iosChromeViewController;
+    if ([iosChromeViewController isTopContext:selfCopy])
     {
-      [v5 popContext:v6 animated:1 completion:0];
+      [v5 popContext:selfCopy animated:1 completion:0];
     }
 
-    v4 = v6;
+    v4 = selfCopy;
   }
 }
 
-- (void)parkedCarInfoCardViewController:(id)a3 showDirectionsForItem:(id)a4 userInfo:(id)a5
+- (void)parkedCarInfoCardViewController:(id)controller showDirectionsForItem:(id)item userInfo:(id)info
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v11 = self;
-  v8 = [(ParkedCarContext *)v11 iosBasedChromeViewController];
-  v9 = [v8 appCoordinator];
+  itemCopy = item;
+  selfCopy = self;
+  iosBasedChromeViewController = [(ParkedCarContext *)selfCopy iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-  if (v9)
+  if (appCoordinator)
   {
     isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
-    [v9 enterRoutePlanningWithDirectionItem:v7 allowToPromptEditing:1 withUserInfo:isa];
+    [appCoordinator enterRoutePlanningWithDirectionItem:itemCopy allowToPromptEditing:1 withUserInfo:isa];
   }
 
   else
@@ -137,11 +137,11 @@
   }
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -151,41 +151,41 @@
   {
     v9 = 0u;
     v10 = 0u;
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = [(ParkedCarContext *)self iosChromeViewController:v9];
   if (v7)
   {
-    v8 = v7;
+    selfCopy3 = v7;
     if ([(ParkedCarContext *)v7 isTopContext:self])
     {
-      [(ParkedCarContext *)v8 popContext:self animated:1 completion:0];
+      [(ParkedCarContext *)selfCopy3 popContext:self animated:1 completion:0];
     }
   }
 
   else
   {
-    v8 = self;
+    selfCopy3 = self;
   }
 
   sub_1000DB2F4(&v9);
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v6 = self;
-  v3 = [(ParkedCarContext *)v6 iosChromeViewController];
-  v4 = v6;
-  if (v3)
+  selfCopy = self;
+  iosChromeViewController = [(ParkedCarContext *)selfCopy iosChromeViewController];
+  v4 = selfCopy;
+  if (iosChromeViewController)
   {
-    v5 = v3;
-    if ([v3 isTopContext:v6])
+    v5 = iosChromeViewController;
+    if ([iosChromeViewController isTopContext:selfCopy])
     {
-      [v5 popContext:v6 animated:1 completion:0];
+      [v5 popContext:selfCopy animated:1 completion:0];
     }
 
-    v4 = v6;
+    v4 = selfCopy;
   }
 }
 

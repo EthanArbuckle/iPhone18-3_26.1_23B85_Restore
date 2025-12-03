@@ -1,25 +1,25 @@
 @interface SISceneSegmentation
 - (CGSize)getInputResolution;
 - (CGSize)getOutputResolution;
-- (SISceneSegmentation)initWithNetworkConfiguration:(id)a3;
+- (SISceneSegmentation)initWithNetworkConfiguration:(id)configuration;
 - (id)subLoggers;
-- (int64_t)evaluateSemanticForImage:(__CVBuffer *)a3 semanticOutput:(__CVBuffer *)a4 confidenceOutput:(__CVBuffer *)a5 uncertaintyOutput:(__CVBuffer *)a6;
-- (int64_t)evaluateSemanticForImageData:(id)a3 output:(id)a4;
-- (int64_t)postprocessingIOSSemanticOutput:(__CVBuffer *)a3 confidenceOutput:(__CVBuffer *)a4 uncertaintyOutput:(__CVBuffer *)a5;
-- (int64_t)postprocessingOutput:(id)a3;
-- (void)_initializeUncertaintyThresholds:(float)a3;
+- (int64_t)evaluateSemanticForImage:(__CVBuffer *)image semanticOutput:(__CVBuffer *)output confidenceOutput:(__CVBuffer *)confidenceOutput uncertaintyOutput:(__CVBuffer *)uncertaintyOutput;
+- (int64_t)evaluateSemanticForImageData:(id)data output:(id)output;
+- (int64_t)postprocessingIOSSemanticOutput:(__CVBuffer *)output confidenceOutput:(__CVBuffer *)confidenceOutput uncertaintyOutput:(__CVBuffer *)uncertaintyOutput;
+- (int64_t)postprocessingOutput:(id)output;
+- (void)_initializeUncertaintyThresholds:(float)thresholds;
 - (void)dealloc;
 @end
 
 @implementation SISceneSegmentation
 
-- (SISceneSegmentation)initWithNetworkConfiguration:(id)a3
+- (SISceneSegmentation)initWithNetworkConfiguration:(id)configuration
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = SISceneSegmentation;
-  v6 = [(SIModel *)&v16 initWithNetworkConfiguration:v5];
+  v6 = [(SIModel *)&v16 initWithNetworkConfiguration:configurationCopy];
   if (v6)
   {
     v19 = kSIMLSceneSegmentationInputTensorName;
@@ -40,9 +40,9 @@
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
     [(SIModel *)v6 setOutputs:v12];
 
-    [v5 uncertaintyThreshold];
+    [configurationCopy uncertaintyThreshold];
     [(SISceneSegmentation *)v6 _initializeUncertaintyThresholds:?];
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v13 = v6;
   }
 
@@ -50,10 +50,10 @@
   return v6;
 }
 
-- (void)_initializeUncertaintyThresholds:(float)a3
+- (void)_initializeUncertaintyThresholds:(float)thresholds
 {
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getOutputChannels:kSIMLSceneSegmentationOutputExponentiatedLogitsTensorName];
+  network = [(SIModel *)self network];
+  v6 = [network getOutputChannels:kSIMLSceneSegmentationOutputExponentiatedLogitsTensorName];
 
   self->_uncertaintyThresholds = malloc_type_malloc(4 * v6, 0x100004052888210uLL);
   v7 = malloc_type_malloc(4 * v6, 0x100004052888210uLL);
@@ -63,8 +63,8 @@
     uncertaintyThresholds = self->_uncertaintyThresholds;
     do
     {
-      *uncertaintyThresholds++ = a3;
-      v9 = 1.0 / (2.0 - a3);
+      *uncertaintyThresholds++ = thresholds;
+      v9 = 1.0 / (2.0 - thresholds);
       *v7++ = v9;
       --v6;
     }
@@ -75,10 +75,10 @@
 
 - (CGSize)getInputResolution
 {
-  v3 = [(SIModel *)self network];
-  v4 = [v3 getInputWidth:kSIMLSceneSegmentationInputTensorName];
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getInputHeight:kSIMLSceneSegmentationInputTensorName];
+  network = [(SIModel *)self network];
+  v4 = [network getInputWidth:kSIMLSceneSegmentationInputTensorName];
+  network2 = [(SIModel *)self network];
+  v6 = [network2 getInputHeight:kSIMLSceneSegmentationInputTensorName];
 
   v7 = v4;
   v8 = v6;
@@ -89,10 +89,10 @@
 
 - (CGSize)getOutputResolution
 {
-  v3 = [(SIModel *)self network];
-  v4 = [v3 getOutputWidth:kSIMLSceneSegmentationOutputLabelsTensorName];
-  v5 = [(SIModel *)self network];
-  v6 = [v5 getOutputHeight:kSIMLSceneSegmentationOutputLabelsTensorName];
+  network = [(SIModel *)self network];
+  v4 = [network getOutputWidth:kSIMLSceneSegmentationOutputLabelsTensorName];
+  network2 = [(SIModel *)self network];
+  v6 = [network2 getOutputHeight:kSIMLSceneSegmentationOutputLabelsTensorName];
 
   v7 = v4;
   v8 = v6;
@@ -120,67 +120,67 @@
   [(SISceneSegmentation *)&v5 dealloc];
 }
 
-- (int64_t)evaluateSemanticForImageData:(id)a3 output:(id)a4
+- (int64_t)evaluateSemanticForImageData:(id)data output:(id)output
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SISceneSegmentation evaluateSemanticForImage:semanticOutput:confidenceOutput:uncertaintyOutput:](self, "evaluateSemanticForImage:semanticOutput:confidenceOutput:uncertaintyOutput:", [v6 inputImageBuffer], objc_msgSend(v7, "semantic"), objc_msgSend(v7, "confidence"), objc_msgSend(v7, "uncertainty"));
+  dataCopy = data;
+  outputCopy = output;
+  v8 = -[SISceneSegmentation evaluateSemanticForImage:semanticOutput:confidenceOutput:uncertaintyOutput:](self, "evaluateSemanticForImage:semanticOutput:confidenceOutput:uncertaintyOutput:", [dataCopy inputImageBuffer], objc_msgSend(outputCopy, "semantic"), objc_msgSend(outputCopy, "confidence"), objc_msgSend(outputCopy, "uncertainty"));
 
   return v8;
 }
 
-- (int64_t)evaluateSemanticForImage:(__CVBuffer *)a3 semanticOutput:(__CVBuffer *)a4 confidenceOutput:(__CVBuffer *)a5 uncertaintyOutput:(__CVBuffer *)a6
+- (int64_t)evaluateSemanticForImage:(__CVBuffer *)image semanticOutput:(__CVBuffer *)output confidenceOutput:(__CVBuffer *)confidenceOutput uncertaintyOutput:(__CVBuffer *)uncertaintyOutput
 {
-  v9 = [(SIModel *)self inputs:a3];
+  v9 = [(SIModel *)self inputs:image];
   v10 = [v9 objectForKeyedSubscript:kSIMLSceneSegmentationInputTensorName];
-  [v10 setPixelBuffer:a3];
+  [v10 setPixelBuffer:image];
 
-  v11 = [(SIModel *)self outputs];
-  v12 = [v11 objectForKeyedSubscript:kSIMLSceneSegmentationOutputLabelsTensorName];
-  [v12 setPixelBuffer:a4];
+  outputs = [(SIModel *)self outputs];
+  v12 = [outputs objectForKeyedSubscript:kSIMLSceneSegmentationOutputLabelsTensorName];
+  [v12 setPixelBuffer:output];
 
-  v13 = [(SIModel *)self inputs];
-  v14 = [(SIModel *)self outputs];
-  [(SIModel *)self evaluateWithInput:v13 outputs:v14];
+  inputs = [(SIModel *)self inputs];
+  outputs2 = [(SIModel *)self outputs];
+  [(SIModel *)self evaluateWithInput:inputs outputs:outputs2];
 
   return 0;
 }
 
-- (int64_t)postprocessingOutput:(id)a3
+- (int64_t)postprocessingOutput:(id)output
 {
-  v4 = a3;
-  v5 = -[SISceneSegmentation postprocessingSemanticOutput:confidenceOutput:uncertaintyOutput:](self, "postprocessingSemanticOutput:confidenceOutput:uncertaintyOutput:", [v4 semantic], objc_msgSend(v4, "confidence"), objc_msgSend(v4, "uncertainty"));
+  outputCopy = output;
+  v5 = -[SISceneSegmentation postprocessingSemanticOutput:confidenceOutput:uncertaintyOutput:](self, "postprocessingSemanticOutput:confidenceOutput:uncertaintyOutput:", [outputCopy semantic], objc_msgSend(outputCopy, "confidence"), objc_msgSend(outputCopy, "uncertainty"));
 
   return v5;
 }
 
-- (int64_t)postprocessingIOSSemanticOutput:(__CVBuffer *)a3 confidenceOutput:(__CVBuffer *)a4 uncertaintyOutput:(__CVBuffer *)a5
+- (int64_t)postprocessingIOSSemanticOutput:(__CVBuffer *)output confidenceOutput:(__CVBuffer *)confidenceOutput uncertaintyOutput:(__CVBuffer *)uncertaintyOutput
 {
-  v7 = [(SIModel *)self network];
-  v45 = [v7 getOutputSurface:kSIMLSceneSegmentationOutputExponentiatedLogitsTensorName];
+  network = [(SIModel *)self network];
+  v45 = [network getOutputSurface:kSIMLSceneSegmentationOutputExponentiatedLogitsTensorName];
 
-  v8 = [(SIModel *)self network];
-  v46 = [v8 getOutputSurface:kSIMLSceneSegmentationOutputNormalizationTensorName];
+  network2 = [(SIModel *)self network];
+  v46 = [network2 getOutputSurface:kSIMLSceneSegmentationOutputNormalizationTensorName];
 
-  v9 = [(SIModel *)self network];
-  v10 = [v9 getOutputChannels:kSIMLSceneSegmentationOutputExponentiatedLogitsTensorName];
+  network3 = [(SIModel *)self network];
+  v10 = [network3 getOutputChannels:kSIMLSceneSegmentationOutputExponentiatedLogitsTensorName];
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  v48 = CVPixelBufferGetBytesPerRow(a4);
-  v47 = CVPixelBufferGetBytesPerRow(a5);
+  Width = CVPixelBufferGetWidth(output);
+  Height = CVPixelBufferGetHeight(output);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(output);
+  v48 = CVPixelBufferGetBytesPerRow(confidenceOutput);
+  v47 = CVPixelBufferGetBytesPerRow(uncertaintyOutput);
   v13 = IOSurfaceGetBytesPerRow([v46 ioSurface]);
   kdebug_trace();
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  CVPixelBufferLockBaseAddress(a5, 0);
+  CVPixelBufferLockBaseAddress(output, 0);
+  CVPixelBufferLockBaseAddress(confidenceOutput, 0);
+  CVPixelBufferLockBaseAddress(uncertaintyOutput, 0);
   IOSurfaceLock([v45 ioSurface], 0, 0);
   IOSurfaceLock([v46 ioSurface], 0, 0);
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
-  v15 = CVPixelBufferGetBaseAddress(a5);
-  v42 = a3;
-  v16 = CVPixelBufferGetBaseAddress(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(confidenceOutput);
+  v15 = CVPixelBufferGetBaseAddress(uncertaintyOutput);
+  outputCopy = output;
+  v16 = CVPixelBufferGetBaseAddress(output);
   v17 = IOSurfaceGetBaseAddress([v46 ioSurface]);
   v18 = IOSurfaceGetBaseAddress([v45 ioSurface]);
   if (Height)
@@ -264,9 +264,9 @@
     }
   }
 
-  CVPixelBufferUnlockBaseAddress(v42, 0);
-  CVPixelBufferUnlockBaseAddress(a4, 0);
-  CVPixelBufferUnlockBaseAddress(a5, 0);
+  CVPixelBufferUnlockBaseAddress(outputCopy, 0);
+  CVPixelBufferUnlockBaseAddress(confidenceOutput, 0);
+  CVPixelBufferUnlockBaseAddress(uncertaintyOutput, 0);
   IOSurfaceUnlock([v45 ioSurface], 0, 0);
   IOSurfaceUnlock([v46 ioSurface], 0, 0);
   kdebug_trace();
@@ -278,9 +278,9 @@
 {
   v4.receiver = self;
   v4.super_class = SISceneSegmentation;
-  v2 = [(SIModel *)&v4 subLoggers];
+  subLoggers = [(SIModel *)&v4 subLoggers];
 
-  return v2;
+  return subLoggers;
 }
 
 @end

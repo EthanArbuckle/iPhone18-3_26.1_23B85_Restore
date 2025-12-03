@@ -1,55 +1,55 @@
 @interface COCapabilityLegacyShim
 - (BOOL)_isStereoPairMember;
-- (BOOL)_isStereoPeer:(id)a3;
+- (BOOL)_isStereoPeer:(id)peer;
 - (BOOL)_isStereoPeerActive;
-- (BOOL)_messageValidateRequest:(id)a3;
-- (BOOL)_messageValidateResponse:(id)a3;
-- (BOOL)_rapportEventShouldUpdateState:(id)a3;
-- (COCapabilityLegacyShim)initWithDelegate:(id)a3;
+- (BOOL)_messageValidateRequest:(id)request;
+- (BOOL)_messageValidateResponse:(id)response;
+- (BOOL)_rapportEventShouldUpdateState:(id)state;
+- (COCapabilityLegacyShim)initWithDelegate:(id)delegate;
 - (COCapabilityLegacyShimDelegate)delegate;
 - (NSSet)availableCapabilities;
 - (NSSet)companionCapabilities;
 - (id)_messageCreateRequest;
 - (id)_messageCreateResponse;
-- (id)_messageDecodeCapabilities:(id)a3;
+- (id)_messageDecodeCapabilities:(id)capabilities;
 - (id)_messageEncodeCapabilities;
 - (void)_messageEncodeCapabilities;
-- (void)_notifyDelegate:(id)a3;
+- (void)_notifyDelegate:(id)delegate;
 - (void)_rapportDeregister;
-- (void)_rapportProcessRequest:(id)a3 emittingResponse:(id)a4;
-- (void)_rapportProcessResponse:(id)a3 error:(id)a4;
+- (void)_rapportProcessRequest:(id)request emittingResponse:(id)response;
+- (void)_rapportProcessResponse:(id)response error:(id)error;
 - (void)_rapportRegister;
 - (void)_rapportStart;
 - (void)_rapportStop;
 - (void)_stateQuery;
 - (void)_stateUpdate;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)setAvailableCapabilities:(id)a3;
-- (void)setCompanionCapabilities:(id)a3;
+- (void)setAvailableCapabilities:(id)capabilities;
+- (void)setCompanionCapabilities:(id)capabilities;
 @end
 
 @implementation COCapabilityLegacyShim
 
-- (COCapabilityLegacyShim)initWithDelegate:(id)a3
+- (COCapabilityLegacyShim)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = COCapabilityLegacyShim;
   v5 = [(COCapabilityLegacyShim *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.CoordinationCore.Capabilities.LegacyShim", v7);
     queue = v6->_queue;
     v6->_queue = v8;
 
-    v10 = [MEMORY[0x277CBEB18] array];
-    [v10 addObject:@"com.apple.SoundBoard.capability.Krono"];
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:@"com.apple.SoundBoard.capability.Krono"];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:array];
     supportedCapabilities = v6->_supportedCapabilities;
     v6->_supportedCapabilities = v11;
 
@@ -103,10 +103,10 @@ void __43__COCapabilityLegacyShim_initWithDelegate___block_invoke_2(uint64_t a1)
 
 - (void)_stateUpdate
 {
-  v3 = [(COCapabilityLegacyShim *)self _isStereoPeerActive];
+  _isStereoPeerActive = [(COCapabilityLegacyShim *)self _isStereoPeerActive];
   v4 = COCoreLogForCategory(5);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_isStereoPeerActive)
   {
     if (v5)
     {
@@ -130,8 +130,8 @@ void __43__COCapabilityLegacyShim_initWithDelegate___block_invoke_2(uint64_t a1)
     v6 = [MEMORY[0x277CBEB98] set];
     [(COCapabilityLegacyShim *)self setCompanionCapabilities:v6];
 
-    v7 = [(COCapabilityLegacyShim *)self supportedCapabilities];
-    [(COCapabilityLegacyShim *)self setAvailableCapabilities:v7];
+    supportedCapabilities = [(COCapabilityLegacyShim *)self supportedCapabilities];
+    [(COCapabilityLegacyShim *)self setAvailableCapabilities:supportedCapabilities];
   }
 }
 
@@ -162,15 +162,15 @@ void __43__COCapabilityLegacyShim_initWithDelegate___block_invoke_2(uint64_t a1)
     }
 
     objc_initWeak(buf, self);
-    v5 = [(COCapabilityLegacyShim *)self rapport];
-    v6 = [(COCapabilityLegacyShim *)self _messageCreateRequest];
+    rapport = [(COCapabilityLegacyShim *)self rapport];
+    _messageCreateRequest = [(COCapabilityLegacyShim *)self _messageCreateRequest];
     v7 = *MEMORY[0x277D44240];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __37__COCapabilityLegacyShim__stateQuery__block_invoke;
     v8[3] = &unk_278E15AE8;
     objc_copyWeak(&v9, buf);
-    [v5 sendRequestID:@"com.apple.SoundBoard.Capabilities" request:v6 destinationID:v7 options:0 responseHandler:v8];
+    [rapport sendRequestID:@"com.apple.SoundBoard.Capabilities" request:_messageCreateRequest destinationID:v7 options:0 responseHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
@@ -209,9 +209,9 @@ void __37__COCapabilityLegacyShim__stateQuery__block_invoke(uint64_t a1, void *a
   rapport = self->_rapport;
   self->_rapport = v4;
 
-  v6 = [(COCapabilityLegacyShim *)self queue];
-  v7 = [(COCapabilityLegacyShim *)self rapport];
-  [v7 setDispatchQueue:v6];
+  queue = [(COCapabilityLegacyShim *)self queue];
+  rapport = [(COCapabilityLegacyShim *)self rapport];
+  [rapport setDispatchQueue:queue];
 
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x277D85DD0];
@@ -219,40 +219,40 @@ void __37__COCapabilityLegacyShim__stateQuery__block_invoke(uint64_t a1, void *a
   v20[2] = __39__COCapabilityLegacyShim__rapportStart__block_invoke;
   v20[3] = &unk_278E15B10;
   objc_copyWeak(&v21, &location);
-  v8 = [(COCapabilityLegacyShim *)self rapport];
-  [v8 setInvalidationHandler:v20];
+  rapport2 = [(COCapabilityLegacyShim *)self rapport];
+  [rapport2 setInvalidationHandler:v20];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __39__COCapabilityLegacyShim__rapportStart__block_invoke_20;
   v18[3] = &unk_278E158D8;
   objc_copyWeak(&v19, &location);
-  v9 = [(COCapabilityLegacyShim *)self rapport];
-  [v9 setLocalDeviceUpdatedHandler:v18];
+  rapport3 = [(COCapabilityLegacyShim *)self rapport];
+  [rapport3 setLocalDeviceUpdatedHandler:v18];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __39__COCapabilityLegacyShim__rapportStart__block_invoke_22;
   v16[3] = &unk_278E158D8;
   objc_copyWeak(&v17, &location);
-  v10 = [(COCapabilityLegacyShim *)self rapport];
-  [v10 setDeviceFoundHandler:v16];
+  rapport4 = [(COCapabilityLegacyShim *)self rapport];
+  [rapport4 setDeviceFoundHandler:v16];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __39__COCapabilityLegacyShim__rapportStart__block_invoke_23;
   v14[3] = &unk_278E158D8;
   objc_copyWeak(&v15, &location);
-  v11 = [(COCapabilityLegacyShim *)self rapport];
-  [v11 setDeviceLostHandler:v14];
+  rapport5 = [(COCapabilityLegacyShim *)self rapport];
+  [rapport5 setDeviceLostHandler:v14];
 
-  v12 = [(COCapabilityLegacyShim *)self rapport];
+  rapport6 = [(COCapabilityLegacyShim *)self rapport];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__COCapabilityLegacyShim__rapportStart__block_invoke_24;
   v13[3] = &unk_278E15B38;
   v13[4] = self;
-  [v12 activateWithCompletion:v13];
+  [rapport6 activateWithCompletion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
@@ -359,20 +359,20 @@ void __39__COCapabilityLegacyShim__rapportStart__block_invoke_24(uint64_t a1, vo
   }
 
   [(COCapabilityLegacyShim *)self _rapportDeregister];
-  v4 = [(COCapabilityLegacyShim *)self rapport];
-  [v4 invalidate];
+  rapport = [(COCapabilityLegacyShim *)self rapport];
+  [rapport invalidate];
 }
 
 - (void)_rapportRegister
 {
   objc_initWeak(&location, self);
-  v3 = [(COCapabilityLegacyShim *)self rapport];
+  rapport = [(COCapabilityLegacyShim *)self rapport];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__COCapabilityLegacyShim__rapportRegister__block_invoke;
   v4[3] = &unk_278E15B88;
   v4[4] = self;
-  [v3 registerRequestID:@"com.apple.SoundBoard.Capabilities" options:0 handler:v4];
+  [rapport registerRequestID:@"com.apple.SoundBoard.Capabilities" options:0 handler:v4];
 
   objc_destroyWeak(&location);
 }
@@ -399,26 +399,26 @@ void __42__COCapabilityLegacyShim__rapportRegister__block_invoke(uint64_t a1, vo
 
 - (void)_rapportDeregister
 {
-  v2 = [(COCapabilityLegacyShim *)self rapport];
-  [v2 deregisterRequestID:@"com.apple.SoundBoard.Capabilities"];
+  rapport = [(COCapabilityLegacyShim *)self rapport];
+  [rapport deregisterRequestID:@"com.apple.SoundBoard.Capabilities"];
 }
 
-- (BOOL)_rapportEventShouldUpdateState:(id)a3
+- (BOOL)_rapportEventShouldUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [(COCapabilityLegacyShim *)self rapport];
-  v6 = [v5 localDevice];
-  v7 = [v4 isEqual:v6];
+  stateCopy = state;
+  rapport = [(COCapabilityLegacyShim *)self rapport];
+  localDevice = [rapport localDevice];
+  v7 = [stateCopy isEqual:localDevice];
 
-  v8 = (v7 & 1) != 0 || [(COCapabilityLegacyShim *)self _isStereoPeer:v4];
+  v8 = (v7 & 1) != 0 || [(COCapabilityLegacyShim *)self _isStereoPeer:stateCopy];
   return v8;
 }
 
-- (void)_rapportProcessRequest:(id)a3 emittingResponse:(id)a4
+- (void)_rapportProcessRequest:(id)request emittingResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(COCapabilityLegacyShim *)self _messageValidateRequest:v6])
+  requestCopy = request;
+  responseCopy = response;
+  if (![(COCapabilityLegacyShim *)self _messageValidateRequest:requestCopy])
   {
     v8 = COCoreLogForCategory(5);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -427,16 +427,16 @@ void __42__COCapabilityLegacyShim__rapportRegister__block_invoke(uint64_t a1, vo
     }
   }
 
-  v9 = [(COCapabilityLegacyShim *)self _messageCreateResponse];
-  (*(v7 + 2))(v7, v9, 0, 0);
+  _messageCreateResponse = [(COCapabilityLegacyShim *)self _messageCreateResponse];
+  (*(responseCopy + 2))(responseCopy, _messageCreateResponse, 0, 0);
 
-  v10 = [(COCapabilityLegacyShim *)self queue];
+  queue = [(COCapabilityLegacyShim *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__COCapabilityLegacyShim__rapportProcessRequest_emittingResponse___block_invoke;
   block[3] = &unk_278E15AB8;
   block[4] = self;
-  dispatch_async(v10, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __66__COCapabilityLegacyShim__rapportProcessRequest_emittingResponse___block_invoke(uint64_t a1)
@@ -456,17 +456,17 @@ uint64_t __66__COCapabilityLegacyShim__rapportProcessRequest_emittingResponse___
   return result;
 }
 
-- (void)_rapportProcessResponse:(id)a3 error:(id)a4
+- (void)_rapportProcessResponse:(id)response error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   [(COCapabilityLegacyShim *)self setCompanionQueryInProgress:0];
-  if (v6 && !v7)
+  if (responseCopy && !errorCopy)
   {
-    if ([(COCapabilityLegacyShim *)self _messageValidateResponse:v6])
+    if ([(COCapabilityLegacyShim *)self _messageValidateResponse:responseCopy])
     {
-      v8 = [v6 objectForKey:@"supported"];
+      v8 = [responseCopy objectForKey:@"supported"];
       v9 = [(COCapabilityLegacyShim *)self _messageDecodeCapabilities:v8];
       v10 = v9;
       if (v9)
@@ -504,8 +504,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v13 = [v7 domain];
-  if (![v13 isEqualToString:*MEMORY[0x277D44250]])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277D44250]])
   {
 
 LABEL_15:
@@ -518,9 +518,9 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v14 = [v7 code];
+  code = [errorCopy code];
 
-  if (v14 != -6714)
+  if (code != -6714)
   {
     goto LABEL_15;
   }
@@ -538,20 +538,20 @@ LABEL_25:
   {
     [(COCapabilityLegacyShim *)self setCompanionQueryUnsuccessful:0];
     [(COCapabilityLegacyShim *)self setCompanionCapabilities:v10];
-    v27 = [(COCapabilityLegacyShim *)self supportedCapabilities];
-    v28 = [v27 mutableCopy];
+    supportedCapabilities = [(COCapabilityLegacyShim *)self supportedCapabilities];
+    v28 = [supportedCapabilities mutableCopy];
 
-    v29 = [(COCapabilityLegacyShim *)self companionCapabilities];
-    [v28 intersectSet:v29];
+    companionCapabilities = [(COCapabilityLegacyShim *)self companionCapabilities];
+    [v28 intersectSet:companionCapabilities];
 
     [(COCapabilityLegacyShim *)self setAvailableCapabilities:v28];
-    v30 = [(COCapabilityLegacyShim *)self queue];
+    queue = [(COCapabilityLegacyShim *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke;
     block[3] = &unk_278E15AB8;
     block[4] = self;
-    dispatch_async(v30, block);
+    dispatch_async(queue, block);
 
     goto LABEL_27;
   }
@@ -568,13 +568,13 @@ LABEL_18:
 
     objc_initWeak(buf, self);
     v25 = dispatch_walltime(0, 120000000000);
-    v26 = [(COCapabilityLegacyShim *)self queue];
+    queue2 = [(COCapabilityLegacyShim *)self queue];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_27;
     v32[3] = &unk_278E15B10;
     objc_copyWeak(&v33, buf);
-    dispatch_after(v25, v26, v32);
+    dispatch_after(v25, queue2, v32);
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(buf);
@@ -637,8 +637,8 @@ void __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_2
   v6[0] = @"version";
   v6[1] = @"supported";
   v7[0] = &unk_2857C8828;
-  v2 = [(COCapabilityLegacyShim *)self _messageEncodeCapabilities];
-  v7[1] = v2;
+  _messageEncodeCapabilities = [(COCapabilityLegacyShim *)self _messageEncodeCapabilities];
+  v7[1] = _messageEncodeCapabilities;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -646,9 +646,9 @@ void __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_2
   return v3;
 }
 
-- (BOOL)_messageValidateRequest:(id)a3
+- (BOOL)_messageValidateRequest:(id)request
 {
-  v3 = [a3 objectForKey:@"version"];
+  v3 = [request objectForKey:@"version"];
   [v3 floatValue];
   v5 = v4;
 
@@ -670,9 +670,9 @@ void __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_2
   return v5 == 1.0;
 }
 
-- (BOOL)_messageValidateResponse:(id)a3
+- (BOOL)_messageValidateResponse:(id)response
 {
-  v3 = [a3 objectForKey:@"version"];
+  v3 = [response objectForKey:@"version"];
   [v3 floatValue];
   v5 = v4;
 
@@ -696,8 +696,8 @@ void __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_2
 
 - (id)_messageEncodeCapabilities
 {
-  v2 = [(COCapabilityLegacyShim *)self supportedCapabilities];
-  v3 = [v2 copy];
+  supportedCapabilities = [(COCapabilityLegacyShim *)self supportedCapabilities];
+  v3 = [supportedCapabilities copy];
 
   v11 = 0;
   v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v11];
@@ -721,18 +721,18 @@ void __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_2
       [COCapabilityLegacyShim _messageEncodeCapabilities];
     }
 
-    v9 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
 
-    v4 = v9;
+    v4 = data;
   }
 
   return v4;
 }
 
-- (id)_messageDecodeCapabilities:(id)a3
+- (id)_messageDecodeCapabilities:(id)capabilities
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   v4 = MEMORY[0x277CBEB98];
   v27[0] = objc_opt_class();
   v27[1] = objc_opt_class();
@@ -740,7 +740,7 @@ void __56__COCapabilityLegacyShim__rapportProcessResponse_error___block_invoke_2
   v6 = [v4 setWithArray:v5];
 
   v25 = 0;
-  v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v6 fromData:v3 error:&v25];
+  v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v6 fromData:capabilitiesCopy error:&v25];
   v8 = v25;
   v9 = v8;
   if (v7)
@@ -851,9 +851,9 @@ uint64_t __47__COCapabilityLegacyShim_availableCapabilities__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setAvailableCapabilities:(id)a3
+- (void)setAvailableCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -862,9 +862,9 @@ uint64_t __47__COCapabilityLegacyShim_availableCapabilities__block_invoke(uint64
   v7[1] = 3221225472;
   v7[2] = __51__COCapabilityLegacyShim_setAvailableCapabilities___block_invoke;
   v7[3] = &unk_278E15700;
-  v5 = v4;
+  v5 = capabilitiesCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [(COCapabilityLegacyShim *)self _withLock:v7];
   if (*(v12 + 24) == 1)
@@ -931,16 +931,16 @@ uint64_t __47__COCapabilityLegacyShim_companionCapabilities__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setCompanionCapabilities:(id)a3
+- (void)setCompanionCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__COCapabilityLegacyShim_setCompanionCapabilities___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = capabilitiesCopy;
+  selfCopy = self;
+  v5 = capabilitiesCopy;
   [(COCapabilityLegacyShim *)self _withLock:v6];
 }
 
@@ -967,29 +967,29 @@ void __51__COCapabilityLegacyShim_setCompanionCapabilities___block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_notifyDelegate:(id)a3
+- (void)_notifyDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(COCapabilityLegacyShim *)self delegate];
-  if (v5)
+  delegateCopy = delegate;
+  delegate = [(COCapabilityLegacyShim *)self delegate];
+  if (delegate)
   {
-    v6 = [v4 copy];
+    v6 = [delegateCopy copy];
     v7 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__COCapabilityLegacyShim__notifyDelegate___block_invoke;
     block[3] = &unk_278E15728;
-    v10 = v5;
-    v11 = self;
+    v10 = delegate;
+    selfCopy = self;
     v12 = v6;
     v8 = v6;
     dispatch_async(v7, block);
@@ -998,25 +998,25 @@ void __51__COCapabilityLegacyShim_setCompanionCapabilities___block_invoke(uint64
 
 - (BOOL)_isStereoPairMember
 {
-  v2 = [(COCapabilityLegacyShim *)self rapport];
-  v3 = [v2 localDevice];
-  v4 = [v3 mediaSystemIdentifier];
-  v5 = v4 != 0;
+  rapport = [(COCapabilityLegacyShim *)self rapport];
+  localDevice = [rapport localDevice];
+  mediaSystemIdentifier = [localDevice mediaSystemIdentifier];
+  v5 = mediaSystemIdentifier != 0;
 
   return v5;
 }
 
-- (BOOL)_isStereoPeer:(id)a3
+- (BOOL)_isStereoPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   if ([(COCapabilityLegacyShim *)self _isStereoPairMember])
   {
-    v5 = [(COCapabilityLegacyShim *)self rapport];
-    v6 = [v5 localDevice];
-    v7 = [v6 mediaSystemIdentifier];
+    rapport = [(COCapabilityLegacyShim *)self rapport];
+    localDevice = [rapport localDevice];
+    mediaSystemIdentifier = [localDevice mediaSystemIdentifier];
 
-    v8 = [v4 mediaSystemIdentifier];
-    v9 = [v7 isEqual:v8];
+    mediaSystemIdentifier2 = [peerCopy mediaSystemIdentifier];
+    v9 = [mediaSystemIdentifier isEqual:mediaSystemIdentifier2];
   }
 
   else
@@ -1036,10 +1036,10 @@ void __51__COCapabilityLegacyShim_setCompanionCapabilities___block_invoke(uint64
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v3 = [(COCapabilityLegacyShim *)self rapport];
-    v4 = [v3 activeDevices];
+    rapport = [(COCapabilityLegacyShim *)self rapport];
+    activeDevices = [rapport activeDevices];
 
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v5 = [activeDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1050,13 +1050,13 @@ void __51__COCapabilityLegacyShim_setCompanionCapabilities___block_invoke(uint64
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeDevices);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [(COCapabilityLegacyShim *)self rapport];
-          v11 = [v10 localDevice];
-          v12 = [v9 isEqual:v11];
+          rapport2 = [(COCapabilityLegacyShim *)self rapport];
+          localDevice = [rapport2 localDevice];
+          v12 = [v9 isEqual:localDevice];
 
           if ((v12 & 1) == 0 && [(COCapabilityLegacyShim *)self _isStereoPeer:v9])
           {
@@ -1065,7 +1065,7 @@ void __51__COCapabilityLegacyShim_setCompanionCapabilities___block_invoke(uint64
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [activeDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           continue;

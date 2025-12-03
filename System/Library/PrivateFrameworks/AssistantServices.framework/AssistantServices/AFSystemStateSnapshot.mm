@@ -1,17 +1,17 @@
 @interface AFSystemStateSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFSystemStateSnapshot)initWithBuilder:(id)a3;
-- (AFSystemStateSnapshot)initWithCoder:(id)a3;
-- (AFSystemStateSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (AFSystemStateSnapshot)initWithSerializedBackingStore:(id)a3;
-- (AFSystemStateSnapshot)initWithSleepState:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSystemStateSnapshot)initWithBuilder:(id)builder;
+- (AFSystemStateSnapshot)initWithCoder:(id)coder;
+- (AFSystemStateSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (AFSystemStateSnapshot)initWithSerializedBackingStore:(id)store;
+- (AFSystemStateSnapshot)initWithSleepState:(int64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)ad_shortDescription;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSystemStateSnapshot
@@ -19,15 +19,15 @@
 - (id)ad_shortDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(AFSystemStateSnapshot *)self sleepState];
-  if (v3 > 2)
+  sleepState = [(AFSystemStateSnapshot *)self sleepState];
+  if (sleepState > 2)
   {
     v4 = @"(unknown)";
   }
 
   else
   {
-    v4 = off_1E7348230[v3];
+    v4 = off_1E7348230[sleepState];
   }
 
   v5 = v4;
@@ -36,20 +36,20 @@
   return v6;
 }
 
-- (AFSystemStateSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFSystemStateSnapshot)initWithSerializedBackingStore:(id)store
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(AFSystemStateSnapshot *)self initWithDictionaryRepresentation:v4];
-    v5 = self;
+    self = [(AFSystemStateSnapshot *)self initWithDictionaryRepresentation:storeCopy];
+    selfCopy = self;
   }
 
   else
   {
-    if (v4)
+    if (storeCopy)
     {
       v6 = AFSiriLogContextUtility;
       if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
@@ -57,16 +57,16 @@
         v9 = 136315394;
         v10 = "[AFSystemStateSnapshot(ContextSnapshot) initWithSerializedBackingStore:]";
         v11 = 2112;
-        v12 = v4;
+        v12 = storeCopy;
         _os_log_error_impl(&dword_1912FE000, v6, OS_LOG_TYPE_ERROR, "%s #hal serializedBackingStore is of unexpected type: %@", &v9, 0x16u);
       }
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5;
+  return selfCopy;
 }
 
 - (id)buildDictionaryRepresentation
@@ -91,11 +91,11 @@
   return v7;
 }
 
-- (AFSystemStateSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFSystemStateSnapshot)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = [a3 objectForKey:@"sleepState"];
+    v4 = [representation objectForKey:@"sleepState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,40 +108,40 @@
     }
 
     self = [(AFSystemStateSnapshot *)self initWithSleepState:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   sleepState = self->_sleepState;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithInteger:sleepState];
-  [v5 encodeObject:v6 forKey:@"AFSystemStateSnapshot::sleepState"];
+  [coderCopy encodeObject:v6 forKey:@"AFSystemStateSnapshot::sleepState"];
 }
 
-- (AFSystemStateSnapshot)initWithCoder:(id)a3
+- (AFSystemStateSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSystemStateSnapshot::sleepState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSystemStateSnapshot::sleepState"];
 
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return [(AFSystemStateSnapshot *)self initWithSleepState:v6];
+  return [(AFSystemStateSnapshot *)self initWithSleepState:integerValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -152,7 +152,7 @@
     if (objc_opt_isKindOfClass())
     {
       sleepState = self->_sleepState;
-      v6 = sleepState == [(AFSystemStateSnapshot *)v4 sleepState];
+      v6 = sleepState == [(AFSystemStateSnapshot *)equalCopy sleepState];
     }
 
     else
@@ -172,7 +172,7 @@
   return v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -195,27 +195,27 @@
   return v9;
 }
 
-- (AFSystemStateSnapshot)initWithSleepState:(int64_t)a3
+- (AFSystemStateSnapshot)initWithSleepState:(int64_t)state
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__AFSystemStateSnapshot_initWithSleepState___block_invoke;
   v4[3] = &__block_descriptor_40_e41_v16__0___AFSystemStateSnapshotMutating__8l;
-  v4[4] = a3;
+  v4[4] = state;
   return [(AFSystemStateSnapshot *)self initWithBuilder:v4];
 }
 
-- (AFSystemStateSnapshot)initWithBuilder:(id)a3
+- (AFSystemStateSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFSystemStateSnapshot;
   v5 = [(AFSystemStateSnapshot *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSystemStateSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSystemStateSnapshotMutation *)v7 isDirty])
     {
       v6->_sleepState = [(_AFSystemStateSnapshotMutation *)v7 getSleepState];
@@ -225,21 +225,21 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSystemStateSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSystemStateSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSystemStateSnapshot);

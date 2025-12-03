@@ -1,27 +1,27 @@
 @interface AWDWiFiMetricExtendedTrapInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)backplaneAtIndex:(unint64_t)a3;
-- (unsigned)busAtIndex:(unint64_t)a3;
-- (unsigned)deepSleepAtIndex:(unint64_t)a3;
-- (unsigned)macAtIndex:(unint64_t)a3;
-- (unsigned)macEnabAtIndex:(unint64_t)a3;
-- (unsigned)memoryDumpAtIndex:(unint64_t)a3;
-- (unsigned)pcieQueueStateAtIndex:(unint64_t)a3;
-- (unsigned)phyAtIndex:(unint64_t)a3;
-- (unsigned)phyTxErrThreshAtIndex:(unint64_t)a3;
-- (unsigned)psmWDAtIndex:(unint64_t)a3;
-- (unsigned)signatureAtIndex:(unint64_t)a3;
-- (unsigned)stackTracesAtIndex:(unint64_t)a3;
-- (unsigned)ucodeErrorsAtIndex:(unint64_t)a3;
-- (unsigned)wlcStateAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)backplaneAtIndex:(unint64_t)index;
+- (unsigned)busAtIndex:(unint64_t)index;
+- (unsigned)deepSleepAtIndex:(unint64_t)index;
+- (unsigned)macAtIndex:(unint64_t)index;
+- (unsigned)macEnabAtIndex:(unint64_t)index;
+- (unsigned)memoryDumpAtIndex:(unint64_t)index;
+- (unsigned)pcieQueueStateAtIndex:(unint64_t)index;
+- (unsigned)phyAtIndex:(unint64_t)index;
+- (unsigned)phyTxErrThreshAtIndex:(unint64_t)index;
+- (unsigned)psmWDAtIndex:(unint64_t)index;
+- (unsigned)signatureAtIndex:(unint64_t)index;
+- (unsigned)stackTracesAtIndex:(unint64_t)index;
+- (unsigned)ucodeErrorsAtIndex:(unint64_t)index;
+- (unsigned)wlcStateAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricExtendedTrapInfo
@@ -47,172 +47,172 @@
   [(AWDWiFiMetricExtendedTrapInfo *)&v3 dealloc];
 }
 
-- (unsigned)signatureAtIndex:(unint64_t)a3
+- (unsigned)signatureAtIndex:(unint64_t)index
 {
   p_signatures = &self->_signatures;
   count = self->_signatures.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_signatures->list[a3];
+  return p_signatures->list[index];
 }
 
-- (unsigned)stackTracesAtIndex:(unint64_t)a3
+- (unsigned)stackTracesAtIndex:(unint64_t)index
 {
   p_stackTraces = &self->_stackTraces;
   count = self->_stackTraces.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_stackTraces->list[a3];
+  return p_stackTraces->list[index];
 }
 
-- (unsigned)ucodeErrorsAtIndex:(unint64_t)a3
+- (unsigned)ucodeErrorsAtIndex:(unint64_t)index
 {
   p_ucodeErrors = &self->_ucodeErrors;
   count = self->_ucodeErrors.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_ucodeErrors->list[a3];
+  return p_ucodeErrors->list[index];
 }
 
-- (unsigned)memoryDumpAtIndex:(unint64_t)a3
+- (unsigned)memoryDumpAtIndex:(unint64_t)index
 {
   p_memoryDumps = &self->_memoryDumps;
   count = self->_memoryDumps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_memoryDumps->list[a3];
+  return p_memoryDumps->list[index];
 }
 
-- (unsigned)deepSleepAtIndex:(unint64_t)a3
+- (unsigned)deepSleepAtIndex:(unint64_t)index
 {
   p_deepSleeps = &self->_deepSleeps;
   count = self->_deepSleeps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_deepSleeps->list[a3];
+  return p_deepSleeps->list[index];
 }
 
-- (unsigned)psmWDAtIndex:(unint64_t)a3
+- (unsigned)psmWDAtIndex:(unint64_t)index
 {
   p_psmWDs = &self->_psmWDs;
   count = self->_psmWDs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_psmWDs->list[a3];
+  return p_psmWDs->list[index];
 }
 
-- (unsigned)phyAtIndex:(unint64_t)a3
+- (unsigned)phyAtIndex:(unint64_t)index
 {
   p_phys = &self->_phys;
   count = self->_phys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_phys->list[a3];
+  return p_phys->list[index];
 }
 
-- (unsigned)busAtIndex:(unint64_t)a3
+- (unsigned)busAtIndex:(unint64_t)index
 {
   p_bus = &self->_bus;
   count = self->_bus.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_bus->list[a3];
+  return p_bus->list[index];
 }
 
-- (unsigned)macAtIndex:(unint64_t)a3
+- (unsigned)macAtIndex:(unint64_t)index
 {
   p_macs = &self->_macs;
   count = self->_macs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_macs->list[a3];
+  return p_macs->list[index];
 }
 
-- (unsigned)backplaneAtIndex:(unint64_t)a3
+- (unsigned)backplaneAtIndex:(unint64_t)index
 {
   p_backplanes = &self->_backplanes;
   count = self->_backplanes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_backplanes->list[a3];
+  return p_backplanes->list[index];
 }
 
-- (unsigned)pcieQueueStateAtIndex:(unint64_t)a3
+- (unsigned)pcieQueueStateAtIndex:(unint64_t)index
 {
   p_pcieQueueStates = &self->_pcieQueueStates;
   count = self->_pcieQueueStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_pcieQueueStates->list[a3];
+  return p_pcieQueueStates->list[index];
 }
 
-- (unsigned)wlcStateAtIndex:(unint64_t)a3
+- (unsigned)wlcStateAtIndex:(unint64_t)index
 {
   p_wlcStates = &self->_wlcStates;
   count = self->_wlcStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_wlcStates->list[a3];
+  return p_wlcStates->list[index];
 }
 
-- (unsigned)macEnabAtIndex:(unint64_t)a3
+- (unsigned)macEnabAtIndex:(unint64_t)index
 {
   p_macEnabs = &self->_macEnabs;
   count = self->_macEnabs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_macEnabs->list[a3];
+  return p_macEnabs->list[index];
 }
 
-- (unsigned)phyTxErrThreshAtIndex:(unint64_t)a3
+- (unsigned)phyTxErrThreshAtIndex:(unint64_t)index
 {
   p_phyTxErrThreshs = &self->_phyTxErrThreshs;
   count = self->_phyTxErrThreshs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_phyTxErrThreshs->list[a3];
+  return p_phyTxErrThreshs->list[index];
 }
 
 - (id)description
@@ -224,30 +224,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sequence), @"sequence"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sequence), @"sequence"}];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"signature"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"stackTraces"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"ucodeErrors"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"memoryDump"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"deepSleep"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"psmWD"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"phy"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"bus"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"mac"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"backplane"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"pcieQueueState"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"wlcState"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"macEnab"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"phyTxErrThresh"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"signature"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"stackTraces"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"ucodeErrors"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"memoryDump"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"deepSleep"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"psmWD"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"phy"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"bus"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"mac"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"backplane"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"pcieQueueState"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"wlcState"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"macEnab"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"phyTxErrThresh"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -439,214 +439,214 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 86) = self->_sequence;
-    *(a3 + 348) |= 1u;
+    *(to + 86) = self->_sequence;
+    *(to + 348) |= 1u;
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self signaturesCount])
   {
-    [a3 clearSignatures];
-    v5 = [(AWDWiFiMetricExtendedTrapInfo *)self signaturesCount];
-    if (v5)
+    [to clearSignatures];
+    signaturesCount = [(AWDWiFiMetricExtendedTrapInfo *)self signaturesCount];
+    if (signaturesCount)
     {
-      v6 = v5;
+      v6 = signaturesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addSignature:{-[AWDWiFiMetricExtendedTrapInfo signatureAtIndex:](self, "signatureAtIndex:", i)}];
+        [to addSignature:{-[AWDWiFiMetricExtendedTrapInfo signatureAtIndex:](self, "signatureAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self stackTracesCount])
   {
-    [a3 clearStackTraces];
-    v8 = [(AWDWiFiMetricExtendedTrapInfo *)self stackTracesCount];
-    if (v8)
+    [to clearStackTraces];
+    stackTracesCount = [(AWDWiFiMetricExtendedTrapInfo *)self stackTracesCount];
+    if (stackTracesCount)
     {
-      v9 = v8;
+      v9 = stackTracesCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addStackTraces:{-[AWDWiFiMetricExtendedTrapInfo stackTracesAtIndex:](self, "stackTracesAtIndex:", j)}];
+        [to addStackTraces:{-[AWDWiFiMetricExtendedTrapInfo stackTracesAtIndex:](self, "stackTracesAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self ucodeErrorsCount])
   {
-    [a3 clearUcodeErrors];
-    v11 = [(AWDWiFiMetricExtendedTrapInfo *)self ucodeErrorsCount];
-    if (v11)
+    [to clearUcodeErrors];
+    ucodeErrorsCount = [(AWDWiFiMetricExtendedTrapInfo *)self ucodeErrorsCount];
+    if (ucodeErrorsCount)
     {
-      v12 = v11;
+      v12 = ucodeErrorsCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addUcodeErrors:{-[AWDWiFiMetricExtendedTrapInfo ucodeErrorsAtIndex:](self, "ucodeErrorsAtIndex:", k)}];
+        [to addUcodeErrors:{-[AWDWiFiMetricExtendedTrapInfo ucodeErrorsAtIndex:](self, "ucodeErrorsAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self memoryDumpsCount])
   {
-    [a3 clearMemoryDumps];
-    v14 = [(AWDWiFiMetricExtendedTrapInfo *)self memoryDumpsCount];
-    if (v14)
+    [to clearMemoryDumps];
+    memoryDumpsCount = [(AWDWiFiMetricExtendedTrapInfo *)self memoryDumpsCount];
+    if (memoryDumpsCount)
     {
-      v15 = v14;
+      v15 = memoryDumpsCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addMemoryDump:{-[AWDWiFiMetricExtendedTrapInfo memoryDumpAtIndex:](self, "memoryDumpAtIndex:", m)}];
+        [to addMemoryDump:{-[AWDWiFiMetricExtendedTrapInfo memoryDumpAtIndex:](self, "memoryDumpAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self deepSleepsCount])
   {
-    [a3 clearDeepSleeps];
-    v17 = [(AWDWiFiMetricExtendedTrapInfo *)self deepSleepsCount];
-    if (v17)
+    [to clearDeepSleeps];
+    deepSleepsCount = [(AWDWiFiMetricExtendedTrapInfo *)self deepSleepsCount];
+    if (deepSleepsCount)
     {
-      v18 = v17;
+      v18 = deepSleepsCount;
       for (n = 0; n != v18; ++n)
       {
-        [a3 addDeepSleep:{-[AWDWiFiMetricExtendedTrapInfo deepSleepAtIndex:](self, "deepSleepAtIndex:", n)}];
+        [to addDeepSleep:{-[AWDWiFiMetricExtendedTrapInfo deepSleepAtIndex:](self, "deepSleepAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self psmWDsCount])
   {
-    [a3 clearPsmWDs];
-    v20 = [(AWDWiFiMetricExtendedTrapInfo *)self psmWDsCount];
-    if (v20)
+    [to clearPsmWDs];
+    psmWDsCount = [(AWDWiFiMetricExtendedTrapInfo *)self psmWDsCount];
+    if (psmWDsCount)
     {
-      v21 = v20;
+      v21 = psmWDsCount;
       for (ii = 0; ii != v21; ++ii)
       {
-        [a3 addPsmWD:{-[AWDWiFiMetricExtendedTrapInfo psmWDAtIndex:](self, "psmWDAtIndex:", ii)}];
+        [to addPsmWD:{-[AWDWiFiMetricExtendedTrapInfo psmWDAtIndex:](self, "psmWDAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self physCount])
   {
-    [a3 clearPhys];
-    v23 = [(AWDWiFiMetricExtendedTrapInfo *)self physCount];
-    if (v23)
+    [to clearPhys];
+    physCount = [(AWDWiFiMetricExtendedTrapInfo *)self physCount];
+    if (physCount)
     {
-      v24 = v23;
+      v24 = physCount;
       for (jj = 0; jj != v24; ++jj)
       {
-        [a3 addPhy:{-[AWDWiFiMetricExtendedTrapInfo phyAtIndex:](self, "phyAtIndex:", jj)}];
+        [to addPhy:{-[AWDWiFiMetricExtendedTrapInfo phyAtIndex:](self, "phyAtIndex:", jj)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self busCount])
   {
-    [a3 clearBus];
-    v26 = [(AWDWiFiMetricExtendedTrapInfo *)self busCount];
-    if (v26)
+    [to clearBus];
+    busCount = [(AWDWiFiMetricExtendedTrapInfo *)self busCount];
+    if (busCount)
     {
-      v27 = v26;
+      v27 = busCount;
       for (kk = 0; kk != v27; ++kk)
       {
-        [a3 addBus:{-[AWDWiFiMetricExtendedTrapInfo busAtIndex:](self, "busAtIndex:", kk)}];
+        [to addBus:{-[AWDWiFiMetricExtendedTrapInfo busAtIndex:](self, "busAtIndex:", kk)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self macsCount])
   {
-    [a3 clearMacs];
-    v29 = [(AWDWiFiMetricExtendedTrapInfo *)self macsCount];
-    if (v29)
+    [to clearMacs];
+    macsCount = [(AWDWiFiMetricExtendedTrapInfo *)self macsCount];
+    if (macsCount)
     {
-      v30 = v29;
+      v30 = macsCount;
       for (mm = 0; mm != v30; ++mm)
       {
-        [a3 addMac:{-[AWDWiFiMetricExtendedTrapInfo macAtIndex:](self, "macAtIndex:", mm)}];
+        [to addMac:{-[AWDWiFiMetricExtendedTrapInfo macAtIndex:](self, "macAtIndex:", mm)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self backplanesCount])
   {
-    [a3 clearBackplanes];
-    v32 = [(AWDWiFiMetricExtendedTrapInfo *)self backplanesCount];
-    if (v32)
+    [to clearBackplanes];
+    backplanesCount = [(AWDWiFiMetricExtendedTrapInfo *)self backplanesCount];
+    if (backplanesCount)
     {
-      v33 = v32;
+      v33 = backplanesCount;
       for (nn = 0; nn != v33; ++nn)
       {
-        [a3 addBackplane:{-[AWDWiFiMetricExtendedTrapInfo backplaneAtIndex:](self, "backplaneAtIndex:", nn)}];
+        [to addBackplane:{-[AWDWiFiMetricExtendedTrapInfo backplaneAtIndex:](self, "backplaneAtIndex:", nn)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self pcieQueueStatesCount])
   {
-    [a3 clearPcieQueueStates];
-    v35 = [(AWDWiFiMetricExtendedTrapInfo *)self pcieQueueStatesCount];
-    if (v35)
+    [to clearPcieQueueStates];
+    pcieQueueStatesCount = [(AWDWiFiMetricExtendedTrapInfo *)self pcieQueueStatesCount];
+    if (pcieQueueStatesCount)
     {
-      v36 = v35;
+      v36 = pcieQueueStatesCount;
       for (i1 = 0; i1 != v36; ++i1)
       {
-        [a3 addPcieQueueState:{-[AWDWiFiMetricExtendedTrapInfo pcieQueueStateAtIndex:](self, "pcieQueueStateAtIndex:", i1)}];
+        [to addPcieQueueState:{-[AWDWiFiMetricExtendedTrapInfo pcieQueueStateAtIndex:](self, "pcieQueueStateAtIndex:", i1)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self wlcStatesCount])
   {
-    [a3 clearWlcStates];
-    v38 = [(AWDWiFiMetricExtendedTrapInfo *)self wlcStatesCount];
-    if (v38)
+    [to clearWlcStates];
+    wlcStatesCount = [(AWDWiFiMetricExtendedTrapInfo *)self wlcStatesCount];
+    if (wlcStatesCount)
     {
-      v39 = v38;
+      v39 = wlcStatesCount;
       for (i2 = 0; i2 != v39; ++i2)
       {
-        [a3 addWlcState:{-[AWDWiFiMetricExtendedTrapInfo wlcStateAtIndex:](self, "wlcStateAtIndex:", i2)}];
+        [to addWlcState:{-[AWDWiFiMetricExtendedTrapInfo wlcStateAtIndex:](self, "wlcStateAtIndex:", i2)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self macEnabsCount])
   {
-    [a3 clearMacEnabs];
-    v41 = [(AWDWiFiMetricExtendedTrapInfo *)self macEnabsCount];
-    if (v41)
+    [to clearMacEnabs];
+    macEnabsCount = [(AWDWiFiMetricExtendedTrapInfo *)self macEnabsCount];
+    if (macEnabsCount)
     {
-      v42 = v41;
+      v42 = macEnabsCount;
       for (i3 = 0; i3 != v42; ++i3)
       {
-        [a3 addMacEnab:{-[AWDWiFiMetricExtendedTrapInfo macEnabAtIndex:](self, "macEnabAtIndex:", i3)}];
+        [to addMacEnab:{-[AWDWiFiMetricExtendedTrapInfo macEnabAtIndex:](self, "macEnabAtIndex:", i3)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricExtendedTrapInfo *)self phyTxErrThreshsCount])
   {
-    [a3 clearPhyTxErrThreshs];
-    v44 = [(AWDWiFiMetricExtendedTrapInfo *)self phyTxErrThreshsCount];
-    if (v44)
+    [to clearPhyTxErrThreshs];
+    phyTxErrThreshsCount = [(AWDWiFiMetricExtendedTrapInfo *)self phyTxErrThreshsCount];
+    if (phyTxErrThreshsCount)
     {
-      v45 = v44;
+      v45 = phyTxErrThreshsCount;
       for (i4 = 0; i4 != v45; ++i4)
       {
-        [a3 addPhyTxErrThresh:{-[AWDWiFiMetricExtendedTrapInfo phyTxErrThreshAtIndex:](self, "phyTxErrThreshAtIndex:", i4)}];
+        [to addPhyTxErrThresh:{-[AWDWiFiMetricExtendedTrapInfo phyTxErrThreshAtIndex:](self, "phyTxErrThreshAtIndex:", i4)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -671,23 +671,23 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 348);
+  v5 = *(equal + 348);
   if (*&self->_has)
   {
-    if ((*(a3 + 348) & 1) == 0 || self->_sequence != *(a3 + 86))
+    if ((*(equal + 348) & 1) == 0 || self->_sequence != *(equal + 86))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 348))
+  else if (*(equal + 348))
   {
     return 0;
   }
@@ -728,151 +728,151 @@
   return v12 ^ v15 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 348))
+  if (*(from + 348))
   {
-    self->_sequence = *(a3 + 86);
+    self->_sequence = *(from + 86);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 signaturesCount];
-  if (v5)
+  signaturesCount = [from signaturesCount];
+  if (signaturesCount)
   {
-    v6 = v5;
+    v6 = signaturesCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addSignature:](self, "addSignature:", [a3 signatureAtIndex:i]);
+      -[AWDWiFiMetricExtendedTrapInfo addSignature:](self, "addSignature:", [from signatureAtIndex:i]);
     }
   }
 
-  v8 = [a3 stackTracesCount];
-  if (v8)
+  stackTracesCount = [from stackTracesCount];
+  if (stackTracesCount)
   {
-    v9 = v8;
+    v9 = stackTracesCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addStackTraces:](self, "addStackTraces:", [a3 stackTracesAtIndex:j]);
+      -[AWDWiFiMetricExtendedTrapInfo addStackTraces:](self, "addStackTraces:", [from stackTracesAtIndex:j]);
     }
   }
 
-  v11 = [a3 ucodeErrorsCount];
-  if (v11)
+  ucodeErrorsCount = [from ucodeErrorsCount];
+  if (ucodeErrorsCount)
   {
-    v12 = v11;
+    v12 = ucodeErrorsCount;
     for (k = 0; k != v12; ++k)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addUcodeErrors:](self, "addUcodeErrors:", [a3 ucodeErrorsAtIndex:k]);
+      -[AWDWiFiMetricExtendedTrapInfo addUcodeErrors:](self, "addUcodeErrors:", [from ucodeErrorsAtIndex:k]);
     }
   }
 
-  v14 = [a3 memoryDumpsCount];
-  if (v14)
+  memoryDumpsCount = [from memoryDumpsCount];
+  if (memoryDumpsCount)
   {
-    v15 = v14;
+    v15 = memoryDumpsCount;
     for (m = 0; m != v15; ++m)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addMemoryDump:](self, "addMemoryDump:", [a3 memoryDumpAtIndex:m]);
+      -[AWDWiFiMetricExtendedTrapInfo addMemoryDump:](self, "addMemoryDump:", [from memoryDumpAtIndex:m]);
     }
   }
 
-  v17 = [a3 deepSleepsCount];
-  if (v17)
+  deepSleepsCount = [from deepSleepsCount];
+  if (deepSleepsCount)
   {
-    v18 = v17;
+    v18 = deepSleepsCount;
     for (n = 0; n != v18; ++n)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addDeepSleep:](self, "addDeepSleep:", [a3 deepSleepAtIndex:n]);
+      -[AWDWiFiMetricExtendedTrapInfo addDeepSleep:](self, "addDeepSleep:", [from deepSleepAtIndex:n]);
     }
   }
 
-  v20 = [a3 psmWDsCount];
-  if (v20)
+  psmWDsCount = [from psmWDsCount];
+  if (psmWDsCount)
   {
-    v21 = v20;
+    v21 = psmWDsCount;
     for (ii = 0; ii != v21; ++ii)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addPsmWD:](self, "addPsmWD:", [a3 psmWDAtIndex:ii]);
+      -[AWDWiFiMetricExtendedTrapInfo addPsmWD:](self, "addPsmWD:", [from psmWDAtIndex:ii]);
     }
   }
 
-  v23 = [a3 physCount];
-  if (v23)
+  physCount = [from physCount];
+  if (physCount)
   {
-    v24 = v23;
+    v24 = physCount;
     for (jj = 0; jj != v24; ++jj)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addPhy:](self, "addPhy:", [a3 phyAtIndex:jj]);
+      -[AWDWiFiMetricExtendedTrapInfo addPhy:](self, "addPhy:", [from phyAtIndex:jj]);
     }
   }
 
-  v26 = [a3 busCount];
-  if (v26)
+  busCount = [from busCount];
+  if (busCount)
   {
-    v27 = v26;
+    v27 = busCount;
     for (kk = 0; kk != v27; ++kk)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addBus:](self, "addBus:", [a3 busAtIndex:kk]);
+      -[AWDWiFiMetricExtendedTrapInfo addBus:](self, "addBus:", [from busAtIndex:kk]);
     }
   }
 
-  v29 = [a3 macsCount];
-  if (v29)
+  macsCount = [from macsCount];
+  if (macsCount)
   {
-    v30 = v29;
+    v30 = macsCount;
     for (mm = 0; mm != v30; ++mm)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addMac:](self, "addMac:", [a3 macAtIndex:mm]);
+      -[AWDWiFiMetricExtendedTrapInfo addMac:](self, "addMac:", [from macAtIndex:mm]);
     }
   }
 
-  v32 = [a3 backplanesCount];
-  if (v32)
+  backplanesCount = [from backplanesCount];
+  if (backplanesCount)
   {
-    v33 = v32;
+    v33 = backplanesCount;
     for (nn = 0; nn != v33; ++nn)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addBackplane:](self, "addBackplane:", [a3 backplaneAtIndex:nn]);
+      -[AWDWiFiMetricExtendedTrapInfo addBackplane:](self, "addBackplane:", [from backplaneAtIndex:nn]);
     }
   }
 
-  v35 = [a3 pcieQueueStatesCount];
-  if (v35)
+  pcieQueueStatesCount = [from pcieQueueStatesCount];
+  if (pcieQueueStatesCount)
   {
-    v36 = v35;
+    v36 = pcieQueueStatesCount;
     for (i1 = 0; i1 != v36; ++i1)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addPcieQueueState:](self, "addPcieQueueState:", [a3 pcieQueueStateAtIndex:i1]);
+      -[AWDWiFiMetricExtendedTrapInfo addPcieQueueState:](self, "addPcieQueueState:", [from pcieQueueStateAtIndex:i1]);
     }
   }
 
-  v38 = [a3 wlcStatesCount];
-  if (v38)
+  wlcStatesCount = [from wlcStatesCount];
+  if (wlcStatesCount)
   {
-    v39 = v38;
+    v39 = wlcStatesCount;
     for (i2 = 0; i2 != v39; ++i2)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addWlcState:](self, "addWlcState:", [a3 wlcStateAtIndex:i2]);
+      -[AWDWiFiMetricExtendedTrapInfo addWlcState:](self, "addWlcState:", [from wlcStateAtIndex:i2]);
     }
   }
 
-  v41 = [a3 macEnabsCount];
-  if (v41)
+  macEnabsCount = [from macEnabsCount];
+  if (macEnabsCount)
   {
-    v42 = v41;
+    v42 = macEnabsCount;
     for (i3 = 0; i3 != v42; ++i3)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addMacEnab:](self, "addMacEnab:", [a3 macEnabAtIndex:i3]);
+      -[AWDWiFiMetricExtendedTrapInfo addMacEnab:](self, "addMacEnab:", [from macEnabAtIndex:i3]);
     }
   }
 
-  v44 = [a3 phyTxErrThreshsCount];
-  if (v44)
+  phyTxErrThreshsCount = [from phyTxErrThreshsCount];
+  if (phyTxErrThreshsCount)
   {
-    v45 = v44;
+    v45 = phyTxErrThreshsCount;
     for (i4 = 0; i4 != v45; ++i4)
     {
-      -[AWDWiFiMetricExtendedTrapInfo addPhyTxErrThresh:](self, "addPhyTxErrThresh:", [a3 phyTxErrThreshAtIndex:i4]);
+      -[AWDWiFiMetricExtendedTrapInfo addPhyTxErrThresh:](self, "addPhyTxErrThresh:", [from phyTxErrThreshAtIndex:i4]);
     }
   }
 }

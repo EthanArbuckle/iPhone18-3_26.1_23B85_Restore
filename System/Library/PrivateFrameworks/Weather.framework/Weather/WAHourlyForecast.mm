@@ -1,24 +1,24 @@
 @interface WAHourlyForecast
-+ (id)hourlyForecastForLocation:(id)a3 conditions:(id)a4 sunriseDateComponents:(id)a5 sunsetDateComponents:(id)a6;
-+ (int64_t)TimeValueFromString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)hourlyForecastForLocation:(id)location conditions:(id)conditions sunriseDateComponents:(id)components sunsetDateComponents:(id)dateComponents;
++ (int64_t)TimeValueFromString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setTemperature:(id)a3;
+- (void)setTemperature:(id)temperature;
 @end
 
 @implementation WAHourlyForecast
 
-+ (id)hourlyForecastForLocation:(id)a3 conditions:(id)a4 sunriseDateComponents:(id)a5 sunsetDateComponents:(id)a6
++ (id)hourlyForecastForLocation:(id)location conditions:(id)conditions sunriseDateComponents:(id)components sunsetDateComponents:(id)dateComponents
 {
-  v11 = a3;
-  v12 = a4;
-  v39 = a5;
-  v38 = a6;
-  if (v11)
+  locationCopy = location;
+  conditionsCopy = conditions;
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  if (locationCopy)
   {
-    if (v12)
+    if (conditionsCopy)
     {
       goto LABEL_3;
     }
@@ -26,50 +26,50 @@
 
   else
   {
-    [WAHourlyForecast(WFAdditions) hourlyForecastForLocation:a2 conditions:a1 sunriseDateComponents:? sunsetDateComponents:?];
-    if (v12)
+    [WAHourlyForecast(WFAdditions) hourlyForecastForLocation:a2 conditions:self sunriseDateComponents:? sunsetDateComponents:?];
+    if (conditionsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  [WAHourlyForecast(WFAdditions) hourlyForecastForLocation:a2 conditions:a1 sunriseDateComponents:? sunsetDateComponents:?];
+  [WAHourlyForecast(WFAdditions) hourlyForecastForLocation:a2 conditions:self sunriseDateComponents:? sunsetDateComponents:?];
 LABEL_3:
   v13 = objc_alloc_init(WAHourlyForecast);
   [(WAHourlyForecast *)v13 setEventType:0];
-  v14 = [v12 valueForComponent:*MEMORY[0x277D7B370]];
+  v14 = [conditionsCopy valueForComponent:*MEMORY[0x277D7B370]];
   [(WAHourlyForecast *)v13 setTemperature:v14];
 
-  v15 = [v12 valueForComponent:*MEMORY[0x277D7B3A8]];
+  v15 = [conditionsCopy valueForComponent:*MEMORY[0x277D7B3A8]];
   -[WAHourlyForecast setHourIndex:](v13, "setHourIndex:", [v15 integerValue]);
-  v16 = [v12 valueForComponent:*MEMORY[0x277D7B348]];
+  v16 = [conditionsCopy valueForComponent:*MEMORY[0x277D7B348]];
   [v16 floatValue];
   [(WAHourlyForecast *)v13 setPercentPrecipitation:v17];
-  v18 = [v12 valueForComponent:*MEMORY[0x277D7B310]];
-  v19 = [v18 date];
-  [v19 timeIntervalSince1970];
+  v18 = [conditionsCopy valueForComponent:*MEMORY[0x277D7B310]];
+  date = [v18 date];
+  [date timeIntervalSince1970];
   v21 = v20;
 
   v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v21];
   v23 = objc_alloc(MEMORY[0x277CBEA80]);
   v24 = [v23 initWithCalendarIdentifier:*MEMORY[0x277CBE5D0]];
-  v25 = [v11 timeZone];
-  [v24 setTimeZone:v25];
+  timeZone = [locationCopy timeZone];
+  [v24 setTimeZone:timeZone];
 
   v26 = [v24 components:96 fromDate:v22];
   v27 = MEMORY[0x277CCACA8];
-  v28 = [v26 hour];
-  v29 = [v26 minute];
-  v30 = 0;
-  if (v29 != 0x7FFFFFFFFFFFFFFFLL)
+  hour = [v26 hour];
+  minute = [v26 minute];
+  minute2 = 0;
+  if (minute != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v30 = [v26 minute];
+    minute2 = [v26 minute];
   }
 
-  v31 = [v27 stringWithFormat:@"%02zd:%02zd", v28, v30];
+  v31 = [v27 stringWithFormat:@"%02zd:%02zd", hour, minute2];
   [(WAHourlyForecast *)v13 setTime:v31];
 
-  v32 = [v12 valueForComponent:*MEMORY[0x277D7B3A0]];
+  v32 = [conditionsCopy valueForComponent:*MEMORY[0x277D7B3A0]];
   v33 = v32;
   v34 = &unk_288235730;
   if (v32)
@@ -79,15 +79,15 @@ LABEL_3:
 
   v35 = v34;
 
-  v36 = [v35 unsignedIntegerValue];
-  [(WAHourlyForecast *)v13 setConditionCode:v36];
+  unsignedIntegerValue = [v35 unsignedIntegerValue];
+  [(WAHourlyForecast *)v13 setConditionCode:unsignedIntegerValue];
 
   return v13;
 }
 
-+ (int64_t)TimeValueFromString:(id)a3
++ (int64_t)TimeValueFromString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:@":"];
+  v3 = [string componentsSeparatedByString:@":"];
   if ([v3 count] < 2)
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
@@ -95,23 +95,23 @@ LABEL_3:
 
   else
   {
-    v4 = [v3 firstObject];
-    v5 = 100 * [v4 integerValue];
+    firstObject = [v3 firstObject];
+    v5 = 100 * [firstObject integerValue];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_eventType;
-  v6 = [(NSString *)self->_time copyWithZone:a3];
+  v6 = [(NSString *)self->_time copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 24) = self->_hourIndex;
-  v8 = [(WFTemperature *)self->_temperature copyWithZone:a3];
+  v8 = [(WFTemperature *)self->_temperature copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -120,10 +120,10 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -131,7 +131,7 @@ LABEL_3:
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -149,27 +149,27 @@ LABEL_3:
       goto LABEL_11;
     }
 
-    v8 = [(WAHourlyForecast *)v7 eventType];
-    if (v8 != [(WAHourlyForecast *)self eventType])
+    eventType = [(WAHourlyForecast *)v7 eventType];
+    if (eventType != [(WAHourlyForecast *)self eventType])
     {
       goto LABEL_11;
     }
 
-    v9 = [(WAHourlyForecast *)v7 time];
-    v10 = [(WAHourlyForecast *)self time];
-    v11 = [v9 isEqualToString:v10];
+    time = [(WAHourlyForecast *)v7 time];
+    time2 = [(WAHourlyForecast *)self time];
+    v11 = [time isEqualToString:time2];
 
     if (!v11)
     {
       goto LABEL_11;
     }
 
-    v12 = [(WAHourlyForecast *)v7 conditionCode];
-    if (v12 == [(WAHourlyForecast *)self conditionCode]&& ([(WAHourlyForecast *)v7 percentPrecipitation], v14 = v13, [(WAHourlyForecast *)self percentPrecipitation], v16 = v15, WAFloatIsEqual(v14, v16)))
+    conditionCode = [(WAHourlyForecast *)v7 conditionCode];
+    if (conditionCode == [(WAHourlyForecast *)self conditionCode]&& ([(WAHourlyForecast *)v7 percentPrecipitation], v14 = v13, [(WAHourlyForecast *)self percentPrecipitation], v16 = v15, WAFloatIsEqual(v14, v16)))
     {
-      v17 = [(WAHourlyForecast *)v7 temperature];
-      v18 = [(WAHourlyForecast *)self temperature];
-      IsEqual = WAObjectIsEqual(v17, v18);
+      temperature = [(WAHourlyForecast *)v7 temperature];
+      temperature2 = [(WAHourlyForecast *)self temperature];
+      IsEqual = WAObjectIsEqual(temperature, temperature2);
     }
 
     else
@@ -190,15 +190,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)setTemperature:(id)a3
+- (void)setTemperature:(id)temperature
 {
-  v5 = a3;
+  temperatureCopy = temperature;
   temperature = self->_temperature;
   p_temperature = &self->_temperature;
-  v8 = v5;
+  v8 = temperatureCopy;
   if (([(WFTemperature *)temperature isEqualToTemperature:?]& 1) == 0)
   {
-    objc_storeStrong(p_temperature, a3);
+    objc_storeStrong(p_temperature, temperature);
   }
 }
 
@@ -207,8 +207,8 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   time = self->_time;
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(WAHourlyForecast *)self temperature];
-  [v6 temperatureForUnit:2];
+  temperature = [(WAHourlyForecast *)self temperature];
+  [temperature temperatureForUnit:2];
   v7 = [v5 numberWithDouble:?];
   v8 = [v3 stringWithFormat:@"<WAHourlyForecast - Hour: %@, Temp: %@, ConditionCode: %ld, Precipitation: %f>", time, v7, self->_conditionCode, *&self->_percentPrecipitation];
 

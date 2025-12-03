@@ -1,18 +1,18 @@
 @interface SBProductivityGestureEducationController
-- (SBProductivityGestureEducationController)initWithBannerPoster:(id)a3;
-- (int64_t)_itemTypeForType:(int64_t)a3;
-- (void)_dismissBanner:(id)a3;
-- (void)_dismissBannerTimerWithInterval:(double)a3 reason:(id)a4;
+- (SBProductivityGestureEducationController)initWithBannerPoster:(id)poster;
+- (int64_t)_itemTypeForType:(int64_t)type;
+- (void)_dismissBanner:(id)banner;
+- (void)_dismissBannerTimerWithInterval:(double)interval reason:(id)reason;
 - (void)_invalidateBannerTimer;
 - (void)_itemMapUpdated;
 - (void)_loadItemMap;
-- (void)_presentBannerWithEducationItem:(id)a3;
-- (void)_resetPillViewController:(id)a3;
+- (void)_presentBannerWithEducationItem:(id)item;
+- (void)_resetPillViewController:(id)controller;
 - (void)dealloc;
-- (void)gestureActivatedForType:(int64_t)a3;
-- (void)gestureEducationPillViewControllerDidReceiveUserTap:(id)a3;
-- (void)gestureEducationPillViewControllerMarqueeStarted:(id)a3 duration:(double)a4;
-- (void)gestureEducationPillViewControllerWillAppear:(id)a3;
+- (void)gestureActivatedForType:(int64_t)type;
+- (void)gestureEducationPillViewControllerDidReceiveUserTap:(id)tap;
+- (void)gestureEducationPillViewControllerMarqueeStarted:(id)started duration:(double)duration;
+- (void)gestureEducationPillViewControllerWillAppear:(id)appear;
 @end
 
 @implementation SBProductivityGestureEducationController
@@ -25,22 +25,22 @@
   [(SBProductivityGestureEducationController *)&v3 dealloc];
 }
 
-- (SBProductivityGestureEducationController)initWithBannerPoster:(id)a3
+- (SBProductivityGestureEducationController)initWithBannerPoster:(id)poster
 {
-  v5 = a3;
+  posterCopy = poster;
   v9.receiver = self;
   v9.super_class = SBProductivityGestureEducationController;
   v6 = [(SBProductivityGestureEducationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bannerPoster, a3);
+    objc_storeStrong(&v6->_bannerPoster, poster);
   }
 
   return v7;
 }
 
-- (void)gestureActivatedForType:(int64_t)a3
+- (void)gestureActivatedForType:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = [(SBProductivityGestureEducationController *)self _itemTypeForType:?];
@@ -48,7 +48,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134218240;
-    v15 = a3;
+    typeCopy2 = type;
     v16 = 2048;
     v17 = v5;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Received education suggestion for education type %lu, itemType %lu", &v14, 0x16u);
@@ -56,16 +56,16 @@
 
   if (v5)
   {
-    v7 = [(SBProductivityGestureEducationPillViewController *)self->_educationPillViewController item];
-    v8 = [v7 type];
+    item = [(SBProductivityGestureEducationPillViewController *)self->_educationPillViewController item];
+    type = [item type];
 
-    if (v8 == v5)
+    if (type == v5)
     {
       v9 = SBLogSystemGesture();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 134217984;
-        v15 = a3;
+        typeCopy2 = type;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring education suggestion because currently showing education suggestion for education type %lu", &v14, 0xCu);
       }
     }
@@ -87,7 +87,7 @@
         [(SBProductivityGestureEducationController *)self _itemMapUpdated];
       }
 
-      if ([(SBProductivityGestureEducationItem *)v10 isValidWithActivationForType:a3])
+      if ([(SBProductivityGestureEducationItem *)v10 isValidWithActivationForType:type])
       {
         [(SBProductivityGestureEducationController *)self _presentBannerWithEducationItem:v10];
       }
@@ -102,16 +102,16 @@
   self->_bannerDismissTimer = 0;
 }
 
-- (int64_t)_itemTypeForType:(int64_t)a3
+- (int64_t)_itemTypeForType:(int64_t)type
 {
-  if ((a3 - 1) > 9)
+  if ((type - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A6E78[a3 - 1];
+    return qword_21F8A6E78[type - 1];
   }
 }
 
@@ -127,8 +127,8 @@
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v4, v5, objc_opt_class(), 0}];
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 objectForKey:@"SBProductivityGestureEducationItemMap"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults objectForKey:@"SBProductivityGestureEducationItemMap"];
 
   v17 = 0;
   v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v6 fromData:v8 error:&v17];
@@ -163,9 +163,9 @@ LABEL_7:
 
   if (!self->_educationItemMap)
   {
-    v15 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     v16 = self->_educationItemMap;
-    self->_educationItemMap = v15;
+    self->_educationItemMap = dictionary;
   }
 }
 
@@ -178,13 +178,13 @@ LABEL_7:
   _os_log_debug_impl(&dword_21ED4E000, a3, OS_LOG_TYPE_DEBUG, "%{public}@ successfully archived educationItemMap", &v5, 0xCu);
 }
 
-- (void)_presentBannerWithEducationItem:(id)a3
+- (void)_presentBannerWithEducationItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
   educationPillViewController = self->_educationPillViewController;
-  v5 = a3;
+  itemCopy = item;
   [(SBProductivityGestureEducationController *)self _resetPillViewController:educationPillViewController];
-  v6 = [[SBProductivityGestureEducationPillViewController alloc] initWithItem:v5];
+  v6 = [[SBProductivityGestureEducationPillViewController alloc] initWithItem:itemCopy];
 
   v7 = self->_educationPillViewController;
   self->_educationPillViewController = v6;
@@ -212,34 +212,34 @@ LABEL_7:
   }
 }
 
-- (void)_dismissBanner:(id)a3
+- (void)_dismissBanner:(id)banner
 {
-  v7 = a3;
+  bannerCopy = banner;
   bannerPoster = self->_bannerPoster;
   v5 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:self->_educationPillViewController];
-  v6 = [(BNPosting *)bannerPoster revokePresentablesWithIdentification:v5 reason:v7 options:0 userInfo:0 error:0];
+  v6 = [(BNPosting *)bannerPoster revokePresentablesWithIdentification:v5 reason:bannerCopy options:0 userInfo:0 error:0];
 }
 
-- (void)_resetPillViewController:(id)a3
+- (void)_resetPillViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(SBProductivityGestureEducationPillViewController *)v7 item];
-  [v4 resetActivations];
+  controllerCopy = controller;
+  item = [(SBProductivityGestureEducationPillViewController *)controllerCopy item];
+  [item resetActivations];
 
-  v5 = v7;
-  if (v7 && self->_educationPillViewController == v7)
+  v5 = controllerCopy;
+  if (controllerCopy && self->_educationPillViewController == controllerCopy)
   {
     [(SBProductivityGestureEducationController *)self _invalidateBannerTimer];
     educationPillViewController = self->_educationPillViewController;
     self->_educationPillViewController = 0;
 
-    v5 = v7;
+    v5 = controllerCopy;
   }
 }
 
-- (void)_dismissBannerTimerWithInterval:(double)a3 reason:(id)a4
+- (void)_dismissBannerTimerWithInterval:(double)interval reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   [(SBProductivityGestureEducationController *)self _invalidateBannerTimer];
   v7 = objc_alloc(MEMORY[0x277CF0B50]);
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBProductivityGestureEducation.bannerDismissTimer"];
@@ -256,9 +256,9 @@ LABEL_7:
   v15[2] = __83__SBProductivityGestureEducationController__dismissBannerTimerWithInterval_reason___block_invoke;
   v15[3] = &unk_2783B79D0;
   objc_copyWeak(&v17, &location);
-  v14 = v6;
+  v14 = reasonCopy;
   v16 = v14;
-  [(BSAbsoluteMachTimer *)v11 scheduleWithFireInterval:v12 leewayInterval:v15 queue:a3 handler:0.05];
+  [(BSAbsoluteMachTimer *)v11 scheduleWithFireInterval:v12 leewayInterval:v15 queue:interval handler:0.05];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -270,35 +270,35 @@ void __83__SBProductivityGestureEducationController__dismissBannerTimerWithInter
   [WeakRetained _dismissBanner:*(a1 + 32)];
 }
 
-- (void)gestureEducationPillViewControllerWillAppear:(id)a3
+- (void)gestureEducationPillViewControllerWillAppear:(id)appear
 {
-  v4 = [a3 item];
-  [v4 contentDidAppear];
+  item = [appear item];
+  [item contentDidAppear];
 
   [(SBProductivityGestureEducationController *)self _itemMapUpdated];
 
   [(SBProductivityGestureEducationController *)self _dismissBannerTimerWithInterval:@"Timer" reason:5.0];
 }
 
-- (void)gestureEducationPillViewControllerDidReceiveUserTap:(id)a3
+- (void)gestureEducationPillViewControllerDidReceiveUserTap:(id)tap
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [a3 actionURL];
+  actionURL = [tap actionURL];
   v5 = SBLogSystemGesture();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionURL;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Productivity banner tapped, launching to %@", &v6, 0xCu);
   }
 
-  SBWorkspaceActivateApplicationFromURL(v4, 0, 0);
+  SBWorkspaceActivateApplicationFromURL(actionURL, 0, 0);
   [(SBProductivityGestureEducationController *)self _dismissBanner:@"User Interaction"];
 }
 
-- (void)gestureEducationPillViewControllerMarqueeStarted:(id)a3 duration:(double)a4
+- (void)gestureEducationPillViewControllerMarqueeStarted:(id)started duration:(double)duration
 {
-  if (a4 > 0.0 && self->_educationPillViewController == a3)
+  if (duration > 0.0 && self->_educationPillViewController == started)
   {
     [(SBProductivityGestureEducationController *)self _dismissBannerTimerWithInterval:@"Marquee Ended" reason:?];
   }

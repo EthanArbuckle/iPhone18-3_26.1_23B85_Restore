@@ -1,71 +1,71 @@
 @interface PUOneUpAssetsDataSourceConverter
 + (id)defaultConverter;
-- (BOOL)shouldReloadTileControllerFromAsset:(id)a3 toAsset:(id)a4 tileKind:(id)a5;
+- (BOOL)shouldReloadTileControllerFromAsset:(id)asset toAsset:(id)toAsset tileKind:(id)kind;
 @end
 
 @implementation PUOneUpAssetsDataSourceConverter
 
-- (BOOL)shouldReloadTileControllerFromAsset:(id)a3 toAsset:(id)a4 tileKind:(id)a5
+- (BOOL)shouldReloadTileControllerFromAsset:(id)asset toAsset:(id)toAsset tileKind:(id)kind
 {
-  v7 = a3;
-  v8 = a4;
-  if (a5 == @"PUTileKindItemContent")
+  assetCopy = asset;
+  toAssetCopy = toAsset;
+  if (kind == @"PUTileKindItemContent")
   {
-    if ([v7 canPlayPhotoIris])
+    if ([assetCopy canPlayPhotoIris])
     {
-      v10 = 1;
+      isPhotoIrisPlaceholder = 1;
     }
 
     else
     {
-      v10 = [v7 isPhotoIrisPlaceholder];
+      isPhotoIrisPlaceholder = [assetCopy isPhotoIrisPlaceholder];
     }
 
-    if ([v8 canPlayPhotoIris])
+    if ([toAssetCopy canPlayPhotoIris])
     {
-      v11 = 1;
+      isPhotoIrisPlaceholder2 = 1;
     }
 
     else
     {
-      v11 = [v8 isPhotoIrisPlaceholder];
+      isPhotoIrisPlaceholder2 = [toAssetCopy isPhotoIrisPlaceholder];
     }
 
-    v12 = [v7 canPlayLoopingVideo];
-    v13 = [v8 canPlayLoopingVideo];
-    v14 = v7;
+    canPlayLoopingVideo = [assetCopy canPlayLoopingVideo];
+    canPlayLoopingVideo2 = [toAssetCopy canPlayLoopingVideo];
+    v14 = assetCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v14 px_isContentPreviewable];
+      px_isContentPreviewable = [v14 px_isContentPreviewable];
     }
 
     else
     {
-      v15 = 1;
+      px_isContentPreviewable = 1;
     }
 
-    v16 = v8;
+    v16 = toAssetCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 px_isContentPreviewable];
+      px_isContentPreviewable2 = [v16 px_isContentPreviewable];
     }
 
     else
     {
-      v17 = 1;
+      px_isContentPreviewable2 = 1;
     }
 
-    v18 = [v14 needsSensitivityProtection];
-    v19 = [v16 needsSensitivityProtection];
-    v20 = v12 ^ v13;
-    if (v10 != v11)
+    needsSensitivityProtection = [v14 needsSensitivityProtection];
+    needsSensitivityProtection2 = [v16 needsSensitivityProtection];
+    v20 = canPlayLoopingVideo ^ canPlayLoopingVideo2;
+    if (isPhotoIrisPlaceholder != isPhotoIrisPlaceholder2)
     {
       v20 = 1;
     }
 
-    v9 = v20 | v15 ^ v17 | v18 ^ v19;
+    v9 = v20 | px_isContentPreviewable ^ px_isContentPreviewable2 | needsSensitivityProtection ^ needsSensitivityProtection2;
   }
 
   else

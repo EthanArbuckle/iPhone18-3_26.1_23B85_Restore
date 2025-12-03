@@ -1,17 +1,17 @@
 @interface BLNetworkMonitor
 + (id)defaultMonitor;
-- (BLNetworkMonitor)initWithPathEvalulator:(id)a3;
+- (BLNetworkMonitor)initWithPathEvalulator:(id)evalulator;
 - (BOOL)isConnected;
 - (BOOL)isConstrained;
 - (BOOL)isExpensive;
 - (BOOL)isRoaming;
-- (id)copyCellularNetworkIdentityWithError:(id *)a3;
+- (id)copyCellularNetworkIdentityWithError:(id *)error;
 - (void)_forcePropertyRefresh;
-- (void)_setPropertiesUsingPath:(id)a3;
-- (void)_updateRoamingStatusForContext:(id)a3;
+- (void)_setPropertiesUsingPath:(id)path;
+- (void)_updateRoamingStatusForContext:(id)context;
 - (void)activeSubscriptionsDidChange;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BLNetworkMonitor
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (BLNetworkMonitor)initWithPathEvalulator:(id)a3
+- (BLNetworkMonitor)initWithPathEvalulator:(id)evalulator
 {
-  v5 = a3;
+  evalulatorCopy = evalulator;
   v18.receiver = self;
   v18.super_class = BLNetworkMonitor;
   v6 = [(BLNetworkMonitor *)&v18 init];
@@ -41,7 +41,7 @@
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v8;
 
-    objc_storeStrong(&v6->_pathEvaluator, a3);
+    objc_storeStrong(&v6->_pathEvaluator, evalulator);
     [(NWPathEvaluator *)v6->_pathEvaluator addObserver:v6 forKeyPath:@"path" options:5 context:0];
     v10 = [[CoreTelephonyClient alloc] initWithQueue:v6->_dispatchQueue];
     telephonyClient = v6->_telephonyClient;
@@ -149,7 +149,7 @@
   return v3;
 }
 
-- (id)copyCellularNetworkIdentityWithError:(id *)a3
+- (id)copyCellularNetworkIdentityWithError:(id *)error
 {
   subscriptionContext = self->_subscriptionContext;
   if (!subscriptionContext)
@@ -158,7 +158,7 @@
     subscriptionContext = self->_subscriptionContext;
   }
 
-  v6 = [BUCellularIdentity identityForSubscription:subscriptionContext usingClient:self->_telephonyClient error:a3];
+  v6 = [BUCellularIdentity identityForSubscription:subscriptionContext usingClient:self->_telephonyClient error:error];
   v7 = MGGetBoolAnswer();
   if (([v6 isRoaming] & 1) == 0 && v7)
   {
@@ -188,13 +188,13 @@
     if (v9 && [v9 length])
     {
       v11 = [v9 dataUsingEncoding:4];
-      v12 = [v11 bu_md5];
+      bu_md5 = [v11 bu_md5];
 
       v13 = BLServiceLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v22 = v12;
+        v22 = bu_md5;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[Network] Cellular data subscription became: %{public}@", buf, 0xCu);
       }
 
@@ -202,7 +202,7 @@
     }
 
     v14 = BLServiceLog();
-    v12 = v14;
+    bu_md5 = v14;
     if (v10)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -210,7 +210,7 @@
         *buf = 138412290;
         v22 = v10;
         v15 = "[Network] Unable to identify cellular data subscription:  %@";
-        v16 = v12;
+        v16 = bu_md5;
         v17 = OS_LOG_TYPE_ERROR;
         v18 = 12;
 LABEL_15:
@@ -222,7 +222,7 @@ LABEL_15:
     {
       *buf = 0;
       v15 = "[Network] There is no cellular data subscription";
-      v16 = v12;
+      v16 = bu_md5;
       v17 = OS_LOG_TYPE_DEFAULT;
       v18 = 2;
       goto LABEL_15;
@@ -246,14 +246,14 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_pathEvaluator == v11 && [v10 isEqualToString:@"path"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_pathEvaluator == objectCopy && [pathCopy isEqualToString:@"path"])
   {
-    v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     if (v13)
     {
       dispatchQueue = self->_dispatchQueue;
@@ -266,13 +266,13 @@ LABEL_17:
     }
   }
 
-  else if (off_10013E238 == a6)
+  else if (off_10013E238 == context)
   {
     v15 = BLServiceLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v10;
+      v20 = pathCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[Network] Got user defaults change: %{public}@", buf, 0xCu);
     }
 
@@ -288,20 +288,20 @@ LABEL_17:
 
 - (void)_forcePropertyRefresh
 {
-  v3 = [(NWPathEvaluator *)self->_pathEvaluator path];
-  [(BLNetworkMonitor *)self _setPropertiesUsingPath:v3];
+  path = [(NWPathEvaluator *)self->_pathEvaluator path];
+  [(BLNetworkMonitor *)self _setPropertiesUsingPath:path];
 }
 
-- (void)_setPropertiesUsingPath:(id)a3
+- (void)_setPropertiesUsingPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (([v4 status] | 2) == 3)
+  if (([pathCopy status] | 2) == 3)
   {
     self->_connected = 1;
-    self->_expensive = [v4 isExpensive];
-    self->_constrained = [v4 isConstrained];
-    if (!self->_expensive && [v4 usesInterfaceType:2])
+    self->_expensive = [pathCopy isExpensive];
+    self->_constrained = [pathCopy isConstrained];
+    if (!self->_expensive && [pathCopy usesInterfaceType:2])
     {
       v5 = BLServiceLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -320,8 +320,8 @@ LABEL_17:
     self->_expensive = 0;
   }
 
-  v6 = [v4 interface];
-  self->_interfaceType = [v6 type];
+  interface = [pathCopy interface];
+  self->_interfaceType = [interface type];
 
   v7 = BLServiceLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -371,7 +371,7 @@ LABEL_15:
   dispatch_async(v17, block);
 }
 
-- (void)_updateRoamingStatusForContext:(id)a3
+- (void)_updateRoamingStatusForContext:(id)context
 {
   subscriptionContext = self->_subscriptionContext;
   telephonyClient = self->_telephonyClient;

@@ -6,33 +6,33 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v2 = [a1 personHandle];
+  personHandle = [self personHandle];
 
-  if (v2)
+  if (personHandle)
   {
-    v3 = [a1 personHandle];
+    personHandle2 = [self personHandle];
   }
 
   else
   {
-    v4 = [a1 contactIdentifier];
+    contactIdentifier = [self contactIdentifier];
 
-    if (v4)
+    if (contactIdentifier)
     {
-      [a1 contactIdentifier];
+      [self contactIdentifier];
     }
 
     else
     {
-      [a1 customIdentifier];
+      [self customIdentifier];
     }
-    v3 = ;
+    personHandle2 = ;
   }
 
-  v5 = v3;
-  v6 = [v3 re_actionIdentifierHashValue];
+  v5 = personHandle2;
+  re_actionIdentifierHashValue = [personHandle2 re_actionIdentifierHashValue];
 
-  return v6;
+  return re_actionIdentifierHashValue;
 }
 
 @end

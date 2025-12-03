@@ -1,11 +1,11 @@
 @interface WebViewControllerFactory
 - (_TtC8StocksUI24WebViewControllerFactory)init;
-- (id)createViewControllerForURL:(id)a3;
+- (id)createViewControllerForURL:(id)l;
 @end
 
 @implementation WebViewControllerFactory
 
-- (id)createViewControllerForURL:(id)a3
+- (id)createViewControllerForURL:(id)l
 {
   v4 = sub_220884E9C();
   v5 = *(v4 - 8);
@@ -14,7 +14,7 @@
   sub_220884E4C();
   v13 = 0;
   memset(v12, 0, sizeof(v12));
-  v9 = self;
+  selfCopy = self;
   v10 = sub_220663D20(v8, v12);
 
   sub_22061550C(v12);

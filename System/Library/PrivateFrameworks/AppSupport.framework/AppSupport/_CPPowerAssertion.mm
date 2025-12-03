@@ -1,21 +1,21 @@
 @interface _CPPowerAssertion
-- (_CPPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4;
+- (_CPPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout;
 - (void)dealloc;
 - (void)timedout;
 @end
 
 @implementation _CPPowerAssertion
 
-- (_CPPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4
+- (_CPPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout
 {
   v10.receiver = self;
   v10.super_class = _CPPowerAssertion;
   v6 = [(_CPPowerAssertion *)&v10 init];
   if (v6)
   {
-    if (a4 <= 0.0)
+    if (timeout <= 0.0)
     {
-      v7 = IOPMAssertionCreateWithName(@"NoIdleSleepAssertion", 0xFFu, a3, &v6->_assertion);
+      v7 = IOPMAssertionCreateWithName(@"NoIdleSleepAssertion", 0xFFu, identifier, &v6->_assertion);
       if (v7)
       {
         goto LABEL_4;
@@ -24,22 +24,22 @@
 
     else
     {
-      v7 = IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", a3, 0, 0, 0, a4 + 60.0, @"TimeoutActionTurnOff", &v6->_assertion);
+      v7 = IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", identifier, 0, 0, 0, timeout + 60.0, @"TimeoutActionTurnOff", &v6->_assertion);
       if (v7)
       {
 LABEL_4:
         v6->_assertion = 0;
-        NSLog(@"Unable to create the power assertion for %@ (%d).", a3, v7);
+        NSLog(@"Unable to create the power assertion for %@ (%d).", identifier, v7);
 
         return 0;
       }
     }
 
-    v6->_identifier = [a3 copy];
-    v6->_timeout = a4;
+    v6->_identifier = [identifier copy];
+    v6->_timeout = timeout;
     v8 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     v6->_stack = [MEMORY[0x1E696AF00] callStackReturnAddresses];
-    if (a4 > 0.0)
+    if (timeout > 0.0)
     {
       pthread_mutex_lock(&_PowerAssertionsLock);
       if (!_PowerAssertions)

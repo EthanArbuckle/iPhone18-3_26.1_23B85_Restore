@@ -1,32 +1,32 @@
 @interface LSPlugInQueryWithURL
-- (BOOL)isEqual:(id)a3;
-- (LSPlugInQueryWithURL)initWithCoder:(id)a3;
-- (id)_initWithURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LSPlugInQueryWithURL)initWithCoder:(id)coder;
+- (id)_initWithURL:(id)l;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
 @end
 
 @implementation LSPlugInQueryWithURL
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = LSPlugInQueryWithURL;
-  v6 = [(LSPlugInQuery *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(LSPlugInQuery *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(_init + 2, l);
   }
 
   return v7;
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3812000000;
@@ -45,7 +45,7 @@
       [(_LSDatabase *)v16[6] store];
       v11 = *([(_LSDatabase *)v16[6] schema]+ 1588);
       v12 = v10;
-      v13 = v7;
+      v13 = blockCopy;
       _CSStoreEnumerateUnits();
     }
 
@@ -54,7 +54,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(blockCopy + 2))(blockCopy, 0, v9);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -91,20 +91,20 @@ void __58__LSPlugInQueryWithURL__enumerateWithXPCConnection_block___block_invoke
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = LSPlugInQueryWithURL;
-  if ([(LSPlugInQuery *)&v12 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(LSPlugInQuery *)&v12 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     bundleURL = self->_bundleURL;
-    v6 = v4;
-    v7 = [(NSURL *)bundleURL path];
-    v8 = [v6 _bundleURL];
+    v6 = equalCopy;
+    path = [(NSURL *)bundleURL path];
+    _bundleURL = [v6 _bundleURL];
 
-    v9 = [v8 path];
-    v10 = [v7 isEqualToString:v9];
+    path2 = [_bundleURL path];
+    v10 = [path isEqualToString:path2];
   }
 
   else
@@ -117,8 +117,8 @@ void __58__LSPlugInQueryWithURL__enumerateWithXPCConnection_block___block_invoke
 
 - (unint64_t)hash
 {
-  v3 = [(NSURL *)self->_bundleURL path];
-  v4 = [v3 hash];
+  path = [(NSURL *)self->_bundleURL path];
+  v4 = [path hash];
   v7.receiver = self;
   v7.super_class = LSPlugInQueryWithURL;
   v5 = [(LSPlugInQuery *)&v7 hash];
@@ -126,10 +126,10 @@ void __58__LSPlugInQueryWithURL__enumerateWithXPCConnection_block___block_invoke
   return v5 ^ v4;
 }
 
-- (LSPlugInQueryWithURL)initWithCoder:(id)a3
+- (LSPlugInQueryWithURL)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+  coderCopy = coder;
+  v5 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
 
   v6 = [(LSPlugInQueryWithURL *)self _initWithURL:v5];
   return v6;

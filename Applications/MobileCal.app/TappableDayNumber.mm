@@ -1,14 +1,14 @@
 @interface TappableDayNumber
-+ (double)firstLineBaselineOffsetForFontSize:(double)a3;
-+ (id)normalFontForSize:(double)a3;
-+ (id)overlayFontForSize:(double)a3;
++ (double)firstLineBaselineOffsetForFontSize:(double)size;
++ (id)normalFontForSize:(double)size;
++ (id)overlayFontForSize:(double)size;
 - (CGRect)contentFrame;
 - (CGRect)dayCircleFrame;
 - (CGRect)numberFrame;
 - (CGRect)primaryNumberFrame;
-- (CGSize)_cachedSizeForLabel:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TappableDayNumber)initWithSizeClass:(int64_t)a3;
+- (CGSize)_cachedSizeForLabel:(id)label;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TappableDayNumber)initWithSizeClass:(int64_t)class;
 - (UILabel)titleLabel;
 - (double)firstLineBaselineOffsetFromBoundsTop;
 - (id)_circledFont;
@@ -25,25 +25,25 @@
 - (void)_loadPressIfNeeded;
 - (void)_loadUnderlineIfNeeded;
 - (void)_updateCircleColor;
-- (void)_updateSubviewAlphaForCircled:(BOOL)a3 pressed:(BOOL)a4;
+- (void)_updateSubviewAlphaForCircled:(BOOL)circled pressed:(BOOL)pressed;
 - (void)_updateTextColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCircled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setCircledDefaultDayNumberColor:(id)a3;
-- (void)setDefaultCircleColor:(id)a3;
-- (void)setFontSize:(double)a3;
-- (void)setIsToday:(BOOL)a3;
-- (void)setIsWeekend:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCircled:(BOOL)circled animated:(BOOL)animated;
+- (void)setCircledDefaultDayNumberColor:(id)color;
+- (void)setDefaultCircleColor:(id)color;
+- (void)setFontSize:(double)size;
+- (void)setIsToday:(BOOL)today;
+- (void)setIsWeekend:(BOOL)weekend;
 - (void)setNeedsDisplay;
-- (void)setOverlayFontSize:(double)a3;
-- (void)setOverlayText:(id)a3;
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setText:(id)a3;
-- (void)setTodayCircleColor:(id)a3;
-- (void)setUnderlineThickness:(double)a3;
-- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)a3;
-- (void)setWeekendColor:(id)a3;
+- (void)setOverlayFontSize:(double)size;
+- (void)setOverlayText:(id)text;
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated;
+- (void)setText:(id)text;
+- (void)setTodayCircleColor:(id)color;
+- (void)setUnderlineThickness:(double)thickness;
+- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)circle;
+- (void)setWeekendColor:(id)color;
 - (void)tintColorDidChange;
 @end
 
@@ -63,8 +63,8 @@
   number = self->_number;
   self->_number = v3;
 
-  v5 = [(TappableDayNumber *)self _normalFont];
-  [(UILabel *)self->_number setFont:v5];
+  _normalFont = [(TappableDayNumber *)self _normalFont];
+  [(UILabel *)self->_number setFont:_normalFont];
 
   [(UILabel *)self->_number setTextAlignment:1];
   v6 = +[UIColor labelColor];
@@ -88,11 +88,11 @@
 
 - (void)_updateTextColor
 {
-  v3 = [(TappableDayNumber *)self _textColor];
-  [(UILabel *)self->_number setTextColor:v3];
+  _textColor = [(TappableDayNumber *)self _textColor];
+  [(UILabel *)self->_number setTextColor:_textColor];
 
-  v4 = [(TappableDayNumber *)self _textColor];
-  [(UILabel *)self->_overlay setTextColor:v4];
+  _textColor2 = [(TappableDayNumber *)self _textColor];
+  [(UILabel *)self->_overlay setTextColor:_textColor2];
 
   if (self->_isToday)
   {
@@ -188,8 +188,8 @@
     }
 
     [(DayCircleView *)self->_circle setAlpha:v5];
-    v6 = [(TappableDayNumber *)self _backgroundColor];
-    [(DayCircleView *)self->_circle setBackgroundColor:v6];
+    _backgroundColor = [(TappableDayNumber *)self _backgroundColor];
+    [(DayCircleView *)self->_circle setBackgroundColor:_backgroundColor];
 
     [(DayCircleView *)self->_circle setUsesRoundedRectInsteadOfCircle:[(TappableDayNumber *)self usesRoundedRectInsteadOfCircle]];
     [(TappableDayNumber *)self _updateCircleColor];
@@ -216,8 +216,8 @@
     numberCircled = self->_numberCircled;
     self->_numberCircled = v4;
 
-    v6 = [(TappableDayNumber *)self _circledFont];
-    [(UILabel *)self->_numberCircled setFont:v6];
+    _circledFont = [(TappableDayNumber *)self _circledFont];
+    [(UILabel *)self->_numberCircled setFont:_circledFont];
 
     [(UILabel *)self->_numberCircled setTextAlignment:1];
     v7 = +[UIColor clearColor];
@@ -246,8 +246,8 @@
     }
 
     [(UILabel *)self->_numberCircled setAlpha:v9];
-    v10 = [(UILabel *)self->_number text];
-    [(UILabel *)self->_numberCircled setText:v10];
+    text = [(UILabel *)self->_number text];
+    [(UILabel *)self->_numberCircled setText:text];
 
     v11 = self->_numberCircled;
 
@@ -273,8 +273,8 @@
     overlayCircled = self->_overlayCircled;
     self->_overlayCircled = v4;
 
-    v6 = [(TappableDayNumber *)self _circledOverlayFont];
-    [(UILabel *)self->_overlayCircled setFont:v6];
+    _circledOverlayFont = [(TappableDayNumber *)self _circledOverlayFont];
+    [(UILabel *)self->_overlayCircled setFont:_circledOverlayFont];
 
     [(UILabel *)self->_overlayCircled setTextAlignment:1];
     v7 = +[UIColor clearColor];
@@ -303,8 +303,8 @@
     }
 
     [(UILabel *)self->_overlayCircled setAlpha:v9];
-    v10 = [(UILabel *)self->_overlay text];
-    [(UILabel *)self->_overlayCircled setText:v10];
+    text = [(UILabel *)self->_overlay text];
+    [(UILabel *)self->_overlayCircled setText:text];
 
     v11 = self->_overlayCircled;
 
@@ -459,8 +459,8 @@
     v57.size.width = v30;
     v57.size.height = v32;
     CGRectGetWidth(v57);
-    v33 = [(UILabel *)self->_numberCircled text];
-    v34 = [(UILabel *)self->_numberCircled font];
+    text = [(UILabel *)self->_numberCircled text];
+    font = [(UILabel *)self->_numberCircled font];
     CalOffsetToCenterNumberWithFont();
     CalRoundToScreenScale();
     v36 = v35;
@@ -495,7 +495,7 @@
   }
 }
 
-- (TappableDayNumber)initWithSizeClass:(int64_t)a3
+- (TappableDayNumber)initWithSizeClass:(int64_t)class
 {
   v14.receiver = self;
   v14.super_class = TappableDayNumber;
@@ -504,7 +504,7 @@
   if (v4)
   {
     v6 = 18.0;
-    if (a3 == 2)
+    if (class == 2)
     {
       v6 = 17.0;
     }
@@ -529,23 +529,23 @@
   return v5;
 }
 
-- (void)setCircledDefaultDayNumberColor:(id)a3
+- (void)setCircledDefaultDayNumberColor:(id)color
 {
-  objc_storeStrong(&self->_circledDefaultDayNumberColor, a3);
+  objc_storeStrong(&self->_circledDefaultDayNumberColor, color);
 
   [(TappableDayNumber *)self _updateTextColor];
 }
 
-- (void)setTodayCircleColor:(id)a3
+- (void)setTodayCircleColor:(id)color
 {
-  objc_storeStrong(&self->_todayCircleColor, a3);
+  objc_storeStrong(&self->_todayCircleColor, color);
 
   [(TappableDayNumber *)self _updateCircleColor];
 }
 
-- (void)setDefaultCircleColor:(id)a3
+- (void)setDefaultCircleColor:(id)color
 {
-  objc_storeStrong(&self->_defaultCircleColor, a3);
+  objc_storeStrong(&self->_defaultCircleColor, color);
 
   [(TappableDayNumber *)self _updateCircleColor];
 }
@@ -574,11 +574,11 @@
     self->_pressCircle = v4;
 
     [(DayCircleView *)self->_pressCircle setAutoresizingMask:18];
-    v6 = [(TappableDayNumber *)self _pressColor];
-    [(DayCircleView *)self->_pressCircle setColor:v6];
+    _pressColor = [(TappableDayNumber *)self _pressColor];
+    [(DayCircleView *)self->_pressCircle setColor:_pressColor];
 
-    v7 = [(TappableDayNumber *)self backgroundColor];
-    [(DayCircleView *)self->_pressCircle setBackgroundColor:v7];
+    backgroundColor = [(TappableDayNumber *)self backgroundColor];
+    [(DayCircleView *)self->_pressCircle setBackgroundColor:backgroundColor];
 
     v8 = 0.0;
     if (self->_pressed)
@@ -602,8 +602,8 @@
     overlay = self->_overlay;
     self->_overlay = v3;
 
-    v5 = [(TappableDayNumber *)self _overlayFont];
-    [(UILabel *)self->_overlay setFont:v5];
+    _overlayFont = [(TappableDayNumber *)self _overlayFont];
+    [(UILabel *)self->_overlay setFont:_overlayFont];
 
     [(UILabel *)self->_overlay setTextAlignment:1];
     v6 = +[UIColor labelColor];
@@ -635,37 +635,37 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   number = self->_number;
-  v5 = a3;
-  [(UILabel *)number setText:v5];
-  [(UILabel *)self->_numberCircled setText:v5];
+  textCopy = text;
+  [(UILabel *)number setText:textCopy];
+  [(UILabel *)self->_numberCircled setText:textCopy];
 
   [(TappableDayNumber *)self setNeedsLayout];
   self->_needsToForceLayout = 1;
 }
 
-- (void)setOverlayText:(id)a3
+- (void)setOverlayText:(id)text
 {
-  v10 = a3;
-  v4 = [(UILabel *)self->_overlay text];
-  if (v4 == v10)
+  textCopy = text;
+  text = [(UILabel *)self->_overlay text];
+  if (text == textCopy)
   {
   }
 
   else
   {
-    v5 = [(UILabel *)self->_overlay text];
-    v6 = [v10 isEqualToString:v5];
+    text2 = [(UILabel *)self->_overlay text];
+    v6 = [textCopy isEqualToString:text2];
 
-    v7 = v10;
+    v7 = textCopy;
     if (v6)
     {
       goto LABEL_11;
     }
 
-    if (v10)
+    if (textCopy)
     {
       [(TappableDayNumber *)self _loadOverlayIfNeeded];
       if (self->_circled)
@@ -673,8 +673,8 @@
         [(TappableDayNumber *)self _loadCircledOverlayIfNeeded];
       }
 
-      [(UILabel *)self->_overlay setText:v10];
-      [(UILabel *)self->_overlayCircled setText:v10];
+      [(UILabel *)self->_overlay setText:textCopy];
+      [(UILabel *)self->_overlayCircled setText:textCopy];
       [(TappableDayNumber *)self _updateTextColor];
     }
 
@@ -693,17 +693,17 @@
     self->_needsToForceLayout = 1;
   }
 
-  v7 = v10;
+  v7 = textCopy;
 LABEL_11:
 }
 
-- (void)setUnderlineThickness:(double)a3
+- (void)setUnderlineThickness:(double)thickness
 {
-  if (self->_underlineThickness != a3)
+  if (self->_underlineThickness != thickness)
   {
     v11 = v3;
-    self->_underlineThickness = a3;
-    if (a3 <= 0.0)
+    self->_underlineThickness = thickness;
+    if (thickness <= 0.0)
     {
       [(UIView *)self->_underline removeFromSuperview];
       underline = self->_underline;
@@ -723,13 +723,13 @@ LABEL_11:
   }
 }
 
-- (void)setIsToday:(BOOL)a3
+- (void)setIsToday:(BOOL)today
 {
-  if (self->_isToday != a3)
+  if (self->_isToday != today)
   {
-    self->_isToday = a3;
-    v5 = [(TappableDayNumber *)self _pressColor];
-    [(DayCircleView *)self->_pressCircle setColor:v5];
+    self->_isToday = today;
+    _pressColor = [(TappableDayNumber *)self _pressColor];
+    [(DayCircleView *)self->_pressCircle setColor:_pressColor];
 
     [(TappableDayNumber *)self _updateCircleColor];
 
@@ -737,46 +737,46 @@ LABEL_11:
   }
 }
 
-- (void)setIsWeekend:(BOOL)a3
+- (void)setIsWeekend:(BOOL)weekend
 {
-  if (self->_isWeekend != a3)
+  if (self->_isWeekend != weekend)
   {
-    self->_isWeekend = a3;
+    self->_isWeekend = weekend;
     [(TappableDayNumber *)self _updateTextColor];
   }
 }
 
-- (void)setWeekendColor:(id)a3
+- (void)setWeekendColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_weekendColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_weekendColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_weekendColor, a3);
+    objc_storeStrong(&self->_weekendColor, color);
     [(TappableDayNumber *)self _updateTextColor];
   }
 }
 
-- (void)setCircled:(BOOL)a3 animated:(BOOL)a4
+- (void)setCircled:(BOOL)circled animated:(BOOL)animated
 {
-  if (self->_circled != a3)
+  if (self->_circled != circled)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_circled = a3;
+    animatedCopy = animated;
+    circledCopy = circled;
+    self->_circled = circled;
     [(TappableDayNumber *)self _loadCircleIfNeeded];
     [(TappableDayNumber *)self dayCircleFrame];
     v11 = v7;
     v12 = v8;
     v13 = v9;
     v14 = v10;
-    if (v4)
+    if (animatedCopy)
     {
       v15 = (v10 - v10 * 0.3) * 0.5;
       if (self->_circleAnimating)
       {
-        [(TappableDayNumber *)self _updateSubviewAlphaForCircled:v5 pressed:self->_pressed];
+        [(TappableDayNumber *)self _updateSubviewAlphaForCircled:circledCopy pressed:self->_pressed];
         circle = self->_circle;
-        if (v5)
+        if (circledCopy)
         {
           v17 = v11;
           v18 = v12;
@@ -798,8 +798,8 @@ LABEL_11:
       else
       {
         self->_circleAnimating = 1;
-        [(TappableDayNumber *)self _updateSubviewAlphaForCircled:v5 ^ 1 pressed:self->_pressed];
-        if (v5)
+        [(TappableDayNumber *)self _updateSubviewAlphaForCircled:circledCopy ^ 1 pressed:self->_pressed];
+        if (circledCopy)
         {
           v21 = (v13 - v13 * 0.3) * 0.5;
         }
@@ -809,7 +809,7 @@ LABEL_11:
           v21 = v11;
         }
 
-        if (v5)
+        if (circledCopy)
         {
           v22 = v15;
         }
@@ -819,7 +819,7 @@ LABEL_11:
           v22 = v12;
         }
 
-        if (v5)
+        if (circledCopy)
         {
           v23 = v13 * 0.3;
         }
@@ -829,7 +829,7 @@ LABEL_11:
           v23 = v13;
         }
 
-        if (v5)
+        if (circledCopy)
         {
           v24 = v14 * 0.3;
         }
@@ -845,7 +845,7 @@ LABEL_11:
         v26[2] = sub_100069038;
         v26[3] = &unk_10020FAB8;
         v26[4] = self;
-        v27 = v5;
+        v27 = circledCopy;
         *&v26[5] = v11;
         *&v26[6] = v12;
         *&v26[7] = v13;
@@ -872,20 +872,20 @@ LABEL_11:
   }
 }
 
-- (void)setPressed:(BOOL)a3 animated:(BOOL)a4
+- (void)setPressed:(BOOL)pressed animated:(BOOL)animated
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    if (a3)
+    if (pressed)
     {
-      [(TappableDayNumber *)self _loadPressIfNeeded:a3];
-      self->_pressed = a3;
+      [(TappableDayNumber *)self _loadPressIfNeeded:pressed];
+      self->_pressed = pressed;
     }
 
     else
     {
       self->_pressed = 0;
-      if (a4)
+      if (animated)
       {
         v6[0] = _NSConcreteStackBlock;
         v6[1] = 3221225472;
@@ -905,58 +905,58 @@ LABEL_7:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = TappableDayNumber;
-  v4 = a3;
-  [(TappableDayNumber *)&v5 setBackgroundColor:v4];
-  [(DayCircleView *)self->_circle setBackgroundColor:v4, v5.receiver, v5.super_class];
-  [(DayCircleView *)self->_pressCircle setBackgroundColor:v4];
+  colorCopy = color;
+  [(TappableDayNumber *)&v5 setBackgroundColor:colorCopy];
+  [(DayCircleView *)self->_circle setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
+  [(DayCircleView *)self->_pressCircle setBackgroundColor:colorCopy];
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  if (vabdd_f64(self->_fontSize, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_fontSize, size) >= 2.22044605e-16)
   {
-    self->_fontSize = a3;
-    v5 = [(TappableDayNumber *)self _normalFont];
-    [(UILabel *)self->_number setFont:v5];
+    self->_fontSize = size;
+    _normalFont = [(TappableDayNumber *)self _normalFont];
+    [(UILabel *)self->_number setFont:_normalFont];
 
-    v6 = [(TappableDayNumber *)self _circledFont];
-    [(UILabel *)self->_numberCircled setFont:v6];
+    _circledFont = [(TappableDayNumber *)self _circledFont];
+    [(UILabel *)self->_numberCircled setFont:_circledFont];
   }
 }
 
-- (void)setOverlayFontSize:(double)a3
+- (void)setOverlayFontSize:(double)size
 {
-  if (vabdd_f64(self->_overlayFontSize, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_overlayFontSize, size) >= 2.22044605e-16)
   {
-    self->_overlayFontSize = a3;
-    v5 = [(TappableDayNumber *)self _overlayFont];
-    [(UILabel *)self->_overlay setFont:v5];
+    self->_overlayFontSize = size;
+    _overlayFont = [(TappableDayNumber *)self _overlayFont];
+    [(UILabel *)self->_overlay setFont:_overlayFont];
 
-    v6 = [(TappableDayNumber *)self _circledOverlayFont];
-    [(UILabel *)self->_overlayCircled setFont:v6];
+    _circledOverlayFont = [(TappableDayNumber *)self _circledOverlayFont];
+    [(UILabel *)self->_overlayCircled setFont:_circledOverlayFont];
   }
 }
 
-- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)a3
+- (void)setUsesRoundedRectInsteadOfCircle:(BOOL)circle
 {
-  if (self->_usesRoundedRectInsteadOfCircle != a3)
+  if (self->_usesRoundedRectInsteadOfCircle != circle)
   {
-    v4 = a3;
-    self->_usesRoundedRectInsteadOfCircle = a3;
+    circleCopy = circle;
+    self->_usesRoundedRectInsteadOfCircle = circle;
     [(DayCircleView *)self->_circle setUsesRoundedRectInsteadOfCircle:?];
     pressCircle = self->_pressCircle;
 
-    [(DayCircleView *)pressCircle setUsesRoundedRectInsteadOfCircle:v4];
+    [(DayCircleView *)pressCircle setUsesRoundedRectInsteadOfCircle:circleCopy];
   }
 }
 
-- (void)_updateSubviewAlphaForCircled:(BOOL)a3 pressed:(BOOL)a4
+- (void)_updateSubviewAlphaForCircled:(BOOL)circled pressed:(BOOL)pressed
 {
-  if (a4)
+  if (pressed)
   {
     v5 = 1.0;
   }
@@ -966,7 +966,7 @@ LABEL_7:
     v5 = 0.0;
   }
 
-  if (a3)
+  if (circled)
   {
     v6 = 0.0;
   }
@@ -977,7 +977,7 @@ LABEL_7:
   }
 
   number = self->_number;
-  if (a3)
+  if (circled)
   {
     v8 = 1.0;
   }
@@ -987,7 +987,7 @@ LABEL_7:
     v8 = 0.0;
   }
 
-  if (a3)
+  if (circled)
   {
     v9 = 0.0;
   }
@@ -1008,30 +1008,30 @@ LABEL_7:
   [(DayCircleView *)pressCircle setAlpha:v9];
 }
 
-- (CGSize)_cachedSizeForLabel:(id)a3
+- (CGSize)_cachedSizeForLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   if (qword_100251960 != -1)
   {
     sub_10016FE40();
   }
 
-  v4 = [v3 font];
-  v5 = [v3 text];
-  v6 = v5;
-  if (v4 && v5)
+  font = [labelCopy font];
+  text = [labelCopy text];
+  v6 = text;
+  if (font && text)
   {
-    v7 = [qword_100251958 objectForKey:v4];
+    v7 = [qword_100251958 objectForKey:font];
     if (!v7)
     {
       v7 = objc_opt_new();
-      [qword_100251958 setObject:v7 forKey:v4];
+      [qword_100251958 setObject:v7 forKey:font];
     }
 
     v8 = [v7 objectForKey:v6];
     if (!v8)
     {
-      [v3 intrinsicContentSize];
+      [labelCopy intrinsicContentSize];
       CalCeilToScreenScale();
       v10 = v9;
       CalCeilToScreenScale();
@@ -1214,9 +1214,9 @@ LABEL_8:
 
 - (double)firstLineBaselineOffsetFromBoundsTop
 {
-  v3 = [(UILabel *)self->_number text];
+  text = [(UILabel *)self->_number text];
 
-  if (!v3)
+  if (!text)
   {
     return 0.0;
   }
@@ -1230,9 +1230,9 @@ LABEL_8:
   return v6 - CGRectGetMinY(v9);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_number sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_number sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -1240,9 +1240,9 @@ LABEL_8:
 
 - (UILabel)titleLabel
 {
-  v3 = [(TappableDayNumber *)self circled];
+  circled = [(TappableDayNumber *)self circled];
   v4 = &OBJC_IVAR___TappableDayNumber__number;
-  if (v3)
+  if (circled)
   {
     v4 = &OBJC_IVAR___TappableDayNumber__numberCircled;
   }
@@ -1260,7 +1260,7 @@ LABEL_8:
   return [v3 overlayFontForSize:?];
 }
 
-+ (id)normalFontForSize:(double)a3
++ (id)normalFontForSize:(double)size
 {
   if (qword_100251970 != -1)
   {
@@ -1268,22 +1268,22 @@ LABEL_8:
   }
 
   v4 = qword_100251968;
-  v5 = [NSNumber numberWithDouble:a3];
+  v5 = [NSNumber numberWithDouble:size];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)
   {
     v7 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody addingSymbolicTraits:0 options:3];
-    v6 = [UIFont fontWithDescriptor:v7 size:a3];
+    v6 = [UIFont fontWithDescriptor:v7 size:size];
     v8 = qword_100251968;
-    v9 = [NSNumber numberWithDouble:a3];
+    v9 = [NSNumber numberWithDouble:size];
     [v8 setObject:v6 forKeyedSubscript:v9];
   }
 
   return v6;
 }
 
-+ (id)overlayFontForSize:(double)a3
++ (id)overlayFontForSize:(double)size
 {
   if (qword_100251980 != -1)
   {
@@ -1291,38 +1291,38 @@ LABEL_8:
   }
 
   v4 = qword_100251978;
-  v5 = [NSNumber numberWithDouble:a3];
+  v5 = [NSNumber numberWithDouble:size];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (!v6)
   {
     v7 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody addingSymbolicTraits:0 options:3];
-    v6 = [UIFont fontWithDescriptor:v7 size:a3];
+    v6 = [UIFont fontWithDescriptor:v7 size:size];
     v8 = qword_100251978;
-    v9 = [NSNumber numberWithDouble:a3];
+    v9 = [NSNumber numberWithDouble:size];
     [v8 setObject:v6 forKeyedSubscript:v9];
   }
 
   return v6;
 }
 
-+ (double)firstLineBaselineOffsetForFontSize:(double)a3
++ (double)firstLineBaselineOffsetForFontSize:(double)size
 {
   if (qword_100251990 != -1)
   {
     sub_10016FE7C();
   }
 
-  if (vabdd_f64(*&qword_100251998, a3) >= 2.22044605e-16)
+  if (vabdd_f64(*&qword_100251998, size) >= 2.22044605e-16)
   {
-    v5 = [a1 normalFontForSize:a3];
+    v5 = [self normalFontForSize:size];
     [qword_100251988 setFont:v5];
 
-    qword_100251998 = *&a3;
+    qword_100251998 = *&size;
     [qword_100251988 sizeToFit];
   }
 
-  [a1 _yOffsetForNumber];
+  [self _yOffsetForNumber];
   v7 = v6;
   [qword_100251988 _firstLineBaselineOffsetFromBoundsTop];
   return v7 + v8;

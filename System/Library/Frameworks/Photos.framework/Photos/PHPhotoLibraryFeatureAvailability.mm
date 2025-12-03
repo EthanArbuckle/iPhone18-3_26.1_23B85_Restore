@@ -1,6 +1,6 @@
 @interface PHPhotoLibraryFeatureAvailability
-- (BOOL)isEqual:(id)a3;
-- (PHPhotoLibraryFeatureAvailability)initWithFeature:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (PHPhotoLibraryFeatureAvailability)initWithFeature:(unint64_t)feature;
 - (id)debugDescription;
 @end
 
@@ -81,10 +81,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v45 = 1;
   }
@@ -94,9 +94,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHPhotoLibraryFeatureAvailability *)self feature];
-      if (v6 == [(PHPhotoLibraryFeatureAvailability *)v5 feature]
+      v5 = equalCopy;
+      feature = [(PHPhotoLibraryFeatureAvailability *)self feature];
+      if (feature == [(PHPhotoLibraryFeatureAvailability *)v5 feature]
         && (v7 = [(PHPhotoLibraryFeatureAvailability *)self photosKnowledgeGraphIsReady], v7 == [(PHPhotoLibraryFeatureAvailability *)v5 photosKnowledgeGraphIsReady])
         && (v8 = [(PHPhotoLibraryFeatureAvailability *)self featureAvailability], v8 == [(PHPhotoLibraryFeatureAvailability *)v5 featureAvailability])
         && (v9 = [(PHPhotoLibraryFeatureAvailability *)self numberOfCuratedAssets], v9 == [(PHPhotoLibraryFeatureAvailability *)v5 numberOfCuratedAssets])
@@ -134,7 +134,7 @@
   return v45;
 }
 
-- (PHPhotoLibraryFeatureAvailability)initWithFeature:(unint64_t)a3
+- (PHPhotoLibraryFeatureAvailability)initWithFeature:(unint64_t)feature
 {
   v8.receiver = self;
   v8.super_class = PHPhotoLibraryFeatureAvailability;
@@ -142,7 +142,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_feature = a3;
+    v4->_feature = feature;
     v6 = v4;
   }
 

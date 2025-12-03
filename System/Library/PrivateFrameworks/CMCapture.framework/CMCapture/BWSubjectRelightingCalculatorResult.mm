@@ -1,7 +1,7 @@
 @interface BWSubjectRelightingCalculatorResult
 - (BOOL)waitForResult;
 - (BWSubjectRelightingCalculatorResult)init;
-- (void)_completeWithRelightingRequired:(BOOL)a3 curveParameter:(float)a4;
+- (void)_completeWithRelightingRequired:(BOOL)required curveParameter:(float)parameter;
 - (void)dealloc;
 @end
 
@@ -43,10 +43,10 @@
   return v3 != 0;
 }
 
-- (void)_completeWithRelightingRequired:(BOOL)a3 curveParameter:(float)a4
+- (void)_completeWithRelightingRequired:(BOOL)required curveParameter:(float)parameter
 {
-  self->_relightingRequired = a3;
-  self->_curveParameter = a4;
+  self->_relightingRequired = required;
+  self->_curveParameter = parameter;
   dispatch_group_leave(self->_group);
 }
 

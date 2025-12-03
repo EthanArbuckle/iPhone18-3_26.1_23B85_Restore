@@ -1,16 +1,16 @@
 @interface SKGGraph
-- (BOOL)addNodes:(id)a3 addEdges:(id)a4 cancelBlock:(id)a5;
+- (BOOL)addNodes:(id)nodes addEdges:(id)edges cancelBlock:(id)block;
 - (BOOL)available;
-- (BOOL)batchAddNodes:(id)a3 addEdges:(id)a4;
-- (BOOL)clearWithCancelBlock:(id)a3;
+- (BOOL)batchAddNodes:(id)nodes addEdges:(id)edges;
+- (BOOL)clearWithCancelBlock:(id)block;
 - (BOOL)commitBatch;
-- (BOOL)commitWithCancelBlock:(id)a3;
-- (BOOL)flushWithCancelBlock:(id)a3;
-- (BOOL)removeNodeSet:(id)a3 removeEdgeSet:(id)a4 cancelBlock:(id)a5;
-- (SKGGraph)initWithResourceDirectoryPath:(id)a3;
+- (BOOL)commitWithCancelBlock:(id)block;
+- (BOOL)flushWithCancelBlock:(id)block;
+- (BOOL)removeNodeSet:(id)set removeEdgeSet:(id)edgeSet cancelBlock:(id)block;
+- (SKGGraph)initWithResourceDirectoryPath:(id)path;
 - (id)graphURL;
-- (id)nodesForNode:(id)a3;
-- (int64_t)countOfNodesWithLabel:(id)a3;
+- (id)nodesForNode:(id)node;
+- (int64_t)countOfNodesWithLabel:(id)label;
 - (int64_t)edgeCount;
 - (int64_t)nodeCount;
 - (void)closeGraph;
@@ -19,16 +19,16 @@
 
 @implementation SKGGraph
 
-- (SKGGraph)initWithResourceDirectoryPath:(id)a3
+- (SKGGraph)initWithResourceDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = SKGGraph;
   v6 = [(SKGGraph *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourcePath, a3);
+    objc_storeStrong(&v6->_resourcePath, path);
     v7->_currentAddedNodeCount = 0;
     v7->_currentAddedEdgeCount = 0;
     nodeBatch = v7->_nodeBatch;
@@ -40,9 +40,9 @@
     v10 = objc_autoreleasePoolPush();
     v11 = objc_alloc_init(SKGGraphSpecification);
     v12 = objc_alloc(MEMORY[0x277D22C48]);
-    v13 = [(SKGGraph *)v7 graphURL];
-    v14 = [MEMORY[0x277D22C80] ignoreProgress];
-    v15 = [v12 initWithSpecification:v11 persistenceStoreURL:v13 progressReporter:v14];
+    graphURL = [(SKGGraph *)v7 graphURL];
+    ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
+    v15 = [v12 initWithSpecification:v11 persistenceStoreURL:graphURL progressReporter:ignoreProgress];
     graph = v7->_graph;
     v7->_graph = v15;
 
@@ -83,10 +83,10 @@
   return graph;
 }
 
-- (BOOL)clearWithCancelBlock:(id)a3
+- (BOOL)clearWithCancelBlock:(id)block
 {
-  v4 = [(SKGGraph *)self available];
-  if (v4)
+  available = [(SKGGraph *)self available];
+  if (available)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = [SKGNodes nodesInGraph:self];
@@ -94,55 +94,55 @@
     {
       v7 = objc_alloc_init(MEMORY[0x277D22C50]);
       [v7 removeNodes:v6];
-      v8 = [(SKGGraph *)self graph];
-      [v8 executeGraphChangeRequest:v7];
+      graph = [(SKGGraph *)self graph];
+      [graph executeGraphChangeRequest:v7];
     }
 
     objc_autoreleasePoolPop(v5);
   }
 
-  return v4;
+  return available;
 }
 
-- (BOOL)flushWithCancelBlock:(id)a3
+- (BOOL)flushWithCancelBlock:(id)block
 {
-  v4 = [(SKGGraph *)self available];
-  if (v4)
+  available = [(SKGGraph *)self available];
+  if (available)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(SKGGraph *)self graph];
-    [v6 leaveBatch];
+    graph = [(SKGGraph *)self graph];
+    [graph leaveBatch];
 
-    v7 = [(SKGGraph *)self graph];
-    [v7 enterBatch];
+    graph2 = [(SKGGraph *)self graph];
+    [graph2 enterBatch];
 
     objc_autoreleasePoolPop(v5);
     self->_currentAddedNodeCount = 0;
     self->_currentAddedEdgeCount = 0;
   }
 
-  return v4;
+  return available;
 }
 
-- (BOOL)commitWithCancelBlock:(id)a3
+- (BOOL)commitWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKGGraph *)self available];
-  if (v5)
+  blockCopy = block;
+  available = [(SKGGraph *)self available];
+  if (available)
   {
-    [(SKGGraph *)self flushWithCancelBlock:v4];
+    [(SKGGraph *)self flushWithCancelBlock:blockCopy];
   }
 
-  return v5;
+  return available;
 }
 
-- (BOOL)addNodes:(id)a3 addEdges:(id)a4 cancelBlock:(id)a5
+- (BOOL)addNodes:(id)nodes addEdges:(id)edges cancelBlock:(id)block
 {
   v94 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v54 = a4;
-  v66 = a5;
-  v69 = self;
+  nodesCopy = nodes;
+  edgesCopy = edges;
+  blockCopy = block;
+  selfCopy = self;
   if ([(SKGGraph *)self available])
   {
     v52 = objc_autoreleasePoolPush();
@@ -150,7 +150,7 @@
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v8 = v55;
+    v8 = nodesCopy;
     v9 = [v8 countByEnumeratingWithState:&v86 objects:v93 count:16];
     if (v9)
     {
@@ -166,35 +166,35 @@
           }
 
           v12 = *(*(&v86 + 1) + 8 * i);
-          v13 = [SKGNodes nodesWithNode:v12 inGraph:v69];
+          v13 = [SKGNodes nodesWithNode:v12 inGraph:selfCopy];
           if (![v13 count])
           {
             v80 = 0;
-            v14 = [(SKGGraph *)v69 graph];
-            v15 = [v12 label];
-            v16 = [v12 domain];
+            graph = [(SKGGraph *)selfCopy graph];
+            label = [v12 label];
+            domain = [v12 domain];
             [v12 weight];
             v18 = v17;
-            v19 = [v12 propertyDictionary];
+            propertyDictionary = [v12 propertyDictionary];
             LODWORD(v20) = v18;
-            v21 = [v14 addUniqueNodeWithLabel:v15 domain:v16 weight:v19 properties:&v80 didCreate:v20];
+            v21 = [graph addUniqueNodeWithLabel:label domain:domain weight:propertyDictionary properties:&v80 didCreate:v20];
 
-            v22 = [(SKGGraph *)v69 available];
-            if ((v22 & 1) == 0)
+            available = [(SKGGraph *)selfCopy available];
+            if ((available & 1) == 0)
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
                 [SKGGraph addNodes:addEdges:cancelBlock:];
               }
 
-              [(SKGGraph *)v69 closeGraph];
+              [(SKGGraph *)selfCopy closeGraph];
 LABEL_21:
 
-              v23 = v22 ^ 1;
+              v23 = available ^ 1;
               goto LABEL_22;
             }
 
-            if (v66 && (v66[2](v66, @"addNodes") & 1) != 0)
+            if (blockCopy && (blockCopy[2](blockCopy, @"addNodes") & 1) != 0)
             {
               goto LABEL_21;
             }
@@ -219,29 +219,29 @@ LABEL_21:
     }
 
     v23 = 1;
-    v22 = 1;
+    available = 1;
 LABEL_22:
 
-    if ((v22 & v23) == 1)
+    if ((available & v23) == 1)
     {
       v84 = 0u;
       v85 = 0u;
       v82 = 0u;
       v83 = 0u;
-      obj = v54;
+      obj = edgesCopy;
       v24 = [obj countByEnumeratingWithState:&v82 objects:v92 count:16];
       if (!v24)
       {
         v53 = 0;
         v23 = 1;
-        v22 = 1;
+        available = 1;
         goto LABEL_71;
       }
 
       v53 = 0;
       v61 = *v83;
       v23 = 1;
-      v22 = 1;
+      available = 1;
       while (1)
       {
         v25 = 0;
@@ -255,20 +255,20 @@ LABEL_22:
 
           v26 = *(*(&v82 + 1) + 8 * v25);
           context = objc_autoreleasePoolPush();
-          v68 = [SKGEdges edgesWithEdge:v26 inGraph:v69];
+          v68 = [SKGEdges edgesWithEdge:v26 inGraph:selfCopy];
           if (![v68 count])
           {
-            v28 = [v26 sourceNode];
-            v64 = [(SKGGraph *)v69 nodesForNode:v28];
+            sourceNode = [v26 sourceNode];
+            v64 = [(SKGGraph *)selfCopy nodesForNode:sourceNode];
 
-            v29 = [v26 targetNode];
-            v62 = [(SKGGraph *)v69 nodesForNode:v29];
+            targetNode = [v26 targetNode];
+            v62 = [(SKGGraph *)selfCopy nodesForNode:targetNode];
 
-            if ([v64 count] && objc_msgSend(v62, "count") && -[SKGGraph available](v69, "available"))
+            if ([v64 count] && objc_msgSend(v62, "count") && -[SKGGraph available](selfCopy, "available"))
             {
-              if (v66)
+              if (blockCopy)
               {
-                v23 = (v66[2])() ^ 1;
+                v23 = (blockCopy[2])() ^ 1;
               }
 
               else
@@ -276,7 +276,7 @@ LABEL_22:
                 v23 = 1;
               }
 
-              if (v22 & v23)
+              if (available & v23)
               {
                 v78 = 0u;
                 v79 = 0u;
@@ -321,26 +321,26 @@ LABEL_22:
                             }
 
                             v34 = *(*(&v72 + 1) + 8 * v32);
-                            v35 = [v26 score];
-                            v36 = [(SKGGraph *)v69 graph];
-                            v37 = [v26 label];
-                            v38 = [v26 domain];
-                            [v35 doubleValue];
+                            score = [v26 score];
+                            graph2 = [(SKGGraph *)selfCopy graph];
+                            label2 = [v26 label];
+                            domain2 = [v26 domain];
+                            [score doubleValue];
                             v40 = v39;
-                            v41 = [v26 propertyDictionary];
+                            propertyDictionary2 = [v26 propertyDictionary];
                             *&v42 = v40;
-                            v43 = [v36 addEdgeWithLabel:v37 sourceNode:v60 targetNode:v34 domain:v38 weight:v41 properties:v42];
+                            v43 = [graph2 addEdgeWithLabel:label2 sourceNode:v60 targetNode:v34 domain:domain2 weight:propertyDictionary2 properties:v42];
 
-                            if (![(SKGGraph *)v69 available])
+                            if (![(SKGGraph *)selfCopy available])
                             {
                               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                               {
                                 [SKGGraph addNodes:v71 addEdges:? cancelBlock:?];
                               }
 
-                              [(SKGGraph *)v69 closeGraph];
+                              [(SKGGraph *)selfCopy closeGraph];
 
-                              v22 = 0;
+                              available = 0;
                               v53 = v33;
                               v30 = v50;
                               goto LABEL_66;
@@ -364,7 +364,7 @@ LABEL_22:
                       v30 = v50;
                     }
 
-                    v22 = 1;
+                    available = 1;
                     v48 = [v50 countByEnumeratingWithState:&v76 objects:v91 count:16];
                   }
 
@@ -373,7 +373,7 @@ LABEL_22:
 
                 else
                 {
-                  v22 = 1;
+                  available = 1;
                 }
 
 LABEL_66:
@@ -391,8 +391,8 @@ LABEL_66:
                 [SKGGraph addNodes:v81 addEdges:? cancelBlock:?];
               }
 
-              [(SKGGraph *)v69 closeGraph];
-              v22 = 0;
+              [(SKGGraph *)selfCopy closeGraph];
+              available = 0;
             }
 
             v27 = 4;
@@ -427,67 +427,67 @@ LABEL_71:
     v53 = 0;
 LABEL_72:
     objc_autoreleasePoolPop(v52);
-    if (v22 & v23)
+    if (available & v23)
     {
-      v44 = v69->_currentAddedNodeCount + v65;
-      v45 = v69->_currentAddedEdgeCount + v53;
-      v69->_currentAddedNodeCount = v44;
-      v69->_currentAddedEdgeCount = v45;
-      LOBYTE(v22) = v44 <= 0x3E7 && v45 < 0x3E8 || [(SKGGraph *)v69 flushWithCancelBlock:v66];
+      v44 = selfCopy->_currentAddedNodeCount + v65;
+      v45 = selfCopy->_currentAddedEdgeCount + v53;
+      selfCopy->_currentAddedNodeCount = v44;
+      selfCopy->_currentAddedEdgeCount = v45;
+      LOBYTE(available) = v44 <= 0x3E7 && v45 < 0x3E8 || [(SKGGraph *)selfCopy flushWithCancelBlock:blockCopy];
     }
   }
 
   else
   {
-    LOBYTE(v22) = 0;
+    LOBYTE(available) = 0;
   }
 
   v46 = *MEMORY[0x277D85DE8];
-  return v22 & 1;
+  return available & 1;
 }
 
-- (BOOL)removeNodeSet:(id)a3 removeEdgeSet:(id)a4 cancelBlock:(id)a5
+- (BOOL)removeNodeSet:(id)set removeEdgeSet:(id)edgeSet cancelBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  edgeSetCopy = edgeSet;
   if ([(SKGGraph *)self available])
   {
     v9 = objc_autoreleasePoolPush();
     v10 = objc_alloc_init(MEMORY[0x277D22C50]);
     v11 = v10;
-    if (v7)
+    if (setCopy)
     {
-      [v10 removeNodes:v7];
+      [v10 removeNodes:setCopy];
     }
 
-    if (v8)
+    if (edgeSetCopy)
     {
-      [v11 removeEdges:v8];
+      [v11 removeEdges:edgeSetCopy];
     }
 
-    v12 = [(SKGGraph *)self graph];
-    [v12 executeGraphChangeRequest:v11];
+    graph = [(SKGGraph *)self graph];
+    [graph executeGraphChangeRequest:v11];
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(SKGGraph *)self available];
+    available = [(SKGGraph *)self available];
   }
 
   else
   {
-    v13 = 0;
+    available = 0;
   }
 
-  return v13;
+  return available;
 }
 
-- (BOOL)batchAddNodes:(id)a3 addEdges:(id)a4
+- (BOOL)batchAddNodes:(id)nodes addEdges:(id)edges
 {
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  edgesCopy = edges;
   if ([(SKGGraph *)self available])
   {
     v8 = objc_autoreleasePoolPush();
-    if (v6)
+    if (nodesCopy)
     {
       nodeBatch = self->_nodeBatch;
       if (!nodeBatch)
@@ -499,10 +499,10 @@ LABEL_72:
         nodeBatch = self->_nodeBatch;
       }
 
-      [(NSMutableSet *)nodeBatch addObjectsFromArray:v6];
+      [(NSMutableSet *)nodeBatch addObjectsFromArray:nodesCopy];
     }
 
-    if (v7)
+    if (edgesCopy)
     {
       edgeBatch = self->_edgeBatch;
       if (!edgeBatch)
@@ -514,26 +514,26 @@ LABEL_72:
         edgeBatch = self->_edgeBatch;
       }
 
-      [(NSMutableSet *)edgeBatch addObjectsFromArray:v7];
+      [(NSMutableSet *)edgeBatch addObjectsFromArray:edgesCopy];
     }
 
     objc_autoreleasePoolPop(v8);
-    v15 = [(SKGGraph *)self available];
+    available = [(SKGGraph *)self available];
   }
 
   else
   {
-    v15 = 0;
+    available = 0;
   }
 
-  return v15;
+  return available;
 }
 
 - (BOOL)commitBatch
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGGraph *)self available];
-  if (v3)
+  available = [(SKGGraph *)self available];
+  if (available)
   {
     v4 = objc_autoreleasePoolPush();
     if (self->_nodeBatch || self->_edgeBatch)
@@ -597,21 +597,21 @@ LABEL_72:
         while (v11);
       }
 
-      v14 = [(SKGGraph *)self graph];
-      [v14 executeGraphChangeRequest:v5];
+      graph = [(SKGGraph *)self graph];
+      [graph executeGraphChangeRequest:v5];
     }
 
     objc_autoreleasePoolPop(v4);
-    LOBYTE(v3) = [(SKGGraph *)self available];
+    LOBYTE(available) = [(SKGGraph *)self available];
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v3;
+  return available;
 }
 
-- (id)nodesForNode:(id)a3
+- (id)nodesForNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   if ([(SKGGraph *)self available])
   {
     v12 = 0;
@@ -621,9 +621,9 @@ LABEL_72:
     v16 = __Block_byref_object_dispose__10;
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = objc_autoreleasePoolPush();
-    v6 = [(SKGGraph *)self graph];
-    v7 = [v4 filter];
-    v8 = [v6 nodeIdentifiersMatchingFilter:v7];
+    graph = [(SKGGraph *)self graph];
+    filter = [nodeCopy filter];
+    v8 = [graph nodeIdentifiersMatchingFilter:filter];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __25__SKGGraph_nodesForNode___block_invoke;
@@ -656,13 +656,13 @@ void __25__SKGGraph_nodesForNode___block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (int64_t)countOfNodesWithLabel:(id)a3
+- (int64_t)countOfNodesWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if ([(SKGGraph *)self available])
   {
-    v5 = [(SKGGraph *)self graph];
-    v6 = [v5 nodesCountForLabel:v4];
+    graph = [(SKGGraph *)self graph];
+    v6 = [graph nodesCountForLabel:labelCopy];
   }
 
   else
@@ -680,10 +680,10 @@ void __25__SKGGraph_nodesForNode___block_invoke(uint64_t a1, uint64_t a2)
     return -1;
   }
 
-  v3 = [(SKGGraph *)self graph];
-  v4 = [v3 nodesCount];
+  graph = [(SKGGraph *)self graph];
+  nodesCount = [graph nodesCount];
 
-  return v4;
+  return nodesCount;
 }
 
 - (int64_t)edgeCount
@@ -693,10 +693,10 @@ void __25__SKGGraph_nodesForNode___block_invoke(uint64_t a1, uint64_t a2)
     return -1;
   }
 
-  v3 = [(SKGGraph *)self graph];
-  v4 = [v3 edgesCount];
+  graph = [(SKGGraph *)self graph];
+  edgesCount = [graph edgesCount];
 
-  return v4;
+  return edgesCount;
 }
 
 - (void)closeGraph

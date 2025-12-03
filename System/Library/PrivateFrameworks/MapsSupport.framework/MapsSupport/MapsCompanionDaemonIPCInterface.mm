@@ -1,6 +1,6 @@
 @interface MapsCompanionDaemonIPCInterface
 + (id)sharedInterface;
-- (void)_configureIncomingConnection:(id)a3;
+- (void)_configureIncomingConnection:(id)connection;
 - (void)establishConnection;
 @end
 
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (void)_configureIncomingConnection:(id)a3
+- (void)_configureIncomingConnection:(id)connection
 {
-  v4 = a3;
-  [v4 setExportedObject:self];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v5 = +[NSXPCInterface _maps_mapsCompanionDaemonXPCClientInterface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = +[NSXPCInterface _maps_mapsCompanionDaemonXPCInterface];
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 }
 
 - (void)establishConnection

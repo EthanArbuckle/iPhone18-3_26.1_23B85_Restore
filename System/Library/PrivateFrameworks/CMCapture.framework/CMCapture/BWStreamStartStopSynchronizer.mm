@@ -1,24 +1,24 @@
 @interface BWStreamStartStopSynchronizer
-- (BOOL)streamWillStart:(id)a3;
-- (BOOL)streamWillStop:(id)a3;
+- (BOOL)streamWillStart:(id)start;
+- (BOOL)streamWillStop:(id)stop;
 - (BOOL)waitForMasterAEToSettle;
-- (BWStreamStartStopSynchronizer)initWithStreams:(id)a3 synchronizationPrimary:(id)a4 timeoutInSeconds:(float)a5;
+- (BWStreamStartStopSynchronizer)initWithStreams:(id)streams synchronizationPrimary:(id)primary timeoutInSeconds:(float)seconds;
 - (NSArray)synchronizationSlavesOrderedByPriority;
 - (void)dealloc;
-- (void)setSynchronizationSlavesOrderedByPriority:(id)a3;
-- (void)setWaitForMasterAEToSettle:(BOOL)a3;
-- (void)streamDidStart:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)setSynchronizationSlavesOrderedByPriority:(id)priority;
+- (void)setWaitForMasterAEToSettle:(BOOL)settle;
+- (void)streamDidStart:(id)start;
+- (void)streamDidStop:(id)stop;
 @end
 
 @implementation BWStreamStartStopSynchronizer
 
 - (BOOL)waitForMasterAEToSettle
 {
-  v2 = [(NSArray *)[(NSDictionary *)self->_streamStatesByPortType allValues] firstObject];
-  if (v2)
+  firstObject = [(NSArray *)[(NSDictionary *)self->_streamStatesByPortType allValues] firstObject];
+  if (firstObject)
   {
-    v3 = v2[68];
+    v3 = firstObject[68];
   }
 
   else
@@ -29,20 +29,20 @@
   return v3 & 1;
 }
 
-- (BWStreamStartStopSynchronizer)initWithStreams:(id)a3 synchronizationPrimary:(id)a4 timeoutInSeconds:(float)a5
+- (BWStreamStartStopSynchronizer)initWithStreams:(id)streams synchronizationPrimary:(id)primary timeoutInSeconds:(float)seconds
 {
   v30.receiver = self;
   v30.super_class = BWStreamStartStopSynchronizer;
   v8 = [(BWStreamStartStopSynchronizer *)&v30 init];
   if (v8)
   {
-    v8->_synchronizationPrimary = a4;
+    v8->_synchronizationPrimary = primary;
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+    v10 = [streams countByEnumeratingWithState:&v26 objects:v25 count:16];
     if (v10)
     {
       v11 = *v27;
@@ -52,19 +52,19 @@
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(streams);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
           if (v13 == v8->_synchronizationPrimary)
           {
-            [(BWStreamStartStopSynchronizer *)v13 initWithStreams:v9 synchronizationPrimary:&v31 timeoutInSeconds:a5];
+            [(BWStreamStartStopSynchronizer *)v13 initWithStreams:v9 synchronizationPrimary:&v31 timeoutInSeconds:seconds];
             v10 = v31;
             goto LABEL_12;
           }
         }
 
-        v10 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+        v10 = [streams countByEnumeratingWithState:&v26 objects:v25 count:16];
         if (v10)
         {
           continue;
@@ -79,7 +79,7 @@ LABEL_12:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+    v14 = [streams countByEnumeratingWithState:&v21 objects:v20 count:16];
     if (v14)
     {
       v15 = v14;
@@ -90,17 +90,17 @@ LABEL_12:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(streams);
           }
 
           v18 = *(*(&v21 + 1) + 8 * j);
           if (v18 != v8->_synchronizationPrimary)
           {
-            [(BWStreamStartStopSynchronizer *)v18 initWithStreams:v10 synchronizationPrimary:v9 timeoutInSeconds:a5];
+            [(BWStreamStartStopSynchronizer *)v18 initWithStreams:v10 synchronizationPrimary:v9 timeoutInSeconds:seconds];
           }
         }
 
-        v15 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v15 = [streams countByEnumeratingWithState:&v21 objects:v20 count:16];
       }
 
       while (v15);
@@ -119,14 +119,14 @@ LABEL_12:
   [(BWStreamStartStopSynchronizer *)&v3 dealloc];
 }
 
-- (void)setWaitForMasterAEToSettle:(BOOL)a3
+- (void)setWaitForMasterAEToSettle:(BOOL)settle
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSDictionary *)self->_streamStatesByPortType allValues];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  allValues = [(NSDictionary *)self->_streamStatesByPortType allValues];
+  v5 = [(NSArray *)allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -138,36 +138,36 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if (v9)
         {
-          *(v9 + 68) = a3;
+          *(v9 + 68) = settle;
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [(NSArray *)allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setSynchronizationSlavesOrderedByPriority:(id)a3
+- (void)setSynchronizationSlavesOrderedByPriority:(id)priority
 {
-  self->_synchronizationSlavesOrderedByPriority = a3;
+  self->_synchronizationSlavesOrderedByPriority = priority;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v31 objects:v30 count:16];
+  v7 = [priority countByEnumeratingWithState:&v31 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -178,7 +178,7 @@ LABEL_12:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(priority);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
@@ -188,15 +188,15 @@ LABEL_12:
           if (v11 != self->_synchronizationPrimary)
           {
             v13 = v12;
-            if (([v6 containsObject:v12] & 1) == 0)
+            if (([array containsObject:v12] & 1) == 0)
             {
-              [v6 addObject:v13];
+              [array addObject:v13];
             }
           }
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v31 objects:v30 count:16];
+      v8 = [priority countByEnumeratingWithState:&v31 objects:v30 count:16];
     }
 
     while (v8);
@@ -206,8 +206,8 @@ LABEL_12:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [(NSDictionary *)self->_streamStatesByPortType allValues];
-  v15 = [(NSArray *)v14 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  allValues = [(NSDictionary *)self->_streamStatesByPortType allValues];
+  v15 = [(NSArray *)allValues countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -219,7 +219,7 @@ LABEL_12:
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v19 = *(*(&v26 + 1) + 8 * v18);
@@ -235,13 +235,13 @@ LABEL_12:
 
         if (v20 != self->_synchronizationPrimary)
         {
-          v21 = [v6 indexOfObject:*(*(&v26 + 1) + 8 * v18)];
+          v21 = [array indexOfObject:*(*(&v26 + 1) + 8 * v18)];
           if (v21)
           {
-            v23 = v6;
+            v23 = array;
             if (v21 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v23 = [v6 subarrayWithRange:{0, v21}];
+              v23 = [array subarrayWithRange:{0, v21}];
             }
           }
 
@@ -260,7 +260,7 @@ LABEL_12:
       }
 
       while (v16 != v18);
-      v24 = [(NSArray *)v14 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v24 = [(NSArray *)allValues countByEnumeratingWithState:&v26 objects:v25 count:16];
       v16 = v24;
     }
 
@@ -277,17 +277,17 @@ LABEL_12:
   return v2;
 }
 
-- (BOOL)streamWillStart:(id)a3
+- (BOOL)streamWillStart:(id)start
 {
-  v3 = OUTLINED_FUNCTION_2_87(self, a2, a3);
+  v3 = OUTLINED_FUNCTION_2_87(self, a2, start);
   v4 = OUTLINED_FUNCTION_3_79(v3);
 
   return [(BWStreamStartStopState *)v4 streamWillStart];
 }
 
-- (void)streamDidStart:(id)a3
+- (void)streamDidStart:(id)start
 {
-  v4 = OUTLINED_FUNCTION_2_87(self, a2, a3);
+  v4 = OUTLINED_FUNCTION_2_87(self, a2, start);
   if (OUTLINED_FUNCTION_3_79(v4))
   {
     OUTLINED_FUNCTION_1_100();
@@ -300,17 +300,17 @@ LABEL_12:
   }
 }
 
-- (BOOL)streamWillStop:(id)a3
+- (BOOL)streamWillStop:(id)stop
 {
-  v3 = OUTLINED_FUNCTION_2_87(self, a2, a3);
+  v3 = OUTLINED_FUNCTION_2_87(self, a2, stop);
   v4 = OUTLINED_FUNCTION_3_79(v3);
 
   return [(BWStreamStartStopState *)v4 streamWillStop];
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v3 = OUTLINED_FUNCTION_2_87(self, a2, a3);
+  v3 = OUTLINED_FUNCTION_2_87(self, a2, stop);
   v4 = OUTLINED_FUNCTION_3_79(v3);
 
   [(BWStreamStartStopState *)v4 streamDidStop];

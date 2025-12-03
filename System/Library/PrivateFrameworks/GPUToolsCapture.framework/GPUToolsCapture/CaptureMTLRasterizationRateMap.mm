@@ -1,31 +1,31 @@
 @interface CaptureMTLRasterizationRateMap
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)parameterBufferSizeAndAlign;
-- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)a3 forLayer:(unint64_t)a4;
+- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)coordinates forLayer:(unint64_t)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalGranularity;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)screenSize;
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLRasterizationRateMap)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLRasterizationRateMap)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
 - (unint64_t)streamReference;
-- (void)copyParameterDataToBuffer:(id)a3 offset:(unint64_t)a4;
+- (void)copyParameterDataToBuffer:(id)buffer offset:(unint64_t)offset;
 - (void)dealloc;
-- (void)resetUsingDescriptor:(id)a3;
+- (void)resetUsingDescriptor:(id)descriptor;
 - (void)touch;
 @end
 
 @implementation CaptureMTLRasterizationRateMap
 
-- (void)resetUsingDescriptor:(id)a3
+- (void)resetUsingDescriptor:(id)descriptor
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceContext = self->_traceContext;
   traceStream = self->_traceStream;
-  v6 = a3;
+  descriptorCopy = descriptor;
   GTTraceContext_pushEncoderWithStream(traceContext, &v17);
-  [(MTLRasterizationRateMapSPI *)self->_baseObject resetUsingDescriptor:v6, v17];
+  [(MTLRasterizationRateMapSPI *)self->_baseObject resetUsingDescriptor:descriptorCopy, v17];
   v7 = v18;
   *(v18 + 8) = -15411;
   v8 = BYTE9(v19);
@@ -45,10 +45,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLRasterizationRateMap *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLRasterizationRateMap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -56,7 +56,7 @@
     var0 = 0;
   }
 
-  v14 = SaveMTLRasterizationRateMapDescriptor(&v17, v6);
+  v14 = SaveMTLRasterizationRateMapDescriptor(&v17, descriptorCopy);
 
   *v9 = var0;
   v9[8] = v14;
@@ -68,13 +68,13 @@
   *(v18 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLRasterizationRateMapSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLRasterizationRateMapSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -129,7 +129,7 @@
   }
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)physicalSizeForLayer:(SEL)layer
 {
   v20 = 0u;
   v21 = 0u;
@@ -164,10 +164,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLRasterizationRateMap *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLRasterizationRateMap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -187,10 +187,10 @@
   return result;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)a3 forLayer:(unint64_t)a4
+- ($94F468A8D4C62B317260615823C2B210)mapScreenToPhysicalCoordinates:(id)coordinates forLayer:(unint64_t)layer
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinates.var1;
+  var0 = coordinates.var0;
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
@@ -198,7 +198,7 @@
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
   *&v9 = var0;
   *&v10 = var1;
-  [(MTLRasterizationRateMapSPI *)self->_baseObject mapScreenToPhysicalCoordinates:a4 forLayer:v9, v10];
+  [(MTLRasterizationRateMapSPI *)self->_baseObject mapScreenToPhysicalCoordinates:layer forLayer:v9, v10];
   v12 = v11;
   v14 = v13;
   v15 = v27;
@@ -220,10 +220,10 @@
   }
 
   *(v15 + 13) = v16;
-  v20 = [(CaptureMTLRasterizationRateMap *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLRasterizationRateMap *)self traceStream];
+  if (traceStream)
   {
-    v21 = v20->var0;
+    v21 = traceStream->var0;
   }
 
   else
@@ -232,7 +232,7 @@
   }
 
   *v17 = v21;
-  *(v17 + 1) = a4;
+  *(v17 + 1) = layer;
   *(v17 + 4) = v12;
   *(v17 + 5) = v14;
   *(v17 + 6) = var0;
@@ -274,10 +274,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLRasterizationRateMap *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLRasterizationRateMap *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -296,17 +296,17 @@
   [(CaptureMTLRasterizationRateMap *)&v13 dealloc];
 }
 
-- (void)copyParameterDataToBuffer:(id)a3 offset:(unint64_t)a4
+- (void)copyParameterDataToBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v6 = a3;
-  v7 = [v6 traceStream];
-  if (v7)
+  bufferCopy = buffer;
+  traceStream = [bufferCopy traceStream];
+  if (traceStream)
   {
-    v8 = atomic_load(v7 + 7);
+    v8 = atomic_load(traceStream + 7);
     v9 = v8;
     do
     {
-      atomic_compare_exchange_strong(v7 + 7, &v9, v8 | 2);
+      atomic_compare_exchange_strong(traceStream + 7, &v9, v8 | 2);
       v10 = v9 == v8;
       v8 = v9;
     }
@@ -314,14 +314,14 @@
     while (!v10);
   }
 
-  v11 = [v6 traceStream];
-  if (v11)
+  traceStream2 = [bufferCopy traceStream];
+  if (traceStream2)
   {
-    v12 = atomic_load(v11 + 7);
+    v12 = atomic_load(traceStream2 + 7);
     v13 = v12;
     do
     {
-      atomic_compare_exchange_strong(v11 + 7, &v13, v12 | 8);
+      atomic_compare_exchange_strong(traceStream2 + 7, &v13, v12 | 8);
       v10 = v13 == v12;
       v12 = v13;
     }
@@ -335,8 +335,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
   baseObject = self->_baseObject;
-  v16 = [v6 baseObject];
-  [(MTLRasterizationRateMapSPI *)baseObject copyParameterDataToBuffer:v16 offset:a4];
+  baseObject = [bufferCopy baseObject];
+  [(MTLRasterizationRateMapSPI *)baseObject copyParameterDataToBuffer:baseObject offset:offset];
 
   v17 = v29;
   *(v29 + 8) = -15776;
@@ -357,10 +357,10 @@
   }
 
   *(v17 + 13) = v18;
-  v22 = [(CaptureMTLRasterizationRateMap *)self traceStream];
-  if (v22)
+  traceStream3 = [(CaptureMTLRasterizationRateMap *)self traceStream];
+  if (traceStream3)
   {
-    var0 = v22->var0;
+    var0 = traceStream3->var0;
   }
 
   else
@@ -368,11 +368,11 @@
     var0 = 0;
   }
 
-  v24 = [v6 traceStream];
+  traceStream4 = [bufferCopy traceStream];
 
-  if (v24)
+  if (traceStream4)
   {
-    v25 = *v24;
+    v25 = *traceStream4;
   }
 
   else
@@ -382,7 +382,7 @@
 
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a4;
+  *(v19 + 2) = offset;
   s();
   *v26 = v27;
   *(v26 + 8) = BYTE8(v30);
@@ -419,28 +419,28 @@
 
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)parameterBufferSizeAndAlign
 {
-  v2 = [(MTLRasterizationRateMapSPI *)self->_baseObject parameterBufferSizeAndAlign];
+  parameterBufferSizeAndAlign = [(MTLRasterizationRateMapSPI *)self->_baseObject parameterBufferSizeAndAlign];
   result.var1 = v3;
-  result.var0 = v2;
+  result.var0 = parameterBufferSizeAndAlign;
   return result;
 }
 
-- (CaptureMTLRasterizationRateMap)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLRasterizationRateMap)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLRasterizationRateMap;
   v9 = [(CaptureMTLRasterizationRateMap *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

@@ -1,8 +1,8 @@
 @interface WKVisibilityPropagationView
-- (BOOL)_containsInteractionForProcess:(void *)a3;
+- (BOOL)_containsInteractionForProcess:(void *)process;
 - (id).cxx_construct;
-- (void)propagateVisibilityToProcess:(void *)a3;
-- (void)stopPropagatingVisibilityToProcess:(void *)a3;
+- (void)propagateVisibilityToProcess:(void *)process;
+- (void)stopPropagatingVisibilityToProcess:(void *)process;
 @end
 
 @implementation WKVisibilityPropagationView
@@ -14,12 +14,12 @@
   return self;
 }
 
-- (void)propagateVisibilityToProcess:(void *)a3
+- (void)propagateVisibilityToProcess:(void *)process
 {
   v29 = *MEMORY[0x1E69E9840];
   if (![(WKVisibilityPropagationView *)self _containsInteractionForProcess:?])
   {
-    v5 = *(a3 + 10);
+    v5 = *(process + 10);
     if (v5)
     {
       std::__optional_copy_base<WebKit::ExtensionProcess,false>::__optional_copy_base[abi:sn200100](&v22, v5 + 40);
@@ -33,7 +33,7 @@
           v7 = qword_1ED6416A0;
           if (os_log_type_enabled(qword_1ED6416A0, OS_LOG_TYPE_DEFAULT))
           {
-            v8 = *(a3 + 10);
+            v8 = *(process + 10);
             if (v8)
             {
               LODWORD(v8) = *(v8 + 108);
@@ -46,8 +46,8 @@
             _os_log_impl(&dword_19D52D000, v7, OS_LOG_TYPE_DEFAULT, "Created visibility propagation interaction %@ for process with PID=%d", buf, 0x12u);
           }
 
-          WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a3 + 2, a3);
-          v9 = *(a3 + 1);
+          WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(process + 2, process);
+          v9 = *(process + 1);
           atomic_fetch_add(v9, 1u);
           v10 = v21;
           if (v21)
@@ -127,7 +127,7 @@
   }
 }
 
-- (void)stopPropagatingVisibilityToProcess:(void *)a3
+- (void)stopPropagatingVisibilityToProcess:(void *)process
 {
   v26 = *MEMORY[0x1E69E9840];
   p_processesAndInteractions = &self->_processesAndInteractions;
@@ -144,7 +144,7 @@
     v13 = v12;
     do
     {
-      if (!*m_buffer || ((v14 = *(*m_buffer + 8)) != 0 ? (v15 = v14 == a3) : (v15 = 1), v15))
+      if (!*m_buffer || ((v14 = *(*m_buffer + 8)) != 0 ? (v15 = v14 == process) : (v15 = 1), v15))
       {
         v16 = qword_1ED6416A0;
         if (os_log_type_enabled(qword_1ED6416A0, OS_LOG_TYPE_DEFAULT))
@@ -221,7 +221,7 @@
   p_processesAndInteractions->m_size = m_size - v10;
 }
 
-- (BOOL)_containsInteractionForProcess:(void *)a3
+- (BOOL)_containsInteractionForProcess:(void *)process
 {
   m_size = self->_processesAndInteractions.m_size;
   if (!m_size)
@@ -229,7 +229,7 @@
     return 0;
   }
 
-  for (i = self->_processesAndInteractions.m_buffer; !*i || *(*i + 8) != a3; i += 16)
+  for (i = self->_processesAndInteractions.m_buffer; !*i || *(*i + 8) != process; i += 16)
   {
     if (!--m_size)
     {

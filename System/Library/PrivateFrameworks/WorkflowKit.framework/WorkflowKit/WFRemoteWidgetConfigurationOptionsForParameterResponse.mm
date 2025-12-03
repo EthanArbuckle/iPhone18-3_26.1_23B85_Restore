@@ -1,20 +1,20 @@
 @interface WFRemoteWidgetConfigurationOptionsForParameterResponse
-- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithCoder:(id)a3;
-- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithOptions:(id)a3 error:(id)a4;
+- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithCoder:(id)coder;
+- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithOptions:(id)options error:(id)error;
 - (id)description;
 @end
 
 @implementation WFRemoteWidgetConfigurationOptionsForParameterResponse
 
-- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithCoder:(id)a3
+- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFRemoteWidgetConfigurationOptionsForParameterResponse;
-  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
     options = v5->_options;
     v5->_options = v6;
 
@@ -27,27 +27,27 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFRemoteWidgetConfigurationOptionsForParameterResponse *)self options];
-  v5 = [v4 allItems];
-  v6 = [v5 count];
-  v7 = [(WFRemoteWidgetConfigurationOptionsForParameterResponse *)self options];
-  v8 = [v7 allItems];
-  v9 = [(WFRemoteWidgetConfigurationResponse *)self error];
-  v10 = [v3 stringWithFormat:@"options count: %lu, items: %@, error: %@", v6, v8, v9];
+  options = [(WFRemoteWidgetConfigurationOptionsForParameterResponse *)self options];
+  allItems = [options allItems];
+  v6 = [allItems count];
+  options2 = [(WFRemoteWidgetConfigurationOptionsForParameterResponse *)self options];
+  allItems2 = [options2 allItems];
+  error = [(WFRemoteWidgetConfigurationResponse *)self error];
+  v10 = [v3 stringWithFormat:@"options count: %lu, items: %@, error: %@", v6, allItems2, error];
 
   return v10;
 }
 
-- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithOptions:(id)a3 error:(id)a4
+- (WFRemoteWidgetConfigurationOptionsForParameterResponse)initWithOptions:(id)options error:(id)error
 {
-  v7 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = WFRemoteWidgetConfigurationOptionsForParameterResponse;
-  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:a4];
+  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_options, a3);
+    objc_storeStrong(&v8->_options, options);
     v10 = v9;
   }
 

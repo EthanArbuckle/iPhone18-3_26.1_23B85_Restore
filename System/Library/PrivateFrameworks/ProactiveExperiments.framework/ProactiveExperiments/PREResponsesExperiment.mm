@@ -1,54 +1,54 @@
 @interface PREResponsesExperiment
-+ (BOOL)_isStringEmpty:(id)a3;
-+ (BOOL)_shouldInsertSuggestion:(id)a3 forExistingSuggestions:(id)a4;
-+ (id)_cannedRepliesForLanguage:(id)a3 inputPreferences:(id)a4;
-+ (id)_getConversationHistoryFromRequest:(id)a3;
-+ (id)_getFormattedPREResponseItems:(id)a3 inputPreferences:(id)a4;
-+ (id)_inputMethodStringFrom:(int)a3;
-+ (id)_rawStringsForMessages:(id)a3 excludingTapBacks:(BOOL)a4;
-+ (id)_suggestionsWithDynamicResponseItems:(id)a3 cannedResponseItems:(id)a4 inputPreferences:(id)a5;
++ (BOOL)_isStringEmpty:(id)empty;
++ (BOOL)_shouldInsertSuggestion:(id)suggestion forExistingSuggestions:(id)suggestions;
++ (id)_cannedRepliesForLanguage:(id)language inputPreferences:(id)preferences;
++ (id)_getConversationHistoryFromRequest:(id)request;
++ (id)_getFormattedPREResponseItems:(id)items inputPreferences:(id)preferences;
++ (id)_inputMethodStringFrom:(int)from;
++ (id)_rawStringsForMessages:(id)messages excludingTapBacks:(BOOL)backs;
++ (id)_suggestionsWithDynamicResponseItems:(id)items cannedResponseItems:(id)responseItems inputPreferences:(id)preferences;
 + (id)sharedManager;
-+ (id)stringArrayFromPreResponseItems:(id)a3;
-+ (int)_preInputMethodFrom:(id)a3;
-- (BOOL)shouldUseDefaultRKTreatmentForLanguage:(id)a3;
++ (id)stringArrayFromPreResponseItems:(id)items;
++ (int)_preInputMethodFrom:(id)from;
+- (BOOL)shouldUseDefaultRKTreatmentForLanguage:(id)language;
 - (PREResponsesExperiment)init;
-- (PREResponsesExperiment)initWithExperimentResolver:(id)a3 metricsClient:(id)a4 xpcClient:(id)a5 rkClient:(id)a6 tiPreferencesController:(id)a7;
-- (id)_responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 outgoingMessageHistory:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 time:(id)a8 withLanguage:(id)a9 languageLastChangedDate:(id)a10 recipientHandles:(id)a11 options:(unint64_t)a12 preferredLocale:(id)a13;
-- (id)activeExperimentNameForLanguage:(id)a3;
-- (id)cacheKeyForMessage:(id)a3 maxResponses:(unint64_t)a4 time:(id)a5 language:(id)a6;
+- (PREResponsesExperiment)initWithExperimentResolver:(id)resolver metricsClient:(id)client xpcClient:(id)xpcClient rkClient:(id)rkClient tiPreferencesController:(id)controller;
+- (id)_responsesForMessage:(id)message maximumResponses:(unint64_t)responses outgoingMessageHistory:(id)history forConversationHistory:(id)conversationHistory forContext:(id)context time:(id)time withLanguage:(id)language languageLastChangedDate:(id)self0 recipientHandles:(id)self1 options:(unint64_t)self2 preferredLocale:(id)self3;
+- (id)activeExperimentNameForLanguage:(id)language;
+- (id)cacheKeyForMessage:(id)message maxResponses:(unint64_t)responses time:(id)time language:(id)language;
 - (id)cachedResponsesGeneratedEvent;
-- (id)clippedMessageIfNecessary:(id)a3;
-- (id)fullNonEditableSuggestionsListForMessage:(id)a3 context:(id)a4 additionalSenderMessages:(id)a5 date:(id)a6 keyboardLanguageID:(id)a7 keyboardLanguageLastChangedDate:(id)a8 recipients:(id)a9 includeDynamicSuggestions:(BOOL)a10;
-- (id)handlesFromRecipients:(id)a3;
-- (id)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipientHandles:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10;
-- (id)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipients:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10;
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10;
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipients:(id)a9 options:(unint64_t)a10;
-- (id)suggestionsForRequest:(id)a3;
-- (id)waitForPreResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10;
+- (id)clippedMessageIfNecessary:(id)necessary;
+- (id)fullNonEditableSuggestionsListForMessage:(id)message context:(id)context additionalSenderMessages:(id)messages date:(id)date keyboardLanguageID:(id)d keyboardLanguageLastChangedDate:(id)changedDate recipients:(id)recipients includeDynamicSuggestions:(BOOL)self0;
+- (id)handlesFromRecipients:(id)recipients;
+- (id)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipientHandles:(id)handles outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0;
+- (id)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipients:(id)recipients outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0;
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0;
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipients:(id)recipients options:(unint64_t)self0;
+- (id)suggestionsForRequest:(id)request;
+- (id)waitForPreResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0;
 - (unint64_t)mode;
-- (void)_responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 outgoingMessageHistory:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 time:(id)a8 withLanguage:(id)a9 languageLastChangedDate:(id)a10 recipientHandles:(id)a11 options:(unint64_t)a12 preferredLocale:(id)a13 completionBlock:(id)a14;
-- (void)fullNonEditableSuggestionsListForMessage:(id)a3 context:(id)a4 additionalSenderMessages:(id)a5 date:(id)a6 keyboardLanguageID:(id)a7 keyboardLanguageLastChangedDate:(id)a8 recipients:(id)a9 includeDynamicSuggestions:(BOOL)a10 completion:(id)a11;
-- (void)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipientHandles:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10 completion:(id)a11;
-- (void)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipients:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10 completion:(id)a11;
-- (void)performWithResolvedModelAssetPathsUsingLanguage:(id)a3 block:(id)a4;
-- (void)preResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10 completionBlock:(id)a11;
-- (void)predictionsForRequest:(id)a3 heads:(id)a4 completion:(id)a5;
-- (void)predictionsForRequest:(id)a3 plistPath:(id)a4 espressoBinPath:(id)a5 vocabPath:(id)a6 heads:(id)a7 completion:(id)a8;
+- (void)_responsesForMessage:(id)message maximumResponses:(unint64_t)responses outgoingMessageHistory:(id)history forConversationHistory:(id)conversationHistory forContext:(id)context time:(id)time withLanguage:(id)language languageLastChangedDate:(id)self0 recipientHandles:(id)self1 options:(unint64_t)self2 preferredLocale:(id)self3 completionBlock:(id)self4;
+- (void)fullNonEditableSuggestionsListForMessage:(id)message context:(id)context additionalSenderMessages:(id)messages date:(id)date keyboardLanguageID:(id)d keyboardLanguageLastChangedDate:(id)changedDate recipients:(id)recipients includeDynamicSuggestions:(BOOL)self0 completion:(id)self1;
+- (void)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipientHandles:(id)handles outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0 completion:(id)self1;
+- (void)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipients:(id)recipients outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0 completion:(id)self1;
+- (void)performWithResolvedModelAssetPathsUsingLanguage:(id)language block:(id)block;
+- (void)preResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0 completionBlock:(id)self1;
+- (void)predictionsForRequest:(id)request heads:(id)heads completion:(id)completion;
+- (void)predictionsForRequest:(id)request plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads completion:(id)completion;
 - (void)primeResponsesExperimentsIfNeeded;
-- (void)registerResponse:(id)a3 forMessage:(id)a4 time:(id)a5 metadata:(id)a6 withLanguage:(id)a7;
-- (void)registerResponseDisplayedAtIndex:(id)a3;
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10 completionBlock:(id)a11;
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipients:(id)a9 options:(unint64_t)a10 completionBlock:(id)a11;
-- (void)setCachedResponsesGeneratedEvent:(id)a3;
-- (void)suggestionsForRequest:(id)a3 withCompletion:(id)a4;
+- (void)registerResponse:(id)response forMessage:(id)message time:(id)time metadata:(id)metadata withLanguage:(id)language;
+- (void)registerResponseDisplayedAtIndex:(id)index;
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0 completionBlock:(id)self1;
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipients:(id)recipients options:(unint64_t)self0 completionBlock:(id)self1;
+- (void)setCachedResponsesGeneratedEvent:(id)event;
+- (void)suggestionsForRequest:(id)request withCompletion:(id)completion;
 @end
 
 @implementation PREResponsesExperiment
 
-- (BOOL)shouldUseDefaultRKTreatmentForLanguage:(id)a3
+- (BOOL)shouldUseDefaultRKTreatmentForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = pre_signpost_handle();
   ptr = 7;
   v6 = os_signpost_id_make_with_pointer(v5, &ptr);
@@ -61,7 +61,7 @@
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PRE-shouldUseDefaultRKTreatment", "Start", buf, 2u);
   }
 
-  v9 = [(PREResponsesExperiment *)self activeExperimentNameForLanguage:v4];
+  v9 = [(PREResponsesExperiment *)self activeExperimentNameForLanguage:languageCopy];
 
   v10 = [v9 isEqualToString:@"DEFAULT_RESPONSE_KIT"];
   v11 = pre_signpost_handle();
@@ -75,11 +75,11 @@
   return v10;
 }
 
-- (id)handlesFromRecipients:(id)a3
+- (id)handlesFromRecipients:(id)recipients
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  recipientsCopy = recipients;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(recipientsCopy, "count")}];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -102,7 +102,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v3;
+  v7 = recipientsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v8)
   {
@@ -120,28 +120,28 @@
         v11 = *(*(&v17 + 1) + 8 * v10);
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 rawAddress];
+          rawAddress = [v11 rawAddress];
 
-          if (!v12)
+          if (!rawAddress)
           {
             goto LABEL_14;
           }
 
-          v13 = [v11 rawAddress];
-          [v4 addObject:v13];
+          rawAddress2 = [v11 rawAddress];
+          [v4 addObject:rawAddress2];
         }
 
         else
         {
-          v13 = pre_responses_handle();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+          rawAddress2 = pre_responses_handle();
+          if (os_log_type_enabled(rawAddress2, OS_LOG_TYPE_FAULT))
           {
             v14 = objc_opt_class();
             *buf = 138543619;
             *&buf[4] = v14;
             *&buf[12] = 2117;
             *&buf[14] = v11;
-            _os_log_fault_impl(&dword_260CE3000, v13, OS_LOG_TYPE_FAULT, "PREResponsesExperiment unexpectedly received unknown object %{public}@ (%{sensitive}@) when expecting CKEntity", buf, 0x16u);
+            _os_log_fault_impl(&dword_260CE3000, rawAddress2, OS_LOG_TYPE_FAULT, "PREResponsesExperiment unexpectedly received unknown object %{public}@ (%{sensitive}@) when expecting CKEntity", buf, 0x16u);
           }
         }
 
@@ -161,14 +161,14 @@ LABEL_14:
   return v4;
 }
 
-- (id)waitForPreResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10
+- (id)waitForPreResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  messageCopy = message;
+  historyCopy = history;
+  contextCopy = context;
+  timeCopy = time;
+  languageCopy = language;
+  handlesCopy = handles;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -183,8 +183,8 @@ LABEL_14:
   v29 = &v30;
   v22 = v21;
   v28 = v22;
-  v23 = v15;
-  [(PREResponsesExperiment *)self preResponseItemsForMessage:v15 maximumResponses:a4 forConversationHistory:v16 forContext:v17 time:v18 withLanguage:v19 recipientHandles:v20 options:a10 completionBlock:v27];
+  v23 = messageCopy;
+  [(PREResponsesExperiment *)self preResponseItemsForMessage:messageCopy maximumResponses:responses forConversationHistory:historyCopy forContext:contextCopy time:timeCopy withLanguage:languageCopy recipientHandles:handlesCopy options:options completionBlock:v27];
   [MEMORY[0x277D425A0] waitForSemaphore:v22 timeoutSeconds:1.0];
   v24 = v31[5];
 
@@ -234,22 +234,22 @@ void __131__PREResponsesExperiment_registerGenerationWithPreResponseItems_langua
 - (void)primeResponsesExperimentsIfNeeded
 {
   v2 = [(PREResponsesExperiment *)self waitForPreResponseItemsForMessage:@"wake up maximumResponses:suggestd!" forConversationHistory:0 forContext:0 time:0 withLanguage:0 recipientHandles:0 options:0, 0];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v5 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v6 = [v5 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  if (v4)
+  if (localeIdentifier)
   {
     v7 = +[PREExperimentResolver sharedInstance];
-    [v7 warmupForLocale:v4];
+    [v7 warmupForLocale:localeIdentifier];
   }
 
-  if (v6 && ([v4 isEqualToString:v6] & 1) == 0)
+  if (firstObject && ([localeIdentifier isEqualToString:firstObject] & 1) == 0)
   {
     v8 = +[PREExperimentResolver sharedInstance];
-    [v8 warmupForLocale:v6];
+    [v8 warmupForLocale:firstObject];
   }
 
   v9 = pre_responses_handle();
@@ -260,10 +260,10 @@ void __131__PREResponsesExperiment_registerGenerationWithPreResponseItems_langua
   }
 }
 
-- (void)registerResponseDisplayedAtIndex:(id)a3
+- (void)registerResponseDisplayedAtIndex:(id)index
 {
-  v4 = a3;
-  if (v4)
+  indexCopy = index;
+  if (indexCopy)
   {
     objc_initWeak(location, self);
     v8 = MEMORY[0x277D85DD0];
@@ -271,7 +271,7 @@ void __131__PREResponsesExperiment_registerGenerationWithPreResponseItems_langua
     v10 = __59__PREResponsesExperiment_registerResponseDisplayedAtIndex___block_invoke;
     v11 = &unk_279ABB310;
     objc_copyWeak(&v13, location);
-    v12 = v4;
+    v12 = indexCopy;
     v5 = MEMORY[0x2666ECBF0](&v8);
     v6 = dispatch_get_global_queue(9, 0);
     [MEMORY[0x277D425A0] runAsyncOnQueue:v6 afterDelaySeconds:v5 block:{0.5, v8, v9, v10, v11}];
@@ -307,14 +307,14 @@ void __59__PREResponsesExperiment_registerResponseDisplayedAtIndex___block_invok
   }
 }
 
-- (void)registerResponse:(id)a3 forMessage:(id)a4 time:(id)a5 metadata:(id)a6 withLanguage:(id)a7
+- (void)registerResponse:(id)response forMessage:(id)message time:(id)time metadata:(id)metadata withLanguage:(id)language
 {
   v73 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v12 = a4;
-  v43 = a5;
-  v13 = a6;
-  v14 = a7;
+  responseCopy = response;
+  messageCopy = message;
+  timeCopy = time;
+  metadataCopy = metadata;
+  languageCopy = language;
   v15 = pre_signpost_handle();
   ptr = 7;
   spid = os_signpost_id_make_with_pointer(v15, &ptr);
@@ -327,32 +327,32 @@ void __59__PREResponsesExperiment_registerResponseDisplayedAtIndex___block_invok
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v17, OS_SIGNPOST_INTERVAL_BEGIN, spid, "PRE-RegisterEngagementPreparation", "Start", buf, 2u);
   }
 
-  v18 = [(PREResponsesExperiment *)self cachedResponsesGeneratedEvent];
-  v19 = [v18 language];
-  v20 = v19;
-  if (v19)
+  cachedResponsesGeneratedEvent = [(PREResponsesExperiment *)self cachedResponsesGeneratedEvent];
+  language = [cachedResponsesGeneratedEvent language];
+  v20 = language;
+  if (language)
   {
-    v46 = v19;
+    v46 = language;
   }
 
   else
   {
     v21 = +[PRELocaleDetection sharedInstance];
-    v46 = [v21 localeForMessage:v12 outgoingMessageHistory:0 defaultLocale:v14 defaultLocaleLastChangedDate:0 sender:0];
+    v46 = [v21 localeForMessage:messageCopy outgoingMessageHistory:0 defaultLocale:languageCopy defaultLocaleLastChangedDate:0 sender:0];
   }
 
   v44 = [(PREResponsesExperiment *)self shouldUseDefaultRKTreatmentForLanguage:v46];
-  v22 = [(PREResponsesExperiment *)self clippedMessageIfNecessary:v47];
-  if (v13)
+  v22 = [(PREResponsesExperiment *)self clippedMessageIfNecessary:responseCopy];
+  if (metadataCopy)
   {
-    v23 = [v13 objectForKeyedSubscript:*MEMORY[0x277D46C20]];
+    v23 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277D46C20]];
     v24 = v23;
     if (v23)
     {
       v25 = v23;
     }
 
-    v26 = [v13 objectForKeyedSubscript:*MEMORY[0x277D46C28]];
+    v26 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277D46C28]];
     if (v26)
     {
       v27 = [objc_opt_class() _preInputMethodFrom:v26];
@@ -377,25 +377,25 @@ void __59__PREResponsesExperiment_registerResponseDisplayedAtIndex___block_invok
     *buf = 138412802;
     *&buf[4] = v24;
     *&buf[12] = 2112;
-    *&buf[14] = v14;
+    *&buf[14] = languageCopy;
     *&buf[22] = 2112;
     v70 = v29;
     _os_log_impl(&dword_260CE3000, v28, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment user engaged prediction at position %@ with language %@ and method %@", buf, 0x20u);
   }
 
-  v49 = [(PREResponsesExperiment *)self cachedResponsesGeneratedEvent];
+  cachedResponsesGeneratedEvent2 = [(PREResponsesExperiment *)self cachedResponsesGeneratedEvent];
   v30 = objc_opt_new();
-  [v30 setResponsesGeneratedEvent:v49];
+  [v30 setResponsesGeneratedEvent:cachedResponsesGeneratedEvent2];
   [v30 setInputMethod:v27];
   [v30 setSelectedResponse:v22];
   [v30 setSelectedPosition:v24];
-  if (v49)
+  if (cachedResponsesGeneratedEvent2)
   {
     v31 = mach_absolute_time();
-    [v30 setTimeToTap:{PREMachTimeToMilliseconds(v31 - objc_msgSend(v49, "responseGenerationTime"))}];
+    [v30 setTimeToTap:{PREMachTimeToMilliseconds(v31 - objc_msgSend(cachedResponsesGeneratedEvent2, "responseGenerationTime"))}];
   }
 
-  [v30 setHasQuestionMark:{objc_msgSend(v12, "containsString:", @"?"}];
+  [v30 setHasQuestionMark:{objc_msgSend(messageCopy, "containsString:", @"?"}];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -414,7 +414,7 @@ void __59__PREResponsesExperiment_registerResponseDisplayedAtIndex___block_invok
   v65[3] = &unk_279ABB2C0;
   v65[4] = buf;
   v65[5] = v66;
-  [(PREResponsesExperiment *)self performWithResolvedModelAssetPathsUsingLanguage:v14 block:v65];
+  [(PREResponsesExperiment *)self performWithResolvedModelAssetPathsUsingLanguage:languageCopy block:v65];
   objc_initWeak(&location, self);
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
@@ -423,13 +423,13 @@ void __59__PREResponsesExperiment_registerResponseDisplayedAtIndex___block_invok
   objc_copyWeak(&v61, &location);
   v63 = v44;
   v51[4] = self;
-  v48 = v47;
+  v48 = responseCopy;
   v52 = v48;
-  v32 = v12;
+  v32 = messageCopy;
   v53 = v32;
-  v33 = v13;
+  v33 = metadataCopy;
   v54 = v33;
-  v34 = v14;
+  v34 = languageCopy;
   v55 = v34;
   v35 = v30;
   v56 = v35;
@@ -514,16 +514,16 @@ void __81__PREResponsesExperiment_registerResponse_forMessage_time_metadata_with
   }
 }
 
-- (void)preResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10 completionBlock:(id)a11
+- (void)preResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0 completionBlock:(id)self1
 {
   v107 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v51 = a6;
-  v56 = a7;
-  v58 = a8;
-  v52 = a9;
-  v55 = a11;
+  messageCopy = message;
+  historyCopy = history;
+  contextCopy = context;
+  timeCopy = time;
+  languageCopy = language;
+  handlesCopy = handles;
+  blockCopy = block;
   v18 = pre_signpost_handle();
   ptr = 7;
   spid = os_signpost_id_make_with_pointer(v18, &ptr);
@@ -552,7 +552,7 @@ void __81__PREResponsesExperiment_registerResponse_forMessage_time_metadata_with
     _os_log_impl(&dword_260CE3000, v21, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment async api called", &v102, 2u);
   }
 
-  v57 = [(PREResponsesExperiment *)self clippedMessageIfNecessary:v16];
+  v57 = [(PREResponsesExperiment *)self clippedMessageIfNecessary:messageCopy];
 
   v22 = pre_signpost_handle();
   v93 = 7;
@@ -566,7 +566,7 @@ void __81__PREResponsesExperiment_registerResponse_forMessage_time_metadata_with
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "PRE-ReadSharedCache", "Start", &v102, 2u);
   }
 
-  v26 = [(PREResponsesExperiment *)self cacheKeyForMessage:v57 maxResponses:a4 time:v56 language:v58];
+  v26 = [(PREResponsesExperiment *)self cacheKeyForMessage:v57 maxResponses:responses time:timeCopy language:languageCopy];
   v27 = [(_PASLRUCache *)self->_responsesGeneratedCache objectForKey:v26];
   v50 = v26;
   v28 = pre_signpost_handle();
@@ -597,8 +597,8 @@ void __81__PREResponsesExperiment_registerResponse_forMessage_time_metadata_with
       _os_signpost_emit_with_name_impl(&dword_260CE3000, v34, OS_SIGNPOST_INTERVAL_END, spid, "PRE-AsyncTotalResponsesForMessage", "Completed", &v102, 2u);
     }
 
-    v55[2](v55, v27);
-    [(PREResponsesExperiment *)self registerGenerationWithPreResponseItems:v27 language:v58 isCached:1 responseTimePerf:v32 promptMessage:v57 generationStatus:2];
+    blockCopy[2](blockCopy, v27);
+    [(PREResponsesExperiment *)self registerGenerationWithPreResponseItems:v27 language:languageCopy isCached:1 responseTimePerf:v32 promptMessage:v57 generationStatus:2];
   }
 
   else
@@ -653,15 +653,15 @@ void __81__PREResponsesExperiment_registerResponse_forMessage_time_metadata_with
     v68[5] = &v81;
     v68[6] = &v75;
     v68[7] = &v69;
-    [(PREResponsesExperiment *)self performWithResolvedModelAssetPathsUsingLanguage:v58 block:v68];
+    [(PREResponsesExperiment *)self performWithResolvedModelAssetPathsUsingLanguage:languageCopy block:v68];
     v48 = *(*(&v102 + 1) + 40);
     xpcClient = self->_xpcClient;
     v46 = v76[5];
     v47 = v82[5];
     v40 = v70[5];
-    v41 = [(PREResponsesExperiment *)self registerDisplayed];
-    v42 = [(PREResponsesExperiment *)self includeCustomResponses];
-    v43 = [(PREResponsesExperiment *)self includeResponsesToRobots];
+    registerDisplayed = [(PREResponsesExperiment *)self registerDisplayed];
+    includeCustomResponses = [(PREResponsesExperiment *)self includeCustomResponses];
+    includeResponsesToRobots = [(PREResponsesExperiment *)self includeResponsesToRobots];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __163__PREResponsesExperiment_preResponseItemsForMessage_maximumResponses_forConversationHistory_forContext_time_withLanguage_recipientHandles_options_completionBlock___block_invoke_2;
@@ -669,19 +669,19 @@ void __81__PREResponsesExperiment_registerResponse_forMessage_time_metadata_with
     v59[4] = self;
     v65 = &v88;
     v60 = v57;
-    v67[1] = a4;
-    v61 = v51;
-    v62 = v58;
-    v67[2] = a10;
+    v67[1] = responses;
+    v61 = contextCopy;
+    v62 = languageCopy;
+    v67[2] = options;
     objc_copyWeak(v67, &location);
     v66 = buf;
     v67[3] = spid;
-    v64 = v55;
+    v64 = blockCopy;
     v63 = v50;
-    BYTE2(v45) = v43;
-    BYTE1(v45) = v42;
-    LOBYTE(v45) = v41;
-    [PREResponsesProtocol preResponseItemsForMessage:"preResponseItemsForMessage:maximumResponses:conversationTurns:context:time:language:recipientHandles:modelFilePath:modelConfigPath:espressoBinFilePath:vocabFilePath:registerDisplayed:includeCustomResponses:includeResponsesToRobots:completion:" maximumResponses:v60 conversationTurns:a4 context:v17 time:v61 language:v56 recipientHandles:v62 modelFilePath:v52 modelConfigPath:v48 espressoBinFilePath:v47 vocabFilePath:v46 registerDisplayed:v40 includeCustomResponses:v45 includeResponsesToRobots:v59 completion:?];
+    BYTE2(v45) = includeResponsesToRobots;
+    BYTE1(v45) = includeCustomResponses;
+    LOBYTE(v45) = registerDisplayed;
+    [PREResponsesProtocol preResponseItemsForMessage:"preResponseItemsForMessage:maximumResponses:conversationTurns:context:time:language:recipientHandles:modelFilePath:modelConfigPath:espressoBinFilePath:vocabFilePath:registerDisplayed:includeCustomResponses:includeResponsesToRobots:completion:" maximumResponses:v60 conversationTurns:responses context:historyCopy time:v61 language:timeCopy recipientHandles:v62 modelFilePath:handlesCopy modelConfigPath:v48 espressoBinFilePath:v47 vocabFilePath:v46 registerDisplayed:v40 includeCustomResponses:v45 includeResponsesToRobots:v59 completion:?];
 
     objc_destroyWeak(v67);
     _Block_object_dispose(&v69, 8);
@@ -890,32 +890,32 @@ void __163__PREResponsesExperiment_preResponseItemsForMessage_maximumResponses_f
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)predictionsForRequest:(id)a3 plistPath:(id)a4 espressoBinPath:(id)a5 vocabPath:(id)a6 heads:(id)a7 completion:(id)a8
+- (void)predictionsForRequest:(id)request plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [PREResponsesExperiment _getConversationHistoryFromRequest:a3];
-  v20 = [v19 lastObject];
-  v21 = [v20 text];
+  completionCopy = completion;
+  headsCopy = heads;
+  vocabPathCopy = vocabPath;
+  binPathCopy = binPath;
+  pathCopy = path;
+  v19 = [PREResponsesExperiment _getConversationHistoryFromRequest:request];
+  lastObject = [v19 lastObject];
+  text = [lastObject text];
 
   xpcClient = self->_xpcClient;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __101__PREResponsesExperiment_predictionsForRequest_plistPath_espressoBinPath_vocabPath_heads_completion___block_invoke;
   v24[3] = &unk_279ABB248;
-  v25 = v14;
-  v23 = v14;
-  [(PREResponsesProtocol *)xpcClient predictForMessage:v21 conversationTurns:v19 language:@"en" plistPath:v18 espressoBinPath:v17 vocabPath:v16 heads:v15 completion:v24];
+  v25 = completionCopy;
+  v23 = completionCopy;
+  [(PREResponsesProtocol *)xpcClient predictForMessage:text conversationTurns:v19 language:@"en" plistPath:pathCopy espressoBinPath:binPathCopy vocabPath:vocabPathCopy heads:headsCopy completion:v24];
 }
 
-- (void)predictionsForRequest:(id)a3 heads:(id)a4 completion:(id)a5
+- (void)predictionsForRequest:(id)request heads:(id)heads completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  headsCopy = heads;
+  completionCopy = completion;
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x3032000000;
@@ -949,9 +949,9 @@ void __163__PREResponsesExperiment_preResponseItemsForMessage_maximumResponses_f
   v21[6] = &v28;
   v21[7] = &v22;
   [(PREResponsesExperiment *)self performWithResolvedModelAssetPathsUsingLanguage:@"en" block:v21];
-  v11 = [PREResponsesExperiment _getConversationHistoryFromRequest:v8];
-  v12 = [v11 lastObject];
-  v13 = [v12 text];
+  v11 = [PREResponsesExperiment _getConversationHistoryFromRequest:requestCopy];
+  lastObject = [v11 lastObject];
+  text = [lastObject text];
 
   xpcClient = self->_xpcClient;
   v15 = v35[5];
@@ -961,9 +961,9 @@ void __163__PREResponsesExperiment_preResponseItemsForMessage_maximumResponses_f
   v19[1] = 3221225472;
   v19[2] = __65__PREResponsesExperiment_predictionsForRequest_heads_completion___block_invoke_2;
   v19[3] = &unk_279ABB248;
-  v18 = v10;
+  v18 = completionCopy;
   v20 = v18;
-  [(PREResponsesProtocol *)xpcClient predictForMessage:v13 conversationTurns:v11 language:@"en" plistPath:v15 espressoBinPath:v16 vocabPath:v17 heads:v9 completion:v19];
+  [(PREResponsesProtocol *)xpcClient predictForMessage:text conversationTurns:v11 language:@"en" plistPath:v15 espressoBinPath:v16 vocabPath:v17 heads:headsCopy completion:v19];
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v28, 8);
@@ -998,64 +998,64 @@ void __65__PREResponsesExperiment_predictionsForRequest_heads_completion___block
   *(v21 + 40) = v12;
 }
 
-- (void)performWithResolvedModelAssetPathsUsingLanguage:(id)a3 block:(id)a4
+- (void)performWithResolvedModelAssetPathsUsingLanguage:(id)language block:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v6 = a4;
+  languageCopy = language;
+  blockCopy = block;
   if ([(PREResponsesExperiment *)self mode]== 2)
   {
     v7 = [(NSUserDefaults *)self->_defaults stringForKey:@"experimentModelUserDirectory"];
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = v8;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v9 = defaultManager;
     if (v7)
     {
-      if (([v8 isReadableFileAtPath:v7]& 1) != 0)
+      if (([defaultManager isReadableFileAtPath:v7]& 1) != 0)
       {
         v10 = [v7 stringByAppendingPathComponent:@"model.chunk"];
         v26 = v10;
         if ([v9 isReadableFileAtPath:v10])
         {
-          v11 = v10;
+          inferenceModelFilePath = v10;
         }
 
         else
         {
-          v11 = 0;
+          inferenceModelFilePath = 0;
         }
 
         v20 = [v7 stringByAppendingPathComponent:@"config.plist"];
         v25 = v20;
         if ([v9 isReadableFileAtPath:v20])
         {
-          v14 = v20;
+          inferenceModelConfigPath = v20;
         }
 
         else
         {
-          v14 = 0;
+          inferenceModelConfigPath = 0;
         }
 
         v21 = [v7 stringByAppendingPathComponent:@"espresso.bin"];
         if ([v9 isReadableFileAtPath:v21])
         {
-          v13 = v21;
+          espressoBinFilePath = v21;
         }
 
         else
         {
-          v13 = 0;
+          espressoBinFilePath = 0;
         }
 
         v22 = [v7 stringByAppendingPathComponent:@"vocab.trie"];
         if ([v9 isReadableFileAtPath:v22])
         {
-          v12 = v22;
+          vocabFilePath = v22;
         }
 
         else
         {
-          v12 = 0;
+          vocabFilePath = 0;
         }
 
         goto LABEL_28;
@@ -1081,10 +1081,10 @@ void __65__PREResponsesExperiment_predictionsForRequest_heads_completion___block
       v7 = 0;
     }
 
-    v12 = 0;
-    v13 = 0;
-    v14 = 0;
-    v11 = 0;
+    vocabFilePath = 0;
+    espressoBinFilePath = 0;
+    inferenceModelConfigPath = 0;
+    inferenceModelFilePath = 0;
 LABEL_28:
 
     goto LABEL_29;
@@ -1092,23 +1092,23 @@ LABEL_28:
 
   if ([(PREResponsesExperiment *)self mode]!= 1)
   {
-    v7 = [(PREExperimentResolverProtocol *)self->_experimentResolver getResponseSuggestionsExperimentConfig:v28 shouldDownloadAssets:1];
-    v11 = [v7 inferenceModelFilePath];
-    v14 = [v7 inferenceModelConfigPath];
-    v13 = [v7 espressoBinFilePath];
-    v12 = [v7 vocabFilePath];
+    v7 = [(PREExperimentResolverProtocol *)self->_experimentResolver getResponseSuggestionsExperimentConfig:languageCopy shouldDownloadAssets:1];
+    inferenceModelFilePath = [v7 inferenceModelFilePath];
+    inferenceModelConfigPath = [v7 inferenceModelConfigPath];
+    espressoBinFilePath = [v7 espressoBinFilePath];
+    vocabFilePath = [v7 vocabFilePath];
     v9 = pre_responses_handle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v7 experimentIdentifiers];
-      v15 = [v27 experimentId];
-      v24 = [v7 experimentIdentifiers];
-      v16 = [v24 treatmentId];
-      v17 = [(PREResponsesExperiment *)self activeExperimentNameForLanguage:v28];
+      experimentIdentifiers = [v7 experimentIdentifiers];
+      experimentId = [experimentIdentifiers experimentId];
+      experimentIdentifiers2 = [v7 experimentIdentifiers];
+      treatmentId = [experimentIdentifiers2 treatmentId];
+      v17 = [(PREResponsesExperiment *)self activeExperimentNameForLanguage:languageCopy];
       *buf = 138412802;
-      v30 = v15;
+      v30 = experimentId;
       v31 = 2112;
-      v32 = v16;
+      v32 = treatmentId;
       v33 = 2112;
       v34 = v17;
       _os_log_impl(&dword_260CE3000, v9, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment performWithResolvedModelAssets api is fetching experimental responses with experiment %@, treatment %@, model %@", buf, 0x20u);
@@ -1117,29 +1117,29 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v12 = 0;
-  v13 = 0;
-  v14 = 0;
-  v11 = 0;
+  vocabFilePath = 0;
+  espressoBinFilePath = 0;
+  inferenceModelConfigPath = 0;
+  inferenceModelFilePath = 0;
 LABEL_29:
-  v6[2](v6, v11, v14, v13, v12);
+  blockCopy[2](blockCopy, inferenceModelFilePath, inferenceModelConfigPath, espressoBinFilePath, vocabFilePath);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 outgoingMessageHistory:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 time:(id)a8 withLanguage:(id)a9 languageLastChangedDate:(id)a10 recipientHandles:(id)a11 options:(unint64_t)a12 preferredLocale:(id)a13 completionBlock:(id)a14
+- (void)_responsesForMessage:(id)message maximumResponses:(unint64_t)responses outgoingMessageHistory:(id)history forConversationHistory:(id)conversationHistory forContext:(id)context time:(id)time withLanguage:(id)language languageLastChangedDate:(id)self0 recipientHandles:(id)self1 options:(unint64_t)self2 preferredLocale:(id)self3 completionBlock:(id)self4
 {
-  v53 = a3;
-  v19 = a5;
-  v56 = a6;
-  v57 = a7;
-  v55 = a8;
-  v54 = a9;
-  v52 = a10;
-  v20 = a11;
-  v21 = a13;
-  v22 = a14;
-  if ([objc_opt_class() _isPreferredLocaleValid:v21])
+  messageCopy = message;
+  historyCopy = history;
+  conversationHistoryCopy = conversationHistory;
+  contextCopy = context;
+  timeCopy = time;
+  languageCopy = language;
+  dateCopy = date;
+  handlesCopy = handles;
+  localeCopy = locale;
+  blockCopy = block;
+  if ([objc_opt_class() _isPreferredLocaleValid:localeCopy])
   {
     v23 = pre_signpost_handle();
     ptr[0] = 7;
@@ -1165,10 +1165,10 @@ LABEL_29:
     v81 = @"async-responsesForMessage";
     v82 = mach_absolute_time();
     v83 = 0;
-    [MEMORY[0x277D3A248] languageForLocaleIdentifier:v21];
-    v50 = v28 = v53;
+    [MEMORY[0x277D3A248] languageForLocaleIdentifier:localeCopy];
+    v50 = v28 = messageCopy;
     v29 = [(PREResponsesExperiment *)self shouldUseDefaultRKTreatmentForLanguage:v50];
-    if ([objc_opt_class() _isStringEmpty:v53])
+    if ([objc_opt_class() _isStringEmpty:messageCopy])
     {
       v30 = pre_responses_handle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1177,7 +1177,7 @@ LABEL_29:
         _os_log_impl(&dword_260CE3000, v30, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment responsesForMessage async received null message, returning empty array", v72, 2u);
       }
 
-      v22[2](v22, MEMORY[0x277CBEBF8]);
+      blockCopy[2](blockCopy, MEMORY[0x277CBEBF8]);
       v31 = pre_signpost_handle();
       v32 = v31;
       if (v27 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v31))
@@ -1188,7 +1188,7 @@ LABEL_29:
       *v72 = 0;
     }
 
-    else if (v53 && [v19 count] && (objc_msgSend(v19, "firstObject"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v53, "isEqualToString:", v33), v33, v34))
+    else if (messageCopy && [historyCopy count] && (objc_msgSend(historyCopy, "firstObject"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(messageCopy, "isEqualToString:", v33), v33, v34))
     {
       v35 = pre_responses_handle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -1197,7 +1197,7 @@ LABEL_29:
         _os_log_impl(&dword_260CE3000, v35, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment responsesForMessage async received message exactly matching first message in outgoing history; treating prompt as outgoing message and returning empty array", v72, 2u);
       }
 
-      v22[2](v22, MEMORY[0x277CBEBF8]);
+      blockCopy[2](blockCopy, MEMORY[0x277CBEBF8]);
       v36 = pre_signpost_handle();
       v32 = v36;
       if (v27 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v36))
@@ -1211,7 +1211,7 @@ LABEL_29:
     else
     {
       v37 = +[PRELocaleDetection sharedInstance];
-      v38 = [v37 isLanguageMismatchedForMessage:v53 withLocaleIdentifier:v21];
+      v38 = [v37 isLanguageMismatchedForMessage:messageCopy withLocaleIdentifier:localeCopy];
 
       if (!v38)
       {
@@ -1250,12 +1250,12 @@ LABEL_29:
           objc_copyWeak(v69, &location);
           v67 = v72;
           v69[1] = spid;
-          v63 = v54;
+          v63 = languageCopy;
           v68 = buf;
-          v66 = v22;
+          v66 = blockCopy;
           v64 = v50;
-          v65 = v53;
-          [(RKMessageResponseManager *)rkClient responsesForMessage:v65 maximumResponses:a4 forContext:v57 withLanguage:v64 options:a12 completionBlock:v62];
+          v65 = messageCopy;
+          [(RKMessageResponseManager *)rkClient responsesForMessage:v65 maximumResponses:responses forContext:contextCopy withLanguage:v64 options:options completionBlock:v62];
 
           objc_destroyWeak(v69);
           _Block_object_dispose(v72, 8);
@@ -1270,10 +1270,10 @@ LABEL_29:
           v58[2] = __220__PREResponsesExperiment__responsesForMessage_maximumResponses_outgoingMessageHistory_forConversationHistory_forContext_time_withLanguage_languageLastChangedDate_recipientHandles_options_preferredLocale_completionBlock___block_invoke_316;
           v58[3] = &unk_279ABB1D8;
           objc_copyWeak(v61, v72);
-          v59 = v22;
+          v59 = blockCopy;
           v60 = buf;
           v61[1] = spid;
-          [(PREResponsesExperiment *)self preResponseItemsForMessage:v53 maximumResponses:a4 forConversationHistory:v56 forContext:v57 time:v55 withLanguage:v50 recipientHandles:v20 options:a12 completionBlock:v58];
+          [(PREResponsesExperiment *)self preResponseItemsForMessage:messageCopy maximumResponses:responses forConversationHistory:conversationHistoryCopy forContext:contextCopy time:timeCopy withLanguage:v50 recipientHandles:handlesCopy options:options completionBlock:v58];
 
           objc_destroyWeak(v61);
           p_location = v72;
@@ -1290,7 +1290,7 @@ LABEL_29:
         _os_log_impl(&dword_260CE3000, v39, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment responsesForMessage async detected language mismatch between prompt and previous outgoing messages in conversation, returning empty array", v72, 2u);
       }
 
-      v22[2](v22, MEMORY[0x277CBEBF8]);
+      blockCopy[2](blockCopy, MEMORY[0x277CBEBF8]);
       v40 = pre_signpost_handle();
       v32 = v40;
       if (v27 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v40))
@@ -1311,8 +1311,8 @@ LABEL_37:
     goto LABEL_27;
   }
 
-  v22[2](v22, MEMORY[0x277CBEBF8]);
-  v28 = v53;
+  blockCopy[2](blockCopy, MEMORY[0x277CBEBF8]);
+  v28 = messageCopy;
 LABEL_38:
 }
 
@@ -1385,46 +1385,46 @@ void __220__PREResponsesExperiment__responsesForMessage_maximumResponses_outgoin
   }
 }
 
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10 completionBlock:(id)a11
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0 completionBlock:(id)self1
 {
-  v17 = a11;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a3;
+  blockCopy = block;
+  handlesCopy = handles;
+  languageCopy = language;
+  timeCopy = time;
+  contextCopy = context;
+  historyCopy = history;
+  messageCopy = message;
   v24 = +[PRELocaleDetection sharedInstance];
-  v26 = [v24 localeForMessage:v23 outgoingMessageHistory:0 defaultLocale:v19 defaultLocaleLastChangedDate:0 sender:v21];
+  v26 = [v24 localeForMessage:messageCopy outgoingMessageHistory:0 defaultLocale:languageCopy defaultLocaleLastChangedDate:0 sender:contextCopy];
 
-  [(PREResponsesExperiment *)self _responsesForMessage:v23 maximumResponses:a4 outgoingMessageHistory:0 forConversationHistory:v22 forContext:v21 time:v20 withLanguage:v19 languageLastChangedDate:0 recipientHandles:v18 options:a10 preferredLocale:v26 completionBlock:v17];
+  [(PREResponsesExperiment *)self _responsesForMessage:messageCopy maximumResponses:responses outgoingMessageHistory:0 forConversationHistory:historyCopy forContext:contextCopy time:timeCopy withLanguage:languageCopy languageLastChangedDate:0 recipientHandles:handlesCopy options:options preferredLocale:v26 completionBlock:blockCopy];
 }
 
-- (void)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipients:(id)a9 options:(unint64_t)a10 completionBlock:(id)a11
+- (void)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipients:(id)recipients options:(unint64_t)self0 completionBlock:(id)self1
 {
-  v18 = a11;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a3;
-  v24 = [(PREResponsesExperiment *)self handlesFromRecipients:a9];
-  [(PREResponsesExperiment *)self responsesForMessage:v23 maximumResponses:a4 forConversationHistory:v22 forContext:v21 time:v20 withLanguage:v19 recipientHandles:v24 options:a10 completionBlock:v18];
+  blockCopy = block;
+  languageCopy = language;
+  timeCopy = time;
+  contextCopy = context;
+  historyCopy = history;
+  messageCopy = message;
+  v24 = [(PREResponsesExperiment *)self handlesFromRecipients:recipients];
+  [(PREResponsesExperiment *)self responsesForMessage:messageCopy maximumResponses:responses forConversationHistory:historyCopy forContext:contextCopy time:timeCopy withLanguage:languageCopy recipientHandles:v24 options:options completionBlock:blockCopy];
 }
 
-- (id)_responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 outgoingMessageHistory:(id)a5 forConversationHistory:(id)a6 forContext:(id)a7 time:(id)a8 withLanguage:(id)a9 languageLastChangedDate:(id)a10 recipientHandles:(id)a11 options:(unint64_t)a12 preferredLocale:(id)a13
+- (id)_responsesForMessage:(id)message maximumResponses:(unint64_t)responses outgoingMessageHistory:(id)history forConversationHistory:(id)conversationHistory forContext:(id)context time:(id)time withLanguage:(id)language languageLastChangedDate:(id)self0 recipientHandles:(id)self1 options:(unint64_t)self2 preferredLocale:(id)self3
 {
   v64 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a5;
-  v54 = a6;
-  v58 = a7;
-  v57 = a8;
-  v56 = a9;
-  v55 = a10;
-  v20 = a11;
-  v21 = a13;
-  if (![objc_opt_class() _isPreferredLocaleValid:v21])
+  messageCopy = message;
+  historyCopy = history;
+  conversationHistoryCopy = conversationHistory;
+  contextCopy = context;
+  timeCopy = time;
+  languageCopy = language;
+  dateCopy = date;
+  handlesCopy = handles;
+  localeCopy = locale;
+  if (![objc_opt_class() _isPreferredLocaleValid:localeCopy])
   {
     v30 = MEMORY[0x277CBEBF8];
     goto LABEL_42;
@@ -1452,9 +1452,9 @@ void __220__PREResponsesExperiment__responsesForMessage_maximumResponses_outgoin
     _os_log_impl(&dword_260CE3000, v25, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment sync api called", buf, 2u);
   }
 
-  v26 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v21];
+  v26 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:localeCopy];
   v27 = [(PREResponsesExperiment *)self shouldUseDefaultRKTreatmentForLanguage:v26];
-  if ([objc_opt_class() _isStringEmpty:v18])
+  if ([objc_opt_class() _isStringEmpty:messageCopy])
   {
     v28 = pre_responses_handle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1466,7 +1466,7 @@ LABEL_19:
     }
   }
 
-  else if (v18 && [v19 count] && (objc_msgSend(v19, "firstObject"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v18, "isEqualToString:", v31), v31, v32))
+  else if (messageCopy && [historyCopy count] && (objc_msgSend(historyCopy, "firstObject"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(messageCopy, "isEqualToString:", v31), v31, v32))
   {
     v28 = pre_responses_handle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1480,7 +1480,7 @@ LABEL_19:
   else
   {
     v33 = +[PRELocaleDetection sharedInstance];
-    v34 = [v33 isLanguageMismatchedForMessage:v18 withLocaleIdentifier:v21];
+    v34 = [v33 isLanguageMismatchedForMessage:messageCopy withLocaleIdentifier:localeCopy];
 
     if (!v34)
     {
@@ -1506,10 +1506,10 @@ LABEL_19:
           _os_signpost_emit_with_name_impl(&dword_260CE3000, v39, OS_SIGNPOST_INTERVAL_BEGIN, v37, "PRE-SyncRKResponsesForMessage", "Start", buf, 2u);
         }
 
-        v41 = [(RKMessageResponseManager *)self->_rkClient responsesForMessage:v18 maximumResponses:a4 forContext:v58 withLanguage:v26 options:a12];
+        v41 = [(RKMessageResponseManager *)self->_rkClient responsesForMessage:messageCopy maximumResponses:responses forContext:contextCopy withLanguage:v26 options:options];
         if (v41)
         {
-          v42 = [PREResponseItem responseItemArrayFromResponseKitArray:v41 forLocale:v56];
+          v42 = [PREResponseItem responseItemArrayFromResponseKitArray:v41 forLocale:languageCopy];
         }
 
         else
@@ -1517,7 +1517,7 @@ LABEL_19:
           v42 = MEMORY[0x277CBEBF8];
         }
 
-        [(PREResponsesExperiment *)self registerGenerationWithPreResponseItems:v42 language:v26 isCached:0 responseTimePerf:PRERecordMeasurementState(v61) promptMessage:v18 generationStatus:1];
+        [(PREResponsesExperiment *)self registerGenerationWithPreResponseItems:v42 language:v26 isCached:0 responseTimePerf:PRERecordMeasurementState(v61) promptMessage:messageCopy generationStatus:1];
         v52 = v37;
         v43 = pre_signpost_handle();
         v44 = v43;
@@ -1530,7 +1530,7 @@ LABEL_19:
 
       else
       {
-        v42 = [(PREResponsesExperiment *)self waitForPreResponseItemsForMessage:v18 maximumResponses:a4 forConversationHistory:0 forContext:v58 time:v57 withLanguage:v26 recipientHandles:v20 options:a12];
+        v42 = [(PREResponsesExperiment *)self waitForPreResponseItemsForMessage:messageCopy maximumResponses:responses forConversationHistory:0 forContext:contextCopy time:timeCopy withLanguage:v26 recipientHandles:handlesCopy options:options];
       }
 
       v45 = pre_signpost_handle();
@@ -1576,47 +1576,47 @@ LABEL_42:
   return v30;
 }
 
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipientHandles:(id)a9 options:(unint64_t)a10
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipientHandles:(id)handles options:(unint64_t)self0
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
+  handlesCopy = handles;
+  languageCopy = language;
+  timeCopy = time;
+  contextCopy = context;
+  historyCopy = history;
+  messageCopy = message;
   v22 = +[PRELocaleDetection sharedInstance];
-  v23 = [v22 localeForMessage:v21 outgoingMessageHistory:0 defaultLocale:v17 defaultLocaleLastChangedDate:0 sender:v19];
+  v23 = [v22 localeForMessage:messageCopy outgoingMessageHistory:0 defaultLocale:languageCopy defaultLocaleLastChangedDate:0 sender:contextCopy];
 
-  v24 = [(PREResponsesExperiment *)self _responsesForMessage:v21 maximumResponses:a4 outgoingMessageHistory:0 forConversationHistory:v20 forContext:v19 time:v18 withLanguage:v17 languageLastChangedDate:0 recipientHandles:v16 options:a10 preferredLocale:v23];
+  v24 = [(PREResponsesExperiment *)self _responsesForMessage:messageCopy maximumResponses:responses outgoingMessageHistory:0 forConversationHistory:historyCopy forContext:contextCopy time:timeCopy withLanguage:languageCopy languageLastChangedDate:0 recipientHandles:handlesCopy options:options preferredLocale:v23];
 
   return v24;
 }
 
-- (void)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipientHandles:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10 completion:(id)a11
+- (void)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipientHandles:(id)handles outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0 completion:(id)self1
 {
-  v17 = a10;
-  v18 = a3;
-  v36 = a4;
-  v37 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a11;
-  if (!a10 && ![(PREResponsesExperiment *)self includeCannedResponses])
+  suggestionsCopy = suggestions;
+  messageCopy = message;
+  dateCopy = date;
+  dCopy = d;
+  handlesCopy = handles;
+  historyCopy = history;
+  iDCopy = iD;
+  changedDateCopy = changedDate;
+  completionCopy = completion;
+  if (!suggestions && ![(PREResponsesExperiment *)self includeCannedResponses])
   {
-    v23[2](v23, MEMORY[0x277CBEBF8]);
-    v32 = v36;
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
+    v32 = dateCopy;
     goto LABEL_18;
   }
 
-  v35 = v19;
+  v35 = handlesCopy;
   v24 = +[PRELocaleDetection sharedInstance];
-  v25 = [v24 localeForMessage:v18 outgoingMessageHistory:v20 defaultLocale:v21 defaultLocaleLastChangedDate:v22 sender:v37];
+  v25 = [v24 localeForMessage:messageCopy outgoingMessageHistory:historyCopy defaultLocale:iDCopy defaultLocaleLastChangedDate:changedDateCopy sender:dCopy];
 
   exemptTermsDetector = self->_exemptTermsDetector;
   v27 = [PRELocaleDetection languageTagForLocaleIdentifier:v25];
-  LODWORD(exemptTermsDetector) = [(PREPredictionExemptTermsDetector *)exemptTermsDetector checkForExemptContentInText:v18 languageCode:v27];
+  LODWORD(exemptTermsDetector) = [(PREPredictionExemptTermsDetector *)exemptTermsDetector checkForExemptContentInText:messageCopy languageCode:v27];
 
   if (exemptTermsDetector)
   {
@@ -1627,13 +1627,13 @@ LABEL_42:
       _os_log_impl(&dword_260CE3000, v28, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment received message contains exempt content", buf, 2u);
     }
 
-    v17 = 0;
+    suggestionsCopy = 0;
   }
 
   if (!-[PREResponsesExperiment includeCannedResponses](self, "includeCannedResponses") || ![objc_opt_class() _isPreferredLocaleValid:v25])
   {
     v30 = MEMORY[0x277CBEBF8];
-    if (!v17)
+    if (!suggestionsCopy)
     {
       goto LABEL_10;
     }
@@ -1655,11 +1655,11 @@ LABEL_12:
     v38[2] = __208__PREResponsesExperiment_nonEditableSuggestionsForMessage_messageDate_senderID_recipientHandles_outgoingMessageHistory_keyboardLanguageID_keyboardLanguageLastChangedDate_includeDynamicSuggestions_completion___block_invoke;
     v38[3] = &unk_279ABB118;
     objc_copyWeak(&v41, buf);
-    v40 = v23;
+    v40 = completionCopy;
     v39 = v30;
     v34 = v33;
-    v32 = v36;
-    [(PREResponsesExperiment *)self _responsesForMessage:v18 maximumResponses:4 outgoingMessageHistory:v20 forConversationHistory:0 forContext:v37 time:v36 withLanguage:v21 languageLastChangedDate:v22 recipientHandles:v35 options:v34 preferredLocale:v25 completionBlock:v38];
+    v32 = dateCopy;
+    [(PREResponsesExperiment *)self _responsesForMessage:messageCopy maximumResponses:4 outgoingMessageHistory:historyCopy forConversationHistory:0 forContext:dCopy time:dateCopy withLanguage:iDCopy languageLastChangedDate:changedDateCopy recipientHandles:v35 options:v34 preferredLocale:v25 completionBlock:v38];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(buf);
@@ -1669,19 +1669,19 @@ LABEL_12:
   v29 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v25];
   v30 = [PREResponsesExperiment _cannedRepliesForLanguage:v29 inputPreferences:self->_tiPreferencesController];
 
-  if (v17)
+  if (suggestionsCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_10:
   v31 = [PREResponsesExperiment _suggestionsWithDynamicResponseItems:0 cannedResponseItems:v30 inputPreferences:self->_tiPreferencesController];
-  (v23)[2](v23, v31);
+  (completionCopy)[2](completionCopy, v31);
 
-  v32 = v36;
+  v32 = dateCopy;
 LABEL_16:
 
-  v19 = v35;
+  handlesCopy = v35;
 LABEL_18:
 }
 
@@ -1702,39 +1702,39 @@ void __208__PREResponsesExperiment_nonEditableSuggestionsForMessage_messageDate_
   }
 }
 
-- (void)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipients:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10 completion:(id)a11
+- (void)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipients:(id)recipients outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0 completion:(id)self1
 {
-  v18 = a11;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v26 = [(PREResponsesExperiment *)self handlesFromRecipients:a6];
-  LOBYTE(v25) = a10;
-  [(PREResponsesExperiment *)self nonEditableSuggestionsForMessage:v24 messageDate:v23 senderID:v22 recipientHandles:v26 outgoingMessageHistory:v21 keyboardLanguageID:v20 keyboardLanguageLastChangedDate:v19 includeDynamicSuggestions:v25 completion:v18];
+  completionCopy = completion;
+  changedDateCopy = changedDate;
+  iDCopy = iD;
+  historyCopy = history;
+  dCopy = d;
+  dateCopy = date;
+  messageCopy = message;
+  v26 = [(PREResponsesExperiment *)self handlesFromRecipients:recipients];
+  LOBYTE(v25) = suggestions;
+  [(PREResponsesExperiment *)self nonEditableSuggestionsForMessage:messageCopy messageDate:dateCopy senderID:dCopy recipientHandles:v26 outgoingMessageHistory:historyCopy keyboardLanguageID:iDCopy keyboardLanguageLastChangedDate:changedDateCopy includeDynamicSuggestions:v25 completion:completionCopy];
 }
 
-- (id)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipientHandles:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10
+- (id)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipientHandles:(id)handles outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0
 {
-  v16 = a10;
-  v17 = a3;
-  v38 = a4;
-  v18 = a5;
-  v37 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (a10 || [(PREResponsesExperiment *)self includeCannedResponses])
+  suggestionsCopy = suggestions;
+  messageCopy = message;
+  dateCopy = date;
+  dCopy = d;
+  handlesCopy = handles;
+  historyCopy = history;
+  iDCopy = iD;
+  changedDateCopy = changedDate;
+  if (suggestions || [(PREResponsesExperiment *)self includeCannedResponses])
   {
     v22 = +[PRELocaleDetection sharedInstance];
-    v36 = v18;
-    v23 = [v22 localeForMessage:v17 outgoingMessageHistory:v19 defaultLocale:v20 defaultLocaleLastChangedDate:v21 sender:v18];
+    v36 = dCopy;
+    v23 = [v22 localeForMessage:messageCopy outgoingMessageHistory:historyCopy defaultLocale:iDCopy defaultLocaleLastChangedDate:changedDateCopy sender:dCopy];
 
     exemptTermsDetector = self->_exemptTermsDetector;
     v25 = [PRELocaleDetection languageTagForLocaleIdentifier:v23];
-    LODWORD(exemptTermsDetector) = [(PREPredictionExemptTermsDetector *)exemptTermsDetector checkForExemptContentInText:v17 languageCode:v25];
+    LODWORD(exemptTermsDetector) = [(PREPredictionExemptTermsDetector *)exemptTermsDetector checkForExemptContentInText:messageCopy languageCode:v25];
 
     if (exemptTermsDetector)
     {
@@ -1745,7 +1745,7 @@ void __208__PREResponsesExperiment_nonEditableSuggestionsForMessage_messageDate_
         _os_log_impl(&dword_260CE3000, v26, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment received message contains exempt content", buf, 2u);
       }
 
-      v16 = 0;
+      suggestionsCopy = 0;
     }
 
     if (-[PREResponsesExperiment includeCannedResponses](self, "includeCannedResponses") && [objc_opt_class() _isPreferredLocaleValid:v23])
@@ -1753,16 +1753,16 @@ void __208__PREResponsesExperiment_nonEditableSuggestionsForMessage_messageDate_
       v27 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v23];
       v28 = [PREResponsesExperiment _cannedRepliesForLanguage:v27 inputPreferences:self->_tiPreferencesController];
 
-      if (!v16)
+      if (!suggestionsCopy)
       {
 LABEL_10:
         v29 = 0;
-        v31 = v37;
-        v30 = v38;
+        v31 = handlesCopy;
+        v30 = dateCopy;
 LABEL_15:
         v34 = [PREResponsesExperiment _suggestionsWithDynamicResponseItems:v29 cannedResponseItems:v28 inputPreferences:self->_tiPreferencesController];
 
-        v18 = v36;
+        dCopy = v36;
         goto LABEL_17;
       }
     }
@@ -1770,7 +1770,7 @@ LABEL_15:
     else
     {
       v28 = MEMORY[0x277CBEBF8];
-      if (!v16)
+      if (!suggestionsCopy)
       {
         goto LABEL_10;
       }
@@ -1783,45 +1783,45 @@ LABEL_15:
       v33 = 256;
     }
 
-    v31 = v37;
-    v30 = v38;
-    v29 = [(PREResponsesExperiment *)self _responsesForMessage:v17 maximumResponses:4 outgoingMessageHistory:v19 forConversationHistory:0 forContext:v36 time:v38 withLanguage:v20 languageLastChangedDate:v21 recipientHandles:v37 options:v33 preferredLocale:v23];
+    v31 = handlesCopy;
+    v30 = dateCopy;
+    v29 = [(PREResponsesExperiment *)self _responsesForMessage:messageCopy maximumResponses:4 outgoingMessageHistory:historyCopy forConversationHistory:0 forContext:v36 time:dateCopy withLanguage:iDCopy languageLastChangedDate:changedDateCopy recipientHandles:handlesCopy options:v33 preferredLocale:v23];
     goto LABEL_15;
   }
 
   v34 = MEMORY[0x277CBEBF8];
-  v31 = v37;
-  v30 = v38;
+  v31 = handlesCopy;
+  v30 = dateCopy;
 LABEL_17:
 
   return v34;
 }
 
-- (id)nonEditableSuggestionsForMessage:(id)a3 messageDate:(id)a4 senderID:(id)a5 recipients:(id)a6 outgoingMessageHistory:(id)a7 keyboardLanguageID:(id)a8 keyboardLanguageLastChangedDate:(id)a9 includeDynamicSuggestions:(BOOL)a10
+- (id)nonEditableSuggestionsForMessage:(id)message messageDate:(id)date senderID:(id)d recipients:(id)recipients outgoingMessageHistory:(id)history keyboardLanguageID:(id)iD keyboardLanguageLastChangedDate:(id)changedDate includeDynamicSuggestions:(BOOL)self0
 {
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(PREResponsesExperiment *)self handlesFromRecipients:a6];
-  LOBYTE(v26) = a10;
-  v24 = [(PREResponsesExperiment *)self nonEditableSuggestionsForMessage:v22 messageDate:v21 senderID:v20 recipientHandles:v23 outgoingMessageHistory:v19 keyboardLanguageID:v18 keyboardLanguageLastChangedDate:v17 includeDynamicSuggestions:v26];
+  changedDateCopy = changedDate;
+  iDCopy = iD;
+  historyCopy = history;
+  dCopy = d;
+  dateCopy = date;
+  messageCopy = message;
+  v23 = [(PREResponsesExperiment *)self handlesFromRecipients:recipients];
+  LOBYTE(v26) = suggestions;
+  v24 = [(PREResponsesExperiment *)self nonEditableSuggestionsForMessage:messageCopy messageDate:dateCopy senderID:dCopy recipientHandles:v23 outgoingMessageHistory:historyCopy keyboardLanguageID:iDCopy keyboardLanguageLastChangedDate:changedDateCopy includeDynamicSuggestions:v26];
 
   return v24;
 }
 
-- (void)fullNonEditableSuggestionsListForMessage:(id)a3 context:(id)a4 additionalSenderMessages:(id)a5 date:(id)a6 keyboardLanguageID:(id)a7 keyboardLanguageLastChangedDate:(id)a8 recipients:(id)a9 includeDynamicSuggestions:(BOOL)a10 completion:(id)a11
+- (void)fullNonEditableSuggestionsListForMessage:(id)message context:(id)context additionalSenderMessages:(id)messages date:(id)date keyboardLanguageID:(id)d keyboardLanguageLastChangedDate:(id)changedDate recipients:(id)recipients includeDynamicSuggestions:(BOOL)self0 completion:(id)self1
 {
-  v40 = a3;
-  v39 = a4;
-  v37 = a5;
-  v17 = a6;
-  v35 = a7;
-  v33 = a8;
-  v18 = a9;
-  v19 = a11;
+  messageCopy = message;
+  contextCopy = context;
+  messagesCopy = messages;
+  dateCopy = date;
+  dCopy = d;
+  changedDateCopy = changedDate;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   v20 = pre_signpost_handle();
   ptr[0] = 7;
   v21 = os_signpost_id_make_with_pointer(v20, ptr);
@@ -1838,9 +1838,9 @@ LABEL_17:
   v53[1] = 3221225472;
   v53[2] = __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_context_additionalSenderMessages_date_keyboardLanguageID_keyboardLanguageLastChangedDate_recipients_includeDynamicSuggestions_completion___block_invoke;
   v53[3] = &unk_279ABB188;
-  v54 = v19;
+  v54 = completionCopy;
   v55 = v21;
-  v38 = v19;
+  v38 = completionCopy;
   v24 = MEMORY[0x2666ECBF0](v53);
   if (fullNonEditableSuggestionsListForMessage_context_additionalSenderMessages_date_keyboardLanguageID_keyboardLanguageLastChangedDate_recipients_includeDynamicSuggestions_completion___pasOnceToken833 != -1)
   {
@@ -1854,22 +1854,22 @@ LABEL_17:
   block[2] = __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_context_additionalSenderMessages_date_keyboardLanguageID_keyboardLanguageLastChangedDate_recipients_includeDynamicSuggestions_completion___block_invoke_2;
   block[3] = &unk_279ABB1B0;
   objc_copyWeak(&v50, buf);
-  v42 = v40;
-  v43 = v17;
-  v44 = v39;
-  v45 = v18;
-  v46 = v37;
-  v47 = v35;
-  v48 = v33;
+  v42 = messageCopy;
+  v43 = dateCopy;
+  v44 = contextCopy;
+  v45 = recipientsCopy;
+  v46 = messagesCopy;
+  v47 = dCopy;
+  v48 = changedDateCopy;
   v49 = v24;
-  v51 = a10;
-  v34 = v33;
-  v36 = v35;
-  v26 = v37;
-  v27 = v18;
-  v28 = v39;
-  v29 = v17;
-  v30 = v40;
+  suggestionsCopy = suggestions;
+  v34 = changedDateCopy;
+  v36 = dCopy;
+  v26 = messagesCopy;
+  v27 = recipientsCopy;
+  v28 = contextCopy;
+  v29 = dateCopy;
+  v30 = messageCopy;
   v31 = v24;
   v32 = dispatch_block_create(0, block);
   dispatch_async(v25, v32);
@@ -1919,15 +1919,15 @@ void __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_cont
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)fullNonEditableSuggestionsListForMessage:(id)a3 context:(id)a4 additionalSenderMessages:(id)a5 date:(id)a6 keyboardLanguageID:(id)a7 keyboardLanguageLastChangedDate:(id)a8 recipients:(id)a9 includeDynamicSuggestions:(BOOL)a10
+- (id)fullNonEditableSuggestionsListForMessage:(id)message context:(id)context additionalSenderMessages:(id)messages date:(id)date keyboardLanguageID:(id)d keyboardLanguageLastChangedDate:(id)changedDate recipients:(id)recipients includeDynamicSuggestions:(BOOL)self0
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  recipientsCopy = recipients;
+  changedDateCopy = changedDate;
+  dCopy = d;
+  dateCopy = date;
+  messagesCopy = messages;
+  contextCopy = context;
+  messageCopy = message;
   v23 = pre_signpost_handle();
   ptr = 7;
   v24 = os_signpost_id_make_with_pointer(v23, &ptr);
@@ -1942,8 +1942,8 @@ void __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_cont
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v26, OS_SIGNPOST_INTERVAL_BEGIN, spid, "PRE-SyncFullNonEditableSuggestions", "Start", buf, 2u);
   }
 
-  LOBYTE(v32) = a10;
-  v28 = [(PREResponsesExperiment *)self nonEditableSuggestionsForMessage:v22 messageDate:v19 senderID:v21 recipients:v16 outgoingMessageHistory:v20 keyboardLanguageID:v18 keyboardLanguageLastChangedDate:v17 includeDynamicSuggestions:v32];
+  LOBYTE(v32) = suggestions;
+  v28 = [(PREResponsesExperiment *)self nonEditableSuggestionsForMessage:messageCopy messageDate:dateCopy senderID:contextCopy recipients:recipientsCopy outgoingMessageHistory:messagesCopy keyboardLanguageID:dCopy keyboardLanguageLastChangedDate:changedDateCopy includeDynamicSuggestions:v32];
 
   v29 = pre_signpost_handle();
   v30 = v29;
@@ -1956,23 +1956,23 @@ void __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_cont
   return v28;
 }
 
-- (id)responsesForMessage:(id)a3 maximumResponses:(unint64_t)a4 forConversationHistory:(id)a5 forContext:(id)a6 time:(id)a7 withLanguage:(id)a8 recipients:(id)a9 options:(unint64_t)a10
+- (id)responsesForMessage:(id)message maximumResponses:(unint64_t)responses forConversationHistory:(id)history forContext:(id)context time:(id)time withLanguage:(id)language recipients:(id)recipients options:(unint64_t)self0
 {
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a3;
-  v21 = [(PREResponsesExperiment *)self handlesFromRecipients:a9];
-  v22 = [(PREResponsesExperiment *)self responsesForMessage:v20 maximumResponses:a4 forConversationHistory:v19 forContext:v18 time:v17 withLanguage:v16 recipientHandles:v21 options:a10];
+  languageCopy = language;
+  timeCopy = time;
+  contextCopy = context;
+  historyCopy = history;
+  messageCopy = message;
+  v21 = [(PREResponsesExperiment *)self handlesFromRecipients:recipients];
+  v22 = [(PREResponsesExperiment *)self responsesForMessage:messageCopy maximumResponses:responses forConversationHistory:historyCopy forContext:contextCopy time:timeCopy withLanguage:languageCopy recipientHandles:v21 options:options];
 
   return v22;
 }
 
-- (void)suggestionsForRequest:(id)a3 withCompletion:(id)a4
+- (void)suggestionsForRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1994,9 +1994,9 @@ void __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_cont
   v25[1] = 3221225472;
   v25[2] = __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_invoke;
   v25[3] = &unk_279ABB0F0;
-  v26 = v7;
+  v26 = completionCopy;
   v27 = &v29;
-  v13 = v7;
+  v13 = completionCopy;
   v14 = MEMORY[0x2666ECBF0](v25);
   if (suggestionsForRequest_withCompletion___pasOnceToken823 != -1)
   {
@@ -2010,10 +2010,10 @@ void __204__PREResponsesExperiment_fullNonEditableSuggestionsListForMessage_cont
   v19[2] = __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_invoke_2;
   v19[3] = &unk_279ABB140;
   objc_copyWeak(&v23, &buf);
-  v21 = self;
+  selfCopy = self;
   v22 = v14;
-  v20 = v6;
-  v16 = v6;
+  v20 = requestCopy;
+  v16 = requestCopy;
   v17 = v14;
   v18 = dispatch_block_create(0, v19);
   dispatch_async(v15, v18);
@@ -2181,9 +2181,9 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)suggestionsForRequest:(id)a3
+- (id)suggestionsForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = pre_signpost_handle();
   ptr = 7;
   v6 = os_signpost_id_make_with_pointer(v5, &ptr);
@@ -2198,28 +2198,28 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v8, OS_SIGNPOST_INTERVAL_BEGIN, spid, "PRE-SyncFullNonEditableSuggestions", "Start", buf, 2u);
   }
 
-  v10 = [v4 includesDynamicSuggestions];
-  if (([v4 includesDynamicSuggestions] & 1) != 0 || -[PREResponsesExperiment includeCannedResponses](self, "includeCannedResponses"))
+  includesDynamicSuggestions = [requestCopy includesDynamicSuggestions];
+  if (([requestCopy includesDynamicSuggestions] & 1) != 0 || -[PREResponsesExperiment includeCannedResponses](self, "includeCannedResponses"))
   {
     v50 = v9;
     v11 = objc_opt_class();
-    v12 = [v4 receivedMessages];
-    v13 = [v11 _rawStringsForMessages:v12 excludingTapBacks:1];
+    receivedMessages = [requestCopy receivedMessages];
+    v13 = [v11 _rawStringsForMessages:receivedMessages excludingTapBacks:1];
 
     v14 = objc_opt_class();
-    v15 = [v4 senderMessages];
-    v16 = [v14 _rawStringsForMessages:v15 excludingTapBacks:1];
+    senderMessages = [requestCopy senderMessages];
+    v16 = [v14 _rawStringsForMessages:senderMessages excludingTapBacks:1];
 
-    v17 = [v4 receivedMessages];
-    v18 = [v17 firstObject];
-    v19 = [v18 senderIdentifier];
+    receivedMessages2 = [requestCopy receivedMessages];
+    firstObject = [receivedMessages2 firstObject];
+    senderIdentifier = [firstObject senderIdentifier];
 
     v20 = +[PRELocaleDetection sharedInstance];
-    v21 = [v4 languageCode];
-    v22 = [v4 languageLastChangedDate];
+    languageCode = [requestCopy languageCode];
+    languageLastChangedDate = [requestCopy languageLastChangedDate];
     v52 = v16;
-    v49 = v19;
-    v23 = [v20 localeForIncomingMessages:v13 outgoingMessages:v16 defaultLocale:v21 defaultLocaleLastChangedDate:v22 sender:v19];
+    v49 = senderIdentifier;
+    v23 = [v20 localeForIncomingMessages:v13 outgoingMessages:v16 defaultLocale:languageCode defaultLocaleLastChangedDate:languageLastChangedDate sender:senderIdentifier];
 
     exemptTermsDetector = self->_exemptTermsDetector;
     v25 = [v13 componentsJoinedByString:@"\n"];
@@ -2235,7 +2235,7 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
         _os_log_impl(&dword_260CE3000, v27, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment received messages contain exempt content", v54, 2u);
       }
 
-      v10 = 0;
+      includesDynamicSuggestions = 0;
     }
 
     if (-[PREResponsesExperiment includeCannedResponses](self, "includeCannedResponses") && [objc_opt_class() _isPreferredLocaleValid:v23])
@@ -2250,7 +2250,7 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     }
 
     v51 = v23;
-    if (v10)
+    if (includesDynamicSuggestions)
     {
       v30 = [(TIPreferencesController *)self->_tiPreferencesController BOOLForKey:9];
       v31 = 384;
@@ -2260,18 +2260,18 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
       }
 
       v46 = v31;
-      [PREResponsesExperiment _getConversationHistoryFromRequest:v4];
+      [PREResponsesExperiment _getConversationHistoryFromRequest:requestCopy];
       v32 = v47 = v13;
-      v33 = [v32 lastObject];
-      v34 = [v33 text];
+      lastObject = [v32 lastObject];
+      text = [lastObject text];
 
-      v35 = [v4 recipients];
-      v36 = [(PREResponsesExperiment *)self handlesFromRecipients:v35];
+      recipients = [requestCopy recipients];
+      v36 = [(PREResponsesExperiment *)self handlesFromRecipients:recipients];
 
-      v37 = [v4 requestDate];
-      v38 = [v4 languageCode];
-      v39 = [v4 languageLastChangedDate];
-      v40 = [(PREResponsesExperiment *)self _responsesForMessage:v34 maximumResponses:4 outgoingMessageHistory:v52 forConversationHistory:v32 forContext:0 time:v37 withLanguage:v38 languageLastChangedDate:v39 recipientHandles:v36 options:v46 preferredLocale:v51];
+      requestDate = [requestCopy requestDate];
+      languageCode2 = [requestCopy languageCode];
+      languageLastChangedDate2 = [requestCopy languageLastChangedDate];
+      v40 = [(PREResponsesExperiment *)self _responsesForMessage:text maximumResponses:4 outgoingMessageHistory:v52 forConversationHistory:v32 forContext:0 time:requestDate withLanguage:languageCode2 languageLastChangedDate:languageLastChangedDate2 recipientHandles:v36 options:v46 preferredLocale:v51];
 
       v13 = v47;
     }
@@ -2301,10 +2301,10 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
   return v44;
 }
 
-- (id)activeExperimentNameForLanguage:(id)a3
+- (id)activeExperimentNameForLanguage:(id)language
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v5 = pre_signpost_handle();
   ptr = 7;
   v6 = os_signpost_id_make_with_pointer(v5, &ptr);
@@ -2318,8 +2318,8 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PRE-ReadExperimentNameDefaults", "Start", buf, 2u);
   }
 
-  v10 = [(PREResponsesExperiment *)self mode];
-  if (v10 == 2)
+  mode = [(PREResponsesExperiment *)self mode];
+  if (mode == 2)
   {
     v14 = [(NSUserDefaults *)self->_defaults stringForKey:@"experimentModelUserLabel"];
     v17 = pre_responses_handle();
@@ -2339,7 +2339,7 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     }
   }
 
-  else if (v10 == 1)
+  else if (mode == 1)
   {
     v15 = pre_responses_handle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2360,7 +2360,7 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     v14 = @"QR_CHUNK_PLIST_BUNDLED_ON_DEVICE";
   }
 
-  else if (v10)
+  else if (mode)
   {
     v19 = pre_signpost_handle();
     v30 = 7;
@@ -2374,16 +2374,16 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
       _os_signpost_emit_with_name_impl(&dword_260CE3000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "PRE-ReadTrialExperimentNameFactor", "Start", buf, 2u);
     }
 
-    v13 = [(PREExperimentResolverProtocol *)self->_experimentResolver getResponseSuggestionsExperimentConfig:v4 shouldDownloadAssets:0];
-    v23 = [v13 treatmentName];
+    v13 = [(PREExperimentResolverProtocol *)self->_experimentResolver getResponseSuggestionsExperimentConfig:languageCopy shouldDownloadAssets:0];
+    treatmentName = [v13 treatmentName];
     v24 = pre_responses_handle();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-    if (v23)
+    if (treatmentName)
     {
       if (v25)
       {
         *buf = 138412290;
-        v33 = v23;
+        v33 = treatmentName;
         _os_log_impl(&dword_260CE3000, v24, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment activeExperimentName from Trial: %@", buf, 0xCu);
       }
 
@@ -2395,7 +2395,7 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
         _os_signpost_emit_with_name_impl(&dword_260CE3000, v27, OS_SIGNPOST_INTERVAL_END, v20, "PRE-ReadTrialExperimentNameFactor", "Completed", buf, 2u);
       }
 
-      v14 = v23;
+      v14 = treatmentName;
     }
 
     else
@@ -2463,15 +2463,15 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
   return v3;
 }
 
-- (id)cacheKeyForMessage:(id)a3 maxResponses:(unint64_t)a4 time:(id)a5 language:(id)a6
+- (id)cacheKeyForMessage:(id)message maxResponses:(unint64_t)responses time:(id)time language:(id)language
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  messageCopy = message;
+  timeCopy = time;
+  languageCopy = language;
+  if (languageCopy)
   {
-    v12 = v11;
-    v13 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v11];
+    v12 = languageCopy;
+    v13 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:languageCopy];
   }
 
   else
@@ -2479,10 +2479,10 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     v13 = 0;
   }
 
-  if (v10)
+  if (timeCopy)
   {
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    [v10 timeIntervalSinceReferenceDate];
+    [timeCopy timeIntervalSinceReferenceDate];
     v16 = [v14 initWithFormat:@"%.02f", v15];
   }
 
@@ -2491,14 +2491,14 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     v16 = @"0";
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%tu-%@-%@", v9, a4, v13, v16];
+  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%tu-%@-%@", messageCopy, responses, v13, v16];
 
   return v17;
 }
 
-- (id)clippedMessageIfNecessary:(id)a3
+- (id)clippedMessageIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = pre_signpost_handle();
   ptr = 7;
   v5 = os_signpost_id_make_with_pointer(v4, &ptr);
@@ -2511,14 +2511,14 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PRE-ClipMessage", "Start", buf, 2u);
   }
 
-  if ([v3 length] >= 0x231)
+  if ([necessaryCopy length] >= 0x231)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v9 = [v3 substringToIndex:280];
-    v10 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 280}];
+    v9 = [necessaryCopy substringToIndex:280];
+    v10 = [necessaryCopy substringFromIndex:{objc_msgSend(necessaryCopy, "length") - 280}];
     v11 = [v8 initWithFormat:@"%@%@", v9, v10];
 
-    v3 = v11;
+    necessaryCopy = v11;
   }
 
   v12 = pre_signpost_handle();
@@ -2529,19 +2529,19 @@ void __63__PREResponsesExperiment_suggestionsForRequest_withCompletion___block_i
     _os_signpost_emit_with_name_impl(&dword_260CE3000, v13, OS_SIGNPOST_INTERVAL_END, v5, "PRE-ClipMessage", "Completed", v15, 2u);
   }
 
-  return v3;
+  return necessaryCopy;
 }
 
-- (void)setCachedResponsesGeneratedEvent:(id)a3
+- (void)setCachedResponsesGeneratedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   guardedCachedResponsesGeneratedEvent = self->_guardedCachedResponsesGeneratedEvent;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__PREResponsesExperiment_setCachedResponsesGeneratedEvent___block_invoke;
   v7[3] = &unk_279ABB0C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   [(_PASLock *)guardedCachedResponsesGeneratedEvent runWithLockAcquired:v7];
 }
 
@@ -2581,31 +2581,31 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
   v3 = +[PREExperimentResolver sharedInstance];
   v4 = objc_opt_new();
   v5 = +[PREResponsesClient sharedInstance];
-  v6 = [MEMORY[0x277D46BD8] sharedManager];
-  v7 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v8 = [(PREResponsesExperiment *)self initWithExperimentResolver:v3 metricsClient:v4 xpcClient:v5 rkClient:v6 tiPreferencesController:v7];
+  mEMORY[0x277D46BD8] = [MEMORY[0x277D46BD8] sharedManager];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v8 = [(PREResponsesExperiment *)self initWithExperimentResolver:v3 metricsClient:v4 xpcClient:v5 rkClient:mEMORY[0x277D46BD8] tiPreferencesController:mEMORY[0x277D6F470]];
 
   return v8;
 }
 
-- (PREResponsesExperiment)initWithExperimentResolver:(id)a3 metricsClient:(id)a4 xpcClient:(id)a5 rkClient:(id)a6 tiPreferencesController:(id)a7
+- (PREResponsesExperiment)initWithExperimentResolver:(id)resolver metricsClient:(id)client xpcClient:(id)xpcClient rkClient:(id)rkClient tiPreferencesController:(id)controller
 {
-  v31 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  resolverCopy = resolver;
+  clientCopy = client;
+  xpcClientCopy = xpcClient;
+  rkClientCopy = rkClient;
+  controllerCopy = controller;
   v33.receiver = self;
   v33.super_class = PREResponsesExperiment;
   v17 = [(PREResponsesExperiment *)&v33 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_experimentResolver, a3);
-    objc_storeStrong(&v18->_metrics, a4);
-    objc_storeStrong(&v18->_xpcClient, a5);
-    objc_storeStrong(&v18->_rkClient, a6);
-    objc_storeStrong(&v18->_tiPreferencesController, a7);
+    objc_storeStrong(&v17->_experimentResolver, resolver);
+    objc_storeStrong(&v18->_metrics, client);
+    objc_storeStrong(&v18->_xpcClient, xpcClient);
+    objc_storeStrong(&v18->_rkClient, rkClient);
+    objc_storeStrong(&v18->_tiPreferencesController, controller);
     v19 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.proactive.experiments.responses"];
     defaults = v18->_defaults;
     v18->_defaults = v19;
@@ -2637,20 +2637,20 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
   return v18;
 }
 
-+ (BOOL)_isStringEmpty:(id)a3
++ (BOOL)_isStringEmpty:(id)empty
 {
-  v3 = a3;
-  if (v3)
+  emptyCopy = empty;
+  if (emptyCopy)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
-    if ([v3 isEqual:v4])
+    null = [MEMORY[0x277CBEB68] null];
+    if ([emptyCopy isEqual:null])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v3 isEqualToString:&stru_28733D8C0];
+      v5 = [emptyCopy isEqualToString:&stru_28733D8C0];
     }
   }
 
@@ -2662,10 +2662,10 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
   return v5;
 }
 
-+ (int)_preInputMethodFrom:(id)a3
++ (int)_preInputMethodFrom:(id)from
 {
-  v3 = [a3 unsignedIntegerValue];
-  if (v3 == 1)
+  unsignedIntegerValue = [from unsignedIntegerValue];
+  if (unsignedIntegerValue == 1)
   {
     v4 = 2;
   }
@@ -2675,7 +2675,7 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
     v4 = 1;
   }
 
-  if (v3 == 2)
+  if (unsignedIntegerValue == 2)
   {
     return 3;
   }
@@ -2686,30 +2686,30 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
   }
 }
 
-+ (id)_inputMethodStringFrom:(int)a3
++ (id)_inputMethodStringFrom:(int)from
 {
-  if (a3 > 5)
+  if (from > 5)
   {
     return @"canned";
   }
 
   else
   {
-    return off_279ABB400[a3];
+    return off_279ABB400[from];
   }
 }
 
-+ (id)_suggestionsWithDynamicResponseItems:(id)a3 cannedResponseItems:(id)a4 inputPreferences:(id)a5
++ (id)_suggestionsWithDynamicResponseItems:(id)items cannedResponseItems:(id)responseItems inputPreferences:(id)preferences
 {
   v63 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  responseItemsCopy = responseItems;
+  preferencesCopy = preferences;
   v10 = objc_opt_new();
   v11 = objc_opt_class();
-  if (v7)
+  if (itemsCopy)
   {
-    obj = [v11 stringArrayFromPreResponseItems:v8];
+    obj = [v11 stringArrayFromPreResponseItems:responseItemsCopy];
     v12 = [obj indexOfObject:@"SMART_REPLIES_MARKER"];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -2722,10 +2722,10 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
     }
 
     v42 = v13;
-    v45 = v8;
-    v43 = [PREResponsesExperiment _suggestionsWithDynamicResponseItems:0 cannedResponseItems:v8 inputPreferences:v9];
-    v44 = v9;
-    v14 = [objc_opt_class() _getFormattedPREResponseItems:v7 inputPreferences:v9];
+    v45 = responseItemsCopy;
+    v43 = [PREResponsesExperiment _suggestionsWithDynamicResponseItems:0 cannedResponseItems:responseItemsCopy inputPreferences:preferencesCopy];
+    v44 = preferencesCopy;
+    v14 = [objc_opt_class() _getFormattedPREResponseItems:itemsCopy inputPreferences:preferencesCopy];
     v15 = objc_opt_new();
     v52 = 0u;
     v53 = 0u;
@@ -2746,9 +2746,9 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v52 + 1) + 8 * i) replyText];
+          replyText = [*(*(&v52 + 1) + 8 * i) replyText];
           v22 = objc_opt_new();
-          v23 = [v21 copy];
+          v23 = [replyText copy];
           [v22 setTitle:v23];
 
           [v22 setDynamicReply:1];
@@ -2815,7 +2815,7 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
 
   else
   {
-    [v11 _getFormattedPREResponseItems:v8 inputPreferences:v9];
+    [v11 _getFormattedPREResponseItems:responseItemsCopy inputPreferences:preferencesCopy];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -2827,8 +2827,8 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
     }
 
     v34 = v33;
-    v44 = v9;
-    v45 = v8;
+    v44 = preferencesCopy;
+    v45 = responseItemsCopy;
     v35 = *v57;
     do
     {
@@ -2839,11 +2839,11 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
           objc_enumerationMutation(obj);
         }
 
-        v37 = [*(*(&v56 + 1) + 8 * k) replyText];
-        if (([v37 isEqualToString:@"SMART_REPLIES_MARKER"] & 1) == 0)
+        replyText2 = [*(*(&v56 + 1) + 8 * k) replyText];
+        if (([replyText2 isEqualToString:@"SMART_REPLIES_MARKER"] & 1) == 0)
         {
           v38 = objc_opt_new();
-          v39 = [v37 copy];
+          v39 = [replyText2 copy];
           [v38 setTitle:v39];
 
           [v10 addObject:v38];
@@ -2856,8 +2856,8 @@ uint64_t __55__PREResponsesExperiment_cachedResponsesGeneratedEvent__block_invok
     while (v34);
   }
 
-  v9 = v44;
-  v8 = v45;
+  preferencesCopy = v44;
+  responseItemsCopy = v45;
 LABEL_35:
 
   v40 = *MEMORY[0x277D85DE8];
@@ -2876,18 +2876,18 @@ uint64_t __100__PREResponsesExperiment__suggestionsWithDynamicResponseItems_cann
   return v6;
 }
 
-+ (BOOL)_shouldInsertSuggestion:(id)a3 forExistingSuggestions:(id)a4
++ (BOOL)_shouldInsertSuggestion:(id)suggestion forExistingSuggestions:(id)suggestions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 title];
-  v7 = [v6 localizedLowercaseString];
+  suggestionsCopy = suggestions;
+  title = [suggestion title];
+  localizedLowercaseString = [title localizedLowercaseString];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -2902,9 +2902,9 @@ uint64_t __100__PREResponsesExperiment__suggestionsWithDynamicResponseItems_cann
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) title];
-        v14 = [v13 localizedLowercaseString];
-        v15 = [v14 isEqualToString:v7];
+        title2 = [*(*(&v19 + 1) + 8 * i) title];
+        localizedLowercaseString2 = [title2 localizedLowercaseString];
+        v15 = [localizedLowercaseString2 isEqualToString:localizedLowercaseString];
 
         if (v15)
         {
@@ -2930,17 +2930,17 @@ LABEL_11:
   return v16;
 }
 
-+ (id)_cannedRepliesForLanguage:(id)a3 inputPreferences:(id)a4
++ (id)_cannedRepliesForLanguage:(id)language inputPreferences:(id)preferences
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  languageCopy = language;
+  preferencesCopy = preferences;
   if (_cannedRepliesForLanguage_inputPreferences__onceToken != -1)
   {
     dispatch_once(&_cannedRepliesForLanguage_inputPreferences__onceToken, &__block_literal_global_342);
   }
 
-  v7 = [_cannedRepliesForLanguage_inputPreferences__store repliesForLanguage:v5];
+  v7 = [_cannedRepliesForLanguage_inputPreferences__store repliesForLanguage:languageCopy];
   v8 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
@@ -2961,7 +2961,7 @@ LABEL_11:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [[PREResponseItem alloc] initWithCategoryId:0 modelId:0 responseClassId:0 replySubgroupId:0 replyTextId:0 replyText:*(*(&v17 + 1) + 8 * i) language:v5 isCustomResponse:0 isRobotResponse:0];
+        v14 = [[PREResponseItem alloc] initWithCategoryId:0 modelId:0 responseClassId:0 replySubgroupId:0 replyTextId:0 replyText:*(*(&v17 + 1) + 8 * i) language:languageCopy isCustomResponse:0 isRobotResponse:0];
         [v8 addObject:v14];
       }
 
@@ -3001,16 +3001,16 @@ void __69__PREResponsesExperiment__cannedRepliesForLanguage_inputPreferences___b
   _cannedRepliesForLanguage_inputPreferences__store = v2;
 }
 
-+ (id)stringArrayFromPreResponseItems:(id)a3
++ (id)stringArrayFromPreResponseItems:(id)items
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v6)
   {
@@ -3031,11 +3031,11 @@ void __69__PREResponsesExperiment__cannedRepliesForLanguage_inputPreferences___b
         if (objc_opt_isKindOfClass())
         {
           [v4 addObject:v10];
-          v11 = pre_responses_handle();
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+          replyText2 = pre_responses_handle();
+          if (os_log_type_enabled(replyText2, OS_LOG_TYPE_FAULT))
           {
             *buf = 0;
-            v12 = v11;
+            v12 = replyText2;
             v13 = "PREResponsesExperiment unexpectedly received NSString when expecting PREResponseItem";
             v14 = 2;
 LABEL_17:
@@ -3048,28 +3048,28 @@ LABEL_17:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v10 replyText];
+            replyText = [v10 replyText];
 
-            if (!v15)
+            if (!replyText)
             {
               goto LABEL_14;
             }
 
-            v11 = [v10 replyText];
-            [v4 addObject:v11];
+            replyText2 = [v10 replyText];
+            [v4 addObject:replyText2];
           }
 
           else
           {
-            v11 = pre_responses_handle();
-            if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+            replyText2 = pre_responses_handle();
+            if (os_log_type_enabled(replyText2, OS_LOG_TYPE_FAULT))
             {
               v16 = objc_opt_class();
               *buf = 138543619;
               v25 = v16;
               v26 = 2117;
               v27 = v10;
-              v12 = v11;
+              v12 = replyText2;
               v13 = "PREResponsesExperiment unexpectedly received unknown object %{public}@ (%{sensitive}@) when expecting PREResponseItem";
               v14 = 22;
               goto LABEL_17;
@@ -3094,21 +3094,21 @@ LABEL_14:
   return v4;
 }
 
-+ (id)_getFormattedPREResponseItems:(id)a3 inputPreferences:(id)a4
++ (id)_getFormattedPREResponseItems:(id)items inputPreferences:(id)preferences
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  itemsCopy = items;
+  preferencesCopy = preferences;
+  v7 = preferencesCopy;
+  if (itemsCopy)
   {
-    if ([v6 BOOLForKey:9])
+    if ([preferencesCopy BOOLForKey:9])
     {
-      v8 = v5;
+      v8 = itemsCopy;
     }
 
     else
     {
-      v8 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_319];
+      v8 = [itemsCopy _pas_mappedArrayWithTransform:&__block_literal_global_319];
     }
 
     v9 = v8;
@@ -3161,19 +3161,19 @@ LABEL_4:
   return v9;
 }
 
-+ (id)_getConversationHistoryFromRequest:(id)a3
++ (id)_getConversationHistoryFromRequest:(id)request
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestCopy = request;
   v4 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"dateSent" ascending:1];
-  v5 = [v3 receivedMessages];
+  receivedMessages = [requestCopy receivedMessages];
   v46 = v4;
   v60[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:1];
-  v7 = [v5 sortedArrayUsingDescriptors:v6];
+  v7 = [receivedMessages sortedArrayUsingDescriptors:v6];
 
-  v47 = v3;
-  v8 = [v3 senderMessages];
+  v47 = requestCopy;
+  senderMessages = [requestCopy senderMessages];
   v9 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
@@ -3197,20 +3197,20 @@ LABEL_4:
         v15 = *(*(&v53 + 1) + 8 * i);
         if (([v15 isTapBack] & 1) == 0 && (objc_msgSend(v15, "isEmote") & 1) == 0)
         {
-          v16 = [v15 title];
-          v17 = v16;
+          title = [v15 title];
+          v17 = title;
           v18 = &stru_28733D8C0;
-          if (v16)
+          if (title)
           {
-            v18 = v16;
+            v18 = title;
           }
 
           v19 = v18;
 
           v20 = objc_alloc(MEMORY[0x277D01F70]);
-          v21 = [v15 senderIdentifier];
-          v22 = [v15 dateSent];
-          v23 = [v20 initWithText:v19 senderID:v21 timestamp:v22];
+          senderIdentifier = [v15 senderIdentifier];
+          dateSent = [v15 dateSent];
+          v23 = [v20 initWithText:v19 senderID:senderIdentifier timestamp:dateSent];
 
           [v9 addObject:v23];
         }
@@ -3223,14 +3223,14 @@ LABEL_4:
   }
 
   v48 = v9;
-  v24 = [v9 lastObject];
-  v25 = [v24 timestamp];
+  lastObject = [v9 lastObject];
+  timestamp = [lastObject timestamp];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v26 = v8;
+  v26 = senderMessages;
   v27 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v27)
   {
@@ -3245,28 +3245,28 @@ LABEL_4:
           objc_enumerationMutation(v26);
         }
 
-        if (v25)
+        if (timestamp)
         {
           v31 = *(*(&v49 + 1) + 8 * j);
-          v32 = [v31 dateSent];
-          v33 = [v32 laterDate:v25];
+          dateSent2 = [v31 dateSent];
+          v33 = [dateSent2 laterDate:timestamp];
 
           if (!v33 && ([v31 isTapBack] & 1) == 0 && (objc_msgSend(v31, "isEmote") & 1) == 0)
           {
-            v34 = [v31 title];
-            v35 = v34;
+            title2 = [v31 title];
+            v35 = title2;
             v36 = &stru_28733D8C0;
-            if (v34)
+            if (title2)
             {
-              v36 = v34;
+              v36 = title2;
             }
 
             v37 = v36;
 
             v38 = objc_alloc(MEMORY[0x277D01F70]);
-            v39 = [v31 senderIdentifier];
-            v40 = [v31 dateSent];
-            v41 = [v38 initWithText:v37 senderID:v39 timestamp:v40];
+            senderIdentifier2 = [v31 senderIdentifier];
+            dateSent3 = [v31 dateSent];
+            v41 = [v38 initWithText:v37 senderID:senderIdentifier2 timestamp:dateSent3];
 
             [v48 addObject:v41];
           }
@@ -3289,14 +3289,14 @@ LABEL_4:
   return v48;
 }
 
-+ (id)_rawStringsForMessages:(id)a3 excludingTapBacks:(BOOL)a4
++ (id)_rawStringsForMessages:(id)messages excludingTapBacks:(BOOL)backs
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__PREResponsesExperiment__rawStringsForMessages_excludingTapBacks___block_invoke;
   v6[3] = &__block_descriptor_33_e49___NSString_16__0__PREResponsesExperimentMessage_8l;
-  v7 = a4;
-  v4 = [a3 _pas_mappedArrayWithTransform:v6];
+  backsCopy = backs;
+  v4 = [messages _pas_mappedArrayWithTransform:v6];
 
   return v4;
 }

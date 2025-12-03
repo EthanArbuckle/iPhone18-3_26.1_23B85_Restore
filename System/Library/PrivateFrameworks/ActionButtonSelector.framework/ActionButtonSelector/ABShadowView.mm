@@ -1,18 +1,18 @@
 @interface ABShadowView
-- (ABShadowView)initWithFrame:(CGRect)a3;
-- (CGImage)_renderBottomVariableBlurMaskWithSize:(CGSize)a3;
+- (ABShadowView)initWithFrame:(CGRect)frame;
+- (CGImage)_renderBottomVariableBlurMaskWithSize:(CGSize)size;
 - (void)_setupGradient;
 - (void)layoutSubviews;
-- (void)setTopShadowRatio:(double)a3;
+- (void)setTopShadowRatio:(double)ratio;
 @end
 
 @implementation ABShadowView
 
-- (ABShadowView)initWithFrame:(CGRect)a3
+- (ABShadowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ABShadowView;
-  v3 = [(ABShadowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ABShadowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,9 +26,9 @@
 - (void)_setupGradient
 {
   v38[16] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CD9EB0] layer];
+  layer = [MEMORY[0x277CD9EB0] layer];
   topGradientLayer = self->_topGradientLayer;
-  self->_topGradientLayer = v3;
+  self->_topGradientLayer = layer;
 
   v34 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.00392156863];
   v38[0] = [v34 CGColor];
@@ -70,12 +70,12 @@
   v13 = self->_topGradientLayer;
   v35 = v36;
   [(CAGradientLayer *)v13 setTransform:&v35];
-  v14 = [(ABShadowView *)self layer];
-  [v14 addSublayer:self->_topGradientLayer];
+  layer2 = [(ABShadowView *)self layer];
+  [layer2 addSublayer:self->_topGradientLayer];
 
-  v15 = [MEMORY[0x277CD9E08] layer];
+  layer3 = [MEMORY[0x277CD9E08] layer];
   bottomVariableBlurLayer = self->_bottomVariableBlurLayer;
-  self->_bottomVariableBlurLayer = v15;
+  self->_bottomVariableBlurLayer = layer3;
 
   v17 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA638]];
   v37 = v17;
@@ -84,21 +84,21 @@
 
   [(CABackdropLayer *)self->_bottomVariableBlurLayer setValue:&unk_28501EF60 forKeyPath:@"filters.variableBlur.inputRadius"];
   [(CABackdropLayer *)self->_bottomVariableBlurLayer setValue:MEMORY[0x277CBEC38] forKeyPath:@"filters.variableBlur.inputNormalizeEdges"];
-  v19 = [(ABShadowView *)self layer];
-  [v19 addSublayer:self->_bottomVariableBlurLayer];
+  layer4 = [(ABShadowView *)self layer];
+  [layer4 addSublayer:self->_bottomVariableBlurLayer];
 
-  v20 = [MEMORY[0x277CD9EB0] layer];
+  layer5 = [MEMORY[0x277CD9EB0] layer];
   bottomGradientLayer = self->_bottomGradientLayer;
-  self->_bottomGradientLayer = v20;
+  self->_bottomGradientLayer = layer5;
 
-  v22 = [(CAGradientLayer *)self->_topGradientLayer colors];
-  [(CAGradientLayer *)self->_bottomGradientLayer setColors:v22];
+  colors = [(CAGradientLayer *)self->_topGradientLayer colors];
+  [(CAGradientLayer *)self->_bottomGradientLayer setColors:colors];
 
-  v23 = [(CAGradientLayer *)self->_topGradientLayer locations];
-  [(CAGradientLayer *)self->_bottomGradientLayer setLocations:v23];
+  locations = [(CAGradientLayer *)self->_topGradientLayer locations];
+  [(CAGradientLayer *)self->_bottomGradientLayer setLocations:locations];
 
-  v24 = [(ABShadowView *)self layer];
-  [v24 addSublayer:self->_bottomGradientLayer];
+  layer6 = [(ABShadowView *)self layer];
+  [layer6 addSublayer:self->_bottomGradientLayer];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -129,10 +129,10 @@
   }
 }
 
-- (CGImage)_renderBottomVariableBlurMaskWithSize:(CGSize)a3
+- (CGImage)_renderBottomVariableBlurMaskWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
   v7 = CGBitmapContextCreate(0, width, height, 8uLL, AlignedBytesPerRow, DeviceRGB, 0x2002u);
@@ -185,18 +185,18 @@
   return Image;
 }
 
-- (void)setTopShadowRatio:(double)a3
+- (void)setTopShadowRatio:(double)ratio
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 54) != a3)
+    if (*(self + 54) != ratio)
     {
-      *(a1 + 54) = a3;
-      return [a1 setNeedsLayout];
+      *(self + 54) = ratio;
+      return [self setNeedsLayout];
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

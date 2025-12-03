@@ -1,27 +1,27 @@
 @interface SFWebExtensionPermissionBanner
-- (SFWebExtensionPermissionBanner)initWithExtension:(id)a3;
+- (SFWebExtensionPermissionBanner)initWithExtension:(id)extension;
 - (id)preferredButtonBackgroundColor;
 - (id)preferredButtonTintColor;
 @end
 
 @implementation SFWebExtensionPermissionBanner
 
-- (SFWebExtensionPermissionBanner)initWithExtension:(id)a3
+- (SFWebExtensionPermissionBanner)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(SFLinkBanner *)self init];
   if (v5)
   {
-    v6 = [v4 displayName];
-    v7 = [(SFLinkBanner *)v5 titleLabel];
-    [v7 setText:v6];
+    displayName = [extensionCopy displayName];
+    titleLabel = [(SFLinkBanner *)v5 titleLabel];
+    [titleLabel setText:displayName];
 
     v8 = _WBSLocalizedString();
     [(SFLinkBanner *)v5 setMessageLabelText:v8];
 
-    v9 = [v4 icon];
-    v10 = [(SFLinkBanner *)v5 icon];
-    [v10 setImage:v9];
+    icon = [extensionCopy icon];
+    icon2 = [(SFLinkBanner *)v5 icon];
+    [icon2 setImage:icon];
 
     v11 = _WBSLocalizedString();
     [(SFLinkBanner *)v5 setOpenButtonTitle:v11];
@@ -38,15 +38,15 @@
   {
     v5.receiver = self;
     v5.super_class = SFWebExtensionPermissionBanner;
-    v3 = [(SFLinkBanner *)&v5 preferredButtonBackgroundColor];
+    preferredButtonBackgroundColor = [(SFLinkBanner *)&v5 preferredButtonBackgroundColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] systemGray5Color];
+    preferredButtonBackgroundColor = [MEMORY[0x1E69DC888] systemGray5Color];
   }
 
-  return v3;
+  return preferredButtonBackgroundColor;
 }
 
 - (id)preferredButtonTintColor
@@ -55,15 +55,15 @@
   {
     v5.receiver = self;
     v5.super_class = SFWebExtensionPermissionBanner;
-    v3 = [(SFLinkBanner *)&v5 preferredButtonTintColor];
+    preferredButtonTintColor = [(SFLinkBanner *)&v5 preferredButtonTintColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    preferredButtonTintColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return preferredButtonTintColor;
 }
 
 @end

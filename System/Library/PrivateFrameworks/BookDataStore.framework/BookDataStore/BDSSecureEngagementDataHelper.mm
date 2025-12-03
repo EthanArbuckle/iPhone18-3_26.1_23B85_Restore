@@ -1,15 +1,15 @@
 @interface BDSSecureEngagementDataHelper
-+ (BOOL)isEngagementTimeSliceDataEmpty:(id)a3;
-+ (id)mergedTimeSliceDataLocal:(id)a3 remote:(id)a4;
++ (BOOL)isEngagementTimeSliceDataEmpty:(id)empty;
++ (id)mergedTimeSliceDataLocal:(id)local remote:(id)remote;
 - (BDSSecureEngagementDataHelper)init;
 @end
 
 @implementation BDSSecureEngagementDataHelper
 
-+ (id)mergedTimeSliceDataLocal:(id)a3 remote:(id)a4
++ (id)mergedTimeSliceDataLocal:(id)local remote:(id)remote
 {
-  v5 = a3;
-  v6 = a4;
+  localCopy = local;
+  remoteCopy = remote;
   v7 = sub_1E4709BDC();
   v9 = v8;
 
@@ -36,15 +36,15 @@
   return v16;
 }
 
-+ (BOOL)isEngagementTimeSliceDataEmpty:(id)a3
++ (BOOL)isEngagementTimeSliceDataEmpty:(id)empty
 {
-  v3 = a3;
+  emptyCopy = empty;
   v4 = sub_1E4709BDC();
   v6 = v5;
 
-  LOBYTE(v3) = _s13BookDataStore016SecureEngagementB6HelperC7isEmpty9timeSliceSb10Foundation0B0V_tFZ_0(v4, v6);
+  LOBYTE(emptyCopy) = _s13BookDataStore016SecureEngagementB6HelperC7isEmpty9timeSliceSb10Foundation0B0V_tFZ_0(v4, v6);
   sub_1E465746C(v4, v6);
-  return v3 & 1;
+  return emptyCopy & 1;
 }
 
 - (BDSSecureEngagementDataHelper)init

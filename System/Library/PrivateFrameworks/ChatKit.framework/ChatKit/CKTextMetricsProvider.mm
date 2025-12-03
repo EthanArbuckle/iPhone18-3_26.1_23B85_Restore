@@ -1,16 +1,16 @@
 @interface CKTextMetricsProvider
-- (id)_metricsForAttributedString:(id)a3 lineFragmentPadding:(double)a4 maximumNumberOfLines:(unint64_t)a5 lineBreakMode:(int64_t)a6 targetSize:(CGSize)a7;
-- (id)_metricsForRequest:(id)a3 containerInset:(UIEdgeInsets)a4;
-- (id)_metricsForRequest:(id)a3 containerInset:(UIEdgeInsets)a4 minimumViewHeight:(double)a5;
-- (id)metricsForRequest:(id)a3;
+- (id)_metricsForAttributedString:(id)string lineFragmentPadding:(double)padding maximumNumberOfLines:(unint64_t)lines lineBreakMode:(int64_t)mode targetSize:(CGSize)size;
+- (id)_metricsForRequest:(id)request containerInset:(UIEdgeInsets)inset;
+- (id)_metricsForRequest:(id)request containerInset:(UIEdgeInsets)inset minimumViewHeight:(double)height;
+- (id)metricsForRequest:(id)request;
 @end
 
 @implementation CKTextMetricsProvider
 
-- (id)_metricsForAttributedString:(id)a3 lineFragmentPadding:(double)a4 maximumNumberOfLines:(unint64_t)a5 lineBreakMode:(int64_t)a6 targetSize:(CGSize)a7
+- (id)_metricsForAttributedString:(id)string lineFragmentPadding:(double)padding maximumNumberOfLines:(unint64_t)lines lineBreakMode:(int64_t)mode targetSize:(CGSize)size
 {
-  width = a7.width;
-  v11 = a3;
+  width = size.width;
+  stringCopy = string;
   v12 = objc_alloc_init(MEMORY[0x1E69DB800]);
   v13 = objc_alloc_init(MEMORY[0x1E69DB828]);
   v14 = objc_alloc_init(MEMORY[0x1E69DB808]);
@@ -19,9 +19,9 @@
 
   [v14 addTextLayoutManager:v13];
   [v13 setTextContainer:v12];
-  [v12 setLineFragmentPadding:a4];
-  [v12 setMaximumNumberOfLines:a5];
-  [v12 setLineBreakMode:a6];
+  [v12 setLineFragmentPadding:padding];
+  [v12 setMaximumNumberOfLines:lines];
+  [v12 setLineBreakMode:mode];
   [v12 setSize:{width, 1.79769313e308}];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -29,11 +29,11 @@
   v47[3] = &unk_1E72EB8D0;
   v16 = v14;
   v48 = v16;
-  v17 = v11;
+  v17 = stringCopy;
   v49 = v17;
   [v16 performEditingTransactionUsingBlock:v47];
-  v18 = [v13 documentRange];
-  [v13 ensureLayoutForRange:v18];
+  documentRange = [v13 documentRange];
+  [v13 ensureLayoutForRange:documentRange];
   [v13 usageBoundsForTextContainer];
   v20 = v19;
   v22 = v21;
@@ -49,7 +49,7 @@
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0;
-  v23 = [v18 location];
+  location = [documentRange location];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPadding_maximumNumberOfLines_lineBreakMode_targetSize___block_invoke_2;
@@ -57,8 +57,8 @@
   v37[4] = v42;
   v37[5] = &v38;
   v37[6] = &v43;
-  v37[7] = a5;
-  v24 = [v13 enumerateTextLayoutFragmentsFromLocation:v23 options:4 usingBlock:v37];
+  v37[7] = lines;
+  v24 = [v13 enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v37];
 
   v25 = v44[3];
   v26 = v39[3];
@@ -66,22 +66,22 @@
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v27 = [v13 documentRange];
-  v28 = [v27 location];
+  documentRange2 = [v13 documentRange];
+  location2 = [documentRange2 location];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPadding_maximumNumberOfLines_lineBreakMode_targetSize___block_invoke_3;
   v32[3] = &unk_1E72EC8C8;
   v32[4] = &v33;
-  v29 = [v13 enumerateTextLayoutFragmentsFromLocation:v28 options:4 usingBlock:v32];
+  v29 = [v13 enumerateTextLayoutFragmentsFromLocation:location2 options:4 usingBlock:v32];
 
-  v30 = [[CKTextMetrics alloc] initWithSize:v34[3] == 1 singleLine:v20 + a4 * 2.0 alignmentInset:v22, v25, a4, v26, a4];
+  padding = [[CKTextMetrics alloc] initWithSize:v34[3] == 1 singleLine:v20 + padding * 2.0 alignmentInset:v22, v25, padding, v26, padding];
   _Block_object_dispose(&v33, 8);
   _Block_object_dispose(&v38, 8);
   _Block_object_dispose(v42, 8);
   _Block_object_dispose(&v43, 8);
 
-  return v30;
+  return padding;
 }
 
 void __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPadding_maximumNumberOfLines_lineBreakMode_targetSize___block_invoke(uint64_t a1)
@@ -186,49 +186,49 @@ uint64_t __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPa
   return 1;
 }
 
-- (id)metricsForRequest:(id)a3
+- (id)metricsForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [v4 minimumViewHeight];
+  [requestCopy minimumViewHeight];
   v6 = v5;
-  [v4 containerInset];
+  [requestCopy containerInset];
   v11 = v7;
   v12 = v8;
   v13 = v9;
   v14 = v10;
   if (v6 <= 0.0)
   {
-    [(CKTextMetricsProvider *)self _metricsForRequest:v4 containerInset:v7, v8, v9, v10];
+    [(CKTextMetricsProvider *)self _metricsForRequest:requestCopy containerInset:v7, v8, v9, v10];
   }
 
   else
   {
-    [v4 minimumViewHeight];
-    [(CKTextMetricsProvider *)self _metricsForRequest:v4 containerInset:v11 minimumViewHeight:v12, v13, v14, v15];
+    [requestCopy minimumViewHeight];
+    [(CKTextMetricsProvider *)self _metricsForRequest:requestCopy containerInset:v11 minimumViewHeight:v12, v13, v14, v15];
   }
   v16 = ;
 
   return v16;
 }
 
-- (id)_metricsForRequest:(id)a3 containerInset:(UIEdgeInsets)a4
+- (id)_metricsForRequest:(id)request containerInset:(UIEdgeInsets)inset
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  [v9 adjustedMaximumSize];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  requestCopy = request;
+  [requestCopy adjustedMaximumSize];
   v11 = v10;
   v13 = v12;
-  v14 = [v9 attributedString];
-  [v9 lineFragmentPadding];
+  attributedString = [requestCopy attributedString];
+  [requestCopy lineFragmentPadding];
   v16 = v15;
-  v17 = [v9 maximumNumberOfLines];
-  v18 = [v9 lineBreakMode];
+  maximumNumberOfLines = [requestCopy maximumNumberOfLines];
+  lineBreakMode = [requestCopy lineBreakMode];
 
-  v19 = [(CKTextMetricsProvider *)self _metricsForAttributedString:v14 lineFragmentPadding:v17 maximumNumberOfLines:v18 lineBreakMode:v16 targetSize:v11, v13];
+  v19 = [(CKTextMetricsProvider *)self _metricsForAttributedString:attributedString lineFragmentPadding:maximumNumberOfLines maximumNumberOfLines:lineBreakMode lineBreakMode:v16 targetSize:v11, v13];
 
   [v19 alignmentInset];
   v21 = top + v20;
@@ -244,21 +244,21 @@ uint64_t __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPa
   return v30;
 }
 
-- (id)_metricsForRequest:(id)a3 containerInset:(UIEdgeInsets)a4 minimumViewHeight:(double)a5
+- (id)_metricsForRequest:(id)request containerInset:(UIEdgeInsets)inset minimumViewHeight:(double)height
 {
-  bottom = a4.bottom;
-  top = a4.top;
-  v8 = a3;
-  [v8 adjustedMaximumSize];
+  bottom = inset.bottom;
+  top = inset.top;
+  requestCopy = request;
+  [requestCopy adjustedMaximumSize];
   v10 = v9;
   v12 = v11;
-  v13 = [v8 attributedString];
-  [v8 lineFragmentPadding];
+  attributedString = [requestCopy attributedString];
+  [requestCopy lineFragmentPadding];
   v15 = v14;
-  v16 = [v8 maximumNumberOfLines];
-  v17 = [v8 lineBreakMode];
+  maximumNumberOfLines = [requestCopy maximumNumberOfLines];
+  lineBreakMode = [requestCopy lineBreakMode];
 
-  v18 = [(CKTextMetricsProvider *)self _metricsForAttributedString:v13 lineFragmentPadding:v16 maximumNumberOfLines:v17 lineBreakMode:v15 targetSize:v10, v12];
+  v18 = [(CKTextMetricsProvider *)self _metricsForAttributedString:attributedString lineFragmentPadding:maximumNumberOfLines maximumNumberOfLines:lineBreakMode lineBreakMode:v15 targetSize:v10, v12];
 
   [v18 size];
   v20 = v19;
@@ -270,14 +270,14 @@ uint64_t __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPa
   v28 = v27;
   v30 = v29;
   [v18 size];
-  if (v31 >= a5)
+  if (v31 >= height)
   {
-    a5 = v20;
+    height = v20;
   }
 
   else
   {
-    v32 = (a5 - (bottom + top + v22)) * 0.5;
+    v32 = (height - (bottom + top + v22)) * 0.5;
     v24 = top + v32;
     v28 = bottom + v32;
     v30 = 0.0;
@@ -285,7 +285,7 @@ uint64_t __119__CKTextMetricsProvider__metricsForAttributedString_lineFragmentPa
   }
 
   [v18 size];
-  v34 = -[CKTextMetrics initWithSize:singleLine:alignmentInset:]([CKTextMetrics alloc], "initWithSize:singleLine:alignmentInset:", [v18 isSingleLine], v33, a5, v24, v26, v28, v30);
+  v34 = -[CKTextMetrics initWithSize:singleLine:alignmentInset:]([CKTextMetrics alloc], "initWithSize:singleLine:alignmentInset:", [v18 isSingleLine], v33, height, v24, v26, v28, v30);
 
   return v34;
 }

@@ -1,14 +1,14 @@
 @interface VCPProtoMovieInterestingnessResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieInterestingnessResult
@@ -19,48 +19,48 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieInterestingnessResult;
   v4 = [(VCPProtoMovieInterestingnessResult *)&v8 description];
-  v5 = [(VCPProtoMovieInterestingnessResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieInterestingnessResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v6 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   *&v4 = self->_interestScore;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"interestScore"];
+  [dictionary setObject:v7 forKey:@"interestScore"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  v5[2] = self->_interestScore;
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  toCopy[2] = self->_interestScore;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -68,10 +68,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(v4 + 2))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_interestScore == *(v4 + 2);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(equalCopy + 2))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_interestScore == *(equalCopy + 2);
 
   return v6;
 }
@@ -107,11 +107,11 @@
   return v11 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (timeRange)
   {
     if (!v6)
@@ -119,7 +119,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoTimeRange *)timeRange mergeFrom:?];
   }
 
@@ -130,21 +130,21 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoMovieInterestingnessResult *)self setTimeRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_interestScore = *(v4 + 2);
+  self->_interestScore = *(fromCopy + 2);
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v10, 0, sizeof(v10));
-  CMTimeRangeMakeFromDictionary(&v10, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"quality"];
+  CMTimeRangeMakeFromDictionary(&v10, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"quality"];
   v5 = v4;
   if (v10.start.flags)
   {
@@ -178,11 +178,11 @@ LABEL_7:
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [(VCPProtoMovieInterestingnessResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieInterestingnessResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface SCKPMediaControlCardSectionView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SCKPMediaControlCardSectionView
@@ -14,37 +14,37 @@
   [(UIView *)contentView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_contentView sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_contentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (contentView)
     {
       [(UIView *)contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (self->_contentView)
     {
       [(SCKPMediaControlCardSectionView *)self addSubview:v7];
     }
 
     contentView = [(SCKPMediaControlCardSectionView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](contentView, v5);
+  MEMORY[0x2821F96F8](contentView, viewCopy);
 }
 
 @end

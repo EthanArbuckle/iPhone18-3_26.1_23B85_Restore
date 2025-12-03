@@ -1,5 +1,5 @@
 @interface IDSMPIdentity
-- (IDSMPIdentity)initWithBackingValue:(void *)a3;
+- (IDSMPIdentity)initWithBackingValue:(void *)value;
 - (void)dealloc;
 @end
 
@@ -18,14 +18,14 @@
   [(IDSMPIdentity *)&v4 dealloc];
 }
 
-- (IDSMPIdentity)initWithBackingValue:(void *)a3
+- (IDSMPIdentity)initWithBackingValue:(void *)value
 {
   v6.receiver = self;
   v6.super_class = IDSMPIdentity;
   v4 = [(IDSMPIdentity *)&v6 init];
   if (v4)
   {
-    v4->_backingValue = CFRetain(a3);
+    v4->_backingValue = CFRetain(value);
   }
 
   return v4;

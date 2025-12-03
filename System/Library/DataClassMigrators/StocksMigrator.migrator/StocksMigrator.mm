@@ -41,13 +41,13 @@
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "StocksMigrator - destination: %@", buf, 0xCu);
     }
 
-    v8 = [v5 path];
-    v9 = [v2 fileExistsAtPath:v8];
+    path = [v5 path];
+    v9 = [v2 fileExistsAtPath:path];
 
     if (v9)
     {
-      v10 = [v7 path];
-      v11 = [v2 fileExistsAtPath:v10];
+      path2 = [v7 path];
+      v11 = [v2 fileExistsAtPath:path2];
 
       if (v11)
       {
@@ -81,8 +81,8 @@
 
           if (v16)
           {
-            v17 = [v7 path];
-            v18 = open([v17 fileSystemRepresentation], 0, 0);
+            path3 = [v7 path];
+            v18 = open([path3 fileSystemRepresentation], 0, 0);
 
             if (v18 != -1)
             {

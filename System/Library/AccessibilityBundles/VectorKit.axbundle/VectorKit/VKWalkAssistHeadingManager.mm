@@ -1,16 +1,16 @@
 @interface VKWalkAssistHeadingManager
 - (BOOL)_isFacingLocation;
 - (VKWalkAssistHapticEngineDelegate)hapticEngineDelegate;
-- (VKWalkAssistHeadingManager)initWithHapticEngineDelegate:(id)a3;
+- (VKWalkAssistHeadingManager)initWithHapticEngineDelegate:(id)delegate;
 - (double)_getDegrees:(double)result;
-- (void)updateHeading:(double)a3 bearing:(double)a4;
+- (void)updateHeading:(double)heading bearing:(double)bearing;
 @end
 
 @implementation VKWalkAssistHeadingManager
 
-- (VKWalkAssistHeadingManager)initWithHapticEngineDelegate:(id)a3
+- (VKWalkAssistHeadingManager)initWithHapticEngineDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = VKWalkAssistHeadingManager;
   v5 = [(VKWalkAssistHeadingManager *)&v14 init];
@@ -21,34 +21,34 @@
 
     *&v5->_heading = _Q0;
     v5->_isLocationInView = 0;
-    objc_storeWeak(&v5->_hapticEngineDelegate, v4);
+    objc_storeWeak(&v5->_hapticEngineDelegate, delegateCopy);
     v12 = v6;
   }
 
   return v6;
 }
 
-- (void)updateHeading:(double)a3 bearing:(double)a4
+- (void)updateHeading:(double)heading bearing:(double)bearing
 {
-  if (a3 >= 0.0)
+  if (heading >= 0.0)
   {
     [(VKWalkAssistHeadingManager *)self setHeading:?];
-    [(VKWalkAssistHeadingManager *)self setBearing:a4];
-    v6 = [(VKWalkAssistHeadingManager *)self _isFacingLocation];
-    if (self->_isLocationInView != v6)
+    [(VKWalkAssistHeadingManager *)self setBearing:bearing];
+    _isFacingLocation = [(VKWalkAssistHeadingManager *)self _isFacingLocation];
+    if (self->_isLocationInView != _isFacingLocation)
     {
-      v7 = v6;
-      v8 = [(VKWalkAssistHeadingManager *)self _isFacingLocation];
-      v9 = [(VKWalkAssistHeadingManager *)self hapticEngineDelegate];
-      v10 = v9;
-      if (v8)
+      v7 = _isFacingLocation;
+      _isFacingLocation2 = [(VKWalkAssistHeadingManager *)self _isFacingLocation];
+      hapticEngineDelegate = [(VKWalkAssistHeadingManager *)self hapticEngineDelegate];
+      v10 = hapticEngineDelegate;
+      if (_isFacingLocation2)
       {
-        [v9 playEnterHaptic];
+        [hapticEngineDelegate playEnterHaptic];
       }
 
       else
       {
-        [v9 playExitHaptic];
+        [hapticEngineDelegate playExitHaptic];
       }
 
       [(VKWalkAssistHeadingManager *)self setIsLocationInView:v7];

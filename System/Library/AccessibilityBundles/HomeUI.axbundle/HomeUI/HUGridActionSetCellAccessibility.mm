@@ -1,24 +1,24 @@
 @interface HUGridActionSetCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 @end
 
 @implementation HUGridActionSetCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUGridActionSetCell" hasInstanceMethod:@"titleAndDescriptionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridActionSetTitleAndDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridActionSetTitleAndDescriptionView" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridActionSetCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUIconView" hasInstanceMethod:@"displayStyle" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"HUIconView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"HFIconDescriptor" hasRequiredInstanceMethod:@"identifier"];
-  [v3 validateClass:@"HUGridActionSetCell" isKindOfClass:@"HIGridCell"];
-  [v3 validateClass:@"HUGridActionSetPlaceholderCell" isKindOfClass:@"HUGridActionSetCell"];
-  [v3 validateClass:@"HUGridCellAccessibility" hasInstanceMethod:@"_axIsActiveGridCell" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUGridActionSetCell" hasInstanceMethod:@"titleAndDescriptionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridActionSetTitleAndDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridActionSetTitleAndDescriptionView" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridActionSetCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUIconView" hasInstanceMethod:@"displayStyle" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"HUIconView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"HFIconDescriptor" hasRequiredInstanceMethod:@"identifier"];
+  [validationsCopy validateClass:@"HUGridActionSetCell" isKindOfClass:@"HIGridCell"];
+  [validationsCopy validateClass:@"HUGridActionSetPlaceholderCell" isKindOfClass:@"HUGridActionSetCell"];
+  [validationsCopy validateClass:@"HUGridCellAccessibility" hasInstanceMethod:@"_axIsActiveGridCell" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

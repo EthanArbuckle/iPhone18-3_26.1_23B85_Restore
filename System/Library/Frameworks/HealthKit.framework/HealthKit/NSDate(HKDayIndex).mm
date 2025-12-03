@@ -42,24 +42,24 @@
 - (uint64_t)hk_dayIndexWithCalendar:()HKDayIndex
 {
   v5 = a3;
-  v6 = [v5 calendarIdentifier];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E695D850]];
+  calendarIdentifier = [v5 calendarIdentifier];
+  v7 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
   if ((v7 & 1) == 0)
   {
-    [(NSDate(HKDayIndex) *)a2 hk_dayIndexWithCalendar:a1];
+    [(NSDate(HKDayIndex) *)a2 hk_dayIndexWithCalendar:self];
   }
 
-  v8 = [v5 components:28 fromDate:a1];
-  v9 = [v8 hk_dayIndex];
+  v8 = [v5 components:28 fromDate:self];
+  hk_dayIndex = [v8 hk_dayIndex];
 
-  return v9;
+  return hk_dayIndex;
 }
 
 - (uint64_t)hk_earliestPossibleDayIndex
 {
   v2 = +[HKCalendarCache earliestTimeZoneCalendar];
-  v3 = [a1 hk_dayIndexWithCalendar:v2];
+  v3 = [self hk_dayIndexWithCalendar:v2];
 
   return v3;
 }
@@ -67,7 +67,7 @@
 - (uint64_t)hk_latestPossibleDayIndex
 {
   v2 = +[HKCalendarCache latestTimeZoneCalendar];
-  v3 = [a1 hk_dayIndexWithCalendar:v2];
+  v3 = [self hk_dayIndexWithCalendar:v2];
 
   return v3;
 }

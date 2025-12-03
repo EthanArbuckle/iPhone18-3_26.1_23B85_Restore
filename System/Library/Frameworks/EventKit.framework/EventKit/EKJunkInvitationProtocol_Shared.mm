@@ -1,29 +1,29 @@
 @interface EKJunkInvitationProtocol_Shared
-+ (unint64_t)junkStatusForInvitation:(id)a3;
-+ (unint64_t)junkStatusForInvitation:(id)a3 withReputationStore:(id)a4;
++ (unint64_t)junkStatusForInvitation:(id)invitation;
++ (unint64_t)junkStatusForInvitation:(id)invitation withReputationStore:(id)store;
 @end
 
 @implementation EKJunkInvitationProtocol_Shared
 
-+ (unint64_t)junkStatusForInvitation:(id)a3
++ (unint64_t)junkStatusForInvitation:(id)invitation
 {
   v3 = MEMORY[0x1E6992F50];
-  v4 = a3;
-  v5 = [v3 defaultProvider];
-  v6 = [v5 reputationStore];
+  invitationCopy = invitation;
+  defaultProvider = [v3 defaultProvider];
+  reputationStore = [defaultProvider reputationStore];
 
-  v7 = [objc_opt_class() junkStatusForInvitation:v4 withReputationStore:v6];
+  v7 = [objc_opt_class() junkStatusForInvitation:invitationCopy withReputationStore:reputationStore];
   return v7;
 }
 
-+ (unint64_t)junkStatusForInvitation:(id)a3 withReputationStore:(id)a4
++ (unint64_t)junkStatusForInvitation:(id)invitation withReputationStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 supportsJunkReporting];
+  invitationCopy = invitation;
+  storeCopy = store;
+  supportsJunkReporting = [invitationCopy supportsJunkReporting];
   v8 = +[EKLogSubsystem junk];
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if ((v7 & 1) == 0)
+  if ((supportsJunkReporting & 1) == 0)
   {
     if (v9)
     {
@@ -38,30 +38,30 @@
     +[EKJunkInvitationProtocol_Shared junkStatusForInvitation:withReputationStore:];
   }
 
-  v10 = [v5 sendersEmail];
+  sendersEmail = [invitationCopy sendersEmail];
 
-  if (v10)
+  if (sendersEmail)
   {
     v11 = MEMORY[0x1E6992F50];
-    v12 = [v5 sendersEmail];
-    v13 = [v11 shouldPermitOrganizerEmailFromJunkChecks:v12 inReputationStore:v6];
+    sendersEmail2 = [invitationCopy sendersEmail];
+    v13 = [v11 shouldPermitOrganizerEmailFromJunkChecks:sendersEmail2 inReputationStore:storeCopy];
   }
 
   else
   {
-    v14 = [v5 sendersPhoneNumber];
+    sendersPhoneNumber = [invitationCopy sendersPhoneNumber];
 
-    if (!v14)
+    if (!sendersPhoneNumber)
     {
       goto LABEL_12;
     }
 
     v15 = MEMORY[0x1E6992F50];
-    v12 = [v5 sendersPhoneNumber];
-    v13 = [v15 shouldPermitOrganizerPhoneNumberFromJunkChecks:v12 inReputationStore:v6];
+    sendersEmail2 = [invitationCopy sendersPhoneNumber];
+    v13 = [v15 shouldPermitOrganizerPhoneNumberFromJunkChecks:sendersEmail2 inReputationStore:storeCopy];
   }
 
-  LOBYTE(v14) = v13;
+  LOBYTE(sendersPhoneNumber) = v13;
 
 LABEL_12:
   v16 = +[EKLogSubsystem junk];
@@ -70,33 +70,33 @@ LABEL_12:
     +[EKJunkInvitationProtocol_Shared junkStatusForInvitation:withReputationStore:];
   }
 
-  if (v14)
+  if (sendersPhoneNumber)
   {
 LABEL_15:
     v17 = 2;
     goto LABEL_26;
   }
 
-  v18 = [v5 sendersEmail];
+  sendersEmail3 = [invitationCopy sendersEmail];
 
-  if (v18)
+  if (sendersEmail3)
   {
-    v19 = [v5 eventStore];
-    v20 = [v5 sendersEmail];
-    v21 = [v19 shouldPermitOrganizerEmailFromJunkChecks:v20];
+    eventStore = [invitationCopy eventStore];
+    sendersEmail4 = [invitationCopy sendersEmail];
+    v21 = [eventStore shouldPermitOrganizerEmailFromJunkChecks:sendersEmail4];
 LABEL_20:
-    LODWORD(v22) = v21;
+    LODWORD(sendersPhoneNumber2) = v21;
 
     goto LABEL_21;
   }
 
-  v22 = [v5 sendersPhoneNumber];
+  sendersPhoneNumber2 = [invitationCopy sendersPhoneNumber];
 
-  if (v22)
+  if (sendersPhoneNumber2)
   {
-    v19 = [v5 eventStore];
-    v20 = [v5 sendersPhoneNumber];
-    v21 = [v19 shouldPermitOrganizerPhoneNumberFromJunkChecks:v20];
+    eventStore = [invitationCopy eventStore];
+    sendersEmail4 = [invitationCopy sendersPhoneNumber];
+    v21 = [eventStore shouldPermitOrganizerPhoneNumberFromJunkChecks:sendersEmail4];
     goto LABEL_20;
   }
 
@@ -107,7 +107,7 @@ LABEL_21:
     +[EKJunkInvitationProtocol_Shared junkStatusForInvitation:withReputationStore:];
   }
 
-  if (v22)
+  if (sendersPhoneNumber2)
   {
     v17 = 2;
   }

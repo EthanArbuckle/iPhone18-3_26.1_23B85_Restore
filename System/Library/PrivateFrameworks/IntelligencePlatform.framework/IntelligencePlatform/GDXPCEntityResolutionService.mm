@@ -1,21 +1,21 @@
 @interface GDXPCEntityResolutionService
-- (BOOL)warmupForMode:(int64_t)a3 error:(id *)a4;
+- (BOOL)warmupForMode:(int64_t)mode error:(id *)error;
 - (GDXPCEntityResolutionService)init;
-- (id)generateMentionsForQuery:(id)a3 error:(id *)a4;
-- (id)requestAssetDownloadForAssetType:(id)a3 localeIdentifier:(id)a4 error:(id *)a5;
-- (id)submitCollectionQuery:(id)a3 withError:(id *)a4;
-- (id)submitQuery:(id)a3 withError:(id *)a4;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)generateMentionsForQuery:(id)query error:(id *)error;
+- (id)requestAssetDownloadForAssetType:(id)type localeIdentifier:(id)identifier error:(id *)error;
+- (id)submitCollectionQuery:(id)query withError:(id *)error;
+- (id)submitQuery:(id)query withError:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCEntityResolutionService
 
-- (id)requestAssetDownloadForAssetType:(id)a3 localeIdentifier:(id)a4 error:(id *)a5
+- (id)requestAssetDownloadForAssetType:(id)type localeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   if (_os_feature_enabled_impl())
   {
     *v24 = 0;
@@ -49,12 +49,12 @@
     v16[3] = &unk_1E79624B0;
     v16[4] = v24;
     v16[5] = buf;
-    [v11 requestAssetDownloadForAssetType:v8 localeIdentifier:v9 withCompletion:v16];
+    [v11 requestAssetDownloadForAssetType:typeCopy localeIdentifier:identifierCopy withCompletion:v16];
 
     v12 = *(v25 + 5);
-    if (a5 && !v12)
+    if (error && !v12)
     {
-      *a5 = *(v19 + 5);
+      *error = *(v19 + 5);
       v12 = *(v25 + 5);
     }
 
@@ -79,9 +79,9 @@
   return v13;
 }
 
-- (id)generateMentionsForQuery:(id)a3 error:(id *)a4
+- (id)generateMentionsForQuery:(id)query error:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   if (_os_feature_enabled_impl())
   {
     *v21 = 0;
@@ -115,12 +115,12 @@
     v13[3] = &unk_1E7962488;
     v13[4] = v21;
     v13[5] = buf;
-    [v8 generateMentionsForQuery:v6 withCompletion:v13];
+    [v8 generateMentionsForQuery:queryCopy withCompletion:v13];
 
     v9 = *(v22 + 5);
-    if (a4 && !v9)
+    if (error && !v9)
     {
-      *a4 = *(v16 + 5);
+      *error = *(v16 + 5);
       v9 = *(v22 + 5);
     }
 
@@ -145,9 +145,9 @@
   return v10;
 }
 
-- (id)submitCollectionQuery:(id)a3 withError:(id *)a4
+- (id)submitCollectionQuery:(id)query withError:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   if (_os_feature_enabled_impl())
   {
     *v21 = 0;
@@ -181,12 +181,12 @@
     v13[3] = &unk_1E7962460;
     v13[4] = v21;
     v13[5] = buf;
-    [v8 submitCollectionQuery:v6 withCompletion:v13];
+    [v8 submitCollectionQuery:queryCopy withCompletion:v13];
 
     v9 = *(v22 + 5);
-    if (a4 && !v9)
+    if (error && !v9)
     {
-      *a4 = *(v16 + 5);
+      *error = *(v16 + 5);
       v9 = *(v22 + 5);
     }
 
@@ -211,9 +211,9 @@
   return v10;
 }
 
-- (id)submitQuery:(id)a3 withError:(id *)a4
+- (id)submitQuery:(id)query withError:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   if (_os_feature_enabled_impl())
   {
     *v21 = 0;
@@ -247,12 +247,12 @@
     v13[3] = &unk_1E79625A0;
     v13[4] = v21;
     v13[5] = buf;
-    [v8 submitQuery:v6 withCompletion:v13];
+    [v8 submitQuery:queryCopy withCompletion:v13];
 
     v9 = *(v22 + 5);
-    if (a4 && !v9)
+    if (error && !v9)
     {
-      *a4 = *(v16 + 5);
+      *error = *(v16 + 5);
       v9 = *(v22 + 5);
     }
 
@@ -277,7 +277,7 @@
   return v10;
 }
 
-- (BOOL)warmupForMode:(int64_t)a3 error:(id *)a4
+- (BOOL)warmupForMode:(int64_t)mode error:(id *)error
 {
   if (_os_feature_enabled_impl())
   {
@@ -310,12 +310,12 @@
     v12[3] = &unk_1E79628A0;
     v12[4] = &v20;
     v12[5] = buf;
-    [v8 warmupForMode:a3 withCompletion:v12];
+    [v8 warmupForMode:mode withCompletion:v12];
 
     v9 = *(v21 + 24);
-    if (a4 && (v21[3] & 1) == 0)
+    if (error && (v21[3] & 1) == 0)
     {
-      *a4 = *(v15 + 5);
+      *error = *(v15 + 5);
       v9 = *(v21 + 24);
     }
 
@@ -339,14 +339,14 @@
   return v9 & 1;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCEntityResolutionService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCEntityResolutionService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

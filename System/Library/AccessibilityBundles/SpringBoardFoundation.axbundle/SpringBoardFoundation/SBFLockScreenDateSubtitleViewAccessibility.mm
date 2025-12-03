@@ -1,13 +1,13 @@
 @interface SBFLockScreenDateSubtitleViewAccessibility
-- (BOOL)_accessibilityPointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_accessibilityPointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation SBFLockScreenDateSubtitleViewAccessibility
 
-- (BOOL)_accessibilityPointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)_accessibilityPointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SBFLockScreenDateSubtitleViewAccessibility *)self frame];
   v10 = x;
   v11 = y;

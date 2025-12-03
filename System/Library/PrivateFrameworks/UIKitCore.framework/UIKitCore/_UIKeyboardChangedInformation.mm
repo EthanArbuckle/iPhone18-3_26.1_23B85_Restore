@@ -1,22 +1,22 @@
 @interface _UIKeyboardChangedInformation
 + (id)informationForKeyboardDown;
-+ (id)informationForKeyboardPreserve:(id)a3;
-+ (id)informationForKeyboardRestore:(id)a3;
-+ (id)informationForKeyboardUp:(CGRect)a3 withIAV:(CGRect)a4;
-+ (id)informationForKeyboardUpWithIAVHeight:(double)a3;
++ (id)informationForKeyboardPreserve:(id)preserve;
++ (id)informationForKeyboardRestore:(id)restore;
++ (id)informationForKeyboardUp:(CGRect)up withIAV:(CGRect)v;
++ (id)informationForKeyboardUpWithIAVHeight:(double)height;
 - (CGPoint)persistentOffset;
 - (CGRect)keyboardPositionWithIAV;
 - (CGRect)keyboardPositionWithRemoteIAV;
-- (_UIKeyboardChangedInformation)initWithCoder:(id)a3;
-- (_UIKeyboardChangedInformation)initWithKeyboardRect:(CGRect)a3 iavPosition:(CGRect)a4 onScreen:(BOOL)a5 takeSnapshot:(BOOL)a6 fence:(id)a7;
-- (id)copyWithIntersectability:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIKeyboardChangedInformation)initWithCoder:(id)coder;
+- (_UIKeyboardChangedInformation)initWithKeyboardRect:(CGRect)rect iavPosition:(CGRect)position onScreen:(BOOL)screen takeSnapshot:(BOOL)snapshot fence:(id)fence;
+- (id)copyWithIntersectability:(BOOL)intersectability;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyWithoutFence;
-- (id)copyWithoutIAVKeyboardRect:(CGRect)a3;
+- (id)copyWithoutIAVKeyboardRect:(CGRect)rect;
 - (id)description;
 - (id)descriptionForLog;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIKeyboardChangedInformation
@@ -52,8 +52,8 @@
 + (id)informationForKeyboardDown
 {
   v3 = [_UIKeyboardChangedInformation alloc];
-  v4 = [a1 animationFence];
-  v5 = [(_UIKeyboardChangedInformation *)v3 initWithKeyboardRect:0 iavPosition:0 onScreen:v4 takeSnapshot:0.0 fence:0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+  animationFence = [self animationFence];
+  v5 = [(_UIKeyboardChangedInformation *)v3 initWithKeyboardRect:0 iavPosition:0 onScreen:animationFence takeSnapshot:0.0 fence:0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
   return v5;
 }
@@ -71,7 +71,7 @@
   v36 = MEMORY[0x1E696AEC0];
   v37.receiver = self;
   v37.super_class = _UIKeyboardChangedInformation;
-  v3 = [(_UIKeyboardUIInformation *)&v37 descriptionForLog];
+  descriptionForLog = [(_UIKeyboardUIInformation *)&v37 descriptionForLog];
   v4 = _UISceneIdentityToLogString(self->_sourceSceneIdentityString);
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
   sourceDisplayIdentifier = self->_sourceDisplayIdentifier;
@@ -165,8 +165,8 @@
       v29 = "N";
     }
 
-    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"restore:%s (key:%@)", v29, keyboardPreserveKey];
-    v31 = [v36 stringWithFormat:@"<%@ src{scene:%@ display:%@ bundle:%@} hostBundle:%@ posWithIAV:%@ %s%s%s%s%s%@>", v3, v4, sourceDisplayIdentifier, sourceBundleIdentifier, hostBundleIdentifier, v18, v23, v24, v25, v26, v27, v30];
+    keyboardPreserveKey = [MEMORY[0x1E696AEC0] stringWithFormat:@"restore:%s (key:%@)", v29, keyboardPreserveKey];
+    v31 = [v36 stringWithFormat:@"<%@ src{scene:%@ display:%@ bundle:%@} hostBundle:%@ posWithIAV:%@ %s%s%s%s%s%@>", descriptionForLog, v4, sourceDisplayIdentifier, sourceBundleIdentifier, hostBundleIdentifier, v18, v23, v24, v25, v26, v27, keyboardPreserveKey];
 
     if (v17)
     {
@@ -176,7 +176,7 @@
     goto LABEL_24;
   }
 
-  v31 = [v36 stringWithFormat:@"<%@ src{scene:%@ display:%@ bundle:%@} hostBundle:%@ posWithIAV:%@ %s%s%s%s%s%@>", v3, v4, sourceDisplayIdentifier, sourceBundleIdentifier, hostBundleIdentifier, v18, v23, v24, v25, v26, v27, &stru_1EFB14550];
+  v31 = [v36 stringWithFormat:@"<%@ src{scene:%@ display:%@ bundle:%@} hostBundle:%@ posWithIAV:%@ %s%s%s%s%s%@>", descriptionForLog, v4, sourceDisplayIdentifier, sourceBundleIdentifier, hostBundleIdentifier, v18, v23, v24, v25, v26, v27, &stru_1EFB14550];
   if (!v17)
   {
 LABEL_24:
@@ -197,7 +197,7 @@ LABEL_25:
   sourceSceneIdentityString = self->_sourceSceneIdentityString;
   hostBundleIdentifier = self->_hostBundleIdentifier;
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  v4 = [(_UIKeyboardUIInformation *)self animationFence];
+  animationFence = [(_UIKeyboardUIInformation *)self animationFence];
   [(_UIKeyboardUIInformation *)self keyboardPosition];
   v9 = StringFromCGRect(v5, v6, v7, v8);
   [(_UIKeyboardUIInformation *)self keyboardPosition];
@@ -215,7 +215,7 @@ LABEL_25:
   v62.size.width = v15;
   v62.size.height = v17;
   v53 = CGRectEqualToRect(v62, v63);
-  v58 = v4;
+  v58 = animationFence;
   v59 = v3;
   v57 = v9;
   if (v53)
@@ -298,14 +298,14 @@ LABEL_25:
     v35 = v34;
     v36 = v31;
     v37 = v30;
-    v38 = [v33 stringWithFormat:@" restore %@ (with key %@)", v35, keyboardPreserveKey];;
+    keyboardPreserveKey = [v33 stringWithFormat:@" restore %@ (with key %@)", v35, keyboardPreserveKey];;
     v47 = v29;
     v45 = v28;
     v39 = v50;
     v40 = v57;
     v41 = v58;
     v42 = v59;
-    v43 = [v56 stringWithFormat:@"<%@ source canvas %@; source display %@; source bundle %@; host bundle %@; animation fence %@; position %@ (with IAV %@); floating %d; on screen %@;%@ %@ intersectable %@; snapshot %@%@>", v59, sourceSceneIdentityString, sourceDisplayIdentifier, sourceBundleIdentifier, hostBundleIdentifier, v58, v57, v50, isFloating, v27, v45, v47, v37, v36, v38];;
+    v43 = [v56 stringWithFormat:@"<%@ source canvas %@; source display %@; source bundle %@; host bundle %@; animation fence %@; position %@ (with IAV %@); floating %d; on screen %@;%@ %@ intersectable %@; snapshot %@%@>", v59, sourceSceneIdentityString, sourceDisplayIdentifier, sourceBundleIdentifier, hostBundleIdentifier, v58, v57, v50, isFloating, v27, v45, v47, v37, v36, keyboardPreserveKey];;
   }
 
   else
@@ -340,10 +340,10 @@ LABEL_25:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
-  v21 = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
-  v22 = [(_UIKeyboardUIInformation *)self animationFence];
-  v23 = [v3 initWithKeyboardRect:v20 iavPosition:v21 onScreen:v22 takeSnapshot:v5 fence:{v7, v9, v11, v13, v15, v17, v19}];
+  keyboardOnScreen = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
+  shouldTakeSnapshot = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
+  animationFence = [(_UIKeyboardUIInformation *)self animationFence];
+  v23 = [v3 initWithKeyboardRect:keyboardOnScreen iavPosition:shouldTakeSnapshot onScreen:animationFence takeSnapshot:v5 fence:{v7, v9, v11, v13, v15, v17, v19}];
 
   *(v23 + 244) = self->_isFloating;
   *(v23 + 304) = self->_persistentOffset;
@@ -382,16 +382,16 @@ LABEL_25:
   return v23;
 }
 
-- (_UIKeyboardChangedInformation)initWithKeyboardRect:(CGRect)a3 iavPosition:(CGRect)a4 onScreen:(BOOL)a5 takeSnapshot:(BOOL)a6 fence:(id)a7
+- (_UIKeyboardChangedInformation)initWithKeyboardRect:(CGRect)rect iavPosition:(CGRect)position onScreen:(BOOL)screen takeSnapshot:(BOOL)snapshot fence:(id)fence
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.size.height;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  v12 = rect.size.height;
   v18.receiver = self;
   v18.super_class = _UIKeyboardChangedInformation;
-  v13 = [(_UIKeyboardUIInformation *)&v18 initWithKeyboardFrame:a5 onScreen:1 animated:0 tracking:a7 fence:a3.origin.x, a3.origin.y, a3.size.width];
+  v13 = [(_UIKeyboardUIInformation *)&v18 initWithKeyboardFrame:screen onScreen:1 animated:0 tracking:fence fence:rect.origin.x, rect.origin.y, rect.size.width];
   v14 = v13;
   if (v13)
   {
@@ -400,80 +400,80 @@ LABEL_25:
     v13->_keyboardPositionWithIAV.size.width = width;
     v13->_keyboardPositionWithIAV.size.height = height;
     v13->_keyboardIAVHeight = height - v12;
-    v13->_shouldTakeSnapshot = a6;
+    v13->_shouldTakeSnapshot = snapshot;
     v15 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v16 = [v15 preferencesActions];
-    v14->_automaticMinimizationEnabled = [v16 automaticMinimizationEnabled];
+    preferencesActions = [v15 preferencesActions];
+    v14->_automaticMinimizationEnabled = [preferencesActions automaticMinimizationEnabled];
   }
 
   return v14;
 }
 
-+ (id)informationForKeyboardUpWithIAVHeight:(double)a3
++ (id)informationForKeyboardUpWithIAVHeight:(double)height
 {
   v5 = [_UIKeyboardChangedInformation alloc];
-  v6 = [a1 animationFence];
-  v7 = [(_UIKeyboardChangedInformation *)v5 initWithKeyboardIAVHeight:1 onScreen:1 takeSnapshot:v6 fence:a3];
+  animationFence = [self animationFence];
+  v7 = [(_UIKeyboardChangedInformation *)v5 initWithKeyboardIAVHeight:1 onScreen:1 takeSnapshot:animationFence fence:height];
 
   return v7;
 }
 
-+ (id)informationForKeyboardUp:(CGRect)a3 withIAV:(CGRect)a4
++ (id)informationForKeyboardUp:(CGRect)up withIAV:(CGRect)v
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = v.size.height;
+  width = v.size.width;
+  y = v.origin.y;
+  x = v.origin.x;
+  v8 = up.size.height;
+  v9 = up.size.width;
+  v10 = up.origin.y;
+  v11 = up.origin.x;
   v13 = [_UIKeyboardChangedInformation alloc];
-  v14 = [a1 animationFence];
-  v15 = [(_UIKeyboardChangedInformation *)v13 initWithKeyboardRect:1 iavPosition:1 onScreen:v14 takeSnapshot:v11 fence:v10, v9, v8, x, y, width, height];
+  animationFence = [self animationFence];
+  height = [(_UIKeyboardChangedInformation *)v13 initWithKeyboardRect:1 iavPosition:1 onScreen:animationFence takeSnapshot:v11 fence:v10, v9, v8, x, y, width, height];
 
-  return v15;
+  return height;
 }
 
-+ (id)informationForKeyboardPreserve:(id)a3
++ (id)informationForKeyboardPreserve:(id)preserve
 {
-  v4 = a3;
+  preserveCopy = preserve;
   v5 = [_UIKeyboardChangedInformation alloc];
-  v6 = [a1 animationFence];
-  v7 = [(_UIKeyboardChangedInformation *)v5 initWithKeyboardRect:0 iavPosition:0 onScreen:v6 takeSnapshot:*MEMORY[0x1E695F058] fence:*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  animationFence = [self animationFence];
+  v7 = [(_UIKeyboardChangedInformation *)v5 initWithKeyboardRect:0 iavPosition:0 onScreen:animationFence takeSnapshot:*MEMORY[0x1E695F058] fence:*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   *(v7 + 246) = 0;
   v8 = *(v7 + 296);
-  *(v7 + 296) = v4;
+  *(v7 + 296) = preserveCopy;
 
   return v7;
 }
 
-+ (id)informationForKeyboardRestore:(id)a3
++ (id)informationForKeyboardRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [_UIKeyboardChangedInformation alloc];
-  v6 = [a1 animationFence];
-  v7 = [(_UIKeyboardChangedInformation *)v5 initWithKeyboardRect:0 iavPosition:0 onScreen:v6 takeSnapshot:*MEMORY[0x1E695F058] fence:*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  animationFence = [self animationFence];
+  v7 = [(_UIKeyboardChangedInformation *)v5 initWithKeyboardRect:0 iavPosition:0 onScreen:animationFence takeSnapshot:*MEMORY[0x1E695F058] fence:*(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   *(v7 + 246) = 1;
   v8 = *(v7 + 296);
-  *(v7 + 296) = v4;
+  *(v7 + 296) = restoreCopy;
 
   return v7;
 }
 
-- (id)copyWithoutIAVKeyboardRect:(CGRect)a3
+- (id)copyWithoutIAVKeyboardRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
-  v10 = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
-  v11 = [(_UIKeyboardUIInformation *)self animationFence];
-  v12 = [v8 initWithKeyboardRect:v9 iavPosition:v10 onScreen:v11 takeSnapshot:x fence:{y, width, height, x, y, width, height}];
+  keyboardOnScreen = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
+  shouldTakeSnapshot = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
+  animationFence = [(_UIKeyboardUIInformation *)self animationFence];
+  v12 = [v8 initWithKeyboardRect:keyboardOnScreen iavPosition:shouldTakeSnapshot onScreen:animationFence takeSnapshot:x fence:{y, width, height, x, y, width, height}];
 
   *(v12 + 244) = self->_isFloating;
   *(v12 + 304) = self->_persistentOffset;
@@ -508,7 +508,7 @@ LABEL_25:
   return v12;
 }
 
-- (id)copyWithIntersectability:(BOOL)a3
+- (id)copyWithIntersectability:(BOOL)intersectability
 {
   v5 = objc_alloc(objc_opt_class());
   [(_UIKeyboardUIInformation *)self keyboardPosition];
@@ -521,10 +521,10 @@ LABEL_25:
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
-  v23 = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
-  v24 = [(_UIKeyboardUIInformation *)self animationFence];
-  v25 = [v5 initWithKeyboardRect:v22 iavPosition:v23 onScreen:v24 takeSnapshot:v7 fence:{v9, v11, v13, v15, v17, v19, v21}];
+  keyboardOnScreen = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
+  shouldTakeSnapshot = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
+  animationFence = [(_UIKeyboardUIInformation *)self animationFence];
+  v25 = [v5 initWithKeyboardRect:keyboardOnScreen iavPosition:shouldTakeSnapshot onScreen:animationFence takeSnapshot:v7 fence:{v9, v11, v13, v15, v17, v19, v21}];
 
   *(v25 + 244) = self->_isFloating;
   *(v25 + 304) = self->_persistentOffset;
@@ -546,7 +546,7 @@ LABEL_25:
 
   *(v25 + 248) = self->_hostProcessIdentifier;
   *(v25 + 252) = self->_processIdentifier;
-  *(v25 + 240) = !a3;
+  *(v25 + 240) = !intersectability;
   *(v25 + 241) = self->_multipleScenes;
   *(v25 + 242) = self->_isOneness;
   *(v25 + 243) = self->_automaticMinimizationEnabled;
@@ -563,24 +563,24 @@ LABEL_25:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = _UIKeyboardChangedInformation;
-  [(_UIKeyboardUIInformation *)&v31 encodeWithCoder:v4];
+  [(_UIKeyboardUIInformation *)&v31 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x1E696B098];
   [(_UIKeyboardUIInformation *)self keyboardPosition];
   v6 = [v5 valueWithCGRect:?];
-  [v4 encodeObject:v6 forKey:@"Position"];
+  [coderCopy encodeObject:v6 forKey:@"Position"];
 
-  [v4 encodeBool:-[_UIKeyboardUIInformation keyboardOnScreen](self forKey:{"keyboardOnScreen"), @"OnScreen"}];
-  [v4 encodeBool:-[_UIKeyboardChangedInformation multipleScenes](self forKey:{"multipleScenes"), @"MultipleScenes"}];
-  [v4 encodeBool:-[_UIKeyboardChangedInformation isOneness](self forKey:{"isOneness"), @"IsOneness"}];
-  [v4 encodeBool:-[_UIKeyboardChangedInformation automaticMinimizationEnabled](self forKey:{"automaticMinimizationEnabled"), @"AutomaticMinimization"}];
-  [v4 encodeBool:self->_avoidIntersectability forKey:@"AvoidIntersectability"];
-  [v4 encodeBool:-[_UIKeyboardChangedInformation shouldTakeSnapshot](self forKey:{"shouldTakeSnapshot"), @"TakeSnapshot"}];
-  [v4 encodeBool:self->_shouldRestoreKeyboard forKey:@"RestoreKeyboard"];
+  [coderCopy encodeBool:-[_UIKeyboardUIInformation keyboardOnScreen](self forKey:{"keyboardOnScreen"), @"OnScreen"}];
+  [coderCopy encodeBool:-[_UIKeyboardChangedInformation multipleScenes](self forKey:{"multipleScenes"), @"MultipleScenes"}];
+  [coderCopy encodeBool:-[_UIKeyboardChangedInformation isOneness](self forKey:{"isOneness"), @"IsOneness"}];
+  [coderCopy encodeBool:-[_UIKeyboardChangedInformation automaticMinimizationEnabled](self forKey:{"automaticMinimizationEnabled"), @"AutomaticMinimization"}];
+  [coderCopy encodeBool:self->_avoidIntersectability forKey:@"AvoidIntersectability"];
+  [coderCopy encodeBool:-[_UIKeyboardChangedInformation shouldTakeSnapshot](self forKey:{"shouldTakeSnapshot"), @"TakeSnapshot"}];
+  [coderCopy encodeBool:self->_shouldRestoreKeyboard forKey:@"RestoreKeyboard"];
   [(_UIKeyboardUIInformation *)self keyboardPosition];
   v8 = v7;
   v10 = v9;
@@ -600,7 +600,7 @@ LABEL_25:
     v19 = MEMORY[0x1E696B098];
     [(_UIKeyboardChangedInformation *)self keyboardPositionWithIAV];
     v20 = [v19 valueWithCGRect:?];
-    [v4 encodeObject:v20 forKey:@"PositionIAV"];
+    [coderCopy encodeObject:v20 forKey:@"PositionIAV"];
   }
 
   [(_UIKeyboardChangedInformation *)self keyboardPositionWithRemoteIAV];
@@ -609,93 +609,93 @@ LABEL_25:
     v21 = MEMORY[0x1E696B098];
     [(_UIKeyboardChangedInformation *)self keyboardPositionWithRemoteIAV];
     v22 = [v21 valueWithCGRect:?];
-    [v4 encodeObject:v22 forKey:@"PositionRemoteIAV"];
+    [coderCopy encodeObject:v22 forKey:@"PositionRemoteIAV"];
   }
 
   if (self->_isFloating)
   {
-    [v4 encodeBool:1 forKey:@"IsFloating"];
+    [coderCopy encodeBool:1 forKey:@"IsFloating"];
     v23 = [MEMORY[0x1E696B098] valueWithCGPoint:{self->_persistentOffset.x, self->_persistentOffset.y}];
-    [v4 encodeObject:v23 forKey:@"PersistentOffset"];
+    [coderCopy encodeObject:v23 forKey:@"PersistentOffset"];
   }
 
   sourceSceneIdentityString = self->_sourceSceneIdentityString;
   if (sourceSceneIdentityString)
   {
-    [v4 encodeObject:sourceSceneIdentityString forKey:@"SourceCanvas"];
+    [coderCopy encodeObject:sourceSceneIdentityString forKey:@"SourceCanvas"];
   }
 
   sourceDisplayIdentifier = self->_sourceDisplayIdentifier;
   if (sourceDisplayIdentifier)
   {
-    [v4 encodeObject:sourceDisplayIdentifier forKey:@"SourceDisplay"];
+    [coderCopy encodeObject:sourceDisplayIdentifier forKey:@"SourceDisplay"];
   }
 
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
   if (sourceBundleIdentifier)
   {
-    [v4 encodeObject:sourceBundleIdentifier forKey:@"SourceBundle"];
+    [coderCopy encodeObject:sourceBundleIdentifier forKey:@"SourceBundle"];
   }
 
   hostBundleIdentifier = self->_hostBundleIdentifier;
   if (hostBundleIdentifier)
   {
-    [v4 encodeObject:hostBundleIdentifier forKey:@"HostBundle"];
+    [coderCopy encodeObject:hostBundleIdentifier forKey:@"HostBundle"];
   }
 
   hostProcessIdentifier = self->_hostProcessIdentifier;
   if (hostProcessIdentifier)
   {
-    [v4 encodeInt:hostProcessIdentifier forKey:@"HostProcessID"];
+    [coderCopy encodeInt:hostProcessIdentifier forKey:@"HostProcessID"];
   }
 
   processIdentifier = self->_processIdentifier;
   if (processIdentifier)
   {
-    [v4 encodeInt:processIdentifier forKey:@"ProcessID"];
+    [coderCopy encodeInt:processIdentifier forKey:@"ProcessID"];
   }
 
   keyboardPreserveKey = self->_keyboardPreserveKey;
   if (keyboardPreserveKey)
   {
-    [v4 encodeObject:keyboardPreserveKey forKey:@"KeyboardPreserveKey"];
+    [coderCopy encodeObject:keyboardPreserveKey forKey:@"KeyboardPreserveKey"];
   }
 }
 
-- (_UIKeyboardChangedInformation)initWithCoder:(id)a3
+- (_UIKeyboardChangedInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = _UIKeyboardChangedInformation;
-  v5 = [(_UIKeyboardUIInformation *)&v37 initWithCoder:v4];
+  v5 = [(_UIKeyboardUIInformation *)&v37 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_multipleScenes = [v4 decodeBoolForKey:@"MultipleScenes"];
-    v5->_isOneness = [v4 decodeBoolForKey:@"IsOneness"];
-    v5->_automaticMinimizationEnabled = [v4 decodeBoolForKey:@"AutomaticMinimization"];
-    v5->_avoidIntersectability = [v4 decodeBoolForKey:@"AvoidIntersectability"];
-    v5->_shouldTakeSnapshot = [v4 decodeBoolForKey:@"TakeSnapshot"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceCanvas"];
+    v5->_multipleScenes = [coderCopy decodeBoolForKey:@"MultipleScenes"];
+    v5->_isOneness = [coderCopy decodeBoolForKey:@"IsOneness"];
+    v5->_automaticMinimizationEnabled = [coderCopy decodeBoolForKey:@"AutomaticMinimization"];
+    v5->_avoidIntersectability = [coderCopy decodeBoolForKey:@"AvoidIntersectability"];
+    v5->_shouldTakeSnapshot = [coderCopy decodeBoolForKey:@"TakeSnapshot"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceCanvas"];
     sourceSceneIdentityString = v5->_sourceSceneIdentityString;
     v5->_sourceSceneIdentityString = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceDisplay"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceDisplay"];
     sourceDisplayIdentifier = v5->_sourceDisplayIdentifier;
     v5->_sourceDisplayIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceBundle"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceBundle"];
     sourceBundleIdentifier = v5->_sourceBundleIdentifier;
     v5->_sourceBundleIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HostBundle"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HostBundle"];
     hostBundleIdentifier = v5->_hostBundleIdentifier;
     v5->_hostBundleIdentifier = v13;
 
-    v5->_hostProcessIdentifier = [v4 decodeIntForKey:@"HostProcessID"];
-    v5->_processIdentifier = [v4 decodeIntForKey:@"ProcessID"];
-    v5->_shouldRestoreKeyboard = [v4 decodeBoolForKey:@"RestoreKeyboard"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KeyboardPreserveKey"];
+    v5->_hostProcessIdentifier = [coderCopy decodeIntForKey:@"HostProcessID"];
+    v5->_processIdentifier = [coderCopy decodeIntForKey:@"ProcessID"];
+    v5->_shouldRestoreKeyboard = [coderCopy decodeBoolForKey:@"RestoreKeyboard"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KeyboardPreserveKey"];
     keyboardPreserveKey = v5->_keyboardPreserveKey;
     v5->_keyboardPreserveKey = v15;
 
@@ -704,9 +704,9 @@ LABEL_25:
     v5->_keyboardPositionWithIAV.origin.y = v18;
     v5->_keyboardPositionWithIAV.size.width = v19;
     v5->_keyboardPositionWithIAV.size.height = v20;
-    if ([v4 containsValueForKey:@"PositionIAV"])
+    if ([coderCopy containsValueForKey:@"PositionIAV"])
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PositionIAV"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PositionIAV"];
       [v21 CGRectValue];
       v5->_keyboardPositionWithIAV.origin.x = v22;
       v5->_keyboardPositionWithIAV.origin.y = v23;
@@ -717,9 +717,9 @@ LABEL_25:
     v26 = *(MEMORY[0x1E695F058] + 16);
     v5->_keyboardPositionWithRemoteIAV.origin = *MEMORY[0x1E695F058];
     v5->_keyboardPositionWithRemoteIAV.size = v26;
-    if ([v4 containsValueForKey:@"PositionRemoteIAV"])
+    if ([coderCopy containsValueForKey:@"PositionRemoteIAV"])
     {
-      v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PositionRemoteIAV"];
+      v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PositionRemoteIAV"];
       [v27 CGRectValue];
       v5->_keyboardPositionWithRemoteIAV.origin.x = v28;
       v5->_keyboardPositionWithRemoteIAV.origin.y = v29;
@@ -727,8 +727,8 @@ LABEL_25:
       v5->_keyboardPositionWithRemoteIAV.size.height = v31;
     }
 
-    v5->_isFloating = [v4 decodeBoolForKey:@"IsFloating"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PersistentOffset"];
+    v5->_isFloating = [coderCopy decodeBoolForKey:@"IsFloating"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PersistentOffset"];
     [v32 CGPointValue];
     v5->_persistentOffset.x = v33;
     v5->_persistentOffset.y = v34;
@@ -740,7 +740,7 @@ LABEL_25:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(_UIKeyboardUIInformation *)self keyboardPosition];
@@ -753,10 +753,10 @@ LABEL_25:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
-  v22 = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
-  v23 = [(_UIKeyboardUIInformation *)self animationFence];
-  v24 = [v4 initWithKeyboardRect:v21 iavPosition:v22 onScreen:v23 takeSnapshot:v6 fence:{v8, v10, v12, v14, v16, v18, v20}];
+  keyboardOnScreen = [(_UIKeyboardUIInformation *)self keyboardOnScreen];
+  shouldTakeSnapshot = [(_UIKeyboardChangedInformation *)self shouldTakeSnapshot];
+  animationFence = [(_UIKeyboardUIInformation *)self animationFence];
+  v24 = [v4 initWithKeyboardRect:keyboardOnScreen iavPosition:shouldTakeSnapshot onScreen:animationFence takeSnapshot:v6 fence:{v8, v10, v12, v14, v16, v18, v20}];
 
   *(v24 + 244) = self->_isFloating;
   *(v24 + 304) = self->_persistentOffset;

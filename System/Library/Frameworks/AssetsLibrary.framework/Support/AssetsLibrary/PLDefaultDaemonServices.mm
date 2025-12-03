@@ -1,20 +1,20 @@
 @interface PLDefaultDaemonServices
-- (id)_captureSessionIdentifierFromRunningBoardTags:(id)a3;
-- (id)_captureSessionStateFromProcessStates:(id)a3;
-- (id)_isSecureCaptureExtensionFromAuditToken:(id *)a3;
-- (id)captureSessionStateFromAuditToken:(id *)a3;
+- (id)_captureSessionIdentifierFromRunningBoardTags:(id)tags;
+- (id)_captureSessionStateFromProcessStates:(id)states;
+- (id)_isSecureCaptureExtensionFromAuditToken:(id *)token;
+- (id)captureSessionStateFromAuditToken:(id *)token;
 @end
 
 @implementation PLDefaultDaemonServices
 
-- (id)_captureSessionIdentifierFromRunningBoardTags:(id)a3
+- (id)_captureSessionIdentifierFromRunningBoardTags:(id)tags
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  tagsCopy = tags;
+  v4 = [tagsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,7 +25,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tagsCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -36,7 +36,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [tagsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -52,12 +52,12 @@ LABEL_11:
   return v9;
 }
 
-- (id)_captureSessionStateFromProcessStates:(id)a3
+- (id)_captureSessionStateFromProcessStates:(id)states
 {
-  v4 = a3;
-  if ([v4 count])
+  statesCopy = states;
+  if ([statesCopy count])
   {
-    if ([v4 count])
+    if ([statesCopy count])
     {
       v6 = 0;
       v7 = 0;
@@ -66,8 +66,8 @@ LABEL_11:
       v26 = v5;
       do
       {
-        v9 = [v4 objectAtIndexedSubscript:{v8, v26}];
-        v10 = [v9 tags];
+        v9 = [statesCopy objectAtIndexedSubscript:{v8, v26}];
+        tags = [v9 tags];
         v11 = PLBackendGetLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
@@ -78,11 +78,11 @@ LABEL_11:
           v31 = 2048;
           v32 = v8;
           v33 = 2112;
-          v34 = v10;
+          v34 = tags;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Capture Session:\nState[%zu]: %@\nTags[%zu]: %@---", buf, 0x2Au);
         }
 
-        v12 = [(PLDefaultDaemonServices *)self _captureSessionIdentifierFromRunningBoardTags:v10];
+        v12 = [(PLDefaultDaemonServices *)self _captureSessionIdentifierFromRunningBoardTags:tags];
         v13 = v12;
         if (v12 && (v14 = [v12 isEqualToString:&stru_10002E038], v13, (v14 & 1) == 0))
         {
@@ -102,13 +102,13 @@ LABEL_11:
           v15 = v6;
         }
 
-        v7 |= [v10 containsObject:@"com.apple.securecapture.unlocked"];
+        v7 |= [tags containsObject:@"com.apple.securecapture.unlocked"];
 
         ++v8;
         v6 = v15;
       }
 
-      while (v8 < [v4 count]);
+      while (v8 < [statesCopy count]);
     }
 
     else
@@ -137,16 +137,16 @@ LABEL_11:
 
     else
     {
-      v20 = [v4 _pl_map:&stru_10002D390];
+      v20 = [statesCopy _pl_map:&stru_10002D390];
       v21 = PLBackendGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v20 _pl_prettyDescription];
-        v23 = [v4 _pl_prettyDescription];
+        _pl_prettyDescription = [v20 _pl_prettyDescription];
+        _pl_prettyDescription2 = [statesCopy _pl_prettyDescription];
         *buf = 138543618;
-        v28 = v22;
+        v28 = _pl_prettyDescription;
         v29 = 2112;
-        v30 = v23;
+        v30 = _pl_prettyDescription2;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Capture Session: Did not find capture session identifier in RBSProcessState tags: %{public}@, all states: %@", buf, 0x16u);
       }
 
@@ -169,11 +169,11 @@ LABEL_11:
   return v18;
 }
 
-- (id)_isSecureCaptureExtensionFromAuditToken:(id *)a3
+- (id)_isSecureCaptureExtensionFromAuditToken:(id *)token
 {
   v21 = 0;
-  v3 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v3 = *&token->var0[4];
+  *buf = *token->var0;
   v23 = v3;
   v4 = [LSBundleRecord bundleRecordForAuditToken:buf error:&v21];
   v5 = v21;
@@ -202,14 +202,14 @@ LABEL_11:
 
     v7 = v9;
 
-    v10 = PLBackendGetLog();
-    v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
+    extensionPointRecord = PLBackendGetLog();
+    v11 = os_log_type_enabled(extensionPointRecord, OS_LOG_TYPE_INFO);
     if (!v7)
     {
       if (v11)
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Capture Session: client is not an extension", buf, 2u);
+        _os_log_impl(&_mh_execute_header, extensionPointRecord, OS_LOG_TYPE_INFO, "Capture Session: client is not an extension", buf, 2u);
       }
 
       v18 = &__kCFBooleanFalse;
@@ -220,32 +220,32 @@ LABEL_11:
     {
       *buf = 138412290;
       *&buf[4] = v8;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Capture Session: extension record: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, extensionPointRecord, OS_LOG_TYPE_INFO, "Capture Session: extension record: %@", buf, 0xCu);
     }
 
-    v10 = [v7 extensionPointRecord];
+    extensionPointRecord = [v7 extensionPointRecord];
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v10;
+      *&buf[4] = extensionPointRecord;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Capture Session: extension point record: %@", buf, 0xCu);
     }
 
-    if (v10)
+    if (extensionPointRecord)
     {
-      v13 = [v10 identifier];
+      identifier = [extensionPointRecord identifier];
       v14 = PLBackendGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v13;
+        *&buf[4] = identifier;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Capture Session: extension point identifier: %@", buf, 0xCu);
       }
 
-      if (v13)
+      if (identifier)
       {
-        v15 = [v13 isEqual:PLSecureCaptureExtensionIdentifier];
+        v15 = [identifier isEqual:PLSecureCaptureExtensionIdentifier];
         v16 = PLBackendGetLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
@@ -271,16 +271,16 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Capture Session: extension point identifier is unexpectedly nil", buf, 2u);
       }
 
-      v13 = 0;
+      identifier = 0;
     }
 
     else
     {
-      v13 = PLBackendGetLog();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      identifier = PLBackendGetLog();
+      if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Capture Session: extension point record is unexpectedly nil", buf, 2u);
+        _os_log_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_ERROR, "Capture Session: extension point record is unexpectedly nil", buf, 2u);
       }
     }
 
@@ -304,7 +304,7 @@ LABEL_35:
   return v18;
 }
 
-- (id)captureSessionStateFromAuditToken:(id *)a3
+- (id)captureSessionStateFromAuditToken:(id *)token
 {
   if ((PLIsCaptureSessionEnabled() & 1) == 0)
   {
@@ -312,8 +312,8 @@ LABEL_35:
     goto LABEL_30;
   }
 
-  v5 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v5 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v5;
   v6 = [(PLDefaultDaemonServices *)self _isSecureCaptureExtensionFromAuditToken:buf];
   v7 = v6;
@@ -322,8 +322,8 @@ LABEL_35:
     if ([v6 BOOLValue])
     {
       v8 = +[FBProcessManager sharedInstance];
-      v9 = *&a3->var0[4];
-      *buf = *a3->var0;
+      v9 = *&token->var0[4];
+      *buf = *token->var0;
       *&buf[16] = v9;
       v10 = [v8 registerProcessForAuditToken:buf];
       v11 = PLBackendGetLog();
@@ -337,19 +337,19 @@ LABEL_35:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Capture Session: FBProcess: %@", buf, 0xCu);
         }
 
-        v13 = [v10 identity];
+        identity = [v10 identity];
         v14 = PLBackendGetLog();
         v15 = v14;
-        if (v13)
+        if (identity)
         {
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v13;
+            *&buf[4] = identity;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Capture Session: RBSProcessIdentity: %@", buf, 0xCu);
           }
 
-          v16 = [RBSProcessPredicate predicateMatchingIdentity:v13];
+          v16 = [RBSProcessPredicate predicateMatchingIdentity:identity];
           v17 = PLBackendGetLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {

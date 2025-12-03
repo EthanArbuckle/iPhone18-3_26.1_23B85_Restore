@@ -1,21 +1,21 @@
 @interface SBProximitySensorManager
 - (NSString)description;
 - (SBProximitySensorManager)init;
-- (SBProximitySensorManager)initWithHIDInterface:(id)a3 hardwareDefaults:(id)a4 interfaceOrientationProvider:(id)a5;
-- (id)suppressBacklightChangesForReason:(id)a3;
+- (SBProximitySensorManager)initWithHIDInterface:(id)interface hardwareDefaults:(id)defaults interfaceOrientationProvider:(id)provider;
+- (id)suppressBacklightChangesForReason:(id)reason;
 - (void)_disableProx;
 - (void)_enableProx;
 - (void)_reloadDefaults;
-- (void)_setObjectInCrudeProximity:(BOOL)a3;
-- (void)_setObjectInProximity:(BOOL)a3 detectionMode:(int)a4 postToApps:(BOOL)a5;
-- (void)_setProximityDetectionEnabled:(BOOL)a3;
-- (void)_setProximityDetectionPermitted:(BOOL)a3;
+- (void)_setObjectInCrudeProximity:(BOOL)proximity;
+- (void)_setObjectInProximity:(BOOL)proximity detectionMode:(int)mode postToApps:(BOOL)apps;
+- (void)_setProximityDetectionEnabled:(BOOL)enabled;
+- (void)_setProximityDetectionPermitted:(BOOL)permitted;
 - (void)_updateProxState;
-- (void)addObserver:(id)a3;
-- (void)client:(id)a3 wantsProximityDetectionEnabled:(BOOL)a4 disableGracePeriod:(BOOL)a5;
+- (void)addObserver:(id)observer;
+- (void)client:(id)client wantsProximityDetectionEnabled:(BOOL)enabled disableGracePeriod:(BOOL)period;
 - (void)dealloc;
-- (void)processHIDEvent:(__IOHIDEvent *)a3;
-- (void)removeObserver:(id)a3;
+- (void)processHIDEvent:(__IOHIDEvent *)event;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBProximitySensorManager
@@ -51,7 +51,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBProximitySensorManager.m";
     v17 = 1024;
@@ -67,11 +67,11 @@
   return result;
 }
 
-- (SBProximitySensorManager)initWithHIDInterface:(id)a3 hardwareDefaults:(id)a4 interfaceOrientationProvider:(id)a5
+- (SBProximitySensorManager)initWithHIDInterface:(id)interface hardwareDefaults:(id)defaults interfaceOrientationProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  interfaceCopy = interface;
+  defaultsCopy = defaults;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = SBProximitySensorManager;
   v12 = [(SBProximitySensorManager *)&v24 init];
@@ -85,9 +85,9 @@
     clientsWantingGracePeriodDisabled = v12->_clientsWantingGracePeriodDisabled;
     v12->_clientsWantingGracePeriodDisabled = v15;
 
-    objc_storeStrong(&v12->_hidInterface, a3);
-    objc_storeStrong(&v12->_hardwareDefaults, a4);
-    objc_storeStrong(&v12->_interfaceOrientationProvider, a5);
+    objc_storeStrong(&v12->_hidInterface, interface);
+    objc_storeStrong(&v12->_hardwareDefaults, defaults);
+    objc_storeStrong(&v12->_interfaceOrientationProvider, provider);
     hardwareDefaults = v12->_hardwareDefaults;
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"disableProximitySensor"];
     v22[0] = MEMORY[0x277D85DD0];
@@ -121,18 +121,18 @@
   v6 = [v3 appendBool:self->_objectInProximity withName:@"_objectInProximity"];
   v7 = [v3 appendObject:self->_clientsWantingDetectionEnabled withName:@"_clientsWantingDetectionEnabled"];
   v8 = [v3 appendObject:self->_clientsWantingGracePeriodDisabled withName:@"_clientsWantingGracePeriodDisabled"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (void)client:(id)a3 wantsProximityDetectionEnabled:(BOOL)a4 disableGracePeriod:(BOOL)a5
+- (void)client:(id)client wantsProximityDetectionEnabled:(BOOL)enabled disableGracePeriod:(BOOL)period
 {
-  v5 = a5;
-  v6 = a4;
+  periodCopy = period;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  clientCopy = client;
+  if (!clientCopy)
   {
     [SBProximitySensorManager client:a2 wantsProximityDetectionEnabled:self disableGracePeriod:?];
   }
@@ -141,63 +141,63 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543874;
-    v13 = v9;
+    v13 = clientCopy;
     v14 = 1024;
-    v15 = v6;
+    v15 = enabledCopy;
     v16 = 1024;
-    v17 = v5;
+    v17 = periodCopy;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Client:%{public}@ wants active proximity sensor:%{BOOL}u disable grace period:%{BOOL}u", &v12, 0x18u);
   }
 
   clientsWantingDetectionEnabled = self->_clientsWantingDetectionEnabled;
-  if (v6)
+  if (enabledCopy)
   {
-    [(NSMutableSet *)clientsWantingDetectionEnabled addObject:v9];
-    if (v5)
+    [(NSMutableSet *)clientsWantingDetectionEnabled addObject:clientCopy];
+    if (periodCopy)
     {
-      [(NSMutableSet *)self->_clientsWantingGracePeriodDisabled addObject:v9];
+      [(NSMutableSet *)self->_clientsWantingGracePeriodDisabled addObject:clientCopy];
     }
   }
 
   else
   {
-    [(NSMutableSet *)clientsWantingDetectionEnabled removeObject:v9];
-    [(NSMutableSet *)self->_clientsWantingGracePeriodDisabled removeObject:v9];
+    [(NSMutableSet *)clientsWantingDetectionEnabled removeObject:clientCopy];
+    [(NSMutableSet *)self->_clientsWantingGracePeriodDisabled removeObject:clientCopy];
   }
 
   [(SBProximitySensorManager *)self _updateProxState];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)processHIDEvent:(__IOHIDEvent *)a3
+- (void)processHIDEvent:(__IOHIDEvent *)event
 {
   v12 = *MEMORY[0x277D85DE8];
   if (IOHIDEventGetType() != 14)
@@ -216,14 +216,14 @@
   }
 
   v8 = BKSHIDEventGetProximityAttributes();
-  v9 = [v8 proximityDetectionMode];
+  proximityDetectionMode = [v8 proximityDetectionMode];
   [(SBProximitySensorManager *)self _setObjectInCrudeProximity:(IntegerValue >> 10) & 1];
-  [(SBProximitySensorManager *)self _setObjectInProximity:(IntegerValue >> 6) & 1 detectionMode:v9];
+  [(SBProximitySensorManager *)self _setObjectInProximity:(IntegerValue >> 6) & 1 detectionMode:proximityDetectionMode];
 }
 
-- (id)suppressBacklightChangesForReason:(id)a3
+- (id)suppressBacklightChangesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   suppressBacklightChangesAssertion = self->_suppressBacklightChangesAssertion;
   if (!suppressBacklightChangesAssertion)
   {
@@ -243,7 +243,7 @@
     suppressBacklightChangesAssertion = self->_suppressBacklightChangesAssertion;
   }
 
-  v10 = [(BSCompoundAssertion *)suppressBacklightChangesAssertion acquireForReason:v4];
+  v10 = [(BSCompoundAssertion *)suppressBacklightChangesAssertion acquireForReason:reasonCopy];
 
   return v10;
 }
@@ -289,19 +289,19 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
   }
 }
 
-- (void)_setObjectInCrudeProximity:(BOOL)a3
+- (void)_setObjectInCrudeProximity:(BOOL)proximity
 {
-  v3 = a3;
+  proximityCopy = proximity;
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_objectInCrudeProximity != a3 || !a3)
+  if (self->_objectInCrudeProximity != proximity || !proximity)
   {
-    self->_objectInCrudeProximity = a3;
+    self->_objectInCrudeProximity = proximity;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -313,20 +313,20 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 proximitySensorManager:self crudeProximityDidChange:v3];
+            [v10 proximitySensorManager:self crudeProximityDidChange:proximityCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -334,22 +334,22 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
   }
 }
 
-- (void)_setObjectInProximity:(BOOL)a3 detectionMode:(int)a4 postToApps:(BOOL)a5
+- (void)_setObjectInProximity:(BOOL)proximity detectionMode:(int)mode postToApps:(BOOL)apps
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  if (self->_objectInProximity != a3)
+  if (self->_objectInProximity != proximity)
   {
-    v5 = *&a4;
-    v6 = a3;
-    cf = a5;
-    self->_objectInProximity = a3;
-    self->_proximityDetectionMode = a4;
+    v5 = *&mode;
+    proximityCopy = proximity;
+    cf = apps;
+    self->_objectInProximity = proximity;
+    self->_proximityDetectionMode = mode;
     v8 = SBLogProximitySensor();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = NSStringFromBKSHIDServicesProximityDetectionMode();
       *buf = 67109378;
-      v47 = v6;
+      v47 = proximityCopy;
       v48 = 2114;
       v49 = v9;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "objectInProximity is now:%{BOOL}u mode:(%{public}@)", buf, 0x12u);
@@ -361,16 +361,16 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
     v55[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:&v54 count:1];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v35 = v11;
-    [v12 postNotificationName:*MEMORY[0x277D67AA0] object:0 userInfo:v11];
+    [defaultCenter postNotificationName:*MEMORY[0x277D67AA0] object:0 userInfo:v11];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v13 = [(NSHashTable *)self->_observers allObjects];
-    v14 = [v13 countByEnumeratingWithState:&v42 objects:v53 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v14 = [allObjects countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v14)
     {
       v15 = v14;
@@ -381,22 +381,22 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
         {
           if (*v43 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allObjects);
           }
 
           v18 = *(*(&v42 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v18 proximitySensorManager:self objectWithinProximityDidChange:v6 detectionMode:v5];
+            [v18 proximitySensorManager:self objectWithinProximityDidChange:proximityCopy detectionMode:v5];
           }
 
           else if (objc_opt_respondsToSelector())
           {
-            [v18 proximitySensorManager:self objectWithinProximityDidChange:v6];
+            [v18 proximitySensorManager:self objectWithinProximityDidChange:proximityCopy];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v42 objects:v53 count:16];
+        v15 = [allObjects countByEnumeratingWithState:&v42 objects:v53 count:16];
       }
 
       while (v15);
@@ -407,13 +407,13 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
       mach_absolute_time();
       cfa = IOHIDEventCreateProximtyEvent();
       v19 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-      v20 = [v19 externalForegroundApplicationSceneHandles];
+      externalForegroundApplicationSceneHandles = [v19 externalForegroundApplicationSceneHandles];
 
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v21 = v20;
+      v21 = externalForegroundApplicationSceneHandles;
       v22 = [v21 countByEnumeratingWithState:&v38 objects:v52 count:16];
       if (v22)
       {
@@ -428,26 +428,26 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
               objc_enumerationMutation(v21);
             }
 
-            v26 = [*(*(&v38 + 1) + 8 * j) scene];
-            v27 = [v26 uiClientSettings];
-            v28 = [v27 proximityDetectionModes];
+            scene = [*(*(&v38 + 1) + 8 * j) scene];
+            uiClientSettings = [scene uiClientSettings];
+            proximityDetectionModes = [uiClientSettings proximityDetectionModes];
 
-            if ((v28 & 2) != 0)
+            if ((proximityDetectionModes & 2) != 0)
             {
-              v29 = [v26 clientHandle];
-              v30 = [v29 bundleIdentifier];
+              clientHandle = [scene clientHandle];
+              bundleIdentifier = [clientHandle bundleIdentifier];
 
-              v31 = [v26 clientProcess];
-              v32 = [v31 state];
-              v33 = [v32 pid];
+              clientProcess = [scene clientProcess];
+              state = [clientProcess state];
+              v33 = [state pid];
 
               v34 = SBLogProximitySensor();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 67109634;
-                v47 = v6;
+                v47 = proximityCopy;
                 v48 = 2114;
-                v49 = v30;
+                v49 = bundleIdentifier;
                 v50 = 1024;
                 v51 = v33;
                 _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "sending prox notification (object in proximity:%{BOOL}u) to %{public}@ (pid %d)", buf, 0x18u);
@@ -468,19 +468,19 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
   }
 }
 
-- (void)_setProximityDetectionEnabled:(BOOL)a3
+- (void)_setProximityDetectionEnabled:(BOOL)enabled
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_proximityDetectionEnabled != a3)
+  if (self->_proximityDetectionEnabled != enabled)
   {
-    v3 = a3;
-    self->_proximityDetectionEnabled = a3;
+    enabledCopy = enabled;
+    self->_proximityDetectionEnabled = enabled;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -492,20 +492,20 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 proximitySensorManager:self proximityDetectionEnabledDidChange:v3];
+            [v10 proximitySensorManager:self proximityDetectionEnabledDidChange:enabledCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -513,19 +513,19 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
   }
 }
 
-- (void)_setProximityDetectionPermitted:(BOOL)a3
+- (void)_setProximityDetectionPermitted:(BOOL)permitted
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_proximityDetectionPermitted != a3)
+  if (self->_proximityDetectionPermitted != permitted)
   {
-    v3 = a3;
-    self->_proximityDetectionPermitted = a3;
+    permittedCopy = permitted;
+    self->_proximityDetectionPermitted = permitted;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -537,20 +537,20 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v11 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 proximitySensorManager:self proximityDetectionPermittedDidChange:v3];
+            [v10 proximitySensorManager:self proximityDetectionPermittedDidChange:permittedCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -572,10 +572,10 @@ void __62__SBProximitySensorManager_suppressBacklightChangesForReason___block_in
   {
     [(SBProximitySensorManager *)self _setProximityDetectionEnabled:1];
     v3 = +[SBMainWorkspace sharedInstanceIfExists];
-    v4 = [v3 currentTransaction];
-    v5 = [v4 transitionRequest];
+    currentTransaction = [v3 currentTransaction];
+    transitionRequest = [currentTransaction transitionRequest];
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = transitionRequest;
     if (v6)
     {
       if (objc_opt_isKindOfClass())

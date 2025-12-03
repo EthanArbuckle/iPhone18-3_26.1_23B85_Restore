@@ -1,9 +1,9 @@
 @interface STAboutScreenTimeGroupSpecifierProvider
 - (STAboutScreenTimeGroupSpecifierProvider)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STAboutScreenTimeGroupSpecifierProvider
@@ -23,10 +23,10 @@
     [v6 setProperty:NSClassFromString(&cfstr_Pesettingsfeat.isa) forKey:*MEMORY[0x277D3FE58]];
     [v6 setProperty:v5 forKey:*MEMORY[0x277D40160]];
     [v6 setProperty:@"com.apple.graphic-icon.screen-time" forKey:*MEMORY[0x277D3FFD8]];
-    v7 = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
-    [v7 addObject:v6];
-    v8 = [MEMORY[0x277D262A0] sharedConnection];
-    v9 = [v8 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
+    [mutableSpecifiers addObject:v6];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v9 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
     if (v9 == 2)
     {
@@ -35,13 +35,13 @@
 
       if (v11)
       {
-        v12 = [(STGroupSpecifierProvider *)v2 groupSpecifier];
-        [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+        groupSpecifier = [(STGroupSpecifierProvider *)v2 groupSpecifier];
+        [groupSpecifier setObject:v11 forKeyedSubscript:*MEMORY[0x277D3FF88]];
       }
     }
 
-    v13 = [MEMORY[0x277D262A0] sharedConnection];
-    [v13 registerObserver:v2];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0]2 registerObserver:v2];
   }
 
   return v2;
@@ -52,38 +52,38 @@
   v5.receiver = self;
   v5.super_class = STAboutScreenTimeGroupSpecifierProvider;
   [(STRootGroupSpecifierProvider *)&v5 invalidate];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STAboutScreenTimeGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUserWithScreenTimeDisabled" context:"STAboutScreenTimeGroupSpecifierObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUserWithScreenTimeDisabled" context:"STAboutScreenTimeGroupSpecifierObservationContext"];
   v6.receiver = self;
   v6.super_class = STAboutScreenTimeGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUserWithScreenTimeDisabled" options:4 context:"STAboutScreenTimeGroupSpecifierObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUserWithScreenTimeDisabled" options:4 context:"STAboutScreenTimeGroupSpecifierObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STAboutScreenTimeGroupSpecifierObservationContext")
+  if (context == "STAboutScreenTimeGroupSpecifierObservationContext")
   {
     v11 = MEMORY[0x277D262A0];
-    v12 = a3;
-    v13 = [v11 sharedConnection];
-    v14 = [v13 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+    pathCopy = path;
+    sharedConnection = [v11 sharedConnection];
+    v14 = [sharedConnection effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-    v16 = [(STRootGroupSpecifierProvider *)self coordinator];
-    LODWORD(v13) = [v12 isEqualToString:@"viewModel.isLocalOrRemotelyManagedUserWithScreenTimeDisabled"];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    LODWORD(sharedConnection) = [pathCopy isEqualToString:@"viewModel.isLocalOrRemotelyManagedUserWithScreenTimeDisabled"];
 
-    if (v13)
+    if (sharedConnection)
     {
       if (v14 == 2)
       {
@@ -92,8 +92,8 @@
 
       else
       {
-        v15 = [v16 viewModel];
-        -[STGroupSpecifierProvider setIsHidden:](self, "setIsHidden:", [v15 isLocalOrRemotelyManagedUserWithScreenTimeDisabled] ^ 1);
+        viewModel = [coordinator viewModel];
+        -[STGroupSpecifierProvider setIsHidden:](self, "setIsHidden:", [viewModel isLocalOrRemotelyManagedUserWithScreenTimeDisabled] ^ 1);
       }
     }
   }
@@ -102,15 +102,15 @@
   {
     v17.receiver = self;
     v17.super_class = STAboutScreenTimeGroupSpecifierProvider;
-    v10 = a3;
-    [(STAboutScreenTimeGroupSpecifierProvider *)&v17 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    pathCopy2 = path;
+    [(STAboutScreenTimeGroupSpecifierProvider *)&v17 observeValueForKeyPath:pathCopy2 ofObject:object change:change context:context];
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
   if (v6 == 2)
   {
@@ -123,9 +123,9 @@
     v13 = 0;
   }
 
-  v8 = [(STGroupSpecifierProvider *)self groupSpecifier];
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
   v9 = *MEMORY[0x277D3FF88];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
+  v10 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
   if (v10)
   {
     v11 = 1;
@@ -138,8 +138,8 @@
 
   if (!v11 || (v10 ? (v12 = v13 == 0) : (v12 = 0), v12))
   {
-    [v8 setObject:v13 forKeyedSubscript:v9];
-    [(STGroupSpecifierProvider *)self reloadSpecifier:v8 animated:1];
+    [groupSpecifier setObject:v13 forKeyedSubscript:v9];
+    [(STGroupSpecifierProvider *)self reloadSpecifier:groupSpecifier animated:1];
   }
 }
 

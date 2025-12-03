@@ -1,11 +1,11 @@
 @interface PREditorRootViewController
 - (BOOL)_shouldShowQuickActionEditing;
-- (BOOL)shouldFixTitleBetweenTransitionFromTitleStyleConfiguration:(id)a3 toTitleStyleConfiguration:(id)a4 extensionBundleURL:(id)a5;
-- (CGPoint)scrollContentOffsetForLook:(id)a3;
-- (CGPoint)scrollContentOffsetForLookAtIndex:(unint64_t)a3;
+- (BOOL)shouldFixTitleBetweenTransitionFromTitleStyleConfiguration:(id)configuration toTitleStyleConfiguration:(id)styleConfiguration extensionBundleURL:(id)l;
+- (CGPoint)scrollContentOffsetForLook:(id)look;
+- (CGPoint)scrollContentOffsetForLookAtIndex:(unint64_t)index;
 - (CGRect)_titleViewFrame;
-- (CGRect)frameForPageAtLookIndex:(unint64_t)a3;
-- (CGRect)frameForPageAtViewIndex:(unint64_t)a3;
+- (CGRect)frameForPageAtLookIndex:(unint64_t)index;
+- (CGRect)frameForPageAtViewIndex:(unint64_t)index;
 - (NSString)description;
 - (PREditor)editor;
 - (UIEdgeInsets)editingChromeDodgingInsets;
@@ -14,49 +14,49 @@
 - (double)_maximumAdaptiveTimeTextHeight;
 - (double)_minimumAdaptiveTimeTextHeight;
 - (id)_makeOverlayHostingScene;
-- (id)_viewsForMenuElements:(id)a3;
-- (id)beginTransitionToLook:(id)a3 method:(int64_t)a4;
+- (id)_viewsForMenuElements:(id)elements;
+- (id)beginTransitionToLook:(id)look method:(int64_t)method;
 - (id)configuredProperties;
 - (id)currentLook;
-- (id)defaultTitleStyleConfigurationForLook:(id)a3;
-- (id)effectiveTitleStyleConfigurationForLook:(id)a3;
+- (id)defaultTitleStyleConfigurationForLook:(id)look;
+- (id)effectiveTitleStyleConfigurationForLook:(id)look;
 - (id)extensionBundleURL;
-- (id)imageForDepthEffectActionTopLevelAction:(BOOL)a3;
-- (id)lookAtScrollContentOffset:(CGPoint)a3 fractionOfDistanceThroughLook:(double *)a4;
-- (id)makeComplicationHostingSceneWithSpecification:(id)a3;
+- (id)imageForDepthEffectActionTopLevelAction:(BOOL)action;
+- (id)lookAtScrollContentOffset:(CGPoint)offset fractionOfDistanceThroughLook:(double *)look;
+- (id)makeComplicationHostingSceneWithSpecification:(id)specification;
 - (id)makeComplicationsHostingScene;
 - (id)makeQuickActionsHostingScene;
-- (id)makeQuickActionsHostingSceneWithSpecification:(id)a3;
-- (id)viewForMenuElementIdentifier:(id)a3;
-- (unint64_t)backgroundTypeForLook:(id)a3;
-- (unint64_t)lookIndexForContentOffset:(CGPoint)a3;
-- (unint64_t)lookIndexForViewIndex:(unint64_t)a3;
-- (unint64_t)viewIndexForLookIndex:(unint64_t)a3;
+- (id)makeQuickActionsHostingSceneWithSpecification:(id)specification;
+- (id)viewForMenuElementIdentifier:(id)identifier;
+- (unint64_t)backgroundTypeForLook:(id)look;
+- (unint64_t)lookIndexForContentOffset:(CGPoint)offset;
+- (unint64_t)lookIndexForViewIndex:(unint64_t)index;
+- (unint64_t)viewIndexForLookIndex:(unint64_t)index;
 - (void)_setNeedsEditingElementsVisibilityUpdate;
-- (void)_setOverlayHostViewController:(id)a3 insertingAboveSubview:(id)a4;
-- (void)_setVibrancyConfiguration:(id)a3;
-- (void)_titleViewResizeGestureDidUpdate:(id)a3;
+- (void)_setOverlayHostViewController:(id)controller insertingAboveSubview:(id)subview;
+- (void)_setVibrancyConfiguration:(id)configuration;
+- (void)_titleViewResizeGestureDidUpdate:(id)update;
 - (void)_updateAdditionalControlsLayout;
 - (void)_updateBottomControlsYConstraint;
 - (void)_updateButtonLayout;
-- (void)_updateComplicationRowReticleWithOffset:(double)a3 animated:(BOOL)a4;
-- (void)_updateComplicationSidebarEmptyViewVisibilityAnimated:(BOOL)a3;
+- (void)_updateComplicationRowReticleWithOffset:(double)offset animated:(BOOL)animated;
+- (void)_updateComplicationSidebarEmptyViewVisibilityAnimated:(BOOL)animated;
 - (void)_updateComplicationsVibrancyFromCurrentLook;
 - (void)_updateDesiredTimeStretchInEditor;
 - (void)_updateEditingElementsVisibilityIfNeeded;
-- (void)_updateForDesiredTimeMaxHeight:(double)a3 orientation:(int64_t)a4;
+- (void)_updateForDesiredTimeMaxHeight:(double)height orientation:(int64_t)orientation;
 - (void)_updateMenuElements;
 - (void)_updateOverlayHostViewControllerLuminanceFromCurrentLook;
-- (void)_updateReticleViewFramesWithOffset:(double)a3;
+- (void)_updateReticleViewFramesWithOffset:(double)offset;
 - (void)_updateScrollViewContentSize;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)currentLookDidChange;
-- (void)dateProvider:(id)a3 didUpdateDate:(id)a4;
+- (void)dateProvider:(id)provider didUpdateDate:(id)date;
 - (void)depthEffectEnablementDidChange;
-- (void)didFinishTransitionToLook:(id)a3;
-- (void)didTransitionToLook:(id)a3 method:(int64_t)a4 progress:(double)a5;
+- (void)didFinishTransitionToLook:(id)look;
+- (void)didTransitionToLook:(id)look method:(int64_t)method progress:(double)progress;
 - (void)disconnect;
-- (void)enumerateTimeViewControllersUsingBlock:(id)a3;
+- (void)enumerateTimeViewControllersUsingBlock:(id)block;
 - (void)forciblyFinishLookTransition;
 - (void)invalidate;
 - (void)layoutAdditionalControls;
@@ -67,69 +67,69 @@
 - (void)lookPropertiesDidChange;
 - (void)looksDidChange;
 - (void)looksWillChange;
-- (void)modalPresentationDismissGestureDidFire:(id)a3;
-- (void)pageControlCurrentPageDidChange:(id)a3;
+- (void)modalPresentationDismissGestureDidFire:(id)fire;
+- (void)pageControlCurrentPageDidChange:(id)change;
 - (void)reconnect;
-- (void)requireGestureRecognizerToFailForLooksScroll:(id)a3;
-- (void)scrollToLook:(id)a3 animated:(BOOL)a4;
-- (void)scrollToLookAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndScrolling:(id)a3;
-- (void)scrollViewDidScroll:(id)a3 withContext:(id *)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAllUserInteractionDisabledExceptForCancelButton:(BOOL)a3;
-- (void)setComplicationRowAtBottom:(BOOL)a3;
-- (void)setComplicationSidebarConfigured:(BOOL)a3;
-- (void)setComplicationsRowConfigured:(BOOL)a3;
-- (void)setContentOverlayView:(id)a3;
-- (void)setControlsHidden:(BOOL)a3;
-- (void)setDepthEffectDisabled:(BOOL)a3;
-- (void)setFocusedComplicationElement:(int64_t)a3;
-- (void)setFocusedQuickActionPosition:(int64_t)a3;
-- (void)setHostedContentSettings:(id)a3;
-- (void)setLooks:(id)a3 forUpdatingProperties:(BOOL)a4;
+- (void)requireGestureRecognizerToFailForLooksScroll:(id)scroll;
+- (void)scrollToLook:(id)look animated:(BOOL)animated;
+- (void)scrollToLookAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)scrollViewDidEndScrolling:(id)scrolling;
+- (void)scrollViewDidScroll:(id)scroll withContext:(id *)context;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAllUserInteractionDisabledExceptForCancelButton:(BOOL)button;
+- (void)setComplicationRowAtBottom:(BOOL)bottom;
+- (void)setComplicationSidebarConfigured:(BOOL)configured;
+- (void)setComplicationsRowConfigured:(BOOL)configured;
+- (void)setContentOverlayView:(id)view;
+- (void)setControlsHidden:(BOOL)hidden;
+- (void)setDepthEffectDisabled:(BOOL)disabled;
+- (void)setFocusedComplicationElement:(int64_t)element;
+- (void)setFocusedQuickActionPosition:(int64_t)position;
+- (void)setHostedContentSettings:(id)settings;
+- (void)setLooks:(id)looks forUpdatingProperties:(BOOL)properties;
 - (void)setNeedsReticleVisibilityUpdate;
-- (void)setOverlayHostViewController:(id)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)setPresentingComplicationGallery:(BOOL)a3;
-- (void)setPresentingModalViewController:(BOOL)a3;
-- (void)setSubtitleHidden:(BOOL)a3;
-- (void)setTimeResizeLookSwitchingDisableAssertion:(id)a3;
-- (void)setTitleReticleActive:(BOOL)a3;
-- (void)setTopButtonsEdgeInsets:(UIEdgeInsets)a3;
-- (void)setTopButtonsHidden:(BOOL)a3;
-- (void)setUsesEditingLayout:(BOOL)a3;
+- (void)setOverlayHostViewController:(id)controller;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)setPresentingComplicationGallery:(BOOL)gallery;
+- (void)setPresentingModalViewController:(BOOL)controller;
+- (void)setSubtitleHidden:(BOOL)hidden;
+- (void)setTimeResizeLookSwitchingDisableAssertion:(id)assertion;
+- (void)setTitleReticleActive:(BOOL)active;
+- (void)setTopButtonsEdgeInsets:(UIEdgeInsets)insets;
+- (void)setTopButtonsHidden:(BOOL)hidden;
+- (void)setUsesEditingLayout:(BOOL)layout;
 - (void)setupAdditionalControls;
 - (void)setupConfirmationButtons;
 - (void)setupLookMenuButton;
-- (void)titleViewTapped:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)titleViewTapped:(id)tapped;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateForChangedOverrideDate;
 - (void)updateForChangedTitleString;
-- (void)updateForDesiredTimeMaxY:(double)a3 orientation:(int64_t)a4;
+- (void)updateForDesiredTimeMaxY:(double)y orientation:(int64_t)orientation;
 - (void)updateLookMenu;
 - (void)updateOverlayHostViewControllerVisibility;
 - (void)updateReticleViewFrames;
 - (void)updateReticleVisibilityIfNeeded;
 - (void)updateTimeControllersForLookMap;
 - (void)updateTopButtonAlpha;
-- (void)updateTopButtonsLayoutWithLeadingTopButtonFrame:(CGRect)a3 trailingTopButtonFrame:(CGRect)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateTopButtonsLayoutWithLeadingTopButtonFrame:(CGRect)frame trailingTopButtonFrame:(CGRect)buttonFrame;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PREditorRootViewController
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = PREditorRootViewController;
   [(PREditorRootViewController *)&v5 setOverrideUserInterfaceStyle:?];
-  [(PRComplicationSceneHostViewController *)self->_complicationHostViewController setOverrideUserInterfaceStyle:a3];
-  [(PRQuickActionsSceneHostViewController *)self->_quickActionsHostViewController setOverrideUserInterfaceStyle:a3];
-  [(PROverlaySceneHostViewController *)self->_overlayHostViewController setOverrideUserInterfaceStyle:a3];
+  [(PRComplicationSceneHostViewController *)self->_complicationHostViewController setOverrideUserInterfaceStyle:style];
+  [(PRQuickActionsSceneHostViewController *)self->_quickActionsHostViewController setOverrideUserInterfaceStyle:style];
+  [(PROverlaySceneHostViewController *)self->_overlayHostViewController setOverrideUserInterfaceStyle:style];
 }
 
 - (void)invalidate
@@ -143,12 +143,12 @@
 - (void)setupAdditionalControls
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self view];
-  v4 = [(PREditorRootViewController *)self editor];
-  v5 = [v4 delegate];
+  view = [(PREditorRootViewController *)self view];
+  editor = [(PREditorRootViewController *)self editor];
+  delegate = [editor delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 additionalControlsForEditor:v4];
+    v6 = [delegate additionalControlsForEditor:editor];
     v7 = v6;
     if (v6 && [v6 count])
     {
@@ -174,7 +174,7 @@
                 objc_enumerationMutation(v10);
               }
 
-              [v3 addSubview:{*(*(&v15 + 1) + 8 * v14++), v15}];
+              [view addSubview:{*(*(&v15 + 1) + 8 * v14++), v15}];
             }
 
             while (v12 != v14);
@@ -218,30 +218,30 @@ LABEL_12:
 - (void)layoutAdditionalControls
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self additionalControls];
-  v4 = v3;
-  if (v3 && [v3 count])
+  additionalControls = [(PREditorRootViewController *)self additionalControls];
+  v4 = additionalControls;
+  if (additionalControls && [additionalControls count])
   {
-    v20 = [(PREditorRootViewController *)self view];
-    v5 = [v20 safeAreaLayoutGuide];
+    view = [(PREditorRootViewController *)self view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
     v6 = [v4 objectAtIndex:0];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     v15 = MEMORY[0x1E696ACD8];
-    v19 = [v6 topAnchor];
-    v18 = [v5 topAnchor];
-    v17 = [v19 constraintEqualToAnchor:v18 constant:22.0];
+    topAnchor = [v6 topAnchor];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:22.0];
     v21[0] = v17;
-    v16 = [v6 leadingAnchor];
-    v14 = [v5 leadingAnchor];
-    v7 = [v16 constraintEqualToAnchor:v14 constant:44.0];
+    leadingAnchor = [v6 leadingAnchor];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:44.0];
     v21[1] = v7;
-    v8 = [v6 widthAnchor];
-    v9 = [v5 widthAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 multiplier:0.25];
+    widthAnchor = [v6 widthAnchor];
+    widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+    v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.25];
     v21[2] = v10;
-    v11 = [v6 heightAnchor];
-    v12 = [v11 constraintEqualToConstant:50.0];
+    heightAnchor = [v6 heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:50.0];
     v21[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
     [v15 activateConstraints:v13];
@@ -250,10 +250,10 @@ LABEL_12:
 
 - (void)setupConfirmationButtons
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  if (([v3 _cancelAndAcceptButtonsRequireNavigationBar] & 1) == 0)
+  editor = [(PREditorRootViewController *)self editor];
+  if (([editor _cancelAndAcceptButtonsRequireNavigationBar] & 1) == 0)
   {
-    v4 = [v3 delegate];
+    delegate = [editor delegate];
     objc_initWeak(&location, self);
     if (PUIFeatureEnabled())
     {
@@ -261,14 +261,14 @@ LABEL_12:
       confirmationButtonsContainerView = self->_confirmationButtonsContainerView;
       self->_confirmationButtonsContainerView = v5;
 
-      v7 = v5;
-      v8 = [(PUITouchPassThroughView *)v7 layer];
-      [v8 setName:@"confirmationButtonsContainerView"];
+      view2 = v5;
+      layer = [(PUITouchPassThroughView *)view2 layer];
+      [layer setName:@"confirmationButtonsContainerView"];
 
-      [(PUITouchPassThroughView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(PUITouchPassThroughView *)v7 pui_setGlassGroupBackground];
-      v9 = [(PREditorRootViewController *)self view];
-      [v9 addSubview:v7];
+      [(PUITouchPassThroughView *)view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(PUITouchPassThroughView *)view2 pui_setGlassGroupBackground];
+      view = [(PREditorRootViewController *)self view];
+      [view addSubview:view2];
 
       v10 = 5;
       v11 = 5;
@@ -276,9 +276,9 @@ LABEL_12:
 
     else
     {
-      v7 = [(PREditorRootViewController *)self view];
+      view2 = [(PREditorRootViewController *)self view];
       v10 = PREditingSupportsLiveBlurs() ^ 1;
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 prefersSimpleButtonAppearanceForEditor:v3])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate prefersSimpleButtonAppearanceForEditor:editor])
       {
         v10 = 1;
       }
@@ -300,12 +300,12 @@ LABEL_12:
     v18 = *(MEMORY[0x1E695F058] + 24);
     v19 = [(PREditingButton *)v12 initWithStyle:v10 frame:v14 primaryAction:*MEMORY[0x1E695F058], v16, v17, v18];
 
-    [(PUITouchPassThroughView *)v7 addSubview:v19];
+    [(PUITouchPassThroughView *)view2 addSubview:v19];
     v20 = objc_opt_class();
-    v21 = [(PREditorRootViewController *)self editor];
-    v22 = [v21 acceptButtonType];
+    editor2 = [(PREditorRootViewController *)self editor];
+    acceptButtonType = [editor2 acceptButtonType];
 
-    if (v22 == 1 || v22 == 2)
+    if (acceptButtonType == 1 || acceptButtonType == 2)
     {
       v20 = objc_opt_class();
     }
@@ -320,7 +320,7 @@ LABEL_12:
     v25 = [v24 actionWithHandler:v27];
     v26 = [v23 initWithStyle:v11 frame:v25 primaryAction:{v15, v16, v17, v18}];
 
-    [(PUITouchPassThroughView *)v7 addSubview:v26];
+    [(PUITouchPassThroughView *)view2 addSubview:v26];
     [(PREditingButton *)v19 setLegibilityShadowEnabled:1];
     [(PREditingCancelButton *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PREditingCancelButton *)v19 setAccessibilityIdentifier:@"editing-cancel"];
@@ -357,10 +357,10 @@ void __54__PREditorRootViewController_setupConfirmationButtons__block_invoke_2(u
 - (void)layoutConfirmationButtons
 {
   v73[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self editor];
-  v4 = [v3 _cancelAndAcceptButtonsRequireNavigationBar];
+  editor = [(PREditorRootViewController *)self editor];
+  _cancelAndAcceptButtonsRequireNavigationBar = [editor _cancelAndAcceptButtonsRequireNavigationBar];
 
-  if (v4)
+  if (_cancelAndAcceptButtonsRequireNavigationBar)
   {
     objc_initWeak(&location, self);
     v5 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -385,11 +385,11 @@ void __54__PREditorRootViewController_setupConfirmationButtons__block_invoke_2(u
     v12 = [v9 initWithBarButtonSystemItem:0 primaryAction:v11];
 
     [v12 setAccessibilityIdentifier:@"editing-done"];
-    v13 = [(PREditorRootViewController *)self navigationItem];
-    [v13 setLeftBarButtonItem:v8];
+    navigationItem = [(PREditorRootViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
 
-    v14 = [(PREditorRootViewController *)self navigationItem];
-    [v14 setRightBarButtonItem:v12];
+    navigationItem2 = [(PREditorRootViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v12];
 
     objc_destroyWeak(&v68);
     objc_destroyWeak(&v70);
@@ -398,50 +398,50 @@ void __54__PREditorRootViewController_setupConfirmationButtons__block_invoke_2(u
 
   else
   {
-    v64 = [(PREditorRootViewController *)self view];
-    v65 = [(PREditorRootViewController *)self cancelButton];
-    v66 = [(PREditorRootViewController *)self acceptButton];
-    v63 = [(PREditorRootViewController *)self pageControl];
-    v15 = [(PREditorRootViewController *)self editor];
-    v16 = [v15 editingIdiom];
+    view = [(PREditorRootViewController *)self view];
+    cancelButton = [(PREditorRootViewController *)self cancelButton];
+    acceptButton = [(PREditorRootViewController *)self acceptButton];
+    pageControl = [(PREditorRootViewController *)self pageControl];
+    editor2 = [(PREditorRootViewController *)self editor];
+    editingIdiom = [editor2 editingIdiom];
 
-    if (v16 == 2)
+    if (editingIdiom == 2)
     {
-      v62 = [v64 safeAreaLayoutGuide];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
       v59 = MEMORY[0x1E696ACD8];
-      v61 = [v65 heightAnchor];
-      v60 = [v61 constraintEqualToConstant:50.0];
+      heightAnchor = [cancelButton heightAnchor];
+      v60 = [heightAnchor constraintEqualToConstant:50.0];
       v73[0] = v60;
-      v17 = [v65 widthAnchor];
-      v18 = [v62 widthAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18 multiplier:0.2];
+      widthAnchor = [cancelButton widthAnchor];
+      widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+      v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.2];
       v73[1] = v19;
-      v20 = [v66 heightAnchor];
-      v21 = [v20 constraintEqualToConstant:50.0];
+      heightAnchor2 = [acceptButton heightAnchor];
+      v21 = [heightAnchor2 constraintEqualToConstant:50.0];
       v73[2] = v21;
-      v22 = [v66 widthAnchor];
-      v23 = [v62 widthAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23 multiplier:0.2];
+      widthAnchor3 = [acceptButton widthAnchor];
+      widthAnchor4 = [safeAreaLayoutGuide widthAnchor];
+      v24 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.2];
       v73[3] = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:4];
       [v59 activateConstraints:v25];
 
-      v26 = [v65 trailingAnchor];
-      v27 = [v66 leadingAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27 constant:-22.0];
+      trailingAnchor = [cancelButton trailingAnchor];
+      leadingAnchor = [acceptButton leadingAnchor];
+      v28 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-22.0];
 
-      v29 = [v65 centerYAnchor];
-      v30 = [v63 centerYAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      centerYAnchor = [cancelButton centerYAnchor];
+      centerYAnchor2 = [pageControl centerYAnchor];
+      v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-      v32 = [v66 trailingAnchor];
-      v33 = [v64 safeAreaLayoutGuide];
-      v34 = [v33 trailingAnchor];
-      v35 = [v32 constraintEqualToAnchor:v34 constant:-22.0];
+      trailingAnchor2 = [acceptButton trailingAnchor];
+      safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+      trailingAnchor3 = [safeAreaLayoutGuide2 trailingAnchor];
+      v35 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-22.0];
 
-      v36 = [v66 centerYAnchor];
-      v37 = [v63 centerYAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      centerYAnchor3 = [acceptButton centerYAnchor];
+      centerYAnchor4 = [pageControl centerYAnchor];
+      v38 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     }
 
     else
@@ -450,33 +450,33 @@ void __54__PREditorRootViewController_setupConfirmationButtons__block_invoke_2(u
       {
         v39 = self->_confirmationButtonsContainerView;
         v40 = MEMORY[0x1E696ACD8];
-        v41 = [v64 pui_constraintsPinningSubview:v39 toEdges:15];
+        v41 = [view pui_constraintsPinningSubview:v39 toEdges:15];
         [v40 activateConstraints:v41];
       }
 
       else
       {
-        v39 = v64;
+        v39 = view;
       }
 
       [(PREditorRootViewController *)self topButtonsEdgeInsets];
       v43 = v42;
       v45 = v44;
-      v46 = [v65 leadingAnchor];
-      v47 = [(PUITouchPassThroughView *)v39 leadingAnchor];
-      v28 = [v46 constraintEqualToAnchor:v47 constant:v45];
+      leadingAnchor2 = [cancelButton leadingAnchor];
+      leadingAnchor3 = [(PUITouchPassThroughView *)v39 leadingAnchor];
+      v28 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:v45];
 
-      v48 = [v65 topAnchor];
-      v49 = [(PUITouchPassThroughView *)v39 topAnchor];
-      v31 = [v48 constraintEqualToAnchor:v49 constant:v43];
+      topAnchor = [cancelButton topAnchor];
+      topAnchor2 = [(PUITouchPassThroughView *)v39 topAnchor];
+      v31 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v43];
 
-      v50 = [v66 trailingAnchor];
-      v51 = [(PUITouchPassThroughView *)v39 trailingAnchor];
-      v35 = [v50 constraintEqualToAnchor:v51 constant:-v45];
+      trailingAnchor4 = [acceptButton trailingAnchor];
+      trailingAnchor5 = [(PUITouchPassThroughView *)v39 trailingAnchor];
+      v35 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-v45];
 
-      v52 = [v66 topAnchor];
-      v53 = [(PUITouchPassThroughView *)v39 topAnchor];
-      v38 = [v52 constraintEqualToAnchor:v53 constant:v43];
+      topAnchor3 = [acceptButton topAnchor];
+      topAnchor4 = [(PUITouchPassThroughView *)v39 topAnchor];
+      v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v43];
     }
 
     [(PREditorRootViewController *)self setLeadingTopButtonXConstraint:v28];
@@ -488,9 +488,9 @@ void __54__PREditorRootViewController_setupConfirmationButtons__block_invoke_2(u
     v72[1] = v31;
     v72[2] = v35;
     v72[3] = v38;
-    v55 = [v66 widthAnchor];
-    v56 = [v65 widthAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    widthAnchor5 = [acceptButton widthAnchor];
+    widthAnchor6 = [cancelButton widthAnchor];
+    v57 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     v72[4] = v57;
     v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:5];
     [v54 activateConstraints:v58];
@@ -516,7 +516,7 @@ void __55__PREditorRootViewController_layoutConfirmationButtons__block_invoke_2(
 - (void)setupLookMenuButton
 {
   objc_initWeak(&location, self);
-  v3 = [(PREditorRootViewController *)self view];
+  view = [(PREditorRootViewController *)self view];
   v4 = MEMORY[0x1E69DC628];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
@@ -524,31 +524,31 @@ void __55__PREditorRootViewController_layoutConfirmationButtons__block_invoke_2(
   v15 = &unk_1E7843448;
   objc_copyWeak(&v16, &location);
   v5 = [v4 actionWithHandler:&v12];
-  v6 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  v7 = [MEMORY[0x1E69DC888] darkGrayColor];
-  [v6 setBaseBackgroundColor:v7];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+  [grayButtonConfiguration setBaseBackgroundColor:darkGrayColor];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v6 setBaseForegroundColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [grayButtonConfiguration setBaseForegroundColor:whiteColor];
 
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.up.chevron.down"];
-  [v6 setImage:v9];
+  [grayButtonConfiguration setImage:v9];
 
-  [v6 setImagePlacement:8];
+  [grayButtonConfiguration setImagePlacement:8];
   v10 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:-1 scale:12.0];
-  [v6 setPreferredSymbolConfigurationForImage:v10];
+  [grayButtonConfiguration setPreferredSymbolConfigurationForImage:v10];
 
-  [v6 setContentInsets:{5.0, 20.0, 5.0, 20.0}];
-  [v6 setCornerStyle:4];
-  [v6 setTitleLineBreakMode:4];
-  [v6 setTitleTextAttributesTransformer:&__block_literal_global_17];
+  [grayButtonConfiguration setContentInsets:{5.0, 20.0, 5.0, 20.0}];
+  [grayButtonConfiguration setCornerStyle:4];
+  [grayButtonConfiguration setTitleLineBreakMode:4];
+  [grayButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_17];
   v11 = [PREditorMenuButton buttonWithType:1];
-  [v11 setConfiguration:v6];
+  [v11 setConfiguration:grayButtonConfiguration];
   [v11 addAction:v5 forControlEvents:0x2000];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v11 setContentHorizontalAlignment:3];
   [v11 setShowsMenuAsPrimaryAction:1];
-  [v3 addSubview:v11];
+  [view addSubview:v11];
   [(PREditorRootViewController *)self setLookMenuButton:v11];
 
   objc_destroyWeak(&v16);
@@ -573,27 +573,27 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
 - (void)layoutLookMenuButton
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v21 = [(PREditorRootViewController *)self view];
-  v20 = [(PREditorRootViewController *)self pageControl];
-  v3 = [v21 safeAreaLayoutGuide];
-  v4 = [(PREditorRootViewController *)self lookMenuButton];
+  view = [(PREditorRootViewController *)self view];
+  pageControl = [(PREditorRootViewController *)self pageControl];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  lookMenuButton = [(PREditorRootViewController *)self lookMenuButton];
   v16 = MEMORY[0x1E696ACD8];
-  v19 = [v4 centerYAnchor];
-  v18 = [v20 centerYAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  centerYAnchor = [lookMenuButton centerYAnchor];
+  centerYAnchor2 = [pageControl centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[0] = v17;
-  v5 = [v4 heightAnchor];
-  v6 = [v5 constraintEqualToConstant:50.0];
+  heightAnchor = [lookMenuButton heightAnchor];
+  v6 = [heightAnchor constraintEqualToConstant:50.0];
   v22[1] = v6;
-  v7 = [v4 leadingAnchor];
-  v8 = v3;
-  v15 = v3;
-  v9 = [v3 leadingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:22.0];
+  leadingAnchor = [lookMenuButton leadingAnchor];
+  v8 = safeAreaLayoutGuide;
+  v15 = safeAreaLayoutGuide;
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:22.0];
   v22[2] = v10;
-  v11 = [v4 widthAnchor];
-  v12 = [v8 widthAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 multiplier:0.333333333];
+  widthAnchor = [lookMenuButton widthAnchor];
+  widthAnchor2 = [v8 widthAnchor];
+  v13 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.333333333];
   v22[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v16 activateConstraints:v14];
@@ -603,7 +603,7 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
 {
   v193[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v4 = [(PREditorRootViewController *)self editor];
+  editor = [(PREditorRootViewController *)self editor];
   [(PREditorRootViewController *)self setView:v3];
   v5 = objc_alloc_init(MEMORY[0x1E698E808]);
   [v5 setDelegate:self];
@@ -614,8 +614,8 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   [v5 setBounces:0];
   [v5 _setHiddenPocketEdges:15];
   [v5 _setAutoScrollEnabled:0];
-  v6 = [v5 layer];
-  [v6 setHitTestsAsOpaque:1];
+  layer = [v5 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 addSubview:v5];
@@ -631,9 +631,9 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   v8 = objc_alloc_init(PREditingLegibilityView);
   [(PREditingLegibilityView *)v8 setUserInteractionEnabled:0];
   [(PREditingLegibilityView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(PREditorRootViewController *)self _shouldShowQuickActionEditing];
+  _shouldShowQuickActionEditing = [(PREditorRootViewController *)self _shouldShowQuickActionEditing];
   v10 = 0.35;
-  if (!v9)
+  if (!_shouldShowQuickActionEditing)
   {
     v10 = 0.25;
   }
@@ -655,10 +655,10 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   [v3 addSubview:v11];
   v186 = v11;
   [(PREditorRootViewController *)self setPageControl:v11];
-  v13 = [(PREditorRootViewController *)self editor];
-  v14 = [v13 editingIdiom];
+  editor2 = [(PREditorRootViewController *)self editor];
+  editingIdiom = [editor2 editingIdiom];
 
-  if (v14 == 2)
+  if (editingIdiom == 2)
   {
     [v5 setScrollEnabled:0];
     [v186 setAlpha:0.0];
@@ -672,16 +672,16 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   [(PREditorRootViewController *)self layoutConfirmationButtons];
   v180 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(PREditorRootViewController *)self setTimeContainerView:?];
-  v15 = [v4 displaysHeaderElements];
-  v16 = [v4 displaysSubtitleElement];
-  v171 = [v4 areComplicationsAllowed];
-  v174 = v15 & v171;
-  if ((v15 & v171) == 1 && v16)
+  displaysHeaderElements = [editor displaysHeaderElements];
+  displaysSubtitleElement = [editor displaysSubtitleElement];
+  areComplicationsAllowed = [editor areComplicationsAllowed];
+  v174 = displaysHeaderElements & areComplicationsAllowed;
+  if ((displaysHeaderElements & areComplicationsAllowed) == 1 && displaysSubtitleElement)
   {
-    v17 = [(PREditorRootViewController *)self isSubtitleHidden];
+    isSubtitleHidden = [(PREditorRootViewController *)self isSubtitleHidden];
     v18 = objc_alloc_init(MEMORY[0x1E6999630]);
     v19 = v18;
-    if (v17)
+    if (isSubtitleHidden)
     {
       v20 = 0;
     }
@@ -692,21 +692,21 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     }
 
     [v18 setElements:v20];
-    v21 = [(PREditorRootViewController *)self dateProvider];
-    [v21 date];
-    v23 = v22 = v15;
+    dateProvider = [(PREditorRootViewController *)self dateProvider];
+    [dateProvider date];
+    v23 = v22 = displaysHeaderElements;
     [v19 setDisplayDate:v23];
 
     [v19 setUsesEditingLayout:{-[PREditorRootViewController usesEditingLayout](self, "usesEditingLayout")}];
-    v24 = [v19 view];
-    [v24 setUserInteractionEnabled:0];
-    v25 = [v24 layer];
-    [v25 setAllowsHitTesting:0];
+    view = [v19 view];
+    [view setUserInteractionEnabled:0];
+    layer2 = [view layer];
+    [layer2 setAllowsHitTesting:0];
 
-    v15 = v22;
-    [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+    displaysHeaderElements = v22;
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PREditorRootViewController *)self addChildViewController:v19];
-    [v180 addSubview:v24];
+    [v180 addSubview:view];
     [v19 didMoveToParentViewController:self];
     [(PREditorRootViewController *)self setSubtitleViewController:v19];
   }
@@ -718,17 +718,17 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   v183 = v26;
   [(PREditorRootViewController *)self setLookNameLabel:v26];
   v27 = 0x1E698E000uLL;
-  if (v15)
+  if (displaysHeaderElements)
   {
     v28 = objc_alloc_init(MEMORY[0x1E698E818]);
     [v28 setUserInteractionEnabled:0];
     [v28 setBlurEnabled:PREditingSupportsLiveBlurs()];
     [(PREditorRootViewController *)self setReticleVibrancyView:v28];
-    v29 = [MEMORY[0x1E69DC938] currentDevice];
-    v30 = [v29 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v185 = v28;
-    if ((v30 & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
     {
       v31 = objc_alloc_init(MEMORY[0x1E698E818]);
       [v31 setUserInteractionEnabled:0];
@@ -749,42 +749,42 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     v185 = 0;
   }
 
-  v177 = v4;
+  v177 = editor;
   v184 = v3;
-  if ([v4 areViewsSharedBetweenLooks])
+  if ([editor areViewsSharedBetweenLooks])
   {
-    v168 = v15;
+    v168 = displaysHeaderElements;
     v32 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v33 = [v32 layer];
-    [v33 setName:@"backgroundContainerView"];
+    layer3 = [v32 layer];
+    [layer3 setName:@"backgroundContainerView"];
 
     [v3 insertSubview:v32 atIndex:0];
     [(PREditorRootViewController *)self setBackgroundContainerView:v32];
     v34 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:v32];
-    v35 = [v34 layer];
-    [v35 setName:@"portaledBackgroundContainerView"];
+    layer4 = [v34 layer];
+    [layer4 setName:@"portaledBackgroundContainerView"];
 
     [v34 setMatchesPosition:1];
     [v34 setHidesSourceView:1];
     [(PREditorRootViewController *)self setPortaledBackgroundContainerView:v34];
     [v5 addSubview:v34];
     v36 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v37 = [v36 layer];
-    [v37 setName:@"foregroundContainerView"];
+    layer5 = [v36 layer];
+    [layer5 setName:@"foregroundContainerView"];
 
     [v3 insertSubview:v36 aboveSubview:v32];
     [(PREditorRootViewController *)self setForegroundContainerView:v36];
     v38 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:v36];
-    v39 = [v38 layer];
-    [v39 setName:@"portaledForegroundContainerView"];
+    layer6 = [v38 layer];
+    [layer6 setName:@"portaledForegroundContainerView"];
 
     [v38 setMatchesPosition:1];
     [v38 setHidesSourceView:1];
     [(PREditorRootViewController *)self setPortaledForegroundContainerView:v38];
     [v5 addSubview:v38];
     v40 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v41 = [v40 layer];
-    [v41 setName:@"floatingContainerView"];
+    layer7 = [v40 layer];
+    [layer7 setName:@"floatingContainerView"];
 
     [(PREditorRootViewController *)self setFloatingContainerView:v40];
     if (v185)
@@ -795,8 +795,8 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     [v5 addSubview:v180];
     [v3 insertSubview:v40 aboveSubview:v36];
     v42 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:v40];
-    v43 = [v42 layer];
-    [v43 setName:@"portaledFloatingContainerView"];
+    layer8 = [v42 layer];
+    [layer8 setName:@"portaledFloatingContainerView"];
 
     [v42 setMatchesPosition:1];
     [v42 setHidesSourceView:1];
@@ -809,29 +809,29 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
 
     v3 = v184;
     v27 = 0x1E698E000;
-    v15 = v168;
+    displaysHeaderElements = v168;
   }
 
   if (v174)
   {
     v44 = objc_alloc_init(PREditingReticleView);
     [(PREditingReticleView *)v44 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v45 = [v185 contentView];
-    [v45 addSubview:v44];
+    contentView = [v185 contentView];
+    [contentView addSubview:v44];
 
     [(PREditorRootViewController *)self setInlineComplicationReticleView:v44];
   }
 
-  if (v15)
+  if (displaysHeaderElements)
   {
     v46 = objc_alloc_init(PREditingReticleView);
-    v47 = [v185 contentView];
-    [v47 addSubview:v46];
+    contentView2 = [v185 contentView];
+    [contentView2 addSubview:v46];
 
     [(PREditorRootViewController *)self setTitleReticleView:v46];
     v48 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v49 = [v48 layer];
-    [v49 setHitTestsAsOpaque:1];
+    layer9 = [v48 layer];
+    [layer9 setHitTestsAsOpaque:1];
 
     v50 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_titleViewTapped_];
     [v48 addGestureRecognizer:v50];
@@ -882,22 +882,22 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     [(PREditingReticleView *)v46 addLayoutGuide:v63];
     [(PREditorRootViewController *)self setTitlePopoverLayoutGuide:v63];
 
-    if (v171)
+    if (areComplicationsAllowed)
     {
       v64 = objc_alloc_init(PREditingReticleView);
-      v65 = [v185 contentView];
-      [v65 addSubview:v64];
+      contentView3 = [v185 contentView];
+      [contentView3 addSubview:v64];
 
       [(PREditingReticleView *)v64 setHidden:1];
       [(PREditorRootViewController *)self setComplicationRowReticleView:v64];
-      v66 = [MEMORY[0x1E69DC938] currentDevice];
-      v67 = [v66 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if ((v67 & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
       {
         v68 = objc_alloc_init(PREditingReticleView);
-        v69 = [v179 contentView];
-        [v69 addSubview:v68];
+        contentView4 = [v179 contentView];
+        [contentView4 addSubview:v68];
 
         [(PREditorRootViewController *)self setComplicationSidebarReticleView:v68];
         v70 = objc_alloc_init(PRComplicationEmptyStateView);
@@ -906,13 +906,13 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
       }
 
       v71 = [PRComplicationSceneHostViewController alloc];
-      v72 = [(PREditorRootViewController *)self makeComplicationsHostingScene];
-      v73 = [(PRComplicationSceneHostViewController *)v71 initWithScene:v72];
+      makeComplicationsHostingScene = [(PREditorRootViewController *)self makeComplicationsHostingScene];
+      v73 = [(PRComplicationSceneHostViewController *)v71 initWithScene:makeComplicationsHostingScene];
 
-      v74 = [(PRComplicationSceneHostViewController *)v73 view];
-      [v74 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view2 = [(PRComplicationSceneHostViewController *)v73 view];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(PREditorRootViewController *)self addChildViewController:v73];
-      [v3 addSubview:v74];
+      [v3 addSubview:view2];
       [(PRComplicationSceneHostViewController *)v73 didMoveToParentViewController:self];
       [(PREditorRootViewController *)self setComplicationHostViewController:v73];
       [(PREditorRootViewController *)self _updateComplicationsVibrancyFromCurrentLook];
@@ -923,8 +923,8 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   if ([(PREditorRootViewController *)self _shouldShowQuickActionEditing])
   {
     v75 = [PRQuickActionsSceneHostViewController alloc];
-    v76 = [(PREditorRootViewController *)self makeQuickActionsHostingScene];
-    v77 = [(PRQuickActionsSceneHostViewController *)v75 initWithScene:v76];
+    makeQuickActionsHostingScene = [(PREditorRootViewController *)self makeQuickActionsHostingScene];
+    v77 = [(PRQuickActionsSceneHostViewController *)v75 initWithScene:makeQuickActionsHostingScene];
 
     [(PRQuickActionsSceneHostViewController *)v77 view];
     v175 = v172 = v77;
@@ -940,16 +940,16 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     [(PREditorRootViewController *)self setControlsVibrancyView:v78];
     [v3 addSubview:v78];
     v164 = MEMORY[0x1E696ACD8];
-    v169 = [v78 leadingAnchor];
-    v166 = [v3 leadingAnchor];
-    v79 = [v169 constraintEqualToAnchor:v166 constant:40.0];
+    leadingAnchor = [v78 leadingAnchor];
+    leadingAnchor2 = [v3 leadingAnchor];
+    v79 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:40.0];
     v193[0] = v79;
-    v80 = [v78 trailingAnchor];
-    v81 = [v3 trailingAnchor];
-    v82 = [v80 constraintEqualToAnchor:v81 constant:-40.0];
+    trailingAnchor = [v78 trailingAnchor];
+    trailingAnchor2 = [v3 trailingAnchor];
+    v82 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-40.0];
     v193[1] = v82;
-    v83 = [v78 heightAnchor];
-    v84 = [v83 constraintEqualToConstant:1.0];
+    heightAnchor = [v78 heightAnchor];
+    v84 = [heightAnchor constraintEqualToConstant:1.0];
     v193[2] = v84;
     v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v193 count:3];
     [v164 activateConstraints:v85];
@@ -958,22 +958,22 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     v5 = v178;
   }
 
-  v86 = [(PREditorRootViewController *)self contentOverlayView];
-  if (!v86)
+  contentOverlayView = [(PREditorRootViewController *)self contentOverlayView];
+  if (!contentOverlayView)
   {
-    v86 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    [(PREditorRootViewController *)self setContentOverlayView:v86];
+    contentOverlayView = objc_alloc_init(MEMORY[0x1E69DD250]);
+    [(PREditorRootViewController *)self setContentOverlayView:contentOverlayView];
   }
 
-  [v86 bounds];
+  [contentOverlayView bounds];
   v88 = v87;
   v90 = v89;
   v92 = v91;
   v94 = v93;
   v95 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v87, v89, v91, v93}];
-  [v86 setFrame:{v88, v90, v92, v94}];
-  v176 = v86;
-  [v95 addSubview:v86];
+  [contentOverlayView setFrame:{v88, v90, v92, v94}];
+  v176 = contentOverlayView;
+  [v95 addSubview:contentOverlayView];
   [v5 addSubview:v95];
   v173 = v95;
   [(PREditorRootViewController *)self setContentOverlayContainerView:v95];
@@ -985,87 +985,87 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
     v99 = v98;
     v101 = v100;
     v103 = v102;
-    v104 = [(PREditorRootViewController *)self view];
-    [v186 convertRect:v104 fromView:{v97, v99, v101, v103}];
+    view3 = [(PREditorRootViewController *)self view];
+    [v186 convertRect:view3 fromView:{v97, v99, v101, v103}];
     v106 = v105;
     v108 = v107;
 
-    v109 = [(PREditingStandaloneLabelView *)v183 centerYAnchor];
-    v110 = [v3 topAnchor];
-    v111 = [v109 constraintEqualToAnchor:v110 constant:v106 + v108 * 0.5];
+    centerYAnchor = [(PREditingStandaloneLabelView *)v183 centerYAnchor];
+    topAnchor = [v3 topAnchor];
+    v111 = [centerYAnchor constraintEqualToAnchor:topAnchor constant:v106 + v108 * 0.5];
     [v111 setActive:1];
   }
 
   v144 = MEMORY[0x1E696ACD8];
-  v167 = [v186 centerXAnchor];
-  v170 = [v3 safeAreaLayoutGuide];
-  v165 = [v170 centerXAnchor];
-  v163 = [v167 constraintEqualToAnchor:v165];
+  centerXAnchor = [v186 centerXAnchor];
+  safeAreaLayoutGuide = [v3 safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+  v163 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v192[0] = v163;
-  v162 = [v5 topAnchor];
-  v161 = [v3 topAnchor];
-  v160 = [v162 constraintEqualToAnchor:v161];
+  topAnchor2 = [v5 topAnchor];
+  topAnchor3 = [v3 topAnchor];
+  v160 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v192[1] = v160;
-  v159 = [v5 bottomAnchor];
-  v158 = [v3 bottomAnchor];
-  v157 = [v159 constraintEqualToAnchor:v158];
+  bottomAnchor = [v5 bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v157 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v192[2] = v157;
-  v156 = [v5 leadingAnchor];
-  v155 = [v3 leadingAnchor];
-  v154 = [v156 constraintEqualToAnchor:v155];
+  leadingAnchor3 = [v5 leadingAnchor];
+  leadingAnchor4 = [v3 leadingAnchor];
+  v154 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v192[3] = v154;
-  v153 = [v5 trailingAnchor];
-  v152 = [v3 trailingAnchor];
-  v151 = [v153 constraintEqualToAnchor:v152];
+  trailingAnchor3 = [v5 trailingAnchor];
+  trailingAnchor4 = [v3 trailingAnchor];
+  v151 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v192[4] = v151;
-  v150 = [(PREditingStandaloneLabelView *)v183 centerXAnchor];
-  v149 = [v3 centerXAnchor];
-  v148 = [v150 constraintEqualToAnchor:v149];
+  centerXAnchor3 = [(PREditingStandaloneLabelView *)v183 centerXAnchor];
+  centerXAnchor4 = [v3 centerXAnchor];
+  v148 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v192[5] = v148;
-  v147 = [(PREditingStandaloneLabelView *)v183 bottomAnchor];
-  v146 = [v186 topAnchor];
-  v145 = [v147 constraintEqualToAnchor:v146 constant:-16.0];
+  bottomAnchor3 = [(PREditingStandaloneLabelView *)v183 bottomAnchor];
+  topAnchor4 = [v186 topAnchor];
+  v145 = [bottomAnchor3 constraintEqualToAnchor:topAnchor4 constant:-16.0];
   v192[6] = v145;
-  v143 = [(PREditingStandaloneLabelView *)v183 leadingAnchor];
-  v142 = [v3 leadingAnchor];
-  v141 = [v143 constraintGreaterThanOrEqualToAnchor:v142 constant:20.0];
+  leadingAnchor5 = [(PREditingStandaloneLabelView *)v183 leadingAnchor];
+  leadingAnchor6 = [v3 leadingAnchor];
+  v141 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6 constant:20.0];
   v192[7] = v141;
-  v140 = [(PREditingStandaloneLabelView *)v183 trailingAnchor];
-  v139 = [v3 trailingAnchor];
-  v138 = [v140 constraintLessThanOrEqualToAnchor:v139 constant:-20.0];
+  trailingAnchor5 = [(PREditingStandaloneLabelView *)v183 trailingAnchor];
+  trailingAnchor6 = [v3 trailingAnchor];
+  v138 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6 constant:-20.0];
   v192[8] = v138;
-  v137 = [(PREditingLegibilityView *)v182 heightAnchor];
-  v136 = [v3 heightAnchor];
-  v135 = [v137 constraintEqualToAnchor:v136];
+  heightAnchor2 = [(PREditingLegibilityView *)v182 heightAnchor];
+  heightAnchor3 = [v3 heightAnchor];
+  v135 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v192[9] = v135;
-  v134 = [(PREditingLegibilityView *)v182 bottomAnchor];
-  v133 = [v3 bottomAnchor];
-  v132 = [v134 constraintEqualToAnchor:v133];
+  bottomAnchor4 = [(PREditingLegibilityView *)v182 bottomAnchor];
+  bottomAnchor5 = [v3 bottomAnchor];
+  v132 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v192[10] = v132;
-  v131 = [(PREditingLegibilityView *)v182 leadingAnchor];
-  v130 = [v3 leadingAnchor];
-  v129 = [v131 constraintEqualToAnchor:v130];
+  leadingAnchor7 = [(PREditingLegibilityView *)v182 leadingAnchor];
+  leadingAnchor8 = [v3 leadingAnchor];
+  v129 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v192[11] = v129;
-  v128 = [(PREditingLegibilityView *)v182 trailingAnchor];
-  v127 = [v3 trailingAnchor];
-  v126 = [v128 constraintEqualToAnchor:v127];
+  trailingAnchor7 = [(PREditingLegibilityView *)v182 trailingAnchor];
+  trailingAnchor8 = [v3 trailingAnchor];
+  v126 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v192[12] = v126;
-  v125 = [(PREditingLegibilityView *)v181 heightAnchor];
-  v124 = [v3 heightAnchor];
-  v123 = [v125 constraintEqualToAnchor:v124];
+  heightAnchor4 = [(PREditingLegibilityView *)v181 heightAnchor];
+  heightAnchor5 = [v3 heightAnchor];
+  v123 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   v192[13] = v123;
   [(PREditingLegibilityView *)v181 bottomAnchor];
   v113 = v112 = v3;
-  v114 = [v112 bottomAnchor];
-  v115 = [v113 constraintEqualToAnchor:v114];
+  bottomAnchor6 = [v112 bottomAnchor];
+  v115 = [v113 constraintEqualToAnchor:bottomAnchor6];
   v192[14] = v115;
-  v116 = [(PREditingLegibilityView *)v181 leadingAnchor];
-  v117 = [v112 leadingAnchor];
-  v118 = [v116 constraintEqualToAnchor:v117];
+  leadingAnchor9 = [(PREditingLegibilityView *)v181 leadingAnchor];
+  leadingAnchor10 = [v112 leadingAnchor];
+  v118 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v192[15] = v118;
-  v119 = [(PREditingLegibilityView *)v181 trailingAnchor];
-  v120 = [v112 trailingAnchor];
-  v121 = [v119 constraintEqualToAnchor:v120];
+  trailingAnchor9 = [(PREditingLegibilityView *)v181 trailingAnchor];
+  trailingAnchor10 = [v112 trailingAnchor];
+  v121 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v192[16] = v121;
   v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:v192 count:17];
   [v144 activateConstraints:v122];
@@ -1081,144 +1081,144 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
   [(PREditorRootViewController *)self setEditorElementLayoutController:v3];
   [(PREditorRootViewController *)self depthEffectEnablementDidChange];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PREditorRootViewController *)self view];
-  v6 = [(PREditorRootViewController *)self editor];
-  if ([v6 displaysHeaderElements])
+  view = [(PREditorRootViewController *)self view];
+  editor = [(PREditorRootViewController *)self editor];
+  if ([editor displaysHeaderElements])
   {
-    v71 = v5;
+    v71 = view;
     v69 = v3;
-    v7 = [(PREditorRootViewController *)self titleGestureView];
-    v8 = [(PREditorRootViewController *)self titleReticleView];
-    v9 = [(PREditorRootViewController *)self titlePopoverLayoutGuide];
-    v64 = [v7 centerXAnchor];
-    v62 = [v8 centerXAnchor];
-    v59 = [v64 constraintEqualToAnchor:v62];
+    titleGestureView = [(PREditorRootViewController *)self titleGestureView];
+    titleReticleView = [(PREditorRootViewController *)self titleReticleView];
+    titlePopoverLayoutGuide = [(PREditorRootViewController *)self titlePopoverLayoutGuide];
+    centerXAnchor = [titleGestureView centerXAnchor];
+    centerXAnchor2 = [titleReticleView centerXAnchor];
+    v59 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v76[0] = v59;
-    v56 = [v7 centerYAnchor];
-    v53 = [v8 centerYAnchor];
-    v50 = [v56 constraintEqualToAnchor:v53];
+    centerYAnchor = [titleGestureView centerYAnchor];
+    centerYAnchor2 = [titleReticleView centerYAnchor];
+    v50 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v76[1] = v50;
-    v47 = [v7 widthAnchor];
-    v46 = [v8 widthAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    widthAnchor = [titleGestureView widthAnchor];
+    widthAnchor2 = [titleReticleView widthAnchor];
+    v45 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v76[2] = v45;
-    v68 = v7;
-    v44 = [v7 heightAnchor];
-    v43 = [v8 heightAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    v68 = titleGestureView;
+    heightAnchor = [titleGestureView heightAnchor];
+    heightAnchor2 = [titleReticleView heightAnchor];
+    v42 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v76[3] = v42;
-    v41 = [v9 centerXAnchor];
-    v40 = [v8 centerXAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    centerXAnchor3 = [titlePopoverLayoutGuide centerXAnchor];
+    centerXAnchor4 = [titleReticleView centerXAnchor];
+    v39 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v76[4] = v39;
-    v38 = [v9 centerYAnchor];
-    v37 = [v8 centerYAnchor];
-    v10 = [v38 constraintEqualToAnchor:v37];
+    centerYAnchor3 = [titlePopoverLayoutGuide centerYAnchor];
+    centerYAnchor4 = [titleReticleView centerYAnchor];
+    v10 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v76[5] = v10;
-    v11 = [v9 widthAnchor];
-    v12 = [v8 widthAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:10.0];
+    widthAnchor3 = [titlePopoverLayoutGuide widthAnchor];
+    widthAnchor4 = [titleReticleView widthAnchor];
+    v13 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 constant:10.0];
     v76[6] = v13;
-    v66 = v9;
-    v14 = [v9 heightAnchor];
-    v67 = v8;
-    [v8 heightAnchor];
-    v15 = v70 = v6;
-    v16 = [v14 constraintEqualToAnchor:v15 constant:10.0];
+    v66 = titlePopoverLayoutGuide;
+    heightAnchor3 = [titlePopoverLayoutGuide heightAnchor];
+    v67 = titleReticleView;
+    [titleReticleView heightAnchor];
+    v15 = v70 = editor;
+    v16 = [heightAnchor3 constraintEqualToAnchor:v15 constant:10.0];
     v76[7] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:8];
     v72 = v4;
     [v4 addObjectsFromArray:v17];
 
-    v6 = v70;
+    editor = v70;
     if ([v70 areComplicationsAllowed])
     {
-      v65 = [(PREditorRootViewController *)self complicationHostViewController];
-      v18 = [v65 view];
-      v60 = [v18 leadingAnchor];
-      v57 = [v71 leadingAnchor];
-      v54 = [v60 constraintEqualToAnchor:v57];
+      complicationHostViewController = [(PREditorRootViewController *)self complicationHostViewController];
+      view2 = [complicationHostViewController view];
+      leadingAnchor = [view2 leadingAnchor];
+      leadingAnchor2 = [v71 leadingAnchor];
+      v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v75[0] = v54;
-      v51 = [v18 trailingAnchor];
-      v48 = [v71 trailingAnchor];
-      v19 = [v51 constraintEqualToAnchor:v48];
+      trailingAnchor = [view2 trailingAnchor];
+      trailingAnchor2 = [v71 trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v75[1] = v19;
-      v63 = v18;
-      v20 = [v18 topAnchor];
-      v21 = [v71 topAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      v63 = view2;
+      topAnchor = [view2 topAnchor];
+      topAnchor2 = [v71 topAnchor];
+      v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v75[2] = v22;
-      v23 = [v18 bottomAnchor];
-      v24 = [v71 bottomAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      bottomAnchor = [view2 bottomAnchor];
+      bottomAnchor2 = [v71 bottomAnchor];
+      v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v75[3] = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:4];
       [v72 addObjectsFromArray:v26];
 
-      v61 = [(PREditorRootViewController *)self subtitleViewController];
-      v27 = [v61 view];
-      v58 = [v27 leadingAnchor];
-      v55 = [v71 leadingAnchor];
-      v52 = [v58 constraintEqualToAnchor:v55];
+      subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+      view3 = [subtitleViewController view];
+      leadingAnchor3 = [view3 leadingAnchor];
+      leadingAnchor4 = [v71 leadingAnchor];
+      v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v74[0] = v52;
-      v49 = [v27 trailingAnchor];
-      v28 = [v71 trailingAnchor];
-      v29 = [v49 constraintEqualToAnchor:v28];
+      trailingAnchor3 = [view3 trailingAnchor];
+      trailingAnchor4 = [v71 trailingAnchor];
+      v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v74[1] = v29;
-      v30 = [v27 topAnchor];
-      v31 = [v71 topAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      topAnchor3 = [view3 topAnchor];
+      topAnchor4 = [v71 topAnchor];
+      v32 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v74[2] = v32;
-      v33 = [v27 bottomAnchor];
-      v34 = [v71 bottomAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34];
+      bottomAnchor3 = [view3 bottomAnchor];
+      bottomAnchor4 = [v71 bottomAnchor];
+      v35 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v74[3] = v35;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:4];
       [v72 addObjectsFromArray:v36];
 
-      v6 = v70;
+      editor = v70;
     }
 
     v3 = v69;
-    v5 = v71;
+    view = v71;
     v4 = v72;
   }
 
   [MEMORY[0x1E696ACD8] activateConstraints:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PREditorRootViewController;
-  [(PREditorRootViewController *)&v13 viewDidAppear:a3];
-  v4 = [(PREditorRootViewController *)self currentLook];
-  v5 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v4];
+  [(PREditorRootViewController *)&v13 viewDidAppear:appear];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v5 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:currentLook];
 
   editorElementLayoutController = self->_editorElementLayoutController;
-  v7 = [v5 timeNumberingSystem];
-  [(PREditorElementLayoutController *)editorElementLayoutController setNumberingSystem:v7];
+  timeNumberingSystem = [v5 timeNumberingSystem];
+  [(PREditorElementLayoutController *)editorElementLayoutController setNumberingSystem:timeNumberingSystem];
 
-  v8 = [(PREditorRootViewController *)self currentLook];
-  v9 = [(PREditorRootViewController *)self timeViewControllerForLook:v8];
+  currentLook2 = [(PREditorRootViewController *)self currentLook];
+  v9 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 isFourDigitTime];
-    [(PREditorRootViewController *)self setFourDigitTime:v10];
-    [(PREditorElementLayoutController *)self->_editorElementLayoutController setFourDigitTime:v10];
+    isFourDigitTime = [v9 isFourDigitTime];
+    [(PREditorRootViewController *)self setFourDigitTime:isFourDigitTime];
+    [(PREditorElementLayoutController *)self->_editorElementLayoutController setFourDigitTime:isFourDigitTime];
   }
 
   [(PREditorRootViewController *)self _updateMenuElements];
   if (![(PREditorRootViewController *)self initialLayoutFinished])
   {
     [(PREditorRootViewController *)self setInitialLayoutFinished:1];
-    v11 = [(PREditorRootViewController *)self editor];
-    v12 = [v11 delegateSafeForCallbackType:3];
+    editor = [(PREditorRootViewController *)self editor];
+    v12 = [editor delegateSafeForCallbackType:3];
     if (objc_opt_respondsToSelector())
     {
-      [v12 editorDidFinishInitialLayout:v11];
+      [v12 editorDidFinishInitialLayout:editor];
     }
   }
 
@@ -1228,7 +1228,7 @@ id __49__PREditorRootViewController_setupLookMenuButton__block_invoke_2(uint64_t
 - (void)viewDidLayoutSubviews
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = NSStringFromSelector(a1);
+  v5 = NSStringFromSelector(self);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = 138544642;
@@ -1262,67 +1262,67 @@ void __51__PREditorRootViewController_viewDidLayoutSubviews__block_invoke(uint64
   [v16 pr_updateStyleBoundingRects];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = PREditorRootViewController;
-  [(PREditorRootViewController *)&v8 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PREditorRootViewController *)&v8 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(PREditorRootViewController *)self _updateButtonLayout];
-  v6 = [(PREditorRootViewController *)self dateProvider];
-  v7 = v6;
-  if (a3)
+  dateProvider = [(PREditorRootViewController *)self dateProvider];
+  v7 = dateProvider;
+  if (window)
   {
-    [v6 addMinuteUpdateObserver:self];
+    [dateProvider addMinuteUpdateObserver:self];
   }
 
   else
   {
-    [v6 removeMinuteUpdateObserver:self];
+    [dateProvider removeMinuteUpdateObserver:self];
   }
 
   [(PREditorRootViewController *)self _updateComplicationSidebarEmptyViewVisibilityAnimated:0];
   [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PREditorRootViewController;
-  [(PREditorRootViewController *)&v4 traitCollectionDidChange:a3];
+  [(PREditorRootViewController *)&v4 traitCollectionDidChange:change];
   [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v35.receiver = self;
   v35.super_class = PREditorRootViewController;
-  v7 = a4;
-  [(PREditorRootViewController *)&v35 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PREditorRootViewController *)self scrollView];
-  v9 = [(PREditorRootViewController *)self lookTransition];
-  v26 = v9;
-  if (v9)
+  coordinatorCopy = coordinator;
+  [(PREditorRootViewController *)&v35 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  scrollView = [(PREditorRootViewController *)self scrollView];
+  lookTransition = [(PREditorRootViewController *)self lookTransition];
+  v26 = lookTransition;
+  if (lookTransition)
   {
-    v10 = [v9 destinationLook];
-    v11 = [(PREditorRootViewController *)self looks];
-    v12 = [v11 indexOfObject:v10];
+    destinationLook = [lookTransition destinationLook];
+    looks = [(PREditorRootViewController *)self looks];
+    v12 = [looks indexOfObject:destinationLook];
 
     v13 = [(PREditorRootViewController *)self viewIndexForLookIndex:v12];
   }
 
   else
   {
-    [v8 contentOffset];
+    [scrollView contentOffset];
     v13 = [(PREditorRootViewController *)self lookIndexForContentOffset:?];
   }
 
   v14 = width * v13;
-  v15 = [(PREditorRootViewController *)self topLegibilityView];
-  v16 = [(PREditorRootViewController *)self bottomLegibilityView];
-  [v15 setShouldOverscan:1];
-  [v16 setShouldOverscan:1];
+  topLegibilityView = [(PREditorRootViewController *)self topLegibilityView];
+  bottomLegibilityView = [(PREditorRootViewController *)self bottomLegibilityView];
+  [topLegibilityView setShouldOverscan:1];
+  [bottomLegibilityView setShouldOverscan:1];
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
   {
     v17 = 8;
@@ -1333,12 +1333,12 @@ void __51__PREditorRootViewController_viewDidLayoutSubviews__block_invoke(uint64
     v17 = 4;
   }
 
-  v18 = [(PREditorRootViewController *)self view];
-  v19 = [v18 window];
-  v20 = [v19 windowScene];
-  v21 = [v20 interfaceOrientation];
+  view = [(PREditorRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  if ((v21 - 1) < 2)
+  if ((interfaceOrientation - 1) < 2)
   {
     v22 = 1;
   }
@@ -1353,7 +1353,7 @@ void __51__PREditorRootViewController_viewDidLayoutSubviews__block_invoke(uint64
   v30[2] = __81__PREditorRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v30[3] = &unk_1E78440E8;
   v30[4] = self;
-  v31 = v8;
+  v31 = scrollView;
   v32 = v14;
   v33 = 0;
   v34 = v22;
@@ -1361,12 +1361,12 @@ void __51__PREditorRootViewController_viewDidLayoutSubviews__block_invoke(uint64
   v27[1] = 3221225472;
   v27[2] = __81__PREditorRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v27[3] = &unk_1E7844110;
-  v28 = v15;
-  v29 = v16;
-  v23 = v16;
-  v24 = v15;
-  v25 = v8;
-  [v7 animateAlongsideTransition:v30 completion:v27];
+  v28 = topLegibilityView;
+  v29 = bottomLegibilityView;
+  v23 = bottomLegibilityView;
+  v24 = topLegibilityView;
+  v25 = scrollView;
+  [coordinatorCopy animateAlongsideTransition:v30 completion:v27];
 }
 
 void __81__PREditorRootViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1401,10 +1401,10 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
 
 - (void)_updateScrollViewContentSize
 {
-  v12 = [(PREditorRootViewController *)self looks];
-  v3 = [v12 count];
-  v4 = [(PREditorRootViewController *)self view];
-  [v4 bounds];
+  looks = [(PREditorRootViewController *)self looks];
+  v3 = [looks count];
+  view = [(PREditorRootViewController *)self view];
+  [view bounds];
   x = v14.origin.x;
   y = v14.origin.y;
   width = v14.size.width;
@@ -1415,8 +1415,8 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
   v15.size.width = width;
   v15.size.height = height;
   v10 = CGRectGetHeight(v15);
-  v11 = [(PREditorRootViewController *)self scrollView];
-  [v11 setContentSize:{v9, v10}];
+  scrollView = [(PREditorRootViewController *)self scrollView];
+  [scrollView setContentSize:{v9, v10}];
 }
 
 - (void)looksWillChange
@@ -1426,8 +1426,8 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(PREditorRootViewController *)self looks];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  looks = [(PREditorRootViewController *)self looks];
+  v4 = [looks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1439,20 +1439,20 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(looks);
         }
 
         v8 = [(PREditorRootViewController *)self timeViewControllerForLook:*(*(&v10 + 1) + 8 * v7)];
         [v8 removeFromParentViewController];
-        v9 = [v8 view];
-        [v9 removeFromSuperview];
+        view = [v8 view];
+        [view removeFromSuperview];
 
         [v8 didMoveToParentViewController:0];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [looks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1465,28 +1465,28 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
 {
   v46 = *MEMORY[0x1E69E9840];
   [(PREditorRootViewController *)self _updateScrollViewContentSize];
-  v3 = [(PREditorRootViewController *)self editor];
-  v4 = [v3 environment];
-  v5 = [v4 role];
+  editor = [(PREditorRootViewController *)self editor];
+  environment = [editor environment];
+  role = [environment role];
 
-  v6 = [(PREditorRootViewController *)self looks];
-  v7 = [v6 count];
-  v40 = [(PREditorRootViewController *)self currentLook];
-  v34 = v5;
-  v35 = v6;
-  if ([v3 displaysHeaderElements])
+  looks = [(PREditorRootViewController *)self looks];
+  v7 = [looks count];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v34 = role;
+  v35 = looks;
+  if ([editor displaysHeaderElements])
   {
     v33 = v7;
-    v8 = [(PREditorRootViewController *)self dateProvider];
-    v38 = [v8 date];
+    dateProvider = [(PREditorRootViewController *)self dateProvider];
+    date = [dateProvider date];
 
-    v37 = [(PREditorRootViewController *)self extensionBundleURL];
-    v39 = v3;
-    v9 = [v3 timeViewControllerDisplayedElements];
+    extensionBundleURL = [(PREditorRootViewController *)self extensionBundleURL];
+    v39 = editor;
+    timeViewControllerDisplayedElements = [editor timeViewControllerDisplayedElements];
     titleViewControllerCoordinator = self->_titleViewControllerCoordinator;
-    if (!titleViewControllerCoordinator || (-[PREditorTitleViewControllerCoordinator role](titleViewControllerCoordinator, "role"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:v5], v11, (v12 & 1) == 0))
+    if (!titleViewControllerCoordinator || (-[PREditorTitleViewControllerCoordinator role](titleViewControllerCoordinator, "role"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:role], v11, (v12 & 1) == 0))
     {
-      v13 = [[PREditorTitleViewControllerCoordinator alloc] initWithRole:v5];
+      v13 = [[PREditorTitleViewControllerCoordinator alloc] initWithRole:role];
       v14 = self->_titleViewControllerCoordinator;
       self->_titleViewControllerCoordinator = v13;
     }
@@ -1513,21 +1513,21 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
           v19 = *(*(&v41 + 1) + 8 * i);
           v20 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v19];
           v21 = [(PREditorRootViewController *)self timeViewControllerForLook:v19];
-          [v21 pr_setElements:v9];
-          [v21 pr_setDisplayDate:v38];
+          [v21 pr_setElements:timeViewControllerDisplayedElements];
+          [v21 pr_setDisplayDate:date];
           [v21 pr_setUsesEditingLayout:{-[PREditorRootViewController usesEditingLayout](self, "usesEditingLayout")}];
-          v22 = [(PREditorRootViewController *)self editor];
-          v23 = [v22 posterRole];
+          editor2 = [(PREditorRootViewController *)self editor];
+          posterRole = [editor2 posterRole];
 
-          [v21 pr_setStylingFromTitleStyleConfiguration:v20 withExtensionBundleURL:v37 forRole:v23];
-          v24 = [v39 titleString];
-          [v21 pr_setDisplayString:v24];
+          [v21 pr_setStylingFromTitleStyleConfiguration:v20 withExtensionBundleURL:extensionBundleURL forRole:posterRole];
+          titleString = [v39 titleString];
+          [v21 pr_setDisplayString:titleString];
 
           [(PREditorRootViewController *)self addChildViewController:v21];
-          v25 = [v21 view];
-          [v25 setHidden:{objc_msgSend(v19, "isEqual:", v40) ^ 1}];
-          [(UIView *)self->_timeContainerView addSubview:v25];
-          [(UIView *)self->_timeContainerView sendSubviewToBack:v25];
+          view = [v21 view];
+          [view setHidden:{objc_msgSend(v19, "isEqual:", currentLook) ^ 1}];
+          [(UIView *)self->_timeContainerView addSubview:view];
+          [(UIView *)self->_timeContainerView sendSubviewToBack:view];
           [v21 didMoveToParentViewController:self];
         }
 
@@ -1537,37 +1537,37 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
       while (v16);
     }
 
-    v3 = v39;
+    editor = v39;
     v7 = v33;
   }
 
   [(PREditorRootViewController *)self _updateComplicationsVibrancyFromCurrentLook];
   [(PREditorRootViewController *)self _updateOverlayHostViewControllerLuminanceFromCurrentLook];
-  v26 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v40];
-  v27 = [(PREditorRootViewController *)self subtitleViewController];
-  v28 = [(PREditorRootViewController *)self extensionBundleURL];
-  v29 = [v3 posterRole];
-  [v27 pr_setStylingFromTitleStyleConfiguration:v26 withExtensionBundleURL:v28 forRole:v29];
-  v30 = [(PREditorRootViewController *)self pageControl];
-  [v30 setNumberOfPages:v7];
+  v26 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:currentLook];
+  subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+  extensionBundleURL2 = [(PREditorRootViewController *)self extensionBundleURL];
+  posterRole2 = [editor posterRole];
+  [subtitleViewController pr_setStylingFromTitleStyleConfiguration:v26 withExtensionBundleURL:extensionBundleURL2 forRole:posterRole2];
+  pageControl = [(PREditorRootViewController *)self pageControl];
+  [pageControl setNumberOfPages:v7];
   [(PREditorRootViewController *)self currentLookDidChange];
-  v31 = [(PREditorRootViewController *)self lookNameLabel];
-  v32 = [v40 displayName];
-  [v31 setText:v32];
-  [v31 setHidden:v7 < 2];
+  lookNameLabel = [(PREditorRootViewController *)self lookNameLabel];
+  displayName = [currentLook displayName];
+  [lookNameLabel setText:displayName];
+  [lookNameLabel setHidden:v7 < 2];
 }
 
 - (void)updateForChangedTitleString
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self looks];
-  v4 = [(PREditorRootViewController *)self editor];
-  v5 = [v4 titleString];
+  looks = [(PREditorRootViewController *)self looks];
+  editor = [(PREditorRootViewController *)self editor];
+  titleString = [editor titleString];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v3;
+  v6 = looks;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -1584,7 +1584,7 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
         }
 
         v11 = [(PREditorRootViewController *)self timeViewControllerForLook:*(*(&v12 + 1) + 8 * v10), v12];
-        [v11 pr_setDisplayString:v5];
+        [v11 pr_setDisplayString:titleString];
 
         ++v10;
       }
@@ -1599,25 +1599,25 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
 
 - (void)updateForChangedOverrideDate
 {
-  v4 = [(PREditorRootViewController *)self dateProvider];
-  v3 = [v4 date];
-  [(PREditorRootViewController *)self dateProvider:v4 didUpdateDate:v3];
+  dateProvider = [(PREditorRootViewController *)self dateProvider];
+  date = [dateProvider date];
+  [(PREditorRootViewController *)self dateProvider:dateProvider didUpdateDate:date];
 }
 
 - (void)updateTimeControllersForLookMap
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self editor];
-  v4 = [v3 displaysHeaderElements];
+  editor = [(PREditorRootViewController *)self editor];
+  displaysHeaderElements = [editor displaysHeaderElements];
 
-  if (v4)
+  if (displaysHeaderElements)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(PREditorRootViewController *)self looks];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    looks = [(PREditorRootViewController *)self looks];
+    v6 = [looks countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1628,16 +1628,16 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(looks);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
           titleViewControllerCoordinator = self->_titleViewControllerCoordinator;
-          v12 = [v10 identifier];
-          [(PREditorTitleViewControllerCoordinator *)titleViewControllerCoordinator updateLookWithIdentifier:v12 withLook:v10];
+          identifier = [v10 identifier];
+          [(PREditorTitleViewControllerCoordinator *)titleViewControllerCoordinator updateLookWithIdentifier:identifier withLook:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [looks countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -1648,26 +1648,26 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
 - (void)lookPropertiesDidChange
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = [(PREditorRootViewController *)self editor];
-  v5 = [v4 displaysHeaderElements];
+  editor = [(PREditorRootViewController *)self editor];
+  displaysHeaderElements = [editor displaysHeaderElements];
 
-  if (!v5)
+  if (!displaysHeaderElements)
   {
     goto LABEL_22;
   }
 
   aSelector = a2;
   [(PREditorRootViewController *)self updateTimeControllersForLookMap];
-  v33 = [(PREditorRootViewController *)self extensionBundleURL];
-  v6 = [(PREditorRootViewController *)self editor];
-  v7 = [v6 posterRole];
+  extensionBundleURL = [(PREditorRootViewController *)self extensionBundleURL];
+  editor2 = [(PREditorRootViewController *)self editor];
+  posterRole = [editor2 posterRole];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [(PREditorRootViewController *)self looks];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v50 count:16];
+  looks = [(PREditorRootViewController *)self looks];
+  v9 = [looks countByEnumeratingWithState:&v34 objects:v50 count:16];
   if (!v9)
   {
     goto LABEL_19;
@@ -1682,15 +1682,15 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
     {
       if (*v35 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(looks);
       }
 
       v13 = *(*(&v34 + 1) + 8 * v12);
-      v14 = [(PREditorRootViewController *)self editor];
-      if ([v14 isLookSwitchingDisabled])
+      editor3 = [(PREditorRootViewController *)self editor];
+      if ([editor3 isLookSwitchingDisabled])
       {
-        v15 = [(PREditorRootViewController *)self currentLook];
-        v16 = [v13 isEqual:v15];
+        currentLook = [(PREditorRootViewController *)self currentLook];
+        v16 = [v13 isEqual:currentLook];
 
         if (!v16)
         {
@@ -1718,7 +1718,7 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
           v41 = v21;
           v22 = v21;
           v42 = 2048;
-          v43 = self;
+          selfCopy = self;
           v44 = 2114;
           v45 = @"PREditorRootViewController.m";
           v46 = 1024;
@@ -1729,36 +1729,36 @@ uint64_t __81__PREditorRootViewController_viewWillTransitionToSize_withTransitio
         }
       }
 
-      [v18 pr_setStylingFromTitleStyleConfiguration:v17 withExtensionBundleURL:v33 forRole:v7];
+      [v18 pr_setStylingFromTitleStyleConfiguration:v17 withExtensionBundleURL:extensionBundleURL forRole:posterRole];
 
 LABEL_13:
       ++v12;
     }
 
     while (v10 != v12);
-    v23 = [v8 countByEnumeratingWithState:&v34 objects:v50 count:16];
+    v23 = [looks countByEnumeratingWithState:&v34 objects:v50 count:16];
     v10 = v23;
   }
 
   while (v23);
 LABEL_19:
 
-  v24 = [(PREditorRootViewController *)self editor];
-  v25 = [v24 configuredProperties];
-  v26 = [v25 titleStyleConfiguration];
+  editor4 = [(PREditorRootViewController *)self editor];
+  configuredProperties = [editor4 configuredProperties];
+  titleStyleConfiguration = [configuredProperties titleStyleConfiguration];
 
-  v27 = [(PREditorRootViewController *)self subtitleViewController];
-  [v27 pr_setStylingFromTitleStyleConfiguration:v26 withExtensionBundleURL:v33 forRole:v7];
+  subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+  [subtitleViewController pr_setStylingFromTitleStyleConfiguration:titleStyleConfiguration withExtensionBundleURL:extensionBundleURL forRole:posterRole];
 
-  if ([v7 isEqual:@"PRPosterRoleIncomingCall"])
+  if ([posterRole isEqual:@"PRPosterRoleIncomingCall"])
   {
-    v28 = [(PREditorRootViewController *)self editor];
-    [v28 setDepthEffectDisallowed:objc_msgSend(v26 forReason:{"prefersVerticalTitleLayout"), @"role"}];
+    editor5 = [(PREditorRootViewController *)self editor];
+    [editor5 setDepthEffectDisallowed:objc_msgSend(titleStyleConfiguration forReason:{"prefersVerticalTitleLayout"), @"role"}];
   }
 
   editorElementLayoutController = self->_editorElementLayoutController;
-  v30 = [v26 timeNumberingSystem];
-  [(PREditorElementLayoutController *)editorElementLayoutController setNumberingSystem:v30];
+  timeNumberingSystem = [titleStyleConfiguration timeNumberingSystem];
+  [(PREditorElementLayoutController *)editorElementLayoutController setNumberingSystem:timeNumberingSystem];
 
   [(PREditorRootViewController *)self _updateComplicationsVibrancyFromCurrentLook];
   [(PREditorRootViewController *)self updateReticleViewFrames];
@@ -1770,18 +1770,18 @@ LABEL_22:
 - (void)lookBackgroundTypesDidChange
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = [(PREditorRootViewController *)self editor];
-  v5 = [v4 displaysHeaderElements];
+  editor = [(PREditorRootViewController *)self editor];
+  displaysHeaderElements = [editor displaysHeaderElements];
 
-  if (v5)
+  if (displaysHeaderElements)
   {
     aSelector = a2;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [(PREditorRootViewController *)self looks];
-    v7 = [v6 countByEnumeratingWithState:&v24 objects:v40 count:16];
+    looks = [(PREditorRootViewController *)self looks];
+    v7 = [looks countByEnumeratingWithState:&v24 objects:v40 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1793,14 +1793,14 @@ LABEL_22:
         {
           if (*v25 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(looks);
           }
 
           v11 = *(*(&v24 + 1) + 8 * v10);
           v12 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v11];
-          v13 = [(PREditorRootViewController *)self extensionBundleURL];
-          v14 = [v12 vibrancyConfigurationWithExtensionBundleURL:v13];
-          v15 = [v14 backgroundType];
+          extensionBundleURL = [(PREditorRootViewController *)self extensionBundleURL];
+          v14 = [v12 vibrancyConfigurationWithExtensionBundleURL:extensionBundleURL];
+          backgroundType = [v14 backgroundType];
 
           v16 = [(PREditorRootViewController *)self timeViewControllerForLook:v11];
           if (!v16)
@@ -1817,7 +1817,7 @@ LABEL_22:
               v31 = v19;
               v20 = v19;
               v32 = 2048;
-              v33 = self;
+              selfCopy = self;
               v34 = 2114;
               v35 = @"PREditorRootViewController.m";
               v36 = 1024;
@@ -1828,13 +1828,13 @@ LABEL_22:
             }
           }
 
-          [v16 pr_setBackgroundType:v15];
+          [v16 pr_setBackgroundType:backgroundType];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v21 = [v6 countByEnumeratingWithState:&v24 objects:v40 count:16];
+        v21 = [looks countByEnumeratingWithState:&v24 objects:v40 count:16];
         v8 = v21;
       }
 
@@ -1851,12 +1851,12 @@ LABEL_22:
 {
   if (self->_overlayHostViewController)
   {
-    v3 = [(PREditorRootViewController *)self currentLook];
-    v4 = v3;
-    if (v3)
+    currentLook = [(PREditorRootViewController *)self currentLook];
+    v4 = currentLook;
+    if (currentLook)
     {
-      v8 = v3;
-      v5 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v3];
+      v8 = currentLook;
+      v5 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:currentLook];
       v6 = v5;
       if (v5)
       {
@@ -1868,33 +1868,33 @@ LABEL_22:
       v4 = v8;
     }
 
-    MEMORY[0x1EEE66BB8](v3, v4);
+    MEMORY[0x1EEE66BB8](currentLook, v4);
   }
 }
 
-- (void)setHostedContentSettings:(id)a3
+- (void)setHostedContentSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (PUIFeatureEnabled())
   {
     if ((BSEqualObjects() & 1) == 0)
     {
-      objc_storeStrong(&self->_hostedContentSettings, a3);
+      objc_storeStrong(&self->_hostedContentSettings, settings);
       overlayHostViewController = self->_overlayHostViewController;
       if (overlayHostViewController)
       {
-        [(PROverlaySceneHostViewController *)overlayHostViewController setContentSettings:v5];
+        [(PROverlaySceneHostViewController *)overlayHostViewController setContentSettings:settingsCopy];
       }
 
       else
       {
-        v8 = [(PREditorRootViewController *)self _makeOverlayHostingScene];
-        v9 = [(PREditorRootViewController *)self currentLook];
-        v10 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v9];
+        _makeOverlayHostingScene = [(PREditorRootViewController *)self _makeOverlayHostingScene];
+        currentLook = [(PREditorRootViewController *)self currentLook];
+        v10 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:currentLook];
         [v10 contentsLuminance];
         v12 = v11;
 
-        v13 = [[PROverlaySceneHostViewController alloc] initWithScene:v8 contentSettings:v5 contentsLuminance:self safeAreaProvider:v12];
+        v13 = [[PROverlaySceneHostViewController alloc] initWithScene:_makeOverlayHostingScene contentSettings:settingsCopy contentsLuminance:self safeAreaProvider:v12];
         [(PREditorRootViewController *)self setOverlayHostViewController:v13];
       }
     }
@@ -1913,28 +1913,28 @@ LABEL_22:
 
 - (void)updateLookMenu
 {
-  v3 = [(PREditorRootViewController *)self lookMenuButton];
-  if (v3)
+  lookMenuButton = [(PREditorRootViewController *)self lookMenuButton];
+  if (lookMenuButton)
   {
-    v4 = [(PREditorRootViewController *)self currentLook];
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [v4 displayName];
-    [v3 setTitle:v6 forState:0];
+    currentLook = [(PREditorRootViewController *)self currentLook];
+    array = [MEMORY[0x1E695DF70] array];
+    displayName = [currentLook displayName];
+    [lookMenuButton setTitle:displayName forState:0];
 
     objc_initWeak(&location, self);
-    v7 = [(PREditorRootViewController *)self looks];
+    looks = [(PREditorRootViewController *)self looks];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__PREditorRootViewController_updateLookMenu__block_invoke;
     v12[3] = &unk_1E7844160;
     objc_copyWeak(&v16, &location);
-    v8 = v3;
+    v8 = lookMenuButton;
     v13 = v8;
-    v9 = v4;
+    v9 = currentLook;
     v14 = v9;
-    v10 = v5;
+    v10 = array;
     v15 = v10;
-    [v7 enumerateObjectsUsingBlock:v12];
+    [looks enumerateObjectsUsingBlock:v12];
 
     v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F1C13D90 image:0 identifier:0 options:1 children:v10];
     [v8 setMenu:v11];
@@ -1997,39 +1997,39 @@ uint64_t __44__PREditorRootViewController_updateLookMenu__block_invoke_2(uint64_
   return result;
 }
 
-- (void)setOverlayHostViewController:(id)a3
+- (void)setOverlayHostViewController:(id)controller
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PREditorRootViewController.m" lineNumber:1393 description:@"setOverlayHostViewController needs to be overridden by subclasses"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PREditorRootViewController.m" lineNumber:1393 description:@"setOverlayHostViewController needs to be overridden by subclasses"];
 }
 
-- (void)_setOverlayHostViewController:(id)a3 insertingAboveSubview:(id)a4
+- (void)_setOverlayHostViewController:(id)controller insertingAboveSubview:(id)subview
 {
-  v14 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  subviewCopy = subview;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(PREditorRootViewController *)self removeChildViewController:self->_overlayHostViewController];
-    objc_storeStrong(&self->_overlayHostViewController, a3);
-    v8 = [v14 view];
-    [v8 setAlpha:0.0];
-    v9 = [v8 layer];
-    [v9 setName:@"overlayHostView"];
+    objc_storeStrong(&self->_overlayHostViewController, controller);
+    view = [controllerCopy view];
+    [view setAlpha:0.0];
+    layer = [view layer];
+    [layer setName:@"overlayHostView"];
 
-    [(PREditorRootViewController *)self addChildViewController:v14];
-    if (v7)
+    [(PREditorRootViewController *)self addChildViewController:controllerCopy];
+    if (subviewCopy)
     {
-      v10 = [(PREditorRootViewController *)self view];
-      [v10 insertSubview:v8 aboveSubview:v7];
+      view2 = [(PREditorRootViewController *)self view];
+      [view2 insertSubview:view aboveSubview:subviewCopy];
 
-      [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
       v11 = MEMORY[0x1E696ACD8];
-      v12 = [(PREditorRootViewController *)self view];
-      v13 = [v12 pui_constraintsPinningSubview:v8 toEdges:15];
+      view3 = [(PREditorRootViewController *)self view];
+      v13 = [view3 pui_constraintsPinningSubview:view toEdges:15];
       [v11 activateConstraints:v13];
     }
 
-    [v14 didMoveToParentViewController:self];
+    [controllerCopy didMoveToParentViewController:self];
     [(PREditorRootViewController *)self updateOverlayHostViewControllerVisibility];
   }
 }
@@ -2039,8 +2039,8 @@ uint64_t __44__PREditorRootViewController_updateLookMenu__block_invoke_2(uint64_
   v3 = self->_overlayHostViewController;
   if (v3)
   {
-    v4 = [(PREditorRootViewController *)self editor];
-    v5 = [v4 viewsHaveASubview];
+    editor = [(PREditorRootViewController *)self editor];
+    viewsHaveASubview = [editor viewsHaveASubview];
 
     v6 = MEMORY[0x1E69DD250];
     v9[0] = MEMORY[0x1E69E9820];
@@ -2048,11 +2048,11 @@ uint64_t __44__PREditorRootViewController_updateLookMenu__block_invoke_2(uint64_
     v9[2] = __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility__block_invoke;
     v9[3] = &unk_1E78437A0;
     v10 = v3;
-    v11 = v5;
+    v11 = viewsHaveASubview;
     [v6 animateWithDuration:v9 animations:0.2];
     v7 = PRLogEditing();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-    if (v5)
+    if (viewsHaveASubview)
     {
       if (v8)
       {
@@ -2083,35 +2083,35 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
 - (void)updateReticleViewFrames
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self editor];
+  editor = [(PREditorRootViewController *)self editor];
   v4 = 0.0;
-  if ([v3 areViewsSharedBetweenLooks])
+  if ([editor areViewsSharedBetweenLooks])
   {
-    v5 = [(PREditorRootViewController *)self scrollView];
-    [v5 contentOffset];
+    scrollView = [(PREditorRootViewController *)self scrollView];
+    [scrollView contentOffset];
     v4 = v6;
   }
 
   updateReticleRecursionDepth = self->_updateReticleRecursionDepth;
   if (updateReticleRecursionDepth > 2)
   {
-    v8 = [(PREditorRootViewController *)self interfaceOrientation];
-    v9 = [v3 configuredProperties];
-    v10 = [v9 titleStyleConfiguration];
-    [v10 preferredTimeMaxYForOrientation:v8];
+    interfaceOrientation = [(PREditorRootViewController *)self interfaceOrientation];
+    configuredProperties = [editor configuredProperties];
+    titleStyleConfiguration = [configuredProperties titleStyleConfiguration];
+    [titleStyleConfiguration preferredTimeMaxYForOrientation:interfaceOrientation];
     v12 = v11;
 
-    v13 = [v3 preferences];
-    [v13 preferredSalientContentRectangle];
+    preferences = [editor preferences];
+    [preferences preferredSalientContentRectangle];
     v14 = NSStringFromCGRect(v26);
 
     v15 = PRLogEditing();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
-      v16 = [v3 isAdaptiveTimeHeightUserConfigured];
+      isAdaptiveTimeHeightUserConfigured = [editor isAdaptiveTimeHeightUserConfigured];
       timeResizeGestureActive = self->_timeResizeGestureActive;
       v18[0] = 67109890;
-      v18[1] = v16;
+      v18[1] = isAdaptiveTimeHeightUserConfigured;
       v19 = 2048;
       v20 = v12;
       v21 = 2114;
@@ -2130,47 +2130,47 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
   }
 }
 
-- (void)_updateReticleViewFramesWithOffset:(double)a3
+- (void)_updateReticleViewFramesWithOffset:(double)offset
 {
   if ([(PREditorRootViewController *)self _appearState]!= 2)
   {
     return;
   }
 
-  v5 = [(PREditorRootViewController *)self editor];
-  v6 = [(PREditorRootViewController *)self view];
-  [v6 bounds];
+  editor = [(PREditorRootViewController *)self editor];
+  view = [(PREditorRootViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PREditorRootViewController *)self editorElementLayoutController];
-  v262 = [(PREditorRootViewController *)self configuredProperties];
-  v16 = [v262 titleStyleConfiguration];
-  v17 = [v5 titleString];
-  v18 = [v16 effectiveTitleLayoutForText:v17];
+  editorElementLayoutController = [(PREditorRootViewController *)self editorElementLayoutController];
+  configuredProperties = [(PREditorRootViewController *)self configuredProperties];
+  titleStyleConfiguration = [configuredProperties titleStyleConfiguration];
+  titleString = [editor titleString];
+  v18 = [titleStyleConfiguration effectiveTitleLayoutForText:titleString];
 
-  v19 = [(PREditorRootViewController *)self reticleVibrancyView];
-  v20 = [v5 displaysHeaderElements];
-  if (v19 && v20)
+  reticleVibrancyView = [(PREditorRootViewController *)self reticleVibrancyView];
+  displaysHeaderElements = [editor displaysHeaderElements];
+  if (reticleVibrancyView && displaysHeaderElements)
   {
-    v250 = v16;
-    v21 = [v5 displaysSubtitleElement];
-    v22 = [v5 areComplicationsAllowed];
-    v23 = [v5 isComplicationRowAtBottom];
+    v250 = titleStyleConfiguration;
+    displaysSubtitleElement = [editor displaysSubtitleElement];
+    areComplicationsAllowed = [editor areComplicationsAllowed];
+    isComplicationRowAtBottom = [editor isComplicationRowAtBottom];
     v24 = 3;
-    if (!v21)
+    if (!displaysSubtitleElement)
     {
       v24 = 1;
     }
 
     v25 = v24 | 0xC;
-    if (v23)
+    if (isComplicationRowAtBottom)
     {
       v25 = v24 | 0x24;
     }
 
-    if (v22)
+    if (areComplicationsAllowed)
     {
       v26 = v25;
     }
@@ -2180,25 +2180,25 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
       v26 = v24;
     }
 
-    v27 = [v15 frameAttributesForElements:v26 variant:3 titleLayout:v18 withBoundingRect:{v8, v10, v12, v14}];
+    v27 = [editorElementLayoutController frameAttributesForElements:v26 variant:3 titleLayout:v18 withBoundingRect:{v8, v10, v12, v14}];
     [v27 rect];
-    v249 = a3;
-    [v19 setFrame:v28 + a3];
-    v246 = [(PREditorRootViewController *)self inlineComplicationReticleView];
-    [v15 frameForElements:2 variant:3 withBoundingRect:{v8, v10, v12, v14}];
+    offsetCopy = offset;
+    [reticleVibrancyView setFrame:v28 + offset];
+    inlineComplicationReticleView = [(PREditorRootViewController *)self inlineComplicationReticleView];
+    [editorElementLayoutController frameForElements:2 variant:3 withBoundingRect:{v8, v10, v12, v14}];
     v259 = v30;
     v260 = v29;
     v242 = v32;
     v243 = v31;
-    v245 = [(PREditorRootViewController *)self titleReticleView];
-    v244 = [v15 frameAttributesForElements:1 variant:3 titleLayout:v18 withBoundingRect:{v8, v10, v12, v14}];
+    titleReticleView = [(PREditorRootViewController *)self titleReticleView];
+    v244 = [editorElementLayoutController frameAttributesForElements:1 variant:3 titleLayout:v18 withBoundingRect:{v8, v10, v12, v14}];
     [v244 rect];
     v33 = v12;
     rect_16 = v34;
     rect_24 = v35;
     v261 = v36;
     v256 = v37;
-    v38 = [v15 frameAttributesForElements:1 variant:2 titleLayout:v18 withBoundingRect:{v8, v10, v12, v14}];
+    v38 = [editorElementLayoutController frameAttributesForElements:1 variant:2 titleLayout:v18 withBoundingRect:{v8, v10, v12, v14}];
     [v38 rect];
     v39 = v10;
     v247 = v10;
@@ -2210,7 +2210,7 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
 
     v241 = v33;
     rect_8 = v14;
-    v46 = [v15 frameAttributesForElements:1 variant:1 titleLayout:v18 withBoundingRect:{v8, v39, v33, v14}];
+    v46 = [editorElementLayoutController frameAttributesForElements:1 variant:1 titleLayout:v18 withBoundingRect:{v8, v39, v33, v14}];
     [v46 rect];
     v48 = v47;
     v50 = v49;
@@ -2245,9 +2245,9 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
     }
 
     v239 = v27;
-    v56 = [(PREditorRootViewController *)self editor];
-    v57 = [v56 preferences];
-    [v57 preferredSalientContentRectangle];
+    editor2 = [(PREditorRootViewController *)self editor];
+    preferences = [editor2 preferences];
+    [preferences preferredSalientContentRectangle];
     v230 = v59;
     v231 = v58;
     v61 = v60;
@@ -2286,9 +2286,9 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
     v221 = v67;
     v70 = v229;
     IsNull = CGRectIsNull(*(&v67 - 1));
-    v71 = [(PREditorRootViewController *)self editor];
-    v72 = [v71 preferences];
-    [v72 acceptableSalientContentRectangle];
+    editor3 = [(PREditorRootViewController *)self editor];
+    preferences2 = [editor3 preferences];
+    [preferences2 acceptableSalientContentRectangle];
     v74 = v73;
     v76 = v75;
     v78 = v77;
@@ -2299,12 +2299,12 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
     v274.size.width = v78;
     v274.size.height = v80;
     v81 = CGRectIsNull(v274);
-    v82 = [(PREditorRootViewController *)self currentLook];
-    v83 = [(PREditorRootViewController *)self timeViewControllerForLook:v82];
+    currentLook = [(PREditorRootViewController *)self currentLook];
+    v83 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook];
 
     v84 = objc_opt_class();
     v85 = v83;
-    v236 = v19;
+    v236 = reticleVibrancyView;
     if (v84)
     {
       if (objc_opt_isKindOfClass())
@@ -2325,9 +2325,9 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
 
     v93 = v86;
 
-    v228 = [v93 supportsAdaptiveTimeTextHeight];
-    v94 = [MEMORY[0x1E69DC938] currentDevice];
-    v95 = [v94 userInterfaceIdiom] == 1 && self->_complicationSidebarConfigured;
+    supportsAdaptiveTimeTextHeight = [v93 supportsAdaptiveTimeTextHeight];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v95 = [currentDevice userInterfaceIdiom] == 1 && self->_complicationSidebarConfigured;
     [v93 setHasSidebarContents:v95];
 
     v96 = v14;
@@ -2347,29 +2347,29 @@ void __71__PREditorRootViewController_updateOverlayHostViewControllerVisibility_
     }
 
     v225 = v66;
-    v98 = [(PREditorRootViewController *)self editor];
-    v99 = [v98 preferences];
-    v100 = [v99 adaptiveTimeMode];
+    editor4 = [(PREditorRootViewController *)self editor];
+    preferences3 = [editor4 preferences];
+    adaptiveTimeMode = [preferences3 adaptiveTimeMode];
 
-    v101 = [(PREditorRootViewController *)self editor];
-    v102 = [v101 preferences];
-    v103 = [v102 complicationRowMode];
+    editor5 = [(PREditorRootViewController *)self editor];
+    preferences4 = [editor5 preferences];
+    complicationRowMode = [preferences4 complicationRowMode];
 
-    v104 = [(PREditorRootViewController *)self editor];
-    v105 = [v104 preferences];
-    if ([v105 adaptiveTimeMode] == 2 && -[PREditorRootViewController isComplicationsRowConfigured](self, "isComplicationsRowConfigured"))
+    editor6 = [(PREditorRootViewController *)self editor];
+    preferences5 = [editor6 preferences];
+    if ([preferences5 adaptiveTimeMode] == 2 && -[PREditorRootViewController isComplicationsRowConfigured](self, "isComplicationsRowConfigured"))
     {
       v223 = v85;
-      v106 = [(PREditorRootViewController *)self isComplicationRowAtBottom];
+      isComplicationRowAtBottom2 = [(PREditorRootViewController *)self isComplicationRowAtBottom];
 
       v89 = 0;
       v90 = 0.0;
       v92 = v261;
       v88 = rect_24;
       v87 = v256;
-      if (!v106 || v103 == 1)
+      if (!isComplicationRowAtBottom2 || complicationRowMode == 1)
       {
-        v19 = v236;
+        reticleVibrancyView = v236;
         v27 = v239;
         v85 = v223;
 LABEL_75:
@@ -2380,8 +2380,8 @@ LABEL_76:
         v257 = v90;
         if (!PUIFeatureEnabled())
         {
-          v16 = v250;
-          v147 = v245;
+          titleStyleConfiguration = v250;
+          v147 = titleReticleView;
 LABEL_97:
           if (BSFloatLessThanFloat())
           {
@@ -2394,28 +2394,28 @@ LABEL_97:
             v160 = v91;
           }
 
-          v161 = [v147 superview];
-          [v161 convertRect:v6 fromView:{v160, v92, v88, v87}];
+          superview = [v147 superview];
+          [superview convertRect:view fromView:{v160, v92, v88, v87}];
           v162 = v87;
           v164 = v163;
           v166 = v165;
           v168 = v167;
           v170 = v169;
 
-          [v6 bounds];
+          [view bounds];
           if (BSFloatLessThanFloat())
           {
             +[PRIncomingCallMetricsProvider horizontalTextEdgePadding];
             v172 = v171;
-            [v6 frame];
+            [view frame];
             v174 = (v172 + vabdd_f64(v88, v173)) * 0.5;
-            [v6 frame];
+            [view frame];
             v88 = v175 - v172;
             v160 = v160 + v174;
-            v176 = [v147 superview];
+            superview2 = [v147 superview];
             v177 = v92;
             v178 = v162;
-            [v176 convertRect:v6 fromView:{v160, v177, v88, v162}];
+            [superview2 convertRect:view fromView:{v160, v177, v88, v162}];
             v164 = v179;
             v166 = v180;
             v168 = v181;
@@ -2435,21 +2435,21 @@ LABEL_97:
           }
 
           [v147 setFrame:{v164, v166, v168, v170}];
-          v184 = [(PREditorRootViewController *)self editor];
-          [v184 updateHostForTitleReticleFrameChanged:{v160, v261, v88, v178}];
+          editor7 = [(PREditorRootViewController *)self editor];
+          [editor7 updateHostForTitleReticleFrameChanged:{v160, v261, v88, v178}];
 
-          v185 = [v246 superview];
-          [v185 convertRect:v6 fromView:{v260, v243, v259, v242}];
+          superview3 = [inlineComplicationReticleView superview];
+          [superview3 convertRect:view fromView:{v260, v243, v259, v242}];
           v187 = v186;
           v189 = v188;
           v191 = v190;
           v193 = v192;
 
-          [v246 setFrame:{v187, v189, v191, v193}];
+          [inlineComplicationReticleView setFrame:{v187, v189, v191, v193}];
           [(PREditorRootViewController *)self _updateComplicationRowReticleWithOffset:0 animated:v257];
 
           v8 = v248;
-          a3 = v249;
+          offset = offsetCopy;
           v10 = v247;
           v12 = v241;
           v14 = rect_8;
@@ -2457,15 +2457,15 @@ LABEL_97:
         }
 
         v138 = v27;
-        v139 = [(PREditorRootViewController *)self currentLook];
-        v140 = [(PREditorRootViewController *)self timeViewControllerForLook:v139];
+        currentLook2 = [(PREditorRootViewController *)self currentLook];
+        v140 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook2];
 
         objc_opt_class();
         rect_24a = v140;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v146 = v250;
-          v147 = v245;
+          v147 = titleReticleView;
 LABEL_90:
           titleResizeHandle = self->_titleResizeHandle;
           if (titleResizeHandle)
@@ -2484,13 +2484,13 @@ LABEL_90:
             v153 = -1.0;
           }
 
-          v16 = v146;
-          v154 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+          titleStyleConfiguration = v146;
+          userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
           v155 = v91;
           v156 = v92;
           v157 = v88;
           v158 = v87;
-          if (v154 == 1)
+          if (userInterfaceLayoutDirection == 1)
           {
             v159 = v153 + CGRectGetMinX(*&v155);
           }
@@ -2519,20 +2519,20 @@ LABEL_90:
           v281.size.width = v237;
           v281.size.height = v258;
           [v142 setAdaptiveTimeTextHeight:CGRectGetHeight(v281) - v238];
-          v143 = [MEMORY[0x1E69DC938] currentDevice];
-          v144 = [v143 userInterfaceIdiom];
+          currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+          userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-          if (v144 == 1)
+          if (userInterfaceIdiom == 1)
           {
             [v142 relativeAdaptiveTimeTextWidth];
             v146 = v250;
-            v147 = v245;
+            v147 = titleReticleView;
             if (v145 > 1.0)
             {
               v148 = v88 * (v145 + -1.0);
               v88 = v88 + v148;
               v91 = v91 - v148 * 0.5;
-              [v19 frame];
+              [reticleVibrancyView frame];
               if (v150 >= v88)
               {
                 v151 = v150;
@@ -2543,7 +2543,7 @@ LABEL_90:
                 v151 = v88;
               }
 
-              [v19 setFrame:v149 - (v151 - v150) * 0.5];
+              [reticleVibrancyView setFrame:v149 - (v151 - v150) * 0.5];
             }
 
             goto LABEL_89;
@@ -2556,16 +2556,16 @@ LABEL_90:
         }
 
         v146 = v250;
-        v147 = v245;
+        v147 = titleReticleView;
 LABEL_89:
 
         v27 = v138;
         goto LABEL_90;
       }
 
-      v19 = v236;
+      reticleVibrancyView = v236;
       v85 = v223;
-      if ((v228 ^ 1))
+      if ((supportsAdaptiveTimeTextHeight ^ 1))
       {
         goto LABEL_60;
       }
@@ -2579,14 +2579,14 @@ LABEL_89:
       v92 = v261;
       v88 = rect_24;
       v87 = v256;
-      if (v103 == 1)
+      if (complicationRowMode == 1)
       {
-        v19 = v236;
+        reticleVibrancyView = v236;
         goto LABEL_60;
       }
 
-      v19 = v236;
-      if ((v228 ^ 1))
+      reticleVibrancyView = v236;
+      if ((supportsAdaptiveTimeTextHeight ^ 1))
       {
 LABEL_60:
         v27 = v239;
@@ -2595,36 +2595,36 @@ LABEL_60:
     }
 
     v27 = v239;
-    if (v100 != 3)
+    if (adaptiveTimeMode != 3)
     {
       if ((PUIFeatureEnabled() & 1) != 0 || ![(PREditorRootViewController *)self isComplicationsRowConfigured])
       {
         v224 = v85;
-        v107 = [(PREditorRootViewController *)self interfaceOrientation];
-        v108 = [v5 configuredProperties];
-        v109 = [v108 titleStyleConfiguration];
-        [v109 preferredTimeMaxYForOrientation:v107];
+        interfaceOrientation = [(PREditorRootViewController *)self interfaceOrientation];
+        configuredProperties2 = [editor configuredProperties];
+        titleStyleConfiguration2 = [configuredProperties2 titleStyleConfiguration];
+        [titleStyleConfiguration2 preferredTimeMaxYForOrientation:interfaceOrientation];
         v111 = v110;
 
         v112 = v111;
         if (v111 <= 1.0)
         {
-          v113 = [(PREditorRootViewController *)self view];
-          [v113 frame];
+          view2 = [(PREditorRootViewController *)self view];
+          [view2 frame];
           v112 = v111 * v114;
         }
 
-        v115 = [(PREditorRootViewController *)self editor];
-        v116 = [v115 editingContext];
+        editor8 = [(PREditorRootViewController *)self editor];
+        editingContext = [editor8 editingContext];
 
-        v117 = [(PREditorRootViewController *)self editor];
-        v118 = [v117 isAdaptiveTimeHeightUserConfigured];
+        editor9 = [(PREditorRootViewController *)self editor];
+        isAdaptiveTimeHeightUserConfigured = [editor9 isAdaptiveTimeHeightUserConfigured];
 
-        v119 = [(PREditorRootViewController *)self editor];
-        v120 = [v119 isIgnoringSalientContentForTimeHeight];
+        editor10 = [(PREditorRootViewController *)self editor];
+        isIgnoringSalientContentForTimeHeight = [editor10 isIgnoringSalientContentForTimeHeight];
 
         v219 = v96;
-        if (v116 && !((v112 != 0.0) & v118 | v120 & 1))
+        if (editingContext && !((v112 != 0.0) & isAdaptiveTimeHeightUserConfigured | isIgnoringSalientContentForTimeHeight & 1))
         {
           if (IsNull)
           {
@@ -2645,11 +2645,11 @@ LABEL_60:
           }
 
           v85 = v224;
-          v123 = [(PREditorRootViewController *)self editor];
-          [v123 setAdaptiveTimeHeightUserConfigured:0];
+          editor11 = [(PREditorRootViewController *)self editor];
+          [editor11 setAdaptiveTimeHeightUserConfigured:0];
 
-          [(PREditorRootViewController *)self updateForDesiredTimeMaxY:v107 orientation:v121];
-          v19 = v236;
+          [(PREditorRootViewController *)self updateForDesiredTimeMaxY:interfaceOrientation orientation:v121];
+          reticleVibrancyView = v236;
           v27 = v239;
         }
 
@@ -2679,12 +2679,12 @@ LABEL_60:
               v121 = v225;
             }
 
-            v19 = v236;
+            reticleVibrancyView = v236;
           }
 
           else
           {
-            v19 = v236;
+            reticleVibrancyView = v236;
             v121 = v225;
           }
         }
@@ -2697,7 +2697,7 @@ LABEL_60:
             v121 = v112;
           }
 
-          v19 = v236;
+          reticleVibrancyView = v236;
           v27 = v239;
           v85 = v224;
         }
@@ -2730,9 +2730,9 @@ LABEL_60:
           v258 = v238 + v127;
         }
 
-        v128 = [(PREditorRootViewController *)self isTimeResizeGestureActive];
+        isTimeResizeGestureActive = [(PREditorRootViewController *)self isTimeResizeGestureActive];
         v129 = v258;
-        if (v128)
+        if (isTimeResizeGestureActive)
         {
           v130 = v90;
           [(PREditorRootViewController *)self timeResizeGestureHeight];
@@ -2760,10 +2760,10 @@ LABEL_60:
         }
 
         v87 = Height - v226 + v129;
-        [v19 frame];
-        [v19 setFrame:?];
-        v137 = [(PREditorRootViewController *)self editor];
-        [v137 setDepthEffectDisallowed:v124 > v220 forReason:@"adaptiveTime"];
+        [reticleVibrancyView frame];
+        [reticleVibrancyView setFrame:?];
+        editor12 = [(PREditorRootViewController *)self editor];
+        [editor12 setDepthEffectDisallowed:v124 > v220 forReason:@"adaptiveTime"];
 
         v89 = 1;
       }
@@ -2778,48 +2778,48 @@ LABEL_60:
   }
 
 LABEL_106:
-  v194 = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
-  if (v194)
+  sidebarReticleVibrancyView = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
+  if (sidebarReticleVibrancyView)
   {
-    v195 = [v15 frameAttributesForElements:16 variant:3 titleLayout:0 withBoundingRect:{v8, v10, v12, v14}];
+    v195 = [editorElementLayoutController frameAttributesForElements:16 variant:3 titleLayout:0 withBoundingRect:{v8, v10, v12, v14}];
     [v195 rect];
-    [v194 setFrame:v196 + a3];
+    [sidebarReticleVibrancyView setFrame:v196 + offset];
     [(PREditorRootViewController *)self complicationSidebarReticleView];
-    v197 = v5;
-    v198 = v16;
-    v200 = v199 = v19;
-    [v15 frameForElements:16 variant:3 withBoundingRect:{v8, v10, v12, v14}];
+    v197 = editor;
+    v198 = titleStyleConfiguration;
+    v200 = v199 = reticleVibrancyView;
+    [editorElementLayoutController frameForElements:16 variant:3 withBoundingRect:{v8, v10, v12, v14}];
     v202 = v201;
     v204 = v203;
     v206 = v205;
     v208 = v207;
-    v209 = [v200 superview];
-    [v209 convertRect:v6 fromView:{v202, v204, v206, v208}];
+    superview4 = [v200 superview];
+    [superview4 convertRect:view fromView:{v202, v204, v206, v208}];
     v211 = v210;
     v213 = v212;
     v215 = v214;
     v217 = v216;
 
     [v200 setFrame:{v211, v213, v215, v217}];
-    v218 = [(PREditorRootViewController *)self complicationSidebarEmptyStateView];
+    complicationSidebarEmptyStateView = [(PREditorRootViewController *)self complicationSidebarEmptyStateView];
     [v200 bounds];
-    [v218 setFrame:?];
+    [complicationSidebarEmptyStateView setFrame:?];
 
-    v19 = v199;
-    v16 = v198;
-    v5 = v197;
+    reticleVibrancyView = v199;
+    titleStyleConfiguration = v198;
+    editor = v197;
   }
 }
 
 - (void)_updateBottomControlsYConstraint
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self bottomControlsYConstraint];
-  v4 = v3;
-  if (v3)
+  bottomControlsYConstraint = [(PREditorRootViewController *)self bottomControlsYConstraint];
+  v4 = bottomControlsYConstraint;
+  if (bottomControlsYConstraint)
   {
     v5 = MEMORY[0x1E696ACD8];
-    v36[0] = v3;
+    v36[0] = bottomControlsYConstraint;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
     [v5 deactivateConstraints:v6];
   }
@@ -2828,9 +2828,9 @@ LABEL_106:
   {
     if (self->_complicationRowAtBottom)
     {
-      v7 = [(BSUIVibrancyEffectView *)self->_controlsVibrancyView bottomAnchor];
-      v8 = [(PREditorRootViewController *)self complicationRowReticleView];
-      v9 = [v8 topAnchor];
+      bottomAnchor = [(BSUIVibrancyEffectView *)self->_controlsVibrancyView bottomAnchor];
+      complicationRowReticleView = [(PREditorRootViewController *)self complicationRowReticleView];
+      topAnchor = [complicationRowReticleView topAnchor];
       v10 = -38.0;
     }
 
@@ -2841,8 +2841,8 @@ LABEL_106:
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [(PREditorRootViewController *)self lookNameLabel];
-      [v22 frame];
+      lookNameLabel = [(PREditorRootViewController *)self lookNameLabel];
+      [lookNameLabel frame];
       v24 = v23;
       v26 = v25;
       v28 = v27;
@@ -2858,25 +2858,25 @@ LABEL_106:
       v38.size.width = v19;
       v38.size.height = v21;
       v32 = CGRectGetMinY(v38);
-      v7 = [(BSUIVibrancyEffectView *)self->_controlsVibrancyView bottomAnchor];
-      v8 = [(PREditorRootViewController *)self lookNameLabel];
-      v9 = [v8 topAnchor];
+      bottomAnchor = [(BSUIVibrancyEffectView *)self->_controlsVibrancyView bottomAnchor];
+      complicationRowReticleView = [(PREditorRootViewController *)self lookNameLabel];
+      topAnchor = [complicationRowReticleView topAnchor];
       v10 = v32 - MinY + -38.0;
     }
 
-    v13 = [v7 constraintEqualToAnchor:v9 constant:v10];
+    v13 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:v10];
   }
 
   else
   {
-    v7 = [(PREditorRootViewController *)self pageControl];
-    v8 = [v7 bottomAnchor];
-    v9 = [(PREditorRootViewController *)self view];
-    v11 = [v9 safeAreaLayoutGuide];
-    v12 = [v11 bottomAnchor];
-    v13 = [v8 constraintEqualToAnchor:v12 constant:-20.0];
+    bottomAnchor = [(PREditorRootViewController *)self pageControl];
+    complicationRowReticleView = [bottomAnchor bottomAnchor];
+    topAnchor = [(PREditorRootViewController *)self view];
+    safeAreaLayoutGuide = [topAnchor safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v13 = [complicationRowReticleView constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
 
-    v4 = v11;
+    v4 = safeAreaLayoutGuide;
   }
 
   [(PREditorRootViewController *)self setBottomControlsYConstraint:v13];
@@ -2886,12 +2886,12 @@ LABEL_106:
   [v33 activateConstraints:v34];
 }
 
-- (void)_updateComplicationRowReticleWithOffset:(double)a3 animated:(BOOL)a4
+- (void)_updateComplicationRowReticleWithOffset:(double)offset animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(PREditorRootViewController *)self _appearState]== 2)
   {
-    v7 = [(PREditorRootViewController *)self complicationRowReticleView];
+    complicationRowReticleView = [(PREditorRootViewController *)self complicationRowReticleView];
     if (self->_complicationRowAtBottom)
     {
       [PREditorElementLayoutController frameForElements:32 variant:3];
@@ -2907,18 +2907,18 @@ LABEL_106:
       v9 = v16;
       v13 = v17;
       v15 = v18;
-      v11 = v19 + a3;
+      v11 = v19 + offset;
     }
 
-    v20 = [v7 superview];
-    v21 = [(PREditorRootViewController *)self view];
-    [v20 convertRect:v21 fromView:{v9, v11, v13, v15}];
+    superview = [complicationRowReticleView superview];
+    view = [(PREditorRootViewController *)self view];
+    [superview convertRect:view fromView:{v9, v11, v13, v15}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
 
-    if (v4)
+    if (animatedCopy)
     {
       v30 = MEMORY[0x1E69DD250];
       v31[0] = MEMORY[0x1E69E9820];
@@ -2929,15 +2929,15 @@ LABEL_106:
       v35 = v25;
       v36 = v27;
       v37 = v29;
-      v32 = v7;
-      v33 = self;
+      v32 = complicationRowReticleView;
+      selfCopy = self;
       [v30 _animateUsingSpringWithDampingRatio:0 response:v31 tracking:&__block_literal_global_228 dampingRatioSmoothing:0.9 responseSmoothing:0.9 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
     }
 
     else
     {
       [(PREditorRootViewController *)self _updateBottomControlsYConstraint];
-      [v7 setFrame:{v23, v25, v27, v29}];
+      [complicationRowReticleView setFrame:{v23, v25, v27, v29}];
     }
   }
 }
@@ -2950,20 +2950,20 @@ void __79__PREditorRootViewController__updateComplicationRowReticleWithOffset_an
   [v2 layoutIfNeeded];
 }
 
-- (void)_updateComplicationSidebarEmptyViewVisibilityAnimated:(BOOL)a3
+- (void)_updateComplicationSidebarEmptyViewVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PREditorRootViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v7 interfaceOrientation];
+  animatedCopy = animated;
+  view = [(PREditorRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v9 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
 
     v10 = 0.0;
-    if ((v8 - 1) < 2)
+    if ((interfaceOrientation - 1) < 2)
     {
       goto LABEL_11;
     }
@@ -3001,7 +3001,7 @@ void __79__PREditorRootViewController__updateComplicationRowReticleWithOffset_an
   }
 
 LABEL_11:
-  if (!v3 || self->_complicationSidebarConfigured)
+  if (!animatedCopy || self->_complicationSidebarConfigured)
   {
     complicationSidebarEmptyStateView = self->_complicationSidebarEmptyStateView;
 
@@ -3022,91 +3022,91 @@ LABEL_11:
 
 - (void)_updateComplicationsVibrancyFromCurrentLook
 {
-  v3 = [(PREditorRootViewController *)self currentLook];
-  v4 = v3;
-  if (v3)
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v4 = currentLook;
+  if (currentLook)
   {
-    v17 = v3;
-    v5 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v3];
-    v6 = [v5 titleContentStyle];
-    v7 = [v6 type];
+    v17 = currentLook;
+    v5 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:currentLook];
+    titleContentStyle = [v5 titleContentStyle];
+    type = [titleContentStyle type];
 
-    if (v7 == 1)
+    if (type == 1)
     {
       v8 = [objc_alloc(MEMORY[0x1E698E810]) initWithEffectType:2 backgroundType:0 color:0];
     }
 
     else
     {
-      v9 = [(PREditorRootViewController *)self extensionBundleURL];
-      v8 = [v5 vibrancyConfigurationWithExtensionBundleURL:v9];
+      extensionBundleURL = [(PREditorRootViewController *)self extensionBundleURL];
+      v8 = [v5 vibrancyConfigurationWithExtensionBundleURL:extensionBundleURL];
     }
 
     [(PREditorRootViewController *)self _setVibrancyConfiguration:v8];
-    v10 = [(PREditorRootViewController *)self subtitleViewController];
-    v11 = [v8 color];
-    [v10 setTextColor:v11];
+    subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+    color = [v8 color];
+    [subtitleViewController setTextColor:color];
 
-    [v10 setEffectType:{objc_msgSend(v8, "effectType")}];
-    [v10 setBackgroundType:{objc_msgSend(v8, "backgroundType")}];
-    v12 = [v8 alternativeVibrancyEffectLUT];
+    [subtitleViewController setEffectType:{objc_msgSend(v8, "effectType")}];
+    [subtitleViewController setBackgroundType:{objc_msgSend(v8, "backgroundType")}];
+    alternativeVibrancyEffectLUT = [v8 alternativeVibrancyEffectLUT];
     v13 = objc_opt_respondsToSelector();
-    v14 = [v12 lutIdentifier];
-    v15 = [v12 bundleURL];
+    lutIdentifier = [alternativeVibrancyEffectLUT lutIdentifier];
+    bundleURL = [alternativeVibrancyEffectLUT bundleURL];
     if (v13)
     {
-      [v10 setAlternativeVibrancyEffectLUTIdentifier:v14 alternativeVibrancyEffectLUTBundleURL:v15 luminanceReduced:0];
+      [subtitleViewController setAlternativeVibrancyEffectLUTIdentifier:lutIdentifier alternativeVibrancyEffectLUTBundleURL:bundleURL luminanceReduced:0];
     }
 
     else
     {
-      [v10 setAlternativeVibrancyEffectLUTIdentifier:v14 alternativeVibrancyEffectLUTBundleURL:v15];
+      [subtitleViewController setAlternativeVibrancyEffectLUTIdentifier:lutIdentifier alternativeVibrancyEffectLUTBundleURL:bundleURL];
     }
 
-    v16 = [v8 groupName];
-    [v10 setGroupName:v16];
+    groupName = [v8 groupName];
+    [subtitleViewController setGroupName:groupName];
 
     v4 = v17;
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](currentLook, v4);
 }
 
-- (void)_setVibrancyConfiguration:(id)a3
+- (void)_setVibrancyConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PREditorRootViewController *)self editor];
-  [v5 setComplicationsVibrancyConfiguration:v4];
+  configurationCopy = configuration;
+  editor = [(PREditorRootViewController *)self editor];
+  [editor setComplicationsVibrancyConfiguration:configurationCopy];
 
-  v9 = [PREditingReticleView reticleVibrancyForVibrancyConfiguration:v4];
+  v9 = [PREditingReticleView reticleVibrancyForVibrancyConfiguration:configurationCopy];
 
-  v6 = [(PREditorRootViewController *)self reticleVibrancyView];
-  [v6 setConfiguration:v9];
+  reticleVibrancyView = [(PREditorRootViewController *)self reticleVibrancyView];
+  [reticleVibrancyView setConfiguration:v9];
 
-  v7 = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
-  [v7 setConfiguration:v9];
+  sidebarReticleVibrancyView = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
+  [sidebarReticleVibrancyView setConfiguration:v9];
 
-  v8 = [(PREditorRootViewController *)self controlsVibrancyView];
-  [v8 setConfiguration:v9];
+  controlsVibrancyView = [(PREditorRootViewController *)self controlsVibrancyView];
+  [controlsVibrancyView setConfiguration:v9];
 }
 
-- (unint64_t)backgroundTypeForLook:(id)a3
+- (unint64_t)backgroundTypeForLook:(id)look
 {
-  v3 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:a3];
+  v3 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:look];
   [v3 contentsLuminance];
   v5 = PRPosterContentsBackgroundTypeForLuminance(v4);
 
   return v5;
 }
 
-- (void)setLooks:(id)a3 forUpdatingProperties:(BOOL)a4
+- (void)setLooks:(id)looks forUpdatingProperties:(BOOL)properties
 {
-  v10 = a3;
+  looksCopy = looks;
   if ((BSEqualArrays() & 1) == 0)
   {
-    if (a4)
+    if (properties)
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v10 copyItems:1];
+      v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:looksCopy copyItems:1];
       looks = self->_looks;
       self->_looks = v6;
 
@@ -3116,7 +3116,7 @@ LABEL_11:
     else
     {
       [(PREditorRootViewController *)self looksWillChange];
-      v8 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v10 copyItems:1];
+      v8 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:looksCopy copyItems:1];
       v9 = self->_looks;
       self->_looks = v8;
 
@@ -3125,26 +3125,26 @@ LABEL_11:
   }
 }
 
-- (id)viewForMenuElementIdentifier:(id)a3
+- (id)viewForMenuElementIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PREditorRootViewController *)self leadingMenuElements];
-  v6 = [(PREditorRootViewController *)self trailingMenuElements];
+  identifierCopy = identifier;
+  leadingMenuElements = [(PREditorRootViewController *)self leadingMenuElements];
+  trailingMenuElements = [(PREditorRootViewController *)self trailingMenuElements];
   v7 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  v8 = [v7 arrayByAddingObjectsFromArray:v5];
+  v8 = [v7 arrayByAddingObjectsFromArray:leadingMenuElements];
 
-  v37 = v6;
-  v9 = [v8 arrayByAddingObjectsFromArray:v6];
+  v37 = trailingMenuElements;
+  v9 = [v8 arrayByAddingObjectsFromArray:trailingMenuElements];
 
-  v10 = [(PREditorRootViewController *)self leadingMenuElementViews];
-  v11 = [(PREditorRootViewController *)self trailingMenuElementViews];
+  leadingMenuElementViews = [(PREditorRootViewController *)self leadingMenuElementViews];
+  trailingMenuElementViews = [(PREditorRootViewController *)self trailingMenuElementViews];
   v12 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  v36 = v10;
-  v13 = [v12 arrayByAddingObjectsFromArray:v10];
+  v36 = leadingMenuElementViews;
+  v13 = [v12 arrayByAddingObjectsFromArray:leadingMenuElementViews];
 
-  v35 = v11;
-  v39 = [v13 arrayByAddingObjectsFromArray:v11];
+  v35 = trailingMenuElementViews;
+  v39 = [v13 arrayByAddingObjectsFromArray:trailingMenuElementViews];
 
   v42 = 0u;
   v43 = 0u;
@@ -3157,7 +3157,7 @@ LABEL_11:
     v15 = v14;
     v16 = 0;
     v17 = *v41;
-    v34 = v5;
+    v34 = leadingMenuElements;
     while (2)
     {
       for (i = 0; i != v15; ++i)
@@ -3191,8 +3191,8 @@ LABEL_11:
 
         v24 = v23;
 
-        v25 = [v24 identifier];
-        v26 = [v25 isEqualToString:v4];
+        identifier = [v24 identifier];
+        v26 = [identifier isEqualToString:identifierCopy];
 
         if (v26)
         {
@@ -3221,14 +3221,14 @@ LABEL_11:
 
         v30 = v29;
 
-        v31 = [v30 identifier];
-        v32 = [v31 isEqualToString:v4];
+        identifier2 = [v30 identifier];
+        v32 = [identifier2 isEqualToString:identifierCopy];
 
         if (v32)
         {
 
 LABEL_23:
-          v5 = v34;
+          leadingMenuElements = v34;
           goto LABEL_24;
         }
 
@@ -3237,7 +3237,7 @@ LABEL_23:
 
       v15 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
       v20 = 0;
-      v5 = v34;
+      leadingMenuElements = v34;
       if (v15)
       {
         continue;
@@ -3262,32 +3262,32 @@ LABEL_24:
   v21[4] = *MEMORY[0x1E69E9840];
   if ([(PREditorRootViewController *)self _appearState]== 2)
   {
-    v3 = [(PREditorRootViewController *)self additionalControls];
-    v4 = v3;
-    if (v3)
+    additionalControls = [(PREditorRootViewController *)self additionalControls];
+    v4 = additionalControls;
+    if (additionalControls)
     {
-      if ([v3 count])
+      if ([additionalControls count])
       {
-        v20 = [(PREditorRootViewController *)self view];
-        v5 = [v20 safeAreaLayoutGuide];
+        view = [(PREditorRootViewController *)self view];
+        safeAreaLayoutGuide = [view safeAreaLayoutGuide];
         v6 = [v4 objectAtIndex:0];
         [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
         v15 = MEMORY[0x1E696ACD8];
-        v19 = [v6 topAnchor];
-        v18 = [v5 topAnchor];
-        v17 = [v19 constraintEqualToAnchor:v18 constant:22.0];
+        topAnchor = [v6 topAnchor];
+        topAnchor2 = [safeAreaLayoutGuide topAnchor];
+        v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:22.0];
         v21[0] = v17;
-        v16 = [v6 leadingAnchor];
-        v14 = [v5 leadingAnchor];
-        v7 = [v16 constraintEqualToAnchor:v14 constant:44.0];
+        leadingAnchor = [v6 leadingAnchor];
+        leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+        v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:44.0];
         v21[1] = v7;
-        v8 = [v6 widthAnchor];
-        v9 = [v5 widthAnchor];
-        v10 = [v8 constraintEqualToAnchor:v9 multiplier:0.25];
+        widthAnchor = [v6 widthAnchor];
+        widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+        v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.25];
         v21[2] = v10;
-        v11 = [v6 heightAnchor];
-        v12 = [v11 constraintEqualToConstant:50.0];
+        heightAnchor = [v6 heightAnchor];
+        v12 = [heightAnchor constraintEqualToConstant:50.0];
         v21[3] = v12;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
         [v15 activateConstraints:v13];
@@ -3301,18 +3301,18 @@ LABEL_24:
   v48 = *MEMORY[0x1E69E9840];
   if ([(PREditorRootViewController *)self _appearState]== 2)
   {
-    v3 = [(PREditorRootViewController *)self leadingMenuElements];
-    v4 = [(PREditorRootViewController *)self trailingMenuElements];
-    if ([v3 count] < 3)
+    leadingMenuElements = [(PREditorRootViewController *)self leadingMenuElements];
+    trailingMenuElements = [(PREditorRootViewController *)self trailingMenuElements];
+    if ([leadingMenuElements count] < 3)
     {
-      if ([v4 count] < 3)
+      if ([trailingMenuElements count] < 3)
       {
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v6 = [(PREditorRootViewController *)self leadingMenuElementViews];
-        v7 = [v6 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        leadingMenuElementViews = [(PREditorRootViewController *)self leadingMenuElementViews];
+        v7 = [leadingMenuElementViews countByEnumeratingWithState:&v40 objects:v47 count:16];
         if (v7)
         {
           v8 = v7;
@@ -3324,14 +3324,14 @@ LABEL_24:
             {
               if (*v41 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(leadingMenuElementViews);
               }
 
               [*(*(&v40 + 1) + 8 * v10++) removeFromSuperview];
             }
 
             while (v8 != v10);
-            v8 = [v6 countByEnumeratingWithState:&v40 objects:v47 count:16];
+            v8 = [leadingMenuElementViews countByEnumeratingWithState:&v40 objects:v47 count:16];
           }
 
           while (v8);
@@ -3341,8 +3341,8 @@ LABEL_24:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v11 = [(PREditorRootViewController *)self trailingMenuElementViews];
-        v12 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+        trailingMenuElementViews = [(PREditorRootViewController *)self trailingMenuElementViews];
+        v12 = [trailingMenuElementViews countByEnumeratingWithState:&v36 objects:v46 count:16];
         if (v12)
         {
           v13 = v12;
@@ -3354,24 +3354,24 @@ LABEL_24:
             {
               if (*v37 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(trailingMenuElementViews);
               }
 
               [*(*(&v36 + 1) + 8 * v15++) removeFromSuperview];
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+            v13 = [trailingMenuElementViews countByEnumeratingWithState:&v36 objects:v46 count:16];
           }
 
           while (v13);
         }
 
-        v16 = [(PREditorRootViewController *)self _viewsForMenuElements:v3];
+        v16 = [(PREditorRootViewController *)self _viewsForMenuElements:leadingMenuElements];
         [(PREditorRootViewController *)self setLeadingMenuElementViews:v16];
-        v17 = [(PREditorRootViewController *)self _viewsForMenuElements:v4];
+        v17 = [(PREditorRootViewController *)self _viewsForMenuElements:trailingMenuElements];
         [(PREditorRootViewController *)self setTrailingMenuElementViews:v17];
-        v18 = [(PREditorRootViewController *)self view];
+        view = [(PREditorRootViewController *)self view];
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
@@ -3392,7 +3392,7 @@ LABEL_24:
                 objc_enumerationMutation(v5);
               }
 
-              [v18 addSubview:*(*(&v32 + 1) + 8 * v22++)];
+              [view addSubview:*(*(&v32 + 1) + 8 * v22++)];
             }
 
             while (v20 != v22);
@@ -3422,7 +3422,7 @@ LABEL_24:
                 objc_enumerationMutation(v23);
               }
 
-              [v18 addSubview:{*(*(&v28 + 1) + 8 * v27++), v28}];
+              [view addSubview:{*(*(&v28 + 1) + 8 * v27++), v28}];
             }
 
             while (v25 != v27);
@@ -3456,16 +3456,16 @@ LABEL_24:
   }
 }
 
-- (id)_viewsForMenuElements:(id)a3
+- (id)_viewsForMenuElements:(id)elements
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  elementsCopy = elements;
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v3;
+  obj = elementsCopy;
   v37 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (!v37)
   {
@@ -3531,15 +3531,15 @@ LABEL_24:
 
       v17 = v16;
 
-      v18 = [v13 identifier];
-      v19 = [v18 isEqualToString:PREditorPlaceholderActionIdentifier];
+      identifier = [v13 identifier];
+      v19 = [identifier isEqualToString:PREditorPlaceholderActionIdentifier];
 
       if (v19)
       {
         v20 = [objc_alloc(MEMORY[0x1E69DC638]) initWithFrame:{v4, v5, v6, v7}];
         [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v21 = [MEMORY[0x1E69DC888] whiteColor];
-        [v20 setColor:v21];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v20 setColor:whiteColor];
 
         [v20 startAnimating];
         [v36 addObject:v20];
@@ -3550,11 +3550,11 @@ LABEL_24:
       [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
       v22 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:26.0];
       [v20 setPreferredSymbolConfiguration:v22 forImageInState:0];
-      v23 = [v15 accessibilityLabel];
-      [v20 setAccessibilityLabel:v23];
+      accessibilityLabel = [v15 accessibilityLabel];
+      [v20 setAccessibilityLabel:accessibilityLabel];
 
-      v24 = [MEMORY[0x1E69DC888] whiteColor];
-      [v20 setTintColor:v24];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [v20 setTintColor:whiteColor2];
 
       [v20 setPointerInteractionEnabled:1];
       objc_initWeak(&location, self);
@@ -3569,26 +3569,26 @@ LABEL_24:
       v26 = [v25 actionWithHandler:v38];
       [v20 addAction:v26 forControlEvents:0x4000];
 
-      v27 = [v13 identifier];
-      if ([v27 isEqualToString:PREditorDepthEffectActionIdentifier])
+      identifier2 = [v13 identifier];
+      if ([identifier2 isEqualToString:PREditorDepthEffectActionIdentifier])
       {
 
 LABEL_21:
-        v30 = [(PREditorRootViewController *)self imageForDepthEffectActionTopLevelAction:1];
-        [v20 setImage:v30 forState:0];
+        image = [(PREditorRootViewController *)self imageForDepthEffectActionTopLevelAction:1];
+        [v20 setImage:image forState:0];
         goto LABEL_23;
       }
 
-      v28 = [v17 identifier];
-      v29 = [v28 isEqualToString:PREditorDepthEffectActionIdentifier];
+      identifier3 = [v17 identifier];
+      v29 = [identifier3 isEqualToString:PREditorDepthEffectActionIdentifier];
 
       if (v29)
       {
         goto LABEL_21;
       }
 
-      v30 = [v15 image];
-      [v20 setImage:v30 forState:0];
+      image = [v15 image];
+      [v20 setImage:image forState:0];
 LABEL_23:
 
       if (v13)
@@ -3649,43 +3649,43 @@ void __52__PREditorRootViewController__viewsForMenuElements___block_invoke(uint6
   v128 = *MEMORY[0x1E69E9840];
   if ([(PREditorRootViewController *)self _appearState]== 2)
   {
-    v3 = [(PREditorRootViewController *)self leadingMenuElementViews];
-    v4 = [(PREditorRootViewController *)self trailingMenuElementViews];
-    if (!(v3 | v4))
+    leadingMenuElementViews = [(PREditorRootViewController *)self leadingMenuElementViews];
+    trailingMenuElementViews = [(PREditorRootViewController *)self trailingMenuElementViews];
+    if (!(leadingMenuElementViews | trailingMenuElementViews))
     {
 LABEL_54:
 
       return;
     }
 
-    v5 = [(PREditorRootViewController *)self view];
-    v88 = [(PREditorRootViewController *)self pageControl];
-    v90 = [v5 safeAreaLayoutGuide];
+    view = [(PREditorRootViewController *)self view];
+    pageControl = [(PREditorRootViewController *)self pageControl];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
     v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-    v7 = [v4 reverseObjectEnumerator];
-    v8 = [v7 allObjects];
+    reverseObjectEnumerator = [trailingMenuElementViews reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v9 = [v3 reverseObjectEnumerator];
-    v10 = [v9 allObjects];
+    reverseObjectEnumerator2 = [leadingMenuElementViews reverseObjectEnumerator];
+    allObjects2 = [reverseObjectEnumerator2 allObjects];
 
-    v87 = v8;
-    v11 = [v6 arrayByAddingObjectsFromArray:v8];
+    v87 = allObjects;
+    v11 = [v6 arrayByAddingObjectsFromArray:allObjects];
 
-    v86 = v10;
-    v12 = [v11 arrayByAddingObjectsFromArray:v10];
+    v86 = allObjects2;
+    v12 = [v11 arrayByAddingObjectsFromArray:allObjects2];
 
-    v13 = [(PREditorRootViewController *)self editor];
-    v14 = [v13 editingIdiom];
+    editor = [(PREditorRootViewController *)self editor];
+    editingIdiom = [editor editingIdiom];
 
     v89 = v12;
-    if (v14 == 2)
+    if (editingIdiom == 2)
     {
       v119 = 0u;
       v120 = 0u;
       v117 = 0u;
       v118 = 0u;
-      v15 = v12;
-      v16 = [v15 countByEnumeratingWithState:&v117 objects:v127 count:16];
+      centerYAnchor = v12;
+      v16 = [centerYAnchor countByEnumeratingWithState:&v117 objects:v127 count:16];
       if (v16)
       {
         v17 = v16;
@@ -3697,13 +3697,13 @@ LABEL_54:
           {
             if (*v118 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(centerYAnchor);
             }
 
             [*(*(&v117 + 1) + 8 * i) setAlpha:0.0];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v117 objects:v127 count:16];
+          v17 = [centerYAnchor countByEnumeratingWithState:&v117 objects:v127 count:16];
         }
 
         while (v17);
@@ -3720,24 +3720,24 @@ LABEL_54:
 
     if ([(PREditorRootViewController *)self _shouldShowQuickActionEditing])
     {
-      v21 = [(BSUIVibrancyEffectView *)self->_controlsVibrancyView topAnchor];
+      topAnchor = [(BSUIVibrancyEffectView *)self->_controlsVibrancyView topAnchor];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E69DC938] currentDevice];
-      v23 = [v22 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v23 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
-        v25 = [(PREditorRootViewController *)self lookNameLabel];
-        v15 = [v25 centerYAnchor];
+        lookNameLabel = [(PREditorRootViewController *)self lookNameLabel];
+        centerYAnchor = [lookNameLabel centerYAnchor];
 
 LABEL_20:
-        v26 = [(PREditorRootViewController *)self editor];
-        v27 = [v26 editingIdiom];
+        editor2 = [(PREditorRootViewController *)self editor];
+        editingIdiom2 = [editor2 editingIdiom];
 
-        if (v27 == 1)
+        if (editingIdiom2 == 1)
         {
           v115 = 0u;
           v116 = 0u;
@@ -3748,12 +3748,12 @@ LABEL_20:
           v98 = [obj countByEnumeratingWithState:&v113 objects:v126 count:16];
           if (v98)
           {
-            v83 = v5;
-            v84 = v4;
-            v85 = v3;
+            v83 = view;
+            v84 = trailingMenuElementViews;
+            v85 = leadingMenuElementViews;
             v28 = 0;
             v92 = *v114;
-            v95 = v15;
+            v95 = centerYAnchor;
             do
             {
               v29 = 0;
@@ -3773,21 +3773,21 @@ LABEL_20:
 
                 else
                 {
-                  [v90 trailingAnchor];
+                  [safeAreaLayoutGuide trailingAnchor];
                 }
                 v101 = ;
                 v104 = MEMORY[0x1E696ACD8];
-                v110 = [v31 centerYAnchor];
-                v107 = [v110 constraintEqualToAnchor:v95];
+                centerYAnchor2 = [v31 centerYAnchor];
+                v107 = [centerYAnchor2 constraintEqualToAnchor:v95];
                 v125[0] = v107;
-                v32 = [v31 widthAnchor];
-                v33 = [v32 constraintEqualToConstant:50.0];
+                widthAnchor = [v31 widthAnchor];
+                v33 = [widthAnchor constraintEqualToConstant:50.0];
                 v125[1] = v33;
-                v34 = [v31 heightAnchor];
-                v35 = [v34 constraintEqualToConstant:50.0];
+                heightAnchor = [v31 heightAnchor];
+                v35 = [heightAnchor constraintEqualToConstant:50.0];
                 v125[2] = v35;
-                v36 = [v31 trailingAnchor];
-                v37 = [v36 constraintEqualToAnchor:v101 constant:-22.0];
+                trailingAnchor = [v31 trailingAnchor];
+                v37 = [trailingAnchor constraintEqualToAnchor:v101 constant:-22.0];
                 v125[3] = v37;
                 v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:4];
                 [v104 activateConstraints:v38];
@@ -3803,7 +3803,7 @@ LABEL_20:
 
             while (v98);
             v24 = v89;
-            v15 = v95;
+            centerYAnchor = v95;
             goto LABEL_51;
           }
 
@@ -3814,7 +3814,7 @@ LABEL_53:
           goto LABEL_54;
         }
 
-        obj = [v5 window];
+        obj = [view window];
         [obj frame];
         Width = CGRectGetWidth(v129);
         if (Width >= 395.0)
@@ -3843,185 +3843,185 @@ LABEL_53:
           v41 = 16.0;
           if ([v12 count] >= 3)
           {
-            [v88 _setPreferredNumberOfVisibleIndicators:4];
+            [pageControl _setPreferredNumberOfVisibleIndicators:4];
           }
         }
 
-        v84 = v4;
-        v85 = v3;
-        v83 = v5;
-        if ([v3 count] == 1)
+        v84 = trailingMenuElementViews;
+        v85 = leadingMenuElementViews;
+        v83 = view;
+        if ([leadingMenuElementViews count] == 1)
         {
-          v42 = [v3 objectAtIndex:0];
+          v42 = [leadingMenuElementViews objectAtIndex:0];
           v43 = MEMORY[0x1E696ACD8];
-          v44 = [v42 centerYAnchor];
-          v45 = [v44 constraintEqualToAnchor:v15];
+          centerYAnchor3 = [v42 centerYAnchor];
+          v45 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor];
           v124[0] = v45;
-          v46 = [v42 widthAnchor];
-          v47 = [v46 constraintEqualToConstant:50.0];
+          widthAnchor2 = [v42 widthAnchor];
+          v47 = [widthAnchor2 constraintEqualToConstant:50.0];
           v124[1] = v47;
-          v111 = [v42 heightAnchor];
-          v108 = [v111 constraintEqualToConstant:50.0];
-          v124[2] = v108;
-          v48 = [v42 leadingAnchor];
-          v49 = [v90 leadingAnchor];
-          v105 = v48;
-          v50 = [v48 constraintEqualToAnchor:v49 constant:v40];
-          v124[3] = v50;
+          heightAnchor2 = [v42 heightAnchor];
+          heightAnchor3 = [heightAnchor2 constraintEqualToConstant:50.0];
+          v124[2] = heightAnchor3;
+          leadingAnchor = [v42 leadingAnchor];
+          leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+          v105 = leadingAnchor;
+          leadingAnchor3 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v40];
+          v124[3] = leadingAnchor3;
           v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:4];
           [v43 activateConstraints:v51];
         }
 
         else
         {
-          if ([v3 count] != 2)
+          if ([leadingMenuElementViews count] != 2)
           {
             goto LABEL_46;
           }
 
-          v42 = [v3 objectAtIndex:0];
-          v44 = [v3 objectAtIndex:1];
+          v42 = [leadingMenuElementViews objectAtIndex:0];
+          centerYAnchor3 = [leadingMenuElementViews objectAtIndex:1];
           v93 = MEMORY[0x1E696ACD8];
-          v99 = [v42 centerYAnchor];
-          v102 = [v99 constraintEqualToAnchor:v15];
+          centerYAnchor4 = [v42 centerYAnchor];
+          v102 = [centerYAnchor4 constraintEqualToAnchor:centerYAnchor];
           v123[0] = v102;
-          v81 = [v42 widthAnchor];
-          v111 = [v81 constraintEqualToConstant:50.0];
-          v123[1] = v111;
-          v108 = [v42 heightAnchor];
-          v105 = [v108 constraintEqualToConstant:50.0];
+          widthAnchor3 = [v42 widthAnchor];
+          heightAnchor2 = [widthAnchor3 constraintEqualToConstant:50.0];
+          v123[1] = heightAnchor2;
+          heightAnchor3 = [v42 heightAnchor];
+          v105 = [heightAnchor3 constraintEqualToConstant:50.0];
           v123[2] = v105;
-          v49 = [v42 leadingAnchor];
-          v50 = [v90 leadingAnchor];
-          v51 = [v49 constraintEqualToAnchor:v50 constant:v41];
+          leadingAnchor2 = [v42 leadingAnchor];
+          leadingAnchor3 = [safeAreaLayoutGuide leadingAnchor];
+          v51 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:v41];
           v123[3] = v51;
-          v79 = [v44 centerYAnchor];
-          v77 = [v79 constraintEqualToAnchor:v15];
+          v44CenterYAnchor = [centerYAnchor3 centerYAnchor];
+          v77 = [v44CenterYAnchor constraintEqualToAnchor:centerYAnchor];
           v123[4] = v77;
-          v75 = [v44 widthAnchor];
-          v73 = [v75 constraintEqualToConstant:50.0];
+          widthAnchor4 = [centerYAnchor3 widthAnchor];
+          v73 = [widthAnchor4 constraintEqualToConstant:50.0];
           v123[5] = v73;
-          v71 = [v44 heightAnchor];
-          v52 = [v71 constraintEqualToConstant:50.0];
+          heightAnchor4 = [centerYAnchor3 heightAnchor];
+          v52 = [heightAnchor4 constraintEqualToConstant:50.0];
           v123[6] = v52;
-          [v44 leadingAnchor];
-          v53 = v96 = v15;
-          v54 = [v90 leadingAnchor];
-          v55 = [v53 constraintEqualToAnchor:v54 constant:v41 + 50.0];
+          [centerYAnchor3 leadingAnchor];
+          v53 = v96 = centerYAnchor;
+          leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+          v55 = [v53 constraintEqualToAnchor:leadingAnchor4 constant:v41 + 50.0];
           v123[7] = v55;
           v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:8];
           [v93 activateConstraints:v56];
 
-          v45 = v99;
-          v47 = v81;
+          v45 = centerYAnchor4;
+          v47 = widthAnchor3;
 
-          v15 = v96;
-          v46 = v102;
+          centerYAnchor = v96;
+          widthAnchor2 = v102;
         }
 
-        v4 = v84;
-        v3 = v85;
-        v5 = v83;
+        trailingMenuElementViews = v84;
+        leadingMenuElementViews = v85;
+        view = v83;
         v24 = v89;
 LABEL_46:
-        if ([v4 count] == 1)
+        if ([trailingMenuElementViews count] == 1)
         {
-          v28 = [v4 objectAtIndex:0];
+          v28 = [trailingMenuElementViews objectAtIndex:0];
           v57 = MEMORY[0x1E696ACD8];
-          v58 = [v28 centerYAnchor];
-          v59 = [v58 constraintEqualToAnchor:v15];
+          centerYAnchor5 = [v28 centerYAnchor];
+          v59 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor];
           v122[0] = v59;
-          v60 = [v28 widthAnchor];
-          v61 = [v60 constraintEqualToConstant:50.0];
+          widthAnchor5 = [v28 widthAnchor];
+          v61 = [widthAnchor5 constraintEqualToConstant:50.0];
           v122[1] = v61;
-          v112 = [v28 heightAnchor];
-          v109 = [v112 constraintEqualToConstant:50.0];
-          v122[2] = v109;
-          v62 = [v28 trailingAnchor];
-          v63 = [v90 trailingAnchor];
-          v106 = v62;
-          v64 = [v62 constraintEqualToAnchor:v63 constant:-v40];
-          v122[3] = v64;
+          heightAnchor5 = [v28 heightAnchor];
+          heightAnchor6 = [heightAnchor5 constraintEqualToConstant:50.0];
+          v122[2] = heightAnchor6;
+          trailingAnchor2 = [v28 trailingAnchor];
+          trailingAnchor3 = [safeAreaLayoutGuide trailingAnchor];
+          v106 = trailingAnchor2;
+          trailingAnchor4 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v40];
+          v122[3] = trailingAnchor4;
           v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v122 count:4];
           [v57 activateConstraints:v65];
         }
 
         else
         {
-          if ([v4 count] != 2)
+          if ([trailingMenuElementViews count] != 2)
           {
             goto LABEL_52;
           }
 
-          v28 = [v4 objectAtIndex:1];
-          v58 = [v4 objectAtIndex:0];
+          v28 = [trailingMenuElementViews objectAtIndex:1];
+          centerYAnchor5 = [trailingMenuElementViews objectAtIndex:0];
           v94 = MEMORY[0x1E696ACD8];
-          v100 = [v28 centerYAnchor];
-          v103 = [v100 constraintEqualToAnchor:v15];
+          centerYAnchor6 = [v28 centerYAnchor];
+          v103 = [centerYAnchor6 constraintEqualToAnchor:centerYAnchor];
           v121[0] = v103;
-          v82 = [v28 widthAnchor];
-          v112 = [v82 constraintEqualToConstant:50.0];
-          v121[1] = v112;
-          v109 = [v28 heightAnchor];
-          v106 = [v109 constraintEqualToConstant:50.0];
+          widthAnchor6 = [v28 widthAnchor];
+          heightAnchor5 = [widthAnchor6 constraintEqualToConstant:50.0];
+          v121[1] = heightAnchor5;
+          heightAnchor6 = [v28 heightAnchor];
+          v106 = [heightAnchor6 constraintEqualToConstant:50.0];
           v121[2] = v106;
-          v63 = [v28 trailingAnchor];
-          v64 = [v90 trailingAnchor];
-          v65 = [v63 constraintEqualToAnchor:v64 constant:-v41];
+          trailingAnchor3 = [v28 trailingAnchor];
+          trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+          v65 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v41];
           v121[3] = v65;
-          v80 = [v58 centerYAnchor];
-          v78 = [v80 constraintEqualToAnchor:v15];
+          v58CenterYAnchor = [centerYAnchor5 centerYAnchor];
+          v78 = [v58CenterYAnchor constraintEqualToAnchor:centerYAnchor];
           v121[4] = v78;
-          v76 = [v58 widthAnchor];
-          v74 = [v76 constraintEqualToConstant:50.0];
+          widthAnchor7 = [centerYAnchor5 widthAnchor];
+          v74 = [widthAnchor7 constraintEqualToConstant:50.0];
           v121[5] = v74;
-          v72 = [v58 heightAnchor];
-          v66 = [v72 constraintEqualToConstant:50.0];
+          heightAnchor7 = [centerYAnchor5 heightAnchor];
+          v66 = [heightAnchor7 constraintEqualToConstant:50.0];
           v121[6] = v66;
-          [v58 trailingAnchor];
-          v67 = v97 = v15;
-          v68 = [v90 trailingAnchor];
-          v69 = [v67 constraintEqualToAnchor:v68 constant:-(v41 + 50.0)];
+          [centerYAnchor5 trailingAnchor];
+          v67 = v97 = centerYAnchor;
+          trailingAnchor5 = [safeAreaLayoutGuide trailingAnchor];
+          v69 = [v67 constraintEqualToAnchor:trailingAnchor5 constant:-(v41 + 50.0)];
           v121[7] = v69;
           v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v121 count:8];
           [v94 activateConstraints:v70];
 
-          v59 = v100;
-          v61 = v82;
+          v59 = centerYAnchor6;
+          v61 = widthAnchor6;
 
-          v15 = v97;
-          v60 = v103;
+          centerYAnchor = v97;
+          widthAnchor5 = v103;
         }
 
         v24 = v89;
 LABEL_51:
 
-        v4 = v84;
-        v3 = v85;
-        v5 = v83;
+        trailingMenuElementViews = v84;
+        leadingMenuElementViews = v85;
+        view = v83;
         goto LABEL_52;
       }
 
-      v21 = [v88 centerYAnchor];
+      topAnchor = [pageControl centerYAnchor];
     }
 
-    v15 = v21;
+    centerYAnchor = topAnchor;
     goto LABEL_20;
   }
 }
 
-- (void)updateTopButtonsLayoutWithLeadingTopButtonFrame:(CGRect)a3 trailingTopButtonFrame:(CGRect)a4
+- (void)updateTopButtonsLayoutWithLeadingTopButtonFrame:(CGRect)frame trailingTopButtonFrame:(CGRect)buttonFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v15 = [(PREditorRootViewController *)self view];
-  if (![v15 effectiveUserInterfaceLayoutDirection])
+  height = buttonFrame.size.height;
+  width = buttonFrame.size.width;
+  y = buttonFrame.origin.y;
+  x = buttonFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  view = [(PREditorRootViewController *)self view];
+  if (![view effectiveUserInterfaceLayoutDirection])
   {
     x = v11;
     y = v10;
@@ -4042,33 +4042,33 @@ LABEL_51:
   [(PREditorRootViewController *)self setTopButtonsEdgeInsets:MinY, MinX, 0.0, MinX];
 }
 
-- (void)setTopButtonsEdgeInsets:(UIEdgeInsets)a3
+- (void)setTopButtonsEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_topButtonsEdgeInsets.top), vceqq_f64(v4, *&self->_topButtonsEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_topButtonsEdgeInsets = a3;
-    left = a3.left;
-    top = a3.top;
-    v9 = [(PREditorRootViewController *)self leadingTopButtonXConstraint];
-    [v9 setConstant:left];
-    v6 = [(PREditorRootViewController *)self leadingTopButtonYConstraint];
-    [v6 setConstant:top];
-    v7 = [(PREditorRootViewController *)self trailingTopButtonXConstraint];
-    [v7 setConstant:-left];
-    v8 = [(PREditorRootViewController *)self trailingTopButtonYConstraint];
-    [v8 setConstant:top];
+    self->_topButtonsEdgeInsets = insets;
+    left = insets.left;
+    top = insets.top;
+    leadingTopButtonXConstraint = [(PREditorRootViewController *)self leadingTopButtonXConstraint];
+    [leadingTopButtonXConstraint setConstant:left];
+    leadingTopButtonYConstraint = [(PREditorRootViewController *)self leadingTopButtonYConstraint];
+    [leadingTopButtonYConstraint setConstant:top];
+    trailingTopButtonXConstraint = [(PREditorRootViewController *)self trailingTopButtonXConstraint];
+    [trailingTopButtonXConstraint setConstant:-left];
+    trailingTopButtonYConstraint = [(PREditorRootViewController *)self trailingTopButtonYConstraint];
+    [trailingTopButtonYConstraint setConstant:top];
   }
 }
 
-- (void)setTopButtonsHidden:(BOOL)a3
+- (void)setTopButtonsHidden:(BOOL)hidden
 {
-  if (self->_topButtonsHidden != a3)
+  if (self->_topButtonsHidden != hidden)
   {
-    self->_topButtonsHidden = a3;
+    self->_topButtonsHidden = hidden;
     [(PREditorRootViewController *)self updateTopButtonAlpha];
   }
 }
@@ -4089,74 +4089,74 @@ LABEL_51:
     }
   }
 
-  v4 = [(PREditorRootViewController *)self cancelButton];
-  [v4 setAlpha:v3];
+  cancelButton = [(PREditorRootViewController *)self cancelButton];
+  [cancelButton setAlpha:v3];
 
-  v5 = [(PREditorRootViewController *)self acceptButton];
-  [v5 setAlpha:v3];
+  acceptButton = [(PREditorRootViewController *)self acceptButton];
+  [acceptButton setAlpha:v3];
 }
 
-- (void)setAllUserInteractionDisabledExceptForCancelButton:(BOOL)a3
+- (void)setAllUserInteractionDisabledExceptForCancelButton:(BOOL)button
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  if (self->_allUserInteractionDisabledExceptForCancelButton != a3)
+  if (self->_allUserInteractionDisabledExceptForCancelButton != button)
   {
-    v3 = a3;
-    self->_allUserInteractionDisabledExceptForCancelButton = a3;
-    v5 = [(PREditorRootViewController *)self view];
-    v6 = [(PREditorRootViewController *)self acceptButton];
-    v7 = !v3;
-    [v6 setEnabled:v7];
+    buttonCopy = button;
+    self->_allUserInteractionDisabledExceptForCancelButton = button;
+    view = [(PREditorRootViewController *)self view];
+    acceptButton = [(PREditorRootViewController *)self acceptButton];
+    v7 = !buttonCopy;
+    [acceptButton setEnabled:v7];
     if (v7)
     {
-      v17 = [(PREditorRootViewController *)self touchBlockingView];
-      [v17 removeFromSuperview];
+      touchBlockingView = [(PREditorRootViewController *)self touchBlockingView];
+      [touchBlockingView removeFromSuperview];
 
       [(PREditorRootViewController *)self setTouchBlockingView:0];
     }
 
     else
     {
-      v25 = [(PREditorRootViewController *)self cancelButton];
-      [v5 bringSubviewToFront:v25];
-      v26 = v6;
+      cancelButton = [(PREditorRootViewController *)self cancelButton];
+      [view bringSubviewToFront:cancelButton];
+      v26 = acceptButton;
       v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      v9 = [v8 layer];
-      [v9 setHitTestsAsOpaque:1];
+      layer = [v8 layer];
+      [layer setHitTestsAsOpaque:1];
 
       [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v5 insertSubview:v8 belowSubview:v25];
+      [view insertSubview:v8 belowSubview:cancelButton];
       v19 = MEMORY[0x1E696ACD8];
-      v24 = [v8 leadingAnchor];
-      v23 = [v5 leadingAnchor];
-      v22 = [v24 constraintEqualToAnchor:v23];
+      leadingAnchor = [v8 leadingAnchor];
+      leadingAnchor2 = [view leadingAnchor];
+      v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v27[0] = v22;
-      v21 = [v8 trailingAnchor];
-      v20 = [v5 trailingAnchor];
-      v18 = [v21 constraintEqualToAnchor:v20];
+      trailingAnchor = [v8 trailingAnchor];
+      trailingAnchor2 = [view trailingAnchor];
+      v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v27[1] = v18;
-      v10 = [v8 topAnchor];
-      v11 = [v5 topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      topAnchor = [v8 topAnchor];
+      topAnchor2 = [view topAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v27[2] = v12;
-      v13 = [v8 bottomAnchor];
-      v14 = [v5 bottomAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      bottomAnchor = [v8 bottomAnchor];
+      bottomAnchor2 = [view bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v27[3] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
       [v19 activateConstraints:v16];
 
       [(PREditorRootViewController *)self setTouchBlockingView:v8];
-      v6 = v26;
+      acceptButton = v26;
     }
   }
 }
 
-- (void)setDepthEffectDisabled:(BOOL)a3
+- (void)setDepthEffectDisabled:(BOOL)disabled
 {
-  if (self->_depthEffectDisabled != a3)
+  if (self->_depthEffectDisabled != disabled)
   {
-    self->_depthEffectDisabled = a3;
+    self->_depthEffectDisabled = disabled;
     [(PREditorRootViewController *)self depthEffectEnablementDidChange];
   }
 }
@@ -4168,26 +4168,26 @@ LABEL_51:
     return;
   }
 
-  v10 = [(PREditorRootViewController *)self editor];
-  v3 = [(PREditorRootViewController *)self reticleVibrancyView];
-  v4 = [(PREditorRootViewController *)self isDepthEffectDisabled];
-  if ([v10 areViewsSharedBetweenLooks])
+  editor = [(PREditorRootViewController *)self editor];
+  reticleVibrancyView = [(PREditorRootViewController *)self reticleVibrancyView];
+  isDepthEffectDisabled = [(PREditorRootViewController *)self isDepthEffectDisabled];
+  if ([editor areViewsSharedBetweenLooks])
   {
-    v5 = [(PREditorRootViewController *)self scrollView];
-    v6 = [(PREditorRootViewController *)self portaledFloatingContainerView];
-    if (!v4)
+    scrollView = [(PREditorRootViewController *)self scrollView];
+    portaledFloatingContainerView = [(PREditorRootViewController *)self portaledFloatingContainerView];
+    if (!isDepthEffectDisabled)
     {
-      v7 = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
-      if (v7)
+      sidebarReticleVibrancyView = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
+      if (sidebarReticleVibrancyView)
       {
-        v8 = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
-        [v5 insertSubview:v6 belowSubview:v8];
+        sidebarReticleVibrancyView2 = [(PREditorRootViewController *)self sidebarReticleVibrancyView];
+        [scrollView insertSubview:portaledFloatingContainerView belowSubview:sidebarReticleVibrancyView2];
       }
 
       else
       {
-        v8 = [(PREditorRootViewController *)self timeContainerView];
-        [v5 insertSubview:v6 aboveSubview:v8];
+        sidebarReticleVibrancyView2 = [(PREditorRootViewController *)self timeContainerView];
+        [scrollView insertSubview:portaledFloatingContainerView aboveSubview:sidebarReticleVibrancyView2];
       }
 
       goto LABEL_12;
@@ -4196,24 +4196,24 @@ LABEL_51:
 
   else
   {
-    v5 = [(PREditorRootViewController *)self view];
-    v6 = [(PREditorRootViewController *)self floatingContainerViewsZStackView];
-    if (!v4)
+    scrollView = [(PREditorRootViewController *)self view];
+    portaledFloatingContainerView = [(PREditorRootViewController *)self floatingContainerViewsZStackView];
+    if (!isDepthEffectDisabled)
     {
-      v9 = [(PREditorRootViewController *)self timeContainerScrollView];
-      [v5 insertSubview:v6 aboveSubview:v9];
+      timeContainerScrollView = [(PREditorRootViewController *)self timeContainerScrollView];
+      [scrollView insertSubview:portaledFloatingContainerView aboveSubview:timeContainerScrollView];
 
       goto LABEL_12;
     }
   }
 
-  [v5 insertSubview:v6 belowSubview:v3];
+  [scrollView insertSubview:portaledFloatingContainerView belowSubview:reticleVibrancyView];
 LABEL_12:
 }
 
-- (id)imageForDepthEffectActionTopLevelAction:(BOOL)a3
+- (id)imageForDepthEffectActionTopLevelAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = @"square.2.layers.3d.fill";
   }
@@ -4228,49 +4228,49 @@ LABEL_12:
   return v4;
 }
 
-- (void)setSubtitleHidden:(BOOL)a3
+- (void)setSubtitleHidden:(BOOL)hidden
 {
-  if (self->_subtitleHidden != a3)
+  if (self->_subtitleHidden != hidden)
   {
-    v4 = a3;
-    self->_subtitleHidden = a3;
-    v5 = [(PREditorRootViewController *)self subtitleViewController];
-    [v5 pr_setSubtitleHidden:v4];
+    hiddenCopy = hidden;
+    self->_subtitleHidden = hidden;
+    subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+    [subtitleViewController pr_setSubtitleHidden:hiddenCopy];
   }
 }
 
-- (void)setUsesEditingLayout:(BOOL)a3
+- (void)setUsesEditingLayout:(BOOL)layout
 {
-  if (self->_usesEditingLayout != a3)
+  if (self->_usesEditingLayout != layout)
   {
     v10 = v3;
     v11 = v4;
-    v5 = a3;
-    self->_usesEditingLayout = a3;
+    layoutCopy = layout;
+    self->_usesEditingLayout = layout;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__PREditorRootViewController_setUsesEditingLayout___block_invoke;
     v8[3] = &__block_descriptor_33_e55_v16__0__UIViewController_PREditorTitleViewController__8l;
-    v9 = a3;
+    layoutCopy2 = layout;
     [(PREditorRootViewController *)self enumerateTimeViewControllersUsingBlock:v8];
-    v7 = [(PREditorRootViewController *)self subtitleViewController];
-    [v7 setUsesEditingLayout:v5];
+    subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+    [subtitleViewController setUsesEditingLayout:layoutCopy];
   }
 }
 
-- (void)setControlsHidden:(BOOL)a3
+- (void)setControlsHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [(PREditorRootViewController *)self editor];
-  v6 = [v5 editingIdiom];
+  editor = [(PREditorRootViewController *)self editor];
+  editingIdiom = [editor editingIdiom];
 
-  if ((v6 != 2 || v3) && self->_controlsHidden != v3)
+  if ((editingIdiom != 2 || hiddenCopy) && self->_controlsHidden != hiddenCopy)
   {
-    self->_controlsHidden = v3;
+    self->_controlsHidden = hiddenCopy;
     [(PREditorRootViewController *)self updateTopButtonAlpha];
     [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
-    if (v3)
+    if (hiddenCopy)
     {
       v7 = 0.0;
     }
@@ -4280,27 +4280,27 @@ LABEL_12:
       v7 = 1.0;
     }
 
-    v8 = [(PREditorRootViewController *)self lookMenuButton];
-    [v8 setAlpha:v7];
+    lookMenuButton = [(PREditorRootViewController *)self lookMenuButton];
+    [lookMenuButton setAlpha:v7];
 
-    v9 = [(PREditorRootViewController *)self lookNameLabel];
-    [v9 setAlpha:v7];
+    lookNameLabel = [(PREditorRootViewController *)self lookNameLabel];
+    [lookNameLabel setAlpha:v7];
 
-    v10 = [(PREditorRootViewController *)self pageControl];
-    [v10 setAlpha:v7];
+    pageControl = [(PREditorRootViewController *)self pageControl];
+    [pageControl setAlpha:v7];
 
-    v11 = [(PREditorRootViewController *)self contentOverlayView];
-    [v11 setAlpha:v7];
+    contentOverlayView = [(PREditorRootViewController *)self contentOverlayView];
+    [contentOverlayView setAlpha:v7];
 
-    v12 = [(PREditorRootViewController *)self bottomLegibilityView];
-    [v12 setAlpha:v7];
+    bottomLegibilityView = [(PREditorRootViewController *)self bottomLegibilityView];
+    [bottomLegibilityView setAlpha:v7];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v13 = [(PREditorRootViewController *)self leadingMenuElementViews];
-    v14 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
+    leadingMenuElementViews = [(PREditorRootViewController *)self leadingMenuElementViews];
+    v14 = [leadingMenuElementViews countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v14)
     {
       v15 = v14;
@@ -4311,13 +4311,13 @@ LABEL_12:
         {
           if (*v37 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(leadingMenuElementViews);
           }
 
           [*(*(&v36 + 1) + 8 * i) setAlpha:v7];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        v15 = [leadingMenuElementViews countByEnumeratingWithState:&v36 objects:v42 count:16];
       }
 
       while (v15);
@@ -4327,8 +4327,8 @@ LABEL_12:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v18 = [(PREditorRootViewController *)self trailingMenuElementViews];
-    v19 = [v18 countByEnumeratingWithState:&v32 objects:v41 count:16];
+    trailingMenuElementViews = [(PREditorRootViewController *)self trailingMenuElementViews];
+    v19 = [trailingMenuElementViews countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v19)
     {
       v20 = v19;
@@ -4339,13 +4339,13 @@ LABEL_12:
         {
           if (*v33 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(trailingMenuElementViews);
           }
 
           [*(*(&v32 + 1) + 8 * j) setAlpha:v7];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v32 objects:v41 count:16];
+        v20 = [trailingMenuElementViews countByEnumeratingWithState:&v32 objects:v41 count:16];
       }
 
       while (v20);
@@ -4355,8 +4355,8 @@ LABEL_12:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v23 = [(PREditorRootViewController *)self additionalControls];
-    v24 = [v23 countByEnumeratingWithState:&v28 objects:v40 count:16];
+    additionalControls = [(PREditorRootViewController *)self additionalControls];
+    v24 = [additionalControls countByEnumeratingWithState:&v28 objects:v40 count:16];
     if (v24)
     {
       v25 = v24;
@@ -4367,13 +4367,13 @@ LABEL_12:
         {
           if (*v29 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(additionalControls);
           }
 
           [*(*(&v28 + 1) + 8 * k) setAlpha:v7];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v28 objects:v40 count:16];
+        v25 = [additionalControls countByEnumeratingWithState:&v28 objects:v40 count:16];
       }
 
       while (v25);
@@ -4381,60 +4381,60 @@ LABEL_12:
   }
 }
 
-- (void)setComplicationsRowConfigured:(BOOL)a3
+- (void)setComplicationsRowConfigured:(BOOL)configured
 {
-  if (self->_complicationsRowConfigured != a3)
+  if (self->_complicationsRowConfigured != configured)
   {
-    self->_complicationsRowConfigured = a3;
+    self->_complicationsRowConfigured = configured;
     [(PREditorRootViewController *)self updateReticleViewFrames];
   }
 }
 
-- (void)setComplicationSidebarConfigured:(BOOL)a3
+- (void)setComplicationSidebarConfigured:(BOOL)configured
 {
-  if (self->_complicationSidebarConfigured != a3)
+  if (self->_complicationSidebarConfigured != configured)
   {
-    self->_complicationSidebarConfigured = a3;
+    self->_complicationSidebarConfigured = configured;
     [(PREditorRootViewController *)self _updateComplicationSidebarEmptyViewVisibility];
 
     [(PREditorRootViewController *)self updateReticleViewFrames];
   }
 }
 
-- (void)setComplicationRowAtBottom:(BOOL)a3
+- (void)setComplicationRowAtBottom:(BOOL)bottom
 {
-  if (self->_complicationRowAtBottom != a3)
+  if (self->_complicationRowAtBottom != bottom)
   {
-    self->_complicationRowAtBottom = a3;
+    self->_complicationRowAtBottom = bottom;
     [(PREditorRootViewController *)self _updateComplicationRowReticleWithOffset:1 animated:0.0];
   }
 }
 
-- (void)setFocusedComplicationElement:(int64_t)a3
+- (void)setFocusedComplicationElement:(int64_t)element
 {
-  if (self->_focusedComplicationElement != a3)
+  if (self->_focusedComplicationElement != element)
   {
-    self->_focusedComplicationElement = a3;
+    self->_focusedComplicationElement = element;
     [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
   }
 }
 
-- (void)setFocusedQuickActionPosition:(int64_t)a3
+- (void)setFocusedQuickActionPosition:(int64_t)position
 {
-  if (self->_focusedQuickActionPosition != a3)
+  if (self->_focusedQuickActionPosition != position)
   {
-    self->_focusedQuickActionPosition = a3;
+    self->_focusedQuickActionPosition = position;
     [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
 
     [(PREditorRootViewController *)self _setNeedsEditingElementsVisibilityUpdate];
   }
 }
 
-- (void)setTitleReticleActive:(BOOL)a3
+- (void)setTitleReticleActive:(BOOL)active
 {
-  if (self->_titleReticleActive != a3)
+  if (self->_titleReticleActive != active)
   {
-    self->_titleReticleActive = a3;
+    self->_titleReticleActive = active;
     [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
   }
 }
@@ -4472,16 +4472,16 @@ LABEL_12:
   if (self->_needsEditingElementsVisibilityUpdate)
   {
     self->_needsEditingElementsVisibilityUpdate = 0;
-    v4 = [(PREditorRootViewController *)self focusedQuickActionPosition];
-    v5 = [(PREditorRootViewController *)self timeContainerView];
-    v7 = v5;
+    focusedQuickActionPosition = [(PREditorRootViewController *)self focusedQuickActionPosition];
+    timeContainerView = [(PREditorRootViewController *)self timeContainerView];
+    v7 = timeContainerView;
     v6 = 0.0;
-    if (!v4)
+    if (!focusedQuickActionPosition)
     {
       v6 = 1.0;
     }
 
-    [v5 setAlpha:v6];
+    [timeContainerView setAlpha:v6];
   }
 }
 
@@ -4493,11 +4493,11 @@ LABEL_12:
   }
 
   self->_needsReticleVisibilityUpdate = 0;
-  v4 = [(PREditorRootViewController *)self focusedComplicationElement];
-  v5 = [(PREditorRootViewController *)self isTitleReticleActive];
-  v6 = [(PREditorRootViewController *)self areControlsHidden];
-  v7 = [(PREditorRootViewController *)self focusedQuickActionPosition];
-  if (v5)
+  focusedComplicationElement = [(PREditorRootViewController *)self focusedComplicationElement];
+  isTitleReticleActive = [(PREditorRootViewController *)self isTitleReticleActive];
+  areControlsHidden = [(PREditorRootViewController *)self areControlsHidden];
+  focusedQuickActionPosition = [(PREditorRootViewController *)self focusedQuickActionPosition];
+  if (isTitleReticleActive)
   {
     v9 = 0;
     v10 = 0;
@@ -4509,12 +4509,12 @@ LABEL_12:
 
   else
   {
-    if (v4)
+    if (focusedComplicationElement)
     {
-      v10 = v4 == 2;
-      v9 = v4 == 3;
+      v10 = focusedComplicationElement == 2;
+      v9 = focusedComplicationElement == 3;
       v11 = 0.0;
-      if (v4 == 1)
+      if (focusedComplicationElement == 1)
       {
         v13 = 1.0;
       }
@@ -4527,36 +4527,36 @@ LABEL_12:
 
     else
     {
-      if (v7)
+      if (focusedQuickActionPosition)
       {
         v14 = 1;
       }
 
       else
       {
-        v14 = v6;
+        v14 = areControlsHidden;
       }
 
       v13 = 0.0;
       if ((v14 & 1) == 0 && !self->_presentingComplicationGallery)
       {
-        v15 = [(PREditorRootViewController *)self presentationDismissalGestureView];
+        presentationDismissalGestureView = [(PREditorRootViewController *)self presentationDismissalGestureView];
 
-        if (!v15)
+        if (!presentationDismissalGestureView)
         {
-          v20 = [MEMORY[0x1E69DC938] currentDevice];
-          v21 = [v20 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
           v13 = 1.0;
-          if (v21 == 1)
+          if (userInterfaceIdiom == 1)
           {
-            v22 = [(PREditorRootViewController *)self view];
-            v23 = [v22 window];
-            v24 = [v23 windowScene];
-            v25 = [v24 interfaceOrientation];
+            view = [(PREditorRootViewController *)self view];
+            window = [view window];
+            windowScene = [window windowScene];
+            interfaceOrientation = [windowScene interfaceOrientation];
 
-            v10 = (v25 - 1) < 2;
-            v9 = (v25 - 3) < 2;
+            v10 = (interfaceOrientation - 1) < 2;
+            v9 = (interfaceOrientation - 3) < 2;
           }
 
           else
@@ -4580,64 +4580,64 @@ LABEL_12:
   }
 
 LABEL_17:
-  v26 = [(PREditorRootViewController *)self titleReticleView];
-  v16 = [(PREditorRootViewController *)self titleResizeHandle];
-  v17 = [(PREditorRootViewController *)self inlineComplicationReticleView];
-  v18 = [(PREditorRootViewController *)self complicationSidebarReticleView];
-  [v26 setAlpha:v12];
-  [v16 setAlpha:v11];
-  [v17 setAlpha:v13];
-  [v18 setAlpha:v9];
-  [v17 setAlpha:v13];
-  v19 = [(PREditorRootViewController *)self editor];
-  [v19 setShowsEditingReticles:v10];
+  titleReticleView = [(PREditorRootViewController *)self titleReticleView];
+  titleResizeHandle = [(PREditorRootViewController *)self titleResizeHandle];
+  inlineComplicationReticleView = [(PREditorRootViewController *)self inlineComplicationReticleView];
+  complicationSidebarReticleView = [(PREditorRootViewController *)self complicationSidebarReticleView];
+  [titleReticleView setAlpha:v12];
+  [titleResizeHandle setAlpha:v11];
+  [inlineComplicationReticleView setAlpha:v13];
+  [complicationSidebarReticleView setAlpha:v9];
+  [inlineComplicationReticleView setAlpha:v13];
+  editor = [(PREditorRootViewController *)self editor];
+  [editor setShowsEditingReticles:v10];
 
   if (PREditingSupportsLiveBlurs())
   {
-    [v26 setActive:v5];
-    [v17 setActive:v4 == 1];
-    [v18 setActive:v4 == 3];
+    [titleReticleView setActive:isTitleReticleActive];
+    [inlineComplicationReticleView setActive:focusedComplicationElement == 1];
+    [complicationSidebarReticleView setActive:focusedComplicationElement == 3];
   }
 
   [(PREditorRootViewController *)self _updateComplicationSidebarEmptyViewVisibility];
 }
 
-- (void)setContentOverlayView:(id)a3
+- (void)setContentOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentOverlayView = self->_contentOverlayView;
-  if (contentOverlayView != v5)
+  if (contentOverlayView != viewCopy)
   {
-    v19 = v5;
+    v19 = viewCopy;
     v7 = contentOverlayView;
-    v8 = [(PREditorRootViewController *)self scrollView];
+    scrollView = [(PREditorRootViewController *)self scrollView];
     [(UIView *)v19 bounds];
     [(UIView *)v19 setFrame:?];
-    objc_storeStrong(&self->_contentOverlayView, a3);
-    v9 = [(PREditorRootViewController *)self areControlsHidden];
+    objc_storeStrong(&self->_contentOverlayView, view);
+    areControlsHidden = [(PREditorRootViewController *)self areControlsHidden];
     v10 = 1.0;
-    if (v9)
+    if (areControlsHidden)
     {
       v10 = 0.0;
     }
 
     [(UIView *)v19 setAlpha:v10];
-    if ([(PREditorRootViewController *)self isViewLoaded]&& v8)
+    if ([(PREditorRootViewController *)self isViewLoaded]&& scrollView)
     {
-      v11 = [(UIView *)v7 superview];
+      superview = [(UIView *)v7 superview];
       [(UIView *)v7 removeFromSuperview];
       contentOverlayContainerView = self->_contentOverlayContainerView;
-      if (v11 == contentOverlayContainerView)
+      if (superview == contentOverlayContainerView)
       {
         [(UIView *)contentOverlayContainerView addSubview:v19];
       }
 
       else
       {
-        v13 = [(UIView *)contentOverlayContainerView subviews];
-        v14 = [v13 firstObject];
+        subviews = [(UIView *)contentOverlayContainerView subviews];
+        firstObject = [subviews firstObject];
         v15 = objc_opt_class();
-        v16 = v14;
+        v16 = firstObject;
         if (v15)
         {
           if (objc_opt_isKindOfClass())
@@ -4662,37 +4662,37 @@ LABEL_17:
       }
     }
 
-    v5 = v19;
+    viewCopy = v19;
   }
 }
 
-- (void)scrollToLook:(id)a3 animated:(BOOL)a4
+- (void)scrollToLook:(id)look animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PREditorRootViewController *)self looks];
-  v8 = [v7 indexOfObject:v6];
+  animatedCopy = animated;
+  lookCopy = look;
+  looks = [(PREditorRootViewController *)self looks];
+  v8 = [looks indexOfObject:lookCopy];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(PREditorRootViewController *)self scrollToLookAtIndex:v8 animated:v4];
+    [(PREditorRootViewController *)self scrollToLookAtIndex:v8 animated:animatedCopy];
   }
 }
 
-- (void)scrollToLookAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)scrollToLookAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(PREditorRootViewController *)self scrollView];
-  [(PREditorRootViewController *)self scrollContentOffsetForLookAtIndex:a3];
-  [v7 setContentOffset:v4 animated:?];
+  animatedCopy = animated;
+  scrollView = [(PREditorRootViewController *)self scrollView];
+  [(PREditorRootViewController *)self scrollContentOffsetForLookAtIndex:index];
+  [scrollView setContentOffset:animatedCopy animated:?];
 }
 
-- (CGPoint)scrollContentOffsetForLook:(id)a3
+- (CGPoint)scrollContentOffsetForLook:(id)look
 {
-  v4 = a3;
-  v5 = [(PREditorRootViewController *)self looks];
-  v6 = [v5 indexOfObject:v4];
+  lookCopy = look;
+  looks = [(PREditorRootViewController *)self looks];
+  v6 = [looks indexOfObject:lookCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4710,34 +4710,34 @@ LABEL_17:
   return result;
 }
 
-- (CGPoint)scrollContentOffsetForLookAtIndex:(unint64_t)a3
+- (CGPoint)scrollContentOffsetForLookAtIndex:(unint64_t)index
 {
-  v5 = [(PREditorRootViewController *)self scrollView];
-  [v5 frame];
+  scrollView = [(PREditorRootViewController *)self scrollView];
+  [scrollView frame];
   Width = CGRectGetWidth(v11);
-  if ([v5 effectiveUserInterfaceLayoutDirection])
+  if ([scrollView effectiveUserInterfaceLayoutDirection])
   {
-    v7 = [(PREditorRootViewController *)self looks];
-    a3 = [v7 count] + ~a3;
+    looks = [(PREditorRootViewController *)self looks];
+    index = [looks count] + ~index;
   }
 
   v8 = 0.0;
-  v9 = Width * a3;
+  v9 = Width * index;
   result.y = v8;
   result.x = v9;
   return result;
 }
 
-- (id)lookAtScrollContentOffset:(CGPoint)a3 fractionOfDistanceThroughLook:(double *)a4
+- (id)lookAtScrollContentOffset:(CGPoint)offset fractionOfDistanceThroughLook:(double *)look
 {
-  x = a3.x;
-  v7 = [(PREditorRootViewController *)self scrollView:a3.x];
+  x = offset.x;
+  v7 = [(PREditorRootViewController *)self scrollView:offset.x];
   [v7 frame];
   Width = CGRectGetWidth(v20);
   __y = 0.0;
   v9 = modf(x / Width, &__y);
-  v10 = [(PREditorRootViewController *)self looks];
-  v11 = [v10 count];
+  looks = [(PREditorRootViewController *)self looks];
+  v11 = [looks count];
   v12 = 0;
   v13 = __y;
   if (__y >= 0.0)
@@ -4761,19 +4761,19 @@ LABEL_17:
     v15 = v12;
   }
 
-  v16 = [v10 objectAtIndex:{v15, v13}];
-  if (a4)
+  v16 = [looks objectAtIndex:{v15, v13}];
+  if (look)
   {
-    *a4 = v9;
+    *look = v9;
   }
 
   return v16;
 }
 
-- (unint64_t)lookIndexForContentOffset:(CGPoint)a3
+- (unint64_t)lookIndexForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  v4 = [(PREditorRootViewController *)self scrollView:a3.x];
+  x = offset.x;
+  v4 = [(PREditorRootViewController *)self scrollView:offset.x];
   [v4 frame];
   v5 = x / CGRectGetWidth(v8);
   v6 = vcvtms_u32_f32(v5);
@@ -4781,38 +4781,38 @@ LABEL_17:
   return v6;
 }
 
-- (unint64_t)lookIndexForViewIndex:(unint64_t)a3
+- (unint64_t)lookIndexForViewIndex:(unint64_t)index
 {
-  v5 = [(PREditorRootViewController *)self view];
-  v6 = [v5 effectiveUserInterfaceLayoutDirection];
+  view = [(PREditorRootViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v6)
+  if (effectiveUserInterfaceLayoutDirection)
   {
-    v7 = [(PREditorRootViewController *)self looks];
-    a3 = [v7 count] + ~a3;
+    looks = [(PREditorRootViewController *)self looks];
+    index = [looks count] + ~index;
   }
 
-  return a3;
+  return index;
 }
 
-- (unint64_t)viewIndexForLookIndex:(unint64_t)a3
+- (unint64_t)viewIndexForLookIndex:(unint64_t)index
 {
-  v5 = [(PREditorRootViewController *)self view];
-  v6 = [v5 effectiveUserInterfaceLayoutDirection];
+  view = [(PREditorRootViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v6)
+  if (effectiveUserInterfaceLayoutDirection)
   {
-    v7 = [(PREditorRootViewController *)self looks];
-    a3 = [v7 count] + ~a3;
+    looks = [(PREditorRootViewController *)self looks];
+    index = [looks count] + ~index;
   }
 
-  return a3;
+  return index;
 }
 
-- (CGRect)frameForPageAtViewIndex:(unint64_t)a3
+- (CGRect)frameForPageAtViewIndex:(unint64_t)index
 {
-  v4 = [(PREditorRootViewController *)self view];
-  [v4 bounds];
+  view = [(PREditorRootViewController *)self view];
+  [view bounds];
   x = v15.origin.x;
   y = v15.origin.y;
   width = v15.size.width;
@@ -4825,7 +4825,7 @@ LABEL_17:
   v10 = CGRectGetHeight(v16);
 
   v11 = 0.0;
-  v12 = v9 * a3;
+  v12 = v9 * index;
   v13 = v9;
   v14 = v10;
   result.size.height = v14;
@@ -4835,9 +4835,9 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)frameForPageAtLookIndex:(unint64_t)a3
+- (CGRect)frameForPageAtLookIndex:(unint64_t)index
 {
-  v4 = [(PREditorRootViewController *)self viewIndexForLookIndex:a3];
+  v4 = [(PREditorRootViewController *)self viewIndexForLookIndex:index];
 
   [(PREditorRootViewController *)self frameForPageAtViewIndex:v4];
   result.size.height = v8;
@@ -4847,65 +4847,65 @@ LABEL_17:
   return result;
 }
 
-- (void)requireGestureRecognizerToFailForLooksScroll:(id)a3
+- (void)requireGestureRecognizerToFailForLooksScroll:(id)scroll
 {
   scrollView = self->_scrollView;
-  v4 = a3;
-  v5 = [(UIScrollView *)scrollView panGestureRecognizer];
-  [v5 requireGestureRecognizerToFail:v4];
+  scrollCopy = scroll;
+  panGestureRecognizer = [(UIScrollView *)scrollView panGestureRecognizer];
+  [panGestureRecognizer requireGestureRecognizerToFail:scrollCopy];
 }
 
 - (void)currentLookDidChange
 {
-  v7 = [(PREditorRootViewController *)self currentLook];
-  v3 = [(PREditorRootViewController *)self looks];
-  v4 = [v3 indexOfObject:v7];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  looks = [(PREditorRootViewController *)self looks];
+  v4 = [looks indexOfObject:currentLook];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
     if (v4 < [(NSArray *)self->_looks count])
     {
       [(PREditorRootViewController *)self updateLookMenu];
-      v6 = [(PREditorRootViewController *)self pageControl];
-      [v6 setCurrentPage:v5];
+      pageControl = [(PREditorRootViewController *)self pageControl];
+      [pageControl setCurrentPage:v5];
     }
   }
 }
 
-- (void)pageControlCurrentPageDidChange:(id)a3
+- (void)pageControlCurrentPageDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 currentPage];
-  v6 = [v4 interactionState];
+  changeCopy = change;
+  currentPage = [changeCopy currentPage];
+  interactionState = [changeCopy interactionState];
 
-  v7 = [(PREditorRootViewController *)self scrollView];
-  [(PREditorRootViewController *)self scrollContentOffsetForLookAtIndex:v5];
-  [v7 setContentOffset:v6 != 2 animated:?];
+  scrollView = [(PREditorRootViewController *)self scrollView];
+  [(PREditorRootViewController *)self scrollContentOffsetForLookAtIndex:currentPage];
+  [scrollView setContentOffset:interactionState != 2 animated:?];
 }
 
-- (void)titleViewTapped:(id)a3
+- (void)titleViewTapped:(id)tapped
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  [v3 presentTimeStyleEditor];
+  editor = [(PREditorRootViewController *)self editor];
+  [editor presentTimeStyleEditor];
 }
 
 - (CGRect)_titleViewFrame
 {
-  v3 = [(PREditorRootViewController *)self editorElementLayoutController];
-  v4 = [(PREditorRootViewController *)self view];
-  [v4 bounds];
+  editorElementLayoutController = [(PREditorRootViewController *)self editorElementLayoutController];
+  view = [(PREditorRootViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PREditorRootViewController *)self configuredProperties];
-  v14 = [v13 titleStyleConfiguration];
-  v15 = [(PREditorRootViewController *)self editor];
-  v16 = [v15 titleString];
-  v17 = [v14 effectiveTitleLayoutForText:v16];
+  configuredProperties = [(PREditorRootViewController *)self configuredProperties];
+  titleStyleConfiguration = [configuredProperties titleStyleConfiguration];
+  editor = [(PREditorRootViewController *)self editor];
+  titleString = [editor titleString];
+  v17 = [titleStyleConfiguration effectiveTitleLayoutForText:titleString];
 
-  v18 = [v3 frameAttributesForElements:1 variant:2 titleLayout:v17 withBoundingRect:{v6, v8, v10, v12}];
+  v18 = [editorElementLayoutController frameAttributesForElements:1 variant:2 titleLayout:v17 withBoundingRect:{v6, v8, v10, v12}];
   [v18 rect];
   v20 = v19;
   v22 = v21;
@@ -4923,42 +4923,42 @@ LABEL_17:
   return result;
 }
 
-- (void)_titleViewResizeGestureDidUpdate:(id)a3
+- (void)_titleViewResizeGestureDidUpdate:(id)update
 {
-  v17 = a3;
+  updateCopy = update;
   v4 = self->_titleResizeHandle;
-  v5 = [v17 state];
-  if ((v5 - 3) >= 3)
+  state = [updateCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
-      v13 = [(PREditorRootViewController *)self view];
-      [v17 locationInView:v13];
+      view = [(PREditorRootViewController *)self view];
+      [updateCopy locationInView:view];
       v15 = v14;
 
       [(PREditorRootViewController *)self _titleViewFrame];
       self->_currentResizeTimeHeight = v15 - CGRectGetMinY(v19);
-      v16 = [(PREditorRootViewController *)self editor];
-      [v16 setAdaptiveTimeHeightUserConfigured:1];
+      editor = [(PREditorRootViewController *)self editor];
+      [editor setAdaptiveTimeHeightUserConfigured:1];
 
       [(PREditorRootViewController *)self _updateDesiredTimeStretchInEditor];
     }
 
-    else if (v5 == 1)
+    else if (state == 1)
     {
       [(SBHIconResizeHandle *)v4 setHighlighted:1];
       [(SBHIconResizeHandle *)v4 setResizing:1];
-      v7 = [(PREditorRootViewController *)self titleReticleView];
-      [v7 setActive:1];
+      titleReticleView = [(PREditorRootViewController *)self titleReticleView];
+      [titleReticleView setActive:1];
 
-      v8 = [(PREditorRootViewController *)self view];
-      [v17 locationInView:v8];
+      view2 = [(PREditorRootViewController *)self view];
+      [updateCopy locationInView:view2];
       v10 = v9;
 
       self->_currentResizeInitialTouchLocation = v10;
       self->_timeResizeGestureActive = 1;
-      v11 = [(PREditorRootViewController *)self editor];
-      v12 = [v11 disableSwitchingLooksForReason:@"timeResizing"];
+      editor2 = [(PREditorRootViewController *)self editor];
+      v12 = [editor2 disableSwitchingLooksForReason:@"timeResizing"];
       [(PREditorRootViewController *)self setTimeResizeLookSwitchingDisableAssertion:v12];
     }
   }
@@ -4967,8 +4967,8 @@ LABEL_17:
   {
     [(SBHIconResizeHandle *)v4 setHighlighted:0];
     [(SBHIconResizeHandle *)v4 setResizing:0];
-    v6 = [(PREditorRootViewController *)self titleReticleView];
-    [v6 setActive:0];
+    titleReticleView2 = [(PREditorRootViewController *)self titleReticleView];
+    [titleReticleView2 setActive:0];
 
     self->_timeResizeGestureActive = 0;
     [(PREditorRootViewController *)self setTimeResizeLookSwitchingDisableAssertion:0];
@@ -4979,8 +4979,8 @@ LABEL_17:
 
 - (double)_minimumAdaptiveTimeTextHeight
 {
-  v3 = [(PREditorRootViewController *)self currentLook];
-  v4 = [(PREditorRootViewController *)self timeViewControllerForLook:v3];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v4 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook];
 
   objc_opt_class();
   v5 = 12.0;
@@ -4995,8 +4995,8 @@ LABEL_17:
 
 - (double)_maximumAdaptiveTimeTextHeight
 {
-  v3 = [(PREditorRootViewController *)self currentLook];
-  v4 = [(PREditorRootViewController *)self timeViewControllerForLook:v3];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v4 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -5010,9 +5010,9 @@ LABEL_17:
     v6 = 500.0;
   }
 
-  v7 = [(PREditorRootViewController *)self editor];
-  v8 = [v7 preferences];
-  [v8 maximumAdaptiveTimeHeight];
+  editor = [(PREditorRootViewController *)self editor];
+  preferences = [editor preferences];
+  [preferences maximumAdaptiveTimeHeight];
   v10 = v9;
 
   if (v10 != 1.79769313e308)
@@ -5030,22 +5030,22 @@ LABEL_17:
 
 - (void)_updateDesiredTimeStretchInEditor
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  [v3 setIgnoringSalientContentForTimeHeight:0];
+  editor = [(PREditorRootViewController *)self editor];
+  [editor setIgnoringSalientContentForTimeHeight:0];
 
-  v4 = [(PREditorRootViewController *)self interfaceOrientation];
+  interfaceOrientation = [(PREditorRootViewController *)self interfaceOrientation];
   currentResizeTimeHeight = self->_currentResizeTimeHeight;
 
-  [(PREditorRootViewController *)self _updateForDesiredTimeMaxHeight:v4 orientation:currentResizeTimeHeight];
+  [(PREditorRootViewController *)self _updateForDesiredTimeMaxHeight:interfaceOrientation orientation:currentResizeTimeHeight];
 }
 
-- (void)_updateForDesiredTimeMaxHeight:(double)a3 orientation:(int64_t)a4
+- (void)_updateForDesiredTimeMaxHeight:(double)height orientation:(int64_t)orientation
 {
-  v22 = [(PREditorRootViewController *)self editor];
-  v7 = [v22 preferences];
-  v8 = [v7 adaptiveTimeMode];
+  editor = [(PREditorRootViewController *)self editor];
+  preferences = [editor preferences];
+  adaptiveTimeMode = [preferences adaptiveTimeMode];
 
-  if (v8 < 3 || v8 == 4)
+  if (adaptiveTimeMode < 3 || adaptiveTimeMode == 4)
   {
     [(PREditorRootViewController *)self _maximumAdaptiveTimeTextHeight];
     v11 = v10;
@@ -5053,8 +5053,8 @@ LABEL_17:
     v13 = v12;
     [(PREditorRootViewController *)self _titleViewFrame];
     MinY = CGRectGetMinY(v24);
-    v15 = [(PREditorRootViewController *)self view];
-    [v15 frame];
+    view = [(PREditorRootViewController *)self view];
+    [view frame];
     v17 = v16;
 
     if (v11 <= v13)
@@ -5066,79 +5066,79 @@ LABEL_17:
 
     else
     {
-      if (v11 <= a3)
+      if (v11 <= height)
       {
-        v18 = v11;
+        heightCopy = v11;
       }
 
       else
       {
-        v18 = a3;
+        heightCopy = height;
       }
 
-      if (v13 >= v18)
+      if (v13 >= heightCopy)
       {
-        v18 = v13;
+        heightCopy = v13;
       }
 
-      v19 = (MinY + v18) / v17;
-      self->_timeResizeGestureHeight = a3;
+      v19 = (MinY + heightCopy) / v17;
+      self->_timeResizeGestureHeight = height;
     }
 
-    [v22 _updateForPreferredTimeMaxY:a4 orientation:v19];
+    [editor _updateForPreferredTimeMaxY:orientation orientation:v19];
   }
 
   else
   {
-    v20 = v22;
-    if (v8 != 3)
+    v20 = editor;
+    if (adaptiveTimeMode != 3)
     {
       goto LABEL_18;
     }
 
-    [v22 _updateForPreferredTimeMaxY:30 orientations:0.0];
+    [editor _updateForPreferredTimeMaxY:30 orientations:0.0];
   }
 
-  v20 = v22;
+  v20 = editor;
 LABEL_18:
 }
 
-- (void)updateForDesiredTimeMaxY:(double)a3 orientation:(int64_t)a4
+- (void)updateForDesiredTimeMaxY:(double)y orientation:(int64_t)orientation
 {
   [(PREditorRootViewController *)self _titleViewFrame];
-  v7 = a3 - CGRectGetMinY(v9);
+  v7 = y - CGRectGetMinY(v9);
 
-  [(PREditorRootViewController *)self _updateForDesiredTimeMaxHeight:a4 orientation:v7];
+  [(PREditorRootViewController *)self _updateForDesiredTimeMaxHeight:orientation orientation:v7];
 }
 
-- (void)setTimeResizeLookSwitchingDisableAssertion:(id)a3
+- (void)setTimeResizeLookSwitchingDisableAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   timeResizeLookSwitchingDisableAssertion = self->_timeResizeLookSwitchingDisableAssertion;
-  if (timeResizeLookSwitchingDisableAssertion != v4)
+  if (timeResizeLookSwitchingDisableAssertion != assertionCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = assertionCopy;
+    v6 = assertionCopy;
     v7 = self->_timeResizeLookSwitchingDisableAssertion;
     self->_timeResizeLookSwitchingDisableAssertion = v6;
     v8 = timeResizeLookSwitchingDisableAssertion;
 
     [(PRInvalidatable *)v8 invalidate];
-    v4 = v9;
+    assertionCopy = v9;
   }
 }
 
-- (void)enumerateTimeViewControllersUsingBlock:(id)a3
+- (void)enumerateTimeViewControllersUsingBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   [(PREditorRootViewController *)self loadViewIfNeeded];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(PREditorRootViewController *)self looks];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  looks = [(PREditorRootViewController *)self looks];
+  v6 = [looks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5150,20 +5150,20 @@ LABEL_18:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(looks);
         }
 
         v10 = [(PREditorRootViewController *)self timeViewControllerForLook:*(*(&v11 + 1) + 8 * v9)];
         if (v10)
         {
-          v4[2](v4, v10);
+          blockCopy[2](blockCopy, v10);
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [looks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -5172,158 +5172,158 @@ LABEL_18:
 
 - (id)currentLook
 {
-  v2 = [(PREditorRootViewController *)self editor];
-  v3 = [v2 currentLook];
+  editor = [(PREditorRootViewController *)self editor];
+  currentLook = [editor currentLook];
 
-  return v3;
+  return currentLook;
 }
 
 - (id)configuredProperties
 {
-  v2 = [(PREditorRootViewController *)self editor];
-  v3 = [v2 configuredProperties];
+  editor = [(PREditorRootViewController *)self editor];
+  configuredProperties = [editor configuredProperties];
 
-  return v3;
+  return configuredProperties;
 }
 
-- (id)defaultTitleStyleConfigurationForLook:(id)a3
+- (id)defaultTitleStyleConfigurationForLook:(id)look
 {
-  v4 = a3;
-  v5 = [(PREditorRootViewController *)self editor];
-  v6 = [v5 defaultTitleStyleConfigurationForLook:v4];
+  lookCopy = look;
+  editor = [(PREditorRootViewController *)self editor];
+  v6 = [editor defaultTitleStyleConfigurationForLook:lookCopy];
 
   return v6;
 }
 
-- (id)effectiveTitleStyleConfigurationForLook:(id)a3
+- (id)effectiveTitleStyleConfigurationForLook:(id)look
 {
-  v4 = a3;
-  v5 = [(PREditorRootViewController *)self editor];
-  v6 = [v5 effectiveTitleStyleConfigurationForLook:v4];
+  lookCopy = look;
+  editor = [(PREditorRootViewController *)self editor];
+  v6 = [editor effectiveTitleStyleConfigurationForLook:lookCopy];
 
   return v6;
 }
 
 - (id)extensionBundleURL
 {
-  v2 = [(PREditorRootViewController *)self editor];
-  v3 = [v2 extensionBundleURL];
+  editor = [(PREditorRootViewController *)self editor];
+  extensionBundleURL = [editor extensionBundleURL];
 
-  return v3;
+  return extensionBundleURL;
 }
 
-- (void)didTransitionToLook:(id)a3 method:(int64_t)a4 progress:(double)a5
+- (void)didTransitionToLook:(id)look method:(int64_t)method progress:(double)progress
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  lookCopy = look;
   v9 = PRLogEditing();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 identifier];
+    identifier = [lookCopy identifier];
     *buf = 138543874;
-    v28 = v10;
+    v28 = identifier;
     v29 = 2048;
-    v30 = a5;
+    progressCopy = progress;
     v31 = 1024;
-    LODWORD(v32) = a4 == 1;
+    LODWORD(v32) = method == 1;
     _os_log_impl(&dword_1A8AA7000, v9, OS_LOG_TYPE_DEFAULT, "did transition to look '%{public}@', progress: %f, discrete: %{BOOL}u", buf, 0x1Cu);
   }
 
-  v11 = [(PREditorRootViewController *)self lookTransition];
-  v12 = [(PREditorRootViewController *)self currentLook];
-  if (([v11 matchesCurrentLook:v12 destinationLook:v8] & 1) == 0)
+  lookTransition = [(PREditorRootViewController *)self lookTransition];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  if (([lookTransition matchesCurrentLook:currentLook destinationLook:lookCopy] & 1) == 0)
   {
-    v13 = [v11 currentLook];
-    v14 = [v11 destinationLook];
+    currentLook2 = [lookTransition currentLook];
+    destinationLook = [lookTransition destinationLook];
     v15 = PRLogEditing();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      [v13 identifier];
-      v16 = v26 = v13;
-      [v14 identifier];
-      v17 = v25 = v14;
-      v18 = [v12 identifier];
-      v19 = [v8 identifier];
+      [currentLook2 identifier];
+      v16 = v26 = currentLook2;
+      [destinationLook identifier];
+      v17 = v25 = destinationLook;
+      identifier2 = [currentLook identifier];
+      identifier3 = [lookCopy identifier];
       *buf = 138544130;
       v28 = v16;
       v29 = 2114;
-      v30 = *&v17;
+      progressCopy = *&v17;
       v31 = 2114;
-      v32 = v18;
+      v32 = identifier2;
       v33 = 2114;
-      v34 = v19;
+      v34 = identifier3;
       _os_log_impl(&dword_1A8AA7000, v15, OS_LOG_TYPE_DEFAULT, "Current coordinated transition ('%{public}@' -> '%{public}@') does not match '%{public}@' -> '%{public}@', invalidating", buf, 0x2Au);
 
-      v14 = v25;
-      v13 = v26;
+      destinationLook = v25;
+      currentLook2 = v26;
     }
 
-    v20 = [v11 destinationLook];
-    if ([v8 isEqual:v20])
+    destinationLook2 = [lookTransition destinationLook];
+    if ([lookCopy isEqual:destinationLook2])
     {
     }
 
     else
     {
-      v21 = [v11 destinationLook];
-      v22 = [v12 isEqual:v21];
+      destinationLook3 = [lookTransition destinationLook];
+      v22 = [currentLook isEqual:destinationLook3];
 
       if (!v22)
       {
-        [v11 cancelInteractiveTransition];
+        [lookTransition cancelInteractiveTransition];
         goto LABEL_13;
       }
     }
 
-    [v11 finishInteractiveTransition];
+    [lookTransition finishInteractiveTransition];
 LABEL_13:
 
 LABEL_14:
-    v11 = [(PREditorRootViewController *)self beginTransitionToLook:v8 method:a4];
+    lookTransition = [(PREditorRootViewController *)self beginTransitionToLook:lookCopy method:method];
     goto LABEL_15;
   }
 
-  if (!v11)
+  if (!lookTransition)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
-  [v11 updateInteractiveTransition:a5];
-  v23 = [(PREditorRootViewController *)self editor];
-  v24 = [v23 delegate];
-  if (a5 >= 0.0 && a5 <= 1.0 && (objc_opt_respondsToSelector() & 1) != 0)
+  [lookTransition updateInteractiveTransition:progress];
+  editor = [(PREditorRootViewController *)self editor];
+  delegate = [editor delegate];
+  if (progress >= 0.0 && progress <= 1.0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v24 editor:v23 didTransitionToLook:v8 progress:a5];
+    [delegate editor:editor didTransitionToLook:lookCopy progress:progress];
   }
 }
 
-- (id)beginTransitionToLook:(id)a3 method:(int64_t)a4
+- (id)beginTransitionToLook:(id)look method:(int64_t)method
 {
   v70 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lookCopy = look;
   v6 = PRLogEditing();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    identifier = [lookCopy identifier];
     *buf = 138543362;
-    v69 = v7;
+    v69 = identifier;
     _os_log_impl(&dword_1A8AA7000, v6, OS_LOG_TYPE_DEFAULT, "Begin coordinated transition to look '%{public}@'", buf, 0xCu);
   }
 
-  v8 = [(PREditorRootViewController *)self currentLook];
-  v9 = [[PREditorLookTransition alloc] initWithCurrentLook:v8 destinationLook:v5];
-  v10 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v8];
-  v11 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:v5];
-  v12 = [(PREditorRootViewController *)self extensionBundleURL];
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  v9 = [[PREditorLookTransition alloc] initWithCurrentLook:currentLook destinationLook:lookCopy];
+  v10 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:currentLook];
+  v11 = [(PREditorRootViewController *)self effectiveTitleStyleConfigurationForLook:lookCopy];
+  extensionBundleURL = [(PREditorRootViewController *)self extensionBundleURL];
   v61 = v10;
-  v13 = [v10 vibrancyConfigurationWithExtensionBundleURL:v12];
-  v62 = [v11 vibrancyConfigurationWithExtensionBundleURL:v12];
+  v13 = [v10 vibrancyConfigurationWithExtensionBundleURL:extensionBundleURL];
+  v62 = [v11 vibrancyConfigurationWithExtensionBundleURL:extensionBundleURL];
   v55 = BSEqualObjects();
-  [(PREditorTitleViewControllerCoordinator *)self->_titleViewControllerCoordinator prepareInteractiveTransitionForStartingLook:v8];
-  v52 = [(PREditorTitleViewControllerCoordinator *)self->_titleViewControllerCoordinator cachingVibrancyProviderForLook:v8];
-  v14 = [(PREditorRootViewController *)self timeViewControllerForLook:v8];
-  v15 = [(PREditorRootViewController *)self timeViewControllerForLook:v5];
+  [(PREditorTitleViewControllerCoordinator *)self->_titleViewControllerCoordinator prepareInteractiveTransitionForStartingLook:currentLook];
+  v52 = [(PREditorTitleViewControllerCoordinator *)self->_titleViewControllerCoordinator cachingVibrancyProviderForLook:currentLook];
+  v14 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook];
+  v15 = [(PREditorRootViewController *)self timeViewControllerForLook:lookCopy];
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
   v63[2] = __59__PREditorRootViewController_beginTransitionToLook_method___block_invoke;
@@ -5332,13 +5332,13 @@ LABEL_15:
   v64 = v16;
   v58 = v15;
   v65 = v58;
-  v66 = self;
+  selfCopy = self;
   v17 = v9;
   v67 = v17;
   v18 = MEMORY[0x1AC574C60](v63);
-  v54 = v12;
+  v54 = extensionBundleURL;
   v57 = v18;
-  if (a4 == 1)
+  if (method == 1)
   {
     (*(v18 + 16))();
     v19 = v11;
@@ -5348,7 +5348,7 @@ LABEL_9:
   }
 
   v19 = v11;
-  if (![(PREditorRootViewController *)self shouldFixTitleBetweenTransitionFromTitleStyleConfiguration:v61 toTitleStyleConfiguration:v11 extensionBundleURL:v12])
+  if (![(PREditorRootViewController *)self shouldFixTitleBetweenTransitionFromTitleStyleConfiguration:v61 toTitleStyleConfiguration:v11 extensionBundleURL:extensionBundleURL])
   {
     v24 = [[PREditorSlidingTitleTransition alloc] initWithSourceTitleViewController:v16 destinationTitleViewController:v58];
     [(PREditorLookTransition *)v17 setTitleScrollingTransition:v24];
@@ -5360,8 +5360,8 @@ LABEL_9:
   v20 = v13;
   if ((v55 & 1) == 0)
   {
-    v21 = [v16 pr_baseFont];
-    [(PREditorTitleViewControllerCoordinator *)self->_titleViewControllerCoordinator beginInteractiveTransitionForStartingLook:v8 toBaseFont:v21 vibrancyConfiguration:v62];
+    pr_baseFont = [v16 pr_baseFont];
+    [(PREditorTitleViewControllerCoordinator *)self->_titleViewControllerCoordinator beginInteractiveTransitionForStartingLook:currentLook toBaseFont:pr_baseFont vibrancyConfiguration:v62];
     v23 = v22 = v16;
     [(PREditorLookTransition *)v17 setTitleStyleTransition:v23];
 
@@ -5369,22 +5369,22 @@ LABEL_9:
   }
 
 LABEL_10:
-  v25 = [v8 displayName];
-  v26 = [v5 displayName];
-  v27 = [(PREditorRootViewController *)self lookNameLabel];
-  v53 = v25;
-  [v27 setText:v25];
-  if (v26)
+  displayName = [currentLook displayName];
+  displayName2 = [lookCopy displayName];
+  lookNameLabel = [(PREditorRootViewController *)self lookNameLabel];
+  v53 = displayName;
+  [lookNameLabel setText:displayName];
+  if (displayName2)
   {
-    [v27 beginInteractiveTransitionToText:v26];
-    v29 = v28 = v27;
+    [lookNameLabel beginInteractiveTransitionToText:displayName2];
+    v29 = v28 = lookNameLabel;
     [(PREditorLookTransition *)v17 setLookNameTransition:v29];
 
-    v27 = v28;
+    lookNameLabel = v28;
   }
 
-  v51 = v26;
-  if (a4 == 1)
+  v51 = displayName2;
+  if (method == 1)
   {
     v30 = 0;
   }
@@ -5402,24 +5402,24 @@ LABEL_10:
 
   else
   {
-    v60 = v27;
-    v33 = [v61 titleContentStyle];
-    v34 = [v33 type];
+    v60 = lookNameLabel;
+    titleContentStyle = [v61 titleContentStyle];
+    type = [titleContentStyle type];
 
-    if (v34 == 1)
+    if (type == 1)
     {
       v35 = [objc_alloc(MEMORY[0x1E698E810]) initWithEffectType:2 backgroundType:0 color:0];
 
       v20 = v35;
     }
 
-    v36 = [v19 titleContentStyle];
-    v37 = [v36 type];
+    titleContentStyle2 = [v19 titleContentStyle];
+    type2 = [titleContentStyle2 type];
 
-    v49 = v8;
-    v50 = v5;
+    v49 = currentLook;
+    v50 = lookCopy;
     v48 = v16;
-    if (v37 == 1)
+    if (type2 == 1)
     {
       v38 = [objc_alloc(MEMORY[0x1E698E810]) initWithEffectType:2 backgroundType:0 color:0];
     }
@@ -5433,22 +5433,22 @@ LABEL_10:
     v62 = v38;
     v56 = [[PREditorLookSwitchingComplicationTransition alloc] initWithFromVibrancyConfiguration:v20 toVibrancyConfiguration:v38 viewController:self cachingVibrancyTransitionProvider:v52];
     [(PREditorLookTransition *)v17 setComplicationTransition:v56];
-    v39 = [(PREditorRootViewController *)self subtitleViewController];
-    v40 = [(PREditorRootViewController *)self extensionBundleURL];
-    v41 = [(PREditorRootViewController *)self editor];
-    v42 = [v41 posterRole];
+    subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+    extensionBundleURL2 = [(PREditorRootViewController *)self extensionBundleURL];
+    editor = [(PREditorRootViewController *)self editor];
+    posterRole = [editor posterRole];
 
-    v43 = [v19 effectiveTimeFontWithExtensionBundleURL:v40 forRole:v42];
-    [v39 beginInteractiveTransitionToBaseFont:v43 vibrancyConfiguration:v38 cachingVibrancyTransitionProvider:v52];
+    v43 = [v19 effectiveTimeFontWithExtensionBundleURL:extensionBundleURL2 forRole:posterRole];
+    [subtitleViewController beginInteractiveTransitionToBaseFont:v43 vibrancyConfiguration:v38 cachingVibrancyTransitionProvider:v52];
     v45 = v44 = v20;
     [(PREditorLookTransition *)v17 setSubtitleStyleTransition:v45];
 
     v20 = v44;
-    v8 = v49;
-    v5 = v50;
+    currentLook = v49;
+    lookCopy = v50;
     v31 = v54;
     v16 = v48;
-    v27 = v60;
+    lookNameLabel = v60;
   }
 
   [(PREditorRootViewController *)self setLookTransition:v17];
@@ -5468,23 +5468,23 @@ void __59__PREditorRootViewController_beginTransitionToLook_method___block_invok
   [*(a1 + 56) setTitleScrollingTransition:v6];
 }
 
-- (void)didFinishTransitionToLook:(id)a3
+- (void)didFinishTransitionToLook:(id)look
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lookCopy = look;
   v5 = PRLogEditing();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [lookCopy identifier];
     v20 = 138543362;
-    v21 = v6;
+    v21 = identifier;
     _os_log_impl(&dword_1A8AA7000, v5, OS_LOG_TYPE_DEFAULT, "Did finish transition to look '%{public}@'", &v20, 0xCu);
   }
 
-  v7 = [(PREditorRootViewController *)self lookTransition];
-  v8 = [v7 destinationLook];
-  v9 = [v4 isEqual:v8];
-  if (v7)
+  lookTransition = [(PREditorRootViewController *)self lookTransition];
+  destinationLook = [lookTransition destinationLook];
+  v9 = [lookCopy isEqual:destinationLook];
+  if (lookTransition)
   {
     v10 = PRLogEditing();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -5496,30 +5496,30 @@ void __59__PREditorRootViewController_beginTransitionToLook_method___block_invok
         _os_log_impl(&dword_1A8AA7000, v10, OS_LOG_TYPE_DEFAULT, "Finishing transition object successfully", &v20, 2u);
       }
 
-      [v7 finishInteractiveTransition];
+      [lookTransition finishInteractiveTransition];
     }
 
     else
     {
       if (v11)
       {
-        v12 = [v8 identifier];
+        identifier2 = [destinationLook identifier];
         v20 = 138543362;
-        v21 = v12;
+        v21 = identifier2;
         _os_log_impl(&dword_1A8AA7000, v10, OS_LOG_TYPE_DEFAULT, "Canceling transition object (object look: '%{public}@')", &v20, 0xCu);
       }
 
-      [v7 cancelInteractiveTransition];
+      [lookTransition cancelInteractiveTransition];
     }
 
     [(PREditorRootViewController *)self setLookTransition:0];
   }
 
   [(PREditorRootViewController *)self _updateOverlayHostViewControllerLuminanceFromCurrentLook];
-  v13 = [(PREditorRootViewController *)self editor];
-  [v13 didFinishTransitionToLook:v4];
-  v14 = [v13 delegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  editor = [(PREditorRootViewController *)self editor];
+  [editor didFinishTransitionToLook:lookCopy];
+  delegate = [editor delegate];
+  if (destinationLook && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if (v9)
     {
@@ -5534,15 +5534,15 @@ void __59__PREditorRootViewController_beginTransitionToLook_method___block_invok
     v16 = PRLogEditing();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v8 identifier];
+      identifier3 = [destinationLook identifier];
       v20 = 138543618;
-      v21 = v17;
+      v21 = identifier3;
       v22 = 2048;
       v23 = v15;
       _os_log_impl(&dword_1A8AA7000, v16, OS_LOG_TYPE_DEFAULT, "Sending final didTransitionToLook delegate method with look '%{public}@', progress: %f", &v20, 0x16u);
     }
 
-    [v14 editor:v13 didTransitionToLook:v8 progress:v15];
+    [delegate editor:editor didTransitionToLook:destinationLook progress:v15];
   }
 
   if (objc_opt_respondsToSelector())
@@ -5550,68 +5550,68 @@ void __59__PREditorRootViewController_beginTransitionToLook_method___block_invok
     v18 = PRLogEditing();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v8 identifier];
+      identifier4 = [destinationLook identifier];
       v20 = 138543362;
-      v21 = v19;
+      v21 = identifier4;
       _os_log_impl(&dword_1A8AA7000, v18, OS_LOG_TYPE_DEFAULT, "Sending didFinishTransitionToLook delegate method with look '%{public}@'", &v20, 0xCu);
     }
 
-    [v14 editor:v13 didFinishTransitionToLook:v4];
+    [delegate editor:editor didFinishTransitionToLook:lookCopy];
   }
 
-  [v13 updateInjectedEditingClientSettings];
+  [editor updateInjectedEditingClientSettings];
 }
 
-- (BOOL)shouldFixTitleBetweenTransitionFromTitleStyleConfiguration:(id)a3 toTitleStyleConfiguration:(id)a4 extensionBundleURL:(id)a5
+- (BOOL)shouldFixTitleBetweenTransitionFromTitleStyleConfiguration:(id)configuration toTitleStyleConfiguration:(id)styleConfiguration extensionBundleURL:(id)l
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PREditorRootViewController *)self editor];
-  v12 = [v11 posterRole];
+  lCopy = l;
+  styleConfigurationCopy = styleConfiguration;
+  configurationCopy = configuration;
+  editor = [(PREditorRootViewController *)self editor];
+  posterRole = [editor posterRole];
 
-  v13 = [v10 effectiveTimeFontWithExtensionBundleURL:v8 forRole:v12];
+  v13 = [configurationCopy effectiveTimeFontWithExtensionBundleURL:lCopy forRole:posterRole];
 
-  v14 = [v9 effectiveTimeFontWithExtensionBundleURL:v8 forRole:v12];
+  v14 = [styleConfigurationCopy effectiveTimeFontWithExtensionBundleURL:lCopy forRole:posterRole];
 
-  LOBYTE(v9) = [v13 isEqual:v14];
-  return v9;
+  LOBYTE(styleConfigurationCopy) = [v13 isEqual:v14];
+  return styleConfigurationCopy;
 }
 
 - (void)forciblyFinishLookTransition
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditorRootViewController *)self lookTransition];
-  v4 = v3;
-  if (v3)
+  lookTransition = [(PREditorRootViewController *)self lookTransition];
+  v4 = lookTransition;
+  if (lookTransition)
   {
-    v5 = [v3 destinationLook];
+    destinationLook = [lookTransition destinationLook];
     v6 = PRLogEditing();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 identifier];
+      identifier = [destinationLook identifier];
       v12 = 138543362;
-      v13 = v7;
+      v13 = identifier;
       _os_log_impl(&dword_1A8AA7000, v6, OS_LOG_TYPE_DEFAULT, "Forcibly ending transition to look '%{public}@'", &v12, 0xCu);
     }
 
-    v8 = [(PREditorRootViewController *)self currentLook];
-    if (([v8 isEqual:v5] & 1) == 0)
+    currentLook = [(PREditorRootViewController *)self currentLook];
+    if (([currentLook isEqual:destinationLook] & 1) == 0)
     {
       v9 = PRLogEditing();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v5 identifier];
+        identifier2 = [destinationLook identifier];
         v12 = 138543362;
-        v13 = v10;
+        v13 = identifier2;
         _os_log_impl(&dword_1A8AA7000, v9, OS_LOG_TYPE_DEFAULT, "Changing current look while forcibly ending transition to look '%{public}@'", &v12, 0xCu);
       }
 
-      v11 = [(PREditorRootViewController *)self editor];
-      [v11 setCurrentLook:v5];
+      editor = [(PREditorRootViewController *)self editor];
+      [editor setCurrentLook:destinationLook];
     }
 
-    [(PREditorRootViewController *)self didFinishTransitionToLook:v5];
+    [(PREditorRootViewController *)self didFinishTransitionToLook:destinationLook];
   }
 }
 
@@ -5623,17 +5623,17 @@ void __59__PREditorRootViewController_beginTransitionToLook_method___block_invok
   return v4;
 }
 
-- (id)makeComplicationHostingSceneWithSpecification:(id)a3
+- (id)makeComplicationHostingSceneWithSpecification:(id)specification
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E699F7F8] pui_posterKitComplicationsWorkspace];
+  specificationCopy = specification;
+  pui_posterKitComplicationsWorkspace = [MEMORY[0x1E699F7F8] pui_posterKitComplicationsWorkspace];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__PREditorRootViewController_makeComplicationHostingSceneWithSpecification___block_invoke;
   v8[3] = &unk_1E7844240;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 pui_createScene:v8];
+  v9 = specificationCopy;
+  v5 = specificationCopy;
+  v6 = [pui_posterKitComplicationsWorkspace pui_createScene:v8];
 
   return v6;
 }
@@ -5662,12 +5662,12 @@ void __76__PREditorRootViewController_makeComplicationHostingSceneWithSpecificat
     return 0;
   }
 
-  v3 = [(PREditorRootViewController *)self editor];
-  v4 = [v3 posterRole];
-  if ([v4 isEqualToString:@"PRPosterRoleLockScreen"])
+  editor = [(PREditorRootViewController *)self editor];
+  posterRole = [editor posterRole];
+  if ([posterRole isEqualToString:@"PRPosterRoleLockScreen"])
   {
-    v5 = [(PREditorRootViewController *)self editor];
-    v6 = [v5 variant] == 0;
+    editor2 = [(PREditorRootViewController *)self editor];
+    v6 = [editor2 variant] == 0;
   }
 
   else
@@ -5686,17 +5686,17 @@ void __76__PREditorRootViewController_makeComplicationHostingSceneWithSpecificat
   return v4;
 }
 
-- (id)makeQuickActionsHostingSceneWithSpecification:(id)a3
+- (id)makeQuickActionsHostingSceneWithSpecification:(id)specification
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E699F7F8] pui_posterKitComplicationsWorkspace];
+  specificationCopy = specification;
+  pui_posterKitComplicationsWorkspace = [MEMORY[0x1E699F7F8] pui_posterKitComplicationsWorkspace];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__PREditorRootViewController_makeQuickActionsHostingSceneWithSpecification___block_invoke;
   v8[3] = &unk_1E7844240;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 pui_createScene:v8];
+  v9 = specificationCopy;
+  v5 = specificationCopy;
+  v6 = [pui_posterKitComplicationsWorkspace pui_createScene:v8];
 
   return v6;
 }
@@ -5721,11 +5721,11 @@ void __76__PREditorRootViewController_makeQuickActionsHostingSceneWithSpecificat
 - (id)_makeOverlayHostingScene
 {
   v3 = objc_alloc_init(PREditorOverlaySceneSpecification);
-  v4 = [(PREditorRootViewController *)self editor];
-  v5 = [v4 _hostProcessHandle];
+  editor = [(PREditorRootViewController *)self editor];
+  _hostProcessHandle = [editor _hostProcessHandle];
 
-  v6 = [v5 identity];
-  if (!v6)
+  identity = [_hostProcessHandle identity];
+  if (!identity)
   {
     v7 = PRLogEditing();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -5734,16 +5734,16 @@ void __76__PREditorRootViewController_makeQuickActionsHostingSceneWithSpecificat
     }
   }
 
-  v8 = [MEMORY[0x1E699F7F8] pui_posterKitExternallyHostedContentWorkspace];
+  pui_posterKitExternallyHostedContentWorkspace = [MEMORY[0x1E699F7F8] pui_posterKitExternallyHostedContentWorkspace];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__PREditorRootViewController__makeOverlayHostingScene__block_invoke;
   v13[3] = &unk_1E7844268;
   v14 = v3;
-  v15 = v6;
-  v9 = v6;
+  v15 = identity;
+  v9 = identity;
   v10 = v3;
-  v11 = [v8 pui_createScene:v13];
+  v11 = [pui_posterKitExternallyHostedContentWorkspace pui_createScene:v13];
 
   return v11;
 }
@@ -5781,17 +5781,17 @@ void __54__PREditorRootViewController__makeOverlayHostingScene__block_invoke(uin
   }
 }
 
-- (void)setPresentingModalViewController:(BOOL)a3
+- (void)setPresentingModalViewController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v24[4] = *MEMORY[0x1E69E9840];
-  v5 = [(PREditorRootViewController *)self presentationDismissalGestureView];
-  v6 = v5;
-  if (!v3 || v5)
+  presentationDismissalGestureView = [(PREditorRootViewController *)self presentationDismissalGestureView];
+  v6 = presentationDismissalGestureView;
+  if (!controllerCopy || presentationDismissalGestureView)
   {
-    if (!v3 && v5)
+    if (!controllerCopy && presentationDismissalGestureView)
     {
-      [v5 removeFromSuperview];
+      [presentationDismissalGestureView removeFromSuperview];
       [(PREditorRootViewController *)self setPresentationDismissalGestureView:0];
     }
   }
@@ -5799,31 +5799,31 @@ void __54__PREditorRootViewController__makeOverlayHostingScene__block_invoke(uin
   else
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    v7 = [v6 layer];
-    [v7 setHitTestsAsOpaque:1];
+    layer = [v6 layer];
+    [layer setHitTestsAsOpaque:1];
 
     v23 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_modalPresentationDismissGestureDidFire_];
     [v6 addGestureRecognizer:v23];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PREditorRootViewController *)self setPresentationDismissalGestureView:v6];
-    v8 = [(PREditorRootViewController *)self view];
-    [v8 addSubview:v6];
+    view = [(PREditorRootViewController *)self view];
+    [view addSubview:v6];
     v17 = MEMORY[0x1E696ACD8];
-    v22 = [v6 leadingAnchor];
-    v21 = [v8 leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [v6 leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[0] = v20;
-    v19 = [v6 trailingAnchor];
-    v18 = [v8 trailingAnchor];
-    v16 = [v19 constraintEqualToAnchor:v18];
+    trailingAnchor = [v6 trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[1] = v16;
-    v9 = [v6 topAnchor];
-    v10 = [v8 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [v6 topAnchor];
+    topAnchor2 = [view topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[2] = v11;
-    v12 = [v6 bottomAnchor];
-    v13 = [v8 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [v6 bottomAnchor];
+    bottomAnchor2 = [view bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
     [v17 activateConstraints:v15];
@@ -5832,19 +5832,19 @@ void __54__PREditorRootViewController__makeOverlayHostingScene__block_invoke(uin
   [(PREditorRootViewController *)self setNeedsReticleVisibilityUpdate];
 }
 
-- (void)modalPresentationDismissGestureDidFire:(id)a3
+- (void)modalPresentationDismissGestureDidFire:(id)fire
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  editor = [(PREditorRootViewController *)self editor];
+  [editor dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setPresentingComplicationGallery:(BOOL)a3
+- (void)setPresentingComplicationGallery:(BOOL)gallery
 {
-  if (self->_presentingComplicationGallery != a3)
+  if (self->_presentingComplicationGallery != gallery)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_presentingComplicationGallery = a3;
+    self->_presentingComplicationGallery = gallery;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __63__PREditorRootViewController_setPresentingComplicationGallery___block_invoke;
@@ -5856,23 +5856,23 @@ void __54__PREditorRootViewController__makeOverlayHostingScene__block_invoke(uin
 
 - (UIEdgeInsets)editingChromeDodgingInsets
 {
-  v3 = [(PREditorRootViewController *)self view];
-  [v3 bounds];
+  view = [(PREditorRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PREditorRootViewController *)self editorElementLayoutController];
-  v13 = [(PREditorRootViewController *)self editor];
-  v14 = [v13 areComplicationsAllowed];
+  editorElementLayoutController = [(PREditorRootViewController *)self editorElementLayoutController];
+  editor = [(PREditorRootViewController *)self editor];
+  areComplicationsAllowed = [editor areComplicationsAllowed];
 
   v15 = [(PREditorRootViewController *)self interfaceOrientation]- 1;
-  if (![(PREditorRootViewController *)self _shouldShowQuickActionEditing]&& v14)
+  if (![(PREditorRootViewController *)self _shouldShowQuickActionEditing]&& areComplicationsAllowed)
   {
     if (self->_complicationRowAtBottom && v15 <= 1)
     {
-      [v12 frameForElements:32 variant:3 withBoundingRect:{v5, v7, v9, v11}];
+      [editorElementLayoutController frameForElements:32 variant:3 withBoundingRect:{v5, v7, v9, v11}];
 LABEL_11:
       v21 = v11 - CGRectGetMinY(*&v17);
       goto LABEL_12;
@@ -5883,7 +5883,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v14)
+  if (!areComplicationsAllowed)
   {
     goto LABEL_10;
   }
@@ -5897,7 +5897,7 @@ LABEL_12:
   v23 = v7;
   v24 = v9;
   v25 = v11;
-  [v12 frameForElements:2 variant:3 withBoundingRect:{v22, v7, v9, v11, *&v54}];
+  [editorElementLayoutController frameForElements:2 variant:3 withBoundingRect:{v22, v7, v9, v11, *&v54}];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -5910,7 +5910,7 @@ LABEL_12:
   v59.size.height = v33;
   v35 = MaxY + CGRectGetMinY(v59);
   MaxX = 0.0;
-  if (!v14)
+  if (!areComplicationsAllowed)
   {
     goto LABEL_21;
   }
@@ -5918,16 +5918,16 @@ LABEL_12:
   v37 = v24;
   if (!self->_complicationRowAtBottom)
   {
-    [v12 frameForElements:8 variant:3 withBoundingRect:{v55, v23, v24, v25}];
+    [editorElementLayoutController frameForElements:8 variant:3 withBoundingRect:{v55, v23, v24, v25}];
     v35 = CGRectGetMaxY(v60);
   }
 
-  v38 = [MEMORY[0x1E69DC938] currentDevice];
-  v39 = [v38 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v39 & 0xFFFFFFFFFFFFFFFBLL) == 1 && v15 >= 2)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && v15 >= 2)
   {
-    [v12 frameForElements:16 variant:3 withBoundingRect:{v55, v23, v24, v25}];
+    [editorElementLayoutController frameForElements:16 variant:3 withBoundingRect:{v55, v23, v24, v25}];
     v41 = v40;
     v43 = v42;
     v45 = v44;
@@ -5977,7 +5977,7 @@ LABEL_21:
   v8 = 3221225472;
   v9 = __41__PREditorRootViewController_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -5986,20 +5986,20 @@ LABEL_21:
   return v5;
 }
 
-- (void)scrollViewDidScroll:(id)a3 withContext:(id *)a4
+- (void)scrollViewDidScroll:(id)scroll withContext:(id *)context
 {
   v93 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scrollCopy = scroll;
   if (![(PREditorRootViewController *)self ignoresScrolling])
   {
-    var0 = a4->var0;
-    [v6 contentOffset];
+    var0 = context->var0;
+    [scrollCopy contentOffset];
     v9 = v8;
-    x = a4->var2.x;
-    [v6 frame];
+    x = context->var2.x;
+    [scrollCopy frame];
     Width = CGRectGetWidth(v94);
-    v12 = [(PREditorRootViewController *)self looks];
-    v84 = [v12 count];
+    looks = [(PREditorRootViewController *)self looks];
+    v84 = [looks count];
     v13 = v9 > Width * (v84 - 1) || v9 < 0.0;
     v14 = nexttoward(v9 + Width, v9);
     v15 = v9 >= x || v13;
@@ -6027,30 +6027,30 @@ LABEL_21:
     v91 = 0.0;
     v19 = [(PREditorRootViewController *)self lookAtScrollContentOffset:&v91 fractionOfDistanceThroughLook:v17, 0.0];
     v86 = [(PREditorRootViewController *)self lookAtScrollContentOffset:0 fractionOfDistanceThroughLook:v18, 0.0];
-    v20 = [(PREditorRootViewController *)self editor];
-    v21 = [(PREditorRootViewController *)self currentLook];
-    v22 = [v19 isEqual:v21];
+    editor = [(PREditorRootViewController *)self editor];
+    currentLook = [(PREditorRootViewController *)self currentLook];
+    v22 = [v19 isEqual:currentLook];
 
     if ((v22 & 1) == 0)
     {
-      [v20 setCurrentLook:v19];
+      [editor setCurrentLook:v19];
     }
 
-    v23 = [(PREditorRootViewController *)self contentOverlayContainerView];
-    [v23 frame];
-    v85 = v23;
-    [v23 setFrame:{v9, 0.0}];
-    v24 = [(PREditorRootViewController *)self editor];
-    v25 = [v24 _editorDynamicRotationIsActive];
+    contentOverlayContainerView = [(PREditorRootViewController *)self contentOverlayContainerView];
+    [contentOverlayContainerView frame];
+    v85 = contentOverlayContainerView;
+    [contentOverlayContainerView setFrame:{v9, 0.0}];
+    editor2 = [(PREditorRootViewController *)self editor];
+    _editorDynamicRotationIsActive = [editor2 _editorDynamicRotationIsActive];
 
-    if ((v25 & 1) == 0)
+    if ((_editorDynamicRotationIsActive & 1) == 0)
     {
       v82 = var0;
-      v26 = v20;
-      v27 = [v85 subviews];
-      v28 = [v27 firstObject];
+      v26 = editor;
+      subviews = [v85 subviews];
+      firstObject = [subviews firstObject];
       v29 = objc_opt_class();
-      v30 = v28;
+      v30 = firstObject;
       if (v29)
       {
         if (objc_opt_isKindOfClass())
@@ -6074,14 +6074,14 @@ LABEL_21:
       [v32 frame];
       [v32 setFrame:{v9, 0.0}];
 
-      v20 = v26;
+      editor = v26;
       var0 = v82;
     }
 
     if (v13)
     {
-      v33 = [v12 lastObject];
-      v34 = [v19 isEqual:v33];
+      lastObject = [looks lastObject];
+      v34 = [v19 isEqual:lastObject];
       v35 = v91 > 0.0;
 
       v36 = v91;
@@ -6102,41 +6102,41 @@ LABEL_21:
     }
 
     v38 = v86;
-    [(PREditorRootViewController *)self didTransitionToLook:v86 method:a4->var0 progress:v36];
-    if ([v20 areViewsSharedBetweenLooks])
+    [(PREditorRootViewController *)self didTransitionToLook:v86 method:context->var0 progress:v36];
+    if ([editor areViewsSharedBetweenLooks])
     {
       [(PREditorRootViewController *)self _updateReticleViewFramesWithOffset:v9];
     }
 
     else
     {
-      v78 = v20;
+      v78 = editor;
       v79 = v19;
-      v81 = v12;
-      v39 = [(PREditorRootViewController *)self timeContainerScrollView];
-      [v39 setContentOffset:{v9, 0.0}];
+      v81 = looks;
+      timeContainerScrollView = [(PREditorRootViewController *)self timeContainerScrollView];
+      [timeContainerScrollView setContentOffset:{v9, 0.0}];
 
-      [v6 bounds];
+      [scrollCopy bounds];
       v41 = v40;
-      v83 = v6;
-      [v6 bounds];
+      v83 = scrollCopy;
+      [scrollCopy bounds];
       v43 = v42;
-      v77 = [(PREditorRootViewController *)self backgroundForegroundContainerViewsZStackView];
-      v44 = [v77 subviews];
-      v45 = [v44 reverseObjectEnumerator];
-      v46 = [v45 allObjects];
+      backgroundForegroundContainerViewsZStackView = [(PREditorRootViewController *)self backgroundForegroundContainerViewsZStackView];
+      subviews2 = [backgroundForegroundContainerViewsZStackView subviews];
+      reverseObjectEnumerator = [subviews2 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v80 = self;
-      v76 = [(PREditorRootViewController *)self floatingContainerViewsZStackView];
-      v47 = [v76 subviews];
-      v48 = [v47 reverseObjectEnumerator];
-      v49 = [v48 allObjects];
+      selfCopy = self;
+      floatingContainerViewsZStackView = [(PREditorRootViewController *)self floatingContainerViewsZStackView];
+      subviews3 = [floatingContainerViewsZStackView subviews];
+      reverseObjectEnumerator2 = [subviews3 reverseObjectEnumerator];
+      allObjects2 = [reverseObjectEnumerator2 allObjects];
 
       v89 = 0u;
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v50 = v46;
+      v50 = allObjects;
       v51 = [v50 countByEnumeratingWithState:&v87 objects:v92 count:16];
       if (v51)
       {
@@ -6180,27 +6180,27 @@ LABEL_21:
               v60 = 0.0;
             }
 
-            v61 = [v49 objectAtIndex:{objc_msgSend(v50, "indexOfObject:", v56, v59)}];
+            v61 = [allObjects2 objectAtIndex:{objc_msgSend(v50, "indexOfObject:", v56, v59)}];
             [v61 setFrame:{0.0, 0.0, v60, v43}];
             [v56 setFrame:{0.0, 0.0, v60, v43}];
             IsZero = BSFloatIsZero();
             [v56 setHidden:IsZero];
             [v61 setHidden:IsZero];
-            v63 = [v56 layer];
-            v64 = [v61 layer];
+            layer = [v56 layer];
+            layer2 = [v61 layer];
             if ((IsZero & 1) != 0 || v54 >= 0.0 || v58 > v41)
             {
-              [v63 setMask:0];
-              [v64 setMask:0];
+              [layer setMask:0];
+              [layer2 setMask:0];
             }
 
             else
             {
-              v65 = [MEMORY[0x1E69794A0] layer];
+              layer3 = [MEMORY[0x1E69794A0] layer];
               v66 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v58 cornerRadius:{0.0, v41 - v58, v43, 0.0}];
-              [v65 setPath:{objc_msgSend(v66, "CGPath")}];
-              [v63 setMask:v65];
-              [v64 setMask:v65];
+              [layer3 setPath:{objc_msgSend(v66, "CGPath")}];
+              [layer setMask:layer3];
+              [layer2 setMask:layer3];
             }
 
             v54 = v54 - v41;
@@ -6212,8 +6212,8 @@ LABEL_21:
         while (v52);
       }
 
-      v6 = v83;
-      v67 = [v83 effectiveUserInterfaceLayoutDirection];
+      scrollCopy = v83;
+      effectiveUserInterfaceLayoutDirection = [v83 effectiveUserInterfaceLayoutDirection];
       if (v9 >= x)
       {
         v68 = v79;
@@ -6224,9 +6224,9 @@ LABEL_21:
         v68 = v86;
       }
 
-      v12 = v81;
+      looks = v81;
       v69 = [v81 indexOfObject:v68];
-      if (v67)
+      if (effectiveUserInterfaceLayoutDirection)
       {
         v70 = -(v9 - v41 * (v84 - v69));
       }
@@ -6246,101 +6246,101 @@ LABEL_21:
         v71 = 8.0;
       }
 
-      v72 = [v83 traitCollection];
-      [v72 displayScale];
+      traitCollection = [v83 traitCollection];
+      [traitCollection displayScale];
       BSFloatRoundForScale();
       v74 = v73;
 
-      v75 = [(PREditorRootViewController *)v80 looksDividerView];
-      [v75 setFrame:{v70 - v74, 0.0, v71, v43}];
+      looksDividerView = [(PREditorRootViewController *)selfCopy looksDividerView];
+      [looksDividerView setFrame:{v70 - v74, 0.0, v71, v43}];
 
       v19 = v79;
       v38 = v86;
 
-      v20 = v78;
+      editor = v78;
     }
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v15 = a3;
-  if (!-[PREditorRootViewController ignoresScrolling](self, "ignoresScrolling") && ([v15 isPagingEnabled] & 1) == 0)
+  x = velocity.x;
+  draggingCopy = dragging;
+  if (!-[PREditorRootViewController ignoresScrolling](self, "ignoresScrolling") && ([draggingCopy isPagingEnabled] & 1) == 0)
   {
-    [v15 frame];
+    [draggingCopy frame];
     Width = CGRectGetWidth(v18);
-    [v15 contentOffset];
+    [draggingCopy contentOffset];
     v10 = v9 / Width;
     if (x > 0.1 || x >= -0.1 && modf(v10, &__y) >= 0.5)
     {
       v10 = v10 + 1.0;
     }
 
-    a5->x = Width * floor(v10);
+    offset->x = Width * floor(v10);
     v11 = [(PREditorRootViewController *)self lookAtScrollContentOffset:?];
-    v12 = [(PREditorRootViewController *)self looks];
-    v13 = [v12 indexOfObject:v11];
+    looks = [(PREditorRootViewController *)self looks];
+    v13 = [looks indexOfObject:v11];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [(PREditorRootViewController *)self pageControl];
-      [v14 setCurrentPage:v13];
+      pageControl = [(PREditorRootViewController *)self pageControl];
+      [pageControl setCurrentPage:v13];
     }
   }
 }
 
-- (void)scrollViewDidEndScrolling:(id)a3
+- (void)scrollViewDidEndScrolling:(id)scrolling
 {
-  v13 = a3;
-  v4 = [(PREditorRootViewController *)self ignoresScrolling];
-  v5 = v13;
-  if (!v4)
+  scrollingCopy = scrolling;
+  ignoresScrolling = [(PREditorRootViewController *)self ignoresScrolling];
+  v5 = scrollingCopy;
+  if (!ignoresScrolling)
   {
-    [v13 contentOffset];
+    [scrollingCopy contentOffset];
     v7 = v6;
     v9 = v8;
-    v10 = [(PREditorRootViewController *)self currentLook];
+    currentLook = [(PREditorRootViewController *)self currentLook];
     v11 = [(PREditorRootViewController *)self lookAtScrollContentOffset:v7, v9];
-    if (([v11 isEqual:v10] & 1) == 0)
+    if (([v11 isEqual:currentLook] & 1) == 0)
     {
-      v12 = [(PREditorRootViewController *)self editor];
-      [v12 setCurrentLook:v11];
+      editor = [(PREditorRootViewController *)self editor];
+      [editor setCurrentLook:v11];
     }
 
     [(PREditorRootViewController *)self didFinishTransitionToLook:v11];
 
-    v5 = v13;
+    v5 = scrollingCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](ignoresScrolling, v5);
 }
 
-- (void)dateProvider:(id)a3 didUpdateDate:(id)a4
+- (void)dateProvider:(id)provider didUpdateDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__PREditorRootViewController_dateProvider_didUpdateDate___block_invoke;
   v12[3] = &unk_1E7844290;
-  v6 = v5;
+  v6 = dateCopy;
   v13 = v6;
   [(PREditorRootViewController *)self enumerateTimeViewControllersUsingBlock:v12];
-  v7 = [(PREditorRootViewController *)self subtitleViewController];
-  [v7 setDisplayDate:v6];
+  subtitleViewController = [(PREditorRootViewController *)self subtitleViewController];
+  [subtitleViewController setDisplayDate:v6];
 
-  v8 = [(PREditorRootViewController *)self currentLook];
-  if (v8)
+  currentLook = [(PREditorRootViewController *)self currentLook];
+  if (currentLook)
   {
-    v9 = [(PREditorRootViewController *)self timeViewControllerForLook:v8];
+    v9 = [(PREditorRootViewController *)self timeViewControllerForLook:currentLook];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 isFourDigitTime];
-      if (self->_fourDigitTime != v10)
+      isFourDigitTime = [v9 isFourDigitTime];
+      if (self->_fourDigitTime != isFourDigitTime)
       {
-        v11 = v10;
-        [(PREditorRootViewController *)self setFourDigitTime:v10];
+        v11 = isFourDigitTime;
+        [(PREditorRootViewController *)self setFourDigitTime:isFourDigitTime];
         [(PREditorElementLayoutController *)self->_editorElementLayoutController setFourDigitTime:v11];
         [(PREditorRootViewController *)self updateReticleViewFrames];
       }
@@ -6362,27 +6362,27 @@ void __57__PREditorRootViewController_dateProvider_didUpdateDate___block_invoke(
 
 - (UIEdgeInsets)overlaySafeAreaInsets
 {
-  v3 = [(PREditorRootViewController *)self editor];
-  [v3 _windowSafeAreaInsets];
+  editor = [(PREditorRootViewController *)self editor];
+  [editor _windowSafeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PREditorRootViewController *)self lookNameLabel];
-  [v12 frame];
+  lookNameLabel = [(PREditorRootViewController *)self lookNameLabel];
+  [lookNameLabel frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(PREditorRootViewController *)self view];
-  [v21 bounds];
+  view = [(PREditorRootViewController *)self view];
+  [view bounds];
   v40 = v23;
   v41 = v22;
   rect1 = v24;
   v42 = v25;
 
-  if (v12)
+  if (lookNameLabel)
   {
     v36 = v9;
     v37 = v11;
@@ -6445,11 +6445,11 @@ void __57__PREditorRootViewController_dateProvider_didUpdateDate___block_invoke(
   return result;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [(PREditorRootViewController *)self lookTransition];
-  v5 = [v6 appendObject:v4 withName:@"lookTransition" skipIfNil:1];
+  formatterCopy = formatter;
+  lookTransition = [(PREditorRootViewController *)self lookTransition];
+  v5 = [formatterCopy appendObject:lookTransition withName:@"lookTransition" skipIfNil:1];
 }
 
 - (PREditor)editor

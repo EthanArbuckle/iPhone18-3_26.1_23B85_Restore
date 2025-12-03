@@ -1,44 +1,44 @@
 @interface PKSelectActionGroupViewController
-- (PKSelectActionGroupViewController)initWithPass:(id)a3 actionGroups:(id)a4 paymentDataProvider:(id)a5 webService:(id)a6;
+- (PKSelectActionGroupViewController)initWithPass:(id)pass actionGroups:(id)groups paymentDataProvider:(id)provider webService:(id)service;
 - (PKSelectActionGroupViewControllerDelegate)delegate;
-- (void)_cancelButtonPressed:(id)a3;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_reloadActionGroupView;
-- (void)_rightBarButtonPressed:(id)a3;
-- (void)remoteGroupActionsViewControllerDidCancel:(id)a3;
-- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)a3;
-- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)a3;
-- (void)setRightBarButtonEnabled:(BOOL)a3;
+- (void)_rightBarButtonPressed:(id)pressed;
+- (void)remoteGroupActionsViewControllerDidCancel:(id)cancel;
+- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)group;
+- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)payment;
+- (void)setRightBarButtonEnabled:(BOOL)enabled;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKSelectActionGroupViewController
 
-- (PKSelectActionGroupViewController)initWithPass:(id)a3 actionGroups:(id)a4 paymentDataProvider:(id)a5 webService:(id)a6
+- (PKSelectActionGroupViewController)initWithPass:(id)pass actionGroups:(id)groups paymentDataProvider:(id)provider webService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  passCopy = pass;
+  groupsCopy = groups;
+  providerCopy = provider;
+  serviceCopy = service;
   v23.receiver = self;
   v23.super_class = PKSelectActionGroupViewController;
   v15 = [(PKSelectActionGroupViewController *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_pass, a3);
-    objc_storeStrong(&v16->_actionGroups, a4);
-    objc_storeStrong(&v16->_paymentDataProvider, a5);
-    objc_storeStrong(&v16->_webService, a6);
-    v17 = [(PKSelectActionGroupViewController *)v16 navigationItem];
+    objc_storeStrong(&v15->_pass, pass);
+    objc_storeStrong(&v16->_actionGroups, groups);
+    objc_storeStrong(&v16->_paymentDataProvider, provider);
+    objc_storeStrong(&v16->_webService, service);
+    navigationItem = [(PKSelectActionGroupViewController *)v16 navigationItem];
     v18 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v18 configureWithTransparentBackground];
-    [v17 setStandardAppearance:v18];
+    [navigationItem setStandardAppearance:v18];
     v19 = PKLocalizedPaymentString(&cfstr_Next.isa);
     v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v19 style:2 target:v16 action:sel__rightBarButtonPressed_];
-    [v17 setRightBarButtonItem:v20];
+    [navigationItem setRightBarButtonItem:v20];
     v21 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v16 action:sel__cancelButtonPressed_];
-    [v17 setLeftBarButtonItem:v21];
+    [navigationItem setLeftBarButtonItem:v21];
   }
 
   return v16;
@@ -49,18 +49,18 @@
   v9.receiver = self;
   v9.super_class = PKSelectActionGroupViewController;
   [(PKSelectActionGroupViewController *)&v9 viewDidLoad];
-  v3 = [(PKSelectActionGroupViewController *)self view];
+  view = [(PKSelectActionGroupViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [PKPerformActionPassView alloc];
   pass = self->_pass;
-  [v3 bounds];
+  [view bounds];
   v7 = [(PKPerformActionPassView *)v5 initWithPass:pass frame:?];
   passView = self->_passView;
   self->_passView = v7;
 
-  [v3 addSubview:self->_passView];
+  [view addSubview:self->_passView];
   [(PKSelectActionGroupViewController *)self _reloadActionGroupView];
 }
 
@@ -77,8 +77,8 @@
   self->_actionGroupView = v5;
 
   [(PKSelectActionGroupView *)self->_actionGroupView setDelegate:self];
-  v7 = [(PKSelectActionGroupViewController *)self view];
-  [v7 insertSubview:self->_actionGroupView belowSubview:self->_passView];
+  view = [(PKSelectActionGroupViewController *)self view];
+  [view insertSubview:self->_actionGroupView belowSubview:self->_passView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -86,13 +86,13 @@
   v23.receiver = self;
   v23.super_class = PKSelectActionGroupViewController;
   [(PKSelectActionGroupViewController *)&v23 viewWillLayoutSubviews];
-  v3 = [(PKSelectActionGroupViewController *)self view];
-  [v3 bounds];
+  view = [(PKSelectActionGroupViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v5 + v12;
   v15 = v7 + v14;
   v17 = v9 - (v12 + v16);
@@ -108,53 +108,53 @@
   [(PKSelectActionGroupView *)self->_actionGroupView setFrame:0.0, MaxY, v17, CGRectGetMaxY(v25) - MaxY];
 }
 
-- (void)_rightBarButtonPressed:(id)a3
+- (void)_rightBarButtonPressed:(id)pressed
 {
   v5 = [[PKRemoteActionGroupViewController alloc] initWithPass:self->_pass actionGroup:self->_selectedActionGroup paymentDataProvider:self->_paymentDataProvider webService:self->_webService];
   [(PKRemoteActionGroupViewController *)v5 setDelegate:self];
-  v4 = [(PKSelectActionGroupViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(PKSelectActionGroupViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v4 = [(PKSelectActionGroupViewController *)self delegate];
-  [v4 selectActionGroupViewControllerDidCancel:self];
+  delegate = [(PKSelectActionGroupViewController *)self delegate];
+  [delegate selectActionGroupViewControllerDidCancel:self];
 }
 
-- (void)setRightBarButtonEnabled:(BOOL)a3
+- (void)setRightBarButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKSelectActionGroupViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  navigationItem = [(PKSelectActionGroupViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)remoteGroupActionsViewControllerDidCancel:(id)a3
+- (void)remoteGroupActionsViewControllerDidCancel:(id)cancel
 {
-  v5 = a3;
-  v3 = [v5 navigationController];
-  v4 = [v3 popViewControllerAnimated:1];
+  cancelCopy = cancel;
+  navigationController = [cancelCopy navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 
-  [v5 setDelegate:0];
+  [cancelCopy setDelegate:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)a3
+- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)group
 {
-  v5 = a3;
-  v3 = [v5 navigationController];
-  v4 = [v3 popViewControllerAnimated:1];
+  groupCopy = group;
+  navigationController = [groupCopy navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 
-  [v5 setDelegate:0];
+  [groupCopy setDelegate:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)a3
+- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)payment
 {
-  v5 = a3;
-  v3 = [v5 navigationController];
-  v4 = [v3 popViewControllerAnimated:1];
+  paymentCopy = payment;
+  navigationController = [paymentCopy navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 
-  [v5 setDelegate:0];
+  [paymentCopy setDelegate:0];
 }
 
 - (PKSelectActionGroupViewControllerDelegate)delegate

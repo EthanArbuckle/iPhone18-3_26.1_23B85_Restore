@@ -7,7 +7,7 @@
 - (id)je_base62String
 {
   v9 = *MEMORY[0x1E69E9840];
-  [a1 getUUIDBytes:v8];
+  [self getUUIDBytes:v8];
   v1 = 0;
   v2 = v7;
   do

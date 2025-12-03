@@ -1,34 +1,34 @@
 @interface MapsSuggestionsDestinationLink
-- (BOOL)addBreadCrumbIfWithin:(id)a3;
+- (BOOL)addBreadCrumbIfWithin:(id)within;
 - (BOOL)hasLinkOptions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MapsSuggestionsDestination)from;
 - (MapsSuggestionsDestination)to;
 - (NSString)description;
 - (double)confidenceOfHavingBeenOnDestinationLink;
-- (double)containsLocation:(id)a3;
-- (double)containsTime:(id)a3;
-- (id)initFromDestination:(id)a3 toDestination:(id)a4;
+- (double)containsLocation:(id)location;
+- (double)containsTime:(id)time;
+- (id)initFromDestination:(id)destination toDestination:(id)toDestination;
 - (id)objectForJSON;
-- (void)addETA:(id)a3;
-- (void)addLinkOption:(id)a3;
-- (void)addRoute:(id)a3;
+- (void)addETA:(id)a;
+- (void)addLinkOption:(id)option;
+- (void)addRoute:(id)route;
 @end
 
 @implementation MapsSuggestionsDestinationLink
 
-- (id)initFromDestination:(id)a3 toDestination:(id)a4
+- (id)initFromDestination:(id)destination toDestination:(id)toDestination
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  toDestinationCopy = toDestination;
   v15.receiver = self;
   v15.super_class = MapsSuggestionsDestinationLink;
   v8 = [(MapsSuggestionsDestinationLink *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_from, v6);
-    objc_storeWeak(&v9->_to, v7);
+    objc_storeWeak(&v8->_from, destinationCopy);
+    objc_storeWeak(&v9->_to, toDestinationCopy);
     v10 = [[NSMutableArray alloc] initWithCapacity:1];
     destinationLinkOptions = v9->_destinationLinkOptions;
     v9->_destinationLinkOptions = v10;
@@ -41,14 +41,14 @@
   return v9;
 }
 
-- (void)addLinkOption:(id)a3
+- (void)addLinkOption:(id)option
 {
-  v4 = a3;
-  if (v4)
+  optionCopy = option;
+  if (optionCopy)
   {
     v5 = self->_destinationLinkOptions;
     objc_sync_enter(v5);
-    [(NSMutableArray *)self->_destinationLinkOptions addObject:v4];
+    [(NSMutableArray *)self->_destinationLinkOptions addObject:optionCopy];
     objc_sync_exit(v5);
   }
 
@@ -70,10 +70,10 @@
   }
 }
 
-- (void)addETA:(id)a3
+- (void)addETA:(id)a
 {
-  v4 = a3;
-  if (v4)
+  aCopy = a;
+  if (aCopy)
   {
     v5 = self->_destinationLinkOptions;
     objc_sync_enter(v5);
@@ -95,7 +95,7 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v9) updateETA:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * v9) updateETA:{aCopy, v10}])
         {
           break;
         }
@@ -117,7 +117,7 @@ LABEL_4:
     {
 LABEL_10:
 
-      v6 = [[MapsSuggestionsDestinationLinkOption alloc] initWithETA:v4];
+      v6 = [[MapsSuggestionsDestinationLinkOption alloc] initWithETA:aCopy];
       [(MapsSuggestionsDestinationLink *)self addLinkOption:v6];
     }
 
@@ -142,14 +142,14 @@ LABEL_10:
   }
 }
 
-- (void)addRoute:(id)a3
+- (void)addRoute:(id)route
 {
-  v4 = a3;
-  if (v4)
+  routeCopy = route;
+  if (routeCopy)
   {
     v5 = self->_destinationLinkOptions;
     objc_sync_enter(v5);
-    v6 = [[MapsSuggestionsDestinationLinkOption alloc] initWithRoute:v4];
+    v6 = [[MapsSuggestionsDestinationLinkOption alloc] initWithRoute:routeCopy];
     [(MapsSuggestionsDestinationLink *)self addLinkOption:v6];
 
     objc_sync_exit(v5);
@@ -173,22 +173,22 @@ LABEL_10:
   }
 }
 
-- (BOOL)addBreadCrumbIfWithin:(id)a3
+- (BOOL)addBreadCrumbIfWithin:(id)within
 {
-  v4 = a3;
-  if (v4)
+  withinCopy = within;
+  if (withinCopy)
   {
     v5 = self->_breadcrumbs;
     objc_sync_enter(v5);
-    v6 = [v4 location];
-    [(MapsSuggestionsDestinationLink *)self containsLocation:v6];
+    location = [withinCopy location];
+    [(MapsSuggestionsDestinationLink *)self containsLocation:location];
     v8 = v7;
     MapsSuggestionsConfidenceLevelFromPrecent(0.75);
     v10 = v9;
 
     if (v8 > v10)
     {
-      [(NSMutableArray *)self->_breadcrumbs addObject:v4];
+      [(NSMutableArray *)self->_breadcrumbs addObject:withinCopy];
       objc_sync_exit(v5);
 
       v12 = 1;
@@ -221,10 +221,10 @@ LABEL_9:
   return v12;
 }
 
-- (double)containsLocation:(id)a3
+- (double)containsLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
     v5 = MapsSuggestionsConfidenceDontKnow();
     v56 = 0u;
@@ -245,7 +245,7 @@ LABEL_9:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v54 + 1) + 8 * i) containsLocation:v4];
+          [*(*(&v54 + 1) + 8 * i) containsLocation:locationCopy];
           v5 = MapsSuggestionsBestConfidence(v5, v10);
         }
 
@@ -261,8 +261,8 @@ LABEL_9:
       v12 = objc_loadWeakRetained(&self->_to);
       if (WeakRetained)
       {
-        v13 = [WeakRetained location];
-        v14 = v13 == 0;
+        location = [WeakRetained location];
+        v14 = location == 0;
 
         if (v12)
         {
@@ -276,49 +276,49 @@ LABEL_9:
 
         if ((v15 & 1) == 0)
         {
-          v16 = [v12 location];
-          v17 = v16 == 0;
+          location2 = [v12 location];
+          v17 = location2 == 0;
 
           if (!v17)
           {
-            [v4 coordinate];
+            [locationCopy coordinate];
             v19 = v18;
-            v20 = [WeakRetained location];
+            location3 = [WeakRetained location];
             v53 = v19;
-            [v20 coordinate];
+            [location3 coordinate];
             v52 = v21;
 
-            [v4 coordinate];
+            [locationCopy coordinate];
             v23 = v22;
-            v24 = [v12 location];
+            location4 = [v12 location];
             v51 = v23;
-            [v24 coordinate];
+            [location4 coordinate];
             v50 = v25;
 
-            v26 = [v12 location];
-            [v26 coordinate];
+            location5 = [v12 location];
+            [location5 coordinate];
             v28 = v27;
-            v29 = [WeakRetained location];
-            [v29 coordinate];
+            location6 = [WeakRetained location];
+            [location6 coordinate];
             v31 = v30;
 
-            [v4 coordinate];
+            [locationCopy coordinate];
             v33 = v32;
-            v34 = [WeakRetained location];
-            [v34 coordinate];
+            location7 = [WeakRetained location];
+            [location7 coordinate];
             v36 = v35;
 
-            [v4 coordinate];
+            [locationCopy coordinate];
             v38 = v37;
-            v39 = [v12 location];
-            [v39 coordinate];
+            location8 = [v12 location];
+            [location8 coordinate];
             v41 = v40;
 
-            v42 = [v12 location];
-            [v42 coordinate];
+            location9 = [v12 location];
+            [location9 coordinate];
             v44 = v43;
-            v45 = [WeakRetained location];
-            [v45 coordinate];
+            location10 = [WeakRetained location];
+            [location10 coordinate];
             v47 = v46;
 
             v48 = sqrt((v44 - v47) * (v44 - v47) + (v28 - v31) * (v28 - v31)) / (sqrt((v33 - v36) * (v33 - v36) + (v53 - v52) * (v53 - v52)) + sqrt((v38 - v41) * (v38 - v41) + (v51 - v50) * (v51 - v50))) * 2.0 + -1.0;
@@ -345,10 +345,10 @@ LABEL_9:
   return v5;
 }
 
-- (double)containsTime:(id)a3
+- (double)containsTime:(id)time
 {
-  v4 = a3;
-  if (v4)
+  timeCopy = time;
+  if (timeCopy)
   {
     v5 = MapsSuggestionsConfidenceDontKnow();
     v6 = self->_destinationLinkOptions;
@@ -371,7 +371,7 @@ LABEL_9:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v13 + 1) + 8 * i) containsTime:{v4, v13}];
+          [*(*(&v13 + 1) + 8 * i) containsTime:{timeCopy, v13}];
           v5 = MapsSuggestionsBestConfidence(v5, v11);
         }
 
@@ -423,19 +423,19 @@ LABEL_9:
 
 - (BOOL)hasLinkOptions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_destinationLinkOptions;
   objc_sync_enter(v3);
-  LOBYTE(v2) = [(NSMutableArray *)v2->_destinationLinkOptions count]!= 0;
+  LOBYTE(selfCopy) = [(NSMutableArray *)selfCopy->_destinationLinkOptions count]!= 0;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -445,8 +445,8 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MapsSuggestionsDestinationLink *)self from];
-      if (!v5)
+      from = [(MapsSuggestionsDestinationLink *)self from];
+      if (!from)
       {
         v8 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -465,9 +465,9 @@ LABEL_9:
         goto LABEL_31;
       }
 
-      v6 = [(MapsSuggestionsDestinationLink *)v4 from];
-      v7 = v6;
-      if (!v6)
+      from2 = [(MapsSuggestionsDestinationLink *)equalCopy from];
+      v7 = from2;
+      if (!from2)
       {
         v10 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -486,7 +486,7 @@ LABEL_9:
         goto LABEL_30;
       }
 
-      if (v5 != v6 && ([v5 isEqualToDestination:v6] & 1) == 0)
+      if (from != from2 && ([from isEqualToDestination:from2] & 1) == 0)
       {
         v12 = 0;
 LABEL_32:
@@ -497,14 +497,14 @@ LABEL_32:
       v8 = [(MapsSuggestionsDestinationLink *)self to];
       if (v8)
       {
-        v9 = [(MapsSuggestionsDestinationLink *)v4 to];
+        v9 = [(MapsSuggestionsDestinationLink *)equalCopy to];
         v10 = v9;
         if (v9)
         {
           if (v8 == v9 || ([v8 isEqualToDestination:v9]& 1) != 0)
           {
             destinationLinkOptions = self->_destinationLinkOptions;
-            if (destinationLinkOptions == v4->_destinationLinkOptions || [(NSMutableArray *)destinationLinkOptions isEqualToArray:?])
+            if (destinationLinkOptions == equalCopy->_destinationLinkOptions || [(NSMutableArray *)destinationLinkOptions isEqualToArray:?])
             {
               v12 = 1;
 LABEL_30:
@@ -565,10 +565,10 @@ LABEL_33:
   v11.super_class = MapsSuggestionsDestinationLink;
   v4 = [(MapsSuggestionsDestinationLink *)&v11 description];
   WeakRetained = objc_loadWeakRetained(&self->_from);
-  v6 = [WeakRetained label];
+  label = [WeakRetained label];
   v7 = objc_loadWeakRetained(&self->_to);
-  v8 = [v7 label];
-  v9 = [v3 initWithFormat:@"%@ from '%@' to '%@'", v4, v6, v8];
+  label2 = [v7 label];
+  v9 = [v3 initWithFormat:@"%@ from '%@' to '%@'", v4, label, label2];
 
   return v9;
 }
@@ -579,9 +579,9 @@ LABEL_33:
   v4 = objc_loadWeakRetained(&self->_to);
   v27 = WeakRetained;
   v5 = [NSString alloc];
-  v6 = [WeakRetained label];
-  v7 = [v4 label];
-  v28 = [v5 initWithFormat:@"'%@' to '%@'", v6, v7];
+  label = [WeakRetained label];
+  label2 = [v4 label];
+  v28 = [v5 initWithFormat:@"'%@' to '%@'", label, label2];
 
   v8 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableArray count](self->_breadcrumbs, "count")}];
   v9 = self->_breadcrumbs;

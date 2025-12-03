@@ -1,7 +1,7 @@
 @interface SiriGKDisambiguationHeader
 - (CGSize)sizeThatFits:(CGSize)result;
 - (UIEdgeInsets)_edgeInsets;
-- (void)configureWithTitle:(id)a3 subtitle:(id)a4;
+- (void)configureWithTitle:(id)title subtitle:(id)subtitle;
 - (void)layoutSubviews;
 @end
 
@@ -39,10 +39,10 @@
   return result;
 }
 
-- (void)configureWithTitle:(id)a3 subtitle:(id)a4
+- (void)configureWithTitle:(id)title subtitle:(id)subtitle
 {
-  v18 = a3;
-  v6 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   if (!self->_topKeyline)
   {
     v7 = [SiriUIKeyline keylineWithKeylineType:2];
@@ -52,7 +52,7 @@
     [(SiriGKDisambiguationHeader *)self addSubview:self->_topKeyline];
   }
 
-  if (v18 | v6)
+  if (titleCopy | subtitleCopy)
   {
     if (!self->_titleLabel)
     {
@@ -71,14 +71,14 @@
       [(SiriGKDisambiguationHeader *)self addSubview:self->_titleLabel];
     }
 
-    if (v18)
+    if (titleCopy)
     {
-      v15 = v18;
+      v15 = titleCopy;
     }
 
     else
     {
-      v15 = v6;
+      v15 = subtitleCopy;
     }
 
     [(SiriSharedUIContentLabel *)self->_titleLabel setText:v15];

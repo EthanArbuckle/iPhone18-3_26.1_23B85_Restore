@@ -3,23 +3,23 @@
 - (CGSize)_horizontalIntrinsicContentSize;
 - (CGSize)_verticalInstrinsicContentSize;
 - (CGSize)intrinsicContentSize;
-- (HKInteractiveChartAnnotationViewKeyValueLabel)initWithFrame:(CGRect)a3;
+- (HKInteractiveChartAnnotationViewKeyValueLabel)initWithFrame:(CGRect)frame;
 - (void)_installForwardChevronView;
 - (void)_layoutSubviewsHorizontally;
 - (void)_layoutSubviewsVertically;
 - (void)_removeForwardChevronView;
-- (void)handleTapOutGesture:(id)a3;
+- (void)handleTapOutGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)setTapOutBlock:(id)a3;
+- (void)setTapOutBlock:(id)block;
 @end
 
 @implementation HKInteractiveChartAnnotationViewKeyValueLabel
 
-- (HKInteractiveChartAnnotationViewKeyValueLabel)initWithFrame:(CGRect)a3
+- (HKInteractiveChartAnnotationViewKeyValueLabel)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = HKInteractiveChartAnnotationViewKeyValueLabel;
-  v3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,47 +28,47 @@
     keyLabel = v4->_keyLabel;
     v4->_keyLabel = v5;
 
-    v7 = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
-    [(HKSelectedRangeLabel *)v4->_keyLabel setFont:v7];
+    hk_chartLollipopKeyFont = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
+    [(HKSelectedRangeLabel *)v4->_keyLabel setFont:hk_chartLollipopKeyFont];
 
-    v8 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-    v9 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
-    [v9 setTextColor:v8];
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    keyLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
+    [keyLabel setTextColor:hk_chartLollipopLabelColor];
 
-    v10 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
-    [v10 setAdjustsFontSizeToFitWidth:1];
+    keyLabel2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
+    [keyLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v11 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
-    [v11 setMinimumScaleFactor:0.1];
+    keyLabel3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
+    [keyLabel3 setMinimumScaleFactor:0.1];
 
-    v12 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
-    [v12 setLineBreakMode:4];
+    keyLabel4 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
+    [keyLabel4 setLineBreakMode:4];
 
-    v13 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
-    [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 addSubview:v13];
+    keyLabel5 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 keyLabel];
+    [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 addSubview:keyLabel5];
 
     v14 = objc_opt_new();
     valueLabel = v4->_valueLabel;
     v4->_valueLabel = v14;
 
-    v16 = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
-    [(HKSelectedRangeLabel *)v4->_valueLabel setFont:v16];
+    hk_chartCurrentValueValueFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
+    [(HKSelectedRangeLabel *)v4->_valueLabel setFont:hk_chartCurrentValueValueFont];
 
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    v18 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
-    [v18 setTextColor:v17];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
+    [valueLabel setTextColor:labelColor];
 
-    v19 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
-    [v19 setAdjustsFontSizeToFitWidth:1];
+    valueLabel2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
+    [valueLabel2 setAdjustsFontSizeToFitWidth:1];
 
-    v20 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
-    [v20 setMinimumScaleFactor:0.1];
+    valueLabel3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
+    [valueLabel3 setMinimumScaleFactor:0.1];
 
-    v21 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
-    [v21 setLineBreakMode:4];
+    valueLabel4 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
+    [valueLabel4 setLineBreakMode:4];
 
-    v22 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
-    [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 addSubview:v22];
+    valueLabel5 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 valueLabel];
+    [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 addSubview:valueLabel5];
 
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 setForwardChevronView:0];
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)v4 setTapOutRecognizer:0];
@@ -92,13 +92,13 @@
   }
 }
 
-- (void)setTapOutBlock:(id)a3
+- (void)setTapOutBlock:(id)block
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(block);
   tapOutBlock = self->_tapOutBlock;
   self->_tapOutBlock = v5;
 
-  if (a3)
+  if (block)
   {
 
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _installForwardChevronView];
@@ -114,34 +114,34 @@
 - (void)_installForwardChevronView
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+  hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
   v4 = MEMORY[0x1E69DCAD8];
-  v18[0] = v3;
+  v18[0] = hk_chartLollipopLabelColor;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v6 = [v4 configurationWithPaletteColors:v5];
 
   v7 = MEMORY[0x1E69DCAD8];
-  v8 = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
-  v9 = [v7 configurationWithFont:v8];
+  hk_chartLollipopKeyFont = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
+  v9 = [v7 configurationWithFont:hk_chartLollipopKeyFont];
 
   v10 = [v6 configurationByApplyingConfiguration:v9];
   v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward" withConfiguration:v10];
   v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setForwardChevronView:v12];
 
-  v13 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-  [v13 setContentMode:1];
+  forwardChevronView = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  [forwardChevronView setContentMode:1];
 
-  v14 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-  [(HKInteractiveChartAnnotationViewKeyValueLabel *)self addSubview:v14];
+  forwardChevronView2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  [(HKInteractiveChartAnnotationViewKeyValueLabel *)self addSubview:forwardChevronView2];
 
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setNeedsLayout];
   v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTapOutGesture_];
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setTapOutRecognizer:v15];
 
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setUserInteractionEnabled:1];
-  v16 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutRecognizer];
-  [(HKInteractiveChartAnnotationViewKeyValueLabel *)self addGestureRecognizer:v16];
+  tapOutRecognizer = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutRecognizer];
+  [(HKInteractiveChartAnnotationViewKeyValueLabel *)self addGestureRecognizer:tapOutRecognizer];
 
   v17 = [MEMORY[0x1E696AEC0] hk_chartAccessibilityIdentifier:@"LollipopTapOut"];
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setAccessibilityIdentifier:v17];
@@ -149,16 +149,16 @@
 
 - (void)_removeForwardChevronView
 {
-  v3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  forwardChevronView = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
 
-  if (v3)
+  if (forwardChevronView)
   {
-    v4 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-    [v4 removeFromSuperview];
+    forwardChevronView2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+    [forwardChevronView2 removeFromSuperview];
 
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setNeedsLayout];
-    v5 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutRecognizer];
-    [(HKInteractiveChartAnnotationViewKeyValueLabel *)self removeGestureRecognizer:v5];
+    tapOutRecognizer = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutRecognizer];
+    [(HKInteractiveChartAnnotationViewKeyValueLabel *)self removeGestureRecognizer:tapOutRecognizer];
 
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setUserInteractionEnabled:0];
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)self setTapOutRecognizer:0];
@@ -167,14 +167,14 @@
   }
 }
 
-- (void)handleTapOutGesture:(id)a3
+- (void)handleTapOutGesture:(id)gesture
 {
-  v4 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutBlock];
+  tapOutBlock = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutBlock];
 
-  if (v4)
+  if (tapOutBlock)
   {
-    v5 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutBlock];
-    v5[2]();
+    tapOutBlock2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self tapOutBlock];
+    tapOutBlock2[2]();
   }
 }
 
@@ -185,8 +185,8 @@
   v6 = v5;
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _compressedKeySize];
   v8 = v7;
-  v9 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
-  [v9 intrinsicContentSize];
+  valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
+  [valueLabel intrinsicContentSize];
   v11 = v10;
 
   v12 = v8 + v11 - v6;
@@ -224,12 +224,12 @@
   }
 
   v19 = v16 - v18;
-  v20 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
-  [v20 setFrame:{0.0, v18, v4, v19}];
+  valueLabel2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
+  [valueLabel2 setFrame:{0.0, v18, v4, v19}];
 
   v21 = v4 - v8;
-  v22 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-  if (v22)
+  forwardChevronView = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  if (forwardChevronView)
   {
     v23 = v4 - v8;
   }
@@ -249,9 +249,9 @@
 
   if ([(HKInteractiveChartAnnotationViewKeyValueLabel *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
-    v25 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+    forwardChevronView2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
 
-    if (v25)
+    if (forwardChevronView2)
     {
       v14 = v8;
     }
@@ -262,12 +262,12 @@
     }
   }
 
-  v26 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self keyLabel];
-  [v26 setFrame:{v14, v24, v23, v18 - v24}];
+  keyLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self keyLabel];
+  [keyLabel setFrame:{v14, v24, v23, v18 - v24}];
 
-  v27 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  forwardChevronView3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
 
-  if (v27)
+  if (forwardChevronView3)
   {
     v28 = v8 + -4.0;
     v29 = v21 + 4.0;
@@ -276,8 +276,8 @@
       v29 = 0.0;
     }
 
-    v30 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-    [v30 setFrame:{v29, v24 + 2.0, v28, v28}];
+    forwardChevronView4 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+    [forwardChevronView4 setFrame:{v29, v24 + 2.0, v28, v28}];
   }
 }
 
@@ -288,8 +288,8 @@
   v6 = v5;
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _compressedKeySize];
   v8 = v7;
-  v9 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
-  [v9 intrinsicContentSize];
+  valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
+  [valueLabel intrinsicContentSize];
   v11 = v10;
 
   if (v8 + v11 <= v4)
@@ -302,8 +302,8 @@
     v12 = (v8 + v11 - v4) * 0.5;
   }
 
-  v13 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-  if (v13)
+  forwardChevronView = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  if (forwardChevronView)
   {
     v14 = v6;
   }
@@ -314,40 +314,40 @@
   }
 
   v15 = v8 - v12;
-  v16 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  forwardChevronView2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
 
-  if (v16)
+  if (forwardChevronView2)
   {
     v15 = v15 - v14;
   }
 
-  v17 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self keyLabel];
-  [v17 setFrame:{0.0, 0.0, v15, v6}];
+  keyLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self keyLabel];
+  [keyLabel setFrame:{0.0, 0.0, v15, v6}];
 
   v18 = v15 + 0.0;
-  v19 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  forwardChevronView3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
 
-  if (v19)
+  if (forwardChevronView3)
   {
-    v20 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
-    [v20 setFrame:{v18 + 4.0, 2.0, v14 + -4.0, v14 + -4.0}];
+    forwardChevronView4 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+    [forwardChevronView4 setFrame:{v18 + 4.0, 2.0, v14 + -4.0, v14 + -4.0}];
 
     v18 = v14 + v18;
   }
 
-  v21 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
-  [v21 setFrame:{v18, 0.0, v11 - v12, v6}];
+  valueLabel2 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
+  [valueLabel2 setFrame:{v18, 0.0, v11 - v12, v6}];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self orientation];
-  if (v3 == 1)
+  orientation = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self orientation];
+  if (orientation == 1)
   {
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _verticalInstrinsicContentSize];
   }
 
-  else if (!v3)
+  else if (!orientation)
   {
     [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _horizontalIntrinsicContentSize];
   }
@@ -362,8 +362,8 @@
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _compressedKeySize];
   v4 = v3;
   v6 = v5;
-  v7 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
-  [v7 intrinsicContentSize];
+  valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
+  [valueLabel intrinsicContentSize];
   v9 = v8;
   v11 = v10;
 
@@ -388,8 +388,8 @@
   [(HKInteractiveChartAnnotationViewKeyValueLabel *)self _compressedKeySize];
   v4 = v3;
   v6 = v5;
-  v7 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
-  [v7 intrinsicContentSize];
+  valueLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self valueLabel];
+  [valueLabel intrinsicContentSize];
   v9 = v8;
   v11 = v10;
 
@@ -411,15 +411,15 @@
 
 - (CGSize)_compressedKeySize
 {
-  v3 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self keyLabel];
-  [v3 intrinsicContentSize];
+  keyLabel = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self keyLabel];
+  [keyLabel intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
+  forwardChevronView = [(HKInteractiveChartAnnotationViewKeyValueLabel *)self forwardChevronView];
 
   v9 = v5 + v7;
-  if (!v8)
+  if (!forwardChevronView)
   {
     v9 = v5;
   }

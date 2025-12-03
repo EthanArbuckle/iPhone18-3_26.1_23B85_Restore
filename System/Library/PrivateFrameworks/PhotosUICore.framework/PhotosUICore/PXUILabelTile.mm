@@ -1,30 +1,30 @@
 @interface PXUILabelTile
 - (UIView)view;
-- (void)_setSpec:(id)a3;
+- (void)_setSpec:(id)spec;
 - (void)becomeReusable;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
-- (void)setText:(id)a3;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
+- (void)setText:(id)text;
 @end
 
 @implementation PXUILabelTile
 
-- (void)_setSpec:(id)a3
+- (void)_setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXUILabel *)self->_label setSpec:self->_spec];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (self->_text != a3)
+  if (self->_text != text)
   {
-    v5 = [a3 copy];
+    v5 = [text copy];
     text = self->_text;
     self->_text = v5;
 
@@ -43,10 +43,10 @@
   [(PXUILabel *)label setHidden:1];
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  v5 = [a4 viewSpec];
-  [(PXUILabelTile *)self _setSpec:v5];
+  viewSpec = [data viewSpec];
+  [(PXUILabelTile *)self _setSpec:viewSpec];
 }
 
 - (UIView)view

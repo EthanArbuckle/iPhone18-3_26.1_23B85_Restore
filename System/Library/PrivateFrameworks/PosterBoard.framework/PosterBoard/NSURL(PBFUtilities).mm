@@ -13,28 +13,28 @@
 - (uint64_t)pbf_isDirectory
 {
   v2 = 0;
-  [a1 getResourceValue:&v2 forKey:*MEMORY[0x277CBE868] error:0];
+  [self getResourceValue:&v2 forKey:*MEMORY[0x277CBE868] error:0];
   return [v2 BOOLValue];
 }
 
 - (uint64_t)pbf_isPurgable
 {
   v2 = 0;
-  [a1 getResourceValue:&v2 forKey:*MEMORY[0x277CBE898] error:0];
+  [self getResourceValue:&v2 forKey:*MEMORY[0x277CBE898] error:0];
   return [v2 BOOLValue];
 }
 
 - (id)pbf_creationDate
 {
   v3 = 0;
-  [a1 getResourceValue:&v3 forKey:*MEMORY[0x277CBE7C0] error:0];
-  v1 = v3;
-  if (!v1)
+  [self getResourceValue:&v3 forKey:*MEMORY[0x277CBE7C0] error:0];
+  distantPast = v3;
+  if (!distantPast)
   {
-    v1 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  return v1;
+  return distantPast;
 }
 
 - (BOOL)pbf_setPurgable:()PBFUtilities error:
@@ -47,14 +47,14 @@
   }
 
   v26 = v7;
-  v8 = [a1 fileSystemRepresentation];
-  v9 = open(v8, 0);
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  v9 = open(fileSystemRepresentation, 0);
   if (v9 < 0)
   {
     v19 = PBFLogCommon();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [NSURL(PBFUtilities) pbf_setPurgable:v8 error:v19];
+      [NSURL(PBFUtilities) pbf_setPurgable:fileSystemRepresentation error:v19];
     }
 
     if (a4)
@@ -63,8 +63,8 @@
       v21 = *MEMORY[0x277CCA5B8];
       v22 = *__error();
       v33 = *MEMORY[0x277CCA170];
-      v23 = [a1 path];
-      v34[0] = v23;
+      path = [self path];
+      v34[0] = path;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
       *a4 = [v20 errorWithDomain:v21 code:v22 userInfo:v24];
     }
@@ -84,7 +84,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v28 = a1;
+        selfCopy = self;
         v29 = 1024;
         v30 = a3;
         v31 = 1024;
@@ -95,12 +95,12 @@
       if (a4)
       {
         v15 = objc_opt_new();
-        v16 = [a1 path];
+        path2 = [self path];
 
-        if (v16)
+        if (path2)
         {
-          v17 = [a1 path];
-          [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x277CCA758]];
+          path3 = [self path];
+          [v15 setObject:path3 forKeyedSubscript:*MEMORY[0x277CCA758]];
         }
 
         v18 = [MEMORY[0x277CCABB0] numberWithInt:v13];
@@ -130,14 +130,14 @@
     [NSURL(PBFUtilities) pbf_setFileProtection:a2 error:?];
   }
 
-  v8 = [a1 setResourceValue:v7 forKey:*MEMORY[0x277CBE7F8] error:a4];
+  v8 = [self setResourceValue:v7 forKey:*MEMORY[0x277CBE7F8] error:a4];
   return v8;
 }
 
 - (id)pbf_fileProtectionType
 {
   v3 = 0;
-  [a1 getResourceValue:&v3 forKey:*MEMORY[0x277CBE7F8] error:0];
+  [self getResourceValue:&v3 forKey:*MEMORY[0x277CBE7F8] error:0];
   v1 = v3;
 
   return v1;
@@ -148,7 +148,7 @@
   v9[3] = *MEMORY[0x277D85DE8];
   v4 = a3;
   BOMCopierNew();
-  [a1 fileSystemRepresentation];
+  [self fileSystemRepresentation];
   [v4 fileSystemRepresentation];
 
   v5 = *MEMORY[0x277CBED28];
@@ -159,10 +159,10 @@
   v8[2] = @"copyResources";
   v9[2] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
-  LODWORD(a1) = BOMCopierCopyWithOptions();
+  LODWORD(self) = BOMCopierCopyWithOptions();
   BOMCopierFree();
 
-  return a1 == 0;
+  return self == 0;
 }
 
 - (void)pbf_setPurgable:()PBFUtilities error:.cold.1(uint64_t a1, NSObject *a2)

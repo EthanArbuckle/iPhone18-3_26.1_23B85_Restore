@@ -1,7 +1,7 @@
 @interface DMDInstallManagedBookOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,25 +21,25 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v14.receiver = a1;
+  requestCopy = request;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___DMDInstallManagedBookOperation;
-  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_13;
   }
 
-  v7 = [v6 URL];
+  v7 = [requestCopy URL];
 
   if (v7)
   {
-    v8 = [v6 persistentID];
+    persistentID = [requestCopy persistentID];
 
-    if (!v8)
+    if (!persistentID)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_10;
       }
@@ -50,15 +50,15 @@
 
   else
   {
-    v9 = [v6 iTunesStoreID];
+    iTunesStoreID = [requestCopy iTunesStoreID];
 
-    if (!v9)
+    if (!iTunesStoreID)
     {
-      if (a4)
+      if (error)
       {
 LABEL_10:
         DMFErrorWithCodeAndUserInfo();
-        *a4 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_14;
       }
 
@@ -67,16 +67,16 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v10 = [v6 originator];
+    originator = [requestCopy originator];
 
-    if (!v10)
+    if (!originator)
     {
-      if (a4)
+      if (error)
       {
         v15 = DMFInvalidParameterErrorKey;
         v16 = @"request.originator";
         v12 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-        *a4 = DMFErrorWithCodeAndUserInfo();
+        *error = DMFErrorWithCodeAndUserInfo();
       }
 
       goto LABEL_13;
@@ -89,57 +89,57 @@ LABEL_14:
   return v11;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [DMDPowerAssertion assertionForOperation:@"DMDInstallManagedBookOperation: run"];
   if (MCHasMDMMigrated())
   {
-    v6 = [v4 iTunesStoreID];
+    iTunesStoreID = [requestCopy iTunesStoreID];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_10004C3C8;
     v21 = &unk_1000CF328;
-    v22 = self;
+    selfCopy = self;
     v7 = v5;
     v23 = v7;
     v8 = objc_retainBlock(&v18);
     v9 = [DMDManagedMediaManager sharedManager:v18];
-    if (v6)
+    if (iTunesStoreID)
     {
-      v10 = [v4 originator];
-      [v9 installStoreBookWithiTunesStoreID:v6 originator:v10 assertion:v7 completionBlock:v8];
+      originator = [requestCopy originator];
+      [v9 installStoreBookWithiTunesStoreID:iTunesStoreID originator:originator assertion:v7 completionBlock:v8];
     }
 
     else
     {
-      v10 = objc_opt_new();
-      v11 = [v4 persistentID];
-      [v10 setPersistentID:v11];
+      originator = objc_opt_new();
+      persistentID = [requestCopy persistentID];
+      [originator setPersistentID:persistentID];
 
-      v12 = [v4 author];
-      [v10 setAuthor:v12];
+      author = [requestCopy author];
+      [originator setAuthor:author];
 
-      v13 = [v4 title];
-      [v10 setTitle:v13];
+      title = [requestCopy title];
+      [originator setTitle:title];
 
-      v14 = [v4 version];
-      [v10 setVersion:v14];
+      version = [requestCopy version];
+      [originator setVersion:version];
 
-      v15 = [v4 type];
-      if (v15 > 2)
+      type = [requestCopy type];
+      if (type > 2)
       {
         v16 = 0;
       }
 
       else
       {
-        v16 = *off_1000CF348[v15];
+        v16 = *off_1000CF348[type];
       }
 
-      [v10 setKind:v16];
-      v17 = [v4 URL];
-      [v9 installNonStoreBook:v10 fileExtension:v16 URL:v17 assertion:v7 completionBlock:v8];
+      [originator setKind:v16];
+      v17 = [requestCopy URL];
+      [v9 installNonStoreBook:originator fileExtension:v16 URL:v17 assertion:v7 completionBlock:v8];
     }
   }
 

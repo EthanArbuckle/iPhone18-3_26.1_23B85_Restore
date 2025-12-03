@@ -1,25 +1,25 @@
 @interface SEEndPointPrivacyEncryptResponse
-+ (SEEndPointPrivacyEncryptResponse)responseWithCipherText:(id)a3 ephemeralPublicKeyData:(id)a4 receiverPublicKeyHash:(id)a5;
-- (SEEndPointPrivacyEncryptResponse)initWithCoder:(id)a3;
++ (SEEndPointPrivacyEncryptResponse)responseWithCipherText:(id)text ephemeralPublicKeyData:(id)data receiverPublicKeyHash:(id)hash;
+- (SEEndPointPrivacyEncryptResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEEndPointPrivacyEncryptResponse
 
-+ (SEEndPointPrivacyEncryptResponse)responseWithCipherText:(id)a3 ephemeralPublicKeyData:(id)a4 receiverPublicKeyHash:(id)a5
++ (SEEndPointPrivacyEncryptResponse)responseWithCipherText:(id)text ephemeralPublicKeyData:(id)data receiverPublicKeyHash:(id)hash
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  dataCopy = data;
+  hashCopy = hash;
   v10 = objc_opt_new();
   v11 = v10;
   if (v10)
   {
     [v10 setVersion:@"ECIES_V1"];
-    [v11 setCipherText:v7];
-    [v11 setEphemeralPublicKeydata:v8];
-    [v11 setReceiverPublicKeyHash:v9];
+    [v11 setCipherText:textCopy];
+    [v11 setEphemeralPublicKeydata:dataCopy];
+    [v11 setReceiverPublicKeyHash:hashCopy];
   }
 
   return v11;
@@ -28,55 +28,55 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SEEndPointPrivacyEncryptResponse *)self version];
-  v5 = [(SEEndPointPrivacyEncryptResponse *)self cipherText];
-  v6 = [v5 asHexString];
-  v7 = [(SEEndPointPrivacyEncryptResponse *)self ephemeralPublicKeydata];
-  v8 = [v7 asHexString];
-  v9 = [(SEEndPointPrivacyEncryptResponse *)self receiverPublicKeyHash];
-  v10 = [v9 asHexString];
-  v11 = [v3 stringWithFormat:@"{\n\tversion : %@, \n\tcipherText : %@, \n\tephemeralPublicKeydata : %@\n\treceiverPublicKeyHash : %@\n}", v4, v6, v8, v10];
+  version = [(SEEndPointPrivacyEncryptResponse *)self version];
+  cipherText = [(SEEndPointPrivacyEncryptResponse *)self cipherText];
+  asHexString = [cipherText asHexString];
+  ephemeralPublicKeydata = [(SEEndPointPrivacyEncryptResponse *)self ephemeralPublicKeydata];
+  asHexString2 = [ephemeralPublicKeydata asHexString];
+  receiverPublicKeyHash = [(SEEndPointPrivacyEncryptResponse *)self receiverPublicKeyHash];
+  asHexString3 = [receiverPublicKeyHash asHexString];
+  v11 = [v3 stringWithFormat:@"{\n\tversion : %@, \n\tcipherText : %@, \n\tephemeralPublicKeydata : %@\n\treceiverPublicKeyHash : %@\n}", version, asHexString, asHexString2, asHexString3];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SEEndPointPrivacyEncryptResponse *)self version];
-  [v4 encodeObject:v5 forKey:@"version"];
+  coderCopy = coder;
+  version = [(SEEndPointPrivacyEncryptResponse *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v6 = [(SEEndPointPrivacyEncryptResponse *)self cipherText];
-  [v4 encodeObject:v6 forKey:@"cipherText"];
+  cipherText = [(SEEndPointPrivacyEncryptResponse *)self cipherText];
+  [coderCopy encodeObject:cipherText forKey:@"cipherText"];
 
-  v7 = [(SEEndPointPrivacyEncryptResponse *)self ephemeralPublicKeydata];
-  [v4 encodeObject:v7 forKey:@"ephemeralPublicKeydata"];
+  ephemeralPublicKeydata = [(SEEndPointPrivacyEncryptResponse *)self ephemeralPublicKeydata];
+  [coderCopy encodeObject:ephemeralPublicKeydata forKey:@"ephemeralPublicKeydata"];
 
-  v8 = [(SEEndPointPrivacyEncryptResponse *)self receiverPublicKeyHash];
-  [v4 encodeObject:v8 forKey:@"receiverPublicKeyHash"];
+  receiverPublicKeyHash = [(SEEndPointPrivacyEncryptResponse *)self receiverPublicKeyHash];
+  [coderCopy encodeObject:receiverPublicKeyHash forKey:@"receiverPublicKeyHash"];
 }
 
-- (SEEndPointPrivacyEncryptResponse)initWithCoder:(id)a3
+- (SEEndPointPrivacyEncryptResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SEEndPointPrivacyEncryptResponse;
   v5 = [(SEEndPointPrivacyEncryptResponse *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cipherText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cipherText"];
     cipherText = v5->_cipherText;
     v5->_cipherText = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKeydata"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKeydata"];
     ephemeralPublicKeydata = v5->_ephemeralPublicKeydata;
     v5->_ephemeralPublicKeydata = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiverPublicKeyHash"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiverPublicKeyHash"];
     receiverPublicKeyHash = v5->_receiverPublicKeyHash;
     v5->_receiverPublicKeyHash = v12;
   }

@@ -1,16 +1,16 @@
 @interface TFFeedbackFormViewSpecification
-+ (UIEdgeInsets)formCellInsetsInTraitEnvironment:(id)a3;
++ (UIEdgeInsets)formCellInsetsInTraitEnvironment:(id)environment;
 @end
 
 @implementation TFFeedbackFormViewSpecification
 
-+ (UIEdgeInsets)formCellInsetsInTraitEnvironment:(id)a3
++ (UIEdgeInsets)formCellInsetsInTraitEnvironment:(id)environment
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [environment traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v5 = 20.0;
-  if (v4 != 2)
+  if (horizontalSizeClass != 2)
   {
     v5 = 16.0;
   }

@@ -1,59 +1,59 @@
 @interface ARTechniqueService
-- (ARTechniqueService)initWithConnection:(id)a3;
-- (ARTechniqueService)initWithConnection:(id)a3 exportedInterface:(id)a4 remoteObjectInterface:(id)a5;
-- (id)processData:(id)a3;
-- (void)_initCommon:(id)a3;
-- (void)captureBehaviorWithReply:(id)a3;
+- (ARTechniqueService)initWithConnection:(id)connection;
+- (ARTechniqueService)initWithConnection:(id)connection exportedInterface:(id)interface remoteObjectInterface:(id)objectInterface;
+- (id)processData:(id)data;
+- (void)_initCommon:(id)common;
+- (void)captureBehaviorWithReply:(id)reply;
 - (void)interruptionHandler;
 - (void)invalidationHandler;
-- (void)isActiveWithReply:(id)a3;
-- (void)numberOfActiveConnectionsWithReply:(id)a3;
-- (void)processData:(id)a3 reply:(id)a4;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (void)requiredSensorDataTypesWithReply:(id)a3;
-- (void)requiredTimeIntervalWithReply:(id)a3;
-- (void)resultDataClassesWithReply:(id)a3;
+- (void)isActiveWithReply:(id)reply;
+- (void)numberOfActiveConnectionsWithReply:(id)reply;
+- (void)processData:(id)data reply:(id)reply;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (void)requiredSensorDataTypesWithReply:(id)reply;
+- (void)requiredTimeIntervalWithReply:(id)reply;
+- (void)resultDataClassesWithReply:(id)reply;
 @end
 
 @implementation ARTechniqueService
 
-- (ARTechniqueService)initWithConnection:(id)a3
+- (ARTechniqueService)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = ARRemoteTechniqueServiceInterfaceWithProtocol();
   v6 = ARRemoteTechniqueClientInterfaceWithProtocol();
   v9.receiver = self;
   v9.super_class = ARTechniqueService;
-  v7 = [(ARDaemonService *)&v9 initWithConnection:v4 exportedInterface:v5 remoteObjectInterface:v6];
+  v7 = [(ARDaemonService *)&v9 initWithConnection:connectionCopy exportedInterface:v5 remoteObjectInterface:v6];
 
   if (v7)
   {
-    [(ARTechniqueService *)v7 _initCommon:v4];
+    [(ARTechniqueService *)v7 _initCommon:connectionCopy];
   }
 
   return v7;
 }
 
-- (ARTechniqueService)initWithConnection:(id)a3 exportedInterface:(id)a4 remoteObjectInterface:(id)a5
+- (ARTechniqueService)initWithConnection:(id)connection exportedInterface:(id)interface remoteObjectInterface:(id)objectInterface
 {
-  v8 = a3;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = ARTechniqueService;
-  v9 = [(ARDaemonService *)&v12 initWithConnection:v8 exportedInterface:a4 remoteObjectInterface:a5];
+  v9 = [(ARDaemonService *)&v12 initWithConnection:connectionCopy exportedInterface:interface remoteObjectInterface:objectInterface];
   v10 = v9;
   if (v9)
   {
-    [(ARTechniqueService *)v9 _initCommon:v8];
+    [(ARTechniqueService *)v9 _initCommon:connectionCopy];
   }
 
   return v10;
 }
 
-- (void)_initCommon:(id)a3
+- (void)_initCommon:(id)common
 {
-  v4 = [a3 remoteObjectProxy];
+  remoteObjectProxy = [common remoteObjectProxy];
   clientProxy = self->_clientProxy;
-  self->_clientProxy = v4;
+  self->_clientProxy = remoteObjectProxy;
 
   [(ARDaemonService *)self setActive:0];
 }
@@ -72,35 +72,35 @@
   [(ARDaemonService *)&v2 interruptionHandler];
 }
 
-- (void)isActiveWithReply:(id)a3
+- (void)isActiveWithReply:(id)reply
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(ARDaemonService *)self isActive], 0);
+  replyCopy = reply;
+  (*(reply + 2))(replyCopy, [(ARDaemonService *)self isActive], 0);
 }
 
-- (void)captureBehaviorWithReply:(id)a3
+- (void)captureBehaviorWithReply:(id)reply
 {
   technique = self->_technique;
-  v4 = a3;
-  v4[2](v4, [(ARTechnique *)technique captureBehavior], 0);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, [(ARTechnique *)technique captureBehavior], 0);
 }
 
-- (void)numberOfActiveConnectionsWithReply:(id)a3
+- (void)numberOfActiveConnectionsWithReply:(id)reply
 {
-  v6 = a3;
-  v4 = [(ARDaemonService *)self dataSource];
-  v5 = [v4 numberOfActiveConnectionsForService:self];
+  replyCopy = reply;
+  dataSource = [(ARDaemonService *)self dataSource];
+  v5 = [dataSource numberOfActiveConnectionsForService:self];
 
-  v6[2](v6, v5, 0);
+  replyCopy[2](replyCopy, v5, 0);
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([(ARDaemonService *)self isActive])
   {
-    v5 = [(ARTechnique *)self->_technique processData:v4];
+    v5 = [(ARTechnique *)self->_technique processData:dataCopy];
   }
 
   else
@@ -113,13 +113,13 @@
       v12 = 138543874;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v4;
+      v17 = dataCopy;
       _os_log_impl(&dword_23D391000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Service not active; skipping processing of data: %@", &v12, 0x20u);
     }
 
-    v5 = v4;
+    v5 = dataCopy;
   }
 
   v9 = v5;
@@ -129,20 +129,20 @@
   return v9;
 }
 
-- (void)processData:(id)a3 reply:(id)a4
+- (void)processData:(id)data reply:(id)reply
 {
-  v6 = a4;
-  v7 = [(ARTechniqueService *)self processData:a3];
-  v6[2](v6, v7, 0);
+  replyCopy = reply;
+  v7 = [(ARTechniqueService *)self processData:data];
+  replyCopy[2](replyCopy, v7, 0);
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   if ([(ARDaemonService *)self isActive])
   {
-    [(ARTechnique *)self->_technique requestResultDataAtTimestamp:v6 context:a3];
+    [(ARTechnique *)self->_technique requestResultDataAtTimestamp:contextCopy context:timestamp];
   }
 
   else
@@ -155,40 +155,40 @@
       v11 = 138543874;
       v12 = v9;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
-      v16 = a3;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_23D391000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Service not active; skipping request for result data at timestamp: %f", &v11, 0x20u);
     }
 
-    [(ARRemoteTechniqueClient *)self->_clientProxy techniqueDidOutputResultData:MEMORY[0x277CBEBF8] timestamp:v6 context:a3];
+    [(ARRemoteTechniqueClient *)self->_clientProxy techniqueDidOutputResultData:MEMORY[0x277CBEBF8] timestamp:contextCopy context:timestamp];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requiredSensorDataTypesWithReply:(id)a3
+- (void)requiredSensorDataTypesWithReply:(id)reply
 {
   technique = self->_technique;
-  v4 = a3;
-  v4[2](v4, [(ARTechnique *)technique requiredSensorDataTypes], 0);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, [(ARTechnique *)technique requiredSensorDataTypes], 0);
 }
 
-- (void)requiredTimeIntervalWithReply:(id)a3
+- (void)requiredTimeIntervalWithReply:(id)reply
 {
   technique = self->_technique;
-  v4 = a3;
+  replyCopy = reply;
   [(ARTechnique *)technique requiredTimeInterval];
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)resultDataClassesWithReply:(id)a3
+- (void)resultDataClassesWithReply:(id)reply
 {
   technique = self->_technique;
-  v4 = a3;
-  v6 = [(ARTechnique *)technique resultDataClasses];
-  v5 = [v6 ar_map:&__block_literal_global_1];
-  v4[2](v4, v5, 0);
+  replyCopy = reply;
+  resultDataClasses = [(ARTechnique *)technique resultDataClasses];
+  v5 = [resultDataClasses ar_map:&__block_literal_global_1];
+  replyCopy[2](replyCopy, v5, 0);
 }
 
 @end

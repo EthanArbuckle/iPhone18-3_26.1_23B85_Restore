@@ -1,95 +1,95 @@
 @interface CRPreflightResponse
-- (CRPreflightResponse)initWithDictionary:(id)a3;
+- (CRPreflightResponse)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation CRPreflightResponse
 
-- (CRPreflightResponse)initWithDictionary:(id)a3
+- (CRPreflightResponse)initWithDictionary:(id)dictionary
 {
   v79 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v75.receiver = self;
   v75.super_class = CRPreflightResponse;
   v6 = [(CRPreflightResponse *)&v75 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!dictionaryCopy)
     {
       v64 = 0;
       goto LABEL_49;
     }
 
-    objc_storeStrong(&v6->_rawResponse, a3);
-    v8 = [v5 objectForKeyedSubscript:@"RequestID"];
+    objc_storeStrong(&v6->_rawResponse, dictionary);
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"RequestID"];
 
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:@"RequestID"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"RequestID"];
       requestID = v7->_requestID;
       v7->_requestID = v9;
     }
 
-    v11 = [v5 objectForKeyedSubscript:@"SessionID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"SessionID"];
 
     if (v11)
     {
-      v12 = [v5 objectForKeyedSubscript:@"SessionID"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"SessionID"];
       sessionID = v7->_sessionID;
       v7->_sessionID = v12;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"status"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"status"];
 
     if (v14)
     {
-      v15 = [v5 objectForKeyedSubscript:@"status"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"status"];
       status = v7->_status;
       v7->_status = v15;
     }
 
-    v17 = [v5 objectForKeyedSubscript:@"details"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"details"];
 
     if (v17)
     {
-      v18 = [v5 objectForKeyedSubscript:@"details"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"details"];
       details = v7->_details;
       v7->_details = v18;
     }
 
-    v20 = [v5 objectForKeyedSubscript:@"ErrorCode"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"ErrorCode"];
 
     if (v20)
     {
-      v21 = [v5 objectForKeyedSubscript:@"ErrorCode"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"ErrorCode"];
       errorCode = v7->_errorCode;
       v7->_errorCode = v21;
     }
 
-    v23 = [v5 objectForKeyedSubscript:@"ErrorMessage"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"ErrorMessage"];
 
     if (v23)
     {
-      v24 = [v5 objectForKeyedSubscript:@"ErrorMessage"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"ErrorMessage"];
       errorMessage = v7->_errorMessage;
       v7->_errorMessage = v24;
     }
 
-    v26 = [v5 objectForKeyedSubscript:@"SpecVersion"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"SpecVersion"];
 
     if (v26)
     {
-      v27 = [v5 objectForKeyedSubscript:@"SpecVersion"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"SpecVersion"];
       specVersion = v7->_specVersion;
       v7->_specVersion = v27;
     }
 
-    v29 = [v5 objectForKeyedSubscript:@"SignatureChallenge"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"SignatureChallenge"];
 
     if (v29)
     {
-      v30 = [v5 objectForKeyedSubscript:@"SignatureChallenge"];
+      v30 = [dictionaryCopy objectForKeyedSubscript:@"SignatureChallenge"];
       signatureChallenge = v7->_signatureChallenge;
       v7->_signatureChallenge = v30;
     }
@@ -102,12 +102,12 @@
     activationChallenges = v7->_activationChallenges;
     v7->_activationChallenges = v34;
 
-    v36 = [v5 objectForKeyedSubscript:@"Challenges"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"Challenges"];
 
     if (v36)
     {
-      v67 = v5;
-      v37 = [v5 objectForKeyedSubscript:@"Challenges"];
+      v67 = dictionaryCopy;
+      v37 = [dictionaryCopy objectForKeyedSubscript:@"Challenges"];
       v38 = handleForCategory(0);
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
@@ -217,7 +217,7 @@
         while (v40);
       }
 
-      v5 = v67;
+      dictionaryCopy = v67;
     }
   }
 
@@ -233,17 +233,17 @@ LABEL_49:
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v17 = NSStringFromClass(v3);
-  v4 = [(CRPreflightResponse *)self requestID];
-  v5 = [(CRPreflightResponse *)self sessionID];
-  v6 = [(CRPreflightResponse *)self componentChallenges];
-  v7 = [(CRPreflightResponse *)self activationChallenges];
-  v8 = [(CRPreflightResponse *)self status];
-  v9 = [(CRPreflightResponse *)self details];
-  v10 = [(CRPreflightResponse *)self errorCode];
-  v11 = [(CRPreflightResponse *)self errorMessage];
-  v12 = [(CRPreflightResponse *)self specVersion];
-  v13 = [(CRPreflightResponse *)self signatureChallenge];
-  v16 = [v15 stringWithFormat:@"<%@: RequestID = %@ SessionID = %@ ComponentChallenges = %@ ActivationChallenges = %@ Status = %@ details = %@ errorCode = %@ errorMessage = %@ specVersion = %@ signatureChallenge = %@>", v17, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13];
+  requestID = [(CRPreflightResponse *)self requestID];
+  sessionID = [(CRPreflightResponse *)self sessionID];
+  componentChallenges = [(CRPreflightResponse *)self componentChallenges];
+  activationChallenges = [(CRPreflightResponse *)self activationChallenges];
+  status = [(CRPreflightResponse *)self status];
+  details = [(CRPreflightResponse *)self details];
+  errorCode = [(CRPreflightResponse *)self errorCode];
+  errorMessage = [(CRPreflightResponse *)self errorMessage];
+  specVersion = [(CRPreflightResponse *)self specVersion];
+  signatureChallenge = [(CRPreflightResponse *)self signatureChallenge];
+  v16 = [v15 stringWithFormat:@"<%@: RequestID = %@ SessionID = %@ ComponentChallenges = %@ ActivationChallenges = %@ Status = %@ details = %@ errorCode = %@ errorMessage = %@ specVersion = %@ signatureChallenge = %@>", v17, requestID, sessionID, componentChallenges, activationChallenges, status, details, errorCode, errorMessage, specVersion, signatureChallenge];
 
   return v16;
 }

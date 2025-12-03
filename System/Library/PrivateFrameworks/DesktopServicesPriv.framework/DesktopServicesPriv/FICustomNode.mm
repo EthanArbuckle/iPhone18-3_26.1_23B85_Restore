@@ -26,13 +26,13 @@
 
 - (id)fileOpNode
 {
-  v3 = [(FIDSNode *)self fileURL];
-  if (!v3 || ([FINode fiNodeFromURL:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  fileURL = [(FIDSNode *)self fileURL];
+  if (!fileURL || ([FINode fiNodeFromURL:fileURL], (selfCopy = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

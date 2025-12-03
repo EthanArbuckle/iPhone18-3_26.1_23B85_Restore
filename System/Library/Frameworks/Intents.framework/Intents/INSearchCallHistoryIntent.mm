@@ -11,22 +11,22 @@
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)preferredCallProvider;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCallCapabilities:(unint64_t)a3;
-- (void)setCallTypes:(unint64_t)a3;
-- (void)setDateCreated:(id)a3;
-- (void)setPreferredCallProvider:(int64_t)a3;
-- (void)setRecipient:(id)a3;
-- (void)setUnseen:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCallCapabilities:(unint64_t)capabilities;
+- (void)setCallTypes:(unint64_t)types;
+- (void)setDateCreated:(id)created;
+- (void)setPreferredCallProvider:(int64_t)provider;
+- (void)setRecipient:(id)recipient;
+- (void)setUnseen:(id)unseen;
 @end
 
 @implementation INSearchCallHistoryIntent
 
 - (INCallRecordType)callType
 {
-  v2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  if ([v2 callTypesCount] && (v3 = objc_msgSend(v2, "callTypesAtIndex:", 0) - 2, v3 <= 8))
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  if ([_typedBackingStore callTypesCount] && (v3 = objc_msgSend(_typedBackingStore, "callTypesAtIndex:", 0) - 2, v3 <= 8))
   {
     v4 = qword_18EE5EA80[v3];
   }
@@ -54,18 +54,18 @@
   return [(INSearchCallHistoryIntent *)self initWithDateCreated:dateCreated recipient:recipient callCapabilities:callCapabilities callTypes:v7];
 }
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v13 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 dateCreated];
-  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  v13 = idCopy;
+  v8 = [_typedBackingStore copy];
+  dateCreated = [_typedBackingStore dateCreated];
+  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(dateCreated, options);
   [v8 setDateCreated:v10];
 
-  v11 = [v7 recipient];
-  v12 = INIntentSlotValueRedactedContactFromContact(v11, a3, v13);
+  recipient = [_typedBackingStore recipient];
+  v12 = INIntentSlotValueRedactedContactFromContact(recipient, options, v13);
 
   [v8 setRecipient:v12];
   [(INIntent *)self setBackingStore:v8];
@@ -75,52 +75,52 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"dateCreated";
-  v3 = [(INSearchCallHistoryIntent *)self dateCreated];
-  v4 = v3;
-  if (!v3)
+  dateCreated = [(INSearchCallHistoryIntent *)self dateCreated];
+  v4 = dateCreated;
+  if (!dateCreated)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    dateCreated = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v3;
+  v18[0] = dateCreated;
   v17[1] = @"recipient";
-  v5 = [(INSearchCallHistoryIntent *)self recipient];
-  v6 = v5;
-  if (!v5)
+  recipient = [(INSearchCallHistoryIntent *)self recipient];
+  null = recipient;
+  if (!recipient)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null;
   v17[2] = @"callCapabilities";
   v7 = INCallCapabilityOptionsGetNames([(INSearchCallHistoryIntent *)self callCapabilities]);
-  v8 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v8;
+  v18[2] = null2;
   v17[3] = @"callTypes";
   v9 = INCallRecordTypeOptionsGetNames([(INSearchCallHistoryIntent *)self callTypes]);
-  v10 = v9;
+  null3 = v9;
   if (!v9)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v10;
+  v18[3] = null3;
   v17[4] = @"unseen";
-  v11 = [(INSearchCallHistoryIntent *)self unseen];
-  v12 = v11;
-  if (!v11)
+  unseen = [(INSearchCallHistoryIntent *)self unseen];
+  null4 = unseen;
+  if (!unseen)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v12;
+  v18[4] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v11)
+  if (!unseen)
   {
   }
 
@@ -132,7 +132,7 @@
   {
   }
 
-  if (!v5)
+  if (!recipient)
   {
   }
 
@@ -145,29 +145,29 @@
   return v13;
 }
 
-- (void)setUnseen:(id)a3
+- (void)setUnseen:(id)unseen
 {
-  v5 = a3;
-  v4 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  if (v5)
+  unseenCopy = unseen;
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  if (unseenCopy)
   {
-    [v4 setUnseen:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setUnseen:{objc_msgSend(unseenCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasUnseen:0];
+    [_typedBackingStore setHasUnseen:0];
   }
 }
 
 - (NSNumber)unseen
 {
-  v3 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  if ([v3 hasUnseen])
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasUnseen])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "unseen")}];
+    _typedBackingStore2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "unseen")}];
   }
 
   else
@@ -178,31 +178,31 @@
   return v6;
 }
 
-- (void)setPreferredCallProvider:(int64_t)a3
+- (void)setPreferredCallProvider:(int64_t)provider
 {
-  v3 = a3 - 1;
-  v4 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = provider - 1;
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 2)
   {
-    [v4 setHasPreferredCallProvider:0];
+    [_typedBackingStore setHasPreferredCallProvider:0];
   }
 
   else
   {
-    [v4 setPreferredCallProvider:?];
+    [_typedBackingStore setPreferredCallProvider:?];
   }
 }
 
 - (int64_t)preferredCallProvider
 {
-  v3 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v4 = [v3 hasPreferredCallProvider];
-  v5 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v6 = [v5 preferredCallProvider];
-  if ((((v6 - 2) < 3) & v4) != 0)
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  hasPreferredCallProvider = [_typedBackingStore hasPreferredCallProvider];
+  _typedBackingStore2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  preferredCallProvider = [_typedBackingStore2 preferredCallProvider];
+  if ((((preferredCallProvider - 2) < 3) & hasPreferredCallProvider) != 0)
   {
-    v7 = (v6 - 1);
+    v7 = (preferredCallProvider - 1);
   }
 
   else
@@ -213,17 +213,17 @@
   return v7;
 }
 
-- (void)setCallTypes:(unint64_t)a3
+- (void)setCallTypes:(unint64_t)types
 {
-  v5 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  [v5 clearCallTypes];
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  [_typedBackingStore clearCallTypes];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__INSearchCallHistoryIntent_setCallTypes___block_invoke;
   v6[3] = &unk_1E7288628;
   v6[4] = self;
-  INCallRecordTypeOptionsEnumerateBackingTypes(a3, v6);
+  INCallRecordTypeOptionsEnumerateBackingTypes(types, v6);
 }
 
 void __42__INSearchCallHistoryIntent_setCallTypes___block_invoke(uint64_t a1, uint64_t a2)
@@ -235,34 +235,34 @@ void __42__INSearchCallHistoryIntent_setCallTypes___block_invoke(uint64_t a1, ui
 - (INCallRecordTypeOptions)callTypes
 {
   v8 = 0;
-  v3 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v4 = [v3 callTypesCount];
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  callTypesCount = [_typedBackingStore callTypesCount];
 
-  if (!v4)
+  if (!callTypesCount)
   {
     return 0;
   }
 
-  for (i = 0; i != v4; ++i)
+  for (i = 0; i != callTypesCount; ++i)
   {
-    v6 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-    INCallRecordTypeOptionsAddBackingType(&v8, [v6 callTypesAtIndex:i]);
+    _typedBackingStore2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+    INCallRecordTypeOptionsAddBackingType(&v8, [_typedBackingStore2 callTypesAtIndex:i]);
   }
 
   return v8;
 }
 
-- (void)setCallCapabilities:(unint64_t)a3
+- (void)setCallCapabilities:(unint64_t)capabilities
 {
-  v5 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  [v5 clearCallCapabilities];
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  [_typedBackingStore clearCallCapabilities];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__INSearchCallHistoryIntent_setCallCapabilities___block_invoke;
   v6[3] = &unk_1E7288628;
   v6[4] = self;
-  INCallCapabilityOptionsEnumerateBackingTypes(a3, v6);
+  INCallCapabilityOptionsEnumerateBackingTypes(capabilities, v6);
 }
 
 void __49__INSearchCallHistoryIntent_setCallCapabilities___block_invoke(uint64_t a1, uint64_t a2)
@@ -273,16 +273,16 @@ void __49__INSearchCallHistoryIntent_setCallCapabilities___block_invoke(uint64_t
 
 - (INCallCapabilityOptions)callCapabilities
 {
-  v3 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v4 = [v3 callCapabilitiesCount];
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  callCapabilitiesCount = [_typedBackingStore callCapabilitiesCount];
 
   v5 = 0;
-  if (v4)
+  if (callCapabilitiesCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != callCapabilitiesCount; ++i)
     {
-      v7 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-      v8 = [v7 callCapabilitiesAtIndex:i];
+      _typedBackingStore2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+      v8 = [_typedBackingStore2 callCapabilitiesAtIndex:i];
       v9 = v5 | 1;
       if (v8 != 1)
       {
@@ -304,38 +304,38 @@ void __49__INSearchCallHistoryIntent_setCallCapabilities___block_invoke(uint64_t
   return v5;
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
-  v4 = a3;
-  v6 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContact(v4);
+  recipientCopy = recipient;
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContact(recipientCopy);
 
-  [v6 setRecipient:v5];
+  [_typedBackingStore setRecipient:v5];
 }
 
 - (INPerson)recipient
 {
-  v2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v3 = [v2 recipient];
-  v4 = INIntentSlotValueTransformFromContact(v3);
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  recipient = [_typedBackingStore recipient];
+  v4 = INIntentSlotValueTransformFromContact(recipient);
 
   return v4;
 }
 
-- (void)setDateCreated:(id)a3
+- (void)setDateCreated:(id)created
 {
-  v4 = a3;
-  v6 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  createdCopy = created;
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(createdCopy);
 
-  [v6 setDateCreated:v5];
+  [_typedBackingStore setDateCreated:v5];
 }
 
 - (INDateComponentsRange)dateCreated
 {
-  v2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v3 = [v2 dateCreated];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  dateCreated = [_typedBackingStore dateCreated];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(dateCreated);
 
   return v4;
 }
@@ -361,28 +361,28 @@ void __49__INSearchCallHistoryIntent_setCallCapabilities___block_invoke(uint64_t
   return v16;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSearchCallHistoryIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSearchCallHistoryIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

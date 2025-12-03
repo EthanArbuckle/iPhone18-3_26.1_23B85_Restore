@@ -11,22 +11,22 @@
   if (v4)
   {
     v6 = MEMORY[0x1BFB5AC50](v4);
-    v7 = [a1 completionBlock];
-    v8 = v7;
-    if (v7)
+    completionBlock = [self completionBlock];
+    v8 = completionBlock;
+    if (completionBlock)
     {
       v10 = MEMORY[0x1E69E9820];
       v11 = 3221225472;
       v12 = __62__CATransaction_CoreMaterialAdditions__mt_addCompletionBlock___block_invoke;
       v13 = &unk_1E80BE098;
-      v14 = v7;
+      v14 = completionBlock;
       v15 = v5;
       v9 = MEMORY[0x1BFB5AC50](&v10);
 
       v6 = v9;
     }
 
-    [a1 setCompletionBlock:{v6, v10, v11, v12, v13}];
+    [self setCompletionBlock:{v6, v10, v11, v12, v13}];
   }
 }
 

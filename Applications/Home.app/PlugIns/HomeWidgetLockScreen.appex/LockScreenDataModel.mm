@@ -1,14 +1,14 @@
 @interface LockScreenDataModel
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation LockScreenDataModel
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  _s20HomeWidgetLockScreen0cD9DataModelC25homeManagerDidUpdateHomesyySo06HMHomeH0CF_0(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  _s20HomeWidgetLockScreen0cD9DataModelC25homeManagerDidUpdateHomesyySo06HMHomeH0CF_0(homesCopy);
 }
 
 @end

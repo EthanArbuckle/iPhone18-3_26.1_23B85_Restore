@@ -1,24 +1,24 @@
 @interface UIKeyboardLayoutDictation
-+ (BOOL)keyboardInputMode:(id)a3 supportsResizingOffsetForScreenTraits:(id)a4;
-+ (CGSize)keyboardSizeForInputMode:(id)a3 screenTraits:(id)a4 keyboardType:(int64_t)a5;
++ (BOOL)keyboardInputMode:(id)mode supportsResizingOffsetForScreenTraits:(id)traits;
++ (CGSize)keyboardSizeForInputMode:(id)mode screenTraits:(id)traits keyboardType:(int64_t)type;
 - (BOOL)visible;
-- (CGRect)dragGestureRectInView:(id)a3;
+- (CGRect)dragGestureRectInView:(id)view;
 - (CGSize)splitLeftSize;
-- (UIKeyboardLayoutDictation)initWithFrame:(CGRect)a3;
-- (unint64_t)_clipCornersOfView:(id)a3;
+- (UIKeyboardLayoutDictation)initWithFrame:(CGRect)frame;
+- (unint64_t)_clipCornersOfView:(id)view;
 - (void)layoutSubviews;
-- (void)setRenderConfig:(id)a3;
-- (void)setupBackgroundViewForNewSplitTraits:(id)a3;
-- (void)showKeyboardWithInputTraits:(id)a3 screenTraits:(id)a4 splitTraits:(id)a5;
+- (void)setRenderConfig:(id)config;
+- (void)setupBackgroundViewForNewSplitTraits:(id)traits;
+- (void)showKeyboardWithInputTraits:(id)traits screenTraits:(id)screenTraits splitTraits:(id)splitTraits;
 @end
 
 @implementation UIKeyboardLayoutDictation
 
-- (UIKeyboardLayoutDictation)initWithFrame:(CGRect)a3
+- (UIKeyboardLayoutDictation)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIKeyboardLayoutDictation;
-  v3 = [(UIKeyboardLayout *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIKeyboardLayout *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,22 +30,22 @@
   return v4;
 }
 
-+ (BOOL)keyboardInputMode:(id)a3 supportsResizingOffsetForScreenTraits:(id)a4
++ (BOOL)keyboardInputMode:(id)mode supportsResizingOffsetForScreenTraits:(id)traits
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 idiom] == 1 || objc_msgSend(v6, "idiom") == 24 || objc_msgSend(v6, "idiom") == 25 || objc_msgSend(v6, "idiom") == 26 || objc_msgSend(v6, "idiom") == 23)
+  modeCopy = mode;
+  traitsCopy = traits;
+  if ([traitsCopy idiom] == 1 || objc_msgSend(traitsCopy, "idiom") == 24 || objc_msgSend(traitsCopy, "idiom") == 25 || objc_msgSend(traitsCopy, "idiom") == 26 || objc_msgSend(traitsCopy, "idiom") == 23)
   {
     v7 = 0;
   }
 
   else
   {
-    v9 = [v6 orientation];
+    orientation = [traitsCopy orientation];
     v7 = 0;
-    if (v5 && (v9 - 1) <= 1)
+    if (modeCopy && (orientation - 1) <= 1)
     {
-      v10 = KBStarLayoutString(v5);
+      v10 = KBStarLayoutString(modeCopy);
       v7 = [v10 hasPrefix:@"HWR"];
     }
   }
@@ -53,17 +53,17 @@
   return v7;
 }
 
-+ (CGSize)keyboardSizeForInputMode:(id)a3 screenTraits:(id)a4 keyboardType:(int64_t)a5
++ (CGSize)keyboardSizeForInputMode:(id)mode screenTraits:(id)traits keyboardType:(int64_t)type
 {
-  v6 = a4;
+  traitsCopy = traits;
   v7 = +[UIDictationController sharedInstance];
-  v8 = [v7 keyboardInputModeToReturn];
-  v9 = [v8 identifier];
+  keyboardInputModeToReturn = [v7 keyboardInputModeToReturn];
+  identifier = [keyboardInputModeToReturn identifier];
 
-  [UIKeyboardLayoutStar keyboardSizeForInputMode:v9 screenTraits:v6 keyboardType:a5];
+  [UIKeyboardLayoutStar keyboardSizeForInputMode:identifier screenTraits:traitsCopy keyboardType:type];
   v11 = v10;
   v13 = v12;
-  if ([objc_opt_class() keyboardInputMode:v9 supportsResizingOffsetForScreenTraits:v6])
+  if ([objc_opt_class() keyboardInputMode:identifier supportsResizingOffsetForScreenTraits:traitsCopy])
   {
     +[UIKBResizingKeyplaneCoordinator savedResizingOffset];
     v13 = v13 + v14;
@@ -72,7 +72,7 @@
   v15 = +[UIKeyboardImpl isSplit];
   if (!+[UIKeyboardImpl showsGlobeAndDictationKeysExternally])
   {
-    [v6 keyboardWidth];
+    [traitsCopy keyboardWidth];
     v11 = v16;
   }
 
@@ -90,15 +90,15 @@
 
 - (BOOL)visible
 {
-  v2 = [(UIView *)self superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
-- (unint64_t)_clipCornersOfView:(id)a3
+- (unint64_t)_clipCornersOfView:(id)view
 {
-  if (self->_backgroundView == a3)
+  if (self->_backgroundView == view)
   {
     return -1;
   }
@@ -109,15 +109,15 @@
   }
 }
 
-- (void)setupBackgroundViewForNewSplitTraits:(id)a3
+- (void)setupBackgroundViewForNewSplitTraits:(id)traits
 {
-  v42 = a3;
+  traitsCopy = traits;
   v4 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
-  v5 = v42;
+  v5 = traitsCopy;
   if (v4 == 1)
   {
     backgroundView = self->_backgroundView;
-    if (v42)
+    if (traitsCopy)
     {
       if (!backgroundView)
       {
@@ -148,7 +148,7 @@
       v13 = [UIKBTree treeOfType:3];
       [v13 setName:@"split-left"];
       v14 = +[UIKBShape shape];
-      [v42 leftFrame];
+      [traitsCopy leftFrame];
       v16 = v15;
       v18 = v17;
       v20 = v19;
@@ -156,16 +156,16 @@
       [v14 setFrame:?];
       [v14 setPaddedFrame:{v16, v18, v20, v22}];
       [v13 setShape:v14];
-      v23 = [(UIKBTree *)self->_keyplane subtrees];
-      [v23 addObject:v13];
+      subtrees = [(UIKBTree *)self->_keyplane subtrees];
+      [subtrees addObject:v13];
 
-      v24 = [objc_opt_self() mainScreen];
-      [v24 _boundsForInterfaceOrientation:{-[UIView _keyboardOrientation](self, "_keyboardOrientation")}];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen _boundsForInterfaceOrientation:{-[UIView _keyboardOrientation](self, "_keyboardOrientation")}];
       v26 = v25;
 
       v27 = [UIKBTree treeOfType:3];
       [v27 setName:@"split-right"];
-      [v42 rightFrame];
+      [traitsCopy rightFrame];
       v29 = v28;
       v31 = v30;
       v33 = v32;
@@ -174,15 +174,15 @@
       [v35 setFrame:{v34, v29, v31, v33}];
       [v35 setPaddedFrame:{v34, v29, v31, v33}];
       [v27 setShape:v35];
-      v36 = [(UIKBTree *)self->_keyplane subtrees];
-      [v36 addObject:v27];
+      subtrees2 = [(UIKBTree *)self->_keyplane subtrees];
+      [subtrees2 addObject:v27];
 
       [(UIView *)self setNeedsDisplay];
       [(UIView *)self->_backgroundView setNeedsDisplay];
       v37 = self->_backgroundView;
       v38 = +[UIKeyboardImpl activeInstance];
-      v39 = [v38 _inheritedRenderConfig];
-      [(UIKBBackgroundView *)v37 setRenderConfig:v39];
+      _inheritedRenderConfig = [v38 _inheritedRenderConfig];
+      [(UIKBBackgroundView *)v37 setRenderConfig:_inheritedRenderConfig];
 
       [(UIKBBackgroundView *)self->_backgroundView refreshStyleForKeyplane:self->_keyplane inputTraits:self->super._inputTraits];
       [v13 frame];
@@ -200,21 +200,21 @@
       self->_backgroundView = 0;
     }
 
-    v5 = v42;
+    v5 = traitsCopy;
   }
 }
 
-- (void)showKeyboardWithInputTraits:(id)a3 screenTraits:(id)a4 splitTraits:(id)a5
+- (void)showKeyboardWithInputTraits:(id)traits screenTraits:(id)screenTraits splitTraits:(id)splitTraits
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  screenTraitsCopy = screenTraits;
+  splitTraitsCopy = splitTraits;
   if (!+[UIKeyboard isModelessActive])
   {
     v23.receiver = self;
     v23.super_class = UIKeyboardLayoutDictation;
-    [(UIKeyboardLayout *)&v23 showKeyboardWithInputTraits:v8 screenTraits:v9 splitTraits:v10];
-    [(UIKeyboardLayoutDictation *)self setupBackgroundViewForNewSplitTraits:v10];
+    [(UIKeyboardLayout *)&v23 showKeyboardWithInputTraits:traitsCopy screenTraits:screenTraitsCopy splitTraits:splitTraitsCopy];
+    [(UIKeyboardLayoutDictation *)self setupBackgroundViewForNewSplitTraits:splitTraitsCopy];
     v11 = +[UIDictationView sharedInstance];
     [v11 setDisplayDelegate:0];
 
@@ -225,33 +225,33 @@
     [v13 setNeedsLayout];
 
     v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v15 = [v14 automaticAppearanceEnabled];
+    automaticAppearanceEnabled = [v14 automaticAppearanceEnabled];
 
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
     [v16 setAutomaticAppearanceEnabled:1];
 
-    v17 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (v17)
+    if (superview)
     {
-      v18 = [(UIView *)self superview];
+      superview2 = [(UIView *)self superview];
       [(UIView *)self bounds];
       v21 = [UIKBKeyplaneChangeContext keyplaneChangeContextWithSize:v19, v20];
-      [v18 _didChangeKeyplaneWithContext:v21];
+      [superview2 _didChangeKeyplaneWithContext:v21];
     }
 
     v22 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    [v22 setAutomaticAppearanceEnabled:v15];
+    [v22 setAutomaticAppearanceEnabled:automaticAppearanceEnabled];
   }
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v8 = a3;
+  configCopy = config;
   v4 = +[UIDictationView sharedInstance];
-  v5 = [v4 superview];
-  v6 = v5;
-  if (v5 == self)
+  superview = [v4 superview];
+  v6 = superview;
+  if (superview == self)
   {
     v7 = +[UIDictationController viewMode];
 
@@ -261,7 +261,7 @@
     }
 
     v4 = +[UIDictationView sharedInstance];
-    [v4 setRenderConfig:v8];
+    [v4 setRenderConfig:configCopy];
   }
 
   else
@@ -269,15 +269,15 @@
   }
 
 LABEL_6:
-  [(UIKBBackgroundView *)self->_backgroundView setRenderConfig:v8];
+  [(UIKBBackgroundView *)self->_backgroundView setRenderConfig:configCopy];
 }
 
 - (void)layoutSubviews
 {
   v3 = +[UIDictationView sharedInstance];
-  v4 = [v3 superview];
+  superview = [v3 superview];
 
-  if (v4 == self)
+  if (superview == self)
   {
     [(UIView *)self bounds];
     v6 = v5;
@@ -306,7 +306,7 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)dragGestureRectInView:(id)a3
+- (CGRect)dragGestureRectInView:(id)view
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);

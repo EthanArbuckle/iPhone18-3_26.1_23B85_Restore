@@ -1,16 +1,16 @@
 @interface AMSUIPasswordSettingsFreeDownloadsCell
-- (AMSUIPasswordSettingsFreeDownloadsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AMSUIPasswordSettingsFreeDownloadsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setup;
-- (void)_toggleChanged:(id)a3;
+- (void)_toggleChanged:(id)changed;
 @end
 
 @implementation AMSUIPasswordSettingsFreeDownloadsCell
 
-- (AMSUIPasswordSettingsFreeDownloadsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AMSUIPasswordSettingsFreeDownloadsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AMSUIPasswordSettingsFreeDownloadsCell;
-  v4 = [(AMSUIPasswordSettingsFreeDownloadsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AMSUIPasswordSettingsFreeDownloadsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,22 +31,22 @@
   v5 = objc_alloc(MEMORY[0x1E69DD250]);
   [(AMSUIPasswordSettingsFreeDownloadsCell *)self bounds];
   v7 = [v5 initWithFrame:?];
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   [(AMSUIPasswordSettingsFreeDownloadsCell *)self setSelectedBackgroundView:v7];
 }
 
-- (void)_toggleChanged:(id)a3
+- (void)_toggleChanged:(id)changed
 {
-  v7 = a3;
-  v4 = [(AMSUIPasswordSettingsFreeDownloadsCell *)self delegate];
+  changedCopy = changed;
+  delegate = [(AMSUIPasswordSettingsFreeDownloadsCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AMSUIPasswordSettingsFreeDownloadsCell *)self delegate];
-    [v6 freeDownloadsToggle:v7 changedValue:{objc_msgSend(v7, "isOn")}];
+    delegate2 = [(AMSUIPasswordSettingsFreeDownloadsCell *)self delegate];
+    [delegate2 freeDownloadsToggle:changedCopy changedValue:{objc_msgSend(changedCopy, "isOn")}];
   }
 }
 

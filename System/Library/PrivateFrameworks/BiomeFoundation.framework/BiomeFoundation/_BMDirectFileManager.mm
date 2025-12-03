@@ -1,27 +1,27 @@
 @interface _BMDirectFileManager
-- (BOOL)_removeDirectoryAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_removeFileAtPath:(id)a3 error:(id *)a4;
-- (BOOL)setUpWithError:(id *)a3;
-- (_BMDirectFileManager)initWithDirectory:(id)a3 cachingOptions:(int64_t)a4;
-- (id)_openTemporaryDirectoryWithError:(id *)a3;
-- (id)_temporaryFileHandleWithProtection:(int)a3 unlink:(BOOL)a4 error:(id *)a5;
+- (BOOL)_removeDirectoryAtPath:(id)path error:(id *)error;
+- (BOOL)_removeFileAtPath:(id)path error:(id *)error;
+- (BOOL)setUpWithError:(id *)error;
+- (_BMDirectFileManager)initWithDirectory:(id)directory cachingOptions:(int64_t)options;
+- (id)_openTemporaryDirectoryWithError:(id *)error;
+- (id)_temporaryFileHandleWithProtection:(int)protection unlink:(BOOL)unlink error:(id *)error;
 @end
 
 @implementation _BMDirectFileManager
 
-- (_BMDirectFileManager)initWithDirectory:(id)a3 cachingOptions:(int64_t)a4
+- (_BMDirectFileManager)initWithDirectory:(id)directory cachingOptions:(int64_t)options
 {
-  v6 = a3;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = _BMDirectFileManager;
-  v7 = [(BMFileManager *)&v12 initWithDirectory:v6 cachingOptions:a4];
+  v7 = [(BMFileManager *)&v12 initWithDirectory:directoryCopy cachingOptions:options];
   if (v7)
   {
     v8 = +[BMProcess current];
     [v8 enforceDatavaultEntitlementRestrictions];
 
     v7->_setUpLock._os_unfair_lock_opaque = 0;
-    v9 = [v6 copy];
+    v9 = [directoryCopy copy];
     directory = v7->_directory;
     v7->_directory = v9;
   }
@@ -29,7 +29,7 @@
   return v7;
 }
 
-- (BOOL)setUpWithError:(id *)a3
+- (BOOL)setUpWithError:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_setUpLock);
@@ -47,11 +47,11 @@
     self->_directoryHandle = v7;
 
 LABEL_4:
-    LOBYTE(a3) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     v11 = *__error();
     v12 = MEMORY[0x1E696ABC0];
@@ -59,26 +59,26 @@ LABEL_4:
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:strerror(v11)];
     v16[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a3 = [v12 errorWithDomain:*MEMORY[0x1E696A798] code:v11 userInfo:v14];
+    *error = [v12 errorWithDomain:*MEMORY[0x1E696A798] code:v11 userInfo:v14];
 
-    LOBYTE(a3) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_5:
   os_unfair_lock_unlock(&self->_setUpLock);
   v9 = *MEMORY[0x1E69E9840];
-  return a3;
+  return error;
 }
 
-- (BOOL)_removeFileAtPath:(id)a3 error:(id *)a4
+- (BOOL)_removeFileAtPath:(id)path error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(_BMDirectFileManager *)self setUpWithError:a4])
+  pathCopy = path;
+  if ([(_BMDirectFileManager *)self setUpWithError:error])
   {
-    if (v6)
+    if (pathCopy)
     {
-      v7 = bm_subpath(self->_directory, v6);
+      v7 = bm_subpath(self->_directory, pathCopy);
       v8 = v7;
       if (v7)
       {
@@ -87,7 +87,7 @@ LABEL_5:
 
       else
       {
-        v9 = v6;
+        v9 = pathCopy;
       }
 
       v10 = v9;
@@ -108,7 +108,7 @@ LABEL_19:
           [_BMDirectFileManager _removeFileAtPath:error:];
         }
 
-        if (a4)
+        if (error)
         {
           v21 = MEMORY[0x1E696ABC0];
           v22 = *MEMORY[0x1E696A578];
@@ -120,7 +120,7 @@ LABEL_19:
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v14 = MEMORY[0x1E696ABC0];
         v24 = *MEMORY[0x1E696A578];
@@ -129,7 +129,7 @@ LABEL_19:
         v16 = v14;
         v17 = 2;
 LABEL_17:
-        *a4 = [v16 errorWithDomain:@"BiomeStorageError" code:v17 userInfo:v15];
+        *error = [v16 errorWithDomain:@"BiomeStorageError" code:v17 userInfo:v15];
       }
 
       v11 = 0;
@@ -142,14 +142,14 @@ LABEL_17:
       [BMFileManager fileExistsAtPath:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E696A578];
       v27[0] = @"Invalid path";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
       [v13 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v10];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_19;
     }
   }
@@ -161,15 +161,15 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)_removeDirectoryAtPath:(id)a3 error:(id *)a4
+- (BOOL)_removeDirectoryAtPath:(id)path error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(_BMDirectFileManager *)self setUpWithError:a4])
+  pathCopy = path;
+  if ([(_BMDirectFileManager *)self setUpWithError:error])
   {
-    if (v6)
+    if (pathCopy)
     {
-      v7 = bm_subpath(self->_directory, v6);
+      v7 = bm_subpath(self->_directory, pathCopy);
       v8 = v7;
       if (v7)
       {
@@ -178,7 +178,7 @@ LABEL_20:
 
       else
       {
-        v9 = v6;
+        v9 = pathCopy;
       }
 
       v10 = v9;
@@ -198,7 +198,7 @@ LABEL_20:
           [_BMDirectFileManager _removeDirectoryAtPath:error:];
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_21;
         }
@@ -213,7 +213,7 @@ LABEL_20:
 
       else
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_21:
           v12 = 0;
@@ -228,7 +228,7 @@ LABEL_21:
         v17 = 2;
       }
 
-      *a4 = [v16 errorWithDomain:@"BiomeStorageError" code:v17 userInfo:v15];
+      *error = [v16 errorWithDomain:@"BiomeStorageError" code:v17 userInfo:v15];
 
       goto LABEL_21;
     }
@@ -239,14 +239,14 @@ LABEL_21:
       [BMFileManager fileExistsAtPath:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v19 = MEMORY[0x1E696ABC0];
       v27 = *MEMORY[0x1E696A578];
       v28[0] = @"Invalid path";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       [v19 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v10];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
 LABEL_22:
 
       goto LABEL_23;
@@ -260,11 +260,11 @@ LABEL_23:
   return v12;
 }
 
-- (id)_openTemporaryDirectoryWithError:(id *)a3
+- (id)_openTemporaryDirectoryWithError:(id *)error
 {
   v26 = 0;
-  v5 = [(BMFileManager *)self directory];
-  v6 = [BMPaths getServiceDomain:&v26 subpath:0 forPath:v5];
+  directory = [(BMFileManager *)self directory];
+  v6 = [BMPaths getServiceDomain:&v26 subpath:0 forPath:directory];
 
   if (!v6)
   {
@@ -294,17 +294,17 @@ LABEL_3:
     v16 = [BMStoreDirectory tmp:v19];
     v17 = [(NSString *)directory stringByAppendingPathComponent:v16];
 
-    v14 = [(BMFileManager *)self fileHandleForFileAtPath:v17 flags:537920000 protection:4 error:a3];
+    v14 = [(BMFileManager *)self fileHandleForFileAtPath:v17 flags:537920000 protection:4 error:error];
   }
 
   return v14;
 }
 
-- (id)_temporaryFileHandleWithProtection:(int)a3 unlink:(BOOL)a4 error:(id *)a5
+- (id)_temporaryFileHandleWithProtection:(int)protection unlink:(BOOL)unlink error:(id *)error
 {
-  v6 = a4;
+  unlinkCopy = unlink;
   v36[2] = *MEMORY[0x1E69E9840];
-  if (![(_BMDirectFileManager *)self setUpWithError:a5])
+  if (![(_BMDirectFileManager *)self setUpWithError:error])
   {
     v15 = 0;
     goto LABEL_20;
@@ -317,11 +317,11 @@ LABEL_3:
   if (v9)
   {
     v29 = 0;
-    v12 = bm_new_temporary_file([v9 fd], a3, v6, &v29);
+    v12 = bm_new_temporary_file([v9 fd], protection, unlinkCopy, &v29);
     v13 = v29;
     if ((v12 & 0x80000000) != 0)
     {
-      if (!a5)
+      if (!error)
       {
         v15 = 0;
         goto LABEL_18;
@@ -336,24 +336,24 @@ LABEL_3:
       v34[1] = v14;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
       [v18 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v20];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
     {
-      if (v6)
+      if (unlinkCopy)
       {
         v14 = @"<tmp>";
       }
 
       else
       {
-        v21 = [v9 attributes];
-        v22 = [v21 path];
-        v14 = [v22 stringByAppendingPathComponent:v13];
+        attributes = [v9 attributes];
+        path = [attributes path];
+        v14 = [path stringByAppendingPathComponent:v13];
       }
 
-      v20 = [[BMFileAttributes alloc] initWithPath:v14 mode:2 protectionClass:BMDataProtectionClassFromOSProtectionClass(a3)];
+      v20 = [[BMFileAttributes alloc] initWithPath:v14 mode:2 protectionClass:BMDataProtectionClassFromOSProtectionClass(protection)];
       v23 = [[BMFileHandle alloc] initWithFileDescriptor:v12 attributes:v20];
       v15 = v23;
       if (v23)
@@ -361,20 +361,20 @@ LABEL_3:
         v24 = v23;
       }
 
-      else if (a5)
+      else if (error)
       {
         v25 = MEMORY[0x1E696ABC0];
         v31 = *MEMORY[0x1E696A578];
         v32 = @"Unspecified failure";
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-        *a5 = [v25 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v26];
+        *error = [v25 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v26];
       }
     }
   }
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_19;
@@ -388,7 +388,7 @@ LABEL_3:
     v36[1] = v10;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
     [v16 errorWithDomain:@"BiomeStorageError" code:1 userInfo:v13];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
 LABEL_18:

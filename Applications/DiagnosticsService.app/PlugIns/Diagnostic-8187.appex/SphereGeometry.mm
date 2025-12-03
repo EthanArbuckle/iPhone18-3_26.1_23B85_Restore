@@ -9,13 +9,13 @@
 
 - (void)uploadToBuffers
 {
-  v25 = [(Geometry *)self device];
-  v3 = [v25 newBufferWithLength:self->_spheres.__end_ - self->_spheres.__begin_ options:0];
+  device = [(Geometry *)self device];
+  v3 = [device newBufferWithLength:self->_spheres.__end_ - self->_spheres.__begin_ options:0];
   sphereBuffer = self->_sphereBuffer;
   self->_sphereBuffer = v3;
 
   v5 = self->_spheres.__end_ - self->_spheres.__begin_;
-  v6 = [v25 newBufferWithLength:8 * ((v5 >> 4) + (v5 >> 5)) options:0];
+  v6 = [device newBufferWithLength:8 * ((v5 >> 4) + (v5 >> 5)) options:0];
   boundingBoxBuffer = self->_boundingBoxBuffer;
   self->_boundingBoxBuffer = v6;
 

@@ -1,34 +1,34 @@
 @interface MFStringAccumulator
 - (id)string;
-- (void)appendString:(id)a3;
+- (void)appendString:(id)string;
 @end
 
 @implementation MFStringAccumulator
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = self->_mutable;
-  v10 = v4;
+  v10 = stringCopy;
   if (v5)
   {
-    [(NSMutableString *)v5 appendString:v4];
+    [(NSMutableString *)v5 appendString:stringCopy];
   }
 
   else
   {
     if (self->_immutable)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@%@", self->_immutable, v4];
+      stringCopy = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@%@", self->_immutable, stringCopy];
       v7 = self->_mutable;
-      self->_mutable = v6;
+      self->_mutable = stringCopy;
 
       v8 = 0;
     }
 
     else
     {
-      v8 = v4;
+      v8 = stringCopy;
     }
 
     immutable = self->_immutable;

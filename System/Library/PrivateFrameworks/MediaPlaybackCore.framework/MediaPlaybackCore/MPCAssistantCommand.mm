@@ -1,34 +1,34 @@
 @interface MPCAssistantCommand
-- (void)insertPlaybackQueueWithResult:(id)a3 atPosition:(int)a4 onDestination:(id)a5 withOptions:(id)a6 completion:(id)a7;
-- (void)sendCommand:(unsigned int)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendCommandWithResult:(unsigned int)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendPlaybackArchive:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendPlaybackArchiveWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendPlaybackQueue:(id)a3 toDestination:(id)a4 completion:(id)a5;
-- (void)sendPlaybackQueue:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)sendPlaybackQueueWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6;
+- (void)insertPlaybackQueueWithResult:(id)result atPosition:(int)position onDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendCommand:(unsigned int)command toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendCommandWithResult:(unsigned int)result toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendPlaybackArchive:(id)archive toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendPlaybackArchiveWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendPlaybackQueue:(id)queue toDestination:(id)destination completion:(id)completion;
+- (void)sendPlaybackQueue:(id)queue toDestination:(id)destination withOptions:(id)options completion:(id)completion;
+- (void)sendPlaybackQueueWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation MPCAssistantCommand
 
-- (void)insertPlaybackQueueWithResult:(id)a3 atPosition:(int)a4 onDestination:(id)a5 withOptions:(id)a6 completion:(id)a7
+- (void)insertPlaybackQueueWithResult:(id)result atPosition:(int)position onDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
+  resultCopy = result;
+  optionsCopy = options;
+  completionCopy = completion;
+  destinationCopy = destination;
   v15 = objc_alloc_init(MPCAssistantCommandInternal);
-  v16 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
+  v16 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __101__MPCAssistantCommand_insertPlaybackQueueWithResult_atPosition_onDestination_withOptions_completion___block_invoke;
   v19[3] = &unk_1E8230D78;
-  v20 = v11;
-  v21 = v12;
-  v22 = a4;
-  v17 = v12;
-  v18 = v11;
-  [(MPCAssistantCommandInternal *)v15 sendCommand:125 toDestination:v14 commandID:v16 commandBuilder:v19 completion:v13];
+  v20 = resultCopy;
+  v21 = optionsCopy;
+  positionCopy = position;
+  v17 = optionsCopy;
+  v18 = resultCopy;
+  [(MPCAssistantCommandInternal *)v15 sendCommand:125 toDestination:destinationCopy commandID:v16 commandBuilder:v19 completion:completionCopy];
 }
 
 void __101__MPCAssistantCommand_insertPlaybackQueueWithResult_atPosition_onDestination_withOptions_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -129,46 +129,46 @@ void __101__MPCAssistantCommand_insertPlaybackQueueWithResult_atPosition_onDesti
   }
 }
 
-- (void)sendPlaybackArchiveWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendPlaybackArchiveWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  destinationCopy = destination;
+  resultCopy = result;
   v13 = objc_alloc_init(MPCAssistantCommandInternal);
-  [(MPCAssistantCommandInternal *)v13 sendPlaybackArchiveWithResult:v12 toDestination:v11 withOptions:v10 completion:v9];
+  [(MPCAssistantCommandInternal *)v13 sendPlaybackArchiveWithResult:resultCopy toDestination:destinationCopy withOptions:optionsCopy completion:completionCopy];
 }
 
-- (void)sendPlaybackQueueWithResult:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendPlaybackQueueWithResult:(id)result toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  destinationCopy = destination;
+  resultCopy = result;
   v13 = objc_alloc_init(MPCAssistantCommandInternal);
-  [(MPCAssistantCommandInternal *)v13 sendPlaybackQueueWithResult:v12 toDestination:v11 withOptions:v10 completion:v9];
+  [(MPCAssistantCommandInternal *)v13 sendPlaybackQueueWithResult:resultCopy toDestination:destinationCopy withOptions:optionsCopy completion:completionCopy];
 }
 
-- (void)sendCommandWithResult:(unsigned int)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendCommandWithResult:(unsigned int)result toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v8 = *&a3;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  v8 = *&result;
+  completionCopy = completion;
+  optionsCopy = options;
+  destinationCopy = destination;
   v12 = objc_alloc_init(MPCAssistantCommandInternal);
-  [(MPCAssistantCommandInternal *)v12 sendCommandWithResult:v8 toDestination:v11 withOptions:v10 completion:v9];
+  [(MPCAssistantCommandInternal *)v12 sendCommandWithResult:v8 toDestination:destinationCopy withOptions:optionsCopy completion:completionCopy];
 }
 
-- (void)sendPlaybackArchive:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendPlaybackArchive:(id)archive toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__MPCAssistantCommand_sendPlaybackArchive_toDestination_withOptions_completion___block_invoke;
   v12[3] = &unk_1E8230C38;
-  v13 = v10;
-  v11 = v10;
-  [(MPCAssistantCommand *)self sendPlaybackArchiveWithResult:a3 toDestination:a4 withOptions:a5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MPCAssistantCommand *)self sendPlaybackArchiveWithResult:archive toDestination:destination withOptions:options completion:v12];
 }
 
 void __80__MPCAssistantCommand_sendPlaybackArchive_toDestination_withOptions_completion___block_invoke(uint64_t a1, void *a2)
@@ -181,16 +181,16 @@ void __80__MPCAssistantCommand_sendPlaybackArchive_toDestination_withOptions_com
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)sendPlaybackQueue:(id)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendPlaybackQueue:(id)queue toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__MPCAssistantCommand_sendPlaybackQueue_toDestination_withOptions_completion___block_invoke;
   v12[3] = &unk_1E8230C38;
-  v13 = v10;
-  v11 = v10;
-  [(MPCAssistantCommand *)self sendPlaybackQueueWithResult:a3 toDestination:a4 withOptions:a5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MPCAssistantCommand *)self sendPlaybackQueueWithResult:queue toDestination:destination withOptions:options completion:v12];
 }
 
 void __78__MPCAssistantCommand_sendPlaybackQueue_toDestination_withOptions_completion___block_invoke(uint64_t a1, void *a2)
@@ -203,16 +203,16 @@ void __78__MPCAssistantCommand_sendPlaybackQueue_toDestination_withOptions_compl
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)sendPlaybackQueue:(id)a3 toDestination:(id)a4 completion:(id)a5
+- (void)sendPlaybackQueue:(id)queue toDestination:(id)destination completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__MPCAssistantCommand_sendPlaybackQueue_toDestination_completion___block_invoke;
   v10[3] = &unk_1E8230C38;
-  v11 = v8;
-  v9 = v8;
-  [(MPCAssistantCommand *)self sendPlaybackQueueWithResult:a3 toDestination:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MPCAssistantCommand *)self sendPlaybackQueueWithResult:queue toDestination:destination completion:v10];
 }
 
 void __66__MPCAssistantCommand_sendPlaybackQueue_toDestination_completion___block_invoke(uint64_t a1, void *a2)
@@ -225,17 +225,17 @@ void __66__MPCAssistantCommand_sendPlaybackQueue_toDestination_completion___bloc
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)sendCommand:(unsigned int)a3 toDestination:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)sendCommand:(unsigned int)command toDestination:(id)destination withOptions:(id)options completion:(id)completion
 {
-  v8 = *&a3;
-  v10 = a6;
+  v8 = *&command;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__MPCAssistantCommand_sendCommand_toDestination_withOptions_completion___block_invoke;
   v12[3] = &unk_1E8230C38;
-  v13 = v10;
-  v11 = v10;
-  [(MPCAssistantCommand *)self sendCommandWithResult:v8 toDestination:a4 withOptions:a5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(MPCAssistantCommand *)self sendCommandWithResult:v8 toDestination:destination withOptions:options completion:v12];
 }
 
 void __72__MPCAssistantCommand_sendCommand_toDestination_withOptions_completion___block_invoke(uint64_t a1, void *a2)

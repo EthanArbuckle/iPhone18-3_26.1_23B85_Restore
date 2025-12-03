@@ -1,39 +1,39 @@
 @interface PBUIColorWallpaperView
-- (BOOL)isDisplayingWallpaperWithConfiguration:(id)a3 forVariant:(int64_t)a4;
-- (PBUIColorWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8;
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5;
+- (BOOL)isDisplayingWallpaperWithConfiguration:(id)configuration forVariant:(int64_t)variant;
+- (PBUIColorWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options;
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes;
 - (id)snapshotImage;
 @end
 
 @implementation PBUIColorWallpaperView
 
-- (PBUIColorWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8
+- (PBUIColorWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = PBUIColorWallpaperView;
-  v18 = [(PBUIWallpaperView *)&v21 initWithFrame:v17 configuration:a5 variant:a6 cacheGroup:a7 delegate:a8 options:x, y, width, height];
-  if (v18)
+  height = [(PBUIWallpaperView *)&v21 initWithFrame:configurationCopy configuration:variant variant:group cacheGroup:delegate delegate:options options:x, y, width, height];
+  if (height)
   {
-    v19 = [v17 wallpaperColor];
-    [(PBUIColorWallpaperView *)v18 setBackgroundColor:v19];
+    wallpaperColor = [configurationCopy wallpaperColor];
+    [(PBUIColorWallpaperView *)height setBackgroundColor:wallpaperColor];
   }
 
-  return v18;
+  return height;
 }
 
-- (BOOL)isDisplayingWallpaperWithConfiguration:(id)a3 forVariant:(int64_t)a4
+- (BOOL)isDisplayingWallpaperWithConfiguration:(id)configuration forVariant:(int64_t)variant
 {
-  v5 = a3;
-  if ([v5 wallpaperType] == 4)
+  configurationCopy = configuration;
+  if ([configurationCopy wallpaperType] == 4)
   {
-    v6 = [v5 wallpaperColor];
-    v7 = [(PBUIColorWallpaperView *)self wallpaperColor];
-    v8 = [v7 isEqual:v6];
+    wallpaperColor = [configurationCopy wallpaperColor];
+    wallpaperColor2 = [(PBUIColorWallpaperView *)self wallpaperColor];
+    v8 = [wallpaperColor2 isEqual:wallpaperColor];
   }
 
   else
@@ -44,16 +44,16 @@
   return v8;
 }
 
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes
 {
-  if (a4)
+  if (boxes)
   {
-    *a4 = 0.0;
+    *boxes = 0.0;
   }
 
-  if (a5)
+  if (betweenBoxes)
   {
-    *a5 = 0.0;
+    *betweenBoxes = 0.0;
   }
 
   return 0.0;
@@ -61,22 +61,22 @@
 
 - (id)snapshotImage
 {
-  v3 = [(PBUIColorWallpaperView *)self cachedSnapshotImage];
-  if (!v3)
+  cachedSnapshotImage = [(PBUIColorWallpaperView *)self cachedSnapshotImage];
+  if (!cachedSnapshotImage)
   {
-    v4 = [(PBUIColorWallpaperView *)self wallpaperColor];
+    wallpaperColor = [(PBUIColorWallpaperView *)self wallpaperColor];
     v5 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{20.0, 20.0}];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__PBUIColorWallpaperView_snapshotImage__block_invoke;
     v8[3] = &unk_278363F20;
-    v9 = v4;
-    v6 = v4;
-    v3 = [v5 imageWithActions:v8];
-    [(PBUIColorWallpaperView *)self setCachedSnapshotImage:v3];
+    v9 = wallpaperColor;
+    v6 = wallpaperColor;
+    cachedSnapshotImage = [v5 imageWithActions:v8];
+    [(PBUIColorWallpaperView *)self setCachedSnapshotImage:cachedSnapshotImage];
   }
 
-  return v3;
+  return cachedSnapshotImage;
 }
 
 void __39__PBUIColorWallpaperView_snapshotImage__block_invoke(uint64_t a1, void *a2)

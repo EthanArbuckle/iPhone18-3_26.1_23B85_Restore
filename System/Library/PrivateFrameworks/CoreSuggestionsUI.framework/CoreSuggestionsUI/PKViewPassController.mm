@@ -1,6 +1,6 @@
 @interface PKViewPassController
-- (_TtC17CoreSuggestionsUI20PKViewPassController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissalPressed:(id)a3;
+- (_TtC17CoreSuggestionsUI20PKViewPassController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissalPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -8,25 +8,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81D928C();
 }
 
-- (void)dismissalPressed:(id)a3
+- (void)dismissalPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_1B81D9860();
 }
 
-- (_TtC17CoreSuggestionsUI20PKViewPassController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17CoreSuggestionsUI20PKViewPassController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B81F8F98();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1B81D990C();
 }
 

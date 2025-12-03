@@ -1,25 +1,25 @@
 @interface TSCH3DAreaGenerator
-+ (id)generatorWithYLimits:(tvec2<float>)a3 zeroValue:(float)a4;
-- (TSCH3DAreaGenerator)initWithYLimits:(tvec2<float>)a3 zeroValue:(float)a4;
++ (id)generatorWithYLimits:(tvec2<float>)limits zeroValue:(float)value;
+- (TSCH3DAreaGenerator)initWithYLimits:(tvec2<float>)limits zeroValue:(float)value;
 - (float)clampedZero;
 - (id).cxx_construct;
-- (id)createGeometryWithXValues:(const void *)a3 yValues:(const void *)a4;
-- (void)addRowWithXValues:(const void *)a3 yValues:(const void *)a4;
-- (void)clipLine:(const void *)a3 into:(void *)a4;
+- (id)createGeometryWithXValues:(const void *)values yValues:(const void *)yValues;
+- (void)addRowWithXValues:(const void *)values yValues:(const void *)yValues;
+- (void)clipLine:(const void *)line into:(void *)into;
 @end
 
 @implementation TSCH3DAreaGenerator
 
-+ (id)generatorWithYLimits:(tvec2<float>)a3 zeroValue:(float)a4
++ (id)generatorWithYLimits:(tvec2<float>)limits zeroValue:(float)value
 {
-  v6 = [a1 alloc];
-  v12 = **&a3;
-  v10 = objc_msgSend_initWithYLimits_zeroValue_(v6, v7, COERCE_DOUBLE(__PAIR64__(HIDWORD(v12), LODWORD(a4))), v8, v9, &v12);
+  v6 = [self alloc];
+  v12 = **&limits;
+  v10 = objc_msgSend_initWithYLimits_zeroValue_(v6, v7, COERCE_DOUBLE(__PAIR64__(HIDWORD(v12), LODWORD(value))), v8, v9, &v12);
 
   return v10;
 }
 
-- (TSCH3DAreaGenerator)initWithYLimits:(tvec2<float>)a3 zeroValue:(float)a4
+- (TSCH3DAreaGenerator)initWithYLimits:(tvec2<float>)limits zeroValue:(float)value
 {
   v18.receiver = self;
   v18.super_class = TSCH3DAreaGenerator;
@@ -27,10 +27,10 @@
   v11 = v6;
   if (v6)
   {
-    v6->_YLimits.var0.var0 = **&a3;
-    LODWORD(v8) = *(*&a3 + 4);
+    v6->_YLimits.var0.var0 = **&limits;
+    LODWORD(v8) = *(*&limits + 4);
     v6->_YLimits.var1.var0 = *&v8;
-    v6->_zeroValue = a4;
+    v6->_zeroValue = value;
     objc_msgSend_clampedZero(v6, v7, v8, v9, v10);
     v13 = v12;
     v15 = 0;
@@ -63,10 +63,10 @@
   return result;
 }
 
-- (void)addRowWithXValues:(const void *)a3 yValues:(const void *)a4
+- (void)addRowWithXValues:(const void *)values yValues:(const void *)yValues
 {
-  sub_2761F27A8(v34, (*(a4 + 1) - *a4) >> 2);
-  *&v7 = sub_2761F69CC(a3, a4, v34);
+  sub_2761F27A8(v34, (*(yValues + 1) - *yValues) >> 2);
+  *&v7 = sub_2761F69CC(values, yValues, v34);
   v31 = 0;
   v32 = 0;
   v33 = 0;
@@ -160,10 +160,10 @@
   }
 }
 
-- (id)createGeometryWithXValues:(const void *)a3 yValues:(const void *)a4
+- (id)createGeometryWithXValues:(const void *)values yValues:(const void *)yValues
 {
-  sub_2761F27A8(v61, (*(a4 + 1) - *a4) >> 2);
-  *&v7 = sub_2761F69CC(a3, a4, v61);
+  sub_2761F27A8(v61, (*(yValues + 1) - *yValues) >> 2);
+  *&v7 = sub_2761F69CC(values, yValues, v61);
   v58 = 0;
   v59 = 0;
   v60 = 0;
@@ -337,7 +337,7 @@
   return v39;
 }
 
-- (void)clipLine:(const void *)a3 into:(void *)a4
+- (void)clipLine:(const void *)line into:(void *)into
 {
   sub_2761F2844(v12, self->_YLimits.var0.var0, self->_YLimits.var1.var0);
   sub_2761F287C(v12, 1);
@@ -347,8 +347,8 @@
     __p = 0;
     v10 = 0;
     v11 = 0;
-    sub_2761F2884(zeroValue, v12, a3, &__p);
-    sub_2761F2A18(v12, &__p, a4);
+    sub_2761F2884(zeroValue, v12, line, &__p);
+    sub_2761F2A18(v12, &__p, into);
     if (__p)
     {
       v10 = __p;
@@ -358,7 +358,7 @@
 
   else
   {
-    sub_2761F2A18(v12, a3, a4);
+    sub_2761F2A18(v12, line, into);
   }
 }
 

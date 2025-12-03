@@ -1,9 +1,9 @@
 @interface PXMonthsLayoutMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXMonthsLayoutMetrics)init;
 - (UIEdgeInsets)chapterHeaderPadding;
 - (UIEdgeInsets)padding;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -50,10 +50,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -63,16 +63,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v16.receiver = self;
       v16.super_class = PXMonthsLayoutMetrics;
       if ([(PXLayoutMetrics *)&v16 isEqual:v5])
       {
-        v6 = [(PXMonthsLayoutMetrics *)v5 sizeClass];
-        if (v6 == [(PXMonthsLayoutMetrics *)self sizeClass])
+        sizeClass = [(PXMonthsLayoutMetrics *)v5 sizeClass];
+        if (sizeClass == [(PXMonthsLayoutMetrics *)self sizeClass])
         {
-          v7 = [(PXMonthsLayoutMetrics *)v5 orientation];
-          if (v7 == [(PXMonthsLayoutMetrics *)self orientation])
+          orientation = [(PXMonthsLayoutMetrics *)v5 orientation];
+          if (orientation == [(PXMonthsLayoutMetrics *)self orientation])
           {
             [(PXMonthsLayoutMetrics *)v5 interitemSpacing];
             v9 = v8;
@@ -114,11 +114,11 @@
   return v4 ^ (4 * [(PXMonthsLayoutMetrics *)self orientation]);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PXMonthsLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v7 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v7 copyWithZone:zone];
   *(result + 4) = self->_sizeClass;
   *(result + 5) = self->_orientation;
   *(result + 6) = *&self->_interitemSpacing;

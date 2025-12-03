@@ -2,8 +2,8 @@
 - (FrameRejectionState)rejectionState;
 - (VGFrameSelectorResult)init;
 - (id).cxx_construct;
-- (void)addDebugDataForKey:(id)a3 debugData:(id)a4;
-- (void)setRejectionState:(FrameRejectionState *)a3;
+- (void)addDebugDataForKey:(id)key debugData:(id)data;
+- (void)setRejectionState:(FrameRejectionState *)state;
 @end
 
 @implementation VGFrameSelectorResult
@@ -23,10 +23,10 @@
   return v3;
 }
 
-- (void)addDebugDataForKey:(id)a3 debugData:(id)a4
+- (void)addDebugDataForKey:(id)key debugData:(id)data
 {
-  v10 = a3;
-  v6 = a4;
+  keyCopy = key;
+  dataCopy = data;
   debugDataInternal = self->_debugDataInternal;
   if (!debugDataInternal)
   {
@@ -37,7 +37,7 @@
     debugDataInternal = self->_debugDataInternal;
   }
 
-  [(NSMutableDictionary *)debugDataInternal setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)debugDataInternal setObject:dataCopy forKeyedSubscript:keyCopy];
 }
 
 - (FrameRejectionState)rejectionState
@@ -53,14 +53,14 @@
   return result;
 }
 
-- (void)setRejectionState:(FrameRejectionState *)a3
+- (void)setRejectionState:(FrameRejectionState *)state
 {
-  self->_rejectionState.reason = a3->reason;
-  objc_storeStrong(&self->_rejectionState.description, a3->description);
-  *&self->_rejectionState.outOfFovOffset = *&a3->outOfFovOffset;
-  objc_storeStrong(&self->_rejectionState.debugDictionary, a3->debugDictionary);
+  self->_rejectionState.reason = state->reason;
+  objc_storeStrong(&self->_rejectionState.description, state->description);
+  *&self->_rejectionState.outOfFovOffset = *&state->outOfFovOffset;
+  objc_storeStrong(&self->_rejectionState.debugDictionary, state->debugDictionary);
 
-  description = a3->description;
+  description = state->description;
 }
 
 - (id).cxx_construct

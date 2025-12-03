@@ -64,7 +64,7 @@
 - (uint64_t)initWithDomainMSDCode:()MSDExtension message:
 {
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a4 forKey:*MEMORY[0x277CCA450]];
-  v7 = [a1 initWithDomain:@"MSDDemodErrorDomain" code:a3 userInfo:v6];
+  v7 = [self initWithDomain:@"MSDDemodErrorDomain" code:a3 userInfo:v6];
 
   return v7;
 }
@@ -72,7 +72,7 @@
 - (uint64_t)initWithDomainMSDCode:()MSDExtension message:reason:
 {
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a4, *MEMORY[0x277CCA450], a5, *MEMORY[0x277CCA470], 0}];
-  v8 = [a1 initWithDomain:@"MSDDemodErrorDomain" code:a3 userInfo:v7];
+  v8 = [self initWithDomain:@"MSDDemodErrorDomain" code:a3 userInfo:v7];
 
   return v8;
 }

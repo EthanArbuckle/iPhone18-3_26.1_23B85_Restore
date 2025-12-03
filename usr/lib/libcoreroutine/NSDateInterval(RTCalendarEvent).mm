@@ -29,7 +29,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 dateIntervalFromEvent:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self dateIntervalFromEvent:{*(*(&v13 + 1) + 8 * i), v13}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -49,21 +49,21 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 startDate];
-  v5 = [v3 endDate];
-  v6 = [v4 isOnOrBefore:v5];
+  startDate = [v3 startDate];
+  endDate = [v3 endDate];
+  v6 = [startDate isOnOrBefore:endDate];
 
   if ((v6 & 1) == 0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v3 endDate];
-      v17 = [v3 startDate];
+      endDate2 = [v3 endDate];
+      startDate2 = [v3 startDate];
       v18 = 138413314;
-      v19 = v16;
+      v19 = endDate2;
       v20 = 2112;
-      v21 = v17;
+      v21 = startDate2;
       v22 = 2112;
       v24 = 2080;
       v23 = v3;
@@ -74,16 +74,16 @@
     }
   }
 
-  v8 = [v3 startDate];
-  v9 = [v3 endDate];
-  v10 = [v8 isOnOrBefore:v9];
+  startDate3 = [v3 startDate];
+  endDate3 = [v3 endDate];
+  v10 = [startDate3 isOnOrBefore:endDate3];
 
   if (v10)
   {
     v11 = objc_alloc(MEMORY[0x277CCA970]);
-    v12 = [v3 startDate];
-    v13 = [v3 endDate];
-    v14 = [v11 initWithStartDate:v12 endDate:v13];
+    startDate4 = [v3 startDate];
+    endDate4 = [v3 endDate];
+    v14 = [v11 initWithStartDate:startDate4 endDate:endDate4];
   }
 
   else

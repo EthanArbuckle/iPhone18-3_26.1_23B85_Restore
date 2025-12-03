@@ -8,18 +8,18 @@
 - (id)accessibilityLabel
 {
   v2 = [(CommunicationControlAccessibility *)self safeValueForKey:@"label"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
   v4 = *MEMORY[0x29EDC7F70];
-  if (v3)
+  if (isEnabled)
   {
     v5 = 0;
   }

@@ -1,10 +1,10 @@
 @interface WiFiCWFInterface
 + (id)sharedWiFiCWFInterfaceInstance;
 - (WiFiCWFInterface)init;
-- (id)getServiceFor:(id)a3 withServiceKey:(id)a4;
-- (id)startMonitoringSupportedEvents:(id)a3;
-- (id)stopMonitoringSupportedEvents:(id)a3;
-- (int)performSensingFor:(id)a3;
+- (id)getServiceFor:(id)for withServiceKey:(id)key;
+- (id)startMonitoringSupportedEvents:(id)events;
+- (id)stopMonitoringSupportedEvents:(id)events;
+- (int)performSensingFor:(id)for;
 - (void)dealloc;
 @end
 
@@ -73,13 +73,13 @@ LABEL_6:
   [(WiFiCWFInterface *)&v3 dealloc];
 }
 
-- (id)startMonitoringSupportedEvents:(id)a3
+- (id)startMonitoringSupportedEvents:(id)events
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [events countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,7 +90,7 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(events);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -106,10 +106,10 @@ LABEL_6:
           goto LABEL_13;
         }
 
-        -[NSMutableDictionary setObject:forKeyedSubscript:](-[WiFiCWFInterface _eventHandlers](self, "_eventHandlers"), "setObject:forKeyedSubscript:", [a3 objectForKeyedSubscript:v9], v9);
+        -[NSMutableDictionary setObject:forKeyedSubscript:](-[WiFiCWFInterface _eventHandlers](self, "_eventHandlers"), "setObject:forKeyedSubscript:", [events objectForKeyedSubscript:v9], v9);
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [events countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -124,13 +124,13 @@ LABEL_13:
   return CWFErrorWithDescription();
 }
 
-- (id)stopMonitoringSupportedEvents:(id)a3
+- (id)stopMonitoringSupportedEvents:(id)events
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [events countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -142,7 +142,7 @@ LABEL_13:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(events);
         }
 
         [(NSMutableDictionary *)[(WiFiCWFInterface *)self _eventHandlers] removeObjectForKey:*(*(&v10 + 1) + 8 * v8)];
@@ -150,7 +150,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [events countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -160,23 +160,23 @@ LABEL_13:
   return CWFErrorWithDescription();
 }
 
-- (int)performSensingFor:(id)a3
+- (int)performSensingFor:(id)for
 {
   v3 = *([(WiFiCWFInterface *)self performSensing]+ 2);
 
   return v3();
 }
 
-- (id)getServiceFor:(id)a3 withServiceKey:(id)a4
+- (id)getServiceFor:(id)for withServiceKey:(id)key
 {
-  if ([(NSMutableDictionary *)[(WiFiCWFInterface *)self _eventHandlers] objectForKey:a4])
+  if ([(NSMutableDictionary *)[(WiFiCWFInterface *)self _eventHandlers] objectForKey:key])
   {
-    v7 = [(NSMutableDictionary *)[(WiFiCWFInterface *)self _eventHandlers] objectForKeyedSubscript:a4];
-    v8 = v7[2](v7, a3);
+    v7 = [(NSMutableDictionary *)[(WiFiCWFInterface *)self _eventHandlers] objectForKeyedSubscript:key];
+    v8 = v7[2](v7, for);
     v9 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s:Start data collect for sensing params %@ with erorr %@", "-[WiFiCWFInterface getServiceFor:withServiceKey:]", a3, v8}];
+      [off_100298C40 WFLog:3 message:{"%s:Start data collect for sensing params %@ with erorr %@", "-[WiFiCWFInterface getServiceFor:withServiceKey:]", for, v8}];
     }
   }
 
@@ -187,7 +187,7 @@ LABEL_13:
     v9 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s:%@ service doesn't exist", "-[WiFiCWFInterface getServiceFor:withServiceKey:]", a4, v11}];
+      [off_100298C40 WFLog:3 message:{"%s:%@ service doesn't exist", "-[WiFiCWFInterface getServiceFor:withServiceKey:]", key, v11}];
     }
   }
 

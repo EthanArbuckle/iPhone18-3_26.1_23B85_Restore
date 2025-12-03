@@ -1,7 +1,7 @@
 @interface ACMExternalEnvironmentPreferences
 + (id)externalEnvironmentSpecifications;
 - (id)defaultPublicKeyString;
-- (id)environmentSpecificationForRealm:(id)a3;
+- (id)environmentSpecificationForRealm:(id)realm;
 - (id)myAppleIDURL;
 - (id)serverAttemptsDelays;
 - (id)serverHosts;
@@ -48,12 +48,12 @@
   return [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 }
 
-- (id)environmentSpecificationForRealm:(id)a3
+- (id)environmentSpecificationForRealm:(id)realm
 {
   v6.receiver = self;
   v6.super_class = ACMExternalEnvironmentPreferences;
   v4 = [MEMORY[0x29EDB8E00] dictionaryWithDictionary:{-[ACMEnvironmentPreferences environmentSpecificationForRealm:](&v6, sel_environmentSpecificationForRealm_)}];
-  [v4 addEntriesFromDictionary:{objc_msgSend(+[ACMExternalEnvironmentPreferences externalEnvironmentSpecifications](ACMExternalEnvironmentPreferences, "externalEnvironmentSpecifications"), "objectForKey:", a3)}];
+  [v4 addEntriesFromDictionary:{objc_msgSend(+[ACMExternalEnvironmentPreferences externalEnvironmentSpecifications](ACMExternalEnvironmentPreferences, "externalEnvironmentSpecifications"), "objectForKey:", realm)}];
   return [v4 copy];
 }
 

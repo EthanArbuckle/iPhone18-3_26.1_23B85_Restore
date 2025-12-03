@@ -1,6 +1,6 @@
 @interface ServerBackedExtensionMonitorRegistry.MonitorClientExport
 - (_TtCC13AppProtection36ServerBackedExtensionMonitorRegistryP33_0D76BCD90F39FFE5BC347065C6051DB119MonitorClientExport)init;
-- (void)extensionMonitorWithUUID:(id)a3 lockedStatusUpdate:(BOOL)a4;
+- (void)extensionMonitorWithUUID:(id)d lockedStatusUpdate:(BOOL)update;
 @end
 
 @implementation ServerBackedExtensionMonitorRegistry.MonitorClientExport
@@ -13,7 +13,7 @@
   return [(ServerBackedExtensionMonitorRegistry.MonitorClientExport *)&v4 init];
 }
 
-- (void)extensionMonitorWithUUID:(id)a3 lockedStatusUpdate:(BOOL)a4
+- (void)extensionMonitorWithUUID:(id)d lockedStatusUpdate:(BOOL)update
 {
   v6 = sub_185B67AFC();
   v7 = *(v6 - 8);
@@ -23,8 +23,8 @@
   sub_185B67ADC();
   if (swift_weakLoadStrong())
   {
-    v12 = self;
-    sub_185B07E0C(v11, a4);
+    selfCopy = self;
+    sub_185B07E0C(v11, update);
   }
 
   (*(v7 + 8))(v11, v6);

@@ -1,25 +1,25 @@
 @interface UNNotificationTopic
-+ (id)topicWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (UNNotificationTopic)initWithCoder:(id)a3;
++ (id)topicWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (UNNotificationTopic)initWithCoder:(id)coder;
 - (id)_description;
-- (id)_initWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6;
+- (id)_initWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationTopic
 
 - (unint64_t)hash
 {
-  v3 = [(UNNotificationTopic *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(UNNotificationTopic *)self displayName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(UNNotificationTopic *)self priority];
-  v8 = [(UNNotificationTopic *)self sortIdentifier];
-  v9 = v7 ^ [v8 hash];
+  identifier = [(UNNotificationTopic *)self identifier];
+  v4 = [identifier hash];
+  displayName = [(UNNotificationTopic *)self displayName];
+  v6 = [displayName hash] ^ v4;
+  priority = [(UNNotificationTopic *)self priority];
+  sortIdentifier = [(UNNotificationTopic *)self sortIdentifier];
+  v9 = priority ^ [sortIdentifier hash];
 
   return v6 ^ v9;
 }
@@ -27,8 +27,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(UNNotificationTopic *)self _description];
-  v4 = [v2 stringWithFormat:@"%@>", v3];
+  _description = [(UNNotificationTopic *)self _description];
+  v4 = [v2 stringWithFormat:@"%@>", _description];
 
   return v4;
 }
@@ -37,43 +37,43 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UNNotificationTopic *)self identifier];
-  v6 = [(UNNotificationTopic *)self displayName];
-  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %@, displayName: %@", v4, self, v5, v6];;
+  identifier = [(UNNotificationTopic *)self identifier];
+  displayName = [(UNNotificationTopic *)self displayName];
+  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %@, displayName: %@", v4, self, identifier, displayName];;
 
   return v7;
 }
 
-+ (id)topicWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6
++ (id)topicWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] _initWithIdentifier:v12 displayName:v11 priority:a5 sortIdentifier:v10];
+  sortIdentifierCopy = sortIdentifier;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v13 = [[self alloc] _initWithIdentifier:identifierCopy displayName:nameCopy priority:priority sortIdentifier:sortIdentifierCopy];
 
   return v13;
 }
 
-- (id)_initWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6
+- (id)_initWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  sortIdentifierCopy = sortIdentifier;
   v21.receiver = self;
   v21.super_class = UNNotificationTopic;
   v13 = [(UNNotificationTopic *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [nameCopy copy];
     displayName = v13->_displayName;
     v13->_displayName = v16;
 
-    v13->_priority = a5;
-    v18 = [v12 copy];
+    v13->_priority = priority;
+    v18 = [sortIdentifierCopy copy];
     sortIdentifier = v13->_sortIdentifier;
     v13->_sortIdentifier = v18;
   }
@@ -81,19 +81,19 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UNNotificationTopic *)self identifier];
-    v6 = [v4 identifier];
-    if (UNEqualStrings(v5, v6))
+    identifier = [(UNNotificationTopic *)self identifier];
+    identifier2 = [equalCopy identifier];
+    if (UNEqualStrings(identifier, identifier2))
     {
-      v7 = [(UNNotificationTopic *)self displayName];
-      v8 = [v4 displayName];
-      v9 = UNEqualObjects(v7, v8);
+      displayName = [(UNNotificationTopic *)self displayName];
+      displayName2 = [equalCopy displayName];
+      v9 = UNEqualObjects(displayName, displayName2);
     }
 
     else
@@ -110,34 +110,34 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UNNotificationTopic *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(UNNotificationTopic *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(UNNotificationTopic *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(UNNotificationTopic *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  [v4 encodeInteger:-[UNNotificationTopic priority](self forKey:{"priority"), @"priority"}];
-  v7 = [(UNNotificationTopic *)self sortIdentifier];
-  [v4 encodeObject:v7 forKey:@"sortIdentifier"];
+  [coderCopy encodeInteger:-[UNNotificationTopic priority](self forKey:{"priority"), @"priority"}];
+  sortIdentifier = [(UNNotificationTopic *)self sortIdentifier];
+  [coderCopy encodeObject:sortIdentifier forKey:@"sortIdentifier"];
 }
 
-- (UNNotificationTopic)initWithCoder:(id)a3
+- (UNNotificationTopic)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = [v5 copy];
 
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"displayName"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"displayName"];
   v11 = [v10 copy];
 
-  v12 = [v4 decodeIntegerForKey:@"priority"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortIdentifier"];
+  v12 = [coderCopy decodeIntegerForKey:@"priority"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortIdentifier"];
 
   v14 = [(UNNotificationTopic *)self _initWithIdentifier:v6 displayName:v11 priority:v12 sortIdentifier:v13];
   return v14;

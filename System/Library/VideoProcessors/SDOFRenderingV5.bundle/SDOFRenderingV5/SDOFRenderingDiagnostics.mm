@@ -1,7 +1,7 @@
 @interface SDOFRenderingDiagnostics
 - (SDOFRenderingDiagnostics)init;
 - (id)createDiagnosticsDictionary;
-- (id)dictFromFace:(id *)a3;
+- (id)dictFromFace:(id *)face;
 @end
 
 @implementation SDOFRenderingDiagnostics
@@ -28,18 +28,18 @@
   return v4;
 }
 
-- (id)dictFromFace:(id *)a3
+- (id)dictFromFace:(id *)face
 {
-  v5 = objc_msgSend_dictionary(MEMORY[0x29EDB8E00], a2, a3, v3);
+  v5 = objc_msgSend_dictionary(MEMORY[0x29EDB8E00], a2, face, v3);
   if (v5)
   {
-    DictionaryRepresentation = CGPointCreateDictionaryRepresentation(a3->var1);
+    DictionaryRepresentation = CGPointCreateDictionaryRepresentation(face->var1);
     objc_msgSend_setObject_forKeyedSubscript_(v5, v7, DictionaryRepresentation, @"leftEye");
 
-    v8 = CGPointCreateDictionaryRepresentation(a3->var2);
+    v8 = CGPointCreateDictionaryRepresentation(face->var2);
     objc_msgSend_setObject_forKeyedSubscript_(v5, v9, v8, @"rightEye");
 
-    v10 = CGPointCreateDictionaryRepresentation(a3->var0);
+    v10 = CGPointCreateDictionaryRepresentation(face->var0);
     objc_msgSend_setObject_forKeyedSubscript_(v5, v11, v10, @"nose");
   }
 

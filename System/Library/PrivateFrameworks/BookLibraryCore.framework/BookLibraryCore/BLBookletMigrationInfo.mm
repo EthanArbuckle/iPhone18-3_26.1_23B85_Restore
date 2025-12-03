@@ -1,22 +1,22 @@
 @interface BLBookletMigrationInfo
-- (BLBookletMigrationInfo)initWithCoder:(id)a3;
-- (BLBookletMigrationInfo)initWithStoreID:(int64_t)a3 migrationState:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BLBookletMigrationInfo)initWithCoder:(id)coder;
+- (BLBookletMigrationInfo)initWithStoreID:(int64_t)d migrationState:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BLBookletMigrationInfo
 
-- (BLBookletMigrationInfo)initWithStoreID:(int64_t)a3 migrationState:(int64_t)a4
+- (BLBookletMigrationInfo)initWithStoreID:(int64_t)d migrationState:(int64_t)state
 {
   v7.receiver = self;
   v7.super_class = BLBookletMigrationInfo;
   result = [(BLBookletMigrationInfo *)&v7 init];
   if (result)
   {
-    result->_migrationState = a4;
-    result->_storeID = a3;
+    result->_migrationState = state;
+    result->_storeID = d;
   }
 
   return result;
@@ -32,21 +32,21 @@
   return v6;
 }
 
-- (BLBookletMigrationInfo)initWithCoder:(id)a3
+- (BLBookletMigrationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BLBookletMigrationInfo;
   v5 = [(BLBookletMigrationInfo *)&v11 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"migrationState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"migrationState"];
     v7 = BUDynamicCast();
     v5->_migrationState = [v7 longLongValue];
 
     objc_opt_class();
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeID"];
     v9 = BUDynamicCast();
     v5->_storeID = [v9 longLongValue];
   }
@@ -54,18 +54,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[BLBookletMigrationInfo migrationState](self, "migrationState")}];
-  [v5 encodeObject:v6 forKey:@"migrationState"];
+  [coderCopy encodeObject:v6 forKey:@"migrationState"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[BLBookletMigrationInfo storeID](self, "storeID")}];
-  [v5 encodeObject:v7 forKey:@"storeID"];
+  [coderCopy encodeObject:v7 forKey:@"storeID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   if (v4)

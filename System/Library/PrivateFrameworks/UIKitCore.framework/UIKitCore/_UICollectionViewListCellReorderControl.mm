@@ -1,36 +1,36 @@
 @interface _UICollectionViewListCellReorderControl
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGSize)_minimumSizeForHitTesting;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UICollectionViewListCellReorderControl)initWithDelegate:(id)a3 constants:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UICollectionViewListCellReorderControl)initWithDelegate:(id)delegate constants:(id)constants;
 - (_UICollectionViewListCellReorderControlDelegate)delegate;
-- (void)_setTracking:(BOOL)a3;
+- (void)_setTracking:(BOOL)tracking;
 - (void)_updateImageViewIfNeeded;
 - (void)beginReordering;
 - (void)cancelReorderingGesture;
-- (void)endReordering:(BOOL)a3;
-- (void)gestureMovedToPoint:(CGPoint)a3;
+- (void)endReordering:(BOOL)reordering;
+- (void)gestureMovedToPoint:(CGPoint)point;
 - (void)layoutSubviews;
-- (void)pan:(id)a3;
-- (void)setAccessoryTintColor:(id)a3;
-- (void)setConstants:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)pan:(id)pan;
+- (void)setAccessoryTintColor:(id)color;
+- (void)setConstants:(id)constants;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UICollectionViewListCellReorderControl
 
-- (_UICollectionViewListCellReorderControl)initWithDelegate:(id)a3 constants:(id)a4
+- (_UICollectionViewListCellReorderControl)initWithDelegate:(id)delegate constants:(id)constants
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  constantsCopy = constants;
   v20.receiver = self;
   v20.super_class = _UICollectionViewListCellReorderControl;
   v8 = [(UIControl *)&v20 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_constants, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_constants, constants);
     v10 = objc_alloc_init(UIImageView);
     [(UIView *)v9 addSubview:v10];
     imageView = v9->_imageView;
@@ -54,35 +54,35 @@
   return v9;
 }
 
-- (void)setConstants:(id)a3
+- (void)setConstants:(id)constants
 {
-  v5 = a3;
-  if (self->_constants != v5)
+  constantsCopy = constants;
+  if (self->_constants != constantsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_constants, a3);
+    v6 = constantsCopy;
+    objc_storeStrong(&self->_constants, constants);
     [(_UICollectionViewListCellReorderControl *)self _setNeedsImageViewUpdate];
-    v5 = v6;
+    constantsCopy = v6;
   }
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_accessoryTintColor != v5)
+  colorCopy = color;
+  if (self->_accessoryTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accessoryTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_accessoryTintColor, color);
     [(_UICollectionViewListCellReorderControl *)self _setNeedsImageViewUpdate];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)_setTracking:(BOOL)a3
+- (void)_setTracking:(BOOL)tracking
 {
-  if (self->_tracking != a3)
+  if (self->_tracking != tracking)
   {
-    self->_tracking = a3;
+    self->_tracking = tracking;
     [(_UICollectionViewListCellReorderControl *)self _setNeedsImageViewUpdate];
   }
 }
@@ -93,18 +93,18 @@
   {
     self->_needsImageViewUpdate = 0;
     constants = self->_constants;
-    v6 = [(UIView *)self traitCollection];
-    v5 = [(UITableConstants *)constants defaultReorderControlImageForTraitCollection:v6 withAccessoryBaseColor:self->_accessoryTintColor isTracking:self->_tracking];
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = [(UITableConstants *)constants defaultReorderControlImageForTraitCollection:traitCollection withAccessoryBaseColor:self->_accessoryTintColor isTracking:self->_tracking];
     [(UIImageView *)self->_imageView setImage:v5];
   }
 }
 
 - (CGSize)_minimumSizeForHitTesting
 {
-  v2 = [(UIView *)self isUserInteractionEnabled];
+  isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
   v3 = 44.0;
   v4 = *(MEMORY[0x1E695F060] + 8);
-  if (v2)
+  if (isUserInteractionEnabled)
   {
     v4 = 44.0;
   }
@@ -119,10 +119,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(_UICollectionViewListCellReorderControl *)self _updateImageViewIfNeeded];
   [(UIImageView *)self->_imageView sizeThatFits:width, height];
   v7 = v6;
@@ -160,8 +160,8 @@
   v12.super_class = _UICollectionViewListCellReorderControl;
   [(UIView *)&v12 layoutSubviews];
   [(_UICollectionViewListCellReorderControl *)self _updateImageViewIfNeeded];
-  v3 = [(UIImageView *)self->_imageView _currentImage];
-  [v3 size];
+  _currentImage = [(UIImageView *)self->_imageView _currentImage];
+  [_currentImage size];
   v5 = v4;
   v7 = v6;
 
@@ -170,22 +170,22 @@
   [(UIImageView *)self->_imageView setCenter:v9 + v8 * 0.5, v11 + v10 * 0.5];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UICollectionViewListCellReorderControl;
-  v6 = a3;
-  [(UIControl *)&v8 touchesBegan:v6 withEvent:a4];
+  beganCopy = began;
+  [(UIControl *)&v8 touchesBegan:beganCopy withEvent:event];
   v7 = [(_UICollectionViewListCellReorderControl *)self delegate:v8.receiver];
-  [v7 _reorderControl:self didReceiveTouchesBegan:v6];
+  [v7 _reorderControl:self didReceiveTouchesBegan:beganCopy];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_reorderRecognizer == a3)
+  if (self->_reorderRecognizer == begin)
   {
-    v5 = [(_UICollectionViewListCellReorderControl *)self delegate];
-    v6 = [v5 _reorderControlShouldBeginReordering:self];
+    delegate = [(_UICollectionViewListCellReorderControl *)self delegate];
+    v6 = [delegate _reorderControlShouldBeginReordering:self];
 
     return v6;
   }
@@ -198,22 +198,22 @@
   }
 }
 
-- (void)pan:(id)a3
+- (void)pan:(id)pan
 {
-  v22 = a3;
-  v5 = [v22 state];
-  if (v5 > 2)
+  panCopy = pan;
+  state = [panCopy state];
+  if (state > 2)
   {
-    switch(v5)
+    switch(state)
     {
       case 3:
         if (!self->_tracking)
         {
-          v18 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"_tracking"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"_tracking"}];
         }
 
-        [v22 locationInView:self];
+        [panCopy locationInView:self];
         v11 = v10;
         v13 = v12;
         [(_UICollectionViewListCellReorderControl *)self endReordering:0];
@@ -222,8 +222,8 @@
       case 4:
         if (!self->_tracking)
         {
-          v21 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v21 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"_tracking"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"_tracking"}];
         }
 
         [(_UICollectionViewListCellReorderControl *)self endReordering:1];
@@ -238,61 +238,61 @@
     goto LABEL_24;
   }
 
-  switch(v5)
+  switch(state)
   {
     case 0:
 LABEL_11:
       if (self->_tracking)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"!_tracking"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"!_tracking"}];
       }
 
       goto LABEL_24;
     case 1:
       if (self->_tracking)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"!_tracking"}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"!_tracking"}];
       }
 
       [(_UICollectionViewListCellReorderControl *)self _setTracking:1];
-      [v22 locationInView:self];
+      [panCopy locationInView:self];
       v15 = v14;
       v17 = v16;
       [(_UICollectionViewListCellReorderControl *)self beginReordering];
-      v8 = self;
+      selfCopy2 = self;
       v6 = v15;
       v7 = v17;
       break;
     case 2:
       if (!self->_tracking)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v19 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"_tracking"}];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListCellReorderControl.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"_tracking"}];
       }
 
-      [v22 locationInView:self];
-      v8 = self;
+      [panCopy locationInView:self];
+      selfCopy2 = self;
       break;
     default:
       goto LABEL_24;
   }
 
-  [(_UICollectionViewListCellReorderControl *)v8 gestureMovedToPoint:v6, v7];
+  [(_UICollectionViewListCellReorderControl *)selfCopy2 gestureMovedToPoint:v6, v7];
 LABEL_24:
 }
 
 - (void)beginReordering
 {
-  v3 = [(_UICollectionViewListCellReorderControl *)self delegate];
-  [v3 _reorderControlDidBeginReordering:self];
+  delegate = [(_UICollectionViewListCellReorderControl *)self delegate];
+  [delegate _reorderControlDidBeginReordering:self];
 }
 
-- (void)gestureMovedToPoint:(CGPoint)a3
+- (void)gestureMovedToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIView *)self bounds];
   v6 = v14.origin.x;
   v7 = v14.origin.y;
@@ -304,15 +304,15 @@ LABEL_24:
   v15.size.width = width;
   v15.size.height = height;
   v11 = y - CGRectGetMidY(v15);
-  v12 = [(_UICollectionViewListCellReorderControl *)self delegate];
-  [v12 _reorderControl:self didUpdateWithOffset:{x - MidX, v11}];
+  delegate = [(_UICollectionViewListCellReorderControl *)self delegate];
+  [delegate _reorderControl:self didUpdateWithOffset:{x - MidX, v11}];
 }
 
-- (void)endReordering:(BOOL)a3
+- (void)endReordering:(BOOL)reordering
 {
-  v3 = a3;
-  v5 = [(_UICollectionViewListCellReorderControl *)self delegate];
-  [v5 _reorderControlDidEndReordering:self cancelled:v3];
+  reorderingCopy = reordering;
+  delegate = [(_UICollectionViewListCellReorderControl *)self delegate];
+  [delegate _reorderControlDidEndReordering:self cancelled:reorderingCopy];
 }
 
 - (void)cancelReorderingGesture

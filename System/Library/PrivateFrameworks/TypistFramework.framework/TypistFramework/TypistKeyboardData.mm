@@ -1,8 +1,8 @@
 @interface TypistKeyboardData
 + (BOOL)isKeyboardUIOutOfProcess;
 + (Class)keyboardData;
-+ (void)setConnectionTimeoutInSec:(double)a3;
-+ (void)setTargetApplicationBundleID:(id)a3;
++ (void)setConnectionTimeoutInSec:(double)sec;
++ (void)setTargetApplicationBundleID:(id)d;
 @end
 
 @implementation TypistKeyboardData
@@ -42,22 +42,22 @@ uint64_t __46__TypistKeyboardData_isKeyboardUIOutOfProcess__block_invoke()
   return result;
 }
 
-+ (void)setTargetApplicationBundleID:(id)a3
++ (void)setTargetApplicationBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&_globalTargetApplication, a3);
-    v4 = v5;
+    v5 = dCopy;
+    objc_storeStrong(&_globalTargetApplication, d);
+    dCopy = v5;
   }
 }
 
-+ (void)setConnectionTimeoutInSec:(double)a3
++ (void)setConnectionTimeoutInSec:(double)sec
 {
-  if (a3 > 0.0)
+  if (sec > 0.0)
   {
-    _globalConnectionTimeoutInSec = *&a3;
+    _globalConnectionTimeoutInSec = *&sec;
   }
 }
 

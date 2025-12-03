@@ -1,37 +1,37 @@
 @interface OSLogEntryLog
-- (OSLogEntryLog)initWithCoder:(id)a3;
-- (OSLogEntryLog)initWithDate:(id)a3 composedMessage:(id)a4 processIdentifier:(int)a5;
-- (OSLogEntryLog)initWithEventProxy:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OSLogEntryLog)initWithCoder:(id)coder;
+- (OSLogEntryLog)initWithDate:(id)date composedMessage:(id)message processIdentifier:(int)identifier;
+- (OSLogEntryLog)initWithEventProxy:(id)proxy;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OSLogEntryLog
 
-- (OSLogEntryLog)initWithCoder:(id)a3
+- (OSLogEntryLog)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = OSLogEntryLog;
-  v5 = [(OSLogEntry *)&v26 initWithCoder:v4];
+  v5 = [(OSLogEntry *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
     v5->_activityIdentifier = [v6 unsignedLongLongValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"process"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"process"];
     process = v5->_process;
     v5->_process = v7;
 
-    v5->_processIdentifier = [v4 decodeInt32ForKey:@"processIdentifier"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
+    v5->_processIdentifier = [coderCopy decodeInt32ForKey:@"processIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
     sender = v5->_sender;
     v5->_sender = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
     v5->_threadIdentifier = [v11 unsignedLongLongValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     category = v5->_category;
     v5->_category = v12;
 
@@ -40,19 +40,19 @@
     v27[1] = objc_opt_class();
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
     v16 = [v14 setWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"components"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"components"];
     components = v5->_components;
     v5->_components = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formatString"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formatString"];
     formatString = v5->_formatString;
     v5->_formatString = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subsystem"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subsystem"];
     subsystem = v5->_subsystem;
     v5->_subsystem = v21;
 
-    v5->_level = [v4 decodeIntegerForKey:@"level"];
+    v5->_level = [coderCopy decodeIntegerForKey:@"level"];
     v23 = v5;
   }
 
@@ -60,100 +60,100 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = OSLogEntryLog;
-  v4 = a3;
-  [(OSLogEntry *)&v13 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(OSLogEntry *)&v13 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[OSLogEntryLog activityIdentifier](self, "activityIdentifier", v13.receiver, v13.super_class)}];
-  [v4 encodeObject:v5 forKey:@"activityIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"activityIdentifier"];
 
-  v6 = [(OSLogEntryLog *)self process];
-  [v4 encodeObject:v6 forKey:@"process"];
+  process = [(OSLogEntryLog *)self process];
+  [coderCopy encodeObject:process forKey:@"process"];
 
-  [v4 encodeInt32:-[OSLogEntryLog processIdentifier](self forKey:{"processIdentifier"), @"processIdentifier"}];
-  v7 = [(OSLogEntryLog *)self sender];
-  [v4 encodeObject:v7 forKey:@"sender"];
+  [coderCopy encodeInt32:-[OSLogEntryLog processIdentifier](self forKey:{"processIdentifier"), @"processIdentifier"}];
+  sender = [(OSLogEntryLog *)self sender];
+  [coderCopy encodeObject:sender forKey:@"sender"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[OSLogEntryLog threadIdentifier](self, "threadIdentifier")}];
-  [v4 encodeObject:v8 forKey:@"threadIdentifier"];
+  [coderCopy encodeObject:v8 forKey:@"threadIdentifier"];
 
-  v9 = [(OSLogEntryLog *)self category];
-  [v4 encodeObject:v9 forKey:@"category"];
+  category = [(OSLogEntryLog *)self category];
+  [coderCopy encodeObject:category forKey:@"category"];
 
-  v10 = [(OSLogEntryLog *)self components];
-  [v4 encodeObject:v10 forKey:@"components"];
+  components = [(OSLogEntryLog *)self components];
+  [coderCopy encodeObject:components forKey:@"components"];
 
-  v11 = [(OSLogEntryLog *)self formatString];
-  [v4 encodeObject:v11 forKey:@"formatString"];
+  formatString = [(OSLogEntryLog *)self formatString];
+  [coderCopy encodeObject:formatString forKey:@"formatString"];
 
-  v12 = [(OSLogEntryLog *)self subsystem];
-  [v4 encodeObject:v12 forKey:@"subsystem"];
+  subsystem = [(OSLogEntryLog *)self subsystem];
+  [coderCopy encodeObject:subsystem forKey:@"subsystem"];
 
-  [v4 encodeInteger:-[OSLogEntryLog level](self forKey:{"level"), @"level"}];
+  [coderCopy encodeInteger:-[OSLogEntryLog level](self forKey:{"level"), @"level"}];
 }
 
-- (OSLogEntryLog)initWithDate:(id)a3 composedMessage:(id)a4 processIdentifier:(int)a5
+- (OSLogEntryLog)initWithDate:(id)date composedMessage:(id)message processIdentifier:(int)identifier
 {
   v10.receiver = self;
   v10.super_class = OSLogEntryLog;
-  v6 = [(OSLogEntry *)&v10 initWithDate:a3 composedMessage:a4];
+  v6 = [(OSLogEntry *)&v10 initWithDate:date composedMessage:message];
   v7 = v6;
   if (v6)
   {
-    v6->_processIdentifier = a5;
+    v6->_processIdentifier = identifier;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (OSLogEntryLog)initWithEventProxy:(id)a3
+- (OSLogEntryLog)initWithEventProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v22.receiver = self;
   v22.super_class = OSLogEntryLog;
-  v5 = [(OSLogEntry *)&v22 initWithEventProxy:v4];
+  v5 = [(OSLogEntry *)&v22 initWithEventProxy:proxyCopy];
   if (v5)
   {
-    v5->_activityIdentifier = [v4 activityIdentifier];
-    v6 = [v4 process];
+    v5->_activityIdentifier = [proxyCopy activityIdentifier];
+    process = [proxyCopy process];
     process = v5->_process;
-    v5->_process = v6;
+    v5->_process = process;
 
-    v5->_processIdentifier = [v4 processIdentifier];
-    v8 = [v4 sender];
+    v5->_processIdentifier = [proxyCopy processIdentifier];
+    sender = [proxyCopy sender];
     sender = v5->_sender;
-    v5->_sender = v8;
+    v5->_sender = sender;
 
-    v5->_threadIdentifier = [v4 threadIdentifier];
-    v10 = [v4 category];
+    v5->_threadIdentifier = [proxyCopy threadIdentifier];
+    category = [proxyCopy category];
     category = v5->_category;
-    v5->_category = v10;
+    v5->_category = category;
 
-    v12 = makeComponents(v4);
+    v12 = makeComponents(proxyCopy);
     components = v5->_components;
     v5->_components = v12;
 
-    v14 = [v4 formatString];
+    formatString = [proxyCopy formatString];
     formatString = v5->_formatString;
-    v5->_formatString = v14;
+    v5->_formatString = formatString;
 
-    v16 = [v4 subsystem];
+    subsystem = [proxyCopy subsystem];
     subsystem = v5->_subsystem;
-    v5->_subsystem = v16;
+    v5->_subsystem = subsystem;
 
-    v18 = [v4 logType];
-    if (v18 <= 1)
+    logType = [proxyCopy logType];
+    if (logType <= 1)
     {
-      if (!v18)
+      if (!logType)
       {
         v19 = 3;
         goto LABEL_14;
       }
 
-      if (v18 == 1)
+      if (logType == 1)
       {
         v19 = 2;
         goto LABEL_14;
@@ -162,7 +162,7 @@
 
     else
     {
-      switch(v18)
+      switch(logType)
       {
         case 2:
           v19 = 1;

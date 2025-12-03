@@ -1,10 +1,10 @@
 @interface _CNTimeProfilingTaskOSLogger
 - (NSString)description;
 - (_CNTimeProfilingTaskOSLogger)init;
-- (_CNTimeProfilingTaskOSLogger)initWithOSLog:(id)a3;
-- (void)task:(id)a3 didCompleteAfter:(double)a4;
-- (void)task:(id)a3 didFailWithError:(id)a4 after:(double)a5;
-- (void)taskWillBegin:(id)a3;
+- (_CNTimeProfilingTaskOSLogger)initWithOSLog:(id)log;
+- (void)task:(id)task didCompleteAfter:(double)after;
+- (void)task:(id)task didFailWithError:(id)error after:(double)after;
+- (void)taskWillBegin:(id)begin;
 @end
 
 @implementation _CNTimeProfilingTaskOSLogger
@@ -15,16 +15,16 @@
   objc_exception_throw(v2);
 }
 
-- (_CNTimeProfilingTaskOSLogger)initWithOSLog:(id)a3
+- (_CNTimeProfilingTaskOSLogger)initWithOSLog:(id)log
 {
-  v5 = a3;
+  logCopy = log;
   v10.receiver = self;
   v10.super_class = _CNTimeProfilingTaskOSLogger;
   v6 = [(_CNTimeProfilingTaskOSLogger *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_os_log, a3);
+    objc_storeStrong(&v6->_os_log, log);
     v8 = v7;
   }
 
@@ -35,63 +35,63 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"os_log" object:self->_os_log];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)taskWillBegin:(id)a3
+- (void)taskWillBegin:(id)begin
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_CNTimeProfilingTaskOSLogger *)self os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  beginCopy = begin;
+  os_log = [(_CNTimeProfilingTaskOSLogger *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [beginCopy name];
     v8 = 138543362;
-    v9 = v6;
-    _os_log_impl(&dword_1859F0000, v5, OS_LOG_TYPE_DEFAULT, "Task '%{public}@' beginning", &v8, 0xCu);
+    v9 = name;
+    _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_DEFAULT, "Task '%{public}@' beginning", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)task:(id)a3 didCompleteAfter:(double)a4
+- (void)task:(id)task didCompleteAfter:(double)after
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [CNTimeIntervalFormatter stringForTimeInterval:a4];
-  v8 = [(_CNTimeProfilingTaskOSLogger *)self os_log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  taskCopy = task;
+  v7 = [CNTimeIntervalFormatter stringForTimeInterval:after];
+  os_log = [(_CNTimeProfilingTaskOSLogger *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 name];
+    name = [taskCopy name];
     v11 = 138543618;
-    v12 = v9;
+    v12 = name;
     v13 = 2114;
     v14 = v7;
-    _os_log_impl(&dword_1859F0000, v8, OS_LOG_TYPE_DEFAULT, "Task '%{public}@' complete (%{public}@)", &v11, 0x16u);
+    _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_DEFAULT, "Task '%{public}@' complete (%{public}@)", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)task:(id)a3 didFailWithError:(id)a4 after:(double)a5
+- (void)task:(id)task didFailWithError:(id)error after:(double)after
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [CNTimeIntervalFormatter stringForTimeInterval:a5];
-  v11 = [(_CNTimeProfilingTaskOSLogger *)self os_log];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  taskCopy = task;
+  errorCopy = error;
+  v10 = [CNTimeIntervalFormatter stringForTimeInterval:after];
+  os_log = [(_CNTimeProfilingTaskOSLogger *)self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 name];
+    name = [taskCopy name];
     v14 = 138543874;
-    v15 = v12;
+    v15 = name;
     v16 = 2114;
     v17 = v10;
     v18 = 2114;
-    v19 = v9;
-    _os_log_impl(&dword_1859F0000, v11, OS_LOG_TYPE_DEFAULT, "Task '%{public}@' failed (%{public}@): %{public}@", &v14, 0x20u);
+    v19 = errorCopy;
+    _os_log_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_DEFAULT, "Task '%{public}@' failed (%{public}@): %{public}@", &v14, 0x20u);
   }
 
   v13 = *MEMORY[0x1E69E9840];

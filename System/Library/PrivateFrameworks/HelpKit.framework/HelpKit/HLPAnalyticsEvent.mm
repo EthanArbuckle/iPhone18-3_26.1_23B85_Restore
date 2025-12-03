@@ -9,7 +9,7 @@
 
 + (id)event
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -17,9 +17,9 @@
 - (NSDictionary)caRepresentation
 {
   v2 = +[HLPAnalyticsEventController sharedInstance];
-  v3 = [v2 requiredKeys];
+  requiredKeys = [v2 requiredKeys];
 
-  return v3;
+  return requiredKeys;
 }
 
 - (void)log

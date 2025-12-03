@@ -1,22 +1,22 @@
 @interface ATXHistogramData
 - (ATXHistogramData)init;
-- (ATXHistogramData)initWithCategoricalHistogram:(id)a3;
-- (ATXHistogramData)initWithCoder:(id)a3;
-- (ATXHistogramData)initWithTimeHistogram:(id)a3;
-- (float)lookupSmoothedWithBucketCount:(unsigned __int16)a3 distanceScale:(float)a4 a:(unsigned __int16)a5 b:(unsigned __int16)a6;
-- (float)lookupUnsmoothedA:(unsigned __int16)a3 b:(unsigned __int16)a4;
+- (ATXHistogramData)initWithCategoricalHistogram:(id)histogram;
+- (ATXHistogramData)initWithCoder:(id)coder;
+- (ATXHistogramData)initWithTimeHistogram:(id)histogram;
+- (float)lookupSmoothedWithBucketCount:(unsigned __int16)count distanceScale:(float)scale a:(unsigned __int16)a b:(unsigned __int16)b;
+- (float)lookupUnsmoothedA:(unsigned __int16)a b:(unsigned __int16)b;
 - (id).cxx_construct;
 - (id)aSet;
 - (id)bSet;
-- (int)countWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4;
-- (void)add:(float)a3 a:(unsigned __int16)a4 b:(unsigned __int16)a5;
-- (void)applyPermutationToA:(id)a3;
+- (int)countWhereA:(unsigned __int16)a b:(unsigned __int16)b;
+- (void)add:(float)add a:(unsigned __int16)a b:(unsigned __int16)b;
+- (void)applyPermutationToA:(id)a;
 - (void)clear;
-- (void)decayByFactor:(float)a3;
-- (void)decayWithHalfLifeInDays:(float)a3;
-- (void)deleteWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerate:(id)a3;
+- (void)decayByFactor:(float)factor;
+- (void)decayWithHalfLifeInDays:(float)days;
+- (void)deleteWhereA:(unsigned __int16)a b:(unsigned __int16)b;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerate:(id)enumerate;
 @end
 
 @implementation ATXHistogramData
@@ -117,12 +117,12 @@
   }
 }
 
-- (void)add:(float)a3 a:(unsigned __int16)a4 b:(unsigned __int16)a5
+- (void)add:(float)add a:(unsigned __int16)a b:(unsigned __int16)b
 {
-  if ((LODWORD(a3) & 0x7FFFFFFFu) <= 0x7F7FFFFF)
+  if ((LODWORD(add) & 0x7FFFFFFFu) <= 0x7F7FFFFF)
   {
-    v6 = a5;
-    v7 = a4;
+    bCopy = b;
+    aCopy = a;
     ptr = self->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 8));
     v9 = *ptr;
@@ -137,7 +137,7 @@
       if (v10)
       {
         v11 = 0;
-        while (*(v9[4] + 4 * v11) != (v6 | (v7 << 16)))
+        while (*(v9[4] + 4 * v11) != (bCopy | (aCopy << 16)))
         {
           if (v10 == ++v11)
           {
@@ -145,21 +145,21 @@
           }
         }
 
-        *(*v9 + 4 * v11) = fmaxf(*(*v9 + 4 * v11) + a3, 0.0);
+        *(*v9 + 4 * v11) = fmaxf(*(*v9 + 4 * v11) + add, 0.0);
       }
 
       else
       {
 LABEL_7:
-        if (a3 >= 0.0)
+        if (add >= 0.0)
         {
           v12 = v9[3];
           _ZN12_GLOBAL__N_110SimdVectorIDv8_ffE6resizeEm(*ptr, v12 + 1);
-          *(*v9 + 4 * v12) = fmaxf(a3, 0.0);
+          *(*v9 + 4 * v12) = fmaxf(add, 0.0);
           v13 = *ptr;
           v14 = *(*ptr + 56);
           _ZN12_GLOBAL__N_110SimdVectorIDv8_ijE6resizeEm(*ptr + 32, v14 + 1);
-          *(*(v13 + 32) + 4 * v14) = v6 | (v7 << 16);
+          *(*(v13 + 32) + 4 * v14) = bCopy | (aCopy << 16);
         }
       }
 
@@ -168,10 +168,10 @@ LABEL_7:
   }
 }
 
-- (float)lookupUnsmoothedA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (float)lookupUnsmoothedA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  v4 = a4;
-  v5 = a3;
+  bCopy = b;
+  aCopy = a;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v7 = **ptr;
@@ -180,7 +180,7 @@ LABEL_7:
   {
     v9 = v8 >> 5;
     v10 = *(*ptr + 32);
-    v11 = vdupq_n_s32(v4 | (v5 << 16));
+    v11 = vdupq_n_s32(bCopy | (aCopy << 16));
     if (v9 <= 1)
     {
       v9 = 1;
@@ -229,15 +229,15 @@ LABEL_7:
   return result;
 }
 
-- (float)lookupSmoothedWithBucketCount:(unsigned __int16)a3 distanceScale:(float)a4 a:(unsigned __int16)a5 b:(unsigned __int16)a6
+- (float)lookupSmoothedWithBucketCount:(unsigned __int16)count distanceScale:(float)scale a:(unsigned __int16)a b:(unsigned __int16)b
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a3;
-  if (a6 == 0xFFFF)
+  bCopy = b;
+  aCopy = a;
+  countCopy = count;
+  if (b == 0xFFFF)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"b != SUMALL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"b != SUMALL"}];
   }
 
   ptr = self->_guardedData.__ptr_;
@@ -255,9 +255,9 @@ LABEL_7:
   {
     v14 = 0;
     v15 = v13 >> 5;
-    v16 = vdupq_n_s32((v7 << 16) | 0xFFFFu);
-    v17 = vdupq_n_s32(v6);
-    v18 = vdupq_n_s32(v8);
+    v16 = vdupq_n_s32((aCopy << 16) | 0xFFFFu);
+    v17 = vdupq_n_s32(bCopy);
+    v18 = vdupq_n_s32(countCopy);
     v19 = 0uLL;
     v20.i64[0] = -1;
     v20.i64[1] = -1;
@@ -279,8 +279,8 @@ LABEL_7:
       v36 = (v11 + 32 * v14);
       v37 = vabdq_s32(vandq_s8(v33, v23), v17);
       v38 = vabdq_s32(vandq_s8(v32, v23), v17);
-      v39 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v18, v38), v38)), a4);
-      v40 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v18, v37), v37)), a4);
+      v39 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v18, v38), v38)), scale);
+      v40 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v18, v37), v37)), scale);
       v41 = vmulq_f32(vmlaq_f32(_Q6, v39, v39), v29);
       v42 = vmulq_f32(vmlaq_f32(_Q6, v40, v40), v29);
       v43 = vrecpeq_f32(v42);
@@ -306,9 +306,9 @@ LABEL_7:
   return result;
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
-  v11 = a3;
+  enumerateCopy = enumerate;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v5 = *ptr;
@@ -323,7 +323,7 @@ LABEL_7:
       if (*(*v5 + 4 * v7) > 0.0)
       {
         v9 = *(*(v5 + 32) + 4 * v7);
-        (*(v11 + 2))(v11, HIWORD(v9), v9);
+        (*(enumerateCopy + 2))(enumerateCopy, HIWORD(v9), v9);
         v5 = *ptr;
       }
 
@@ -337,9 +337,9 @@ LABEL_7:
   pthread_mutex_unlock((ptr + 8));
 }
 
-- (int)countWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (int)countWhereA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  if ((a4 & a3) == 0xFFFF)
+  if ((b & a) == 0xFFFF)
   {
     ptr = self->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 8));
@@ -348,7 +348,7 @@ LABEL_7:
     return v5;
   }
 
-  if (a3 == 0xFFFF)
+  if (a == 0xFFFF)
   {
     v12 = 0;
     v13 = &v12;
@@ -358,7 +358,7 @@ LABEL_7:
     v10[1] = 3221225472;
     v10[2] = __34__ATXHistogramData_countWhereA_b___block_invoke;
     v10[3] = &unk_27859DEC0;
-    v11 = a4;
+    bCopy = b;
     v10[4] = &v12;
     [(ATXHistogramData *)self enumerate:v10];
 LABEL_8:
@@ -367,7 +367,7 @@ LABEL_8:
     return v5;
   }
 
-  if (a4 == 0xFFFF)
+  if (b == 0xFFFF)
   {
     v12 = 0;
     v13 = &v12;
@@ -377,7 +377,7 @@ LABEL_8:
     v8[1] = 3221225472;
     v8[2] = __34__ATXHistogramData_countWhereA_b___block_invoke_2;
     v8[3] = &unk_27859DEC0;
-    v9 = a3;
+    aCopy = a;
     v8[4] = &v12;
     [(ATXHistogramData *)self enumerate:v8];
     goto LABEL_8;
@@ -407,9 +407,9 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
   return result;
 }
 
-- (void)deleteWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (void)deleteWhereA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  if ((a4 & a3) == 0xFFFF)
+  if ((b & a) == 0xFFFF)
   {
 
     [(ATXHistogramData *)self clear];
@@ -417,8 +417,8 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
 
   else
   {
-    v4 = a4;
-    v5 = a3;
+    bCopy = b;
+    aCopy = a;
     ptr = self->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 8));
     v7 = *ptr;
@@ -438,8 +438,8 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
         do
         {
           v12 = *(v11 + 4 * v9);
-          v14 = v4 == 0xFFFF || v4 == *(v11 + 4 * v9);
-          v15 = HIWORD(v12) == v5 || v5 == 0xFFFF;
+          v14 = bCopy == 0xFFFF || bCopy == *(v11 + 4 * v9);
+          v15 = HIWORD(v12) == aCopy || aCopy == 0xFFFF;
           if (!v15 || !v14)
           {
             *(v11 + 4 * v10) = v12;
@@ -459,7 +459,7 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
   }
 }
 
-- (void)decayByFactor:(float)a3
+- (void)decayByFactor:(float)factor
 {
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
@@ -477,8 +477,8 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
       do
       {
         v6 = (v4 + 32 * v5);
-        v7 = vmulq_n_f32(v6[1], a3);
-        *v6 = vmulq_n_f32(*v6, a3);
+        v7 = vmulq_n_f32(v6[1], factor);
+        *v6 = vmulq_n_f32(*v6, factor);
         v6[1] = v7;
         ++v5;
         v4 = **ptr;
@@ -491,9 +491,9 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
   }
 }
 
-- (void)decayWithHalfLifeInDays:(float)a3
+- (void)decayWithHalfLifeInDays:(float)days
 {
-  v4 = exp2(-1.0 / a3);
+  v4 = exp2(-1.0 / days);
   *&v4 = v4;
 
   [(ATXHistogramData *)self decayByFactor:v4];
@@ -525,9 +525,9 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
   return v9;
 }
 
-- (ATXHistogramData)initWithCoder:(id)a3
+- (ATXHistogramData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ATXHistogramData *)self init];
   if (!v5)
   {
@@ -537,7 +537,7 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
   v6 = objc_autoreleasePoolPush();
   ptr = v5->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 1));
-  v8 = [v4 decodeInt32ForKey:@"count"];
+  v8 = [coderCopy decodeInt32ForKey:@"count"];
   if (!v8)
   {
     goto LABEL_15;
@@ -546,7 +546,7 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
   v9 = v8;
   _ZN12_GLOBAL__N_110SimdVectorIDv8_ffE6resizeEm(*ptr, v8);
   _ZN12_GLOBAL__N_110SimdVectorIDv8_ijE6resizeEm((*ptr + 4), v9);
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scores"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scores"];
   v11 = [v10 length];
   if (v11 == 4 * v9)
   {
@@ -555,7 +555,7 @@ uint64_t __34__ATXHistogramData_countWhereA_b___block_invoke_2(uint64_t result, 
       memcpy(**ptr, [v10 bytes], objc_msgSend(v10, "length"));
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"abs"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"abs"];
 
     if ([v12 length] == v11)
     {
@@ -622,17 +622,17 @@ LABEL_25:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
-  [v8 encodeInt32:*(*ptr + 24) forKey:@"count"];
+  [coderCopy encodeInt32:*(*ptr + 24) forKey:@"count"];
   v5 = *ptr;
   if (*(*ptr + 24))
   {
     v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:**ptr length:4 * *(*ptr + 24)];
-    [v8 encodeObject:v6 forKey:@"scores"];
+    [coderCopy encodeObject:v6 forKey:@"scores"];
 
     v5 = *ptr;
   }
@@ -640,19 +640,19 @@ LABEL_25:
   if (v5[7])
   {
     v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:*(*ptr + 32) length:4 * *(*ptr + 56)];
-    [v8 encodeObject:v7 forKey:@"abs"];
+    [coderCopy encodeObject:v7 forKey:@"abs"];
   }
 
   pthread_mutex_unlock((ptr + 8));
 }
 
-- (ATXHistogramData)initWithTimeHistogram:(id)a3
+- (ATXHistogramData)initWithTimeHistogram:(id)histogram
 {
-  v5 = a3;
-  if (!v5)
+  histogramCopy = histogram;
+  if (!histogramCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"histogram"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"histogram"}];
   }
 
   v6 = [(ATXHistogramData *)self init];
@@ -664,19 +664,19 @@ LABEL_25:
     v10[2] = __42__ATXHistogramData_initWithTimeHistogram___block_invoke;
     v10[3] = &unk_27859DEE8;
     v11 = v6;
-    [v5 enumerate:v10];
+    [histogramCopy enumerate:v10];
   }
 
   return v7;
 }
 
-- (ATXHistogramData)initWithCategoricalHistogram:(id)a3
+- (ATXHistogramData)initWithCategoricalHistogram:(id)histogram
 {
-  v5 = a3;
-  if (!v5)
+  histogramCopy = histogram;
+  if (!histogramCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:603 description:{@"Invalid parameter not satisfying: %@", @"histogram"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXHistogramData.mm" lineNumber:603 description:{@"Invalid parameter not satisfying: %@", @"histogram"}];
   }
 
   v6 = [(ATXHistogramData *)self init];
@@ -688,18 +688,18 @@ LABEL_25:
     v10[2] = __49__ATXHistogramData_initWithCategoricalHistogram___block_invoke;
     v10[3] = &unk_27859DEE8;
     v11 = v6;
-    [v5 enumerate:v10];
+    [histogramCopy enumerate:v10];
   }
 
   return v7;
 }
 
-- (void)applyPermutationToA:(id)a3
+- (void)applyPermutationToA:(id)a
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  aCopy = a;
+  v5 = aCopy;
+  if (!aCopy)
   {
     v16 = __atxlog_handle_default();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -710,7 +710,7 @@ LABEL_25:
     goto LABEL_15;
   }
 
-  v6 = [v4 bytes];
+  bytes = [aCopy bytes];
   v7 = [v5 length];
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
@@ -742,7 +742,7 @@ LABEL_25:
 
         else
         {
-          *(v12 + 4 * v10) = *(v12 + 4 * v10) | (*(v6 + 2 * v13) << 16);
+          *(v12 + 4 * v10) = *(v12 + 4 * v10) | (*(bytes + 2 * v13) << 16);
         }
 
         v10 = v11;

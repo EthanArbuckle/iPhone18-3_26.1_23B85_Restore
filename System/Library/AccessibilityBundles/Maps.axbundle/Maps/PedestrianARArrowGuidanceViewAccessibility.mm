@@ -1,5 +1,5 @@
 @interface PedestrianARArrowGuidanceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation PedestrianARArrowGuidanceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PedestrianARArrowGuidanceView" hasInstanceVariable:@"_instructionLabel" withType:"UILabel"];
-  [v3 validateClass:@"PedestrianARArrowGuidanceView" hasInstanceVariable:@"_dynamicArrowImageView" withType:"UIImageView"];
-  [v3 validateClass:@"PedestrianARArrowGuidanceView" hasInstanceVariable:@"_dynamicArrowAngle" withType:"d"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PedestrianARArrowGuidanceView" hasInstanceVariable:@"_instructionLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PedestrianARArrowGuidanceView" hasInstanceVariable:@"_dynamicArrowImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PedestrianARArrowGuidanceView" hasInstanceVariable:@"_dynamicArrowAngle" withType:"d"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -25,9 +25,9 @@
 - (id)accessibilityValue
 {
   v3 = [(PedestrianARArrowGuidanceViewAccessibility *)self safeUIViewForKey:@"_dynamicArrowImageView"];
-  v4 = [v3 isHidden];
+  isHidden = [v3 isHidden];
 
-  if (v4)
+  if (isHidden)
   {
     v5 = &stru_2A21E4020;
   }
@@ -54,20 +54,20 @@
 - (id)accessibilityLabel
 {
   v3 = [(PedestrianARArrowGuidanceViewAccessibility *)self safeUIViewForKey:@"_dynamicArrowImageView"];
-  v4 = [v3 isHidden];
+  isHidden = [v3 isHidden];
 
-  if (v4)
+  if (isHidden)
   {
-    v5 = &stru_2A21E4020;
+    accessibilityLabel = &stru_2A21E4020;
   }
 
   else
   {
     v6 = [(PedestrianARArrowGuidanceViewAccessibility *)self safeUIViewForKey:@"_instructionLabel"];
-    v5 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

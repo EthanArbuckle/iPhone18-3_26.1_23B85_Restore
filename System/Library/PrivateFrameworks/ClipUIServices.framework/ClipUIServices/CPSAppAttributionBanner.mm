@@ -1,11 +1,11 @@
 @interface CPSAppAttributionBanner
 + (ISImageDescriptor)preferredImageDescriptor;
 - (CPSAppAttributionBanner)init;
-- (CPSAppAttributionBanner)initWithCoder:(id)a3;
-- (CPSAppAttributionBanner)initWithFrame:(CGRect)a3;
-- (void)_handleTap:(id)a3;
+- (CPSAppAttributionBanner)initWithCoder:(id)coder;
+- (CPSAppAttributionBanner)initWithFrame:(CGRect)frame;
+- (void)_handleTap:(id)tap;
 - (void)commonInit;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPSAppAttributionBanner
@@ -13,8 +13,8 @@
 + (ISImageDescriptor)preferredImageDescriptor
 {
   v2 = objc_alloc(MEMORY[0x277D1B1C8]);
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = [v2 initWithSize:48.0 scale:{48.0, v4}];
 
   [v5 setShape:1];
@@ -24,8 +24,8 @@
 
 - (CPSAppAttributionBanner)init
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7.receiver = self;
   v7.super_class = CPSAppAttributionBanner;
   v4 = [(CPSAppAttributionBanner *)&v7 initWithFrame:?];
@@ -39,11 +39,11 @@
   return v4;
 }
 
-- (CPSAppAttributionBanner)initWithFrame:(CGRect)a3
+- (CPSAppAttributionBanner)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CPSAppAttributionBanner;
-  v3 = [(CPSAppAttributionBanner *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSAppAttributionBanner *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -54,9 +54,9 @@
   return v4;
 }
 
-- (CPSAppAttributionBanner)initWithCoder:(id)a3
+- (CPSAppAttributionBanner)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"-[CPSAppAttributionBanner initWithCoder:] is not available." userInfo:0];
   objc_exception_throw(v4);
 }
@@ -68,9 +68,9 @@
   v5 = [v3 nibWithNibName:@"CPSAppAttributionBanner" bundle:v4];
 
   v6 = [v5 instantiateWithOwner:self options:0];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
     [(CPSAppStoreButton *)self->_appStoreButton setHidden:1];
     v8 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76940] variant:256];
@@ -108,21 +108,21 @@
     v17 = self->_platterView;
     if (v16)
     {
-      v18 = v17;
+      customContentView = v17;
     }
 
     else
     {
-      v18 = [(CPSHighlightable *)v17 customContentView];
+      customContentView = [(CPSHighlightable *)v17 customContentView];
     }
 
-    v19 = v18;
+    v19 = customContentView;
     [(CPSAppAttributionBanner *)self bounds];
     [(CPSHighlightable *)v19 setFrame:?];
-    [v7 setAutoresizingMask:18];
+    [firstObject setAutoresizingMask:18];
     [(CPSHighlightable *)v19 bounds];
-    [v7 setFrame:?];
-    [(CPSHighlightable *)v19 addSubview:v7];
+    [firstObject setFrame:?];
+    [(CPSHighlightable *)v19 addSubview:firstObject];
     [(CPSHighlightForwardingButton *)self->_overlayButton setHighlightForwardingTarget:self->_platterView];
   }
 
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   tapAction = self->_tapAction;
   if (tapAction)
@@ -145,11 +145,11 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(CPSLabelWithPlaceholder *)self->_titleLabel setText:a3];
-  v4 = [(CPSLabelWithPlaceholder *)self->_titleLabel text];
-  -[CPSLabelWithPlaceholder setPlaceholderWidth:](self->_subtitleLabel, "setPlaceholderWidth:", fmax(fmin((5 * [v4 length]), 200.0), 50.0));
+  [(CPSLabelWithPlaceholder *)self->_titleLabel setText:title];
+  text = [(CPSLabelWithPlaceholder *)self->_titleLabel text];
+  -[CPSLabelWithPlaceholder setPlaceholderWidth:](self->_subtitleLabel, "setPlaceholderWidth:", fmax(fmin((5 * [text length]), 200.0), 50.0));
 }
 
 @end

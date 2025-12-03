@@ -1,34 +1,34 @@
 @interface DocumentLaunchController
 - (_TtC7Preview24DocumentLaunchController)init;
-- (void)documentBrowser:(id)a3 didImportDocumentAtURL:(id)a4 toDestinationURL:(id)a5;
-- (void)documentBrowser:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentBrowser:(id)a3 didRequestDocumentCreationWithHandler:(id)a4;
-- (void)documentBrowser:(id)a3 failedToImportDocumentAtURL:(id)a4 error:(id)a5;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
+- (void)documentBrowser:(id)browser didImportDocumentAtURL:(id)l toDestinationURL:(id)rL;
+- (void)documentBrowser:(id)browser didPickDocumentsAtURLs:(id)ls;
+- (void)documentBrowser:(id)browser didRequestDocumentCreationWithHandler:(id)handler;
+- (void)documentBrowser:(id)browser failedToImportDocumentAtURL:(id)l error:(id)error;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
 @end
 
 @implementation DocumentLaunchController
 
-- (void)documentBrowser:(id)a3 didRequestDocumentCreationWithHandler:(id)a4
+- (void)documentBrowser:(id)browser didRequestDocumentCreationWithHandler:(id)handler
 {
-  v6 = j___Block_copy(a4);
+  v6 = j___Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_10000E398(v8, sub_10001335C, v7);
+  browserCopy = browser;
+  selfCopy = self;
+  sub_10000E398(browserCopy, sub_10001335C, v7);
 }
 
-- (void)documentBrowser:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentBrowser:(id)browser didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  browserCopy = browser;
+  selfCopy = self;
   sub_1000120C8(v6);
 }
 
-- (void)documentBrowser:(id)a3 didImportDocumentAtURL:(id)a4 toDestinationURL:(id)a5
+- (void)documentBrowser:(id)browser didImportDocumentAtURL:(id)l toDestinationURL:(id)rL
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
@@ -38,8 +38,8 @@
   v13 = &v17 - v12;
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = self;
+  browserCopy = browser;
+  selfCopy = self;
   sub_1000122FC(v13, v11);
 
   v16 = *(v8 + 8);
@@ -47,17 +47,17 @@
   v16(v13, v7);
 }
 
-- (void)documentBrowser:(id)a3 failedToImportDocumentAtURL:(id)a4 error:(id)a5
+- (void)documentBrowser:(id)browser failedToImportDocumentAtURL:(id)l error:(id)error
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  v14 = a5;
-  sub_100012700(v11, a5);
+  browserCopy = browser;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100012700(v11, error);
 
   (*(v9 + 8))(v11, v8);
 }
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -87,10 +87,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_100012A5C(v8, a5);
+  selfCopy = self;
+  sub_100012A5C(controllerCopy, coordinator);
 
   swift_unknownObjectRelease();
 }

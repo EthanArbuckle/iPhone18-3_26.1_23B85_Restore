@@ -1,12 +1,12 @@
 @interface TitledButtonStackCollectionViewCell
-- (_TtC20ProductPageExtension35TitledButtonStackCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension35TitledButtonStackCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation TitledButtonStackCollectionViewCell
 
-- (_TtC20ProductPageExtension35TitledButtonStackCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension35TitledButtonStackCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = sub_10000A5D4(&qword_10094CF28);
   __chkstk_darwin(v4);
@@ -28,7 +28,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D4B64();
 }
 

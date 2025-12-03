@@ -7,7 +7,7 @@
 - (id)sk_SHA1Hash
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   v5[0] = 0;
   v5[1] = 0;
   LODWORD(v6) = 0;

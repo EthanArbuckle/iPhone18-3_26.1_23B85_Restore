@@ -1,18 +1,18 @@
 @interface VNTracker
-+ (id)supportedComputeDevicesForOptions:(id)a3 error:(id *)a4;
-+ (int64_t)VNTrackerOptionToTrackerType:(id)a3;
-- (BOOL)_updateTrackerWithModifiedBBoxForImageBuffer:(id)a3 error:(id *)a4;
-- (BOOL)_visionBBoxToTrackerBBox:(id)a3 trackedObjects:(void *)a4 imageSize:(CGSize)a5 results:(id)a6 error:(id *)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)reset:(id *)a3;
++ (id)supportedComputeDevicesForOptions:(id)options error:(id *)error;
++ (int64_t)VNTrackerOptionToTrackerType:(id)type;
+- (BOOL)_updateTrackerWithModifiedBBoxForImageBuffer:(id)buffer error:(id *)error;
+- (BOOL)_visionBBoxToTrackerBBox:(id)box trackedObjects:(void *)objects imageSize:(CGSize)size results:(id)results error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)reset:(id *)reset;
 - (CGRect)lastTrackedBBox;
-- (VNTracker)initWithOptions:(id)a3 error:(id *)a4;
+- (VNTracker)initWithOptions:(id)options error:(id *)error;
 - (id).cxx_construct;
-- (id)_postProcessTrackingResults:(id)a3 trackerResults:(id)a4 error:(id *)a5;
-- (id)setTrackedObjects:(id)a3 inFrame:(id)a4 error:(id *)a5;
-- (id)trackInFrame:(id)a3 error:(id *)a4;
+- (id)_postProcessTrackingResults:(id)results trackerResults:(id)trackerResults error:(id *)error;
+- (id)setTrackedObjects:(id)objects inFrame:(id)frame error:(id *)error;
+- (id)trackInFrame:(id)frame error:(id *)error;
 - (unint64_t)hash;
-- (void)_createTrackerWithLevel:(id)a3 options:(ObjectTrackerOptions *)a4 error:(id *)a5;
+- (void)_createTrackerWithLevel:(id)level options:(ObjectTrackerOptions *)options error:(id *)error;
 @end
 
 @implementation VNTracker
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (BOOL)_updateTrackerWithModifiedBBoxForImageBuffer:(id)a3 error:(id *)a4
+- (BOOL)_updateTrackerWithModifiedBBoxForImageBuffer:(id)buffer error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bufferCopy = buffer;
   v7 = [(VNTracker *)self key];
   v22 = v7;
   [(VNTracker *)self lastTrackedBBox];
@@ -52,17 +52,17 @@
   v10 = [v9 count];
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
   std::vector<vision::mod::DetectedObject>::vector[abi:ne200100](v20, v10);
-  v12 = [v6 width];
-  v13 = [v6 height];
-  if ([(VNTracker *)self _visionBBoxToTrackerBBox:v9 trackedObjects:v20 imageSize:v11 results:a4 error:v12, v13])
+  width = [bufferCopy width];
+  height = [bufferCopy height];
+  if ([(VNTracker *)self _visionBBoxToTrackerBBox:v9 trackedObjects:v20 imageSize:v11 results:error error:width, height])
   {
-    v14 = [v6 bufferWithWidth:v12 height:v13 format:875704422 options:0 error:a4];
+    v14 = [bufferCopy bufferWithWidth:width height:height format:875704422 options:0 error:error];
     if (!v14)
     {
-      if (a4)
+      if (error)
       {
         v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No frame to track objects was passed to the tracker"];
-        *a4 = [VNError errorWithCode:14 message:v18];
+        *error = [VNError errorWithCode:14 message:v18];
       }
 
       goto LABEL_10;
@@ -71,10 +71,10 @@
     v15 = (*(*self->mTrackerImpl.__ptr_ + 40))(self->mTrackerImpl.__ptr_, v14, v20);
     CVPixelBufferRelease(v14);
     v16 = v15 == 128;
-    if (a4 && v15 != 128)
+    if (error && v15 != 128)
     {
       v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Tracking objects failed with error: %llu", v15];
-      *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v17];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v17];
 
 LABEL_10:
       v16 = 0;
@@ -83,13 +83,13 @@ LABEL_10:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
 
     [VNError errorForInternalErrorWithLocalizedDescription:@"Conversion to Tracker coordinate system failed"];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   v21 = v20;
@@ -98,21 +98,21 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)_visionBBoxToTrackerBBox:(id)a3 trackedObjects:(void *)a4 imageSize:(CGSize)a5 results:(id)a6 error:(id *)a7
+- (BOOL)_visionBBoxToTrackerBBox:(id)box trackedObjects:(void *)objects imageSize:(CGSize)size results:(id)results error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v64 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v44 = a6;
-  v45 = [(VNTracker *)self originatingRequestSpecifier];
-  v9 = [objc_opt_class() trackerObservationClass];
+  boxCopy = box;
+  resultsCopy = results;
+  originatingRequestSpecifier = [(VNTracker *)self originatingRequestSpecifier];
+  trackerObservationClass = [objc_opt_class() trackerObservationClass];
   v46 = [(VNTracker *)self key];
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = [v49 allKeys];
+  obj = [boxCopy allKeys];
   v10 = [obj countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (v10)
   {
@@ -137,24 +137,24 @@ LABEL_10:
         v18 = *(v14 + 16);
         rect.origin = *v14;
         rect.size = v18;
-        v19 = [v49 objectForKeyedSubscript:v17];
+        v19 = [boxCopy objectForKeyedSubscript:v17];
         v20 = CGRectMakeWithDictionaryRepresentation(v19, &rect);
 
         if (!v20)
         {
-          if (a7)
+          if (error)
           {
-            *a7 = [VNError errorForInternalErrorWithLocalizedDescription:@"failed to initialize object IDs to rectangles dictionary"];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:@"failed to initialize object IDs to rectangles dictionary"];
           }
 
           v38 = 0;
           goto LABEL_17;
         }
 
-        v21 = [v9 alloc];
-        v22 = [v21 initWithOriginatingRequestSpecifier:v45 boundingBox:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+        v21 = [trackerObservationClass alloc];
+        v22 = [v21 initWithOriginatingRequestSpecifier:originatingRequestSpecifier boundingBox:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
         [v22 setUUID:v46];
-        [v44 setObject:v22 atIndexedSubscript:v11];
+        [resultsCopy setObject:v22 atIndexedSubscript:v11];
         v23 = vmulq_f64(v48, rect.size);
         v24 = vmulq_f64(v48, rect.origin);
         rect.origin = v24;
@@ -179,8 +179,8 @@ LABEL_10:
         v61 = 0;
         v57 = 0;
         v58 = 0;
-        v35 = *a4;
-        v36 = *a4 + v16;
+        v35 = *objects;
+        v36 = *objects + v16;
         if (v36 != &__str)
         {
           *(v36 + 64) = v62;
@@ -221,12 +221,12 @@ LABEL_17:
   return v38;
 }
 
-- (id)_postProcessTrackingResults:(id)a3 trackerResults:(id)a4 error:(id *)a5
+- (id)_postProcessTrackingResults:(id)results trackerResults:(id)trackerResults error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && [v9 count] == 1)
+  resultsCopy = results;
+  trackerResultsCopy = trackerResults;
+  v10 = trackerResultsCopy;
+  if (trackerResultsCopy && [trackerResultsCopy count] == 1)
   {
     v11 = [v10 objectAtIndexedSubscript:0];
     [v11 boundingBox];
@@ -235,10 +235,10 @@ LABEL_17:
     v12 = v10;
   }
 
-  else if (a5)
+  else if (error)
   {
     [VNError errorForInvalidArgumentWithLocalizedDescription:@"no tracker results"];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -249,7 +249,7 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)reset:(id *)a3
+- (BOOL)reset:(id *)reset
 {
   ptr = self->mTrackerImpl.__ptr_;
   if (ptr)
@@ -262,36 +262,36 @@ LABEL_17:
       return 1;
     }
 
-    if (a3)
+    if (reset)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Resetting tracker failed with error: %llu", v6];
-      *a3 = [VNError errorForInternalErrorWithLocalizedDescription:v10];
+      *reset = [VNError errorForInternalErrorWithLocalizedDescription:v10];
     }
   }
 
-  else if (a3)
+  else if (reset)
   {
     v8 = [VNError errorForInternalErrorWithLocalizedDescription:@"Tracker is not initialized"];
     v9 = v8;
     result = 0;
-    *a3 = v8;
+    *reset = v8;
     return result;
   }
 
   return 0;
 }
 
-- (id)trackInFrame:(id)a3 error:(id *)a4
+- (id)trackInFrame:(id)frame error:(id *)error
 {
-  v6 = a3;
+  frameCopy = frame;
   if (!self->mTrackerImpl.__ptr_ || ![(VNTracker *)self isTracking])
   {
-    if (a4)
+    if (error)
     {
       v37 = [VNError errorForInternalErrorWithLocalizedDescription:@"Tracker is not initialized"];
 LABEL_14:
       v36 = 0;
-      *a4 = v37;
+      *error = v37;
       goto LABEL_22;
     }
 
@@ -300,13 +300,13 @@ LABEL_17:
     goto LABEL_22;
   }
 
-  v7 = [v6 width];
-  v8 = [v6 height];
-  v9 = [v6 bufferWithWidth:v7 height:v8 format:-[VNTracker trackedFrameCVPixelBufferFormat](self options:"trackedFrameCVPixelBufferFormat") error:{0, a4}];
+  width = [frameCopy width];
+  height = [frameCopy height];
+  v9 = [frameCopy bufferWithWidth:width height:height format:-[VNTracker trackedFrameCVPixelBufferFormat](self options:"trackedFrameCVPixelBufferFormat") error:{0, error}];
   v10 = v9;
   if (!v9)
   {
-    if (a4)
+    if (error)
     {
       v37 = [VNError errorForInvalidArgumentWithLocalizedDescription:@"No frame to track objects was passed to the tracker"];
       goto LABEL_14;
@@ -331,13 +331,13 @@ LABEL_17:
   aBlock[6] = v10;
   aBlock[4] = self;
   v11 = _Block_copy(aBlock);
-  v12 = VNExecuteBlock(v11, a4);
+  v12 = VNExecuteBlock(v11, error);
   CVPixelBufferUnlockBaseAddress(v10, 1uLL);
   CVPixelBufferRelease(v10);
   if (v12)
   {
-    v39 = v6;
-    v13 = [(VNTracker *)self originatingRequestSpecifier];
+    v39 = frameCopy;
+    originatingRequestSpecifier = [(VNTracker *)self originatingRequestSpecifier];
     v14 = objc_alloc(MEMORY[0x1E695DF70]);
     v15 = [v14 initWithCapacity:0xCCCCCCCCCCCCCCCDLL * ((v42[7] - v42[6]) >> 4)];
     v17 = v42[6];
@@ -347,7 +347,7 @@ LABEL_17:
       v18 = 0;
       do
       {
-        v19 = [[VNDetectedObjectObservation alloc] initWithOriginatingRequestSpecifier:v13 boundingBox:*(v17 + 24) / v7, *(v17 + 28) / v8, *(v17 + 36) / v7, *(v17 + 32) / v8];
+        v19 = [[VNDetectedObjectObservation alloc] initWithOriginatingRequestSpecifier:originatingRequestSpecifier boundingBox:*(v17 + 24) / width, *(v17 + 28) / height, *(v17 + 36) / width, *(v17 + 32) / height];
         v20 = [(VNTracker *)self key];
         [(VNObservation *)v19 setUUID:v20];
 
@@ -362,15 +362,15 @@ LABEL_17:
     }
 
     v22 = [v15 objectAtIndexedSubscript:0];
-    v6 = v39;
+    frameCopy = v39;
     [v22 boundingBox];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(VNTracker *)self _postProcessTrackingResults:v39 trackerResults:v15 error:a4];
-    if (v31 && (([(VNTracker *)self setTrackedFrameNumber:[(VNTracker *)self trackedFrameNumber]+ 1], [(VNTracker *)self lastTrackedBBox], v51.origin.x = v32, v51.origin.y = v33, v51.size.width = v34, v51.size.height = v35, v50.origin.x = v24, v50.origin.y = v26, v50.size.width = v28, v50.size.height = v30, CGRectEqualToRect(v50, v51)) || [(VNTracker *)self _updateTrackerWithModifiedBBoxForImageBuffer:v39 error:a4]))
+    v31 = [(VNTracker *)self _postProcessTrackingResults:v39 trackerResults:v15 error:error];
+    if (v31 && (([(VNTracker *)self setTrackedFrameNumber:[(VNTracker *)self trackedFrameNumber]+ 1], [(VNTracker *)self lastTrackedBBox], v51.origin.x = v32, v51.origin.y = v33, v51.size.width = v34, v51.size.height = v35, v50.origin.x = v24, v50.origin.y = v26, v50.size.width = v28, v50.size.height = v30, CGRectEqualToRect(v50, v51)) || [(VNTracker *)self _updateTrackerWithModifiedBBoxForImageBuffer:v39 error:error]))
     {
       v36 = v31;
     }
@@ -407,10 +407,10 @@ BOOL __32__VNTracker_trackInFrame_error___block_invoke(void *a1, void *a2)
   return v4 == 128;
 }
 
-- (id)setTrackedObjects:(id)a3 inFrame:(id)a4 error:(id *)a5
+- (id)setTrackedObjects:(id)objects inFrame:(id)frame error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VNTracker *)self _parseInputObservations:a3 imageBuffer:v8 error:a5];
+  frameCopy = frame;
+  v9 = [(VNTracker *)self _parseInputObservations:objects imageBuffer:frameCopy error:error];
   if (!v9)
   {
 LABEL_9:
@@ -420,7 +420,7 @@ LABEL_9:
 
   if (!self->mTrackerImpl.__ptr_)
   {
-    if (a5)
+    if (error)
     {
       v10 = [VNError errorForInternalErrorWithLocalizedDescription:@"Tracker is not initialized"];
       goto LABEL_8;
@@ -431,12 +431,12 @@ LABEL_9:
 
   if ([(VNTracker *)self isTracking])
   {
-    if (a5)
+    if (error)
     {
       v10 = [VNError errorForInternalErrorWithLocalizedDescription:@"Tracker is busy with previous tracking requests. It needs to be reset to restart tracking sequence"];
 LABEL_8:
       v11 = 0;
-      *a5 = v10;
+      *error = v10;
       goto LABEL_18;
     }
 
@@ -446,9 +446,9 @@ LABEL_8:
   v12 = [v9 count];
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v12];
   std::vector<vision::mod::DetectedObject>::vector[abi:ne200100](&v24, v12);
-  v14 = [v8 width];
-  v15 = [v8 height];
-  if (-[VNTracker _visionBBoxToTrackerBBox:trackedObjects:imageSize:results:error:](self, "_visionBBoxToTrackerBBox:trackedObjects:imageSize:results:error:", v9, &v24, v13, a5, v14, v15) && (v16 = [v8 bufferWithWidth:v14 height:v15 format:-[VNTracker trackedFrameCVPixelBufferFormat](self options:"trackedFrameCVPixelBufferFormat") error:{0, a5}], (v17 = v16) != 0))
+  width = [frameCopy width];
+  height = [frameCopy height];
+  if (-[VNTracker _visionBBoxToTrackerBBox:trackedObjects:imageSize:results:error:](self, "_visionBBoxToTrackerBBox:trackedObjects:imageSize:results:error:", v9, &v24, v13, error, width, height) && (v16 = [frameCopy bufferWithWidth:width height:height format:-[VNTracker trackedFrameCVPixelBufferFormat](self options:"trackedFrameCVPixelBufferFormat") error:{0, error}], (v17 = v16) != 0))
   {
     CVPixelBufferLockBaseAddress(v16, 1uLL);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -460,7 +460,7 @@ LABEL_8:
     memset(v23, 0, sizeof(v23));
     std::vector<vision::mod::DetectedObject>::__init_with_size[abi:ne200100]<vision::mod::DetectedObject*,vision::mod::DetectedObject*>(v23, v24, v25, 0xCCCCCCCCCCCCCCCDLL * ((v25 - v24) >> 4));
     v18 = _Block_copy(aBlock);
-    v19 = VNExecuteBlock(v18, a5);
+    v19 = VNExecuteBlock(v18, error);
     CVPixelBufferUnlockBaseAddress(v17, 1uLL);
     CVPixelBufferRelease(v17);
     if (v19)
@@ -508,15 +508,15 @@ BOOL __45__VNTracker_setTrackedObjects_inFrame_error___block_invoke(uint64_t a1,
   return v4 == 128;
 }
 
-- (void)_createTrackerWithLevel:(id)a3 options:(ObjectTrackerOptions *)a4 error:(id *)a5
+- (void)_createTrackerWithLevel:(id)level options:(ObjectTrackerOptions *)options error:(id *)error
 {
-  v7 = [VNTracker VNTrackerOptionToTrackerType:a3];
+  v7 = [VNTracker VNTrackerOptionToTrackerType:level];
   if (v7 == -1)
   {
-    if (a5)
+    if (error)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown Tracker type: %ld", -1];
-      *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v8];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v8];
     }
   }
 
@@ -536,9 +536,9 @@ BOOL __45__VNTracker_setTrackedObjects_inFrame_error___block_invoke(uint64_t a1,
         operator new();
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create a Tracker object"];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create a Tracker object"];
     }
   }
 
@@ -552,10 +552,10 @@ BOOL __45__VNTracker_setTrackedObjects_inFrame_error___block_invoke(uint64_t a1,
   return [(NSUUID *)self->_key hash]^ __ROR8__([(VNTracker *)&v3 hash], 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -565,7 +565,7 @@ BOOL __45__VNTracker_setTrackedObjects_inFrame_error___block_invoke(uint64_t a1,
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSUUID *)self->_key isEqual:v4->_key];
+      v5 = [(NSUUID *)self->_key isEqual:equalCopy->_key];
     }
 
     else
@@ -577,18 +577,18 @@ BOOL __45__VNTracker_setTrackedObjects_inFrame_error___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (VNTracker)initWithOptions:(id)a3 error:(id *)a4
+- (VNTracker)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = VNTracker;
   v7 = [(VNTracker *)&v19 init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_10;
     }
 
@@ -597,7 +597,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 error:a4];
+  v8 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   originatingRequestSpecifier = v7->_originatingRequestSpecifier;
   v7->_originatingRequestSpecifier = v8;
 
@@ -610,7 +610,7 @@ LABEL_9:
   v10 = *(MEMORY[0x1E695F058] + 16);
   v7->_lastTrackedBBox.origin = *MEMORY[0x1E695F058];
   v7->_lastTrackedBBox.size = v10;
-  v11 = [v6 objectForKeyedSubscript:@"VNTrackingOption_TrackerKey"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"VNTrackingOption_TrackerKey"];
   v12 = [v11 copy];
   key = v7->_key;
   v7->_key = v12;
@@ -620,7 +620,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrackingOption_TrackingLevel" inOptions:v6 error:a4];
+  v14 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrackingOption_TrackingLevel" inOptions:optionsCopy error:error];
   level = v7->_level;
   v7->_level = v14;
 
@@ -630,7 +630,7 @@ LABEL_9:
   }
 
   v18 = 0;
-  if (![VNValidationUtilities getNSUIntegerValue:&v18 forKey:@"VNTrackingOption_CVPixelBufferFormat" inOptions:v6 error:a4])
+  if (![VNValidationUtilities getNSUIntegerValue:&v18 forKey:@"VNTrackingOption_CVPixelBufferFormat" inOptions:optionsCopy error:error])
   {
     goto LABEL_9;
   }
@@ -642,37 +642,37 @@ LABEL_10:
   return v16;
 }
 
-+ (id)supportedComputeDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeDevicesForOptions:(id)options error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-+ (int64_t)VNTrackerOptionToTrackerType:(id)a3
++ (int64_t)VNTrackerOptionToTrackerType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (+[VNTracker VNTrackerOptionToTrackerType:]::onceToken != -1)
   {
     dispatch_once(&+[VNTracker VNTrackerOptionToTrackerType:]::onceToken, &__block_literal_global_36004);
   }
 
-  v4 = [+[VNTracker VNTrackerOptionToTrackerType:]::s_visTrackerOptionToTrackerType objectForKeyedSubscript:v3];
+  v4 = [+[VNTracker VNTrackerOptionToTrackerType:]::s_visTrackerOptionToTrackerType objectForKeyedSubscript:typeCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __42__VNTracker_VNTrackerOptionToTrackerType___block_invoke()

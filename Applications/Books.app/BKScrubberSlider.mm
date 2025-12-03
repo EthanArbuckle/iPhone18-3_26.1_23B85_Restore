@@ -6,20 +6,20 @@
 - (CGRect)_createSessionIndicatorRect;
 - (CGRect)accessibilityFrame;
 - (CGRect)bkaxDefaultAccessibilityFrame;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (CGRect)visualTrackRectForBounds:(CGRect)a3;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (CGRect)visualTrackRectForBounds:(CGRect)bounds;
 - (UIEdgeInsets)alignmentRectInsets;
 - (id)_sessionIndicatorAccessibleDescription;
 - (id)accessibilityCustomActions;
 - (id)createThumbView;
-- (void)_didTapSessionIndicator:(id)a3;
+- (void)_didTapSessionIndicator:(id)indicator;
 - (void)_updateSessionIndicatorColor;
 - (void)layoutSubviews;
-- (void)setBufferIndicatorColor:(id)a3;
+- (void)setBufferIndicatorColor:(id)color;
 - (void)setBufferedValue:(double)bufferedValue;
-- (void)setSessionIndicatorColor:(id)a3;
-- (void)setSessionIndicatorValue:(id)a3;
-- (void)setTouchInsets:(UIEdgeInsets)a3;
+- (void)setSessionIndicatorColor:(id)color;
+- (void)setSessionIndicatorValue:(id)value;
+- (void)setTouchInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation BKScrubberSlider
@@ -42,11 +42,11 @@
 {
   v6.receiver = self;
   v6.super_class = BKScrubberSlider;
-  v3 = [(BKScrubberSlider *)&v6 createThumbView];
-  v4 = [(BKScrubberSlider *)self containerView];
-  [v4 setThumbView:v3];
+  createThumbView = [(BKScrubberSlider *)&v6 createThumbView];
+  containerView = [(BKScrubberSlider *)self containerView];
+  [containerView setThumbView:createThumbView];
 
-  return v3;
+  return createThumbView;
 }
 
 - (void)layoutSubviews
@@ -54,59 +54,59 @@
   v16.receiver = self;
   v16.super_class = BKScrubberSlider;
   [(BKScrubberSlider *)&v16 layoutSubviews];
-  v3 = [(BKScrubberSlider *)self containerView];
-  v4 = [v3 bufferedView];
-  v5 = [v3 sessionIndicatorView];
-  if (v4)
+  containerView = [(BKScrubberSlider *)self containerView];
+  bufferedView = [containerView bufferedView];
+  sessionIndicatorView = [containerView sessionIndicatorView];
+  if (bufferedView)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
     [(BKScrubberSlider *)self _createBufferedRect];
-    [v4 setFrame:?];
+    [bufferedView setFrame:?];
     +[CATransaction commit];
   }
 
-  if (v5)
+  if (sessionIndicatorView)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
     [(BKScrubberSlider *)self _createSessionIndicatorRect];
-    [v5 setFrame:?];
-    v6 = [v3 subviews];
-    v7 = [v6 lastObject];
-    v8 = [v7 isEqual:v5];
+    [sessionIndicatorView setFrame:?];
+    subviews = [containerView subviews];
+    lastObject = [subviews lastObject];
+    v8 = [lastObject isEqual:sessionIndicatorView];
 
     if ((v8 & 1) == 0)
     {
-      [v3 bringSubviewToFront:v5];
+      [containerView bringSubviewToFront:sessionIndicatorView];
     }
 
     +[CATransaction commit];
   }
 
-  v9 = [(BKScrubberSlider *)self subviews];
-  v10 = [v9 count];
+  subviews2 = [(BKScrubberSlider *)self subviews];
+  v10 = [subviews2 count];
 
   v11 = v10 - 2;
-  v12 = [(BKScrubberSlider *)self subviews];
-  v13 = [v12 objectAtIndexedSubscript:v11];
-  v14 = [v13 isEqual:v3];
+  subviews3 = [(BKScrubberSlider *)self subviews];
+  v13 = [subviews3 objectAtIndexedSubscript:v11];
+  v14 = [v13 isEqual:containerView];
 
   if ((v14 & 1) == 0)
   {
-    [(BKScrubberSlider *)self bringSubviewToFront:v3];
-    v15 = [v3 thumbView];
-    [(BKScrubberSlider *)self bringSubviewToFront:v15];
+    [(BKScrubberSlider *)self bringSubviewToFront:containerView];
+    thumbView = [containerView thumbView];
+    [(BKScrubberSlider *)self bringSubviewToFront:thumbView];
   }
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  x = a3.origin.x;
+  width = bounds.size.width;
+  x = bounds.origin.x;
   v17.receiver = self;
   v17.super_class = BKScrubberSlider;
-  [(BKScrubberSlider *)&v17 trackRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BKScrubberSlider *)&v17 trackRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v7 = v6;
   v9 = v8;
   [(BKScrubberSlider *)self trackRectHorizontalInset];
@@ -136,28 +136,28 @@
   return result;
 }
 
-- (void)setTouchInsets:(UIEdgeInsets)a3
+- (void)setTouchInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
+  v3.f64[0] = insets.top;
   v4 = &self->IMCustomSlider_opaque[OBJC_IVAR___IMCustomSlider__touchInsets];
-  v3.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v3.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *v4), vceqq_f64(v5, v4[1])))) & 1) == 0)
   {
-    *v4->f64 = a3;
-    right = a3.right;
-    left = a3.left;
-    bottom = a3.bottom;
-    top = a3.top;
-    v9 = [(BKScrubberSlider *)self containerView];
-    [v9 setThumbTouchInsets:{top, left, bottom, right}];
+    *v4->f64 = insets;
+    right = insets.right;
+    left = insets.left;
+    bottom = insets.bottom;
+    top = insets.top;
+    containerView = [(BKScrubberSlider *)self containerView];
+    [containerView setThumbTouchInsets:{top, left, bottom, right}];
   }
 }
 
-- (CGRect)visualTrackRectForBounds:(CGRect)a3
+- (CGRect)visualTrackRectForBounds:(CGRect)bounds
 {
-  [(BKScrubberSlider *)self trackRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BKScrubberSlider *)self trackRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
   return CGRectInset(*&v3, 1.0, 0.0);
 }
@@ -176,26 +176,26 @@
     v7 = +[UIColor clearColor];
     [(BKScrubberSliderContainerView *)self->_containerView setBackgroundColor:v7];
 
-    v8 = [(BKScrubberSliderContainerView *)self->_containerView layer];
-    [v8 setAllowsGroupBlending:0];
+    layer = [(BKScrubberSliderContainerView *)self->_containerView layer];
+    [layer setAllowsGroupBlending:0];
 
     [(BKScrubberSliderContainerView *)self->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(BKScrubberSlider *)self addSubview:self->_containerView];
-    v22 = [(BKScrubberSliderContainerView *)self->_containerView topAnchor];
-    v21 = [(BKScrubberSlider *)self topAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    topAnchor = [(BKScrubberSliderContainerView *)self->_containerView topAnchor];
+    topAnchor2 = [(BKScrubberSlider *)self topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v23[0] = v20;
-    v19 = [(BKScrubberSliderContainerView *)self->_containerView leadingAnchor];
-    v18 = [(BKScrubberSlider *)self leadingAnchor];
-    v9 = [v19 constraintEqualToAnchor:v18];
+    leadingAnchor = [(BKScrubberSliderContainerView *)self->_containerView leadingAnchor];
+    leadingAnchor2 = [(BKScrubberSlider *)self leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[1] = v9;
-    v10 = [(BKScrubberSliderContainerView *)self->_containerView trailingAnchor];
-    v11 = [(BKScrubberSlider *)self trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [(BKScrubberSliderContainerView *)self->_containerView trailingAnchor];
+    trailingAnchor2 = [(BKScrubberSlider *)self trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[2] = v12;
-    v13 = [(BKScrubberSliderContainerView *)self->_containerView bottomAnchor];
-    v14 = [(BKScrubberSlider *)self bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(BKScrubberSliderContainerView *)self->_containerView bottomAnchor];
+    bottomAnchor2 = [(BKScrubberSlider *)self bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v23[3] = v15;
     v16 = [NSArray arrayWithObjects:v23 count:4];
     [NSLayoutConstraint activateConstraints:v16];
@@ -216,38 +216,38 @@
   self->_bufferedValue = bufferedValue;
   if (bufferedValue > 0.0)
   {
-    v4 = [(BKScrubberSlider *)self containerView];
-    v5 = [v4 bufferedView];
+    containerView = [(BKScrubberSlider *)self containerView];
+    bufferedView = [containerView bufferedView];
 
-    if (!v5)
+    if (!bufferedView)
     {
       [(BKScrubberSlider *)self bounds];
       [(BKScrubberSlider *)self visualTrackRectForBounds:?];
       v10 = v9;
-      v8 = objc_opt_new();
-      v11 = [(BKScrubberSlider *)self bufferIndicatorColor];
-      if (v11)
+      containerView5 = objc_opt_new();
+      bufferIndicatorColor = [(BKScrubberSlider *)self bufferIndicatorColor];
+      if (bufferIndicatorColor)
       {
-        [v8 setBackgroundColor:v11];
+        [containerView5 setBackgroundColor:bufferIndicatorColor];
       }
 
       else
       {
         v12 = +[UIColor systemGray2Color];
-        [v8 setBackgroundColor:v12];
+        [containerView5 setBackgroundColor:v12];
       }
 
-      v13 = [v8 layer];
-      [v13 setCornerRadius:v10 * 0.5];
+      layer = [containerView5 layer];
+      [layer setCornerRadius:v10 * 0.5];
 
-      v14 = [v8 layer];
-      [v14 setMaskedCorners:10];
+      layer2 = [containerView5 layer];
+      [layer2 setMaskedCorners:10];
 
-      v15 = [(BKScrubberSlider *)self containerView];
-      [v15 addSubview:v8];
+      containerView2 = [(BKScrubberSlider *)self containerView];
+      [containerView2 addSubview:containerView5];
 
-      v16 = [(BKScrubberSlider *)self containerView];
-      [v16 setBufferedView:v8];
+      containerView3 = [(BKScrubberSlider *)self containerView];
+      [containerView3 setBufferedView:containerView5];
 
       goto LABEL_12;
     }
@@ -257,82 +257,82 @@
 
   if (bufferedValue <= 0.0)
   {
-    v6 = [(BKScrubberSlider *)self containerView];
-    v7 = [v6 bufferedView];
-    [v7 removeFromSuperview];
+    containerView4 = [(BKScrubberSlider *)self containerView];
+    bufferedView2 = [containerView4 bufferedView];
+    [bufferedView2 removeFromSuperview];
 
-    v8 = [(BKScrubberSlider *)self containerView];
-    [v8 setBufferedView:0];
+    containerView5 = [(BKScrubberSlider *)self containerView];
+    [containerView5 setBufferedView:0];
 LABEL_12:
   }
 
   [(BKScrubberSlider *)self setNeedsLayout];
 }
 
-- (void)setBufferIndicatorColor:(id)a3
+- (void)setBufferIndicatorColor:(id)color
 {
-  objc_storeStrong(&self->_bufferIndicatorColor, a3);
-  v5 = a3;
-  v7 = [(BKScrubberSlider *)self containerView];
-  v6 = [v7 bufferedView];
-  [v6 setBackgroundColor:v5];
+  objc_storeStrong(&self->_bufferIndicatorColor, color);
+  colorCopy = color;
+  containerView = [(BKScrubberSlider *)self containerView];
+  bufferedView = [containerView bufferedView];
+  [bufferedView setBackgroundColor:colorCopy];
 }
 
-- (void)setSessionIndicatorColor:(id)a3
+- (void)setSessionIndicatorColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_sessionIndicatorColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_sessionIndicatorColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_sessionIndicatorColor, a3);
+      objc_storeStrong(&self->_sessionIndicatorColor, color);
       [(BKScrubberSlider *)self _updateSessionIndicatorColor];
       v6 = v8;
     }
   }
 }
 
-- (void)setSessionIndicatorValue:(id)a3
+- (void)setSessionIndicatorValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   sessionIndicatorValue = self->_sessionIndicatorValue;
-  v19 = v5;
-  if (v5)
+  v19 = valueCopy;
+  if (valueCopy)
   {
-    if ([(NSNumber *)sessionIndicatorValue isEqualToNumber:v5])
+    if ([(NSNumber *)sessionIndicatorValue isEqualToNumber:valueCopy])
     {
       goto LABEL_13;
     }
 
-    objc_storeStrong(&self->_sessionIndicatorValue, a3);
+    objc_storeStrong(&self->_sessionIndicatorValue, value);
     if (!self->_sessionIndicatorValue)
     {
       goto LABEL_12;
     }
 
-    v7 = [(BKScrubberSlider *)self containerView];
-    v8 = [v7 sessionIndicatorView];
+    containerView = [(BKScrubberSlider *)self containerView];
+    sessionIndicatorView = [containerView sessionIndicatorView];
 
-    if (v8)
+    if (sessionIndicatorView)
     {
       goto LABEL_12;
     }
 
-    v9 = objc_opt_new();
+    containerView5 = objc_opt_new();
     [(BKScrubberSlider *)self _createSessionIndicatorRect];
-    [v9 setFrame:?];
+    [containerView5 setFrame:?];
     v10 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_didTapSessionIndicator:"];
-    [v9 addGestureRecognizer:v10];
+    [containerView5 addGestureRecognizer:v10];
 
-    v11 = [(BKScrubberSlider *)self containerView];
-    [v11 addSubview:v9];
+    containerView2 = [(BKScrubberSlider *)self containerView];
+    [containerView2 addSubview:containerView5];
 
-    v12 = [(BKScrubberSlider *)self containerView];
-    [v12 setSessionIndicatorView:v9];
+    containerView3 = [(BKScrubberSlider *)self containerView];
+    [containerView3 setSessionIndicatorView:containerView5];
 
     if (_UISolariumEnabled())
     {
@@ -347,8 +347,8 @@ LABEL_12:
     v14 = [UIBezierPath bezierPathWithOvalInRect:v13 * -0.5 + 11.0, v13 * -0.5 + 11.0 + -0.5, v13, v13];
     v15 = +[CAShapeLayer layer];
     [v15 setPath:{objc_msgSend(v14, "CGPath")}];
-    v16 = [v9 layer];
-    [v16 addSublayer:v15];
+    layer = [containerView5 layer];
+    [layer addSublayer:v15];
 
     [(BKScrubberSlider *)self _updateSessionIndicatorColor];
   }
@@ -362,12 +362,12 @@ LABEL_12:
 
     self->_sessionIndicatorValue = 0;
 
-    v17 = [(BKScrubberSlider *)self containerView];
-    v18 = [v17 sessionIndicatorView];
-    [v18 removeFromSuperview];
+    containerView4 = [(BKScrubberSlider *)self containerView];
+    sessionIndicatorView2 = [containerView4 sessionIndicatorView];
+    [sessionIndicatorView2 removeFromSuperview];
 
-    v9 = [(BKScrubberSlider *)self containerView];
-    [v9 setSessionIndicatorView:0];
+    containerView5 = [(BKScrubberSlider *)self containerView];
+    [containerView5 setSessionIndicatorView:0];
   }
 
 LABEL_12:
@@ -378,8 +378,8 @@ LABEL_13:
 
 - (CGRect)_createSessionIndicatorRect
 {
-  v3 = [(BKScrubberSlider *)self containerView];
-  [v3 bounds];
+  containerView = [(BKScrubberSlider *)self containerView];
+  [containerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -422,8 +422,8 @@ LABEL_13:
 
   else
   {
-    v6 = [(BKScrubberSlider *)self containerView];
-    [v6 bounds];
+    containerView = [(BKScrubberSlider *)self containerView];
+    [containerView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -468,19 +468,19 @@ LABEL_13:
 
 - (BOOL)_hasSessionIndicatorView
 {
-  v2 = [(BKScrubberSlider *)self containerView];
-  v3 = [v2 sessionIndicatorView];
-  v4 = v3 != 0;
+  containerView = [(BKScrubberSlider *)self containerView];
+  sessionIndicatorView = [containerView sessionIndicatorView];
+  v4 = sessionIndicatorView != 0;
 
   return v4;
 }
 
 - (id)_sessionIndicatorAccessibleDescription
 {
-  v3 = [(BKScrubberSlider *)self cachedAccessibleDescriptionOfSessionIndicatorPosition];
-  if (!v3 && [(BKScrubberSlider *)self _hasSessionIndicatorView])
+  cachedAccessibleDescriptionOfSessionIndicatorPosition = [(BKScrubberSlider *)self cachedAccessibleDescriptionOfSessionIndicatorPosition];
+  if (!cachedAccessibleDescriptionOfSessionIndicatorPosition && [(BKScrubberSlider *)self _hasSessionIndicatorView])
   {
-    v4 = [(BKScrubberSlider *)self delegate];
+    delegate = [(BKScrubberSlider *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if ((v5 & 1) == 0)
@@ -488,9 +488,9 @@ LABEL_13:
       goto LABEL_6;
     }
 
-    v3 = [(BKScrubberSlider *)self delegate];
-    v6 = [v3 accessibleDescriptionOfSessionIndicatorPosition];
-    [(BKScrubberSlider *)self setCachedAccessibleDescriptionOfSessionIndicatorPosition:v6];
+    cachedAccessibleDescriptionOfSessionIndicatorPosition = [(BKScrubberSlider *)self delegate];
+    accessibleDescriptionOfSessionIndicatorPosition = [cachedAccessibleDescriptionOfSessionIndicatorPosition accessibleDescriptionOfSessionIndicatorPosition];
+    [(BKScrubberSlider *)self setCachedAccessibleDescriptionOfSessionIndicatorPosition:accessibleDescriptionOfSessionIndicatorPosition];
   }
 
 LABEL_6:
@@ -498,10 +498,10 @@ LABEL_6:
   return [(BKScrubberSlider *)self cachedAccessibleDescriptionOfSessionIndicatorPosition];
 }
 
-- (void)_didTapSessionIndicator:(id)a3
+- (void)_didTapSessionIndicator:(id)indicator
 {
-  v4 = [(BKScrubberSlider *)self delegate];
-  [v4 didTapSessionIndicator:self];
+  delegate = [(BKScrubberSlider *)self delegate];
+  [delegate didTapSessionIndicator:self];
 }
 
 - (void)_updateSessionIndicatorColor
@@ -510,13 +510,13 @@ LABEL_6:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(BKScrubberSlider *)self containerView];
-  v4 = [v3 sessionIndicatorView];
-  v5 = [v4 layer];
-  v6 = [v5 sublayers];
+  containerView = [(BKScrubberSlider *)self containerView];
+  sessionIndicatorView = [containerView sessionIndicatorView];
+  layer = [sessionIndicatorView layer];
+  sublayers = [layer sublayers];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  obj = sublayers;
+  v7 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -530,20 +530,20 @@ LABEL_6:
           objc_enumerationMutation(obj);
         }
 
-        v11 = [(BKScrubberSlider *)self sessionIndicatorColor];
-        v12 = [v11 CGColor];
-        v13 = v12;
-        if (!v12)
+        sessionIndicatorColor = [(BKScrubberSlider *)self sessionIndicatorColor];
+        cGColor = [sessionIndicatorColor CGColor];
+        cGColor2 = cGColor;
+        if (!cGColor)
         {
-          v4 = +[UIColor bc_booksOpaqueSecondaryLabelColor];
-          v13 = [v4 CGColor];
+          sessionIndicatorView = +[UIColor bc_booksOpaqueSecondaryLabelColor];
+          cGColor2 = [sessionIndicatorView CGColor];
         }
 
         objc_opt_class();
         v14 = BUDynamicCast();
-        [v14 setFillColor:v13];
+        [v14 setFillColor:cGColor2];
 
-        if (!v12)
+        if (!cGColor)
         {
         }
       }
@@ -560,17 +560,17 @@ LABEL_6:
   v3 = [NSMutableArray alloc];
   v14.receiver = self;
   v14.super_class = BKScrubberSlider;
-  v4 = [(BKScrubberSlider *)&v14 accessibilityCustomActions];
-  v5 = [v3 initWithArray:v4];
+  accessibilityCustomActions = [(BKScrubberSlider *)&v14 accessibilityCustomActions];
+  v5 = [v3 initWithArray:accessibilityCustomActions];
 
   if ([(BKScrubberSlider *)self _hasSessionIndicatorView])
   {
-    v6 = [(BKScrubberSlider *)self _sessionIndicatorAccessibleDescription];
+    _sessionIndicatorAccessibleDescription = [(BKScrubberSlider *)self _sessionIndicatorAccessibleDescription];
     v7 = +[NSBundle mainBundle];
-    if (v6)
+    if (_sessionIndicatorAccessibleDescription)
     {
       v8 = [v7 localizedStringForKey:@"Scrub to start of playback at %@" value:&stru_100A30A68 table:0];
-      v9 = [NSString localizedStringWithFormat:v8, v6];
+      v9 = [NSString localizedStringWithFormat:v8, _sessionIndicatorAccessibleDescription];
     }
 
     else
@@ -606,13 +606,13 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKScrubberSlider *)self delegate];
+  delegate = [(BKScrubberSlider *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(BKScrubberSlider *)self delegate];
-    [v13 alternateAccessibilityFrameFor:self];
+    delegate2 = [(BKScrubberSlider *)self delegate];
+    [delegate2 alternateAccessibilityFrameFor:self];
     v4 = v14;
     v6 = v15;
     v8 = v16;

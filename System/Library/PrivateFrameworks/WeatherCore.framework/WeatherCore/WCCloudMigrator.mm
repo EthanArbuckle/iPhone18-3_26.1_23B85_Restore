@@ -1,9 +1,9 @@
 @interface WCCloudMigrator
 + (BOOL)isRunningInTheWeatherAppProcess;
-- (BOOL)storeRequiresMigration:(id)a3;
+- (BOOL)storeRequiresMigration:(id)migration;
 - (WCCloudMigrator)init;
-- (void)eraseStoreIfNeeded:(id)a3;
-- (void)migrateStore:(id)a3 toStore:(id)a4 completionBlock:(id)a5;
+- (void)eraseStoreIfNeeded:(id)needed;
+- (void)migrateStore:(id)store toStore:(id)toStore completionBlock:(id)block;
 @end
 
 @implementation WCCloudMigrator
@@ -38,37 +38,37 @@
 
 + (BOOL)isRunningInTheWeatherAppProcess
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.weather"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.weather"];
 
   return v4;
 }
 
-- (BOOL)storeRequiresMigration:(id)a3
+- (BOOL)storeRequiresMigration:(id)migration
 {
-  v3 = [a3 objectForKey:@"version"];
-  v4 = [v3 integerValue];
+  v3 = [migration objectForKey:@"version"];
+  integerValue = [v3 integerValue];
 
-  return v4 < 1;
+  return integerValue < 1;
 }
 
-- (void)migrateStore:(id)a3 toStore:(id)a4 completionBlock:(id)a5
+- (void)migrateStore:(id)store toStore:(id)toStore completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  toStoreCopy = toStore;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__WCCloudMigrator_migrateStore_toStore_completionBlock___block_invoke;
   v14[3] = &unk_1E8340AA0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = toStoreCopy;
+  v16 = storeCopy;
+  v17 = blockCopy;
+  v11 = storeCopy;
+  v12 = toStoreCopy;
+  v13 = blockCopy;
   [v12 synchronizeWithCompletionHandler:v14];
 }
 
@@ -162,9 +162,9 @@ void __56__WCCloudMigrator_migrateStore_toStore_completionBlock___block_invoke_2
   }
 }
 
-- (void)eraseStoreIfNeeded:(id)a3
+- (void)eraseStoreIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (!+[WCCloudMigrator isRunningInTheWeatherAppProcess])
   {
     v9 = WCLogForCategory(2uLL);
@@ -180,9 +180,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [v5 allKeys];
-  v7 = [v6 count];
+  dictionaryRepresentation = [neededCopy dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v7 = [allKeys count];
 
   if (!v7)
   {
@@ -197,13 +197,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = [(WCCloudMigrator *)self deviceLookup];
+  deviceLookup = [(WCCloudMigrator *)self deviceLookup];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __38__WCCloudMigrator_eraseStoreIfNeeded___block_invoke;
   v11[3] = &unk_1E8340AF0;
-  v12 = v4;
-  [v8 checkAllDevicesRunningMinimumiOSVersion:14 macOSVersion:0 orInactiveForTimeInterval:10 completionHandler:{16, v11, 15552000.0}];
+  v12 = neededCopy;
+  [deviceLookup checkAllDevicesRunningMinimumiOSVersion:14 macOSVersion:0 orInactiveForTimeInterval:10 completionHandler:{16, v11, 15552000.0}];
 
   v9 = v12;
 LABEL_9:

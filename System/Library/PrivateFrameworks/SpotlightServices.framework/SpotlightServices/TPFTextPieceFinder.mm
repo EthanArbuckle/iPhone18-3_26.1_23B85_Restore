@@ -1,15 +1,15 @@
 @interface TPFTextPieceFinder
-- (TPFTextPieceFinder)initWithFullText:(id)a3 maxLength:(unint64_t)a4 maxNumCandidates:(unint64_t)a5;
-- (id)createPiecesWithTargets:(id)a3;
-- (id)findLocationsOfTarget:(id)a3;
+- (TPFTextPieceFinder)initWithFullText:(id)text maxLength:(unint64_t)length maxNumCandidates:(unint64_t)candidates;
+- (id)createPiecesWithTargets:(id)targets;
+- (id)findLocationsOfTarget:(id)target;
 @end
 
 @implementation TPFTextPieceFinder
 
-- (TPFTextPieceFinder)initWithFullText:(id)a3 maxLength:(unint64_t)a4 maxNumCandidates:(unint64_t)a5
+- (TPFTextPieceFinder)initWithFullText:(id)text maxLength:(unint64_t)length maxNumCandidates:(unint64_t)candidates
 {
-  v8 = a3;
-  if (![v8 length])
+  textCopy = text;
+  if (![textCopy length])
   {
     v15 = SSGeneralLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -20,7 +20,7 @@
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!length)
   {
     v15 = SSGeneralLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@
 
 LABEL_10:
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -39,37 +39,37 @@ LABEL_10:
   v9 = [(TPFTextPieceFinder *)&v17 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [textCopy copy];
     originalFullText = v9->_originalFullText;
     v9->_originalFullText = v10;
 
-    v12 = [v8 lowercaseString];
+    lowercaseString = [textCopy lowercaseString];
     searchableFullText = v9->_searchableFullText;
-    v9->_searchableFullText = v12;
+    v9->_searchableFullText = lowercaseString;
 
-    v9->_maxLength = a4;
-    v9->_maxNumCandidates = a5;
+    v9->_maxLength = length;
+    v9->_maxNumCandidates = candidates;
   }
 
   self = v9;
-  v14 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)findLocationsOfTarget:(id)a3
+- (id)findLocationsOfTarget:(id)target
 {
-  v4 = a3;
-  if ([v4 length] && (-[TPFTextPieceFinder searchableFullText](self, "searchableFullText"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v6))
+  targetCopy = target;
+  if ([targetCopy length] && (-[TPFTextPieceFinder searchableFullText](self, "searchableFullText"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v6))
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [v4 lowercaseString];
-    v9 = [(TPFTextPieceFinder *)self searchableFullText];
-    v10 = [v9 length];
+    array = [MEMORY[0x1E695DF70] array];
+    lowercaseString = [targetCopy lowercaseString];
+    searchableFullText = [(TPFTextPieceFinder *)self searchableFullText];
+    v10 = [searchableFullText length];
 
-    v11 = [(TPFTextPieceFinder *)self searchableFullText];
-    v12 = [v11 length];
+    searchableFullText2 = [(TPFTextPieceFinder *)self searchableFullText];
+    v12 = [searchableFullText2 length];
 
     if (v12)
     {
@@ -77,8 +77,8 @@ LABEL_11:
       v14 = 0;
       do
       {
-        v15 = [(TPFTextPieceFinder *)self searchableFullText];
-        v16 = [v15 rangeOfString:v8 options:0 range:{v14, v10}];
+        searchableFullText3 = [(TPFTextPieceFinder *)self searchableFullText];
+        v16 = [searchableFullText3 rangeOfString:lowercaseString options:0 range:{v14, v10}];
         v18 = v17;
 
         if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -87,14 +87,14 @@ LABEL_11:
         }
 
         v19 = [MEMORY[0x1E696B098] valueWithRange:{v16, v18}];
-        [v7 addObject:v19];
+        [array addObject:v19];
 
         v14 = v16 + v18;
-        v20 = [(TPFTextPieceFinder *)self searchableFullText];
-        v21 = [v20 length];
+        searchableFullText4 = [(TPFTextPieceFinder *)self searchableFullText];
+        v21 = [searchableFullText4 length];
 
-        v22 = [(TPFTextPieceFinder *)self searchableFullText];
-        v23 = [v22 length];
+        searchableFullText5 = [(TPFTextPieceFinder *)self searchableFullText];
+        v23 = [searchableFullText5 length];
 
         if (v14 >= v23)
         {
@@ -107,7 +107,7 @@ LABEL_11:
       while (v13++ < 0x3E7);
     }
 
-    v25 = [v7 copy];
+    v25 = [array copy];
   }
 
   else
@@ -118,16 +118,16 @@ LABEL_11:
   return v25;
 }
 
-- (id)createPiecesWithTargets:(id)a3
+- (id)createPiecesWithTargets:(id)targets
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  targetsCopy = targets;
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = v4;
+  v6 = targetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -143,7 +143,7 @@ LABEL_11:
         }
 
         v11 = [(TPFTextPieceFinder *)self findLocationsOfTarget:*(*(&v30 + 1) + 8 * i)];
-        [v5 addObjectsFromArray:v11];
+        [array addObjectsFromArray:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -152,24 +152,24 @@ LABEL_11:
     while (v8);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v14 = [(TPFTextPieceFinder *)self originalFullText];
-    v15 = [(TPFTextPieceFinder *)self originalFullText];
-    v16 = [v15 length];
+    array2 = [MEMORY[0x1E695DF70] array];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    originalFullText = [(TPFTextPieceFinder *)self originalFullText];
+    originalFullText2 = [(TPFTextPieceFinder *)self originalFullText];
+    v16 = [originalFullText2 length];
     v22 = MEMORY[0x1E69E9820];
     v23 = 3221225472;
     v24 = __46__TPFTextPieceFinder_createPiecesWithTargets___block_invoke;
     v25 = &unk_1E8596678;
-    v26 = v12;
-    v27 = self;
-    v28 = v5;
-    v29 = v13;
-    v17 = v13;
-    v18 = v12;
-    [v14 enumerateSubstringsInRange:0 options:v16 usingBlock:{3, &v22}];
+    v26 = array2;
+    selfCopy = self;
+    v28 = array;
+    v29 = whitespaceAndNewlineCharacterSet;
+    v17 = whitespaceAndNewlineCharacterSet;
+    v18 = array2;
+    [originalFullText enumerateSubstringsInRange:0 options:v16 usingBlock:{3, &v22}];
 
     v19 = [v18 copy];
   }

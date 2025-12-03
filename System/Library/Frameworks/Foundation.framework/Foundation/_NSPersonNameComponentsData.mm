@@ -1,9 +1,9 @@
 @interface _NSPersonNameComponentsData
 - (_NSPersonNameComponentsData)init;
-- (_NSPersonNameComponentsData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSPersonNameComponentsData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSPersonNameComponentsData
@@ -48,22 +48,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(_NSPersonNameComponentsData);
-  v5->_givenName = [(NSString *)self->_givenName copyWithZone:a3];
-  v5->_familyName = [(NSString *)self->_familyName copyWithZone:a3];
-  v5->_middleName = [(NSString *)self->_middleName copyWithZone:a3];
-  v5->_namePrefix = [(NSString *)self->_namePrefix copyWithZone:a3];
-  v5->_nameSuffix = [(NSString *)self->_nameSuffix copyWithZone:a3];
-  v5->_nickname = [(NSString *)self->_nickname copyWithZone:a3];
-  v5->_phoneticRepresentation = [(NSPersonNameComponents *)self->_phoneticRepresentation copyWithZone:a3];
+  v5->_givenName = [(NSString *)self->_givenName copyWithZone:zone];
+  v5->_familyName = [(NSString *)self->_familyName copyWithZone:zone];
+  v5->_middleName = [(NSString *)self->_middleName copyWithZone:zone];
+  v5->_namePrefix = [(NSString *)self->_namePrefix copyWithZone:zone];
+  v5->_nameSuffix = [(NSString *)self->_nameSuffix copyWithZone:zone];
+  v5->_nickname = [(NSString *)self->_nickname copyWithZone:zone];
+  v5->_phoneticRepresentation = [(NSPersonNameComponents *)self->_phoneticRepresentation copyWithZone:zone];
   return v5;
 }
 
-- (_NSPersonNameComponentsData)initWithCoder:(id)a3
+- (_NSPersonNameComponentsData)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersonNameComponents cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -71,61 +71,61 @@
 
   if (self)
   {
-    if ([a3 containsValueForKey:@"NS.givenName"])
+    if ([coder containsValueForKey:@"NS.givenName"])
     {
-      self->_givenName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.givenName", "copy"}];
+      self->_givenName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.givenName", "copy"}];
     }
 
-    if ([a3 containsValueForKey:@"NS.familyName"])
+    if ([coder containsValueForKey:@"NS.familyName"])
     {
-      self->_familyName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.familyName", "copy"}];
+      self->_familyName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.familyName", "copy"}];
     }
 
-    if ([a3 containsValueForKey:@"NS.middleName"])
+    if ([coder containsValueForKey:@"NS.middleName"])
     {
-      self->_middleName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.middleName", "copy"}];
+      self->_middleName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.middleName", "copy"}];
     }
 
-    if ([a3 containsValueForKey:@"NS.namePrefix"])
+    if ([coder containsValueForKey:@"NS.namePrefix"])
     {
-      self->_namePrefix = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.namePrefix", "copy"}];
+      self->_namePrefix = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.namePrefix", "copy"}];
     }
 
-    if ([a3 containsValueForKey:@"NS.nameSuffix"])
+    if ([coder containsValueForKey:@"NS.nameSuffix"])
     {
-      self->_nameSuffix = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nameSuffix", "copy"}];
+      self->_nameSuffix = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nameSuffix", "copy"}];
     }
 
-    if ([a3 containsValueForKey:@"NS.nickname"])
+    if ([coder containsValueForKey:@"NS.nickname"])
     {
-      self->_nickname = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nickname", "copy"}];
+      self->_nickname = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nickname", "copy"}];
     }
 
-    if ([a3 containsValueForKey:@"NS.phoneticRepresentation"])
+    if ([coder containsValueForKey:@"NS.phoneticRepresentation"])
     {
-      self->_phoneticRepresentation = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.phoneticRepresentation", "copy"}];
+      self->_phoneticRepresentation = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.phoneticRepresentation", "copy"}];
     }
   }
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersonNameComponents cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 encodeObject:self->_givenName forKey:@"NS.givenName"];
-  [a3 encodeObject:self->_familyName forKey:@"NS.familyName"];
-  [a3 encodeObject:self->_middleName forKey:@"NS.middleName"];
-  [a3 encodeObject:self->_namePrefix forKey:@"NS.namePrefix"];
-  [a3 encodeObject:self->_nameSuffix forKey:@"NS.nameSuffix"];
-  [a3 encodeObject:self->_nickname forKey:@"NS.nickname"];
+  [coder encodeObject:self->_givenName forKey:@"NS.givenName"];
+  [coder encodeObject:self->_familyName forKey:@"NS.familyName"];
+  [coder encodeObject:self->_middleName forKey:@"NS.middleName"];
+  [coder encodeObject:self->_namePrefix forKey:@"NS.namePrefix"];
+  [coder encodeObject:self->_nameSuffix forKey:@"NS.nameSuffix"];
+  [coder encodeObject:self->_nickname forKey:@"NS.nickname"];
   phoneticRepresentation = self->_phoneticRepresentation;
 
-  [a3 encodeObject:phoneticRepresentation forKey:@"NS.phoneticRepresentation"];
+  [coder encodeObject:phoneticRepresentation forKey:@"NS.phoneticRepresentation"];
 }
 
 @end

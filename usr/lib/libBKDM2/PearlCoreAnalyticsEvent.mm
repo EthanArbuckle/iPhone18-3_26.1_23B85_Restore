@@ -1,7 +1,7 @@
 @interface PearlCoreAnalyticsEvent
-- (BOOL)postEventExtendedBy:(id)a3;
-- (PearlCoreAnalyticsEvent)initWithName:(id)a3;
-- (PearlCoreAnalyticsEvent)initWithName:(id)a3 awdMetric:(id)a4;
+- (BOOL)postEventExtendedBy:(id)by;
+- (PearlCoreAnalyticsEvent)initWithName:(id)name;
+- (PearlCoreAnalyticsEvent)initWithName:(id)name awdMetric:(id)metric;
 - (id)getPrintableArray;
 - (void)reset;
 @end
@@ -44,13 +44,13 @@
   v8 = *MEMORY[0x29EDCA608];
 }
 
-- (PearlCoreAnalyticsEvent)initWithName:(id)a3
+- (PearlCoreAnalyticsEvent)initWithName:(id)name
 {
   v19[7] = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PearlCoreAnalyticsEvent;
-  v5 = [(BiometricKitCoreAnalyticsEvent *)&v18 initWithName:v4];
+  v5 = [(BiometricKitCoreAnalyticsEvent *)&v18 initWithName:nameCopy];
   if (v5)
   {
     v6 = *MEMORY[0x29EDBFDA8];
@@ -68,7 +68,7 @@
     v11 = *(&v5->super.super.isa + v10);
     *(&v5->super.super.isa + v10) = v9;
 
-    v12 = [&unk_2A1E03A20 objectForKey:v4];
+    v12 = [&unk_2A1E03A20 objectForKey:nameCopy];
     awdMetricName = v5->_awdMetricName;
     v5->_awdMetricName = v12;
 
@@ -90,16 +90,16 @@
   return v5;
 }
 
-- (PearlCoreAnalyticsEvent)initWithName:(id)a3 awdMetric:(id)a4
+- (PearlCoreAnalyticsEvent)initWithName:(id)name awdMetric:(id)metric
 {
-  v7 = a4;
-  v8 = [(PearlCoreAnalyticsEvent *)self initWithName:a3];
+  metricCopy = metric;
+  v8 = [(PearlCoreAnalyticsEvent *)self initWithName:name];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (metricCopy)
     {
-      objc_storeStrong(&v8->_awdMetric, a4);
+      objc_storeStrong(&v8->_awdMetric, metric);
     }
 
     else
@@ -112,10 +112,10 @@
   return v9;
 }
 
-- (BOOL)postEventExtendedBy:(id)a3
+- (BOOL)postEventExtendedBy:(id)by
 {
   v19 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  byCopy = by;
   v5 = MEMORY[0x29EDCA988];
   if (__osLog)
   {
@@ -141,7 +141,7 @@
   {
     v14.receiver = self;
     v14.super_class = PearlCoreAnalyticsEvent;
-    if ([(BiometricKitCoreAnalyticsEvent *)&v14 postEventExtendedBy:v4])
+    if ([(BiometricKitCoreAnalyticsEvent *)&v14 postEventExtendedBy:byCopy])
     {
       if (__osLogTrace)
       {
@@ -238,15 +238,15 @@ void __50__PearlCoreAnalyticsEvent_prepareEventDictionary___block_invoke(uint64_
 
 - (id)getPrintableArray
 {
-  v19 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v20 = 0;
   v21 = 0;
   v22 = 0;
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   [(PearlCoreAnalyticsEvent *)self prepareEventDictionary:1];
-  v18 = self;
-  v17 = [(PearlCoreAnalyticsEvent *)self getEventDictionary];
-  v4 = [v17 description];
+  selfCopy = self;
+  getEventDictionary = [(PearlCoreAnalyticsEvent *)self getEventDictionary];
+  v4 = [getEventDictionary description];
   v5 = [v4 length];
   if (v5)
   {
@@ -256,7 +256,7 @@ void __50__PearlCoreAnalyticsEvent_prepareEventDictionary___block_invoke(uint64_
     {
       [v4 getParagraphStart:&v22 end:&v21 contentsEnd:&v20 forRange:{v7, 0}];
       v8 = [v4 substringWithRange:{v22, v20 - v22}];
-      [v3 addObject:v8];
+      [array2 addObject:v8];
 
       v7 = v21;
     }
@@ -264,23 +264,23 @@ void __50__PearlCoreAnalyticsEvent_prepareEventDictionary___block_invoke(uint64_
     while (v21 < v6);
   }
 
-  v9 = [v3 count] / 0x14uLL + 1;
+  v9 = [array2 count] / 0x14uLL + 1;
   v10 = *MEMORY[0x29EDBFD90];
   v11 = [MEMORY[0x29EDBA050] stringWithFormat:@"PearlCAEvent: %@ (print %ld of %ld):\n", *(&self->super.super.isa + v10), 1, v9];
-  if ([v3 count])
+  if ([array2 count])
   {
     v12 = 0;
     v13 = 1;
     do
     {
-      v14 = [v3 objectAtIndexedSubscript:v12];
+      v14 = [array2 objectAtIndexedSubscript:v12];
       [v11 appendString:v14];
 
       [v11 appendString:@"\n"];
       if (v13 - 1 < v12 / 0x14)
       {
-        [v19 addObject:v11];
-        v15 = [MEMORY[0x29EDBA050] stringWithFormat:@"PearlCAEvent: %@ (print %ld of %ld):\n", *(&v18->super.super.isa + v10), ++v13, v9];
+        [array addObject:v11];
+        v15 = [MEMORY[0x29EDBA050] stringWithFormat:@"PearlCAEvent: %@ (print %ld of %ld):\n", *(&selfCopy->super.super.isa + v10), ++v13, v9];
 
         v11 = v15;
       }
@@ -288,12 +288,12 @@ void __50__PearlCoreAnalyticsEvent_prepareEventDictionary___block_invoke(uint64_
       ++v12;
     }
 
-    while (v12 < [v3 count]);
+    while (v12 < [array2 count]);
   }
 
-  [v19 addObject:v11];
+  [array addObject:v11];
 
-  return v19;
+  return array;
 }
 
 - (void)initWithName:(void *)a1 .cold.1(void *a1)

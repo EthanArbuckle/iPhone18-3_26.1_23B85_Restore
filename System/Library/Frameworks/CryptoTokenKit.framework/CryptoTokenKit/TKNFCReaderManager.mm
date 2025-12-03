@@ -1,53 +1,53 @@
 @interface TKNFCReaderManager
-- (BOOL)connectToTag:(id)a3 error:(id *)a4;
-- (BOOL)disconnectTagWithCardRemoval:(BOOL)a3 error:(id *)a4;
+- (BOOL)connectToTag:(id)tag error:(id *)error;
+- (BOOL)disconnectTagWithCardRemoval:(BOOL)removal error:(id *)error;
 - (BOOL)isTagPresent;
-- (BOOL)stopPollingWithError:(id *)a3;
-- (TKNFCReaderManager)initWithAppIdentifiers:(id)a3 uiMessage:(id)a4 nfcHwManager:(id)a5;
+- (BOOL)stopPollingWithError:(id *)error;
+- (TKNFCReaderManager)initWithAppIdentifiers:(id)identifiers uiMessage:(id)message nfcHwManager:(id)manager;
 - (TKNFCReaderManagerDelegate)delegate;
-- (id)transceiveAPDU:(id)a3 error:(id *)a4;
+- (id)transceiveAPDU:(id)u error:(id *)error;
 - (void)checkTagConnection;
 - (void)dealloc;
-- (void)endSessionWithCompletion:(id)a3;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSessionDidEndUnexpectedly:(id)a3;
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4;
+- (void)endSessionWithCompletion:(id)completion;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason;
 - (void)startConnectionObservation;
-- (void)startPollingWithCompletion:(id)a3;
+- (void)startPollingWithCompletion:(id)completion;
 - (void)stopConnectionObservation;
-- (void)updateUIMessageWithMessage:(id)a3;
+- (void)updateUIMessageWithMessage:(id)message;
 @end
 
 @implementation TKNFCReaderManager
 
-- (TKNFCReaderManager)initWithAppIdentifiers:(id)a3 uiMessage:(id)a4 nfcHwManager:(id)a5
+- (TKNFCReaderManager)initWithAppIdentifiers:(id)identifiers uiMessage:(id)message nfcHwManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  messageCopy = message;
+  managerCopy = manager;
   v41.receiver = self;
   v41.super_class = TKNFCReaderManager;
   v11 = [(TKNFCReaderManager *)&v41 init];
   v12 = v11;
   if (v11)
   {
-    v33 = v10;
-    v35 = v9;
-    objc_storeStrong(&v11->_nfcHwManager, a5);
-    objc_storeStrong(&v12->_uiMessage, a4);
+    v33 = managerCopy;
+    v35 = messageCopy;
+    objc_storeStrong(&v11->_nfcHwManager, manager);
+    objc_storeStrong(&v12->_uiMessage, message);
     v12->_isStartingPolling = 0;
     v13 = objc_alloc_init(NSObject);
     lock = v12->_lock;
     v34 = v12;
     v12->_lock = v13;
 
-    v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+    v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [identifiersCopy count]);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v36 = v8;
-    v16 = v8;
+    v36 = identifiersCopy;
+    v16 = identifiersCopy;
     v17 = [v16 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v17)
     {
@@ -103,9 +103,9 @@
     queue = v34->_queue;
     v34->_queue = v30;
 
-    v9 = v35;
-    v8 = v36;
-    v10 = v33;
+    messageCopy = v35;
+    identifiersCopy = v36;
+    managerCopy = v33;
   }
 
   return v12;
@@ -130,9 +130,9 @@
   [(TKNFCReaderManager *)&v4 dealloc];
 }
 
-- (void)startPollingWithCompletion:(id)a3
+- (void)startPollingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18 = 0;
   v5 = [(TKNFCReaderManager *)self isNFCSupportedWithError:&v18];
   v6 = v18;
@@ -147,9 +147,9 @@
       {
 LABEL_14:
 
-        if (v4)
+        if (completionCopy)
         {
-          v4[2](v4, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
 
         objc_sync_exit(v7);
@@ -173,7 +173,7 @@ LABEL_14:
         v14[2] = sub_100012DB0;
         v14[3] = &unk_100038DE0;
         objc_copyWeak(&v16, &location);
-        v15 = v4;
+        v15 = completionCopy;
         v12 = [(TKNFCHardwareManager *)nfcHwManager startNFCReaderSession:v14];
         overallSession = self->_overallSession;
         self->_overallSession = v12;
@@ -201,15 +201,15 @@ LABEL_14:
   }
 
   [(TKNFCReaderManager *)self endSession];
-  if (v4)
+  if (completionCopy)
   {
-    (v4)[2](v4, 0, v6);
+    (completionCopy)[2](completionCopy, 0, v6);
   }
 
 LABEL_17:
 }
 
-- (BOOL)stopPollingWithError:(id *)a3
+- (BOOL)stopPollingWithError:(id *)error
 {
   v5 = self->_lock;
   objc_sync_enter(v5);
@@ -227,11 +227,11 @@ LABEL_17:
       sub_10001FDD4();
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v8;
       v7 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -243,9 +243,9 @@ LABEL_17:
   return v7;
 }
 
-- (void)endSessionWithCompletion:(id)a3
+- (void)endSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(TKNFCReaderManager *)self stopConnectionObservation];
   v5 = self->_lock;
   objc_sync_enter(v5);
@@ -264,19 +264,19 @@ LABEL_17:
     v8[1] = 3221225472;
     v8[2] = sub_1000133F8;
     v8[3] = &unk_100038E08;
-    v9 = v4;
+    v9 = completionCopy;
     [(NFSession *)v7 endSessionWithCompletion:v8];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (BOOL)disconnectTagWithCardRemoval:(BOOL)a3 error:(id *)a4
+- (BOOL)disconnectTagWithCardRemoval:(BOOL)removal error:(id *)error
 {
-  v5 = a3;
+  removalCopy = removal;
   v7 = self->_lock;
   objc_sync_enter(v7);
   v8 = self->_nfReaderSession;
@@ -284,35 +284,35 @@ LABEL_17:
 
   if (v8)
   {
-    if (v5)
+    if (removalCopy)
     {
-      v9 = [(NFReaderSession *)v8 disconnectTagWithCardRemoval:a4];
+      v9 = [(NFReaderSession *)v8 disconnectTagWithCardRemoval:error];
     }
 
     else
     {
-      v9 = [(NFReaderSession *)v8 disconnectTagWithError:a4];
+      v9 = [(NFReaderSession *)v8 disconnectTagWithError:error];
     }
 
-    LOBYTE(a4) = v9;
+    LOBYTE(error) = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = NSLocalizedDescriptionKey;
     v13 = @"No active NFC reader session";
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    *a4 = [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:v10];
+    *error = [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:v10];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)connectToTag:(id)a3 error:(id *)a4
+- (BOOL)connectToTag:(id)tag error:(id *)error
 {
-  v6 = a3;
+  tagCopy = tag;
   v7 = self->_lock;
   objc_sync_enter(v7);
   v8 = self->_nfReaderSession;
@@ -320,25 +320,25 @@ LABEL_17:
 
   if (v8)
   {
-    LOBYTE(a4) = [(NFReaderSession *)v8 connectTag:v6 error:a4];
+    LOBYTE(error) = [(NFReaderSession *)v8 connectTag:tagCopy error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = NSLocalizedDescriptionKey;
     v12 = @"No active NFC reader session";
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:v9];
+    *error = [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:v9];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (id)transceiveAPDU:(id)a3 error:(id *)a4
+- (id)transceiveAPDU:(id)u error:(id *)error
 {
-  v6 = a3;
+  uCopy = u;
   v7 = self->_lock;
   objc_sync_enter(v7);
   v8 = self->_nfReaderSession;
@@ -346,34 +346,34 @@ LABEL_17:
 
   if (v8)
   {
-    a4 = [(NFReaderSession *)v8 transceive:v6 error:a4];
+    error = [(NFReaderSession *)v8 transceive:uCopy error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = NSLocalizedDescriptionKey;
     v12 = @"No active NFC reader session";
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:v9];
+    *error = [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:v9];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (void)updateUIMessageWithMessage:(id)a3
+- (void)updateUIMessageWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = self->_lock;
   objc_sync_enter(v6);
-  objc_storeStrong(&self->_uiMessage, a3);
+  objc_storeStrong(&self->_uiMessage, message);
   objc_sync_exit(v6);
 
   nfReaderSession = self->_nfReaderSession;
   if (nfReaderSession)
   {
-    v8 = [(NFReaderSession *)nfReaderSession updateUIAlertMessage:v5];
+    v8 = [(NFReaderSession *)nfReaderSession updateUIAlertMessage:messageCopy];
     if (v8)
     {
       v9 = sub_100012AB8();
@@ -394,15 +394,15 @@ LABEL_17:
 
   if (v4)
   {
-    v5 = [(NFReaderSession *)v4 checkPresence];
+    checkPresence = [(NFReaderSession *)v4 checkPresence];
   }
 
   else
   {
-    v5 = 0;
+    checkPresence = 0;
   }
 
-  return v5;
+  return checkPresence;
 }
 
 - (void)startConnectionObservation
@@ -463,7 +463,7 @@ LABEL_17:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v21 = self;
+        selfCopy = self;
         v22 = 1024;
         v23 = v5;
         v24 = 2112;
@@ -484,8 +484,8 @@ LABEL_17:
   }
 
   [(TKNFCReaderManager *)self stopConnectionObservation];
-  v8 = [(TKNFCReaderManager *)self delegate];
-  [v8 readerManagerDidDisconnectTag:self];
+  delegate = [(TKNFCReaderManager *)self delegate];
+  [delegate readerManagerDidDisconnectTag:self];
 
   v18 = 0;
   [(TKNFCReaderManager *)self restartPollingWithError:&v18];
@@ -508,15 +508,15 @@ LABEL_17:
 LABEL_14:
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
-  v6 = a3;
+  sessionCopy = session;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  tagsCopy = tags;
+  v8 = [tagsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -527,7 +527,7 @@ LABEL_3:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(tagsCopy);
       }
 
       v12 = *(*(&v15 + 1) + 8 * v11);
@@ -538,7 +538,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [tagsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -555,8 +555,8 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v14 = [(TKNFCReaderManager *)self delegate];
-    [v14 readerManager:self didDetectTag:v13];
+    delegate = [(TKNFCReaderManager *)self delegate];
+    [delegate readerManager:self didDetectTag:v13];
 
     [(TKNFCReaderManager *)self startConnectionObservation];
   }
@@ -566,29 +566,29 @@ LABEL_3:
 LABEL_10:
 
 LABEL_13:
-    [v6 restartPollingWithError:{0, v15}];
+    [sessionCopy restartPollingWithError:{0, v15}];
   }
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason
 {
-  if (a4)
+  if (reason)
   {
-    v5 = a4;
-    v6 = [(TKNFCReaderManager *)self delegate];
-    [v6 readerManager:self didEncounterError:v5];
+    reasonCopy = reason;
+    delegate = [(TKNFCReaderManager *)self delegate];
+    [delegate readerManager:self didEncounterError:reasonCopy];
   }
 
-  v7 = [(TKNFCReaderManager *)self delegate];
-  [v7 readerManagerDidEndSession:self];
+  delegate2 = [(TKNFCReaderManager *)self delegate];
+  [delegate2 readerManagerDidEndSession:self];
 
   [(TKNFCReaderManager *)self stopConnectionObservation];
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = [(TKNFCReaderManager *)self delegate];
-  [v4 readerManagerDidEndSession:self];
+  delegate = [(TKNFCReaderManager *)self delegate];
+  [delegate readerManagerDidEndSession:self];
 
   [(TKNFCReaderManager *)self stopConnectionObservation];
 }

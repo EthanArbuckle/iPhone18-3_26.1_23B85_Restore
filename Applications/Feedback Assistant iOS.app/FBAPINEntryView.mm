@@ -10,9 +10,9 @@
 - (void)_updateLabels;
 - (void)awakeFromNib;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)insertText:(id)text;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setText:(id)text;
 @end
 
 @implementation FBAPINEntryView
@@ -41,8 +41,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(FBAPINEntryView *)self digits];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  digits = [(FBAPINEntryView *)self digits];
+  v11 = [digits countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -54,22 +54,22 @@
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(digits);
         }
 
         v15 = *(*(&v20 + 1) + 8 * v14);
         v16 = +[UIColor labelColor];
         [v15 setTextColor:v16];
 
-        v17 = [v15 superview];
+        superview = [v15 superview];
         v18 = +[UIColor secondarySystemBackgroundColor];
-        [v17 setBackgroundColor:v18];
+        [superview setBackgroundColor:v18];
 
         v14 = v14 + 1;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v12 = [digits countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v12);
@@ -79,10 +79,10 @@
   [(FBAPINEntryView *)self setBackgroundColor:v19];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  self->_disabled = a3;
-  if (a3)
+  self->_disabled = disabled;
+  if (disabled)
   {
     [(FBAPINEntryView *)self resignFirstResponder];
   }
@@ -109,10 +109,10 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 uppercaseString];
-  v5 = [v4 mutableCopy];
+  uppercaseString = [text uppercaseString];
+  v5 = [uppercaseString mutableCopy];
   text = self->_text;
   self->_text = v5;
 
@@ -192,9 +192,9 @@
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   if (!self->_text)
   {
     v4 = objc_alloc_init(NSMutableString);
@@ -206,8 +206,8 @@
   if (v6 != [(NSMutableString *)self->_text length])
   {
     v7 = self->_text;
-    v8 = [v9 uppercaseString];
-    [(NSMutableString *)v7 appendString:v8];
+    uppercaseString = [textCopy uppercaseString];
+    [(NSMutableString *)v7 appendString:uppercaseString];
 
     [(FBAPINEntryView *)self _updateLabels];
   }

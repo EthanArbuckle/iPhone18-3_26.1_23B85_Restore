@@ -1,24 +1,24 @@
 @interface WifiP2PController
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5;
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)dataSessionRequestStarted:(id)a3;
-- (void)publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6;
-- (void)publisher:(id)a3 dataTerminatedForHandle:(id)a4 reason:(int64_t)a5;
-- (void)publisher:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)publisher:(id)a3 receivedMessage:(id)a4 fromSubscriberID:(unsigned __int8)a5 subscriberAddress:(id)a6;
-- (void)publisher:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)publisherStarted:(id)a3;
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5;
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4;
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)subscriberStarted:(id)a3;
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info;
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error;
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason;
+- (void)dataSessionRequestStarted:(id)started;
+- (void)publisher:(id)publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info;
+- (void)publisher:(id)publisher dataTerminatedForHandle:(id)handle reason:(int64_t)reason;
+- (void)publisher:(id)publisher failedToStartWithError:(int64_t)error;
+- (void)publisher:(id)publisher receivedMessage:(id)message fromSubscriberID:(unsigned __int8)d subscriberAddress:(id)address;
+- (void)publisher:(id)publisher terminatedWithReason:(int64_t)reason;
+- (void)publisherStarted:(id)started;
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error;
+- (void)subscriber:(id)subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address;
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result;
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason;
+- (void)subscriberStarted:(id)started;
 @end
 
 @implementation WifiP2PController
 
-- (void)dataSessionRequestStarted:(id)a3
+- (void)dataSessionRequestStarted:(id)started
 {
   v4 = _os_activity_create(&_mh_execute_header, "dataSessionRequestStarted:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -36,11 +36,11 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  addressCopy = address;
+  infoCopy = info;
   v11 = _os_activity_create(&_mh_execute_header, "dataSession:confirmedForPeerDataAddress:serviceSepcificInfo:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -58,10 +58,10 @@
   }
 
   v13 = wifiDataSession;
-  [v10 protocolType];
-  [v10 servicePort];
-  v20 = [v10 hostname];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController dataSession:confirmedForPeerDataAddress:serviceSpecificInfo:]", 468, self, @"PeerAddr=%@, session=%@, serviceSpecificInfo={type=%ld, port=%d, host=%@}}", v14, v15, v9);
+  [infoCopy protocolType];
+  [infoCopy servicePort];
+  hostname = [infoCopy hostname];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController dataSession:confirmedForPeerDataAddress:serviceSpecificInfo:]", 468, self, @"PeerAddr=%@, session=%@, serviceSpecificInfo={type=%ld, port=%d, host=%@}}", v14, v15, addressCopy);
 
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -69,16 +69,16 @@
   block[2] = sub_100015A4C;
   block[3] = &unk_100058DB8;
   block[4] = self;
-  v22 = v9;
-  v23 = v8;
-  v24 = v10;
-  v17 = v10;
-  v18 = v8;
-  v19 = v9;
+  v22 = addressCopy;
+  v23 = sessionCopy;
+  v24 = infoCopy;
+  v17 = infoCopy;
+  v18 = sessionCopy;
+  v19 = addressCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error
 {
   v6 = _os_activity_create(&_mh_execute_header, "dataSession:failedToStartWithError:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -86,7 +86,7 @@
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController dataSession:failedToStartWithError:]", 495, self, @"Data session fail to start, error=%ld", v7, v8, a4);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController dataSession:failedToStartWithError:]", 495, self, @"Data session fail to start, error=%ld", v7, v8, error);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -96,7 +96,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason
 {
   v6 = _os_activity_create(&_mh_execute_header, "dataSession:terminatedWithReason:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -104,18 +104,18 @@
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController dataSession:terminatedWithReason:]", 510, self, @"Data session terminated, reason=%ld", v7, v8, a4);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController dataSession:terminatedWithReason:]", 510, self, @"Data session terminated, reason=%ld", v7, v8, reason);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015E04;
   block[3] = &unk_100058DE0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = reason;
   dispatch_async(workQueue, block);
 }
 
-- (void)publisherStarted:(id)a3
+- (void)publisherStarted:(id)started
 {
   v4 = _os_activity_create(&_mh_execute_header, "publisherStarted:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -142,7 +142,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)publisher:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)publisher:(id)publisher failedToStartWithError:(int64_t)error
 {
   v6 = _os_activity_create(&_mh_execute_header, "publisher:failedToStartWithError:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -150,18 +150,18 @@
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:failedToStartWithError:]", 538, self, @"Publisher start failure, reason=%ld", v7, v8, a4);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:failedToStartWithError:]", 538, self, @"Publisher start failure, reason=%ld", v7, v8, error);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000161F8;
   block[3] = &unk_100058DE0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = error;
   dispatch_async(workQueue, block);
 }
 
-- (void)publisher:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)publisher:(id)publisher terminatedWithReason:(int64_t)reason
 {
   v6 = _os_activity_create(&_mh_execute_header, "publisher:terminatedWithReason:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -169,7 +169,7 @@
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:terminatedWithReason:]", 554, self, @"Publisher terminated, reason=%ld", v7, v8, a4);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:terminatedWithReason:]", 554, self, @"Publisher terminated, reason=%ld", v7, v8, reason);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -179,33 +179,33 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)publisher:(id)a3 receivedMessage:(id)a4 fromSubscriberID:(unsigned __int8)a5 subscriberAddress:(id)a6
+- (void)publisher:(id)publisher receivedMessage:(id)message fromSubscriberID:(unsigned __int8)d subscriberAddress:(id)address
 {
-  v8 = a6;
-  v9 = a4;
+  addressCopy = address;
+  messageCopy = message;
   v10 = _os_activity_create(&_mh_execute_header, "publisher:receivedMessage:fromSubscriberID:subscriberAddress:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:receivedMessage:fromSubscriberID:subscriberAddress:]", 566, self, @"Recv msg %@, subscriberID=%ld, address=%@", v11, v12, v9);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:receivedMessage:fromSubscriberID:subscriberAddress:]", 566, self, @"Recv msg %@, subscriberID=%ld, address=%@", v11, v12, messageCopy);
 }
 
-- (void)publisher:(id)a3 dataConfirmedForHandle:(id)a4 localInterfaceIndex:(unsigned int)a5 serviceSpecificInfo:(id)a6
+- (void)publisher:(id)publisher dataConfirmedForHandle:(id)handle localInterfaceIndex:(unsigned int)index serviceSpecificInfo:(id)info
 {
-  v9 = a4;
-  v10 = a6;
+  handleCopy = handle;
+  infoCopy = info;
   v11 = _os_activity_create(&_mh_execute_header, "publisher:dataConfirmedForHandle:localInterfaceIndex:serviceSpecificInfo:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
   os_activity_scope_leave(&state);
 
-  [v10 protocolType];
-  [v10 servicePort];
-  v17 = [v10 hostname];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:dataConfirmedForHandle:localInterfaceIndex:serviceSpecificInfo:]", 577, self, @"handle=%@, localInterfaceIdx=%u, serviceSpecificInfo={type=%ld, port=%d, host=%@}", v12, v13, v9);
+  [infoCopy protocolType];
+  [infoCopy servicePort];
+  hostname = [infoCopy hostname];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:dataConfirmedForHandle:localInterfaceIndex:serviceSpecificInfo:]", 577, self, @"handle=%@, localInterfaceIdx=%u, serviceSpecificInfo={type=%ld, port=%d, host=%@}", v12, v13, handleCopy);
 
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -213,35 +213,35 @@
   block[2] = sub_1000166E8;
   block[3] = &unk_100058E08;
   block[4] = self;
-  v19 = v9;
-  v21 = a5;
-  v20 = v10;
-  v15 = v10;
-  v16 = v9;
+  v19 = handleCopy;
+  indexCopy = index;
+  v20 = infoCopy;
+  v15 = infoCopy;
+  v16 = handleCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)publisher:(id)a3 dataTerminatedForHandle:(id)a4 reason:(int64_t)a5
+- (void)publisher:(id)publisher dataTerminatedForHandle:(id)handle reason:(int64_t)reason
 {
-  v7 = a4;
+  handleCopy = handle;
   v8 = _os_activity_create(&_mh_execute_header, "publisher:dataTerminatedForHandle:reason:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:dataTerminatedForHandle:reason:]", 607, self, @"Publisher data session terminated; handle=%@, reason=%ld", v9, v10, v7);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController publisher:dataTerminatedForHandle:reason:]", 607, self, @"Publisher data session terminated; handle=%@, reason=%ld", v9, v10, handleCopy);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000169D4;
   block[3] = &unk_100058DE0;
   block[4] = self;
-  block[5] = a5;
+  block[5] = reason;
   dispatch_async(workQueue, block);
 }
 
-- (void)subscriberStarted:(id)a3
+- (void)subscriberStarted:(id)started
 {
   v4 = _os_activity_create(&_mh_execute_header, "subscriberStarted:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v8.opaque[0] = 0;
@@ -266,7 +266,7 @@
   }
 }
 
-- (void)subscriber:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)subscriber:(id)subscriber failedToStartWithError:(int64_t)error
 {
   v6 = _os_activity_create(&_mh_execute_header, "subscriber:failedToStartWithError:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -274,27 +274,27 @@
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController subscriber:failedToStartWithError:]", 632, self, @"Subscriber start failure, reason=%ld", v7, v8, a4);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController subscriber:failedToStartWithError:]", 632, self, @"Subscriber start failure, reason=%ld", v7, v8, error);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016D30;
   block[3] = &unk_100058DE0;
   block[4] = self;
-  block[5] = a4;
+  block[5] = error;
   dispatch_async(workQueue, block);
 }
 
-- (void)subscriber:(id)a3 lostDiscoveryResultForPublishID:(unsigned __int8)a4 address:(id)a5
+- (void)subscriber:(id)subscriber lostDiscoveryResultForPublishID:(unsigned __int8)d address:(id)address
 {
-  v5 = a4;
+  dCopy = d;
   v7 = _os_activity_create(&_mh_execute_header, "subscriber:lostDiscoveryResultForPublishID:address:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController subscriber:lostDiscoveryResultForPublishID:address:]", 649, self, @"Subscriber lost discovery result, publishID=%ld", v8, v9, v5);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController subscriber:lostDiscoveryResultForPublishID:address:]", 649, self, @"Subscriber lost discovery result, publishID=%ld", v8, v9, dCopy);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -304,17 +304,17 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)subscriber:(id)a3 receivedDiscoveryResult:(id)a4
+- (void)subscriber:(id)subscriber receivedDiscoveryResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = _os_activity_create(&_mh_execute_header, "subscriber:receivedDiscoveryResult:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[WifiP2PController subscriber:receivedDiscoveryResult:]", 666, self, @"Subscriber recv discovery result:%@", v7, v8, v5);
-  v9 = v5;
+  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[WifiP2PController subscriber:receivedDiscoveryResult:]", 666, self, @"Subscriber recv discovery result:%@", v7, v8, resultCopy);
+  v9 = resultCopy;
   v10 = v9;
   if (self)
   {
@@ -323,13 +323,13 @@
     state.opaque[1] = 3221225472;
     v13 = sub_100013ECC;
     v14 = &unk_100058CB0;
-    v15 = self;
+    selfCopy = self;
     v16 = v9;
     dispatch_async(workQueue, &state);
   }
 }
 
-- (void)subscriber:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)subscriber:(id)subscriber terminatedWithReason:(int64_t)reason
 {
   v6 = _os_activity_create(&_mh_execute_header, "subscriber:terminatedWithReason:", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
@@ -337,7 +337,7 @@
   os_activity_scope_enter(v6, &state);
   os_activity_scope_leave(&state);
 
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController subscriber:terminatedWithReason:]", 673, self, @"Subscriber terminated, reason=%ld", v7, v8, a4);
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[WifiP2PController subscriber:terminatedWithReason:]", 673, self, @"Subscriber terminated, reason=%ld", v7, v8, reason);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

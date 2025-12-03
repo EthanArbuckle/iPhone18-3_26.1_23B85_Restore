@@ -3,12 +3,12 @@
 - (NSString)passwordForCreating;
 - (NSString)usernameForCreating;
 - (UINavigationController)navigationController;
-- (void)dismissBasicLoginUIWithCompletion:(id)a3;
-- (void)dismissServerProvidedUIWithCompletion:(id)a3;
-- (void)presentBasicLoginUIWithCompletion:(id)a3;
-- (void)presentBiometricOrPasscodeValidationForAppleID:(id)a3 completion:(id)a4;
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
+- (void)dismissBasicLoginUIWithCompletion:(id)completion;
+- (void)dismissServerProvidedUIWithCompletion:(id)completion;
+- (void)presentBasicLoginUIWithCompletion:(id)completion;
+- (void)presentBiometricOrPasscodeValidationForAppleID:(id)d completion:(id)completion;
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
 @end
 
 @implementation AKAppleIDAuthenticationPurpleBuddyContext
@@ -50,11 +50,11 @@
 
 - (NSString)usernameForCreating
 {
-  v4 = [(AKAppleIDAuthenticationInAppContext *)self serverDataHarvester];
-  v3 = [v4 harvestedData];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  serverDataHarvester = [(AKAppleIDAuthenticationInAppContext *)self serverDataHarvester];
+  harvestedData = [serverDataHarvester harvestedData];
+  v5 = [harvestedData objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
+  MEMORY[0x277D82BD8](harvestedData);
+  MEMORY[0x277D82BD8](serverDataHarvester);
 
   return v5;
 }
@@ -62,17 +62,17 @@
 - (NSString)passwordForCreating
 {
   v14 = *MEMORY[0x277D85DE8];
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
-  v9 = [(AKAppleIDAuthenticationInAppContext *)self serverDataHarvester];
-  v8 = [v9 harvestedData];
-  v11[0] = [v8 objectForKeyedSubscript:*MEMORY[0x277CEFFC8]];
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
+  serverDataHarvester = [(AKAppleIDAuthenticationInAppContext *)self serverDataHarvester];
+  harvestedData = [serverDataHarvester harvestedData];
+  v11[0] = [harvestedData objectForKeyedSubscript:*MEMORY[0x277CEFFC8]];
+  MEMORY[0x277D82BD8](harvestedData);
+  MEMORY[0x277D82BD8](serverDataHarvester);
   location = _AKLogSystem();
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(AKAppleIDAuthenticationInAppContext *)v12 serverDataHarvester];
+    serverDataHarvester2 = [(AKAppleIDAuthenticationInAppContext *)selfCopy serverDataHarvester];
     if (v11[0])
     {
       v2 = [v11[0] length];
@@ -90,9 +90,9 @@
       v6 = @"(null)";
     }
 
-    __os_log_helper_16_3_2_8_65_8_65(v13, v7, v6);
+    __os_log_helper_16_3_2_8_65_8_65(v13, serverDataHarvester2, v6);
     _os_log_debug_impl(&dword_222379000, location, OS_LOG_TYPE_DEBUG, "Buddy password from harverster %{private}@ - %{private}@", v13, 0x16u);
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](serverDataHarvester2);
   }
 
   objc_storeStrong(&location, 0);
@@ -103,15 +103,15 @@
   return v5;
 }
 
-- (void)presentBasicLoginUIWithCompletion:(id)a3
+- (void)presentBasicLoginUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKAppleIDAuthenticationPurpleBuddyContext *)v14 _shortLivedToken];
-  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v8)
+  objc_storeStrong(location, completion);
+  _shortLivedToken = [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy _shortLivedToken];
+  *&v3 = MEMORY[0x277D82BD8](_shortLivedToken).n128_u64[0];
+  if (_shortLivedToken)
   {
     v12 = _AKLogSystem();
     v11 = OS_LOG_TYPE_DEFAULT;
@@ -135,7 +135,7 @@
 
   else
   {
-    v9.receiver = v14;
+    v9.receiver = selfCopy;
     v9.super_class = AKAppleIDAuthenticationPurpleBuddyContext;
     [(AKAppleIDAuthenticationInAppContext *)&v9 presentBasicLoginUIWithCompletion:location[0], v3];
   }
@@ -143,15 +143,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissBasicLoginUIWithCompletion:(id)a3
+- (void)dismissBasicLoginUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKAppleIDAuthenticationPurpleBuddyContext *)v14 _shortLivedToken];
-  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (v8)
+  objc_storeStrong(location, completion);
+  _shortLivedToken = [(AKAppleIDAuthenticationPurpleBuddyContext *)selfCopy _shortLivedToken];
+  *&v3 = MEMORY[0x277D82BD8](_shortLivedToken).n128_u64[0];
+  if (_shortLivedToken)
   {
     v12 = _AKLogSystem();
     v11 = OS_LOG_TYPE_DEFAULT;
@@ -175,7 +175,7 @@
 
   else
   {
-    v9.receiver = v14;
+    v9.receiver = selfCopy;
     v9.super_class = AKAppleIDAuthenticationPurpleBuddyContext;
     [(AKAppleIDAuthenticationInAppContext *)&v9 dismissBasicLoginUIWithCompletion:location[0], v3];
   }
@@ -183,12 +183,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissServerProvidedUIWithCompletion:(id)a3
+- (void)dismissServerProvidedUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -197,7 +197,7 @@
   v8 = 0;
   v9 = __83__AKAppleIDAuthenticationPurpleBuddyContext_dismissServerProvidedUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -223,26 +223,26 @@ id __83__AKAppleIDAuthenticationPurpleBuddyContext_dismissServerProvidedUIWithCo
   return objc_msgSendSuper2(&v5, sel_dismissServerProvidedUIWithCompletion_, v1);
 }
 
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, title);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, message);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
-  v12 = [location[0] domain];
+  objc_storeStrong(&v18, completion);
+  domain = [location[0] domain];
   v13 = 0;
-  if ([v12 isEqualToString:*MEMORY[0x277CEFF48]])
+  if ([domain isEqualToString:*MEMORY[0x277CEFF48]])
   {
     v13 = [location[0] code] == -7034;
   }
 
-  *&v6 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+  *&v6 = MEMORY[0x277D82BD8](domain).n128_u64[0];
   if (v13)
   {
     v17 = _AKLogSystem();
@@ -264,7 +264,7 @@ id __83__AKAppleIDAuthenticationPurpleBuddyContext_dismissServerProvidedUIWithCo
 
   else
   {
-    v14.receiver = v22;
+    v14.receiver = selfCopy;
     v14.super_class = AKAppleIDAuthenticationPurpleBuddyContext;
     [(AKAppleIDAuthenticationInAppContext *)&v14 _presentLoginAlertWithError:location[0] title:v20 message:v19 waitForInteraction:1 completion:v18, v6];
   }
@@ -275,14 +275,14 @@ id __83__AKAppleIDAuthenticationPurpleBuddyContext_dismissServerProvidedUIWithCo
   objc_storeStrong(location, 0);
 }
 
-- (void)presentBiometricOrPasscodeValidationForAppleID:(id)a3 completion:(id)a4
+- (void)presentBiometricOrPasscodeValidationForAppleID:(id)d completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, completion);
   v5 = v7;
   v6 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7027];
   v5[2](v5, 0);
@@ -291,21 +291,21 @@ id __83__AKAppleIDAuthenticationPurpleBuddyContext_dismissServerProvidedUIWithCo
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9 = a5;
-  v8.receiver = v12;
+  objc_storeStrong(&v10, model);
+  signalCopy = signal;
+  v8.receiver = selfCopy;
   v8.super_class = AKAppleIDAuthenticationPurpleBuddyContext;
-  [(AKAppleIDAuthenticationInAppContext *)&v8 remoteUIController:location[0] didReceiveObjectModel:v10 actionSignal:a5];
-  v7 = [MEMORY[0x277D46210] setupAssistantStyle];
-  [v7 applyToObjectModel:v10];
-  MEMORY[0x277D82BD8](v7);
+  [(AKAppleIDAuthenticationInAppContext *)&v8 remoteUIController:location[0] didReceiveObjectModel:v10 actionSignal:signal];
+  setupAssistantStyle = [MEMORY[0x277D46210] setupAssistantStyle];
+  [setupAssistantStyle applyToObjectModel:v10];
+  MEMORY[0x277D82BD8](setupAssistantStyle);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }

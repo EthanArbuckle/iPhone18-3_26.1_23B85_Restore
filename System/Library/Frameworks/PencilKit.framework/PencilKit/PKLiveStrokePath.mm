@@ -1,29 +1,29 @@
 @interface PKLiveStrokePath
-- (PKLiveStrokePath)initWithPoints:(PKCompressedStrokePoint *)a3 count:(unint64_t)a4 immutableCount:(unint64_t)a5 inputType:(int64_t)a6 timestamp:(double)a7 UUID:(id)a8 inputPoints:(const void *)a9;
+- (PKLiveStrokePath)initWithPoints:(PKCompressedStrokePoint *)points count:(unint64_t)count immutableCount:(unint64_t)immutableCount inputType:(int64_t)type timestamp:(double)timestamp UUID:(id)d inputPoints:(const void *)inputPoints;
 - (id).cxx_construct;
-- (id)regenerateStrokeWithInk:(id)a3 randomSeed:(unsigned int)a4 strokeClass:(Class)a5;
+- (id)regenerateStrokeWithInk:(id)ink randomSeed:(unsigned int)seed strokeClass:(Class)class;
 @end
 
 @implementation PKLiveStrokePath
 
-- (PKLiveStrokePath)initWithPoints:(PKCompressedStrokePoint *)a3 count:(unint64_t)a4 immutableCount:(unint64_t)a5 inputType:(int64_t)a6 timestamp:(double)a7 UUID:(id)a8 inputPoints:(const void *)a9
+- (PKLiveStrokePath)initWithPoints:(PKCompressedStrokePoint *)points count:(unint64_t)count immutableCount:(unint64_t)immutableCount inputType:(int64_t)type timestamp:(double)timestamp UUID:(id)d inputPoints:(const void *)inputPoints
 {
-  v16 = a8;
+  dCopy = d;
   v40.receiver = self;
   v40.super_class = PKLiveStrokePath;
-  v17 = [(PKStrokePath *)&v40 initWithPoints:a3 count:a4 immutableCount:a5 inputType:a6 timestamp:v16 UUID:a7];
+  v17 = [(PKStrokePath *)&v40 initWithPoints:points count:count immutableCount:immutableCount inputType:type timestamp:dCopy UUID:timestamp];
   v18 = v17;
   p_inputPoints = &v17->_inputPoints;
-  if (&v17->_inputPoints == a9)
+  if (&v17->_inputPoints == inputPoints)
   {
     end = v17->_inputPoints.__end_;
   }
 
   else
   {
-    v20 = *a9;
-    v21 = *(a9 + 1);
-    v22 = &v21[-*a9];
+    v20 = *inputPoints;
+    v21 = *(inputPoints + 1);
+    v22 = &v21[-*inputPoints];
     cap = v17->_inputPoints.__cap_;
     v24 = *p_inputPoints;
     if (cap - *p_inputPoints < v22)
@@ -126,13 +126,13 @@
   return v18;
 }
 
-- (id)regenerateStrokeWithInk:(id)a3 randomSeed:(unsigned int)a4 strokeClass:(Class)a5
+- (id)regenerateStrokeWithInk:(id)ink randomSeed:(unsigned int)seed strokeClass:(Class)class
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&seed;
+  inkCopy = ink;
   v9 = objc_alloc_init(PKStrokeGenerator);
   [(PKStrokeGenerator *)v9 setCaptureLiveData:1];
-  v10 = [(PKStrokeGenerator *)v9 strokeFromInputPoints:&self->_inputPoints inputType:[(PKStrokePath *)self _inputType] ink:v8 inputScale:v6 randomSeed:a5 strokeClass:1.0];
+  v10 = [(PKStrokeGenerator *)v9 strokeFromInputPoints:&self->_inputPoints inputType:[(PKStrokePath *)self _inputType] ink:inkCopy inputScale:v6 randomSeed:class strokeClass:1.0];
 
   return v10;
 }

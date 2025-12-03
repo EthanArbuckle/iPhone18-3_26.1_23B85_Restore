@@ -1,16 +1,16 @@
 @interface FBKFeedbackDraftViewController
-- (_TtC8Feedback30FBKFeedbackDraftViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didFailSubmissionWithError:(id)a3;
-- (void)didRequestViewDismissalWithSaved:(BOOL)a3;
+- (_TtC8Feedback30FBKFeedbackDraftViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didFailSubmissionWithError:(id)error;
+- (void)didRequestViewDismissalWithSaved:(BOOL)saved;
 - (void)didRequestViewFullScreen;
-- (void)feedbackDidCompleteWithResponseType:(int64_t)a3 responseID:(id)a4 completedForm:(id)a5;
-- (void)feedbackDidFailToAttachURL:(id)a3 nsError:(id)a4;
-- (void)feedbackRestartDidFailWithError:(id)a3;
+- (void)feedbackDidCompleteWithResponseType:(int64_t)type responseID:(id)d completedForm:(id)form;
+- (void)feedbackDidFailToAttachURL:(id)l nsError:(id)error;
+- (void)feedbackRestartDidFailWithError:(id)error;
 @end
 
 @implementation FBKFeedbackDraftViewController
 
-- (_TtC8Feedback30FBKFeedbackDraftViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Feedback30FBKFeedbackDraftViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -19,33 +19,33 @@
 
 - (void)didRequestViewFullScreen
 {
-  v2 = self;
+  selfCopy = self;
   FBKFeedbackDraftViewController.didRequestViewFullScreen()();
 }
 
-- (void)didRequestViewDismissalWithSaved:(BOOL)a3
+- (void)didRequestViewDismissalWithSaved:(BOOL)saved
 {
-  v3 = self;
+  selfCopy = self;
   _s8Feedback30FBKFeedbackDraftViewControllerC010didRequestD9Dismissal5savedySb_tF_0();
 }
 
-- (void)feedbackDidCompleteWithResponseType:(int64_t)a3 responseID:(id)a4 completedForm:(id)a5
+- (void)feedbackDidCompleteWithResponseType:(int64_t)type responseID:(id)d completedForm:(id)form
 {
   v8 = sub_1B8C25128();
   v10 = v9;
-  v11 = a5;
-  v12 = self;
-  FBKFeedbackDraftViewController.feedbackDidComplete(responseType:responseID:completedForm:)(a3, v8, v10, v11);
+  formCopy = form;
+  selfCopy = self;
+  FBKFeedbackDraftViewController.feedbackDidComplete(responseType:responseID:completedForm:)(type, v8, v10, formCopy);
 }
 
-- (void)didFailSubmissionWithError:(id)a3
+- (void)didFailSubmissionWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  FBKFeedbackDraftViewController.didFailSubmission(error:)(v4);
+  errorCopy = error;
+  selfCopy = self;
+  FBKFeedbackDraftViewController.didFailSubmission(error:)(errorCopy);
 }
 
-- (void)feedbackDidFailToAttachURL:(id)a3 nsError:(id)a4
+- (void)feedbackDidFailToAttachURL:(id)l nsError:(id)error
 {
   v6 = sub_1B8C23498();
   v7 = *(v6 - 8);
@@ -53,18 +53,18 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B8C23448();
-  v11 = a4;
-  v12 = self;
-  FBKFeedbackDraftViewController.feedbackDidFailToAttachURL(_:nsError:)(v10, v11);
+  errorCopy = error;
+  selfCopy = self;
+  FBKFeedbackDraftViewController.feedbackDidFailToAttachURL(_:nsError:)(v10, errorCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)feedbackRestartDidFailWithError:(id)a3
+- (void)feedbackRestartDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  FBKFeedbackDraftViewController.feedbackRestartDidFail(error:)(v4);
+  errorCopy = error;
+  selfCopy = self;
+  FBKFeedbackDraftViewController.feedbackRestartDidFail(error:)(errorCopy);
 }
 
 @end

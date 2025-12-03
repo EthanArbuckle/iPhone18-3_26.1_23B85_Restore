@@ -1,44 +1,44 @@
 @interface _DUIPresentationUpdate
-- (BOOL)isEqual:(id)a3;
-- (_DUIPresentationUpdate)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_DUIPresentationUpdate)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DUIPresentationUpdate
 
-- (_DUIPresentationUpdate)initWithCoder:(id)a3
+- (_DUIPresentationUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _DUIPresentationUpdate;
   v5 = [(_DUIPresentationUpdate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"modifiedPreviews"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"modifiedPreviews"];
     modifiedPreviews = v5->_modifiedPreviews;
     v5->_modifiedPreviews = v6;
 
-    v5->_badgeStyle = [v4 decodeIntegerForKey:@"badgeStyle"];
+    v5->_badgeStyle = [coderCopy decodeIntegerForKey:@"badgeStyle"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   badgeStyle = self->_badgeStyle;
-  v5 = a3;
-  [v5 encodeInteger:badgeStyle forKey:@"badgeStyle"];
-  [v5 encodeObject:self->_modifiedPreviews forKey:@"modifiedPreviews"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:badgeStyle forKey:@"badgeStyle"];
+  [coderCopy encodeObject:self->_modifiedPreviews forKey:@"modifiedPreviews"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_badgeStyle == *(v5 + 2))
     {

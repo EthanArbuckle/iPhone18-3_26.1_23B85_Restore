@@ -1,39 +1,39 @@
 @interface BYODListDomain
-- (BYODListDomain)initWithDictionary:(id)a3;
-- (id)domainFromDomainName:(id)a3;
+- (BYODListDomain)initWithDictionary:(id)dictionary;
+- (id)domainFromDomainName:(id)name;
 @end
 
 @implementation BYODListDomain
 
-- (BYODListDomain)initWithDictionary:(id)a3
+- (BYODListDomain)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = BYODListDomain;
   v5 = [(BYODListDomain *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"maxDomainsAllowed"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"maxDomainsAllowed"];
     v5->_maxDomainsAllowed = [v6 integerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"showWelcomeScreen"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"showWelcomeScreen"];
     v5->_showWelcomeScreen = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"enablePurchaseDomain"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enablePurchaseDomain"];
     v5->_enablePurchaseDomain = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"iCloudPlusSubscriptionExpired"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"iCloudPlusSubscriptionExpired"];
     v5->_iCloudPlusSubscriptionExpired = [v9 BOOLValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"iCloudPlusSubscriptionEndDate"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"iCloudPlusSubscriptionEndDate"];
     iCloudPlusSubscriptionEndTimestamp = v5->_iCloudPlusSubscriptionEndTimestamp;
     v5->_iCloudPlusSubscriptionEndTimestamp = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"domainPurchaseProviderName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"domainPurchaseProviderName"];
     domainPurchaseProviderName = v5->_domainPurchaseProviderName;
     v5->_domainPurchaseProviderName = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"domains"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"domains"];
     v15 = objc_alloc_init(NSMutableArray);
     v27 = 0u;
     v28 = 0u;
@@ -76,9 +76,9 @@
   return v5;
 }
 
-- (id)domainFromDomainName:(id)a3
+- (id)domainFromDomainName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -98,8 +98,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {

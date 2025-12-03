@@ -1,12 +1,12 @@
 @interface _OSInactivityPredictorSignalsAndModel
-+ (id)predictorWithPredictor:(id)a3;
++ (id)predictorWithPredictor:(id)predictor;
 - (_OSInactivityPredictorSignalsAndModel)init;
-- (_OSInactivityPredictorSignalsAndModel)initWithPredictor:(id)a3;
-- (id)inferInputDateAndWaitTimeToQueryModelWithOptions:(int64_t)a3 withError:(id *)a4;
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6;
-- (id)longInactivityPredictionResultWithOptions:(int64_t)a3 withError:(id *)a4;
+- (_OSInactivityPredictorSignalsAndModel)initWithPredictor:(id)predictor;
+- (id)inferInputDateAndWaitTimeToQueryModelWithOptions:(int64_t)options withError:(id *)error;
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error;
+- (id)longInactivityPredictionResultWithOptions:(int64_t)options withError:(id *)error;
 - (id)predictorType;
-- (id)sleepSuppresionPredictionResultWithError:(id *)a3;
+- (id)sleepSuppresionPredictionResultWithError:(id *)error;
 - (void)updateTrialParameters;
 @end
 
@@ -21,9 +21,9 @@
   return v5;
 }
 
-- (_OSInactivityPredictorSignalsAndModel)initWithPredictor:(id)a3
+- (_OSInactivityPredictorSignalsAndModel)initWithPredictor:(id)predictor
 {
-  v5 = a3;
+  predictorCopy = predictor;
   v26.receiver = self;
   v26.super_class = _OSInactivityPredictorSignalsAndModel;
   v6 = [(_OSInactivityPredictor *)&v26 init];
@@ -37,7 +37,7 @@
     alarmMonitor = v6->_alarmMonitor;
     v6->_alarmMonitor = v9;
 
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, predictor);
     v11 = [TRIClient clientWithIdentifier:293];
     trialClient = v6->_trialClient;
     v6->_trialClient = v11;
@@ -114,23 +114,23 @@
   self->_rarelyUsedMaxPredictionDuration = v19;
 }
 
-+ (id)predictorWithPredictor:(id)a3
++ (id)predictorWithPredictor:(id)predictor
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPredictor:v3];
+  predictorCopy = predictor;
+  v4 = [objc_alloc(objc_opt_class()) initWithPredictor:predictorCopy];
 
   return v4;
 }
 
 - (id)predictorType
 {
-  v2 = [(_OSInactivityPredictor *)self->_baseModel predictorType];
-  v3 = [NSString stringWithFormat:@"%@ (with heuristics)", v2];
+  predictorType = [(_OSInactivityPredictor *)self->_baseModel predictorType];
+  v3 = [NSString stringWithFormat:@"%@ (with heuristics)", predictorType];
 
   return v3;
 }
 
-- (id)inferInputDateAndWaitTimeToQueryModelWithOptions:(int64_t)a3 withError:(id *)a4
+- (id)inferInputDateAndWaitTimeToQueryModelWithOptions:(int64_t)options withError:(id *)error
 {
   v7 = +[_CDClientContext userContext];
   v8 = [OSIntelligenceUtilities isPluggedInWithContext:v7];
@@ -148,22 +148,22 @@
   }
 
   v12 = [NSDate dateWithTimeIntervalSinceNow:-v9];
-  v13 = [(_OSInactivityPredictorSignalsAndModel *)self longInactivityPredictionResultAtDate:v12 withTimeSinceInactive:a3 withOptions:a4 withError:v9];
+  v13 = [(_OSInactivityPredictorSignalsAndModel *)self longInactivityPredictionResultAtDate:v12 withTimeSinceInactive:options withOptions:error withError:v9];
   [v13 safeSubtractWaitTimeFromPredictedDuration:v9];
 
   return v13;
 }
 
-- (id)longInactivityPredictionResultWithOptions:(int64_t)a3 withError:(id *)a4
+- (id)longInactivityPredictionResultWithOptions:(int64_t)options withError:(id *)error
 {
-  if (a3 == 2)
+  if (options == 2)
   {
     v8 = objc_alloc_init(_OSIInactivityEntrySignals);
     [(_OSInactivityPredictor *)self waitedDuration];
     v10 = v9;
-    v11 = [(_OSInactivityPredictorSignalsAndModel *)self baseModel];
-    v12 = [v11 predictorType];
-    [(_OSIInactivityEntrySignals *)v8 checkSleepSignalsWithTimeSinceInactive:v12 andPredictorType:v10];
+    baseModel = [(_OSInactivityPredictorSignalsAndModel *)self baseModel];
+    predictorType = [baseModel predictorType];
+    [(_OSIInactivityEntrySignals *)v8 checkSleepSignalsWithTimeSinceInactive:predictorType andPredictorType:v10];
 
     v13 = [_OSInactivityPredictorOutput alloc];
     if ([(_OSIInactivityEntrySignals *)v8 areSleepHeuristicsMet])
@@ -176,7 +176,7 @@
       v14 = 0;
     }
 
-    v15 = [(_OSIInactivityEntrySignals *)v8 areSleepHeuristicsMet];
+    areSleepHeuristicsMet = [(_OSIInactivityEntrySignals *)v8 areSleepHeuristicsMet];
     if ([(_OSIInactivityEntrySignals *)v8 areSleepHeuristicsMet])
     {
       v16 = 1;
@@ -187,12 +187,12 @@
       v16 = 4;
     }
 
-    v7 = [v13 initWithConfidenceLevel:v14 andConfidenceValue:v16 andPredictedDuration:v15 andReason:0.0];
+    v7 = [v13 initWithConfidenceLevel:v14 andConfidenceValue:v16 andPredictedDuration:areSleepHeuristicsMet andReason:0.0];
   }
 
-  else if (a3 == 1)
+  else if (options == 1)
   {
-    v7 = [(_OSInactivityPredictorSignalsAndModel *)self sleepSuppresionPredictionResultWithError:a4];
+    v7 = [(_OSInactivityPredictorSignalsAndModel *)self sleepSuppresionPredictionResultWithError:error];
   }
 
   else
@@ -205,7 +205,7 @@
     [(_OSInactivityPredictor *)self waitedDuration];
     if ([(_OSIInactivityEntrySignals *)v20 checkInactivitySignalsWithTimeSinceInactive:?])
     {
-      v7 = [(_OSInactivityPredictorSignalsAndModel *)self inferInputDateAndWaitTimeToQueryModelWithOptions:a3 withError:a4];
+      v7 = [(_OSInactivityPredictorSignalsAndModel *)self inferInputDateAndWaitTimeToQueryModelWithOptions:options withError:error];
 
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -234,8 +234,8 @@
     v38 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 outputReason]);
     v42[3] = v38;
     v41[4] = @"ModelType";
-    v37 = [(_OSInactivityPredictor *)self->_baseModel predictorType];
-    v23 = [NSString stringWithFormat:@"cpn_%@", v37];
+    predictorType2 = [(_OSInactivityPredictor *)self->_baseModel predictorType];
+    v23 = [NSString stringWithFormat:@"cpn_%@", predictorType2];
     v42[4] = v23;
     v41[5] = @"ModelConfidence";
     [v7 confidenceValue];
@@ -292,9 +292,9 @@
   return v7;
 }
 
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error
 {
-  v10 = a3;
+  dateCopy = date;
   v11 = +[OSIntelligenceDefines inactivityUserDefaults];
   LODWORD(v12) = [v11 BOOLForKey:@"heuristicsOnly"];
   if (v12)
@@ -311,8 +311,8 @@
 
   else
   {
-    v15 = v10;
-    if (a5 == 1 && self->_accelerateSuppression)
+    v15 = dateCopy;
+    if (options == 1 && self->_accelerateSuppression)
     {
       v81 = v11;
       v16 = [NSDate dateWithTimeIntervalSinceNow:self->_accelerateLookahead];
@@ -322,18 +322,18 @@
       {
         accelerateLookahead = self->_accelerateLookahead;
         *buf = 134217984;
-        v85 = *&accelerateLookahead;
+        optionsCopy = *&accelerateLookahead;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Advancing query date to %.2f seconds from now to accelerate sleep suppression", buf, 0xCu);
       }
 
       v15 = v16;
-      v12 = v10;
+      v12 = dateCopy;
       v19 = v81;
     }
 
     else
     {
-      v12 = v10;
+      v12 = dateCopy;
       v19 = v11;
     }
 
@@ -341,17 +341,17 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v85 = a5;
+      optionsCopy = options;
       v86 = 2112;
       v87 = v15;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "(%ld) Querying model with input date: %@", buf, 0x16u);
     }
 
-    v14 = [(_OSInactivityPredictor *)self->_baseModel longInactivityPredictionResultAtDate:v15 withTimeSinceInactive:a5 withOptions:a6 withError:a4];
+    v14 = [(_OSInactivityPredictor *)self->_baseModel longInactivityPredictionResultAtDate:v15 withTimeSinceInactive:options withOptions:error withError:inactive];
     self->_accelerateSuppression = 0;
 
     v11 = v19;
-    v10 = v12;
+    dateCopy = v12;
     LOBYTE(v12) = 0;
   }
 
@@ -364,18 +364,18 @@
 
   v82 = v11;
   [v14 predictedDuration];
-  v22 = [v10 dateByAddingTimeInterval:v21 * 3600.0];
+  v22 = [dateCopy dateByAddingTimeInterval:v21 * 3600.0];
   v79 = +[NSDate now];
-  v83 = [v10 laterDate:?];
+  v83 = [dateCopy laterDate:?];
   v23 = self->_log;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v24 = v23;
     [v14 predictedDuration];
     *buf = 134218498;
-    v85 = v25;
+    optionsCopy = v25;
     v86 = 2112;
-    v87 = v10;
+    v87 = dateCopy;
     v88 = 2112;
     v89 = v22;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Raw model confidently predicted %.2f hours of inactivity from %@ until %@", buf, 0x20u);
@@ -391,23 +391,23 @@
     [(_OSInactivityPredictorSignalsAndModel *)self setIsRarelyUsed:1];
     v80 = +[NSCalendar currentCalendar];
     v26 = [v80 components:60 fromDate:v83];
-    v27 = [v26 hour];
-    v28 = v27;
+    hour = [v26 hour];
+    v28 = hour;
     v29 = &OBJC_IVAR____OSInactivityPredictorSignalsAndModel__rarelyUsedTimeRestrictionEarlyHourForSleepSuppression;
-    if (!a5)
+    if (!options)
     {
       v29 = &OBJC_IVAR____OSInactivityPredictorSignalsAndModel__rarelyUsedTimeRestrictionEarlyHour;
     }
 
     v30 = &OBJC_IVAR____OSInactivityPredictorSignalsAndModel__rarelyUsedTimeRestrictionLateHourForSleepSuppression;
-    if (!a5)
+    if (!options)
     {
       v30 = &OBJC_IVAR____OSInactivityPredictorSignalsAndModel__rarelyUsedTimeRestrictionLateHour;
     }
 
     v31 = *v29;
     v32 = *(&self->super.super.isa + v31);
-    if (v27 < *(&self->super.super.isa + *v30) && v27 >= v32)
+    if (hour < *(&self->super.super.isa + *v30) && hour >= v32)
     {
       v33 = [_OSInactivityPredictorOutput alloc];
       [(_OSInactivityPredictor *)self->_baseModel confidenceThresholdStrict];
@@ -464,9 +464,9 @@
 
   if (self->_useDND)
   {
-    v38 = [(OSIDNDMonitor *)self->_dndMonitor scheduledDNDEndDate];
-    v39 = v38;
-    if (v38 && ([v38 timeIntervalSinceDate:v83], v40 > 0.0))
+    scheduledDNDEndDate = [(OSIDNDMonitor *)self->_dndMonitor scheduledDNDEndDate];
+    v39 = scheduledDNDEndDate;
+    if (scheduledDNDEndDate && ([scheduledDNDEndDate timeIntervalSinceDate:v83], v40 > 0.0))
     {
       v26 = [v39 dateByAddingTimeInterval:-self->_dndOffset];
     }
@@ -497,7 +497,7 @@
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v85 = v44;
+        optionsCopy = v44;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Using alarm date: %@", buf, 0xCu);
       }
 
@@ -505,7 +505,7 @@
       deadlineSetter = self->_deadlineSetter;
       self->_deadlineSetter = @"Alarm";
 
-      if (a5)
+      if (options)
       {
         v48 = v26;
         analyticsManager = self->_analyticsManager;
@@ -544,7 +544,7 @@ LABEL_67:
       if (v60)
       {
         *buf = 138412290;
-        v85 = v80;
+        optionsCopy = v80;
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "Using 'rarely-used' date: %@", buf, 0xCu);
       }
 
@@ -558,7 +558,7 @@ LABEL_67:
       if (v60)
       {
         *buf = 138412290;
-        v85 = v22;
+        optionsCopy = v22;
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "Using model output: %@", buf, 0xCu);
       }
 
@@ -569,7 +569,7 @@ LABEL_67:
 
     self->_deadlineSetter = &v62->isa;
 
-    if (!a5)
+    if (!options)
     {
       v46 = 0;
       v53 = 1;
@@ -592,7 +592,7 @@ LABEL_67:
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v85 = v26;
+    optionsCopy = v26;
     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Using DND date: %@", buf, 0xCu);
   }
 
@@ -600,7 +600,7 @@ LABEL_67:
   v56 = self->_deadlineSetter;
   self->_deadlineSetter = @"DND";
 
-  if (a5)
+  if (options)
   {
     v48 = v26;
     v57 = self->_analyticsManager;
@@ -621,11 +621,11 @@ LABEL_67:
   v53 = 3;
 LABEL_69:
   v72 = [_OSInactivityPredictorOutput alloc];
-  v73 = [v14 confidenceLevel];
+  confidenceLevel = [v14 confidenceLevel];
   [v14 confidenceValue];
   v75 = v74;
-  [v54 timeIntervalSinceDate:v10];
-  v37 = [v72 initWithConfidenceLevel:v73 andConfidenceValue:v53 andPredictedDuration:v75 andReason:v76 / 3600.0];
+  [v54 timeIntervalSinceDate:dateCopy];
+  v37 = [v72 initWithConfidenceLevel:confidenceLevel andConfidenceValue:v53 andPredictedDuration:v75 andReason:v76 / 3600.0];
 
   v11 = v82;
   v22 = v78;
@@ -636,15 +636,15 @@ LABEL_71:
   return v37;
 }
 
-- (id)sleepSuppresionPredictionResultWithError:(id *)a3
+- (id)sleepSuppresionPredictionResultWithError:(id *)error
 {
   self->_accelerateSuppression = 0;
   v5 = objc_alloc_init(_OSIInactivityEntrySignals);
   [(_OSInactivityPredictor *)self waitedDuration];
   v7 = v6;
-  v8 = [(_OSInactivityPredictorSignalsAndModel *)self baseModel];
-  v9 = [v8 predictorType];
-  [(_OSIInactivityEntrySignals *)v5 checkSleepSignalsWithTimeSinceInactive:v9 andPredictorType:v7];
+  baseModel = [(_OSInactivityPredictorSignalsAndModel *)self baseModel];
+  predictorType = [baseModel predictorType];
+  [(_OSIInactivityEntrySignals *)v5 checkSleepSignalsWithTimeSinceInactive:predictorType andPredictorType:v7];
 
   v10 = [_OSInactivityPredictorOutput alloc];
   [(_OSInactivityPredictor *)self->_baseModel confidenceThresholdRelaxed];
@@ -674,7 +674,7 @@ LABEL_71:
       }
     }
 
-    v19 = [(_OSInactivityPredictorSignalsAndModel *)self inferInputDateAndWaitTimeToQueryModelWithOptions:1 withError:a3];
+    v19 = [(_OSInactivityPredictorSignalsAndModel *)self inferInputDateAndWaitTimeToQueryModelWithOptions:1 withError:error];
 
     v20 = self->_log;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -710,8 +710,8 @@ LABEL_71:
   v26 = v25 = v5;
   v56[3] = v26;
   v55[4] = @"deadlineSetter";
-  v27 = [(_OSInactivityPredictorSignalsAndModel *)self deadlineSetter];
-  v56[4] = v27;
+  deadlineSetter = [(_OSInactivityPredictorSignalsAndModel *)self deadlineSetter];
+  v56[4] = deadlineSetter;
   v28 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:5];
 
   v29 = self->_log;
@@ -737,8 +737,8 @@ LABEL_71:
   v31 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 outputReason]);
   v54[3] = v31;
   v53[4] = @"ModelType";
-  v32 = [(_OSInactivityPredictor *)self->_baseModel predictorType];
-  v54[4] = v32;
+  predictorType2 = [(_OSInactivityPredictor *)self->_baseModel predictorType];
+  v54[4] = predictorType2;
   v53[5] = @"ModelConfidence";
   [v19 confidenceValue];
   v34 = [NSNumber numberWithInt:(v33 * 100.0)];

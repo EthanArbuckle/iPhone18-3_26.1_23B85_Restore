@@ -2,30 +2,30 @@
 - (CGSize)alignmentSize;
 - (CGSize)intrinsicContentSize;
 - (CGSize)minimumContentSize;
-- (_UISecureControlDrawingPlan)initWithSlotStyle:(id)a3 arrangeVertically:(BOOL)a4 secureName:(unsigned int)a5 iconGlyph:(id)a6;
-- (id)glyphDrawingInColor:(CGColor *)a3;
-- (id)textDrawingInColor:(CGColor *)a3;
+- (_UISecureControlDrawingPlan)initWithSlotStyle:(id)style arrangeVertically:(BOOL)vertically secureName:(unsigned int)name iconGlyph:(id)glyph;
+- (id)glyphDrawingInColor:(CGColor *)color;
+- (id)textDrawingInColor:(CGColor *)color;
 - (void)dealloc;
 @end
 
 @implementation _UISecureControlDrawingPlan
 
-- (_UISecureControlDrawingPlan)initWithSlotStyle:(id)a3 arrangeVertically:(BOOL)a4 secureName:(unsigned int)a5 iconGlyph:(id)a6
+- (_UISecureControlDrawingPlan)initWithSlotStyle:(id)style arrangeVertically:(BOOL)vertically secureName:(unsigned int)name iconGlyph:(id)glyph
 {
-  v10 = a3;
-  v11 = a6;
+  styleCopy = style;
+  glyphCopy = glyph;
   v56.receiver = self;
   v56.super_class = _UISecureControlDrawingPlan;
   v12 = [(_UISecureControlDrawingPlan *)&v56 init];
   if (v12)
   {
     v13 = kCTUIFontTextStyleShortBody;
-    v12->_font = [v10 newFontForTextStyle:kCTUIFontTextStyleShortBody attributes:0];
-    v12->_contentSizeCategory = CFRetain([v10 fontContentSizeCategory]);
-    v12->_displayScale = [v10 displayScale];
-    if (a5)
+    v12->_font = [styleCopy newFontForTextStyle:kCTUIFontTextStyleShortBody attributes:0];
+    v12->_contentSizeCategory = CFRetain([styleCopy fontContentSizeCategory]);
+    v12->_displayScale = [styleCopy displayScale];
+    if (name)
     {
-      v14 = [v10 localization];
+      localization = [styleCopy localization];
       v15 = UISLocalizedStringForSecureName();
       localizedText = v12->_localizedText;
       v12->_localizedText = v15;
@@ -33,14 +33,14 @@
 
     else
     {
-      v14 = v12->_localizedText;
+      localization = v12->_localizedText;
       v12->_localizedText = 0;
     }
 
-    v17 = [v11 length];
+    v17 = [glyphCopy length];
     if (v17)
     {
-      v17 = [v10 assetGlyphWithName:v11 glyphSize:1 textStyle:v13];
+      v17 = [styleCopy assetGlyphWithName:glyphCopy glyphSize:1 textStyle:v13];
     }
 
     assetGlyph = v12->_assetGlyph;
@@ -83,7 +83,7 @@
             v54[1] = 3221225472;
             v54[2] = sub_1000014EC;
             v54[3] = &unk_1000041C8;
-            v55 = a4;
+            verticallyCopy = vertically;
             v41 = v35;
             v42 = objc_retainBlock(v54);
             v37 = (v42[2])(v51, v52, v49, v50);
@@ -125,12 +125,12 @@
     }
 
     v46 = 0.0;
-    if ([v10 preferredContentSizeCategory] >= 7)
+    if ([styleCopy preferredContentSizeCategory] >= 7)
     {
-      v46 = ([v10 preferredContentSizeCategory] - 6) * 4.0;
+      v46 = ([styleCopy preferredContentSizeCategory] - 6) * 4.0;
     }
 
-    v47 = fmin(1.0 / [v10 displayScale], 1.0);
+    v47 = fmin(1.0 / [styleCopy displayScale], 1.0);
     v12->_alignmentSize.width = v26;
     v12->_alignmentSize.height = v38;
     v12->_intrinsicContentSize.width = fmax(v26 + 24.0 + v46, v37);
@@ -161,9 +161,9 @@
   [(_UISecureControlDrawingPlan *)&v5 dealloc];
 }
 
-- (id)textDrawingInColor:(CGColor *)a3
+- (id)textDrawingInColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"UISecureControlDrawingPlan.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"color"}];
@@ -177,7 +177,7 @@
     v12[0] = kCTFontAttributeName;
     v12[1] = kCTForegroundColorAttributeName;
     v13[0] = font;
-    v13[1] = a3;
+    v13[1] = color;
     v8 = [v5 initWithString:localizedText attributes:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary lineBreakMode:"dictionaryWithObjects:forKeys:count:" textAlignment:v13 width:v12 scale:{2), 2, 0, NAN, self->_displayScale}];
   }
 
@@ -189,9 +189,9 @@
   return v8;
 }
 
-- (id)glyphDrawingInColor:(CGColor *)a3
+- (id)glyphDrawingInColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"UISecureControlDrawingPlan.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"color"}];
@@ -199,7 +199,7 @@
 
   if (self->_assetGlyph)
   {
-    v5 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:self->_assetGlyph tintColor:a3];
+    v5 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:self->_assetGlyph tintColor:color];
   }
 
   else

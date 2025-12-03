@@ -1,6 +1,6 @@
 @interface TitledAppIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)layoutSubviews;
 @end
@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2EBB7C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_24E2EBEB0();
   v6 = v5;
 
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_24E2EC488(a4, v6);
+  selfCopy = self;
+  v7 = sub_24E2EC488(in, selfCopy);
   v9 = v8;
   v11 = v10;
   v13 = v12;

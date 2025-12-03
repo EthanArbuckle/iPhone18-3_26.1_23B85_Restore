@@ -1,27 +1,27 @@
 @interface CalVirtualConference
-- (BOOL)isEqual:(id)a3;
-- (CalVirtualConference)initWithTitle:(id)a3 joinMethods:(id)a4 conferenceDetails:(id)a5 source:(unint64_t)a6 isWritable:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (CalVirtualConference)initWithTitle:(id)title joinMethods:(id)methods conferenceDetails:(id)details source:(unint64_t)source isWritable:(BOOL)writable;
 - (id)description;
 @end
 
 @implementation CalVirtualConference
 
-- (CalVirtualConference)initWithTitle:(id)a3 joinMethods:(id)a4 conferenceDetails:(id)a5 source:(unint64_t)a6 isWritable:(BOOL)a7
+- (CalVirtualConference)initWithTitle:(id)title joinMethods:(id)methods conferenceDetails:(id)details source:(unint64_t)source isWritable:(BOOL)writable
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  titleCopy = title;
+  methodsCopy = methods;
+  detailsCopy = details;
   v19.receiver = self;
   v19.super_class = CalVirtualConference;
   v16 = [(CalVirtualConference *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_title, a3);
-    objc_storeStrong(&v17->_joinMethods, a4);
-    objc_storeStrong(&v17->_conferenceDetails, a5);
-    v17->_source = a6;
-    v17->_isWritable = a7;
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v17->_joinMethods, methods);
+    objc_storeStrong(&v17->_conferenceDetails, details);
+    v17->_source = source;
+    v17->_isWritable = writable;
   }
 
   return v17;
@@ -41,15 +41,15 @@
   self->_source;
   [CalDescriptionBuilder setKey:v5 withEnumNumericalValue:"setKey:withEnumNumericalValue:andStringValue:" andStringValue:@"source"];
   [(CalDescriptionBuilder *)v5 setKey:@"isWritable" withBoolean:self->_isWritable];
-  v6 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v6;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -59,18 +59,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       title = self->_title;
-      v7 = [(CalVirtualConference *)v5 title];
-      if (CalEqualStrings(title, v7))
+      title = [(CalVirtualConference *)v5 title];
+      if (CalEqualStrings(title, title))
       {
         joinMethods = self->_joinMethods;
-        v9 = [(CalVirtualConference *)v5 joinMethods];
-        if (CalEqualObjects(joinMethods, v9))
+        joinMethods = [(CalVirtualConference *)v5 joinMethods];
+        if (CalEqualObjects(joinMethods, joinMethods))
         {
           conferenceDetails = self->_conferenceDetails;
-          v11 = [(CalVirtualConference *)v5 conferenceDetails];
-          if (CalEqualStrings(conferenceDetails, v11) && (source = self->_source, source == [(CalVirtualConference *)v5 source]))
+          conferenceDetails = [(CalVirtualConference *)v5 conferenceDetails];
+          if (CalEqualStrings(conferenceDetails, conferenceDetails) && (source = self->_source, source == [(CalVirtualConference *)v5 source]))
           {
             isWritable = self->_isWritable;
             v14 = isWritable == [(CalVirtualConference *)v5 isWritable];

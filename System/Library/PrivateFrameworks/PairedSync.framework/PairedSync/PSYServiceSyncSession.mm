@@ -1,29 +1,29 @@
 @interface PSYServiceSyncSession
 - (NRDevice)pairedDevice;
 - (NSUUID)pairingID;
-- (PSYServiceSyncSession)initWithQueue:(id)a3 supportsMigrationSync:(BOOL)a4;
+- (PSYServiceSyncSession)initWithQueue:(id)queue supportsMigrationSync:(BOOL)sync;
 - (PSYServiceSyncSessionDelegate)delegate;
 - (PSYSyncCoordinator)syncCoordinator;
 - (unint64_t)syncSessionType;
-- (void)reportProgress:(double)a3;
+- (void)reportProgress:(double)progress;
 - (void)syncDidComplete;
 - (void)syncDidCompleteSending;
-- (void)syncDidFailWithError:(id)a3;
+- (void)syncDidFailWithError:(id)error;
 @end
 
 @implementation PSYServiceSyncSession
 
-- (PSYServiceSyncSession)initWithQueue:(id)a3 supportsMigrationSync:(BOOL)a4
+- (PSYServiceSyncSession)initWithQueue:(id)queue supportsMigrationSync:(BOOL)sync
 {
-  v7 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = PSYServiceSyncSession;
   v8 = [(PSYServiceSyncSession *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    v9->_supportsMigrationSync = a4;
+    objc_storeStrong(&v8->_queue, queue);
+    v9->_supportsMigrationSync = sync;
   }
 
   return v9;
@@ -31,17 +31,17 @@
 
 - (NSUUID)pairingID
 {
-  v2 = [(PSYServiceSyncSession *)self pdrPairedDevice];
-  v3 = [v2 pairingID];
+  pdrPairedDevice = [(PSYServiceSyncSession *)self pdrPairedDevice];
+  pairingID = [pdrPairedDevice pairingID];
 
-  return v3;
+  return pairingID;
 }
 
 - (NRDevice)pairedDevice
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [(PSYServiceSyncSession *)self pairingID];
-  v5 = [v3 deviceForPairingID:v4];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  pairingID = [(PSYServiceSyncSession *)self pairingID];
+  v5 = [mEMORY[0x277D2BCF8] deviceForPairingID:pairingID];
 
   return v5;
 }
@@ -94,17 +94,17 @@ void __40__PSYServiceSyncSession_syncDidComplete__block_invoke(uint64_t a1)
   [v5 syncSessionDidComplete:*(a1 + 32)];
 }
 
-- (void)syncDidFailWithError:(id)a3
+- (void)syncDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PSYServiceSyncSession_syncDidFailWithError___block_invoke;
   v7[3] = &unk_2799FB588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -115,7 +115,7 @@ void __46__PSYServiceSyncSession_syncDidFailWithError___block_invoke(uint64_t a1
   [v2 syncSession:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)reportProgress:(double)a3
+- (void)reportProgress:(double)progress
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -123,7 +123,7 @@ void __46__PSYServiceSyncSession_syncDidFailWithError___block_invoke(uint64_t a1
   v4[2] = __40__PSYServiceSyncSession_reportProgress___block_invoke;
   v4[3] = &unk_2799FB738;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = progress;
   dispatch_async(queue, v4);
 }
 

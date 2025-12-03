@@ -7,18 +7,18 @@
 - (id)imageResource;
 - (id)okayButtonTitle;
 - (id)titleString;
-- (void)okayButtonPressed:(id)a3;
-- (void)unlockPairingComplete:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
+- (void)unlockPairingComplete:(id)complete;
 @end
 
 @implementation COSUnlockPlaceholderViewController
 
 + (BOOL)isMandatory
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v3)
+  if (isTinkerPairing)
   {
     return 0;
   }
@@ -47,9 +47,9 @@
 
   else
   {
-    v3 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v4 = [[NSUUID alloc] initWithUUIDString:@"CFD76F6A-B79A-475D-BCD7-7EB10AC33956"];
-    v5 = [v3 supportsCapability:v4];
+    v5 = [activeWatch supportsCapability:v4];
 
     v6 = pbb_bridge_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -97,8 +97,8 @@
     [v4 addObserver:v2 selector:"unlockPairingComplete:" name:PBBridgeDidCompleteUnlockPairingNotification object:0];
 
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 bridgeController];
-    [v6 sendGizmoPasscodeRestrictions];
+    bridgeController = [v5 bridgeController];
+    [bridgeController sendGizmoPasscodeRestrictions];
   }
 
   return v2;
@@ -114,10 +114,10 @@
 
 - (id)detailString
 {
-  v2 = [objc_opt_class() isMandatory];
+  isMandatory = [objc_opt_class() isMandatory];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (isMandatory)
   {
     v5 = @"UNLOCK_OPTION_MANDATORY_TEXT";
   }
@@ -135,7 +135,7 @@
 - (id)imageResource
 {
   v2 = sub_10002D528(@"Screen-Passcode");
-  v3 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v4 = BPSIsDeviceCompatibleWithVersions();
 
   if (v4)
@@ -148,10 +148,10 @@
   return v2;
 }
 
-- (void)unlockPairingComplete:(id)a3
+- (void)unlockPairingComplete:(id)complete
 {
-  v4 = [(COSUnlockPlaceholderViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSUnlockPlaceholderViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)okayButtonTitle
@@ -170,10 +170,10 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(COSUnlockPlaceholderViewController *)self delegate];
-  [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  delegate = [(COSUnlockPlaceholderViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
 @end

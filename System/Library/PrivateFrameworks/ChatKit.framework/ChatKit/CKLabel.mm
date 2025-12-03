@@ -1,18 +1,18 @@
 @interface CKLabel
 - (BOOL)hasAccessoryImageView;
-- (BOOL)titleIconImageTypeSupportsRotation:(int64_t)a3;
-- (CGRect)rectToDrawTextInForRect:(CGRect)a3;
+- (BOOL)titleIconImageTypeSupportsRotation:(int64_t)rotation;
+- (CGRect)rectToDrawTextInForRect:(CGRect)rect;
 - (CGRect)textRectForAccessoryImageView;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeOfAccessoryImageView;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSSet)titleIconImageTypesSupportingRotation;
 - (void)_rotateTitleIconImageView;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setShouldHaveRotatedTitleIconImage:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTextColor:(id)a3;
-- (void)setTitleIconImageType:(int64_t)a3;
+- (void)setShouldHaveRotatedTitleIconImage:(BOOL)image animated:(BOOL)animated;
+- (void)setTextColor:(id)color;
+- (void)setTitleIconImageType:(int64_t)type;
 @end
 
 @implementation CKLabel
@@ -37,12 +37,12 @@
   memset(&v10, 0, sizeof(v10));
   if ([(CKLabel *)self shouldHaveRotatedTitleIconImage])
   {
-    v3 = [(CKLabel *)self isLTR];
+    isLTR = [(CKLabel *)self isLTR];
     v4 = *(MEMORY[0x1E695EFD0] + 16);
     *&v9.a = *MEMORY[0x1E695EFD0];
     *&v9.c = v4;
     *&v9.tx = *(MEMORY[0x1E695EFD0] + 32);
-    if (v3)
+    if (isLTR)
     {
       v5 = 1.57079633;
     }
@@ -70,16 +70,16 @@
 
 - (BOOL)hasAccessoryImageView
 {
-  v2 = [(CKLabel *)self titleIconImageType];
+  titleIconImageType = [(CKLabel *)self titleIconImageType];
   result = 1;
-  if (v2 > 4)
+  if (titleIconImageType > 4)
   {
-    if (v2 == 5)
+    if (titleIconImageType == 5)
     {
       goto LABEL_8;
     }
 
-    if (v2 != 6)
+    if (titleIconImageType != 6)
     {
       return result;
     }
@@ -87,18 +87,18 @@
     return 0;
   }
 
-  if (!v2)
+  if (!titleIconImageType)
   {
     return 0;
   }
 
-  if (v2 == 4)
+  if (titleIconImageType == 4)
   {
 LABEL_8:
-    v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v5 = [v4 isKeyTransparencyEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isKeyTransparencyEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyEnabled];
 
-    return v5;
+    return isKeyTransparencyEnabled;
   }
 
   return result;
@@ -213,71 +213,71 @@ LABEL_8:
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v39 = [(CKLabel *)self titleIconImageView];
-  [v39 setFrame:{v32, v34, v36, v38}];
+  titleIconImageView = [(CKLabel *)self titleIconImageView];
+  [titleIconImageView setFrame:{v32, v34, v36, v38}];
 
   UIRectRoundToViewScale();
   [(CKLabel *)self setTextRectForAccessoryImageView:?];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = CKLabel;
-  [(CKLabel *)&v6 setTextColor:v4];
+  [(CKLabel *)&v6 setTextColor:colorCopy];
   if ([(CKLabel *)self titleIconImageType]== 1 || [(CKLabel *)self titleIconImageType]== 3)
   {
-    v5 = [(CKLabel *)self titleIconImageView];
-    [v5 setTintColor:v4];
+    titleIconImageView = [(CKLabel *)self titleIconImageView];
+    [titleIconImageView setTintColor:colorCopy];
   }
 }
 
-- (void)setTitleIconImageType:(int64_t)a3
+- (void)setTitleIconImageType:(int64_t)type
 {
-  if (self->_titleIconImageType != a3)
+  if (self->_titleIconImageType != type)
   {
     [(CKLabel *)self setNeedsDisplay];
   }
 
-  self->_titleIconImageType = a3;
-  v5 = [(CKLabel *)self titleIconImageView];
-  [v5 removeFromSuperview];
+  self->_titleIconImageType = type;
+  titleIconImageView = [(CKLabel *)self titleIconImageView];
+  [titleIconImageView removeFromSuperview];
 
   [(CKLabel *)self setTitleIconImageView:0];
-  if ((a3 - 1) <= 5)
+  if ((type - 1) <= 5)
   {
-    v6 = [[CKTitleIcon alloc] initWithTitleIconImageType:a3];
+    v6 = [[CKTitleIcon alloc] initWithTitleIconImageType:type];
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(CKLabel *)self setTitleIconImageView:v8];
 
-    v9 = [(CKTitleIcon *)v6 image];
-    v10 = [(CKLabel *)self titleIconImageView];
-    [v10 setImage:v9];
+    image = [(CKTitleIcon *)v6 image];
+    titleIconImageView2 = [(CKLabel *)self titleIconImageView];
+    [titleIconImageView2 setImage:image];
 
-    v11 = [(CKTitleIcon *)v6 preferredColor];
-    v12 = v11;
-    if (!v11)
+    preferredColor = [(CKTitleIcon *)v6 preferredColor];
+    textColor = preferredColor;
+    if (!preferredColor)
     {
-      v12 = [(CKLabel *)self textColor];
+      textColor = [(CKLabel *)self textColor];
     }
 
-    v13 = [(CKLabel *)self titleIconImageView];
-    [v13 setTintColor:v12];
+    titleIconImageView3 = [(CKLabel *)self titleIconImageView];
+    [titleIconImageView3 setTintColor:textColor];
 
-    if (!v11)
+    if (!preferredColor)
     {
     }
 
-    v14 = [(CKLabel *)self titleIconImageView];
-    [(CKLabel *)self addSubview:v14];
+    titleIconImageView4 = [(CKLabel *)self titleIconImageView];
+    [(CKLabel *)self addSubview:titleIconImageView4];
   }
 
-  if ([(CKLabel *)self titleIconImageTypeSupportsRotation:a3])
+  if ([(CKLabel *)self titleIconImageTypeSupportsRotation:type])
   {
-    v15 = [(CKLabel *)self titleIconImageView];
-    [v15 setContentMode:4];
+    titleIconImageView5 = [(CKLabel *)self titleIconImageView];
+    [titleIconImageView5 setContentMode:4];
   }
 
   else
@@ -289,12 +289,12 @@ LABEL_8:
   [(CKLabel *)self setNeedsLayout];
 }
 
-- (CGRect)rectToDrawTextInForRect:(CGRect)a3
+- (CGRect)rectToDrawTextInForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(CKLabel *)self hasAccessoryImageView])
   {
     [(CKLabel *)self textRectForAccessoryImageView];
@@ -315,18 +315,18 @@ LABEL_8:
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  [(CKLabel *)self rectToDrawTextInForRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CKLabel *)self rectToDrawTextInForRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4.receiver = self;
   v4.super_class = CKLabel;
   [(CKLabel *)&v4 drawTextInRect:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(CKLabel *)self hasAccessoryImageView])
   {
     [(CKLabel *)self sizeOfAccessoryImageView];
@@ -391,17 +391,17 @@ LABEL_8:
 
 - (CGSize)sizeOfAccessoryImageView
 {
-  v4 = [(CKLabel *)self titleIconImageType];
-  if (v4 > 6)
+  titleIconImageType = [(CKLabel *)self titleIconImageType];
+  if (titleIconImageType > 6)
   {
     goto LABEL_8;
   }
 
-  if (((1 << v4) & 0xC) != 0)
+  if (((1 << titleIconImageType) & 0xC) != 0)
   {
-    v19 = [(CKLabel *)self titleIconImageView];
-    v20 = [v19 image];
-    [v20 size];
+    titleIconImageView = [(CKLabel *)self titleIconImageView];
+    image = [titleIconImageView image];
+    [image size];
     v22 = v21;
     v24 = v23;
 
@@ -410,21 +410,21 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (((1 << v4) & 0x30) != 0)
+  if (((1 << titleIconImageType) & 0x30) != 0)
   {
-    v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v9 = [v8 isKeyTransparencyEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isKeyTransparencyEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyEnabled];
 
-    if (v9)
+    if (isKeyTransparencyEnabled)
     {
-      v10 = [(CKLabel *)self font];
-      [v10 lineHeight];
+      font = [(CKLabel *)self font];
+      [font lineHeight];
       UICeilToViewScale();
       v12 = v11;
 
-      v13 = [(CKLabel *)self titleIconImageView];
-      v14 = [v13 image];
-      [v14 size];
+      titleIconImageView2 = [(CKLabel *)self titleIconImageView];
+      image2 = [titleIconImageView2 image];
+      [image2 size];
       v16 = v15;
       v18 = v17;
 
@@ -439,10 +439,10 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (((1 << v4) & 0x42) == 0)
+  if (((1 << titleIconImageType) & 0x42) == 0)
   {
 LABEL_8:
-    if (v4)
+    if (titleIconImageType)
     {
       goto LABEL_11;
     }
@@ -450,8 +450,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [(CKLabel *)self font];
-  [v6 lineHeight];
+  font2 = [(CKLabel *)self font];
+  [font2 lineHeight];
   UICeilToViewScale();
   v2 = v7;
 
@@ -463,23 +463,23 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)titleIconImageTypeSupportsRotation:(int64_t)a3
+- (BOOL)titleIconImageTypeSupportsRotation:(int64_t)rotation
 {
-  v4 = [(CKLabel *)self titleIconImageTypesSupportingRotation];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  titleIconImageTypesSupportingRotation = [(CKLabel *)self titleIconImageTypesSupportingRotation];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:rotation];
+  v6 = [titleIconImageTypesSupportingRotation containsObject:v5];
 
   return v6;
 }
 
-- (void)setShouldHaveRotatedTitleIconImage:(BOOL)a3 animated:(BOOL)a4
+- (void)setShouldHaveRotatedTitleIconImage:(BOOL)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  imageCopy = image;
   if ([(CKLabel *)self titleIconImageTypeSupportsRotation:[(CKLabel *)self titleIconImageType]])
   {
-    [(CKLabel *)self setShouldHaveRotatedTitleIconImage:v5];
-    if (v4)
+    [(CKLabel *)self setShouldHaveRotatedTitleIconImage:imageCopy];
+    if (animatedCopy)
     {
       v7 = +[CKUIBehavior sharedBehaviors];
       [v7 transcriptHeaderChevronRotationAnimationSpeed];

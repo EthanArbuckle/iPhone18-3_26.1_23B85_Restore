@@ -1,16 +1,16 @@
 @interface KCContainer
-- (KCContainer)initWithKCData:(kcdata_iter)a3;
+- (KCContainer)initWithKCData:(kcdata_iter)data;
 - (void)omit;
 @end
 
 @implementation KCContainer
 
-- (KCContainer)initWithKCData:(kcdata_iter)a3
+- (KCContainer)initWithKCData:(kcdata_iter)data
 {
-  item = a3.item;
+  item = data.item;
   v11.receiver = self;
   v11.super_class = KCContainer;
-  v4 = [(KCContainer *)&v11 init:a3.item];
+  v4 = [(KCContainer *)&v11 init:data.item];
   v5 = v4;
   if (v4)
   {

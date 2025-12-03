@@ -4,29 +4,29 @@
 - (WBSOpenSearchDescription)openSearchDescription;
 - (WBSOpenSearchURLTemplate)searchURLTemplate;
 - (WBSOpenSearchURLTemplate)urlTemplateForSuggestionsInJSON;
-- (WBSQuickWebsiteSearchProvider)initWithDictionaryRepresentation:(id)a3 delegate:(id)a4;
-- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)a3 openSearchDescriptionURLString:(id)a4 delegate:(id)a5;
-- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)a3 searchURLTemplateFromForm:(id)a4 delegate:(id)a5;
+- (WBSQuickWebsiteSearchProvider)initWithDictionaryRepresentation:(id)representation delegate:(id)delegate;
+- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)string openSearchDescriptionURLString:(id)lString delegate:(id)delegate;
+- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)string searchURLTemplateFromForm:(id)form delegate:(id)delegate;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation WBSQuickWebsiteSearchProvider
 
-- (WBSQuickWebsiteSearchProvider)initWithDictionaryRepresentation:(id)a3 delegate:(id)a4
+- (WBSQuickWebsiteSearchProvider)initWithDictionaryRepresentation:(id)representation delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = WBSQuickWebsiteSearchProvider;
   v8 = [(WBSQuickWebsiteSearchProvider *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [v6 safari_stringForKey:@"SourcePageURLString"];
-    v11 = [v6 safari_stringForKey:@"SearchURLTemplateStringFromForm"];
-    v12 = [v6 safari_stringForKey:@"OpenSearchDescriptionURLString"];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [representationCopy safari_stringForKey:@"SourcePageURLString"];
+    v11 = [representationCopy safari_stringForKey:@"SearchURLTemplateStringFromForm"];
+    v12 = [representationCopy safari_stringForKey:@"OpenSearchDescriptionURLString"];
     if ([v10 length] && (objc_msgSend(v11, "length") || objc_msgSend(v12, "length")))
     {
       v13 = [v10 copy];
@@ -41,11 +41,11 @@
       openSearchDescriptionURLString = v9->_openSearchDescriptionURLString;
       v9->_openSearchDescriptionURLString = v17;
 
-      v19 = [v6 safari_dateForKey:@"DateAdded"];
+      v19 = [representationCopy safari_dateForKey:@"DateAdded"];
       dateAdded = v9->_dateAdded;
       v9->_dateAdded = v19;
 
-      v21 = [v6 safari_dateForKey:@"DateOfLastSearch"];
+      v21 = [representationCopy safari_dateForKey:@"DateOfLastSearch"];
       dateOfLastSearch = v9->_dateOfLastSearch;
       v9->_dateOfLastSearch = v21;
 
@@ -66,26 +66,26 @@
   return v23;
 }
 
-- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)a3 searchURLTemplateFromForm:(id)a4 delegate:(id)a5
+- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)string searchURLTemplateFromForm:(id)form delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  formCopy = form;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = WBSQuickWebsiteSearchProvider;
   v11 = [(WBSQuickWebsiteSearchProvider *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    v13 = [v8 copy];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v13 = [stringCopy copy];
     sourcePageURLString = v12->_sourcePageURLString;
     v12->_sourcePageURLString = v13;
 
-    objc_storeStrong(&v12->_searchURLTemplateFromForm, a4);
-    v15 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v12->_searchURLTemplateFromForm, form);
+    date = [MEMORY[0x1E695DF00] date];
     dateAdded = v12->_dateAdded;
-    v12->_dateAdded = v15;
+    v12->_dateAdded = date;
 
     v17 = v12;
   }
@@ -93,29 +93,29 @@
   return v12;
 }
 
-- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)a3 openSearchDescriptionURLString:(id)a4 delegate:(id)a5
+- (WBSQuickWebsiteSearchProvider)initWithSourcePageURLString:(id)string openSearchDescriptionURLString:(id)lString delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  lStringCopy = lString;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = WBSQuickWebsiteSearchProvider;
   v11 = [(WBSQuickWebsiteSearchProvider *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    v13 = [v8 copy];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v13 = [stringCopy copy];
     sourcePageURLString = v12->_sourcePageURLString;
     v12->_sourcePageURLString = v13;
 
-    v15 = [v9 copy];
+    v15 = [lStringCopy copy];
     openSearchDescriptionURLString = v12->_openSearchDescriptionURLString;
     v12->_openSearchDescriptionURLString = v15;
 
-    v17 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     dateAdded = v12->_dateAdded;
-    v12->_dateAdded = v17;
+    v12->_dateAdded = date;
 
     v19 = v12;
   }
@@ -143,10 +143,10 @@
 
 - (WBSOpenSearchURLTemplate)urlTemplateForSuggestionsInJSON
 {
-  v2 = [(WBSQuickWebsiteSearchProvider *)self openSearchDescription];
-  v3 = [v2 urlTemplateForSuggestionsInJSON];
+  openSearchDescription = [(WBSQuickWebsiteSearchProvider *)self openSearchDescription];
+  urlTemplateForSuggestionsInJSON = [openSearchDescription urlTemplateForSuggestionsInJSON];
 
-  return v3;
+  return urlTemplateForSuggestionsInJSON;
 }
 
 - (id)dictionaryRepresentation
@@ -155,8 +155,8 @@
   searchURLTemplateFromForm = self->_searchURLTemplateFromForm;
   if (searchURLTemplateFromForm)
   {
-    v5 = [(WBSOpenSearchURLTemplate *)searchURLTemplateFromForm templateString];
-    [v3 setObject:v5 forKeyedSubscript:@"SearchURLTemplateStringFromForm"];
+    templateString = [(WBSOpenSearchURLTemplate *)searchURLTemplateFromForm templateString];
+    [v3 setObject:templateString forKeyedSubscript:@"SearchURLTemplateStringFromForm"];
   }
 
   if ([(NSString *)self->_openSearchDescriptionURLString length])
@@ -200,9 +200,9 @@
   if (!hostname)
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:self->_sourcePageURLString];
-    v5 = [v4 host];
+    host = [v4 host];
     v6 = self->_hostname;
-    self->_hostname = v5;
+    self->_hostname = host;
 
     hostname = self->_hostname;
   }
@@ -215,8 +215,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBSQuickWebsiteSearchProvider *)self displayName];
-  v7 = [v3 stringWithFormat:@"<%@: %p display name = %@>", v5, self, v6];;
+  displayName = [(WBSQuickWebsiteSearchProvider *)self displayName];
+  v7 = [v3 stringWithFormat:@"<%@: %p display name = %@>", v5, self, displayName];;
 
   return v7;
 }

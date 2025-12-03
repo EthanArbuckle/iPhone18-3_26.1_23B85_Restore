@@ -1,20 +1,20 @@
 @interface AVCAnsweringMachine
-+ (void)cleanUpMessageRecordingURL:(id)a3 messageRecordingURLSandboxExtensionHandle:(int64_t)a4;
-- (AVCAnsweringMachine)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (BOOL)setUpDelegateQueue:(id)a3;
++ (void)cleanUpMessageRecordingURL:(id)l messageRecordingURLSandboxExtensionHandle:(int64_t)handle;
+- (AVCAnsweringMachine)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
+- (BOOL)setUpDelegateQueue:(id)queue;
 - (BOOL)setUpServerConnection;
-- (id)addAnnouncementAsset:(id)a3;
+- (id)addAnnouncementAsset:(id)asset;
 - (id)description;
 - (id)logPrefix;
 - (void)dealloc;
 - (void)deregisterServerCallbacks;
-- (void)printDidStop:(BOOL)a3 messageRecordingURL:(id)a4 error:(id)a5;
+- (void)printDidStop:(BOOL)stop messageRecordingURL:(id)l error:(id)error;
 - (void)printInitConfiguration;
-- (void)registerDidFinishAnnouncementBlockWithInstance:(id)a3;
-- (void)registerDidStartBlockWithInstance:(id)a3;
-- (void)registerDidStopBlockWithInstance:(id)a3;
+- (void)registerDidFinishAnnouncementBlockWithInstance:(id)instance;
+- (void)registerDidStartBlockWithInstance:(id)instance;
+- (void)registerDidStopBlockWithInstance:(id)instance;
 - (void)registerServerCallbacks;
-- (void)registerServerDidDisconnectBlockWithInstance:(id)a3;
+- (void)registerServerDidDisconnectBlockWithInstance:(id)instance;
 - (void)setUpServerConnection;
 - (void)start;
 - (void)stop;
@@ -37,14 +37,14 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ messageAudioToken=%ld, configuration=%@", -[AVCAnsweringMachine description](&v3, sel_description), -[AVCAnsweringMachine logPrefix](self, "logPrefix"), self->_messageAudioToken, self->_configuration];
 }
 
-- (void)registerDidStartBlockWithInstance:(id)a3
+- (void)registerDidStartBlockWithInstance:(id)instance
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__AVCAnsweringMachine_registerDidStartBlockWithInstance___block_invoke;
   v3[3] = &unk_1E85F3AD8;
-  v3[4] = a3;
+  v3[4] = instance;
   [(AVConferenceXPCClient *)self->_connection registerBlockForService:"vcAnsweringMachineDidStart" block:v3 queue:self->_stateQueue];
 }
 
@@ -174,16 +174,16 @@ uint64_t __57__AVCAnsweringMachine_registerDidStartBlockWithInstance___block_inv
   return [*(a1 + 56) answeringMachine:*(a1 + 40) didStart:v2 error:*(a1 + 48)];
 }
 
-- (void)printDidStop:(BOOL)a3 messageRecordingURL:(id)a4 error:(id)a5
+- (void)printDidStop:(BOOL)stop messageRecordingURL:(id)l error:(id)error
 {
-  v6 = a3;
+  stopCopy = stop;
   v43 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (l)
   {
     v18 = 0xAAAAAAAAAAAAAAAALL;
     v19 = -1;
     v20 = -1;
-    [VCFileUtil statsOfFile:a4];
+    [VCFileUtil statsOfFile:l];
     v17 = 0;
     v9 = VCUtil_BinaryPrefix(v18, &v17);
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCAnsweringMachine-didStop");
@@ -200,13 +200,13 @@ uint64_t __57__AVCAnsweringMachine_registerDidStartBlockWithInstance___block_inv
         v25 = 1024;
         v26 = 139;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 1024;
-        v30 = v6;
+        v30 = stopCopy;
         v31 = 2112;
-        v32 = a4;
+        lCopy = l;
         v33 = 2112;
-        v34 = a5;
+        errorCopy2 = error;
         v35 = 2048;
         v36 = v17;
         v37 = 1024;
@@ -240,13 +240,13 @@ LABEL_8:
         v25 = 1024;
         v26 = 133;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 1024;
-        v30 = v6;
+        v30 = stopCopy;
         v31 = 2112;
-        v32 = 0;
+        lCopy = 0;
         v33 = 2112;
-        v34 = a5;
+        errorCopy2 = error;
         v12 = " [%s] %s:%d @:@ AVCAnsweringMachine-didStop (%p) didStop=%{BOOL}d messageRecordingURL=%@ error=%@";
         v13 = v16;
         v14 = 64;
@@ -256,11 +256,11 @@ LABEL_8:
   }
 }
 
-+ (void)cleanUpMessageRecordingURL:(id)a3 messageRecordingURLSandboxExtensionHandle:(int64_t)a4
++ (void)cleanUpMessageRecordingURL:(id)l messageRecordingURLSandboxExtensionHandle:(int64_t)handle
 {
   v20 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  if (a3 && ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] ? (v6 = v9 == 0) : (v6 = 0), !v6 && VRTraceGetErrorLogLevelForModule() >= 3 && (v7 = VRTraceErrorLogLevelToCSTR(), v8 = *MEMORY[0x1E6986650], os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))))
+  if (l && ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] ? (v6 = v9 == 0) : (v6 = 0), !v6 && VRTraceGetErrorLogLevelForModule() >= 3 && (v7 = VRTraceErrorLogLevelToCSTR(), v8 = *MEMORY[0x1E6986650], os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))))
   {
     *buf = 136316162;
     v11 = v7;
@@ -269,17 +269,17 @@ LABEL_8:
     v14 = 1024;
     v15 = 151;
     v16 = 2112;
-    v17 = a3;
+    lCopy = l;
     v18 = 2112;
     v19 = v9;
     _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to remove messageRecordingURL=%@: error=%@", buf, 0x30u);
-    if (!a4)
+    if (!handle)
     {
       return;
     }
   }
 
-  else if (!a4)
+  else if (!handle)
   {
     return;
   }
@@ -287,14 +287,14 @@ LABEL_8:
   sandbox_extension_release();
 }
 
-- (void)registerDidStopBlockWithInstance:(id)a3
+- (void)registerDidStopBlockWithInstance:(id)instance
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__AVCAnsweringMachine_registerDidStopBlockWithInstance___block_invoke;
   v3[3] = &unk_1E85F3AD8;
-  v3[4] = a3;
+  v3[4] = instance;
   [(AVConferenceXPCClient *)self->_connection registerBlockForService:"vcAnsweringMachineDidStop" block:v3 queue:self->_stateQueue];
 }
 
@@ -520,14 +520,14 @@ LABEL_24:
   return [AVCAnsweringMachine cleanUpMessageRecordingURL:v3 messageRecordingURLSandboxExtensionHandle:v5];
 }
 
-- (void)registerServerDidDisconnectBlockWithInstance:(id)a3
+- (void)registerServerDidDisconnectBlockWithInstance:(id)instance
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__AVCAnsweringMachine_registerServerDidDisconnectBlockWithInstance___block_invoke;
   v3[3] = &unk_1E85F3AD8;
-  v3[4] = a3;
+  v3[4] = instance;
   [(AVConferenceXPCClient *)self->_connection registerBlockForService:"vcAnsweringMachineServerDidDisconnect" block:v3 queue:self->_stateQueue];
 }
 
@@ -557,14 +557,14 @@ uint64_t __68__AVCAnsweringMachine_registerServerDidDisconnectBlockWithInstance_
   return [*(a1 + 40) serverDidDisconnectForAnsweringMachine:*(a1 + 32)];
 }
 
-- (void)registerDidFinishAnnouncementBlockWithInstance:(id)a3
+- (void)registerDidFinishAnnouncementBlockWithInstance:(id)instance
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstance___block_invoke;
   v3[3] = &unk_1E85F3AD8;
-  v3[4] = a3;
+  v3[4] = instance;
   [(AVConferenceXPCClient *)self->_connection registerBlockForService:"vcAnsweringMachineDidFinishAnnouncement" block:v3 queue:self->_stateQueue];
 }
 
@@ -715,35 +715,35 @@ uint64_t __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstanc
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcAnsweringMachineDidFinishAnnouncement"];
 }
 
-- (BOOL)setUpDelegateQueue:(id)a3
+- (BOOL)setUpDelegateQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    v4 = a3;
-    dispatch_retain(a3);
+    queueCopy = queue;
+    dispatch_retain(queue);
   }
 
   else
   {
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
-    v4 = dispatch_queue_create_with_target_V2("com.apple.AVConference.AVCAnsweringMachine.delegateQueue", 0, CustomRootQueue);
-    if (!v4)
+    queueCopy = dispatch_queue_create_with_target_V2("com.apple.AVConference.AVCAnsweringMachine.delegateQueue", 0, CustomRootQueue);
+    if (!queueCopy)
     {
       [AVCAnsweringMachine setUpDelegateQueue:];
       return v7;
     }
   }
 
-  self->_delegateQueue = v4;
+  self->_delegateQueue = queueCopy;
   return 1;
 }
 
 - (BOOL)setUpServerConnection
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AVCAnsweringMachineConfiguration *)self->_configuration dictionary];
-  if (!v4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [(AVCAnsweringMachineConfiguration *)self->_configuration dictionary];
+  if (!dictionary2)
   {
     if (objc_opt_class() == self)
     {
@@ -792,7 +792,7 @@ uint64_t __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstanc
         v42 = 2112;
         v43 = v29;
         v44 = 2048;
-        v45 = self;
+        selfCopy = self;
         v46 = 2112;
         v47 = configuration;
         _os_log_error_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to serialize configuration=%@", buf, 0x3Au);
@@ -802,13 +802,13 @@ uint64_t __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstanc
     goto LABEL_52;
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"vcAnsweringMachineConfig"];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"vcAnsweringMachineConfig"];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v6 = v3 ? [objc_msgSend(v3 "description")] : "<nil>";
+      v6 = dictionary ? [objc_msgSend(dictionary "description")] : "<nil>";
       asprintf(&__str, "serializedConfiguration=%s", v6);
       if (__str)
       {
@@ -832,7 +832,7 @@ uint64_t __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstanc
               v42 = 2080;
               v43 = "";
               v44 = 2080;
-              v45 = v13;
+              selfCopy = v13;
               _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
             }
           }
@@ -861,9 +861,9 @@ uint64_t __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstanc
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       __str = 0;
-      v7 = [(__CFString *)v5 UTF8String];
-      v8 = v3 ? [objc_msgSend(v3 "description")] : "<nil>";
-      asprintf(&__str, "%s(%p) serializedConfiguration=%s", v7, self, v8);
+      uTF8String = [(__CFString *)v5 UTF8String];
+      v8 = dictionary ? [objc_msgSend(dictionary "description")] : "<nil>";
+      asprintf(&__str, "%s(%p) serializedConfiguration=%s", uTF8String, self, v8);
       if (__str)
       {
         __lasts = 0;
@@ -886,7 +886,7 @@ uint64_t __70__AVCAnsweringMachine_registerDidFinishAnnouncementBlockWithInstanc
               v42 = 2080;
               v43 = "";
               v44 = 2080;
-              v45 = v9;
+              selfCopy = v9;
               _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
             }
           }
@@ -901,7 +901,7 @@ LABEL_27:
     }
   }
 
-  v17 = [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcAnsweringMachineInitialize" arguments:v3];
+  v17 = [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcAnsweringMachineInitialize" arguments:dictionary];
   v18 = v17;
   if (v17 && ([v17 objectForKeyedSubscript:@"ERROR"] || objc_msgSend(v18, "objectForKeyedSubscript:", @"TIMEOUT")))
   {
@@ -939,7 +939,7 @@ LABEL_27:
             v42 = 2080;
             v43 = "";
             v44 = 2080;
-            v45 = v21;
+            selfCopy = v21;
             _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
           }
         }
@@ -994,7 +994,7 @@ LABEL_27:
             v42 = 2080;
             v43 = "";
             v44 = 2080;
-            v45 = v25;
+            selfCopy = v25;
             _os_log_error_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
           }
         }
@@ -1019,10 +1019,10 @@ LABEL_52:
 - (void)printInitConfiguration
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(AVCAnsweringMachineConfiguration *)self->_configuration announcementAsset];
-  if (v3)
+  announcementAsset = [(AVCAnsweringMachineConfiguration *)self->_configuration announcementAsset];
+  if (announcementAsset)
   {
-    v4 = v3;
+    v4 = announcementAsset;
     [(AVCAnsweringMachine *)self setIsAnnouncementInProgress:1];
     v21 = 0xAAAAAAAAAAAAAAAALL;
     v22 = NAN;
@@ -1117,7 +1117,7 @@ LABEL_24:
   }
 }
 
-- (AVCAnsweringMachine)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (AVCAnsweringMachine)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
   v30 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -1135,12 +1135,12 @@ LABEL_24:
       v24 = 1024;
       v25 = 333;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCAnsweringMachine-init (%p)", buf, 0x26u);
     }
   }
 
-  if (!a3)
+  if (!configuration)
   {
     [AVCAnsweringMachine initWithConfiguration:delegate:delegateQueue:];
 LABEL_19:
@@ -1150,7 +1150,7 @@ LABEL_20:
     return 0;
   }
 
-  if (!a4)
+  if (!delegate)
   {
     [AVCAnsweringMachine initWithConfiguration:delegate:delegateQueue:];
     goto LABEL_19;
@@ -1166,7 +1166,7 @@ LABEL_20:
   }
 
   v12 = v11;
-  v11->_configuration = [a3 copy];
+  v11->_configuration = [configuration copy];
   [(AVCAnsweringMachine *)v12 printInitConfiguration];
   v13 = objc_alloc_init(AVConferenceXPCClient);
   v12->_connection = v13;
@@ -1185,8 +1185,8 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  objc_storeWeak(&v12->_delegate, a4);
-  if (![(AVCAnsweringMachine *)v12 setUpDelegateQueue:a5])
+  objc_storeWeak(&v12->_delegate, delegate);
+  if (![(AVCAnsweringMachine *)v12 setUpDelegateQueue:queue])
   {
     goto LABEL_20;
   }
@@ -1212,7 +1212,7 @@ LABEL_20:
       v24 = 1024;
       v25 = 359;
       v26 = 2048;
-      v27 = v12;
+      selfCopy = v12;
       v28 = 2048;
       v29 = messageAudioToken;
       _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCAnsweringMachine-init (%p) Succeeded with messageAudioToken=%ld", buf, 0x30u);
@@ -1240,7 +1240,7 @@ LABEL_20:
         v20 = 1024;
         v21 = 364;
         v22 = 2112;
-        v23 = self;
+        selfCopy4 = self;
         v6 = " [%s] %s:%d self=%@";
         v7 = v5;
         v8 = 38;
@@ -1275,11 +1275,11 @@ LABEL_11:
         v20 = 1024;
         v21 = 364;
         v22 = 2112;
-        v23 = v3;
+        selfCopy4 = v3;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2112;
-        v27 = self;
+        selfCopy3 = self;
         v6 = " [%s] %s:%d %@(%p) self=%@";
         v7 = v10;
         v8 = 58;
@@ -1320,7 +1320,7 @@ LABEL_11:
       v20 = 1024;
       v21 = 375;
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCAnsweringMachine-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -1538,7 +1538,7 @@ LABEL_12:
   }
 }
 
-- (id)addAnnouncementAsset:(id)a3
+- (id)addAnnouncementAsset:(id)asset
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -1552,7 +1552,7 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __44__AVCAnsweringMachine_addAnnouncementAsset___block_invoke;
   v6[3] = &unk_1E85F4108;
-  v6[5] = a3;
+  v6[5] = asset;
   v6[6] = &v7;
   v6[4] = self;
   dispatch_sync(stateQueue, v6);

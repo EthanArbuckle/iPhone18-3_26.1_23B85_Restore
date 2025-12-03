@@ -1,45 +1,45 @@
 @interface STIntroAppLimitsTableViewController
-- (STIntroAppLimitsTableViewController)initWithCoder:(id)a3;
-- (STIntroAppLimitsTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (STIntroAppLimitsTableViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (STIntroAppLimitsTableViewController)initWithCoder:(id)coder;
+- (STIntroAppLimitsTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (STIntroAppLimitsTableViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_selectedCategories;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_datePickerChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_datePickerChanged:(id)changed;
 - (void)_stIntroAppLimitsTableViewControllerCommonInit;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STIntroAppLimitsTableViewController
 
-- (STIntroAppLimitsTableViewController)initWithStyle:(int64_t)a3
+- (STIntroAppLimitsTableViewController)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = STIntroAppLimitsTableViewController;
-  v3 = [(STIntroAppLimitsTableViewController *)&v5 initWithStyle:a3];
+  v3 = [(STIntroAppLimitsTableViewController *)&v5 initWithStyle:style];
   [(STIntroAppLimitsTableViewController *)v3 _stIntroAppLimitsTableViewControllerCommonInit];
   return v3;
 }
 
-- (STIntroAppLimitsTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STIntroAppLimitsTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = STIntroAppLimitsTableViewController;
-  v4 = [(STIntroAppLimitsTableViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(STIntroAppLimitsTableViewController *)&v6 initWithNibName:name bundle:bundle];
   [(STIntroAppLimitsTableViewController *)v4 _stIntroAppLimitsTableViewControllerCommonInit];
   return v4;
 }
 
-- (STIntroAppLimitsTableViewController)initWithCoder:(id)a3
+- (STIntroAppLimitsTableViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STIntroAppLimitsTableViewController;
-  v3 = [(STIntroAppLimitsTableViewController *)&v5 initWithCoder:a3];
+  v3 = [(STIntroAppLimitsTableViewController *)&v5 initWithCoder:coder];
   [(STIntroAppLimitsTableViewController *)v3 _stIntroAppLimitsTableViewControllerCommonInit];
   return v3;
 }
@@ -66,8 +66,8 @@
   v5.receiver = self;
   v5.super_class = STIntroAppLimitsTableViewController;
   [(STIntroAppLimitsTableViewController *)&v5 viewDidLoad];
-  v3 = [(STIntroAppLimitsTableViewController *)self tableView];
-  [v3 setEditing:1];
+  tableView = [(STIntroAppLimitsTableViewController *)self tableView];
+  [tableView setEditing:1];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -76,18 +76,18 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = STIntroAppLimitsTableViewController;
-  [(STIntroAppLimitsTableViewController *)&v9 viewWillAppear:a3];
+  [(STIntroAppLimitsTableViewController *)&v9 viewWillAppear:appear];
   v4 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-  v5 = [(STIntroAppLimitsTableViewController *)self tableView];
-  [v5 selectRowAtIndexPath:v4 animated:0 scrollPosition:0];
+  tableView = [(STIntroAppLimitsTableViewController *)self tableView];
+  [tableView selectRowAtIndexPath:v4 animated:0 scrollPosition:0];
 
-  v6 = [(STIntroAppLimitsTableViewController *)self _selectedCategories];
-  v7 = [(STIntroAppLimitsTableViewController *)self allowance];
-  [v7 setCategoryIdentifiers:v6];
+  _selectedCategories = [(STIntroAppLimitsTableViewController *)self _selectedCategories];
+  allowance = [(STIntroAppLimitsTableViewController *)self allowance];
+  [allowance setCategoryIdentifiers:_selectedCategories];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -96,10 +96,10 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v7 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     if ([(STIntroAppLimitsTableViewController *)self showingDatePicker])
     {
@@ -112,10 +112,10 @@
     }
   }
 
-  else if (a4)
+  else if (section)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"STIntroAppLimitsTableViewController.m" lineNumber:116 description:{@"Unhandled App Limits table section %ld", a4}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STIntroAppLimitsTableViewController.m" lineNumber:116 description:{@"Unhandled App Limits table section %ld", section}];
 
     v10 = 0;
   }
@@ -140,25 +140,25 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 section];
-  if (v9 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
-    v18 = [v8 row];
+    v18 = [pathCopy row];
     if (v18 == 1)
     {
-      v14 = [v7 dequeueReusableCellWithIdentifier:@"Date Picker" forIndexPath:v8];
-      v31 = [v14 contentView];
-      v32 = [v31 subviews];
-      v33 = [v32 objectAtIndexedSubscript:0];
+      v14 = [viewCopy dequeueReusableCellWithIdentifier:@"Date Picker" forIndexPath:pathCopy];
+      contentView = [v14 contentView];
+      subviews = [contentView subviews];
+      v33 = [subviews objectAtIndexedSubscript:0];
 
       [v33 _setAllowsZeroCountDownDuration:1];
-      v34 = [(STIntroAppLimitsTableViewController *)self allowance];
-      v35 = [v34 time];
-      [STAllowance timeIntervalForAllowanceDateComponents:v35];
+      allowance = [(STIntroAppLimitsTableViewController *)self allowance];
+      time = [allowance time];
+      [STAllowance timeIntervalForAllowanceDateComponents:time];
       [v33 setCountDownDuration:?];
 
       [v33 sendActionsForControlEvents:4096];
@@ -168,83 +168,83 @@
     v19 = v18;
     if (!v18)
     {
-      v20 = [(STIntroAppLimitsTableViewController *)self allowance];
-      v21 = [v20 time];
-      [STAllowance timeIntervalForAllowanceDateComponents:v21];
+      allowance2 = [(STIntroAppLimitsTableViewController *)self allowance];
+      time2 = [allowance2 time];
+      [STAllowance timeIntervalForAllowanceDateComponents:time2];
       v23 = v22;
 
-      v14 = [v7 dequeueReusableCellWithIdentifier:@"Has Set Time Amount" forIndexPath:v8];
-      v15 = [(STIntroAppLimitsTableViewController *)self timeAmountFormatter];
-      v16 = [v15 stringFromTimeInterval:v23];
-      v17 = [v14 detailTextLabel];
-      [v17 setText:v16];
+      v14 = [viewCopy dequeueReusableCellWithIdentifier:@"Has Set Time Amount" forIndexPath:pathCopy];
+      timeAmountFormatter = [(STIntroAppLimitsTableViewController *)self timeAmountFormatter];
+      v16 = [timeAmountFormatter stringFromTimeInterval:v23];
+      detailTextLabel = [v14 detailTextLabel];
+      [detailTextLabel setText:v16];
       goto LABEL_10;
     }
 
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"STIntroAppLimitsTableViewController.m" lineNumber:168 description:{@"Unhandled App Limits Time Amount section row %ld", v19}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STIntroAppLimitsTableViewController.m" lineNumber:168 description:{@"Unhandled App Limits Time Amount section row %ld", v19}];
 LABEL_15:
 
     v14 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
     goto LABEL_19;
   }
 
-  v10 = v9;
-  if (v9)
+  v10 = section;
+  if (section)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"STIntroAppLimitsTableViewController.m" lineNumber:174 description:{@"Unhandled App Limits table section %ld", v10}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STIntroAppLimitsTableViewController.m" lineNumber:174 description:{@"Unhandled App Limits table section %ld", v10}];
     goto LABEL_15;
   }
 
-  v11 = [v8 row];
+  v11 = [pathCopy row];
   if (!v11)
   {
-    v14 = [v7 dequeueReusableCellWithIdentifier:@"Category" forIndexPath:v8];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:@"Category" forIndexPath:pathCopy];
     v25 = +[STScreenTimeSettingsUIBundle bundle];
     v26 = [v25 localizedStringForKey:@"AllAppsAndCategoriesSpecifierName" value:&stru_28766E5A8 table:0];
-    v27 = [v14 textLabel];
-    [v27 setText:v26];
+    textLabel = [v14 textLabel];
+    [textLabel setText:v26];
 
-    v28 = [MEMORY[0x277D4BD98] sharedCache];
-    v29 = [v28 roundedImageForImageWithName:@"AllApps"];
-    v30 = [v14 imageView];
-    [v30 setImage:v29];
+    mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+    v29 = [mEMORY[0x277D4BD98] roundedImageForImageWithName:@"AllApps"];
+    imageView = [v14 imageView];
+    [imageView setImage:v29];
 LABEL_17:
 
-    v15 = objc_opt_new();
-    v40 = [MEMORY[0x277D75348] clearColor];
-    [v15 setBackgroundColor:v40];
+    timeAmountFormatter = objc_opt_new();
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [timeAmountFormatter setBackgroundColor:clearColor];
 
-    [v14 setMultipleSelectionBackgroundView:v15];
+    [v14 setMultipleSelectionBackgroundView:timeAmountFormatter];
     goto LABEL_18;
   }
 
   v12 = v11;
-  v13 = [(STIntroAppLimitsTableViewController *)self showingAllCategories];
-  if (v12 < 3 || v13)
+  showingAllCategories = [(STIntroAppLimitsTableViewController *)self showingAllCategories];
+  if (v12 < 3 || showingAllCategories)
   {
-    v14 = [v7 dequeueReusableCellWithIdentifier:@"Category" forIndexPath:v8];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:@"Category" forIndexPath:pathCopy];
     v36 = STSortedCategoriesForUsageLimits();
-    v28 = [v36 objectAtIndexedSubscript:v12 - 1];
+    mEMORY[0x277D4BD98] = [v36 objectAtIndexedSubscript:v12 - 1];
 
     v29 = STCategoryNameWithIdentifier();
-    v37 = [v14 textLabel];
-    [v37 setText:v29];
+    textLabel2 = [v14 textLabel];
+    [textLabel2 setText:v29];
 
-    v30 = [MEMORY[0x277D4BD98] sharedCache];
-    v38 = [v30 imageForCategoryIdentifier:v28];
-    v39 = [v14 imageView];
-    [v39 setImage:v38];
+    imageView = [MEMORY[0x277D4BD98] sharedCache];
+    v38 = [imageView imageForCategoryIdentifier:mEMORY[0x277D4BD98]];
+    imageView2 = [v14 imageView];
+    [imageView2 setImage:v38];
 
     goto LABEL_17;
   }
 
-  v14 = [v7 dequeueReusableCellWithIdentifier:@"Show All Categories" forIndexPath:v8];
-  v15 = [MEMORY[0x277D4BD98] sharedCache];
-  v16 = [v15 blankSpaceImageWithSize:{29.0, 29.0}];
-  v17 = [v14 imageView];
-  [v17 setImage:v16];
+  v14 = [viewCopy dequeueReusableCellWithIdentifier:@"Show All Categories" forIndexPath:pathCopy];
+  timeAmountFormatter = [MEMORY[0x277D4BD98] sharedCache];
+  v16 = [timeAmountFormatter blankSpaceImageWithSize:{29.0, 29.0}];
+  detailTextLabel = [v14 imageView];
+  [detailTextLabel setImage:v16];
 LABEL_10:
 
 LABEL_18:
@@ -253,34 +253,34 @@ LABEL_19:
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
-    if (![v7 row])
+    if (![pathCopy row])
     {
       [(STIntroAppLimitsTableViewController *)self setShowingDatePicker:[(STIntroAppLimitsTableViewController *)self showingDatePicker]^ 1];
       v10 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndex:1];
-      [v6 reloadSections:v10 withRowAnimation:100];
+      [viewCopy reloadSections:v10 withRowAnimation:100];
     }
   }
 
-  else if (!v8)
+  else if (!section)
   {
-    if (-[STIntroAppLimitsTableViewController showingAllCategories](self, "showingAllCategories") || [v7 row] != 3)
+    if (-[STIntroAppLimitsTableViewController showingAllCategories](self, "showingAllCategories") || [pathCopy row] != 3)
     {
-      if ([v7 row])
+      if ([pathCopy row])
       {
         v20 = 0u;
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v9 = [v6 indexPathsForSelectedRows];
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        indexPathsForSelectedRows = [viewCopy indexPathsForSelectedRows];
+        v11 = [indexPathsForSelectedRows countByEnumeratingWithState:&v18 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -291,18 +291,18 @@ LABEL_19:
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(indexPathsForSelectedRows);
               }
 
               v15 = *(*(&v18 + 1) + 8 * i);
               if (![v15 section] && !objc_msgSend(v15, "row"))
               {
-                [v6 deselectRowAtIndexPath:v15 animated:1];
+                [viewCopy deselectRowAtIndexPath:v15 animated:1];
                 goto LABEL_21;
               }
             }
 
-            v12 = [v9 countByEnumeratingWithState:&v18 objects:v27 count:16];
+            v12 = [indexPathsForSelectedRows countByEnumeratingWithState:&v18 objects:v27 count:16];
             if (v12)
             {
               continue;
@@ -319,11 +319,11 @@ LABEL_19:
         v22[1] = 3221225472;
         v22[2] = __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath___block_invoke_2;
         v22[3] = &unk_279B7CAE0;
-        v23 = v6;
-        v24 = v7;
+        v23 = viewCopy;
+        v24 = pathCopy;
         [v23 performBatchUpdates:v22 completion:0];
 
-        v9 = v23;
+        indexPathsForSelectedRows = v23;
       }
     }
 
@@ -334,16 +334,16 @@ LABEL_19:
       v25[1] = 3221225472;
       v25[2] = __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v25[3] = &unk_279B7C998;
-      v26 = v6;
+      v26 = viewCopy;
       [v26 performBatchUpdates:v25 completion:0];
-      v9 = v26;
+      indexPathsForSelectedRows = v26;
     }
 
 LABEL_21:
 
-    v16 = [(STIntroAppLimitsTableViewController *)self _selectedCategories];
-    v17 = [(STIntroAppLimitsTableViewController *)self allowance];
-    [v17 setCategoryIdentifiers:v16];
+    _selectedCategories = [(STIntroAppLimitsTableViewController *)self _selectedCategories];
+    allowance = [(STIntroAppLimitsTableViewController *)self allowance];
+    [allowance setCategoryIdentifiers:_selectedCategories];
   }
 }
 
@@ -420,36 +420,36 @@ void __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = [a4 section];
-  v7 = v13;
-  if (!v6)
+  viewCopy = view;
+  section = [path section];
+  v7 = viewCopy;
+  if (!section)
   {
-    v8 = [v13 indexPathsForSelectedRows];
-    v9 = [v8 count];
+    indexPathsForSelectedRows = [viewCopy indexPathsForSelectedRows];
+    v9 = [indexPathsForSelectedRows count];
 
     if (!v9)
     {
       v10 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-      [v13 selectRowAtIndexPath:v10 animated:1 scrollPosition:0];
+      [viewCopy selectRowAtIndexPath:v10 animated:1 scrollPosition:0];
     }
 
-    v11 = [(STIntroAppLimitsTableViewController *)self _selectedCategories];
-    v12 = [(STIntroAppLimitsTableViewController *)self allowance];
-    [v12 setCategoryIdentifiers:v11];
+    _selectedCategories = [(STIntroAppLimitsTableViewController *)self _selectedCategories];
+    allowance = [(STIntroAppLimitsTableViewController *)self allowance];
+    [allowance setCategoryIdentifiers:_selectedCategories];
 
-    v7 = v13;
+    v7 = viewCopy;
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](section, v7);
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] || !-[STIntroAppLimitsTableViewController showingAllCategories](self, "showingAllCategories") && objc_msgSend(v5, "row") == 3)
+  pathCopy = path;
+  if ([pathCopy section] || !-[STIntroAppLimitsTableViewController showingAllCategories](self, "showingAllCategories") && objc_msgSend(pathCopy, "row") == 3)
   {
     v6 = 0;
   }
@@ -462,12 +462,12 @@ void __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = a4;
-  if ([v4 section] == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    if ([v4 row] == 1)
+    if ([pathCopy row] == 1)
     {
       v5 = *MEMORY[0x277D76F30];
     }
@@ -494,10 +494,10 @@ void __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(STIntroAppLimitsTableViewController *)self tableView];
-  v5 = [v4 indexPathsForSelectedRows];
+  tableView = [(STIntroAppLimitsTableViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [indexPathsForSelectedRows countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -509,7 +509,7 @@ void __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -535,7 +535,7 @@ void __73__STIntroAppLimitsTableViewController_tableView_didSelectRowAtIndexPath
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [indexPathsForSelectedRows countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -566,19 +566,19 @@ LABEL_16:
   return v14;
 }
 
-- (void)_datePickerChanged:(id)a3
+- (void)_datePickerChanged:(id)changed
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  [a3 countDownDuration];
+  [changed countDownDuration];
   v4 = [STAllowance dateComponentsForDuration:?];
-  v5 = [(STIntroAppLimitsTableViewController *)self allowance];
-  [v5 setTime:v4];
+  allowance = [(STIntroAppLimitsTableViewController *)self allowance];
+  [allowance setTime:v4];
 
   v6 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
-  v7 = [(STIntroAppLimitsTableViewController *)self tableView];
+  tableView = [(STIntroAppLimitsTableViewController *)self tableView];
   v9[0] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v7 reloadRowsAtIndexPaths:v8 withRowAnimation:100];
+  [tableView reloadRowsAtIndexPaths:v8 withRowAnimation:100];
 }
 
 - (void)tableView:(uint64_t)a3 numberOfRowsInSection:.cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

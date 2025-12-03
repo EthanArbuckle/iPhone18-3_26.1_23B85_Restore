@@ -1,32 +1,32 @@
 @interface DRPasteAnnouncementContinuityEndpoint
-- (BOOL)isSimilarToContinuityEndpoint:(id)a3;
-- (DRPasteAnnouncementContinuityEndpoint)initWithDeviceName:(id)a3;
+- (BOOL)isSimilarToContinuityEndpoint:(id)endpoint;
+- (DRPasteAnnouncementContinuityEndpoint)initWithDeviceName:(id)name;
 @end
 
 @implementation DRPasteAnnouncementContinuityEndpoint
 
-- (DRPasteAnnouncementContinuityEndpoint)initWithDeviceName:(id)a3
+- (DRPasteAnnouncementContinuityEndpoint)initWithDeviceName:(id)name
 {
   v4.receiver = self;
   v4.super_class = DRPasteAnnouncementContinuityEndpoint;
-  return [(DRPasteAnnouncementEndpoint *)&v4 _initWithLocalizedName:a3];
+  return [(DRPasteAnnouncementEndpoint *)&v4 _initWithLocalizedName:name];
 }
 
-- (BOOL)isSimilarToContinuityEndpoint:(id)a3
+- (BOOL)isSimilarToContinuityEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(DRPasteAnnouncementContinuityEndpoint *)self deviceName];
-  v6 = [v4 deviceName];
-  if (v5 == v6)
+  endpointCopy = endpoint;
+  deviceName = [(DRPasteAnnouncementContinuityEndpoint *)self deviceName];
+  deviceName2 = [endpointCopy deviceName];
+  if (deviceName == deviceName2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(DRPasteAnnouncementContinuityEndpoint *)self deviceName];
-    v8 = [v4 deviceName];
-    v9 = [v7 isEqual:v8];
+    deviceName3 = [(DRPasteAnnouncementContinuityEndpoint *)self deviceName];
+    deviceName4 = [endpointCopy deviceName];
+    v9 = [deviceName3 isEqual:deviceName4];
   }
 
   return v9;

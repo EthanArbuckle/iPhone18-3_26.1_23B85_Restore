@@ -1,68 +1,68 @@
 @interface UIAccessibilityAggregateElement
 - (CGRect)accessibilityFrame;
-- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)a3;
-- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)a3 representedElements:(id)a4;
+- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)container;
+- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)container representedElements:(id)elements;
 - (id)accessibilityLabel;
-- (void)addRepresentedObject:(id)a3;
+- (void)addRepresentedObject:(id)object;
 @end
 
 @implementation UIAccessibilityAggregateElement
 
-- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)a3 representedElements:(id)a4
+- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)container representedElements:(id)elements
 {
-  v6 = a4;
+  elementsCopy = elements;
   v10.receiver = self;
   v10.super_class = UIAccessibilityAggregateElement;
-  v7 = [(UIAccessibilityAggregateElement *)&v10 initWithAccessibilityContainer:a3];
+  v7 = [(UIAccessibilityAggregateElement *)&v10 initWithAccessibilityContainer:container];
   v8 = v7;
   if (v7)
   {
-    [(UIAccessibilityAggregateElement *)v7 setRepresentedElements:v6];
+    [(UIAccessibilityAggregateElement *)v7 setRepresentedElements:elementsCopy];
   }
 
   return v8;
 }
 
-- (void)addRepresentedObject:(id)a3
+- (void)addRepresentedObject:(id)object
 {
   representedElements = self->_representedElements;
-  v5 = a3;
+  objectCopy = object;
   v6 = [(NSArray *)representedElements mutableCopy];
-  [v6 axSafelyAddObject:v5];
+  [v6 axSafelyAddObject:objectCopy];
 
   [(UIAccessibilityAggregateElement *)self setRepresentedElements:v6];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIAccessibilityAggregateElement *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(UIAccessibilityAggregateElement *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(UIAccessibilityAggregateElement *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(UIAccessibilityAggregateElement *)self accessibilityUserDefinedLabel];
   }
 
   else
   {
-    v5 = [(UIAccessibilityAggregateElement *)self representedElements];
-    v4 = UIAXLabelForElements();
+    representedElements = [(UIAccessibilityAggregateElement *)self representedElements];
+    accessibilityUserDefinedLabel2 = UIAXLabelForElements();
   }
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (CGRect)accessibilityFrame
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(UIAccessibilityAggregateElement *)self accessibilityUserDefinedFrame], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(UIAccessibilityAggregateElement *)self accessibilityUserDefinedFrame];
-    [v4 rectValue];
+    accessibilityUserDefinedFrame = [(UIAccessibilityAggregateElement *)self accessibilityUserDefinedFrame];
+    [accessibilityUserDefinedFrame rectValue];
   }
 
   else
   {
-    v4 = [(UIAccessibilityAggregateElement *)self representedElements];
-    v5 = UIAXFrameForElements(v4);
+    accessibilityUserDefinedFrame = [(UIAccessibilityAggregateElement *)self representedElements];
+    v5 = UIAXFrameForElements(accessibilityUserDefinedFrame);
   }
 
   v9 = v5;
@@ -81,7 +81,7 @@
   return result;
 }
 
-- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)a3
+- (UIAccessibilityAggregateElement)initWithAccessibilityContainer:(id)container
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

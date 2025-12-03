@@ -1,7 +1,7 @@
 @interface SBPhysicalButtonZStackPolicyAssistant
-- (BOOL)_sceneHasFullFidelityEventsEntitlement:(uint64_t)a1;
+- (BOOL)_sceneHasFullFidelityEventsEntitlement:(uint64_t)entitlement;
 - (id)observedSceneSettings;
-- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)a3;
+- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)scenes;
 - (uint64_t)captureButtonFullFidelityEventRequestingScenes;
 - (uint64_t)foregroundCaptureSceneTargets;
 - (uint64_t)physicalButtonSceneTargets;
@@ -49,16 +49,16 @@
   return v3;
 }
 
-- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)a3
+- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)scenes
 {
   v43 = *MEMORY[0x277D85DE8];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = a3;
+  obj = scenes;
   v33 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
-  v3 = 0;
+  array = 0;
   v4 = 0;
   if (v33)
   {
@@ -75,9 +75,9 @@
         }
 
         v6 = *(*(&v38 + 1) + 8 * i);
-        v7 = [v6 clientSettings];
+        clientSettings = [v6 clientSettings];
         v8 = objc_opt_self();
-        v9 = v7;
+        v9 = clientSettings;
         if (v8)
         {
           if (objc_opt_isKindOfClass())
@@ -99,8 +99,8 @@
         v11 = v10;
 
         v35 = v11;
-        v12 = [v11 physicalButtonConfigurations];
-        if ([v12 _count])
+        physicalButtonConfigurations = [v11 physicalButtonConfigurations];
+        if ([physicalButtonConfigurations _count])
         {
           v13 = [MEMORY[0x277D65F00] targetWithScene:v6];
           v36[0] = MEMORY[0x277D85DD0];
@@ -109,7 +109,7 @@
           v36[3] = &unk_2783AF628;
           v14 = v13;
           v37 = v14;
-          [v12 _enumerateConfigurationsWithBlock:v36];
+          [physicalButtonConfigurations _enumerateConfigurationsWithBlock:v36];
           v15 = v34;
           if (!v34)
           {
@@ -132,7 +132,7 @@
             v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
           }
 
-          v16 = [v12 _configurationForButton:5];
+          v16 = [physicalButtonConfigurations _configurationForButton:5];
           if (v16)
           {
             [v32 addObject:v6];
@@ -140,22 +140,22 @@
         }
 
         v17 = +[SBCaptureApplicationCenter sharedInstance];
-        v18 = [v6 clientHandle];
-        v19 = [v18 processHandle];
-        v20 = [v19 bundle];
-        v21 = [v20 identifier];
+        clientHandle = [v6 clientHandle];
+        processHandle = [clientHandle processHandle];
+        bundle = [processHandle bundle];
+        identifier = [bundle identifier];
 
-        v22 = [v17 captureApplicationForBundleIdentifier:v21];
-        if (v22 || ([v17 captureApplicationForExtensionIdentifier:v21], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+        v22 = [v17 captureApplicationForBundleIdentifier:identifier];
+        if (v22 || ([v17 captureApplicationForExtensionIdentifier:identifier], (v22 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v23 = v22;
-          if (!v3)
+          if (!array)
           {
-            v3 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
           v24 = [[SBCaptureIntentSceneTarget alloc] initWithScene:v6 andCaptureApplication:v23];
-          [v3 addObject:v24];
+          [array addObject:v24];
         }
       }
 
@@ -193,7 +193,7 @@
 
   if ((BSEqualArrays() & 1) == 0)
   {
-    objc_storeStrong(&self->_foregroundCaptureSceneTargets, v3);
+    objc_storeStrong(&self->_foregroundCaptureSceneTargets, array);
     v25 = 1;
   }
 
@@ -213,20 +213,20 @@ void __84__SBPhysicalButtonZStackPolicyAssistant_resolveProposedPoliciesForForeg
   [*(a1 + 32) addButtonTarget:v8];
 }
 
-- (BOOL)_sceneHasFullFidelityEventsEntitlement:(uint64_t)a1
+- (BOOL)_sceneHasFullFidelityEventsEntitlement:(uint64_t)entitlement
 {
-  if (!a1)
+  if (!entitlement)
   {
     return 0;
   }
 
-  v2 = [a2 clientHandle];
-  v3 = [v2 processHandle];
+  clientHandle = [a2 clientHandle];
+  processHandle = [clientHandle processHandle];
 
   v4 = 0;
-  if (v3)
+  if (processHandle)
   {
-    [v3 auditToken];
+    [processHandle auditToken];
     if ((BSAuditTokenTaskHasEntitlement() & 1) != 0 || BSAuditTokenTaskHasEntitlement())
     {
       v4 = 1;

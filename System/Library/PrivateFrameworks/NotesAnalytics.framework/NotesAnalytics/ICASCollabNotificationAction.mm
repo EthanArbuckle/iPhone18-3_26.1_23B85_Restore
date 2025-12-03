@@ -1,34 +1,34 @@
 @interface ICASCollabNotificationAction
-- (ICASCollabNotificationAction)initWithCollabNotificationAction:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASCollabNotificationAction)initWithCollabNotificationAction:(int64_t)action;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASCollabNotificationAction
 
-- (ICASCollabNotificationAction)initWithCollabNotificationAction:(int64_t)a3
+- (ICASCollabNotificationAction)initWithCollabNotificationAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = ICASCollabNotificationAction;
   result = [(ICASCollabNotificationAction *)&v5 init];
   if (result)
   {
-    result->_collabNotificationAction = a3;
+    result->_collabNotificationAction = action;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASCollabNotificationAction *)self collabNotificationAction];
-  if ((v3 - 1) > 2)
+  collabNotificationAction = [(ICASCollabNotificationAction *)self collabNotificationAction];
+  if ((collabNotificationAction - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF688[v3 - 1];
+    return off_2799AF688[collabNotificationAction - 1];
   }
 }
 

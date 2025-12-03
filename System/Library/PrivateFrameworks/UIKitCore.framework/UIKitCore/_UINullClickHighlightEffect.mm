@@ -1,31 +1,31 @@
 @interface _UINullClickHighlightEffect
-+ (id)effectWithPreview:(id)a3 continuingFromPreview:(id)a4;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
++ (id)effectWithPreview:(id)preview continuingFromPreview:(id)fromPreview;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation _UINullClickHighlightEffect
 
-+ (id)effectWithPreview:(id)a3 continuingFromPreview:(id)a4
++ (id)effectWithPreview:(id)preview continuingFromPreview:(id)fromPreview
 {
-  v4 = a3;
+  previewCopy = preview;
   v5 = objc_opt_new();
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = previewCopy;
 
   return v5;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  if ([a4 ended])
+  if ([context ended])
   {
-    v6 = [(_UINullClickHighlightEffect *)self completionBlock];
+    completionBlock = [(_UINullClickHighlightEffect *)self completionBlock];
     [(_UINullClickHighlightEffect *)self setCompletionBlock:0];
-    v5 = v6;
-    if (v6)
+    v5 = completionBlock;
+    if (completionBlock)
     {
-      (*(v6 + 16))(v6, self);
-      v5 = v6;
+      (*(completionBlock + 16))(completionBlock, self);
+      v5 = completionBlock;
     }
   }
 }

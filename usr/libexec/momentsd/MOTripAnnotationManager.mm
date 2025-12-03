@@ -1,61 +1,61 @@
 @interface MOTripAnnotationManager
-- (BOOL)inSameCityOfEvent:(id)a3 trip:(id)a4;
-- (BOOL)isSameDayOfEvent:(id)a3 trip:(id)a4;
-- (MOTripAnnotationManager)initWithUniverse:(id)a3;
-- (double)distanceFromEvent:(id)a3 trip:(id)a4;
-- (double)distanceFromLocation:(id)a3 hometownReferenceLocations:(id)a4;
-- (double)durationOfTrip:(id)a3;
-- (double)dwellTimeOfEvents:(id)a3;
-- (double)interestingPOIDurationInTrip:(id)a3;
-- (double)maxDistanceFromEvent:(id)a3 events:(id)a4;
-- (double)nonInterestingPOIDurationInTrip:(id)a3;
-- (id)_assignPriorityScoreForPlace:(id)a3 placeInfoArray:(id)a4;
-- (id)_filterPlaceUsingPredicates:(id)a3;
-- (id)buildPromptDescriptionForEventBundle:(id)a3;
-- (id)createTripWithVisitEvent:(id)a3;
-- (id)dominantInterestingPOIFromEvents:(id)a3 timeZone:(id)a4;
-- (id)dominantPOIFormEvents:(id)a3 timeZone:(id)a4;
-- (id)dominantPlaceFromEvents:(id)a3 timeZone:(id)a4;
-- (id)dominantPlaceNamesFromEvents:(id)a3 countryMode:(BOOL)a4 timeZone:(id)a5;
-- (id)generateDailyTripsFromBaseEvents:(id)a3 contextEvents:(id)a4 pregeneratedTripBundles:(id)a5 hometownReferenceLocations:(id)a6;
-- (id)generateSummaryTripsFromBaseEvents:(id)a3 hometownReferenceLocations:(id)a4;
-- (id)getBaseEvents:(id)a3;
-- (id)getContextEvents:(id)a3;
-- (id)getTripEventBundles:(id)a3;
+- (BOOL)inSameCityOfEvent:(id)event trip:(id)trip;
+- (BOOL)isSameDayOfEvent:(id)event trip:(id)trip;
+- (MOTripAnnotationManager)initWithUniverse:(id)universe;
+- (double)distanceFromEvent:(id)event trip:(id)trip;
+- (double)distanceFromLocation:(id)location hometownReferenceLocations:(id)locations;
+- (double)durationOfTrip:(id)trip;
+- (double)dwellTimeOfEvents:(id)events;
+- (double)interestingPOIDurationInTrip:(id)trip;
+- (double)maxDistanceFromEvent:(id)event events:(id)events;
+- (double)nonInterestingPOIDurationInTrip:(id)trip;
+- (id)_assignPriorityScoreForPlace:(id)place placeInfoArray:(id)array;
+- (id)_filterPlaceUsingPredicates:(id)predicates;
+- (id)buildPromptDescriptionForEventBundle:(id)bundle;
+- (id)createTripWithVisitEvent:(id)event;
+- (id)dominantInterestingPOIFromEvents:(id)events timeZone:(id)zone;
+- (id)dominantPOIFormEvents:(id)events timeZone:(id)zone;
+- (id)dominantPlaceFromEvents:(id)events timeZone:(id)zone;
+- (id)dominantPlaceNamesFromEvents:(id)events countryMode:(BOOL)mode timeZone:(id)zone;
+- (id)generateDailyTripsFromBaseEvents:(id)events contextEvents:(id)contextEvents pregeneratedTripBundles:(id)bundles hometownReferenceLocations:(id)locations;
+- (id)generateSummaryTripsFromBaseEvents:(id)events hometownReferenceLocations:(id)locations;
+- (id)getBaseEvents:(id)events;
+- (id)getContextEvents:(id)events;
+- (id)getTripEventBundles:(id)bundles;
 - (id)hometownReferenceLocations;
-- (id)loadSummaryTripMonitorFromStore:(id)a3;
-- (id)placeNameOfEvent:(id)a3 addressFormatOption:(id)a4 countryMode:(BOOL)a5;
-- (id)resourceFromWorkoutEvent:(id)a3;
-- (id)transformTripPlan:(id)a3;
-- (unint64_t)dayCountInTrip:(id)a3;
-- (unint64_t)visitCountInTrip:(id)a3;
-- (void)_assignPriorityScoreForPhotoResources:(id)a3;
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 eventBundles:(id)a5 handler:(id)a6;
-- (void)_updateMOPlacePriorityScore:(id)a3 priorityScore:(unint64_t)a4 handler:(id)a5;
-- (void)addVisitEvent:(id)a3 toTripBundle:(id)a4;
-- (void)closeTrip:(id)a3 hometownReferenceLocations:(id)a4 contextEvents:(id)a5;
-- (void)materializeTripBundle:(id)a3 contextEvents:(id)a4 updateWithFilteredEvents:(BOOL)a5;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 eventBundles:(id)a5 handler:(id)a6;
-- (void)resourcesFromEvents:(id)a3 handler:(id)a4;
-- (void)setupSummaryTripMonitorWithHomeLOI:(id)a3;
-- (void)updateSummaryTripMonitor:(id)a3;
+- (id)loadSummaryTripMonitorFromStore:(id)store;
+- (id)placeNameOfEvent:(id)event addressFormatOption:(id)option countryMode:(BOOL)mode;
+- (id)resourceFromWorkoutEvent:(id)event;
+- (id)transformTripPlan:(id)plan;
+- (unint64_t)dayCountInTrip:(id)trip;
+- (unint64_t)visitCountInTrip:(id)trip;
+- (void)_assignPriorityScoreForPhotoResources:(id)resources;
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents eventBundles:(id)bundles handler:(id)handler;
+- (void)_updateMOPlacePriorityScore:(id)score priorityScore:(unint64_t)priorityScore handler:(id)handler;
+- (void)addVisitEvent:(id)event toTripBundle:(id)bundle;
+- (void)closeTrip:(id)trip hometownReferenceLocations:(id)locations contextEvents:(id)events;
+- (void)materializeTripBundle:(id)bundle contextEvents:(id)events updateWithFilteredEvents:(BOOL)filteredEvents;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents eventBundles:(id)bundles handler:(id)handler;
+- (void)resourcesFromEvents:(id)events handler:(id)handler;
+- (void)setupSummaryTripMonitorWithHomeLOI:(id)i;
+- (void)updateSummaryTripMonitor:(id)monitor;
 @end
 
 @implementation MOTripAnnotationManager
 
-- (MOTripAnnotationManager)initWithUniverse:(id)a3
+- (MOTripAnnotationManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v69.receiver = self;
   v69.super_class = MOTripAnnotationManager;
-  v5 = [(MOAnnotationManager *)&v69 initWithUniverse:v4];
+  v5 = [(MOAnnotationManager *)&v69 initWithUniverse:universeCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v5->_queue;
     v5->_queue = v10;
 
@@ -104,7 +104,7 @@
 
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [v4 getService:v24];
+    v25 = [universeCopy getService:v24];
     fsmStore = v5->_fsmStore;
     v5->_fsmStore = v25;
 
@@ -114,15 +114,15 @@
 
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
-    v31 = [v4 getService:v30];
+    v31 = [universeCopy getService:v30];
 
-    v32 = [v31 routineManager];
+    routineManager = [v31 routineManager];
     routineManager = v5->_routineManager;
-    v5->_routineManager = v32;
+    v5->_routineManager = routineManager;
 
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
-    v36 = [v4 getService:v35];
+    v36 = [universeCopy getService:v35];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v36;
 
@@ -196,27 +196,27 @@
   return v5;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 eventBundles:(id)a5 handler:(id)a6
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents eventBundles:(id)bundles handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOTripAnnotationManager *)self queue];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  queue = [(MOTripAnnotationManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEvents_eventBundles_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = eventsCopy;
+  v21 = patternEventsCopy;
+  v22 = bundlesCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = bundlesCopy;
+  v17 = patternEventsCopy;
+  v18 = eventsCopy;
+  dispatch_async(queue, block);
 }
 
 void __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEvents_eventBundles_handler___block_invoke(uint64_t a1)
@@ -244,26 +244,26 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
   return result;
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 eventBundles:(id)a5 handler:(id)a6
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents eventBundles:(id)bundles handler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v9;
-  v59 = v11;
-  v13 = [(MOTripAnnotationManager *)self getBaseEvents:v9];
+  eventsCopy = events;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  v12 = eventsCopy;
+  v59 = handlerCopy;
+  v13 = [(MOTripAnnotationManager *)self getBaseEvents:eventsCopy];
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
-  v58 = v10;
+  v58 = bundlesCopy;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v17 = [v13 count];
-    v18 = [v13 firstObject];
-    [v18 startDate];
+    firstObject = [v13 firstObject];
+    [firstObject startDate];
     v20 = v19 = v13;
-    v21 = [v19 lastObject];
-    v22 = [v21 endDate];
+    lastObject = [v19 lastObject];
+    endDate = [lastObject endDate];
     *buf = 138413058;
     v64 = v16;
     v65 = 2048;
@@ -271,11 +271,11 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
     v67 = 2112;
     v68 = v20;
     v69 = 2112;
-    v70 = v22;
+    v70 = endDate;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@: Base Events, %lu, startDate, %@, endDate, %@", buf, 0x2Au);
 
     v13 = v19;
-    v10 = v58;
+    bundlesCopy = v58;
   }
 
   if ([v13 count])
@@ -296,7 +296,7 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
 
     v57 = v12;
 
-    v28 = [(MOTripAnnotationManager *)self getTripEventBundles:v10];
+    v28 = [(MOTripAnnotationManager *)self getTripEventBundles:bundlesCopy];
     v29 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
@@ -305,19 +305,19 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
       v32 = [v28 count];
       [v28 firstObject];
       v33 = v55 = v13;
-      v34 = [v33 startDate];
+      startDate = [v33 startDate];
       [v28 lastObject];
       v35 = v28;
       v37 = v36 = v23;
-      v38 = [v37 endDate];
+      endDate2 = [v37 endDate];
       *buf = 138413058;
       v64 = v31;
       v65 = 2048;
       v66 = v32;
       v67 = 2112;
-      v68 = v34;
+      v68 = startDate;
       v69 = 2112;
-      v70 = v38;
+      v70 = endDate2;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%@: pre-generated Trip Bundles, %lu, startDate, %@, endDate, %@", buf, 0x2Au);
 
       v23 = v36;
@@ -326,13 +326,13 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
       v13 = v55;
     }
 
-    v39 = [(MOTripAnnotationManager *)self hometownReferenceLocations];
+    hometownReferenceLocations = [(MOTripAnnotationManager *)self hometownReferenceLocations];
     v40 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
       v41 = objc_opt_class();
       v42 = NSStringFromClass(v41);
-      v43 = [v39 count];
+      v43 = [hometownReferenceLocations count];
       *buf = 138412546;
       v64 = v42;
       v65 = 2048;
@@ -340,15 +340,15 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "%@: trip manager hometown location count, %lu", buf, 0x16u);
     }
 
-    if ([v39 count])
+    if ([hometownReferenceLocations count])
     {
       v44 = objc_opt_new();
-      [(MOTripAnnotationManager *)self generateDailyTripsFromBaseEvents:v13 contextEvents:v23 pregeneratedTripBundles:v28 hometownReferenceLocations:v39];
+      [(MOTripAnnotationManager *)self generateDailyTripsFromBaseEvents:v13 contextEvents:v23 pregeneratedTripBundles:v28 hometownReferenceLocations:hometownReferenceLocations];
       v56 = v28;
       v45 = v23;
       v47 = v46 = v13;
       [v44 addObjectsFromArray:v47];
-      v48 = [(MOTripAnnotationManager *)self generateSummaryTripsFromBaseEvents:v46 hometownReferenceLocations:v39];
+      v48 = [(MOTripAnnotationManager *)self generateSummaryTripsFromBaseEvents:v46 hometownReferenceLocations:hometownReferenceLocations];
       [v44 addObjectsFromArray:v48];
       v49 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
       v60 = v49;
@@ -380,7 +380,7 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
 
     v12 = v57;
 
-    v10 = v58;
+    bundlesCopy = v58;
   }
 
   else
@@ -389,23 +389,23 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
   }
 }
 
-- (id)generateSummaryTripsFromBaseEvents:(id)a3 hometownReferenceLocations:(id)a4
+- (id)generateSummaryTripsFromBaseEvents:(id)events hometownReferenceLocations:(id)locations
 {
-  v5 = a3;
-  v6 = [(MOTripAnnotationManager *)self summaryTripMonitor];
+  eventsCopy = events;
+  summaryTripMonitor = [(MOTripAnnotationManager *)self summaryTripMonitor];
 
-  if (v6)
+  if (summaryTripMonitor)
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [(MOTripAnnotationManager *)self summaryTripMonitor];
+      summaryTripMonitor2 = [(MOTripAnnotationManager *)self summaryTripMonitor];
       *buf = 138412546;
       v44 = v9;
       v45 = 2112;
-      v46 = v10;
+      v46 = summaryTripMonitor2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@: fsm model, %@", buf, 0x16u);
     }
 
@@ -414,15 +414,15 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v36 = v5;
-    v12 = v5;
+    v36 = eventsCopy;
+    v12 = eventsCopy;
     v13 = [v12 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v13)
     {
       v14 = v13;
       v15 = *v39;
       v16 = &MOLogFacilityTripAnnotationManager;
-      v37 = self;
+      selfCopy = self;
       do
       {
         v17 = 0;
@@ -434,14 +434,14 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
           }
 
           v18 = *(*(&v38 + 1) + 8 * v17);
-          v19 = [(MOTripAnnotationManager *)self summaryTripMonitor];
-          v20 = [v19 processVisitEvent:v18];
+          summaryTripMonitor3 = [(MOTripAnnotationManager *)self summaryTripMonitor];
+          v20 = [summaryTripMonitor3 processVisitEvent:v18];
 
           if (v20)
           {
-            v21 = [v20 startDate];
+            startDate = [v20 startDate];
 
-            if (!v21)
+            if (!startDate)
             {
               v22 = _mo_log_facility_get_os_log(v16);
               if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -481,7 +481,7 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
                 v12 = v28;
                 v15 = v27;
                 v14 = v26;
-                self = v37;
+                self = selfCopy;
               }
             }
           }
@@ -496,10 +496,10 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
       while (v14);
     }
 
-    v34 = [(MOTripAnnotationManager *)self summaryTripMonitor];
-    [(MOTripAnnotationManager *)self updateSummaryTripMonitor:v34];
+    summaryTripMonitor4 = [(MOTripAnnotationManager *)self summaryTripMonitor];
+    [(MOTripAnnotationManager *)self updateSummaryTripMonitor:summaryTripMonitor4];
 
-    v5 = v36;
+    eventsCopy = v36;
   }
 
   else
@@ -510,9 +510,9 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
   return v11;
 }
 
-- (id)transformTripPlan:(id)a3
+- (id)transformTripPlan:(id)plan
 {
-  v4 = a3;
+  planCopy = plan;
   v5 = [MOEventBundle alloc];
   v6 = +[NSUUID UUID];
   v7 = +[NSDate date];
@@ -525,78 +525,78 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
   v9 = [[MOAction alloc] initWithActionName:@"Trip" actionType:2];
   [(MOEventBundle *)v8 setAction:v9];
 
-  v10 = [v4 startDate];
-  v11 = [(MOAnnotationManager *)self timeZoneManager];
-  v12 = [MOTime timeForDate:v10 timeZoneManager:v11];
+  startDate = [planCopy startDate];
+  timeZoneManager = [(MOAnnotationManager *)self timeZoneManager];
+  v12 = [MOTime timeForDate:startDate timeZoneManager:timeZoneManager];
   [(MOEventBundle *)v8 setTime:v12];
 
   [(MOEventBundle *)v8 setEvents:&__NSArray0__struct];
-  v13 = [v4 startDate];
-  [(MOEventBundle *)v8 setStartDate:v13];
+  startDate2 = [planCopy startDate];
+  [(MOEventBundle *)v8 setStartDate:startDate2];
 
-  v14 = [v4 endDate];
-  [(MOEventBundle *)v8 setEndDate:v14];
+  endDate = [planCopy endDate];
+  [(MOEventBundle *)v8 setEndDate:endDate];
 
-  v15 = [v4 endDate];
-  v16 = [v15 dateByAddingTimeInterval:2419200.0];
+  endDate2 = [planCopy endDate];
+  v16 = [endDate2 dateByAddingTimeInterval:2419200.0];
   [(MOEventBundle *)v8 setExpirationDate:v16];
 
   [(MOEventBundle *)v8 setIsAggregatedAndSuppressed:0];
-  v17 = [v4 destination];
-  [(MOEventBundle *)v8 setPromptLanguage:v17];
+  destination = [planCopy destination];
+  [(MOEventBundle *)v8 setPromptLanguage:destination];
 
-  v18 = [v4 destinationType];
-  if (v18 > 3)
+  destinationType = [planCopy destinationType];
+  if (destinationType > 3)
   {
     v19 = 100;
   }
 
   else
   {
-    v19 = qword_100322BD8[v18];
+    v19 = qword_100322BD8[destinationType];
   }
 
   v20 = [MOPlace alloc];
   v21 = +[NSUUID UUID];
-  v22 = [v4 destination];
-  v23 = [v4 destination];
-  v24 = [v4 startDate];
-  v25 = [v4 endDate];
-  v26 = [(MOPlace *)v20 initWithIdentifier:v21 placeName:v22 enclosingArea:v23 placeType:v19 placeUserType:0 location:0 locationMode:0.0 poiCategory:0.99 categoryMuid:0.0 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:0 priorityScore:0 startDate:v24 endDate:v25];
+  destination2 = [planCopy destination];
+  destination3 = [planCopy destination];
+  startDate3 = [planCopy startDate];
+  endDate3 = [planCopy endDate];
+  v26 = [(MOPlace *)v20 initWithIdentifier:v21 placeName:destination2 enclosingArea:destination3 placeType:v19 placeUserType:0 location:0 locationMode:0.0 poiCategory:0.99 categoryMuid:0.0 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:0 priorityScore:0 startDate:startDate3 endDate:endDate3];
   [(MOEventBundle *)v8 setPlace:v26];
 
   return v8;
 }
 
-- (id)generateDailyTripsFromBaseEvents:(id)a3 contextEvents:(id)a4 pregeneratedTripBundles:(id)a5 hometownReferenceLocations:(id)a6
+- (id)generateDailyTripsFromBaseEvents:(id)events contextEvents:(id)contextEvents pregeneratedTripBundles:(id)bundles hometownReferenceLocations:(id)locations
 {
-  v10 = a3;
-  v114 = a4;
-  v11 = a5;
-  v120 = a6;
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
+  bundlesCopy = bundles;
+  locationsCopy = locations;
   v115 = objc_opt_new();
-  v116 = v11;
-  v12 = [v11 lastObject];
+  v116 = bundlesCopy;
+  lastObject = [bundlesCopy lastObject];
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v12 state];
-    v17 = [v12 startDate];
-    v18 = [v12 endDate];
-    v19 = [v12 promptLanguage];
-    v20 = [v19 mask];
+    state = [lastObject state];
+    startDate = [lastObject startDate];
+    endDate = [lastObject endDate];
+    promptLanguage = [lastObject promptLanguage];
+    mask = [promptLanguage mask];
     *buf = 138413314;
     v141 = v15;
     v142 = 2048;
-    v143 = *&v16;
+    v143 = *&state;
     v144 = 2112;
-    v145 = *&v17;
+    v145 = *&startDate;
     v146 = 2112;
-    v147 = *&v18;
+    v147 = *&endDate;
     v148 = 2112;
-    v149 = v20;
+    v149 = mask;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@: current trip, state, %lu, startDate, %@, endDate, %@, string, %@", buf, 0x34u);
   }
 
@@ -604,7 +604,7 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
   v135 = 0u;
   v132 = 0u;
   v133 = 0u;
-  obj = v10;
+  obj = eventsCopy;
   v21 = [obj countByEnumeratingWithState:&v132 objects:v139 count:16];
   if (v21)
   {
@@ -620,11 +620,11 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
         }
 
         v25 = *(*(&v132 + 1) + 8 * i);
-        if (v12)
+        if (lastObject)
         {
-          v26 = [*(*(&v132 + 1) + 8 * i) startDate];
-          v27 = [v12 endDate];
-          v28 = [v26 isBeforeDate:v27];
+          startDate2 = [*(*(&v132 + 1) + 8 * i) startDate];
+          endDate2 = [lastObject endDate];
+          v28 = [startDate2 isBeforeDate:endDate2];
 
           if (v28)
           {
@@ -632,10 +632,10 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
           }
         }
 
-        v29 = v12;
-        v30 = [v25 routineEvent];
-        v31 = [v30 location];
-        [(MOTripAnnotationManager *)self distanceFromLocation:v31 hometownReferenceLocations:v120];
+        v29 = lastObject;
+        routineEvent = [v25 routineEvent];
+        location = [routineEvent location];
+        [(MOTripAnnotationManager *)self distanceFromLocation:location hometownReferenceLocations:locationsCopy];
         v33 = v32;
 
         minimumHometownDistanceThreshold = self->_minimumHometownDistanceThreshold;
@@ -667,13 +667,13 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
 
         if (v33 < minimumHometownDistanceThreshold)
         {
-          if (v12)
+          if (lastObject)
           {
-            if ([v12 state]== 1)
+            if ([lastObject state]== 1)
             {
-              [(MOTripAnnotationManager *)self closeTrip:v12 hometownReferenceLocations:v120 contextEvents:v114];
-              v56 = [v12 suggestionID];
-              [v115 setObject:v12 forKey:v56];
+              [(MOTripAnnotationManager *)self closeTrip:lastObject hometownReferenceLocations:locationsCopy contextEvents:contextEventsCopy];
+              suggestionID = [lastObject suggestionID];
+              [v115 setObject:lastObject forKey:suggestionID];
 
               v57 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
               if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
@@ -683,7 +683,7 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
                 *buf = 138412546;
                 v141 = v59;
                 v142 = 2112;
-                v143 = *&v12;
+                v143 = *&lastObject;
                 _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "%@: hometown visit, close the previous trip, %@", buf, 0x16u);
               }
             }
@@ -702,20 +702,20 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
           goto LABEL_48;
         }
 
-        if (v12)
+        if (lastObject)
         {
-          [(MOTripAnnotationManager *)self distanceFromEvent:v25 trip:v12];
+          [(MOTripAnnotationManager *)self distanceFromEvent:v25 trip:lastObject];
           v42 = v41;
-          v43 = [(MOTripAnnotationManager *)self inSameCityOfEvent:v25 trip:v12];
+          v43 = [(MOTripAnnotationManager *)self inSameCityOfEvent:v25 trip:lastObject];
           if (v42 <= self->_minimumDistanceBetweenTripsThreshold || (v43 & 1) != 0)
           {
-            v60 = [(MOTripAnnotationManager *)self isSameDayOfEvent:v25 trip:v12];
-            v61 = [(MOTripAnnotationManager *)self dayCountInTrip:v12];
+            v60 = [(MOTripAnnotationManager *)self isSameDayOfEvent:v25 trip:lastObject];
+            v61 = [(MOTripAnnotationManager *)self dayCountInTrip:lastObject];
             if (v61 < self->_maximumDayCountThreashold || (v60 & 1) != 0)
             {
-              [(MOTripAnnotationManager *)self addVisitEvent:v25 toTripBundle:v12];
-              v69 = [v12 suggestionID];
-              [v115 setObject:v12 forKey:v69];
+              [(MOTripAnnotationManager *)self addVisitEvent:v25 toTripBundle:lastObject];
+              suggestionID2 = [lastObject suggestionID];
+              [v115 setObject:lastObject forKey:suggestionID2];
 
               v29 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
               if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -734,20 +734,20 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
                 v142 = 2112;
                 v143 = *&v73;
                 v144 = 2112;
-                v145 = *&v12;
+                v145 = *&lastObject;
                 _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%@: add to previous trip (%@), %@", buf, 0x20u);
               }
 
-              v48 = v12;
+              v48 = lastObject;
               goto LABEL_48;
             }
 
             v62 = v61;
-            if ([v12 state]== 1)
+            if ([lastObject state]== 1)
             {
-              [(MOTripAnnotationManager *)self closeTrip:v12 hometownReferenceLocations:v120 contextEvents:v114];
-              v63 = [v12 suggestionID];
-              [v115 setObject:v12 forKey:v63];
+              [(MOTripAnnotationManager *)self closeTrip:lastObject hometownReferenceLocations:locationsCopy contextEvents:contextEventsCopy];
+              suggestionID3 = [lastObject suggestionID];
+              [v115 setObject:lastObject forKey:suggestionID3];
 
               v64 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
               if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
@@ -757,15 +757,15 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
                 *buf = 138412546;
                 v141 = v66;
                 v142 = 2112;
-                v143 = *&v12;
+                v143 = *&lastObject;
                 _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "%@: activate the new trip, %@", buf, 0x16u);
               }
             }
 
             v48 = [(MOTripAnnotationManager *)self createTripWithVisitEvent:v25];
 
-            v67 = [v48 suggestionID];
-            [v115 setObject:v48 forKey:v67];
+            suggestionID4 = [v48 suggestionID];
+            [v115 setObject:v48 forKey:suggestionID4];
 
             v29 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
             if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -786,11 +786,11 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
 
           else
           {
-            if ([v12 state]== 1)
+            if ([lastObject state]== 1)
             {
-              [(MOTripAnnotationManager *)self closeTrip:v12 hometownReferenceLocations:v120 contextEvents:v114];
-              v44 = [v12 suggestionID];
-              [v115 setObject:v12 forKey:v44];
+              [(MOTripAnnotationManager *)self closeTrip:lastObject hometownReferenceLocations:locationsCopy contextEvents:contextEventsCopy];
+              suggestionID5 = [lastObject suggestionID];
+              [v115 setObject:lastObject forKey:suggestionID5];
 
               v45 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
               if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
@@ -800,15 +800,15 @@ uint64_t __94__MOTripAnnotationManager_performAnnotationWithEvents_withPatternEv
                 *buf = 138412546;
                 v141 = v47;
                 v142 = 2112;
-                v143 = *&v12;
+                v143 = *&lastObject;
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "%@: activate the new trip, %@", buf, 0x16u);
               }
             }
 
             v48 = [(MOTripAnnotationManager *)self createTripWithVisitEvent:v25];
 
-            v49 = [v48 suggestionID];
-            [v115 setObject:v48 forKey:v49];
+            suggestionID6 = [v48 suggestionID];
+            [v115 setObject:v48 forKey:suggestionID6];
 
             v29 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
             if (!os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -834,8 +834,8 @@ LABEL_42:
         else
         {
           v48 = [(MOTripAnnotationManager *)self createTripWithVisitEvent:v25];
-          v54 = [v48 suggestionID];
-          [v115 setObject:v48 forKey:v54];
+          suggestionID7 = [v48 suggestionID];
+          [v115 setObject:v48 forKey:suggestionID7];
 
           v29 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -856,7 +856,7 @@ LABEL_42:
 
 LABEL_48:
 
-        v12 = v48;
+        lastObject = v48;
         continue;
       }
 
@@ -866,7 +866,7 @@ LABEL_48:
     while (v22);
   }
 
-  v113 = v12;
+  v113 = lastObject;
 
   v74 = objc_opt_new();
   v128 = 0u;
@@ -890,15 +890,15 @@ LABEL_48:
         }
 
         v78 = *(*(&v128 + 1) + 8 * j);
-        v79 = [v78 suggestionID];
-        [v74 setObject:v78 forKey:v79];
+        suggestionID8 = [v78 suggestionID];
+        [v74 setObject:v78 forKey:suggestionID8];
 
-        v80 = [v78 events];
-        v81 = [(MOTripAnnotationManager *)self getBaseEvents:v80];
+        events = [v78 events];
+        v81 = [(MOTripAnnotationManager *)self getBaseEvents:events];
 
         v82 = [v81 count];
-        v83 = [v78 events];
-        v84 = [(MOTripAnnotationManager *)self getContextEvents:v83];
+        events2 = [v78 events];
+        v84 = [(MOTripAnnotationManager *)self getContextEvents:events2];
 
         v85 = [v84 count];
         v86 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
@@ -906,11 +906,11 @@ LABEL_48:
         {
           v87 = objc_opt_class();
           v88 = NSStringFromClass(v87);
-          v89 = [v78 state];
+          state2 = [v78 state];
           *buf = 138413314;
           v141 = v88;
           v142 = 2048;
-          v143 = *&v89;
+          v143 = *&state2;
           v144 = 2048;
           v145 = *&v82;
           v146 = 2048;
@@ -933,8 +933,8 @@ LABEL_48:
   v127 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v117 = [v115 allValues];
-  v90 = [v117 countByEnumeratingWithState:&v124 objects:v136 count:16];
+  allValues = [v115 allValues];
+  v90 = [allValues countByEnumeratingWithState:&v124 objects:v136 count:16];
   if (v90)
   {
     v91 = v90;
@@ -945,19 +945,19 @@ LABEL_48:
       {
         if (*v125 != v122)
         {
-          objc_enumerationMutation(v117);
+          objc_enumerationMutation(allValues);
         }
 
         v93 = *(*(&v124 + 1) + 8 * k);
-        v94 = [v93 suggestionID];
-        [v74 setObject:v93 forKey:v94];
+        suggestionID9 = [v93 suggestionID];
+        [v74 setObject:v93 forKey:suggestionID9];
 
-        v95 = [v93 events];
-        v96 = [(MOTripAnnotationManager *)self getBaseEvents:v95];
+        events3 = [v93 events];
+        v96 = [(MOTripAnnotationManager *)self getBaseEvents:events3];
 
         v97 = [v96 count];
-        v98 = [v93 events];
-        v99 = [(MOTripAnnotationManager *)self getContextEvents:v98];
+        events4 = [v93 events];
+        v99 = [(MOTripAnnotationManager *)self getContextEvents:events4];
 
         v100 = [v99 count];
         v101 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
@@ -965,11 +965,11 @@ LABEL_48:
         {
           v102 = objc_opt_class();
           v103 = NSStringFromClass(v102);
-          v104 = [v93 state];
+          state3 = [v93 state];
           *buf = 138413314;
           v141 = v103;
           v142 = 2048;
-          v143 = *&v104;
+          v143 = *&state3;
           v144 = 2048;
           v145 = *&v97;
           v146 = 2048;
@@ -982,7 +982,7 @@ LABEL_48:
         }
       }
 
-      v91 = [v117 countByEnumeratingWithState:&v124 objects:v136 count:16];
+      v91 = [allValues countByEnumeratingWithState:&v124 objects:v136 count:16];
     }
 
     while (v91);
@@ -1007,45 +1007,45 @@ LABEL_48:
     _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_INFO, "%@: previous trips, %lu, new trips, %lu, total trips, %lu", buf, 0x2Au);
   }
 
-  v111 = [v74 allValues];
+  allValues2 = [v74 allValues];
 
-  return v111;
+  return allValues2;
 }
 
-- (void)closeTrip:(id)a3 hometownReferenceLocations:(id)a4 contextEvents:(id)a5
+- (void)closeTrip:(id)trip hometownReferenceLocations:(id)locations contextEvents:(id)events
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 action];
+  tripCopy = trip;
+  locationsCopy = locations;
+  eventsCopy = events;
+  action = [tripCopy action];
 
-  if (!v11)
+  if (!action)
   {
-    v12 = [v8 startDate];
-    v13 = [NSPredicate predicateWithFormat:@"startDate >= %@", v12];
+    startDate = [tripCopy startDate];
+    v13 = [NSPredicate predicateWithFormat:@"startDate >= %@", startDate];
     v77[0] = v13;
-    v14 = [v8 endDate];
-    v15 = [NSPredicate predicateWithFormat:@"startDate <= %@", v14];
+    endDate = [tripCopy endDate];
+    v15 = [NSPredicate predicateWithFormat:@"startDate <= %@", endDate];
     v77[1] = v15;
     v16 = [NSArray arrayWithObjects:v77 count:2];
     v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
     v54 = v17;
-    v18 = [v10 filteredArrayUsingPredicate:v17];
+    v18 = [eventsCopy filteredArrayUsingPredicate:v17];
 
     v53 = v18;
-    [(MOTripAnnotationManager *)self materializeTripBundle:v8 contextEvents:v18 updateWithFilteredEvents:0];
-    [(MOTripAnnotationManager *)self durationOfTrip:v8];
+    [(MOTripAnnotationManager *)self materializeTripBundle:tripCopy contextEvents:v18 updateWithFilteredEvents:0];
+    [(MOTripAnnotationManager *)self durationOfTrip:tripCopy];
     v20 = v19;
-    v21 = [(MOTripAnnotationManager *)self dayCountInTrip:v8];
-    v22 = [(MOTripAnnotationManager *)self visitCountInTrip:v8];
-    v23 = [v8 events];
-    v24 = [v23 firstObject];
-    v25 = [v24 location];
-    [(MOTripAnnotationManager *)self distanceFromLocation:v25 hometownReferenceLocations:v9];
+    v21 = [(MOTripAnnotationManager *)self dayCountInTrip:tripCopy];
+    v22 = [(MOTripAnnotationManager *)self visitCountInTrip:tripCopy];
+    events = [tripCopy events];
+    firstObject = [events firstObject];
+    location = [firstObject location];
+    [(MOTripAnnotationManager *)self distanceFromLocation:location hometownReferenceLocations:locationsCopy];
     v27 = v26;
 
-    v28 = [(MOTripAnnotationManager *)self containInterestingCategoryInTrip:v8];
+    v28 = [(MOTripAnnotationManager *)self containInterestingCategoryInTrip:tripCopy];
     v29 = v28;
     v30 = v20 < self->_minimumDurationThreshold || v22 < self->_minimumVisitCountThreshold || v27 < self->_minimumHometownDistanceForTripThreshold;
     if (v21 >= self->_minimumDayCountThreshold)
@@ -1055,23 +1055,23 @@ LABEL_48:
 
     v31 = (v28 ^ 1) & v30;
     minimumHometownDistanceThreshold = self->_minimumHometownDistanceThreshold;
-    v33 = [v8 place];
+    place = [tripCopy place];
 
-    v35 = v27 < minimumHometownDistanceThreshold || v33 == 0;
+    v35 = v27 < minimumHometownDistanceThreshold || place == 0;
     v52 = v21;
     v36 = v35 | v31;
-    [v8 setIsAggregatedAndSuppressed:(v35 | v31) & 1];
-    v37 = [v8 place];
-    v38 = [v37 placeName];
-    [v8 setPromptLanguage:v38];
+    [tripCopy setIsAggregatedAndSuppressed:(v35 | v31) & 1];
+    place2 = [tripCopy place];
+    placeName = [place2 placeName];
+    [tripCopy setPromptLanguage:placeName];
 
     v39 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = objc_opt_class();
       NSStringFromClass(v40);
-      v41 = v51 = v9;
-      v42 = [v8 suggestionID];
+      v41 = v51 = locationsCopy;
+      suggestionID = [tripCopy suggestionID];
       if (v36)
       {
         v43 = @"suppressed";
@@ -1082,8 +1082,8 @@ LABEL_48:
         v43 = @"created";
       }
 
-      v50 = [v8 promptLanguage];
-      v44 = [v50 mask];
+      promptLanguage = [tripCopy promptLanguage];
+      mask = [promptLanguage mask];
       minimumDurationThreshold = self->_minimumDurationThreshold;
       minimumDayCountThreshold = self->_minimumDayCountThreshold;
       minimumHometownDistanceForTripThreshold = self->_minimumHometownDistanceForTripThreshold;
@@ -1092,17 +1092,17 @@ LABEL_48:
       v49 = v41;
       v56 = v41;
       v57 = 2112;
-      v58 = v42;
+      v58 = suggestionID;
       v59 = 2112;
       v60 = v43;
       v61 = 2112;
-      v62 = v44;
+      v62 = mask;
       v63 = 2048;
       v64 = v20;
       v65 = 2048;
       v66 = minimumDurationThreshold;
       v67 = 2048;
-      v9 = v51;
+      locationsCopy = v51;
       v68 = v52;
       v69 = 2048;
       v70 = minimumDayCountThreshold;
@@ -1115,13 +1115,13 @@ LABEL_48:
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "%@: trip, suggestionId : %@ is %@, label, %@, durationOfTrip, %f (>= %f), dayCount, %lu (>= %lu), distanceToHome, %f (>= %f), containsInterestingPOI, %lu", buf, 0x70u);
     }
 
-    v10 = v53;
+    eventsCopy = v53;
   }
 }
 
-- (id)createTripWithVisitEvent:(id)a3
+- (id)createTripWithVisitEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [MOEventBundle alloc];
   v5 = +[NSUUID UUID];
   v6 = +[NSDate date];
@@ -1131,19 +1131,19 @@ LABEL_48:
   [(MOEventBundle *)v7 setBundleSuperType:1];
   [(MOEventBundle *)v7 setBundleSubType:105];
   [(MOEventBundle *)v7 setSummarizationGranularity:2];
-  v14 = v3;
+  v14 = eventCopy;
   v8 = [NSArray arrayWithObjects:&v14 count:1];
   [(MOEventBundle *)v7 setEvents:v8];
 
-  v9 = [v3 startDate];
-  [(MOEventBundle *)v7 setStartDate:v9];
+  startDate = [eventCopy startDate];
+  [(MOEventBundle *)v7 setStartDate:startDate];
 
-  v10 = [v3 endDate];
-  [(MOEventBundle *)v7 setEndDate:v10];
+  endDate = [eventCopy endDate];
+  [(MOEventBundle *)v7 setEndDate:endDate];
 
-  v11 = [v3 endDate];
+  endDate2 = [eventCopy endDate];
 
-  v12 = [v11 dateByAddingTimeInterval:2419200.0];
+  v12 = [endDate2 dateByAddingTimeInterval:2419200.0];
   [(MOEventBundle *)v7 setExpirationDate:v12];
 
   [(MOEventBundle *)v7 setIsAggregatedAndSuppressed:1];
@@ -1152,16 +1152,16 @@ LABEL_48:
   return v7;
 }
 
-- (void)addVisitEvent:(id)a3 toTripBundle:(id)a4
+- (void)addVisitEvent:(id)event toTripBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  bundleCopy = bundle;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 events];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  events = [bundleCopy events];
+  v8 = [events countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1172,13 +1172,13 @@ LABEL_3:
     {
       if (*v22 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(events);
       }
 
       v12 = *(*(&v21 + 1) + 8 * v11);
-      v13 = [v5 eventIdentifier];
-      v14 = [v12 eventIdentifier];
-      v15 = [v13 isEqual:v14];
+      eventIdentifier = [eventCopy eventIdentifier];
+      eventIdentifier2 = [v12 eventIdentifier];
+      v15 = [eventIdentifier isEqual:eventIdentifier2];
 
       if (v15)
       {
@@ -1187,7 +1187,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [events countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1202,31 +1202,31 @@ LABEL_3:
   {
 LABEL_9:
 
-    v16 = [v6 events];
+    events2 = [bundleCopy events];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v18 = [v6 events];
-    v7 = v18;
+    events3 = [bundleCopy events];
+    events = events3;
     if ((isKindOfClass & 1) == 0)
     {
-      v19 = [v18 mutableCopy];
+      v19 = [events3 mutableCopy];
 
-      v7 = v19;
+      events = v19;
     }
 
-    [v7 addObject:v5];
-    [v6 setEvents:v7];
-    v20 = [v5 endDate];
-    [v6 setEndDate:v20];
+    [events addObject:eventCopy];
+    [bundleCopy setEvents:events];
+    endDate = [eventCopy endDate];
+    [bundleCopy setEndDate:endDate];
   }
 }
 
-- (id)getBaseEvents:(id)a3
+- (id)getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 1];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   v6 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v10 = v6;
@@ -1236,11 +1236,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)getTripEventBundles:(id)a3
+- (id)getTripEventBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 13];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [bundlesCopy filteredArrayUsingPredicate:v4];
 
   v6 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v10 = v6;
@@ -1250,11 +1250,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)getContextEvents:(id)a3
+- (id)getContextEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 2];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   v6 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v10 = v6;
@@ -1264,40 +1264,40 @@ LABEL_9:
   return v8;
 }
 
-- (id)resourceFromWorkoutEvent:(id)a3
+- (id)resourceFromWorkoutEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 provider] == 1 && (objc_msgSend(v3, "workoutType"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  eventCopy = event;
+  if ([eventCopy provider] == 1 && (objc_msgSend(eventCopy, "workoutType"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = objc_opt_new();
-    v6 = [v3 startDate];
-    [v6 timeIntervalSince1970];
+    startDate = [eventCopy startDate];
+    [startDate timeIntervalSince1970];
     v7 = [NSNumber numberWithDouble:?];
     [v5 setObject:v7 forKey:@"MOWorkoutMetaDataKeyStartDate"];
 
-    v8 = [v3 endDate];
-    [v8 timeIntervalSince1970];
+    endDate = [eventCopy endDate];
+    [endDate timeIntervalSince1970];
     v9 = [NSNumber numberWithDouble:?];
     [v5 setObject:v9 forKey:@"MOWorkoutMetaDataKeyEndDate"];
 
-    v10 = [v3 workoutType];
-    [v5 setObject:v10 forKey:@"MOWorkoutMetaDataKeyActivityType"];
+    workoutType = [eventCopy workoutType];
+    [v5 setObject:workoutType forKey:@"MOWorkoutMetaDataKeyActivityType"];
 
-    v11 = [v3 workoutEvent];
-    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isIndoors]);
+    workoutEvent = [eventCopy workoutEvent];
+    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [workoutEvent isIndoors]);
     [v5 setObject:v12 forKey:@"MOWorkoutMetaDataKeyIsIndoors"];
 
-    v13 = [v3 identifierFromProvider];
+    identifierFromProvider = [eventCopy identifierFromProvider];
 
-    if (v13)
+    if (identifierFromProvider)
     {
-      v14 = [v3 identifierFromProvider];
-      [v5 setObject:v14 forKey:@"MOWorkoutMetaDataKeyWorkoutID"];
+      identifierFromProvider2 = [eventCopy identifierFromProvider];
+      [v5 setObject:identifierFromProvider2 forKey:@"MOWorkoutMetaDataKeyWorkoutID"];
     }
 
     v15 = [[MOResource alloc] initWithName:@"Workout" type:10 dict:v5 value:0.0];
-    v16 = [v3 eventIdentifier];
-    [(MOResource *)v15 setSourceEventIdentifier:v16];
+    eventIdentifier = [eventCopy eventIdentifier];
+    [(MOResource *)v15 setSourceEventIdentifier:eventIdentifier];
   }
 
   else
@@ -1317,7 +1317,7 @@ LABEL_9:
   v20 = __Block_byref_object_dispose__6;
   v21 = objc_opt_new();
   v3 = dispatch_semaphore_create(0);
-  v4 = [(MOTripAnnotationManager *)self routineManager];
+  routineManager = [(MOTripAnnotationManager *)self routineManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke;
@@ -1326,7 +1326,7 @@ LABEL_9:
   v13[4] = self;
   v5 = v3;
   v14 = v5;
-  [v4 fetchLocationsOfInterestOfType:0 withHandler:v13];
+  [routineManager fetchLocationsOfInterestOfType:0 withHandler:v13];
 
   v6 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptProvider/MOTripAnnotationManager.m", 715, "[MOTripAnnotationManager hometownReferenceLocations]"];
   v12 = 0;
@@ -1466,12 +1466,12 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (double)distanceFromLocation:(id)a3 hometownReferenceLocations:(id)a4
+- (double)distanceFromLocation:(id)location hometownReferenceLocations:(id)locations
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && (v17 = 0u, v18 = 0u, v15 = 0u, v16 = 0u, (v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16]) != 0))
+  locationCopy = location;
+  locationsCopy = locations;
+  v7 = locationsCopy;
+  if (locationCopy && (v17 = 0u, v18 = 0u, v15 = 0u, v16 = 0u, (v8 = [locationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16]) != 0))
   {
     v9 = v8;
     v10 = *v16;
@@ -1485,7 +1485,7 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
           objc_enumerationMutation(v7);
         }
 
-        [v5 distanceFromLocation:*(*(&v15 + 1) + 8 * i)];
+        [locationCopy distanceFromLocation:*(*(&v15 + 1) + 8 * i)];
         if (v13 < v11)
         {
           v11 = v13;
@@ -1506,19 +1506,19 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
   return v11;
 }
 
-- (double)maxDistanceFromEvent:(id)a3 events:(id)a4
+- (double)maxDistanceFromEvent:(id)event events:(id)events
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 location];
+  eventCopy = event;
+  eventsCopy = events;
+  location = [eventCopy location];
 
-  if (v7 && [v6 count])
+  if (location && [eventsCopy count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v6;
+    v8 = eventsCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -1535,9 +1535,9 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v5 location];
-          v16 = [v14 location];
-          [v15 distanceFromLocation:v16];
+          location2 = [eventCopy location];
+          location3 = [v14 location];
+          [location2 distanceFromLocation:location3];
           v18 = v17;
 
           if (v18 > v12)
@@ -1566,23 +1566,23 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
   return v12;
 }
 
-- (double)distanceFromEvent:(id)a3 trip:(id)a4
+- (double)distanceFromEvent:(id)event trip:(id)trip
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 location];
+  eventCopy = event;
+  tripCopy = trip;
+  location = [eventCopy location];
 
   v8 = 1.79769313e308;
-  if (v6 && v7)
+  if (tripCopy && location)
   {
-    v9 = [v6 events];
-    if ([v9 count])
+    events = [tripCopy events];
+    if ([events count])
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = v9;
+      v10 = events;
       v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v11)
       {
@@ -1599,9 +1599,9 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
             }
 
             v15 = *(*(&v21 + 1) + 8 * i);
-            v16 = [v5 location];
-            v17 = [v15 location];
-            [v16 distanceFromLocation:v17];
+            location2 = [eventCopy location];
+            location3 = [v15 location];
+            [location2 distanceFromLocation:location3];
             v19 = v18;
 
             if (v19 < v8)
@@ -1631,10 +1631,10 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
   return v8;
 }
 
-- (BOOL)inSameCityOfEvent:(id)a3 trip:(id)a4
+- (BOOL)inSameCityOfEvent:(id)event trip:(id)trip
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  tripCopy = trip;
   v8 = @"aboveDoorShortAddress";
   configurationManager = self->_configurationManager;
   if (configurationManager)
@@ -1645,13 +1645,13 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
     v8 = v11;
   }
 
-  v12 = [v6 formatLocalityWithFormatOption:v8];
+  v12 = [eventCopy formatLocalityWithFormatOption:v8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v7 events];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  events = [tripCopy events];
+  v14 = [events countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = *v22;
@@ -1661,7 +1661,7 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(events);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
@@ -1678,7 +1678,7 @@ void __53__MOTripAnnotationManager_hometownReferenceLocations__block_invoke_305(
         }
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [events countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v14)
       {
         continue;
@@ -1693,18 +1693,18 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)isSameDayOfEvent:(id)a3 trip:(id)a4
+- (BOOL)isSameDayOfEvent:(id)event trip:(id)trip
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 dateInterval];
-  v8 = [v5 startDate];
-  v9 = [v7 endDate];
-  if ([v8 isBeforeDate:v9])
+  eventCopy = event;
+  tripCopy = trip;
+  dateInterval = [tripCopy dateInterval];
+  startDate = [eventCopy startDate];
+  endDate = [dateInterval endDate];
+  if ([startDate isBeforeDate:endDate])
   {
-    v10 = [v5 endDate];
-    v11 = [v7 startDate];
-    v12 = [v10 isAfterDate:v11];
+    endDate2 = [eventCopy endDate];
+    startDate2 = [dateInterval startDate];
+    v12 = [endDate2 isAfterDate:startDate2];
 
     if (v12)
     {
@@ -1717,18 +1717,18 @@ LABEL_14:
   {
   }
 
-  v14 = [v6 events];
-  v15 = [v14 lastObject];
+  events = [tripCopy events];
+  lastObject = [events lastObject];
 
-  v16 = [v6 time];
-  v17 = [v16 timeZone];
+  time = [tripCopy time];
+  timeZone = [time timeZone];
 
-  if (v17)
+  if (timeZone)
   {
     v18 = [NSTimeZone alloc];
-    v19 = [v6 time];
-    v20 = [v19 timeZone];
-    v21 = [v18 initWithName:v20];
+    time2 = [tripCopy time];
+    timeZone2 = [time2 timeZone];
+    v21 = [v18 initWithName:timeZone2];
   }
 
   else
@@ -1736,22 +1736,22 @@ LABEL_14:
     v21 = 0;
   }
 
-  v22 = [v5 startDate];
-  v23 = [v15 endDate];
-  v13 = [v22 isSameDayWithDate:v23 timeZone:v21];
+  startDate3 = [eventCopy startDate];
+  endDate3 = [lastObject endDate];
+  v13 = [startDate3 isSameDayWithDate:endDate3 timeZone:v21];
 
 LABEL_9:
   return v13;
 }
 
-- (double)durationOfTrip:(id)a3
+- (double)durationOfTrip:(id)trip
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [a3 events];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  events = [trip events];
+  v5 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1763,21 +1763,21 @@ LABEL_9:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         if ([v10 category] == 1)
         {
           lessInterestingPoiCategories = self->_lessInterestingPoiCategories;
-          v12 = [v10 poiCategory];
-          LOBYTE(lessInterestingPoiCategories) = [(NSSet *)lessInterestingPoiCategories containsObject:v12];
+          poiCategory = [v10 poiCategory];
+          LOBYTE(lessInterestingPoiCategories) = [(NSSet *)lessInterestingPoiCategories containsObject:poiCategory];
 
           if ((lessInterestingPoiCategories & 1) == 0)
           {
             airportCategories = self->_airportCategories;
-            v14 = [v10 poiCategory];
-            LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:v14];
+            poiCategory2 = [v10 poiCategory];
+            LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:poiCategory2];
 
             if ((airportCategories & 1) == 0)
             {
@@ -1788,7 +1788,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -1802,14 +1802,14 @@ LABEL_9:
   return v8;
 }
 
-- (unint64_t)visitCountInTrip:(id)a3
+- (unint64_t)visitCountInTrip:(id)trip
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a3 events];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  events = [trip events];
+  v5 = [events countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1821,28 +1821,28 @@ LABEL_9:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 category] == 1)
         {
           lessInterestingPoiCategories = self->_lessInterestingPoiCategories;
-          v12 = [v10 poiCategory];
-          LOBYTE(lessInterestingPoiCategories) = [(NSSet *)lessInterestingPoiCategories containsObject:v12];
+          poiCategory = [v10 poiCategory];
+          LOBYTE(lessInterestingPoiCategories) = [(NSSet *)lessInterestingPoiCategories containsObject:poiCategory];
 
           if ((lessInterestingPoiCategories & 1) == 0)
           {
             airportCategories = self->_airportCategories;
-            v14 = [v10 poiCategory];
-            LODWORD(airportCategories) = [(NSSet *)airportCategories containsObject:v14];
+            poiCategory2 = [v10 poiCategory];
+            LODWORD(airportCategories) = [(NSSet *)airportCategories containsObject:poiCategory2];
 
             v7 += airportCategories ^ 1;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [events countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -1856,14 +1856,14 @@ LABEL_9:
   return v7;
 }
 
-- (double)interestingPOIDurationInTrip:(id)a3
+- (double)interestingPOIDurationInTrip:(id)trip
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a3 events];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  events = [trip events];
+  v5 = [events countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1875,15 +1875,15 @@ LABEL_9:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         if ([v10 category] == 1)
         {
           interestingPoiCategories = self->_interestingPoiCategories;
-          v12 = [v10 poiCategory];
-          LODWORD(interestingPoiCategories) = [(NSSet *)interestingPoiCategories containsObject:v12];
+          poiCategory = [v10 poiCategory];
+          LODWORD(interestingPoiCategories) = [(NSSet *)interestingPoiCategories containsObject:poiCategory];
 
           if (interestingPoiCategories)
           {
@@ -1893,7 +1893,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [events countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -1907,14 +1907,14 @@ LABEL_9:
   return v8;
 }
 
-- (double)nonInterestingPOIDurationInTrip:(id)a3
+- (double)nonInterestingPOIDurationInTrip:(id)trip
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [a3 events];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  events = [trip events];
+  v5 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1926,21 +1926,21 @@ LABEL_9:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         if ([v10 category] == 1)
         {
           lessInterestingPoiCategories = self->_lessInterestingPoiCategories;
-          v12 = [v10 poiCategory];
-          LOBYTE(lessInterestingPoiCategories) = [(NSSet *)lessInterestingPoiCategories containsObject:v12];
+          poiCategory = [v10 poiCategory];
+          LOBYTE(lessInterestingPoiCategories) = [(NSSet *)lessInterestingPoiCategories containsObject:poiCategory];
 
           if ((lessInterestingPoiCategories & 1) == 0)
           {
             airportCategories = self->_airportCategories;
-            v14 = [v10 poiCategory];
-            LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:v14];
+            poiCategory2 = [v10 poiCategory];
+            LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:poiCategory2];
 
             if ((airportCategories & 1) == 0)
             {
@@ -1951,7 +1951,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -1965,14 +1965,14 @@ LABEL_9:
   return v8;
 }
 
-- (double)dwellTimeOfEvents:(id)a3
+- (double)dwellTimeOfEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [eventsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1984,7 +1984,7 @@ LABEL_9:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -1995,7 +1995,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [eventsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -2009,31 +2009,31 @@ LABEL_9:
   return v7;
 }
 
-- (unint64_t)dayCountInTrip:(id)a3
+- (unint64_t)dayCountInTrip:(id)trip
 {
-  v3 = a3;
+  tripCopy = trip;
   v4 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-  v5 = [v3 time];
-  v6 = [v5 timeZone];
+  time = [tripCopy time];
+  timeZone = [time timeZone];
 
-  if (v6)
+  if (timeZone)
   {
     v7 = [NSTimeZone alloc];
-    v8 = [v3 time];
-    v9 = [v8 timeZone];
-    v10 = [v7 initWithName:v9];
+    time2 = [tripCopy time];
+    timeZone2 = [time2 timeZone];
+    v10 = [v7 initWithName:timeZone2];
 
     [v4 setTimeZone:v10];
   }
 
   v22 = 0;
-  v11 = [v3 startDate];
-  [v4 rangeOfUnit:16 startDate:&v22 interval:0 forDate:v11];
+  startDate = [tripCopy startDate];
+  [v4 rangeOfUnit:16 startDate:&v22 interval:0 forDate:startDate];
   v12 = v22;
 
   v21 = 0;
-  v13 = [v3 endDate];
-  [v4 rangeOfUnit:16 startDate:&v21 interval:0 forDate:v13];
+  endDate = [tripCopy endDate];
+  [v4 rangeOfUnit:16 startDate:&v21 interval:0 forDate:endDate];
   v14 = v21;
 
   v15 = [v4 components:16 fromDate:v12 toDate:v14 options:0];
@@ -2041,12 +2041,12 @@ LABEL_9:
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v3 startDate];
-    v19 = [v3 endDate];
+    startDate2 = [tripCopy startDate];
+    endDate2 = [tripCopy endDate];
     *buf = 138413570;
-    v24 = v18;
+    v24 = startDate2;
     v25 = 2112;
-    v26 = v19;
+    v26 = endDate2;
     v27 = 2112;
     v28 = v12;
     v29 = 2112;
@@ -2061,21 +2061,21 @@ LABEL_9:
   return v16;
 }
 
-- (void)materializeTripBundle:(id)a3 contextEvents:(id)a4 updateWithFilteredEvents:(BOOL)a5
+- (void)materializeTripBundle:(id)bundle contextEvents:(id)events updateWithFilteredEvents:(BOOL)filteredEvents
 {
-  v77 = a5;
-  v6 = a3;
-  v7 = a4;
+  filteredEventsCopy = filteredEvents;
+  bundleCopy = bundle;
+  eventsCopy = events;
   v79 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
-  v87 = v6;
-  v8 = [v6 events];
-  v9 = [(MOTripAnnotationManager *)self getBaseEvents:v8];
+  v87 = bundleCopy;
+  events = [bundleCopy events];
+  v9 = [(MOTripAnnotationManager *)self getBaseEvents:events];
 
   v145 = v79;
   v10 = [NSArray arrayWithObjects:&v145 count:1];
   v83 = [v9 sortedArrayUsingDescriptors:v10];
 
-  v80 = [(MOTripAnnotationManager *)self getContextEvents:v7];
+  v80 = [(MOTripAnnotationManager *)self getContextEvents:eventsCopy];
 
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -2086,7 +2086,7 @@ LABEL_9:
     v15 = @"NO";
     *buf = 138412802;
     *&buf[4] = v13;
-    if (v77)
+    if (filteredEventsCopy)
     {
       v15 = @"YES";
     }
@@ -2098,14 +2098,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@: Context Events, %lu, updateWithFilteredEvents, %@", buf, 0x20u);
   }
 
-  v16 = [v87 time];
-  v17 = [v16 timeZone];
+  time = [v87 time];
+  timeZone = [time timeZone];
 
-  if (v17)
+  if (timeZone)
   {
-    v18 = [v87 time];
-    v19 = [v18 timeZone];
-    v82 = [NSTimeZone timeZoneWithName:v19];
+    time2 = [v87 time];
+    timeZone2 = [time2 timeZone];
+    v82 = [NSTimeZone timeZoneWithName:timeZone2];
   }
 
   else
@@ -2118,10 +2118,10 @@ LABEL_9:
   v78 = v20;
   if (v20)
   {
-    v81 = v20;
-    v21 = [v81 placeName];
-    v22 = [v21 mask];
-    [v90 appendString:v22];
+    firstObject = v20;
+    placeName = [firstObject placeName];
+    mask = [placeName mask];
+    [v90 appendString:mask];
 
     obj = &__NSArray0__struct;
   }
@@ -2129,7 +2129,7 @@ LABEL_9:
   else
   {
     v23 = [(MOTripAnnotationManager *)self dominantPlacesFromEvents:v83 timeZone:v82];
-    v81 = [v23 firstObject];
+    firstObject = [v23 firstObject];
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
@@ -2148,9 +2148,9 @@ LABEL_9:
             objc_enumerationMutation(obj);
           }
 
-          v27 = [*(*(&v130 + 1) + 8 * i) placeName];
-          v28 = [v27 mask];
-          [v90 appendFormat:@"%@, ", v28];
+          placeName2 = [*(*(&v130 + 1) + 8 * i) placeName];
+          mask2 = [placeName2 mask];
+          [v90 appendFormat:@"%@, ", mask2];
         }
 
         v24 = [obj countByEnumeratingWithState:&v130 objects:v144 count:16];
@@ -2159,7 +2159,7 @@ LABEL_9:
       while (v24);
     }
 
-    if (!v81)
+    if (!firstObject)
     {
       v76 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
       if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
@@ -2167,38 +2167,38 @@ LABEL_9:
         [MOTripAnnotationManager materializeTripBundle:contextEvents:updateWithFilteredEvents:];
       }
 
-      v81 = 0;
+      firstObject = 0;
       goto LABEL_53;
     }
   }
 
-  if (!v77)
+  if (!filteredEventsCopy)
   {
-    v29 = [v83 firstObject];
-    v30 = [v29 startDate];
+    firstObject2 = [v83 firstObject];
+    startDate = [firstObject2 startDate];
 
-    v31 = [v83 lastObject];
-    v32 = [v31 endDate];
+    lastObject = [v83 lastObject];
+    endDate = [lastObject endDate];
 
     v33 = [[MOAction alloc] initWithActionName:@"Visit" actionType:2];
     [v87 setAction:v33];
 
-    v34 = [v83 firstObject];
-    v35 = [v34 eventIdentifier];
-    v36 = [v87 action];
-    [v36 setSourceEventIdentifier:v35];
+    firstObject3 = [v83 firstObject];
+    eventIdentifier = [firstObject3 eventIdentifier];
+    action = [v87 action];
+    [action setSourceEventIdentifier:eventIdentifier];
 
-    v37 = [v83 firstObject];
-    v38 = [v37 startDate];
-    v39 = [(MOAnnotationManager *)self timeZoneManager];
-    v40 = [MOTime timeForDate:v38 timeZoneManager:v39];
+    firstObject4 = [v83 firstObject];
+    startDate2 = [firstObject4 startDate];
+    timeZoneManager = [(MOAnnotationManager *)self timeZoneManager];
+    v40 = [MOTime timeForDate:startDate2 timeZoneManager:timeZoneManager];
     [v87 setTime:v40];
 
     [v87 setEvents:v83];
     [v87 setPropertiesBasedOnEvents];
-    [v87 setStartDate:v30];
-    [v87 setEndDate:v32];
-    v41 = [v32 dateByAddingTimeInterval:2419200.0];
+    [v87 setStartDate:startDate];
+    [v87 setEndDate:endDate];
+    v41 = [endDate dateByAddingTimeInterval:2419200.0];
     [v87 setExpirationDate:v41];
   }
 
@@ -2255,20 +2255,20 @@ LABEL_9:
         v46 = *(*(&v113 + 1) + 8 * j);
         if ([v46 category] == 2)
         {
-          v47 = [v46 workoutType];
-          v48 = v47 == 0;
+          workoutType = [v46 workoutType];
+          v48 = workoutType == 0;
 
           if (!v48)
           {
-            v49 = [v46 endDate];
-            v50 = [v87 startDate];
-            v51 = [v49 isBeforeDate:v50];
+            endDate2 = [v46 endDate];
+            startDate3 = [v87 startDate];
+            v51 = [endDate2 isBeforeDate:startDate3];
 
             if ((v51 & 1) == 0)
             {
-              v52 = [v46 startDate];
-              v53 = [v87 endDate];
-              v54 = [v52 isAfterDate:v53];
+              startDate4 = [v46 startDate];
+              endDate3 = [v87 endDate];
+              v54 = [startDate4 isAfterDate:endDate3];
 
               if (v54)
               {
@@ -2279,8 +2279,8 @@ LABEL_9:
               v112 = 0u;
               v109 = 0u;
               v110 = 0u;
-              v55 = [v87 events];
-              v56 = [v55 countByEnumeratingWithState:&v109 objects:v138 count:16];
+              events2 = [v87 events];
+              v56 = [events2 countByEnumeratingWithState:&v109 objects:v138 count:16];
               if (v56)
               {
                 v57 = *v110;
@@ -2290,13 +2290,13 @@ LABEL_9:
                   {
                     if (*v110 != v57)
                     {
-                      objc_enumerationMutation(v55);
+                      objc_enumerationMutation(events2);
                     }
 
                     v59 = *(*(&v109 + 1) + 8 * k);
-                    v60 = [v46 eventIdentifier];
-                    v61 = [v59 eventIdentifier];
-                    v62 = [v60 isEqual:v61];
+                    eventIdentifier2 = [v46 eventIdentifier];
+                    eventIdentifier3 = [v59 eventIdentifier];
+                    v62 = [eventIdentifier2 isEqual:eventIdentifier3];
 
                     if (v62)
                     {
@@ -2305,7 +2305,7 @@ LABEL_9:
                     }
                   }
 
-                  v56 = [v55 countByEnumeratingWithState:&v109 objects:v138 count:16];
+                  v56 = [events2 countByEnumeratingWithState:&v109 objects:v138 count:16];
                   if (v56)
                   {
                     continue;
@@ -2317,8 +2317,8 @@ LABEL_9:
 
               [v87 addEvent:v46];
 LABEL_39:
-              v63 = [v46 eventIdentifier];
-              v64 = [v85 containsObject:v63];
+              eventIdentifier4 = [v46 eventIdentifier];
+              v64 = [v85 containsObject:eventIdentifier4];
 
               if ((v64 & 1) == 0)
               {
@@ -2342,8 +2342,8 @@ LABEL_39:
                     _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_INFO, "%@: add to context event %@ to trip, %@", v134, 0x20u);
                   }
 
-                  v70 = [v46 eventIdentifier];
-                  [v85 addObject:v70];
+                  eventIdentifier5 = [v46 eventIdentifier];
+                  [v85 addObject:eventIdentifier5];
 
                   v44 = v44 + 1.0;
                 }
@@ -2385,7 +2385,7 @@ LABEL_47:
   v98 = objc_opt_new();
   v92.receiver = self;
   v92.super_class = MOTripAnnotationManager;
-  v71 = [(MOAnnotationManager *)&v92 fUniverse];
+  fUniverse = [(MOAnnotationManager *)&v92 fUniverse];
   v91[0] = _NSConcreteStackBlock;
   v91[1] = 3221225472;
   v91[2] = __88__MOTripAnnotationManager_materializeTripBundle_contextEvents_updateWithFilteredEvents___block_invoke_336;
@@ -2395,11 +2395,11 @@ LABEL_47:
   v91[6] = &v99;
   v91[7] = buf;
   v91[8] = &v93;
-  [MOContextAnnotationUtilities addPhotoResourcesWithDateArray:v87 universe:v71 handler:v91];
+  [MOContextAnnotationUtilities addPhotoResourcesWithDateArray:v87 universe:fUniverse handler:v91];
 
   v72 = [(MOTripAnnotationManager *)self _assignPriorityScoreForPlace:v125[5] placeInfoArray:v94[5]];
   [(MOTripAnnotationManager *)self _assignPriorityScoreForPhotoResources:*(*&v134[8] + 40)];
-  [v87 setPlace:v81];
+  [v87 setPlace:firstObject];
   if (v125[5])
   {
     v73 = [obj arrayByAddingObjectsFromArray:?];
@@ -2616,16 +2616,16 @@ LABEL_28:
   }
 }
 
-- (id)_assignPriorityScoreForPlace:(id)a3 placeInfoArray:(id)a4
+- (id)_assignPriorityScoreForPlace:(id)place placeInfoArray:(id)array
 {
-  v6 = a3;
-  v43 = [(MOTripAnnotationManager *)self _filterPlaceUsingPredicates:a4];
-  v40 = v6;
+  placeCopy = place;
+  v43 = [(MOTripAnnotationManager *)self _filterPlaceUsingPredicates:array];
+  v40 = placeCopy;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = [v6 mutableCopy];
+  obj = [placeCopy mutableCopy];
   v44 = [obj countByEnumeratingWithState:&v55 objects:v71 count:16];
   if (v44)
   {
@@ -2663,12 +2663,12 @@ LABEL_28:
               }
 
               v14 = *(*(&v51 + 1) + 8 * i);
-              v15 = [v14 allKeys];
-              v16 = [v15 objectAtIndexedSubscript:0];
+              allKeys = [v14 allKeys];
+              v16 = [allKeys objectAtIndexedSubscript:0];
 
-              v17 = [v8 identifier];
-              v18 = [v17 UUIDString];
-              v19 = [v18 isEqualToString:v16];
+              identifier = [v8 identifier];
+              uUIDString = [identifier UUIDString];
+              v19 = [uUIDString isEqualToString:v16];
 
               if (v19)
               {
@@ -2727,26 +2727,26 @@ LABEL_16:
         v28 = _mo_log_facility_get_os_log(v25);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [v27 identifier];
-          v30 = [v29 UUIDString];
+          identifier2 = [v27 identifier];
+          uUIDString2 = [identifier2 UUIDString];
           [v27 placeName];
           v31 = v24;
           v32 = v25;
           v34 = v33 = v21;
           [v27 priorityScore];
           v36 = v35;
-          v37 = [v27 startDate];
-          v38 = [v27 endDate];
+          startDate = [v27 startDate];
+          endDate = [v27 endDate];
           *buf = 138413314;
-          v60 = v30;
+          v60 = uUIDString2;
           v61 = 2112;
           v62 = v34;
           v63 = 2048;
           v64 = v36;
           v65 = 2112;
-          v66 = v37;
+          v66 = startDate;
           v67 = 2112;
-          v68 = v38;
+          v68 = endDate;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "_assignPriorityScoreForPlace:MOPlace id is:%@, name is %@, priorityscore:%f, startdate:%@ enddate:%@", buf, 0x34u);
 
           v21 = v33;
@@ -2768,11 +2768,11 @@ LABEL_16:
   return v21;
 }
 
-- (void)_assignPriorityScoreForPhotoResources:(id)a3
+- (void)_assignPriorityScoreForPhotoResources:(id)resources
 {
-  v3 = a3;
+  resourcesCopy = resources;
   v4 = [NSPredicate predicateWithFormat:@"type = %lu", 2];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [resourcesCopy filteredArrayUsingPredicate:v4];
   if ([v5 count])
   {
     v6 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:0];
@@ -2818,9 +2818,9 @@ LABEL_16:
   }
 }
 
-- (id)_filterPlaceUsingPredicates:(id)a3
+- (id)_filterPlaceUsingPredicates:(id)predicates
 {
-  v5 = a3;
+  predicatesCopy = predicates;
   if (![interestingPOIcategories count])
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
@@ -2853,14 +2853,14 @@ LABEL_16:
       {
         if (v8 == 6)
         {
-          v10 = [NSPredicate predicateWithFormat:@"kPhotoCurationScore == 0 AND (kEventDwellDuration >= %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
+          interestingPOIcategories = [NSPredicate predicateWithFormat:@"kPhotoCurationScore == 0 AND (kEventDwellDuration >= %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
           v11 = [[NSSortDescriptor alloc] initWithKey:@"kEventDwellDuration" ascending:0];
           v12 = 300;
         }
 
         else
         {
-          v10 = [NSPredicate predicateWithFormat:@"kPhotoCurationScore == 0 AND (kEventDwellDuration < %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
+          interestingPOIcategories = [NSPredicate predicateWithFormat:@"kPhotoCurationScore == 0 AND (kEventDwellDuration < %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
           v11 = [[NSSortDescriptor alloc] initWithKey:@"kPhotoCurationScore" ascending:0];
           v12 = 20000;
         }
@@ -2870,12 +2870,12 @@ LABEL_16:
 
       if (v8 != 4)
       {
-        v10 = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration < %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
+        interestingPOIcategories = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration < %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
         v13 = [[NSSortDescriptor alloc] initWithKey:@"kPhotoCurationScore" ascending:0];
         goto LABEL_21;
       }
 
-      v10 = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration >= %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
+      interestingPOIcategories = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration >= %f) AND NOT (kMOPlacePOICategory IN %@)", *&minimumDwellTime, interestingPOIcategories];
       v11 = [[NSSortDescriptor alloc] initWithKey:@"kPhotoCurationScore" ascending:0];
       v12 = 202;
     }
@@ -2893,21 +2893,21 @@ LABEL_16:
         {
           [NSPredicate predicateWithFormat:@"kPhotoCurationScore == 0 AND (kEventDwellDuration < %f) AND kMOPlacePOICategory IN %@", *&minimumDwellTime, interestingPOIcategories];
         }
-        v10 = ;
+        interestingPOIcategories = ;
         v13 = [[NSSortDescriptor alloc] initWithKey:@"kEventDwellDuration" ascending:0];
         goto LABEL_21;
       }
 
       if (v8)
       {
-        v10 = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration < %f) AND kMOPlacePOICategory IN %@", *&minimumDwellTime, interestingPOIcategories];
+        interestingPOIcategories = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration < %f) AND kMOPlacePOICategory IN %@", *&minimumDwellTime, interestingPOIcategories];
         v13 = [[NSSortDescriptor alloc] initWithKey:@"kPhotoCurationScore" ascending:0];
 LABEL_21:
         v11 = v13;
         goto LABEL_24;
       }
 
-      v10 = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration >= %f) AND kMOPlacePOICategory IN %@", *&minimumDwellTime, interestingPOIcategories];
+      interestingPOIcategories = [NSPredicate predicateWithFormat:@"kPhotoCurationScore != 0 AND (kEventDwellDuration >= %f) AND kMOPlacePOICategory IN %@", *&minimumDwellTime, interestingPOIcategories];
       v11 = [[NSSortDescriptor alloc] initWithKey:@"kPhotoCurationScore" ascending:0];
       v12 = 200;
     }
@@ -2915,7 +2915,7 @@ LABEL_21:
 LABEL_23:
     v24[3] = v12;
 LABEL_24:
-    v14 = [v5 filteredArrayUsingPredicate:v10];
+    v14 = [predicatesCopy filteredArrayUsingPredicate:interestingPOIcategories];
     v37 = v11;
     v15 = [NSArray arrayWithObjects:&v37 count:1];
     v16 = [v14 sortedArrayUsingDescriptors:v15];
@@ -2961,16 +2961,16 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
   return result;
 }
 
-- (void)_updateMOPlacePriorityScore:(id)a3 priorityScore:(unint64_t)a4 handler:(id)a5
+- (void)_updateMOPlacePriorityScore:(id)score priorityScore:(unint64_t)priorityScore handler:(id)handler
 {
-  v7 = a3;
-  v18 = a5;
+  scoreCopy = score;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v7;
+  obj = scoreCopy;
   v9 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -2988,12 +2988,12 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
 
         v13 = *(*(&v20 + 1) + 8 * v12);
         v14 = objc_opt_new();
-        v15 = [NSNumber numberWithUnsignedInteger:a4];
+        v15 = [NSNumber numberWithUnsignedInteger:priorityScore];
         v16 = [v13 objectForKeyedSubscript:@"kMOPlaceUUID"];
         [v14 setObject:v15 forKey:v16];
 
         [v8 addObject:v14];
-        ++a4;
+        ++priorityScore;
 
         v12 = v12 + 1;
       }
@@ -3006,59 +3006,59 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
   }
 
   v17 = [v8 copy];
-  v18[2](v18, v17, a4);
+  handlerCopy[2](handlerCopy, v17, priorityScore);
 }
 
-- (id)placeNameOfEvent:(id)a3 addressFormatOption:(id)a4 countryMode:(BOOL)a5
+- (id)placeNameOfEvent:(id)event addressFormatOption:(id)option countryMode:(BOOL)mode
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (v5)
+  modeCopy = mode;
+  eventCopy = event;
+  optionCopy = option;
+  if (modeCopy)
   {
-    [v7 formatCountryWithFormatOption:v8];
+    [eventCopy formatCountryWithFormatOption:optionCopy];
   }
 
   else
   {
-    [v7 formatLocalityWithFormatOption:v8];
+    [eventCopy formatLocalityWithFormatOption:optionCopy];
   }
-  v9 = ;
-  if (!v9)
+  placeName = ;
+  if (!placeName)
   {
-    v9 = [v7 formatAdministrativeAreaWithFormatOption:v8];
-    if (!v9)
+    placeName = [eventCopy formatAdministrativeAreaWithFormatOption:optionCopy];
+    if (!placeName)
     {
-      v9 = [v7 placeName];
+      placeName = [eventCopy placeName];
     }
   }
 
-  return v9;
+  return placeName;
 }
 
-- (id)dominantPlaceFromEvents:(id)a3 timeZone:(id)a4
+- (id)dominantPlaceFromEvents:(id)events timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOTripAnnotationManager *)self dominantInterestingPOIFromEvents:v6 timeZone:v7];
+  eventsCopy = events;
+  zoneCopy = zone;
+  v8 = [(MOTripAnnotationManager *)self dominantInterestingPOIFromEvents:eventsCopy timeZone:zoneCopy];
   if (!v8)
   {
-    v8 = [(MOTripAnnotationManager *)self dominantPOIFormEvents:v6 timeZone:v7];
+    v8 = [(MOTripAnnotationManager *)self dominantPOIFormEvents:eventsCopy timeZone:zoneCopy];
   }
 
   return v8;
 }
 
-- (id)dominantInterestingPOIFromEvents:(id)a3 timeZone:(id)a4
+- (id)dominantInterestingPOIFromEvents:(id)events timeZone:(id)zone
 {
-  v6 = a3;
-  v85 = a4;
+  eventsCopy = events;
+  zoneCopy = zone;
   v86 = objc_opt_new();
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v7 = v6;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v96 objects:v116 count:16];
   if (v8)
   {
@@ -3068,7 +3068,7 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
     v11 = 0.0;
     v12 = &OBJC_IVAR___MOEvent__lifeEventsEvent;
     v83 = v7;
-    v87 = self;
+    selfCopy = self;
     do
     {
       v13 = 0;
@@ -3080,28 +3080,28 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
         }
 
         v14 = *(*(&v96 + 1) + 8 * v13);
-        v15 = [v14 placeName];
-        if (v15)
+        placeName = [v14 placeName];
+        if (placeName)
         {
           v16 = *(&self->super.super.isa + v12[61]);
-          v17 = [v14 poiCategory];
-          LOBYTE(v16) = [v16 containsObject:v17];
+          poiCategory = [v14 poiCategory];
+          LOBYTE(v16) = [v16 containsObject:poiCategory];
 
           if ((v16 & 1) == 0)
           {
             airportCategories = self->_airportCategories;
-            v19 = [v14 poiCategory];
-            LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:v19];
+            poiCategory2 = [v14 poiCategory];
+            LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:poiCategory2];
 
             if ((airportCategories & 1) == 0)
             {
-              v20 = self;
+              selfCopy2 = self;
               v21 = v12;
-              [v14 weightedDurationWithTimeZone:v85 overnightStartDateHour:v20->_overnightStartDateHour overnightDurationHours:v20->_overnightDurationHours overnightDurationWeight:v20->_overnightDurationWeight];
+              [v14 weightedDurationWithTimeZone:zoneCopy overnightStartDateHour:selfCopy2->_overnightStartDateHour overnightDurationHours:selfCopy2->_overnightDurationHours overnightDurationWeight:selfCopy2->_overnightDurationWeight];
               v23 = v22;
-              interestingPoiCategories = v20->_interestingPoiCategories;
-              v25 = [v14 poiCategory];
-              v26 = [(NSSet *)interestingPoiCategories containsObject:v25];
+              interestingPoiCategories = selfCopy2->_interestingPoiCategories;
+              poiCategory3 = [v14 poiCategory];
+              v26 = [(NSSet *)interestingPoiCategories containsObject:poiCategory3];
 
               v27 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -3115,13 +3115,13 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
                 v81 = v32;
                 [v14 duration];
                 v34 = v33;
-                v80 = [v14 poiCategory];
-                v82 = [v14 routineEvent];
-                v35 = [v82 poiCategory];
-                v36 = [(MOTripAnnotationManager *)v87 addressFormatOption];
-                v79 = [v14 formatLocalityWithFormatOption:v36];
+                poiCategory4 = [v14 poiCategory];
+                routineEvent = [v14 routineEvent];
+                poiCategory5 = [routineEvent poiCategory];
+                addressFormatOption = [(MOTripAnnotationManager *)selfCopy addressFormatOption];
+                v79 = [v14 formatLocalityWithFormatOption:addressFormatOption];
                 *buf = 138413826;
-                v103 = v15;
+                v103 = placeName;
                 v104 = 2112;
                 v105 = *&v81;
                 v106 = 2048;
@@ -3129,9 +3129,9 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
                 v108 = 2048;
                 v109 = v23;
                 v110 = 2112;
-                v111 = v80;
+                v111 = poiCategory4;
                 v112 = 2112;
-                v113 = v35;
+                v113 = poiCategory5;
                 v114 = 2112;
                 v115 = v79;
                 _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "trip manager (dominantInterestingPOIFromEvents), the dominant name, %@, interesting, %@, duration, %f, weighted duration, %f, category, %@ -%@, city, %@", buf, 0x48u);
@@ -3141,7 +3141,7 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
 
               if (v26)
               {
-                v28 = [v86 objectForKey:v15];
+                v28 = [v86 objectForKey:placeName];
                 v29 = v28;
                 v12 = v21;
                 if (v28)
@@ -3152,7 +3152,7 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
 
                 ++v84;
                 v31 = [NSNumber numberWithDouble:v23];
-                [v86 setObject:v31 forKey:v15];
+                [v86 setObject:v31 forKey:placeName];
 
                 v7 = v83;
               }
@@ -3163,7 +3163,7 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
                 v12 = v21;
               }
 
-              self = v87;
+              self = selfCopy;
             }
           }
         }
@@ -3244,10 +3244,10 @@ id __55__MOTripAnnotationManager__filterPlaceUsingPredicates___block_invoke(uint
     v52 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
     {
-      v77 = [v41 mask];
+      mask = [v41 mask];
       minimumDominancyRatioForInterestingPOITripThreshold = self->_minimumDominancyRatioForInterestingPOITripThreshold;
       *buf = 138412802;
-      v103 = v77;
+      v103 = mask;
       v104 = 2048;
       v105 = v51;
       v106 = 2048;
@@ -3283,8 +3283,8 @@ LABEL_44:
           }
 
           v58 = *(*(&v88 + 1) + 8 * v57);
-          v59 = [v58 placeName];
-          v60 = [v41 isEqualToString:v59];
+          placeName2 = [v58 placeName];
+          v60 = [v41 isEqualToString:placeName2];
 
           if (v60)
           {
@@ -3307,8 +3307,8 @@ LABEL_44:
 
         if (v62)
         {
-          v64 = [(MOTripAnnotationManager *)self addressFormatOption];
-          v61 = [v62 formatLocalityWithFormatOption:v64];
+          addressFormatOption2 = [(MOTripAnnotationManager *)self addressFormatOption];
+          v61 = [v62 formatLocalityWithFormatOption:addressFormatOption2];
           v63 = 0;
           goto LABEL_54;
         }
@@ -3323,18 +3323,18 @@ LABEL_50:
         v61 = 0;
         v62 = 0;
         v63 = 1;
-        v64 = v53;
+        addressFormatOption2 = v53;
 LABEL_54:
       }
 
       v65 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
       if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
       {
-        v66 = [v41 mask];
+        mask2 = [v41 mask];
         [v61 mask];
         v67 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 138412546;
-        v103 = v66;
+        v103 = mask2;
         v104 = 2112;
         v105 = v67;
         _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, "trip manager (dominantInterestingPOIFromEvents), place name, %@, city name, %@", buf, 0x16u);
@@ -3346,22 +3346,22 @@ LABEL_54:
       {
         v50 = [(MOPlace *)v68 initWithIdentifier:v69 placeName:v41 enclosingArea:0 placeType:3 placeUserType:0 location:0 locationMode:0.0 poiCategory:v51 categoryMuid:0.0 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:0 priorityScore:0 startDate:0 endDate:0];
 
-        v70 = [v53 firstObject];
+        firstObject = [v53 firstObject];
       }
 
       else
       {
-        v71 = [(MOTripAnnotationManager *)self addressFormatOption];
-        v72 = [v62 formatLocalityWithFormatOption:v71];
-        v73 = [v62 location];
+        addressFormatOption3 = [(MOTripAnnotationManager *)self addressFormatOption];
+        v72 = [v62 formatLocalityWithFormatOption:addressFormatOption3];
+        location = [v62 location];
         [v62 familiarityIndexLOI];
-        v50 = [(MOPlace *)v68 initWithIdentifier:v69 placeName:v41 enclosingArea:v72 placeType:3 placeUserType:0 location:v73 locationMode:0.0 poiCategory:v51 categoryMuid:v74 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:0 priorityScore:0 startDate:0 endDate:0];
+        v50 = [(MOPlace *)v68 initWithIdentifier:v69 placeName:v41 enclosingArea:v72 placeType:3 placeUserType:0 location:location locationMode:0.0 poiCategory:v51 categoryMuid:v74 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:0 priorityScore:0 startDate:0 endDate:0];
 
-        v70 = v62;
+        firstObject = v62;
       }
 
-      v75 = [v70 eventIdentifier];
-      [(MOPlace *)v50 setSourceEventIdentifier:v75];
+      eventIdentifier = [firstObject eventIdentifier];
+      [(MOPlace *)v50 setSourceEventIdentifier:eventIdentifier];
 
       if (v63)
       {
@@ -3382,16 +3382,16 @@ LABEL_65:
   return v50;
 }
 
-- (id)dominantPOIFormEvents:(id)a3 timeZone:(id)a4
+- (id)dominantPOIFormEvents:(id)events timeZone:(id)zone
 {
-  v6 = a3;
-  v67 = a4;
+  eventsCopy = events;
+  zoneCopy = zone;
   v7 = objc_opt_new();
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v6;
+  obj = eventsCopy;
   v8 = [obj countByEnumeratingWithState:&v77 objects:v93 count:16];
   if (v8)
   {
@@ -3409,16 +3409,16 @@ LABEL_65:
         }
 
         v14 = *(*(&v77 + 1) + 8 * i);
-        v15 = [v14 placeName];
-        if (v15)
+        placeName = [v14 placeName];
+        if (placeName)
         {
           v16 = *(&self->super.super.isa + v12[61]);
-          v17 = [v14 poiCategory];
-          LOBYTE(v16) = [v16 containsObject:v17];
+          poiCategory = [v14 poiCategory];
+          LOBYTE(v16) = [v16 containsObject:poiCategory];
 
           if ((v16 & 1) == 0)
           {
-            [v14 weightedDurationWithTimeZone:v67 overnightStartDateHour:self->_overnightStartDateHour overnightDurationHours:self->_overnightDurationHours overnightDurationWeight:self->_overnightDurationWeight];
+            [v14 weightedDurationWithTimeZone:zoneCopy overnightStartDateHour:self->_overnightStartDateHour overnightDurationHours:self->_overnightDurationHours overnightDurationWeight:self->_overnightDurationWeight];
             v19 = v18;
             v11 = v11 + v18;
             if ([v14 placeType] == 2 || objc_msgSend(v14, "placeType") == 3)
@@ -3428,23 +3428,23 @@ LABEL_65:
               {
                 [v14 duration];
                 v26 = v25;
-                v27 = [v14 poiCategory];
-                v28 = [v14 routineEvent];
-                v29 = [v28 poiCategory];
+                poiCategory2 = [v14 poiCategory];
+                routineEvent = [v14 routineEvent];
+                poiCategory3 = [routineEvent poiCategory];
                 *buf = 138413314;
-                v84 = v15;
+                v84 = placeName;
                 v85 = 2048;
                 v86 = v26;
                 v87 = 2048;
                 v88 = v19;
                 v89 = 2112;
-                v90 = v27;
+                v90 = poiCategory2;
                 v91 = 2112;
-                v92 = v29;
+                v92 = poiCategory3;
                 _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "trip manager (dominantPOIFormEvents), the dominant name, %@, duration, %f, weighted duration, %f, category, %@ -%@", buf, 0x34u);
               }
 
-              v21 = [v7 objectForKey:v15];
+              v21 = [v7 objectForKey:placeName];
               v22 = v21;
               if (v21)
               {
@@ -3453,7 +3453,7 @@ LABEL_65:
               }
 
               v24 = [NSNumber numberWithDouble:v19];
-              [v7 setObject:v24 forKey:v15];
+              [v7 setObject:v24 forKey:placeName];
 
               v12 = &OBJC_IVAR___MOEvent__lifeEventsEvent;
             }
@@ -3532,10 +3532,10 @@ LABEL_65:
   v43 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
   {
-    v64 = [v33 mask];
+    mask = [v33 mask];
     minimumDominancyRatioForSinglePOITripThreshold = self->_minimumDominancyRatioForSinglePOITripThreshold;
     *buf = 138412802;
-    v84 = v64;
+    v84 = mask;
     v85 = 2048;
     v86 = v42;
     v87 = 2048;
@@ -3564,8 +3564,8 @@ LABEL_65:
           }
 
           v48 = *(*(&v69 + 1) + 8 * k);
-          v49 = [v48 placeName];
-          v50 = [v33 isEqualToString:v49];
+          placeName2 = [v48 placeName];
+          v50 = [v33 isEqualToString:placeName2];
 
           if (v50)
           {
@@ -3589,9 +3589,9 @@ LABEL_48:
     v52 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
     {
-      v53 = [v33 mask];
+      mask2 = [v33 mask];
       *buf = 138412290;
-      v84 = v53;
+      v84 = mask2;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "trip manager (dominantPOIFormEvents), place name, %@", buf, 0xCu);
     }
 
@@ -3599,26 +3599,26 @@ LABEL_48:
     v55 = +[NSUUID UUID];
     if (v45)
     {
-      v66 = [(MOTripAnnotationManager *)self addressFormatOption];
-      v56 = [v45 formatLocalityWithFormatOption:v66];
-      v57 = [v45 location];
-      v58 = [v45 poiCategory];
-      v59 = [v45 categoryMuid];
+      addressFormatOption = [(MOTripAnnotationManager *)self addressFormatOption];
+      v56 = [v45 formatLocalityWithFormatOption:addressFormatOption];
+      location = [v45 location];
+      poiCategory4 = [v45 poiCategory];
+      categoryMuid = [v45 categoryMuid];
       [v45 familiarityIndexLOI];
-      v51 = [(MOPlace *)v54 initWithIdentifier:v55 placeName:v33 enclosingArea:v56 placeType:3 placeUserType:0 location:v57 locationMode:0.0 poiCategory:v42 categoryMuid:v60 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:v58 priorityScore:v59 startDate:0 endDate:0];
+      v51 = [(MOPlace *)v54 initWithIdentifier:v55 placeName:v33 enclosingArea:v56 placeType:3 placeUserType:0 location:location locationMode:0.0 poiCategory:v42 categoryMuid:v60 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:poiCategory4 priorityScore:categoryMuid startDate:0 endDate:0];
 
-      v61 = v45;
+      firstObject = v45;
     }
 
     else
     {
       v51 = [(MOPlace *)v54 initWithIdentifier:v55 placeName:v33 enclosingArea:0 placeType:3 placeUserType:0 location:0 locationMode:0.0 poiCategory:v42 categoryMuid:0.0 distanceToHomeInMiles:-1.0 placeNameConfidence:2 familiarityIndexLOI:0 priorityScore:0 startDate:0 endDate:0];
 
-      v61 = [v44 firstObject];
+      firstObject = [v44 firstObject];
     }
 
-    v62 = [v61 eventIdentifier];
-    [(MOPlace *)v51 setSourceEventIdentifier:v62];
+    eventIdentifier = [firstObject eventIdentifier];
+    [(MOPlace *)v51 setSourceEventIdentifier:eventIdentifier];
 
     if (!v45)
     {
@@ -3633,18 +3633,18 @@ LABEL_48:
   return v51;
 }
 
-- (id)dominantPlaceNamesFromEvents:(id)a3 countryMode:(BOOL)a4 timeZone:(id)a5
+- (id)dominantPlaceNamesFromEvents:(id)events countryMode:(BOOL)mode timeZone:(id)zone
 {
-  v84 = a4;
-  v7 = a3;
-  v79 = a5;
+  modeCopy = mode;
+  eventsCopy = events;
+  zoneCopy = zone;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v96 = [v7 count];
+    v96 = [eventsCopy count];
     v97 = 2048;
-    *&v98 = v84;
+    *&v98 = modeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "trip manager (dominantPlaceNameFromEvents), events, %lu, country mode, %lu", buf, 0x16u);
   }
 
@@ -3664,7 +3664,7 @@ LABEL_48:
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v13 = v7;
+  v13 = eventsCopy;
   v14 = [v13 countByEnumeratingWithState:&v91 objects:v105 count:16];
   v81 = v9;
   obj = v13;
@@ -3687,27 +3687,27 @@ LABEL_48:
         v19 = *(*(&v91 + 1) + 8 * v18);
         v20 = v16[62];
         v21 = *(&self->super.super.isa + v20);
-        v22 = [v19 poiCategory];
-        LOBYTE(v21) = [v21 containsObject:v22];
+        poiCategory = [v19 poiCategory];
+        LOBYTE(v21) = [v21 containsObject:poiCategory];
 
         if ((v21 & 1) == 0)
         {
-          v23 = [(MOTripAnnotationManager *)self placeNameOfEvent:v19 addressFormatOption:v9 countryMode:v84];
+          v23 = [(MOTripAnnotationManager *)self placeNameOfEvent:v19 addressFormatOption:v9 countryMode:modeCopy];
           if (v23)
           {
             v24 = v16;
             v25 = [v86 objectForKey:v23];
             lessInterestingPoiCategories = self->_lessInterestingPoiCategories;
-            v27 = [v19 poiCategory];
-            if ([(NSSet *)lessInterestingPoiCategories containsObject:v27])
+            poiCategory2 = [v19 poiCategory];
+            if ([(NSSet *)lessInterestingPoiCategories containsObject:poiCategory2])
             {
 
               goto LABEL_17;
             }
 
             v28 = *(&self->super.super.isa + v20);
-            v29 = [v19 poiCategory];
-            LODWORD(v28) = [v28 containsObject:v29];
+            poiCategory3 = [v19 poiCategory];
+            LODWORD(v28) = [v28 containsObject:poiCategory3];
 
             if (v28)
             {
@@ -3724,13 +3724,13 @@ LABEL_20:
               [v86 setObject:v36 forKey:v23];
 
               v16 = v24;
-              v33 = [v19 location];
+              location = [v19 location];
               v34 = v80;
             }
 
             else
             {
-              [v19 weightedDurationWithTimeZone:v79 overnightStartDateHour:self->_overnightStartDateHour overnightDurationHours:self->_overnightDurationHours overnightDurationWeight:self->_overnightDurationWeight];
+              [v19 weightedDurationWithTimeZone:zoneCopy overnightStartDateHour:self->_overnightStartDateHour overnightDurationHours:self->_overnightDurationHours overnightDurationWeight:self->_overnightDurationWeight];
               v31 = v35;
               if (!v25)
               {
@@ -3740,11 +3740,11 @@ LABEL_20:
 LABEL_18:
               v16 = v24;
               [v25 doubleValue];
-              v33 = [NSNumber numberWithDouble:v31 + v32];
+              location = [NSNumber numberWithDouble:v31 + v32];
               v34 = v86;
             }
 
-            [v34 setObject:v33 forKey:v23];
+            [v34 setObject:location forKey:v23];
             v15 = v82;
 
             v9 = v81;
@@ -3834,9 +3834,9 @@ LABEL_34:
       v54 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
       {
-        v55 = [v47 mask];
+        mask = [v47 mask];
         *buf = 138412546;
-        v96 = v55;
+        v96 = mask;
         v97 = 2048;
         v98 = v50;
         _os_log_debug_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEBUG, "trip manager (dominantPlaceNameFromEvents), place, %@, dwell, %f", buf, 0x16u);
@@ -3878,14 +3878,14 @@ LABEL_34:
     v61 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
     {
-      v62 = [v41 mask];
-      v63 = [v40 mask];
+      mask2 = [v41 mask];
+      mask3 = [v40 mask];
       *buf = 138413058;
-      v96 = v62;
+      v96 = mask2;
       v97 = 2048;
       v98 = v59;
       v99 = 2112;
-      v100 = v63;
+      v100 = mask3;
       v101 = 2048;
       v102 = v60;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "trip manager (dominantPlaceNameFromEvents), the dominant name, %@, ratio, %f, the second name, %@, ratio, %f", buf, 0x2Au);
@@ -3908,11 +3908,11 @@ LABEL_34:
     v69 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
     {
-      v70 = [v41 mask];
+      mask4 = [v41 mask];
       *buf = 138412546;
-      v96 = v70;
+      v96 = mask4;
       v97 = 2048;
-      *&v98 = v84;
+      *&v98 = modeCopy;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "trip manager (dominantPlaceNameFromEvents), place name, %@, country mode, %lu", buf, 0x16u);
     }
 
@@ -3920,9 +3920,9 @@ LABEL_34:
     v72 = [[MOPlace alloc] initWithPlaceName:v41 placeType:100 placeUserType:0 location:v64 locationMode:2 poiCategory:0 categoryMuid:0.0 distanceToHomeInMiles:v59 placeNameConfidence:v68 familiarityIndexLOI:0];
     [(MOPlace *)v72 setPriorityScore:20000.0];
     [(MOPlace *)v72 setEnclosingArea:v41];
-    v73 = [obj firstObject];
-    v74 = [v73 eventIdentifier];
-    [(MOPlace *)v72 setSourceEventIdentifier:v74];
+    firstObject = [obj firstObject];
+    eventIdentifier = [firstObject eventIdentifier];
+    [(MOPlace *)v72 setSourceEventIdentifier:eventIdentifier];
 
     [v71 addObject:v72];
     if (v40)
@@ -3931,9 +3931,9 @@ LABEL_34:
 
       [(MOPlace *)v75 setPriorityScore:20000.0];
       [(MOPlace *)v75 setEnclosingArea:v41];
-      v76 = [obj firstObject];
-      v77 = [v76 eventIdentifier];
-      [(MOPlace *)v75 setSourceEventIdentifier:v77];
+      firstObject2 = [obj firstObject];
+      eventIdentifier2 = [firstObject2 eventIdentifier];
+      [(MOPlace *)v75 setSourceEventIdentifier:eventIdentifier2];
 
       [v71 addObject:v75];
       v72 = v75;
@@ -3959,10 +3959,10 @@ LABEL_59:
   return v66;
 }
 
-- (void)resourcesFromEvents:(id)a3 handler:(id)a4
+- (void)resourcesFromEvents:(id)events handler:(id)handler
 {
-  v6 = a3;
-  v59 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   v7 = [(NSSet *)self->_airportCategories setByAddingObjectsFromSet:self->_lessInterestingPoiCategories];
   v64 = objc_opt_new();
   v61 = objc_opt_new();
@@ -3971,14 +3971,14 @@ LABEL_59:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v8 = v6;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v66 objects:v78 count:16];
   if (v9)
   {
     v10 = v9;
     v65 = *v67;
     v62 = v8;
-    v63 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -3990,9 +3990,9 @@ LABEL_59:
         }
 
         v12 = *(*(&v66 + 1) + 8 * v11);
-        v13 = [v12 routineEvent];
-        v14 = [v13 poiCategory];
-        if ([v7 containsObject:v14])
+        routineEvent = [v12 routineEvent];
+        poiCategory = [routineEvent poiCategory];
+        if ([v7 containsObject:poiCategory])
         {
 
 LABEL_9:
@@ -4001,30 +4001,30 @@ LABEL_9:
           {
             v40 = objc_opt_class();
             v41 = NSStringFromClass(v40);
-            v42 = [v12 placeName];
-            v43 = [v42 mask];
-            v44 = [v12 poiCategory];
-            v45 = [v12 routineEvent];
-            v46 = [v45 poiCategory];
+            placeName = [v12 placeName];
+            mask = [placeName mask];
+            poiCategory2 = [v12 poiCategory];
+            routineEvent2 = [v12 routineEvent];
+            poiCategory3 = [routineEvent2 poiCategory];
             *buf = 138413058;
             v71 = v41;
             v72 = 2112;
-            v73 = v43;
+            v73 = mask;
             v74 = 2112;
-            v75 = v44;
+            v75 = poiCategory2;
             v76 = 2112;
-            v77 = v46;
+            v77 = poiCategory3;
             _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%@: supress resource, place, %@, category, %@ (%@)", buf, 0x2Au);
 
-            self = v63;
+            self = selfCopy;
             v8 = v62;
           }
 
           goto LABEL_11;
         }
 
-        v15 = [v12 poiCategory];
-        v16 = [v7 containsObject:v15];
+        poiCategory4 = [v12 poiCategory];
+        v16 = [v7 containsObject:poiCategory4];
 
         if (v16)
         {
@@ -4037,8 +4037,8 @@ LABEL_9:
         v21 = v20;
         [(MOTripAnnotationManager *)self aoiVisitLabelConfidentThreshold];
         v23 = v22;
-        v24 = [(MOAnnotationManager *)self fUniverse];
-        v17 = [MOContextAnnotationUtilities placeFromVisitEvent:v12 preferredCategories:0 poiCategoryBlocklist:v7 mediumConfidenceThreshold:v24 highConfidenceThreshold:v19 aoiConfidenceThreshold:v21 universe:v23];
+        fUniverse = [(MOAnnotationManager *)self fUniverse];
+        v17 = [MOContextAnnotationUtilities placeFromVisitEvent:v12 preferredCategories:0 poiCategoryBlocklist:v7 mediumConfidenceThreshold:fUniverse highConfidenceThreshold:v19 aoiConfidenceThreshold:v21 universe:v23];
 
         if (!v17)
         {
@@ -4063,46 +4063,46 @@ LABEL_9:
         {
           v52 = objc_opt_class();
           v53 = NSStringFromClass(v52);
-          v54 = [v17 placeName];
-          v55 = [v54 mask];
-          v56 = [v12 placeMapItem];
-          v57 = [v56 length];
+          placeName2 = [v17 placeName];
+          mask2 = [placeName2 mask];
+          placeMapItem = [v12 placeMapItem];
+          v57 = [placeMapItem length];
           *buf = 138412802;
           v71 = v53;
           v72 = 2112;
-          v73 = v55;
+          v73 = mask2;
           v74 = 2048;
           v75 = v57;
           _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%@: resourcesFromBaseEvents, place, %@, mapItem.length, %lu", buf, 0x20u);
 
           v8 = v62;
-          self = v63;
+          self = selfCopy;
         }
 
-        v26 = [v12 placeMapItem];
-        if (v26)
+        placeMapItem2 = [v12 placeMapItem];
+        if (placeMapItem2)
         {
-          v27 = v26;
-          v28 = [v17 placeUserType];
+          v27 = placeMapItem2;
+          placeUserType = [v17 placeUserType];
 
-          if (v28 != 2)
+          if (placeUserType != 2)
           {
             v29 = [MOResource alloc];
-            v30 = [v17 placeName];
-            v31 = [v12 placeMapItem];
-            v32 = [(MOResource *)v29 initWithName:v30 mapItemHandle:v31 priorityScore:-1.0];
+            placeName3 = [v17 placeName];
+            placeMapItem3 = [v12 placeMapItem];
+            v32 = [(MOResource *)v29 initWithName:placeName3 mapItemHandle:placeMapItem3 priorityScore:-1.0];
 
-            v33 = [v12 eventIdentifier];
-            [v32 setSourceEventIdentifier:v33];
+            eventIdentifier = [v12 eventIdentifier];
+            [v32 setSourceEventIdentifier:eventIdentifier];
 
             [v60 addObject:v32];
             v34 = objc_opt_new();
-            v35 = [v17 identifier];
-            v36 = [v35 UUIDString];
-            [v34 setObject:v36 forKey:@"kMOPlaceUUID"];
+            identifier = [v17 identifier];
+            uUIDString = [identifier UUIDString];
+            [v34 setObject:uUIDString forKey:@"kMOPlaceUUID"];
 
-            v37 = [v17 poiCategory];
-            if (v37)
+            poiCategory5 = [v17 poiCategory];
+            if (poiCategory5)
             {
               [v17 poiCategory];
             }
@@ -4112,22 +4112,22 @@ LABEL_9:
               +[NSString string];
             }
             v47 = ;
-            self = v63;
+            self = selfCopy;
 
             [v34 setObject:v47 forKey:@"kMOPlacePOICategory"];
-            v48 = [v17 categoryMuid];
+            categoryMuid = [v17 categoryMuid];
 
-            if (v48)
+            if (categoryMuid)
             {
-              v49 = [v17 categoryMuid];
-              [v34 setObject:v49 forKey:@"kMOPlaceCategoryMuid"];
+              categoryMuid2 = [v17 categoryMuid];
+              [v34 setObject:categoryMuid2 forKey:@"kMOPlaceCategoryMuid"];
             }
 
-            v50 = [v12 startDate];
-            [v34 setObject:v50 forKey:@"kMOPlaceStartDate"];
+            startDate = [v12 startDate];
+            [v34 setObject:startDate forKey:@"kMOPlaceStartDate"];
 
-            v51 = [v12 endDate];
-            [v34 setObject:v51 forKey:@"kMOPlaceEndDate"];
+            endDate = [v12 endDate];
+            [v34 setObject:endDate forKey:@"kMOPlaceEndDate"];
 
             [v61 addObject:v34];
             v8 = v62;
@@ -4148,20 +4148,20 @@ LABEL_11:
     while (v58);
   }
 
-  v59[2](v59, v60, v64, v61);
+  handlerCopy[2](handlerCopy, v60, v64, v61);
 }
 
-- (id)buildPromptDescriptionForEventBundle:(id)a3
+- (id)buildPromptDescriptionForEventBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 place];
-  v5 = [v4 placeName];
+  bundleCopy = bundle;
+  place = [bundleCopy place];
+  placeName = [place placeName];
 
-  if (v5)
+  if (placeName)
   {
-    v6 = [v3 place];
-    v7 = [v6 placeName];
-    v8 = [NSString stringWithFormat:@"Trip to %@", v7];
+    place2 = [bundleCopy place];
+    placeName2 = [place2 placeName];
+    v8 = [NSString stringWithFormat:@"Trip to %@", placeName2];
   }
 
   else
@@ -4172,17 +4172,17 @@ LABEL_11:
   return v8;
 }
 
-- (id)loadSummaryTripMonitorFromStore:(id)a3
+- (id)loadSummaryTripMonitorFromStore:(id)store
 {
-  v4 = a3;
-  v5 = v4;
+  storeCopy = store;
+  v5 = storeCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__6;
   v17 = __Block_byref_object_dispose__6;
   v18 = 0;
-  if (v4 && (v12[0] = _NSConcreteStackBlock, v12[1] = 3221225472, v12[2] = __59__MOTripAnnotationManager_loadSummaryTripMonitorFromStore___block_invoke, v12[3] = &unk_100336D88, v12[4] = self, v12[5] = &v13, [v4 fetchFSMWithName:@"SummaryTripMonitor" CompletionHandler:v12], v14[5]))
+  if (storeCopy && (v12[0] = _NSConcreteStackBlock, v12[1] = 3221225472, v12[2] = __59__MOTripAnnotationManager_loadSummaryTripMonitorFromStore___block_invoke, v12[3] = &unk_100336D88, v12[4] = self, v12[5] = &v13, [storeCopy fetchFSMWithName:@"SummaryTripMonitor" CompletionHandler:v12], v14[5]))
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -4233,32 +4233,32 @@ void __59__MOTripAnnotationManager_loadSummaryTripMonitorFromStore___block_invok
   }
 }
 
-- (void)updateSummaryTripMonitor:(id)a3
+- (void)updateSummaryTripMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(MOTripAnnotationManager *)self fsmStore];
+  monitorCopy = monitor;
+  fsmStore = [(MOTripAnnotationManager *)self fsmStore];
 
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityTripAnnotationManager);
   v7 = v6;
-  if (v5)
+  if (fsmStore)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = monitorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "saving fsm model, %@", buf, 0xCu);
     }
 
-    v8 = [v4 copy];
+    v8 = [monitorCopy copy];
     [v8 cleanUpBeforeUpdate];
-    v9 = [(MOTripAnnotationManager *)self fsmStore];
+    fsmStore2 = [(MOTripAnnotationManager *)self fsmStore];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __52__MOTripAnnotationManager_updateSummaryTripMonitor___block_invoke;
     v10[3] = &unk_100336DB0;
     v11 = v8;
     v7 = v8;
-    [v9 updateFSM:v7 completionHandler:v10];
+    [fsmStore2 updateFSM:v7 completionHandler:v10];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -4289,30 +4289,30 @@ void __52__MOTripAnnotationManager_updateSummaryTripMonitor___block_invoke(uint6
   }
 }
 
-- (void)setupSummaryTripMonitorWithHomeLOI:(id)a3
+- (void)setupSummaryTripMonitorWithHomeLOI:(id)i
 {
-  v22 = a3;
-  v4 = [v22 mapItem];
-  v5 = [v4 address];
-  v6 = [v5 countryCode];
+  iCopy = i;
+  mapItem = [iCopy mapItem];
+  address = [mapItem address];
+  countryCode = [address countryCode];
 
-  if (v6)
+  if (countryCode)
   {
-    v7 = [v22 mapItem];
-    v8 = [v7 address];
-    v9 = [MOFSM countryFromAddress:v8];
+    mapItem2 = [iCopy mapItem];
+    address2 = [mapItem2 address];
+    v9 = [MOFSM countryFromAddress:address2];
 
-    v10 = [v22 mapItem];
-    v11 = [v10 address];
-    v12 = [MOFSM countryCodeFromAddress:v11];
+    mapItem3 = [iCopy mapItem];
+    address3 = [mapItem3 address];
+    v12 = [MOFSM countryCodeFromAddress:address3];
 
-    v13 = [v22 mapItem];
-    v14 = [v13 address];
-    v15 = [MOFSM stateFromAddress:v14];
+    mapItem4 = [iCopy mapItem];
+    address4 = [mapItem4 address];
+    v15 = [MOFSM stateFromAddress:address4];
 
-    v16 = [v22 mapItem];
-    v17 = [v16 address];
-    v18 = [MOFSM stateCodeFromAddress:v17];
+    mapItem5 = [iCopy mapItem];
+    address5 = [mapItem5 address];
+    v18 = [MOFSM stateCodeFromAddress:address5];
 
     if ([(NSSet *)self->_stateStateTripEligibleCountries containsObject:v12]&& v18 != 0)
     {
@@ -4324,11 +4324,11 @@ void __52__MOTripAnnotationManager_updateSummaryTripMonitor___block_invoke(uint6
       v19 = 1;
     }
 
-    v20 = [(MOTripAnnotationManager *)self summaryTripMonitor];
-    [v20 setMode:v19];
+    summaryTripMonitor = [(MOTripAnnotationManager *)self summaryTripMonitor];
+    [summaryTripMonitor setMode:v19];
 
-    v21 = [(MOTripAnnotationManager *)self summaryTripMonitor];
-    [v21 setReferenceDataWithCountry:v9 countryCode:v12 state:v15 stateCode:v18];
+    summaryTripMonitor2 = [(MOTripAnnotationManager *)self summaryTripMonitor];
+    [summaryTripMonitor2 setReferenceDataWithCountry:v9 countryCode:v12 state:v15 stateCode:v18];
   }
 }
 

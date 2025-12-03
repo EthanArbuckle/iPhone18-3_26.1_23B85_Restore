@@ -1,42 +1,42 @@
 @interface AKAuthorizationRevokeUpgradeController
 - (id)_authenticationContextForRevokingUpgrade;
-- (id)_requestBodyForUpgradeRevokeContext:(id)a3;
-- (void)revokeUpgradeWithContext:(id)a3 client:(id)a4 completion:(id)a5;
+- (id)_requestBodyForUpgradeRevokeContext:(id)context;
+- (void)revokeUpgradeWithContext:(id)context client:(id)client completion:(id)completion;
 @end
 
 @implementation AKAuthorizationRevokeUpgradeController
 
-- (void)revokeUpgradeWithContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)revokeUpgradeWithContext:(id)context client:(id)client completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, client);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  v24 = [(AKAuthorizationRevokeUpgradeController *)v28 _authenticationContextForRevokingUpgrade];
+  objc_storeStrong(&v25, completion);
+  _authenticationContextForRevokingUpgrade = [(AKAuthorizationRevokeUpgradeController *)selfCopy _authenticationContextForRevokingUpgrade];
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [location[0] transactionID];
-    v10 = [location[0] teamID];
-    v9 = [location[0] bundleID];
-    sub_10004DCC8(v29, v11, v10, v9);
+    transactionID = [location[0] transactionID];
+    teamID = [location[0] teamID];
+    bundleID = [location[0] bundleID];
+    sub_10004DCC8(v29, transactionID, teamID, bundleID);
     _os_log_debug_impl(&_mh_execute_header, v23, v22, "Sending request to revoke upgrade txID %@ for teamID/bundleID: %@/%@", v29, 0x20u);
-    _objc_release(v9);
-    _objc_release(v10);
-    _objc_release(v11);
+    _objc_release(bundleID);
+    _objc_release(teamID);
+    _objc_release(transactionID);
   }
 
   objc_storeStrong(&v23, 0);
   v5 = [AKGrandSlamRequestProvider alloc];
-  v21 = [(AKURLRequestProviderImpl *)v5 initWithContext:v24 urlBagKey:AKURLBagKeyDeleteAuthorizedApp];
+  v21 = [(AKURLRequestProviderImpl *)v5 initWithContext:_authenticationContextForRevokingUpgrade urlBagKey:AKURLBagKeyDeleteAuthorizedApp];
   [(AKGrandSlamRequestProvider *)v21 setAuthenticatedRequest:1];
   [(AKURLRequestProviderImpl *)v21 setClient:v26];
-  v7 = [(AKAuthorizationRevokeUpgradeController *)v28 _requestBodyForUpgradeRevokeContext:location[0]];
+  v7 = [(AKAuthorizationRevokeUpgradeController *)selfCopy _requestBodyForUpgradeRevokeContext:location[0]];
   [(AKURLRequestProviderImpl *)v21 setAuthKitBody:?];
   _objc_release(v7);
   v6 = [AKServiceControllerImpl alloc];
@@ -52,31 +52,31 @@
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&_authenticationContextForRevokingUpgrade, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_requestBodyForUpgradeRevokeContext:(id)a3
+- (id)_requestBodyForUpgradeRevokeContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v9[0] = @"atxid";
-  v7 = [location[0] transactionID];
-  v10[0] = v7;
+  transactionID = [location[0] transactionID];
+  v10[0] = transactionID;
   v9[1] = @"client_id";
-  v6 = [location[0] bundleID];
-  v10[1] = v6;
+  bundleID = [location[0] bundleID];
+  v10[1] = bundleID;
   v9[2] = @"team_id";
-  v4 = [location[0] teamID];
-  v10[2] = v4;
+  teamID = [location[0] teamID];
+  v10[2] = teamID;
   v5 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
-  _objc_release(v4);
-  _objc_release(v6);
-  _objc_release(v7);
+  _objc_release(teamID);
+  _objc_release(bundleID);
+  _objc_release(transactionID);
   objc_storeStrong(location, 0);
 
   return v5;
@@ -87,12 +87,12 @@
   v6[2] = self;
   v6[1] = a2;
   v6[0] = objc_alloc_init(AKAccountManager);
-  v5 = [v6[0] altDSIDforPrimaryiCloudAccount];
+  altDSIDforPrimaryiCloudAccount = [v6[0] altDSIDforPrimaryiCloudAccount];
   v4 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  [v4 setAltDSID:v5];
+  [v4 setAltDSID:altDSIDforPrimaryiCloudAccount];
   v3 = _objc_retain(v4);
   objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
   objc_storeStrong(v6, 0);
 
   return v3;

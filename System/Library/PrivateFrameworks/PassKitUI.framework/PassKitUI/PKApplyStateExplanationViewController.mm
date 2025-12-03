@@ -6,13 +6,13 @@
 
 - (void)handleNextStep
 {
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  v4 = [v3 featureApplication];
-  v5 = [v4 applicationStateReason];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
+  applicationStateReason = [featureApplication applicationStateReason];
 
-  if (v5 - 5 < 0xC || v5 <= 3)
+  if (applicationStateReason - 5 < 0xC || applicationStateReason <= 3)
   {
-    [v3 endApplyFlow];
+    [controller endApplyFlow];
   }
 
   v7.receiver = self;

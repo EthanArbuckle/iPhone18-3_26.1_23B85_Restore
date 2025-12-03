@@ -1,20 +1,20 @@
 @interface WFLocalNotificationAccessResource
-+ (void)requestLocalNotificationsAuthorizationWithCompletionHandler:(id)a3;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
++ (void)requestLocalNotificationsAuthorizationWithCompletionHandler:(id)handler;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFLocalNotificationAccessResource
 
-+ (void)requestLocalNotificationsAuthorizationWithCompletionHandler:(id)a3
++ (void)requestLocalNotificationsAuthorizationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = WFWorkflowUserNotificationCenter();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __97__WFLocalNotificationAccessResource_requestLocalNotificationsAuthorizationWithCompletionHandler___block_invoke;
   v6[3] = &unk_278C1CBC0;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 requestAuthorizationWithOptions:6 completionHandler:v6];
 }
 
@@ -29,17 +29,17 @@ uint64_t __97__WFLocalNotificationAccessResource_requestLocalNotificationsAuthor
   return result;
 }
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = objc_opt_class();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __86__WFLocalNotificationAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
   v8[3] = &unk_278C20360;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 requestLocalNotificationsAuthorizationWithCompletionHandler:v8];
 }
 

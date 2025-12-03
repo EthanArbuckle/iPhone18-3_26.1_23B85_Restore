@@ -1,22 +1,22 @@
 @interface PKPaymentOfferDynamicContentIconVariant
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferDynamicContentIconVariant)initWithCoder:(id)a3;
-- (PKPaymentOfferDynamicContentIconVariant)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferDynamicContentIconVariant)initWithCoder:(id)coder;
+- (PKPaymentOfferDynamicContentIconVariant)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)urlForScreenScale:(double)a3;
+- (id)urlForScreenScale:(double)scale;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferDynamicContentIconVariant
 
-- (PKPaymentOfferDynamicContentIconVariant)initWithDictionary:(id)a3
+- (PKPaymentOfferDynamicContentIconVariant)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKURLForKey:@"url2x"];
-  v6 = [v4 PKURLForKey:@"url3x"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKURLForKey:@"url2x"];
+  v6 = [dictionaryCopy PKURLForKey:@"url3x"];
 
   if (v5 | v6)
   {
@@ -31,34 +31,34 @@
     }
 
     self = p_isa;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSURL *)self->_url2x absoluteString];
-  [v3 setObject:v4 forKeyedSubscript:@"url2x"];
+  absoluteString = [(NSURL *)self->_url2x absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"url2x"];
 
-  v5 = [(NSURL *)self->_url3x absoluteString];
-  [v3 setObject:v5 forKeyedSubscript:@"url3x"];
+  absoluteString2 = [(NSURL *)self->_url3x absoluteString];
+  [v3 setObject:absoluteString2 forKeyedSubscript:@"url3x"];
 
   v6 = [v3 copy];
 
   return v6;
 }
 
-- (id)urlForScreenScale:(double)a3
+- (id)urlForScreenScale:(double)scale
 {
-  if (a3 >= 3.0)
+  if (scale >= 3.0)
   {
     v5 = self->_url3x;
   }
@@ -68,7 +68,7 @@
     v5 = 0;
   }
 
-  if (a3 >= 2.0 && v5 == 0)
+  if (scale >= 2.0 && v5 == 0)
   {
     v5 = self->_url2x;
   }
@@ -76,18 +76,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -165,19 +165,19 @@ LABEL_16:
   return v3;
 }
 
-- (PKPaymentOfferDynamicContentIconVariant)initWithCoder:(id)a3
+- (PKPaymentOfferDynamicContentIconVariant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferDynamicContentIconVariant;
   v5 = [(PKPaymentOfferDynamicContentIconVariant *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url2x"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url2x"];
     url2x = v5->_url2x;
     v5->_url2x = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url3x"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url3x"];
     url3x = v5->_url3x;
     v5->_url3x = v8;
   }
@@ -185,22 +185,22 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url2x = self->_url2x;
-  v5 = a3;
-  [v5 encodeObject:url2x forKey:@"url2x"];
-  [v5 encodeObject:self->_url3x forKey:@"url3x"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url2x forKey:@"url2x"];
+  [coderCopy encodeObject:self->_url3x forKey:@"url3x"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferDynamicContentIconVariant allocWithZone:](PKPaymentOfferDynamicContentIconVariant init];
-  v6 = [(NSURL *)self->_url2x copyWithZone:a3];
+  v6 = [(NSURL *)self->_url2x copyWithZone:zone];
   url2x = v5->_url2x;
   v5->_url2x = v6;
 
-  v8 = [(NSURL *)self->_url3x copyWithZone:a3];
+  v8 = [(NSURL *)self->_url3x copyWithZone:zone];
   url3x = v5->_url3x;
   v5->_url3x = v8;
 

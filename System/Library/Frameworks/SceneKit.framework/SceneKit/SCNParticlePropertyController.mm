@@ -1,15 +1,15 @@
 @interface SCNParticlePropertyController
 + (SCNParticlePropertyController)controllerWithAnimation:(CAAnimation *)animation;
-+ (SCNParticlePropertyController)particlePropertyControllerWithAnimation:(id)a3;
++ (SCNParticlePropertyController)particlePropertyControllerWithAnimation:(id)animation;
 - (SCNParticlePropertyController)init;
-- (SCNParticlePropertyController)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_customDecodingOfSCNParticlePropertyController:(id)a3;
-- (void)_customEncodingOfSCNParticlePropertyController:(id)a3;
+- (SCNParticlePropertyController)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_customDecodingOfSCNParticlePropertyController:(id)controller;
+- (void)_customEncodingOfSCNParticlePropertyController:(id)controller;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAnimation:(CAAnimation *)animation;
-- (void)setC3dAnimation:(id)a3;
+- (void)setC3dAnimation:(id)animation;
 - (void)setInputProperty:(SCNParticleProperty)inputProperty;
 @end
 
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (void)setC3dAnimation:(id)a3
+- (void)setC3dAnimation:(id)animation
 {
   c3dAnimation = self->_c3dAnimation;
-  if (c3dAnimation != a3)
+  if (c3dAnimation != animation)
   {
 
-    self->_c3dAnimation = a3;
+    self->_c3dAnimation = animation;
   }
 }
 
@@ -47,21 +47,21 @@
   [(SCNParticlePropertyController *)&v3 dealloc];
 }
 
-+ (SCNParticlePropertyController)particlePropertyControllerWithAnimation:(id)a3
++ (SCNParticlePropertyController)particlePropertyControllerWithAnimation:(id)animation
 {
-  v4 = objc_alloc_init(a1);
-  [(SCNParticlePropertyController *)v4 setAnimation:a3];
+  v4 = objc_alloc_init(self);
+  [(SCNParticlePropertyController *)v4 setAnimation:animation];
   return v4;
 }
 
 + (SCNParticlePropertyController)controllerWithAnimation:(CAAnimation *)animation
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [(SCNParticlePropertyController *)v4 setAnimation:animation];
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setAnimation:self->_animation];
@@ -94,18 +94,18 @@
   }
 }
 
-- (void)_customEncodingOfSCNParticlePropertyController:(id)a3
+- (void)_customEncodingOfSCNParticlePropertyController:(id)controller
 {
   c3dAnimation = self->_c3dAnimation;
   if (c3dAnimation)
   {
-    SCNEncodeC3DAnimationForKey(a3, c3dAnimation, @"animation");
+    SCNEncodeC3DAnimationForKey(controller, c3dAnimation, @"animation");
   }
 }
 
-- (void)_customDecodingOfSCNParticlePropertyController:(id)a3
+- (void)_customDecodingOfSCNParticlePropertyController:(id)controller
 {
-  v4 = SCNDecodeC3DAnimationForKey(a3, @"animation");
+  v4 = SCNDecodeC3DAnimationForKey(controller, @"animation");
   if (v4)
   {
     v5 = v4;
@@ -119,26 +119,26 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNParticlePropertyController *)self _customEncodingOfSCNParticlePropertyController:?];
-  [a3 encodeInteger:self->_inputMode forKey:@"inputMode"];
-  [a3 encodeDouble:@"inputScale" forKey:self->_inputScale];
-  [a3 encodeDouble:@"inputBias" forKey:self->_inputBias];
-  v5 = [(SCNParticlePropertyController *)self inputOrigin];
-  if (v5)
+  [coder encodeInteger:self->_inputMode forKey:@"inputMode"];
+  [coder encodeDouble:@"inputScale" forKey:self->_inputScale];
+  [coder encodeDouble:@"inputBias" forKey:self->_inputBias];
+  inputOrigin = [(SCNParticlePropertyController *)self inputOrigin];
+  if (inputOrigin)
   {
-    [a3 encodeObject:v5 forKey:@"inputOrigin"];
+    [coder encodeObject:inputOrigin forKey:@"inputOrigin"];
   }
 
   if (self->_inputProperty)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (SCNParticlePropertyController)initWithCoder:(id)a3
+- (SCNParticlePropertyController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNParticlePropertyController;
@@ -147,14 +147,14 @@
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNParticlePropertyController *)v4 _customDecodingOfSCNParticlePropertyController:a3];
-    -[SCNParticlePropertyController setInputMode:](v4, "setInputMode:", [a3 decodeIntegerForKey:@"inputMode"]);
-    [a3 decodeDoubleForKey:@"inputScale"];
+    [(SCNParticlePropertyController *)v4 _customDecodingOfSCNParticlePropertyController:coder];
+    -[SCNParticlePropertyController setInputMode:](v4, "setInputMode:", [coder decodeIntegerForKey:@"inputMode"]);
+    [coder decodeDoubleForKey:@"inputScale"];
     [(SCNParticlePropertyController *)v4 setInputScale:?];
-    [a3 decodeDoubleForKey:@"inputBias"];
+    [coder decodeDoubleForKey:@"inputBias"];
     [(SCNParticlePropertyController *)v4 setInputBias:?];
-    -[SCNParticlePropertyController setInputOrigin:](v4, "setInputOrigin:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"inputOrigin"]);
-    -[SCNParticlePropertyController setInputProperty:](v4, "setInputProperty:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"inputProperty"]);
+    -[SCNParticlePropertyController setInputOrigin:](v4, "setInputOrigin:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"inputOrigin"]);
+    -[SCNParticlePropertyController setInputProperty:](v4, "setInputProperty:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"inputProperty"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

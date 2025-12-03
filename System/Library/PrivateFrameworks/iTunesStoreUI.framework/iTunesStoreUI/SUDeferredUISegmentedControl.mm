@@ -1,27 +1,27 @@
 @interface SUDeferredUISegmentedControl
 - (CGRect)frame;
-- (id)imageForSegmentAtIndex:(unint64_t)a3;
-- (id)titleForSegmentAtIndex:(unint64_t)a3;
+- (id)imageForSegmentAtIndex:(unint64_t)index;
+- (id)titleForSegmentAtIndex:(unint64_t)index;
 - (int64_t)segmentedControlStyle;
 - (int64_t)selectedSegmentIndex;
 - (unint64_t)numberOfSegments;
 - (void)_commitDeferredInterfaceUpdates;
-- (void)_insertSegmentWithValue:(id)a3 atIndex:(unint64_t)a4;
+- (void)_insertSegmentWithValue:(id)value atIndex:(unint64_t)index;
 - (void)_saveCurrentStateAsDeferred;
 - (void)_saveSegmentsAsDeferred;
 - (void)dealloc;
-- (void)insertSegmentWithImage:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)insertSegmentWithTitle:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
+- (void)insertSegmentWithImage:(id)image atIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)insertSegmentWithTitle:(id)title atIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)removeAllSegments;
-- (void)removeSegmentAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setDeferringInterfaceUpdates:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3 forSegmentAtIndex:(unint64_t)a4;
-- (void)setSegmentedControlStyle:(int64_t)a3;
-- (void)setSelectedSegmentIndex:(int64_t)a3;
-- (void)setTitle:(id)a3 forSegmentAtIndex:(unint64_t)a4;
+- (void)removeSegmentAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setDeferringInterfaceUpdates:(BOOL)updates;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image forSegmentAtIndex:(unint64_t)index;
+- (void)setSegmentedControlStyle:(int64_t)style;
+- (void)setSelectedSegmentIndex:(int64_t)index;
+- (void)setTitle:(id)title forSegmentAtIndex:(unint64_t)index;
 - (void)sizeToFit;
-- (void)sizeToFitWithMinimumSegmentWidth:(double)a3 maximumTotalWidth:(double)a4;
+- (void)sizeToFitWithMinimumSegmentWidth:(double)width maximumTotalWidth:(double)totalWidth;
 @end
 
 @implementation SUDeferredUISegmentedControl
@@ -35,18 +35,18 @@
   [(SUDeferredUISegmentedControl *)&v3 dealloc];
 }
 
-- (void)setDeferringInterfaceUpdates:(BOOL)a3
+- (void)setDeferringInterfaceUpdates:(BOOL)updates
 {
   isDeferringInterfaceUpdates = self->_isDeferringInterfaceUpdates;
-  if (isDeferringInterfaceUpdates != a3)
+  if (isDeferringInterfaceUpdates != updates)
   {
     if (!isDeferringInterfaceUpdates)
     {
       [(SUDeferredUISegmentedControl *)self _saveCurrentStateAsDeferred];
     }
 
-    self->_isDeferringInterfaceUpdates = a3;
-    if (!a3)
+    self->_isDeferringInterfaceUpdates = updates;
+    if (!updates)
     {
 
       [(SUDeferredUISegmentedControl *)self _commitDeferredInterfaceUpdates];
@@ -78,18 +78,18 @@
   return result;
 }
 
-- (id)imageForSegmentAtIndex:(unint64_t)a3
+- (id)imageForSegmentAtIndex:(unint64_t)index
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    if ([(NSMutableArray *)self->_deferredSegments count]<= a3)
+    if ([(NSMutableArray *)self->_deferredSegments count]<= index)
     {
       return 0;
     }
 
     else
     {
-      v5 = [(NSMutableArray *)self->_deferredSegments objectAtIndex:a3];
+      v5 = [(NSMutableArray *)self->_deferredSegments objectAtIndex:index];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -107,41 +107,41 @@
   {
     v7.receiver = self;
     v7.super_class = SUDeferredUISegmentedControl;
-    return [(SUDeferredUISegmentedControl *)&v7 imageForSegmentAtIndex:a3];
+    return [(SUDeferredUISegmentedControl *)&v7 imageForSegmentAtIndex:index];
   }
 }
 
-- (void)insertSegmentWithImage:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)insertSegmentWithImage:(id)image atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
 
-    [(SUDeferredUISegmentedControl *)self _insertSegmentWithValue:a3 atIndex:a4];
+    [(SUDeferredUISegmentedControl *)self _insertSegmentWithValue:image atIndex:index];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v9 insertSegmentWithImage:a3 atIndex:a4 animated:v5];
+    [(SUDeferredUISegmentedControl *)&v9 insertSegmentWithImage:image atIndex:index animated:animatedCopy];
   }
 }
 
-- (void)insertSegmentWithTitle:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)insertSegmentWithTitle:(id)title atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
 
-    [(SUDeferredUISegmentedControl *)self _insertSegmentWithValue:a3 atIndex:a4];
+    [(SUDeferredUISegmentedControl *)self _insertSegmentWithValue:title atIndex:index];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v9 insertSegmentWithTitle:a3 atIndex:a4 animated:v5];
+    [(SUDeferredUISegmentedControl *)&v9 insertSegmentWithTitle:title atIndex:index animated:animatedCopy];
   }
 }
 
@@ -179,16 +179,16 @@
   }
 }
 
-- (void)removeSegmentAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)removeSegmentAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    if ([(NSMutableArray *)self->_deferredSegments count]> a3)
+    if ([(NSMutableArray *)self->_deferredSegments count]> index)
     {
       deferredSegments = self->_deferredSegments;
 
-      [(NSMutableArray *)deferredSegments removeObjectAtIndex:a3];
+      [(NSMutableArray *)deferredSegments removeObjectAtIndex:index];
     }
   }
 
@@ -196,7 +196,7 @@
   {
     v8.receiver = self;
     v8.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v8 removeSegmentAtIndex:a3 animated:v4];
+    [(SUDeferredUISegmentedControl *)&v8 removeSegmentAtIndex:index animated:animatedCopy];
   }
 }
 
@@ -224,12 +224,12 @@
   return [(SUDeferredUISegmentedControl *)&v4 selectedSegmentIndex];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
     self->_deferredFrame.origin.x = x;
@@ -246,15 +246,15 @@
   }
 }
 
-- (void)setImage:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setImage:(id)image forSegmentAtIndex:(unint64_t)index
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    if ([(NSMutableArray *)self->_deferredSegments count]> a4)
+    if ([(NSMutableArray *)self->_deferredSegments count]> index)
     {
       deferredSegments = self->_deferredSegments;
 
-      [(NSMutableArray *)deferredSegments replaceObjectAtIndex:a4 withObject:a3];
+      [(NSMutableArray *)deferredSegments replaceObjectAtIndex:index withObject:image];
     }
   }
 
@@ -262,49 +262,49 @@
   {
     v8.receiver = self;
     v8.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v8 setImage:a3 forSegmentAtIndex:a4];
+    [(SUDeferredUISegmentedControl *)&v8 setImage:image forSegmentAtIndex:index];
   }
 }
 
-- (void)setSegmentedControlStyle:(int64_t)a3
+- (void)setSegmentedControlStyle:(int64_t)style
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    self->_deferredSegmentedControlStyle = a3;
+    self->_deferredSegmentedControlStyle = style;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v5 setSegmentedControlStyle:a3];
+    [(SUDeferredUISegmentedControl *)&v5 setSegmentedControlStyle:style];
   }
 }
 
-- (void)setSelectedSegmentIndex:(int64_t)a3
+- (void)setSelectedSegmentIndex:(int64_t)index
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    self->_deferredSelectedSegmentIndex = a3;
+    self->_deferredSelectedSegmentIndex = index;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v5 setSelectedSegmentIndex:a3];
+    [(SUDeferredUISegmentedControl *)&v5 setSelectedSegmentIndex:index];
   }
 }
 
-- (void)setTitle:(id)a3 forSegmentAtIndex:(unint64_t)a4
+- (void)setTitle:(id)title forSegmentAtIndex:(unint64_t)index
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    if ([(NSMutableArray *)self->_deferredSegments count]> a4)
+    if ([(NSMutableArray *)self->_deferredSegments count]> index)
     {
       deferredSegments = self->_deferredSegments;
 
-      [(NSMutableArray *)deferredSegments replaceObjectAtIndex:a4 withObject:a3];
+      [(NSMutableArray *)deferredSegments replaceObjectAtIndex:index withObject:title];
     }
   }
 
@@ -312,7 +312,7 @@
   {
     v8.receiver = self;
     v8.super_class = SUDeferredUISegmentedControl;
-    [(SUDeferredUISegmentedControl *)&v8 setTitle:a3 forSegmentAtIndex:a4];
+    [(SUDeferredUISegmentedControl *)&v8 setTitle:title forSegmentAtIndex:index];
   }
 }
 
@@ -331,12 +331,12 @@
   }
 }
 
-- (void)sizeToFitWithMinimumSegmentWidth:(double)a3 maximumTotalWidth:(double)a4
+- (void)sizeToFitWithMinimumSegmentWidth:(double)width maximumTotalWidth:(double)totalWidth
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    self->_deferredMaxTotalWidth = a4;
-    self->_deferredMinSegmentWidth = a3;
+    self->_deferredMaxTotalWidth = totalWidth;
+    self->_deferredMinSegmentWidth = width;
     self->_deferredSizeToFit = 1;
   }
 
@@ -344,22 +344,22 @@
   {
     v7.receiver = self;
     v7.super_class = SUDeferredUISegmentedControl;
-    [(UISegmentedControl *)&v7 sizeToFitWithMinimumSegmentWidth:a3 maximumTotalWidth:a4];
+    [(UISegmentedControl *)&v7 sizeToFitWithMinimumSegmentWidth:width maximumTotalWidth:totalWidth];
   }
 }
 
-- (id)titleForSegmentAtIndex:(unint64_t)a3
+- (id)titleForSegmentAtIndex:(unint64_t)index
 {
   if ([(SUDeferredUISegmentedControl *)self isDeferringInterfaceUpdates])
   {
-    if ([(NSMutableArray *)self->_deferredSegments count]<= a3)
+    if ([(NSMutableArray *)self->_deferredSegments count]<= index)
     {
       return 0;
     }
 
     else
     {
-      v5 = [(NSMutableArray *)self->_deferredSegments objectAtIndex:a3];
+      v5 = [(NSMutableArray *)self->_deferredSegments objectAtIndex:index];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -377,7 +377,7 @@
   {
     v7.receiver = self;
     v7.super_class = SUDeferredUISegmentedControl;
-    return [(SUDeferredUISegmentedControl *)&v7 titleForSegmentAtIndex:a3];
+    return [(SUDeferredUISegmentedControl *)&v7 titleForSegmentAtIndex:index];
   }
 }
 
@@ -409,15 +409,15 @@
           v8 = *(*(&v11 + 1) + 8 * i);
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v10 = [(SUDeferredUISegmentedControl *)self numberOfSegments];
+          numberOfSegments = [(SUDeferredUISegmentedControl *)self numberOfSegments];
           if (isKindOfClass)
           {
-            [(SUDeferredUISegmentedControl *)self insertSegmentWithImage:v8 atIndex:v10 animated:0];
+            [(SUDeferredUISegmentedControl *)self insertSegmentWithImage:v8 atIndex:numberOfSegments animated:0];
           }
 
           else
           {
-            [(SUDeferredUISegmentedControl *)self insertSegmentWithTitle:v8 atIndex:v10 animated:0];
+            [(SUDeferredUISegmentedControl *)self insertSegmentWithTitle:v8 atIndex:numberOfSegments animated:0];
           }
         }
 
@@ -443,7 +443,7 @@
   }
 }
 
-- (void)_insertSegmentWithValue:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertSegmentWithValue:(id)value atIndex:(unint64_t)index
 {
   deferredSegments = self->_deferredSegments;
   if (!deferredSegments)
@@ -453,17 +453,17 @@
   }
 
   v8 = [(NSMutableArray *)deferredSegments count];
-  if (v8 >= a4)
+  if (v8 >= index)
   {
-    v9 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v9 = v8;
+    indexCopy = v8;
   }
 
-  [(NSMutableArray *)deferredSegments insertObject:a3 atIndex:v9];
+  [(NSMutableArray *)deferredSegments insertObject:value atIndex:indexCopy];
 }
 
 - (void)_saveCurrentStateAsDeferred
@@ -493,10 +493,10 @@
   }
 
   [(NSMutableArray *)deferredSegments removeAllObjects];
-  v4 = [(SUDeferredUISegmentedControl *)self numberOfSegments];
-  if (v4 >= 1)
+  numberOfSegments = [(SUDeferredUISegmentedControl *)self numberOfSegments];
+  if (numberOfSegments >= 1)
   {
-    v5 = v4;
+    v5 = numberOfSegments;
     for (i = 0; i != v5; ++i)
     {
       v7 = [(SUDeferredUISegmentedControl *)self titleForSegmentAtIndex:i];

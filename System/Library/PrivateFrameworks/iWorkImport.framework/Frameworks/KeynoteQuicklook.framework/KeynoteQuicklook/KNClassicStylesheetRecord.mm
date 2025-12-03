@@ -1,27 +1,27 @@
 @interface KNClassicStylesheetRecord
 - (id)childEnumerator;
 - (id)referencedStyles;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setIdentifierToStyleMap:(id)a3;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setIdentifierToStyleMap:(id)map;
 @end
 
 @implementation KNClassicStylesheetRecord
 
-- (void)setIdentifierToStyleMap:(id)a3
+- (void)setIdentifierToStyleMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   objc_msgSend_willModify(self, v5, v6);
   identifierToStyleMap = self->_identifierToStyleMap;
-  self->_identifierToStyleMap = v4;
+  self->_identifierToStyleMap = mapCopy;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v5 = a4;
+  mapperCopy = mapper;
   v8 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v6, v7);
   v11 = objc_msgSend_identifierToStyleMap(self, v9, v10);
   v16 = MEMORY[0x277D85DD0];
@@ -30,7 +30,7 @@
   v19 = &unk_27A698C28;
   v12 = v8;
   v20 = v12;
-  v13 = v5;
+  v13 = mapperCopy;
   v21 = v13;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v11, v14, &v16);
 
@@ -69,20 +69,20 @@
   return v12;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v19 = self;
-  v5 = a4;
+  selfCopy = self;
+  unarchiverCopy = unarchiver;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = *(a3 + 8);
+  v8 = *(archive + 8);
   if (v8 >= 1)
   {
     v9 = 8;
     v10 = MEMORY[0x277D80A18];
     do
     {
-      v11 = *(*(a3 + 5) + v9);
-      v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(v11 + 24) & 0xFFFFFFFFFFFFFFFELL, v19);
+      v11 = *(*(archive + 5) + v9);
+      v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(v11 + 24) & 0xFFFFFFFFFFFFFFFELL, selfCopy);
       v13 = *(v11 + 32);
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
@@ -91,7 +91,7 @@
       v22 = v7;
       v14 = v12;
       v23 = v14;
-      v15 = v5;
+      v15 = unarchiverCopy;
       v17 = objc_opt_class();
       if (v13)
       {
@@ -110,19 +110,19 @@
     while (v8);
   }
 
-  objc_storeStrong(&v19->_identifierToStyleMap, v7);
+  objc_storeStrong(&selfCopy->_identifierToStyleMap, v7);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_275DC8658;
   v20[3] = &unk_27A698390;
-  v20[4] = v19;
-  objc_msgSend_addFinalizeHandler_(v5, v18, v20);
+  v20[4] = selfCopy;
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v18, v20);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v83 = *MEMORY[0x277D85DE8];
-  v74 = a4;
+  archiverCopy = archiver;
   v7 = objc_msgSend_allKeys(self->_identifierToStyleMap, v5, v6);
   v9 = objc_msgSend_sortedArrayUsingComparator_(v7, v8, &unk_2884D5168);
 
@@ -147,34 +147,34 @@
 
         v14 = *(*(&v78 + 1) + 8 * i);
         v77 = objc_msgSend_objectForKeyedSubscript_(self->_identifierToStyleMap, v12, v14);
-        v17 = *(a3 + 5);
+        v17 = *(archive + 5);
         if (!v17)
         {
           goto LABEL_11;
         }
 
-        v18 = *(a3 + 8);
+        v18 = *(archive + 8);
         v19 = *v17;
         if (v18 < *v17)
         {
-          *(a3 + 8) = v18 + 1;
+          *(archive + 8) = v18 + 1;
           v20 = *&v17[2 * v18 + 2];
           goto LABEL_13;
         }
 
-        if (v19 == *(a3 + 9))
+        if (v19 == *(archive + 9))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v17 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v17 = *(archive + 5);
           v19 = *v17;
         }
 
         *v17 = v19 + 1;
-        v20 = MEMORY[0x277C8F080](*(a3 + 3));
-        v21 = *(a3 + 8);
-        v22 = *(a3 + 5) + 8 * v21;
-        *(a3 + 8) = v21 + 1;
+        v20 = MEMORY[0x277C8F080](*(archive + 3));
+        v21 = *(archive + 8);
+        v22 = *(archive + 5) + 8 * v21;
+        *(archive + 8) = v21 + 1;
         *(v22 + 8) = v20;
 LABEL_13:
         v23 = objc_msgSend_tsp_protobufString(v14, v15, v16);
@@ -196,7 +196,7 @@ LABEL_13:
             *(v20 + 32) = v25;
           }
 
-          objc_msgSend_setStrongReference_message_(v74, v24, v77, v25);
+          objc_msgSend_setStrongReference_message_(archiverCopy, v24, v77, v25);
         }
 
         else
@@ -231,7 +231,7 @@ LABEL_13:
               *(v20 + 32) = v56;
             }
 
-            objc_msgSend_setStrongReference_message_(v74, v55, v54, v56);
+            objc_msgSend_setStrongReference_message_(archiverCopy, v55, v54, v56);
           }
 
           else
@@ -256,7 +256,7 @@ LABEL_13:
               *(v20 + 32) = v66;
             }
 
-            objc_msgSend_setWeakReference_message_(v74, v65, v77, v66);
+            objc_msgSend_setWeakReference_message_(archiverCopy, v65, v77, v66);
           }
         }
       }
@@ -268,22 +268,22 @@ LABEL_13:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812EA908[22]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[22]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275DC90DC, off_2812EA908[22]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275DC90DC, off_2812EA908[22]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

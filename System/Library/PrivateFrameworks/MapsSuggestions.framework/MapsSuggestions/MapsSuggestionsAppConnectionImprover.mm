@@ -1,17 +1,17 @@
 @interface MapsSuggestionsAppConnectionImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsAppConnectionImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    if ([v4 type] == 12)
+    if ([entryCopy type] == 12)
     {
       v6 = v5;
       if ([v6 BOOLeanForKey:@"MapsSuggestionsAppConnectionIsCoordinateOnlyURL" is:1])
@@ -82,36 +82,36 @@ LABEL_25:
           goto LABEL_27;
         }
 
-        v7 = [v6 stringForKey:@"MapsSuggestionsAppConnectionMessageSenderContactName"];
-        v8 = MapsSuggestionsLocalizedSharedByString(v7);
+        geoMapItem2 = [v6 stringForKey:@"MapsSuggestionsAppConnectionMessageSenderContactName"];
+        v8 = MapsSuggestionsLocalizedSharedByString(geoMapItem2);
 LABEL_22:
 
         goto LABEL_23;
       }
 
-      v11 = [v6 undecoratedTitle];
-      if ([v11 length])
+      undecoratedTitle = [v6 undecoratedTitle];
+      if ([undecoratedTitle length])
       {
       }
 
       else
       {
-        v13 = [v6 geoMapItem];
+        geoMapItem = [v6 geoMapItem];
 
-        if (v13)
+        if (geoMapItem)
         {
-          v7 = [v6 geoMapItem];
-          v14 = [v7 name];
-          v15 = v14;
-          if (v14)
+          geoMapItem2 = [v6 geoMapItem];
+          name = [geoMapItem2 name];
+          v15 = name;
+          if (name)
           {
-            v8 = v14;
+            v8 = name;
           }
 
           else
           {
-            v16 = [v6 geoMapItem];
-            v17 = MapsSuggestionsMapItemShortAddress(v16);
+            geoMapItem3 = [v6 geoMapItem];
+            v17 = MapsSuggestionsMapItemShortAddress(geoMapItem3);
             v18 = v17;
             if (v17)
             {

@@ -2,7 +2,7 @@
 + (id)entryEventForwardDefinitions;
 + (void)load;
 - (PLScheduledWakeAgent)init;
-- (id)humanReadableScheduledWakeString:(id)a3;
+- (id)humanReadableScheduledWakeString:(id)string;
 - (void)initOperatorDependancies;
 - (void)logEventForwardScheduledEvent;
 @end
@@ -11,7 +11,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLScheduledWakeAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -31,17 +31,17 @@
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
   v20[0] = v3;
   v19[1] = *MEMORY[0x277D3F540];
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v16[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v16[0] = commonTypeDict_DateFormat;
   v15[1] = @"Type";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v16[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v16[1] = commonTypeDict_StringFormat;
   v15[2] = @"AppName";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v16[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v16[2] = commonTypeDict_StringFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -73,8 +73,8 @@
   v3 = [MEMORY[0x277D3F218] sharedSemaphoreForKey:*MEMORY[0x277D3F468]];
   [(PLScheduledWakeAgent *)self setCanSleepSemaphore:v3];
 
-  v4 = [(PLScheduledWakeAgent *)self canSleepSemaphore];
-  [v4 signalInterestByObject:self];
+  canSleepSemaphore = [(PLScheduledWakeAgent *)self canSleepSemaphore];
+  [canSleepSemaphore signalInterestByObject:self];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -109,9 +109,9 @@
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ signaling done", self];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLScheduledWakeAgent.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLScheduledWakeAgent logEventForwardScheduledEvent]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:120];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:120];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -123,10 +123,10 @@
     }
   }
 
-  v11 = [(PLScheduledWakeAgent *)self canSleepSemaphore];
-  [v11 signalDoneByObject:self];
+  canSleepSemaphore = [(PLScheduledWakeAgent *)self canSleepSemaphore];
+  [canSleepSemaphore signalDoneByObject:self];
 
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -153,8 +153,8 @@
         if (v18 >= 0.0)
         {
           v19 = [v16 objectForKey:@"scheduledby"];
-          v20 = [(PLScheduledWakeAgent *)self previousScheduleWakeEvents];
-          v21 = [v20 valueForKey:v19];
+          previousScheduleWakeEvents = [(PLScheduledWakeAgent *)self previousScheduleWakeEvents];
+          v21 = [previousScheduleWakeEvents valueForKey:v19];
 
           if (v21 && [v21 isEqualToDate:v17])
           {
@@ -176,9 +176,9 @@
                 v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Skip logging event %@", v16];
                 v43 = MEMORY[0x277D3F178];
                 v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Software/PLScheduledWakeAgent.m"];
-                v25 = [v24 lastPathComponent];
+                lastPathComponent2 = [v24 lastPathComponent];
                 v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLScheduledWakeAgent logEventForwardScheduledEvent]"];
-                [v43 logMessage:v23 fromFile:v25 fromFunction:v26 fromLineNumber:136];
+                [v43 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v26 fromLineNumber:136];
 
                 v27 = PLLogCommon();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -203,7 +203,7 @@ LABEL_24:
           [v23 setObject:v17 forKeyedSubscript:@"EventTime"];
           [v23 setObject:v27 forKeyedSubscript:@"Type"];
           [v23 setObject:v19 forKeyedSubscript:@"AppName"];
-          [v44 addObject:v23];
+          [array addObject:v23];
           goto LABEL_24;
         }
 
@@ -219,8 +219,8 @@ LABEL_26:
     while (v13);
   }
 
-  v29 = [(PLScheduledWakeAgent *)self previousScheduleWakeEvents];
-  [v29 removeAllObjects];
+  previousScheduleWakeEvents2 = [(PLScheduledWakeAgent *)self previousScheduleWakeEvents];
+  [previousScheduleWakeEvents2 removeAllObjects];
 
   v49 = 0u;
   v50 = 0u;
@@ -247,8 +247,8 @@ LABEL_26:
         if (v37 >= 0.0)
         {
           v38 = [v35 objectForKey:@"scheduledby"];
-          v39 = [(PLScheduledWakeAgent *)self previousScheduleWakeEvents];
-          [v39 setValue:v36 forKey:v38];
+          previousScheduleWakeEvents3 = [(PLScheduledWakeAgent *)self previousScheduleWakeEvents];
+          [previousScheduleWakeEvents3 setValue:v36 forKey:v38];
         }
       }
 
@@ -258,10 +258,10 @@ LABEL_26:
     while (v32);
   }
 
-  if ([v44 count])
+  if ([array count])
   {
     v57 = v42;
-    v58 = v44;
+    v58 = array;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
     [(PLOperator *)self logEntries:v40 withGroupID:v42];
   }
@@ -291,22 +291,22 @@ uint64_t __53__PLScheduledWakeAgent_logEventForwardScheduledEvent__block_invoke_
   return result;
 }
 
-- (id)humanReadableScheduledWakeString:(id)a3
+- (id)humanReadableScheduledWakeString:(id)string
 {
-  v3 = a3;
-  if (CFStringCompare(v3, @"wake", 0))
+  stringCopy = string;
+  if (CFStringCompare(stringCopy, @"wake", 0))
   {
-    if (CFStringCompare(v3, @"wakepoweron", 0))
+    if (CFStringCompare(stringCopy, @"wakepoweron", 0))
     {
-      if (CFStringCompare(v3, @"poweron", 0))
+      if (CFStringCompare(stringCopy, @"poweron", 0))
       {
-        if (CFStringCompare(v3, @"sleep", 0))
+        if (CFStringCompare(stringCopy, @"sleep", 0))
         {
-          if (CFStringCompare(v3, @"shutdown", 0))
+          if (CFStringCompare(stringCopy, @"shutdown", 0))
           {
-            if (CFStringCompare(v3, @"restart", 0))
+            if (CFStringCompare(stringCopy, @"restart", 0))
             {
-              v4 = v3;
+              v4 = stringCopy;
             }
 
             else

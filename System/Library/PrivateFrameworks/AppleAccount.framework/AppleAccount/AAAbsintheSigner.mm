@@ -1,19 +1,19 @@
 @interface AAAbsintheSigner
 + (AAAbsintheSigner)sharedSigner;
 + (id)_contextCreationBlock;
-+ (void)_setContextCreationBlock:(id)a3;
++ (void)_setContextCreationBlock:(id)block;
 - (AAAbsintheContext)context;
-- (AAAbsintheSigner)initWithCacheTimeout:(double)a3;
+- (AAAbsintheSigner)initWithCacheTimeout:(double)timeout;
 - (id)_contextLock_contextInvalidatingIfNecessary;
 - (void)_contextLock_dequeueContextCleanup;
 - (void)_contextLock_enqueueContextCleanup;
-- (void)_contextQueue_contextWithCompletion:(id)a3;
-- (void)_contextWithCompletion:(id)a3;
-- (void)_fetchCertificateDataWithCompletion:(id)a3;
-- (void)_fetchSessionInfoWithRequestInfo:(id)a3 completion:(id)a4;
+- (void)_contextQueue_contextWithCompletion:(id)completion;
+- (void)_contextWithCompletion:(id)completion;
+- (void)_fetchCertificateDataWithCompletion:(id)completion;
+- (void)_fetchSessionInfoWithRequestInfo:(id)info completion:(id)completion;
 - (void)dealloc;
-- (void)setContext:(id)a3;
-- (void)signatureForData:(id)a3 completion:(id)a4;
+- (void)setContext:(id)context;
+- (void)signatureForData:(id)data completion:(id)completion;
 @end
 
 @implementation AAAbsintheSigner
@@ -64,22 +64,22 @@ AAAbsintheContext *__41__AAAbsintheSigner__contextCreationBlock__block_invoke_2(
   return v0;
 }
 
-+ (void)_setContextCreationBlock:(id)a3
++ (void)_setContextCreationBlock:(id)block
 {
-  v3 = a3;
-  v6 = v3;
-  if (!v3)
+  blockCopy = block;
+  v6 = blockCopy;
+  if (!blockCopy)
   {
     +[AAAbsintheSigner _setContextCreationBlock:];
-    v3 = 0;
+    blockCopy = 0;
   }
 
-  v4 = _Block_copy(v3);
+  v4 = _Block_copy(blockCopy);
   v5 = _AAContextCreationBlock;
   _AAContextCreationBlock = v4;
 }
 
-- (AAAbsintheSigner)initWithCacheTimeout:(double)a3
+- (AAAbsintheSigner)initWithCacheTimeout:(double)timeout
 {
   v13.receiver = self;
   v13.super_class = AAAbsintheSigner;
@@ -87,7 +87,7 @@ AAAbsintheContext *__41__AAAbsintheSigner__contextCreationBlock__block_invoke_2(
   v5 = v4;
   if (v4)
   {
-    v4->_cacheTimeout = a3;
+    v4->_cacheTimeout = timeout;
     v6 = +[AAURLSession sharedSession];
     session = v5->_session;
     v5->_session = v6;
@@ -134,11 +134,11 @@ void __27__AAAbsintheSigner_dealloc__block_invoke(uint64_t a1)
   *(v2 + 32) = 0;
 }
 
-- (void)signatureForData:(id)a3 completion:(id)a4
+- (void)signatureForData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAAbsintheSigner signatureForData:completion:];
   }
@@ -147,10 +147,10 @@ void __27__AAAbsintheSigner_dealloc__block_invoke(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __48__AAAbsintheSigner_signatureForData_completion___block_invoke;
   v10[3] = &unk_1E7C9BC28;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dataCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = dataCopy;
   [(AAAbsintheSigner *)self _contextWithCompletion:v10];
 }
 
@@ -191,8 +191,8 @@ void __48__AAAbsintheSigner_signatureForData_completion___block_invoke(uint64_t 
 - (id)_contextLock_contextInvalidatingIfNecessary
 {
   os_unfair_lock_assert_owner(&self->_contextLock);
-  v3 = [(AAAbsintheSignerContextCache *)self->_contextCache creationDate];
-  [v3 timeIntervalSinceNow];
+  creationDate = [(AAAbsintheSignerContextCache *)self->_contextCache creationDate];
+  [creationDate timeIntervalSinceNow];
   v5 = v4;
   v6 = -self->_cacheTimeout;
 
@@ -210,21 +210,21 @@ void __48__AAAbsintheSigner_signatureForData_completion___block_invoke(uint64_t 
     [(AAAbsintheSigner *)self _contextLock_dequeueContextCleanup];
   }
 
-  v9 = [(AAAbsintheSignerContextCache *)self->_contextCache context];
+  context = [(AAAbsintheSignerContextCache *)self->_contextCache context];
 
-  return v9;
+  return context;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__AAAbsintheSigner_setContext___block_invoke;
   v6[3] = &unk_1E7C9ADE8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = contextCopy;
+  selfCopy = self;
+  v5 = contextCopy;
   os_unfair_lock_lock(&self->_contextLock);
   __31__AAAbsintheSigner_setContext___block_invoke(v6);
   os_unfair_lock_unlock(&self->_contextLock);
@@ -310,18 +310,18 @@ void __54__AAAbsintheSigner__contextLock_enqueueContextCleanup__block_invoke(uin
   }
 }
 
-- (void)_contextWithCompletion:(id)a3
+- (void)_contextWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAAbsintheSigner _contextWithCompletion:];
   }
 
-  v5 = [(AAAbsintheSigner *)self context];
-  if (v5)
+  context = [(AAAbsintheSigner *)self context];
+  if (context)
   {
-    v4[2](v4, v5, 0);
+    completionCopy[2](completionCopy, context, 0);
   }
 
   else
@@ -332,25 +332,25 @@ void __54__AAAbsintheSigner__contextLock_enqueueContextCleanup__block_invoke(uin
     v7[2] = __43__AAAbsintheSigner__contextWithCompletion___block_invoke;
     v7[3] = &unk_1E7C9BC78;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(contextQueue, v7);
   }
 }
 
-- (void)_contextQueue_contextWithCompletion:(id)a3
+- (void)_contextQueue_contextWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAAbsintheSigner _contextQueue_contextWithCompletion:];
   }
 
   dispatch_assert_queue_V2(self->_contextQueue);
-  v5 = [(AAAbsintheSigner *)self context];
-  if (v5)
+  context = [(AAAbsintheSigner *)self context];
+  if (context)
   {
-    v4[2](v4, v5, 0);
+    completionCopy[2](completionCopy, context, 0);
   }
 
   else
@@ -382,7 +382,7 @@ void __54__AAAbsintheSigner__contextLock_enqueueContextCleanup__block_invoke(uin
     v22 = v7;
     v23 = v9;
     aBlock[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     v21 = v13;
     v14 = _Block_copy(aBlock);
     dispatch_suspend(self->_contextQueue);
@@ -598,17 +598,17 @@ void __56__AAAbsintheSigner__contextQueue_contextWithCompletion___block_invoke_5
   }
 }
 
-- (void)_fetchCertificateDataWithCompletion:(id)a3
+- (void)_fetchCertificateDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x1E695DFF8] aa_URLWithEndpoint:@"qualifyCert"];
   session = self->_session;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__AAAbsintheSigner__fetchCertificateDataWithCompletion___block_invoke;
   v9[3] = &unk_1E7C9BD18;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   v8 = [(AAURLSession *)session dataTaskWithURL:v5 completion:v9];
   [v8 resume];
 }
@@ -675,14 +675,14 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_fetchSessionInfoWithRequestInfo:(id)a3 completion:(id)a4
+- (void)_fetchSessionInfoWithRequestInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E695DFF8];
-  v8 = a3;
+  infoCopy = info;
   v9 = [v7 aa_URLWithEndpoint:@"qualifySession"];
   v10 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:v9];
-  v11 = [v8 base64EncodedStringWithOptions:0];
+  v11 = [infoCopy base64EncodedStringWithOptions:0];
 
   [v10 setValue:v11 forHTTPHeaderField:@"X-MMe-Nas-Session"];
   session = self->_session;
@@ -690,8 +690,8 @@ LABEL_17:
   v15[1] = 3221225472;
   v15[2] = __64__AAAbsintheSigner__fetchSessionInfoWithRequestInfo_completion___block_invoke;
   v15[3] = &unk_1E7C9BD40;
-  v16 = v6;
-  v13 = v6;
+  v16 = completionCopy;
+  v13 = completionCopy;
   v14 = [(AAURLSession *)session bodyTaskWithRequest:v10 completion:v15];
   [v14 resume];
 }

@@ -1,19 +1,19 @@
 @interface StagingBuffer
-- (StagingBuffer)initWithContext:(__n128)a3 stagingWidth:(__n128)a4 stagingHeight:(__n128)a5 homography:(__n128)a6 atlasHomography:(__n128)a7;
-- (void)overlapWithAtlasHomography:(float32x4_t *)a1 roi:(simd_float3x3)a2;
-- (void)setAtlasHomography:(__n128)a3;
-- (void)setHomographyToReference:(__n128)a3;
+- (StagingBuffer)initWithContext:(__n128)context stagingWidth:(__n128)width stagingHeight:(__n128)height homography:(__n128)homography atlasHomography:(__n128)atlasHomography;
+- (void)overlapWithAtlasHomography:(float32x4_t *)homography roi:(simd_float3x3)roi;
+- (void)setAtlasHomography:(__n128)homography;
+- (void)setHomographyToReference:(__n128)reference;
 @end
 
 @implementation StagingBuffer
 
-- (void)overlapWithAtlasHomography:(float32x4_t *)a1 roi:(simd_float3x3)a2
+- (void)overlapWithAtlasHomography:(float32x4_t *)homography roi:(simd_float3x3)roi
 {
-  v9 = __invert_f3(a2);
+  v9 = __invert_f3(roi);
   v3 = 0;
-  v4 = a1[6];
-  v5 = a1[7];
-  v6 = a1[8];
+  v4 = homography[6];
+  v5 = homography[7];
+  v6 = homography[8];
   v7 = v9;
   memset(v8, 0, sizeof(v8));
   do
@@ -25,26 +25,26 @@
   while (v3 != 3);
 }
 
-- (void)setHomographyToReference:(__n128)a3
+- (void)setHomographyToReference:(__n128)reference
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = reference;
   v4[2] = a4;
-  objc_copyStruct((a1 + 48), v4, 48, 1, 0);
+  objc_copyStruct((self + 48), v4, 48, 1, 0);
 }
 
-- (void)setAtlasHomography:(__n128)a3
+- (void)setAtlasHomography:(__n128)homography
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = homography;
   v4[2] = a4;
-  objc_copyStruct((a1 + 96), v4, 48, 1, 0);
+  objc_copyStruct((self + 96), v4, 48, 1, 0);
 }
 
-- (StagingBuffer)initWithContext:(__n128)a3 stagingWidth:(__n128)a4 stagingHeight:(__n128)a5 homography:(__n128)a6 atlasHomography:(__n128)a7
+- (StagingBuffer)initWithContext:(__n128)context stagingWidth:(__n128)width stagingHeight:(__n128)height homography:(__n128)homography atlasHomography:(__n128)atlasHomography
 {
   v14 = a9;
-  v61.receiver = a1;
+  v61.receiver = self;
   v61.super_class = StagingBuffer;
   v16 = [(StagingBuffer *)&v61 init];
   if (v16)
@@ -89,11 +89,11 @@
     if (v16->_weights)
     {
       *v16->_anon_30 = a2;
-      *&v16->_anon_30[16] = a3;
-      *&v16->_anon_30[32] = a4;
-      *&v16[1].super.isa = a5;
-      *&v16[1]._luma = a6;
-      *&v16[1]._weights = a7;
+      *&v16->_anon_30[16] = context;
+      *&v16->_anon_30[32] = width;
+      *&v16[1].super.isa = height;
+      *&v16[1]._luma = homography;
+      *&v16[1]._weights = atlasHomography;
       v16->_dirty = 0;
       fig_note_initialize_category_with_default_work();
       v53 = v16;

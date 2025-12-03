@@ -1,18 +1,18 @@
 @interface PUReviewScreenControlBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PUReviewScreenControlBarAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PUReviewScreenControlBarAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PUReviewScreenControlBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"sendButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"markupButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"sendButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"markupButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUReviewScreenControlBar" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,11 +33,11 @@
   [v7 setAccessibilityLabel:v8];
 }
 
-- (PUReviewScreenControlBarAccessibility)initWithFrame:(CGRect)a3
+- (PUReviewScreenControlBarAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PUReviewScreenControlBarAccessibility;
-  v3 = [(PUReviewScreenControlBarAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUReviewScreenControlBarAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PUReviewScreenControlBarAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

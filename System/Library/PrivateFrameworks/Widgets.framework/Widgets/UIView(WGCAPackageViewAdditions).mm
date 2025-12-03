@@ -13,40 +13,40 @@
   if ((*a4 & 1) == 0)
   {
     v13 = 1;
-    v8 = (*(v6 + 2))(v6, a1, &v13);
+    v8 = (*(v6 + 2))(v6, self, &v13);
     *a4 = v8;
     if ((v8 & 1) == 0 && v13 == 1)
     {
-      v9 = [a1 subviews];
+      subviews = [self subviews];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __75__UIView_WGCAPackageViewAdditions___wg_innerWalkSubviewTreeWithBlock_stop___block_invoke;
       v10[3] = &unk_279ED1718;
       v11 = v7;
       v12 = a4;
-      [v9 enumerateObjectsUsingBlock:v10];
+      [subviews enumerateObjectsUsingBlock:v10];
     }
   }
 }
 
 - (BOOL)wg_imageContentsDrawWithinBounds
 {
-  v2 = [a1 layer];
-  if ([v2 isMemberOfClass:objc_opt_class()])
+  layer = [self layer];
+  if ([layer isMemberOfClass:objc_opt_class()])
   {
-    v3 = [a1 layer];
-    v4 = [v3 contents];
+    layer2 = [self layer];
+    contents = [layer2 contents];
 
-    if (v4 && (v5 = CFGetTypeID(v4), v5 == CGImageGetTypeID()))
+    if (contents && (v5 = CFGetTypeID(contents), v5 == CGImageGetTypeID()))
     {
-      [a1 bounds];
+      [self bounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
       v13 = v12;
-      CGImageGetWidth(v4);
+      CGImageGetWidth(contents);
       _WGMainScreenScale();
-      CGImageGetHeight(v4);
+      CGImageGetHeight(contents);
       _WGMainScreenScale();
       BSRectWithSize();
       v21.origin.x = v14;
@@ -77,9 +77,9 @@
 - (BOOL)wg_supportsBottomCornerRadiusGivenRootView:()WGCAPackageViewAdditions withCornerRadius:supportedCorners:
 {
   v6 = a3;
-  v7 = [v6 layer];
-  v8 = [v7 animationKeys];
-  v9 = [v8 count];
+  layer = [v6 layer];
+  animationKeys = [layer animationKeys];
+  v9 = [animationKeys count];
 
   if (v9)
   {
@@ -111,15 +111,15 @@
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [a1 superview];
-  [a1 frame];
-  [v31 convertRect:v6 toView:?];
+  superview = [self superview];
+  [self frame];
+  [superview convertRect:v6 toView:?];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v63 = v38;
 
-  if ([a1 clipsToBounds] & 1) != 0 || (objc_msgSend(a1, "wg_imageContentsDrawWithinBounds"))
+  if ([self clipsToBounds] & 1) != 0 || (objc_msgSend(self, "wg_imageContentsDrawWithinBounds"))
   {
     v65.origin.x = v24;
     v65.origin.y = v26;

@@ -1,20 +1,20 @@
 @interface FIUIHeartRateStatusView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FIUIHeartRateStatusView)initWithFrame:(CGRect)a3 heartFilledImageName:(id)a4 heartSpriteImageName:(id)a5 heartSuspendedSpriteImageName:(id)a6 spriteFrameCount:(int64_t)a7 spriteColumnCount:(int64_t)a8 resourceBundle:(id)a9;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FIUIHeartRateStatusView)initWithFrame:(CGRect)frame heartFilledImageName:(id)name heartSpriteImageName:(id)imageName heartSuspendedSpriteImageName:(id)spriteImageName spriteFrameCount:(int64_t)count spriteColumnCount:(int64_t)columnCount resourceBundle:(id)bundle;
 - (id)_loadHeartMeasuringImage;
 - (void)_beatFullHeartOnce;
 - (void)_finishedHeartbeat;
 - (void)_loadHeartMeasuringImage;
 - (void)_resumeAnimations;
 - (void)_startBeatingHeart;
-- (void)_startMeasuringAnimationAnimated:(BOOL)a3;
+- (void)_startMeasuringAnimationAnimated:(BOOL)animated;
 - (void)_suspendAnimations;
 - (void)layoutSubviews;
-- (void)setAnimationsSuspended:(BOOL)a3;
-- (void)setReloadArrowImage:(id)a3;
-- (void)setReloadHeartOutlineImage:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setAnimationsSuspended:(BOOL)suspended;
+- (void)setReloadArrowImage:(id)image;
+- (void)setReloadHeartOutlineImage:(id)image;
+- (void)setState:(unint64_t)state;
 - (void)unloadAnimationAssets;
 @end
 
@@ -22,8 +22,8 @@
 
 - (id)_loadHeartMeasuringImage
 {
-  v3 = [(FIUIAnimatingSpriteImageView *)self->_animatingImageView spriteImage];
-  if (v3)
+  spriteImage = [(FIUIAnimatingSpriteImageView *)self->_animatingImageView spriteImage];
+  if (spriteImage)
   {
   }
 
@@ -52,9 +52,9 @@
     }
   }
 
-  v7 = [(FIUIAnimatingSpriteImageView *)self->_animatingImageView spriteImage];
+  spriteImage2 = [(FIUIAnimatingSpriteImageView *)self->_animatingImageView spriteImage];
 
-  return v7;
+  return spriteImage2;
 }
 
 - (void)_resumeAnimations
@@ -93,8 +93,8 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(FIUIHeartRateStatusView *)self fullHeartImageView];
-  [v11 bounds];
+  fullHeartImageView = [(FIUIHeartRateStatusView *)self fullHeartImageView];
+  [fullHeartImageView bounds];
   v61.origin.x = v12;
   v61.origin.y = v13;
   v61.size.width = v14;
@@ -112,39 +112,39 @@ LABEL_7:
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [(FIUIHeartRateStatusView *)self animatingImageView];
-    [v25 setFrame:{v18, v20, v22, v24}];
+    animatingImageView = [(FIUIHeartRateStatusView *)self animatingImageView];
+    [animatingImageView setFrame:{v18, v20, v22, v24}];
 
     [(FIUIHeartRateStatusView *)self bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(FIUIHeartRateStatusView *)self fullHeartImageView];
-    [v34 setFrame:{v27, v29, v31, v33}];
+    fullHeartImageView2 = [(FIUIHeartRateStatusView *)self fullHeartImageView];
+    [fullHeartImageView2 setFrame:{v27, v29, v31, v33}];
 
     [(FIUIHeartRateStatusView *)self bounds];
     v36 = v35;
     v38 = v37;
     v40 = v39;
     v42 = v41;
-    v43 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-    [v43 setFrame:{v36, v38, v40, v42}];
+    reloadOutlineView = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+    [reloadOutlineView setFrame:{v36, v38, v40, v42}];
 
     [(FIUIHeartRateStatusView *)self bounds];
     v45 = v44;
     v47 = v46;
     v49 = v48;
     v51 = v50;
-    v52 = [(FIUIHeartRateStatusView *)self animationSuspendedMeasuringView];
-    [v52 setFrame:{v45, v47, v49, v51}];
+    animationSuspendedMeasuringView = [(FIUIHeartRateStatusView *)self animationSuspendedMeasuringView];
+    [animationSuspendedMeasuringView setFrame:{v45, v47, v49, v51}];
 
-    v53 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-    [v53 center];
+    reloadOutlineView2 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+    [reloadOutlineView2 center];
     v55 = v54;
     v57 = v56;
-    v58 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-    [v58 setCenter:{v55, v57}];
+    reloadArrowView = [(FIUIHeartRateStatusView *)self reloadArrowView];
+    [reloadArrowView setCenter:{v55, v57}];
 
     [(FIUIHeartRateStatusView *)self _resumeAnimations];
   }
@@ -169,79 +169,79 @@ LABEL_7:
   [(FIUIHeartRateStatusView *)self invalidateIntrinsicContentSize];
 }
 
-- (FIUIHeartRateStatusView)initWithFrame:(CGRect)a3 heartFilledImageName:(id)a4 heartSpriteImageName:(id)a5 heartSuspendedSpriteImageName:(id)a6 spriteFrameCount:(int64_t)a7 spriteColumnCount:(int64_t)a8 resourceBundle:(id)a9
+- (FIUIHeartRateStatusView)initWithFrame:(CGRect)frame heartFilledImageName:(id)name heartSpriteImageName:(id)imageName heartSuspendedSpriteImageName:(id)spriteImageName spriteFrameCount:(int64_t)count spriteColumnCount:(int64_t)columnCount resourceBundle:(id)bundle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a9;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  nameCopy = name;
+  imageNameCopy = imageName;
+  spriteImageNameCopy = spriteImageName;
+  bundleCopy = bundle;
   v41.receiver = self;
   v41.super_class = FIUIHeartRateStatusView;
-  v23 = [(FIUIHeartRateStatusView *)&v41 initWithFrame:x, y, width, height];
-  v24 = v23;
-  if (v23)
+  height = [(FIUIHeartRateStatusView *)&v41 initWithFrame:x, y, width, height];
+  v24 = height;
+  if (height)
   {
-    objc_storeStrong(&v23->_heartSpriteImageName, a5);
-    v24->_heartSpriteImageFrameCount = a7;
-    v24->_heartSpriteImageColumnCount = a8;
-    objc_storeStrong(&v24->_resourceBundle, a9);
+    objc_storeStrong(&height->_heartSpriteImageName, imageName);
+    v24->_heartSpriteImageFrameCount = count;
+    v24->_heartSpriteImageColumnCount = columnCount;
+    objc_storeStrong(&v24->_resourceBundle, bundle);
     v24->_beatsPerMinute = 60.0;
     v25 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{x, y, width, height}];
     [(FIUIHeartRateStatusView *)v24 setFullHeartImageView:v25];
 
-    v26 = FIUIImageInBundle(v19, v24->_resourceBundle);
-    v27 = [(FIUIHeartRateStatusView *)v24 fullHeartImageView];
-    [v27 setImage:v26];
+    v26 = FIUIImageInBundle(nameCopy, v24->_resourceBundle);
+    fullHeartImageView = [(FIUIHeartRateStatusView *)v24 fullHeartImageView];
+    [fullHeartImageView setImage:v26];
 
-    v28 = [(FIUIHeartRateStatusView *)v24 fullHeartImageView];
-    [v28 setAlpha:0.0];
+    fullHeartImageView2 = [(FIUIHeartRateStatusView *)v24 fullHeartImageView];
+    [fullHeartImageView2 setAlpha:0.0];
 
-    v29 = [(FIUIHeartRateStatusView *)v24 fullHeartImageView];
-    [(FIUIHeartRateStatusView *)v24 addSubview:v29];
+    fullHeartImageView3 = [(FIUIHeartRateStatusView *)v24 fullHeartImageView];
+    [(FIUIHeartRateStatusView *)v24 addSubview:fullHeartImageView3];
 
     v30 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{x, y, width, height}];
     [(FIUIHeartRateStatusView *)v24 setAnimationSuspendedMeasuringView:v30];
 
-    v31 = FIUIImageInBundle(v21, v24->_resourceBundle);
-    v32 = [(FIUIHeartRateStatusView *)v24 animationSuspendedMeasuringView];
-    [v32 setImage:v31];
+    v31 = FIUIImageInBundle(spriteImageNameCopy, v24->_resourceBundle);
+    animationSuspendedMeasuringView = [(FIUIHeartRateStatusView *)v24 animationSuspendedMeasuringView];
+    [animationSuspendedMeasuringView setImage:v31];
 
-    v33 = [(FIUIHeartRateStatusView *)v24 animationSuspendedMeasuringView];
-    [v33 setAlpha:0.0];
+    animationSuspendedMeasuringView2 = [(FIUIHeartRateStatusView *)v24 animationSuspendedMeasuringView];
+    [animationSuspendedMeasuringView2 setAlpha:0.0];
 
-    v34 = [(FIUIHeartRateStatusView *)v24 animationSuspendedMeasuringView];
-    [(FIUIHeartRateStatusView *)v24 addSubview:v34];
+    animationSuspendedMeasuringView3 = [(FIUIHeartRateStatusView *)v24 animationSuspendedMeasuringView];
+    [(FIUIHeartRateStatusView *)v24 addSubview:animationSuspendedMeasuringView3];
 
-    v35 = [[FIUIAnimatingSpriteImageView alloc] initWithFrame:x, y, width, height];
-    [(FIUIHeartRateStatusView *)v24 setAnimatingImageView:v35];
+    height2 = [[FIUIAnimatingSpriteImageView alloc] initWithFrame:x, y, width, height];
+    [(FIUIHeartRateStatusView *)v24 setAnimatingImageView:height2];
 
-    v36 = [(FIUIHeartRateStatusView *)v24 animatingImageView];
-    [v36 setContentMode:1];
+    animatingImageView = [(FIUIHeartRateStatusView *)v24 animatingImageView];
+    [animatingImageView setContentMode:1];
 
-    v37 = [(FIUIHeartRateStatusView *)v24 animatingImageView];
-    [v37 setAlpha:0.0];
+    animatingImageView2 = [(FIUIHeartRateStatusView *)v24 animatingImageView];
+    [animatingImageView2 setAlpha:0.0];
 
-    v38 = [(FIUIHeartRateStatusView *)v24 animatingImageView];
-    [(FIUIHeartRateStatusView *)v24 addSubview:v38];
+    animatingImageView3 = [(FIUIHeartRateStatusView *)v24 animatingImageView];
+    [(FIUIHeartRateStatusView *)v24 addSubview:animatingImageView3];
 
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v24 selector:sel__resumeAnimations name:@"FIUIResumeAnimationsNotification" object:0];
-    [v39 addObserver:v24 selector:sel__suspendAnimations name:@"FIUISuspendAnimationsNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v24 selector:sel__resumeAnimations name:@"FIUIResumeAnimationsNotification" object:0];
+    [defaultCenter addObserver:v24 selector:sel__suspendAnimations name:@"FIUISuspendAnimationsNotification" object:0];
   }
 
   return v24;
 }
 
-- (void)setAnimationsSuspended:(BOOL)a3
+- (void)setAnimationsSuspended:(BOOL)suspended
 {
-  if (self->_animationsSuspended != a3)
+  if (self->_animationsSuspended != suspended)
   {
-    self->_animationsSuspended = a3;
-    if (a3)
+    self->_animationsSuspended = suspended;
+    if (suspended)
     {
       [(FIUIHeartRateStatusView *)self _suspendAnimations];
     }
@@ -253,11 +253,11 @@ LABEL_7:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(FIUIHeartRateStatusView *)self fullHeartImageView:a3.width];
-  v4 = [v3 image];
-  [v4 size];
+  v3 = [(FIUIHeartRateStatusView *)self fullHeartImageView:fits.width];
+  image = [v3 image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -275,7 +275,7 @@ LABEL_7:
   {
     if (((1 << state) & 0x6C) != 0)
     {
-      v5 = [(FIUIHeartRateStatusView *)self fullHeartImageView];
+      fullHeartImageView = [(FIUIHeartRateStatusView *)self fullHeartImageView];
     }
 
     else
@@ -294,11 +294,11 @@ LABEL_7:
       {
         [(FIUIHeartRateStatusView *)self animatingImageView];
       }
-      v5 = ;
+      fullHeartImageView = ;
     }
 
-    v6 = v5;
-    [v5 intrinsicContentSize];
+    v6 = fullHeartImageView;
+    [fullHeartImageView intrinsicContentSize];
     v2 = v7;
     v3 = v8;
   }
@@ -311,75 +311,75 @@ LABEL_5:
   return result;
 }
 
-- (void)setReloadHeartOutlineImage:(id)a3
+- (void)setReloadHeartOutlineImage:(id)image
 {
-  v4 = a3;
-  v5 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+  imageCopy = image;
+  reloadOutlineView = [(FIUIHeartRateStatusView *)self reloadOutlineView];
 
-  if (!v5)
+  if (!reloadOutlineView)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(FIUIHeartRateStatusView *)self setReloadOutlineView:v6];
 
-    v7 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-    [(FIUIHeartRateStatusView *)self addSubview:v7];
+    reloadOutlineView2 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+    [(FIUIHeartRateStatusView *)self addSubview:reloadOutlineView2];
   }
 
-  v8 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-  [v8 setImage:v4];
+  reloadOutlineView3 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+  [reloadOutlineView3 setImage:imageCopy];
 
-  v9 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-  [v9 setAlpha:0.0];
+  reloadOutlineView4 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+  [reloadOutlineView4 setAlpha:0.0];
 
-  v10 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-  [v10 sizeToFit];
+  reloadOutlineView5 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+  [reloadOutlineView5 sizeToFit];
 
   [(FIUIHeartRateStatusView *)self setNeedsLayout];
 }
 
-- (void)setReloadArrowImage:(id)a3
+- (void)setReloadArrowImage:(id)image
 {
-  v4 = a3;
-  v5 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+  imageCopy = image;
+  reloadArrowView = [(FIUIHeartRateStatusView *)self reloadArrowView];
 
-  if (!v5)
+  if (!reloadArrowView)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(FIUIHeartRateStatusView *)self setReloadArrowView:v6];
 
-    v7 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-    [(FIUIHeartRateStatusView *)self addSubview:v7];
+    reloadArrowView2 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+    [(FIUIHeartRateStatusView *)self addSubview:reloadArrowView2];
   }
 
-  v8 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-  [v8 setImage:v4];
+  reloadArrowView3 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+  [reloadArrowView3 setImage:imageCopy];
 
-  v9 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-  [v9 setAlpha:0.0];
+  reloadArrowView4 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+  [reloadArrowView4 setAlpha:0.0];
 
-  v10 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-  [v10 sizeToFit];
+  reloadArrowView5 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+  [reloadArrowView5 sizeToFit];
 
   [(FIUIHeartRateStatusView *)self setNeedsLayout];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
-    if (a3 > 3)
+    self->_state = state;
+    if (state > 3)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         [(FIUIHeartRateStatusView *)self _startMeasuringAnimationAnimated:1];
         goto LABEL_18;
       }
 
-      if (a3 != 5)
+      if (state != 5)
       {
-        if (a3 != 6)
+        if (state != 6)
         {
 LABEL_18:
           [(FIUIHeartRateStatusView *)self invalidateIntrinsicContentSize];
@@ -387,29 +387,29 @@ LABEL_18:
         }
 
 LABEL_10:
-        v5 = [(FIUIHeartRateStatusView *)self animatingImageView];
-        [v5 setAlpha:0.0];
+        animatingImageView = [(FIUIHeartRateStatusView *)self animatingImageView];
+        [animatingImageView setAlpha:0.0];
 
-        v6 = [(FIUIHeartRateStatusView *)self animationSuspendedMeasuringView];
-        [v6 setAlpha:0.0];
+        animationSuspendedMeasuringView = [(FIUIHeartRateStatusView *)self animationSuspendedMeasuringView];
+        [animationSuspendedMeasuringView setAlpha:0.0];
 
-        v7 = [(FIUIHeartRateStatusView *)self fullHeartImageView];
-        [v7 setAlpha:1.0];
+        fullHeartImageView = [(FIUIHeartRateStatusView *)self fullHeartImageView];
+        [fullHeartImageView setAlpha:1.0];
 
-        v8 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-        [v8 setAlpha:0.0];
+        reloadOutlineView = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+        [reloadOutlineView setAlpha:0.0];
 
-        v9 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-        [v9 setAlpha:0.0];
+        reloadArrowView = [(FIUIHeartRateStatusView *)self reloadArrowView];
+        [reloadArrowView setAlpha:0.0];
 
         [(FIUIHeartRateStatusView *)self _suspendAnimations];
         goto LABEL_18;
       }
 
       CGAffineTransformMakeRotation(&v20, 3.14159265);
-      v15 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+      reloadArrowView2 = [(FIUIHeartRateStatusView *)self reloadArrowView];
       v19 = v20;
-      [v15 setTransform:&v19];
+      [reloadArrowView2 setTransform:&v19];
 
       v10 = MEMORY[0x1E69DD250];
       v18[0] = MEMORY[0x1E69E9820];
@@ -431,9 +431,9 @@ LABEL_10:
 
     else
     {
-      if (a3 != 1)
+      if (state != 1)
       {
-        if (a3 == 2)
+        if (state == 2)
         {
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
@@ -450,7 +450,7 @@ LABEL_10:
           goto LABEL_18;
         }
 
-        if (a3 != 3)
+        if (state != 3)
         {
           goto LABEL_18;
         }
@@ -461,8 +461,8 @@ LABEL_10:
       [(FIUIHeartRateStatusView *)self _startMeasuringAnimationAnimated:0];
       if (state != 5)
       {
-        v16 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-        [v16 setAlpha:0.0];
+        reloadArrowView3 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+        [reloadArrowView3 setAlpha:0.0];
 
         goto LABEL_18;
       }
@@ -651,8 +651,8 @@ void __45__FIUIHeartRateStatusView__beatFullHeartOnce__block_invoke_3(uint64_t a
 - (void)_finishedHeartbeat
 {
   self->_isBeatingHeart = 0;
-  v3 = [(FIUIHeartRateStatusView *)self window];
-  if (v3)
+  window = [(FIUIHeartRateStatusView *)self window];
+  if (window)
   {
     animationsSuspended = self->_animationsSuspended;
 
@@ -675,38 +675,38 @@ void __45__FIUIHeartRateStatusView__beatFullHeartOnce__block_invoke_3(uint64_t a
   }
 }
 
-- (void)_startMeasuringAnimationAnimated:(BOOL)a3
+- (void)_startMeasuringAnimationAnimated:(BOOL)animated
 {
   if (self->_animationsSuspended)
   {
-    v4 = [(FIUIHeartRateStatusView *)self animatingImageView];
-    [v4 setAlpha:0.0];
+    animatingImageView = [(FIUIHeartRateStatusView *)self animatingImageView];
+    [animatingImageView setAlpha:0.0];
 
-    v5 = [(FIUIHeartRateStatusView *)self fullHeartImageView];
-    [v5 setAlpha:0.0];
+    fullHeartImageView = [(FIUIHeartRateStatusView *)self fullHeartImageView];
+    [fullHeartImageView setAlpha:0.0];
 
-    v6 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-    [v6 setAlpha:0.0];
+    reloadOutlineView = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+    [reloadOutlineView setAlpha:0.0];
 
-    v7 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-    [v7 setAlpha:0.0];
+    reloadArrowView = [(FIUIHeartRateStatusView *)self reloadArrowView];
+    [reloadArrowView setAlpha:0.0];
 
-    v15 = [(FIUIHeartRateStatusView *)self animationSuspendedMeasuringView];
-    [v15 setAlpha:1.0];
+    animationSuspendedMeasuringView = [(FIUIHeartRateStatusView *)self animationSuspendedMeasuringView];
+    [animationSuspendedMeasuringView setAlpha:1.0];
   }
 
   else
   {
-    v8 = a3;
-    v9 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
-    [v9 setAlpha:0.0];
+    animatedCopy = animated;
+    reloadOutlineView2 = [(FIUIHeartRateStatusView *)self reloadOutlineView];
+    [reloadOutlineView2 setAlpha:0.0];
 
-    v10 = [(FIUIHeartRateStatusView *)self reloadArrowView];
-    [v10 setAlpha:0.0];
+    reloadArrowView2 = [(FIUIHeartRateStatusView *)self reloadArrowView];
+    [reloadArrowView2 setAlpha:0.0];
 
-    v11 = [(FIUIHeartRateStatusView *)self _loadHeartMeasuringImage];
-    v12 = [(FIUIHeartRateStatusView *)self animatingImageView];
-    [v12 startAnimating];
+    _loadHeartMeasuringImage = [(FIUIHeartRateStatusView *)self _loadHeartMeasuringImage];
+    animatingImageView2 = [(FIUIHeartRateStatusView *)self animatingImageView];
+    [animatingImageView2 startAnimating];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -715,7 +715,7 @@ void __45__FIUIHeartRateStatusView__beatFullHeartOnce__block_invoke_3(uint64_t a
     aBlock[4] = self;
     v13 = _Block_copy(aBlock);
     v14 = v13;
-    if (v8)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v13 animations:0.5];
     }
@@ -750,7 +750,7 @@ void __60__FIUIHeartRateStatusView__startMeasuringAnimationAnimated___block_invo
 - (void)_loadHeartMeasuringImage
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4 = *a2;
   v5 = 138412546;
   v6 = v3;

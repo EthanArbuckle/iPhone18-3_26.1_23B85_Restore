@@ -1,33 +1,33 @@
 @interface CNPhotoPickerAnimojiPosePreviewView
 - (void)layoutSubviews;
 - (void)setupPreview;
-- (void)updatePoseWithConfiguration:(id)a3;
-- (void)updatePreviewWithItem:(id)a3;
+- (void)updatePoseWithConfiguration:(id)configuration;
+- (void)updatePreviewWithItem:(id)item;
 @end
 
 @implementation CNPhotoPickerAnimojiPosePreviewView
 
-- (void)updatePoseWithConfiguration:(id)a3
+- (void)updatePoseWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 loadIfNeeded];
-  v5 = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
-  v6 = [v5 avatar];
+  configurationCopy = configuration;
+  [configurationCopy loadIfNeeded];
+  avtView = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
+  avatar = [avtView avatar];
 
-  [v6 stopTransitionAnimation];
-  v7 = [v4 poseAnimation];
+  [avatar stopTransitionAnimation];
+  poseAnimation = [configurationCopy poseAnimation];
 
-  v8 = [v7 staticPose];
+  staticPose = [poseAnimation staticPose];
 
-  v9 = [v6 pose];
+  pose = [avatar pose];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___block_invoke;
   v11[3] = &unk_1E74E77C0;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v6 transitionFromPose:v9 toPose:v10 duration:v11 delay:0.25 completionHandler:0.0];
+  v12 = staticPose;
+  v10 = staticPose;
+  [avatar transitionFromPose:pose toPose:v10 duration:v11 delay:0.25 completionHandler:0.0];
 }
 
 void __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___block_invoke(uint64_t a1)
@@ -37,11 +37,11 @@ void __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___blo
   [v2 setPose:*(a1 + 40)];
 }
 
-- (void)updatePreviewWithItem:(id)a3
+- (void)updatePreviewWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -56,13 +56,13 @@ void __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___blo
 
   if (v7)
   {
-    v8 = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
-    v9 = [v8 avatar];
+    avtView = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
+    avatar = [avtView avatar];
 
-    if (v9)
+    if (avatar)
     {
-      v10 = [v7 poseConfiguration];
-      [(CNPhotoPickerAnimojiPosePreviewView *)self updatePoseWithConfiguration:v10];
+      poseConfiguration = [v7 poseConfiguration];
+      [(CNPhotoPickerAnimojiPosePreviewView *)self updatePoseWithConfiguration:poseConfiguration];
     }
 
     else
@@ -85,10 +85,10 @@ void __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___blo
 
       v12 = v11;
       _Block_object_dispose(&v17, 8);
-      v13 = [v7 avatarRecord];
-      v14 = [v11 avatarForRecord:v13];
-      v15 = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
-      [v15 setAvatar:v14];
+      avatarRecord = [v7 avatarRecord];
+      v14 = [v11 avatarForRecord:avatarRecord];
+      avtView2 = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
+      [avtView2 setAvatar:v14];
     }
   }
 }
@@ -99,12 +99,12 @@ void __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___blo
   v8.super_class = CNPhotoPickerAnimojiPosePreviewView;
   [(CNPhotoPickerPreviewView *)&v8 layoutSubviews];
   v3 = MEMORY[0x1E69DC728];
-  v4 = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
-  [v4 bounds];
+  avtView = [(CNPhotoPickerAnimojiPosePreviewView *)self avtView];
+  [avtView bounds];
   v5 = [v3 bezierPathWithOvalInRect:?];
-  v6 = [v5 CGPath];
-  v7 = [(CNPhotoPickerAnimojiPosePreviewView *)self clippingLayer];
-  [v7 setPath:v6];
+  cGPath = [v5 CGPath];
+  clippingLayer = [(CNPhotoPickerAnimojiPosePreviewView *)self clippingLayer];
+  [clippingLayer setPath:cGPath];
 }
 
 - (void)setupPreview
@@ -146,8 +146,8 @@ void __67__CNPhotoPickerAnimojiPosePreviewView_updatePoseWithConfiguration___blo
   self->_clippingLayer = v12;
 
   v14 = self->_clippingLayer;
-  v15 = [(AVTView *)self->_avtView layer];
-  [v15 setMask:v14];
+  layer = [(AVTView *)self->_avtView layer];
+  [layer setMask:v14];
 }
 
 @end

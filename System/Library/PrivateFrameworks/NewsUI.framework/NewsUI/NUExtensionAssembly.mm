@@ -1,71 +1,71 @@
 @interface NUExtensionAssembly
-- (NUExtensionAssembly)initWithExtensionContextProvider:(id)a3;
+- (NUExtensionAssembly)initWithExtensionContextProvider:(id)provider;
 - (NUExtensionContextProvider)extensionContextProvider;
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation NUExtensionAssembly
 
-- (NUExtensionAssembly)initWithExtensionContextProvider:(id)a3
+- (NUExtensionAssembly)initWithExtensionContextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = NUExtensionAssembly;
   v5 = [(NUExtensionAssembly *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_extensionContextProvider, v4);
+    objc_storeWeak(&v5->_extensionContextProvider, providerCopy);
   }
 
   return v6;
 }
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v4 = a3;
-  v5 = [v4 publicContainer];
-  v6 = [v5 registerProtocol:&unk_286E338F8 factory:&__block_literal_global_2];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v6 = [publicContainer registerProtocol:&unk_286E338F8 factory:&__block_literal_global_2];
 
-  v7 = [v4 publicContainer];
-  v8 = [v7 registerProtocol:&unk_286E2B898 factory:&__block_literal_global_53];
+  publicContainer2 = [registryCopy publicContainer];
+  v8 = [publicContainer2 registerProtocol:&unk_286E2B898 factory:&__block_literal_global_53];
 
-  v9 = [v4 publicContainer];
+  publicContainer3 = [registryCopy publicContainer];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __38__NUExtensionAssembly_loadInRegistry___block_invoke_3;
   v31[3] = &unk_2799A3548;
   v31[4] = self;
-  v10 = [v9 registerProtocol:&unk_286E4ADB0 factory:v31];
+  v10 = [publicContainer3 registerProtocol:&unk_286E4ADB0 factory:v31];
 
-  v11 = [v4 publicContainer];
+  publicContainer4 = [registryCopy publicContainer];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __38__NUExtensionAssembly_loadInRegistry___block_invoke_4;
   v30[3] = &unk_2799A3570;
   v30[4] = self;
-  v12 = [v11 registerProtocol:&unk_286E13A60 factory:v30];
+  v12 = [publicContainer4 registerProtocol:&unk_286E13A60 factory:v30];
 
-  v13 = [v4 publicContainer];
-  v14 = [v13 registerProtocol:&unk_286E25D28 factory:&__block_literal_global_82];
+  publicContainer5 = [registryCopy publicContainer];
+  v14 = [publicContainer5 registerProtocol:&unk_286E25D28 factory:&__block_literal_global_82];
 
-  v15 = [v4 publicContainer];
-  v16 = [v15 registerProtocol:&unk_286E25F18 factory:&__block_literal_global_94];
+  publicContainer6 = [registryCopy publicContainer];
+  v16 = [publicContainer6 registerProtocol:&unk_286E25F18 factory:&__block_literal_global_94];
 
-  v17 = [v4 publicContainer];
-  v18 = [v17 registerProtocol:&unk_286E2EDF8 factory:&__block_literal_global_101];
+  publicContainer7 = [registryCopy publicContainer];
+  v18 = [publicContainer7 registerProtocol:&unk_286E2EDF8 factory:&__block_literal_global_101];
 
-  v19 = [v4 publicContainer];
-  v20 = [v19 registerProtocol:&unk_286E35228 factory:&__block_literal_global_109];
+  publicContainer8 = [registryCopy publicContainer];
+  v20 = [publicContainer8 registerProtocol:&unk_286E35228 factory:&__block_literal_global_109];
 
-  v21 = [v4 publicContainer];
-  v22 = [v21 registerProtocol:&unk_286E26538 factory:&__block_literal_global_117];
+  publicContainer9 = [registryCopy publicContainer];
+  v22 = [publicContainer9 registerProtocol:&unk_286E26538 factory:&__block_literal_global_117];
 
-  v23 = [v4 privateContainer];
-  v24 = [v23 registerClass:objc_opt_class() factory:&__block_literal_global_121];
+  privateContainer = [registryCopy privateContainer];
+  v24 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_121];
   v25 = [v24 inScope:2];
 
-  v26 = [v4 privateContainer];
+  privateContainer2 = [registryCopy privateContainer];
 
   v27 = objc_opt_class();
   v29[0] = MEMORY[0x277D85DD0];
@@ -73,7 +73,7 @@
   v29[2] = __38__NUExtensionAssembly_loadInRegistry___block_invoke_11;
   v29[3] = &unk_2799A3658;
   v29[4] = self;
-  v28 = [v26 registerClass:v27 factory:v29];
+  v28 = [privateContainer2 registerClass:v27 factory:v29];
 }
 
 id __38__NUExtensionAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

@@ -1,43 +1,43 @@
 @interface SFUZipArchive
-+ (BOOL)isZipArchiveAtPath:(id)a3;
-- (BOOL)decompressAtPath:(id)a3;
-- (SFUZipArchive)initWithData:(id)a3 collapseCommonRootDirectory:(BOOL)a4;
-- (SFUZipArchive)initWithPath:(id)a3 collapseCommonRootDirectory:(BOOL)a4;
-- (SFUZipEndOfCentralDirectory)readEndOfCentralDirectoryFromInputStream:(SEL)a3;
-- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)a3 eocdOffset:(id)a4;
-- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)a3 offset:(id)a4;
-- (const)searchForEndOfCentralDirectoryFromInputStream:(id)a3 offset:(int64_t *)a4;
-- (id)entryWithName:(id)a3 dataLength:(int64_t)a4;
-- (id)readFilenameFromBuffer:(const char *)a3 size:(unint64_t)a4;
++ (BOOL)isZipArchiveAtPath:(id)path;
+- (BOOL)decompressAtPath:(id)path;
+- (SFUZipArchive)initWithData:(id)data collapseCommonRootDirectory:(BOOL)directory;
+- (SFUZipArchive)initWithPath:(id)path collapseCommonRootDirectory:(BOOL)directory;
+- (SFUZipEndOfCentralDirectory)readEndOfCentralDirectoryFromInputStream:(SEL)stream;
+- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)stream eocdOffset:(id)offset;
+- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)stream offset:(id)offset;
+- (const)searchForEndOfCentralDirectoryFromInputStream:(id)stream offset:(int64_t *)offset;
+- (id)entryWithName:(id)name dataLength:(int64_t)length;
+- (id)readFilenameFromBuffer:(const char *)buffer size:(unint64_t)size;
 - (void)collapseCommonRootDirectory;
 - (void)dealloc;
 - (void)readEntries;
-- (void)readExtraFieldFromBuffer:(const char *)a3 size:(unint64_t)a4 entry:(id)a5;
-- (void)setCryptoKey:(id)a3;
+- (void)readExtraFieldFromBuffer:(const char *)buffer size:(unint64_t)size entry:(id)entry;
+- (void)setCryptoKey:(id)key;
 @end
 
 @implementation SFUZipArchive
 
-+ (BOOL)isZipArchiveAtPath:(id)a3
++ (BOOL)isZipArchiveAtPath:(id)path
 {
-  v3 = [[SFUZipArchiveFileDataRepresentation alloc] initWithPath:a3];
-  v4 = [(SFUZipArchiveFileDataRepresentation *)v3 inputStream];
-  v6 = [v4 readToBuffer:&v8 size:4] == 4 && v8 == 67324752;
-  [v4 close];
+  v3 = [[SFUZipArchiveFileDataRepresentation alloc] initWithPath:path];
+  inputStream = [(SFUZipArchiveFileDataRepresentation *)v3 inputStream];
+  v6 = [inputStream readToBuffer:&v8 size:4] == 4 && v8 == 67324752;
+  [inputStream close];
 
   return v6;
 }
 
-- (SFUZipArchive)initWithPath:(id)a3 collapseCommonRootDirectory:(BOOL)a4
+- (SFUZipArchive)initWithPath:(id)path collapseCommonRootDirectory:(BOOL)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   v6 = [(SFUZipArchive *)self init];
   if (v6)
   {
     v6->mEntries = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v6->mDataRepresentation = [[SFUZipArchiveFileDataRepresentation alloc] initWithPath:a3];
+    v6->mDataRepresentation = [[SFUZipArchiveFileDataRepresentation alloc] initWithPath:path];
     [(SFUZipArchive *)v6 readEntries];
-    if (v4)
+    if (directoryCopy)
     {
       [(SFUZipArchive *)v6 collapseCommonRootDirectory];
     }
@@ -46,16 +46,16 @@
   return v6;
 }
 
-- (SFUZipArchive)initWithData:(id)a3 collapseCommonRootDirectory:(BOOL)a4
+- (SFUZipArchive)initWithData:(id)data collapseCommonRootDirectory:(BOOL)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   v6 = [(SFUZipArchive *)self init];
   if (v6)
   {
     v6->mEntries = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v6->mDataRepresentation = [[SFUZipArchiveMemoryDataRepresentation alloc] initWithData:a3];
+    v6->mDataRepresentation = [[SFUZipArchiveMemoryDataRepresentation alloc] initWithData:data];
     [(SFUZipArchive *)v6 readEntries];
-    if (v4)
+    if (directoryCopy)
     {
       [(SFUZipArchive *)v6 collapseCommonRootDirectory];
     }
@@ -71,35 +71,35 @@
   [(SFUZipArchive *)&v3 dealloc];
 }
 
-- (id)entryWithName:(id)a3 dataLength:(int64_t)a4
+- (id)entryWithName:(id)name dataLength:(int64_t)length
 {
-  v5 = [(SFUZipArchive *)self entryWithName:a3];
+  v5 = [(SFUZipArchive *)self entryWithName:name];
   v6 = v5;
   if (v5)
   {
-    [v5 setDataLength:a4];
+    [v5 setDataLength:length];
   }
 
   return v6;
 }
 
-- (void)setCryptoKey:(id)a3
+- (void)setCryptoKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
 
-  self->mCryptoKey = a3;
-  v6 = [(NSMutableDictionary *)self->mEntries allValues];
+  self->mCryptoKey = key;
+  allValues = [(NSMutableDictionary *)self->mEntries allValues];
   mCryptoKey = self->mCryptoKey;
 
-  [v6 makeObjectsPerformSelector:sel_setCryptoKey_ withObject:mCryptoKey];
+  [allValues makeObjectsPerformSelector:sel_setCryptoKey_ withObject:mCryptoKey];
 }
 
-- (BOOL)decompressAtPath:(id)a3
+- (BOOL)decompressAtPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  if ([v5 fileExistsAtPath:a3 isDirectory:&v24])
+  if ([defaultManager fileExistsAtPath:path isDirectory:&v24])
   {
     if ((v24 & 1) == 0)
     {
@@ -110,7 +110,7 @@
     }
   }
 
-  else if (([v5 createDirectoryAtPath:a3 withIntermediateDirectories:1 attributes:0 error:0] & 1) == 0)
+  else if (([defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0] & 1) == 0)
   {
     v17 = +[TSUAssertionHandler currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipArchive decompressAtPath:]"];
@@ -141,15 +141,15 @@
 
       v12 = *(*(&v20 + 1) + 8 * i);
       v13 = [v12 length];
-      v14 = [a3 stringByAppendingPathComponent:v12];
+      v14 = [path stringByAppendingPathComponent:v12];
       if ([v12 characterAtIndex:v13 - 1] == 47)
       {
-        v15 = [v5 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
+        v15 = [defaultManager createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
       }
 
       else
       {
-        v15 = [v5 createDirectoryAtPath:objc_msgSend(v14 withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, 0}];
+        v15 = [defaultManager createDirectoryAtPath:objc_msgSend(v14 withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, 0}];
         v16 = [(SFUZipArchive *)self entryWithName:v12];
         [v16 copyToFile:v14];
         [(SFUZipArchiveDelegate *)[(SFUZipArchive *)self delegate] zipArchiveDidDecompressEntry:v16];
@@ -173,8 +173,8 @@
 - (void)collapseCommonRootDirectory
 {
   v20 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  v3 = [(SFUZipArchive *)self allEntryNames];
-  v4 = [v3 count];
+  allEntryNames = [(SFUZipArchive *)self allEntryNames];
+  v4 = [allEntryNames count];
   if (v4)
   {
     v5 = v4;
@@ -182,7 +182,7 @@
     v7 = 0;
     while (1)
     {
-      v8 = [objc_msgSend(v3 objectAtIndex:{v7), "pathComponents"}];
+      v8 = [objc_msgSend(allEntryNames objectAtIndex:{v7), "pathComponents"}];
       if ([v8 count] < 2 || (objc_msgSend(objc_msgSend(v8, "objectAtIndex:", 0), "isEqualToString:", @"__MACOSX") & 1) == 0)
       {
         if (v6)
@@ -250,8 +250,8 @@ LABEL_17:
     v21 = v11;
     v12 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSMutableDictionary count](self->mEntries, "count")}];
     v13 = [v10 length];
-    v14 = [(SFUZipArchive *)self allEntryNames];
-    v15 = [v14 count];
+    allEntryNames2 = [(SFUZipArchive *)self allEntryNames];
+    v15 = [allEntryNames2 count];
     if (v15)
     {
       v16 = v15;
@@ -259,7 +259,7 @@ LABEL_17:
       v18 = v13 + 1;
       do
       {
-        v19 = [v14 objectAtIndex:v17];
+        v19 = [allEntryNames2 objectAtIndex:v17];
         if ([v19 length] != v18 && (objc_msgSend(v19, "hasPrefix:", @"__MACOSX") & 1) == 0)
         {
           -[NSMutableDictionary setObject:forKey:](v12, "setObject:forKey:", -[NSMutableDictionary objectForKey:](self->mEntries, "objectForKey:", v19), [v19 substringFromIndex:v18]);
@@ -276,7 +276,7 @@ LABEL_17:
   }
 }
 
-- (SFUZipEndOfCentralDirectory)readEndOfCentralDirectoryFromInputStream:(SEL)a3
+- (SFUZipEndOfCentralDirectory)readEndOfCentralDirectoryFromInputStream:(SEL)stream
 {
   v16 = [(SFUZipArchiveDataRepresentation *)self->mDataRepresentation dataLength]- 22;
   result = [a4 dataAtOffset:? size:? end:?];
@@ -313,12 +313,12 @@ LABEL_17:
   return result;
 }
 
-- (const)searchForEndOfCentralDirectoryFromInputStream:(id)a3 offset:(int64_t *)a4
+- (const)searchForEndOfCentralDirectoryFromInputStream:(id)stream offset:(int64_t *)offset
 {
-  v6 = [(SFUZipArchiveDataRepresentation *)self->mDataRepresentation dataLength];
-  if (v6 <= 0x10015)
+  dataLength = [(SFUZipArchiveDataRepresentation *)self->mDataRepresentation dataLength];
+  if (dataLength <= 0x10015)
   {
-    v7 = v6;
+    v7 = dataLength;
   }
 
   else
@@ -326,8 +326,8 @@ LABEL_17:
     v7 = 65557;
   }
 
-  v8 = v6 - v7;
-  v9 = [a3 dataAtOffset:v6 - v7 size:v7 end:v6];
+  v8 = dataLength - v7;
+  v9 = [stream dataAtOffset:dataLength - v7 size:v7 end:dataLength];
   v10 = v7 & 0x3FF | 0x400;
   if (v10 >= v7)
   {
@@ -357,7 +357,7 @@ LABEL_17:
               if (v17[3] == 6)
               {
                 v12 = v17 + 4;
-                *a4 = &v17[v8 - v13];
+                *offset = &v17[v8 - v13];
                 return v12;
               }
             }
@@ -385,7 +385,7 @@ LABEL_17:
   return 0;
 }
 
-- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)a3 eocdOffset:(id)a4
+- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)stream eocdOffset:(id)offset
 {
   v8 = a5 - 20;
   if (a5 < 0x14)
@@ -393,7 +393,7 @@ LABEL_17:
     [SFUZipException raise:@"SFUZipEndOfCentralDirectoryError" format:@"File isn't long enough for Zip64 locator"];
   }
 
-  result = [a4 dataAtOffset:v8 size:20 end:0];
+  result = [offset dataAtOffset:v8 size:20 end:0];
   v10 = result;
   if (LODWORD(result->var0) != 117853008)
   {
@@ -414,7 +414,7 @@ LABEL_17:
   if (self)
   {
 
-    return [(SFUZipArchive *)self readZip64EndOfCentralDirectoryFromInputStream:a4 offset:var1];
+    return [(SFUZipArchive *)self readZip64EndOfCentralDirectoryFromInputStream:offset offset:var1];
   }
 
   else
@@ -427,9 +427,9 @@ LABEL_17:
   return result;
 }
 
-- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)a3 offset:(id)a4
+- (SFUZipEndOfCentralDirectory)readZip64EndOfCentralDirectoryFromInputStream:(SEL)stream offset:(id)offset
 {
-  result = [a4 dataAtOffset:a5 size:56 end:0];
+  result = [offset dataAtOffset:a5 size:56 end:0];
   v7 = result;
   if (LODWORD(result->var0) != 101075792)
   {
@@ -451,13 +451,13 @@ LABEL_17:
   return result;
 }
 
-- (id)readFilenameFromBuffer:(const char *)a3 size:(unint64_t)a4
+- (id)readFilenameFromBuffer:(const char *)buffer size:(unint64_t)size
 {
-  result = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:a4 encoding:4];
+  result = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:size encoding:4];
   if (!result)
   {
     SystemEncoding = CFStringGetSystemEncoding();
-    result = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:a4 encoding:CFStringConvertEncodingToNSStringEncoding(SystemEncoding)];
+    result = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:size encoding:CFStringConvertEncodingToNSStringEncoding(SystemEncoding)];
     if (!result)
     {
       [SFUZipException raise:@"SFUZipFilenameError" format:@"Could not read filename."];
@@ -468,26 +468,26 @@ LABEL_17:
   return result;
 }
 
-- (void)readExtraFieldFromBuffer:(const char *)a3 size:(unint64_t)a4 entry:(id)a5
+- (void)readExtraFieldFromBuffer:(const char *)buffer size:(unint64_t)size entry:(id)entry
 {
-  if (a4 >= 4)
+  if (size >= 4)
   {
     v18 = v5;
     v19 = v6;
-    v8 = a3;
-    v10 = &a3[a4];
+    bufferCopy = buffer;
+    v10 = &buffer[size];
     qmemcpy(v17, "iwphiwuu", sizeof(v17));
     do
     {
-      v11 = *(v8 + 1);
-      v12 = v8 + 4;
-      v13 = &v8[v11 + 4];
+      v11 = *(bufferCopy + 1);
+      v12 = bufferCopy + 4;
+      v13 = &bufferCopy[v11 + 4];
       if (v13 > v10)
       {
         break;
       }
 
-      v14 = *v8;
+      v14 = *bufferCopy;
       if (v14 > 0x636D)
       {
         if (v14 == 25454)
@@ -495,28 +495,28 @@ LABEL_17:
           v15 = v11 >= 4 && self->mPassphraseHint == 0;
           if (v15 && *v12 == v17[0])
           {
-            v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v8 + 8 length:(v11 - 4)];
+            v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bufferCopy + 8 length:(v11 - 4)];
             self->mPassphraseHint = [SFUCryptoUtils decodePassphraseHint:v16];
           }
         }
 
         else if (v14 == 25455 && v11 >= 4 && !self->mEncryptedDocumentUuid && *v12 == v17[1])
         {
-          self->mEncryptedDocumentUuid = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v8 + 8 length:(v11 - 4)];
+          self->mEncryptedDocumentUuid = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bufferCopy + 8 length:(v11 - 4)];
         }
       }
 
       else if (v14 == 1)
       {
-        [a5 readZip64ExtraField:? size:?];
+        [entry readZip64ExtraField:? size:?];
       }
 
       else if (v14 == 25453 && v11 >= 4 && !self->mPassphraseVerifier && *v12 == 1987082089)
       {
-        self->mPassphraseVerifier = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v8 + 8 length:(v11 - 4)];
+        self->mPassphraseVerifier = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bufferCopy + 8 length:(v11 - 4)];
       }
 
-      v8 = v13;
+      bufferCopy = v13;
     }
 
     while (v13 + 4 <= v10);

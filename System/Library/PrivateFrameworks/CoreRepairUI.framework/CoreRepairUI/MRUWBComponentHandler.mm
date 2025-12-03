@@ -39,9 +39,9 @@
       [(MRBaseComponentHandler *)v3 setFollowUpInfoMessage:@"UWB_FOLLOWUP_INFO_IPAD"];
       [(MRBaseComponentHandler *)v3 setPopUpNotificationMessage:@"UWB_POPUP_INFO_IPAD"];
       v5 = objc_opt_new();
-      v6 = [v5 isSupportedIPad];
+      isSupportedIPad = [v5 isSupportedIPad];
 
-      if ((v6 & 1) == 0)
+      if ((isSupportedIPad & 1) == 0)
       {
         [(MRBaseComponentHandler *)v3 setUnlockCheckActivityRequired:0];
         [(MRBaseComponentHandler *)v3 setDisplayNotification:0];
@@ -66,7 +66,7 @@
   block[1] = 3221225472;
   block[2] = __40__MRUWBComponentHandler_sharedSingleton__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSingleton_once != -1)
   {
     dispatch_once(&sharedSingleton_once, block);
@@ -88,7 +88,7 @@ uint64_t __40__MRUWBComponentHandler_sharedSingleton__block_invoke(uint64_t a1)
 + (void)handleSUCase
 {
   v3 = objc_opt_new();
-  [a1 handleComponentSUCase:@"hasDisplayedFollowupForSHCUWB" lastAUthCheckBuildVersion:@"LastUWBAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.UWBRepair" queryString:@"UWB" suCasekey:@"SUcaseForUWB" startBuildVersion:@"19F1" componentAuth:v3];
+  [self handleComponentSUCase:@"hasDisplayedFollowupForSHCUWB" lastAUthCheckBuildVersion:@"LastUWBAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.UWBRepair" queryString:@"UWB" suCasekey:@"SUcaseForUWB" startBuildVersion:@"19F1" componentAuth:v3];
 }
 
 @end

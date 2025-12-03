@@ -16,7 +16,7 @@
 + (id)errorForPhotoVisionVisionKitErrorWithLocalizedDescription:()PhotoVisionAdditions underlyingError:
 {
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277CCA450], a4, *MEMORY[0x277CCA7E8], 0}];
-  v6 = [a1 errorForPhotoVisionStorageErrorWithUserInfo:v5];
+  v6 = [self errorForPhotoVisionStorageErrorWithUserInfo:v5];
 
   return v6;
 }
@@ -24,7 +24,7 @@
 + (id)errorForPhotoVisionStorageErrorWithLocalizedDescription:()PhotoVisionAdditions underlyingError:
 {
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277CCA450], a4, *MEMORY[0x277CCA7E8], 0}];
-  v6 = [a1 errorForPhotoVisionStorageErrorWithUserInfo:v5];
+  v6 = [self errorForPhotoVisionStorageErrorWithUserInfo:v5];
 
   return v6;
 }
@@ -38,7 +38,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 errorForPhotoVisionErrorCode:-1002 userInfo:v6];
+  v7 = [self errorForPhotoVisionErrorCode:-1002 userInfo:v6];
 
   return v7;
 }
@@ -48,7 +48,7 @@
   v6 = MEMORY[0x277CCABB0];
   v7 = a4;
   v8 = [v6 numberWithDouble:a2];
-  v9 = [a1 errorForPhotoVisionInvalidParameterNamed:v7 value:v8];
+  v9 = [self errorForPhotoVisionInvalidParameterNamed:v7 value:v8];
 
   return v9;
 }
@@ -58,7 +58,7 @@
   v6 = MEMORY[0x277CCABB0];
   v7 = a3;
   v8 = [v6 numberWithInteger:a4];
-  v9 = [a1 errorForPhotoVisionInvalidParameterNamed:v7 value:v8];
+  v9 = [self errorForPhotoVisionInvalidParameterNamed:v7 value:v8];
 
   return v9;
 }
@@ -66,7 +66,7 @@
 + (id)errorForPhotoVisionInvalidParameterNamed:()PhotoVisionAdditions value:
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid value of %@ for parameter %@", a4, a3];
-  v6 = [a1 errorForPhotoVisionInvalidParameterWithLocalizedDescription:v5];
+  v6 = [self errorForPhotoVisionInvalidParameterWithLocalizedDescription:v5];
 
   return v6;
 }
@@ -74,7 +74,7 @@
 + (id)errorForPhotoVisionInvalidNilParameterNamed:()PhotoVisionAdditions
 {
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"The parameter %@ cannot be nil", a3];
-  v5 = [a1 errorForPhotoVisionInvalidParameterWithLocalizedDescription:v4];
+  v5 = [self errorForPhotoVisionInvalidParameterWithLocalizedDescription:v4];
 
   return v5;
 }
@@ -82,7 +82,7 @@
 + (id)errorForPhotoVisionUnexpectedCondition:()PhotoVisionAdditions
 {
   v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277CCA450], 0}];
-  v3 = [a1 errorForPhotoVisionErrorCode:-1001 userInfo:v2];
+  v3 = [self errorForPhotoVisionErrorCode:-1001 userInfo:v2];
 
   return v3;
 }
@@ -90,7 +90,7 @@
 + (id)errorForPhotoVisionErrorCode:()PhotoVisionAdditions localizedDescription:underlyingError:
 {
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a4, *MEMORY[0x277CCA450], a5, *MEMORY[0x277CCA7E8], 0}];
-  v8 = [a1 errorWithDomain:@"PVErrorDomainPhotoVision" code:a3 userInfo:v7];
+  v8 = [self errorWithDomain:@"PVErrorDomainPhotoVision" code:a3 userInfo:v7];
 
   return v8;
 }
@@ -104,7 +104,7 @@
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [a1 errorWithDomain:@"PVErrorDomainPhotoVision" code:a3 userInfo:v8];
+  v9 = [self errorWithDomain:@"PVErrorDomainPhotoVision" code:a3 userInfo:v8];
 
   return v9;
 }

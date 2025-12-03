@@ -1,15 +1,15 @@
 @interface TIPreferencesAnalyzer
-+ (id)normalizedInputModeIdentifierGroupsFromInputModes:(id)a3;
++ (id)normalizedInputModeIdentifierGroupsFromInputModes:(id)modes;
 - (TIPreferencesAnalyzer)init;
-- (TIPreferencesAnalyzer)initWithRegistry:(id)a3;
+- (TIPreferencesAnalyzer)initWithRegistry:(id)registry;
 - (id)_createEventSpecForTextInputUserPreferenceChanges;
 - (id)_createEventSpecForTextInputUserPreferenceState;
-- (void)_dispatchEventPayloadWithPreferenceNameToChangesEvent:(id)a3 activeInputModes:(id)a4 currentValue:(id)a5 previousValue:(id)a6 changedAt:(id)a7 analyzedAt:(id)a8 buildAtChange:(id)a9 isFreshInstall:(BOOL)a10 approxDateOfBuildInstall:(id)a11 buildAtLastAnalysis:(id)a12;
-- (void)_dispatchEventPayloadWithPreferenceNameToStateEvent:(id)a3 activeInputModes:(id)a4 currentValue:(id)a5;
-- (void)_recordAnalysisOfPreferenceKey:(id)a3 inDomain:(id)a4;
+- (void)_dispatchEventPayloadWithPreferenceNameToChangesEvent:(id)event activeInputModes:(id)modes currentValue:(id)value previousValue:(id)previousValue changedAt:(id)at analyzedAt:(id)analyzedAt buildAtChange:(id)change isFreshInstall:(BOOL)self0 approxDateOfBuildInstall:(id)self1 buildAtLastAnalysis:(id)self2;
+- (void)_dispatchEventPayloadWithPreferenceNameToStateEvent:(id)event activeInputModes:(id)modes currentValue:(id)value;
+- (void)_recordAnalysisOfPreferenceKey:(id)key inDomain:(id)domain;
 - (void)_registerAnalyticsEventSpecWithAnalyticsService;
-- (void)_resetChangedAtForPreferenceKey:(id)a3 inDomain:(id)a4;
-- (void)_updateApproxBuildAtLastAnalysisWithBuild:(id)a3 andApproxDateOfInstall:(id)a4 ForPreferenceKey:(id)a5 inDomain:(id)a6;
+- (void)_resetChangedAtForPreferenceKey:(id)key inDomain:(id)domain;
+- (void)_updateApproxBuildAtLastAnalysisWithBuild:(id)build andApproxDateOfInstall:(id)install ForPreferenceKey:(id)key inDomain:(id)domain;
 - (void)analyzeRegisteredPreferences;
 @end
 
@@ -93,35 +93,35 @@ void __74__TIPreferencesAnalyzer__createEventSpecForTextInputUserPreferenceChang
 
 - (void)_registerAnalyticsEventSpecWithAnalyticsService
 {
-  v6 = [(TIPreferencesAnalyzer *)self _createEventSpecForTextInputUserPreferenceChanges];
-  v3 = [MEMORY[0x277D6F318] sharedInstance];
-  [v3 registerEventSpec:v6];
+  _createEventSpecForTextInputUserPreferenceChanges = [(TIPreferencesAnalyzer *)self _createEventSpecForTextInputUserPreferenceChanges];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:_createEventSpecForTextInputUserPreferenceChanges];
 
-  v4 = [(TIPreferencesAnalyzer *)self _createEventSpecForTextInputUserPreferenceState];
-  v5 = [MEMORY[0x277D6F318] sharedInstance];
-  [v5 registerEventSpec:v4];
+  _createEventSpecForTextInputUserPreferenceState = [(TIPreferencesAnalyzer *)self _createEventSpecForTextInputUserPreferenceState];
+  mEMORY[0x277D6F318]2 = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318]2 registerEventSpec:_createEventSpecForTextInputUserPreferenceState];
 }
 
-- (void)_dispatchEventPayloadWithPreferenceNameToStateEvent:(id)a3 activeInputModes:(id)a4 currentValue:(id)a5
+- (void)_dispatchEventPayloadWithPreferenceNameToStateEvent:(id)event activeInputModes:(id)modes currentValue:(id)value
 {
-  v17 = a5;
+  valueCopy = value;
   v7 = MEMORY[0x277CBEB38];
-  v8 = a4;
-  v9 = a3;
+  modesCopy = modes;
+  eventCopy = event;
   v10 = objc_alloc_init(v7);
-  [v10 setObject:v9 forKey:@"preferenceName"];
+  [v10 setObject:eventCopy forKey:@"preferenceName"];
 
-  v11 = [v8 componentsJoinedByString:{@", "}];
+  v11 = [modesCopy componentsJoinedByString:{@", "}];
 
   [v10 setObject:v11 forKey:@"activeInputModes"];
-  if (v17)
+  if (valueCopy)
   {
-    v12 = v17;
+    v12 = valueCopy;
     if ([MEMORY[0x277D6F320] isBoolean:v12])
     {
-      v13 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
       v14 = &unk_28400BE08;
-      if (v13)
+      if (bOOLValue)
       {
         v14 = &unk_28400BDF0;
       }
@@ -139,41 +139,41 @@ void __74__TIPreferencesAnalyzer__createEventSpecForTextInputUserPreferenceChang
     [v10 setObject:&unk_28400BE08 forKey:@"currentValue"];
   }
 
-  v16 = [MEMORY[0x277D6F318] sharedInstance];
-  [v16 dispatchEventWithName:@"textInputUserPreferenceState" payload:v10 testingParameters:0 allowSparsePayload:1];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] dispatchEventWithName:@"textInputUserPreferenceState" payload:v10 testingParameters:0 allowSparsePayload:1];
 }
 
-- (void)_dispatchEventPayloadWithPreferenceNameToChangesEvent:(id)a3 activeInputModes:(id)a4 currentValue:(id)a5 previousValue:(id)a6 changedAt:(id)a7 analyzedAt:(id)a8 buildAtChange:(id)a9 isFreshInstall:(BOOL)a10 approxDateOfBuildInstall:(id)a11 buildAtLastAnalysis:(id)a12
+- (void)_dispatchEventPayloadWithPreferenceNameToChangesEvent:(id)event activeInputModes:(id)modes currentValue:(id)value previousValue:(id)previousValue changedAt:(id)at analyzedAt:(id)analyzedAt buildAtChange:(id)change isFreshInstall:(BOOL)self0 approxDateOfBuildInstall:(id)self1 buildAtLastAnalysis:(id)self2
 {
   v63 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a11;
+  eventCopy = event;
+  modesCopy = modes;
+  valueCopy = value;
+  previousValueCopy = previousValue;
+  atCopy = at;
+  changeCopy = change;
+  buildInstallCopy = buildInstall;
   v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v56 = v16;
-  [v23 setObject:v16 forKey:@"preferenceName"];
-  v24 = [v17 componentsJoinedByString:{@", "}];
+  v56 = eventCopy;
+  [v23 setObject:eventCopy forKey:@"preferenceName"];
+  v24 = [modesCopy componentsJoinedByString:{@", "}];
   [v23 setObject:v24 forKey:@"activeInputModes"];
 
-  v25 = [MEMORY[0x277CCABB0] numberWithBool:a10];
+  v25 = [MEMORY[0x277CCABB0] numberWithBool:install];
   [v23 setObject:v25 forKey:@"isNewUser"];
 
-  if (v18)
+  if (valueCopy)
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v18];
-    [v23 setObject:v26 forKey:@"currentValue"];
+    valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", valueCopy];
+    [v23 setObject:valueCopy forKey:@"currentValue"];
   }
 
-  if (v19)
+  if (previousValueCopy)
   {
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v19];
-    [v23 setObject:v27 forKey:@"previousValue"];
+    previousValueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", previousValueCopy];
+    [v23 setObject:previousValueCopy forKey:@"previousValue"];
 
-    if (!v20)
+    if (!atCopy)
     {
       goto LABEL_16;
     }
@@ -182,13 +182,13 @@ void __74__TIPreferencesAnalyzer__createEventSpecForTextInputUserPreferenceChang
   else
   {
     [v23 setObject:@"previousValueNotSet" forKey:@"previousValue"];
-    if (!v20)
+    if (!atCopy)
     {
       goto LABEL_16;
     }
   }
 
-  v28 = v20;
+  v28 = atCopy;
   [v28 timeIntervalSinceNow];
   v30 = v29;
   if (v29 <= 0.0)
@@ -232,19 +232,19 @@ void __74__TIPreferencesAnalyzer__createEventSpecForTextInputUserPreferenceChang
   [v23 setObject:v36 forKey:@"daysSinceLastChangeBucket"];
 
 LABEL_16:
-  if (v21)
+  if (changeCopy)
   {
-    [v23 setObject:v21 forKey:@"buildAtChange"];
+    [v23 setObject:changeCopy forKey:@"buildAtChange"];
   }
 
-  v37 = v18;
-  v38 = [v37 BOOLValue];
-  if (v20 && v22 && !v38)
+  v37 = valueCopy;
+  bOOLValue = [v37 BOOLValue];
+  if (atCopy && buildInstallCopy && !bOOLValue)
   {
-    [v20 timeIntervalSinceDate:v22];
+    [atCopy timeIntervalSinceDate:buildInstallCopy];
     if (v39 >= 0.0)
     {
-      v41 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v22 endDate:v20];
+      v41 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:buildInstallCopy endDate:atCopy];
       [v41 duration];
       v40 = (v42 / 86400.0);
 
@@ -258,8 +258,8 @@ LABEL_16:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
       {
-        v51 = [v20 description];
-        v52 = [v22 description];
+        v51 = [atCopy description];
+        v52 = [buildInstallCopy description];
         *buf = 136315650;
         v58 = "[TIPreferencesAnalyzer _dispatchEventPayloadWithPreferenceNameToChangesEvent:activeInputModes:currentValue:previousValue:changedAt:analyzedAt:buildAtChange:isFreshInstall:approxDateOfBuildInstall:buildAtLastAnalysis:]";
         v59 = 2112;
@@ -277,50 +277,50 @@ LABEL_16:
   }
 
 LABEL_27:
-  v46 = v37 != v19 && v20 != 0 && a8 == 0;
+  v46 = v37 != previousValueCopy && atCopy != 0 && analyzedAt == 0;
   v47 = [MEMORY[0x277CCABB0] numberWithBool:v46];
   [v23 setObject:v47 forKey:@"valueDidChange"];
 
-  v48 = [MEMORY[0x277D6F318] sharedInstance];
-  [v48 dispatchEventWithName:@"textInputUserPreferenceChanges" payload:v23 testingParameters:0 allowSparsePayload:1];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] dispatchEventWithName:@"textInputUserPreferenceChanges" payload:v23 testingParameters:0 allowSparsePayload:1];
 
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetChangedAtForPreferenceKey:(id)a3 inDomain:(id)a4
+- (void)_resetChangedAtForPreferenceKey:(id)key inDomain:(id)domain
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = [v5 stringWithFormat:@"%@_changedAt", a3];
-  CFPreferencesSetAppValue(v7, 0, v6);
+  domainCopy = domain;
+  v7 = [v5 stringWithFormat:@"%@_changedAt", key];
+  CFPreferencesSetAppValue(v7, 0, domainCopy);
 }
 
-- (void)_updateApproxBuildAtLastAnalysisWithBuild:(id)a3 andApproxDateOfInstall:(id)a4 ForPreferenceKey:(id)a5 inDomain:(id)a6
+- (void)_updateApproxBuildAtLastAnalysisWithBuild:(id)build andApproxDateOfInstall:(id)install ForPreferenceKey:(id)key inDomain:(id)domain
 {
   v9 = MEMORY[0x277CCACA8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  key = [v9 stringWithFormat:@"%@_approxDateOfBuildInstall", v11];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_buildAtLastAnalysis", v11];
+  domainCopy = domain;
+  keyCopy = key;
+  installCopy = install;
+  buildCopy = build;
+  key = [v9 stringWithFormat:@"%@_approxDateOfBuildInstall", keyCopy];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_buildAtLastAnalysis", keyCopy];
 
-  CFPreferencesSetAppValue(v14, v13, v10);
-  CFPreferencesSetAppValue(key, v12, v10);
+  CFPreferencesSetAppValue(keyCopy, buildCopy, domainCopy);
+  CFPreferencesSetAppValue(key, installCopy, domainCopy);
 }
 
-- (void)_recordAnalysisOfPreferenceKey:(id)a3 inDomain:(id)a4
+- (void)_recordAnalysisOfPreferenceKey:(id)key inDomain:(id)domain
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  key = [v5 stringWithFormat:@"%@_analyzedAt", a3];
+  domainCopy = domain;
+  key = [v5 stringWithFormat:@"%@_analyzedAt", key];
   v7 = [MEMORY[0x277CBEAA8] now];
-  CFPreferencesSetAppValue(key, v7, v6);
+  CFPreferencesSetAppValue(key, v7, domainCopy);
 }
 
-- (TIPreferencesAnalyzer)initWithRegistry:(id)a3
+- (TIPreferencesAnalyzer)initWithRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v9.receiver = self;
   v9.super_class = TIPreferencesAnalyzer;
   v6 = [(TIPreferencesAnalyzer *)&v9 init];
@@ -328,7 +328,7 @@ LABEL_27:
   if (v6)
   {
     [(TIPreferencesAnalyzer *)v6 _registerAnalyticsEventSpecWithAnalyticsService];
-    objc_storeStrong(&v7->_registry, a3);
+    objc_storeStrong(&v7->_registry, registry);
   }
 
   return v7;
@@ -383,7 +383,7 @@ LABEL_27:
   }
 
   _Block_object_dispose(&v15, 8);
-  v9 = [(TIPreferencesAnalyzer *)self registry];
+  registry = [(TIPreferencesAnalyzer *)self registry];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__TIPreferencesAnalyzer_analyzeRegisteredPreferences__block_invoke;
@@ -391,7 +391,7 @@ LABEL_27:
   v12[4] = self;
   v13 = v8;
   v10 = v8;
-  [v9 enumerateRegisteredPreferencesUsingBlock:v12];
+  [registry enumerateRegisteredPreferencesUsingBlock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -505,17 +505,17 @@ void __53__TIPreferencesAnalyzer_analyzeRegisteredPreferences__block_invoke(uint
   }
 }
 
-+ (id)normalizedInputModeIdentifierGroupsFromInputModes:(id)a3
++ (id)normalizedInputModeIdentifierGroupsFromInputModes:(id)modes
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modesCopy = modes;
   v41 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = v3;
+  v5 = modesCopy;
   v6 = [v5 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v6)
   {
@@ -546,7 +546,7 @@ void __53__TIPreferencesAnalyzer_analyzeRegisteredPreferences__block_invoke(uint
 
           [v4 addObject:v11];
           v12 = TIInputModeGetMultilingualSetFromInputModesWithPreferredLanguages();
-          v13 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v42 = [MEMORY[0x277CBEB58] set];
           v14 = @"Unknown";
           if ([v12 count])
@@ -589,7 +589,7 @@ void __53__TIPreferencesAnalyzer_analyzeRegisteredPreferences__block_invoke(uint
                 }
 
                 v24 = v23;
-                [v13 addObject:v23];
+                [array addObject:v23];
               }
 
               else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -611,7 +611,7 @@ void __53__TIPreferencesAnalyzer_analyzeRegisteredPreferences__block_invoke(uint
           }
 
           v31 = MEMORY[0x277CCACA8];
-          v32 = [v13 componentsJoinedByString:{@", "}];
+          v32 = [array componentsJoinedByString:{@", "}];
           v33 = [v31 stringWithFormat:@"(%@)", v32];
           [v41 addObject:v33];
 
@@ -670,11 +670,11 @@ LABEL_35:
     while (v7);
   }
 
-  v34 = [v41 allObjects];
+  allObjects = [v41 allObjects];
 
   v35 = *MEMORY[0x277D85DE8];
 
-  return v34;
+  return allObjects;
 }
 
 @end

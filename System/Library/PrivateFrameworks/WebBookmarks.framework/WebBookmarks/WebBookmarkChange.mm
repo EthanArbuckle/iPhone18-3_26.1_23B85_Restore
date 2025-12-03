@@ -1,85 +1,85 @@
 @interface WebBookmarkChange
-+ (id)bookmarkAddChangeWithBookmark:(id)a3;
-+ (id)bookmarkModifyChangeWithBookmark:(id)a3;
-+ (id)deleteChangeWithBookmark:(id)a3;
-+ (id)reorderChangeWithBookmark:(id)a3 afterBookmark:(id)a4;
++ (id)bookmarkAddChangeWithBookmark:(id)bookmark;
++ (id)bookmarkModifyChangeWithBookmark:(id)bookmark;
++ (id)deleteChangeWithBookmark:(id)bookmark;
++ (id)reorderChangeWithBookmark:(id)bookmark afterBookmark:(id)afterBookmark;
 - (BOOL)shouldSync;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
-- (WebBookmarkChange)initWithBookmark:(id)a3 bookmarkID:(int)a4 parentID:(int)a5 associatedBookmarkID:(int)a6 changeType:(int64_t)a7;
-- (WebBookmarkChange)initWithBookmarks:(id)a3 parentID:(int)a4 specialFolderID:(int)a5 changeType:(int64_t)a6;
-- (WebBookmarkChange)initWithCoder:(id)a3;
-- (WebBookmarkChange)initWithDictionaryRepresentation:(id)a3;
-- (id)_stringForType:(int64_t)a3;
+- (WebBookmarkChange)initWithBookmark:(id)bookmark bookmarkID:(int)d parentID:(int)iD associatedBookmarkID:(int)bookmarkID changeType:(int64_t)type;
+- (WebBookmarkChange)initWithBookmarks:(id)bookmarks parentID:(int)d specialFolderID:(int)iD changeType:(int64_t)type;
+- (WebBookmarkChange)initWithCoder:(id)coder;
+- (WebBookmarkChange)initWithDictionaryRepresentation:(id)representation;
+- (id)_stringForType:(int64_t)type;
 - (void)_setModifiedAttributesIfSupported;
-- (void)applyModificationsToBookmark:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyModificationsToBookmark:(id)bookmark;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WebBookmarkChange
 
-+ (id)bookmarkAddChangeWithBookmark:(id)a3
++ (id)bookmarkAddChangeWithBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBookmark:v4 bookmarkID:objc_msgSend(v4 parentID:"identifier") changeType:{objc_msgSend(v4, "parentID"), 2}];
+  bookmarkCopy = bookmark;
+  v5 = [[self alloc] initWithBookmark:bookmarkCopy bookmarkID:objc_msgSend(bookmarkCopy parentID:"identifier") changeType:{objc_msgSend(bookmarkCopy, "parentID"), 2}];
 
   return v5;
 }
 
-+ (id)bookmarkModifyChangeWithBookmark:(id)a3
++ (id)bookmarkModifyChangeWithBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBookmark:v4 bookmarkID:objc_msgSend(v4 parentID:"identifier") changeType:{objc_msgSend(v4, "parentID"), 3}];
+  bookmarkCopy = bookmark;
+  v5 = [[self alloc] initWithBookmark:bookmarkCopy bookmarkID:objc_msgSend(bookmarkCopy parentID:"identifier") changeType:{objc_msgSend(bookmarkCopy, "parentID"), 3}];
 
   return v5;
 }
 
-+ (id)deleteChangeWithBookmark:(id)a3
++ (id)deleteChangeWithBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBookmark:v4 bookmarkID:objc_msgSend(v4 parentID:"identifier") changeType:{objc_msgSend(v4, "parentID"), 0}];
+  bookmarkCopy = bookmark;
+  v5 = [[self alloc] initWithBookmark:bookmarkCopy bookmarkID:objc_msgSend(bookmarkCopy parentID:"identifier") changeType:{objc_msgSend(bookmarkCopy, "parentID"), 0}];
 
   return v5;
 }
 
-+ (id)reorderChangeWithBookmark:(id)a3 afterBookmark:(id)a4
++ (id)reorderChangeWithBookmark:(id)bookmark afterBookmark:(id)afterBookmark
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v9 = [v6 identifier];
-  v10 = [v6 parentID];
-  if (v7)
+  bookmarkCopy = bookmark;
+  afterBookmarkCopy = afterBookmark;
+  v8 = [self alloc];
+  identifier = [bookmarkCopy identifier];
+  parentID = [bookmarkCopy parentID];
+  if (afterBookmarkCopy)
   {
-    v11 = [v7 identifier];
+    identifier2 = [afterBookmarkCopy identifier];
   }
 
   else
   {
-    v11 = 0x7FFFFFFFLL;
+    identifier2 = 0x7FFFFFFFLL;
   }
 
-  v12 = [v8 initWithBookmark:v6 bookmarkID:v9 parentID:v10 associatedBookmarkID:v11 changeType:5];
+  v12 = [v8 initWithBookmark:bookmarkCopy bookmarkID:identifier parentID:parentID associatedBookmarkID:identifier2 changeType:5];
 
   return v12;
 }
 
-- (WebBookmarkChange)initWithBookmarks:(id)a3 parentID:(int)a4 specialFolderID:(int)a5 changeType:(int64_t)a6
+- (WebBookmarkChange)initWithBookmarks:(id)bookmarks parentID:(int)d specialFolderID:(int)iD changeType:(int64_t)type
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  bookmarksCopy = bookmarks;
   v26.receiver = self;
   v26.super_class = WebBookmarkChange;
   v11 = [(WebBookmarkChange *)&v26 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [bookmarksCopy copy];
     bookmarks = v11->_bookmarks;
     v11->_bookmarks = v12;
 
-    v11->_parentID = a4;
-    v11->_specialFolderID = a5;
-    v11->_changeType = a6;
+    v11->_parentID = d;
+    v11->_specialFolderID = iD;
+    v11->_changeType = type;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -117,24 +117,24 @@
   return v11;
 }
 
-- (WebBookmarkChange)initWithBookmark:(id)a3 bookmarkID:(int)a4 parentID:(int)a5 associatedBookmarkID:(int)a6 changeType:(int64_t)a7
+- (WebBookmarkChange)initWithBookmark:(id)bookmark bookmarkID:(int)d parentID:(int)iD associatedBookmarkID:(int)bookmarkID changeType:(int64_t)type
 {
-  v12 = a3;
+  bookmarkCopy = bookmark;
   v19.receiver = self;
   v19.super_class = WebBookmarkChange;
   v13 = [(WebBookmarkChange *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    v13->_bookmarkID = a4;
-    v13->_parentID = a5;
-    v13->_associatedBookmarkID = a6;
-    v13->_changeType = a7;
-    v15 = [v12 copy];
+    v13->_bookmarkID = d;
+    v13->_parentID = iD;
+    v13->_associatedBookmarkID = bookmarkID;
+    v13->_changeType = type;
+    v15 = [bookmarkCopy copy];
     bookmark = v14->_bookmark;
     v14->_bookmark = v15;
 
-    [(WebBookmark *)v14->_bookmark _setUsedForInMemoryChangeTracking:a7 == 3];
+    [(WebBookmark *)v14->_bookmark _setUsedForInMemoryChangeTracking:type == 3];
     [(WebBookmarkChange *)v14 _setModifiedAttributesIfSupported];
     v17 = v14;
   }
@@ -142,9 +142,9 @@
   return v14;
 }
 
-- (WebBookmarkChange)initWithDictionaryRepresentation:(id)a3
+- (WebBookmarkChange)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v23.receiver = self;
   v23.super_class = WebBookmarkChange;
   v5 = [(WebBookmarkChange *)&v23 init];
@@ -154,7 +154,7 @@
   }
 
   v22 = 0;
-  v6 = [v4 wb_numberForKey:@"BookmarkID" isValid:&v22];
+  v6 = [representationCopy wb_numberForKey:@"BookmarkID" isValid:&v22];
   v5->_bookmarkID = [v6 intValue];
 
   if (v22 != 1)
@@ -162,7 +162,7 @@
     goto LABEL_15;
   }
 
-  v7 = [v4 wb_numberForKey:@"ParentID" isValid:&v22];
+  v7 = [representationCopy wb_numberForKey:@"ParentID" isValid:&v22];
   v5->_parentID = [v7 intValue];
 
   if (v22 != 1)
@@ -170,7 +170,7 @@
     goto LABEL_15;
   }
 
-  v8 = [v4 wb_numberForKey:@"AssociatedBookmarkID" isValid:&v22];
+  v8 = [representationCopy wb_numberForKey:@"AssociatedBookmarkID" isValid:&v22];
   v5->_associatedBookmarkID = [v8 intValue];
 
   if (v22 != 1)
@@ -178,7 +178,7 @@
     goto LABEL_15;
   }
 
-  v9 = [v4 wb_numberForKey:@"SpecialFolderID" isValid:&v22];
+  v9 = [representationCopy wb_numberForKey:@"SpecialFolderID" isValid:&v22];
   v5->_specialFolderID = [v9 intValue];
 
   if (v22 != 1)
@@ -186,12 +186,12 @@
     goto LABEL_15;
   }
 
-  v10 = [v4 wb_numberForKey:@"Type" isValid:&v22];
+  v10 = [representationCopy wb_numberForKey:@"Type" isValid:&v22];
   v5->_changeType = [v10 integerValue];
 
   if (v22 == 1)
   {
-    v11 = [v4 wb_dictionaryForKey:@"AssociatedBookmark" isValid:&v22];
+    v11 = [representationCopy wb_dictionaryForKey:@"AssociatedBookmark" isValid:&v22];
     v12 = v11;
     if (v22 != 1)
     {
@@ -210,12 +210,12 @@
       }
     }
 
-    v15 = [v4 wb_numberForKey:@"ModifiedAttributes" isValid:&v22];
+    v15 = [representationCopy wb_numberForKey:@"ModifiedAttributes" isValid:&v22];
     v5->_modifiedAttributes = [v15 integerValue];
 
     if (v22 == 1)
     {
-      v16 = [v4 wb_arrayForKey:@"Bookmarks" isValid:&v22];
+      v16 = [representationCopy wb_arrayForKey:@"Bookmarks" isValid:&v22];
       v17 = v16;
       if (v22 == 1)
       {
@@ -259,31 +259,31 @@ WebBookmark *__54__WebBookmarkChange_initWithDictionaryRepresentation___block_in
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bookmarkID = self->_bookmarkID;
-  v6 = a3;
-  [v6 encodeInt32:bookmarkID forKey:@"BookmarkID"];
-  [v6 encodeInt32:self->_parentID forKey:@"ParentID"];
-  [v6 encodeInt32:self->_associatedBookmarkID forKey:@"AssociatedBookmarkID"];
-  [v6 encodeInt32:self->_specialFolderID forKey:@"SpecialFolderID"];
-  [v6 encodeInteger:self->_changeType forKey:@"Type"];
-  v5 = [(WebBookmark *)self->_bookmark dictionaryRepresentationForInMemoryChangeTracking];
-  [v6 encodeObject:v5 forKey:@"AssociatedBookmark"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:bookmarkID forKey:@"BookmarkID"];
+  [coderCopy encodeInt32:self->_parentID forKey:@"ParentID"];
+  [coderCopy encodeInt32:self->_associatedBookmarkID forKey:@"AssociatedBookmarkID"];
+  [coderCopy encodeInt32:self->_specialFolderID forKey:@"SpecialFolderID"];
+  [coderCopy encodeInteger:self->_changeType forKey:@"Type"];
+  dictionaryRepresentationForInMemoryChangeTracking = [(WebBookmark *)self->_bookmark dictionaryRepresentationForInMemoryChangeTracking];
+  [coderCopy encodeObject:dictionaryRepresentationForInMemoryChangeTracking forKey:@"AssociatedBookmark"];
 
-  [v6 encodeInt64:self->_modifiedAttributes forKey:@"ModifiedAttributes"];
-  [v6 encodeObject:self->_bookmarks forKey:@"Bookmarks"];
+  [coderCopy encodeInt64:self->_modifiedAttributes forKey:@"ModifiedAttributes"];
+  [coderCopy encodeObject:self->_bookmarks forKey:@"Bookmarks"];
 }
 
-- (WebBookmarkChange)initWithCoder:(id)a3
+- (WebBookmarkChange)initWithCoder:(id)coder
 {
   v25[7] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v22 = [v3 decodeInt32ForKey:@"BookmarkID"];
-  v21 = [v3 decodeInt32ForKey:@"ParentID"];
-  v20 = [v3 decodeInt32ForKey:@"AssociatedBookmarkID"];
-  v4 = [v3 decodeInt32ForKey:@"SpecialFolderID"];
-  v5 = [v3 decodeIntegerForKey:@"Type"];
+  coderCopy = coder;
+  v22 = [coderCopy decodeInt32ForKey:@"BookmarkID"];
+  v21 = [coderCopy decodeInt32ForKey:@"ParentID"];
+  v20 = [coderCopy decodeInt32ForKey:@"AssociatedBookmarkID"];
+  v4 = [coderCopy decodeInt32ForKey:@"SpecialFolderID"];
+  v5 = [coderCopy decodeIntegerForKey:@"Type"];
   v6 = [WebBookmark alloc];
   v7 = MEMORY[0x277CBEB98];
   v25[0] = objc_opt_class();
@@ -295,16 +295,16 @@ WebBookmark *__54__WebBookmarkChange_initWithDictionaryRepresentation___block_in
   v25[6] = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:7];
   v9 = [v7 setWithArray:v8];
-  v10 = [v3 decodeObjectOfClasses:v9 forKey:@"AssociatedBookmark"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"AssociatedBookmark"];
   v11 = [(WebBookmark *)v6 initWithDictionaryRepresentationForInMemoryChangeTracking:v10];
 
-  v12 = [v3 decodeInt64ForKey:@"ModifiedAttributes"];
+  v12 = [coderCopy decodeInt64ForKey:@"ModifiedAttributes"];
   v13 = MEMORY[0x277CBEB98];
   v24[0] = objc_opt_class();
   v24[1] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v15 = [v13 setWithArray:v14];
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"Bookmarks"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"Bookmarks"];
 
   v17 = [[WebBookmarkChange alloc] initWithBookmark:v11 bookmarkID:v22 parentID:v21 associatedBookmarkID:v20 changeType:v5];
   [(WebBookmarkChange *)v17 setSpecialFolderID:v4];
@@ -315,78 +315,78 @@ WebBookmark *__54__WebBookmarkChange_initWithDictionaryRepresentation___block_in
   return v17;
 }
 
-- (void)applyModificationsToBookmark:(id)a3
+- (void)applyModificationsToBookmark:(id)bookmark
 {
-  v8 = a3;
+  bookmarkCopy = bookmark;
   if ([(WebBookmarkChange *)self attributesMarkedAsModify:8])
   {
-    v4 = [v8 isReadingListItem];
-    v5 = [(WebBookmark *)self->_bookmark dateLastViewed];
-    if (v4)
+    isReadingListItem = [bookmarkCopy isReadingListItem];
+    dateLastViewed = [(WebBookmark *)self->_bookmark dateLastViewed];
+    if (isReadingListItem)
     {
-      [v8 setReadingListDateLastViewed:v5];
+      [bookmarkCopy setReadingListDateLastViewed:dateLastViewed];
     }
 
     else
     {
-      [v8 setTabDateLastViewed:v5];
+      [bookmarkCopy setTabDateLastViewed:dateLastViewed];
     }
   }
 
   if ([(WebBookmarkChange *)self attributesMarkedAsModify:1])
   {
-    v6 = [(WebBookmark *)self->_bookmark title];
-    [v8 setTitle:v6];
+    title = [(WebBookmark *)self->_bookmark title];
+    [bookmarkCopy setTitle:title];
   }
 
   if ([(WebBookmarkChange *)self attributesMarkedAsModify:2])
   {
-    v7 = [(WebBookmark *)self->_bookmark address];
-    [v8 setAddress:v7];
+    address = [(WebBookmark *)self->_bookmark address];
+    [bookmarkCopy setAddress:address];
   }
 
   if ([(WebBookmarkChange *)self attributesMarkedAsModify:512])
   {
-    [v8 setLastSelectedChildID:{-[WebBookmark lastSelectedChildID](self->_bookmark, "lastSelectedChildID")}];
+    [bookmarkCopy setLastSelectedChildID:{-[WebBookmark lastSelectedChildID](self->_bookmark, "lastSelectedChildID")}];
   }
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_bookmarkID];
-  [v3 setObject:v4 forKeyedSubscript:@"BookmarkID"];
+  [dictionary setObject:v4 forKeyedSubscript:@"BookmarkID"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_parentID];
-  [v3 setObject:v5 forKeyedSubscript:@"ParentID"];
+  [dictionary setObject:v5 forKeyedSubscript:@"ParentID"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_associatedBookmarkID];
-  [v3 setObject:v6 forKeyedSubscript:@"AssociatedBookmarkID"];
+  [dictionary setObject:v6 forKeyedSubscript:@"AssociatedBookmarkID"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInt:self->_specialFolderID];
-  [v3 setObject:v7 forKeyedSubscript:@"SpecialFolderID"];
+  [dictionary setObject:v7 forKeyedSubscript:@"SpecialFolderID"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_changeType];
-  [v3 setObject:v8 forKeyedSubscript:@"Type"];
+  [dictionary setObject:v8 forKeyedSubscript:@"Type"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_modifiedAttributes];
-  [v3 setObject:v9 forKeyedSubscript:@"ModifiedAttributes"];
+  [dictionary setObject:v9 forKeyedSubscript:@"ModifiedAttributes"];
 
   bookmarks = self->_bookmarks;
   if (bookmarks)
   {
     v11 = [(NSArray *)bookmarks valueForKey:@"dictionaryRepresentationForInMemoryChangeTracking"];
-    [v3 setObject:v11 forKeyedSubscript:@"Bookmarks"];
+    [dictionary setObject:v11 forKeyedSubscript:@"Bookmarks"];
   }
 
   bookmark = self->_bookmark;
   if (bookmark)
   {
-    v13 = [(WebBookmark *)bookmark dictionaryRepresentationForInMemoryChangeTracking];
-    [v3 setObject:v13 forKeyedSubscript:@"AssociatedBookmark"];
+    dictionaryRepresentationForInMemoryChangeTracking = [(WebBookmark *)bookmark dictionaryRepresentationForInMemoryChangeTracking];
+    [dictionary setObject:dictionaryRepresentationForInMemoryChangeTracking forKeyedSubscript:@"AssociatedBookmark"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)_setModifiedAttributesIfSupported
@@ -424,16 +424,16 @@ WebBookmark *__54__WebBookmarkChange_initWithDictionaryRepresentation___block_in
   return [(WebBookmark *)bookmark isSyncable];
 }
 
-- (id)_stringForType:(int64_t)a3
+- (id)_stringForType:(int64_t)type
 {
-  if ((a3 - 2) > 4)
+  if ((type - 2) > 4)
   {
     return @"Delete";
   }
 
   else
   {
-    return off_279E75788[a3 - 2];
+    return off_279E75788[type - 2];
   }
 }
 
@@ -443,8 +443,8 @@ WebBookmark *__54__WebBookmarkChange_initWithDictionaryRepresentation___block_in
   v4 = objc_opt_class();
   v5 = [(WebBookmarkChange *)self _stringForType:self->_changeType];
   bookmarkID = self->_bookmarkID;
-  v7 = [(WebBookmark *)self->_bookmark title];
-  v8 = v7;
+  title = [(WebBookmark *)self->_bookmark title];
+  v8 = title;
   specialFolderID = self->_specialFolderID;
   if (!specialFolderID)
   {
@@ -462,7 +462,7 @@ WebBookmark *__54__WebBookmarkChange_initWithDictionaryRepresentation___block_in
     v10 = v10;
   }
 
-  v11 = [v3 stringWithFormat:@"<%@: %p type = %@; bookmark = %d %@; parent = %d; associated bookmark = %d;>", v4, self, v5, bookmarkID, v7, specialFolderID, v10];;
+  v11 = [v3 stringWithFormat:@"<%@: %p type = %@; bookmark = %d %@; parent = %d; associated bookmark = %d;>", v4, self, v5, bookmarkID, title, specialFolderID, v10];;
 
   return v11;
 }

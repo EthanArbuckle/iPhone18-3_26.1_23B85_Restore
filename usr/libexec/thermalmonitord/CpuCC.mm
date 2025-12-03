@@ -1,5 +1,5 @@
 @interface CpuCC
-- (CpuCC)initWithParams:(__CFDictionary *)a3 powerScale:(float)a4 listID:(int)a5 needspowerZones:(BOOL)a6;
+- (CpuCC)initWithParams:(__CFDictionary *)params powerScale:(float)scale listID:(int)d needspowerZones:(BOOL)zones;
 - (int)numberOfFields;
 - (unsigned)getUserUsage;
 - (void)defaultAction;
@@ -8,7 +8,7 @@
 
 @implementation CpuCC
 
-- (CpuCC)initWithParams:(__CFDictionary *)a3 powerScale:(float)a4 listID:(int)a5 needspowerZones:(BOOL)a6
+- (CpuCC)initWithParams:(__CFDictionary *)params powerScale:(float)scale listID:(int)d needspowerZones:(BOOL)zones
 {
   v15.receiver = self;
   v15.super_class = CpuCC;
@@ -17,8 +17,8 @@
   if (v10)
   {
     *(&v10->super.currentPower + 1) = 101;
-    v10->kDVD1Level = a5;
-    *&v10->prevCpu.cpu_ticks[3] = a4;
+    v10->kDVD1Level = d;
+    *&v10->prevCpu.cpu_ticks[3] = scale;
     v10->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d CPU ", 2);
     v11->listIDPos = mach_host_self();
     v11->super.super.boundCheckLow = 0;
@@ -27,7 +27,7 @@
     *&v11->currCpu.cpu_ticks[1] = 0;
     *&v11->currCpu.cpu_ticks[3] = 0;
     *&v11->prevCpu.cpu_ticks[1] = 0;
-    if (sub_100002A20(a3, @"minReachableLoadIndex", kCFNumberIntType, &v11->_usesPowerZoneControl))
+    if (sub_100002A20(params, @"minReachableLoadIndex", kCFNumberIntType, &v11->_usesPowerZoneControl))
     {
       v12 = *&v11->_usesPowerZoneControl;
       *&v13 = 100.0 / (100 - v12);
@@ -35,7 +35,7 @@
       v11->_directMapSlope = 0.5 - (*&v13 * v12);
     }
 
-    LOBYTE(v11->timeActive) = a6;
+    LOBYTE(v11->timeActive) = zones;
   }
 
   return v11;

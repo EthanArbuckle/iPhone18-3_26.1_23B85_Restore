@@ -1,17 +1,17 @@
 @interface WBSFaviconProviderPrivateCache
-- (BOOL)linkPageURLString:(id)a3 toIconURLString:(id)a4;
+- (BOOL)linkPageURLString:(id)string toIconURLString:(id)lString;
 - (WBSFaviconProviderPrivateCache)init;
-- (id)firstImageDataMatchingPageURLStringIn:(id)a3 matchedPageURLString:(id *)a4;
-- (id)imageDataForIconURLString:(id)a3;
-- (id)imageDataForPageURLString:(id)a3;
-- (id)imageInfoForIconURLString:(id)a3;
-- (id)imageInfoForPageURLString:(id)a3;
-- (id)pageURLStringsWithPrefixesIn:(id)a3;
-- (id)rejectedResourceInfosForPageURLString:(id)a3 iconURLString:(id)a4;
-- (void)removeAllImageDataWithCompletionHandler:(id)a3;
-- (void)removeImageDataForPageURLString:(id)a3;
-- (void)setImageData:(id)a3 forPageURLString:(id)a4 iconURLString:(id)a5 iconSize:(CGSize)a6 hasGeneratedResolutions:(BOOL)a7;
-- (void)setIsRejectedResource:(BOOL)a3 forPageURLString:(id)a4 iconURLString:(id)a5;
+- (id)firstImageDataMatchingPageURLStringIn:(id)in matchedPageURLString:(id *)string;
+- (id)imageDataForIconURLString:(id)string;
+- (id)imageDataForPageURLString:(id)string;
+- (id)imageInfoForIconURLString:(id)string;
+- (id)imageInfoForPageURLString:(id)string;
+- (id)pageURLStringsWithPrefixesIn:(id)in;
+- (id)rejectedResourceInfosForPageURLString:(id)string iconURLString:(id)lString;
+- (void)removeAllImageDataWithCompletionHandler:(id)handler;
+- (void)removeImageDataForPageURLString:(id)string;
+- (void)setImageData:(id)data forPageURLString:(id)string iconURLString:(id)lString iconSize:(CGSize)size hasGeneratedResolutions:(BOOL)resolutions;
+- (void)setIsRejectedResource:(BOOL)resource forPageURLString:(id)string iconURLString:(id)lString;
 @end
 
 @implementation WBSFaviconProviderPrivateCache
@@ -27,17 +27,17 @@
     uuidToImageDataCache = v2->_uuidToImageDataCache;
     v2->_uuidToImageDataCache = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pageURLStringToIconInfoDict = v2->_pageURLStringToIconInfoDict;
-    v2->_pageURLStringToIconInfoDict = v5;
+    v2->_pageURLStringToIconInfoDict = dictionary;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     iconURLStringToIconInfoDict = v2->_iconURLStringToIconInfoDict;
-    v2->_iconURLStringToIconInfoDict = v7;
+    v2->_iconURLStringToIconInfoDict = dictionary2;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     urlStringToRejectedResourceIconInfoDict = v2->_urlStringToRejectedResourceIconInfoDict;
-    v2->_urlStringToRejectedResourceIconInfoDict = v9;
+    v2->_urlStringToRejectedResourceIconInfoDict = dictionary3;
 
     v11 = v2;
   }
@@ -45,15 +45,15 @@
   return v2;
 }
 
-- (id)imageDataForPageURLString:(id)a3
+- (id)imageDataForPageURLString:(id)string
 {
-  v4 = [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict objectForKeyedSubscript:string];
   v5 = v4;
   if (v4)
   {
     uuidToImageDataCache = self->_uuidToImageDataCache;
-    v7 = [v4 UUIDString];
-    v8 = [(NSCache *)uuidToImageDataCache objectForKey:v7];
+    uUIDString = [v4 UUIDString];
+    v8 = [(NSCache *)uuidToImageDataCache objectForKey:uUIDString];
   }
 
   else
@@ -64,15 +64,15 @@
   return v8;
 }
 
-- (id)imageDataForIconURLString:(id)a3
+- (id)imageDataForIconURLString:(id)string
 {
-  v4 = [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict objectForKeyedSubscript:string];
   v5 = v4;
   if (v4)
   {
     uuidToImageDataCache = self->_uuidToImageDataCache;
-    v7 = [v4 UUIDString];
-    v8 = [(NSCache *)uuidToImageDataCache objectForKey:v7];
+    uUIDString = [v4 UUIDString];
+    v8 = [(NSCache *)uuidToImageDataCache objectForKey:uUIDString];
   }
 
   else
@@ -83,15 +83,15 @@
   return v8;
 }
 
-- (id)firstImageDataMatchingPageURLStringIn:(id)a3 matchedPageURLString:(id *)a4
+- (id)firstImageDataMatchingPageURLStringIn:(id)in matchedPageURLString:(id *)string
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  inCopy = in;
+  v7 = [inCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -102,7 +102,7 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -110,17 +110,17 @@
         if (v12)
         {
           v13 = v12;
-          if (a4)
+          if (string)
           {
             v14 = v11;
-            *a4 = v11;
+            *string = v11;
           }
 
           goto LABEL_12;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [inCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -136,10 +136,10 @@ LABEL_12:
   return v13;
 }
 
-- (id)pageURLStringsWithPrefixesIn:(id)a3
+- (id)pageURLStringsWithPrefixesIn:(id)in
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  inCopy = in;
   v5 = [MEMORY[0x1E695DFA8] set];
   v23 = 0u;
   v24 = 0u;
@@ -165,7 +165,7 @@ LABEL_12:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = v4;
+        v11 = inCopy;
         v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
@@ -199,20 +199,20 @@ LABEL_12:
     while (v7);
   }
 
-  v16 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v16;
+  return allObjects;
 }
 
-- (id)imageInfoForPageURLString:(id)a3
+- (id)imageInfoForPageURLString:(id)string
 {
-  v4 = [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict objectForKeyedSubscript:string];
   v5 = v4;
   if (v4)
   {
     uuidToImageDataCache = self->_uuidToImageDataCache;
-    v7 = [v4 UUIDString];
-    v8 = [(NSCache *)uuidToImageDataCache objectForKey:v7];
+    uUIDString = [v4 UUIDString];
+    v8 = [(NSCache *)uuidToImageDataCache objectForKey:uUIDString];
     if (v8)
     {
       v9 = v5;
@@ -234,15 +234,15 @@ LABEL_12:
   return v10;
 }
 
-- (id)imageInfoForIconURLString:(id)a3
+- (id)imageInfoForIconURLString:(id)string
 {
-  v4 = [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict objectForKeyedSubscript:string];
   v5 = v4;
   if (v4)
   {
     uuidToImageDataCache = self->_uuidToImageDataCache;
-    v7 = [v4 UUIDString];
-    v8 = [(NSCache *)uuidToImageDataCache objectForKey:v7];
+    uUIDString = [v4 UUIDString];
+    v8 = [(NSCache *)uuidToImageDataCache objectForKey:uUIDString];
     if (v8)
     {
       v9 = v5;
@@ -264,16 +264,16 @@ LABEL_12:
   return v10;
 }
 
-- (void)setImageData:(id)a3 forPageURLString:(id)a4 iconURLString:(id)a5 iconSize:(CGSize)a6 hasGeneratedResolutions:(BOOL)a7
+- (void)setImageData:(id)data forPageURLString:(id)string iconURLString:(id)lString iconSize:(CGSize)size hasGeneratedResolutions:(BOOL)resolutions
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
-  v36 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(WBSFaviconProviderPrivateCache *)self imageInfoForPageURLString:v13];
-  v16 = [(WBSFaviconProviderPrivateCache *)self imageInfoForIconURLString:v14];
+  resolutionsCopy = resolutions;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  stringCopy = string;
+  lStringCopy = lString;
+  v15 = [(WBSFaviconProviderPrivateCache *)self imageInfoForPageURLString:stringCopy];
+  v16 = [(WBSFaviconProviderPrivateCache *)self imageInfoForIconURLString:lStringCopy];
   v17 = v16;
   if (!v15 || v16)
   {
@@ -282,65 +282,65 @@ LABEL_12:
       goto LABEL_4;
     }
 
-    v26 = [v15 UUIDString];
-    v27 = [v17 UUIDString];
-    v28 = [v26 isEqual:v27];
+    uUIDString = [v15 UUIDString];
+    uUIDString2 = [v17 UUIDString];
+    v28 = [uUIDString isEqual:uUIDString2];
 
     if (v28)
     {
-      if (v36)
+      if (dataCopy)
       {
         uuidToImageDataCache = self->_uuidToImageDataCache;
-        v30 = [v15 UUIDString];
-        [(NSCache *)uuidToImageDataCache setObject:v36 forKey:v30];
+        uUIDString3 = [v15 UUIDString];
+        [(NSCache *)uuidToImageDataCache setObject:dataCopy forKey:uUIDString3];
       }
 
       else
       {
-        [(WBSFaviconProviderPrivateCache *)self removeImageDataForPageURLString:v13];
+        [(WBSFaviconProviderPrivateCache *)self removeImageDataForPageURLString:stringCopy];
       }
 
       goto LABEL_16;
     }
   }
 
-  [(WBSFaviconProviderPrivateCache *)self removeImageDataForPageURLString:v13];
+  [(WBSFaviconProviderPrivateCache *)self removeImageDataForPageURLString:stringCopy];
 
   v15 = 0;
 LABEL_4:
-  if (!v36)
+  if (!dataCopy)
   {
     goto LABEL_16;
   }
 
   if (!(v15 | v17))
   {
-    v31 = [MEMORY[0x1E696AFB0] UUID];
-    v32 = [v31 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString4 = [uUID UUIDString];
 
-    v33 = [MEMORY[0x1E695DF00] date];
-    v34 = [[WBSFaviconProviderIconInfo alloc] initWithPageURLString:v13 iconURLString:v14 UUIDString:v32 dateAdded:v33 size:v7 hasGeneratedResolutions:0 isRejectedResource:width, height];
-    [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict setObject:v34 forKeyedSubscript:v13];
+    date = [MEMORY[0x1E695DF00] date];
+    height = [[WBSFaviconProviderIconInfo alloc] initWithPageURLString:stringCopy iconURLString:lStringCopy UUIDString:uUIDString4 dateAdded:date size:resolutionsCopy hasGeneratedResolutions:0 isRejectedResource:width, height];
+    [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict setObject:height forKeyedSubscript:stringCopy];
 
-    v35 = [[WBSFaviconProviderIconInfo alloc] initWithPageURLString:0 iconURLString:v14 UUIDString:v32 dateAdded:v33 size:v7 hasGeneratedResolutions:0 isRejectedResource:width, height];
-    [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict setObject:v35 forKeyedSubscript:v14];
+    height2 = [[WBSFaviconProviderIconInfo alloc] initWithPageURLString:0 iconURLString:lStringCopy UUIDString:uUIDString4 dateAdded:date size:resolutionsCopy hasGeneratedResolutions:0 isRejectedResource:width, height];
+    [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict setObject:height2 forKeyedSubscript:lStringCopy];
 
-    [(NSCache *)self->_uuidToImageDataCache setObject:v36 forKey:v32];
+    [(NSCache *)self->_uuidToImageDataCache setObject:dataCopy forKey:uUIDString4];
     goto LABEL_15;
   }
 
   if (!v15 && v17)
   {
     v18 = [WBSFaviconProviderIconInfo alloc];
-    v19 = [v17 UUIDString];
-    v20 = [v17 dateAdded];
+    uUIDString5 = [v17 UUIDString];
+    dateAdded = [v17 dateAdded];
     [v17 size];
-    v23 = -[WBSFaviconProviderIconInfo initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:](v18, "initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:", v13, v14, v19, v20, [v17 hasGeneratedResolutions], 0, v21, v22);
-    [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict setObject:v23 forKeyedSubscript:v13];
+    v23 = -[WBSFaviconProviderIconInfo initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:](v18, "initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:", stringCopy, lStringCopy, uUIDString5, dateAdded, [v17 hasGeneratedResolutions], 0, v21, v22);
+    [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict setObject:v23 forKeyedSubscript:stringCopy];
 
     v24 = self->_uuidToImageDataCache;
-    v25 = [v17 UUIDString];
-    [(NSCache *)v24 setObject:v36 forKey:v25];
+    uUIDString6 = [v17 UUIDString];
+    [(NSCache *)v24 setObject:dataCopy forKey:uUIDString6];
 
 LABEL_15:
     v15 = 0;
@@ -349,16 +349,16 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)setIsRejectedResource:(BOOL)a3 forPageURLString:(id)a4 iconURLString:(id)a5
+- (void)setIsRejectedResource:(BOOL)resource forPageURLString:(id)string iconURLString:(id)lString
 {
-  v6 = a3;
-  v12 = a4;
-  v8 = a5;
-  if (v6)
+  resourceCopy = resource;
+  stringCopy = string;
+  lStringCopy = lString;
+  if (resourceCopy)
   {
     v9 = [WBSFaviconProviderIconInfo alloc];
-    v10 = [MEMORY[0x1E695DF00] date];
-    v11 = [(WBSFaviconProviderIconInfo *)v9 initWithPageURLString:v12 iconURLString:v8 UUIDString:0 dateAdded:v10 size:0 hasGeneratedResolutions:1 isRejectedResource:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    date = [MEMORY[0x1E695DF00] date];
+    v11 = [(WBSFaviconProviderIconInfo *)v9 initWithPageURLString:stringCopy iconURLString:lStringCopy UUIDString:0 dateAdded:date size:0 hasGeneratedResolutions:1 isRejectedResource:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
 
   else
@@ -366,67 +366,67 @@ LABEL_16:
     v11 = 0;
   }
 
-  [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict setObject:v11 forKeyedSubscript:v12];
-  [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict setObject:v11 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict setObject:v11 forKeyedSubscript:stringCopy];
+  [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict setObject:v11 forKeyedSubscript:lStringCopy];
 }
 
-- (id)rejectedResourceInfosForPageURLString:(id)a3 iconURLString:(id)a4
+- (id)rejectedResourceInfosForPageURLString:(id)string iconURLString:(id)lString
 {
-  v6 = a4;
+  lStringCopy = lString;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a3;
-  v9 = [v7 array];
-  v10 = [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict objectForKeyedSubscript:v8];
+  stringCopy = string;
+  array = [v7 array];
+  v10 = [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict objectForKeyedSubscript:stringCopy];
 
   if (v10)
   {
-    [v9 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict objectForKeyedSubscript:v6];
+  v11 = [(NSMutableDictionary *)self->_urlStringToRejectedResourceIconInfoDict objectForKeyedSubscript:lStringCopy];
 
   if (v11)
   {
-    [v9 addObject:v11];
+    [array addObject:v11];
   }
 
-  return v9;
+  return array;
 }
 
-- (BOOL)linkPageURLString:(id)a3 toIconURLString:(id)a4
+- (BOOL)linkPageURLString:(id)string toIconURLString:(id)lString
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSFaviconProviderPrivateCache *)self imageInfoForPageURLString:v6];
-  v9 = [(WBSFaviconProviderPrivateCache *)self imageInfoForIconURLString:v7];
+  stringCopy = string;
+  lStringCopy = lString;
+  v8 = [(WBSFaviconProviderPrivateCache *)self imageInfoForPageURLString:stringCopy];
+  v9 = [(WBSFaviconProviderPrivateCache *)self imageInfoForIconURLString:lStringCopy];
   if (v9)
   {
-    v10 = [v8 UUIDString];
-    v11 = [v9 UUIDString];
-    v12 = [v10 isEqual:v11];
+    uUIDString = [v8 UUIDString];
+    uUIDString2 = [v9 UUIDString];
+    v12 = [uUIDString isEqual:uUIDString2];
 
     if ((v12 & 1) == 0)
     {
-      [(WBSFaviconProviderPrivateCache *)self removeImageDataForPageURLString:v6];
+      [(WBSFaviconProviderPrivateCache *)self removeImageDataForPageURLString:stringCopy];
       v13 = [WBSFaviconProviderIconInfo alloc];
-      v14 = [v9 UUIDString];
-      v15 = [v9 dateAdded];
+      uUIDString3 = [v9 UUIDString];
+      dateAdded = [v9 dateAdded];
       [v9 size];
-      v18 = -[WBSFaviconProviderIconInfo initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:](v13, "initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:", v6, v7, v14, v15, [v9 hasGeneratedResolutions], 0, v16, v17);
-      [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict setObject:v18 forKeyedSubscript:v6];
+      v18 = -[WBSFaviconProviderIconInfo initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:](v13, "initWithPageURLString:iconURLString:UUIDString:dateAdded:size:hasGeneratedResolutions:isRejectedResource:", stringCopy, lStringCopy, uUIDString3, dateAdded, [v9 hasGeneratedResolutions], 0, v16, v17);
+      [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict setObject:v18 forKeyedSubscript:stringCopy];
     }
   }
 
   return v9 != 0;
 }
 
-- (void)removeImageDataForPageURLString:(id)a3
+- (void)removeImageDataForPageURLString:(id)string
 {
-  v4 = a3;
-  v5 = [(WBSFaviconProviderPrivateCache *)self imageInfoForPageURLString:v4];
+  stringCopy = string;
+  v5 = [(WBSFaviconProviderPrivateCache *)self imageInfoForPageURLString:stringCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict removeObjectForKey:stringCopy];
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
@@ -461,8 +461,8 @@ LABEL_16:
       {
         [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict removeObjectForKey:v12, v13, v14, v15];
         uuidToImageDataCache = self->_uuidToImageDataCache;
-        v11 = [v9 UUIDString];
-        [(NSCache *)uuidToImageDataCache removeObjectForKey:v11];
+        uUIDString = [v9 UUIDString];
+        [(NSCache *)uuidToImageDataCache removeObjectForKey:uUIDString];
       }
 
       _Block_object_dispose(&v18, 8);
@@ -503,16 +503,16 @@ void __66__WBSFaviconProviderPrivateCache_removeImageDataForPageURLString___bloc
   }
 }
 
-- (void)removeAllImageDataWithCompletionHandler:(id)a3
+- (void)removeAllImageDataWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict allKeys];
+  handlerCopy = handler;
+  allKeys = [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict allKeys];
   [(NSCache *)self->_uuidToImageDataCache removeAllObjects];
   [(NSMutableDictionary *)self->_pageURLStringToIconInfoDict removeAllObjects];
   [(NSMutableDictionary *)self->_iconURLStringToIconInfoDict removeAllObjects];
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v4);
+    handlerCopy[2](handlerCopy, allKeys);
   }
 }
 

@@ -11,9 +11,9 @@
   {
     v1 = [objc_alloc(MEMORY[0x29EDC70E0]) initWithBaseCharacterSet:3];
     [v1 removeCharactersInString:@" "];
-    v2 = [v1 invertedSetDescription];
+    invertedSetDescription = [v1 invertedSetDescription];
     v3 = zhuyinWordCharacters__wordCharacterSet;
-    zhuyinWordCharacters__wordCharacterSet = v2;
+    zhuyinWordCharacters__wordCharacterSet = invertedSetDescription;
 
     v0 = zhuyinWordCharacters__wordCharacterSet;
   }

@@ -1,22 +1,22 @@
 @interface TPSSubscriptionLabelerCharacterSets
-+ (USet)_characterSetFromPattern:(id)a3;
++ (USet)_characterSetFromPattern:(id)pattern;
 - (TPSSubscriptionLabelerCharacterSets)init;
 - (void)dealloc;
 @end
 
 @implementation TPSSubscriptionLabelerCharacterSets
 
-+ (USet)_characterSetFromPattern:(id)a3
++ (USet)_characterSetFromPattern:(id)pattern
 {
-  if (!a3)
+  if (!pattern)
   {
     return 0;
   }
 
-  v3 = [TPSSubscriptionLabeler _resultWithAllCharacters:&__block_literal_global_6 string:a3];
-  v4 = [v3 pointerValue];
+  v3 = [TPSSubscriptionLabeler _resultWithAllCharacters:&__block_literal_global_6 string:pattern];
+  pointerValue = [v3 pointerValue];
 
-  return v4;
+  return pointerValue;
 }
 
 id __64__TPSSubscriptionLabelerCharacterSets__characterSetFromPattern___block_invoke()

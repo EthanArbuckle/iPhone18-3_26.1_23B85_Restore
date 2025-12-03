@@ -3,7 +3,7 @@
 + (id)currentManagedObjectModel;
 + (id)defaultModelsDirectory;
 + (id)defaultStoresDirectory;
-+ (id)getBundlingJSONURLWithTrigger:(unint64_t)a3;
++ (id)getBundlingJSONURLWithTrigger:(unint64_t)trigger;
 + (id)getCollectionDate;
 + (id)getPlistFileURL;
 + (id)protectedStoreFilesExtensions;
@@ -11,29 +11,29 @@
 + (void)defaultStoresDirectory;
 + (void)getCollectionDate;
 + (void)persistCollectionDate;
-- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4;
+- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension;
 - (BOOL)_acquireBackgroundProcessingPermissions;
 - (BOOL)acquireBackgroundProcessingPermissions;
 - (BOOL)loadStore;
-- (MOPersistenceManager)initWithUniverse:(id)a3;
-- (int)_acquireBackgroundAssertionForFileDescriptor:(int)a3;
+- (MOPersistenceManager)initWithUniverse:(id)universe;
+- (int)_acquireBackgroundAssertionForFileDescriptor:(int)descriptor;
 - (unint64_t)availability;
 - (void)loadStore;
-- (void)onLockStateChangeNotification:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
+- (void)onLockStateChangeNotification:(id)notification;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
 - (void)registerForNotifications;
 @end
 
 @implementation MOPersistenceManager
 
-- (MOPersistenceManager)initWithUniverse:(id)a3
+- (MOPersistenceManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v40 = os_transaction_create();
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   if (v8)
   {
@@ -68,9 +68,9 @@
       v19 = [NSArray arrayWithObjects:v18, 0];
       [(NSPersistentContainer *)self->_persistentContainer setPersistentStoreDescriptions:v19];
 
-      v20 = [(NSPersistentContainer *)self->_persistentContainer newBackgroundContext];
+      newBackgroundContext = [(NSPersistentContainer *)self->_persistentContainer newBackgroundContext];
       managedObjectContext = self->_managedObjectContext;
-      self->_managedObjectContext = v20;
+      self->_managedObjectContext = newBackgroundContext;
 
       v22 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -88,16 +88,16 @@
 
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
-      v34 = [v5 getService:v33];
+      v34 = [universeCopy getService:v33];
       configurationManager = self->_configurationManager;
       self->_configurationManager = v34;
 
-      v36 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v36 = 0;
+      selfCopy = 0;
       v15 = v40;
       v40 = 0;
     }
@@ -113,10 +113,10 @@
 
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MOPersistenceManager.m" lineNumber:45 description:@"Invalid parameter not satisfying: notifier"];
-    v36 = 0;
+    selfCopy = 0;
   }
 
-  return v36;
+  return selfCopy;
 }
 
 - (void)registerForNotifications
@@ -127,8 +127,8 @@
   v5[3] = &unk_10033C3F8;
   v5[4] = self;
   v3 = objc_retainBlock(v5);
-  v4 = [(MOPersistenceManager *)self dispatcher];
-  [v4 registerForNotification:2 withHandler:v3];
+  dispatcher = [(MOPersistenceManager *)self dispatcher];
+  [dispatcher registerForNotification:2 withHandler:v3];
 }
 
 void __48__MOPersistenceManager_registerForNotifications__block_invoke(uint64_t a1, int a2, void *a3)
@@ -146,9 +146,9 @@ void __48__MOPersistenceManager_registerForNotifications__block_invoke(uint64_t 
   }
 }
 
-- (void)onLockStateChangeNotification:(id)a3
+- (void)onLockStateChangeNotification:(id)notification
 {
-  v4 = [a3 valueForKey:@"isUnlocked"];
+  v4 = [notification valueForKey:@"isUnlocked"];
 
   if (v4 && [(MOPersistenceManager *)self availability]== 2)
   {
@@ -176,24 +176,24 @@ void __54__MOPersistenceManager_onLockStateChangeNotification___block_invoke(uin
 
 - (unint64_t)availability
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_availability != 2 && [(MOPersistenceManager *)v2 loadStore])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_availability != 2 && [(MOPersistenceManager *)selfCopy loadStore])
   {
-    v2->_availability = 2;
+    selfCopy->_availability = 2;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_availability;
+  return selfCopy->_availability;
 }
 
 - (BOOL)loadStore
 {
-  v3 = [(MOPersistenceManager *)self _acquireBackgroundProcessingPermissions];
+  _acquireBackgroundProcessingPermissions = [(MOPersistenceManager *)self _acquireBackgroundProcessingPermissions];
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (_acquireBackgroundProcessingPermissions)
   {
     if (!v5)
     {
@@ -222,9 +222,9 @@ LABEL_7:
   v25 = buf;
   v26 = 0x2020000000;
   v27 = 0;
-  v7 = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
-  v8 = [v7 persistentStores];
-  v9 = [v8 count];
+  persistentStoreCoordinator = [(NSPersistentContainer *)self->_persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v9 = [persistentStores count];
 
   if (v9)
   {
@@ -296,17 +296,17 @@ void __33__MOPersistenceManager_loadStore__block_invoke(uint64_t a1, uint64_t a2
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(MOPersistenceManager *)self managedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __37__MOPersistenceManager_performBlock___block_invoke;
   v8 = v7[3] = &unk_10033B9D8;
-  v9 = v4;
+  v9 = blockCopy;
   v5 = v8;
-  v6 = v4;
+  v6 = blockCopy;
   [v5 performBlock:v7];
 }
 
@@ -319,17 +319,17 @@ void __37__MOPersistenceManager_performBlock___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   [(MOPersistenceManager *)self managedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __44__MOPersistenceManager_performBlockAndWait___block_invoke;
   v8 = v7[3] = &unk_10033B9D8;
-  v9 = v4;
+  v9 = waitCopy;
   v5 = v8;
-  v6 = v4;
+  v6 = waitCopy;
   [v5 performBlockAndWait:v7];
 }
 
@@ -345,7 +345,7 @@ void __44__MOPersistenceManager_performBlockAndWait___block_invoke(uint64_t a1)
 + (id)defaultModelsDirectory
 {
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 resourceURL];
+  resourceURL = [v4 resourceURL];
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -359,7 +359,7 @@ void __44__MOPersistenceManager_performBlockAndWait___block_invoke(uint64_t a1)
     +[MOPersistenceManager defaultModelsDirectory];
   }
 
-  v9 = [[NSURL alloc] initFileURLWithPath:v7 relativeToURL:v5];
+  v9 = [[NSURL alloc] initFileURLWithPath:v7 relativeToURL:resourceURL];
   v16 = 0;
   v10 = [v9 checkResourceIsReachableAndReturnError:&v16];
   v11 = v16;
@@ -372,7 +372,7 @@ void __44__MOPersistenceManager_performBlockAndWait___block_invoke(uint64_t a1)
     }
 
     v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"MOPersistenceManager.m" lineNumber:200 description:{@"Failed to locate momd bundle: %@ (in %s:%d)", v11, "+[MOPersistenceManager defaultModelsDirectory]", 200}];
+    [v13 handleFailureInMethod:a2 object:self file:@"MOPersistenceManager.m" lineNumber:200 description:{@"Failed to locate momd bundle: %@ (in %s:%d)", v11, "+[MOPersistenceManager defaultModelsDirectory]", 200}];
   }
 
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
@@ -386,10 +386,10 @@ void __44__MOPersistenceManager_performBlockAndWait___block_invoke(uint64_t a1)
 
 + (id)defaultStoresDirectory
 {
-  v2 = [a1 userCacheDirectoryPath];
-  if (v2)
+  userCacheDirectoryPath = [self userCacheDirectoryPath];
+  if (userCacheDirectoryPath)
   {
-    v3 = [NSURL fileURLWithPath:v2 isDirectory:1];
+    v3 = [NSURL fileURLWithPath:userCacheDirectoryPath isDirectory:1];
     v4 = [v3 URLByAppendingPathComponent:@"momentsDataModel.sqlite"];
     v5 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -418,7 +418,7 @@ void __44__MOPersistenceManager_performBlockAndWait___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __49__MOPersistenceManager_currentManagedObjectModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentManagedObjectModel_onceToken != -1)
   {
     dispatch_once(&currentManagedObjectModel_onceToken, block);
@@ -441,18 +441,18 @@ uint64_t __49__MOPersistenceManager_currentManagedObjectModel__block_invoke(uint
 + (id)createModel
 {
   v3 = [NSManagedObjectModel alloc];
-  v4 = [a1 defaultModelsDirectory];
-  v5 = [v3 initWithContentsOfURL:v4];
+  defaultModelsDirectory = [self defaultModelsDirectory];
+  v5 = [v3 initWithContentsOfURL:defaultModelsDirectory];
 
   return v5;
 }
 
 + (id)getPlistFileURL
 {
-  v2 = [a1 userCacheDirectoryPath];
-  if (v2)
+  userCacheDirectoryPath = [self userCacheDirectoryPath];
+  if (userCacheDirectoryPath)
   {
-    v3 = [NSURL fileURLWithPath:v2 isDirectory:1];
+    v3 = [NSURL fileURLWithPath:userCacheDirectoryPath isDirectory:1];
     v4 = [v3 URLByAppendingPathComponent:@"lastCollection.plist"];
   }
 
@@ -479,10 +479,10 @@ uint64_t __49__MOPersistenceManager_currentManagedObjectModel__block_invoke(uint
 
 + (id)getCollectionDate
 {
-  v2 = [a1 getPlistFileURL];
+  getPlistFileURL = [self getPlistFileURL];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [getPlistFileURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -496,7 +496,7 @@ uint64_t __49__MOPersistenceManager_currentManagedObjectModel__block_invoke(uint
     }
 
     v13 = 0;
-    v8 = [[NSDictionary alloc] initWithContentsOfURL:v2 error:&v13];
+    v8 = [[NSDictionary alloc] initWithContentsOfURL:getPlistFileURL error:&v13];
     v6 = v13;
     if (v6 || !v8)
     {
@@ -549,10 +549,10 @@ LABEL_18:
   return v9;
 }
 
-+ (id)getBundlingJSONURLWithTrigger:(unint64_t)a3
++ (id)getBundlingJSONURLWithTrigger:(unint64_t)trigger
 {
-  v3 = a3 - 1;
-  if (a3 - 1 < 5 && ((0x1Bu >> v3) & 1) != 0)
+  v3 = trigger - 1;
+  if (trigger - 1 < 5 && ((0x1Bu >> v3) & 1) != 0)
   {
     v4 = [MOPersistenceUtilities getBundlingJSONURLWithDirectorySuffix:*(&off_10033C9E8 + v3)];
   }
@@ -571,15 +571,15 @@ LABEL_18:
   return v4;
 }
 
-- (int)_acquireBackgroundAssertionForFileDescriptor:(int)a3
+- (int)_acquireBackgroundAssertionForFileDescriptor:(int)descriptor
 {
-  v4 = [(MOPersistenceManager *)self configurationManager];
-  [v4 getDoubleSettingForKey:@"persistenceDriverBackgroundProcessingAssertionDuration" withFallback:86400.0];
+  configurationManager = [(MOPersistenceManager *)self configurationManager];
+  [configurationManager getDoubleSettingForKey:@"persistenceDriverBackgroundProcessingAssertionDuration" withFallback:86400.0];
   v6 = v5;
 
   v8[0] = 0;
   v8[1] = (v6 * 1000000000.0);
-  return fcntl(a3, 108, v8);
+  return fcntl(descriptor, 108, v8);
 }
 
 + (id)protectedStoreFilesExtensions
@@ -597,12 +597,12 @@ LABEL_18:
   return v2;
 }
 
-- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)a3 cacheFileExtension:(id)a4
+- (BOOL)_acquireBackgroundProcessingPermissionForStoreURL:(id)l cacheFileExtension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 path];
-  v10 = [v9 stringByReplacingOccurrencesOfString:@"sqlite" withString:v8];
+  lCopy = l;
+  extensionCopy = extension;
+  path = [lCopy path];
+  v10 = [path stringByReplacingOccurrencesOfString:@"sqlite" withString:extensionCopy];
 
   v11 = [(MOPersistenceManager *)self _getFileDescriptorForPersistenceStoreFile:v10];
   if ((v11 & 0x80000000) != 0)
@@ -630,7 +630,7 @@ LABEL_18:
       v22 = 138413314;
       v23 = v15;
       v24 = 2112;
-      v25 = v7;
+      v25 = lCopy;
       v26 = 1024;
       *v27 = v12;
       *&v27[4] = 1024;
@@ -652,9 +652,9 @@ LABEL_7:
     v22 = 138412802;
     v23 = v21;
     v24 = 2112;
-    v25 = v7;
+    v25 = lCopy;
     v26 = 2112;
-    *v27 = v8;
+    *v27 = extensionCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@ Succeed to acquire background processing assertion for the persistence store type %@ and the extension %@", &v22, 0x20u);
   }
 
@@ -713,23 +713,23 @@ LABEL_11:
 
 - (BOOL)acquireBackgroundProcessingPermissions
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MOPersistenceManager *)self queue];
+  queue = [(MOPersistenceManager *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __62__MOPersistenceManager_acquireBackgroundProcessingPermissions__block_invoke;
   v5[3] = &unk_10033C6A8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 id __62__MOPersistenceManager_acquireBackgroundProcessingPermissions__block_invoke(uint64_t a1)

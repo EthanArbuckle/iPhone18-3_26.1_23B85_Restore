@@ -6,7 +6,7 @@
 - (int)clientType;
 - (void)_wifiClient;
 - (void)dealloc;
-- (void)setClientType:(int)a3;
+- (void)setClientType:(int)type;
 @end
 
 @implementation WiFiManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100227C3C;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100384180 != -1)
   {
     dispatch_once(&qword_100384180, block);
@@ -98,7 +98,7 @@
   return v3;
 }
 
-- (void)setClientType:(int)a3
+- (void)setClientType:(int)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -106,7 +106,7 @@
   v4[2] = sub_100227F9C;
   v4[3] = &unk_10032CC10;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_async(dispatchQueue, v4);
 }
 

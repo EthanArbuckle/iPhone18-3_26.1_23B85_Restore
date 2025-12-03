@@ -1,23 +1,23 @@
 @interface AWDCoreRoutineLearnedRouteInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)majorGapLengthAtIndex:(unint64_t)a3;
+- (int)majorGapLengthAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addLocationTypeHistogram:(id)a3;
-- (void)addRoadClassHistogram:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addLocationTypeHistogram:(id)histogram;
+- (void)addRoadClassHistogram:(id)histogram;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFailureReason:(BOOL)a3;
-- (void)setHasLatitudeTruncated:(BOOL)a3;
-- (void)setHasLength:(BOOL)a3;
-- (void)setHasLongitudeTruncated:(BOOL)a3;
-- (void)setHasNumberOfFilteredLocations:(BOOL)a3;
-- (void)setHasNumberOfInputLocations:(BOOL)a3;
-- (void)setHasRecoveryTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasFailureReason:(BOOL)reason;
+- (void)setHasLatitudeTruncated:(BOOL)truncated;
+- (void)setHasLength:(BOOL)length;
+- (void)setHasLongitudeTruncated:(BOOL)truncated;
+- (void)setHasNumberOfFilteredLocations:(BOOL)locations;
+- (void)setHasNumberOfInputLocations:(BOOL)locations;
+- (void)setHasRecoveryTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLearnedRouteInstance
@@ -32,9 +32,9 @@
   [(AWDCoreRoutineLearnedRouteInstance *)&v3 dealloc];
 }
 
-- (void)setHasNumberOfInputLocations:(BOOL)a3
+- (void)setHasNumberOfInputLocations:(BOOL)locations
 {
-  if (a3)
+  if (locations)
   {
     v3 = 64;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNumberOfFilteredLocations:(BOOL)a3
+- (void)setHasNumberOfFilteredLocations:(BOOL)locations
 {
-  if (a3)
+  if (locations)
   {
     v3 = 32;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasLength:(BOOL)a3
+- (void)setHasLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 8;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRecoveryTime:(BOOL)a3
+- (void)setHasRecoveryTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 0x80;
   }
@@ -92,9 +92,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasFailureReason:(BOOL)a3
+- (void)setHasFailureReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -107,9 +107,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLatitudeTruncated:(BOOL)a3
+- (void)setHasLatitudeTruncated:(BOOL)truncated
 {
-  if (a3)
+  if (truncated)
   {
     v3 = 4;
   }
@@ -122,9 +122,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLongitudeTruncated:(BOOL)a3
+- (void)setHasLongitudeTruncated:(BOOL)truncated
 {
-  if (a3)
+  if (truncated)
   {
     v3 = 16;
   }
@@ -137,7 +137,7 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addRoadClassHistogram:(id)a3
+- (void)addRoadClassHistogram:(id)histogram
 {
   roadClassHistograms = self->_roadClassHistograms;
   if (!roadClassHistograms)
@@ -146,10 +146,10 @@
     self->_roadClassHistograms = roadClassHistograms;
   }
 
-  [(NSMutableArray *)roadClassHistograms addObject:a3];
+  [(NSMutableArray *)roadClassHistograms addObject:histogram];
 }
 
-- (void)addLocationTypeHistogram:(id)a3
+- (void)addLocationTypeHistogram:(id)histogram
 {
   locationTypeHistograms = self->_locationTypeHistograms;
   if (!locationTypeHistograms)
@@ -158,19 +158,19 @@
     self->_locationTypeHistograms = locationTypeHistograms;
   }
 
-  [(NSMutableArray *)locationTypeHistograms addObject:a3];
+  [(NSMutableArray *)locationTypeHistograms addObject:histogram];
 }
 
-- (int)majorGapLengthAtIndex:(unint64_t)a3
+- (int)majorGapLengthAtIndex:(unint64_t)index
 {
   p_majorGapLengths = &self->_majorGapLengths;
   count = self->_majorGapLengths.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_majorGapLengths->list[a3];
+  return p_majorGapLengths->list[index];
 }
 
 - (id)description
@@ -183,11 +183,11 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -206,7 +206,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_numberOfInputLocations), @"numberOfInputLocations"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_numberOfInputLocations), @"numberOfInputLocations"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -220,7 +220,7 @@ LABEL_4:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_numberOfFilteredLocations), @"numberOfFilteredLocations"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_numberOfFilteredLocations), @"numberOfFilteredLocations"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -234,7 +234,7 @@ LABEL_5:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_length), @"length"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_length), @"length"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -248,7 +248,7 @@ LABEL_6:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_recoveryTime), @"recoveryTime"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_recoveryTime), @"recoveryTime"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -262,7 +262,7 @@ LABEL_7:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_failureReason), @"failureReason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_failureReason), @"failureReason"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -276,11 +276,11 @@ LABEL_8:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_latitudeTruncated), @"latitudeTruncated"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_latitudeTruncated), @"latitudeTruncated"}];
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_longitudeTruncated), @"longitudeTruncated"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_longitudeTruncated), @"longitudeTruncated"}];
   }
 
 LABEL_10:
@@ -315,7 +315,7 @@ LABEL_10:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"roadClassHistogram"];
+    [dictionary setObject:v5 forKey:@"roadClassHistogram"];
   }
 
   if ([(NSMutableArray *)self->_locationTypeHistograms count])
@@ -349,15 +349,15 @@ LABEL_10:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"locationTypeHistogram"];
+    [dictionary setObject:v11 forKey:@"locationTypeHistogram"];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"majorGapLength"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"majorGapLength"];
   v17 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -543,13 +543,13 @@ LABEL_10:
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 88) |= 1u;
+    *(to + 4) = self->_timestamp;
+    *(to + 88) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -568,8 +568,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 18) = self->_numberOfInputLocations;
-  *(a3 + 88) |= 0x40u;
+  *(to + 18) = self->_numberOfInputLocations;
+  *(to + 88) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -583,8 +583,8 @@ LABEL_4:
   }
 
 LABEL_25:
-  *(a3 + 17) = self->_numberOfFilteredLocations;
-  *(a3 + 88) |= 0x20u;
+  *(to + 17) = self->_numberOfFilteredLocations;
+  *(to + 88) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -598,8 +598,8 @@ LABEL_5:
   }
 
 LABEL_26:
-  *(a3 + 12) = self->_length;
-  *(a3 + 88) |= 8u;
+  *(to + 12) = self->_length;
+  *(to + 88) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -613,8 +613,8 @@ LABEL_6:
   }
 
 LABEL_27:
-  *(a3 + 19) = self->_recoveryTime;
-  *(a3 + 88) |= 0x80u;
+  *(to + 19) = self->_recoveryTime;
+  *(to + 88) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -625,8 +625,8 @@ LABEL_7:
     }
 
 LABEL_29:
-    *(a3 + 11) = self->_latitudeTruncated;
-    *(a3 + 88) |= 4u;
+    *(to + 11) = self->_latitudeTruncated;
+    *(to + 88) |= 4u;
     if ((*&self->_has & 0x10) == 0)
     {
       goto LABEL_10;
@@ -636,8 +636,8 @@ LABEL_29:
   }
 
 LABEL_28:
-  *(a3 + 10) = self->_failureReason;
-  *(a3 + 88) |= 2u;
+  *(to + 10) = self->_failureReason;
+  *(to + 88) |= 2u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -648,58 +648,58 @@ LABEL_8:
   if ((has & 0x10) != 0)
   {
 LABEL_9:
-    *(a3 + 16) = self->_longitudeTruncated;
-    *(a3 + 88) |= 0x10u;
+    *(to + 16) = self->_longitudeTruncated;
+    *(to + 88) |= 0x10u;
   }
 
 LABEL_10:
   if ([(AWDCoreRoutineLearnedRouteInstance *)self roadClassHistogramsCount])
   {
-    [a3 clearRoadClassHistograms];
-    v6 = [(AWDCoreRoutineLearnedRouteInstance *)self roadClassHistogramsCount];
-    if (v6)
+    [to clearRoadClassHistograms];
+    roadClassHistogramsCount = [(AWDCoreRoutineLearnedRouteInstance *)self roadClassHistogramsCount];
+    if (roadClassHistogramsCount)
     {
-      v7 = v6;
+      v7 = roadClassHistogramsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addRoadClassHistogram:{-[AWDCoreRoutineLearnedRouteInstance roadClassHistogramAtIndex:](self, "roadClassHistogramAtIndex:", i)}];
+        [to addRoadClassHistogram:{-[AWDCoreRoutineLearnedRouteInstance roadClassHistogramAtIndex:](self, "roadClassHistogramAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLearnedRouteInstance *)self locationTypeHistogramsCount])
   {
-    [a3 clearLocationTypeHistograms];
-    v9 = [(AWDCoreRoutineLearnedRouteInstance *)self locationTypeHistogramsCount];
-    if (v9)
+    [to clearLocationTypeHistograms];
+    locationTypeHistogramsCount = [(AWDCoreRoutineLearnedRouteInstance *)self locationTypeHistogramsCount];
+    if (locationTypeHistogramsCount)
     {
-      v10 = v9;
+      v10 = locationTypeHistogramsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addLocationTypeHistogram:{-[AWDCoreRoutineLearnedRouteInstance locationTypeHistogramAtIndex:](self, "locationTypeHistogramAtIndex:", j)}];
+        [to addLocationTypeHistogram:{-[AWDCoreRoutineLearnedRouteInstance locationTypeHistogramAtIndex:](self, "locationTypeHistogramAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineLearnedRouteInstance *)self majorGapLengthsCount])
   {
-    [a3 clearMajorGapLengths];
-    v12 = [(AWDCoreRoutineLearnedRouteInstance *)self majorGapLengthsCount];
-    if (v12)
+    [to clearMajorGapLengths];
+    majorGapLengthsCount = [(AWDCoreRoutineLearnedRouteInstance *)self majorGapLengthsCount];
+    if (majorGapLengthsCount)
     {
-      v13 = v12;
+      v13 = majorGapLengthsCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addMajorGapLength:{-[AWDCoreRoutineLearnedRouteInstance majorGapLengthAtIndex:](self, "majorGapLengthAtIndex:", k)}];
+        [to addMajorGapLength:{-[AWDCoreRoutineLearnedRouteInstance majorGapLengthAtIndex:](self, "majorGapLengthAtIndex:", k)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -828,7 +828,7 @@ LABEL_10:
           objc_enumerationMutation(roadClassHistograms);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v6 addRoadClassHistogram:v13];
       }
 
@@ -857,7 +857,7 @@ LABEL_10:
           objc_enumerationMutation(locationTypeHistograms);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:zone];
         [v6 addLocationTypeHistogram:v19];
       }
 
@@ -872,126 +872,126 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 88);
+  v5 = *(equal + 88);
   if (*&self->_has)
   {
-    if ((*(a3 + 88) & 1) == 0 || self->_timestamp != *(a3 + 4))
+    if ((*(equal + 88) & 1) == 0 || self->_timestamp != *(equal + 4))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 88))
+  else if (*(equal + 88))
   {
     return 0;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(a3 + 88) & 0x40) == 0 || self->_numberOfInputLocations != *(a3 + 18))
+    if ((*(equal + 88) & 0x40) == 0 || self->_numberOfInputLocations != *(equal + 18))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 0x40) != 0)
+  else if ((*(equal + 88) & 0x40) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(a3 + 88) & 0x20) == 0 || self->_numberOfFilteredLocations != *(a3 + 17))
+    if ((*(equal + 88) & 0x20) == 0 || self->_numberOfFilteredLocations != *(equal + 17))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 0x20) != 0)
+  else if ((*(equal + 88) & 0x20) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 88) & 8) == 0 || self->_length != *(a3 + 12))
+    if ((*(equal + 88) & 8) == 0 || self->_length != *(equal + 12))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 8) != 0)
+  else if ((*(equal + 88) & 8) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(a3 + 88) & 0x80) == 0 || self->_recoveryTime != *(a3 + 19))
+    if ((*(equal + 88) & 0x80) == 0 || self->_recoveryTime != *(equal + 19))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 0x80) != 0)
+  else if ((*(equal + 88) & 0x80) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 88) & 2) == 0 || self->_failureReason != *(a3 + 10))
+    if ((*(equal + 88) & 2) == 0 || self->_failureReason != *(equal + 10))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 2) != 0)
+  else if ((*(equal + 88) & 2) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 88) & 4) == 0 || self->_latitudeTruncated != *(a3 + 11))
+    if ((*(equal + 88) & 4) == 0 || self->_latitudeTruncated != *(equal + 11))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 4) != 0)
+  else if ((*(equal + 88) & 4) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 88) & 0x10) == 0 || self->_longitudeTruncated != *(a3 + 16))
+    if ((*(equal + 88) & 0x10) == 0 || self->_longitudeTruncated != *(equal + 16))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 88) & 0x10) != 0)
+  else if ((*(equal + 88) & 0x10) != 0)
   {
     return 0;
   }
 
   roadClassHistograms = self->_roadClassHistograms;
-  if (roadClassHistograms | *(a3 + 10) && ![(NSMutableArray *)roadClassHistograms isEqual:?])
+  if (roadClassHistograms | *(equal + 10) && ![(NSMutableArray *)roadClassHistograms isEqual:?])
   {
     return 0;
   }
 
   locationTypeHistograms = self->_locationTypeHistograms;
-  if (locationTypeHistograms | *(a3 + 7))
+  if (locationTypeHistograms | *(equal + 7))
   {
     if (![(NSMutableArray *)locationTypeHistograms isEqual:?])
     {
@@ -1115,15 +1115,15 @@ LABEL_18:
   return v11 ^ v12 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if (v5)
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 1u;
-    v5 = *(a3 + 88);
+    v5 = *(from + 88);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -1136,14 +1136,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 88) & 0x40) == 0)
+  else if ((*(from + 88) & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_numberOfInputLocations = *(a3 + 18);
+  self->_numberOfInputLocations = *(from + 18);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -1156,9 +1156,9 @@ LABEL_4:
   }
 
 LABEL_30:
-  self->_numberOfFilteredLocations = *(a3 + 17);
+  self->_numberOfFilteredLocations = *(from + 17);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -1171,9 +1171,9 @@ LABEL_5:
   }
 
 LABEL_31:
-  self->_length = *(a3 + 12);
+  self->_length = *(from + 12);
   *&self->_has |= 8u;
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1186,9 +1186,9 @@ LABEL_6:
   }
 
 LABEL_32:
-  self->_recoveryTime = *(a3 + 19);
+  self->_recoveryTime = *(from + 19);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -1201,9 +1201,9 @@ LABEL_7:
   }
 
 LABEL_33:
-  self->_failureReason = *(a3 + 10);
+  self->_failureReason = *(from + 10);
   *&self->_has |= 2u;
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1216,12 +1216,12 @@ LABEL_8:
   }
 
 LABEL_34:
-  self->_latitudeTruncated = *(a3 + 11);
+  self->_latitudeTruncated = *(from + 11);
   *&self->_has |= 4u;
-  if ((*(a3 + 88) & 0x10) != 0)
+  if ((*(from + 88) & 0x10) != 0)
   {
 LABEL_9:
-    self->_longitudeTruncated = *(a3 + 16);
+    self->_longitudeTruncated = *(from + 16);
     *&self->_has |= 0x10u;
   }
 
@@ -1230,7 +1230,7 @@ LABEL_10:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = *(a3 + 10);
+  v6 = *(from + 10);
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -1258,7 +1258,7 @@ LABEL_10:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = *(a3 + 7);
+  v11 = *(from + 7);
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v12)
   {
@@ -1282,13 +1282,13 @@ LABEL_10:
     while (v13);
   }
 
-  v16 = [a3 majorGapLengthsCount];
-  if (v16)
+  majorGapLengthsCount = [from majorGapLengthsCount];
+  if (majorGapLengthsCount)
   {
-    v17 = v16;
+    v17 = majorGapLengthsCount;
     for (k = 0; k != v17; ++k)
     {
-      -[AWDCoreRoutineLearnedRouteInstance addMajorGapLength:](self, "addMajorGapLength:", [a3 majorGapLengthAtIndex:k]);
+      -[AWDCoreRoutineLearnedRouteInstance addMajorGapLength:](self, "addMajorGapLength:", [from majorGapLengthAtIndex:k]);
     }
   }
 

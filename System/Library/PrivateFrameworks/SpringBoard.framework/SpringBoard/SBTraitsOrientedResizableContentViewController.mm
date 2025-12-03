@@ -1,23 +1,23 @@
 @interface SBTraitsOrientedResizableContentViewController
-- (SBTraitsOrientedResizableContentViewController)initWithContentViewController:(id)a3 delegate:(id)a4;
+- (SBTraitsOrientedResizableContentViewController)initWithContentViewController:(id)controller delegate:(id)delegate;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SBTraitsOrientedResizableContentViewController
 
-- (SBTraitsOrientedResizableContentViewController)initWithContentViewController:(id)a3 delegate:(id)a4
+- (SBTraitsOrientedResizableContentViewController)initWithContentViewController:(id)controller delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SBTraitsOrientedResizableContentViewController;
   v9 = [(SBTraitsOrientedResizableContentViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_delegate, a4);
-    objc_storeStrong(&v10->_contentViewController, a3);
+    objc_storeStrong(&v9->_delegate, delegate);
+    objc_storeStrong(&v10->_contentViewController, controller);
   }
 
   return v10;
@@ -37,8 +37,8 @@
   v5.super_class = SBTraitsOrientedResizableContentViewController;
   [(SBTraitsOrientedResizableContentViewController *)&v5 viewDidLayoutSubviews];
   delegate = self->_delegate;
-  v4 = [(SBTraitsOrientedResizableContentViewController *)self view];
-  [v4 bounds];
+  view = [(SBTraitsOrientedResizableContentViewController *)self view];
+  [view bounds];
   [(SBResizableContentViewControllerDelegate *)delegate resizableContentViewController:self didUpdateToBounds:?];
 }
 

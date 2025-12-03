@@ -1,14 +1,14 @@
 @interface CSSearchClientConnection
-- (CSSearchClientConnection)initWithConnection:(id)a3;
-- (CSSearchClientConnection)initWithConnectionConfiguration:(id)a3;
+- (CSSearchClientConnection)initWithConnection:(id)connection;
+- (CSSearchClientConnection)initWithConnectionConfiguration:(id)configuration;
 - (id)description;
-- (id)queryTask:(int64_t)a3;
+- (id)queryTask:(int64_t)task;
 - (void)_didReceiveResultsBatchCompletion;
-- (void)_willSendResultsBatch:(id)a3 qid:(int64_t)a4;
+- (void)_willSendResultsBatch:(id)batch qid:(int64_t)qid;
 - (void)cancelQueryTasks;
 - (void)dealloc;
-- (void)pollResultsForQueryTask:(int64_t)a3;
-- (void)setQueryTask:(id)a3 forQueryID:(int64_t)a4;
+- (void)pollResultsForQueryTask:(int64_t)task;
+- (void)setQueryTask:(id)task forQueryID:(int64_t)d;
 @end
 
 @implementation CSSearchClientConnection
@@ -22,34 +22,34 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (CSSearchClientConnection)initWithConnectionConfiguration:(id)a3
+- (CSSearchClientConnection)initWithConnectionConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = CSSearchClientConnection;
   v6 = [(CSSearchClientConnection *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_opt_new();
     queryTasks = v7->_queryTasks;
     v7->_queryTasks = v8;
 
-    v10 = [v5 bundleID];
-    if (v10)
+    bundleID = [configurationCopy bundleID];
+    if (bundleID)
     {
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    if (([v5 searchInternal] & 1) == 0)
+    if (([configurationCopy searchInternal] & 1) == 0)
     {
-      v10 = logForCSLogCategoryDefault();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      bundleID = logForCSLogCategoryDefault();
+      if (os_log_type_enabled(bundleID, OS_LOG_TYPE_ERROR))
       {
-        [CSSearchClientConnection initWithConnectionConfiguration:v5];
+        [CSSearchClientConnection initWithConnectionConfiguration:configurationCopy];
       }
 
       goto LABEL_6;
@@ -61,19 +61,19 @@ LABEL_7:
   return v7;
 }
 
-- (CSSearchClientConnection)initWithConnection:(id)a3
+- (CSSearchClientConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [SDConnectionConfiguration alloc];
-  v6 = [(SDConnectionConfiguration *)v5 initWithConnection:v4 isPrivate:sSearchAgentIsPrivate];
+  v6 = [(SDConnectionConfiguration *)v5 initWithConnection:connectionCopy isPrivate:sSearchAgentIsPrivate];
 
   v7 = [(CSSearchClientConnection *)self initWithConnectionConfiguration:v6];
   return v7;
 }
 
-- (void)pollResultsForQueryTask:(int64_t)a3
+- (void)pollResultsForQueryTask:(int64_t)task
 {
-  if (a3)
+  if (task)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     v5 = self->_queryTasks;
@@ -85,9 +85,9 @@ LABEL_7:
   }
 }
 
-- (id)queryTask:(int64_t)a3
+- (id)queryTask:(int64_t)task
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:task];
   v5 = self->_queryTasks;
   objc_sync_enter(v5);
   v6 = [(NSMutableDictionary *)self->_queryTasks objectForKeyedSubscript:v4];
@@ -96,13 +96,13 @@ LABEL_7:
   return v6;
 }
 
-- (void)setQueryTask:(id)a3 forQueryID:(int64_t)a4
+- (void)setQueryTask:(id)task forQueryID:(int64_t)d
 {
-  v8 = a3;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  taskCopy = task;
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:d];
   v7 = self->_queryTasks;
   objc_sync_enter(v7);
-  [(NSMutableDictionary *)self->_queryTasks setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_queryTasks setObject:taskCopy forKeyedSubscript:v6];
   objc_sync_exit(v7);
 }
 
@@ -161,9 +161,9 @@ LABEL_7:
   [(CSSearchClientConnection *)&v3 dealloc];
 }
 
-- (void)_willSendResultsBatch:(id)a3 qid:(int64_t)a4
+- (void)_willSendResultsBatch:(id)batch qid:(int64_t)qid
 {
-  v6 = a3;
+  batchCopy = batch;
   add = atomic_fetch_add(&self->_outBatchCount, 1u);
   if (add == 6)
   {
@@ -183,17 +183,17 @@ LABEL_7:
 
   if (self->_pausedTasks)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:qid];
     if (([(NSMutableOrderedSet *)self->_pausedTasks containsObject:v11]& 1) == 0)
     {
       [(NSMutableOrderedSet *)self->_pausedTasks addObject:v11];
       v12 = logForCSLogCategoryQuery();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [(CSSearchClientConnection *)add _willSendResultsBatch:a4 qid:v12];
+        [(CSSearchClientConnection *)add _willSendResultsBatch:qid qid:v12];
       }
 
-      [v6 pauseResults];
+      [batchCopy pauseResults];
     }
   }
 }
@@ -201,10 +201,10 @@ LABEL_7:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SDConnectionConfiguration *)self->_configuration bundleID];
-  v5 = [(SDConnectionConfiguration *)self->_configuration protectionClass];
-  v6 = [(SDConnectionConfiguration *)self->_configuration connection];
-  v7 = [v3 stringWithFormat:@"CSSearchClientConnection bundleID:%@, protectionClass:%@, conn:%@", v4, v5, v6];
+  bundleID = [(SDConnectionConfiguration *)self->_configuration bundleID];
+  protectionClass = [(SDConnectionConfiguration *)self->_configuration protectionClass];
+  connection = [(SDConnectionConfiguration *)self->_configuration connection];
+  v7 = [v3 stringWithFormat:@"CSSearchClientConnection bundleID:%@, protectionClass:%@, conn:%@", bundleID, protectionClass, connection];
 
   return v7;
 }

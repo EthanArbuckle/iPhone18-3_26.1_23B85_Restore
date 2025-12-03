@@ -1,14 +1,14 @@
 @interface UniversalCandidateCoreDataRecord
-- (UniversalCandidateCoreDataRecord)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (UniversalCandidateCoreDataRecord)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation UniversalCandidateCoreDataRecord
 
-- (UniversalCandidateCoreDataRecord)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (UniversalCandidateCoreDataRecord)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UniversalCandidateCoreDataRecord();
-  return [(UniversalCandidateCoreDataRecord *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(UniversalCandidateCoreDataRecord *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

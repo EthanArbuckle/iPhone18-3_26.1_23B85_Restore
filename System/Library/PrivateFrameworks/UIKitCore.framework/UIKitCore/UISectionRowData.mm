@@ -1,39 +1,39 @@
 @interface UISectionRowData
-+ (uint64_t)sectionLocationForRow:(uint64_t)a3 inSection:(uint64_t)a4 numRows:(uint64_t)a5 gapIndexPath:(void *)a6 rowSpacing:;
-- (double)_headerFooterSizeForSection:(void *)a3 inTable:(uint64_t)a4 withTitle:(uint64_t)a5 detailText:(uint64_t)a6 isHeader:(int)a7 stripPaddingForAbuttingView:(uint64_t)a8 isTopHeader:;
++ (uint64_t)sectionLocationForRow:(uint64_t)row inSection:(uint64_t)section numRows:(uint64_t)rows gapIndexPath:(void *)path rowSpacing:;
+- (double)_headerFooterSizeForSection:(void *)section inTable:(uint64_t)table withTitle:(uint64_t)title detailText:(uint64_t)text isHeader:(int)header stripPaddingForAbuttingView:(uint64_t)view isTopHeader:;
 - (double)addOffset:(double)result fromRow:;
 - (double)deleteRowAtIndex:(double)result;
 - (double)headerSize;
-- (double)heightForFooterInSection:(char)a3 canGuess:;
-- (double)heightForRow:(uint64_t)a3 inSection:(char)a4 canGuess:;
-- (double)insertRowAtIndex:(uint64_t)a3 inSection:(uint64_t)a4 rowHeight:(double)result tableViewRowData:;
-- (double)offsetForRow:(char)a3 adjustedForGap:;
-- (double)sizeForHeaderInSection:(char)a3 canGuess:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)heightForFooterInSection:(char)section canGuess:;
+- (double)heightForRow:(uint64_t)row inSection:(char)section canGuess:;
+- (double)insertRowAtIndex:(uint64_t)index inSection:(uint64_t)section rowHeight:(double)result tableViewRowData:;
+- (double)offsetForRow:(char)row adjustedForGap:;
+- (double)sizeForHeaderInSection:(char)section canGuess:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)_rowForPoint:(int64_t)a3 beginningWithRow:(double)a4 numberOfRows:(double)a5 extraHitSpaceBetweenRows:(double)a6;
-- (uint64_t)updateSectionHeightWithDelta:(int)a3 section:(double)a4 updateFooterOffset:;
-- (void)allocateArraysWithCapacity:(uint64_t)a3 forSection:;
+- (uint64_t)_rowForPoint:(int64_t)point beginningWithRow:(double)row numberOfRows:(double)rows extraHitSpaceBetweenRows:(double)betweenRows;
+- (uint64_t)updateSectionHeightWithDelta:(int)delta section:(double)section updateFooterOffset:;
+- (void)allocateArraysWithCapacity:(uint64_t)capacity forSection:;
 - (void)dealloc;
-- (void)heightForEmptySection:(uint64_t)a1 inTableView:(void *)a2 rowData:(void *)a3;
-- (void)refreshWithSection:(void *)a3 tableView:(uint64_t)a4 tableViewRowData:;
+- (void)heightForEmptySection:(uint64_t)section inTableView:(void *)view rowData:(void *)data;
+- (void)refreshWithSection:(void *)section tableView:(uint64_t)view tableViewRowData:;
 @end
 
 @implementation UISectionRowData
 
 - (double)headerSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (![*(*(a1 + 96) + 8) _sectionHeadersHugContent])
+  if (![*(*(self + 96) + 8) _sectionHeadersHugContent])
   {
-    return [(UITableViewRowData *)*(a1 + 96) fullContentWidth];
+    return [(UITableViewRowData *)*(self + 96) fullContentWidth];
   }
 
-  result = *(a1 + 104);
+  result = *(self + 104);
   if (result < -1.0)
   {
     return -result;
@@ -51,13 +51,13 @@
   [(UISectionRowData *)&v3 dealloc];
 }
 
-- (void)allocateArraysWithCapacity:(uint64_t)a3 forSection:
+- (void)allocateArraysWithCapacity:(uint64_t)capacity forSection:
 {
-  *(a1 + 128) = a2;
-  *(a1 + 136) = malloc_type_realloc(*(a1 + 136), 4 * a2, 0x100004052888210uLL);
-  v6 = malloc_type_realloc(*(a1 + 144), 8 * a2, 0x100004000313F17uLL);
-  *(a1 + 144) = v6;
-  if (*(a1 + 136))
+  *(self + 128) = a2;
+  *(self + 136) = malloc_type_realloc(*(self + 136), 4 * a2, 0x100004052888210uLL);
+  v6 = malloc_type_realloc(*(self + 144), 8 * a2, 0x100004000313F17uLL);
+  *(self + 144) = v6;
+  if (*(self + 136))
   {
     v7 = v6 == 0;
   }
@@ -69,16 +69,16 @@
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:sel_allocateArraysWithCapacity_forSection_ object:a1 file:@"UITableViewRowData.m" lineNumber:216 description:{@"Failed to allocate data stores for %ld rows in section %ld. Consider using fewer rows", *(a1 + 32), a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_allocateArraysWithCapacity_forSection_ object:self file:@"UITableViewRowData.m" lineNumber:216 description:{@"Failed to allocate data stores for %ld rows in section %ld. Consider using fewer rows", *(self + 32), capacity}];
   }
 }
 
-- (double)_headerFooterSizeForSection:(void *)a3 inTable:(uint64_t)a4 withTitle:(uint64_t)a5 detailText:(uint64_t)a6 isHeader:(int)a7 stripPaddingForAbuttingView:(uint64_t)a8 isTopHeader:
+- (double)_headerFooterSizeForSection:(void *)section inTable:(uint64_t)table withTitle:(uint64_t)title detailText:(uint64_t)text isHeader:(int)header stripPaddingForAbuttingView:(uint64_t)view isTopHeader:
 {
-  HIDWORD(v37) = a7;
-  [a3 _prepareForRowDataHeaderFooterSizing];
-  v15 = *(*(a1 + 96) + 16);
+  HIDWORD(v37) = header;
+  [section _prepareForRowDataHeaderFooterSizing];
+  v15 = *(*(self + 96) + 16);
   if (v15)
   {
     v16 = v15;
@@ -88,66 +88,66 @@
   else
   {
     v16 = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:0];
-    objc_storeStrong((*(a1 + 96) + 16), v16);
+    objc_storeStrong((*(self + 96) + 16), v16);
   }
 
   v17 = 72;
-  if (a6)
+  if (text)
   {
     v17 = 64;
   }
 
-  v18 = *(a1 + v17);
+  v18 = *(self + v17);
   if (_UITableViewHeadersFootersUseModernConfiguration() && (objc_opt_respondsToSelector() & 1) != 0)
   {
     LOBYTE(v37) = 0;
-    [a3 _configureTableHeaderFooterView:v16 forHeader:a6 section:a2 floating:0 withTitle:a4 detailText:a5 textAlignment:v18 fromClient:v37];
+    [section _configureTableHeaderFooterView:v16 forHeader:text section:a2 floating:0 withTitle:table detailText:title textAlignment:v18 fromClient:v37];
     v19 = 1;
   }
 
   else
   {
-    [(UITableViewHeaderFooterView *)v16 setTable:a3];
-    v20 = [a3 _constants];
-    [(UITableViewHeaderFooterView *)v16 _setConstants:v20];
+    [(UITableViewHeaderFooterView *)v16 setTable:section];
+    _constants = [section _constants];
+    [(UITableViewHeaderFooterView *)v16 _setConstants:_constants];
 
-    v21 = [a3 _metricsAdapter];
-    [(UITableViewHeaderFooterView *)v16 _setMetricsAdapter:v21];
+    _metricsAdapter = [section _metricsAdapter];
+    [(UITableViewHeaderFooterView *)v16 _setMetricsAdapter:_metricsAdapter];
 
-    -[UITableViewHeaderFooterView setTableViewStyle:](v16, "setTableViewStyle:", [a3 _tableStyle]);
-    [(UITableViewHeaderFooterView *)v16 setSectionHeader:a6];
+    -[UITableViewHeaderFooterView setTableViewStyle:](v16, "setTableViewStyle:", [section _tableStyle]);
+    [(UITableViewHeaderFooterView *)v16 setSectionHeader:text];
     [(UITableViewHeaderFooterView *)v16 setTextAlignment:v18];
     v22 = [off_1E70ECC18 systemFontOfSize:0.0];
-    v23 = [(UITableViewHeaderFooterView *)v16 textLabel];
-    [v23 setFont:v22];
+    textLabel = [(UITableViewHeaderFooterView *)v16 textLabel];
+    [textLabel setFont:v22];
 
     v24 = [off_1E70ECC18 systemFontOfSize:0.0];
-    v25 = [(UITableViewHeaderFooterView *)v16 detailTextLabel];
-    [v25 setFont:v24];
+    detailTextLabel = [(UITableViewHeaderFooterView *)v16 detailTextLabel];
+    [detailTextLabel setFont:v24];
 
-    v26 = [(UITableViewHeaderFooterView *)v16 textLabel];
-    [v26 setText:a4];
+    textLabel2 = [(UITableViewHeaderFooterView *)v16 textLabel];
+    [textLabel2 setText:table];
 
-    v27 = [(UITableViewHeaderFooterView *)v16 detailTextLabel];
-    [v27 setText:a5];
+    detailTextLabel2 = [(UITableViewHeaderFooterView *)v16 detailTextLabel];
+    [detailTextLabel2 setText:title];
 
-    [a3 _headerFooterLeadingMarginWidthIsHeader:a6 isFirstSection:a8];
+    [section _headerFooterLeadingMarginWidthIsHeader:text isFirstSection:view];
     [(UITableViewHeaderFooterView *)v16 _setMarginWidth:?];
-    [a3 _headerFooterTrailingMarginWidth];
+    [section _headerFooterTrailingMarginWidth];
     [(UITableViewHeaderFooterView *)v16 _setRightMarginWidth:?];
     v28 = 88;
-    if (a6)
+    if (text)
     {
       v28 = 80;
     }
 
-    [(UITableViewHeaderFooterView *)v16 setMaxTitleWidth:*(a1 + v28)];
+    [(UITableViewHeaderFooterView *)v16 setMaxTitleWidth:*(self + v28)];
     [(UIView *)v16 setNeedsLayout];
     v19 = 0;
   }
 
-  [a3 _tableContentInset];
-  v31 = *(*(a1 + 96) + 24) - (v30 + v29);
+  [section _tableContentInset];
+  v31 = *(*(self + 96) + 24) - (v30 + v29);
   [(UITableViewHeaderFooterView *)v16 setFrame:v29, 0.0, v31, 0.0];
   if (v19)
   {
@@ -158,7 +158,7 @@
 
   else
   {
-    [(UITableViewHeaderFooterView *)v16 _sizeThatFits:HIDWORD(v37) stripPaddingForAbuttingView:a8 isTopHeader:v31, 3.40282347e38];
+    [(UITableViewHeaderFooterView *)v16 _sizeThatFits:HIDWORD(v37) stripPaddingForAbuttingView:view isTopHeader:v31, 3.40282347e38];
   }
 
   v35 = v34;
@@ -168,23 +168,23 @@
 
 - (double)addOffset:(double)result fromRow:
 {
-  if (a1)
+  if (self)
   {
     v3 = result;
-    v5 = *(a1 + 32);
+    v5 = *(self + 32);
     v6 = v5 >= a2;
     v7 = v5 - a2;
-    if (*(*(a1 + 96) + 72))
+    if (*(*(self + 96) + 72))
     {
       if (v7 != 0 && v6)
       {
-        memset_pattern16((*(a1 + 144) + 8 * a2), &xmmword_18A678720, 8 * v7);
+        memset_pattern16((*(self + 144) + 8 * a2), &xmmword_18A678720, 8 * v7);
       }
     }
 
     else if (v7 != 0 && v6)
     {
-      v8 = (*(a1 + 144) + 8 * a2);
+      v8 = (*(self + 144) + 8 * a2);
       do
       {
         *v8 = *v8 + result;
@@ -195,24 +195,24 @@
       while (v7);
     }
 
-    *(a1 + 56) = *(a1 + 56) + v3;
-    result = *(a1 + 40) + v3;
-    *(a1 + 40) = result;
+    *(self + 56) = *(self + 56) + v3;
+    result = *(self + 40) + v3;
+    *(self + 40) = result;
   }
 
   return result;
 }
 
-- (uint64_t)updateSectionHeightWithDelta:(int)a3 section:(double)a4 updateFooterOffset:
+- (uint64_t)updateSectionHeightWithDelta:(int)delta section:(double)section updateFooterOffset:
 {
-  *(a1 + 40) = *(a1 + 40) + a4;
-  if (a3)
+  *(self + 40) = *(self + 40) + section;
+  if (delta)
   {
-    *(a1 + 56) = *(a1 + 56) + a4;
+    *(self + 56) = *(self + 56) + section;
   }
 
   v6 = a2 + 1;
-  v7 = *(a1 + 96);
+  v7 = *(self + 96);
   v8 = *(v7 + 64);
   if (a2 + 1 < v8)
   {
@@ -222,7 +222,7 @@
       if ((v9 & 1) == 0)
       {
         v10 = *(*(v7 + 88) + 8 * v6);
-        *(v10 + 16) = *(v10 + 16) + a4;
+        *(v10 + 16) = *(v10 + 16) + section;
       }
 
       ++v6;
@@ -232,39 +232,39 @@
   }
 
   v11 = dyld_program_sdk_at_least();
-  v12 = *(*(a1 + 96) + 8);
+  v12 = *(*(self + 96) + 8);
   if (v11)
   {
 
-    return [v12 _coalesceContentSizeUpdateWithDelta:a4];
+    return [v12 _coalesceContentSizeUpdateWithDelta:section];
   }
 
   else
   {
 
-    return [v12 _applyContentSizeDeltaImmediately:a4];
+    return [v12 _applyContentSizeDeltaImmediately:section];
   }
 }
 
-- (double)heightForRow:(uint64_t)a3 inSection:(char)a4 canGuess:
+- (double)heightForRow:(uint64_t)row inSection:(char)section canGuess:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ((a4 & 1) == 0 && *(*(a1 + 136) + 4 * a2) < -1.0)
+  if ((section & 1) == 0 && *(*(self + 136) + 4 * a2) < -1.0)
   {
-    v7 = [(UITableViewRowData *)*(a1 + 96) temporarilyDeletedIndexPathBeingReordered];
-    if (!v7 || (v8 = v7, [v7 section] != a3) || objc_msgSend(v8, "row") > a2 || (v9 = a2 + 1, (a2 + 1) >= *(a1 + 32)))
+    temporarilyDeletedIndexPathBeingReordered = [(UITableViewRowData *)*(self + 96) temporarilyDeletedIndexPathBeingReordered];
+    if (!temporarilyDeletedIndexPathBeingReordered || (v8 = temporarilyDeletedIndexPathBeingReordered, [temporarilyDeletedIndexPathBeingReordered section] != row) || objc_msgSend(v8, "row") > a2 || (v9 = a2 + 1, (a2 + 1) >= *(self + 32)))
     {
       v9 = a2;
     }
 
-    v10 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:a3];
-    [*(*(a1 + 96) + 8) _heightForRowAtIndexPath:v10];
+    v10 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:row];
+    [*(*(self + 96) + 8) _heightForRowAtIndexPath:v10];
     v12 = v11;
-    v13 = *(a1 + 136);
+    v13 = *(self + 136);
     v14 = *(v13 + 4 * a2);
     if (v14 < -1.0)
     {
@@ -273,24 +273,24 @@
 
     v15 = (v12 - v14);
     *(v13 + 4 * a2) = v12;
-    if (*(*(a1 + 96) + 72))
+    if (*(*(self + 96) + 72))
     {
-      v16 = *(a1 + 32);
+      v16 = *(self + 32);
       v17 = v16 > a2 + 1;
       v18 = v16 - (a2 + 1);
       if (v17)
       {
-        memset_pattern16((*(a1 + 144) + 8 * (a2 + 1)), &xmmword_18A678720, 8 * v18);
+        memset_pattern16((*(self + 144) + 8 * (a2 + 1)), &xmmword_18A678720, 8 * v18);
       }
     }
 
     else
     {
-      v19 = *(a1 + 32);
+      v19 = *(self + 32);
       if (a2 + 1 < v19)
       {
         v20 = ~a2 + v19;
-        v21 = (*(a1 + 144) + 8 * a2 + 8);
+        v21 = (*(self + 144) + 8 * a2 + 8);
         do
         {
           *v21 = *v21 + v15;
@@ -302,10 +302,10 @@
       }
     }
 
-    [(UISectionRowData *)a1 updateSectionHeightWithDelta:a3 section:1 updateFooterOffset:v15];
+    [(UISectionRowData *)self updateSectionHeightWithDelta:row section:1 updateFooterOffset:v15];
   }
 
-  v22 = *(*(a1 + 136) + 4 * a2);
+  v22 = *(*(self + 136) + 4 * a2);
   if (v22 < -1.0)
   {
     return -v22;
@@ -314,18 +314,18 @@
   return v22;
 }
 
-- (double)sizeForHeaderInSection:(char)a3 canGuess:
+- (double)sizeForHeaderInSection:(char)section canGuess:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ((a3 & 1) == 0 && (*(a1 + 112) < -1.0 || *(a1 + 104) < -1.0))
+  if ((section & 1) == 0 && (*(self + 112) < -1.0 || *(self + 104) < -1.0))
   {
-    [*(*(a1 + 96) + 8) _sizeForHeaderInSection:a2];
+    [*(*(self + 96) + 8) _sizeForHeaderInSection:a2];
     v7 = v6;
-    v8 = *(a1 + 112);
+    v8 = *(self + 112);
     if (v8 < -1.0)
     {
       v8 = -v8;
@@ -333,20 +333,20 @@
 
     v9 = v8;
     v10 = (v7 - v9);
-    *(a1 + 104) = v5;
-    *(a1 + 112) = v7;
-    v11 = *(a1 + 32);
-    if (*(*(a1 + 96) + 72))
+    *(self + 104) = v5;
+    *(self + 112) = v7;
+    v11 = *(self + 32);
+    if (*(*(self + 96) + 72))
     {
       if (v11)
       {
-        memset_pattern16(*(a1 + 144), &xmmword_18A678720, 8 * v11);
+        memset_pattern16(*(self + 144), &xmmword_18A678720, 8 * v11);
       }
     }
 
     else if (v11)
     {
-      v12 = *(a1 + 144);
+      v12 = *(self + 144);
       do
       {
         *v12 = *v12 + v10;
@@ -357,35 +357,35 @@
       while (v11);
     }
 
-    [(UISectionRowData *)a1 updateSectionHeightWithDelta:a2 section:1 updateFooterOffset:v10];
+    [(UISectionRowData *)self updateSectionHeightWithDelta:a2 section:1 updateFooterOffset:v10];
   }
 
-  return [(UISectionRowData *)a1 headerSize];
+  return [(UISectionRowData *)self headerSize];
 }
 
-- (double)heightForFooterInSection:(char)a3 canGuess:
+- (double)heightForFooterInSection:(char)section canGuess:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if ((a3 & 1) == 0 && *(a1 + 120) < -1.0)
+  if ((section & 1) == 0 && *(self + 120) < -1.0)
   {
-    [*(*(a1 + 96) + 8) _heightForFooterInSection:a2];
+    [*(*(self + 96) + 8) _heightForFooterInSection:a2];
     v6 = v5;
-    v7 = *(a1 + 120);
+    v7 = *(self + 120);
     if (v7 < -1.0)
     {
       v7 = -v7;
     }
 
     v8 = v7;
-    *(a1 + 120) = v6;
-    [(UISectionRowData *)a1 updateSectionHeightWithDelta:a2 section:0 updateFooterOffset:(v6 - v8)];
+    *(self + 120) = v6;
+    [(UISectionRowData *)self updateSectionHeightWithDelta:a2 section:0 updateFooterOffset:(v6 - v8)];
   }
 
-  result = *(a1 + 120);
+  result = *(self + 120);
   if (result < -1.0)
   {
     return -result;
@@ -394,94 +394,94 @@
   return result;
 }
 
-- (void)heightForEmptySection:(uint64_t)a1 inTableView:(void *)a2 rowData:(void *)a3
+- (void)heightForEmptySection:(uint64_t)section inTableView:(void *)view rowData:(void *)data
 {
-  if ([a2 _tableStyle])
+  if ([view _tableStyle])
   {
-    if (a1)
+    if (section)
     {
-      [a2 sectionHeaderHeight];
+      [view sectionHeaderHeight];
       if (v6 == -1.0)
       {
 
-        [a2 _defaultSectionHeaderHeight];
+        [view _defaultSectionHeaderHeight];
       }
     }
 
     else
     {
-      v11 = GroupedTableOffsetFromTop(a2, a3);
-      if (a3)
+      v11 = GroupedTableOffsetFromTop(view, data);
+      if (data)
       {
-        *(a3 + 19) = v11;
+        *(data + 19) = v11;
       }
     }
   }
 
   else
   {
-    [a2 sectionHeaderHeight];
+    [view sectionHeaderHeight];
     if (v7 == -1.0)
     {
-      v8 = [a2 _constants];
-      v9 = v8;
-      if (a1)
+      _constants = [view _constants];
+      v9 = _constants;
+      if (section)
       {
-        [v8 defaultSectionHeaderHeightForTableView:a2];
+        [_constants defaultSectionHeaderHeightForTableView:view];
       }
 
       else
       {
-        [v8 defaultPlainFirstSectionHeaderHeightForTableView:a2];
+        [_constants defaultPlainFirstSectionHeaderHeightForTableView:view];
       }
 
       v12 = v10;
-      v13 = [a2 _scrollView];
-      [v13 _currentScreenScale];
+      _scrollView = [view _scrollView];
+      [_scrollView _currentScreenScale];
       UIPixelBoundaryOffset(1, v12, v14);
     }
   }
 }
 
-- (void)refreshWithSection:(void *)a3 tableView:(uint64_t)a4 tableViewRowData:
+- (void)refreshWithSection:(void *)section tableView:(uint64_t)view tableViewRowData:
 {
   v166 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  *(a4 + 72) = [a3 _estimatesHeights];
-  [a3 _sectionContentInset];
-  *(a4 + 32) = v8;
-  *(a4 + 40) = v9;
-  *(a4 + 48) = v10;
-  *(a4 + 56) = v11;
-  v142 = [a3 _constants];
-  *(a1 + 104) = 0;
-  *(a1 + 112) = 0;
-  v12 = [(UITableViewRowData *)a4 fullContentWidth];
-  v143 = [a3 _shouldHaveHeaderViewForSection:a2];
+  *(view + 72) = [section _estimatesHeights];
+  [section _sectionContentInset];
+  *(view + 32) = v8;
+  *(view + 40) = v9;
+  *(view + 48) = v10;
+  *(view + 56) = v11;
+  _constants = [section _constants];
+  *(self + 104) = 0;
+  *(self + 112) = 0;
+  fullContentWidth = [(UITableViewRowData *)view fullContentWidth];
+  v143 = [section _shouldHaveHeaderViewForSection:a2];
   if (v143)
   {
-    v13 = [a3 _sectionHeadersHugContent];
-    v14 = -v12;
-    if (!v13)
+    _sectionHeadersHugContent = [section _sectionHeadersHugContent];
+    v14 = -fullContentWidth;
+    if (!_sectionHeadersHugContent)
     {
-      v14 = v12;
+      v14 = fullContentWidth;
     }
 
-    *(a1 + 104) = v14;
-    *(a1 + 64) = [a3 _titleAlignmentForHeaderInSection:a2];
-    [a3 _maxTitleWidthForHeaderInSection:a2];
-    *(a1 + 80) = v15;
-    *(a1 + 112) = 0xBFF0000000000000;
-    if ([a3 _estimatesSectionHeaderHeights])
+    *(self + 104) = v14;
+    *(self + 64) = [section _titleAlignmentForHeaderInSection:a2];
+    [section _maxTitleWidthForHeaderInSection:a2];
+    *(self + 80) = v15;
+    *(self + 112) = 0xBFF0000000000000;
+    if ([section _estimatesSectionHeaderHeights])
     {
-      [a3 _estimatedHeightForHeaderInSection:a2];
+      [section _estimatedHeightForHeaderInSection:a2];
       if (v16 == -1.0)
       {
-        [a3 _defaultSectionHeaderHeight];
+        [section _defaultSectionHeaderHeight];
       }
 
       v17 = -v16;
@@ -489,11 +489,11 @@
 
     else
     {
-      [a3 _dataSourceHeightForHeaderInSection:a2];
+      [section _dataSourceHeightForHeaderInSection:a2];
       v17 = v18;
     }
 
-    *(a1 + 112) = v17;
+    *(self + 112) = v17;
     if (v17 != -1.0)
     {
       goto LABEL_22;
@@ -501,18 +501,18 @@
 
     if (!a2)
     {
-      *(a4 + 152) = 0;
+      *(view + 152) = 0;
     }
 
-    v19 = [a3 _tableStyle];
-    if (v19 <= 0x10 && ((1 << v19) & 0x10006) != 0)
+    _tableStyle = [section _tableStyle];
+    if (_tableStyle <= 0x10 && ((1 << _tableStyle) & 0x10006) != 0)
     {
-      v20 = [a3 _titleForHeaderInSection:a2];
+      v20 = [section _titleForHeaderInSection:a2];
       v21 = v20;
       if (v20 && [v20 length])
       {
-        v22 = [a3 _detailTextForHeaderInSection:a2];
-        v17 = -[UISectionRowData _headerFooterSizeForSection:inTable:withTitle:detailText:isHeader:stripPaddingForAbuttingView:isTopHeader:](a1, a2, a3, v21, v22, 1, [*(a4 + 8) _shouldStripHeaderTopPaddingForSection:a2], a2 == 0);
+        v22 = [section _detailTextForHeaderInSection:a2];
+        v17 = -[UISectionRowData _headerFooterSizeForSection:inTable:withTitle:detailText:isHeader:stripPaddingForAbuttingView:isTopHeader:](self, a2, section, v21, v22, 1, [*(view + 8) _shouldStripHeaderTopPaddingForSection:a2], a2 == 0);
 
         if (v17 != 0.0)
         {
@@ -525,51 +525,51 @@
       }
     }
 
-    [UISectionRowData heightForEmptySection:a2 inTableView:a3 rowData:a4];
+    [UISectionRowData heightForEmptySection:a2 inTableView:section rowData:view];
     v17 = v23;
 LABEL_21:
-    *(a1 + 112) = v17;
+    *(self + 112) = v17;
 LABEL_22:
     if (v17 >= -1.0 && v17 < 0.0)
     {
-      v135 = [MEMORY[0x1E696AAA8] currentHandler];
-      v136 = v135;
-      v137 = *(a1 + 112);
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v136 = currentHandler;
+      v137 = *(self + 112);
       if (v137 < -1.0)
       {
         v137 = -v137;
       }
 
-      [v135 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:a1 file:@"UITableViewRowData.m" lineNumber:568 description:{@"section header height must not be negative - provided height for section %ld is %f", a2, *&v137}];
+      [currentHandler handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:self file:@"UITableViewRowData.m" lineNumber:568 description:{@"section header height must not be negative - provided height for section %ld is %f", a2, *&v137}];
     }
   }
 
-  v24 = *(a1 + 112);
+  v24 = *(self + 112);
   if (v24 >= -1.0 && v24 == 0.0)
   {
-    v25 = [a3 _tableStyle];
-    if (v25 <= 0x10 && ((1 << v25) & 0x10006) != 0)
+    _tableStyle2 = [section _tableStyle];
+    if (_tableStyle2 <= 0x10 && ((1 << _tableStyle2) & 0x10006) != 0)
     {
-      [UISectionRowData heightForEmptySection:a2 inTableView:a3 rowData:a4];
-      *(a1 + 104) = v12;
-      *(a1 + 112) = v26;
+      [UISectionRowData heightForEmptySection:a2 inTableView:section rowData:view];
+      *(self + 104) = fullContentWidth;
+      *(self + 112) = v26;
     }
   }
 
-  *(a1 + 120) = 0;
-  v27 = [a3 _shouldHaveFooterViewForSection:a2];
+  *(self + 120) = 0;
+  v27 = [section _shouldHaveFooterViewForSection:a2];
   if (v27)
   {
-    *(a1 + 72) = [a3 _titleAlignmentForFooterInSection:a2];
-    [a3 _maxTitleWidthForFooterInSection:a2];
-    *(a1 + 88) = v28;
-    *(a1 + 120) = 0xBFF0000000000000;
-    if ([a3 _estimatesSectionFooterHeights])
+    *(self + 72) = [section _titleAlignmentForFooterInSection:a2];
+    [section _maxTitleWidthForFooterInSection:a2];
+    *(self + 88) = v28;
+    *(self + 120) = 0xBFF0000000000000;
+    if ([section _estimatesSectionFooterHeights])
     {
-      [a3 _estimatedHeightForFooterInSection:a2];
+      [section _estimatedHeightForFooterInSection:a2];
       if (v29 == -1.0)
       {
-        [a3 _defaultSectionFooterHeight];
+        [section _defaultSectionFooterHeight];
       }
 
       v30 = -v29;
@@ -577,48 +577,48 @@ LABEL_22:
 
     else
     {
-      [a3 _dataSourceHeightForFooterInSection:a2];
+      [section _dataSourceHeightForFooterInSection:a2];
       v30 = v31;
     }
 
-    *(a1 + 120) = v30;
+    *(self + 120) = v30;
     if (v30 != -1.0)
     {
       goto LABEL_67;
     }
 
-    if (*(a4 + 64) - 1 == a2)
+    if (*(view + 64) - 1 == a2)
     {
-      *(a4 + 160) = 0;
+      *(view + 160) = 0;
     }
 
-    v32 = [a3 _tableStyle];
-    if (v32 <= 0x10 && ((1 << v32) & 0x10006) != 0)
+    _tableStyle3 = [section _tableStyle];
+    if (_tableStyle3 <= 0x10 && ((1 << _tableStyle3) & 0x10006) != 0)
     {
-      v33 = [a3 _titleForFooterInSection:a2];
+      v33 = [section _titleForFooterInSection:a2];
       v34 = v33;
       if (v33 && [v33 length])
       {
-        v35 = [(UISectionRowData *)a1 _headerFooterSizeForSection:a2 inTable:a3 withTitle:v34 detailText:0 isHeader:0 stripPaddingForAbuttingView:0 isTopHeader:0];
+        v35 = [(UISectionRowData *)self _headerFooterSizeForSection:a2 inTable:section withTitle:v34 detailText:0 isHeader:0 stripPaddingForAbuttingView:0 isTopHeader:0];
         v30 = v35;
-        if (*(a4 + 64) - 1 == a2 && v35 > 0.0)
+        if (*(view + 64) - 1 == a2 && v35 > 0.0)
         {
-          v36 = a3;
-          v37 = a4;
-          [v36 _bottomPadding];
+          sectionCopy = section;
+          viewCopy = view;
+          [sectionCopy _bottomPadding];
           v39 = v38;
           if (v38 == -1.0)
           {
             v39 = 0.0;
-            if ([(UITableViewRowData *)v37 heightForTableFooterView]<= 0.0)
+            if ([(UITableViewRowData *)viewCopy heightForTableFooterView]<= 0.0)
             {
               v40 = +[UIDevice currentDevice];
-              v141 = [v40 userInterfaceIdiom];
+              userInterfaceIdiom = [v40 userInterfaceIdiom];
 
               v39 = 20.0;
-              if ((v141 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+              if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
               {
-                if ([v36 usesVariableMargins])
+                if ([sectionCopy usesVariableMargins])
                 {
                   v39 = 40.0;
                 }
@@ -631,7 +631,7 @@ LABEL_22:
             }
           }
 
-          v37[20] = v39;
+          viewCopy[20] = v39;
         }
 
         if (v30 != 0.0)
@@ -645,27 +645,27 @@ LABEL_22:
       }
     }
 
-    [a3 sectionFooterHeight];
+    [section sectionFooterHeight];
     v30 = v41;
-    v42 = [a3 _tableStyle];
-    if (v42 <= 0x10 && ((1 << v42) & 0x10006) != 0 && *(a4 + 64) - 1 == a2)
+    _tableStyle4 = [section _tableStyle];
+    if (_tableStyle4 <= 0x10 && ((1 << _tableStyle4) & 0x10006) != 0 && *(view + 64) - 1 == a2)
     {
-      v43 = a3;
-      v44 = a4;
-      [v43 _bottomPadding];
+      sectionCopy2 = section;
+      viewCopy2 = view;
+      [sectionCopy2 _bottomPadding];
       v46 = v45;
       if (v45 == -1.0)
       {
         v46 = 0.0;
-        if ([(UITableViewRowData *)v44 heightForTableFooterView]<= 0.0)
+        if ([(UITableViewRowData *)viewCopy2 heightForTableFooterView]<= 0.0)
         {
           v47 = +[UIDevice currentDevice];
-          v48 = [v47 userInterfaceIdiom];
+          userInterfaceIdiom2 = [v47 userInterfaceIdiom];
 
           v46 = 20.0;
-          if ((v48 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
-            if ([v43 usesVariableMargins])
+            if ([sectionCopy2 usesVariableMargins])
             {
               v46 = 40.0;
             }
@@ -678,68 +678,68 @@ LABEL_22:
         }
       }
 
-      v44[20] = v46;
+      viewCopy2[20] = v46;
     }
 
 LABEL_64:
     if (v30 == -1.0)
     {
-      [a3 _defaultSectionFooterHeight];
+      [section _defaultSectionFooterHeight];
       v30 = v49;
     }
 
-    *(a1 + 120) = v30;
+    *(self + 120) = v30;
 LABEL_67:
     if (v30 >= -1.0 && v30 < 0.0)
     {
-      v138 = [MEMORY[0x1E696AAA8] currentHandler];
-      v139 = v138;
-      v140 = *(a1 + 120);
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      v139 = currentHandler2;
+      v140 = *(self + 120);
       if (v140 < -1.0)
       {
         v140 = -v140;
       }
 
-      [v138 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:a1 file:@"UITableViewRowData.m" lineNumber:595 description:{@"section footer height must not be negative - provided height for section %ld is %f", a2, *&v140}];
+      [currentHandler2 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:self file:@"UITableViewRowData.m" lineNumber:595 description:{@"section footer height must not be negative - provided height for section %ld is %f", a2, *&v140}];
     }
   }
 
-  v50 = *(a1 + 120);
+  v50 = *(self + 120);
   if (v50 >= -1.0 && v50 == 0.0)
   {
-    v51 = [a3 _tableStyle];
-    if (v51 <= 0x10 && ((1 << v51) & 0x10006) != 0)
+    _tableStyle5 = [section _tableStyle];
+    if (_tableStyle5 <= 0x10 && ((1 << _tableStyle5) & 0x10006) != 0)
     {
-      [a3 sectionFooterHeight];
+      [section sectionFooterHeight];
       v53 = v52;
       if (v52 == -1.0)
       {
-        +[UITableViewHeaderFooterView defaultFooterHeightForStyle:](UITableViewHeaderFooterView, "defaultFooterHeightForStyle:", [*(*(a1 + 96) + 8) _tableStyle]);
+        +[UITableViewHeaderFooterView defaultFooterHeightForStyle:](UITableViewHeaderFooterView, "defaultFooterHeightForStyle:", [*(*(self + 96) + 8) _tableStyle]);
         v55 = v54;
-        v56 = [*(*(a1 + 96) + 8) _scrollView];
-        [v56 _currentScreenScale];
+        _scrollView = [*(*(self + 96) + 8) _scrollView];
+        [_scrollView _currentScreenScale];
         v53 = UIPixelBoundaryOffset(0, v55, v57);
       }
 
-      *(a1 + 120) = v53;
-      if (*(a4 + 64) - 1 == a2)
+      *(self + 120) = v53;
+      if (*(view + 64) - 1 == a2)
       {
-        v58 = a3;
-        v59 = a4;
-        [v58 _bottomPadding];
+        sectionCopy3 = section;
+        viewCopy3 = view;
+        [sectionCopy3 _bottomPadding];
         v61 = v60;
         if (v60 == -1.0)
         {
           v61 = 0.0;
-          if ([(UITableViewRowData *)v59 heightForTableFooterView]<= 0.0)
+          if ([(UITableViewRowData *)viewCopy3 heightForTableFooterView]<= 0.0)
           {
             v62 = +[UIDevice currentDevice];
-            v63 = [v62 userInterfaceIdiom];
+            userInterfaceIdiom3 = [v62 userInterfaceIdiom];
 
             v61 = 20.0;
-            if ((v63 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+            if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
             {
-              if ([v58 usesVariableMargins])
+              if ([sectionCopy3 usesVariableMargins])
               {
                 v61 = 40.0;
               }
@@ -752,16 +752,16 @@ LABEL_67:
           }
         }
 
-        v59[20] = v61;
+        viewCopy3[20] = v61;
       }
     }
   }
 
-  v64 = [a3 _estimatesRowHeights];
-  v65 = [a3 _numberOfRowsInSection:a2];
-  *(a1 + 32) = v65;
-  v68 = *(a1 + 128);
-  v67 = *(a1 + 136);
+  _estimatesRowHeights = [section _estimatesRowHeights];
+  v65 = [section _numberOfRowsInSection:a2];
+  *(self + 32) = v65;
+  v68 = *(self + 128);
+  v67 = *(self + 136);
   if (v67)
   {
     v69 = v68 == 0;
@@ -783,7 +783,7 @@ LABEL_67:
   else
   {
     v72 = v65;
-    if ((v64 & v70) == 1)
+    if ((_estimatesRowHeights & v70) == 1)
     {
       v73 = 0;
       v74 = 0;
@@ -804,8 +804,8 @@ LABEL_67:
       while (v68 > v73);
       if (v74)
       {
-        v77 = [a3 _scrollView];
-        UIRoundToViewScale(v77);
+        _scrollView2 = [section _scrollView];
+        UIRoundToViewScale(_scrollView2);
         v79 = v78;
 
         if (v79 > 1.0 || v79 <= 0.0)
@@ -818,7 +818,7 @@ LABEL_67:
           v75 = 2.0;
         }
 
-        v72 = *(a1 + 32);
+        v72 = *(self + 32);
       }
     }
 
@@ -828,7 +828,7 @@ LABEL_67:
       v75 = 0.0;
     }
 
-    [(UISectionRowData *)a1 allocateArraysWithCapacity:v72 forSection:a2];
+    [(UISectionRowData *)self allocateArraysWithCapacity:v72 forSection:a2];
     LOBYTE(v70) = 0;
   }
 
@@ -840,22 +840,22 @@ LABEL_67:
   {
     if (a2)
     {
-      [a3 _paddingAboveSectionHeaders];
+      [section _paddingAboveSectionHeaders];
     }
 
     else
     {
-      [a3 _paddingAboveFirstSectionHeader];
+      [section _paddingAboveFirstSectionHeader];
     }
 
     v71 = v81 + v161[3];
     v161[3] = v71;
   }
 
-  *(a1 + 48) = v71;
-  if (([a3 overlapsSectionHeaderViews] & 1) == 0)
+  *(self + 48) = v71;
+  if (([section overlapsSectionHeaderViews] & 1) == 0)
   {
-    v82 = *(a1 + 112);
+    v82 = *(self + 112);
     if (v82 < -1.0)
     {
       v82 = -v82;
@@ -866,11 +866,11 @@ LABEL_67:
 
   if (v143)
   {
-    [a3 _sectionHeaderToFirstRowPadding];
+    [section _sectionHeaderToFirstRowPadding];
     v161[3] = v83 + v161[3];
   }
 
-  [a3 rowHeight];
+  [section rowHeight];
   v85 = v84;
   v86 = dyld_program_sdk_at_least();
   v87 = v85 != -1.0 && v85 < 0.0;
@@ -881,8 +881,8 @@ LABEL_67:
       goto LABEL_124;
     }
 
-    v88 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v88 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:a1 file:@"UITableViewRowData.m" lineNumber:654 description:@"Invalid table view rowHeight (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v85];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:self file:@"UITableViewRowData.m" lineNumber:654 description:@"Invalid table view rowHeight (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", *&v85];
   }
 
   else
@@ -892,29 +892,29 @@ LABEL_67:
       goto LABEL_124;
     }
 
-    v88 = *(__UILogGetCategoryCachedImpl("Assert", &refreshWithSection_tableView_tableViewRowData____s_category) + 8);
-    if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
+    currentHandler3 = *(__UILogGetCategoryCachedImpl("Assert", &refreshWithSection_tableView_tableViewRowData____s_category) + 8);
+    if (os_log_type_enabled(currentHandler3, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
       v165 = v85;
-      _os_log_impl(&dword_188A29000, v88, OS_LOG_TYPE_ERROR, "Invalid table view rowHeight (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", buf, 0xCu);
+      _os_log_impl(&dword_188A29000, currentHandler3, OS_LOG_TYPE_ERROR, "Invalid table view rowHeight (%g). Value must be at least 0.0, or UITableViewAutomaticDimension.", buf, 0xCu);
     }
   }
 
 LABEL_124:
-  [v142 defaultRowHeightForTableView:a3];
+  [_constants defaultRowHeightForTableView:section];
   v90 = v89;
   if (v89 < 0.0)
   {
-    v134 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v134 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:a1 file:@"UITableViewRowData.m" lineNumber:656 description:{@"UITableView internal inconsistency: default row height (%g) cannot be negative.", *&v90}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:sel_refreshWithSection_tableView_tableViewRowData_ object:self file:@"UITableViewRowData.m" lineNumber:656 description:{@"UITableView internal inconsistency: default row height (%g) cannot be negative.", *&v90}];
   }
 
-  v91 = [v142 defaultRowHeightDependsOnCellStyle];
-  v92 = v91;
-  if (a4)
+  defaultRowHeightDependsOnCellStyle = [_constants defaultRowHeightDependsOnCellStyle];
+  v92 = defaultRowHeightDependsOnCellStyle;
+  if (view)
   {
-    v93 = *(a4 + 144);
+    v93 = *(view + 144);
   }
 
   else
@@ -927,33 +927,33 @@ LABEL_124:
   v145 = __66__UISectionRowData_refreshWithSection_tableView_tableViewRowData___block_invoke;
   v146 = &unk_1E71239C8;
   v149 = a2;
-  v150 = a3;
+  sectionCopy4 = section;
   v158 = v70;
   v157 = v74;
   v151 = v75;
   v152 = v85;
   v153 = v90;
-  v159 = v91;
+  v159 = defaultRowHeightDependsOnCellStyle;
   v154 = sel_refreshWithSection_tableView_tableViewRowData_;
-  v147 = a1;
+  selfCopy = self;
   v148 = &v160;
   v155 = v93;
-  v156 = a4;
-  if (v64)
+  viewCopy4 = view;
+  if (_estimatesRowHeights)
   {
     __66__UISectionRowData_refreshWithSection_tableView_tableViewRowData___block_invoke(v144, 1);
 LABEL_132:
-    v94 = *(a1 + 32);
+    v94 = *(self + 32);
     if (!v94)
     {
       goto LABEL_170;
     }
 
-    v95 = *(a1 + 136);
+    v95 = *(self + 136);
     goto LABEL_152;
   }
 
-  if ([a3 _providesRowHeights])
+  if ([section _providesRowHeights])
   {
     v145(v144, 0);
     goto LABEL_132;
@@ -971,12 +971,12 @@ LABEL_132:
     v98 = v85;
   }
 
-  if (a4 && *(a4 + 136) > v98)
+  if (view && *(view + 136) > v98)
   {
-    *(a4 + 136) = v98;
+    *(view + 136) = v98;
   }
 
-  v94 = *(a1 + 32);
+  v94 = *(self + 32);
   if (v94)
   {
     v99 = 0;
@@ -991,8 +991,8 @@ LABEL_132:
       v96 = v97;
     }
 
-    v95 = *(a1 + 136);
-    v101 = *(a1 + 144);
+    v95 = *(self + 136);
+    v101 = *(self + 144);
     v102 = -v96;
     if (v96 >= -1.0)
     {
@@ -1003,7 +1003,7 @@ LABEL_132:
     do
     {
       v95[v99] = v96;
-      if (*(*(a1 + 96) + 72))
+      if (*(*(self + 96) + 72))
       {
         v104 = 0x7FEFFFFFFFFFFFFFLL;
       }
@@ -1020,7 +1020,7 @@ LABEL_132:
 
     while (v94 != v99);
 LABEL_152:
-    v105 = *(a1 + 96);
+    v105 = *(self + 96);
     v106 = *(v105 + 32);
     v107 = *(v105 + 48);
     v108 = *v95;
@@ -1034,9 +1034,9 @@ LABEL_152:
 
     *v95 = v110;
     v111 = v94 - 1;
-    if (v94 != 1 && (*(*(a1 + 96) + 72) & 1) == 0)
+    if (v94 != 1 && (*(*(self + 96) + 72) & 1) == 0)
     {
-      v112 = (*(a1 + 144) + 8);
+      v112 = (*(self + 144) + 8);
       do
       {
         *v112 = v106 + *v112;
@@ -1048,7 +1048,7 @@ LABEL_152:
     }
 
     v161[3] = v106 + v161[3];
-    if (a4)
+    if (view)
     {
       v113 = -v110;
       if (v110 >= -1.0)
@@ -1057,9 +1057,9 @@ LABEL_152:
       }
 
       v114 = v113;
-      if (*(a4 + 136) > v114)
+      if (*(view + 136) > v114)
       {
-        *(a4 + 136) = v114;
+        *(view + 136) = v114;
       }
     }
 
@@ -1077,7 +1077,7 @@ LABEL_152:
 
     *(v115 - 1) = v120;
     v161[3] = v107 + v161[3];
-    if (a4)
+    if (view)
     {
       v121 = -v120;
       if (v120 >= -1.0)
@@ -1086,15 +1086,15 @@ LABEL_152:
       }
 
       v122 = v121;
-      if (*(a4 + 136) > v122)
+      if (*(view + 136) > v122)
       {
-        *(a4 + 136) = v122;
+        *(view + 136) = v122;
       }
     }
   }
 
 LABEL_170:
-  if (((v27 | v143 ^ 1) & 1) != 0 || [a3 _tableStyle])
+  if (((v27 | v143 ^ 1) & 1) != 0 || [section _tableStyle])
   {
     if (!v27)
     {
@@ -1104,18 +1104,18 @@ LABEL_170:
     goto LABEL_175;
   }
 
-  if (*(a1 + 48) == 0.0)
+  if (*(self + 48) == 0.0)
   {
 LABEL_175:
-    [a3 _sectionFooterToLastRowPadding];
+    [section _sectionFooterToLastRowPadding];
     v161[3] = v123 + v161[3];
   }
 
 LABEL_176:
   v124 = v161;
   v125 = v161[3];
-  *(a1 + 56) = v125;
-  v126 = *(a1 + 120);
+  *(self + 56) = v125;
+  v126 = *(self + 120);
   if (v126 < -1.0)
   {
     v126 = -v126;
@@ -1128,25 +1128,25 @@ LABEL_176:
   }
 
   v124[3] = v127;
-  *(a1 + 40) = v127;
-  *(a1 + 8) = 1;
-  if (a4)
+  *(self + 40) = v127;
+  *(self + 8) = 1;
+  if (view)
   {
-    v128 = *(a4 + 184);
+    v128 = *(view + 184);
     v129 = v128;
     if (v128 && [v128 section] == a2)
     {
       v130 = [v129 row];
-      [(UISectionRowData *)a1 deleteRowAtIndex:v130, v131];
+      [(UISectionRowData *)self deleteRowAtIndex:v130, v131];
     }
 
-    v132 = *(a4 + 176);
+    v132 = *(view + 176);
     v133 = v132;
     if (v132)
     {
       if ([v132 section] == a2)
       {
-        -[UISectionRowData addOffset:fromRow:](a1, [v133 row], *(a4 + 216));
+        -[UISectionRowData addOffset:fromRow:](self, [v133 row], *(view + 216));
       }
     }
   }
@@ -1284,9 +1284,9 @@ LABEL_24:
 
 - (double)deleteRowAtIndex:(double)result
 {
-  if (a1)
+  if (self)
   {
-    v3 = *(a1 + 96);
+    v3 = *(self + 96);
     if (v3)
     {
       v4 = *(v3 + 144);
@@ -1297,7 +1297,7 @@ LABEL_24:
       v4 = 0.0;
     }
 
-    v5 = *(a1 + 136);
+    v5 = *(self + 136);
     v6 = *(v5 + 4 * a2);
     if (v6 < -1.0)
     {
@@ -1305,17 +1305,17 @@ LABEL_24:
     }
 
     v7 = v4 + v6;
-    *(a1 + 40) = *(a1 + 40) - v7;
-    v8 = *(a1 + 32);
+    *(self + 40) = *(self + 40) - v7;
+    v8 = *(self + 32);
     if (a2 + 1 < v8)
     {
       v9 = ~a2 + v8;
-      v10 = (*(a1 + 144) + 8 * a2 + 8);
+      v10 = (*(self + 144) + 8 * a2 + 8);
       v11 = (v5 + 4 * a2 + 4);
       do
       {
         *(v11 - 1) = *v11;
-        if (*(*(a1 + 96) + 72))
+        if (*(*(self + 96) + 72))
         {
           v12 = 1.79769313e308;
         }
@@ -1333,17 +1333,17 @@ LABEL_24:
       while (v9);
     }
 
-    result = *(a1 + 56) - v7;
-    *(a1 + 56) = result;
-    *(a1 + 32) = v8 - 1;
+    result = *(self + 56) - v7;
+    *(self + 56) = result;
+    *(self + 32) = v8 - 1;
   }
 
   return result;
 }
 
-- (double)insertRowAtIndex:(uint64_t)a3 inSection:(uint64_t)a4 rowHeight:(double)result tableViewRowData:
+- (double)insertRowAtIndex:(uint64_t)index inSection:(uint64_t)section rowHeight:(double)result tableViewRowData:
 {
-  if (!a1)
+  if (!self)
   {
     return result;
   }
@@ -1351,10 +1351,10 @@ LABEL_24:
   v6 = result;
   if (a2 < 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:sel_insertRowAtIndex_inSection_rowHeight_tableViewRowData_ object:a1 file:@"UITableViewRowData.m" lineNumber:817 description:{@"Attempted to insert an out-of-bounds row %ld in section %ld", a2, a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_insertRowAtIndex_inSection_rowHeight_tableViewRowData_ object:self file:@"UITableViewRowData.m" lineNumber:817 description:{@"Attempted to insert an out-of-bounds row %ld in section %ld", a2, index}];
 
-    if (a4)
+    if (section)
     {
       goto LABEL_4;
     }
@@ -1364,37 +1364,37 @@ LABEL_42:
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!section)
   {
     goto LABEL_42;
   }
 
 LABEL_4:
-  v10 = *(a4 + 144);
+  v10 = *(section + 144);
 LABEL_5:
-  v11 = *(a1 + 32);
-  *(a1 + 32) = v11 + 1;
-  if ((v11 + 1) > *(a1 + 128))
+  v11 = *(self + 32);
+  *(self + 32) = v11 + 1;
+  if ((v11 + 1) > *(self + 128))
   {
-    [(UISectionRowData *)a1 allocateArraysWithCapacity:a3 forSection:?];
+    [(UISectionRowData *)self allocateArraysWithCapacity:index forSection:?];
   }
 
   v12 = v11 - a2;
   if (v11 - a2 < 0)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:sel_insertRowAtIndex_inSection_rowHeight_tableViewRowData_ object:a1 file:@"UITableViewRowData.m" lineNumber:829 description:{@"Attempted to insert an out-of-bounds row %ld in section %ld", a2, a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_insertRowAtIndex_inSection_rowHeight_tableViewRowData_ object:self file:@"UITableViewRowData.m" lineNumber:829 description:{@"Attempted to insert an out-of-bounds row %ld in section %ld", a2, index}];
   }
 
   v13 = a2 + 1;
-  memmove((*(a1 + 136) + 4 * (a2 + 1)), (*(a1 + 136) + 4 * a2), 4 * v12);
-  if ((*(*(a1 + 96) + 72) & 1) == 0)
+  memmove((*(self + 136) + 4 * (a2 + 1)), (*(self + 136) + 4 * a2), 4 * v12);
+  if ((*(*(self + 96) + 72) & 1) == 0)
   {
-    memmove((*(a1 + 144) + 8 * v13), (*(a1 + 144) + 8 * a2), 8 * v12);
+    memmove((*(self + 144) + 8 * v13), (*(self + 144) + 8 * a2), 8 * v12);
   }
 
   v14 = v6;
-  v15 = *(a1 + 136);
+  v15 = *(self + 136);
   *(v15 + 4 * a2) = v14;
   v16 = -v14;
   if (v14 >= -1.0)
@@ -1407,24 +1407,24 @@ LABEL_5:
     v17 = -v14;
   }
 
-  if (a4)
+  if (section)
   {
     v18 = v17;
-    if (*(a4 + 136) > v18)
+    if (*(section + 136) > v18)
     {
-      *(a4 + 136) = v18;
+      *(section + 136) = v18;
     }
   }
 
-  v19 = *(a1 + 96);
+  v19 = *(self + 96);
   if (*(v19 + 72) == 1)
   {
-    v20 = *(a1 + 32);
+    v20 = *(self + 32);
     v21 = v20 > a2;
     v22 = v20 - a2;
     if (v21)
     {
-      memset_pattern16((*(a1 + 144) + 8 * a2), &xmmword_18A678720, 8 * v22);
+      memset_pattern16((*(self + 144) + 8 * a2), &xmmword_18A678720, 8 * v22);
     }
   }
 
@@ -1433,26 +1433,26 @@ LABEL_5:
     v23 = a2 - 1;
     if (a2 < 1)
     {
-      v27 = *(a1 + 112);
+      v27 = *(self + 112);
       if (v27 < -1.0)
       {
         v27 = -v27;
       }
 
-      v26 = *(a1 + 48) + v27;
+      v26 = *(self + 48) + v27;
       if (v27 > 0.0)
       {
         [*(v19 + 8) _sectionHeaderToFirstRowPadding];
         v26 = v26 + v28;
-        v14 = *(*(a1 + 136) + 4 * a2);
+        v14 = *(*(self + 136) + 4 * a2);
       }
 
-      v24 = *(a1 + 144);
+      v24 = *(self + 144);
     }
 
     else
     {
-      v24 = *(a1 + 144);
+      v24 = *(self + 144);
       v25 = *(v15 + 4 * v23);
       if (v25 < -1.0)
       {
@@ -1463,7 +1463,7 @@ LABEL_5:
     }
 
     *(v24 + 8 * a2) = v26;
-    v29 = *(a1 + 32);
+    v29 = *(self + 32);
     v16 = -v14;
     if (v13 < v29)
     {
@@ -1502,27 +1502,27 @@ LABEL_5:
   }
 
   v35 = v10 + v34;
-  *(a1 + 56) = *(a1 + 56) + v35;
-  result = *(a1 + 40) + v35;
-  *(a1 + 40) = result;
+  *(self + 56) = *(self + 56) + v35;
+  result = *(self + 40) + v35;
+  *(self + 40) = result;
   return result;
 }
 
-- (double)offsetForRow:(char)a3 adjustedForGap:
+- (double)offsetForRow:(char)row adjustedForGap:
 {
   v3 = 0.0;
-  if (!a1)
+  if (!self)
   {
     return v3;
   }
 
-  v5 = *(a1 + 144);
+  v5 = *(self + 144);
   if (!v5)
   {
     return v3;
   }
 
-  v7 = *(a1 + 96);
+  v7 = *(self + 96);
   if (*(v7 + 72) != 1)
   {
     return *(v5 + 8 * a2);
@@ -1558,7 +1558,7 @@ LABEL_15:
     else
     {
       v13 = 0;
-      while (*(*(v7 + 88) + 8 * v13) != a1)
+      while (*(*(v7 + 88) + 8 * v13) != self)
       {
         if (v12 == ++v13)
         {
@@ -1573,13 +1573,13 @@ LABEL_15:
     }
 
 LABEL_20:
-    v14 = *(a1 + 112);
+    v14 = *(self + 112);
     if (v14 < -1.0)
     {
       v14 = -v14;
     }
 
-    v3 = *(a1 + 48) + v14;
+    v3 = *(self + 48) + v14;
     if (v14 > 0.0)
     {
       [*(v7 + 8) _sectionHeaderToFirstRowPadding];
@@ -1601,12 +1601,12 @@ LABEL_17:
 LABEL_24:
   if (v9 < a2)
   {
-    v16 = *(a1 + 144) + 8;
+    v16 = *(self + 144) + 8;
     do
     {
       if ((v9 & 0x8000000000000000) == 0)
       {
-        v17 = *(*(a1 + 136) + 4 * v9);
+        v17 = *(*(self + 136) + 4 * v9);
         if (v17 < -1.0)
         {
           v17 = -v17;
@@ -1621,16 +1621,16 @@ LABEL_24:
     while (a2 != v9);
   }
 
-  if (a3)
+  if (row)
   {
-    v18 = *(a1 + 96);
+    v18 = *(self + 96);
     if (v18)
     {
       v19 = *(v18 + 176);
       v20 = v19;
       if (v19 && v13 == [v19 section] && objc_msgSend(v20, "row") <= a2)
       {
-        v21 = *(a1 + 96);
+        v21 = *(self + 96);
         if (v21)
         {
           v22 = *(v21 + 216);
@@ -1654,27 +1654,27 @@ LABEL_24:
   return v3;
 }
 
-+ (uint64_t)sectionLocationForRow:(uint64_t)a3 inSection:(uint64_t)a4 numRows:(uint64_t)a5 gapIndexPath:(void *)a6 rowSpacing:
++ (uint64_t)sectionLocationForRow:(uint64_t)row inSection:(uint64_t)section numRows:(uint64_t)rows gapIndexPath:(void *)path rowSpacing:
 {
-  v10 = a6;
+  pathCopy = path;
   objc_opt_self();
-  if (a1 > 0.0)
+  if (self > 0.0)
   {
     v11 = 4;
     goto LABEL_17;
   }
 
-  if (!v10 || [v10 section] != a4)
+  if (!pathCopy || [pathCopy section] != section)
   {
     objc_opt_self();
-    v12 = a5 - 1 == a3;
+    v12 = rows - 1 == row;
     goto LABEL_8;
   }
 
-  if ([v10 row] > a3)
+  if ([pathCopy row] > row)
   {
     objc_opt_self();
-    v12 = a5 == a3;
+    v12 = rows == row;
 LABEL_8:
     if (v12)
     {
@@ -1696,7 +1696,7 @@ LABEL_8:
       v14 = 1;
     }
 
-    if (a3)
+    if (row)
     {
       v11 = v14;
     }
@@ -1709,7 +1709,7 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if (a3 + 1 == a5)
+  if (row + 1 == rows)
   {
     v16 = 4;
   }
@@ -1719,7 +1719,7 @@ LABEL_8:
     v16 = 2;
   }
 
-  if (a3 + 1 == a5)
+  if (row + 1 == rows)
   {
     v17 = 3;
   }
@@ -1729,7 +1729,7 @@ LABEL_8:
     v17 = 1;
   }
 
-  if (a3 == -1)
+  if (row == -1)
   {
     v11 = v16;
   }
@@ -1745,9 +1745,9 @@ LABEL_17:
   return v11;
 }
 
-- (uint64_t)_rowForPoint:(int64_t)a3 beginningWithRow:(double)a4 numberOfRows:(double)a5 extraHitSpaceBetweenRows:(double)a6
+- (uint64_t)_rowForPoint:(int64_t)point beginningWithRow:(double)row numberOfRows:(double)rows extraHitSpaceBetweenRows:(double)betweenRows
 {
-  *&v22 = a4;
+  *&v22 = row;
   if (result)
   {
     v6 = result;
@@ -1756,7 +1756,7 @@ LABEL_17:
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v10 = a5 - [(UITableViewRowData *)*(result + 96) offsetForSection:?];
+    v10 = rows - [(UITableViewRowData *)*(result + 96) offsetForSection:?];
     *(&v22 + 1) = v10;
     v11 = [(UISectionRowData *)v6 offsetForRow:a2 adjustedForGap:0];
     if (v10 < v11 || v10 > *(v6 + 40))
@@ -1764,7 +1764,7 @@ LABEL_17:
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (a3 != 1)
+    if (point != 1)
     {
       v12 = *(v6 + 96);
       if (*(v12 + 72) != 1)
@@ -1776,8 +1776,8 @@ LABEL_17:
         v19[3] = &unk_1E71239F0;
         v19[4] = v6;
         v20 = v22;
-        v21 = a6;
-        v18 = bsearch_b(&v22 + 8, v17, a3, 8uLL, v19);
+        betweenRowsCopy = betweenRows;
+        v18 = bsearch_b(&v22 + 8, v17, point, 8uLL, v19);
         if (v18)
         {
           return (v18 - *(v6 + 144)) >> 3;
@@ -1786,13 +1786,13 @@ LABEL_17:
         return 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      if (a3 < 1)
+      if (point < 1)
       {
         return 0x7FFFFFFFFFFFFFFFLL;
       }
 
       v13 = *(v12 + 144);
-      v14 = a3 + a2;
+      v14 = point + a2;
       result = 0x7FFFFFFFFFFFFFFFLL;
       while (1)
       {
@@ -1803,7 +1803,7 @@ LABEL_17:
         }
 
         v16 = v15;
-        if (v10 < v11 + v16 + a6)
+        if (v10 < v11 + v16 + betweenRows)
         {
           break;
         }
@@ -1839,7 +1839,7 @@ uint64_t __88__UISectionRowData__rowForPoint_beginningWithRow_numberOfRows_extra
   return v3 >= *(a1 + 56) + *a3 + v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISectionRowData alloc];
   if (v4)

@@ -1,7 +1,7 @@
 @interface ANSTVideoCaptionAlgorithmCaptionState
 + (id)new;
 - (ANSTVideoCaptionAlgorithmCaptionState)init;
-- (ANSTVideoCaptionAlgorithmCaptionState)initWithHiddenTensorDescriptor:(id)a3;
+- (ANSTVideoCaptionAlgorithmCaptionState)initWithHiddenTensorDescriptor:(id)descriptor;
 @end
 
 @implementation ANSTVideoCaptionAlgorithmCaptionState
@@ -15,12 +15,12 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTVideoCaptionAlgorithmCaptionState)initWithHiddenTensorDescriptor:(id)a3
+- (ANSTVideoCaptionAlgorithmCaptionState)initWithHiddenTensorDescriptor:(id)descriptor
 {
   v7.receiver = self;
   v7.super_class = ANSTVideoCaptionAlgorithmCaptionState;

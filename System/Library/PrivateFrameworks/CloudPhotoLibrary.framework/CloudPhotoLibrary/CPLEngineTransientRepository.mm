@@ -2,41 +2,41 @@
 + (id)orderedClassesForChanges;
 + (id)orderedClassesForChangesForLargeSync;
 + (id)orderedClassesForDelete;
-- (BOOL)_appendBatchToStorage:(id)a3 alreadyMingled:(BOOL)a4 countOfAssetChanges:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)a3;
-- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)a3;
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3;
-- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)a3;
-- (BOOL)hasStashedRecordWithScopedIdentifier:(id)a3;
+- (BOOL)_appendBatchToStorage:(id)storage alreadyMingled:(BOOL)mingled countOfAssetChanges:(unint64_t *)changes error:(id *)error;
+- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)identifier;
+- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)identifier;
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier;
+- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)identifier;
+- (BOOL)hasStashedRecordWithScopedIdentifier:(id)identifier;
 - (BOOL)hasUnmingledChanges;
-- (BOOL)hasUnmingledChangesForScope:(id)a3;
-- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)a3;
-- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)a3;
-- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)a3 error:(id *)a4;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)popChangeBatchOfRemappedRecords:(id *)a3 scope:(id)a4 maximumCount:(unint64_t)a5 error:(id *)a6;
-- (BOOL)resetMingledRecordsWithScopeFilter:(id)a3 error:(id *)a4;
-- (BOOL)resetTransientRepositoryForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)shouldKeepDeleteChange:(id)a3 forRecordWithScopedIdentifier:(id)a4;
-- (BOOL)stashChangeWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)unstashRecordsForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4 hasMore:(BOOL *)a5 unstashedCount:(unint64_t *)a6 error:(id *)a7;
-- (CPLEngineTransientRepository)initWithEngineStore:(id)a3 name:(id)a4;
-- (id)_sharedDeleteFromDelete:(id)a3;
-- (id)allUnmingledChangesWithClass:(Class)a3 relatedScopedIdentifier:(id)a4;
-- (id)allUnmingledChangesWithClass:(Class)a3 scopeIdentifier:(id)a4;
-- (id)allUnmingledChangesWithScopeIdentifier:(id)a3;
-- (id)allUnmingledDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4;
-- (id)allUnmingledNonDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4;
-- (id)batchStorageForScope:(id)a3;
-- (id)cachedRecordWithScopedIdentifier:(id)a3;
-- (id)changeWithScopedIdentifier:(id)a3;
-- (id)nextBatchOfRemappedRecordsInScope:(id)a3 maximumCount:(unint64_t)a4;
+- (BOOL)hasUnmingledChangesForScope:(id)scope;
+- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)identifier;
+- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)filter;
+- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)mingled error:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)popChangeBatchOfRemappedRecords:(id *)records scope:(id)scope maximumCount:(unint64_t)count error:(id *)error;
+- (BOOL)resetMingledRecordsWithScopeFilter:(id)filter error:(id *)error;
+- (BOOL)resetTransientRepositoryForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)shouldKeepDeleteChange:(id)change forRecordWithScopedIdentifier:(id)identifier;
+- (BOOL)stashChangeWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)unstashRecordsForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count hasMore:(BOOL *)more unstashedCount:(unint64_t *)unstashedCount error:(id *)error;
+- (CPLEngineTransientRepository)initWithEngineStore:(id)store name:(id)name;
+- (id)_sharedDeleteFromDelete:(id)delete;
+- (id)allUnmingledChangesWithClass:(Class)class relatedScopedIdentifier:(id)identifier;
+- (id)allUnmingledChangesWithClass:(Class)class scopeIdentifier:(id)identifier;
+- (id)allUnmingledChangesWithScopeIdentifier:(id)identifier;
+- (id)allUnmingledDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier;
+- (id)allUnmingledNonDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier;
+- (id)batchStorageForScope:(id)scope;
+- (id)cachedRecordWithScopedIdentifier:(id)identifier;
+- (id)changeWithScopedIdentifier:(id)identifier;
+- (id)nextBatchOfRemappedRecordsInScope:(id)scope maximumCount:(unint64_t)count;
 - (id)status;
-- (id)unmingledChangeWithScopedIdentifier:(id)a3;
+- (id)unmingledChangeWithScopedIdentifier:(id)identifier;
 - (unint64_t)countOfUnmingledRecords;
-- (void)setMaximumCountOfRecordsInBatches:(unint64_t)a3;
+- (void)setMaximumCountOfRecordsInBatches:(unint64_t)batches;
 @end
 
 @implementation CPLEngineTransientRepository
@@ -45,8 +45,8 @@
 {
   v6.receiver = self;
   v6.super_class = CPLEngineTransientRepository;
-  v3 = [(CPLEngineStorage *)&v6 status];
-  v4 = [v3 mutableCopy];
+  status = [(CPLEngineStorage *)&v6 status];
+  v4 = [status mutableCopy];
 
   if ([(NSMutableArray *)self->_observers count])
   {
@@ -56,16 +56,16 @@
   return v4;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = CPLEngineTransientRepository;
-  v4 = [(CPLEngineStorage *)&v10 openWithError:a3];
+  v4 = [(CPLEngineStorage *)&v10 openWithError:error];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 integerForKey:@"CPLMaximumSizeForPulledBatches"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults integerForKey:@"CPLMaximumSizeForPulledBatches"];
 
     if (v6 >= 1)
     {
@@ -88,45 +88,45 @@
   return v4;
 }
 
-- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)a3
+- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasStashedChangesForScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasStashedChangesForScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)unstashRecordsForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4 hasMore:(BOOL *)a5 unstashedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)unstashRecordsForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count hasMore:(BOOL *)more unstashedCount:(unint64_t *)unstashedCount error:(id *)error
 {
-  v12 = a3;
-  v13 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a7) = [v13 unstashRecordsForScopeWithIdentifier:v12 maxCount:a4 hasMore:a5 unstashedCount:a6 error:a7];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject unstashRecordsForScopeWithIdentifier:identifierCopy maxCount:count hasMore:more unstashedCount:unstashedCount error:error];
 
-  return a7;
+  return error;
 }
 
-- (BOOL)stashChangeWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)stashChangeWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 stashChangeWithScopedIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject stashChangeWithScopedIdentifier:identifierCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)a3
+- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasUnmingledOrStashedRecordsWithScopeFilter:v4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasUnmingledOrStashedRecordsWithScopeFilter:filterCopy];
 
   return v6;
 }
 
-- (BOOL)resetTransientRepositoryForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)resetTransientRepositoryForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = __CPLStorageOSLogDomain_9448();
@@ -137,23 +137,23 @@
     }
   }
 
-  v8 = [(CPLEngineStorage *)self platformObject];
-  v9 = [v8 deleteAllRecordsForScopeWithIdentifier:v6 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v9 = [platformObject deleteAllRecordsForScopeWithIdentifier:identifierCopy error:error];
 
   return v9;
 }
 
 - (unint64_t)countOfUnmingledRecords
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 countOfUnmingledRecords];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  countOfUnmingledRecords = [platformObject countOfUnmingledRecords];
 
-  return v3;
+  return countOfUnmingledRecords;
 }
 
-- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = __CPLStorageOSLogDomain_9448();
@@ -164,17 +164,17 @@
     }
   }
 
-  v8 = [(CPLEngineStorage *)self platformObject];
-  v9 = [v8 deleteMingledRecordsForScopeWithIdentifier:v6 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v9 = [platformObject deleteMingledRecordsForScopeWithIdentifier:identifierCopy error:error];
 
   return v9;
 }
 
-- (BOOL)resetMingledRecordsWithScopeFilter:(id)a3 error:(id *)a4
+- (BOOL)resetMingledRecordsWithScopeFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 resetMingledRecordsWithScopeFilter:v6 error:a4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject resetMingledRecordsWithScopeFilter:filterCopy error:error];
 
   if (v8)
   {
@@ -184,138 +184,138 @@
     v11[2] = __73__CPLEngineTransientRepository_resetMingledRecordsWithScopeFilter_error___block_invoke;
     v11[3] = &unk_1E861CC50;
     v11[4] = self;
-    v12 = v6;
+    v12 = filterCopy;
     [(NSMutableArray *)observers enumerateObjectsUsingBlock:v11];
   }
 
   return v8;
 }
 
-- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)a3
+- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasOnlyMingledRecordsWithScopeIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasOnlyMingledRecordsWithScopeIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)a3
+- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasUnmingledNonStashedRecordsForScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasUnmingledNonStashedRecordsForScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)a3
+- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasMingledRecordsForScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasMingledRecordsForScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)a3 error:(id *)a4
+- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)mingled error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 markUnmingledChangeWithScopedIdentifierAsMingled:v6 error:a4];
+  mingledCopy = mingled;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject markUnmingledChangeWithScopedIdentifierAsMingled:mingledCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)allUnmingledChangesWithScopeIdentifier:(id)a3
+- (id)allUnmingledChangesWithScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 allUnmingledChangesWithScopeIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject allUnmingledChangesWithScopeIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)allUnmingledChangesWithClass:(Class)a3 relatedScopedIdentifier:(id)a4
+- (id)allUnmingledChangesWithClass:(Class)class relatedScopedIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 allUnmingledChangesWithClass:a3 relatedScopedIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject allUnmingledChangesWithClass:class relatedScopedIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)allUnmingledDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4
+- (id)allUnmingledDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 allUnmingledDeletedChangesWithClass:a3 scopeIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject allUnmingledDeletedChangesWithClass:class scopeIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)allUnmingledNonDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4
+- (id)allUnmingledNonDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 allUnmingledNonDeletedChangesWithClass:a3 scopeIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject allUnmingledNonDeletedChangesWithClass:class scopeIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)allUnmingledChangesWithClass:(Class)a3 scopeIdentifier:(id)a4
+- (id)allUnmingledChangesWithClass:(Class)class scopeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 allUnmingledChangesWithClass:a3 scopeIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject allUnmingledChangesWithClass:class scopeIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)unmingledChangeWithScopedIdentifier:(id)a3
+- (id)unmingledChangeWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 unmingledChangeWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject unmingledChangeWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)popChangeBatchOfRemappedRecords:(id *)a3 scope:(id)a4 maximumCount:(unint64_t)a5 error:(id *)a6
+- (BOOL)popChangeBatchOfRemappedRecords:(id *)records scope:(id)scope maximumCount:(unint64_t)count error:(id *)error
 {
-  v10 = a4;
-  v11 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v11 popChangeBatchOfRemappedRecords:a3 scope:v10 maximumCount:a5 error:a6];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject popChangeBatchOfRemappedRecords:records scope:scopeCopy maximumCount:count error:error];
 
-  return a6;
+  return error;
 }
 
-- (id)nextBatchOfRemappedRecordsInScope:(id)a3 maximumCount:(unint64_t)a4
+- (id)nextBatchOfRemappedRecordsInScope:(id)scope maximumCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 nextBatchOfRemappedRecordsInScope:v6 maximumCount:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject nextBatchOfRemappedRecordsInScope:scopeCopy maximumCount:count];
 
   return v8;
 }
 
-- (BOOL)_appendBatchToStorage:(id)a3 alreadyMingled:(BOOL)a4 countOfAssetChanges:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_appendBatchToStorage:(id)storage alreadyMingled:(BOOL)mingled countOfAssetChanges:(unint64_t *)changes error:(id *)error
 {
-  v48 = a4;
+  mingledCopy = mingled;
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  storageCopy = storage;
   v54 = objc_alloc_init(CPLChangeBatch);
-  v58 = self;
-  v9 = [(CPLEngineStorage *)self engineStore];
-  v52 = [v9 remappedRecords];
-  v10 = [v9 sharingScopeIdentifier];
-  v50 = v9;
-  v51 = [v9 ignoredRecords];
+  selfCopy = self;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  remappedRecords = [engineStore remappedRecords];
+  sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
+  v50 = engineStore;
+  ignoredRecords = [engineStore ignoredRecords];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v8;
+  obj = storageCopy;
   v56 = [obj countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v56)
   {
@@ -334,15 +334,15 @@ LABEL_3:
 
       v13 = *(*(&v61 + 1) + 8 * v12);
       v14 = objc_autoreleasePoolPush();
-      v15 = [v13 scopedIdentifier];
-      v16 = [v15 scopeIdentifier];
-      v17 = [(CPLEngineStorage *)v58 mainScopeIdentifier];
-      v18 = [v16 isEqualToString:v17];
+      scopedIdentifier = [v13 scopedIdentifier];
+      scopeIdentifier = [scopedIdentifier scopeIdentifier];
+      mainScopeIdentifier = [(CPLEngineStorage *)selfCopy mainScopeIdentifier];
+      v18 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
-      if ((v18 & 1) == 0 && v10)
+      if ((v18 & 1) == 0 && sharingScopeIdentifier)
       {
-        v19 = [v15 scopeIdentifier];
-        v18 = [v19 isEqualToString:v10];
+        scopeIdentifier2 = [scopedIdentifier scopeIdentifier];
+        v18 = [scopeIdentifier2 isEqualToString:sharingScopeIdentifier];
       }
 
       if (![v13 isDelete])
@@ -358,19 +358,19 @@ LABEL_3:
         goto LABEL_31;
       }
 
-      if (v10)
+      if (sharingScopeIdentifier)
       {
-        v20 = [v15 scopeIdentifier];
-        v21 = [v20 isEqualToString:v10];
+        scopeIdentifier3 = [scopedIdentifier scopeIdentifier];
+        v21 = [scopeIdentifier3 isEqualToString:sharingScopeIdentifier];
 
         if (v21)
         {
-          v22 = [(CPLEngineTransientRepository *)v58 _sharedDeleteFromDelete:v13];
+          v22 = [(CPLEngineTransientRepository *)selfCopy _sharedDeleteFromDelete:v13];
           goto LABEL_24;
         }
       }
 
-      if (!v15)
+      if (!scopedIdentifier)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -383,20 +383,20 @@ LABEL_3:
           }
         }
 
-        v44 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineTransientRepository.m"];
-        [v44 handleFailureInMethod:v46 object:v58 file:v45 lineNumber:387 description:{@"Got a delete change with no identifier: %@", 0}];
+        [currentHandler handleFailureInMethod:v46 object:selfCopy file:v45 lineNumber:387 description:{@"Got a delete change with no identifier: %@", 0}];
 
         abort();
       }
 
-      v24 = [(CPLEngineTransientRepository *)v58 cachedRecordWithScopedIdentifier:v15];
+      v24 = [(CPLEngineTransientRepository *)selfCopy cachedRecordWithScopedIdentifier:scopedIdentifier];
       if (v24)
       {
         break;
       }
 
-      v27 = [(CPLEngineTransientRepository *)v58 changeWithScopedIdentifier:v15];
+      v27 = [(CPLEngineTransientRepository *)selfCopy changeWithScopedIdentifier:scopedIdentifier];
       if (v27)
       {
         v24 = v27;
@@ -406,7 +406,7 @@ LABEL_3:
         }
       }
 
-      if ([(CPLEngineTransientRepository *)v58 shouldKeepDeleteChange:v13 forRecordWithScopedIdentifier:v15])
+      if ([(CPLEngineTransientRepository *)selfCopy shouldKeepDeleteChange:v13 forRecordWithScopedIdentifier:scopedIdentifier])
       {
         v22 = v13;
 LABEL_24:
@@ -428,10 +428,10 @@ LABEL_24:
 LABEL_31:
       if (([v13 isDelete] & 1) != 0 || objc_msgSend(v13, "hasChangeType:", 2) && (objc_msgSend(v13, "realIdentifier"), v35 = objc_claimAutoreleasedReturnValue(), v35, !v35))
       {
-        v32 = [v13 scopedIdentifier];
-        v33 = [v32 copy];
+        scopedIdentifier2 = [v13 scopedIdentifier];
+        v33 = [scopedIdentifier2 copy];
         v59 = v11;
-        v34 = [v52 removeRemappedRecordWithScopedIdentifier:v33 error:&v59];
+        v34 = [remappedRecords removeRemappedRecordWithScopedIdentifier:v33 error:&v59];
         v31 = v59;
 
         v11 = v31;
@@ -440,11 +440,11 @@ LABEL_31:
 LABEL_44:
 
           objc_autoreleasePoolPop(v14);
-          if (a6)
+          if (error)
           {
             v37 = v31;
             v38 = 0;
-            *a6 = v31;
+            *error = v31;
           }
 
           else
@@ -480,7 +480,7 @@ LABEL_44:
     v25 = objc_opt_class();
     if (v25 == objc_opt_class())
     {
-      v26 = [objc_opt_class() newDeleteChangeWithScopedIdentifier:v15];
+      v26 = [objc_opt_class() newDeleteChangeWithScopedIdentifier:scopedIdentifier];
     }
 
     else
@@ -489,18 +489,18 @@ LABEL_44:
     }
 
     v23 = v26;
-    v28 = [v24 relatedIdentifier];
-    if (v28)
+    relatedIdentifier = [v24 relatedIdentifier];
+    if (relatedIdentifier)
     {
-      [v23 setRelatedIdentifier:v28];
+      [v23 setRelatedIdentifier:relatedIdentifier];
     }
 
     if (v18)
     {
 LABEL_30:
-      v29 = [v13 scopedIdentifier];
+      scopedIdentifier3 = [v13 scopedIdentifier];
       v60 = v11;
-      v30 = [v51 removeRecordWithScopedIdentifier:v29 error:&v60];
+      v30 = [ignoredRecords removeRecordWithScopedIdentifier:scopedIdentifier3 error:&v60];
       v31 = v60;
 
       v11 = v31;
@@ -519,93 +519,93 @@ LABEL_30:
   v57 = 0;
 LABEL_47:
 
-  if (a5)
+  if (changes)
   {
-    *a5 = v57;
+    *changes = v57;
   }
 
-  v39 = [(CPLEngineStorage *)v58 platformObject];
+  platformObject = [(CPLEngineStorage *)selfCopy platformObject];
   v40 = v54;
-  v38 = [v39 appendBatch:v54 alreadyMingled:v48 error:a6];
+  v38 = [platformObject appendBatch:v54 alreadyMingled:mingledCopy error:error];
 
 LABEL_52:
   v41 = *MEMORY[0x1E69E9840];
   return v38;
 }
 
-- (id)_sharedDeleteFromDelete:(id)a3
+- (id)_sharedDeleteFromDelete:(id)delete
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 cloudCache];
+  deleteCopy = delete;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  cloudCache = [engineStore cloudCache];
 
-  v7 = [v4 scopedIdentifier];
-  v8 = [v6 targetForRecordWithSharedCloudScopedIdentifier:v7];
-  v9 = [v8 scopedIdentifier];
-  v10 = [(CPLEngineTransientRepository *)self cachedRecordWithScopedIdentifier:v9];
+  scopedIdentifier = [deleteCopy scopedIdentifier];
+  v8 = [cloudCache targetForRecordWithSharedCloudScopedIdentifier:scopedIdentifier];
+  scopedIdentifier2 = [v8 scopedIdentifier];
+  v10 = [(CPLEngineTransientRepository *)self cachedRecordWithScopedIdentifier:scopedIdentifier2];
 
   if (!v10)
   {
-    v10 = [(CPLEngineTransientRepository *)self changeWithScopedIdentifier:v7];
+    v10 = [(CPLEngineTransientRepository *)self changeWithScopedIdentifier:scopedIdentifier];
     if ([v10 changeType] == 1024)
     {
     }
 
     else if (v10)
     {
-      v14 = [v10 relatedIdentifier];
+      relatedIdentifier = [v10 relatedIdentifier];
       goto LABEL_8;
     }
 
-    v18 = [v8 scopedIdentifier];
-    v19 = [(CPLEngineTransientRepository *)self shouldKeepDeleteChange:v4 forRecordWithScopedIdentifier:v18];
+    scopedIdentifier3 = [v8 scopedIdentifier];
+    v19 = [(CPLEngineTransientRepository *)self shouldKeepDeleteChange:deleteCopy forRecordWithScopedIdentifier:scopedIdentifier3];
 
     if (v19)
     {
-      v17 = v4;
+      v17 = deleteCopy;
       v10 = 0;
-      v14 = 0;
+      relatedIdentifier = 0;
     }
 
     else
     {
       v10 = 0;
-      v14 = 0;
+      relatedIdentifier = 0;
       v17 = 0;
     }
 
     goto LABEL_18;
   }
 
-  v11 = [v10 relatedScopedIdentifier];
-  if (v11)
+  relatedScopedIdentifier = [v10 relatedScopedIdentifier];
+  if (relatedScopedIdentifier)
   {
-    v12 = [v6 targetForRecordWithCloudScopedIdentifier:v11];
-    v13 = [v12 otherScopedIdentifier];
-    v14 = [v13 identifier];
+    v12 = [cloudCache targetForRecordWithCloudScopedIdentifier:relatedScopedIdentifier];
+    otherScopedIdentifier = [v12 otherScopedIdentifier];
+    relatedIdentifier = [otherScopedIdentifier identifier];
   }
 
   else
   {
-    v14 = 0;
+    relatedIdentifier = 0;
   }
 
 LABEL_8:
   v15 = objc_opt_class();
   if (v15 == objc_opt_class())
   {
-    v16 = [objc_opt_class() newDeleteChangeWithScopedIdentifier:v7];
+    v16 = [objc_opt_class() newDeleteChangeWithScopedIdentifier:scopedIdentifier];
   }
 
   else
   {
-    v16 = v4;
+    v16 = deleteCopy;
   }
 
   v17 = v16;
-  if (v14)
+  if (relatedIdentifier)
   {
-    [v16 setRelatedIdentifier:v14];
+    [v16 setRelatedIdentifier:relatedIdentifier];
   }
 
 LABEL_18:
@@ -613,56 +613,56 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)hasStashedRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasStashedRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasStashedRecordWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasStashedRecordWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)changeWithScopedIdentifier:(id)a3
+- (id)changeWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 recordWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject recordWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasRecordWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasRecordWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v10 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)shouldKeepDeleteChange:(id)a3 forRecordWithScopedIdentifier:(id)a4
+- (BOOL)shouldKeepDeleteChange:(id)change forRecordWithScopedIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  identifierCopy = identifier;
   v27 = 0;
-  v8 = [(CPLEngineStorage *)self engineStore];
-  v9 = [v8 idMapping];
-  v10 = [v9 localScopedIdentifierForCloudScopedIdentifier:v7 isFinal:&v27];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  idMapping = [engineStore idMapping];
+  v10 = [idMapping localScopedIdentifierForCloudScopedIdentifier:identifierCopy isFinal:&v27];
 
   if (v10)
   {
-    v11 = [(CPLEngineStorage *)self engineStore];
-    v12 = [v11 quarantinedRecords];
-    v13 = [v12 isRecordWithScopedIdentifierQuarantined:v10];
+    engineStore2 = [(CPLEngineStorage *)self engineStore];
+    quarantinedRecords = [engineStore2 quarantinedRecords];
+    v13 = [quarantinedRecords isRecordWithScopedIdentifierQuarantined:v10];
 
     if (v13)
     {
@@ -676,7 +676,7 @@ LABEL_18:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v29 = v6;
+        v29 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEBUG, "%@ is a delete for a quarantined record. Keeping.", buf, 0xCu);
       }
 
@@ -684,21 +684,21 @@ LABEL_18:
     }
   }
 
-  v16 = [(CPLEngineStorage *)self engineStore];
-  v17 = [v16 cloudCache];
-  v14 = [v17 targetForRecordWithCloudScopedIdentifier:v7];
+  engineStore3 = [(CPLEngineStorage *)self engineStore];
+  cloudCache = [engineStore3 cloudCache];
+  v14 = [cloudCache targetForRecordWithCloudScopedIdentifier:identifierCopy];
 
-  v18 = [v14 otherScopedIdentifier];
-  if (!v18)
+  otherScopedIdentifier = [v14 otherScopedIdentifier];
+  if (!otherScopedIdentifier)
   {
     goto LABEL_13;
   }
 
-  v19 = v18;
-  v20 = [(CPLEngineStorage *)self engineStore];
-  v21 = [v20 ignoredRecords];
-  v22 = [v14 otherScopedIdentifier];
-  v23 = [v21 hasRecordWithScopedIdentifier:v22];
+  v19 = otherScopedIdentifier;
+  engineStore4 = [(CPLEngineStorage *)self engineStore];
+  ignoredRecords = [engineStore4 ignoredRecords];
+  otherScopedIdentifier2 = [v14 otherScopedIdentifier];
+  v23 = [ignoredRecords hasRecordWithScopedIdentifier:otherScopedIdentifier2];
 
   if (!v23)
   {
@@ -713,7 +713,7 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = changeCopy;
       _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_DEBUG, "%@ is a delete for a record we don't know or has already been deleted. Ignoring.", buf, 0xCu);
     }
 
@@ -727,7 +727,7 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = changeCopy;
       _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_DEBUG, "%@ is a delete of a record shadowing an other record", buf, 0xCu);
     }
 
@@ -746,33 +746,33 @@ LABEL_19:
   return v15;
 }
 
-- (id)cachedRecordWithScopedIdentifier:(id)a3
+- (id)cachedRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 cloudCache];
-  v7 = [v6 recordWithScopedIdentifier:v4 isFinal:0];
+  identifierCopy = identifier;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  cloudCache = [engineStore cloudCache];
+  v7 = [cloudCache recordWithScopedIdentifier:identifierCopy isFinal:0];
 
   return v7;
 }
 
-- (id)batchStorageForScope:(id)a3
+- (id)batchStorageForScope:(id)scope
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 scopeType];
-  if ((v5 - 4) < 2)
+  scopeCopy = scope;
+  scopeType = [scopeCopy scopeType];
+  if ((scopeType - 4) < 2)
   {
-    v6 = [(CPLEngineStorage *)self engineStore];
-    v7 = [v6 sharingScopeIdentifier];
-    if (v7)
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
+    if (sharingScopeIdentifier)
     {
-      v8 = [v6 scopes];
-      v9 = [v8 scopeForSharingScope:v4];
+      scopes = [engineStore scopes];
+      v9 = [scopes scopeForSharingScope:scopeCopy];
       if (v9)
       {
         v10 = v9;
-        v11 = [[CPLInvalidBatchStorage alloc] initWithTransientRepository:self scope:v4];
+        v11 = [[CPLInvalidBatchStorage alloc] initWithTransientRepository:self scope:scopeCopy];
 
 LABEL_11:
         goto LABEL_20;
@@ -786,30 +786,30 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v5 == 1)
+  if (scopeType == 1)
   {
-    v6 = [(CPLEngineStorage *)self engineStore];
-    v7 = [v6 sharingScopeIdentifier];
-    if (v7)
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
+    if (sharingScopeIdentifier)
     {
-      v8 = [v6 scopes];
-      v12 = [v8 sharingScopeForScope:v4];
+      scopes = [engineStore scopes];
+      v12 = [scopes sharingScopeForScope:scopeCopy];
       if (v12)
       {
         v13 = v12;
-        v14 = [v8 flagsForScope:v12];
+        v14 = [scopes flagsForScope:v12];
         if (![v14 valueForFlag:52] || (objc_msgSend(v14, "valueForFlag:", 64) & 1) != 0)
         {
           v15 = [CPLSharedRecordMerger alloc];
-          v16 = [(CPLEngineStorage *)self engineStore];
-          v17 = [v16 engineLibrary];
-          [v17 transport];
+          engineStore2 = [(CPLEngineStorage *)self engineStore];
+          engineLibrary = [engineStore2 engineLibrary];
+          [engineLibrary transport];
           v18 = v24 = v14;
           [v18 propertyMapping];
-          v19 = v25 = v8;
+          v19 = v25 = scopes;
           v20 = [(CPLSharedRecordMerger *)v15 initWithMapping:v19];
 
-          v11 = [[CPLSharedBatchStorage alloc] initWithTransientRepository:self scope:v4 sharedScope:v13 merger:v20];
+          v11 = [[CPLSharedBatchStorage alloc] initWithTransientRepository:self scope:scopeCopy sharedScope:v13 merger:v20];
           goto LABEL_11;
         }
 
@@ -823,7 +823,7 @@ LABEL_17:
             v28 = 2112;
             v29 = v14;
             v30 = 2112;
-            v31 = v4;
+            v31 = scopeCopy;
             _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_DEFAULT, "Ignoring %@ (%@) for %@", buf, 0x20u);
           }
         }
@@ -835,7 +835,7 @@ LABEL_17:
 LABEL_18:
   }
 
-  v11 = [[CPLEngineTransientRepositoryBatchStorage alloc] initWithTransientRepository:self scope:v4];
+  v11 = [[CPLEngineTransientRepositoryBatchStorage alloc] initWithTransientRepository:self scope:scopeCopy];
 LABEL_20:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -843,39 +843,39 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)hasUnmingledChangesForScope:(id)a3
+- (BOOL)hasUnmingledChangesForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasUnmingledChangesForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasUnmingledChangesForScope:scopeCopy];
 
   return v6;
 }
 
 - (BOOL)hasUnmingledChanges
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasUnmingledChanges];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasUnmingledChanges = [platformObject hasUnmingledChanges];
 
-  return v3;
+  return hasUnmingledChanges;
 }
 
-- (void)setMaximumCountOfRecordsInBatches:(unint64_t)a3
+- (void)setMaximumCountOfRecordsInBatches:(unint64_t)batches
 {
-  v3 = 100;
-  if (a3)
+  batchesCopy = 100;
+  if (batches)
   {
-    v3 = a3;
+    batchesCopy = batches;
   }
 
-  self->_maximumCountOfRecordsInBatches = v3;
+  self->_maximumCountOfRecordsInBatches = batchesCopy;
 }
 
-- (CPLEngineTransientRepository)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEngineTransientRepository)initWithEngineStore:(id)store name:(id)name
 {
   v9.receiver = self;
   v9.super_class = CPLEngineTransientRepository;
-  v4 = [(CPLEngineStorage *)&v9 initWithEngineStore:a3 name:a4];
+  v4 = [(CPLEngineStorage *)&v9 initWithEngineStore:store name:name];
   v5 = v4;
   if (v4)
   {

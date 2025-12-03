@@ -1,9 +1,9 @@
 @interface CarHairlineView
-+ (id)hairlineViewAlongAxis:(int64_t)a3;
-+ (id)hairlineViewsInView:(id)a3;
-+ (void)removeHairlineViewsFromView:(id)a3;
++ (id)hairlineViewAlongAxis:(int64_t)axis;
++ (id)hairlineViewsInView:(id)view;
++ (void)removeHairlineViewsFromView:(id)view;
 - (CGSize)intrinsicContentSize;
-- (CarHairlineView)initWithAxis:(int64_t)a3;
+- (CarHairlineView)initWithAxis:(int64_t)axis;
 - (void)didMoveToWindow;
 @end
 
@@ -14,12 +14,12 @@
   v8.receiver = self;
   v8.super_class = CarHairlineView;
   [(CarHairlineView *)&v8 didMoveToWindow];
-  v3 = [(CarHairlineView *)self window];
+  window = [(CarHairlineView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CarHairlineView *)self traitCollection];
-    [v4 displayScale];
+    traitCollection = [(CarHairlineView *)self traitCollection];
+    [traitCollection displayScale];
     if (v5 <= 0.0)
     {
       [(NSLayoutConstraint *)self->_constraint setConstant:1.0];
@@ -27,8 +27,8 @@
 
     else
     {
-      v6 = [(CarHairlineView *)self traitCollection];
-      [v6 displayScale];
+      traitCollection2 = [(CarHairlineView *)self traitCollection];
+      [traitCollection2 displayScale];
       [(NSLayoutConstraint *)self->_constraint setConstant:1.0 / v7];
     }
   }
@@ -65,13 +65,13 @@
   return result;
 }
 
-- (CarHairlineView)initWithAxis:(int64_t)a3
+- (CarHairlineView)initWithAxis:(int64_t)axis
 {
   v4 = [(CarHairlineView *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v5 = v4;
   if (v4)
   {
-    v4->_axis = a3;
+    v4->_axis = axis;
     [(CarHairlineView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = [UIColor colorWithWhite:0.5 alpha:0.5];
     [(CarHairlineView *)v5 setBackgroundColor:v6];
@@ -86,16 +86,16 @@ LABEL_7:
         return v5;
       }
 
-      v8 = [(CarHairlineView *)v5 widthAnchor];
+      widthAnchor = [(CarHairlineView *)v5 widthAnchor];
     }
 
     else
     {
-      v8 = [(CarHairlineView *)v5 heightAnchor];
+      widthAnchor = [(CarHairlineView *)v5 heightAnchor];
     }
 
-    v9 = v8;
-    v10 = [v8 constraintEqualToConstant:1.0];
+    v9 = widthAnchor;
+    v10 = [widthAnchor constraintEqualToConstant:1.0];
     constraint = v5->_constraint;
     v5->_constraint = v10;
 
@@ -105,14 +105,14 @@ LABEL_7:
   return v5;
 }
 
-+ (void)removeHairlineViewsFromView:(id)a3
++ (void)removeHairlineViewsFromView:(id)view
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [view subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -124,7 +124,7 @@ LABEL_7:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -138,30 +138,30 @@ LABEL_7:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (id)hairlineViewsInView:(id)a3
++ (id)hairlineViewsInView:(id)view
 {
-  v4 = [a3 subviews];
+  subviews = [view subviews];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100817D60;
   v8[3] = &unk_10162B4A0;
-  v8[4] = a1;
+  v8[4] = self;
   v5 = [NSPredicate predicateWithBlock:v8];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [subviews filteredArrayUsingPredicate:v5];
 
   return v6;
 }
 
-+ (id)hairlineViewAlongAxis:(int64_t)a3
++ (id)hairlineViewAlongAxis:(int64_t)axis
 {
-  v3 = [[a1 alloc] initWithAxis:a3];
+  v3 = [[self alloc] initWithAxis:axis];
 
   return v3;
 }

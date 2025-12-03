@@ -1,5 +1,5 @@
 @interface _UIScrollViewScrollIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
@@ -16,14 +16,14 @@
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
 - (void)accessibilityIncrement;
-- (void)setAccessibilityScrollIndicatorDelegate:(uint64_t)a1;
+- (void)setAccessibilityScrollIndicatorDelegate:(uint64_t)delegate;
 @end
 
 @implementation _UIScrollViewScrollIndicatorAccessibility
 
 - (id)accessibilityScrollIndicatorDelegate
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedNonRetainedObject();
   }
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (void)setAccessibilityScrollIndicatorDelegate:(uint64_t)a1
+- (void)setAccessibilityScrollIndicatorDelegate:(uint64_t)delegate
 {
-  v3 = a1;
+  delegateCopy = delegate;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (delegateCopy)
   {
     __UIAccessibilitySetAssociatedNonRetainedObject();
   }
@@ -51,7 +51,7 @@
 
 - (uint64_t)accessibilityScrollDirection
 {
-  if (a1)
+  if (self)
   {
     return __UIAccessibilityGetAssociatedLong();
   }
@@ -74,7 +74,7 @@
 
 - (uint64_t)accessibilityScrollIndicatorIsFocused
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -97,31 +97,31 @@
   return result;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  v4 = [v3 accessibilityShouldEnableScrollIndicator:self];
-  MEMORY[0x29EDC9740](v3);
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  v4 = [accessibilityScrollIndicatorDelegate accessibilityShouldEnableScrollIndicator:self];
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
   return v4;
 }
 
 - (id)_axBasicDescription
 {
-  v9 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v8 = 0;
-    v7 = [(_UIScrollViewScrollIndicatorAccessibility *)v9 accessibilityScrollDirection];
-    if (v7 == 1)
+    accessibilityScrollDirection = [(_UIScrollViewScrollIndicatorAccessibility *)selfCopy accessibilityScrollDirection];
+    if (accessibilityScrollDirection == 1)
     {
       v1 = accessibilityLocalizedString(@"scroll.bar.vertical");
       v2 = v8;
@@ -129,7 +129,7 @@
       MEMORY[0x29EDC9740](v2);
     }
 
-    else if (v7 == 2)
+    else if (accessibilityScrollDirection == 2)
     {
       v3 = accessibilityLocalizedString(@"scroll.bar.horizontal");
       v4 = v8;
@@ -153,12 +153,12 @@
 
 - (id)accessibilityLabel
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v11[0] = [(_UIScrollViewScrollIndicatorAccessibility *)self _axBasicDescription];
-  v6 = [(_UIScrollViewScrollIndicatorAccessibility *)v12 accessibilityScrollIndicatorDelegate];
-  v7 = [v6 accessibilityNumberOfPagesForScrollIndicator:v12];
-  MEMORY[0x29EDC9740](v6);
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)selfCopy accessibilityScrollIndicatorDelegate];
+  v7 = [accessibilityScrollIndicatorDelegate accessibilityNumberOfPagesForScrollIndicator:selfCopy];
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
   v8 = MEMORY[0x29EDBA0F8];
   v9 = accessibilityLocalizedString(@"page.count");
   v5 = [v8 localizedStringWithFormat:v7];
@@ -176,32 +176,32 @@
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [(_UIScrollViewScrollIndicatorAccessibility *)self _axBasicDescription];
+  _axBasicDescription = [(_UIScrollViewScrollIndicatorAccessibility *)self _axBasicDescription];
   v4 = MEMORY[0x29ED3D9A0]();
-  MEMORY[0x29EDC9740](v3);
+  MEMORY[0x29EDC9740](_axBasicDescription);
 
   return v4;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  [v3 accessibilityProgressForScrollIndicator:self];
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  [accessibilityScrollIndicatorDelegate accessibilityProgressForScrollIndicator:self];
   v4 = AXFormatFloatWithPercentage();
-  MEMORY[0x29EDC9740](v3);
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
 
   return v4;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v10 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  [v10 accessibilityFrameForScrollIndicator:self];
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  [accessibilityScrollIndicatorDelegate accessibilityFrameForScrollIndicator:self];
   v12 = v2;
   v13 = v3;
   v14 = v4;
   v15 = v5;
-  MEMORY[0x29EDC9740](v10);
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
   v6 = v12;
   v7 = v13;
   v8 = v14;
@@ -215,7 +215,7 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v14 = 0;
   objc_opt_class();
@@ -243,32 +243,32 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  [v2 accessibilityScrollIndicator:self addProgress:-0.1];
-  MEMORY[0x29EDC9740](v2);
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  [accessibilityScrollIndicatorDelegate accessibilityScrollIndicator:self addProgress:-0.1];
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  [v2 accessibilityScrollIndicator:self addProgress:0.1];
-  MEMORY[0x29EDC9740](v2);
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  [accessibilityScrollIndicatorDelegate accessibilityScrollIndicator:self addProgress:0.1];
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
 }
 
 - (void)accessibilityElementDidBecomeFocused
 {
   [_UIScrollViewScrollIndicatorAccessibility setAccessibilityScrollIndicatorIsFocused:?];
-  v2 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  [v2 accessibilityScrollIndicator:self didBecomeFocused:1];
-  MEMORY[0x29EDC9740](v2);
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  [accessibilityScrollIndicatorDelegate accessibilityScrollIndicator:self didBecomeFocused:1];
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
 }
 
 - (void)accessibilityElementDidLoseFocus
 {
   [_UIScrollViewScrollIndicatorAccessibility setAccessibilityScrollIndicatorIsFocused:?];
-  v2 = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
-  [v2 accessibilityScrollIndicator:self didBecomeFocused:0];
-  MEMORY[0x29EDC9740](v2);
+  accessibilityScrollIndicatorDelegate = [(_UIScrollViewScrollIndicatorAccessibility *)self accessibilityScrollIndicatorDelegate];
+  [accessibilityScrollIndicatorDelegate accessibilityScrollIndicator:self didBecomeFocused:0];
+  MEMORY[0x29EDC9740](accessibilityScrollIndicatorDelegate);
 }
 
 @end

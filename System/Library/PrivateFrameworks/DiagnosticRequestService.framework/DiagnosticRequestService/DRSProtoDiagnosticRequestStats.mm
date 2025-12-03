@@ -1,33 +1,33 @@
 @interface DRSProtoDiagnosticRequestStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addOutcomes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOutcomes:(id)outcomes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoDiagnosticRequestStats
 
-- (void)addOutcomes:(id)a3
+- (void)addOutcomes:(id)outcomes
 {
-  v4 = a3;
+  outcomesCopy = outcomes;
   outcomes = self->_outcomes;
-  v8 = v4;
+  v8 = outcomesCopy;
   if (!outcomes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_outcomes;
     self->_outcomes = v6;
 
-    v4 = v8;
+    outcomesCopy = v8;
     outcomes = self->_outcomes;
   }
 
-  [(NSMutableArray *)outcomes addObject:v4];
+  [(NSMutableArray *)outcomes addObject:outcomesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = DRSProtoDiagnosticRequestStats;
   v4 = [(DRSProtoDiagnosticRequestStats *)&v8 description];
-  v5 = [(DRSProtoDiagnosticRequestStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoDiagnosticRequestStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   build = self->_build;
   if (build)
   {
-    [v3 setObject:build forKey:@"build"];
+    [dictionary setObject:build forKey:@"build"];
   }
 
   teamId = self->_teamId;
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -111,10 +111,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_build)
   {
     PBDataWriterWriteStringField();
@@ -170,62 +170,62 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_build)
   {
-    [v8 setBuild:?];
+    [toCopy setBuild:?];
   }
 
   if (self->_teamId)
   {
-    [v8 setTeamId:?];
+    [toCopy setTeamId:?];
   }
 
   if (self->_issueCategory)
   {
-    [v8 setIssueCategory:?];
+    [toCopy setIssueCategory:?];
   }
 
   if (self->_issueDescription)
   {
-    [v8 setIssueDescription:?];
+    [toCopy setIssueDescription:?];
   }
 
   if ([(DRSProtoDiagnosticRequestStats *)self outcomesCount])
   {
-    [v8 clearOutcomes];
-    v4 = [(DRSProtoDiagnosticRequestStats *)self outcomesCount];
-    if (v4)
+    [toCopy clearOutcomes];
+    outcomesCount = [(DRSProtoDiagnosticRequestStats *)self outcomesCount];
+    if (outcomesCount)
     {
-      v5 = v4;
+      v5 = outcomesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(DRSProtoDiagnosticRequestStats *)self outcomesAtIndex:i];
-        [v8 addOutcomes:v7];
+        [toCopy addOutcomes:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_build copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_build copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_teamId copyWithZone:a3];
+  v8 = [(NSString *)self->_teamId copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSString *)self->_issueCategory copyWithZone:a3];
+  v10 = [(NSString *)self->_issueCategory copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_issueDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_issueDescription copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
@@ -249,7 +249,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addOutcomes:v19];
 
         ++v18;
@@ -266,13 +266,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((build = self->_build, !(build | v4[1])) || -[NSString isEqual:](build, "isEqual:")) && ((teamId = self->_teamId, !(teamId | v4[5])) || -[NSString isEqual:](teamId, "isEqual:")) && ((issueCategory = self->_issueCategory, !(issueCategory | v4[2])) || -[NSString isEqual:](issueCategory, "isEqual:")) && ((issueDescription = self->_issueDescription, !(issueDescription | v4[3])) || -[NSString isEqual:](issueDescription, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((build = self->_build, !(build | equalCopy[1])) || -[NSString isEqual:](build, "isEqual:")) && ((teamId = self->_teamId, !(teamId | equalCopy[5])) || -[NSString isEqual:](teamId, "isEqual:")) && ((issueCategory = self->_issueCategory, !(issueCategory | equalCopy[2])) || -[NSString isEqual:](issueCategory, "isEqual:")) && ((issueDescription = self->_issueDescription, !(issueDescription | equalCopy[3])) || -[NSString isEqual:](issueDescription, "isEqual:")))
   {
     outcomes = self->_outcomes;
-    if (outcomes | v4[4])
+    if (outcomes | equalCopy[4])
     {
       v10 = [(NSMutableArray *)outcomes isEqual:?];
     }
@@ -300,26 +300,26 @@
   return v6 ^ [(NSMutableArray *)self->_outcomes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(DRSProtoDiagnosticRequestStats *)self setBuild:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(DRSProtoDiagnosticRequestStats *)self setTeamId:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(DRSProtoDiagnosticRequestStats *)self setIssueCategory:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(DRSProtoDiagnosticRequestStats *)self setIssueDescription:?];
   }
@@ -328,7 +328,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

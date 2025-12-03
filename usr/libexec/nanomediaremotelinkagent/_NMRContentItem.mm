@@ -1,11 +1,11 @@
 @interface _NMRContentItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRContentItem
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = _NMRContentItem;
   v3 = [(_NMRContentItem *)&v7 description];
-  v4 = [(_NMRContentItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRContentItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,68 +34,68 @@
   metadata = self->_metadata;
   if (metadata)
   {
-    v7 = [(_NMRContentItemMetadata *)metadata dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"metadata"];
+    dictionaryRepresentation = [(_NMRContentItemMetadata *)metadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_metadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_metadata)
   {
     [v5 setMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(_NMRContentItemMetadata *)self->_metadata copyWithZone:a3];
+  v8 = [(_NMRContentItemMetadata *)self->_metadata copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[1])) || -[NSString isEqual:](identifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[1])) || -[NSString isEqual:](identifier, "isEqual:")))
   {
     metadata = self->_metadata;
-    if (metadata | v4[2])
+    if (metadata | equalCopy[2])
     {
       v7 = [(_NMRContentItemMetadata *)metadata isEqual:?];
     }
@@ -114,18 +114,18 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[1])
   {
     [(_NMRContentItem *)self setIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   metadata = self->_metadata;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (metadata)
   {
     if (v6)

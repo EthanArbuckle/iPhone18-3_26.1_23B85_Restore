@@ -1,6 +1,6 @@
 @interface PrivateDataActionProvider
 - (_TtC10StocksCoreP33_8188EFB552A1879D25D8FDAD94CCB0E125PrivateDataActionProvider)init;
-- (void)consumeNonDestructiveActionsSyncWithBlock:(id)a3;
+- (void)consumeNonDestructiveActionsSyncWithBlock:(id)block;
 @end
 
 @implementation PrivateDataActionProvider
@@ -12,9 +12,9 @@
   return [(PrivateDataActionProvider *)&v3 init];
 }
 
-- (void)consumeNonDestructiveActionsSyncWithBlock:(id)a3
+- (void)consumeNonDestructiveActionsSyncWithBlock:(id)block
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(block);
   if (v3)
   {
     v4 = v3;

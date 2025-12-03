@@ -1,7 +1,7 @@
 @interface CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton
 - (CGSize)intrinsicContentSize;
-- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithCoder:(id)a3;
-- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithFrame:(CGRect)a3;
+- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithCoder:(id)coder;
+- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton
@@ -15,23 +15,23 @@
   return result;
 }
 
-- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithFrame:(CGRect)a3
+- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton();
   return [(CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithCoder:(id)a3
+- (_TtCC8Freeform32CRLScenesNavigatorViewControllerP33_05C0AAD711D75A114ED1933B2A36B55D36NoIntrinsicContentSizePlatformButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton();
-  v4 = a3;
-  v5 = [(CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CRLScenesNavigatorViewController.NoIntrinsicContentSizePlatformButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

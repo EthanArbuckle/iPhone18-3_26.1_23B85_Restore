@@ -1,33 +1,33 @@
 @interface SBInteractiveScreenshotGestureManager
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handleRemoteTransientOverlayPresentationRequest:(id)a3 forSession:(id)a4;
-- (SBInteractiveScreenshotGestureManager)initWithWindowScene:(id)a3 workspace:(id)a4 appInteractionEventSource:(id)a5;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handleRemoteTransientOverlayPresentationRequest:(id)request forSession:(id)session;
+- (SBInteractiveScreenshotGestureManager)initWithWindowScene:(id)scene workspace:(id)workspace appInteractionEventSource:(id)source;
 - (SBInteractiveScreenshotGestureManagerDelegate)delegate;
 - (id)_screenshotPresentationOptions;
-- (id)acquireDisableGestureAssertionWithReason:(id)a3;
-- (unint64_t)_touchTypeForGestureRecognizer:(id)a3;
-- (void)_handleInteractiveScreenshotGesture:(id)a3;
-- (void)_invalidateSessionID:(id)a3;
-- (void)_performCommitWorkspaceTransactionBlock:(id)a3;
-- (void)_performPendingCommitWorkspaceTransactionBlocksWithTransaction:(id)a3;
+- (id)acquireDisableGestureAssertionWithReason:(id)reason;
+- (unint64_t)_touchTypeForGestureRecognizer:(id)recognizer;
+- (void)_handleInteractiveScreenshotGesture:(id)gesture;
+- (void)_invalidateSessionID:(id)d;
+- (void)_performCommitWorkspaceTransactionBlock:(id)block;
+- (void)_performPendingCommitWorkspaceTransactionBlocksWithTransaction:(id)transaction;
 - (void)_updateFailureRequirements;
 - (void)dealloc;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4;
-- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsGestureWindowInvalidation:(id)a3;
-- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsPlaceholderChromeRemoval:(id)a3;
-- (void)interactiveScreenshotGestureRootViewController:(id)a3 gestureDidCompleteWithIntent:(int64_t)a4;
-- (void)interactiveScreenshotGestureRootViewControllerRequestsGestureRecognizerCancellation:(id)a3;
-- (void)transactionDidComplete:(id)a3;
+- (void)eventSource:(id)source userTouchedApplication:(id)application;
+- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsGestureWindowInvalidation:(id)invalidation;
+- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsPlaceholderChromeRemoval:(id)removal;
+- (void)interactiveScreenshotGestureRootViewController:(id)controller gestureDidCompleteWithIntent:(int64_t)intent;
+- (void)interactiveScreenshotGestureRootViewControllerRequestsGestureRecognizerCancellation:(id)cancellation;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBInteractiveScreenshotGestureManager
 
-- (SBInteractiveScreenshotGestureManager)initWithWindowScene:(id)a3 workspace:(id)a4 appInteractionEventSource:(id)a5
+- (SBInteractiveScreenshotGestureManager)initWithWindowScene:(id)scene workspace:(id)workspace appInteractionEventSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  workspaceCopy = workspace;
+  sourceCopy = source;
   v35.receiver = self;
   v35.super_class = SBInteractiveScreenshotGestureManager;
   v12 = [(SBInteractiveScreenshotGestureManager *)&v35 init];
@@ -35,44 +35,44 @@
   if (v12)
   {
     v12->_lastApplicationTouchTime = -1.79769313e308;
-    v14 = [v9 screen];
+    screen = [sceneCopy screen];
     screen = v13->_screen;
-    v13->_screen = v14;
+    v13->_screen = screen;
 
-    objc_storeStrong(&v13->_appInteractionEventSource, a5);
-    objc_storeStrong(&v13->_windowScene, a3);
-    v16 = [v9 systemGestureManager];
+    objc_storeStrong(&v13->_appInteractionEventSource, source);
+    objc_storeStrong(&v13->_windowScene, scene);
+    systemGestureManager = [sceneCopy systemGestureManager];
     systemGestureManager = v13->_systemGestureManager;
-    v13->_systemGestureManager = v16;
+    v13->_systemGestureManager = systemGestureManager;
 
-    objc_storeStrong(&v13->_workspace, a4);
+    objc_storeStrong(&v13->_workspace, workspace);
     v18 = +[SBInteractiveScreenshotDomain rootSettings];
     settings = v13->_settings;
     v13->_settings = v18;
 
-    v20 = [(SBInteractiveScreenshotSettings *)v13->_settings pencilGestureSettings];
-    v21 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:v20 corner:4 target:v13 action:sel__handleInteractiveScreenshotGesture_];
+    pencilGestureSettings = [(SBInteractiveScreenshotSettings *)v13->_settings pencilGestureSettings];
+    v21 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:pencilGestureSettings corner:4 target:v13 action:sel__handleInteractiveScreenshotGesture_];
     bottomLeftPencilGestureRecognizer = v13->_bottomLeftPencilGestureRecognizer;
     v13->_bottomLeftPencilGestureRecognizer = v21;
 
     [(SBCornerPencilPanGestureRecognizer *)v13->_bottomLeftPencilGestureRecognizer setDelegate:v13];
     [(SBSystemGestureManager *)v13->_systemGestureManager addGestureRecognizer:v13->_bottomLeftPencilGestureRecognizer withType:105];
-    v23 = [(SBInteractiveScreenshotSettings *)v13->_settings pencilGestureSettings];
-    v24 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:v23 corner:8 target:v13 action:sel__handleInteractiveScreenshotGesture_];
+    pencilGestureSettings2 = [(SBInteractiveScreenshotSettings *)v13->_settings pencilGestureSettings];
+    v24 = [SBCornerPencilPanGestureRecognizer interactiveCornerPanGestureRecognizerWithSettings:pencilGestureSettings2 corner:8 target:v13 action:sel__handleInteractiveScreenshotGesture_];
     bottomRightPencilGestureRecognizer = v13->_bottomRightPencilGestureRecognizer;
     v13->_bottomRightPencilGestureRecognizer = v24;
 
     [(SBCornerPencilPanGestureRecognizer *)v13->_bottomRightPencilGestureRecognizer setDelegate:v13];
     [(SBSystemGestureManager *)v13->_systemGestureManager addGestureRecognizer:v13->_bottomRightPencilGestureRecognizer withType:106];
-    v26 = [(SBInteractiveScreenshotSettings *)v13->_settings fingerGestureSettings];
-    v27 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:v26];
+    fingerGestureSettings = [(SBInteractiveScreenshotSettings *)v13->_settings fingerGestureSettings];
+    v27 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:fingerGestureSettings];
     v28 = [[SBCornerFingerPanGestureRecognizer alloc] initWithTarget:v13 action:sel__handleInteractiveScreenshotGesture_ corner:4 classifier:v27];
     bottomLeftFingerGestureRecognizer = v13->_bottomLeftFingerGestureRecognizer;
     v13->_bottomLeftFingerGestureRecognizer = v28;
 
     [(SBCornerFingerPanGestureRecognizer *)v13->_bottomLeftFingerGestureRecognizer setDelegate:v13];
     [(SBSystemGestureManager *)v13->_systemGestureManager addGestureRecognizer:v13->_bottomLeftFingerGestureRecognizer withType:107];
-    v30 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:v26];
+    v30 = [[SBCornerFingerGestureClassifier alloc] initWithSettings:fingerGestureSettings];
     v31 = [[SBCornerFingerPanGestureRecognizer alloc] initWithTarget:v13 action:sel__handleInteractiveScreenshotGesture_ corner:8 classifier:v30];
     bottomRightFingerGestureRecognizer = v13->_bottomRightFingerGestureRecognizer;
     v13->_bottomRightFingerGestureRecognizer = v31;
@@ -80,8 +80,8 @@
     [(SBCornerFingerPanGestureRecognizer *)v13->_bottomRightFingerGestureRecognizer setDelegate:v13];
     [(SBSystemGestureManager *)v13->_systemGestureManager addGestureRecognizer:v13->_bottomRightFingerGestureRecognizer withType:108];
     [(SBInteractiveScreenshotGestureManager *)v13 _updateFailureRequirements];
-    v33 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v33 addObserver:v13 selector:sel__springBoardBootCompleted_ name:@"SBBootCompleteNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__springBoardBootCompleted_ name:@"SBBootCompleteNotification" object:0];
 
     [(SBDisplayAppInteractionEventSource *)v13->_appInteractionEventSource addObserver:v13];
   }
@@ -107,9 +107,9 @@
   SBCornerFingerGestureUpdateFailureRequirements(bottomRightFingerGestureRecognizer, systemGestureManager);
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
-  if (self->_commitTransaction == a3)
+  if (self->_commitTransaction == complete)
   {
     self->_hasInitiatedCommit = 0;
     [(BSInvalidatable *)self->_commitTransactionDisableGestureAssertion invalidate];
@@ -121,33 +121,33 @@
   }
 }
 
-- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsPlaceholderChromeRemoval:(id)a3
+- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsPlaceholderChromeRemoval:(id)removal
 {
-  if (self->_commitTransaction == a3)
+  if (self->_commitTransaction == removal)
   {
     sessionIDToSession = self->_sessionIDToSession;
-    v5 = [a3 gestureSessionID];
-    v7 = [(NSMutableDictionary *)sessionIDToSession objectForKey:v5];
+    gestureSessionID = [removal gestureSessionID];
+    v7 = [(NSMutableDictionary *)sessionIDToSession objectForKey:gestureSessionID];
 
-    v6 = [v7 rootViewController];
-    [v6 removePlaceholderChrome];
+    rootViewController = [v7 rootViewController];
+    [rootViewController removePlaceholderChrome];
   }
 }
 
-- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsGestureWindowInvalidation:(id)a3
+- (void)interactiveScreenshotCommitWorkspaceTransactionRequestsGestureWindowInvalidation:(id)invalidation
 {
-  if (self->_commitTransaction == a3)
+  if (self->_commitTransaction == invalidation)
   {
-    v5 = [a3 gestureSessionID];
-    [(SBInteractiveScreenshotGestureManager *)self _invalidateSessionID:v5];
+    gestureSessionID = [invalidation gestureSessionID];
+    [(SBInteractiveScreenshotGestureManager *)self _invalidateSessionID:gestureSessionID];
   }
 }
 
-- (void)interactiveScreenshotGestureRootViewController:(id)a3 gestureDidCompleteWithIntent:(int64_t)a4
+- (void)interactiveScreenshotGestureRootViewController:(id)controller gestureDidCompleteWithIntent:(int64_t)intent
 {
-  v6 = a3;
-  v7 = [(SBWorkspace *)self->_workspace eventQueue];
-  [v7 cancelEventsWithName:@"BInteractiveScreenshotGestureCommit"];
+  controllerCopy = controller;
+  eventQueue = [(SBWorkspace *)self->_workspace eventQueue];
+  [eventQueue cancelEventsWithName:@"BInteractiveScreenshotGestureCommit"];
 
   activeGestureSessionID = self->_activeGestureSessionID;
   if (activeGestureSessionID)
@@ -159,38 +159,38 @@
     v31[2] = __117__SBInteractiveScreenshotGestureManager_interactiveScreenshotGestureRootViewController_gestureDidCompleteWithIntent___block_invoke;
     v31[3] = &unk_2783B5080;
     v31[4] = self;
-    v11 = v6;
+    v11 = controllerCopy;
     v32 = v11;
     v12 = v9;
     v33 = v12;
     v13 = MEMORY[0x223D6F7F0](v31);
     screen = self->_screen;
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    if ([(UIScreen *)screen isEqual:v15])
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    if ([(UIScreen *)screen isEqual:mainScreen])
     {
-      v16 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+      activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
     }
 
     else
     {
-      v16 = 0;
+      activeInterfaceOrientation = 0;
     }
 
-    if (v16 <= 1)
+    if (activeInterfaceOrientation <= 1)
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = v16;
+      v17 = activeInterfaceOrientation;
     }
 
-    if (a4 == 1)
+    if (intent == 1)
     {
-      v19 = [v11 gestureStyle];
+      gestureStyle = [v11 gestureStyle];
       v18 = v13[2];
-      if (v19 != 1)
+      if (gestureStyle != 1)
       {
         v20 = v13;
         v21 = 1;
@@ -200,7 +200,7 @@
 
     else
     {
-      if (a4 == 2 && !self->_hasInitiatedCommit)
+      if (intent == 2 && !self->_hasInitiatedCommit)
       {
         v22 = self->_activeGestureSessionID;
         self->_activeGestureSessionID = 0;
@@ -378,7 +378,7 @@ SBInteractiveScreenshotCommitWorkspaceTransaction *__117__SBInteractiveScreensho
   return v4;
 }
 
-- (void)interactiveScreenshotGestureRootViewControllerRequestsGestureRecognizerCancellation:(id)a3
+- (void)interactiveScreenshotGestureRootViewControllerRequestsGestureRecognizerCancellation:(id)cancellation
 {
   [(SBCornerPencilPanGestureRecognizer *)self->_bottomLeftPencilGestureRecognizer setEnabled:0];
   [(SBCornerPencilPanGestureRecognizer *)self->_bottomRightPencilGestureRecognizer setEnabled:0];
@@ -392,23 +392,23 @@ SBInteractiveScreenshotCommitWorkspaceTransaction *__117__SBInteractiveScreensho
   [(SBCornerFingerPanGestureRecognizer *)bottomRightFingerGestureRecognizer setEnabled:1];
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4
+- (void)eventSource:(id)source userTouchedApplication:(id)application
 {
-  if (a4)
+  if (application)
   {
     BSContinuousMachTimeNow();
     self->_lastApplicationTouchTime = v5;
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 cornerGestureDefaults];
+  cornerGestureDefaults = [v5 cornerGestureDefaults];
 
   v7 = objc_opt_class();
-  v8 = v4;
+  v8 = beginCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -431,11 +431,11 @@ SBInteractiveScreenshotCommitWorkspaceTransaction *__117__SBInteractiveScreensho
 
   if (v10)
   {
-    v11 = [(SBWindowScene *)self->_windowScene switcherController];
-    v12 = [v11 windowManagementContext];
-    v13 = [v12 isChamoisOrFlexibleWindowing] ^ 1;
+    switcherController = [(SBWindowScene *)self->_windowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    v13 = [windowManagementContext isChamoisOrFlexibleWindowing] ^ 1;
 
-    v14 = [v10 corner];
+    corner = [v10 corner];
   }
 
   else
@@ -462,33 +462,33 @@ SBInteractiveScreenshotCommitWorkspaceTransaction *__117__SBInteractiveScreensho
 
     v18 = v17;
 
-    v14 = [v18 corner];
+    corner = [v18 corner];
     v13 = 2;
   }
 
-  if ([v6 bottomLeftCornerGestureFeature])
+  if ([cornerGestureDefaults bottomLeftCornerGestureFeature])
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = ([v6 bottomLeftCornerGestureTouchTypes] & v13) != 0;
+    v19 = ([cornerGestureDefaults bottomLeftCornerGestureTouchTypes] & v13) != 0;
   }
 
-  if ([v6 bottomRightCornerGestureFeature])
+  if ([cornerGestureDefaults bottomRightCornerGestureFeature])
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = ([v6 bottomRightCornerGestureTouchTypes] & v13) != 0;
+    v20 = ([cornerGestureDefaults bottomRightCornerGestureTouchTypes] & v13) != 0;
   }
 
-  if (v14 != 8)
+  if (corner != 8)
   {
-    if (v14 == 4)
+    if (corner == 4)
     {
       if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
       {
@@ -527,14 +527,14 @@ LABEL_30:
   return v21;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if ([(SBInteractiveScreenshotSettings *)self->_settings isEnabled]&& !self->_isCapturingScreenshot && (self->_lastApplicationTouchTime == -1.79769313e308 || (BSContinuousMachTimeNow(), v9 = v8 - self->_lastApplicationTouchTime, [(SBInteractiveScreenshotSettings *)self->_settings applicationTouchDelayHysteresis], v9 > v10)))
   {
     v11 = objc_opt_class();
-    v12 = v6;
+    v12 = recognizerCopy;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -555,7 +555,7 @@ LABEL_30:
 
     v16 = v13;
 
-    if (v16 && ![v16 shouldReceiveTouch:v7])
+    if (v16 && ![v16 shouldReceiveTouch:touchCopy])
     {
       v14 = 0;
     }
@@ -577,18 +577,18 @@ LABEL_30:
   return v14;
 }
 
-- (BOOL)handleRemoteTransientOverlayPresentationRequest:(id)a3 forSession:(id)a4
+- (BOOL)handleRemoteTransientOverlayPresentationRequest:(id)request forSession:(id)session
 {
-  v5 = a3;
-  if ([v5 isScreenshotMarkup] && self->_hasInitiatedCommit)
+  requestCopy = request;
+  if ([requestCopy isScreenshotMarkup] && self->_hasInitiatedCommit)
   {
-    v6 = [v5 viewController];
+    viewController = [requestCopy viewController];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __100__SBInteractiveScreenshotGestureManager_handleRemoteTransientOverlayPresentationRequest_forSession___block_invoke;
     v10[3] = &unk_2783BD8B8;
-    v11 = v6;
-    v7 = v6;
+    v11 = viewController;
+    v7 = viewController;
     [(SBInteractiveScreenshotGestureManager *)self _performCommitWorkspaceTransactionBlock:v10];
 
     v8 = 1;
@@ -602,9 +602,9 @@ LABEL_30:
   return v8;
 }
 
-- (id)acquireDisableGestureAssertionWithReason:(id)a3
+- (id)acquireDisableGestureAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CF0CE8]);
   v12 = MEMORY[0x277D85DD0];
@@ -612,7 +612,7 @@ LABEL_30:
   v14 = __82__SBInteractiveScreenshotGestureManager_acquireDisableGestureAssertionWithReason___block_invoke;
   v15 = &unk_2783A9070;
   objc_copyWeak(&v16, &location);
-  v6 = [v5 initWithIdentifier:@"com.apple.SpringBoard.SBInteractiveScreenshotGestureManager.disableGesture" forReason:v4 invalidationBlock:&v12];
+  v6 = [v5 initWithIdentifier:@"com.apple.SpringBoard.SBInteractiveScreenshotGestureManager.disableGesture" forReason:reasonCopy invalidationBlock:&v12];
   disableGestureAssertions = self->_disableGestureAssertions;
   if (!disableGestureAssertions)
   {
@@ -647,29 +647,29 @@ void __82__SBInteractiveScreenshotGestureManager_acquireDisableGestureAssertionW
   }
 }
 
-- (void)_handleInteractiveScreenshotGesture:(id)a3
+- (void)_handleInteractiveScreenshotGesture:(id)gesture
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
+  gestureCopy = gesture;
+  state = [gestureCopy state];
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 cornerGestureDefaults];
+  cornerGestureDefaults = [v6 cornerGestureDefaults];
 
-  v8 = [(SBInteractiveScreenshotGestureManager *)self _touchTypeForGestureRecognizer:v4];
-  if (([v7 cornerGestureRequiresEducation] & v8) != 0)
+  v8 = [(SBInteractiveScreenshotGestureManager *)self _touchTypeForGestureRecognizer:gestureCopy];
+  if (([cornerGestureDefaults cornerGestureRequiresEducation] & v8) != 0)
   {
-    if (v5 == 1)
+    if (state == 1)
     {
-      v9 = [v4 corner];
+      corner = [gestureCopy corner];
       v10 = SBLogSystemGesture();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v41 = 134217984;
-        v42 = v9;
+        v42 = corner;
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Interactive screenshot gesture recognized for corner %lu that requires education", &v41, 0xCu);
       }
 
-      if (v9 == 8)
+      if (corner == 8)
       {
         v11 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
         v12 = 9;
@@ -678,12 +678,12 @@ void __82__SBInteractiveScreenshotGestureManager_acquireDisableGestureAssertionW
 
       else
       {
-        if (v9 != 4)
+        if (corner != 4)
         {
           v22 = 0;
 LABEL_24:
-          v23 = [SBApp productivityGestureEducationController];
-          [v23 gestureActivatedForType:v22];
+          productivityGestureEducationController = [SBApp productivityGestureEducationController];
+          [productivityGestureEducationController gestureActivatedForType:v22];
 
           goto LABEL_45;
         }
@@ -709,7 +709,7 @@ LABEL_24:
 
   else
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       if (!self->_asynchronousRenderingAssertion && [(SBInteractiveScreenshotSettings *)self->_settings shouldAsynchronouslyRender])
       {
@@ -721,11 +721,11 @@ LABEL_24:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (!self->_activeGestureSessionID && ([MEMORY[0x277CCAD78] UUID], v17 = objc_claimAutoreleasedReturnValue(), activeGestureSessionID = self->_activeGestureSessionID, self->_activeGestureSessionID = v17, activeGestureSessionID, !self->_activeGestureSessionID) || (-[NSMutableDictionary objectForKey:](self->_sessionIDToSession, "objectForKey:"), (v19 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v20 = [(NSHashTable *)self->_weakReusableGestureRootWindows anyObject];
-        if (v20)
+        anyObject = [(NSHashTable *)self->_weakReusableGestureRootWindows anyObject];
+        if (anyObject)
         {
-          [(NSHashTable *)self->_weakReusableGestureRootWindows removeObject:v20];
-          v21 = v20;
+          [(NSHashTable *)self->_weakReusableGestureRootWindows removeObject:anyObject];
+          v21 = anyObject;
         }
 
         else
@@ -740,9 +740,9 @@ LABEL_24:
           self->_weakReusableGestureRootWindows = 0;
         }
 
-        v26 = [(SBInteractiveScreenshotGestureRootWindow *)v24 rootViewController];
+        rootViewController = [(SBInteractiveScreenshotGestureRootWindow *)v24 rootViewController];
 
-        if (!v26)
+        if (!rootViewController)
         {
           v27 = [[SBInteractiveScreenshotGestureRootViewController alloc] initWithWindowScene:self->_windowScene];
           [(SBInteractiveScreenshotGestureRootViewController *)v27 setDelegate:self];
@@ -788,17 +788,17 @@ LABEL_24:
         v35 = v31 != 0;
       }
 
-      v36 = [(_SBInteractiveScreenshotGestureSession *)v19 rootViewController];
-      [v36 setGestureStyle:v35];
+      rootViewController2 = [(_SBInteractiveScreenshotGestureSession *)v19 rootViewController];
+      [rootViewController2 setGestureStyle:v35];
 
-      v37 = [(_SBInteractiveScreenshotGestureSession *)v19 rootWindow];
-      [v37 setHidden:0];
-      [v37 layoutIfNeeded];
-      v38 = [(SBInteractiveScreenshotSettings *)self->_settings shouldPreheat];
-      if (v34 == 1 && v38)
+      rootWindow = [(_SBInteractiveScreenshotGestureSession *)v19 rootWindow];
+      [rootWindow setHidden:0];
+      [rootWindow layoutIfNeeded];
+      shouldPreheat = [(SBInteractiveScreenshotSettings *)self->_settings shouldPreheat];
+      if (v34 == 1 && shouldPreheat)
       {
-        v39 = [(SBInteractiveScreenshotGestureManager *)self _screenshotPresentationOptions];
-        [WeakRetained interactiveScreenshotGestureManager:self requestsScreenshotPreheatWithPresentationOptions:v39];
+        _screenshotPresentationOptions = [(SBInteractiveScreenshotGestureManager *)self _screenshotPresentationOptions];
+        [WeakRetained interactiveScreenshotGestureManager:self requestsScreenshotPreheatWithPresentationOptions:_screenshotPresentationOptions];
       }
     }
 
@@ -812,46 +812,46 @@ LABEL_24:
       v19 = 0;
     }
 
-    v40 = [(_SBInteractiveScreenshotGestureSession *)v19 rootViewController];
-    [v40 handlePanGestureRecognizerAction:v4];
+    rootViewController3 = [(_SBInteractiveScreenshotGestureSession *)v19 rootViewController];
+    [rootViewController3 handlePanGestureRecognizerAction:gestureCopy];
   }
 
 LABEL_45:
 }
 
-- (void)_invalidateSessionID:(id)a3
+- (void)_invalidateSessionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     activeGestureSessionID = self->_activeGestureSessionID;
-    v5 = a3;
-    if ([(NSUUID *)activeGestureSessionID isEqual:v5])
+    dCopy = d;
+    if ([(NSUUID *)activeGestureSessionID isEqual:dCopy])
     {
       v6 = self->_activeGestureSessionID;
       self->_activeGestureSessionID = 0;
     }
 
-    v18 = [(NSMutableDictionary *)self->_sessionIDToSession objectForKey:v5];
-    [(NSMutableDictionary *)self->_sessionIDToSession removeObjectForKey:v5];
+    v18 = [(NSMutableDictionary *)self->_sessionIDToSession objectForKey:dCopy];
+    [(NSMutableDictionary *)self->_sessionIDToSession removeObjectForKey:dCopy];
 
-    v7 = [v18 rootViewController];
-    [v7 invalidate];
+    rootViewController = [v18 rootViewController];
+    [rootViewController invalidate];
 
-    v8 = [v18 hostRootViewController];
-    [v8 invalidate];
+    hostRootViewController = [v18 hostRootViewController];
+    [hostRootViewController invalidate];
 
-    v9 = [v18 rootWindow];
-    v10 = v9;
-    if (v9)
+    rootWindow = [v18 rootWindow];
+    v10 = rootWindow;
+    if (rootWindow)
     {
-      [v9 setHidden:1];
+      [rootWindow setHidden:1];
       [v10 setRootViewController:0];
       weakReusableGestureRootWindows = self->_weakReusableGestureRootWindows;
       if (!weakReusableGestureRootWindows)
       {
-        v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v13 = self->_weakReusableGestureRootWindows;
-        self->_weakReusableGestureRootWindows = v12;
+        self->_weakReusableGestureRootWindows = weakObjectsHashTable;
 
         weakReusableGestureRootWindows = self->_weakReusableGestureRootWindows;
       }
@@ -859,11 +859,11 @@ LABEL_45:
       [(NSHashTable *)weakReusableGestureRootWindows addObject:v10];
     }
 
-    v14 = [v18 hostWindow];
-    v15 = v14;
-    if (v14)
+    hostWindow = [v18 hostWindow];
+    v15 = hostWindow;
+    if (hostWindow)
     {
-      [v14 setHidden:1];
+      [hostWindow setHidden:1];
       [v15 setRootViewController:0];
     }
 
@@ -879,19 +879,19 @@ LABEL_45:
   }
 }
 
-- (void)_performCommitWorkspaceTransactionBlock:(id)a3
+- (void)_performCommitWorkspaceTransactionBlock:(id)block
 {
-  v4 = a3;
-  v10 = v4;
+  blockCopy = block;
+  v10 = blockCopy;
   if (!self->_hasInitiatedCommit)
   {
-    v5 = v4[2];
+    v5 = blockCopy[2];
     goto LABEL_5;
   }
 
   if (self->_commitTransaction)
   {
-    v5 = v4[2];
+    v5 = blockCopy[2];
 LABEL_5:
     v5();
     goto LABEL_6;
@@ -913,10 +913,10 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_performPendingCommitWorkspaceTransactionBlocksWithTransaction:(id)a3
+- (void)_performPendingCommitWorkspaceTransactionBlocksWithTransaction:(id)transaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [(NSMutableArray *)self->_pendingCommitWorkspaceTransactionBlocks copy];
   pendingCommitWorkspaceTransactionBlocks = self->_pendingCommitWorkspaceTransactionBlocks;
   self->_pendingCommitWorkspaceTransactionBlocks = 0;
@@ -961,11 +961,11 @@ LABEL_6:
   return v2;
 }
 
-- (unint64_t)_touchTypeForGestureRecognizer:(id)a3
+- (unint64_t)_touchTypeForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = recognizerCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())

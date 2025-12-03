@@ -1,13 +1,13 @@
 @interface ADPushContextReceiver
-- (ADPushContextReceiver)initWithCollector:(id)a3 pid:(int)a4 connection:(id)a5;
-- (void)sendContext:(id)a3;
+- (ADPushContextReceiver)initWithCollector:(id)collector pid:(int)pid connection:(id)connection;
+- (void)sendContext:(id)context;
 @end
 
 @implementation ADPushContextReceiver
 
-- (void)sendContext:(id)a3
+- (void)sendContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -20,25 +20,25 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_collector);
-  [WeakRetained _setContext:v4 forPID:self->_pid];
+  [WeakRetained _setContext:contextCopy forPID:self->_pid];
 
   v8 = objc_loadWeakRetained(&self->_connection);
   [v8 invalidate];
 }
 
-- (ADPushContextReceiver)initWithCollector:(id)a3 pid:(int)a4 connection:(id)a5
+- (ADPushContextReceiver)initWithCollector:(id)collector pid:(int)pid connection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  collectorCopy = collector;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = ADPushContextReceiver;
   v10 = [(ADPushContextReceiver *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_collector, v8);
-    v11->_pid = a4;
-    objc_storeWeak(&v11->_connection, v9);
+    objc_storeWeak(&v10->_collector, collectorCopy);
+    v11->_pid = pid;
+    objc_storeWeak(&v11->_connection, connectionCopy);
   }
 
   return v11;

@@ -1,9 +1,9 @@
 @interface _CPResultGradingFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPResultGradingFeedback)init;
-- (_CPResultGradingFeedback)initWithFacade:(id)a3;
+- (_CPResultGradingFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPResultGradingFeedback
@@ -16,34 +16,34 @@
   return v4 ^ v5 ^ [(NSString *)self->_textFeedback hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_14;
   }
 
-  v6 = [(_CPResultGradingFeedback *)self result];
-  v7 = [v4 result];
-  if ((v6 != 0) == (v7 == 0))
+  result = [(_CPResultGradingFeedback *)self result];
+  result2 = [equalCopy result];
+  if ((result != 0) == (result2 == 0))
   {
     goto LABEL_13;
   }
 
-  v8 = [(_CPResultGradingFeedback *)self result];
-  if (v8)
+  result3 = [(_CPResultGradingFeedback *)self result];
+  if (result3)
   {
-    v9 = v8;
-    v10 = [(_CPResultGradingFeedback *)self result];
-    v11 = [v4 result];
-    v12 = [v10 isEqual:v11];
+    v9 = result3;
+    result4 = [(_CPResultGradingFeedback *)self result];
+    result5 = [equalCopy result];
+    v12 = [result4 isEqual:result5];
 
     if (!v12)
     {
@@ -56,22 +56,22 @@
   }
 
   grade = self->_grade;
-  if (grade != [v4 grade])
+  if (grade != [equalCopy grade])
   {
     goto LABEL_14;
   }
 
-  v6 = [(_CPResultGradingFeedback *)self textFeedback];
-  v7 = [v4 textFeedback];
-  if ((v6 != 0) == (v7 == 0))
+  result = [(_CPResultGradingFeedback *)self textFeedback];
+  result2 = [equalCopy textFeedback];
+  if ((result != 0) == (result2 == 0))
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v14 = [(_CPResultGradingFeedback *)self textFeedback];
-  if (!v14)
+  textFeedback = [(_CPResultGradingFeedback *)self textFeedback];
+  if (!textFeedback)
   {
 
 LABEL_17:
@@ -79,10 +79,10 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  v15 = v14;
-  v16 = [(_CPResultGradingFeedback *)self textFeedback];
-  v17 = [v4 textFeedback];
-  v18 = [v16 isEqual:v17];
+  v15 = textFeedback;
+  textFeedback2 = [(_CPResultGradingFeedback *)self textFeedback];
+  textFeedback3 = [equalCopy textFeedback];
+  v18 = [textFeedback2 isEqual:textFeedback3];
 
   if (v18)
   {
@@ -96,20 +96,20 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_CPResultGradingFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPResultGradingFeedback *)self result];
+  result = [(_CPResultGradingFeedback *)self result];
 
-  if (v5)
+  if (result)
   {
-    v6 = [(_CPResultGradingFeedback *)self result];
+    result2 = [(_CPResultGradingFeedback *)self result];
     PBDataWriterWriteSubmessage();
   }
 
@@ -119,14 +119,14 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_CPResultGradingFeedback *)self textFeedback];
+  textFeedback = [(_CPResultGradingFeedback *)self textFeedback];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (textFeedback)
   {
     textFeedback = self->_textFeedback;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -144,32 +144,32 @@ LABEL_15:
   return v2;
 }
 
-- (_CPResultGradingFeedback)initWithFacade:(id)a3
+- (_CPResultGradingFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v14.receiver = self;
   v14.super_class = _CPResultGradingFeedback;
   v5 = [(_CPResultGradingFeedback *)&v14 init];
   if (v5)
   {
-    -[_CPResultGradingFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 result];
+    -[_CPResultGradingFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    result = [facadeCopy result];
 
-    if (v6)
+    if (result)
     {
       v7 = [_CPSearchResultForFeedback alloc];
-      v8 = [v4 result];
-      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:v8];
+      result2 = [facadeCopy result];
+      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:result2];
       [(_CPResultGradingFeedback *)v5 setResult:v9];
     }
 
-    -[_CPResultGradingFeedback setGrade:](v5, "setGrade:", [v4 grade]);
-    v10 = [v4 textFeedback];
+    -[_CPResultGradingFeedback setGrade:](v5, "setGrade:", [facadeCopy grade]);
+    textFeedback = [facadeCopy textFeedback];
 
-    if (v10)
+    if (textFeedback)
     {
-      v11 = [v4 textFeedback];
-      [(_CPResultGradingFeedback *)v5 setTextFeedback:v11];
+      textFeedback2 = [facadeCopy textFeedback];
+      [(_CPResultGradingFeedback *)v5 setTextFeedback:textFeedback2];
     }
 
     v12 = v5;

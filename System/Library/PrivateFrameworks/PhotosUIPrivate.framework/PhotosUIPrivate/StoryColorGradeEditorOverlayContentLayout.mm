@@ -1,8 +1,8 @@
 @interface StoryColorGradeEditorOverlayContentLayout
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
-- (id)layout:(id)a3 navigationObjectReferenceForSublayoutAtIndex:(int64_t)a4;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
+- (id)layout:(id)layout navigationObjectReferenceForSublayoutAtIndex:(int64_t)index;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)referenceSizeDidChange;
 - (void)update;
 @end
@@ -11,46 +11,46 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37A2634();
 }
 
 - (void)referenceSizeDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37A2820();
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_1B3C9D1E8();
   swift_unknownObjectRelease();
-  v9 = sub_1B37A2C3C(v11, a4, a5);
+  v9 = sub_1B37A2C3C(v11, options, objectReference);
 
   __swift_destroy_boxed_opaque_existential_0Tm(v11);
   return v9;
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1B37A4630(v6, a4);
+  layoutCopy = layout;
+  selfCopy = self;
+  v8 = sub_1B37A4630(layoutCopy, index);
 
   return v8;
 }
 
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size
 {
-  CGSizeMake(a3);
+  CGSizeMake(layout);
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (id)layout:(id)a3 navigationObjectReferenceForSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout navigationObjectReferenceForSublayoutAtIndex:(int64_t)index
 {
   sub_1B37A484C(&v12);
   v4 = v13;

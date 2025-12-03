@@ -20,8 +20,8 @@
 - (SRSTSharedState)currentState
 {
   v3 = [SRSTSharedState alloc];
-  v4 = [(_SRSTSharedServer *)self->_underlyingObject currentState];
-  v5 = [(SRSTSharedState *)v3 initWithUnderlyingObject:v4];
+  currentState = [(_SRSTSharedServer *)self->_underlyingObject currentState];
+  v5 = [(SRSTSharedState *)v3 initWithUnderlyingObject:currentState];
 
   return v5;
 }

@@ -1,61 +1,61 @@
 @interface HPRFSessionTrackerAppSettingsController
 - (BOOL)_deviceSupportsCyclingAutoStart;
 - (HPRFSessionTrackerAppSettingsController)init;
-- (id)NFCAlwaysOn:(id)a3;
+- (id)NFCAlwaysOn:(id)on;
 - (id)_createConfigurationDataSourceSpecifiers;
 - (id)applicationBundleIdentifier;
 - (id)autoPauseItemValue;
 - (id)bundle;
 - (id)createPowerSpecifiers;
-- (id)getGuidedRunPrefetchEnabled:(id)a3;
-- (id)getGuidedWorkoutPrefetchEnabled:(id)a3;
+- (id)getGuidedRunPrefetchEnabled:(id)enabled;
+- (id)getGuidedWorkoutPrefetchEnabled:(id)enabled;
 - (id)isAutoPauseEnabled;
 - (id)isConfirmEndWorkoutEnabled;
 - (id)isCyclingAutoPauseEnabled;
-- (id)isEndRemindersEnabled:(id)a3;
-- (id)isGuidedRunMediaMomentsEnabled:(id)a3;
-- (id)isGuidedWorkoutMediaMomentsEnabled:(id)a3;
+- (id)isEndRemindersEnabled:(id)enabled;
+- (id)isGuidedRunMediaMomentsEnabled:(id)enabled;
+- (id)isGuidedWorkoutMediaMomentsEnabled:(id)enabled;
 - (id)isMirrorModeEnabled;
 - (id)isPrecisionStartEnabled;
-- (id)isResumeRemindersEnabled:(id)a3;
+- (id)isResumeRemindersEnabled:(id)enabled;
 - (id)isRunningAutoPauseEnabled;
-- (id)isStartRemindersEnabled:(id)a3;
-- (id)isVoiceFeedbackEnabled:(id)a3;
+- (id)isStartRemindersEnabled:(id)enabled;
+- (id)isVoiceFeedbackEnabled:(id)enabled;
 - (id)isWorkoutSafetyCheckInEnabled;
 - (id)localizedPaneTitle;
 - (id)lowPowerModeName;
 - (id)selectedLPMIdentifierSwitch;
-- (id)selectedMusicViewString:(id)a3;
+- (id)selectedMusicViewString:(id)string;
 - (id)selectedUltraIdentifier;
 - (id)shouldAlertOnWatchWhenMirrored;
 - (id)shouldTrackTrainingLoad;
 - (id)specifiers;
-- (void)_addAboutTextToSpecifier:(id)a3;
-- (void)_addGestureLinkToSpecifier:(id)a3;
-- (void)_addLearnMoreExtendedLowPowerModeTextToSpecifier:(id)a3;
-- (void)_addLearnMoreLowPowerModeTextToSpecifier:(id)a3;
-- (void)_addPreKincaidFooterTextToSpecifier:(id)a3;
+- (void)_addAboutTextToSpecifier:(id)specifier;
+- (void)_addGestureLinkToSpecifier:(id)specifier;
+- (void)_addLearnMoreExtendedLowPowerModeTextToSpecifier:(id)specifier;
+- (void)_addLearnMoreLowPowerModeTextToSpecifier:(id)specifier;
+- (void)_addPreKincaidFooterTextToSpecifier:(id)specifier;
 - (void)_openEltonSetting;
 - (void)_openPrivacyLink;
 - (void)_refreshManagedConfigurationDataSources;
-- (void)_showConfigurationDataSourceProviderSpecifiers:(BOOL)a3;
+- (void)_showConfigurationDataSourceProviderSpecifiers:(BOOL)specifiers;
 - (void)_showLearnMoreAboutLowPowerMode;
-- (void)_updateShuffleSelectionInSpecifiers:(id)a3;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
+- (void)_updateShuffleSelectionInSpecifiers:(id)specifiers;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
 - (void)dealloc;
-- (void)isSubscribedWithCompletion:(id)a3;
+- (void)isSubscribedWithCompletion:(id)completion;
 - (void)onMessagesAppInstalled;
 - (void)onMessagesAppUninstalled;
 - (void)reloadSpecifiers;
-- (void)setGuidedRunPrefetchEnabled:(id)a3 specifier:(id)a4;
-- (void)setGuidedWorkoutPrefetchEnabled:(id)a3 specifier:(id)a4;
-- (void)setNFCAlwaysOn:(id)a3 specifier:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setSelectedLPMIdentifierSwitch:(id)a3;
-- (void)setSelectedUltraIdentifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateWorkoutInstallState:(BOOL)a3;
+- (void)setGuidedRunPrefetchEnabled:(id)enabled specifier:(id)specifier;
+- (void)setGuidedWorkoutPrefetchEnabled:(id)enabled specifier:(id)specifier;
+- (void)setNFCAlwaysOn:(id)on specifier:(id)specifier;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setSelectedLPMIdentifierSwitch:(id)switch;
+- (void)setSelectedUltraIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateWorkoutInstallState:(BOOL)state;
 - (void)viewDidLoad;
 @end
 
@@ -84,9 +84,9 @@
     v9 = +[NRPairedDeviceRegistry sharedInstance];
     v10 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v11 = [v9 getAllDevicesWithArchivedAltAccountDevicesMatching:v10];
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
     device = v2->_device;
-    v2->_device = v12;
+    v2->_device = firstObject;
 
     v2->_isWorkoutAppInstalled = 0;
     v14 = +[ACXDeviceConnection sharedDeviceConnection];
@@ -148,14 +148,14 @@
   [(HPRFSessionTrackerAppSettingsController *)&v6 viewDidLoad];
   if (self->_isWorkoutAppInstalled)
   {
-    v3 = [(HPRFSessionTrackerAppSettingsController *)self localizedPaneTitle];
-    [(HPRFSessionTrackerAppSettingsController *)self setTitle:v3];
+    localizedPaneTitle = [(HPRFSessionTrackerAppSettingsController *)self localizedPaneTitle];
+    [(HPRFSessionTrackerAppSettingsController *)self setTitle:localizedPaneTitle];
   }
 
   else
   {
-    v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v3 localizedStringForKey:@"PANE_TITLE_UNINSTALLED" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
+    localizedPaneTitle = [NSBundle bundleForClass:objc_opt_class()];
+    v4 = [localizedPaneTitle localizedStringForKey:@"PANE_TITLE_UNINSTALLED" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
     [(HPRFSessionTrackerAppSettingsController *)self setTitle:v4];
   }
 
@@ -194,10 +194,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerAppSettingsController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerAppSettingsController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)_deviceSupportsCyclingAutoStart
@@ -209,9 +209,9 @@
   return device;
 }
 
-- (void)setSelectedLPMIdentifierSwitch:(id)a3
+- (void)setSelectedLPMIdentifierSwitch:(id)switch
 {
-  [a3 BOOLValue];
+  [switch BOOLValue];
 
   FIUISetIsPowerSavingModeEnabled();
 }
@@ -223,9 +223,9 @@
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)setSelectedUltraIdentifier:(id)a3
+- (void)setSelectedUltraIdentifier:(id)identifier
 {
-  [a3 BOOLValue];
+  [identifier BOOLValue];
 
   FIUISetWorkoutExtendedModeEnabled();
 }
@@ -280,8 +280,8 @@
 - (id)createPowerSpecifiers
 {
   v3 = objc_opt_new();
-  v4 = [(HPRFSessionTrackerAppSettingsController *)self lowPowerModeName];
-  v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:"setSelectedLPMIdentifierSwitch:" get:"selectedLPMIdentifierSwitch" detail:0 cell:6 edit:0];
+  lowPowerModeName = [(HPRFSessionTrackerAppSettingsController *)self lowPowerModeName];
+  v5 = [PSSpecifier preferenceSpecifierNamed:lowPowerModeName target:self set:"setSelectedLPMIdentifierSwitch:" get:"selectedLPMIdentifierSwitch" detail:0 cell:6 edit:0];
   v6 = PSValueChangedNotificationKey;
   [v5 setProperty:@"NanoLifestyleSessionTrackerAppPreferencesChangedNotification" forKey:PSValueChangedNotificationKey];
   v7 = PSIDKey;
@@ -289,7 +289,7 @@
   [v3 addObject:v5];
   if (FIUIIsWorkoutExtendedModeSupported())
   {
-    v17 = v4;
+    v17 = lowPowerModeName;
     v8 = FIUIBundle();
     v9 = [v8 localizedStringForKey:@"WORKOUT_ULTRA_MODE_GROUP_TITLE" value:&stru_35B68 table:@"Localizable"];
     v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:0 set:0 get:0 detail:0 cell:0 edit:0];
@@ -308,7 +308,7 @@
     [v15 setProperty:@"ULTRA_SWITCH" forKey:v7];
     [v3 addObject:v15];
 
-    v4 = v17;
+    lowPowerModeName = v17;
   }
 
   return v3;
@@ -377,7 +377,7 @@
 
   v23 = [v5 specifierForID:@"POWER_SAVING_MODE_GROUP_ID"];
   [(HPRFSessionTrackerAppSettingsController *)self _addLearnMoreLowPowerModeTextToSpecifier:v23];
-  v160 = [(HPRFSessionTrackerAppSettingsController *)self createPowerSpecifiers];
+  createPowerSpecifiers = [(HPRFSessionTrackerAppSettingsController *)self createPowerSpecifiers];
   v161 = v23;
   [v5 ps_insertObjectsFromArray:? afterObject:?];
   v24 = self->_device;
@@ -479,8 +479,8 @@ LABEL_14:
     [v163 setProperty:v41 forKey:PSFooterTextGroupKey];
   }
 
-  v42 = [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCharacteristicCache isWheelchairUser];
-  if (!FIDeviceMeetsMinimumOSVersionGlory() || (v42 & 1) != 0 || v7 == 2)
+  isWheelchairUser = [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCharacteristicCache isWheelchairUser];
+  if (!FIDeviceMeetsMinimumOSVersionGlory() || (isWheelchairUser & 1) != 0 || v7 == 2)
   {
     v43 = [v5 specifierForID:@"REMINDERS_GROUP"];
     [v5 removeObject:v43];
@@ -496,9 +496,9 @@ LABEL_14:
   }
 
   v47 = +[NMSMediaPinningManager sharedManager];
-  v48 = [v47 workoutPlaylistID];
+  workoutPlaylistID = [v47 workoutPlaylistID];
 
-  if (!v48)
+  if (!workoutPlaylistID)
   {
     selectedAlbumTitle = self->_selectedAlbumTitle;
     self->_selectedAlbumTitle = 0;
@@ -544,7 +544,7 @@ LABEL_14:
     v164[2] = sub_E144;
     v164[3] = &unk_352E0;
     v165 = v5;
-    v166 = self;
+    selfCopy = self;
     [v52 performWithResponseHandler:v164];
   }
 
@@ -726,9 +726,9 @@ LABEL_14:
 
     else
     {
-      v116 = [(SMAppDeletionManager *)self->_appDeletionManager isMessagesAppInstalled];
+      isMessagesAppInstalled = [(SMAppDeletionManager *)self->_appDeletionManager isMessagesAppInstalled];
 
-      if (v116)
+      if (isMessagesAppInstalled)
       {
         goto LABEL_61;
       }
@@ -792,20 +792,20 @@ LABEL_68:
 
   if ([(WOWorkoutConfigurationDataSourcesBridgedModel *)self->_configurationDataSourcesModel hasDataSources])
   {
-    v133 = [(HPRFSessionTrackerAppSettingsController *)self _createConfigurationDataSourceSpecifiers];
-    [v5 addObjectsFromArray:v133];
+    _createConfigurationDataSourceSpecifiers = [(HPRFSessionTrackerAppSettingsController *)self _createConfigurationDataSourceSpecifiers];
+    [v5 addObjectsFromArray:_createConfigurationDataSourceSpecifiers];
   }
 
   if (self->_isWorkoutAppInstalled)
   {
-    v134 = [(HPRFSessionTrackerAppSettingsController *)self localizedPaneTitle];
-    [(HPRFSessionTrackerAppSettingsController *)self setTitle:v134];
+    localizedPaneTitle = [(HPRFSessionTrackerAppSettingsController *)self localizedPaneTitle];
+    [(HPRFSessionTrackerAppSettingsController *)self setTitle:localizedPaneTitle];
   }
 
   else
   {
-    v134 = [NSBundle bundleForClass:objc_opt_class()];
-    v135 = [v134 localizedStringForKey:@"PANE_TITLE_UNINSTALLED" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
+    localizedPaneTitle = [NSBundle bundleForClass:objc_opt_class()];
+    v135 = [localizedPaneTitle localizedStringForKey:@"PANE_TITLE_UNINSTALLED" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
     [(HPRFSessionTrackerAppSettingsController *)self setTitle:v135];
   }
 
@@ -818,8 +818,8 @@ LABEL_68:
       do
       {
         v138 = [v5 objectAtIndex:v137];
-        v139 = [v138 identifier];
-        v140 = [&off_38760 containsObject:v139];
+        identifier = [v138 identifier];
+        v140 = [&off_38760 containsObject:identifier];
 
         if ((v140 & 1) == 0)
         {
@@ -898,18 +898,18 @@ LABEL_85:
   return v6;
 }
 
-- (void)_showConfigurationDataSourceProviderSpecifiers:(BOOL)a3
+- (void)_showConfigurationDataSourceProviderSpecifiers:(BOOL)specifiers
 {
-  if (a3)
+  if (specifiers)
   {
-    v4 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
-    v5 = [v4 specifierForID:@"WORKOUT_CONFIGURATION_DATA_SOURCES_GROUP_ID"];
+    specifiers = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
+    v5 = [specifiers specifierForID:@"WORKOUT_CONFIGURATION_DATA_SOURCES_GROUP_ID"];
 
     if (!v5)
     {
-      v10 = [(HPRFSessionTrackerAppSettingsController *)self _createConfigurationDataSourceSpecifiers];
-      v11 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
-      -[HPRFSessionTrackerAppSettingsController insertContiguousSpecifiers:atIndex:animated:](self, "insertContiguousSpecifiers:atIndex:animated:", v10, [v11 count], 1);
+      _createConfigurationDataSourceSpecifiers = [(HPRFSessionTrackerAppSettingsController *)self _createConfigurationDataSourceSpecifiers];
+      specifiers2 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
+      -[HPRFSessionTrackerAppSettingsController insertContiguousSpecifiers:atIndex:animated:](self, "insertContiguousSpecifiers:atIndex:animated:", _createConfigurationDataSourceSpecifiers, [specifiers2 count], 1);
 
       [(HPRFSessionTrackerAppSettingsController *)self reloadSpecifiers];
     }
@@ -918,16 +918,16 @@ LABEL_85:
   else
   {
     v12 = objc_opt_new();
-    v6 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
-    v7 = [v6 specifierForID:@"WORKOUT_CONFIGURATION_DATA_SOURCES_GROUP_ID"];
+    specifiers3 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
+    v7 = [specifiers3 specifierForID:@"WORKOUT_CONFIGURATION_DATA_SOURCES_GROUP_ID"];
 
     if (v7)
     {
       [v12 addObject:v7];
     }
 
-    v8 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
-    v9 = [v8 specifierForID:@"WORKOUT_CONFIGURATION_DATA_SOURCES_ROW_ID"];
+    specifiers4 = [(HPRFSessionTrackerAppSettingsController *)self specifiers];
+    v9 = [specifiers4 specifierForID:@"WORKOUT_CONFIGURATION_DATA_SOURCES_ROW_ID"];
 
     if (v9)
     {
@@ -942,12 +942,12 @@ LABEL_85:
   }
 }
 
-- (void)_updateShuffleSelectionInSpecifiers:(id)a3
+- (void)_updateShuffleSelectionInSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v8 = [v4 specifierForID:@"WORKOUT_MUSIC_SHUFFLE_GROUP_ID"];
-  v5 = [v4 specifierForID:@"WORKOUT_MUSIC_SHUFFLE_SETTING_ID"];
-  v6 = [v4 specifierForID:@"WORKOUT_MUSIC_PLAY_FROM_BEGINNING_SETTING_ID"];
+  specifiersCopy = specifiers;
+  v8 = [specifiersCopy specifierForID:@"WORKOUT_MUSIC_SHUFFLE_GROUP_ID"];
+  v5 = [specifiersCopy specifierForID:@"WORKOUT_MUSIC_SHUFFLE_SETTING_ID"];
+  v6 = [specifiersCopy specifierForID:@"WORKOUT_MUSIC_PLAY_FROM_BEGINNING_SETTING_ID"];
 
   if (FIUIMusicIsPlaybackModeShuffle())
   {
@@ -973,9 +973,9 @@ LABEL_85:
   [(HPRFSessionTrackerAppSettingsController *)&v4 reloadSpecifiers];
 }
 
-- (void)_addLearnMoreLowPowerModeTextToSpecifier:(id)a3
+- (void)_addLearnMoreLowPowerModeTextToSpecifier:(id)specifier
 {
-  v10 = a3;
+  specifierCopy = specifier;
   device = self->_device;
   v5 = [[NSUUID alloc] initWithUUIDString:@"F5E0C9C7-CA38-421E-808A-0705258C1EF9"];
   if ([(NRDevice *)device supportsCapability:v5])
@@ -985,7 +985,7 @@ LABEL_4:
     v8 = FIUIBundle();
     v9 = [v8 localizedStringForKey:@"WORKOUT_LOW_POWER_MODE_FOOTER_NO_LINK" value:&stru_35B68 table:@"Localizable-meadow"];
 
-    [v10 setProperty:v9 forKey:PSFooterTextGroupKey];
+    [specifierCopy setProperty:v9 forKey:PSFooterTextGroupKey];
     goto LABEL_6;
   }
 
@@ -998,13 +998,13 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  [(HPRFSessionTrackerAppSettingsController *)self _addPreKincaidFooterTextToSpecifier:v10];
+  [(HPRFSessionTrackerAppSettingsController *)self _addPreKincaidFooterTextToSpecifier:specifierCopy];
 LABEL_6:
 }
 
-- (void)_addPreKincaidFooterTextToSpecifier:(id)a3
+- (void)_addPreKincaidFooterTextToSpecifier:(id)specifier
 {
-  v27 = a3;
+  specifierCopy = specifier;
   healthStore = self->_healthStore;
   v5 = FIActivityMoveModeWithHealthStore();
   device = self->_device;
@@ -1014,7 +1014,7 @@ LABEL_6:
   v9 = FIUIBundle();
   v10 = [v9 localizedStringForKey:@"POWER_SAVING_MODE_FOOTER" value:&stru_35B68 table:@"Localizable"];
 
-  v11 = [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCharacteristicCache isWheelchairUser];
+  isWheelchairUser = [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCharacteristicCache isWheelchairUser];
   if (v8)
   {
     v12 = FIUIBundle();
@@ -1023,7 +1023,7 @@ LABEL_6:
     v10 = v13;
   }
 
-  if (v11)
+  if (isWheelchairUser)
   {
     v14 = FIUIBundle();
     v15 = [v14 localizedStringForKey:@"POWER_SAVING_MODE_FOOTER_WHEELCHAIR" value:&stru_35B68 table:@"Localizable"];
@@ -1067,7 +1067,7 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  if (v11)
+  if (isWheelchairUser)
   {
     v21 = FIUIBundle();
     v22 = [v21 localizedStringForKey:@"POWER_SAVING_MODE_FOOTER_WHEELCHAIR_TELEPHONY" value:&stru_35B68 table:@"Localizable-Sashimi"];
@@ -1112,7 +1112,7 @@ LABEL_20:
 
   v10 = v22;
 LABEL_22:
-  [v27 setProperty:v10 forKey:PSFooterTextGroupKey];
+  [specifierCopy setProperty:v10 forKey:PSFooterTextGroupKey];
 }
 
 - (void)_showLearnMoreAboutLowPowerMode
@@ -1150,30 +1150,30 @@ LABEL_22:
   [(HPRFSessionTrackerAppSettingsController *)self presentViewController:v19 animated:1 completion:0];
 }
 
-- (void)_addLearnMoreExtendedLowPowerModeTextToSpecifier:(id)a3
+- (void)_addLearnMoreExtendedLowPowerModeTextToSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = FIUIBundle();
   v5 = [v4 localizedStringForKey:@"WORKOUT_ULTRA_MODE_FOOTER" value:&stru_35B68 table:@"Localizable"];
 
-  [v3 setProperty:v5 forKey:PSFooterTextGroupKey];
+  [specifierCopy setProperty:v5 forKey:PSFooterTextGroupKey];
 }
 
-- (void)_addAboutTextToSpecifier:(id)a3
+- (void)_addAboutTextToSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v5 localizedStringForKey:@"ABOUT_GYMKIT" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
 
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v7 = [v6 getActivePairedDevice];
+  getActivePairedDevice = [v6 getActivePairedDevice];
 
-  v8 = [v7 valueForProperty:NRDevicePropertyGreenTeaDevice];
-  v9 = [v8 BOOLValue];
+  v8 = [getActivePairedDevice valueForProperty:NRDevicePropertyGreenTeaDevice];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = v10;
-  if (v9)
+  if (bOOLValue)
   {
     v12 = @"NFC_ENABLED_WITH_NFC_SWITCH_FOOTER";
   }
@@ -1188,17 +1188,17 @@ LABEL_22:
   v14 = [NSString stringWithFormat:@"%@ %@", v13, v19];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v4 setProperty:v16 forKey:PSFooterCellClassGroupKey];
+  [specifierCopy setProperty:v16 forKey:PSFooterCellClassGroupKey];
 
-  [v4 setProperty:v14 forKey:PSFooterHyperlinkViewTitleKey];
+  [specifierCopy setProperty:v14 forKey:PSFooterHyperlinkViewTitleKey];
   v21.location = [v14 rangeOfString:v19];
   v17 = NSStringFromRange(v21);
-  [v4 setProperty:v17 forKey:PSFooterHyperlinkViewLinkRangeKey];
+  [specifierCopy setProperty:v17 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
   v18 = [NSValue valueWithNonretainedObject:self];
-  [v4 setProperty:v18 forKey:PSFooterHyperlinkViewTargetKey];
+  [specifierCopy setProperty:v18 forKey:PSFooterHyperlinkViewTargetKey];
 
-  [v4 setProperty:@"_openPrivacyLink" forKey:PSFooterHyperlinkViewActionKey];
+  [specifierCopy setProperty:@"_openPrivacyLink" forKey:PSFooterHyperlinkViewActionKey];
 }
 
 - (void)_openPrivacyLink
@@ -1216,9 +1216,9 @@ LABEL_22:
   [(HPRFSessionTrackerAppSettingsController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_addGestureLinkToSpecifier:(id)a3
+- (void)_addGestureLinkToSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"DOUBLE_TAP_TO_SCROLL_WORKOUT_VIEWS_ENABLED_FOOTER" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
 
@@ -1239,19 +1239,19 @@ LABEL_22:
   else
   {
     v11 = NSStringFromRange(v9);
-    [v4 setProperty:v11 forKey:PSFooterHyperlinkViewLinkRangeKey];
+    [specifierCopy setProperty:v11 forKey:PSFooterHyperlinkViewLinkRangeKey];
   }
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  [v4 setProperty:v13 forKey:PSFooterCellClassGroupKey];
+  [specifierCopy setProperty:v13 forKey:PSFooterCellClassGroupKey];
 
-  [v4 setProperty:v6 forKey:PSFooterHyperlinkViewTitleKey];
+  [specifierCopy setProperty:v6 forKey:PSFooterHyperlinkViewTitleKey];
   v14 = [NSValue valueWithNonretainedObject:self];
-  [v4 setProperty:v14 forKey:PSFooterHyperlinkViewTargetKey];
+  [specifierCopy setProperty:v14 forKey:PSFooterHyperlinkViewTargetKey];
 
   v15 = NSStringFromSelector("_openEltonSetting");
-  [v4 setProperty:v15 forKey:PSFooterHyperlinkViewActionKey];
+  [specifierCopy setProperty:v15 forKey:PSFooterHyperlinkViewActionKey];
 }
 
 - (void)_openEltonSetting
@@ -1261,7 +1261,7 @@ LABEL_22:
   [v2 openSensitiveURL:v3 withOptions:0];
 }
 
-- (id)selectedMusicViewString:(id)a3
+- (id)selectedMusicViewString:(id)string
 {
   selectedAlbumTitle = self->_selectedAlbumTitle;
   if (selectedAlbumTitle)
@@ -1277,91 +1277,91 @@ LABEL_22:
   return v4;
 }
 
-- (void)isSubscribedWithCompletion:(id)a3
+- (void)isSubscribedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sessionTrackerAppSettingsContext = self->_sessionTrackerAppSettingsContext;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_F880;
   v7[3] = &unk_35330;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HPRFSessionTrackerAppSettingsContext *)sessionTrackerAppSettingsContext fetchSubscriptionStatusWithCompletion:v7];
 }
 
-- (id)getGuidedWorkoutPrefetchEnabled:(id)a3
+- (id)getGuidedWorkoutPrefetchEnabled:(id)enabled
 {
   v3 = FIUIIsGuidedWorkoutPrefetchEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setGuidedWorkoutPrefetchEnabled:(id)a3 specifier:(id)a4
+- (void)setGuidedWorkoutPrefetchEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _FIUISetGuidedWorkoutPrefetchEnabled(v4);
+  _FIUISetGuidedWorkoutPrefetchEnabled(bOOLValue);
 }
 
-- (id)isGuidedWorkoutMediaMomentsEnabled:(id)a3
+- (id)isGuidedWorkoutMediaMomentsEnabled:(id)enabled
 {
   v3 = FIUIIsGuidedWorkoutMediaMomentsEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (id)getGuidedRunPrefetchEnabled:(id)a3
+- (id)getGuidedRunPrefetchEnabled:(id)enabled
 {
   v3 = FIUIIsGuidedRunPrefetchEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setGuidedRunPrefetchEnabled:(id)a3 specifier:(id)a4
+- (void)setGuidedRunPrefetchEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _FIUISetGuidedRunPrefetchEnabled(v4);
+  _FIUISetGuidedRunPrefetchEnabled(bOOLValue);
 }
 
-- (id)isGuidedRunMediaMomentsEnabled:(id)a3
+- (id)isGuidedRunMediaMomentsEnabled:(id)enabled
 {
   v3 = FIUIIsGuidedRunMediaMomentsEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (id)NFCAlwaysOn:(id)a3
+- (id)NFCAlwaysOn:(id)on
 {
   v3 = FIUIIsWorkoutNFCAllDayEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setNFCAlwaysOn:(id)a3 specifier:(id)a4
+- (void)setNFCAlwaysOn:(id)on specifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 BOOLValue])
+  onCopy = on;
+  if ([onCopy BOOLValue])
   {
     v6 = objc_alloc_init(sub_BEFC());
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_FC0C;
     v7[3] = &unk_35358;
-    v8 = v5;
-    v9 = self;
+    v8 = onCopy;
+    selfCopy = self;
     [v6 allowEnableExpressGymKitWithVisibleViewController:self completion:v7];
   }
 
   else
   {
-    [v5 BOOLValue];
+    [onCopy BOOLValue];
     FIUISetWorkoutNFCAllDayEnabled();
   }
 }
 
-- (id)isStartRemindersEnabled:(id)a3
+- (id)isStartRemindersEnabled:(id)enabled
 {
   FIIsActivePairedDeviceSatellitePaired();
   healthStore = self->_healthStore;
@@ -1371,7 +1371,7 @@ LABEL_22:
   return [NSNumber numberWithBool:started];
 }
 
-- (id)isResumeRemindersEnabled:(id)a3
+- (id)isResumeRemindersEnabled:(id)enabled
 {
   FIIsActivePairedDeviceSatellitePaired();
   healthStore = self->_healthStore;
@@ -1381,7 +1381,7 @@ LABEL_22:
   return [NSNumber numberWithBool:v5];
 }
 
-- (id)isEndRemindersEnabled:(id)a3
+- (id)isEndRemindersEnabled:(id)enabled
 {
   healthStore = self->_healthStore;
   FIActivityMoveModeWithHealthStore();
@@ -1420,26 +1420,26 @@ LABEL_22:
 
 - (id)autoPauseItemValue
 {
-  v3 = [(HPRFSessionTrackerAppSettingsController *)self isAutoPauseEnabled];
-  v4 = [v3 BOOLValue];
+  isAutoPauseEnabled = [(HPRFSessionTrackerAppSettingsController *)self isAutoPauseEnabled];
+  bOOLValue = [isAutoPauseEnabled BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(HPRFSessionTrackerAppSettingsController *)self isRunningAutoPauseEnabled];
-    v7 = [v6 BOOLValue];
+    isRunningAutoPauseEnabled = [(HPRFSessionTrackerAppSettingsController *)self isRunningAutoPauseEnabled];
+    bOOLValue2 = [isRunningAutoPauseEnabled BOOLValue];
 
-    if (v7)
+    if (bOOLValue2)
     {
       v8 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"AUTOPAUSE_RUNNING" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
       [v5 addObject:v9];
     }
 
-    v10 = [(HPRFSessionTrackerAppSettingsController *)self isCyclingAutoPauseEnabled];
-    v11 = [v10 BOOLValue];
+    isCyclingAutoPauseEnabled = [(HPRFSessionTrackerAppSettingsController *)self isCyclingAutoPauseEnabled];
+    bOOLValue3 = [isCyclingAutoPauseEnabled BOOLValue];
 
-    if (v11)
+    if (bOOLValue3)
     {
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v13 = [v12 localizedStringForKey:@"AUTOPAUSE_CYCLING" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
@@ -1457,11 +1457,11 @@ LABEL_22:
   return v14;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 propertyForKey:PSKeyNameKey];
+  valueCopy = value;
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:PSKeyNameKey];
   if (v8)
   {
     if (qword_412F0 != -1)
@@ -1470,16 +1470,16 @@ LABEL_22:
     }
 
     v9 = [qword_412F8 containsObject:v8];
-    if (v6)
+    if (valueCopy)
     {
       if (v9)
       {
-        v10 = [v7 propertyForKey:PSValueKey];
-        v11 = [v6 isEqual:v10];
+        v10 = [specifierCopy propertyForKey:PSValueKey];
+        v11 = [valueCopy isEqual:v10];
 
         if ((v11 & 1) == 0)
         {
-          v12 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v6 integerValue]);
+          v12 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [valueCopy integerValue]);
           FIActivityAnalyticsSubmission();
         }
       }
@@ -1488,33 +1488,33 @@ LABEL_22:
 
   v13.receiver = self;
   v13.super_class = HPRFSessionTrackerAppSettingsController;
-  [(HPRFSessionTrackerAppSettingsController *)&v13 setPreferenceValue:v6 specifier:v7];
+  [(HPRFSessionTrackerAppSettingsController *)&v13 setPreferenceValue:valueCopy specifier:specifierCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPRFSessionTrackerAppSettingsController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(HPRFSessionTrackerAppSettingsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  if (([v10 isEqualToString:@"WORKOUT_MUSIC_SHUFFLE_SETTING_ID"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"WORKOUT_MUSIC_PLAY_FROM_BEGINNING_SETTING_ID"))
+  identifier = [v9 identifier];
+  if (([identifier isEqualToString:@"WORKOUT_MUSIC_SHUFFLE_SETTING_ID"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"WORKOUT_MUSIC_PLAY_FROM_BEGINNING_SETTING_ID"))
   {
-    [v10 isEqualToString:@"WORKOUT_MUSIC_SHUFFLE_SETTING_ID"];
+    [identifier isEqualToString:@"WORKOUT_MUSIC_SHUFFLE_SETTING_ID"];
     FIUISetMusicPlaybackModeShuffle();
   }
 
-  else if ([v10 isEqualToString:@"EnablePowerSavingMode"])
+  else if ([identifier isEqualToString:@"EnablePowerSavingMode"])
   {
     FIUISetIsPowerSavingModeEnabled();
   }
 
-  else if ([v10 isEqualToString:@"WorkoutExtendedModeEnabled"])
+  else if ([identifier isEqualToString:@"WorkoutExtendedModeEnabled"])
   {
     FIUISetWorkoutExtendedModeEnabled();
   }
 
-  else if ([v10 isEqualToString:@"kWOLPMNoneKey"])
+  else if ([identifier isEqualToString:@"kWOLPMNoneKey"])
   {
     FIUIClearWorkoutPowerMode();
   }
@@ -1524,7 +1524,7 @@ LABEL_22:
   [(HPRFSessionTrackerAppSettingsController *)&v12 reloadSpecifiers];
   v11.receiver = self;
   v11.super_class = HPRFSessionTrackerAppSettingsController;
-  [(HPRFSessionTrackerAppSettingsController *)&v11 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(HPRFSessionTrackerAppSettingsController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (void)onMessagesAppInstalled
@@ -1547,7 +1547,7 @@ LABEL_22:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)isVoiceFeedbackEnabled:(id)a3
+- (id)isVoiceFeedbackEnabled:(id)enabled
 {
   v3 = FIUIIsWorkoutVoiceFeedbackEnabled();
 
@@ -1589,12 +1589,12 @@ LABEL_22:
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRDevice *)self->_device pairingID];
-  v9 = [v8 isEqual:v7];
+  installedCopy = installed;
+  dCopy = d;
+  pairingID = [(NRDevice *)self->_device pairingID];
+  v9 = [pairingID isEqual:dCopy];
 
   if (v9)
   {
@@ -1602,7 +1602,7 @@ LABEL_22:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v6;
+    v10 = installedCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -1618,8 +1618,8 @@ LABEL_22:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * v14) bundleIdentifier];
-          v16 = [v15 isEqualToString:@"com.apple.SessionTrackerApp"];
+          bundleIdentifier = [*(*(&v17 + 1) + 8 * v14) bundleIdentifier];
+          v16 = [bundleIdentifier isEqualToString:@"com.apple.SessionTrackerApp"];
 
           if (v16)
           {
@@ -1638,12 +1638,12 @@ LABEL_22:
   }
 }
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRDevice *)self->_device pairingID];
-  v9 = [v8 isEqual:v7];
+  uninstalledCopy = uninstalled;
+  dCopy = d;
+  pairingID = [(NRDevice *)self->_device pairingID];
+  v9 = [pairingID isEqual:dCopy];
 
   if (v9)
   {
@@ -1651,7 +1651,7 @@ LABEL_22:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = v6;
+    v10 = uninstalledCopy;
     v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
@@ -1684,14 +1684,14 @@ LABEL_22:
   }
 }
 
-- (void)updateWorkoutInstallState:(BOOL)a3
+- (void)updateWorkoutInstallState:(BOOL)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10960;
   v3[3] = &unk_35380;
   v3[4] = self;
-  v4 = a3;
+  stateCopy = state;
   dispatch_async(&_dispatch_main_q, v3);
 }
 

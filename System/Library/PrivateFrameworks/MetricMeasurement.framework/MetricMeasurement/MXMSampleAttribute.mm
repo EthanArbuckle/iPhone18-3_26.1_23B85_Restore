@@ -1,18 +1,18 @@
 @interface MXMSampleAttribute
-+ (id)attributeWithName:(id)a3;
-+ (id)attributeWithName:(id)a3 numericValue:(id)a4;
-+ (id)attributeWithName:(id)a3 stringValue:(id)a4;
-+ (id)attributeWithName:(id)a3 valueType:(int64_t)a4;
-+ (id)attributeWithName:(id)a3 valueType:(int64_t)a4 value:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAttribute:(id)a3;
-- (MXMSampleAttribute)initWithAttributeName:(id)a3 valueType:(int64_t)a4 value:(id)a5;
-- (MXMSampleAttribute)initWithCoder:(id)a3;
++ (id)attributeWithName:(id)name;
++ (id)attributeWithName:(id)name numericValue:(id)value;
++ (id)attributeWithName:(id)name stringValue:(id)value;
++ (id)attributeWithName:(id)name valueType:(int64_t)type;
++ (id)attributeWithName:(id)name valueType:(int64_t)type value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAttribute:(id)attribute;
+- (MXMSampleAttribute)initWithAttributeName:(id)name valueType:(int64_t)type value:(id)value;
+- (MXMSampleAttribute)initWithCoder:(id)coder;
 - (NSNumber)numericValue;
 - (NSString)stringValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMSampleAttribute
@@ -47,53 +47,53 @@
   return v4;
 }
 
-+ (id)attributeWithName:(id)a3
++ (id)attributeWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAttributeName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithAttributeName:nameCopy];
 
   return v5;
 }
 
-+ (id)attributeWithName:(id)a3 stringValue:(id)a4
++ (id)attributeWithName:(id)name stringValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAttributeName:v7 stringValue:v6];
+  valueCopy = value;
+  nameCopy = name;
+  v8 = [[self alloc] initWithAttributeName:nameCopy stringValue:valueCopy];
 
   return v8;
 }
 
-+ (id)attributeWithName:(id)a3 numericValue:(id)a4
++ (id)attributeWithName:(id)name numericValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAttributeName:v7 numericValue:v6];
+  valueCopy = value;
+  nameCopy = name;
+  v8 = [[self alloc] initWithAttributeName:nameCopy numericValue:valueCopy];
 
   return v8;
 }
 
-+ (id)attributeWithName:(id)a3 valueType:(int64_t)a4
++ (id)attributeWithName:(id)name valueType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithAttributeName:v6 valueType:a4 value:0];
+  nameCopy = name;
+  v7 = [[self alloc] initWithAttributeName:nameCopy valueType:type value:0];
 
   return v7;
 }
 
-+ (id)attributeWithName:(id)a3 valueType:(int64_t)a4 value:(id)a5
++ (id)attributeWithName:(id)name valueType:(int64_t)type value:(id)value
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithAttributeName:v9 valueType:a4 value:v8];
+  valueCopy = value;
+  nameCopy = name;
+  v10 = [[self alloc] initWithAttributeName:nameCopy valueType:type value:valueCopy];
 
   return v10;
 }
 
-- (MXMSampleAttribute)initWithAttributeName:(id)a3 valueType:(int64_t)a4 value:(id)a5
+- (MXMSampleAttribute)initWithAttributeName:(id)name valueType:(int64_t)type value:(id)value
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MXMSampleAttribute;
   v11 = [(MXMSampleAttribute *)&v17 init];
@@ -102,14 +102,14 @@
     goto LABEL_12;
   }
 
-  v12 = [v9 copy];
+  v12 = [nameCopy copy];
   name = v11->_name;
   v11->_name = v12;
 
-  v11->_valueType = a4;
-  if (v9)
+  v11->_valueType = type;
+  if (nameCopy)
   {
-    if (!v10)
+    if (!valueCopy)
     {
 LABEL_12:
       v14 = v11;
@@ -120,14 +120,14 @@ LABEL_12:
   else
   {
     [MXMSampleAttribute initWithAttributeName:a2 valueType:v11 value:?];
-    if (!v10)
+    if (!valueCopy)
     {
       goto LABEL_12;
     }
   }
 
   v14 = 0;
-  switch(a4)
+  switch(type)
   {
     case 0:
 LABEL_11:
@@ -144,7 +144,7 @@ LABEL_11:
       }
 
 LABEL_10:
-      v14 = [v10 copy];
+      v14 = [valueCopy copy];
       goto LABEL_11;
     case 1:
       objc_opt_class();
@@ -164,35 +164,35 @@ LABEL_13:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(MXMSampleAttribute *)self name];
-  v6 = [(MXMSampleAttribute *)self valueType];
-  v7 = [(MXMSampleAttribute *)self value];
-  v8 = [v4 initWithAttributeName:v5 valueType:v6 value:v7];
+  name = [(MXMSampleAttribute *)self name];
+  valueType = [(MXMSampleAttribute *)self valueType];
+  value = [(MXMSampleAttribute *)self value];
+  v8 = [v4 initWithAttributeName:name valueType:valueType value:value];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeInteger:self->_valueType forKey:@"valueType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_valueType forKey:@"valueType"];
   value = self->_value;
   if (value)
   {
-    [v5 encodeObject:value forKey:@"value"];
+    [coderCopy encodeObject:value forKey:@"value"];
   }
 }
 
-- (MXMSampleAttribute)initWithCoder:(id)a3
+- (MXMSampleAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeIntegerForKey:@"valueType"];
-  if (![v4 containsValueForKey:@"value"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeIntegerForKey:@"valueType"];
+  if (![coderCopy containsValueForKey:@"value"])
   {
     goto LABEL_8;
   }
@@ -221,53 +221,53 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"value"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"value"];
 LABEL_9:
   v11 = [(MXMSampleAttribute *)self initWithAttributeName:v5 valueType:v6 value:v10];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MXMSampleAttribute *)self isEqualToAttribute:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MXMSampleAttribute *)self isEqualToAttribute:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAttribute:(id)a3
+- (BOOL)isEqualToAttribute:(id)attribute
 {
-  v5 = a3;
+  attributeCopy = attribute;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(MXMSampleAttribute *)a2 isEqualToAttribute:?];
   }
 
-  v6 = [(MXMSampleAttribute *)self valueType];
-  if (v6 == [v5 valueType] && (-[MXMSampleAttribute name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "name"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
+  valueType = [(MXMSampleAttribute *)self valueType];
+  if (valueType == [attributeCopy valueType] && (-[MXMSampleAttribute name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(attributeCopy, "name"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
   {
-    v10 = [(MXMSampleAttribute *)self valueType];
-    switch(v10)
+    valueType2 = [(MXMSampleAttribute *)self valueType];
+    switch(valueType2)
     {
       case 0:
-        v11 = [(MXMSampleAttribute *)self value];
-        if (!v11)
+        value = [(MXMSampleAttribute *)self value];
+        if (!value)
         {
-          v12 = [v5 value];
-          LOBYTE(v8) = v12 == 0;
+          value2 = [attributeCopy value];
+          LOBYTE(v8) = value2 == 0;
           goto LABEL_18;
         }
 
         goto LABEL_16;
       case 2:
-        v11 = [(MXMSampleAttribute *)self numericValue];
-        if (v11)
+        value = [(MXMSampleAttribute *)self numericValue];
+        if (value)
         {
-          v12 = [(MXMSampleAttribute *)self numericValue];
-          v13 = [v5 numericValue];
-          v14 = [v12 isEqualToNumber:v13];
+          value2 = [(MXMSampleAttribute *)self numericValue];
+          numericValue = [attributeCopy numericValue];
+          v14 = [value2 isEqualToNumber:numericValue];
           goto LABEL_14;
         }
 
@@ -277,12 +277,12 @@ LABEL_19:
 
         break;
       case 1:
-        v11 = [(MXMSampleAttribute *)self stringValue];
-        if (v11)
+        value = [(MXMSampleAttribute *)self stringValue];
+        if (value)
         {
-          v12 = [(MXMSampleAttribute *)self stringValue];
-          v13 = [v5 stringValue];
-          v14 = [v12 isEqualToString:v13];
+          value2 = [(MXMSampleAttribute *)self stringValue];
+          numericValue = [attributeCopy stringValue];
+          v14 = [value2 isEqualToString:numericValue];
 LABEL_14:
           LOBYTE(v8) = v14;
 
@@ -307,9 +307,9 @@ LABEL_18:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MXMSampleAttribute *)self name];
-  v7 = [(MXMSampleAttribute *)self value];
-  v8 = [v3 stringWithFormat:@"<%@: %p name='%@' value='%@'>", v5, self, v6, v7];
+  name = [(MXMSampleAttribute *)self name];
+  value = [(MXMSampleAttribute *)self value];
+  v8 = [v3 stringWithFormat:@"<%@: %p name='%@' value='%@'>", v5, self, name, value];
 
   return v8;
 }

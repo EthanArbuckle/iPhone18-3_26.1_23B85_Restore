@@ -1,14 +1,14 @@
 @interface ConversationLinkSyncIDSInteractor
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation ConversationLinkSyncIDSInteractor
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -18,14 +18,14 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1002E9DDC(a3, v6);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1002E9DDC(service, v6);
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  if (a4)
+  if (changed)
   {
     v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -35,26 +35,26 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1002EA084(v8, v6);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1002EA084(selfCopy, v6);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  if (a5)
+  dataCopy = data;
+  if (data)
   {
-    v12 = a3;
-    v13 = a4;
-    v14 = a6;
-    v15 = a7;
-    v16 = self;
-    v17 = v9;
-    v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    serviceCopy = service;
+    accountCopy = account;
+    dCopy = d;
+    contextCopy = context;
+    selfCopy = self;
+    v17 = dataCopy;
+    dataCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = v18;
 
-    if (!a6)
+    if (!d)
     {
       goto LABEL_5;
     }
@@ -62,13 +62,13 @@
     goto LABEL_3;
   }
 
-  v20 = a3;
-  v21 = a4;
-  v22 = a6;
-  v23 = a7;
-  v24 = self;
+  serviceCopy2 = service;
+  accountCopy2 = account;
+  dCopy2 = d;
+  contextCopy2 = context;
+  selfCopy2 = self;
   v19 = 0xF000000000000000;
-  if (a6)
+  if (d)
   {
 LABEL_3:
     static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -77,7 +77,7 @@ LABEL_3:
 LABEL_5:
   sub_1002EA17C();
 
-  sub_100290B6C(v9, v19);
+  sub_100290B6C(dataCopy, v19);
 }
 
 @end

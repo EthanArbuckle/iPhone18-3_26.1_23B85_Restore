@@ -1,15 +1,15 @@
 @interface VN5xRo0q9Wz9Io02mmbtoLsConfiguration
-- (VN5xRo0q9Wz9Io02mmbtoLsConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VN5xRo0q9Wz9Io02mmbtoLsConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VN5xRo0q9Wz9Io02mmbtoLsConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = VN5xRo0q9Wz9Io02mmbtoLsConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -22,11 +22,11 @@
   return v5;
 }
 
-- (VN5xRo0q9Wz9Io02mmbtoLsConfiguration)initWithRequestClass:(Class)a3
+- (VN5xRo0q9Wz9Io02mmbtoLsConfiguration)initWithRequestClass:(Class)class
 {
   v8.receiver = self;
   v8.super_class = VN5xRo0q9Wz9Io02mmbtoLsConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v8 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v8 initWithRequestClass:class];
   v4 = v3;
   if (v3)
   {

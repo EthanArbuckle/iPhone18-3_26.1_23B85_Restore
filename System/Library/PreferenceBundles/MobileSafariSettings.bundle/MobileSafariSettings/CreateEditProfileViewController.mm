@@ -1,37 +1,37 @@
 @interface CreateEditProfileViewController
 - (CreateEditProfileViewController)init;
-- (id)_contentBlockerManagerForProfileIdentifier:(id)a3;
+- (id)_contentBlockerManagerForProfileIdentifier:(id)identifier;
 - (id)_fallbackColorForCurrentSymbol;
 - (id)_newTabOverrideDescription;
 - (id)_presetColorForCurrentSymbol;
 - (id)_titleOfCurrentFavorites;
-- (id)_webExtensionsControllerForProfileIdentifier:(id)a3;
+- (id)_webExtensionsControllerForProfileIdentifier:(id)identifier;
 - (id)specifiers;
 - (void)_createNewFolderForFavorites;
-- (void)_deleteDefunctCustomFavoritesFolderWithServerID:(id)a3;
-- (void)_didSelectColorButton:(id)a3;
-- (void)_didSelectIconButton:(id)a3;
-- (void)_generateProfileSpecificBackgroundImageForProfile:(id)a3 isCreatingInitialDefaultProfile:(BOOL)a4 completionHandler:(id)a5;
+- (void)_deleteDefunctCustomFavoritesFolderWithServerID:(id)d;
+- (void)_didSelectColorButton:(id)button;
+- (void)_didSelectIconButton:(id)button;
+- (void)_generateProfileSpecificBackgroundImageForProfile:(id)profile isCreatingInitialDefaultProfile:(BOOL)defaultProfile completionHandler:(id)handler;
 - (void)_saveColorSelectionToProfile;
 - (void)_saveIconToProfile;
-- (void)_setValue:(id)a3 forSpecifier:(id)a4;
-- (void)_showColorPickerPopover:(id)a3;
-- (void)_showIconPickerPopover:(id)a3;
+- (void)_setValue:(id)value forSpecifier:(id)specifier;
+- (void)_showColorPickerPopover:(id)popover;
+- (void)_showIconPickerPopover:(id)popover;
 - (void)_updateColorSelection;
 - (void)_updateTitle;
-- (void)colorPickerCollectionViewController:(id)a3 didSelectColorAtIndex:(int64_t)a4;
-- (void)deleteButtonTapped:(id)a3;
-- (void)didSelectNewFolderInProfileFavoritesFolderPickerController:(id)a3;
-- (void)doneButtonTapped:(id)a3;
-- (void)postDistributedNotificationNamed:(__CFString *)a3;
-- (void)profileFavoritesFolderPickerController:(id)a3 didSelectFolderWithServerID:(id)a4;
-- (void)profileIconCollectionViewController:(id)a3 didSelectIconAtIndex:(int64_t)a4;
+- (void)colorPickerCollectionViewController:(id)controller didSelectColorAtIndex:(int64_t)index;
+- (void)deleteButtonTapped:(id)tapped;
+- (void)didSelectNewFolderInProfileFavoritesFolderPickerController:(id)controller;
+- (void)doneButtonTapped:(id)tapped;
+- (void)postDistributedNotificationNamed:(__CFString *)named;
+- (void)profileFavoritesFolderPickerController:(id)controller didSelectFolderWithServerID:(id)d;
+- (void)profileIconCollectionViewController:(id)controller didSelectIconAtIndex:(int64_t)index;
 - (void)profileNameCellDidResignFirstResponder;
-- (void)setSpecifier:(id)a3;
-- (void)setUserInfo:(id)a3;
-- (void)tabGroupManager:(id)a3 didUpdateProfileWithIdentifier:(id)a4 difference:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setSpecifier:(id)specifier;
+- (void)setUserInfo:(id)info;
+- (void)tabGroupManager:(id)manager didUpdateProfileWithIdentifier:(id)identifier difference:(id)difference;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -178,17 +178,17 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
     v18 = PSEnabledKey;
     [(PSSpecifier *)self->_iconSpecifier setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
     [(PSSpecifier *)self->_iconSpecifier setUserInfo:self->_symbolStackView];
-    v19 = [(CreateEditProfileViewController *)self profile];
-    v20 = [v19 identifier];
-    v21 = [v20 isEqualToString:WBSDefaultProfileIdentifier];
+    profile = [(CreateEditProfileViewController *)self profile];
+    identifier = [profile identifier];
+    v21 = [identifier isEqualToString:WBSDefaultProfileIdentifier];
 
     if (v21)
     {
       v22 = self->_nameAndIconGroupSpecifier;
-      v23 = SafariSettingsLocalizedString(@"%@ (Default) cannot be deleted.", @"Profiles");
-      v24 = [(CreateEditProfileViewController *)self profile];
-      v25 = [v24 title];
-      v26 = [NSString stringWithFormat:v23, v25];
+      profile3 = SafariSettingsLocalizedString(@"%@ (Default) cannot be deleted.", @"Profiles");
+      profile2 = [(CreateEditProfileViewController *)self profile];
+      title = [profile2 title];
+      v26 = [NSString stringWithFormat:profile3, title];
       [(PSSpecifier *)v22 setProperty:v26 forKey:PSFooterTextGroupKey];
     }
 
@@ -206,9 +206,9 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
       self->_favoritesSpecifier = v32;
 
       v106[0] = @"isCreatingNewProfile";
-      v23 = [(CreateEditProfileViewController *)self profile];
+      profile3 = [(CreateEditProfileViewController *)self profile];
       v34 = &__kCFBooleanFalse;
-      if (!v23)
+      if (!profile3)
       {
         v34 = &__kCFBooleanTrue;
       }
@@ -216,8 +216,8 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
       v106[1] = @"delegate";
       v107[0] = v34;
       v107[1] = self;
-      v24 = [NSDictionary dictionaryWithObjects:v107 forKeys:v106 count:2];
-      [(PSSpecifier *)self->_favoritesSpecifier setUserInfo:v24];
+      profile2 = [NSDictionary dictionaryWithObjects:v107 forKeys:v106 count:2];
+      [(PSSpecifier *)self->_favoritesSpecifier setUserInfo:profile2];
     }
 
     v35 = [[PSSpecifier alloc] initWithName:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -230,9 +230,9 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
     if ((v21 & 1) == 0)
     {
       v37 = +[WBSManagedNewTabPageController sharedController];
-      v38 = [v37 managedNewTabPageState];
+      managedNewTabPageState = [v37 managedNewTabPageState];
 
-      if (v38)
+      if (managedNewTabPageState)
       {
         v39 = [PSSpecifier groupSpecifierWithID:@"NEW_TABS_OPEN_WITH"];
         newTabsGroupSpecifier = self->_newTabsGroupSpecifier;
@@ -251,7 +251,7 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
 
       v43 = [PSSpecifier alloc];
       v44 = SafariSettingsLocalizedString(@"Profile Open New Tabs Setting Title", @"Profiles");
-      if (v38)
+      if (managedNewTabPageState)
       {
         v45 = 0;
         v46 = -1;
@@ -267,19 +267,19 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
       newTabsSpecifier = self->_newTabsSpecifier;
       self->_newTabsSpecifier = v47;
 
-      if (v38)
+      if (managedNewTabPageState)
       {
         [(PSSpecifier *)self->_newTabsSpecifier setProperty:&__kCFBooleanFalse forKey:v18];
       }
 
       v104[0] = @"profileID";
-      v49 = [(CreateEditProfileViewController *)self profile];
-      v50 = [v49 identifierForExtensions];
-      v51 = v50;
+      profile4 = [(CreateEditProfileViewController *)self profile];
+      identifierForExtensions = [profile4 identifierForExtensions];
+      v51 = identifierForExtensions;
       v52 = &stru_8BB60;
-      if (v50)
+      if (identifierForExtensions)
       {
-        v52 = v50;
+        v52 = identifierForExtensions;
       }
 
       v104[1] = @"delegate";
@@ -289,25 +289,25 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
       [(PSSpecifier *)self->_newTabsSpecifier setUserInfo:v53];
     }
 
-    v54 = [(CreateEditProfileViewController *)self profile];
-    v55 = v54 == 0;
+    profile5 = [(CreateEditProfileViewController *)self profile];
+    v55 = profile5 == 0;
 
     if ((v55 | v21))
     {
-      v99 = 0;
+      specifiers = 0;
     }
 
     else
     {
-      v56 = [(CreateEditProfileViewController *)self profile];
-      v57 = [v56 identifierForExtensions];
+      profile6 = [(CreateEditProfileViewController *)self profile];
+      identifierForExtensions2 = [profile6 identifierForExtensions];
 
-      v58 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:v57];
-      v59 = [(CreateEditProfileViewController *)self _contentBlockerManagerForProfileIdentifier:v57];
-      v60 = [v58 extensions];
-      v61 = [v60 count];
-      v62 = [v59 extensions];
-      LODWORD(v61) = &v61[[v62 count]] > &dword_4 + 2;
+      v58 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:identifierForExtensions2];
+      v59 = [(CreateEditProfileViewController *)self _contentBlockerManagerForProfileIdentifier:identifierForExtensions2];
+      extensions = [v58 extensions];
+      v61 = [extensions count];
+      extensions2 = [v59 extensions];
+      LODWORD(v61) = &v61[[extensions2 count]] > &dword_4 + 2;
 
       if (v61)
       {
@@ -321,14 +321,14 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
         manageExtensionsSpecifier = self->_manageExtensionsSpecifier;
         self->_manageExtensionsSpecifier = v67;
 
-        v99 = 0;
-        [(PSSpecifier *)self->_manageExtensionsSpecifier setUserInfo:v57];
+        specifiers = 0;
+        [(PSSpecifier *)self->_manageExtensionsSpecifier setUserInfo:identifierForExtensions2];
       }
 
       else
       {
-        v69 = [[SafariExtensionsProfileSettingsController alloc] initWithProfileIdentifier:v57];
-        v99 = [(SafariExtensionsProfileSettingsController *)v69 specifiers];
+        v69 = [[SafariExtensionsProfileSettingsController alloc] initWithProfileIdentifier:identifierForExtensions2];
+        specifiers = [(SafariExtensionsProfileSettingsController *)v69 specifiers];
       }
 
       v70 = [PSSpecifier groupSpecifierWithName:0];
@@ -360,9 +360,9 @@ void __39__CreateEditProfileViewController_init__block_invoke(uint64_t a1, void 
     v85 = *&self->super.PSListController_opaque[v98];
     *&self->super.PSListController_opaque[v98] = v84;
 
-    if (v99)
+    if (specifiers)
     {
-      v86 = [*&self->super.PSListController_opaque[v98] arrayByAddingObjectsFromArray:v99];
+      v86 = [*&self->super.PSListController_opaque[v98] arrayByAddingObjectsFromArray:specifiers];
       v87 = *&self->super.PSListController_opaque[v98];
       *&self->super.PSListController_opaque[v98] = v86;
     }
@@ -400,91 +400,91 @@ void __45__CreateEditProfileViewController_specifiers__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_setValue:(id)a3 forSpecifier:(id)a4
+- (void)_setValue:(id)value forSpecifier:(id)specifier
 {
-  v7 = a3;
-  -[UIBarButtonItem setEnabled:](self->_doneButton, "setEnabled:", [v7 length] != 0);
-  v5 = [v7 copy];
+  valueCopy = value;
+  -[UIBarButtonItem setEnabled:](self->_doneButton, "setEnabled:", [valueCopy length] != 0);
+  v5 = [valueCopy copy];
   profileTitle = self->_profileTitle;
   self->_profileTitle = v5;
 
   [(CreateEditProfileViewController *)self _updateTitle];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v6.receiver = self;
   v6.super_class = CreateEditProfileViewController;
-  [(CreateEditProfileViewController *)&v6 setSpecifier:v4];
-  if (v4)
+  [(CreateEditProfileViewController *)&v6 setSpecifier:specifierCopy];
+  if (specifierCopy)
   {
-    v5 = [v4 userInfo];
-    [(CreateEditProfileViewController *)self setUserInfo:v5];
+    userInfo = [specifierCopy userInfo];
+    [(CreateEditProfileViewController *)self setUserInfo:userInfo];
   }
 }
 
-- (id)_webExtensionsControllerForProfileIdentifier:(id)a3
+- (id)_webExtensionsControllerForProfileIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SafariSettingsController extensionsProfilesDataSource];
-  v5 = [v4 profileServerIDToWebExtensionsControllers];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  profileServerIDToWebExtensionsControllers = [v4 profileServerIDToWebExtensionsControllers];
+  v6 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (id)_contentBlockerManagerForProfileIdentifier:(id)a3
+- (id)_contentBlockerManagerForProfileIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SafariSettingsController extensionsProfilesDataSource];
-  v5 = [v4 profileServerIDToContentBlockerManagers];
-  v6 = [v5 objectForKeyedSubscript:v3];
+  profileServerIDToContentBlockerManagers = [v4 profileServerIDToContentBlockerManagers];
+  v6 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
 - (id)_newTabOverrideDescription
 {
-  v3 = [(CreateEditProfileViewController *)self profile];
+  profile = [(CreateEditProfileViewController *)self profile];
 
-  if (v3)
+  if (profile)
   {
-    v4 = [(CreateEditProfileViewController *)self profile];
-    v5 = [v4 identifierForExtensions];
-    v6 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:v5];
+    profile2 = [(CreateEditProfileViewController *)self profile];
+    identifierForExtensions = [profile2 identifierForExtensions];
+    userInfo2 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:identifierForExtensions];
 
-    v7 = [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:v6];
+    v7 = [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:userInfo2];
   }
 
   else
   {
     v8 = +[WBSManagedNewTabPageController sharedController];
-    v9 = [v8 managedNewTabPageState];
+    managedNewTabPageState = [v8 managedNewTabPageState];
 
-    if (v9)
+    if (managedNewTabPageState)
     {
-      v6 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:WBSDefaultProfileIdentifier];
-      v7 = [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:v6];
+      userInfo2 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:WBSDefaultProfileIdentifier];
+      v7 = [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:userInfo2];
     }
 
     else
     {
-      v10 = [(PSSpecifier *)self->_newTabsSpecifier userInfo];
+      userInfo = [(PSSpecifier *)self->_newTabsSpecifier userInfo];
       v11 = WBSNewTabTopLevelStringKey;
-      v12 = [v10 safari_stringForKey:WBSNewTabTopLevelStringKey];
+      v12 = [userInfo safari_stringForKey:WBSNewTabTopLevelStringKey];
       v13 = [v12 length];
 
       if (v13)
       {
-        v6 = [(PSSpecifier *)self->_newTabsSpecifier userInfo];
-        [v6 objectForKeyedSubscript:v11];
+        userInfo2 = [(PSSpecifier *)self->_newTabsSpecifier userInfo];
+        [userInfo2 objectForKeyedSubscript:v11];
       }
 
       else
       {
-        v6 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:WBSDefaultProfileIdentifier];
-        [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:v6];
+        userInfo2 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:WBSDefaultProfileIdentifier];
+        [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:userInfo2];
       }
       v7 = ;
     }
@@ -495,31 +495,31 @@ void __45__CreateEditProfileViewController_specifiers__block_invoke(uint64_t a1,
   return v14;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v10 = a3;
-  objc_storeStrong(&self->_userInfo, a3);
-  v5 = [(SafariProfileSettingsUserInfo *)self->_userInfo profile];
-  v6 = [v5 customFavoritesFolderServerID];
+  infoCopy = info;
+  objc_storeStrong(&self->_userInfo, info);
+  profile = [(SafariProfileSettingsUserInfo *)self->_userInfo profile];
+  customFavoritesFolderServerID = [profile customFavoritesFolderServerID];
   customFavoritesFolderServerID = self->_customFavoritesFolderServerID;
-  self->_customFavoritesFolderServerID = v6;
+  self->_customFavoritesFolderServerID = customFavoritesFolderServerID;
 
-  v8 = [v5 title];
+  title = [profile title];
   profileTitle = self->_profileTitle;
-  self->_profileTitle = v8;
+  self->_profileTitle = title;
 }
 
 - (void)profileNameCellDidResignFirstResponder
 {
-  v3 = [(CreateEditProfileViewController *)self profile];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:WBSDefaultProfileIdentifier];
+  profile = [(CreateEditProfileViewController *)self profile];
+  identifier = [profile identifier];
+  v5 = [identifier isEqualToString:WBSDefaultProfileIdentifier];
 
   if (([(NSString *)self->_profileTitle length]!= 0) | v5 & 1)
   {
-    v6 = [(CreateEditProfileViewController *)self tabGroupManager];
-    v7 = [(CreateEditProfileViewController *)self profile];
-    v8 = [v7 identifier];
+    tabGroupManager = [(CreateEditProfileViewController *)self tabGroupManager];
+    profile2 = [(CreateEditProfileViewController *)self profile];
+    identifier2 = [profile2 identifier];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = __73__CreateEditProfileViewController_profileNameCellDidResignFirstResponder__block_invoke;
@@ -531,15 +531,15 @@ void __45__CreateEditProfileViewController_specifiers__block_invoke(uint64_t a1,
     v14[3] = &unk_8AA68;
     v14[4] = self;
     v15 = v5;
-    v9 = [v6 updateProfileWithIdentifier:v8 persist:1 usingBlock:v16 completionHandler:v14];
+    v9 = [tabGroupManager updateProfileWithIdentifier:identifier2 persist:1 usingBlock:v16 completionHandler:v14];
   }
 
   else
   {
-    v10 = [(CreateEditProfileViewController *)self profile];
-    v11 = [v10 title];
+    profile3 = [(CreateEditProfileViewController *)self profile];
+    title = [profile3 title];
     profileTitle = self->_profileTitle;
-    self->_profileTitle = v11;
+    self->_profileTitle = title;
 
     [(CreateEditProfileViewController *)self _updateTitle];
     nameAndIconGroupSpecifier = self->_nameAndIconGroupSpecifier;
@@ -599,8 +599,8 @@ void __73__CreateEditProfileViewController_profileNameCellDidResignFirstResponde
   v13.receiver = self;
   v13.super_class = CreateEditProfileViewController;
   [(CreateEditProfileViewController *)&v13 viewDidLoad];
-  v3 = [(CreateEditProfileViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"ProfilesSettingsCreateEditView"];
+  view = [(CreateEditProfileViewController *)self view];
+  [view setAccessibilityIdentifier:@"ProfilesSettingsCreateEditView"];
 
   [(CreateEditProfileViewController *)self _updateTitle];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonTapped:"];
@@ -608,41 +608,41 @@ void __73__CreateEditProfileViewController_profileNameCellDidResignFirstResponde
   self->_doneButton = v4;
 
   [(UIBarButtonItem *)self->_doneButton setEnabled:self->_profileTitle != 0];
-  v6 = [(CreateEditProfileViewController *)self profile];
+  profile = [(CreateEditProfileViewController *)self profile];
 
-  if (!v6)
+  if (!profile)
   {
     self->_selectedIconIndex = 0;
-    v7 = [(NSArray *)self->_iconButtons firstObject];
+    firstObject = [(NSArray *)self->_iconButtons firstObject];
     selectedIconButton = self->_selectedIconButton;
-    self->_selectedIconButton = v7;
+    self->_selectedIconButton = firstObject;
 
     [(ProfileIconButton *)self->_selectedIconButton setSelected:1];
     v9 = self->_doneButton;
-    v10 = [(CreateEditProfileViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v9];
+    navigationItem = [(CreateEditProfileViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v9];
 
     v11 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelButtonTapped:"];
-    v12 = [(CreateEditProfileViewController *)self navigationItem];
-    [v12 setLeftBarButtonItem:v11];
+    navigationItem2 = [(CreateEditProfileViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v11];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(CreateEditProfileViewController *)self specifierAtIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(CreateEditProfileViewController *)self specifierAtIndexPath:path];
   v9 = v8;
   if (v8 == self->_iconSpecifier)
   {
-    v10 = [(CreateEditProfileViewController *)self profile];
-    v13 = [v10 symbolImageName];
+    profile = [(CreateEditProfileViewController *)self profile];
+    symbolImageName = [profile symbolImageName];
 
-    if (v13)
+    if (symbolImageName)
     {
       v14 = +[WBProfile availableSymbolImageNames];
-      v15 = [v10 symbolImageName];
-      v16 = [v14 indexOfObject:v15];
+      symbolImageName2 = [profile symbolImageName];
+      v16 = [v14 indexOfObject:symbolImageName2];
 
       [(ProfileIconButton *)self->_selectedIconButton setSelected:0];
       IsPad = _SFDeviceIsPad();
@@ -656,16 +656,16 @@ void __73__CreateEditProfileViewController_profileNameCellDidResignFirstResponde
       {
         objc_storeStrong(&self->_selectedIconButton, self->_customIconButton);
         selectedIconButton = self->_selectedIconButton;
-        v20 = [v10 symbolImageName];
+        symbolImageName3 = [profile symbolImageName];
         v28 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleTitle2 scale:1];
-        v29 = [UIImage _systemImageNamed:v20 withConfiguration:v28];
+        v29 = [UIImage _systemImageNamed:symbolImageName3 withConfiguration:v28];
         [(ProfileIconButton *)selectedIconButton setImage:v29 forState:0];
       }
 
       else
       {
         v19 = [(NSArray *)self->_iconButtons objectAtIndexedSubscript:v16];
-        v20 = self->_selectedIconButton;
+        symbolImageName3 = self->_selectedIconButton;
         self->_selectedIconButton = v19;
       }
 
@@ -678,9 +678,9 @@ void __73__CreateEditProfileViewController_profileNameCellDidResignFirstResponde
   {
     if (v8 == self->_deleteProfileSpecifier)
     {
-      v10 = +[UIColor redColor];
-      v11 = [v7 textLabel];
-      [v11 setTextColor:v10];
+      profile = +[UIColor redColor];
+      textLabel = [cellCopy textLabel];
+      [textLabel setTextColor:profile];
 LABEL_15:
 
       goto LABEL_25;
@@ -688,18 +688,18 @@ LABEL_15:
 
     if (v8 == self->_colorSpecifier)
     {
-      v21 = [(CreateEditProfileViewController *)self profile];
-      v22 = [v21 color];
-      v10 = [v22 colorName];
+      profile2 = [(CreateEditProfileViewController *)self profile];
+      color = [profile2 color];
+      profile = [color colorName];
 
-      if (v10)
+      if (profile)
       {
         v23 = +[WBSCoreProfilesConstants orderedProfileColorOptions];
         v34[0] = _NSConcreteStackBlock;
         v34[1] = 3221225472;
         v34[2] = __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndexPath___block_invoke;
         v34[3] = &unk_8AA90;
-        v35 = v10;
+        v35 = profile;
         v24 = [v23 indexOfObjectPassingTest:v34];
 
         if (v24 == 0x7FFFFFFFFFFFFFFFLL)
@@ -718,13 +718,13 @@ LABEL_15:
 
       else
       {
-        v30 = [(CreateEditProfileViewController *)self _fallbackColorForCurrentSymbol];
+        _fallbackColorForCurrentSymbol = [(CreateEditProfileViewController *)self _fallbackColorForCurrentSymbol];
         v31 = +[WBSCoreProfilesConstants orderedProfileColorOptions];
         v32[0] = _NSConcreteStackBlock;
         v32[1] = 3221225472;
         v32[2] = __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndexPath___block_invoke_2;
         v32[3] = &unk_8AA90;
-        v26 = v30;
+        v26 = _fallbackColorForCurrentSymbol;
         v33 = v26;
         self->_selectedColorIndex = [v31 indexOfObjectPassingTest:v32];
       }
@@ -734,12 +734,12 @@ LABEL_15:
 
     else
     {
-      v10 = [(PSSpecifier *)v8 userInfo];
+      profile = [(PSSpecifier *)v8 userInfo];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [(PSSpecifier *)v9 userInfo];
-        if ([v11 isEnabled])
+        textLabel = [(PSSpecifier *)v9 userInfo];
+        if ([textLabel isEnabled])
         {
           v12 = 3;
         }
@@ -749,7 +749,7 @@ LABEL_15:
           v12 = 0;
         }
 
-        [v7 setAccessoryType:v12];
+        [cellCopy setAccessoryType:v12];
         goto LABEL_15;
       }
     }
@@ -775,11 +775,11 @@ id __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndex
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CreateEditProfileViewController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CreateEditProfileViewController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -790,15 +790,15 @@ id __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndex
     v9 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   }
 
-  v10 = [v9 userInfo];
+  userInfo = [v9 userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v9 userInfo];
-    v12 = [v11 isEnabled];
-    v13 = [v6 cellForRowAtIndexPath:v7];
+    userInfo2 = [v9 userInfo];
+    isEnabled = [userInfo2 isEnabled];
+    v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v14 = v13;
-    if (v12)
+    if (isEnabled)
     {
       v15 = 0;
     }
@@ -810,21 +810,21 @@ id __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndex
 
     [v13 setAccessoryType:v15];
 
-    if ([v11 isEnabled])
+    if ([userInfo2 isEnabled])
     {
-      [v11 disable];
+      [userInfo2 disable];
       [(CreateEditProfileViewController *)self postDistributedNotificationNamed:@"com.apple.mobilesafari.SafariSettingsChangedExtensionSettings"];
-      v16 = [(CreateEditProfileViewController *)self profile];
-      v17 = [v16 identifierForExtensions];
-      v18 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:v17];
+      profile = [(CreateEditProfileViewController *)self profile];
+      identifierForExtensions = [profile identifierForExtensions];
+      v18 = [(CreateEditProfileViewController *)self _webExtensionsControllerForProfileIdentifier:identifierForExtensions];
 
       v23 = v18;
-      v19 = [v11 composedIdentifier];
-      v20 = [v18 tabOverridePreferencesManager];
+      composedIdentifier = [userInfo2 composedIdentifier];
+      tabOverridePreferencesManager = [v18 tabOverridePreferencesManager];
       v21 = +[NSUserDefaults safari_browserDefaults];
-      v22 = [v20 extensionComposedIdentifierForNewTabPreferenceInDefaults:v21];
+      v22 = [tabOverridePreferencesManager extensionComposedIdentifierForNewTabPreferenceInDefaults:v21];
 
-      if ([v19 isEqualToString:v22])
+      if ([composedIdentifier isEqualToString:v22])
       {
         [(CreateEditProfileViewController *)self reloadSpecifier:self->_newTabsSpecifier];
       }
@@ -837,23 +837,23 @@ id __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndex
       v25[2] = __69__CreateEditProfileViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v25[3] = &unk_8AAB8;
       v25[4] = self;
-      [v11 enableWithPresentingViewController:self completionHandler:v25];
+      [userInfo2 enableWithPresentingViewController:self completionHandler:v25];
     }
 
     v24.receiver = self;
     v24.super_class = CreateEditProfileViewController;
-    [(SafariSettingsListController *)&v24 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v24 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = CreateEditProfileViewController;
-    [(SafariSettingsListController *)&v26 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v26 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   if ([(CreateEditProfileViewController *)self _shouldCreateNewFolderForFavorites])
   {
@@ -893,33 +893,33 @@ id __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndex
     v5 = 0;
   }
 
-  v6 = [(CreateEditProfileViewController *)self tabGroupManager];
+  tabGroupManager = [(CreateEditProfileViewController *)self tabGroupManager];
   v7 = [WBMutableProfile alloc];
   profileTitle = self->_profileTitle;
   customFavoritesFolderServerID = self->_customFavoritesFolderServerID;
-  v10 = [v6 deviceIdentifier];
-  v11 = [v7 initWithTitle:profileTitle symbolImageName:v5 favoritesFolderServerID:customFavoritesFolderServerID deviceIdentifier:v10];
+  deviceIdentifier = [tabGroupManager deviceIdentifier];
+  v11 = [v7 initWithTitle:profileTitle symbolImageName:v5 favoritesFolderServerID:customFavoritesFolderServerID deviceIdentifier:deviceIdentifier];
 
   selectedColorIndex = self->_selectedColorIndex;
   if (selectedColorIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [(CreateEditProfileViewController *)self _fallbackColorForCurrentSymbol];
-    v14 = v13;
+    _fallbackColorForCurrentSymbol = [(CreateEditProfileViewController *)self _fallbackColorForCurrentSymbol];
+    v14 = _fallbackColorForCurrentSymbol;
   }
 
   else
   {
     v14 = +[WBSCoreProfilesConstants orderedProfileColorOptions];
-    v13 = [v14 objectAtIndexedSubscript:self->_selectedColorIndex];
+    _fallbackColorForCurrentSymbol = [v14 objectAtIndexedSubscript:self->_selectedColorIndex];
   }
 
-  [v11 setColor:v13];
+  [v11 setColor:_fallbackColorForCurrentSymbol];
   if (selectedColorIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
   }
 
-  v15 = [(CreateEditProfileViewController *)self tabGroupManager];
-  v16 = [v15 hasMultipleProfiles];
+  tabGroupManager2 = [(CreateEditProfileViewController *)self tabGroupManager];
+  hasMultipleProfiles = [tabGroupManager2 hasMultipleProfiles];
 
   v17 = [v11 copy];
   v23[0] = _NSConcreteStackBlock;
@@ -927,11 +927,11 @@ id __79__CreateEditProfileViewController_tableView_willDisplayCell_forRowAtIndex
   v23[2] = __52__CreateEditProfileViewController_doneButtonTapped___block_invoke;
   v23[3] = &unk_8AAE0;
   v23[4] = self;
-  v24 = v16 ^ 1;
-  [v6 appendProfile:v17 completionHandler:v23];
+  v24 = hasMultipleProfiles ^ 1;
+  [tabGroupManager appendProfile:v17 completionHandler:v23];
 
-  v18 = [(CreateEditProfileViewController *)self delegate];
-  [v18 createEditProfileViewControllerDidChangeProfilesData:self];
+  delegate = [(CreateEditProfileViewController *)self delegate];
+  [delegate createEditProfileViewControllerDidChangeProfilesData:self];
 
   [(CreateEditProfileViewController *)self dismissViewControllerAnimated:1 completion:0];
 LABEL_14:
@@ -1007,14 +1007,14 @@ void __52__CreateEditProfileViewController_doneButtonTapped___block_invoke(uint6
   }
 }
 
-- (void)postDistributedNotificationNamed:(__CFString *)a3
+- (void)postDistributedNotificationNamed:(__CFString *)named
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, a3, 0, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, named, 0, 0, 1u);
 }
 
-- (void)deleteButtonTapped:(id)a3
+- (void)deleteButtonTapped:(id)tapped
 {
   if (+[SafariSettingsController isHistoryClearingEnabled])
   {
@@ -1159,19 +1159,19 @@ id __54__CreateEditProfileViewController_deleteButtonTapped___block_invoke_3(uin
   return [SafariWebsiteDataDataSource deleteAllDataForProfileWithIdentifier:v3];
 }
 
-- (void)_deleteDefunctCustomFavoritesFolderWithServerID:(id)a3
+- (void)_deleteDefunctCustomFavoritesFolderWithServerID:(id)d
 {
-  v4 = a3;
-  if ([v4 length] && (objc_msgSend(v4, "isEqualToString:", WBSCloudBookmarkListRecordNameFavoritesBar) & 1) == 0)
+  dCopy = d;
+  if ([dCopy length] && (objc_msgSend(dCopy, "isEqualToString:", WBSCloudBookmarkListRecordNameFavoritesBar) & 1) == 0)
   {
     v5 = +[WebBookmarkCollection safariBookmarkCollection];
-    v6 = [v5 favoritesFolder];
-    v7 = [v6 serverID];
-    v8 = [v4 isEqualToString:v7];
+    favoritesFolder = [v5 favoritesFolder];
+    serverID = [favoritesFolder serverID];
+    v8 = [dCopy isEqualToString:serverID];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v5 bookmarkIDForServerID:v4 excludeDeletedBookmarks:1];
+      v9 = [v5 bookmarkIDForServerID:dCopy excludeDeletedBookmarks:1];
       if (v9 != 0x7FFFFFFF)
       {
         v19 = [v5 listWithID:v9];
@@ -1181,10 +1181,10 @@ id __54__CreateEditProfileViewController_deleteButtonTapped___block_invoke_3(uin
           v23 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v10 = [(CreateEditProfileViewController *)self tabGroupManager];
-          v11 = [v10 profiles];
+          tabGroupManager = [(CreateEditProfileViewController *)self tabGroupManager];
+          profiles = [tabGroupManager profiles];
 
-          v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v12 = [profiles countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v12)
           {
             v13 = *v21;
@@ -1194,11 +1194,11 @@ id __54__CreateEditProfileViewController_deleteButtonTapped___block_invoke_3(uin
               {
                 if (*v21 != v13)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(profiles);
                 }
 
-                v15 = [*(*(&v20 + 1) + 8 * i) customFavoritesFolderServerID];
-                v16 = [v15 isEqualToString:v4];
+                customFavoritesFolderServerID = [*(*(&v20 + 1) + 8 * i) customFavoritesFolderServerID];
+                v16 = [customFavoritesFolderServerID isEqualToString:dCopy];
 
                 if (v16)
                 {
@@ -1207,7 +1207,7 @@ id __54__CreateEditProfileViewController_deleteButtonTapped___block_invoke_3(uin
                 }
               }
 
-              v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+              v12 = [profiles countByEnumeratingWithState:&v20 objects:v24 count:16];
               if (v12)
               {
                 continue;
@@ -1241,10 +1241,10 @@ LABEL_18:
   }
 }
 
-- (void)_didSelectIconButton:(id)a3
+- (void)_didSelectIconButton:(id)button
 {
-  v8 = a3;
-  if ([v8 tag] != self->_selectedIconIndex)
+  buttonCopy = button;
+  if ([buttonCopy tag] != self->_selectedIconIndex)
   {
     [(CreateEditProfileViewController *)self reloadSpecifier:self->_nameSpecifier];
     [(ProfileIconButton *)self->_selectedIconButton setSelected:0];
@@ -1253,14 +1253,14 @@ LABEL_18:
     v7 = [UIImage _systemImageNamed:@"ellipsis" withConfiguration:v6];
     [(ProfileIconButton *)customIconButton setImage:v7 forState:0];
 
-    self->_selectedIconIndex = [v8 tag];
-    [v8 setSelected:1];
-    objc_storeStrong(&self->_selectedIconButton, a3);
+    self->_selectedIconIndex = [buttonCopy tag];
+    [buttonCopy setSelected:1];
+    objc_storeStrong(&self->_selectedIconButton, button);
     [(CreateEditProfileViewController *)self _saveIconToProfile];
   }
 }
 
-- (void)_showIconPickerPopover:(id)a3
+- (void)_showIconPickerPopover:(id)popover
 {
   v29 = +[WBProfile availableSymbolImageNames];
   if (_SFDeviceIsPad())
@@ -1290,11 +1290,11 @@ LABEL_18:
     self->_profileIconCollectionViewController = v10;
 
     [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController setDelegate:self];
-    v12 = [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController view];
-    [v12 setFrame:{0.0, 0.0, 100.0, 100.0}];
+    view = [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController view];
+    [view setFrame:{0.0, 0.0, 100.0, 100.0}];
 
-    v13 = [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController view];
-    [v13 layoutIfNeeded];
+    view2 = [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController view];
+    [view2 layoutIfNeeded];
 
     profileIconCollectionViewController = self->_profileIconCollectionViewController;
   }
@@ -1327,9 +1327,9 @@ LABEL_18:
   }
 
   [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController setSelectedIndex:v17];
-  v21 = [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController view];
+  view3 = [(ProfileIconCollectionViewController *)self->_profileIconCollectionViewController view];
   v22 = [NSIndexPath indexPathForRow:0 inSection:0];
-  v23 = [v21 layoutAttributesForItemAtIndexPath:v22];
+  v23 = [view3 layoutAttributesForItemAtIndexPath:v22];
   [v23 frame];
   v25 = v24;
 
@@ -1343,13 +1343,13 @@ LABEL_18:
 
 - (void)_saveIconToProfile
 {
-  v3 = [(CreateEditProfileViewController *)self profile];
+  profile = [(CreateEditProfileViewController *)self profile];
 
-  if (v3)
+  if (profile)
   {
-    v4 = [(CreateEditProfileViewController *)self tabGroupManager];
-    v5 = [(CreateEditProfileViewController *)self profile];
-    v6 = [v5 identifier];
+    tabGroupManager = [(CreateEditProfileViewController *)self tabGroupManager];
+    profile2 = [(CreateEditProfileViewController *)self profile];
+    identifier = [profile2 identifier];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __53__CreateEditProfileViewController__saveIconToProfile__block_invoke;
@@ -1360,25 +1360,25 @@ LABEL_18:
     v13[2] = __53__CreateEditProfileViewController__saveIconToProfile__block_invoke_2;
     v13[3] = &unk_8AB78;
     v13[4] = self;
-    v7 = [v4 updateProfileWithIdentifier:v6 persist:1 usingBlock:v14 completionHandler:v13];
+    v7 = [tabGroupManager updateProfileWithIdentifier:identifier persist:1 usingBlock:v14 completionHandler:v13];
   }
 
-  v8 = [(CreateEditProfileViewController *)self profile];
-  if (v8)
+  profile3 = [(CreateEditProfileViewController *)self profile];
+  if (profile3)
   {
   }
 
   else if (!self->_hasManuallyPickedColor)
   {
-    v9 = [(CreateEditProfileViewController *)self _presetColorForCurrentSymbol];
+    _presetColorForCurrentSymbol = [(CreateEditProfileViewController *)self _presetColorForCurrentSymbol];
     v10 = +[WBSCoreProfilesConstants orderedProfileColorOptions];
-    if (v9)
+    if (_presetColorForCurrentSymbol)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = __53__CreateEditProfileViewController__saveIconToProfile__block_invoke_3;
       v11[3] = &unk_8AA90;
-      v12 = v9;
+      v12 = _presetColorForCurrentSymbol;
       self->_selectedColorIndex = [v10 indexOfObjectPassingTest:v11];
 
       v10 = v12;
@@ -1433,11 +1433,11 @@ id __53__CreateEditProfileViewController__saveIconToProfile__block_invoke_3(uint
   return v5;
 }
 
-- (void)_didSelectColorButton:(id)a3
+- (void)_didSelectColorButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   self->_hasManuallyPickedColor = 1;
-  v6 = v4;
+  v6 = buttonCopy;
   v5 = [(NSMutableArray *)self->_colorButtons indexOfObject:?];
   if (v5 != self->_selectedColorIndex)
   {
@@ -1448,9 +1448,9 @@ id __53__CreateEditProfileViewController__saveIconToProfile__block_invoke_3(uint
   }
 }
 
-- (void)_showColorPickerPopover:(id)a3
+- (void)_showColorPickerPopover:(id)popover
 {
-  v30 = a3;
+  popoverCopy = popover;
   v4 = +[WBSCoreProfilesConstants orderedProfileColorOptions];
   if (_SFDeviceIsPad())
   {
@@ -1510,44 +1510,44 @@ id __53__CreateEditProfileViewController__saveIconToProfile__block_invoke_3(uint
   }
 
   [(ColorPickerCollectionViewController *)self->_colorCollectionViewController setSelectedIndex:v16];
-  v20 = [(NSMutableArray *)self->_colorButtons firstObject];
-  [v20 intrinsicContentSize];
+  firstObject = [(NSMutableArray *)self->_colorButtons firstObject];
+  [firstObject intrinsicContentSize];
   v22 = v21;
 
   [v9 count];
   _SFCeilingFloatToPixels();
   v24 = v23;
-  v25 = [(NSMutableArray *)self->_colorButtons firstObject];
-  [v25 intrinsicContentSize];
+  firstObject2 = [(NSMutableArray *)self->_colorButtons firstObject];
+  [firstObject2 intrinsicContentSize];
   v27 = 10.0 + 10.0 + v24 * (v26 + 5.0 * 2.0);
 
   [(ColorPickerCollectionViewController *)self->_colorCollectionViewController setPreferredContentSize:10.0 + 10.0 + (v22 + 5.0 * 2.0) * 4.0, v27];
   v28 = self->_colorCollectionViewController;
-  v29 = [[_SFUIViewPopoverSourceInfo alloc] initWithView:v30];
+  v29 = [[_SFUIViewPopoverSourceInfo alloc] initWithView:popoverCopy];
   [(CreateEditProfileViewController *)self _presentModalViewController:v28 fromPopoverSource:v29 useAdaptivePresentationInCompact:0 animated:1 completion:0];
 }
 
-- (void)profileFavoritesFolderPickerController:(id)a3 didSelectFolderWithServerID:(id)a4
+- (void)profileFavoritesFolderPickerController:(id)controller didSelectFolderWithServerID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   customFavoritesFolderServerID = self->_customFavoritesFolderServerID;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_customFavoritesFolderServerID, a4);
-    v8 = [(CreateEditProfileViewController *)self tabGroupManager];
-    v9 = [(CreateEditProfileViewController *)self profile];
-    v10 = [v9 identifier];
+    objc_storeStrong(&self->_customFavoritesFolderServerID, d);
+    tabGroupManager = [(CreateEditProfileViewController *)self tabGroupManager];
+    profile = [(CreateEditProfileViewController *)self profile];
+    identifier = [profile identifier];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __102__CreateEditProfileViewController_profileFavoritesFolderPickerController_didSelectFolderWithServerID___block_invoke;
     v13[3] = &unk_8AA40;
-    v14 = v6;
+    v14 = dCopy;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __102__CreateEditProfileViewController_profileFavoritesFolderPickerController_didSelectFolderWithServerID___block_invoke_2;
     v12[3] = &unk_8AB78;
     v12[4] = self;
-    v11 = [v8 updateProfileWithIdentifier:v10 persist:1 usingBlock:v13 completionHandler:v12];
+    v11 = [tabGroupManager updateProfileWithIdentifier:identifier persist:1 usingBlock:v13 completionHandler:v12];
 
     [(CreateEditProfileViewController *)self reloadSpecifier:self->_favoritesSpecifier];
   }
@@ -1570,7 +1570,7 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
   return result;
 }
 
-- (void)didSelectNewFolderInProfileFavoritesFolderPickerController:(id)a3
+- (void)didSelectNewFolderInProfileFavoritesFolderPickerController:(id)controller
 {
   customFavoritesFolderServerID = self->_customFavoritesFolderServerID;
   self->_customFavoritesFolderServerID = 0;
@@ -1580,28 +1580,28 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
   [(CreateEditProfileViewController *)self reloadSpecifier:favoritesSpecifier];
 }
 
-- (void)tabGroupManager:(id)a3 didUpdateProfileWithIdentifier:(id)a4 difference:(id)a5
+- (void)tabGroupManager:(id)manager didUpdateProfileWithIdentifier:(id)identifier difference:(id)difference
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = [(CreateEditProfileViewController *)self profile];
-  v9 = [v8 identifier];
-  v10 = [v7 isEqualToString:v9];
+  managerCopy = manager;
+  identifierCopy = identifier;
+  profile = [(CreateEditProfileViewController *)self profile];
+  identifier = [profile identifier];
+  v10 = [identifierCopy isEqualToString:identifier];
 
   if (v10)
   {
-    v11 = [v16 profileWithIdentifier:v7];
+    v11 = [managerCopy profileWithIdentifier:identifierCopy];
     [(SafariProfileSettingsUserInfo *)self->_userInfo setProfile:v11];
-    v12 = [v11 title];
+    title = [v11 title];
     profileTitle = self->_profileTitle;
-    self->_profileTitle = v12;
+    self->_profileTitle = title;
 
-    v14 = [(SafariProfileSettingsUserInfo *)self->_userInfo profile];
-    v15 = [v14 customFavoritesFolderServerID];
+    profile2 = [(SafariProfileSettingsUserInfo *)self->_userInfo profile];
+    customFavoritesFolderServerID = [profile2 customFavoritesFolderServerID];
 
-    if (v15)
+    if (customFavoritesFolderServerID)
     {
-      objc_storeStrong(&self->_customFavoritesFolderServerID, v15);
+      objc_storeStrong(&self->_customFavoritesFolderServerID, customFavoritesFolderServerID);
     }
 
     [(CreateEditProfileViewController *)self reloadSpecifiers];
@@ -1609,7 +1609,7 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
   }
 }
 
-- (void)colorPickerCollectionViewController:(id)a3 didSelectColorAtIndex:(int64_t)a4
+- (void)colorPickerCollectionViewController:(id)controller didSelectColorAtIndex:(int64_t)index
 {
   [(CreateEditProfileViewController *)self reloadSpecifier:self->_nameSpecifier];
   self->_hasManuallyPickedColor = 1;
@@ -1620,7 +1620,7 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
     v7 = 5;
   }
 
-  self->_selectedColorIndex = v7 + a4;
+  self->_selectedColorIndex = v7 + index;
   [(CreateEditProfileViewController *)self _updateColorSelection];
 
   [(CreateEditProfileViewController *)self _saveColorSelectionToProfile];
@@ -1628,8 +1628,8 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
 
 - (void)_updateTitle
 {
-  v3 = [(CreateEditProfileViewController *)self profile];
-  if (v3)
+  profile = [(CreateEditProfileViewController *)self profile];
+  if (profile)
   {
     v4 = SafariSettingsLocalizedString(@"Profile Settings Title Prefix", @"Profiles");
     v5 = [NSString stringWithFormat:@"%@ — %@", v4, self->_profileTitle];
@@ -1642,7 +1642,7 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
   }
 
   [(CreateEditProfileViewController *)self setTitle:v5];
-  if (v3)
+  if (profile)
   {
   }
 
@@ -1658,11 +1658,11 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
 {
   if ([(CreateEditProfileViewController *)self _shouldCreateNewFolderForFavorites])
   {
-    v3 = [(NSString *)self->_profileTitle safari_stringByTrimmingWhitespace];
-    if ([v3 length])
+    safari_stringByTrimmingWhitespace = [(NSString *)self->_profileTitle safari_stringByTrimmingWhitespace];
+    if ([safari_stringByTrimmingWhitespace length])
     {
-      v4 = v3;
-      v3 = v4;
+      v4 = safari_stringByTrimmingWhitespace;
+      safari_stringByTrimmingWhitespace = v4;
     }
 
     else
@@ -1670,67 +1670,67 @@ id *__102__CreateEditProfileViewController_profileFavoritesFolderPickerControlle
       v4 = SafariSettingsLocalizedString(@"Titlebar Button Name for Creating New Folder", @"Profiles");
     }
 
-    v9 = v4;
+    title = v4;
     goto LABEL_12;
   }
 
-  v3 = +[WebBookmarkCollection safariBookmarkCollection];
-  v5 = [v3 favoritesFolder];
+  safari_stringByTrimmingWhitespace = +[WebBookmarkCollection safariBookmarkCollection];
+  favoritesFolder = [safari_stringByTrimmingWhitespace favoritesFolder];
   customFavoritesFolderServerID = self->_customFavoritesFolderServerID;
   if (customFavoritesFolderServerID)
   {
-    v7 = [v3 bookmarkWithServerID:customFavoritesFolderServerID excludeDeletedBookmarks:1];
+    v7 = [safari_stringByTrimmingWhitespace bookmarkWithServerID:customFavoritesFolderServerID excludeDeletedBookmarks:1];
     v8 = v7;
-    if (v7 && ([v7 isEqual:v5] & 1) == 0)
+    if (v7 && ([v7 isEqual:favoritesFolder] & 1) == 0)
     {
-      v9 = [v8 title];
+      title = [v8 title];
 
       goto LABEL_9;
     }
   }
 
-  v9 = SafariSettingsLocalizedString(@"Favorites", @"Safari");
+  title = SafariSettingsLocalizedString(@"Favorites", @"Safari");
 LABEL_9:
 
 LABEL_12:
 
-  return v9;
+  return title;
 }
 
 - (void)_createNewFolderForFavorites
 {
   v11 = +[WebBookmarkCollection safariBookmarkCollection];
   v3 = [WebBookmark alloc];
-  v4 = [v11 rootBookmark];
-  v5 = [v3 initFolderWithParentID:objc_msgSend(v4 collectionType:{"identifier"), 0}];
+  rootBookmark = [v11 rootBookmark];
+  v5 = [v3 initFolderWithParentID:objc_msgSend(rootBookmark collectionType:{"identifier"), 0}];
 
   [v5 setTitle:self->_profileTitle];
   [v11 saveBookmark:v5];
-  v6 = [v5 serverID];
+  serverID = [v5 serverID];
 
-  if (!v6)
+  if (!serverID)
   {
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
-    [v11 setServerID:v8 forBookmark:v5];
+    uUIDString = [v7 UUIDString];
+    [v11 setServerID:uUIDString forBookmark:v5];
   }
 
-  v9 = [v5 serverID];
+  serverID2 = [v5 serverID];
   customFavoritesFolderServerID = self->_customFavoritesFolderServerID;
-  self->_customFavoritesFolderServerID = v9;
+  self->_customFavoritesFolderServerID = serverID2;
 }
 
-- (void)_generateProfileSpecificBackgroundImageForProfile:(id)a3 isCreatingInitialDefaultProfile:(BOOL)a4 completionHandler:(id)a5
+- (void)_generateProfileSpecificBackgroundImageForProfile:(id)profile isCreatingInitialDefaultProfile:(BOOL)defaultProfile completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  profileCopy = profile;
+  handlerCopy = handler;
   v10 = +[WBSStartPageBackgroundManager defaultManager];
-  v11 = [(__CFString *)v8 isEqualToString:WBSDefaultProfileIdentifier];
+  v11 = [(__CFString *)profileCopy isEqualToString:WBSDefaultProfileIdentifier];
   v12 = v11 ^ 1;
   v13 = &stru_8BB60;
   if (!v11)
   {
-    v13 = v8;
+    v13 = profileCopy;
   }
 
   v14 = v13;
@@ -1740,13 +1740,13 @@ LABEL_12:
   v19[3] = &unk_8AC80;
   v15 = v10;
   v20 = v15;
-  v16 = v8;
+  v16 = profileCopy;
   v25 = v12;
-  v26 = a4;
+  defaultProfileCopy = defaultProfile;
   v21 = v16;
-  v22 = self;
+  selfCopy = self;
   v23 = v14;
-  v17 = v9;
+  v17 = handlerCopy;
   v24 = v17;
   v18 = v14;
   [v15 getHasGeneratedBackgroundImage:v18 forProfileWithIdentifier:v16 completionHandler:v19];
@@ -1901,9 +1901,9 @@ uint64_t __135__CreateEditProfileViewController__generateProfileSpecificBackgrou
 
 - (void)_saveColorSelectionToProfile
 {
-  v3 = [(CreateEditProfileViewController *)self tabGroupManager];
-  v4 = [(CreateEditProfileViewController *)self profile];
-  v5 = [v4 identifier];
+  tabGroupManager = [(CreateEditProfileViewController *)self tabGroupManager];
+  profile = [(CreateEditProfileViewController *)self profile];
+  identifier = [profile identifier];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __63__CreateEditProfileViewController__saveColorSelectionToProfile__block_invoke;
@@ -1914,7 +1914,7 @@ uint64_t __135__CreateEditProfileViewController__generateProfileSpecificBackgrou
   v7[2] = __63__CreateEditProfileViewController__saveColorSelectionToProfile__block_invoke_2;
   v7[3] = &unk_8AB78;
   v7[4] = self;
-  v6 = [v3 updateProfileWithIdentifier:v5 persist:1 usingBlock:v8 completionHandler:v7];
+  v6 = [tabGroupManager updateProfileWithIdentifier:identifier persist:1 usingBlock:v8 completionHandler:v7];
 }
 
 void __63__CreateEditProfileViewController__saveColorSelectionToProfile__block_invoke(uint64_t a1, void *a2)
@@ -2028,11 +2028,11 @@ void *__63__CreateEditProfileViewController__saveColorSelectionToProfile__block_
 
   if (self->_selectedIconIndex)
   {
-    v5 = [(CreateEditProfileViewController *)self _presetColorForCurrentSymbol];
-    v6 = v5;
-    if (v5)
+    _presetColorForCurrentSymbol = [(CreateEditProfileViewController *)self _presetColorForCurrentSymbol];
+    v6 = _presetColorForCurrentSymbol;
+    if (_presetColorForCurrentSymbol)
     {
-      v7 = v5;
+      v7 = _presetColorForCurrentSymbol;
     }
 
     else
@@ -2058,17 +2058,17 @@ void *__63__CreateEditProfileViewController__saveColorSelectionToProfile__block_
   return v6;
 }
 
-- (void)profileIconCollectionViewController:(id)a3 didSelectIconAtIndex:(int64_t)a4
+- (void)profileIconCollectionViewController:(id)controller didSelectIconAtIndex:(int64_t)index
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(CreateEditProfileViewController *)self reloadSpecifier:self->_nameSpecifier];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __92__CreateEditProfileViewController_profileIconCollectionViewController_didSelectIconAtIndex___block_invoke;
   v7[3] = &unk_8ACA8;
   v7[4] = self;
-  v7[5] = a4;
-  [v6 dismissViewControllerAnimated:1 completion:v7];
+  v7[5] = index;
+  [controllerCopy dismissViewControllerAnimated:1 completion:v7];
 }
 
 id __92__CreateEditProfileViewController_profileIconCollectionViewController_didSelectIconAtIndex___block_invoke(uint64_t a1)

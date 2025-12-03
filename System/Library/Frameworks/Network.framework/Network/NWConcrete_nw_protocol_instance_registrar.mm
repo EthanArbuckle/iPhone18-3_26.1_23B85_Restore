@@ -23,7 +23,7 @@
       *buf = 136446466;
       v6 = "[NWConcrete_nw_protocol_instance_registrar dealloc]";
       v7 = 2048;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v3, OS_LOG_TYPE_DEBUG, "%{public}s <nw_protocol_instance_registrar %p> dealloc", buf, 0x16u);
     }
   }

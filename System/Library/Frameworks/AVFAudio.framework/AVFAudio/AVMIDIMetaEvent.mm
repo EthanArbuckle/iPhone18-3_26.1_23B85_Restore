@@ -1,5 +1,5 @@
 @interface AVMIDIMetaEvent
-- (AVMIDIMetaEvent)initWithMetaEvent:(MIDIMetaEvent *)a3;
+- (AVMIDIMetaEvent)initWithMetaEvent:(MIDIMetaEvent *)event;
 - (AVMIDIMetaEvent)initWithType:(AVMIDIMetaEventType)type data:(NSData *)data;
 - (void)dealloc;
 @end
@@ -14,20 +14,20 @@
   [(AVMIDIMetaEvent *)&v3 dealloc];
 }
 
-- (AVMIDIMetaEvent)initWithMetaEvent:(MIDIMetaEvent *)a3
+- (AVMIDIMetaEvent)initWithMetaEvent:(MIDIMetaEvent *)event
 {
   v8.receiver = self;
   v8.super_class = AVMIDIMetaEvent;
   v4 = [(AVMIDIMetaEvent *)&v8 init];
   if (v4)
   {
-    v5 = malloc_type_malloc(a3->dataLength + 11, 0x100004005A209FEuLL);
-    *v5 = a3->metaEventType;
+    v5 = malloc_type_malloc(event->dataLength + 11, 0x100004005A209FEuLL);
+    *v5 = event->metaEventType;
     v5[3] = 0;
     *(v5 + 1) = 0;
-    dataLength = a3->dataLength;
+    dataLength = event->dataLength;
     *(v5 + 1) = dataLength;
-    memcpy(v5 + 8, a3->data, dataLength);
+    memcpy(v5 + 8, event->data, dataLength);
     v4->_event = v5;
   }
 

@@ -1,13 +1,13 @@
 @interface FocusPixelDisparityDemosaic
-- (FocusPixelDisparityDemosaic)initWithMetalContext:(id)a3;
+- (FocusPixelDisparityDemosaic)initWithMetalContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation FocusPixelDisparityDemosaic
 
-- (FocusPixelDisparityDemosaic)initWithMetalContext:(id)a3
+- (FocusPixelDisparityDemosaic)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = FocusPixelDisparityDemosaic;
   v6 = [(FocusPixelDisparityDemosaic *)&v18 init];
@@ -17,8 +17,8 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_mtlContext, a3);
-  v10 = objc_msgSend_commandQueue(v5, v8, v9);
+  objc_storeStrong(&v6->_mtlContext, context);
+  v10 = objc_msgSend_commandQueue(contextCopy, v8, v9);
   commandQueue = v7->_commandQueue;
   v7->_commandQueue = v10;
 

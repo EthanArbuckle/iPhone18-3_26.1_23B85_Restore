@@ -1,44 +1,44 @@
 @interface GDSwiftViewService
 + (GDSwiftViewService)clientService;
-+ (id)clientServiceWithUseCase:(id)a3;
-- (id)autonamingViewWithViewName:(id)a3 error:(id *)a4;
-- (id)gdSwiftSubgraphViewContextWithName:(id)a3 tableName:(id)a4 error:(id *)a5;
++ (id)clientServiceWithUseCase:(id)case;
+- (id)autonamingViewWithViewName:(id)name error:(id *)error;
+- (id)gdSwiftSubgraphViewContextWithName:(id)name tableName:(id)tableName error:(id *)error;
 @end
 
 @implementation GDSwiftViewService
 
 + (GDSwiftViewService)clientService
 {
-  v2 = static ViewService.clientService.getter(a1);
+  v2 = static ViewService.clientService.getter(self);
 
   return v2;
 }
 
-+ (id)clientServiceWithUseCase:(id)a3
++ (id)clientServiceWithUseCase:(id)case
 {
-  v3 = a3;
-  v4 = static ViewService.clientService(useCase:)(v3);
+  caseCopy = case;
+  v4 = static ViewService.clientService(useCase:)(caseCopy);
 
   return v4;
 }
 
-- (id)autonamingViewWithViewName:(id)a3 error:(id *)a4
+- (id)autonamingViewWithViewName:(id)name error:(id *)error
 {
   v5 = sub_1ABF23C04();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = ViewService.autonamingView(viewName:)(v5, v7);
 
   return v9;
 }
 
-- (id)gdSwiftSubgraphViewContextWithName:(id)a3 tableName:(id)a4 error:(id *)a5
+- (id)gdSwiftSubgraphViewContextWithName:(id)name tableName:(id)tableName error:(id *)error
 {
   v6 = sub_1ABF23C04();
   v8 = v7;
   v9 = sub_1ABF23C04();
   v11 = v10;
-  v12 = self;
+  selfCopy = self;
   v13 = ViewService.gdSwiftSubgraphViewContext(name:tableName:)(v6, v8, v9, v11);
 
   return v13;

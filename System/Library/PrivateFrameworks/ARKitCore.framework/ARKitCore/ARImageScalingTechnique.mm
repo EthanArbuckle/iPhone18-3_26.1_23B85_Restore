@@ -1,17 +1,17 @@
 @interface ARImageScalingTechnique
-+ (id)scalingPassDescriptionForInputSize:(CGSize)a3 scaledSize:(CGSize)a4 conversionPixelFormat:(unsigned int)a5;
-- (ARImageScalingTechnique)initWithDownscaleFactor:(unsigned __int8)a3;
-- (ARImageScalingTechnique)initWithScaledSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)scalingPassDescriptionForInputSize:(CGSize)size scaledSize:(CGSize)scaledSize conversionPixelFormat:(unsigned int)format;
+- (ARImageScalingTechnique)initWithDownscaleFactor:(unsigned __int8)factor;
+- (ARImageScalingTechnique)initWithScaledSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)scaledSize;
-- (__CVBuffer)_applyScalingPasses:(__CVBuffer *)a3;
-- (id)processData:(id)a3;
-- (void)_createScalingPassesForInputSize:(CGSize)a3;
+- (__CVBuffer)_applyScalingPasses:(__CVBuffer *)passes;
+- (id)processData:(id)data;
+- (void)_createScalingPassesForInputSize:(CGSize)size;
 @end
 
 @implementation ARImageScalingTechnique
 
-- (ARImageScalingTechnique)initWithDownscaleFactor:(unsigned __int8)a3
+- (ARImageScalingTechnique)initWithDownscaleFactor:(unsigned __int8)factor
 {
   v8.receiver = self;
   v8.super_class = ARImageScalingTechnique;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_downscaleFactor = a3;
+    v4->_downscaleFactor = factor;
     v4->_shouldUseScaleFactor = 1;
     v4->_conversionPixelFormatType = 0;
     v4->_scalingInputSize = *MEMORY[0x1E695F060];
@@ -30,10 +30,10 @@
   return v5;
 }
 
-- (ARImageScalingTechnique)initWithScaledSize:(CGSize)a3
+- (ARImageScalingTechnique)initWithScaledSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = ARImageScalingTechnique;
   v5 = [(ARTechnique *)&v9 init];
@@ -53,12 +53,12 @@
   return v6;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = dataCopy;
   v7 = v6;
   v8 = v6;
   if (isKindOfClass)
@@ -112,15 +112,15 @@ LABEL_12:
   return v8;
 }
 
-- (void)_createScalingPassesForInputSize:(CGSize)a3
+- (void)_createScalingPassesForInputSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v47 = *MEMORY[0x1E69E9840];
   p_scaledSize = &self->_scaledSize;
   if (self->_shouldUseScaleFactor)
   {
-    v7 = a3.width / [(ARImageScalingTechnique *)self downscaleFactor];
+    v7 = size.width / [(ARImageScalingTechnique *)self downscaleFactor];
     v8 = height / [(ARImageScalingTechnique *)self downscaleFactor];
   }
 
@@ -145,7 +145,7 @@ LABEL_12:
         *buf = 138543618;
         v36 = v20;
         v37 = 2048;
-        v38 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Recreating scaling passes", buf, 0x16u);
       }
 
@@ -161,7 +161,7 @@ LABEL_12:
         *buf = 138544642;
         v36 = v23;
         v37 = 2048;
-        v38 = self;
+        selfCopy3 = self;
         v39 = 2048;
         v40 = v24;
         v41 = 2048;
@@ -181,7 +181,7 @@ LABEL_12:
         *buf = 138544642;
         v36 = v30;
         v37 = 2048;
-        v38 = self;
+        selfCopy3 = self;
         v39 = 2048;
         v40 = width;
         v41 = 2048;
@@ -220,11 +220,11 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
   [*(*(a1 + 32) + 56) addObject:v4];
 }
 
-- (__CVBuffer)_applyScalingPasses:(__CVBuffer *)a3
+- (__CVBuffer)_applyScalingPasses:(__CVBuffer *)passes
 {
-  v3 = a3;
+  passesCopy = passes;
   v17 = *MEMORY[0x1E69E9840];
-  CVPixelBufferRetain(a3);
+  CVPixelBufferRetain(passes);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -238,7 +238,7 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
     do
     {
       v9 = 0;
-      v10 = v3;
+      v10 = passesCopy;
       do
       {
         if (*v13 != v8)
@@ -246,10 +246,10 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
           objc_enumerationMutation(v5);
         }
 
-        v3 = [*(*(&v12 + 1) + 8 * v9) scalePixelBuffer:{v10, v12}];
+        passesCopy = [*(*(&v12 + 1) + 8 * v9) scalePixelBuffer:{v10, v12}];
         CVPixelBufferRelease(v10);
         ++v9;
-        v10 = v3;
+        v10 = passesCopy;
       }
 
       while (v7 != v9);
@@ -259,15 +259,15 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
     while (v7);
   }
 
-  return v3;
+  return passesCopy;
 }
 
-+ (id)scalingPassDescriptionForInputSize:(CGSize)a3 scaledSize:(CGSize)a4 conversionPixelFormat:(unsigned int)a5
++ (id)scalingPassDescriptionForInputSize:(CGSize)size scaledSize:(CGSize)scaledSize conversionPixelFormat:(unsigned int)format
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v8 = a3.width;
+  height = scaledSize.height;
+  width = scaledSize.width;
+  v7 = size.height;
+  v8 = size.width;
   v53 = *MEMORY[0x1E69E9840];
   v10 = objc_opt_new();
   v11 = _ARLogTechnique_5();
@@ -278,7 +278,7 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
     *buf = 138544642;
     v34 = v13;
     v35 = 2048;
-    v36 = a1;
+    selfCopy3 = self;
     v37 = 2048;
     v38 = v8;
     v39 = 2048;
@@ -311,7 +311,7 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
       *buf = 138545666;
       v34 = v23;
       v35 = 2048;
-      v36 = a1;
+      selfCopy3 = self;
       v37 = 2048;
       v38 = v8;
       v39 = 2048;
@@ -347,7 +347,7 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
     *buf = 138544130;
     v34 = v27;
     v35 = 2048;
-    v36 = a1;
+    selfCopy3 = self;
     v37 = 2048;
     v38 = v17;
     v39 = 2048;
@@ -355,24 +355,24 @@ void __60__ARImageScalingTechnique__createScalingPassesForInputSize___block_invo
     _os_log_impl(&dword_1C241C000, v25, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: scaled to (%.1f x %.1f) COMPLETE", buf, 0x2Au);
   }
 
-  v28 = [v10 lastObject];
-  [v28 setPixelBufferFormat:a5];
+  lastObject = [v10 lastObject];
+  [lastObject setPixelBufferFormat:format];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = ARImageScalingTechnique;
-  if ([(ARTechnique *)&v15 isEqual:v4])
+  if ([(ARTechnique *)&v15 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_shouldUseScaleFactor)
     {
-      v6 = [(ARImageScalingTechnique *)self downscaleFactor];
-      v7 = v6 == [v5 downscaleFactor];
+      downscaleFactor = [(ARImageScalingTechnique *)self downscaleFactor];
+      v7 = downscaleFactor == [v5 downscaleFactor];
     }
 
     else

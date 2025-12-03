@@ -1,19 +1,19 @@
 @interface PKLinkedAppUserRatingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKLinkedAppUserRatingView)initWithFrame:(CGRect)a3;
-- (id)_starImageViewWithImage:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKLinkedAppUserRatingView)initWithFrame:(CGRect)frame;
+- (id)_starImageViewWithImage:(id)image;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setUserRating:(float)a3;
+- (void)setUserRating:(float)rating;
 @end
 
 @implementation PKLinkedAppUserRatingView
 
-- (PKLinkedAppUserRatingView)initWithFrame:(CGRect)a3
+- (PKLinkedAppUserRatingView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKLinkedAppUserRatingView;
-  v3 = [(PKLinkedAppUserRatingView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKLinkedAppUserRatingView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -31,16 +31,16 @@
   [(PKLinkedAppUserRatingView *)&v2 dealloc];
 }
 
-- (void)setUserRating:(float)a3
+- (void)setUserRating:(float)rating
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = 5.0;
-  if (a3 <= 5.0)
+  ratingCopy = 5.0;
+  if (rating <= 5.0)
   {
-    v5 = a3;
+    ratingCopy = rating;
   }
 
-  self->_userRating = v5;
+  self->_userRating = ratingCopy;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -72,7 +72,7 @@
   [(NSMutableArray *)self->_starViews removeAllObjects];
   userRating = self->_userRating;
   v12 = vcvtms_s32_f32(userRating);
-  v13 = vcvtps_s32_f32(a3 - floorf(userRating));
+  v13 = vcvtps_s32_f32(rating - floorf(userRating));
   v14 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:10.0];
   if (v12)
   {
@@ -211,9 +211,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(NSMutableArray *)self->_starViews lastObject:a3.width];
+  v3 = [(NSMutableArray *)self->_starViews lastObject:fits.width];
   v4 = v3;
   if (v3)
   {
@@ -234,12 +234,12 @@
   return result;
 }
 
-- (id)_starImageViewWithImage:(id)a3
+- (id)_starImageViewWithImage:(id)image
 {
-  v3 = [a3 imageWithRenderingMode:2];
+  v3 = [image imageWithRenderingMode:2];
   v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v3];
-  v5 = [MEMORY[0x1E69DC888] systemOrangeColor];
-  [v4 setTintColor:v5];
+  systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
+  [v4 setTintColor:systemOrangeColor];
 
   return v4;
 }

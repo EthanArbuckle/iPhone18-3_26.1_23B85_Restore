@@ -1,21 +1,21 @@
 @interface CSHomeButtonShowPasscodeRecognizer
-- (CSHomeButtonShowPasscodeRecognizer)initWithFingerOn:(BOOL)a3;
+- (CSHomeButtonShowPasscodeRecognizer)initWithFingerOn:(BOOL)on;
 - (SBHomeButtonShowPasscodeRecognizerDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_invalidateMinimumTimer;
 - (void)_minimumTimerFired;
-- (void)_reallySetState:(unint64_t)a3 forReason:(id)a4;
-- (void)_switchedFromState:(unint64_t)a3 toState:(unint64_t)a4;
+- (void)_reallySetState:(unint64_t)state forReason:(id)reason;
+- (void)_switchedFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)dealloc;
-- (void)handleBiometricEvent:(unint64_t)a3;
-- (void)noteAuthenticated:(BOOL)a3;
+- (void)handleBiometricEvent:(unint64_t)event;
+- (void)noteAuthenticated:(BOOL)authenticated;
 @end
 
 @implementation CSHomeButtonShowPasscodeRecognizer
 
-- (CSHomeButtonShowPasscodeRecognizer)initWithFingerOn:(BOOL)a3
+- (CSHomeButtonShowPasscodeRecognizer)initWithFingerOn:(BOOL)on
 {
   v18 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
@@ -24,11 +24,11 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fingerWasOnInitially = a3;
+    v4->_fingerWasOnInitially = on;
     v6 = [MEMORY[0x277CF0C00] builderWithObject:v4];
-    v7 = [v6 build];
+    build = [v6 build];
     simplePublicDescription = v5->_simplePublicDescription;
-    v5->_simplePublicDescription = v7;
+    v5->_simplePublicDescription = build;
 
     v9 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -66,18 +66,18 @@
   [(CSHomeButtonShowPasscodeRecognizer *)&v5 dealloc];
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CSHomeButtonShowPasscodeRecognizer *)a3 handleBiometricEvent:v5];
+    [(CSHomeButtonShowPasscodeRecognizer *)event handleBiometricEvent:v5];
   }
 
   if (self->_state - 3 >= 2)
   {
-    if (a3 <= 0x21 && ((1 << a3) & 0x2070009E0) != 0)
+    if (event <= 0x21 && ((1 << event) & 0x2070009E0) != 0)
     {
       v6 = MEMORY[0x277CCACA8];
       v7 = NSStringFromSBUIBiometricEvent();
@@ -89,7 +89,7 @@ LABEL_8:
       return;
     }
 
-    if (a3 - 9 <= 1)
+    if (event - 9 <= 1)
     {
       v9 = MEMORY[0x277CCACA8];
       v7 = NSStringFromSBUIBiometricEvent();
@@ -97,9 +97,9 @@ LABEL_8:
       goto LABEL_7;
     }
 
-    if (a3)
+    if (event)
     {
-      if (a3 == 1)
+      if (event == 1)
       {
         v7 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -140,32 +140,32 @@ LABEL_8:
   }
 }
 
-- (void)noteAuthenticated:(BOOL)a3
+- (void)noteAuthenticated:(BOOL)authenticated
 {
   if (self->_state - 3 >= 2)
   {
-    v3 = a3;
+    authenticatedCopy = authenticated;
     v5 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(CSHomeButtonShowPasscodeRecognizer *)self noteAuthenticated:v3, v5];
+      [(CSHomeButtonShowPasscodeRecognizer *)self noteAuthenticated:authenticatedCopy, v5];
     }
 
-    if (v3)
+    if (authenticatedCopy)
     {
       [(CSHomeButtonShowPasscodeRecognizer *)self _reallySetState:4 forReason:@"Authenticated"];
     }
   }
 }
 
-- (void)_reallySetState:(unint64_t)a3 forReason:(id)a4
+- (void)_reallySetState:(unint64_t)state forReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  reasonCopy = reason;
   state = self->_state;
-  if (state != a3 && state - 3 >= 2)
+  if (state != state && state - 3 >= 2)
   {
-    self->_state = a3;
+    self->_state = state;
     v10 = SBLogLockScreenMesaHomeButtonPasscodeRecognizer();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -186,27 +186,27 @@ LABEL_8:
       v16 = 2114;
       v17 = v13;
       v18 = 2114;
-      v19 = v7;
+      v19 = reasonCopy;
       _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_INFO, "[%{public}@] changed to state: %{public}@ for reason: %{public}@", &v14, 0x20u);
     }
 
     [(CSHomeButtonShowPasscodeRecognizer *)self _switchedFromState:state toState:self->_state];
     if (self->_state - 3 <= 1)
     {
-      objc_storeStrong(&self->_terminalStateReasoning, a4);
+      objc_storeStrong(&self->_terminalStateReasoning, reason);
     }
   }
 }
 
-- (void)_switchedFromState:(unint64_t)a3 toState:(unint64_t)a4
+- (void)_switchedFromState:(unint64_t)state toState:(unint64_t)toState
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (a3 == 1)
+  if (state == 1)
   {
     [(CSHomeButtonShowPasscodeRecognizer *)self _invalidateMinimumTimer];
   }
 
-  switch(a4)
+  switch(toState)
   {
     case 4uLL:
       [WeakRetained homeButtonShowPasscodeRecognizerDidFailToRecognize:self];
@@ -244,24 +244,24 @@ void __65__CSHomeButtonShowPasscodeRecognizer__switchedFromState_toState___block
 
 - (id)succinctDescription
 {
-  v2 = [(CSHomeButtonShowPasscodeRecognizer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSHomeButtonShowPasscodeRecognizer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSHomeButtonShowPasscodeRecognizer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSHomeButtonShowPasscodeRecognizer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(CSHomeButtonShowPasscodeRecognizer *)self succinctDescriptionBuilder];
-  v5 = v4;
+  succinctDescriptionBuilder = [(CSHomeButtonShowPasscodeRecognizer *)self succinctDescriptionBuilder];
+  v5 = succinctDescriptionBuilder;
   v6 = self->_state - 1;
   if (v6 > 3)
   {
@@ -273,7 +273,7 @@ void __65__CSHomeButtonShowPasscodeRecognizer__switchedFromState_toState___block
     v7 = off_27838E1A8[v6];
   }
 
-  [v4 appendString:v7 withName:@"state"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"state"];
   v8 = [v5 appendBool:self->_minimumTimer != 0 withName:@"minimumTimerActive"];
   v9 = [v5 appendBool:self->_fingerWasOnInitially withName:@"initialFingerOn?"];
   v10 = [v5 appendBool:self->_fingerHasLifted withName:@"initialFingerOnHasLifted?"];
@@ -305,7 +305,7 @@ void __65__CSHomeButtonShowPasscodeRecognizer__switchedFromState_toState___block
     if (!self->_fingerHasLifted)
     {
       v3 = @"MinimumTimeToShowPasscodePassed - finger on initially but hasn't yet lifted";
-      v4 = self;
+      selfCopy2 = self;
       v5 = 2;
       goto LABEL_9;
     }
@@ -318,11 +318,11 @@ void __65__CSHomeButtonShowPasscodeRecognizer__switchedFromState_toState___block
     v3 = @"MinimumTimerExpired - finger was not on at the time the home button press recognized";
   }
 
-  v4 = self;
+  selfCopy2 = self;
   v5 = 3;
 LABEL_9:
 
-  [(CSHomeButtonShowPasscodeRecognizer *)v4 _reallySetState:v5 forReason:v3];
+  [(CSHomeButtonShowPasscodeRecognizer *)selfCopy2 _reallySetState:v5 forReason:v3];
 }
 
 - (SBHomeButtonShowPasscodeRecognizerDelegate)delegate

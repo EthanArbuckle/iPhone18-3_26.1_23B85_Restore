@@ -1,6 +1,6 @@
 @interface PNPPairingViewController
 - (CGSize)preferredContentSize;
-- (PNPPairingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PNPPairingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PNPPairingViewControllerDelegate)delegate;
 - (PNPPlatterViewControllerPlatterDelegate)platterDelegate;
 - (PNPViewControllerAppearanceDelegate)appearanceDelegate;
@@ -14,74 +14,74 @@
 - (void)_actuallyTransitionToCharging;
 - (void)_actuallyTransitionToChargingByMovingPlatter;
 - (void)_actuallyTransitionToChargingBySlideOutAndPresent;
-- (void)_actuallyTransitionToSpinningPlatterWithDimmingState:(int64_t)a3;
+- (void)_actuallyTransitionToSpinningPlatterWithDimmingState:(int64_t)state;
 - (void)_actuallyTransitionToWizard;
 - (void)_cancelTimeoutTimer;
 - (void)_centerContainerViews;
 - (void)_chargingStatusViewHostsLayoutIfNeeded;
-- (void)_chargingStatusViewHostsSetShowsChargingStatusView:(BOOL)a3;
+- (void)_chargingStatusViewHostsSetShowsChargingStatusView:(BOOL)view;
 - (void)_chargingStatusViewHostsSetupChargingViews;
 - (void)_chargingStatusViewHostsTeardownChargingViews;
 - (void)_chargingStatusViewLayoutIfNeeded;
-- (void)_chargingStatusViewSetChargingState:(int64_t)a3;
-- (void)_chargingStatusViewSetDeviceState:(id)a3;
-- (void)_chargingStatusViewSetIsTransitioningToBatteryUI:(BOOL)a3;
+- (void)_chargingStatusViewSetChargingState:(int64_t)state;
+- (void)_chargingStatusViewSetDeviceState:(id)state;
+- (void)_chargingStatusViewSetIsTransitioningToBatteryUI:(BOOL)i;
 - (void)_chargingStatusViewSetNeedsLayout;
-- (void)_chargingStatusViewSetShowCharging:(BOOL)a3;
+- (void)_chargingStatusViewSetShowCharging:(BOOL)charging;
 - (void)_chargingStatusViewUpdateConstraints;
-- (void)_chargingUIViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)_dismissChargingAndPresentSpinningPencilWithDimmingState:(int64_t)a3;
-- (void)_handlePanGesture:(id)a3;
+- (void)_chargingUIViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)_dismissChargingAndPresentSpinningPencilWithDimmingState:(int64_t)state;
+- (void)_handlePanGesture:(id)gesture;
 - (void)_hideOrShowAllContainerViewsIfNeeded;
-- (void)_hideOrShowContainerViewIfNeeded:(id)a3;
-- (void)_morphToSpinningPencilWithDimmingState:(int64_t)a3;
+- (void)_hideOrShowContainerViewIfNeeded:(id)needed;
+- (void)_morphToSpinningPencilWithDimmingState:(int64_t)state;
 - (void)_offsetContainerViewsIfNecessary;
-- (void)_orientationChanged:(double)a3;
-- (void)_performAnimations:(id)a3 completion:(id)a4;
+- (void)_orientationChanged:(double)changed;
+- (void)_performAnimations:(id)animations completion:(id)completion;
 - (void)_resetTimeoutTimer;
 - (void)_resetTimerForWizard;
 - (void)_showConnectingAnimationUI;
-- (void)_spinningPencilViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)_spinningPencilViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)_startConnectingUITimer;
 - (void)_transitionPairingViewToWizardByMovingPlatter;
-- (void)_transitionToChargingFrom:(int64_t)a3;
+- (void)_transitionToChargingFrom:(int64_t)from;
 - (void)_transitionToChargingFromSpinner;
 - (void)_transitionToWizardBySlideOutAndPresent;
 - (void)_updateAnimationTranslation;
-- (void)_updateForSize:(CGSize)a3;
-- (void)_updatePillUIAnimated:(BOOL)a3;
-- (void)_updatePlatterContainerView:(id)a3 toPreferredCornerRadius:(double)a4 edge:(unint64_t)a5;
+- (void)_updateForSize:(CGSize)size;
+- (void)_updatePillUIAnimated:(BOOL)animated;
+- (void)_updatePlatterContainerView:(id)view toPreferredCornerRadius:(double)radius edge:(unint64_t)edge;
 - (void)_updatePreferredContentSize;
-- (void)_updateSubviewDeviceStateForContainerView:(id)a3;
-- (void)_wizardViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)_updateSubviewDeviceStateForContainerView:(id)view;
+- (void)_wizardViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)didCompleteOneRevolution;
 - (void)didTapOnCancelButton;
 - (void)didTapOnConnectButton;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
 - (void)pairingFailed;
 - (void)pairingStarted;
-- (void)pairingStartedWithDimming:(BOOL)a3 deviceType:(int64_t)a4;
-- (void)pairingStartedWithDimmingState:(int64_t)a3;
+- (void)pairingStartedWithDimming:(BOOL)dimming deviceType:(int64_t)type;
+- (void)pairingStartedWithDimmingState:(int64_t)state;
 - (void)pairingSucceededSubsequently;
-- (void)pairingSucceededWithShouldShowWhatsNew:(BOOL)a3 deviceType:(int64_t)a4;
-- (void)setDeviceState:(id)a3;
+- (void)pairingSucceededWithShouldShowWhatsNew:(BOOL)new deviceType:(int64_t)type;
+- (void)setDeviceState:(id)state;
 - (void)showGenericBatteryUI;
 - (void)showNeedsInternetAlert;
 - (void)showPairingPrompt;
 - (void)showPairingPromptAlert;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewRequestsDismiss:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewRequestsDismiss:(id)dismiss;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PNPPairingViewController
 
-- (PNPPairingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PNPPairingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v26.receiver = self;
   v26.super_class = PNPPairingViewController;
@@ -101,8 +101,8 @@
   v4->_pairingView = v9;
 
   [(PNPPairingView *)v4->_pairingView setDelegate:v4];
-  v11 = [(PNPPairingView *)v4->_pairingView pencilView];
-  [v11 setDelegate:v4];
+  pencilView = [(PNPPairingView *)v4->_pairingView pencilView];
+  [pencilView setDelegate:v4];
 
   v12 = objc_alloc_init(PNPPlatterContainerView);
   horizontalPencilPlatterContainerView = v4->_horizontalPencilPlatterContainerView;
@@ -134,8 +134,8 @@
   panGestureRecognizer = v4->_panGestureRecognizer;
   v4->_panGestureRecognizer = v22;
 
-  v24 = [(PNPPairingViewController *)v4 view];
-  [v24 addGestureRecognizer:v4->_panGestureRecognizer];
+  view = [(PNPPairingViewController *)v4 view];
+  [view addGestureRecognizer:v4->_panGestureRecognizer];
 
   [(PNPPairingViewController *)v4 _offsetContainerViewsIfNecessary];
   return v4;
@@ -147,16 +147,16 @@
   [(PNPPairingViewController *)self setView:v3];
 }
 
-- (void)_orientationChanged:(double)a3
+- (void)_orientationChanged:(double)changed
 {
   if (![(PNPPairingView *)self->_pairingView state])
   {
-    v4 = [(PNPPairingViewController *)self deviceState];
-    v8 = [v4 copy];
+    deviceState = [(PNPPairingViewController *)self deviceState];
+    v8 = [deviceState copy];
 
-    v5 = [(PNPPairingViewController *)self _edgeToStickToPort];
+    _edgeToStickToPort = [(PNPPairingViewController *)self _edgeToStickToPort];
     v6 = v8;
-    if (!v5)
+    if (!_edgeToStickToPort)
     {
       if ([v8 edge] != 8 && objc_msgSend(v8, "edge") != 2 && objc_msgSend(v8, "edge") != 4)
       {
@@ -168,35 +168,35 @@
 
     [v6 setEdge:?];
     [(PNPPairingViewController *)self setDeviceState:v8];
-    v7 = [(PNPPairingViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(PNPPairingViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (unint64_t)_edgeToStickToPort
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  if (v3 == 1 || v5 == 1)
+  if (orientation == 1 || statusBarOrientation == 1)
   {
     return 8;
   }
 
-  if (v3 == 2 || v5 == 2)
+  if (orientation == 2 || statusBarOrientation == 2)
   {
     return 2;
   }
 
-  if (v3 == 3 || v5 == 3)
+  if (orientation == 3 || statusBarOrientation == 3)
   {
     return 1;
   }
 
-  if (v5 == 4 || v3 == 4)
+  if (statusBarOrientation == 4 || orientation == 4)
   {
     return 4;
   }
@@ -210,24 +210,24 @@
 - (void)viewWillLayoutSubviews
 {
   wizardPlatterContainerView = self->_wizardPlatterContainerView;
-  v4 = [(PNPPairingViewController *)self view];
-  [v4 bounds];
+  view = [(PNPPairingViewController *)self view];
+  [view bounds];
   [(PNPPlatterContainerView *)wizardPlatterContainerView setFrame:?];
 
   horizontalPencilPlatterContainerView = self->_horizontalPencilPlatterContainerView;
-  v6 = [(PNPPairingViewController *)self view];
-  [v6 bounds];
+  view2 = [(PNPPairingViewController *)self view];
+  [view2 bounds];
   [(PNPPlatterContainerView *)horizontalPencilPlatterContainerView setFrame:?];
 
   [(PNPPairingViewController *)self _chargingStatusViewSetNeedsLayout];
-  v7 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   [(PNPPairingViewController *)self preferredCornerRadius];
-  [(PNPPairingViewController *)self _updatePlatterContainerView:v7 toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v8];
+  [(PNPPairingViewController *)self _updatePlatterContainerView:_currentPlatterContainerView toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v8];
 
-  v9 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView2 = [(PNPPairingViewController *)self _currentPlatterContainerView];
   v10 = self->_wizardPlatterContainerView;
 
-  if (!self->_viewDidAppearCalled || (v11 = v9 == v10, v12 = v9 != v10, self->_viewRequestsDismissCalled))
+  if (!self->_viewDidAppearCalled || (v11 = _currentPlatterContainerView2 == v10, v12 = _currentPlatterContainerView2 != v10, self->_viewRequestsDismissCalled))
   {
     v11 = 0;
     v12 = 0;
@@ -244,62 +244,62 @@
   v5.receiver = self;
   v5.super_class = PNPPairingViewController;
   [(PNPPairingViewController *)&v5 viewDidLoad];
-  v3 = [(PNPPairingViewController *)self view];
-  [v3 addSubview:self->_horizontalPencilPlatterContainerView];
+  view = [(PNPPairingViewController *)self view];
+  [view addSubview:self->_horizontalPencilPlatterContainerView];
 
-  v4 = [(PNPPairingViewController *)self view];
-  [v4 insertSubview:self->_wizardPlatterContainerView belowSubview:self->_horizontalPencilPlatterContainerView];
+  view2 = [(PNPPairingViewController *)self view];
+  [view2 insertSubview:self->_wizardPlatterContainerView belowSubview:self->_horizontalPencilPlatterContainerView];
 }
 
-- (void)_updateForSize:(CGSize)a3
+- (void)_updateForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
-  [(PNPPlatterContainerView *)self->_wizardPlatterContainerView setFrame:*MEMORY[0x277CBF3A0], v7, a3.width, a3.height];
+  [(PNPPlatterContainerView *)self->_wizardPlatterContainerView setFrame:*MEMORY[0x277CBF3A0], v7, size.width, size.height];
   horizontalPencilPlatterContainerView = self->_horizontalPencilPlatterContainerView;
 
   [(PNPPlatterContainerView *)horizontalPencilPlatterContainerView setFrame:v6, v7, width, height];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if (self->_inWizard)
   {
-    [(PNPPairingViewController *)self _wizardViewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(PNPPairingViewController *)self _wizardViewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 
   else if (self->_showingChargingUI)
   {
-    [(PNPPairingViewController *)self _chargingUIViewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(PNPPairingViewController *)self _chargingUIViewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 
   else
   {
-    [(PNPPairingViewController *)self _spinningPencilViewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(PNPPairingViewController *)self _spinningPencilViewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 
   v8.receiver = self;
   v8.super_class = PNPPairingViewController;
-  [(PNPPairingViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PNPPairingViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)_wizardViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)_wizardViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
   v15 = 0u;
   v16 = 0u;
   v14 = 0u;
-  if (v7)
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
     v9 = *(&v14 + 1);
     v10 = *&v14;
   }
@@ -369,18 +369,18 @@ uint64_t __86__PNPPairingViewController__wizardViewWillTransitionToSize_withTran
   return [v7 layoutIfNeeded];
 }
 
-- (void)_chargingUIViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)_chargingUIViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
-  if (v7)
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
     v9 = *(&v13 + 1);
     v10 = *&v13;
   }
@@ -417,18 +417,18 @@ void __90__PNPPairingViewController__chargingUIViewWillTransitionToSize_withTran
   [v7 layoutIfNeeded];
 }
 
-- (void)_spinningPencilViewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)_spinningPencilViewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
-  if (v7)
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
     v9 = *(&v13 + 1);
     v10 = *&v13;
   }
@@ -482,18 +482,18 @@ void __94__PNPPairingViewController__spinningPencilViewWillTransitionToSize_with
   return v6;
 }
 
-- (void)_updatePlatterContainerView:(id)a3 toPreferredCornerRadius:(double)a4 edge:(unint64_t)a5
+- (void)_updatePlatterContainerView:(id)view toPreferredCornerRadius:(double)radius edge:(unint64_t)edge
 {
-  v8 = a3;
-  [v8 setPreferredCornerRadius:a4];
-  [v8 setEdge:a5];
-  [(PNPPairingViewController *)self _updateSubviewDeviceStateForContainerView:v8];
-  [v8 layoutIfNeeded];
+  viewCopy = view;
+  [viewCopy setPreferredCornerRadius:radius];
+  [viewCopy setEdge:edge];
+  [(PNPPairingViewController *)self _updateSubviewDeviceStateForContainerView:viewCopy];
+  [viewCopy layoutIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[PencilSettings sharedPencilSettings];
   [v5 syncSettingsToBackboard];
 
@@ -502,28 +502,28 @@ void __94__PNPPairingViewController__spinningPencilViewWillTransitionToSize_with
 
   v16.receiver = self;
   v16.super_class = PNPPairingViewController;
-  [(PNPPairingViewController *)&v16 viewDidAppear:v3];
-  v7 = [(PNPPairingViewController *)self view];
-  [v7 bounds];
+  [(PNPPairingViewController *)&v16 viewDidAppear:appearCopy];
+  view = [(PNPPairingViewController *)self view];
+  [view bounds];
   [(PNPPairingViewController *)self _updateForSize:v8, v9];
 
-  v10 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   [(PNPPairingViewController *)self preferredCornerRadius];
-  [(PNPPairingViewController *)self _updatePlatterContainerView:v10 toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v11];
+  [(PNPPairingViewController *)self _updatePlatterContainerView:_currentPlatterContainerView toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v11];
 
-  v12 = [(PNPPairingViewController *)self _currentPlatterContainerView];
-  [v12 setPresented:0];
+  _currentPlatterContainerView2 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  [_currentPlatterContainerView2 setPresented:0];
 
-  v13 = [(PNPPairingViewController *)self _currentPlatterContainerView];
-  [v13 layoutIfNeeded];
+  _currentPlatterContainerView3 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  [_currentPlatterContainerView3 layoutIfNeeded];
 
-  v14 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView4 = [(PNPPairingViewController *)self _currentPlatterContainerView];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __42__PNPPairingViewController_viewDidAppear___block_invoke;
   v15[3] = &unk_279A0A060;
   v15[4] = self;
-  PNPPlatterPresentPlatterContainerView(v14, v3, v15);
+  PNPPlatterPresentPlatterContainerView(_currentPlatterContainerView4, appearCopy, v15);
 
   self->_viewDidAppearCalled = 1;
 }
@@ -550,40 +550,40 @@ uint64_t __42__PNPPairingViewController_viewDidAppear___block_invoke(uint64_t a1
   MEMORY[0x2821F96F8](v3, initialTimer);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PNPPairingViewController;
-  [(PNPPairingViewController *)&v4 viewWillDisappear:a3];
+  [(PNPPairingViewController *)&v4 viewWillDisappear:disappear];
   [(PNPPairingViewController *)self resignFirstResponder];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PNPPairingViewController;
-  [(PNPPairingViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PNPPairingViewController *)self appearanceDelegate];
-  [v4 viewControllerDidDismiss:self];
+  [(PNPPairingViewController *)&v5 viewDidDisappear:disappear];
+  appearanceDelegate = [(PNPPairingViewController *)self appearanceDelegate];
+  [appearanceDelegate viewControllerDidDismiss:self];
 }
 
-- (void)_performAnimations:(id)a3 completion:(id)a4
+- (void)_performAnimations:(id)animations completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   v7 = MEMORY[0x277D75D18];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__PNPPairingViewController__performAnimations_completion___block_invoke;
   v12[3] = &unk_279A0A128;
-  v13 = v5;
+  v13 = animationsCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__PNPPairingViewController__performAnimations_completion___block_invoke_2;
   v10[3] = &unk_279A0A1C0;
-  v11 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = completionCopy;
+  v8 = completionCopy;
+  v9 = animationsCopy;
   [v7 animateWithDuration:4 delay:v12 usingSpringWithDamping:v10 initialSpringVelocity:0.6 options:0.0 animations:0.85 completion:0.0];
 }
 
@@ -601,8 +601,8 @@ uint64_t __58__PNPPairingViewController__performAnimations_completion___block_in
 - (void)_transitionPairingViewToWizardByMovingPlatter
 {
   [(PNPPairingView *)self->_pairingView prepareForTransitionToWizard];
-  v3 = [(PNPPairingView *)self->_pairingView wizardViewController];
-  [(PNPPairingViewController *)self addChildViewController:v3];
+  wizardViewController = [(PNPPairingView *)self->_pairingView wizardViewController];
+  [(PNPPairingViewController *)self addChildViewController:wizardViewController];
 
   v4[4] = self;
   v5[0] = MEMORY[0x277D85DD0];
@@ -670,8 +670,8 @@ uint64_t __73__PNPPairingViewController__transitionPairingViewToWizardByMovingPl
 - (void)_transitionToWizardBySlideOutAndPresent
 {
   [(PNPPairingView *)self->_pairingView prepareForTransitionToWizard];
-  v3 = [(PNPPairingView *)self->_pairingView wizardViewController];
-  [(PNPPairingViewController *)self addChildViewController:v3];
+  wizardViewController = [(PNPPairingView *)self->_pairingView wizardViewController];
+  [(PNPPairingViewController *)self addChildViewController:wizardViewController];
 
   [(PNPPairingView *)self->_pairingView unhideWizardIfNecessary];
   [(PNPPairingView *)self->_pairingView setState:1];
@@ -695,13 +695,13 @@ uint64_t __73__PNPPairingViewController__transitionPairingViewToWizardByMovingPl
 
 - (void)_actuallyTransitionToWizard
 {
-  v3 = [(PNPPairingViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(PNPPairingViewController *)self view];
+  [view layoutIfNeeded];
 
   self->_inWizard = 1;
-  v4 = [(PNPPairingView *)self->_pairingView deviceType];
-  v5 = [(PNPPairingViewController *)self deviceState];
-  if (([v5 isOnLeftOrRightSide] & 1) != 0 || -[PNPPairingView deviceType](self->_pairingView, "deviceType") == 1)
+  deviceType = [(PNPPairingView *)self->_pairingView deviceType];
+  deviceState = [(PNPPairingViewController *)self deviceState];
+  if (([deviceState isOnLeftOrRightSide] & 1) != 0 || -[PNPPairingView deviceType](self->_pairingView, "deviceType") == 1)
   {
 
 LABEL_4:
@@ -709,15 +709,15 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (v4 == 3)
+  if (deviceType == 3)
   {
     goto LABEL_4;
   }
 
   [(PNPPairingViewController *)self _transitionPairingViewToWizardByMovingPlatter];
 LABEL_5:
-  v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v6 postNotificationName:@"PNPParingVCDidAppearNotification" object:0 userInfo:0 deliverImmediately:1];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"PNPParingVCDidAppearNotification" object:0 userInfo:0 deliverImmediately:1];
   [(PNPPairingViewController *)self becomeFirstResponder];
 }
 
@@ -746,39 +746,39 @@ LABEL_5:
   [(PNPPencilHorizontalPresentationContainerView *)horizontalPresentationPencilContainerView setChargingStatusView:0];
 }
 
-- (void)_chargingStatusViewHostsSetShowsChargingStatusView:(BOOL)a3
+- (void)_chargingStatusViewHostsSetShowsChargingStatusView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(PNPPairingView *)self->_pairingView setShowsChargingStatusView:?];
   horizontalPresentationPencilContainerView = self->_horizontalPresentationPencilContainerView;
 
-  [(PNPPencilHorizontalPresentationContainerView *)horizontalPresentationPencilContainerView setShowsChargingStatusView:v3];
+  [(PNPPencilHorizontalPresentationContainerView *)horizontalPresentationPencilContainerView setShowsChargingStatusView:viewCopy];
 }
 
-- (void)_chargingStatusViewSetShowCharging:(BOOL)a3
+- (void)_chargingStatusViewSetShowCharging:(BOOL)charging
 {
-  v3 = a3;
+  chargingCopy = charging;
   [(PNPChargingStatusView *)self->_pairingChargingStatusView setShowsCharging:?];
   horizontalChargingStatusView = self->_horizontalChargingStatusView;
 
-  [(PNPChargingStatusView *)horizontalChargingStatusView setShowsCharging:v3];
+  [(PNPChargingStatusView *)horizontalChargingStatusView setShowsCharging:chargingCopy];
 }
 
-- (void)_chargingStatusViewSetChargingState:(int64_t)a3
+- (void)_chargingStatusViewSetChargingState:(int64_t)state
 {
   [(PNPChargingStatusView *)self->_pairingChargingStatusView updateChargingState:?];
   horizontalChargingStatusView = self->_horizontalChargingStatusView;
 
-  [(PNPChargingStatusView *)horizontalChargingStatusView updateChargingState:a3];
+  [(PNPChargingStatusView *)horizontalChargingStatusView updateChargingState:state];
 }
 
-- (void)_chargingStatusViewSetIsTransitioningToBatteryUI:(BOOL)a3
+- (void)_chargingStatusViewSetIsTransitioningToBatteryUI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   [(PNPChargingStatusView *)self->_pairingChargingStatusView setIsTransitioningToBatteryUI:?];
   horizontalChargingStatusView = self->_horizontalChargingStatusView;
 
-  [(PNPChargingStatusView *)horizontalChargingStatusView setIsTransitioningToBatteryUI:v3];
+  [(PNPChargingStatusView *)horizontalChargingStatusView setIsTransitioningToBatteryUI:iCopy];
 }
 
 - (void)_chargingStatusViewSetNeedsLayout
@@ -805,20 +805,20 @@ LABEL_5:
   [(PNPChargingStatusView *)horizontalChargingStatusView setNeedsUpdateConstraints];
 }
 
-- (void)_chargingStatusViewSetDeviceState:(id)a3
+- (void)_chargingStatusViewSetDeviceState:(id)state
 {
   pairingChargingStatusView = self->_pairingChargingStatusView;
-  v5 = a3;
-  [(PNPChargingStatusView *)pairingChargingStatusView setDeviceState:v5];
-  [(PNPChargingStatusView *)self->_horizontalChargingStatusView setDeviceState:v5];
+  stateCopy = state;
+  [(PNPChargingStatusView *)pairingChargingStatusView setDeviceState:stateCopy];
+  [(PNPChargingStatusView *)self->_horizontalChargingStatusView setDeviceState:stateCopy];
 }
 
 - (void)_actuallyTransitionToCharging
 {
-  v3 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   horizontalPencilPlatterContainerView = self->_horizontalPencilPlatterContainerView;
 
-  if (v3 == horizontalPencilPlatterContainerView)
+  if (_currentPlatterContainerView == horizontalPencilPlatterContainerView)
   {
 
     [(PNPPairingViewController *)self _actuallyTransitionToChargingBySlideOutAndPresent];
@@ -846,8 +846,8 @@ LABEL_5:
   wizardPlatterContainerView = self->_wizardPlatterContainerView;
   [(PNPPairingViewController *)self preferredCornerRadius];
   [(PNPPairingViewController *)self _updatePlatterContainerView:wizardPlatterContainerView toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v4];
-  v5 = [(PNPPairingViewController *)self platterDelegate];
-  [v5 platterPreferencesChangedForViewController:self];
+  platterDelegate = [(PNPPairingViewController *)self platterDelegate];
+  [platterDelegate platterPreferencesChangedForViewController:self];
 
   [(PNPPlatterContainerView *)self->_wizardPlatterContainerView setNeedsLayout];
   [(PNPPlatterContainerView *)self->_wizardPlatterContainerView layoutIfNeeded];
@@ -875,8 +875,8 @@ void __77__PNPPairingViewController__actuallyTransitionToChargingBySlideOutAndPr
 
 - (void)_actuallyTransitionToChargingByMovingPlatter
 {
-  v3 = [(PNPPairingViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(PNPPairingViewController *)self view];
+  [view layoutIfNeeded];
 
   self->_showingChargingUI = 1;
   [(PNPPairingViewController *)self _chargingStatusViewHostsSetupChargingViews];
@@ -937,8 +937,8 @@ void __72__PNPPairingViewController__actuallyTransitionToChargingByMovingPlatter
 
 - (void)_offsetContainerViewsIfNecessary
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   if (v4 < 1000.0)
   {
 
@@ -947,8 +947,8 @@ void __72__PNPPairingViewController__actuallyTransitionToChargingByMovingPlatter
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 bounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
     v7 = v6;
 
     if (v7 >= 1000.0)
@@ -970,46 +970,46 @@ void __72__PNPPairingViewController__actuallyTransitionToChargingByMovingPlatter
 
 - (id)_effectivePencilView
 {
-  v3 = [(PNPPairingViewController *)self deviceState];
-  v4 = [v3 isOnLeftOrRightSide];
+  deviceState = [(PNPPairingViewController *)self deviceState];
+  isOnLeftOrRightSide = [deviceState isOnLeftOrRightSide];
 
-  if (v4)
+  if (isOnLeftOrRightSide)
   {
-    v5 = self->_horizontalPencilView;
+    pencilView = self->_horizontalPencilView;
   }
 
   else
   {
-    v5 = [(PNPPairingView *)self->_pairingView pencilView];
+    pencilView = [(PNPPairingView *)self->_pairingView pencilView];
   }
 
-  return v5;
+  return pencilView;
 }
 
-- (void)_actuallyTransitionToSpinningPlatterWithDimmingState:(int64_t)a3
+- (void)_actuallyTransitionToSpinningPlatterWithDimmingState:(int64_t)state
 {
   [(PNPPairingViewController *)self _offsetContainerViewsIfNecessary];
-  v5 = [(PNPPairingViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(PNPPairingViewController *)self view];
+  [view layoutIfNeeded];
 
   [(PNPPencilView *)self->_horizontalPencilView prepareMovieForSpinningPencil:self->_deviceState];
-  v6 = [(PNPPairingView *)self->_pairingView pencilView];
-  [v6 prepareMovieForSpinningPencil:self->_deviceState];
+  pencilView = [(PNPPairingView *)self->_pairingView pencilView];
+  [pencilView prepareMovieForSpinningPencil:self->_deviceState];
 
   if ([(PNPPairingViewController *)self pairingViewControllerState]&& [(PNPPairingViewController *)self pairingViewControllerState]!= 1 || (v7 = [(PNPPairingViewController *)self _edgeToStickToPort], v7 == 1) || v7 == 4)
   {
 
-    [(PNPPairingViewController *)self _morphToSpinningPencilWithDimmingState:a3];
+    [(PNPPairingViewController *)self _morphToSpinningPencilWithDimmingState:state];
   }
 
   else
   {
 
-    [(PNPPairingViewController *)self _dismissChargingAndPresentSpinningPencilWithDimmingState:a3];
+    [(PNPPairingViewController *)self _dismissChargingAndPresentSpinningPencilWithDimmingState:state];
   }
 }
 
-- (void)_morphToSpinningPencilWithDimmingState:(int64_t)a3
+- (void)_morphToSpinningPencilWithDimmingState:(int64_t)state
 {
   self->_showingChargingUI = 0;
   v3[0] = MEMORY[0x277D85DD0];
@@ -1017,7 +1017,7 @@ void __72__PNPPairingViewController__actuallyTransitionToChargingByMovingPlatter
   v3[2] = __67__PNPPairingViewController__morphToSpinningPencilWithDimmingState___block_invoke;
   v3[3] = &unk_279A0A150;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   [(PNPPairingViewController *)self _performAnimations:v3 completion:0];
 }
 
@@ -1042,7 +1042,7 @@ uint64_t __67__PNPPairingViewController__morphToSpinningPencilWithDimmingState__
   return [v6 _chargingStatusViewHostsLayoutIfNeeded];
 }
 
-- (void)_dismissChargingAndPresentSpinningPencilWithDimmingState:(int64_t)a3
+- (void)_dismissChargingAndPresentSpinningPencilWithDimmingState:(int64_t)state
 {
   self->_showingChargingUI = 0;
   [(PNPPairingViewController *)self _offsetContainerViewsIfNecessary];
@@ -1050,20 +1050,20 @@ uint64_t __67__PNPPairingViewController__morphToSpinningPencilWithDimmingState__
   [(PNPPairingViewController *)self _chargingStatusViewHostsSetShowsChargingStatusView:0];
   [(PNPPairingView *)self->_pairingView setState:0];
   [(PNPPairingView *)self->_pairingView layoutIfNeeded];
-  [(PNPPlatterContainerView *)self->_horizontalPencilPlatterContainerView setDimmingState:a3];
-  [(PNPPlatterContainerView *)self->_wizardPlatterContainerView setDimmingState:a3];
-  v5 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  [(PNPPlatterContainerView *)self->_horizontalPencilPlatterContainerView setDimmingState:state];
+  [(PNPPlatterContainerView *)self->_wizardPlatterContainerView setDimmingState:state];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   [(PNPPairingViewController *)self preferredCornerRadius];
-  [(PNPPairingViewController *)self _updatePlatterContainerView:v5 toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v6];
+  [(PNPPairingViewController *)self _updatePlatterContainerView:_currentPlatterContainerView toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v6];
 
   [(PNPPairingViewController *)self _chargingStatusViewHostsLayoutIfNeeded];
 
   [(PNPPairingViewController *)self _hideOrShowAllContainerViewsIfNeeded];
 }
 
-- (void)_transitionToChargingFrom:(int64_t)a3
+- (void)_transitionToChargingFrom:(int64_t)from
 {
-  if (a3 == 1 && [(PNPChargingStatusView *)self->_pairingChargingStatusView chargingState]== 1)
+  if (from == 1 && [(PNPChargingStatusView *)self->_pairingChargingStatusView chargingState]== 1)
   {
 
     [(PNPPairingViewController *)self _transitionToChargingFromSpinner];
@@ -1116,16 +1116,16 @@ uint64_t __67__PNPPairingViewController__morphToSpinningPencilWithDimmingState__
   [(PNPPairingViewController *)self setPreferredContentSize:?];
 }
 
-- (void)viewRequestsDismiss:(id)a3
+- (void)viewRequestsDismiss:(id)dismiss
 {
   self->_viewRequestsDismissCalled = 1;
-  v4 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__PNPPairingViewController_viewRequestsDismiss___block_invoke;
   v5[3] = &unk_279A0A060;
   v5[4] = self;
-  PNPPlatterDismissPlatterContainerView(v4, 1, v5);
+  PNPPlatterDismissPlatterContainerView(_currentPlatterContainerView, 1, v5);
 }
 
 uint64_t __48__PNPPairingViewController_viewRequestsDismiss___block_invoke(uint64_t a1)
@@ -1158,30 +1158,30 @@ uint64_t __48__PNPPairingViewController_viewRequestsDismiss___block_invoke(uint6
   return [v9 dismissViewControllerAnimated:0 completion:0];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
   v5.receiver = self;
   v5.super_class = PNPPairingViewController;
-  [(PNPPairingViewController *)&v5 dismissViewControllerAnimated:a3 completion:a4];
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 postNotificationName:@"PNPParingVCDidDisappearNotification" object:0 userInfo:0 deliverImmediately:1];
+  [(PNPPairingViewController *)&v5 dismissViewControllerAnimated:animated completion:completion];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"PNPParingVCDidDisappearNotification" object:0 userInfo:0 deliverImmediately:1];
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  v10 = a3;
-  v5 = [(PNPPairingViewController *)self deviceState];
-  v6 = [v5 edge];
+  stateCopy = state;
+  deviceState = [(PNPPairingViewController *)self deviceState];
+  edge = [deviceState edge];
 
-  objc_storeStrong(&self->_deviceState, a3);
-  v7 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  objc_storeStrong(&self->_deviceState, state);
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   [(PNPPairingViewController *)self preferredCornerRadius];
-  [(PNPPairingViewController *)self _updatePlatterContainerView:v7 toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v8];
+  [(PNPPairingViewController *)self _updatePlatterContainerView:_currentPlatterContainerView toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v8];
 
-  v9 = [(PNPPairingViewController *)self platterDelegate];
-  [v9 platterPreferencesChangedForViewController:self];
+  platterDelegate = [(PNPPairingViewController *)self platterDelegate];
+  [platterDelegate platterPreferencesChangedForViewController:self];
 
-  if (v6 && !self->_viewRequestsDismissCalled)
+  if (edge && !self->_viewRequestsDismissCalled)
   {
     [(PNPPlatterContainerView *)self->_wizardPlatterContainerView setDismissUsingAlpha:1];
     [(PNPPlatterContainerView *)self->_horizontalPencilPlatterContainerView setDismissUsingAlpha:1];
@@ -1191,23 +1191,23 @@ uint64_t __48__PNPPairingViewController_viewRequestsDismiss___block_invoke(uint6
   }
 }
 
-- (void)_updateSubviewDeviceStateForContainerView:(id)a3
+- (void)_updateSubviewDeviceStateForContainerView:(id)view
 {
-  v4 = [(PNPPairingViewController *)self deviceState];
-  [(PNPPairingViewController *)self _chargingStatusViewSetDeviceState:v4];
+  deviceState = [(PNPPairingViewController *)self deviceState];
+  [(PNPPairingViewController *)self _chargingStatusViewSetDeviceState:deviceState];
 
-  v5 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   wizardPlatterContainerView = self->_wizardPlatterContainerView;
 
   v7 = &OBJC_IVAR___PNPPairingViewController__horizontalPresentationPencilContainerView;
-  if (v5 == wizardPlatterContainerView)
+  if (_currentPlatterContainerView == wizardPlatterContainerView)
   {
     v7 = &OBJC_IVAR___PNPPairingViewController__pairingView;
   }
 
   v8 = *(&self->super.super.super.isa + *v7);
-  v9 = [(PNPPairingViewController *)self deviceState];
-  [v8 setDeviceState:v9];
+  deviceState2 = [(PNPPairingViewController *)self deviceState];
+  [v8 setDeviceState:deviceState2];
 }
 
 - (void)_hideOrShowAllContainerViewsIfNeeded
@@ -1218,39 +1218,39 @@ uint64_t __48__PNPPairingViewController_viewRequestsDismiss___block_invoke(uint6
   [(PNPPairingViewController *)self _hideOrShowContainerViewIfNeeded:horizontalPencilPlatterContainerView];
 }
 
-- (void)_hideOrShowContainerViewIfNeeded:(id)a3
+- (void)_hideOrShowContainerViewIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(PNPPairingViewController *)self _currentPlatterContainerView];
-  v6 = v5;
-  if (v5 == v4)
+  neededCopy = needed;
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  v6 = _currentPlatterContainerView;
+  if (_currentPlatterContainerView == neededCopy)
   {
   }
 
   else
   {
-    v7 = [v4 presented];
+    presented = [neededCopy presented];
 
-    if (v7)
+    if (presented)
     {
-      PNPPlatterDismissPlatterContainerView(v4, 1, 0);
+      PNPPlatterDismissPlatterContainerView(neededCopy, 1, 0);
     }
   }
 
-  v8 = [(PNPPairingViewController *)self _currentPlatterContainerView];
-  v9 = v8;
-  if (v8 == v4)
+  _currentPlatterContainerView2 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  v9 = _currentPlatterContainerView2;
+  if (_currentPlatterContainerView2 == neededCopy)
   {
-    v10 = [v4 presented];
+    presented2 = [neededCopy presented];
 
-    if ((v10 & 1) == 0)
+    if ((presented2 & 1) == 0)
     {
       v11 = MEMORY[0x277D75D18];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __61__PNPPairingViewController__hideOrShowContainerViewIfNeeded___block_invoke;
       v13[3] = &unk_279A0A060;
-      v12 = v4;
+      v12 = neededCopy;
       v14 = v12;
       [v11 performWithoutAnimation:v13];
       PNPPlatterPresentPlatterContainerView(v12, 1, 0);
@@ -1440,12 +1440,12 @@ uint64_t __50__PNPPairingViewController_showNeedsInternetAlert__block_invoke(uin
   return [v4 _updatePillUIAnimated:a2];
 }
 
-- (void)_updatePillUIAnimated:(BOOL)a3
+- (void)_updatePillUIAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_showingChargingUI = 1;
   [(PNPPairingViewController *)self _centerContainerViews];
-  if (v3)
+  if (animatedCopy)
   {
     [(PNPPairingViewController *)self _chargingStatusViewSetIsTransitioningToBatteryUI:1];
   }
@@ -1453,30 +1453,30 @@ uint64_t __50__PNPPairingViewController_showNeedsInternetAlert__block_invoke(uin
   [(PNPPairingViewController *)self _chargingStatusViewHostsSetShowsChargingStatusView:1];
   [(PNPPairingViewController *)self _chargingStatusViewHostsLayoutIfNeeded];
   [(PNPPairingViewController *)self _chargingStatusViewUpdateConstraints];
-  v5 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   [(PNPPairingViewController *)self preferredCornerRadius];
-  [(PNPPairingViewController *)self _updatePlatterContainerView:v5 toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v6];
+  [(PNPPairingViewController *)self _updatePlatterContainerView:_currentPlatterContainerView toPreferredCornerRadius:[(PNPPairingViewController *)self preferredEdge] edge:v6];
 
-  v7 = [(PNPPairingViewController *)self platterDelegate];
-  [v7 platterPreferencesChangedForViewController:self];
+  platterDelegate = [(PNPPairingViewController *)self platterDelegate];
+  [platterDelegate platterPreferencesChangedForViewController:self];
 
   [(PNPPairingViewController *)self _resetTimeoutTimer];
 }
 
 - (int64_t)_dimmingState
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v4 = [v3 isEqualToString:@"com.apple.SharingViewService"];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.SharingViewService"];
   return v4;
 }
 
 - (void)pairingStarted
 {
-  v3 = [(PNPPairingViewController *)self _dimmingState];
+  _dimmingState = [(PNPPairingViewController *)self _dimmingState];
 
-  [(PNPPairingViewController *)self pairingStartedWithDimmingState:v3];
+  [(PNPPairingViewController *)self pairingStartedWithDimmingState:_dimmingState];
 }
 
 - (void)showPairingPromptAlert
@@ -1532,29 +1532,29 @@ uint64_t __50__PNPPairingViewController_showPairingPromptAlert__block_invoke_2(u
   return [v2 pairingFailed];
 }
 
-- (void)pairingStartedWithDimmingState:(int64_t)a3
+- (void)pairingStartedWithDimmingState:(int64_t)state
 {
-  [(PNPPairingViewController *)self _actuallyTransitionToSpinningPlatterWithDimmingState:a3];
+  [(PNPPairingViewController *)self _actuallyTransitionToSpinningPlatterWithDimmingState:state];
   [(PNPPairingViewController *)self setPairingViewControllerState:3];
 
   [(PNPPairingViewController *)self _resetTimeoutTimer];
 }
 
-- (void)pairingStartedWithDimming:(BOOL)a3 deviceType:(int64_t)a4
+- (void)pairingStartedWithDimming:(BOOL)dimming deviceType:(int64_t)type
 {
-  v5 = a3;
-  v7 = [(PNPPairingViewController *)self deviceState];
-  [v7 setDeviceType:a4];
+  dimmingCopy = dimming;
+  deviceState = [(PNPPairingViewController *)self deviceState];
+  [deviceState setDeviceType:type];
 
-  [(PNPPairingViewController *)self pairingStartedWithDimming:v5];
+  [(PNPPairingViewController *)self pairingStartedWithDimming:dimmingCopy];
 }
 
-- (void)pairingSucceededWithShouldShowWhatsNew:(BOOL)a3 deviceType:(int64_t)a4
+- (void)pairingSucceededWithShouldShowWhatsNew:(BOOL)new deviceType:(int64_t)type
 {
-  v5 = a3;
+  newCopy = new;
   [(PNPPairingViewController *)self setPairingViewControllerState:4];
-  [(PNPPairingView *)self->_pairingView setShouldShowWhatsNew:v5];
-  [(PNPPairingView *)self->_pairingView setDeviceType:a4];
+  [(PNPPairingView *)self->_pairingView setShouldShowWhatsNew:newCopy];
+  [(PNPPairingView *)self->_pairingView setDeviceType:type];
   [(PNPPairingViewController *)self _transitionToWizard];
 
   [(PNPPairingViewController *)self _resetTimerForWizard];
@@ -1562,9 +1562,9 @@ uint64_t __50__PNPPairingViewController_showPairingPromptAlert__block_invoke_2(u
 
 - (void)pairingSucceededSubsequently
 {
-  v3 = [(PNPPairingViewController *)self pairingViewControllerState];
+  pairingViewControllerState = [(PNPPairingViewController *)self pairingViewControllerState];
   [(PNPPairingViewController *)self setPairingViewControllerState:5];
-  [(PNPPairingViewController *)self _transitionToChargingFrom:v3];
+  [(PNPPairingViewController *)self _transitionToChargingFrom:pairingViewControllerState];
 
   [(PNPPairingViewController *)self _resetTimeoutTimer];
 }
@@ -1588,10 +1588,10 @@ uint64_t __50__PNPPairingViewController_showPairingPromptAlert__block_invoke_2(u
     return 0;
   }
 
-  v4 = [(PNPPairingViewController *)self deviceState];
-  v5 = [v4 edge];
+  deviceState = [(PNPPairingViewController *)self deviceState];
+  edge = [deviceState edge];
 
-  return v5;
+  return edge;
 }
 
 - (double)preferredCornerRadius
@@ -1612,23 +1612,23 @@ uint64_t __50__PNPPairingViewController_showPairingPromptAlert__block_invoke_2(u
 
 - (double)_translationAmountForDismiss
 {
-  v2 = [(PNPPairingViewController *)self _currentPlatterContainerView];
-  v3 = [v2 contentView];
-  [v3 frame];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  contentView = [_currentPlatterContainerView contentView];
+  [contentView frame];
   v5 = v4 * 0.25;
 
   return v5;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(PNPPairingViewController *)self view];
-  [v4 translationInView:v5];
+  gestureCopy = gesture;
+  view = [(PNPPairingViewController *)self view];
+  [gestureCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
-  if ([v4 state] == 2)
+  if ([gestureCopy state] == 2)
   {
     v10 = v9 * 0.05;
     if (v9 < 0.0)
@@ -1641,7 +1641,7 @@ uint64_t __50__PNPPairingViewController_showPairingPromptAlert__block_invoke_2(u
     goto LABEL_5;
   }
 
-  if ([v4 state] != 3 && objc_msgSend(v4, "state") != 4 && objc_msgSend(v4, "state") != 5)
+  if ([gestureCopy state] != 3 && objc_msgSend(gestureCopy, "state") != 4 && objc_msgSend(gestureCopy, "state") != 5)
   {
 LABEL_5:
     [(PNPPairingViewController *)self _updateAnimationTranslation];
@@ -1670,12 +1670,12 @@ LABEL_13:
 
 - (void)_updateAnimationTranslation
 {
-  v3 = [(PNPPairingViewController *)self _currentPlatterContainerView];
+  _currentPlatterContainerView = [(PNPPairingViewController *)self _currentPlatterContainerView];
   CGAffineTransformMakeTranslation(&v6, 0.0, self->_animationTranslation.y);
   v5 = v6;
-  [v3 setAnimationTranslation:&v5];
-  v4 = [(PNPPairingViewController *)self view];
-  [v4 layoutIfNeeded];
+  [_currentPlatterContainerView setAnimationTranslation:&v5];
+  view = [(PNPPairingViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)didTapOnConnectButton

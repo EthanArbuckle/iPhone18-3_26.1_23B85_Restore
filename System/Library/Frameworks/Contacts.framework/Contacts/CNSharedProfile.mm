@@ -2,12 +2,12 @@
 + (id)log;
 - (CGRect)cropRect;
 - (CNContact)contact;
-- (CNSharedProfile)initWithContact:(id)a3;
-- (CNSharedProfile)initWithNickname:(id)a3;
-- (CNSharedProfile)initWithRecentContactImage:(id)a3 recentPoster:(id)a4 recentAvatarRecipeData:(id)a5;
+- (CNSharedProfile)initWithContact:(id)contact;
+- (CNSharedProfile)initWithNickname:(id)nickname;
+- (CNSharedProfile)initWithRecentContactImage:(id)image recentPoster:(id)poster recentAvatarRecipeData:(id)data;
 - (NSData)thumbnailImageData;
-- (id)imageTypeStringFromContactImage:(id)a3;
-- (id)thumbnailImageDataFromImageData:(id)a3 cropRect:(CGRect)a4;
+- (id)imageTypeStringFromContactImage:(id)image;
+- (id)thumbnailImageDataFromImageData:(id)data cropRect:(CGRect)rect;
 @end
 
 @implementation CNSharedProfile
@@ -33,39 +33,39 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNSharedProfile)initWithNickname:(id)a3
+- (CNSharedProfile)initWithNickname:(id)nickname
 {
-  v4 = a3;
+  nicknameCopy = nickname;
   v32.receiver = self;
   v32.super_class = CNSharedProfile;
   v5 = [(CNSharedProfile *)&v32 init];
   if (v5)
   {
-    v6 = [v4 avatar];
-    v7 = [v6 imageData];
+    avatar = [nicknameCopy avatar];
+    imageData = [avatar imageData];
     v8 = *(v5 + 1);
-    *(v5 + 1) = v7;
+    *(v5 + 1) = imageData;
 
-    v9 = [v4 avatar];
-    v10 = [v9 imageData];
+    avatar2 = [nicknameCopy avatar];
+    imageData2 = [avatar2 imageData];
     v11 = *(v5 + 2);
-    *(v5 + 2) = v10;
+    *(v5 + 2) = imageData2;
 
     v12 = *(MEMORY[0x1E695F058] + 16);
     *(v5 + 56) = *MEMORY[0x1E695F058];
     *(v5 + 72) = v12;
     v13 = [CNWallpaper alloc];
-    v14 = [v4 wallpaper];
-    v15 = [v14 wallpaperData];
-    v16 = [v4 wallpaper];
-    v17 = -[CNWallpaper initWithPosterArchiveData:contentIsSensitive:](v13, "initWithPosterArchiveData:contentIsSensitive:", v15, [v16 contentIsSensitive]);
+    wallpaper = [nicknameCopy wallpaper];
+    wallpaperData = [wallpaper wallpaperData];
+    wallpaper2 = [nicknameCopy wallpaper];
+    v17 = -[CNWallpaper initWithPosterArchiveData:contentIsSensitive:](v13, "initWithPosterArchiveData:contentIsSensitive:", wallpaperData, [wallpaper2 contentIsSensitive]);
 
-    v18 = [v4 wallpaper];
-    v19 = [v18 metadata];
+    wallpaper3 = [nicknameCopy wallpaper];
+    metadata = [wallpaper3 metadata];
 
-    if (v19)
+    if (metadata)
     {
-      v20 = [(CNWallpaper *)v17 wallpaperIncludingIMWallpaperMetadata:v19];
+      v20 = [(CNWallpaper *)v17 wallpaperIncludingIMWallpaperMetadata:metadata];
 
       v17 = v20;
     }
@@ -74,14 +74,14 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
     *(v5 + 5) = v17;
     v22 = v17;
 
-    v23 = [v4 wallpaper];
-    v24 = [v23 lowResWallpaperData];
+    wallpaper4 = [nicknameCopy wallpaper];
+    lowResWallpaperData = [wallpaper4 lowResWallpaperData];
     v25 = *(v5 + 6);
-    *(v5 + 6) = v24;
+    *(v5 + 6) = lowResWallpaperData;
 
-    v26 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v27 = [v26 nicknameProvider];
-    v28 = [v27 avatarRecipeDataForNickname:v4];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment nicknameProvider];
+    v28 = [nicknameProvider avatarRecipeDataForNickname:nicknameCopy];
     v29 = *(v5 + 4);
     *(v5 + 4) = v28;
 
@@ -91,42 +91,42 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
   return v5;
 }
 
-- (CNSharedProfile)initWithContact:(id)a3
+- (CNSharedProfile)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v24.receiver = self;
   v24.super_class = CNSharedProfile;
   v5 = [(CNSharedProfile *)&v24 init];
   if (v5)
   {
-    v6 = [v4 imageData];
+    imageData = [contactCopy imageData];
     imageData = v5->_imageData;
-    v5->_imageData = v6;
+    v5->_imageData = imageData;
 
-    v8 = [v4 thumbnailImageData];
+    thumbnailImageData = [contactCopy thumbnailImageData];
     thumbnailImageData = v5->_thumbnailImageData;
-    v5->_thumbnailImageData = v8;
+    v5->_thumbnailImageData = thumbnailImageData;
 
-    [v4 cropRect];
+    [contactCopy cropRect];
     v5->_cropRect.origin.x = v10;
     v5->_cropRect.origin.y = v11;
     v5->_cropRect.size.width = v12;
     v5->_cropRect.size.height = v13;
-    v14 = [v4 imageType];
+    imageType = [contactCopy imageType];
     imageType = v5->_imageType;
-    v5->_imageType = v14;
+    v5->_imageType = imageType;
 
-    v16 = [v4 avatarRecipeData];
+    avatarRecipeData = [contactCopy avatarRecipeData];
     avatarRecipeData = v5->_avatarRecipeData;
-    v5->_avatarRecipeData = v16;
+    v5->_avatarRecipeData = avatarRecipeData;
 
-    v18 = [v4 wallpaper];
+    wallpaper = [contactCopy wallpaper];
     wallpaper = v5->_wallpaper;
-    v5->_wallpaper = v18;
+    v5->_wallpaper = wallpaper;
 
-    v20 = [v4 watchWallpaperImageData];
+    watchWallpaperImageData = [contactCopy watchWallpaperImageData];
     watchWallpaperImageData = v5->_watchWallpaperImageData;
-    v5->_watchWallpaperImageData = v20;
+    v5->_watchWallpaperImageData = watchWallpaperImageData;
 
     v22 = v5;
   }
@@ -134,38 +134,38 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
   return v5;
 }
 
-- (CNSharedProfile)initWithRecentContactImage:(id)a3 recentPoster:(id)a4 recentAvatarRecipeData:(id)a5
+- (CNSharedProfile)initWithRecentContactImage:(id)image recentPoster:(id)poster recentAvatarRecipeData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  posterCopy = poster;
+  dataCopy = data;
   v31.receiver = self;
   v31.super_class = CNSharedProfile;
   v11 = [(CNSharedProfile *)&v31 init];
   if (v11)
   {
-    v12 = [v8 imageData];
+    imageData = [imageCopy imageData];
     imageData = v11->_imageData;
-    v11->_imageData = v12;
+    v11->_imageData = imageData;
 
-    v14 = [v8 imageData];
-    [v8 cropRect];
-    v15 = [(CNSharedProfile *)v11 thumbnailImageDataFromImageData:v14 cropRect:?];
+    imageData2 = [imageCopy imageData];
+    [imageCopy cropRect];
+    v15 = [(CNSharedProfile *)v11 thumbnailImageDataFromImageData:imageData2 cropRect:?];
     thumbnailImageData = v11->_thumbnailImageData;
     v11->_thumbnailImageData = v15;
 
-    [v8 cropRect];
+    [imageCopy cropRect];
     v11->_cropRect.origin.x = v17;
     v11->_cropRect.origin.y = v18;
     v11->_cropRect.size.width = v19;
     v11->_cropRect.size.height = v20;
-    v21 = [(CNSharedProfile *)v11 imageTypeStringFromContactImage:v8];
+    v21 = [(CNSharedProfile *)v11 imageTypeStringFromContactImage:imageCopy];
     imageType = v11->_imageType;
     v11->_imageType = v21;
 
     v23 = [CNWallpaper alloc];
-    v24 = [v9 posterData];
-    v25 = [(CNWallpaper *)v23 initWithPosterArchiveData:v24];
+    posterData = [posterCopy posterData];
+    v25 = [(CNWallpaper *)v23 initWithPosterArchiveData:posterData];
 
     wallpaper = v11->_wallpaper;
     v11->_wallpaper = v25;
@@ -174,18 +174,18 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
     watchWallpaperImageData = v11->_watchWallpaperImageData;
     v11->_watchWallpaperImageData = 0;
 
-    objc_storeStrong(&v11->_avatarRecipeData, a5);
+    objc_storeStrong(&v11->_avatarRecipeData, data);
     v29 = v11;
   }
 
   return v11;
 }
 
-- (id)imageTypeStringFromContactImage:(id)a3
+- (id)imageTypeStringFromContactImage:(id)image
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = [v3 source], (v5 - 1) <= 3))
+  imageCopy = image;
+  v4 = imageCopy;
+  if (imageCopy && (v5 = [imageCopy source], (v5 - 1) <= 3))
   {
     v6 = *off_1E74160A8[v5 - 1];
   }
@@ -203,9 +203,9 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
   thumbnailImageData = self->_thumbnailImageData;
   if (!thumbnailImageData)
   {
-    v4 = [(CNSharedProfile *)self imageData];
+    imageData = [(CNSharedProfile *)self imageData];
     [(CNSharedProfile *)self cropRect];
-    v5 = [(CNSharedProfile *)self thumbnailImageDataFromImageData:v4 cropRect:?];
+    v5 = [(CNSharedProfile *)self thumbnailImageDataFromImageData:imageData cropRect:?];
     v6 = self->_thumbnailImageData;
     self->_thumbnailImageData = v5;
 
@@ -217,10 +217,10 @@ uint64_t __22__CNSharedProfile_log__block_invoke()
   return v7;
 }
 
-- (id)thumbnailImageDataFromImageData:(id)a3 cropRect:(CGRect)a4
+- (id)thumbnailImageDataFromImageData:(id)data cropRect:(CGRect)rect
 {
   v9 = 0;
-  v4 = CNImageUtilsCroppedImageDataFromFullSizeImageData(a3, &v9, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v4 = CNImageUtilsCroppedImageDataFromFullSizeImageData(data, &v9, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v5 = v9;
   if (v4)
   {

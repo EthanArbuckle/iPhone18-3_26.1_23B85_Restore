@@ -1,39 +1,39 @@
 @interface IMDAvailabilityAutoReplier
-- (BOOL)_audience:(unint64_t)a3 allowsRepliesToChat:(id)a4;
-- (BOOL)_chatEligibleForAvailabilityInformation:(id)a3;
-- (BOOL)_contactsContainsParticipants:(id)a3;
+- (BOOL)_audience:(unint64_t)_audience allowsRepliesToChat:(id)chat;
+- (BOOL)_chatEligibleForAvailabilityInformation:(id)information;
+- (BOOL)_contactsContainsParticipants:(id)participants;
 - (BOOL)_deviceIsPhone;
-- (BOOL)_deviceSupportsSMSAutoReplyForChat:(id)a3;
+- (BOOL)_deviceSupportsSMSAutoReplyForChat:(id)chat;
 - (BOOL)_deviceSupportsiMessageAutoReply;
-- (BOOL)_favoritesContainsParticipants:(id)a3;
-- (BOOL)_hasRecentOutgoingMessagesInChat:(id)a3;
-- (BOOL)_haveRecentUrgentMessageInGracePeriodForChat:(id)a3;
-- (BOOL)_haveRecentlySentUnavailabilityAutoReplyMessageToChat:(id)a3;
+- (BOOL)_favoritesContainsParticipants:(id)participants;
+- (BOOL)_hasRecentOutgoingMessagesInChat:(id)chat;
+- (BOOL)_haveRecentUrgentMessageInGracePeriodForChat:(id)chat;
+- (BOOL)_haveRecentlySentUnavailabilityAutoReplyMessageToChat:(id)chat;
 - (BOOL)_isInDrivingFocus;
-- (BOOL)_isSMSChat:(id)a3;
-- (BOOL)_localDeviceHasSIMMatchingChat:(id)a3;
-- (BOOL)_messageIsSOS:(id)a3;
-- (BOOL)_messageItemSupportsBreakthroughNotification:(id)a3;
-- (BOOL)_messageSenderEligibleToReceiveAvailabilityInformation:(id)a3;
-- (BOOL)_shouldIgnoreDoNotDisturbForMessages:(id)a3 inChat:(id)a4;
-- (BOOL)_shouldSendTextAutoReplyForChat:(id)a3;
-- (BOOL)_sosTransportValidForMessage:(id)a3;
-- (BOOL)_sosURLMatchInText:(id)a3;
-- (BOOL)_userIsAvailableToHandle:(id)a3;
+- (BOOL)_isSMSChat:(id)chat;
+- (BOOL)_localDeviceHasSIMMatchingChat:(id)chat;
+- (BOOL)_messageIsSOS:(id)s;
+- (BOOL)_messageItemSupportsBreakthroughNotification:(id)notification;
+- (BOOL)_messageSenderEligibleToReceiveAvailabilityInformation:(id)information;
+- (BOOL)_shouldIgnoreDoNotDisturbForMessages:(id)messages inChat:(id)chat;
+- (BOOL)_shouldSendTextAutoReplyForChat:(id)chat;
+- (BOOL)_sosTransportValidForMessage:(id)message;
+- (BOOL)_sosURLMatchInText:(id)text;
+- (BOOL)_userIsAvailableToHandle:(id)handle;
 - (IMDAutoReplyDelegate)replyDelegate;
 - (IMDAvailabilityAutoReplier)init;
-- (id)_autoReplyMessageTextWithUrgentBreakthroughInstructions:(BOOL)a3;
+- (id)_autoReplyMessageTextWithUrgentBreakthroughInstructions:(BOOL)instructions;
 - (id)_customizedAutoReplyMessage;
-- (id)_dndHandleForIMDHandle:(id)a3;
-- (id)_messageGuidsForMessages:(id)a3;
-- (id)_messageItemsSupportingAvailabilityReplyFromItems:(id)a3;
-- (id)_messageItemsSupportingBreakthroughNotifications:(id)a3;
-- (id)_stringForAutoReplyAudience:(unint64_t)a3;
+- (id)_dndHandleForIMDHandle:(id)handle;
+- (id)_messageGuidsForMessages:(id)messages;
+- (id)_messageItemsSupportingAvailabilityReplyFromItems:(id)items;
+- (id)_messageItemsSupportingBreakthroughNotifications:(id)notifications;
+- (id)_stringForAutoReplyAudience:(unint64_t)audience;
 - (unint64_t)_autoReplyAudience;
-- (void)_processMessagesForAvailabilityAutoReply:(id)a3 forIncomingMessageFromIDSID:(id)a4 inChat:(id)a5;
-- (void)_sendDeliveredQuietelyForMessages:(id)a3 forIncomingMessageFromIDSID:(id)a4 inChat:(id)a5;
-- (void)iterateRecentMessagesInChat:(id)a3 withBlock:(id)a4;
-- (void)processMessages:(id)a3 inChat:(id)a4 fromIDSID:(id)a5;
+- (void)_processMessagesForAvailabilityAutoReply:(id)reply forIncomingMessageFromIDSID:(id)d inChat:(id)chat;
+- (void)_sendDeliveredQuietelyForMessages:(id)messages forIncomingMessageFromIDSID:(id)d inChat:(id)chat;
+- (void)iterateRecentMessagesInChat:(id)chat withBlock:(id)block;
+- (void)processMessages:(id)messages inChat:(id)chat fromIDSID:(id)d;
 @end
 
 @implementation IMDAvailabilityAutoReplier
@@ -57,40 +57,40 @@
   return v2;
 }
 
-- (void)processMessages:(id)a3 inChat:(id)a4 fromIDSID:(id)a5
+- (void)processMessages:(id)messages inChat:(id)chat fromIDSID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  chatCopy = chat;
+  dCopy = d;
   privateWorkQueue = self->_privateWorkQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_22B5A0D30;
   v15[3] = &unk_278705748;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = messagesCopy;
+  v17 = dCopy;
+  v18 = chatCopy;
+  v12 = chatCopy;
+  v13 = dCopy;
+  v14 = messagesCopy;
   dispatch_async(privateWorkQueue, v15);
 }
 
-- (void)_processMessagesForAvailabilityAutoReply:(id)a3 forIncomingMessageFromIDSID:(id)a4 inChat:(id)a5
+- (void)_processMessagesForAvailabilityAutoReply:(id)reply forIncomingMessageFromIDSID:(id)d inChat:(id)chat
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(IMDAvailabilityAutoReplier *)self _chatEligibleForAvailabilityInformation:v10])
+  replyCopy = reply;
+  dCopy = d;
+  chatCopy = chat;
+  if ([(IMDAvailabilityAutoReplier *)self _chatEligibleForAvailabilityInformation:chatCopy])
   {
-    v11 = [v10 participants];
-    v12 = [v11 firstObject];
+    participants = [chatCopy participants];
+    firstObject = [participants firstObject];
 
-    if ([(IMDAvailabilityAutoReplier *)self _messageSenderEligibleToReceiveAvailabilityInformation:v12])
+    if ([(IMDAvailabilityAutoReplier *)self _messageSenderEligibleToReceiveAvailabilityInformation:firstObject])
     {
-      v13 = [(IMDAvailabilityAutoReplier *)self _messageItemsSupportingBreakthroughNotifications:v8];
-      v14 = [(IMDAvailabilityAutoReplier *)self _shouldIgnoreDoNotDisturbForMessages:v13 inChat:v10];
+      v13 = [(IMDAvailabilityAutoReplier *)self _messageItemsSupportingBreakthroughNotifications:replyCopy];
+      v14 = [(IMDAvailabilityAutoReplier *)self _shouldIgnoreDoNotDisturbForMessages:v13 inChat:chatCopy];
       v15 = IMOSLoggingEnabled();
       if (v14)
       {
@@ -105,7 +105,7 @@
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_replyDelegate);
-        [WeakRetained autoReplier:self sendNotifyRecipientCommandForMessages:v13 inChat:v10];
+        [WeakRetained autoReplier:self sendNotifyRecipientCommandForMessages:v13 inChat:chatCopy];
 
         v18 = [(IMDAvailabilityAutoReplier *)self _messageGuidsForMessages:v13];
         v19 = objc_loadWeakRetained(&self->_replyDelegate);
@@ -124,10 +124,10 @@
           }
         }
 
-        v18 = [(IMDAvailabilityAutoReplier *)self _messageItemsSupportingAvailabilityReplyFromItems:v8];
+        v18 = [(IMDAvailabilityAutoReplier *)self _messageItemsSupportingAvailabilityReplyFromItems:replyCopy];
         if ([v18 count])
         {
-          [(IMDAvailabilityAutoReplier *)self _sendDeliveredQuietelyForMessages:v18 forIncomingMessageFromIDSID:v9 inChat:v10];
+          [(IMDAvailabilityAutoReplier *)self _sendDeliveredQuietelyForMessages:v18 forIncomingMessageFromIDSID:dCopy inChat:chatCopy];
         }
 
         else if (IMOSLoggingEnabled())
@@ -164,11 +164,11 @@ LABEL_27:
 
   if (IMOSLoggingEnabled())
   {
-    v12 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    firstObject = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
     {
       *v26 = 0;
-      _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Chat is not eligible for availability auto replies or dnd breakthrough", v26, 2u);
+      _os_log_impl(&dword_22B4CC000, firstObject, OS_LOG_TYPE_INFO, "Chat is not eligible for availability auto replies or dnd breakthrough", v26, 2u);
     }
 
     goto LABEL_27;
@@ -177,14 +177,14 @@ LABEL_27:
 LABEL_28:
 }
 
-- (BOOL)_userIsAvailableToHandle:(id)a3
+- (BOOL)_userIsAvailableToHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = MEMORY[0x231897B40](@"DNDModeConfigurationService", @"DoNotDisturb");
   if ([v5 instancesRespondToSelector:sel_isLocalUserAvailableForContactInActiveMode_error_])
   {
     v6 = [v5 serviceForClientIdentifier:@"com.apple.messages"];
-    v7 = [(IMDAvailabilityAutoReplier *)self _dndHandleForIMDHandle:v4];
+    v7 = [(IMDAvailabilityAutoReplier *)self _dndHandleForIMDHandle:handleCopy];
     v11 = 0;
     LOBYTE(v8) = [v6 isLocalUserAvailableForContactInActiveMode:v7 error:&v11];
     v9 = v11;
@@ -208,9 +208,9 @@ LABEL_28:
   return v8;
 }
 
-- (id)_dndHandleForIMDHandle:(id)a3
+- (id)_dndHandleForIMDHandle:(id)handle
 {
-  v3 = [a3 ID];
+  v3 = [handle ID];
   if (IMStringIsEmail())
   {
     v4 = 1;
@@ -229,12 +229,12 @@ LABEL_28:
   return v6;
 }
 
-- (BOOL)_chatEligibleForAvailabilityInformation:(id)a3
+- (BOOL)_chatEligibleForAvailabilityInformation:(id)information
 {
-  v3 = a3;
-  if ([v3 style] == 45)
+  informationCopy = information;
+  if ([informationCopy style] == 45)
   {
-    if ([v3 isBusinessChat])
+    if ([informationCopy isBusinessChat])
     {
       if (IMOSLoggingEnabled())
       {
@@ -255,7 +255,7 @@ LABEL_9:
 
     else
     {
-      if ([v3 isStewieChat])
+      if ([informationCopy isStewieChat])
       {
         if (!IMOSLoggingEnabled())
         {
@@ -274,8 +274,8 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      v9 = [v3 participants];
-      v10 = [v9 count];
+      participants = [informationCopy participants];
+      v10 = [participants count];
 
       if (v10 == 1)
       {
@@ -320,11 +320,11 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_messageSenderEligibleToReceiveAvailabilityInformation:(id)a3
+- (BOOL)_messageSenderEligibleToReceiveAvailabilityInformation:(id)information
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 ID];
+  informationCopy = information;
+  v5 = [informationCopy ID];
   if (![v5 length])
   {
     if (IMOSLoggingEnabled())
@@ -367,7 +367,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(IMDAvailabilityAutoReplier *)self _userIsAvailableToHandle:v4];
+  v10 = [(IMDAvailabilityAutoReplier *)self _userIsAvailableToHandle:informationCopy];
   if (v10 && IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
@@ -385,16 +385,16 @@ LABEL_18:
   return v9;
 }
 
-- (id)_messageItemsSupportingAvailabilityReplyFromItems:(id)a3
+- (id)_messageItemsSupportingAvailabilityReplyFromItems:(id)items
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v6)
   {
@@ -454,13 +454,13 @@ LABEL_18:
   return v15;
 }
 
-- (void)_sendDeliveredQuietelyForMessages:(id)a3 forIncomingMessageFromIDSID:(id)a4 inChat:(id)a5
+- (void)_sendDeliveredQuietelyForMessages:(id)messages forIncomingMessageFromIDSID:(id)d inChat:(id)chat
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(IMDAvailabilityAutoReplier *)self _isSMSChat:v10])
+  messagesCopy = messages;
+  dCopy = d;
+  chatCopy = chat;
+  if ([(IMDAvailabilityAutoReplier *)self _isSMSChat:chatCopy])
   {
     if (IMOSLoggingEnabled())
     {
@@ -472,12 +472,12 @@ LABEL_18:
       }
     }
 
-    [(IMDAvailabilityAutoReplier *)self _sendTextAutoReplyIfNecessaryForMessages:v8 withUrgentBreakthroughInstructions:1 inChat:v10];
+    [(IMDAvailabilityAutoReplier *)self _sendTextAutoReplyIfNecessaryForMessages:messagesCopy withUrgentBreakthroughInstructions:1 inChat:chatCopy];
   }
 
   else
   {
-    v12 = [(IMDAvailabilityAutoReplier *)self _messageGuidsForMessages:v8];
+    v12 = [(IMDAvailabilityAutoReplier *)self _messageGuidsForMessages:messagesCopy];
     if (IMOSLoggingEnabled())
     {
       v13 = OSLogHandleForIMFoundationCategory();
@@ -496,9 +496,9 @@ LABEL_18:
     v16[2] = sub_22B5A1B7C;
     v16[3] = &unk_278705770;
     objc_copyWeak(&v19, buf);
-    v17 = v8;
-    v18 = v10;
-    [WeakRetained autoReplier:self sendDeliveredQuietlyReceiptForMessages:v17 forIncomingMessageFromIDSID:v9 inChat:v18 withWillSendToDestinationsHandler:v16];
+    v17 = messagesCopy;
+    v18 = chatCopy;
+    [WeakRetained autoReplier:self sendDeliveredQuietlyReceiptForMessages:v17 forIncomingMessageFromIDSID:dCopy inChat:v18 withWillSendToDestinationsHandler:v16];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(buf);
@@ -509,16 +509,16 @@ LABEL_18:
 
 - (BOOL)_deviceIsPhone
 {
-  v2 = [MEMORY[0x277D07DB0] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  v3 = [mEMORY[0x277D07DB0] deviceType] == 2;
 
   return v3;
 }
 
 - (BOOL)_deviceSupportsiMessageAutoReply
 {
-  v2 = [(IMDAvailabilityAutoReplier *)self _deviceIsPhone];
-  if (!v2 && IMOSLoggingEnabled())
+  _deviceIsPhone = [(IMDAvailabilityAutoReplier *)self _deviceIsPhone];
+  if (!_deviceIsPhone && IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -528,29 +528,29 @@ LABEL_18:
     }
   }
 
-  return v2;
+  return _deviceIsPhone;
 }
 
-- (BOOL)_localDeviceHasSIMMatchingChat:(id)a3
+- (BOOL)_localDeviceHasSIMMatchingChat:(id)chat
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D1A908] sharedInstance];
-  v5 = [v4 deviceSupportsMultipleSubscriptions];
+  chatCopy = chat;
+  mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+  deviceSupportsMultipleSubscriptions = [mEMORY[0x277D1A908] deviceSupportsMultipleSubscriptions];
 
-  if (v5)
+  if (deviceSupportsMultipleSubscriptions)
   {
-    v6 = [MEMORY[0x277D1A908] sharedInstance];
-    v7 = [v6 ctServiceSubscriptions];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    ctServiceSubscriptions = [mEMORY[0x277D1A908]2 ctServiceSubscriptions];
 
-    v8 = [v3 lastAddressedSIMID];
-    if ([v8 length])
+    lastAddressedSIMID = [chatCopy lastAddressedSIMID];
+    if ([lastAddressedSIMID length])
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = v7;
+      v9 = ctServiceSubscriptions;
       v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
@@ -564,8 +564,8 @@ LABEL_18:
               objc_enumerationMutation(v9);
             }
 
-            v13 = [*(*(&v20 + 1) + 8 * i) labelID];
-            if ([v13 length] && objc_msgSend(v8, "isEqualToString:", v13))
+            labelID = [*(*(&v20 + 1) + 8 * i) labelID];
+            if ([labelID length] && objc_msgSend(lastAddressedSIMID, "isEqualToString:", labelID))
             {
 
               LOBYTE(v10) = 1;
@@ -600,10 +600,10 @@ LABEL_24:
 
   else
   {
-    v14 = [MEMORY[0x277D07DB0] sharedInstance];
-    v15 = [v14 supportsSMS];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    supportsSMS = [mEMORY[0x277D07DB0] supportsSMS];
 
-    if (v15)
+    if (supportsSMS)
     {
       LOBYTE(v10) = 1;
     }
@@ -628,9 +628,9 @@ LABEL_24:
   return v10;
 }
 
-- (BOOL)_deviceSupportsSMSAutoReplyForChat:(id)a3
+- (BOOL)_deviceSupportsSMSAutoReplyForChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   if (![(IMDAvailabilityAutoReplier *)self _deviceIsPhone])
   {
     if (IMOSLoggingEnabled())
@@ -653,7 +653,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (![(IMDAvailabilityAutoReplier *)self _localDeviceHasSIMMatchingChat:v4])
+  if (![(IMDAvailabilityAutoReplier *)self _localDeviceHasSIMMatchingChat:chatCopy])
   {
     if (IMOSLoggingEnabled())
     {
@@ -698,9 +698,9 @@ LABEL_13:
       goto LABEL_4;
     }
 
-    v9 = [v3 activeModeConfiguration];
-    v5 = v9;
-    if (!v9)
+    activeModeConfiguration = [v3 activeModeConfiguration];
+    v5 = activeModeConfiguration;
+    if (!activeModeConfiguration)
     {
       if (IMOSLoggingEnabled())
       {
@@ -715,13 +715,13 @@ LABEL_13:
       goto LABEL_4;
     }
 
-    v10 = [v9 mode];
-    v11 = v10;
-    if (v10)
+    mode = [activeModeConfiguration mode];
+    v11 = mode;
+    if (mode)
     {
-      v12 = [v10 semanticType];
+      semanticType = [mode semanticType];
       v13 = IMOSLoggingEnabled();
-      if (v12 == 2)
+      if (semanticType == 2)
       {
         if (v13)
         {
@@ -743,7 +743,7 @@ LABEL_13:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v20 = v12;
+          v20 = semanticType;
           _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Driving focus is not active, current focus semantic type is %ld", buf, 0xCu);
         }
       }
@@ -779,15 +779,15 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)_haveRecentlySentUnavailabilityAutoReplyMessageToChat:(id)a3
+- (BOOL)_haveRecentlySentUnavailabilityAutoReplyMessageToChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v5 dateByAddingTimeInterval:-3600.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [date dateByAddingTimeInterval:-3600.0];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -797,23 +797,23 @@ LABEL_5:
   v10 = v7;
   v11 = &v13;
   v12 = 500;
-  [(IMDAvailabilityAutoReplier *)self iterateRecentMessagesInChat:v4 withBlock:v9];
+  [(IMDAvailabilityAutoReplier *)self iterateRecentMessagesInChat:chatCopy withBlock:v9];
   LOBYTE(self) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
   return self;
 }
 
-- (id)_messageItemsSupportingBreakthroughNotifications:(id)a3
+- (id)_messageItemsSupportingBreakthroughNotifications:(id)notifications
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = notificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
@@ -873,10 +873,10 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)_messageItemSupportsBreakthroughNotification:(id)a3
+- (BOOL)_messageItemSupportsBreakthroughNotification:(id)notification
 {
-  v3 = a3;
-  if ([v3 isFromMe])
+  notificationCopy = notification;
+  if ([notificationCopy isFromMe])
   {
     if (IMOSLoggingEnabled())
     {
@@ -895,7 +895,7 @@ LABEL_29:
     }
   }
 
-  else if ([v3 isEmpty])
+  else if ([notificationCopy isEmpty])
   {
     if (IMOSLoggingEnabled())
     {
@@ -912,7 +912,7 @@ LABEL_30:
     }
   }
 
-  else if ([v3 isTypingMessage])
+  else if ([notificationCopy isTypingMessage])
   {
     if (IMOSLoggingEnabled())
     {
@@ -929,7 +929,7 @@ LABEL_30:
     }
   }
 
-  else if ([v3 isLocatingMessage])
+  else if ([notificationCopy isLocatingMessage])
   {
     if (IMOSLoggingEnabled())
     {
@@ -946,7 +946,7 @@ LABEL_30:
     }
   }
 
-  else if ([v3 isAutoReply])
+  else if ([notificationCopy isAutoReply])
   {
     if (IMOSLoggingEnabled())
     {
@@ -963,7 +963,7 @@ LABEL_30:
     }
   }
 
-  else if ([v3 isUnfinished])
+  else if ([notificationCopy isUnfinished])
   {
     if (IMOSLoggingEnabled())
     {
@@ -982,7 +982,7 @@ LABEL_30:
 
   else
   {
-    if (![v3 isSystemMessage])
+    if (![notificationCopy isSystemMessage])
     {
       v7 = 1;
       goto LABEL_32;
@@ -1009,16 +1009,16 @@ LABEL_32:
   return v7;
 }
 
-- (id)_messageGuidsForMessages:(id)a3
+- (id)_messageGuidsForMessages:(id)messages
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1033,10 +1033,10 @@ LABEL_32:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) guid];
-        if ([v10 length])
+        guid = [*(*(&v14 + 1) + 8 * i) guid];
+        if ([guid length])
         {
-          [v4 addObject:v10];
+          [v4 addObject:guid];
         }
       }
 
@@ -1052,12 +1052,12 @@ LABEL_32:
   return v11;
 }
 
-- (BOOL)_shouldIgnoreDoNotDisturbForMessages:(id)a3 inChat:(id)a4
+- (BOOL)_shouldIgnoreDoNotDisturbForMessages:(id)messages inChat:(id)chat
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  messagesCopy = messages;
+  chatCopy = chat;
+  if (![messagesCopy count])
   {
 LABEL_31:
     v16 = 0;
@@ -1068,7 +1068,7 @@ LABEL_31:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = messagesCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v9)
   {
@@ -1134,7 +1134,7 @@ LABEL_24:
 
 LABEL_12:
 
-  v13 = [(IMDAvailabilityAutoReplier *)self _haveRecentUrgentMessageInGracePeriodForChat:v7];
+  v13 = [(IMDAvailabilityAutoReplier *)self _haveRecentUrgentMessageInGracePeriodForChat:chatCopy];
   v14 = IMOSLoggingEnabled();
   if (!v13)
   {
@@ -1170,10 +1170,10 @@ LABEL_32:
   return v16;
 }
 
-- (BOOL)_haveRecentUrgentMessageInGracePeriodForChat:(id)a3
+- (BOOL)_haveRecentUrgentMessageInGracePeriodForChat:(id)chat
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chatCopy = chat;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1183,8 +1183,8 @@ LABEL_32:
   v11[2] = 0x3032000000;
   v11[3] = sub_22B4D7700;
   v11[4] = sub_22B4D78DC;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v12 = [v5 dateByAddingTimeInterval:-480.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v12 = [date dateByAddingTimeInterval:-480.0];
 
   if (IMOSLoggingEnabled())
   {
@@ -1204,7 +1204,7 @@ LABEL_32:
   v10[4] = v11;
   v10[5] = &v13;
   v10[6] = 0x407E000000000000;
-  [(IMDAvailabilityAutoReplier *)self iterateRecentMessagesInChat:v4 withBlock:v10];
+  [(IMDAvailabilityAutoReplier *)self iterateRecentMessagesInChat:chatCopy withBlock:v10];
   v7 = *(v14 + 24);
   _Block_object_dispose(v11, 8);
 
@@ -1213,20 +1213,20 @@ LABEL_32:
   return v7 & 1;
 }
 
-- (void)iterateRecentMessagesInChat:(id)a3 withBlock:(id)a4
+- (void)iterateRecentMessagesInChat:(id)chat withBlock:(id)block
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 style] == 45)
+  chatCopy = chat;
+  blockCopy = block;
+  if ([chatCopy style] == 45)
   {
-    v19 = [v5 chatIdentifier];
-    v18 = [v5 serviceName];
-    if (v19 && v18)
+    chatIdentifier = [chatCopy chatIdentifier];
+    serviceName = [chatCopy serviceName];
+    if (chatIdentifier && serviceName)
     {
-      v63[0] = v19;
+      v63[0] = chatIdentifier;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:1];
-      v62 = v18;
+      v62 = serviceName;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -1276,7 +1276,7 @@ LABEL_32:
         v38[1] = 3221225472;
         v38[2] = sub_22B5A4120;
         v38[3] = &unk_278705810;
-        v39 = v6;
+        v39 = blockCopy;
         v40 = &v48;
         v41 = &v42;
         [v13 enumerateObjectsWithOptions:2 usingBlock:v38];
@@ -1349,7 +1349,7 @@ LABEL_32:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = chatCopy;
         _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Chat is missing identifier or service: %@", &buf, 0xCu);
       }
     }
@@ -1368,29 +1368,29 @@ LABEL_32:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isSMSChat:(id)a3
+- (BOOL)_isSMSChat:(id)chat
 {
-  v3 = [a3 serviceName];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D1A610]];
+  serviceName = [chat serviceName];
+  v4 = [serviceName isEqualToString:*MEMORY[0x277D1A610]];
 
   return v4;
 }
 
-- (id)_autoReplyMessageTextWithUrgentBreakthroughInstructions:(BOOL)a3
+- (id)_autoReplyMessageTextWithUrgentBreakthroughInstructions:(BOOL)instructions
 {
-  v3 = a3;
+  instructionsCopy = instructions;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(IMDAvailabilityAutoReplier *)self _customizedAutoReplyMessage];
-  v7 = [v6 stringByRemovingWhitespace];
-  v8 = [v7 length];
+  _customizedAutoReplyMessage = [(IMDAvailabilityAutoReplier *)self _customizedAutoReplyMessage];
+  stringByRemovingWhitespace = [_customizedAutoReplyMessage stringByRemovingWhitespace];
+  v8 = [stringByRemovingWhitespace length];
 
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6 attributes:0];
+    v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:_customizedAutoReplyMessage attributes:0];
     [v5 addObject:v9];
   }
 
-  if (v3)
+  if (instructionsCopy)
   {
     v10 = IMDaemonCoreBundle();
     v11 = [v10 localizedStringForKey:@"(I’m not receiving notifications. If this is urgent value:reply “urgent” to send a notification through with your original message.)" table:{&stru_283F23018, @"DaemonCoreLocalizable"}];
@@ -1404,10 +1404,10 @@ LABEL_32:
   return v13;
 }
 
-- (BOOL)_shouldSendTextAutoReplyForChat:(id)a3
+- (BOOL)_shouldSendTextAutoReplyForChat:(id)chat
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chatCopy = chat;
   if (![(IMDAvailabilityAutoReplier *)self _isInDrivingFocus])
   {
     if (IMOSLoggingEnabled())
@@ -1425,9 +1425,9 @@ LABEL_32:
     goto LABEL_18;
   }
 
-  if ([(IMDAvailabilityAutoReplier *)self _isSMSChat:v4])
+  if ([(IMDAvailabilityAutoReplier *)self _isSMSChat:chatCopy])
   {
-    if (![(IMDAvailabilityAutoReplier *)self _deviceSupportsSMSAutoReplyForChat:v4])
+    if (![(IMDAvailabilityAutoReplier *)self _deviceSupportsSMSAutoReplyForChat:chatCopy])
     {
       goto LABEL_4;
     }
@@ -1453,11 +1453,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (![(IMDAvailabilityAutoReplier *)self _haveRecentlySentUnavailabilityAutoReplyMessageToChat:v4])
+  if (![(IMDAvailabilityAutoReplier *)self _haveRecentlySentUnavailabilityAutoReplyMessageToChat:chatCopy])
   {
-    v9 = [(IMDAvailabilityAutoReplier *)self _autoReplyAudience];
-    v10 = [(IMDAvailabilityAutoReplier *)self _stringForAutoReplyAudience:v9];
-    v6 = [(IMDAvailabilityAutoReplier *)self _audience:v9 allowsRepliesToChat:v4];
+    _autoReplyAudience = [(IMDAvailabilityAutoReplier *)self _autoReplyAudience];
+    v10 = [(IMDAvailabilityAutoReplier *)self _stringForAutoReplyAudience:_autoReplyAudience];
+    v6 = [(IMDAvailabilityAutoReplier *)self _audience:_autoReplyAudience allowsRepliesToChat:chatCopy];
     v11 = IMOSLoggingEnabled();
     if (v6)
     {
@@ -1467,7 +1467,7 @@ LABEL_17:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = 134218242;
-          v14 = v9;
+          v14 = _autoReplyAudience;
           v15 = 2112;
           v16 = v10;
           _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Auto reply audience preference matches this chat. Audience %ld=%@", &v13, 0x16u);
@@ -1483,7 +1483,7 @@ LABEL_28:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = 134218242;
-        v14 = v9;
+        v14 = _autoReplyAudience;
         v15 = 2112;
         v16 = v10;
         _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Not sending auto reply becuase the user auto reply audience preference does not match this chat. Audience %ld=%@", &v13, 0x16u);
@@ -1515,16 +1515,16 @@ LABEL_19:
   return v6;
 }
 
-- (id)_stringForAutoReplyAudience:(unint64_t)a3
+- (id)_stringForAutoReplyAudience:(unint64_t)audience
 {
-  if (a3 > 4)
+  if (audience > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_2787058A8[a3];
+    return off_2787058A8[audience];
   }
 }
 
@@ -1536,7 +1536,7 @@ LABEL_19:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v4 = [(IMDAvailabilityAutoReplier *)self automaticDNDStatus];
+  automaticDNDStatus = [(IMDAvailabilityAutoReplier *)self automaticDNDStatus];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = sub_22B5A4B7C;
@@ -1544,7 +1544,7 @@ LABEL_19:
   v17 = &v18;
   v5 = v3;
   v16 = v5;
-  [v4 allowedAutoReplyAudience:&v12];
+  [automaticDNDStatus allowedAutoReplyAudience:&v12];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = [(IMDAvailabilityAutoReplier *)self _stringForAutoReplyAudience:v19[3], v12, v13, v14, v15];
@@ -1579,7 +1579,7 @@ LABEL_19:
   v21 = sub_22B4D7700;
   v22 = sub_22B4D78DC;
   v23 = 0;
-  v4 = [(IMDAvailabilityAutoReplier *)self automaticDNDStatus];
+  automaticDNDStatus = [(IMDAvailabilityAutoReplier *)self automaticDNDStatus];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = sub_22B5A4E3C;
@@ -1587,11 +1587,11 @@ LABEL_19:
   v17 = &v18;
   v5 = v3;
   v16 = v5;
-  [v4 autoReplyMessageWithReply:&v12];
+  [automaticDNDStatus autoReplyMessageWithReply:&v12];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  v6 = [v19[5] stringByRemovingWhitespace];
-  [v6 length];
+  stringByRemovingWhitespace = [v19[5] stringByRemovingWhitespace];
+  [stringByRemovingWhitespace length];
 
   v7 = [v19[5] length];
   if (IMOSLoggingEnabled())
@@ -1613,17 +1613,17 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)_audience:(unint64_t)a3 allowsRepliesToChat:(id)a4
+- (BOOL)_audience:(unint64_t)_audience allowsRepliesToChat:(id)chat
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  chatCopy = chat;
   v7 = [MEMORY[0x277CBEB58] set];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 participants];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+  participants = [chatCopy participants];
+  v9 = [participants countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -1633,26 +1633,26 @@ LABEL_19:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(participants);
         }
 
         v12 = [*(*(&v19 + 1) + 8 * i) ID];
         [v7 addObject:v12];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+      v9 = [participants countByEnumeratingWithState:&v19 objects:v29 count:16];
     }
 
     while (v9);
   }
 
-  switch(a3)
+  switch(_audience)
   {
     case 2uLL:
       v13 = [(IMDAvailabilityAutoReplier *)self _contactsContainsParticipants:v7];
       goto LABEL_14;
     case 3uLL:
-      v13 = [(IMDAvailabilityAutoReplier *)self _hasRecentOutgoingMessagesInChat:v6];
+      v13 = [(IMDAvailabilityAutoReplier *)self _hasRecentOutgoingMessagesInChat:chatCopy];
       goto LABEL_14;
     case 4uLL:
       v13 = [(IMDAvailabilityAutoReplier *)self _favoritesContainsParticipants:v7];
@@ -1663,14 +1663,14 @@ LABEL_14:
 
   v14 = 0;
 LABEL_16:
-  v15 = [(IMDAvailabilityAutoReplier *)self _stringForAutoReplyAudience:a3];
+  v15 = [(IMDAvailabilityAutoReplier *)self _stringForAutoReplyAudience:_audience];
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 134218498;
-      v24 = a3;
+      _audienceCopy = _audience;
       v25 = 2112;
       v26 = v15;
       v27 = 2048;
@@ -1683,15 +1683,15 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)_contactsContainsParticipants:(id)a3
+- (BOOL)_contactsContainsParticipants:(id)participants
 {
   v22 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v21 count:16];
+  participantsCopy = participants;
+  v4 = [participantsCopy countByEnumeratingWithState:&v14 objects:v21 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -1701,7 +1701,7 @@ LABEL_16:
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participantsCopy);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
@@ -1727,7 +1727,7 @@ LABEL_16:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v21 count:16];
+      v4 = [participantsCopy countByEnumeratingWithState:&v14 objects:v21 count:16];
       if (v4)
       {
         continue;
@@ -1744,15 +1744,15 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_favoritesContainsParticipants:(id)a3
+- (BOOL)_favoritesContainsParticipants:(id)participants
 {
   v31 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  participantsCopy = participants;
+  v4 = [participantsCopy countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v4)
   {
     v6 = *v22;
@@ -1765,7 +1765,7 @@ LABEL_15:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participantsCopy);
         }
 
         v29 = *(*(&v21 + 1) + 8 * i);
@@ -1814,7 +1814,7 @@ LABEL_20:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v4 = [participantsCopy countByEnumeratingWithState:&v21 objects:v30 count:16];
       v16 = 1;
       if (v4)
       {
@@ -1836,22 +1836,22 @@ LABEL_22:
   return v16;
 }
 
-- (BOOL)_hasRecentOutgoingMessagesInChat:(id)a3
+- (BOOL)_hasRecentOutgoingMessagesInChat:(id)chat
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 lastSentMessageDate];
-  if (v4)
+  chatCopy = chat;
+  lastSentMessageDate = [chatCopy lastSentMessageDate];
+  if (lastSentMessageDate)
   {
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
-    if (([v5 isDateInToday:v4]& 1) != 0)
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    if (([currentCalendar isDateInToday:lastSentMessageDate]& 1) != 0)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v5 isDateInYesterday:v4];
+      v6 = [currentCalendar isDateInYesterday:lastSentMessageDate];
     }
 
     if (IMOSLoggingEnabled())
@@ -1859,9 +1859,9 @@ LABEL_22:
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v3 chatIdentifier];
+        chatIdentifier = [chatCopy chatIdentifier];
         v11 = 138412546;
-        v12 = v8;
+        v12 = chatIdentifier;
         v13 = 1024;
         v14 = v6;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "chatID %@ is recent?: %i", &v11, 0x12u);
@@ -1871,10 +1871,10 @@ LABEL_22:
 
   else
   {
-    v5 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    currentCalendar = IMLogHandleForCategory();
+    if (os_log_type_enabled(currentCalendar, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D444C(v3, v5);
+      sub_22B7D444C(chatCopy, currentCalendar);
     }
 
     LOBYTE(v6) = 0;
@@ -1884,15 +1884,15 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)_messageIsSOS:(id)a3
+- (BOOL)_messageIsSOS:(id)s
 {
-  v4 = a3;
-  if ([(IMDAvailabilityAutoReplier *)self _sosTransportValidForMessage:v4])
+  sCopy = s;
+  if ([(IMDAvailabilityAutoReplier *)self _sosTransportValidForMessage:sCopy])
   {
-    v5 = [v4 body];
-    v6 = [v5 string];
+    body = [sCopy body];
+    string = [body string];
 
-    LODWORD(self) = [(IMDAvailabilityAutoReplier *)self _sosURLMatchInText:v6];
+    LODWORD(self) = [(IMDAvailabilityAutoReplier *)self _sosURLMatchInText:string];
     if (self)
     {
       if (IMOSLoggingEnabled())
@@ -1920,10 +1920,10 @@ LABEL_22:
   return self;
 }
 
-- (BOOL)_sosTransportValidForMessage:(id)a3
+- (BOOL)_sosTransportValidForMessage:(id)message
 {
-  v3 = [a3 service];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D1A610]];
+  service = [message service];
+  v4 = [service isEqualToString:*MEMORY[0x277D1A610]];
 
   if (v4)
   {
@@ -1933,11 +1933,11 @@ LABEL_22:
   return IMGetCachedDomainBoolForKeyWithDefaultValue();
 }
 
-- (BOOL)_sosURLMatchInText:(id)a3
+- (BOOL)_sosURLMatchInText:(id)text
 {
-  v3 = a3;
-  v4 = [v3 im_matchesSOSMapURL];
-  if (v4 && IMOSLoggingEnabled())
+  textCopy = text;
+  im_matchesSOSMapURL = [textCopy im_matchesSOSMapURL];
+  if (im_matchesSOSMapURL && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1947,7 +1947,7 @@ LABEL_22:
     }
   }
 
-  return v4;
+  return im_matchesSOSMapURL;
 }
 
 - (IMDAutoReplyDelegate)replyDelegate

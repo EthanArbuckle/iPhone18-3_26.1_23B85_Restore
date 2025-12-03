@@ -1,39 +1,39 @@
 @interface ADOpportuneSpeakingModuleEdgeDetector
-- (ADOpportuneSpeakingModuleEdgeDetector)initWithQueue:(id)a3 stateManager:(id)a4;
-- (id)modeDescriptionFor:(unint64_t)a3;
-- (unsigned)_framesPerSecondForOpportuneSpeakListeningType:(unint64_t)a3;
-- (void)_handleFrame:(unint64_t)a3;
-- (void)_initializeVoiceThresholdsForOpportuneSpeakListeningType:(unint64_t)a3;
-- (void)_resetStateWithCompletion:(id)a3;
+- (ADOpportuneSpeakingModuleEdgeDetector)initWithQueue:(id)queue stateManager:(id)manager;
+- (id)modeDescriptionFor:(unint64_t)for;
+- (unsigned)_framesPerSecondForOpportuneSpeakListeningType:(unint64_t)type;
+- (void)_handleFrame:(unint64_t)frame;
+- (void)_initializeVoiceThresholdsForOpportuneSpeakListeningType:(unint64_t)type;
+- (void)_resetStateWithCompletion:(id)completion;
 - (void)_restartAndExtendListening;
-- (void)_scheduleTimerForMaxDelay:(float)a3;
-- (void)_stopListeningWithCompletion:(id)a3;
+- (void)_scheduleTimerForMaxDelay:(float)delay;
+- (void)_stopListeningWithCompletion:(id)completion;
 - (void)_thresholdDetected;
 - (void)dealloc;
-- (void)listenForPauseWithOptions:(id)a3 forPause:(float)a4 maxDelay:(float)a5 stopOnDetection:(BOOL)a6 executeOnSuccess:(id)a7 onFail:(id)a8;
-- (void)listenForUserSpeechWithOptions:(id)a3 forVoice:(float)a4 maxDelay:(float)a5 stopOnDetection:(BOOL)a6 executeOnSuccess:(id)a7 onFail:(id)a8;
-- (void)opportuneSpeakListener:(id)a3 didStopUnexpectly:(BOOL)a4;
-- (void)opportuneSpeakListener:(id)a3 hasRemoteVADAvailable:(BOOL)a4;
-- (void)opportuneSpeakListener:(id)a3 hasVADAvailable:(BOOL)a4 withHostTime:(float)a5;
+- (void)listenForPauseWithOptions:(id)options forPause:(float)pause maxDelay:(float)delay stopOnDetection:(BOOL)detection executeOnSuccess:(id)success onFail:(id)fail;
+- (void)listenForUserSpeechWithOptions:(id)options forVoice:(float)voice maxDelay:(float)delay stopOnDetection:(BOOL)detection executeOnSuccess:(id)success onFail:(id)fail;
+- (void)opportuneSpeakListener:(id)listener didStopUnexpectly:(BOOL)unexpectly;
+- (void)opportuneSpeakListener:(id)listener hasRemoteVADAvailable:(BOOL)available;
+- (void)opportuneSpeakListener:(id)listener hasVADAvailable:(BOOL)available withHostTime:(float)time;
 - (void)stopListening;
-- (void)updateAttendingThreshold:(float)a3;
+- (void)updateAttendingThreshold:(float)threshold;
 @end
 
 @implementation ADOpportuneSpeakingModuleEdgeDetector
 
-- (void)opportuneSpeakListener:(id)a3 didStopUnexpectly:(BOOL)a4
+- (void)opportuneSpeakListener:(id)listener didStopUnexpectly:(BOOL)unexpectly
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000E344C;
   v5[3] = &unk_10051CBD8;
-  v6 = a4;
+  unexpectlyCopy = unexpectly;
   v5[4] = self;
   dispatch_async(dispatchQueue, v5);
 }
 
-- (void)opportuneSpeakListener:(id)a3 hasVADAvailable:(BOOL)a4 withHostTime:(float)a5
+- (void)opportuneSpeakListener:(id)listener hasVADAvailable:(BOOL)available withHostTime:(float)time
 {
   dispatchQueue = self->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
@@ -41,12 +41,12 @@
   v6[2] = sub_1000E3614;
   v6[3] = &unk_100511188;
   v6[4] = self;
-  v8 = a4;
-  v7 = a5;
+  availableCopy = available;
+  timeCopy = time;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)opportuneSpeakListener:(id)a3 hasRemoteVADAvailable:(BOOL)a4
+- (void)opportuneSpeakListener:(id)listener hasRemoteVADAvailable:(BOOL)available
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -54,13 +54,13 @@
   v5[2] = sub_1000E37B4;
   v5[3] = &unk_10051CBD8;
   v5[4] = self;
-  v6 = a4;
+  availableCopy = available;
   dispatch_async(dispatchQueue, v5);
 }
 
-- (id)modeDescriptionFor:(unint64_t)a3
+- (id)modeDescriptionFor:(unint64_t)for
 {
-  if (a3)
+  if (for)
   {
     return @"ADOSMED_PAUSE";
   }
@@ -102,9 +102,9 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_stopListeningWithCompletion:(id)a3
+- (void)_stopListeningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_isStopping)
   {
     self->_isStopping = 1;
@@ -118,7 +118,7 @@
     v7[2] = sub_1000E3FB4;
     v7[3] = &unk_100511160;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(CSOpportuneSpeakListener *)listener stopListenWithStateReset:1 completion:v7];
   }
 }
@@ -209,14 +209,14 @@
   }
 }
 
-- (void)_handleFrame:(unint64_t)a3
+- (void)_handleFrame:(unint64_t)frame
 {
-  if (!a3)
+  if (!frame)
   {
     goto LABEL_4;
   }
 
-  if (a3 != 1)
+  if (frame != 1)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -377,7 +377,7 @@ LABEL_34:
   }
 }
 
-- (void)updateAttendingThreshold:(float)a3
+- (void)updateAttendingThreshold:(float)threshold
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -385,50 +385,50 @@ LABEL_34:
   v4[2] = sub_1000E4950;
   v4[3] = &unk_1005114D0;
   v4[4] = self;
-  v5 = a3;
+  thresholdCopy = threshold;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)listenForUserSpeechWithOptions:(id)a3 forVoice:(float)a4 maxDelay:(float)a5 stopOnDetection:(BOOL)a6 executeOnSuccess:(id)a7 onFail:(id)a8
+- (void)listenForUserSpeechWithOptions:(id)options forVoice:(float)voice maxDelay:(float)delay stopOnDetection:(BOOL)detection executeOnSuccess:(id)success onFail:(id)fail
 {
-  v10 = a6;
-  v15 = a3;
-  v16 = a8;
-  v17 = a7;
-  v18 = -[ADOpportuneSpeakingModuleEdgeDetector _framesPerSecondForOpportuneSpeakListeningType:](self, "_framesPerSecondForOpportuneSpeakListeningType:", [v15 opportuneSpeakListeningType]);
+  detectionCopy = detection;
+  optionsCopy = options;
+  failCopy = fail;
+  successCopy = success;
+  v18 = -[ADOpportuneSpeakingModuleEdgeDetector _framesPerSecondForOpportuneSpeakListeningType:](self, "_framesPerSecondForOpportuneSpeakListeningType:", [optionsCopy opportuneSpeakListeningType]);
   self->_inVoice = 0;
   *&self->_currentPausedFrameCount = 0;
   self->_currentFrameCount = 0;
-  v19 = objc_retainBlock(v17);
+  v19 = objc_retainBlock(successCopy);
 
   successCompletionBlock = self->_successCompletionBlock;
   self->_successCompletionBlock = v19;
 
-  v21 = objc_retainBlock(v16);
+  v21 = objc_retainBlock(failCopy);
   failCompletionBlock = self->_failCompletionBlock;
   self->_failCompletionBlock = v21;
 
-  self->_thresholdFrameCount = (v18 * a4);
+  self->_thresholdFrameCount = (v18 * voice);
   self->_mode = 0;
   self->_isListening = 1;
   self->_isStopping = 0;
-  v23 = [v15 deviceId];
+  deviceId = [optionsCopy deviceId];
   deviceID = self->_deviceID;
-  self->_deviceID = v23;
+  self->_deviceID = deviceId;
 
-  self->_maxDelay = a5;
+  self->_maxDelay = delay;
   v25 = [[ADOpportuneSpeakingMovingAverageBuffer alloc] initWithSize:self->_thresholdFrameCount];
   avbuffer = self->_avbuffer;
   self->_avbuffer = v25;
 
-  self->_shouldStopListeningOnDetection = v10;
-  objc_storeStrong(&self->_listeningOptions, a3);
-  -[ADOpportuneSpeakingModuleEdgeDetector _initializeVoiceThresholdsForOpportuneSpeakListeningType:](self, "_initializeVoiceThresholdsForOpportuneSpeakListeningType:", [v15 opportuneSpeakListeningType]);
+  self->_shouldStopListeningOnDetection = detectionCopy;
+  objc_storeStrong(&self->_listeningOptions, options);
+  -[ADOpportuneSpeakingModuleEdgeDetector _initializeVoiceThresholdsForOpportuneSpeakListeningType:](self, "_initializeVoiceThresholdsForOpportuneSpeakListeningType:", [optionsCopy opportuneSpeakListeningType]);
   v27 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v29 = @"NO";
-    if (v10)
+    if (detectionCopy)
     {
       v29 = @"YES";
     }
@@ -440,7 +440,7 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s shouldStopListeningOnDetection:%@", buf, 0x16u);
   }
 
-  *&v28 = a5;
+  *&v28 = delay;
   [(ADOpportuneSpeakingModuleEdgeDetector *)self _scheduleTimerForMaxDelay:v28];
   listener = self->_listener;
   v31[0] = _NSConcreteStackBlock;
@@ -448,49 +448,49 @@ LABEL_34:
   v31[2] = sub_1000E4D10;
   v31[3] = &unk_10051B580;
   v31[4] = self;
-  [(CSOpportuneSpeakListener *)listener startListenWithOption:v15 completion:v31];
+  [(CSOpportuneSpeakListener *)listener startListenWithOption:optionsCopy completion:v31];
 }
 
-- (void)listenForPauseWithOptions:(id)a3 forPause:(float)a4 maxDelay:(float)a5 stopOnDetection:(BOOL)a6 executeOnSuccess:(id)a7 onFail:(id)a8
+- (void)listenForPauseWithOptions:(id)options forPause:(float)pause maxDelay:(float)delay stopOnDetection:(BOOL)detection executeOnSuccess:(id)success onFail:(id)fail
 {
-  v10 = a6;
-  v15 = a3;
-  v16 = a8;
-  v17 = a7;
-  LODWORD(a8) = -[ADOpportuneSpeakingModuleEdgeDetector _framesPerSecondForOpportuneSpeakListeningType:](self, "_framesPerSecondForOpportuneSpeakListeningType:", [v15 opportuneSpeakListeningType]);
+  detectionCopy = detection;
+  optionsCopy = options;
+  failCopy = fail;
+  successCopy = success;
+  LODWORD(fail) = -[ADOpportuneSpeakingModuleEdgeDetector _framesPerSecondForOpportuneSpeakListeningType:](self, "_framesPerSecondForOpportuneSpeakListeningType:", [optionsCopy opportuneSpeakListeningType]);
   self->_inVoice = 0;
   *&self->_currentPausedFrameCount = 0;
   self->_currentFrameCount = 0;
-  v18 = objc_retainBlock(v17);
+  v18 = objc_retainBlock(successCopy);
 
   successCompletionBlock = self->_successCompletionBlock;
   self->_successCompletionBlock = v18;
 
-  v20 = objc_retainBlock(v16);
+  v20 = objc_retainBlock(failCopy);
   failCompletionBlock = self->_failCompletionBlock;
   self->_failCompletionBlock = v20;
 
-  self->_thresholdFrameCount = (a8 * a4);
+  self->_thresholdFrameCount = (fail * pause);
   self->_mode = 1;
   self->_isListening = 1;
   self->_isStopping = 0;
-  v22 = [v15 deviceId];
+  deviceId = [optionsCopy deviceId];
   deviceID = self->_deviceID;
-  self->_deviceID = v22;
+  self->_deviceID = deviceId;
 
-  self->_maxDelay = a5;
-  v24 = [[ADOpportuneSpeakingMovingAverageBuffer alloc] initWithSize:vcvtd_n_f64_u32(a8, 1uLL)];
+  self->_maxDelay = delay;
+  v24 = [[ADOpportuneSpeakingMovingAverageBuffer alloc] initWithSize:vcvtd_n_f64_u32(fail, 1uLL)];
   avbuffer = self->_avbuffer;
   self->_avbuffer = v24;
 
-  self->_shouldStopListeningOnDetection = v10;
-  objc_storeStrong(&self->_listeningOptions, a3);
-  -[ADOpportuneSpeakingModuleEdgeDetector _initializeVoiceThresholdsForOpportuneSpeakListeningType:](self, "_initializeVoiceThresholdsForOpportuneSpeakListeningType:", [v15 opportuneSpeakListeningType]);
+  self->_shouldStopListeningOnDetection = detectionCopy;
+  objc_storeStrong(&self->_listeningOptions, options);
+  -[ADOpportuneSpeakingModuleEdgeDetector _initializeVoiceThresholdsForOpportuneSpeakListeningType:](self, "_initializeVoiceThresholdsForOpportuneSpeakListeningType:", [optionsCopy opportuneSpeakListeningType]);
   v26 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v28 = @"NO";
-    if (v10)
+    if (detectionCopy)
     {
       v28 = @"YES";
     }
@@ -502,7 +502,7 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s shouldStopListeningOnDetection:%@", buf, 0x16u);
   }
 
-  *&v27 = a5;
+  *&v27 = delay;
   [(ADOpportuneSpeakingModuleEdgeDetector *)self _scheduleTimerForMaxDelay:v27];
   listener = self->_listener;
   v30[0] = _NSConcreteStackBlock;
@@ -510,10 +510,10 @@ LABEL_34:
   v30[2] = sub_1000E510C;
   v30[3] = &unk_10051B580;
   v30[4] = self;
-  [(CSOpportuneSpeakListener *)listener startListenWithOption:v15 completion:v30];
+  [(CSOpportuneSpeakListener *)listener startListenWithOption:optionsCopy completion:v30];
 }
 
-- (void)_scheduleTimerForMaxDelay:(float)a3
+- (void)_scheduleTimerForMaxDelay:(float)delay
 {
   v5 = [AFWatchdogTimer alloc];
   dispatchQueue = self->_dispatchQueue;
@@ -522,16 +522,16 @@ LABEL_34:
   v9[2] = sub_1000E534C;
   v9[3] = &unk_10051DFE8;
   v9[4] = self;
-  v7 = [v5 initWithTimeoutInterval:dispatchQueue onQueue:v9 timeoutHandler:a3];
+  v7 = [v5 initWithTimeoutInterval:dispatchQueue onQueue:v9 timeoutHandler:delay];
   timer = self->_timer;
   self->_timer = v7;
 
   [(AFWatchdogTimer *)self->_timer start];
 }
 
-- (void)_resetStateWithCompletion:(id)a3
+- (void)_resetStateWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   [(ADOpportuneSpeakingModuleEdgeDetector *)self _didStopListening];
   self->_isListening = 0;
   failCompletionBlock = self->_failCompletionBlock;
@@ -540,20 +540,20 @@ LABEL_34:
   successCompletionBlock = self->_successCompletionBlock;
   self->_successCompletionBlock = 0;
 
-  v6 = v7;
+  v6 = completionCopy;
   self->_inVoice = 0;
   *&self->_currentPausedFrameCount = 0;
   self->_currentFrameCount = 0;
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
-- (void)_initializeVoiceThresholdsForOpportuneSpeakListeningType:(unint64_t)a3
+- (void)_initializeVoiceThresholdsForOpportuneSpeakListeningType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     _AFPreferencesAnnounceCallsVoiceOnMinRatio();
     self->_voiceOnMin = v7;
@@ -562,7 +562,7 @@ LABEL_34:
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -586,19 +586,19 @@ LABEL_6:
     v15 = 2048;
     v16 = voiceOffMax;
     v17 = 2048;
-    v18 = a3;
+    typeCopy = type;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Using voiceOnMin: %f, voiceOffMax: %f for listening type: %lu", &v11, 0x2Au);
   }
 }
 
-- (unsigned)_framesPerSecondForOpportuneSpeakListeningType:(unint64_t)a3
+- (unsigned)_framesPerSecondForOpportuneSpeakListeningType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 50;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return 100;
   }
@@ -624,10 +624,10 @@ LABEL_6:
   [(ADOpportuneSpeakingModuleEdgeDetector *)&v3 dealloc];
 }
 
-- (ADOpportuneSpeakingModuleEdgeDetector)initWithQueue:(id)a3 stateManager:(id)a4
+- (ADOpportuneSpeakingModuleEdgeDetector)initWithQueue:(id)queue stateManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = ADOpportuneSpeakingModuleEdgeDetector;
   v9 = [(ADOpportuneSpeakingModuleEdgeDetector *)&v19 init];
@@ -649,8 +649,8 @@ LABEL_6:
 
     v9->_isListening = 0;
     v9->_isStopping = 0;
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    objc_storeStrong(&v9->_stateManager, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    objc_storeStrong(&v9->_stateManager, manager);
     v14 = objc_alloc_init(CSOpportuneSpeakListener);
     listener = v9->_listener;
     v9->_listener = v14;

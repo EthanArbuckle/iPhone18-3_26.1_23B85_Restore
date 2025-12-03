@@ -1,48 +1,48 @@
 @interface TSCHTrendLineData
-+ (int64_t)getTrendLineTypeForSeries:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)p_unitPoint:(id)a3 toScreenFrame:(CGRect)a4 offset:(double)a5 vertical:(BOOL)a6;
++ (int64_t)getTrendLineTypeForSeries:(id)series;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)p_unitPoint:(id)point toScreenFrame:(CGRect)frame offset:(double)offset vertical:(BOOL)vertical;
 - (BOOL)showEquation;
 - (BOOL)showRSquared;
-- (BOOL)showTrendLineForAxisID:(id)a3;
+- (BOOL)showTrendLineForAxisID:(id)d;
 - (BOOL)showTrendLineLegendText;
 - (NSString)rSquaredText;
 - (NSString)trendLineLegendText;
-- (TSCHTrendLineData)initWithSeries:(id)a3;
+- (TSCHTrendLineData)initWithSeries:(id)series;
 - (__CFAttributedString)newEquationAttributedString;
-- (double)maxValueForAxisID:(id)a3;
-- (double)minValueForAxisID:(id)a3;
+- (double)maxValueForAxisID:(id)d;
+- (double)minValueForAxisID:(id)d;
 - (float)equationTextOpacity;
 - (float)rSquaredTextOpacity;
 - (id)p_dataPointValues;
-- (id)p_linePathFromPoints:(id *)a3 count:(unint64_t)a4;
-- (id)trendLinePathForChartRect:(CGRect)a3 offsetInBody:(double)a4 vertical:(BOOL)a5;
+- (id)p_linePathFromPoints:(id *)points count:(unint64_t)count;
+- (id)trendLinePathForChartRect:(CGRect)rect offsetInBody:(double)body vertical:(BOOL)vertical;
 - (int64_t)p_getTrendLineType;
-- (unint64_t)p_fillArrayX:(double *)a3 andY:(double *)a4 fromPoints:(id)a5 hasNegativeX:(BOOL *)a6;
-- (unint64_t)p_fillArrayX:(id)a3 andY:(id)a4 fromPoints:(id)a5;
+- (unint64_t)p_fillArrayX:(double *)x andY:(double *)y fromPoints:(id)points hasNegativeX:(BOOL *)negativeX;
+- (unint64_t)p_fillArrayX:(id)x andY:(id)y fromPoints:(id)points;
 - (void)dealloc;
-- (void)p_addPathToTrendLinePathWithPoints:(id *)a3 count:(unint64_t)a4 curved:(BOOL)a5 curveFitter:(id)a6;
+- (void)p_addPathToTrendLinePathWithPoints:(id *)points count:(unint64_t)count curved:(BOOL)curved curveFitter:(id)fitter;
 - (void)p_calcBounds;
 - (void)p_calcBoundsForMovingAverage;
-- (void)p_calcMARegression:(unint64_t)a3 xData:(id)a4 yData:(id)a5;
-- (void)p_calcRegression:(unint64_t)a3 xData:(double *)a4 yData:(double *)a5;
+- (void)p_calcMARegression:(unint64_t)regression xData:(id)data yData:(id)yData;
+- (void)p_calcRegression:(unint64_t)regression xData:(double *)data yData:(double *)yData;
 - (void)p_generateRegression;
 - (void)p_releaseCache;
 - (void)p_updateTrendLineData;
-- (void)trendLineUnitSpacePoints:(id *)a3 count:(unint64_t *)a4 drawCurve:(BOOL *)a5 maxPoints:(unint64_t)a6;
+- (void)trendLineUnitSpacePoints:(id *)points count:(unint64_t *)count drawCurve:(BOOL *)curve maxPoints:(unint64_t)maxPoints;
 - (void)updateIfNeeded;
 @end
 
 @implementation TSCHTrendLineData
 
-+ (int64_t)getTrendLineTypeForSeries:(id)a3
++ (int64_t)getTrendLineTypeForSeries:(id)series
 {
-  v3 = a3;
-  v8 = objc_msgSend_model(v3, v4, v5, v6, v7);
+  seriesCopy = series;
+  v8 = objc_msgSend_model(seriesCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_chartInfo(v8, v9, v10, v11, v12);
   v18 = objc_msgSend_chartType(v13, v14, v15, v16, v17);
   if (objc_msgSend_supportsTrendLines(v18, v19, v20, v21, v22))
   {
-    v23 = v3;
+    v23 = seriesCopy;
     if (objc_msgSend_intValueForProperty_defaultValue_(v23, v24, v25, v26, v27, 1180, 0))
     {
       v32 = objc_msgSend_intValueForProperty_defaultValue_(v23, v28, v29, v30, v31, 1203, 0);
@@ -62,16 +62,16 @@
   return v32;
 }
 
-- (TSCHTrendLineData)initWithSeries:(id)a3
+- (TSCHTrendLineData)initWithSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   v13.receiver = self;
   v13.super_class = TSCHTrendLineData;
   v5 = [(TSCHTrendLineData *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_series, v4);
+    objc_storeWeak(&v5->_series, seriesCopy);
     v6->_lineType = 0;
     regression = v6->_regression;
     v6->_regression = 0;
@@ -219,15 +219,15 @@
   return v8;
 }
 
-- (BOOL)showTrendLineForAxisID:(id)a3
+- (BOOL)showTrendLineForAxisID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_series);
-  v10 = objc_msgSend_type(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_type(dCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_axisForAxisType_(WeakRetained, v11, v12, v13, v14, v10);
 
   v20 = objc_msgSend_axisID(v15, v16, v17, v18, v19);
-  isEqual = objc_msgSend_isEqual_(v4, v21, v22, v23, v24, v20);
+  isEqual = objc_msgSend_isEqual_(dCopy, v21, v22, v23, v24, v20);
 
   v30 = isEqual && (objc_msgSend_isCategory(v15, v26, v27, v28, v29) & 1) == 0 && self->_showTrendLine;
   return v30;
@@ -268,11 +268,11 @@
   }
 }
 
-- (double)minValueForAxisID:(id)a3
+- (double)minValueForAxisID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_msgSend_updateIfNeeded(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_type(v4, v9, v10, v11, v12);
+  v13 = objc_msgSend_type(dCopy, v9, v10, v11, v12);
 
   if (v13 != self->_inputAxisType)
   {
@@ -295,11 +295,11 @@
   return minXValue;
 }
 
-- (double)maxValueForAxisID:(id)a3
+- (double)maxValueForAxisID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_msgSend_updateIfNeeded(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_type(v4, v9, v10, v11, v12);
+  v13 = objc_msgSend_type(dCopy, v9, v10, v11, v12);
 
   if (v13 != self->_inputAxisType)
   {
@@ -322,7 +322,7 @@
   return maxXValue;
 }
 
-- (void)trendLineUnitSpacePoints:(id *)a3 count:(unint64_t *)a4 drawCurve:(BOOL *)a5 maxPoints:(unint64_t)a6
+- (void)trendLineUnitSpacePoints:(id *)points count:(unint64_t *)count drawCurve:(BOOL *)curve maxPoints:(unint64_t)maxPoints
 {
   WeakRetained = objc_loadWeakRetained(&self->_series);
   v16 = objc_msgSend_axisForAxisType_(WeakRetained, v12, v13, v14, v15, self->_inputAxisType);
@@ -330,24 +330,24 @@
   v17 = objc_loadWeakRetained(&self->_series);
   v22 = objc_msgSend_axisForAxisType_(v17, v18, v19, v20, v21, self->_outputAxisType);
 
-  if (a3 && a4 && a5)
+  if (points && count && curve)
   {
-    *a4 = 0;
-    *a3 = 0;
-    *a5 = 0;
-    v139 = a3;
+    *count = 0;
+    *points = 0;
+    *curve = 0;
+    pointsCopy = points;
     if (self->_lineType == 6)
     {
       v23 = self->_regression;
       v28 = objc_msgSend_numTrendPoint(v23, v24, v25, v26, v27);
-      *a4 = v28;
-      *a5 = 0;
-      *a3 = malloc_type_calloc(0x10uLL, v28, 0x5C16FB05uLL);
-      if (*a4)
+      *count = v28;
+      *curve = 0;
+      *points = malloc_type_calloc(0x10uLL, v28, 0x5C16FB05uLL);
+      if (*count)
       {
         v33 = 0;
         v34 = 0;
-        v138 = a4;
+        countCopy = count;
         v140 = v22;
         do
         {
@@ -367,8 +367,8 @@
             v66 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v62, v63, v64, v65, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHTrendLineData.m");
             objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v57, v67, v68, v69, v70, v61, v66, 42, 0, "Overflowed BLAS int type argument.");
 
-            a3 = v139;
-            a4 = v138;
+            points = pointsCopy;
+            count = countCopy;
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v71, v72, v73, v74);
           }
 
@@ -379,7 +379,7 @@
             v50 = v34;
           }
 
-          objc_msgSend_trendYValueAtIndex_(v23, v75, v76, v77, v78, v50, v138);
+          objc_msgSend_trendYValueAtIndex_(v23, v75, v76, v77, v78, v50, countCopy);
           v80 = v79;
           isCategory = objc_msgSend_isCategory(v16, v81, v79, v82, v83);
           v88 = v56 + -1.0;
@@ -399,26 +399,26 @@
           }
 
           v22 = v140;
-          *(*a3 + v33) = v93;
+          *(*points + v33) = v93;
           objc_msgSend_unitSpaceValueForDataSpaceValue_(v140, v92, v80, v94, v95);
-          *(*a3 + v33 + 8) = v30;
+          *(*points + v33 + 8) = v30;
           ++v34;
           v33 += 16;
         }
 
-        while (v34 < *a4);
+        while (v34 < *count);
       }
     }
 
     else
     {
-      *a4 = a6 + 1;
-      *a5 = self->_lineType != 1;
-      *a3 = malloc_type_calloc(0x10uLL, a6 + 1, 0x4BFBEF5uLL);
+      *count = maxPoints + 1;
+      *curve = self->_lineType != 1;
+      *points = malloc_type_calloc(0x10uLL, maxPoints + 1, 0x4BFBEF5uLL);
       maxXValue = self->_maxXValue;
       minXValue = self->_minXValue;
       v98 = maxXValue - minXValue;
-      v99 = a6;
+      maxPointsCopy = maxPoints;
       if (objc_msgSend_isCategory(v16, v100, maxXValue, v101, v102))
       {
         if (minXValue < 1.0)
@@ -438,8 +438,8 @@
       v122 = 0;
       v123 = self->_minXValue;
       v141 = v123;
-      v124 = *a4 - 1;
-      v125 = v98 / v99;
+      v124 = *count - 1;
+      v125 = v98 / maxPointsCopy;
       do
       {
         if (v124 == v121)
@@ -470,12 +470,12 @@
         if ((v136 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (v135 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
         {
 LABEL_25:
-          --*a4;
+          --*count;
         }
 
         else
         {
-          v137 = (*a3 + 16 * v122);
+          v137 = (*points + 16 * v122);
           *v137 = v135;
           v137[1] = v136;
           ++v122;
@@ -560,13 +560,13 @@ LABEL_25:
   return Copy;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)p_unitPoint:(id)a3 toScreenFrame:(CGRect)a4 offset:(double)a5 vertical:(BOOL)a6
+- ($F24F406B2B787EFB06265DBA3D28CBD5)p_unitPoint:(id)point toScreenFrame:(CGRect)frame offset:(double)offset vertical:(BOOL)vertical
 {
-  v6 = a4.origin.y + a3.var0 * a4.size.height + a5;
-  v7 = a4.origin.x + a3.var1 * a4.size.width;
-  v8 = a4.origin.y + a4.size.height - a3.var1 * a4.size.height;
-  v9 = a4.origin.x + a3.var0 * a4.size.width + a5;
-  if (!a6)
+  v6 = frame.origin.y + point.var0 * frame.size.height + offset;
+  v7 = frame.origin.x + point.var1 * frame.size.width;
+  v8 = frame.origin.y + frame.size.height - point.var1 * frame.size.height;
+  v9 = frame.origin.x + point.var0 * frame.size.width + offset;
+  if (!vertical)
   {
     v8 = v6;
     v9 = v7;
@@ -577,10 +577,10 @@ LABEL_25:
   return result;
 }
 
-- (id)p_linePathFromPoints:(id *)a3 count:(unint64_t)a4
+- (id)p_linePathFromPoints:(id *)points count:(unint64_t)count
 {
-  v9 = a4 - 1;
-  if (a4 <= 1)
+  v9 = count - 1;
+  if (count <= 1)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHTrendLineData p_linePathFromPoints:count:]");
@@ -592,9 +592,9 @@ LABEL_25:
 
   Mutable = CGPathCreateMutable();
   CGPathMoveToPointSafe();
-  if (a4 >= 2)
+  if (count >= 2)
   {
-    p_var1 = &a3[1].var1;
+    p_var1 = &points[1].var1;
     do
     {
       CGPathAddLineToPointSafe();
@@ -611,66 +611,66 @@ LABEL_25:
   return v31;
 }
 
-- (void)p_addPathToTrendLinePathWithPoints:(id *)a3 count:(unint64_t)a4 curved:(BOOL)a5 curveFitter:(id)a6
+- (void)p_addPathToTrendLinePathWithPoints:(id *)points count:(unint64_t)count curved:(BOOL)curved curveFitter:(id)fitter
 {
-  v6 = a5;
-  v10 = a6;
-  if (v6)
+  curvedCopy = curved;
+  fitterCopy = fitter;
+  if (curvedCopy)
   {
-    if (a4 < 3)
+    if (count < 3)
     {
-      if (a4 != 2)
+      if (count != 2)
       {
         goto LABEL_9;
       }
 
-      v30 = v10;
+      v30 = fitterCopy;
       cachedTrendLinePath = self->_cachedTrendLinePath;
-      v15 = objc_msgSend_p_linePathFromPoints_count_(self, v11, v12, v13, v14, a3, 2);
+      v15 = objc_msgSend_p_linePathFromPoints_count_(self, v11, v12, v13, v14, points, 2);
       objc_msgSend_appendBezierPath_(cachedTrendLinePath, v26, v27, v28, v29, v15);
     }
 
     else
     {
-      v30 = v10;
-      v15 = objc_msgSend_bezierPathFittingPointArray_count_(v10, v11, v12, v13, v14, a3, a4);
+      v30 = fitterCopy;
+      v15 = objc_msgSend_bezierPathFittingPointArray_count_(fitterCopy, v11, v12, v13, v14, points, count);
       objc_msgSend_appendBezierPath_(self->_cachedTrendLinePath, v16, v17, v18, v19, v15);
     }
   }
 
   else
   {
-    if (a4 < 2)
+    if (count < 2)
     {
       goto LABEL_9;
     }
 
-    v30 = v10;
+    v30 = fitterCopy;
     v20 = self->_cachedTrendLinePath;
-    v15 = objc_msgSend_p_linePathFromPoints_count_(self, v11, v12, v13, v14, a3, a4);
+    v15 = objc_msgSend_p_linePathFromPoints_count_(self, v11, v12, v13, v14, points, count);
     objc_msgSend_appendBezierPath_(v20, v21, v22, v23, v24, v15);
   }
 
-  v10 = v30;
+  fitterCopy = v30;
 LABEL_9:
 }
 
-- (id)trendLinePathForChartRect:(CGRect)a3 offsetInBody:(double)a4 vertical:(BOOL)a5
+- (id)trendLinePathForChartRect:(CGRect)rect offsetInBody:(double)body vertical:(BOOL)vertical
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = self;
-  objc_sync_enter(v11);
-  cachedTrendLinePath = v11->_cachedTrendLinePath;
-  if (!cachedTrendLinePath || v11->_cachedChartVertical != v5 || vabdd_f64(a4, v11->_offsetInBody) > 0.01 || (TSUNearlyEqualRects() & 1) == 0)
+  verticalCopy = vertical;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedTrendLinePath = selfCopy->_cachedTrendLinePath;
+  if (!cachedTrendLinePath || selfCopy->_cachedChartVertical != verticalCopy || vabdd_f64(body, selfCopy->_offsetInBody) > 0.01 || (TSUNearlyEqualRects() & 1) == 0)
   {
     v83 = 0;
     size = 0;
     v82 = 0;
-    if (v5)
+    if (verticalCopy)
     {
       v17 = width;
     }
@@ -696,11 +696,11 @@ LABEL_9:
       v17 = v17 / 3.0;
     }
 
-    objc_msgSend_trendLineUnitSpacePoints_count_drawCurve_maxPoints_(v11, v12, v17, v18, v13, &v83, &size, &v82, vcvtpd_u64_f64(v17));
+    objc_msgSend_trendLineUnitSpacePoints_count_drawCurve_maxPoints_(selfCopy, v12, v17, v18, v13, &v83, &size, &v82, vcvtpd_u64_f64(v17));
     if (!size || !v83)
     {
       free(v83);
-      objc_msgSend_p_releaseCache(v11, v67, v68, v69, v70);
+      objc_msgSend_p_releaseCache(selfCopy, v67, v68, v69, v70);
       v71 = 0;
       goto LABEL_71;
     }
@@ -709,28 +709,28 @@ LABEL_9:
     for (i = 0; i < size; ++i)
     {
       v22 = v83 + v20;
-      objc_msgSend_p_unitPoint_toScreenFrame_offset_vertical_(v11, v19, *(v83 + v20), *(v83 + v20 + 8), x, v5, y, width, height, a4);
+      objc_msgSend_p_unitPoint_toScreenFrame_offset_vertical_(selfCopy, v19, *(v83 + v20), *(v83 + v20 + 8), x, verticalCopy, y, width, height, body);
       *v22 = v23;
       v22[1] = v24;
       v20 += 16;
     }
 
-    objc_msgSend_p_unitPoint_toScreenFrame_offset_vertical_(v11, v19, 0.0, 0.0, x, v5, y, width, height, a4);
+    objc_msgSend_p_unitPoint_toScreenFrame_offset_vertical_(selfCopy, v19, 0.0, 0.0, x, verticalCopy, y, width, height, body);
     v80 = v25;
     v27 = v26;
-    objc_msgSend_p_unitPoint_toScreenFrame_offset_vertical_(v11, v28, 1.0, 1.0, x, v5, y, width, height, a4);
+    objc_msgSend_p_unitPoint_toScreenFrame_offset_vertical_(selfCopy, v28, 1.0, 1.0, x, verticalCopy, y, width, height, body);
     v30 = v29;
     v32 = v31;
     v33 = objc_alloc_init(MEMORY[0x277D81160]);
-    v34 = v11->_cachedTrendLinePath;
-    v11->_cachedTrendLinePath = v33;
+    v34 = selfCopy->_cachedTrendLinePath;
+    selfCopy->_cachedTrendLinePath = v33;
 
     v35 = objc_alloc_init(MEMORY[0x277D80210]);
     objc_msgSend_setErrorDistance_(v35, v36, 4.0, v37, v38);
     objc_msgSend_setErrorIterations_(v35, v39, v40, v41, v42, 4);
     v79 = y;
     v44 = malloc_type_calloc(0x10uLL, size, 0x539253DBuLL);
-    v77 = a4;
+    bodyCopy = body;
     v48 = size;
     if (size)
     {
@@ -819,7 +819,7 @@ LABEL_9:
 
             else
             {
-              objc_msgSend_p_addPathToTrendLinePathWithPoints_count_curved_curveFitter_(v11, v43, v45, v46, v47, v44);
+              objc_msgSend_p_addPathToTrendLinePathWithPoints_count_curved_curveFitter_(selfCopy, v43, v45, v46, v47, v44);
               v50 = 0;
               v48 = size;
             }
@@ -846,27 +846,27 @@ LABEL_9:
       v50 = 0;
     }
 
-    objc_msgSend_p_addPathToTrendLinePathWithPoints_count_curved_curveFitter_(v11, v43, v45, v46, v47, v44, v50, v82, v35, *&v77);
+    objc_msgSend_p_addPathToTrendLinePathWithPoints_count_curved_curveFitter_(selfCopy, v43, v45, v46, v47, v44, v50, v82, v35, *&bodyCopy);
     free(v83);
     free(v44);
-    v11->_cachedChartVertical = v5;
-    v11->_cachedChartFrame.origin.x = x;
-    v11->_cachedChartFrame.origin.y = v79;
-    v11->_cachedChartFrame.size.width = width;
-    v11->_cachedChartFrame.size.height = height;
-    v11->_offsetInBody = v78;
+    selfCopy->_cachedChartVertical = verticalCopy;
+    selfCopy->_cachedChartFrame.origin.x = x;
+    selfCopy->_cachedChartFrame.origin.y = v79;
+    selfCopy->_cachedChartFrame.size.width = width;
+    selfCopy->_cachedChartFrame.size.height = height;
+    selfCopy->_offsetInBody = v78;
 
-    cachedTrendLinePath = v11->_cachedTrendLinePath;
+    cachedTrendLinePath = selfCopy->_cachedTrendLinePath;
   }
 
   if (objc_msgSend_isEmpty(cachedTrendLinePath, v12, v15, v16, v13))
   {
-    objc_msgSend_p_releaseCache(v11, v72, v73, v74, v75);
+    objc_msgSend_p_releaseCache(selfCopy, v72, v73, v74, v75);
   }
 
-  v71 = v11->_cachedTrendLinePath;
+  v71 = selfCopy->_cachedTrendLinePath;
 LABEL_71:
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   return v71;
 }
@@ -1045,16 +1045,16 @@ LABEL_22:
   }
 }
 
-- (void)p_calcRegression:(unint64_t)a3 xData:(double *)a4 yData:(double *)a5
+- (void)p_calcRegression:(unint64_t)regression xData:(double *)data yData:(double *)yData
 {
-  v9 = a3 - 1;
-  if (a3 <= 1)
+  v9 = regression - 1;
+  if (regression <= 1)
   {
     self->_showTrendLine = 0;
     return;
   }
 
-  v12 = a3;
+  regressionCopy = regression;
   lineType = self->_lineType;
   if (lineType > 2)
   {
@@ -1086,7 +1086,7 @@ LABEL_22:
         WeakRetained = objc_loadWeakRetained(&self->_series);
         v35 = objc_msgSend_intValueForProperty_defaultValue_(WeakRetained, v31, v32, v33, v34, 1194, 2);
 
-        if (v35 >= v12)
+        if (v35 >= regressionCopy)
         {
           v36 = v9;
         }
@@ -1107,7 +1107,7 @@ LABEL_22:
         }
 
         v39 = objc_alloc(MEMORY[0x277D812C8]);
-        if (v12 >> 31)
+        if (regressionCopy >> 31)
         {
           v43 = MEMORY[0x277D81150];
           v44 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, v40, v41, v42, "int BLASintForNSUInteger(NSUInteger)");
@@ -1115,7 +1115,7 @@ LABEL_22:
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v43, v50, v51, v52, v53, v44, v49, 42, 0, "Overflowed BLAS int type argument.");
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55, v56, v57);
-          v12 = 0x7FFFFFFFLL;
+          regressionCopy = 0x7FFFFFFFLL;
         }
 
         if (v36 >> 31)
@@ -1129,7 +1129,7 @@ LABEL_22:
           v37 = 0x7FFFFFFFLL;
         }
 
-        inited = objc_msgSend_initAffineWithMappings_xs_ys_xOrder_(v39, v38, v40, v41, v42, v12, a4, a5, v37);
+        inited = objc_msgSend_initAffineWithMappings_xs_ys_xOrder_(v39, v38, v40, v41, v42, regressionCopy, data, yData, v37);
         goto LABEL_31;
       }
 
@@ -1138,7 +1138,7 @@ LABEL_22:
 
 LABEL_28:
     v75 = [v14 alloc];
-    if (v12 >> 31)
+    if (regressionCopy >> 31)
     {
       v79 = MEMORY[0x277D81150];
       v80 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, v76, v77, v78, "int BLASintForNSUInteger(NSUInteger)");
@@ -1146,10 +1146,10 @@ LABEL_28:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v79, v86, v87, v88, v89, v80, v85, 42, 0, "Overflowed BLAS int type argument.");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v90, v91, v92, v93);
-      v12 = 0x7FFFFFFFLL;
+      regressionCopy = 0x7FFFFFFFLL;
     }
 
-    inited = objc_msgSend_initAffineWithMappings_xs_ys_xDimension_(v75, v74, v76, v77, v78, v12, a4, a5, 1);
+    inited = objc_msgSend_initAffineWithMappings_xs_ys_xDimension_(v75, v74, v76, v77, v78, regressionCopy, data, yData, 1);
 LABEL_31:
     regression = self->_regression;
     self->_regression = inited;
@@ -1258,11 +1258,11 @@ LABEL_32:
   }
 }
 
-- (void)p_calcMARegression:(unint64_t)a3 xData:(id)a4 yData:(id)a5
+- (void)p_calcMARegression:(unint64_t)regression xData:(id)data yData:(id)yData
 {
-  v74 = a4;
-  v9 = a5;
-  if (a3 <= 2)
+  dataCopy = data;
+  yDataCopy = yData;
+  if (regression <= 2)
   {
     goto LABEL_2;
   }
@@ -1276,9 +1276,9 @@ LABEL_32:
       v30 = 2;
       v35 = objc_msgSend_intValueForProperty_defaultValue_(WeakRetained, v31, v32, v33, v34, 1195, 2);
 
-      if (v35 >= a3)
+      if (v35 >= regression)
       {
-        v36 = a3 - 1;
+        v36 = regression - 1;
       }
 
       else
@@ -1292,7 +1292,7 @@ LABEL_32:
       }
 
       v38 = objc_alloc(MEMORY[0x277D81240]);
-      if (a3 >> 31)
+      if (regression >> 31)
       {
         v42 = MEMORY[0x277D81150];
         v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, v39, v40, v41, "int BLASintForNSUInteger(NSUInteger)");
@@ -1300,7 +1300,7 @@ LABEL_32:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v42, v49, v50, v51, v52, v43, v48, 42, 0, "Overflowed BLAS int type argument.");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v53, v54, v55, v56);
-        a3 = 0x7FFFFFFFLL;
+        regression = 0x7FFFFFFFLL;
       }
 
       if (v36 >> 31)
@@ -1314,7 +1314,7 @@ LABEL_32:
         v30 = 0x7FFFFFFFLL;
       }
 
-      v72 = objc_msgSend_initWithMappings_xs_ys_numPeriod_(v38, v37, v39, v40, v41, a3, v74, v9, v30);
+      v72 = objc_msgSend_initWithMappings_xs_ys_numPeriod_(v38, v37, v39, v40, v41, regression, dataCopy, yDataCopy, v30);
       regression = self->_regression;
       self->_regression = v72;
     }
@@ -1338,11 +1338,11 @@ LABEL_2:
   }
 }
 
-- (unint64_t)p_fillArrayX:(id)a3 andY:(id)a4 fromPoints:(id)a5
+- (unint64_t)p_fillArrayX:(id)x andY:(id)y fromPoints:(id)points
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
+  xCopy = x;
+  yCopy = y;
+  pointsCopy = points;
   if (self->_lineType != 6)
   {
     v15 = MEMORY[0x277D81150];
@@ -1353,7 +1353,7 @@ LABEL_2:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  v30 = objc_msgSend_count(v11, v10, v12, v13, v14);
+  v30 = objc_msgSend_count(pointsCopy, v10, v12, v13, v14);
   if (v30)
   {
     v35 = v30;
@@ -1362,7 +1362,7 @@ LABEL_2:
     for (i = 0; i != v35; ++i)
     {
       v39 = v37;
-      v37 = objc_msgSend_objectAtIndexedSubscript_(v11, v31, v32, v33, v34, i);
+      v37 = objc_msgSend_objectAtIndexedSubscript_(pointsCopy, v31, v32, v33, v34, i);
 
       objc_msgSend_dataPointX(v37, v40, v41, v42, v43);
       v45 = v44;
@@ -1372,10 +1372,10 @@ LABEL_2:
       if ((*&v46 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&v32 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
       {
         v51 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v31, v45, v33, v34);
-        objc_msgSend_addObject_(v8, v52, v53, v54, v55, v51);
+        objc_msgSend_addObject_(xCopy, v52, v53, v54, v55, v51);
 
         v59 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v56, v50, v57, v58);
-        objc_msgSend_addObject_(v9, v60, v61, v62, v63, v59);
+        objc_msgSend_addObject_(yCopy, v60, v61, v62, v63, v59);
 
         ++v36;
       }
@@ -1390,9 +1390,9 @@ LABEL_2:
   return v36;
 }
 
-- (unint64_t)p_fillArrayX:(double *)a3 andY:(double *)a4 fromPoints:(id)a5 hasNegativeX:(BOOL *)a6
+- (unint64_t)p_fillArrayX:(double *)x andY:(double *)y fromPoints:(id)points hasNegativeX:(BOOL *)negativeX
 {
-  v10 = a5;
+  pointsCopy = points;
   if (self->_lineType == 6)
   {
     v14 = MEMORY[0x277D81150];
@@ -1403,7 +1403,7 @@ LABEL_2:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_count(v10, v9, v11, v12, v13);
+  v29 = objc_msgSend_count(pointsCopy, v9, v11, v12, v13);
   if (!v29)
   {
     v35 = 0;
@@ -1417,7 +1417,7 @@ LABEL_2:
   while (1)
   {
     v38 = v37;
-    v37 = objc_msgSend_objectAtIndexedSubscript_(v10, v30, v31, v32, v33, v36);
+    v37 = objc_msgSend_objectAtIndexedSubscript_(pointsCopy, v30, v31, v32, v33, v36);
 
     objc_msgSend_dataPointX(v37, v39, v40, v41, v42);
     v44 = v43;
@@ -1430,7 +1430,7 @@ LABEL_2:
 
     if (v44 <= 0.0)
     {
-      *a6 = 1;
+      *negativeX = 1;
     }
 
     v32 = fmin(v44, v31);
@@ -1439,8 +1439,8 @@ LABEL_2:
       break;
     }
 
-    a3[v35] = v44;
-    a4[v35++] = v31;
+    x[v35] = v44;
+    y[v35++] = v31;
 LABEL_12:
     if (v34 == ++v36)
     {

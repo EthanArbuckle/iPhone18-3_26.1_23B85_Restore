@@ -11,14 +11,14 @@
     v2 = dispatch_semaphore_create(0);
     out_token = -1;
     v3 = +[PLConcurrencyLimiter sharedLimiter];
-    v4 = [v3 sharedUtilityQueue];
+    sharedUtilityQueue = [v3 sharedUtilityQueue];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __47__PLFirstUnlockProtection_waitUntilFirstUnlock__block_invoke;
     handler[3] = &unk_1E756B898;
     v5 = v2;
     v11 = v5;
-    v6 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &out_token, v4, handler);
+    v6 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &out_token, sharedUtilityQueue, handler);
 
     v7 = PLBackendGetLog();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);

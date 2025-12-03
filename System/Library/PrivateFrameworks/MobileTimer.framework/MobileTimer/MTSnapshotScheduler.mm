@@ -1,20 +1,20 @@
 @interface MTSnapshotScheduler
 + (double)_quiescingWindow;
-- (MTSnapshotScheduler)initWithBundleID:(id)a3;
+- (MTSnapshotScheduler)initWithBundleID:(id)d;
 @end
 
 @implementation MTSnapshotScheduler
 
-- (MTSnapshotScheduler)initWithBundleID:(id)a3
+- (MTSnapshotScheduler)initWithBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MTSnapshotScheduler;
   v6 = [(MTSnapshotScheduler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleID, a3);
+    objc_storeStrong(&v6->_bundleID, d);
   }
 
   return v7;
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __39__MTSnapshotScheduler__quiescingWindow__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_quiescingWindow_onceToken != -1)
   {
     dispatch_once(&_quiescingWindow_onceToken, block);

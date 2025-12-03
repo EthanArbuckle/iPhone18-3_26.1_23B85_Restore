@@ -1,9 +1,9 @@
 @interface SUUIStoreIdentifier
-- (BOOL)isEqual:(id)a3;
-- (SUUIStoreIdentifier)initWithLongLong:(int64_t)a3;
-- (SUUIStoreIdentifier)initWithNumber:(id)a3;
-- (SUUIStoreIdentifier)initWithPodcastFeedURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUUIStoreIdentifier)initWithLongLong:(int64_t)long;
+- (SUUIStoreIdentifier)initWithNumber:(id)number;
+- (SUUIStoreIdentifier)initWithPodcastFeedURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)stringValue;
 - (int64_t)longLongValue;
@@ -12,15 +12,15 @@
 
 @implementation SUUIStoreIdentifier
 
-- (SUUIStoreIdentifier)initWithLongLong:(int64_t)a3
+- (SUUIStoreIdentifier)initWithLongLong:(int64_t)long
 {
   v9.receiver = self;
   v9.super_class = SUUIStoreIdentifier;
   v4 = [(SUUIStoreIdentifier *)&v9 init];
   v5 = v4;
-  if (a3 && v4)
+  if (long && v4)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithLongLong:long];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
   }
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (SUUIStoreIdentifier)initWithNumber:(id)a3
+- (SUUIStoreIdentifier)initWithNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v9.receiver = self;
   v9.super_class = SUUIStoreIdentifier;
   v5 = [(SUUIStoreIdentifier *)&v9 init];
-  if (v5 && [v4 longLongValue])
+  if (v5 && [numberCopy longLongValue])
   {
-    v6 = [v4 copy];
+    v6 = [numberCopy copy];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
   }
@@ -44,22 +44,22 @@
   return v5;
 }
 
-- (SUUIStoreIdentifier)initWithPodcastFeedURL:(id)a3
+- (SUUIStoreIdentifier)initWithPodcastFeedURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SUUIStoreIdentifier;
   v6 = [(SUUIStoreIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_podcastFeedURLIdentifier, a3);
+    objc_storeStrong(&v6->_podcastFeedURLIdentifier, l);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SUUIStoreIdentifier allocWithZone:?]];
   p_isa = &v4->super.isa;
@@ -79,25 +79,25 @@
   v8.receiver = self;
   v8.super_class = SUUIStoreIdentifier;
   v4 = [(SUUIStoreIdentifier *)&v8 description];
-  v5 = [(SUUIStoreIdentifier *)self numberValue];
-  v6 = [v3 stringWithFormat:@"%@: [%@, %@]", v4, v5, self->_podcastFeedURLIdentifier];
+  numberValue = [(SUUIStoreIdentifier *)self numberValue];
+  v6 = [v3 stringWithFormat:@"%@: [%@, %@]", v4, numberValue, self->_podcastFeedURLIdentifier];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SUUIStoreIdentifier *)self numberValue];
-  v4 = [v3 hash];
+  numberValue = [(SUUIStoreIdentifier *)self numberValue];
+  v4 = [numberValue hash];
   v5 = [(NSString *)self->_podcastFeedURLIdentifier hash];
 
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_12;
   }
@@ -113,7 +113,7 @@ LABEL_7:
   itemIdentifier = self->_itemIdentifier;
   if (itemIdentifier)
   {
-    v6 = v4->_itemIdentifier;
+    v6 = equalCopy->_itemIdentifier;
     if (itemIdentifier != v6)
     {
       if (v6)
@@ -135,7 +135,7 @@ LABEL_12:
   podcastFeedURLIdentifier = self->_podcastFeedURLIdentifier;
   if (podcastFeedURLIdentifier)
   {
-    if (podcastFeedURLIdentifier != v4->_podcastFeedURLIdentifier)
+    if (podcastFeedURLIdentifier != equalCopy->_podcastFeedURLIdentifier)
     {
       v7 = [(NSString *)podcastFeedURLIdentifier isEqualToString:?];
       goto LABEL_11;
@@ -147,8 +147,8 @@ LABEL_12:
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
-    v11 = [(SUUIStoreIdentifier *)v4 bundleIdentifier];
-    LOBYTE(bundleIdentifier) = [(NSString *)bundleIdentifier isEqualToString:v11];
+    bundleIdentifier = [(SUUIStoreIdentifier *)equalCopy bundleIdentifier];
+    LOBYTE(bundleIdentifier) = [(NSString *)bundleIdentifier isEqualToString:bundleIdentifier];
   }
 
 LABEL_13:
@@ -171,7 +171,7 @@ LABEL_13:
 {
   if (self->_itemIdentifier && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(NSNumber *)self->_itemIdentifier stringValue];
+    stringValue = [(NSNumber *)self->_itemIdentifier stringValue];
   }
 
   else
@@ -179,16 +179,16 @@ LABEL_13:
     podcastFeedURLIdentifier = self->_podcastFeedURLIdentifier;
     if (podcastFeedURLIdentifier)
     {
-      v3 = podcastFeedURLIdentifier;
+      stringValue = podcastFeedURLIdentifier;
     }
 
     else
     {
-      v3 = 0;
+      stringValue = 0;
     }
   }
 
-  return v3;
+  return stringValue;
 }
 
 @end

@@ -5,22 +5,22 @@
 - (NSString)description;
 - (_UIPhysicalButtonContact)init;
 - (id)_init;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)_appendProemDescriptionSansSelfToFormatter:(uint64_t)result;
-- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)a1;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)formatter;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation _UIPhysicalButtonContact
 
 - (_UIPhysicalButtonContact)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonContact.m" lineNumber:29 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonContact init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonContact.m" lineNumber:29 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonContact init]", objc_opt_class()}];
 
   return 0;
 }
@@ -60,47 +60,47 @@
   return result;
 }
 
-- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)a1
+- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)formatter
 {
-  if (a1)
+  if (formatter)
   {
-    v4 = [a2 appendBool:*(a1 + 8) withName:@"isTouching"];
-    v5 = [a2 appendFloat:@"touchMajorRadius" withName:1 decimalPrecision:*(a1 + 16)];
-    v6 = [a2 appendFloat:@"touchMinorRadius" withName:1 decimalPrecision:*(a1 + 24)];
+    v4 = [a2 appendBool:*(formatter + 8) withName:@"isTouching"];
+    v5 = [a2 appendFloat:@"touchMajorRadius" withName:1 decimalPrecision:*(formatter + 16)];
+    v6 = [a2 appendFloat:@"touchMinorRadius" withName:1 decimalPrecision:*(formatter + 24)];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67___UIPhysicalButtonContact__appendDebugBodyDescriptionToFormatter___block_invoke;
     v10[3] = &unk_1E70FA340;
-    v10[4] = a1;
+    v10[4] = formatter;
     [a2 appendCustomFormatWithName:@"position" block:v10];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67___UIPhysicalButtonContact__appendDebugBodyDescriptionToFormatter___block_invoke_2;
     v9[3] = &unk_1E70FA340;
-    v9[4] = a1;
+    v9[4] = formatter;
     [a2 appendCustomFormatWithName:@"positionDelta" block:v9];
-    v7 = _NSStringFromUITouchSenstiveButtonPositionHint(*(a1 + 32));
+    v7 = _NSStringFromUITouchSenstiveButtonPositionHint(*(formatter + 32));
     v8 = [a2 appendObject:v7 withName:@"touchPositionHints"];
   }
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57___UIPhysicalButtonContact_appendDescriptionToFormatter___block_invoke;
   v3[3] = &unk_1E70F35B8;
   v3[4] = self;
-  v3[5] = a3;
-  [a3 appendProem:self block:v3];
+  v3[5] = formatter;
+  [formatter appendProem:self block:v3];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonContact *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonContact *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -111,33 +111,33 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonContact *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonContact *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonContact *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonContact *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66___UIPhysicalButtonContact_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 

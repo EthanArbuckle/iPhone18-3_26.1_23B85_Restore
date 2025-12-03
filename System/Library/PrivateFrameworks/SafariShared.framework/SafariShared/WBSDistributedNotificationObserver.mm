@@ -1,35 +1,35 @@
 @interface WBSDistributedNotificationObserver
-- (WBSDistributedNotificationObserver)initWithNotificationName:(id)a3 type:(int64_t)a4;
+- (WBSDistributedNotificationObserver)initWithNotificationName:(id)name type:(int64_t)type;
 - (id)notificationHandler;
 - (id)timeoutHandler;
-- (void)_didReceiveNotification:(id)a3;
+- (void)_didReceiveNotification:(id)notification;
 - (void)_didTimeOut;
 - (void)_invalidateTimeoutTimer;
-- (void)_scheduleTimeoutTimerWithTimeout:(double)a3;
+- (void)_scheduleTimeoutTimerWithTimeout:(double)timeout;
 - (void)_startObserving;
 - (void)_stopObserving;
-- (void)setNotificationHandler:(id)a3;
-- (void)setTimeoutHandler:(id)a3;
+- (void)setNotificationHandler:(id)handler;
+- (void)setTimeoutHandler:(id)handler;
 - (void)stopWaiting;
-- (void)waitWithTimeout:(double)a3;
+- (void)waitWithTimeout:(double)timeout;
 @end
 
 @implementation WBSDistributedNotificationObserver
 
-- (WBSDistributedNotificationObserver)initWithNotificationName:(id)a3 type:(int64_t)a4
+- (WBSDistributedNotificationObserver)initWithNotificationName:(id)name type:(int64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = WBSDistributedNotificationObserver;
   v7 = [(WBSDistributedNotificationObserver *)&v15 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     notificationName = v7->_notificationName;
     v7->_notificationName = v8;
 
-    v7->_notificationType = a4;
-    v10 = [@"com.apple.Safari.WBSCloudBookmarksSyncAgentObserver." stringByAppendingString:v6];
+    v7->_notificationType = type;
+    v10 = [@"com.apple.Safari.WBSCloudBookmarksSyncAgentObserver." stringByAppendingString:nameCopy];
     v11 = dispatch_queue_create([v10 UTF8String], 0);
     internalQueue = v7->_internalQueue;
     v7->_internalQueue = v11;
@@ -40,17 +40,17 @@
   return v7;
 }
 
-- (void)setNotificationHandler:(id)a3
+- (void)setNotificationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__WBSDistributedNotificationObserver_setNotificationHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -92,17 +92,17 @@ void __57__WBSDistributedNotificationObserver_notificationHandler__block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (void)setTimeoutHandler:(id)a3
+- (void)setTimeoutHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__WBSDistributedNotificationObserver_setTimeoutHandler___block_invoke;
   v7[3] = &unk_1E7FB81B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -144,7 +144,7 @@ void __52__WBSDistributedNotificationObserver_timeoutHandler__block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)waitWithTimeout:(double)a3
+- (void)waitWithTimeout:(double)timeout
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -152,7 +152,7 @@ void __52__WBSDistributedNotificationObserver_timeoutHandler__block_invoke(uint6
   v4[2] = __54__WBSDistributedNotificationObserver_waitWithTimeout___block_invoke;
   v4[3] = &unk_1E7FB74E0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = timeout;
   dispatch_sync(internalQueue, v4);
 }
 
@@ -189,8 +189,8 @@ uint64_t __54__WBSDistributedNotificationObserver_waitWithTimeout___block_invoke
 
     else if (!notificationType)
     {
-      v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-      [v4 addObserver:self selector:sel__didReceiveNotification_ name:self->_notificationName object:0 suspensionBehavior:4];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__didReceiveNotification_ name:self->_notificationName object:0 suspensionBehavior:4];
     }
 
     self->_observing = 1;
@@ -211,23 +211,23 @@ uint64_t __54__WBSDistributedNotificationObserver_waitWithTimeout___block_invoke
 
     else if (!notificationType)
     {
-      v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-      [v4 removeObserver:self name:self->_notificationName object:0];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+      [defaultCenter removeObserver:self name:self->_notificationName object:0];
     }
 
     self->_observing = 0;
   }
 }
 
-- (void)_scheduleTimeoutTimerWithTimeout:(double)a3
+- (void)_scheduleTimeoutTimerWithTimeout:(double)timeout
 {
   [(WBSDistributedNotificationObserver *)self _invalidateTimeoutTimer];
   v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_internalQueue);
   timeoutTimer = self->_timeoutTimer;
   self->_timeoutTimer = v5;
 
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
-  dispatch_source_set_timer(self->_timeoutTimer, v7, 0xFFFFFFFFFFFFFFFFLL, (a3 / 10.0 * 1000000000.0));
+  v7 = dispatch_time(0, (timeout * 1000000000.0));
+  dispatch_source_set_timer(self->_timeoutTimer, v7, 0xFFFFFFFFFFFFFFFFLL, (timeout / 10.0 * 1000000000.0));
   v8 = self->_timeoutTimer;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
@@ -257,17 +257,17 @@ uint64_t __71__WBSDistributedNotificationObserver__scheduleTimeoutTimerWithTimeo
   }
 }
 
-- (void)_didReceiveNotification:(id)a3
+- (void)_didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__WBSDistributedNotificationObserver__didReceiveNotification___block_invoke;
   v7[3] = &unk_1E7FB6E30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 

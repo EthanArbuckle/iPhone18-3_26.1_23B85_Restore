@@ -1,34 +1,34 @@
 @interface RemoteNotificationsProperties.Availability.ManagedConfigurationObserver
 - (_TtCCC21UserNotificationsCore29RemoteNotificationsProperties12AvailabilityP33_4AD97FADDCB7378298ADDAABCB61570928ManagedConfigurationObserver)init;
-- (void)profileConnectionDidReceiveDefaultsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveDefaultsChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation RemoteNotificationsProperties.Availability.ManagedConfigurationObserver
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
-  v4 = self;
+  selfCopy = self;
   sub_1DA85915C();
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
-  v4 = self;
+  selfCopy = self;
   sub_1DA85915C();
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v4 = self;
+  selfCopy = self;
   sub_1DA85915C();
 }
 
-- (void)profileConnectionDidReceiveDefaultsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveDefaultsChangedNotification:(id)notification userInfo:(id)info
 {
-  v4 = self;
+  selfCopy = self;
   sub_1DA85915C();
 }
 

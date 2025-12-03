@@ -1,33 +1,33 @@
 @interface CHChannelFolder
 - (BOOL)_shouldDeleteDescendantsOnRemoval;
-- (BOOL)hasDescendant:(id)a3;
+- (BOOL)hasDescendant:(id)descendant;
 - (BOOL)hasDescendantWithFadeHandle;
 - (BOOL)hasModifiedDescendant;
 - (BOOL)hasTimeVaryingDescendant;
-- (BOOL)testFolderFlag:(unsigned int)a3;
-- (id)channelStateForDescendants:(BOOL)a3;
-- (id)childAtIndex:(unint64_t)a3;
-- (id)childWithChannelID:(unsigned int)a3;
+- (BOOL)testFolderFlag:(unsigned int)flag;
+- (id)channelStateForDescendants:(BOOL)descendants;
+- (id)childAtIndex:(unint64_t)index;
+- (id)childWithChannelID:(unsigned int)d;
 - (id)children;
-- (id)debugDescrptionWithIndentLevel:(unsigned int)a3;
-- (id)descendantAtPath:(id)a3;
+- (id)debugDescrptionWithIndentLevel:(unsigned int)level;
+- (id)descendantAtPath:(id)path;
 - (id)description;
-- (id)pathToDescendant:(id)a3;
-- (unint64_t)indexOfChild:(id)a3;
+- (id)pathToDescendant:(id)descendant;
+- (unint64_t)indexOfChild:(id)child;
 - (unsigned)_newChannelIdForChild;
 - (unsigned)numberOfChildren;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)dealloc;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)iterateDescendantsWithOptions:(unsigned int)a3 usingBlock:(id)a4;
-- (void)iterateDescendantsWithOptions:(unsigned int)a3 usingFunction:(void *)a4 contextInfo:(void *)a5;
-- (void)iterateDescendantsWithOptions:(unsigned int)a3 usingSelector:(SEL)a4 delegate:(id)a5 contextInfo:(void *)a6;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)iterateDescendantsWithOptions:(unsigned int)options usingBlock:(id)block;
+- (void)iterateDescendantsWithOptions:(unsigned int)options usingFunction:(void *)function contextInfo:(void *)info;
+- (void)iterateDescendantsWithOptions:(unsigned int)options usingSelector:(SEL)selector delegate:(id)delegate contextInfo:(void *)info;
 - (void)ozChannel;
 - (void)removeAllChildren;
-- (void)removeChild:(id)a3;
-- (void)resetFolderFlag:(unsigned int)a3;
-- (void)setFolderFlag:(unsigned int)a3;
-- (void)setFolderFlags:(unsigned int)a3;
+- (void)removeChild:(id)child;
+- (void)resetFolderFlag:(unsigned int)flag;
+- (void)setFolderFlag:(unsigned int)flag;
+- (void)setFolderFlags:(unsigned int)flags;
 @end
 
 @implementation CHChannelFolder
@@ -56,9 +56,9 @@
   return [v3 stringWithFormat:@"<%@: %p, oz=%p, name='%@', ID=%lu, #children=%lu>", NSStringFromClass(v4), self, self->super._pOZChannel, -[CHChannelBase name](self, "name"), -[CHChannelBase channelID](self, "channelID"), -[CHChannelFolder numberOfChildren](self, "numberOfChildren")];
 }
 
-- (id)debugDescrptionWithIndentLevel:(unsigned int)a3
+- (id)debugDescrptionWithIndentLevel:(unsigned int)level
 {
-  v15 = 2 * a3;
+  v15 = 2 * level;
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"%*s%@", v15, ", -[CHChannelFolder description](self, "description"")];
   objc_msgSend(v5, "appendString:", @"(");
   if (v6)
@@ -83,7 +83,7 @@
           goto LABEL_9;
         }
 
-        v12 = [(OZChannelBase *)v11 debugDescrptionWithIndentLevel:a3 + 1];
+        v12 = [(OZChannelBase *)v11 debugDescrptionWithIndentLevel:level + 1];
         v13 = 0;
 LABEL_10:
         [v5 appendFormat:@"\n%*s%@", v13, "", v12];
@@ -116,44 +116,44 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)testFolderFlag:(unsigned int)a3
+- (BOOL)testFolderFlag:(unsigned int)flag
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannelFolder::testFoldFlag(pOZChannel, a3);
+  return OZChannelFolder::testFoldFlag(pOZChannel, flag);
 }
 
-- (void)setFolderFlag:(unsigned int)a3
+- (void)setFolderFlag:(unsigned int)flag
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelFolder::setFoldFlag(pOZChannel, a3);
+  OZChannelFolder::setFoldFlag(pOZChannel, flag);
 }
 
-- (void)resetFolderFlag:(unsigned int)a3
+- (void)resetFolderFlag:(unsigned int)flag
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelFolder::resetFoldFlag(pOZChannel, a3);
+  OZChannelFolder::resetFoldFlag(pOZChannel, flag);
 }
 
-- (void)setFolderFlags:(unsigned int)a3
+- (void)setFolderFlags:(unsigned int)flags
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelFolder::setFoldFlags(pOZChannel, a3);
+  OZChannelFolder::setFoldFlags(pOZChannel, flags);
 }
 
 - (id)children
@@ -200,13 +200,13 @@ LABEL_11:
   return v3;
 }
 
-- (id)childAtIndex:(unint64_t)a3
+- (id)childAtIndex:(unint64_t)index
 {
 
   return CHChannelWrapperForOZChannel(v3, 0);
 }
 
-- (unint64_t)indexOfChild:(id)a3
+- (unint64_t)indexOfChild:(id)child
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
@@ -218,7 +218,7 @@ LABEL_11:
     v5 = 0;
   }
 
-  v6 = [a3 ozChannel];
+  ozChannel = [child ozChannel];
   v7 = v5[14];
   if (!v7)
   {
@@ -232,7 +232,7 @@ LABEL_11:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = v6;
+  v10 = ozChannel;
   result = 0;
   v12 = (v9 >> 3);
   while (*(v8 + 8 * result) != v10)
@@ -246,14 +246,14 @@ LABEL_11:
   return result;
 }
 
-- (id)childWithChannelID:(unsigned int)a3
+- (id)childWithChannelID:(unsigned int)d
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  result = OZChannelFolder::getDescendant(pOZChannel, a3);
+  result = OZChannelFolder::getDescendant(pOZChannel, d);
   if (result)
   {
 
@@ -263,20 +263,20 @@ LABEL_11:
   return result;
 }
 
-- (void)iterateDescendantsWithOptions:(unsigned int)a3 usingBlock:(id)a4
+- (void)iterateDescendantsWithOptions:(unsigned int)options usingBlock:(id)block
 {
-  v5 = *&a3;
+  v5 = *&options;
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  IterateDescendants(pOZChannel, v5, a4);
+  IterateDescendants(pOZChannel, v5, block);
 }
 
-- (void)iterateDescendantsWithOptions:(unsigned int)a3 usingFunction:(void *)a4 contextInfo:(void *)a5
+- (void)iterateDescendantsWithOptions:(unsigned int)options usingFunction:(void *)function contextInfo:(void *)info
 {
-  v7 = *&a3;
+  v7 = *&options;
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
@@ -286,14 +286,14 @@ LABEL_11:
   v9[1] = *"";
   v9[2] = __75__CHChannelFolder_iterateDescendantsWithOptions_usingFunction_contextInfo___block_invoke;
   v9[3] = &__block_descriptor_48_e23_B16__0__CHChannelBase_8l;
-  v9[4] = a4;
-  v9[5] = a5;
+  v9[4] = function;
+  v9[5] = info;
   IterateDescendants(pOZChannel, v7, v9);
 }
 
-- (void)iterateDescendantsWithOptions:(unsigned int)a3 usingSelector:(SEL)a4 delegate:(id)a5 contextInfo:(void *)a6
+- (void)iterateDescendantsWithOptions:(unsigned int)options usingSelector:(SEL)selector delegate:(id)delegate contextInfo:(void *)info
 {
-  v9 = *&a3;
+  v9 = *&options;
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
   {
@@ -303,9 +303,9 @@ LABEL_11:
   v11[1] = *"";
   v11[2] = __84__CHChannelFolder_iterateDescendantsWithOptions_usingSelector_delegate_contextInfo___block_invoke;
   v11[3] = &unk_279AA9A28;
-  v11[4] = a5;
-  v11[5] = a4;
-  v11[6] = a6;
+  v11[4] = delegate;
+  v11[5] = selector;
+  v11[6] = info;
   IterateDescendants(pOZChannel, v9, v11);
 }
 
@@ -323,14 +323,14 @@ LABEL_11:
 
   do
   {
-    v4 = [objc_opt_class() _newChannelId];
+    _newChannelId = [objc_opt_class() _newChannelId];
   }
 
-  while (OZChannelFolder::getDescendant(v3, v4));
-  return v4;
+  while (OZChannelFolder::getDescendant(v3, _newChannelId));
+  return _newChannelId;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
@@ -342,13 +342,13 @@ LABEL_11:
     v5 = 0;
   }
 
-  v6 = [a3 ozChannel];
-  FixupNewChild(v5, v6);
+  ozChannel = [child ozChannel];
+  FixupNewChild(v5, ozChannel);
 
-  OZChannelFolder::push_back(v5, v6);
+  OZChannelFolder::push_back(v5, ozChannel);
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
@@ -360,12 +360,12 @@ LABEL_11:
     v7 = 0;
   }
 
-  v8 = [a3 ozChannel];
-  FixupNewChild(v7, v8);
+  ozChannel = [child ozChannel];
+  FixupNewChild(v7, ozChannel);
   v9 = *(v7 + 14);
-  if (v9 && (v10 = *v9, a4 != ((*(*(v7 + 14) + 8) - v10) >> 3)))
+  if (v9 && (v10 = *v9, index != ((*(*(v7 + 14) + 8) - v10) >> 3)))
   {
-    v11 = *(v10 + 8 * a4);
+    v11 = *(v10 + 8 * index);
   }
 
   else
@@ -373,7 +373,7 @@ LABEL_11:
     v11 = 0;
   }
 
-  OZChannelFolder::insertDescendantBefore(v7, v11, v8);
+  OZChannelFolder::insertDescendantBefore(v7, v11, ozChannel);
 }
 
 - (BOOL)_shouldDeleteDescendantsOnRemoval
@@ -407,9 +407,9 @@ LABEL_11:
   return result;
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  if (a3)
+  if (child)
   {
     pOZChannel = self->super._pOZChannel;
     if (pOZChannel)
@@ -421,17 +421,17 @@ LABEL_11:
       v6 = 0;
     }
 
-    v7 = [a3 ozChannel];
+    ozChannel = [child ozChannel];
     if ([(CHChannelFolder *)self _shouldDeleteDescendantsOnRemoval])
     {
 
-      DeleteDescendant(v6, v7);
+      DeleteDescendant(v6, ozChannel);
     }
 
     else
     {
 
-      OZChannelFolder::removeDescendant(v6, v7);
+      OZChannelFolder::removeDescendant(v6, ozChannel);
     }
   }
 }
@@ -461,14 +461,14 @@ LABEL_11:
   }
 }
 
-- (id)channelStateForDescendants:(BOOL)a3
+- (id)channelStateForDescendants:(BOOL)descendants
 {
-  ChannelState = OZChannelBase::createChannelState(self->super._pOZChannel, 1, a3);
+  ChannelState = OZChannelBase::createChannelState(self->super._pOZChannel, 1, descendants);
 
   return ChannelState;
 }
 
-- (BOOL)hasDescendant:(id)a3
+- (BOOL)hasDescendant:(id)descendant
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
@@ -480,12 +480,12 @@ LABEL_11:
     v5 = 0;
   }
 
-  v6 = [a3 ozChannel];
+  ozChannel = [descendant ozChannel];
 
-  return OZChannelBase::isDescendantOf(v6, v5);
+  return OZChannelBase::isDescendantOf(ozChannel, v5);
 }
 
-- (id)pathToDescendant:(id)a3
+- (id)pathToDescendant:(id)descendant
 {
   pOZChannel = self->super._pOZChannel;
   if (pOZChannel)
@@ -497,7 +497,7 @@ LABEL_11:
     v5 = 0;
   }
 
-  OZChannelRef::OZChannelRef(v9, [a3 ozChannel], v5);
+  OZChannelRef::OZChannelRef(v9, [descendant ozChannel], v5);
   if (v10 >= 0)
   {
     v6 = v9;
@@ -513,10 +513,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)descendantAtPath:(id)a3
+- (id)descendantAtPath:(id)path
 {
   v9.var0 = 0;
-  PCString::set(&v9, a3);
+  PCString::set(&v9, path);
   OZChannelRef::OZChannelRef(v10, &v9);
   PCString::~PCString(&v9);
   pOZChannel = self->super._pOZChannel;

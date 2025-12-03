@@ -1,38 +1,38 @@
 @interface _MSStickerPackCollectionViewDataSource
-+ (int64_t)_stickerSizeFromString:(id)a3;
-- (_MSStickerPackCollectionViewDataSource)initWithStickerPackURL:(id)a3;
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4;
-- (void)_loadStickerPackWithURL:(id)a3;
++ (int64_t)_stickerSizeFromString:(id)string;
+- (_MSStickerPackCollectionViewDataSource)initWithStickerPackURL:(id)l;
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index;
+- (void)_loadStickerPackWithURL:(id)l;
 @end
 
 @implementation _MSStickerPackCollectionViewDataSource
 
-+ (int64_t)_stickerSizeFromString:(id)a3
++ (int64_t)_stickerSizeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MSStickerBrowserLayoutSparse"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MSStickerSizeLarge") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MSStickerSizeClassLarge"))
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"MSStickerBrowserLayoutSparse"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"MSStickerSizeLarge") & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"MSStickerSizeClassLarge"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MSStickerBrowserLayoutCondensed"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"MSStickerSizeSmall"))
+  else if ([stringCopy isEqualToString:@"MSStickerBrowserLayoutCondensed"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"MSStickerSizeSmall"))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"MSStickerSizeClassSmall"] ^ 1;
+    v4 = [stringCopy isEqualToString:@"MSStickerSizeClassSmall"] ^ 1;
   }
 
   return v4;
 }
 
-- (_MSStickerPackCollectionViewDataSource)initWithStickerPackURL:(id)a3
+- (_MSStickerPackCollectionViewDataSource)initWithStickerPackURL:(id)l
 {
-  v4 = a3;
-  NSLog(&cfstr_Initwithsticke.isa, v4);
-  if (v4 && ([MEMORY[0x1E696AC08] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "path"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, v7))
+  lCopy = l;
+  NSLog(&cfstr_Initwithsticke.isa, lCopy);
+  if (lCopy && ([MEMORY[0x1E696AC08] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(lCopy, "path"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, v7))
   {
     v13.receiver = self;
     v13.super_class = _MSStickerPackCollectionViewDataSource;
@@ -43,32 +43,32 @@
       stickers = v8->_stickers;
       v8->_stickers = v9;
 
-      [(_MSStickerPackCollectionViewDataSource *)v8 _loadStickerPackWithURL:v4];
+      [(_MSStickerPackCollectionViewDataSource *)v8 _loadStickerPackWithURL:lCopy];
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)_loadStickerPackWithURL:(id)a3
+- (void)_loadStickerPackWithURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleWithURL:v4];
-    v6 = [v4 path];
-    v24 = v4;
-    v7 = [v4 URLByDeletingPathExtension];
-    v30 = [v7 lastPathComponent];
+    v5 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
+    path = [lCopy path];
+    v24 = lCopy;
+    uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
     v8 = [v5 objectForInfoDictionaryKey:@"IMStickerPackLayout"];
     self->_stickerSize = [_MSStickerPackCollectionViewDataSource _stickerSizeFromString:v8];
@@ -84,7 +84,7 @@
       v29 = *v34;
       v28 = *MEMORY[0x1E69A8430];
       v27 = *MEMORY[0x1E69A8420];
-      v25 = v6;
+      v25 = path;
       do
       {
         for (i = 0; i != v31; ++i)
@@ -98,10 +98,10 @@
           v11 = [v10 objectForKey:v28];
           v12 = [v11 stringByAppendingString:@".accessibilityLabel"];
           v13 = [v10 objectForKey:v27];
-          v14 = [v5 localizedStringForKey:v12 value:v13 table:v30];
+          v14 = [v5 localizedStringForKey:v12 value:v13 table:lastPathComponent];
 
           v15 = MEMORY[0x1E695DFF8];
-          v16 = [v6 stringByAppendingPathComponent:v11];
+          v16 = [path stringByAppendingPathComponent:v11];
           v17 = [v15 fileURLWithPath:v16];
 
           v18 = [MSSticker alloc];
@@ -122,7 +122,7 @@
 
             self = v22;
             v5 = v21;
-            v6 = v25;
+            path = v25;
           }
         }
 
@@ -132,14 +132,14 @@
       while (v31);
     }
 
-    v4 = v24;
+    lCopy = v24;
   }
 }
 
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index
 {
-  v6 = a3;
-  if (a4 < 0 || [(NSMutableArray *)self->_stickers count]<= a4)
+  viewCopy = view;
+  if (index < 0 || [(NSMutableArray *)self->_stickers count]<= index)
   {
     NSLog(&cfstr_WarningSticker.isa);
     v7 = 0;
@@ -147,7 +147,7 @@
 
   else
   {
-    v7 = [(NSMutableArray *)self->_stickers objectAtIndex:a4];
+    v7 = [(NSMutableArray *)self->_stickers objectAtIndex:index];
   }
 
   return v7;

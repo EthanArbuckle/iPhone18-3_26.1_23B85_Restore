@@ -1,22 +1,22 @@
 @interface FBSProcessorGPU
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
 @end
 
 @implementation FBSProcessorGPU
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"fullROI", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"fullROI", "CGRectValue"}];
   v10 = v9;
   v12 = v11;
-  v13 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputMaxNumVertices", "intValue"}];
-  v14 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputSigmaS", "intValue"}];
-  v15 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputSigmaRLuma", "intValue"}];
-  v16 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputSigmaRChroma", "intValue"}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputLambda", "floatValue"}];
+  v13 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputMaxNumVertices", "intValue"}];
+  v14 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputSigmaS", "intValue"}];
+  v15 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputSigmaRLuma", "intValue"}];
+  v16 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputSigmaRChroma", "intValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputLambda", "floatValue"}];
   v18 = v17;
-  v19 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputMaxNumIterations", "intValue"}];
+  v19 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputMaxNumIterations", "intValue"}];
   if (v13 <= 1000)
   {
     +[FBSProcessorGPU processWithInputs:arguments:output:error:];
@@ -48,14 +48,14 @@
   }
 
   v56 = v19;
-  v20 = [a3 objectAtIndexedSubscript:0];
-  v55 = [a3 objectAtIndexedSubscript:1];
-  v21 = [a3 objectAtIndexedSubscript:2];
-  v22 = -[CIBilateralSolverGPU initWithWidth:height:maxVertices:commandBuffer:]([CIBilateralSolverGPU alloc], "initWithWidth:height:maxVertices:commandBuffer:", v10, v12, v13, [a5 metalCommandBuffer]);
+  v20 = [inputs objectAtIndexedSubscript:0];
+  v55 = [inputs objectAtIndexedSubscript:1];
+  v21 = [inputs objectAtIndexedSubscript:2];
+  v22 = -[CIBilateralSolverGPU initWithWidth:height:maxVertices:commandBuffer:]([CIBilateralSolverGPU alloc], "initWithWidth:height:maxVertices:commandBuffer:", v10, v12, v13, [output metalCommandBuffer]);
   v23 = [[CIBilateralGridHash alloc] initWithWidth:v10 height:v12 maxHashTableSize:v13];
-  v24 = [v20 surface];
+  surface = [v20 surface];
   [v20 region];
-  if ([CIBilateralGridHash createWithSurface:v23 region:"createWithSurface:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:" cropRect:v24 sigma_s:v14 sigma_r_luma:v15 sigma_r_chroma:v16])
+  if ([CIBilateralGridHash createWithSurface:v23 region:"createWithSurface:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:" cropRect:surface sigma_s:v14 sigma_r_luma:v15 sigma_r_chroma:v16])
   {
     v25 = ci_logger_performance();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -66,12 +66,12 @@
     }
   }
 
-  v26 = [v20 surface];
-  v27 = [objc_msgSend(a5 "metalCommandBuffer")];
-  Width = IOSurfaceGetWidth(v26);
-  v29 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:70 width:Width height:IOSurfaceGetHeight(v26) mipmapped:0];
+  surface2 = [v20 surface];
+  v27 = [objc_msgSend(output "metalCommandBuffer")];
+  Width = IOSurfaceGetWidth(surface2);
+  v29 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:70 width:Width height:IOSurfaceGetHeight(surface2) mipmapped:0];
   [v29 setUsage:23];
-  v30 = [v27 newTextureWithDescriptor:v29 iosurface:v26 plane:0];
+  v30 = [v27 newTextureWithDescriptor:v29 iosurface:surface2 plane:0];
   [v20 region];
   v53 = v31;
   [v20 region];
@@ -90,9 +90,9 @@
   v38.f64[0] = v49;
   v38.f64[1] = v39;
   v50 = vmovn_s64(vcvtq_s64_f64(vnegq_f64(v38)));
-  [a5 region];
+  [output region];
   v48 = v40;
-  [a5 region];
+  [output region];
   v41.f64[0] = v48;
   v41.f64[1] = v42;
   *&v41.f64[0] = vmovn_s64(vcvtq_s64_f64(vnegq_f64(v41)));
@@ -104,11 +104,11 @@
   WORD2(v58) = v50.i16[0];
   v60 = WORD2(v41.f64[0]);
   v59 = LOWORD(v41.f64[0]);
-  v43 = [v21 metalTexture];
-  v44 = [v55 metalTexture];
-  v45 = [a5 metalTexture];
+  metalTexture = [v21 metalTexture];
+  metalTexture2 = [v55 metalTexture];
+  metalTexture3 = [output metalTexture];
   *&v46 = v18;
-  [(CIBilateralSolverGPU *)v22 doSolveWithBilateralGridhash:v23 reference:v30 disparity:v43 confidence:v44 output:v45 lambda:v56 maxIterations:v46 offsets:buf];
+  [(CIBilateralSolverGPU *)v22 doSolveWithBilateralGridhash:v23 reference:v30 disparity:metalTexture confidence:metalTexture2 output:metalTexture3 lambda:v56 maxIterations:v46 offsets:buf];
 
   return 1;
 }

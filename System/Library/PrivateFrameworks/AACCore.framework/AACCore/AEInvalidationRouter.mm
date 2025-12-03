@@ -1,24 +1,24 @@
 @interface AEInvalidationRouter
-- (AEInvalidationRouter)initWithQueue:(id)a3;
+- (AEInvalidationRouter)initWithQueue:(id)queue;
 - (id)invalidationHandler;
-- (void)fetchCapturedErrorWithCompletion:(id)a3;
+- (void)fetchCapturedErrorWithCompletion:(id)completion;
 - (void)forwardError;
-- (void)setRouterDelegate:(id)a3;
-- (void)setRouterMode:(int64_t)a3;
+- (void)setRouterDelegate:(id)delegate;
+- (void)setRouterMode:(int64_t)mode;
 @end
 
 @implementation AEInvalidationRouter
 
-- (AEInvalidationRouter)initWithQueue:(id)a3
+- (AEInvalidationRouter)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = AEInvalidationRouter;
   v6 = [(AEInvalidationRouter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_mode = 0;
   }
 
@@ -61,7 +61,7 @@ void __43__AEInvalidationRouter_invalidationHandler__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setRouterMode:(int64_t)a3
+- (void)setRouterMode:(int64_t)mode
 {
   objc_initWeak(&location, self);
   if (self)
@@ -75,7 +75,7 @@ void __43__AEInvalidationRouter_invalidationHandler__block_invoke_2(uint64_t a1)
   v12 = &unk_278BB6F38;
   v8 = v7;
   objc_copyWeak((v3 + 32), &location);
-  v13 = a3;
+  modeCopy = mode;
   dispatch_async(v8, block);
 
   objc_destroyWeak((v3 + 32));
@@ -96,25 +96,25 @@ void __38__AEInvalidationRouter_setRouterMode___block_invoke(uint64_t a1)
 
 - (void)forwardError
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    if (WeakRetained && *(a1 + 32) == 1)
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    if (WeakRetained && *(self + 32) == 1)
     {
       v5 = WeakRetained;
-      v3 = *(a1 + 40);
+      v3 = *(self + 40);
       if (v3)
       {
-        v4 = *(a1 + 9);
+        v4 = *(self + 9);
 
         if (v4)
         {
           return;
         }
 
-        *(a1 + 9) = 1;
-        v5 = objc_loadWeakRetained((a1 + 24));
-        [v5 invalidationRouter:a1 didReceiveInvalidationError:*(a1 + 40)];
+        *(self + 9) = 1;
+        v5 = objc_loadWeakRetained((self + 24));
+        [v5 invalidationRouter:self didReceiveInvalidationError:*(self + 40)];
       }
 
       WeakRetained = v5;
@@ -122,9 +122,9 @@ void __38__AEInvalidationRouter_setRouterMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setRouterDelegate:(id)a3
+- (void)setRouterDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   if (self)
   {
@@ -137,8 +137,8 @@ void __38__AEInvalidationRouter_setRouterMode___block_invoke(uint64_t a1)
   v13 = &unk_278BB6F60;
   v8 = v7;
   objc_copyWeak((v3 + 40), &location);
-  v14 = v5;
-  v9 = v5;
+  v14 = delegateCopy;
+  v9 = delegateCopy;
   dispatch_async(v8, block);
 
   objc_destroyWeak((v3 + 40));
@@ -158,9 +158,9 @@ void __42__AEInvalidationRouter_setRouterDelegate___block_invoke(uint64_t a1)
   [(AEInvalidationRouter *)WeakRetained forwardError];
 }
 
-- (void)fetchCapturedErrorWithCompletion:(id)a3
+- (void)fetchCapturedErrorWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (self)
   {
@@ -171,11 +171,11 @@ void __42__AEInvalidationRouter_setRouterDelegate___block_invoke(uint64_t a1)
   v9 = 3221225472;
   v10 = __57__AEInvalidationRouter_fetchCapturedErrorWithCompletion___block_invoke;
   v11 = &unk_278BB6F88;
-  v12 = v5;
-  v6 = v5;
-  v7 = self;
+  v12 = completionCopy;
+  v6 = completionCopy;
+  selfCopy = self;
   objc_copyWeak((v3 + 40), &location);
-  dispatch_async(&v7->super, block);
+  dispatch_async(&selfCopy->super, block);
 
   objc_destroyWeak((v3 + 40));
   objc_destroyWeak(&location);

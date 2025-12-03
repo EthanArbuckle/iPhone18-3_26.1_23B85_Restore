@@ -1,23 +1,23 @@
 @interface _MFInvocationQOSOverride
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeOverride;
-- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)a3 desiredQoS:(unsigned int)a4 lowPriority:(BOOL)a5;
-- (void)applyOverrideWhileForeground:(BOOL)a3;
+- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)pthread desiredQoS:(unsigned int)s lowPriority:(BOOL)priority;
+- (void)applyOverrideWhileForeground:(BOOL)foreground;
 - (void)dealloc;
 @end
 
 @implementation _MFInvocationQOSOverride
 
-- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)a3 desiredQoS:(unsigned int)a4 lowPriority:(BOOL)a5
+- (_MFInvocationQOSOverride)initWithPthread:(_opaque_pthread_t *)pthread desiredQoS:(unsigned int)s lowPriority:(BOOL)priority
 {
   v9.receiver = self;
   v9.super_class = _MFInvocationQOSOverride;
   result = [(_MFInvocationQOSOverride *)&v9 init];
   if (result)
   {
-    result->_pthread = a3;
-    result->_desiredQoS = a4;
-    result->_lowPriority = a5;
+    result->_pthread = pthread;
+    result->_desiredQoS = s;
+    result->_lowPriority = priority;
   }
 
   return result;
@@ -31,9 +31,9 @@
   [(_MFInvocationQOSOverride *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -44,19 +44,19 @@
     return 0;
   }
 
-  v5 = [a3 pthread];
-  return v5 == [(_MFInvocationQOSOverride *)self pthread];
+  pthread = [equal pthread];
+  return pthread == [(_MFInvocationQOSOverride *)self pthread];
 }
 
-- (void)applyOverrideWhileForeground:(BOOL)a3
+- (void)applyOverrideWhileForeground:(BOOL)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   if (self->_override)
   {
     goto LABEL_3;
   }
 
-  if (![(_MFInvocationQOSOverride *)self isLowPriority]|| v3)
+  if (![(_MFInvocationQOSOverride *)self isLowPriority]|| foregroundCopy)
   {
     self->_override = pthread_override_qos_class_start_np([(_MFInvocationQOSOverride *)self pthread], [(_MFInvocationQOSOverride *)self desiredQoS], -12);
     return;
@@ -65,7 +65,7 @@
   if (self->_override)
   {
 LABEL_3:
-    if ([(_MFInvocationQOSOverride *)self isLowPriority]&& !v3)
+    if ([(_MFInvocationQOSOverride *)self isLowPriority]&& !foregroundCopy)
     {
 
       [(_MFInvocationQOSOverride *)self removeOverride];

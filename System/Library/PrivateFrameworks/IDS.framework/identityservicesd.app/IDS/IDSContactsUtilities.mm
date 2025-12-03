@@ -1,9 +1,9 @@
 @interface IDSContactsUtilities
-- (BOOL)doesContactMatchingURIExists:(id)a3;
+- (BOOL)doesContactMatchingURIExists:(id)exists;
 - (IDSContactsUtilities)init;
-- (IDSContactsUtilities)initWithContactStore:(id)a3;
-- (id)nameForContactMatchingURI:(id)a3;
-- (id)predicateForURI:(id)a3;
+- (IDSContactsUtilities)initWithContactStore:(id)store;
+- (id)nameForContactMatchingURI:(id)i;
+- (id)predicateForURI:(id)i;
 - (int64_t)countOfHandles;
 @end
 
@@ -35,31 +35,31 @@
   return v6;
 }
 
-- (IDSContactsUtilities)initWithContactStore:(id)a3
+- (IDSContactsUtilities)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = IDSContactsUtilities;
   v6 = [(IDSContactsUtilities *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)predicateForURI:(id)a3
+- (id)predicateForURI:(id)i
 {
-  v3 = a3;
-  v4 = [v3 FZIDType];
-  if (v4)
+  iCopy = i;
+  fZIDType = [iCopy FZIDType];
+  if (fZIDType)
   {
-    if (v4 == 1)
+    if (fZIDType == 1)
     {
-      v5 = [v3 unprefixedURI];
-      v6 = [sub_1004D62C0() predicateForContactsMatchingEmailAddress:v5];
+      unprefixedURI = [iCopy unprefixedURI];
+      v6 = [sub_1004D62C0() predicateForContactsMatchingEmailAddress:unprefixedURI];
     }
 
     else
@@ -88,8 +88,8 @@
 
     v8 = v7;
     _Block_object_dispose(&v13, 8);
-    v9 = [v3 unprefixedURI];
-    v10 = [v7 phoneNumberWithStringValue:v9];
+    unprefixedURI2 = [iCopy unprefixedURI];
+    v10 = [v7 phoneNumberWithStringValue:unprefixedURI2];
 
     v6 = [sub_1004D62C0() predicateForContactsMatchingPhoneNumber:v10];
   }
@@ -97,10 +97,10 @@
   return v6;
 }
 
-- (id)nameForContactMatchingURI:(id)a3
+- (id)nameForContactMatchingURI:(id)i
 {
-  v4 = a3;
-  v5 = [(IDSContactsUtilities *)self predicateForURI:v4];
+  iCopy = i;
+  v5 = [(IDSContactsUtilities *)self predicateForURI:iCopy];
   if (v5)
   {
     *&v39 = 0;
@@ -193,7 +193,7 @@
           *buf = 138412802;
           *&buf[4] = v24;
           *&buf[12] = 2112;
-          *&buf[14] = v4;
+          *&buf[14] = iCopy;
           *&buf[22] = 2112;
           v45 = v22;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Found contact %@, for URI %@ with error %@", buf, 0x20u);
@@ -232,7 +232,7 @@
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(v39) = 138412290;
-    *(&v39 + 4) = v4;
+    *(&v39 + 4) = iCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "No predicate found for URI %@", &v39, 0xCu);
   }
 
@@ -242,10 +242,10 @@ LABEL_19:
   return v25;
 }
 
-- (BOOL)doesContactMatchingURIExists:(id)a3
+- (BOOL)doesContactMatchingURIExists:(id)exists
 {
-  v4 = a3;
-  v5 = [(IDSContactsUtilities *)self predicateForURI:v4];
+  existsCopy = exists;
+  v5 = [(IDSContactsUtilities *)self predicateForURI:existsCopy];
   if (v5)
   {
     *&v28 = 0;
@@ -288,7 +288,7 @@ LABEL_19:
       *buf = 138412802;
       v22 = v15;
       v23 = 2112;
-      v24 = v4;
+      v24 = existsCopy;
       v25 = 2112;
       v26 = v13;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Found contact %@, for URI %@ with error %@", buf, 0x20u);
@@ -304,7 +304,7 @@ LABEL_19:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v28) = 138412290;
-      *(&v28 + 4) = v4;
+      *(&v28 + 4) = existsCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "No predicate found for URI %@", &v28, 0xCu);
     }
 

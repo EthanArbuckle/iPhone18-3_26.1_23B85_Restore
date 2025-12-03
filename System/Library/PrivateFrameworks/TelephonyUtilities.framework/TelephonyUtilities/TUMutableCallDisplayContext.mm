@@ -1,209 +1,209 @@
 @interface TUMutableCallDisplayContext
-- (void)mergeValuesFromDisplayContext:(id)a3;
+- (void)mergeValuesFromDisplayContext:(id)context;
 @end
 
 @implementation TUMutableCallDisplayContext
 
-- (void)mergeValuesFromDisplayContext:(id)a3
+- (void)mergeValuesFromDisplayContext:(id)context
 {
-  v40 = a3;
-  v4 = [(TUCallDisplayContext *)self name];
+  contextCopy = context;
+  name = [(TUCallDisplayContext *)self name];
   v5 = TUBundle();
   v6 = [v5 localizedStringForKey:@"UNKNOWN" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-  v7 = [v4 isEqualToString:v6] == 0;
-  v8 = v40;
+  v7 = [name isEqualToString:v6] == 0;
+  selfCopy = contextCopy;
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  v9 = [(TUCallDisplayContext *)v8 name];
-  [(TUCallDisplayContext *)self setName:v9];
+  name2 = [(TUCallDisplayContext *)selfCopy name];
+  [(TUCallDisplayContext *)self setName:name2];
 
-  v10 = [(TUCallDisplayContext *)self personNameComponents];
-  if (v10)
+  personNameComponents = [(TUCallDisplayContext *)self personNameComponents];
+  if (personNameComponents)
   {
-    [(TUCallDisplayContext *)self setPersonNameComponents:v10];
-  }
-
-  else
-  {
-    v11 = [(TUCallDisplayContext *)v40 personNameComponents];
-    [(TUCallDisplayContext *)self setPersonNameComponents:v11];
-  }
-
-  v12 = [(TUCallDisplayContext *)self suggestedName];
-  if (v12)
-  {
-    [(TUCallDisplayContext *)self setSuggestedName:v12];
+    [(TUCallDisplayContext *)self setPersonNameComponents:personNameComponents];
   }
 
   else
   {
-    v13 = [(TUCallDisplayContext *)v40 suggestedName];
-    [(TUCallDisplayContext *)self setSuggestedName:v13];
+    personNameComponents2 = [(TUCallDisplayContext *)contextCopy personNameComponents];
+    [(TUCallDisplayContext *)self setPersonNameComponents:personNameComponents2];
   }
 
-  v14 = [(TUCallDisplayContext *)self label];
-  if (v14)
+  suggestedName = [(TUCallDisplayContext *)self suggestedName];
+  if (suggestedName)
   {
-    [(TUCallDisplayContext *)self setLabel:v14];
-  }
-
-  else
-  {
-    v15 = [(TUCallDisplayContext *)v40 label];
-    [(TUCallDisplayContext *)self setLabel:v15];
-  }
-
-  v16 = [(TUCallDisplayContext *)self companyName];
-  if (v16)
-  {
-    [(TUCallDisplayContext *)self setCompanyName:v16];
+    [(TUCallDisplayContext *)self setSuggestedName:suggestedName];
   }
 
   else
   {
-    v17 = [(TUCallDisplayContext *)v40 companyName];
-    [(TUCallDisplayContext *)self setCompanyName:v17];
+    suggestedName2 = [(TUCallDisplayContext *)contextCopy suggestedName];
+    [(TUCallDisplayContext *)self setSuggestedName:suggestedName2];
   }
 
-  v18 = [(TUCallDisplayContext *)self companyDepartment];
-  if (v18)
+  label = [(TUCallDisplayContext *)self label];
+  if (label)
   {
-    [(TUCallDisplayContext *)self setCompanyDepartment:v18];
-  }
-
-  else
-  {
-    v19 = [(TUCallDisplayContext *)v40 companyDepartment];
-    [(TUCallDisplayContext *)self setCompanyDepartment:v19];
-  }
-
-  v20 = [(TUCallDisplayContext *)self companyLogoURL];
-  if (v20)
-  {
-    [(TUCallDisplayContext *)self setCompanyLogoURL:v20];
+    [(TUCallDisplayContext *)self setLabel:label];
   }
 
   else
   {
-    v21 = [(TUCallDisplayContext *)v40 companyLogoURL];
-    [(TUCallDisplayContext *)self setCompanyLogoURL:v21];
+    label2 = [(TUCallDisplayContext *)contextCopy label];
+    [(TUCallDisplayContext *)self setLabel:label2];
   }
 
-  v22 = [(TUCallDisplayContext *)self contactName];
-  if (v22)
+  companyName = [(TUCallDisplayContext *)self companyName];
+  if (companyName)
   {
-    [(TUCallDisplayContext *)self setContactName:v22];
-  }
-
-  else
-  {
-    v23 = [(TUCallDisplayContext *)v40 contactName];
-    [(TUCallDisplayContext *)self setContactName:v23];
-  }
-
-  v24 = [(TUCallDisplayContext *)self contactLabel];
-  if (v24)
-  {
-    [(TUCallDisplayContext *)self setContactLabel:v24];
+    [(TUCallDisplayContext *)self setCompanyName:companyName];
   }
 
   else
   {
-    v25 = [(TUCallDisplayContext *)v40 contactLabel];
-    [(TUCallDisplayContext *)self setContactLabel:v25];
+    companyName2 = [(TUCallDisplayContext *)contextCopy companyName];
+    [(TUCallDisplayContext *)self setCompanyName:companyName2];
   }
 
-  v26 = [(TUCallDisplayContext *)self mapName];
-  if (v26)
+  companyDepartment = [(TUCallDisplayContext *)self companyDepartment];
+  if (companyDepartment)
   {
-    [(TUCallDisplayContext *)self setMapName:v26];
-  }
-
-  else
-  {
-    v27 = [(TUCallDisplayContext *)v40 mapName];
-    [(TUCallDisplayContext *)self setMapName:v27];
-  }
-
-  v28 = [(TUCallDisplayContext *)self location];
-  if (v28)
-  {
-    [(TUCallDisplayContext *)self setLocation:v28];
+    [(TUCallDisplayContext *)self setCompanyDepartment:companyDepartment];
   }
 
   else
   {
-    v29 = [(TUCallDisplayContext *)v40 location];
-    [(TUCallDisplayContext *)self setLocation:v29];
+    companyDepartment2 = [(TUCallDisplayContext *)contextCopy companyDepartment];
+    [(TUCallDisplayContext *)self setCompanyDepartment:companyDepartment2];
   }
 
-  v30 = [(TUCallDisplayContext *)self callDirectoryLabel];
-  if (v30)
+  companyLogoURL = [(TUCallDisplayContext *)self companyLogoURL];
+  if (companyLogoURL)
   {
-    [(TUCallDisplayContext *)self setCallDirectoryLabel:v30];
-  }
-
-  else
-  {
-    v31 = [(TUCallDisplayContext *)v40 callDirectoryLabel];
-    [(TUCallDisplayContext *)self setCallDirectoryLabel:v31];
-  }
-
-  v32 = [(TUCallDisplayContext *)self callDirectoryLocalizedExtensionContainingAppName];
-  if (v32)
-  {
-    [(TUCallDisplayContext *)self setCallDirectoryLocalizedExtensionContainingAppName:v32];
+    [(TUCallDisplayContext *)self setCompanyLogoURL:companyLogoURL];
   }
 
   else
   {
-    v33 = [(TUCallDisplayContext *)v40 callDirectoryLocalizedExtensionContainingAppName];
-    [(TUCallDisplayContext *)self setCallDirectoryLocalizedExtensionContainingAppName:v33];
+    companyLogoURL2 = [(TUCallDisplayContext *)contextCopy companyLogoURL];
+    [(TUCallDisplayContext *)self setCompanyLogoURL:companyLogoURL2];
   }
 
-  v34 = [(TUCallDisplayContext *)self contactIdentifiers];
-  if (v34)
+  contactName = [(TUCallDisplayContext *)self contactName];
+  if (contactName)
   {
-    [(TUCallDisplayContext *)self setContactIdentifiers:v34];
-  }
-
-  else
-  {
-    v35 = [(TUCallDisplayContext *)v40 contactIdentifiers];
-    [(TUCallDisplayContext *)self setContactIdentifiers:v35];
-  }
-
-  v36 = [(TUCallDisplayContext *)self callDirectoryExtensionIdentifier];
-  if (v36)
-  {
-    [(TUCallDisplayContext *)self setCallDirectoryExtensionIdentifier:v36];
+    [(TUCallDisplayContext *)self setContactName:contactName];
   }
 
   else
   {
-    v37 = [(TUCallDisplayContext *)v40 callDirectoryExtensionIdentifier];
-    [(TUCallDisplayContext *)self setCallDirectoryExtensionIdentifier:v37];
+    contactName2 = [(TUCallDisplayContext *)contextCopy contactName];
+    [(TUCallDisplayContext *)self setContactName:contactName2];
+  }
+
+  contactLabel = [(TUCallDisplayContext *)self contactLabel];
+  if (contactLabel)
+  {
+    [(TUCallDisplayContext *)self setContactLabel:contactLabel];
+  }
+
+  else
+  {
+    contactLabel2 = [(TUCallDisplayContext *)contextCopy contactLabel];
+    [(TUCallDisplayContext *)self setContactLabel:contactLabel2];
+  }
+
+  mapName = [(TUCallDisplayContext *)self mapName];
+  if (mapName)
+  {
+    [(TUCallDisplayContext *)self setMapName:mapName];
+  }
+
+  else
+  {
+    mapName2 = [(TUCallDisplayContext *)contextCopy mapName];
+    [(TUCallDisplayContext *)self setMapName:mapName2];
+  }
+
+  location = [(TUCallDisplayContext *)self location];
+  if (location)
+  {
+    [(TUCallDisplayContext *)self setLocation:location];
+  }
+
+  else
+  {
+    location2 = [(TUCallDisplayContext *)contextCopy location];
+    [(TUCallDisplayContext *)self setLocation:location2];
+  }
+
+  callDirectoryLabel = [(TUCallDisplayContext *)self callDirectoryLabel];
+  if (callDirectoryLabel)
+  {
+    [(TUCallDisplayContext *)self setCallDirectoryLabel:callDirectoryLabel];
+  }
+
+  else
+  {
+    callDirectoryLabel2 = [(TUCallDisplayContext *)contextCopy callDirectoryLabel];
+    [(TUCallDisplayContext *)self setCallDirectoryLabel:callDirectoryLabel2];
+  }
+
+  callDirectoryLocalizedExtensionContainingAppName = [(TUCallDisplayContext *)self callDirectoryLocalizedExtensionContainingAppName];
+  if (callDirectoryLocalizedExtensionContainingAppName)
+  {
+    [(TUCallDisplayContext *)self setCallDirectoryLocalizedExtensionContainingAppName:callDirectoryLocalizedExtensionContainingAppName];
+  }
+
+  else
+  {
+    callDirectoryLocalizedExtensionContainingAppName2 = [(TUCallDisplayContext *)contextCopy callDirectoryLocalizedExtensionContainingAppName];
+    [(TUCallDisplayContext *)self setCallDirectoryLocalizedExtensionContainingAppName:callDirectoryLocalizedExtensionContainingAppName2];
+  }
+
+  contactIdentifiers = [(TUCallDisplayContext *)self contactIdentifiers];
+  if (contactIdentifiers)
+  {
+    [(TUCallDisplayContext *)self setContactIdentifiers:contactIdentifiers];
+  }
+
+  else
+  {
+    contactIdentifiers2 = [(TUCallDisplayContext *)contextCopy contactIdentifiers];
+    [(TUCallDisplayContext *)self setContactIdentifiers:contactIdentifiers2];
+  }
+
+  callDirectoryExtensionIdentifier = [(TUCallDisplayContext *)self callDirectoryExtensionIdentifier];
+  if (callDirectoryExtensionIdentifier)
+  {
+    [(TUCallDisplayContext *)self setCallDirectoryExtensionIdentifier:callDirectoryExtensionIdentifier];
+  }
+
+  else
+  {
+    callDirectoryExtensionIdentifier2 = [(TUCallDisplayContext *)contextCopy callDirectoryExtensionIdentifier];
+    [(TUCallDisplayContext *)self setCallDirectoryExtensionIdentifier:callDirectoryExtensionIdentifier2];
   }
 
   v7 = [(TUCallDisplayContext *)self callDirectoryIdentityType]== 0;
-  v38 = v40;
+  selfCopy2 = contextCopy;
   if (!v7)
   {
-    v38 = self;
+    selfCopy2 = self;
   }
 
-  [(TUCallDisplayContext *)self setCallDirectoryIdentityType:[(TUCallDisplayContext *)v38 callDirectoryIdentityType]];
+  [(TUCallDisplayContext *)self setCallDirectoryIdentityType:[(TUCallDisplayContext *)selfCopy2 callDirectoryIdentityType]];
   v7 = [(TUCallDisplayContext *)self legacyAddressBookIdentifier]== -1;
-  v39 = v40;
+  selfCopy3 = contextCopy;
   if (!v7)
   {
-    v39 = self;
+    selfCopy3 = self;
   }
 
-  [(TUCallDisplayContext *)self setLegacyAddressBookIdentifier:[(TUCallDisplayContext *)v39 legacyAddressBookIdentifier]];
+  [(TUCallDisplayContext *)self setLegacyAddressBookIdentifier:[(TUCallDisplayContext *)selfCopy3 legacyAddressBookIdentifier]];
 }
 
 @end

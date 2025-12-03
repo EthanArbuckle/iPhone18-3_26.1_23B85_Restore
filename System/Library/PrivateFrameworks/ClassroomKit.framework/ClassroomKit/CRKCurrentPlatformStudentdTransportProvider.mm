@@ -13,9 +13,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CRKCurrentPlatformStudentdTransportProvider *)v2 makeProviderForCurrentPlatform];
+    makeProviderForCurrentPlatform = [(CRKCurrentPlatformStudentdTransportProvider *)v2 makeProviderForCurrentPlatform];
     mBaseProvider = v3->mBaseProvider;
-    v3->mBaseProvider = v4;
+    v3->mBaseProvider = makeProviderForCurrentPlatform;
   }
 
   return v3;

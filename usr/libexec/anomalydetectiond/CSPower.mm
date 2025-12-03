@@ -1,7 +1,7 @@
 @interface CSPower
 + (CSPower)sharedInstance;
 - (CSPower)init;
-- (void)createPowerAssertion:(id)a3;
+- (void)createPowerAssertion:(id)assertion;
 - (void)releasePowerAssertion;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1003522C0;
   block[3] = &unk_100423460;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100458980 != -1)
   {
     dispatch_once(&qword_100458980, block);
@@ -44,13 +44,13 @@
   return v3;
 }
 
-- (void)createPowerAssertion:(id)a3
+- (void)createPowerAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(CSPower *)self isAssertionActive];
+  isAssertionActive = [(CSPower *)self isAssertionActive];
   refCount = self->_refCount;
-  if (!v5)
+  if (!isAssertionActive)
   {
     if (refCount)
     {
@@ -72,7 +72,7 @@
     }
 
     v24[0] = @"PreventUserIdleSystemSleep";
-    v11 = [NSString stringWithFormat:@"%@(%@)", @"com.apple.anomalydetectiond.PowerAssertion", v4, @"AssertType", @"AssertName"];
+    v11 = [NSString stringWithFormat:@"%@(%@)", @"com.apple.anomalydetectiond.PowerAssertion", assertionCopy, @"AssertType", @"AssertName"];
     v24[1] = v11;
     v24[2] = &off_10043F408;
     v23[2] = @"TimeoutSeconds";
@@ -114,14 +114,14 @@
       if (os_log_type_enabled(qword_1004568C0, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v26[0] = v4;
+        v26[0] = assertionCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Successfully created new power assertion for %@", buf, 0xCu);
       }
 
       if (!self->_osTransaction)
       {
-        v20 = v4;
-        [v4 UTF8String];
+        v20 = assertionCopy;
+        [assertionCopy UTF8String];
         v21 = os_transaction_create();
         osTransaction = self->_osTransaction;
         self->_osTransaction = v21;
@@ -166,7 +166,7 @@ LABEL_19:
     *buf = 67109378;
     LODWORD(v26[0]) = v8;
     WORD2(v26[0]) = 2112;
-    *(v26 + 6) = v4;
+    *(v26 + 6) = assertionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Power assertion ref increased to %d for %@", buf, 0x12u);
   }
 

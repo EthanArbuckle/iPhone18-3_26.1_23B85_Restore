@@ -1,47 +1,47 @@
 @interface AIAudiogramIngestionEngine
 - (AIAudiogramIngestionEngine)init;
-- (AIAudiogramIngestionEngine)initWithDelegate:(id)a3;
+- (AIAudiogramIngestionEngine)initWithDelegate:(id)delegate;
 - (AIAudiogramIngestionEngineDelegate)delegate;
-- (BOOL)_isValidObject:(id)a3 toObject:(id)a4 withValueDifference:(double)a5 stepDistance:(double)a6 forAxis:(unint64_t)a7;
+- (BOOL)_isValidObject:(id)object toObject:(id)toObject withValueDifference:(double)difference stepDistance:(double)distance forAxis:(unint64_t)axis;
 - (BOOL)isAvailable;
-- (CGRect)_adjustedRectForVisionCoordinateSpace:(CGRect)a3 inImage:(id)a4;
-- (CGRect)_shrinkRect:(CGRect)a3 width:(double)a4 height:(double)a5 insideBounds:(CGSize)a6;
-- (double)_meanFromNumbers:(id)a3;
-- (double)_stddevFromNumbers:(id)a3;
-- (double)_zScoreFromNumber:(double)a3 mean:(double)a4 stddev:(double)a5;
-- (id)_audiogramFromAudiogramPoints:(id)a3;
-- (id)_audiogramFromImagesV2:(id)a3;
-- (id)_audiogramFromSymbols:(id)a3 onAudiogramMap:(id)a4;
-- (id)_audiogramFromSymbols:(id)a3 recognizedText:(id)a4;
-- (id)_audiogramMapFromRecognizedText:(id)a3;
-- (id)_audiogramPointsFromSymbolsV2:(id)a3 inGraphRect:(CGRect)a4 onAudiogramMap:(id)a5;
-- (id)_audiogramPointsFromSymbolsV2:(id)a3 inGraphRect:(CGRect)a4 recognizedText:(id)a5;
-- (id)_combineAudiograms:(id)a3;
-- (id)_cropEdgesFromImage:(id)a3 graphRect:(CGRect)a4 symbolsRect:(CGRect)a5;
-- (id)_cropResultsFromImage:(id)a3 observations:(id)a4;
-- (id)_formatNumbersFromRecognizedText:(id)a3;
-- (id)_groupNumbersByAxisFromRecognizedText:(id)a3;
-- (id)_observationsFromCIImage:(id)a3;
-- (id)_rectsOfGraphFromImage:(id)a3 objectData:(id)a4;
-- (id)_rectsOfSymbolsFromImage:(id)a3 objectData:(id)a4;
-- (id)_removeDuplicateSetsFromTextSets:(id)a3;
-- (id)_sortAndRemoveInvalidAxisValues:(id)a3 forAxis:(unint64_t)a4 error:(id *)a5;
-- (id)_textFromAudiogramImage:(id)a3 regionOfInterest:(CGRect)a4;
-- (id)_validMapForPointPairs:(id)a3 stepDistance:(double)a4 forValueDifference:(double)a5 forAxis:(unint64_t)a6;
-- (id)_validPointsFromMap:(id)a3 forValues:(id)a4;
-- (id)_valueDifferencesForValues:(id)a3 stepDistance:(double)a4 forAxis:(unint64_t)a5;
-- (id)audiogramDetectorResultsFromImage:(id)a3;
-- (id)audiogramFromImage:(id)a3;
-- (id)audiogramFromImages:(id)a3;
-- (id)audiogramPointsFromImages:(id)a3;
-- (unsigned)_propertyOrientationFromOrientation:(int64_t)a3;
-- (void)_loadModelFromAssetPath:(id)a3 assetProperties:(id)a4;
-- (void)_loadV2ModelFromAssetPath:(id)a3 assetProperties:(id)a4;
+- (CGRect)_adjustedRectForVisionCoordinateSpace:(CGRect)space inImage:(id)image;
+- (CGRect)_shrinkRect:(CGRect)rect width:(double)width height:(double)height insideBounds:(CGSize)bounds;
+- (double)_meanFromNumbers:(id)numbers;
+- (double)_stddevFromNumbers:(id)numbers;
+- (double)_zScoreFromNumber:(double)number mean:(double)mean stddev:(double)stddev;
+- (id)_audiogramFromAudiogramPoints:(id)points;
+- (id)_audiogramFromImagesV2:(id)v2;
+- (id)_audiogramFromSymbols:(id)symbols onAudiogramMap:(id)map;
+- (id)_audiogramFromSymbols:(id)symbols recognizedText:(id)text;
+- (id)_audiogramMapFromRecognizedText:(id)text;
+- (id)_audiogramPointsFromSymbolsV2:(id)v2 inGraphRect:(CGRect)rect onAudiogramMap:(id)map;
+- (id)_audiogramPointsFromSymbolsV2:(id)v2 inGraphRect:(CGRect)rect recognizedText:(id)text;
+- (id)_combineAudiograms:(id)audiograms;
+- (id)_cropEdgesFromImage:(id)image graphRect:(CGRect)rect symbolsRect:(CGRect)symbolsRect;
+- (id)_cropResultsFromImage:(id)image observations:(id)observations;
+- (id)_formatNumbersFromRecognizedText:(id)text;
+- (id)_groupNumbersByAxisFromRecognizedText:(id)text;
+- (id)_observationsFromCIImage:(id)image;
+- (id)_rectsOfGraphFromImage:(id)image objectData:(id)data;
+- (id)_rectsOfSymbolsFromImage:(id)image objectData:(id)data;
+- (id)_removeDuplicateSetsFromTextSets:(id)sets;
+- (id)_sortAndRemoveInvalidAxisValues:(id)values forAxis:(unint64_t)axis error:(id *)error;
+- (id)_textFromAudiogramImage:(id)image regionOfInterest:(CGRect)interest;
+- (id)_validMapForPointPairs:(id)pairs stepDistance:(double)distance forValueDifference:(double)difference forAxis:(unint64_t)axis;
+- (id)_validPointsFromMap:(id)map forValues:(id)values;
+- (id)_valueDifferencesForValues:(id)values stepDistance:(double)distance forAxis:(unint64_t)axis;
+- (id)audiogramDetectorResultsFromImage:(id)image;
+- (id)audiogramFromImage:(id)image;
+- (id)audiogramFromImages:(id)images;
+- (id)audiogramPointsFromImages:(id)images;
+- (unsigned)_propertyOrientationFromOrientation:(int64_t)orientation;
+- (void)_loadModelFromAssetPath:(id)path assetProperties:(id)properties;
+- (void)_loadV2ModelFromAssetPath:(id)path assetProperties:(id)properties;
 - (void)_retrieveModel;
-- (void)_setAudiogramAxisError:(unint64_t)a3 onError:(id *)a4;
-- (void)audiogramFromImages:(id)a3 completion:(id)a4;
-- (void)modelDidUpdate:(id)a3 assetProperties:(id)a4 assetVersion:(unint64_t)a5 withError:(id)a6;
-- (void)modelDownloadProgressDidUpdate:(float)a3;
+- (void)_setAudiogramAxisError:(unint64_t)error onError:(id *)onError;
+- (void)audiogramFromImages:(id)images completion:(id)completion;
+- (void)modelDidUpdate:(id)update assetProperties:(id)properties assetVersion:(unint64_t)version withError:(id)error;
+- (void)modelDownloadProgressDidUpdate:(float)update;
 - (void)startRetrievingLatestModel;
 - (void)startRetrievingLatestModelSilently;
 @end
@@ -66,14 +66,14 @@
   return v2;
 }
 
-- (AIAudiogramIngestionEngine)initWithDelegate:(id)a3
+- (AIAudiogramIngestionEngine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(AIAudiogramIngestionEngine *)self init];
   v6 = v5;
   if (v5)
   {
-    [(AIAudiogramIngestionEngine *)v5 setDelegate:v4];
+    [(AIAudiogramIngestionEngine *)v5 setDelegate:delegateCopy];
   }
 
   return v6;
@@ -83,11 +83,11 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(AIAudiogramIngestionEngine *)self graphModel];
-    if (v3)
+    graphModel = [(AIAudiogramIngestionEngine *)self graphModel];
+    if (graphModel)
     {
-      v4 = [(AIAudiogramIngestionEngine *)self symbolModel];
-      v5 = v4 != 0;
+      symbolModel = [(AIAudiogramIngestionEngine *)self symbolModel];
+      v5 = symbolModel != 0;
     }
 
     else
@@ -98,8 +98,8 @@
 
   else
   {
-    v3 = [(AIAudiogramIngestionEngine *)self model];
-    v5 = v3 != 0;
+    graphModel = [(AIAudiogramIngestionEngine *)self model];
+    v5 = graphModel != 0;
   }
 
   return v5;
@@ -146,20 +146,20 @@
   else
   {
     [(AIAudiogramIngestionEngine *)self setIsRetrievingLatestModel:1];
-    v4 = [(AIAudiogramIngestionEngine *)self assetManager];
-    [v4 refreshAssets];
+    assetManager = [(AIAudiogramIngestionEngine *)self assetManager];
+    [assetManager refreshAssets];
   }
 }
 
-- (void)_loadModelFromAssetPath:(id)a3 assetProperties:(id)a4
+- (void)_loadModelFromAssetPath:(id)path assetProperties:(id)properties
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(AIAudiogramIngestionEngine *)self setAssetProperties:v7];
+  pathCopy = path;
+  propertiesCopy = properties;
+  [(AIAudiogramIngestionEngine *)self setAssetProperties:propertiesCopy];
   if (!_os_feature_enabled_impl())
   {
-    v8 = [v7 objectForKey:@"LeftEarSymbolName"];
+    v8 = [propertiesCopy objectForKey:@"LeftEarSymbolName"];
     v9 = v8;
     if (v8)
     {
@@ -173,7 +173,7 @@
 
     [(AIAudiogramIngestionEngine *)self setModelLabelLeftEarSymbol:v10];
 
-    v11 = [v7 objectForKey:@"RightEarSymbolName"];
+    v11 = [propertiesCopy objectForKey:@"RightEarSymbolName"];
     v12 = v11;
     if (v11)
     {
@@ -187,7 +187,7 @@
 
     [(AIAudiogramIngestionEngine *)self setModelLabelRightEarSymbol:v13];
 
-    v14 = [v7 objectForKey:@"GraphName"];
+    v14 = [propertiesCopy objectForKey:@"GraphName"];
     v15 = v14;
     if (v14)
     {
@@ -201,7 +201,7 @@
 
     [(AIAudiogramIngestionEngine *)self setModelLabelGraph:v16];
 
-    v17 = [v7 objectForKey:@"SymbolConfidenceThreshold"];
+    v17 = [propertiesCopy objectForKey:@"SymbolConfidenceThreshold"];
     v40 = v17;
     if (v17)
     {
@@ -214,19 +214,19 @@
     }
 
     [(AIAudiogramIngestionEngine *)self setModelLabelConfidenceThreshold:v18, v40];
-    v19 = [v7 objectForKey:@"IsModelCompiled"];
+    v19 = [propertiesCopy objectForKey:@"IsModelCompiled"];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
     }
 
     else
     {
-      v21 = 0;
+      bOOLValue = 0;
     }
 
-    v22 = [v7 objectForKey:@"ModelName"];
+    v22 = [propertiesCopy objectForKey:@"ModelName"];
     v23 = v22;
     v24 = @"SymbolsDetector";
     if (v22)
@@ -239,28 +239,28 @@
     v26 = AXLogAudiogram();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [(AIAudiogramIngestionEngine *)self modelLabelLeftEarSymbol];
-      v28 = [(AIAudiogramIngestionEngine *)self modelLabelRightEarSymbol];
-      v29 = [(AIAudiogramIngestionEngine *)self modelLabelGraph];
+      modelLabelLeftEarSymbol = [(AIAudiogramIngestionEngine *)self modelLabelLeftEarSymbol];
+      modelLabelRightEarSymbol = [(AIAudiogramIngestionEngine *)self modelLabelRightEarSymbol];
+      modelLabelGraph = [(AIAudiogramIngestionEngine *)self modelLabelGraph];
       [(AIAudiogramIngestionEngine *)self modelLabelConfidenceThreshold];
       *buf = 138413570;
-      v46 = v27;
+      v46 = modelLabelLeftEarSymbol;
       v47 = 2112;
-      v48 = v28;
+      v48 = modelLabelRightEarSymbol;
       v49 = 2112;
-      v50 = v29;
+      v50 = modelLabelGraph;
       v51 = 2048;
       v52 = v30;
       v53 = 2112;
       v54 = v25;
       v55 = 1024;
-      v56 = v21;
+      v56 = bOOLValue;
       _os_log_impl(&dword_24179B000, v26, OS_LOG_TYPE_INFO, "Loading audiogram model properties. left='%@', right='%@', graph='%@', confidence=%f, model name='%@', compiled=%i", buf, 0x3Au);
     }
 
-    v31 = [v6 URLByAppendingPathComponent:v25];
+    v31 = [pathCopy URLByAppendingPathComponent:v25];
     v32 = v31;
-    if (v21)
+    if (bOOLValue)
     {
       v33 = [v31 URLByAppendingPathExtension:@"mlmodelc"];
     }
@@ -331,16 +331,16 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  [(AIAudiogramIngestionEngine *)self _loadV2ModelFromAssetPath:v6 assetProperties:v7];
+  [(AIAudiogramIngestionEngine *)self _loadV2ModelFromAssetPath:pathCopy assetProperties:propertiesCopy];
 LABEL_38:
 }
 
-- (void)_loadV2ModelFromAssetPath:(id)a3 assetProperties:(id)a4
+- (void)_loadV2ModelFromAssetPath:(id)path assetProperties:(id)properties
 {
   v93 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:@"LeftEarACUnmaskedSymbolName"];
+  pathCopy = path;
+  propertiesCopy = properties;
+  v8 = [propertiesCopy objectForKey:@"LeftEarACUnmaskedSymbolName"];
   v9 = v8;
   if (v8)
   {
@@ -354,7 +354,7 @@ LABEL_38:
 
   [(AIAudiogramIngestionEngine *)self setLeftEarAirConductionUnmaskedSymbol:v10];
 
-  v11 = [v7 objectForKey:@"LeftEarACMaskedSymbolName"];
+  v11 = [propertiesCopy objectForKey:@"LeftEarACMaskedSymbolName"];
   v12 = v11;
   if (v11)
   {
@@ -368,7 +368,7 @@ LABEL_38:
 
   [(AIAudiogramIngestionEngine *)self setLeftEarAirConductionMaskedSymbol:v13];
 
-  v14 = [v7 objectForKey:@"RightEarACUnmaskedSymbolName"];
+  v14 = [propertiesCopy objectForKey:@"RightEarACUnmaskedSymbolName"];
   v15 = v14;
   if (v14)
   {
@@ -382,7 +382,7 @@ LABEL_38:
 
   [(AIAudiogramIngestionEngine *)self setRightEarAirConductionUnmaskedSymbol:v16];
 
-  v17 = [v7 objectForKey:@"RightEarACMaskedSymbolName"];
+  v17 = [propertiesCopy objectForKey:@"RightEarACMaskedSymbolName"];
   v18 = v17;
   if (v17)
   {
@@ -396,7 +396,7 @@ LABEL_38:
 
   [(AIAudiogramIngestionEngine *)self setRightEarAirConductionMaskedSymbol:v19];
 
-  v20 = [v7 objectForKey:@"SymbolNames"];
+  v20 = [propertiesCopy objectForKey:@"SymbolNames"];
   v21 = v20;
   v22 = &unk_285365980;
   if (v20)
@@ -406,7 +406,7 @@ LABEL_38:
 
   v23 = v22;
 
-  v24 = [v7 objectForKey:@"CollisionMitigationSymbolNames"];
+  v24 = [propertiesCopy objectForKey:@"CollisionMitigationSymbolNames"];
   v25 = v24;
   v26 = &unk_285365998;
   if (v24)
@@ -416,7 +416,7 @@ LABEL_38:
 
   v87 = v26;
 
-  v27 = [v7 objectForKey:@"SymbolConfidenceThreshold"];
+  v27 = [propertiesCopy objectForKey:@"SymbolConfidenceThreshold"];
   v85 = v27;
   if (v27)
   {
@@ -429,7 +429,7 @@ LABEL_38:
     v29 = 1045220557;
   }
 
-  v30 = [v7 objectForKey:@"GraphConfidenceThreshold"];
+  v30 = [propertiesCopy objectForKey:@"GraphConfidenceThreshold"];
   v84 = v30;
   if (v30)
   {
@@ -442,7 +442,7 @@ LABEL_38:
     v32 = 1041865114;
   }
 
-  v33 = [v7 objectForKey:@"GraphModelInputWidth"];
+  v33 = [propertiesCopy objectForKey:@"GraphModelInputWidth"];
   v83 = v33;
   if (v33)
   {
@@ -455,7 +455,7 @@ LABEL_38:
     v35 = 960.0;
   }
 
-  v36 = [v7 objectForKey:@"GraphModelInputHeight"];
+  v36 = [propertiesCopy objectForKey:@"GraphModelInputHeight"];
   v82 = v36;
   if (v36)
   {
@@ -468,7 +468,7 @@ LABEL_38:
     v38 = 960.0;
   }
 
-  v39 = [v7 objectForKey:@"SymbolModelInputWidth"];
+  v39 = [propertiesCopy objectForKey:@"SymbolModelInputWidth"];
   v81 = v39;
   if (v39)
   {
@@ -481,7 +481,7 @@ LABEL_38:
     v41 = 960.0;
   }
 
-  v42 = [v7 objectForKey:@"SymbolModelInputHeight"];
+  v42 = [propertiesCopy objectForKey:@"SymbolModelInputHeight"];
   v80 = v42;
   if (v42)
   {
@@ -494,7 +494,7 @@ LABEL_38:
     v44 = 960.0;
   }
 
-  v45 = [v7 objectForKey:@"GraphModelName"];
+  v45 = [propertiesCopy objectForKey:@"GraphModelName"];
   v46 = v45;
   v47 = @"GraphDetector";
   if (v45)
@@ -504,7 +504,7 @@ LABEL_38:
 
   v48 = v47;
 
-  v49 = [v7 objectForKey:@"IsGraphModelCompiled"];
+  v49 = [propertiesCopy objectForKey:@"IsGraphModelCompiled"];
   v50 = v49;
   if (v49)
   {
@@ -517,7 +517,7 @@ LABEL_38:
   }
 
   v86 = v23;
-  v52 = [v7 objectForKey:@"SymbolModelName"];
+  v52 = [propertiesCopy objectForKey:@"SymbolModelName"];
   v53 = v52;
   v54 = @"SymbolDetector";
   if (v52)
@@ -527,7 +527,7 @@ LABEL_38:
 
   v88 = v54;
 
-  v55 = [v7 objectForKey:@"IsSymbolModelCompiled"];
+  v55 = [propertiesCopy objectForKey:@"IsSymbolModelCompiled"];
   v56 = v55;
   if (v55)
   {
@@ -543,16 +543,16 @@ LABEL_38:
   if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v92 = v7;
+    v92 = propertiesCopy;
     _os_log_impl(&dword_24179B000, v58, OS_LOG_TYPE_INFO, "Loading v2 audiogram model properties %@", buf, 0xCu);
   }
 
   v79 = v48;
-  v59 = [v6 URLByAppendingPathComponent:v48];
+  v59 = [pathCopy URLByAppendingPathComponent:v48];
   v60 = v59;
   if (v51)
   {
-    v61 = v6;
+    v61 = pathCopy;
     v62 = [v59 URLByAppendingPathExtension:@"mlmodel"];
 
     v90 = 0;
@@ -591,8 +591,8 @@ LABEL_38:
     _os_log_impl(&dword_24179B000, v71, OS_LOG_TYPE_INFO, "Successfully loaded graph model!", buf, 2u);
   }
 
-  v61 = v6;
-  v72 = [v6 URLByAppendingPathComponent:v88];
+  v61 = pathCopy;
+  v72 = [pathCopy URLByAppendingPathComponent:v88];
   v73 = v72;
   if (v57)
   {
@@ -640,19 +640,19 @@ LABEL_38:
 LABEL_66:
 }
 
-- (void)modelDidUpdate:(id)a3 assetProperties:(id)a4 assetVersion:(unint64_t)a5 withError:(id)a6
+- (void)modelDidUpdate:(id)update assetProperties:(id)properties assetVersion:(unint64_t)version withError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  updateCopy = update;
+  propertiesCopy = properties;
+  errorCopy = error;
+  if (errorCopy)
   {
     v12 = AXLogAudiogram();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v16 = 138412290;
-      v17 = v11;
+      v17 = errorCopy;
       _os_log_impl(&dword_24179B000, v12, OS_LOG_TYPE_INFO, "AIAudiogramIngestionEngine failed to download model: %@", &v16, 0xCu);
     }
 
@@ -661,8 +661,8 @@ LABEL_66:
       goto LABEL_12;
     }
 
-    v13 = [(AIAudiogramIngestionEngine *)self delegate];
-    [v13 audiogramIngestionEngineModelDownloadFailed:v11];
+    delegate = [(AIAudiogramIngestionEngine *)self delegate];
+    [delegate audiogramIngestionEngineModelDownloadFailed:errorCopy];
 LABEL_11:
 
 LABEL_12:
@@ -672,7 +672,7 @@ LABEL_12:
 
   v14 = AXLogAudiogram();
   v15 = v14;
-  if (v9)
+  if (updateCopy)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -680,14 +680,14 @@ LABEL_12:
       _os_log_impl(&dword_24179B000, v15, OS_LOG_TYPE_INFO, "AIAudiogramIngestionEngine finished downloading model", &v16, 2u);
     }
 
-    [(AIAudiogramIngestionEngine *)self _loadModelFromAssetPath:v9 assetProperties:v10];
+    [(AIAudiogramIngestionEngine *)self _loadModelFromAssetPath:updateCopy assetProperties:propertiesCopy];
     if ([(AIAudiogramIngestionEngine *)self isRetrievingLatestModelSilently])
     {
       goto LABEL_12;
     }
 
-    v13 = [(AIAudiogramIngestionEngine *)self delegate];
-    [v13 audiogramIngestionEngineModelDownloadComplete];
+    delegate = [(AIAudiogramIngestionEngine *)self delegate];
+    [delegate audiogramIngestionEngineModelDownloadComplete];
     goto LABEL_11;
   }
 
@@ -699,34 +699,34 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)modelDownloadProgressDidUpdate:(float)a3
+- (void)modelDownloadProgressDidUpdate:(float)update
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = AXLogAudiogram();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = (a3 * 100.0);
+    v9 = (update * 100.0);
     _os_log_impl(&dword_24179B000, v5, OS_LOG_TYPE_INFO, "AIAudiogramIngestionEngine downloading model %0.1f%%", &v8, 0xCu);
   }
 
-  v6 = [(AIAudiogramIngestionEngine *)self delegate];
-  *&v7 = a3;
-  [v6 audiogramIngestionEngineModelDownloadProgressed:v7];
+  delegate = [(AIAudiogramIngestionEngine *)self delegate];
+  *&v7 = update;
+  [delegate audiogramIngestionEngineModelDownloadProgressed:v7];
 }
 
-- (id)_textFromAudiogramImage:(id)a3 regionOfInterest:(CGRect)a4
+- (id)_textFromAudiogramImage:(id)image regionOfInterest:(CGRect)interest
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v29[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  imageCopy = image;
   v9 = objc_opt_new();
   v10 = objc_alloc_init(MEMORY[0x277CE2DB0]);
-  v11 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  [v10 setRecognitionLanguages:v11];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  [v10 setRecognitionLanguages:preferredLanguages];
 
   [v10 setUsesLanguageCorrection:1];
   [v10 setMinimumTextHeight:0.0];
@@ -741,7 +741,7 @@ LABEL_13:
   }
 
   v12 = objc_alloc(MEMORY[0x277CE2D50]);
-  v13 = [v12 initWithCIImage:v8 options:MEMORY[0x277CBEC10]];
+  v13 = [v12 initWithCIImage:imageCopy options:MEMORY[0x277CBEC10]];
 
   v29[0] = v10;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
@@ -762,7 +762,7 @@ LABEL_13:
 
   else
   {
-    v18 = [v10 results];
+    results = [v10 results];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __71__AIAudiogramIngestionEngine__textFromAudiogramImage_regionOfInterest___block_invoke;
@@ -773,7 +773,7 @@ LABEL_13:
     v27 = height;
     v19 = v9;
     v23 = v19;
-    [v18 enumerateObjectsUsingBlock:v22];
+    [results enumerateObjectsUsingBlock:v22];
 
     v20 = v19;
   }
@@ -824,20 +824,20 @@ void __71__AIAudiogramIngestionEngine__textFromAudiogramImage_regionOfInterest__
   }
 }
 
-- (id)_observationsFromCIImage:(id)a3
+- (id)_observationsFromCIImage:(id)image
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AIAudiogramIngestionEngine *)self model];
+  imageCopy = image;
+  model = [(AIAudiogramIngestionEngine *)self model];
 
-  if (v5)
+  if (model)
   {
     v6 = objc_alloc(MEMORY[0x277CE2C40]);
-    v7 = [(AIAudiogramIngestionEngine *)self model];
-    v8 = [v6 initWithModel:v7];
+    model2 = [(AIAudiogramIngestionEngine *)self model];
+    v8 = [v6 initWithModel:model2];
 
     v9 = objc_alloc(MEMORY[0x277CE2D50]);
-    v10 = [v9 initWithCIImage:v4 options:MEMORY[0x277CBEC10]];
+    v10 = [v9 initWithCIImage:imageCopy options:MEMORY[0x277CBEC10]];
     v17[0] = v8;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     v16 = 0;
@@ -852,12 +852,12 @@ void __71__AIAudiogramIngestionEngine__textFromAudiogramImage_regionOfInterest__
         [AIAudiogramIngestionEngine _observationsFromCIImage:];
       }
 
-      v14 = MEMORY[0x277CBEBF8];
+      results = MEMORY[0x277CBEBF8];
     }
 
     else
     {
-      v14 = [v8 results];
+      results = [v8 results];
     }
   }
 
@@ -869,24 +869,24 @@ void __71__AIAudiogramIngestionEngine__textFromAudiogramImage_regionOfInterest__
       [AIAudiogramIngestionEngine _observationsFromCIImage:];
     }
 
-    v14 = MEMORY[0x277CBEBF8];
+    results = MEMORY[0x277CBEBF8];
   }
 
-  return v14;
+  return results;
 }
 
-- (id)_cropEdgesFromImage:(id)a3 graphRect:(CGRect)a4 symbolsRect:(CGRect)a5
+- (id)_cropEdgesFromImage:(id)image graphRect:(CGRect)rect symbolsRect:(CGRect)symbolsRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
+  height = symbolsRect.size.height;
+  width = symbolsRect.size.width;
+  y = symbolsRect.origin.y;
+  x = symbolsRect.origin.x;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  v11 = rect.origin.y;
+  v12 = rect.origin.x;
   v60 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  imageCopy = image;
   v14 = objc_opt_new();
   v62.origin.x = x;
   v62.origin.y = y;
@@ -925,9 +925,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  [v13 extent];
+  [imageCopy extent];
   v54 = v15;
-  [v13 extent];
+  [imageCopy extent];
   v53 = v16;
   v63.origin.x = v12;
   v63.origin.y = v11;
@@ -1094,19 +1094,19 @@ LABEL_25:
   return v14;
 }
 
-- (id)_rectsOfSymbolsFromImage:(id)a3 objectData:(id)a4
+- (id)_rectsOfSymbolsFromImage:(id)image objectData:(id)data
 {
   v88[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 extent];
+  imageCopy = image;
+  dataCopy = data;
+  [imageCopy extent];
   v9 = v8;
-  v67 = v6;
-  [v6 extent];
+  v67 = imageCopy;
+  [imageCopy extent];
   v11 = v10;
-  v12 = [v7 mutableCopy];
-  v66 = v7;
-  v13 = [v7 mutableCopy];
+  v12 = [dataCopy mutableCopy];
+  v66 = dataCopy;
+  v13 = [dataCopy mutableCopy];
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __66__AIAudiogramIngestionEngine__rectsOfSymbolsFromImage_objectData___block_invoke;
@@ -1550,13 +1550,13 @@ void __66__AIAudiogramIngestionEngine__rectsOfSymbolsFromImage_objectData___bloc
   *(v22 + 24) = v15;
 }
 
-- (id)_rectsOfGraphFromImage:(id)a3 objectData:(id)a4
+- (id)_rectsOfGraphFromImage:(id)image objectData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 extent];
+  dataCopy = data;
+  imageCopy = image;
+  [imageCopy extent];
   Width = CGRectGetWidth(v27);
-  [v7 extent];
+  [imageCopy extent];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1577,7 +1577,7 @@ void __66__AIAudiogramIngestionEngine__rectsOfSymbolsFromImage_objectData___bloc
   v26 = Height;
   v19 = v18;
   v24 = v19;
-  [v6 enumerateObjectsUsingBlock:v23];
+  [dataCopy enumerateObjectsUsingBlock:v23];
 
   v20 = v24;
   v21 = v19;
@@ -1639,13 +1639,13 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_cropResultsFromImage:(id)a3 observations:(id)a4
+- (id)_cropResultsFromImage:(id)image observations:(id)observations
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AIAudiogramIngestionEngine *)self _rectsOfGraphFromImage:v6 objectData:v7];
-  v9 = [(AIAudiogramIngestionEngine *)self _rectsOfSymbolsFromImage:v6 objectData:v7];
+  imageCopy = image;
+  observationsCopy = observations;
+  v8 = [(AIAudiogramIngestionEngine *)self _rectsOfGraphFromImage:imageCopy objectData:observationsCopy];
+  v9 = [(AIAudiogramIngestionEngine *)self _rectsOfSymbolsFromImage:imageCopy objectData:observationsCopy];
 
   v10 = objc_opt_new();
   v21[0] = MEMORY[0x277D85DD0];
@@ -1671,8 +1671,8 @@ LABEL_8:
   v19[2] = __65__AIAudiogramIngestionEngine__cropResultsFromImage_observations___block_invoke_206;
   v19[3] = &unk_278CEC580;
   v19[4] = self;
-  v20 = v6;
-  v14 = v6;
+  v20 = imageCopy;
+  v14 = imageCopy;
   [v12 enumerateObjectsUsingBlock:v19];
   v15 = AXLogAudiogram();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1835,16 +1835,16 @@ void __65__AIAudiogramIngestionEngine__cropResultsFromImage_observations___block
   }
 }
 
-- (CGRect)_shrinkRect:(CGRect)a3 width:(double)a4 height:(double)a5 insideBounds:(CGSize)a6
+- (CGRect)_shrinkRect:(CGRect)rect width:(double)width height:(double)height insideBounds:(CGSize)bounds
 {
-  height = a6.height;
-  width = a6.width;
-  v18 = CGRectInset(a3, a4 * 0.5, a5 * 0.5);
+  height = bounds.height;
+  width = bounds.width;
+  v18 = CGRectInset(rect, width * 0.5, height * 0.5);
   x = v18.origin.x;
   y = v18.origin.y;
   v12 = v18.size.width;
   v13 = v18.size.height;
-  if (a4 < 0.0)
+  if (width < 0.0)
   {
     if (CGRectGetMinX(v18) < 0.0)
     {
@@ -1865,7 +1865,7 @@ void __65__AIAudiogramIngestionEngine__cropResultsFromImage_observations___block
     }
   }
 
-  if (a5 < 0.0)
+  if (height < 0.0)
   {
     v21.origin.x = x;
     v21.origin.y = y;
@@ -1901,10 +1901,10 @@ void __65__AIAudiogramIngestionEngine__cropResultsFromImage_observations___block
   return result;
 }
 
-- (id)_audiogramMapFromRecognizedText:(id)a3
+- (id)_audiogramMapFromRecognizedText:(id)text
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [(AIAudiogramIngestionEngine *)self _formatNumbersFromRecognizedText:a3];
+  v4 = [(AIAudiogramIngestionEngine *)self _formatNumbersFromRecognizedText:text];
   v5 = [(AIAudiogramIngestionEngine *)self _groupNumbersByAxisFromRecognizedText:v4];
   v20 = 0;
   v21 = &v20;
@@ -1976,10 +1976,10 @@ void __62__AIAudiogramIngestionEngine__audiogramMapFromRecognizedText___block_in
   *(v6 + 40) = v3;
 }
 
-- (id)_formatNumbersFromRecognizedText:(id)a3
+- (id)_formatNumbersFromRecognizedText:(id)text
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
+  textCopy = text;
   v5 = [v3 characterSetWithCharactersInString:{@"0123456789, .-"}];
   v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"kK"];
   v7 = objc_opt_new();
@@ -1993,7 +1993,7 @@ void __62__AIAudiogramIngestionEngine__audiogramMapFromRecognizedText___block_in
   v17 = v8;
   v9 = v6;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [textCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v17;
   v12 = v8;
@@ -2152,10 +2152,10 @@ LABEL_31:
 LABEL_32:
 }
 
-- (id)_groupNumbersByAxisFromRecognizedText:(id)a3
+- (id)_groupNumbersByAxisFromRecognizedText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_0];
+  textCopy = text;
+  v5 = [textCopy ax_filteredArrayUsingBlock:&__block_literal_global_0];
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v32[0] = MEMORY[0x277D85DD0];
@@ -2490,14 +2490,14 @@ void __68__AIAudiogramIngestionEngine__groupNumbersByAxisFromRecognizedText___bl
   }
 }
 
-- (id)_removeDuplicateSetsFromTextSets:(id)a3
+- (id)_removeDuplicateSetsFromTextSets:(id)sets
 {
-  v3 = a3;
+  setsCopy = sets;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__AIAudiogramIngestionEngine__removeDuplicateSetsFromTextSets___block_invoke;
   v6[3] = &unk_278CEC708;
-  v4 = v3;
+  v4 = setsCopy;
   v7 = v4;
   [v4 ax_removeObjectsFromArrayUsingBlock:v6];
 
@@ -2567,21 +2567,21 @@ uint64_t __63__AIAudiogramIngestionEngine__removeDuplicateSetsFromTextSets___blo
   return result;
 }
 
-- (void)audiogramFromImages:(id)a3 completion:(id)a4
+- (void)audiogramFromImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AIAudiogramIngestionEngine *)self analysisQueue];
+  imagesCopy = images;
+  completionCopy = completion;
+  analysisQueue = [(AIAudiogramIngestionEngine *)self analysisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__AIAudiogramIngestionEngine_audiogramFromImages_completion___block_invoke;
   block[3] = &unk_278CEC730;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = imagesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = imagesCopy;
+  dispatch_async(analysisQueue, block);
 }
 
 uint64_t __61__AIAudiogramIngestionEngine_audiogramFromImages_completion___block_invoke(uint64_t a1)
@@ -2598,42 +2598,42 @@ uint64_t __61__AIAudiogramIngestionEngine_audiogramFromImages_completion___block
   return MEMORY[0x2821F96F8](v3, v2);
 }
 
-- (id)audiogramFromImage:(id)a3
+- (id)audiogramFromImage:(id)image
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  imageCopy = image;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  imageCopy2 = image;
+  v6 = [v4 arrayWithObjects:&imageCopy count:1];
 
-  v7 = [(AIAudiogramIngestionEngine *)self audiogramFromImages:v6, v9, v10];
+  v7 = [(AIAudiogramIngestionEngine *)self audiogramFromImages:v6, imageCopy, v10];
 
   return v7;
 }
 
-- (id)audiogramFromImages:(id)a3
+- (id)audiogramFromImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(AIAudiogramIngestionEngine *)self _audiogramFromImagesV2:v4];
+    selfCopy = [(AIAudiogramIngestionEngine *)self _audiogramFromImagesV2:imagesCopy];
   }
 
   else
   {
     v6 = objc_opt_new();
-    if ([v4 count])
+    if ([imagesCopy count])
     {
       v10 = MEMORY[0x277D85DD0];
       v11 = 3221225472;
       v12 = __50__AIAudiogramIngestionEngine_audiogramFromImages___block_invoke;
       v13 = &unk_278CEC7A8;
-      v14 = self;
+      selfCopy = self;
       v7 = v6;
       v15 = v7;
-      [v4 enumerateObjectsUsingBlock:&v10];
-      v5 = [(AIAudiogramIngestionEngine *)self _combineAudiograms:v7, v10, v11, v12, v13, v14];
-      if (!v5)
+      [imagesCopy enumerateObjectsUsingBlock:&v10];
+      selfCopy = [(AIAudiogramIngestionEngine *)self _combineAudiograms:v7, v10, v11, v12, v13, selfCopy];
+      if (!selfCopy)
       {
         v8 = AXLogAudiogram();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2645,11 +2645,11 @@ uint64_t __61__AIAudiogramIngestionEngine_audiogramFromImages_completion___block
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __50__AIAudiogramIngestionEngine_audiogramFromImages___block_invoke(uint64_t a1, void *a2)
@@ -2858,29 +2858,29 @@ void __50__AIAudiogramIngestionEngine_audiogramFromImages___block_invoke_245(uin
   }
 }
 
-- (id)_audiogramFromSymbols:(id)a3 recognizedText:(id)a4
+- (id)_audiogramFromSymbols:(id)symbols recognizedText:(id)text
 {
-  v6 = a3;
-  v7 = [(AIAudiogramIngestionEngine *)self _audiogramMapFromRecognizedText:a4];
-  v8 = [(AIAudiogramIngestionEngine *)self _audiogramFromSymbols:v6 onAudiogramMap:v7];
+  symbolsCopy = symbols;
+  v7 = [(AIAudiogramIngestionEngine *)self _audiogramMapFromRecognizedText:text];
+  v8 = [(AIAudiogramIngestionEngine *)self _audiogramFromSymbols:symbolsCopy onAudiogramMap:v7];
 
   return v8;
 }
 
-- (id)_audiogramFromSymbols:(id)a3 onAudiogramMap:(id)a4
+- (id)_audiogramFromSymbols:(id)symbols onAudiogramMap:(id)map
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  symbolsCopy = symbols;
+  mapCopy = map;
+  v8 = [symbolsCopy count];
   v9 = 0;
-  if (v7 && v8)
+  if (mapCopy && v8)
   {
     v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [getHKUnitClass_1() hertzUnit];
-    v11 = [getHKUnitClass_1() decibelHearingLevelUnit];
+    hertzUnit = [getHKUnitClass_1() hertzUnit];
+    decibelHearingLevelUnit = [getHKUnitClass_1() decibelHearingLevelUnit];
     v12 = objc_opt_new();
-    v39 = v6;
+    v39 = symbolsCopy;
     v13 = objc_opt_new();
     v14 = objc_opt_new();
     v15 = objc_opt_new();
@@ -2890,13 +2890,13 @@ void __50__AIAudiogramIngestionEngine_audiogramFromImages___block_invoke_245(uin
     v45[2] = __67__AIAudiogramIngestionEngine__audiogramFromSymbols_onAudiogramMap___block_invoke;
     v45[3] = &unk_278CEC7F8;
     v45[4] = self;
-    v46 = v7;
+    v46 = mapCopy;
     v37 = v15;
     v47 = v37;
-    v38 = v11;
+    v38 = decibelHearingLevelUnit;
     v48 = v38;
     v17 = v13;
-    v6 = v39;
+    symbolsCopy = v39;
     v18 = v17;
     v49 = v17;
     v19 = v12;
@@ -2943,7 +2943,7 @@ void __50__AIAudiogramIngestionEngine_audiogramFromImages___block_invoke_245(uin
     v41 = v26;
     v27 = v20;
     v42 = v27;
-    v28 = v10;
+    v28 = hertzUnit;
     v43 = v28;
     v29 = v35;
     v44 = v29;
@@ -2951,12 +2951,12 @@ void __50__AIAudiogramIngestionEngine_audiogramFromImages___block_invoke_245(uin
     if ([v29 count])
     {
       HKAudiogramSampleClass = getHKAudiogramSampleClass();
-      v31 = [MEMORY[0x277CBEAA8] date];
-      v32 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v33 = metadataForHKAudiogramSample();
-      v9 = [HKAudiogramSampleClass audiogramSampleWithSensitivityPoints:v29 startDate:v31 endDate:v32 metadata:v33];
+      v9 = [HKAudiogramSampleClass audiogramSampleWithSensitivityPoints:v29 startDate:date endDate:date2 metadata:v33];
 
-      v6 = v39;
+      symbolsCopy = v39;
     }
 
     else
@@ -3201,11 +3201,11 @@ void __67__AIAudiogramIngestionEngine__audiogramFromSymbols_onAudiogramMap___blo
   }
 }
 
-- (id)_combineAudiograms:(id)a3
+- (id)_combineAudiograms:(id)audiograms
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  audiogramsCopy = audiograms;
+  v4 = [audiogramsCopy count];
   v5 = AXLogAudiogram();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
   if (v4 == 1)
@@ -3216,7 +3216,7 @@ void __67__AIAudiogramIngestionEngine__audiogramFromSymbols_onAudiogramMap___blo
       _os_log_impl(&dword_24179B000, v5, OS_LOG_TYPE_INFO, "Only one audiogram. No need to combine", buf, 2u);
     }
 
-    v7 = [v3 firstObject];
+    firstObject = [audiogramsCopy firstObject];
   }
 
   else if (v4)
@@ -3241,7 +3241,7 @@ void __67__AIAudiogramIngestionEngine__audiogramFromSymbols_onAudiogramMap___blo
     v31 = v12;
     v13 = v10;
     v32 = v13;
-    [v3 enumerateObjectsUsingBlock:v29];
+    [audiogramsCopy enumerateObjectsUsingBlock:v29];
     v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:&stru_28535F0B0 ascending:1];
     v33 = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
@@ -3262,15 +3262,15 @@ void __67__AIAudiogramIngestionEngine__audiogramFromSymbols_onAudiogramMap___blo
     if ([v19 count])
     {
       HKAudiogramSampleClass = getHKAudiogramSampleClass();
-      v21 = [MEMORY[0x277CBEAA8] date];
-      v22 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v23 = metadataForHKAudiogramSample();
-      v7 = [HKAudiogramSampleClass audiogramSampleWithSensitivityPoints:v19 startDate:v21 endDate:v22 metadata:v23];
+      firstObject = [HKAudiogramSampleClass audiogramSampleWithSensitivityPoints:v19 startDate:date endDate:date2 metadata:v23];
     }
 
     else
     {
-      v7 = 0;
+      firstObject = 0;
     }
   }
 
@@ -3282,10 +3282,10 @@ void __67__AIAudiogramIngestionEngine__audiogramFromSymbols_onAudiogramMap___blo
       _os_log_impl(&dword_24179B000, v5, OS_LOG_TYPE_INFO, "No audiogram to combine", buf, 2u);
     }
 
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 void __49__AIAudiogramIngestionEngine__combineAudiograms___block_invoke(id *a1, void *a2)
@@ -3392,31 +3392,31 @@ void __49__AIAudiogramIngestionEngine__combineAudiograms___block_invoke_259(uint
   }
 }
 
-- (id)_audiogramFromImagesV2:(id)a3
+- (id)_audiogramFromImagesV2:(id)v2
 {
-  v4 = a3;
+  v2Copy = v2;
   [(AIAudiogramIngestionEngine *)self setFailureMode:0];
-  v5 = [(AIAudiogramIngestionEngine *)self audiogramPointsFromImages:v4];
+  v5 = [(AIAudiogramIngestionEngine *)self audiogramPointsFromImages:v2Copy];
 
   v6 = [(AIAudiogramIngestionEngine *)self _audiogramFromAudiogramPoints:v5];
 
   return v6;
 }
 
-- (id)audiogramPointsFromImages:(id)a3
+- (id)audiogramPointsFromImages:(id)images
 {
-  v4 = a3;
-  if ([v4 count])
+  imagesCopy = images;
+  if ([imagesCopy count])
   {
     v5 = objc_opt_new();
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __56__AIAudiogramIngestionEngine_audiogramPointsFromImages___block_invoke;
     v14 = &unk_278CEC7A8;
-    v15 = self;
+    selfCopy = self;
     v6 = v5;
     v16 = v6;
-    [v4 enumerateObjectsUsingBlock:&v11];
+    [imagesCopy enumerateObjectsUsingBlock:&v11];
     if (![v6 count])
     {
       v7 = AXLogAudiogram();
@@ -3751,14 +3751,14 @@ void __56__AIAudiogramIngestionEngine_audiogramPointsFromImages___block_invoke_2
   }
 }
 
-- (id)audiogramDetectorResultsFromImage:(id)a3
+- (id)audiogramDetectorResultsFromImage:(id)image
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_opt_new();
-  v6 = -[AIAudiogramIngestionEngine _propertyOrientationFromOrientation:](self, "_propertyOrientationFromOrientation:", [v4 imageOrientation]);
-  v7 = [(AIAudiogramIngestionEngine *)self graphModel];
-  v8 = [v7 getGraphDetectorResult:objc_msgSend(v4 orientation:{"CGImage"), v6}];
+  v6 = -[AIAudiogramIngestionEngine _propertyOrientationFromOrientation:](self, "_propertyOrientationFromOrientation:", [imageCopy imageOrientation]);
+  graphModel = [(AIAudiogramIngestionEngine *)self graphModel];
+  v8 = [graphModel getGraphDetectorResult:objc_msgSend(imageCopy orientation:{"CGImage"), v6}];
 
   v9 = AXLogAudiogram();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -3792,11 +3792,11 @@ void __56__AIAudiogramIngestionEngine_audiogramPointsFromImages___block_invoke_2
   v18[2] = __64__AIAudiogramIngestionEngine_audiogramDetectorResultsFromImage___block_invoke;
   v18[3] = &unk_278CEC910;
   v18[4] = self;
-  v19 = v4;
+  v19 = imageCopy;
   v21 = v6;
   v13 = v5;
   v20 = v13;
-  v14 = v4;
+  v14 = imageCopy;
   [v8 enumerateObjectsUsingBlock:v18];
   v15 = v20;
   v16 = v13;
@@ -3833,13 +3833,13 @@ void __64__AIAudiogramIngestionEngine_audiogramDetectorResultsFromImage___block_
   [v9 addObject:v10];
 }
 
-- (CGRect)_adjustedRectForVisionCoordinateSpace:(CGRect)a3 inImage:(id)a4
+- (CGRect)_adjustedRectForVisionCoordinateSpace:(CGRect)space inImage:(id)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 extent];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  [image extent];
   v8 = CGRectGetHeight(v16);
   v17.origin.x = x;
   v17.origin.y = y;
@@ -3871,32 +3871,32 @@ void __64__AIAudiogramIngestionEngine_audiogramDetectorResultsFromImage___block_
   return result;
 }
 
-- (id)_audiogramPointsFromSymbolsV2:(id)a3 inGraphRect:(CGRect)a4 recognizedText:(id)a5
+- (id)_audiogramPointsFromSymbolsV2:(id)v2 inGraphRect:(CGRect)rect recognizedText:(id)text
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = [(AIAudiogramIngestionEngine *)self _audiogramMapFromRecognizedText:a5];
-  v13 = [(AIAudiogramIngestionEngine *)self _audiogramPointsFromSymbolsV2:v11 inGraphRect:v12 onAudiogramMap:x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v2Copy = v2;
+  v12 = [(AIAudiogramIngestionEngine *)self _audiogramMapFromRecognizedText:text];
+  height = [(AIAudiogramIngestionEngine *)self _audiogramPointsFromSymbolsV2:v2Copy inGraphRect:v12 onAudiogramMap:x, y, width, height];
 
-  return v13;
+  return height;
 }
 
-- (id)_audiogramPointsFromSymbolsV2:(id)a3 inGraphRect:(CGRect)a4 onAudiogramMap:(id)a5
+- (id)_audiogramPointsFromSymbolsV2:(id)v2 inGraphRect:(CGRect)rect onAudiogramMap:(id)map
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = [v11 count];
-  if (!v12 || !v13)
+  v2Copy = v2;
+  mapCopy = map;
+  v13 = [v2Copy count];
+  if (!mapCopy || !v13)
   {
-    if (v12)
+    if (mapCopy)
     {
       v19 = 2;
     }
@@ -3911,17 +3911,17 @@ void __64__AIAudiogramIngestionEngine_audiogramDetectorResultsFromImage___block_
     goto LABEL_20;
   }
 
-  v14 = [v12 frequencies];
-  v15 = [v14 values];
-  if ([v15 count] <= 3)
+  frequencies = [mapCopy frequencies];
+  values = [frequencies values];
+  if ([values count] <= 3)
   {
 
     goto LABEL_11;
   }
 
-  v16 = [v12 hearingLevels];
-  v17 = [v16 values];
-  v18 = [v17 count];
+  hearingLevels = [mapCopy hearingLevels];
+  values2 = [hearingLevels values];
+  v18 = [values2 count];
 
   if (v18 <= 3)
   {
@@ -3929,16 +3929,16 @@ LABEL_11:
     [(AIAudiogramIngestionEngine *)self setFailureMode:3];
   }
 
-  v21 = [v12 hearingLevelSlope];
-  [v21 doubleValue];
+  hearingLevelSlope = [mapCopy hearingLevelSlope];
+  [hearingLevelSlope doubleValue];
   if (fabs(v22) < 10.0)
   {
   }
 
   else
   {
-    v23 = [v12 frequencySlope];
-    [v23 doubleValue];
+    frequencySlope = [mapCopy frequencySlope];
+    [frequencySlope doubleValue];
     v25 = fabs(v24);
 
     if (v25 <= 0.1)
@@ -3958,10 +3958,10 @@ LABEL_17:
   v39 = y;
   v40 = width;
   v41 = height;
-  v36 = v12;
+  v36 = mapCopy;
   v27 = v26;
   v37 = v27;
-  [v11 enumerateObjectsUsingBlock:&v32];
+  [v2Copy enumerateObjectsUsingBlock:&v32];
   v28 = AXLogAudiogram();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
@@ -4036,14 +4036,14 @@ void __87__AIAudiogramIngestionEngine__audiogramPointsFromSymbolsV2_inGraphRect_
   }
 }
 
-- (id)_audiogramFromAudiogramPoints:(id)a3
+- (id)_audiogramFromAudiogramPoints:(id)points
 {
   v58 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  pointsCopy = points;
   v37 = objc_alloc_init(v4);
-  v38 = [getHKUnitClass_1() hertzUnit];
-  v6 = [getHKUnitClass_1() decibelHearingLevelUnit];
+  hertzUnit = [getHKUnitClass_1() hertzUnit];
+  decibelHearingLevelUnit = [getHKUnitClass_1() decibelHearingLevelUnit];
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v9 = objc_opt_new();
@@ -4058,7 +4058,7 @@ void __87__AIAudiogramIngestionEngine__audiogramPointsFromSymbolsV2_inGraphRect_
   v46[4] = self;
   v14 = v10;
   v47 = v14;
-  v36 = v6;
+  v36 = decibelHearingLevelUnit;
   v48 = v36;
   v15 = v8;
   v49 = v15;
@@ -4072,7 +4072,7 @@ void __87__AIAudiogramIngestionEngine__audiogramPointsFromSymbolsV2_inGraphRect_
   v53 = v19;
   v20 = v13;
   v54 = v20;
-  [v5 enumerateObjectsUsingBlock:v46];
+  [pointsCopy enumerateObjectsUsingBlock:v46];
 
   v21 = AXLogAudiogram();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -4114,7 +4114,7 @@ void __87__AIAudiogramIngestionEngine__audiogramPointsFromSymbolsV2_inGraphRect_
       v39[3] = &unk_278CEC988;
       v40 = v15;
       v41 = v19;
-      v42 = v38;
+      v42 = hertzUnit;
       v43 = v17;
       v44 = v20;
       v27 = v37;
@@ -4132,10 +4132,10 @@ void __87__AIAudiogramIngestionEngine__audiogramPointsFromSymbolsV2_inGraphRect_
         }
 
         HKAudiogramSampleClass = getHKAudiogramSampleClass();
-        v35 = [MEMORY[0x277CBEAA8] date];
-        v33 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
         v30 = metadataForHKAudiogramSample();
-        v31 = [HKAudiogramSampleClass audiogramSampleWithSensitivityPoints:v27 startDate:v35 endDate:v33 metadata:v30];
+        v31 = [HKAudiogramSampleClass audiogramSampleWithSensitivityPoints:v27 startDate:date endDate:date2 metadata:v30];
       }
 
       else
@@ -4356,27 +4356,27 @@ LABEL_4:
   }
 }
 
-- (void)_setAudiogramAxisError:(unint64_t)a3 onError:(id *)a4
+- (void)_setAudiogramAxisError:(unint64_t)error onError:(id *)onError
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  if (a3 >= 3)
+  if (error >= 3)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown error: %d", a4, a3];
+    error = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown error: %d", onError, error];
   }
 
   else
   {
-    v5 = off_278CECAB0[a3];
-    if (a4)
+    error = off_278CECAB0[error];
+    if (onError)
     {
       v6 = MEMORY[0x277CCA9B8];
       v10[0] = *MEMORY[0x277CCA450];
       v10[1] = @"AIAudiogramAxisErrorKey";
-      v11[0] = v5;
+      v11[0] = error;
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
       v11[1] = v7;
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-      *a4 = [v6 errorWithDomain:@"AudiogramIngestion" code:0 userInfo:v8];
+      *onError = [v6 errorWithDomain:@"AudiogramIngestion" code:0 userInfo:v8];
     }
 
     else
@@ -4390,17 +4390,17 @@ LABEL_4:
   }
 }
 
-- (id)_sortAndRemoveInvalidAxisValues:(id)a3 forAxis:(unint64_t)a4 error:(id *)a5
+- (id)_sortAndRemoveInvalidAxisValues:(id)values forAxis:(unint64_t)axis error:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 count];
+  valuesCopy = values;
+  v7 = [valuesCopy count];
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxis_error___block_invoke;
   v71[3] = &__block_descriptor_40_e47_q24__0__AIRecognizedText_8__AIRecognizedText_16l;
-  v71[4] = a4;
-  v8 = [v6 sortedArrayUsingComparator:v71];
+  v71[4] = axis;
+  v8 = [valuesCopy sortedArrayUsingComparator:v71];
 
   v9 = AXLogAudiogram();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4419,7 +4419,7 @@ LABEL_4:
   v67[1] = 3221225472;
   v67[2] = __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxis_error___block_invoke_2;
   v67[3] = &__block_descriptor_40_e33_B32__0__AIRecognizedText_8Q16_B24l;
-  v67[4] = a4;
+  v67[4] = axis;
   v11 = [v10 ax_filteredArrayUsingBlock:v67];
 
   v12 = AXLogAudiogram();
@@ -4430,7 +4430,7 @@ LABEL_4:
 
   if ([v11 count] > 2)
   {
-    v14 = [(AIAudiogramIngestionEngine *)self _valueDifferencesForValues:v11 stepDistance:a4 forAxis:0.1];
+    v14 = [(AIAudiogramIngestionEngine *)self _valueDifferencesForValues:v11 stepDistance:axis forAxis:0.1];
     v15 = AXLogAudiogram();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -4461,13 +4461,13 @@ LABEL_4:
 
     [(AIAudiogramIngestionEngine *)self _meanFromNumbers:*(v65[0] + 40)];
     v25 = v24;
-    if ((a4 != 1 || v24 >= 0.0) && (a4 || v24 >= 1.0))
+    if ((axis != 1 || v24 >= 0.0) && (axis || v24 >= 1.0))
     {
       v27 = 0;
       v28 = 4;
       do
       {
-        v29 = [(AIAudiogramIngestionEngine *)self _validMapForPointPairs:v11 stepDistance:a4 forValueDifference:0.1 forAxis:v25, v54];
+        v29 = [(AIAudiogramIngestionEngine *)self _validMapForPointPairs:v11 stepDistance:axis forValueDifference:0.1 forAxis:v25, v54];
         v30 = AXLogAudiogram();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
@@ -4486,7 +4486,7 @@ LABEL_4:
 
         v32 = [(AIAudiogramIngestionEngine *)self _validPointsFromMap:v29 forValues:v11];
 
-        v33 = [(AIAudiogramIngestionEngine *)self _validMapForPointPairs:v32 stepDistance:a4 forValueDifference:0.1 forAxis:v25];
+        v33 = [(AIAudiogramIngestionEngine *)self _validMapForPointPairs:v32 stepDistance:axis forValueDifference:0.1 forAxis:v25];
 
         v34 = AXLogAudiogram();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
@@ -4653,7 +4653,7 @@ LABEL_4:
           _os_log_impl(&dword_24179B000, v52, OS_LOG_TYPE_INFO, "Could not validate enough values. Group is not valid", buf, 2u);
         }
 
-        [(AIAudiogramIngestionEngine *)self _setAudiogramAxisError:2 onError:a5];
+        [(AIAudiogramIngestionEngine *)self _setAudiogramAxisError:2 onError:error];
         v13 = 0;
       }
     }
@@ -4668,7 +4668,7 @@ LABEL_4:
         _os_log_impl(&dword_24179B000, v26, OS_LOG_TYPE_INFO, "Most frequently occuring value was less than 0 or 1 indicating the set is not increasing and not valid: %@", buf, 0xCu);
       }
 
-      [(AIAudiogramIngestionEngine *)self _setAudiogramAxisError:1 onError:a5, v54];
+      [(AIAudiogramIngestionEngine *)self _setAudiogramAxisError:1 onError:error, v54];
       v13 = 0;
     }
 
@@ -4677,7 +4677,7 @@ LABEL_4:
 
   else
   {
-    [(AIAudiogramIngestionEngine *)self _setAudiogramAxisError:0 onError:a5];
+    [(AIAudiogramIngestionEngine *)self _setAudiogramAxisError:0 onError:error];
     v13 = 0;
   }
 
@@ -4824,11 +4824,11 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (id)_valueDifferencesForValues:(id)a3 stepDistance:(double)a4 forAxis:(unint64_t)a5
+- (id)_valueDifferencesForValues:(id)values stepDistance:(double)distance forAxis:(unint64_t)axis
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 count];
+  valuesCopy = values;
+  v8 = [valuesCopy count];
   v9 = objc_opt_new();
   v11 = v8 - 1;
   if (v11 >= 1)
@@ -4838,15 +4838,15 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
     v34 = v10;
     do
     {
-      v13 = [v7 objectAtIndex:{v12, v34}];
-      v14 = [v7 objectAtIndex:++v12];
-      v15 = [v14 numericalValue];
-      v16 = v15;
-      if (a5 == 1)
+      v13 = [valuesCopy objectAtIndex:{v12, v34}];
+      v14 = [valuesCopy objectAtIndex:++v12];
+      numericalValue = [v14 numericalValue];
+      v16 = numericalValue;
+      if (axis == 1)
       {
-        v17 = [v15 integerValue];
-        v18 = [v13 numericalValue];
-        v19 = (v17 - [v18 integerValue]);
+        integerValue = [numericalValue integerValue];
+        numericalValue2 = [v13 numericalValue];
+        v19 = (integerValue - [numericalValue2 integerValue]);
 
         [v13 center];
         v21 = v20;
@@ -4856,10 +4856,10 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
 
       else
       {
-        [v15 doubleValue];
+        [numericalValue doubleValue];
         v25 = v24;
-        v26 = [v13 numericalValue];
-        [v26 doubleValue];
+        numericalValue3 = [v13 numericalValue];
+        [numericalValue3 doubleValue];
         v19 = v25 / v27;
 
         [v14 center];
@@ -4868,7 +4868,7 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
         v23 = v29 - v30;
       }
 
-      v31 = [MEMORY[0x277CCABB0] numberWithDouble:v19 / (v23 / a4)];
+      v31 = [MEMORY[0x277CCABB0] numberWithDouble:v19 / (v23 / distance)];
       v32 = AXLogAudiogram();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
@@ -4877,7 +4877,7 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
         v37 = 2048;
         v38 = v23;
         v39 = 2048;
-        v40 = v23 / a4;
+        v40 = v23 / distance;
         v41 = 2048;
         v42 = v19;
         _os_log_debug_impl(&dword_24179B000, v32, OS_LOG_TYPE_DEBUG, "Step value difference: %@ distance: %f distance factor: %f original val diff: %f", buf, 0x2Au);
@@ -4892,10 +4892,10 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
   return v9;
 }
 
-- (id)_validMapForPointPairs:(id)a3 stepDistance:(double)a4 forValueDifference:(double)a5 forAxis:(unint64_t)a6
+- (id)_validMapForPointPairs:(id)pairs stepDistance:(double)distance forValueDifference:(double)difference forAxis:(unint64_t)axis
 {
-  v10 = a3;
-  v11 = [v10 count];
+  pairsCopy = pairs;
+  v11 = [pairsCopy count];
   v12 = objc_opt_new();
   v13 = v11 - 1;
   if (v13 >= 1)
@@ -4903,9 +4903,9 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
     v14 = 0;
     do
     {
-      v15 = [v10 objectAtIndex:v14];
-      v16 = [v10 objectAtIndex:++v14];
-      v17 = [(AIAudiogramIngestionEngine *)self _isValidObject:v15 toObject:v16 withValueDifference:a6 stepDistance:a5 forAxis:a4];
+      v15 = [pairsCopy objectAtIndex:v14];
+      v16 = [pairsCopy objectAtIndex:++v14];
+      v17 = [(AIAudiogramIngestionEngine *)self _isValidObject:v15 toObject:v16 withValueDifference:axis stepDistance:difference forAxis:distance];
       v18 = [MEMORY[0x277CCABB0] numberWithBool:v17];
       [v12 addObject:v18];
     }
@@ -4916,13 +4916,13 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
   return v12;
 }
 
-- (id)_validPointsFromMap:(id)a3 forValues:(id)a4
+- (id)_validPointsFromMap:(id)map forValues:(id)values
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  mapCopy = map;
+  valuesCopy = values;
   v7 = objc_opt_new();
-  v8 = [v5 count];
+  v8 = [mapCopy count];
   v10 = v8;
   if (v8 >= 1)
   {
@@ -4933,14 +4933,14 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
     v27 = v7;
     do
     {
-      v13 = [v5 objectAtIndex:{v11, v26}];
-      v14 = [v13 BOOLValue];
+      v13 = [mapCopy objectAtIndex:{v11, v26}];
+      bOOLValue = [v13 BOOLValue];
 
       if (v12 == v11)
       {
-        if (v14)
+        if (bOOLValue)
         {
-          v15 = [v6 objectAtIndex:v12 + 1];
+          v15 = [valuesCopy objectAtIndex:v12 + 1];
           [v7 addObject:v15];
           v16 = AXLogAudiogram();
           if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -4948,9 +4948,9 @@ uint64_t __76__AIAudiogramIngestionEngine__sortAndRemoveInvalidAxisValues_forAxi
             goto LABEL_22;
           }
 
-          v17 = [v15 numericalValue];
+          numericalValue = [v15 numericalValue];
           *buf = 138412290;
-          v29 = v17;
+          v29 = numericalValue;
           _os_log_impl(&dword_24179B000, v16, OS_LOG_TYPE_INFO, "pairA valid. Add %@", buf, 0xCu);
 LABEL_14:
 
@@ -4960,14 +4960,14 @@ LABEL_14:
 
       else
       {
-        v18 = [v5 objectAtIndex:v11 + 1];
-        v19 = [v18 BOOLValue];
+        v18 = [mapCopy objectAtIndex:v11 + 1];
+        bOOLValue2 = [v18 BOOLValue];
 
         if (v11)
         {
-          if (v19)
+          if (bOOLValue2)
           {
-            v15 = [v6 objectAtIndex:v11 + 1];
+            v15 = [valuesCopy objectAtIndex:v11 + 1];
             [v7 addObject:v15];
             v16 = AXLogAudiogram();
             if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -4976,9 +4976,9 @@ LABEL_14:
             }
 
 LABEL_20:
-            v22 = [v15 numericalValue];
+            numericalValue2 = [v15 numericalValue];
             *buf = 138412290;
-            v29 = v22;
+            v29 = numericalValue2;
             v23 = v16;
             v24 = "pairB valid. Add %@";
 LABEL_21:
@@ -4987,9 +4987,9 @@ LABEL_21:
             goto LABEL_22;
           }
 
-          if (v14)
+          if (bOOLValue)
           {
-            v15 = [v6 objectAtIndex:v11 + 1];
+            v15 = [valuesCopy objectAtIndex:v11 + 1];
             [v7 addObject:v15];
             v16 = AXLogAudiogram();
             if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -4997,9 +4997,9 @@ LABEL_21:
               goto LABEL_22;
             }
 
-            v22 = [v15 numericalValue];
+            numericalValue2 = [v15 numericalValue];
             *buf = 138412290;
-            v29 = v22;
+            v29 = numericalValue2;
             v23 = v16;
             v24 = "pairA valid. Add %@";
             goto LABEL_21;
@@ -5008,22 +5008,22 @@ LABEL_21:
 
         else
         {
-          if (v14)
+          if (bOOLValue)
           {
-            v15 = [v6 objectAtIndex:0];
-            v16 = [v6 objectAtIndex:1];
+            v15 = [valuesCopy objectAtIndex:0];
+            v16 = [valuesCopy objectAtIndex:1];
             [v7 addObject:v15];
             [v7 addObject:v16];
-            v17 = AXLogAudiogram();
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+            numericalValue = AXLogAudiogram();
+            if (os_log_type_enabled(numericalValue, OS_LOG_TYPE_INFO))
             {
-              v20 = [v15 numericalValue];
-              v21 = [v16 numericalValue];
+              numericalValue3 = [v15 numericalValue];
+              numericalValue4 = [v16 numericalValue];
               *buf = v26;
-              v29 = v20;
+              v29 = numericalValue3;
               v30 = 2112;
-              v31 = v21;
-              _os_log_impl(&dword_24179B000, v17, OS_LOG_TYPE_INFO, "pairA valid. Add %@, %@", buf, 0x16u);
+              v31 = numericalValue4;
+              _os_log_impl(&dword_24179B000, numericalValue, OS_LOG_TYPE_INFO, "pairA valid. Add %@, %@", buf, 0x16u);
 
               v7 = v27;
             }
@@ -5031,9 +5031,9 @@ LABEL_21:
             goto LABEL_14;
           }
 
-          if (v19)
+          if (bOOLValue2)
           {
-            v15 = [v6 objectAtIndex:1];
+            v15 = [valuesCopy objectAtIndex:1];
             [v7 addObject:v15];
             v16 = AXLogAudiogram();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -5055,15 +5055,15 @@ LABEL_22:
   return v7;
 }
 
-- (BOOL)_isValidObject:(id)a3 toObject:(id)a4 withValueDifference:(double)a5 stepDistance:(double)a6 forAxis:(unint64_t)a7
+- (BOOL)_isValidObject:(id)object toObject:(id)toObject withValueDifference:(double)difference stepDistance:(double)distance forAxis:(unint64_t)axis
 {
   v68 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (a7 == 1)
+  objectCopy = object;
+  toObjectCopy = toObject;
+  v13 = toObjectCopy;
+  if (axis == 1)
   {
-    [v11 center];
+    [objectCopy center];
     v15 = v14;
     [v13 center];
     v17 = v15 - v16;
@@ -5071,23 +5071,23 @@ LABEL_22:
 
   else
   {
-    [v12 center];
+    [toObjectCopy center];
     v19 = v18;
-    [v11 center];
+    [objectCopy center];
     v17 = v19 - v20;
   }
 
-  v21 = v17 / a6;
-  v22 = v21 * a5;
+  v21 = v17 / distance;
+  v22 = v21 * difference;
   v23 = AXLogAudiogram();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v56 = [v11 numericalValue];
-    v57 = [v13 numericalValue];
+    numericalValue = [objectCopy numericalValue];
+    numericalValue2 = [v13 numericalValue];
     v58 = 138413314;
-    v59 = v56;
+    v59 = numericalValue;
     v60 = 2112;
-    v61 = v57;
+    v61 = numericalValue2;
     v62 = 2048;
     v63 = v17;
     v64 = 2048;
@@ -5097,13 +5097,13 @@ LABEL_22:
     _os_log_debug_impl(&dword_24179B000, v23, OS_LOG_TYPE_DEBUG, "Pair (%@, %@), distance: %f distance factor: %f adjusted target value difference: %f", &v58, 0x34u);
   }
 
-  v24 = [v13 numericalValue];
-  v25 = v24;
-  if (a7 == 1)
+  numericalValue3 = [v13 numericalValue];
+  v25 = numericalValue3;
+  if (axis == 1)
   {
-    v26 = [v24 integerValue];
-    v27 = [v11 numericalValue];
-    v28 = (v26 - [v27 integerValue]);
+    integerValue = [numericalValue3 integerValue];
+    numericalValue4 = [objectCopy numericalValue];
+    v28 = (integerValue - [numericalValue4 integerValue]);
 
     v29 = v28 / v22;
     v30 = AXLogAudiogram();
@@ -5118,10 +5118,10 @@ LABEL_22:
 
   else
   {
-    [v24 doubleValue];
+    [numericalValue3 doubleValue];
     v41 = v40;
-    v42 = [v11 numericalValue];
-    [v42 doubleValue];
+    numericalValue5 = [objectCopy numericalValue];
+    [numericalValue5 doubleValue];
     v44 = v41 / v43;
 
     if (v44 <= 1.0)
@@ -5148,11 +5148,11 @@ LABEL_18:
   return v45;
 }
 
-- (double)_stddevFromNumbers:(id)a3
+- (double)_stddevFromNumbers:(id)numbers
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9C0];
-  v4 = [MEMORY[0x277CCA9C0] expressionForConstantValue:a3];
+  v4 = [MEMORY[0x277CCA9C0] expressionForConstantValue:numbers];
   v11[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v6 = [v3 expressionForFunction:@"stddev:" arguments:v5];
@@ -5164,11 +5164,11 @@ LABEL_18:
   return v9;
 }
 
-- (double)_meanFromNumbers:(id)a3
+- (double)_meanFromNumbers:(id)numbers
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9C0];
-  v4 = [MEMORY[0x277CCA9C0] expressionForConstantValue:a3];
+  v4 = [MEMORY[0x277CCA9C0] expressionForConstantValue:numbers];
   v11[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v6 = [v3 expressionForFunction:@"average:" arguments:v5];
@@ -5180,22 +5180,22 @@ LABEL_18:
   return v9;
 }
 
-- (double)_zScoreFromNumber:(double)a3 mean:(double)a4 stddev:(double)a5
+- (double)_zScoreFromNumber:(double)number mean:(double)mean stddev:(double)stddev
 {
   result = 0.0;
-  if (a5 != 0.0)
+  if (stddev != 0.0)
   {
-    return (a3 - a4) / a5;
+    return (number - mean) / stddev;
   }
 
   return result;
 }
 
-- (unsigned)_propertyOrientationFromOrientation:(int64_t)a3
+- (unsigned)_propertyOrientationFromOrientation:(int64_t)orientation
 {
-  if (a3 < 8)
+  if (orientation < 8)
   {
-    return dword_2417E8350[a3];
+    return dword_2417E8350[orientation];
   }
 
   v4 = AXLogAudiogram();

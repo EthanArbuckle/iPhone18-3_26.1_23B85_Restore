@@ -1,5 +1,5 @@
 @interface MapRegionShareItemSource
-- (MapRegionShareItemSource)initWithMapView:(id)a3 title:(id)a4;
+- (MapRegionShareItemSource)initWithMapView:(id)view title:(id)title;
 - (NSArray)activityProviders;
 - (NSArray)applicationActivities;
 @end
@@ -10,21 +10,21 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v6 = [(MapRegionShareItemSource *)self pushSubmissionData];
-    if (v6)
+    pushSubmissionData = [(MapRegionShareItemSource *)self pushSubmissionData];
+    if (pushSubmissionData)
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
       v7 = +[MapsPushManager defaultManager];
-      v8 = [v7 devices];
+      devices = [v7 devices];
 
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -35,14 +35,14 @@
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(devices);
             }
 
             v13 = [[PushToDeviceActivity alloc] initWithDevice:*(*(&v15 + 1) + 8 * i) place:self];
             [v3 addObject:v13];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
@@ -55,33 +55,33 @@
 
 - (NSArray)activityProviders
 {
-  v3 = [(MapRegionShareItemSource *)self textActivityProvider];
-  v7[0] = v3;
-  v4 = [(MapRegionShareItemSource *)self urlActivityProvider];
-  v7[1] = v4;
+  textActivityProvider = [(MapRegionShareItemSource *)self textActivityProvider];
+  v7[0] = textActivityProvider;
+  urlActivityProvider = [(MapRegionShareItemSource *)self urlActivityProvider];
+  v7[1] = urlActivityProvider;
   v5 = [NSArray arrayWithObjects:v7 count:2];
 
   return v5;
 }
 
-- (MapRegionShareItemSource)initWithMapView:(id)a3 title:(id)a4
+- (MapRegionShareItemSource)initWithMapView:(id)view title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  titleCopy = title;
   v22.receiver = self;
   v22.super_class = MapRegionShareItemSource;
   v8 = [(MapRegionShareItemSource *)&v22 init];
   if (v8)
   {
-    [v6 visibleMapRect];
+    [viewCopy visibleMapRect];
     v24 = MKCoordinateRegionForMapRect(v23);
     latitude = v24.center.latitude;
     longitude = v24.center.longitude;
     latitudeDelta = v24.span.latitudeDelta;
     longitudeDelta = v24.span.longitudeDelta;
     v13 = [_TtC4Maps29MapRegionActivityDataProvider alloc];
-    v14 = [v6 camera];
-    v15 = -[MapRegionActivityDataProvider initWithMapRegion:camera:title:mapType:](v13, "initWithMapRegion:camera:title:mapType:", v14, v7, [v6 mapType], latitude, longitude, latitudeDelta, longitudeDelta);
+    camera = [viewCopy camera];
+    v15 = -[MapRegionActivityDataProvider initWithMapRegion:camera:title:mapType:](v13, "initWithMapRegion:camera:title:mapType:", camera, titleCopy, [viewCopy mapType], latitude, longitude, latitudeDelta, longitudeDelta);
     dataProvider = v8->_dataProvider;
     v8->_dataProvider = v15;
 

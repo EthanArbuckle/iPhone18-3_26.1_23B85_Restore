@@ -1,20 +1,20 @@
 @interface COSUnifiedOptinFYIViewController
 + (BOOL)controllerNeedsToRun;
 + (BOOL)hasTelephonyAndIsGreenTea;
-+ (BOOL)skipControllerForExpressMode:(id)a3;
++ (BOOL)skipControllerForExpressMode:(id)mode;
 - (COSUnifiedOptinFYIViewController)init;
 - (id)_detailStringKeyForCurrentState;
 - (id)detailString;
 - (id)okayButtonTitle;
 - (id)titleString;
-- (void)okayButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
 @end
 
 @implementation COSUnifiedOptinFYIViewController
 
 + (BOOL)controllerNeedsToRun
 {
-  if ([a1 hasTelephonyAndIsGreenTea])
+  if ([self hasTelephonyAndIsGreenTea])
   {
     return 1;
   }
@@ -22,12 +22,12 @@
   return +[COSOptinFYIController wantsUnifiedFYIPane];
 }
 
-+ (BOOL)skipControllerForExpressMode:(id)a3
++ (BOOL)skipControllerForExpressMode:(id)mode
 {
   v4 = +[COSOptinFYIController wantsUnifiedFYIPane];
   if (v4)
   {
-    LOBYTE(v4) = [a1 hasTelephonyAndIsGreenTea] ^ 1;
+    LOBYTE(v4) = [self hasTelephonyAndIsGreenTea] ^ 1;
   }
 
   return v4;
@@ -38,9 +38,9 @@
   v2 = +[UIDevice currentDevice];
   if ([v2 sf_isChinaRegionCellularDevice])
   {
-    v3 = [UIApp activeWatch];
+    activeWatch = [UIApp activeWatch];
     v4 = [[NSUUID alloc] initWithUUIDString:@"4AA3FF3B-3224-42E6-995E-481F49AE9260"];
-    v5 = [v3 supportsCapability:v4];
+    v5 = [activeWatch supportsCapability:v4];
   }
 
   else
@@ -83,9 +83,9 @@
 
 - (id)detailString
 {
-  v2 = [(COSUnifiedOptinFYIViewController *)self _detailStringKeyForCurrentState];
+  _detailStringKeyForCurrentState = [(COSUnifiedOptinFYIViewController *)self _detailStringKeyForCurrentState];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 localizedStringForKey:v2 value:&stru_10026E598 table:@"Localizable"];
+  v4 = [v3 localizedStringForKey:_detailStringKeyForCurrentState value:&stru_10026E598 table:@"Localizable"];
 
   return v4;
 }
@@ -113,9 +113,9 @@
     v5 = v6;
   }
 
-  v7 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v8 = [[NSUUID alloc] initWithUUIDString:@"4AA3FF3B-3224-42E6-995E-481F49AE9260"];
-  v9 = [v7 supportsCapability:v8];
+  v9 = [activeWatch supportsCapability:v8];
 
   if (v9)
   {
@@ -127,11 +127,11 @@
   return v5;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
   +[COSOptinFYIController doWorkForSkippedPanes];
-  v4 = [(COSUnifiedOptinFYIViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSUnifiedOptinFYIViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

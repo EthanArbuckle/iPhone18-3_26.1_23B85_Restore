@@ -1,6 +1,6 @@
 @interface AppProtectionMonitor
 - (_TtC26VisualActionPredictionCore20AppProtectionMonitor)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation AppProtectionMonitor
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   sub_22635084C();
   v5 = sub_22635056C();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_22634D6A0(v5);
   swift_unknownObjectRelease();
 }

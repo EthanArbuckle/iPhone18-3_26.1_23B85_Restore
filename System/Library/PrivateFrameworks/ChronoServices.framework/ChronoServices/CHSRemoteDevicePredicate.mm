@@ -1,24 +1,24 @@
 @interface CHSRemoteDevicePredicate
 + (CHSRemoteDevicePredicate)allPredicate;
 + (CHSRemoteDevicePredicate)nonePredicate;
-+ (CHSRemoteDevicePredicate)predicateWithDeviceIdentifier:(id)a3;
-+ (CHSRemoteDevicePredicate)predicateWithDeviceType:(int64_t)a3;
-+ (CHSRemoteDevicePredicate)predicateWithRelationshipIdentifier:(id)a3;
-- (BOOL)acceptsDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CHSRemoteDevicePredicate)predicateWithDeviceIdentifier:(id)identifier;
++ (CHSRemoteDevicePredicate)predicateWithDeviceType:(int64_t)type;
++ (CHSRemoteDevicePredicate)predicateWithRelationshipIdentifier:(id)identifier;
+- (BOOL)acceptsDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
 - (CHSRemoteDevicePredicate)init;
 - (NSString)description;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSRemoteDevicePredicate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CHSRemoteDevicePredicate.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CHSRemoteDevicePredicate.encode(with:)(coderCopy);
 }
 
 + (CHSRemoteDevicePredicate)nonePredicate
@@ -48,7 +48,7 @@
   return [(CHSRemoteDevicePredicate *)&v4 init];
 }
 
-+ (CHSRemoteDevicePredicate)predicateWithDeviceIdentifier:(id)a3
++ (CHSRemoteDevicePredicate)predicateWithDeviceIdentifier:(id)identifier
 {
   v3 = sub_195FA08B8();
   v5 = v4;
@@ -58,15 +58,15 @@
   return v6;
 }
 
-+ (CHSRemoteDevicePredicate)predicateWithDeviceType:(int64_t)a3
++ (CHSRemoteDevicePredicate)predicateWithDeviceType:(int64_t)type
 {
   swift_getObjCClassMetadata();
-  v4 = static CHSRemoteDevicePredicate.deviceType(_:)(a3);
+  v4 = static CHSRemoteDevicePredicate.deviceType(_:)(type);
 
   return v4;
 }
 
-+ (CHSRemoteDevicePredicate)predicateWithRelationshipIdentifier:(id)a3
++ (CHSRemoteDevicePredicate)predicateWithRelationshipIdentifier:(id)identifier
 {
   v3 = sub_195FA0548();
   v4 = *(v3 - 8);
@@ -96,11 +96,11 @@
   return v7;
 }
 
-- (BOOL)acceptsDevice:(id)a3
+- (BOOL)acceptsDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = CHSRemoteDevicePredicate.acceptsDevice(_:)(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  LOBYTE(self) = CHSRemoteDevicePredicate.acceptsDevice(_:)(deviceCopy);
 
   return self & 1;
 }
@@ -114,11 +114,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_195FA0E08();
     swift_unknownObjectRelease();
@@ -127,7 +127,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CHSRemoteDevicePredicate.isEqual(_:)(v8);
@@ -138,7 +138,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CHSRemoteDevicePredicate.hash.getter();
 
   return v3;

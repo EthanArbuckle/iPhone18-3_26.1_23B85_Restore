@@ -1,35 +1,35 @@
 @interface NavigationDebugAnnotationsProvider
-- (NavigationDebugAnnotationsProvider)initWithMapView:(id)a3;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_addArrivalRegionOverlay:(id)a3 fillColor:(id)a4 strokeColor:(id)a5 lineWidth:(double)a6;
-- (void)_addDebugLocationAnnotationMatchedLocation:(id)a3;
-- (void)_addLocationAnnotation:(id)a3 history:(id)a4;
-- (void)_addStepOrManeuverOverlayForCoordinate:(id)a3 color:(id)a4;
+- (NavigationDebugAnnotationsProvider)initWithMapView:(id)view;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_addArrivalRegionOverlay:(id)overlay fillColor:(id)color strokeColor:(id)strokeColor lineWidth:(double)width;
+- (void)_addDebugLocationAnnotationMatchedLocation:(id)location;
+- (void)_addLocationAnnotation:(id)annotation history:(id)history;
+- (void)_addStepOrManeuverOverlayForCoordinate:(id)coordinate color:(id)color;
 - (void)_clearDebugHistoryAnnotations;
 - (void)_clearStepAndManeuverOverlays;
-- (void)_updateArrivalOverlaysWithRoute:(id)a3;
-- (void)_updateStepAndManeuverOverlaysWithRoute:(id)a3;
+- (void)_updateArrivalOverlaysWithRoute:(id)route;
+- (void)_updateStepAndManeuverOverlaysWithRoute:(id)route;
 - (void)clearAllAnnotationsAndOverlays;
 - (void)dealloc;
-- (void)updateWithRoute:(id)a3;
+- (void)updateWithRoute:(id)route;
 @end
 
 @implementation NavigationDebugAnnotationsProvider
 
-- (void)_addArrivalRegionOverlay:(id)a3 fillColor:(id)a4 strokeColor:(id)a5 lineWidth:(double)a6
+- (void)_addArrivalRegionOverlay:(id)overlay fillColor:(id)color strokeColor:(id)strokeColor lineWidth:(double)width
 {
-  v21 = a4;
-  v10 = a5;
-  v11 = [a3 coordinates];
-  v12 = malloc_type_malloc(16 * [v11 count], 0x1000040451B5BE8uLL);
-  if ([v11 count])
+  colorCopy = color;
+  strokeColorCopy = strokeColor;
+  coordinates = [overlay coordinates];
+  v12 = malloc_type_malloc(16 * [coordinates count], 0x1000040451B5BE8uLL);
+  if ([coordinates count])
   {
     v13 = 0;
     v14 = v12 + 1;
     do
     {
-      v15 = [v11 objectAtIndexedSubscript:v13];
+      v15 = [coordinates objectAtIndexedSubscript:v13];
       [v15 lat];
       v17 = v16;
       [v15 lng];
@@ -40,28 +40,28 @@
       v14 += 2;
     }
 
-    while (v13 < [v11 count]);
+    while (v13 < [coordinates count]);
   }
 
-  v19 = +[MKPolygon polygonWithCoordinates:count:](MKPolygon, "polygonWithCoordinates:count:", v12, [v11 count]);
+  v19 = +[MKPolygon polygonWithCoordinates:count:](MKPolygon, "polygonWithCoordinates:count:", v12, [coordinates count]);
   free(v12);
   v20 = [[MKPolygonRenderer alloc] initWithPolygon:v19];
-  [v20 setFillColor:v21];
-  [v20 setStrokeColor:v10];
-  [v20 setLineWidth:a6];
+  [v20 setFillColor:colorCopy];
+  [v20 setStrokeColor:strokeColorCopy];
+  [v20 setLineWidth:width];
   [(NSMapTable *)self->_renderersForOverlays setObject:v20 forKey:v19];
   [(MKMapView *)self->_mapView addOverlay:v19 level:0];
 }
 
-- (void)_updateArrivalOverlaysWithRoute:(id)a3
+- (void)_updateArrivalOverlaysWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   mapView = self->_mapView;
   if (mapView)
   {
-    v6 = [(NSMapTable *)self->_renderersForOverlays keyEnumerator];
-    v7 = [v6 allObjects];
-    [(MKMapView *)mapView removeOverlays:v7];
+    keyEnumerator = [(NSMapTable *)self->_renderersForOverlays keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    [(MKMapView *)mapView removeOverlays:allObjects];
 
     renderersForOverlays = self->_renderersForOverlays;
     self->_renderersForOverlays = 0;
@@ -70,12 +70,12 @@
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    obj = [v4 legs];
+    obj = [routeCopy legs];
     v52 = [obj countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v52)
     {
       v51 = *v64;
-      v49 = v4;
+      v49 = routeCopy;
       do
       {
         for (i = 0; i != v52; i = i + 1)
@@ -85,8 +85,8 @@
             objc_enumerationMutation(obj);
           }
 
-          v10 = [*(*(&v63 + 1) + 8 * i) arrivalParameters];
-          if (v10)
+          arrivalParameters = [*(*(&v63 + 1) + 8 * i) arrivalParameters];
+          if (arrivalParameters)
           {
             if (!self->_renderersForOverlays)
             {
@@ -96,9 +96,9 @@
             }
 
             v54 = i;
-            if (GEOConfigGetBOOL() && [v4 pointCount] && objc_msgSend(v10, "endOfRouteDistanceThreshold"))
+            if (GEOConfigGetBOOL() && [routeCopy pointCount] && objc_msgSend(arrivalParameters, "endOfRouteDistanceThreshold"))
             {
-              [v4 pointAtRouteCoordinate:{objc_msgSend(v4, "routeCoordinateAtDistance:beforeRouteCoordinate:", objc_msgSend(v4, "pointCount") - 1, objc_msgSend(v10, "endOfRouteDistanceThreshold"))}];
+              [routeCopy pointAtRouteCoordinate:{objc_msgSend(routeCopy, "routeCoordinateAtDistance:beforeRouteCoordinate:", objc_msgSend(routeCopy, "pointCount") - 1, objc_msgSend(arrivalParameters, "endOfRouteDistanceThreshold"))}];
               v13 = [MKCircle circleWithCenterCoordinate:"circleWithCenterCoordinate:radius:" radius:?];
               v14 = [[MKCircleRenderer alloc] initWithCircle:v13];
               v15 = +[UIColor greenColor];
@@ -113,9 +113,9 @@
             v62 = 0u;
             v59 = 0u;
             v60 = 0u;
-            v53 = v10;
-            v17 = [v10 arrivalMapRegions];
-            v18 = [v17 countByEnumeratingWithState:&v59 objects:v68 count:16];
+            v53 = arrivalParameters;
+            arrivalMapRegions = [arrivalParameters arrivalMapRegions];
+            v18 = [arrivalMapRegions countByEnumeratingWithState:&v59 objects:v68 count:16];
             if (v18)
             {
               v19 = v18;
@@ -126,14 +126,14 @@
                 {
                   if (*v60 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(arrivalMapRegions);
                   }
 
                   v22 = *(*(&v59 + 1) + 8 * j);
-                  v23 = [v22 arrivalRegionAction];
-                  if (v23 <= 4)
+                  arrivalRegionAction = [v22 arrivalRegionAction];
+                  if (arrivalRegionAction <= 4)
                   {
-                    if (v23 == 2 || v23 == 3)
+                    if (arrivalRegionAction == 2 || arrivalRegionAction == 3)
                     {
                       if (!GEOConfigGetBOOL())
                       {
@@ -150,7 +150,7 @@ LABEL_40:
                       goto LABEL_41;
                     }
 
-                    if (v23 == 4 && GEOConfigGetBOOL())
+                    if (arrivalRegionAction == 4 && GEOConfigGetBOOL())
                     {
                       v27 = +[UIColor orangeColor];
                       v28 = [v27 colorWithAlphaComponent:0.2];
@@ -163,9 +163,9 @@ LABEL_40:
 
                   else
                   {
-                    if (v23 <= 6)
+                    if (arrivalRegionAction <= 6)
                     {
-                      if (v23 == 5)
+                      if (arrivalRegionAction == 5)
                       {
                         if (!GEOConfigGetBOOL())
                         {
@@ -193,13 +193,13 @@ LABEL_37:
                       v29 = +[UIColor greenColor];
                       v30 = 3.0;
 LABEL_41:
-                      v34 = [v22 arrivalRegion];
-                      [(NavigationDebugAnnotationsProvider *)self _addArrivalRegionOverlay:v34 fillColor:v28 strokeColor:v29 lineWidth:v30];
+                      arrivalRegion = [v22 arrivalRegion];
+                      [(NavigationDebugAnnotationsProvider *)self _addArrivalRegionOverlay:arrivalRegion fillColor:v28 strokeColor:v29 lineWidth:v30];
 
                       continue;
                     }
 
-                    if ((v23 == 7 || v23 == 8) && GEOConfigGetBOOL())
+                    if ((arrivalRegionAction == 7 || arrivalRegionAction == 8) && GEOConfigGetBOOL())
                     {
                       v24 = +[UIColor magentaColor];
                       v25 = v24;
@@ -209,13 +209,13 @@ LABEL_41:
                   }
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v59 objects:v68 count:16];
+                v19 = [arrivalMapRegions countByEnumeratingWithState:&v59 objects:v68 count:16];
               }
 
               while (v19);
             }
 
-            v10 = v53;
+            arrivalParameters = v53;
             i = v54;
             if (GEOConfigGetBOOL())
             {
@@ -223,8 +223,8 @@ LABEL_41:
               v58 = 0u;
               v55 = 0u;
               v56 = 0u;
-              v35 = [v53 arrivalPoints];
-              v36 = [v35 countByEnumeratingWithState:&v55 objects:v67 count:16];
+              arrivalPoints = [v53 arrivalPoints];
+              v36 = [arrivalPoints countByEnumeratingWithState:&v55 objects:v67 count:16];
               if (v36)
               {
                 v37 = v36;
@@ -235,12 +235,12 @@ LABEL_41:
                   {
                     if (*v56 != v38)
                     {
-                      objc_enumerationMutation(v35);
+                      objc_enumerationMutation(arrivalPoints);
                     }
 
                     v40 = *(*(&v55 + 1) + 8 * k);
-                    v41 = [v40 point];
-                    [v41 coordinate];
+                    point = [v40 point];
+                    [point coordinate];
 
                     CLLocationCoordinate2DFromGEOLocationCoordinate2D();
                     v44 = +[MKCircle circleWithCenterCoordinate:radius:](MKCircle, "circleWithCenterCoordinate:radius:", v42, v43, [v40 radius]);
@@ -257,14 +257,14 @@ LABEL_41:
                     [(MKMapView *)self->_mapView addOverlay:v44 level:0];
                   }
 
-                  v37 = [v35 countByEnumeratingWithState:&v55 objects:v67 count:16];
+                  v37 = [arrivalPoints countByEnumeratingWithState:&v55 objects:v67 count:16];
                 }
 
                 while (v37);
               }
 
-              v4 = v49;
-              v10 = v53;
+              routeCopy = v49;
+              arrivalParameters = v53;
               i = v54;
             }
           }
@@ -281,31 +281,31 @@ LABEL_41:
 - (void)_clearStepAndManeuverOverlays
 {
   mapView = self->_mapView;
-  v4 = [(NSMapTable *)self->_stepAndManeuverOverlays keyEnumerator];
-  v5 = [v4 allObjects];
-  [(MKMapView *)mapView removeOverlays:v5];
+  keyEnumerator = [(NSMapTable *)self->_stepAndManeuverOverlays keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  [(MKMapView *)mapView removeOverlays:allObjects];
 
   stepAndManeuverOverlays = self->_stepAndManeuverOverlays;
   self->_stepAndManeuverOverlays = 0;
 }
 
-- (void)_addStepOrManeuverOverlayForCoordinate:(id)a3 color:(id)a4
+- (void)_addStepOrManeuverOverlayForCoordinate:(id)coordinate color:(id)color
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  colorCopy = color;
   v8 = CLLocationCoordinate2DMake(var0, var1);
   v10 = [MKCircle circleWithCenterCoordinate:v8.latitude radius:v8.longitude, 2.0];
   v9 = [[MKCircleRenderer alloc] initWithCircle:v10];
-  [v9 setFillColor:v7];
+  [v9 setFillColor:colorCopy];
 
   [(NSMapTable *)self->_stepAndManeuverOverlays setObject:v9 forKey:v10];
   [(MKMapView *)self->_mapView addOverlay:v10];
 }
 
-- (void)_updateStepAndManeuverOverlaysWithRoute:(id)a3
+- (void)_updateStepAndManeuverOverlaysWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   [(NavigationDebugAnnotationsProvider *)self _clearStepAndManeuverOverlays];
   if (self->_mapView)
   {
@@ -325,7 +325,7 @@ LABEL_41:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      obj = [v4 steps];
+      obj = [routeCopy steps];
       v9 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v9)
       {
@@ -349,10 +349,10 @@ LABEL_41:
               [v13 endRouteCoordinate];
             }
 
-            v15 = [v14 startRouteCoordinate];
+            startRouteCoordinate = [v14 startRouteCoordinate];
             if ((GEOPolylineCoordinateEqual() & 1) == 0)
             {
-              [v4 pointAtRouteCoordinate:v15];
+              [routeCopy pointAtRouteCoordinate:startRouteCoordinate];
               v17 = v16;
               v19 = v18;
               v21 = v20;
@@ -360,14 +360,14 @@ LABEL_41:
               [(NavigationDebugAnnotationsProvider *)self _addStepOrManeuverOverlayForCoordinate:v22 color:v17, v19, v21];
             }
 
-            [v4 pointAtRouteCoordinate:{objc_msgSend(v14, "maneuverStartRouteCoordinate")}];
+            [routeCopy pointAtRouteCoordinate:{objc_msgSend(v14, "maneuverStartRouteCoordinate")}];
             v24 = v23;
             v26 = v25;
             v28 = v27;
             v29 = +[UIColor greenColor];
             [(NavigationDebugAnnotationsProvider *)self _addStepOrManeuverOverlayForCoordinate:v29 color:v24, v26, v28];
 
-            [v4 pointAtRouteCoordinate:{objc_msgSend(v14, "endRouteCoordinate")}];
+            [routeCopy pointAtRouteCoordinate:{objc_msgSend(v14, "endRouteCoordinate")}];
             v31 = v30;
             v33 = v32;
             v35 = v34;
@@ -507,43 +507,43 @@ LABEL_41:
   [(NSMutableArray *)self->_matchedUserLocationHistory removeAllObjects];
 }
 
-- (void)_addLocationAnnotation:(id)a3 history:(id)a4
+- (void)_addLocationAnnotation:(id)annotation history:(id)history
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 count] == 3)
+  annotationCopy = annotation;
+  historyCopy = history;
+  if ([historyCopy count] == 3)
   {
-    v7 = [v6 objectAtIndexedSubscript:0];
+    v7 = [historyCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(MKMapView *)self->_mapView removeAnnotation:v7];
     }
 
-    [v6 removeObjectAtIndex:0];
+    [historyCopy removeObjectAtIndex:0];
   }
 
-  if (v9)
+  if (annotationCopy)
   {
-    [v6 addObject:v9];
+    [historyCopy addObject:annotationCopy];
   }
 
   else
   {
     v8 = +[NSNull null];
-    [v6 addObject:v8];
+    [historyCopy addObject:v8];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MKMapView *)self->_mapView addAnnotation:v9];
+    [(MKMapView *)self->_mapView addAnnotation:annotationCopy];
   }
 }
 
-- (void)_addDebugLocationAnnotationMatchedLocation:(id)a3
+- (void)_addDebugLocationAnnotationMatchedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 BOOLForKey:@"NavigationShowRawGPSTrail"];
 
@@ -556,14 +556,14 @@ LABEL_41:
       self->_locationShifter = v7;
     }
 
-    v9 = [v4 rawLocation];
-    [v4 rawCoordinate];
+    rawLocation = [locationCopy rawLocation];
+    [locationCopy rawCoordinate];
     if ([GEOLocationShifter isLocationShiftRequiredForCoordinate:?])
     {
-      v10 = [[GEOLocation alloc] initWithCLLocation:v4];
-      v11 = [v10 rawCoordinate];
+      v10 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
+      rawCoordinate = [v10 rawCoordinate];
       v40 = 0uLL;
-      if ([(GEOLocationShifter *)self->_locationShifter shiftLatLng:v11 accuracy:&v40 shiftedCoordinate:0 shiftedAccuracy:0.0])
+      if ([(GEOLocationShifter *)self->_locationShifter shiftLatLng:rawCoordinate accuracy:&v40 shiftedCoordinate:0 shiftedAccuracy:0.0])
       {
         v38 = 0u;
         memset(v39, 0, 60);
@@ -572,9 +572,9 @@ LABEL_41:
         v34 = 0u;
         v35 = 0u;
         v33 = 0u;
-        if (v9)
+        if (rawLocation)
         {
-          [v9 clientLocation];
+          [rawLocation clientLocation];
         }
 
         *(v39 + 4) = v40;
@@ -598,23 +598,23 @@ LABEL_41:
         v13 = 0;
       }
 
-      v9 = v13;
+      rawLocation = v13;
     }
 
-    if (v9)
+    if (rawLocation)
     {
       v14 = objc_alloc_init(DebugLocationAnnotation);
-      [(DebugLocationAnnotation *)v14 setLocation:v9];
-      -[DebugLocationAnnotation setLocationType:](v14, "setLocationType:", [v4 isProjected]);
+      [(DebugLocationAnnotation *)v14 setLocation:rawLocation];
+      -[DebugLocationAnnotation setLocationType:](v14, "setLocationType:", [locationCopy isProjected]);
       [(DebugLocationAnnotation *)v14 setNavType:self->_userLocationMarkerMode];
-      v15 = [v4 rawLocation];
-      v16 = [v15 _navigation_hasMatch];
+      rawLocation2 = [locationCopy rawLocation];
+      _navigation_hasMatch = [rawLocation2 _navigation_hasMatch];
 
-      if (v16)
+      if (_navigation_hasMatch)
       {
         v17 = objc_alloc_init(DebugLocationAnnotation);
-        v18 = [v4 rawLocation];
-        [(DebugLocationAnnotation *)v17 setLocation:v18];
+        rawLocation3 = [locationCopy rawLocation];
+        [(DebugLocationAnnotation *)v17 setLocation:rawLocation3];
 
         [(DebugLocationAnnotation *)v17 setLocationType:3];
         [(DebugLocationAnnotation *)v17 setNavType:self->_userLocationMarkerMode];
@@ -656,7 +656,7 @@ LABEL_41:
   if (v26)
   {
     v27 = objc_alloc_init(DebugLocationAnnotation);
-    [(DebugLocationAnnotation *)v27 setLocation:v4];
+    [(DebugLocationAnnotation *)v27 setLocation:locationCopy];
     [(DebugLocationAnnotation *)v27 setLocationType:2];
     [(DebugLocationAnnotation *)v27 setNavType:self->_userLocationMarkerMode];
     matchedUserLocationHistory = self->_matchedUserLocationHistory;
@@ -673,15 +673,15 @@ LABEL_41:
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a4;
-  if (self->_mapView == a3)
+  overlayCopy = overlay;
+  if (self->_mapView == view)
   {
-    v8 = [(NSMapTable *)self->_renderersForOverlays objectForKey:v6];
+    v8 = [(NSMapTable *)self->_renderersForOverlays objectForKey:overlayCopy];
     if (!v8)
     {
-      v8 = [(NSMapTable *)self->_stepAndManeuverOverlays objectForKey:v6];
+      v8 = [(NSMapTable *)self->_stepAndManeuverOverlays objectForKey:overlayCopy];
     }
 
     v7 = v8;
@@ -695,11 +695,11 @@ LABEL_41:
   return v7;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_mapView != v6)
+  viewCopy = view;
+  annotationCopy = annotation;
+  if (self->_mapView != viewCopy)
   {
     goto LABEL_2;
   }
@@ -707,11 +707,11 @@ LABEL_41:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = annotationCopy;
     [v9 radius];
     if (v10 <= 0.0)
     {
-      v8 = [(MKMapView *)v6 dequeueReusableAnnotationViewWithIdentifier:@"NavCircle"];
+      v8 = [(MKMapView *)viewCopy dequeueReusableAnnotationViewWithIdentifier:@"NavCircle"];
       if (!v8)
       {
         v8 = [[CircleAnnotationView alloc] initWithAnnotation:v9 reuseIdentifier:@"NavCircle"];
@@ -720,7 +720,7 @@ LABEL_41:
 
     else
     {
-      v8 = [(MKMapView *)v6 dequeueReusableAnnotationViewWithIdentifier:@"NavDistanceCircle"];
+      v8 = [(MKMapView *)viewCopy dequeueReusableAnnotationViewWithIdentifier:@"NavDistanceCircle"];
       if (!v8)
       {
         v8 = [[DistanceCircleAnnotationView alloc] initWithAnnotation:v9 reuseIdentifier:@"NavDistanceCircle"];
@@ -750,8 +750,8 @@ LABEL_2:
       goto LABEL_15;
     }
 
-    v11 = v7;
-    v12 = [(MKMapView *)v6 dequeueReusableAnnotationViewWithIdentifier:@"NavDebugLocation"];
+    v11 = annotationCopy;
+    v12 = [(MKMapView *)viewCopy dequeueReusableAnnotationViewWithIdentifier:@"NavDebugLocation"];
     if (v12)
     {
       v8 = v12;
@@ -774,20 +774,20 @@ LABEL_15:
   [(NavigationDebugAnnotationsProvider *)self _clearAllDebugAnnotations];
   [(NavigationDebugAnnotationsProvider *)self _clearStepAndManeuverOverlays];
   mapView = self->_mapView;
-  v4 = [(NSMapTable *)self->_renderersForOverlays keyEnumerator];
-  v5 = [v4 allObjects];
-  [(MKMapView *)mapView removeOverlays:v5];
+  keyEnumerator = [(NSMapTable *)self->_renderersForOverlays keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  [(MKMapView *)mapView removeOverlays:allObjects];
 
   renderersForOverlays = self->_renderersForOverlays;
   self->_renderersForOverlays = 0;
 }
 
-- (void)updateWithRoute:(id)a3
+- (void)updateWithRoute:(id)route
 {
-  objc_storeStrong(&self->_route, a3);
-  v5 = a3;
-  [(NavigationDebugAnnotationsProvider *)self _updateArrivalOverlaysWithRoute:v5];
-  [(NavigationDebugAnnotationsProvider *)self _updateStepAndManeuverOverlaysWithRoute:v5];
+  objc_storeStrong(&self->_route, route);
+  routeCopy = route;
+  [(NavigationDebugAnnotationsProvider *)self _updateArrivalOverlaysWithRoute:routeCopy];
+  [(NavigationDebugAnnotationsProvider *)self _updateStepAndManeuverOverlaysWithRoute:routeCopy];
 }
 
 - (void)dealloc
@@ -831,16 +831,16 @@ LABEL_15:
   [(NavigationDebugAnnotationsProvider *)&v9 dealloc];
 }
 
-- (NavigationDebugAnnotationsProvider)initWithMapView:(id)a3
+- (NavigationDebugAnnotationsProvider)initWithMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v43.receiver = self;
   v43.super_class = NavigationDebugAnnotationsProvider;
   v6 = [(NavigationDebugAnnotationsProvider *)&v43 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapView, a3);
+    objc_storeStrong(&v6->_mapView, view);
     v8 = [[NSMutableArray alloc] initWithCapacity:3];
     userLocationHistory = v7->_userLocationHistory;
     v7->_userLocationHistory = v8;

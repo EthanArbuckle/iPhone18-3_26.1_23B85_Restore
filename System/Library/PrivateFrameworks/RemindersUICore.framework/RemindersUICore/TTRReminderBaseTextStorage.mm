@@ -1,9 +1,9 @@
 @interface TTRReminderBaseTextStorage
 - (TTRReminderBaseTextStorage)init;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)string;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
 @end
 
 @implementation TTRReminderBaseTextStorage
@@ -29,36 +29,36 @@
 
 - (id)string
 {
-  v2 = [(TTRReminderBaseTextStorage *)self backingStore];
-  v3 = [v2 string];
+  backingStore = [(TTRReminderBaseTextStorage *)self backingStore];
+  string = [backingStore string];
 
-  return v3;
+  return string;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(TTRReminderBaseTextStorage *)self backingStore];
-  v7 = [v6 attributesAtIndex:a3 effectiveRange:a4];
+  backingStore = [(TTRReminderBaseTextStorage *)self backingStore];
+  v7 = [backingStore attributesAtIndex:index effectiveRange:range];
 
   return v7;
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(TTRReminderBaseTextStorage *)self backingStore];
-  [v8 replaceCharactersInRange:location withString:{length, v7}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  backingStore = [(TTRReminderBaseTextStorage *)self backingStore];
+  [backingStore replaceCharactersInRange:location withString:{length, stringCopy}];
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(TTRReminderBaseTextStorage *)self backingStore];
-  [v8 setAttributes:v7 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  attributesCopy = attributes;
+  backingStore = [(TTRReminderBaseTextStorage *)self backingStore];
+  [backingStore setAttributes:attributesCopy range:{location, length}];
 }
 
 @end

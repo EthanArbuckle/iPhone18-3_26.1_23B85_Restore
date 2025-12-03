@@ -1,19 +1,19 @@
 @interface SBCustomEventDodgingModifierEvent
-- (SBCustomEventDodgingModifierEvent)initWithName:(id)a3;
+- (SBCustomEventDodgingModifierEvent)initWithName:(id)name;
 - (id)description;
 @end
 
 @implementation SBCustomEventDodgingModifierEvent
 
-- (SBCustomEventDodgingModifierEvent)initWithName:(id)a3
+- (SBCustomEventDodgingModifierEvent)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = SBCustomEventDodgingModifierEvent;
   v5 = [(SBCustomEventDodgingModifierEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }

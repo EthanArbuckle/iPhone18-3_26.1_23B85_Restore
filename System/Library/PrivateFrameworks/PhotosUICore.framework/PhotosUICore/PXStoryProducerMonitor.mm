@@ -1,17 +1,17 @@
 @interface PXStoryProducerMonitor
-- (PXStoryProducerMonitor)initWithStoryQueue:(id)a3;
+- (PXStoryProducerMonitor)initWithStoryQueue:(id)queue;
 - (double)currentTime;
 - (void)_invalidateIsLikelyToKeepUp;
 - (void)_updateIsLikelyToKeepUp;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)producerDidProduceResult:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)producerDidProduceResult:(id)result;
 - (void)reset;
-- (void)setEstimatedFractionCompletedPlaybackSpeed:(float)a3;
-- (void)setIsLikelyToKeepUp:(BOOL)a3;
-- (void)setLastFractionCompleted:(float)a3;
-- (void)setLastTime:(double)a3;
-- (void)setStartTime:(double)a3;
+- (void)setEstimatedFractionCompletedPlaybackSpeed:(float)speed;
+- (void)setIsLikelyToKeepUp:(BOOL)up;
+- (void)setLastFractionCompleted:(float)completed;
+- (void)setLastTime:(double)time;
+- (void)setStartTime:(double)time;
 @end
 
 @implementation PXStoryProducerMonitor
@@ -36,8 +36,8 @@
 
 - (void)_invalidateIsLikelyToKeepUp
 {
-  v2 = [(PXStoryProducerMonitor *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsLikelyToKeepUp];
+  updater = [(PXStoryProducerMonitor *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsLikelyToKeepUp];
 }
 
 - (void)reset
@@ -49,13 +49,13 @@
   [(PXStoryProducerMonitor *)self setEstimatedFractionCompletedPlaybackSpeed:0.0];
 }
 
-- (void)producerDidProduceResult:(id)a3
+- (void)producerDidProduceResult:(id)result
 {
-  v6 = a3;
-  if ([v6 isDegraded])
+  resultCopy = result;
+  if ([resultCopy isDegraded])
   {
-    v5 = [v6 fractionCompleted];
-    [v5 floatValue];
+    fractionCompleted = [resultCopy fractionCompleted];
+    [fractionCompleted floatValue];
     [(PXStoryProducerMonitor *)self setLastFractionCompleted:?];
   }
 
@@ -69,11 +69,11 @@
   [(PXStoryProducerMonitor *)self setLastTime:?];
 }
 
-- (void)setEstimatedFractionCompletedPlaybackSpeed:(float)a3
+- (void)setEstimatedFractionCompletedPlaybackSpeed:(float)speed
 {
-  if (self->_estimatedFractionCompletedPlaybackSpeed != a3)
+  if (self->_estimatedFractionCompletedPlaybackSpeed != speed)
   {
-    self->_estimatedFractionCompletedPlaybackSpeed = a3;
+    self->_estimatedFractionCompletedPlaybackSpeed = speed;
     [(PXStoryProducerMonitor *)self _invalidateIsLikelyToKeepUp];
   }
 }
@@ -83,8 +83,8 @@
   v4.receiver = self;
   v4.super_class = PXStoryProducerMonitor;
   [(PXStoryProducerMonitor *)&v4 didPerformChanges];
-  v3 = [(PXStoryProducerMonitor *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryProducerMonitor *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (double)currentTime
@@ -102,64 +102,64 @@
   return v5;
 }
 
-- (void)setIsLikelyToKeepUp:(BOOL)a3
+- (void)setIsLikelyToKeepUp:(BOOL)up
 {
-  if (self->_isLikelyToKeepUp != a3)
+  if (self->_isLikelyToKeepUp != up)
   {
-    self->_isLikelyToKeepUp = a3;
+    self->_isLikelyToKeepUp = up;
     [(PXStoryProducerMonitor *)self signalChange:1];
   }
 }
 
-- (void)setLastTime:(double)a3
+- (void)setLastTime:(double)time
 {
-  if (self->_lastTime != a3)
+  if (self->_lastTime != time)
   {
-    self->_lastTime = a3;
+    self->_lastTime = time;
     [(PXStoryProducerMonitor *)self _invalidateIsLikelyToKeepUp];
   }
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  if (self->_startTime != a3)
+  if (self->_startTime != time)
   {
-    self->_startTime = a3;
+    self->_startTime = time;
     [(PXStoryProducerMonitor *)self _invalidateIsLikelyToKeepUp];
   }
 }
 
-- (void)setLastFractionCompleted:(float)a3
+- (void)setLastFractionCompleted:(float)completed
 {
-  if (self->_lastFractionCompleted != a3)
+  if (self->_lastFractionCompleted != completed)
   {
-    self->_lastFractionCompleted = a3;
+    self->_lastFractionCompleted = completed;
     [(PXStoryProducerMonitor *)self _invalidateIsLikelyToKeepUp];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryProducerMonitor *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryProducerMonitor *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryProducerMonitor;
-  [(PXStoryProducerMonitor *)&v6 performChanges:v4];
+  [(PXStoryProducerMonitor *)&v6 performChanges:changesCopy];
 }
 
-- (PXStoryProducerMonitor)initWithStoryQueue:(id)a3
+- (PXStoryProducerMonitor)initWithStoryQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = PXStoryProducerMonitor;
   v5 = [(PXStoryProducerMonitor *)&v14 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
       storyQueue = v5->_storyQueue;
       v5->_storyQueue = v6;
     }

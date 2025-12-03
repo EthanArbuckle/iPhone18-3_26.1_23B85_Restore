@@ -1,21 +1,21 @@
 @interface ViewGraphDisplayLink
-+ (void)asyncThreadWithArg:(id)a3;
++ (void)asyncThreadWithArg:(id)arg;
 - (_TtC7SwiftUI20ViewGraphDisplayLink)init;
-- (void)displayLinkTimer:(id)a3;
+- (void)displayLinkTimer:(id)timer;
 @end
 
 @implementation ViewGraphDisplayLink
 
-- (void)displayLinkTimer:(id)a3
+- (void)displayLinkTimer:(id)timer
 {
-  v4 = a3;
-  v5 = self;
-  ViewGraphDisplayLink.displayLinkTimer(_:)(v4);
+  timerCopy = timer;
+  selfCopy = self;
+  ViewGraphDisplayLink.displayLinkTimer(_:)(timerCopy);
 }
 
-+ (void)asyncThreadWithArg:(id)a3
++ (void)asyncThreadWithArg:(id)arg
 {
-  if (a3)
+  if (arg)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

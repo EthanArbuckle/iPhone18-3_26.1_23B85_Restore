@@ -1,33 +1,33 @@
 @interface NSCollectionLayoutSize
-+ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)a3 fractionalHeight:(double)a4;
-+ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)a3 fractionalHeightUsingWidth:(double)a4;
-+ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)a3 height:(double)a4;
++ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)width fractionalHeight:(double)height;
++ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)width fractionalHeightUsingWidth:(double)usingWidth;
++ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)width height:(double)height;
 @end
 
 @implementation NSCollectionLayoutSize
 
-+ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)a3 height:(double)a4
++ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)width height:(double)height
 {
-  v5 = [NSCollectionLayoutDimension fractionalWidthDimension:a3];
-  v6 = [NSCollectionLayoutDimension absoluteDimension:a4];
+  v5 = [NSCollectionLayoutDimension fractionalWidthDimension:width];
+  v6 = [NSCollectionLayoutDimension absoluteDimension:height];
   v7 = [NSCollectionLayoutSize sizeWithWidthDimension:v5 heightDimension:v6];
 
   return v7;
 }
 
-+ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)a3 fractionalHeightUsingWidth:(double)a4
++ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)width fractionalHeightUsingWidth:(double)usingWidth
 {
-  v5 = [NSCollectionLayoutDimension fractionalWidthDimension:a3];
-  v6 = [NSCollectionLayoutDimension fractionalWidthDimension:a4];
+  v5 = [NSCollectionLayoutDimension fractionalWidthDimension:width];
+  v6 = [NSCollectionLayoutDimension fractionalWidthDimension:usingWidth];
   v7 = [NSCollectionLayoutSize sizeWithWidthDimension:v5 heightDimension:v6];
 
   return v7;
 }
 
-+ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)a3 fractionalHeight:(double)a4
++ (NSCollectionLayoutSize)layoutSizeWithFractionalWidth:(double)width fractionalHeight:(double)height
 {
-  v5 = [NSCollectionLayoutDimension fractionalWidthDimension:a3];
-  v6 = [NSCollectionLayoutDimension fractionalHeightDimension:a4];
+  v5 = [NSCollectionLayoutDimension fractionalWidthDimension:width];
+  v6 = [NSCollectionLayoutDimension fractionalHeightDimension:height];
   v7 = [NSCollectionLayoutSize sizeWithWidthDimension:v5 heightDimension:v6];
 
   return v7;

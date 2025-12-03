@@ -1,48 +1,48 @@
 @interface FCEntitlementService
-- (FCEntitlementService)initWithConfigurationManager:(id)a3;
+- (FCEntitlementService)initWithConfigurationManager:(id)manager;
 - (void)clearTimer;
-- (void)performEntitlementWithIgnoreCache:(BOOL)a3 completion:(id)a4;
-- (void)startTimerWithTimeoutDuration:(double)a3;
+- (void)performEntitlementWithIgnoreCache:(BOOL)cache completion:(id)completion;
+- (void)startTimerWithTimeoutDuration:(double)duration;
 @end
 
 @implementation FCEntitlementService
 
-- (FCEntitlementService)initWithConfigurationManager:(id)a3
+- (FCEntitlementService)initWithConfigurationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = FCEntitlementService;
   v6 = [(FCEntitlementService *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     blocks = v6->_blocks;
-    v6->_blocks = v7;
+    v6->_blocks = array;
 
     v9 = objc_alloc_init(MEMORY[0x1E69B68E8]);
     accessLock = v6->_accessLock;
     v6->_accessLock = v9;
 
-    objc_storeStrong(&v6->_configurationManager, a3);
+    objc_storeStrong(&v6->_configurationManager, manager);
   }
 
   return v6;
 }
 
-- (void)performEntitlementWithIgnoreCache:(BOOL)a3 completion:(id)a4
+- (void)performEntitlementWithIgnoreCache:(BOOL)cache completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(FCEntitlementService *)self configurationManager];
+  completionCopy = completion;
+  configurationManager = [(FCEntitlementService *)self configurationManager];
   v8 = dispatch_get_global_queue(25, 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__FCEntitlementService_performEntitlementWithIgnoreCache_completion___block_invoke;
   v10[3] = &unk_1E7C3F478;
-  v12 = a3;
+  cacheCopy = cache;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 fetchConfigurationIfNeededWithCompletionQueue:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [configurationManager fetchConfigurationIfNeededWithCompletionQueue:v8 completion:v10];
 }
 
 uint64_t __69__FCEntitlementService_performEntitlementWithIgnoreCache_completion___block_invoke(uint64_t a1, void *a2)
@@ -156,18 +156,18 @@ LABEL_7:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTimerWithTimeoutDuration:(double)a3
+- (void)startTimerWithTimeoutDuration:(double)duration
 {
-  v5 = [(FCEntitlementService *)self entitlementRequestTimer];
+  entitlementRequestTimer = [(FCEntitlementService *)self entitlementRequestTimer];
 
-  if (!v5)
+  if (!entitlementRequestTimer)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __54__FCEntitlementService_startTimerWithTimeoutDuration___block_invoke;
     v6[3] = &unk_1E7C3C970;
     v6[4] = self;
-    *&v6[5] = a3;
+    *&v6[5] = duration;
     FCPerformBlockOnMainThread(v6);
   }
 }
@@ -190,22 +190,22 @@ void __54__FCEntitlementService_startTimerWithTimeoutDuration___block_invoke(uin
     _os_log_impl(&dword_1B63EF000, v4, OS_LOG_TYPE_DEFAULT, "%@ clearing the timer", buf, 0xCu);
   }
 
-  v5 = [(FCEntitlementService *)self accessLock];
-  [v5 lock];
+  accessLock = [(FCEntitlementService *)self accessLock];
+  [accessLock lock];
 
-  v6 = [(FCEntitlementService *)self blocks];
-  v7 = [v6 copy];
+  blocks = [(FCEntitlementService *)self blocks];
+  v7 = [blocks copy];
 
-  v8 = [(FCEntitlementService *)self blocks];
-  [v8 removeAllObjects];
+  blocks2 = [(FCEntitlementService *)self blocks];
+  [blocks2 removeAllObjects];
 
-  v9 = [(FCEntitlementService *)self entitlementRequestTimer];
-  [v9 invalidate];
+  entitlementRequestTimer = [(FCEntitlementService *)self entitlementRequestTimer];
+  [entitlementRequestTimer invalidate];
 
   [(FCEntitlementService *)self setEntitlementRequestTimer:0];
   [(FCEntitlementService *)self setRequestInProgress:0];
-  v10 = [(FCEntitlementService *)self accessLock];
-  [v10 unlock];
+  accessLock2 = [(FCEntitlementService *)self accessLock];
+  [accessLock2 unlock];
 
   v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EntitlementsProviderErrorDomain" code:3001 userInfo:0];
   v19 = 0u;

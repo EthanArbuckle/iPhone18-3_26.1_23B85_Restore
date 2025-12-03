@@ -7,16 +7,16 @@
 
 - (id)nms_lastUpdatedString
 {
-  v2 = [a1 lastModifiedDateComponents];
+  lastModifiedDateComponents = [self lastModifiedDateComponents];
 
-  if (v2)
+  if (lastModifiedDateComponents)
   {
-    v3 = [MEMORY[0x277CBEA80] currentCalendar];
-    v4 = [a1 lastModifiedDateComponents];
-    v5 = [v4 date];
-    v6 = [v3 component:512 fromDate:v5];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    lastModifiedDateComponents2 = [self lastModifiedDateComponents];
+    date = [lastModifiedDateComponents2 date];
+    v6 = [currentCalendar component:512 fromDate:date];
 
-    v7 = [a1 _stringForDayOfWeek:v6 compact:0];
+    v7 = [self _stringForDayOfWeek:v6 compact:0];
   }
 
   else
@@ -35,7 +35,7 @@
     switch(a3)
     {
       case 1:
-        v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+        nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
         if (a4)
         {
           v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_SUNDAY";
@@ -50,7 +50,7 @@
 
         break;
       case 2:
-        v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+        nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
         if (a4)
         {
           v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_MONDAY";
@@ -65,7 +65,7 @@
 
         break;
       case 3:
-        v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+        nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
         if (a4)
         {
           v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_TUESDAY";
@@ -88,7 +88,7 @@
   {
     if (a3 == 6)
     {
-      v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+      nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
       if (a4)
       {
         v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_FRIDAY";
@@ -109,7 +109,7 @@
         goto LABEL_31;
       }
 
-      v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+      nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
       if (a4)
       {
         v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_SATURDAY";
@@ -126,7 +126,7 @@
 
   else if (a3 == 4)
   {
-    v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+    nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
     if (a4)
     {
       v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_WEDNESDAY";
@@ -142,7 +142,7 @@
 
   else
   {
-    v6 = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
+    nanoMusicSyncBundle = [MEMORY[0x277CCA8D8] nanoMusicSyncBundle];
     if (a4)
     {
       v7 = @"COMPACT_LAST_UPDATED_SUBTITLE_THURSDAY";
@@ -156,7 +156,7 @@
     }
   }
 
-  v5 = [v6 localizedStringForKey:v7 value:v8 table:0];
+  v5 = [nanoMusicSyncBundle localizedStringForKey:v7 value:v8 table:0];
 
 LABEL_31:
 

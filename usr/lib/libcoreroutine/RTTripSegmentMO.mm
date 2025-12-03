@@ -1,19 +1,19 @@
 @interface RTTripSegmentMO
-+ (id)managedObjectWithTripSegment:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripSegment:(id)segment inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripSegmentMO
 
-+ (id)managedObjectWithTripSegment:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripSegment:(id)segment inManagedObjectContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  segmentCopy = segment;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!segmentCopy)
   {
-    v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    tripCommuteID = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(tripCommuteID, OS_LOG_TYPE_ERROR))
     {
 LABEL_11:
       v9 = 0;
@@ -23,14 +23,14 @@ LABEL_11:
     LOWORD(v19) = 0;
     v16 = "Invalid parameter not satisfying: tripSegment";
 LABEL_16:
-    _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, v16, &v19, 2u);
+    _os_log_error_impl(&dword_2304B3000, tripCommuteID, OS_LOG_TYPE_ERROR, v16, &v19, 2u);
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!contextCopy)
   {
-    v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    tripCommuteID = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(tripCommuteID, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -45,43 +45,43 @@ LABEL_16:
     v8 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v5 identifier];
+      identifier = [segmentCopy identifier];
       v19 = 138412290;
-      v20 = v18;
+      v20 = identifier;
       _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "RTTripSegmentMO: invoked managedObjectWithTripSegment on UUID %@", &v19, 0xCu);
     }
   }
 
   v9 = [[RTTripSegmentMO alloc] initWithContext:v7];
-  v10 = [v5 identifier];
-  [(RTTripSegmentMO *)v9 setIdentifier:v10];
+  identifier2 = [segmentCopy identifier];
+  [(RTTripSegmentMO *)v9 setIdentifier:identifier2];
 
-  v11 = [v5 dateInterval];
-  v12 = [v11 startDate];
-  [(RTTripSegmentMO *)v9 setStartDate:v12];
+  dateInterval = [segmentCopy dateInterval];
+  startDate = [dateInterval startDate];
+  [(RTTripSegmentMO *)v9 setStartDate:startDate];
 
-  v13 = [v5 dateInterval];
-  v14 = [v13 endDate];
-  [(RTTripSegmentMO *)v9 setEndDate:v14];
+  dateInterval2 = [segmentCopy dateInterval];
+  endDate = [dateInterval2 endDate];
+  [(RTTripSegmentMO *)v9 setEndDate:endDate];
 
-  [v5 tripDistance];
+  [segmentCopy tripDistance];
   [(RTTripSegmentMO *)v9 setTripDistance_m:?];
-  [v5 tripDistanceUncertainty];
+  [segmentCopy tripDistanceUncertainty];
   [(RTTripSegmentMO *)v9 setTripDistanceUncertainty_m:?];
-  -[RTTripSegmentMO setModeOfTransportation:](v9, "setModeOfTransportation:", [v5 modeOfTransportation]);
-  -[RTTripSegmentMO setIsConsumedByClustering:](v9, "setIsConsumedByClustering:", [v5 isConsumedByClustering]);
-  -[RTTripSegmentMO setTripSegmentSequence:](v9, "setTripSegmentSequence:", [v5 tripSegmentSequence]);
-  -[RTTripSegmentMO setTripSegmentSequenceMax:](v9, "setTripSegmentSequenceMax:", [v5 tripSegmentSequenceMax]);
-  [v5 originLatitude];
+  -[RTTripSegmentMO setModeOfTransportation:](v9, "setModeOfTransportation:", [segmentCopy modeOfTransportation]);
+  -[RTTripSegmentMO setIsConsumedByClustering:](v9, "setIsConsumedByClustering:", [segmentCopy isConsumedByClustering]);
+  -[RTTripSegmentMO setTripSegmentSequence:](v9, "setTripSegmentSequence:", [segmentCopy tripSegmentSequence]);
+  -[RTTripSegmentMO setTripSegmentSequenceMax:](v9, "setTripSegmentSequenceMax:", [segmentCopy tripSegmentSequenceMax]);
+  [segmentCopy originLatitude];
   [(RTTripSegmentMO *)v9 setOriginLatitude:?];
-  [v5 originLongitude];
+  [segmentCopy originLongitude];
   [(RTTripSegmentMO *)v9 setOriginLongitude:?];
-  [v5 destinationLatitude];
+  [segmentCopy destinationLatitude];
   [(RTTripSegmentMO *)v9 setDestinationLatitude:?];
-  [v5 destinationLongitude];
+  [segmentCopy destinationLongitude];
   [(RTTripSegmentMO *)v9 setDestinationLongitude:?];
-  v15 = [v5 tripCommuteID];
-  [(RTTripSegmentMO *)v9 setTripCommuteID:v15];
+  tripCommuteID = [segmentCopy tripCommuteID];
+  [(RTTripSegmentMO *)v9 setTripCommuteID:tripCommuteID];
 LABEL_12:
 
   return v9;

@@ -1,25 +1,25 @@
 @interface BKDisplayBrightnessUpdateTransaction
 + (id)_sharedQueue;
 + (void)beginImplicitTransaction;
-- (BKDisplayBrightnessUpdateTransaction)initWithIdentifier:(id)a3 transactionManager:(id)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BKDisplayBrightnessUpdateTransaction)initWithIdentifier:(id)identifier transactionManager:(id)manager;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_queue_invalidate;
-- (void)_queue_setTimerWithTimeIntervalSinceNow:(double)a3;
-- (void)_queue_updateExpirationTimeWithIntervalSinceNow:(double)a3;
+- (void)_queue_setTimerWithTimeIntervalSinceNow:(double)now;
+- (void)_queue_updateExpirationTimeWithIntervalSinceNow:(double)now;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation BKDisplayBrightnessUpdateTransaction
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKDisplayBrightnessUpdateTransaction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKDisplayBrightnessUpdateTransaction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -32,22 +32,22 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKDisplayBrightnessUpdateTransaction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKDisplayBrightnessUpdateTransaction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)_queue_updateExpirationTimeWithIntervalSinceNow:(double)a3
+- (void)_queue_updateExpirationTimeWithIntervalSinceNow:(double)now
 {
   queue = self->_queue;
   BSDispatchQueueAssert();
   BSAbsoluteMachTimeNow();
-  self->_expirationTime = v6 + a3;
+  self->_expirationTime = v6 + now;
   if (!self->_timer)
   {
 
-    [(BKDisplayBrightnessUpdateTransaction *)self _queue_setTimerWithTimeIntervalSinceNow:a3];
+    [(BKDisplayBrightnessUpdateTransaction *)self _queue_setTimerWithTimeIntervalSinceNow:now];
   }
 }
 
@@ -71,13 +71,13 @@
   }
 }
 
-- (void)_queue_setTimerWithTimeIntervalSinceNow:(double)a3
+- (void)_queue_setTimerWithTimeIntervalSinceNow:(double)now
 {
   [(BSAbsoluteMachTimer *)self->_timer invalidate];
   timer = self->_timer;
   self->_timer = 0;
 
-  if (a3 <= 0.0)
+  if (now <= 0.0)
   {
 
     [(BKDisplayBrightnessUpdateTransaction *)self _queue_invalidate];
@@ -96,7 +96,7 @@
     v10[2] = sub_100074E6C;
     v10[3] = &unk_1000FC4D0;
     v10[4] = self;
-    [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:queue leewayInterval:v10 queue:a3 handler:0.0];
+    [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:queue leewayInterval:v10 queue:now handler:0.0];
   }
 }
 
@@ -126,7 +126,7 @@
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKDisplayBrightnessUpdateTransactionManager.m";
       v17 = 1024;
@@ -147,16 +147,16 @@
   [(BKDisplayBrightnessUpdateTransaction *)&v8 dealloc];
 }
 
-- (BKDisplayBrightnessUpdateTransaction)initWithIdentifier:(id)a3 transactionManager:(id)a4
+- (BKDisplayBrightnessUpdateTransaction)initWithIdentifier:(id)identifier transactionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = BKDisplayBrightnessUpdateTransaction;
   v8 = [(BKDisplayBrightnessUpdateTransaction *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
@@ -164,8 +164,8 @@
     queue = v8->_queue;
     v8->_queue = v11;
 
-    objc_storeStrong(&v8->_transactionManager, a4);
-    [v7 _beginUpdateTransaction:v8];
+    objc_storeStrong(&v8->_transactionManager, manager);
+    [managerCopy _beginUpdateTransaction:v8];
   }
 
   return v8;

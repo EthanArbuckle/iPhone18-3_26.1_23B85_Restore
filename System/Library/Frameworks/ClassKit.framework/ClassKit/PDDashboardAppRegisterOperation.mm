@@ -1,5 +1,5 @@
 @interface PDDashboardAppRegisterOperation
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
 - (id)requestData;
 @end
 
@@ -9,13 +9,13 @@
 {
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    data2 = 0;
   }
 
   else
   {
     v4 = objc_alloc_init(PDDPRegisterDashboardAppRequest);
-    v5 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
     v6 = objc_opt_class();
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -23,8 +23,8 @@
     v32[3] = &unk_100203B40;
     v7 = v4;
     v33 = v7;
-    v34 = self;
-    [v5 selectAll:v6 block:v32];
+    selfCopy = self;
+    [database selectAll:v6 block:v32];
 
     if ([(PDDPRegisterDashboardAppRequest *)v7 dashboardAppsCount])
     {
@@ -35,8 +35,8 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v9 = [(PDDPRegisterDashboardAppRequest *)v7 dashboardApps];
-      v10 = [v9 countByEnumeratingWithState:&v28 objects:v41 count:16];
+      dashboardApps = [(PDDPRegisterDashboardAppRequest *)v7 dashboardApps];
+      v10 = [dashboardApps countByEnumeratingWithState:&v28 objects:v41 count:16];
       if (v10)
       {
         v11 = v10;
@@ -47,100 +47,100 @@
           {
             if (*v29 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(dashboardApps);
             }
 
             v14 = *(*(&v28 + 1) + 8 * i);
-            v15 = [(PDDashboardAppRegisterOperation *)self appIdentifiersInRequest];
-            v16 = [v14 appIdentifier];
-            [v15 addObject:v16];
+            appIdentifiersInRequest = [(PDDashboardAppRegisterOperation *)self appIdentifiersInRequest];
+            appIdentifier = [v14 appIdentifier];
+            [appIdentifiersInRequest addObject:appIdentifier];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v28 objects:v41 count:16];
+          v11 = [dashboardApps countByEnumeratingWithState:&v28 objects:v41 count:16];
         }
 
         while (v11);
       }
 
       CLSInitLog();
-      v17 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      logSubsystem = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
       {
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [(PDURLRequestOperation *)self operationID];
-        v21 = [(PDDPRegisterDashboardAppRequest *)v7 data];
-        v22 = [v21 length];
+        operationID = [(PDURLRequestOperation *)self operationID];
+        data = [(PDDPRegisterDashboardAppRequest *)v7 data];
+        v22 = [data length];
         *buf = 138543874;
         v36 = v18;
         v37 = 2114;
-        v38 = v20;
+        v38 = operationID;
         v39 = 2048;
         v40 = v22;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ request payload size %ld bytes", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ request payload size %ld bytes", buf, 0x20u);
       }
 
-      v3 = [(PDDPRegisterDashboardAppRequest *)v7 data];
+      data2 = [(PDDPRegisterDashboardAppRequest *)v7 data];
     }
 
     else
     {
       CLSInitLog();
-      v23 = [(PDOperation *)self logSubsystem];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+      logSubsystem2 = [(PDOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_INFO))
       {
         v24 = objc_opt_class();
         v25 = v24;
-        v26 = [(PDURLRequestOperation *)self operationID];
+        operationID2 = [(PDURLRequestOperation *)self operationID];
         *buf = 138543618;
         v36 = v24;
         v37 = 2114;
-        v38 = v26;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ request no pending register.", buf, 0x16u);
+        v38 = operationID2;
+        _os_log_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ request no pending register.", buf, 0x16u);
       }
 
       [(PDEndpointRequestOperation *)self markAsFinished];
-      v3 = 0;
+      data2 = 0;
     }
   }
 
-  return v3;
+  return data2;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if (![(PDOperation *)self isAborted])
   {
     CLSInitLog();
-    v8 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    logSubsystem = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       *buf = 138543618;
       *&buf[4] = v9;
       *&buf[12] = 2114;
-      *&buf[14] = v11;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ processing response;", buf, 0x16u);
+      *&buf[14] = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ processing response;", buf, 0x16u);
     }
 
     CLSInitLog();
-    v12 = [(PDOperation *)self logSubsystem];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    logSubsystem2 = [(PDOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_DEBUG))
     {
       v27 = objc_opt_class();
       v28 = v27;
-      v29 = [(PDURLRequestOperation *)self operationID];
-      v30 = [v6 dictionaryRepresentation];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
+      dictionaryRepresentation = [objectCopy dictionaryRepresentation];
       *buf = 138543874;
       *&buf[4] = v27;
       *&buf[12] = 2114;
-      *&buf[14] = v29;
+      *&buf[14] = operationID2;
       *&buf[22] = 2112;
-      v47 = v30;
-      _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
+      v47 = dictionaryRepresentation;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ response data: %@", buf, 0x20u);
     }
 
     *buf = 0;
@@ -148,24 +148,24 @@
     *&buf[16] = 0x3032000000;
     v47 = sub_10006C6B8;
     v48 = sub_10006C6C8;
-    v49 = [(PDURLRequestOperation *)self operationID];
-    v13 = [(PDURLRequestOperation *)self stats];
-    if (v13)
+    operationID3 = [(PDURLRequestOperation *)self operationID];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v13[15] = 1;
+      stats[15] = 1;
     }
 
-    if (![v6 hasStatus])
+    if (![objectCopy hasStatus])
     {
       goto LABEL_16;
     }
 
-    v14 = [v6 status];
-    v15 = sub_100105CA4(v14);
+    status = [objectCopy status];
+    v15 = sub_100105CA4(status);
     [(PDEndpointRequestOperation *)self handleServerAlerts:v15];
 
-    v16 = [v6 status];
-    v17 = sub_1001055FC(v16, 0);
+    status2 = [objectCopy status];
+    v17 = sub_1001055FC(status2, 0);
 
     if (!v17)
     {
@@ -196,16 +196,16 @@ LABEL_16:
     }
 
     CLSInitLog();
-    v18 = [(PDOperation *)self logSubsystem];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    logSubsystem3 = [(PDOperation *)self logSubsystem];
+    if (!os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_INFO))
     {
 LABEL_73:
 
-      if (a4)
+      if (error)
       {
         v33 = v17;
         v7 = 0;
-        *a4 = v17;
+        *error = v17;
       }
 
       else
@@ -221,15 +221,15 @@ LABEL_76:
 
     v19 = objc_opt_class();
     v20 = *(*&buf[8] + 40);
-    v21 = [v6 status];
-    v22 = [v21 code];
-    if (v22 > 299)
+    status3 = [objectCopy status];
+    code = [status3 code];
+    if (code > 299)
     {
-      if (v22 <= 801)
+      if (code <= 801)
       {
-        if (v22 > 799)
+        if (code > 799)
         {
-          if (v22 == 800)
+          if (code == 800)
           {
             v23 = @"E_NOT_APPLICABLE_TYPE";
           }
@@ -242,13 +242,13 @@ LABEL_76:
           goto LABEL_72;
         }
 
-        if (v22 == 300)
+        if (code == 300)
         {
           v23 = @"E_DEVICE_UNSUPPORTED";
           goto LABEL_72;
         }
 
-        if (v22 == 500)
+        if (code == 500)
         {
           v23 = @"E_INVALID_FIELD_VALUE";
           goto LABEL_72;
@@ -257,9 +257,9 @@ LABEL_76:
 
       else
       {
-        if (v22 <= 803)
+        if (code <= 803)
         {
-          if (v22 == 802)
+          if (code == 802)
           {
             v23 = @"E_ENTITY_PRIVILEGE_CHANGE";
           }
@@ -272,7 +272,7 @@ LABEL_76:
           goto LABEL_72;
         }
 
-        switch(v22)
+        switch(code)
         {
           case 0x324:
             v23 = @"E_ENTITY_EXPIRED";
@@ -284,7 +284,7 @@ LABEL_76:
             v23 = @"E_DISALLOWED_EMAIL_DOMAIN";
 LABEL_72:
             v31 = v23;
-            v32 = [v6 status];
+            status4 = [objectCopy status];
             *v38 = 138544130;
             v39 = v19;
             v40 = 2114;
@@ -292,8 +292,8 @@ LABEL_72:
             v42 = 2114;
             v43 = v31;
             v44 = 2048;
-            v45 = [v32 code];
-            _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Dashboard app register request failed. status: %{public}@ (%ld)", v38, 0x2Au);
+            code2 = [status4 code];
+            _os_log_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ Dashboard app register request failed. status: %{public}@ (%ld)", v38, 0x2Au);
 
             goto LABEL_73;
         }
@@ -302,9 +302,9 @@ LABEL_72:
 
     else
     {
-      if (v22 > 3)
+      if (code > 3)
       {
-        switch(v22)
+        switch(code)
         {
           case 'd':
             v23 = @"E_BOOTSTRAP_REQUIRED";
@@ -373,14 +373,14 @@ LABEL_72:
             v23 = @"E_DISALLOWED_COUNTRY_CODE";
             break;
           default:
-            if (v22 == 4)
+            if (code == 4)
             {
               v23 = @"S_OK_HAS_MORE_DATA";
             }
 
             else
             {
-              if (v22 != 5)
+              if (code != 5)
               {
                 goto LABEL_44;
               }
@@ -394,9 +394,9 @@ LABEL_72:
         goto LABEL_72;
       }
 
-      if (v22 > 1)
+      if (code > 1)
       {
-        if (v22 == 2)
+        if (code == 2)
         {
           v23 = @"E_ERROR";
         }
@@ -409,13 +409,13 @@ LABEL_72:
         goto LABEL_72;
       }
 
-      if (!v22)
+      if (!code)
       {
         v23 = @"UNKNOWN_CODE";
         goto LABEL_72;
       }
 
-      if (v22 == 1)
+      if (code == 1)
       {
         v23 = @"S_OK";
         goto LABEL_72;
@@ -423,7 +423,7 @@ LABEL_72:
     }
 
 LABEL_44:
-    v23 = [NSString stringWithFormat:@"(unknown: %i)", v22];
+    v23 = [NSString stringWithFormat:@"(unknown: %i)", code];
     goto LABEL_72;
   }
 

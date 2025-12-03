@@ -8,7 +8,7 @@
 
 + (MPSCNNNeuronReLUNode)nodeWithSource:(MPSNNImageNode *)sourceNode
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v11 = objc_msgSend_initWithSource_(v4, v5, sourceNode, v6, v7, v8, v9, v10);
 
   return v11;
@@ -16,7 +16,7 @@
 
 + (MPSCNNNeuronReLUNode)nodeWithSource:(MPSNNImageNode *)sourceNode a:(float)a
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   *&v7 = a;
   v14 = objc_msgSend_initWithSource_a_(v6, v8, sourceNode, v9, v10, v11, v12, v13, v7);
 

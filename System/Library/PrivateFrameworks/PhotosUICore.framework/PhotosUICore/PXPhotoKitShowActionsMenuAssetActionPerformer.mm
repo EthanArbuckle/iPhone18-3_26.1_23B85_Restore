@@ -1,17 +1,17 @@
 @interface PXPhotoKitShowActionsMenuAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
-+ (BOOL)shouldEnableOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
++ (BOOL)shouldEnableOnAsset:(id)asset inAssetCollection:(id)collection;
 @end
 
 @implementation PXPhotoKitShowActionsMenuAssetActionPerformer
 
-+ (BOOL)shouldEnableOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)shouldEnableOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && ([v5 isPhotoIrisPlaceholder] & 1) == 0)
+  assetCopy = asset;
+  collectionCopy = collection;
+  if (assetCopy && ([assetCopy isPhotoIrisPlaceholder] & 1) == 0)
   {
-    v7 = [v5 needsSensitivityProtection] ^ 1;
+    v7 = [assetCopy needsSensitivityProtection] ^ 1;
   }
 
   else
@@ -22,14 +22,14 @@
   return v7;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 isPhotoIrisPlaceholder];
-  v6 = [v4 needsSensitivityProtection];
-  v7 = [v4 canPerformSharingAction];
+  assetCopy = asset;
+  isPhotoIrisPlaceholder = [assetCopy isPhotoIrisPlaceholder];
+  needsSensitivityProtection = [assetCopy needsSensitivityProtection];
+  canPerformSharingAction = [assetCopy canPerformSharingAction];
 
-  return (v7 | v5 | v6) & 1;
+  return (canPerformSharingAction | isPhotoIrisPlaceholder | needsSensitivityProtection) & 1;
 }
 
 @end

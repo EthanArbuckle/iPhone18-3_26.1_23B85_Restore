@@ -1,41 +1,41 @@
 @interface VFXCoreEntityHandle
-+ (VFXCoreEntityHandle)handleWithEntityObject:(id)a3;
-+ (id)presentationHandleWithCFXCoreEntityHandle:(__CFXCoreEntityHandle *)a3;
-+ (id)presentationHandleWithEntityObject:(id)a3;
-- (BOOL)setBindingData:(id)a3 forKey:(id)a4;
-- (BOOL)setBindingValue:(id)a3 forKey:(id)a4;
-- (BOOL)setBindingValue:(void *)a3 size:(unint64_t)a4 forKey:(id)a5;
++ (VFXCoreEntityHandle)handleWithEntityObject:(id)object;
++ (id)presentationHandleWithCFXCoreEntityHandle:(__CFXCoreEntityHandle *)handle;
++ (id)presentationHandleWithEntityObject:(id)object;
+- (BOOL)setBindingData:(id)data forKey:(id)key;
+- (BOOL)setBindingValue:(id)value forKey:(id)key;
+- (BOOL)setBindingValue:(void *)value size:(unint64_t)size forKey:(id)key;
 - (NSArray)bindings;
 - (NSString)description;
-- (VFXCoreEntityHandle)initWithCoder:(id)a3;
-- (VFXCoreEntityHandle)initWithCoreEntityHandleRef:(__CFXCoreEntityHandle *)a3;
-- (VFXCoreEntityHandle)initWithEntityObject:(id)a3;
-- (VFXCoreEntityHandle)initWithTag:(id)a3;
+- (VFXCoreEntityHandle)initWithCoder:(id)coder;
+- (VFXCoreEntityHandle)initWithCoreEntityHandleRef:(__CFXCoreEntityHandle *)ref;
+- (VFXCoreEntityHandle)initWithEntityObject:(id)object;
+- (VFXCoreEntityHandle)initWithTag:(id)tag;
 - (VFXWorld)world;
 - (_TtC3VFX15VFXEntityObject)entityObject;
 - (_TtC3VFX20EntityPropertyHelper)entityHelper;
 - (__CFXWorld)worldRef;
-- (id)_bindingNames:(BOOL)a3;
-- (id)bindingDataForKey:(id)a3;
-- (id)bindingForKey:(id)a3;
-- (id)bindingPresentationValueForKey:(id)a3;
-- (id)bindingValueForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationBindingForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
+- (id)_bindingNames:(BOOL)names;
+- (id)bindingDataForKey:(id)key;
+- (id)bindingForKey:(id)key;
+- (id)bindingPresentationValueForKey:(id)key;
+- (id)bindingValueForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationBindingForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
 - (void)_updateModelFromPresentation;
 - (void)_updatePresentationFromModel;
-- (void)addWorldReference:(id)a3;
+- (void)addWorldReference:(id)reference;
 - (void)dealloc;
-- (void)didAttachToWorld:(id)a3;
-- (void)didDetachFromWorld:(id)a3;
+- (void)didAttachToWorld:(id)world;
+- (void)didDetachFromWorld:(id)world;
 - (void)didSetEntityObject;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeWorldReference:(id)a3;
-- (void)resolveTag:(id)a3 remap:(id)a4;
-- (void)setTag:(id)a3;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
-- (void)setWorld:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeWorldReference:(id)reference;
+- (void)resolveTag:(id)tag remap:(id)remap;
+- (void)setTag:(id)tag;
+- (void)setValue:(id)value forKeyPath:(id)path;
+- (void)setWorld:(id)world;
 @end
 
 @implementation VFXCoreEntityHandle
@@ -60,15 +60,15 @@
   MEMORY[0x1EEE66B58](v4, sel_setBeamed, v5, v6);
 }
 
-- (VFXCoreEntityHandle)initWithEntityObject:(id)a3
+- (VFXCoreEntityHandle)initWithEntityObject:(id)object
 {
   v17.receiver = self;
   v17.super_class = VFXCoreEntityHandle;
   v4 = [(VFXCoreEntityHandle *)&v17 init];
   if (v4)
   {
-    v4->_entityObject = a3;
-    v8 = objc_msgSend_tag(a3, v5, v6, v7);
+    v4->_entityObject = object;
+    v8 = objc_msgSend_tag(object, v5, v6, v7);
     v4->_tag = v8;
     v9 = sub_1AF16A5D0(v8);
     v4->_handle = v9;
@@ -84,16 +84,16 @@
   return v4;
 }
 
-- (VFXCoreEntityHandle)initWithCoreEntityHandleRef:(__CFXCoreEntityHandle *)a3
+- (VFXCoreEntityHandle)initWithCoreEntityHandleRef:(__CFXCoreEntityHandle *)ref
 {
   v7.receiver = self;
   v7.super_class = VFXCoreEntityHandle;
   v4 = [(VFXCoreEntityHandle *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (ref)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(ref);
     }
 
     else
@@ -107,45 +107,45 @@
   return v4;
 }
 
-+ (VFXCoreEntityHandle)handleWithEntityObject:(id)a3
++ (VFXCoreEntityHandle)handleWithEntityObject:(id)object
 {
-  v5 = objc_msgSend_handle(a3, a2, a3, v3);
+  v5 = objc_msgSend_handle(object, a2, object, v3);
   if (!v5)
   {
     v6 = [VFXCoreEntityHandle alloc];
-    v5 = objc_msgSend_initWithEntityObject_(v6, v7, a3, v8);
-    objc_msgSend_setHandle_(a3, v9, v5, v10);
+    v5 = objc_msgSend_initWithEntityObject_(v6, v7, object, v8);
+    objc_msgSend_setHandle_(object, v9, v5, v10);
   }
 
   return v5;
 }
 
-+ (id)presentationHandleWithEntityObject:(id)a3
++ (id)presentationHandleWithEntityObject:(id)object
 {
   v4 = [VFXCoreEntityHandle alloc];
-  result = objc_msgSend_initWithEntityObject_(v4, v5, a3, v6);
+  result = objc_msgSend_initWithEntityObject_(v4, v5, object, v6);
   *(result + 36) = 1;
   return result;
 }
 
-+ (id)presentationHandleWithCFXCoreEntityHandle:(__CFXCoreEntityHandle *)a3
++ (id)presentationHandleWithCFXCoreEntityHandle:(__CFXCoreEntityHandle *)handle
 {
   v4 = [VFXCoreEntityHandle alloc];
-  result = objc_msgSend_initWithCoreEntityHandleRef_(v4, v5, a3, v6);
+  result = objc_msgSend_initWithCoreEntityHandleRef_(v4, v5, handle, v6);
   *(result + 36) = 1;
   return result;
 }
 
-- (VFXCoreEntityHandle)initWithTag:(id)a3
+- (VFXCoreEntityHandle)initWithTag:(id)tag
 {
   v8.receiver = self;
   v8.super_class = VFXCoreEntityHandle;
   v4 = [(VFXCoreEntityHandle *)&v8 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_tag = v5;
-    v6 = sub_1AF16A5D0(v5);
+    tagCopy = tag;
+    v4->_tag = tagCopy;
+    v6 = sub_1AF16A5D0(tagCopy);
     v4->_handle = v6;
     if (v6)
     {
@@ -250,12 +250,12 @@
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v2);
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  if ((objc_msgSend_isEqual_(a3, a2, self->_tag, v3) & 1) == 0)
+  if ((objc_msgSend_isEqual_(tag, a2, self->_tag, v3) & 1) == 0)
   {
 
-    self->_tag = objc_msgSend_copy(a3, v6, v7, v8);
+    self->_tag = objc_msgSend_copy(tag, v6, v7, v8);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF2BF868;
@@ -265,17 +265,17 @@
   }
 }
 
-- (void)resolveTag:(id)a3 remap:(id)a4
+- (void)resolveTag:(id)tag remap:(id)remap
 {
   if (!self->_entityObject)
   {
     p_tag = &self->_tag;
-    v8 = objc_msgSend_objectForKey_(a4, a2, self->_tag, a4);
+    v8 = objc_msgSend_objectForKey_(remap, a2, self->_tag, remap);
     v11 = *p_tag;
     if (v8)
     {
       objc_msgSend_setTag_(self, v9, v8, v10);
-      v14 = objc_msgSend_fetchEntityObjectWithTag_(a3, v12, self->_tag, v13);
+      v14 = objc_msgSend_fetchEntityObjectWithTag_(tag, v12, self->_tag, v13);
       self->_entityObject = v14;
       if (!v14)
       {
@@ -289,7 +289,7 @@
 
     else
     {
-      v16 = objc_msgSend_fetchEntityObjectWithTag_(a3, v9, self->_tag, v10);
+      v16 = objc_msgSend_fetchEntityObjectWithTag_(tag, v9, self->_tag, v10);
       self->_entityObject = v16;
       if (v16)
       {
@@ -297,7 +297,7 @@
         v24 = objc_msgSend_UUIDString(v20, v21, v22, v23);
         objc_msgSend_setTag_(self, v25, v24, v26);
         v30 = objc_msgSend_tag(self->_entityObject, v27, v28, v29);
-        objc_msgSend_didRenameTag_to_(a3, v31, v30, self->_tag);
+        objc_msgSend_didRenameTag_to_(tag, v31, v30, self->_tag);
         objc_msgSend_setTag_(self->_entityObject, v32, self->_tag, v33);
       }
 
@@ -310,7 +310,7 @@
         }
       }
 
-      objc_msgSend_setObject_forKey_(a4, v34, *p_tag, v11);
+      objc_msgSend_setObject_forKey_(remap, v34, *p_tag, v11);
     }
 
     objc_msgSend__updateModelFromPresentation(self, v36, v37, v38);
@@ -333,11 +333,11 @@
   return self->_entityObject;
 }
 
-- (void)didAttachToWorld:(id)a3
+- (void)didAttachToWorld:(id)world
 {
   if (self->_handle)
   {
-    v6 = objc_msgSend_worldRef(a3, a2, a3, v3);
+    v6 = objc_msgSend_worldRef(world, a2, world, v3);
     handle = self->_handle;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -350,15 +350,15 @@
 
   if (!self->_muteWorldChange && self->_entityObject)
   {
-    v9 = objc_msgSend_scene(a3, a2, a3, v3);
+    v9 = objc_msgSend_scene(world, a2, world, v3);
     objc_msgSend_addEntityObject_(v9, v10, self->_entityObject, v11);
     objc_msgSend_invalidateHelper(self, v12, v13, v14);
   }
 
-  objc_msgSend__updateModelFromPresentation(self, a2, a3, v3);
+  objc_msgSend__updateModelFromPresentation(self, a2, world, v3);
 }
 
-- (void)didDetachFromWorld:(id)a3
+- (void)didDetachFromWorld:(id)world
 {
   handle = self->_handle;
   if (handle)
@@ -375,17 +375,17 @@
   {
     if (self->_entityObject)
     {
-      v7 = objc_msgSend_scene(a3, a2, a3, v3);
+      v7 = objc_msgSend_scene(world, a2, world, v3);
       objc_msgSend_removeEntityObject_(v7, v8, self->_entityObject, v9);
       objc_msgSend_invalidateHelper(self, v10, v11, v12);
     }
   }
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
   world = self->_world;
-  if (world == a3)
+  if (world == reference)
   {
     v6 = self->_worldReferenceCounter + 1;
   }
@@ -397,17 +397,17 @@
       self->_worldReferenceCounter = 0;
     }
 
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
     v6 = 1;
   }
 
   self->_worldReferenceCounter = v6;
 }
 
-- (void)removeWorldReference:(id)a3
+- (void)removeWorldReference:(id)reference
 {
   p_world = &self->_world;
-  if (!a3 || self->_world == a3)
+  if (!reference || self->_world == reference)
   {
     worldReferenceCounter = self->_worldReferenceCounter;
     if (worldReferenceCounter)
@@ -432,10 +432,10 @@
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v13[9] = v4;
     v13[10] = v5;
@@ -450,10 +450,10 @@
       objc_msgSend_didDetachFromWorld_(self, v9, self->_world, v10);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
-      objc_msgSend_didAttachToWorld_(self, a2, a3, v3);
+      objc_msgSend_didAttachToWorld_(self, a2, world, v3);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = sub_1AF2BFE94;
@@ -488,7 +488,7 @@
   return sub_1AF1C3FAC(v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_isPresentationObject)
   {
@@ -537,11 +537,11 @@
   return result;
 }
 
-- (id)_bindingNames:(BOOL)a3
+- (id)_bindingNames:(BOOL)names
 {
   if (!self->_isPresentationObject)
   {
-    objc_msgSend__updateModelFromPresentation(self, a2, a3, v3);
+    objc_msgSend__updateModelFromPresentation(self, a2, names, v3);
   }
 
   v6 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -552,24 +552,24 @@
   v18[1] = 3221225472;
   v18[2] = sub_1AF2C0158;
   v18[3] = &unk_1E7A7E6E8;
-  v19 = a3;
+  namesCopy = names;
   v18[4] = v13;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(bindings, v15, v18, v16);
   return v13;
 }
 
-- (id)bindingValueForKey:(id)a3
+- (id)bindingValueForKey:(id)key
 {
   if (self->_isPresentationObject)
   {
 
-    return objc_msgSend_bindingPresentationValueForKey_(self, a2, a3, v3);
+    return objc_msgSend_bindingPresentationValueForKey_(self, a2, key, v3);
   }
 
   else
   {
-    v6 = objc_msgSend___bindings(self, a2, a3, v3);
-    result = objc_msgSend_valueForKey_(v6, v7, a3, v8);
+    v6 = objc_msgSend___bindings(self, a2, key, v3);
+    result = objc_msgSend_valueForKey_(v6, v7, key, v8);
     if (result)
     {
 
@@ -580,17 +580,17 @@
   return result;
 }
 
-- (id)bindingForKey:(id)a3
+- (id)bindingForKey:(id)key
 {
-  v5 = objc_msgSend___bindings(self, a2, a3, v3);
+  v5 = objc_msgSend___bindings(self, a2, key, v3);
 
-  return objc_msgSend_valueForKey_(v5, v6, a3, v7);
+  return objc_msgSend_valueForKey_(v5, v6, key, v7);
 }
 
-- (id)presentationBindingForKey:(id)a3
+- (id)presentationBindingForKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_entityHelper(self, a2, a3, v3);
+  v5 = objc_msgSend_entityHelper(self, a2, key, v3);
   v9 = objc_msgSend_bindings(v5, v6, v7, v8);
   v23 = 0u;
   v24 = 0u;
@@ -615,7 +615,7 @@ LABEL_3:
 
     v18 = *(*(&v23 + 1) + 8 * v17);
     v19 = objc_msgSend_bindingName(v18, v12, v13, v14);
-    if (objc_msgSend_isEqualToString_(v19, v20, a3, v21))
+    if (objc_msgSend_isEqualToString_(v19, v20, key, v21))
     {
       return v18;
     }
@@ -633,9 +633,9 @@ LABEL_3:
   }
 }
 
-- (id)bindingPresentationValueForKey:(id)a3
+- (id)bindingPresentationValueForKey:(id)key
 {
-  result = objc_msgSend_presentationBindingForKey_(self, a2, a3, v3);
+  result = objc_msgSend_presentationBindingForKey_(self, a2, key, v3);
   if (result)
   {
 
@@ -645,14 +645,14 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)setBindingValue:(id)a3 forKey:(id)a4
+- (BOOL)setBindingValue:(id)value forKey:(id)key
 {
-  v7 = objc_msgSend___bindings(self, a2, a3, a4);
-  v10 = objc_msgSend_valueForKey_(v7, v8, a4, v9);
+  v7 = objc_msgSend___bindings(self, a2, value, key);
+  v10 = objc_msgSend_valueForKey_(v7, v8, key, v9);
   v14 = v10;
   if (v10 && !objc_msgSend_type(v10, v11, v12, v13))
   {
-    v20 = objc_msgSend_dataUsingEncoding_(a3, v11, 4, v13);
+    v20 = objc_msgSend_dataUsingEncoding_(value, v11, 4, v13);
     goto LABEL_7;
   }
 
@@ -663,19 +663,19 @@ LABEL_3:
     v17 = v16;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v20 = sub_1AF3711B4(a3, v17, 0);
+    v20 = sub_1AF3711B4(value, v17, 0);
     if (isKindOfClass)
     {
       objc_msgSend_setRawValueNoReplication_(v14, v19, v20, v21);
-      v22 = sub_1AF3762E4(a3, v17);
+      v22 = sub_1AF3762E4(value, v17);
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = sub_1AF2C05DC;
       v25[3] = &unk_1E7A7E2E8;
       v25[4] = self;
-      v25[5] = a4;
+      v25[5] = key;
       v25[6] = v22;
-      objc_msgSend_postCommandWithObject_keyPath_applyBlock_(VFXTransaction, v23, self, a4, v25);
+      objc_msgSend_postCommandWithObject_keyPath_applyBlock_(VFXTransaction, v23, self, key, v25);
 LABEL_8:
       LOBYTE(v16) = 1;
       return v16;
@@ -689,10 +689,10 @@ LABEL_7:
   return v16;
 }
 
-- (id)bindingDataForKey:(id)a3
+- (id)bindingDataForKey:(id)key
 {
-  v5 = objc_msgSend___bindings(self, a2, a3, v3);
-  result = objc_msgSend_valueForKey_(v5, v6, a3, v7);
+  v5 = objc_msgSend___bindings(self, a2, key, v3);
+  result = objc_msgSend_valueForKey_(v5, v6, key, v7);
   if (result)
   {
 
@@ -702,46 +702,46 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)setBindingValue:(void *)a3 size:(unint64_t)a4 forKey:(id)a5
+- (BOOL)setBindingValue:(void *)value size:(unint64_t)size forKey:(id)key
 {
-  v7 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], a2, a3, a4);
+  v7 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], a2, value, size);
 
-  return MEMORY[0x1EEE66B58](self, sel_setBindingData_forKey_, v7, a5);
+  return MEMORY[0x1EEE66B58](self, sel_setBindingData_forKey_, v7, key);
 }
 
-- (BOOL)setBindingData:(id)a3 forKey:(id)a4
+- (BOOL)setBindingData:(id)data forKey:(id)key
 {
-  v7 = objc_msgSend___bindings(self, a2, a3, a4);
-  v10 = objc_msgSend_valueForKey_(v7, v8, a4, v9);
+  v7 = objc_msgSend___bindings(self, a2, data, key);
+  v10 = objc_msgSend_valueForKey_(v7, v8, key, v9);
   v13 = v10;
   if (v10)
   {
-    objc_msgSend_setRawValueNoReplication_(v10, v11, a3, v12);
+    objc_msgSend_setRawValueNoReplication_(v10, v11, data, v12);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = sub_1AF2C077C;
     v16[3] = &unk_1E7A7E3B0;
     v16[4] = self;
-    v16[5] = a4;
-    v16[6] = a3;
-    objc_msgSend_postCommandWithObject_keyPath_applyBlock_(VFXTransaction, v14, self, a4, v16);
+    v16[5] = key;
+    v16[6] = data;
+    objc_msgSend_postCommandWithObject_keyPath_applyBlock_(VFXTransaction, v14, self, key, v16);
   }
 
   return v13 != 0;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  v6 = objc_msgSend_entityHelper(self, a2, a3, v3);
+  v6 = objc_msgSend_entityHelper(self, a2, path, v3);
   v10 = objc_msgSend_world(self, v7, v8, v9);
 
-  return MEMORY[0x1EEE66B58](v6, sel__valueForKeyPath_world_, a3, v10);
+  return MEMORY[0x1EEE66B58](v6, sel__valueForKeyPath_world_, path, v10);
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  v6 = objc_msgSend_entityHelper(self, a2, a3, a4);
-  if ((objc_msgSend__setValue_forKeyPath_(v6, v7, a3, a4) & 1) == 0)
+  v6 = objc_msgSend_entityHelper(self, a2, value, path);
+  if ((objc_msgSend__setValue_forKeyPath_(v6, v7, value, path) & 1) == 0)
   {
     v8 = sub_1AF0D5194();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -751,18 +751,18 @@ LABEL_7:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_tag, @"tag");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_tag, @"tag");
   v8 = sub_1AF16AD60(self->_handle, v5, v6, v7);
   if (v8)
   {
     v9 = v8;
-    objc_msgSend_encodeObject_forKey_(a3, v9, v9, @"bindings");
+    objc_msgSend_encodeObject_forKey_(coder, v9, v9, @"bindings");
   }
 }
 
-- (VFXCoreEntityHandle)initWithCoder:(id)a3
+- (VFXCoreEntityHandle)initWithCoder:(id)coder
 {
   v24.receiver = self;
   v24.super_class = VFXCoreEntityHandle;
@@ -772,11 +772,11 @@ LABEL_7:
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"tag");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"tag");
     *(v7 + 6) = v13;
     *(v7 + 2) = sub_1AF16A5D0(v13);
     v14 = sub_1AF373968();
-    v16 = objc_msgSend_vfx_decodeArrayOfObjectsOfClasses_forKey_(a3, v15, v14, @"bindings");
+    v16 = objc_msgSend_vfx_decodeArrayOfObjectsOfClasses_forKey_(coder, v15, v14, @"bindings");
     sub_1AF16AE94(*(v7 + 2), v16);
     v20 = *(v7 + 2);
     if (v20)

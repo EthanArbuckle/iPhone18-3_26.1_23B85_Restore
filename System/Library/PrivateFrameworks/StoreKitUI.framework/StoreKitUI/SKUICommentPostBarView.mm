@@ -1,29 +1,29 @@
 @interface SKUICommentPostBarView
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (SKUICommentDelegate)delegate;
-- (SKUICommentPostBarView)initWithFrame:(CGRect)a3;
+- (SKUICommentPostBarView)initWithFrame:(CGRect)frame;
 - (id)_asLabel;
 - (id)_asNameButton;
-- (void)_changeCommenter:(id)a3;
-- (void)_post:(id)a3;
+- (void)_changeCommenter:(id)commenter;
+- (void)_post:(id)_post;
 - (void)_postComment;
 - (void)layoutSubviews;
-- (void)setAsText:(id)a3;
-- (void)setCommenter:(id)a3;
-- (void)setPostButtonVisible:(BOOL)a3;
+- (void)setAsText:(id)text;
+- (void)setCommenter:(id)commenter;
+- (void)setPostButtonVisible:(BOOL)visible;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUICommentPostBarView
 
-- (SKUICommentPostBarView)initWithFrame:(CGRect)a3
+- (SKUICommentPostBarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICommentPostBarView initWithFrame:];
@@ -31,157 +31,157 @@
 
   v35.receiver = self;
   v35.super_class = SKUICommentPostBarView;
-  v8 = [(SKUICommentPostBarView *)&v35 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUICommentPostBarView *)&v35 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
-    [(SKUICommentPostBarView *)v8 setBackgroundColor:v9];
+    [(SKUICommentPostBarView *)height setBackgroundColor:v9];
 
     v10 = [MEMORY[0x277D75348] colorWithRed:0.835294118 green:0.839215686 blue:0.850980392 alpha:1.0];
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v13 = 1.0 / v12;
 
-    [(SKUICommentPostBarView *)v8 bounds];
+    [(SKUICommentPostBarView *)height bounds];
     v15 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v14, v13}];
     [v15 setAutoresizingMask:2];
     [v15 setBackgroundColor:v10];
-    [(SKUICommentPostBarView *)v8 addSubview:v15];
+    [(SKUICommentPostBarView *)height addSubview:v15];
     v16 = [SKUICommentPostBarTextField alloc];
     v17 = *MEMORY[0x277CBF3A0];
     v18 = *(MEMORY[0x277CBF3A0] + 8);
     v19 = *(MEMORY[0x277CBF3A0] + 16);
     v20 = *(MEMORY[0x277CBF3A0] + 24);
     v21 = [(SKUICommentPostBarTextField *)v16 initWithFrame:*MEMORY[0x277CBF3A0], v18, v19, v20];
-    postTextField = v8->_postTextField;
-    v8->_postTextField = v21;
+    postTextField = height->_postTextField;
+    height->_postTextField = v21;
 
-    [(SKUICommentPostBarTextField *)v8->_postTextField setDelegate:v8];
-    v23 = [(SKUICommentPostBarTextField *)v8->_postTextField layer];
-    [v23 setBorderWidth:1.0];
+    [(SKUICommentPostBarTextField *)height->_postTextField setDelegate:height];
+    layer = [(SKUICommentPostBarTextField *)height->_postTextField layer];
+    [layer setBorderWidth:1.0];
 
-    v24 = [(SKUICommentPostBarTextField *)v8->_postTextField layer];
-    [v24 setCornerRadius:5.0];
+    layer2 = [(SKUICommentPostBarTextField *)height->_postTextField layer];
+    [layer2 setCornerRadius:5.0];
 
-    v25 = [(SKUICommentPostBarTextField *)v8->_postTextField layer];
-    [v25 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    layer3 = [(SKUICommentPostBarTextField *)height->_postTextField layer];
+    [layer3 setBorderColor:{objc_msgSend(v10, "CGColor")}];
 
-    [(SKUICommentPostBarView *)v8 addSubview:v8->_postTextField];
+    [(SKUICommentPostBarView *)height addSubview:height->_postTextField];
     v26 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{v17, v18, v19, v20}];
-    postButton = v8->_postButton;
-    v8->_postButton = v26;
+    postButton = height->_postButton;
+    height->_postButton = v26;
 
-    v28 = [(UIButton *)v8->_postButton titleLabel];
+    titleLabel = [(UIButton *)height->_postButton titleLabel];
     v29 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
-    [v28 setFont:v29];
+    [titleLabel setFont:v29];
 
-    v30 = v8->_postButton;
-    v31 = [(SKUICommentPostBarView *)v8 tintColor];
-    [(UIButton *)v30 setTitleColor:v31 forState:0];
+    v30 = height->_postButton;
+    tintColor = [(SKUICommentPostBarView *)height tintColor];
+    [(UIButton *)v30 setTitleColor:tintColor forState:0];
 
-    v32 = v8->_postButton;
-    v33 = [MEMORY[0x277D75348] grayColor];
-    [(UIButton *)v32 setTitleColor:v33 forState:2];
+    v32 = height->_postButton;
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UIButton *)v32 setTitleColor:grayColor forState:2];
 
-    [(UIButton *)v8->_postButton addTarget:v8 action:sel__post_ forControlEvents:64];
-    [(UIButton *)v8->_postButton setEnabled:0];
-    [(SKUICommentPostBarView *)v8 addSubview:v8->_postButton];
+    [(UIButton *)height->_postButton addTarget:height action:sel__post_ forControlEvents:64];
+    [(UIButton *)height->_postButton setEnabled:0];
+    [(SKUICommentPostBarView *)height addSubview:height->_postButton];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)_post:(id)a3
+- (void)_post:(id)_post
 {
   [(SKUICommentPostBarView *)self _postComment];
 
   [(SKUICommentPostBarView *)self resignFirstResponder];
 }
 
-- (void)_changeCommenter:(id)a3
+- (void)_changeCommenter:(id)commenter
 {
-  v9 = a3;
-  v4 = [(SKUICommentPostBarView *)self delegate];
-  if (v4)
+  commenterCopy = commenter;
+  delegate = [(SKUICommentPostBarView *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(SKUICommentPostBarView *)self delegate];
-    v7 = [v6 conformsToProtocol:&unk_28298A6C8];
+    v5 = delegate;
+    delegate2 = [(SKUICommentPostBarView *)self delegate];
+    v7 = [delegate2 conformsToProtocol:&unk_28298A6C8];
 
     if (v7)
     {
-      v8 = [(SKUICommentPostBarView *)self delegate];
-      [v8 commentPostBarView:self changeCommenter:v9];
+      delegate3 = [(SKUICommentPostBarView *)self delegate];
+      [delegate3 commentPostBarView:self changeCommenter:commenterCopy];
     }
   }
 }
 
-- (void)setAsText:(id)a3
+- (void)setAsText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   asText = self->_asText;
-  v7 = v5;
-  v9 = v5;
-  if (asText != v5)
+  v7 = textCopy;
+  v9 = textCopy;
+  if (asText != textCopy)
   {
-    asText = [(NSString *)asText isEqual:v5];
+    asText = [(NSString *)asText isEqual:textCopy];
     if ((asText & 1) == 0)
     {
-      objc_storeStrong(&self->_asText, a3);
+      objc_storeStrong(&self->_asText, text);
     }
 
     v7 = self->_asText;
-    v5 = v9;
+    textCopy = v9;
   }
 
   if (v7)
   {
-    v8 = [(SKUICommentPostBarView *)self _asLabel];
-    [v8 setText:self->_asText];
+    _asLabel = [(SKUICommentPostBarView *)self _asLabel];
+    [_asLabel setText:self->_asText];
 
-    v5 = v9;
+    textCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](asText, v5);
+  MEMORY[0x2821F96F8](asText, textCopy);
 }
 
-- (void)setCommenter:(id)a3
+- (void)setCommenter:(id)commenter
 {
-  v5 = a3;
+  commenterCopy = commenter;
   commenter = self->_commenter;
-  if (commenter != v5)
+  if (commenter != commenterCopy)
   {
-    v8 = v5;
-    commenter = [commenter isEqual:v5];
-    v5 = v8;
+    v8 = commenterCopy;
+    commenter = [commenter isEqual:commenterCopy];
+    commenterCopy = v8;
     if ((commenter & 1) == 0)
     {
-      objc_storeStrong(&self->_commenter, a3);
-      v7 = [(SKUICommentPostBarView *)self _asNameButton];
-      [v7 setTitle:self->_commenter forState:0];
+      objc_storeStrong(&self->_commenter, commenter);
+      _asNameButton = [(SKUICommentPostBarView *)self _asNameButton];
+      [_asNameButton setTitle:self->_commenter forState:0];
 
       commenter = [(SKUICommentPostBarView *)self setNeedsLayout];
-      v5 = v8;
+      commenterCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](commenter, v5);
+  MEMORY[0x2821F96F8](commenter, commenterCopy);
 }
 
-- (void)setPostButtonVisible:(BOOL)a3
+- (void)setPostButtonVisible:(BOOL)visible
 {
-  [(UIButton *)self->_postButton setHidden:!a3];
+  [(UIButton *)self->_postButton setHidden:!visible];
 
   [(SKUICommentPostBarView *)self setNeedsLayout];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 isEqualToString:@"\n"];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  v11 = [stringCopy isEqualToString:@"\n"];
   if (v11)
   {
     [(SKUICommentPostBarView *)self _postComment];
@@ -189,8 +189,8 @@
 
   else
   {
-    v12 = [v9 text];
-    v13 = [v12 stringByReplacingCharactersInRange:location withString:{length, v10}];
+    text = [fieldCopy text];
+    v13 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
     -[UIButton setEnabled:](self->_postButton, "setEnabled:", [v13 length] != 0);
   }
@@ -206,20 +206,20 @@
   if (self->_commenter)
   {
     v3 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[SKUICommentPostBarView semanticContentAttribute](self, "semanticContentAttribute")}];
-    v4 = [(SKUICommentPostBarView *)self _asLabel];
-    [v4 setHidden:0];
+    _asLabel = [(SKUICommentPostBarView *)self _asLabel];
+    [_asLabel setHidden:0];
 
-    v5 = [(SKUICommentPostBarView *)self _asNameButton];
-    [v5 setHidden:0];
+    _asNameButton = [(SKUICommentPostBarView *)self _asNameButton];
+    [_asNameButton setHidden:0];
 
-    v6 = [(SKUICommentPostBarView *)self _asLabel];
-    [v6 frame];
+    _asLabel2 = [(SKUICommentPostBarView *)self _asLabel];
+    [_asLabel2 frame];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(SKUICommentPostBarView *)self _asLabel];
+    _asLabel3 = [(SKUICommentPostBarView *)self _asLabel];
     [(SKUICommentPostBarView *)self bounds];
-    [v11 sizeThatFits:{v12, v13}];
+    [_asLabel3 sizeThatFits:{v12, v13}];
     v15 = v14;
     v17 = v16;
 
@@ -241,11 +241,11 @@
 
     v24 = (30.0 - v17) * 0.5;
     v25 = ceilf(v24) + 2.0;
-    v26 = [(SKUICommentPostBarView *)self _asLabel];
-    [v26 setFrame:{v19, v25, v15, v17}];
+    _asLabel4 = [(SKUICommentPostBarView *)self _asLabel];
+    [_asLabel4 setFrame:{v19, v25, v15, v17}];
 
-    v27 = [(SKUICommentPostBarView *)self _asNameButton];
-    [v27 frame];
+    _asNameButton2 = [(SKUICommentPostBarView *)self _asNameButton];
+    [_asNameButton2 frame];
     v29 = v28;
     v31 = v30;
 
@@ -297,18 +297,18 @@
     v22 = 30.0;
     v46 = (30.0 - v37) * 0.5;
     v47 = ceilf(v46) + 2.0;
-    v21 = [(SKUICommentPostBarView *)self _asNameButton];
-    [v21 setFrame:{v45, v47, v35, v37}];
+    _asNameButton3 = [(SKUICommentPostBarView *)self _asNameButton];
+    [_asNameButton3 setFrame:{v45, v47, v35, v37}];
     v23 = 40.0;
   }
 
   else
   {
-    v20 = [(SKUICommentPostBarView *)self _asLabel];
-    [v20 setHidden:1];
+    _asLabel5 = [(SKUICommentPostBarView *)self _asLabel];
+    [_asLabel5 setHidden:1];
 
-    v21 = [(SKUICommentPostBarView *)self _asNameButton];
-    [v21 setHidden:1];
+    _asNameButton3 = [(SKUICommentPostBarView *)self _asNameButton];
+    [_asNameButton3 setHidden:1];
     v22 = 1.0;
     v23 = 45.0;
   }
@@ -373,15 +373,15 @@
   asNameButton = self->_asNameButton;
   if (asNameButton)
   {
-    v4 = [(SKUICommentPostBarView *)self tintColor];
-    [(UIButton *)asNameButton setTintColor:v4];
+    tintColor = [(SKUICommentPostBarView *)self tintColor];
+    [(UIButton *)asNameButton setTintColor:tintColor];
   }
 
   postButton = self->_postButton;
   if (postButton)
   {
-    v6 = [(SKUICommentPostBarView *)self tintColor];
-    [(UIButton *)postButton setTitleColor:v6 forState:0];
+    tintColor2 = [(SKUICommentPostBarView *)self tintColor];
+    [(UIButton *)postButton setTitleColor:tintColor2 forState:0];
   }
 }
 
@@ -395,13 +395,13 @@
     v6 = self->_asNameButton;
     self->_asNameButton = v5;
 
-    v7 = [(UIButton *)self->_asNameButton titleLabel];
+    titleLabel = [(UIButton *)self->_asNameButton titleLabel];
     v8 = [MEMORY[0x277D74300] systemFontOfSize:15.0];
-    [v7 setFont:v8];
+    [titleLabel setFont:v8];
 
     v9 = self->_asNameButton;
-    v10 = [(SKUICommentPostBarView *)self tintColor];
-    [(UIButton *)v9 setTitleColor:v10 forState:0];
+    tintColor = [(SKUICommentPostBarView *)self tintColor];
+    [(UIButton *)v9 setTitleColor:tintColor forState:0];
 
     [(UIButton *)self->_asNameButton addTarget:self action:sel__changeCommenter_ forControlEvents:64];
     [(SKUICommentPostBarView *)self addSubview:self->_asNameButton];
@@ -439,20 +439,20 @@
 
 - (void)_postComment
 {
-  v8 = [(SKUICommentPostBarTextField *)self->_postTextField text];
-  if ([v8 length])
+  text = [(SKUICommentPostBarTextField *)self->_postTextField text];
+  if ([text length])
   {
-    v3 = [(SKUICommentPostBarView *)self delegate];
-    if (v3)
+    delegate = [(SKUICommentPostBarView *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(SKUICommentPostBarView *)self delegate];
-      v6 = [v5 conformsToProtocol:&unk_28298A6C8];
+      v4 = delegate;
+      delegate2 = [(SKUICommentPostBarView *)self delegate];
+      v6 = [delegate2 conformsToProtocol:&unk_28298A6C8];
 
       if (v6)
       {
-        v7 = [(SKUICommentPostBarView *)self delegate];
-        [v7 commentPostBarView:self text:v8 as:self->_commenter];
+        delegate3 = [(SKUICommentPostBarView *)self delegate];
+        [delegate3 commentPostBarView:self text:text as:self->_commenter];
       }
     }
   }

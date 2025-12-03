@@ -1,5 +1,5 @@
 @interface TPSDialAssistController
-- (BOOL)supportsDialAssistForSubscriptionContext:(id)a3;
+- (BOOL)supportsDialAssistForSubscriptionContext:(id)context;
 - (TPSDialAssistController)init;
 @end
 
@@ -20,12 +20,12 @@
   return v2;
 }
 
-- (BOOL)supportsDialAssistForSubscriptionContext:(id)a3
+- (BOOL)supportsDialAssistForSubscriptionContext:(id)context
 {
-  v5 = a3;
-  v6 = [(TPSDialAssistController *)self carrierBundleController];
+  contextCopy = context;
+  carrierBundleController = [(TPSDialAssistController *)self carrierBundleController];
   v15 = 0;
-  v7 = [v6 objectForKey:@"ShowDialAssist" subscriptionContext:v5 error:&v15];
+  v7 = [carrierBundleController objectForKey:@"ShowDialAssist" subscriptionContext:contextCopy error:&v15];
 
   v8 = v15;
   if (v8)
@@ -50,22 +50,22 @@
   {
     if (!v7)
     {
-      v10 = 1;
+      bOOLValue = 1;
       goto LABEL_6;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
       goto LABEL_6;
     }
   }
 
-  v10 = 0;
+  bOOLValue = 0;
 LABEL_6:
 
-  return v10;
+  return bOOLValue;
 }
 
 @end

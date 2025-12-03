@@ -1,6 +1,6 @@
 @interface LiveSpeechSwiftUI
-- (LiveSpeechSwiftUI)initWithCoder:(id)a3;
-- (LiveSpeechSwiftUI)initWithNibName:(id)a3 bundle:(id)a4;
+- (LiveSpeechSwiftUI)initWithCoder:(id)coder;
+- (LiveSpeechSwiftUI)initWithNibName:(id)name bundle:(id)bundle;
 - (id)makeController;
 @end
 
@@ -16,34 +16,34 @@
   return v2;
 }
 
-- (LiveSpeechSwiftUI)initWithNibName:(id)a3 bundle:(id)a4
+- (LiveSpeechSwiftUI)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_23BD06394();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_23BD06384();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for LiveSpeechSwiftUI();
-  v9 = [(LiveSpeechSwiftUI *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(LiveSpeechSwiftUI *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (LiveSpeechSwiftUI)initWithCoder:(id)a3
+- (LiveSpeechSwiftUI)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LiveSpeechSwiftUI();
-  v4 = a3;
-  v5 = [(LiveSpeechSwiftUI *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LiveSpeechSwiftUI *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

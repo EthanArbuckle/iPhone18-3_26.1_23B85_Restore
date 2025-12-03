@@ -9,13 +9,13 @@
 {
   v12 = a7;
   v13 = _UIFocusStringFromCGRect(a2, a3, a4, a5);
-  [a1 encodeObject:v13 forKey:v12];
+  [self encodeObject:v13 forKey:v12];
 }
 
 - (double)decodeCGRectForKey:()UIFocusGeometryKeyedCoding
 {
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {

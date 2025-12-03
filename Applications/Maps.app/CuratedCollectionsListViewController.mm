@@ -1,133 +1,133 @@
 @interface CuratedCollectionsListViewController
-- (CuratedCollectionsListViewController)initWithCuratedCollections:(id)a3 usingTitle:(id)a4 usingCollectionIds:(id)a5 withTraits:(id)a6;
+- (CuratedCollectionsListViewController)initWithCuratedCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids withTraits:(id)traits;
 - (void)addCarouselView;
 - (void)addHeaderView;
-- (void)collectionsCarouselDidRouteToCollectionId:(id)a3 atIndex:(int64_t)a4 isSaved:(BOOL)a5;
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3;
+- (void)collectionsCarouselDidRouteToCollectionId:(id)id atIndex:(int64_t)index isSaved:(BOOL)saved;
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections;
 - (void)dealloc;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)displayCollections;
-- (void)handleDismissAction:(id)a3;
-- (void)routeToCuratedCollection:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)handleDismissAction:(id)action;
+- (void)routeToCuratedCollection:(id)collection;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)setupConstraints;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CuratedCollectionsListViewController
 
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections
 {
-  v3 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  [v3 refreshCollections];
+  collectionsCarousel = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  [collectionsCarousel refreshCollections];
 }
 
-- (void)collectionsCarouselDidRouteToCollectionId:(id)a3 atIndex:(int64_t)a4 isSaved:(BOOL)a5
+- (void)collectionsCarouselDidRouteToCollectionId:(id)id atIndex:(int64_t)index isSaved:(BOOL)saved
 {
-  v5 = a5;
-  v8 = a3;
-  v10 = [(CuratedCollectionsListViewController *)self analyticsManager];
-  v9 = [v8 muid];
+  savedCopy = saved;
+  idCopy = id;
+  analyticsManager = [(CuratedCollectionsListViewController *)self analyticsManager];
+  muid = [idCopy muid];
 
-  [v10 curatedCollectionTappedWithMuid:v9 verticalIndex:a4 isCollectionSaved:v5];
+  [analyticsManager curatedCollectionTappedWithMuid:muid verticalIndex:index isCollectionSaved:savedCopy];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   v5.receiver = self;
   v5.super_class = CuratedCollectionsListViewController;
-  [(ContaineeViewController *)&v5 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x, a4.y];
+  [(ContaineeViewController *)&v5 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x, velocity.y];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3.receiver = self;
   v3.super_class = CuratedCollectionsListViewController;
-  [(ContaineeViewController *)&v3 scrollViewWillBeginDragging:a3];
+  [(ContaineeViewController *)&v3 scrollViewWillBeginDragging:dragging];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3.receiver = self;
   v3.super_class = CuratedCollectionsListViewController;
-  [(ContaineeViewController *)&v3 scrollViewDidScroll:a3];
+  [(ContaineeViewController *)&v3 scrollViewDidScroll:scroll];
 }
 
-- (void)routeToCuratedCollection:(id)a3
+- (void)routeToCuratedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ControlContaineeViewController *)self delegate];
-  [v5 viewController:self showCuratedCollection:v4];
+  collectionCopy = collection;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [delegate viewController:self showCuratedCollection:collectionCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CuratedCollectionsListViewController;
-  v7 = a4;
-  [(ContaineeViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ContaineeViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100C9B6D8;
   v8[3] = &unk_101661710;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)setupConstraints
 {
-  v43 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  v41 = [v43 topAnchor];
-  v42 = [(ContaineeViewController *)self headerView];
-  v40 = [v42 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  titleHeaderView = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  topAnchor = [titleHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[0] = v39;
-  v38 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  v36 = [v38 leadingAnchor];
-  v37 = [(ContaineeViewController *)self headerView];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  titleHeaderView2 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  leadingAnchor = [titleHeaderView2 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[1] = v34;
-  v33 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  v31 = [v33 trailingAnchor];
-  v32 = [(ContaineeViewController *)self headerView];
-  v30 = [v32 trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  titleHeaderView3 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  trailingAnchor = [titleHeaderView3 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[2] = v29;
-  v28 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  v26 = [v28 bottomAnchor];
-  v27 = [(ContaineeViewController *)self headerView];
-  v25 = [v27 bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  titleHeaderView4 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  bottomAnchor = [titleHeaderView4 bottomAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView4 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[3] = v24;
-  v23 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  v21 = [v23 leadingAnchor];
-  v22 = [(ContaineeViewController *)self contentView];
-  v20 = [v22 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  collectionsCarousel = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  leadingAnchor3 = [collectionsCarousel leadingAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v44[4] = v19;
-  v18 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  v16 = [v18 trailingAnchor];
-  v17 = [(ContaineeViewController *)self contentView];
-  v15 = [v17 trailingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  collectionsCarousel2 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  trailingAnchor3 = [collectionsCarousel2 trailingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView2 trailingAnchor];
+  v14 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v44[5] = v14;
-  v13 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  v3 = [v13 topAnchor];
-  v4 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  v5 = [v4 bottomAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  collectionsCarousel3 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  topAnchor3 = [collectionsCarousel3 topAnchor];
+  titleHeaderView5 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  bottomAnchor3 = [titleHeaderView5 bottomAnchor];
+  v6 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v44[6] = v6;
-  v7 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  v8 = [v7 bottomAnchor];
-  v9 = [(ContaineeViewController *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  collectionsCarousel4 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  bottomAnchor4 = [collectionsCarousel4 bottomAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  bottomAnchor5 = [contentView3 bottomAnchor];
+  v11 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v44[7] = v11;
   v12 = [NSArray arrayWithObjects:v44 count:8];
   [NSLayoutConstraint activateConstraints:v12];
@@ -136,21 +136,21 @@
 - (void)addCarouselView
 {
   v3 = [MKCollectionsCarouselView alloc];
-  v4 = [(CuratedCollectionsListViewController *)self curatedCollections];
+  curatedCollections = [(CuratedCollectionsListViewController *)self curatedCollections];
   v5 = +[CuratedCollectionSyncManager sharedManager];
-  v6 = [v3 initCollectionsCarouselViewWithContext:0 withPlaceCollections:v4 usingSyncCoordinator:v5 withRoutingDelegate:self withScrollViewDelegate:self withAnalyticsDelegate:self exploreGuides:0];
+  v6 = [v3 initCollectionsCarouselViewWithContext:0 withPlaceCollections:curatedCollections usingSyncCoordinator:v5 withRoutingDelegate:self withScrollViewDelegate:self withAnalyticsDelegate:self exploreGuides:0];
   [(CuratedCollectionsListViewController *)self setCollectionsCarousel:v6];
 
-  v7 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionsCarousel = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  [collectionsCarousel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  collectionsCarousel2 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
   v9 = +[UIColor clearColor];
-  [v8 setBackgroundColor:v9];
+  [collectionsCarousel2 setBackgroundColor:v9];
 
-  v10 = [(ContaineeViewController *)self contentView];
-  v11 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  [v10 addSubview:v11];
+  contentView = [(ContaineeViewController *)self contentView];
+  collectionsCarousel3 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  [contentView addSubview:collectionsCarousel3];
 
   [(CuratedCollectionsListViewController *)self setupConstraints];
 }
@@ -160,54 +160,54 @@
   v3 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CuratedCollectionsListViewController *)self setTitleHeaderView:v3];
 
-  v4 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleHeaderView = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  [titleHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  v6 = sub_10000FA08(v5);
+  titleHeaderView2 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  v6 = sub_10000FA08(titleHeaderView2);
 
   if (v6 == 5)
   {
-    v7 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+    titleHeaderView3 = [(CuratedCollectionsListViewController *)self titleHeaderView];
     v8 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle3 variant:1024];
-    [v7 setCustomTitleFont:v8];
+    [titleHeaderView3 setCustomTitleFont:v8];
   }
 
-  v9 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  titleHeaderView4 = [(CuratedCollectionsListViewController *)self titleHeaderView];
   LODWORD(v10) = 1148846080;
-  [v9 setContentCompressionResistancePriority:1 forAxis:v10];
+  [titleHeaderView4 setContentCompressionResistancePriority:1 forAxis:v10];
 
-  v11 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  [v11 setDelegate:self];
+  titleHeaderView5 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  [titleHeaderView5 setDelegate:self];
 
-  v12 = [(CuratedCollectionsListViewController *)self cardTitle];
+  cardTitle = [(CuratedCollectionsListViewController *)self cardTitle];
 
-  if (v12)
+  if (cardTitle)
   {
-    v13 = [(CuratedCollectionsListViewController *)self cardTitle];
-    v14 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-    [v14 setTitle:v13];
+    cardTitle2 = [(CuratedCollectionsListViewController *)self cardTitle];
+    titleHeaderView6 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+    [titleHeaderView6 setTitle:cardTitle2];
   }
 
   else
   {
-    v13 = +[NSBundle mainBundle];
-    v14 = [v13 localizedStringForKey:@"[Curated Guides] Featured In" value:@"localized string not found" table:0];
-    v15 = [(CuratedCollectionsListViewController *)self curatedCollections];
-    v16 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v14, [v15 count]);
-    v17 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-    [v17 setTitle:v16];
+    cardTitle2 = +[NSBundle mainBundle];
+    titleHeaderView6 = [cardTitle2 localizedStringForKey:@"[Curated Guides] Featured In" value:@"localized string not found" table:0];
+    curatedCollections = [(CuratedCollectionsListViewController *)self curatedCollections];
+    v16 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", titleHeaderView6, [curatedCollections count]);
+    titleHeaderView7 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+    [titleHeaderView7 setTitle:v16];
   }
 
-  v18 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  [v18 setHeaderSize:1];
+  titleHeaderView8 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  [titleHeaderView8 setHeaderSize:1];
 
-  v19 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  [v19 setHairLineAlpha:0.0];
+  titleHeaderView9 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  [titleHeaderView9 setHairLineAlpha:0.0];
 
-  v21 = [(ContaineeViewController *)self headerView];
-  v20 = [(CuratedCollectionsListViewController *)self titleHeaderView];
-  [v21 addSubview:v20];
+  headerView = [(ContaineeViewController *)self headerView];
+  titleHeaderView10 = [(CuratedCollectionsListViewController *)self titleHeaderView];
+  [headerView addSubview:titleHeaderView10];
 }
 
 - (void)displayCollections
@@ -223,10 +223,10 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "DisplayingCarouselCollections", "", buf, 2u);
   }
 
-  v7 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  v8 = [(CuratedCollectionsListViewController *)self collectionIds];
-  v9 = [(CuratedCollectionsListViewController *)self guideFetcher];
-  [v7 displayCollectionsUsingBatchIds:v8 usingGuideFetcher:v9];
+  collectionsCarousel = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  collectionIds = [(CuratedCollectionsListViewController *)self collectionIds];
+  guideFetcher = [(CuratedCollectionsListViewController *)self guideFetcher];
+  [collectionsCarousel displayCollectionsUsingBatchIds:collectionIds usingGuideFetcher:guideFetcher];
 
   v10 = sub_100C9C090();
   v11 = v10;
@@ -237,29 +237,29 @@
   }
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v6.receiver = self;
   v6.super_class = CuratedCollectionsListViewController;
-  [(ContaineeViewController *)&v6 didChangeLayout:a3];
-  v4 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  [(ContaineeViewController *)&v6 didChangeLayout:layout];
+  collectionsCarousel = [(CuratedCollectionsListViewController *)self collectionsCarousel];
 
-  if (v4)
+  if (collectionsCarousel)
   {
-    v5 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-    [v5 resetCollectionsLayout];
+    collectionsCarousel2 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+    [collectionsCarousel2 resetCollectionsLayout];
   }
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionsListViewController *)self collectionsCarousel];
-  [v5 dismissedCollections];
+  actionCopy = action;
+  collectionsCarousel = [(CuratedCollectionsListViewController *)self collectionsCarousel];
+  [collectionsCarousel dismissedCollections];
 
   v6.receiver = self;
   v6.super_class = CuratedCollectionsListViewController;
-  [(ContaineeViewController *)&v6 handleDismissAction:v4];
+  [(ContaineeViewController *)&v6 handleDismissAction:actionCopy];
 }
 
 - (void)viewDidLoad
@@ -299,31 +299,31 @@
   [(CuratedCollectionsListViewController *)&v4 dealloc];
 }
 
-- (CuratedCollectionsListViewController)initWithCuratedCollections:(id)a3 usingTitle:(id)a4 usingCollectionIds:(id)a5 withTraits:(id)a6
+- (CuratedCollectionsListViewController)initWithCuratedCollections:(id)collections usingTitle:(id)title usingCollectionIds:(id)ids withTraits:(id)traits
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  collectionsCopy = collections;
+  titleCopy = title;
+  idsCopy = ids;
+  traitsCopy = traits;
   v25.receiver = self;
   v25.super_class = CuratedCollectionsListViewController;
   v15 = [(CuratedCollectionsListViewController *)&v25 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_curatedCollections, a3);
-    objc_storeStrong(&v16->_cardTitle, a4);
-    objc_storeStrong(&v16->_collectionIds, a5);
-    objc_storeStrong(&v16->_traits, a6);
+    objc_storeStrong(&v15->_curatedCollections, collections);
+    objc_storeStrong(&v16->_cardTitle, title);
+    objc_storeStrong(&v16->_collectionIds, ids);
+    objc_storeStrong(&v16->_traits, traits);
     v17 = [[CuratedCollectionsListFetcher alloc] initWithTraits:v16->_traits];
     guideFetcher = v16->_guideFetcher;
     v16->_guideFetcher = v17;
 
-    v19 = [(ContaineeViewController *)v16 cardPresentationController];
-    [v19 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v16 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v20 = [(ContaineeViewController *)v16 cardPresentationController];
-    [v20 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v16 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
     v21 = objc_alloc_init(CuratedCollectionsListAnalyticsManager);
     analyticsManager = v16->_analyticsManager;

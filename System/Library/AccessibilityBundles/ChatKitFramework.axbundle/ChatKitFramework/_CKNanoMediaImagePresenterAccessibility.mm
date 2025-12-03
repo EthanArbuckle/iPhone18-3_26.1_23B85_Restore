@@ -1,17 +1,17 @@
 @interface _CKNanoMediaImagePresenterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation _CKNanoMediaImagePresenterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_CKNanoMediaImagePresenter" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_CKNanoMediaImagePresenter" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
-  [v3 validateClass:@"CKNanoMediaPresenter" hasInstanceMethod:@"mediaObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMediaObject" hasInstanceMethod:@"fileURL" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_CKNanoMediaImagePresenter" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_CKNanoMediaImagePresenter" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"CKNanoMediaPresenter" hasInstanceMethod:@"mediaObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMediaObject" hasInstanceMethod:@"fileURL" withFullSignature:{"@", 0}];
 }
 
 - (void)viewDidLoad
@@ -21,8 +21,8 @@
   [(_CKNanoMediaImagePresenterAccessibility *)&v17 viewDidLoad];
   v3 = [(_CKNanoMediaImagePresenterAccessibility *)self safeValueForKey:@"_imageView"];
   [v3 setIsAccessibilityElement:1];
-  v4 = [v3 accessibilityLabel];
-  v5 = [v4 length];
+  accessibilityLabel = [v3 accessibilityLabel];
+  v5 = [accessibilityLabel length];
 
   if (!v5)
   {

@@ -1,15 +1,15 @@
 @interface DebugFormatWorkspaceCanvasSorter
 - (_TtC8NewsFeed32DebugFormatWorkspaceCanvasSorter)init;
-- (void)doCanvasSortWithSender:(id)a3;
+- (void)doCanvasSortWithSender:(id)sender;
 @end
 
 @implementation DebugFormatWorkspaceCanvasSorter
 
-- (void)doCanvasSortWithSender:(id)a3
+- (void)doCanvasSortWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6770F90(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1D6770F90(senderCopy);
 }
 
 - (_TtC8NewsFeed32DebugFormatWorkspaceCanvasSorter)init

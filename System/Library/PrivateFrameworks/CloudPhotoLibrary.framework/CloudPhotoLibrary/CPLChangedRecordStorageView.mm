@@ -1,22 +1,22 @@
 @interface CPLChangedRecordStorageView
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3;
-- (CPLChangedRecordStorageView)initWithChangeStorage:(id)a3 overStorageView:(id)a4;
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier;
+- (CPLChangedRecordStorageView)initWithChangeStorage:(id)storage overStorageView:(id)view;
 - (id)description;
-- (id)recordViewWithScopedIdentifier:(id)a3;
-- (id)recordViewsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4;
+- (id)recordViewWithScopedIdentifier:(id)identifier;
+- (id)recordViewsWithRelatedScopedIdentifier:(id)identifier class:(Class)class;
 - (id)redactedDescription;
-- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)a3;
-- (id)resourceOfType:(unint64_t)a3 forRecordWithScopedIdentifier:(id)a4 recordClass:(Class *)a5 error:(id *)a6;
-- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4;
+- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)identifier;
+- (id)resourceOfType:(unint64_t)type forRecordWithScopedIdentifier:(id)identifier recordClass:(Class *)class error:(id *)error;
+- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)identifier class:(Class)class;
 @end
 
 @implementation CPLChangedRecordStorageView
 
-- (id)resourceOfType:(unint64_t)a3 forRecordWithScopedIdentifier:(id)a4 recordClass:(Class *)a5 error:(id *)a6
+- (id)resourceOfType:(unint64_t)type forRecordWithScopedIdentifier:(id)identifier recordClass:(Class *)class error:(id *)error
 {
-  v10 = a4;
-  v11 = [(CPLChangedRecordStorageView *)self changeStorage];
-  v12 = [v11 changeWithScopedIdentifier:v10];
+  identifierCopy = identifier;
+  changeStorage = [(CPLChangedRecordStorageView *)self changeStorage];
+  v12 = [changeStorage changeWithScopedIdentifier:identifierCopy];
 
   if (!v12 || ([v12 isDelete] & 1) == 0 && !objc_msgSend(v12, "hasChangeType:", 8))
   {
@@ -25,16 +25,16 @@
 
   if ([v12 isDelete])
   {
-    v13 = [CPLErrors cplErrorWithCode:25 description:@"Record %@ has just been deleted", v10];
+    identifierCopy = [CPLErrors cplErrorWithCode:25 description:@"Record %@ has just been deleted", identifierCopy];
     goto LABEL_11;
   }
 
   if (([v12 supportsResources] & 1) == 0)
   {
-    v13 = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
+    identifierCopy = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
 LABEL_11:
-    v16 = v13;
-    if (v13)
+    v16 = identifierCopy;
+    if (identifierCopy)
     {
       goto LABEL_12;
     }
@@ -42,40 +42,40 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v14 = [v12 resourceForType:a3];
+  v14 = [v12 resourceForType:type];
   if (v14)
   {
     v15 = v14;
-    if (a5)
+    if (class)
     {
       v16 = 0;
-      *a5 = objc_opt_class();
+      *class = objc_opt_class();
       goto LABEL_18;
     }
 
     goto LABEL_17;
   }
 
-  v18 = [CPLResource shortDescriptionForResourceType:a3];
-  v16 = [CPLErrors cplErrorWithCode:26 description:@"Record %@ has just been modified and has no resource of type %@", v10, v18];
+  v18 = [CPLResource shortDescriptionForResourceType:type];
+  v16 = [CPLErrors cplErrorWithCode:26 description:@"Record %@ has just been modified and has no resource of type %@", identifierCopy, v18];
 
   if (!v16)
   {
 LABEL_16:
     v20.receiver = self;
     v20.super_class = CPLChangedRecordStorageView;
-    v15 = [(CPLRecordStorageView *)&v20 resourceOfType:a3 forRecordWithScopedIdentifier:v10 recordClass:a5 error:a6];
+    v15 = [(CPLRecordStorageView *)&v20 resourceOfType:type forRecordWithScopedIdentifier:identifierCopy recordClass:class error:error];
 LABEL_17:
     v16 = 0;
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (a6)
+  if (error)
   {
     v17 = v16;
     v15 = 0;
-    *a6 = v16;
+    *error = v16;
   }
 
   else
@@ -88,34 +88,34 @@ LABEL_18:
   return v15;
 }
 
-- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4
+- (unint64_t)countOfRecordsWithRelatedScopedIdentifier:(id)identifier class:(Class)class
 {
-  v6 = a3;
-  v7 = [(CPLChangedRecordStorageView *)self changeStorage];
-  v8 = [v7 hasChangesWithRelatedScopedIdentifier:v6 class:a4];
+  identifierCopy = identifier;
+  changeStorage = [(CPLChangedRecordStorageView *)self changeStorage];
+  v8 = [changeStorage hasChangesWithRelatedScopedIdentifier:identifierCopy class:class];
 
   if (v8)
   {
     v12.receiver = self;
     v12.super_class = CPLChangedRecordStorageView;
-    v9 = [(CPLRecordStorageView *)&v12 countOfRecordsWithRelatedScopedIdentifier:v6 class:a4];
+    v9 = [(CPLRecordStorageView *)&v12 countOfRecordsWithRelatedScopedIdentifier:identifierCopy class:class];
   }
 
   else
   {
-    v10 = [(CPLChangedRecordStorageView *)self baseStorageView];
-    v9 = [v10 countOfRecordsWithRelatedScopedIdentifier:v6 class:a4];
+    baseStorageView = [(CPLChangedRecordStorageView *)self baseStorageView];
+    v9 = [baseStorageView countOfRecordsWithRelatedScopedIdentifier:identifierCopy class:class];
   }
 
   return v9;
 }
 
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v5 = [(CPLChangedRecordStorageView *)self changeStorage];
-  v6 = [v5 getStoredChangeType:&v10 forRecordWithScopedIdentifier:v4];
+  changeStorage = [(CPLChangedRecordStorageView *)self changeStorage];
+  v6 = [changeStorage getStoredChangeType:&v10 forRecordWithScopedIdentifier:identifierCopy];
 
   if (v6)
   {
@@ -124,25 +124,25 @@ LABEL_18:
 
   else
   {
-    v8 = [(CPLChangedRecordStorageView *)self baseStorageView];
-    v7 = [v8 hasRecordWithScopedIdentifier:v4];
+    baseStorageView = [(CPLChangedRecordStorageView *)self baseStorageView];
+    v7 = [baseStorageView hasRecordWithScopedIdentifier:identifierCopy];
   }
 
   return v7;
 }
 
-- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)a3
+- (id)relatedScopedIdentifierForRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLChangedRecordStorageView *)self changeStorage];
+  identifierCopy = identifier;
+  changeStorage = [(CPLChangedRecordStorageView *)self changeStorage];
   v11 = 0;
-  v6 = [v5 getRelatedScopedIdentifier:&v11 forRecordWithScopedIdentifier:v4];
+  v6 = [changeStorage getRelatedScopedIdentifier:&v11 forRecordWithScopedIdentifier:identifierCopy];
   v7 = v11;
 
   if ((v6 & 1) == 0)
   {
-    v8 = [(CPLChangedRecordStorageView *)self baseStorageView];
-    v9 = [v8 relatedScopedIdentifierForRecordWithScopedIdentifier:v4];
+    baseStorageView = [(CPLChangedRecordStorageView *)self baseStorageView];
+    v9 = [baseStorageView relatedScopedIdentifierForRecordWithScopedIdentifier:identifierCopy];
 
     v7 = v9;
   }
@@ -153,9 +153,9 @@ LABEL_18:
 - (id)redactedDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CPLRecordStorageView *)self->_baseStorageView redactedDescription];
-  v5 = [(CPLChangeStorage *)self->_changeStorage storageDescription];
-  v6 = [v3 initWithFormat:@"%@+%@", v4, v5];
+  redactedDescription = [(CPLRecordStorageView *)self->_baseStorageView redactedDescription];
+  storageDescription = [(CPLChangeStorage *)self->_changeStorage storageDescription];
+  v6 = [v3 initWithFormat:@"%@+%@", redactedDescription, storageDescription];
 
   return v6;
 }
@@ -164,17 +164,17 @@ LABEL_18:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   baseStorageView = self->_baseStorageView;
-  v5 = [(CPLChangeStorage *)self->_changeStorage storageDescription];
-  v6 = [v3 initWithFormat:@"%@+%@", baseStorageView, v5];
+  storageDescription = [(CPLChangeStorage *)self->_changeStorage storageDescription];
+  v6 = [v3 initWithFormat:@"%@+%@", baseStorageView, storageDescription];
 
   return v6;
 }
 
-- (id)recordViewsWithRelatedScopedIdentifier:(id)a3 class:(Class)a4
+- (id)recordViewsWithRelatedScopedIdentifier:(id)identifier class:(Class)class
 {
   v69 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v51 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   [CPLRecordStorageView recordViewsWithRelatedScopedIdentifier:"recordViewsWithRelatedScopedIdentifier:class:" class:?];
   v62 = 0u;
   v63 = 0u;
@@ -202,14 +202,14 @@ LABEL_18:
           v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
         }
 
-        v13 = [v12 scopedIdentifier];
+        scopedIdentifier = [v12 scopedIdentifier];
         if (!v8)
         {
           v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         }
 
-        [v9 setObject:v12 forKeyedSubscript:v13];
-        [v8 addObject:v13];
+        [v9 setObject:v12 forKeyedSubscript:scopedIdentifier];
+        [v8 addObject:scopedIdentifier];
       }
 
       v7 = [obj countByEnumeratingWithState:&v62 objects:v68 count:16];
@@ -224,8 +224,8 @@ LABEL_18:
     v9 = 0;
   }
 
-  v14 = v51;
-  [(CPLChangeStorage *)v51->_changeStorage changesWithRelatedScopedIdentifier:v50 class:a4];
+  v14 = selfCopy;
+  [(CPLChangeStorage *)selfCopy->_changeStorage changesWithRelatedScopedIdentifier:identifierCopy class:class];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -245,31 +245,31 @@ LABEL_18:
         }
 
         v19 = *(*(&v58 + 1) + 8 * j);
-        v20 = [v19 scopedIdentifier];
-        [v8 removeObject:v20];
-        v21 = [v9 objectForKeyedSubscript:v20];
+        scopedIdentifier2 = [v19 scopedIdentifier];
+        [v8 removeObject:scopedIdentifier2];
+        v21 = [v9 objectForKeyedSubscript:scopedIdentifier2];
         if (v21)
         {
-          v22 = v21;
+          asRecordView2 = v21;
           if ([v19 isDelete])
           {
-            [v9 removeObjectForKey:v20];
+            [v9 removeObjectForKey:scopedIdentifier2];
           }
 
           else
           {
             if ([v19 isFullRecord])
             {
-              v23 = [v19 asRecordView];
+              asRecordView = [v19 asRecordView];
             }
 
             else
             {
-              v23 = [[CPLChangedRecordView alloc] initWithChange:v19 overRecordView:v22];
+              asRecordView = [[CPLChangedRecordView alloc] initWithChange:v19 overRecordView:asRecordView2];
             }
 
-            v27 = v23;
-            [v9 setObject:v23 forKeyedSubscript:v20];
+            v27 = asRecordView;
+            [v9 setObject:asRecordView forKeyedSubscript:scopedIdentifier2];
           }
         }
 
@@ -280,8 +280,8 @@ LABEL_18:
             v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
           }
 
-          v22 = [v19 asRecordView];
-          [v9 setObject:v22 forKeyedSubscript:v20];
+          asRecordView2 = [v19 asRecordView];
+          [v9 setObject:asRecordView2 forKeyedSubscript:scopedIdentifier2];
         }
 
         else
@@ -292,22 +292,22 @@ LABEL_18:
           }
 
           baseStorageView = v14->_baseStorageView;
-          v25 = [v19 scopedIdentifier];
-          v22 = [(CPLRecordStorageView *)baseStorageView recordViewWithScopedIdentifier:v25];
+          scopedIdentifier3 = [v19 scopedIdentifier];
+          asRecordView2 = [(CPLRecordStorageView *)baseStorageView recordViewWithScopedIdentifier:scopedIdentifier3];
 
-          if (!v22)
+          if (!asRecordView2)
           {
-            v47 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLChangedRecordStorageView.m"];
-            [v47 handleFailureInMethod:a2 object:v19 file:v51 lineNumber:? description:?];
+            [currentHandler handleFailureInMethod:a2 object:v19 file:selfCopy lineNumber:? description:?];
 
             abort();
           }
 
-          v26 = [[CPLChangedRecordView alloc] initWithChange:v19 overRecordView:v22];
-          [v9 setObject:v26 forKeyedSubscript:v20];
+          v26 = [[CPLChangedRecordView alloc] initWithChange:v19 overRecordView:asRecordView2];
+          [v9 setObject:v26 forKeyedSubscript:scopedIdentifier2];
 
-          v14 = v51;
+          v14 = selfCopy;
         }
 
 LABEL_34:
@@ -357,11 +357,11 @@ LABEL_34:
           goto LABEL_50;
         }
 
-        v36 = [v35 relatedScopedIdentifier];
-        v37 = v36;
-        if (v50 && v36)
+        relatedScopedIdentifier = [v35 relatedScopedIdentifier];
+        v37 = relatedScopedIdentifier;
+        if (identifierCopy && relatedScopedIdentifier)
         {
-          v38 = [v36 isEqual:v50];
+          v38 = [relatedScopedIdentifier isEqual:identifierCopy];
 
           if ((v38 & 1) == 0)
           {
@@ -371,8 +371,8 @@ LABEL_34:
 LABEL_50:
           if ([v35 isFullRecord])
           {
-            v40 = [v35 asRecordView];
-            [v9 setObject:v40 forKeyedSubscript:v33];
+            asRecordView3 = [v35 asRecordView];
+            [v9 setObject:asRecordView3 forKeyedSubscript:v33];
           }
 
           else
@@ -386,7 +386,7 @@ LABEL_50:
 
         else
         {
-          v39 = v50 | v36;
+          v39 = identifierCopy | relatedScopedIdentifier;
 
           if (!v39)
           {
@@ -397,7 +397,7 @@ LABEL_48:
           [v9 removeObjectForKey:v33];
         }
 
-        v14 = v51;
+        v14 = selfCopy;
       }
 
 LABEL_54:
@@ -409,29 +409,29 @@ LABEL_54:
   while (v30);
 LABEL_56:
 
-  v44 = [v9 allValues];
+  allValues = [v9 allValues];
 
   v45 = *MEMORY[0x1E69E9840];
 
-  return v44;
+  return allValues;
 }
 
-- (id)recordViewWithScopedIdentifier:(id)a3
+- (id)recordViewWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLChangeStorage *)self->_changeStorage changeWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(CPLChangeStorage *)self->_changeStorage changeWithScopedIdentifier:identifierCopy];
   v6 = v5;
   if (!v5)
   {
-    v7 = [(CPLRecordStorageView *)self->_baseStorageView recordViewWithScopedIdentifier:v4];
+    asRecordView = [(CPLRecordStorageView *)self->_baseStorageView recordViewWithScopedIdentifier:identifierCopy];
     goto LABEL_5;
   }
 
   if ([v5 isFullRecord])
   {
-    v7 = [v6 asRecordView];
+    asRecordView = [v6 asRecordView];
 LABEL_5:
-    v8 = v7;
+    v8 = asRecordView;
     goto LABEL_6;
   }
 
@@ -442,7 +442,7 @@ LABEL_5:
 
   else
   {
-    v10 = [(CPLRecordStorageView *)self->_baseStorageView recordViewWithScopedIdentifier:v4];
+    v10 = [(CPLRecordStorageView *)self->_baseStorageView recordViewWithScopedIdentifier:identifierCopy];
     if (!v10)
     {
       _CPLBaseRecordViewFailure(self, v6);
@@ -457,18 +457,18 @@ LABEL_6:
   return v8;
 }
 
-- (CPLChangedRecordStorageView)initWithChangeStorage:(id)a3 overStorageView:(id)a4
+- (CPLChangedRecordStorageView)initWithChangeStorage:(id)storage overStorageView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = CPLChangedRecordStorageView;
   v9 = [(CPLChangedRecordStorageView *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseStorageView, a4);
-    objc_storeStrong(&v10->_changeStorage, a3);
+    objc_storeStrong(&v9->_baseStorageView, view);
+    objc_storeStrong(&v10->_changeStorage, storage);
   }
 
   return v10;

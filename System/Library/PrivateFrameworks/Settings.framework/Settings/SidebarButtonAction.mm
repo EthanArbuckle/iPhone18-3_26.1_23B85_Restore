@@ -1,24 +1,24 @@
 @interface SidebarButtonAction
 - (_TtC8Settings19SidebarButtonAction)init;
-- (_TtC8Settings19SidebarButtonAction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8Settings19SidebarButtonAction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SidebarButtonAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8Settings19SidebarButtonAction_action);
-  v5 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_21CE6CC20();
-  [v5 encodeInteger:v4 forKey:v6];
+  [coderCopy encodeInteger:v4 forKey:v6];
 }
 
-- (_TtC8Settings19SidebarButtonAction)initWithCoder:(id)a3
+- (_TtC8Settings19SidebarButtonAction)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_21CE35A4C(v3);
+  coderCopy = coder;
+  v4 = sub_21CE35A4C(coderCopy);
 
   return v4;
 }

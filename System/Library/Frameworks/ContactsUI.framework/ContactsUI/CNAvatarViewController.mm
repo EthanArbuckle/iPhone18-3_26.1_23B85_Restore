@@ -1,13 +1,13 @@
 @interface CNAvatarViewController
 + (id)avatarViewController;
 - (CALayer)sourceAvatarLayer;
-- (CNAvatarViewController)initWithCoder:(id)a3;
-- (CNAvatarViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CNAvatarViewController)initWithSettings:(id)a3;
+- (CNAvatarViewController)initWithCoder:(id)coder;
+- (CNAvatarViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CNAvatarViewController)initWithSettings:(id)settings;
 - (CNUIObjectViewControllerDelegate)objectViewControllerDelegate;
 - (UIImageView)destinationAvatarImageView;
 - (id)descriptorForRequiredKeys;
-- (void)performTransitionAnimationWithStartHandler:(id)a3 completion:(id)a4;
+- (void)performTransitionAnimationWithStartHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation CNAvatarViewController
@@ -19,13 +19,13 @@
   return WeakRetained;
 }
 
-- (void)performTransitionAnimationWithStartHandler:(id)a3 completion:(id)a4
+- (void)performTransitionAnimationWithStartHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAvatarViewController *)self sharedProfileStateOracle];
+  handlerCopy = handler;
+  completionCopy = completion;
+  sharedProfileStateOracle = [(CNAvatarViewController *)self sharedProfileStateOracle];
 
-  if (!v8)
+  if (!sharedProfileStateOracle)
   {
     v9 = CNUILogAvatarView();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -40,15 +40,15 @@
   if (![(CNAvatarViewController *)self isPerformingTransition])
   {
     v10 = objc_alloc_init(CNSharedProfileAnimationGenerator);
-    v11 = [(CNAvatarViewController *)self sharedProfileStateOracle];
-    v12 = [v11 avatarViewAnimationTypeForEffectiveState];
+    sharedProfileStateOracle2 = [(CNAvatarViewController *)self sharedProfileStateOracle];
+    avatarViewAnimationTypeForEffectiveState = [sharedProfileStateOracle2 avatarViewAnimationTypeForEffectiveState];
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, v12);
+      handlerCopy[2](handlerCopy, avatarViewAnimationTypeForEffectiveState);
     }
 
-    if (v12 == 2)
+    if (avatarViewAnimationTypeForEffectiveState == 2)
     {
       v24 = CNUILogAvatarView();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -57,15 +57,15 @@
         _os_log_impl(&dword_199A75000, v24, OS_LOG_TYPE_DEFAULT, "No transition animation to perform", buf, 2u);
       }
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 2);
+        completionCopy[2](completionCopy, 2);
       }
 
       goto LABEL_25;
     }
 
-    if (v12 == 1)
+    if (avatarViewAnimationTypeForEffectiveState == 1)
     {
       v19 = CNUILogAvatarView();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -75,24 +75,24 @@
       }
 
       [(CNAvatarViewController *)self setIsPerformingTransition:1];
-      v20 = [(CNAvatarViewController *)self sharedProfileStateOracle];
-      v21 = [v20 pendingNickname];
-      v22 = [(CNAvatarViewController *)self sharedProfileStateOracle];
-      v23 = [v22 contact];
+      sharedProfileStateOracle3 = [(CNAvatarViewController *)self sharedProfileStateOracle];
+      pendingNickname = [sharedProfileStateOracle3 pendingNickname];
+      sharedProfileStateOracle4 = [(CNAvatarViewController *)self sharedProfileStateOracle];
+      contact = [sharedProfileStateOracle4 contact];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __80__CNAvatarViewController_performTransitionAnimationWithStartHandler_completion___block_invoke_7;
       v25[3] = &unk_1E74E6DD0;
       v25[4] = self;
-      v26 = v7;
-      [(CNSharedProfileAnimationGenerator *)v10 performPeekABooAnimationForAnimatingAvatarView:self pendingNickname:v21 contact:v23 completionHandler:v25];
+      v26 = completionCopy;
+      [(CNSharedProfileAnimationGenerator *)v10 performPeekABooAnimationForAnimatingAvatarView:self pendingNickname:pendingNickname contact:contact completionHandler:v25];
 
       v18 = v26;
     }
 
     else
     {
-      if (v12)
+      if (avatarViewAnimationTypeForEffectiveState)
       {
 LABEL_25:
 
@@ -107,17 +107,17 @@ LABEL_25:
       }
 
       [(CNAvatarViewController *)self setIsPerformingTransition:1];
-      v14 = [(CNAvatarViewController *)self sharedProfileStateOracle];
-      v15 = [v14 pendingNickname];
-      v16 = [(CNAvatarViewController *)self sharedProfileStateOracle];
-      v17 = [v16 contact];
+      sharedProfileStateOracle5 = [(CNAvatarViewController *)self sharedProfileStateOracle];
+      pendingNickname2 = [sharedProfileStateOracle5 pendingNickname];
+      sharedProfileStateOracle6 = [(CNAvatarViewController *)self sharedProfileStateOracle];
+      contact2 = [sharedProfileStateOracle6 contact];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __80__CNAvatarViewController_performTransitionAnimationWithStartHandler_completion___block_invoke;
       v27[3] = &unk_1E74E6DD0;
       v27[4] = self;
-      v28 = v7;
-      [(CNSharedProfileAnimationGenerator *)v10 performCoinFlipAnimationForAnimatingAvatarView:self pendingNickname:v15 contact:v17 completionHandler:v27];
+      v28 = completionCopy;
+      [(CNSharedProfileAnimationGenerator *)v10 performCoinFlipAnimationForAnimatingAvatarView:self pendingNickname:pendingNickname2 contact:contact2 completionHandler:v27];
 
       v18 = v28;
     }
@@ -134,9 +134,9 @@ LABEL_25:
 
 LABEL_7:
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 2);
+    completionCopy[2](completionCopy, 2);
   }
 
 LABEL_26:
@@ -172,23 +172,23 @@ uint64_t __80__CNAvatarViewController_performTransitionAnimationWithStartHandler
 
 - (UIImageView)destinationAvatarImageView
 {
-  v2 = [(CNAvatarViewController *)self view];
-  v3 = [v2 destinationAvatarImageView];
+  view = [(CNAvatarViewController *)self view];
+  destinationAvatarImageView = [view destinationAvatarImageView];
 
-  return v3;
+  return destinationAvatarImageView;
 }
 
 - (CALayer)sourceAvatarLayer
 {
-  v2 = [(CNAvatarViewController *)self view];
-  v3 = [v2 sourceAvatarLayer];
+  view = [(CNAvatarViewController *)self view];
+  sourceAvatarLayer = [view sourceAvatarLayer];
 
-  return v3;
+  return sourceAvatarLayer;
 }
 
-- (CNAvatarViewController)initWithSettings:(id)a3
+- (CNAvatarViewController)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if ([(CNAvatarViewController *)self isMemberOfClass:objc_opt_class()])
   {
 
@@ -207,7 +207,7 @@ uint64_t __80__CNAvatarViewController_performTransitionAnimationWithStartHandler
   return v6;
 }
 
-- (CNAvatarViewController)initWithCoder:(id)a3
+- (CNAvatarViewController)initWithCoder:(id)coder
 {
   v4 = +[CNAvatarViewControllerSettings defaultSettings];
   v5 = [(CNAvatarViewController *)self initWithSettings:v4];
@@ -215,9 +215,9 @@ uint64_t __80__CNAvatarViewController_performTransitionAnimationWithStartHandler
   return v5;
 }
 
-- (CNAvatarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNAvatarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = [CNAvatarViewControllerSettings defaultSettings:a3];
+  v5 = [CNAvatarViewControllerSettings defaultSettings:name];
   v6 = [(CNAvatarViewController *)self initWithSettings:v5];
 
   return v6;

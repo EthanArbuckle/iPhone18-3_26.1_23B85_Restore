@@ -1,9 +1,9 @@
 @interface CRKConcreteNotificationCenterSubscription
-+ (id)subscriptionWithNotificationCenter:(id)a3 notificationName:(id)a4 object:(id)a5 notificationHandler:(id)a6;
-- (CRKConcreteNotificationCenterSubscription)initWithNotificationCenter:(id)a3 object:(id)a4 notificationHandler:(id)a5;
++ (id)subscriptionWithNotificationCenter:(id)center notificationName:(id)name object:(id)object notificationHandler:(id)handler;
+- (CRKConcreteNotificationCenterSubscription)initWithNotificationCenter:(id)center object:(id)object notificationHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)notificationDidFire:(id)a3;
+- (void)notificationDidFire:(id)fire;
 @end
 
 @implementation CRKConcreteNotificationCenterSubscription
@@ -16,20 +16,20 @@
   [(CRKConcreteNotificationCenterSubscription *)&v3 dealloc];
 }
 
-- (CRKConcreteNotificationCenterSubscription)initWithNotificationCenter:(id)a3 object:(id)a4 notificationHandler:(id)a5
+- (CRKConcreteNotificationCenterSubscription)initWithNotificationCenter:(id)center object:(id)object notificationHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  centerCopy = center;
+  objectCopy = object;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = CRKConcreteNotificationCenterSubscription;
   v12 = [(CRKConcreteNotificationCenterSubscription *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_notificationCenter, a3);
-    objc_storeStrong(&v13->_object, a4);
-    v14 = MEMORY[0x245D3AAD0](v11);
+    objc_storeStrong(&v12->_notificationCenter, center);
+    objc_storeStrong(&v13->_object, object);
+    v14 = MEMORY[0x245D3AAD0](handlerCopy);
     notificationHandler = v13->_notificationHandler;
     v13->_notificationHandler = v14;
   }
@@ -37,37 +37,37 @@
   return v13;
 }
 
-+ (id)subscriptionWithNotificationCenter:(id)a3 notificationName:(id)a4 object:(id)a5 notificationHandler:(id)a6
++ (id)subscriptionWithNotificationCenter:(id)center notificationName:(id)name object:(id)object notificationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithNotificationCenter:v13 object:v11 notificationHandler:v10];
+  handlerCopy = handler;
+  objectCopy = object;
+  nameCopy = name;
+  centerCopy = center;
+  v14 = [[self alloc] initWithNotificationCenter:centerCopy object:objectCopy notificationHandler:handlerCopy];
 
-  [v13 addObserver:v14 selector:sel_notificationDidFire_ name:v12 object:v11];
+  [centerCopy addObserver:v14 selector:sel_notificationDidFire_ name:nameCopy object:objectCopy];
 
   return v14;
 }
 
 - (void)cancel
 {
-  v3 = [(CRKConcreteNotificationCenterSubscription *)self notificationCenter];
-  [v3 removeObserver:self];
+  notificationCenter = [(CRKConcreteNotificationCenterSubscription *)self notificationCenter];
+  [notificationCenter removeObserver:self];
 
   [(CRKConcreteNotificationCenterSubscription *)self setNotificationHandler:0];
 
   [(CRKConcreteNotificationCenterSubscription *)self setObject:0];
 }
 
-- (void)notificationDidFire:(id)a3
+- (void)notificationDidFire:(id)fire
 {
-  v6 = a3;
-  v4 = [(CRKConcreteNotificationCenterSubscription *)self notificationHandler];
-  v5 = v4;
-  if (v4)
+  fireCopy = fire;
+  notificationHandler = [(CRKConcreteNotificationCenterSubscription *)self notificationHandler];
+  v5 = notificationHandler;
+  if (notificationHandler)
   {
-    (*(v4 + 16))(v4, v6);
+    (*(notificationHandler + 16))(notificationHandler, fireCopy);
   }
 }
 

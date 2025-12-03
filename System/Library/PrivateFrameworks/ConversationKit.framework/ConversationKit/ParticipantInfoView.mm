@@ -3,7 +3,7 @@
 - (void)didTapExpandButton;
 - (void)didTapShutterButton;
 - (void)layoutSubviews;
-- (void)setIsMomentsAvailable:(BOOL)a3;
+- (void)setIsMomentsAvailable:(BOOL)available;
 @end
 
 @implementation ParticipantInfoView
@@ -15,27 +15,27 @@
   return v2;
 }
 
-- (void)setIsMomentsAvailable:(BOOL)a3
+- (void)setIsMomentsAvailable:(BOOL)available
 {
-  v4 = self;
-  ParticipantInfoView.isMomentsAvailable.setter(a3);
+  selfCopy = self;
+  ParticipantInfoView.isMomentsAvailable.setter(available);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantInfoView.layoutSubviews()();
 }
 
 - (void)didTapExpandButton
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantInfoView.didTapExpandButton()();
 }
 
 - (void)didTapShutterButton
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantInfoView.didTapShutterButton()();
 }
 

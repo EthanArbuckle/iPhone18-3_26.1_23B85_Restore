@@ -1,12 +1,12 @@
 @interface STCustomNotificationSettingsController
 + (id)screenTimeDefaults;
 - (STCustomNotificationSettingsController)init;
-- (STCustomNotificationSettingsController)initWithPersistenceController:(id)a3 userDefaults:(id)a4;
-- (id)_createSpecifierWithNameKey:(id)a3 userDefaultsKey:(id)a4;
-- (id)_isNotificationEnabled:(id)a3;
+- (STCustomNotificationSettingsController)initWithPersistenceController:(id)controller userDefaults:(id)defaults;
+- (id)_createSpecifierWithNameKey:(id)key userDefaultsKey:(id)defaultsKey;
+- (id)_isNotificationEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_setIsNotificationEnabled:(id)a3 specifier:(id)a4;
-- (void)loadCustomSettingsWithCompletionHandler:(id)a3;
+- (void)_setIsNotificationEnabled:(id)enabled specifier:(id)specifier;
+- (void)loadCustomSettingsWithCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -21,19 +21,19 @@
   return v5;
 }
 
-- (STCustomNotificationSettingsController)initWithPersistenceController:(id)a3 userDefaults:(id)a4
+- (STCustomNotificationSettingsController)initWithPersistenceController:(id)controller userDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  defaultsCopy = defaults;
   v13.receiver = self;
   v13.super_class = STCustomNotificationSettingsController;
   v8 = [(STCustomNotificationSettingsController *)&v13 initWithNibName:0 bundle:0];
   persistenceController = v8->_persistenceController;
-  v8->_persistenceController = v6;
-  v10 = v6;
+  v8->_persistenceController = controllerCopy;
+  v10 = controllerCopy;
 
   userDefaults = v8->_userDefaults;
-  v8->_userDefaults = v7;
+  v8->_userDefaults = defaultsCopy;
 
   return v8;
 }
@@ -54,21 +54,21 @@
   [(STCustomNotificationSettingsController *)self loadCustomSettingsWithCompletionHandler:&stru_41C0];
 }
 
-- (void)loadCustomSettingsWithCompletionHandler:(id)a3
+- (void)loadCustomSettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STCustomNotificationSettingsController *)self persistenceController];
-  v6 = [v5 newBackgroundContext];
+  handlerCopy = handler;
+  persistenceController = [(STCustomNotificationSettingsController *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_F0C;
   v9[3] = &unk_4210;
-  v11 = self;
-  v12 = v4;
-  v10 = v6;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v10 = newBackgroundContext;
+  v7 = handlerCopy;
+  v8 = newBackgroundContext;
   [v8 performBlock:v9];
 }
 
@@ -81,8 +81,8 @@
     v5 = [[NSMutableArray alloc] initWithCapacity:4];
     v6 = +[STScreenTimeSettingsUIBundle bundle];
     v7 = objc_opt_new();
-    v8 = [v7 UUIDString];
-    v9 = [PSSpecifier groupSpecifierWithID:v8];
+    uUIDString = [v7 UUIDString];
+    v9 = [PSSpecifier groupSpecifierWithID:uUIDString];
 
     v10 = [v6 localizedStringForKey:@"WeeklyReportNotificationGroupSpecifierFooterText" value:&stru_4250 table:0];
     v11 = PSFooterTextGroupKey;
@@ -113,36 +113,36 @@
   return v4;
 }
 
-- (id)_createSpecifierWithNameKey:(id)a3 userDefaultsKey:(id)a4
+- (id)_createSpecifierWithNameKey:(id)key userDefaultsKey:(id)defaultsKey
 {
-  v6 = a4;
-  v7 = a3;
+  defaultsKeyCopy = defaultsKey;
+  keyCopy = key;
   v8 = +[STScreenTimeSettingsUIBundle bundle];
-  v9 = [v8 localizedStringForKey:v7 value:&stru_4250 table:0];
+  v9 = [v8 localizedStringForKey:keyCopy value:&stru_4250 table:0];
 
   v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:"_setIsNotificationEnabled:specifier:" get:"_isNotificationEnabled:" detail:0 cell:6 edit:0];
-  [v10 setIdentifier:v6];
+  [v10 setIdentifier:defaultsKeyCopy];
 
   return v10;
 }
 
-- (void)_setIsNotificationEnabled:(id)a3 specifier:(id)a4
+- (void)_setIsNotificationEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a4;
-  LODWORD(a3) = [a3 BOOLValue];
-  v8 = [(STCustomNotificationSettingsController *)self userDefaults];
-  v7 = [v6 identifier];
+  specifierCopy = specifier;
+  LODWORD(enabled) = [enabled BOOLValue];
+  userDefaults = [(STCustomNotificationSettingsController *)self userDefaults];
+  identifier = [specifierCopy identifier];
 
-  [v8 setBool:a3 ^ 1 forKey:v7];
+  [userDefaults setBool:enabled ^ 1 forKey:identifier];
 }
 
-- (id)_isNotificationEnabled:(id)a3
+- (id)_isNotificationEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(STCustomNotificationSettingsController *)self userDefaults];
-  v6 = [v4 identifier];
+  enabledCopy = enabled;
+  userDefaults = [(STCustomNotificationSettingsController *)self userDefaults];
+  identifier = [enabledCopy identifier];
 
-  v7 = [v5 BOOLForKey:v6];
+  v7 = [userDefaults BOOLForKey:identifier];
 
   return [NSNumber numberWithInt:v7 ^ 1];
 }

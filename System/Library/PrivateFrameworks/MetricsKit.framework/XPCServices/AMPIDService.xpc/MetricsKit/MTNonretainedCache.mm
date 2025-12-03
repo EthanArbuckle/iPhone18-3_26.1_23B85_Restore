@@ -1,8 +1,8 @@
 @interface MTNonretainedCache
 - (MTNonretainedCache)init;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3 creation:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)objectForKeyedSubscript:(id)subscript creation:(id)creation;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation MTNonretainedCache
@@ -21,82 +21,82 @@
   return v2;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTNonretainedCache *)v5 cache];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MTNonretainedCache *)selfCopy cache];
+  v7 = [cache objectForKeyedSubscript:subscriptCopy];
 
-  v8 = [v7 value];
-  if (!v8)
+  value = [v7 value];
+  if (!value)
   {
-    v9 = [(MTNonretainedCache *)v5 cache];
-    [v9 setObject:0 forKeyedSubscript:v4];
+    cache2 = [(MTNonretainedCache *)selfCopy cache];
+    [cache2 setObject:0 forKeyedSubscript:subscriptCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v8;
+  return value;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v11)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (objectCopy)
   {
-    v8 = [(MTNonretainedCache *)v7 cache];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    cache = [(MTNonretainedCache *)selfCopy cache];
+    cache3 = [cache objectForKeyedSubscript:subscriptCopy];
 
-    if (!v9)
+    if (!cache3)
     {
-      v9 = objc_alloc_init(MTWeakRef);
-      v10 = [(MTNonretainedCache *)v7 cache];
-      [v10 setObject:v9 forKeyedSubscript:v6];
+      cache3 = objc_alloc_init(MTWeakRef);
+      cache2 = [(MTNonretainedCache *)selfCopy cache];
+      [cache2 setObject:cache3 forKeyedSubscript:subscriptCopy];
     }
 
-    [(MTWeakRef *)v9 setValue:v11];
+    [(MTWeakRef *)cache3 setValue:objectCopy];
   }
 
   else
   {
-    v9 = [(MTNonretainedCache *)v7 cache];
-    [(MTWeakRef *)v9 setObject:0 forKeyedSubscript:v6];
+    cache3 = [(MTNonretainedCache *)selfCopy cache];
+    [(MTWeakRef *)cache3 setObject:0 forKeyedSubscript:subscriptCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)objectForKeyedSubscript:(id)a3 creation:(id)a4
+- (id)objectForKeyedSubscript:(id)subscript creation:(id)creation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MTNonretainedCache *)v8 cache];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  subscriptCopy = subscript;
+  creationCopy = creation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MTNonretainedCache *)selfCopy cache];
+  v10 = [cache objectForKeyedSubscript:subscriptCopy];
 
   if (!v10)
   {
     v10 = objc_alloc_init(MTWeakRef);
-    v11 = [(MTNonretainedCache *)v8 cache];
-    [v11 setObject:v10 forKeyedSubscript:v6];
+    cache2 = [(MTNonretainedCache *)selfCopy cache];
+    [cache2 setObject:v10 forKeyedSubscript:subscriptCopy];
   }
 
-  v12 = [(MTWeakRef *)v10 value];
-  if (!v12)
+  value = [(MTWeakRef *)v10 value];
+  if (!value)
   {
-    v12 = v7[2](v7);
-    [(MTWeakRef *)v10 setValue:v12];
+    value = creationCopy[2](creationCopy);
+    [(MTWeakRef *)v10 setValue:value];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  return v12;
+  return value;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface NPKRemotePassActionCompanionEnterValueViewController
-+ (id)_fallbackHeaderImageForMessage:(id)a3;
++ (id)_fallbackHeaderImageForMessage:(id)message;
 - (BOOL)_shouldHideNonEssentialUI;
-- (NPKRemotePassActionCompanionEnterValueViewController)initWithRequest:(id)a3 contact:(id)a4 delegate:(id)a5;
+- (NPKRemotePassActionCompanionEnterValueViewController)initWithRequest:(id)request contact:(id)contact delegate:(id)delegate;
 - (NPKRemotePassActionCompanionEnterValueViewControllerDelegate)delegate;
-- (id)_contactImageForContact:(id)a3;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)_confirmButtonTapped:(id)a3;
-- (void)_keyboardWillChange:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (id)_contactImageForContact:(id)contact;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)_confirmButtonTapped:(id)tapped;
+- (void)_keyboardWillChange:(id)change;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_registerObservers;
 - (void)_setUpAppearance;
-- (void)_setUpEnterValueViewForBalanceField:(id)a3;
+- (void)_setUpEnterValueViewForBalanceField:(id)field;
 - (void)_setUpNavigationItem;
 - (void)_setUpPassView;
 - (void)_setUpTitleLabel;
 - (void)_updateFirstResponder;
-- (void)_updateLayoutForKeyboardAction:(id)a3;
+- (void)_updateLayoutForKeyboardAction:(id)action;
 - (void)_updateViewVisibility;
-- (void)setContact:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContact:(id)contact;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation NPKRemotePassActionCompanionEnterValueViewController
 
-- (NPKRemotePassActionCompanionEnterValueViewController)initWithRequest:(id)a3 contact:(id)a4 delegate:(id)a5
+- (NPKRemotePassActionCompanionEnterValueViewController)initWithRequest:(id)request contact:(id)contact delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  contactCopy = contact;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = NPKRemotePassActionCompanionEnterValueViewController;
   v12 = [(NPKRemotePassActionCompanionEnterValueViewController *)&v35 initWithNibName:0 bundle:0];
@@ -41,30 +41,30 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [v9 balanceField];
-  v14 = [v13 action];
+  balanceField = [requestCopy balanceField];
+  action = [balanceField action];
 
-  if ([v14 type] == 1)
+  if ([action type] == 1)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeWeak(&v12->_delegate, v11);
-    v15 = [v9 image];
-    v16 = v15;
-    if (v15)
+    objc_storeStrong(&v12->_request, request);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    image = [requestCopy image];
+    v16 = image;
+    if (image)
     {
-      v17 = v15;
+      v17 = image;
     }
 
     else
     {
-      v17 = [objc_opt_class() _fallbackHeaderImageForMessage:v9];
+      v17 = [objc_opt_class() _fallbackHeaderImageForMessage:requestCopy];
     }
 
     v24 = v17;
 
     v25 = [NPKRemotePassActionPassView alloc];
-    v26 = [(NPKRemotePassActionCompanionEnterValueViewController *)v12 view];
-    [v26 bounds];
+    view = [(NPKRemotePassActionCompanionEnterValueViewController *)v12 view];
+    [view bounds];
     v27 = [(NPKRemotePassActionPassView *)v25 initWithPassImage:v24 frame:?];
     passView = v12->_passView;
     v12->_passView = v27;
@@ -73,16 +73,16 @@ LABEL_12:
     titleLabel = v12->_titleLabel;
     v12->_titleLabel = v29;
 
-    v31 = [[PKPerformActionEnterValueView alloc] initWithPass:0 action:v14 paymentDataProvider:0];
+    v31 = [[PKPerformActionEnterValueView alloc] initWithPass:0 action:action paymentDataProvider:0];
     enterValueView = v12->_enterValueView;
     v12->_enterValueView = v31;
 
     [(NPKRemotePassActionCompanionEnterValueViewController *)v12 _setUpAppearance];
     [(NPKRemotePassActionCompanionEnterValueViewController *)v12 _setUpPassView];
-    [(NPKRemotePassActionCompanionEnterValueViewController *)v12 setContact:v10];
+    [(NPKRemotePassActionCompanionEnterValueViewController *)v12 setContact:contactCopy];
     [(NPKRemotePassActionCompanionEnterValueViewController *)v12 _setUpTitleLabel];
-    v33 = [v9 balanceField];
-    [(NPKRemotePassActionCompanionEnterValueViewController *)v12 _setUpEnterValueViewForBalanceField:v33];
+    balanceField2 = [requestCopy balanceField];
+    [(NPKRemotePassActionCompanionEnterValueViewController *)v12 _setUpEnterValueViewForBalanceField:balanceField2];
 
     [(NPKRemotePassActionCompanionEnterValueViewController *)v12 _registerObservers];
     goto LABEL_12;
@@ -97,13 +97,13 @@ LABEL_12:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
-      v22 = [v14 type];
+      type = [action type];
       *buf = 138412802;
       v37 = v21;
       v38 = 2112;
-      v39 = v14;
+      v39 = action;
       v40 = 2048;
-      v41 = v22;
+      v41 = type;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Error: Fail to init object of class %@ with action: %@ actionType: %lu", buf, 0x20u);
     }
   }
@@ -127,13 +127,13 @@ LABEL_13:
   v27.receiver = self;
   v27.super_class = NPKRemotePassActionCompanionEnterValueViewController;
   [(NPKRemotePassActionCompanionEnterValueViewController *)&v27 viewWillLayoutSubviews];
-  v3 = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
-  [v3 bounds];
+  view = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v23 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   x = v5 + v11 + 10.0;
   y = v7 + v15;
   width = v9 - (v11 + 10.0 + v13 + 10.0);
@@ -180,21 +180,21 @@ LABEL_13:
   [(PKPerformActionEnterValueView *)self->_enterValueView setFrame:x, y, width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = NPKRemotePassActionCompanionEnterValueViewController;
-  [(NPKRemotePassActionCompanionEnterValueViewController *)&v10 traitCollectionDidChange:v4];
-  v5 = [(NPKRemotePassActionCompanionEnterValueViewController *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(NPKRemotePassActionCompanionEnterValueViewController *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(NPKRemotePassActionCompanionEnterValueViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(NPKRemotePassActionCompanionEnterValueViewController *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(NPKRemotePassActionCompanionEnterValueViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -208,19 +208,19 @@ LABEL_13:
 LABEL_6:
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  objc_storeStrong(&self->_contact, a3);
-  v5 = a3;
-  v6 = [(NPKRemotePassActionCompanionEnterValueViewController *)self _contactImageForContact:v5];
+  objc_storeStrong(&self->_contact, contact);
+  contactCopy = contact;
+  v6 = [(NPKRemotePassActionCompanionEnterValueViewController *)self _contactImageForContact:contactCopy];
   [(NPKRemotePassActionPassView *)self->_passView setContactImage:v6];
 }
 
 - (void)_setUpAppearance
 {
   v4 = +[UIColor systemBackgroundColor];
-  v3 = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
-  [v3 setBackgroundColor:v4];
+  view = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
+  [view setBackgroundColor:v4];
 }
 
 - (void)_setUpPassView
@@ -228,8 +228,8 @@ LABEL_6:
   if (self->_passView)
   {
     [(NPKRemotePassActionPassView *)self->_passView setHidden:[(NPKRemotePassActionCompanionEnterValueViewController *)self _shouldHideNonEssentialUI]];
-    v3 = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
-    [v3 addSubview:self->_passView];
+    view = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
+    [view addSubview:self->_passView];
   }
 }
 
@@ -237,11 +237,11 @@ LABEL_6:
 {
   if (self->_titleLabel)
   {
-    v3 = [objc_opt_class() _primaryFont];
-    [(UILabel *)self->_titleLabel setFont:v3];
+    _primaryFont = [objc_opt_class() _primaryFont];
+    [(UILabel *)self->_titleLabel setFont:_primaryFont];
 
-    v4 = [objc_opt_class() _primaryTextColor];
-    [(UILabel *)self->_titleLabel setTextColor:v4];
+    _primaryTextColor = [objc_opt_class() _primaryTextColor];
+    [(UILabel *)self->_titleLabel setTextColor:_primaryTextColor];
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     [(UILabel *)self->_titleLabel setNumberOfLines:3];
@@ -250,55 +250,55 @@ LABEL_6:
     [(UILabel *)self->_titleLabel setText:v6];
 
     [(UILabel *)self->_titleLabel setHidden:[(NPKRemotePassActionCompanionEnterValueViewController *)self _shouldHideNonEssentialUI]];
-    v7 = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
-    [v7 addSubview:self->_titleLabel];
+    view = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
+    [view addSubview:self->_titleLabel];
   }
 }
 
-- (void)_setUpEnterValueViewForBalanceField:(id)a3
+- (void)_setUpEnterValueViewForBalanceField:(id)field
 {
   enterValueView = self->_enterValueView;
   if (enterValueView)
   {
-    v5 = a3;
+    fieldCopy = field;
     [(PKPerformActionEnterValueView *)enterValueView setDelegate:self];
-    v6 = [v5 balance];
-    v7 = [v6 value];
-    [(PKPerformActionEnterValueView *)self->_enterValueView setCardBalance:v7];
+    balance = [fieldCopy balance];
+    value = [balance value];
+    [(PKPerformActionEnterValueView *)self->_enterValueView setCardBalance:value];
 
-    v17 = [v5 action];
+    action = [fieldCopy action];
 
-    v8 = [v17 enteredValueItem];
-    v9 = [v8 minLoadAmount];
-    [(PKPerformActionEnterValueView *)self->_enterValueView setMinLoadAmount:v9];
+    enteredValueItem = [action enteredValueItem];
+    minLoadAmount = [enteredValueItem minLoadAmount];
+    [(PKPerformActionEnterValueView *)self->_enterValueView setMinLoadAmount:minLoadAmount];
 
-    v10 = [v17 enteredValueItem];
-    v11 = [v10 maxLoadAmount];
-    [(PKPerformActionEnterValueView *)self->_enterValueView setMaxLoadAmount:v11];
+    enteredValueItem2 = [action enteredValueItem];
+    maxLoadAmount = [enteredValueItem2 maxLoadAmount];
+    [(PKPerformActionEnterValueView *)self->_enterValueView setMaxLoadAmount:maxLoadAmount];
 
-    v12 = [v17 enteredValueItem];
-    v13 = [v12 minLoadedBalance];
-    [(PKPerformActionEnterValueView *)self->_enterValueView setMinLoadedBalance:v13];
+    enteredValueItem3 = [action enteredValueItem];
+    minLoadedBalance = [enteredValueItem3 minLoadedBalance];
+    [(PKPerformActionEnterValueView *)self->_enterValueView setMinLoadedBalance:minLoadedBalance];
 
-    v14 = [v17 enteredValueItem];
-    v15 = [v14 maxLoadedBalance];
-    [(PKPerformActionEnterValueView *)self->_enterValueView setMaxLoadedBalance:v15];
+    enteredValueItem4 = [action enteredValueItem];
+    maxLoadedBalance = [enteredValueItem4 maxLoadedBalance];
+    [(PKPerformActionEnterValueView *)self->_enterValueView setMaxLoadedBalance:maxLoadedBalance];
 
-    v16 = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
-    [v16 addSubview:self->_enterValueView];
+    view = [(NPKRemotePassActionCompanionEnterValueViewController *)self view];
+    [view addSubview:self->_enterValueView];
   }
 }
 
 - (void)_setUpNavigationItem
 {
-  v15 = [(NPKRemotePassActionCompanionEnterValueViewController *)self navigationItem];
-  v3 = [(NPKRemotePassActionEnterValueRequest *)self->_request balanceField];
-  v4 = [v3 action];
-  v5 = [v4 title];
-  v6 = v5;
-  if (v5)
+  navigationItem = [(NPKRemotePassActionCompanionEnterValueViewController *)self navigationItem];
+  balanceField = [(NPKRemotePassActionEnterValueRequest *)self->_request balanceField];
+  action = [balanceField action];
+  title = [action title];
+  v6 = title;
+  if (title)
   {
-    v7 = v5;
+    v7 = title;
   }
 
   else
@@ -307,18 +307,18 @@ LABEL_6:
     v7 = [v8 localizedStringForKey:@"RELOAD_REQUEST_TITLE" value:&stru_100010628 table:@"RemotePaymentPassActionsService"];
   }
 
-  [v15 setTitle:v7];
-  v9 = [(NPKRemotePassActionEnterValueRequest *)self->_request balanceField];
-  v10 = [v9 action];
-  v11 = [v10 confirmationTitle];
+  [navigationItem setTitle:v7];
+  balanceField2 = [(NPKRemotePassActionEnterValueRequest *)self->_request balanceField];
+  action2 = [balanceField2 action];
+  confirmationTitle = [action2 confirmationTitle];
 
-  v12 = [[UIBarButtonItem alloc] initWithTitle:v11 style:0 target:self action:"_confirmButtonTapped:"];
+  v12 = [[UIBarButtonItem alloc] initWithTitle:confirmationTitle style:0 target:self action:"_confirmButtonTapped:"];
   confirmBarButtonItem = self->_confirmBarButtonItem;
   self->_confirmBarButtonItem = v12;
 
-  [v15 setRightBarButtonItem:self->_confirmBarButtonItem];
+  [navigationItem setRightBarButtonItem:self->_confirmBarButtonItem];
   v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-  [v15 setLeftBarButtonItem:v14];
+  [navigationItem setLeftBarButtonItem:v14];
 }
 
 - (void)_registerObservers
@@ -329,13 +329,13 @@ LABEL_6:
   [v3 addObserver:self selector:"_keyboardWillHide:" name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)_confirmButtonTapped:(id)a3
+- (void)_confirmButtonTapped:(id)tapped
 {
-  v4 = [(PKPerformActionEnterValueView *)self->_enterValueView transactionAmount];
-  v5 = v4;
-  if (v4)
+  transactionAmount = [(PKPerformActionEnterValueView *)self->_enterValueView transactionAmount];
+  v5 = transactionAmount;
+  if (transactionAmount)
   {
-    v6 = v4;
+    v6 = transactionAmount;
   }
 
   else
@@ -345,26 +345,26 @@ LABEL_6:
 
   v7 = v6;
 
-  v8 = [(PKPerformActionEnterValueView *)self->_enterValueView transactionCurrency];
-  v9 = v8;
-  if (v8)
+  transactionCurrency = [(PKPerformActionEnterValueView *)self->_enterValueView transactionCurrency];
+  v9 = transactionCurrency;
+  if (transactionCurrency)
   {
-    v10 = v8;
+    currencyCode = transactionCurrency;
   }
 
   else
   {
-    v11 = [(NPKRemotePassActionEnterValueRequest *)self->_request balanceField];
-    v12 = [v11 balance];
-    v10 = [v12 currencyCode];
+    balanceField = [(NPKRemotePassActionEnterValueRequest *)self->_request balanceField];
+    balance = [balanceField balance];
+    currencyCode = [balance currencyCode];
   }
 
   v13 = PKCurrencyAmountMake();
   if (v13)
   {
-    v14 = [(NPKRemotePassActionCompanionEnterValueViewController *)self delegate];
-    v15 = [(NPKRemotePassActionEnterValueRequest *)self->_request identifier];
-    [v14 enterValueViewController:self didFinishWithCurrencyAmount:v13 forRequestIdentifier:v15];
+    delegate = [(NPKRemotePassActionCompanionEnterValueViewController *)self delegate];
+    identifier = [(NPKRemotePassActionEnterValueRequest *)self->_request identifier];
+    [delegate enterValueViewController:self didFinishWithCurrencyAmount:v13 forRequestIdentifier:identifier];
   }
 
   else
@@ -382,28 +382,28 @@ LABEL_6:
         v21 = 2112;
         v22 = v7;
         v23 = 2112;
-        v24 = v10;
+        v24 = currencyCode;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error: Unable to identify currency amount! (%@). transactionAmount: %@ currencyCode: %@", &v19, 0x20u);
       }
     }
 
-    v14 = [(NPKRemotePassActionCompanionEnterValueViewController *)self delegate];
-    v15 = [(NPKRemotePassActionEnterValueRequest *)self->_request identifier];
-    [v14 enterValueViewController:self didCancelForRequestIdentifier:v15];
+    delegate = [(NPKRemotePassActionCompanionEnterValueViewController *)self delegate];
+    identifier = [(NPKRemotePassActionEnterValueRequest *)self->_request identifier];
+    [delegate enterValueViewController:self didCancelForRequestIdentifier:identifier];
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
-  v5 = [(NPKRemotePassActionCompanionEnterValueViewController *)self delegate];
-  v4 = [(NPKRemotePassActionEnterValueRequest *)self->_request identifier];
-  [v5 enterValueViewController:self didCancelForRequestIdentifier:v4];
+  delegate = [(NPKRemotePassActionCompanionEnterValueViewController *)self delegate];
+  identifier = [(NPKRemotePassActionEnterValueRequest *)self->_request identifier];
+  [delegate enterValueViewController:self didCancelForRequestIdentifier:identifier];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -415,14 +415,14 @@ LABEL_6:
   [(NPKRemotePassActionCompanionEnterValueViewController *)self _updateLayoutForKeyboardAction:v7];
 }
 
-- (void)_keyboardWillChange:(id)a3
+- (void)_keyboardWillChange:(id)change
 {
   if (self->_keyboardVisible)
   {
     v10 = v3;
     v11 = v4;
-    v6 = [a3 userInfo];
-    v7 = [v6 objectForKey:UIKeyboardFrameEndUserInfoKey];
+    userInfo = [change userInfo];
+    v7 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
 
     if (v7)
     {
@@ -437,7 +437,7 @@ LABEL_6:
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -447,17 +447,17 @@ LABEL_6:
   [(NPKRemotePassActionCompanionEnterValueViewController *)self _updateLayoutForKeyboardAction:v3];
 }
 
-- (void)_updateLayoutForKeyboardAction:(id)a3
+- (void)_updateLayoutForKeyboardAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [(NPKRemotePassActionCompanionEnterValueViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(NPKRemotePassActionCompanionEnterValueViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v5 layoutIfNeeded];
-      if (v4[2](v4))
+      [viewIfLoaded layoutIfNeeded];
+      if (actionCopy[2](actionCopy))
       {
         [v6 setNeedsLayout];
         v7[0] = _NSConcreteStackBlock;
@@ -471,31 +471,31 @@ LABEL_6:
 
     else
     {
-      v4[2](v4);
+      actionCopy[2](actionCopy);
     }
   }
 }
 
 - (void)_updateFirstResponder
 {
-  v2 = [(PKPerformActionEnterValueView *)self->_enterValueView amountTextField];
-  [v2 becomeFirstResponder];
+  amountTextField = [(PKPerformActionEnterValueView *)self->_enterValueView amountTextField];
+  [amountTextField becomeFirstResponder];
 }
 
-+ (id)_fallbackHeaderImageForMessage:(id)a3
++ (id)_fallbackHeaderImageForMessage:(id)message
 {
-  v3 = [a3 cardType];
-  if (v3 <= 2)
+  cardType = [message cardType];
+  if (cardType <= 2)
   {
-    v4 = [UIImage imageNamed:off_100010418[v3]];
+    v4 = [UIImage imageNamed:off_100010418[cardType]];
   }
 
   return v4;
 }
 
-- (id)_contactImageForContact:(id)a3
+- (id)_contactImageForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   passView = self->_passView;
   [objc_opt_class() contactImageSize];
   v7 = v6;
@@ -517,9 +517,9 @@ LABEL_6:
 
   v9 = v8;
   _Block_object_dispose(&v24, 8);
-  v10 = [v4 givenName];
-  v11 = [v4 familyName];
-  v12 = [v8 profilePictureForContact:v4 serverImageData:0 firstName:v10 lastName:v11 diameter:v7];
+  givenName = [contactCopy givenName];
+  familyName = [contactCopy familyName];
+  v12 = [v8 profilePictureForContact:contactCopy serverImageData:0 firstName:givenName lastName:familyName diameter:v7];
 
   if (!v12 || ([UIImage imageWithData:v12], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -532,7 +532,7 @@ LABEL_6:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v4;
+        *(&buf + 4) = contactCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Warning: No photo data found; falling back to monogram for contact: %@", &buf, 0xCu);
       }
     }
@@ -547,19 +547,19 @@ LABEL_6:
       v17 = qword_100016DA8;
     }
 
-    v20 = [v17 monogramForContact:v4];
+    v20 = [v17 monogramForContact:contactCopy];
     v21 = v20;
     if (v20)
     {
-      v22 = v20;
+      silhouetteMonogram = v20;
     }
 
     else
     {
-      v22 = [qword_100016DA8 silhouetteMonogram];
+      silhouetteMonogram = [qword_100016DA8 silhouetteMonogram];
     }
 
-    v13 = v22;
+    v13 = silhouetteMonogram;
   }
 
   return v13;
@@ -572,21 +572,21 @@ LABEL_6:
     return 1;
   }
 
-  v3 = [(NPKRemotePassActionCompanionEnterValueViewController *)self traitCollection];
-  v4 = [v3 verticalSizeClass] == 1;
+  traitCollection = [(NPKRemotePassActionCompanionEnterValueViewController *)self traitCollection];
+  v4 = [traitCollection verticalSizeClass] == 1;
 
   return v4;
 }
 
 - (void)_updateViewVisibility
 {
-  v3 = [(NPKRemotePassActionCompanionEnterValueViewController *)self _shouldHideNonEssentialUI];
-  if (v3 == [(NPKRemotePassActionPassView *)self->_passView isHidden])
+  _shouldHideNonEssentialUI = [(NPKRemotePassActionCompanionEnterValueViewController *)self _shouldHideNonEssentialUI];
+  if (_shouldHideNonEssentialUI == [(NPKRemotePassActionPassView *)self->_passView isHidden])
   {
-    v4 = [(UILabel *)self->_titleLabel isHidden];
-    [(NPKRemotePassActionPassView *)self->_passView setHidden:v3];
-    [(UILabel *)self->_titleLabel setHidden:v3];
-    if (v3 == v4)
+    isHidden = [(UILabel *)self->_titleLabel isHidden];
+    [(NPKRemotePassActionPassView *)self->_passView setHidden:_shouldHideNonEssentialUI];
+    [(UILabel *)self->_titleLabel setHidden:_shouldHideNonEssentialUI];
+    if (_shouldHideNonEssentialUI == isHidden)
     {
       return;
     }
@@ -594,12 +594,12 @@ LABEL_6:
 
   else
   {
-    [(NPKRemotePassActionPassView *)self->_passView setHidden:v3];
-    [(UILabel *)self->_titleLabel setHidden:v3];
+    [(NPKRemotePassActionPassView *)self->_passView setHidden:_shouldHideNonEssentialUI];
+    [(UILabel *)self->_titleLabel setHidden:_shouldHideNonEssentialUI];
   }
 
-  v5 = [(NPKRemotePassActionCompanionEnterValueViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(NPKRemotePassActionCompanionEnterValueViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (NPKRemotePassActionCompanionEnterValueViewControllerDelegate)delegate

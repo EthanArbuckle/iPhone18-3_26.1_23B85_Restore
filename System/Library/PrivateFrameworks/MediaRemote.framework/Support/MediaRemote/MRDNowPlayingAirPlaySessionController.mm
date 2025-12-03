@@ -1,33 +1,33 @@
 @interface MRDNowPlayingAirPlaySessionController
 - (BOOL)isStartingNowPlayingSession;
-- (void)_findEndpointContainingGroupID:(id)a3 andDeviceID:(id)a4 requestID:(id)a5 completion:(id)a6;
+- (void)_findEndpointContainingGroupID:(id)d andDeviceID:(id)iD requestID:(id)requestID completion:(id)completion;
 - (void)resumeNowPlayingSesion;
-- (void)setStartingNowPlayingSession:(BOOL)a3;
-- (void)startNowPlayingSessionWithCompletion:(id)a3;
+- (void)setStartingNowPlayingSession:(BOOL)session;
+- (void)startNowPlayingSessionWithCompletion:(id)completion;
 - (void)stopNowPlayingSesion;
 @end
 
 @implementation MRDNowPlayingAirPlaySessionController
 
-- (void)startNowPlayingSessionWithCompletion:(id)a3
+- (void)startNowPlayingSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
   v7 = +[NSDate now];
   v8 = +[MRDMediaRemoteServer server];
-  v9 = [v8 nowPlayingServer];
-  v10 = [v9 localOriginClient];
-  v11 = [v10 deviceInfoDataSource];
-  v12 = [v11 deviceInfo];
+  nowPlayingServer = [v8 nowPlayingServer];
+  localOriginClient = [nowPlayingServer localOriginClient];
+  deviceInfoDataSource = [localOriginClient deviceInfoDataSource];
+  deviceInfo = [deviceInfoDataSource deviceInfo];
 
-  v13 = [v12 deviceUID];
-  v14 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"startNowPlayingSession", v6];
+  deviceUID = [deviceInfo deviceUID];
+  v14 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"startNowPlayingSession", uUIDString];
   v15 = v14;
-  if (v13)
+  if (deviceUID)
   {
-    [(__CFString *)v14 appendFormat:@" for %@", v13];
+    [(__CFString *)v14 appendFormat:@" for %@", deviceUID];
   }
 
   v16 = _MRLogForCategory();
@@ -40,10 +40,10 @@
 
   [(MRDNowPlayingAirPlaySessionController *)self setStartingNowPlayingSession:1];
   v17 = [MRDNowPlayingAirPlaySessionEvents alloc];
-  v18 = [v12 clusterType];
-  v95 = v12;
-  v19 = [v12 modelID];
-  v20 = [(MRDNowPlayingAirPlaySessionEvents *)v17 initWithClusterType:v18 modelID:v19];
+  clusterType = [deviceInfo clusterType];
+  v95 = deviceInfo;
+  modelID = [deviceInfo modelID];
+  v20 = [(MRDNowPlayingAirPlaySessionEvents *)v17 initWithClusterType:clusterType modelID:modelID];
 
   v129[0] = _NSConcreteStackBlock;
   v129[1] = 3221225472;
@@ -52,26 +52,26 @@
   v21 = v20;
   v130 = v21;
   v131 = @"startNowPlayingSession";
-  v22 = v6;
+  v22 = uUIDString;
   v132 = v22;
-  v98 = v13;
+  v98 = deviceUID;
   v133 = v98;
   v23 = v7;
   v134 = v23;
-  v97 = v4;
-  v135 = self;
+  v97 = completionCopy;
+  selfCopy = self;
   v136 = v97;
   v24 = objc_retainBlock(v129);
   v25 = +[MRDMediaRemoteServer server];
-  v26 = [v25 routingServer];
-  v27 = [v26 hostedRoutingService];
-  v28 = [v27 hostedRoutingController];
+  routingServer = [v25 routingServer];
+  hostedRoutingService = [routingServer hostedRoutingService];
+  hostedRoutingController = [hostedRoutingService hostedRoutingController];
 
-  v96 = v28;
-  v29 = [v28 discoverySession];
-  v30 = [v29 localEndpointConnection];
+  v96 = hostedRoutingController;
+  discoverySession = [hostedRoutingController discoverySession];
+  localEndpointConnection = [discoverySession localEndpointConnection];
 
-  if (v30)
+  if (localEndpointConnection)
   {
     v31 = [MRBlockGuard alloc];
     v32 = [[NSString alloc] initWithFormat:@"%@<%@>", @"startNowPlayingSession", v22];
@@ -130,14 +130,14 @@
     v93 = v45;
     v47 = v45;
     v123 = v47;
-    v120 = self;
+    selfCopy2 = self;
     v48 = v98;
     v121 = v48;
     v49 = v22;
     v122 = v49;
     v50 = objc_retainBlock(v118);
-    v51 = [(MRDNowPlayingAirPlaySessionEvents *)v46 sourceOutputContext];
-    [v51 start];
+    sourceOutputContext = [(MRDNowPlayingAirPlaySessionEvents *)v46 sourceOutputContext];
+    [sourceOutputContext start];
 
     v52 = +[MRDAVOutputContextManager sharedManager];
     v53 = [v52 outputContextForOutputDeviceUID:v48];
@@ -146,8 +146,8 @@
     if (!v53)
     {
       v78 = [[NSError alloc] initWithMRError:32 description:@"Failed to query output context for local device"];
-      v79 = [(MRDNowPlayingAirPlaySessionEvents *)v46 sourceOutputContext];
-      [v79 endWithError:v78];
+      sourceOutputContext2 = [(MRDNowPlayingAirPlaySessionEvents *)v46 sourceOutputContext];
+      [sourceOutputContext2 endWithError:v78];
 
       (v47[2])(v47, 0, v78);
       v35 = v92;
@@ -167,8 +167,8 @@ LABEL_22:
     v86 = v50;
     v87 = v23;
     v88 = v21;
-    v54 = [(MRDNowPlayingAirPlaySessionEvents *)v46 sourceOutputContext];
-    [v54 end];
+    sourceOutputContext3 = [(MRDNowPlayingAirPlaySessionEvents *)v46 sourceOutputContext];
+    [sourceOutputContext3 end];
 
     v55 = _MRLogForCategory();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -182,14 +182,14 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
     }
 
-    v56 = [(__CFString *)v53 outputDevices];
+    outputDevices = [(__CFString *)v53 outputDevices];
     v116[0] = _NSConcreteStackBlock;
     v116[1] = 3221225472;
     v116[2] = sub_1000BA26C;
     v116[3] = &unk_1004B8A40;
     v57 = v48;
     v117 = v57;
-    v58 = [v56 msv_firstWhere:v116];
+    v58 = [outputDevices msv_firstWhere:v116];
 
     v84 = objc_alloc_init(NSMutableArray);
     v109[0] = _NSConcreteStackBlock;
@@ -227,14 +227,14 @@ LABEL_22:
     v102 = v65;
     v82 = objc_retainBlock(v101);
     v66 = +[MRDMediaRemoteServer server];
-    v67 = [v66 nowPlayingServer];
-    v68 = [v67 localOriginClient];
-    v69 = [v68 deviceInfoDataSource];
-    v70 = [v69 deviceInfo];
-    v71 = ([v70 clusterType] - 1) & 0xFFFFFFFD;
+    nowPlayingServer2 = [v66 nowPlayingServer];
+    localOriginClient2 = [nowPlayingServer2 localOriginClient];
+    deviceInfoDataSource2 = [localOriginClient2 deviceInfoDataSource];
+    deviceInfo2 = [deviceInfoDataSource2 deviceInfo];
+    v71 = ([deviceInfo2 clusterType] - 1) & 0xFFFFFFFD;
 
-    v72 = [(__CFString *)v60 outputDevices];
-    v73 = [v72 count];
+    outputDevices2 = [(__CFString *)v60 outputDevices];
+    v73 = [outputDevices2 count];
 
     v35 = v92;
     v90 = v64;
@@ -294,21 +294,21 @@ LABEL_23:
 - (void)stopNowPlayingSesion
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 localOriginClient];
-  v6 = [v5 deviceInfoDataSource];
-  v7 = [v6 deviceInfo];
-  v8 = [v7 deviceUID];
+  nowPlayingServer = [v3 nowPlayingServer];
+  localOriginClient = [nowPlayingServer localOriginClient];
+  deviceInfoDataSource = [localOriginClient deviceInfoDataSource];
+  deviceInfo = [deviceInfoDataSource deviceInfo];
+  deviceUID = [deviceInfo deviceUID];
 
   v9 = +[NSDate date];
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  v12 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"stopNowPlayingSession", v11];
+  v12 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"stopNowPlayingSession", uUIDString];
   v13 = v12;
-  if (v8)
+  if (deviceUID)
   {
-    [(__CFString *)v12 appendFormat:@" for %@", v8];
+    [(__CFString *)v12 appendFormat:@" for %@", deviceUID];
   }
 
   v14 = _MRLogForCategory();
@@ -321,7 +321,7 @@ LABEL_23:
 
   v15 = _MRLogForCategory();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (deviceUID)
   {
     if (v16)
     {
@@ -330,9 +330,9 @@ LABEL_23:
       *buf = 138544130;
       v25 = @"stopNowPlayingSession";
       v26 = 2114;
-      v27 = v11;
+      v27 = uUIDString;
       v28 = 2114;
-      v29 = v8;
+      v29 = deviceUID;
       v30 = 2048;
       v31 = v18;
       v19 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -350,7 +350,7 @@ LABEL_10:
     *buf = 138543874;
     v25 = @"stopNowPlayingSession";
     v26 = 2114;
-    v27 = v11;
+    v27 = uUIDString;
     v28 = 2048;
     v29 = v22;
     v19 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -366,21 +366,21 @@ LABEL_10:
 - (void)resumeNowPlayingSesion
 {
   v2 = +[MRDMediaRemoteServer server];
-  v3 = [v2 nowPlayingServer];
-  v4 = [v3 localOriginClient];
-  v5 = [v4 deviceInfoDataSource];
-  v6 = [v5 deviceInfo];
-  v7 = [v6 deviceUID];
+  nowPlayingServer = [v2 nowPlayingServer];
+  localOriginClient = [nowPlayingServer localOriginClient];
+  deviceInfoDataSource = [localOriginClient deviceInfoDataSource];
+  deviceInfo = [deviceInfoDataSource deviceInfo];
+  deviceUID = [deviceInfo deviceUID];
 
   v8 = +[NSDate date];
   v9 = +[NSUUID UUID];
-  v10 = [v9 UUIDString];
+  uUIDString = [v9 UUIDString];
 
-  v11 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"resumeNowPlayingSession", v10];
+  v11 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"resumeNowPlayingSession", uUIDString];
   v12 = v11;
-  if (v7)
+  if (deviceUID)
   {
-    [(__CFString *)v11 appendFormat:@" for %@", v7];
+    [(__CFString *)v11 appendFormat:@" for %@", deviceUID];
   }
 
   v13 = _MRLogForCategory();
@@ -393,7 +393,7 @@ LABEL_10:
 
   v14 = _MRLogForCategory();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (deviceUID)
   {
     if (v15)
     {
@@ -402,9 +402,9 @@ LABEL_10:
       *buf = 138544130;
       v23 = @"resumeNowPlayingSession";
       v24 = 2114;
-      v25 = v10;
+      v25 = uUIDString;
       v26 = 2114;
-      v27 = v7;
+      v27 = deviceUID;
       v28 = 2048;
       v29 = v17;
       v18 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -422,7 +422,7 @@ LABEL_10:
     *buf = 138543874;
     v23 = @"resumeNowPlayingSession";
     v24 = 2114;
-    v25 = v10;
+    v25 = uUIDString;
     v26 = 2048;
     v27 = v21;
     v18 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -432,18 +432,18 @@ LABEL_10:
   }
 }
 
-- (void)_findEndpointContainingGroupID:(id)a3 andDeviceID:(id)a4 requestID:(id)a5 completion:(id)a6
+- (void)_findEndpointContainingGroupID:(id)d andDeviceID:(id)iD requestID:(id)requestID completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  requestIDCopy = requestID;
+  completionCopy = completion;
   v13 = +[NSDate now];
-  v14 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"startNowPlayingSession.findEndpointContainingGroupID", v11];
-  v15 = v14;
-  if (v9)
+  requestIDCopy = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"startNowPlayingSession.findEndpointContainingGroupID", requestIDCopy];
+  v15 = requestIDCopy;
+  if (dCopy)
   {
-    [v14 appendFormat:@" for %@", v9];
+    [requestIDCopy appendFormat:@" for %@", dCopy];
   }
 
   v16 = _MRLogForCategory();
@@ -458,27 +458,27 @@ LABEL_10:
   v41[1] = 3221225472;
   v41[2] = sub_1000BB244;
   v41[3] = &unk_1004B8438;
-  v17 = v9;
+  v17 = dCopy;
   v42 = v17;
   v43 = @"startNowPlayingSession.findEndpointContainingGroupID";
-  v18 = v11;
+  v18 = requestIDCopy;
   v44 = v18;
   v45 = v13;
-  v46 = v12;
-  v31 = v12;
+  v46 = completionCopy;
+  v31 = completionCopy;
   v19 = v13;
   v20 = objc_retainBlock(v41);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1000BB5C0;
   v36[3] = &unk_1004BABC0;
-  v37 = v10;
+  v37 = iDCopy;
   v38 = @"startNowPlayingSession.findEndpointContainingGroupID";
   v21 = v18;
   v39 = v21;
   v40 = v17;
   v22 = v17;
-  v23 = v10;
+  v23 = iDCopy;
   v24 = objc_retainBlock(v36);
   v25 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
   v26 = [[NSString alloc] initWithFormat:@"%@<%@> looking for localDevice with groupID=%@", @"startNowPlayingSession.findEndpointContainingGroupID", v21, v22];
@@ -498,25 +498,25 @@ LABEL_10:
 
 - (BOOL)isStartingNowPlayingSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  startingNowPlayingSession = v2->_startingNowPlayingSession;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  startingNowPlayingSession = selfCopy->_startingNowPlayingSession;
+  objc_sync_exit(selfCopy);
 
   return startingNowPlayingSession;
 }
 
-- (void)setStartingNowPlayingSession:(BOOL)a3
+- (void)setStartingNowPlayingSession:(BOOL)session
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_startingNowPlayingSession = v3;
-  objc_sync_exit(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_startingNowPlayingSession = sessionCopy;
+  objc_sync_exit(selfCopy);
 
   v5 = +[NSNotificationCenter defaultCenter];
   v7 = v5;
-  if (v3)
+  if (sessionCopy)
   {
     v6 = @"MRDNowPlayingAirplaySessionStarting";
   }
@@ -526,7 +526,7 @@ LABEL_10:
     v6 = @"MRDNowPlayingAirplaySessionStarted";
   }
 
-  [v5 postNotificationName:v6 object:v4];
+  [v5 postNotificationName:v6 object:selfCopy];
 }
 
 @end

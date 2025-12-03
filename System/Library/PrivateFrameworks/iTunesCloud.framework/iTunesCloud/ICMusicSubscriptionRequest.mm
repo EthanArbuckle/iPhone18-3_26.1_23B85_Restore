@@ -1,16 +1,16 @@
 @interface ICMusicSubscriptionRequest
-- (ICMusicSubscriptionRequest)initWithStoreRequestContext:(id)a3 requestType:(int64_t)a4 requestingOfflineSlot:(BOOL)a5;
-- (id)_bagKeyForRequestType:(int64_t)a3;
+- (ICMusicSubscriptionRequest)initWithStoreRequestContext:(id)context requestType:(int64_t)type requestingOfflineSlot:(BOOL)slot;
+- (id)_bagKeyForRequestType:(int64_t)type;
 - (void)execute;
 @end
 
 @implementation ICMusicSubscriptionRequest
 
-- (id)_bagKeyForRequestType:(int64_t)a3
+- (id)_bagKeyForRequestType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    self = *off_1E7BF36C8[a3];
+    self = *off_1E7BF36C8[type];
   }
 
   return self;
@@ -326,18 +326,18 @@ void __37__ICMusicSubscriptionRequest_execute__block_invoke_28(uint64_t a1, uint
   [*(a1 + 32) finishWithError:v4];
 }
 
-- (ICMusicSubscriptionRequest)initWithStoreRequestContext:(id)a3 requestType:(int64_t)a4 requestingOfflineSlot:(BOOL)a5
+- (ICMusicSubscriptionRequest)initWithStoreRequestContext:(id)context requestType:(int64_t)type requestingOfflineSlot:(BOOL)slot
 {
-  v9 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = ICMusicSubscriptionRequest;
   v10 = [(ICRequestOperation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_storeRequestContext, a3);
-    v11->_requestType = a4;
-    v11->_requestingOfflineSlot = a5;
+    objc_storeStrong(&v10->_storeRequestContext, context);
+    v11->_requestType = type;
+    v11->_requestingOfflineSlot = slot;
   }
 
   return v11;

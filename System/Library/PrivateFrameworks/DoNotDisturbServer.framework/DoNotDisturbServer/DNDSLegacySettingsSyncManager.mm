@@ -1,16 +1,16 @@
 @interface DNDSLegacySettingsSyncManager
-+ (id)receiveManagerForPairedDevice:(id)a3;
-+ (id)sendManagerForPairedDevice:(id)a3;
++ (id)receiveManagerForPairedDevice:(id)device;
++ (id)sendManagerForPairedDevice:(id)device;
 + (void)cleanupState;
 - (DNDSSettingsSyncManagerDataSource)dataSource;
 - (DNDSSettingsSyncManagerDelegate)delegate;
-- (id)_initWithListen:(BOOL)a3 send:(BOOL)a4 pairedDevice:(id)a5;
+- (id)_initWithListen:(BOOL)listen send:(BOOL)send pairedDevice:(id)device;
 - (void)_beginMonitoringForChanges;
 - (void)_endMonitoringForChanges;
-- (void)_propagateBypassSettings:(id)a3;
-- (void)_propagateScheduleSettings:(id)a3;
+- (void)_propagateBypassSettings:(id)settings;
+- (void)_propagateScheduleSettings:(id)settings;
 - (void)_updateBypassSettings;
-- (void)_updateScheduleSettingsWithDate:(id)a3;
+- (void)_updateScheduleSettingsWithDate:(id)date;
 - (void)dealloc;
 - (void)resume;
 - (void)update;
@@ -30,44 +30,44 @@
   v3 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano"];
   [v3 removeObjectForKey:@"dndEffectiveOverrides"];
   [v3 removeObjectForKey:@"dndPrivilegedSenderTypes"];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
 }
 
-+ (id)sendManagerForPairedDevice:(id)a3
++ (id)sendManagerForPairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithListen:0 send:1 pairedDevice:v4];
+  deviceCopy = device;
+  v5 = [[self alloc] _initWithListen:0 send:1 pairedDevice:deviceCopy];
 
   return v5;
 }
 
-+ (id)receiveManagerForPairedDevice:(id)a3
++ (id)receiveManagerForPairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithListen:1 send:0 pairedDevice:v4];
+  deviceCopy = device;
+  v5 = [[self alloc] _initWithListen:1 send:0 pairedDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)_initWithListen:(BOOL)a3 send:(BOOL)a4 pairedDevice:(id)a5
+- (id)_initWithListen:(BOOL)listen send:(BOOL)send pairedDevice:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = DNDSLegacySettingsSyncManager;
   v9 = [(DNDSLegacySettingsSyncManager *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    v9->_listen = a3;
-    v9->_send = a4;
+    v9->_listen = listen;
+    v9->_send = send;
     v11 = objc_alloc_init(MEMORY[0x277D2BA60]);
     npsManager = v10->_npsManager;
     v10->_npsManager = v11;
 
     v13 = objc_alloc(MEMORY[0x277D2BA58]);
-    v14 = [v8 pairingIdentifier];
-    v15 = [v8 pairingDataStore];
-    v16 = [v13 initWithDomain:@"com.apple.nano" pairingID:v14 pairingDataStore:v15];
+    pairingIdentifier = [deviceCopy pairingIdentifier];
+    pairingDataStore = [deviceCopy pairingDataStore];
+    v16 = [v13 initWithDomain:@"com.apple.nano" pairingID:pairingIdentifier pairingDataStore:pairingDataStore];
     accessor = v10->_accessor;
     v10->_accessor = v16;
   }
@@ -103,9 +103,9 @@
 {
   if (self->_send)
   {
-    v6 = [(DNDSLegacySettingsSyncManager *)self dataSource];
-    v4 = [v6 phoneCallBypassSettingsForSyncManager:self];
-    v5 = [v6 scheduleSettingsForSyncManager:self];
+    dataSource = [(DNDSLegacySettingsSyncManager *)self dataSource];
+    v4 = [dataSource phoneCallBypassSettingsForSyncManager:self];
+    v5 = [dataSource scheduleSettingsForSyncManager:self];
     [(DNDSLegacySettingsSyncManager *)self _propagateBypassSettings:v4];
     [(DNDSLegacySettingsSyncManager *)self _propagateScheduleSettings:v5];
   }
@@ -129,21 +129,21 @@
   CFNotificationCenterRemoveObserver(v4, self, @"DNDPrivilegedSenderChangedNotification", 0);
 }
 
-- (void)_propagateScheduleSettings:(id)a3
+- (void)_propagateScheduleSettings:(id)settings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  settingsCopy = settings;
+  v5 = [settingsCopy mutableCopy];
   [v5 scheduleEnabledSetting];
   [v5 setScheduleEnabledSetting:DNDResolvedScheduleEnabledSetting()];
   [v5 setBedtimeBehaviorEnabledSetting:0];
-  v6 = [v4 creationDate];
-  v7 = [DNDSScheduleSettings settingsWithClientSettings:v5 creationDate:v6];
+  creationDate = [settingsCopy creationDate];
+  v7 = [DNDSScheduleSettings settingsWithClientSettings:v5 creationDate:creationDate];
 
-  v8 = [(NPSDomainAccessor *)self->_accessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
   accessor = self->_accessor;
-  v10 = [v4 creationDate];
-  v11 = [(NPSDomainAccessor *)accessor dnds_scheduleSettingsWithLastUpdated:v10];
+  creationDate2 = [settingsCopy creationDate];
+  v11 = [(NPSDomainAccessor *)accessor dnds_scheduleSettingsWithLastUpdated:creationDate2];
 
   if (v7 != v11 && (!v7 || !v11 || ([v7 isEqual:v11] & 1) == 0))
   {
@@ -151,14 +151,14 @@
     if (os_log_type_enabled(DNDSLogLegacySettingsSync, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543618;
-      v17 = v4;
+      v17 = settingsCopy;
       v18 = 2114;
       v19 = v11;
       _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "Got new schedule settings: settings=%{public}@, oldSettings=%{public}@", &v16, 0x16u);
     }
 
-    [(NPSDomainAccessor *)self->_accessor dnds_setScheduleSettings:v4];
-    v13 = [(NPSDomainAccessor *)self->_accessor synchronize];
+    [(NPSDomainAccessor *)self->_accessor dnds_setScheduleSettings:settingsCopy];
+    synchronize2 = [(NPSDomainAccessor *)self->_accessor synchronize];
     v14 = [MEMORY[0x277CBEB98] setWithObject:@"dndEffectiveOverrides"];
     [(NPSManager *)self->_npsManager synchronizeNanoDomain:@"com.apple.nano" keys:v14];
   }
@@ -166,41 +166,41 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateScheduleSettingsWithDate:(id)a3
+- (void)_updateScheduleSettingsWithDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPSDomainAccessor *)self->_accessor synchronize];
-  v6 = [(DNDSLegacySettingsSyncManager *)self dataSource];
-  v7 = [v6 scheduleSettingsForSyncManager:self];
+  dateCopy = date;
+  synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
+  dataSource = [(DNDSLegacySettingsSyncManager *)self dataSource];
+  v7 = [dataSource scheduleSettingsForSyncManager:self];
 
-  if (v4)
+  if (dateCopy)
   {
-    v8 = v4;
+    creationDate = dateCopy;
   }
 
   else
   {
-    v8 = [v7 creationDate];
+    creationDate = [v7 creationDate];
   }
 
-  v9 = v8;
-  v10 = [(NPSDomainAccessor *)self->_accessor dnds_scheduleSettingsWithLastUpdated:v8];
+  v9 = creationDate;
+  v10 = [(NPSDomainAccessor *)self->_accessor dnds_scheduleSettingsWithLastUpdated:creationDate];
   v11 = v10;
   if (v10 && v7 != v10 && (!v7 || ([v7 isEqual:v10] & 1) == 0))
   {
-    if (v4)
+    if (dateCopy)
     {
-      v12 = v4;
+      date = dateCopy;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v13 = v12;
-    v14 = [DNDSScheduleSettings settingsWithClientSettings:v11 creationDate:v12];
+    v13 = date;
+    v14 = [DNDSScheduleSettings settingsWithClientSettings:v11 creationDate:date];
     v15 = DNDSLogLegacySettingsSync;
     if (os_log_type_enabled(DNDSLogLegacySettingsSync, OS_LOG_TYPE_DEFAULT))
     {
@@ -209,40 +209,40 @@
       _os_log_impl(&dword_24912E000, v15, OS_LOG_TYPE_DEFAULT, "Got new schedule settings: settings=%{public}@", &v18, 0xCu);
     }
 
-    v16 = [(DNDSLegacySettingsSyncManager *)self delegate];
-    [v16 syncManager:self didReceiveUpdatedScheduleSettings:v14];
+    delegate = [(DNDSLegacySettingsSyncManager *)self delegate];
+    [delegate syncManager:self didReceiveUpdatedScheduleSettings:v14];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_propagateBypassSettings:(id)a3
+- (void)_propagateBypassSettings:(id)settings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  settingsCopy = settings;
+  v5 = [settingsCopy mutableCopy];
   [v5 immediateBypassEventSourceType];
   [v5 setImmediateBypassEventSourceType:DNDResolvedImmediateBypassEventSourceType()];
   [v5 setImmediateBypassCNGroupIdentifier:0];
   [v5 repeatEventSourceBehaviorEnabledSetting];
   [v5 setRepeatEventSourceBehaviorEnabledSetting:DNDResolvedRepeatEventSourceBehaviorEnabledSetting()];
-  v6 = [(NPSDomainAccessor *)self->_accessor synchronize];
-  v7 = [(NPSDomainAccessor *)self->_accessor dnds_bypassSettings];
-  v8 = v7;
-  if (v5 != v7 && (!v5 || !v7 || ([v5 isEqual:v7] & 1) == 0))
+  synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
+  dnds_bypassSettings = [(NPSDomainAccessor *)self->_accessor dnds_bypassSettings];
+  v8 = dnds_bypassSettings;
+  if (v5 != dnds_bypassSettings && (!v5 || !dnds_bypassSettings || ([v5 isEqual:dnds_bypassSettings] & 1) == 0))
   {
     v9 = DNDSLogLegacySettingsSync;
     if (os_log_type_enabled(DNDSLogLegacySettingsSync, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = v4;
+      v14 = settingsCopy;
       v15 = 2114;
       v16 = v8;
       _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Got new bypass settings: settings=%{public}@, oldSettings=%{public}@", &v13, 0x16u);
     }
 
-    [(NPSDomainAccessor *)self->_accessor dnds_setBypassSettings:v4];
-    v10 = [(NPSDomainAccessor *)self->_accessor synchronize];
+    [(NPSDomainAccessor *)self->_accessor dnds_setBypassSettings:settingsCopy];
+    synchronize2 = [(NPSDomainAccessor *)self->_accessor synchronize];
     v11 = [MEMORY[0x277CBEB98] setWithObject:@"dndPrivilegedSenderTypes"];
     [(NPSManager *)self->_npsManager synchronizeNanoDomain:@"com.apple.nano" keys:v11];
   }
@@ -253,15 +253,15 @@
 - (void)_updateBypassSettings
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(NPSDomainAccessor *)self->_accessor synchronize];
-  v4 = [(DNDSLegacySettingsSyncManager *)self dataSource];
-  v5 = [v4 phoneCallBypassSettingsForSyncManager:self];
+  synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
+  dataSource = [(DNDSLegacySettingsSyncManager *)self dataSource];
+  v5 = [dataSource phoneCallBypassSettingsForSyncManager:self];
 
-  v6 = [(NPSDomainAccessor *)self->_accessor dnds_bypassSettings];
-  v7 = v6;
-  if (v6)
+  dnds_bypassSettings = [(NPSDomainAccessor *)self->_accessor dnds_bypassSettings];
+  v7 = dnds_bypassSettings;
+  if (dnds_bypassSettings)
   {
-    v8 = v6 == v5;
+    v8 = dnds_bypassSettings == v5;
   }
 
   else
@@ -269,7 +269,7 @@
     v8 = 1;
   }
 
-  if (!v8 && (!v5 || ([v6 isEqual:v5] & 1) == 0))
+  if (!v8 && (!v5 || ([dnds_bypassSettings isEqual:v5] & 1) == 0))
   {
     v9 = DNDSLogLegacySettingsSync;
     if (os_log_type_enabled(DNDSLogLegacySettingsSync, OS_LOG_TYPE_DEFAULT))
@@ -279,8 +279,8 @@
       _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Got new bypass settings: settings=%{public}@", &v12, 0xCu);
     }
 
-    v10 = [(DNDSLegacySettingsSyncManager *)self delegate];
-    [v10 syncManager:self didReceiveUpdatedPhoneCallBypassSettings:v7];
+    delegate = [(DNDSLegacySettingsSyncManager *)self delegate];
+    [delegate syncManager:self didReceiveUpdatedPhoneCallBypassSettings:v7];
   }
 
   v11 = *MEMORY[0x277D85DE8];

@@ -1,11 +1,11 @@
 @interface PDSRegistration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRegistration:(id)a3;
-- (PDSRegistration)initWithCoder:(id)a3;
-- (PDSRegistration)initWithTopic:(id)a3 qualifier:(id)a4 pushEnvironment:(char)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRegistration:(id)registration;
+- (PDSRegistration)initWithCoder:(id)coder;
+- (PDSRegistration)initWithTopic:(id)topic qualifier:(id)qualifier pushEnvironment:(char)environment;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PDSRegistration
@@ -14,22 +14,22 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PDSRegistration *)self topicString];
-  v6 = [(PDSRegistration *)self qualifierString];
-  v7 = [v3 stringWithFormat:@"<%@: %p topic = %@; qual = %@; env = %d>", v4, self, v5, v6, -[PDSRegistration pushEnvironment](self, "pushEnvironment")];;
+  topicString = [(PDSRegistration *)self topicString];
+  qualifierString = [(PDSRegistration *)self qualifierString];
+  v7 = [v3 stringWithFormat:@"<%@: %p topic = %@; qual = %@; env = %d>", v4, self, topicString, qualifierString, -[PDSRegistration pushEnvironment](self, "pushEnvironment")];;
 
   return v7;
 }
 
-- (PDSRegistration)initWithTopic:(id)a3 qualifier:(id)a4 pushEnvironment:(char)a5
+- (PDSRegistration)initWithTopic:(id)topic qualifier:(id)qualifier pushEnvironment:(char)environment
 {
-  v5 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  environmentCopy = environment;
+  topicCopy = topic;
+  qualifierCopy = qualifier;
+  v12 = qualifierCopy;
+  if (topicCopy)
   {
-    if (v11)
+    if (qualifierCopy)
     {
       goto LABEL_3;
     }
@@ -46,7 +46,7 @@
 
   [PDSRegistration initWithTopic:a2 qualifier:self pushEnvironment:?];
 LABEL_3:
-  if (v5 >= 2)
+  if (environmentCopy >= 2)
   {
     [PDSRegistration initWithTopic:a2 qualifier:self pushEnvironment:?];
   }
@@ -57,54 +57,54 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_topicString, a3);
-    objc_storeStrong(&v14->_qualifierString, a4);
-    v14->_pushEnvironment = v5;
+    objc_storeStrong(&v13->_topicString, topic);
+    objc_storeStrong(&v14->_qualifierString, qualifier);
+    v14->_pushEnvironment = environmentCopy;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PDSRegistration *)self isEqualToRegistration:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PDSRegistration *)self isEqualToRegistration:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PDSRegistration *)self topicString];
-  v4 = [v3 hash];
-  v5 = [(PDSRegistration *)self qualifierString];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(PDSRegistration *)self pushEnvironment];
+  topicString = [(PDSRegistration *)self topicString];
+  v4 = [topicString hash];
+  qualifierString = [(PDSRegistration *)self qualifierString];
+  v6 = [qualifierString hash] ^ v4;
+  pushEnvironment = [(PDSRegistration *)self pushEnvironment];
 
-  return v6 ^ v7;
+  return v6 ^ pushEnvironment;
 }
 
-- (BOOL)isEqualToRegistration:(id)a3
+- (BOOL)isEqualToRegistration:(id)registration
 {
-  v4 = a3;
-  if (v4 == self)
+  registrationCopy = registration;
+  if (registrationCopy == self)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(PDSRegistration *)self qualifierString];
-    v6 = [(PDSRegistration *)v4 qualifierString];
-    if ([v5 isEqualToString:v6])
+    qualifierString = [(PDSRegistration *)self qualifierString];
+    qualifierString2 = [(PDSRegistration *)registrationCopy qualifierString];
+    if ([qualifierString isEqualToString:qualifierString2])
     {
-      v7 = [(PDSRegistration *)self topicString];
-      v8 = [(PDSRegistration *)v4 topicString];
-      if ([v7 isEqualToString:v8])
+      topicString = [(PDSRegistration *)self topicString];
+      topicString2 = [(PDSRegistration *)registrationCopy topicString];
+      if ([topicString isEqualToString:topicString2])
       {
-        v9 = [(PDSRegistration *)self pushEnvironment];
-        v10 = v9 == [(PDSRegistration *)v4 pushEnvironment];
+        pushEnvironment = [(PDSRegistration *)self pushEnvironment];
+        v10 = pushEnvironment == [(PDSRegistration *)registrationCopy pushEnvironment];
       }
 
       else
@@ -122,24 +122,24 @@ LABEL_3:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(PDSRegistration *)self topicString];
-  [v6 encodeObject:v4 forKey:@"topic"];
+  coderCopy = coder;
+  topicString = [(PDSRegistration *)self topicString];
+  [coderCopy encodeObject:topicString forKey:@"topic"];
 
-  v5 = [(PDSRegistration *)self qualifierString];
-  [v6 encodeObject:v5 forKey:@"qualifier"];
+  qualifierString = [(PDSRegistration *)self qualifierString];
+  [coderCopy encodeObject:qualifierString forKey:@"qualifier"];
 
-  [v6 encodeInt32:-[PDSRegistration pushEnvironment](self forKey:{"pushEnvironment"), @"env"}];
+  [coderCopy encodeInt32:-[PDSRegistration pushEnvironment](self forKey:{"pushEnvironment"), @"env"}];
 }
 
-- (PDSRegistration)initWithCoder:(id)a3
+- (PDSRegistration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"qualifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
-  v7 = [v4 decodeInt32ForKey:@"env"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"qualifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+  v7 = [coderCopy decodeInt32ForKey:@"env"];
 
   v8 = [(PDSRegistration *)self initWithTopic:v6 qualifier:v5 pushEnvironment:v7];
   return v8;

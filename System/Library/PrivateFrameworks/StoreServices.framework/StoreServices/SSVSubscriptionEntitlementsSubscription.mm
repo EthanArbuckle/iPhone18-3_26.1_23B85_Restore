@@ -1,68 +1,68 @@
 @interface SSVSubscriptionEntitlementsSubscription
-- (SSVSubscriptionEntitlementsSubscription)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVSubscriptionEntitlementsSubscription)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVSubscriptionEntitlementsSubscription
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SSVSubscriptionEntitlementsSubscription *)self appAdamId];
-  [v4 setAppAdamId:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  appAdamId = [(SSVSubscriptionEntitlementsSubscription *)self appAdamId];
+  [v4 setAppAdamId:appAdamId];
 
-  v6 = [(SSVSubscriptionEntitlementsSubscription *)self appVersion];
-  [v4 setAppVersion:v6];
+  appVersion = [(SSVSubscriptionEntitlementsSubscription *)self appVersion];
+  [v4 setAppVersion:appVersion];
 
-  v7 = [(SSVSubscriptionEntitlementsSubscription *)self chargeCountryCode];
-  [v4 setChargeCountryCode:v7];
+  chargeCountryCode = [(SSVSubscriptionEntitlementsSubscription *)self chargeCountryCode];
+  [v4 setChargeCountryCode:chargeCountryCode];
 
-  v8 = [(SSVSubscriptionEntitlementsSubscription *)self chargeCurrencyCode];
-  [v4 setChargeCurrencyCode:v8];
+  chargeCurrencyCode = [(SSVSubscriptionEntitlementsSubscription *)self chargeCurrencyCode];
+  [v4 setChargeCurrencyCode:chargeCurrencyCode];
 
-  v9 = [(SSVSubscriptionEntitlementsSubscription *)self chargeStoreFrontIdentifier];
-  [v4 setChargeStoreFrontIdentifier:v9];
+  chargeStoreFrontIdentifier = [(SSVSubscriptionEntitlementsSubscription *)self chargeStoreFrontIdentifier];
+  [v4 setChargeStoreFrontIdentifier:chargeStoreFrontIdentifier];
 
-  v10 = [(SSVSubscriptionEntitlementsSubscription *)self expireDate];
-  [v4 setExpireDate:v10];
+  expireDate = [(SSVSubscriptionEntitlementsSubscription *)self expireDate];
+  [v4 setExpireDate:expireDate];
 
-  v11 = [(SSVSubscriptionEntitlementsSubscription *)self familyId];
-  [v4 setFamilyId:v11];
+  familyId = [(SSVSubscriptionEntitlementsSubscription *)self familyId];
+  [v4 setFamilyId:familyId];
 
-  v12 = [(SSVSubscriptionEntitlementsSubscription *)self inAppAdamId];
-  [v4 setInAppAdamId:v12];
+  inAppAdamId = [(SSVSubscriptionEntitlementsSubscription *)self inAppAdamId];
+  [v4 setInAppAdamId:inAppAdamId];
 
-  v13 = [(SSVSubscriptionEntitlementsSubscription *)self inAppVersion];
-  [v4 setInAppVersion:v13];
+  inAppVersion = [(SSVSubscriptionEntitlementsSubscription *)self inAppVersion];
+  [v4 setInAppVersion:inAppVersion];
 
   [v4 setNewsAppPurchase:{-[SSVSubscriptionEntitlementsSubscription isNewsAppPurchase](self, "isNewsAppPurchase")}];
-  v14 = [(SSVSubscriptionEntitlementsSubscription *)self offerIdentifier];
-  [v4 setOfferIdentifier:v14];
+  offerIdentifier = [(SSVSubscriptionEntitlementsSubscription *)self offerIdentifier];
+  [v4 setOfferIdentifier:offerIdentifier];
 
-  v15 = [(SSVSubscriptionEntitlementsSubscription *)self originalPurchaseDownloadId];
-  [v4 setOriginalPurchaseDownloadId:v15];
+  originalPurchaseDownloadId = [(SSVSubscriptionEntitlementsSubscription *)self originalPurchaseDownloadId];
+  [v4 setOriginalPurchaseDownloadId:originalPurchaseDownloadId];
 
-  v16 = [(SSVSubscriptionEntitlementsSubscription *)self purchasabilityType];
-  [v4 setPurchasabilityType:v16];
+  purchasabilityType = [(SSVSubscriptionEntitlementsSubscription *)self purchasabilityType];
+  [v4 setPurchasabilityType:purchasabilityType];
 
-  v17 = [(SSVSubscriptionEntitlementsSubscription *)self purchaseDownloadId];
-  [v4 setPurchaseDownloadId:v17];
+  purchaseDownloadId = [(SSVSubscriptionEntitlementsSubscription *)self purchaseDownloadId];
+  [v4 setPurchaseDownloadId:purchaseDownloadId];
 
-  v18 = [(SSVSubscriptionEntitlementsSubscription *)self quantity];
-  [v4 setQuantity:v18];
+  quantity = [(SSVSubscriptionEntitlementsSubscription *)self quantity];
+  [v4 setQuantity:quantity];
 
-  v19 = [(SSVSubscriptionEntitlementsSubscription *)self vendorIdentifier];
-  [v4 setVendorIdentifier:v19];
+  vendorIdentifier = [(SSVSubscriptionEntitlementsSubscription *)self vendorIdentifier];
+  [v4 setVendorIdentifier:vendorIdentifier];
 
   return v4;
 }
 
-- (SSVSubscriptionEntitlementsSubscription)initWithXPCEncoding:(id)a3
+- (SSVSubscriptionEntitlementsSubscription)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v55.receiver = self;
     v55.super_class = SSVSubscriptionEntitlementsSubscription;

@@ -1,20 +1,20 @@
 @interface SGSiderealData
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)a3;
-- (SGSiderealData)initWithStartOfDay:(double)a3 location:(id)a4 useXR:(BOOL)a5;
-- (double)pseudoAltitudeForProgress:(double)a3;
-- (double)sunsetFilter:(double)a3;
-- (double)timeToProgress:(double)a3;
-- (id)gradientWithSunsetFilterForDayProgress:(double)a3;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)location;
+- (SGSiderealData)initWithStartOfDay:(double)day location:(id)location useXR:(BOOL)r;
+- (double)pseudoAltitudeForProgress:(double)progress;
+- (double)sunsetFilter:(double)filter;
+- (double)timeToProgress:(double)progress;
+- (id)gradientWithSunsetFilterForDayProgress:(double)progress;
 @end
 
 @implementation SGSiderealData
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)_geoLocationForLocation:(id)location
 {
-  v3 = a3;
-  [v3 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v5 = v4;
-  [v3 coordinate];
+  [locationCopy coordinate];
   v7 = v6;
 
   v8 = v5;
@@ -24,38 +24,38 @@
   return result;
 }
 
-- (SGSiderealData)initWithStartOfDay:(double)a3 location:(id)a4 useXR:(BOOL)a5
+- (SGSiderealData)initWithStartOfDay:(double)day location:(id)location useXR:(BOOL)r
 {
-  v9 = a4;
+  locationCopy = location;
   v32.receiver = self;
   v32.super_class = SGSiderealData;
   v10 = [(SGSiderealData *)&v32 init];
   if (v10)
   {
-    [SGSiderealData _geoLocationForLocation:v9];
+    [SGSiderealData _geoLocationForLocation:locationCopy];
     v12 = v11;
     v14 = v13;
     v15 = objc_alloc(MEMORY[0x277D0ED50]);
-    v16 = [v15 initWithLocation:v12 time:v14 altitudeInDegrees:a3 accuracy:{*MEMORY[0x277D0E7C0], 60.0}];
+    v16 = [v15 initWithLocation:v12 time:v14 altitudeInDegrees:day accuracy:{*MEMORY[0x277D0E7C0], 60.0}];
     [v16 nextEventOfType:8];
     v18 = v17;
     [v16 nextEventOfType:32];
     v20 = v19;
     [v16 nextEventOfType:16];
     v22 = v21;
-    v10->_useXR = a5;
-    objc_storeStrong(&v10->_location, a4);
-    v10->_startOfDay = a3;
+    v10->_useXR = r;
+    objc_storeStrong(&v10->_location, location);
+    v10->_startOfDay = day;
     v10->_solarNoonTime = v22;
     v10->_sunriseTime = v18;
     v10->_sunsetTime = v20;
     v23 = v20 - v18;
     v10->_sunsetFollowsSunrise = v23 > 0.0;
-    v24 = [(SGSiderealData *)v10 sunsetFollowsSunrise];
+    sunsetFollowsSunrise = [(SGSiderealData *)v10 sunsetFollowsSunrise];
     v25 = 0.0;
-    if (v24 && v23 >= 14400.0)
+    if (sunsetFollowsSunrise && v23 >= 14400.0)
     {
-      v31 = a3 + 86400.0 - v20;
+      v31 = day + 86400.0 - v20;
       if (v23 < 28800.0)
       {
         if (v31 >= 7200.0)
@@ -65,7 +65,7 @@
 
         else
         {
-          v27 = a3 + 79200.0;
+          v27 = day + 79200.0;
         }
 
         v26 = 1;
@@ -83,7 +83,7 @@
 
         else
         {
-          v27 = a3 + 79200.0;
+          v27 = day + 79200.0;
         }
 
         v26 = 1;
@@ -104,14 +104,14 @@ LABEL_5:
   return v10;
 }
 
-- (double)timeToProgress:(double)a3
+- (double)timeToProgress:(double)progress
 {
   startOfDay = self->_startOfDay;
   CLKMapFractionIntoRange();
   return result;
 }
 
-- (double)pseudoAltitudeForProgress:(double)a3
+- (double)pseudoAltitudeForProgress:(double)progress
 {
   startOfDay = self->_startOfDay;
   CLKMapFractionIntoRange();
@@ -129,15 +129,15 @@ LABEL_5:
   return v15;
 }
 
-- (double)sunsetFilter:(double)a3
+- (double)sunsetFilter:(double)filter
 {
   result = 0.0;
   if (self->_sunsetFilterEnabled && self->_useXR)
   {
-    v5 = a3;
+    filterCopy = filter;
     sunsetFilterRampUpStartProgress = self->_sunsetFilterRampUpStartProgress;
     v7 = self->_sunsetFilterRampDownStartProgress - sunsetFilterRampUpStartProgress;
-    v8 = ((((v7 + -0.083333) * 0.5) + 0.083333) / 0.083333) - fabsf((((v5 + -0.083333) - sunsetFilterRampUpStartProgress) - ((v7 + -0.083333) * 0.5)) / 0.083333);
+    v8 = ((((v7 + -0.083333) * 0.5) + 0.083333) / 0.083333) - fabsf((((filterCopy + -0.083333) - sunsetFilterRampUpStartProgress) - ((v7 + -0.083333) * 0.5)) / 0.083333);
     if (v8 < 0.0)
     {
       v8 = 0.0;
@@ -149,7 +149,7 @@ LABEL_5:
   return result;
 }
 
-- (id)gradientWithSunsetFilterForDayProgress:(double)a3
+- (id)gradientWithSunsetFilterForDayProgress:(double)progress
 {
   v26[3] = *MEMORY[0x277D85DE8];
   [(SGSiderealData *)self pseudoAltitudeForProgress:?];
@@ -182,7 +182,7 @@ LABEL_5:
   CLKUIConvertToXRSRGBfFromRGBf();
   v24 = v15;
 
-  [(SGSiderealData *)self sunsetFilter:a3];
+  [(SGSiderealData *)self sunsetFilter:progress];
   v17 = v16;
   v18 = [SGSiderealData _applySunsetFilter:"_applySunsetFilter:toColor:" toColor:?];
   v19 = [(SGSiderealData *)self _applySunsetFilter:v17 toColor:v25];

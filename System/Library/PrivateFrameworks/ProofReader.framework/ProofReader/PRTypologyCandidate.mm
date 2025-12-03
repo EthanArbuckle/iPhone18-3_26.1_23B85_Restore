@@ -1,24 +1,24 @@
 @interface PRTypologyCandidate
-+ (id)openTypologyCandidate:(id)a3 selectedRange:(_NSRange)a4 inString:(id)a5;
-- (PRTypologyCandidate)initWithString:(id)a3 range:(_NSRange)a4;
++ (id)openTypologyCandidate:(id)candidate selectedRange:(_NSRange)range inString:(id)string;
+- (PRTypologyCandidate)initWithString:(id)string range:(_NSRange)range;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)closeTypologyCandidateWithResult:(id)a3;
+- (void)closeTypologyCandidateWithResult:(id)result;
 - (void)dealloc;
 @end
 
 @implementation PRTypologyCandidate
 
-- (PRTypologyCandidate)initWithString:(id)a3 range:(_NSRange)a4
+- (PRTypologyCandidate)initWithString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = PRTypologyCandidate;
   v7 = [(PRTypologyCandidate *)&v9 init];
   if (v7)
   {
-    v7->_candidateString = [a3 copy];
+    v7->_candidateString = [string copy];
     v7->_selectedRange.location = location;
     v7->_selectedRange.length = length;
     v7->_isOpen = 1;
@@ -55,12 +55,12 @@
   [(PRTypologyCandidate *)&v3 dealloc];
 }
 
-+ (id)openTypologyCandidate:(id)a3 selectedRange:(_NSRange)a4 inString:(id)a5
++ (id)openTypologyCandidate:(id)candidate selectedRange:(_NSRange)range inString:(id)string
 {
   v5 = 0;
   if ((_enabledLogTypes & 0x400) != 0 && _typologyRecords && _typologyRecordsSerialQueue != 0)
   {
-    v5 = [[PRTypologyCandidate alloc] initWithString:a3 range:a4.location, a4.length];
+    v5 = [[PRTypologyCandidate alloc] initWithString:candidate range:range.location, range.length];
     [+[PRTypologyRecord currentTypologyRecord](PRTypologyRecord "currentTypologyRecord")];
   }
 
@@ -69,12 +69,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   candidateString = self->_candidateString;
   if (candidateString)
   {
-    [v3 setObject:candidateString forKey:@"CandidateString"];
+    [dictionary setObject:candidateString forKey:@"CandidateString"];
   }
 
   [v4 setObject:NSStringFromRange(self->_selectedRange) forKey:@"SelectedRange"];
@@ -92,12 +92,12 @@
   return v4;
 }
 
-- (void)closeTypologyCandidateWithResult:(id)a3
+- (void)closeTypologyCandidateWithResult:(id)result
 {
   if (self->_isOpen)
   {
     self->_closeTime = CFAbsoluteTimeGetCurrent();
-    self->_result = [a3 copy];
+    self->_result = [result copy];
     self->_isOpen = 0;
   }
 }

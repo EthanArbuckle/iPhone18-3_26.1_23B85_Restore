@@ -1,24 +1,24 @@
 @interface AWDSymptomsDiagnosticIncidentReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDampeningType:(id)a3;
-- (int)StringAsHandledResult:(id)a3;
+- (int)StringAsDampeningType:(id)type;
+- (int)StringAsHandledResult:(id)result;
 - (int)dampeningType;
 - (int)handledResult;
 - (unint64_t)hash;
-- (unint64_t)timestampsIncidentEventsAtIndex:(unint64_t)a3;
-- (void)addIncidentEvents:(id)a3;
-- (void)addRelatedNames:(id)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)timestampsIncidentEventsAtIndex:(unint64_t)index;
+- (void)addIncidentEvents:(id)events;
+- (void)addRelatedNames:(id)names;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDampeningType:(BOOL)a3;
-- (void)setHasHandledResult:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDampeningType:(BOOL)type;
+- (void)setHasHandledResult:(BOOL)result;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsDiagnosticIncidentReport
@@ -31,9 +31,9 @@
   [(AWDSymptomsDiagnosticIncidentReport *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)setHasHandledResult:(BOOL)a3
+- (void)setHasHandledResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 16;
   }
@@ -74,25 +74,25 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsHandledResult:(id)a3
+- (int)StringAsHandledResult:(id)result
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Allowed"])
+  resultCopy = result;
+  if ([resultCopy isEqualToString:@"Allowed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NotAllowed"])
+  else if ([resultCopy isEqualToString:@"NotAllowed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PriorityAllowed"])
+  else if ([resultCopy isEqualToString:@"PriorityAllowed"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TransientAllowed"])
+  else if ([resultCopy isEqualToString:@"TransientAllowed"])
   {
     v4 = 4;
   }
@@ -105,61 +105,61 @@
   return v4;
 }
 
-- (void)addRelatedNames:(id)a3
+- (void)addRelatedNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   relatedNames = self->_relatedNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!relatedNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_relatedNames;
     self->_relatedNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     relatedNames = self->_relatedNames;
   }
 
-  [(NSMutableArray *)relatedNames addObject:v4];
+  [(NSMutableArray *)relatedNames addObject:namesCopy];
 }
 
-- (unint64_t)timestampsIncidentEventsAtIndex:(unint64_t)a3
+- (unint64_t)timestampsIncidentEventsAtIndex:(unint64_t)index
 {
   p_timestampsIncidentEvents = &self->_timestampsIncidentEvents;
   count = self->_timestampsIncidentEvents.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_timestampsIncidentEvents->list[a3];
+  return p_timestampsIncidentEvents->list[index];
 }
 
-- (void)addIncidentEvents:(id)a3
+- (void)addIncidentEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   incidentEvents = self->_incidentEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!incidentEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_incidentEvents;
     self->_incidentEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     incidentEvents = self->_incidentEvents;
   }
 
-  [(NSMutableArray *)incidentEvents addObject:v4];
+  [(NSMutableArray *)incidentEvents addObject:eventsCopy];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -185,9 +185,9 @@
   }
 }
 
-- (void)setHasDampeningType:(BOOL)a3
+- (void)setHasDampeningType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -200,40 +200,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsDampeningType:(id)a3
+- (int)StringAsDampeningType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TransientApproval"])
+  else if ([typeCopy isEqualToString:@"TransientApproval"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HourlyQuotaExceeded"])
+  else if ([typeCopy isEqualToString:@"HourlyQuotaExceeded"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DailyQuotaExceeded"])
+  else if ([typeCopy isEqualToString:@"DailyQuotaExceeded"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RandomizedSuppression"])
+  else if ([typeCopy isEqualToString:@"RandomizedSuppression"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UnsatisfiedSystemPrerequisites"])
+  else if ([typeCopy isEqualToString:@"UnsatisfiedSystemPrerequisites"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"UnsatisfiedCollectionRequirements"])
+  else if ([typeCopy isEqualToString:@"UnsatisfiedCollectionRequirements"])
   {
     v4 = 7;
   }
@@ -252,8 +252,8 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsDiagnosticIncidentReport;
   v4 = [(AWDSymptomsDiagnosticIncidentReport *)&v8 description];
-  v5 = [(AWDSymptomsDiagnosticIncidentReport *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsDiagnosticIncidentReport *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -261,12 +261,12 @@
 - (id)dictionaryRepresentation
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v27 forKey:@"timestamp"];
+    [dictionary setObject:v27 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -297,66 +297,66 @@ LABEL_3:
     v29 = off_278CF01C0[v28];
   }
 
-  [v3 setObject:v29 forKey:@"handledResult"];
+  [dictionary setObject:v29 forKey:@"handledResult"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_duration];
-    [v3 setObject:v5 forKey:@"duration"];
+    [dictionary setObject:v5 forKey:@"duration"];
   }
 
 LABEL_5:
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   type = self->_type;
   if (type)
   {
-    [v3 setObject:type forKey:@"type"];
+    [dictionary setObject:type forKey:@"type"];
   }
 
   subtype = self->_subtype;
   if (subtype)
   {
-    [v3 setObject:subtype forKey:@"subtype"];
+    [dictionary setObject:subtype forKey:@"subtype"];
   }
 
   subtypeContext = self->_subtypeContext;
   if (subtypeContext)
   {
-    [v3 setObject:subtypeContext forKey:@"subtypeContext"];
+    [dictionary setObject:subtypeContext forKey:@"subtypeContext"];
   }
 
   detectedName = self->_detectedName;
   if (detectedName)
   {
-    [v3 setObject:detectedName forKey:@"detectedName"];
+    [dictionary setObject:detectedName forKey:@"detectedName"];
   }
 
   effectiveName = self->_effectiveName;
   if (effectiveName)
   {
-    [v3 setObject:effectiveName forKey:@"effectiveName"];
+    [dictionary setObject:effectiveName forKey:@"effectiveName"];
   }
 
   relatedNames = self->_relatedNames;
   if (relatedNames)
   {
-    [v3 setObject:relatedNames forKey:@"relatedNames"];
+    [dictionary setObject:relatedNames forKey:@"relatedNames"];
   }
 
   v14 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v14 forKey:@"timestampsIncidentEvents"];
+  [dictionary setObject:v14 forKey:@"timestampsIncidentEvents"];
 
   if ([(NSMutableArray *)self->_incidentEvents count])
   {
@@ -380,8 +380,8 @@ LABEL_5:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -390,20 +390,20 @@ LABEL_5:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"incidentEvents"];
+    [dictionary setObject:v15 forKey:@"incidentEvents"];
   }
 
   groupIdentifier = self->_groupIdentifier;
   if (groupIdentifier)
   {
-    [v3 setObject:groupIdentifier forKey:@"groupIdentifier"];
+    [dictionary setObject:groupIdentifier forKey:@"groupIdentifier"];
   }
 
   v23 = self->_has;
   if ((v23 & 4) != 0)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_version];
-    [v3 setObject:v24 forKey:@"version"];
+    [dictionary setObject:v24 forKey:@"version"];
 
     v23 = self->_has;
   }
@@ -421,18 +421,18 @@ LABEL_5:
       v26 = off_278CF01E0[v25];
     }
 
-    [v3 setObject:v26 forKey:@"dampeningType"];
+    [dictionary setObject:v26 forKey:@"dampeningType"];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -594,14 +594,14 @@ LABEL_5:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_timestamp;
-    *(v4 + 152) |= 2u;
+    toCopy[5] = self->_timestamp;
+    *(toCopy + 152) |= 2u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -620,20 +620,20 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 24) = self->_handledResult;
-  *(v4 + 152) |= 0x10u;
+  *(toCopy + 24) = self->_handledResult;
+  *(toCopy + 152) |= 0x10u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[4] = self->_duration;
-    *(v4 + 152) |= 1u;
+    toCopy[4] = self->_duration;
+    *(toCopy + 152) |= 1u;
   }
 
 LABEL_5:
-  v18 = v4;
+  v18 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if (self->_domain)
@@ -669,10 +669,10 @@ LABEL_5:
   if ([(AWDSymptomsDiagnosticIncidentReport *)self relatedNamesCount])
   {
     [v18 clearRelatedNames];
-    v6 = [(AWDSymptomsDiagnosticIncidentReport *)self relatedNamesCount];
-    if (v6)
+    relatedNamesCount = [(AWDSymptomsDiagnosticIncidentReport *)self relatedNamesCount];
+    if (relatedNamesCount)
     {
-      v7 = v6;
+      v7 = relatedNamesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDSymptomsDiagnosticIncidentReport *)self relatedNamesAtIndex:i];
@@ -684,10 +684,10 @@ LABEL_5:
   if ([(AWDSymptomsDiagnosticIncidentReport *)self timestampsIncidentEventsCount])
   {
     [v18 clearTimestampsIncidentEvents];
-    v10 = [(AWDSymptomsDiagnosticIncidentReport *)self timestampsIncidentEventsCount];
-    if (v10)
+    timestampsIncidentEventsCount = [(AWDSymptomsDiagnosticIncidentReport *)self timestampsIncidentEventsCount];
+    if (timestampsIncidentEventsCount)
     {
-      v11 = v10;
+      v11 = timestampsIncidentEventsCount;
       for (j = 0; j != v11; ++j)
       {
         [v18 addTimestampsIncidentEvents:{-[AWDSymptomsDiagnosticIncidentReport timestampsIncidentEventsAtIndex:](self, "timestampsIncidentEventsAtIndex:", j)}];
@@ -698,10 +698,10 @@ LABEL_5:
   if ([(AWDSymptomsDiagnosticIncidentReport *)self incidentEventsCount])
   {
     [v18 clearIncidentEvents];
-    v13 = [(AWDSymptomsDiagnosticIncidentReport *)self incidentEventsCount];
-    if (v13)
+    incidentEventsCount = [(AWDSymptomsDiagnosticIncidentReport *)self incidentEventsCount];
+    if (incidentEventsCount)
     {
-      v14 = v13;
+      v14 = incidentEventsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(AWDSymptomsDiagnosticIncidentReport *)self incidentEventsAtIndex:k];
@@ -730,10 +730,10 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -768,31 +768,31 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v6 + 104);
   *(v6 + 104) = v8;
 
-  v10 = [(NSString *)self->_domain copyWithZone:a3];
+  v10 = [(NSString *)self->_domain copyWithZone:zone];
   v11 = *(v6 + 72);
   *(v6 + 72) = v10;
 
-  v12 = [(NSString *)self->_type copyWithZone:a3];
+  v12 = [(NSString *)self->_type copyWithZone:zone];
   v13 = *(v6 + 144);
   *(v6 + 144) = v12;
 
-  v14 = [(NSString *)self->_subtype copyWithZone:a3];
+  v14 = [(NSString *)self->_subtype copyWithZone:zone];
   v15 = *(v6 + 128);
   *(v6 + 128) = v14;
 
-  v16 = [(NSString *)self->_subtypeContext copyWithZone:a3];
+  v16 = [(NSString *)self->_subtypeContext copyWithZone:zone];
   v17 = *(v6 + 136);
   *(v6 + 136) = v16;
 
-  v18 = [(NSString *)self->_detectedName copyWithZone:a3];
+  v18 = [(NSString *)self->_detectedName copyWithZone:zone];
   v19 = *(v6 + 64);
   *(v6 + 64) = v18;
 
-  v20 = [(NSString *)self->_effectiveName copyWithZone:a3];
+  v20 = [(NSString *)self->_effectiveName copyWithZone:zone];
   v21 = *(v6 + 80);
   *(v6 + 80) = v20;
 
@@ -815,7 +815,7 @@ LABEL_5:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v43 + 1) + 8 * i) copyWithZone:a3];
+        v27 = [*(*(&v43 + 1) + 8 * i) copyWithZone:zone];
         [v6 addRelatedNames:v27];
       }
 
@@ -845,7 +845,7 @@ LABEL_5:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v39 + 1) + 8 * j) copyWithZone:{a3, v39}];
+        v33 = [*(*(&v39 + 1) + 8 * j) copyWithZone:{zone, v39}];
         [v6 addIncidentEvents:v33];
       }
 
@@ -855,7 +855,7 @@ LABEL_5:
     while (v30);
   }
 
-  v34 = [(NSString *)self->_groupIdentifier copyWithZone:a3];
+  v34 = [(NSString *)self->_groupIdentifier copyWithZone:zone];
   v35 = *(v6 + 88);
   *(v6 + 88) = v34;
 
@@ -877,24 +877,24 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = *(v4 + 152);
+  v5 = *(equalCopy + 152);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 152) & 2) == 0 || self->_timestamp != *(v4 + 5))
+    if ((*(equalCopy + 152) & 2) == 0 || self->_timestamp != *(equalCopy + 5))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 152) & 2) != 0)
+  else if ((*(equalCopy + 152) & 2) != 0)
   {
 LABEL_47:
     v16 = 0;
@@ -903,38 +903,38 @@ LABEL_47:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 152) & 0x10) == 0 || self->_handledResult != *(v4 + 24))
+    if ((*(equalCopy + 152) & 0x10) == 0 || self->_handledResult != *(equalCopy + 24))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 152) & 0x10) != 0)
+  else if ((*(equalCopy + 152) & 0x10) != 0)
   {
     goto LABEL_47;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 152) & 1) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 152) & 1) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 152))
+  else if (*(equalCopy + 152))
   {
     goto LABEL_47;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 13) && ![(NSString *)identifier isEqual:?])
+  if (identifier | *(equalCopy + 13) && ![(NSString *)identifier isEqual:?])
   {
     goto LABEL_47;
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 9))
+  if (domain | *(equalCopy + 9))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -943,7 +943,7 @@ LABEL_47:
   }
 
   type = self->_type;
-  if (type | *(v4 + 18))
+  if (type | *(equalCopy + 18))
   {
     if (![(NSString *)type isEqual:?])
     {
@@ -952,7 +952,7 @@ LABEL_47:
   }
 
   subtype = self->_subtype;
-  if (subtype | *(v4 + 16))
+  if (subtype | *(equalCopy + 16))
   {
     if (![(NSString *)subtype isEqual:?])
     {
@@ -961,7 +961,7 @@ LABEL_47:
   }
 
   subtypeContext = self->_subtypeContext;
-  if (subtypeContext | *(v4 + 17))
+  if (subtypeContext | *(equalCopy + 17))
   {
     if (![(NSString *)subtypeContext isEqual:?])
     {
@@ -970,7 +970,7 @@ LABEL_47:
   }
 
   detectedName = self->_detectedName;
-  if (detectedName | *(v4 + 8))
+  if (detectedName | *(equalCopy + 8))
   {
     if (![(NSString *)detectedName isEqual:?])
     {
@@ -979,7 +979,7 @@ LABEL_47:
   }
 
   effectiveName = self->_effectiveName;
-  if (effectiveName | *(v4 + 10))
+  if (effectiveName | *(equalCopy + 10))
   {
     if (![(NSString *)effectiveName isEqual:?])
     {
@@ -988,7 +988,7 @@ LABEL_47:
   }
 
   relatedNames = self->_relatedNames;
-  if (relatedNames | *(v4 + 15))
+  if (relatedNames | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)relatedNames isEqual:?])
     {
@@ -1002,7 +1002,7 @@ LABEL_47:
   }
 
   incidentEvents = self->_incidentEvents;
-  if (incidentEvents | *(v4 + 14))
+  if (incidentEvents | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)incidentEvents isEqual:?])
     {
@@ -1011,7 +1011,7 @@ LABEL_47:
   }
 
   groupIdentifier = self->_groupIdentifier;
-  if (groupIdentifier | *(v4 + 11))
+  if (groupIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)groupIdentifier isEqual:?])
     {
@@ -1021,21 +1021,21 @@ LABEL_47:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 152) & 4) == 0 || self->_version != *(v4 + 6))
+    if ((*(equalCopy + 152) & 4) == 0 || self->_version != *(equalCopy + 6))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 152) & 4) != 0)
+  else if ((*(equalCopy + 152) & 4) != 0)
   {
     goto LABEL_47;
   }
 
-  v16 = (*(v4 + 152) & 8) == 0;
+  v16 = (*(equalCopy + 152) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 152) & 8) == 0 || self->_dampeningType != *(v4 + 14))
+    if ((*(equalCopy + 152) & 8) == 0 || self->_dampeningType != *(equalCopy + 14))
     {
       goto LABEL_47;
     }
@@ -1121,17 +1121,17 @@ LABEL_10:
   return v18 ^ v19 ^ v17 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 152);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 152);
   if ((v6 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 5);
+    self->_timestamp = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v6 = *(v4 + 152);
+    v6 = *(fromCopy + 152);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -1144,22 +1144,22 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 152) & 0x10) == 0)
+  else if ((*(fromCopy + 152) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_handledResult = *(v4 + 24);
+  self->_handledResult = *(fromCopy + 24);
   *&self->_has |= 0x10u;
-  if (*(v4 + 152))
+  if (*(fromCopy + 152))
   {
 LABEL_4:
-    self->_duration = *(v4 + 4);
+    self->_duration = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(AWDSymptomsDiagnosticIncidentReport *)self setIdentifier:?];
   }
@@ -1222,10 +1222,10 @@ LABEL_5:
     while (v9);
   }
 
-  v12 = [v5 timestampsIncidentEventsCount];
-  if (v12)
+  timestampsIncidentEventsCount = [v5 timestampsIncidentEventsCount];
+  if (timestampsIncidentEventsCount)
   {
-    v13 = v12;
+    v13 = timestampsIncidentEventsCount;
     for (j = 0; j != v13; ++j)
     {
       -[AWDSymptomsDiagnosticIncidentReport addTimestampsIncidentEvents:](self, "addTimestampsIncidentEvents:", [v5 timestampsIncidentEventsAtIndex:j]);

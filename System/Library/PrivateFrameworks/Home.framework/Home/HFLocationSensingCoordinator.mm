@@ -1,25 +1,25 @@
 @interface HFLocationSensingCoordinator
 - (BOOL)readHomeSensingDefault;
-- (HFLocationSensingCoordinator)initWithDelegate:(id)a3;
+- (HFLocationSensingCoordinator)initWithDelegate:(id)delegate;
 - (HFLocationSensingCoordinatorDelegate)delegate;
 - (NAFuture)locationSensingAvailableFuture;
 - (void)_defaultsDidChange;
 - (void)dealloc;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation HFLocationSensingCoordinator
 
-- (HFLocationSensingCoordinator)initWithDelegate:(id)a3
+- (HFLocationSensingCoordinator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = HFLocationSensingCoordinator;
   v5 = [(HFLocationSensingCoordinator *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.Home.group"];
     defaults = v6->_defaults;
     v6->_defaults = v7;
@@ -39,20 +39,20 @@
     objc_copyWeak(&v23, &location);
     notify_register_dispatch(v11, &v6->_defaultsChangedNotifyToken, v12, handler);
 
-    v14 = [MEMORY[0x277D0F8F0] defaultScheduler];
+    defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __49__HFLocationSensingCoordinator_initWithDelegate___block_invoke_2;
     v20[3] = &unk_277DF3D38;
     v15 = v6;
     v21 = v15;
-    v16 = [v14 performBlock:v20];
+    v16 = [defaultScheduler performBlock:v20];
 
     v17 = +[HFLocationManagerDispatcher sharedDispatcher];
     [(HFLocationSensingCoordinator *)v15 setLocationDispatcher:v17];
 
-    v18 = [(HFLocationSensingCoordinator *)v15 locationDispatcher];
-    [v18 addObserver:v15];
+    locationDispatcher = [(HFLocationSensingCoordinator *)v15 locationDispatcher];
+    [locationDispatcher addObserver:v15];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
@@ -103,13 +103,13 @@ void __49__HFLocationSensingCoordinator_initWithDelegate___block_invoke_2(uint64
 - (NAFuture)locationSensingAvailableFuture
 {
   objc_initWeak(&location, self);
-  v3 = [(HFLocationSensingCoordinator *)self homeSensingFirstFuture];
+  homeSensingFirstFuture = [(HFLocationSensingCoordinator *)self homeSensingFirstFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__HFLocationSensingCoordinator_locationSensingAvailableFuture__block_invoke;
   v6[3] = &unk_277DF3D10;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 flatMap:v6];
+  v4 = [homeSensingFirstFuture flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -139,59 +139,59 @@ id __62__HFLocationSensingCoordinator_locationSensingAvailableFuture__block_invo
 
 - (BOOL)readHomeSensingDefault
 {
-  v3 = [(HFLocationSensingCoordinator *)self defaults];
-  v4 = [v3 objectForKey:@"HFHomeSensingEnabled"];
+  defaults = [(HFLocationSensingCoordinator *)self defaults];
+  v4 = [defaults objectForKey:@"HFHomeSensingEnabled"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
-    self->_cachedHomeSensingValue = v5;
+    bOOLValue = [v4 BOOLValue];
+    self->_cachedHomeSensingValue = bOOLValue;
     v6 = 1;
   }
 
   else
   {
     v6 = 0;
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   self->_cachedHomeSensingValueSet = v6;
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 authorizationStatus];
-  v5 = [(HFLocationSensingCoordinator *)self delegate];
+  authorizationStatus = [authorization authorizationStatus];
+  delegate = [(HFLocationSensingCoordinator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HFLocationSensingCoordinator *)self delegate];
-    [v7 coordinator:self locationSensingAvailabilityDidChange:(v4 - 3) < 2];
+    delegate2 = [(HFLocationSensingCoordinator *)self delegate];
+    [delegate2 coordinator:self locationSensingAvailabilityDidChange:(authorizationStatus - 3) < 2];
   }
 }
 
 - (void)_defaultsDidChange
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HFLocationSensingCoordinator *)self readHomeSensingDefault];
+  readHomeSensingDefault = [(HFLocationSensingCoordinator *)self readHomeSensingDefault];
   v4 = HFLogForCategory(0x2DuLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = readHomeSensingDefault;
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "Home Sensing preferences changed - state is now %{BOOL}d", v9, 8u);
   }
 
-  v5 = [(HFLocationSensingCoordinator *)self delegate];
+  delegate = [(HFLocationSensingCoordinator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HFLocationSensingCoordinator *)self delegate];
-    [v7 coordinator:self homeSensingStatusDidChange:v3];
+    delegate2 = [(HFLocationSensingCoordinator *)self delegate];
+    [delegate2 coordinator:self homeSensingStatusDidChange:readHomeSensingDefault];
   }
 
   v8 = *MEMORY[0x277D85DE8];

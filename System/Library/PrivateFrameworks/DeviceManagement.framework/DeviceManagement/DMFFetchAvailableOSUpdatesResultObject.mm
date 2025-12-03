@@ -1,21 +1,21 @@
 @interface DMFFetchAvailableOSUpdatesResultObject
-- (DMFFetchAvailableOSUpdatesResultObject)initWithCoder:(id)a3;
-- (DMFFetchAvailableOSUpdatesResultObject)initWithUpdate:(id)a3;
+- (DMFFetchAvailableOSUpdatesResultObject)initWithCoder:(id)coder;
+- (DMFFetchAvailableOSUpdatesResultObject)initWithUpdate:(id)update;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchAvailableOSUpdatesResultObject
 
-- (DMFFetchAvailableOSUpdatesResultObject)initWithUpdate:(id)a3
+- (DMFFetchAvailableOSUpdatesResultObject)initWithUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v9.receiver = self;
   v9.super_class = DMFFetchAvailableOSUpdatesResultObject;
   v5 = [(CATTaskResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [updateCopy copy];
     update = v5->_update;
     v5->_update = v6;
   }
@@ -23,16 +23,16 @@
   return v5;
 }
 
-- (DMFFetchAvailableOSUpdatesResultObject)initWithCoder:(id)a3
+- (DMFFetchAvailableOSUpdatesResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = DMFFetchAvailableOSUpdatesResultObject;
-  v5 = [(CATTaskResultObject *)&v10 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"update"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"update"];
     update = v5->_update;
     v5->_update = v7;
   }
@@ -40,25 +40,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchAvailableOSUpdatesResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchAvailableOSUpdatesResultObject *)self update:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"update"];
+  [coderCopy encodeObject:v5 forKey:@"update"];
 }
 
 - (id)description
 {
-  v3 = [(DMFFetchAvailableOSUpdatesResultObject *)self update];
+  update = [(DMFFetchAvailableOSUpdatesResultObject *)self update];
 
-  if (v3)
+  if (update)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(DMFFetchAvailableOSUpdatesResultObject *)self update];
-    v6 = [v5 description];
+    update2 = [(DMFFetchAvailableOSUpdatesResultObject *)self update];
+    v6 = [update2 description];
     v7 = [v4 stringWithFormat:@"%@\n", v6];
   }
 

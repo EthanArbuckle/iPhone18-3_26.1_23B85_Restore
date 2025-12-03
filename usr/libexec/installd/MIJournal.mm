@@ -1,14 +1,14 @@
 @interface MIJournal
 + (id)sharedInstance;
-- (BOOL)purgeJournalEntry:(id)a3 withError:(id *)a4;
-- (BOOL)writeJournalEntry:(id)a3 withError:(id *)a4;
+- (BOOL)purgeJournalEntry:(id)entry withError:(id *)error;
+- (BOOL)writeJournalEntry:(id)entry withError:(id *)error;
 - (MIJournal)init;
 - (NSURL)journalStorageBase;
-- (id)_journalStorageURLForUniqueIdentifier:(id)a3;
-- (id)journalEntryForIdentifier:(id)a3 error:(id *)a4;
-- (id)journaledEntriesCleaningFailuresWithError:(id *)a3;
-- (id)journaledEntriesWithError:(id *)a3;
-- (void)_enumerateJournaledEntriesContinuingOnFailure:(BOOL)a3 cleanUpFailedEntries:(BOOL)a4 withBlock:(id)a5;
+- (id)_journalStorageURLForUniqueIdentifier:(id)identifier;
+- (id)journalEntryForIdentifier:(id)identifier error:(id *)error;
+- (id)journaledEntriesCleaningFailuresWithError:(id *)error;
+- (id)journaledEntriesWithError:(id *)error;
+- (void)_enumerateJournaledEntriesContinuingOnFailure:(BOOL)failure cleanUpFailedEntries:(BOOL)entries withBlock:(id)block;
 - (void)reconcile;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002A688;
   block[3] = &unk_100090CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A9660 != -1)
   {
     dispatch_once(&qword_1000A9660, block);
@@ -41,27 +41,27 @@
 - (NSURL)journalStorageBase
 {
   v2 = +[MIDaemonConfiguration sharedInstance];
-  v3 = [v2 journalStorageBaseURL];
+  journalStorageBaseURL = [v2 journalStorageBaseURL];
 
-  return v3;
+  return journalStorageBaseURL;
 }
 
-- (id)_journalStorageURLForUniqueIdentifier:(id)a3
+- (id)_journalStorageURLForUniqueIdentifier:(id)identifier
 {
-  v4 = [a3 stringByAppendingPathExtension:@"plist"];
-  v5 = [(MIJournal *)self journalStorageBase];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:0];
+  v4 = [identifier stringByAppendingPathExtension:@"plist"];
+  journalStorageBase = [(MIJournal *)self journalStorageBase];
+  v6 = [journalStorageBase URLByAppendingPathComponent:v4 isDirectory:0];
 
   return v6;
 }
 
-- (BOOL)writeJournalEntry:(id)a3 withError:(id *)a4
+- (BOOL)writeJournalEntry:(id)entry withError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 shouldPersist];
+  entryCopy = entry;
+  shouldPersist = [entryCopy shouldPersist];
   if (+[ICLFeatureFlags twoStageAppInstallEnabled])
   {
-    v8 = v7 == 0;
+    v8 = shouldPersist == 0;
   }
 
   else
@@ -81,24 +81,24 @@
   {
     if (qword_1000A9720 && *(qword_1000A9720 + 44) >= 7)
     {
-      v22 = v6;
+      v22 = entryCopy;
       MOLogWrite();
     }
 
     v25 = 0;
-    v10 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v25, v22];
+    v10 = [NSKeyedArchiver archivedDataWithRootObject:entryCopy requiringSecureCoding:1 error:&v25, v22];
     v13 = v25;
     v14 = v13;
     if (!v10)
     {
       v11 = 0;
       v9 = v13;
-      if (a4)
+      if (error)
       {
 LABEL_18:
         v20 = v9;
         v12 = 0;
-        *a4 = v9;
+        *error = v9;
         goto LABEL_21;
       }
 
@@ -107,8 +107,8 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v15 = [v6 uniqueIdentifier];
-    v11 = [(MIJournal *)self _journalStorageURLForUniqueIdentifier:v15];
+    uniqueIdentifier = [entryCopy uniqueIdentifier];
+    v11 = [(MIJournal *)self _journalStorageURLForUniqueIdentifier:uniqueIdentifier];
 
     v16 = +[MIDaemonConfiguration sharedInstance];
     v17 = [v16 uid];
@@ -122,16 +122,16 @@ LABEL_20:
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
       {
-        sub_100058464(v6, v11);
+        sub_100058464(entryCopy, v11);
       }
 
       if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
       {
-        v23 = [v11 path];
+        path = [v11 path];
         MOLogWrite();
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_18;
       }
@@ -145,9 +145,9 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)purgeJournalEntry:(id)a3 withError:(id *)a4
+- (BOOL)purgeJournalEntry:(id)entry withError:(id *)error
 {
-  v6 = a3;
+  entryCopy = entry;
   if (!+[ICLFeatureFlags twoStageAppInstallEnabled])
   {
     v13 = 0;
@@ -159,12 +159,12 @@ LABEL_19:
 
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
   {
-    v17 = v6;
+    v17 = entryCopy;
     MOLogWrite();
   }
 
   v21 = 0;
-  v7 = [v6 cleanUpJournaledDataOnDiskWithError:{&v21, v17}];
+  v7 = [entryCopy cleanUpJournaledDataOnDiskWithError:{&v21, v17}];
   v8 = v21;
   if ((v7 & 1) == 0)
   {
@@ -177,8 +177,8 @@ LABEL_19:
     v8 = 0;
   }
 
-  v9 = [v6 uniqueIdentifier];
-  v10 = [(MIJournal *)self _journalStorageURLForUniqueIdentifier:v9];
+  uniqueIdentifier = [entryCopy uniqueIdentifier];
+  v10 = [(MIJournal *)self _journalStorageURLForUniqueIdentifier:uniqueIdentifier];
 
   v11 = +[MIFileManager defaultManager];
   v20 = v8;
@@ -192,20 +192,20 @@ LABEL_19:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
-    sub_100058518(v6, v10);
+    sub_100058518(entryCopy, v10);
   }
 
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
   {
-    v19 = [v10 path];
+    path = [v10 path];
     MOLogWrite();
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v13;
     v15 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -218,29 +218,29 @@ LABEL_20:
   return v15;
 }
 
-- (void)_enumerateJournaledEntriesContinuingOnFailure:(BOOL)a3 cleanUpFailedEntries:(BOOL)a4 withBlock:(id)a5
+- (void)_enumerateJournaledEntriesContinuingOnFailure:(BOOL)failure cleanUpFailedEntries:(BOOL)entries withBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(MIJournal *)self journalEntryClasses];
+  entriesCopy = entries;
+  blockCopy = block;
+  journalEntryClasses = [(MIJournal *)self journalEntryClasses];
   v10 = objc_opt_new();
   v11 = +[MIFileManager defaultManager];
-  v12 = [(MIJournal *)self journalStorageBase];
+  journalStorageBase = [(MIJournal *)self journalStorageBase];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10002AF44;
   v33[3] = &unk_1000914F8;
-  v13 = v8;
+  v13 = blockCopy;
   v36 = v13;
-  v37 = a3;
-  v14 = v9;
+  failureCopy = failure;
+  v14 = journalEntryClasses;
   v34 = v14;
-  v38 = v5;
+  v38 = entriesCopy;
   v15 = v10;
   v35 = v15;
-  v16 = [v11 enumerateURLsForItemsInDirectoryAtURL:v12 ignoreSymlinks:1 withBlock:v33];
+  v16 = [v11 enumerateURLsForItemsInDirectoryAtURL:journalStorageBase ignoreSymlinks:1 withBlock:v33];
 
-  if (v5)
+  if (entriesCopy)
   {
     v27 = v14;
     v31 = 0u;
@@ -266,18 +266,18 @@ LABEL_20:
           v22 = *(*(&v29 + 1) + 8 * i);
           if (qword_1000A9720 && *(qword_1000A9720 + 44) >= 7)
           {
-            v25 = [*(*(&v29 + 1) + 8 * i) path];
+            path = [*(*(&v29 + 1) + 8 * i) path];
             MOLogWrite();
           }
 
           v28 = 0;
-          v23 = [v11 removeItemAtURL:v22 error:{&v28, v25}];
+          v23 = [v11 removeItemAtURL:v22 error:{&v28, path}];
           v24 = v28;
           if ((v23 & 1) == 0)
           {
             if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
             {
-              v25 = v24;
+              path = v24;
               MOLogWrite();
             }
 
@@ -311,10 +311,10 @@ LABEL_20:
   }
 }
 
-- (id)journalEntryForIdentifier:(id)a3 error:(id *)a4
+- (id)journalEntryForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIJournal *)self _journalStorageURLForUniqueIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(MIJournal *)self _journalStorageURLForUniqueIdentifier:identifierCopy];
   v8 = +[MIFileManager defaultManager];
   v9 = [v8 itemExistsAtURL:v7];
 
@@ -325,9 +325,9 @@ LABEL_20:
     v12 = v27;
     if (v11)
     {
-      v13 = [(MIJournal *)self journalEntryClasses];
+      journalEntryClasses = [(MIJournal *)self journalEntryClasses];
       v26 = v12;
-      v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v13 fromData:v11 error:&v26];
+      v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:journalEntryClasses fromData:v11 error:&v26];
       v15 = v26;
 
       if (v14)
@@ -337,11 +337,11 @@ LABEL_20:
       }
 
       v21 = MIInstallerErrorDomain;
-      v22 = [v7 path];
-      v24 = sub_100010734("[MIJournal journalEntryForIdentifier:error:]", 276, v21, 218, v15, 0, @"Failed to unarchive journal entry data from %@", v23, v22);
+      path = [v7 path];
+      v24 = sub_100010734("[MIJournal journalEntryForIdentifier:error:]", 276, v21, 218, v15, 0, @"Failed to unarchive journal entry data from %@", v23, path);
 
       v15 = v24;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -349,22 +349,22 @@ LABEL_20:
 LABEL_8:
       v20 = v15;
       v16 = 0;
-      *a4 = v15;
+      *error = v15;
       goto LABEL_11;
     }
 
     v17 = MIInstallerErrorDomain;
-    v18 = [v7 path];
-    v15 = sub_100010734("[MIJournal journalEntryForIdentifier:error:]", 270, v17, 218, v12, 0, @"Failed to read journal entry data from %@", v19, v18);
+    path2 = [v7 path];
+    v15 = sub_100010734("[MIJournal journalEntryForIdentifier:error:]", 270, v17, 218, v12, 0, @"Failed to read journal entry data from %@", v19, path2);
   }
 
   else
   {
-    v15 = sub_100010734("[MIJournal journalEntryForIdentifier:error:]", 264, MIInstallerErrorDomain, 218, 0, 0, @"Failed to find matching journal entry for %@", v10, v6);
+    v15 = sub_100010734("[MIJournal journalEntryForIdentifier:error:]", 264, MIInstallerErrorDomain, 218, 0, 0, @"Failed to find matching journal entry for %@", v10, identifierCopy);
   }
 
   v11 = 0;
-  if (a4)
+  if (error)
   {
     goto LABEL_8;
   }
@@ -376,7 +376,7 @@ LABEL_11:
   return v16;
 }
 
-- (id)journaledEntriesCleaningFailuresWithError:(id *)a3
+- (id)journaledEntriesCleaningFailuresWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -395,7 +395,7 @@ LABEL_11:
   if (v15[5])
   {
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -404,7 +404,7 @@ LABEL_11:
   else
   {
     v6 = [v5 copy];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -412,7 +412,7 @@ LABEL_11:
 
   if (!v6)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
 LABEL_7:
@@ -422,7 +422,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)journaledEntriesWithError:(id *)a3
+- (id)journaledEntriesWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -441,7 +441,7 @@ LABEL_7:
   if (v15[5])
   {
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -450,7 +450,7 @@ LABEL_7:
   else
   {
     v6 = [v5 copy];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -458,7 +458,7 @@ LABEL_7:
 
   if (!v6)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
 LABEL_7:

@@ -1,18 +1,18 @@
 @interface JavaLangEnum
 + (void)initialize;
-- (JavaLangEnum)initWithNSString:(id)a3 withInt:(int)a4;
+- (JavaLangEnum)initWithNSString:(id)string withInt:(int)int;
 - (id)getDeclaringClass;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation JavaLangEnum
 
-- (JavaLangEnum)initWithNSString:(id)a3 withInt:(int)a4
+- (JavaLangEnum)initWithNSString:(id)string withInt:(int)int
 {
-  JreStrongAssign(&self->name_, a3);
-  self->ordinal_ = a4;
+  JreStrongAssign(&self->name_, string);
+  self->ordinal_ = int;
   return self;
 }
 
@@ -28,10 +28,10 @@
   return name + ordinal;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -41,27 +41,27 @@
     JreThrowClassCastException();
   }
 
-  return self->ordinal_ - *(a3 + 4);
+  return self->ordinal_ - *(id + 4);
 }
 
 - (id)getDeclaringClass
 {
-  v2 = [(JavaLangEnum *)self getClass];
-  v3 = [v2 getSuperclass];
+  getClass = [(JavaLangEnum *)self getClass];
+  getSuperclass = [getClass getSuperclass];
   v4 = JavaLangEnum_class_();
   objc_opt_class();
-  if (v4 == v3)
+  if (v4 == getSuperclass)
   {
-    if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (getClass && (objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_7:
       JreThrowClassCastException();
     }
   }
 
-  else if (v3)
+  else if (getSuperclass)
   {
-    v2 = v3;
+    getClass = getSuperclass;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_7;
@@ -73,7 +73,7 @@ LABEL_7:
     return 0;
   }
 
-  return v2;
+  return getClass;
 }
 
 - (void)dealloc
@@ -85,7 +85,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaLangEnum__1 alloc];
     LibcoreUtilBasicLruCache_initWithInt_(v2, 64);

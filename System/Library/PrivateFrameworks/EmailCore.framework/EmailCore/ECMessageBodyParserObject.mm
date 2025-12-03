@@ -1,11 +1,11 @@
 @interface ECMessageBodyParserObject
 - (BOOL)shouldProceedParsing;
-- (void)messageBodyParserWillBeginParsing:(id)a3;
+- (void)messageBodyParserWillBeginParsing:(id)parsing;
 @end
 
 @implementation ECMessageBodyParserObject
 
-- (void)messageBodyParserWillBeginParsing:(id)a3
+- (void)messageBodyParserWillBeginParsing:(id)parsing
 {
   [(ECMessageBodyParserObject *)self timeoutInterval];
   v5 = v4;

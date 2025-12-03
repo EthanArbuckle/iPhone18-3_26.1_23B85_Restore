@@ -1,41 +1,41 @@
 @interface TRIActivateTargetedRolloutDeploymentTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithDeployment:(id)a3 factorPackSetId:(id)a4 taskAttribution:(id)a5 capabilityModifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithDeployment:(id)deployment factorPackSetId:(id)id taskAttribution:(id)attribution capabilityModifier:(id)modifier;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)dependencies;
 - (NSString)description;
-- (TRIActivateTargetedRolloutDeploymentTask)initWithCoder:(id)a3;
-- (TRIActivateTargetedRolloutDeploymentTask)initWithDeployment:(id)a3 factorPackSetId:(id)a4 taskAttribution:(id)a5 capabilityModifier:(id)a6;
+- (TRIActivateTargetedRolloutDeploymentTask)initWithCoder:(id)coder;
+- (TRIActivateTargetedRolloutDeploymentTask)initWithDeployment:(id)deployment factorPackSetId:(id)id taskAttribution:(id)attribution capabilityModifier:(id)modifier;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)encodeWithCoder:(id)a3;
-- (void)runDequeueHandlerUsingContext:(id)a3;
-- (void)runEnqueueHandlerUsingContext:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)runDequeueHandlerUsingContext:(id)context;
+- (void)runEnqueueHandlerUsingContext:(id)context;
 @end
 
 @implementation TRIActivateTargetedRolloutDeploymentTask
 
-- (TRIActivateTargetedRolloutDeploymentTask)initWithDeployment:(id)a3 factorPackSetId:(id)a4 taskAttribution:(id)a5 capabilityModifier:(id)a6
+- (TRIActivateTargetedRolloutDeploymentTask)initWithDeployment:(id)deployment factorPackSetId:(id)id taskAttribution:(id)attribution capabilityModifier:(id)modifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  deploymentCopy = deployment;
+  idCopy = id;
+  attributionCopy = attribution;
+  modifierCopy = modifier;
+  if (deploymentCopy)
   {
-    if (v13)
+    if (idCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
-    if (v14)
+    if (attributionCopy)
     {
       goto LABEL_4;
     }
@@ -43,23 +43,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
 
-  if (!v13)
+  if (!idCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (attributionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
 
 LABEL_4:
   v32.receiver = self;
@@ -68,28 +68,28 @@ LABEL_4:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_deployment, a3);
-    objc_storeStrong(&v17->_factorPackSetId, a4);
-    objc_storeStrong(&v17->_taskAttribution, a5);
+    objc_storeStrong(&v16->_deployment, deployment);
+    objc_storeStrong(&v17->_factorPackSetId, id);
+    objc_storeStrong(&v17->_taskAttribution, attribution);
     v18 = [[TRIRolloutTaskSupport alloc] initWithRolloutDeployment:v17->_deployment];
     support = v17->_support;
     v17->_support = v18;
 
-    objc_storeStrong(&v17->_capabilityModifier, a6);
+    objc_storeStrong(&v17->_capabilityModifier, modifier);
     v20 = objc_opt_new();
-    v21 = [v12 rolloutId];
-    v22 = [v20 ensureRolloutFields];
-    [v22 setClientRolloutId:v21];
+    rolloutId = [deploymentCopy rolloutId];
+    ensureRolloutFields = [v20 ensureRolloutFields];
+    [ensureRolloutFields setClientRolloutId:rolloutId];
 
-    v23 = loggableFactorPackSetIdFromFactorPackSetId(v13);
-    v24 = [v20 ensureRolloutFields];
-    [v24 setClientFactorPackSetId:v23];
+    v23 = loggableFactorPackSetIdFromFactorPackSetId(idCopy);
+    ensureRolloutFields2 = [v20 ensureRolloutFields];
+    [ensureRolloutFields2 setClientFactorPackSetId:v23];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v12, "deploymentId")}];
-    v26 = [v25 stringValue];
-    [v20 setClientDeploymentId:v26];
+    v25 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(deploymentCopy, "deploymentId")}];
+    stringValue = [v25 stringValue];
+    [v20 setClientDeploymentId:stringValue];
 
-    v27 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:v14];
+    v27 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:attributionCopy];
     [(TRIRolloutTaskSupport *)v17->_support mergeTelemetry:v20];
     [(TRIRolloutTaskSupport *)v17->_support mergeTelemetry:v27];
   }
@@ -97,13 +97,13 @@ LABEL_4:
   return v17;
 }
 
-+ (id)taskWithDeployment:(id)a3 factorPackSetId:(id)a4 taskAttribution:(id)a5 capabilityModifier:(id)a6
++ (id)taskWithDeployment:(id)deployment factorPackSetId:(id)id taskAttribution:(id)attribution capabilityModifier:(id)modifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithDeployment:v13 factorPackSetId:v12 taskAttribution:v11 capabilityModifier:v10];
+  modifierCopy = modifier;
+  attributionCopy = attribution;
+  idCopy = id;
+  deploymentCopy = deployment;
+  v14 = [[self alloc] initWithDeployment:deploymentCopy factorPackSetId:idCopy taskAttribution:attributionCopy capabilityModifier:modifierCopy];
 
   return v14;
 }
@@ -122,41 +122,41 @@ LABEL_4:
   return v5;
 }
 
-- (void)runEnqueueHandlerUsingContext:(id)a3
+- (void)runEnqueueHandlerUsingContext:(id)context
 {
   factorPackSetId = self->_factorPackSetId;
-  v5 = a3;
+  contextCopy = context;
   v9 = [TRIContentTracker contentIdentifierForFactorPackSetWithId:factorPackSetId];
-  v6 = [v5 contentTracker];
-  [v6 addRefWithContentIdentifier:v9];
+  contentTracker = [contextCopy contentTracker];
+  [contentTracker addRefWithContentIdentifier:v9];
 
   v7 = [TRIContentTracker contentIdentifierForRolloutArtifactWithDeployment:self->_deployment];
-  v8 = [v5 contentTracker];
+  contentTracker2 = [contextCopy contentTracker];
 
-  [v8 addRefWithContentIdentifier:v7];
+  [contentTracker2 addRefWithContentIdentifier:v7];
 }
 
-- (void)runDequeueHandlerUsingContext:(id)a3
+- (void)runDequeueHandlerUsingContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
   factorPackSetId = self->_factorPackSetId;
-  v5 = a3;
+  contextCopy = context;
   v6 = [TRIContentTracker contentIdentifierForFactorPackSetWithId:factorPackSetId];
-  v7 = [v5 contentTracker];
-  [v7 dropRefWithContentIdentifier:v6];
+  contentTracker = [contextCopy contentTracker];
+  [contentTracker dropRefWithContentIdentifier:v6];
 
   v8 = [TRIContentTracker contentIdentifierForRolloutArtifactWithDeployment:self->_deployment];
-  v9 = [v5 contentTracker];
+  contentTracker2 = [contextCopy contentTracker];
 
-  LOBYTE(v5) = [v9 dropRefWithContentIdentifier:v8];
-  if ((v5 & 1) == 0)
+  LOBYTE(contextCopy) = [contentTracker2 dropRefWithContentIdentifier:v8];
+  if ((contextCopy & 1) == 0)
   {
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
+      shortDesc = [(TRIRolloutDeployment *)self->_deployment shortDesc];
       v13 = 138543362;
-      v14 = v12;
+      v14 = shortDesc;
       _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, "Failed to drop reference on artifact for rollout %{public}@", &v13, 0xCu);
     }
   }
@@ -164,117 +164,117 @@ LABEL_4:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v158 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v121 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v7 = [TRITaskRunResult alloc];
   v110 = [(TRITaskRunResult *)v7 initWithRunStatus:3 reportResultToServer:1 nextTasks:MEMORY[0x277CBEBF8] earliestRetryDate:0];
   v8 = objc_opt_new();
   v9 = [TRISystemCovariates alloc];
-  v118 = v6;
-  v10 = [v6 paths];
-  v11 = [(TRISystemCovariates *)v9 initWithPaths:v10];
+  v118 = contextCopy;
+  paths = [contextCopy paths];
+  v11 = [(TRISystemCovariates *)v9 initWithPaths:paths];
 
   v120 = v11;
-  v12 = [(TRISystemCovariates *)v11 dictionary];
-  v114 = [v12 valueForKey:@"OSBuild"];
+  dictionary = [(TRISystemCovariates *)v11 dictionary];
+  v114 = [dictionary valueForKey:@"OSBuild"];
 
-  v13 = [(TRISystemCovariates *)v11 dictionary];
-  v117 = [v13 valueForKey:@"UserSettingsLanguageCode"];
+  dictionary2 = [(TRISystemCovariates *)v11 dictionary];
+  v117 = [dictionary2 valueForKey:@"UserSettingsLanguageCode"];
 
-  v14 = [(TRISystemCovariates *)v11 dictionary];
-  v116 = [v14 valueForKey:@"UserSettingsRegionCode"];
+  dictionary3 = [(TRISystemCovariates *)v11 dictionary];
+  v116 = [dictionary3 valueForKey:@"UserSettingsRegionCode"];
 
-  v15 = [(TRISystemCovariates *)v11 dictionary];
-  v115 = [v15 valueForKey:@"BCP47DeviceLocale"];
+  dictionary4 = [(TRISystemCovariates *)v11 dictionary];
+  v115 = [dictionary4 valueForKey:@"BCP47DeviceLocale"];
 
   if (v115)
   {
     v16 = [v115 componentsSeparatedByString:@"-"];
-    v17 = [v16 firstObject];
+    firstObject = [v16 firstObject];
 
     v18 = [v115 componentsSeparatedByString:@"-"];
-    v19 = [v18 lastObject];
+    lastObject = [v18 lastObject];
 
     v20 = &stru_287FA0430;
-    if (v19)
+    if (lastObject)
     {
-      v20 = v19;
+      v20 = lastObject;
     }
 
     v116 = v20;
 
-    v117 = v17;
+    v117 = firstObject;
   }
 
-  v21 = [(TRISystemCovariates *)v11 dictionary];
-  v113 = [v21 valueForKey:@"CarrierBundleIdentifier"];
+  dictionary5 = [(TRISystemCovariates *)v11 dictionary];
+  v113 = [dictionary5 valueForKey:@"CarrierBundleIdentifier"];
 
-  v22 = [(TRISystemCovariates *)v11 dictionary];
-  v112 = [v22 valueForKey:@"CarrierCountryIsoCode"];
+  dictionary6 = [(TRISystemCovariates *)v11 dictionary];
+  v112 = [dictionary6 valueForKey:@"CarrierCountryIsoCode"];
 
-  v23 = [(TRISystemCovariates *)v11 dictionary];
-  v24 = [v23 valueForKey:@"DiagnosticsUsageEnabled"];
-  v25 = [v24 BOOLValue];
+  dictionary7 = [(TRISystemCovariates *)v11 dictionary];
+  v24 = [dictionary7 valueForKey:@"DiagnosticsUsageEnabled"];
+  bOOLValue = [v24 BOOLValue];
 
-  v26 = [(TRISystemCovariates *)v11 dictionary];
-  v27 = [v26 valueForKey:@"HasANE"];
-  v28 = [v27 BOOLValue];
+  dictionary8 = [(TRISystemCovariates *)v11 dictionary];
+  v27 = [dictionary8 valueForKey:@"HasANE"];
+  bOOLValue2 = [v27 BOOLValue];
 
-  v29 = [(TRISystemCovariates *)v11 dictionary];
-  v111 = [v29 valueForKey:@"ANEVersion"];
+  dictionary9 = [(TRISystemCovariates *)v11 dictionary];
+  v111 = [dictionary9 valueForKey:@"ANEVersion"];
 
   if (!v114)
   {
-    v94 = [MEMORY[0x277CCA890] currentHandler];
-    [v94 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"osBuild"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"osBuild"}];
   }
 
   if (!v117)
   {
-    v95 = [MEMORY[0x277CCA890] currentHandler];
-    [v95 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
   }
 
   if (!v116)
   {
-    v96 = [MEMORY[0x277CCA890] currentHandler];
-    [v96 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"regionCode"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"regionCode"}];
   }
 
   if (!v113)
   {
-    v97 = [MEMORY[0x277CCA890] currentHandler];
-    [v97 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"carrierBundleId"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"carrierBundleId"}];
   }
 
   if (!v112)
   {
-    v98 = [MEMORY[0x277CCA890] currentHandler];
-    [v98 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"carrierCountryCode"}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"carrierCountryCode"}];
   }
 
   if (!v111)
   {
-    v99 = [MEMORY[0x277CCA890] currentHandler];
-    [v99 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"aneVersion"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"aneVersion"}];
   }
 
-  v30 = [v118 rolloutDatabase];
-  v119 = [v30 recordWithDeployment:self->_deployment usingTransaction:0];
+  rolloutDatabase = [v118 rolloutDatabase];
+  v119 = [rolloutDatabase recordWithDeployment:self->_deployment usingTransaction:0];
 
   if (v119)
   {
-    v31 = [v118 namespaceDatabase];
-    v32 = [v118 paths];
-    v33 = [v32 namespaceDescriptorsDefaultDir];
-    v109 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v31 defaultDescriptorDirectoryPath:v33];
+    namespaceDatabase = [v118 namespaceDatabase];
+    paths2 = [v118 paths];
+    namespaceDescriptorsDefaultDir = [paths2 namespaceDescriptorsDefaultDir];
+    v109 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
-    v34 = [v119 artifact];
-    v35 = [v34 rollout];
-    v108 = [TRISetupAssistantFetchUtils getIncompatibleNamespaceNamesForTriClientRollout:v35 namespaceDescriptorProvider:v109];
+    artifact = [v119 artifact];
+    rollout = [artifact rollout];
+    v108 = [TRISetupAssistantFetchUtils getIncompatibleNamespaceNamesForTriClientRollout:rollout namespaceDescriptorProvider:v109];
 
     if ([v108 count])
     {
@@ -293,28 +293,28 @@ LABEL_4:
     }
 
     v43 = objc_opt_new();
-    v44 = [v119 rampId];
+    rampId = [v119 rampId];
 
-    if (v44)
+    if (rampId)
     {
-      v45 = [v119 rampId];
-      v46 = [v43 ensureRolloutFields];
-      [v46 setClientRampId:v45];
+      rampId2 = [v119 rampId];
+      ensureRolloutFields = [v43 ensureRolloutFields];
+      [ensureRolloutFields setClientRampId:rampId2];
     }
 
     factorPackSetId = self->_factorPackSetId;
-    v48 = [v119 targetedFactorPackSetId];
-    if ([(TRIFactorPackSetId *)factorPackSetId isEqual:v48])
+    targetedFactorPackSetId = [v119 targetedFactorPackSetId];
+    if ([(TRIFactorPackSetId *)factorPackSetId isEqual:targetedFactorPackSetId])
     {
-      v49 = [v119 targetedTargetingRuleIndex];
+      targetedTargetingRuleIndex = [v119 targetedTargetingRuleIndex];
 
-      if (!v49)
+      if (!targetedTargetingRuleIndex)
       {
 LABEL_31:
         [(TRIRolloutTaskSupport *)self->_support mergeTelemetry:v43];
 
-        v52 = [v119 activeFactorPackSetId];
-        v53 = [v52 isEqualToString:self->_factorPackSetId];
+        activeFactorPackSetId = [v119 activeFactorPackSetId];
+        v53 = [activeFactorPackSetId isEqualToString:self->_factorPackSetId];
 
         if (!v53)
         {
@@ -322,8 +322,8 @@ LABEL_31:
           v149 = 0u;
           v146 = 0u;
           v147 = 0u;
-          v60 = [v119 namespaces];
-          v61 = [v60 countByEnumeratingWithState:&v146 objects:v157 count:16];
+          namespaces = [v119 namespaces];
+          v61 = [namespaces countByEnumeratingWithState:&v146 objects:v157 count:16];
           if (v61)
           {
             v62 = *v147;
@@ -333,25 +333,25 @@ LABEL_31:
               {
                 if (*v147 != v62)
                 {
-                  objc_enumerationMutation(v60);
+                  objc_enumerationMutation(namespaces);
                 }
 
                 [v8 addObject:*(*(&v146 + 1) + 8 * i)];
               }
 
-              v61 = [v60 countByEnumeratingWithState:&v146 objects:v157 count:16];
+              v61 = [namespaces countByEnumeratingWithState:&v146 objects:v157 count:16];
             }
 
             while (v61);
           }
 
           v64 = [TRINamespaceResolverStorage alloc];
-          v65 = [v118 paths];
-          v107 = [(TRINamespaceResolverStorage *)v64 initWithPaths:v65];
+          paths3 = [v118 paths];
+          v107 = [(TRINamespaceResolverStorage *)v64 initWithPaths:paths3];
 
           v66 = self->_deployment;
-          v67 = [v119 rampId];
-          LOBYTE(v66) = [(TRINamespaceResolverStorage *)v107 rewriteRolloutDeployment:v66 rampId:v67 targetedFactorPackSetId:self->_factorPackSetId];
+          rampId3 = [v119 rampId];
+          LOBYTE(v66) = [(TRINamespaceResolverStorage *)v107 rewriteRolloutDeployment:v66 rampId:rampId3 targetedFactorPackSetId:self->_factorPackSetId];
 
           if (v66)
           {
@@ -380,13 +380,13 @@ LABEL_31:
             v138 = v116;
             v139 = v113;
             v140 = v112;
-            v144 = v25;
-            v145 = v28;
+            v144 = bOOLValue;
+            v145 = bOOLValue2;
             v141 = v111;
             v142 = v107;
             v105 = MEMORY[0x2743948D0](v131);
-            v70 = [v106 rolloutDatabase];
-            [v70 writeTransactionWithFailableBlock:v105];
+            rolloutDatabase2 = [v106 rolloutDatabase];
+            [rolloutDatabase2 writeTransactionWithFailableBlock:v105];
 
             if (*(*&buf[8] + 24))
             {
@@ -408,10 +408,10 @@ LABEL_31:
                       objc_enumerationMutation(v71);
                     }
 
-                    v75 = [*(*(&v127 + 1) + 8 * j) taskTag];
-                    v153 = self;
-                    v76 = [MEMORY[0x277CBEA60] arrayWithObjects:&v153 count:1];
-                    [v121 cancelTasksWithTag:v75 excludingTasks:v76];
+                    taskTag = [*(*(&v127 + 1) + 8 * j) taskTag];
+                    selfCopy = self;
+                    v76 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
+                    [queueCopy cancelTasksWithTag:taskTag excludingTasks:v76];
                   }
 
                   v72 = [v71 countByEnumeratingWithState:&v127 objects:v154 count:16];
@@ -420,8 +420,8 @@ LABEL_31:
                 while (v72);
               }
 
-              v77 = [v106 pushServiceMuxer];
-              [v77 subscribeForRolloutDeployment:self->_deployment];
+              pushServiceMuxer = [v106 pushServiceMuxer];
+              [pushServiceMuxer subscribeForRolloutDeployment:self->_deployment];
 
               v125 = 0u;
               v126 = 0u;
@@ -459,10 +459,10 @@ LABEL_31:
                 while (v79);
               }
 
-              v84 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
-              v85 = [v104 rampId];
+              rolloutId = [(TRIRolloutDeployment *)self->_deployment rolloutId];
+              rampId4 = [v104 rampId];
               LOBYTE(v100) = 0;
-              [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:3 forRollout:v84 ramp:v85 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:v104 isBecomingObsolete:v100 context:v106, v101];
+              [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:3 forRollout:rolloutId ramp:rampId4 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:v104 isBecomingObsolete:v100 context:v106, v101];
 
               v86 = [TRITaskRunResult alloc];
               v87 = [(TRITaskRunResult *)v86 initWithRunStatus:2 reportResultToServer:1 nextTasks:MEMORY[0x277CBEBF8] earliestRetryDate:0];
@@ -470,10 +470,10 @@ LABEL_31:
 
             else
             {
-              v90 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
-              v91 = [v104 rampId];
+              rolloutId2 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
+              rampId5 = [v104 rampId];
               LOBYTE(v100) = 0;
-              [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:7 forRollout:v90 ramp:v91 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:v104 isBecomingObsolete:v100 context:v106, v101, v103];
+              [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:7 forRollout:rolloutId2 ramp:rampId5 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:v104 isBecomingObsolete:v100 context:v106, v101, v103];
 
               v87 = v110;
             }
@@ -485,10 +485,10 @@ LABEL_31:
 
           else
           {
-            v88 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
-            v89 = [v119 rampId];
+            rolloutId3 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
+            rampId6 = [v119 rampId];
             LOBYTE(v100) = 0;
-            [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:7 forRollout:v88 ramp:v89 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:v119 isBecomingObsolete:v100 context:v118];
+            [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:7 forRollout:rolloutId3 ramp:rampId6 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:v119 isBecomingObsolete:v100 context:v118];
 
             v42 = v110;
           }
@@ -499,10 +499,10 @@ LABEL_31:
         v54 = TRILogCategory_Server();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
+          shortDesc = [(TRIRolloutDeployment *)self->_deployment shortDesc];
           v56 = self->_factorPackSetId;
           *buf = 138543618;
-          *&buf[4] = v55;
+          *&buf[4] = shortDesc;
           *&buf[12] = 2114;
           *&buf[14] = v56;
           _os_log_impl(&dword_26F567000, v54, OS_LOG_TYPE_DEFAULT, "Rollout deployment %{public}@ has already activated factor pack set %{public}@. Completing task without activating deployment again.", buf, 0x16u);
@@ -517,10 +517,10 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v48 = [v119 targetedTargetingRuleIndex];
-      v50 = [v48 intValue];
-      v51 = [v43 ensureRolloutFields];
-      [v51 setClientTargetingRuleGroupOrdinal:v50];
+      targetedFactorPackSetId = [v119 targetedTargetingRuleIndex];
+      intValue = [targetedFactorPackSetId intValue];
+      ensureRolloutFields2 = [v43 ensureRolloutFields];
+      [ensureRolloutFields2 setClientTargetingRuleGroupOrdinal:intValue];
     }
 
     goto LABEL_31;
@@ -529,16 +529,16 @@ LABEL_36:
   v39 = TRILogCategory_Server();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
   {
-    v93 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
+    shortDesc2 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
     *buf = 138543362;
-    *&buf[4] = v93;
+    *&buf[4] = shortDesc2;
     _os_log_error_impl(&dword_26F567000, v39, OS_LOG_TYPE_ERROR, "Unexpected failure to lookup rollout record for deployment %{public}@.", buf, 0xCu);
   }
 
-  v40 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
-  v41 = [0 rampId];
+  rolloutId4 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
+  rampId7 = [0 rampId];
   LOBYTE(v100) = 0;
-  [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:7 forRollout:v40 ramp:v41 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:0 isBecomingObsolete:v100 context:v118];
+  [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:7 forRollout:rolloutId4 ramp:rampId7 deployment:[(TRIRolloutDeployment *)self->_deployment deploymentId] fps:self->_factorPackSetId namespaces:0 telemetryMetric:0 rolloutRecord:0 isBecomingObsolete:v100 context:v118];
 
   v42 = v110;
 LABEL_37:
@@ -901,10 +901,10 @@ void __74__TRIActivateTargetedRolloutDeploymentTask_runUsingContext_withTaskQueu
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -913,9 +913,9 @@ void __74__TRIActivateTargetedRolloutDeploymentTask_runUsingContext_withTaskQueu
   {
     v8.receiver = self;
     v8.super_class = TRIActivateTargetedRolloutDeploymentTask;
-    if ([(TRIBaseTask *)&v8 isEqual:v4]&& [(TRIActivateTargetedRolloutDeploymentTask *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(TRIBaseTask *)&v8 isEqual:equalCopy]&& [(TRIActivateTargetedRolloutDeploymentTask *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(TRIRolloutDeployment *)self->_deployment isEqualToDeployment:v5->_deployment]&& [(TRIFactorPackSetId *)self->_factorPackSetId isEqualToString:v5->_factorPackSetId])
       {
         v6 = [(TRITaskAttributing *)self->_taskAttribution isEqual:v5->_taskAttribution];
@@ -949,41 +949,41 @@ void __74__TRIActivateTargetedRolloutDeploymentTask_runUsingContext_withTaskQueu
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRIRolloutDeployment *)self->_deployment rolloutId];
-  [v3 setRolloutId:v4];
+  rolloutId = [(TRIRolloutDeployment *)self->_deployment rolloutId];
+  [v3 setRolloutId:rolloutId];
 
   [v3 setDeploymentId:{-[TRIRolloutDeployment deploymentId](self->_deployment, "deploymentId")}];
   [v3 setFactorPackSetId:self->_factorPackSetId];
-  v5 = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v5];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
-  v6 = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
-  [v3 setCapabilityModifier:v6];
+  asPersistedModifier = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
+  [v3 setCapabilityModifier:asPersistedModifier];
 
   return v3;
 }
 
 - (id)serialize
 {
-  v4 = [(TRIActivateTargetedRolloutDeploymentTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIActivateTargetedRolloutDeploymentTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:437 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:437 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v35 = *MEMORY[0x277D85DE8];
   v32 = 0;
-  v3 = [(TRIPBMessage *)TRIActivateTargetedRolloutDeploymentPersistedTask parseFromData:a3 error:&v32];
+  v3 = [(TRIPBMessage *)TRIActivateTargetedRolloutDeploymentPersistedTask parseFromData:data error:&v32];
   v4 = v32;
   if (!v3)
   {
@@ -1024,8 +1024,8 @@ void __74__TRIActivateTargetedRolloutDeploymentTask_runUsingContext_withTaskQueu
     goto LABEL_25;
   }
 
-  v5 = [v3 rolloutId];
-  v6 = [v5 length];
+  rolloutId = [v3 rolloutId];
+  v6 = [rolloutId length];
 
   if (!v6)
   {
@@ -1096,27 +1096,27 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v7 = [v3 taskAttribution];
-  v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v7];
+  taskAttribution = [v3 taskAttribution];
+  v8 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
   if (v8)
   {
-    v9 = [v3 factorPackSetId];
+    factorPackSetId = [v3 factorPackSetId];
     v10 = TRIValidateFactorPackSetId();
 
     if (v10)
     {
       v11 = objc_alloc(MEMORY[0x277D737C8]);
-      v12 = [v3 rolloutId];
-      v13 = [v11 initWithRolloutId:v12 deploymentId:{objc_msgSend(v3, "deploymentId")}];
+      rolloutId2 = [v3 rolloutId];
+      v13 = [v11 initWithRolloutId:rolloutId2 deploymentId:{objc_msgSend(v3, "deploymentId")}];
 
       if ([v3 hasCapabilityModifier])
       {
         v14 = [TRITaskCapabilityModifier alloc];
-        v15 = [v3 capabilityModifier];
-        v16 = [v15 add];
-        v17 = [v3 capabilityModifier];
-        v18 = -[TRITaskCapabilityModifier initWithAdd:remove:](v14, "initWithAdd:remove:", v16, [v17 remove]);
+        capabilityModifier = [v3 capabilityModifier];
+        v16 = [capabilityModifier add];
+        capabilityModifier2 = [v3 capabilityModifier];
+        v18 = -[TRITaskCapabilityModifier initWithAdd:remove:](v14, "initWithAdd:remove:", v16, [capabilityModifier2 remove]);
       }
 
       else
@@ -1160,23 +1160,23 @@ LABEL_27:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRIRolloutDeployment *)self->_deployment shortDesc];
+  shortDesc = [(TRIRolloutDeployment *)self->_deployment shortDesc];
   factorPackSetId = self->_factorPackSetId;
-  v7 = [(TRITaskAttributing *)self->_taskAttribution applicationBundleIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@:%@, %@, %@>", v4, v5, factorPackSetId, v7];
+  applicationBundleIdentifier = [(TRITaskAttributing *)self->_taskAttribution applicationBundleIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@:%@, %@, %@>", v4, shortDesc, factorPackSetId, applicationBundleIdentifier];
 
   return v8;
 }
 
-- (TRIActivateTargetedRolloutDeploymentTask)initWithCoder:(id)a3
+- (TRIActivateTargetedRolloutDeploymentTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIActivateTargetedRolloutDeploymentTask;
   v5 = [(TRIActivateTargetedRolloutDeploymentTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -1196,18 +1196,18 @@ LABEL_27:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:487 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivateTargetedRolloutDeploymentTask.m" lineNumber:487 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIActivateTargetedRolloutDeploymentTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIActivateTargetedRolloutDeploymentTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

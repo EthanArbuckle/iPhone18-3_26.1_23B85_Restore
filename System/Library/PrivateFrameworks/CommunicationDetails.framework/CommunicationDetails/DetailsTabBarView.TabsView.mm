@@ -1,18 +1,18 @@
 @interface DetailsTabBarView.TabsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithCoder:(id)a3;
-- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithCoder:(id)coder;
+- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DetailsTabBarView.TabsView
 
-- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithFrame:(CGRect)a3
+- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -39,13 +39,13 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC20CommunicationDetails17DetailsTabBarView8TabsView_tabViews) = v9;
   v14.receiver = self;
   v14.super_class = type metadata accessor for DetailsTabBarView.TabsView();
-  v12 = [(DetailsTabBarView.TabsView *)&v14 initWithFrame:x, y, width, height];
-  [(DetailsTabBarView.TabsView *)v12 setPreservesSuperviewLayoutMargins:0];
+  height = [(DetailsTabBarView.TabsView *)&v14 initWithFrame:x, y, width, height];
+  [(DetailsTabBarView.TabsView *)height setPreservesSuperviewLayoutMargins:0];
 
-  return v12;
+  return height;
 }
 
-- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithCoder:(id)a3
+- (_TtCC20CommunicationDetails17DetailsTabBarView8TabsView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -64,7 +64,7 @@
   v7 = self + OBJC_IVAR____TtCC20CommunicationDetails17DetailsTabBarView8TabsView_configuration;
   memset(v13, 0, sizeof(v13));
   v14 = 1;
-  v8 = a3;
+  coderCopy = coder;
   DetailsTabBarView.Configuration.init(preferredLayoutMargins:)(v13, v11);
   v9 = v11[1];
   *v7 = v11[0];
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -87,7 +87,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   specialized DetailsTabBarView.TabsView.sizeThatFits(_:)();
   v6 = v5;
   v8 = v7;
@@ -109,7 +109,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   DetailsTabBarView.TabsView.layoutSubviews()();
 }
 

@@ -1,36 +1,36 @@
 @interface ASFriendListSectionManager
-- (ASFriendListSectionManager)initWithModel:(id)a3 activitySharingClient:(id)a4 workoutDataProvider:(id)a5;
-- (ASFriendListSectionManager)initWithModel:(id)a3 andWorkoutDataProvider:(id)a4;
-- (BOOL)_isWheelchairUserDisplayModeValidForFriends:(id)a3 filter:(int64_t)a4;
+- (ASFriendListSectionManager)initWithModel:(id)model activitySharingClient:(id)client workoutDataProvider:(id)provider;
+- (ASFriendListSectionManager)initWithModel:(id)model andWorkoutDataProvider:(id)provider;
+- (BOOL)_isWheelchairUserDisplayModeValidForFriends:(id)friends filter:(int64_t)filter;
 - (BOOL)hasAnyFriendsSetup;
 - (BOOL)hasInitializedFriendData;
 - (id)_copyFriends;
-- (id)_createSectionsForFriends:(id)a3 withDisplayContext:(id)a4;
-- (id)_datesToShowSnapshotsForFriend:(id)a3 startingFromCurrentDateComponents:(id)a4;
-- (id)_filterFriends:(id)a3 withActiveFriendshipAtEndOfDay:(id)a4;
-- (id)_filterFriends:(id)a3 withSnapshotDataAtCacheIndex:(id)a4;
-- (id)_filterFriends:(id)a3 withWheelchairUseAtCacheIndex:(id)a4;
-- (id)_friendWithUUID:(id)a3 fromFriends:(id)a4;
+- (id)_createSectionsForFriends:(id)friends withDisplayContext:(id)context;
+- (id)_datesToShowSnapshotsForFriend:(id)friend startingFromCurrentDateComponents:(id)components;
+- (id)_filterFriends:(id)friends withActiveFriendshipAtEndOfDay:(id)day;
+- (id)_filterFriends:(id)friends withSnapshotDataAtCacheIndex:(id)index;
+- (id)_filterFriends:(id)friends withWheelchairUseAtCacheIndex:(id)index;
+- (id)_friendWithUUID:(id)d fromFriends:(id)friends;
 - (id)_queue_me;
-- (id)_sectionForDataVisibilityConditionalUsingBlock:(id)a3 comparator:(id)a4;
-- (id)_sortFriends:(id)a3 forDisplayMode:(int64_t)a4 cacheIndex:(id)a5;
+- (id)_sectionForDataVisibilityConditionalUsingBlock:(id)block comparator:(id)comparator;
+- (id)_sortFriends:(id)friends forDisplayMode:(int64_t)mode cacheIndex:(id)index;
 - (id)allActiveFriendsAsRecipients;
 - (id)allDestinationsForActiveOrPendingFriends;
 - (id)allFriends;
-- (id)friendWithUUID:(id)a3;
+- (id)friendWithUUID:(id)d;
 - (id)me;
-- (id)sectionsForDisplayContext:(id)a3;
+- (id)sectionsForDisplayContext:(id)context;
 - (int64_t)numberOfNewFriendsAllowed;
 - (unint64_t)numberOfFriendsWithCompetitionRequestsAwaitingResponseFromMe;
 - (unint64_t)numberOfFriendsWithInvitesAwaitingResponseFromMe;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
-- (void)_calendarDayChangedNotification:(id)a3;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
+- (void)_calendarDayChangedNotification:(id)notification;
 - (void)_createFakeFriends;
-- (void)_enumerateVisibleDaysForFriends:(id)a3 usingBlock:(id)a4;
+- (void)_enumerateVisibleDaysForFriends:(id)friends usingBlock:(id)block;
 - (void)_postFriendsListChangedNotification;
-- (void)_queue_handleActivitySummaryUpdate:(id)a3;
+- (void)_queue_handleActivitySummaryUpdate:(id)update;
 - (void)_queue_handleMyWorkoutsUpdate;
-- (void)_queue_restartQueryAfterErrorCount:(int64_t)a3 withBlock:(id)a4;
+- (void)_queue_restartQueryAfterErrorCount:(int64_t)count withBlock:(id)block;
 - (void)_queue_startFriendsQuery;
 - (void)_queue_startMeQuery;
 - (void)_queue_stopQueries;
@@ -39,8 +39,8 @@
 - (void)_startQueriesIfRequired;
 - (void)_stopQueries;
 - (void)dealloc;
-- (void)enumerateValidDisplayModesForFilter:(int64_t)a3 usingBlock:(id)a4;
-- (void)fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)a3 completion:(id)a4;
+- (void)enumerateValidDisplayModesForFilter:(int64_t)filter usingBlock:(id)block;
+- (void)fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)than completion:(id)completion;
 @end
 
 @implementation ASFriendListSectionManager
@@ -53,8 +53,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(ASFriendListSectionManager *)self _copyFriends];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
+  v5 = [_copyFriends countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v5)
   {
     goto LABEL_18;
@@ -69,27 +69,27 @@
     {
       if (*v21 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(_copyFriends);
       }
 
       v9 = *(*(&v20 + 1) + 8 * v8);
       if (([v9 isMe] & 1) == 0)
       {
-        v10 = [v9 contact];
-        v11 = [v10 destinations];
-        if (!v11)
+        contact = [v9 contact];
+        destinations = [contact destinations];
+        if (!destinations)
         {
           goto LABEL_12;
         }
 
-        v12 = v11;
+        v12 = destinations;
         if (([v9 isFriendshipCurrentlyActive] & 1) != 0 || objc_msgSend(v9, "isAwaitingInviteResponseFromMe"))
         {
 
 LABEL_11:
-          v10 = [v9 contact];
-          v13 = [v10 destinations];
-          v14 = [v3 setByAddingObjectsFromSet:v13];
+          contact = [v9 contact];
+          destinations2 = [contact destinations];
+          v14 = [v3 setByAddingObjectsFromSet:destinations2];
 
           v3 = v14;
 LABEL_12:
@@ -97,9 +97,9 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v15 = [v9 hasInviteRequestFromMe];
+        hasInviteRequestFromMe = [v9 hasInviteRequestFromMe];
 
-        if (v15)
+        if (hasInviteRequestFromMe)
         {
           goto LABEL_11;
         }
@@ -110,7 +110,7 @@ LABEL_13:
     }
 
     while (v6 != v8);
-    v16 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v16 = [_copyFriends countByEnumeratingWithState:&v20 objects:v24 count:16];
     v6 = v16;
   }
 
@@ -216,15 +216,15 @@ uint64_t __54__ASFriendListSectionManager_hasInitializedFriendData__block_invoke
 
 - (id)allFriends
 {
-  v2 = [(ASFriendListSectionManager *)self _copyFriends];
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
 
-  return v2;
+  return _copyFriends;
 }
 
 - (void)_createFakeFriends
 {
-  v3 = [MEMORY[0x277CE90F0] fakeAppFriendListForMarketing];
-  v4 = [v3 mutableCopy];
+  fakeAppFriendListForMarketing = [MEMORY[0x277CE90F0] fakeAppFriendListForMarketing];
+  v4 = [fakeAppFriendListForMarketing mutableCopy];
 
   readWriteQueue = self->_readWriteQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -254,18 +254,18 @@ uint64_t __54__ASFriendListSectionManager_hasInitializedFriendData__block_invoke
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v2 rows];
+    rows = [v2 rows];
     v15 = 134217984;
-    v16 = [v6 count];
+    v16 = [rows count];
     _os_log_impl(&dword_23E69E000, v5, OS_LOG_TYPE_DEFAULT, "Fitness Friends Framework checking if any friends are setup, filtered to friends that are active, invited, or inviting me: %lu", &v15, 0xCu);
   }
 
-  v7 = [v2 rows];
-  v8 = [v7 count];
+  rows2 = [v2 rows];
+  v8 = [rows2 count];
 
   if (v8)
   {
-    LOBYTE(v9) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
   else
@@ -273,18 +273,18 @@ uint64_t __54__ASFriendListSectionManager_hasInitializedFriendData__block_invoke
     v10 = objc_alloc(MEMORY[0x277CBEBD0]);
     v11 = [v10 initWithSuiteName:*MEMORY[0x277CE91F8]];
     v12 = [v11 objectForKey:*MEMORY[0x277CE9220]];
-    v9 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
     ASLoggingInitialize();
     v13 = *v3;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 67109120;
-      LODWORD(v16) = v9;
+      LODWORD(v16) = bOOLValue;
       _os_log_impl(&dword_23E69E000, v13, OS_LOG_TYPE_DEFAULT, "Fitness Friends Framework checking defaults if any friends are setup: %{BOOL}d", &v15, 8u);
     }
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 uint64_t __48__ASFriendListSectionManager__createFakeFriends__block_invoke_2(uint64_t a1)
@@ -313,11 +313,11 @@ uint64_t __48__ASFriendListSectionManager__createFakeFriends__block_invoke_2(uin
   dispatch_assert_queue_V2(self->_readWriteQueue);
   if (!self->_meQuery)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v4 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v5 = [v4 dateByAddingUnit:16 value:1 - *MEMORY[0x277CE9298] toDate:v3 options:0];
-    v6 = [v4 hk_activitySummaryDateComponentsFromDate:v5];
-    v7 = [v4 hk_activitySummaryDateComponentsFromDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    v5 = [hk_gregorianCalendar dateByAddingUnit:16 value:1 - *MEMORY[0x277CE9298] toDate:date options:0];
+    v6 = [hk_gregorianCalendar hk_activitySummaryDateComponentsFromDate:v5];
+    v7 = [hk_gregorianCalendar hk_activitySummaryDateComponentsFromDate:date];
     v8 = [MEMORY[0x277CCD838] predicateForActivitySummariesBetweenStartDateComponents:v6 endDateComponents:v7];
     objc_initWeak(&location, self);
     v9 = objc_alloc(MEMORY[0x277CCCFB8]);
@@ -326,7 +326,7 @@ uint64_t __48__ASFriendListSectionManager__createFakeFriends__block_invoke_2(uin
     v21[2] = __49__ASFriendListSectionManager__queue_startMeQuery__block_invoke;
     v21[3] = &unk_278C53158;
     objc_copyWeak(&v24, &location);
-    v10 = v4;
+    v10 = hk_gregorianCalendar;
     v22 = v10;
     v11 = v5;
     v23 = v11;
@@ -339,10 +339,10 @@ uint64_t __48__ASFriendListSectionManager__createFakeFriends__block_invoke_2(uin
     v16 = 3221225472;
     v17 = __49__ASFriendListSectionManager__queue_startMeQuery__block_invoke_3;
     v18 = &unk_278C531A8;
-    v19 = self;
+    selfCopy = self;
     objc_copyWeak(&v20, &location);
     [(HKActivitySummaryQuery *)v14 setUpdateHandler:&v15];
-    [(HKHealthStore *)self->_healthStore executeQuery:self->_meQuery, v15, v16, v17, v18, v19];
+    [(HKHealthStore *)self->_healthStore executeQuery:self->_meQuery, v15, v16, v17, v18, selfCopy];
     objc_destroyWeak(&v20);
 
     objc_destroyWeak(&v24);
@@ -470,23 +470,23 @@ uint64_t __58__ASFriendListSectionManager_sectionForFriendsInvitedByMe__block_in
   return v3;
 }
 
-- (ASFriendListSectionManager)initWithModel:(id)a3 andWorkoutDataProvider:(id)a4
+- (ASFriendListSectionManager)initWithModel:(id)model andWorkoutDataProvider:(id)provider
 {
   v6 = MEMORY[0x277CE9518];
-  v7 = a4;
-  v8 = a3;
+  providerCopy = provider;
+  modelCopy = model;
   v9 = objc_alloc_init(v6);
   [v9 activateWithCompletionHandler:&__block_literal_global];
-  v10 = [(ASFriendListSectionManager *)self initWithModel:v8 activitySharingClient:v9 workoutDataProvider:v7];
+  v10 = [(ASFriendListSectionManager *)self initWithModel:modelCopy activitySharingClient:v9 workoutDataProvider:providerCopy];
 
   return v10;
 }
 
-- (ASFriendListSectionManager)initWithModel:(id)a3 activitySharingClient:(id)a4 workoutDataProvider:(id)a5
+- (ASFriendListSectionManager)initWithModel:(id)model activitySharingClient:(id)client workoutDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  clientCopy = client;
+  providerCopy = provider;
   v36.receiver = self;
   v36.super_class = ASFriendListSectionManager;
   v12 = [(ASFriendListSectionManager *)&v36 init];
@@ -496,15 +496,15 @@ uint64_t __58__ASFriendListSectionManager_sectionForFriendsInvitedByMe__block_in
     readWriteQueue = v12->_readWriteQueue;
     v12->_readWriteQueue = v13;
 
-    objc_storeStrong(&v12->_model, a3);
-    v15 = [v9 healthStore];
+    objc_storeStrong(&v12->_model, model);
+    healthStore = [modelCopy healthStore];
     healthStore = v12->_healthStore;
-    v12->_healthStore = v15;
+    v12->_healthStore = healthStore;
 
-    objc_storeStrong(&v12->_activitySharingClient, a4);
-    if (v11)
+    objc_storeStrong(&v12->_activitySharingClient, client);
+    if (providerCopy)
     {
-      v17 = v11;
+      v17 = providerCopy;
     }
 
     else
@@ -533,9 +533,9 @@ uint64_t __58__ASFriendListSectionManager_sectionForFriendsInvitedByMe__block_in
     displayContextToSortedSectionsCache = v12->_displayContextToSortedSectionsCache;
     v12->_displayContextToSortedSectionsCache = v22;
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v12 selector:sel__calendarDayChangedNotification_ name:*MEMORY[0x277CBE580] object:0];
-    [v24 addObserver:v12 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__calendarDayChangedNotification_ name:*MEMORY[0x277CBE580] object:0];
+    [defaultCenter addObserver:v12 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
     v25 = objc_alloc(MEMORY[0x277CBEBD0]);
     v26 = [v25 initWithSuiteName:*MEMORY[0x277CE91F8]];
     if ([MEMORY[0x277D75128] isRunningInStoreDemoMode])
@@ -595,15 +595,15 @@ void __86__ASFriendListSectionManager_initWithModel_activitySharingClient_workou
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASFriendListSectionManager;
   [(ASFriendListSectionManager *)&v4 dealloc];
 }
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
   [(ASFriendListSectionManager *)self _startQueriesIfRequired];
   if ([(ASFriendListSectionManager *)self hasAnyFriendsSetup])
@@ -681,9 +681,9 @@ uint64_t __43__ASFriendListSectionManager__startQueries__block_invoke(uint64_t a
   dispatch_async(readWriteQueue, block);
 }
 
-- (id)sectionsForDisplayContext:(id)a3
+- (id)sectionsForDisplayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -695,10 +695,10 @@ uint64_t __43__ASFriendListSectionManager__startQueries__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __56__ASFriendListSectionManager_sectionsForDisplayContext___block_invoke;
   block[3] = &unk_278C52FE0;
-  v10 = v4;
+  v10 = contextCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = contextCopy;
   dispatch_sync(readWriteQueue, block);
   v7 = v13[5];
 
@@ -729,18 +729,18 @@ void __56__ASFriendListSectionManager_sectionsForDisplayContext___block_invoke(u
   }
 }
 
-- (void)enumerateValidDisplayModesForFilter:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateValidDisplayModesForFilter:(int64_t)filter usingBlock:(id)block
 {
-  v8 = a4;
-  v6 = [(ASFriendListSectionManager *)self _copyFriends];
+  blockCopy = block;
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
   for (i = 0; i != 5; ++i)
   {
-    v8[2](v8, i);
+    blockCopy[2](blockCopy, i);
   }
 
-  if ([(ASFriendListSectionManager *)self _isWheelchairUserDisplayModeValidForFriends:v6 filter:a3])
+  if ([(ASFriendListSectionManager *)self _isWheelchairUserDisplayModeValidForFriends:_copyFriends filter:filter])
   {
-    v8[2](v8, 5);
+    blockCopy[2](blockCopy, 5);
   }
 }
 
@@ -872,17 +872,17 @@ uint64_t __77__ASFriendListSectionManager__sectionForDataVisibilityConditionalUs
   return v11;
 }
 
-- (id)_sectionForDataVisibilityConditionalUsingBlock:(id)a3 comparator:(id)a4
+- (id)_sectionForDataVisibilityConditionalUsingBlock:(id)block comparator:(id)comparator
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
+  blockCopy = block;
+  comparatorCopy = comparator;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(ASFriendListSectionManager *)self _copyFriends];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
+  v8 = [_copyFriends countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -894,18 +894,18 @@ uint64_t __77__ASFriendListSectionManager__sectionForDataVisibilityConditionalUs
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_copyFriends);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        if (([v13 isMe] & 1) == 0 && v6[2](v6, v13))
+        if (([v13 isMe] & 1) == 0 && blockCopy[2](blockCopy, v13))
         {
           v14 = objc_alloc_init(ASFriendListRow);
           [(ASFriendListRow *)v14 setFriend:v13];
           if ([v13 isActivityDataCurrentlyVisibleToMe])
           {
-            v15 = [v13 currentSnapshotWithGoalsCarriedForward];
-            [(ASFriendListRow *)v14 setSnapshot:v15];
+            currentSnapshotWithGoalsCarriedForward = [v13 currentSnapshotWithGoalsCarriedForward];
+            [(ASFriendListRow *)v14 setSnapshot:currentSnapshotWithGoalsCarriedForward];
           }
 
           v16 = [v11 arrayByAddingObject:v14];
@@ -914,7 +914,7 @@ uint64_t __77__ASFriendListSectionManager__sectionForDataVisibilityConditionalUs
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [_copyFriends countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -925,32 +925,32 @@ uint64_t __77__ASFriendListSectionManager__sectionForDataVisibilityConditionalUs
     v11 = MEMORY[0x277CBEBF8];
   }
 
-  v17 = [v11 sortedArrayUsingComparator:v20];
+  v17 = [v11 sortedArrayUsingComparator:comparatorCopy];
 
   v18 = [[ASFriendListSection alloc] initWithDate:0 andRows:v17];
 
   return v18;
 }
 
-- (id)friendWithUUID:(id)a3
+- (id)friendWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ASFriendListSectionManager *)self _copyFriends];
-  v6 = [(ASFriendListSectionManager *)self _friendWithUUID:v4 fromFriends:v5];
+  dCopy = d;
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
+  v6 = [(ASFriendListSectionManager *)self _friendWithUUID:dCopy fromFriends:_copyFriends];
 
   return v6;
 }
 
-- (id)_friendWithUUID:(id)a3 fromFriends:(id)a4
+- (id)_friendWithUUID:(id)d fromFriends:(id)friends
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  friendsCopy = friends;
+  v7 = [friendsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -960,12 +960,12 @@ uint64_t __77__ASFriendListSectionManager__sectionForDataVisibilityConditionalUs
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(friendsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 UUID];
-        v12 = [v11 isEqual:v5];
+        uUID = [v10 UUID];
+        v12 = [uUID isEqual:dCopy];
 
         if (v12)
         {
@@ -974,7 +974,7 @@ uint64_t __77__ASFriendListSectionManager__sectionForDataVisibilityConditionalUs
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [friendsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1025,8 +1025,8 @@ uint64_t __32__ASFriendListSectionManager_me__block_invoke(uint64_t a1)
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(ASFriendListSectionManager *)self _copyFriends];
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
+  v3 = [_copyFriends countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v3)
   {
     v6 = MEMORY[0x277CBEBF8];
@@ -1042,33 +1042,33 @@ uint64_t __32__ASFriendListSectionManager_me__block_invoke(uint64_t a1)
     {
       if (*v17 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(_copyFriends);
       }
 
       v8 = *(*(&v16 + 1) + 8 * i);
       if (([v8 isMe] & 1) == 0)
       {
-        v9 = [v8 contact];
-        v10 = [v9 primaryDestinationForMessaging];
-        if (v10 && [v8 isFriendshipCurrentlyActive])
+        contact = [v8 contact];
+        primaryDestinationForMessaging = [contact primaryDestinationForMessaging];
+        if (primaryDestinationForMessaging && [v8 isFriendshipCurrentlyActive])
         {
-          v11 = [v8 isActivityDataCurrentlyVisibleToMe];
+          isActivityDataCurrentlyVisibleToMe = [v8 isActivityDataCurrentlyVisibleToMe];
 
-          if (!v11)
+          if (!isActivityDataCurrentlyVisibleToMe)
           {
             continue;
           }
 
-          v9 = [v8 contact];
-          v10 = [v9 primaryDestinationForMessaging];
-          v12 = [v6 arrayByAddingObject:v10];
+          contact = [v8 contact];
+          primaryDestinationForMessaging = [contact primaryDestinationForMessaging];
+          v12 = [v6 arrayByAddingObject:primaryDestinationForMessaging];
 
           v6 = v12;
         }
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v4 = [_copyFriends countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
   while (v4);
@@ -1091,11 +1091,11 @@ LABEL_16:
 
 - (unint64_t)numberOfFriendsWithInvitesAwaitingResponseFromMe
 {
-  v2 = [(ASFriendListSectionManager *)self sectionForFriendsInvitingMe];
-  v3 = [v2 rows];
+  sectionForFriendsInvitingMe = [(ASFriendListSectionManager *)self sectionForFriendsInvitingMe];
+  rows = [sectionForFriendsInvitingMe rows];
 
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_385];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [rows filteredArrayUsingPredicate:v4];
 
   v6 = [v5 count];
   return v6;
@@ -1111,24 +1111,24 @@ uint64_t __78__ASFriendListSectionManager_numberOfFriendsWithInvitesAwaitingResp
 
 - (unint64_t)numberOfFriendsWithCompetitionRequestsAwaitingResponseFromMe
 {
-  v2 = [(ASFriendListSectionManager *)self sectionForFriendsRequestingMeToCompete];
-  v3 = [v2 rows];
-  v4 = [v3 count];
+  sectionForFriendsRequestingMeToCompete = [(ASFriendListSectionManager *)self sectionForFriendsRequestingMeToCompete];
+  rows = [sectionForFriendsRequestingMeToCompete rows];
+  v4 = [rows count];
 
   return v4;
 }
 
-- (void)fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)a3 completion:(id)a4
+- (void)fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan:(unint64_t)than completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   activitySharingClient = self->_activitySharingClient;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __99__ASFriendListSectionManager_fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan_completion___block_invoke;
   v9[3] = &unk_278C53068;
-  v10 = v6;
-  v8 = v6;
-  [(ASActivitySharingClient *)activitySharingClient fetchActivityDataIfGreaterThanLastFetchElapsedMinimum:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(ASActivitySharingClient *)activitySharingClient fetchActivityDataIfGreaterThanLastFetchElapsedMinimum:than completion:v9];
 }
 
 void __99__ASFriendListSectionManager_fetchActivitySharingDataIfTimeSinceLastFetchIsGreaterThan_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1159,13 +1159,13 @@ void __99__ASFriendListSectionManager_fetchActivitySharingDataIfTimeSinceLastFet
 
 - (int64_t)numberOfNewFriendsAllowed
 {
-  v2 = [(ASFriendListSectionManager *)self _copyFriends];
+  _copyFriends = [(ASFriendListSectionManager *)self _copyFriends];
   v3 = ASNumberOfNewFriendsAllowedForFriends();
 
   return v3;
 }
 
-- (void)_calendarDayChangedNotification:(id)a3
+- (void)_calendarDayChangedNotification:(id)notification
 {
   readWriteQueue = self->_readWriteQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1190,9 +1190,9 @@ void __65__ASFriendListSectionManager__postFriendsListChangedNotification__block
   [v0 postNotificationName:*MEMORY[0x277CE9208] object:0];
 }
 
-- (BOOL)_isWheelchairUserDisplayModeValidForFriends:(id)a3 filter:(int64_t)a4
+- (BOOL)_isWheelchairUserDisplayModeValidForFriends:(id)friends filter:(int64_t)filter
 {
-  v5 = a3;
+  friendsCopy = friends;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -1203,7 +1203,7 @@ void __65__ASFriendListSectionManager__postFriendsListChangedNotification__block
   v7[3] = &unk_278C53090;
   v7[4] = self;
   v7[5] = &v8;
-  [(ASFriendListSectionManager *)self _enumerateVisibleDaysForFriends:v5 usingBlock:v7];
+  [(ASFriendListSectionManager *)self _enumerateVisibleDaysForFriends:friendsCopy usingBlock:v7];
   LOBYTE(self) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
@@ -1219,25 +1219,25 @@ void __81__ASFriendListSectionManager__isWheelchairUserDisplayModeValidForFriend
   }
 }
 
-- (void)_queue_restartQueryAfterErrorCount:(int64_t)a3 withBlock:(id)a4
+- (void)_queue_restartQueryAfterErrorCount:(int64_t)count withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_readWriteQueue);
-  v7 = 5;
-  if (a3 < 5)
+  countCopy = 5;
+  if (count < 5)
   {
-    v7 = a3;
+    countCopy = count;
   }
 
-  v8 = dispatch_time(0, 1000000000 * v7);
+  v8 = dispatch_time(0, 1000000000 * countCopy);
   readWriteQueue = self->_readWriteQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__ASFriendListSectionManager__queue_restartQueryAfterErrorCount_withBlock___block_invoke;
   v11[3] = &unk_278C530B8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = blockCopy;
+  v10 = blockCopy;
   dispatch_after(v8, readWriteQueue, v11);
 }
 
@@ -1630,37 +1630,37 @@ uint64_t __49__ASFriendListSectionManager__queue_startMeQuery__block_invoke_2_40
   self->_modelQueryToken = 0;
 }
 
-- (void)_queue_handleActivitySummaryUpdate:(id)a3
+- (void)_queue_handleActivitySummaryUpdate:(id)update
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_readWriteQueue);
-  v5 = [(ASFriendListSectionManager *)self _queue_me];
-  if (!v5)
+  _queue_me = [(ASFriendListSectionManager *)self _queue_me];
+  if (!_queue_me)
   {
     v6 = [(NSSet *)self->_allFriends mutableCopy];
     v7 = objc_alloc(MEMORY[0x277CE90F8]);
-    v5 = [v7 initWithActivitySnapshots:0 friendAchievements:0 friendWorkouts:0 contact:0 competitions:MEMORY[0x277CBEBF8]];
-    [v6 addObject:v5];
+    _queue_me = [v7 initWithActivitySnapshots:0 friendAchievements:0 friendWorkouts:0 contact:0 competitions:MEMORY[0x277CBEBF8]];
+    [v6 addObject:_queue_me];
     v8 = [MEMORY[0x277CBEB98] setWithSet:v6];
     allFriends = self->_allFriends;
     self->_allFriends = v8;
   }
 
-  v23 = self;
-  v10 = [v5 snapshots];
-  v11 = [v10 mutableCopy];
+  selfCopy = self;
+  snapshots = [_queue_me snapshots];
+  v11 = [snapshots mutableCopy];
 
   if (!v11)
   {
-    v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(updateCopy, "count")}];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v4;
+  v12 = updateCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v13)
   {
@@ -1688,43 +1688,43 @@ uint64_t __49__ASFriendListSectionManager__queue_startMeQuery__block_invoke_2_40
   }
 
   [v22 setSnapshots:v11];
-  v23->_hasReceivedMeQueryResult = 1;
+  selfCopy->_hasReceivedMeQueryResult = 1;
   ASLoggingInitialize();
   v20 = *MEMORY[0x277CE8FF0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF0], OS_LOG_TYPE_DEFAULT))
   {
-    hasReceivedMeQueryResult = v23->_hasReceivedMeQueryResult;
+    hasReceivedMeQueryResult = selfCopy->_hasReceivedMeQueryResult;
     *buf = 67109120;
     v29 = hasReceivedMeQueryResult;
     _os_log_impl(&dword_23E69E000, v20, OS_LOG_TYPE_DEFAULT, "Updating _hasReceivedMeQueryResult: %d", buf, 8u);
   }
 
-  [(ASFriendListSectionManager *)v23 _queue_updateWithNewData];
+  [(ASFriendListSectionManager *)selfCopy _queue_updateWithNewData];
 }
 
 - (void)_queue_handleMyWorkoutsUpdate
 {
   v28 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_readWriteQueue);
-  v13 = [(ASFriendListSectionManager *)self _queue_me];
-  if (!v13)
+  _queue_me = [(ASFriendListSectionManager *)self _queue_me];
+  if (!_queue_me)
   {
     v3 = [(NSSet *)self->_allFriends mutableCopy];
     v4 = objc_alloc(MEMORY[0x277CE90F8]);
-    v13 = [v4 initWithActivitySnapshots:0 friendAchievements:0 friendWorkouts:0 contact:0 competitions:MEMORY[0x277CBEBF8]];
+    _queue_me = [v4 initWithActivitySnapshots:0 friendAchievements:0 friendWorkouts:0 contact:0 competitions:MEMORY[0x277CBEBF8]];
     [v3 addObject:?];
     v5 = [MEMORY[0x277CBEB98] setWithSet:v3];
     allFriends = self->_allFriends;
     self->_allFriends = v5;
   }
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [(FIUIWorkoutDataProvider *)self->_workoutDataProvider allWorkouts];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  allWorkouts = [(FIUIWorkoutDataProvider *)self->_workoutDataProvider allWorkouts];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = [v7 allKeys];
+  obj = [allWorkouts allKeys];
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -1745,14 +1745,14 @@ uint64_t __49__ASFriendListSectionManager__queue_startMeQuery__block_invoke_2_40
         v20 = __Block_byref_object_copy_;
         v21 = __Block_byref_object_dispose_;
         v22 = [MEMORY[0x277CBEB98] set];
-        v12 = [v7 objectForKeyedSubscript:v11];
+        v12 = [allWorkouts objectForKeyedSubscript:v11];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invoke;
         v16[3] = &unk_278C531D0;
         v16[4] = &v17;
         [v12 enumerateObjectsUsingBlock:v16];
-        [v15 setObject:v18[5] forKey:v11];
+        [dictionary setObject:v18[5] forKey:v11];
 
         _Block_object_dispose(&v17, 8);
       }
@@ -1763,7 +1763,7 @@ uint64_t __49__ASFriendListSectionManager__queue_startMeQuery__block_invoke_2_40
     while (v8);
   }
 
-  [v13 setFriendWorkouts:v15];
+  [_queue_me setFriendWorkouts:dictionary];
   [(ASFriendListSectionManager *)self _queue_updateWithNewData];
 }
 
@@ -1777,17 +1777,17 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
   *(v5 + 40) = v4;
 }
 
-- (void)_enumerateVisibleDaysForFriends:(id)a3 usingBlock:(id)a4
+- (void)_enumerateVisibleDaysForFriends:(id)friends usingBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v31 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  friendsCopy = friends;
+  blockCopy = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v5;
+  obj = friendsCopy;
   v35 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v35)
   {
@@ -1804,7 +1804,7 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
 
         v37 = v7;
         v8 = *(*(&v49 + 1) + 8 * v7);
-        v36 = [v8 currentDateComponents];
+        currentDateComponents = [v8 currentDateComponents];
         v9 = [(ASFriendListSectionManager *)self _datesToShowSnapshotsForFriend:v8 startingFromCurrentDateComponents:?];
         v45 = 0u;
         v46 = 0u;
@@ -1825,7 +1825,7 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
               }
 
               v14 = *(*(&v45 + 1) + 8 * i);
-              v15 = [v6 objectForKeyedSubscript:v14];
+              v15 = [dictionary objectForKeyedSubscript:v14];
               if (!v15)
               {
                 v15 = [MEMORY[0x277CBEB98] set];
@@ -1833,7 +1833,7 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
 
               v16 = [v15 setByAddingObject:v8];
 
-              [v6 setObject:v16 forKeyedSubscript:v14];
+              [dictionary setObject:v16 forKeyedSubscript:v14];
             }
 
             v11 = [v9 countByEnumeratingWithState:&v45 objects:v54 count:16];
@@ -1852,8 +1852,8 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
     while (v35);
   }
 
-  v17 = [v6 allKeys];
-  v18 = [v17 sortedArrayUsingComparator:&__block_literal_global_411];
+  allKeys = [dictionary allKeys];
+  v18 = [allKeys sortedArrayUsingComparator:&__block_literal_global_411];
 
   v43 = 0u;
   v44 = 0u;
@@ -1875,17 +1875,17 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
         }
 
         v24 = *(*(&v41 + 1) + 8 * j);
-        v25 = [v6 objectForKeyedSubscript:v24];
+        v25 = [dictionary objectForKeyedSubscript:v24];
         if ([v25 count] != 1)
         {
 
           goto LABEL_29;
         }
 
-        v26 = [v25 anyObject];
-        if ([v26 isMe])
+        anyObject = [v25 anyObject];
+        if ([anyObject isMe])
         {
-          [v6 removeObjectForKey:v24];
+          [dictionary removeObjectForKey:v24];
         }
       }
 
@@ -1901,17 +1901,17 @@ void __59__ASFriendListSectionManager__queue_handleMyWorkoutsUpdate__block_invok
 
 LABEL_29:
 
-  v27 = [v6 allKeys];
-  v28 = [v27 sortedArrayUsingComparator:&__block_literal_global_413];
+  allKeys2 = [dictionary allKeys];
+  v28 = [allKeys2 sortedArrayUsingComparator:&__block_literal_global_413];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __73__ASFriendListSectionManager__enumerateVisibleDaysForFriends_usingBlock___block_invoke_3;
   v38[3] = &unk_278C53218;
-  v39 = v6;
-  v40 = v31;
-  v29 = v6;
-  v30 = v31;
+  v39 = dictionary;
+  v40 = blockCopy;
+  v29 = dictionary;
+  v30 = blockCopy;
   [v28 enumerateObjectsUsingBlock:v38];
 }
 
@@ -1929,56 +1929,56 @@ void __73__ASFriendListSectionManager__enumerateVisibleDaysForFriends_usingBlock
   (*(v7 + 16))(v7, v4, v6, v9);
 }
 
-- (id)_datesToShowSnapshotsForFriend:(id)a3 startingFromCurrentDateComponents:(id)a4
+- (id)_datesToShowSnapshotsForFriend:(id)friend startingFromCurrentDateComponents:(id)components
 {
-  v5 = a3;
-  v6 = a4;
+  friendCopy = friend;
+  componentsCopy = components;
   v7 = [MEMORY[0x277CBEB58] set];
   v8 = *MEMORY[0x277CE9298];
   v9 = 1 - *MEMORY[0x277CE9298];
-  v10 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  [v6 setDay:{objc_msgSend(v6, "day") + 1}];
-  v32 = v6;
-  v11 = [v10 dateFromComponents:v6];
-  v12 = [v10 startOfDayForDate:v11];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  [componentsCopy setDay:{objc_msgSend(componentsCopy, "day") + 1}];
+  v32 = componentsCopy;
+  v11 = [hk_gregorianCalendar dateFromComponents:componentsCopy];
+  v12 = [hk_gregorianCalendar startOfDayForDate:v11];
 
   v31 = v12;
-  v13 = [v10 dateByAddingUnit:128 value:-1 toDate:v12 options:0];
-  v14 = [MEMORY[0x277CBEAA8] date];
-  v15 = [v10 startOfDayForDate:v14];
+  v13 = [hk_gregorianCalendar dateByAddingUnit:128 value:-1 toDate:v12 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v15 = [hk_gregorianCalendar startOfDayForDate:date];
 
   v30 = v15;
-  v16 = [v10 dateByAddingUnit:16 value:2 - v8 toDate:v15 options:0];
-  v17 = [v10 startOfDayForDate:v16];
+  v16 = [hk_gregorianCalendar dateByAddingUnit:16 value:2 - v8 toDate:v15 options:0];
+  v17 = [hk_gregorianCalendar startOfDayForDate:v16];
 
   v29 = v17;
-  v18 = [v10 dateByAddingUnit:128 value:-1 toDate:v17 options:0];
-  if ([v5 isMe])
+  v18 = [hk_gregorianCalendar dateByAddingUnit:128 value:-1 toDate:v17 options:0];
+  if ([friendCopy isMe])
   {
-    v19 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
   else
   {
-    v20 = [v5 dateForLatestRelationshipStart];
-    v19 = [v10 startOfDayForDate:v20];
+    dateForLatestRelationshipStart = [friendCopy dateForLatestRelationshipStart];
+    distantPast = [hk_gregorianCalendar startOfDayForDate:dateForLatestRelationshipStart];
   }
 
-  v21 = [v10 dateFromComponents:v32];
-  v22 = [v10 startOfDayForDate:v21];
+  v21 = [hk_gregorianCalendar dateFromComponents:v32];
+  v22 = [hk_gregorianCalendar startOfDayForDate:v21];
 
   if (v9 <= 0)
   {
     v26 = 0;
-    while (![v13 hk_isBeforeDate:v19] || (objc_msgSend(v13, "hk_isBeforeDate:", v22) & 1) == 0)
+    while (![v13 hk_isBeforeDate:distantPast] || (objc_msgSend(v13, "hk_isBeforeDate:", v22) & 1) == 0)
     {
-      if (([v5 isMe] & 1) != 0 || objc_msgSend(v5, "isActivityDataVisibleToMeForDate:", v13))
+      if (([friendCopy isMe] & 1) != 0 || objc_msgSend(friendCopy, "isActivityDataVisibleToMeForDate:", v13))
       {
-        v27 = [v10 startOfDayForDate:v13];
+        v27 = [hk_gregorianCalendar startOfDayForDate:v13];
         [v7 addObject:v27];
       }
 
-      v23 = [v10 dateByAddingUnit:16 value:-1 toDate:v13 options:0];
+      v23 = [hk_gregorianCalendar dateByAddingUnit:16 value:-1 toDate:v13 options:0];
 
       if (([v23 hk_isBeforeDate:v18] & 1) == 0)
       {
@@ -2000,31 +2000,31 @@ LABEL_6:
   return v24;
 }
 
-- (id)_createSectionsForFriends:(id)a3 withDisplayContext:(id)a4
+- (id)_createSectionsForFriends:(id)friends withDisplayContext:(id)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v6 = a4;
+  friendsCopy = friends;
+  contextCopy = context;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
   v41 = __Block_byref_object_copy_;
   v42 = __Block_byref_object_dispose_;
-  v43 = [MEMORY[0x277CBEB18] array];
-  v7 = [v30 allObjects];
+  array = [MEMORY[0x277CBEB18] array];
+  allObjects = [friendsCopy allObjects];
   v8 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_418];
-  v9 = [v7 filteredArrayUsingPredicate:v8];
+  v9 = [allObjects filteredArrayUsingPredicate:v8];
 
-  if ([v6 displayFilter] == 1)
+  if ([contextCopy displayFilter] == 1)
   {
     v10 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_420];
     v29 = [v9 filteredArrayUsingPredicate:v10];
 
-    v11 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v28 = [v11 startOfDayForDate:v12];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    v28 = [hk_gregorianCalendar startOfDayForDate:date];
 
-    v13 = -[ASFriendListSectionManager _sortFriends:forDisplayMode:cacheIndex:](self, "_sortFriends:forDisplayMode:cacheIndex:", v29, [v6 displayMode], 0);
+    v13 = -[ASFriendListSectionManager _sortFriends:forDisplayMode:cacheIndex:](self, "_sortFriends:forDisplayMode:cacheIndex:", v29, [contextCopy displayMode], 0);
     v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
     v36 = 0u;
     v37 = 0u;
@@ -2047,8 +2047,8 @@ LABEL_6:
           v19 = *(*(&v34 + 1) + 8 * i);
           v20 = objc_opt_new();
           [v20 setFriend:v19];
-          v21 = [v19 currentSnapshotWithGoalsCarriedForward];
-          [v20 setSnapshot:v21];
+          currentSnapshotWithGoalsCarriedForward = [v19 currentSnapshotWithGoalsCarriedForward];
+          [v20 setSnapshot:currentSnapshotWithGoalsCarriedForward];
 
           [v14 addObject:v20];
         }
@@ -2074,7 +2074,7 @@ LABEL_6:
     v31[2] = __75__ASFriendListSectionManager__createSectionsForFriends_withDisplayContext___block_invoke_3;
     v31[3] = &unk_278C53260;
     v31[4] = self;
-    v32 = v6;
+    v32 = contextCopy;
     v33 = &v38;
     [(ASFriendListSectionManager *)self _enumerateVisibleDaysForFriends:v25 usingBlock:v31];
   }
@@ -2170,19 +2170,19 @@ void __75__ASFriendListSectionManager__createSectionsForFriends_withDisplayConte
   [*(*(*(a1 + 48) + 8) + 40) insertObject:v20 atIndex:0];
 }
 
-- (id)_filterFriends:(id)a3 withSnapshotDataAtCacheIndex:(id)a4
+- (id)_filterFriends:(id)friends withSnapshotDataAtCacheIndex:(id)index
 {
-  v5 = a4;
+  indexCopy = index;
   v6 = MEMORY[0x277CCAC30];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__ASFriendListSectionManager__filterFriends_withSnapshotDataAtCacheIndex___block_invoke;
   v12[3] = &unk_278C53288;
-  v13 = v5;
-  v7 = v5;
-  v8 = a3;
+  v13 = indexCopy;
+  v7 = indexCopy;
+  friendsCopy = friends;
   v9 = [v6 predicateWithBlock:v12];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  v10 = [friendsCopy filteredArrayUsingPredicate:v9];
 
   return v10;
 }
@@ -2196,19 +2196,19 @@ BOOL __74__ASFriendListSectionManager__filterFriends_withSnapshotDataAtCacheInde
   return v5;
 }
 
-- (id)_filterFriends:(id)a3 withActiveFriendshipAtEndOfDay:(id)a4
+- (id)_filterFriends:(id)friends withActiveFriendshipAtEndOfDay:(id)day
 {
-  v5 = a4;
+  dayCopy = day;
   v6 = MEMORY[0x277CCAC30];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__ASFriendListSectionManager__filterFriends_withActiveFriendshipAtEndOfDay___block_invoke;
   v12[3] = &unk_278C53288;
-  v13 = v5;
-  v7 = v5;
-  v8 = a3;
+  v13 = dayCopy;
+  v7 = dayCopy;
+  friendsCopy = friends;
   v9 = [v6 predicateWithBlock:v12];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  v10 = [friendsCopy filteredArrayUsingPredicate:v9];
 
   return v10;
 }
@@ -2229,19 +2229,19 @@ uint64_t __76__ASFriendListSectionManager__filterFriends_withActiveFriendshipAtE
   return v4;
 }
 
-- (id)_filterFriends:(id)a3 withWheelchairUseAtCacheIndex:(id)a4
+- (id)_filterFriends:(id)friends withWheelchairUseAtCacheIndex:(id)index
 {
-  v5 = a4;
+  indexCopy = index;
   v6 = MEMORY[0x277CCAC30];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__ASFriendListSectionManager__filterFriends_withWheelchairUseAtCacheIndex___block_invoke;
   v12[3] = &unk_278C53288;
-  v13 = v5;
-  v7 = v5;
-  v8 = a3;
+  v13 = indexCopy;
+  v7 = indexCopy;
+  friendsCopy = friends;
   v9 = [v6 predicateWithBlock:v12];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  v10 = [friendsCopy filteredArrayUsingPredicate:v9];
 
   return v10;
 }
@@ -2257,21 +2257,21 @@ uint64_t __75__ASFriendListSectionManager__filterFriends_withWheelchairUseAtCach
   return v5;
 }
 
-- (id)_sortFriends:(id)a3 forDisplayMode:(int64_t)a4 cacheIndex:(id)a5
+- (id)_sortFriends:(id)friends forDisplayMode:(int64_t)mode cacheIndex:(id)index
 {
-  v7 = a5;
+  indexCopy = index;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __69__ASFriendListSectionManager__sortFriends_forDisplayMode_cacheIndex___block_invoke;
   v16 = &unk_278C532B0;
-  v17 = v7;
-  v18 = a4;
-  v8 = v7;
-  v9 = [a3 sortedArrayUsingComparator:&v13];
-  v10 = [v9 reverseObjectEnumerator];
-  v11 = [v10 allObjects];
+  v17 = indexCopy;
+  modeCopy = mode;
+  v8 = indexCopy;
+  v9 = [friends sortedArrayUsingComparator:&v13];
+  reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 uint64_t __69__ASFriendListSectionManager__sortFriends_forDisplayMode_cacheIndex___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,19 +1,19 @@
 @interface AVCABackdropLayer
-- (void)setScale:(double)a3;
+- (void)setScale:(double)scale;
 @end
 
 @implementation AVCABackdropLayer
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   if (*(&self->super._disablesOccludedBackdropBlurs + 1))
   {
-    a3 = 0.25;
+    scale = 0.25;
   }
 
   v3.receiver = self;
   v3.super_class = AVCABackdropLayer;
-  [(AVCABackdropLayer *)&v3 setScale:a3];
+  [(AVCABackdropLayer *)&v3 setScale:scale];
 }
 
 @end

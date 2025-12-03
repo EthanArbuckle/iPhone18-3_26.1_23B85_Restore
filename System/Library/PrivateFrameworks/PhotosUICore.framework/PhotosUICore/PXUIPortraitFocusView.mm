@@ -1,9 +1,9 @@
 @interface PXUIPortraitFocusView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (PXUIPortraitFocusView)initWithMediaView:(id)a3 isHDR:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_viewTapped:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (PXUIPortraitFocusView)initWithMediaView:(id)view isHDR:(BOOL)r;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_viewTapped:(id)tapped;
+- (void)drawRect:(CGRect)rect;
 - (void)installAssociatedMediaViewGesture;
 - (void)removeAssociatedMediaViewGesture;
 - (void)setUpEDRGainLayer;
@@ -11,20 +11,20 @@
 
 @implementation PXUIPortraitFocusView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(PXUIPortraitFocusView *)self drawingEnabled:a3.origin.x])
+  if ([(PXUIPortraitFocusView *)self drawingEnabled:rect.origin.x])
   {
-    v4 = [(PXPortraitFocusView *)self focusViewDelegate];
-    [v4 currentFocusRect];
+    focusViewDelegate = [(PXPortraitFocusView *)self focusViewDelegate];
+    [focusViewDelegate currentFocusRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
 
     [(CEKSubjectIndicatorView *)self->_fixedFocusView setFrame:v6, v8, v10, v12];
-    v15 = [(CEKSubjectIndicatorView *)self->_fixedFocusView layer];
-    [v15 removeAllAnimations];
+    layer = [(CEKSubjectIndicatorView *)self->_fixedFocusView layer];
+    [layer removeAllAnimations];
     if (self->_animateNextRender)
     {
       self->_animateNextRender = 0;
@@ -37,50 +37,50 @@
       [v13 setToValue:&unk_1F190E678];
       [v13 setRepeatCount:0.0];
       [v13 setAutoreverses:0];
-      [v15 addAnimation:v13 forKey:@"shrink"];
+      [layer addAnimation:v13 forKey:@"shrink"];
     }
   }
 }
 
-- (void)_viewTapped:(id)a3
+- (void)_viewTapped:(id)tapped
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  tappedCopy = tapped;
+  if ([tappedCopy state] == 3)
   {
-    [v4 locationInView:self];
+    [tappedCopy locationInView:self];
     [(PXPortraitFocusView *)self focusPointChanged:?];
   }
 }
 
 - (void)removeAssociatedMediaViewGesture
 {
-  v3 = [(PXPortraitFocusView *)self mediaView];
-  [v3 removeGestureRecognizer:self->_tapGestureRecognizer];
+  mediaView = [(PXPortraitFocusView *)self mediaView];
+  [mediaView removeGestureRecognizer:self->_tapGestureRecognizer];
 }
 
 - (void)installAssociatedMediaViewGesture
 {
-  v3 = [(PXPortraitFocusView *)self mediaView];
-  [v3 addGestureRecognizer:self->_tapGestureRecognizer];
+  mediaView = [(PXPortraitFocusView *)self mediaView];
+  [mediaView addGestureRecognizer:self->_tapGestureRecognizer];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_tapGestureRecognizer == v4)
+  beginCopy = begin;
+  if (self->_tapGestureRecognizer == beginCopy)
   {
-    v6 = [(PXPortraitFocusView *)self mediaView];
+    mediaView = [(PXPortraitFocusView *)self mediaView];
 
-    if (v6)
+    if (mediaView)
     {
-      v7 = [(PXPortraitFocusView *)self mediaView];
-      v8 = [v7 superview];
-      [(UITapGestureRecognizer *)v4 locationInView:v8];
+      mediaView2 = [(PXPortraitFocusView *)self mediaView];
+      superview = [mediaView2 superview];
+      [(UITapGestureRecognizer *)beginCopy locationInView:superview];
       v10 = v9;
       v12 = v11;
 
-      v13 = [(PXPortraitFocusView *)self mediaView];
-      [v13 imageFrame];
+      mediaView3 = [(PXPortraitFocusView *)self mediaView];
+      [mediaView3 imageFrame];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -109,13 +109,13 @@
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXPortraitFocusView *)self mediaView];
-  v9 = [v8 hitTest:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  mediaView = [(PXPortraitFocusView *)self mediaView];
+  v9 = [mediaView hitTest:eventCopy withEvent:{x, y}];
 
   return v9;
 }
@@ -127,9 +127,9 @@
   [v10 setValue:&unk_1F190DF30 forKey:*MEMORY[0x1E6979BF0]];
   [v10 setValue:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E6979980]];
   [v10 setName:@"modulationFilter"];
-  v3 = [(CEKSubjectIndicatorView *)self->_fixedFocusView layer];
-  v4 = [v3 filters];
-  v5 = [v4 mutableCopy];
+  layer = [(CEKSubjectIndicatorView *)self->_fixedFocusView layer];
+  filters = [layer filters];
+  v5 = [filters mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -144,23 +144,23 @@
   v8 = v7;
 
   [v8 addObject:v10];
-  v9 = [(CEKSubjectIndicatorView *)self->_fixedFocusView layer];
-  [v9 setFilters:v8];
+  layer2 = [(CEKSubjectIndicatorView *)self->_fixedFocusView layer];
+  [layer2 setFilters:v8];
 }
 
-- (PXUIPortraitFocusView)initWithMediaView:(id)a3 isHDR:(BOOL)a4
+- (PXUIPortraitFocusView)initWithMediaView:(id)view isHDR:(BOOL)r
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  rCopy = r;
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXUIPortraitFocusView.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPortraitFocusView.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
   }
 
   v16.receiver = self;
   v16.super_class = PXUIPortraitFocusView;
-  v8 = [(PXPortraitFocusView *)&v16 initWithMediaView:v7 isHDR:v4];
+  v8 = [(PXPortraitFocusView *)&v16 initWithMediaView:viewCopy isHDR:rCopy];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E6993898]);
@@ -175,7 +175,7 @@
     v8->_tapGestureRecognizer = v12;
 
     [(UITapGestureRecognizer *)v8->_tapGestureRecognizer setDelegate:v8];
-    if (v4)
+    if (rCopy)
     {
       [(PXUIPortraitFocusView *)v8 setUpEDRGainLayer];
     }

@@ -1,9 +1,9 @@
 @interface PXPhotosStatusToggleButtonController
-- (PXPhotosStatusToggleButtonController)initWithFooterViewModel:(id)a3 buttonConfiguration:(id)a4;
+- (PXPhotosStatusToggleButtonController)initWithFooterViewModel:(id)model buttonConfiguration:(id)configuration;
 - (PXPhotosStatusToggleButtonControllerDelegate)delegate;
-- (void)_handleButtonAction:(id)a3;
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4;
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3;
+- (void)_handleButtonAction:(id)action;
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller;
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height;
 @end
 
 @implementation PXPhotosStatusToggleButtonController
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height
 {
-  v4 = a3;
-  [v4 frame];
-  [v4 systemLayoutSizeFittingSize:{v5, 1.79769313e308}];
+  heightCopy = height;
+  [heightCopy frame];
+  [heightCopy systemLayoutSizeFittingSize:{v5, 1.79769313e308}];
   v7 = v6;
   v9 = v8;
 
@@ -27,24 +27,24 @@
   [WeakRetained setPreferredContentSize:{v7, v9}];
 }
 
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(PXPhotosStatusToggleButtonController *)self delegate];
-  if (!v6)
+  controllerCopy = controller;
+  delegate = [(PXPhotosStatusToggleButtonController *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  v7 = [v6 presentationEnvironmentForPhotosStatusToggleButtonController:self];
-  [v7 presentViewController:v5 animated:1 completionHandler:0];
+  v7 = [delegate presentationEnvironmentForPhotosStatusToggleButtonController:self];
+  [v7 presentViewController:controllerCopy animated:1 completionHandler:0];
 }
 
-- (void)_handleButtonAction:(id)a3
+- (void)_handleButtonAction:(id)action
 {
   v4 = objc_alloc_init(PXPhotosGlobalFooterView);
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PXPhotosGlobalFooterView *)v4 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PXPhotosGlobalFooterView *)v4 setBackgroundColor:systemBackgroundColor];
 
   [(PXPhotosGlobalFooterView *)v4 setViewModel:self->_footerViewModel];
   [(PXPhotosGlobalFooterView *)v4 setDelegate:self];
@@ -54,27 +54,27 @@
   [(PXPhotosGlobalFooterView *)v4 systemLayoutSizeFittingSize:*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)];
   [v6 setPreferredContentSize:?];
   objc_storeWeak(&self->_presentedPopOverViewController, v6);
-  v7 = [v6 popoverPresentationController];
-  [v7 setDelegate:self];
-  [v7 setPermittedArrowDirections:2];
-  v8 = [(PXPhotosStatusToggleButtonController *)self delegate];
-  if (!v8)
+  popoverPresentationController = [v6 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
+  [popoverPresentationController setPermittedArrowDirections:2];
+  delegate = [(PXPhotosStatusToggleButtonController *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  v9 = [v8 popoverPresentationEnvironmentForPhotosStatusToggleButtonController:self];
+  v9 = [delegate popoverPresentationEnvironmentForPhotosStatusToggleButtonController:self];
   [v9 presentViewController:v6 animated:1 completionHandler:0];
 }
 
-- (PXPhotosStatusToggleButtonController)initWithFooterViewModel:(id)a3 buttonConfiguration:(id)a4
+- (PXPhotosStatusToggleButtonController)initWithFooterViewModel:(id)model buttonConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  modelCopy = model;
+  configurationCopy = configuration;
+  v10 = configurationCopy;
+  if (modelCopy)
   {
-    if (v9)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
@@ -82,8 +82,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPhotosStatusToggleButtonController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"footerViewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosStatusToggleButtonController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"footerViewModel"}];
 
     if (v10)
     {
@@ -91,8 +91,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PXPhotosStatusToggleButtonController.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"buttonConfiguration"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosStatusToggleButtonController.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"buttonConfiguration"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -101,7 +101,7 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_footerViewModel, a3);
+    objc_storeStrong(&v11->_footerViewModel, model);
     v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v10 primaryAction:0];
     button = v12->_button;
     v12->_button = v13;

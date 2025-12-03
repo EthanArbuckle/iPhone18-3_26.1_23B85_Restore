@@ -1,40 +1,40 @@
 @interface PDURLSessionProxyTaskCompleted
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (__NSCFURLSessionTaskInfo)_actualTaskInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_setActualTaskInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_setActualTaskInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyTaskCompleted
 
-- (void)_setActualTaskInfo:(id)a3
+- (void)_setActualTaskInfo:(id)info
 {
-  v4 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:a3];
+  v4 = [NSKeyedArchiver _nsurlsessionproxy_secureArchivedDataWithRootObject:info];
   [(PDURLSessionProxyTaskCompleted *)self setTaskInfo:?];
 }
 
 - (__NSCFURLSessionTaskInfo)_actualTaskInfo
 {
   v3 = objc_opt_class();
-  v4 = [(PDURLSessionProxyTaskCompleted *)self taskInfo];
-  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:v4];
+  taskInfo = [(PDURLSessionProxyTaskCompleted *)self taskInfo];
+  v5 = [NSKeyedUnarchiver _nsurlsessionproxy_secureUnarchiveObjectOfClass:v3 withData:taskInfo];
 
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (task)
   {
     if (!v6)
@@ -55,10 +55,10 @@
     [(PDURLSessionProxyTaskCompleted *)self setTask:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   error = self->_error;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (error)
   {
     if (!v8)
@@ -79,12 +79,12 @@ LABEL_7:
     [(PDURLSessionProxyTaskCompleted *)self setError:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PDURLSessionProxyTaskCompleted *)self setTaskInfo:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 }
 
@@ -95,13 +95,13 @@ LABEL_13:
   return v4 ^ [(NSData *)self->_taskInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | v4[2])) || -[PDURLSessionProxyTaskMessage isEqual:](task, "isEqual:")) && ((error = self->_error, !(error | v4[1])) || -[PDURLSessionProxyError isEqual:](error, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((task = self->_task, !(task | equalCopy[2])) || -[PDURLSessionProxyTaskMessage isEqual:](task, "isEqual:")) && ((error = self->_error, !(error | equalCopy[1])) || -[PDURLSessionProxyError isEqual:](error, "isEqual:")))
   {
     taskInfo = self->_taskInfo;
-    if (taskInfo | v4[3])
+    if (taskInfo | equalCopy[3])
     {
       v8 = [(NSData *)taskInfo isEqual:?];
     }
@@ -120,80 +120,80 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(PDURLSessionProxyError *)self->_error copyWithZone:a3];
+  v8 = [(PDURLSessionProxyError *)self->_error copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_taskInfo copyWithZone:a3];
+  v10 = [(NSData *)self->_taskInfo copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     [v5 setError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_taskInfo)
   {
     [v5 setTaskInfo:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_taskInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -202,18 +202,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v19) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v19 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v19 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v19 & 0x7F) << v6;
@@ -230,11 +230,11 @@ LABEL_13:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -249,7 +249,7 @@ LABEL_15:
         objc_storeStrong(&self->_error, taskInfo);
         v19 = 0;
         v20 = 0;
-        if (!PBReaderPlaceMark() || !sub_10006F354(taskInfo, a3))
+        if (!PBReaderPlaceMark() || !sub_10006F354(taskInfo, from))
         {
 LABEL_31:
 
@@ -269,7 +269,7 @@ LABEL_27:
         objc_storeStrong(&self->_task, taskInfo);
         v19 = 0;
         v20 = 0;
-        if (!PBReaderPlaceMark() || !sub_10006CE20(taskInfo, a3))
+        if (!PBReaderPlaceMark() || !sub_10006CE20(taskInfo, from))
         {
           goto LABEL_31;
         }
@@ -283,10 +283,10 @@ LABEL_27:
       }
 
 LABEL_29:
-      v17 = [a3 position];
-      if (v17 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -296,7 +296,7 @@ LABEL_29:
     goto LABEL_27;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -305,15 +305,15 @@ LABEL_29:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   error = self->_error;
   if (error)
   {
-    v7 = [(PDURLSessionProxyError *)error dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"error"];
+    dictionaryRepresentation2 = [(PDURLSessionProxyError *)error dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   taskInfo = self->_taskInfo;
@@ -330,8 +330,8 @@ LABEL_29:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyTaskCompleted;
   v3 = [(PDURLSessionProxyTaskCompleted *)&v7 description];
-  v4 = [(PDURLSessionProxyTaskCompleted *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyTaskCompleted *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

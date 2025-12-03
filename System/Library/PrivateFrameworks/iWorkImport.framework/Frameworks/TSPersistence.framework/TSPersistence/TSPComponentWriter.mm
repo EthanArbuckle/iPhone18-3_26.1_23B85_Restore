@@ -1,36 +1,36 @@
 @interface TSPComponentWriter
-- (BOOL)canSkipArchivingStronglyReferencedObject:(id)a3 fromComponentRootObject:(id)a4;
-- (BOOL)isObjectExternalBecauseItAlreadyBelongsToAnotherComponent:(id)a3 parentObject:(id)a4 claimingComponent:(id *)a5 claimingPackageIdentifier:(unsigned __int8 *)a6 claimingComponentWillBeCopied:(BOOL *)a7 claimingComponentReadVersion:(unint64_t *)a8;
-- (BOOL)shouldDelayWritingObject:(id)a3;
-- (BOOL)shouldWriteObject:(id)a3;
-- (BOOL)validateObjectContextForObject:(id)a3;
+- (BOOL)canSkipArchivingStronglyReferencedObject:(id)object fromComponentRootObject:(id)rootObject;
+- (BOOL)isObjectExternalBecauseItAlreadyBelongsToAnotherComponent:(id)component parentObject:(id)object claimingComponent:(id *)claimingComponent claimingPackageIdentifier:(unsigned __int8 *)identifier claimingComponentWillBeCopied:(BOOL *)copied claimingComponentReadVersion:(unint64_t *)version;
+- (BOOL)shouldDelayWritingObject:(id)object;
+- (BOOL)shouldWriteObject:(id)object;
+- (BOOL)validateObjectContextForObject:(id)object;
 - (TSPComponentWriter)init;
-- (TSPComponentWriter)initWithComponent:(id)a3 locator:(id)a4 rootObject:(id)a5 delegate:(id)a6 mode:(int64_t)a7 packageIdentifier:(unsigned __int8)a8 objectReferenceMapOrNil:(id)a9 writeChannel:(id)a10 archiverManager:(id)a11;
+- (TSPComponentWriter)initWithComponent:(id)component locator:(id)locator rootObject:(id)object delegate:(id)delegate mode:(int64_t)mode packageIdentifier:(unsigned __int8)identifier objectReferenceMapOrNil:(id)nil writeChannel:(id)self0 archiverManager:(id)self1;
 - (id).cxx_construct;
-- (void)acquireArchiverAccessLockAndWriteObjects:(id)a3 parentObject:(id)a4 completion:(id)a5;
-- (void)writeArchiver:(id)a3 forObjectIdentifier:(int64_t)a4;
-- (void)writeObject:(id)a3 archiver:(id)a4 parentObject:(id)a5 completion:(id)a6;
-- (void)writeWithArchiverAccessLockForObjects:(id)a3 parentObject:(id)a4 completion:(id)a5;
-- (void)writeWithCompletionQueue:(id)a3 completion:(id)a4;
+- (void)acquireArchiverAccessLockAndWriteObjects:(id)objects parentObject:(id)object completion:(id)completion;
+- (void)writeArchiver:(id)archiver forObjectIdentifier:(int64_t)identifier;
+- (void)writeObject:(id)object archiver:(id)archiver parentObject:(id)parentObject completion:(id)completion;
+- (void)writeWithArchiverAccessLockForObjects:(id)objects parentObject:(id)object completion:(id)completion;
+- (void)writeWithCompletionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation TSPComponentWriter
 
-- (TSPComponentWriter)initWithComponent:(id)a3 locator:(id)a4 rootObject:(id)a5 delegate:(id)a6 mode:(int64_t)a7 packageIdentifier:(unsigned __int8)a8 objectReferenceMapOrNil:(id)a9 writeChannel:(id)a10 archiverManager:(id)a11
+- (TSPComponentWriter)initWithComponent:(id)component locator:(id)locator rootObject:(id)object delegate:(id)delegate mode:(int64_t)mode packageIdentifier:(unsigned __int8)identifier objectReferenceMapOrNil:(id)nil writeChannel:(id)self0 archiverManager:(id)self1
 {
-  v81 = a3;
-  v82 = a4;
-  v18 = a5;
-  v19 = a6;
-  v79 = a9;
-  v78 = a10;
-  v77 = a11;
-  v80 = v18;
-  if (!v18)
+  componentCopy = component;
+  locatorCopy = locator;
+  objectCopy = object;
+  delegateCopy = delegate;
+  nilCopy = nil;
+  channelCopy = channel;
+  managerCopy = manager;
+  v80 = objectCopy;
+  if (!objectCopy)
   {
     TSUSetCrashReporterInfo();
     v71 = MEMORY[0x277D81150];
-    v73 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v72, "[TSPComponentWriter initWithComponent:locator:rootObject:delegate:mode:packageIdentifier:objectReferenceMapOrNil:writeChannel:archiverManager:]", "[TSPComponentWriter initWithComponent:locator:rootObject:delegate:mode:packageIdentifier:objectReferenceMapOrNil:writeChannel:archiverManager:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPComponentWriter.mm", 110, "rootObject", v77, v78, v79, 0);
+    v73 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v72, "[TSPComponentWriter initWithComponent:locator:rootObject:delegate:mode:packageIdentifier:objectReferenceMapOrNil:writeChannel:archiverManager:]", "[TSPComponentWriter initWithComponent:locator:rootObject:delegate:mode:packageIdentifier:objectReferenceMapOrNil:writeChannel:archiverManager:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPComponentWriter.mm", 110, "rootObject", managerCopy, channelCopy, nilCopy, 0);
     v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPComponentWriter.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v71, v76, v73, v75, 110, 1, "invalid nil value for '%{public}s'", "rootObject");
 
@@ -44,18 +44,18 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_component, a3);
-    v24 = objc_msgSend_copy(v82, v22, v23);
+    objc_storeStrong(&v20->_component, component);
+    v24 = objc_msgSend_copy(locatorCopy, v22, v23);
     locator = v21->_locator;
     v21->_locator = v24;
 
-    objc_storeStrong(&v21->_rootObject, a5);
-    objc_storeWeak(&v21->_delegate, v19);
-    v21->_mode = a7;
-    v21->_packageIdentifier = a8;
-    objc_storeStrong(&v21->_objectReferenceMap, a9);
-    objc_storeStrong(&v21->_writeChannel, a10);
-    objc_storeStrong(&v21->_archiverManager, a11);
+    objc_storeStrong(&v21->_rootObject, object);
+    objc_storeWeak(&v21->_delegate, delegateCopy);
+    v21->_mode = mode;
+    v21->_packageIdentifier = identifier;
+    objc_storeStrong(&v21->_objectReferenceMap, nil);
+    objc_storeStrong(&v21->_writeChannel, channel);
+    objc_storeStrong(&v21->_archiverManager, manager);
     v26 = dispatch_semaphore_create(0);
     delegateSemaphore = v21->_delegateSemaphore;
     v21->_delegateSemaphore = v26;
@@ -103,7 +103,7 @@
     externalReferences = v21->_externalReferences;
     v21->_externalReferences = v57;
 
-    v61 = objc_msgSend_ambiguousReferences(v81, v59, v60);
+    v61 = objc_msgSend_ambiguousReferences(componentCopy, v59, v60);
     componentAmbiguousReferences = v21->_componentAmbiguousReferences;
     v21->_componentAmbiguousReferences = v61;
 
@@ -187,11 +187,11 @@
   objc_exception_throw(v13);
 }
 
-- (void)writeWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)writeWithCompletionQueue:(id)queue completion:(id)completion
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   if (self->_rootObject)
   {
     v28[0] = self->_rootObject;
@@ -201,8 +201,8 @@
     v23[2] = sub_276A9D0C0;
     v23[3] = &unk_27A6E55B0;
     v23[4] = self;
-    v24 = v6;
-    v25 = v8;
+    v24 = queueCopy;
+    v25 = completionCopy;
     objc_msgSend_acquireArchiverAccessLockAndWriteObjects_parentObject_completion_(self, v10, v9, 0, v23);
   }
 
@@ -220,31 +220,31 @@
     block[1] = 3221225472;
     block[2] = sub_276A9D074;
     block[3] = &unk_27A6E3480;
-    v27 = v8;
-    dispatch_async(v6, block);
+    v27 = completionCopy;
+    dispatch_async(queueCopy, block);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldWriteObject:(id)a3
+- (BOOL)shouldWriteObject:(id)object
 {
-  if (objc_msgSend_containsItem_(self->_archivedObjects, a2, a3))
+  if (objc_msgSend_containsItem_(self->_archivedObjects, a2, object))
   {
     return 0;
   }
 
   else
   {
-    return objc_msgSend_shouldDelayWritingObject_(self, v5, a3) ^ 1;
+    return objc_msgSend_shouldDelayWritingObject_(self, v5, object) ^ 1;
   }
 }
 
-- (void)acquireArchiverAccessLockAndWriteObjects:(id)a3 parentObject:(id)a4 completion:(id)a5
+- (void)acquireArchiverAccessLockAndWriteObjects:(id)objects parentObject:(id)object completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  objectCopy = object;
+  completionCopy = completion;
   dispatch_group_enter(self->_writeGroup);
   archiverManager = self->_archiverManager;
   v16[0] = MEMORY[0x277D85DD0];
@@ -252,34 +252,34 @@
   v16[2] = sub_276A9D374;
   v16[3] = &unk_27A6E39F8;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v17 = objectsCopy;
+  v18 = objectCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = objectCopy;
+  v14 = objectsCopy;
   objc_msgSend_performAsynchronousArchiverAccessUsingBlock_(archiverManager, v15, v16);
 }
 
-- (void)writeWithArchiverAccessLockForObjects:(id)a3 parentObject:(id)a4 completion:(id)a5
+- (void)writeWithArchiverAccessLockForObjects:(id)objects parentObject:(id)object completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  block = a5;
-  if (objc_msgSend_count(v8, v10, v11))
+  objectsCopy = objects;
+  objectCopy = object;
+  block = completion;
+  if (objc_msgSend_count(objectsCopy, v10, v11))
   {
-    v104 = v9;
-    v105 = v8;
+    v104 = objectCopy;
+    v105 = objectsCopy;
     v106 = 0;
     sub_276A9DAC4(&self->_objectStack, &v104);
   }
 
-  v97 = v8;
+  v97 = objectsCopy;
   for (i = self->_objectStack.__end_; i != self->_objectStack.__begin_; i = self->_objectStack.__end_)
   {
-    v13 = v9;
+    v13 = objectCopy;
     v14 = *(i - 2);
-    v9 = *(i - 3);
+    objectCopy = *(i - 3);
 
     v15 = *(i - 1);
     v19 = objc_msgSend_count(v14, v16, v17);
@@ -290,7 +290,7 @@
         v20 = objc_msgSend_objectAtIndexedSubscript_(v14, v18, v15);
         v23 = v20;
         LOBYTE(v104) = 0;
-        if (self->_mode || v20 == self->_rootObject || (objc_msgSend_isComponentRoot(v20, v21, v22) & 1) == 0 && !objc_msgSend_isObjectExternal_archiverOrNil_parentObject_hasArchiverAccessLock_claimingComponent_isOwnedByDifferentPackage_isAmbiguousOwnership_(self, v21, v23, 0, v9, 1, 0, 0, &v104))
+        if (self->_mode || v20 == self->_rootObject || (objc_msgSend_isComponentRoot(v20, v21, v22) & 1) == 0 && !objc_msgSend_isObjectExternal_archiverOrNil_parentObject_hasArchiverAccessLock_claimingComponent_isOwnedByDifferentPackage_isAmbiguousOwnership_(self, v21, v23, 0, objectCopy, 1, 0, 0, &v104))
         {
           if (objc_msgSend_shouldWriteObject_(self, v21, v23))
           {
@@ -324,17 +324,17 @@
                 {
 LABEL_31:
                   v34 = v97;
-                  if (!v9)
+                  if (!objectCopy)
                   {
                     rootObject = self->_rootObject;
                     if (v23 == rootObject)
                     {
-                      v9 = 0;
+                      objectCopy = 0;
                     }
 
                     else
                     {
-                      v9 = rootObject;
+                      objectCopy = rootObject;
                     }
                   }
 
@@ -376,7 +376,7 @@ LABEL_31:
                   v96 = v23;
                   v100 = v96;
                   v101 = v83;
-                  v88 = v9;
+                  v88 = objectCopy;
                   v102 = v88;
                   v103 = block;
                   dispatch_group_notify(v86, writeQueue, v99);
@@ -400,7 +400,7 @@ LABEL_31:
                   }
 
                   v23 = v96;
-                  v9 = v88;
+                  objectCopy = v88;
 LABEL_19:
                   v35 = block;
                   goto LABEL_24;
@@ -496,57 +496,57 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)writeObject:(id)a3 archiver:(id)a4 parentObject:(id)a5 completion:(id)a6
+- (void)writeObject:(id)object archiver:(id)archiver parentObject:(id)parentObject completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (objc_msgSend_beginWrite(v11, v14, v15))
+  objectCopy = object;
+  archiverCopy = archiver;
+  parentObjectCopy = parentObject;
+  completionCopy = completion;
+  if (objc_msgSend_beginWrite(archiverCopy, v14, v15))
   {
-    objc_msgSend_addItem_(self->_archivedObjects, v16, v10);
+    objc_msgSend_addItem_(self->_archivedObjects, v16, objectCopy);
     archivedObjectsDictionary = self->_archivedObjectsDictionary;
-    v20 = objc_msgSend_tsp_identifier(v10, v18, v19);
-    objc_msgSend_tsp_setObject_forIdentifier_(archivedObjectsDictionary, v21, v10, v20);
+    v20 = objc_msgSend_tsp_identifier(objectCopy, v18, v19);
+    objc_msgSend_tsp_setObject_forIdentifier_(archivedObjectsDictionary, v21, objectCopy, v20);
     mode = self->_mode;
     if (!mode)
     {
-      objc_msgSend_validateExplicitComponentOwnershipForObject_archiverOrNil_parentObject_hasArchiverAccessLock_(self, v22, v10, v11, v12, 0);
+      objc_msgSend_validateExplicitComponentOwnershipForObject_archiverOrNil_parentObject_hasArchiverAccessLock_(self, v22, objectCopy, archiverCopy, parentObjectCopy, 0);
       mode = self->_mode;
     }
 
-    if ((mode > 3 || mode == 1) && (objc_msgSend_aggregatedWeakReferences(v11, v22, v23), v48 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend_count(v48, v49, v50), v48, v51))
+    if ((mode > 3 || mode == 1) && (objc_msgSend_aggregatedWeakReferences(archiverCopy, v22, v23), v48 = objc_claimAutoreleasedReturnValue(), v51 = objc_msgSend_count(v48, v49, v50), v48, v51))
     {
-      v52 = objc_msgSend_aggregatedStrongReferences(v11, v22, v23);
+      v52 = objc_msgSend_aggregatedStrongReferences(archiverCopy, v22, v23);
       v55 = objc_msgSend_count(v52, v53, v54);
 
       if (self->_mode == 1)
       {
-        v58 = objc_msgSend_aggregatedWeakReferences(v11, v56, v57);
+        v58 = objc_msgSend_aggregatedWeakReferences(archiverCopy, v56, v57);
         v55 += objc_msgSend_count(v58, v59, v60);
       }
 
       v61 = [TSPReferenceOrderedSet alloc];
       v26 = objc_msgSend_initWithCapacity_(v61, v62, v55);
-      v65 = objc_msgSend_aggregatedStrongReferences(v11, v63, v64);
+      v65 = objc_msgSend_aggregatedStrongReferences(archiverCopy, v63, v64);
       objc_msgSend_unionSet_(v26, v66, v65);
 
       if (self->_mode == 1)
       {
-        v68 = objc_msgSend_aggregatedWeakReferences(v11, v25, v67);
+        v68 = objc_msgSend_aggregatedWeakReferences(archiverCopy, v25, v67);
         objc_msgSend_unionSet_(v26, v69, v68);
       }
     }
 
     else
     {
-      v26 = objc_msgSend_aggregatedStrongReferences(v11, v22, v23);
+      v26 = objc_msgSend_aggregatedStrongReferences(archiverCopy, v22, v23);
     }
 
-    objc_msgSend_addReferencesFromObject_archiver_(self->_objectReferenceMap, v25, v10, v11);
-    v29 = objc_msgSend_tsp_identifier(v10, v27, v28);
-    objc_msgSend_writeArchiver_forObjectIdentifier_(self, v30, v11, v29);
-    objc_msgSend_cleanup(v11, v31, v32);
+    objc_msgSend_addReferencesFromObject_archiver_(self->_objectReferenceMap, v25, objectCopy, archiverCopy);
+    v29 = objc_msgSend_tsp_identifier(objectCopy, v27, v28);
+    objc_msgSend_writeArchiver_forObjectIdentifier_(self, v30, archiverCopy, v29);
+    objc_msgSend_cleanup(archiverCopy, v31, v32);
     v75 = 0;
     v76 = &v75;
     v77 = 0x3032000000;
@@ -569,7 +569,7 @@ LABEL_24:
       objc_msgSend_enumerateItemsUsingBlock_(v26, v35, v70);
     }
 
-    objc_msgSend_acquireArchiverAccessLockAndWriteObjects_parentObject_completion_(self, v35, v76[5], v10, v13);
+    objc_msgSend_acquireArchiverAccessLockAndWriteObjects_parentObject_completion_(self, v35, v76[5], objectCopy, completionCopy);
     _Block_object_dispose(&v71, 8);
     _Block_object_dispose(&v75, 8);
   }
@@ -578,36 +578,36 @@ LABEL_24:
   {
     v75 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v26 = objc_msgSend_componentWriter_wantsComponentOfObject_componentReadVersion_(WeakRetained, v37, self, v10, &v75);
+    v26 = objc_msgSend_componentWriter_wantsComponentOfObject_componentReadVersion_(WeakRetained, v37, self, objectCopy, &v75);
 
     LOBYTE(v71) = 0;
-    v40 = objc_msgSend_explicitComponentRootObject(v11, v38, v39);
-    objc_msgSend_validateAmbiguousObjectOwnershipForObject_explicitComponentRootObject_parentObject_claimingComponent_claimingPackageIdentifier_claimingComponentWillBeCopied_claimingComponentReadVersion_isAmbiguousOwnership_(self, v41, v10, v40, v12, v26, self->_packageIdentifier, 0, v75, &v71);
+    v40 = objc_msgSend_explicitComponentRootObject(archiverCopy, v38, v39);
+    objc_msgSend_validateAmbiguousObjectOwnershipForObject_explicitComponentRootObject_parentObject_claimingComponent_claimingPackageIdentifier_claimingComponentWillBeCopied_claimingComponentReadVersion_isAmbiguousOwnership_(self, v41, objectCopy, v40, parentObjectCopy, v26, self->_packageIdentifier, 0, v75, &v71);
 
-    if ((objc_msgSend_containsItem_(self->_archivedObjects, v42, v10) & 1) == 0)
+    if ((objc_msgSend_containsItem_(self->_archivedObjects, v42, objectCopy) & 1) == 0)
     {
-      objc_msgSend_addItem_(self->_externalReferences, v43, v10);
+      objc_msgSend_addItem_(self->_externalReferences, v43, objectCopy);
     }
 
     if (v71 == 1)
     {
       ambiguousReferences = self->_ambiguousReferences;
-      v46 = objc_msgSend_tsp_identifier(v10, v43, v44);
+      v46 = objc_msgSend_tsp_identifier(objectCopy, v43, v44);
       objc_msgSend_addIndex_(ambiguousReferences, v47, v46);
     }
 
-    objc_msgSend_acquireArchiverAccessLockAndWriteObjects_parentObject_completion_(self, v43, 0, 0, v13);
+    objc_msgSend_acquireArchiverAccessLockAndWriteObjects_parentObject_completion_(self, v43, 0, 0, completionCopy);
   }
 }
 
-- (void)writeArchiver:(id)a3 forObjectIdentifier:(int64_t)a4
+- (void)writeArchiver:(id)archiver forObjectIdentifier:(int64_t)identifier
 {
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = v6;
+  archiverCopy = archiver;
+  v9 = archiverCopy;
   if (*&self->_flags)
   {
-    if (objc_msgSend_success(v6, v7, v8))
+    if (objc_msgSend_success(archiverCopy, v7, v8))
     {
       v12 = objc_msgSend_objectUUID(v9, v10, v11);
       v15 = v12 != 0;
@@ -624,7 +624,7 @@ LABEL_24:
           componentObjectUUIDMap = self->_componentObjectUUIDMap;
         }
 
-        v20 = objc_msgSend_setObjectUUID_forIdentifier_(componentObjectUUIDMap, v13, v82, a4);
+        v20 = objc_msgSend_setObjectUUID_forIdentifier_(componentObjectUUIDMap, v13, v82, identifier);
         if (v82 != v20 && (objc_msgSend_isEqual_(v82, v19, v20) & 1) == 0)
         {
           v69 = MEMORY[0x277D81150];
@@ -632,7 +632,7 @@ LABEL_24:
           v72 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v71, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPComponentWriter.mm");
           v75 = objc_msgSend_locator(self->_component, v73, v74);
           v78 = objc_msgSend_identifier(self->_component, v76, v77);
-          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v69, v79, v70, v72, 521, 0, "Archived two objects with the same identifier %llu in component [%{public}@-%llu] with different UUIDs: %{public}@ and %{public}@", a4, v75, v78, v20, v82);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v69, v79, v70, v72, 521, 0, "Archived two objects with the same identifier %llu in component [%{public}@-%llu] with different UUIDs: %{public}@ and %{public}@", identifier, v75, v78, v20, v82);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v80, v81);
           *&self->_flags &= ~1u;
@@ -648,7 +648,7 @@ LABEL_25:
       v87[2] = sub_276A9E83C;
       v87[3] = &unk_27A6E6480;
       v87[4] = self;
-      v87[5] = a4;
+      v87[5] = identifier;
       v88 = v15;
       objc_msgSend_enumerateIdentifiersUsingBlock_(v22, v23, v87);
       objc_msgSend_aggregatedDataReferences(v9, v24, v25);
@@ -735,9 +735,9 @@ LABEL_26:
   v68 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canSkipArchivingStronglyReferencedObject:(id)a3 fromComponentRootObject:(id)a4
+- (BOOL)canSkipArchivingStronglyReferencedObject:(id)object fromComponentRootObject:(id)rootObject
 {
-  v6 = self;
+  selfCopy = self;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -747,33 +747,33 @@ LABEL_26:
   v10[1] = 3221225472;
   v10[2] = sub_276A9EA60;
   v10[3] = &unk_27A6E64A8;
-  v10[4] = v6;
+  v10[4] = selfCopy;
   v10[5] = &v11;
-  objc_msgSend_componentWriter_canSkipArchivingStronglyReferencedObject_fromComponentRootObject_completion_(WeakRetained, v8, v6, a3, a4, v10);
+  objc_msgSend_componentWriter_canSkipArchivingStronglyReferencedObject_fromComponentRootObject_completion_(WeakRetained, v8, selfCopy, object, rootObject, v10);
 
-  dispatch_semaphore_wait(v6->_delegateSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v6) = *(v12 + 24);
+  dispatch_semaphore_wait(selfCopy->_delegateSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+  LOBYTE(selfCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isObjectExternalBecauseItAlreadyBelongsToAnotherComponent:(id)a3 parentObject:(id)a4 claimingComponent:(id *)a5 claimingPackageIdentifier:(unsigned __int8 *)a6 claimingComponentWillBeCopied:(BOOL *)a7 claimingComponentReadVersion:(unint64_t *)a8
+- (BOOL)isObjectExternalBecauseItAlreadyBelongsToAnotherComponent:(id)component parentObject:(id)object claimingComponent:(id *)claimingComponent claimingPackageIdentifier:(unsigned __int8 *)identifier claimingComponentWillBeCopied:(BOOL *)copied claimingComponentReadVersion:(unint64_t *)version
 {
-  v14 = a3;
-  v17 = a4;
+  componentCopy = component;
+  objectCopy = object;
   Version = 0;
   if (self->_packageIdentifier != 1 && (*&self->_flags & 0x40) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v35 = 0;
-    v34 = objc_msgSend_componentWriter_externalPackageDidWriteObject_claimingComponent_componentReadVersion_(WeakRetained, v33, self, v14, &v35, &Version);
+    v34 = objc_msgSend_componentWriter_externalPackageDidWriteObject_claimingComponent_componentReadVersion_(WeakRetained, v33, self, componentCopy, &v35, &Version);
     v19 = v35;
 
     if (v34)
     {
       v28 = 0;
       v25 = 1;
-      if (!a5)
+      if (!claimingComponent)
       {
         goto LABEL_9;
       }
@@ -789,9 +789,9 @@ LABEL_26:
     v18 = 0;
   }
 
-  v19 = objc_msgSend_tsp_component(v14, v15, v16);
+  v19 = objc_msgSend_tsp_component(componentCopy, v15, v16);
 
-  if (v19 == self->_component || (*&self->_flags & 0x20) == 0 || (v20 = objc_loadWeakRetained(&self->_delegate), v22 = objc_msgSend_componentWriter_object_belongsToCopiedComponent_(v20, v21, self, v14, v19), v20, !v22))
+  if (v19 == self->_component || (*&self->_flags & 0x20) == 0 || (v20 = objc_loadWeakRetained(&self->_delegate), v22 = objc_msgSend_componentWriter_object_belongsToCopiedComponent_(v20, v21, self, componentCopy, v19), v20, !v22))
   {
     v30 = 0;
     goto LABEL_17;
@@ -800,27 +800,27 @@ LABEL_26:
   v25 = objc_msgSend_packageIdentifier(v19, v23, v24);
   Version = objc_msgSend_componentReadVersion(v19, v26, v27);
   v28 = 1;
-  if (a5)
+  if (claimingComponent)
   {
 LABEL_8:
     v29 = v19;
-    *a5 = v19;
+    *claimingComponent = v19;
   }
 
 LABEL_9:
-  if (a6)
+  if (identifier)
   {
-    *a6 = v25;
+    *identifier = v25;
   }
 
-  if (a7)
+  if (copied)
   {
-    *a7 = v28;
+    *copied = v28;
   }
 
-  if (a8)
+  if (version)
   {
-    *a8 = Version;
+    *version = Version;
   }
 
   v30 = 1;
@@ -829,13 +829,13 @@ LABEL_17:
   return v30;
 }
 
-- (BOOL)shouldDelayWritingObject:(id)a3
+- (BOOL)shouldDelayWritingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ((*&self->_flags & 0x80000000) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    shouldDelayWritingObject = objc_msgSend_componentWriter_shouldDelayWritingObject_(WeakRetained, v7, self, v4);
+    shouldDelayWritingObject = objc_msgSend_componentWriter_shouldDelayWritingObject_(WeakRetained, v7, self, objectCopy);
   }
 
   else
@@ -846,10 +846,10 @@ LABEL_17:
   return shouldDelayWritingObject;
 }
 
-- (BOOL)validateObjectContextForObject:(id)a3
+- (BOOL)validateObjectContextForObject:(id)object
 {
-  v4 = a3;
-  v7 = objc_msgSend_context(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_context(objectCopy, v5, v6);
   v10 = objc_msgSend_context(self->_rootObject, v8, v9);
 
   if (v7 != v10)
@@ -863,8 +863,8 @@ LABEL_17:
     v19 = objc_msgSend_tsp_identifier(self->_rootObject, v17, v18);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v24 = objc_msgSend_tsp_identifier(v4, v22, v23);
-    v27 = objc_msgSend_context(v4, v25, v26);
+    v24 = objc_msgSend_tsp_identifier(objectCopy, v22, v23);
+    v27 = objc_msgSend_context(objectCopy, v25, v26);
     v30 = objc_msgSend_context(self->_rootObject, v28, v29);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v35, v31, v36, v13, 687, 0, "Component root object [%{public}@-%llu] cannot have a reference to object [%{public}@-%llu] because it belongs to a different object context %p (expected object context: %p).", v16, v19, v21, v24, v27, v30);
 

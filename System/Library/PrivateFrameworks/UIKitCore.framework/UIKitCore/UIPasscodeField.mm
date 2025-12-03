@@ -2,22 +2,22 @@
 + (double)defaultHeight;
 - (BOOL)becomeFirstResponder;
 - (BOOL)isFirstResponder;
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5;
-- (UIPasscodeField)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4;
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range;
+- (UIPasscodeField)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event;
 - (id)stringValue;
 - (void)_textDidChange;
 - (void)_updateFields;
-- (void)appendString:(id)a3;
+- (void)appendString:(id)string;
 - (void)dealloc;
 - (void)deleteLastCharacter;
-- (void)okButtonClicked:(id)a3;
-- (void)setKeyboardType:(int64_t)a3 appearance:(int64_t)a4 emptyContentReturnKeyType:(int)a5;
-- (void)setNumberOfEntryFields:(int)a3 opaqueBackground:(BOOL)a4;
-- (void)setShowsOKButton:(BOOL)a3;
-- (void)setStringValue:(id)a3;
-- (void)setTextCentersHorizontally:(BOOL)a3;
-- (void)textFieldDidResignFirstResponder:(id)a3;
+- (void)okButtonClicked:(id)clicked;
+- (void)setKeyboardType:(int64_t)type appearance:(int64_t)appearance emptyContentReturnKeyType:(int)keyType;
+- (void)setNumberOfEntryFields:(int)fields opaqueBackground:(BOOL)background;
+- (void)setShowsOKButton:(BOOL)button;
+- (void)setStringValue:(id)value;
+- (void)setTextCentersHorizontally:(BOOL)horizontally;
+- (void)textFieldDidResignFirstResponder:(id)responder;
 @end
 
 @implementation UIPasscodeField
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (UIPasscodeField)initWithFrame:(CGRect)a3
+- (UIPasscodeField)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIPasscodeField;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -50,17 +50,17 @@
   return v3;
 }
 
-- (void)setKeyboardType:(int64_t)a3 appearance:(int64_t)a4 emptyContentReturnKeyType:(int)a5
+- (void)setKeyboardType:(int64_t)type appearance:(int64_t)appearance emptyContentReturnKeyType:(int)keyType
 {
-  self->_keyboardType = a3;
-  self->_keyboardAppearance = a4;
-  self->_emptyContentReturnKeyType = a5;
+  self->_keyboardType = type;
+  self->_keyboardAppearance = appearance;
+  self->_emptyContentReturnKeyType = keyType;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UIPasscodeField;
@@ -79,28 +79,28 @@
     do
     {
       v6 = [(NSMutableArray *)self->_entryFields objectAtIndex:v4];
-      v7 = &stru_1EFB14550;
+      string = &stru_1EFB14550;
       if (v4 < v13)
       {
         if (!_updateFields___bullet)
         {
-          v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%C", 10625];
+          10625 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%C", 10625];
           v9 = _updateFields___bullet;
-          _updateFields___bullet = v8;
+          _updateFields___bullet = 10625;
         }
 
         if (v4 != v12 || v13 - v4 == 1)
         {
-          v7 = _updateFields___bullet;
+          string = _updateFields___bullet;
         }
 
         else
         {
-          v7 = [MEMORY[0x1E696AD60] string];
+          string = [MEMORY[0x1E696AD60] string];
           v10 = v13;
           do
           {
-            [(__CFString *)v7 appendString:_updateFields___bullet];
+            [(__CFString *)string appendString:_updateFields___bullet];
             --v10;
           }
 
@@ -108,7 +108,7 @@
         }
       }
 
-      [v6 setText:v7];
+      [v6 setText:string];
 
       ++v4;
     }
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)setShowsOKButton:(BOOL)a3
+- (void)setShowsOKButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     okButton = self->_okButton;
     if (!okButton)
@@ -147,9 +147,9 @@
       [v13 size];
       v15 = [v13 stretchableImageWithLeftCapWidth:vcvtmd_s64_f64(v14 * 0.5) topCapHeight:0];
       [(UIButton *)self->_okButton setBackgroundImage:v15 forState:1];
-      v16 = [(UIButton *)self->_okButton titleLabel];
+      titleLabel = [(UIButton *)self->_okButton titleLabel];
       v17 = [off_1E70ECC18 boldSystemFontOfSize:20.0];
-      [v16 setFont:v17];
+      [titleLabel setFont:v17];
 
       v18 = self->_okButton;
       v19 = +[UIColor blackColor];
@@ -204,11 +204,11 @@
   }
 }
 
-- (void)setTextCentersHorizontally:(BOOL)a3
+- (void)setTextCentersHorizontally:(BOOL)horizontally
 {
-  if (self->_centerHorizontally != a3)
+  if (self->_centerHorizontally != horizontally)
   {
-    self->_centerHorizontally = a3;
+    self->_centerHorizontally = horizontally;
     v5 = [(NSMutableArray *)self->_entryFields count];
     opaqueBackground = self->_opaqueBackground;
 
@@ -223,16 +223,16 @@
   return v2;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v10 = a3;
+  valueCopy = value;
   v4 = [(NSMutableArray *)self->_entryFields count];
   value = self->_value;
   if (v4 < 2)
   {
-    if (v10)
+    if (valueCopy)
     {
-      v9 = v10;
+      v9 = valueCopy;
     }
 
     else
@@ -245,7 +245,7 @@
 
   else
   {
-    v6 = [(__CFString *)v10 length];
+    v6 = [(__CFString *)valueCopy length];
     if (v6 >= (v4 & 0x7FFFFFFFu))
     {
       v7 = v4 & 0x7FFFFFFF;
@@ -256,21 +256,21 @@
       v7 = v6;
     }
 
-    v8 = [(__CFString *)v10 substringToIndex:v7];
+    v8 = [(__CFString *)valueCopy substringToIndex:v7];
     [(NSMutableString *)value setString:v8];
   }
 
   [(UIPasscodeField *)self _updateFields];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v11 = a3;
+  stringCopy = string;
   v4 = [(NSMutableArray *)self->_entryFields count];
   value = self->_value;
   if (v4 < 2)
   {
-    [(NSMutableString *)value appendString:v11];
+    [(NSMutableString *)value appendString:stringCopy];
   }
 
   else
@@ -279,7 +279,7 @@
     if (v6 >= 1)
     {
       v7 = self->_value;
-      v8 = [v11 length];
+      v8 = [stringCopy length];
       if (v8 >= (v6 & 0x7FFFFFFFu))
       {
         v9 = v6 & 0x7FFFFFFF;
@@ -290,7 +290,7 @@
         v9 = v8;
       }
 
-      v10 = [v11 substringToIndex:v9];
+      v10 = [stringCopy substringToIndex:v9];
       [(NSMutableString *)v7 appendString:v10];
     }
   }
@@ -309,9 +309,9 @@
   }
 }
 
-- (void)setNumberOfEntryFields:(int)a3 opaqueBackground:(BOOL)a4
+- (void)setNumberOfEntryFields:(int)fields opaqueBackground:(BOOL)background
 {
-  if (a4)
+  if (background)
   {
     v7 = @"UIPasscodeFieldBackground_Opaque.png";
   }
@@ -328,8 +328,8 @@
   v10 = v9;
   [(UIView *)self bounds];
   v12 = v11;
-  v35 = [MEMORY[0x1E696AD88] defaultCenter];
-  self->_opaqueBackground = a4;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  self->_opaqueBackground = background;
   okButton = self->_okButton;
   if (okButton)
   {
@@ -343,7 +343,7 @@
   }
 
   v16 = -0.5;
-  if (a3 == 1)
+  if (fields == 1)
   {
     if (self->_centerHorizontally)
     {
@@ -359,7 +359,7 @@
 
   if (self->_entryFields)
   {
-    [v35 removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:0];
     [(NSMutableArray *)self->_entryFields makeObjectsPerformSelector:sel_removeFromSuperview];
     [(NSMutableArray *)self->_entryFields removeAllObjects];
     [(NSMutableArray *)self->_entryBackgrounds removeAllObjects];
@@ -377,16 +377,16 @@
   }
 
   v21 = 72.0;
-  if (a3 == 1)
+  if (fields == 1)
   {
     v21 = 31.0;
   }
 
   v22 = [off_1E70ECC18 fontWithFamilyName:@"Helvetica" traits:0 size:v21];
-  if (a3 >= 1)
+  if (fields >= 1)
   {
-    v23 = floor((v12 + (a3 - 1) * -10.0) / a3);
-    if (a3 == 1)
+    v23 = floor((v12 + (fields - 1) * -10.0) / fields);
+    if (fields == 1)
     {
       v24 = 3.0;
     }
@@ -398,7 +398,7 @@
 
     v25 = v23 - v15;
     v26 = 0.0;
-    v27 = a3;
+    fieldsCopy = fields;
     do
     {
       v28 = [[UIButton alloc] initWithFrame:v26, 0.0, v23, v10];
@@ -419,11 +419,11 @@
       [v29 setDelegate:self];
       [(NSMutableArray *)self->_entryFields addObject:v29];
       [(NSMutableArray *)self->_entryBackgrounds addObject:v28];
-      v31 = [v29 textInputTraits];
-      v32 = v31;
-      if (a3 != 1)
+      textInputTraits = [v29 textInputTraits];
+      v32 = textInputTraits;
+      if (fields != 1)
       {
-        [v31 setInsertionPointColor:0];
+        [textInputTraits setInsertionPointColor:0];
       }
 
       [v32 setKeyboardType:self->_keyboardType];
@@ -433,18 +433,18 @@
       [v32 setTextLoupeVisibility:1];
       [v32 setShortcutConversionType:1];
       [v32 setLearnsCorrections:0];
-      if (a3 == 1)
+      if (fields == 1)
       {
         [v29 setSecureTextEntry:1];
       }
 
-      [v35 addObserver:self selector:sel__textDidChange name:@"UITextFieldTextDidChangeNotification" object:v29];
+      [defaultCenter addObserver:self selector:sel__textDidChange name:@"UITextFieldTextDidChangeNotification" object:v29];
       v26 = v23 + 10.0 + v26;
 
-      --v27;
+      --fieldsCopy;
     }
 
-    while (v27);
+    while (fieldsCopy);
   }
 }
 
@@ -456,9 +456,9 @@
   }
 
   v3 = [(NSMutableArray *)self->_entryFields objectAtIndex:0];
-  v4 = [v3 becomeFirstResponder];
+  becomeFirstResponder = [v3 becomeFirstResponder];
 
-  return v4;
+  return becomeFirstResponder;
 }
 
 - (BOOL)isFirstResponder
@@ -466,9 +466,9 @@
   if ([(NSMutableArray *)self->_entryFields count]== 1)
   {
     v3 = [(NSMutableArray *)self->_entryFields objectAtIndex:0];
-    v4 = [v3 isFirstResponder];
+    isFirstResponder = [v3 isFirstResponder];
 
-    return v4;
+    return isFirstResponder;
   }
 
   else
@@ -488,8 +488,8 @@
     {
       value = self->_value;
       v4 = [(NSMutableArray *)self->_entryFields objectAtIndex:0];
-      v5 = [v4 text];
-      [(NSMutableString *)value setString:v5];
+      text = [v4 text];
+      [(NSMutableString *)value setString:text];
 
       okButton = self->_okButton;
       if (okButton)
@@ -502,13 +502,13 @@
   }
 }
 
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range
 {
-  v6 = a4;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [WeakRetained passcodeField:self shouldInsertText:v6];
+    v8 = [WeakRetained passcodeField:self shouldInsertText:textCopy];
   }
 
   else
@@ -519,7 +519,7 @@
   return v8;
 }
 
-- (void)textFieldDidResignFirstResponder:(id)a3
+- (void)textFieldDidResignFirstResponder:(id)responder
 {
   if ([(NSMutableArray *)self->_entryFields count]== 1)
   {
@@ -528,7 +528,7 @@
   }
 }
 
-- (void)okButtonClicked:(id)a3
+- (void)okButtonClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -537,11 +537,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event
 {
   v7.receiver = self;
   v7.super_class = UIPasscodeField;
-  v5 = [(UIView *)&v7 hitTest:a4 forEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v7 hitTest:event forEvent:test.x, test.y];
   if (v5 == self && !self->_okButton)
   {
 

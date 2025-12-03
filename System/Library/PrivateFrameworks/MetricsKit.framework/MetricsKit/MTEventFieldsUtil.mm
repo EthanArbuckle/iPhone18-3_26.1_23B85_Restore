@@ -1,45 +1,45 @@
 @interface MTEventFieldsUtil
-+ (id)applyFieldsMap:(id)a3 data:(id)a4 sectionName:(id)a5 error:(id *)a6;
-+ (id)mapForSectionName:(id)a3 inFieldsMap:(id)a4;
++ (id)applyFieldsMap:(id)map data:(id)data sectionName:(id)name error:(id *)error;
++ (id)mapForSectionName:(id)name inFieldsMap:(id)map;
 @end
 
 @implementation MTEventFieldsUtil
 
-+ (id)mapForSectionName:(id)a3 inFieldsMap:(id)a4
++ (id)mapForSectionName:(id)name inFieldsMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [v6 valueForKeyPath:v7];
+  nameCopy = name;
+  mapCopy = map;
+  v7 = nameCopy;
+  v8 = [mapCopy valueForKeyPath:v7];
   v9 = v7;
   if (!v8)
   {
     v9 = [@"custom." stringByAppendingString:v7];
 
-    v8 = [v6 valueForKeyPath:v9];
+    v8 = [mapCopy valueForKeyPath:v9];
   }
 
   return v8;
 }
 
-+ (id)applyFieldsMap:(id)a3 data:(id)a4 sectionName:(id)a5 error:(id *)a6
++ (id)applyFieldsMap:(id)map data:(id)data sectionName:(id)name error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  mapCopy = map;
+  dataCopy = data;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = [a1 mapForSectionName:v12 inFieldsMap:v10];
+    v25 = [self mapForSectionName:nameCopy inFieldsMap:mapCopy];
     if (v25)
     {
-      v68 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v66 = v12;
-        v67 = v10;
+        v66 = nameCopy;
+        v67 = mapCopy;
         v81 = 0u;
         v82 = 0u;
         v79 = 0u;
@@ -114,11 +114,11 @@ LABEL_23:
                     objc_enumerationMutation(v39);
                   }
 
-                  v44 = [v11 mt_nullableValueForKeyPathExt:*(*(&v75 + 1) + 8 * i)];
+                  v44 = [dataCopy mt_nullableValueForKeyPathExt:*(*(&v75 + 1) + 8 * i)];
                   if (v44)
                   {
                     v45 = v44;
-                    [v68 setObject:v44 forKey:v33];
+                    [dictionary setObject:v44 forKey:v33];
 
                     goto LABEL_25;
                   }
@@ -158,8 +158,8 @@ LABEL_26:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v66 = v12;
-        v67 = v10;
+        v66 = nameCopy;
+        v67 = mapCopy;
         v73 = 0u;
         v74 = 0u;
         v71 = 0u;
@@ -181,10 +181,10 @@ LABEL_26:
               }
 
               v58 = *(*(&v71 + 1) + 8 * j);
-              v59 = [v11 mt_nullableValueForKey:v58];
+              v59 = [dataCopy mt_nullableValueForKey:v58];
               if (v59)
               {
-                [v68 setObject:v59 forKey:v58];
+                [dictionary setObject:v59 forKey:v58];
               }
             }
 
@@ -197,9 +197,9 @@ LABEL_26:
 LABEL_44:
         v25 = v65;
 
-        v60 = v68;
-        v12 = v66;
-        if (![v68 count])
+        v60 = dictionary;
+        nameCopy = v66;
+        if (![dictionary count])
         {
           v61 = MTMetricsKitOSLog();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
@@ -210,16 +210,16 @@ LABEL_44:
           }
         }
 
-        v46 = [v68 copy];
-        v10 = v67;
+        v46 = [dictionary copy];
+        mapCopy = v67;
       }
 
       else
       {
-        if (a6)
+        if (error)
         {
-          MTError(106, @"fieldsMap section %@ in config sources is not valid", v47, v48, v49, v50, v51, v52, v12);
-          *a6 = v46 = 0;
+          MTError(106, @"fieldsMap section %@ in config sources is not valid", v47, v48, v49, v50, v51, v52, nameCopy);
+          *error = v46 = 0;
         }
 
         else
@@ -227,14 +227,14 @@ LABEL_44:
           v46 = 0;
         }
 
-        v60 = v68;
+        v60 = dictionary;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
-      MTError(105, @"fieldsMap section %@ is not found in config sources", v19, v20, v21, v22, v23, v24, v12);
-      *a6 = v46 = 0;
+      MTError(105, @"fieldsMap section %@ is not found in config sources", v19, v20, v21, v22, v23, v24, nameCopy);
+      *error = v46 = 0;
     }
 
     else
@@ -243,10 +243,10 @@ LABEL_44:
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     MTError(104, @"fieldsMap in config sources is not a dictionary object", v13, v14, v15, v16, v17, v18, v64);
-    *a6 = v46 = 0;
+    *error = v46 = 0;
   }
 
   else

@@ -13,7 +13,7 @@
   v10[3] = &unk_2785E2568;
   v11 = v8;
   v9 = v8;
-  [a1 saveAccount:a3 verify:a4 dataclassActions:0 completion:v10];
+  [self saveAccount:a3 verify:a4 dataclassActions:0 completion:v10];
 }
 
 @end

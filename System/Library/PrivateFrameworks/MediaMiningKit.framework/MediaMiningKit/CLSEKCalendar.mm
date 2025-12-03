@@ -1,16 +1,16 @@
 @interface CLSEKCalendar
-- (BOOL)isEqual:(id)a3;
-- (CLSEKCalendar)initWithCoder:(id)a3;
-- (CLSEKCalendar)initWithEKCalendar:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLSEKCalendar)initWithCoder:(id)coder;
+- (CLSEKCalendar)initWithEKCalendar:(id)calendar;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSEKCalendar
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_4;
   }
@@ -22,12 +22,12 @@
   }
 
   v5 = [(CLSEKCalendar *)self hash];
-  if (v5 == [(CLSEKCalendar *)v4 hash])
+  if (v5 == [(CLSEKCalendar *)equalCopy hash])
   {
     goto LABEL_4;
   }
 
-  if (self->_hasSharees != v4->_hasSharees)
+  if (self->_hasSharees != equalCopy->_hasSharees)
   {
 LABEL_8:
     v6 = 0;
@@ -35,7 +35,7 @@ LABEL_8:
   }
 
   shareesAndOwner = self->_shareesAndOwner;
-  if (shareesAndOwner != v4->_shareesAndOwner)
+  if (shareesAndOwner != equalCopy->_shareesAndOwner)
   {
     v6 = [(NSSet *)shareesAndOwner isEqualToSet:?];
     goto LABEL_9;
@@ -48,32 +48,32 @@ LABEL_9:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   calendarIdentifier = self->_calendarIdentifier;
-  v5 = a3;
-  [v5 encodeObject:calendarIdentifier forKey:@"calendarIdentifier"];
-  [v5 encodeBool:self->_hasSharees forKey:@"hasSharees"];
-  [v5 encodeObject:self->_shareesAndOwner forKey:@"shareesAndOwner"];
+  coderCopy = coder;
+  [coderCopy encodeObject:calendarIdentifier forKey:@"calendarIdentifier"];
+  [coderCopy encodeBool:self->_hasSharees forKey:@"hasSharees"];
+  [coderCopy encodeObject:self->_shareesAndOwner forKey:@"shareesAndOwner"];
 }
 
-- (CLSEKCalendar)initWithCoder:(id)a3
+- (CLSEKCalendar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CLSEKCalendar;
   v5 = [(CLSEKCalendar *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendarIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendarIdentifier"];
     calendarIdentifier = v5->_calendarIdentifier;
     v5->_calendarIdentifier = v6;
 
-    v5->_hasSharees = [v4 decodeBoolForKey:@"hasSharees"];
+    v5->_hasSharees = [coderCopy decodeBoolForKey:@"hasSharees"];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"shareesAndOwner"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"shareesAndOwner"];
     shareesAndOwner = v5->_shareesAndOwner;
     v5->_shareesAndOwner = v11;
   }
@@ -81,30 +81,30 @@ LABEL_9:
   return v5;
 }
 
-- (CLSEKCalendar)initWithEKCalendar:(id)a3
+- (CLSEKCalendar)initWithEKCalendar:(id)calendar
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  calendarCopy = calendar;
   v26.receiver = self;
   v26.super_class = CLSEKCalendar;
   v5 = [(CLSEKCalendar *)&v26 init];
   if (v5)
   {
-    v6 = [v4 calendarIdentifier];
+    calendarIdentifier = [calendarCopy calendarIdentifier];
     calendarIdentifier = v5->_calendarIdentifier;
-    v5->_calendarIdentifier = v6;
+    v5->_calendarIdentifier = calendarIdentifier;
 
-    v8 = [v4 hasSharees];
-    v5->_hasSharees = v8;
-    if (v8)
+    hasSharees = [calendarCopy hasSharees];
+    v5->_hasSharees = hasSharees;
+    if (hasSharees)
     {
-      v9 = [v4 shareesAndOwner];
-      v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v9, "count")}];
+      shareesAndOwner = [calendarCopy shareesAndOwner];
+      v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(shareesAndOwner, "count")}];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v11 = v9;
+      v11 = shareesAndOwner;
       v12 = [(NSSet *)v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v12)
       {

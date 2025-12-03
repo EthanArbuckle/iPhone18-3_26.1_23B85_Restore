@@ -1,6 +1,6 @@
 @interface WFVariableAggrandizement
-- (BOOL)isEqual:(id)a3;
-- (WFVariableAggrandizement)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFVariableAggrandizement)initWithDictionary:(id)dictionary;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 hash];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary hash];
 
   return v3 ^ 0x5620140A;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -27,9 +27,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFVariableAggrandizement *)v4 dictionary];
-      v6 = [(WFVariableAggrandizement *)self dictionary];
-      v7 = [v5 isEqual:v6];
+      dictionary = [(WFVariableAggrandizement *)equalCopy dictionary];
+      dictionary2 = [(WFVariableAggrandizement *)self dictionary];
+      v7 = [dictionary isEqual:dictionary2];
     }
 
     else
@@ -41,11 +41,11 @@
   return v7;
 }
 
-- (WFVariableAggrandizement)initWithDictionary:(id)a3
+- (WFVariableAggrandizement)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"Type"];
   v6 = objc_opt_class();
   v7 = v5;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -79,7 +79,7 @@
     v12 = NSClassFromString(v8);
     if ([(objc_class *)v12 isSubclassOfClass:objc_opt_class()])
     {
-      v13 = [[v12 alloc] initWithDictionary:v4];
+      v13 = [[v12 alloc] initWithDictionary:dictionaryCopy];
       if (v13)
       {
         v14 = v13;
@@ -97,15 +97,15 @@ LABEL_15:
   {
     if (!v8)
     {
-      v15 = [v4 mutableCopy];
+      v15 = [dictionaryCopy mutableCopy];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       [v15 setObject:v17 forKey:@"Type"];
 
-      v4 = v15;
+      dictionaryCopy = v15;
     }
 
-    v18 = [v4 copy];
+    v18 = [dictionaryCopy copy];
     self = *(v14 + 8);
     *(v14 + 8) = v18;
     goto LABEL_15;

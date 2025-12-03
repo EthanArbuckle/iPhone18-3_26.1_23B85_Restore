@@ -8,8 +8,8 @@
 - (BOOL)isExternalDisplayWindowScene;
 - (BOOL)isMainDisplayWindowScene;
 - (BOOL)supportsMultitasking;
-- (CGPoint)convertPoint:(CGPoint)a3 toNeighboringDisplayWindowScene:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toNeighboringDisplayWindowScene:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point toNeighboringDisplayWindowScene:(id)scene;
+- (CGRect)convertRect:(CGRect)rect toNeighboringDisplayWindowScene:(id)scene;
 - (CSCoverSheetViewController)coverSheetViewController;
 - (FBSDisplayIdentity)displayIdentity;
 - (FBSDisplayLayoutPublishing)displayLayoutPublisher;
@@ -61,24 +61,24 @@
 - (int64_t)_displayWindowingMode;
 - (int64_t)keyboardFocusCoalitionAffinity;
 - (void)_abstractWindowSceneDelegate;
-- (void)setInvalidating:(BOOL)a3;
+- (void)setInvalidating:(BOOL)invalidating;
 @end
 
 @implementation SBWindowScene
 
 - (SBHomeScreenController)homeScreenController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 homeScreenController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  homeScreenController = [_abstractWindowSceneDelegate homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
 - (id)_abstractWindowSceneDelegate
 {
-  v4 = [(SBWindowScene *)self delegate];
+  delegate = [(SBWindowScene *)self delegate];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = delegate;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -109,62 +109,62 @@
 
 - (SBSwitcherController)switcherController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 switcherController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  switcherController = [_abstractWindowSceneDelegate switcherController];
 
-  return v3;
+  return switcherController;
 }
 
 - (SBSceneManager)sceneManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 sceneManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  sceneManager = [_abstractWindowSceneDelegate sceneManager];
 
-  return v3;
+  return sceneManager;
 }
 
 - (SBLayoutStateTransitionCoordinator)layoutStateTransitionCoordinator
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 layoutStateTransitionCoordinator];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  layoutStateTransitionCoordinator = [_abstractWindowSceneDelegate layoutStateTransitionCoordinator];
 
-  return v3;
+  return layoutStateTransitionCoordinator;
 }
 
 - (BOOL)isMainDisplayWindowScene
 {
-  v2 = [(SBWindowScene *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 displayIdentity];
-  v5 = [v4 isMainDisplay];
+  _FBSScene = [(SBWindowScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  displayIdentity = [settings displayIdentity];
+  isMainDisplay = [displayIdentity isMainDisplay];
 
-  return v5;
+  return isMainDisplay;
 }
 
 - (SBTransientOverlayPresenting)transientOverlayPresenter
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 transientOverlayPresenter];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  transientOverlayPresenter = [_abstractWindowSceneDelegate transientOverlayPresenter];
 
-  return v3;
+  return transientOverlayPresenter;
 }
 
 - (BOOL)isExternalDisplayWindowScene
 {
-  v2 = [(SBWindowScene *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 displayIdentity];
-  v5 = [v4 isExternal];
+  _FBSScene = [(SBWindowScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  displayIdentity = [settings displayIdentity];
+  isExternal = [displayIdentity isExternal];
 
-  return v5;
+  return isExternal;
 }
 
 - (BOOL)supportsMultitasking
 {
   v3 = +[SBPlatformController sharedInstance];
-  v4 = [v3 isMedusaCapable];
+  isMedusaCapable = [v3 isMedusaCapable];
 
-  if (v4)
+  if (isMedusaCapable)
   {
     return ![(SBWindowScene *)self isContinuityDisplayWindowScene];
   }
@@ -177,13 +177,13 @@
 
 - (BOOL)isExtendedDisplayWindowScene
 {
-  v3 = [(SBWindowScene *)self session];
-  v4 = [v3 role];
-  v5 = [v4 isEqualToString:@"SBWindowSceneSessionRoleExternalDisplay"];
+  session = [(SBWindowScene *)self session];
+  role = [session role];
+  v5 = [role isEqualToString:@"SBWindowSceneSessionRoleExternalDisplay"];
 
-  v6 = [(SBWindowScene *)self _displayWindowingMode];
-  v7 = [(SBWindowScene *)self isExternalDisplayWindowScene];
-  if (v6 == 1)
+  _displayWindowingMode = [(SBWindowScene *)self _displayWindowingMode];
+  isExternalDisplayWindowScene = [(SBWindowScene *)self isExternalDisplayWindowScene];
+  if (_displayWindowingMode == 1)
   {
     v8 = v5;
   }
@@ -193,180 +193,180 @@
     v8 = 0;
   }
 
-  return v7 && v8;
+  return isExternalDisplayWindowScene && v8;
 }
 
 - (FBSDisplayLayoutPublishing)displayLayoutPublisher
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 displayLayoutPublisher];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  displayLayoutPublisher = [_abstractWindowSceneDelegate displayLayoutPublisher];
 
-  return v3;
+  return displayLayoutPublisher;
 }
 
 - (SBSceneLayoutStateProvider)layoutStateProvider
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 layoutStateProvider];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  layoutStateProvider = [_abstractWindowSceneDelegate layoutStateProvider];
 
-  return v3;
+  return layoutStateProvider;
 }
 
 - (SBMainDisplayLayoutStateManager)layoutStateManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 layoutStateManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  layoutStateManager = [_abstractWindowSceneDelegate layoutStateManager];
 
-  return v3;
+  return layoutStateManager;
 }
 
 - (SBLockStateProviding)uiLockStateProvider
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 uiLockStateProvider];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  uiLockStateProvider = [_abstractWindowSceneDelegate uiLockStateProvider];
 
-  return v3;
+  return uiLockStateProvider;
 }
 
 - (int64_t)_displayWindowingMode
 {
   v2 = SBApp;
-  v3 = [(SBWindowScene *)self _FBSScene];
-  v4 = [v3 settings];
-  v5 = [v4 displayIdentity];
-  v6 = [v2 windowingModeForDisplay:v5];
+  _FBSScene = [(SBWindowScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  displayIdentity = [settings displayIdentity];
+  v6 = [v2 windowingModeForDisplay:displayIdentity];
 
   return v6;
 }
 
 - (SBFloatingDockController)floatingDockController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 floatingDockController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  floatingDockController = [_abstractWindowSceneDelegate floatingDockController];
 
-  return v3;
+  return floatingDockController;
 }
 
 - (SBTraitsPipelineManager)traitsPipelineManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 traitsPipelineManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  traitsPipelineManager = [_abstractWindowSceneDelegate traitsPipelineManager];
 
-  return v3;
+  return traitsPipelineManager;
 }
 
 - (SBFAuthenticationStatusProvider)authenticationStatusProvider
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 authenticationStatusProvider];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  authenticationStatusProvider = [_abstractWindowSceneDelegate authenticationStatusProvider];
 
-  return v3;
+  return authenticationStatusProvider;
 }
 
 - (SBFSecureDisplayStateProviding)secureDisplayStateProvider
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 secureDisplayStateProvider];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  secureDisplayStateProvider = [_abstractWindowSceneDelegate secureDisplayStateProvider];
 
-  return v3;
+  return secureDisplayStateProvider;
 }
 
 - (BOOL)isContinuityDisplayWindowScene
 {
-  v3 = [(SBWindowScene *)self session];
-  v4 = [v3 role];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D68048]];
+  session = [(SBWindowScene *)self session];
+  role = [session role];
+  v5 = [role isEqualToString:*MEMORY[0x277D68048]];
 
-  v6 = [(SBWindowScene *)self _displayWindowingMode];
-  v7 = [(SBWindowScene *)self isExternalDisplayWindowScene];
-  if (v7)
+  _displayWindowingMode = [(SBWindowScene *)self _displayWindowingMode];
+  isExternalDisplayWindowScene = [(SBWindowScene *)self isExternalDisplayWindowScene];
+  if (isExternalDisplayWindowScene)
   {
-    if (v6 == 1)
+    if (_displayWindowingMode == 1)
     {
-      LOBYTE(v7) = v5;
+      LOBYTE(isExternalDisplayWindowScene) = v5;
     }
 
     else
     {
-      LOBYTE(v7) = 0;
+      LOBYTE(isExternalDisplayWindowScene) = 0;
     }
   }
 
-  return v7;
+  return isExternalDisplayWindowScene;
 }
 
 - (SBAssistantSceneControlling)assistantController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 assistantController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  assistantController = [_abstractWindowSceneDelegate assistantController];
 
-  return v3;
+  return assistantController;
 }
 
 - (SBSystemGestureManager)systemGestureManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 systemGestureManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  systemGestureManager = [_abstractWindowSceneDelegate systemGestureManager];
 
-  return v3;
+  return systemGestureManager;
 }
 
 - (SBWindowScenePIPManager)pictureInPictureManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 pictureInPictureManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  pictureInPictureManager = [_abstractWindowSceneDelegate pictureInPictureManager];
 
-  return v3;
+  return pictureInPictureManager;
 }
 
 - (SBCommandTabController)commandTabController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 commandTabController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  commandTabController = [_abstractWindowSceneDelegate commandTabController];
 
-  return v3;
+  return commandTabController;
 }
 
 - (SBRecordingIndicatorManager)recordingIndicatorManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 recordingIndicatorManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  recordingIndicatorManager = [_abstractWindowSceneDelegate recordingIndicatorManager];
 
-  return v3;
+  return recordingIndicatorManager;
 }
 
 - (SBIconController)iconController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 iconController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  iconController = [_abstractWindowSceneDelegate iconController];
 
-  return v3;
+  return iconController;
 }
 
 - (SBMedusaHostedKeyboardWindowController)medusaHostedKeyboardWindowController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 medusaHostedKeyboardWindowController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  medusaHostedKeyboardWindowController = [_abstractWindowSceneDelegate medusaHostedKeyboardWindowController];
 
-  return v3;
+  return medusaHostedKeyboardWindowController;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBWindowScene *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWindowScene *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
-  v3 = [(SBWindowScene *)self _FBSScene];
-  if (v3)
+  _FBSScene = [(SBWindowScene *)self _FBSScene];
+  if (_FBSScene)
   {
-    v4 = [MEMORY[0x277CF0C00] builderWithObject:v3];
-    v5 = [v3 identifier];
-    [v4 appendString:v5 withName:@"identifier" skipIfEmpty:1];
+    v4 = [MEMORY[0x277CF0C00] builderWithObject:_FBSScene];
+    identifier = [_FBSScene identifier];
+    [v4 appendString:identifier withName:@"identifier" skipIfEmpty:1];
   }
 
   else
@@ -382,7 +382,7 @@
   v7 = v6;
   v13 = v7;
   v14 = v4;
-  v15 = self;
+  selfCopy = self;
   v8 = v4;
   v9 = [v7 modifyProem:v12];
   v10 = v7;
@@ -404,119 +404,119 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
 
 - (SBHardwareButtonBezelEffectsCoordinator)hardwareButtonBezelEffectsCoordinator
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 hardwareButtonBezelEffectsCoordinator];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  hardwareButtonBezelEffectsCoordinator = [_abstractWindowSceneDelegate hardwareButtonBezelEffectsCoordinator];
 
-  return v3;
+  return hardwareButtonBezelEffectsCoordinator;
 }
 
 - (SBHomeAffordanceInteractionManager)homeAffordanceInteractionManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 homeAffordanceInteractionManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  homeAffordanceInteractionManager = [_abstractWindowSceneDelegate homeAffordanceInteractionManager];
 
-  return v3;
+  return homeAffordanceInteractionManager;
 }
 
 - (SBSystemPointerInteractionManager)systemPointerInteractionManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 systemPointerInteractionManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  systemPointerInteractionManager = [_abstractWindowSceneDelegate systemPointerInteractionManager];
 
-  return v3;
+  return systemPointerInteractionManager;
 }
 
 - (SBModalLibraryController)modalLibraryController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 modalLibraryController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  modalLibraryController = [_abstractWindowSceneDelegate modalLibraryController];
 
-  return v3;
+  return modalLibraryController;
 }
 
 - (SBLockScreenManager)lockScreenManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 lockScreenManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  lockScreenManager = [_abstractWindowSceneDelegate lockScreenManager];
 
-  return v3;
+  return lockScreenManager;
 }
 
 - (SBSystemApertureController)systemApertureController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 systemApertureController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  systemApertureController = [_abstractWindowSceneDelegate systemApertureController];
 
-  return v3;
+  return systemApertureController;
 }
 
 - (BNBannerController)bannerController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 bannerController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  bannerController = [_abstractWindowSceneDelegate bannerController];
 
-  return v3;
+  return bannerController;
 }
 
 - (SBAmbientPresentationController)ambientPresentationController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 ambientPresentationController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  ambientPresentationController = [_abstractWindowSceneDelegate ambientPresentationController];
 
-  return v3;
+  return ambientPresentationController;
 }
 
 - (SBFZStackResolver)zStackResolver
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 zStackResolver];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  zStackResolver = [_abstractWindowSceneDelegate zStackResolver];
 
-  return v3;
+  return zStackResolver;
 }
 
 - (SBWindowHidingManager)windowHidingManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 windowHidingManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  windowHidingManager = [_abstractWindowSceneDelegate windowHidingManager];
 
-  return v3;
+  return windowHidingManager;
 }
 
 - (TRAArbiter)traitsArbiter
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 traitsArbiter];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  traitsArbiter = [_abstractWindowSceneDelegate traitsArbiter];
 
-  return v3;
+  return traitsArbiter;
 }
 
 - (SBControlCenterController)controlCenterController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 controlCenterController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  controlCenterController = [_abstractWindowSceneDelegate controlCenterController];
 
-  return v3;
+  return controlCenterController;
 }
 
 - (CSCoverSheetViewController)coverSheetViewController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 coverSheetViewController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  coverSheetViewController = [_abstractWindowSceneDelegate coverSheetViewController];
 
-  return v3;
+  return coverSheetViewController;
 }
 
 - (SBTransientUIInteractionManager)transientUIInteractionManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 transientUIInteractionManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  transientUIInteractionManager = [_abstractWindowSceneDelegate transientUIInteractionManager];
 
-  return v3;
+  return transientUIInteractionManager;
 }
 
-- (void)setInvalidating:(BOOL)a3
+- (void)setInvalidating:(BOOL)invalidating
 {
-  if (self->_isInvalidating && !a3)
+  if (self->_isInvalidating && !invalidating)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't unvalidate an invalidating scene!"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -531,16 +531,16 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
 
   else
   {
-    self->_isInvalidating = a3;
+    self->_isInvalidating = invalidating;
   }
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toNeighboringDisplayWindowScene:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toNeighboringDisplayWindowScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(UIWindowScene *)self _fbsDisplayConfiguration];
-  v7 = [(SBWindowScene *)self screen];
-  [v7 bounds];
+  sceneCopy = scene;
+  _fbsDisplayConfiguration = [(UIWindowScene *)self _fbsDisplayConfiguration];
+  screen = [(SBWindowScene *)self screen];
+  [screen bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -556,10 +556,10 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
   v34.size.width = v13;
   v34.size.height = v15;
   CGRectGetHeight(v34);
-  v16 = [v5 _fbsDisplayConfiguration];
-  v17 = [v5 screen];
+  _fbsDisplayConfiguration2 = [sceneCopy _fbsDisplayConfiguration];
+  screen2 = [sceneCopy screen];
 
-  [v17 bounds];
+  [screen2 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -586,12 +586,12 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toNeighboringDisplayWindowScene:(id)a4
+- (CGRect)convertRect:(CGRect)rect toNeighboringDisplayWindowScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(UIWindowScene *)self _fbsDisplayConfiguration];
-  v7 = [(SBWindowScene *)self screen];
-  [v7 bounds];
+  sceneCopy = scene;
+  _fbsDisplayConfiguration = [(UIWindowScene *)self _fbsDisplayConfiguration];
+  screen = [(SBWindowScene *)self screen];
+  [screen bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -607,10 +607,10 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
   v39.size.width = v13;
   v39.size.height = v15;
   CGRectGetHeight(v39);
-  v16 = [v5 _fbsDisplayConfiguration];
-  v17 = [v5 screen];
+  _fbsDisplayConfiguration2 = [sceneCopy _fbsDisplayConfiguration];
+  screen2 = [sceneCopy screen];
 
-  [v17 bounds];
+  [screen2 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -645,125 +645,125 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
 
 - (SBAlertItemsController)alertItemsController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 alertItemsController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  alertItemsController = [_abstractWindowSceneDelegate alertItemsController];
 
-  return v3;
+  return alertItemsController;
 }
 
 - (SBDisplayAppInteractionEventSource)appInteractionEventSource
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 appInteractionEventSource];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  appInteractionEventSource = [_abstractWindowSceneDelegate appInteractionEventSource];
 
-  return v3;
+  return appInteractionEventSource;
 }
 
 - (SBCoverSheetPresentationManager)coverSheetPresentationManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 coverSheetPresentationManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  coverSheetPresentationManager = [_abstractWindowSceneDelegate coverSheetPresentationManager];
 
-  return v3;
+  return coverSheetPresentationManager;
 }
 
 - (SBLockedPointerManager)lockedPointerManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 lockedPointerManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  lockedPointerManager = [_abstractWindowSceneDelegate lockedPointerManager];
 
-  return v3;
+  return lockedPointerManager;
 }
 
 - (SBModalAlertPresentationCoordinator)modalAlertPresentationCoordinator
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 modalAlertPresentationCoordinator];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  modalAlertPresentationCoordinator = [_abstractWindowSceneDelegate modalAlertPresentationCoordinator];
 
-  return v3;
+  return modalAlertPresentationCoordinator;
 }
 
 - (SBModalUIFluidDismissGestureManager)modalUIFluidDismissGestureManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 modalUIFluidDismissGestureManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  modalUIFluidDismissGestureManager = [_abstractWindowSceneDelegate modalUIFluidDismissGestureManager];
 
-  return v3;
+  return modalUIFluidDismissGestureManager;
 }
 
 - (SBReachabilitySceneOffsetProviding)reachabilitySceneOffsetProvider
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 reachabilitySceneOffsetProvider];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  reachabilitySceneOffsetProvider = [_abstractWindowSceneDelegate reachabilitySceneOffsetProvider];
 
-  return v3;
+  return reachabilitySceneOffsetProvider;
 }
 
 - (SBWallpaperController)wallpaperController
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 wallpaperController];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  wallpaperController = [_abstractWindowSceneDelegate wallpaperController];
 
-  return v3;
+  return wallpaperController;
 }
 
 - (SBUICommandValidating)commandValidator
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 commandValidator];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  commandValidator = [_abstractWindowSceneDelegate commandValidator];
 
-  return v3;
+  return commandValidator;
 }
 
 - (SBMenuBarManager)menuBarManager
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 menuBarManager];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  menuBarManager = [_abstractWindowSceneDelegate menuBarManager];
 
-  return v3;
+  return menuBarManager;
 }
 
 - (SBWindowSceneAccessorySceneProvider)accessorySceneProvider
 {
-  v2 = [(SBWindowScene *)self _abstractWindowSceneDelegate];
-  v3 = [v2 accessorySceneProvider];
+  _abstractWindowSceneDelegate = [(SBWindowScene *)self _abstractWindowSceneDelegate];
+  accessorySceneProvider = [_abstractWindowSceneDelegate accessorySceneProvider];
 
-  return v3;
+  return accessorySceneProvider;
 }
 
 - (FBSDisplayIdentity)displayIdentity
 {
-  v2 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v3 = [v2 identity];
+  _sbDisplayConfiguration = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
 
-  return v3;
+  return identity;
 }
 
 - (int64_t)keyboardFocusCoalitionAffinity
 {
-  v3 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v4 = [v3 identity];
-  v5 = [v4 isMainDisplay];
+  _sbDisplayConfiguration = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
+  isMainDisplay = [identity isMainDisplay];
 
-  if (v5)
+  if (isMainDisplay)
   {
     return 0;
   }
 
-  v7 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v8 = [v7 identity];
-  v9 = [v8 isExternal];
+  _sbDisplayConfiguration2 = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity2 = [_sbDisplayConfiguration2 identity];
+  isExternal = [identity2 isExternal];
 
-  if (v9)
+  if (isExternal)
   {
     return 1;
   }
 
-  v10 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v11 = [v10 identity];
-  v12 = [v11 isContinuityDisplay];
+  _sbDisplayConfiguration3 = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity3 = [_sbDisplayConfiguration3 identity];
+  isContinuityDisplay = [identity3 isContinuityDisplay];
 
-  if (v12)
+  if (isContinuityDisplay)
   {
     return 2;
   }
@@ -776,29 +776,29 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
 
 - (BOOL)isEmbeddedScene
 {
-  v2 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v3 = [v2 identity];
-  v4 = [v3 isMainDisplay];
+  _sbDisplayConfiguration = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
+  isMainDisplay = [identity isMainDisplay];
 
-  return v4;
+  return isMainDisplay;
 }
 
 - (BOOL)isContinuityScene
 {
-  v2 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v3 = [v2 identity];
-  v4 = [v3 isContinuityDisplay];
+  _sbDisplayConfiguration = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
+  isContinuityDisplay = [identity isContinuityDisplay];
 
-  return v4;
+  return isContinuityDisplay;
 }
 
 - (BOOL)isExternalDisplayScene
 {
-  v2 = [(UIWindowScene *)self _sbDisplayConfiguration];
-  v3 = [v2 identity];
-  v4 = [v3 isExternal];
+  _sbDisplayConfiguration = [(UIWindowScene *)self _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
+  isExternal = [identity isExternal];
 
-  return v4;
+  return isExternal;
 }
 
 - (void)setInvalidating:(uint64_t)a3 .cold.1(const char *a1, uint64_t a2, uint64_t a3)
@@ -824,8 +824,8 @@ void __58__SBWindowScene_DebuggingOnly__succinctDescriptionBuilder__block_invoke
 
 - (void)_abstractWindowSceneDelegate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBWindowScene.m" lineNumber:124 description:{@"Delegate is nil or not the right type %@", 0}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBWindowScene.m" lineNumber:124 description:{@"Delegate is nil or not the right type %@", 0}];
 }
 
 @end

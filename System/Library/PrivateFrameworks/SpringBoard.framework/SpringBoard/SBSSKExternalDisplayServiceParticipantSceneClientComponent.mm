@@ -3,67 +3,67 @@
 - (BOOL)isExtendedDisplayCapable;
 - (FBSDisplayConfiguration)displayConfiguration;
 - (void)invalidate;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SBSSKExternalDisplayServiceParticipantSceneClientComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = SBSSKExternalDisplayServiceParticipantSceneClientComponent;
-  [(FBSSceneComponent *)&v5 setScene:a3];
-  v4 = [SBApp sskExternalDisplayService];
-  [v4 didConnectParticipant:self];
+  [(FBSSceneComponent *)&v5 setScene:scene];
+  sskExternalDisplayService = [SBApp sskExternalDisplayService];
+  [sskExternalDisplayService didConnectParticipant:self];
 }
 
 - (void)invalidate
 {
-  v3 = [SBApp sskExternalDisplayService];
-  [v3 willDisconnectParticipant:self];
+  sskExternalDisplayService = [SBApp sskExternalDisplayService];
+  [sskExternalDisplayService willDisconnectParticipant:self];
 
   v4.receiver = self;
   v4.super_class = SBSSKExternalDisplayServiceParticipantSceneClientComponent;
   [(FBSSceneComponent *)&v4 invalidate];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v4 = a4;
-  v8 = [v4 previousSettings];
-  v5 = [v8 displayConfiguration];
-  v6 = [v4 settings];
+  settingsCopy = settings;
+  previousSettings = [settingsCopy previousSettings];
+  displayConfiguration = [previousSettings displayConfiguration];
+  settings = [settingsCopy settings];
 
-  v7 = [v6 displayConfiguration];
-  [v5 isEqual:v7];
+  displayConfiguration2 = [settings displayConfiguration];
+  [displayConfiguration isEqual:displayConfiguration2];
 }
 
 - (FBSDisplayConfiguration)displayConfiguration
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
-  v4 = [v3 displayConfiguration];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  return v4;
+  return displayConfiguration;
 }
 
 - (BOOL)isActive
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 SSKDisplayEndpoint];
-  v4 = [v3 hasControlOfDisplay];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  sSKDisplayEndpoint = [clientScene SSKDisplayEndpoint];
+  hasControlOfDisplay = [sSKDisplayEndpoint hasControlOfDisplay];
 
-  return v4;
+  return hasControlOfDisplay;
 }
 
 - (BOOL)isExtendedDisplayCapable
 {
-  v2 = [(SBSSKExternalDisplayServiceParticipantSceneClientComponent *)self displayConfiguration];
+  displayConfiguration = [(SBSSKExternalDisplayServiceParticipantSceneClientComponent *)self displayConfiguration];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 externalDisplayDefaults];
+  externalDisplayDefaults = [v3 externalDisplayDefaults];
 
-  LOBYTE(v3) = [v4 displaySupportsExtendedDisplayMode:v2];
+  LOBYTE(v3) = [externalDisplayDefaults displaySupportsExtendedDisplayMode:displayConfiguration];
   return v3;
 }
 

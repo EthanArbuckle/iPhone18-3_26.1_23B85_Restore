@@ -1,41 +1,41 @@
 @interface ADReprojection
-- (ADReprojection)initWithCapacity:(unint64_t)a3 streakingInfill:(unint64_t)a4;
-- (BOOL)isCalibrationUndistorted:(id)a3;
-- (BOOL)updateCapacity:(unint64_t)a3;
-- (int)vectorizeCameraPixels:(__CVBuffer *)a3;
-- (int64_t)updateWarpWithWarpedDepthBuffer:(__CVBuffer *)a3 dimensions:(CGSize)a4 validPixels:(unint64_t)a5;
-- (int64_t)warpImage:(__CVBuffer *)a3 intoImage:(__CVBuffer *)a4;
-- (uint64_t)updateWarpMapWithDepth:(__n128)a3 srcCalibration:(__n128)a4 dstCalibration:(__n128)a5 sourceToDestinationTransform:(uint64_t)a6 warpedDepth:(__CVBuffer *)a7;
-- (uint64_t)updateWarpMapWithDepth:(__n128)a3 srcCalibration:(__n128)a4 dstCalibration:(__n128)a5 sourceToDestinationTransform:(uint64_t)a6 warpedDepth:(__CVBuffer *)a7 warpMap:(void *)a8;
-- (uint64_t)updateWarpMapWithDepth:(float32x4_t)a3 srcCalibration:(float32x4_t)a4 dstCalibration:(float32x4_t)a5 poseTransform:(uint64_t)a6 warpedDepth:(uint64_t)a7;
-- (uint64_t)warpDepth:(float32x4_t)a3 srcCalibration:(float32x4_t)a4 dstCalibration:(float32x4_t)a5 poseTransform:(uint64_t)a6 warpedDepth:(uint64_t)a7;
-- (void)calculateWarpedPixelsFromSrcCalibration:(id)a3 dstCalibration:(id)a4 sourceToDestinationTransform:(id *)a5 validPixels:(unint64_t)a6;
+- (ADReprojection)initWithCapacity:(unint64_t)capacity streakingInfill:(unint64_t)infill;
+- (BOOL)isCalibrationUndistorted:(id)undistorted;
+- (BOOL)updateCapacity:(unint64_t)capacity;
+- (int)vectorizeCameraPixels:(__CVBuffer *)pixels;
+- (int64_t)updateWarpWithWarpedDepthBuffer:(__CVBuffer *)buffer dimensions:(CGSize)dimensions validPixels:(unint64_t)pixels;
+- (int64_t)warpImage:(__CVBuffer *)image intoImage:(__CVBuffer *)intoImage;
+- (uint64_t)updateWarpMapWithDepth:(__n128)depth srcCalibration:(__n128)calibration dstCalibration:(__n128)dstCalibration sourceToDestinationTransform:(uint64_t)transform warpedDepth:(__CVBuffer *)warpedDepth;
+- (uint64_t)updateWarpMapWithDepth:(__n128)depth srcCalibration:(__n128)calibration dstCalibration:(__n128)dstCalibration sourceToDestinationTransform:(uint64_t)transform warpedDepth:(__CVBuffer *)warpedDepth warpMap:(void *)map;
+- (uint64_t)updateWarpMapWithDepth:(float32x4_t)depth srcCalibration:(float32x4_t)calibration dstCalibration:(float32x4_t)dstCalibration poseTransform:(uint64_t)transform warpedDepth:(uint64_t)warpedDepth;
+- (uint64_t)warpDepth:(float32x4_t)depth srcCalibration:(float32x4_t)calibration dstCalibration:(float32x4_t)dstCalibration poseTransform:(uint64_t)transform warpedDepth:(uint64_t)warpedDepth;
+- (void)calculateWarpedPixelsFromSrcCalibration:(id)calibration dstCalibration:(id)dstCalibration sourceToDestinationTransform:(id *)transform validPixels:(unint64_t)pixels;
 - (void)dealloc;
 - (void)deallocateBuffers;
 @end
 
 @implementation ADReprojection
 
-- (int64_t)warpImage:(__CVBuffer *)a3 intoImage:(__CVBuffer *)a4
+- (int64_t)warpImage:(__CVBuffer *)image intoImage:(__CVBuffer *)intoImage
 {
   v164 = *MEMORY[0x277D85DE8];
   if (self->_singlePassOptimizationUsed)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(image);
     if (PixelFormatType > 1380410944)
     {
       switch(PixelFormatType)
       {
         case 1380410945:
           warpMap = self->_warpMap;
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(image, 1uLL);
           CVPixelBufferLockBaseAddress(warpMap, 1uLL);
-          CVPixelBufferLockBaseAddress(a4, 0);
+          CVPixelBufferLockBaseAddress(intoImage, 0);
           memset(&buf, 0, sizeof(buf));
           v82 = MEMORY[0x277CBF3A0];
-          PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+          PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
           memset(&v163, 0, sizeof(v163));
-          PixelBufferUtils::asVImageBuffer(a4, *v82, &v163);
+          PixelBufferUtils::asVImageBuffer(intoImage, *v82, &v163);
           memset(&v161, 0, sizeof(v161));
           PixelBufferUtils::asVImageBuffer(warpMap, *v82, &v161);
           rowBytes = v163.rowBytes;
@@ -90,14 +90,14 @@
           goto LABEL_91;
         case 1717855600:
           warpMap = self->_warpMap;
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(image, 1uLL);
           CVPixelBufferLockBaseAddress(warpMap, 1uLL);
-          CVPixelBufferLockBaseAddress(a4, 0);
+          CVPixelBufferLockBaseAddress(intoImage, 0);
           memset(&buf, 0, sizeof(buf));
           v102 = MEMORY[0x277CBF3A0];
-          PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+          PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
           memset(&v163, 0, sizeof(v163));
-          PixelBufferUtils::asVImageBuffer(a4, *v102, &v163);
+          PixelBufferUtils::asVImageBuffer(intoImage, *v102, &v163);
           memset(&v161, 0, sizeof(v161));
           PixelBufferUtils::asVImageBuffer(warpMap, *v102, &v161);
           v103 = v163.rowBytes;
@@ -144,14 +144,14 @@
           goto LABEL_91;
         case 1751410032:
           warpMap = self->_warpMap;
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(image, 1uLL);
           CVPixelBufferLockBaseAddress(warpMap, 1uLL);
-          CVPixelBufferLockBaseAddress(a4, 0);
+          CVPixelBufferLockBaseAddress(intoImage, 0);
           memset(&buf, 0, sizeof(buf));
           v27 = MEMORY[0x277CBF3A0];
-          PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+          PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
           memset(&v163, 0, sizeof(v163));
-          PixelBufferUtils::asVImageBuffer(a4, *v27, &v163);
+          PixelBufferUtils::asVImageBuffer(intoImage, *v27, &v163);
           memset(&v161, 0, sizeof(v161));
           PixelBufferUtils::asVImageBuffer(warpMap, *v27, &v161);
           v28 = v163.rowBytes;
@@ -202,14 +202,14 @@
     else if (PixelFormatType == 32 || PixelFormatType == 1111970369 || PixelFormatType == 1380401729)
     {
       warpMap = self->_warpMap;
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
+      CVPixelBufferLockBaseAddress(image, 1uLL);
       CVPixelBufferLockBaseAddress(warpMap, 1uLL);
-      CVPixelBufferLockBaseAddress(a4, 0);
+      CVPixelBufferLockBaseAddress(intoImage, 0);
       memset(&buf, 0, sizeof(buf));
       v9 = MEMORY[0x277CBF3A0];
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+      PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
       memset(&v163, 0, sizeof(v163));
-      PixelBufferUtils::asVImageBuffer(a4, *v9, &v163);
+      PixelBufferUtils::asVImageBuffer(intoImage, *v9, &v163);
       memset(&v161, 0, sizeof(v161));
       PixelBufferUtils::asVImageBuffer(warpMap, *v9, &v161);
       v10 = v163.rowBytes;
@@ -260,11 +260,11 @@
       }
 
 LABEL_91:
-      CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-      v118 = warpMap;
+      CVPixelBufferUnlockBaseAddress(image, 1uLL);
+      imageCopy = warpMap;
 LABEL_112:
-      CVPixelBufferUnlockBaseAddress(v118, 1uLL);
-      CVPixelBufferUnlockBaseAddress(a4, 0);
+      CVPixelBufferUnlockBaseAddress(imageCopy, 1uLL);
+      CVPixelBufferUnlockBaseAddress(intoImage, 0);
       return 0;
     }
 
@@ -273,7 +273,7 @@ LABEL_112:
       return -22953;
     }
 
-    v99 = CVPixelBufferGetPixelFormatType(a3);
+    v99 = CVPixelBufferGetPixelFormatType(image);
     PixelBufferUtils::pixelFormatAsString(v99, &buf);
     if ((buf.width & 0x8000000000000000) == 0)
     {
@@ -291,10 +291,10 @@ LABEL_112:
     goto LABEL_119;
   }
 
-  v25 = CVPixelBufferGetHeight(a4);
-  if (CVPixelBufferGetWidth(a4) * v25 <= self->_capacity)
+  v25 = CVPixelBufferGetHeight(intoImage);
+  if (CVPixelBufferGetWidth(intoImage) * v25 <= self->_capacity)
   {
-    v43 = CVPixelBufferGetPixelFormatType(a3);
+    v43 = CVPixelBufferGetPixelFormatType(image);
     if (v43 <= 1380401728)
     {
       if (v43 == 32 || v43 == 1111970369)
@@ -318,15 +318,15 @@ LABEL_112:
           {
             warpMaskX = self->_warpMaskX;
             warpMaskY = self->_warpMaskY;
-            v46 = CVPixelBufferGetHeight(a4);
-            v47 = CVPixelBufferGetWidth(a4);
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
-            CVPixelBufferLockBaseAddress(a4, 0);
+            v46 = CVPixelBufferGetHeight(intoImage);
+            v47 = CVPixelBufferGetWidth(intoImage);
+            CVPixelBufferLockBaseAddress(image, 1uLL);
+            CVPixelBufferLockBaseAddress(intoImage, 0);
             memset(&buf, 0, sizeof(buf));
             v48 = MEMORY[0x277CBF3A0];
-            PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+            PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
             memset(&v163, 0, sizeof(v163));
-            PixelBufferUtils::asVImageBuffer(a4, *v48, &v163);
+            PixelBufferUtils::asVImageBuffer(intoImage, *v48, &v163);
             v49 = v163.rowBytes;
             v50 = v163.data;
             bzero(v163.data, v163.height * v163.rowBytes);
@@ -365,7 +365,7 @@ LABEL_112:
             }
 
 LABEL_111:
-            v118 = a3;
+            imageCopy = image;
             goto LABEL_112;
           }
 
@@ -375,7 +375,7 @@ LABEL_113:
             return -22953;
           }
 
-          v159 = CVPixelBufferGetPixelFormatType(a3);
+          v159 = CVPixelBufferGetPixelFormatType(image);
           PixelBufferUtils::pixelFormatAsString(v159, &buf);
           if ((buf.width & 0x8000000000000000) == 0)
           {
@@ -403,15 +403,15 @@ LABEL_119:
 LABEL_54:
         v63 = self->_warpMaskX;
         v64 = self->_warpMaskY;
-        v65 = CVPixelBufferGetHeight(a4);
-        v66 = CVPixelBufferGetWidth(a4);
-        CVPixelBufferLockBaseAddress(a3, 1uLL);
-        CVPixelBufferLockBaseAddress(a4, 0);
+        v65 = CVPixelBufferGetHeight(intoImage);
+        v66 = CVPixelBufferGetWidth(intoImage);
+        CVPixelBufferLockBaseAddress(image, 1uLL);
+        CVPixelBufferLockBaseAddress(intoImage, 0);
         memset(&buf, 0, sizeof(buf));
         v67 = MEMORY[0x277CBF3A0];
-        PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+        PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
         memset(&v163, 0, sizeof(v163));
-        PixelBufferUtils::asVImageBuffer(a4, *v67, &v163);
+        PixelBufferUtils::asVImageBuffer(intoImage, *v67, &v163);
         v68 = v163.rowBytes;
         v69 = v163.data;
         bzero(v163.data, v163.height * v163.rowBytes);
@@ -458,15 +458,15 @@ LABEL_54:
         {
           v119 = self->_warpMaskX;
           v120 = self->_warpMaskY;
-          v121 = CVPixelBufferGetHeight(a4);
-          v122 = CVPixelBufferGetWidth(a4);
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
-          CVPixelBufferLockBaseAddress(a4, 0);
+          v121 = CVPixelBufferGetHeight(intoImage);
+          v122 = CVPixelBufferGetWidth(intoImage);
+          CVPixelBufferLockBaseAddress(image, 1uLL);
+          CVPixelBufferLockBaseAddress(intoImage, 0);
           memset(&buf, 0, sizeof(buf));
           v123 = MEMORY[0x277CBF3A0];
-          PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+          PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
           memset(&v163, 0, sizeof(v163));
-          PixelBufferUtils::asVImageBuffer(a4, *v123, &v163);
+          PixelBufferUtils::asVImageBuffer(intoImage, *v123, &v163);
           v124 = v163.rowBytes;
           v125 = v163.data;
           bzero(v163.data, v163.height * v163.rowBytes);
@@ -514,15 +514,15 @@ LABEL_54:
 
     v139 = self->_warpMaskX;
     v140 = self->_warpMaskY;
-    v141 = CVPixelBufferGetHeight(a4);
-    v142 = CVPixelBufferGetWidth(a4);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a4, 0);
+    v141 = CVPixelBufferGetHeight(intoImage);
+    v142 = CVPixelBufferGetWidth(intoImage);
+    CVPixelBufferLockBaseAddress(image, 1uLL);
+    CVPixelBufferLockBaseAddress(intoImage, 0);
     memset(&buf, 0, sizeof(buf));
     v143 = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+    PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
     memset(&v163, 0, sizeof(v163));
-    PixelBufferUtils::asVImageBuffer(a4, *v143, &v163);
+    PixelBufferUtils::asVImageBuffer(intoImage, *v143, &v163);
     v144 = v163.rowBytes;
     v145 = v163.data;
     bzero(v163.data, v163.height * v163.rowBytes);
@@ -573,26 +573,26 @@ LABEL_54:
   return -22957;
 }
 
-- (uint64_t)updateWarpMapWithDepth:(__n128)a3 srcCalibration:(__n128)a4 dstCalibration:(__n128)a5 sourceToDestinationTransform:(uint64_t)a6 warpedDepth:(__CVBuffer *)a7 warpMap:(void *)a8
+- (uint64_t)updateWarpMapWithDepth:(__n128)depth srcCalibration:(__n128)calibration dstCalibration:(__n128)dstCalibration sourceToDestinationTransform:(uint64_t)transform warpedDepth:(__CVBuffer *)warpedDepth warpMap:(void *)map
 {
   *v41 = a2;
-  *&v41[16] = a3;
+  *&v41[16] = depth;
   v43[0] = a2;
-  v43[1] = a3;
-  *&v41[32] = a4;
-  *&v41[48] = a5;
-  v43[2] = a4;
-  v43[3] = a5;
-  v16 = a8;
+  v43[1] = depth;
+  *&v41[32] = calibration;
+  *&v41[48] = dstCalibration;
+  v43[2] = calibration;
+  v43[3] = dstCalibration;
+  mapCopy = map;
   v17 = a9;
   v18 = v17;
-  if (v16 && v17)
+  if (mapCopy && v17)
   {
-    v19 = a1;
-    objc_sync_enter(v19);
-    if (*(v19 + 88) != 1 || ![v19 isCalibrationUndistorted:v16] || !objc_msgSend(v19, "isCalibrationUndistorted:", v18) || *(v19 + 14))
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (*(selfCopy + 88) != 1 || ![selfCopy isCalibrationUndistorted:mapCopy] || !objc_msgSend(selfCopy, "isCalibrationUndistorted:", v18) || *(selfCopy + 14))
     {
-      if (*(v19 + 89) != 1)
+      if (*(selfCopy + 89) != 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -604,9 +604,9 @@ LABEL_54:
         goto LABEL_24;
       }
 
-      *(v19 + 72) = 0;
-      Height = CVPixelBufferGetHeight(a7);
-      Width = CVPixelBufferGetWidth(a7);
+      *(selfCopy + 72) = 0;
+      Height = CVPixelBufferGetHeight(warpedDepth);
+      Width = CVPixelBufferGetWidth(warpedDepth);
       [v18 referenceDimensions];
       v23 = v22;
       [v18 referenceDimensions];
@@ -620,15 +620,15 @@ LABEL_54:
         v25 = Width * Height;
       }
 
-      if ([v19 updateCapacity:v25])
+      if ([selfCopy updateCapacity:v25])
       {
-        v26 = [v19 vectorizeCameraPixels:a7];
+        v26 = [selfCopy vectorizeCameraPixels:warpedDepth];
         if ((v26 & 0x80000000) == 0)
         {
           v27 = v26;
-          [v19 calculateWarpedPixelsFromSrcCalibration:v16 dstCalibration:v18 sourceToDestinationTransform:v43 validPixels:v26];
+          [selfCopy calculateWarpedPixelsFromSrcCalibration:mapCopy dstCalibration:v18 sourceToDestinationTransform:v43 validPixels:v26];
           [v18 referenceDimensions];
-          v28 = [v19 updateWarpWithWarpedDepthBuffer:a10 dimensions:v27 validPixels:?];
+          v28 = [selfCopy updateWarpWithWarpedDepthBuffer:a10 dimensions:v27 validPixels:?];
 LABEL_23:
           v29 = v28;
           goto LABEL_24;
@@ -643,13 +643,13 @@ LABEL_23:
       }
 
 LABEL_24:
-      objc_sync_exit(v19);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_25;
     }
 
-    *(v19 + 72) = 1;
-    [v16 intrinsicMatrix];
+    *(selfCopy + 72) = 1;
+    [mapCopy intrinsicMatrix];
     v39 = v31;
     v40 = v30;
     v38 = v32;
@@ -660,7 +660,7 @@ LABEL_24:
     v44.columns[1] = v39;
     v44.columns[0] = v40;
     v44.columns[2] = v38;
-    v28 = ADReprojectionOptimizations::reprojectUndistortedDepthMap(a7, a11, v44, *v41, a10, v37);
+    v28 = ADReprojectionOptimizations::reprojectUndistortedDepthMap(warpedDepth, a11, v44, *v41, a10, v37);
     goto LABEL_23;
   }
 
@@ -676,39 +676,39 @@ LABEL_25:
   return v29;
 }
 
-- (uint64_t)updateWarpMapWithDepth:(__n128)a3 srcCalibration:(__n128)a4 dstCalibration:(__n128)a5 sourceToDestinationTransform:(uint64_t)a6 warpedDepth:(__CVBuffer *)a7
+- (uint64_t)updateWarpMapWithDepth:(__n128)depth srcCalibration:(__n128)calibration dstCalibration:(__n128)dstCalibration sourceToDestinationTransform:(uint64_t)transform warpedDepth:(__CVBuffer *)warpedDepth
 {
   v33 = *MEMORY[0x277D85DE8];
   v14 = a8;
   v15 = a9;
-  if (*(a1 + 88) == 1)
+  if (*(self + 88) == 1)
   {
-    v16 = *(a1 + 80);
+    v16 = *(self + 80);
     if (v16)
     {
       Width = CVPixelBufferGetWidth(v16);
-      v18 = CVPixelBufferGetWidth(a7);
-      v16 = *(a1 + 80);
+      v18 = CVPixelBufferGetWidth(warpedDepth);
+      v16 = *(self + 80);
       if (Width == v18)
       {
         Height = CVPixelBufferGetHeight(v16);
-        if (Height == CVPixelBufferGetHeight(a7))
+        if (Height == CVPixelBufferGetHeight(warpedDepth))
         {
           goto LABEL_8;
         }
 
-        v16 = *(a1 + 80);
+        v16 = *(self + 80);
       }
     }
 
     CVPixelBufferRelease(v16);
-    *(a1 + 80) = 0;
-    PixelBufferWithSameSize = PixelBufferUtils::createPixelBufferWithSameSize(a7, 0x32433136, 1);
-    *(a1 + 80) = PixelBufferWithSameSize;
+    *(self + 80) = 0;
+    PixelBufferWithSameSize = PixelBufferUtils::createPixelBufferWithSameSize(warpedDepth, 0x32433136, 1);
+    *(self + 80) = PixelBufferWithSameSize;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v21 = CVPixelBufferGetWidth(PixelBufferWithSameSize);
-      v22 = CVPixelBufferGetHeight(*(a1 + 80));
+      v22 = CVPixelBufferGetHeight(*(self + 80));
       *buf = 134218240;
       v30 = v21;
       v31 = 2048;
@@ -718,12 +718,12 @@ LABEL_25:
   }
 
 LABEL_8:
-  v23 = [a1 updateWarpMapWithDepth:a7 srcCalibration:v14 dstCalibration:v15 sourceToDestinationTransform:a10 warpedDepth:*(a1 + 80) warpMap:{a2.n128_f64[0], a3.n128_f64[0], a4.n128_f64[0], a5.n128_f64[0], *&a2, *&a3, *&a4, *&a5}];
+  v23 = [self updateWarpMapWithDepth:warpedDepth srcCalibration:v14 dstCalibration:v15 sourceToDestinationTransform:a10 warpedDepth:*(self + 80) warpMap:{a2.n128_f64[0], depth.n128_f64[0], calibration.n128_f64[0], dstCalibration.n128_f64[0], *&a2, *&depth, *&calibration, *&dstCalibration}];
 
   return v23;
 }
 
-- (uint64_t)warpDepth:(float32x4_t)a3 srcCalibration:(float32x4_t)a4 dstCalibration:(float32x4_t)a5 poseTransform:(uint64_t)a6 warpedDepth:(uint64_t)a7
+- (uint64_t)warpDepth:(float32x4_t)depth srcCalibration:(float32x4_t)calibration dstCalibration:(float32x4_t)dstCalibration poseTransform:(uint64_t)transform warpedDepth:(uint64_t)warpedDepth
 {
   v14 = a8;
   v15 = a9;
@@ -732,7 +732,7 @@ LABEL_8:
   v34 = v17;
   v35 = v18;
   v36 = v19;
-  v20 = [v15 cameraToPlatformTransform];
+  cameraToPlatformTransform = [v15 cameraToPlatformTransform];
   v22 = 0;
   v23 = v36;
   HIDWORD(v23) = 1.0;
@@ -748,21 +748,21 @@ LABEL_8:
   v41[3] = v23;
   do
   {
-    v42.columns[v22] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(v41[v22])), a3, *&v41[v22], 1), a4, v41[v22], 2), a5, v41[v22], 3);
+    v42.columns[v22] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(v41[v22])), depth, *&v41[v22], 1), calibration, v41[v22], 2), dstCalibration, v41[v22], 3);
     ++v22;
   }
 
   while (v22 != 4);
-  v27 = ADCommonUtils::computeTransform(v20, v21, v42);
-  v31 = [a1 updateWarpMapWithDepth:a7 srcCalibration:v14 dstCalibration:v15 sourceToDestinationTransform:a10 warpedDepth:0 warpMap:{v27, v28, v29, v30}];
+  v27 = ADCommonUtils::computeTransform(cameraToPlatformTransform, v21, v42);
+  v31 = [self updateWarpMapWithDepth:warpedDepth srcCalibration:v14 dstCalibration:v15 sourceToDestinationTransform:a10 warpedDepth:0 warpMap:{v27, v28, v29, v30}];
 
   return v31;
 }
 
-- (BOOL)isCalibrationUndistorted:(id)a3
+- (BOOL)isCalibrationUndistorted:(id)undistorted
 {
-  v3 = a3;
-  v4 = [v3 distortionModel];
+  undistortedCopy = undistorted;
+  distortionModel = [undistortedCopy distortionModel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -771,12 +771,12 @@ LABEL_8:
 
   else
   {
-    v6 = [v3 distortionModel];
+    distortionModel2 = [undistortedCopy distortionModel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v3 distortionModel];
-      v5 = [v7 XThetaType] == 2;
+      distortionModel3 = [undistortedCopy distortionModel];
+      v5 = [distortionModel3 XThetaType] == 2;
     }
 
     else
@@ -788,7 +788,7 @@ LABEL_8:
   return v5;
 }
 
-- (uint64_t)updateWarpMapWithDepth:(float32x4_t)a3 srcCalibration:(float32x4_t)a4 dstCalibration:(float32x4_t)a5 poseTransform:(uint64_t)a6 warpedDepth:(uint64_t)a7
+- (uint64_t)updateWarpMapWithDepth:(float32x4_t)depth srcCalibration:(float32x4_t)calibration dstCalibration:(float32x4_t)dstCalibration poseTransform:(uint64_t)transform warpedDepth:(uint64_t)warpedDepth
 {
   v14 = a8;
   v15 = a9;
@@ -797,7 +797,7 @@ LABEL_8:
   v34 = v17;
   v35 = v18;
   v36 = v19;
-  v20 = [v15 cameraToPlatformTransform];
+  cameraToPlatformTransform = [v15 cameraToPlatformTransform];
   v22 = 0;
   v23 = v36;
   HIDWORD(v23) = 1.0;
@@ -813,32 +813,32 @@ LABEL_8:
   v41[3] = v23;
   do
   {
-    v42.columns[v22] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(v41[v22])), a3, *&v41[v22], 1), a4, v41[v22], 2), a5, v41[v22], 3);
+    v42.columns[v22] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(v41[v22])), depth, *&v41[v22], 1), calibration, v41[v22], 2), dstCalibration, v41[v22], 3);
     ++v22;
   }
 
   while (v22 != 4);
-  v27 = ADCommonUtils::computeTransform(v20, v21, v42);
-  v31 = [a1 updateWarpMapWithDepth:a7 srcCalibration:v14 dstCalibration:v15 sourceToDestinationTransform:a10 warpedDepth:{v27, v28, v29, v30}];
+  v27 = ADCommonUtils::computeTransform(cameraToPlatformTransform, v21, v42);
+  v31 = [self updateWarpMapWithDepth:warpedDepth srcCalibration:v14 dstCalibration:v15 sourceToDestinationTransform:a10 warpedDepth:{v27, v28, v29, v30}];
 
   return v31;
 }
 
-- (int)vectorizeCameraPixels:(__CVBuffer *)a3
+- (int)vectorizeCameraPixels:(__CVBuffer *)pixels
 {
   v70 = *MEMORY[0x277D85DE8];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(pixels);
   if (PixelFormatType <= 1717855599)
   {
     if (PixelFormatType == 825437747)
     {
       inOutDepth = self->_inOutDepth;
       srcCameraPixels = self->_srcCameraPixels;
-      Height = CVPixelBufferGetHeight(a3);
-      Width = CVPixelBufferGetWidth(a3);
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
+      Height = CVPixelBufferGetHeight(pixels);
+      Width = CVPixelBufferGetWidth(pixels);
+      CVPixelBufferLockBaseAddress(pixels, 1uLL);
       memset(&__p, 0, sizeof(__p));
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(pixels, *MEMORY[0x277CBF3A0], &__p);
       v10 = 0;
       if (Height)
       {
@@ -884,11 +884,11 @@ LABEL_19:
     {
       v19 = self->_inOutDepth;
       v18 = self->_srcCameraPixels;
-      v20 = CVPixelBufferGetHeight(a3);
-      v21 = CVPixelBufferGetWidth(a3);
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
+      v20 = CVPixelBufferGetHeight(pixels);
+      v21 = CVPixelBufferGetWidth(pixels);
+      CVPixelBufferLockBaseAddress(pixels, 1uLL);
       memset(&__p, 0, sizeof(__p));
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(pixels, *MEMORY[0x277CBF3A0], &__p);
       v10 = 0;
       if (v20)
       {
@@ -934,11 +934,11 @@ LABEL_19:
     {
       v54 = self->_inOutDepth;
       v53 = self->_srcCameraPixels;
-      v55 = CVPixelBufferGetHeight(a3);
-      v56 = CVPixelBufferGetWidth(a3);
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
+      v55 = CVPixelBufferGetHeight(pixels);
+      v56 = CVPixelBufferGetWidth(pixels);
+      CVPixelBufferLockBaseAddress(pixels, 1uLL);
       memset(&__p, 0, sizeof(__p));
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(pixels, *MEMORY[0x277CBF3A0], &__p);
       v10 = 0;
       if (v55)
       {
@@ -984,11 +984,11 @@ LABEL_19:
 LABEL_29:
     v34 = self->_inOutDepth;
     v33 = self->_srcCameraPixels;
-    v35 = CVPixelBufferGetHeight(a3);
-    v36 = CVPixelBufferGetWidth(a3);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v35 = CVPixelBufferGetHeight(pixels);
+    v36 = CVPixelBufferGetWidth(pixels);
+    CVPixelBufferLockBaseAddress(pixels, 1uLL);
     memset(&__p, 0, sizeof(__p));
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+    PixelBufferUtils::asVImageBuffer(pixels, *MEMORY[0x277CBF3A0], &__p);
     v10 = 0;
     if (v35)
     {
@@ -1027,11 +1027,11 @@ LABEL_29:
   {
     v7 = self->_inOutDepth;
     v6 = self->_srcCameraPixels;
-    v8 = CVPixelBufferGetHeight(a3);
-    v9 = CVPixelBufferGetWidth(a3);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v8 = CVPixelBufferGetHeight(pixels);
+    v9 = CVPixelBufferGetWidth(pixels);
+    CVPixelBufferLockBaseAddress(pixels, 1uLL);
     memset(&__p, 0, sizeof(__p));
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+    PixelBufferUtils::asVImageBuffer(pixels, *MEMORY[0x277CBF3A0], &__p);
     v10 = 0;
     if (v8)
     {
@@ -1064,14 +1064,14 @@ LABEL_29:
     }
 
 LABEL_55:
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(pixels, 1uLL);
     return v10;
   }
 
 LABEL_57:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v65 = CVPixelBufferGetPixelFormatType(a3);
+    v65 = CVPixelBufferGetPixelFormatType(pixels);
     PixelBufferUtils::pixelFormatAsString(v65, &__p);
     v66 = (__p.width & 0x8000000000000000) == 0 ? &__p : __p.data;
     *buf = 136315138;
@@ -1086,50 +1086,50 @@ LABEL_57:
   return -1;
 }
 
-- (void)calculateWarpedPixelsFromSrcCalibration:(id)a3 dstCalibration:(id)a4 sourceToDestinationTransform:(id *)a5 validPixels:(unint64_t)a6
+- (void)calculateWarpedPixelsFromSrcCalibration:(id)calibration dstCalibration:(id)dstCalibration sourceToDestinationTransform:(id *)transform validPixels:(unint64_t)pixels
 {
-  v17 = a3;
-  v10 = a4;
+  calibrationCopy = calibration;
+  dstCalibrationCopy = dstCalibration;
   srcCameraPixels = self->_srcCameraPixels;
-  v12 = [v17 distortionModel];
+  distortionModel = [calibrationCopy distortionModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [v17 undistort:a6 distortedPixels:self->_srcCameraPixels outUndistorted:self->_intermediateUndistortedCameraPixels];
+    [calibrationCopy undistort:pixels distortedPixels:self->_srcCameraPixels outUndistorted:self->_intermediateUndistortedCameraPixels];
     srcCameraPixels = self->_intermediateUndistortedCameraPixels;
   }
 
-  [v17 backProject:a6 undistortedPixels:srcCameraPixels withZ:self->_inOutDepth outPoints:*self->_points];
-  [ADCameraCalibration transform:a6 points:*self->_points with:*self->_points outPoints:*a5, *(a5 + 2), *(a5 + 4), *(a5 + 6)];
-  v14 = [v10 distortionModel];
+  [calibrationCopy backProject:pixels undistortedPixels:srcCameraPixels withZ:self->_inOutDepth outPoints:*self->_points];
+  [ADCameraCalibration transform:pixels points:*self->_points with:*self->_points outPoints:*transform, *(transform + 2), *(transform + 4), *(transform + 6)];
+  distortionModel2 = [dstCalibrationCopy distortionModel];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
   v16 = *self->_points;
   if (v15)
   {
-    [v10 project:a6 points:v16 outUndistortedPixels:self->_dstCameraPixels];
+    [dstCalibrationCopy project:pixels points:v16 outUndistortedPixels:self->_dstCameraPixels];
   }
 
   else
   {
-    [v10 project:a6 points:v16 outUndistortedPixels:self->_intermediateUndistortedCameraPixels];
-    [v10 distort:a6 undistortedPixels:self->_intermediateUndistortedCameraPixels outDistorted:self->_dstCameraPixels];
+    [dstCalibrationCopy project:pixels points:v16 outUndistortedPixels:self->_intermediateUndistortedCameraPixels];
+    [dstCalibrationCopy distort:pixels undistortedPixels:self->_intermediateUndistortedCameraPixels outDistorted:self->_dstCameraPixels];
   }
 }
 
-- (int64_t)updateWarpWithWarpedDepthBuffer:(__CVBuffer *)a3 dimensions:(CGSize)a4 validPixels:(unint64_t)a5
+- (int64_t)updateWarpWithWarpedDepthBuffer:(__CVBuffer *)buffer dimensions:(CGSize)dimensions validPixels:(unint64_t)pixels
 {
   v183 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!a3)
+  bufferCopy = buffer;
+  if (!buffer)
   {
-    v9 = PixelBufferUtils::asPixelBuffer(a4.width, a4.height, 0x66646570, self->_warpMaskZHelper, v5);
+    bufferCopy = PixelBufferUtils::asPixelBuffer(dimensions.width, dimensions.height, 0x66646570, self->_warpMaskZHelper, v5);
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v9);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(bufferCopy);
   if (PixelFormatType <= 1717856626)
   {
     if (PixelFormatType == 825437747)
@@ -1141,9 +1141,9 @@ LABEL_57:
       dstCameraPixels = self->_dstCameraPixels;
       v169 = *self->_points;
       streakingInfill = self->_streakingInfill;
-      CVPixelBufferLockBaseAddress(v9, 0);
+      CVPixelBufferLockBaseAddress(bufferCopy, 0);
       memset(&__p, 0, sizeof(__p));
-      PixelBufferUtils::asVImageBuffer(v9, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(bufferCopy, *MEMORY[0x277CBF3A0], &__p);
       height = __p.height;
       width = __p.width;
       if (__p.height * __p.width > capacity)
@@ -1156,7 +1156,7 @@ LABEL_57:
       data = __p.data;
       rowBytes = __p.rowBytes;
       bzero(__p.data, __p.rowBytes * height);
-      if (a5)
+      if (pixels)
       {
         v145 = (v169 + 8);
         p_y = &srcCameraPixels->y;
@@ -1229,10 +1229,10 @@ LABEL_57:
           v145 += 4;
           p_y += 2;
           v147 += 2;
-          --a5;
+          --pixels;
         }
 
-        while (a5);
+        while (pixels);
       }
     }
 
@@ -1250,9 +1250,9 @@ LABEL_57:
       v176 = self->_dstCameraPixels;
       v166 = *self->_points;
       v51 = self->_streakingInfill;
-      CVPixelBufferLockBaseAddress(v9, 0);
+      CVPixelBufferLockBaseAddress(bufferCopy, 0);
       memset(&__p, 0, sizeof(__p));
-      PixelBufferUtils::asVImageBuffer(v9, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(bufferCopy, *MEMORY[0x277CBF3A0], &__p);
       v53 = __p.height;
       v52 = __p.width;
       if (__p.height * __p.width > v50)
@@ -1265,7 +1265,7 @@ LABEL_57:
       v54 = __p.data;
       v55 = __p.rowBytes;
       bzero(__p.data, __p.rowBytes * v53);
-      if (a5)
+      if (pixels)
       {
         v56 = (v166 + 8);
         v57 = &v171->y;
@@ -1339,10 +1339,10 @@ LABEL_57:
           v56 += 4;
           v57 += 2;
           v58 += 2;
-          --a5;
+          --pixels;
         }
 
-        while (a5);
+        while (pixels);
       }
     }
   }
@@ -1359,9 +1359,9 @@ LABEL_57:
         v177 = self->_dstCameraPixels;
         v167 = *self->_points;
         v78 = self->_streakingInfill;
-        CVPixelBufferLockBaseAddress(v9, 0);
+        CVPixelBufferLockBaseAddress(bufferCopy, 0);
         memset(&__p, 0, sizeof(__p));
-        PixelBufferUtils::asVImageBuffer(v9, *MEMORY[0x277CBF3A0], &__p);
+        PixelBufferUtils::asVImageBuffer(bufferCopy, *MEMORY[0x277CBF3A0], &__p);
         v80 = __p.height;
         v79 = __p.width;
         if (__p.height * __p.width > v77)
@@ -1374,7 +1374,7 @@ LABEL_57:
         v81 = __p.data;
         v82 = __p.rowBytes;
         bzero(__p.data, __p.rowBytes * v80);
-        if (a5)
+        if (pixels)
         {
           v83 = (v167 + 8);
           v84 = &v172->y;
@@ -1448,10 +1448,10 @@ LABEL_57:
             v83 += 4;
             v84 += 2;
             v85 += 2;
-            --a5;
+            --pixels;
           }
 
-          while (a5);
+          while (pixels);
         }
 
         break;
@@ -1463,9 +1463,9 @@ LABEL_57:
         v178 = self->_dstCameraPixels;
         v168 = *self->_points;
         v105 = self->_streakingInfill;
-        CVPixelBufferLockBaseAddress(v9, 0);
+        CVPixelBufferLockBaseAddress(bufferCopy, 0);
         memset(&__p, 0, sizeof(__p));
-        PixelBufferUtils::asVImageBuffer(v9, *MEMORY[0x277CBF3A0], &__p);
+        PixelBufferUtils::asVImageBuffer(bufferCopy, *MEMORY[0x277CBF3A0], &__p);
         v107 = __p.height;
         v106 = __p.width;
         if (__p.height * __p.width > v104)
@@ -1478,7 +1478,7 @@ LABEL_57:
         v108 = __p.data;
         v109 = __p.rowBytes;
         bzero(__p.data, __p.rowBytes * v107);
-        if (a5)
+        if (pixels)
         {
           v110 = (v168 + 8);
           v111 = &v173->y;
@@ -1583,10 +1583,10 @@ LABEL_57:
             v110 += 4;
             v111 += 2;
             v112 += 2;
-            --a5;
+            --pixels;
           }
 
-          while (a5);
+          while (pixels);
         }
 
         break;
@@ -1598,9 +1598,9 @@ LABEL_57:
         v175 = self->_dstCameraPixels;
         v165 = *self->_points;
         v14 = self->_streakingInfill;
-        CVPixelBufferLockBaseAddress(v9, 0);
+        CVPixelBufferLockBaseAddress(bufferCopy, 0);
         memset(&__p, 0, sizeof(__p));
-        PixelBufferUtils::asVImageBuffer(v9, *MEMORY[0x277CBF3A0], &__p);
+        PixelBufferUtils::asVImageBuffer(bufferCopy, *MEMORY[0x277CBF3A0], &__p);
         v16 = __p.height;
         v15 = __p.width;
         if (__p.height * __p.width <= v13)
@@ -1610,7 +1610,7 @@ LABEL_57:
           v17 = __p.data;
           v18 = __p.rowBytes;
           bzero(__p.data, __p.rowBytes * v16);
-          if (a5)
+          if (pixels)
           {
             v19 = (v165 + 8);
             v20 = &v170->y;
@@ -1715,10 +1715,10 @@ LABEL_57:
               v19 += 4;
               v20 += 2;
               v21 += 2;
-              --a5;
+              --pixels;
             }
 
-            while (a5);
+            while (pixels);
           }
 
           break;
@@ -1726,7 +1726,7 @@ LABEL_57:
 
 LABEL_122:
         v142 = -22957;
-        if (!a3)
+        if (!buffer)
         {
           goto LABEL_150;
         }
@@ -1736,7 +1736,7 @@ LABEL_122:
 LABEL_124:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          v163 = CVPixelBufferGetPixelFormatType(v9);
+          v163 = CVPixelBufferGetPixelFormatType(bufferCopy);
           PixelBufferUtils::pixelFormatAsString(v163, &__p);
           v164 = (__p.width & 0x8000000000000000) == 0 ? &__p : __p.data;
           *buf = 136315138;
@@ -1749,7 +1749,7 @@ LABEL_124:
         }
 
         v142 = -22953;
-        if (!a3)
+        if (!buffer)
         {
           goto LABEL_150;
         }
@@ -1758,20 +1758,20 @@ LABEL_124:
     }
   }
 
-  CVPixelBufferUnlockBaseAddress(v9, 0);
+  CVPixelBufferUnlockBaseAddress(bufferCopy, 0);
   v142 = 0;
-  if (!a3)
+  if (!buffer)
   {
 LABEL_150:
-    CVPixelBufferRelease(v9);
+    CVPixelBufferRelease(bufferCopy);
   }
 
   return v142;
 }
 
-- (BOOL)updateCapacity:(unint64_t)a3
+- (BOOL)updateCapacity:(unint64_t)capacity
 {
-  if (self->_capacity < a3)
+  if (self->_capacity < capacity)
   {
     [(ADReprojection *)self deallocateBuffers];
     operator new[]();
@@ -1842,13 +1842,13 @@ LABEL_150:
   [(ADReprojection *)&v3 dealloc];
 }
 
-- (ADReprojection)initWithCapacity:(unint64_t)a3 streakingInfill:(unint64_t)a4
+- (ADReprojection)initWithCapacity:(unint64_t)capacity streakingInfill:(unint64_t)infill
 {
   v10.receiver = self;
   v10.super_class = ADReprojection;
   v6 = [(ADReprojection *)&v10 init];
   v7 = v6;
-  if (v6 && (*(v6 + 10) = 0, *(v6 + 8) = 0u, *(v6 + 24) = 0u, *(v6 + 40) = 0u, *(v6 + 56) = 0u, v6[72] = 0, *(v6 + 12) = 0, *(v6 + 13) = 0, *(v6 + 14) = a4, *(v6 + 44) = 257, ([v6 updateCapacity:a3] & 1) == 0))
+  if (v6 && (*(v6 + 10) = 0, *(v6 + 8) = 0u, *(v6 + 24) = 0u, *(v6 + 40) = 0u, *(v6 + 56) = 0u, v6[72] = 0, *(v6 + 12) = 0, *(v6 + 13) = 0, *(v6 + 14) = infill, *(v6 + 44) = 257, ([v6 updateCapacity:capacity] & 1) == 0))
   {
     v8 = 0;
   }

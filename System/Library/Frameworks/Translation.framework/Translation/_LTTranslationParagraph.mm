@@ -1,24 +1,24 @@
 @interface _LTTranslationParagraph
-- (_LTTranslationParagraph)initWithCoder:(id)a3;
-- (_LTTranslationParagraph)initWithIdentifier:(id)a3 text:(id)a4 spans:(id)a5;
-- (_LTTranslationParagraph)initWithIdentifier:(id)a3 text:(id)a4 spans:(id)a5 isFinal:(BOOL)a6;
+- (_LTTranslationParagraph)initWithCoder:(id)coder;
+- (_LTTranslationParagraph)initWithIdentifier:(id)identifier text:(id)text spans:(id)spans;
+- (_LTTranslationParagraph)initWithIdentifier:(id)identifier text:(id)text spans:(id)spans isFinal:(BOOL)final;
 - (id)splitIntoSentences;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTTranslationParagraph
 
-- (_LTTranslationParagraph)initWithIdentifier:(id)a3 text:(id)a4 spans:(id)a5
+- (_LTTranslationParagraph)initWithIdentifier:(id)identifier text:(id)text spans:(id)spans
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  textCopy = text;
+  spansCopy = spans;
   v14.receiver = self;
   v14.super_class = _LTTranslationParagraph;
   v11 = [(_LTTranslationParagraph *)&v14 init];
   if (v11)
   {
-    v12 = [(_LTTranslationParagraph *)v11 initWithIdentifier:v8 text:v9 spans:v10 isFinal:1];
+    v12 = [(_LTTranslationParagraph *)v11 initWithIdentifier:identifierCopy text:textCopy spans:spansCopy isFinal:1];
   }
 
   else
@@ -29,26 +29,26 @@
   return v12;
 }
 
-- (_LTTranslationParagraph)initWithIdentifier:(id)a3 text:(id)a4 spans:(id)a5 isFinal:(BOOL)a6
+- (_LTTranslationParagraph)initWithIdentifier:(id)identifier text:(id)text spans:(id)spans isFinal:(BOOL)final
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  textCopy = text;
+  spansCopy = spans;
   v22.receiver = self;
   v22.super_class = _LTTranslationParagraph;
   v13 = [(_LTTranslationParagraph *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [textCopy copy];
     text = v13->_text;
     v13->_text = v16;
 
-    v13->_isFinal = a6;
-    v18 = [v12 copy];
+    v13->_isFinal = final;
+    v18 = [spansCopy copy];
     spans = v13->_spans;
     v13->_spans = v18;
 
@@ -58,30 +58,30 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_text forKey:@"text"];
-  [v5 encodeObject:self->_spans forKey:@"spans"];
-  [v5 encodeBool:self->_isFinal forKey:@"isFinal"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
+  [coderCopy encodeObject:self->_spans forKey:@"spans"];
+  [coderCopy encodeBool:self->_isFinal forKey:@"isFinal"];
 }
 
-- (_LTTranslationParagraph)initWithCoder:(id)a3
+- (_LTTranslationParagraph)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _LTTranslationParagraph;
   v5 = [(_LTTranslationParagraph *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v8;
 
@@ -89,11 +89,11 @@
     v18[1] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v11 = [MEMORY[0x277CBEB98] setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"spans"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"spans"];
     spans = v5->_spans;
     v5->_spans = v12;
 
-    v5->_isFinal = [v4 decodeBoolForKey:@"isFinal"];
+    v5->_isFinal = [coderCopy decodeBoolForKey:@"isFinal"];
     v14 = v5;
   }
 
@@ -104,7 +104,7 @@
 - (id)splitIntoSentences
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:self->_text];
   spans = self->_spans;
   v36[0] = MEMORY[0x277D85DD0];
@@ -125,7 +125,7 @@
   {
     v8 = v7;
     v9 = *v33;
-    v10 = v3;
+    v10 = array;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -164,9 +164,9 @@
 
         v18 = [_LTTranslationParagraph alloc];
         identifier = self->_identifier;
-        v20 = [v12 string];
-        v21 = [(_LTTranslationParagraph *)v18 initWithIdentifier:identifier text:v20 spans:v17 isFinal:self->_isFinal];
-        v3 = v10;
+        string = [v12 string];
+        v21 = [(_LTTranslationParagraph *)v18 initWithIdentifier:identifier text:string spans:v17 isFinal:self->_isFinal];
+        array = v10;
         [v10 addObject:v21];
       }
 
@@ -176,15 +176,15 @@
     while (v8);
   }
 
-  if ([v3 count] == 1)
+  if ([array count] == 1)
   {
-    v38 = self;
-    v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
+    selfCopy = self;
+    v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
   }
 
   else
   {
-    v22 = v3;
+    v22 = array;
   }
 
   v23 = v22;

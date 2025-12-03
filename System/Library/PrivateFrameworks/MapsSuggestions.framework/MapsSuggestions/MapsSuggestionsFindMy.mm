@@ -1,16 +1,16 @@
 @interface MapsSuggestionsFindMy
 - (_TtC15MapsSuggestions21MapsSuggestionsFindMy)init;
-- (id)initFromResourceDepot:(id)a3;
-- (void)locationOf:(MapsSuggestionsEntry *)a3 completionHandler:(id)a4;
-- (void)verifyFriendshipWith:(NSArray *)a3 completionHandler:(id)a4;
+- (id)initFromResourceDepot:(id)depot;
+- (void)locationOf:(MapsSuggestionsEntry *)of completionHandler:(id)handler;
+- (void)verifyFriendshipWith:(NSArray *)with completionHandler:(id)handler;
 @end
 
 @implementation MapsSuggestionsFindMy
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   swift_unknownObjectRetain();
-  result = [a3 oneFindMyConnector];
+  result = [depot oneFindMyConnector];
   if (result)
   {
     *(&self->super.isa + OBJC_IVAR____TtC15MapsSuggestions21MapsSuggestionsFindMy__connector) = result;
@@ -29,14 +29,14 @@
   return result;
 }
 
-- (void)verifyFriendshipWith:(NSArray *)a3 completionHandler:(id)a4
+- (void)verifyFriendshipWith:(NSArray *)with completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156340);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = with;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1C529D85C();
@@ -51,19 +51,19 @@
   v14[3] = 0;
   v14[4] = &unk_1C52A8F68;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_1C5264C18(0, 0, v9, &unk_1C52A8F70, v14);
 }
 
-- (void)locationOf:(MapsSuggestionsEntry *)a3 completionHandler:(id)a4
+- (void)locationOf:(MapsSuggestionsEntry *)of completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156340);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = of;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1C529D85C();
@@ -78,8 +78,8 @@
   v14[3] = 0;
   v14[4] = &unk_1C52A94B0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  ofCopy = of;
+  selfCopy = self;
   sub_1C5264C18(0, 0, v9, &unk_1C52A8F50, v14);
 }
 

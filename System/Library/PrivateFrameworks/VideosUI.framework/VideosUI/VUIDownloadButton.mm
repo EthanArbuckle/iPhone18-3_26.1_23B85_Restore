@@ -2,90 +2,90 @@
 - (BOOL)_hasImage;
 - (BOOL)_hasTextForNotDownloadState;
 - (BOOL)_hasTitle;
-- (CGSize)_imageSizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)_imageSizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIImage)downloadedImage;
 - (UIImage)downloadingImage;
 - (UIImage)expiredDownloadImage;
 - (UIImage)notDownloadedImage;
 - (UIViewController)presentingViewController;
-- (VUIDownloadButton)initWithAssetController:(id)a3 type:(unint64_t)a4;
-- (VUIDownloadButton)initWithDownloadButtonViewModel:(id)a3 isForLibrary:(BOOL)a4 type:(unint64_t)a5 textLayout:(id)a6;
-- (VUIDownloadButton)initWithMediaEntity:(id)a3 type:(unint64_t)a4;
-- (VUIDownloadButton)initWithPlayable:(id)a3 type:(unint64_t)a4 textLayout:(id)a5;
-- (VUIDownloadButton)initWithRemotePlayable:(id)a3 type:(unint64_t)a4 textLayout:(id)a5;
-- (id)_buttonPropertiesForState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6;
-- (id)_imageForDownloadState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6;
-- (id)_localButtonPropertiesForState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6;
-- (id)_remoteButtonPropertiesForState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6;
+- (VUIDownloadButton)initWithAssetController:(id)controller type:(unint64_t)type;
+- (VUIDownloadButton)initWithDownloadButtonViewModel:(id)model isForLibrary:(BOOL)library type:(unint64_t)type textLayout:(id)layout;
+- (VUIDownloadButton)initWithMediaEntity:(id)entity type:(unint64_t)type;
+- (VUIDownloadButton)initWithPlayable:(id)playable type:(unint64_t)type textLayout:(id)layout;
+- (VUIDownloadButton)initWithRemotePlayable:(id)playable type:(unint64_t)type textLayout:(id)layout;
+- (id)_buttonPropertiesForState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed;
+- (id)_imageForDownloadState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed;
+- (id)_localButtonPropertiesForState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed;
+- (id)_remoteButtonPropertiesForState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed;
 - (id)accessibilityLabel;
-- (id)initTVShowDownloadButtonWithType:(unint64_t)a3 textLayout:(id)a4;
+- (id)initTVShowDownloadButtonWithType:(unint64_t)type textLayout:(id)layout;
 - (void)_clearMasks;
-- (void)_configureProgressIndicatorWithProperties:(id)a3;
-- (void)_insertProgressIndicatorWithFrame:(CGRect)a3;
+- (void)_configureProgressIndicatorWithProperties:(id)properties;
+- (void)_insertProgressIndicatorWithFrame:(CGRect)frame;
 - (void)_layoutProgressIndicator;
-- (void)_setImage:(id)a3;
-- (void)_setTitleWithProperties:(id)a3;
+- (void)_setImage:(id)image;
+- (void)_setTitleWithProperties:(id)properties;
 - (void)_setupDownloadButton;
-- (void)_startObservingDownloadProgress:(id)a3;
-- (void)_startObservingViewModel:(id)a3;
-- (void)_stopObservingDownloadProgress:(id)a3;
-- (void)_stopObservingViewModel:(id)a3;
-- (void)_updateButtonToConnectingWithProperties:(id)a3;
-- (void)_updateButtonToDownloadedWithProperties:(id)a3;
-- (void)_updateButtonToDownloadingWithProperties:(id)a3;
-- (void)_updateButtonToEnqueuedWithProperties:(id)a3;
-- (void)_updateButtonToNotDownloadedWithProperties:(id)a3;
-- (void)_updateButtonToState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6;
-- (void)_updateButtonToState:(unint64_t)a3 oldState:(unint64_t)a4;
-- (void)_updateDownloadProgress:(double)a3 animated:(BOOL)a4;
-- (void)_updateImageViewTintColorWithDownloadState:(unint64_t)a3;
+- (void)_startObservingDownloadProgress:(id)progress;
+- (void)_startObservingViewModel:(id)model;
+- (void)_stopObservingDownloadProgress:(id)progress;
+- (void)_stopObservingViewModel:(id)model;
+- (void)_updateButtonToConnectingWithProperties:(id)properties;
+- (void)_updateButtonToDownloadedWithProperties:(id)properties;
+- (void)_updateButtonToDownloadingWithProperties:(id)properties;
+- (void)_updateButtonToEnqueuedWithProperties:(id)properties;
+- (void)_updateButtonToNotDownloadedWithProperties:(id)properties;
+- (void)_updateButtonToState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed;
+- (void)_updateButtonToState:(unint64_t)state oldState:(unint64_t)oldState;
+- (void)_updateDownloadProgress:(double)progress animated:(BOOL)animated;
+- (void)_updateImageViewTintColorWithDownloadState:(unint64_t)state;
 - (void)_updateMaskForProgressLayer;
 - (void)configureActionHandler;
 - (void)configureWithLayoutProperties;
 - (void)dealloc;
 - (void)insertProgressIndicator;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)revertTintColor;
 - (void)saturateTintColorAndBackgroundColor;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setNotDownloadStateText:(id)a3;
-- (void)setPresentingViewController:(id)a3;
-- (void)setScrolledNonUberPercentage:(double)a3;
-- (void)setSeasonDownloadDataSourceProvider:(id)a3;
-- (void)setShowsTextInDownloadedState:(BOOL)a3;
-- (void)setTintColor:(id)a3;
-- (void)setUsesDefaultConfiguration:(BOOL)a3;
-- (void)setViewModel:(id)a3;
-- (void)updateWithAssetController:(id)a3;
-- (void)updateWithPlayable:(id)a3 textLayout:(id)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setNotDownloadStateText:(id)text;
+- (void)setPresentingViewController:(id)controller;
+- (void)setScrolledNonUberPercentage:(double)percentage;
+- (void)setSeasonDownloadDataSourceProvider:(id)provider;
+- (void)setShowsTextInDownloadedState:(BOOL)state;
+- (void)setTintColor:(id)color;
+- (void)setUsesDefaultConfiguration:(BOOL)configuration;
+- (void)setViewModel:(id)model;
+- (void)updateWithAssetController:(id)controller;
+- (void)updateWithPlayable:(id)playable textLayout:(id)layout;
 - (void)vui_didMoveToWindow;
 @end
 
 @implementation VUIDownloadButton
 
-- (VUIDownloadButton)initWithRemotePlayable:(id)a3 type:(unint64_t)a4 textLayout:(id)a5
+- (VUIDownloadButton)initWithRemotePlayable:(id)playable type:(unint64_t)type textLayout:(id)layout
 {
-  v5 = [(VUIDownloadButton *)self initWithPlayable:a3 type:a4 textLayout:a5];
-  v6 = [(VUIDownloadButton *)v5 viewModel];
-  [v6 setIsRemoteDownload:1];
+  v5 = [(VUIDownloadButton *)self initWithPlayable:playable type:type textLayout:layout];
+  viewModel = [(VUIDownloadButton *)v5 viewModel];
+  [viewModel setIsRemoteDownload:1];
 
   return v5;
 }
 
-- (VUIDownloadButton)initWithPlayable:(id)a3 type:(unint64_t)a4 textLayout:(id)a5
+- (VUIDownloadButton)initWithPlayable:(id)playable type:(unint64_t)type textLayout:(id)layout
 {
-  v8 = a3;
-  v9 = a5;
+  playableCopy = playable;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = VUIDownloadButton;
-  v10 = [(VUIButton *)&v17 initWithType:a4 interfaceStyle:1];
+  v10 = [(VUIButton *)&v17 initWithType:type interfaceStyle:1];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_textLayout, a5);
+    objc_storeStrong(&v10->_textLayout, layout);
     [(VUIDownloadButton *)v11 _setupDownloadButton];
-    v12 = [VUIDownloadButtonViewModel viewModelWithVideosPlayable:v8];
+    v12 = [VUIDownloadButtonViewModel viewModelWithVideosPlayable:playableCopy];
     [(VUIDownloadButton *)v11 setViewModel:v12];
     objc_initWeak(&location, v11);
     v14[0] = MEMORY[0x1E69E9820];
@@ -108,21 +108,21 @@ void __54__VUIDownloadButton_initWithPlayable_type_textLayout___block_invoke(uin
   [v1 performAction:objc_msgSend(WeakRetained confirmBeforeStopDownloading:{"isForLibrary"), 0}];
 }
 
-- (VUIDownloadButton)initWithDownloadButtonViewModel:(id)a3 isForLibrary:(BOOL)a4 type:(unint64_t)a5 textLayout:(id)a6
+- (VUIDownloadButton)initWithDownloadButtonViewModel:(id)model isForLibrary:(BOOL)library type:(unint64_t)type textLayout:(id)layout
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  libraryCopy = library;
+  modelCopy = model;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = VUIDownloadButton;
-  v12 = [(VUIButton *)&v18 initWithType:a5 interfaceStyle:1];
+  v12 = [(VUIButton *)&v18 initWithType:type interfaceStyle:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_textLayout, a6);
+    objc_storeStrong(&v12->_textLayout, layout);
     [(VUIDownloadButton *)v13 _setupDownloadButton];
-    [(VUIDownloadButton *)v13 setIsForLibrary:v8];
-    [(VUIDownloadButton *)v13 setViewModel:v10];
+    [(VUIDownloadButton *)v13 setIsForLibrary:libraryCopy];
+    [(VUIDownloadButton *)v13 setViewModel:modelCopy];
     objc_initWeak(&location, v13);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -144,112 +144,112 @@ void __82__VUIDownloadButton_initWithDownloadButtonViewModel_isForLibrary_type_t
   [v1 performAction:objc_msgSend(WeakRetained confirmBeforeStopDownloading:{"isForLibrary"), 0}];
 }
 
-- (VUIDownloadButton)initWithAssetController:(id)a3 type:(unint64_t)a4
+- (VUIDownloadButton)initWithAssetController:(id)controller type:(unint64_t)type
 {
-  v6 = [VUIDownloadButtonViewModel viewModelWithAssetController:a3];
-  v7 = [(VUIDownloadButton *)self initWithDownloadButtonViewModel:v6 isForLibrary:1 type:a4 textLayout:0];
+  v6 = [VUIDownloadButtonViewModel viewModelWithAssetController:controller];
+  v7 = [(VUIDownloadButton *)self initWithDownloadButtonViewModel:v6 isForLibrary:1 type:type textLayout:0];
 
   return v7;
 }
 
-- (VUIDownloadButton)initWithMediaEntity:(id)a3 type:(unint64_t)a4
+- (VUIDownloadButton)initWithMediaEntity:(id)entity type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 assetController];
-  v8 = [(VUIDownloadButton *)self initWithAssetController:v7 type:a4];
+  entityCopy = entity;
+  assetController = [entityCopy assetController];
+  v8 = [(VUIDownloadButton *)self initWithAssetController:assetController type:type];
   v9 = v8;
   if (v8)
   {
-    v10 = [(VUIDownloadButton *)v8 viewModel];
-    [v10 setMediaEntity:v6];
+    viewModel = [(VUIDownloadButton *)v8 viewModel];
+    [viewModel setMediaEntity:entityCopy];
   }
 
   return v9;
 }
 
-- (id)initTVShowDownloadButtonWithType:(unint64_t)a3 textLayout:(id)a4
+- (id)initTVShowDownloadButtonWithType:(unint64_t)type textLayout:(id)layout
 {
-  v4 = [(VUIDownloadButton *)self initWithDownloadButtonViewModel:0 isForLibrary:0 type:a3 textLayout:a4];
+  v4 = [(VUIDownloadButton *)self initWithDownloadButtonViewModel:0 isForLibrary:0 type:type textLayout:layout];
   [(VUIDownloadButton *)v4 setIsForLibrary:0];
   return v4;
 }
 
-- (void)setSeasonDownloadDataSourceProvider:(id)a3
+- (void)setSeasonDownloadDataSourceProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_seasonDownloadDataSourceProvider != v5)
+  providerCopy = provider;
+  if (self->_seasonDownloadDataSourceProvider != providerCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_seasonDownloadDataSourceProvider, a3);
-    v6 = [(VUISeasonDownloadDataSourceProvider *)v9 tvShowCanonicalId];
-    v7 = [VUIDownloadButtonViewModel viewModelWithCanonicalId:v6 title:0 episodeCount:[(VUISeasonDownloadDataSourceProvider *)v9 totalEpisodeCount] downloadType:1];
+    v9 = providerCopy;
+    objc_storeStrong(&self->_seasonDownloadDataSourceProvider, provider);
+    tvShowCanonicalId = [(VUISeasonDownloadDataSourceProvider *)v9 tvShowCanonicalId];
+    v7 = [VUIDownloadButtonViewModel viewModelWithCanonicalId:tvShowCanonicalId title:0 episodeCount:[(VUISeasonDownloadDataSourceProvider *)v9 totalEpisodeCount] downloadType:1];
     if (_os_feature_enabled_impl())
     {
-      v8 = [(VUIDownloadButton *)self viewModel];
-      [v7 setIsRemoteDownload:{objc_msgSend(v8, "isRemoteDownload")}];
+      viewModel = [(VUIDownloadButton *)self viewModel];
+      [v7 setIsRemoteDownload:{objc_msgSend(viewModel, "isRemoteDownload")}];
     }
 
     [(VUIDownloadButton *)self setViewModel:v7];
 
-    v5 = v9;
+    providerCopy = v9;
   }
 }
 
 - (void)dealloc
 {
   [(VUIDownloadButton *)self setViewModel:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DF7E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DF7E0] object:0];
 
   v4.receiver = self;
   v4.super_class = VUIDownloadButton;
   [(VUIDownloadButton *)&v4 dealloc];
 }
 
-- (void)setUsesDefaultConfiguration:(BOOL)a3
+- (void)setUsesDefaultConfiguration:(BOOL)configuration
 {
-  self->_usesDefaultConfiguration = a3;
-  if (a3)
+  self->_usesDefaultConfiguration = configuration;
+  if (configuration)
   {
     [(VUIButton *)self setPadding:0.0, 0.0, 0.0, 0.0];
     [(VUIButton *)self setImageMaxHeight:28.0];
     [(VUIButton *)self setImageMaxWidth:28.0];
-    v4 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [(VUIButton *)self setImageTintColor:v4];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    [(VUIButton *)self setImageTintColor:vui_keyColor];
 
     if ([(VUIButton *)self buttonType]== 9)
     {
       [(VUIButton *)self setHeight:28.0];
       [(VUIButton *)self setWidth:28.0];
       [(VUIButton *)self setCornerRadius:14.0];
-      v5 = [MEMORY[0x1E69DC888] vui_tertiaryFillColor];
-      [(VUIDownloadButton *)self setKeyBackgroundColor:v5];
+      vui_tertiaryFillColor = [MEMORY[0x1E69DC888] vui_tertiaryFillColor];
+      [(VUIDownloadButton *)self setKeyBackgroundColor:vui_tertiaryFillColor];
 
-      v7 = [(VUIDownloadButton *)self backgroundView];
-      v6 = [(VUIDownloadButton *)self keyBackgroundColor];
-      [v7 setVuiBackgroundColor:v6];
+      backgroundView = [(VUIDownloadButton *)self backgroundView];
+      keyBackgroundColor = [(VUIDownloadButton *)self keyBackgroundColor];
+      [backgroundView setVuiBackgroundColor:keyBackgroundColor];
     }
   }
 }
 
-- (void)setPresentingViewController:(id)a3
+- (void)setPresentingViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_presentingViewController, obj);
-    v5 = [(VUIDownloadButton *)self actionHandler];
-    [v5 setPresentingViewController:obj];
+    actionHandler = [(VUIDownloadButton *)self actionHandler];
+    [actionHandler setPresentingViewController:obj];
   }
 }
 
 - (void)configureActionHandler
 {
   v3 = [VUIDownloadButtonActionHandler alloc];
-  v4 = [(VUIDownloadButton *)self viewModel];
-  v5 = [(VUIDownloadButtonActionHandler *)v3 initWithViewModel:v4];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  v5 = [(VUIDownloadButtonActionHandler *)v3 initWithViewModel:viewModel];
 
   [(VUIDownloadButtonActionHandler *)v5 setParentView:self];
   objc_initWeak(&location, self);
@@ -288,72 +288,72 @@ void __43__VUIDownloadButton_configureActionHandler__block_invoke_2(uint64_t a1)
 {
   if (-[VUIButton buttonType](self, "buttonType") && -[VUIButton buttonType](self, "buttonType") != 3 || ([MEMORY[0x1E69DF6F0] isMac] & 1) == 0)
   {
-    v3 = [(VUIButton *)self buttonBackgroundColor];
-    [(VUIDownloadButton *)self setKeyBackgroundColor:v3];
+    buttonBackgroundColor = [(VUIButton *)self buttonBackgroundColor];
+    [(VUIDownloadButton *)self setKeyBackgroundColor:buttonBackgroundColor];
 
     [(VUIButton *)self setButtonBackgroundColor:0];
-    v4 = [(VUIDownloadButton *)self backgroundView];
-    v5 = [(VUIDownloadButton *)self keyBackgroundColor];
-    [v4 setVuiBackgroundColor:v5];
+    backgroundView = [(VUIDownloadButton *)self backgroundView];
+    keyBackgroundColor = [(VUIDownloadButton *)self keyBackgroundColor];
+    [backgroundView setVuiBackgroundColor:keyBackgroundColor];
   }
 
   v13.receiver = self;
   v13.super_class = VUIDownloadButton;
   [(VUIButton *)&v13 configureWithLayoutProperties];
-  v6 = [(VUIDownloadButton *)self viewModel];
-  v7 = [v6 downloadState];
-  v8 = [(VUIDownloadButton *)self viewModel];
-  v9 = [v8 isExpired];
-  v10 = [(VUIDownloadButton *)self viewModel];
-  v11 = [v10 isExpiringSoon];
-  v12 = [(VUIDownloadButton *)self viewModel];
-  -[VUIDownloadButton _updateButtonToState:isExpired:isExpiringSoon:hasFailed:](self, "_updateButtonToState:isExpired:isExpiringSoon:hasFailed:", v7, v9, v11, [v12 downloadFailedDueToError]);
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  downloadState = [viewModel downloadState];
+  viewModel2 = [(VUIDownloadButton *)self viewModel];
+  isExpired = [viewModel2 isExpired];
+  viewModel3 = [(VUIDownloadButton *)self viewModel];
+  isExpiringSoon = [viewModel3 isExpiringSoon];
+  viewModel4 = [(VUIDownloadButton *)self viewModel];
+  -[VUIDownloadButton _updateButtonToState:isExpired:isExpiringSoon:hasFailed:](self, "_updateButtonToState:isExpired:isExpiringSoon:hasFailed:", downloadState, isExpired, isExpiringSoon, [viewModel4 downloadFailedDueToError]);
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = VUIDownloadButton;
-  [(VUIButton *)&v6 setTintColor:v4];
+  [(VUIButton *)&v6 setTintColor:colorCopy];
   if ([(VUIDownloadButton *)self tintAdjustmentMode]!= 2)
   {
-    v5 = [(VUIDownloadButton *)self progressIndicator];
-    [v5 setProgressFillColor:v4];
+    progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+    [progressIndicator setProgressFillColor:colorCopy];
   }
 }
 
 - (void)saturateTintColorAndBackgroundColor
 {
-  v3 = [MEMORY[0x1E69DC888] systemMidGrayColor];
+  systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
   saturatedTintColor = self->_saturatedTintColor;
-  self->_saturatedTintColor = v3;
+  self->_saturatedTintColor = systemMidGrayColor;
 
-  v5 = [(VUIDownloadButton *)self progressIndicator];
-  [v5 setProgressFillColor:self->_saturatedTintColor];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator setProgressFillColor:self->_saturatedTintColor];
 
-  v6 = [(VUIButton *)self imageView];
-  [v6 _setTintColor:self->_saturatedTintColor];
+  imageView = [(VUIButton *)self imageView];
+  [imageView _setTintColor:self->_saturatedTintColor];
 }
 
 - (void)revertTintColor
 {
-  v6 = [(VUIButton *)self imageTintColor];
-  v3 = [(VUIDownloadButton *)self progressIndicator];
-  [v3 setProgressFillColor:v6];
+  imageTintColor = [(VUIButton *)self imageTintColor];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator setProgressFillColor:imageTintColor];
 
-  v4 = [(VUIButton *)self imageView];
-  [v4 _setTintColor:v6];
+  imageView = [(VUIButton *)self imageView];
+  [imageView _setTintColor:imageTintColor];
 
   saturatedTintColor = self->_saturatedTintColor;
   self->_saturatedTintColor = 0;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  height = subviews.height;
+  width = subviews.width;
   v28.receiver = self;
   v28.super_class = VUIDownloadButton;
   [VUIButton vui_layoutSubviews:sel_vui_layoutSubviews_computationOnly_ computationOnly:?];
@@ -369,47 +369,47 @@ void __43__VUIDownloadButton_configureActionHandler__block_invoke_2(uint64_t a1)
   *&aBlock[7] = v8;
   *&aBlock[8] = v10;
   v12 = _Block_copy(aBlock);
-  if (v4)
+  if (onlyCopy)
   {
     v13 = *MEMORY[0x1E695F060];
     v14 = *(MEMORY[0x1E695F060] + 8);
-    v15 = [(VUIButton *)self buttonType];
+    buttonType = [(VUIButton *)self buttonType];
     if (v9 == v13 && v11 == v14)
     {
-      if (v15 == 7)
+      if (buttonType == 7)
       {
-        v18 = [(VUIDownloadButton *)self progressIndicator];
+        progressIndicator = [(VUIDownloadButton *)self progressIndicator];
 
-        if (v18)
+        if (progressIndicator)
         {
-          v19 = [(VUIDownloadButton *)self progressIndicator];
-          [v19 vui_sizeThatFits:{width, height}];
+          progressIndicator2 = [(VUIDownloadButton *)self progressIndicator];
+          [progressIndicator2 vui_sizeThatFits:{width, height}];
           v9 = v20;
           v11 = v21;
         }
       }
     }
 
-    else if (v15 == 9)
+    else if (buttonType == 9)
     {
       v9 = v12[2](v12, v9, v11);
       v11 = v17;
     }
   }
 
-  v22 = [(VUIDownloadButton *)self progressIndicator];
+  progressIndicator3 = [(VUIDownloadButton *)self progressIndicator];
 
-  if (v22)
+  if (progressIndicator3)
   {
     [(VUIDownloadButton *)self _layoutProgressIndicator];
   }
 
-  v23 = [(VUIDownloadButton *)self backgroundView];
-  [v23 setFrame:{0.0, 0.0, v9, v11}];
+  backgroundView = [(VUIDownloadButton *)self backgroundView];
+  [backgroundView setFrame:{0.0, 0.0, v9, v11}];
 
-  v24 = [(VUIDownloadButton *)self backgroundView];
+  backgroundView2 = [(VUIDownloadButton *)self backgroundView];
   [(VUIButton *)self cornerRadius];
-  [v24 _setCornerRadius:?];
+  [backgroundView2 _setCornerRadius:?];
 
   v25 = v9;
   v26 = v11;
@@ -481,11 +481,11 @@ double __56__VUIDownloadButton_vui_layoutSubviews_computationOnly___block_invoke
   v6.receiver = self;
   v6.super_class = VUIDownloadButton;
   [(VUIDownloadButton *)&v6 vui_didMoveToWindow];
-  v3 = [(VUIDownloadButton *)self window];
+  window = [(VUIDownloadButton *)self window];
 
   v4 = +[VUIUnifiedMessagingRegistry sharedInstance];
   v5 = v4;
-  if (v3)
+  if (window)
   {
     [v4 registerDownloadButton:self];
   }
@@ -496,18 +496,18 @@ double __56__VUIDownloadButton_vui_layoutSubviews_computationOnly___block_invoke
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (__ViewModelDownloadStateContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (__ViewModelDownloadStateContext == context)
   {
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+    viewModel = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
     v15 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    if (v14)
+    if (viewModel)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -517,7 +517,7 @@ double __56__VUIDownloadButton_vui_layoutSubviews_computationOnly___block_invoke
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            -[VUIDownloadButton _updateButtonToState:oldState:](self, "_updateButtonToState:oldState:", [v15 unsignedIntegerValue], objc_msgSend(v14, "unsignedIntegerValue"));
+            -[VUIDownloadButton _updateButtonToState:oldState:](self, "_updateButtonToState:oldState:", [v15 unsignedIntegerValue], objc_msgSend(viewModel, "unsignedIntegerValue"));
           }
         }
       }
@@ -526,41 +526,41 @@ double __56__VUIDownloadButton_vui_layoutSubviews_computationOnly___block_invoke
     goto LABEL_12;
   }
 
-  if (__ViewModelDownloadExpirationDateContext == a6)
+  if (__ViewModelDownloadExpirationDateContext == context)
   {
-    v14 = [(VUIDownloadButton *)self viewModel];
-    v29 = [v14 downloadState];
-    v16 = [(VUIDownloadButton *)self viewModel];
-    v17 = v11;
-    v18 = v10;
-    v19 = [v16 isExpired];
-    v20 = [(VUIDownloadButton *)self viewModel];
-    v21 = [v20 isExpiringSoon];
-    v22 = [(VUIDownloadButton *)self viewModel];
-    v23 = [v22 downloadFailedDueToError];
-    v24 = v19;
-    v10 = v18;
-    v11 = v17;
-    [(VUIDownloadButton *)self _updateButtonToState:v29 isExpired:v24 isExpiringSoon:v21 hasFailed:v23];
+    viewModel = [(VUIDownloadButton *)self viewModel];
+    downloadState = [viewModel downloadState];
+    viewModel2 = [(VUIDownloadButton *)self viewModel];
+    v17 = objectCopy;
+    v18 = pathCopy;
+    isExpired = [viewModel2 isExpired];
+    viewModel3 = [(VUIDownloadButton *)self viewModel];
+    isExpiringSoon = [viewModel3 isExpiringSoon];
+    viewModel4 = [(VUIDownloadButton *)self viewModel];
+    downloadFailedDueToError = [viewModel4 downloadFailedDueToError];
+    v24 = isExpired;
+    pathCopy = v18;
+    objectCopy = v17;
+    [(VUIDownloadButton *)self _updateButtonToState:downloadState isExpired:v24 isExpiringSoon:isExpiringSoon hasFailed:downloadFailedDueToError];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if (__ViewModelDownloadProgressContext == a6)
+  if (__ViewModelDownloadProgressContext == context)
   {
     v25 = VUIDefaultLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(VUIDownloadButton *)self viewModel];
-      [v26 downloadProgress];
+      viewModel5 = [(VUIDownloadButton *)self viewModel];
+      [viewModel5 downloadProgress];
       *buf = 134217984;
       v32 = v27;
       _os_log_impl(&dword_1E323F000, v25, OS_LOG_TYPE_DEFAULT, "VUIDownloadButton:: update download progress %f", buf, 0xCu);
     }
 
-    v28 = [(VUIDownloadButton *)self viewModel];
-    [v28 downloadProgress];
+    viewModel6 = [(VUIDownloadButton *)self viewModel];
+    [viewModel6 downloadProgress];
     [(VUIDownloadButton *)self _updateDownloadProgress:1 animated:?];
   }
 
@@ -568,60 +568,60 @@ LABEL_12:
   {
     v30.receiver = self;
     v30.super_class = VUIDownloadButton;
-    [(VUIDownloadButton *)&v30 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VUIDownloadButton *)&v30 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_13:
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     if (viewModel)
     {
       [(VUIDownloadButton *)self _stopObservingViewModel:?];
       [(VUIDownloadButton *)self _stopObservingDownloadProgress:self->_viewModel];
     }
 
-    objc_storeStrong(&self->_viewModel, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_viewModel, model);
+    modelCopy = v7;
     if (v7)
     {
       [(VUIDownloadButton *)self configureActionHandler];
       [(VUIDownloadButton *)self _startObservingViewModel:v7];
       [(VUIDownloadButton *)self _updateButtonToState:[(VUIDownloadButtonViewModel *)v7 downloadState] isExpired:[(VUIDownloadButtonViewModel *)v7 isExpired] isExpiringSoon:[(VUIDownloadButtonViewModel *)v7 isExpiringSoon] hasFailed:[(VUIDownloadButtonViewModel *)v7 downloadFailedDueToError]];
-      v5 = v7;
+      modelCopy = v7;
     }
   }
 }
 
-- (void)setNotDownloadStateText:(id)a3
+- (void)setNotDownloadStateText:(id)text
 {
-  v5 = a3;
-  if (self->_notDownloadStateText != v5)
+  textCopy = text;
+  if (self->_notDownloadStateText != textCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_notDownloadStateText, a3);
+    v7 = textCopy;
+    objc_storeStrong(&self->_notDownloadStateText, text);
     v6 = [(VUIDownloadButton *)self _buttonPropertiesForState:0 isExpired:0 isExpiringSoon:0 hasFailed:0];
     [(VUIDownloadButton *)self _updateButtonToNotDownloadedWithProperties:v6];
 
-    v5 = v7;
+    textCopy = v7;
   }
 }
 
-- (void)setShowsTextInDownloadedState:(BOOL)a3
+- (void)setShowsTextInDownloadedState:(BOOL)state
 {
-  self->_showsTextInDownloadedState = a3;
-  if (a3)
+  self->_showsTextInDownloadedState = state;
+  if (state)
   {
-    v4 = [(VUIDownloadButton *)self viewModel];
-    v5 = [v4 downloadState];
+    viewModel = [(VUIDownloadButton *)self viewModel];
+    downloadState = [viewModel downloadState];
 
-    if (v5 == 4)
+    if (downloadState == 4)
     {
       v6 = [(VUIDownloadButton *)self _buttonPropertiesForState:4 isExpired:0 isExpiringSoon:0 hasFailed:0];
       [(VUIDownloadButton *)self _updateButtonToDownloadedWithProperties:v6];
@@ -629,38 +629,38 @@ LABEL_13:
   }
 }
 
-- (void)updateWithAssetController:(id)a3
+- (void)updateWithAssetController:(id)controller
 {
-  v4 = a3;
-  v5 = [(VUIDownloadButton *)self viewModel];
-  [v5 setAssetController:v4];
+  controllerCopy = controller;
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [viewModel setAssetController:controllerCopy];
 }
 
-- (void)updateWithPlayable:(id)a3 textLayout:(id)a4
+- (void)updateWithPlayable:(id)playable textLayout:(id)layout
 {
-  v5 = [VUIDownloadButtonViewModel viewModelWithVideosPlayable:a3, a4];
-  [(VUIDownloadButton *)self setViewModel:v5];
+  layout = [VUIDownloadButtonViewModel viewModelWithVideosPlayable:playable, layout];
+  [(VUIDownloadButton *)self setViewModel:layout];
 }
 
-- (void)setScrolledNonUberPercentage:(double)a3
+- (void)setScrolledNonUberPercentage:(double)percentage
 {
   v6.receiver = self;
   v6.super_class = VUIDownloadButton;
   [(VUIButton *)&v6 setScrolledNonUberPercentage:?];
-  v5 = [(VUIDownloadButton *)self backgroundView];
-  [v5 setHidden:a3 == 0.0];
+  backgroundView = [(VUIDownloadButton *)self backgroundView];
+  [backgroundView setHidden:percentage == 0.0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = VUIDownloadButton;
   [(VUIButton *)&v6 setHighlighted:?];
   if ([(VUIButton *)self buttonType]== 9)
   {
     v5 = 1.0;
-    if (v3)
+    if (highlightedCopy)
     {
       v5 = 0.5;
     }
@@ -669,12 +669,12 @@ LABEL_13:
   }
 }
 
-- (CGSize)_imageSizeThatFits:(CGSize)a3
+- (CGSize)_imageSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(VUIDownloadButton *)self viewModel];
-  v7 = +[VUIDownloadButtonViewModel shouldShowExpiredImageWithDownloadState:isExpired:isExpiringSoon:hasFailed:](VUIDownloadButtonViewModel, "shouldShowExpiredImageWithDownloadState:isExpired:isExpiringSoon:hasFailed:", [v6 downloadState], objc_msgSend(v6, "isExpired"), objc_msgSend(v6, "isExpiringSoon"), objc_msgSend(v6, "downloadFailedDueToError"));
+  height = fits.height;
+  width = fits.width;
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  v7 = +[VUIDownloadButtonViewModel shouldShowExpiredImageWithDownloadState:isExpired:isExpiringSoon:hasFailed:](VUIDownloadButtonViewModel, "shouldShowExpiredImageWithDownloadState:isExpired:isExpiringSoon:hasFailed:", [viewModel downloadState], objc_msgSend(viewModel, "isExpired"), objc_msgSend(viewModel, "isExpiringSoon"), objc_msgSend(viewModel, "downloadFailedDueToError"));
   if ([(VUIButton *)self buttonType])
   {
     v8 = [(VUIButton *)self buttonType]== 3;
@@ -685,11 +685,11 @@ LABEL_13:
     v8 = 1;
   }
 
-  if ([v6 downloadState] != 4 || v7 || v8)
+  if ([viewModel downloadState] != 4 || v7 || v8)
   {
-    v13 = [(VUIDownloadButton *)self progressIndicator];
+    progressIndicator = [(VUIDownloadButton *)self progressIndicator];
 
-    if (v13)
+    if (progressIndicator)
     {
       [(VUIDownloadButton *)self progressIndicator];
     }
@@ -740,10 +740,10 @@ LABEL_13:
   backgroundView = self->_backgroundView;
   self->_backgroundView = v5;
 
-  v7 = [(VUIDownloadButton *)self subviews];
-  v13 = [v7 firstObject];
+  subviews = [(VUIDownloadButton *)self subviews];
+  firstObject = [subviews firstObject];
 
-  [(VUIDownloadButton *)self vui_insertSubview:self->_backgroundView belowSubview:v13 oldView:0];
+  [(VUIDownloadButton *)self vui_insertSubview:self->_backgroundView belowSubview:firstObject oldView:0];
   v8 = objc_alloc_init(MEMORY[0x1E69794A0]);
   backgroundMaskingLayer = self->_backgroundMaskingLayer;
   self->_backgroundMaskingLayer = v8;
@@ -787,47 +787,47 @@ LABEL_13:
     [v18 appendBezierPath:v11];
     -[CAShapeLayer setPath:](self->_backgroundMaskingLayer, "setPath:", [v18 vuiCGPath]);
     -[CAShapeLayer setPath:](self->_backdropMaskingLayer, "setPath:", [v18 vuiCGPath]);
-    v14 = [(VUIDownloadButton *)self backgroundView];
-    v15 = [v14 layer];
-    [v15 setMask:self->_backgroundMaskingLayer];
+    backgroundView = [(VUIDownloadButton *)self backgroundView];
+    layer = [backgroundView layer];
+    [layer setMask:self->_backgroundMaskingLayer];
 
-    v16 = [(VUIButton *)self backdropView];
-    v17 = [v16 layer];
-    [v17 setMask:self->_backdropMaskingLayer];
+    backdropView = [(VUIButton *)self backdropView];
+    layer2 = [backdropView layer];
+    [layer2 setMask:self->_backdropMaskingLayer];
   }
 }
 
 - (void)_clearMasks
 {
-  v3 = [(VUIDownloadButton *)self backgroundView];
-  v4 = [v3 layer];
-  [v4 setMask:0];
+  backgroundView = [(VUIDownloadButton *)self backgroundView];
+  layer = [backgroundView layer];
+  [layer setMask:0];
 
-  v6 = [(VUIButton *)self backdropView];
-  v5 = [v6 layer];
-  [v5 setMask:0];
+  backdropView = [(VUIButton *)self backdropView];
+  layer2 = [backdropView layer];
+  [layer2 setMask:0];
 }
 
 - (BOOL)_hasTitle
 {
-  v2 = [(VUIButton *)self textContentView];
-  v3 = v2 != 0;
+  textContentView = [(VUIButton *)self textContentView];
+  v3 = textContentView != 0;
 
   return v3;
 }
 
 - (BOOL)_hasImage
 {
-  v3 = [(VUIButton *)self imageView];
-  if (v3)
+  imageView = [(VUIButton *)self imageView];
+  if (imageView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(VUIDownloadButton *)self progressIndicator];
-    v4 = v5 != 0;
+    progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+    v4 = progressIndicator != 0;
   }
 
   return v4;
@@ -850,9 +850,9 @@ LABEL_13:
       v12 = v14;
     }
 
-    v15 = [(VUIButton *)self textContentView];
-    v16 = [v15 textLayout];
-    [v16 margin];
+    textContentView = [(VUIButton *)self textContentView];
+    textLayout = [textContentView textLayout];
+    [textLayout margin];
     v18 = v17;
 
     [(VUIButton *)self imageMargin];
@@ -860,14 +860,14 @@ LABEL_13:
     [(VUIDownloadButton *)self _imageSizeThatFits:v9, v12];
     v22 = v21;
     v24 = v23;
-    v25 = [(VUIButton *)self textContentView];
-    [v25 frame];
+    textContentView2 = [(VUIButton *)self textContentView];
+    [textContentView2 frame];
     v26 = CGRectGetMinX(v41) - v18 - v20 - v22;
 
     VUIRoundValue();
     v28 = v27;
-    v29 = [(VUIDownloadButton *)self progressIndicator];
-    v39 = v29;
+    progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+    v39 = progressIndicator;
     v30 = v26;
     v31 = v28;
     v32 = v22;
@@ -881,56 +881,56 @@ LABEL_13:
     v35 = (v34 + -28.0) * 0.5;
     [(VUIDownloadButton *)self bounds];
     v37 = (v36 + -28.0) * 0.5;
-    v29 = [(VUIDownloadButton *)self progressIndicator];
-    v39 = v29;
+    progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+    v39 = progressIndicator;
     v32 = 28.0;
     v33 = 28.0;
     v30 = v35;
     v31 = v37;
 LABEL_11:
-    [v29 setFrame:{v30, v31, v32, v33}];
+    [progressIndicator setFrame:{v30, v31, v32, v33}];
 
     return;
   }
 
-  v38 = [(VUIDownloadButton *)self progressIndicator];
+  progressIndicator2 = [(VUIDownloadButton *)self progressIndicator];
   [(VUIDownloadButton *)self bounds];
-  [v38 setFrame:?];
+  [progressIndicator2 setFrame:?];
 
   [(VUIDownloadButton *)self _updateMaskForProgressLayer];
 }
 
-- (void)_setTitleWithProperties:(id)a3
+- (void)_setTitleWithProperties:(id)properties
 {
-  v14 = a3;
-  if ([v14 hasTitle] && (objc_msgSend(v14, "title"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
+  propertiesCopy = properties;
+  if ([propertiesCopy hasTitle] && (objc_msgSend(propertiesCopy, "title"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, v5))
   {
-    v6 = [(VUIButton *)self textContentView];
-    v7 = [v6 textLayout];
-    if (v7)
+    textContentView = [(VUIButton *)self textContentView];
+    textLayout = [textContentView textLayout];
+    if (textLayout)
     {
-      v8 = [(VUIButton *)self textContentView];
-      v9 = [v8 textLayout];
+      textContentView2 = [(VUIButton *)self textContentView];
+      textLayout2 = [textContentView2 textLayout];
     }
 
     else
     {
-      v9 = [(VUIDownloadButton *)self textLayout];
+      textLayout2 = [(VUIDownloadButton *)self textLayout];
     }
 
-    v10 = [(VUIButton *)self textContentView];
+    textContentView3 = [(VUIButton *)self textContentView];
 
-    v11 = [v14 title];
-    if (v10)
+    title = [propertiesCopy title];
+    if (textContentView3)
     {
-      v12 = [(VUIButton *)self textContentView];
-      v13 = [VUILabel labelWithString:v11 textLayout:v9 existingLabel:v12];
+      textContentView4 = [(VUIButton *)self textContentView];
+      v13 = [VUILabel labelWithString:title textLayout:textLayout2 existingLabel:textContentView4];
     }
 
     else
     {
-      v12 = [VUILabel labelWithString:v11 textLayout:v9 existingLabel:0];
-      [(VUIButton *)self setTextContentView:v12];
+      textContentView4 = [VUILabel labelWithString:title textLayout:textLayout2 existingLabel:0];
+      [(VUIButton *)self setTextContentView:textContentView4];
     }
   }
 
@@ -944,39 +944,39 @@ LABEL_11:
 
 - (BOOL)_hasTextForNotDownloadState
 {
-  v3 = [(VUIDownloadButton *)self viewModel];
-  v4 = [v3 downloadFailedDueToError];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  downloadFailedDueToError = [viewModel downloadFailedDueToError];
 
-  v5 = [(VUIDownloadButton *)self viewModel];
-  v6 = [v5 isExpired];
+  viewModel2 = [(VUIDownloadButton *)self viewModel];
+  isExpired = [viewModel2 isExpired];
 
   v7 = 0;
-  if ((v4 & 1) == 0 && (v6 & 1) == 0)
+  if ((downloadFailedDueToError & 1) == 0 && (isExpired & 1) == 0)
   {
-    v8 = [(VUIDownloadButton *)self notDownloadStateText];
-    v7 = [v8 length] != 0;
+    notDownloadStateText = [(VUIDownloadButton *)self notDownloadStateText];
+    v7 = [notDownloadStateText length] != 0;
   }
 
   return v7;
 }
 
-- (void)_setImage:(id)a3
+- (void)_setImage:(id)image
 {
-  v6 = a3;
-  if (v6)
+  imageCopy = image;
+  if (imageCopy)
   {
     [(VUIButton *)self setImageTrailsTextContent:0];
-    v4 = [(VUIButton *)self imageView];
-    if (v4)
+    imageView = [(VUIButton *)self imageView];
+    if (imageView)
     {
-      v5 = v4;
-      [v4 setImage:v6];
+      v5 = imageView;
+      [imageView setImage:imageCopy];
     }
 
     else
     {
       v5 = objc_opt_new();
-      [v5 setImage:v6];
+      [v5 setImage:imageCopy];
       [(VUIButton *)self setImageView:v5];
     }
 
@@ -1000,9 +1000,9 @@ LABEL_11:
     v6 = +[VUILocalizationManager sharedInstance];
     v7 = [v6 localizedStringForKey:@"TV.Image.Not.Downloaded.VO"];
     v8 = [v4 vuiSystemImageNamed:@"arrow.down" withConfiguration:primarySymbolConfiguration accessibilityDescription:v7];
-    v9 = [v8 vuiTemplateImage];
+    vuiTemplateImage = [v8 vuiTemplateImage];
     v10 = self->_notDownloadedImage;
-    self->_notDownloadedImage = v9;
+    self->_notDownloadedImage = vuiTemplateImage;
 
     notDownloadedImage = self->_notDownloadedImage;
   }
@@ -1027,9 +1027,9 @@ LABEL_11:
     v7 = +[VUILocalizationManager sharedInstance];
     v8 = [v7 localizedStringForKey:@"TV.Image.Downloaded.VO"];
     v9 = [v6 vuiSystemImageNamed:@"arrow.down.circle.fill" withConfiguration:v4 accessibilityDescription:v8];
-    v10 = [v9 vuiTemplateImage];
+    vuiTemplateImage = [v9 vuiTemplateImage];
     v11 = self->_downloadedImage;
-    self->_downloadedImage = v10;
+    self->_downloadedImage = vuiTemplateImage;
 
     downloadedImage = self->_downloadedImage;
   }
@@ -1058,9 +1058,9 @@ LABEL_11:
     v8 = +[VUILocalizationManager sharedInstance];
     v9 = [v8 localizedStringForKey:@"TV.Image.Downloaded.VO"];
     v10 = [v7 vuiSystemImageNamed:@"arrow.down" withConfiguration:v6 accessibilityDescription:v9];
-    v11 = [v10 vuiTemplateImage];
+    vuiTemplateImage = [v10 vuiTemplateImage];
     v12 = self->_downloadingImage;
-    self->_downloadingImage = v11;
+    self->_downloadingImage = vuiTemplateImage;
 
     downloadingImage = self->_downloadingImage;
   }
@@ -1078,9 +1078,9 @@ LABEL_11:
     v6 = +[VUILocalizationManager sharedInstance];
     v7 = [v6 localizedStringForKey:@"TV.Image.Download.Expired.VO"];
     v8 = [v4 vuiSystemImageNamed:@"exclamationmark" withConfiguration:primarySymbolConfiguration accessibilityDescription:v7];
-    v9 = [v8 vuiTemplateImage];
+    vuiTemplateImage = [v8 vuiTemplateImage];
     v10 = self->_expiredDownloadImage;
-    self->_expiredDownloadImage = v9;
+    self->_expiredDownloadImage = vuiTemplateImage;
 
     expiredDownloadImage = self->_expiredDownloadImage;
   }
@@ -1088,53 +1088,53 @@ LABEL_11:
   return expiredDownloadImage;
 }
 
-- (id)_imageForDownloadState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6
+- (id)_imageForDownloadState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed
 {
-  if ([VUIDownloadButtonViewModel shouldShowExpiredImageWithDownloadState:a3 isExpired:a4 isExpiringSoon:a5 hasFailed:a6])
+  if ([VUIDownloadButtonViewModel shouldShowExpiredImageWithDownloadState:state isExpired:expired isExpiringSoon:soon hasFailed:failed])
   {
-    v8 = [(VUIDownloadButton *)self expiredDownloadImage];
+    expiredDownloadImage = [(VUIDownloadButton *)self expiredDownloadImage];
     goto LABEL_9;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0uLL:
       goto LABEL_6;
     case 4uLL:
-      v8 = [(VUIDownloadButton *)self downloadedImage];
+      expiredDownloadImage = [(VUIDownloadButton *)self downloadedImage];
       break;
     case 3uLL:
 LABEL_6:
-      v8 = [(VUIDownloadButton *)self notDownloadedImage];
+      expiredDownloadImage = [(VUIDownloadButton *)self notDownloadedImage];
       break;
     default:
-      v8 = 0;
+      expiredDownloadImage = 0;
       break;
   }
 
 LABEL_9:
 
-  return v8;
+  return expiredDownloadImage;
 }
 
-- (void)_updateButtonToState:(unint64_t)a3 oldState:(unint64_t)a4
+- (void)_updateButtonToState:(unint64_t)state oldState:(unint64_t)oldState
 {
-  if (a3 != a4)
+  if (state != oldState)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"VUIUnifiedMessagingRegistryActiveButtonsDidChange" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VUIUnifiedMessagingRegistryActiveButtonsDidChange" object:self];
   }
 
-  if (a3 > 5 || ((1 << a3) & 0x26) == 0)
+  if (state > 5 || ((1 << state) & 0x26) == 0)
   {
-    v8 = [(VUIDownloadButton *)self viewModel];
-    v9 = [v8 isExpired];
-    v10 = [(VUIDownloadButton *)self viewModel];
-    v11 = [v10 isExpiringSoon];
-    v12 = [(VUIDownloadButton *)self viewModel];
-    -[VUIDownloadButton _updateButtonToState:isExpired:isExpiringSoon:hasFailed:](self, "_updateButtonToState:isExpired:isExpiringSoon:hasFailed:", a3, v9, v11, [v12 downloadFailedDueToError]);
+    viewModel = [(VUIDownloadButton *)self viewModel];
+    isExpired = [viewModel isExpired];
+    viewModel2 = [(VUIDownloadButton *)self viewModel];
+    isExpiringSoon = [viewModel2 isExpiringSoon];
+    viewModel3 = [(VUIDownloadButton *)self viewModel];
+    -[VUIDownloadButton _updateButtonToState:isExpired:isExpiringSoon:hasFailed:](self, "_updateButtonToState:isExpired:isExpiringSoon:hasFailed:", state, isExpired, isExpiringSoon, [viewModel3 downloadFailedDueToError]);
 
-    if (a3 != a4)
+    if (state != oldState)
     {
       goto LABEL_10;
     }
@@ -1148,19 +1148,19 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a3 == a4)
+  if (state == oldState)
   {
     goto LABEL_8;
   }
 
-  [(VUIDownloadButton *)self _updateButtonToState:a3 isExpired:0 isExpiringSoon:0 hasFailed:0];
+  [(VUIDownloadButton *)self _updateButtonToState:state isExpired:0 isExpiringSoon:0 hasFailed:0];
 LABEL_10:
-  v13 = [(VUIDownloadButton *)self downloadStateChangeHandler];
+  downloadStateChangeHandler = [(VUIDownloadButton *)self downloadStateChangeHandler];
 
-  if (v13)
+  if (downloadStateChangeHandler)
   {
-    v14 = [(VUIDownloadButton *)self downloadStateChangeHandler];
-    (v14)[2](v14, a3, [(VUIDownloadButton *)self wasDeleted], [(VUIDownloadButton *)self wasCanceled]);
+    downloadStateChangeHandler2 = [(VUIDownloadButton *)self downloadStateChangeHandler];
+    (downloadStateChangeHandler2)[2](downloadStateChangeHandler2, state, [(VUIDownloadButton *)self wasDeleted], [(VUIDownloadButton *)self wasCanceled]);
   }
 
   [(VUIDownloadButton *)self setWasDeleted:0];
@@ -1168,25 +1168,25 @@ LABEL_10:
   [(VUIDownloadButton *)self setWasCanceled:0];
 }
 
-- (void)_updateButtonToState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6
+- (void)_updateButtonToState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed
 {
-  v8 = [(VUIDownloadButton *)self _buttonPropertiesForState:a3 isExpired:a4 isExpiringSoon:a5 hasFailed:a6];
+  v8 = [(VUIDownloadButton *)self _buttonPropertiesForState:state isExpired:expired isExpiringSoon:soon hasFailed:failed];
   -[VUIButton setEnabled:](self, "setEnabled:", [v8 isEnabled]);
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 5)
+    if (state == 5)
     {
       [(VUIDownloadButton *)self _updateButtonToEnqueuedWithProperties:v8];
       goto LABEL_13;
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       [(VUIDownloadButton *)self _updateButtonToDownloadedWithProperties:v8];
       goto LABEL_13;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       goto LABEL_13;
     }
@@ -1196,7 +1196,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0uLL:
       goto LABEL_9;
@@ -1209,60 +1209,60 @@ LABEL_9:
   }
 
 LABEL_13:
-  [(VUIDownloadButton *)self _updateImageViewTintColorWithDownloadState:a3];
+  [(VUIDownloadButton *)self _updateImageViewTintColorWithDownloadState:state];
   [(VUIDownloadButton *)self vui_setNeedsLayout];
 }
 
-- (void)_updateButtonToNotDownloadedWithProperties:(id)a3
+- (void)_updateButtonToNotDownloadedWithProperties:(id)properties
 {
-  v7 = a3;
-  if ([v7 hasImage])
+  propertiesCopy = properties;
+  if ([propertiesCopy hasImage])
   {
-    v4 = [v7 image];
-    [(VUIDownloadButton *)self _setImage:v4];
+    image = [propertiesCopy image];
+    [(VUIDownloadButton *)self _setImage:image];
   }
 
   [(VUIDownloadButton *)self _clearMasks];
-  [(VUIDownloadButton *)self _setTitleWithProperties:v7];
-  v5 = [(VUIDownloadButton *)self progressIndicator];
-  [v5 vui_removeFromSuperView];
+  [(VUIDownloadButton *)self _setTitleWithProperties:propertiesCopy];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator vui_removeFromSuperView];
 
   [(VUIDownloadButton *)self setProgressIndicator:0];
-  v6 = [(VUIDownloadButton *)self viewModel];
-  [(VUIDownloadButton *)self _stopObservingDownloadProgress:v6];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [(VUIDownloadButton *)self _stopObservingDownloadProgress:viewModel];
 }
 
-- (void)_updateButtonToConnectingWithProperties:(id)a3
+- (void)_updateButtonToConnectingWithProperties:(id)properties
 {
-  v6 = a3;
+  propertiesCopy = properties;
   [(VUIDownloadButton *)self _setTitleWithProperties:?];
-  v4 = [(VUIDownloadButton *)self progressIndicator];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
 
-  if (!v4)
+  if (!progressIndicator)
   {
     [(VUIDownloadButton *)self insertProgressIndicator];
   }
 
-  v5 = [v6 image];
-  [(VUIDownloadButton *)self _setImage:v5];
+  image = [propertiesCopy image];
+  [(VUIDownloadButton *)self _setImage:image];
 
-  [(VUIDownloadButton *)self _configureProgressIndicatorWithProperties:v6];
+  [(VUIDownloadButton *)self _configureProgressIndicatorWithProperties:propertiesCopy];
 }
 
-- (void)_updateButtonToDownloadingWithProperties:(id)a3
+- (void)_updateButtonToDownloadingWithProperties:(id)properties
 {
-  v6 = a3;
+  propertiesCopy = properties;
   [(VUIDownloadButton *)self _setTitleWithProperties:?];
-  v4 = [(VUIDownloadButton *)self progressIndicator];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
 
-  if (!v4)
+  if (!progressIndicator)
   {
     [(VUIDownloadButton *)self insertProgressIndicator];
   }
 
-  [(VUIDownloadButton *)self _configureProgressIndicatorWithProperties:v6];
-  v5 = [(VUIDownloadButton *)self viewModel];
-  [(VUIDownloadButton *)self _startObservingDownloadProgress:v5];
+  [(VUIDownloadButton *)self _configureProgressIndicatorWithProperties:propertiesCopy];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [(VUIDownloadButton *)self _startObservingDownloadProgress:viewModel];
 
   [(VUIDownloadButton *)self _setImage:0];
 }
@@ -1281,12 +1281,12 @@ LABEL_13:
 
   else
   {
-    v9 = [(VUIButton *)self imageView];
+    imageView = [(VUIButton *)self imageView];
 
-    if (v9)
+    if (imageView)
     {
-      v10 = [(VUIButton *)self imageView];
-      [v10 frame];
+      imageView2 = [(VUIButton *)self imageView];
+      [imageView2 frame];
       v4 = v11;
       v6 = v12;
       v8 = v13;
@@ -1305,86 +1305,86 @@ LABEL_13:
   [(VUIDownloadButton *)self _insertProgressIndicatorWithFrame:v4, v6, v8, v7];
 }
 
-- (void)_updateButtonToEnqueuedWithProperties:(id)a3
+- (void)_updateButtonToEnqueuedWithProperties:(id)properties
 {
-  v6 = a3;
+  propertiesCopy = properties;
   [(VUIDownloadButton *)self _setTitleWithProperties:?];
-  v4 = [(VUIDownloadButton *)self progressIndicator];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
 
-  if (!v4)
+  if (!progressIndicator)
   {
     [(VUIDownloadButton *)self insertProgressIndicator];
   }
 
-  [(VUIDownloadButton *)self _configureProgressIndicatorWithProperties:v6];
-  v5 = [(VUIDownloadButton *)self viewModel];
-  [(VUIDownloadButton *)self _startObservingDownloadProgress:v5];
+  [(VUIDownloadButton *)self _configureProgressIndicatorWithProperties:propertiesCopy];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [(VUIDownloadButton *)self _startObservingDownloadProgress:viewModel];
 
   [(VUIDownloadButton *)self _setImage:0];
 }
 
-- (void)_updateButtonToDownloadedWithProperties:(id)a3
+- (void)_updateButtonToDownloadedWithProperties:(id)properties
 {
-  v13 = a3;
-  [(VUIDownloadButton *)self _setTitleWithProperties:v13];
-  if (([v13 hasTitle] & 1) == 0 && -[VUIDownloadButton showsTextInDownloadedState](self, "showsTextInDownloadedState"))
+  propertiesCopy = properties;
+  [(VUIDownloadButton *)self _setTitleWithProperties:propertiesCopy];
+  if (([propertiesCopy hasTitle] & 1) == 0 && -[VUIDownloadButton showsTextInDownloadedState](self, "showsTextInDownloadedState"))
   {
-    v4 = [(VUIButton *)self textContentView];
-    v5 = [v4 textLayout];
-    if (v5)
+    textContentView = [(VUIButton *)self textContentView];
+    textLayout = [textContentView textLayout];
+    if (textLayout)
     {
-      v6 = [(VUIButton *)self textContentView];
-      v7 = [v6 textLayout];
+      textContentView2 = [(VUIButton *)self textContentView];
+      textLayout2 = [textContentView2 textLayout];
     }
 
     else
     {
-      v7 = [(VUIDownloadButton *)self textLayout];
+      textLayout2 = [(VUIDownloadButton *)self textLayout];
     }
 
-    v8 = [v13 title];
-    v9 = [VUILabel labelWithString:v8 textLayout:v7 existingLabel:0];
+    title = [propertiesCopy title];
+    v9 = [VUILabel labelWithString:title textLayout:textLayout2 existingLabel:0];
     [(VUIButton *)self setTextContentView:v9];
   }
 
-  if ([v13 hasImage])
+  if ([propertiesCopy hasImage])
   {
-    v10 = [v13 image];
-    [(VUIDownloadButton *)self _setImage:v10];
+    image = [propertiesCopy image];
+    [(VUIDownloadButton *)self _setImage:image];
   }
 
   [(VUIDownloadButton *)self _clearMasks];
-  v11 = [(VUIDownloadButton *)self progressIndicator];
-  [v11 vui_removeFromSuperView];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator vui_removeFromSuperView];
 
   [(VUIDownloadButton *)self setProgressIndicator:0];
-  v12 = [(VUIDownloadButton *)self viewModel];
-  [(VUIDownloadButton *)self _stopObservingDownloadProgress:v12];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [(VUIDownloadButton *)self _stopObservingDownloadProgress:viewModel];
 }
 
-- (void)_updateImageViewTintColorWithDownloadState:(unint64_t)a3
+- (void)_updateImageViewTintColorWithDownloadState:(unint64_t)state
 {
-  v5 = [(VUIButton *)self imageView];
-  v4 = [(VUIButton *)self imageTintColor];
-  [v5 _setTintColor:v4];
+  imageView = [(VUIButton *)self imageView];
+  imageTintColor = [(VUIButton *)self imageTintColor];
+  [imageView _setTintColor:imageTintColor];
 }
 
-- (void)_updateDownloadProgress:(double)a3 animated:(BOOL)a4
+- (void)_updateDownloadProgress:(double)progress animated:(BOOL)animated
 {
-  v6 = [(VUIDownloadButton *)self progressIndicator];
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
 
-  if (v6)
+  if (progressIndicator)
   {
-    v7 = [(VUIDownloadButton *)self progressIndicator];
-    [v7 setProgress:a3];
+    progressIndicator2 = [(VUIDownloadButton *)self progressIndicator];
+    [progressIndicator2 setProgress:progress];
   }
 }
 
-- (id)_remoteButtonPropertiesForState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6
+- (id)_remoteButtonPropertiesForState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  failedCopy = failed;
+  soonCopy = soon;
+  expiredCopy = expired;
   v11 = objc_opt_new();
   v12 = [(VUIButton *)self buttonType]!= 9 && [(VUIButton *)self buttonType]!= 7;
   if ([(VUIButton *)self buttonType])
@@ -1398,22 +1398,22 @@ LABEL_13:
   }
 
   [v11 setHasTitle:v12];
-  v14 = [(VUIDownloadButton *)self _imageForDownloadState:a3 isExpired:v8 isExpiringSoon:v7 hasFailed:v6];
+  v14 = [(VUIDownloadButton *)self _imageForDownloadState:state isExpired:expiredCopy isExpiringSoon:soonCopy hasFailed:failedCopy];
   [v11 setImage:v14];
 
   [v11 setHasImage:1];
-  [v11 setDownloadState:a3];
-  v15 = [(VUIDownloadButton *)self viewModel];
-  [v15 downloadProgress];
+  [v11 setDownloadState:state];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [viewModel downloadProgress];
   [v11 setProgress:?];
 
   [v11 setEnabled:1];
-  if (a3 > 5)
+  if (state > 5)
   {
     goto LABEL_19;
   }
 
-  if (((1 << a3) & 0x26) != 0)
+  if (((1 << state) & 0x26) != 0)
   {
     [v11 setHasImage:0];
     if (v13)
@@ -1429,7 +1429,7 @@ LABEL_13:
     goto LABEL_27;
   }
 
-  if (((1 << a3) & 9) == 0)
+  if (((1 << state) & 9) == 0)
   {
     [v11 setIndeterminate:0];
     if (v13)
@@ -1458,17 +1458,17 @@ LABEL_19:
       goto LABEL_25;
     }
 
-    v20 = [(VUIDownloadButton *)self viewModel];
-    v21 = [v20 videosPlayable];
-    v22 = [v21 playbackModes];
-    v23 = [v22 containsObject:@"Stereoscopic"];
+    viewModel2 = [(VUIDownloadButton *)self viewModel];
+    videosPlayable = [viewModel2 videosPlayable];
+    playbackModes = [videosPlayable playbackModes];
+    v23 = [playbackModes containsObject:@"Stereoscopic"];
 
     v24 = +[VUILocalizationManager sharedInstance];
     v25 = v24;
     v26 = (v23 & 1) != 0 ? @"TV.Button.RemoteDownload.Download3D" : @"TV.Button.RemoteDownload.Download";
-    v31 = [v24 localizedStringForKey:v26];
+    notDownloadStateText = [v24 localizedStringForKey:v26];
 
-    if (!v31)
+    if (!notDownloadStateText)
     {
       goto LABEL_25;
     }
@@ -1476,8 +1476,8 @@ LABEL_19:
 
   else
   {
-    v31 = [(VUIDownloadButton *)self notDownloadStateText];
-    if (!v31)
+    notDownloadStateText = [(VUIDownloadButton *)self notDownloadStateText];
+    if (!notDownloadStateText)
     {
 LABEL_25:
       [v11 setHasTitle:0];
@@ -1485,7 +1485,7 @@ LABEL_25:
     }
   }
 
-  [v11 setTitle:v31];
+  [v11 setTitle:notDownloadStateText];
   [v11 setHasTitle:1];
 
 LABEL_26:
@@ -1498,37 +1498,37 @@ LABEL_28:
   return v11;
 }
 
-- (id)_localButtonPropertiesForState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6
+- (id)_localButtonPropertiesForState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  failedCopy = failed;
+  soonCopy = soon;
+  expiredCopy = expired;
   v11 = objc_opt_new();
   v12 = [(VUIButton *)self buttonType]!= 9 && [(VUIButton *)self buttonType]!= 7;
   [v11 setHasTitle:v12];
-  v13 = [(VUIDownloadButton *)self _imageForDownloadState:a3 isExpired:v8 isExpiringSoon:v7 hasFailed:v6];
+  v13 = [(VUIDownloadButton *)self _imageForDownloadState:state isExpired:expiredCopy isExpiringSoon:soonCopy hasFailed:failedCopy];
   [v11 setImage:v13];
 
   [v11 setHasImage:1];
-  [v11 setDownloadState:a3];
-  v14 = [(VUIDownloadButton *)self viewModel];
-  [v14 downloadProgress];
+  [v11 setDownloadState:state];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  [viewModel downloadProgress];
   [v11 setProgress:?];
 
   [v11 setEnabled:1];
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 5)
+    if (state == 5)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 4)
+    if (state == 4)
     {
       [v11 setIndeterminate:0];
       v23 = +[VUILocalizationManager sharedInstance];
       v24 = v23;
-      if (v8)
+      if (expiredCopy)
       {
         v25 = @"RENEW";
       }
@@ -1544,15 +1544,15 @@ LABEL_28:
       goto LABEL_27;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       goto LABEL_15;
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       [v11 setHasBorder:0];
       [v11 setHasImage:0];
@@ -1562,7 +1562,7 @@ LABEL_28:
       goto LABEL_19;
     }
 
-    if (a3 != 2)
+    if (state != 2)
     {
 LABEL_15:
       [v11 setHasTitle:0];
@@ -1580,10 +1580,10 @@ LABEL_19:
     goto LABEL_27;
   }
 
-  v15 = [(VUIDownloadButton *)self notDownloadStateText];
-  v16 = [(VUIDownloadButton *)self _hasTextForNotDownloadState];
-  v17 = v16;
-  if (v8)
+  notDownloadStateText = [(VUIDownloadButton *)self notDownloadStateText];
+  _hasTextForNotDownloadState = [(VUIDownloadButton *)self _hasTextForNotDownloadState];
+  v17 = _hasTextForNotDownloadState;
+  if (expiredCopy)
   {
     v18 = +[VUILocalizationManager sharedInstance];
     v19 = v18;
@@ -1595,7 +1595,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v16)
+  if (!_hasTextForNotDownloadState)
   {
     v18 = +[VUILocalizationManager sharedInstance];
     v19 = v18;
@@ -1603,7 +1603,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  [v11 setTitle:v15];
+  [v11 setTitle:notDownloadStateText];
 LABEL_24:
   [v11 setIndeterminate:0];
   [v11 setHasTitle:v17];
@@ -1613,31 +1613,31 @@ LABEL_27:
   return v11;
 }
 
-- (id)_buttonPropertiesForState:(unint64_t)a3 isExpired:(BOOL)a4 isExpiringSoon:(BOOL)a5 hasFailed:(BOOL)a6
+- (id)_buttonPropertiesForState:(unint64_t)state isExpired:(BOOL)expired isExpiringSoon:(BOOL)soon hasFailed:(BOOL)failed
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  failedCopy = failed;
+  soonCopy = soon;
+  expiredCopy = expired;
   if (_os_feature_enabled_impl() && (-[VUIDownloadButton viewModel](self, "viewModel"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isRemoteDownload], v11, v12))
   {
-    v13 = [(VUIDownloadButton *)self _remoteButtonPropertiesForState:a3 isExpired:v8 isExpiringSoon:v7 hasFailed:v6];
+    v13 = [(VUIDownloadButton *)self _remoteButtonPropertiesForState:state isExpired:expiredCopy isExpiringSoon:soonCopy hasFailed:failedCopy];
   }
 
   else
   {
-    v13 = [(VUIDownloadButton *)self _localButtonPropertiesForState:a3 isExpired:v8 isExpiringSoon:v7 hasFailed:v6];
+    v13 = [(VUIDownloadButton *)self _localButtonPropertiesForState:state isExpired:expiredCopy isExpiringSoon:soonCopy hasFailed:failedCopy];
   }
 
   return v13;
 }
 
-- (void)_insertProgressIndicatorWithFrame:(CGRect)a3
+- (void)_insertProgressIndicatorWithFrame:(CGRect)frame
 {
   if (!self->_progressIndicator)
   {
-    v13 = [[VUICircularProgress alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(VUICircularProgress *)v13 setVuiBackgroundColor:v5];
+    v13 = [[VUICircularProgress alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VUICircularProgress *)v13 setVuiBackgroundColor:clearColor];
 
     if (MEMORY[0x1E6913230]())
     {
@@ -1672,27 +1672,27 @@ LABEL_27:
     [(VUICircularProgress *)v13 setVuiClipsToBounds:0];
     if (_os_feature_enabled_impl())
     {
-      v8 = [(VUIDownloadButton *)self viewModel];
-      -[VUICircularProgress setIndeterminateType:](v13, "setIndeterminateType:", [v8 isRemoteDownload]);
+      viewModel = [(VUIDownloadButton *)self viewModel];
+      -[VUICircularProgress setIndeterminateType:](v13, "setIndeterminateType:", [viewModel isRemoteDownload]);
     }
 
-    v9 = [(VUIDownloadButton *)self viewModel];
-    v10 = [v9 downloadType];
+    viewModel2 = [(VUIDownloadButton *)self viewModel];
+    downloadType = [viewModel2 downloadType];
 
-    if (v10 == 1)
+    if (downloadType == 1)
     {
       if (MEMORY[0x1E6913230]() && [(VUIButton *)self buttonType]== 7)
       {
-        v11 = [(VUIDownloadButton *)self downloadingImage];
+        downloadingImage = [(VUIDownloadButton *)self downloadingImage];
       }
 
       else
       {
-        v11 = [(VUIDownloadButton *)self notDownloadedImage];
+        downloadingImage = [(VUIDownloadButton *)self notDownloadedImage];
       }
 
-      v12 = v11;
-      [(VUICircularProgress *)v13 setCenterImage:v11];
+      v12 = downloadingImage;
+      [(VUICircularProgress *)v13 setCenterImage:downloadingImage];
     }
 
     [(VUIDownloadButton *)self vui_addSubview:v13 oldView:0];
@@ -1700,122 +1700,122 @@ LABEL_27:
   }
 }
 
-- (void)_configureProgressIndicatorWithProperties:(id)a3
+- (void)_configureProgressIndicatorWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(VUIDownloadButton *)self progressIndicator];
-  v6 = [v5 vuiLayer];
-  [v6 removeAllAnimations];
+  propertiesCopy = properties;
+  progressIndicator = [(VUIDownloadButton *)self progressIndicator];
+  vuiLayer = [progressIndicator vuiLayer];
+  [vuiLayer removeAllAnimations];
 
-  v7 = [(VUIDownloadButton *)self progressIndicator];
-  [v7 setVuiUserInteractionEnabled:0];
+  progressIndicator2 = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator2 setVuiUserInteractionEnabled:0];
 
-  v8 = [(VUIButton *)self imageTintColor];
-  if (!v8)
+  imageTintColor = [(VUIButton *)self imageTintColor];
+  if (!imageTintColor)
   {
-    v8 = [MEMORY[0x1E69DC888] vui_keyColor];
+    imageTintColor = [MEMORY[0x1E69DC888] vui_keyColor];
   }
 
-  v18 = v8;
-  v9 = [(VUIDownloadButton *)self saturatedTintColor];
+  v18 = imageTintColor;
+  saturatedTintColor = [(VUIDownloadButton *)self saturatedTintColor];
 
-  if (v9)
+  if (saturatedTintColor)
   {
-    v10 = [(VUIDownloadButton *)self saturatedTintColor];
+    saturatedTintColor2 = [(VUIDownloadButton *)self saturatedTintColor];
 
-    v18 = v10;
+    v18 = saturatedTintColor2;
   }
 
-  v11 = [(VUIDownloadButton *)self progressIndicator];
-  [v11 setVuiTintColor:v18];
+  progressIndicator3 = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator3 setVuiTintColor:v18];
 
-  v12 = [(VUIDownloadButton *)self progressIndicator];
-  [v12 setProgressFillColor:v18];
+  progressIndicator4 = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator4 setProgressFillColor:v18];
 
   v13 = [v18 colorWithAlphaComponent:0.2];
-  v14 = [(VUIDownloadButton *)self progressIndicator];
-  [v14 setProgressBgColor:v13];
+  progressIndicator5 = [(VUIDownloadButton *)self progressIndicator];
+  [progressIndicator5 setProgressBgColor:v13];
 
-  v15 = [(VUIDownloadButton *)self progressIndicator];
-  [v4 progress];
-  [v15 setProgress:?];
+  progressIndicator6 = [(VUIDownloadButton *)self progressIndicator];
+  [propertiesCopy progress];
+  [progressIndicator6 setProgress:?];
 
-  v16 = [(VUIDownloadButton *)self progressIndicator];
-  v17 = [v4 isIndeterminate];
+  progressIndicator7 = [(VUIDownloadButton *)self progressIndicator];
+  isIndeterminate = [propertiesCopy isIndeterminate];
 
-  [v16 setIndeterminate:v17];
+  [progressIndicator7 setIndeterminate:isIndeterminate];
 }
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
   v4 = __ViewModelDownloadStateContext;
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"downloadState" options:3 context:v4];
-  [v5 addObserver:self forKeyPath:@"downloadExpirationDate" options:3 context:__ViewModelDownloadExpirationDateContext];
+  modelCopy = model;
+  [modelCopy addObserver:self forKeyPath:@"downloadState" options:3 context:v4];
+  [modelCopy addObserver:self forKeyPath:@"downloadExpirationDate" options:3 context:__ViewModelDownloadExpirationDateContext];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
   v4 = __ViewModelDownloadStateContext;
-  v5 = a3;
-  [v5 removeObserver:self forKeyPath:@"downloadState" context:v4];
-  [v5 removeObserver:self forKeyPath:@"downloadExpirationDate" context:__ViewModelDownloadExpirationDateContext];
+  modelCopy = model;
+  [modelCopy removeObserver:self forKeyPath:@"downloadState" context:v4];
+  [modelCopy removeObserver:self forKeyPath:@"downloadExpirationDate" context:__ViewModelDownloadExpirationDateContext];
 }
 
-- (void)_startObservingDownloadProgress:(id)a3
+- (void)_startObservingDownloadProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   if (![(VUIDownloadButton *)self observingDownloadProgress])
   {
-    [v4 addObserver:self forKeyPath:@"downloadProgress" options:5 context:__ViewModelDownloadProgressContext];
+    [progressCopy addObserver:self forKeyPath:@"downloadProgress" options:5 context:__ViewModelDownloadProgressContext];
     [(VUIDownloadButton *)self setObservingDownloadProgress:1];
   }
 }
 
-- (void)_stopObservingDownloadProgress:(id)a3
+- (void)_stopObservingDownloadProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   if ([(VUIDownloadButton *)self observingDownloadProgress])
   {
     [(VUIDownloadButton *)self setObservingDownloadProgress:0];
-    [v4 removeObserver:self forKeyPath:@"downloadProgress" context:__ViewModelDownloadProgressContext];
+    [progressCopy removeObserver:self forKeyPath:@"downloadProgress" context:__ViewModelDownloadProgressContext];
   }
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(VUIDownloadButton *)self viewModel];
-  v4 = [v3 downloadState];
+  viewModel = [(VUIDownloadButton *)self viewModel];
+  downloadState = [viewModel downloadState];
 
-  if (v4 == 2)
+  if (downloadState == 2)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(VUIDownloadButton *)self viewModel];
-    [v8 downloadProgress];
+    viewModel2 = [(VUIDownloadButton *)self viewModel];
+    [viewModel2 downloadProgress];
     v10 = [v7 numberWithDouble:v9 * 100.0];
-    v5 = [v6 stringWithFormat:@"%d", objc_msgSend(v10, "intValue")];
+    image = [v6 stringWithFormat:@"%d", objc_msgSend(v10, "intValue")];
 
     v11 = MEMORY[0x1E696AEC0];
     v12 = +[VUILocalizationManager sharedInstance];
     v13 = [v12 localizedStringForKey:@"TV.Downloading.VO"];
-    v14 = [v11 stringWithFormat:v13, v5];
+    v14 = [v11 stringWithFormat:v13, image];
   }
 
   else
   {
-    if (v4 == 1)
+    if (downloadState == 1)
     {
-      v5 = +[VUILocalizationManager sharedInstance];
-      [v5 localizedStringForKey:@"TV.Download.Connecting.VO"];
+      image = +[VUILocalizationManager sharedInstance];
+      [image localizedStringForKey:@"TV.Download.Connecting.VO"];
     }
 
     else
     {
-      v15 = [(VUIButton *)self imageView];
-      v5 = [v15 image];
+      imageView = [(VUIButton *)self imageView];
+      image = [imageView image];
 
-      [v5 accessibilityLabel];
+      [image accessibilityLabel];
     }
     v14 = ;
   }

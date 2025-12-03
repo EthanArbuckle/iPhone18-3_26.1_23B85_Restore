@@ -1,31 +1,31 @@
 @interface SXCollectionCalculator
-+ (id)layoutWithCollectionDisplay:(id)a3 width:(double)a4 numberOfComponents:(unint64_t)a5 unitConverter:(id)a6;
++ (id)layoutWithCollectionDisplay:(id)display width:(double)width numberOfComponents:(unint64_t)components unitConverter:(id)converter;
 @end
 
 @implementation SXCollectionCalculator
 
-+ (id)layoutWithCollectionDisplay:(id)a3 width:(double)a4 numberOfComponents:(unint64_t)a5 unitConverter:(id)a6
++ (id)layoutWithCollectionDisplay:(id)display width:(double)width numberOfComponents:(unint64_t)components unitConverter:(id)converter
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 gutter];
-  [v10 convertValueToPoints:{v11, v12}];
+  displayCopy = display;
+  converterCopy = converter;
+  gutter = [displayCopy gutter];
+  [converterCopy convertValueToPoints:{gutter, v12}];
   v14 = v13;
-  v15 = [v9 minimumWidth];
-  [v10 convertValueToPoints:{v15, v16}];
-  if (v17 >= a4)
+  minimumWidth = [displayCopy minimumWidth];
+  [converterCopy convertValueToPoints:{minimumWidth, v16}];
+  if (widthCopy2 >= width)
   {
-    v17 = a4;
+    widthCopy2 = width;
   }
 
-  if (v14 > a4)
+  if (v14 > width)
   {
-    v17 = a4;
+    widthCopy2 = width;
   }
 
-  if (v17 >= 40.0)
+  if (widthCopy2 >= 40.0)
   {
-    v18 = v17;
+    v18 = widthCopy2;
   }
 
   else
@@ -33,17 +33,17 @@
     v18 = 40.0;
   }
 
-  v19 = [v9 maximumWidth];
-  [v10 convertValueToPoints:{v19, v20}];
+  maximumWidth = [displayCopy maximumWidth];
+  [converterCopy convertValueToPoints:{maximumWidth, v20}];
   v22 = 0;
-  if (v21 == 0.0)
+  if (widthCopy3 == 0.0)
   {
-    v21 = a4;
+    widthCopy3 = width;
   }
 
-  if (v21 >= v18)
+  if (widthCopy3 >= v18)
   {
-    v23 = v21;
+    v23 = widthCopy3;
   }
 
   else
@@ -56,7 +56,7 @@
     v24 = v22++;
   }
 
-  while (v22 <= a5 && (a4 - v14 * (v22 - 1)) / v22 > v18);
+  while (v22 <= components && (width - v14 * (v22 - 1)) / v22 > v18);
   if (v24 <= 1)
   {
     v25 = 1;
@@ -67,10 +67,10 @@
     v25 = v24;
   }
 
-  v26 = [v9 widows];
-  if (v25 >= a5 || v26)
+  widows = [displayCopy widows];
+  if (v25 >= components || widows)
   {
-    if ([v9 widows] != 1)
+    if ([displayCopy widows] != 1)
     {
       goto LABEL_26;
     }
@@ -81,7 +81,7 @@
     goto LABEL_25;
   }
 
-  if ((a5 & 1) == 0)
+  if ((components & 1) == 0)
   {
       ;
     }
@@ -91,32 +91,32 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v25 + a5 / v25 * v25 - a5 >= 2)
+  if (v25 + components / v25 * v25 - components >= 2)
   {
     do
     {
       --v25;
     }
 
-    while (v25 + a5 / v25 * v25 - a5 > 1);
+    while (v25 + components / v25 * v25 - components > 1);
   }
 
 LABEL_26:
-  [v10 convertValueToPoints:{0x4069000000000000, 2}];
+  [converterCopy convertValueToPoints:{0x4069000000000000, 2}];
   v61 = v29;
-  v30 = [v9 rowSpacing];
-  [v10 convertValueToPoints:{v30, v31}];
+  rowSpacing = [displayCopy rowSpacing];
+  [converterCopy convertValueToPoints:{rowSpacing, v31}];
   v60 = v32;
-  v33 = vcvtpd_u64_f64(a5 / v25);
-  v34 = [v9 variableSizing];
-  v35 = [MEMORY[0x1E695DF70] array];
+  v33 = vcvtpd_u64_f64(components / v25);
+  variableSizing = [displayCopy variableSizing];
+  array = [MEMORY[0x1E695DF70] array];
   if (v33)
   {
     while (1)
     {
-      v36 = a5;
-      v37 = a5 >= v25;
-      a5 -= v25;
+      componentsCopy = components;
+      v37 = components >= v25;
+      components -= v25;
       if (v37)
       {
         v38 = v25;
@@ -124,10 +124,10 @@ LABEL_26:
 
       else
       {
-        v38 = v36;
+        v38 = componentsCopy;
       }
 
-      if (v34)
+      if (variableSizing)
       {
         v39 = v38;
       }
@@ -140,12 +140,12 @@ LABEL_26:
       v40 = v38;
       v41 = v39 - 1;
       v42 = v25;
-      if (v34)
+      if (variableSizing)
       {
         v42 = v38;
       }
 
-      v43 = a4 - v14 * v41;
+      v43 = width - v14 * v41;
       if (v43 / v42 >= v23)
       {
         v44 = v23;
@@ -156,14 +156,14 @@ LABEL_26:
         v44 = v43 / v42;
       }
 
-      v45 = [v9 distribution];
+      distribution = [displayCopy distribution];
       v46 = floor(v44);
-      if (v45 || (v14 == 0.0 ? (v47 = v44 < v23) : (v47 = 0), !v47))
+      if (distribution || (v14 == 0.0 ? (v47 = v44 < v23) : (v47 = 0), !v47))
       {
         v44 = v46;
       }
 
-      if (v34)
+      if (variableSizing)
       {
         v48 = v43 - v44 * v40;
       }
@@ -174,9 +174,9 @@ LABEL_26:
       }
 
       v49 = 0.0;
-      if ([v9 distribution] == 1)
+      if ([displayCopy distribution] == 1)
       {
-        if ([v9 alignment] == 1)
+        if ([displayCopy alignment] == 1)
         {
           v50 = floor(v48 * 0.5);
           v49 = ceil(v48 * 0.5);
@@ -185,10 +185,10 @@ LABEL_26:
         else
         {
           v50 = v48;
-          if ([v9 alignment] != 2)
+          if ([displayCopy alignment] != 2)
           {
             v50 = 0.0;
-            if ([v9 alignment])
+            if ([displayCopy alignment])
             {
               v49 = 0.0;
             }
@@ -224,13 +224,13 @@ LABEL_26:
         goto LABEL_59;
       }
 
-      v55 = [v9 distribution];
-      if (!v55)
+      distribution2 = [displayCopy distribution];
+      if (!distribution2)
       {
         goto LABEL_58;
       }
 
-      if (v55 == 1)
+      if (distribution2 == 1)
       {
         break;
       }
@@ -243,7 +243,7 @@ LABEL_59:
       [(SXCollectionRowLayout *)v56 setRightMargin:v49];
       [(SXCollectionRowLayout *)v56 setComponentWidth:v44];
       [(SXCollectionRowLayout *)v56 setSpaceBetweenComponents:floor(v52)];
-      [v35 addObject:v56];
+      [array addObject:v56];
 
       if (!--v33)
       {
@@ -251,14 +251,14 @@ LABEL_59:
       }
     }
 
-    if ([v9 alignment] != 1)
+    if ([displayCopy alignment] != 1)
     {
-      if ([v9 alignment] == 2)
+      if ([displayCopy alignment] == 2)
       {
         v50 = v54;
       }
 
-      else if (![v9 alignment])
+      else if (![displayCopy alignment])
       {
         v49 = v54;
       }
@@ -285,7 +285,7 @@ LABEL_70:
 
   v58 = objc_alloc_init(SXCollectionLayout);
   [(SXCollectionLayout *)v58 setSpaceBetweenRows:v57];
-  [(SXCollectionLayout *)v58 setRowsLayouts:v35];
+  [(SXCollectionLayout *)v58 setRowsLayouts:array];
 
   return v58;
 }

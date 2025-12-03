@@ -1,34 +1,34 @@
 @interface PLCloudResourcePruneManager
 - (PLCloudResourcePruneManager)init;
-- (PLCloudResourcePruneManager)initWithCPLManager:(id)a3 libraryServicesManager:(id)a4;
-- (__CFDictionary)_handleCacheDeletePurge:(int)a3 info:(__CFDictionary *)a4;
-- (__CFDictionary)_handleCacheDeletePurgeable:(int)a3 info:(__CFDictionary *)a4;
-- (id)_identifierForResource:(id)a3;
-- (id)_predicateForPruneWithUrgency:(int64_t)a3;
-- (id)pruneStatusForDebug:(BOOL)a3;
-- (int64_t)_fetchResourcesForPruningWithBudget:(int64_t)a3 urgency:(int64_t)a4 batchHandler:(id)a5;
+- (PLCloudResourcePruneManager)initWithCPLManager:(id)manager libraryServicesManager:(id)servicesManager;
+- (__CFDictionary)_handleCacheDeletePurge:(int)purge info:(__CFDictionary *)info;
+- (__CFDictionary)_handleCacheDeletePurgeable:(int)purgeable info:(__CFDictionary *)info;
+- (id)_identifierForResource:(id)resource;
+- (id)_predicateForPruneWithUrgency:(int64_t)urgency;
+- (id)pruneStatusForDebug:(BOOL)debug;
+- (int64_t)_fetchResourcesForPruningWithBudget:(int64_t)budget urgency:(int64_t)urgency batchHandler:(id)handler;
 - (int64_t)_localResourcesSize;
-- (int64_t)_purgeableAmountWithBudget:(int64_t)a3 debugString:(id)a4;
-- (int64_t)_totalPurgeableAmountForUrgency:(int64_t)a3;
+- (int64_t)_purgeableAmountWithBudget:(int64_t)budget debugString:(id)string;
+- (int64_t)_totalPurgeableAmountForUrgency:(int64_t)urgency;
 - (int64_t)diskSpaceToPrune;
-- (int64_t)pruneResources:(id)a3 inPhotoLibrary:(id)a4;
+- (int64_t)pruneResources:(id)resources inPhotoLibrary:(id)library;
 - (void)_handleCacheDeleteRegistration;
-- (void)_runOnWorkQueueWithTransaction:(id)a3 block:(id)a4;
-- (void)_updateLocalStateForPrunedResources:(id)a3 inPhotoLibrary:(id)a4;
+- (void)_runOnWorkQueueWithTransaction:(id)transaction block:(id)block;
+- (void)_updateLocalStateForPrunedResources:(id)resources inPhotoLibrary:(id)library;
 - (void)dealloc;
 - (void)handleOptimizeModeChange;
-- (void)startAutomaticPruneWithBudget:(int64_t)a3 urgency:(int64_t)a4 completionHandler:(id)a5;
+- (void)startAutomaticPruneWithBudget:(int64_t)budget urgency:(int64_t)urgency completionHandler:(id)handler;
 - (void)stop;
 - (void)updateCacheDeletePurgeableAmount;
 @end
 
 @implementation PLCloudResourcePruneManager
 
-- (int64_t)pruneResources:(id)a3 inPhotoLibrary:(id)a4
+- (int64_t)pruneResources:(id)resources inPhotoLibrary:(id)library
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resourcesCopy = resources;
+  libraryCopy = library;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -37,11 +37,11 @@
   v14[1] = 3221225472;
   v14[2] = __61__PLCloudResourcePruneManager_pruneResources_inPhotoLibrary___block_invoke;
   v14[3] = &unk_1E75778C0;
-  v8 = v6;
+  v8 = resourcesCopy;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v18 = &v19;
-  v9 = v7;
+  v9 = libraryCopy;
   v17 = v9;
   [v9 performTransactionAndWait:v14];
   v10 = PLResourceCachingGetLog();
@@ -299,25 +299,25 @@ void __61__PLCloudResourcePruneManager_pruneResources_inPhotoLibrary___block_inv
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_identifierForResource:(id)a3
+- (id)_identifierForResource:(id)resource
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 itemScopedIdentifier];
-  v6 = [v4 resourceType];
+  resourceCopy = resource;
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  resourceType = [resourceCopy resourceType];
 
-  v7 = [v3 stringWithFormat:@"%@-%lu", v5, v6];
+  v7 = [v3 stringWithFormat:@"%@-%lu", itemScopedIdentifier, resourceType];
 
   return v7;
 }
 
-- (id)_predicateForPruneWithUrgency:(int64_t)a3
+- (id)_predicateForPruneWithUrgency:(int64_t)urgency
 {
   v4 = +[PLInternalResource nonOriginalCPLResourceTypes];
-  v5 = [(PLLibraryServicesManager *)self->_lsm cplSettings];
-  v6 = [v5 isKeepOriginalsEnabled];
+  cplSettings = [(PLLibraryServicesManager *)self->_lsm cplSettings];
+  isKeepOriginalsEnabled = [cplSettings isKeepOriginalsEnabled];
 
-  if (v6)
+  if (isKeepOriginalsEnabled)
   {
     v7 = [PLInternalResource prunePredicateForCPLResourceTypes:v4];
   }
@@ -336,23 +336,23 @@ void __61__PLCloudResourcePruneManager_pruneResources_inPhotoLibrary___block_inv
 - (int64_t)diskSpaceToPrune
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self->_lsm cplSettings];
-  v4 = [v3 isKeepOriginalsEnabled];
+  cplSettings = [(PLLibraryServicesManager *)self->_lsm cplSettings];
+  isKeepOriginalsEnabled = [cplSettings isKeepOriginalsEnabled];
 
-  v5 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v6 = [v5 photoDirectoryWithType:1];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  v6 = [pathManager photoDirectoryWithType:1];
 
   v7 = [MEMORY[0x1E69BF208] fileSystemSizeForPath:v6];
   v8 = [MEMORY[0x1E69BF208] diskSpaceAvailableForPath:v6];
   v9 = 0.1;
   v10 = 0.05;
-  if (!v4)
+  if (!isKeepOriginalsEnabled)
   {
     v10 = 0.1;
   }
 
   v11 = (v10 * v7);
-  if (!v4)
+  if (!isKeepOriginalsEnabled)
   {
     v9 = 0.25;
   }
@@ -395,8 +395,8 @@ void __61__PLCloudResourcePruneManager_pruneResources_inPhotoLibrary___block_inv
     }
   }
 
-  v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v18 = [v17 integerForKey:@"PLPruneDiskSpaceMB"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v18 = [standardUserDefaults integerForKey:@"PLPruneDiskSpaceMB"];
 
   if (v18 <= 0)
   {
@@ -417,8 +417,8 @@ void __61__PLCloudResourcePruneManager_pruneResources_inPhotoLibrary___block_inv
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v2 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v3 = [v2 newShortLivedLibraryWithName:"-[PLCloudResourcePruneManager _localResourcesSize]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v3 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePruneManager _localResourcesSize]"];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -468,16 +468,16 @@ uint64_t __50__PLCloudResourcePruneManager__localResourcesSize__block_invoke_2(u
   return result;
 }
 
-- (void)_updateLocalStateForPrunedResources:(id)a3 inPhotoLibrary:(id)a4
+- (void)_updateLocalStateForPrunedResources:(id)resources inPhotoLibrary:(id)library
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  resourcesCopy = resources;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(resourcesCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = resourcesCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
@@ -495,26 +495,26 @@ uint64_t __50__PLCloudResourcePruneManager__localResourcesSize__block_invoke_2(u
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 fileURL];
-        v14 = [v13 path];
+        fileURL = [v12 fileURL];
+        path = [fileURL path];
 
         v15 = PLResourceCachingGetLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v25 = v14;
+          v25 = path;
           v26 = 2112;
           v27 = v12;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEBUG, "%@ has been deleted for %@", buf, 0x16u);
         }
 
         [v12 markAsNotLocallyAvailableAfterPurge];
-        v16 = [v12 asset];
-        v17 = [v16 uuid];
+        asset = [v12 asset];
+        uuid = [asset uuid];
 
-        if (v17)
+        if (uuid)
         {
-          [v5 addObject:v17];
+          [v5 addObject:uuid];
         }
 
         else
@@ -536,12 +536,12 @@ uint64_t __50__PLCloudResourcePruneManager__localResourcesSize__block_invoke_2(u
   }
 }
 
-- (void)_runOnWorkQueueWithTransaction:(id)a3 block:(id)a4
+- (void)_runOnWorkQueueWithTransaction:(id)transaction block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
-  v6 = v8;
+  transactionCopy = transaction;
+  blockCopy = block;
+  v5 = transactionCopy;
+  v6 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -555,24 +555,24 @@ uint64_t __68__PLCloudResourcePruneManager__runOnWorkQueueWithTransaction_block_
 
 - (void)handleOptimizeModeChange
 {
-  v3 = [(PLCloudResourcePruneManager *)self diskSpaceToPrune];
+  diskSpaceToPrune = [(PLCloudResourcePruneManager *)self diskSpaceToPrune];
 
-  [(PLCloudResourcePruneManager *)self startAutomaticPruneWithBudget:v3 urgency:0 completionHandler:&__block_literal_global_105_63401];
+  [(PLCloudResourcePruneManager *)self startAutomaticPruneWithBudget:diskSpaceToPrune urgency:0 completionHandler:&__block_literal_global_105_63401];
 }
 
-- (id)pruneStatusForDebug:(BOOL)a3
+- (id)pruneStatusForDebug:(BOOL)debug
 {
-  v4 = [(PLCloudResourcePruneManager *)self diskSpaceToPrune];
-  v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"Disk space to prune: %llu MB\n", v4 / 0x100000];
-  [v5 appendFormat:@"Max purgeable amount: %llu MB\n", -[PLCloudResourcePruneManager _purgeableAmountWithBudget:debugString:](self, "_purgeableAmountWithBudget:debugString:", v4, v5) / 0x100000];
+  diskSpaceToPrune = [(PLCloudResourcePruneManager *)self diskSpaceToPrune];
+  0x100000 = [MEMORY[0x1E696AD60] stringWithFormat:@"Disk space to prune: %llu MB\n", diskSpaceToPrune / 0x100000];
+  [0x100000 appendFormat:@"Max purgeable amount: %llu MB\n", -[PLCloudResourcePruneManager _purgeableAmountWithBudget:debugString:](self, "_purgeableAmountWithBudget:debugString:", diskSpaceToPrune, 0x100000) / 0x100000];
 
-  return v5;
+  return 0x100000;
 }
 
-- (int64_t)_fetchResourcesForPruningWithBudget:(int64_t)a3 urgency:(int64_t)a4 batchHandler:(id)a5
+- (int64_t)_fetchResourcesForPruningWithBudget:(int64_t)budget urgency:(int64_t)urgency batchHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -591,13 +591,13 @@ LABEL_10:
     }
   }
 
-  else if (a3 <= 0)
+  else if (budget <= 0)
   {
     v9 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v35 = a3;
+      budgetCopy2 = budget;
       v10 = "Pruning budget is %lld bytes, skip pruning";
       v11 = v9;
       v12 = 12;
@@ -607,19 +607,19 @@ LABEL_10:
 
   else
   {
-    v13 = [(PLCloudResourcePruneManager *)self _predicateForPruneWithUrgency:a4];
+    v13 = [(PLCloudResourcePruneManager *)self _predicateForPruneWithUrgency:urgency];
     v14 = PLResourceCachingGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v35 = a3;
+      budgetCopy2 = budget;
       v36 = 2112;
       v37 = v13;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Started pruning with budget %lld predicate: %@", buf, 0x16u);
     }
 
-    v15 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-    v16 = [v15 newShortLivedLibraryWithName:"-[PLCloudResourcePruneManager _fetchResourcesForPruningWithBudget:urgency:batchHandler:]"];
+    databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+    v16 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePruneManager _fetchResourcesForPruningWithBudget:urgency:batchHandler:]"];
 
     v17 = dispatch_semaphore_create(0);
     v24[0] = MEMORY[0x1E69E9820];
@@ -630,9 +630,9 @@ LABEL_10:
     v25 = v9;
     v18 = v16;
     v26 = v18;
-    v27 = v8;
+    v27 = handlerCopy;
     v28 = &v30;
-    v29 = a3;
+    budgetCopy3 = budget;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __88__PLCloudResourcePruneManager__fetchResourcesForPruningWithBudget_urgency_batchHandler___block_invoke_96;
@@ -762,18 +762,18 @@ void __88__PLCloudResourcePruneManager__fetchResourcesForPruningWithBudget_urgen
 
   self->_stopped = 1;
   WeakRetained = objc_loadWeakRetained(&self->_cplManager);
-  v5 = [WeakRetained cplStatus];
+  cplStatus = [WeakRetained cplStatus];
 
-  [v5 setLastPruneDate:0];
+  [cplStatus setLastPruneDate:0];
 }
 
-- (void)startAutomaticPruneWithBudget:(int64_t)a3 urgency:(int64_t)a4 completionHandler:(id)a5
+- (void)startAutomaticPruneWithBudget:(int64_t)budget urgency:(int64_t)urgency completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Budget: %lld", a3];
-  [v9 setObject:v10 forKey:@"PruneStart"];
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  budget = [MEMORY[0x1E696AEC0] stringWithFormat:@"Budget: %lld", budget];
+  [dictionary setObject:budget forKey:@"PruneStart"];
 
   v11 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourcePruneManager startAutomaticPruneWithBudget:urgency:completionHandler:]"];
   self->_stopped = 0;
@@ -781,7 +781,7 @@ void __88__PLCloudResourcePruneManager__fetchResourcesForPruningWithBudget_urgen
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v28 = a3 / 0x100000;
+    v28 = budget / 0x100000;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Starting automatic prune with budget: %lld MB", buf, 0xCu);
   }
 
@@ -792,7 +792,7 @@ void __88__PLCloudResourcePruneManager__fetchResourcesForPruningWithBudget_urgen
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
     *buf = 134217984;
-    v28 = a3 / 0x100000;
+    v28 = budget / 0x100000;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "AutoPrune", "Budget: %lld MB", buf, 0xCu);
   }
 
@@ -800,16 +800,16 @@ void __88__PLCloudResourcePruneManager__fetchResourcesForPruningWithBudget_urgen
   v20[1] = 3221225472;
   v20[2] = __87__PLCloudResourcePruneManager_startAutomaticPruneWithBudget_urgency_completionHandler___block_invoke;
   v20[3] = &unk_1E756F070;
-  v24 = a3;
-  v25 = a4;
+  budgetCopy = budget;
+  urgencyCopy = urgency;
   v20[4] = self;
   v21 = v16;
   v26 = v14;
-  v22 = v9;
-  v23 = v8;
-  v17 = v9;
+  v22 = dictionary;
+  v23 = handlerCopy;
+  v17 = dictionary;
   v18 = v16;
-  v19 = v8;
+  v19 = handlerCopy;
   [(PLCloudResourcePruneManager *)self _runOnWorkQueueWithTransaction:v11 block:v20];
 }
 
@@ -887,11 +887,11 @@ void __87__PLCloudResourcePruneManager_startAutomaticPruneWithBudget_urgency_com
 - (void)updateCacheDeletePurgeableAmount
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v4 = [v3 capabilities];
-  v5 = [v4 isCentralizedCacheDeleteCapable];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-  if ((v5 & 1) == 0)
+  if ((isCentralizedCacheDeleteCapable & 1) == 0)
   {
     v6 = [(PLCloudResourcePruneManager *)self _totalPurgeableAmountForUrgency:1];
     v12[0] = @"CACHE_DELETE_ID";
@@ -919,11 +919,11 @@ void __87__PLCloudResourcePruneManager_startAutomaticPruneWithBudget_urgency_com
 
 - (void)_handleCacheDeleteRegistration
 {
-  v3 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v4 = [v3 capabilities];
-  v5 = [v4 isCentralizedCacheDeleteCapable];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-  if ((v5 & 1) == 0)
+  if ((isCentralizedCacheDeleteCapable & 1) == 0)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1001,7 +1001,7 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
   return v7;
 }
 
-- (__CFDictionary)_handleCacheDeletePurgeable:(int)a3 info:(__CFDictionary *)a4
+- (__CFDictionary)_handleCacheDeletePurgeable:(int)purgeable info:(__CFDictionary *)info
 {
   v24 = *MEMORY[0x1E69E9840];
   v7 = PLResourceCachingGetLog();
@@ -1013,7 +1013,7 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v9 = v8;
-  v10 = [(PLCloudResourcePruneManager *)self _totalPurgeableAmountForUrgency:a3 != 1];
+  v10 = [(PLCloudResourcePruneManager *)self _totalPurgeableAmountForUrgency:purgeable != 1];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v12 = v11;
   v13 = PLResourceCachingGetLog();
@@ -1026,7 +1026,7 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Max purgeable amount: %llu MB, took %f s", buf, 0x16u);
   }
 
-  v14 = [(__CFDictionary *)a4 objectForKey:@"CACHE_DELETE_VOLUME"];
+  v14 = [(__CFDictionary *)info objectForKey:@"CACHE_DELETE_VOLUME"];
   v18[1] = @"CACHE_DELETE_AMOUNT";
   v19[0] = v14;
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:v10];
@@ -1036,45 +1036,45 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
   return v16;
 }
 
-- (__CFDictionary)_handleCacheDeletePurge:(int)a3 info:(__CFDictionary *)a4
+- (__CFDictionary)_handleCacheDeletePurge:(int)purge info:(__CFDictionary *)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = [(__CFDictionary *)a4 objectForKey:@"CACHE_DELETE_AMOUNT"];
-  v8 = [v7 longLongValue];
+  v7 = [(__CFDictionary *)info objectForKey:@"CACHE_DELETE_AMOUNT"];
+  longLongValue = [v7 longLongValue];
 
-  v9 = [(PLCloudResourcePruneManager *)self diskSpaceToPrune];
-  v10 = v9;
-  if (v8 <= v9)
+  diskSpaceToPrune = [(PLCloudResourcePruneManager *)self diskSpaceToPrune];
+  v10 = diskSpaceToPrune;
+  if (longLongValue <= diskSpaceToPrune)
   {
-    v11 = v9;
+    v11 = diskSpaceToPrune;
   }
 
   else
   {
-    v11 = v8;
+    v11 = longLongValue;
   }
 
   v12 = PLResourceCachingGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = v8 + 0xFFFFF;
+    v13 = longLongValue + 0xFFFFF;
     *buf = 134219008;
-    if (v8 >= 0)
+    if (longLongValue >= 0)
     {
-      v13 = v8;
+      v13 = longLongValue;
     }
 
     *&buf[4] = v13 >> 20;
     v14 = v10 + 0xFFFFF;
     *&buf[12] = 2048;
-    *&buf[14] = v8;
+    *&buf[14] = longLongValue;
     if (v10 >= 0)
     {
       v14 = v10;
     }
 
     *&buf[22] = 1024;
-    *v37 = a3;
+    *v37 = purge;
     *&v37[4] = 2048;
     *&v37[6] = v14 >> 20;
     v38 = 2048;
@@ -1087,7 +1087,7 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
   *&buf[16] = 0x2020000000;
   *v37 = 0;
   v15 = dispatch_semaphore_create(0);
-  v16 = a3 > 1;
+  v16 = purge > 1;
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __60__PLCloudResourcePruneManager__handleCacheDeletePurge_info___block_invoke;
@@ -1124,7 +1124,7 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
   }
 
   v32[0] = @"CACHE_DELETE_VOLUME";
-  v22 = [(__CFDictionary *)a4 objectForKey:v26, v27, v28, v29];
+  v22 = [(__CFDictionary *)info objectForKey:v26, v27, v28, v29];
   v32[1] = @"CACHE_DELETE_AMOUNT";
   v33[0] = v22;
   v23 = [MEMORY[0x1E696AD98] numberWithLongLong:*(*&buf[8] + 24)];
@@ -1135,16 +1135,16 @@ uint64_t __61__PLCloudResourcePruneManager__handleCacheDeleteRegistration__block
   return v24;
 }
 
-- (int64_t)_purgeableAmountWithBudget:(int64_t)a3 debugString:(id)a4
+- (int64_t)_purgeableAmountWithBudget:(int64_t)budget debugString:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__PLCloudResourcePruneManager__purgeableAmountWithBudget_debugString___block_invoke;
   v10[3] = &unk_1E756EFD0;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(PLCloudResourcePruneManager *)self _fetchResourcesForPruningWithBudget:a3 urgency:1 batchHandler:v10];
+  v11 = stringCopy;
+  v7 = stringCopy;
+  v8 = [(PLCloudResourcePruneManager *)self _fetchResourcesForPruningWithBudget:budget urgency:1 batchHandler:v10];
 
   return v8;
 }
@@ -1212,14 +1212,14 @@ uint64_t __70__PLCloudResourcePruneManager__purgeableAmountWithBudget_debugStrin
   return v6;
 }
 
-- (int64_t)_totalPurgeableAmountForUrgency:(int64_t)a3
+- (int64_t)_totalPurgeableAmountForUrgency:(int64_t)urgency
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v4 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v5 = [v4 newShortLivedLibraryWithName:"-[PLCloudResourcePruneManager _totalPurgeableAmountForUrgency:]"];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v5 = [databaseContext newShortLivedLibraryWithName:"-[PLCloudResourcePruneManager _totalPurgeableAmountForUrgency:]"];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1228,7 +1228,7 @@ uint64_t __70__PLCloudResourcePruneManager__purgeableAmountWithBudget_debugStrin
   v11 = &v13;
   v6 = v5;
   v10 = v6;
-  v12 = a3;
+  urgencyCopy = urgency;
   [v6 performBlockAndWait:v9];
   v7 = v14[3];
 
@@ -1252,18 +1252,18 @@ int64_t __63__PLCloudResourcePruneManager__totalPurgeableAmountForUrgency___bloc
   [(PLCloudResourcePruneManager *)&v4 dealloc];
 }
 
-- (PLCloudResourcePruneManager)initWithCPLManager:(id)a3 libraryServicesManager:(id)a4
+- (PLCloudResourcePruneManager)initWithCPLManager:(id)manager libraryServicesManager:(id)servicesManager
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  servicesManagerCopy = servicesManager;
   v14.receiver = self;
   v14.super_class = PLCloudResourcePruneManager;
   v8 = [(PLCloudResourcePruneManager *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lsm, a4);
-    objc_storeWeak(&v9->_cplManager, v6);
+    objc_storeStrong(&v8->_lsm, servicesManager);
+    objc_storeWeak(&v9->_cplManager, managerCopy);
     v9->_stopped = 0;
     v10 = PLCloudCopyDefaultSerialQueueAttributes();
     v11 = dispatch_queue_create("PLCloudResourcePruneManager work queue", v10);

@@ -7,47 +7,47 @@
 - (CNContact)defaultShippingAddress;
 - (NSDictionary)defaultBillingAddresses;
 - (PKPaymentOptionsDefaults)init;
-- (id)_contactForKeychainKey:(id)a3;
-- (id)_keychainDataForKey:(id)a3;
+- (id)_contactForKeychainKey:(id)key;
+- (id)_keychainDataForKey:(id)key;
 - (id)_lastUpdatedDatesForBillingAddresses;
 - (id)_rawDefaultBillingAddresses;
-- (id)defaultBillingAddressForBankAccountIdentifier:(id)a3;
-- (id)defaultBillingAddressForBankInformation:(id)a3;
-- (id)defaultBillingAddressForPaymentPass:(id)a3;
-- (id)defaultBillingAddressForPrimaryAccountIdentifier:(id)a3;
-- (id)defaultBillingAddressForRemotePaymentInstrument:(id)a3;
-- (id)lastUpdatedDateForPrimaryAccountIdentifier:(id)a3;
-- (void)_deleteKeychainDataForKey:(id)a3 localOnly:(BOOL)a4;
+- (id)defaultBillingAddressForBankAccountIdentifier:(id)identifier;
+- (id)defaultBillingAddressForBankInformation:(id)information;
+- (id)defaultBillingAddressForPaymentPass:(id)pass;
+- (id)defaultBillingAddressForPrimaryAccountIdentifier:(id)identifier;
+- (id)defaultBillingAddressForRemotePaymentInstrument:(id)instrument;
+- (id)lastUpdatedDateForPrimaryAccountIdentifier:(id)identifier;
+- (void)_deleteKeychainDataForKey:(id)key localOnly:(BOOL)only;
 - (void)_hardDeleteDefaultBillingAddress;
 - (void)_registerForChangeNotifications;
-- (void)_setContact:(id)a3 forKeychainKey:(id)a4;
-- (void)_setContact:(id)a3 property:(id)a4 forKeychainKey:(id)a5;
-- (void)_setKeychainData:(id)a3 forKey:(id)a4;
-- (void)_setRawDefaultBillingAddresses:(id)a3;
+- (void)_setContact:(id)contact forKeychainKey:(id)key;
+- (void)_setContact:(id)contact property:(id)property forKeychainKey:(id)key;
+- (void)_setKeychainData:(id)data forKey:(id)key;
+- (void)_setRawDefaultBillingAddresses:(id)addresses;
 - (void)_unregisterForChangeNotifications;
 - (void)dealloc;
 - (void)deleteAllDefaults;
 - (void)deleteAllLocalDefaults;
-- (void)deleteDefaultBillingAddress:(id)a3;
-- (void)deleteDefaultBillingAddressForPrimaryAccountIdentifier:(id)a3;
+- (void)deleteDefaultBillingAddress:(id)address;
+- (void)deleteDefaultBillingAddressForPrimaryAccountIdentifier:(id)identifier;
 - (void)deleteDefaultContactEmail;
 - (void)deleteDefaultContactName;
 - (void)deleteDefaultContactPhone;
-- (void)deleteDefaultForContactKey:(id)a3;
+- (void)deleteDefaultForContactKey:(id)key;
 - (void)deleteDefaultShippingAddress;
 - (void)deleteUseHideMyEmail;
 - (void)migrateToSyncable;
-- (void)optionsSynchronizationDidChangeTo:(BOOL)a3;
-- (void)setDefaultBillingAddress:(id)a3 forBankInformation:(id)a4;
-- (void)setDefaultBillingAddress:(id)a3 forPaymentPass:(id)a4;
-- (void)setDefaultBillingAddress:(id)a3 forPrimaryAccountIdentifier:(id)a4;
-- (void)setDefaultBillingAddress:(id)a3 forRemotePaymentInstrument:(id)a4;
-- (void)setDefaultContactEmail:(id)a3;
-- (void)setDefaultContactName:(id)a3;
-- (void)setDefaultContactPhone:(id)a3;
-- (void)setDefaultShippingAddress:(id)a3;
-- (void)setUseHideMyEmail:(BOOL)a3;
-- (void)updateLastUpdatedDate:(id)a3 forPrimaryAccountIdentifier:(id)a4;
+- (void)optionsSynchronizationDidChangeTo:(BOOL)to;
+- (void)setDefaultBillingAddress:(id)address forBankInformation:(id)information;
+- (void)setDefaultBillingAddress:(id)address forPaymentPass:(id)pass;
+- (void)setDefaultBillingAddress:(id)address forPrimaryAccountIdentifier:(id)identifier;
+- (void)setDefaultBillingAddress:(id)address forRemotePaymentInstrument:(id)instrument;
+- (void)setDefaultContactEmail:(id)email;
+- (void)setDefaultContactName:(id)name;
+- (void)setDefaultContactPhone:(id)phone;
+- (void)setDefaultShippingAddress:(id)address;
+- (void)setUseHideMyEmail:(BOOL)email;
+- (void)updateLastUpdatedDate:(id)date forPrimaryAccountIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentOptionsDefaults
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __36__PKPaymentOptionsDefaults_defaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6D1FA8 != -1)
   {
     dispatch_once(&qword_1ED6D1FA8, block);
@@ -107,7 +107,7 @@ void __36__PKPaymentOptionsDefaults_defaults__block_invoke()
 - (void)_registerForChangeNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [@"com.apple.passkit.paymentoptionsdefaultschanged" UTF8String];
+  uTF8String = [@"com.apple.passkit.paymentoptionsdefaultschanged" UTF8String];
   v4 = MEMORY[0x1E69E96A0];
   v5 = MEMORY[0x1E69E96A0];
   v6[0] = MEMORY[0x1E69E9820];
@@ -115,7 +115,7 @@ void __36__PKPaymentOptionsDefaults_defaults__block_invoke()
   v6[2] = __59__PKPaymentOptionsDefaults__registerForChangeNotifications__block_invoke;
   v6[3] = &unk_1E79D08F0;
   objc_copyWeak(&v7, &location);
-  notify_register_dispatch(v3, &self->_defaultsChangedNotifyToken, v4, v6);
+  notify_register_dispatch(uTF8String, &self->_defaultsChangedNotifyToken, v4, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -161,11 +161,11 @@ void __59__PKPaymentOptionsDefaults__registerForChangeNotifications__block_invok
   }
 }
 
-- (void)optionsSynchronizationDidChangeTo:(BOOL)a3
+- (void)optionsSynchronizationDidChangeTo:(BOOL)to
 {
-  v3 = [@"com.apple.passkit.paymentoptionsdefaultschanged" UTF8String];
+  uTF8String = [@"com.apple.passkit.paymentoptionsdefaultschanged" UTF8String];
 
-  notify_post(v3);
+  notify_post(uTF8String);
 }
 
 - (void)_unregisterForChangeNotifications
@@ -178,24 +178,24 @@ void __59__PKPaymentOptionsDefaults__registerForChangeNotifications__block_invok
   }
 }
 
-- (id)_keychainDataForKey:(id)a3
+- (id)_keychainDataForKey:(id)key
 {
   optionsSynchronization = self->_optionsSynchronization;
-  v4 = a3;
-  v5 = [(PKPaymentOptionsSynchronization *)optionsSynchronization shouldSyncToCloud];
+  keyCopy = key;
+  shouldSyncToCloud = [(PKPaymentOptionsSynchronization *)optionsSynchronization shouldSyncToCloud];
   v6 = [PKKeychainItemWrapper alloc];
   v7 = v6;
-  if (v5)
+  if (shouldSyncToCloud)
   {
-    v8 = [(PKKeychainItemWrapper *)v6 initWithIdentifier:v4 accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:2 invisible:0];
+    v8 = [(PKKeychainItemWrapper *)v6 initWithIdentifier:keyCopy accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:2 invisible:0];
   }
 
   else
   {
-    v9 = [v4 stringByAppendingString:@"Local"];
+    v9 = [keyCopy stringByAppendingString:@"Local"];
 
     v8 = [(PKKeychainItemWrapper *)v7 initWithIdentifier:v9 accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:0 invisible:0];
-    v4 = v9;
+    keyCopy = v9;
   }
 
   v10 = [(PKKeychainItemWrapper *)v8 objectForKey:*MEMORY[0x1E697B3C0]];
@@ -203,54 +203,54 @@ void __59__PKPaymentOptionsDefaults__registerForChangeNotifications__block_invok
   return v10;
 }
 
-- (void)_setKeychainData:(id)a3 forKey:(id)a4
+- (void)_setKeychainData:(id)data forKey:(id)key
 {
   optionsSynchronization = self->_optionsSynchronization;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PKPaymentOptionsSynchronization *)optionsSynchronization shouldSyncToCloud];
+  keyCopy = key;
+  dataCopy = data;
+  shouldSyncToCloud = [(PKPaymentOptionsSynchronization *)optionsSynchronization shouldSyncToCloud];
   v10 = [PKKeychainItemWrapper alloc];
   v11 = v10;
-  if (v9)
+  if (shouldSyncToCloud)
   {
-    v13 = [(PKKeychainItemWrapper *)v10 initWithIdentifier:v7 accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:1 invisible:0];
+    v13 = [(PKKeychainItemWrapper *)v10 initWithIdentifier:keyCopy accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:1 invisible:0];
   }
 
   else
   {
-    v12 = [v7 stringByAppendingString:@"Local"];
+    v12 = [keyCopy stringByAppendingString:@"Local"];
 
     v13 = [(PKKeychainItemWrapper *)v11 initWithIdentifier:v12 accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:0 invisible:0];
-    v7 = v12;
+    keyCopy = v12;
   }
 
-  [(PKKeychainItemWrapper *)v13 setObject:v8 forKey:*MEMORY[0x1E697B3C0]];
+  [(PKKeychainItemWrapper *)v13 setObject:dataCopy forKey:*MEMORY[0x1E697B3C0]];
   ++self->_postedNotificationCount;
   notify_post([@"com.apple.passkit.paymentoptionsdefaultschanged" UTF8String]);
 }
 
-- (void)_deleteKeychainDataForKey:(id)a3 localOnly:(BOOL)a4
+- (void)_deleteKeychainDataForKey:(id)key localOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   optionsSynchronization = self->_optionsSynchronization;
-  v7 = a3;
-  v8 = [(PKPaymentOptionsSynchronization *)optionsSynchronization shouldSyncToCloud];
+  keyCopy = key;
+  shouldSyncToCloud = [(PKPaymentOptionsSynchronization *)optionsSynchronization shouldSyncToCloud];
   v9 = [PKKeychainItemWrapper alloc];
   v10 = v9;
-  if (v8)
+  if (shouldSyncToCloud)
   {
-    v12 = [(PKKeychainItemWrapper *)v9 initWithIdentifier:v7 accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:1 invisible:0];
+    v12 = [(PKKeychainItemWrapper *)v9 initWithIdentifier:keyCopy accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:1 invisible:0];
   }
 
   else
   {
-    v11 = [v7 stringByAppendingString:@"Local"];
+    v11 = [keyCopy stringByAppendingString:@"Local"];
 
     v12 = [(PKKeychainItemWrapper *)v10 initWithIdentifier:v11 accessGroup:@"com.apple.PassbookUIService" serviceName:@"com.apple.passkit" type:0 invisible:0];
-    v7 = v11;
+    keyCopy = v11;
   }
 
-  if (v4)
+  if (onlyCopy)
   {
     [(PKKeychainItemWrapper *)v12 resetLocalKeychainItem];
   }
@@ -264,40 +264,40 @@ void __59__PKPaymentOptionsDefaults__registerForChangeNotifications__block_invok
   notify_post([@"com.apple.passkit.paymentoptionsdefaultschanged" UTF8String]);
 }
 
-- (void)_setContact:(id)a3 property:(id)a4 forKeychainKey:(id)a5
+- (void)_setContact:(id)contact property:(id)property forKeychainKey:(id)key
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v13 contactSource] != 1)
+  contactCopy = contact;
+  propertyCopy = property;
+  keyCopy = key;
+  if ([contactCopy contactSource] != 1)
   {
-    [v13 setContactSource:2];
+    [contactCopy setContactSource:2];
   }
 
   v10 = MEMORY[0x1E696ACC8];
-  v11 = [v13 pkDictionaryForProperty:v8];
+  v11 = [contactCopy pkDictionaryForProperty:propertyCopy];
   v12 = [v10 archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
 
-  [(PKPaymentOptionsDefaults *)self _setKeychainData:v12 forKey:v9];
+  [(PKPaymentOptionsDefaults *)self _setKeychainData:v12 forKey:keyCopy];
 }
 
-- (void)_setContact:(id)a3 forKeychainKey:(id)a4
+- (void)_setContact:(id)contact forKeychainKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 contactSource] != 1)
+  contactCopy = contact;
+  keyCopy = key;
+  if ([contactCopy contactSource] != 1)
   {
-    [v8 setContactSource:2];
+    [contactCopy setContactSource:2];
   }
 
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
-  [(PKPaymentOptionsDefaults *)self _setKeychainData:v7 forKey:v6];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:contactCopy requiringSecureCoding:1 error:0];
+  [(PKPaymentOptionsDefaults *)self _setKeychainData:v7 forKey:keyCopy];
 }
 
-- (id)_contactForKeychainKey:(id)a3
+- (id)_contactForKeychainKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentOptionsDefaults *)self _keychainDataForKey:a3];
+  v3 = [(PKPaymentOptionsDefaults *)self _keychainDataForKey:key];
   if (!v3)
   {
     v13 = 0;
@@ -370,14 +370,14 @@ LABEL_14:
   return defaultShippingAddress;
 }
 
-- (void)setDefaultShippingAddress:(id)a3
+- (void)setDefaultShippingAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   AnalyticsSendEvent();
-  if (v5)
+  if (addressCopy)
   {
-    objc_storeStrong(&self->_defaultShippingAddress, a3);
-    [(PKPaymentOptionsDefaults *)self _setContact:v5 property:*MEMORY[0x1E695C360] forKeychainKey:@"PKShippingAddressKeychainKey"];
+    objc_storeStrong(&self->_defaultShippingAddress, address);
+    [(PKPaymentOptionsDefaults *)self _setContact:addressCopy property:*MEMORY[0x1E695C360] forKeychainKey:@"PKShippingAddressKeychainKey"];
   }
 
   else
@@ -402,7 +402,7 @@ LABEL_14:
   defaultBillingAddresses = self->_defaultBillingAddresses;
   if (!defaultBillingAddresses)
   {
-    v4 = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
+    _rawDefaultBillingAddresses = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -410,9 +410,9 @@ LABEL_14:
     v11[3] = &unk_1E79DE040;
     v12 = v5;
     v6 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v11];
-    v7 = [v6 allKeys];
-    [v7 enumerateObjectsUsingBlock:&__block_literal_global_178];
+    [_rawDefaultBillingAddresses enumerateKeysAndObjectsUsingBlock:v11];
+    allKeys = [v6 allKeys];
+    [allKeys enumerateObjectsUsingBlock:&__block_literal_global_178];
 
     v8 = [v6 copy];
     v9 = self->_defaultBillingAddresses;
@@ -582,9 +582,9 @@ LABEL_30:
   return v23;
 }
 
-- (void)_setRawDefaultBillingAddresses:(id)a3
+- (void)_setRawDefaultBillingAddresses:(id)addresses
 {
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:addresses requiringSecureCoding:1 error:0];
   [(PKPaymentOptionsDefaults *)self _setKeychainData:v4 forKey:@"PKBillingAddressesKeychainKey"];
 
   defaultBillingAddresses = self->_defaultBillingAddresses;
@@ -594,34 +594,34 @@ LABEL_30:
   }
 }
 
-- (id)defaultBillingAddressForPaymentPass:(id)a3
+- (id)defaultBillingAddressForPaymentPass:(id)pass
 {
-  v4 = [a3 primaryAccountIdentifier];
-  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForPrimaryAccountIdentifier:v4];
+  primaryAccountIdentifier = [pass primaryAccountIdentifier];
+  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForPrimaryAccountIdentifier:primaryAccountIdentifier];
 
   return v5;
 }
 
-- (id)defaultBillingAddressForBankInformation:(id)a3
+- (id)defaultBillingAddressForBankInformation:(id)information
 {
-  v4 = [a3 identifier];
-  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForBankAccountIdentifier:v4];
+  identifier = [information identifier];
+  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForBankAccountIdentifier:identifier];
 
   return v5;
 }
 
-- (id)defaultBillingAddressForRemotePaymentInstrument:(id)a3
+- (id)defaultBillingAddressForRemotePaymentInstrument:(id)instrument
 {
-  v4 = [a3 primaryAccountIdentifier];
-  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForPrimaryAccountIdentifier:v4];
+  primaryAccountIdentifier = [instrument primaryAccountIdentifier];
+  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForPrimaryAccountIdentifier:primaryAccountIdentifier];
 
   return v5;
 }
 
-- (id)defaultBillingAddressForPrimaryAccountIdentifier:(id)a3
+- (id)defaultBillingAddressForPrimaryAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddresses];
+  identifierCopy = identifier;
+  defaultBillingAddresses = [(PKPaymentOptionsDefaults *)self defaultBillingAddresses];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -632,10 +632,10 @@ LABEL_30:
   v9[1] = 3221225472;
   v9[2] = __77__PKPaymentOptionsDefaults_defaultBillingAddressForPrimaryAccountIdentifier___block_invoke;
   v9[3] = &unk_1E79CDB98;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [defaultBillingAddresses enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -652,10 +652,10 @@ void __77__PKPaymentOptionsDefaults_defaultBillingAddressForPrimaryAccountIdenti
   }
 }
 
-- (id)defaultBillingAddressForBankAccountIdentifier:(id)a3
+- (id)defaultBillingAddressForBankAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddresses];
+  identifierCopy = identifier;
+  defaultBillingAddresses = [(PKPaymentOptionsDefaults *)self defaultBillingAddresses];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -666,10 +666,10 @@ void __77__PKPaymentOptionsDefaults_defaultBillingAddressForPrimaryAccountIdenti
   v9[1] = 3221225472;
   v9[2] = __74__PKPaymentOptionsDefaults_defaultBillingAddressForBankAccountIdentifier___block_invoke;
   v9[3] = &unk_1E79CDB98;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [defaultBillingAddresses enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -686,48 +686,48 @@ void __74__PKPaymentOptionsDefaults_defaultBillingAddressForBankAccountIdentifie
   }
 }
 
-- (void)setDefaultBillingAddress:(id)a3 forPaymentPass:(id)a4
+- (void)setDefaultBillingAddress:(id)address forPaymentPass:(id)pass
 {
-  if (a3 && a4)
+  if (address && pass)
   {
-    v6 = a3;
-    v7 = [a4 primaryAccountIdentifier];
-    [(PKPaymentOptionsDefaults *)self setDefaultBillingAddress:v6 forPrimaryAccountIdentifier:v7];
+    addressCopy = address;
+    primaryAccountIdentifier = [pass primaryAccountIdentifier];
+    [(PKPaymentOptionsDefaults *)self setDefaultBillingAddress:addressCopy forPrimaryAccountIdentifier:primaryAccountIdentifier];
   }
 }
 
-- (void)setDefaultBillingAddress:(id)a3 forRemotePaymentInstrument:(id)a4
+- (void)setDefaultBillingAddress:(id)address forRemotePaymentInstrument:(id)instrument
 {
-  if (a3 && a4)
+  if (address && instrument)
   {
-    v6 = a3;
-    v7 = [a4 primaryAccountIdentifier];
-    [(PKPaymentOptionsDefaults *)self setDefaultBillingAddress:v6 forPrimaryAccountIdentifier:v7];
+    addressCopy = address;
+    primaryAccountIdentifier = [instrument primaryAccountIdentifier];
+    [(PKPaymentOptionsDefaults *)self setDefaultBillingAddress:addressCopy forPrimaryAccountIdentifier:primaryAccountIdentifier];
   }
 }
 
-- (void)setDefaultBillingAddress:(id)a3 forBankInformation:(id)a4
+- (void)setDefaultBillingAddress:(id)address forBankInformation:(id)information
 {
-  if (a3 && a4)
+  if (address && information)
   {
-    v6 = a3;
-    v7 = [a4 identifier];
-    [(PKPaymentOptionsDefaults *)self setDefaultBillingAddress:v6 forPrimaryAccountIdentifier:v7];
+    addressCopy = address;
+    identifier = [information identifier];
+    [(PKPaymentOptionsDefaults *)self setDefaultBillingAddress:addressCopy forPrimaryAccountIdentifier:identifier];
   }
 }
 
-- (void)setDefaultBillingAddress:(id)a3 forPrimaryAccountIdentifier:(id)a4
+- (void)setDefaultBillingAddress:(id)address forPrimaryAccountIdentifier:(id)identifier
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  addressCopy = address;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v34 = v6;
-    v33 = [v6 pkDictionaryForProperty:*MEMORY[0x1E695C360]];
+    v34 = addressCopy;
+    v33 = [addressCopy pkDictionaryForProperty:*MEMORY[0x1E695C360]];
     v8 = objc_alloc(MEMORY[0x1E695DF90]);
-    v9 = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
-    v10 = [v8 initWithDictionary:v9];
+    _rawDefaultBillingAddresses = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
+    v10 = [v8 initWithDictionary:_rawDefaultBillingAddresses];
 
     v41 = 0u;
     v42 = 0u;
@@ -753,9 +753,9 @@ void __74__PKPaymentOptionsDefaults_defaultBillingAddressForBankAccountIdentifie
           v18 = [v10 objectForKeyedSubscript:v16];
           v19 = [v17 initWithSet:v18];
 
-          if ([v19 containsObject:v7])
+          if ([v19 containsObject:identifierCopy])
           {
-            [v19 removeObject:v7];
+            [v19 removeObject:identifierCopy];
             if ([v19 count])
             {
               [v10 setObject:v19 forKey:v16];
@@ -780,27 +780,27 @@ void __74__PKPaymentOptionsDefaults_defaultBillingAddressForBankAccountIdentifie
     v36[3] = &unk_1E79DE088;
     v20 = v33;
     v37 = v20;
-    v6 = v34;
+    addressCopy = v34;
     v38 = v34;
     v21 = [v10 keysOfEntriesPassingTest:v36];
-    v22 = [v21 anyObject];
-    v23 = [v10 objectForKeyedSubscript:v22];
+    anyObject = [v21 anyObject];
+    v23 = [v10 objectForKeyedSubscript:anyObject];
 
     if (v23)
     {
       v24 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v25 = [v10 objectForKeyedSubscript:v22];
+      v25 = [v10 objectForKeyedSubscript:anyObject];
       v26 = [v24 initWithSet:v25];
 
-      [v26 addObject:v7];
+      [v26 addObject:identifierCopy];
       v27 = v10;
       v28 = v26;
-      v29 = v22;
+      v29 = anyObject;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+      v26 = [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
       v27 = v10;
       v28 = v26;
       v29 = v20;
@@ -811,8 +811,8 @@ void __74__PKPaymentOptionsDefaults_defaultBillingAddressForBankAccountIdentifie
     v30 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
     [(PKPaymentOptionsDefaults *)self _setKeychainData:v30 forKey:@"PKBillingAddressesKeychainKey"];
 
-    v31 = [MEMORY[0x1E695DF00] date];
-    [(PKPaymentOptionsDefaults *)self updateLastUpdatedDate:v31 forPrimaryAccountIdentifier:v7];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PKPaymentOptionsDefaults *)self updateLastUpdatedDate:date forPrimaryAccountIdentifier:identifierCopy];
 
     defaultBillingAddresses = self->_defaultBillingAddresses;
     if (defaultBillingAddresses)
@@ -863,22 +863,22 @@ LABEL_7:
   return v6;
 }
 
-- (void)deleteDefaultBillingAddress:(id)a3
+- (void)deleteDefaultBillingAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v6 = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
-  v7 = [v5 initWithDictionary:v6];
+  _rawDefaultBillingAddresses = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
+  v7 = [v5 initWithDictionary:_rawDefaultBillingAddresses];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__PKPaymentOptionsDefaults_deleteDefaultBillingAddress___block_invoke;
   v13[3] = &unk_1E79C9A40;
-  v8 = v4;
+  v8 = addressCopy;
   v14 = v8;
   v9 = [v7 keysOfEntriesPassingTest:v13];
-  v10 = [v9 allObjects];
-  [v7 removeObjectsForKeys:v10];
+  allObjects = [v9 allObjects];
+  [v7 removeObjectsForKeys:allObjects];
 
   v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
   [(PKPaymentOptionsDefaults *)self _setKeychainData:v11 forKey:@"PKBillingAddressesKeychainKey"];
@@ -898,20 +898,20 @@ uint64_t __56__PKPaymentOptionsDefaults_deleteDefaultBillingAddress___block_invo
   return v4;
 }
 
-- (void)deleteDefaultBillingAddressForPrimaryAccountIdentifier:(id)a3
+- (void)deleteDefaultBillingAddressForPrimaryAccountIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForPrimaryAccountIdentifier:v4];
+    v5 = [(PKPaymentOptionsDefaults *)self defaultBillingAddressForPrimaryAccountIdentifier:identifierCopy];
 
     if (v5)
     {
       v6 = objc_alloc(MEMORY[0x1E695DF90]);
-      v20 = self;
-      v7 = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
-      v8 = [v6 initWithDictionary:v7];
+      selfCopy = self;
+      _rawDefaultBillingAddresses = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
+      v8 = [v6 initWithDictionary:_rawDefaultBillingAddresses];
 
       v23 = 0u;
       v24 = 0u;
@@ -937,9 +937,9 @@ uint64_t __56__PKPaymentOptionsDefaults_deleteDefaultBillingAddress___block_invo
             v16 = [v8 objectForKeyedSubscript:v14];
             v17 = [v15 initWithSet:v16];
 
-            if ([v17 containsObject:v4])
+            if ([v17 containsObject:identifierCopy])
             {
-              [v17 removeObject:v4];
+              [v17 removeObject:identifierCopy];
               if ([v17 count])
               {
                 [v8 setObject:v17 forKey:v14];
@@ -959,12 +959,12 @@ uint64_t __56__PKPaymentOptionsDefaults_deleteDefaultBillingAddress___block_invo
       }
 
       v18 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
-      [(PKPaymentOptionsDefaults *)v20 _setKeychainData:v18 forKey:@"PKBillingAddressesKeychainKey"];
+      [(PKPaymentOptionsDefaults *)selfCopy _setKeychainData:v18 forKey:@"PKBillingAddressesKeychainKey"];
 
-      defaultBillingAddresses = v20->_defaultBillingAddresses;
+      defaultBillingAddresses = selfCopy->_defaultBillingAddresses;
       if (defaultBillingAddresses)
       {
-        v20->_defaultBillingAddresses = 0;
+        selfCopy->_defaultBillingAddresses = 0;
       }
     }
   }
@@ -983,11 +983,11 @@ uint64_t __56__PKPaymentOptionsDefaults_deleteDefaultBillingAddress___block_invo
   [(PKPaymentOptionsDefaults *)self _deleteKeychainDataForKey:@"PKBillingAddressesUpdatesKeychainKey"];
 }
 
-- (id)lastUpdatedDateForPrimaryAccountIdentifier:(id)a3
+- (id)lastUpdatedDateForPrimaryAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentOptionsDefaults *)self _lastUpdatedDatesForBillingAddresses];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _lastUpdatedDatesForBillingAddresses = [(PKPaymentOptionsDefaults *)self _lastUpdatedDatesForBillingAddresses];
+  v6 = [_lastUpdatedDatesForBillingAddresses objectForKey:identifierCopy];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1002,19 +1002,19 @@ uint64_t __56__PKPaymentOptionsDefaults_deleteDefaultBillingAddress___block_invo
   return v7;
 }
 
-- (void)updateLastUpdatedDate:(id)a3 forPrimaryAccountIdentifier:(id)a4
+- (void)updateLastUpdatedDate:(id)date forPrimaryAccountIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(PKPaymentOptionsDefaults *)self _lastUpdatedDatesForBillingAddresses];
-  v8 = [v7 mutableCopy];
+  dateCopy = date;
+  identifierCopy = identifier;
+  _lastUpdatedDatesForBillingAddresses = [(PKPaymentOptionsDefaults *)self _lastUpdatedDatesForBillingAddresses];
+  v8 = [_lastUpdatedDatesForBillingAddresses mutableCopy];
 
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [v8 setObject:v12 forKey:v6];
+  [v8 setObject:dateCopy forKey:identifierCopy];
   v9 = MEMORY[0x1E696ACC8];
   v10 = [v8 copy];
   v11 = [v9 archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
@@ -1090,13 +1090,13 @@ LABEL_11:
   return defaultContactEmail;
 }
 
-- (void)setDefaultContactEmail:(id)a3
+- (void)setDefaultContactEmail:(id)email
 {
-  v5 = a3;
-  if (v5)
+  emailCopy = email;
+  if (emailCopy)
   {
-    objc_storeStrong(&self->_defaultContactEmail, a3);
-    [(PKPaymentOptionsDefaults *)self _setContact:v5 property:*MEMORY[0x1E695C208] forKeychainKey:@"PKContactEmailKeychainKey"];
+    objc_storeStrong(&self->_defaultContactEmail, email);
+    [(PKPaymentOptionsDefaults *)self _setContact:emailCopy property:*MEMORY[0x1E695C208] forKeychainKey:@"PKContactEmailKeychainKey"];
   }
 
   else
@@ -1153,9 +1153,9 @@ LABEL_11:
   return [(NSNumber *)useHideMyEmailNumber BOOLValue];
 }
 
-- (void)setUseHideMyEmail:(BOOL)a3
+- (void)setUseHideMyEmail:(BOOL)email
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:email];
   useHideMyEmailNumber = self->_useHideMyEmailNumber;
   self->_useHideMyEmailNumber = v4;
 
@@ -1191,13 +1191,13 @@ LABEL_11:
   return defaultContactPhone;
 }
 
-- (void)setDefaultContactPhone:(id)a3
+- (void)setDefaultContactPhone:(id)phone
 {
-  v5 = a3;
-  if (v5)
+  phoneCopy = phone;
+  if (phoneCopy)
   {
-    objc_storeStrong(&self->_defaultContactPhone, a3);
-    [(PKPaymentOptionsDefaults *)self _setContact:v5 property:*MEMORY[0x1E695C330] forKeychainKey:@"PKContactPhoneKeychainKey"];
+    objc_storeStrong(&self->_defaultContactPhone, phone);
+    [(PKPaymentOptionsDefaults *)self _setContact:phoneCopy property:*MEMORY[0x1E695C330] forKeychainKey:@"PKContactPhoneKeychainKey"];
   }
 
   else
@@ -1232,13 +1232,13 @@ LABEL_11:
   return defaultContactName;
 }
 
-- (void)setDefaultContactName:(id)a3
+- (void)setDefaultContactName:(id)name
 {
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
-    objc_storeStrong(&self->_defaultContactName, a3);
-    [(PKPaymentOptionsDefaults *)self _setContact:v5 forKeychainKey:@"PKContactNameKeychainKey"];
+    objc_storeStrong(&self->_defaultContactName, name);
+    [(PKPaymentOptionsDefaults *)self _setContact:nameCopy forKeychainKey:@"PKContactNameKeychainKey"];
   }
 
   else
@@ -1299,25 +1299,25 @@ LABEL_11:
   [(PKPaymentOptionsDefaults *)self _deleteKeychainDataForKey:@"PKBillingAddressesUpdatesKeychainKey" localOnly:1];
 }
 
-- (void)deleteDefaultForContactKey:(id)a3
+- (void)deleteDefaultForContactKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E695C360]])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E695C360]])
   {
     [(PKPaymentOptionsDefaults *)self deleteDefaultShippingAddress];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E695C208]])
+  else if ([keyCopy isEqualToString:*MEMORY[0x1E695C208]])
   {
     [(PKPaymentOptionsDefaults *)self deleteDefaultContactEmail];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E695C330]])
+  else if ([keyCopy isEqualToString:*MEMORY[0x1E695C330]])
   {
     [(PKPaymentOptionsDefaults *)self deleteDefaultContactPhone];
   }
 
-  else if (([v4 isEqualToString:*MEMORY[0x1E695C230]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C240]))
+  else if (([keyCopy isEqualToString:*MEMORY[0x1E695C230]] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", *MEMORY[0x1E695C240]))
   {
     [(PKPaymentOptionsDefaults *)self deleteDefaultContactName];
   }
@@ -1332,8 +1332,8 @@ LABEL_11:
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Migrating keychain to syncable items", buf, 2u);
   }
 
-  v4 = [(PKPaymentOptionsDefaults *)self defaultContactEmail];
-  if (v4)
+  defaultContactEmail = [(PKPaymentOptionsDefaults *)self defaultContactEmail];
+  if (defaultContactEmail)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -1342,11 +1342,11 @@ LABEL_11:
     }
 
     [(PKPaymentOptionsDefaults *)self deleteDefaultContactEmail];
-    [(PKPaymentOptionsDefaults *)self setDefaultContactEmail:v4];
+    [(PKPaymentOptionsDefaults *)self setDefaultContactEmail:defaultContactEmail];
   }
 
-  v5 = [(PKPaymentOptionsDefaults *)self defaultContactName];
-  if (v5)
+  defaultContactName = [(PKPaymentOptionsDefaults *)self defaultContactName];
+  if (defaultContactName)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -1355,11 +1355,11 @@ LABEL_11:
     }
 
     [(PKPaymentOptionsDefaults *)self deleteDefaultContactName];
-    [(PKPaymentOptionsDefaults *)self setDefaultContactName:v5];
+    [(PKPaymentOptionsDefaults *)self setDefaultContactName:defaultContactName];
   }
 
-  v6 = [(PKPaymentOptionsDefaults *)self defaultContactPhone];
-  if (v6)
+  defaultContactPhone = [(PKPaymentOptionsDefaults *)self defaultContactPhone];
+  if (defaultContactPhone)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -1368,11 +1368,11 @@ LABEL_11:
     }
 
     [(PKPaymentOptionsDefaults *)self deleteDefaultContactPhone];
-    [(PKPaymentOptionsDefaults *)self setDefaultContactPhone:v6];
+    [(PKPaymentOptionsDefaults *)self setDefaultContactPhone:defaultContactPhone];
   }
 
-  v7 = [(PKPaymentOptionsDefaults *)self defaultShippingAddress];
-  if (v7)
+  defaultShippingAddress = [(PKPaymentOptionsDefaults *)self defaultShippingAddress];
+  if (defaultShippingAddress)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -1381,11 +1381,11 @@ LABEL_11:
     }
 
     [(PKPaymentOptionsDefaults *)self deleteDefaultShippingAddress];
-    [(PKPaymentOptionsDefaults *)self setDefaultShippingAddress:v7];
+    [(PKPaymentOptionsDefaults *)self setDefaultShippingAddress:defaultShippingAddress];
   }
 
-  v8 = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
-  if (v8)
+  _rawDefaultBillingAddresses = [(PKPaymentOptionsDefaults *)self _rawDefaultBillingAddresses];
+  if (_rawDefaultBillingAddresses)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -1394,7 +1394,7 @@ LABEL_11:
     }
 
     [(PKPaymentOptionsDefaults *)self _hardDeleteDefaultBillingAddress];
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:_rawDefaultBillingAddresses requiringSecureCoding:1 error:0];
     [(PKPaymentOptionsDefaults *)self _setKeychainData:v9 forKey:@"PKBillingAddressesKeychainKey"];
   }
 }

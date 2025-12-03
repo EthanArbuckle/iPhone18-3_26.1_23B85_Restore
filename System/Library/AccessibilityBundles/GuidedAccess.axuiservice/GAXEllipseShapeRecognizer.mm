@@ -1,18 +1,18 @@
 @interface GAXEllipseShapeRecognizer
-+ (id)smoothPathForFingerPath:(id)a3 probabilityOfMatch:(double *)a4;
++ (id)smoothPathForFingerPath:(id)path probabilityOfMatch:(double *)match;
 @end
 
 @implementation GAXEllipseShapeRecognizer
 
-+ (id)smoothPathForFingerPath:(id)a3 probabilityOfMatch:(double *)a4
++ (id)smoothPathForFingerPath:(id)path probabilityOfMatch:(double *)match
 {
-  v5 = a3;
-  [v5 bounds];
+  pathCopy = path;
+  [pathCopy bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 boundsCenter];
+  [pathCopy boundsCenter];
   v15 = v14;
   v17 = v16;
   v28.origin.x = v7;
@@ -39,10 +39,10 @@
     v24 = v26;
     CGAffineTransformTranslate(&v25, &v24, -v15, -v17);
     v26 = v25;
-    v22 = [v5 copy];
+    v22 = [pathCopy copy];
     v25 = v26;
     [v22 applyTransform:&v25];
-    v20 = [GAXCircleShapeRecognizer smoothPathForFingerPath:v22 probabilityOfMatch:a4];
+    v20 = [GAXCircleShapeRecognizer smoothPathForFingerPath:v22 probabilityOfMatch:match];
     v24 = v26;
     CGAffineTransformInvert(&v25, &v24);
     [v20 applyTransform:&v25];

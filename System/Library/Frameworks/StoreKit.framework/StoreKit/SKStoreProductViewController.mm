@@ -1,77 +1,77 @@
 @interface SKStoreProductViewController
 + (id)_defaultIXStoreSheetDictionary;
-+ (void)_validateURL:(id)a3 withSheetInfo:(id)a4 completionBlock:(id)a5;
-+ (void)getCanLoadURL:(id)a3 completionBlock:(id)a4;
-+ (void)getCanLoadURL:(id)a3 withURLBag:(id)a4 completionBlock:(id)a5;
++ (void)_validateURL:(id)l withSheetInfo:(id)info completionBlock:(id)block;
++ (void)getCanLoadURL:(id)l completionBlock:(id)block;
++ (void)getCanLoadURL:(id)l withURLBag:(id)bag completionBlock:(id)block;
 - (BOOL)_isInvalidSubclass;
 - (BOOL)_isPeeking;
-- (BOOL)dismissRemoteViewControllerWithCompletion:(id)a3;
-- (SKStoreProductViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_impressionDictFromImpression:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
+- (BOOL)dismissRemoteViewControllerWithCompletion:(id)completion;
+- (SKStoreProductViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_impressionDictFromImpression:(id)impression;
+- (id)animationControllerForDismissedController:(id)controller;
 - (id)delegate;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_addRemoteView;
 - (void)_configureForFullScreenPresentationOrThrowException;
 - (void)_didFinish;
 - (void)_didFinishDismissal;
-- (void)_didFinishWithResult:(int64_t)a3;
+- (void)_didFinishWithResult:(int64_t)result;
 - (void)_fireLoadBlockBeforeFinishing;
 - (void)_forceOrientationBackToSupportedOrientation;
 - (void)_isInvalidSubclass;
-- (void)_loadDidFinishWithResult:(BOOL)a3 error:(id)a4;
-- (void)_presentPageWithRequest:(id)a3 animated:(BOOL)a4;
+- (void)_loadDidFinishWithResult:(BOOL)result error:(id)error;
+- (void)_presentPageWithRequest:(id)request animated:(BOOL)animated;
 - (void)_requestRemoteViewController;
 - (void)_resetRemoteViewController;
-- (void)_setLoadBlock:(id)a3;
+- (void)_setLoadBlock:(id)block;
 - (void)_throwUnsupportedPresentationException;
-- (void)_userDidInteractWithProduct:(unint64_t)a3;
-- (void)_viewTapped:(id)a3;
+- (void)_userDidInteractWithProduct:(unint64_t)product;
+- (void)_viewTapped:(id)tapped;
 - (void)dealloc;
-- (void)didChangeAlpha:(double)a3;
+- (void)didChangeAlpha:(double)alpha;
 - (void)didChangeHidden;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)finishImmediately;
-- (void)loadProductWithPageDictionary:(id)a3 completionBlock:(id)a4;
+- (void)loadProductWithPageDictionary:(id)dictionary completionBlock:(id)block;
 - (void)loadProductWithParameters:(NSDictionary *)parameters completionBlock:(void *)block;
 - (void)loadProductWithParameters:(NSDictionary *)parameters impression:(SKAdImpression *)impression completionBlock:(void *)block;
-- (void)loadProductWithRequest:(id)a3 completionBlock:(id)a4;
-- (void)loadProductWithURL:(id)a3 completionBlock:(id)a4;
+- (void)loadProductWithRequest:(id)request completionBlock:(id)block;
+- (void)loadProductWithURL:(id)l completionBlock:(id)block;
 - (void)loadView;
-- (void)setAdditionalBuyParameters:(id)a3;
-- (void)setAffiliateIdentifier:(id)a3;
-- (void)setAskToBuy:(BOOL)a3;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setHostBundleIdentifier:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)setAdditionalBuyParameters:(id)parameters;
+- (void)setAffiliateIdentifier:(id)identifier;
+- (void)setAskToBuy:(BOOL)buy;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setHostBundleIdentifier:(id)identifier;
+- (void)setModalPresentationStyle:(int64_t)style;
 - (void)setNoClippingIfNeeded;
-- (void)setParentViewController:(id)a3;
+- (void)setParentViewController:(id)controller;
 - (void)setPresentationStyleIfNeeded;
-- (void)setProductPageStyle:(int64_t)a3;
-- (void)setPromptString:(id)a3;
-- (void)setRightBarButtonTitle:(id)a3;
-- (void)setScriptContextDictionary:(id)a3;
-- (void)setShowsRightBarButton:(BOOL)a3;
-- (void)setShowsStoreButton:(BOOL)a3;
-- (void)setUsageContext:(id)a3;
-- (void)sk_didBecomeOffScreen:(id)a3;
-- (void)sk_didBecomeOnScreen:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setProductPageStyle:(int64_t)style;
+- (void)setPromptString:(id)string;
+- (void)setRightBarButtonTitle:(id)title;
+- (void)setScriptContextDictionary:(id)dictionary;
+- (void)setShowsRightBarButton:(BOOL)button;
+- (void)setShowsStoreButton:(BOOL)button;
+- (void)setUsageContext:(id)context;
+- (void)sk_didBecomeOffScreen:(id)screen;
+- (void)sk_didBecomeOnScreen:(id)screen;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SKStoreProductViewController
 
-- (SKStoreProductViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKStoreProductViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v16.receiver = self;
   v16.super_class = SKStoreProductViewController;
-  v4 = [(SKStoreProductViewController *)&v16 initWithNibName:a3 bundle:a4];
+  v4 = [(SKStoreProductViewController *)&v16 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = _os_feature_enabled_impl();
@@ -95,16 +95,16 @@
       [(SKStoreProductViewController *)v4 setTransitioningDelegate:v4];
     }
 
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v4->_bundleID;
-    v4->_bundleID = v11;
+    v4->_bundleID = bundleIdentifier;
 
     [(SKStoreProductViewController *)v4 setShowsStoreButton:1];
-    v13 = [MEMORY[0x1E69DC938] currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v14 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(SKStoreProductViewController *)v4 setModalPresentationStyle:2];
     }
@@ -117,23 +117,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
   [(SKRemoteProductViewController *)self->_remoteViewController setProductViewController:0];
-  v5 = [(_UIRemoteViewController *)self->_remoteViewController disconnect];
+  disconnect = [(_UIRemoteViewController *)self->_remoteViewController disconnect];
   [(SKUIServiceProductPageViewController *)self->_serviceProxy setInvocationTarget:0];
   v6.receiver = self;
   v6.super_class = SKStoreProductViewController;
   [(SKStoreProductViewController *)&v6 dealloc];
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   if (self->_productPageQFAEnabled)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:style];
     [(SKProductRemoteViewTask *)self->_remoteViewTask overridePresentationStyle:v5];
   }
 }
@@ -149,9 +149,9 @@
     if (objc_opt_isKindOfClass())
     {
       v9 = [(NSDictionary *)v6 mutableCopy];
-      v10 = [v8 UUIDString];
-      v11 = [v10 lowercaseString];
-      [v9 setObject:v11 forKeyedSubscript:@"adNetworkNonce"];
+      uUIDString = [v8 UUIDString];
+      lowercaseString = [uUIDString lowercaseString];
+      [v9 setObject:lowercaseString forKeyedSubscript:@"adNetworkNonce"];
 
       v12 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v9];
 
@@ -221,8 +221,8 @@ void __74__SKStoreProductViewController_loadProductWithParameters_completionBloc
   v8 = parameters;
   v9 = impression;
   v10 = block;
-  v11 = [(SKAdImpression *)v9 adImpressionIdentifier];
-  if (v11)
+  adImpressionIdentifier = [(SKAdImpression *)v9 adImpressionIdentifier];
+  if (adImpressionIdentifier)
   {
     v20 = 0;
     v21 = &v20;
@@ -306,28 +306,28 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
   v8 = objc_alloc_init(SKObservableView);
   [(SKObservableView *)v8 setDelegate:self];
   [(SKObservableView *)v8 setAutoresizingMask:18];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(SKObservableView *)v8 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(SKObservableView *)v8 setBackgroundColor:clearColor];
 
   [(SKStoreProductViewController *)self setView:v8];
   [(SKStoreProductViewController *)self _addRemoteView];
   v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__viewTapped_];
-  v5 = [(SKStoreProductViewController *)self view];
-  [v5 addGestureRecognizer:v4];
+  view = [(SKStoreProductViewController *)self view];
+  [view addGestureRecognizer:v4];
 
-  v6 = [(SKStoreProductViewController *)self view];
-  v7 = [v6 layer];
-  [v7 setHitTestsAsOpaque:1];
+  view2 = [(SKStoreProductViewController *)self view];
+  layer = [view2 layer];
+  [layer setHitTestsAsOpaque:1];
 }
 
-- (void)_viewTapped:(id)a3
+- (void)_viewTapped:(id)tapped
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tappedCopy = tapped;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: viewTapped.", &v6, 0xCu);
   }
 
@@ -341,7 +341,7 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           v6 = 138543362;
-          v7 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: Dismissing view after tap.", &v6, 0xCu);
         }
 
@@ -353,10 +353,10 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -369,9 +369,9 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
   return 2;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(SKStoreProductViewController *)self _configureForFullScreenPresentationOrThrowException];
   if ([(SKStoreProductViewController *)self _isInvalidSubclass])
   {
@@ -380,16 +380,16 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
 
   v5.receiver = self;
   v5.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v5 willMoveToParentViewController:v4];
+  [(SKStoreProductViewController *)&v5 willMoveToParentViewController:controllerCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKStoreProductViewController *)self presentingViewController];
-  if (v5)
+  appearCopy = appear;
+  presentingViewController = [(SKStoreProductViewController *)self presentingViewController];
+  if (presentingViewController)
   {
-    v6 = v5;
+    v6 = presentingViewController;
     v7 = isMyViewVisible(self);
 
     if (v7)
@@ -431,38 +431,38 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
 
   [(SKStoreProductViewController *)self setPresentationStyleIfNeeded];
   [(SKStoreProductViewController *)self setNoClippingIfNeeded];
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
-  self->_originalStatusBarStyle = [v15 statusBarStyle];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  self->_originalStatusBarStyle = [mEMORY[0x1E69DC668] statusBarStyle];
 
-  v16 = [MEMORY[0x1E69DC938] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v17)
+  if (!userInterfaceIdiom)
   {
-    v18 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v18 setStatusBarStyle:0 animated:v3];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668]2 setStatusBarStyle:0 animated:appearCopy];
   }
 
   [(SKStoreProductViewController *)self _forceOrientationBackToSupportedOrientation];
   v19.receiver = self;
   v19.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v19 viewWillAppear:v3];
+  [(SKStoreProductViewController *)&v19 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKStoreProductViewController *)self presentingViewController];
+  appearCopy = appear;
+  presentingViewController = [(SKStoreProductViewController *)self presentingViewController];
 
-  if (!v5)
+  if (!presentingViewController)
   {
     v6 = [[SKScrollDetector alloc] initWithDelegate:self];
     scrollDetector = self->_scrollDetector;
     self->_scrollDetector = v6;
 
     v8 = self->_scrollDetector;
-    v9 = [(SKStoreProductViewController *)self view];
-    [(SKScrollDetector *)v8 findAndListenForScrollingOfView:v9];
+    view = [(SKStoreProductViewController *)self view];
+    [(SKScrollDetector *)v8 findAndListenForScrollingOfView:view];
   }
 
   [(SKStoreProductViewController *)self _configureForFullScreenPresentationOrThrowException];
@@ -473,7 +473,7 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
 
   v10.receiver = self;
   v10.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v10 viewDidAppear:v3];
+  [(SKStoreProductViewController *)&v10 viewDidAppear:appearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -483,11 +483,11 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
   _os_log_fault_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "[%@] Invalid use of SKStoreProductViewController.", v0, 0xCu);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 setStatusBarStyle:self->_originalStatusBarStyle animated:v3];
+  disappearCopy = disappear;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setStatusBarStyle:self->_originalStatusBarStyle animated:disappearCopy];
 
   if (self->_productPageQFAEnabled)
   {
@@ -496,33 +496,33 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
 
   v6.receiver = self;
   v6.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v6 viewWillDisappear:v3];
+  [(SKStoreProductViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: viewDidDisappear.", buf, 0xCu);
   }
 
   v5.receiver = self;
   v5.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v5 viewDidDisappear:v3];
+  [(SKStoreProductViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: dismissViewControllerAnimated.", buf, 0xCu);
   }
 
@@ -533,23 +533,23 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
 
   v6.receiver = self;
   v6.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v6 dismissViewControllerAnimated:1 completion:v5];
+  [(SKStoreProductViewController *)&v6 dismissViewControllerAnimated:1 completion:completionCopy];
 }
 
-+ (void)getCanLoadURL:(id)a3 withURLBag:(id)a4 completionBlock:(id)a5
++ (void)getCanLoadURL:(id)l withURLBag:(id)bag completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v12 = [v11 isOnDeviceAppInstallationAllowed];
+  lCopy = l;
+  bagCopy = bag;
+  blockCopy = block;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isOnDeviceAppInstallationAllowed = [mEMORY[0x1E69ADFB8] isOnDeviceAppInstallationAllowed];
 
-  if (v12)
+  if (isOnDeviceAppInstallationAllowed)
   {
-    v13 = [v8 scheme];
-    if ([v13 caseInsensitiveCompare:@"http"] && objc_msgSend(v13, "caseInsensitiveCompare:", @"https"))
+    scheme = [lCopy scheme];
+    if ([scheme caseInsensitiveCompare:@"http"] && objc_msgSend(scheme, "caseInsensitiveCompare:", @"https"))
     {
-      v10[2](v10, 0);
+      blockCopy[2](blockCopy, 0);
     }
 
     else
@@ -558,16 +558,16 @@ void __85__SKStoreProductViewController_loadProductWithParameters_impression_com
       v14[1] = 3221225472;
       v14[2] = __73__SKStoreProductViewController_getCanLoadURL_withURLBag_completionBlock___block_invoke;
       v14[3] = &unk_1E7B28588;
-      v17 = a1;
-      v15 = v8;
-      v16 = v10;
-      [v9 loadValueForKey:@"ix-store-sheet" completionBlock:v14];
+      selfCopy = self;
+      v15 = lCopy;
+      v16 = blockCopy;
+      [bagCopy loadValueForKey:@"ix-store-sheet" completionBlock:v14];
     }
   }
 
   else
   {
-    v10[2](v10, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
@@ -591,11 +591,11 @@ void __73__SKStoreProductViewController_getCanLoadURL_withURLBag_completionBlock
   [*(a1 + 48) _validateURL:*(a1 + 32) withSheetInfo:v3 completionBlock:*(a1 + 40)];
 }
 
-+ (void)getCanLoadURL:(id)a3 completionBlock:(id)a4
++ (void)getCanLoadURL:(id)l completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x1E69D49F8];
-  v8 = a3;
+  lCopy = l;
   v9 = [v7 contextWithBagType:0];
   [v9 setAllowsExpiredBags:1];
   [v9 setUsesCachedBagsOnly:1];
@@ -604,9 +604,9 @@ void __73__SKStoreProductViewController_getCanLoadURL_withURLBag_completionBlock
   v12[1] = 3221225472;
   v12[2] = __62__SKStoreProductViewController_getCanLoadURL_completionBlock___block_invoke;
   v12[3] = &unk_1E7B285D0;
-  v13 = v6;
-  v11 = v6;
-  [a1 getCanLoadURL:v8 withURLBag:v10 completionBlock:v12];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [self getCanLoadURL:lCopy withURLBag:v10 completionBlock:v12];
 }
 
 void __62__SKStoreProductViewController_getCanLoadURL_completionBlock___block_invoke(uint64_t a1)
@@ -633,61 +633,61 @@ void __62__SKStoreProductViewController_getCanLoadURL_completionBlock___block_in
   [*(&self->super.super.super.isa + *v2) finishImmediately];
 }
 
-- (void)loadProductWithPageDictionary:(id)a3 completionBlock:(id)a4
+- (void)loadProductWithPageDictionary:(id)dictionary completionBlock:(id)block
 {
   if (self->_productPageQFAEnabled)
   {
-    [(SKProductRemoteViewTask *)self->_remoteViewTask loadProductWithPageDictionary:a3 completionBlock:a4];
+    [(SKProductRemoteViewTask *)self->_remoteViewTask loadProductWithPageDictionary:dictionary completionBlock:block];
   }
 
   else
   {
-    v6 = a3;
-    [(SKStoreProductViewController *)self _setLoadBlock:a4];
-    [(SKUIServiceProductPageViewController *)self->_serviceProxy loadProductWithPageDictionary:v6];
+    dictionaryCopy = dictionary;
+    [(SKStoreProductViewController *)self _setLoadBlock:block];
+    [(SKUIServiceProductPageViewController *)self->_serviceProxy loadProductWithPageDictionary:dictionaryCopy];
   }
 }
 
-- (void)loadProductWithRequest:(id)a3 completionBlock:(id)a4
+- (void)loadProductWithRequest:(id)request completionBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
+  requestCopy = request;
+  blockCopy = block;
   if (!self->_productPageQFAEnabled)
   {
-    [(SKStoreProductViewController *)self _setLoadBlock:v6];
+    [(SKStoreProductViewController *)self _setLoadBlock:blockCopy];
   }
 
-  self->_productPageStyle = [v8 productPageStyle];
-  v7 = [v8 copyXPCEncoding];
+  self->_productPageStyle = [requestCopy productPageStyle];
+  copyXPCEncoding = [requestCopy copyXPCEncoding];
   if (self->_productPageQFAEnabled)
   {
-    [(SKProductRemoteViewTask *)self->_remoteViewTask loadProductWithRequest:v7 completionBlock:v6];
+    [(SKProductRemoteViewTask *)self->_remoteViewTask loadProductWithRequest:copyXPCEncoding completionBlock:blockCopy];
   }
 
   else
   {
-    [(SKUIServiceProductPageViewController *)self->_serviceProxy loadProductWithRequest:v7];
+    [(SKUIServiceProductPageViewController *)self->_serviceProxy loadProductWithRequest:copyXPCEncoding];
   }
 }
 
-- (void)loadProductWithURL:(id)a3 completionBlock:(id)a4
+- (void)loadProductWithURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_productPageQFAEnabled || ([(SKStoreProductViewController *)self _setLoadBlock:v7], self->_productPageQFAEnabled))
+  lCopy = l;
+  blockCopy = block;
+  if (self->_productPageQFAEnabled || ([(SKStoreProductViewController *)self _setLoadBlock:blockCopy], self->_productPageQFAEnabled))
   {
     remoteViewTask = self->_remoteViewTask;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__SKStoreProductViewController_loadProductWithURL_completionBlock___block_invoke;
     v9[3] = &unk_1E7B27B08;
-    v10 = v7;
-    [(SKProductRemoteViewTask *)remoteViewTask loadProductWithURL:v6 completionBlock:v9];
+    v10 = blockCopy;
+    [(SKProductRemoteViewTask *)remoteViewTask loadProductWithURL:lCopy completionBlock:v9];
   }
 
   else
   {
-    [(SKUIServiceProductPageViewController *)self->_serviceProxy loadProductWithURL:v6];
+    [(SKUIServiceProductPageViewController *)self->_serviceProxy loadProductWithURL:lCopy];
   }
 }
 
@@ -707,13 +707,13 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   }
 }
 
-- (void)setAdditionalBuyParameters:(id)a3
+- (void)setAdditionalBuyParameters:(id)parameters
 {
-  v4 = a3;
-  if (self->_additionalBuyParameters != v4)
+  parametersCopy = parameters;
+  if (self->_additionalBuyParameters != parametersCopy)
   {
-    v8 = v4;
-    v5 = [(NSString *)v4 copy];
+    v8 = parametersCopy;
+    v5 = [(NSString *)parametersCopy copy];
     additionalBuyParameters = self->_additionalBuyParameters;
     self->_additionalBuyParameters = v5;
 
@@ -728,17 +728,17 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v7) setAdditionalBuyParameters:v8];
-    v4 = v8;
+    parametersCopy = v8;
   }
 }
 
-- (void)setAffiliateIdentifier:(id)a3
+- (void)setAffiliateIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->_affiliateIdentifier != v4)
+  identifierCopy = identifier;
+  if (self->_affiliateIdentifier != identifierCopy)
   {
-    v8 = v4;
-    v5 = [(NSString *)v4 copy];
+    v8 = identifierCopy;
+    v5 = [(NSString *)identifierCopy copy];
     affiliateIdentifier = self->_affiliateIdentifier;
     self->_affiliateIdentifier = v5;
 
@@ -753,17 +753,17 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v7) setAffiliateIdentifier:v8];
-    v4 = v8;
+    identifierCopy = v8;
   }
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->_clientIdentifier != v4)
+  identifierCopy = identifier;
+  if (self->_clientIdentifier != identifierCopy)
   {
-    v8 = v4;
-    v5 = [(NSString *)v4 copy];
+    v8 = identifierCopy;
+    v5 = [(NSString *)identifierCopy copy];
     clientIdentifier = self->_clientIdentifier;
     self->_clientIdentifier = v5;
 
@@ -778,17 +778,17 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v7) setClientIdentifier:v8];
-    v4 = v8;
+    identifierCopy = v8;
   }
 }
 
-- (void)setHostBundleIdentifier:(id)a3
+- (void)setHostBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->_hostBundleIdentifier != v4)
+  identifierCopy = identifier;
+  if (self->_hostBundleIdentifier != identifierCopy)
   {
-    v8 = v4;
-    v5 = [(NSString *)v4 copy];
+    v8 = identifierCopy;
+    v5 = [(NSString *)identifierCopy copy];
     hostBundleIdentifier = self->_hostBundleIdentifier;
     self->_hostBundleIdentifier = v5;
 
@@ -803,17 +803,17 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v7) setHostBundleIdentifier:v8];
-    v4 = v8;
+    identifierCopy = v8;
   }
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
-  v5 = a3;
-  if (self->_cancelButtonTitle != v5)
+  titleCopy = title;
+  if (self->_cancelButtonTitle != titleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_cancelButtonTitle, a3);
+    v7 = titleCopy;
+    objc_storeStrong(&self->_cancelButtonTitle, title);
     if (self->_productPageQFAEnabled)
     {
       v6 = &OBJC_IVAR___SKStoreProductViewController__remoteViewTask;
@@ -825,17 +825,17 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v6) setCancelButtonTitle:v7];
-    v5 = v7;
+    titleCopy = v7;
   }
 }
 
-- (void)setRightBarButtonTitle:(id)a3
+- (void)setRightBarButtonTitle:(id)title
 {
-  v5 = a3;
-  if (self->_rightBarButtonTitle != v5)
+  titleCopy = title;
+  if (self->_rightBarButtonTitle != titleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_rightBarButtonTitle, a3);
+    v7 = titleCopy;
+    objc_storeStrong(&self->_rightBarButtonTitle, title);
     if (self->_productPageQFAEnabled)
     {
       v6 = &OBJC_IVAR___SKStoreProductViewController__remoteViewTask;
@@ -847,15 +847,15 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v6) setRightBarButtonTitle:v7];
-    v5 = v7;
+    titleCopy = v7;
   }
 }
 
-- (void)setShowsRightBarButton:(BOOL)a3
+- (void)setShowsRightBarButton:(BOOL)button
 {
-  if (self->_showsRightBarButton != a3)
+  if (self->_showsRightBarButton != button)
   {
-    self->_showsRightBarButton = a3;
+    self->_showsRightBarButton = button;
     if (self->_productPageQFAEnabled)
     {
       remoteViewTask = self->_remoteViewTask;
@@ -872,13 +872,13 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   }
 }
 
-- (void)setPromptString:(id)a3
+- (void)setPromptString:(id)string
 {
-  v5 = a3;
-  if (self->_promptString != v5)
+  stringCopy = string;
+  if (self->_promptString != stringCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_promptString, a3);
+    v7 = stringCopy;
+    objc_storeStrong(&self->_promptString, string);
     if (self->_productPageQFAEnabled)
     {
       v6 = &OBJC_IVAR___SKStoreProductViewController__remoteViewTask;
@@ -890,15 +890,15 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v6) setPromptString:v7];
-    v5 = v7;
+    stringCopy = v7;
   }
 }
 
-- (void)setProductPageStyle:(int64_t)a3
+- (void)setProductPageStyle:(int64_t)style
 {
-  if (self->_productPageStyle != a3)
+  if (self->_productPageStyle != style)
   {
-    self->_productPageStyle = a3;
+    self->_productPageStyle = style;
     if (self->_productPageQFAEnabled)
     {
       v4 = &OBJC_IVAR___SKStoreProductViewController__remoteViewTask;
@@ -915,11 +915,11 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   }
 }
 
-- (void)setShowsStoreButton:(BOOL)a3
+- (void)setShowsStoreButton:(BOOL)button
 {
-  if (self->_showsStoreButton != a3)
+  if (self->_showsStoreButton != button)
   {
-    self->_showsStoreButton = a3;
+    self->_showsStoreButton = button;
     if (self->_productPageQFAEnabled)
     {
       v4 = &OBJC_IVAR___SKStoreProductViewController__remoteViewTask;
@@ -936,13 +936,13 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   }
 }
 
-- (void)setScriptContextDictionary:(id)a3
+- (void)setScriptContextDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (self->_scriptContextDictionary != v4)
+  dictionaryCopy = dictionary;
+  if (self->_scriptContextDictionary != dictionaryCopy)
   {
-    v8 = v4;
-    v5 = [(NSDictionary *)v4 copy];
+    v8 = dictionaryCopy;
+    v5 = [(NSDictionary *)dictionaryCopy copy];
     scriptContextDictionary = self->_scriptContextDictionary;
     self->_scriptContextDictionary = v5;
 
@@ -957,17 +957,17 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v7) setScriptContextDictionary:v8];
-    v4 = v8;
+    dictionaryCopy = v8;
   }
 }
 
-- (void)setUsageContext:(id)a3
+- (void)setUsageContext:(id)context
 {
-  v5 = a3;
-  if (self->_usageContext != v5)
+  contextCopy = context;
+  if (self->_usageContext != contextCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_usageContext, a3);
+    v7 = contextCopy;
+    objc_storeStrong(&self->_usageContext, context);
     if (self->_productPageQFAEnabled)
     {
       v6 = &OBJC_IVAR___SKStoreProductViewController__remoteViewTask;
@@ -979,15 +979,15 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     }
 
     [*(&self->super.super.super.isa + *v6) setUsageContext:v7];
-    v5 = v7;
+    contextCopy = v7;
   }
 }
 
-- (void)setAskToBuy:(BOOL)a3
+- (void)setAskToBuy:(BOOL)buy
 {
-  if (self->_askToBuy != a3)
+  if (self->_askToBuy != buy)
   {
-    self->_askToBuy = a3;
+    self->_askToBuy = buy;
     if (self->_productPageQFAEnabled)
     {
       remoteViewTask = self->_remoteViewTask;
@@ -1010,7 +1010,7 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: didFinish.", &v6, 0xCu);
   }
 
@@ -1026,7 +1026,7 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   }
 }
 
-- (void)_didFinishWithResult:(int64_t)a3
+- (void)_didFinishWithResult:(int64_t)result
 {
   [(SKStoreProductViewController *)self _fireLoadBlockBeforeFinishing];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
@@ -1041,7 +1041,7 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   {
     [(SKStoreProductViewController *)self dismissViewControllerAnimated:1 completion:0];
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 productViewController:self didFinishWithResult:a3];
+    [v7 productViewController:self didFinishWithResult:result];
   }
 
   else
@@ -1070,25 +1070,25 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: dismiss end delay.", &v5, 0xCu);
   }
 
   [(SKStoreProductViewController *)self _endDelayingPresentation];
 }
 
-- (void)_loadDidFinishWithResult:(BOOL)a3 error:(id)a4
+- (void)_loadDidFinishWithResult:(BOOL)result error:(id)error
 {
   loadBlock = self->_loadBlock;
   if (loadBlock)
   {
-    loadBlock[2](loadBlock, a3, a4);
+    loadBlock[2](loadBlock, result, error);
     v6 = self->_loadBlock;
     self->_loadBlock = 0;
   }
 }
 
-- (void)_userDidInteractWithProduct:(unint64_t)a3
+- (void)_userDidInteractWithProduct:(unint64_t)product
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -1096,21 +1096,21 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 productViewController:self userDidInteractWithProduct:a3];
+    [v7 productViewController:self userDidInteractWithProduct:product];
   }
 }
 
-- (void)_presentPageWithRequest:(id)a3 animated:(BOOL)a4
+- (void)_presentPageWithRequest:(id)request animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 productViewController:self presentProductWithRequest:v9 animated:v4];
+    [v8 productViewController:self presentProductWithRequest:requestCopy animated:animatedCopy];
   }
 }
 
@@ -1128,8 +1128,8 @@ void __67__SKStoreProductViewController_loadProductWithURL_completionBlock___blo
     goto LABEL_2;
   }
 
-  v4 = [(NSString *)self->_bundleID lowercaseString];
-  v5 = [v4 hasPrefix:@"com.apple."];
+  lowercaseString = [(NSString *)self->_bundleID lowercaseString];
+  v5 = [lowercaseString hasPrefix:@"com.apple."];
 
   if (v5)
   {
@@ -1161,15 +1161,15 @@ LABEL_2:
 
 - (BOOL)_isPeeking
 {
-  v3 = [(SKStoreProductViewController *)self presentationController];
-  if ([v3 presentationStyle] == 20)
+  presentationController = [(SKStoreProductViewController *)self presentationController];
+  if ([presentationController presentationStyle] == 20)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v5 = [(SKStoreProductViewController *)self presentationController];
+    presentationController2 = [(SKStoreProductViewController *)self presentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1177,17 +1177,17 @@ LABEL_2:
   return isKindOfClass & 1;
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = SKStoreProductViewController;
-  [(SKStoreProductViewController *)&v3 setParentViewController:a3];
+  [(SKStoreProductViewController *)&v3 setParentViewController:controller];
 }
 
 - (void)setPresentationStyleIfNeeded
 {
-  v3 = [(SKStoreProductViewController *)self parentViewController];
-  if (v3)
+  parentViewController = [(SKStoreProductViewController *)self parentViewController];
+  if (parentViewController)
   {
   }
 
@@ -1229,12 +1229,12 @@ LABEL_8:
 
 - (void)setNoClippingIfNeeded
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [@"com.apple.Spotlight" isEqualToString:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [@"com.apple.Spotlight" isEqualToString:bundleIdentifier];
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   remoteViewController = self->_remoteViewController;
   if (remoteViewController)
@@ -1247,7 +1247,7 @@ LABEL_8:
     v9 = 1;
   }
 
-  if (!v9 && v7 == 1)
+  if (!v9 && userInterfaceIdiom == 1)
   {
 
     [(_UIRemoteViewController *)remoteViewController _setViewClipsToBounds:0];
@@ -1258,29 +1258,29 @@ LABEL_8:
 {
   if (self->_remoteViewController && [(SKStoreProductViewController *)self isViewLoaded])
   {
-    v5 = [(SKRemoteProductViewController *)self->_remoteViewController view];
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setBackgroundColor:v3];
+    view = [(SKRemoteProductViewController *)self->_remoteViewController view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
 
-    v4 = [(SKStoreProductViewController *)self view];
-    [v4 addSubview:v5];
-    [v4 bounds];
-    [v5 setFrame:?];
-    [v5 setAutoresizingMask:18];
+    view2 = [(SKStoreProductViewController *)self view];
+    [view2 addSubview:view];
+    [view2 bounds];
+    [view setFrame:?];
+    [view setAutoresizingMask:18];
   }
 }
 
 + (id)_defaultIXStoreSheetDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"itunes[.]apple[.]com", @"new[.]itunes[.]com", 0}];
-  [v2 setObject:v3 forKey:@"host-patterns"];
+  [dictionary setObject:v3 forKey:@"host-patterns"];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v4 addObject:@"^/([a-z][a-z]/)?(app|app-bundle|album|movie|tv-season)([/?]|$)"];
   [v4 addObject:@"^/redir/.*[&?]mt=[0123456789]+(&|$)"];
-  [v2 setObject:v4 forKey:@"path-patterns"];
+  [dictionary setObject:v4 forKey:@"path-patterns"];
 
-  return v2;
+  return dictionary;
 }
 
 - (void)_fireLoadBlockBeforeFinishing
@@ -1294,22 +1294,22 @@ LABEL_8:
 
 - (void)_forceOrientationBackToSupportedOrientation
 {
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  if (([v7 statusBarOrientation] - 3) <= 1 && (-[SKStoreProductViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if (([mEMORY[0x1E69DC668] statusBarOrientation] - 3) <= 1 && (-[SKStoreProductViewController supportedInterfaceOrientations](self, "supportedInterfaceOrientations") & 0x18) == 0)
   {
-    if (!-[SKStoreProductViewController isViewLoaded](self, "isViewLoaded") || (-[SKStoreProductViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+    if (!-[SKStoreProductViewController isViewLoaded](self, "isViewLoaded") || (-[SKStoreProductViewController view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], window = objc_claimAutoreleasedReturnValue(), v3, !window))
     {
-      v5 = [(SKStoreProductViewController *)self presentedViewController];
-      v6 = [v5 view];
-      v4 = [v6 window];
+      presentedViewController = [(SKStoreProductViewController *)self presentedViewController];
+      view = [presentedViewController view];
+      window = [view window];
 
-      if (!v4)
+      if (!window)
       {
-        v4 = [MEMORY[0x1E69DD2E8] keyWindow];
+        window = [MEMORY[0x1E69DD2E8] keyWindow];
       }
     }
 
-    [v4 _setRotatableViewOrientation:1 duration:1 force:0.0];
+    [window _setRotatableViewOrientation:1 duration:1 force:0.0];
   }
 }
 
@@ -1382,11 +1382,11 @@ void __60__SKStoreProductViewController__requestRemoteViewController__block_invo
   [v9 _endDelayingPresentation];
 }
 
-- (void)_setLoadBlock:(id)a3
+- (void)_setLoadBlock:(id)block
 {
-  if (self->_loadBlock != a3)
+  if (self->_loadBlock != block)
   {
-    v4 = [a3 copy];
+    v4 = [block copy];
     loadBlock = self->_loadBlock;
     self->_loadBlock = v4;
 
@@ -1396,9 +1396,9 @@ void __60__SKStoreProductViewController__requestRemoteViewController__block_invo
 
 - (void)_configureForFullScreenPresentationOrThrowException
 {
-  v3 = [(SKStoreProductViewController *)self presentingViewController];
+  presentingViewController = [(SKStoreProductViewController *)self presentingViewController];
 
-  if (!v3)
+  if (!presentingViewController)
   {
     if (dyld_program_sdk_at_least())
     {
@@ -1417,20 +1417,20 @@ void __60__SKStoreProductViewController__requestRemoteViewController__block_invo
   [v2 raise:@"SKUnsupportedPresentationException" format:{@"%@ must be used in a modal view controller", v4}];
 }
 
-+ (void)_validateURL:(id)a3 withSheetInfo:(id)a4 completionBlock:(id)a5
++ (void)_validateURL:(id)l withSheetInfo:(id)info completionBlock:(id)block
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  infoCopy = info;
+  blockCopy = block;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 objectForKey:@"host-patterns"];
+    v10 = [infoCopy objectForKey:@"host-patterns"];
     if (v10)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 host], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ([lCopy host], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v20 = 0;
         v21 = 0;
@@ -1441,7 +1441,7 @@ LABEL_44:
       }
 
       v12 = v11;
-      v41 = v7;
+      v41 = lCopy;
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
@@ -1458,7 +1458,7 @@ LABEL_42:
       }
 
       v15 = v14;
-      v39 = v8;
+      v39 = infoCopy;
       v40 = v10;
       v16 = *v47;
       while (2)
@@ -1477,8 +1477,8 @@ LABEL_42:
           {
 
             v10 = v40;
-            v7 = v41;
-            v8 = v39;
+            lCopy = v41;
+            infoCopy = v39;
             goto LABEL_17;
           }
         }
@@ -1498,7 +1498,7 @@ LABEL_42:
     }
 
 LABEL_17:
-    v12 = [v8 objectForKey:@"path-patterns"];
+    v12 = [infoCopy objectForKey:@"path-patterns"];
     if (v12)
     {
       objc_opt_class();
@@ -1506,41 +1506,41 @@ LABEL_17:
       {
         v40 = v10;
         v23 = MEMORY[0x1E696AD60];
-        [v7 path];
-        v25 = v24 = v7;
+        [lCopy path];
+        v25 = v24 = lCopy;
         v13 = [v23 stringWithString:v25];
 
         if (!v13)
         {
           v21 = 0;
           v20 = 1;
-          v7 = v24;
+          lCopy = v24;
           goto LABEL_41;
         }
 
-        v26 = [v24 parameterString];
+        parameterString = [v24 parameterString];
 
-        if (v26)
+        if (parameterString)
         {
-          v27 = [v24 parameterString];
-          [v13 appendFormat:@";%@", v27];
+          parameterString2 = [v24 parameterString];
+          [v13 appendFormat:@";%@", parameterString2];
         }
 
-        v28 = [v24 query];
+        query = [v24 query];
 
-        if (v28)
+        if (query)
         {
-          v29 = [v24 query];
-          [v13 appendFormat:@"?%@", v29];
+          query2 = [v24 query];
+          [v13 appendFormat:@"?%@", query2];
         }
 
-        v39 = v8;
-        v30 = [v24 fragment];
+        v39 = infoCopy;
+        fragment = [v24 fragment];
 
-        if (v30)
+        if (fragment)
         {
-          v31 = [v24 fragment];
-          [v13 appendFormat:@"#%@", v31];
+          fragment2 = [v24 fragment];
+          [v13 appendFormat:@"#%@", fragment2];
         }
 
         v41 = v24;
@@ -1593,8 +1593,8 @@ LABEL_34:
 
         v20 = 1;
 LABEL_36:
-        v7 = v41;
-        v8 = v39;
+        lCopy = v41;
+        infoCopy = v39;
 LABEL_41:
         v10 = v40;
         goto LABEL_42;
@@ -1617,46 +1617,46 @@ LABEL_43:
 
   v22 = 0;
 LABEL_45:
-  v9[2](v9, v22);
+  blockCopy[2](blockCopy, v22);
 }
 
-- (id)_impressionDictFromImpression:(id)a3
+- (id)_impressionDictFromImpression:(id)impression
 {
-  v3 = a3;
+  impressionCopy = impression;
   v4 = objc_opt_new();
-  v5 = [v3 advertisedAppStoreItemIdentifier];
-  [v4 setObject:v5 forKeyedSubscript:@"id"];
+  advertisedAppStoreItemIdentifier = [impressionCopy advertisedAppStoreItemIdentifier];
+  [v4 setObject:advertisedAppStoreItemIdentifier forKeyedSubscript:@"id"];
 
-  v6 = [v3 signature];
-  [v4 setObject:v6 forKeyedSubscript:@"adNetworkAttributionSignature"];
+  signature = [impressionCopy signature];
+  [v4 setObject:signature forKeyedSubscript:@"adNetworkAttributionSignature"];
 
-  v7 = [v3 adCampaignIdentifier];
-  [v4 setObject:v7 forKeyedSubscript:@"adNetworkCampaignId"];
+  adCampaignIdentifier = [impressionCopy adCampaignIdentifier];
+  [v4 setObject:adCampaignIdentifier forKeyedSubscript:@"adNetworkCampaignId"];
 
-  v8 = [v3 sourceIdentifier];
-  [v4 setObject:v8 forKeyedSubscript:@"sourceIdentifier"];
+  sourceIdentifier = [impressionCopy sourceIdentifier];
+  [v4 setObject:sourceIdentifier forKeyedSubscript:@"sourceIdentifier"];
 
-  v9 = [v3 adNetworkIdentifier];
-  [v4 setObject:v9 forKeyedSubscript:@"adNetworkId"];
+  adNetworkIdentifier = [impressionCopy adNetworkIdentifier];
+  [v4 setObject:adNetworkIdentifier forKeyedSubscript:@"adNetworkId"];
 
-  v10 = [v3 adImpressionIdentifier];
-  v11 = [v10 lowercaseString];
-  [v4 setObject:v11 forKeyedSubscript:@"adNetworkNonce"];
+  adImpressionIdentifier = [impressionCopy adImpressionIdentifier];
+  lowercaseString = [adImpressionIdentifier lowercaseString];
+  [v4 setObject:lowercaseString forKeyedSubscript:@"adNetworkNonce"];
 
-  v12 = [v3 timestamp];
-  [v4 setObject:v12 forKeyedSubscript:@"adNetworkImpressionTimestamp"];
+  timestamp = [impressionCopy timestamp];
+  [v4 setObject:timestamp forKeyedSubscript:@"adNetworkImpressionTimestamp"];
 
-  v13 = [v3 version];
-  [v4 setObject:v13 forKeyedSubscript:@"adNetworkPayloadVersion"];
+  version = [impressionCopy version];
+  [v4 setObject:version forKeyedSubscript:@"adNetworkPayloadVersion"];
 
-  v14 = [v3 sourceAppStoreItemIdentifier];
+  sourceAppStoreItemIdentifier = [impressionCopy sourceAppStoreItemIdentifier];
 
-  [v4 setObject:v14 forKeyedSubscript:@"adNetworkSourceAppStoreIdentifier"];
+  [v4 setObject:sourceAppStoreItemIdentifier forKeyedSubscript:@"adNetworkSourceAppStoreIdentifier"];
 
   return v4;
 }
 
-- (void)sk_didBecomeOnScreen:(id)a3
+- (void)sk_didBecomeOnScreen:(id)screen
 {
   if (self->_productPageQFAEnabled)
   {
@@ -1673,7 +1673,7 @@ LABEL_45:
   [v4 setVisibleInClientWindow:v5];
 }
 
-- (void)sk_didBecomeOffScreen:(id)a3
+- (void)sk_didBecomeOffScreen:(id)screen
 {
   if (self->_productPageQFAEnabled)
   {
@@ -1690,31 +1690,31 @@ LABEL_45:
   [v4 setVisibleInClientWindow:v5];
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [[SKRemoteDismissingTransition alloc] initWithViewController:self];
 
   return v3;
 }
 
-- (BOOL)dismissRemoteViewControllerWithCompletion:(id)a3
+- (BOOL)dismissRemoteViewControllerWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SKUIServiceProductPageViewController *)self->_serviceProxy invocationTarget];
+  completionCopy = completion;
+  invocationTarget = [(SKUIServiceProductPageViewController *)self->_serviceProxy invocationTarget];
 
   v6 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (invocationTarget)
   {
     if (v6)
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: dismiss begin delay.", &v10, 0xCu);
     }
 
     [(SKStoreProductViewController *)self _beginDelayingPresentation:0 cancellationHandler:5.0];
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     dismissalCompleted = self->_dismissalCompleted;
     self->_dismissalCompleted = v7;
 
@@ -1724,11 +1724,11 @@ LABEL_45:
   else if (v6)
   {
     v10 = 138543362;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B23EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%{public}@: no invocation target.", &v10, 0xCu);
   }
 
-  return v5 != 0;
+  return invocationTarget != 0;
 }
 
 - (id)delegate
@@ -1738,9 +1738,9 @@ LABEL_45:
   return WeakRetained;
 }
 
-- (void)didChangeAlpha:(double)a3
+- (void)didChangeAlpha:(double)alpha
 {
-  v3 = a3 > 0.300000012;
+  v3 = alpha > 0.300000012;
   if (self->_viewWasOnScreen != v3)
   {
     if (self->_productPageQFAEnabled)
@@ -1754,7 +1754,7 @@ LABEL_45:
     }
 
     v6 = *(&self->super.super.super.isa + *v5);
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:a3 > 0.300000012];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:alpha > 0.300000012];
     [v6 setVisibleInClientWindow:v7];
 
     self->_viewWasOnScreen = v3;
@@ -1763,8 +1763,8 @@ LABEL_45:
 
 - (void)didChangeHidden
 {
-  v3 = [(SKStoreProductViewController *)self view];
-  v4 = [v3 isHidden] ^ 1;
+  view = [(SKStoreProductViewController *)self view];
+  v4 = [view isHidden] ^ 1;
 
   if (self->_viewWasOnScreen != v4)
   {

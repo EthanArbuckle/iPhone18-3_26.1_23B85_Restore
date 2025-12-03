@@ -9,7 +9,7 @@
 - (id)description;
 - (unint64_t)sampleCellRxThroughputBps;
 - (unint64_t)sampleCellTxThroughputBps;
-- (void)addActivityBitmapForSnapshot:(id)a3;
+- (void)addActivityBitmapForSnapshot:(id)snapshot;
 - (void)dealloc;
 - (void)startSamplingPeriod;
 @end
@@ -75,50 +75,50 @@
   [(FlowOriginLedger *)&v2 dealloc];
 }
 
-- (void)addActivityBitmapForSnapshot:(id)a3
+- (void)addActivityBitmapForSnapshot:(id)snapshot
 {
-  v7 = a3;
-  if ([v7 hasTrafficDelta])
+  snapshotCopy = snapshot;
+  if ([snapshotCopy hasTrafficDelta])
   {
-    v4 = [v7 sourceIdentifier];
+    sourceIdentifier = [snapshotCopy sourceIdentifier];
     self->_lastUsed = apparentTime();
-    v5 = [(FlowOriginLedger *)self activityBitmaps];
+    activityBitmaps = [(FlowOriginLedger *)self activityBitmaps];
 
-    if (!v5)
+    if (!activityBitmaps)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [(FlowOriginLedger *)self setActivityBitmaps:v6];
     }
 
-    if ([v7 interfaceWiFi])
+    if ([snapshotCopy interfaceWiFi])
     {
-      if ([v7 hasWiFiInfraTrafficDelta])
+      if ([snapshotCopy hasWiFiInfraTrafficDelta])
       {
-        -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", v4, 3, [v7 networkActivityMapWiFiInfra]);
+        -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", sourceIdentifier, 3, [snapshotCopy networkActivityMapWiFiInfra]);
       }
 
-      if ([v7 hasWiFiNonInfraTrafficDelta])
+      if ([snapshotCopy hasWiFiNonInfraTrafficDelta])
       {
-        -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", v4, 4, [v7 networkActivityMapWiFiNonInfra]);
+        -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", sourceIdentifier, 4, [snapshotCopy networkActivityMapWiFiNonInfra]);
       }
     }
 
-    if ([v7 interfaceCellular] && objc_msgSend(v7, "hasCellTrafficDelta"))
+    if ([snapshotCopy interfaceCellular] && objc_msgSend(snapshotCopy, "hasCellTrafficDelta"))
     {
-      -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", v4, 5, [v7 networkActivityMapCell]);
+      -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", sourceIdentifier, 5, [snapshotCopy networkActivityMapCell]);
     }
 
-    if ([v7 interfaceCompanionLink] && objc_msgSend(v7, "hasCompanionLinkBluetoothTrafficDelta"))
+    if ([snapshotCopy interfaceCompanionLink] && objc_msgSend(snapshotCopy, "hasCompanionLinkBluetoothTrafficDelta"))
     {
-      -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", v4, 7, [v7 networkActivityMapBT]);
+      -[FlowOriginLedger addActivityWithFlowId:interfaceType:xnuBitmap:](self, "addActivityWithFlowId:interfaceType:xnuBitmap:", sourceIdentifier, 7, [snapshotCopy networkActivityMapBT]);
     }
   }
 }
 
 - (double)sampleCellRxThroughput
 {
-  v3 = [(FlowOriginLedger *)self totalObservedCellRxBytes];
-  v4 = v3 - [(FlowOriginLedger *)self sampleStartCellRxBytes];
+  totalObservedCellRxBytes = [(FlowOriginLedger *)self totalObservedCellRxBytes];
+  v4 = totalObservedCellRxBytes - [(FlowOriginLedger *)self sampleStartCellRxBytes];
   sampleTotalBusyTime = self->_sampleTotalBusyTime;
 
   return mbpsThroughput(v4, sampleTotalBusyTime);
@@ -126,8 +126,8 @@
 
 - (double)sampleCellTxThroughput
 {
-  v3 = [(FlowOriginLedger *)self totalObservedCellTxBytes];
-  v4 = v3 - [(FlowOriginLedger *)self sampleStartCellTxBytes];
+  totalObservedCellTxBytes = [(FlowOriginLedger *)self totalObservedCellTxBytes];
+  v4 = totalObservedCellTxBytes - [(FlowOriginLedger *)self sampleStartCellTxBytes];
   sampleTotalBusyTime = self->_sampleTotalBusyTime;
 
   return mbpsThroughput(v4, sampleTotalBusyTime);
@@ -140,8 +140,8 @@
     return 0;
   }
 
-  v3 = [(FlowOriginLedger *)self totalObservedCellRxBytes];
-  return ((v3 - [(FlowOriginLedger *)self sampleStartCellRxBytes]) / self->_sampleTotalBusyTime);
+  totalObservedCellRxBytes = [(FlowOriginLedger *)self totalObservedCellRxBytes];
+  return ((totalObservedCellRxBytes - [(FlowOriginLedger *)self sampleStartCellRxBytes]) / self->_sampleTotalBusyTime);
 }
 
 - (unint64_t)sampleCellTxThroughputBps
@@ -151,14 +151,14 @@
     return 0;
   }
 
-  v3 = [(FlowOriginLedger *)self totalObservedCellTxBytes];
-  return ((v3 - [(FlowOriginLedger *)self sampleStartCellTxBytes]) / self->_sampleTotalBusyTime);
+  totalObservedCellTxBytes = [(FlowOriginLedger *)self totalObservedCellTxBytes];
+  return ((totalObservedCellTxBytes - [(FlowOriginLedger *)self sampleStartCellTxBytes]) / self->_sampleTotalBusyTime);
 }
 
 - (double)sampleWiFiRxThroughput
 {
-  v3 = [(FlowOriginLedger *)self totalObservedWiFiRxBytes];
-  v4 = v3 - [(FlowOriginLedger *)self sampleStartWiFiRxBytes];
+  totalObservedWiFiRxBytes = [(FlowOriginLedger *)self totalObservedWiFiRxBytes];
+  v4 = totalObservedWiFiRxBytes - [(FlowOriginLedger *)self sampleStartWiFiRxBytes];
   sampleTotalBusyTime = self->_sampleTotalBusyTime;
 
   return mbpsThroughput(v4, sampleTotalBusyTime);
@@ -166,8 +166,8 @@
 
 - (double)sampleWiFiTxThroughput
 {
-  v3 = [(FlowOriginLedger *)self totalObservedWiFiTxBytes];
-  v4 = v3 - [(FlowOriginLedger *)self sampleStartWiFiTxBytes];
+  totalObservedWiFiTxBytes = [(FlowOriginLedger *)self totalObservedWiFiTxBytes];
+  v4 = totalObservedWiFiTxBytes - [(FlowOriginLedger *)self sampleStartWiFiTxBytes];
   sampleTotalBusyTime = self->_sampleTotalBusyTime;
 
   return mbpsThroughput(v4, sampleTotalBusyTime);

@@ -1,24 +1,24 @@
 @interface CNAvatarEditingManager
 + (id)log;
-- (CGRect)computeFullscreenImageRectForScreenWithSize:(CGSize)a3;
-- (CNAvatarEditingManager)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 variantsManager:(id)a5;
+- (CGRect)computeFullscreenImageRectForScreenWithSize:(CGSize)size;
+- (CNAvatarEditingManager)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration variantsManager:(id)manager;
 - (CNAvatarEditingManagerDelegate)delegate;
 - (CNPhotoPickerAnimojiProviderItem)originalItem;
 - (UIViewController)viewController;
-- (id)captureFlashViewWithSize:(CGSize)a3 alpha:(double)a4;
-- (id)compositeImageDataForImage:(id)a3 backgroundColor:(id)a4;
-- (id)createImagePickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 customBackgroundColor:(id)a5;
-- (id)croppedAndCenteredImageForGeneratedImage:(id)a3 toSize:(CGSize)a4;
-- (id)fullScreenImageFromImage:(id)a3 inSize:(CGSize)a4;
-- (id)imagePickerForItem:(id)a3;
-- (id)initForEditingWithAvatarRecord:(id)a3 variantsManager:(id)a4 fromViewController:(id)a5;
-- (id)renderImage:(id)a3 inRect:(CGRect)a4;
-- (void)combinedPickerViewController:(id)a3 didSelectRecord:(id)a4 withStickerConfiguration:(id)a5;
-- (void)combinedPickerViewControllerDidCancel:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)prepareAvatarImageForPicker:(id)a3 synchronousCompletion:(id)a4;
-- (void)presentImagePickerForImage:(id)a3 cropRect:(CGRect)a4 fadeIn:(BOOL)a5 completion:(id)a6;
+- (id)captureFlashViewWithSize:(CGSize)size alpha:(double)alpha;
+- (id)compositeImageDataForImage:(id)image backgroundColor:(id)color;
+- (id)createImagePickerForEditingImageData:(id)data withCropRect:(CGRect)rect customBackgroundColor:(id)color;
+- (id)croppedAndCenteredImageForGeneratedImage:(id)image toSize:(CGSize)size;
+- (id)fullScreenImageFromImage:(id)image inSize:(CGSize)size;
+- (id)imagePickerForItem:(id)item;
+- (id)initForEditingWithAvatarRecord:(id)record variantsManager:(id)manager fromViewController:(id)controller;
+- (id)renderImage:(id)image inRect:(CGRect)rect;
+- (void)combinedPickerViewController:(id)controller didSelectRecord:(id)record withStickerConfiguration:(id)configuration;
+- (void)combinedPickerViewControllerDidCancel:(id)cancel;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)prepareAvatarImageForPicker:(id)picker synchronousCompletion:(id)completion;
+- (void)presentImagePickerForImage:(id)image cropRect:(CGRect)rect fadeIn:(BOOL)in completion:(id)completion;
 @end
 
 @implementation CNAvatarEditingManager
@@ -30,34 +30,34 @@
   return WeakRetained;
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
   if (self->_viewController)
   {
-    v4 = [(CNAvatarEditingManager *)self viewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    viewController = [(CNAvatarEditingManager *)self viewController];
+    [viewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
 
-    [a3 dismissViewControllerAnimated:1 completion:0];
+    [cancel dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAvatarEditingManager *)self delegate];
+  controllerCopy = controller;
+  infoCopy = info;
+  delegate = [(CNAvatarEditingManager *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(CNAvatarEditingManager *)self imageWithAlpha];
-    v10 = UIImagePNGRepresentation(v9);
+    imageWithAlpha = [(CNAvatarEditingManager *)self imageWithAlpha];
+    v10 = UIImagePNGRepresentation(imageWithAlpha);
 
-    v11 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDDE0]];
+    v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDDE0]];
     v12 = v11;
     if (v11)
     {
@@ -76,13 +76,13 @@
       v20 = *(MEMORY[0x1E695F058] + 24);
     }
 
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
     v21 = [MEMORY[0x1E69DCAB8] imageWithData:v10];
     [v21 size];
     v23 = v22;
     v25 = v24;
 
-    v26 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
+    v26 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
     [v26 size];
     v28 = v27;
     v30 = v29;
@@ -111,53 +111,53 @@
       v20 = v36;
     }
 
-    v37 = [(CNAvatarEditingManager *)self originalItem];
-    v38 = [v37 backgroundColorVariant];
-    v39 = v38;
-    if (v38)
+    originalItem = [(CNAvatarEditingManager *)self originalItem];
+    backgroundColorVariant = [originalItem backgroundColorVariant];
+    v39 = backgroundColorVariant;
+    if (backgroundColorVariant)
     {
-      v40 = v38;
+      firstObject = backgroundColorVariant;
     }
 
     else
     {
-      v41 = [(CNAvatarEditingManager *)self variantsManager];
-      v42 = [v41 avatarBackgrounds];
-      v40 = [v42 firstObject];
+      variantsManager = [(CNAvatarEditingManager *)self variantsManager];
+      avatarBackgrounds = [variantsManager avatarBackgrounds];
+      firstObject = [avatarBackgrounds firstObject];
     }
 
-    v43 = [[CNPhotoPickerAnimojiProviderItem alloc] initWithOriginalImageData:v10 cropRect:v40 backgroundColorVariant:v14, v16, v18, v20];
-    v44 = [(CNAvatarEditingManager *)self originalItem];
-    [v44 originalImageSize];
+    v43 = [[CNPhotoPickerAnimojiProviderItem alloc] initWithOriginalImageData:v10 cropRect:firstObject backgroundColorVariant:v14, v16, v18, v20];
+    originalItem2 = [(CNAvatarEditingManager *)self originalItem];
+    [originalItem2 originalImageSize];
     [(CNPhotoPickerAnimojiProviderItem *)v43 setOriginalImageSize:?];
 
-    v45 = [(CNAvatarEditingManager *)self avatarRecord];
-    [(CNPhotoPickerAnimojiProviderItem *)v43 setAvatarRecord:v45];
+    avatarRecord = [(CNAvatarEditingManager *)self avatarRecord];
+    [(CNPhotoPickerAnimojiProviderItem *)v43 setAvatarRecord:avatarRecord];
 
-    v46 = [(CNAvatarEditingManager *)self poseConfiguration];
-    [(CNPhotoPickerAnimojiProviderItem *)v43 setPoseConfiguration:v46];
+    poseConfiguration = [(CNAvatarEditingManager *)self poseConfiguration];
+    [(CNPhotoPickerAnimojiProviderItem *)v43 setPoseConfiguration:poseConfiguration];
 
-    v47 = [(CNAvatarEditingManager *)self originalItem];
-    [v47 edgeInsets];
+    originalItem3 = [(CNAvatarEditingManager *)self originalItem];
+    [originalItem3 edgeInsets];
     [(CNPhotoPickerAnimojiProviderItem *)v43 setEdgeInsets:?];
 
-    v48 = [(CNAvatarEditingManager *)self delegate];
-    [v48 avatarEditingManager:self didFinishWithProviderItem:v43];
+    delegate2 = [(CNAvatarEditingManager *)self delegate];
+    [delegate2 avatarEditingManager:self didFinishWithProviderItem:v43];
   }
 }
 
-- (id)createImagePickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 customBackgroundColor:(id)a5
+- (id)createImagePickerForEditingImageData:(id)data withCropRect:(CGRect)rect customBackgroundColor:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26[7] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  if (v11)
+  dataCopy = data;
+  colorCopy = color;
+  if (dataCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x1E69DCAD0]) _initWithSourceImageData:v11 cropRect:{x, y, width, height}];
+    v13 = [objc_alloc(MEMORY[0x1E69DCAD0]) _initWithSourceImageData:dataCopy cropRect:{x, y, width, height}];
   }
 
   else
@@ -167,9 +167,9 @@
 
   v14 = v13;
   [v13 setDelegate:self];
-  if (v12)
+  if (colorCopy)
   {
-    v15 = v12;
+    v15 = colorCopy;
   }
 
   else
@@ -180,8 +180,8 @@
   v16 = v15;
   [v14 _setImagePickerSavingOptions:7];
   v17 = MEMORY[0x1E695DF90];
-  v18 = [v14 _properties];
-  v19 = [v17 dictionaryWithDictionary:v18];
+  _properties = [v14 _properties];
+  v19 = [v17 dictionaryWithDictionary:_properties];
 
   v20 = *MEMORY[0x1E69DE998];
   v25[0] = *MEMORY[0x1E69DDDD8];
@@ -208,22 +208,22 @@
   return v14;
 }
 
-- (id)imagePickerForItem:(id)a3
+- (id)imagePickerForItem:(id)item
 {
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = a3;
-  v6 = [v5 originalImageData];
-  v7 = [v4 imageWithData:v6];
+  itemCopy = item;
+  originalImageData = [itemCopy originalImageData];
+  v7 = [v4 imageWithData:originalImageData];
   [(CNAvatarEditingManager *)self setImageWithAlpha:v7];
 
-  v8 = [v5 backgroundColorVariant];
-  v9 = [v8 color];
-  v10 = [CNPhotoPickerVariantsManager nonAlphaColorForBackgroundColor:v9];
+  backgroundColorVariant = [itemCopy backgroundColorVariant];
+  color = [backgroundColorVariant color];
+  v10 = [CNPhotoPickerVariantsManager nonAlphaColorForBackgroundColor:color];
 
-  v11 = [(CNAvatarEditingManager *)self imageWithAlpha];
-  v12 = [(CNAvatarEditingManager *)self compositeImageDataForImage:v11 backgroundColor:v10];
+  imageWithAlpha = [(CNAvatarEditingManager *)self imageWithAlpha];
+  v12 = [(CNAvatarEditingManager *)self compositeImageDataForImage:imageWithAlpha backgroundColor:v10];
 
-  [v5 cropRect];
+  [itemCopy cropRect];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -234,53 +234,53 @@
   return v21;
 }
 
-- (id)croppedAndCenteredImageForGeneratedImage:(id)a3 toSize:(CGSize)a4
+- (id)croppedAndCenteredImageForGeneratedImage:(id)image toSize:(CGSize)size
 {
-  v4 = [(CNAvatarEditingManager *)self fullScreenImageFromImage:a3 inSize:a4.width, a4.height];
+  v4 = [(CNAvatarEditingManager *)self fullScreenImageFromImage:image inSize:size.width, size.height];
   v5 = [CNAvatarImageUtilities croppedAndCenteredAvatarImageForImage:v4 widthMultiplier:1.1];
 
   return v5;
 }
 
-- (void)presentImagePickerForImage:(id)a3 cropRect:(CGRect)a4 fadeIn:(BOOL)a5 completion:(id)a6
+- (void)presentImagePickerForImage:(id)image cropRect:(CGRect)rect fadeIn:(BOOL)in completion:(id)completion
 {
-  v6 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a3;
-  [(CNAvatarEditingManager *)self setImageWithAlpha:v14];
-  v15 = [(CNAvatarEditingManager *)self compositeImageDataForImage:v14 backgroundColor:0];
+  inCopy = in;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  imageCopy = image;
+  [(CNAvatarEditingManager *)self setImageWithAlpha:imageCopy];
+  v15 = [(CNAvatarEditingManager *)self compositeImageDataForImage:imageCopy backgroundColor:0];
 
-  v16 = [(CNAvatarEditingManager *)self createImagePickerForEditingImageData:v15 withCropRect:0 customBackgroundColor:x, y, width, height];
-  [v16 setModalTransitionStyle:2];
-  [v16 setModalPresentationStyle:3];
-  if (v6)
+  height = [(CNAvatarEditingManager *)self createImagePickerForEditingImageData:v15 withCropRect:0 customBackgroundColor:x, y, width, height];
+  [height setModalTransitionStyle:2];
+  [height setModalPresentationStyle:3];
+  if (inCopy)
   {
-    v17 = [v16 view];
-    [v17 bounds];
+    view = [height view];
+    [view bounds];
     v20 = [(CNAvatarEditingManager *)self captureFlashViewWithSize:v18 alpha:v19, 1.0];
 
-    v21 = [v16 view];
-    [v21 addSubview:v20];
+    view2 = [height view];
+    [view2 addSubview:v20];
 
-    v22 = [(CNAvatarEditingManager *)self viewController];
+    viewController = [(CNAvatarEditingManager *)self viewController];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn_completion___block_invoke;
     v25[3] = &unk_1E74E6DD0;
     v26 = v20;
-    v27 = v13;
+    v27 = completionCopy;
     v23 = v20;
-    [v22 presentViewController:v16 animated:0 completion:v25];
+    [viewController presentViewController:height animated:0 completion:v25];
   }
 
   else
   {
-    v24 = [(CNAvatarEditingManager *)self viewController];
-    [v24 presentViewController:v16 animated:1 completion:0];
+    viewController2 = [(CNAvatarEditingManager *)self viewController];
+    [viewController2 presentViewController:height animated:1 completion:0];
   }
 }
 
@@ -309,16 +309,16 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   return v2();
 }
 
-- (void)prepareAvatarImageForPicker:(id)a3 synchronousCompletion:(id)a4
+- (void)prepareAvatarImageForPicker:(id)picker synchronousCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [CNAvatarImageUtilities transparencyInsetsForImage:v7 requiringFullOpacity:0];
+  completionCopy = completion;
+  pickerCopy = picker;
+  [CNAvatarImageUtilities transparencyInsetsForImage:pickerCopy requiringFullOpacity:0];
   v9 = v8;
-  [v7 size];
+  [pickerCopy size];
   v11 = v10;
-  [v7 size];
-  v50 = [(CNAvatarEditingManager *)self croppedAndCenteredImageForGeneratedImage:v7 toSize:v11, v12 + v12];
+  [pickerCopy size];
+  v50 = [(CNAvatarEditingManager *)self croppedAndCenteredImageForGeneratedImage:pickerCopy toSize:v11, v12 + v12];
   [CNAvatarImageUtilities transparencyInsetsForImage:v50 requiringFullOpacity:0];
   v14 = v13;
   v15 = MEMORY[0x1E6996738];
@@ -332,14 +332,14 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   v26 = v25;
   [v50 size];
   v28 = v27;
-  [v7 scale];
+  [pickerCopy scale];
   v30 = v28 - v14 / v29;
   v52.origin.x = v20;
   v52.origin.y = v22;
   v52.size.width = v24;
   v52.size.height = v26;
   v31 = v30 - CGRectGetMaxY(v52);
-  [v7 scale];
+  [pickerCopy scale];
   v33 = v31 - v32;
   if (v9 != 0.0)
   {
@@ -359,33 +359,33 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   y = v54.origin.y;
   width = v54.size.width;
   height = v54.size.height;
-  [v7 scale];
+  [pickerCopy scale];
   v43 = v42 * x;
-  [v7 scale];
+  [pickerCopy scale];
   v45 = y * v44;
-  [v7 scale];
+  [pickerCopy scale];
   v47 = width * v46;
-  [v7 scale];
+  [pickerCopy scale];
   v49 = v48;
 
-  v6[2](v6, v37, v43, v45, v47, height * v49);
+  completionCopy[2](completionCopy, v37, v43, v45, v47, height * v49);
 }
 
-- (id)compositeImageDataForImage:(id)a3 backgroundColor:(id)a4
+- (id)compositeImageDataForImage:(id)image backgroundColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  imageCopy = image;
+  colorCopy = color;
+  v8 = colorCopy;
+  if (colorCopy)
   {
-    v9 = v7;
+    v9 = colorCopy;
   }
 
   else
   {
-    v10 = [(CNAvatarEditingManager *)self viewController];
-    v11 = [v10 traitCollection];
-    if ([v11 userInterfaceStyle] == 2)
+    viewController = [(CNAvatarEditingManager *)self viewController];
+    traitCollection = [viewController traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       +[CNUIColorRepository photoPickerCaptureDarkBackgroundColor];
     }
@@ -397,11 +397,11 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
     v9 = ;
   }
 
-  [v6 size];
+  [imageCopy size];
   v13 = v12;
-  [v6 size];
+  [imageCopy size];
   v15 = v14;
-  [v6 scale];
+  [imageCopy scale];
   v17 = v16;
   v22.width = v13;
   v22.height = v15;
@@ -412,7 +412,7 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   v23.size.width = v13;
   v23.size.height = v15;
   UIRectFill(v23);
-  [v6 drawInRect:{0.0, 0.0, v13, v15}];
+  [imageCopy drawInRect:{0.0, 0.0, v13, v15}];
   v18 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v19 = UIImagePNGRepresentation(v18);
@@ -420,26 +420,26 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   return v19;
 }
 
-- (id)renderImage:(id)a3 inRect:(CGRect)a4
+- (id)renderImage:(id)image inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v6 = a3;
-  [v6 size];
-  [v6 size];
-  [v6 scale];
+  height = rect.size.height;
+  width = rect.size.width;
+  imageCopy = image;
+  [imageCopy size];
+  [imageCopy size];
+  [imageCopy scale];
   UIRoundToScale();
   v8 = v7;
-  [v6 scale];
+  [imageCopy scale];
   UIRoundToScale();
   v10 = v9;
-  [v6 scale];
+  [imageCopy scale];
   v12 = v11;
   v17.width = width;
   v17.height = height;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v12);
   v13 = UIGraphicsGetImageFromCurrentImageContext();
-  [v6 drawInRect:{0.0, v10, width, v8}];
+  [imageCopy drawInRect:{0.0, v10, width, v8}];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -447,26 +447,26 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   return v14;
 }
 
-- (CGRect)computeFullscreenImageRectForScreenWithSize:(CGSize)a3
+- (CGRect)computeFullscreenImageRectForScreenWithSize:(CGSize)size
 {
-  if (a3.width <= a3.height)
+  if (size.width <= size.height)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
-  if (a3.width <= a3.height)
+  if (size.width <= size.height)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
   {
-    height = a3.width;
+    height = size.width;
   }
 
   v5 = 0.0;
@@ -478,34 +478,34 @@ uint64_t __80__CNAvatarEditingManager_presentImagePickerForImage_cropRect_fadeIn
   return result;
 }
 
-- (id)fullScreenImageFromImage:(id)a3 inSize:(CGSize)a4
+- (id)fullScreenImageFromImage:(id)image inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   [(CNAvatarEditingManager *)self computeFullscreenImageRectForScreenWithSize:width, height];
-  v8 = [(CNAvatarEditingManager *)self renderImage:v7 inRect:?];
+  v8 = [(CNAvatarEditingManager *)self renderImage:imageCopy inRect:?];
 
   return v8;
 }
 
-- (void)combinedPickerViewController:(id)a3 didSelectRecord:(id)a4 withStickerConfiguration:(id)a5
+- (void)combinedPickerViewController:(id)controller didSelectRecord:(id)record withStickerConfiguration:(id)configuration
 {
-  v7 = a5;
-  v8 = a4;
-  [(CNAvatarEditingManager *)self setAvatarRecord:v8];
-  v9 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:v8];
+  configurationCopy = configuration;
+  recordCopy = record;
+  [(CNAvatarEditingManager *)self setAvatarRecord:recordCopy];
+  v9 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:recordCopy];
 
-  [v9 setPoseConfiguration:v7];
-  v10 = [(CNAvatarEditingManager *)self originalItem];
-  [v10 originalImageSize];
+  [v9 setPoseConfiguration:configurationCopy];
+  originalItem = [(CNAvatarEditingManager *)self originalItem];
+  [originalItem originalImageSize];
   [v9 setOriginalImageSize:?];
 
-  v11 = [(CNAvatarEditingManager *)self originalItem];
-  [v11 edgeInsets];
+  originalItem2 = [(CNAvatarEditingManager *)self originalItem];
+  [originalItem2 edgeInsets];
   [v9 setEdgeInsets:?];
 
-  [(CNAvatarEditingManager *)self setPoseConfiguration:v7];
+  [(CNAvatarEditingManager *)self setPoseConfiguration:configurationCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __96__CNAvatarEditingManager_combinedPickerViewController_didSelectRecord_withStickerConfiguration___block_invoke;
@@ -595,19 +595,19 @@ void __96__CNAvatarEditingManager_combinedPickerViewController_didSelectRecord_w
   v13[7] = a6;
 }
 
-- (void)combinedPickerViewControllerDidCancel:(id)a3
+- (void)combinedPickerViewControllerDidCancel:(id)cancel
 {
-  v4 = [(CNAvatarEditingManager *)self delegate];
-  [v4 avatarEditingManager:self didFinishWithProviderItem:0];
+  delegate = [(CNAvatarEditingManager *)self delegate];
+  [delegate avatarEditingManager:self didFinishWithProviderItem:0];
 }
 
-- (id)captureFlashViewWithSize:(CGSize)a3 alpha:(double)a4
+- (id)captureFlashViewWithSize:(CGSize)size alpha:(double)alpha
 {
-  v5 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, a3.width, a3.height}];
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  [v5 setBackgroundColor:v6];
+  v5 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, size.width, size.height}];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v5 setBackgroundColor:blackColor];
 
-  [v5 setAlpha:a4];
+  [v5 setAlpha:alpha];
 
   return v5;
 }
@@ -636,8 +636,8 @@ void __96__CNAvatarEditingManager_combinedPickerViewController_didSelectRecord_w
     v5 = v4;
     _Block_object_dispose(&v12, 8);
     v6 = [v4 alloc];
-    v7 = [(CNAvatarEditingManager *)self avatarRecord];
-    v8 = [v6 initWithSelectedRecord:v7];
+    avatarRecord = [(CNAvatarEditingManager *)self avatarRecord];
+    v8 = [v6 initWithSelectedRecord:avatarRecord];
 
     [(UIViewController *)v8 setDelegate:self];
     v9 = self->_viewController;
@@ -654,8 +654,8 @@ void __96__CNAvatarEditingManager_combinedPickerViewController_didSelectRecord_w
   originalItem = self->_originalItem;
   if (!originalItem)
   {
-    v4 = [(CNAvatarEditingManager *)self avatarRecord];
-    v5 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:v4];
+    avatarRecord = [(CNAvatarEditingManager *)self avatarRecord];
+    v5 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:avatarRecord];
     v6 = self->_originalItem;
     self->_originalItem = v5;
 
@@ -665,34 +665,34 @@ void __96__CNAvatarEditingManager_combinedPickerViewController_didSelectRecord_w
   return originalItem;
 }
 
-- (id)initForEditingWithAvatarRecord:(id)a3 variantsManager:(id)a4 fromViewController:(id)a5
+- (id)initForEditingWithAvatarRecord:(id)record variantsManager:(id)manager fromViewController:(id)controller
 {
-  v9 = a5;
-  v10 = [(CNAvatarEditingManager *)self initWithAvatarRecord:a3 variantsManager:a4];
+  controllerCopy = controller;
+  v10 = [(CNAvatarEditingManager *)self initWithAvatarRecord:record variantsManager:manager];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_viewController, a5);
+    objc_storeStrong(&v10->_viewController, controller);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (CNAvatarEditingManager)initWithAvatarRecord:(id)a3 poseConfiguration:(id)a4 variantsManager:(id)a5
+- (CNAvatarEditingManager)initWithAvatarRecord:(id)record poseConfiguration:(id)configuration variantsManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recordCopy = record;
+  configurationCopy = configuration;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = CNAvatarEditingManager;
   v12 = [(CNAvatarEditingManager *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avatarRecord, a3);
-    objc_storeStrong(&v13->_poseConfiguration, a4);
-    objc_storeStrong(&v13->_variantsManager, a5);
+    objc_storeStrong(&v12->_avatarRecord, record);
+    objc_storeStrong(&v13->_poseConfiguration, configuration);
+    objc_storeStrong(&v13->_variantsManager, manager);
     v14 = v13;
   }
 

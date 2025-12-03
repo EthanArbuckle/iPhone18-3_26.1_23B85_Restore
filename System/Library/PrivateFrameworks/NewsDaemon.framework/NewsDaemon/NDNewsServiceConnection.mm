@@ -1,23 +1,23 @@
 @interface NDNewsServiceConnection
 - (NDNewsServiceClient)client;
-- (NDNewsServiceConnection)initWithClient:(id)a3;
-- (void)_establishConnectionIfNeededWithCompletion:(id)a3;
-- (void)_unsafeEstablishConnectionIfNeededWithCompletion:(id)a3;
+- (NDNewsServiceConnection)initWithClient:(id)client;
+- (void)_establishConnectionIfNeededWithCompletion:(id)completion;
+- (void)_unsafeEstablishConnectionIfNeededWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fetchLatestResultsWithParameters:(id)a3 completion:(id)a4;
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3;
-- (void)fetchPlaceholderResultsWithOperationInfo:(id)a3 syncCompletion:(id)a4;
-- (void)markAnalyticsElement:(id)a3 asReadAtDate:(id)a4 withCompletion:(id)a5;
-- (void)markAnalyticsElements:(id)a3 asSeenAtDate:(id)a4 withCompletion:(id)a5;
+- (void)fetchLatestResultsWithParameters:(id)parameters completion:(id)completion;
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion;
+- (void)fetchPlaceholderResultsWithOperationInfo:(id)info syncCompletion:(id)completion;
+- (void)markAnalyticsElement:(id)element asReadAtDate:(id)date withCompletion:(id)completion;
+- (void)markAnalyticsElements:(id)elements asSeenAtDate:(id)date withCompletion:(id)completion;
 - (void)serviceHasNewTodayResults;
 @end
 
 @implementation NDNewsServiceConnection
 
-- (NDNewsServiceConnection)initWithClient:(id)a3
+- (NDNewsServiceConnection)initWithClient:(id)client
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  clientCopy = client;
+  if (!clientCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection initWithClient:];
   }
@@ -32,7 +32,7 @@
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v7;
 
-    objc_storeWeak(&v5->_client, v4);
+    objc_storeWeak(&v5->_client, clientCopy);
   }
 
   return v5;
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [(NDNewsServiceConnection *)self connection];
-  [v3 invalidate];
+  connection = [(NDNewsServiceConnection *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = NDNewsServiceConnection;
@@ -50,14 +50,14 @@
 
 - (void)serviceHasNewTodayResults
 {
-  v2 = [(NDNewsServiceConnection *)self client];
-  [v2 serviceHasNewTodayResults];
+  client = [(NDNewsServiceConnection *)self client];
+  [client serviceHasNewTodayResults];
 }
 
-- (void)fetchModuleDescriptorsWithCompletion:(id)a3
+- (void)fetchModuleDescriptorsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection fetchModuleDescriptorsWithCompletion:];
   }
@@ -67,8 +67,8 @@
   v6[2] = __64__NDNewsServiceConnection_fetchModuleDescriptorsWithCompletion___block_invoke;
   v6[3] = &unk_27997C188;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(NDNewsServiceConnection *)self _establishConnectionIfNeededWithCompletion:v6];
 }
 
@@ -95,20 +95,20 @@ void __64__NDNewsServiceConnection_fetchModuleDescriptorsWithCompletion___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchLatestResultsWithParameters:(id)a3 completion:(id)a4
+- (void)fetchLatestResultsWithParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (!parametersCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection fetchLatestResultsWithParameters:completion:];
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -123,11 +123,11 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __71__NDNewsServiceConnection_fetchLatestResultsWithParameters_completion___block_invoke;
   v10[3] = &unk_27997C1B0;
-  v11 = v6;
-  v12 = v7;
+  v11 = parametersCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = parametersCopy;
+  v9 = completionCopy;
   [(NDNewsServiceConnection *)self _establishConnectionIfNeededWithCompletion:v10];
 }
 
@@ -154,21 +154,21 @@ void __71__NDNewsServiceConnection_fetchLatestResultsWithParameters_completion__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAnalyticsElements:(id)a3 asSeenAtDate:(id)a4 withCompletion:(id)a5
+- (void)markAnalyticsElements:(id)elements asSeenAtDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  elementsCopy = elements;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!elementsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection markAnalyticsElements:asSeenAtDate:withCompletion:];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -179,22 +179,22 @@ void __71__NDNewsServiceConnection_fetchLatestResultsWithParameters_completion__
   }
 
 LABEL_6:
-  if ([v8 count])
+  if ([elementsCopy count])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __77__NDNewsServiceConnection_markAnalyticsElements_asSeenAtDate_withCompletion___block_invoke;
     v11[3] = &unk_27997C1D8;
     v11[4] = self;
-    v14 = v10;
-    v12 = v8;
-    v13 = v9;
+    v14 = completionCopy;
+    v12 = elementsCopy;
+    v13 = dateCopy;
     [(NDNewsServiceConnection *)self _establishConnectionIfNeededWithCompletion:v11];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -228,21 +228,21 @@ void __77__NDNewsServiceConnection_markAnalyticsElements_asSeenAtDate_withComple
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAnalyticsElement:(id)a3 asReadAtDate:(id)a4 withCompletion:(id)a5
+- (void)markAnalyticsElement:(id)element asReadAtDate:(id)date withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  elementCopy = element;
+  dateCopy = date;
+  completionCopy = completion;
+  if (!elementCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection markAnalyticsElement:asReadAtDate:withCompletion:];
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -258,12 +258,12 @@ LABEL_6:
   v14[2] = __76__NDNewsServiceConnection_markAnalyticsElement_asReadAtDate_withCompletion___block_invoke;
   v14[3] = &unk_27997C1D8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = elementCopy;
+  v16 = dateCopy;
+  v17 = completionCopy;
+  v11 = dateCopy;
+  v12 = elementCopy;
+  v13 = completionCopy;
   [(NDNewsServiceConnection *)self _establishConnectionIfNeededWithCompletion:v14];
 }
 
@@ -286,20 +286,20 @@ void __76__NDNewsServiceConnection_markAnalyticsElement_asReadAtDate_withComplet
   [v5 markAnalyticsElement:*(a1 + 40) asReadAtDate:*(a1 + 48) withCompletion:v4];
 }
 
-- (void)fetchPlaceholderResultsWithOperationInfo:(id)a3 syncCompletion:(id)a4
+- (void)fetchPlaceholderResultsWithOperationInfo:(id)info syncCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection fetchPlaceholderResultsWithOperationInfo:syncCompletion:];
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -310,17 +310,17 @@ void __76__NDNewsServiceConnection_markAnalyticsElement_asReadAtDate_withComplet
   }
 
 LABEL_6:
-  v8 = [(NDNewsServiceConnection *)self accessQueue];
+  accessQueue = [(NDNewsServiceConnection *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_syncCompletion___block_invoke;
   block[3] = &unk_27997C1B0;
-  v12 = v6;
-  v13 = v7;
+  v12 = infoCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v9 = infoCopy;
+  v10 = completionCopy;
+  dispatch_sync(accessQueue, block);
 }
 
 void __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_syncCompletion___block_invoke(uint64_t a1)
@@ -349,25 +349,25 @@ void __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_sync
   [v3 fetchPlaceholderResultsWithOperationInfo:*(a1 + 40) syncCompletion:*(a1 + 48)];
 }
 
-- (void)_establishConnectionIfNeededWithCompletion:(id)a3
+- (void)_establishConnectionIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NDNewsServiceConnection *)self accessQueue];
+  completionCopy = completion;
+  accessQueue = [(NDNewsServiceConnection *)self accessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__NDNewsServiceConnection__establishConnectionIfNeededWithCompletion___block_invoke;
   v7[3] = &unk_27997C188;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(accessQueue, v7);
 }
 
-- (void)_unsafeEstablishConnectionIfNeededWithCompletion:(id)a3
+- (void)_unsafeEstablishConnectionIfNeededWithCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDNewsServiceConnection _unsafeEstablishConnectionIfNeededWithCompletion:];
   }
@@ -380,8 +380,8 @@ void __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_sync
     _os_log_impl(&dword_25BE24000, v5, OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v6 = [(NDNewsServiceConnection *)self connection];
-  v7 = v6 == 0;
+  connection = [(NDNewsServiceConnection *)self connection];
+  v7 = connection == 0;
 
   if (v7)
   {
@@ -401,7 +401,7 @@ void __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_sync
     v25 = 3221225472;
     v26 = __76__NDNewsServiceConnection__unsafeEstablishConnectionIfNeededWithCompletion___block_invoke_77;
     v27 = &unk_27997C228;
-    v28 = self;
+    selfCopy = self;
     objc_copyWeak(&v29, buf);
     [v8 setInvalidationHandler:&v24];
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286D7EAA0];
@@ -409,21 +409,21 @@ void __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_sync
     v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286D7E910];
     [v8 setExportedInterface:v11];
 
-    v12 = [v8 remoteObjectInterface];
+    remoteObjectInterface = [v8 remoteObjectInterface];
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
-    v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0, v24, v25, v26, v27, v28}];
-    [v12 setClasses:v15 forSelector:sel_fetchLatestResultsWithParameters_completion_ argumentIndex:1 ofReply:1];
+    v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0, v24, v25, v26, v27, selfCopy}];
+    [remoteObjectInterface setClasses:v15 forSelector:sel_fetchLatestResultsWithParameters_completion_ argumentIndex:1 ofReply:1];
 
-    v16 = [v8 remoteObjectInterface];
+    remoteObjectInterface2 = [v8 remoteObjectInterface];
     v17 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-    [v16 setClasses:v17 forSelector:sel_fetchLatestResultsWithParameters_completion_ argumentIndex:2 ofReply:1];
+    [remoteObjectInterface2 setClasses:v17 forSelector:sel_fetchLatestResultsWithParameters_completion_ argumentIndex:2 ofReply:1];
 
-    v18 = [v8 remoteObjectInterface];
+    remoteObjectInterface3 = [v8 remoteObjectInterface];
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    [v18 setClasses:v21 forSelector:sel_fetchModuleDescriptorsWithCompletion_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface3 setClasses:v21 forSelector:sel_fetchModuleDescriptorsWithCompletion_ argumentIndex:0 ofReply:1];
 
     v22 = objc_alloc_init(NDNewsServiceConnectionClientProxy);
     [(NDNewsServiceConnectionClientProxy *)v22 setClient:self];
@@ -446,9 +446,9 @@ void __83__NDNewsServiceConnection_fetchPlaceholderResultsWithOperationInfo_sync
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   v23 = *MEMORY[0x277D85DE8];

@@ -29,8 +29,8 @@
 {
   v5.receiver = self;
   v5.super_class = SCNSceneAccessibility;
-  v2 = [(SCNSceneAccessibility *)&v5 accessibilityContainer];
-  v3 = v2 != 0;
+  accessibilityContainer = [(SCNSceneAccessibility *)&v5 accessibilityContainer];
+  v3 = accessibilityContainer != 0;
 
   return v3;
 }
@@ -39,19 +39,19 @@
 {
   v4.receiver = self;
   v4.super_class = SCNSceneAccessibility;
-  v2 = [(SCNSceneAccessibility *)&v4 accessibilityContainer];
-  if (!v2)
+  accessibilityContainer = [(SCNSceneAccessibility *)&v4 accessibilityContainer];
+  if (!accessibilityContainer)
   {
     _AXAssert();
   }
 
-  return v2;
+  return accessibilityContainer;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(SCNSceneAccessibility *)self accessibilityContainer];
-  [v2 accessibilityFrame];
+  accessibilityContainer = [(SCNSceneAccessibility *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

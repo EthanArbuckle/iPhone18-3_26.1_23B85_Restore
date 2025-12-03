@@ -1,12 +1,12 @@
 @interface PushNotification
-+ (id)entityFromContext:(id)a3;
++ (id)entityFromContext:(id)context;
 @end
 
 @implementation PushNotification
 
-+ (id)entityFromContext:(id)a3
++ (id)entityFromContext:(id)context
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 "persistentStoreCoordinator")];
+  v3 = [objc_msgSend(objc_msgSend(context "persistentStoreCoordinator")];
 
   return [v3 objectForKey:@"PushNotification"];
 }

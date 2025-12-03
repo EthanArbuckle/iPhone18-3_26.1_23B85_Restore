@@ -1,12 +1,12 @@
 @interface ISAssetCatalogResource
-+ (id)assetCatalogResourceWithURL:(id)a3 error:(id *)a4;
-+ (id)assetCatalogResourceWithURL:(id)a3 imageName:(id)a4 platform:(unint64_t)a5 isAppLike:(BOOL)a6 error:(id *)a7;
-- (BOOL)hasResourceWithAppearance:(int64_t)a3;
-- (BOOL)hasResourceWithAppearance:(int64_t)a3 appearanceString:(id)a4;
++ (id)assetCatalogResourceWithURL:(id)l error:(id *)error;
++ (id)assetCatalogResourceWithURL:(id)l imageName:(id)name platform:(unint64_t)platform isAppLike:(BOOL)like error:(id *)error;
+- (BOOL)hasResourceWithAppearance:(int64_t)appearance;
+- (BOOL)hasResourceWithAppearance:(int64_t)appearance appearanceString:(id)string;
 - (IFImageBag)imageBag;
-- (ISAssetCatalogResource)initWithCatalog:(id)a3 imageName:(id)a4 platform:(unint64_t)a5;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
-- (id)imageWithName:(id)a3 scale:(double)a4;
+- (ISAssetCatalogResource)initWithCatalog:(id)catalog imageName:(id)name platform:(unint64_t)platform;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
+- (id)imageWithName:(id)name scale:(double)scale;
 - (int64_t)_layoutDirectionFromDevice;
 - (int64_t)assetAppearance;
 @end
@@ -37,9 +37,9 @@ LABEL_3:
 
         else
         {
-          v7 = [(ISAssetCatalogResource *)self appearance];
+          appearance = [(ISAssetCatalogResource *)self appearance];
 
-          if (v7 == 2)
+          if (appearance == 2)
           {
             goto LABEL_3;
           }
@@ -49,9 +49,9 @@ LABEL_3:
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 134218240;
-          v9 = [(ISAssetCatalogResource *)self appearance];
+          appearance2 = [(ISAssetCatalogResource *)self appearance];
           v10 = 2048;
-          v11 = [(ISAssetCatalogResource *)self appearanceVariant];
+          appearanceVariant = [(ISAssetCatalogResource *)self appearanceVariant];
           _os_log_impl(&dword_1A77B8000, v5, OS_LOG_TYPE_DEFAULT, "Unknown appearance configuration. A:%lu, AV:%lu", &v8, 0x16u);
         }
 
@@ -65,41 +65,41 @@ LABEL_14:
   return result;
 }
 
-+ (id)assetCatalogResourceWithURL:(id)a3 error:(id *)a4
++ (id)assetCatalogResourceWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v6 = [MEMORY[0x1E6999368] _IS_coreGlyphsBundleURL];
-    v5 = [MEMORY[0x1E6999368] _IS_assetCatalogURLWithBundleURL:v6];
+    _IS_coreGlyphsBundleURL = [MEMORY[0x1E6999368] _IS_coreGlyphsBundleURL];
+    lCopy = [MEMORY[0x1E6999368] _IS_assetCatalogURLWithBundleURL:_IS_coreGlyphsBundleURL];
   }
 
-  v7 = [ISAssetCatalogResource assetCatalogResourceWithURL:v5 imageName:0 platform:0 error:a4];
+  v7 = [ISAssetCatalogResource assetCatalogResourceWithURL:lCopy imageName:0 platform:0 error:error];
 
   return v7;
 }
 
-+ (id)assetCatalogResourceWithURL:(id)a3 imageName:(id)a4 platform:(unint64_t)a5 isAppLike:(BOOL)a6 error:(id *)a7
++ (id)assetCatalogResourceWithURL:(id)l imageName:(id)name platform:(unint64_t)platform isAppLike:(BOOL)like error:(id *)error
 {
-  v8 = a6;
+  likeCopy = like;
   v42 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (!v11 || !v12)
+  lCopy = l;
+  nameCopy = name;
+  v13 = nameCopy;
+  if (!lCopy || !nameCopy)
   {
-    if (a7)
+    if (error)
     {
       v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-      *a7 = [v18 initWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:MEMORY[0x1E695E0F8]];
+      *error = [v18 initWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:MEMORY[0x1E695E0F8]];
     }
 
     v14 = _ISDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      if (a7)
+      if (error)
       {
-        v19 = *a7;
+        v19 = *error;
       }
 
       else
@@ -108,7 +108,7 @@ LABEL_14:
       }
 
       *buf = 138412802;
-      v37 = v11;
+      v37 = lCopy;
       v38 = 2112;
       v39 = v13;
       v40 = 2112;
@@ -119,13 +119,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:v11 error:a7];
+  v14 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:lCopy error:error];
   if (!v14)
   {
     v20 = _ISDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [ISAssetCatalogResource assetCatalogResourceWithURL:v11 imageName:a7 platform:v20 isAppLike:? error:?];
+      [ISAssetCatalogResource assetCatalogResourceWithURL:lCopy imageName:error platform:v20 isAppLike:? error:?];
     }
 
 LABEL_15:
@@ -134,15 +134,15 @@ LABEL_15:
   }
 
   v15 = +[ISPlatformInfo sharedInstance];
-  if ([v15 supportsRequestingIconStacksForPlatform:a5])
+  if ([v15 supportsRequestingIconStacksForPlatform:platform])
   {
-    v16 = [v14 _IS_possibleIconStackExistsWithName:v13 platform:a5];
+    v16 = [v14 _IS_possibleIconStackExistsWithName:v13 platform:platform];
 
     if (v16)
     {
       v17 = ISIconStackAssetCatalogResource;
 LABEL_35:
-      v21 = [[v17 alloc] initWithCatalog:v14 imageName:v13 platform:a5];
+      v21 = [[v17 alloc] initWithCatalog:v14 imageName:v13 platform:platform];
       goto LABEL_36;
     }
   }
@@ -152,9 +152,9 @@ LABEL_35:
   }
 
   v22 = +[ISPlatformInfo sharedInstance];
-  if ([v22 supportsRequestingLayerStacksForPlatform:a5])
+  if ([v22 supportsRequestingLayerStacksForPlatform:platform])
   {
-    v23 = [v14 _IS_possibleLayerStackExistsWithName:v13 platform:a5];
+    v23 = [v14 _IS_possibleLayerStackExistsWithName:v13 platform:platform];
 
     if (v23)
     {
@@ -168,13 +168,13 @@ LABEL_35:
   }
 
   v24 = +[ISPlatformInfo sharedInstance];
-  if ([v24 supportsRequestingMultisizedImagesForPlatform:a5])
+  if ([v24 supportsRequestingMultisizedImagesForPlatform:platform])
   {
-    v25 = [v14 _IS_possibleMultisizedImageExistsWithName:v13 platform:a5];
+    v25 = [v14 _IS_possibleMultisizedImageExistsWithName:v13 platform:platform];
 
     if (v25)
     {
-      if (v8)
+      if (likeCopy)
       {
         v17 = ISMultisizedAppAssetCatalogResource;
       }
@@ -193,28 +193,28 @@ LABEL_35:
   }
 
   v26 = [v13 stringByAppendingPathComponent:@"image_"];
-  v27 = [v14 allImageNames];
+  allImageNames = [v14 allImageNames];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_platform_isAppLike_error___block_invoke;
   v34[3] = &unk_1E77C6618;
   v28 = v26;
   v35 = v28;
-  v29 = [v27 indexOfObjectPassingTest:v34];
+  v29 = [allImageNames indexOfObjectPassingTest:v34];
 
   if (v29 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v30 = _ISDefaultLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      [ISAssetCatalogResource assetCatalogResourceWithURL:v13 imageName:v11 platform:v30 isAppLike:? error:?];
+      [ISAssetCatalogResource assetCatalogResourceWithURL:v13 imageName:lCopy platform:v30 isAppLike:? error:?];
     }
 
-    if (a7)
+    if (error)
     {
       v31 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = 0;
-      *a7 = [v31 initWithDomain:*MEMORY[0x1E696A768] code:-2582 userInfo:MEMORY[0x1E695E0F8]];
+      *error = [v31 initWithDomain:*MEMORY[0x1E696A768] code:-2582 userInfo:MEMORY[0x1E695E0F8]];
     }
 
     else
@@ -225,7 +225,7 @@ LABEL_35:
 
   else
   {
-    v21 = [[ISAssetCatalogResource alloc] initWithCatalog:v14 imageName:v13 platform:a5];
+    v21 = [[ISAssetCatalogResource alloc] initWithCatalog:v14 imageName:v13 platform:platform];
   }
 
 LABEL_36:
@@ -245,39 +245,39 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
   return result;
 }
 
-- (ISAssetCatalogResource)initWithCatalog:(id)a3 imageName:(id)a4 platform:(unint64_t)a5
+- (ISAssetCatalogResource)initWithCatalog:(id)catalog imageName:(id)name platform:(unint64_t)platform
 {
-  v9 = a3;
-  v10 = a4;
+  catalogCopy = catalog;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ISAssetCatalogResource;
   v11 = [(ISAssetCatalogResource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_imageName, a4);
-    objc_storeStrong(&v12->_catalog, a3);
+    objc_storeStrong(&v11->_imageName, name);
+    objc_storeStrong(&v12->_catalog, catalog);
     v12->_disableSubtype = 0;
     v12->_layoutDirection = 5;
-    v12->_platform = a5;
+    v12->_platform = platform;
     v12->_appearance = 0;
   }
 
   return v12;
 }
 
-- (id)imageWithName:(id)a3 scale:(double)a4
+- (id)imageWithName:(id)name scale:(double)scale
 {
-  v4 = [(CUICatalog *)self->_catalog imageWithName:a3 scaleFactor:a4];
+  v4 = [(CUICatalog *)self->_catalog imageWithName:name scaleFactor:scale];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 image];
+    image = [v4 image];
     v7 = *MEMORY[0x1E695E4D0];
     CGImageSetProperty();
     v8 = objc_alloc(MEMORY[0x1E69A8988]);
     [v5 scale];
-    v9 = [v8 initWithCGImage:v6 scale:?];
+    v9 = [v8 initWithCGImage:image scale:?];
   }
 
   else
@@ -291,8 +291,8 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
 - (int64_t)_layoutDirectionFromDevice
 {
   v2 = MEMORY[0x1E695DF58];
-  v3 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  v4 = [v2 characterDirectionForLanguage:v3];
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  v4 = [v2 characterDirectionForLanguage:_deviceLanguage];
 
   if (v4 == 1)
   {
@@ -311,7 +311,7 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
   imageBag = self->_imageBag;
   if (!imageBag)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = [(NSString *)self->_imageName stringByAppendingPathComponent:@"image"];
     [(CUICatalog *)self->_catalog allImageNames];
     v21 = 0u;
@@ -335,26 +335,26 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
           v10 = *(*(&v21 + 1) + 8 * i);
           if ([v10 hasPrefix:v5])
           {
-            v11 = [v10 imageMetadataFromFileName];
-            v12 = [v11 objectForKeyedSubscript:kIconCompilerImageInfoNameKey];
+            imageMetadataFromFileName = [v10 imageMetadataFromFileName];
+            v12 = [imageMetadataFromFileName objectForKeyedSubscript:kIconCompilerImageInfoNameKey];
             if (([v12 isEqualToString:v5] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", self->_imageName))
             {
               v13 = [(ISAssetCatalogResource *)self imageWithName:v10 scale:1.0];
               if (v13)
               {
-                [v4 addObject:v13];
+                [array addObject:v13];
               }
 
               v14 = [(ISAssetCatalogResource *)self imageWithName:v10 scale:2.0];
               if (v14)
               {
-                [v4 addObject:v14];
+                [array addObject:v14];
               }
 
               v15 = [(ISAssetCatalogResource *)self imageWithName:v10 scale:3.0];
               if (v15)
               {
-                [v4 addObject:v15];
+                [array addObject:v15];
               }
             }
           }
@@ -366,9 +366,9 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
       while (v7);
     }
 
-    if ([v4 count])
+    if ([array count])
     {
-      v16 = [objc_alloc(MEMORY[0x1E69A8990]) initWithImages:v4];
+      v16 = [objc_alloc(MEMORY[0x1E69A8990]) initWithImages:array];
       v17 = self->_imageBag;
       self->_imageBag = v16;
     }
@@ -381,14 +381,14 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
   return imageBag;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = [(ISAssetCatalogResource *)self imageName];
+  imageName = [(ISAssetCatalogResource *)self imageName];
 
-  if (!v8)
+  if (!imageName)
   {
     goto LABEL_5;
   }
@@ -404,12 +404,12 @@ uint64_t __89__ISAssetCatalogResource_assetCatalogResourceWithURL_imageName_plat
     v21 = 2048;
     v22 = width;
     v23 = 2048;
-    v24 = a4;
+    scaleCopy2 = scale;
     _os_log_debug_impl(&dword_1A77B8000, v9, OS_LOG_TYPE_DEBUG, "Looking for resources matching the iconset naming convention. Named: %@ for size: (%f,%f) scale:(%lf)", &v17, 0x2Au);
   }
 
-  v10 = [(ISAssetCatalogResource *)self imageBag];
-  v11 = [v10 imageForSize:width scale:{height, a4}];
+  imageBag = [(ISAssetCatalogResource *)self imageBag];
+  v11 = [imageBag imageForSize:width scale:{height, scale}];
 
   if (!v11)
   {
@@ -425,7 +425,7 @@ LABEL_5:
       v21 = 2048;
       v22 = width;
       v23 = 2048;
-      v24 = a4;
+      scaleCopy2 = scale;
       _os_log_error_impl(&dword_1A77B8000, v12, OS_LOG_TYPE_ERROR, "Failed to find a icon resources with named: %@ for size: (%f,%f) scale:(%lf)", &v17, 0x2Au);
     }
 
@@ -437,19 +437,19 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)hasResourceWithAppearance:(int64_t)a3 appearanceString:(id)a4
+- (BOOL)hasResourceWithAppearance:(int64_t)appearance appearanceString:(id)string
 {
-  v6 = a4;
-  v7 = [(ISAssetCatalogResource *)self catalog];
-  v8 = [(ISAssetCatalogResource *)self imageName];
-  v9 = [(ISAssetCatalogResource *)self layoutDirection];
-  v10 = [(ISAssetCatalogResource *)self platform];
-  v11 = [v7 _IS_multisizedImageWithName:v8 size:v9 scale:v10 layoutDirection:a3 platform:*MEMORY[0x1E695F060] appearance:{*(MEMORY[0x1E695F060] + 8), 0.0}];
+  stringCopy = string;
+  catalog = [(ISAssetCatalogResource *)self catalog];
+  imageName = [(ISAssetCatalogResource *)self imageName];
+  layoutDirection = [(ISAssetCatalogResource *)self layoutDirection];
+  platform = [(ISAssetCatalogResource *)self platform];
+  v11 = [catalog _IS_multisizedImageWithName:imageName size:layoutDirection scale:platform layoutDirection:appearance platform:*MEMORY[0x1E695F060] appearance:{*(MEMORY[0x1E695F060] + 8), 0.0}];
 
   if (v11)
   {
-    v12 = [v11 appearance];
-    v13 = [v12 isEqualToString:v6];
+    appearance = [v11 appearance];
+    v13 = [appearance isEqualToString:stringCopy];
   }
 
   else
@@ -460,12 +460,12 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)hasResourceWithAppearance:(int64_t)a3
+- (BOOL)hasResourceWithAppearance:(int64_t)appearance
 {
   v5 = [MEMORY[0x1E6999368] _IS_appearanceStringFromAppearance:?];
   if (v5)
   {
-    v6 = [(ISAssetCatalogResource *)self hasResourceWithAppearance:a3 appearanceString:v5];
+    v6 = [(ISAssetCatalogResource *)self hasResourceWithAppearance:appearance appearanceString:v5];
   }
 
   else

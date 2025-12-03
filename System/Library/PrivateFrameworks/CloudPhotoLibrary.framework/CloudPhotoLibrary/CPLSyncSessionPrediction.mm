@@ -1,12 +1,12 @@
 @interface CPLSyncSessionPrediction
 - (CPLSyncSessionPrediction)init;
-- (CPLSyncSessionPrediction)initWithPredictedValuesAndTypes:(id)a3;
-- (double)timeIntervalSincePredictedDateForType:(id)a3;
+- (CPLSyncSessionPrediction)initWithPredictedValuesAndTypes:(id)types;
+- (double)timeIntervalSincePredictedDateForType:(id)type;
 - (id)description;
-- (id)descriptionWithNow:(id)a3;
-- (id)predictedDateForType:(id)a3;
-- (id)updatedPredictionRemovingValueForType:(id)a3;
-- (id)updatedPredictionWithValuesAndTypes:(id)a3;
+- (id)descriptionWithNow:(id)now;
+- (id)predictedDateForType:(id)type;
+- (id)updatedPredictionRemovingValueForType:(id)type;
+- (id)updatedPredictionWithValuesAndTypes:(id)types;
 @end
 
 @implementation CPLSyncSessionPrediction
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (id)descriptionWithNow:(id)a3
+- (id)descriptionWithNow:(id)now
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  nowCopy = now;
   if ([(NSDictionary *)self->_predictions count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSDictionary count](self->_predictions, "count")}];
@@ -90,7 +90,7 @@
             v13 = v12;
             if (objc_opt_respondsToSelector())
             {
-              [v13 stringForTimeIntervalNumber:v11 now:v22];
+              [v13 stringForTimeIntervalNumber:v11 now:nowCopy];
             }
 
             else
@@ -145,15 +145,15 @@
   return v19;
 }
 
-- (id)updatedPredictionRemovingValueForType:(id)a3
+- (id)updatedPredictionRemovingValueForType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_predictions objectForKeyedSubscript:v4];
+  typeCopy = type;
+  v5 = [(NSDictionary *)self->_predictions objectForKeyedSubscript:typeCopy];
 
   if (v5)
   {
     v6 = [(NSDictionary *)self->_predictions mutableCopy];
-    [v6 removeObjectForKey:v4];
+    [v6 removeObjectForKey:typeCopy];
     v7 = [[CPLSyncSessionPrediction alloc] initWithPredictedValuesAndTypes:v6];
   }
 
@@ -165,9 +165,9 @@
   return v7;
 }
 
-- (id)updatedPredictionWithValuesAndTypes:(id)a3
+- (id)updatedPredictionWithValuesAndTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -180,7 +180,7 @@
   v8[3] = &unk_1E861DE40;
   v8[4] = self;
   v8[5] = &v9;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [typesCopy enumerateKeysAndObjectsUsingBlock:v8];
   if (v10[5])
   {
     v5 = [CPLSyncSessionPrediction alloc];
@@ -264,23 +264,23 @@ LABEL_11:
 LABEL_16:
 }
 
-- (double)timeIntervalSincePredictedDateForType:(id)a3
+- (double)timeIntervalSincePredictedDateForType:(id)type
 {
-  v3 = [(CPLSyncSessionPrediction *)self predictedDateForType:a3];
-  if (!v3)
+  distantPast = [(CPLSyncSessionPrediction *)self predictedDateForType:type];
+  if (!distantPast)
   {
-    v3 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  [v3 timeIntervalSinceNow];
+  [distantPast timeIntervalSinceNow];
   v5 = -v4;
 
   return v5;
 }
 
-- (id)predictedDateForType:(id)a3
+- (id)predictedDateForType:(id)type
 {
-  v3 = [(NSDictionary *)self->_predictions objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_predictions objectForKeyedSubscript:type];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E695DF00]);
@@ -296,13 +296,13 @@ LABEL_16:
   return v5;
 }
 
-- (CPLSyncSessionPrediction)initWithPredictedValuesAndTypes:(id)a3
+- (CPLSyncSessionPrediction)initWithPredictedValuesAndTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = [(CPLSyncSessionPrediction *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     predictions = v5->_predictions;
     v5->_predictions = v6;
   }

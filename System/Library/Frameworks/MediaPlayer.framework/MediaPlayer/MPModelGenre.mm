@@ -10,11 +10,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelGenre *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelGenre *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -28,15 +28,15 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"genre %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"genre %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyGenreName"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelGenre *)self name];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    name = [(MPModelGenre *)self name];
+    v9 = [v7 stringWithFormat:@"“%@” ", name];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -46,20 +46,20 @@
 
 + (void)__MPModelPropertyGenreLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenre.m" lineNumber:80 description:@"Translator was missing mapping for MPModelPropertyGenreLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenre.m" lineNumber:80 description:@"Translator was missing mapping for MPModelPropertyGenreLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertyGenreArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenre.m" lineNumber:79 description:@"Translator was missing mapping for MPModelPropertyGenreArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenre.m" lineNumber:79 description:@"Translator was missing mapping for MPModelPropertyGenreArtwork"];
 }
 
 + (void)__MPModelPropertyGenreName__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelGenre.m" lineNumber:78 description:@"Translator was missing mapping for MPModelPropertyGenreName"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelGenre.m" lineNumber:78 description:@"Translator was missing mapping for MPModelPropertyGenreName"];
 }
 
 @end

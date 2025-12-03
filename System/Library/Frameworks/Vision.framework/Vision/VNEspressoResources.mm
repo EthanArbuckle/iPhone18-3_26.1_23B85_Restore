@@ -1,6 +1,6 @@
 @interface VNEspressoResources
 - ($C4732ECC957FA13B9B3DF4A51A95735B)network;
-- (VNEspressoResources)initWithModelPath:(id)a3 networkConfigurationName:(id)a4 network:(id)a5 plan:(void *)a6 context:(void *)a7;
+- (VNEspressoResources)initWithModelPath:(id)path networkConfigurationName:(id)name network:(id)network plan:(void *)plan context:(void *)context;
 - (id)description;
 - (void)dealloc;
 - (void)free;
@@ -21,8 +21,8 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(VNEspressoResources *)self modelPath];
-  v5 = [v3 initWithFormat:@"Model: %@, network: %p, plan: %p: context: %p", v4, &self->_network, self->_plan, self->_context];
+  modelPath = [(VNEspressoResources *)self modelPath];
+  v5 = [v3 initWithFormat:@"Model: %@, network: %p, plan: %p: context: %p", modelPath, &self->_network, self->_plan, self->_context];
 
   return v5;
 }
@@ -45,29 +45,29 @@
   self->_network.network_index = 0;
 }
 
-- (VNEspressoResources)initWithModelPath:(id)a3 networkConfigurationName:(id)a4 network:(id)a5 plan:(void *)a6 context:(void *)a7
+- (VNEspressoResources)initWithModelPath:(id)path networkConfigurationName:(id)name network:(id)network plan:(void *)plan context:(void *)context
 {
-  v9 = *&a5.var1;
-  var0 = a5.var0;
-  v13 = a3;
-  v14 = a4;
+  v9 = *&network.var1;
+  var0 = network.var0;
+  pathCopy = path;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = VNEspressoResources;
   v15 = [(VNEspressoResources *)&v22 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [pathCopy copy];
     modelPath = v15->_modelPath;
     v15->_modelPath = v16;
 
-    v18 = [v14 copy];
+    v18 = [nameCopy copy];
     networkConfigurationName = v15->_networkConfigurationName;
     v15->_networkConfigurationName = v18;
 
     v15->_network.plan = var0;
     *&v15->_network.network_index = v9;
-    v15->_plan = a6;
-    v15->_context = a7;
+    v15->_plan = plan;
+    v15->_context = context;
     v20 = v15;
   }
 

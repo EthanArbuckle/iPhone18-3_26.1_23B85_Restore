@@ -1,13 +1,13 @@
 @interface MBProperties
-+ (MBProperties)propertiesWithFile:(id)a3 error:(id *)a4;
++ (MBProperties)propertiesWithFile:(id)file error:(id *)error;
 + (id)properties;
-- (BOOL)_BOOLForKey:(id)a3;
+- (BOOL)_BOOLForKey:(id)key;
 - (BOOL)hasCorruptSQLiteDBs;
 - (BOOL)hasEncryptedManifestDB;
-- (BOOL)writeToFile:(id)a3 error:(id *)a4;
-- (MBProperties)initWithData:(id)a3 error:(id *)a4;
-- (MBProperties)initWithFile:(id)a3 error:(id *)a4;
-- (MBProperties)initWithVersion:(double)a3 minVersion:(double)a4 maxVersion:(double)a5;
+- (BOOL)writeToFile:(id)file error:(id *)error;
+- (MBProperties)initWithData:(id)data error:(id *)error;
+- (MBProperties)initWithFile:(id)file error:(id *)error;
+- (MBProperties)initWithVersion:(double)version minVersion:(double)minVersion maxVersion:(double)maxVersion;
 - (NSData)manifestEncryptionKey;
 - (NSDate)date;
 - (NSDictionary)appleIDs;
@@ -17,23 +17,23 @@
 - (double)systemDomainsVersion;
 - (double)version;
 - (id)_containers;
-- (id)_dataForKey:(id)a3;
-- (id)_dictionaryForKey:(id)a3;
-- (id)_stringForLockdownKey:(id)a3;
-- (id)containerWithIdentifier:(id)a3;
+- (id)_dataForKey:(id)key;
+- (id)_dictionaryForKey:(id)key;
+- (id)_stringForLockdownKey:(id)key;
+- (id)containerWithIdentifier:(id)identifier;
 - (id)description;
-- (void)_addContainer:(id)a3;
-- (void)addAppleID:(id)a3 DSID:(id)a4 altDSID:(id)a5 dataClass:(id)a6;
-- (void)addAppleIDsFromSet:(id)a3 dataClass:(id)a4;
-- (void)addAssetDescriptionForAppleID:(id)a3 assetDescription:(id)a4;
-- (void)addContainersFromArray:(id)a3;
+- (void)_addContainer:(id)container;
+- (void)addAppleID:(id)d DSID:(id)iD altDSID:(id)sID dataClass:(id)class;
+- (void)addAppleIDsFromSet:(id)set dataClass:(id)class;
+- (void)addAssetDescriptionForAppleID:(id)d assetDescription:(id)description;
+- (void)addContainersFromArray:(id)array;
 - (void)removeAllContainers;
-- (void)setAccountClass:(id)a3;
-- (void)setAccountType:(id)a3;
-- (void)setActiveAppleID:(id)a3;
-- (void)setRequiredProductVersion:(id)a3;
-- (void)setSystemDomainsVersion:(double)a3;
-- (void)setVersion:(double)a3;
+- (void)setAccountClass:(id)class;
+- (void)setAccountType:(id)type;
+- (void)setActiveAppleID:(id)d;
+- (void)setRequiredProductVersion:(id)version;
+- (void)setSystemDomainsVersion:(double)version;
+- (void)setVersion:(double)version;
 @end
 
 @implementation MBProperties
@@ -45,15 +45,15 @@
   return v2;
 }
 
-+ (MBProperties)propertiesWithFile:(id)a3 error:(id *)a4
++ (MBProperties)propertiesWithFile:(id)file error:(id *)error
 {
-  v5 = a3;
-  v6 = [[MBProperties alloc] initWithFile:v5 error:a4];
+  fileCopy = file;
+  v6 = [[MBProperties alloc] initWithFile:fileCopy error:error];
 
   return v6;
 }
 
-- (MBProperties)initWithVersion:(double)a3 minVersion:(double)a4 maxVersion:(double)a5
+- (MBProperties)initWithVersion:(double)version minVersion:(double)minVersion maxVersion:(double)maxVersion
 {
   v14.receiver = self;
   v14.super_class = MBProperties;
@@ -64,9 +64,9 @@
     plist = v8->_plist;
     v8->_plist = v9;
 
-    [(MBProperties *)v8 setVersion:a3];
-    [(MBProperties *)v8 setMinSupportedVersion:a4];
-    [(MBProperties *)v8 setMaxSupportedVersion:a5];
+    [(MBProperties *)v8 setVersion:version];
+    [(MBProperties *)v8 setMinSupportedVersion:minVersion];
+    [(MBProperties *)v8 setMaxSupportedVersion:maxVersion];
     v11 = +[MBSystemDomainsVersions defaultSystemDomainsVersions];
     [v11 version];
     [(MBProperties *)v8 setSystemDomainsVersion:?];
@@ -78,16 +78,16 @@
   return v8;
 }
 
-- (MBProperties)initWithData:(id)a3 error:(id *)a4
+- (MBProperties)initWithData:(id)data error:(id *)error
 {
   v24 = 0;
-  v6 = [NSPropertyListSerialization propertyListFromData:a3 mutabilityOption:1 format:0 errorDescription:&v24];
+  v6 = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:1 format:0 errorDescription:&v24];
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       [MBError errorWithCode:11 format:@"Error deserializing properties: %@", v24];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
 LABEL_16:
 
       goto LABEL_17;
@@ -109,10 +109,10 @@ LABEL_15:
     [(MBProperties *)v8 version];
     if (v10 > v11 || ([(MBProperties *)v8 version], v13 = v12, [(MBProperties *)v8 maxSupportedVersion], v13 >= v14))
     {
-      if (a4)
+      if (error)
       {
         [(MBProperties *)v8 version];
-        *a4 = [MBError errorWithCode:203 format:@"Unsupported properties version: %0.1f", v22];
+        *error = [MBError errorWithCode:203 format:@"Unsupported properties version: %0.1f", v22];
       }
 
       self = v8;
@@ -135,10 +135,10 @@ LABEL_15:
         }
       }
 
-      if (a4)
+      if (error)
       {
         [(MBProperties *)v8 systemDomainsVersion];
-        *a4 = [MBError errorWithCode:203 format:@"Unsupported system domains version: %0.1f", v21];
+        *error = [MBError errorWithCode:203 format:@"Unsupported system domains version: %0.1f", v21];
       }
     }
 
@@ -150,12 +150,12 @@ LABEL_17:
   return v8;
 }
 
-- (MBProperties)initWithFile:(id)a3 error:(id *)a4
+- (MBProperties)initWithFile:(id)file error:(id *)error
 {
-  v6 = [NSData dataWithContentsOfFile:a3 options:0 error:a4];
+  v6 = [NSData dataWithContentsOfFile:file options:0 error:error];
   if (v6)
   {
-    v7 = [(MBProperties *)self initWithData:v6 error:a4];
+    v7 = [(MBProperties *)self initWithData:v6 error:error];
   }
 
   else
@@ -167,50 +167,50 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)_BOOLForKey:(id)a3
+- (BOOL)_BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self->_plist objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [self->_plist objectForKeyedSubscript:keyCopy];
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"%@ value not an NSNumber", v4}]);
+      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"%@ value not an NSNumber", keyCopy}]);
     }
   }
 
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)_dataForKey:(id)a3
+- (id)_dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self->_plist objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [self->_plist objectForKeyedSubscript:keyCopy];
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"%@ value not an NSData", v4}]);
+      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"%@ value not an NSData", keyCopy}]);
     }
   }
 
   return v5;
 }
 
-- (id)_dictionaryForKey:(id)a3
+- (id)_dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self->_plist objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [self->_plist objectForKeyedSubscript:keyCopy];
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"%@ value not an NSDictionary", v4}]);
+      objc_exception_throw([[MBException alloc] initWithCode:11 format:{@"%@ value not an NSDictionary", keyCopy}]);
     }
   }
 
@@ -234,10 +234,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)setRequiredProductVersion:(id)a3
+- (void)setRequiredProductVersion:(id)version
 {
-  v4 = a3;
-  if (v4)
+  versionCopy = version;
+  if (versionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -245,7 +245,7 @@ LABEL_17:
       __assert_rtn("[MBProperties setRequiredProductVersion:]", "MBProperties.m", 168, "!requiredProductVersion || [requiredProductVersion isKindOfClass:NSString.class]");
     }
 
-    [self->_plist setObject:v4 forKeyedSubscript:@"RequiredProductVersion"];
+    [self->_plist setObject:versionCopy forKeyedSubscript:@"RequiredProductVersion"];
   }
 
   else
@@ -271,10 +271,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)setAccountClass:(id)a3
+- (void)setAccountClass:(id)class
 {
-  v4 = a3;
-  if (v4)
+  classCopy = class;
+  if (classCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -282,7 +282,7 @@ LABEL_17:
       __assert_rtn("[MBProperties setAccountClass:]", "MBProperties.m", 185, "!accountClass || [accountClass isKindOfClass:NSNumber.class]");
     }
 
-    [self->_plist setObject:v4 forKeyedSubscript:@"AccountClass"];
+    [self->_plist setObject:classCopy forKeyedSubscript:@"AccountClass"];
   }
 
   else
@@ -308,10 +308,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)setAccountType:(id)a3
+- (void)setAccountType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -319,7 +319,7 @@ LABEL_17:
       __assert_rtn("[MBProperties setAccountType:]", "MBProperties.m", 200, "!accountType || [accountType isKindOfClass:NSNumber.class]");
     }
 
-    [self->_plist setObject:v4 forKeyedSubscript:@"AccountType"];
+    [self->_plist setObject:typeCopy forKeyedSubscript:@"AccountType"];
   }
 
   else
@@ -355,9 +355,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setVersion:(double)a3
+- (void)setVersion:(double)version
 {
-  v4 = [NSString stringWithFormat:@"%0.1f", *&a3];
+  v4 = [NSString stringWithFormat:@"%0.1f", *&version];
   [self->_plist setObject:v4 forKeyedSubscript:@"Version"];
 }
 
@@ -376,9 +376,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setSystemDomainsVersion:(double)a3
+- (void)setSystemDomainsVersion:(double)version
 {
-  v4 = [NSString stringWithFormat:@"%0.1f", *&a3];
+  v4 = [NSString stringWithFormat:@"%0.1f", *&version];
   [self->_plist setObject:v4 forKeyedSubscript:@"SystemDomainsVersion"];
 }
 
@@ -412,11 +412,11 @@ LABEL_17:
   return v2;
 }
 
-- (id)_stringForLockdownKey:(id)a3
+- (id)_stringForLockdownKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MBProperties *)self lockdownKeys];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lockdownKeys = [(MBProperties *)self lockdownKeys];
+  v6 = [lockdownKeys objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
@@ -432,23 +432,23 @@ LABEL_17:
 
 - (BOOL)hasCorruptSQLiteDBs
 {
-  v3 = [(MBProperties *)self encrypted];
-  if (v3)
+  encrypted = [(MBProperties *)self encrypted];
+  if (encrypted)
   {
-    v4 = [(MBProperties *)self buildVersion];
-    if ([v4 hasPrefix:@"9A"])
+    buildVersion = [(MBProperties *)self buildVersion];
+    if ([buildVersion hasPrefix:@"9A"])
     {
-      v5 = [(MBProperties *)self buildVersion];
-      v6 = [v5 length];
+      buildVersion2 = [(MBProperties *)self buildVersion];
+      v6 = [buildVersion2 length];
 
       if (v6 >= 3)
       {
-        v7 = [(MBProperties *)self buildVersion];
-        v8 = [v7 substringFromIndex:2];
-        v9 = [v8 intValue];
+        buildVersion3 = [(MBProperties *)self buildVersion];
+        v8 = [buildVersion3 substringFromIndex:2];
+        intValue = [v8 intValue];
 
-        LOBYTE(v3) = v9 - 124 < 0x52;
-        return v3;
+        LOBYTE(encrypted) = intValue - 124 < 0x52;
+        return encrypted;
       }
     }
 
@@ -456,10 +456,10 @@ LABEL_17:
     {
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(encrypted) = 0;
   }
 
-  return v3;
+  return encrypted;
 }
 
 - (BOOL)hasEncryptedManifestDB
@@ -469,8 +469,8 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [(MBProperties *)self manifestEncryptionKey];
-  v4 = v3 != 0;
+  manifestEncryptionKey = [(MBProperties *)self manifestEncryptionKey];
+  v4 = manifestEncryptionKey != 0;
 
   return v4;
 }
@@ -491,31 +491,31 @@ LABEL_17:
   return v4;
 }
 
-- (void)addAppleIDsFromSet:(id)a3 dataClass:(id)a4
+- (void)addAppleIDsFromSet:(id)set dataClass:(id)class
 {
-  v6 = a3;
-  v30 = a4;
-  v7 = [(MBProperties *)self appleIDs];
-  if (!v7)
+  setCopy = set;
+  classCopy = class;
+  appleIDs = [(MBProperties *)self appleIDs];
+  if (!appleIDs)
   {
-    v7 = +[NSMutableDictionary dictionary];
-    [self->_plist setObject:v7 forKeyedSubscript:@"AppleIDs"];
+    appleIDs = +[NSMutableDictionary dictionary];
+    [self->_plist setObject:appleIDs forKeyedSubscript:@"AppleIDs"];
   }
 
-  v26 = self;
+  selfCopy = self;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
-  v8 = v30;
+  obj = setCopy;
+  v8 = classCopy;
   v31 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v31)
   {
     v9 = MBError_ptr;
     v10 = MBError_ptr;
     v11 = *v33;
-    v28 = v7;
+    v28 = appleIDs;
     do
     {
       v12 = 0;
@@ -532,10 +532,10 @@ LABEL_17:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v25 = +[NSAssertionHandler currentHandler];
-          [v25 handleFailureInMethod:a2 object:v26 file:@"MBProperties.m" lineNumber:377 description:{@"Account item %@ not a string", v13}];
+          [v25 handleFailureInMethod:a2 object:selfCopy file:@"MBProperties.m" lineNumber:377 description:{@"Account item %@ not a string", v13}];
         }
 
-        v15 = [v7 objectForKeyedSubscript:v13];
+        v15 = [appleIDs objectForKeyedSubscript:v13];
         v16 = v10[146];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (v17 = v15) == 0)
@@ -554,26 +554,26 @@ LABEL_17:
             v21 = v10;
             v23 = v22 = v9;
             [v23 addObject:v8];
-            v24 = [v23 allObjects];
+            allObjects = [v23 allObjects];
 
             v9 = v22;
             v10 = v21;
             v11 = v20;
-            v7 = v28;
+            appleIDs = v28;
           }
 
           else
           {
             v36 = v8;
-            v24 = [NSArray arrayWithObjects:&v36 count:1];
+            allObjects = [NSArray arrayWithObjects:&v36 count:1];
           }
 
-          [v17 setObject:v24 forKeyedSubscript:@"dataClasses"];
+          [v17 setObject:allObjects forKeyedSubscript:@"dataClasses"];
 
-          v8 = v30;
+          v8 = classCopy;
         }
 
-        [v7 setObject:v17 forKeyedSubscript:v13];
+        [appleIDs setObject:v17 forKeyedSubscript:v13];
 
         v12 = v12 + 1;
       }
@@ -586,86 +586,86 @@ LABEL_17:
   }
 }
 
-- (void)addAppleID:(id)a3 DSID:(id)a4 altDSID:(id)a5 dataClass:(id)a6
+- (void)addAppleID:(id)d DSID:(id)iD altDSID:(id)sID dataClass:(id)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  sIDCopy = sID;
+  classCopy = class;
   v14 = MBGetDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v36 = v10;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v11;
+    v38 = iDCopy;
     v39 = 2112;
-    v40 = v12;
+    v40 = sIDCopy;
     v41 = 2112;
-    v42 = v13;
+    v42 = classCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Adding appleID:%@, DSID:%@, altDSID:%@, dataClass:%@", buf, 0x2Au);
-    v32 = v12;
-    v33 = v13;
-    v28 = v10;
-    v30 = v11;
+    v32 = sIDCopy;
+    v33 = classCopy;
+    v28 = dCopy;
+    v30 = iDCopy;
     _MBLog();
   }
 
-  if (!v10)
+  if (!dCopy)
   {
-    v15 = MBGetDefaultLog();
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    appleIDs = MBGetDefaultLog();
+    if (!os_log_type_enabled(appleIDs, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_35;
     }
 
     *buf = 138412802;
-    v36 = v11;
+    v36 = iDCopy;
     v37 = 2112;
-    v38 = v12;
+    v38 = sIDCopy;
     v39 = 2112;
-    v40 = v13;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "nil appleID, DSID:%@, altDSID:%@, dataClass:%@", buf, 0x20u);
+    v40 = classCopy;
+    _os_log_impl(&_mh_execute_header, appleIDs, OS_LOG_TYPE_ERROR, "nil appleID, DSID:%@, altDSID:%@, dataClass:%@", buf, 0x20u);
 LABEL_31:
     _MBLog();
     goto LABEL_35;
   }
 
-  if (!(v11 | v12))
+  if (!(iDCopy | sIDCopy))
   {
-    v15 = MBGetDefaultLog();
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    appleIDs = MBGetDefaultLog();
+    if (!os_log_type_enabled(appleIDs, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_35;
     }
 
     *buf = 138412546;
-    v36 = v10;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v13;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "appleID:%@, nil DSID&altDSID, dataClass:%@", buf, 0x16u);
+    v38 = classCopy;
+    _os_log_impl(&_mh_execute_header, appleIDs, OS_LOG_TYPE_ERROR, "appleID:%@, nil DSID&altDSID, dataClass:%@", buf, 0x16u);
     goto LABEL_31;
   }
 
-  v15 = [(MBProperties *)self appleIDs];
-  if (!v15)
+  appleIDs = [(MBProperties *)self appleIDs];
+  if (!appleIDs)
   {
-    v15 = +[NSMutableDictionary dictionary];
-    [self->_plist setObject:v15 forKeyedSubscript:@"AppleIDs"];
+    appleIDs = +[NSMutableDictionary dictionary];
+    [self->_plist setObject:appleIDs forKeyedSubscript:@"AppleIDs"];
   }
 
-  v16 = [v15 objectForKeyedSubscript:v10, v28, v30, v32, v33];
+  v16 = [appleIDs objectForKeyedSubscript:dCopy, v28, v30, v32, v33];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (v17 = v16) == 0)
   {
     v17 = +[NSMutableDictionary dictionary];
   }
 
-  if (v11)
+  if (iDCopy)
   {
     v18 = [v17 objectForKeyedSubscript:@"dsid"];
     v19 = v18;
-    if (v18 && ([v18 isEqualToString:v11] & 1) == 0)
+    if (v18 && ([v18 isEqualToString:iDCopy] & 1) == 0)
     {
       v20 = MBGetDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -673,22 +673,22 @@ LABEL_31:
         *buf = 138412546;
         v36 = v19;
         v37 = 2112;
-        v38 = v11;
+        v38 = iDCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "DSID mismatch: existingDSID:%@ != DSID:%@", buf, 0x16u);
         v29 = v19;
-        v31 = v11;
+        v31 = iDCopy;
         _MBLog();
       }
     }
 
-    [v17 setObject:v11 forKeyedSubscript:{@"dsid", v29, v31}];
+    [v17 setObject:iDCopy forKeyedSubscript:{@"dsid", v29, v31}];
   }
 
-  if (v12)
+  if (sIDCopy)
   {
     v21 = [v17 objectForKeyedSubscript:@"altDsid"];
     v22 = v21;
-    if (v21 && ([v21 isEqualToString:v12] & 1) == 0)
+    if (v21 && ([v21 isEqualToString:sIDCopy] & 1) == 0)
     {
       v23 = MBGetDefaultLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -696,51 +696,51 @@ LABEL_31:
         *buf = 138412546;
         v36 = v22;
         v37 = 2112;
-        v38 = v12;
+        v38 = sIDCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "altDSID mismatch: existingAltDSID:%@ != altDSID:%@", buf, 0x16u);
         v29 = v22;
-        v31 = v12;
+        v31 = sIDCopy;
         _MBLog();
       }
     }
 
-    [v17 setObject:v12 forKeyedSubscript:{@"altDsid", v29, v31}];
+    [v17 setObject:sIDCopy forKeyedSubscript:{@"altDsid", v29, v31}];
   }
 
-  if (v13)
+  if (classCopy)
   {
     v24 = [v17 objectForKeyedSubscript:@"dataClasses"];
     if (v24)
     {
       v25 = v24;
       v26 = [NSMutableSet setWithArray:v24];
-      [v26 addObject:v13];
-      v27 = [v26 allObjects];
+      [v26 addObject:classCopy];
+      allObjects = [v26 allObjects];
     }
 
     else
     {
-      v34 = v13;
-      v27 = [NSArray arrayWithObjects:&v34 count:1];
+      v34 = classCopy;
+      allObjects = [NSArray arrayWithObjects:&v34 count:1];
     }
 
-    [v17 setObject:v27 forKeyedSubscript:@"dataClasses"];
+    [v17 setObject:allObjects forKeyedSubscript:@"dataClasses"];
   }
 
-  [v15 setObject:v17 forKeyedSubscript:v10];
+  [appleIDs setObject:v17 forKeyedSubscript:dCopy];
 
 LABEL_35:
 }
 
-- (void)addAssetDescriptionForAppleID:(id)a3 assetDescription:(id)a4
+- (void)addAssetDescriptionForAppleID:(id)d assetDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  descriptionCopy = description;
+  v8 = descriptionCopy;
+  if (dCopy && descriptionCopy)
   {
-    v9 = [(MBProperties *)self appleIDs];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    appleIDs = [(MBProperties *)self appleIDs];
+    v10 = [appleIDs objectForKeyedSubscript:dCopy];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || (v11 = v10) == 0)
     {
@@ -755,26 +755,26 @@ LABEL_35:
       v14 = [NSMutableSet setWithArray:v13];
 
       [v14 addObject:v8];
-      v15 = [v14 allObjects];
+      allObjects = [v14 allObjects];
     }
 
     else
     {
       v16 = v8;
-      v15 = [NSArray arrayWithObjects:&v16 count:1];
+      allObjects = [NSArray arrayWithObjects:&v16 count:1];
     }
 
-    [v11 setObject:v15 forKeyedSubscript:@"assets"];
-    [v9 setObject:v11 forKeyedSubscript:v6];
+    [v11 setObject:allObjects forKeyedSubscript:@"assets"];
+    [appleIDs setObject:v11 forKeyedSubscript:dCopy];
   }
 }
 
-- (void)setActiveAppleID:(id)a3
+- (void)setActiveAppleID:(id)d
 {
   plist = self->_plist;
-  if (a3)
+  if (d)
   {
-    [plist setObject:a3 forKeyedSubscript:@"ActiveAppleID"];
+    [plist setObject:d forKeyedSubscript:@"ActiveAppleID"];
   }
 
   else
@@ -799,11 +799,11 @@ LABEL_35:
   return v4;
 }
 
-- (id)containerWithIdentifier:(id)a3
+- (id)containerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MBProperties *)self _containers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _containers = [(MBProperties *)self _containers];
+  v6 = [_containers objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
@@ -818,45 +818,45 @@ LABEL_35:
   return v7;
 }
 
-- (void)_addContainer:(id)a3
+- (void)_addContainer:(id)container
 {
-  v4 = a3;
-  if (([v4 isSystemContainer] & 1) == 0 && (objc_msgSend(v4, "isSystemSharedContainer") & 1) == 0)
+  containerCopy = container;
+  if (([containerCopy isSystemContainer] & 1) == 0 && (objc_msgSend(containerCopy, "isSystemSharedContainer") & 1) == 0)
   {
-    v5 = [(MBProperties *)self _containers];
-    if (!v5)
+    _containers = [(MBProperties *)self _containers];
+    if (!_containers)
     {
-      v5 = [NSMutableDictionary dictionaryWithCapacity:32];
-      [self->_plist setObject:v5 forKeyedSubscript:@"Applications"];
+      _containers = [NSMutableDictionary dictionaryWithCapacity:32];
+      [self->_plist setObject:_containers forKeyedSubscript:@"Applications"];
     }
 
-    v6 = [v4 identifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    identifier = [containerCopy identifier];
+    v7 = [_containers objectForKeyedSubscript:identifier];
 
     if (v7)
     {
-      v8 = MBGetDefaultLog();
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+      propertyListForBackupProperties = MBGetDefaultLog();
+      if (!os_log_type_enabled(propertyListForBackupProperties, OS_LOG_TYPE_FAULT))
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v9 = [v4 identifier];
+      identifier2 = [containerCopy identifier];
       *buf = 138412290;
-      v12 = v9;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Duplicate container ID detected: %@", buf, 0xCu);
+      v12 = identifier2;
+      _os_log_impl(&_mh_execute_header, propertyListForBackupProperties, OS_LOG_TYPE_FAULT, "Duplicate container ID detected: %@", buf, 0xCu);
 
-      v10 = [v4 identifier];
+      identifier3 = [containerCopy identifier];
       _MBLog();
     }
 
     else
     {
-      v8 = [v4 propertyListForBackupProperties];
-      v10 = [v4 identifier];
-      [v5 setObject:v8 forKeyedSubscript:v10];
+      propertyListForBackupProperties = [containerCopy propertyListForBackupProperties];
+      identifier3 = [containerCopy identifier];
+      [_containers setObject:propertyListForBackupProperties forKeyedSubscript:identifier3];
     }
 
     goto LABEL_10;
@@ -865,14 +865,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)addContainersFromArray:(id)a3
+- (void)addContainersFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -884,7 +884,7 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [(MBProperties *)self _addContainer:*(*(&v9 + 1) + 8 * v8)];
@@ -892,7 +892,7 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -905,9 +905,9 @@ LABEL_11:
   [self->_plist setObject:v3 forKeyedSubscript:@"Applications"];
 }
 
-- (BOOL)writeToFile:(id)a3 error:(id *)a4
+- (BOOL)writeToFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   v12 = 0;
   v7 = [NSPropertyListSerialization dataFromPropertyList:self->_plist format:200 errorDescription:&v12];
   v8 = v7;
@@ -923,13 +923,13 @@ LABEL_11:
       v9 = 1;
     }
 
-    v10 = [v7 writeToFile:v6 options:v9 error:a4];
+    v10 = [v7 writeToFile:fileCopy options:v9 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MBError errorWithCode:100 format:@"Error serializing properties: %@", v12];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -947,13 +947,13 @@ LABEL_11:
   v5 = v4;
   [(MBProperties *)self systemDomainsVersion];
   v7 = v6;
-  v8 = [(MBProperties *)self requiredProductVersion];
-  v9 = [(MBProperties *)self date];
-  v10 = [(MBProperties *)self encrypted];
-  v11 = [(MBProperties *)self wasPasscodeSet];
-  v12 = [(MBProperties *)self lockdownKeys];
+  requiredProductVersion = [(MBProperties *)self requiredProductVersion];
+  date = [(MBProperties *)self date];
+  encrypted = [(MBProperties *)self encrypted];
+  wasPasscodeSet = [(MBProperties *)self wasPasscodeSet];
+  lockdownKeys = [(MBProperties *)self lockdownKeys];
   v13 = MBStringWithDictionary();
-  v14 = [NSString stringWithFormat:@"<%@: version=%0.1f, systemDomainsVersion=%0.1f, requiredProductVersion=%@, date=%@, encrypted=%d, passcodeSet=%d, lockdownKeys=%@>", v3, v5, v7, v8, v9, v10, v11, v13];
+  v14 = [NSString stringWithFormat:@"<%@: version=%0.1f, systemDomainsVersion=%0.1f, requiredProductVersion=%@, date=%@, encrypted=%d, passcodeSet=%d, lockdownKeys=%@>", v3, v5, v7, requiredProductVersion, date, encrypted, wasPasscodeSet, v13];
 
   return v14;
 }

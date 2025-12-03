@@ -1,8 +1,8 @@
 @interface _TVShelfLayoutHelper
-- (CGRect)frameForHeaderInSection:(int64_t)a3;
-- (CGRect)frameForItemAtIndexPath:(id)a3;
-- (UIEdgeInsets)insetForSection:(int64_t)a3;
-- (_TVShelfLayoutHelper)initWithShelfViewLayout:(id)a3;
+- (CGRect)frameForHeaderInSection:(int64_t)section;
+- (CGRect)frameForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)insetForSection:(int64_t)section;
+- (_TVShelfLayoutHelper)initWithShelfViewLayout:(id)layout;
 - (_TVShelfViewLayout)shelfViewLayout;
 - (void)_compute;
 - (void)_freeBuffers;
@@ -11,16 +11,16 @@
 
 @implementation _TVShelfLayoutHelper
 
-- (_TVShelfLayoutHelper)initWithShelfViewLayout:(id)a3
+- (_TVShelfLayoutHelper)initWithShelfViewLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = _TVShelfLayoutHelper;
   v5 = [(_TVShelfLayoutHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_shelfViewLayout, v4);
+    objc_storeWeak(&v5->_shelfViewLayout, layoutCopy);
     [(_TVShelfLayoutHelper *)v6 _compute];
   }
 
@@ -35,13 +35,13 @@
   [(_TVShelfLayoutHelper *)&v3 dealloc];
 }
 
-- (CGRect)frameForHeaderInSection:(int64_t)a3
+- (CGRect)frameForHeaderInSection:(int64_t)section
 {
   p_x = MEMORY[0x277CBF3A0];
   headerFrames = self->_headerFrames;
   if (headerFrames)
   {
-    p_x = &headerFrames[a3].origin.x;
+    p_x = &headerFrames[section].origin.x;
   }
 
   v5 = *p_x;
@@ -55,13 +55,13 @@
   return result;
 }
 
-- (UIEdgeInsets)insetForSection:(int64_t)a3
+- (UIEdgeInsets)insetForSection:(int64_t)section
 {
   p_top = MEMORY[0x277D768C8];
   sectionInsets = self->_sectionInsets;
   if (sectionInsets)
   {
-    p_top = &sectionInsets[a3].top;
+    p_top = &sectionInsets[section].top;
   }
 
   v5 = *p_top;
@@ -75,17 +75,17 @@
   return result;
 }
 
-- (CGRect)frameForItemAtIndexPath:(id)a3
+- (CGRect)frameForItemAtIndexPath:(id)path
 {
   cellFrames = self->_cellFrames;
   if (cellFrames)
   {
     sectionOffsets = self->_sectionOffsets;
-    v5 = a3;
-    v6 = sectionOffsets[[v5 section]];
-    v7 = [v5 item];
+    pathCopy = path;
+    v6 = sectionOffsets[[pathCopy section]];
+    item = [pathCopy item];
 
-    p_x = &cellFrames[v6 + v7].origin.x;
+    p_x = &cellFrames[v6 + item].origin.x;
   }
 
   else
@@ -107,48 +107,48 @@
 - (void)_compute
 {
   v132 = *MEMORY[0x277D85DE8];
-  v127 = [(_TVShelfLayoutHelper *)self shelfViewLayout];
-  v3 = [v127 collectionView];
-  v4 = [v3 dataSource];
-  v5 = [v3 delegate];
-  if ([v5 conformsToProtocol:&unk_287E801C8])
+  shelfViewLayout = [(_TVShelfLayoutHelper *)self shelfViewLayout];
+  collectionView = [shelfViewLayout collectionView];
+  dataSource = [collectionView dataSource];
+  delegate = [collectionView delegate];
+  if ([delegate conformsToProtocol:&unk_287E801C8])
   {
-    v6 = [v3 delegate];
+    delegate2 = [collectionView delegate];
   }
 
   else
   {
-    v6 = 0;
+    delegate2 = 0;
   }
 
   v7 = objc_opt_respondsToSelector();
   v114 = objc_opt_respondsToSelector();
   v129 = objc_opt_respondsToSelector();
   v113 = objc_opt_respondsToSelector();
-  [v3 bounds];
+  [collectionView bounds];
   v9 = v8;
-  [v3 contentInset];
+  [collectionView contentInset];
   v11 = v10;
   v13 = v12;
-  [v127 itemSize];
+  [shelfViewLayout itemSize];
   v15 = v14;
   v17 = v16;
-  v18 = [v127 rowCount];
-  if (v18 <= 1)
+  rowCount = [shelfViewLayout rowCount];
+  if (rowCount <= 1)
   {
     v19 = 1;
   }
 
   else
   {
-    v19 = v18;
+    v19 = rowCount;
   }
 
-  v20 = [v127 prominentSectionIndex];
-  v120 = v4;
+  prominentSectionIndex = [shelfViewLayout prominentSectionIndex];
+  v120 = dataSource;
   if (v7)
   {
-    v21 = [v4 numberOfSectionsInCollectionView:v3];
+    v21 = [dataSource numberOfSectionsInCollectionView:collectionView];
   }
 
   else
@@ -156,13 +156,13 @@
     v21 = 1;
   }
 
-  [v127 minimumInteritemSpacing];
+  [shelfViewLayout minimumInteritemSpacing];
   v115 = v22;
-  [v127 minimumLineSpacing];
+  [shelfViewLayout minimumLineSpacing];
   v24 = v23;
   v25 = malloc_type_calloc(v21 + 1, 8uLL, 0x100004000313F17uLL);
   v26 = v25;
-  v126 = v6;
+  v126 = delegate2;
   count = v21;
   v119 = v25;
   v109 = v11;
@@ -182,11 +182,11 @@
 
   else
   {
-    v112 = v20;
+    v112 = prominentSectionIndex;
     v27 = 0;
     for (i = 0; i != v21; ++i)
     {
-      v29 = [v4 collectionView:v3 numberOfItemsInSection:i];
+      v29 = [dataSource collectionView:collectionView numberOfItemsInSection:i];
       v26[i] = v27;
       v27 += v29;
     }
@@ -215,21 +215,21 @@
     v58 = 0.0;
     v122 = 0.0;
     v35 = v126;
-    v128 = v3;
+    v128 = collectionView;
     do
     {
-      v36 = [v120 collectionView:v3 numberOfItemsInSection:v32];
+      v36 = [v120 collectionView:collectionView numberOfItemsInSection:v32];
       if (v36)
       {
         v37 = v36;
         if (v113)
         {
-          [v35 collectionView:v128 layout:v127 insetForSectionAtIndex:v32];
+          [v35 collectionView:v128 layout:shelfViewLayout insetForSectionAtIndex:v32];
         }
 
         else
         {
-          [v127 sectionInset];
+          [shelfViewLayout sectionInset];
         }
 
         v42 = v38;
@@ -238,12 +238,12 @@
         v45 = v41;
         if (v114)
         {
-          [v35 collectionView:v128 layout:v127 referenceSizeForHeaderInSection:v32];
+          [v35 collectionView:v128 layout:shelfViewLayout referenceSizeForHeaderInSection:v32];
         }
 
         else
         {
-          [v127 headerReferenceSize];
+          [shelfViewLayout headerReferenceSize];
         }
 
         v33->top = v42;
@@ -290,7 +290,7 @@
             v55 = v17;
             if (v129)
             {
-              [v126 collectionView:v128 layout:v127 sizeForItemAtIndexPath:{v53, v15, v17}];
+              [v126 collectionView:v128 layout:shelfViewLayout sizeForItemAtIndexPath:{v53, v15, v17}];
             }
 
             if ((*&v54 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v55 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
@@ -326,11 +326,11 @@
       }
 
       ++v32;
-      v3 = v128;
+      collectionView = v128;
     }
 
     while (v32 != v21);
-    v20 = v112;
+    prominentSectionIndex = v112;
   }
 
   v59 = 0.0;
@@ -351,7 +351,7 @@
 
   if (v58 > 0.0)
   {
-    [v127 headerBottomMargin];
+    [shelfViewLayout headerBottomMargin];
   }
 
   v125 = v58;
@@ -364,11 +364,11 @@
     v68 = 0.0;
     while (1)
     {
-      v69 = [v120 collectionView:v3 numberOfItemsInSection:v64];
+      v69 = [v120 collectionView:collectionView numberOfItemsInSection:v64];
       if (v69)
       {
         v70 = v119[v64];
-        v72 = v20 == 0x7FFFFFFFFFFFFFFFLL || v64 == v20;
+        v72 = prominentSectionIndex == 0x7FFFFFFFFFFFFFFFLL || v64 == prominentSectionIndex;
         v73 = &v117[v64];
         right = v73->right;
         v75 = v67 + v73->left;

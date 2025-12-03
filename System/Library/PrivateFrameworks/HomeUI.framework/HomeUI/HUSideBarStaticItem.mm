@@ -1,6 +1,6 @@
 @interface HUSideBarStaticItem
-- (HUSideBarStaticItem)initWithSideBarStaticItemType:(unint64_t)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUSideBarStaticItem)initWithSideBarStaticItemType:(unint64_t)type;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)resultDictionary;
 @end
 
@@ -9,16 +9,16 @@
 - (id)resultDictionary
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HUSideBarStaticItem *)self type];
-  if (v3 == 2)
+  type = [(HUSideBarStaticItem *)self type];
+  if (type == 2)
   {
     v11[0] = *MEMORY[0x277D13F60];
     v4 = HFLocalizedString();
     v12[0] = v4;
     v11[1] = *MEMORY[0x277D13EA0];
-    v8 = [MEMORY[0x277D14CE8] isAMac];
+    isAMac = [MEMORY[0x277D14CE8] isAMac];
     v9 = @"star.fill";
-    if (v8)
+    if (isAMac)
     {
       v9 = @"star";
     }
@@ -29,7 +29,7 @@
     v7 = v11;
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
     v13[0] = *MEMORY[0x277D13F60];
     v4 = HFLocalizedString();
@@ -43,7 +43,7 @@
 
   else
   {
-    if (v3)
+    if (type)
     {
       goto LABEL_10;
     }
@@ -65,25 +65,25 @@ LABEL_10:
   return v2;
 }
 
-- (HUSideBarStaticItem)initWithSideBarStaticItemType:(unint64_t)a3
+- (HUSideBarStaticItem)initWithSideBarStaticItemType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = HUSideBarStaticItem;
   result = [(HFStaticItem *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(MEMORY[0x277D2C900]);
   v5 = MEMORY[0x277D14780];
-  v6 = [(HUSideBarStaticItem *)self resultDictionary];
-  v7 = [v5 outcomeWithResults:v6];
+  resultDictionary = [(HUSideBarStaticItem *)self resultDictionary];
+  v7 = [v5 outcomeWithResults:resultDictionary];
   [v4 finishWithResult:v7];
 
   return v4;

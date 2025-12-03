@@ -1,9 +1,9 @@
 @interface STUIStatusBarSignalViewCacheKey
-- (BOOL)isEqual:(id)a3;
-- (double)initWithClass:(double)a3 size:(double)a4 rect:(double)a5 radius:(double)a6 lineWidth:(double)a7 secondarySize:(double)a8 secondaryRect:(double)a9 alternate:(uint64_t)a10 scale:(uint64_t)a11;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)initWithClass:(double)class size:(double)size rect:(double)rect radius:(double)radius lineWidth:(double)width secondarySize:(double)secondarySize secondaryRect:(double)secondaryRect alternate:(uint64_t)self0 scale:(uint64_t)self1;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -12,37 +12,37 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendClass:self->_classType];
-  v5 = [v3 appendCGSize:{self->_size.width, self->_size.height}];
-  v6 = [v3 appendCGRect:{self->_rect.origin.x, self->_rect.origin.y, self->_rect.size.width, self->_rect.size.height}];
-  v7 = [v3 appendCGFloat:self->_radius];
-  v8 = [v3 appendCGFloat:self->_lineWidth];
-  v9 = [v3 appendCGSize:{self->_secondarySize.width, self->_secondarySize.height}];
-  v10 = [v3 appendCGRect:{self->_secondaryRect.origin.x, self->_secondaryRect.origin.y, self->_secondaryRect.size.width, self->_secondaryRect.size.height}];
-  v11 = [v3 appendBool:self->_alternate];
-  v12 = [v3 appendCGFloat:self->_scale];
-  v13 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendClass:self->_classType];
+  v5 = [builder appendCGSize:{self->_size.width, self->_size.height}];
+  v6 = [builder appendCGRect:{self->_rect.origin.x, self->_rect.origin.y, self->_rect.size.width, self->_rect.size.height}];
+  v7 = [builder appendCGFloat:self->_radius];
+  v8 = [builder appendCGFloat:self->_lineWidth];
+  v9 = [builder appendCGSize:{self->_secondarySize.width, self->_secondarySize.height}];
+  v10 = [builder appendCGRect:{self->_secondaryRect.origin.x, self->_secondaryRect.origin.y, self->_secondaryRect.size.width, self->_secondaryRect.size.height}];
+  v11 = [builder appendBool:self->_alternate];
+  v12 = [builder appendCGFloat:self->_scale];
+  v13 = [builder hash];
 
   return v13;
 }
 
-- (double)initWithClass:(double)a3 size:(double)a4 rect:(double)a5 radius:(double)a6 lineWidth:(double)a7 secondarySize:(double)a8 secondaryRect:(double)a9 alternate:(uint64_t)a10 scale:(uint64_t)a11
+- (double)initWithClass:(double)class size:(double)size rect:(double)rect radius:(double)radius lineWidth:(double)width secondarySize:(double)secondarySize secondaryRect:(double)secondaryRect alternate:(uint64_t)self0 scale:(uint64_t)self1
 {
-  v34.receiver = a1;
+  v34.receiver = self;
   v34.super_class = STUIStatusBarSignalViewCacheKey;
   result = objc_msgSendSuper2(&v34, sel_init);
   if (result)
   {
-    *(result + 1) = a11;
+    *(result + 1) = scale;
     result[2] = a2;
-    result[3] = a3;
-    result[4] = a4;
-    result[5] = a5;
-    result[6] = a6;
-    result[7] = a7;
-    result[8] = a8;
-    result[9] = a9;
+    result[3] = class;
+    result[4] = size;
+    result[5] = rect;
+    result[6] = radius;
+    result[7] = width;
+    result[8] = secondarySize;
+    result[9] = secondaryRect;
     *(result + 10) = a17;
     *(result + 11) = a18;
     *(result + 12) = a19;
@@ -56,11 +56,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   classType = self->_classType;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -136,43 +136,43 @@
 
 - (id)succinctDescription
 {
-  v2 = [(STUIStatusBarSignalViewCacheKey *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STUIStatusBarSignalViewCacheKey *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarSignalViewCacheKey *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarSignalViewCacheKey *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STUIStatusBarSignalViewCacheKey *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STUIStatusBarSignalViewCacheKey *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STUIStatusBarSignalViewCacheKey *)self succinctDescriptionBuilder];
-  [v7 setUseDebugDescription:v4];
-  [v7 setActiveMultilinePrefix:v6];
+  debugCopy = debug;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STUIStatusBarSignalViewCacheKey *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setUseDebugDescription:debugCopy];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __83__STUIStatusBarSignalViewCacheKey__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
   v11[3] = &unk_279D38150;
-  v8 = v7;
+  v8 = succinctDescriptionBuilder;
   v12 = v8;
-  v13 = self;
-  [v8 appendBodySectionWithName:0 multilinePrefix:v6 block:v11];
+  selfCopy = self;
+  [v8 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v11];
 
   v9 = v8;
   return v8;

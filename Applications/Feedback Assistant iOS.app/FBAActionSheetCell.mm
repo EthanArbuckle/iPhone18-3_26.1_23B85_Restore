@@ -1,36 +1,36 @@
 @interface FBAActionSheetCell
-- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithCoder:(id)a3;
-- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setActionImageView:(id)a3;
-- (void)setActionTitleLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithCoder:(id)coder;
+- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setActionImageView:(id)view;
+- (void)setActionTitleLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FBAActionSheetCell
 
-- (void)setActionTitleLabel:(id)a3
+- (void)setActionTitleLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setActionImageView:(id)a3
+- (void)setActionImageView:(id)view
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionImageView);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionImageView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionImageView) = view;
+  viewCopy = view;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v9 = self;
-  v4 = a3;
-  v5 = [(FBAActionSheetCell *)v9 traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  selfCopy = self;
+  changeCopy = change;
+  traitCollection = [(FBAActionSheetCell *)selfCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v7 = UIContentSizeCategory.isAccessibilityCategory.getter();
-  v8 = *(&v9->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel);
+  v8 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel);
   if (v8)
   {
     [v8 setNumberOfLines:(v7 & 1) == 0];
@@ -42,9 +42,9 @@
   }
 }
 
-- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel) = 0;
@@ -61,19 +61,19 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for FBAActionSheetCell();
-  v7 = [(FBAActionSheetCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(FBAActionSheetCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithCoder:(id)a3
+- (_TtC18Feedback_Assistant18FBAActionSheetCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionTitleLabel) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18Feedback_Assistant18FBAActionSheetCell_actionImageView) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FBAActionSheetCell();
-  v4 = a3;
-  v5 = [(FBAActionSheetCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FBAActionSheetCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

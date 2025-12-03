@@ -1,26 +1,26 @@
 @interface iAUPServer
 - (BOOL)personalizationComplete;
-- (char)assetTypeString:(int)a3;
-- (char)commandString:(int)a3;
-- (char)parserStateString:(int)a3;
-- (char)serverStateString:(int)a3;
-- (id)initInstanceWithByteEscape:(BOOL)a3;
-- (unsigned)appendByteWithEscaping:(unsigned __int8)a3 toObject:(id *)a4;
+- (char)assetTypeString:(int)string;
+- (char)commandString:(int)string;
+- (char)parserStateString:(int)string;
+- (char)serverStateString:(int)string;
+- (id)initInstanceWithByteEscape:(BOOL)escape;
+- (unsigned)appendByteWithEscaping:(unsigned __int8)escaping toObject:(id *)object;
 - (void)accessoryDisconnected;
-- (void)appendToLog:(id)a3;
+- (void)appendToLog:(id)log;
 - (void)dealloc;
-- (void)processDataFromAccessory:(id)a3;
+- (void)processDataFromAccessory:(id)accessory;
 - (void)processInTelegram;
-- (void)processNotifyAccessoryErrorCommand:(char *)a3 length:(unsigned int)a4;
-- (void)processPersonalizationInfo:(char *)a3 length:(unsigned int)a4;
+- (void)processNotifyAccessoryErrorCommand:(char *)command length:(unsigned int)length;
+- (void)processPersonalizationInfo:(char *)info length:(unsigned int)length;
 - (void)resetParser;
-- (void)setFirmwareBundle:(id)a3;
-- (void)setHSModel:(id)a3 fallbackModel:(id)a4 error:(id)a5;
+- (void)setFirmwareBundle:(id)bundle;
+- (void)setHSModel:(id)model fallbackModel:(id)fallbackModel error:(id)error;
 @end
 
 @implementation iAUPServer
 
-- (id)initInstanceWithByteEscape:(BOOL)a3
+- (id)initInstanceWithByteEscape:(BOOL)escape
 {
   v6.receiver = self;
   v6.super_class = iAUPServer;
@@ -30,7 +30,7 @@
     *(v4 + 7) = [[NSMutableData alloc] initWithCapacity:32];
     *(v4 + 1) = 0;
     *(v4 + 4) = 0;
-    v4[25] = a3;
+    v4[25] = escape;
     v4[26] = 0;
     *(v4 + 42) = 0;
     *(v4 + 87) = 256;
@@ -72,14 +72,14 @@
   [(iAUPServer *)self setParserState:v3];
 }
 
-- (void)appendToLog:(id)a3
+- (void)appendToLog:(id)log
 {
-  v4 = [(iAUPServer *)self delegate];
+  delegate = [(iAUPServer *)self delegate];
 
-  [(iAUPServerDelegate *)v4 logStatusString:a3];
+  [(iAUPServerDelegate *)delegate logStatusString:log];
 }
 
-- (void)setFirmwareBundle:(id)a3
+- (void)setFirmwareBundle:(id)bundle
 {
   firmwareBundle = self->_firmwareBundle;
   if (firmwareBundle)
@@ -88,7 +88,7 @@
     self->_firmwareBundle = 0;
   }
 
-  self->_firmwareBundle = a3;
+  self->_firmwareBundle = bundle;
   if ([(iAUPServer *)self serverState]!= 1 && [(iAUPServer *)self serverState]!= 7)
   {
     [(iAUPServer *)self resetParser];
@@ -97,29 +97,29 @@
   }
 }
 
-- (void)processDataFromAccessory:(id)a3
+- (void)processDataFromAccessory:(id)accessory
 {
-  v5 = [a3 bytes];
-  if ([a3 length])
+  bytes = [accessory bytes];
+  if ([accessory length])
   {
     v6 = 1;
     do
     {
-      v7 = *v5++;
+      v7 = *bytes++;
       [(iAUPServer *)self processInByte:v7];
     }
 
-    while ([a3 length] > v6++);
+    while ([accessory length] > v6++);
   }
 }
 
 - (void)processInTelegram
 {
-  v3 = [(NSMutableData *)self->_telegramDataIn mutableBytes];
-  v4 = (v3 + 1);
-  v5 = *v3;
+  mutableBytes = [(NSMutableData *)self->_telegramDataIn mutableBytes];
+  v4 = (mutableBytes + 1);
+  v5 = *mutableBytes;
   v6 = [(NSMutableData *)self->_telegramDataIn length]- 1;
-  [(iAUPServer *)self logCommand:v5 payload:v3 + 1 length:v6];
+  [(iAUPServer *)self logCommand:v5 payload:mutableBytes + 1 length:v6];
   if (v5 > 6)
   {
     if (v5 <= 33)
@@ -237,13 +237,13 @@ LABEL_78:
         {
           if (v30 == 2)
           {
-            v31 = [(FirmwareBundle *)self->_firmwareBundle hash];
+            signature = [(FirmwareBundle *)self->_firmwareBundle hash];
             goto LABEL_90;
           }
 
           if (v30 == 3)
           {
-            v31 = [(FirmwareBundle *)self->_firmwareBundle signature];
+            signature = [(FirmwareBundle *)self->_firmwareBundle signature];
             goto LABEL_90;
           }
         }
@@ -252,9 +252,9 @@ LABEL_78:
         {
           if (v30 == 1)
           {
-            v31 = [(FirmwareBundle *)self->_firmwareBundle certificate];
+            signature = [(FirmwareBundle *)self->_firmwareBundle certificate];
 LABEL_90:
-            v29 = bswap32([(NSData *)v31 length]);
+            v29 = bswap32([(NSData *)signature length]);
           }
         }
 
@@ -265,10 +265,10 @@ LABEL_90:
 
         v48 = *v4;
         v49 = v29;
-        v27 = self;
+        selfCopy4 = self;
         v28 = 132;
 LABEL_92:
-        [(iAUPServer *)v27 sendCommand:v28 payload:&v48 payload_length:5];
+        [(iAUPServer *)selfCopy4 sendCommand:v28 payload:&v48 payload_length:5];
         return;
       }
 
@@ -285,9 +285,9 @@ LABEL_92:
         goto LABEL_69;
       }
 
-      v12 = self;
+      selfCopy5 = self;
       v13 = 131;
-      v14 = (v3 + 1);
+      v14 = (mutableBytes + 1);
       v15 = 4;
       goto LABEL_34;
     }
@@ -297,13 +297,13 @@ LABEL_92:
       v16 = *v4;
       self->_accessoryCapabilities = v16;
       NSLog(@"_accessoryCapabilities set to 0x%x\n", v16);
-      v12 = self;
+      selfCopy5 = self;
       v13 = 134;
       v14 = 0;
       v15 = 0;
 LABEL_34:
 
-      [(iAUPServer *)v12 sendCommand:v13 payload:v14 payload_length:v15];
+      [(iAUPServer *)selfCopy5 sendCommand:v13 payload:v14 payload_length:v15];
       return;
     }
 
@@ -313,8 +313,8 @@ LABEL_34:
       return;
     }
 
-    v21 = *(v3 + 2);
-    LODWORD(v3) = self->objectBlockTransferSizes[v20];
+    v21 = *(mutableBytes + 2);
+    LODWORD(mutableBytes) = self->objectBlockTransferSizes[v20];
     firmwareBundle = self->_firmwareBundle;
     if (*v4)
     {
@@ -322,8 +322,8 @@ LABEL_34:
       {
         if ([(FirmwareBundle *)firmwareBundle certificate])
         {
-          v23 = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle certificate] length];
-          v24 = [(FirmwareBundle *)self->_firmwareBundle certificate];
+          firmwareImageSize = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle certificate] length];
+          certificate = [(FirmwareBundle *)self->_firmwareBundle certificate];
           goto LABEL_98;
         }
       }
@@ -332,31 +332,31 @@ LABEL_34:
       {
         if ([(FirmwareBundle *)firmwareBundle signature])
         {
-          v23 = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle signature] length];
-          v24 = [(FirmwareBundle *)self->_firmwareBundle signature];
+          firmwareImageSize = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle signature] length];
+          certificate = [(FirmwareBundle *)self->_firmwareBundle signature];
 LABEL_98:
-          v33 = [(NSData *)v24 bytes];
+          bytes = [(NSData *)certificate bytes];
           goto LABEL_99;
         }
       }
 
       else if ([(FirmwareBundle *)firmwareBundle hash])
       {
-        v23 = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle hash] length];
-        v24 = [(FirmwareBundle *)self->_firmwareBundle hash];
+        firmwareImageSize = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle hash] length];
+        certificate = [(FirmwareBundle *)self->_firmwareBundle hash];
         goto LABEL_98;
       }
     }
 
     else if ([(FirmwareBundle *)firmwareBundle firmwareImage]|| [(FirmwareBundle *)self->_firmwareBundle firmwareLocalURL])
     {
-      v23 = [(FirmwareBundle *)self->_firmwareBundle firmwareImageSize];
+      firmwareImageSize = [(FirmwareBundle *)self->_firmwareBundle firmwareImageSize];
       v32 = [(NSData *)[(FirmwareBundle *)self->_firmwareBundle firmwareImage] bytes]+ self->_firmwareImageBaseTransferAddress;
-      v33 = &v32[[(FirmwareBundle *)self->_firmwareBundle]];
+      bytes = &v32[[(FirmwareBundle *)self->_firmwareBundle]];
 LABEL_99:
-      if (!v33 && ![(FirmwareBundle *)self->_firmwareBundle firmwareLocalURL]|| !v23)
+      if (!bytes && ![(FirmwareBundle *)self->_firmwareBundle firmwareLocalURL]|| !firmwareImageSize)
       {
-        [(iAUPServer *)self appendToLog:[NSString stringWithFormat:@"COMMAND_GetObjectBlock Failed, Invalid object_type (%c) or Image (object_total_size = %u)", v20, v23]];
+        [(iAUPServer *)self appendToLog:[NSString stringWithFormat:@"COMMAND_GetObjectBlock Failed, Invalid object_type (%c) or Image (object_total_size = %u)", v20, firmwareImageSize]];
         v8 = [[NSError alloc] initWithDomain:@"com.apple.iAUPServer.ErrorDomain" code:-4 userInfo:0];
         v58 = @"Event";
         v59 = @"com.apple.fud.updateFailed";
@@ -365,9 +365,9 @@ LABEL_99:
         goto LABEL_69;
       }
 
-      v34 = (bswap32(v21) >> 16) * v3;
-      v35 = v23 - v34;
-      if (v23 < v34)
+      v34 = (bswap32(v21) >> 16) * mutableBytes;
+      v35 = firmwareImageSize - v34;
+      if (firmwareImageSize < v34)
       {
         [(iAUPServer *)self appendToLog:@"COMMAND_GetObjectBlock: bound check failed: block_offset * block_size > object_total_size"];
         v8 = [[NSError alloc] initWithDomain:@"com.apple.iAUPServer.ErrorDomain" code:-2 userInfo:0];
@@ -378,17 +378,17 @@ LABEL_99:
         goto LABEL_69;
       }
 
-      if (v35 >= v3)
+      if (v35 >= mutableBytes)
       {
-        v3 = v3;
+        mutableBytes = mutableBytes;
       }
 
       else
       {
-        v3 = v35;
+        mutableBytes = v35;
       }
 
-      v36 = malloc_type_malloc((v3 + 3), 0xB287C21EuLL);
+      v36 = malloc_type_malloc((mutableBytes + 3), 0xB287C21EuLL);
       if (!v36)
       {
         [(iAUPServer *)self appendToLog:@"COMMAND_GetObjectBlock: malloc failed."];
@@ -404,16 +404,16 @@ LABEL_99:
       if (v20 || ![(FirmwareBundle *)self->_firmwareBundle firmwareLocalURL])
       {
         v38 = *v4;
-        v39 = &v33[v34];
+        v39 = &bytes[v34];
         v37[2] = v4[2];
         *v37 = v38;
         v40 = v37 + 3;
-        v41 = v3;
+        v41 = mutableBytes;
       }
 
       else
       {
-        v43 = [(FirmwareBundle *)self->_firmwareBundle getFirmwareDataInRange:v34 error:v3, 0];
+        v43 = [(FirmwareBundle *)self->_firmwareBundle getFirmwareDataInRange:v34 error:mutableBytes, 0];
         if (!v43)
         {
           [(iAUPServer *)self appendToLog:@"COMMAND_GetObjectBlock: Failed to read firmware data from file"];
@@ -430,16 +430,16 @@ LABEL_99:
         v45 = *v4;
         v37[2] = v4[2];
         *v37 = v45;
-        v46 = [v43 bytes];
+        bytes2 = [v43 bytes];
         v41 = [v44 length];
         v40 = v37 + 3;
-        v39 = v46;
+        v39 = bytes2;
       }
 
       memcpy(v40, v39, v41);
-      [(iAUPServer *)self sendCommand:133 payload:v37 payload_length:(v3 + 3)];
+      [(iAUPServer *)self sendCommand:133 payload:v37 payload_length:(mutableBytes + 3)];
       free(v37);
-      self->_totalBytesDownloadedInCurrentSession += v3;
+      self->_totalBytesDownloadedInCurrentSession += mutableBytes;
       if ((self->_accessoryCapabilities & 1) == 0 && !self->_startEventSent)
       {
         v51[0] = @"com.apple.fud.updateStarted";
@@ -463,7 +463,7 @@ LABEL_99:
         delegate = self->_delegate;
         if (delegate)
         {
-          [(iAUPServerDelegate *)delegate updateProgress:(v3 + v34) / v23 * 100.0];
+          [(iAUPServerDelegate *)delegate updateProgress:(mutableBytes + v34) / firmwareImageSize * 100.0];
         }
       }
 
@@ -493,7 +493,7 @@ LABEL_99:
     }
 
     v49 = v26;
-    v27 = self;
+    selfCopy4 = self;
     v28 = 128;
     goto LABEL_92;
   }
@@ -506,10 +506,10 @@ LABEL_99:
       return;
     }
 
-    self->objectBlockTransferSizes[v11] = bswap32(*(v3 + 2)) >> 16;
-    v12 = self;
+    self->objectBlockTransferSizes[v11] = bswap32(*(mutableBytes + 2)) >> 16;
+    selfCopy5 = self;
     v13 = 130;
-    v14 = (v3 + 1);
+    v14 = (mutableBytes + 1);
     v15 = 3;
     goto LABEL_34;
   }
@@ -539,42 +539,42 @@ LABEL_55:
   }
 }
 
-- (unsigned)appendByteWithEscaping:(unsigned __int8)a3 toObject:(id *)a4
+- (unsigned)appendByteWithEscaping:(unsigned __int8)escaping toObject:(id *)object
 {
-  v7 = a3;
-  if ((a3 - 125) <= 1 && self->_byteEscape)
+  escapingCopy = escaping;
+  if ((escaping - 125) <= 1 && self->_byteEscape)
   {
-    v4 = a3;
+    escapingCopy2 = escaping;
     v6[0] = 125;
-    v6[1] = a3 & 0x5F;
-    [*a4 appendBytes:v6 length:2];
+    v6[1] = escaping & 0x5F;
+    [*object appendBytes:v6 length:2];
   }
 
   else
   {
-    [*a4 appendBytes:&v7 length:1];
-    return v7;
+    [*object appendBytes:&escapingCopy length:1];
+    return escapingCopy;
   }
 
-  return v4;
+  return escapingCopy2;
 }
 
-- (void)processPersonalizationInfo:(char *)a3 length:(unsigned int)a4
+- (void)processPersonalizationInfo:(char *)info length:(unsigned int)length
 {
-  if (a3 && a4)
+  if (info && length)
   {
-    if ((*a3 & 0xF) == 1)
+    if ((*info & 0xF) == 1)
     {
       v5 = [iAUPServer processManifestProperties:"processManifestProperties:length:" length:?];
       goto LABEL_7;
     }
 
-    NSLog(@"[processPersonalizationInfo] Unsupported infoType = %d\n", a2, *a3);
+    NSLog(@"[processPersonalizationInfo] Unsupported infoType = %d\n", a2, *info);
   }
 
   else
   {
-    NSLog(@"[processPersonalizationInfo] Invalid payload length=%d\n", a2, a4);
+    NSLog(@"[processPersonalizationInfo] Invalid payload length=%d\n", a2, length);
   }
 
   v5 = 0;
@@ -625,16 +625,16 @@ LABEL_12:
   return 1;
 }
 
-- (void)processNotifyAccessoryErrorCommand:(char *)a3 length:(unsigned int)a4
+- (void)processNotifyAccessoryErrorCommand:(char *)command length:(unsigned int)length
 {
   v6 = "valid";
-  if (!a3)
+  if (!command)
   {
     v6 = "nil";
   }
 
-  NSLog(@"%s(): payload=%s length=%d \n", a2, "[iAUPServer processNotifyAccessoryErrorCommand:length:]", v6, a4);
-  NSLog(@"[NotifyAccessoryError] Accessory notified error reason=%d\n", *a3);
+  NSLog(@"%s(): payload=%s length=%d \n", a2, "[iAUPServer processNotifyAccessoryErrorCommand:length:]", v6, length);
+  NSLog(@"[NotifyAccessoryError] Accessory notified error reason=%d\n", *command);
   [(iAUPServer *)self setServerState:0];
   v7 = [[NSError alloc] initWithDomain:@"com.apple.iAUPServer.ErrorDomain" code:-1 userInfo:0];
   v8 = @"Event";
@@ -656,29 +656,29 @@ LABEL_12:
   }
 }
 
-- (void)setHSModel:(id)a3 fallbackModel:(id)a4 error:(id)a5
+- (void)setHSModel:(id)model fallbackModel:(id)fallbackModel error:(id)error
 {
   dispatchQ = self->_dispatchQ;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000D8DC;
   v6[3] = &unk_10002CB58;
-  v6[4] = a3;
-  v6[5] = a4;
-  v6[6] = a5;
+  v6[4] = model;
+  v6[5] = fallbackModel;
+  v6[6] = error;
   v6[7] = self;
   dispatch_async(dispatchQ, v6);
 }
 
-- (char)commandString:(int)a3
+- (char)commandString:(int)string
 {
-  if (a3 <= 65)
+  if (string <= 65)
   {
-    if (a3 > 5)
+    if (string > 5)
     {
-      if (a3 > 32)
+      if (string > 32)
       {
-        switch(a3)
+        switch(string)
         {
           case '!':
             return "COMMAND_iAUPv2_RequestDownload";
@@ -691,7 +691,7 @@ LABEL_12:
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 6:
             return "COMMAND_SetAccessoryCapabilities";
@@ -705,9 +705,9 @@ LABEL_12:
       return "unknown";
     }
 
-    if (a3 <= 2)
+    if (string <= 2)
     {
-      switch(a3)
+      switch(string)
       {
         case 0:
           return "COMMAND_GetMetadata";
@@ -720,12 +720,12 @@ LABEL_12:
       return "unknown";
     }
 
-    if (a3 == 3)
+    if (string == 3)
     {
       return "COMMAND_SetBaseImageTransferAddress";
     }
 
-    else if (a3 == 4)
+    else if (string == 4)
     {
       return "COMMAND_GetObjectSize";
     }
@@ -738,11 +738,11 @@ LABEL_12:
 
   else
   {
-    if (a3 <= 128)
+    if (string <= 128)
     {
-      if (a3 > 97)
+      if (string > 97)
       {
-        switch(a3)
+        switch(string)
         {
           case 98:
             return "COMMAND_iAUPv2_AckDownloadComplete";
@@ -755,7 +755,7 @@ LABEL_12:
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 'B':
             return "COMMAND_GetPersonalizationInfo";
@@ -768,11 +768,11 @@ LABEL_12:
       return "unknown";
     }
 
-    if (a3 > 131)
+    if (string > 131)
     {
-      if (a3 <= 133)
+      if (string <= 133)
       {
-        if (a3 == 132)
+        if (string == 132)
         {
           return "COMMAND_RetObjectSize";
         }
@@ -783,12 +783,12 @@ LABEL_12:
         }
       }
 
-      if (a3 == 134)
+      if (string == 134)
       {
         return "COMMAND_AckAccessoryCapabilities";
       }
 
-      if (a3 == 135)
+      if (string == 135)
       {
         return "COMMAND_AckResumeInfo";
       }
@@ -796,12 +796,12 @@ LABEL_12:
       return "unknown";
     }
 
-    if (a3 == 129)
+    if (string == 129)
     {
       return "COMMAND_AckNotifyProcessStatus";
     }
 
-    else if (a3 == 130)
+    else if (string == 130)
     {
       return "COMMAND_AckSetBlockTransferSize";
     }
@@ -813,42 +813,42 @@ LABEL_12:
   }
 }
 
-- (char)assetTypeString:(int)a3
+- (char)assetTypeString:(int)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return "unknown";
   }
 
   else
   {
-    return off_10002CB78[a3];
+    return off_10002CB78[string];
   }
 }
 
-- (char)serverStateString:(int)a3
+- (char)serverStateString:(int)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return "Unknown";
   }
 
   else
   {
-    return off_10002CB90[a3];
+    return off_10002CB90[string];
   }
 }
 
-- (char)parserStateString:(int)a3
+- (char)parserStateString:(int)string
 {
-  if (a3 != 0 && a3 < 0xFFFFFFFC)
+  if (string != 0 && string < 0xFFFFFFFC)
   {
     return "PayloadCountdown";
   }
 
   else
   {
-    return off_10002CBD0[a3 + 4];
+    return off_10002CBD0[string + 4];
   }
 }
 

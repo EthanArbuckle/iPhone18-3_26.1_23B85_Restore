@@ -1,15 +1,15 @@
 @interface PromotionTileHeroView
-- (_TtC18HealthExperienceUI21PromotionTileHeroView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI21PromotionTileHeroView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PromotionTileHeroView
 
-- (_TtC18HealthExperienceUI21PromotionTileHeroView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI21PromotionTileHeroView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC18HealthExperienceUI21PromotionTileHeroView_previousConfiguration;
   v9 = sub_1BA4A31F8();
   (*(*(v9 - 8) + 56))(self + v8, 1, 1, v9);

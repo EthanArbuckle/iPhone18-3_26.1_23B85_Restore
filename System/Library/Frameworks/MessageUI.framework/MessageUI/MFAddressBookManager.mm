@@ -5,10 +5,10 @@
 - (id)_clientsArray;
 - (void)_handleAddressBookChangeNotification;
 - (void)_handleAddressBookPrefsChangeNotification;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)addressBook;
 - (void)dealloc;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 @end
 
 @implementation MFAddressBookManager
@@ -41,9 +41,9 @@ void __37__MFAddressBookManager_sharedManager__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     clients = v3->_clients;
-    v3->_clients = v4;
+    v3->_clients = weakObjectsHashTable;
   }
 
   return v3;
@@ -98,8 +98,8 @@ ABAuthorizationStatus __52__MFAddressBookManager_isAuthorizedToUseAddressBook__b
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_addressBook)
   {
@@ -116,10 +116,10 @@ ABAuthorizationStatus __52__MFAddressBookManager_isAuthorizedToUseAddressBook__b
 - (id)_clientsArray
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_clients allObjects];
+  allObjects = [(NSHashTable *)self->_clients allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (void)_handleAddressBookChangeNotification
@@ -135,8 +135,8 @@ ABAuthorizationStatus __52__MFAddressBookManager_isAuthorizedToUseAddressBook__b
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v4 = [(MFAddressBookManager *)self _clientsArray];
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _clientsArray = [(MFAddressBookManager *)self _clientsArray];
+  v5 = [_clientsArray countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -147,14 +147,14 @@ ABAuthorizationStatus __52__MFAddressBookManager_isAuthorizedToUseAddressBook__b
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_clientsArray);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) addressBookManager:self addressBookDidChange:self->_addressBook];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_clientsArray countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -168,8 +168,8 @@ ABAuthorizationStatus __52__MFAddressBookManager_isAuthorizedToUseAddressBook__b
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(MFAddressBookManager *)self _clientsArray];
-  v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _clientsArray = [(MFAddressBookManager *)self _clientsArray];
+  v4 = [_clientsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
     v5 = *v8;
@@ -180,34 +180,34 @@ ABAuthorizationStatus __52__MFAddressBookManager_isAuthorizedToUseAddressBook__b
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_clientsArray);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) addressBookPreferencesChangedForAddressBookManager:self];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_clientsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_clients addObject:v4];
+  [(NSHashTable *)self->_clients addObject:clientCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_clients removeObject:v4];
+  [(NSHashTable *)self->_clients removeObject:clientCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

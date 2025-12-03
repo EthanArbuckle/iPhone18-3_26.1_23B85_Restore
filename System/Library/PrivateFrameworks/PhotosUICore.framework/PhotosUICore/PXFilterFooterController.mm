@@ -1,52 +1,52 @@
 @interface PXFilterFooterController
 - (PXFilterFooterController)init;
-- (PXFilterFooterController)initWithActionManager:(id)a3 photoLibrary:(id)a4;
+- (PXFilterFooterController)initWithActionManager:(id)manager photoLibrary:(id)library;
 - (PXFilterFooterView)footerFilterView;
 - (UIView)view;
-- (void)filterFooterViewDidTapShowFilter:(id)a3 sender:(id)a4;
-- (void)setContentFilterState:(id)a3;
-- (void)setLibraryFilterState:(id)a3;
-- (void)setSharedLibraryStatusProvider:(id)a3;
+- (void)filterFooterViewDidTapShowFilter:(id)filter sender:(id)sender;
+- (void)setContentFilterState:(id)state;
+- (void)setLibraryFilterState:(id)state;
+- (void)setSharedLibraryStatusProvider:(id)provider;
 @end
 
 @implementation PXFilterFooterController
 
-- (void)filterFooterViewDidTapShowFilter:(id)a3 sender:(id)a4
+- (void)filterFooterViewDidTapShowFilter:(id)filter sender:(id)sender
 {
-  v6 = a3;
+  filterCopy = filter;
   v5 = [(PXActionManager *)self->_actionManager actionPerformerForActionType:@"PXCuratedLibraryActionShowFilters"];
   if (!v5)
   {
     v5 = [(PXActionManager *)self->_actionManager actionPerformerForActionType:*off_1E77220F8];
   }
 
-  [v5 setSender:v6];
+  [v5 setSender:filterCopy];
   [v5 performActionWithCompletionHandler:0];
 }
 
 - (UIView)view
 {
-  v3 = [(PXFilterFooterController *)self libraryFilterState];
-  if ([v3 isFiltering])
+  libraryFilterState = [(PXFilterFooterController *)self libraryFilterState];
+  if ([libraryFilterState isFiltering])
   {
 
 LABEL_4:
-    v6 = [(PXFilterFooterController *)self footerFilterView];
+    footerFilterView = [(PXFilterFooterController *)self footerFilterView];
     goto LABEL_6;
   }
 
-  v4 = [(PXFilterFooterController *)self contentFilterState];
-  v5 = [v4 isFiltering];
+  contentFilterState = [(PXFilterFooterController *)self contentFilterState];
+  isFiltering = [contentFilterState isFiltering];
 
-  if (v5)
+  if (isFiltering)
   {
     goto LABEL_4;
   }
 
-  v6 = 0;
+  footerFilterView = 0;
 LABEL_6:
 
-  return v6;
+  return footerFilterView;
 }
 
 - (PXFilterFooterView)footerFilterView
@@ -69,9 +69,9 @@ LABEL_6:
   return footerFilterView;
 }
 
-- (void)setContentFilterState:(id)a3
+- (void)setContentFilterState:(id)state
 {
-  v4 = [a3 copy];
+  v4 = [state copy];
   v5 = v4;
   if (v4)
   {
@@ -92,11 +92,11 @@ LABEL_6:
   [(PXFilterFooterView *)footerFilterView setContentFilterState:v8];
 }
 
-- (void)setLibraryFilterState:(id)a3
+- (void)setLibraryFilterState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = [a3 copy];
+    v4 = [state copy];
     libraryFilterState = self->_libraryFilterState;
     self->_libraryFilterState = v4;
   }
@@ -116,24 +116,24 @@ LABEL_6:
   [(PXFilterFooterView *)footerFilterView setLibraryFilterState:v9];
 }
 
-- (void)setSharedLibraryStatusProvider:(id)a3
+- (void)setSharedLibraryStatusProvider:(id)provider
 {
-  objc_storeStrong(&self->_sharedLibraryStatusProvider, a3);
-  v5 = a3;
-  [(PXFilterFooterView *)self->_footerFilterView setSharedLibraryStatusProvider:v5];
-  v6 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v5];
+  objc_storeStrong(&self->_sharedLibraryStatusProvider, provider);
+  providerCopy = provider;
+  [(PXFilterFooterView *)self->_footerFilterView setSharedLibraryStatusProvider:providerCopy];
+  v6 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:providerCopy];
 
   [(PXFilterFooterController *)self setLibraryFilterState:v6];
 }
 
-- (PXFilterFooterController)initWithActionManager:(id)a3 photoLibrary:(id)a4
+- (PXFilterFooterController)initWithActionManager:(id)manager photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  managerCopy = manager;
+  libraryCopy = library;
+  v10 = libraryCopy;
+  if (managerCopy)
   {
-    if (v9)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -141,8 +141,8 @@ LABEL_6:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXFilterFooterController.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"actionManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFilterFooterController.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"actionManager"}];
 
     if (v10)
     {
@@ -150,8 +150,8 @@ LABEL_6:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PXFilterFooterController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXFilterFooterController.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -160,8 +160,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_actionManager, a3);
-    objc_storeStrong(&v12->_photoLibrary, a4);
+    objc_storeStrong(&v11->_actionManager, manager);
+    objc_storeStrong(&v12->_photoLibrary, library);
   }
 
   return v12;
@@ -169,8 +169,8 @@ LABEL_3:
 
 - (PXFilterFooterController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFilterFooterController.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXFilterFooterController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFilterFooterController.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXFilterFooterController init]"}];
 
   abort();
 }

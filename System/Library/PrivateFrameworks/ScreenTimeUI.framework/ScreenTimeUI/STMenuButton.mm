@@ -1,36 +1,36 @@
 @interface STMenuButton
 - (STMenuButtonDelegate)delegate;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation STMenuButton
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v13.receiver = self;
   v13.super_class = STMenuButton;
   if ([(STMenuButton *)&v13 respondsToSelector:sel_contextMenuInteraction_willDisplayMenuForConfiguration_animator_])
   {
     v12.receiver = self;
     v12.super_class = STMenuButton;
-    [(STMenuButton *)&v12 contextMenuInteraction:v8 willDisplayMenuForConfiguration:v9 animator:v10];
+    [(STMenuButton *)&v12 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animatorCopy];
   }
 
-  v11 = [(STMenuButton *)self delegate];
-  [v11 contextMenuWillDisplayForButton:self];
+  delegate = [(STMenuButton *)self delegate];
+  [delegate contextMenuWillDisplayForButton:self];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(STMenuButton *)self delegate];
-  [v11 contextMenuWillEndForButton:self];
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  delegate = [(STMenuButton *)self delegate];
+  [delegate contextMenuWillEndForButton:self];
 
   v13.receiver = self;
   v13.super_class = STMenuButton;
@@ -38,7 +38,7 @@
   {
     v12.receiver = self;
     v12.super_class = STMenuButton;
-    [(STMenuButton *)&v12 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:v10];
+    [(STMenuButton *)&v12 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
   }
 }
 

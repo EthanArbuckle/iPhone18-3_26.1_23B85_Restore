@@ -1,77 +1,77 @@
 @interface ASDAlertAction
-+ (id)actionWithTitle:(id)a3;
-+ (id)actionWithTitle:(id)a3 style:(int64_t)a4;
-- (ASDAlertAction)initWithCoder:(id)a3;
-- (ASDAlertAction)initWithTitle:(id)a3 style:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)actionWithTitle:(id)title;
++ (id)actionWithTitle:(id)title style:(int64_t)style;
+- (ASDAlertAction)initWithCoder:(id)coder;
+- (ASDAlertAction)initWithTitle:(id)title style:(int64_t)style;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDAlertAction
 
-- (ASDAlertAction)initWithTitle:(id)a3 style:(int64_t)a4
+- (ASDAlertAction)initWithTitle:(id)title style:(int64_t)style
 {
-  v7 = a3;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = ASDAlertAction;
   v8 = [(ASDAlertAction *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = uUID;
 
-    objc_storeStrong(&v8->_title, a3);
-    v8->_style = a4;
+    objc_storeStrong(&v8->_title, title);
+    v8->_style = style;
   }
 
   return v8;
 }
 
-+ (id)actionWithTitle:(id)a3
++ (id)actionWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[ASDAlertAction alloc] initWithTitle:v3];
+  titleCopy = title;
+  v4 = [[ASDAlertAction alloc] initWithTitle:titleCopy];
 
   return v4;
 }
 
-+ (id)actionWithTitle:(id)a3 style:(int64_t)a4
++ (id)actionWithTitle:(id)title style:(int64_t)style
 {
-  v5 = a3;
-  v6 = [[ASDAlertAction alloc] initWithTitle:v5 style:a4];
+  titleCopy = title;
+  v6 = [[ASDAlertAction alloc] initWithTitle:titleCopy style:style];
 
   return v6;
 }
 
-- (ASDAlertAction)initWithCoder:(id)a3
+- (ASDAlertAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ASDAlertAction;
   v5 = [(ASDAlertAction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeInteger:self->_style forKey:@"style"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
 }
 
 @end

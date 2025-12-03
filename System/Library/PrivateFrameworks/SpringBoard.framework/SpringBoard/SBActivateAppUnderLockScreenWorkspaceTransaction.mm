@@ -1,5 +1,5 @@
 @interface SBActivateAppUnderLockScreenWorkspaceTransaction
-- (SBActivateAppUnderLockScreenWorkspaceTransaction)initWithTransitionRequest:(id)a3 lockScreenEnvironment:(id)a4;
+- (SBActivateAppUnderLockScreenWorkspaceTransaction)initWithTransitionRequest:(id)request lockScreenEnvironment:(id)environment;
 - (void)_activateLockScreen;
 - (void)_begin;
 - (void)_didComplete;
@@ -9,19 +9,19 @@
 
 @implementation SBActivateAppUnderLockScreenWorkspaceTransaction
 
-- (SBActivateAppUnderLockScreenWorkspaceTransaction)initWithTransitionRequest:(id)a3 lockScreenEnvironment:(id)a4
+- (SBActivateAppUnderLockScreenWorkspaceTransaction)initWithTransitionRequest:(id)request lockScreenEnvironment:(id)environment
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 applicationContext];
-  [v10 setAnimationDisabled:1];
+  environmentCopy = environment;
+  requestCopy = request;
+  applicationContext = [requestCopy applicationContext];
+  [applicationContext setAnimationDisabled:1];
   v13.receiver = self;
   v13.super_class = SBActivateAppUnderLockScreenWorkspaceTransaction;
-  v11 = [(SBToAppsWorkspaceTransaction *)&v13 initWithTransitionRequest:v9];
+  v11 = [(SBToAppsWorkspaceTransaction *)&v13 initWithTransitionRequest:requestCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_lockScreenEnvironment, a4);
+    objc_storeStrong(&v11->_lockScreenEnvironment, environment);
     if (!v11->_lockScreenEnvironment)
     {
       [SBActivateAppUnderLockScreenWorkspaceTransaction initWithTransitionRequest:a2 lockScreenEnvironment:v11];

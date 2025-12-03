@@ -1,30 +1,30 @@
 @interface ICIAMSerialCheckRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMSerialCheckRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
-    self->_dSID = v4[1];
+    self->_dSID = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(ICIAMSerialCheckRequest *)self setDeviceID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -43,23 +43,23 @@
   return [(NSString *)self->_deviceID hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_dSID != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_dSID != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v6 = 0;
@@ -67,7 +67,7 @@ LABEL_9:
   }
 
   deviceID = self->_deviceID;
-  if (deviceID | *(v4 + 2))
+  if (deviceID | *(equalCopy + 2))
   {
     v6 = [(NSString *)deviceID isEqual:?];
   }
@@ -82,9 +82,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -92,63 +92,63 @@ LABEL_10:
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSString *)self->_deviceID copyWithZone:a3];
+  v7 = [(NSString *)self->_deviceID copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_dSID;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_dSID;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_deviceID)
   {
-    v5 = v4;
-    [v4 setDeviceID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setDeviceID:?];
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dSID];
-    [v3 setObject:v4 forKey:@"DSID"];
+    [dictionary setObject:v4 forKey:@"DSID"];
   }
 
   deviceID = self->_deviceID;
   if (deviceID)
   {
-    [v3 setObject:deviceID forKey:@"deviceID"];
+    [dictionary setObject:deviceID forKey:@"deviceID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -157,8 +157,8 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = ICIAMSerialCheckRequest;
   v4 = [(ICIAMSerialCheckRequest *)&v8 description];
-  v5 = [(ICIAMSerialCheckRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMSerialCheckRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

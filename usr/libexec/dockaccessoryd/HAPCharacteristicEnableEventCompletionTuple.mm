@@ -1,17 +1,17 @@
 @interface HAPCharacteristicEnableEventCompletionTuple
-+ (id)enableEventCompletionTupleWithHandler:(id)a3 queue:(id)a4;
++ (id)enableEventCompletionTupleWithHandler:(id)handler queue:(id)queue;
 @end
 
 @implementation HAPCharacteristicEnableEventCompletionTuple
 
-+ (id)enableEventCompletionTupleWithHandler:(id)a3 queue:(id)a4
++ (id)enableEventCompletionTupleWithHandler:(id)handler queue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
+  queueCopy = queue;
+  handlerCopy = handler;
   v7 = objc_alloc_init(HAPCharacteristicEnableEventCompletionTuple);
-  [(HAPCharacteristicEnableEventCompletionTuple *)v7 setHandler:v6];
+  [(HAPCharacteristicEnableEventCompletionTuple *)v7 setHandler:handlerCopy];
 
-  [(HAPCharacteristicEnableEventCompletionTuple *)v7 setCompletionQueue:v5];
+  [(HAPCharacteristicEnableEventCompletionTuple *)v7 setCompletionQueue:queueCopy];
 
   return v7;
 }

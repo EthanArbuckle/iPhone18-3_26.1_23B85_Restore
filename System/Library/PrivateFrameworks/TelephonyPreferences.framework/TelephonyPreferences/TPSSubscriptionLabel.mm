@@ -1,34 +1,34 @@
 @interface TPSSubscriptionLabel
-+ (id)labelsFromUnlocalizedLabels:(id)a3 localizedLongLabels:(id)a4 localizedBadgeLabels:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSubscriptionLabel:(id)a3;
-- (TPSSubscriptionLabel)initWithUnlocalizedLabel:(id)a3 localizedLongLabel:(id)a4 localizedBadgeLabel:(id)a5;
++ (id)labelsFromUnlocalizedLabels:(id)labels localizedLongLabels:(id)longLabels localizedBadgeLabels:(id)badgeLabels;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSubscriptionLabel:(id)label;
+- (TPSSubscriptionLabel)initWithUnlocalizedLabel:(id)label localizedLongLabel:(id)longLabel localizedBadgeLabel:(id)badgeLabel;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TPSSubscriptionLabel
 
-+ (id)labelsFromUnlocalizedLabels:(id)a3 localizedLongLabels:(id)a4 localizedBadgeLabels:(id)a5
++ (id)labelsFromUnlocalizedLabels:(id)labels localizedLongLabels:(id)longLabels localizedBadgeLabels:(id)badgeLabels
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  v11 = [v7 count];
-  if (v11 == [v8 count])
+  labelsCopy = labels;
+  longLabelsCopy = longLabels;
+  badgeLabelsCopy = badgeLabels;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(labelsCopy, "count")}];
+  v11 = [labelsCopy count];
+  if (v11 == [longLabelsCopy count])
   {
-    v12 = [v9 count];
-    if (v12 == [v8 count])
+    v12 = [badgeLabelsCopy count];
+    if (v12 == [longLabelsCopy count])
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __93__TPSSubscriptionLabel_labelsFromUnlocalizedLabels_localizedLongLabels_localizedBadgeLabels___block_invoke;
       v15[3] = &unk_2782E3C38;
-      v16 = v8;
-      v17 = v9;
+      v16 = longLabelsCopy;
+      v17 = badgeLabelsCopy;
       v18 = v10;
-      [v7 enumerateObjectsUsingBlock:v15];
+      [labelsCopy enumerateObjectsUsingBlock:v15];
     }
   }
 
@@ -48,20 +48,20 @@ void __93__TPSSubscriptionLabel_labelsFromUnlocalizedLabels_localizedLongLabels_
   [a1[6] addObject:v9];
 }
 
-- (TPSSubscriptionLabel)initWithUnlocalizedLabel:(id)a3 localizedLongLabel:(id)a4 localizedBadgeLabel:(id)a5
+- (TPSSubscriptionLabel)initWithUnlocalizedLabel:(id)label localizedLongLabel:(id)longLabel localizedBadgeLabel:(id)badgeLabel
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelCopy = label;
+  longLabelCopy = longLabel;
+  badgeLabelCopy = badgeLabel;
   v15.receiver = self;
   v15.super_class = TPSSubscriptionLabel;
   v12 = [(TPSSubscriptionLabel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_unlocalizedLongLabel, a3);
-    objc_storeStrong(&v13->_localizedLongLabel, a4);
-    objc_storeStrong(&v13->_localizedBadgeLabel, a5);
+    objc_storeStrong(&v12->_unlocalizedLongLabel, label);
+    objc_storeStrong(&v13->_localizedLongLabel, longLabel);
+    objc_storeStrong(&v13->_localizedBadgeLabel, badgeLabel);
   }
 
   return v13;
@@ -70,29 +70,29 @@ void __93__TPSSubscriptionLabel_labelsFromUnlocalizedLabels_localizedLongLabels_
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TPSSubscriptionLabel *)self localizedLongLabel];
-  v5 = [(TPSSubscriptionLabel *)self localizedBadgeLabel];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  localizedLongLabel = [(TPSSubscriptionLabel *)self localizedLongLabel];
+  localizedBadgeLabel = [(TPSSubscriptionLabel *)self localizedBadgeLabel];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", localizedLongLabel, localizedBadgeLabel];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TPSSubscriptionLabel *)self unlocalizedLongLabel];
-  v4 = [v3 hash];
-  v5 = [(TPSSubscriptionLabel *)self localizedLongLabel];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TPSSubscriptionLabel *)self localizedBadgeLabel];
-  v8 = [v7 hash];
+  unlocalizedLongLabel = [(TPSSubscriptionLabel *)self unlocalizedLongLabel];
+  v4 = [unlocalizedLongLabel hash];
+  localizedLongLabel = [(TPSSubscriptionLabel *)self localizedLongLabel];
+  v6 = [localizedLongLabel hash] ^ v4;
+  localizedBadgeLabel = [(TPSSubscriptionLabel *)self localizedBadgeLabel];
+  v8 = [localizedBadgeLabel hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -100,26 +100,26 @@ void __93__TPSSubscriptionLabel_labelsFromUnlocalizedLabels_localizedLongLabels_
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSSubscriptionLabel *)self isEqualToSubscriptionLabel:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSSubscriptionLabel *)self isEqualToSubscriptionLabel:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSubscriptionLabel:(id)a3
+- (BOOL)isEqualToSubscriptionLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(TPSSubscriptionLabel *)self localizedBadgeLabel];
-  v6 = [v4 localizedBadgeLabel];
-  if ([v5 isEqual:v6])
+  labelCopy = label;
+  localizedBadgeLabel = [(TPSSubscriptionLabel *)self localizedBadgeLabel];
+  localizedBadgeLabel2 = [labelCopy localizedBadgeLabel];
+  if ([localizedBadgeLabel isEqual:localizedBadgeLabel2])
   {
-    v7 = [(TPSSubscriptionLabel *)self localizedLongLabel];
-    v8 = [v4 localizedLongLabel];
-    if ([v7 isEqual:v8])
+    localizedLongLabel = [(TPSSubscriptionLabel *)self localizedLongLabel];
+    localizedLongLabel2 = [labelCopy localizedLongLabel];
+    if ([localizedLongLabel isEqual:localizedLongLabel2])
     {
-      v9 = [(TPSSubscriptionLabel *)self unlocalizedLongLabel];
-      v10 = [v4 unlocalizedLongLabel];
-      v11 = [v9 isEqual:v10];
+      unlocalizedLongLabel = [(TPSSubscriptionLabel *)self unlocalizedLongLabel];
+      unlocalizedLongLabel2 = [labelCopy unlocalizedLongLabel];
+      v11 = [unlocalizedLongLabel isEqual:unlocalizedLongLabel2];
     }
 
     else

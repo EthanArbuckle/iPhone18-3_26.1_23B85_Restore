@@ -1,9 +1,9 @@
 @interface DTProcessorTraceStateController
 - (DTProcessorTraceStateController)init;
-- (id)isProcessorTraceEnabled:(id)a3;
+- (id)isProcessorTraceEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_presentRebootAlertForStateTransitionTo:(BOOL)a3 withCallback:(id)a4 onCancel:(id)a5;
-- (void)setProcessorTraceEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)_presentRebootAlertForStateTransitionTo:(BOOL)to withCallback:(id)callback onCancel:(id)cancel;
+- (void)setProcessorTraceEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation DTProcessorTraceStateController
@@ -56,39 +56,39 @@
   return v4;
 }
 
-- (id)isProcessorTraceEnabled:(id)a3
+- (id)isProcessorTraceEnabled:(id)enabled
 {
-  v3 = [(DTProcessorTraceStateController *)self state];
-  v4 = [v3 hardwareConfigured];
+  state = [(DTProcessorTraceStateController *)self state];
+  hardwareConfigured = [state hardwareConfigured];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:hardwareConfigured];
 }
 
-- (void)setProcessorTraceEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setProcessorTraceEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_19868;
   v7[3] = &unk_3D6C8;
   v7[4] = self;
-  v8 = v5;
+  v8 = bOOLValue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_198BC;
   v6[3] = &unk_3D5B0;
   v6[4] = self;
-  [(DTProcessorTraceStateController *)self _presentRebootAlertForStateTransitionTo:v5 withCallback:v7 onCancel:v6];
+  [(DTProcessorTraceStateController *)self _presentRebootAlertForStateTransitionTo:bOOLValue withCallback:v7 onCancel:v6];
 }
 
-- (void)_presentRebootAlertForStateTransitionTo:(BOOL)a3 withCallback:(id)a4 onCancel:(id)a5
+- (void)_presentRebootAlertForStateTransitionTo:(BOOL)to withCallback:(id)callback onCancel:(id)cancel
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  toCopy = to;
+  callbackCopy = callback;
+  cancelCopy = cancel;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = v10;
-  if (v6)
+  if (toCopy)
   {
     v12 = @"PROCESSOR_TRACE_ENABLE_ALERT";
   }
@@ -107,8 +107,8 @@
   v25[1] = 3221225472;
   v25[2] = sub_19B74;
   v25[3] = &unk_3D650;
-  v26 = v8;
-  v16 = v8;
+  v26 = callbackCopy;
+  v16 = callbackCopy;
   v17 = [UIAlertAction actionWithTitle:v15 style:2 handler:v25];
   [v13 addAction:v17];
 
@@ -118,8 +118,8 @@
   v23[1] = 3221225472;
   v23[2] = sub_19C10;
   v23[3] = &unk_3D650;
-  v24 = v9;
-  v20 = v9;
+  v24 = cancelCopy;
+  v20 = cancelCopy;
   v21 = [UIAlertAction actionWithTitle:v19 style:0 handler:v23];
   [v13 addAction:v21];
 

@@ -1,9 +1,9 @@
 @interface CSFallbackAudioSessionReleaseProvidingProxy
 - (CSClientXPCConnection)xpcConnection;
-- (CSFallbackAudioSessionReleaseProvidingProxy)initWithXPCConnection:(id)a3;
-- (void)_handleDeactivateAudioSessionRequestMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
+- (CSFallbackAudioSessionReleaseProvidingProxy)initWithXPCConnection:(id)connection;
+- (void)_handleDeactivateAudioSessionRequestMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client;
 @end
 
 @implementation CSFallbackAudioSessionReleaseProvidingProxy
@@ -15,37 +15,37 @@
   return WeakRetained;
 }
 
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error
 {
-  connection = a4;
-  v9 = a6;
-  reply = xpc_dictionary_create_reply(a3);
-  xpc_dictionary_set_BOOL(reply, "result", a5);
-  if (v9)
+  connection = client;
+  errorCopy = error;
+  reply = xpc_dictionary_create_reply(reply);
+  xpc_dictionary_set_BOOL(reply, "result", result);
+  if (errorCopy)
   {
-    v11 = [v9 domain];
-    xpc_dictionary_set_string(reply, "resultErrorDomain", [v11 UTF8String]);
+    domain = [errorCopy domain];
+    xpc_dictionary_set_string(reply, "resultErrorDomain", [domain UTF8String]);
 
-    xpc_dictionary_set_int64(reply, "resultErrorCode", [v9 code]);
+    xpc_dictionary_set_int64(reply, "resultErrorCode", [errorCopy code]);
   }
 
   xpc_connection_send_message(connection, reply);
 }
 
-- (void)_handleDeactivateAudioSessionRequestMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleDeactivateAudioSessionRequestMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a5;
-  v9 = a3;
-  int64 = xpc_dictionary_get_int64(a4, "option");
+  clientCopy = client;
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(body, "option");
   v11 = +[CSSpeechManager sharedManager];
-  v12 = [v11 fetchFallbackAudioSessionReleaseProvider];
+  fetchFallbackAudioSessionReleaseProvider = [v11 fetchFallbackAudioSessionReleaseProvider];
 
-  if (v12)
+  if (fetchFallbackAudioSessionReleaseProvider)
   {
     v16 = 0;
-    v13 = [v12 fallbackDeactivateAudioSession:int64 error:&v16];
+    v13 = [fetchFallbackAudioSessionReleaseProvider fallbackDeactivateAudioSession:int64 error:&v16];
     v14 = v16;
-    [(CSFallbackAudioSessionReleaseProvidingProxy *)self _sendReply:v9 client:v8 result:v13 error:v14];
+    [(CSFallbackAudioSessionReleaseProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:v13 error:v14];
   }
 
   else
@@ -58,19 +58,19 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s CSFallbackAudioSessionReleaseProvider is nil from CSSpeechManager", buf, 0xCu);
     }
 
-    [(CSFallbackAudioSessionReleaseProvidingProxy *)self _sendReply:v9 client:v8 result:0 error:0];
+    [(CSFallbackAudioSessionReleaseProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v9, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   if (int64 == 1)
   {
-    [(CSFallbackAudioSessionReleaseProvidingProxy *)self _handleDeactivateAudioSessionRequestMessage:v8 messageBody:v9 client:v10];
+    [(CSFallbackAudioSessionReleaseProvidingProxy *)self _handleDeactivateAudioSessionRequestMessage:messageCopy messageBody:bodyCopy client:clientCopy];
   }
 
   else
@@ -88,16 +88,16 @@
   }
 }
 
-- (CSFallbackAudioSessionReleaseProvidingProxy)initWithXPCConnection:(id)a3
+- (CSFallbackAudioSessionReleaseProvidingProxy)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CSFallbackAudioSessionReleaseProvidingProxy;
   v5 = [(CSFallbackAudioSessionReleaseProvidingProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSFallbackAudioSessionReleaseProvidingProxy *)v5 setXpcConnection:v4];
+    [(CSFallbackAudioSessionReleaseProvidingProxy *)v5 setXpcConnection:connectionCopy];
   }
 
   return v6;

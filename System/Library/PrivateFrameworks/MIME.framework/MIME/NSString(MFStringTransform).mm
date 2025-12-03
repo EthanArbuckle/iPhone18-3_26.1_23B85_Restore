@@ -11,13 +11,13 @@
   if (!v4 || !*(v4 + 1))
   {
 LABEL_8:
-    v7 = a1;
+    selfCopy = self;
     goto LABEL_9;
   }
 
-  if ([a1 length])
+  if ([self length])
   {
-    if ([a1 length] < 0xF4241)
+    if ([self length] < 0xF4241)
     {
       v9 = objc_autoreleasePoolPush();
       v13[0] = MEMORY[0x1E69E9820];
@@ -25,19 +25,19 @@ LABEL_8:
       v13[2] = __49__NSString_MFStringTransform__mf_applyTransform___block_invoke;
       v13[3] = &unk_1E8455100;
       v14 = v5;
-      v10 = withMutableCharactersAndPadding(a1, v13);
+      v10 = withMutableCharactersAndPadding(self, v13);
       v11 = v10;
       if (v10)
       {
-        v12 = v10;
+        selfCopy2 = v10;
       }
 
       else
       {
-        v12 = a1;
+        selfCopy2 = self;
       }
 
-      v7 = v12;
+      selfCopy = selfCopy2;
 
       objc_autoreleasePoolPop(v9);
       goto LABEL_9;
@@ -52,10 +52,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v7 = &stru_1F4F33820;
+  selfCopy = &stru_1F4F33820;
 LABEL_9:
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)mf_applyTransform:()MFStringTransform .cold.1()

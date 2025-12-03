@@ -1,20 +1,20 @@
 @interface UIKeyboardImpl_TFExtras
-- (_NSRange)_selectedTextRangeForInputDelegate:(id)a3;
-- (id)_textInInputDelegate:(id)a3;
+- (_NSRange)_selectedTextRangeForInputDelegate:(id)delegate;
+- (id)_textInInputDelegate:(id)delegate;
 @end
 
 @implementation UIKeyboardImpl_TFExtras
 
-- (_NSRange)_selectedTextRangeForInputDelegate:(id)a3
+- (_NSRange)_selectedTextRangeForInputDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [v3 selectedTextRange];
-  v5 = [v3 beginningOfDocument];
-  v6 = [v4 start];
-  v7 = [v3 offsetFromPosition:v5 toPosition:v6];
+  delegateCopy = delegate;
+  selectedTextRange = [delegateCopy selectedTextRange];
+  beginningOfDocument = [delegateCopy beginningOfDocument];
+  start = [selectedTextRange start];
+  v7 = [delegateCopy offsetFromPosition:beginningOfDocument toPosition:start];
 
-  v8 = [v4 end];
-  v9 = [v3 offsetFromPosition:v5 toPosition:v8];
+  v8 = [selectedTextRange end];
+  v9 = [delegateCopy offsetFromPosition:beginningOfDocument toPosition:v8];
 
   v10 = v7;
   v11 = v9 - v7;
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (id)_textInInputDelegate:(id)a3
+- (id)_textInInputDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [v3 beginningOfDocument];
-  v5 = [v3 endOfDocument];
-  v6 = [v3 textRangeFromPosition:v4 toPosition:v5];
-  v7 = [v3 textInRange:v6];
+  delegateCopy = delegate;
+  beginningOfDocument = [delegateCopy beginningOfDocument];
+  endOfDocument = [delegateCopy endOfDocument];
+  v6 = [delegateCopy textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
+  v7 = [delegateCopy textInRange:v6];
 
   return v7;
 }

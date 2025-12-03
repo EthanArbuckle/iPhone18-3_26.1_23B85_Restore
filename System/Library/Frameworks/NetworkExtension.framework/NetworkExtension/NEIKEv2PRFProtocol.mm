@@ -1,7 +1,7 @@
 @interface NEIKEv2PRFProtocol
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2PRFProtocol)initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2PRFProtocol)initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unsigned)nonceSize;
 - (void)ccDigest;
@@ -13,8 +13,8 @@
 
 - (unsigned)nonceSize
 {
-  v2 = [(NEIKEv2PRFProtocol *)self type];
-  if (v2 == 7)
+  type = [(NEIKEv2PRFProtocol *)self type];
+  if (type == 7)
   {
     v3 = 32;
   }
@@ -24,7 +24,7 @@
     v3 = 16;
   }
 
-  if (v2 == 6)
+  if (type == 6)
   {
     return 24;
   }
@@ -35,24 +35,24 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NEIKEv2PRFProtocol *)self type];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  type = [(NEIKEv2PRFProtocol *)self type];
 
-  return [v4 initWithType:v5];
+  return [v4 initWithType:type];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2PRFProtocol *)self type];
-    v7 = [v5 type];
+    v5 = equalCopy;
+    type = [(NEIKEv2PRFProtocol *)self type];
+    type2 = [v5 type];
 
-    v8 = v6 == v7;
+    v8 = type == type2;
   }
 
   else
@@ -65,21 +65,21 @@
 
 - (id)description
 {
-  v3 = [(NEIKEv2PRFProtocol *)self type];
-  if (v3 >= 9)
+  type = [(NEIKEv2PRFProtocol *)self type];
+  if (type >= 9)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown[%llu]", -[NEIKEv2PRFProtocol type](self, "type")];
   }
 
   else
   {
-    v4 = off_1E7F07E98[v3];
+    v4 = off_1E7F07E98[type];
   }
 
   return v4;
 }
 
-- (NEIKEv2PRFProtocol)initWithType:(unint64_t)a3
+- (NEIKEv2PRFProtocol)initWithType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2PRFProtocol;
@@ -87,7 +87,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = v4;
   }
 

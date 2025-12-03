@@ -8,7 +8,7 @@
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
 
   v3 = v1(v2);
 
@@ -41,7 +41,7 @@
 
 - (uint64_t)NSNumber
 {
-  v3 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v3 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a2)
   {
     type metadata accessor for NSObject(0, &lazy cache variable for type metadata for NSNumber);

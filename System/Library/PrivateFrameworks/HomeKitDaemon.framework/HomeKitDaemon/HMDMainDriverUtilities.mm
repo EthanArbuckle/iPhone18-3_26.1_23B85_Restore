@@ -1,11 +1,11 @@
 @interface HMDMainDriverUtilities
-+ (void)mainDriver:(id)a3 finishDelayedHomeManager:(id)a4;
++ (void)mainDriver:(id)driver finishDelayedHomeManager:(id)manager;
 - (HMDMainDriverUtilities)init;
 @end
 
 @implementation HMDMainDriverUtilities
 
-+ (void)mainDriver:(id)a3 finishDelayedHomeManager:(id)a4
++ (void)mainDriver:(id)driver finishDelayedHomeManager:(id)manager
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();

@@ -6,7 +6,7 @@
 + (id)languageCode;
 + (id)triggerPhraseChoiceHS;
 + (id)triggerPhraseChoiceHSJS;
-+ (void)setAssistantEnabled:(BOOL)a3 alertPresenter:(id)a4 confirmationAction:(id)a5 alertPresentationCompletion:(id)a6;
++ (void)setAssistantEnabled:(BOOL)enabled alertPresenter:(id)presenter confirmationAction:(id)action alertPresentationCompletion:(id)completion;
 @end
 
 @implementation AssistantBridgeSettingsUtilities
@@ -14,33 +14,33 @@
 + (id)languageCode
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 languageCode];
+  languageCode = [v2 languageCode];
 
-  if (!v3)
+  if (!languageCode)
   {
     v4 = +[AFPreferences sharedPreferences];
-    v3 = [v4 bestSupportedLanguageCodeForLanguageCode:0];
+    languageCode = [v4 bestSupportedLanguageCodeForLanguageCode:0];
   }
 
-  return v3;
+  return languageCode;
 }
 
 + (BOOL)isCompactVoiceTriggerAvailable
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 nanoJSSupported];
+  nanoJSSupported = [v2 nanoJSSupported];
 
-  return v3;
+  return nanoJSSupported;
 }
 
 + (id)triggerPhraseChoiceHSJS
 {
-  v2 = [a1 languageCode];
+  languageCode = [self languageCode];
   v3 = +[VTPreferences sharedPreferences];
-  v4 = [v3 localizedTriggerPhraseForLanguageCode:v2];
+  v4 = [v3 localizedTriggerPhraseForLanguageCode:languageCode];
 
   v5 = +[VTPreferences sharedPreferences];
-  v6 = [v5 localizedCompactTriggerPhraseForLanguageCode:v2];
+  v6 = [v5 localizedCompactTriggerPhraseForLanguageCode:languageCode];
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"TRIGGER_PHRASE_CHOICE_TWO_PHRASES" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
@@ -52,8 +52,8 @@
 + (id)triggerPhraseChoiceHS
 {
   v3 = +[VTPreferences sharedPreferences];
-  v4 = [a1 languageCode];
-  v5 = [v3 localizedTriggerPhraseForLanguageCode:v4];
+  languageCode = [self languageCode];
+  v5 = [v3 localizedTriggerPhraseForLanguageCode:languageCode];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"TRIGGER_PHRASE_CHOICE_ONE_PHRASE" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
@@ -68,15 +68,15 @@
   if ([v2 nanoAssistantEnabled])
   {
     v3 = +[AFPreferences sharedPreferences];
-    v4 = [v3 nanoPhraseSpotterEnabled];
+    nanoPhraseSpotterEnabled = [v3 nanoPhraseSpotterEnabled];
   }
 
   else
   {
-    v4 = 0;
+    nanoPhraseSpotterEnabled = 0;
   }
 
-  return v4;
+  return nanoPhraseSpotterEnabled;
 }
 
 + (BOOL)raiseToSpeakEnabled
@@ -85,15 +85,15 @@
   if ([v2 nanoAssistantEnabled])
   {
     v3 = +[AFPreferences sharedPreferences];
-    v4 = [v3 nanoRaiseToSpeakEnabled];
+    nanoRaiseToSpeakEnabled = [v3 nanoRaiseToSpeakEnabled];
   }
 
   else
   {
-    v4 = 0;
+    nanoRaiseToSpeakEnabled = 0;
   }
 
-  return v4;
+  return nanoRaiseToSpeakEnabled;
 }
 
 + (BOOL)digitalCrownEnabled
@@ -102,27 +102,27 @@
   if ([v2 nanoAssistantEnabled])
   {
     v3 = +[AFPreferences sharedPreferences];
-    v4 = [v3 nanoCrownActivationEnabled];
+    nanoCrownActivationEnabled = [v3 nanoCrownActivationEnabled];
   }
 
   else
   {
-    v4 = 0;
+    nanoCrownActivationEnabled = 0;
   }
 
-  return v4;
+  return nanoCrownActivationEnabled;
 }
 
-+ (void)setAssistantEnabled:(BOOL)a3 alertPresenter:(id)a4 confirmationAction:(id)a5 alertPresentationCompletion:(id)a6
++ (void)setAssistantEnabled:(BOOL)enabled alertPresenter:(id)presenter confirmationAction:(id)action alertPresentationCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v34 = a5;
-  v35 = a6;
+  enabledCopy = enabled;
+  presenterCopy = presenter;
+  actionCopy = action;
+  completionCopy = completion;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = v10;
-  v36 = v8;
-  if (v8)
+  v36 = enabledCopy;
+  if (enabledCopy)
   {
     v12 = [v10 localizedStringForKey:@"ASSISTANT_ENABLE_TITLE" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
 
@@ -142,11 +142,11 @@
     v16 = [v18 localizedStringForKey:@"ASSISTANT_DISABLE_CONFIRMATION" value:&stru_10AF0 table:@"AssistantBridgeSettings"];
 
     v19 = +[AFPreferences sharedPreferences];
-    v20 = [v19 nanoDictationEnabled];
+    nanoDictationEnabled = [v19 nanoDictationEnabled];
 
     v21 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = v21;
-    if (v20)
+    if (nanoDictationEnabled)
     {
       v22 = @"ASSISTANT_DISABLE_WARNING_DICTATION_ENABLED";
     }
@@ -168,13 +168,13 @@
   v39[1] = 3221225472;
   v39[2] = sub_72D4;
   v39[3] = &unk_10648;
-  v41 = v34;
-  v24 = v35;
+  v41 = actionCopy;
+  v24 = completionCopy;
   v43 = v36;
   v42 = v24;
-  v40 = v9;
-  v25 = v9;
-  v26 = v34;
+  v40 = presenterCopy;
+  v25 = presenterCopy;
+  v26 = actionCopy;
   v27 = [UIAlertAction actionWithTitle:v16 style:v17 handler:v39];
   [v23 addAction:v27];
 

@@ -1,50 +1,50 @@
 @interface SharingXPCHelperGroupContactIcon
-- (SharingXPCHelperGroupContactIcon)initWithCoder:(id)a3;
-- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)a3 icon:(CGImage *)a4 atIndex:(int64_t)a5 cacheLookupKey:(id)a6;
-- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)a3 iconData:(id)a4 atIndex:(int64_t)a5 cacheLookupKey:(id)a6;
+- (SharingXPCHelperGroupContactIcon)initWithCoder:(id)coder;
+- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)contacts icon:(CGImage *)icon atIndex:(int64_t)index cacheLookupKey:(id)key;
+- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)contacts iconData:(id)data atIndex:(int64_t)index cacheLookupKey:(id)key;
 - (id)contactIDs;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SharingXPCHelperGroupContactIcon
 
-- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)a3 iconData:(id)a4 atIndex:(int64_t)a5 cacheLookupKey:(id)a6
+- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)contacts iconData:(id)data atIndex:(int64_t)index cacheLookupKey:(id)key
 {
-  v11 = a3;
+  contactsCopy = contacts;
   v15.receiver = self;
   v15.super_class = SharingXPCHelperGroupContactIcon;
-  v12 = [(SharingXPCHelperContactIcon *)&v15 initWithContact:0 iconData:a4 atIndex:a5 cacheLookupKey:a6];
+  v12 = [(SharingXPCHelperContactIcon *)&v15 initWithContact:0 iconData:data atIndex:index cacheLookupKey:key];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contacts, a3);
+    objc_storeStrong(&v12->_contacts, contacts);
   }
 
   return v13;
 }
 
-- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)a3 icon:(CGImage *)a4 atIndex:(int64_t)a5 cacheLookupKey:(id)a6
+- (SharingXPCHelperGroupContactIcon)initWithContacts:(id)contacts icon:(CGImage *)icon atIndex:(int64_t)index cacheLookupKey:(id)key
 {
-  v11 = a3;
+  contactsCopy = contacts;
   v15.receiver = self;
   v15.super_class = SharingXPCHelperGroupContactIcon;
-  v12 = [(SharingXPCHelperContactIcon *)&v15 initWithContact:0 icon:a4 atIndex:a5 cacheLookupKey:a6];
+  v12 = [(SharingXPCHelperContactIcon *)&v15 initWithContact:0 icon:icon atIndex:index cacheLookupKey:key];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contacts, a3);
+    objc_storeStrong(&v12->_contacts, contacts);
   }
 
   return v13;
 }
 
-- (SharingXPCHelperGroupContactIcon)initWithCoder:(id)a3
+- (SharingXPCHelperGroupContactIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SharingXPCHelperGroupContactIcon;
-  v5 = [(SharingXPCHelperContactIcon *)&v7 initWithCoder:v4];
+  v5 = [(SharingXPCHelperContactIcon *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
     objc_opt_class();
@@ -54,16 +54,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SharingXPCHelperGroupContactIcon;
-  [(SharingXPCHelperContactIcon *)&v6 encodeWithCoder:v4];
+  [(SharingXPCHelperContactIcon *)&v6 encodeWithCoder:coderCopy];
   contacts = self->_contacts;
   if (contacts)
   {
-    [v4 encodeObject:contacts forKey:@"SharingXPCHelperGroupContactIcon-Contacts"];
+    [coderCopy encodeObject:contacts forKey:@"SharingXPCHelperGroupContactIcon-Contacts"];
   }
 }
 
@@ -74,8 +74,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SharingXPCHelperGroupContactIcon *)self contacts];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  contacts = [(SharingXPCHelperGroupContactIcon *)self contacts];
+  v5 = [contacts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -86,14 +86,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contacts);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [contacts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -107,7 +107,7 @@
 - (id)description
 {
   contacts = self->_contacts;
-  v4 = [(SharingXPCHelperContactIcon *)self iconData];
+  iconData = [(SharingXPCHelperContactIcon *)self iconData];
   [(SharingXPCHelperContactIcon *)self iconIndex];
   NSAppendPrintF();
   v5 = 0;

@@ -1,8 +1,8 @@
 @interface TSCH3DTextureTiling
 + (id)tiling;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DTextureTiling)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -10,7 +10,7 @@
 
 + (id)tiling
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -29,18 +29,18 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v4, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_allocWithZone_(v4, v5, v6, v7, v8, zone);
 
   return objc_msgSend_init(v9, v10, v11, v12, v13);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }

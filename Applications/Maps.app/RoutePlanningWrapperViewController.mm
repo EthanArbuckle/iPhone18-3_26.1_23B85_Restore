@@ -1,9 +1,9 @@
 @interface RoutePlanningWrapperViewController
 - (RoutePlanningDataCoordination)dataCoordinator;
-- (RoutePlanningWrapperViewController)initWithDataCoordination:(id)a3;
-- (void)_setupChildViewControllerIfNeeded:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)headerViewTapped:(id)a3;
+- (RoutePlanningWrapperViewController)initWithDataCoordination:(id)coordination;
+- (void)_setupChildViewControllerIfNeeded:(id)needed;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)headerViewTapped:(id)tapped;
 - (void)updateHeaderTitle;
 - (void)viewDidLoad;
 @end
@@ -17,65 +17,65 @@
   return WeakRetained;
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = [(ContaineeViewController *)self containeeDelegate:a3];
+  v5 = [(ContaineeViewController *)self containeeDelegate:tapped];
   [v5 containeeViewControllerGoToPreviousState:self withSender:self];
 }
 
-- (void)_setupChildViewControllerIfNeeded:(id)a3
+- (void)_setupChildViewControllerIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(RoutePlanningWrapperViewController *)self isViewLoaded])
   {
-    v5 = [v4 parentViewController];
+    parentViewController = [neededCopy parentViewController];
 
-    if (v4)
+    if (neededCopy)
     {
-      if (v5 != self)
+      if (parentViewController != self)
       {
-        [(RoutePlanningWrapperViewController *)self addChildViewController:v4];
-        v6 = [(ContaineeViewController *)self contentView];
-        v7 = [v4 view];
-        [v6 addSubview:v7];
+        [(RoutePlanningWrapperViewController *)self addChildViewController:neededCopy];
+        contentView = [(ContaineeViewController *)self contentView];
+        view = [neededCopy view];
+        [contentView addSubview:view];
 
-        v8 = [v4 view];
-        [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view2 = [neededCopy view];
+        [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v29 = [v4 view];
-        v27 = [v29 leadingAnchor];
-        v28 = [(ContaineeViewController *)self contentView];
-        v26 = [v28 leadingAnchor];
-        v25 = [v27 constraintEqualToAnchor:v26];
+        view3 = [neededCopy view];
+        leadingAnchor = [view3 leadingAnchor];
+        contentView2 = [(ContaineeViewController *)self contentView];
+        leadingAnchor2 = [contentView2 leadingAnchor];
+        v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v30[0] = v25;
-        v24 = [v4 view];
-        v22 = [v24 trailingAnchor];
-        v23 = [(ContaineeViewController *)self contentView];
-        v21 = [v23 trailingAnchor];
-        v20 = [v22 constraintEqualToAnchor:v21];
+        view4 = [neededCopy view];
+        trailingAnchor = [view4 trailingAnchor];
+        contentView3 = [(ContaineeViewController *)self contentView];
+        trailingAnchor2 = [contentView3 trailingAnchor];
+        v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v30[1] = v20;
-        v19 = [v4 view];
-        v17 = [v19 topAnchor];
-        v18 = [(ContaineeViewController *)self contentView];
-        v9 = [v18 topAnchor];
-        v10 = [v17 constraintEqualToAnchor:v9];
+        view5 = [neededCopy view];
+        topAnchor = [view5 topAnchor];
+        contentView4 = [(ContaineeViewController *)self contentView];
+        topAnchor2 = [contentView4 topAnchor];
+        v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v30[2] = v10;
-        v11 = [v4 view];
-        v12 = [v11 bottomAnchor];
-        v13 = [(ContaineeViewController *)self contentView];
-        v14 = [v13 bottomAnchor];
-        v15 = [v12 constraintEqualToAnchor:v14];
+        view6 = [neededCopy view];
+        bottomAnchor = [view6 bottomAnchor];
+        contentView5 = [(ContaineeViewController *)self contentView];
+        bottomAnchor2 = [contentView5 bottomAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v30[3] = v15;
         v16 = [NSArray arrayWithObjects:v30 count:4];
         [NSLayoutConstraint activateConstraints:v16];
 
-        [v4 didMoveToParentViewController:self];
+        [neededCopy didMoveToParentViewController:self];
       }
     }
   }
@@ -83,15 +83,15 @@
 
 - (void)updateHeaderTitle
 {
-  v3 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+  titleHeaderView = [(RoutePlanningWrapperViewController *)self titleHeaderView];
 
-  if (v3)
+  if (titleHeaderView)
   {
-    v7 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v4 = [v7 navigationItem];
-    v5 = [v4 title];
-    v6 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v6 setTitle:v5];
+    wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    navigationItem = [wrappedViewController navigationItem];
+    title = [navigationItem title];
+    titleHeaderView2 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView2 setTitle:title];
   }
 }
 
@@ -100,9 +100,9 @@
   v40.receiver = self;
   v40.super_class = RoutePlanningWrapperViewController;
   [(ContaineeViewController *)&v40 viewDidLoad];
-  v3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  wrappedViewController = [(RoutePlanningWrapperViewController *)self wrappedViewController];
 
-  if (!v3)
+  if (!wrappedViewController)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -136,75 +136,75 @@
     v4 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(RoutePlanningWrapperViewController *)self setTitleHeaderView:v4];
 
-    v5 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleHeaderView = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v6 setDelegate:self];
+    titleHeaderView2 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView2 setDelegate:self];
 
-    v7 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v7 setHairLineAlpha:0.0];
+    titleHeaderView3 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView3 setHairLineAlpha:0.0];
 
-    v8 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v8 setHeaderSize:2];
+    titleHeaderView4 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView4 setHeaderSize:2];
 
-    v9 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-    v10 = [v9 navigationItem];
-    v11 = [v10 title];
-    v12 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v12 setTitle:v11];
+    wrappedViewController2 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+    navigationItem = [wrappedViewController2 navigationItem];
+    title = [navigationItem title];
+    titleHeaderView5 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [titleHeaderView5 setTitle:title];
 
-    v13 = [(ContaineeViewController *)self headerView];
-    v14 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    [v13 addSubview:v14];
+    headerView = [(ContaineeViewController *)self headerView];
+    titleHeaderView6 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    [headerView addSubview:titleHeaderView6];
 
-    v39 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    v37 = [v39 leadingAnchor];
-    v38 = [(ContaineeViewController *)self headerView];
-    v36 = [v38 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    titleHeaderView7 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    leadingAnchor = [titleHeaderView7 leadingAnchor];
+    headerView2 = [(ContaineeViewController *)self headerView];
+    leadingAnchor2 = [headerView2 leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41[0] = v35;
-    v34 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    v32 = [v34 trailingAnchor];
-    v33 = [(ContaineeViewController *)self headerView];
-    v31 = [v33 trailingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    titleHeaderView8 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    trailingAnchor = [titleHeaderView8 trailingAnchor];
+    headerView3 = [(ContaineeViewController *)self headerView];
+    trailingAnchor2 = [headerView3 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v41[1] = v30;
-    v29 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    v28 = [v29 topAnchor];
-    v15 = [(ContaineeViewController *)self headerView];
-    v16 = [v15 topAnchor];
-    v17 = [v28 constraintEqualToAnchor:v16];
+    titleHeaderView9 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    topAnchor = [titleHeaderView9 topAnchor];
+    headerView4 = [(ContaineeViewController *)self headerView];
+    topAnchor2 = [headerView4 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v41[2] = v17;
-    v18 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
-    v19 = [v18 bottomAnchor];
-    v20 = [(ContaineeViewController *)self headerView];
-    v21 = [v20 bottomAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    titleHeaderView10 = [(RoutePlanningWrapperViewController *)self titleHeaderView];
+    bottomAnchor = [titleHeaderView10 bottomAnchor];
+    headerView5 = [(ContaineeViewController *)self headerView];
+    bottomAnchor2 = [headerView5 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v41[3] = v22;
     v23 = [NSArray arrayWithObjects:v41 count:4];
     [NSLayoutConstraint activateConstraints:v23];
   }
 
-  v24 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
-  [(RoutePlanningWrapperViewController *)self _setupChildViewControllerIfNeeded:v24];
+  wrappedViewController3 = [(RoutePlanningWrapperViewController *)self wrappedViewController];
+  [(RoutePlanningWrapperViewController *)self _setupChildViewControllerIfNeeded:wrappedViewController3];
 }
 
-- (RoutePlanningWrapperViewController)initWithDataCoordination:(id)a3
+- (RoutePlanningWrapperViewController)initWithDataCoordination:(id)coordination
 {
-  v4 = a3;
+  coordinationCopy = coordination;
   v10.receiver = self;
   v10.super_class = RoutePlanningWrapperViewController;
   v5 = [(RoutePlanningWrapperViewController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataCoordinator, v4);
-    v7 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v7 setPresentedModally:1];
+    objc_storeWeak(&v5->_dataCoordinator, coordinationCopy);
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v8 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v8 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
   }
 
   return v6;

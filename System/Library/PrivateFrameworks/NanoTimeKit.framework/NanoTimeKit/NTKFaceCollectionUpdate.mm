@@ -1,20 +1,20 @@
 @interface NTKFaceCollectionUpdate
-+ (id)updateWithType:(int64_t)a3 uuid:(id)a4 block:(id)a5;
++ (id)updateWithType:(int64_t)type uuid:(id)uuid block:(id)block;
 @end
 
 @implementation NTKFaceCollectionUpdate
 
-+ (id)updateWithType:(int64_t)a3 uuid:(id)a4 block:(id)a5
++ (id)updateWithType:(int64_t)type uuid:(id)uuid block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = objc_alloc_init(a1);
+  uuidCopy = uuid;
+  blockCopy = block;
+  v10 = objc_alloc_init(self);
   v11 = v10[2];
-  v10[1] = a3;
-  v10[2] = v8;
-  v12 = v8;
+  v10[1] = type;
+  v10[2] = uuidCopy;
+  v12 = uuidCopy;
 
-  v13 = [v9 copy];
+  v13 = [blockCopy copy];
   v14 = v10[3];
   v10[3] = v13;
 

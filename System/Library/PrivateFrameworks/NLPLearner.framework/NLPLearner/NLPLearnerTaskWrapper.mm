@@ -1,6 +1,6 @@
 @interface NLPLearnerTaskWrapper
-+ (id)privacyIdentifierForTask:(int64_t)a3;
-+ (int64_t)taskFromRecipe:(id)a3;
++ (id)privacyIdentifierForTask:(int64_t)task;
++ (int64_t)taskFromRecipe:(id)recipe;
 + (void)initialize;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog_2 = os_log_create("com.apple.NLP", "NLPLearnerTaskWrapper");
 
@@ -16,11 +16,11 @@
   }
 }
 
-+ (int64_t)taskFromRecipe:(id)a3
++ (int64_t)taskFromRecipe:(id)recipe
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:@"emoji"] & 1) == 0)
+  recipeCopy = recipe;
+  v4 = recipeCopy;
+  if (recipeCopy && ([recipeCopy isEqualToString:@"emoji"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"lm"])
     {
@@ -62,12 +62,12 @@
   return v5;
 }
 
-+ (id)privacyIdentifierForTask:(int64_t)a3
++ (id)privacyIdentifierForTask:(int64_t)task
 {
   v4 = sLog_2;
   if (os_log_type_enabled(sLog_2, OS_LOG_TYPE_ERROR))
   {
-    [(NLPLearnerTaskWrapper *)a3 privacyIdentifierForTask:v4];
+    [(NLPLearnerTaskWrapper *)task privacyIdentifierForTask:v4];
   }
 
   return &stru_286C38420;

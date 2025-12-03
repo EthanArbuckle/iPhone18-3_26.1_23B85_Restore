@@ -1,21 +1,21 @@
 @interface _MLCCPUReduction
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-- (_MLCCPUReduction)initWithDevice:(id)a3 reduceType:(int)a4 dimensions:(id)a5;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (_MLCCPUReduction)initWithDevice:(id)device reduceType:(int)type dimensions:(id)dimensions;
 @end
 
 @implementation _MLCCPUReduction
 
-- (_MLCCPUReduction)initWithDevice:(id)a3 reduceType:(int)a4 dimensions:(id)a5
+- (_MLCCPUReduction)initWithDevice:(id)device reduceType:(int)type dimensions:(id)dimensions
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  deviceCopy = device;
   v9 = [MEMORY[0x277CBEBF8] mutableCopy];
   bzero(v24, 0x218uLL);
-  if (a4 <= 4)
+  if (type <= 4)
   {
-    if (a4 > 2)
+    if (type > 2)
     {
-      if (a4 == 3)
+      if (type == 3)
       {
 LABEL_20:
         v11 = [MEMORY[0x277CBEA90] dataWithBytes:v24 length:536];
@@ -41,9 +41,9 @@ LABEL_20:
         v18 = [v9 copy];
         v22.receiver = self;
         v22.super_class = _MLCCPUReduction;
-        self = [(_MLCCPULayer *)&v22 initWithDevice:v8 deviceOps:v18];
+        self = [(_MLCCPULayer *)&v22 initWithDevice:deviceCopy deviceOps:v18];
 
-        v19 = self;
+        selfCopy = self;
         goto LABEL_23;
       }
 
@@ -53,13 +53,13 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v10 = 6;
       goto LABEL_19;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v10 = 4;
       goto LABEL_19;
@@ -68,9 +68,9 @@ LABEL_19:
 
   else
   {
-    if (a4 <= 6)
+    if (type <= 6)
     {
-      if (a4 == 5)
+      if (type == 5)
       {
         v10 = 2;
       }
@@ -83,7 +83,7 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    switch(a4)
+    switch(type)
     {
       case 7:
         v10 = 9;
@@ -100,53 +100,53 @@ LABEL_19:
   v11 = +[MLCLog framework];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [_MLCCPUReduction initWithDevice:a2 reduceType:a4 dimensions:v11];
+    [_MLCCPUReduction initWithDevice:a2 reduceType:type dimensions:v11];
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_23:
 
   v20 = *MEMORY[0x277D85DE8];
-  return v19;
+  return selfCopy;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v8 = a5;
-  v35 = a6;
-  v36 = [a4 objectAtIndexedSubscript:0];
-  v9 = [v36 params];
-  v10 = [v9 bytes];
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v36 = [ops objectAtIndexedSubscript:0];
+  params = [v36 params];
+  bytes = [params bytes];
 
-  v11 = [v8 objectAtIndexedSubscript:0];
-  v12 = [v11 descriptor];
-  v13 = [v12 shape];
-  v14 = [v8 objectAtIndexedSubscript:0];
-  v15 = [v14 descriptor];
-  v16 = [v15 stride];
-  v37 = v8;
-  v17 = [v8 objectAtIndexedSubscript:0];
-  v18 = [v17 descriptor];
-  v34 = v10;
-  LODWORD(v8) = CPU_BuildBNNSNDArrayLastMajorDescriptor(v10, v13, v16, 0, [v18 dataType]);
+  v11 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v11 descriptor];
+  shape = [descriptor shape];
+  v14 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v14 descriptor];
+  stride = [descriptor2 stride];
+  v37 = tensorsCopy;
+  v17 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor3 = [v17 descriptor];
+  v34 = bytes;
+  LODWORD(tensorsCopy) = CPU_BuildBNNSNDArrayLastMajorDescriptor(bytes, shape, stride, 0, [descriptor3 dataType]);
 
-  if (!v8)
+  if (!tensorsCopy)
   {
     v32 = 0;
-    v19 = v35;
+    v19 = tensorCopy;
 LABEL_8:
     v28 = v36;
     v27 = v37;
     goto LABEL_9;
   }
 
-  v19 = v35;
-  v20 = [v35 descriptor];
-  v21 = [v20 shape];
-  v22 = [v35 descriptor];
-  v23 = [v22 stride];
-  v24 = [v35 descriptor];
-  MajorDescriptor = CPU_BuildBNNSNDArrayLastMajorDescriptor(v34 + 176, v21, v23, 0, [v24 dataType]);
+  v19 = tensorCopy;
+  descriptor4 = [tensorCopy descriptor];
+  shape2 = [descriptor4 shape];
+  descriptor5 = [tensorCopy descriptor];
+  stride2 = [descriptor5 stride];
+  descriptor6 = [tensorCopy descriptor];
+  MajorDescriptor = CPU_BuildBNNSNDArrayLastMajorDescriptor(v34 + 176, shape2, stride2, 0, [descriptor6 dataType]);
 
   if (!MajorDescriptor)
   {
@@ -164,15 +164,15 @@ LABEL_8:
     v29 = [v37 objectAtIndexedSubscript:0];
     [v36 setSourceStride:CPU_SetBatchStride(v29)];
 
-    [v36 setResultStride:CPU_SetBatchStride(v35)];
+    [v36 setResultStride:CPU_SetBatchStride(tensorCopy)];
   }
 
   objc_opt_class();
   v30 = objc_opt_new();
   [v36 setLayer:v30];
 
-  v31 = [v36 layer];
-  [v31 setFilter:v26];
+  layer = [v36 layer];
+  [layer setFilter:v26];
 
   v32 = 1;
 LABEL_9:

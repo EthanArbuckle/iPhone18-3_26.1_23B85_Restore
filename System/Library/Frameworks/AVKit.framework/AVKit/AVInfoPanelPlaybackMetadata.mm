@@ -1,16 +1,16 @@
 @interface AVInfoPanelPlaybackMetadata
-+ (BOOL)_closedCaptioningStatusForPlayerController:(id)a3;
-+ (double)_durationForPlayerController:(id)a3;
-+ (id)_metadataItemsForPlayerItem:(id)a3 withAsset:(id)a4;
-+ (id)playbackMetadataForPlayerController:(id)a3 fulfillment:(id)a4;
-+ (void)_loadAssetValues:(id)a3 into:(id)a4 completion:(id)a5;
-- (AVInfoPanelPlaybackMetadata)initWithPlaybackMetadata:(id)a3;
-- (AVInfoPanelPlaybackMetadata)initWithPlayerController:(id)a3;
++ (BOOL)_closedCaptioningStatusForPlayerController:(id)controller;
++ (double)_durationForPlayerController:(id)controller;
++ (id)_metadataItemsForPlayerItem:(id)item withAsset:(id)asset;
++ (id)playbackMetadataForPlayerController:(id)controller fulfillment:(id)fulfillment;
++ (void)_loadAssetValues:(id)values into:(id)into completion:(id)completion;
+- (AVInfoPanelPlaybackMetadata)initWithPlaybackMetadata:(id)metadata;
+- (AVInfoPanelPlaybackMetadata)initWithPlayerController:(id)controller;
 - (AVMetadataItem)episodeNumberItem;
 - (AVMetadataItem)seasonNumberItem;
 - (AVMetadataItem)secondaryTitleItem;
 - (AVMetadataItem)titleItem;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDateFormatter)_yearDateFormatter;
 - (NSString)episodeNumberString;
 - (NSString)releaseDateString;
@@ -19,8 +19,8 @@
 - (NSString)secondaryTitleString;
 - (NSString)titleString;
 - (id)_releaseDateStringItem;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)metadataItemForIdentifiers:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)metadataItemForIdentifiers:(id)identifiers;
 @end
 
 @implementation AVInfoPanelPlaybackMetadata
@@ -41,10 +41,10 @@
   return yearDateFormatter;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -54,13 +54,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AVInfoPanelPlaybackMetadata *)self metadataItems];
-      v6 = [(AVInfoPanelPlaybackMetadata *)v4 metadataItems];
-      if (v5 == v6)
+      metadataItems = [(AVInfoPanelPlaybackMetadata *)self metadataItems];
+      metadataItems2 = [(AVInfoPanelPlaybackMetadata *)equalCopy metadataItems];
+      if (metadataItems == metadataItems2)
       {
-        v8 = [(AVInfoPanelPlaybackMetadata *)self creationDate];
-        v9 = [(AVInfoPanelPlaybackMetadata *)v4 creationDate];
-        v7 = v8 == v9;
+        creationDate = [(AVInfoPanelPlaybackMetadata *)self creationDate];
+        creationDate2 = [(AVInfoPanelPlaybackMetadata *)equalCopy creationDate];
+        v7 = creationDate == creationDate2;
       }
 
       else
@@ -78,32 +78,32 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithPlaybackMetadata:self];
 }
 
-- (AVInfoPanelPlaybackMetadata)initWithPlaybackMetadata:(id)a3
+- (AVInfoPanelPlaybackMetadata)initWithPlaybackMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = AVInfoPanelPlaybackMetadata;
   v5 = [(AVInfoPanelPlaybackMetadata *)&v14 init];
   if (v5)
   {
-    v6 = [v4 metadataItems];
-    v7 = [v6 copy];
+    metadataItems = [metadataCopy metadataItems];
+    v7 = [metadataItems copy];
     metadataItems = v5->_metadataItems;
     v5->_metadataItems = v7;
 
-    [v4 duration];
+    [metadataCopy duration];
     v5->_duration = v9;
-    v5->_closedCaptioned = [v4 isClosedCaptioned];
-    v5->_livePlayback = [v4 isLivePlayback];
-    v10 = [v4 creationDate];
-    v11 = [v10 copy];
+    v5->_closedCaptioned = [metadataCopy isClosedCaptioned];
+    v5->_livePlayback = [metadataCopy isLivePlayback];
+    creationDate = [metadataCopy creationDate];
+    v11 = [creationDate copy];
     creationDate = v5->_creationDate;
     v5->_creationDate = v11;
   }
@@ -111,19 +111,19 @@
   return v5;
 }
 
-- (AVInfoPanelPlaybackMetadata)initWithPlayerController:(id)a3
+- (AVInfoPanelPlaybackMetadata)initWithPlayerController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 player];
-  v6 = [v5 currentItem];
+  controllerCopy = controller;
+  player = [controllerCopy player];
+  currentItem = [player currentItem];
 
-  v7 = [v6 asset];
+  asset = [currentItem asset];
   v15.receiver = self;
   v15.super_class = AVInfoPanelPlaybackMetadata;
   v8 = [(AVInfoPanelPlaybackMetadata *)&v15 init];
   if (v8)
   {
-    v9 = v7 == 0;
+    v9 = asset == 0;
   }
 
   else
@@ -133,26 +133,26 @@
 
   if (!v9)
   {
-    v10 = [objc_opt_class() _metadataItemsForPlayerItem:v6 withAsset:v7];
+    v10 = [objc_opt_class() _metadataItemsForPlayerItem:currentItem withAsset:asset];
     metadataItems = v8->_metadataItems;
     v8->_metadataItems = v10;
 
     creationDate = v8->_creationDate;
     v8->_creationDate = 0;
 
-    [objc_opt_class() _durationForPlayerController:v4];
+    [objc_opt_class() _durationForPlayerController:controllerCopy];
     v8->_duration = v13;
-    v8->_closedCaptioned = [objc_opt_class() _closedCaptioningStatusForPlayerController:v4];
-    v8->_livePlayback = [v4 hasLiveStreamingContent];
+    v8->_closedCaptioned = [objc_opt_class() _closedCaptioningStatusForPlayerController:controllerCopy];
+    v8->_livePlayback = [controllerCopy hasLiveStreamingContent];
   }
 
   return v8;
 }
 
-+ (BOOL)_closedCaptioningStatusForPlayerController:(id)a3
++ (BOOL)_closedCaptioningStatusForPlayerController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  [a3 legibleMediaSelectionOptions];
+  [controller legibleMediaSelectionOptions];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -172,8 +172,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) mediaType];
-        v10 = [v9 isEqualToString:v7];
+        mediaType = [*(*(&v13 + 1) + 8 * i) mediaType];
+        v10 = [mediaType isEqualToString:v7];
 
         if (v10)
         {
@@ -198,35 +198,35 @@ LABEL_11:
   return v11;
 }
 
-+ (double)_durationForPlayerController:(id)a3
++ (double)_durationForPlayerController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = 0.0;
-  if (([v3 hasLiveStreamingContent] & 1) == 0)
+  if (([controllerCopy hasLiveStreamingContent] & 1) == 0)
   {
-    [v3 contentDuration];
+    [controllerCopy contentDuration];
     v4 = v5;
   }
 
   return v4;
 }
 
-+ (id)_metadataItemsForPlayerItem:(id)a3 withAsset:(id)a4
++ (id)_metadataItemsForPlayerItem:(id)item withAsset:(id)asset
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  assetCopy = asset;
   v6 = MEMORY[0x1E695DF58];
-  v7 = a3;
-  v8 = [v6 preferredLanguages];
-  v9 = [v8 arrayByAddingObject:@"und"];
+  itemCopy = item;
+  preferredLanguages = [v6 preferredLanguages];
+  v9 = [preferredLanguages arrayByAddingObject:@"und"];
 
-  v10 = [v5 statusOfValueForKey:@"metadata" error:0];
+  v10 = [assetCopy statusOfValueForKey:@"metadata" error:0];
   v11 = MEMORY[0x1E695E0F0];
   if (v10 == 2)
   {
     v12 = MEMORY[0x1E6987FE0];
-    v13 = [v5 metadata];
-    v14 = [v12 metadataItemsFromArray:v13 filteredAndSortedAccordingToPreferredLanguages:v9];
+    metadata = [assetCopy metadata];
+    v14 = [v12 metadataItemsFromArray:metadata filteredAndSortedAccordingToPreferredLanguages:v9];
     v15 = v14;
     if (v14)
     {
@@ -255,9 +255,9 @@ LABEL_11:
   }
 
   v19 = MEMORY[0x1E6987FE0];
-  v20 = [v7 externalMetadata];
+  externalMetadata = [itemCopy externalMetadata];
 
-  v21 = [v19 metadataItemsFromArray:v20 filteredAndSortedAccordingToPreferredLanguages:v9];
+  v21 = [v19 metadataItemsFromArray:externalMetadata filteredAndSortedAccordingToPreferredLanguages:v9];
   v22 = v21;
   if (v21)
   {
@@ -276,24 +276,24 @@ LABEL_11:
   return v25;
 }
 
-+ (void)_loadAssetValues:(id)a3 into:(id)a4 completion:(id)a5
++ (void)_loadAssetValues:(id)values into:(id)into completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  valuesCopy = values;
+  intoCopy = into;
+  completionCopy = completion;
   v18[0] = @"creationDate";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__AVInfoPanelPlaybackMetadata__loadAssetValues_into_completion___block_invoke;
   v14[3] = &unk_1E720A068;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = valuesCopy;
+  v16 = intoCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = intoCopy;
+  v13 = valuesCopy;
   [v13 loadValuesAsynchronouslyForKeys:v10 completionHandler:v14];
 }
 
@@ -330,27 +330,27 @@ void __64__AVInfoPanelPlaybackMetadata__loadAssetValues_into_completion___block_
   (*(*(a1 + 56) + 16))();
 }
 
-+ (id)playbackMetadataForPlayerController:(id)a3 fulfillment:(id)a4
++ (id)playbackMetadataForPlayerController:(id)controller fulfillment:(id)fulfillment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithPlayerController:v6];
-  if (v7)
+  controllerCopy = controller;
+  fulfillmentCopy = fulfillment;
+  v8 = [[self alloc] initWithPlayerController:controllerCopy];
+  if (fulfillmentCopy)
   {
-    v9 = [v6 player];
-    v10 = [v9 currentItem];
-    v11 = [v10 asset];
+    player = [controllerCopy player];
+    currentItem = [player currentItem];
+    asset = [currentItem asset];
 
-    if (v11)
+    if (asset)
     {
       v12 = [v8 copy];
-      [a1 _loadAssetValues:v11 into:v12 completion:v7];
+      [self _loadAssetValues:asset into:v12 completion:fulfillmentCopy];
     }
 
     else
     {
       v12 = [MEMORY[0x1E695DFD8] set];
-      v7[2](v7, v8, v12);
+      fulfillmentCopy[2](fulfillmentCopy, v8, v12);
     }
   }
 
@@ -373,11 +373,11 @@ void __64__AVInfoPanelPlaybackMetadata__loadAssetValues_into_completion___block_
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:5];
 
   v9 = [(AVInfoPanelPlaybackMetadata *)self metadataItemForIdentifiers:v8];
-  v10 = [v9 dateValue];
-  v11 = [v9 stringValue];
-  v12 = [(AVInfoPanelPlaybackMetadata *)self creationDate];
-  v13 = [(AVInfoPanelPlaybackMetadata *)self _releaseDateStringItem];
-  v14 = [v13 stringValue];
+  dateValue = [v9 dateValue];
+  stringValue = [v9 stringValue];
+  creationDate = [(AVInfoPanelPlaybackMetadata *)self creationDate];
+  _releaseDateStringItem = [(AVInfoPanelPlaybackMetadata *)self _releaseDateStringItem];
+  stringValue2 = [_releaseDateStringItem stringValue];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -386,15 +386,15 @@ void __64__AVInfoPanelPlaybackMetadata__loadAssetValues_into_completion___block_
   aBlock[4] = self;
   v15 = _Block_copy(aBlock);
   v16 = v15;
-  if (v14)
+  if (stringValue2)
   {
-    v17 = v14;
+    v17 = stringValue2;
 LABEL_8:
     v19 = v17;
     goto LABEL_9;
   }
 
-  if (v10)
+  if (dateValue)
   {
     v18 = v15[2];
 LABEL_5:
@@ -402,13 +402,13 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (v11)
+  if (stringValue)
   {
-    v17 = v11;
+    v17 = stringValue;
     goto LABEL_8;
   }
 
-  if (v12)
+  if (creationDate)
   {
     v18 = v15[2];
     goto LABEL_5;
@@ -432,15 +432,15 @@ id __59__AVInfoPanelPlaybackMetadata_ViewModel__releaseDateString__block_invoke(
 
 - (NSString)seasonEpisodeString
 {
-  v3 = [(AVInfoPanelPlaybackMetadata *)self seasonNumberString];
-  v4 = [(AVInfoPanelPlaybackMetadata *)self episodeNumberString];
-  v5 = v4;
+  seasonNumberString = [(AVInfoPanelPlaybackMetadata *)self seasonNumberString];
+  episodeNumberString = [(AVInfoPanelPlaybackMetadata *)self episodeNumberString];
+  v5 = episodeNumberString;
   v6 = 0;
-  if (v3 && v4)
+  if (seasonNumberString && episodeNumberString)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = AVLocalizedString(@"Season %@, Episode %@");
-    v6 = [v7 stringWithFormat:v8, v3, v5];
+    v6 = [v7 stringWithFormat:v8, seasonNumberString, v5];
   }
 
   return v6;
@@ -448,84 +448,84 @@ id __59__AVInfoPanelPlaybackMetadata_ViewModel__releaseDateString__block_invoke(
 
 - (NSString)episodeNumberString
 {
-  v2 = [(AVInfoPanelPlaybackMetadata *)self episodeNumberItem];
-  v3 = [v2 value];
+  episodeNumberItem = [(AVInfoPanelPlaybackMetadata *)self episodeNumberItem];
+  value = [episodeNumberItem value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v2 stringValue];
+    stringValue = [episodeNumberItem stringValue];
   }
 
   else
   {
-    v6 = [v2 value];
+    value2 = [episodeNumberItem value];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [v2 value];
-      v5 = [v8 stringValue];
+      value3 = [episodeNumberItem value];
+      stringValue = [value3 stringValue];
     }
 
     else
     {
-      v5 = 0;
+      stringValue = 0;
     }
   }
 
-  return v5;
+  return stringValue;
 }
 
 - (NSString)seasonNumberString
 {
-  v2 = [(AVInfoPanelPlaybackMetadata *)self seasonNumberItem];
-  v3 = [v2 value];
+  seasonNumberItem = [(AVInfoPanelPlaybackMetadata *)self seasonNumberItem];
+  value = [seasonNumberItem value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v2 stringValue];
+    stringValue = [seasonNumberItem stringValue];
   }
 
   else
   {
-    v6 = [v2 value];
+    value2 = [seasonNumberItem value];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [v2 value];
-      v5 = [v8 stringValue];
+      value3 = [seasonNumberItem value];
+      stringValue = [value3 stringValue];
     }
 
     else
     {
-      v5 = 0;
+      stringValue = 0;
     }
   }
 
-  return v5;
+  return stringValue;
 }
 
 - (NSString)secondaryTitleString
 {
-  v3 = [(AVInfoPanelPlaybackMetadata *)self titleItem];
-  v4 = [v3 stringValue];
+  titleItem = [(AVInfoPanelPlaybackMetadata *)self titleItem];
+  stringValue = [titleItem stringValue];
 
-  v5 = [(AVInfoPanelPlaybackMetadata *)self secondaryTitleItem];
-  v6 = [v5 stringValue];
+  secondaryTitleItem = [(AVInfoPanelPlaybackMetadata *)self secondaryTitleItem];
+  stringValue2 = [secondaryTitleItem stringValue];
 
-  if ([v6 length] && !objc_msgSend(v4, "length"))
+  if ([stringValue2 length] && !objc_msgSend(stringValue, "length"))
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = stringValue2;
   }
 
   return v7;
@@ -533,15 +533,15 @@ id __59__AVInfoPanelPlaybackMetadata_ViewModel__releaseDateString__block_invoke(
 
 - (NSString)titleString
 {
-  v3 = [(AVInfoPanelPlaybackMetadata *)self titleItem];
-  v4 = [v3 stringValue];
+  titleItem = [(AVInfoPanelPlaybackMetadata *)self titleItem];
+  stringValue = [titleItem stringValue];
 
-  v5 = [(AVInfoPanelPlaybackMetadata *)self secondaryTitleItem];
-  v6 = [v5 stringValue];
+  secondaryTitleItem = [(AVInfoPanelPlaybackMetadata *)self secondaryTitleItem];
+  stringValue2 = [secondaryTitleItem stringValue];
 
-  if (![v6 length] || (v7 = v6, objc_msgSend(v4, "length")))
+  if (![stringValue2 length] || (v7 = stringValue2, objc_msgSend(stringValue, "length")))
   {
-    v7 = v4;
+    v7 = stringValue;
   }
 
   v8 = v7;
@@ -601,15 +601,15 @@ id __59__AVInfoPanelPlaybackMetadata_ViewModel__releaseDateString__block_invoke(
   return v4;
 }
 
-- (id)metadataItemForIdentifiers:(id)a3
+- (id)metadataItemForIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -620,23 +620,23 @@ LABEL_3:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(identifiersCopy);
       }
 
       v9 = *(*(&v15 + 1) + 8 * v8);
       v10 = MEMORY[0x1E6987FE0];
-      v11 = [(AVInfoPanelPlaybackMetadata *)self metadataItems];
-      v12 = [v10 metadataItemsFromArray:v11 filteredByIdentifier:v9];
-      v13 = [v12 firstObject];
+      metadataItems = [(AVInfoPanelPlaybackMetadata *)self metadataItems];
+      v12 = [v10 metadataItemsFromArray:metadataItems filteredByIdentifier:v9];
+      firstObject = [v12 firstObject];
 
-      if (v13)
+      if (firstObject)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -650,10 +650,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
 @end

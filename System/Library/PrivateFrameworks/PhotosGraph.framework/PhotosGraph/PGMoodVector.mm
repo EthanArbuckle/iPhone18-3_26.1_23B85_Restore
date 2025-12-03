@@ -1,26 +1,26 @@
 @interface PGMoodVector
 - (PGMoodVector)init;
-- (PGMoodVector)initWithArray:(id)a3;
+- (PGMoodVector)initWithArray:(id)array;
 - (double)sum;
-- (double)valueForMood:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)valueForMood:(unint64_t)mood;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)moodArray;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (unint64_t)moodsWithThreshold:(double)a3;
-- (unint64_t)weightedRandomMoodWithSeed:(unint64_t)a3;
-- (void)addMoodVector:(id)a3;
-- (void)addValue:(double)a3 forMood:(unint64_t)a4;
-- (void)addValue:(double)a3 forMoods:(unint64_t)a4;
-- (void)enumerateWithBlock:(id)a3;
-- (void)filterWithMoods:(unint64_t)a3;
-- (void)multiplyByWeight:(double)a3;
-- (void)multiplyByWeight:(double)a3 forMood:(unint64_t)a4;
-- (void)multiplyMoodVector:(id)a3;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (unint64_t)moodsWithThreshold:(double)threshold;
+- (unint64_t)weightedRandomMoodWithSeed:(unint64_t)seed;
+- (void)addMoodVector:(id)vector;
+- (void)addValue:(double)value forMood:(unint64_t)mood;
+- (void)addValue:(double)value forMoods:(unint64_t)moods;
+- (void)enumerateWithBlock:(id)block;
+- (void)filterWithMoods:(unint64_t)moods;
+- (void)multiplyByWeight:(double)weight;
+- (void)multiplyByWeight:(double)weight forMood:(unint64_t)mood;
+- (void)multiplyMoodVector:(id)vector;
 - (void)normalize;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
-- (void)setValue:(double)a3 forMood:(unint64_t)a4;
-- (void)substractMoodVector:(id)a3;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
+- (void)setValue:(double)value forMood:(unint64_t)mood;
+- (void)substractMoodVector:(id)vector;
 @end
 
 @implementation PGMoodVector
@@ -78,9 +78,9 @@
   return result;
 }
 
-- (unint64_t)weightedRandomMoodWithSeed:(unint64_t)a3
+- (unint64_t)weightedRandomMoodWithSeed:(unint64_t)seed
 {
-  v3 = a3;
+  seedCopy = seed;
   [(PGMoodVector *)self sum];
   if (v5 == 0.0)
   {
@@ -89,7 +89,7 @@
 
   v6 = v5;
   v12[0] = 13070;
-  *&v12[1] = v3;
+  *&v12[1] = seedCopy;
   v7 = erand48(v12);
   v8 = 0;
   v9 = v6 * v7;
@@ -111,15 +111,15 @@
   return (1 << v8);
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     v4 = 0;
     vector = self->_vector;
     do
     {
-      (*(a3 + 2))(a3, (1 << v4), vector[v4]);
+      (*(block + 2))(block, (1 << v4), vector[v4]);
       ++v4;
     }
 
@@ -127,9 +127,9 @@
   }
 }
 
-- (unint64_t)moodsWithThreshold:(double)a3
+- (unint64_t)moodsWithThreshold:(double)threshold
 {
-  v3 = vdupq_lane_s64(*&a3, 0);
+  v3 = vdupq_lane_s64(*&threshold, 0);
   v4 = 0x100000000;
   v5 = 0uLL;
   for (i = 8; i != 88; i += 16)
@@ -181,165 +181,165 @@
   }
 }
 
-- (void)filterWithMoods:(unint64_t)a3
+- (void)filterWithMoods:(unint64_t)moods
 {
   for (i = 0; i != 10; ++i)
   {
-    if (((1 << i) & a3) == 0)
+    if (((1 << i) & moods) == 0)
     {
       self->_vector[i] = 0.0;
     }
   }
 }
 
-- (void)multiplyByWeight:(double)a3
+- (void)multiplyByWeight:(double)weight
 {
   for (i = 8; i != 88; i += 16)
   {
-    *(&self->super.isa + i) = vmulq_n_f64(*(&self->super.isa + i), a3);
+    *(&self->super.isa + i) = vmulq_n_f64(*(&self->super.isa + i), weight);
   }
 }
 
-- (void)multiplyMoodVector:(id)a3
+- (void)multiplyMoodVector:(id)vector
 {
-  if (a3)
+  if (vector)
   {
     for (i = 8; i != 88; i += 8)
     {
-      *(&self->super.isa + i) = *(a3 + i) * *(&self->super.isa + i);
+      *(&self->super.isa + i) = *(vector + i) * *(&self->super.isa + i);
     }
   }
 }
 
-- (void)substractMoodVector:(id)a3
+- (void)substractMoodVector:(id)vector
 {
-  if (a3)
+  if (vector)
   {
     for (i = 8; i != 88; i += 8)
     {
-      *(&self->super.isa + i) = *(&self->super.isa + i) - *(a3 + i);
+      *(&self->super.isa + i) = *(&self->super.isa + i) - *(vector + i);
     }
   }
 }
 
-- (void)addMoodVector:(id)a3
+- (void)addMoodVector:(id)vector
 {
-  if (a3)
+  if (vector)
   {
     for (i = 8; i != 88; i += 8)
     {
-      *(&self->super.isa + i) = *(a3 + i) + *(&self->super.isa + i);
+      *(&self->super.isa + i) = *(vector + i) + *(&self->super.isa + i);
     }
   }
 }
 
-- (void)multiplyByWeight:(double)a3 forMood:(unint64_t)a4
+- (void)multiplyByWeight:(double)weight forMood:(unint64_t)mood
 {
-  if (a4 <= 0x3FF)
+  if (mood <= 0x3FF)
   {
-    v4 = vcnt_s8(a4);
+    v4 = vcnt_s8(mood);
     v4.i16[0] = vaddlv_u8(v4);
     if (v4.i32[0] == 1)
     {
-      v5 = (&self->super.isa + __clz(__rbit32(a4)));
-      v5[1] = v5[1] * a3;
+      v5 = (&self->super.isa + __clz(__rbit32(mood)));
+      v5[1] = v5[1] * weight;
     }
   }
 }
 
-- (void)addValue:(double)a3 forMoods:(unint64_t)a4
+- (void)addValue:(double)value forMoods:(unint64_t)moods
 {
   for (i = 0; i != 10; ++i)
   {
-    if (((1 << i) & a4) != 0)
+    if (((1 << i) & moods) != 0)
     {
-      self->_vector[i] = self->_vector[i] + a3;
+      self->_vector[i] = self->_vector[i] + value;
     }
   }
 }
 
-- (void)addValue:(double)a3 forMood:(unint64_t)a4
+- (void)addValue:(double)value forMood:(unint64_t)mood
 {
-  if (a4 <= 0x3FF)
+  if (mood <= 0x3FF)
   {
-    v4 = vcnt_s8(a4);
+    v4 = vcnt_s8(mood);
     v4.i16[0] = vaddlv_u8(v4);
     if (v4.i32[0] == 1)
     {
-      v5 = (&self->super.isa + __clz(__rbit32(a4)));
-      v5[1] = v5[1] + a3;
+      v5 = (&self->super.isa + __clz(__rbit32(mood)));
+      v5[1] = v5[1] + value;
     }
   }
 }
 
-- (void)setValue:(double)a3 forMood:(unint64_t)a4
+- (void)setValue:(double)value forMood:(unint64_t)mood
 {
-  if (a4 <= 0x3FF)
+  if (mood <= 0x3FF)
   {
-    v4 = vcnt_s8(a4);
+    v4 = vcnt_s8(mood);
     v4.i16[0] = vaddlv_u8(v4);
     if (v4.i32[0] == 1)
     {
-      self->_vector[__clz(__rbit32(a4))] = a3;
+      self->_vector[__clz(__rbit32(mood))] = value;
     }
   }
 }
 
-- (double)valueForMood:(unint64_t)a3
+- (double)valueForMood:(unint64_t)mood
 {
   result = 9.22337204e18;
-  if (a3 <= 0x3FF)
+  if (mood <= 0x3FF)
   {
-    v4 = vcnt_s8(a3);
+    v4 = vcnt_s8(mood);
     v4.i16[0] = vaddlv_u8(v4);
     if (v4.i32[0] == 1)
     {
-      return self->_vector[__clz(__rbit32(a3))];
+      return self->_vector[__clz(__rbit32(mood))];
     }
   }
 
   return result;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  if (a4 <= 0x3FF)
+  if (subscript <= 0x3FF)
   {
-    v4 = a4;
-    v5 = vcnt_s8(a4);
+    subscriptCopy = subscript;
+    v5 = vcnt_s8(subscript);
     v5.i16[0] = vaddlv_u8(v5);
     if (v5.i32[0] == 1)
     {
-      [a3 doubleValue];
-      self->_vector[__clz(__rbit32(v4))] = v7;
+      [object doubleValue];
+      self->_vector[__clz(__rbit32(subscriptCopy))] = v7;
     }
   }
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 > 0x3FF || (v9 = vcnt_s8(a3), v9.i16[0] = vaddlv_u8(v9), v9.i32[0] != 1))
+  if (subscript > 0x3FF || (v9 = vcnt_s8(subscript), v9.i16[0] = vaddlv_u8(v9), v9.i32[0] != 1))
   {
     v18 = v4;
     v19 = v3;
     v13 = MEMORY[0x277CBEAD8];
     v14 = *MEMORY[0x277CBE730];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Index %lu is out of bounds [0..%lu]", a3, 1023, v6, v5, v18, v19, v7, v8];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Index %lu is out of bounds [0..%lu]", subscript, 1023, v6, v5, v18, v19, v7, v8];
     v16 = [v13 exceptionWithName:v14 reason:v15 userInfo:0];
     v17 = v16;
 
     objc_exception_throw(v16);
   }
 
-  v10 = self->_vector[__clz(__rbit32(a3))];
+  v10 = self->_vector[__clz(__rbit32(subscript))];
   v11 = MEMORY[0x277CCABB0];
 
   return [v11 numberWithDouble:v10];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = *self->_vector;
   v5 = *&self->_vector[4];
   v6 = *&self->_vector[6];
@@ -351,23 +351,23 @@
   return result;
 }
 
-- (PGMoodVector)initWithArray:(id)a3
+- (PGMoodVector)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(PGMoodVector *)self init];
-  if (v5 && [v4 count])
+  if (v5 && [arrayCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 objectAtIndexedSubscript:v6];
+      v7 = [arrayCopy objectAtIndexedSubscript:v6];
       [v7 doubleValue];
       v5->_vector[v6] = v8;
 
       ++v6;
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [arrayCopy count]);
   }
 
   return v5;

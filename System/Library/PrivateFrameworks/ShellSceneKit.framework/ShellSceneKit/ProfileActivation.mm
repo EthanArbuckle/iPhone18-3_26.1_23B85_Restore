@@ -2,8 +2,8 @@
 - (NSString)description;
 - (NSString)identifier;
 - (_TtC13ShellSceneKit17ProfileActivation)init;
-- (_TtC13ShellSceneKit17ProfileActivation)initWithIdentifier:(id)a3 inControl:(BOOL)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (_TtC13ShellSceneKit17ProfileActivation)initWithIdentifier:(id)identifier inControl:(BOOL)control;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation ProfileActivation
@@ -25,38 +25,38 @@
   return result;
 }
 
-- (_TtC13ShellSceneKit17ProfileActivation)initWithIdentifier:(id)a3 inControl:(BOOL)a4
+- (_TtC13ShellSceneKit17ProfileActivation)initWithIdentifier:(id)identifier inControl:(BOOL)control
 {
   ObjectType = swift_getObjectType();
   v7 = sub_265FEC0E0();
   v8 = (self + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_identifier);
   *v8 = v7;
   v8[1] = v9;
-  *(self + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_inControl) = a4;
+  *(self + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_inControl) = control;
   v11.receiver = self;
   v11.super_class = ObjectType;
   return [(ProfileActivation *)&v11 init];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v5 = *(self + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_identifier);
   v6 = *(self + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_identifier + 8);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_265FEC0D0();
   v9 = sub_265FEC0D0();
-  [a3 encodeObject:v8 forKey:v9];
+  [coder encodeObject:v8 forKey:v9];
 
-  v10 = *(v7 + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_inControl);
+  v10 = *(selfCopy + OBJC_IVAR____TtC13ShellSceneKit17ProfileActivation_inControl);
   v11 = sub_265FEC0D0();
-  [a3 encodeBool:v10 forKey:v11];
+  [coder encodeBool:v10 forKey:v11];
   swift_unknownObjectRelease();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ProfileActivation.description.getter();
 
   v3 = sub_265FEC0D0();

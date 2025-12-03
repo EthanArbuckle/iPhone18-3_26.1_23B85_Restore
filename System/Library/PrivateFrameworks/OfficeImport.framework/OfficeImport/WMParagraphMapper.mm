@@ -1,28 +1,28 @@
 @interface WMParagraphMapper
-+ (void)mapPlaceholderAt:(id)a3 rect:(CGRect)a4 withState:(id)a5;
++ (void)mapPlaceholderAt:(id)at rect:(CGRect)rect withState:(id)state;
 - (BOOL)containsOfficeArt;
-- (BOOL)isCollapsable:(id)a3;
+- (BOOL)isCollapsable:(id)collapsable;
 - (BOOL)isTextFrame;
-- (WMParagraphMapper)initWithBlock:(id)a3 parent:(id)a4;
-- (id)runAtIndex:(unint64_t)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapParagraphBodyWithState:(id)a3;
-- (void)mapRunAt:(id)a3 run:(id)a4 withState:(id)a5;
+- (WMParagraphMapper)initWithBlock:(id)block parent:(id)parent;
+- (id)runAtIndex:(unint64_t)index;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapParagraphBodyWithState:(id)state;
+- (void)mapRunAt:(id)at run:(id)run withState:(id)state;
 @end
 
 @implementation WMParagraphMapper
 
 - (BOOL)isTextFrame
 {
-  v2 = [(WDParagraph *)self->wdParagraph properties];
-  if ([v2 isHorizontalAnchorOverridden] && objc_msgSend(v2, "horizontalAnchor") || objc_msgSend(v2, "isVerticalAnchorOverridden") && objc_msgSend(v2, "verticalAnchor") != 2 || objc_msgSend(v2, "isHorizontalPositionOverridden") && objc_msgSend(v2, "horizontalPosition"))
+  properties = [(WDParagraph *)self->wdParagraph properties];
+  if ([properties isHorizontalAnchorOverridden] && objc_msgSend(properties, "horizontalAnchor") || objc_msgSend(properties, "isVerticalAnchorOverridden") && objc_msgSend(properties, "verticalAnchor") != 2 || objc_msgSend(properties, "isHorizontalPositionOverridden") && objc_msgSend(properties, "horizontalPosition"))
   {
     v3 = 1;
   }
 
-  else if ([v2 isVerticalPositionOverridden])
+  else if ([properties isVerticalPositionOverridden])
   {
-    v3 = [v2 verticalPosition] != 0;
+    v3 = [properties verticalPosition] != 0;
   }
 
   else
@@ -35,18 +35,18 @@
 
 - (BOOL)containsOfficeArt
 {
-  v3 = [(WDParagraph *)self->wdParagraph runCount];
-  if (v3)
+  runCount = [(WDParagraph *)self->wdParagraph runCount];
+  if (runCount)
   {
-    v4 = v3;
+    v4 = runCount;
     v5 = 0;
     v6 = 1;
     do
     {
       v7 = [(WDParagraph *)self->wdParagraph runAt:v5];
-      v8 = [v7 runType];
+      runType = [v7 runType];
 
-      if (v8 == 3)
+      if (runType == 3)
       {
         break;
       }
@@ -65,16 +65,16 @@
   return v6;
 }
 
-+ (void)mapPlaceholderAt:(id)a3 rect:(CGRect)a4 withState:(id)a5
++ (void)mapPlaceholderAt:(id)at rect:(CGRect)rect withState:(id)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v10 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  atCopy = at;
+  stateCopy = state;
   v11 = [OIXMLElement elementWithType:14];
-  [v14 addChild:v11];
+  [atCopy addChild:v11];
   v12 = objc_alloc_init(CMStyle);
   v16.origin.x = x;
   v16.origin.y = y;
@@ -83,41 +83,41 @@
   [(CMStyle *)v12 appendPropertyForName:0x286EF67D0 length:4 unit:CGRectGetHeight(v16)];
   v13 = [[CMMapper alloc] initWithParent:0];
   [(CMMapper *)v13 addStyleUsingGlobalCacheTo:v11 style:v12];
-  [WMCharacterRunMapper addNonCollapsableSpanAt:v11 withState:v10];
+  [WMCharacterRunMapper addNonCollapsableSpanAt:v11 withState:stateCopy];
 }
 
-- (WMParagraphMapper)initWithBlock:(id)a3 parent:(id)a4
+- (WMParagraphMapper)initWithBlock:(id)block parent:(id)parent
 {
-  v7 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = WMParagraphMapper;
-  v8 = [(CMMapper *)&v11 initWithParent:a4];
+  v8 = [(CMMapper *)&v11 initWithParent:parent];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->wdParagraph, a3);
+    objc_storeStrong(&v8->wdParagraph, block);
   }
 
   return v9;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v19 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = objc_autoreleasePoolPush();
-  if ([v6 containsParagraph:self->wdParagraph])
+  if ([stateCopy containsParagraph:self->wdParagraph])
   {
     NSLog(@"Bailing out: mapping a paragraph recursively");
   }
 
   else
   {
-    [v6 pushParagraph:self->wdParagraph];
-    v8 = [(WMParagraphMapper *)self isTextFrame];
-    v9 = [[WMParagraphStyleMapper alloc] initWithWDParagraph:self->wdParagraph parent:self isInTextFrame:v8];
-    v10 = [(WMParagraphMapper *)self containsOfficeArt];
-    if ([(WMParagraphStyleMapper *)v9 isListItem]|| v10 || v8)
+    [stateCopy pushParagraph:self->wdParagraph];
+    isTextFrame = [(WMParagraphMapper *)self isTextFrame];
+    v9 = [[WMParagraphStyleMapper alloc] initWithWDParagraph:self->wdParagraph parent:self isInTextFrame:isTextFrame];
+    containsOfficeArt = [(WMParagraphMapper *)self containsOfficeArt];
+    if ([(WMParagraphStyleMapper *)v9 isListItem]|| containsOfficeArt || isTextFrame)
     {
       [OIXMLElement elementWithType:3];
     }
@@ -129,70 +129,70 @@
     v11 = ;
     objc_storeStrong(&self->mActiveNode, v11);
 
-    v12 = [(CMMapper *)self archiver];
-    v13 = [v12 progressiveMappingIsPausedOnPath:0];
+    archiver = [(CMMapper *)self archiver];
+    v13 = [archiver progressiveMappingIsPausedOnPath:0];
 
     if (v13)
     {
-      [v19 addChild:self->mActiveNode];
+      [atCopy addChild:self->mActiveNode];
     }
 
-    v14 = [(CMMapper *)self archiver];
-    [v14 pauseProgressiveMappingOnPath:0];
+    archiver2 = [(CMMapper *)self archiver];
+    [archiver2 pauseProgressiveMappingOnPath:0];
 
-    if (v10)
+    if (containsOfficeArt)
     {
       [(CMMapper *)self addAttribute:0x286EEA590 toNode:self->mActiveNode value:@"border:1px solid transparent;"];
     }
 
-    [(WMParagraphStyleMapper *)v9 mapListStyleFromParagraphStyleWithState:v6];
+    [(WMParagraphStyleMapper *)v9 mapListStyleFromParagraphStyleWithState:stateCopy];
     [(WMParagraphStyleMapper *)v9 mapParagraphStyle];
-    [(WMParagraphStyleMapper *)v9 mapListStyleAt:self->mActiveNode state:v6];
+    [(WMParagraphStyleMapper *)v9 mapListStyleAt:self->mActiveNode state:stateCopy];
     [(WMParagraphStyleMapper *)v9 mapParagraphProperties];
-    [(WMParagraphMapper *)self mapParagraphBodyWithState:v6];
+    [(WMParagraphMapper *)self mapParagraphBodyWithState:stateCopy];
     if (!self->mIsDeleted)
     {
       if ([(WMParagraphMapper *)self isCollapsable:self->mActiveNode])
       {
         [(WMParagraphStyleMapper *)v9 destyleEmptyParagraph];
-        [WMCharacterRunMapper addNonCollapsableSpanAt:self->mActiveNode withState:v6];
+        [WMCharacterRunMapper addNonCollapsableSpanAt:self->mActiveNode withState:stateCopy];
       }
 
-      [(WMParagraphStyleMapper *)v9 mapAt:self->mActiveNode withState:v6];
+      [(WMParagraphStyleMapper *)v9 mapAt:self->mActiveNode withState:stateCopy];
     }
 
     if ((v13 & 1) == 0)
     {
-      v15 = [(CMMapper *)self archiver];
-      [v15 restartProgressiveMappingOnPath:0];
+      archiver3 = [(CMMapper *)self archiver];
+      [archiver3 restartProgressiveMappingOnPath:0];
 
-      v16 = [(CMMapper *)self archiver];
-      [v16 pushCssToPath:0];
+      archiver4 = [(CMMapper *)self archiver];
+      [archiver4 pushCssToPath:0];
 
-      v17 = [(CMMapper *)self archiver];
-      v18 = [(OIXMLNode *)self->mActiveNode XMLString];
-      [v17 pushText:v18 toPath:0];
+      archiver5 = [(CMMapper *)self archiver];
+      xMLString = [(OIXMLNode *)self->mActiveNode XMLString];
+      [archiver5 pushText:xMLString toPath:0];
     }
 
-    [v6 popParagraph];
+    [stateCopy popParagraph];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)mapParagraphBodyWithState:(id)a3
+- (void)mapParagraphBodyWithState:(id)state
 {
-  v14 = a3;
-  v4 = [(WDParagraph *)self->wdParagraph runCount];
-  self->mIsDeleted = v4 != 0;
-  if (v4)
+  stateCopy = state;
+  runCount = [(WDParagraph *)self->wdParagraph runCount];
+  self->mIsDeleted = runCount != 0;
+  if (runCount)
   {
     v5 = 0;
     v6 = 0;
     while (1)
     {
       v7 = [(WDParagraph *)self->wdParagraph runAt:v5];
-      [v14 setRunIndex:v5];
+      [stateCopy setRunIndex:v5];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -201,28 +201,28 @@
           v8 = [WMFieldMapper alloc];
           if (v6)
           {
-            v9 = v6;
+            selfCopy = v6;
           }
 
           else
           {
-            v9 = self;
+            selfCopy = self;
           }
 
-          v10 = [(WMFieldMapper *)v8 initWithWDFieldMarker:v7 parent:v9];
+          v10 = [(WMFieldMapper *)v8 initWithWDFieldMarker:v7 parent:selfCopy];
 
           v6 = v10;
         }
 
-        [(WMParagraphMapper *)v6 mapFieldMarkerAt:self->mActiveNode marker:v7 withState:v14];
+        [(WMParagraphMapper *)v6 mapFieldMarkerAt:self->mActiveNode marker:v7 withState:stateCopy];
         if ([v7 fieldMarkerType] != 21)
         {
           goto LABEL_17;
         }
 
-        v11 = [(CMMapper *)v6 parent];
+        parent = [(CMMapper *)v6 parent];
 
-        if (v11 == self)
+        if (parent == self)
         {
           v12 = v6;
           v6 = 0;
@@ -239,20 +239,20 @@
       {
         if (v6)
         {
-          v13 = v6;
+          selfCopy2 = v6;
         }
 
         else
         {
-          v13 = self;
+          selfCopy2 = self;
         }
 
-        v12 = v13;
-        [(WMParagraphMapper *)v12 mapRunAt:self->mActiveNode run:v7 withState:v14];
+        v12 = selfCopy2;
+        [(WMParagraphMapper *)v12 mapRunAt:self->mActiveNode run:v7 withState:stateCopy];
       }
 
 LABEL_17:
-      if (v4 == ++v5)
+      if (runCount == ++v5)
       {
 
         break;
@@ -261,18 +261,18 @@ LABEL_17:
   }
 }
 
-- (void)mapRunAt:(id)a3 run:(id)a4 withState:(id)a5
+- (void)mapRunAt:(id)at run:(id)run withState:(id)state
 {
-  v9 = a4;
-  v7 = a5;
+  runCopy = run;
+  stateCopy = state;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v9 isHidden] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([runCopy isHidden] & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[WMCharacterRunMapper alloc] initWithWDCharacterRun:v9 parent:self];
-      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:v7];
+      v8 = [[WMCharacterRunMapper alloc] initWithWDCharacterRun:runCopy parent:self];
+      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:stateCopy];
       if (self->mIsDeleted)
       {
         self->mIsDeleted = [(WMCharacterRunMapper *)v8 isDeleted];
@@ -281,10 +281,10 @@ LABEL_17:
       goto LABEL_10;
     }
 
-    if ([v9 runType] == 4 || objc_msgSend(v9, "runType") == 5)
+    if ([runCopy runType] == 4 || objc_msgSend(runCopy, "runType") == 5)
     {
-      v8 = [[WMPictureMapper alloc] initWithWDPicture:v9 parent:self];
-      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:v7];
+      v8 = [[WMPictureMapper alloc] initWithWDPicture:runCopy parent:self];
+      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:stateCopy];
 LABEL_9:
       self->mIsDeleted = 0;
 LABEL_10:
@@ -292,24 +292,24 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if ([v9 runType] == 3)
+    if ([runCopy runType] == 3)
     {
-      v8 = [[WMOfficeArtMapper alloc] initWithWdOfficeArt:v9 parent:self];
-      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:v7];
+      v8 = [[WMOfficeArtMapper alloc] initWithWdOfficeArt:runCopy parent:self];
+      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:stateCopy];
       goto LABEL_9;
     }
 
-    if ([v9 runType] == 10)
+    if ([runCopy runType] == 10)
     {
-      v8 = [[WMSymbolMapper alloc] initWithWDSymbol:v9 parent:self];
-      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:v7];
+      v8 = [[WMSymbolMapper alloc] initWithWDSymbol:runCopy parent:self];
+      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:stateCopy];
       goto LABEL_9;
     }
 
-    if ([v9 runType] == 12)
+    if ([runCopy runType] == 12)
     {
-      v8 = [[WMBookmarkMapper alloc] initWithWDBookmark:v9 parent:self];
-      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:v7];
+      v8 = [[WMBookmarkMapper alloc] initWithWDBookmark:runCopy parent:self];
+      [(WMCharacterRunMapper *)v8 mapAt:self->mActiveNode withState:stateCopy];
       goto LABEL_9;
     }
   }
@@ -317,35 +317,35 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)runAtIndex:(unint64_t)a3
+- (id)runAtIndex:(unint64_t)index
 {
-  if ([(WDParagraph *)self->wdParagraph runCount]<= a3)
+  if ([(WDParagraph *)self->wdParagraph runCount]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(WDParagraph *)self->wdParagraph runAt:a3];
+    v5 = [(WDParagraph *)self->wdParagraph runAt:index];
   }
 
   return v5;
 }
 
-- (BOOL)isCollapsable:(id)a3
+- (BOOL)isCollapsable:(id)collapsable
 {
-  if (![a3 childrenCount])
+  if (![collapsable childrenCount])
   {
     return 1;
   }
 
-  v4 = [(WDParagraph *)self->wdParagraph runCount];
-  if (!v4)
+  runCount = [(WDParagraph *)self->wdParagraph runCount];
+  if (!runCount)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = runCount;
   v6 = 0;
   v7 = 0;
   while (1)
@@ -377,8 +377,8 @@ LABEL_8:
     }
   }
 
-  v9 = [v8 string];
-  v6 = ![v9 length] || objc_msgSend(v9, "length") == 1 && objc_msgSend(v9, "characterAtIndex:", 0) == 32;
+  string = [v8 string];
+  v6 = ![string length] || objc_msgSend(string, "length") == 1 && objc_msgSend(string, "characterAtIndex:", 0) == 32;
 
 LABEL_19:
   return v6;

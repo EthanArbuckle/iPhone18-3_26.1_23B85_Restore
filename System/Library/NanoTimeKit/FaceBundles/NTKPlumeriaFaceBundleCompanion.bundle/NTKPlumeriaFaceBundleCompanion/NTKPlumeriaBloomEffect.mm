@@ -1,7 +1,7 @@
 @interface NTKPlumeriaBloomEffect
 - (NTKPlumeriaBloomEffect)init;
-- (id)bloom:(id)a3 commandBuffer:(id)a4;
-- (void)initShader:(id)a3 metalLibrary:(id)a4 width:(int)a5 height:(int)a6;
+- (id)bloom:(id)bloom commandBuffer:(id)buffer;
+- (void)initShader:(id)shader metalLibrary:(id)library width:(int)width height:(int)height;
 @end
 
 @implementation NTKPlumeriaBloomEffect
@@ -27,20 +27,20 @@
   return v3;
 }
 
-- (void)initShader:(id)a3 metalLibrary:(id)a4 width:(int)a5 height:(int)a6
+- (void)initShader:(id)shader metalLibrary:(id)library width:(int)width height:(int)height
 {
-  v10 = a3;
-  v11 = a4;
+  shaderCopy = shader;
+  libraryCopy = library;
   device = self->_device;
-  self->_device = v10;
-  v13 = v10;
+  self->_device = shaderCopy;
+  v13 = shaderCopy;
 
   library = self->_library;
-  self->_library = v11;
-  v15 = v11;
+  self->_library = libraryCopy;
+  v15 = libraryCopy;
 
-  self->_width = a5;
-  self->_height = a6;
+  self->_width = width;
+  self->_height = height;
   v33 = [(MTLLibrary *)self->_library newFunctionWithName:@"screenTriangleVertex"];
   v16 = [(MTLLibrary *)self->_library newFunctionWithName:@"bloom::initialDownsampleFragment"];
   v17 = [(MTLLibrary *)self->_library newFunctionWithName:@"bloom::downsampleFragment"];
@@ -57,8 +57,8 @@
   self->_outTexture = v22;
 
   v24 = objc_alloc_init(MTLRenderPipelineDescriptor);
-  v25 = [v24 colorAttachments];
-  v26 = [v25 objectAtIndexedSubscript:0];
+  colorAttachments = [v24 colorAttachments];
+  v26 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v26 setPixelFormat:objc_msgSend(v19, "pixelFormat")];
   [v26 setBlendingEnabled:0];
@@ -79,24 +79,24 @@
   self->_upsamplePipeline = v31;
 }
 
-- (id)bloom:(id)a3 commandBuffer:(id)a4
+- (id)bloom:(id)bloom commandBuffer:(id)buffer
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 pushDebugGroup:@"bloom"];
+  bloomCopy = bloom;
+  bufferCopy = buffer;
+  [bufferCopy pushDebugGroup:@"bloom"];
   maxIterations = self->_maxIterations;
   v9 = self->_outTexture;
-  v10 = [(MTLTexture *)v9 width];
-  v11 = [(MTLTexture *)v9 height];
+  width = [(MTLTexture *)v9 width];
+  height = [(MTLTexture *)v9 height];
 
-  if (v10 <= v11)
+  if (width <= height)
   {
-    v12 = v11;
+    v12 = height;
   }
 
   else
   {
-    v12 = v10;
+    v12 = width;
   }
 
   v13 = fmax(v12, 1.0);
@@ -117,11 +117,11 @@
   }
 
   v32 = sub_6D64(self->_scratchTexture, 0);
-  v16 = [v7 renderCommandEncoderWithDescriptor:?];
+  v16 = [bufferCopy renderCommandEncoderWithDescriptor:?];
   [v16 setRenderPipelineState:self->_initialDownsamplePipeline];
   [v16 setLabel:@"initial downsample"];
-  v33 = v6;
-  [v16 setFragmentTexture:v6 atIndex:0];
+  v33 = bloomCopy;
+  [v16 setFragmentTexture:bloomCopy atIndex:0];
   [v16 drawPrimitives:3 vertexStart:0 vertexCount:3];
   v31 = v16;
   [v16 endEncoding];
@@ -129,7 +129,7 @@
   do
   {
     v18 = sub_6D64(self->_scratchTexture, v17);
-    v19 = [v7 renderCommandEncoderWithDescriptor:v18];
+    v19 = [bufferCopy renderCommandEncoderWithDescriptor:v18];
 
     [v19 setRenderPipelineState:self->_downsamplepipeline];
     v20 = [NSString stringWithFormat:@"down %d", v17];
@@ -151,7 +151,7 @@
   {
     v23 = v22 - 1;
     v24 = sub_6D64(self->_outTexture, v22 - 1);
-    v25 = [v7 renderCommandEncoderWithDescriptor:v24];
+    v25 = [bufferCopy renderCommandEncoderWithDescriptor:v24];
 
     [v25 setRenderPipelineState:self->_upsamplePipeline];
     v26 = [NSString stringWithFormat:@"up %d", (v22 - 1)];
@@ -175,7 +175,7 @@
   }
 
   while (v23 > 0);
-  [v7 popDebugGroup];
+  [bufferCopy popDebugGroup];
   outTexture = self->_outTexture;
   v29 = outTexture;
 

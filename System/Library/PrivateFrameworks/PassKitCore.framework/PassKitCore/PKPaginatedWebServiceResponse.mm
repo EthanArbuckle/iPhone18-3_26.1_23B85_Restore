@@ -1,32 +1,32 @@
 @interface PKPaginatedWebServiceResponse
-+ (PKPaginatedWebServiceResponse)responseWithData:(id)a3;
-- (PKPaginatedWebServiceResponse)initWithCoder:(id)a3;
-- (PKPaginatedWebServiceResponse)initWithData:(id)a3;
++ (PKPaginatedWebServiceResponse)responseWithData:(id)data;
+- (PKPaginatedWebServiceResponse)initWithCoder:(id)coder;
+- (PKPaginatedWebServiceResponse)initWithData:(id)data;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaginatedWebServiceResponse
 
-- (PKPaginatedWebServiceResponse)initWithData:(id)a3
+- (PKPaginatedWebServiceResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKPaginatedWebServiceResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4->_moreComing = [v5 PKBoolForKey:@"moreComing"];
-      v6 = [v5 PKDateForKey:@"lastUpdated"];
+      v4->_moreComing = [jSONObject PKBoolForKey:@"moreComing"];
+      v6 = [jSONObject PKDateForKey:@"lastUpdated"];
       lastUpdated = v4->_lastUpdated;
       v4->_lastUpdated = v6;
 
-      v8 = [v5 PKArrayContaining:objc_opt_class() forKey:@"data"];
+      v8 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"data"];
       rawDataList = v4->_rawDataList;
       v4->_rawDataList = v8;
     }
@@ -55,10 +55,10 @@
   return v4;
 }
 
-+ (PKPaginatedWebServiceResponse)responseWithData:(id)a3
++ (PKPaginatedWebServiceResponse)responseWithData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithData:v3];
+  dataCopy = data;
+  v4 = [objc_alloc(objc_opt_class()) initWithData:dataCopy];
 
   return v4;
 }
@@ -67,26 +67,26 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PKWebServiceResponse *)self JSONObject];
-  v6 = [v3 stringWithFormat:@"<%@: %p> JSONObject: %@", v4, self, v5];
+  jSONObject = [(PKWebServiceResponse *)self JSONObject];
+  v6 = [v3 stringWithFormat:@"<%@: %p> JSONObject: %@", v4, self, jSONObject];
 
   return v6;
 }
 
-- (PKPaginatedWebServiceResponse)initWithCoder:(id)a3
+- (PKPaginatedWebServiceResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawData"];
 
   v6 = [(PKPaginatedWebServiceResponse *)self initWithData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKWebServiceResponse *)self rawData];
-  [v4 encodeObject:v5 forKey:@"rawData"];
+  coderCopy = coder;
+  rawData = [(PKWebServiceResponse *)self rawData];
+  [coderCopy encodeObject:rawData forKey:@"rawData"];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface FolderComposerFilterHeader
-- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithCoder:(id)a3;
-- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithCoder:(id)coder;
+- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation FolderComposerFilterHeader
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UIListContentConfiguration();
   v5 = *(v4 - 8);
@@ -17,7 +17,7 @@
   __chkstk_darwin(v8);
   v11 = &v15[-1] - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = self;
+  selfCopy = self;
   static UIListContentConfiguration.prominentInsetGroupedHeader()();
 
   UIListContentConfiguration.text.setter();
@@ -31,12 +31,12 @@
   (*(v9 + 8))(v11, v8);
 }
 
-- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithFrame:(CGRect)a3
+- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes26FolderComposerFilterHeader_text);
   *v9 = 0;
@@ -46,7 +46,7 @@
   return [(FolderComposerFilterHeader *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithCoder:(id)a3
+- (_TtC11MobileNotes26FolderComposerFilterHeader)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes26FolderComposerFilterHeader_text);
@@ -54,8 +54,8 @@
   v6[1] = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(FolderComposerFilterHeader *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(FolderComposerFilterHeader *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

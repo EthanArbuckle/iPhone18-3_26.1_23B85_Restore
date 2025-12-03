@@ -1,10 +1,10 @@
 @interface SGMailMessageKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMailMessageKey:(id)a3;
-- (SGMailMessageKey)initWithCoder:(id)a3;
-- (SGMailMessageKey)initWithSource:(id)a3 messageId:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMailMessageKey:(id)key;
+- (SGMailMessageKey)initWithCoder:(id)coder;
+- (SGMailMessageKey)initWithSource:(id)source messageId:(id)id;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGMailMessageKey
@@ -16,12 +16,12 @@
   return v2;
 }
 
-- (BOOL)isEqualToMailMessageKey:(id)a3
+- (BOOL)isEqualToMailMessageKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->_source;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == keyCopy[1])
   {
   }
 
@@ -38,7 +38,7 @@
 
   v9 = self->_messageId;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == keyCopy[2])
   {
     v8 = 1;
   }
@@ -52,46 +52,46 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGMailMessageKey *)self isEqualToMailMessageKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGMailMessageKey *)self isEqualToMailMessageKey:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   source = self->_source;
-  v5 = a3;
-  [v5 encodeObject:source forKey:@"source"];
-  [v5 encodeObject:self->_messageId forKey:@"messageId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:source forKey:@"source"];
+  [coderCopy encodeObject:self->_messageId forKey:@"messageId"];
 }
 
-- (SGMailMessageKey)initWithCoder:(id)a3
+- (SGMailMessageKey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SGMailMessageKey;
   v5 = [(SGMailMessageKey *)&v13 init];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"source"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"source"];
     source = v5->_source;
     v5->_source = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"messageId"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"messageId"];
     messageId = v5->_messageId;
     v5->_messageId = v10;
   }
@@ -99,18 +99,18 @@ LABEL_9:
   return v5;
 }
 
-- (SGMailMessageKey)initWithSource:(id)a3 messageId:(id)a4
+- (SGMailMessageKey)initWithSource:(id)source messageId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = SGMailMessageKey;
   v9 = [(SGMailMessageKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_source, a3);
-    objc_storeStrong(&v10->_messageId, a4);
+    objc_storeStrong(&v9->_source, source);
+    objc_storeStrong(&v10->_messageId, id);
   }
 
   return v10;

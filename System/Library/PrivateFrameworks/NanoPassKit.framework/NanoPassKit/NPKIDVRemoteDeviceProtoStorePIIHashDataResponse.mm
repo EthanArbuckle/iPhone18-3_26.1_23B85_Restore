@@ -1,11 +1,11 @@
 @interface NPKIDVRemoteDeviceProtoStorePIIHashDataResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKIDVRemoteDeviceProtoStorePIIHashDataResponse
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKIDVRemoteDeviceProtoStorePIIHashDataResponse;
   v4 = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)&v8 description];
-  v5 = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   credentialIdentifier = self->_credentialIdentifier;
   if (credentialIdentifier)
   {
-    [v3 setObject:credentialIdentifier forKey:@"credentialIdentifier"];
+    [dictionary setObject:credentialIdentifier forKey:@"credentialIdentifier"];
   }
 
   errorData = self->_errorData;
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_credentialIdentifier)
   {
     [NPKIDVRemoteDeviceProtoStorePIIHashDataResponse writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_errorData)
   {
@@ -57,37 +57,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setCredentialIdentifier:self->_credentialIdentifier];
+  toCopy = to;
+  [toCopy setCredentialIdentifier:self->_credentialIdentifier];
   if (self->_errorData)
   {
-    [v4 setErrorData:?];
+    [toCopy setErrorData:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_credentialIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_credentialIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((credentialIdentifier = self->_credentialIdentifier, !(credentialIdentifier | v4[1])) || -[NSString isEqual:](credentialIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((credentialIdentifier = self->_credentialIdentifier, !(credentialIdentifier | equalCopy[1])) || -[NSString isEqual:](credentialIdentifier, "isEqual:")))
   {
     errorData = self->_errorData;
-    if (errorData | v4[2])
+    if (errorData | equalCopy[2])
     {
       v7 = [(NSData *)errorData isEqual:?];
     }
@@ -106,20 +106,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)self setCredentialIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKIDVRemoteDeviceProtoStorePIIHashDataResponse *)self setErrorData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

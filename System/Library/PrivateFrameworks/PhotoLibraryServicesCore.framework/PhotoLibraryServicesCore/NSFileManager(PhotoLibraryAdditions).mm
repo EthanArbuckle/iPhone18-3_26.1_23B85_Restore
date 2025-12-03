@@ -14,7 +14,7 @@
   if (v6)
   {
     v15 = 0;
-    v7 = [a1 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v15];
+    v7 = [self createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v15];
     v8 = v15;
     if (!a4)
     {
@@ -53,7 +53,7 @@ LABEL_7:
 - (uint64_t)removeDirectoryAtPathIfEmpty:()PhotoLibraryAdditions ancestors:
 {
   v6 = a3;
-  v7 = v6;
+  stringByDeletingLastPathComponent = v6;
   if (a4 < 0 || [v6 length] < 2)
   {
     v8 = 0;
@@ -63,16 +63,16 @@ LABEL_7:
   {
     v8 = 0;
     v9 = a4 + 1;
-    v10 = v7;
+    v10 = stringByDeletingLastPathComponent;
     while (1)
     {
-      if (![a1 directoryExistsAtPath:v10] || (objc_msgSend(a1, "contentsOfDirectoryAtPath:error:", v10, 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v12) || !objc_msgSend(a1, "removeItemAtPath:error:", v10, 0))
+      if (![self directoryExistsAtPath:v10] || (objc_msgSend(self, "contentsOfDirectoryAtPath:error:", v10, 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v12) || !objc_msgSend(self, "removeItemAtPath:error:", v10, 0))
       {
-        v7 = v10;
+        stringByDeletingLastPathComponent = v10;
         goto LABEL_13;
       }
 
-      v7 = [v10 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
 
       if (--v9 <= 0)
       {
@@ -80,8 +80,8 @@ LABEL_7:
       }
 
       v8 = 1;
-      v10 = v7;
-      if ([v7 length] < 2)
+      v10 = stringByDeletingLastPathComponent;
+      if ([stringByDeletingLastPathComponent length] < 2)
       {
         goto LABEL_13;
       }
@@ -98,7 +98,7 @@ LABEL_13:
 - (uint64_t)directoryExistsAtPath:()PhotoLibraryAdditions
 {
   v4 = 0;
-  [a1 fileExistsAtPath:a3 isDirectory:&v4];
+  [self fileExistsAtPath:a3 isDirectory:&v4];
   return v4;
 }
 

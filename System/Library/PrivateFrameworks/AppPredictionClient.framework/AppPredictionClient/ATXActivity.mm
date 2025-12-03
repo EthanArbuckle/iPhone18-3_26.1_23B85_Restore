@@ -1,9 +1,9 @@
 @interface ATXActivity
-- (ATXActivity)initWithBMInferredModeEvent:(id)a3;
-- (ATXActivity)initWithBiomeInferredModeEvent:(id)a3;
-- (ATXActivity)initWithModeUUID:(id)a3 userModeName:(id)a4 activityType:(unint64_t)a5 origin:(int64_t)a6 originBundleId:(id)a7 originAnchorType:(id)a8 allowsSmartEntry:(BOOL)a9 suggestionUUID:(id)a10 triggers:(id)a11 location:(unint64_t)a12 shouldSuggestTriggers:(BOOL)a13;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXActivity:(id)a3;
+- (ATXActivity)initWithBMInferredModeEvent:(id)event;
+- (ATXActivity)initWithBiomeInferredModeEvent:(id)event;
+- (ATXActivity)initWithModeUUID:(id)d userModeName:(id)name activityType:(unint64_t)type origin:(int64_t)origin originBundleId:(id)id originAnchorType:(id)anchorType allowsSmartEntry:(BOOL)entry suggestionUUID:(id)self0 triggers:(id)self1 location:(unint64_t)self2 shouldSuggestTriggers:(BOOL)self3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXActivity:(id)activity;
 - (NSString)localizedSuggestionReason;
 - (id)_anchorSuggestionReasonLocalizationKey;
 - (id)_heuristicSuggestionReasonLocalizationKey;
@@ -15,97 +15,97 @@
 
 @implementation ATXActivity
 
-- (ATXActivity)initWithBMInferredModeEvent:(id)a3
+- (ATXActivity)initWithBMInferredModeEvent:(id)event
 {
-  v3 = a3;
-  v19 = [v3 modeUUID];
-  v18 = [v3 userModeName];
-  [v3 modeType];
+  eventCopy = event;
+  modeUUID = [eventCopy modeUUID];
+  userModeName = [eventCopy userModeName];
+  [eventCopy modeType];
   v17 = BMInferredModeTypeToActivity();
-  v4 = [v3 origin];
-  v5 = [v3 originBundleId];
-  v6 = [v3 originAnchorType];
-  v7 = [v3 isAutomationEnabled];
-  v8 = [v3 suggestionUUID];
-  v9 = [v3 serializedTriggers];
+  origin = [eventCopy origin];
+  originBundleId = [eventCopy originBundleId];
+  originAnchorType = [eventCopy originAnchorType];
+  isAutomationEnabled = [eventCopy isAutomationEnabled];
+  suggestionUUID = [eventCopy suggestionUUID];
+  serializedTriggers = [eventCopy serializedTriggers];
   v10 = ATXDeserializeTriggers();
-  v11 = [v3 uiLocation];
-  v12 = [v3 shouldSuggestTriggers];
+  uiLocation = [eventCopy uiLocation];
+  shouldSuggestTriggers = [eventCopy shouldSuggestTriggers];
 
-  LOBYTE(v16) = v12;
-  LOBYTE(v15) = v7;
-  v13 = [(ATXActivity *)self initWithModeUUID:v19 userModeName:v18 activityType:v17 origin:v4 originBundleId:v5 originAnchorType:v6 allowsSmartEntry:v15 suggestionUUID:v8 triggers:v10 location:v11 shouldSuggestTriggers:v16];
+  LOBYTE(v16) = shouldSuggestTriggers;
+  LOBYTE(v15) = isAutomationEnabled;
+  v13 = [(ATXActivity *)self initWithModeUUID:modeUUID userModeName:userModeName activityType:v17 origin:origin originBundleId:originBundleId originAnchorType:originAnchorType allowsSmartEntry:v15 suggestionUUID:suggestionUUID triggers:v10 location:uiLocation shouldSuggestTriggers:v16];
 
   return v13;
 }
 
-- (ATXActivity)initWithBiomeInferredModeEvent:(id)a3
+- (ATXActivity)initWithBiomeInferredModeEvent:(id)event
 {
-  v3 = a3;
-  v19 = [v3 modeIdentifier];
-  v18 = [v3 userModeName];
-  [v3 modeType];
+  eventCopy = event;
+  modeIdentifier = [eventCopy modeIdentifier];
+  userModeName = [eventCopy userModeName];
+  [eventCopy modeType];
   v17 = BMUserFocusInferredModeTypeToActivity();
-  [v3 origin];
+  [eventCopy origin];
   v4 = BMUserFocusInferredModeOriginToLegacy();
-  v5 = [v3 originBundleID];
-  v6 = [v3 originAnchorType];
-  v7 = [v3 isAutomationEnabled];
-  v8 = [v3 uuid];
-  v9 = [v3 serializedTriggers];
+  originBundleID = [eventCopy originBundleID];
+  originAnchorType = [eventCopy originAnchorType];
+  isAutomationEnabled = [eventCopy isAutomationEnabled];
+  uuid = [eventCopy uuid];
+  serializedTriggers = [eventCopy serializedTriggers];
   v10 = ATXDeserializeTriggers();
-  v11 = [v3 uiLocation];
-  v12 = [v3 shouldSuggestTriggers];
+  uiLocation = [eventCopy uiLocation];
+  shouldSuggestTriggers = [eventCopy shouldSuggestTriggers];
 
-  LOBYTE(v16) = v12;
-  LOBYTE(v15) = v7;
-  v13 = [(ATXActivity *)self initWithModeUUID:v19 userModeName:v18 activityType:v17 origin:v4 originBundleId:v5 originAnchorType:v6 allowsSmartEntry:v15 suggestionUUID:v8 triggers:v10 location:v11 shouldSuggestTriggers:v16];
+  LOBYTE(v16) = shouldSuggestTriggers;
+  LOBYTE(v15) = isAutomationEnabled;
+  v13 = [(ATXActivity *)self initWithModeUUID:modeIdentifier userModeName:userModeName activityType:v17 origin:v4 originBundleId:originBundleID originAnchorType:originAnchorType allowsSmartEntry:v15 suggestionUUID:uuid triggers:v10 location:uiLocation shouldSuggestTriggers:v16];
 
   return v13;
 }
 
-- (ATXActivity)initWithModeUUID:(id)a3 userModeName:(id)a4 activityType:(unint64_t)a5 origin:(int64_t)a6 originBundleId:(id)a7 originAnchorType:(id)a8 allowsSmartEntry:(BOOL)a9 suggestionUUID:(id)a10 triggers:(id)a11 location:(unint64_t)a12 shouldSuggestTriggers:(BOOL)a13
+- (ATXActivity)initWithModeUUID:(id)d userModeName:(id)name activityType:(unint64_t)type origin:(int64_t)origin originBundleId:(id)id originAnchorType:(id)anchorType allowsSmartEntry:(BOOL)entry suggestionUUID:(id)self0 triggers:(id)self1 location:(unint64_t)self2 shouldSuggestTriggers:(BOOL)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a7;
-  v22 = a8;
-  v23 = a10;
-  v24 = a11;
+  dCopy = d;
+  nameCopy = name;
+  idCopy = id;
+  anchorTypeCopy = anchorType;
+  iDCopy = iD;
+  triggersCopy = triggers;
   v39.receiver = self;
   v39.super_class = ATXActivity;
   v25 = [(ATXActivity *)&v39 init];
   if (v25)
   {
-    v26 = [v19 copy];
+    v26 = [dCopy copy];
     modeUUID = v25->_modeUUID;
     v25->_modeUUID = v26;
 
-    v28 = [v20 copy];
+    v28 = [nameCopy copy];
     userModeName = v25->_userModeName;
     v25->_userModeName = v28;
 
-    v25->_activityType = a5;
-    v25->_origin = a6;
-    v30 = [v21 copy];
+    v25->_activityType = type;
+    v25->_origin = origin;
+    v30 = [idCopy copy];
     originBundleId = v25->_originBundleId;
     v25->_originBundleId = v30;
 
-    v32 = [v22 copy];
+    v32 = [anchorTypeCopy copy];
     originAnchorType = v25->_originAnchorType;
     v25->_originAnchorType = v32;
 
-    v34 = [v23 copy];
+    v34 = [iDCopy copy];
     suggestionUUID = v25->_suggestionUUID;
     v25->_suggestionUUID = v34;
 
-    v25->_allowsSmartEntry = a9;
-    v25->_location = a12;
-    v36 = [v24 copy];
+    v25->_allowsSmartEntry = entry;
+    v25->_location = location;
+    v36 = [triggersCopy copy];
     triggers = v25->_triggers;
     v25->_triggers = v36;
 
-    v25->_shouldSuggestTriggers = a13;
+    v25->_shouldSuggestTriggers = suggestTriggers;
   }
 
   return v25;
@@ -129,11 +129,11 @@
     _os_log_impl(&dword_1BF549000, v3, OS_LOG_TYPE_DEFAULT, "ATXActivity - Generating localizedSuggestionReason for activity type %ld, origin %ld, and origin anchor type %@", &v11, 0x20u);
   }
 
-  v7 = [(ATXActivity *)self _suggestionReasonLocalizationKey];
-  if (v7)
+  _suggestionReasonLocalizationKey = [(ATXActivity *)self _suggestionReasonLocalizationKey];
+  if (_suggestionReasonLocalizationKey)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v9 = [v8 localizedStringForKey:v7 value:0 table:0];
+    v9 = [v8 localizedStringForKey:_suggestionReasonLocalizationKey value:0 table:0];
   }
 
   else
@@ -166,21 +166,21 @@
   {
     if (((1 << v2) & 0x3E7FC) != 0)
     {
-      v3 = [(ATXActivity *)self _heuristicSuggestionReasonLocalizationKey];
+      _heuristicSuggestionReasonLocalizationKey = [(ATXActivity *)self _heuristicSuggestionReasonLocalizationKey];
       goto LABEL_10;
     }
 
     if (((1 << v2) & 0x1003) == 0)
     {
-      v3 = [(ATXActivity *)self _anchorSuggestionReasonLocalizationKey];
+      _heuristicSuggestionReasonLocalizationKey = [(ATXActivity *)self _anchorSuggestionReasonLocalizationKey];
       goto LABEL_10;
     }
   }
 
-  v3 = 0;
+  _heuristicSuggestionReasonLocalizationKey = 0;
 LABEL_10:
 
-  return v3;
+  return _heuristicSuggestionReasonLocalizationKey;
 }
 
 - (id)_anchorSuggestionReasonLocalizationKey
@@ -285,14 +285,14 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v5 = [v3 integerValue];
-  v6 = v5;
+  integerValue = [v3 integerValue];
+  v6 = integerValue;
   v7 = 0;
-  if (v5 > 4)
+  if (integerValue > 4)
   {
-    if (v5 > 7)
+    if (integerValue > 7)
     {
-      if ((v5 - 8) < 2)
+      if ((integerValue - 8) < 2)
       {
         goto LABEL_43;
       }
@@ -311,7 +311,7 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    if (v5 == 5)
+    if (integerValue == 5)
     {
       if (self->_origin == 4)
       {
@@ -320,7 +320,7 @@ LABEL_42:
       }
     }
 
-    else if (v5 == 6)
+    else if (integerValue == 6)
     {
       if (self->_origin == 6)
       {
@@ -345,9 +345,9 @@ LABEL_39:
     goto LABEL_42;
   }
 
-  if (v5 > 1)
+  if (integerValue > 1)
   {
-    if (v5 == 2)
+    if (integerValue == 2)
     {
       if ((self->_origin - 1) < 3)
       {
@@ -356,7 +356,7 @@ LABEL_39:
       }
     }
 
-    else if (v5 == 3)
+    else if (integerValue == 3)
     {
       origin = self->_origin;
       if (origin == 7)
@@ -392,11 +392,11 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  if (v5 != -1)
+  if (integerValue != -1)
   {
-    if (v5)
+    if (integerValue)
     {
-      if (v5 == 1)
+      if (integerValue == 1)
       {
         v8 = self->_origin;
         if (v8 == 5)
@@ -451,29 +451,29 @@ LABEL_43:
   return self->_shouldSuggestTriggers - (v10 - v9 + 32 * v9) + 32 * (v10 - v9 + 32 * v9);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActivity *)self isEqualToATXActivity:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActivity *)self isEqualToATXActivity:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXActivity:(id)a3
+- (BOOL)isEqualToATXActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   modeUUID = self->_modeUUID;
-  v6 = [v4 modeUUID];
-  LODWORD(modeUUID) = [(NSString *)modeUUID isEqualToString:v6];
+  modeUUID = [activityCopy modeUUID];
+  LODWORD(modeUUID) = [(NSString *)modeUUID isEqualToString:modeUUID];
 
   if (!modeUUID)
   {
@@ -481,8 +481,8 @@ LABEL_43:
   }
 
   suggestionUUID = self->_suggestionUUID;
-  v8 = [v4 suggestionUUID];
-  LODWORD(suggestionUUID) = [(NSString *)suggestionUUID isEqualToString:v8];
+  suggestionUUID = [activityCopy suggestionUUID];
+  LODWORD(suggestionUUID) = [(NSString *)suggestionUUID isEqualToString:suggestionUUID];
 
   if (!suggestionUUID)
   {
@@ -490,25 +490,25 @@ LABEL_43:
   }
 
   activityType = self->_activityType;
-  if (activityType != [v4 activityType])
+  if (activityType != [activityCopy activityType])
   {
     goto LABEL_21;
   }
 
   allowsSmartEntry = self->_allowsSmartEntry;
-  if (allowsSmartEntry != [v4 allowsSmartEntry])
+  if (allowsSmartEntry != [activityCopy allowsSmartEntry])
   {
     goto LABEL_21;
   }
 
   origin = self->_origin;
-  if (origin != [v4 origin])
+  if (origin != [activityCopy origin])
   {
     goto LABEL_21;
   }
 
   location = self->_location;
-  if (location != [v4 location])
+  if (location != [activityCopy location])
   {
     goto LABEL_21;
   }
@@ -517,18 +517,18 @@ LABEL_43:
   v14 = originBundleId;
   if (!originBundleId)
   {
-    v15 = [v4 originBundleId];
-    if (!v15)
+    originBundleId = [activityCopy originBundleId];
+    if (!originBundleId)
     {
       goto LABEL_14;
     }
 
-    location = v15;
+    location = originBundleId;
     v14 = self->_originBundleId;
   }
 
-  v16 = [v4 originBundleId];
-  v17 = [(NSString *)v14 isEqualToString:v16];
+  originBundleId2 = [activityCopy originBundleId];
+  v17 = [(NSString *)v14 isEqualToString:originBundleId2];
 
   if (originBundleId)
   {
@@ -555,14 +555,14 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v20 = [v4 originAnchorType];
-  if (v20)
+  originAnchorType = [activityCopy originAnchorType];
+  if (originAnchorType)
   {
-    location = v20;
+    location = originAnchorType;
     v19 = self->_originAnchorType;
 LABEL_17:
-    v21 = [v4 originAnchorType];
-    v22 = [(NSString *)v19 isEqualToString:v21];
+    originAnchorType2 = [activityCopy originAnchorType];
+    v22 = [(NSString *)v19 isEqualToString:originAnchorType2];
 
     if (originAnchorType)
     {
@@ -588,7 +588,7 @@ LABEL_21:
 
 LABEL_19:
   shouldSuggestTriggers = self->_shouldSuggestTriggers;
-  v24 = shouldSuggestTriggers == [v4 shouldSuggestTriggers];
+  v24 = shouldSuggestTriggers == [activityCopy shouldSuggestTriggers];
 LABEL_22:
 
   return v24;

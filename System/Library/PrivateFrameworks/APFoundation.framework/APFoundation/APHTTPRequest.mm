@@ -1,18 +1,18 @@
 @interface APHTTPRequest
-- (APHTTPRequest)initWithURL:(id)a3 HTTPMethod:(int64_t)a4 HTTPHeaders:(id)a5 HTTPBody:(id)a6 serviceName:(id)a7 completionHandler:(id)a8;
+- (APHTTPRequest)initWithURL:(id)l HTTPMethod:(int64_t)method HTTPHeaders:(id)headers HTTPBody:(id)body serviceName:(id)name completionHandler:(id)handler;
 - (NSDictionary)allHTTPHeaderFields;
-- (void)setRequestHeader:(id)a3 withValue:(id)a4;
+- (void)setRequestHeader:(id)header withValue:(id)value;
 @end
 
 @implementation APHTTPRequest
 
-- (APHTTPRequest)initWithURL:(id)a3 HTTPMethod:(int64_t)a4 HTTPHeaders:(id)a5 HTTPBody:(id)a6 serviceName:(id)a7 completionHandler:(id)a8
+- (APHTTPRequest)initWithURL:(id)l HTTPMethod:(int64_t)method HTTPHeaders:(id)headers HTTPBody:(id)body serviceName:(id)name completionHandler:(id)handler
 {
-  v36 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  headersCopy = headers;
+  bodyCopy = body;
+  nameCopy = name;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = APHTTPRequest;
   v22 = [(APHTTPRequest *)&v37 init];
@@ -22,11 +22,11 @@
     identifier = v22->_identifier;
     v22->_identifier = v23;
 
-    objc_storeStrong(&v22->_URL, a3);
-    v22->_HTTPMethod = a4;
-    if (v15)
+    objc_storeStrong(&v22->_URL, l);
+    v22->_HTTPMethod = method;
+    if (headersCopy)
     {
-      v28 = objc_msgSend_mutableCopy(v15, v25, v26, v27);
+      v28 = objc_msgSend_mutableCopy(headersCopy, v25, v26, v27);
     }
 
     else
@@ -37,9 +37,9 @@
     internalHTTPHeaderFields = v22->_internalHTTPHeaderFields;
     v22->_internalHTTPHeaderFields = v28;
 
-    objc_storeStrong(&v22->_HTTPBody, a6);
-    objc_storeStrong(&v22->_serviceName, a7);
-    v33 = objc_msgSend_copy(v18, v30, v31, v32);
+    objc_storeStrong(&v22->_HTTPBody, body);
+    objc_storeStrong(&v22->_serviceName, name);
+    v33 = objc_msgSend_copy(handlerCopy, v30, v31, v32);
     completionHandler = v22->_completionHandler;
     v22->_completionHandler = v33;
   }
@@ -47,20 +47,20 @@
   return v22;
 }
 
-- (void)setRequestHeader:(id)a3 withValue:(id)a4
+- (void)setRequestHeader:(id)header withValue:(id)value
 {
-  v13 = a4;
-  v6 = a3;
+  valueCopy = value;
+  headerCopy = header;
   v10 = objc_msgSend_internalHTTPHeaderFields(self, v7, v8, v9);
   v12 = v10;
-  if (v13)
+  if (valueCopy)
   {
-    objc_msgSend_setValue_forKey_(v10, v13, v13, v6);
+    objc_msgSend_setValue_forKey_(v10, valueCopy, valueCopy, headerCopy);
   }
 
   else
   {
-    objc_msgSend_removeObjectForKey_(v10, 0, v6, v11);
+    objc_msgSend_removeObjectForKey_(v10, 0, headerCopy, v11);
   }
 }
 

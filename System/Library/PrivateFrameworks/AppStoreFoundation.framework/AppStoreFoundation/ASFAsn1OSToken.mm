@@ -6,10 +6,10 @@
 
 - (void)stringValue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[4];
+    selfCopy = self;
+    v3 = self[4];
     if (!v3)
     {
       goto LABEL_7;
@@ -25,18 +25,18 @@
         v5 = 4;
         break;
       case 2:
-        a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", *(v3 + 32)];
+        self = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", *(v3 + 32)];
 LABEL_13:
         v1 = vars8;
         goto LABEL_14;
       default:
 LABEL_7:
-        a1 = 0;
+        self = 0;
         goto LABEL_13;
     }
 
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = v2[4];
+    v8 = selfCopy[4];
     if (v8)
     {
       Property = objc_getProperty(v8, v6, 24, 1);
@@ -47,13 +47,13 @@ LABEL_7:
       Property = 0;
     }
 
-    a1 = [v7 initWithData:Property encoding:v5];
+    self = [v7 initWithData:Property encoding:v5];
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface DateRangeRelevanceProviderManager
 + (Class)_relevanceProviderClass;
 + (NSArray)_features;
-- (_TtC18HealthPlatformCore33DateRangeRelevanceProviderManager)initWithQueue:(id)a3;
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (_TtC18HealthPlatformCore33DateRangeRelevanceProviderManager)initWithQueue:(id)queue;
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 @end
 
 @implementation DateRangeRelevanceProviderManager
@@ -34,29 +34,29 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_22870BA4C(v8, a4);
+  providerCopy = provider;
+  contextCopy = context;
+  featureCopy = feature;
+  selfCopy = self;
+  v12 = sub_22870BA4C(providerCopy, context);
 
   return v12;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v4 = [(DateRangeRelevanceProviderManager *)self _valueForProvider:a3 context:0 feature:a4];
+  v4 = [(DateRangeRelevanceProviderManager *)self _valueForProvider:provider context:0 feature:feature];
 
   return v4;
 }
 
-- (_TtC18HealthPlatformCore33DateRangeRelevanceProviderManager)initWithQueue:(id)a3
+- (_TtC18HealthPlatformCore33DateRangeRelevanceProviderManager)initWithQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for DateRangeRelevanceProviderManager();
-  return [(RERelevanceProviderManager *)&v5 initWithQueue:a3];
+  return [(RERelevanceProviderManager *)&v5 initWithQueue:queue];
 }
 
 @end

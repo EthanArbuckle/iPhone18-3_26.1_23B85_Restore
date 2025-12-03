@@ -1,25 +1,25 @@
 @interface RTEventModelUserInteractionMO
-+ (id)managedObjectWithFeedback:(id)a3 interaction:(id)a4 locationOfInterestIdentifier:(id)a5 date:(id)a6 inManagedObjectContext:(id)a7;
++ (id)managedObjectWithFeedback:(id)feedback interaction:(id)interaction locationOfInterestIdentifier:(id)identifier date:(id)date inManagedObjectContext:(id)context;
 @end
 
 @implementation RTEventModelUserInteractionMO
 
-+ (id)managedObjectWithFeedback:(id)a3 interaction:(id)a4 locationOfInterestIdentifier:(id)a5 date:(id)a6 inManagedObjectContext:(id)a7
++ (id)managedObjectWithFeedback:(id)feedback interaction:(id)interaction locationOfInterestIdentifier:(id)identifier date:(id)date inManagedObjectContext:(id)context
 {
   v11 = MEMORY[0x277CBE408];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  contextCopy = context;
+  dateCopy = date;
+  identifierCopy = identifier;
+  interactionCopy = interaction;
+  feedbackCopy = feedback;
   v17 = +[(NSManagedObject *)RTEventModelUserInteractionMO];
-  v18 = [v11 insertNewObjectForEntityForName:v17 inManagedObjectContext:v12];
+  v18 = [v11 insertNewObjectForEntityForName:v17 inManagedObjectContext:contextCopy];
 
-  [v18 setFeedback:v16];
-  [v18 setInteraction:v15];
+  [v18 setFeedback:feedbackCopy];
+  [v18 setInteraction:interactionCopy];
 
-  [v18 setLocationOfInterestIdentifier:v14];
-  [v18 setDate:v13];
+  [v18 setLocationOfInterestIdentifier:identifierCopy];
+  [v18 setDate:dateCopy];
 
   return v18;
 }

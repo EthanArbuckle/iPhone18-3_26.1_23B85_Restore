@@ -1,6 +1,6 @@
 @interface RAPCuratedCollectionContext
 - (GEORPCuratedCollectionContext)geoContext;
-- (RAPCuratedCollectionContext)initWithCuratedCollection:(id)a3 placeCollectionMapItems:(id)a4;
+- (RAPCuratedCollectionContext)initWithCuratedCollection:(id)collection placeCollectionMapItems:(id)items;
 @end
 
 @implementation RAPCuratedCollectionContext
@@ -12,9 +12,9 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v4 = self;
-  v5 = [(GEOPlaceCollection *)self->_curatedCollection itemIds];
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  selfCopy = self;
+  itemIds = [(GEOPlaceCollection *)self->_curatedCollection itemIds];
+  v6 = [itemIds countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,7 +25,7 @@
       {
         if (*v42 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemIds);
         }
 
         v10 = *(*(&v41 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v7 = [itemIds countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v7);
@@ -45,7 +45,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = [(GEOPlaceCollection *)v4->_curatedCollection photos];
+  obj = [(GEOPlaceCollection *)selfCopy->_curatedCollection photos];
   v11 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v11)
   {
@@ -62,13 +62,13 @@
 
         v15 = *(*(&v37 + 1) + 8 * j);
         v16 = objc_alloc_init(GEORPFeedbackClientImageInfo);
-        v17 = [v15 largestPhoto];
-        v18 = [v17 url];
-        v19 = [v18 absoluteString];
-        [v16 setImageUrl:v19];
+        largestPhoto = [v15 largestPhoto];
+        v18 = [largestPhoto url];
+        absoluteString = [v18 absoluteString];
+        [v16 setImageUrl:absoluteString];
 
-        v20 = [(GEOPlaceCollection *)v4->_curatedCollection publisherAttributionIdentifierString];
-        [v16 setProviderImageId:v20];
+        publisherAttributionIdentifierString = [(GEOPlaceCollection *)selfCopy->_curatedCollection publisherAttributionIdentifierString];
+        [v16 setProviderImageId:publisherAttributionIdentifierString];
 
         [v3 addImageInfo:v16];
       }
@@ -79,25 +79,25 @@
     while (v12);
   }
 
-  v21 = [(GEOPlaceCollection *)v4->_curatedCollection collectionTitle];
-  [v3 setOriginalName:v21];
+  collectionTitle = [(GEOPlaceCollection *)selfCopy->_curatedCollection collectionTitle];
+  [v3 setOriginalName:collectionTitle];
 
-  v22 = [(GEOPlaceCollection *)v4->_curatedCollection collectionDescription];
-  [v3 setOriginalDescription:v22];
+  collectionDescription = [(GEOPlaceCollection *)selfCopy->_curatedCollection collectionDescription];
+  [v3 setOriginalDescription:collectionDescription];
 
-  v23 = [(GEOPlaceCollection *)v4->_curatedCollection collectionURL];
-  v24 = [v23 absoluteString];
-  [v3 setOriginalUrl:v24];
+  collectionURL = [(GEOPlaceCollection *)selfCopy->_curatedCollection collectionURL];
+  absoluteString2 = [collectionURL absoluteString];
+  [v3 setOriginalUrl:absoluteString2];
 
-  v25 = [(GEOPlaceCollection *)v4->_curatedCollection collectionIdentifier];
-  [v3 setCuratedCollectionMuid:{objc_msgSend(v25, "muid")}];
+  collectionIdentifier = [(GEOPlaceCollection *)selfCopy->_curatedCollection collectionIdentifier];
+  [v3 setCuratedCollectionMuid:{objc_msgSend(collectionIdentifier, "muid")}];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = [(GEOPlaceCollection *)v4->_curatedCollection itemIds];
-  v27 = [v26 countByEnumeratingWithState:&v33 objects:v45 count:16];
+  itemIds2 = [(GEOPlaceCollection *)selfCopy->_curatedCollection itemIds];
+  v27 = [itemIds2 countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v27)
   {
     v28 = v27;
@@ -108,13 +108,13 @@
       {
         if (*v34 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(itemIds2);
         }
 
         [v3 addPlaceEntityMuid:{objc_msgSend(*(*(&v33 + 1) + 8 * k), "muid")}];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v33 objects:v45 count:16];
+      v28 = [itemIds2 countByEnumeratingWithState:&v33 objects:v45 count:16];
     }
 
     while (v28);
@@ -123,18 +123,18 @@
   return v3;
 }
 
-- (RAPCuratedCollectionContext)initWithCuratedCollection:(id)a3 placeCollectionMapItems:(id)a4
+- (RAPCuratedCollectionContext)initWithCuratedCollection:(id)collection placeCollectionMapItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  itemsCopy = items;
   v14.receiver = self;
   v14.super_class = RAPCuratedCollectionContext;
   v9 = [(RAPCuratedCollectionContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_curatedCollection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_curatedCollection, collection);
+    v11 = [itemsCopy copy];
     placeCollectionMapItems = v10->_placeCollectionMapItems;
     v10->_placeCollectionMapItems = v11;
   }

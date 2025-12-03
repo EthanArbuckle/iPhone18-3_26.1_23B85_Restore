@@ -1,6 +1,6 @@
 @interface CATransformLayer
 - (CATransformLayer)init;
-- (CATransformLayer)initWithLayer:(id)a3;
+- (CATransformLayer)initWithLayer:(id)layer;
 @end
 
 @implementation CATransformLayer
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (CATransformLayer)initWithLayer:(id)a3
+- (CATransformLayer)initWithLayer:(id)layer
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
   v4.super_class = CATransformLayer;
-  result = [(CALayer *)&v4 initWithLayer:a3];
+  result = [(CALayer *)&v4 initWithLayer:layer];
   if (result)
   {
     atomic_fetch_or(result->super._attr.layer + 1, 0x10000u);

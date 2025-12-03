@@ -1,7 +1,7 @@
 @interface EARKeywordFinder
 + (void)initialize;
-- (EARKeywordFinder)initWithConfiguration:(id)a3;
-- (id)correctedResultWithKeyword:(id)a3 tokenizedKeyword:(id)a4 preItnSausage:(id)a5 preItnOneBest:(id)a6 preItnOneBestIndices:(id)a7 nbestSize:(int64_t)a8;
+- (EARKeywordFinder)initWithConfiguration:(id)configuration;
+- (id)correctedResultWithKeyword:(id)keyword tokenizedKeyword:(id)tokenizedKeyword preItnSausage:(id)sausage preItnOneBest:(id)best preItnOneBestIndices:(id)indices nbestSize:(int64_t)size;
 @end
 
 @implementation EARKeywordFinder
@@ -9,21 +9,21 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (EARKeywordFinder)initWithConfiguration:(id)a3
+- (EARKeywordFinder)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v7.receiver = self;
   v7.super_class = EARKeywordFinder;
   if ([(EARKeywordFinder *)&v7 init])
   {
-    [v4 fileSystemRepresentation];
+    [configurationCopy fileSystemRepresentation];
     std::make_unique[abi:ne200100]<quasar::KeywordFinder,char const*,0>();
   }
 
@@ -32,20 +32,20 @@
   return v5;
 }
 
-- (id)correctedResultWithKeyword:(id)a3 tokenizedKeyword:(id)a4 preItnSausage:(id)a5 preItnOneBest:(id)a6 preItnOneBestIndices:(id)a7 nbestSize:(int64_t)a8
+- (id)correctedResultWithKeyword:(id)keyword tokenizedKeyword:(id)tokenizedKeyword preItnSausage:(id)sausage preItnOneBest:(id)best preItnOneBestIndices:(id)indices nbestSize:(int64_t)size
 {
-  v8 = a8;
+  sizeCopy = size;
   v92 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v56 = a5;
-  v57 = a6;
-  v55 = a7;
+  keywordCopy = keyword;
+  tokenizedKeywordCopy = tokenizedKeyword;
+  sausageCopy = sausage;
+  bestCopy = best;
+  indicesCopy = indices;
   ptr = self->_kwf.__ptr_;
-  v52 = v14;
-  if (v14)
+  v52 = keywordCopy;
+  if (keywordCopy)
   {
-    [v14 ear_toString];
+    [keywordCopy ear_toString];
   }
 
   else
@@ -56,8 +56,8 @@
   }
 
   v53 = ptr;
-  v54 = v8;
-  v17 = v15;
+  v54 = sizeCopy;
+  v17 = tokenizedKeywordCopy;
   v65 = 0;
   v66 = 0;
   v64 = 0;
@@ -143,9 +143,9 @@
     while (v18);
   }
 
-  EARHelpers::ArrayToVector2<std::vector<quasar::Token>,std::vector<quasar::Token> (*)(NSArray<_EARSpeechRecognitionToken *> *)>(v56, EARHelpers::QuasarResultFromEARSpeechRecognitionTokens, &v77);
-  EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v57, &v63);
-  v26 = v55;
+  EARHelpers::ArrayToVector2<std::vector<quasar::Token>,std::vector<quasar::Token> (*)(NSArray<_EARSpeechRecognitionToken *> *)>(sausageCopy, EARHelpers::QuasarResultFromEARSpeechRecognitionTokens, &v77);
+  EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(bestCopy, &v63);
+  v26 = indicesCopy;
   v61 = 0;
   v62 = 0;
   __src = 0;
@@ -167,7 +167,7 @@
         }
 
         v30 = *(__p[1] + j);
-        v31 = [v30 intValue];
+        intValue = [v30 intValue];
         v32 = v61;
         if (v61 >= v62)
         {
@@ -201,7 +201,7 @@
             std::__allocate_at_least[abi:ne200100]<std::allocator<int>>(&__src, v39);
           }
 
-          *(4 * v36) = v31;
+          *(4 * v36) = intValue;
           v33 = 4 * v36 + 4;
           memcpy(0, v34, v35);
           v40 = __src;
@@ -216,7 +216,7 @@
 
         else
         {
-          *v61 = v31;
+          *v61 = intValue;
           v33 = (v32 + 4);
         }
 
@@ -241,7 +241,7 @@
     operator delete(v67[0]);
   }
 
-  v41 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = v69;
   if (v69 != *(&v69 + 1))
   {
@@ -252,14 +252,14 @@
       __p[1] = 0;
       *&v74[0] = 0;
       std::vector<quasar::Token>::__init_with_size[abi:ne200100]<quasar::Token*,quasar::Token*>(__p, *v42, v42[1], 0x6DB6DB6DB6DB6DB7 * ((v42[1] - *v42) >> 5));
-      v44 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v46 = __p[0];
       v45 = __p[1];
       while (v46 != v45)
       {
         quasar::Token::Token(&v81, v46);
         v47 = [[_EARSpeechRecognitionToken alloc] _initWithQuasarToken:&v81];
-        [v44 addObject:v47];
+        [array2 addObject:v47];
 
         if (v91 < 0)
         {
@@ -293,9 +293,9 @@
         v46 = (v46 + 224);
       }
 
-      v48 = [v44 copy];
+      v48 = [array2 copy];
 
-      [v41 addObject:v48];
+      [array addObject:v48];
       v81.__r_.__value_.__r.__words[0] = __p;
       std::vector<quasar::Token>::__destroy_vector::operator()[abi:ne200100](&v81);
       v42 += 3;
@@ -304,7 +304,7 @@
     while (v42 != v43);
   }
 
-  v49 = [v41 copy];
+  v49 = [array copy];
 
   v50 = [[EARKeywordFinderResult alloc] _initWithCorrectedUtterances:v49];
   v81.__r_.__value_.__r.__words[0] = &v72;

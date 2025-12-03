@@ -1,17 +1,17 @@
 @interface NTKFaceViewTapControl
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKFaceViewTapControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKFaceViewTapControl)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation NTKFaceViewTapControl
 
-- (NTKFaceViewTapControl)initWithFrame:(CGRect)a3
+- (NTKFaceViewTapControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = NTKFaceViewTapControl;
-  v3 = [(NTKFaceViewTapControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKFaceViewTapControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -38,20 +38,20 @@
   [(UIImageView *)highlightImageView setFrame:?];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v12.receiver = self;
   v12.super_class = NTKFaceViewTapControl;
-  v5 = [(NTKFaceViewTapControl *)&v12 isHighlighted];
+  isHighlighted = [(NTKFaceViewTapControl *)&v12 isHighlighted];
   v11.receiver = self;
   v11.super_class = NTKFaceViewTapControl;
-  [(NTKFaceViewTapControl *)&v11 setHighlighted:v3];
-  if (v5 != v3)
+  [(NTKFaceViewTapControl *)&v11 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(UIImageView *)self->_highlightImageView setHidden:0];
     v6 = 0.2;
-    if (v3)
+    if (highlightedCopy)
     {
       v6 = 0.0;
     }
@@ -61,20 +61,20 @@
     v9[2] = __40__NTKFaceViewTapControl_setHighlighted___block_invoke;
     v9[3] = &unk_27877F7E8;
     v9[4] = self;
-    v10 = v3;
+    v10 = highlightedCopy;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__NTKFaceViewTapControl_setHighlighted___block_invoke_2;
     v7[3] = &unk_278782CD0;
     v7[4] = self;
-    v8 = v3;
+    v8 = highlightedCopy;
     [MEMORY[0x277D75D18] animateWithDuration:v9 animations:v7 completion:v6];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImageView *)self->_highlightImageView sizeThatFits:a3.width, a3.height];
+  [(UIImageView *)self->_highlightImageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

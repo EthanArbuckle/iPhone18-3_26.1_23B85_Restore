@@ -27,8 +27,8 @@
 
   v4 = objc_alloc_init(DDRSchedulerResetNetworkSettings);
   [(DDRSchedulerResetNetworkSettings *)v4 configureTasks];
-  v5 = [(DDRSchedulerResetNetworkSettings *)v4 scheduledTasks];
-  [v23 addObjectsFromArray:v5];
+  scheduledTasks = [(DDRSchedulerResetNetworkSettings *)v4 scheduledTasks];
+  [v23 addObjectsFromArray:scheduledTasks];
 
   v6 = objc_opt_new();
   [v23 addObject:v6];
@@ -84,8 +84,8 @@
 
 - (id)scheduledTasks
 {
-  v2 = [(DDRSchedulerResetAllSettings *)self resetTasks];
-  v3 = [v2 copy];
+  resetTasks = [(DDRSchedulerResetAllSettings *)self resetTasks];
+  v3 = [resetTasks copy];
 
   return v3;
 }

@@ -1,28 +1,28 @@
 @interface AEAnnotationDragItemProvider
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)itemProviderWithAnnotation:(id)a3 propertyProvider:(id)a4;
-- (AEAnnotationDragItemProvider)initWithPlainTextString:(id)a3 htmlString:(id)a4;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (void)_loadHtmlData:(id)a3;
-- (void)_loadPlainTextData:(id)a3;
++ (id)itemProviderWithAnnotation:(id)annotation propertyProvider:(id)provider;
+- (AEAnnotationDragItemProvider)initWithPlainTextString:(id)string htmlString:(id)htmlString;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (void)_loadHtmlData:(id)data;
+- (void)_loadPlainTextData:(id)data;
 @end
 
 @implementation AEAnnotationDragItemProvider
 
-- (AEAnnotationDragItemProvider)initWithPlainTextString:(id)a3 htmlString:(id)a4
+- (AEAnnotationDragItemProvider)initWithPlainTextString:(id)string htmlString:(id)htmlString
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  htmlStringCopy = htmlString;
   v14.receiver = self;
   v14.super_class = AEAnnotationDragItemProvider;
   v8 = [(AEAnnotationDragItemProvider *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     plainTextString = v8->_plainTextString;
     v8->_plainTextString = v9;
 
-    v11 = [v7 copy];
+    v11 = [htmlStringCopy copy];
     htmlString = v8->_htmlString;
     v8->_htmlString = v11;
   }
@@ -30,75 +30,75 @@
   return v8;
 }
 
-+ (id)itemProviderWithAnnotation:(id)a3 propertyProvider:(id)a4
++ (id)itemProviderWithAnnotation:(id)annotation propertyProvider:(id)provider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AEAnnotationDragHTMLGenerator alloc] initWithAnnotation:v6 propertyProvider:v5];
+  providerCopy = provider;
+  annotationCopy = annotation;
+  v7 = [[AEAnnotationDragHTMLGenerator alloc] initWithAnnotation:annotationCopy propertyProvider:providerCopy];
 
   v8 = objc_alloc(objc_opt_class());
-  v9 = [(AEAnnotationDragHTMLGenerator *)v7 plainTextString];
-  v10 = [(AEAnnotationDragHTMLGenerator *)v7 documentString];
-  v11 = [v8 initWithPlainTextString:v9 htmlString:v10];
+  plainTextString = [(AEAnnotationDragHTMLGenerator *)v7 plainTextString];
+  documentString = [(AEAnnotationDragHTMLGenerator *)v7 documentString];
+  v11 = [v8 initWithPlainTextString:plainTextString htmlString:documentString];
 
   return v11;
 }
 
-- (void)_loadPlainTextData:(id)a3
+- (void)_loadPlainTextData:(id)data
 {
   plainTextString = self->_plainTextString;
-  v5 = a3;
+  dataCopy = data;
   v6 = [(NSString *)plainTextString dataUsingEncoding:4];
-  (*(a3 + 2))(v5, v6, 0);
+  (*(data + 2))(dataCopy, v6, 0);
 }
 
-- (void)_loadHtmlData:(id)a3
+- (void)_loadHtmlData:(id)data
 {
   htmlString = self->_htmlString;
-  v5 = a3;
+  dataCopy = data;
   v6 = [(NSString *)htmlString dataUsingEncoding:4];
-  (*(a3 + 2))(v5, v6, 0);
+  (*(data + 2))(dataCopy, v6, 0);
 }
 
 + (NSArray)writableTypeIdentifiersForItemProvider
 {
-  v2 = [UTTypeHTML identifier];
-  v6[0] = v2;
-  v3 = [UTTypeUTF8PlainText identifier];
-  v6[1] = v3;
+  identifier = [UTTypeHTML identifier];
+  v6[0] = identifier;
+  identifier2 = [UTTypeUTF8PlainText identifier];
+  v6[1] = identifier2;
   v4 = [NSArray arrayWithObjects:v6 count:2];
 
   return v4;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [UTTypeUTF8PlainText identifier];
-  v9 = [v8 isEqualToString:v6];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  identifier = [UTTypeUTF8PlainText identifier];
+  v9 = [identifier isEqualToString:identifierCopy];
 
   if (v9)
   {
-    [(AEAnnotationDragItemProvider *)self _loadPlainTextData:v7];
+    [(AEAnnotationDragItemProvider *)self _loadPlainTextData:handlerCopy];
   }
 
   else
   {
-    v10 = [UTTypeHTML identifier];
-    v11 = [v10 isEqualToString:v6];
+    identifier2 = [UTTypeHTML identifier];
+    v11 = [identifier2 isEqualToString:identifierCopy];
 
     if (v11)
     {
-      [(AEAnnotationDragItemProvider *)self _loadHtmlData:v7];
+      [(AEAnnotationDragItemProvider *)self _loadHtmlData:handlerCopy];
     }
 
     else
     {
-      if (v6)
+      if (identifierCopy)
       {
         v15 = @"typeIdentifier";
-        v16 = v6;
+        v16 = identifierCopy;
         v12 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
       }
 
@@ -108,7 +108,7 @@
       }
 
       v13 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v12];
-      v7[2](v7, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
   }
 

@@ -1,6 +1,6 @@
 @interface CRLWPDictationAndAutocorrectionCoordinator
 - (id)selectionStateSnapshot;
-- (void)validateSelectionStateUsing:(id)a3;
+- (void)validateSelectionStateUsing:(id)using;
 @end
 
 @implementation CRLWPDictationAndAutocorrectionCoordinator
@@ -13,9 +13,9 @@
   return 0;
 }
 
-- (void)validateSelectionStateUsing:(id)a3
+- (void)validateSelectionStateUsing:(id)using
 {
-  v3 = a3;
+  usingCopy = using;
 
   sub_1008AE290();
 }

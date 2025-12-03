@@ -1,15 +1,15 @@
 @interface PXStoryAutoEditDurationConstraintSolver
-- ($34B6A3E4F6D84C42DF3A29A209E596E5)constrainedDurationInfoAtIndex:(SEL)a3;
-- ($34B6A3E4F6D84C42DF3A29A209E596E5)originalDurationInfoAtIndex:(SEL)a3;
+- ($34B6A3E4F6D84C42DF3A29A209E596E5)constrainedDurationInfoAtIndex:(SEL)index;
+- ($34B6A3E4F6D84C42DF3A29A209E596E5)originalDurationInfoAtIndex:(SEL)index;
 - ($A35046FF140701A0BC97C4369CFAD28C)constrainedOverallDurationInfo;
 - ($A35046FF140701A0BC97C4369CFAD28C)originalOverallDurationInfo;
-- (BOOL)solveForMaximumDuration:(id *)a3;
-- (BOOL)solveForPreferredDuration:(id *)a3;
+- (BOOL)solveForMaximumDuration:(id *)duration;
+- (BOOL)solveForPreferredDuration:(id *)duration;
 - (PXStoryAutoEditDurationConstraintSolver)init;
 - (id).cxx_construct;
-- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)a3 maximumDuration:(id *)a4;
-- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)a3 preferredDuration:(id *)a4;
-- (void)addClipWithDurationInfo:(id *)a3;
+- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)named maximumDuration:(id *)duration;
+- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)named preferredDuration:(id *)duration;
+- (void)addClipWithDurationInfo:(id *)info;
 @end
 
 @implementation PXStoryAutoEditDurationConstraintSolver
@@ -22,15 +22,15 @@
   return self;
 }
 
-- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)a3 maximumDuration:(id *)a4
+- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)named maximumDuration:(id *)duration
 {
-  v6 = a3;
+  namedCopy = named;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   memset(v13, 0, sizeof(v13));
   SumDurations(v13, self->_infos.__begin_, self->_infos.__end_);
-  time = *a4;
+  time = *duration;
   Seconds = CMTimeGetSeconds(&time);
-  [v7 appendFormat:@"func test%@MaximumDurationFromTTR() throws {\n", v6];
+  [v7 appendFormat:@"func test%@MaximumDurationFromTTR() throws {\n", namedCopy];
   [v7 appendFormat:@"    let solver = PXStoryAutoEditDurationConstraintSolver()\n"];
   [v7 appendFormat:@"\n"];
   begin = self->_infos.__begin_;
@@ -51,7 +51,7 @@
   time = v13[2];
   [v7 appendFormat:@"    XCTAssertEqual(originalOverall.specificDurationInfo.maximumSeconds, %f)\n", CMTimeGetSeconds(&time)];
   [v7 appendFormat:@"\n"];
-  [v7 appendFormat:@"    solver.solve(forMaximumDuration: CMTimeMake(value: %lld, timescale: %d))\n", a4->var0, a4->var1];
+  [v7 appendFormat:@"    solver.solve(forMaximumDuration: CMTimeMake(value: %lld, timescale: %d))\n", duration->var0, duration->var1];
   [v7 appendFormat:@"\n"];
   [v7 appendFormat:@"    let constrainedOverall = solver.constrainedOverallDurationInfo\n"];
   [v7 appendFormat:@"    XCTAssertLessThanOrEqual(constrainedOverall.specificDurationInfo.minimumSeconds, %f)\n", *&Seconds];
@@ -63,15 +63,15 @@
   return v7;
 }
 
-- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)a3 preferredDuration:(id *)a4
+- (id)diagnosticSwiftCodeForDurationUnitTestNamed:(id)named preferredDuration:(id *)duration
 {
-  v6 = a3;
+  namedCopy = named;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   memset(v13, 0, sizeof(v13));
   SumDurations(v13, self->_infos.__begin_, self->_infos.__end_);
-  time = *a4;
+  time = *duration;
   Seconds = CMTimeGetSeconds(&time);
-  [v7 appendFormat:@"func test%@PreferredDurationFromTTR() throws {\n", v6];
+  [v7 appendFormat:@"func test%@PreferredDurationFromTTR() throws {\n", namedCopy];
   [v7 appendFormat:@"    let solver = PXStoryAutoEditDurationConstraintSolver()\n"];
   [v7 appendFormat:@"\n"];
   begin = self->_infos.__begin_;
@@ -92,7 +92,7 @@
   time = v13[2];
   [v7 appendFormat:@"    XCTAssertEqual(originalOverall.specificDurationInfo.maximumSeconds, %f)\n", CMTimeGetSeconds(&time)];
   [v7 appendFormat:@"\n"];
-  [v7 appendFormat:@"    solver.solve(forPreferredDuration: CMTimeMake(value: %lld, timescale: %d))\n", a4->var0, a4->var1];
+  [v7 appendFormat:@"    solver.solve(forPreferredDuration: CMTimeMake(value: %lld, timescale: %d))\n", duration->var0, duration->var1];
   [v7 appendFormat:@"\n"];
   [v7 appendFormat:@"    let constrainedOverall = solver.constrainedOverallDurationInfo\n"];
   [v7 appendFormat:@"    XCTAssertLessThanOrEqual(constrainedOverall.specificDurationInfo.minimumSeconds, %f)\n", *&Seconds];
@@ -142,7 +142,7 @@
   return result;
 }
 
-- ($34B6A3E4F6D84C42DF3A29A209E596E5)constrainedDurationInfoAtIndex:(SEL)a3
+- ($34B6A3E4F6D84C42DF3A29A209E596E5)constrainedDurationInfoAtIndex:(SEL)index
 {
   if (a4 == 0x7FFFFFFFFFFFFFFFLL || 0x8E38E38E38E38E39 * ((self->var1.var0 - self->var0.var3) >> 3) <= a4)
   {
@@ -178,7 +178,7 @@
   return self;
 }
 
-- ($34B6A3E4F6D84C42DF3A29A209E596E5)originalDurationInfoAtIndex:(SEL)a3
+- ($34B6A3E4F6D84C42DF3A29A209E596E5)originalDurationInfoAtIndex:(SEL)index
 {
   if (a4 == 0x7FFFFFFFFFFFFFFFLL || (var3 = self->var0.var3, 0x8E38E38E38E38E39 * ((self->var1.var0 - var3) >> 3) <= a4))
   {
@@ -208,7 +208,7 @@
   return self;
 }
 
-- (BOOL)solveForMaximumDuration:(id *)a3
+- (BOOL)solveForMaximumDuration:(id *)duration
 {
   v5 = os_signpost_id_make_with_pointer(self->_log, self);
   v6 = self->_log;
@@ -224,7 +224,7 @@
   memset(v28, 0, 56);
   SumDurations(buf, self->_infos.__begin_, self->_infos.__end_);
   time1 = *&v28[32];
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) < 1)
   {
     goto LABEL_14;
@@ -232,11 +232,11 @@
 
   *&time1.value = *buf;
   time1.epoch = *v28;
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) <= 0)
   {
     time1 = *&v28[8];
-    time2 = *a3;
+    time2 = *duration;
     if (CMTimeCompare(&time1, &time2) <= 0)
     {
       memset(&time1, 0, sizeof(time1));
@@ -245,7 +245,7 @@
       CMTimeSubtract(&time1, &time2, &rhs);
       memset(&time2, 0, sizeof(time2));
       rhs = *&v28[32];
-      lhs = *a3;
+      lhs = *duration;
       CMTimeSubtract(&time2, &rhs, &lhs);
       begin = self->_solveResults.__begin_;
       end = self->_solveResults.__end_;
@@ -284,7 +284,7 @@
       CMTimeSubtract(&time1, &time2, &rhs);
       memset(&time2, 0, sizeof(time2));
       rhs = *&v28[8];
-      lhs = *a3;
+      lhs = *duration;
       CMTimeSubtract(&time2, &rhs, &lhs);
       v9 = self->_solveResults.__begin_;
       v10 = self->_solveResults.__end_;
@@ -340,7 +340,7 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)solveForPreferredDuration:(id *)a3
+- (BOOL)solveForPreferredDuration:(id *)duration
 {
   v5 = os_signpost_id_make_with_pointer(self->_log, self);
   v6 = self->_log;
@@ -358,14 +358,14 @@ LABEL_15:
   SumDurations(buf, self->_infos.__begin_, self->_infos.__end_);
   *&time1.value = *buf;
   time1.epoch = *v47;
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) > 0)
   {
     goto LABEL_5;
   }
 
   time1 = *&v47[8];
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) < 0)
   {
     v35 = v5 - 1;
@@ -377,7 +377,7 @@ LABEL_15:
     while ([v10 count])
     {
       lhs = time2;
-      rhs = *a3;
+      rhs = *duration;
       if ((CMTimeCompare(&lhs, &rhs) & 0x80000000) == 0)
       {
         break;
@@ -388,7 +388,7 @@ LABEL_15:
       v41 = time2;
       CMTimeSubtract(&lhs, &rhs, &v41);
       memset(&rhs, 0, sizeof(rhs));
-      v41 = *a3;
+      v41 = *duration;
       time = time2;
       CMTimeSubtract(&rhs, &v41, &time);
       time = rhs;
@@ -458,7 +458,7 @@ LABEL_15:
   }
 
   time1 = *&v47[8];
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) >= 1)
   {
     v35 = v5 - 1;
@@ -469,7 +469,7 @@ LABEL_15:
     while ([v10 count])
     {
       time2 = time1;
-      lhs = *a3;
+      lhs = *duration;
       if (CMTimeCompare(&time2, &lhs) < 1)
       {
         break;
@@ -477,7 +477,7 @@ LABEL_15:
 
       memset(&time2, 0, sizeof(time2));
       lhs = time1;
-      rhs = *a3;
+      rhs = *duration;
       CMTimeSubtract(&time2, &lhs, &rhs);
       memset(&lhs, 0, sizeof(lhs));
       rhs = time2;
@@ -561,9 +561,9 @@ LABEL_31:
   return v9;
 }
 
-- (void)addClipWithDurationInfo:(id *)a3
+- (void)addClipWithDurationInfo:(id *)info
 {
-  time1 = a3->var0;
+  time1 = info->var0;
   v5 = MEMORY[0x1E6960CC0];
   var0 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1, &var0) <= 0)
@@ -571,15 +571,15 @@ LABEL_31:
     PXAssertGetLog();
   }
 
-  time1 = a3->var1;
+  time1 = info->var1;
   var0 = *v5;
   if (CMTimeCompare(&time1, &var0) <= 0)
   {
     PXAssertGetLog();
   }
 
-  time1 = a3->var1;
-  var0 = a3->var0;
+  time1 = info->var1;
+  var0 = info->var0;
   if (CMTimeCompare(&time1, &var0) < 0)
   {
     PXAssertGetLog();
@@ -619,11 +619,11 @@ LABEL_31:
     }
 
     v17 = 72 * v13;
-    *v17 = *&a3->var0.var0;
-    v18 = *&a3->var0.var3;
-    v19 = *&a3->var1.var1;
-    v20 = *&a3->var2.var0;
-    *(v17 + 64) = a3->var2.var3;
+    *v17 = *&info->var0.var0;
+    v18 = *&info->var0.var3;
+    v19 = *&info->var1.var1;
+    v20 = *&info->var2.var0;
+    *(v17 + 64) = info->var2.var3;
     *(v17 + 32) = v19;
     *(v17 + 48) = v20;
     *(v17 + 16) = v18;
@@ -644,11 +644,11 @@ LABEL_31:
 
   else
   {
-    *end = *&a3->var0.var0;
-    v8 = *&a3->var0.var3;
-    v9 = *&a3->var1.var1;
-    v10 = *&a3->var2.var0;
-    *(end + 8) = a3->var2.var3;
+    *end = *&info->var0.var0;
+    v8 = *&info->var0.var3;
+    v9 = *&info->var1.var1;
+    v10 = *&info->var2.var0;
+    *(end + 8) = info->var2.var3;
     *(end + 2) = v9;
     *(end + 3) = v10;
     *(end + 1) = v8;
@@ -667,8 +667,8 @@ LABEL_31:
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
-    v6 = os_log_create(*MEMORY[0x1E69BFF60], v5);
+    uTF8String = [v4 UTF8String];
+    v6 = os_log_create(*MEMORY[0x1E69BFF60], uTF8String);
     log = v2->_log;
     v2->_log = v6;
 

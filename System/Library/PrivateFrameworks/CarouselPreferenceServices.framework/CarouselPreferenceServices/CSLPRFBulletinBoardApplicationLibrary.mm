@@ -3,33 +3,33 @@
 - (NSArray)allApplications;
 - (NSDictionary)allApplicationsDictionary;
 - (id)_loadApplications;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)allApplicationsWithCompletion:(id)a3;
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (void)addObserver:(id)observer;
+- (void)allApplicationsWithCompletion:(id)completion;
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CSLPRFBulletinBoardApplicationLibrary
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CSLPRFBulletinBoardApplicationLibrary *)self allApplications];
-  [(CSLPRFObservationHelper *)self->_observationHelper addObserver:v4];
-  [v4 applicationLibrary:self didAddApplications:v5];
+  observerCopy = observer;
+  allApplications = [(CSLPRFBulletinBoardApplicationLibrary *)self allApplications];
+  [(CSLPRFObservationHelper *)self->_observationHelper addObserver:observerCopy];
+  [observerCopy applicationLibrary:self didAddApplications:allApplications];
 }
 
-- (void)allApplicationsWithCompletion:(id)a3
+- (void)allApplicationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(CSLPRFBulletinBoardApplicationLibrary *)self allApplications];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  allApplications = [(CSLPRFBulletinBoardApplicationLibrary *)self allApplications];
+  (*(completion + 2))(completionCopy, allApplications);
 }
 
 - (NSDictionary)allApplicationsDictionary
 {
-  v2 = [(CSLPRFBulletinBoardApplicationLibrary *)self _loadApplications];
-  v3 = [v2 copy];
+  _loadApplications = [(CSLPRFBulletinBoardApplicationLibrary *)self _loadApplications];
+  v3 = [_loadApplications copy];
 
   return v3;
 }
@@ -37,20 +37,20 @@
 - (id)_loadApplications
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x277CBEB38] dictionary];
-    v2 = [MEMORY[0x277D37A58] sharedManager];
-    [v2 loadBBSections];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    mEMORY[0x277D37A58] = [MEMORY[0x277D37A58] sharedManager];
+    [mEMORY[0x277D37A58] loadBBSections];
 
-    v3 = [MEMORY[0x277D37A58] sharedManager];
-    v4 = [v3 bbSections];
+    mEMORY[0x277D37A58]2 = [MEMORY[0x277D37A58] sharedManager];
+    bbSections = [mEMORY[0x277D37A58]2 bbSections];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = v4;
+    v5 = bbSections;
     v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v6)
     {
@@ -71,16 +71,16 @@
           if ([v11 allowsNotifications] && (objc_msgSend(v11, "alertType") || objc_msgSend(v11, "lockScreenSetting") == 2) && (objc_msgSend(v11, "suppressFromSettings") & 1) == 0 && objc_msgSend(v11, "sectionType") != 1)
           {
             v12 = [CSLPRFApp appWithBBSectionInfo:v11];
-            v13 = [v12 bundleIdentifier];
-            if ([v13 isEqualToString:@"com.apple.news"] && (BPSIsNewsAllowed() & 1) == 0)
+            bundleIdentifier = [v12 bundleIdentifier];
+            if ([bundleIdentifier isEqualToString:@"com.apple.news"] && (BPSIsNewsAllowed() & 1) == 0)
             {
               v14 = cslprf_app_library_log();
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
               {
                 *buf = v22;
-                v33 = a1;
+                selfCopy = self;
                 v34 = 2112;
-                v35 = v13;
+                v35 = bundleIdentifier;
                 _os_log_debug_impl(&dword_22CE92000, v14, OS_LOG_TYPE_DEBUG, "%@ app %@ hidden by policy", buf, 0x16u);
               }
             }
@@ -88,7 +88,7 @@
             else
             {
 
-              [v1 setObject:v12 forKey:v13];
+              [dictionary setObject:v12 forKey:bundleIdentifier];
             }
           }
         }
@@ -99,16 +99,16 @@
       while (v8);
     }
 
-    os_unfair_lock_lock((a1 + 24));
-    v15 = *(a1 + 16);
-    objc_storeStrong((a1 + 16), v1);
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_lock((self + 24));
+    v15 = *(self + 16);
+    objc_storeStrong((self + 16), dictionary);
+    os_unfair_lock_unlock((self + 24));
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__CSLPRFBulletinBoardApplicationLibrary__loadApplications__block_invoke;
     block[3] = &unk_2787453E0;
-    block[4] = a1;
-    v16 = v1;
+    block[4] = self;
+    v16 = dictionary;
     v25 = v16;
     v26 = v15;
     v17 = v15;
@@ -255,39 +255,39 @@ LABEL_6:
 
 - (NSArray)allApplications
 {
-  v2 = [(CSLPRFBulletinBoardApplicationLibrary *)self _loadApplications];
-  v3 = [v2 allValues];
+  _loadApplications = [(CSLPRFBulletinBoardApplicationLibrary *)self _loadApplications];
+  allValues = [_loadApplications allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = [(CSLPRFBulletinBoardApplicationLibrary *)self applicationWithBundleIdentifier:a3];
-  (*(a4 + 2))(v7, v8);
+  completionCopy = completion;
+  v8 = [(CSLPRFBulletinBoardApplicationLibrary *)self applicationWithBundleIdentifier:identifier];
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = self->_lock_cachedApplications;
+    _loadApplications = self->_lock_cachedApplications;
     os_unfair_lock_unlock(&self->_lock);
-    if (!v5)
+    if (!_loadApplications)
     {
-      v5 = [(CSLPRFBulletinBoardApplicationLibrary *)self _loadApplications];
+      _loadApplications = [(CSLPRFBulletinBoardApplicationLibrary *)self _loadApplications];
     }
   }
 
   else
   {
-    v5 = 0;
+    _loadApplications = 0;
   }
 
-  v6 = [(NSMutableDictionary *)v5 objectForKey:v4];
+  v6 = [(NSMutableDictionary *)_loadApplications objectForKey:identifierCopy];
 
   return v6;
 }

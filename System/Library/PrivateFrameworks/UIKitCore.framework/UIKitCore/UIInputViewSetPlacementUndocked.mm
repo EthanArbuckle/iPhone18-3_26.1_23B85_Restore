@@ -1,48 +1,48 @@
 @interface UIInputViewSetPlacementUndocked
-+ (CGPoint)computeOffsetForOffset:(CGPoint)a3 withSize:(CGSize)a4 chromeBuffer:(UIEdgeInsets)a5 onScreenSize:(CGSize)a6;
-+ (id)infoWithPoint:(CGPoint)a3;
-+ (id)placementWithUndockedOffset:(CGPoint)a3 chromeBuffer:(UIEdgeInsets)a4;
-- (BOOL)isEqual:(id)a3;
++ (CGPoint)computeOffsetForOffset:(CGPoint)offset withSize:(CGSize)size chromeBuffer:(UIEdgeInsets)buffer onScreenSize:(CGSize)screenSize;
++ (id)infoWithPoint:(CGPoint)point;
++ (id)placementWithUndockedOffset:(CGPoint)offset chromeBuffer:(UIEdgeInsets)buffer;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)normalizedOffset;
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4;
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v;
 - (UIEdgeInsets)chromeBuffer;
-- (UIInputViewSetPlacementUndocked)initWithCoder:(id)a3;
-- (double)heightOfInputViews:(id)a3;
-- (id)applicatorInfoForOwner:(id)a3;
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOffset:(CGPoint)a3;
+- (UIInputViewSetPlacementUndocked)initWithCoder:(id)coder;
+- (double)heightOfInputViews:(id)views;
+- (id)applicatorInfoForOwner:(id)owner;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOffset:(CGPoint)offset;
 @end
 
 @implementation UIInputViewSetPlacementUndocked
 
-+ (id)infoWithPoint:(CGPoint)a3
++ (id)infoWithPoint:(CGPoint)point
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"Origin";
-  v3 = [MEMORY[0x1E696B098] valueWithPoint:{a3.x, a3.y}];
+  v3 = [MEMORY[0x1E696B098] valueWithPoint:{point.x, point.y}];
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   return v4;
 }
 
-- (id)applicatorInfoForOwner:(id)a3
+- (id)applicatorInfoForOwner:(id)owner
 {
   v4 = MEMORY[0x1E695DF90];
   v24.receiver = self;
   v24.super_class = UIInputViewSetPlacementUndocked;
-  v5 = a3;
-  v6 = [(UIInputViewSetPlacement *)&v24 applicatorInfoForOwner:v5];
+  ownerCopy = owner;
+  v6 = [(UIInputViewSetPlacement *)&v24 applicatorInfoForOwner:ownerCopy];
   v7 = [v4 dictionaryWithDictionary:v6];
 
-  v8 = [v5 inputViewSet];
-  [(UIInputViewSetPlacementUndocked *)self heightOfInputViews:v8];
+  inputViewSet = [ownerCopy inputViewSet];
+  [(UIInputViewSetPlacementUndocked *)self heightOfInputViews:inputViewSet];
   v10 = v9;
 
-  v11 = [v5 containerView];
+  containerView = [ownerCopy containerView];
 
-  [v11 bounds];
+  [containerView bounds];
   v13 = v12;
 
   v14 = 0.0;
@@ -71,37 +71,37 @@
   return v7;
 }
 
-+ (id)placementWithUndockedOffset:(CGPoint)a3 chromeBuffer:(UIEdgeInsets)a4
++ (id)placementWithUndockedOffset:(CGPoint)offset chromeBuffer:(UIEdgeInsets)buffer
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  y = a3.y;
-  x = a3.x;
-  v10 = objc_alloc_init(a1);
+  right = buffer.right;
+  bottom = buffer.bottom;
+  left = buffer.left;
+  top = buffer.top;
+  y = offset.y;
+  x = offset.x;
+  v10 = objc_alloc_init(self);
   [v10 setChromeBuffer:{top, left, bottom, right}];
   [v10 setOffset:{x, y}];
 
   return v10;
 }
 
-- (UIInputViewSetPlacementUndocked)initWithCoder:(id)a3
+- (UIInputViewSetPlacementUndocked)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = UIInputViewSetPlacementUndocked;
-  v5 = [(UIInputViewSetPlacement *)&v17 initWithCoder:v4];
+  v5 = [(UIInputViewSetPlacement *)&v17 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     p_normalizedOffset = &v5->_normalizedOffset;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Offset"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Offset"];
     [v8 CGPointValue];
     *&p_normalizedOffset->x = v9;
     v6->_normalizedOffset.y = v10;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Chrome"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Chrome"];
     [v11 UIEdgeInsetsValue];
     v6->_chromeBuffer.top = v12;
     v6->_chromeBuffer.left = v13;
@@ -112,28 +112,28 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = UIInputViewSetPlacementUndocked;
-  v4 = a3;
-  [(UIInputViewSetPlacement *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UIInputViewSetPlacement *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696B098] valueWithCGPoint:{self->_normalizedOffset.x, self->_normalizedOffset.y, v7.receiver, v7.super_class}];
-  [v4 encodeObject:v5 forKey:@"Offset"];
+  [coderCopy encodeObject:v5 forKey:@"Offset"];
 
   v6 = [MEMORY[0x1E696B098] valueWithUIEdgeInsets:{self->_chromeBuffer.top, self->_chromeBuffer.left, self->_chromeBuffer.bottom, self->_chromeBuffer.right}];
-  [v4 encodeObject:v6 forKey:@"Chrome"];
+  [coderCopy encodeObject:v6 forKey:@"Chrome"];
 }
 
-- (void)setOffset:(CGPoint)a3
+- (void)setOffset:(CGPoint)offset
 {
-  v3 = fmax(fabs(a3.x), 0.0);
+  v3 = fmax(fabs(offset.x), 0.0);
   if (v3 > 1.0)
   {
     v3 = 1.0;
   }
 
-  v4 = fmax(fabs(a3.y), 0.0);
+  v4 = fmax(fabs(offset.y), 0.0);
   if (v4 > 1.0)
   {
     v4 = 1.0;
@@ -142,51 +142,51 @@
   [(UIInputViewSetPlacementUndocked *)self setNormalizedOffset:v3, v4];
 }
 
-+ (CGPoint)computeOffsetForOffset:(CGPoint)a3 withSize:(CGSize)a4 chromeBuffer:(UIEdgeInsets)a5 onScreenSize:(CGSize)a6
++ (CGPoint)computeOffsetForOffset:(CGPoint)offset withSize:(CGSize)size chromeBuffer:(UIEdgeInsets)buffer onScreenSize:(CGSize)screenSize
 {
   v6 = 0.0;
   if (v12 != 0.0)
   {
-    v7 = a4.height + a5.top;
+    v7 = size.height + buffer.top;
     v8 = v12;
     v6 = fminf(v7, v8) / v12;
   }
 
   v9 = 1.0 - v6;
-  if (a3.y >= v9)
+  if (offset.y >= v9)
   {
-    a3.y = v9;
+    offset.y = v9;
   }
 
-  v10 = v12 * fabs(a3.y);
+  v10 = v12 * fabs(offset.y);
   v11 = 0.0;
   result.y = v10;
   result.x = v11;
   return result;
 }
 
-- (double)heightOfInputViews:(id)a3
+- (double)heightOfInputViews:(id)views
 {
-  v3 = a3;
-  [v3 inputViewBounds];
+  viewsCopy = views;
+  [viewsCopy inputViewBounds];
   v5 = v4;
-  [v3 inputAssistantViewBounds];
+  [viewsCopy inputAssistantViewBounds];
   v7 = v5 + v6;
-  [v3 inputAccessoryViewBounds];
+  [viewsCopy inputAccessoryViewBounds];
   v9 = v8;
 
   return v7 + v9;
 }
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  v8 = a5;
-  if (a4)
+  containerViewCopy = containerView;
+  if (view)
   {
-    v9 = a4;
-    [(UIInputViewSetPlacementUndocked *)self heightOfInputViews:a3];
+    viewCopy = view;
+    [(UIInputViewSetPlacementUndocked *)self heightOfInputViews:set];
     v11 = v10;
-    [v8 bounds];
+    [containerViewCopy bounds];
     v13 = v12;
     v14 = 0.0;
     if (v12 != 0.0)
@@ -206,7 +206,7 @@
       v20 = v19;
     }
 
-    v21 = [MEMORY[0x1E69977A0] constraintWithItem:v8 attribute:4 relatedBy:0 toItem:v9 attribute:4 multiplier:1.0 constant:v13 * v20];
+    v21 = [MEMORY[0x1E69977A0] constraintWithItem:containerViewCopy attribute:4 relatedBy:0 toItem:viewCopy attribute:4 multiplier:1.0 constant:v13 * v20];
   }
 
   else
@@ -217,17 +217,17 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = UIInputViewSetPlacementUndocked;
-  if ([(UIInputViewSetPlacement *)&v13 isEqual:v4])
+  if ([(UIInputViewSetPlacement *)&v13 isEqual:equalCopy])
   {
     [(UIInputViewSetPlacementUndocked *)self normalizedOffset];
     v6 = v5;
     v8 = v7;
-    [v4 normalizedOffset];
+    [equalCopy normalizedOffset];
     v11 = v8 == v10 && v6 == v9;
   }
 
@@ -239,11 +239,11 @@
   return v11;
 }
 
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v
 {
   v8.receiver = self;
   v8.super_class = UIInputViewSetPlacementUndocked;
-  [(UIInputViewSetPlacement *)&v8 remoteIntrinsicContentSizeForInputViewInSet:a3 includingIAV:a4];
+  [(UIInputViewSetPlacement *)&v8 remoteIntrinsicContentSizeForInputViewInSet:set includingIAV:v];
   v7 = 1.0;
   result.size.height = v6;
   result.size.width = v5;

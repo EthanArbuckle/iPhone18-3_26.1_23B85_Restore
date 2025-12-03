@@ -1,9 +1,9 @@
 @interface WXShading
-+ (id)getColorFromCString:(const char *)a3;
-+ (id)getColorFromString:(id)a3;
-+ (id)getStringFromColor:(id)a3;
++ (id)getColorFromCString:(const char *)string;
++ (id)getColorFromString:(id)string;
++ (id)getStringFromColor:(id)color;
 + (id)shadingStylesEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 + (void)shadingStylesEnumMap;
 @end
 
@@ -32,13 +32,13 @@ void __33__WXShading_shadingStylesEnumMap__block_invoke()
   +[WXShading shadingStylesEnumMap]::sShadingStylesEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  toCopy = to;
+  stateCopy = state;
   v24 = 0;
-  v10 = [a1 shadingStylesEnumMap];
-  readEnumProperty<WDShadingStyle>(a3, "val", v10, &v24);
+  shadingStylesEnumMap = [self shadingStylesEnumMap];
+  readEnumProperty<WDShadingStyle>(from, "val", shadingStylesEnumMap, &v24);
 
   v11 = v24;
   if (v24 == -130883970)
@@ -47,9 +47,9 @@ void __33__WXShading_shadingStylesEnumMap__block_invoke()
     v24 = 0;
   }
 
-  [v8 setStyle:v11];
-  v12 = [v9 WXMainNamespace];
-  v13 = CXDefaultStringAttribute(a3, v12, "color", 0);
+  [toCopy setStyle:v11];
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v13 = CXDefaultStringAttribute(from, wXMainNamespace, "color", 0);
 
   v14 = [WXShading getColorFromString:v13];
   v15 = +[OITSUColor clearColor];
@@ -62,9 +62,9 @@ void __33__WXShading_shadingStylesEnumMap__block_invoke()
     v14 = v17;
   }
 
-  [v8 setForeground:v14];
-  v18 = [v9 WXMainNamespace];
-  v19 = CXDefaultStringAttribute(a3, v18, "fill", 0);
+  [toCopy setForeground:v14];
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  v19 = CXDefaultStringAttribute(from, wXMainNamespace2, "fill", 0);
 
   v20 = [WXShading getColorFromString:v19];
   v21 = +[OITSUColor clearColor];
@@ -77,20 +77,20 @@ void __33__WXShading_shadingStylesEnumMap__block_invoke()
     v20 = v23;
   }
 
-  [v8 setBackground:v20];
+  [toCopy setBackground:v20];
 }
 
-+ (id)getColorFromString:(id)a3
++ (id)getColorFromString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 getColorFromCString:{objc_msgSend(v4, "UTF8String")}];
+  stringCopy = string;
+  v5 = [self getColorFromCString:{objc_msgSend(stringCopy, "UTF8String")}];
 
   return v5;
 }
 
-+ (id)getColorFromCString:(const char *)a3
++ (id)getColorFromCString:(const char *)string
 {
-  if (!a3 || !strcmp(a3, "auto"))
+  if (!string || !strcmp(string, "auto"))
   {
     v4 = +[OITSUColor clearColor];
   }
@@ -99,7 +99,7 @@ void __33__WXShading_shadingStylesEnumMap__block_invoke()
   {
     v7 = 0;
     v6 = 0;
-    if (sscanf(a3, "%02x%02x%02x", &v7 + 4, &v7, &v6) == 3)
+    if (sscanf(string, "%02x%02x%02x", &v7 + 4, &v7, &v6) == 3)
     {
       v4 = [OITSUColor colorWithCalibratedRed:SHIDWORD(v7) / 255.0 green:v7 / 255.0 blue:v6 / 255.0 alpha:1.0];
     }
@@ -113,23 +113,23 @@ void __33__WXShading_shadingStylesEnumMap__block_invoke()
   return v4;
 }
 
-+ (id)getStringFromColor:(id)a3
++ (id)getStringFromColor:(id)color
 {
-  v3 = a3;
-  if (!v3)
+  colorCopy = color;
+  if (!colorCopy)
   {
     goto LABEL_8;
   }
 
   v4 = +[WDShading autoBackgroundColor];
-  if (v4 == v3)
+  if (v4 == colorCopy)
   {
     goto LABEL_7;
   }
 
   v5 = +[WDShading autoForegroundColor];
   v6 = v5;
-  if (v5 == v3)
+  if (v5 == colorCopy)
   {
 
 LABEL_7:
@@ -137,15 +137,15 @@ LABEL_7:
   }
 
   v7 = +[OITSUColor clearColor];
-  v8 = [v3 isEqual:v7];
+  v8 = [colorCopy isEqual:v7];
 
   if ((v8 & 1) == 0)
   {
-    [v3 redComponent];
+    [colorCopy redComponent];
     v10 = v9;
-    [v3 greenComponent];
+    [colorCopy greenComponent];
     v12 = v11;
-    [v3 blueComponent];
+    [colorCopy blueComponent];
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02x%02x%02x", (v10 * 255.0), (v12 * 255.0), (v13 * 255.0)];
     goto LABEL_9;
   }

@@ -2,16 +2,16 @@
 + (NSString)localizedForwardPrefix;
 + (NSString)localizedReplyPrefix;
 + (OS_os_log)log;
-+ (id)_subjectStringForDisplayForObject:(id)a3 style:(int64_t)a4;
-+ (id)subjectStringForDisplayForMessage:(id)a3;
-+ (id)subjectStringForDisplayForMessage:(id)a3 style:(int64_t)a4;
-+ (id)subjectStringForDisplayForSubject:(id)a3;
-+ (id)subjectStringForDisplayForSubject:(id)a3 style:(int64_t)a4;
-+ (id)subjectStringForDisplayForSubjectString:(id)a3;
-+ (id)subjectStringForDisplayForSubjectString:(id)a3 style:(int64_t)a4;
-- (ECSubjectFormatter)initWithStyle:(int64_t)a3;
-- (id)_localizedPrefixForSubjectFromSubject:(id)a3;
-- (id)stringForObjectValue:(id)a3;
++ (id)_subjectStringForDisplayForObject:(id)object style:(int64_t)style;
++ (id)subjectStringForDisplayForMessage:(id)message;
++ (id)subjectStringForDisplayForMessage:(id)message style:(int64_t)style;
++ (id)subjectStringForDisplayForSubject:(id)subject;
++ (id)subjectStringForDisplayForSubject:(id)subject style:(int64_t)style;
++ (id)subjectStringForDisplayForSubjectString:(id)string;
++ (id)subjectStringForDisplayForSubjectString:(id)string style:(int64_t)style;
+- (ECSubjectFormatter)initWithStyle:(int64_t)style;
+- (id)_localizedPrefixForSubjectFromSubject:(id)subject;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation ECSubjectFormatter
@@ -60,7 +60,7 @@ uint64_t __44__ECSubjectFormatter_localizedForwardPrefix__block_invoke()
   block[1] = 3221225472;
   block[2] = __25__ECSubjectFormatter_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_5 != -1)
   {
     dispatch_once(&log_onceToken_5, block);
@@ -79,66 +79,66 @@ void __25__ECSubjectFormatter_log__block_invoke(uint64_t a1)
   log_log_5 = v1;
 }
 
-+ (id)subjectStringForDisplayForSubjectString:(id)a3
++ (id)subjectStringForDisplayForSubjectString:(id)string
 {
-  v3 = [a1 subjectStringForDisplayForSubjectString:a3 style:0];
+  v3 = [self subjectStringForDisplayForSubjectString:string style:0];
 
   return v3;
 }
 
-+ (id)subjectStringForDisplayForSubjectString:(id)a3 style:(int64_t)a4
++ (id)subjectStringForDisplayForSubjectString:(id)string style:(int64_t)style
 {
-  v4 = [a1 _subjectStringForDisplayForObject:a3 style:a4];
+  v4 = [self _subjectStringForDisplayForObject:string style:style];
 
   return v4;
 }
 
-+ (id)subjectStringForDisplayForSubject:(id)a3
++ (id)subjectStringForDisplayForSubject:(id)subject
 {
-  v3 = [a1 subjectStringForDisplayForSubject:a3 style:0];
+  v3 = [self subjectStringForDisplayForSubject:subject style:0];
 
   return v3;
 }
 
-+ (id)subjectStringForDisplayForSubject:(id)a3 style:(int64_t)a4
++ (id)subjectStringForDisplayForSubject:(id)subject style:(int64_t)style
 {
-  v4 = [a1 _subjectStringForDisplayForObject:a3 style:a4];
+  v4 = [self _subjectStringForDisplayForObject:subject style:style];
 
   return v4;
 }
 
-+ (id)subjectStringForDisplayForMessage:(id)a3
++ (id)subjectStringForDisplayForMessage:(id)message
 {
-  v3 = [a1 subjectStringForDisplayForMessage:a3 style:0];
+  v3 = [self subjectStringForDisplayForMessage:message style:0];
 
   return v3;
 }
 
-+ (id)subjectStringForDisplayForMessage:(id)a3 style:(int64_t)a4
++ (id)subjectStringForDisplayForMessage:(id)message style:(int64_t)style
 {
-  v4 = [a1 _subjectStringForDisplayForObject:a3 style:a4];
+  v4 = [self _subjectStringForDisplayForObject:message style:style];
 
   return v4;
 }
 
-+ (id)_subjectStringForDisplayForObject:(id)a3 style:(int64_t)a4
++ (id)_subjectStringForDisplayForObject:(id)object style:(int64_t)style
 {
-  v5 = a3;
+  objectCopy = object;
   if (_subjectStringForDisplayForObject_style__onceToken != -1)
   {
     +[ECSubjectFormatter _subjectStringForDisplayForObject:style:];
   }
 
   v6 = _subjectStringForDisplayForObject_style__formatterCache;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__ECSubjectFormatter__subjectStringForDisplayForObject_style___block_invoke_2;
   v11[3] = &__block_descriptor_40_e5__8__0l;
-  v11[4] = a4;
+  v11[4] = style;
   v8 = [v6 objectForKey:v7 generator:v11];
 
-  v9 = [v8 stringForObjectValue:v5];
+  v9 = [v8 stringForObjectValue:objectCopy];
 
   return v9;
 }
@@ -157,7 +157,7 @@ ECSubjectFormatter *__62__ECSubjectFormatter__subjectStringForDisplayForObject_s
   return v1;
 }
 
-- (ECSubjectFormatter)initWithStyle:(int64_t)a3
+- (ECSubjectFormatter)initWithStyle:(int64_t)style
 {
   v15.receiver = self;
   v15.super_class = ECSubjectFormatter;
@@ -165,16 +165,16 @@ ECSubjectFormatter *__62__ECSubjectFormatter__subjectStringForDisplayForObject_s
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
-    v6 = [objc_opt_class() localizedReplyPrefix];
-    v7 = [objc_opt_class() nonLocalizedReplyPrefix];
-    v8 = __36__ECSubjectFormatter_initWithStyle___block_invoke(v7, v6, v7);
+    v4->_style = style;
+    localizedReplyPrefix = [objc_opt_class() localizedReplyPrefix];
+    nonLocalizedReplyPrefix = [objc_opt_class() nonLocalizedReplyPrefix];
+    v8 = __36__ECSubjectFormatter_initWithStyle___block_invoke(nonLocalizedReplyPrefix, localizedReplyPrefix, nonLocalizedReplyPrefix);
     replyContext = v5->_replyContext;
     v5->_replyContext = v8;
 
-    v10 = [objc_opt_class() localizedForwardPrefix];
-    v11 = [objc_opt_class() nonLocalizedForwardPrefix];
-    v12 = __36__ECSubjectFormatter_initWithStyle___block_invoke(v11, v10, v11);
+    localizedForwardPrefix = [objc_opt_class() localizedForwardPrefix];
+    nonLocalizedForwardPrefix = [objc_opt_class() nonLocalizedForwardPrefix];
+    v12 = __36__ECSubjectFormatter_initWithStyle___block_invoke(nonLocalizedForwardPrefix, localizedForwardPrefix, nonLocalizedForwardPrefix);
     forwardContext = v5->_forwardContext;
     v5->_forwardContext = v12;
   }
@@ -219,10 +219,10 @@ _ECSubjectFormatterContext *__36__ECSubjectFormatter_initWithStyle___block_invok
   return v6;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     v8 = 0;
     goto LABEL_23;
@@ -231,32 +231,32 @@ _ECSubjectFormatterContext *__36__ECSubjectFormatter_initWithStyle___block_invok
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ECSubjectFormatter *)self style];
-    if (!v6)
+    v5 = valueCopy;
+    style = [(ECSubjectFormatter *)self style];
+    if (!style)
     {
-      v7 = [(ECSubjectFormatter *)self _localizedPrefixForSubjectFromSubject:v5];
+      subjectWithoutPrefix = [(ECSubjectFormatter *)self _localizedPrefixForSubjectFromSubject:v5];
       goto LABEL_16;
     }
 
-    if (v6 == 1)
+    if (style == 1)
     {
-      v7 = [ECSubjectParser subjectWithoutPrefixForSubject:v5];
+      subjectWithoutPrefix = [ECSubjectParser subjectWithoutPrefixForSubject:v5];
 LABEL_16:
-      v9 = v5;
+      subject = v5;
 LABEL_21:
-      v12 = v7;
+      v12 = subjectWithoutPrefix;
       goto LABEL_22;
     }
 
-    v9 = v5;
+    subject = v5;
     goto LABEL_19;
   }
 
-  if ([v4 conformsToProtocol:&unk_284062EF0])
+  if ([valueCopy conformsToProtocol:&unk_284062EF0])
   {
-    v9 = [v4 subject];
-    if (!v9)
+    subject = [valueCopy subject];
+    if (!subject)
     {
       goto LABEL_19;
     }
@@ -267,61 +267,61 @@ LABEL_21:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = 0;
+      subject = 0;
 LABEL_19:
       v12 = 0;
       goto LABEL_22;
     }
 
-    v9 = v4;
+    subject = valueCopy;
   }
 
-  v10 = [(ECSubjectFormatter *)self style];
-  if (v10 == 1)
+  style2 = [(ECSubjectFormatter *)self style];
+  if (style2 == 1)
   {
-    v7 = [v9 subjectWithoutPrefix];
+    subjectWithoutPrefix = [subject subjectWithoutPrefix];
     goto LABEL_21;
   }
 
-  if (v10)
+  if (style2)
   {
     goto LABEL_19;
   }
 
-  v11 = [v9 subjectString];
-  v12 = [(ECSubjectFormatter *)self _localizedPrefixForSubjectFromSubject:v11];
+  subjectString = [subject subjectString];
+  v12 = [(ECSubjectFormatter *)self _localizedPrefixForSubjectFromSubject:subjectString];
 
 LABEL_22:
-  v13 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v14 = [v12 componentsSeparatedByCharactersInSet:v13];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v14 = [v12 componentsSeparatedByCharactersInSet:newlineCharacterSet];
   v15 = [v14 componentsJoinedByString:@" "];
 
-  v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v8 = [v15 stringByTrimmingCharactersInSet:v16];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v8 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
 LABEL_23:
 
   return v8;
 }
 
-- (id)_localizedPrefixForSubjectFromSubject:(id)a3
+- (id)_localizedPrefixForSubjectFromSubject:(id)subject
 {
-  v4 = a3;
-  v5 = [(ECSubjectFormatter *)self replyContext];
+  subjectCopy = subject;
+  replyContext = [(ECSubjectFormatter *)self replyContext];
 
-  v6 = v4;
-  if (v5)
+  v6 = subjectCopy;
+  if (replyContext)
   {
-    v7 = [(ECSubjectFormatter *)self replyContext];
-    v6 = localizePrefixIfNeeded(v4, v7);
+    replyContext2 = [(ECSubjectFormatter *)self replyContext];
+    v6 = localizePrefixIfNeeded(subjectCopy, replyContext2);
   }
 
-  v8 = [(ECSubjectFormatter *)self forwardContext];
+  forwardContext = [(ECSubjectFormatter *)self forwardContext];
 
-  if (v8)
+  if (forwardContext)
   {
-    v9 = [(ECSubjectFormatter *)self forwardContext];
-    v10 = localizePrefixIfNeeded(v6, v9);
+    forwardContext2 = [(ECSubjectFormatter *)self forwardContext];
+    v10 = localizePrefixIfNeeded(v6, forwardContext2);
 
     v6 = v10;
   }

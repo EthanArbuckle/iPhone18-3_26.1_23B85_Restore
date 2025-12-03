@@ -18,33 +18,33 @@
 - (id)transformerClass
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ([a1 generatedPreviewItemType])
+  if ([self generatedPreviewItemType])
   {
-    v2 = [a1 generatedPreviewItemType];
+    generatedPreviewItemType = [self generatedPreviewItemType];
   }
 
   else
   {
-    v2 = [a1 previewItemType];
+    generatedPreviewItemType = [self previewItemType];
   }
 
-  if (v2 > 7)
+  if (generatedPreviewItemType > 7)
   {
-    if (v2 <= 10 || (v2 - 12) < 3 || v2 == 11)
+    if (generatedPreviewItemType <= 10 || (generatedPreviewItemType - 12) < 3 || generatedPreviewItemType == 11)
     {
       goto LABEL_20;
     }
   }
 
-  else if (v2 <= 3)
+  else if (generatedPreviewItemType <= 3)
   {
-    if (v2 == 1 || v2 == 2 || v2 == 3)
+    if (generatedPreviewItemType == 1 || generatedPreviewItemType == 2 || generatedPreviewItemType == 3)
     {
       goto LABEL_20;
     }
   }
 
-  else if ((v2 - 4) < 2 || v2 == 6 || v2 == 7)
+  else if ((generatedPreviewItemType - 4) < 2 || generatedPreviewItemType == 6 || generatedPreviewItemType == 7)
   {
 LABEL_20:
     v3 = objc_opt_class();
@@ -63,7 +63,7 @@ LABEL_20:
   {
     v7 = v6;
     v9 = 134217984;
-    v10 = [a1 previewItemType];
+    previewItemType = [self previewItemType];
     _os_log_impl(&dword_23A714000, v7, OS_LOG_TYPE_ERROR, "Unhandled item type %lu #PreviewItem", &v9, 0xCu);
   }
 
@@ -77,8 +77,8 @@ LABEL_21:
 - (id)previewItemPrintingViewControllerClassName
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [a1 previewItemType];
-  if (v2 != 6 && v2 != 4)
+  previewItemType = [self previewItemType];
+  if (previewItemType != 6 && previewItemType != 4)
   {
     v3 = MEMORY[0x277D43EF8];
     v4 = *MEMORY[0x277D43EF8];
@@ -91,7 +91,7 @@ LABEL_21:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_23A714000, v4, OS_LOG_TYPE_ERROR, "Unknown preview item type in -previewItemViewControllerClassName: for preview item %@ #PreviewItem", &v9, 0xCu);
     }
   }
@@ -105,17 +105,17 @@ LABEL_21:
 
 - (uint64_t)previewItemViewControllerClassName
 {
-  if ([a1 generatedPreviewItemType])
+  if ([self generatedPreviewItemType])
   {
-    v2 = [a1 generatedPreviewItemType];
+    generatedPreviewItemType = [self generatedPreviewItemType];
   }
 
   else
   {
-    v2 = [a1 previewItemType];
+    generatedPreviewItemType = [self previewItemType];
   }
 
-  return [a1 previewItemViewControllerClassNameForType:v2];
+  return [self previewItemViewControllerClassNameForType:generatedPreviewItemType];
 }
 
 - (__CFString)previewItemViewControllerClassNameForType:()UI
@@ -125,12 +125,12 @@ LABEL_21:
   switch(a3)
   {
     case 1:
-      v7 = [a1 UTIAnalyzer];
-      [v7 isAudioOnly];
+      uTIAnalyzer = [self UTIAnalyzer];
+      [uTIAnalyzer isAudioOnly];
 
       goto LABEL_20;
     case 2:
-      if (([a1 canBeEdited] & 1) == 0 && !objc_msgSend(a1, "editingMode"))
+      if (([self canBeEdited] & 1) == 0 && !objc_msgSend(self, "editingMode"))
       {
         goto LABEL_20;
       }
@@ -174,7 +174,7 @@ LABEL_21:
       }
 
       v13 = 138412290;
-      v14 = a1;
+      selfCopy2 = self;
       v6 = "Unsupported preview item type in -previewItemViewControllerClassName: for preview item %@ #PreviewItem";
       goto LABEL_15;
     default:
@@ -192,7 +192,7 @@ LABEL_21:
       }
 
       v13 = 138412290;
-      v14 = a1;
+      selfCopy2 = self;
       v6 = "Unknown preview item type in -previewItemViewControllerClassName: for preview item %@ #PreviewItem";
 LABEL_15:
       _os_log_impl(&dword_23A714000, v5, OS_LOG_TYPE_ERROR, v6, &v13, 0xCu);
@@ -216,17 +216,17 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([a1 previewItemType] == 3)
+      if ([self previewItemType] == 3)
       {
         gotLoadHelper_x8__OBJC_CLASS___PFVideoComplement(v9);
         v11 = [objc_alloc(*(v10 + 1312)) initWithBundleAtURL:v7];
-        v12 = [v11 imagePath];
+        imagePath = [v11 imagePath];
 
-        if (v12)
+        if (imagePath)
         {
           v13 = MEMORY[0x277CBEBC0];
-          v14 = [v11 imagePath];
-          v15 = [v13 fileURLWithPath:v14];
+          imagePath2 = [v11 imagePath];
+          v15 = [v13 fileURLWithPath:imagePath2];
         }
 
         else
@@ -354,20 +354,20 @@ LABEL_33:
 - (double)previewSizeForItemViewControllerSize:()UI
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = [a1 fetcher];
-  v7 = [v6 fetchedContent];
+  fetcher = [self fetcher];
+  fetchedContent = [fetcher fetchedContent];
 
-  if (!v7)
+  if (!fetchedContent)
   {
     goto LABEL_34;
   }
 
-  if ([a1 previewItemType] != 2 && objc_msgSend(a1, "previewItemType") != 3)
+  if ([self previewItemType] != 2 && objc_msgSend(self, "previewItemType") != 3)
   {
-    if ([a1 previewItemType] == 1)
+    if ([self previewItemType] == 1)
     {
-      v18 = [a1 UTIAnalyzer];
-      if ([v18 isAudioOnly])
+      uTIAnalyzer = [self UTIAnalyzer];
+      if ([uTIAnalyzer isAudioOnly])
       {
       }
 
@@ -382,7 +382,7 @@ LABEL_33:
           v42 = *MEMORY[0x277CE6260];
           v43 = &unk_284D72F58;
           v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-          v33 = [v31 initWithURL:v7 options:v32];
+          v33 = [v31 initWithURL:fetchedContent options:v32];
 
           [v33 ql_imageSizeOfFirstVideoTrack];
           v34 = *MEMORY[0x277CBF348];
@@ -402,7 +402,7 @@ LABEL_34:
   }
 
   v41 = 0;
-  [a1 imageRawSizeOfContents:v7 withPreviewItemType:objc_msgSend(a1 imageIsAnimated:{"previewItemType"), &v41}];
+  [self imageRawSizeOfContents:fetchedContent withPreviewItemType:objc_msgSend(self imageIsAnimated:{"previewItemType"), &v41}];
   v10 = *MEMORY[0x277CBF3A8];
   if (v8 == *MEMORY[0x277CBF3A8] && v9 == *(MEMORY[0x277CBF3A8] + 8))
   {
@@ -417,9 +417,9 @@ LABEL_34:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v45 = a1;
+      selfCopy = self;
       v46 = 2112;
-      v47 = v7;
+      v47 = fetchedContent;
       _os_log_impl(&dword_23A714000, v17, OS_LOG_TYPE_INFO, "Could not determine preview size of contents %@ %@ #PreviewItem", buf, 0x16u);
     }
   }
@@ -428,8 +428,8 @@ LABEL_34:
   {
     v12 = v8;
     v13 = v9;
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v16 = v15;
 
     if (QLImageWithSizeShouldNotBeScaled())
@@ -456,7 +456,7 @@ LABEL_34:
         v20 = v25;
       }
 
-      if ((![a1 canBeEdited] || v41 == 1) && v10 < a2 * 0.75 && v20 < a3 * 0.75)
+      if ((![self canBeEdited] || v41 == 1) && v10 < a2 * 0.75 && v20 < a3 * 0.75)
       {
         v27 = *MEMORY[0x277CBF348];
         v28 = *(MEMORY[0x277CBF348] + 8);
@@ -475,42 +475,42 @@ LABEL_35:
 - (uint64_t)shouldUseRemoteViewController
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [a1 previewItemContentType];
-  v3 = [a1 previewItemType];
-  if (v3 > 0xE)
+  previewItemContentType = [self previewItemContentType];
+  previewItemType = [self previewItemType];
+  if (previewItemType > 0xE)
   {
     goto LABEL_7;
   }
 
-  if (((1 << v3) & 0x2F50) == 0)
+  if (((1 << previewItemType) & 0x2F50) == 0)
   {
-    if (((1 << v3) & 0x5088) != 0)
+    if (((1 << previewItemType) & 0x5088) != 0)
     {
 LABEL_5:
       v4 = 0;
       goto LABEL_10;
     }
 
-    if (v3 == 5)
+    if (previewItemType == 5)
     {
 LABEL_9:
-      v4 = [MEMORY[0x277D43F78] shouldBeRemoteForMediaContentType:v2];
+      v4 = [MEMORY[0x277D43F78] shouldBeRemoteForMediaContentType:previewItemContentType];
       goto LABEL_10;
     }
 
 LABEL_7:
-    if (v3 == 2)
+    if (previewItemType == 2)
     {
-      if (([a1 canBeEdited] & 1) == 0)
+      if (([self canBeEdited] & 1) == 0)
       {
-        v4 = [a1 editingMode] != 0;
+        v4 = [self editingMode] != 0;
         goto LABEL_10;
       }
 
       goto LABEL_3;
     }
 
-    if (v3 != 1)
+    if (previewItemType != 1)
     {
       v7 = *MEMORY[0x277D43EF8];
       if (!*MEMORY[0x277D43EF8])
@@ -524,9 +524,9 @@ LABEL_7:
       {
         v8 = v7;
         v10 = 134218242;
-        v11 = [a1 previewItemType];
+        previewItemType2 = [self previewItemType];
         v12 = 2112;
-        v13 = v2;
+        v13 = previewItemContentType;
         _os_log_impl(&dword_23A714000, v8, OS_LOG_TYPE_ERROR, "Unhandled item type %lu: contentType is: %@ #PreviewItem", &v10, 0x16u);
       }
 
@@ -565,10 +565,10 @@ LABEL_10:
       v8[3] = &unk_278B57280;
       v8[4] = &v9;
       [v3 previewItemAtIndex:v4 withCompletionHandler:v8];
-      v6 = [v10[5] shouldUseRemoteViewController];
+      shouldUseRemoteViewController = [v10[5] shouldUseRemoteViewController];
       _Block_object_dispose(&v9, 8);
 
-      if (v6)
+      if (shouldUseRemoteViewController)
       {
         break;
       }
@@ -581,10 +581,10 @@ LABEL_10:
 
   else
   {
-    v6 = 0;
+    shouldUseRemoteViewController = 0;
   }
 
-  return v6;
+  return shouldUseRemoteViewController;
 }
 
 + (uint64_t)openInTypeForItem:()UI appIsContentManaged:
@@ -597,14 +597,14 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v5 = [v3 editedCopy];
+  editedCopy = [v3 editedCopy];
 
-  if (v5)
+  if (editedCopy)
   {
     goto LABEL_11;
   }
 
-  v6 = [v4 bundleRecord];
+  bundleRecord = [v4 bundleRecord];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -613,48 +613,48 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [v4 bundleRecord];
-  v9 = [v8 supportsOpenInPlace];
-  v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v11 = [v10 isApplicationEligibleForReadOnlyDocumentOpenBehavior:v8];
+  bundleRecord2 = [v4 bundleRecord];
+  supportsOpenInPlace = [bundleRecord2 supportsOpenInPlace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v11 = [defaultWorkspace isApplicationEligibleForReadOnlyDocumentOpenBehavior:bundleRecord2];
 
-  if (!v9)
+  if (!supportsOpenInPlace)
   {
     goto LABEL_11;
   }
 
-  v12 = [v3 fpItem];
+  fpItem = [v3 fpItem];
 
-  if (v12)
+  if (fpItem)
   {
     v13 = 1;
     goto LABEL_12;
   }
 
-  v14 = [v3 previewItemURL];
+  previewItemURL = [v3 previewItemURL];
 
-  if (!v14)
+  if (!previewItemURL)
   {
 LABEL_11:
     v13 = 2;
     goto LABEL_12;
   }
 
-  v15 = [v3 previewItemURL];
-  if ([v15 _QLNeedsCoordination])
+  previewItemURL2 = [v3 previewItemURL];
+  if ([previewItemURL2 _QLNeedsCoordination])
   {
-    v16 = 1;
+    isBookmarkable = 1;
   }
 
   else
   {
-    v16 = [v3 isBookmarkable];
+    isBookmarkable = [v3 isBookmarkable];
   }
 
-  v18 = [v3 previewItemURL];
-  if ([v18 ui_isFileProviderURL])
+  previewItemURL3 = [v3 previewItemURL];
+  if ([previewItemURL3 ui_isFileProviderURL])
   {
-    v19 = [v3 previewItemURL];
+    previewItemURL4 = [v3 previewItemURL];
     v20 = FPURLMightBeInFileProvider() != 0;
 
     v21 = v20 | v11;
@@ -665,7 +665,7 @@ LABEL_11:
     v21 = 1;
   }
 
-  if ((v16 & v21) != 0)
+  if ((isBookmarkable & v21) != 0)
   {
     v13 = 1;
   }
@@ -683,7 +683,7 @@ LABEL_12:
 - (BOOL)isBookmarkable
 {
   v6 = *MEMORY[0x277D85DE8];
-  v1 = [a1 previewItemURL];
+  previewItemURL = [self previewItemURL];
   v2 = FPCreateBookmarkableStringFromDocumentURL();
 
   v3 = [v2 length] != 0;
@@ -693,24 +693,24 @@ LABEL_12:
 
 - (uint64_t)defaultWhitePointAdaptivityStyle
 {
-  v2 = [a1 previewItemType];
-  if ((v2 - 2) < 2)
+  previewItemType = [self previewItemType];
+  if ((previewItemType - 2) < 2)
   {
     return 2;
   }
 
-  if (v2 == 4)
+  if (previewItemType == 4)
   {
     return 1;
   }
 
-  if (v2 != 1)
+  if (previewItemType != 1)
   {
     return 0;
   }
 
-  v3 = [a1 UTIAnalyzer];
-  if ([v3 isAudioOnly])
+  uTIAnalyzer = [self UTIAnalyzer];
+  if ([uTIAnalyzer isAudioOnly])
   {
     v4 = 0;
   }
@@ -727,13 +727,13 @@ LABEL_12:
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 previewItemType] == 2 || objc_msgSend(a1, "previewItemType") == 3)
+  if ([self previewItemType] == 2 || objc_msgSend(self, "previewItemType") == 3)
   {
-    [a1 imageRawSizeOfContents:v4 withPreviewItemType:objc_msgSend(a1 imageIsAnimated:{"previewItemType"), 0}];
+    [self imageRawSizeOfContents:v4 withPreviewItemType:objc_msgSend(self imageIsAnimated:{"previewItemType"), 0}];
     v6 = v5;
   }
 
-  else if ([a1 previewItemType] == 1 && (objc_msgSend(a1, "UTIAnalyzer"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isAudioOnly"), v9, (v10 & 1) == 0))
+  else if ([self previewItemType] == 1 && (objc_msgSend(self, "UTIAnalyzer"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isAudioOnly"), v9, (v10 & 1) == 0))
   {
     v12 = objc_alloc(MEMORY[0x277CE6650]);
     v16 = *MEMORY[0x277CE6260];

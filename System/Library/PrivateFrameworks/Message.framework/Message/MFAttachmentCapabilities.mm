@@ -1,7 +1,7 @@
 @interface MFAttachmentCapabilities
 + (BOOL)_isMailDropDevice;
 + (BOOL)mailDropAvailable;
-+ (BOOL)mailDropAvailableForAccount:(id)a3;
++ (BOOL)mailDropAvailableForAccount:(id)account;
 + (BOOL)mailDropConfigured;
 + (double)mailDropExpiration;
 + (id)capabilitiesDictionary;
@@ -11,7 +11,7 @@
 + (unint64_t)currentMessageLimit;
 + (unint64_t)currentPlaceholderThreshold;
 + (unint64_t)currentUploadLimit;
-+ (unint64_t)currentUploadLimitForAccount:(id)a3;
++ (unint64_t)currentUploadLimitForAccount:(id)account;
 + (unint64_t)mailDropThreshold;
 @end
 
@@ -20,23 +20,23 @@
 + (unint64_t)currentMessageLimit
 {
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
-    v5 = 52428800;
+    integerValue = 52428800;
   }
 
   else
   {
-    v6 = [a1 capabilitiesDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"MFMailAttachmentMessageLimitKey"];
-    v5 = [v7 integerValue];
+    capabilitiesDictionary = [self capabilitiesDictionary];
+    v7 = [capabilitiesDictionary objectForKeyedSubscript:@"MFMailAttachmentMessageLimitKey"];
+    integerValue = [v7 integerValue];
   }
 
-  if ([a1 placeholdersAvailable])
+  if ([self placeholdersAvailable])
   {
-    return v5;
+    return integerValue;
   }
 
   else
@@ -48,9 +48,9 @@
 + (unint64_t)currentDownloadLimit
 {
   v2 = +[MFNetworkController sharedInstance];
-  v3 = [v2 isFatPipe];
+  isFatPipe = [v2 isFatPipe];
 
-  if (v3)
+  if (isFatPipe)
   {
     return 0x40000000;
   }
@@ -64,46 +64,46 @@
 + (unint64_t)currentUploadLimit
 {
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
-    v5 = +[MailAccount defaultMailAccountForDelivery];
-    if (([a1 mailDropAvailableForAccount:v5] & 1) != 0 || objc_msgSend(a1, "mailDropAvailable"))
+    capabilitiesDictionary = +[MailAccount defaultMailAccountForDelivery];
+    if (([self mailDropAvailableForAccount:capabilitiesDictionary] & 1) != 0 || objc_msgSend(self, "mailDropAvailable"))
     {
-      v6 = [a1 _mailDropLimit];
+      _mailDropLimit = [self _mailDropLimit];
     }
 
     else
     {
-      v6 = 104857600;
+      _mailDropLimit = 104857600;
     }
 
     v8 = +[MFNetworkController sharedInstance];
-    v9 = [v8 isFatPipe];
+    isFatPipe = [v8 isFatPipe];
 
     v10 = 104857600;
-    if (v6 < 0x6400000)
+    if (_mailDropLimit < 0x6400000)
     {
-      v10 = v6;
+      v10 = _mailDropLimit;
     }
 
-    if (!v9)
+    if (!isFatPipe)
     {
-      v6 = v10;
+      _mailDropLimit = v10;
     }
   }
 
   else
   {
-    v5 = [a1 capabilitiesDictionary];
-    v7 = [v5 objectForKeyedSubscript:@"MFMailAttachmentUploadLimitKey"];
-    v6 = [v7 integerValue];
+    capabilitiesDictionary = [self capabilitiesDictionary];
+    v7 = [capabilitiesDictionary objectForKeyedSubscript:@"MFMailAttachmentUploadLimitKey"];
+    _mailDropLimit = [v7 integerValue];
   }
 
-  if ([a1 placeholdersAvailable])
+  if ([self placeholdersAvailable])
   {
-    return v6;
+    return _mailDropLimit;
   }
 
   else
@@ -112,42 +112,42 @@
   }
 }
 
-+ (unint64_t)currentUploadLimitForAccount:(id)a3
++ (unint64_t)currentUploadLimitForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = MFUserAgent();
-  v6 = [v5 isMobileMail];
+  isMobileMail = [v5 isMobileMail];
 
-  if (v6 && [a1 mailDropAvailableForAccount:v4])
+  if (isMobileMail && [self mailDropAvailableForAccount:accountCopy])
   {
-    v7 = [a1 _mailDropLimit];
+    _mailDropLimit = [self _mailDropLimit];
   }
 
   else
   {
-    v7 = 104857600;
+    _mailDropLimit = 104857600;
   }
 
   v8 = +[MFNetworkController sharedInstance];
-  v9 = [v8 isFatPipe];
+  isFatPipe = [v8 isFatPipe];
 
-  v10 = [a1 placeholdersAvailable];
-  if (v7 >= 0x6400000)
+  placeholdersAvailable = [self placeholdersAvailable];
+  if (_mailDropLimit >= 0x6400000)
   {
     v11 = 104857600;
   }
 
   else
   {
-    v11 = v7;
+    v11 = _mailDropLimit;
   }
 
-  if (v9)
+  if (isFatPipe)
   {
-    v11 = v7;
+    v11 = _mailDropLimit;
   }
 
-  if (v10)
+  if (placeholdersAvailable)
   {
     v12 = v11;
   }
@@ -163,39 +163,39 @@
 + (BOOL)_isMailDropDevice
 {
   v2 = MFUserAgent();
-  v3 = [v2 isMobileMail];
+  isMobileMail = [v2 isMobileMail];
 
-  return v3;
+  return isMobileMail;
 }
 
 + (unint64_t)mailDropThreshold
 {
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
-    if ([a1 mailDropAvailable])
+    if ([self mailDropAvailable])
     {
-      v5 = 20971520;
+      integerValue = 20971520;
     }
 
     else
     {
-      v5 = 0xFFFFFFFFLL;
+      integerValue = 0xFFFFFFFFLL;
     }
   }
 
   else
   {
-    v6 = [a1 capabilitiesDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"MFMailAttachmentMailDropThresholdKey"];
-    v5 = [v7 integerValue];
+    capabilitiesDictionary = [self capabilitiesDictionary];
+    v7 = [capabilitiesDictionary objectForKeyedSubscript:@"MFMailAttachmentMailDropThresholdKey"];
+    integerValue = [v7 integerValue];
   }
 
-  if ([a1 placeholdersAvailable])
+  if ([self placeholdersAvailable])
   {
-    return v5;
+    return integerValue;
   }
 
   else
@@ -207,9 +207,9 @@
 + (unint64_t)_mailDropLimit
 {
   v2 = +[MFNetworkController sharedInstance];
-  v3 = [v2 isFatPipe];
+  isFatPipe = [v2 isFatPipe];
 
-  if (v3)
+  if (isFatPipe)
   {
     return 0xFFFFFFFFLL;
   }
@@ -240,32 +240,32 @@
 
       if ((v5 & 1) == 0)
       {
-        v7 = [a1 capabilitiesDictionary];
-        v9 = [v7 objectForKeyedSubscript:@"MFMailAttachmentMailDropConfiguredKey"];
-        v10 = [v9 BOOLValue];
+        capabilitiesDictionary = [self capabilitiesDictionary];
+        v9 = [capabilitiesDictionary objectForKeyedSubscript:@"MFMailAttachmentMailDropConfiguredKey"];
+        bOOLValue = [v9 BOOLValue];
         goto LABEL_12;
       }
     }
 
     v6 = +[MFAccountStore sharedAccountStore];
-    v7 = [v6 persistentStore];
+    capabilitiesDictionary = [v6 persistentStore];
 
-    v8 = [v7 aa_primaryAppleAccount];
-    v9 = v8;
-    if (!v8)
+    aa_primaryAppleAccount = [capabilitiesDictionary aa_primaryAppleAccount];
+    v9 = aa_primaryAppleAccount;
+    if (!aa_primaryAppleAccount)
     {
       v11 = 0;
 LABEL_13:
 
-      v3 = [a1 placeholdersAvailable] & v11;
+      v3 = [self placeholdersAvailable] & v11;
       mailDropConfigured_mailDropConfigured = v3;
       mailDropConfigured_mailDropConfiguredNeedsRefresh = 1;
       return v3 & 1;
     }
 
-    v10 = [v8 isEnabledForDataclass:*MEMORY[0x1E6959B58]];
+    bOOLValue = [aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x1E6959B58]];
 LABEL_12:
-    v11 = v10;
+    v11 = bOOLValue;
     goto LABEL_13;
   }
 
@@ -281,36 +281,36 @@ void __46__MFAttachmentCapabilities_mailDropConfigured__block_invoke()
   notify_register_dispatch(v0, &out_token, v1, &__block_literal_global_23_0);
 }
 
-+ (BOOL)mailDropAvailableForAccount:(id)a3
++ (BOOL)mailDropAvailableForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = MFUserAgent();
-  v6 = [v5 isMobileMail];
+  isMobileMail = [v5 isMobileMail];
 
-  if (v6 && [a1 _isMailDropDevice] && objc_msgSend(v4, "supportsMailDrop"))
+  if (isMobileMail && [self _isMailDropDevice] && objc_msgSend(accountCopy, "supportsMailDrop"))
   {
-    v7 = [a1 mailDropConfigured];
+    mailDropConfigured = [self mailDropConfigured];
   }
 
   else
   {
-    v7 = 0;
+    mailDropConfigured = 0;
   }
 
-  v8 = [a1 placeholdersAvailable];
+  placeholdersAvailable = [self placeholdersAvailable];
 
-  return v8 & v7;
+  return placeholdersAvailable & mailDropConfigured;
 }
 
 + (BOOL)mailDropAvailable
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
-    if ([a1 _isMailDropDevice])
+    if ([self _isMailDropDevice])
     {
       +[MailAccount activeAccounts];
       v16 = 0u;
@@ -330,7 +330,7 @@ void __46__MFAttachmentCapabilities_mailDropConfigured__block_invoke()
               objc_enumerationMutation(v5);
             }
 
-            if ([a1 mailDropAvailableForAccount:{*(*(&v14 + 1) + 8 * i), v14}])
+            if ([self mailDropAvailableForAccount:{*(*(&v14 + 1) + 8 * i), v14}])
             {
               LOBYTE(v6) = 1;
               goto LABEL_15;
@@ -358,28 +358,28 @@ LABEL_15:
 
   else
   {
-    v9 = [a1 capabilitiesDictionary];
-    v10 = [v9 objectForKeyedSubscript:@"MFMailAttachmentMailDropAvailableKey"];
+    capabilitiesDictionary = [self capabilitiesDictionary];
+    v10 = [capabilitiesDictionary objectForKeyedSubscript:@"MFMailAttachmentMailDropAvailableKey"];
     LODWORD(v6) = [v10 BOOLValue];
   }
 
-  v11 = [a1 placeholdersAvailable];
+  placeholdersAvailable = [self placeholdersAvailable];
   v12 = *MEMORY[0x1E69E9840];
-  return v11 & v6;
+  return placeholdersAvailable & v6;
 }
 
 + (double)mailDropExpiration
 {
   v2 = MFUserAgent();
-  v3 = [v2 isMobileMail];
+  isMobileMail = [v2 isMobileMail];
 
-  if (!v3)
+  if (!isMobileMail)
   {
     return 2592000.0;
   }
 
-  v4 = [MEMORY[0x1E695E000] em_userDefaults];
-  v5 = [v4 BOOLForKey:@"MailDropShortExp"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v5 = [em_userDefaults BOOLForKey:@"MailDropShortExp"];
 
   result = 2592000.0;
   if (v5)
@@ -393,9 +393,9 @@ LABEL_15:
 + (id)mailDropPreferences
 {
   v2 = MFUserAgent();
-  v3 = [v2 isMobileMail];
+  isMobileMail = [v2 isMobileMail];
 
-  if (v3)
+  if (isMobileMail)
   {
     v4 = MFMobileMailPreferenceDomain();
     v5 = CFPreferencesCopyAppValue(@"mailDrop", v4);
@@ -412,12 +412,12 @@ LABEL_15:
 + (unint64_t)currentPlaceholderThreshold
 {
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
-    v5 = [MEMORY[0x1E695E000] em_userDefaults];
-    v6 = [v5 BOOLForKey:@"AttachmentPlaceholderLowerLimit"];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v6 = [em_userDefaults BOOLForKey:@"AttachmentPlaceholderLowerLimit"];
 
     if (v6)
     {
@@ -429,27 +429,27 @@ LABEL_15:
       v7 = 10485760;
     }
 
-    if ([a1 placeholdersAvailable])
+    if ([self placeholdersAvailable])
     {
-      v8 = v7;
+      integerValue = v7;
     }
 
     else
     {
-      v8 = 0xFFFFFFFFLL;
+      integerValue = 0xFFFFFFFFLL;
     }
   }
 
   else
   {
-    v9 = [a1 capabilitiesDictionary];
-    v10 = [v9 objectForKeyedSubscript:@"MFMailAttachmentPlaceholderThresholdKey"];
-    v8 = [v10 integerValue];
+    capabilitiesDictionary = [self capabilitiesDictionary];
+    v10 = [capabilitiesDictionary objectForKeyedSubscript:@"MFMailAttachmentPlaceholderThresholdKey"];
+    integerValue = [v10 integerValue];
   }
 
-  if ([a1 placeholdersAvailable])
+  if ([self placeholdersAvailable])
   {
-    return v8;
+    return integerValue;
   }
 
   else
@@ -461,39 +461,39 @@ LABEL_15:
 + (id)capabilitiesDictionary
 {
   v3 = MFUserAgent();
-  v4 = [v3 isMobileMail];
+  isMobileMail = [v3 isMobileMail];
 
-  if (v4)
+  if (isMobileMail)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:6];
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "currentUploadLimit")}];
-    [v5 setObject:v6 forKey:@"MFMailAttachmentUploadLimitKey"];
+    attachmentCapabilities = [MEMORY[0x1E695DF90] dictionaryWithCapacity:6];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "currentUploadLimit")}];
+    [attachmentCapabilities setObject:v6 forKey:@"MFMailAttachmentUploadLimitKey"];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "currentMessageLimit")}];
-    [v5 setObject:v7 forKey:@"MFMailAttachmentMessageLimitKey"];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "currentMessageLimit")}];
+    [attachmentCapabilities setObject:v7 forKey:@"MFMailAttachmentMessageLimitKey"];
 
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "mailDropThreshold")}];
-    [v5 setObject:v8 forKey:@"MFMailAttachmentMailDropThresholdKey"];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "mailDropThreshold")}];
+    [attachmentCapabilities setObject:v8 forKey:@"MFMailAttachmentMailDropThresholdKey"];
 
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a1, "currentPlaceholderThreshold")}];
-    [v5 setObject:v9 forKey:@"MFMailAttachmentPlaceholderThresholdKey"];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(self, "currentPlaceholderThreshold")}];
+    [attachmentCapabilities setObject:v9 forKey:@"MFMailAttachmentPlaceholderThresholdKey"];
 
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "placeholdersAvailable")}];
-    [v5 setObject:v10 forKey:@"MFMailAttachmentPlaceholdersAvailableKey"];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "placeholdersAvailable")}];
+    [attachmentCapabilities setObject:v10 forKey:@"MFMailAttachmentPlaceholdersAvailableKey"];
 
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "mailDropAvailable")}];
-    [v5 setObject:v11 forKey:@"MFMailAttachmentMailDropConfiguredKey"];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "mailDropAvailable")}];
+    [attachmentCapabilities setObject:v11 forKey:@"MFMailAttachmentMailDropConfiguredKey"];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "mailDropConfigured")}];
-    [v5 setObject:v12 forKey:@"MFMailAttachmentMailDropConfiguredKey"];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "mailDropConfigured")}];
+    [attachmentCapabilities setObject:v12 forKey:@"MFMailAttachmentMailDropConfiguredKey"];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69ADAC0] attachmentCapabilities];
+    attachmentCapabilities = [MEMORY[0x1E69ADAC0] attachmentCapabilities];
   }
 
-  return v5;
+  return attachmentCapabilities;
 }
 
 @end

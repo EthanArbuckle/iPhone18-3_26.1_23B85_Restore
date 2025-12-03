@@ -1,7 +1,7 @@
 @interface STSCategorySectionHeader
 - (STSCategorySectionHeader)init;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation STSCategorySectionHeader
@@ -15,8 +15,8 @@
   {
     v3 = objc_alloc_init(MEMORY[0x277D756B8]);
     v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
-    v5 = [v4 fontDescriptor];
-    v6 = [v5 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v4 fontDescriptor];
+    v6 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
     v7 = [MEMORY[0x277D74300] fontWithDescriptor:v6 size:0.0];
     [(UILabel *)v3 setFont:v7];
@@ -28,12 +28,12 @@
     v10 = [MEMORY[0x277D75220] buttonWithType:1];
     v11 = STSLocalizedString(@"CLEAR");
     [(UIButton *)v10 setTitle:v11 forState:0];
-    v12 = [(UIButton *)v10 titleLabel];
+    titleLabel = [(UIButton *)v10 titleLabel];
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
-    [v12 setFont:v13];
+    [titleLabel setFont:v13];
 
-    v14 = [MEMORY[0x277D75348] systemPinkColor];
-    [(UIButton *)v10 setTintColor:v14];
+    systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+    [(UIButton *)v10 setTintColor:systemPinkColor];
 
     [(UIButton *)v10 setHidden:0];
     clearButton = v2->_clearButton;
@@ -47,10 +47,10 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
   [(UILabel *)self->_titleLabel setText:self->_title];
 }
 
@@ -60,14 +60,14 @@
   v31.super_class = STSCategorySectionHeader;
   [(STSCategorySectionHeader *)&v31 layoutSubviews];
   [(UILabel *)self->_titleLabel sizeToFit];
-  v3 = [(STSCategorySectionHeader *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(STSCategorySectionHeader *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v5 = 20.0;
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
-    v6 = [(STSCategorySectionHeader *)self readableContentGuide];
-    [v6 layoutFrame];
+    readableContentGuide = [(STSCategorySectionHeader *)self readableContentGuide];
+    [readableContentGuide layoutFrame];
     v5 = v7;
   }
 
@@ -81,12 +81,12 @@
   [(UILabel *)self->_titleLabel bounds];
   [(UILabel *)titleLabel setFrame:v5, v12, v14];
   [(UIButton *)self->_clearButton sizeToFit];
-  v15 = [(STSCategorySectionHeader *)self readableContentGuide];
-  [v15 layoutFrame];
+  readableContentGuide2 = [(STSCategorySectionHeader *)self readableContentGuide];
+  [readableContentGuide2 layoutFrame];
   v17 = v16;
   v19 = v18;
 
-  if (v4 == 2)
+  if (horizontalSizeClass == 2)
   {
     v20 = v17 + v19;
   }

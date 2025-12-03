@@ -1,9 +1,9 @@
 @interface _ARViewerRemoteViewController
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
-- (void)isIgnoringInteractionEvents:(id)a3;
-- (void)setStatusBarOrientation:(int64_t)a3;
-- (void)statusBarOrientation:(id)a3;
+- (void)isIgnoringInteractionEvents:(id)events;
+- (void)setStatusBarOrientation:(int64_t)orientation;
+- (void)statusBarOrientation:(id)orientation;
 @end
 
 @implementation _ARViewerRemoteViewController
@@ -32,24 +32,24 @@
   return v3;
 }
 
-- (void)isIgnoringInteractionEvents:(id)a3
+- (void)isIgnoringInteractionEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(_ARViewerRemoteViewController *)self arviewerDelegate];
-  [v5 isIgnoringInteractionEvents:v4];
+  eventsCopy = events;
+  arviewerDelegate = [(_ARViewerRemoteViewController *)self arviewerDelegate];
+  [arviewerDelegate isIgnoringInteractionEvents:eventsCopy];
 }
 
-- (void)statusBarOrientation:(id)a3
+- (void)statusBarOrientation:(id)orientation
 {
-  v4 = a3;
-  v5 = [(_ARViewerRemoteViewController *)self arviewerDelegate];
-  [v5 statusBarOrientation:v4];
+  orientationCopy = orientation;
+  arviewerDelegate = [(_ARViewerRemoteViewController *)self arviewerDelegate];
+  [arviewerDelegate statusBarOrientation:orientationCopy];
 }
 
-- (void)setStatusBarOrientation:(int64_t)a3
+- (void)setStatusBarOrientation:(int64_t)orientation
 {
-  v4 = [(_ARViewerRemoteViewController *)self arviewerDelegate];
-  [v4 setStatusBarOrientation:a3];
+  arviewerDelegate = [(_ARViewerRemoteViewController *)self arviewerDelegate];
+  [arviewerDelegate setStatusBarOrientation:orientation];
 }
 
 @end

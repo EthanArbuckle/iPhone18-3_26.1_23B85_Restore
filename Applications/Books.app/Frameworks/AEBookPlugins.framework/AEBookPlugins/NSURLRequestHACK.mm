@@ -1,10 +1,10 @@
 @interface NSURLRequestHACK
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSURLRequestHACK
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NSURLRequestHACK alloc];
   v5 = [(NSURLRequestHACK *)self URL];

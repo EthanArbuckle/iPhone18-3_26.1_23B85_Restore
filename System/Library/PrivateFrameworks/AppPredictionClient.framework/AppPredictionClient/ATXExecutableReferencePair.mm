@@ -1,6 +1,6 @@
 @interface ATXExecutableReferencePair
-- (ATXExecutableReferencePair)initWithReference:(id)a3 executable:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ATXExecutableReferencePair)initWithReference:(id)reference executable:(id)executable;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -8,34 +8,34 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ATXExecutableReferencePair *)self executable];
-  v3 = [v2 hash];
+  executable = [(ATXExecutableReferencePair *)self executable];
+  v3 = [executable hash];
 
   return v3;
 }
 
-- (ATXExecutableReferencePair)initWithReference:(id)a3 executable:(id)a4
+- (ATXExecutableReferencePair)initWithReference:(id)reference executable:(id)executable
 {
-  v7 = a3;
-  v8 = a4;
+  referenceCopy = reference;
+  executableCopy = executable;
   v13.receiver = self;
   v13.super_class = ATXExecutableReferencePair;
   v9 = [(ATXExecutableReferencePair *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_reference, a3);
-    objc_storeStrong(&v10->_executable, a4);
+    objc_storeStrong(&v9->_reference, reference);
+    objc_storeStrong(&v10->_executable, executable);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_executable;
       v7 = v6;
       if (v6 == v5->_executable)

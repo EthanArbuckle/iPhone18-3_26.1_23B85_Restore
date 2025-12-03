@@ -1,23 +1,23 @@
 @interface SKUIActivityIndicatorCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUIActivityIndicatorCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUIActivityIndicatorCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIActivityIndicatorCollectionViewCell
 
-- (SKUIActivityIndicatorCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIActivityIndicatorCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,24 +32,24 @@
 
   v21.receiver = self;
   v21.super_class = SKUIActivityIndicatorCollectionViewCell;
-  v16 = [(SKUICollectionViewCell *)&v21 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUICollectionViewCell *)&v21 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = objc_alloc_init(SKUIActivityIndicatorView);
-    indicatorView = v16->_indicatorView;
-    v16->_indicatorView = v17;
+    indicatorView = height->_indicatorView;
+    height->_indicatorView = v17;
 
-    v19 = [(SKUIActivityIndicatorCollectionViewCell *)v16 contentView];
-    [v19 addSubview:v16->_indicatorView];
+    contentView = [(SKUIActivityIndicatorCollectionViewCell *)height contentView];
+    [contentView addSubview:height->_indicatorView];
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -62,21 +62,21 @@
     }
   }
 
-  v17 = [SKUIActivityIndicatorView prefetchResourcesForViewElement:v7 reason:a4 context:v8];
+  v17 = [SKUIActivityIndicatorView prefetchResourcesForViewElement:elementCopy reason:reason context:contextCopy];
 
   return v17;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIActivityIndicatorCollectionViewCell preferredSizeForViewElement:context:];
   }
 
-  [SKUIActivityIndicatorView preferredSizeForViewElement:v5 context:v6];
+  [SKUIActivityIndicatorView preferredSizeForViewElement:elementCopy context:contextCopy];
   v8 = v7;
   v10 = v9;
 
@@ -87,10 +87,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -103,13 +103,13 @@
     }
   }
 
-  [SKUIActivityIndicatorView requestLayoutForViewElement:v7 width:v8 context:a4];
+  [SKUIActivityIndicatorView requestLayoutForViewElement:elementCopy width:contextCopy context:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -122,7 +122,7 @@
     }
   }
 
-  [SKUIActivityIndicatorView sizeThatFitsWidth:v7 viewElement:v8 context:a3];
+  [SKUIActivityIndicatorView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
   v18 = v17;
   v20 = v19;
 
@@ -133,29 +133,29 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIActivityIndicatorCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   indicatorView = self->_indicatorView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SKUIViewReuseView *)indicatorView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)indicatorView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SKUIActivityIndicatorCollectionViewCell;
-  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
 - (void)layoutSubviews
@@ -163,8 +163,8 @@
   v11.receiver = self;
   v11.super_class = SKUIActivityIndicatorCollectionViewCell;
   [(SKUICollectionViewCell *)&v11 layoutSubviews];
-  v3 = [(SKUIActivityIndicatorCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIActivityIndicatorCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -175,14 +175,14 @@
   [(SKUIActivityIndicatorView *)self->_indicatorView setFrame:floorf(*&v8), floorf(*&v10), v9];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   indicatorView = self->_indicatorView;
-  v5 = a3;
-  [(SKUIViewReuseView *)indicatorView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)indicatorView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIActivityIndicatorCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 + (void)preferredSizeForViewElement:context:.cold.1()

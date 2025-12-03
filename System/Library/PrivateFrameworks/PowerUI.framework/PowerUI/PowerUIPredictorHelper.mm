@@ -1,69 +1,69 @@
 @interface PowerUIPredictorHelper
-+ (double)getHourBinID:(id)a3 forHourBin:(unint64_t)a4;
-+ (double)hoursUntilUseFromBucketedUsage:(id)a3 withCurrentHour:(int)a4 withComponentsMinutes:(int64_t)a5;
-+ (double)meanEventDuration:(id)a3;
-+ (double)meanOf:(id)a3;
-+ (double)medianOf:(id)a3;
-+ (double)medianTimeBetweenDescendingEvents:(id)a3;
-+ (double)standardDeviationOf:(id)a3;
-+ (id)column:(id)a3 inDataFrame:(id)a4;
-+ (id)convertDateTimeColumnToSeconds:(id)a3 inDataFrame:(id)a4;
-+ (id)convertDateToSeconds:(id)a3;
-+ (id)countForColumn:(id)a3 inDataFrame:(id)a4;
-+ (id)events:(id)a3 forHourBin:(unint64_t)a4 date:(id)a5 withMaxDuration:(double)a6;
-+ (id)filterDataFrame:(id)a3 forColumn:(id)a4 withFilterHandler:(id)a5;
-+ (id)filterDataFrame:(id)a3 withValue:(double)a4 forColumn:(id)a5;
-+ (id)filterDataFrame:(id)a3 withValueGreaterThan:(double)a4 andLessThan:(double)a5 forColumn:(id)a6;
-+ (id)filterEvents:(id)a3 startOnSameWeekdayAs:(id)a4;
-+ (id)getDurationsFromEvents:(id)a3 withUnit:(double)a4 cappedAt:(double)a5;
-+ (id)getUsageBucketsForEvents:(id)a3 forDate:(id)a4 withLog:(id)a5;
-+ (id)meanForColumn:(id)a3 inDataFrame:(id)a4;
-+ (id)percentile:(double)a3 forColumn:(id)a4 inDataFrame:(id)a5;
-+ (id)percentiles:(id)a3 forColumn:(id)a4 inDataFrame:(id)a5;
-+ (id)standardDeviationForColumn:(id)a3 inDataFrame:(id)a4;
-+ (id)timeBetweenUsesForSortedDescendingByAgeEvents:(id)a3 forHourBin:(unint64_t)a4 atDate:(id)a5 addAtDate:(BOOL)a6;
-+ (id)varianceForColumn:(id)a3 inDataFrame:(id)a4;
-+ (void)quantizeValuesInDataFrame:(id)a3 forColumn:(id)a4 withBinWidth:(id)a5;
++ (double)getHourBinID:(id)d forHourBin:(unint64_t)bin;
++ (double)hoursUntilUseFromBucketedUsage:(id)usage withCurrentHour:(int)hour withComponentsMinutes:(int64_t)minutes;
++ (double)meanEventDuration:(id)duration;
++ (double)meanOf:(id)of;
++ (double)medianOf:(id)of;
++ (double)medianTimeBetweenDescendingEvents:(id)events;
++ (double)standardDeviationOf:(id)of;
++ (id)column:(id)column inDataFrame:(id)frame;
++ (id)convertDateTimeColumnToSeconds:(id)seconds inDataFrame:(id)frame;
++ (id)convertDateToSeconds:(id)seconds;
++ (id)countForColumn:(id)column inDataFrame:(id)frame;
++ (id)events:(id)events forHourBin:(unint64_t)bin date:(id)date withMaxDuration:(double)duration;
++ (id)filterDataFrame:(id)frame forColumn:(id)column withFilterHandler:(id)handler;
++ (id)filterDataFrame:(id)frame withValue:(double)value forColumn:(id)column;
++ (id)filterDataFrame:(id)frame withValueGreaterThan:(double)than andLessThan:(double)lessThan forColumn:(id)column;
++ (id)filterEvents:(id)events startOnSameWeekdayAs:(id)as;
++ (id)getDurationsFromEvents:(id)events withUnit:(double)unit cappedAt:(double)at;
++ (id)getUsageBucketsForEvents:(id)events forDate:(id)date withLog:(id)log;
++ (id)meanForColumn:(id)column inDataFrame:(id)frame;
++ (id)percentile:(double)percentile forColumn:(id)column inDataFrame:(id)frame;
++ (id)percentiles:(id)percentiles forColumn:(id)column inDataFrame:(id)frame;
++ (id)standardDeviationForColumn:(id)column inDataFrame:(id)frame;
++ (id)timeBetweenUsesForSortedDescendingByAgeEvents:(id)events forHourBin:(unint64_t)bin atDate:(id)date addAtDate:(BOOL)atDate;
++ (id)varianceForColumn:(id)column inDataFrame:(id)frame;
++ (void)quantizeValuesInDataFrame:(id)frame forColumn:(id)column withBinWidth:(id)width;
 @end
 
 @implementation PowerUIPredictorHelper
 
-+ (double)getHourBinID:(id)a3 forHourBin:(unint64_t)a4
++ (double)getHourBinID:(id)d forHourBin:(unint64_t)bin
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a3;
-  v7 = [v5 currentCalendar];
-  v8 = [v7 components:32 fromDate:v6];
+  dCopy = d;
+  currentCalendar = [v5 currentCalendar];
+  v8 = [currentCalendar components:32 fromDate:dCopy];
 
-  v9 = [v8 hour] / a4;
+  v9 = [v8 hour] / bin;
   return v9;
 }
 
-+ (id)events:(id)a3 forHourBin:(unint64_t)a4 date:(id)a5 withMaxDuration:(double)a6
++ (id)events:(id)events forHourBin:(unint64_t)bin date:(id)date withMaxDuration:(double)duration
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  eventsCopy = events;
   v11 = MEMORY[0x277CBEA80];
-  v12 = a5;
-  v13 = [v11 currentCalendar];
-  v14 = [v13 timeZone];
-  v15 = [v12 dateByAddingTimeInterval:{objc_msgSend(v14, "secondsFromGMT")}];
+  dateCopy = date;
+  currentCalendar = [v11 currentCalendar];
+  timeZone = [currentCalendar timeZone];
+  v15 = [dateCopy dateByAddingTimeInterval:{objc_msgSend(timeZone, "secondsFromGMT")}];
 
   v35 = v15;
-  v36 = v13;
-  v34 = [v13 components:32 fromDate:v15];
-  v16 = [v34 hour];
-  v17 = [MEMORY[0x277CBEB18] array];
+  v36 = currentCalendar;
+  v34 = [currentCalendar components:32 fromDate:v15];
+  hour = [v34 hour];
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v18 = v10;
+  v18 = eventsCopy;
   v19 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v19)
   {
     v20 = v19;
-    v21 = v16 / a4;
+    v21 = hour / bin;
     v22 = *v38;
     do
     {
@@ -75,31 +75,31 @@
         }
 
         v24 = *(*(&v37 + 1) + 8 * i);
-        v25 = [v24 startDate];
-        [a1 getHourBinID:v25 forHourBin:a4];
+        startDate = [v24 startDate];
+        [self getHourBinID:startDate forHourBin:bin];
         if (v21 == v26)
         {
-          v27 = [v24 endDate];
-          [v27 timeIntervalSinceDate:v25];
+          endDate = [v24 endDate];
+          [endDate timeIntervalSinceDate:startDate];
           v29 = v28 / 3600.0;
 
-          if (v29 >= a6)
+          if (v29 >= duration)
           {
-            v30 = a6;
+            durationCopy = duration;
           }
 
           else
           {
-            v30 = v29;
+            durationCopy = v29;
           }
 
-          if (a6 <= 0.0)
+          if (duration <= 0.0)
           {
-            v30 = v29;
+            durationCopy = v29;
           }
 
-          v31 = [MEMORY[0x277CCABB0] numberWithDouble:v30];
-          [v17 addObject:v31];
+          v31 = [MEMORY[0x277CCABB0] numberWithDouble:durationCopy];
+          [array addObject:v31];
         }
       }
 
@@ -111,25 +111,25 @@
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return array;
 }
 
-+ (id)filterEvents:(id)a3 startOnSameWeekdayAs:(id)a4
++ (id)filterEvents:(id)events startOnSameWeekdayAs:(id)as
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v22 = v6;
-  v21 = [v8 components:512 fromDate:v6];
-  v9 = [v21 weekday];
+  eventsCopy = events;
+  asCopy = as;
+  array = [MEMORY[0x277CBEB18] array];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v22 = asCopy;
+  v21 = [currentCalendar components:512 fromDate:asCopy];
+  weekday = [v21 weekday];
   context = objc_autoreleasePoolPush();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v5;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -145,12 +145,12 @@
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 startDate];
-        v17 = [v8 components:512 fromDate:v16];
+        startDate = [v15 startDate];
+        v17 = [currentCalendar components:512 fromDate:startDate];
 
-        if ([v17 weekday] == v9)
+        if ([v17 weekday] == weekday)
         {
-          [v7 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -163,19 +163,19 @@
   objc_autoreleasePoolPop(context);
   v18 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-+ (id)getDurationsFromEvents:(id)a3 withUnit:(double)a4 cappedAt:(double)a5
++ (id)getDurationsFromEvents:(id)events withUnit:(double)unit cappedAt:(double)at
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
+  eventsCopy = events;
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -191,24 +191,24 @@
         }
 
         [*(*(&v20 + 1) + 8 * i) duration];
-        v15 = v14 / a4;
-        if (v15 >= a5)
+        v15 = v14 / unit;
+        if (v15 >= at)
         {
-          v16 = a5;
+          atCopy = at;
         }
 
         else
         {
-          v16 = v15;
+          atCopy = v15;
         }
 
-        if (a5 > 0.0)
+        if (at > 0.0)
         {
-          v15 = v16;
+          v15 = atCopy;
         }
 
         v17 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-        [v8 addObject:v17];
+        [array addObject:v17];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -219,20 +219,20 @@
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
-+ (double)meanOf:(id)a3
++ (double)meanOf:(id)of
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = v3;
+    v4 = ofCopy;
     v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
@@ -275,20 +275,20 @@
   return v11;
 }
 
-+ (double)standardDeviationOf:(id)a3
++ (double)standardDeviationOf:(id)of
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  ofCopy = of;
   v4 = 0.0;
-  if ([v3 count] >= 2)
+  if ([ofCopy count] >= 2)
   {
-    [PowerUIPredictorHelper meanOf:v3];
+    [PowerUIPredictorHelper meanOf:ofCopy];
     v6 = v5;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v3;
+    v7 = ofCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -326,12 +326,12 @@
   return v4;
 }
 
-+ (double)medianOf:(id)a3
++ (double)medianOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+    v4 = [ofCopy sortedArrayUsingSelector:sel_compare_];
     v5 = [v4 count];
     v6 = [v4 count] >> 1;
     if (v5)
@@ -360,49 +360,49 @@
   return v12;
 }
 
-+ (id)timeBetweenUsesForSortedDescendingByAgeEvents:(id)a3 forHourBin:(unint64_t)a4 atDate:(id)a5 addAtDate:(BOOL)a6
++ (id)timeBetweenUsesForSortedDescendingByAgeEvents:(id)events forHourBin:(unint64_t)bin atDate:(id)date addAtDate:(BOOL)atDate
 {
-  v9 = a3;
-  v10 = a5;
-  v43 = [MEMORY[0x277CBEB18] array];
-  if ([v9 count] >= 2)
+  eventsCopy = events;
+  dateCopy = date;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([eventsCopy count] >= 2)
   {
-    v39 = a6;
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    v12 = [v11 timeZone];
-    v13 = [v10 dateByAddingTimeInterval:{objc_msgSend(v12, "secondsFromGMT")}];
+    atDateCopy = atDate;
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    timeZone = [currentCalendar timeZone];
+    v13 = [dateCopy dateByAddingTimeInterval:{objc_msgSend(timeZone, "secondsFromGMT")}];
 
     v41 = v13;
-    v42 = v11;
-    v40 = [v11 components:32 fromDate:v13];
-    v14 = [v40 hour] / a4;
-    v15 = [v9 count];
+    v42 = currentCalendar;
+    v40 = [currentCalendar components:32 fromDate:v13];
+    v14 = [v40 hour] / bin;
+    v15 = [eventsCopy count];
     if (v15 >= 2)
     {
       v16 = (v15 & 0x7FFFFFFF) + 1;
       do
       {
-        v17 = [v9 objectAtIndexedSubscript:v16 - 2];
-        v18 = [v17 endDate];
+        v17 = [eventsCopy objectAtIndexedSubscript:v16 - 2];
+        endDate = [v17 endDate];
 
-        v19 = [v9 objectAtIndexedSubscript:v16 - 3];
-        v20 = [v19 startDate];
+        v19 = [eventsCopy objectAtIndexedSubscript:v16 - 3];
+        startDate = [v19 startDate];
 
-        v21 = [v18 earlierDate:v20];
+        v21 = [endDate earlierDate:startDate];
 
-        if (v21 != v20)
+        if (v21 != startDate)
         {
-          v22 = [v9 objectAtIndexedSubscript:v16 - 2];
-          v23 = [v22 startDate];
-          [PowerUIPredictorHelper getHourBinID:v23 forHourBin:a4];
+          v22 = [eventsCopy objectAtIndexedSubscript:v16 - 2];
+          startDate2 = [v22 startDate];
+          [PowerUIPredictorHelper getHourBinID:startDate2 forHourBin:bin];
           v25 = v24;
 
           if (v14 == v25)
           {
             v26 = MEMORY[0x277CCABB0];
-            [v20 timeIntervalSinceDate:v18];
+            [startDate timeIntervalSinceDate:endDate];
             v28 = [v26 numberWithDouble:v27 / 60.0];
-            [v43 addObject:v28];
+            [array addObject:v28];
           }
         }
 
@@ -412,43 +412,43 @@
       while (v16 > 2);
     }
 
-    v10 = v41;
-    if (v39)
+    dateCopy = v41;
+    if (atDateCopy)
     {
-      v29 = [v9 firstObject];
-      v30 = [v29 startDate];
-      [PowerUIPredictorHelper getHourBinID:v30 forHourBin:a4];
+      firstObject = [eventsCopy firstObject];
+      startDate3 = [firstObject startDate];
+      [PowerUIPredictorHelper getHourBinID:startDate3 forHourBin:bin];
       v32 = v31;
 
       if (v14 == v32)
       {
         v33 = MEMORY[0x277CCABB0];
-        v34 = [v9 firstObject];
-        v35 = [v34 endDate];
-        [v41 timeIntervalSinceDate:v35];
+        firstObject2 = [eventsCopy firstObject];
+        endDate2 = [firstObject2 endDate];
+        [v41 timeIntervalSinceDate:endDate2];
         v37 = [v33 numberWithDouble:v36 / 60.0];
 
-        [v43 addObject:v37];
+        [array addObject:v37];
       }
     }
   }
 
-  return v43;
+  return array;
 }
 
-+ (id)getUsageBucketsForEvents:(id)a3 forDate:(id)a4 withLog:(id)a5
++ (id)getUsageBucketsForEvents:(id)events forDate:(id)date withLog:(id)log
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v44 = a5;
+  eventsCopy = events;
+  dateCopy = date;
+  logCopy = log;
   memset(v57, 0, sizeof(v57));
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v7;
-  v47 = [v7 countByEnumeratingWithState:&v50 objects:v56 count:16];
+  obj = eventsCopy;
+  v47 = [eventsCopy countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (!v47)
   {
     goto LABEL_27;
@@ -466,44 +466,44 @@
       }
 
       v11 = *(*(&v50 + 1) + 8 * v10);
-      v12 = [MEMORY[0x277CBEA80] currentCalendar];
-      v13 = [v11 startDate];
-      v14 = [v12 components:112 fromDate:v13];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      startDate = [v11 startDate];
+      v14 = [currentCalendar components:112 fromDate:startDate];
 
-      v15 = [MEMORY[0x277CBEA80] currentCalendar];
-      v16 = [v11 endDate];
-      v17 = [v15 components:96 fromDate:v16];
+      currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+      endDate = [v11 endDate];
+      v17 = [currentCalendar2 components:96 fromDate:endDate];
 
-      v18 = [v14 hour];
-      v19 = [v17 hour];
-      v48 = [v14 minute];
-      v49 = [v17 minute];
-      v20 = [MEMORY[0x277CBEA80] currentCalendar];
-      v21 = [v11 startDate];
-      if ([v20 isDate:v21 inSameDayAsDate:v8])
+      hour = [v14 hour];
+      hour2 = [v17 hour];
+      minute = [v14 minute];
+      minute2 = [v17 minute];
+      currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+      startDate2 = [v11 startDate];
+      if ([currentCalendar3 isDate:startDate2 inSameDayAsDate:dateCopy])
       {
 
         goto LABEL_22;
       }
 
-      v46 = v19;
-      v22 = [v11 startDate];
-      [v8 earlierDate:v22];
+      v46 = hour2;
+      startDate3 = [v11 startDate];
+      [dateCopy earlierDate:startDate3];
       v23 = v9;
-      v25 = v24 = v8;
+      v25 = v24 = dateCopy;
 
       v26 = v25 == v24;
-      v8 = v24;
+      dateCopy = v24;
       v9 = v23;
       if (!v26)
       {
-        if (v18 < v46)
+        if (hour < v46)
         {
-          *(v57 + v18) = sqrt((60 - v48)) + *(v57 + v18);
-          if (v18 + 1 < v46)
+          *(v57 + hour) = sqrt((60 - minute)) + *(v57 + hour);
+          if (hour + 1 < v46)
           {
-            v27 = ~v18 + v46;
-            v28 = v57 + v18 + 1;
+            v27 = ~hour + v46;
+            v28 = v57 + hour + 1;
             do
             {
               *v28 = *v28 + 7.74596669;
@@ -515,16 +515,16 @@
           }
 
 LABEL_21:
-          *(v57 + v46) = sqrt(v49) + *(v57 + v46);
+          *(v57 + v46) = sqrt(minute2) + *(v57 + v46);
           goto LABEL_22;
         }
 
-        if (v18 > v46)
+        if (hour > v46)
         {
-          *(v57 + v18) = sqrt((60 - v48)) + *(v57 + v18);
-          if (v18 <= 22)
+          *(v57 + hour) = sqrt((60 - minute)) + *(v57 + hour);
+          if (hour <= 22)
           {
-            v29 = v18 + 1;
+            v29 = hour + 1;
             do
             {
               *(v57 + v29) = *(v57 + v29) + 7.74596669;
@@ -551,9 +551,9 @@ LABEL_21:
           goto LABEL_21;
         }
 
-        if (v49 - v48 >= 0)
+        if (minute2 - minute >= 0)
         {
-          *(v57 + v18) = sqrt((v49 - v48)) + *(v57 + v18);
+          *(v57 + hour) = sqrt((minute2 - minute)) + *(v57 + hour);
         }
       }
 
@@ -582,7 +582,7 @@ LABEL_27:
   }
 
   while (v33 != 192);
-  v35 = v44;
+  v35 = logCopy;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     v36 = [MEMORY[0x277CCABB0] numberWithDouble:v34];
@@ -604,17 +604,17 @@ LABEL_27:
 
   else
   {
-    v38 = v8;
-    v39 = [MEMORY[0x277CBEB18] array];
+    v38 = dateCopy;
+    array = [MEMORY[0x277CBEB18] array];
     for (i = 0; i != 192; i += 8)
     {
       v41 = [MEMORY[0x277CCABB0] numberWithDouble:*(v57 + i) / v34];
-      [v39 addObject:v41];
+      [array addObject:v41];
     }
 
-    v37 = [MEMORY[0x277CBEA60] arrayWithArray:v39];
+    v37 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
-    v8 = v38;
+    dateCopy = v38;
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -622,19 +622,19 @@ LABEL_27:
   return v37;
 }
 
-+ (double)hoursUntilUseFromBucketedUsage:(id)a3 withCurrentHour:(int)a4 withComponentsMinutes:(int64_t)a5
++ (double)hoursUntilUseFromBucketedUsage:(id)usage withCurrentHour:(int)hour withComponentsMinutes:(int64_t)minutes
 {
   v8 = 0.0;
   v9 = 1;
   while (1)
   {
-    v10 = a4 + v9;
-    if ((a4 + v9) > 23)
+    v10 = hour + v9;
+    if ((hour + v9) > 23)
     {
-      v10 = a4 + v9 - 24;
+      v10 = hour + v9 - 24;
     }
 
-    v11 = [a3 objectAtIndexedSubscript:v10];
+    v11 = [usage objectAtIndexedSubscript:v10];
     [v11 doubleValue];
     v13 = v12;
 
@@ -654,52 +654,52 @@ LABEL_27:
     }
   }
 
-  return v9 + a5 / -60.0;
+  return v9 + minutes / -60.0;
 }
 
-+ (double)medianTimeBetweenDescendingEvents:(id)a3
++ (double)medianTimeBetweenDescendingEvents:(id)events
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 count] >= 2)
+  eventsCopy = events;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([eventsCopy count] >= 2)
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
-      v7 = [v6 startDate];
-      v8 = [v3 objectAtIndexedSubscript:++v5];
-      v9 = [v8 endDate];
-      [v7 timeIntervalSinceDate:v9];
+      v6 = [eventsCopy objectAtIndexedSubscript:v5];
+      startDate = [v6 startDate];
+      v8 = [eventsCopy objectAtIndexedSubscript:++v5];
+      endDate = [v8 endDate];
+      [startDate timeIntervalSinceDate:endDate];
       v11 = v10;
 
       if (v11 >= 0.0)
       {
         v12 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
     }
 
-    while (v5 < ([v3 count] - 1));
+    while (v5 < ([eventsCopy count] - 1));
   }
 
-  [PowerUIPredictorHelper medianOf:v4];
+  [PowerUIPredictorHelper medianOf:array];
   v14 = v13;
 
   return v14;
 }
 
-+ (double)meanEventDuration:(id)a3
++ (double)meanEventDuration:(id)duration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  durationCopy = duration;
+  if ([durationCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = v3;
+    v4 = durationCopy;
     v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
@@ -716,9 +716,9 @@ LABEL_27:
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 endDate];
-          v12 = [v10 startDate];
-          [v11 timeIntervalSinceDate:v12];
+          endDate = [v10 endDate];
+          startDate = [v10 startDate];
+          [endDate timeIntervalSinceDate:startDate];
           v8 = v8 + v13;
         }
 
@@ -745,17 +745,17 @@ LABEL_27:
   return v14;
 }
 
-+ (void)quantizeValuesInDataFrame:(id)a3 forColumn:(id)a4 withBinWidth:(id)a5
++ (void)quantizeValuesInDataFrame:(id)frame forColumn:(id)column withBinWidth:(id)width
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  frameCopy = frame;
+  columnCopy = column;
+  widthCopy = width;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v10 = [frameCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -766,21 +766,21 @@ LABEL_27:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(frameCopy);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = MEMORY[0x277CCABB0];
-        v16 = [v14 objectForKeyedSubscript:v8];
+        v16 = [v14 objectForKeyedSubscript:columnCopy];
         [v16 doubleValue];
         v18 = v17;
-        [v9 doubleValue];
+        [widthCopy doubleValue];
         LODWORD(v20) = vcvtmd_s64_f64(v18 / v19);
         v21 = [v15 numberWithInt:v20];
-        [v14 setObject:v21 forKeyedSubscript:v8];
+        [v14 setObject:v21 forKeyedSubscript:columnCopy];
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [frameCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
@@ -789,29 +789,29 @@ LABEL_27:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)convertDateToSeconds:(id)a3
++ (id)convertDateToSeconds:(id)seconds
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:224 fromDate:v4];
+  secondsCopy = seconds;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:224 fromDate:secondsCopy];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:{objc_msgSend(v6, "minute") * 60.0 + objc_msgSend(v6, "hour") * 3600.0 + objc_msgSend(v6, "second")}];
 
   return v7;
 }
 
-+ (id)convertDateTimeColumnToSeconds:(id)a3 inDataFrame:(id)a4
++ (id)convertDateTimeColumnToSeconds:(id)seconds inDataFrame:(id)frame
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  secondsCopy = seconds;
+  frameCopy = frame;
   v8 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v7;
+  v9 = frameCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -826,8 +826,8 @@ LABEL_27:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) objectForKey:{v6, v18}];
-        v15 = [a1 convertDateToSeconds:v14];
+        v14 = [*(*(&v18 + 1) + 8 * i) objectForKey:{secondsCopy, v18}];
+        v15 = [self convertDateToSeconds:v14];
         [v8 addObject:v15];
       }
 
@@ -842,17 +842,17 @@ LABEL_27:
   return v8;
 }
 
-+ (id)filterDataFrame:(id)a3 withValue:(double)a4 forColumn:(id)a5
++ (id)filterDataFrame:(id)frame withValue:(double)value forColumn:(id)column
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  frameCopy = frame;
+  columnCopy = column;
   v9 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v7;
+  v10 = frameCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -868,9 +868,9 @@ LABEL_27:
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 objectForKeyedSubscript:{v8, v21}];
+        v16 = [v15 objectForKeyedSubscript:{columnCopy, v21}];
         [v16 doubleValue];
-        v18 = vabdd_f64(v17, a4);
+        v18 = vabdd_f64(v17, value);
 
         if (v18 <= 0.01)
         {
@@ -889,17 +889,17 @@ LABEL_27:
   return v9;
 }
 
-+ (id)filterDataFrame:(id)a3 withValueGreaterThan:(double)a4 andLessThan:(double)a5 forColumn:(id)a6
++ (id)filterDataFrame:(id)frame withValueGreaterThan:(double)than andLessThan:(double)lessThan forColumn:(id)column
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
+  frameCopy = frame;
+  columnCopy = column;
   v11 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = v9;
+  v12 = frameCopy;
   v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
@@ -915,15 +915,15 @@ LABEL_27:
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [v17 objectForKeyedSubscript:{v10, v25}];
+        v18 = [v17 objectForKeyedSubscript:{columnCopy, v25}];
         [v18 doubleValue];
-        if (v19 >= a4)
+        if (v19 >= than)
         {
-          v20 = [v17 objectForKeyedSubscript:v10];
+          v20 = [v17 objectForKeyedSubscript:columnCopy];
           [v20 doubleValue];
           v22 = v21;
 
-          if (v22 < a5)
+          if (v22 < lessThan)
           {
             [v11 addObject:v17];
           }
@@ -945,18 +945,18 @@ LABEL_27:
   return v11;
 }
 
-+ (id)filterDataFrame:(id)a3 forColumn:(id)a4 withFilterHandler:(id)a5
++ (id)filterDataFrame:(id)frame forColumn:(id)column withFilterHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  frameCopy = frame;
+  columnCopy = column;
+  handlerCopy = handler;
   v21 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v7;
+  v10 = frameCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -972,12 +972,12 @@ LABEL_27:
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 objectForKey:v8];
+        v16 = [v15 objectForKey:columnCopy];
 
         if (v16)
         {
-          v17 = [v15 objectForKeyedSubscript:v8];
-          v18 = v9[2](v9, v17);
+          v17 = [v15 objectForKeyedSubscript:columnCopy];
+          v18 = handlerCopy[2](handlerCopy, v17);
 
           if (v18)
           {
@@ -997,17 +997,17 @@ LABEL_27:
   return v21;
 }
 
-+ (id)column:(id)a3 inDataFrame:(id)a4
++ (id)column:(id)column inDataFrame:(id)frame
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  columnCopy = column;
+  frameCopy = frame;
   v7 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = frameCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -1022,7 +1022,7 @@ LABEL_27:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) objectForKey:{v5, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) objectForKey:{columnCopy, v17}];
         v14 = [v13 copy];
         [v7 addObject:v14];
       }
@@ -1038,9 +1038,9 @@ LABEL_27:
   return v7;
 }
 
-+ (id)meanForColumn:(id)a3 inDataFrame:(id)a4
++ (id)meanForColumn:(id)column inDataFrame:(id)frame
 {
-  v4 = [a1 column:a3 inDataFrame:a4];
+  v4 = [self column:column inDataFrame:frame];
   v5 = MEMORY[0x277CCABB0];
   [v4 mean];
   v6 = [v5 numberWithDouble:?];
@@ -1048,27 +1048,27 @@ LABEL_27:
   return v6;
 }
 
-+ (id)percentile:(double)a3 forColumn:(id)a4 inDataFrame:(id)a5
++ (id)percentile:(double)percentile forColumn:(id)column inDataFrame:(id)frame
 {
-  v6 = [a1 column:a4 inDataFrame:a5];
+  v6 = [self column:column inDataFrame:frame];
   v7 = MEMORY[0x277CCABB0];
-  [v6 percentile:a3];
+  [v6 percentile:percentile];
   v8 = [v7 numberWithDouble:?];
 
   return v8;
 }
 
-+ (id)percentiles:(id)a3 forColumn:(id)a4 inDataFrame:(id)a5
++ (id)percentiles:(id)percentiles forColumn:(id)column inDataFrame:(id)frame
 {
-  v5 = [a1 column:a4 inDataFrame:a5];
+  v5 = [self column:column inDataFrame:frame];
   v6 = [v5 percentiles:v5];
 
   return v6;
 }
 
-+ (id)standardDeviationForColumn:(id)a3 inDataFrame:(id)a4
++ (id)standardDeviationForColumn:(id)column inDataFrame:(id)frame
 {
-  v4 = [a1 column:a3 inDataFrame:a4];
+  v4 = [self column:column inDataFrame:frame];
   v5 = MEMORY[0x277CCABB0];
   [v4 standardDeviation];
   v6 = [v5 numberWithDouble:?];
@@ -1076,9 +1076,9 @@ LABEL_27:
   return v6;
 }
 
-+ (id)varianceForColumn:(id)a3 inDataFrame:(id)a4
++ (id)varianceForColumn:(id)column inDataFrame:(id)frame
 {
-  v4 = [a1 standardDeviationForColumn:a3 inDataFrame:a4];
+  v4 = [self standardDeviationForColumn:column inDataFrame:frame];
   [v4 doubleValue];
   v6 = v5;
 
@@ -1087,9 +1087,9 @@ LABEL_27:
   return [v7 numberWithDouble:v6 * v6];
 }
 
-+ (id)countForColumn:(id)a3 inDataFrame:(id)a4
++ (id)countForColumn:(id)column inDataFrame:(id)frame
 {
-  v4 = [a1 column:a3 inDataFrame:a4];
+  v4 = [self column:column inDataFrame:frame];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
 
   return v5;

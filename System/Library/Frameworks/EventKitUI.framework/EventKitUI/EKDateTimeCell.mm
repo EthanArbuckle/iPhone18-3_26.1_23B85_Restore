@@ -1,25 +1,25 @@
 @interface EKDateTimeCell
-- (EKDateTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_datePicker:(id)a3 didSelectComponent:(int64_t)a4;
+- (EKDateTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_datePicker:(id)picker didSelectComponent:(int64_t)component;
 - (void)_updateConstraints;
 - (void)contentSizeCategoryChanged;
-- (void)datePickerBeganEditing:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)datePickerEndedEditing:(id)a3;
+- (void)datePickerBeganEditing:(id)editing;
+- (void)datePickerChanged:(id)changed;
+- (void)datePickerEndedEditing:(id)editing;
 - (void)didMoveToWindow;
 - (void)handleTap;
-- (void)replaceControlsWithPicker:(id)a3;
-- (void)updateWithDate:(id)a3 timeZone:(id)a4 allDay:(BOOL)a5 needsStrikethrough:(BOOL)a6;
-- (void)willMoveToSuperview:(id)a3;
+- (void)replaceControlsWithPicker:(id)picker;
+- (void)updateWithDate:(id)date timeZone:(id)zone allDay:(BOOL)day needsStrikethrough:(BOOL)strikethrough;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation EKDateTimeCell
 
-- (EKDateTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKDateTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = EKDateTimeCell;
-  v4 = [(EKDateTimeCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKDateTimeCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -33,8 +33,8 @@
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v9) = 1148846080;
     [(UILabel *)v4->_titleLabel setContentCompressionResistancePriority:0 forAxis:v9];
-    v10 = [(EKDateTimeCell *)v4 contentView];
-    [v10 addSubview:v4->_titleLabel];
+    contentView = [(EKDateTimeCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
 
     v11 = objc_alloc_init(MEMORY[0x1E69DC920]);
     datePicker = v4->_datePicker;
@@ -49,8 +49,8 @@
     [(UIDatePicker *)v4->_datePicker addTarget:v4 action:sel_datePickerChanged_ forControlEvents:4096];
     [(UIDatePicker *)v4->_datePicker addTarget:v4 action:sel_datePickerBeganEditing_ forControlEvents:0x10000];
     [(UIDatePicker *)v4->_datePicker addTarget:v4 action:sel_datePickerEndedEditing_ forControlEvents:0x40000];
-    v14 = [(EKDateTimeCell *)v4 contentView];
-    [v14 addSubview:v4->_datePicker];
+    contentView2 = [(EKDateTimeCell *)v4 contentView];
+    [contentView2 addSubview:v4->_datePicker];
 
     [(EKDateTimeCell *)v4 _updateConstraints];
     v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel_handleTap];
@@ -71,9 +71,9 @@
   [(EKDateTimeCell *)self _updateConstraints];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  if (a3)
+  if (superview)
   {
     [(UIDatePicker *)self->_datePicker _compactStyleSetActiveComponent:self->_currentVisibleComponent];
   }
@@ -81,9 +81,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(EKDateTimeCell *)self window];
+  window = [(EKDateTimeCell *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(EKDateTimeCell *)self _updateConstraints];
@@ -103,25 +103,25 @@
     [(UIDatePicker *)self->_datePicker setContentHorizontalAlignment:5];
     v3 = MEMORY[0x1E696ACD8];
     titleLabel = self->_titleLabel;
-    v35 = [(EKDateTimeCell *)self contentView];
+    contentView = [(EKDateTimeCell *)self contentView];
     v34 = [v3 constraintWithItem:titleLabel attribute:5 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
     v36[0] = v34;
     v5 = MEMORY[0x1E696ACD8];
     v6 = self->_titleLabel;
-    v33 = [(EKDateTimeCell *)self contentView];
+    contentView2 = [(EKDateTimeCell *)self contentView];
     v32 = [v5 constraintWithItem:v6 attribute:10 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
     v36[1] = v32;
     v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_datePicker attribute:5 relatedBy:1 toItem:self->_titleLabel attribute:6 multiplier:1.0 constant:8.0];
     v36[2] = v7;
     v8 = MEMORY[0x1E696ACD8];
     datePicker = self->_datePicker;
-    v10 = [(EKDateTimeCell *)self contentView];
-    v11 = [v8 constraintWithItem:datePicker attribute:10 relatedBy:0 toItem:v10 attribute:10 multiplier:1.0 constant:0.0];
+    contentView3 = [(EKDateTimeCell *)self contentView];
+    v11 = [v8 constraintWithItem:datePicker attribute:10 relatedBy:0 toItem:contentView3 attribute:10 multiplier:1.0 constant:0.0];
     v36[3] = v11;
     v12 = MEMORY[0x1E696ACD8];
     v13 = self->_datePicker;
-    v14 = [(EKDateTimeCell *)self contentView];
-    v15 = [v12 constraintWithItem:v13 attribute:6 relatedBy:0 toItem:v14 attribute:18 multiplier:1.0 constant:0.0];
+    contentView4 = [(EKDateTimeCell *)self contentView];
+    v15 = [v12 constraintWithItem:v13 attribute:6 relatedBy:0 toItem:contentView4 attribute:18 multiplier:1.0 constant:0.0];
     v36[4] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:5];
     v17 = 0;
@@ -134,25 +134,25 @@
     [(UIDatePicker *)self->_datePicker setContentHorizontalAlignment:4];
     v19 = MEMORY[0x1E696ACD8];
     v20 = self->_titleLabel;
-    v35 = [(EKDateTimeCell *)self contentView];
+    contentView = [(EKDateTimeCell *)self contentView];
     v34 = [v19 constraintWithItem:v20 attribute:5 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
     v37[0] = v34;
     v21 = MEMORY[0x1E696ACD8];
     v22 = self->_titleLabel;
-    v33 = [(EKDateTimeCell *)self contentView];
+    contentView2 = [(EKDateTimeCell *)self contentView];
     v32 = [v21 constraintWithItem:v22 attribute:3 relatedBy:0 toItem:1.0 attribute:0.0 multiplier:? constant:?];
     v37[1] = v32;
     v7 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_datePicker attribute:3 relatedBy:0 toItem:self->_titleLabel attribute:4 multiplier:1.0 constant:0.0];
     v37[2] = v7;
     v23 = MEMORY[0x1E696ACD8];
     v24 = self->_datePicker;
-    v10 = [(EKDateTimeCell *)self contentView];
-    v11 = [v23 constraintWithItem:v24 attribute:5 relatedBy:0 toItem:v10 attribute:17 multiplier:1.0 constant:0.0];
+    contentView3 = [(EKDateTimeCell *)self contentView];
+    v11 = [v23 constraintWithItem:v24 attribute:5 relatedBy:0 toItem:contentView3 attribute:17 multiplier:1.0 constant:0.0];
     v37[3] = v11;
     v25 = MEMORY[0x1E696ACD8];
     v26 = self->_datePicker;
-    v14 = [(EKDateTimeCell *)self contentView];
-    v15 = [v25 constraintWithItem:v26 attribute:6 relatedBy:-1 toItem:v14 attribute:18 multiplier:1.0 constant:0.0];
+    contentView4 = [(EKDateTimeCell *)self contentView];
+    v15 = [v25 constraintWithItem:v26 attribute:6 relatedBy:-1 toItem:contentView4 attribute:18 multiplier:1.0 constant:0.0];
     v37[4] = v15;
     v27 = MEMORY[0x1E696ACD8];
     v28 = self->_datePicker;
@@ -170,11 +170,11 @@
   [MEMORY[0x1E696ACD8] activateConstraints:self->_currentConstraints];
 }
 
-- (void)updateWithDate:(id)a3 timeZone:(id)a4 allDay:(BOOL)a5 needsStrikethrough:(BOOL)a6
+- (void)updateWithDate:(id)date timeZone:(id)zone allDay:(BOOL)day needsStrikethrough:(BOOL)strikethrough
 {
-  v6 = a6;
+  strikethroughCopy = strikethrough;
   v19[1] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (day)
   {
     v9 = 1;
   }
@@ -185,33 +185,33 @@
   }
 
   datePicker = self->_datePicker;
-  v11 = a4;
-  v12 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   [(UIDatePicker *)datePicker setDatePickerMode:v9];
   v18 = *MEMORY[0x1E69DB6B8];
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:strikethroughCopy];
   v19[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   [(UIDatePicker *)self->_datePicker _setOverrideCompactTextAttributes:v14];
 
-  v15 = [v12 copy];
-  [v15 setTimeZone:v11];
-  v16 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v17 = [v16 dateFromComponents:v15];
+  v15 = [dateCopy copy];
+  [v15 setTimeZone:zoneCopy];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v17 = [currentCalendar dateFromComponents:v15];
 
   [(UIDatePicker *)self->_datePicker setDate:v17 animated:0];
-  [(UIDatePicker *)self->_datePicker _setDisplaysTimeZone:v11 != 0];
-  [(UIDatePicker *)self->_datePicker setTimeZone:v11];
+  [(UIDatePicker *)self->_datePicker _setDisplaysTimeZone:zoneCopy != 0];
+  [(UIDatePicker *)self->_datePicker setTimeZone:zoneCopy];
 }
 
-- (void)replaceControlsWithPicker:(id)a3
+- (void)replaceControlsWithPicker:(id)picker
 {
-  v4 = a3;
-  [(EKDateTimeCell *)self addSubview:v4];
-  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  pickerCopy = picker;
+  [(EKDateTimeCell *)self addSubview:pickerCopy];
+  v5 = [MEMORY[0x1E696ACD8] constraintWithItem:pickerCopy attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
   [v5 setActive:1];
 
-  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:0.0];
+  v6 = [MEMORY[0x1E696ACD8] constraintWithItem:pickerCopy attribute:6 relatedBy:0 toItem:self attribute:6 multiplier:1.0 constant:0.0];
 
   [v6 setActive:1];
   datePicker = self->_datePicker;
@@ -222,8 +222,8 @@
 - (void)handleTap
 {
   gestureRecognizer = self->_gestureRecognizer;
-  v4 = [(EKDateTimeCell *)self contentView];
-  [(UITapGestureRecognizer *)gestureRecognizer locationInView:v4];
+  contentView = [(EKDateTimeCell *)self contentView];
+  [(UITapGestureRecognizer *)gestureRecognizer locationInView:contentView];
   v6 = v5;
 
   [(UIDatePicker *)self->_datePicker frame];
@@ -254,45 +254,45 @@
   }
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
   v4 = MEMORY[0x1E695DEE8];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v5 timeZone];
-  v8 = [v5 date];
+  changedCopy = changed;
+  currentCalendar = [v4 currentCalendar];
+  timeZone = [changedCopy timeZone];
+  date = [changedCopy date];
 
-  v12 = [v6 componentsInTimeZone:v7 fromDate:v8];
+  v12 = [currentCalendar componentsInTimeZone:timeZone fromDate:date];
 
   [v12 setTimeZone:0];
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v9 dateFromComponents:v12];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [currentCalendar2 dateFromComponents:v12];
 
-  v11 = [(EKDateTimeCell *)self dateTimeDelegate];
-  [v11 dateTimeCell:self dateChanged:v10];
+  dateTimeDelegate = [(EKDateTimeCell *)self dateTimeDelegate];
+  [dateTimeDelegate dateTimeCell:self dateChanged:v10];
 }
 
-- (void)datePickerBeganEditing:(id)a3
+- (void)datePickerBeganEditing:(id)editing
 {
   self->_isEditing = 1;
-  v4 = [(EKDateTimeCell *)self dateTimeDelegate];
-  [v4 dateTimeCellBeganEditing:self];
+  dateTimeDelegate = [(EKDateTimeCell *)self dateTimeDelegate];
+  [dateTimeDelegate dateTimeCellBeganEditing:self];
 }
 
-- (void)datePickerEndedEditing:(id)a3
+- (void)datePickerEndedEditing:(id)editing
 {
   self->_isEditing = 0;
-  v4 = [(EKDateTimeCell *)self dateTimeDelegate];
-  [v4 dateTimeCellEndedEditing:self];
+  dateTimeDelegate = [(EKDateTimeCell *)self dateTimeDelegate];
+  [dateTimeDelegate dateTimeCellEndedEditing:self];
 }
 
-- (void)_datePicker:(id)a3 didSelectComponent:(int64_t)a4
+- (void)_datePicker:(id)picker didSelectComponent:(int64_t)component
 {
-  v6 = a3;
-  v7 = v6;
+  pickerCopy = picker;
+  v7 = pickerCopy;
   if (self->_currentVisibleComponent)
   {
-    v8 = a4 == 0;
+    v8 = component == 0;
   }
 
   else
@@ -307,20 +307,20 @@
 
   else
   {
-    currentVisibleComponent = a4;
+    currentVisibleComponent = component;
   }
 
   if (!self->_isEditing)
   {
-    v12 = v6;
+    v12 = pickerCopy;
     v10 = EKUICatalyst();
     v7 = v12;
     if ((v10 & 1) == 0)
     {
       if (currentVisibleComponent == 2)
       {
-        v11 = [(EKDateTimeCell *)self dateTimeDelegate];
-        [v11 dateTimeCellTimeTapped:self];
+        dateTimeDelegate = [(EKDateTimeCell *)self dateTimeDelegate];
+        [dateTimeDelegate dateTimeCellTimeTapped:self];
       }
 
       else
@@ -330,8 +330,8 @@
           goto LABEL_14;
         }
 
-        v11 = [(EKDateTimeCell *)self dateTimeDelegate];
-        [v11 dateTimeCellDateTapped:self];
+        dateTimeDelegate = [(EKDateTimeCell *)self dateTimeDelegate];
+        [dateTimeDelegate dateTimeCellDateTapped:self];
       }
 
       v7 = v12;
@@ -339,7 +339,7 @@
   }
 
 LABEL_14:
-  self->_currentVisibleComponent = a4;
+  self->_currentVisibleComponent = component;
 }
 
 @end

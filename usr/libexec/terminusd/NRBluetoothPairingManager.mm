@@ -1,23 +1,23 @@
 @interface NRBluetoothPairingManager
 - (NRBluetoothPairingManager)init;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
+- (void)peripheralManagerDidUpdateState:(id)state;
 @end
 
 @implementation NRBluetoothPairingManager
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v21 = a3;
-  v6 = a4;
+  agentCopy = agent;
+  unpairCopy = unpair;
   if (qword_100228EF8 != -1)
   {
     dispatch_once(&qword_100228EF8, &stru_1001FA5D8);
@@ -31,13 +31,13 @@
     }
 
     v19 = 694;
-    v20 = v6;
+    v20 = unpairCopy;
     v17 = "";
     v18 = "[NRBluetoothPairingManager pairingAgent:peerDidUnpair:]";
     _NRLogWithArgs();
   }
 
-  v7 = [(CBPairingAgent *)v21 delegate:v17];
+  v7 = [(CBPairingAgent *)agentCopy delegate:v17];
   if (self)
   {
     pairingAgent = self->_pairingAgent;
@@ -49,7 +49,7 @@
   }
 
   v9 = pairingAgent;
-  if (v9 == v21 && v7 && self && (v10 = self->_activePairer) != 0)
+  if (v9 == agentCopy && v7 && self && (v10 = self->_activePairer) != 0)
   {
     v11 = v7[9];
     activePairer = self->_activePairer;
@@ -58,8 +58,8 @@
     {
       if (self->_isUnpairing)
       {
-        v13 = [v6 identifier];
-        sub_10001F9C4(self, 1, v13);
+        identifier = [unpairCopy identifier];
+        sub_10001F9C4(self, 1, identifier);
 
         v14 = objc_opt_self();
         v15 = v14;
@@ -95,11 +95,11 @@
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
   if (qword_100228EF8 != -1)
   {
     dispatch_once(&qword_100228EF8, &stru_1001FA5D8);
@@ -112,15 +112,15 @@
       dispatch_once(&qword_100228EF8, &stru_1001FA5D8);
     }
 
-    v22 = v8;
-    v23 = v9;
+    v22 = pairingCopy;
+    v23 = errorCopy;
     v21 = 680;
     v19 = "";
     v20 = "[NRBluetoothPairingManager pairingAgent:peerDidFailToCompletePairing:error:]";
     _NRLogWithArgs();
   }
 
-  v10 = [(CBPairingAgent *)v24 delegate:v19];
+  v10 = [(CBPairingAgent *)agentCopy delegate:v19];
   if (self)
   {
     pairingAgent = self->_pairingAgent;
@@ -131,8 +131,8 @@
     pairingAgent = 0;
   }
 
-  v12 = pairingAgent;
-  if (v12 == v24)
+  identifier = pairingAgent;
+  if (identifier == agentCopy)
   {
     if (v10)
     {
@@ -157,8 +157,8 @@
             *(v16 + 56) = 0;
           }
 
-          v12 = [v8 identifier];
-          sub_10001F9C4(self, 0, v12);
+          identifier = [pairingCopy identifier];
+          sub_10001F9C4(self, 0, identifier);
         }
       }
     }
@@ -167,10 +167,10 @@
 LABEL_18:
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v19 = a3;
-  v6 = a4;
+  agentCopy = agent;
+  pairingCopy = pairing;
   if (qword_100228EF8 != -1)
   {
     dispatch_once(&qword_100228EF8, &stru_1001FA5D8);
@@ -184,13 +184,13 @@ LABEL_18:
     }
 
     v17 = 661;
-    v18 = v6;
+    v18 = pairingCopy;
     v15 = "";
     v16 = "[NRBluetoothPairingManager pairingAgent:peerDidCompletePairing:]";
     _NRLogWithArgs();
   }
 
-  v7 = [(CBPairingAgent *)v19 delegate:v15];
+  v7 = [(CBPairingAgent *)agentCopy delegate:v15];
   if (self)
   {
     pairingAgent = self->_pairingAgent;
@@ -202,7 +202,7 @@ LABEL_18:
   }
 
   v9 = pairingAgent;
-  if (v9 == v19 && v7 && self && (v10 = self->_activePairer) != 0)
+  if (v9 == agentCopy && v7 && self && (v10 = self->_activePairer) != 0)
   {
     v11 = v7[9];
     activePairer = self->_activePairer;
@@ -211,9 +211,9 @@ LABEL_18:
     {
       if (self->_isPairing)
       {
-        v13 = [v6 identifier];
+        identifier = [pairingCopy identifier];
         pairedPeerBluetoothUUID = self->_pairedPeerBluetoothUUID;
-        self->_pairedPeerBluetoothUUID = v13;
+        self->_pairedPeerBluetoothUUID = identifier;
 
         sub_10001F9C4(self, 1, self->_pairedPeerBluetoothUUID);
       }
@@ -243,11 +243,11 @@ LABEL_18:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   if (qword_100228EF8 != -1)
   {
     dispatch_once(&qword_100228EF8, &stru_1001FA5D8);
@@ -261,7 +261,7 @@ LABEL_18:
     }
 
     v26 = 624;
-    v27 = a5;
+    typeCopy2 = type;
     v24 = "";
     v25 = "[NRBluetoothPairingManager pairingAgent:peerDidRequestPairing:type:passkey:]";
     _NRLogWithArgs();
@@ -269,7 +269,7 @@ LABEL_18:
 
   if (self && self->_centralManager)
   {
-    if (self->_pairingAgent != v10)
+    if (self->_pairingAgent != agentCopy)
     {
       if (qword_100228EF8 != -1)
       {
@@ -289,12 +289,12 @@ LABEL_18:
       goto LABEL_40;
     }
 
-    if (a5)
+    if (type)
     {
-      if (a5 == 5)
+      if (type == 5)
       {
-        v13 = [v11 identifier];
-        v14 = sub_100168BE8(NRDLocalDevice, v13, 0);
+        identifier = [pairingCopy identifier];
+        v14 = sub_100168BE8(NRDLocalDevice, identifier, 0);
 
         if (v14)
         {
@@ -324,7 +324,7 @@ LABEL_18:
           v18 = v17;
           v29 = v18;
           v19 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-          [(CBPairingAgent *)v10 respondToPairingRequest:v11 type:5 accept:1 data:v19];
+          [(CBPairingAgent *)agentCopy respondToPairingRequest:pairingCopy type:5 accept:1 data:v19];
         }
 
         else
@@ -350,12 +350,12 @@ LABEL_39:
 
     else if (_NRIsAppleInternal())
     {
-      v20 = v10;
-      v21 = v11;
-      v22 = 0;
+      v20 = agentCopy;
+      v21 = pairingCopy;
+      typeCopy3 = 0;
       v23 = 1;
 LABEL_33:
-      [(CBPairingAgent *)v20 respondToPairingRequest:v21 type:v22 accept:v23 data:0, v24, v25, v26, v27];
+      [(CBPairingAgent *)v20 respondToPairingRequest:v21 type:typeCopy3 accept:v23 data:0, v24, v25, v26, typeCopy2];
       goto LABEL_40;
     }
 
@@ -372,15 +372,15 @@ LABEL_33:
       }
 
       v26 = 651;
-      v27 = a5;
+      typeCopy2 = type;
       v24 = "";
       v25 = "[NRBluetoothPairingManager pairingAgent:peerDidRequestPairing:type:passkey:]";
       _NRLogWithArgs();
     }
 
-    v20 = v10;
-    v21 = v11;
-    v22 = a5;
+    v20 = agentCopy;
+    v21 = pairingCopy;
+    typeCopy3 = type;
     v23 = 0;
     goto LABEL_33;
   }
@@ -388,9 +388,9 @@ LABEL_33:
 LABEL_40:
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self)
   {
     v5 = self->_peripheralManager;
@@ -398,9 +398,9 @@ LABEL_40:
     {
       peripheralManager = self->_peripheralManager;
 
-      if (peripheralManager == v4 && self->_isPairing)
+      if (peripheralManager == stateCopy && self->_isPairing)
       {
-        if ([(CBPeripheralManager *)v4 state]== 5)
+        if ([(CBPeripheralManager *)stateCopy state]== 5)
         {
           v7 = self->_pairingAgent;
           if (v7)
@@ -410,9 +410,9 @@ LABEL_40:
           else if (self->_isPeripheralRole)
           {
             v9 = self->_peripheralManager;
-            v10 = [(CBPeripheralManager *)v9 sharedPairingAgent];
+            sharedPairingAgent = [(CBPeripheralManager *)v9 sharedPairingAgent];
             pairingAgent = self->_pairingAgent;
-            self->_pairingAgent = v10;
+            self->_pairingAgent = sharedPairingAgent;
 
             [(CBPairingAgent *)self->_pairingAgent setDelegate:self];
           }
@@ -479,11 +479,11 @@ LABEL_40:
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (self)
   {
     v10 = self->_centralManager;
@@ -491,7 +491,7 @@ LABEL_40:
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v17)
+      if (centralManager == managerCopy)
       {
         if (qword_100228EF8 != -1)
         {
@@ -506,28 +506,28 @@ LABEL_40:
           }
 
           v15 = 546;
-          v16 = v8;
+          v16 = peripheralCopy;
           v13 = "";
           v14 = "[NRBluetoothPairingManager centralManager:didDisconnectPeripheral:error:]";
           _NRLogWithArgs();
         }
 
-        [(NSMutableSet *)self->_peripherals removeObject:v8, v13, v14, v15, v16];
-        v12 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-        if (([v12 isPeerPaired:v8] & 1) == 0)
+        [(NSMutableSet *)self->_peripherals removeObject:peripheralCopy, v13, v14, v15, v16];
+        sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+        if (([sharedPairingAgent isPeerPaired:peripheralCopy] & 1) == 0)
         {
-          [(CBCentralManager *)self->_centralManager connectPeripheral:v8 options:0];
+          [(CBCentralManager *)self->_centralManager connectPeripheral:peripheralCopy options:0];
         }
       }
     }
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (self)
   {
     v10 = self->_centralManager;
@@ -535,7 +535,7 @@ LABEL_40:
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v13)
+      if (centralManager == managerCopy)
       {
         if (qword_100228EF8 != -1)
         {
@@ -554,13 +554,13 @@ LABEL_40:
 
         if (self->_peripheralReconnectCounter > 4)
         {
-          v12 = [v8 identifier];
-          sub_10001F9C4(self, 0, v12);
+          identifier = [peripheralCopy identifier];
+          sub_10001F9C4(self, 0, identifier);
         }
 
         else
         {
-          [(CBCentralManager *)self->_centralManager connectPeripheral:v8 options:0];
+          [(CBCentralManager *)self->_centralManager connectPeripheral:peripheralCopy options:0];
           ++self->_peripheralReconnectCounter;
         }
       }
@@ -568,10 +568,10 @@ LABEL_40:
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   if (self)
   {
     v8 = self->_centralManager;
@@ -579,9 +579,9 @@ LABEL_40:
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v6)
+      if (centralManager == managerCopy)
       {
-        [(NSMutableSet *)self->_peripherals addObject:v7];
+        [(NSMutableSet *)self->_peripherals addObject:peripheralCopy];
         [(CBCentralManager *)self->_centralManager stopScan];
         if (qword_100228EF8 != -1)
         {
@@ -596,17 +596,17 @@ LABEL_40:
           }
 
           v20 = 492;
-          v21 = v7;
+          v21 = peripheralCopy;
           v18 = "";
           v19 = "[NRBluetoothPairingManager centralManager:didConnectPeripheral:]";
           _NRLogWithArgs();
         }
 
         v10 = self->_centralManager;
-        v11 = [(CBCentralManager *)v10 sharedPairingAgent];
+        sharedPairingAgent = [(CBCentralManager *)v10 sharedPairingAgent];
 
-        v12 = [v7 identifier];
-        v13 = sub_10001FEDC(self, v12);
+        identifier = [peripheralCopy identifier];
+        v13 = sub_10001FEDC(self, identifier);
 
         if (v13)
         {
@@ -614,16 +614,16 @@ LABEL_40:
           if (v14 == 5 || !v14 && (_NRIsAppleInternal() & 1) != 0)
           {
             v15 = v14 == 5;
-            [v11 setOOBPairingEnabled:v15 forPeer:{v7, v18, v19, v20, v21}];
-            objc_storeStrong(&self->_pairingAgent, v11);
-            [v11 setDelegate:self];
+            [sharedPairingAgent setOOBPairingEnabled:v15 forPeer:{peripheralCopy, v18, v19, v20, v21}];
+            objc_storeStrong(&self->_pairingAgent, sharedPairingAgent);
+            [sharedPairingAgent setDelegate:self];
             v23[0] = CBPairingOptionsUseMITMAuthentication;
             v16 = [NSNumber numberWithBool:v15];
             v23[1] = CBPairingOptionsDistributeIRK;
             v24[0] = v16;
             v24[1] = &__kCFBooleanTrue;
             v17 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
-            [v11 pairPeer:v7 options:v17];
+            [sharedPairingAgent pairPeer:peripheralCopy options:v17];
 
             if (qword_100228EF8 != -1)
             {
@@ -687,12 +687,12 @@ LABEL_31:
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
   if (qword_100228EF8 != -1)
   {
     dispatch_once(&qword_100228EF8, &stru_1001FA5D8);
@@ -706,30 +706,30 @@ LABEL_31:
     }
 
     v18 = 471;
-    v19 = v10;
+    v19 = peripheralCopy;
     v16 = "";
     v17 = "[NRBluetoothPairingManager centralManager:didDiscoverPeripheral:advertisementData:RSSI:]";
     _NRLogWithArgs();
   }
 
-  v13 = [v10 identifier];
-  v14 = sub_10001FEDC(self, v13);
+  identifier = [peripheralCopy identifier];
+  v14 = sub_10001FEDC(self, identifier);
 
   if (v14)
   {
     if (self)
     {
-      [(NSMutableSet *)self->_peripherals addObject:v10];
+      [(NSMutableSet *)self->_peripherals addObject:peripheralCopy];
       centralManager = self->_centralManager;
     }
 
     else
     {
-      [0 addObject:v10];
+      [0 addObject:peripheralCopy];
       centralManager = 0;
     }
 
-    [(CBCentralManager *)centralManager connectPeripheral:v10 options:0];
+    [(CBCentralManager *)centralManager connectPeripheral:peripheralCopy options:0];
   }
 
   else
@@ -751,9 +751,9 @@ LABEL_31:
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self)
   {
     v5 = self->_centralManager;
@@ -761,10 +761,10 @@ LABEL_31:
     {
       centralManager = self->_centralManager;
 
-      if (centralManager == v4 && (self->_isPairing || self->_isUnpairing))
+      if (centralManager == stateCopy && (self->_isPairing || self->_isUnpairing))
       {
-        v7 = [(CBCentralManager *)v4 state];
-        if (v7 == 5)
+        state = [(CBCentralManager *)stateCopy state];
+        if (state == 5)
         {
           if (self->_isUnpairing)
           {
@@ -803,7 +803,7 @@ LABEL_31:
           }
         }
 
-        else if (v7 <= 3)
+        else if (state <= 3)
         {
           sub_100020CD4(self);
         }

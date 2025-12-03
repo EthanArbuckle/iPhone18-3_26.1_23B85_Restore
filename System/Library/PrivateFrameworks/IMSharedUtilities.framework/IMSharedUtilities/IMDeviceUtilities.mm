@@ -18,7 +18,7 @@
     LOBYTE(v3) = 1;
   }
 
-  else if ([a1 _completedSystemAppMigration])
+  else if ([self _completedSystemAppMigration])
   {
     LOBYTE(v3) = 0;
   }
@@ -49,8 +49,8 @@
 
 + (BOOL)deviceIsLockedDown
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"LDMGlobalEnabled" inDomain:*MEMORY[0x1E696A400]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"LDMGlobalEnabled" inDomain:*MEMORY[0x1E696A400]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

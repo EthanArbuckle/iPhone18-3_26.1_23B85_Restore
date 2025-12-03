@@ -4,9 +4,9 @@
 - (id)currentBootSessionUUID;
 - (void)dealloc;
 - (void)migrateDefaultsPlist;
-- (void)notifyPPMOfMitigationState:(unint64_t)a3;
-- (void)takeActionOnUPO:(int)a3 forWRa:(int)a4;
-- (void)updateMitigationStateAndNotify:(unint64_t)a3;
+- (void)notifyPPMOfMitigationState:(unint64_t)state;
+- (void)takeActionOnUPO:(int)o forWRa:(int)ra;
+- (void)updateMitigationStateAndNotify:(unint64_t)notify;
 - (void)xpcNotifyForMitigationsUI;
 @end
 
@@ -40,13 +40,13 @@
 - (void)migrateDefaultsPlist
 {
   v3 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.thermalmonitor.agingcontroller"];
-  v4 = [v3 dictionaryRepresentation];
-  v5 = [v4 allKeys];
+  dictionaryRepresentation = [v3 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -58,15 +58,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        -[NSUserDefaults setObject:forKey:](self->_defaults, "setObject:forKey:", [v4 objectForKey:*(*(&v10 + 1) + 8 * v9)], *(*(&v10 + 1) + 8 * v9));
+        -[NSUserDefaults setObject:forKey:](self->_defaults, "setObject:forKey:", [dictionaryRepresentation objectForKey:*(*(&v10 + 1) + 8 * v9)], *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -96,10 +96,10 @@
   [(AgingController *)&v5 dealloc];
 }
 
-- (void)takeActionOnUPO:(int)a3 forWRa:(int)a4
+- (void)takeActionOnUPO:(int)o forWRa:(int)ra
 {
   v7 = [(NSUserDefaults *)self->_defaults stringForKey:@"BootUUID"];
-  v8 = [(AgingController *)self currentBootSessionUUID];
+  currentBootSessionUUID = [(AgingController *)self currentBootSessionUUID];
   v9 = [(NSUserDefaults *)self->_defaults integerForKey:@"UPOCount"];
   v10 = [objc_opt_class() log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -107,15 +107,15 @@
     v19 = 138413058;
     v20 = v7;
     v21 = 2112;
-    v22 = v8;
+    v22 = currentBootSessionUUID;
     v23 = 1024;
     v24 = v9;
     v25 = 1024;
-    v26 = a3;
+    oCopy = o;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "savedBootUUID %@ currentBootUUID %@ savedUPOCount %d currentUPOCount %d\n", &v19, 0x22u);
   }
 
-  if (a4 <= 0)
+  if (ra <= 0)
   {
     v12 = [objc_opt_class() log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -126,7 +126,7 @@
 
   else
   {
-    if ([v8 isEqualToString:v7])
+    if ([currentBootSessionUUID isEqualToString:v7])
     {
       v11 = [objc_opt_class() log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -137,18 +137,18 @@
       return;
     }
 
-    [(NSUserDefaults *)self->_defaults setObject:v8 forKey:@"BootUUID"];
-    if (v9 < a3)
+    [(NSUserDefaults *)self->_defaults setObject:currentBootSessionUUID forKey:@"BootUUID"];
+    if (v9 < o)
     {
-      [(NSUserDefaults *)self->_defaults setInteger:a3 forKey:@"UPOCount"];
+      [(NSUserDefaults *)self->_defaults setInteger:o forKey:@"UPOCount"];
       p_UPOAgingMitigationsThreshold = &self->_UPOAgingMitigationsThreshold;
-      v14 = self;
-      if (self->_UPOAgingMitigationsThreshold > a4)
+      selfCopy2 = self;
+      if (self->_UPOAgingMitigationsThreshold > ra)
       {
         v15 = [objc_opt_class() log];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          sub_100052CF8(p_UPOAgingMitigationsThreshold, a4, v15);
+          sub_100052CF8(p_UPOAgingMitigationsThreshold, ra, v15);
         }
 
         return;
@@ -156,21 +156,21 @@
 
       v18 = 1;
 LABEL_20:
-      [(AgingController *)v14 updateMitigationStateAndNotify:v18];
+      [(AgingController *)selfCopy2 updateMitigationStateAndNotify:v18];
       return;
     }
 
     v16 = [objc_opt_class() log];
     v17 = v16;
-    if (v9 != a3)
+    if (v9 != o)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        sub_100052BFC(v9, a3, v17);
+        sub_100052BFC(v9, o, v17);
       }
 
-      [(NSUserDefaults *)self->_defaults setInteger:a3 forKey:@"UPOCount"];
-      v14 = self;
+      [(NSUserDefaults *)self->_defaults setInteger:o forKey:@"UPOCount"];
+      selfCopy2 = self;
       v18 = 2;
       goto LABEL_20;
     }
@@ -182,12 +182,12 @@ LABEL_20:
   }
 }
 
-- (void)updateMitigationStateAndNotify:(unint64_t)a3
+- (void)updateMitigationStateAndNotify:(unint64_t)notify
 {
-  v5 = [(AgingController *)self mitigationState];
+  mitigationState = [(AgingController *)self mitigationState];
   v6 = [objc_opt_class() log];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5 == a3)
+  if (mitigationState == notify)
   {
     if (v7)
     {
@@ -202,7 +202,7 @@ LABEL_20:
       sub_100052E78(self);
     }
 
-    [(AgingController *)self setMitigationState:a3];
+    [(AgingController *)self setMitigationState:notify];
     [(NSUserDefaults *)self->_defaults setInteger:[(AgingController *)self mitigationState] forKey:@"MitigationState"];
     notify_set_state(self->_mitigationStateToken, [(AgingController *)self mitigationState]);
     notify_post([@"com.apple.thermalmonitor.ageAwareMitigationState" UTF8String]);
@@ -212,7 +212,7 @@ LABEL_20:
       v10 = 136315394;
       v11 = "[AgingController updateMitigationStateAndNotify:]";
       v12 = 1024;
-      v13 = [(AgingController *)self mitigationState];
+      mitigationState2 = [(AgingController *)self mitigationState];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Notification posted for state %d\n", &v10, 0x12u);
     }
 
@@ -230,7 +230,7 @@ LABEL_20:
   }
 }
 
-- (void)notifyPPMOfMitigationState:(unint64_t)a3
+- (void)notifyPPMOfMitigationState:(unint64_t)state
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -244,7 +244,7 @@ LABEL_20:
 
   if (self->_ppmService)
   {
-    valuePtr = a3 == 1;
+    valuePtr = state == 1;
     v5 = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &valuePtr);
     if (v5)
     {

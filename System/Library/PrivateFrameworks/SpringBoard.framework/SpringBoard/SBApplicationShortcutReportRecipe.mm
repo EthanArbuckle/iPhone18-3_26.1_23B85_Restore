@@ -17,10 +17,10 @@
   }
 
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 iconDefaults];
-  v7 = [v6 suppressAppShortcutTruncation];
+  iconDefaults = [v5 iconDefaults];
+  suppressAppShortcutTruncation = [iconDefaults suppressAppShortcutTruncation];
 
-  if (v7)
+  if (suppressAppShortcutTruncation)
   {
     v8 = SBLogAppShortcuts();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -52,9 +52,9 @@
 
         v14 = *(*(&v29 + 1) + 8 * i);
         v15 = [v2 applicationWithBundleIdentifier:{v14, v27}];
-        v16 = [v15 info];
+        info = [v15 info];
 
-        v17 = [v3 applicationShortcutItemsForBundleIdentifier:v14 withVersion:{objc_msgSend(v16, "dynamicApplicationShortcutItemsVersion")}];
+        v17 = [v3 applicationShortcutItemsForBundleIdentifier:v14 withVersion:{objc_msgSend(info, "dynamicApplicationShortcutItemsVersion")}];
         v18 = [v17 mutableCopy];
         v19 = v18;
         if (v18)

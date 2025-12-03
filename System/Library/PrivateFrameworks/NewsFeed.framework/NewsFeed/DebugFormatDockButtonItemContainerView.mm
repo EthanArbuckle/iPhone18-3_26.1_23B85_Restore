@@ -1,7 +1,7 @@
 @interface DebugFormatDockButtonItemContainerView
 - (CGSize)intrinsicContentSize;
-- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -31,16 +31,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D5EE6FD8();
 }
 
-- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed38DebugFormatDockButtonItemContainerView_items) = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed38DebugFormatDockButtonItemContainerView_buttonSize) = 0x4046000000000000;
@@ -49,15 +49,15 @@
   return [(DebugFormatDockButtonItemContainerView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithCoder:(id)a3
+- (_TtC8NewsFeed38DebugFormatDockButtonItemContainerView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed38DebugFormatDockButtonItemContainerView_items) = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed38DebugFormatDockButtonItemContainerView_buttonSize) = 0x4046000000000000;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DebugFormatDockButtonItemContainerView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DebugFormatDockButtonItemContainerView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

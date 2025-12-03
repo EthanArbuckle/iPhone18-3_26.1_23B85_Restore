@@ -1,8 +1,8 @@
 @interface WKIdentityDocumentPresentmentMobileDocumentRequest
 - (NSArray)presentmentRequests;
 - (WKIdentityDocumentPresentmentMobileDocumentRequest)init;
-- (WKIdentityDocumentPresentmentMobileDocumentRequest)initWithPresentmentRequests:(id)a3 authenticationCertificates:(id)a4;
-- (void)setPresentmentRequests:(id)a3;
+- (WKIdentityDocumentPresentmentMobileDocumentRequest)initWithPresentmentRequests:(id)requests authenticationCertificates:(id)certificates;
+- (void)setPresentmentRequests:(id)requests;
 @end
 
 @implementation WKIdentityDocumentPresentmentMobileDocumentRequest
@@ -19,7 +19,7 @@
   return v6;
 }
 
-- (void)setPresentmentRequests:(id)a3
+- (void)setPresentmentRequests:(id)requests
 {
   type metadata accessor for WKIdentityDocumentPresentmentMobileDocumentPresentmentRequest(self);
   v4 = sub_23B59D890();
@@ -29,7 +29,7 @@
   *(self + v5) = v4;
 }
 
-- (WKIdentityDocumentPresentmentMobileDocumentRequest)initWithPresentmentRequests:(id)a3 authenticationCertificates:(id)a4
+- (WKIdentityDocumentPresentmentMobileDocumentRequest)initWithPresentmentRequests:(id)requests authenticationCertificates:(id)certificates
 {
   type metadata accessor for WKIdentityDocumentPresentmentMobileDocumentPresentmentRequest(self);
   v5 = sub_23B59D890();

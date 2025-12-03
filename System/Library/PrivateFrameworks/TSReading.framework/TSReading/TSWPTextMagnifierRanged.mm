@@ -8,27 +8,27 @@
 - (NSString)maskImageName;
 - (NSString)overlayImageName;
 - (NSString)underlayImageName;
-- (TSWPTextMagnifierRanged)initWithFrame:(CGRect)a3;
+- (TSWPTextMagnifierRanged)initWithFrame:(CGRect)frame;
 - (double)currentOffset;
-- (double)horizontalMovementAtTime:(double)a3;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
+- (double)horizontalMovementAtTime:(double)time;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
 - (void)dealloc;
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context;
+- (void)setFrame:(CGRect)frame;
+- (void)setMagnificationPoint:(CGPoint)point;
 - (void)setNeedsDisplay;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrame;
 @end
 
 @implementation TSWPTextMagnifierRanged
 
-- (TSWPTextMagnifierRanged)initWithFrame:(CGRect)a3
+- (TSWPTextMagnifierRanged)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = TSWPTextMagnifierRanged;
   v7 = [(TSWPTextMagnifierRanged *)&v10 initWithFrame:?];
@@ -36,9 +36,9 @@
   {
     -[TSWPTextMagnifierRanged setBackgroundColor:](v7, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
     v7->_weightedPoint = objc_alloc_init(TSWPTextMagnifierTimeWeightedPoint);
-    v8 = [[TSWPTextMagnifierRenderer alloc] initWithFrame:x, y, width, height];
-    v7->_magnifierRenderer = v8;
-    [(TSWPTextMagnifierRenderer *)v8 setDelegate:v7];
+    height = [[TSWPTextMagnifierRenderer alloc] initWithFrame:x, y, width, height];
+    v7->_magnifierRenderer = height;
+    [(TSWPTextMagnifierRenderer *)height setDelegate:v7];
     [(TSWPTextMagnifierRanged *)v7 addSubview:v7->_magnifierRenderer];
   }
 
@@ -55,7 +55,7 @@
   [(TSWPTextMagnifierRanged *)&v3 dealloc];
 }
 
-- (double)horizontalMovementAtTime:(double)a3
+- (double)horizontalMovementAtTime:(double)time
 {
   [(TSWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint distanceCoveredInInterval:3.40282347e38];
   v5 = v4;
@@ -72,17 +72,17 @@
 
 - (double)currentOffset
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged currentOffset]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 97, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 97, @"Abstract method"}];
   return 0.0;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = TSWPTextMagnifierRanged;
-  [(TSWPTextMagnifierRanged *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSWPTextMagnifierRanged *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   magnifierRenderer = self->_magnifierRenderer;
   [(TSWPTextMagnifierRanged *)self bounds];
   [(TSWPTextMagnifierRenderer *)magnifierRenderer setFrame:?];
@@ -98,29 +98,29 @@
 
 - (void)updateFrame
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged updateFrame]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"];
 
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:115 description:@"Abstract method"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:115 description:@"Abstract method"];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v6 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged beginMagnifyingTarget:magnificationPoint:offset:animated:]"];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"];
 
-  [v6 handleFailureInFunction:v7 file:v8 lineNumber:122 description:@"Abstract method"];
+  [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:122 description:@"Abstract method"];
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged stopMagnifying:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:127 description:@"Abstract method"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:127 description:@"Abstract method"];
 }
 
 - (CGPoint)terminalPoint
@@ -147,10 +147,10 @@
   return result;
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TSWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint addPoint:?];
   if (x != self->_magnificationPoint.x || y != self->_magnificationPoint.y)
   {
@@ -165,43 +165,43 @@
 
 - (NSString)underlayImageName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged underlayImageName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 180, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 180, @"Abstract method"}];
   return &stru_287D36338;
 }
 
 - (NSString)overlayImageName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged overlayImageName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 186, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 186, @"Abstract method"}];
   return &stru_287D36338;
 }
 
 - (NSString)maskImageName
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged maskImageName]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 192, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 192, @"Abstract method"}];
   return &stru_287D36338;
 }
 
 - (BOOL)shouldHideCanvasLayer
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged shouldHideCanvasLayer]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 198, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"), 198, @"Abstract method"}];
   return 1;
 }
 
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextMagnifierRanged drawMagnifierClippedCanvasLayer:inContext:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextMagnifierRanged.mm"];
 
-  [v4 handleFailureInFunction:v5 file:v6 lineNumber:204 description:@"Abstract method"];
+  [currentHandler handleFailureInFunction:v5 file:v6 lineNumber:204 description:@"Abstract method"];
 }
 
 - (CGPoint)animationPoint

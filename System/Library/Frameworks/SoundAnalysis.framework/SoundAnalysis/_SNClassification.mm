@@ -1,8 +1,8 @@
 @interface _SNClassification
 - (NSString)identifier;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation _SNClassification
@@ -15,27 +15,27 @@
   return v2;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_1C9A924A8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   _SNClassification.identifier.setter(v4, v6);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _SNClassification.hash.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _SNClassification.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _SNClassification.encode(with:)(coderCopy);
 }
 
 @end

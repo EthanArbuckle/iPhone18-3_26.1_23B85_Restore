@@ -1,8 +1,8 @@
 @interface EFSQLDisqualifiedColumnExpression
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)cachedSelf;
 - (unint64_t)hash;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLDisqualifiedColumnExpression
@@ -29,24 +29,24 @@ void __60__EFSQLDisqualifiedColumnExpression_EFCacheable__cachedSelf__block_invo
   cachedSelf_sUniqueObjectIDs_132 = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (([(EFSQLDisqualifiedColumnExpression *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EFSQLDisqualifiedColumnExpression *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EFSQLColumnExpression *)self name];
-    v7 = [(EFSQLColumnExpression *)v5 name];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    name = [(EFSQLColumnExpression *)self name];
+    name2 = [(EFSQLColumnExpression *)v5 name];
+    if ([name isEqualToString:name2])
     {
-      v8 = [(EFSQLColumnExpression *)self tableName];
-      v9 = [(EFSQLColumnExpression *)v5 tableName];
-      v10 = EFObjectsAreEqual(v8, v9);
+      tableName = [(EFSQLColumnExpression *)self tableName];
+      tableName2 = [(EFSQLColumnExpression *)v5 tableName];
+      v10 = EFObjectsAreEqual(tableName, tableName2);
     }
 
     else
@@ -70,13 +70,13 @@ void __60__EFSQLDisqualifiedColumnExpression_EFCacheable__cachedSelf__block_invo
   return 33 * [(EFSQLColumnExpression *)&v3 hash]+ 1;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
-  [v4 appendString:@"+"];
+  intoCopy = into;
+  [intoCopy appendString:@"+"];
   v5.receiver = self;
   v5.super_class = EFSQLDisqualifiedColumnExpression;
-  [(EFSQLColumnExpression *)&v5 ef_renderSQLExpressionInto:v4];
+  [(EFSQLColumnExpression *)&v5 ef_renderSQLExpressionInto:intoCopy];
 }
 
 @end

@@ -3,46 +3,46 @@
 - (CGFloat)strokeEnd;
 - (CGFloat)strokeStart;
 - (MKCircleRenderer)initWithCircle:(MKCircle *)circle;
-- (MKCircleRenderer)initWithCoder:(id)a3;
+- (MKCircleRenderer)initWithCoder:(id)coder;
 - (id)_vectorData;
-- (id)vectorDataForOverlay:(id)a3;
-- (void)_decodePropertiesWithCoder:(id)a3;
+- (id)vectorDataForOverlay:(id)overlay;
+- (void)_decodePropertiesWithCoder:(id)coder;
 - (void)_performInitialConfiguration;
 - (void)_updateRenderColors;
 - (void)createPath;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setFillColor:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlpha:(double)alpha;
+- (void)setFillColor:(id)color;
+- (void)setLineWidth:(double)width;
+- (void)setStrokeColor:(id)color;
 - (void)setStrokeEnd:(CGFloat)strokeEnd;
 - (void)setStrokeStart:(CGFloat)strokeStart;
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4;
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context;
 @end
 
 @implementation MKCircleRenderer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MKOverlayRenderer *)self overlay];
-  [v4 encodeObject:v5 forKey:@"MKCircleRendererCircle"];
+  coderCopy = coder;
+  overlay = [(MKOverlayRenderer *)self overlay];
+  [coderCopy encodeObject:overlay forKey:@"MKCircleRendererCircle"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_strokeStart];
-  [v4 encodeObject:v6 forKey:@"MKCircleRendererStrokeStart"];
+  [coderCopy encodeObject:v6 forKey:@"MKCircleRendererStrokeStart"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_strokeEnd];
-  [v4 encodeObject:v7 forKey:@"MKCircleRendererStrokeEnd"];
+  [coderCopy encodeObject:v7 forKey:@"MKCircleRendererStrokeEnd"];
 
   v8.receiver = self;
   v8.super_class = MKCircleRenderer;
-  [(MKOverlayPathRenderer *)&v8 _encodePropertiesWithCoder:v4];
+  [(MKOverlayPathRenderer *)&v8 _encodePropertiesWithCoder:coderCopy];
 }
 
-- (void)_decodePropertiesWithCoder:(id)a3
+- (void)_decodePropertiesWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRendererStrokeStart"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRendererStrokeStart"];
   v6 = v5;
   if (v5)
   {
@@ -50,7 +50,7 @@
     self->_strokeStart = v7;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRendererStrokeEnd"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRendererStrokeEnd"];
   v9 = v8;
   if (v8)
   {
@@ -60,18 +60,18 @@
 
   v11.receiver = self;
   v11.super_class = MKCircleRenderer;
-  [(MKOverlayPathRenderer *)&v11 _decodePropertiesWithCoder:v4];
+  [(MKOverlayPathRenderer *)&v11 _decodePropertiesWithCoder:coderCopy];
 }
 
-- (MKCircleRenderer)initWithCoder:(id)a3
+- (MKCircleRenderer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRendererCircle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKCircleRendererCircle"];
   v6 = [(MKCircleRenderer *)self initWithCircle:v5];
   v7 = v6;
   if (v6)
   {
-    [(MKCircleRenderer *)v6 _decodePropertiesWithCoder:v4];
+    [(MKCircleRenderer *)v6 _decodePropertiesWithCoder:coderCopy];
   }
 
   return v7;
@@ -81,13 +81,13 @@
 {
   if (self->_vectorData)
   {
-    v3 = [(MKOverlayRenderer *)self _mapView];
+    _mapView = [(MKOverlayRenderer *)self _mapView];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __39__MKCircleRenderer__updateRenderColors__block_invoke;
     v5[3] = &unk_1E76CDB38;
     v5[4] = self;
-    [v3 _withEffectiveTraitCollection:v5];
+    [_mapView _withEffectiveTraitCollection:v5];
   }
 
   v4.receiver = self;
@@ -105,19 +105,19 @@ void __39__MKCircleRenderer__updateRenderColors__block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 208) setStrokeColor:{objc_msgSend(v4, "CGColor")}];
 }
 
-- (id)vectorDataForOverlay:(id)a3
+- (id)vectorDataForOverlay:(id)overlay
 {
   if ([(MKCircleRenderer *)self _canProvideVectorGeometry])
   {
-    v4 = [(MKCircleRenderer *)self _vectorData];
+    _vectorData = [(MKCircleRenderer *)self _vectorData];
   }
 
   else
   {
-    v4 = 0;
+    _vectorData = 0;
   }
 
-  return v4;
+  return _vectorData;
 }
 
 - (id)_vectorData
@@ -125,20 +125,20 @@ void __39__MKCircleRenderer__updateRenderColors__block_invoke(uint64_t a1)
   if (!self->_vectorData && [(MKCircleRenderer *)self _canProvideVectorGeometry])
   {
     v3 = objc_alloc(MEMORY[0x1E69DF4B8]);
-    v4 = [(MKOverlayRenderer *)self overlay];
-    [v4 boundingMapRect];
+    overlay = [(MKOverlayRenderer *)self overlay];
+    [overlay boundingMapRect];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
     [(MKOverlayPathRenderer *)self lineWidth];
     v14 = v13;
-    v15 = [(MKOverlayPathRenderer *)self fillColor];
-    v16 = [v15 CGColor];
-    v17 = [(MKOverlayPathRenderer *)self strokeColor];
-    v18 = [v17 CGColor];
+    fillColor = [(MKOverlayPathRenderer *)self fillColor];
+    cGColor = [fillColor CGColor];
+    strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+    cGColor2 = [strokeColor CGColor];
     [(MKOverlayRenderer *)self alpha];
-    v20 = [v3 initWithMapRect:v16 lineWidth:v18 fillColor:v6 strokeColor:v8 alpha:{v10, v12, v14, v19}];
+    v20 = [v3 initWithMapRect:cGColor lineWidth:cGColor2 fillColor:v6 strokeColor:v8 alpha:{v10, v12, v14, v19}];
     vectorData = self->_vectorData;
     self->_vectorData = v20;
   }
@@ -160,37 +160,37 @@ void __39__MKCircleRenderer__updateRenderColors__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v3 = [(MKOverlayPathRenderer *)self lineDashPattern];
-  v4 = [v3 count];
+  lineDashPattern = [(MKOverlayPathRenderer *)self lineDashPattern];
+  v4 = [lineDashPattern count];
 
   if (v4)
   {
     return 0;
   }
 
-  v5 = [(MKOverlayPathRenderer *)self strokeColor];
-  if (CGColorGetPattern([v5 CGColor]))
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+  if (CGColorGetPattern([strokeColor CGColor]))
   {
 
     return 0;
   }
 
-  v6 = [(MKOverlayPathRenderer *)self fillColor];
-  Pattern = CGColorGetPattern([v6 CGColor]);
+  fillColor = [(MKOverlayPathRenderer *)self fillColor];
+  Pattern = CGColorGetPattern([fillColor CGColor]);
 
   if (Pattern)
   {
     return 0;
   }
 
-  v8 = [(MKOverlayRenderer *)self overlay];
-  [v8 boundingMapRect];
+  overlay = [(MKOverlayRenderer *)self overlay];
+  [overlay boundingMapRect];
   v10 = v9;
 
   return v10 <= 268435456.0 && self->_strokeStart <= 0.0 && self->_strokeEnd >= 1.0;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v7.receiver = self;
   v7.super_class = MKCircleRenderer;
@@ -202,38 +202,38 @@ void __39__MKCircleRenderer__updateRenderColors__block_invoke(uint64_t a1)
   v6[3] = &unk_1E76CD230;
   v6[4] = self;
   v6[5] = v5;
-  *&v6[6] = a3;
+  *&v6[6] = alpha;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"alpha" withStepHandler:v6];
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MKOverlayPathRenderer *)self strokeColor];
-  v6 = v5;
-  if (v5)
+  colorCopy = color;
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
+  v6 = strokeColor;
+  if (strokeColor)
   {
-    v7 = v5;
+    clearColor = strokeColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v8 = v7;
+  v8 = clearColor;
 
   v15.receiver = self;
   v15.super_class = MKCircleRenderer;
-  [(MKOverlayPathRenderer *)&v15 setStrokeColor:v4];
+  [(MKOverlayPathRenderer *)&v15 setStrokeColor:colorCopy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__MKCircleRenderer_setStrokeColor___block_invoke;
   v11[3] = &unk_1E76CCF90;
   v12 = v8;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
+  v13 = colorCopy;
+  selfCopy = self;
+  v9 = colorCopy;
   v10 = v8;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"strokeColor" withStepHandler:v11];
 }
@@ -253,34 +253,34 @@ void __35__MKCircleRenderer_setStrokeColor___block_invoke(uint64_t a1, float a2)
   [*(*(a1 + 48) + 208) setStrokeColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v5 = [(MKOverlayPathRenderer *)self fillColor];
-  v6 = v5;
-  if (v5)
+  colorCopy = color;
+  fillColor = [(MKOverlayPathRenderer *)self fillColor];
+  v6 = fillColor;
+  if (fillColor)
   {
-    v7 = v5;
+    clearColor = fillColor;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v8 = v7;
+  v8 = clearColor;
 
   v15.receiver = self;
   v15.super_class = MKCircleRenderer;
-  [(MKOverlayPathRenderer *)&v15 setFillColor:v4];
+  [(MKOverlayPathRenderer *)&v15 setFillColor:colorCopy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __33__MKCircleRenderer_setFillColor___block_invoke;
   v11[3] = &unk_1E76CCF90;
   v12 = v8;
-  v13 = v4;
-  v14 = self;
-  v9 = v4;
+  v13 = colorCopy;
+  selfCopy = self;
+  v9 = colorCopy;
   v10 = v8;
   [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"fillColor" withStepHandler:v11];
 }
@@ -300,15 +300,15 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   [*(*(a1 + 48) + 208) setFillColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   v7.receiver = self;
   v7.super_class = MKCircleRenderer;
   [(MKOverlayPathRenderer *)&v7 setLineWidth:?];
   [(VKVectorOverlayCircle *)self->_vectorData lineWidth];
-  if (fabs(a3) < 0.000001 || fabs(v5) < 0.000001)
+  if (fabs(width) < 0.000001 || fabs(v5) < 0.000001)
   {
-    [(VKVectorOverlayCircle *)self->_vectorData setLineWidth:a3];
+    [(VKVectorOverlayCircle *)self->_vectorData setLineWidth:width];
   }
 
   else
@@ -319,7 +319,7 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
     v6[3] = &unk_1E76CD230;
     v6[4] = self;
     *&v6[5] = v5;
-    *&v6[6] = a3;
+    *&v6[6] = width;
     [(MKOverlayPathRenderer *)self _animateVectorGeometryIfNecessaryForKey:@"lineWidth" withStepHandler:v6];
   }
 }
@@ -332,8 +332,8 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   {
     [(MKCircleRenderer *)obj willChangeValueForKey:@"strokeEnd"];
     obj->_strokeEnd = strokeEnd;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKCircleRenderer *)obj didChangeValueForKey:@"strokeEnd"];
   }
@@ -349,8 +349,8 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   {
     [(MKCircleRenderer *)obj willChangeValueForKey:@"strokeStart"];
     obj->_strokeStart = strokeStart;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKCircleRenderer *)obj didChangeValueForKey:@"strokeStart"];
   }
@@ -360,20 +360,20 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
 
 - (CGFloat)strokeEnd
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeEnd = v2->_strokeEnd;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeEnd = selfCopy->_strokeEnd;
+  objc_sync_exit(selfCopy);
 
   return strokeEnd;
 }
 
 - (CGFloat)strokeStart
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  strokeStart = v2->_strokeStart;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  strokeStart = selfCopy->_strokeStart;
+  objc_sync_exit(selfCopy);
 
   return strokeStart;
 }
@@ -387,7 +387,7 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   self->_strokeEnd = 1.0;
 }
 
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context
 {
   CGContextGetLineWidth();
   v8 = v7;
@@ -399,14 +399,14 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   {
     v32.receiver = self;
     v32.super_class = MKCircleRenderer;
-    [(MKOverlayPathRenderer *)&v32 strokePath:a3 inContext:a4];
+    [(MKOverlayPathRenderer *)&v32 strokePath:path inContext:context];
   }
 
   else
   {
     Mutable = CGPathCreateMutable();
-    v16 = [(MKOverlayRenderer *)self overlay];
-    [v16 coordinate];
+    overlay = [(MKOverlayRenderer *)self overlay];
+    [overlay coordinate];
     v18 = v17;
     v20 = v19;
 
@@ -415,18 +415,18 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
     v24 = v23;
     GEOMapPointsPerMeterAtLatitude();
     v26 = v25;
-    v27 = [(MKOverlayRenderer *)self overlay];
-    [v27 radius];
+    overlay2 = [(MKOverlayRenderer *)self overlay];
+    [overlay2 radius];
     v29 = v26 * v28;
 
     CGPathAddArc(Mutable, 0, v22, v24, v29, (v10 + v10) * 3.14159265 + -1.57079633, (v12 + v12) * 3.14159265 + -1.57079633, 0);
     CopyByStrokingPath = CGPathCreateCopyByStrokingPath(Mutable, 0, v8, kCGLineCapButt, kCGLineJoinRound, 0.0);
     CGPathRelease(Mutable);
-    CGContextAddPath(a4, CopyByStrokingPath);
-    CGContextClip(a4);
+    CGContextAddPath(context, CopyByStrokingPath);
+    CGContextClip(context);
     v31.receiver = self;
     v31.super_class = MKCircleRenderer;
-    [(MKOverlayPathRenderer *)&v31 strokePath:a3 inContext:a4];
+    [(MKOverlayPathRenderer *)&v31 strokePath:path inContext:context];
     CGPathRelease(CopyByStrokingPath);
   }
 }
@@ -434,8 +434,8 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
 - (void)createPath
 {
   Mutable = CGPathCreateMutable();
-  v4 = [(MKOverlayRenderer *)self overlay];
-  [v4 coordinate];
+  overlay = [(MKOverlayRenderer *)self overlay];
+  [overlay coordinate];
   v6 = v5;
   v8 = v7;
 
@@ -444,8 +444,8 @@ void __33__MKCircleRenderer_setFillColor___block_invoke(uint64_t a1, float a2)
   v12 = v11;
   GEOMapPointsPerMeterAtLatitude();
   v14 = v13;
-  v15 = [(MKOverlayRenderer *)self overlay];
-  [v15 radius];
+  overlay2 = [(MKOverlayRenderer *)self overlay];
+  [overlay2 radius];
   v17 = v14 * v16;
 
   CGPathAddArc(Mutable, 0, v10, v12, v17, 0.0, 6.28318531, 1);

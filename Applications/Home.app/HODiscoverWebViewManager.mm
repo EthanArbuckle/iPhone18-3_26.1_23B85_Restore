@@ -1,24 +1,24 @@
 @interface HODiscoverWebViewManager
 + (id)sharedInstance;
-- (BOOL)doesURLContainPath:(id)a3 urlResponseString:(id)a4;
+- (BOOL)doesURLContainPath:(id)path urlResponseString:(id)string;
 - (HODiscoverWebViewManager)init;
 - (HODiscoverWebViewManagerWebViewNavigationDelegate)delegate;
-- (id)createWebViewForURL:(id)a3 dependentWebViewURLString:(id)a4;
+- (id)createWebViewForURL:(id)l dependentWebViewURLString:(id)string;
 - (id)getDeviceName;
-- (id)getURLRequestForURL:(id)a3;
-- (id)getURLStringFromLocaleDictionary:(id)a3;
+- (id)getURLRequestForURL:(id)l;
+- (id)getURLStringFromLocaleDictionary:(id)dictionary;
 - (id)getUserAgent;
-- (id)getWebViewURLKeyFromCache:(id)a3;
-- (id)webViewForURLString:(id)a3 dependentWebViewURLString:(id)a4;
-- (unint64_t)getWebViewNavigationStateForWebView:(id)a3;
-- (void)failedWebViewNavigation:(id)a3 navigation:(id)a4 withError:(id)a5;
-- (void)populateWebViewCache:(id)a3;
-- (void)preload:(id)a3;
+- (id)getWebViewURLKeyFromCache:(id)cache;
+- (id)webViewForURLString:(id)string dependentWebViewURLString:(id)lString;
+- (unint64_t)getWebViewNavigationStateForWebView:(id)view;
+- (void)failedWebViewNavigation:(id)navigation navigation:(id)a4 withError:(id)error;
+- (void)populateWebViewCache:(id)cache;
+- (void)preload:(id)preload;
 - (void)reloadWebViews;
-- (void)updateWebViewRefreshIntervalFromServerResponse:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
+- (void)updateWebViewRefreshIntervalFromServerResponse:(id)response;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
 @end
 
 @implementation HODiscoverWebViewManager
@@ -52,36 +52,36 @@
   return v2;
 }
 
-- (void)populateWebViewCache:(id)a3
+- (void)populateWebViewCache:(id)cache
 {
-  v8 = a3;
-  v4 = [(HODiscoverWebViewManager *)self webViewCache];
-  v5 = [v4 count];
+  cacheCopy = cache;
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v5 = [webViewCache count];
 
   if (!v5)
   {
-    v6 = [(HODiscoverWebViewManager *)self getURLStringFromLocaleDictionary:v8];
+    v6 = [(HODiscoverWebViewManager *)self getURLStringFromLocaleDictionary:cacheCopy];
     v7 = [(HODiscoverWebViewManager *)self webViewForURLString:v6];
   }
 }
 
-- (id)getURLStringFromLocaleDictionary:(id)a3
+- (id)getURLStringFromLocaleDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"region"];
-  v5 = [v3 objectForKeyedSubscript:@"storefront"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"region"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"storefront"];
 
   v6 = [NSString stringWithFormat:@"https://asa.commerce.apple.com/home/%@/%@/landing", v4, v5];
 
   if (+[HFUtilities isAMac])
   {
     v7 = +[NSBundle mainBundle];
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
 
-    v9 = CFPreferencesCopyAppValue(@"HOStoreForceStagingURL", v8);
+    v9 = CFPreferencesCopyAppValue(@"HOStoreForceStagingURL", bundleIdentifier);
     if ([v9 BOOLValue])
     {
-      v10 = CFPreferencesCopyAppValue(@"HOStoreStagingURLValue", v8);
+      v10 = CFPreferencesCopyAppValue(@"HOStoreStagingURLValue", bundleIdentifier);
     }
 
     else
@@ -110,25 +110,25 @@
   return v12;
 }
 
-- (id)webViewForURLString:(id)a3 dependentWebViewURLString:(id)a4
+- (id)webViewForURLString:(id)string dependentWebViewURLString:(id)lString
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HODiscoverWebViewManager *)self webViewCache];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  stringCopy = string;
+  lStringCopy = lString;
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v9 = [webViewCache objectForKeyedSubscript:stringCopy];
 
   if (!v9)
   {
-    v10 = [NSURL URLWithString:v6];
-    v11 = [(HODiscoverWebViewManager *)self createWebViewForURL:v10 dependentWebViewURLString:v7];
+    v10 = [NSURL URLWithString:stringCopy];
+    v11 = [(HODiscoverWebViewManager *)self createWebViewForURL:v10 dependentWebViewURLString:lStringCopy];
     v12 = [HODiscoverWebViewCacheValue valueWithWebView:v11];
-    v13 = [(HODiscoverWebViewManager *)self webViewCache];
-    [v13 setObject:v12 forKeyedSubscript:v6];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
+    [webViewCache2 setObject:v12 forKeyedSubscript:stringCopy];
 
-    v14 = [(HODiscoverWebViewManager *)self webViewCache];
-    v15 = [v14 objectForKeyedSubscript:v6];
-    v16 = [v15 webView];
-    [v16 setNavigationDelegate:self];
+    webViewCache3 = [(HODiscoverWebViewManager *)self webViewCache];
+    v15 = [webViewCache3 objectForKeyedSubscript:stringCopy];
+    webView = [v15 webView];
+    [webView setNavigationDelegate:self];
 
     v17 = HFLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -136,27 +136,27 @@
       v22 = 136315394;
       v23 = "[HODiscoverWebViewManager webViewForURLString:dependentWebViewURLString:]";
       v24 = 2112;
-      v25 = v6;
+      v25 = stringCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "(%s) Discover webView created with url:[%@]", &v22, 0x16u);
     }
   }
 
-  v18 = [(HODiscoverWebViewManager *)self webViewCache];
-  v19 = [v18 objectForKeyedSubscript:v6];
-  v20 = [v19 webView];
+  webViewCache4 = [(HODiscoverWebViewManager *)self webViewCache];
+  v19 = [webViewCache4 objectForKeyedSubscript:stringCopy];
+  webView2 = [v19 webView];
 
-  return v20;
+  return webView2;
 }
 
-- (void)preload:(id)a3
+- (void)preload:(id)preload
 {
-  v14 = a3;
-  if ([v14 count])
+  preloadCopy = preload;
+  if ([preloadCopy count])
   {
     v4 = 0;
     v5 = 0;
     v6 = 0;
-    v7 = v14;
+    v7 = preloadCopy;
     do
     {
       v8 = v6;
@@ -164,49 +164,49 @@
 
       if (v4)
       {
-        v9 = [v14 objectAtIndexedSubscript:v4 - 1];
+        v9 = [preloadCopy objectAtIndexedSubscript:v4 - 1];
 
         v5 = v9;
       }
 
       v10 = [(HODiscoverWebViewManager *)self webViewForURLString:v6 dependentWebViewURLString:v5];
-      v11 = [(HODiscoverWebViewManager *)self webViewCache];
-      v12 = [v11 objectForKeyedSubscript:v6];
+      webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+      v12 = [webViewCache objectForKeyedSubscript:v6];
       [v12 setWebView:v10];
 
-      v13 = ++v4 >= [v14 count];
-      v7 = v14;
+      v13 = ++v4 >= [preloadCopy count];
+      v7 = preloadCopy;
     }
 
     while (!v13);
   }
 }
 
-- (id)createWebViewForURL:(id)a3 dependentWebViewURLString:(id)a4
+- (id)createWebViewForURL:(id)l dependentWebViewURLString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  lCopy = l;
   v8 = objc_alloc_init(WKWebViewConfiguration);
   [v8 setAllowsInlineMediaPlayback:1];
   [v8 setMediaTypesRequiringUserActionForPlayback:1];
   [v8 _setCanShowWhileLocked:0];
   v9 = objc_alloc_init(HODiscoverWebViewMessageHandler);
-  v10 = [v8 userContentController];
-  [v10 addScriptMessageHandler:v9 name:@"preload"];
+  userContentController = [v8 userContentController];
+  [userContentController addScriptMessageHandler:v9 name:@"preload"];
 
-  if (v6)
+  if (stringCopy)
   {
-    v11 = [(HODiscoverWebViewManager *)self webViewCache];
-    v12 = [v11 objectForKeyedSubscript:v6];
-    v13 = [v12 webView];
+    webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+    v12 = [webViewCache objectForKeyedSubscript:stringCopy];
+    webView = [v12 webView];
 
-    if (v13)
+    if (webView)
     {
-      v14 = [v13 configuration];
-      v15 = [v14 processPool];
-      [v8 setProcessPool:v15];
+      configuration = [webView configuration];
+      processPool = [configuration processPool];
+      [v8 setProcessPool:processPool];
 
-      [v8 _setRelatedWebView:v13];
+      [v8 _setRelatedWebView:webView];
     }
   }
 
@@ -215,11 +215,11 @@
   [v17 bounds];
   v18 = [v16 initWithFrame:v8 configuration:?];
 
-  v19 = [(HODiscoverWebViewManager *)self getUserAgent];
-  [v18 setCustomUserAgent:v19];
+  getUserAgent = [(HODiscoverWebViewManager *)self getUserAgent];
+  [v18 setCustomUserAgent:getUserAgent];
 
   [v18 setAllowsLinkPreview:0];
-  v20 = [(HODiscoverWebViewManager *)self getURLRequestForURL:v7];
+  v20 = [(HODiscoverWebViewManager *)self getURLRequestForURL:lCopy];
 
   v21 = [v18 loadRequest:v20];
 
@@ -228,20 +228,20 @@
 
 - (id)getUserAgent
 {
-  v3 = [(HODiscoverWebViewManager *)self userAgent];
+  userAgent = [(HODiscoverWebViewManager *)self userAgent];
 
-  if (v3)
+  if (userAgent)
   {
-    v4 = [(HODiscoverWebViewManager *)self userAgent];
+    userAgent2 = [(HODiscoverWebViewManager *)self userAgent];
   }
 
   else
   {
     v5 = +[NSBundle mainBundle];
-    v6 = [v5 infoDictionary];
+    infoDictionary = [v5 infoDictionary];
 
-    v7 = [v6 objectForKey:@"CFBundleDisplayName"];
-    v8 = [v6 objectForKey:@"CFBundleShortVersionString"];
+    v7 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+    v8 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     if (+[HFUtilities isAMac])
     {
       v18 = 0uLL;
@@ -257,48 +257,48 @@
         v18 = 0uLL;
       }
 
-      v12 = [@"macOS" copy];
-      v14 = [NSString stringWithFormat:@"%ld.%ld.%ld", v18, 0];
+      systemName = [@"macOS" copy];
+      systemVersion = [NSString stringWithFormat:@"%ld.%ld.%ld", v18, 0];
     }
 
     else
     {
       v11 = +[UIDevice currentDevice];
-      v12 = [v11 systemName];
+      systemName = [v11 systemName];
 
       v13 = +[UIDevice currentDevice];
-      v14 = [v13 systemVersion];
+      systemVersion = [v13 systemVersion];
     }
 
-    v15 = [(HODiscoverWebViewManager *)self getDeviceName];
-    v16 = [NSString stringWithFormat:@"%@/%@ %@/%@ model/%@", v7, v8, v12, v14, v15];
+    getDeviceName = [(HODiscoverWebViewManager *)self getDeviceName];
+    v16 = [NSString stringWithFormat:@"%@/%@ %@/%@ model/%@", v7, v8, systemName, systemVersion, getDeviceName];
     [(HODiscoverWebViewManager *)self setUserAgent:v16];
 
-    v4 = [(HODiscoverWebViewManager *)self userAgent];
+    userAgent2 = [(HODiscoverWebViewManager *)self userAgent];
   }
 
-  return v4;
+  return userAgent2;
 }
 
 - (void)reloadWebViews
 {
-  v3 = [(HODiscoverWebViewManager *)self webViewCache];
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000342A4;
   v4[3] = &unk_1000C3C68;
   v4[4] = self;
-  [v3 na_each:v4];
+  [webViewCache na_each:v4];
 }
 
-- (id)getURLRequestForURL:(id)a3
+- (id)getURLRequestForURL:(id)l
 {
-  v3 = [NSURLRequest requestWithURL:a3 cachePolicy:0 timeoutInterval:10.0];
+  v3 = [NSURLRequest requestWithURL:l cachePolicy:0 timeoutInterval:10.0];
   v4 = [v3 mutableCopy];
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
   v7 = [@"x-request-id" copy];
-  [v4 addValue:v6 forHTTPHeaderField:v7];
+  [v4 addValue:uUIDString forHTTPHeaderField:v7];
 
   if (+[HFUtilities isInternalInstall])
   {
@@ -321,13 +321,13 @@
   return v2;
 }
 
-- (unint64_t)getWebViewNavigationStateForWebView:(id)a3
+- (unint64_t)getWebViewNavigationStateForWebView:(id)view
 {
-  v4 = a3;
-  v5 = [(HODiscoverWebViewManager *)self webViewCache];
-  v6 = [v4 URL];
-  v7 = [v6 absoluteString];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  viewCopy = view;
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v6 = [viewCopy URL];
+  absoluteString = [v6 absoluteString];
+  v8 = [webViewCache objectForKeyedSubscript:absoluteString];
   v9 = v8;
   if (v8)
   {
@@ -336,55 +336,55 @@
 
   else
   {
-    v11 = [(HODiscoverWebViewManager *)self webViewCache];
-    v12 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:v4];
-    v10 = [v11 objectForKeyedSubscript:v12];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
+    v12 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:viewCopy];
+    v10 = [webViewCache2 objectForKeyedSubscript:v12];
   }
 
-  v13 = [v10 navigationState];
-  return v13;
+  navigationState = [v10 navigationState];
+  return navigationState;
 }
 
-- (id)getWebViewURLKeyFromCache:(id)a3
+- (id)getWebViewURLKeyFromCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HODiscoverWebViewManager *)self webViewCache];
-  v6 = [v4 URL];
-  v7 = [v6 absoluteString];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  cacheCopy = cache;
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v6 = [cacheCopy URL];
+  absoluteString = [v6 absoluteString];
+  v8 = [webViewCache objectForKeyedSubscript:absoluteString];
 
   if (v8)
   {
-    v9 = [v4 URL];
-    v10 = [v9 absoluteString];
+    webViewCache2 = [cacheCopy URL];
+    absoluteString2 = [webViewCache2 absoluteString];
   }
 
   else
   {
-    v9 = [(HODiscoverWebViewManager *)self webViewCache];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100034800;
     v12[3] = &unk_1000C3C90;
-    v13 = v4;
-    v10 = [v9 na_firstKeyPassingTest:v12];
+    v13 = cacheCopy;
+    absoluteString2 = [webViewCache2 na_firstKeyPassingTest:v12];
   }
 
-  return v10;
+  return absoluteString2;
 }
 
-- (void)updateWebViewRefreshIntervalFromServerResponse:(id)a3
+- (void)updateWebViewRefreshIntervalFromServerResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [@"\\/landing" copy];
-  v6 = [v4 URL];
-  v7 = [v6 absoluteString];
-  v8 = [(HODiscoverWebViewManager *)self doesURLContainPath:v5 urlResponseString:v7];
+  v6 = [responseCopy URL];
+  absoluteString = [v6 absoluteString];
+  v8 = [(HODiscoverWebViewManager *)self doesURLContainPath:v5 urlResponseString:absoluteString];
 
   if (v8)
   {
     v9 = [@"x-hov-ti" copy];
-    v10 = [v4 valueForHTTPHeaderField:v9];
+    v10 = [responseCopy valueForHTTPHeaderField:v9];
 
     v11 = objc_alloc_init(NSNumberFormatter);
     [v11 setNumberStyle:1];
@@ -416,60 +416,60 @@
   }
 }
 
-- (void)failedWebViewNavigation:(id)a3 navigation:(id)a4 withError:(id)a5
+- (void)failedWebViewNavigation:(id)navigation navigation:(id)a4 withError:(id)error
 {
-  v7 = a3;
-  v8 = a5;
+  navigationCopy = navigation;
+  errorCopy = error;
   [(HODiscoverWebViewManager *)self setAllowForcedCacheReload:0];
-  v9 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:v7];
+  v9 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:navigationCopy];
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v17 = [v7 URL];
-    v18 = [v17 absoluteString];
+    v17 = [navigationCopy URL];
+    absoluteString = [v17 absoluteString];
     v19 = 136315906;
     v20 = "[HODiscoverWebViewManager failedWebViewNavigation:navigation:withError:]";
     v21 = 2112;
-    v22 = v18;
+    v22 = absoluteString;
     v23 = 2112;
-    v24 = v8;
+    v24 = errorCopy;
     v25 = 2112;
     v26 = v9;
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "(%s) error occurred during Discover webView Navigation to url:[%@] with error: %@, from requested URL:[%@]", &v19, 0x2Au);
   }
 
-  v11 = [(HODiscoverWebViewManager *)self webViewCache];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v12 = [webViewCache objectForKeyedSubscript:v9];
   [v12 setNavigationState:2];
 
-  v13 = [(HODiscoverWebViewManager *)self delegate];
+  delegate = [(HODiscoverWebViewManager *)self delegate];
 
-  if (v13)
+  if (delegate)
   {
-    v14 = [(HODiscoverWebViewManager *)self delegate];
-    v15 = [(HODiscoverWebViewManager *)self webViewCache];
-    v16 = [v15 objectForKeyedSubscript:v9];
-    [v14 webViewNavigationStateUpdated:v7 navigationState:{objc_msgSend(v16, "navigationState")}];
+    delegate2 = [(HODiscoverWebViewManager *)self delegate];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
+    v16 = [webViewCache2 objectForKeyedSubscript:v9];
+    [delegate2 webViewNavigationStateUpdated:navigationCopy navigationState:{objc_msgSend(v16, "navigationState")}];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v35 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v35 URL];
-  v11 = [v10 absoluteString];
+  viewCopy = view;
+  handlerCopy = handler;
+  responseCopy = response;
+  v10 = [viewCopy URL];
+  absoluteString = [v10 absoluteString];
 
-  v12 = [(HODiscoverWebViewManager *)self webViewCache];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v13 = [webViewCache objectForKeyedSubscript:absoluteString];
 
   objc_opt_class();
-  v14 = [v9 response];
+  response = [responseCopy response];
 
   if (objc_opt_isKindOfClass())
   {
-    v15 = v14;
+    v15 = response;
   }
 
   else
@@ -485,125 +485,125 @@
     if ([v16 statusCode] - 400 > 0xC7)
     {
       v28 = [@"\\/covers.html" copy];
-      v29 = [v35 URL];
-      v30 = [v29 absoluteString];
-      v31 = [(HODiscoverWebViewManager *)self doesURLContainPath:v28 urlResponseString:v30];
+      v29 = [viewCopy URL];
+      absoluteString2 = [v29 absoluteString];
+      v31 = [(HODiscoverWebViewManager *)self doesURLContainPath:v28 urlResponseString:absoluteString2];
 
       [(HODiscoverWebViewManager *)self setAllowForcedCacheReload:v31 != 0];
       [v13 setNavigationState:1];
-      v8[2](v8, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
 
     else
     {
       [(HODiscoverWebViewManager *)self setAllowForcedCacheReload:0];
       [v13 setNavigationState:2];
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
-    v17 = v11;
+    v17 = absoluteString;
   }
 
   else
   {
-    v17 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:v35];
+    v17 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:viewCopy];
 
-    v18 = [(HODiscoverWebViewManager *)self webViewCache];
-    v13 = [v18 objectForKeyedSubscript:v17];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
+    v13 = [webViewCache2 objectForKeyedSubscript:v17];
 
     if ((+[HFUtilities isInternalInstall]& 1) != 0)
     {
       goto LABEL_9;
     }
 
-    v34 = [v13 webView];
-    v19 = [v34 URL];
-    v20 = [v19 host];
-    v21 = [v35 URL];
-    v22 = [v21 host];
-    v23 = [v20 isEqualToString:v22];
+    webView = [v13 webView];
+    v19 = [webView URL];
+    host = [v19 host];
+    v21 = [viewCopy URL];
+    host2 = [v21 host];
+    v23 = [host isEqualToString:host2];
 
     if (v23)
     {
 LABEL_9:
       v24 = [@"\\/covers.html" copy];
-      v25 = [v35 URL];
-      v26 = [v25 absoluteString];
-      v27 = [(HODiscoverWebViewManager *)self doesURLContainPath:v24 urlResponseString:v26];
+      v25 = [viewCopy URL];
+      absoluteString3 = [v25 absoluteString];
+      v27 = [(HODiscoverWebViewManager *)self doesURLContainPath:v24 urlResponseString:absoluteString3];
 
       [(HODiscoverWebViewManager *)self setAllowForcedCacheReload:v27];
       [v13 setNavigationState:1];
-      v8[2](v8, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
 
     else
     {
       [(HODiscoverWebViewManager *)self setAllowForcedCacheReload:0];
       [v13 setNavigationState:2];
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
-  v32 = [(HODiscoverWebViewManager *)self delegate];
+  delegate = [(HODiscoverWebViewManager *)self delegate];
 
-  if (v32)
+  if (delegate)
   {
-    v33 = [(HODiscoverWebViewManager *)self delegate];
-    [v33 webViewNavigationStateUpdated:v35 navigationState:{objc_msgSend(v13, "navigationState")}];
+    delegate2 = [(HODiscoverWebViewManager *)self delegate];
+    [delegate2 webViewNavigationStateUpdated:viewCopy navigationState:{objc_msgSend(v13, "navigationState")}];
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v12 = a3;
+  viewCopy = view;
   v5 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:?];
-  v6 = [(HODiscoverWebViewManager *)self webViewCache];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+  v7 = [webViewCache objectForKeyedSubscript:v5];
   [v7 setNavigationState:1];
 
-  v8 = [(HODiscoverWebViewManager *)self delegate];
+  delegate = [(HODiscoverWebViewManager *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(HODiscoverWebViewManager *)self delegate];
-    v10 = [(HODiscoverWebViewManager *)self webViewCache];
-    v11 = [v10 objectForKeyedSubscript:v5];
-    [v9 webViewNavigationStateUpdated:v12 navigationState:{objc_msgSend(v11, "navigationState")}];
+    delegate2 = [(HODiscoverWebViewManager *)self delegate];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
+    v11 = [webViewCache2 objectForKeyedSubscript:v5];
+    [delegate2 webViewNavigationStateUpdated:viewCopy navigationState:{objc_msgSend(v11, "navigationState")}];
   }
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
-  v12 = a3;
-  v5 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:v12];
-  if ([v12 isLoading])
+  viewCopy = view;
+  v5 = [(HODiscoverWebViewManager *)self getWebViewURLKeyFromCache:viewCopy];
+  if ([viewCopy isLoading])
   {
-    v6 = [(HODiscoverWebViewManager *)self webViewCache];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    webViewCache = [(HODiscoverWebViewManager *)self webViewCache];
+    v7 = [webViewCache objectForKeyedSubscript:v5];
     [v7 setNavigationState:0];
   }
 
-  v8 = [(HODiscoverWebViewManager *)self delegate];
+  delegate = [(HODiscoverWebViewManager *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(HODiscoverWebViewManager *)self delegate];
-    v10 = [(HODiscoverWebViewManager *)self webViewCache];
-    v11 = [v10 objectForKeyedSubscript:v5];
-    [v9 webViewNavigationStateUpdated:v12 navigationState:{objc_msgSend(v11, "navigationState")}];
+    delegate2 = [(HODiscoverWebViewManager *)self delegate];
+    webViewCache2 = [(HODiscoverWebViewManager *)self webViewCache];
+    v11 = [webViewCache2 objectForKeyedSubscript:v5];
+    [delegate2 webViewNavigationStateUpdated:viewCopy navigationState:{objc_msgSend(v11, "navigationState")}];
   }
 }
 
-- (BOOL)doesURLContainPath:(id)a3 urlResponseString:(id)a4
+- (BOOL)doesURLContainPath:(id)path urlResponseString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  pathCopy = path;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy)
   {
-    v8 = [v6 length];
+    v8 = [stringCopy length];
     v15 = 0;
-    v9 = [NSRegularExpression regularExpressionWithPattern:v5 options:0 error:&v15];
+    v9 = [NSRegularExpression regularExpressionWithPattern:pathCopy options:0 error:&v15];
     v10 = v15;
     v11 = [v9 firstMatchInString:v7 options:0 range:{0, v8}];
     v12 = HFLogForCategory();
@@ -614,7 +614,7 @@ LABEL_9:
       v18 = 2112;
       v19 = v7;
       v20 = 2112;
-      v21 = v5;
+      v21 = pathCopy;
       v22 = 1024;
       v23 = v11 != 0;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(%s) Did Discover webview response came from url:[%@] with pathPattern:[%@] - [%d]", buf, 0x26u);

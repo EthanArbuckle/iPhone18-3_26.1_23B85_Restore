@@ -18,12 +18,12 @@
   linkClient = self->_linkClient;
   if (linkClient)
   {
-    v4 = [NSString stringWithFormat:@"linkClient: <%@>, ", linkClient];
+    linkClient = [NSString stringWithFormat:@"linkClient: <%@>, ", linkClient];
   }
 
   else
   {
-    v4 = &stru_1008EFBD0;
+    linkClient = &stru_1008EFBD0;
   }
 
   v5 = objc_opt_class();
@@ -34,7 +34,7 @@
   v13.receiver = self;
   v13.super_class = SDActivityPayloadRequestRecord;
   v10 = [(SDActivityRequestRecord *)&v13 description];
-  v11 = [NSString stringWithFormat:@"<%@: %p, advertisementPayload:%@, command:%@, %@%@>", v6, self, v8, command, v4, v10];
+  v11 = [NSString stringWithFormat:@"<%@: %p, advertisementPayload:%@, command:%@, %@%@>", v6, self, v8, command, linkClient, v10];
 
   return v11;
 }

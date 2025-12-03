@@ -1,20 +1,20 @@
 @interface HDHealthActivityCachePluginDaemonExtension
 - (HDDaemon)daemon;
-- (HDHealthActivityCachePluginDaemonExtension)initWithDaemon:(id)a3;
+- (HDHealthActivityCachePluginDaemonExtension)initWithDaemon:(id)daemon;
 @end
 
 @implementation HDHealthActivityCachePluginDaemonExtension
 
-- (HDHealthActivityCachePluginDaemonExtension)initWithDaemon:(id)a3
+- (HDHealthActivityCachePluginDaemonExtension)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v8.receiver = self;
   v8.super_class = HDHealthActivityCachePluginDaemonExtension;
   v5 = [(HDHealthActivityCachePluginDaemonExtension *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
   }
 
   return v6;

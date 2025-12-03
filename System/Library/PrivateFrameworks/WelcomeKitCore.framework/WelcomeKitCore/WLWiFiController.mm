@@ -1,17 +1,17 @@
 @interface WLWiFiController
 + (id)sharedInstance;
 - (WLWiFiController)init;
-- (id)_initWithWiFiManager:(id)a3 netrbClient:(id)a4;
-- (id)_networkRecordFromSSID:(id)a3 password:(id)a4 channel:(id)a5;
+- (id)_initWithWiFiManager:(id)manager netrbClient:(id)client;
+- (id)_networkRecordFromSSID:(id)d password:(id)password channel:(id)channel;
 - (id)_startedNetwork;
 - (unint64_t)_newRequestID;
-- (void)_disableSoftAPWithCompletion:(id)a3;
-- (void)_enableSoftAPWithSSID:(id)a3 password:(id)a4 channel:(id)a5 completion:(id)a6;
+- (void)_disableSoftAPWithCompletion:(id)completion;
+- (void)_enableSoftAPWithSSID:(id)d password:(id)password channel:(id)channel completion:(id)completion;
 - (void)_ensureStartedNetworkReflectsPreferences;
-- (void)_startWiFiWithSSID:(id)a3 password:(id)a4 channel:(id)a5 completion:(id)a6;
-- (void)_stopWiFiWithCompletion:(id)a3;
-- (void)disableSoftAPWithCompletion:(id)a3;
-- (void)enableSoftAPWithSSID:(id)a3 password:(id)a4 channel:(id)a5 completion:(id)a6;
+- (void)_startWiFiWithSSID:(id)d password:(id)password channel:(id)channel completion:(id)completion;
+- (void)_stopWiFiWithCompletion:(id)completion;
+- (void)disableSoftAPWithCompletion:(id)completion;
+- (void)enableSoftAPWithSSID:(id)d password:(id)password channel:(id)channel completion:(id)completion;
 @end
 
 @implementation WLWiFiController
@@ -44,10 +44,10 @@ uint64_t __34__WLWiFiController_sharedInstance__block_invoke()
   return v5;
 }
 
-- (id)_initWithWiFiManager:(id)a3 netrbClient:(id)a4
+- (id)_initWithWiFiManager:(id)manager netrbClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  clientCopy = client;
   v13.receiver = self;
   v13.super_class = WLWiFiController;
   v9 = [(WLWiFiController *)&v13 init];
@@ -57,8 +57,8 @@ uint64_t __34__WLWiFiController_sharedInstance__block_invoke()
     requestQueue = v9->_requestQueue;
     v9->_requestQueue = v10;
 
-    objc_storeStrong(&v9->_wifiManager, a3);
-    objc_storeStrong(&v9->_netrbClient, a4);
+    objc_storeStrong(&v9->_wifiManager, manager);
+    objc_storeStrong(&v9->_netrbClient, client);
   }
 
   return v9;
@@ -66,50 +66,50 @@ uint64_t __34__WLWiFiController_sharedInstance__block_invoke()
 
 - (unint64_t)_newRequestID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastRequestID + 1;
-  v2->_lastRequestID = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastRequestID + 1;
+  selfCopy->_lastRequestID = v3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)enableSoftAPWithSSID:(id)a3 password:(id)a4 channel:(id)a5 completion:(id)a6
+- (void)enableSoftAPWithSSID:(id)d password:(id)password channel:(id)channel completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  passwordCopy = password;
+  channelCopy = channel;
+  completionCopy = completion;
   _WLLog();
   if ([MEMORY[0x277D7B8B0] BOOLForKey:{*MEMORY[0x277D7B8E8], self}] == 1)
   {
     _WLLog();
-    v13[2](v13, 1, -1, 0);
+    completionCopy[2](completionCopy, 1, -1, 0);
   }
 
-  else if (-[WLWiFiController hasSoftAPCapability](self, "hasSoftAPCapability") && [v10 length])
+  else if (-[WLWiFiController hasSoftAPCapability](self, "hasSoftAPCapability") && [dCopy length])
   {
-    v15 = [(WLWiFiController *)self _newRequestID];
+    _newRequestID = [(WLWiFiController *)self _newRequestID];
     _WLLog();
     requestQueue = self->_requestQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__WLWiFiController_enableSoftAPWithSSID_password_channel_completion___block_invoke;
     block[3] = &unk_279EB62B0;
-    v21 = v15;
+    v21 = _newRequestID;
     block[4] = self;
-    v17 = v10;
-    v18 = v11;
-    v19 = v12;
-    v20 = v13;
+    v17 = dCopy;
+    v18 = passwordCopy;
+    v19 = channelCopy;
+    v20 = completionCopy;
     dispatch_async(requestQueue, block);
   }
 
   else
   {
     _WLLog();
-    v13[2](v13, 0, -1, 0);
+    completionCopy[2](completionCopy, 0, -1, 0);
   }
 }
 
@@ -166,17 +166,17 @@ void __69__WLWiFiController_enableSoftAPWithSSID_password_channel_completion___b
   dispatch_resume(v2);
 }
 
-- (void)_enableSoftAPWithSSID:(id)a3 password:(id)a4 channel:(id)a5 completion:(id)a6
+- (void)_enableSoftAPWithSSID:(id)d password:(id)password channel:(id)channel completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__WLWiFiController__enableSoftAPWithSSID_password_channel_completion___block_invoke;
   v12[3] = &unk_279EB6300;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(WLWiFiController *)self _startWiFiWithSSID:a3 password:a4 channel:a5 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(WLWiFiController *)self _startWiFiWithSSID:d password:password channel:channel completion:v12];
 }
 
 void __70__WLWiFiController__enableSoftAPWithSSID_password_channel_completion___block_invoke(uint64_t a1, int a2, uint64_t a3, void *a4)
@@ -226,20 +226,20 @@ void __70__WLWiFiController__enableSoftAPWithSSID_password_channel_completion___
   }
 }
 
-- (void)disableSoftAPWithCompletion:(id)a3
+- (void)disableSoftAPWithCompletion:(id)completion
 {
-  v4 = a3;
-  v7 = [(WLWiFiController *)self _newRequestID];
+  completionCopy = completion;
+  _newRequestID = [(WLWiFiController *)self _newRequestID];
   _WLLog();
   requestQueue = self->_requestQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__WLWiFiController_disableSoftAPWithCompletion___block_invoke;
   block[3] = &unk_279EB6350;
-  v9 = v4;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = _newRequestID;
   block[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   dispatch_async(requestQueue, block);
 }
 
@@ -272,30 +272,30 @@ void __48__WLWiFiController_disableSoftAPWithCompletion___block_invoke_2(void *a
   dispatch_resume(v2);
 }
 
-- (void)_disableSoftAPWithCompletion:(id)a3
+- (void)_disableSoftAPWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  startedNetwork = v5->_startedNetwork;
-  objc_sync_exit(v5);
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  startedNetwork = selfCopy->_startedNetwork;
+  objc_sync_exit(selfCopy);
 
   _WLLog();
   if (startedNetwork)
   {
-    netrbClient = v5->_netrbClient;
+    netrbClient = selfCopy->_netrbClient;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__WLWiFiController__disableSoftAPWithCompletion___block_invoke;
     v8[3] = &unk_279EB63A0;
-    v8[4] = v5;
-    v9 = v4;
+    v8[4] = selfCopy;
+    v9 = completionCopy;
     [(WLNETRBClient *)netrbClient stopDHCPWithCompletion:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -326,25 +326,25 @@ void __49__WLWiFiController__disableSoftAPWithCompletion___block_invoke_2(uint64
   if (!self->_didConsultPreferencesForStartedNetwork)
   {
     self->_didConsultPreferencesForStartedNetwork = 1;
-    v3 = self;
-    objc_sync_enter(v3);
-    p_startedNetwork = &v3->_startedNetwork;
-    v11 = v3->_startedNetwork;
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    p_startedNetwork = &selfCopy->_startedNetwork;
+    v11 = selfCopy->_startedNetwork;
+    objc_sync_exit(selfCopy);
 
     v5 = v11;
     if (!v11)
     {
-      v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v7 = [v6 stringForKey:*MEMORY[0x277D7B8E0]];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v7 = [standardUserDefaults stringForKey:*MEMORY[0x277D7B8E0]];
 
       if (v7)
       {
-        v8 = [(WLWiFiManager *)v3->_wifiManager createDeviceClient];
-        v9 = [v8 hostedNetworkMatchingSSID:v7];
+        createDeviceClient = [(WLWiFiManager *)selfCopy->_wifiManager createDeviceClient];
+        v9 = [createDeviceClient hostedNetworkMatchingSSID:v7];
         if (v9)
         {
-          v10 = v3;
+          v10 = selfCopy;
           objc_sync_enter(v10);
           objc_storeStrong(p_startedNetwork, v9);
           objc_sync_exit(v10);
@@ -387,29 +387,29 @@ void __35__WLWiFiController__startedNetwork__block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)_startWiFiWithSSID:(id)a3 password:(id)a4 channel:(id)a5 completion:(id)a6
+- (void)_startWiFiWithSSID:(id)d password:(id)password channel:(id)channel completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WLWiFiManager *)self->_wifiManager createDeviceClient];
-  if (v14)
+  dCopy = d;
+  passwordCopy = password;
+  channelCopy = channel;
+  completionCopy = completion;
+  createDeviceClient = [(WLWiFiManager *)self->_wifiManager createDeviceClient];
+  if (createDeviceClient)
   {
-    v15 = [(WLWiFiController *)self _networkRecordFromSSID:v10 password:v11 channel:v12];
+    v15 = [(WLWiFiController *)self _networkRecordFromSSID:dCopy password:passwordCopy channel:channelCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __67__WLWiFiController__startWiFiWithSSID_password_channel_completion___block_invoke;
     v16[3] = &unk_279EB63F0;
     v16[4] = self;
-    v17 = v13;
-    [v14 startNetworkWithHostRole:2 request:v15 completion:v16];
+    v17 = completionCopy;
+    [createDeviceClient startNetworkWithHostRole:2 request:v15 completion:v16];
   }
 
   else
   {
     _WLLog();
-    (*(v13 + 2))(v13, 0, -1, 0);
+    (*(completionCopy + 2))(completionCopy, 0, -1, 0);
   }
 }
 
@@ -442,32 +442,32 @@ void __67__WLWiFiController__startWiFiWithSSID_password_channel_completion___blo
   (*(*(a1 + 40) + 16))(*(a1 + 40), v3 != 0, [v10 channel], 0);
 }
 
-- (id)_networkRecordFromSSID:(id)a3 password:(id)a4 channel:(id)a5
+- (id)_networkRecordFromSSID:(id)d password:(id)password channel:(id)channel
 {
-  v6 = a3;
+  dCopy = d;
   v7 = MEMORY[0x277CBEB38];
-  v8 = a5;
-  v9 = [v7 dictionary];
-  [v9 setObject:MEMORY[0x277CBEC38] forKey:@"HIDDEN_NETWORK"];
+  channelCopy = channel;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"HIDDEN_NETWORK"];
   v10 = [MEMORY[0x277CCABB0] numberWithShort:1];
-  [v9 setObject:v10 forKey:@"AP_MODE_AUTH_LOWER"];
+  [dictionary setObject:v10 forKey:@"AP_MODE_AUTH_LOWER"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithShort:0];
-  [v9 setObject:v11 forKey:@"AP_MODE_AUTH_UPPER"];
+  [dictionary setObject:v11 forKey:@"AP_MODE_AUTH_UPPER"];
 
-  v12 = [v6 dataUsingEncoding:4];
-  [v9 setObject:v6 forKey:@"SSID_STR"];
-  [v9 setObject:v12 forKey:@"AP_MODE_SSID_BYTES"];
-  [v9 setObject:v8 forKey:@"CHANNEL"];
+  v12 = [dCopy dataUsingEncoding:4];
+  [dictionary setObject:dCopy forKey:@"SSID_STR"];
+  [dictionary setObject:v12 forKey:@"AP_MODE_SSID_BYTES"];
+  [dictionary setObject:channelCopy forKey:@"CHANNEL"];
 
-  v13 = v6;
+  v13 = dCopy;
   v14 = MEMORY[0x277CCABB0];
   if (v13)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithShort:8];
-    [v9 setObject:v15 forKey:@"AP_MODE_AUTH_UPPER"];
+    [dictionary setObject:v15 forKey:@"AP_MODE_AUTH_UPPER"];
 
-    [v9 setObject:v13 forKey:@"AP_MODE_KEY"];
+    [dictionary setObject:v13 forKey:@"AP_MODE_KEY"];
     v14 = MEMORY[0x277CCABB0];
     v16 = 10;
   }
@@ -478,38 +478,38 @@ void __67__WLWiFiController__startWiFiWithSSID_password_channel_completion___blo
   }
 
   v17 = [v14 numberWithInt:v16];
-  [v9 setObject:v17 forKey:@"AP_MODE_CYPHER_TYPE"];
+  [dictionary setObject:v17 forKey:@"AP_MODE_CYPHER_TYPE"];
 
-  v18 = [v9 copy];
+  v18 = [dictionary copy];
 
   return v18;
 }
 
-- (void)_stopWiFiWithCompletion:(id)a3
+- (void)_stopWiFiWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   _WLLog();
-  v5 = [(WLWiFiManager *)self->_wifiManager createDeviceClient];
-  if (v5)
+  createDeviceClient = [(WLWiFiManager *)self->_wifiManager createDeviceClient];
+  if (createDeviceClient)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = v6->_startedNetwork;
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = selfCopy->_startedNetwork;
+    objc_sync_exit(selfCopy);
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__WLWiFiController__stopWiFiWithCompletion___block_invoke;
     v8[3] = &unk_279EB63A0;
-    v8[4] = v6;
-    v9 = v4;
-    [v5 stopNetwork:v7 completion:v8];
+    v8[4] = selfCopy;
+    v9 = completionCopy;
+    [createDeviceClient stopNetwork:v7 completion:v8];
   }
 
   else
   {
     _WLLog();
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

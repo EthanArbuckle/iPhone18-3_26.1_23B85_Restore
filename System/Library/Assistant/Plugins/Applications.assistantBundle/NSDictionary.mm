@@ -1,12 +1,12 @@
 @interface NSDictionary
-- (BOOL)aap_BOOLValueForKey:(id)a3;
-- (id)aap_arrayValueForKey:(id)a3 expectedContainingObjectsType:(Class)a4;
-- (id)aap_stringValueForKey:(id)a3;
+- (BOOL)aap_BOOLValueForKey:(id)key;
+- (id)aap_arrayValueForKey:(id)key expectedContainingObjectsType:(Class)type;
+- (id)aap_stringValueForKey:(id)key;
 @end
 
 @implementation NSDictionary
 
-- (BOOL)aap_BOOLValueForKey:(id)a3
+- (BOOL)aap_BOOLValueForKey:(id)key
 {
   v3 = [(NSDictionary *)self objectForKey:?];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -26,7 +26,7 @@
   }
 }
 
-- (id)aap_stringValueForKey:(id)a3
+- (id)aap_stringValueForKey:(id)key
 {
   v3 = [(NSDictionary *)self objectForKey:?];
   if (v3)
@@ -46,7 +46,7 @@
   return v3;
 }
 
-- (id)aap_arrayValueForKey:(id)a3 expectedContainingObjectsType:(Class)a4
+- (id)aap_arrayValueForKey:(id)key expectedContainingObjectsType:(Class)type
 {
   result = [(NSDictionary *)self objectForKey:?];
   if (result)
@@ -86,11 +86,11 @@
               v14 = AFSiriLogContextPlugin;
               if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
               {
-                v15 = NSStringFromClass(a4);
+                v15 = NSStringFromClass(type);
                 *buf = 136315906;
                 v21 = "[NSDictionary(AAPIntentsInfoSync) aap_arrayValueForKey:expectedContainingObjectsType:]";
                 v22 = 2114;
-                v23 = a3;
+                keyCopy = key;
                 v24 = 2114;
                 v25 = v15;
                 v26 = 2112;

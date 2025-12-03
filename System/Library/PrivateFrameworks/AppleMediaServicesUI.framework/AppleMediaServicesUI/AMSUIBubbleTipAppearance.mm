@@ -1,7 +1,7 @@
 @interface AMSUIBubbleTipAppearance
 - (AMSUIBubbleTipAppearance)init;
-- (AMSUIBubbleTipAppearance)initWithDictionary:(id)a3;
-- (void)_setImageStyleWithDictionary:(id)a3;
+- (AMSUIBubbleTipAppearance)initWithDictionary:(id)dictionary;
+- (void)_setImageStyleWithDictionary:(id)dictionary;
 @end
 
 @implementation AMSUIBubbleTipAppearance
@@ -21,85 +21,85 @@
   return result;
 }
 
-- (AMSUIBubbleTipAppearance)initWithDictionary:(id)a3
+- (AMSUIBubbleTipAppearance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = AMSUIBubbleTipAppearance;
-  v5 = [(AMSUIAppearance *)&v37 initWithDictionary:v4];
+  v5 = [(AMSUIAppearance *)&v37 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [AMSUIAppearance _accessoryButtonBackgroundColorWithDictionary:v4];
+    v6 = [AMSUIAppearance _accessoryButtonBackgroundColorWithDictionary:dictionaryCopy];
     accessoryButtonBackgroundColor = v5->_accessoryButtonBackgroundColor;
     v5->_accessoryButtonBackgroundColor = v6;
 
-    v8 = [AMSUIAppearance _accessoryButtonColorWithDictionary:v4];
+    v8 = [AMSUIAppearance _accessoryButtonColorWithDictionary:dictionaryCopy];
     accessoryButtonColor = v5->_accessoryButtonColor;
     v5->_accessoryButtonColor = v8;
 
-    v10 = [AMSUIAppearance _accessoryButtonFontWithDictionary:v4];
+    v10 = [AMSUIAppearance _accessoryButtonFontWithDictionary:dictionaryCopy];
     accessoryButtonFont = v5->_accessoryButtonFont;
     v5->_accessoryButtonFont = v10;
 
-    v12 = [AMSUIAppearance _backgroundColorWithDictionary:v4];
+    v12 = [AMSUIAppearance _backgroundColorWithDictionary:dictionaryCopy];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v12;
 
-    v14 = [AMSUIAppearance _backgroundImageWithDictionary:v4];
+    v14 = [AMSUIAppearance _backgroundImageWithDictionary:dictionaryCopy];
     backgroundImage = v5->_backgroundImage;
     v5->_backgroundImage = v14;
 
-    v16 = [AMSUIAppearance _footerButtonBackgroundColorWithDictionary:v4];
+    v16 = [AMSUIAppearance _footerButtonBackgroundColorWithDictionary:dictionaryCopy];
     footerButtonBackgroundColor = v5->_footerButtonBackgroundColor;
     v5->_footerButtonBackgroundColor = v16;
 
-    v18 = [AMSUIAppearance _footerButtonColorWithDictionary:v4];
+    v18 = [AMSUIAppearance _footerButtonColorWithDictionary:dictionaryCopy];
     footerButtonColor = v5->_footerButtonColor;
     v5->_footerButtonColor = v18;
 
-    v20 = [AMSUIAppearance _footerButtonFontWithDictionary:v4];
+    v20 = [AMSUIAppearance _footerButtonFontWithDictionary:dictionaryCopy];
     footerButtonFont = v5->_footerButtonFont;
     v5->_footerButtonFont = v20;
 
-    v5->_iconAnimationPlayCount = [AMSUIAppearance _iconAnimationPlayCount:v4];
-    v22 = [AMSUIAppearance _imageSymbolConfigurationWithDictionary:v4];
+    v5->_iconAnimationPlayCount = [AMSUIAppearance _iconAnimationPlayCount:dictionaryCopy];
+    v22 = [AMSUIAppearance _imageSymbolConfigurationWithDictionary:dictionaryCopy];
     imageSymbolConfiguration = v5->_imageSymbolConfiguration;
     v5->_imageSymbolConfiguration = v22;
 
-    v24 = [AMSUIAppearance _imageTintColorWithDictionary:v4];
+    v24 = [AMSUIAppearance _imageTintColorWithDictionary:dictionaryCopy];
     imageTintColor = v5->_imageTintColor;
     v5->_imageTintColor = v24;
 
-    v5->_primaryImageRenderingMode = [AMSUIAppearance _primaryImageRenderingModeWithDictionary:v4];
-    v26 = [AMSUIAppearance _separatorColorWithDictionary:v4];
+    v5->_primaryImageRenderingMode = [AMSUIAppearance _primaryImageRenderingModeWithDictionary:dictionaryCopy];
+    v26 = [AMSUIAppearance _separatorColorWithDictionary:dictionaryCopy];
     separatorColor = v5->_separatorColor;
     v5->_separatorColor = v26;
 
-    v28 = [AMSUIAppearance _titleFontWithDictionary:v4];
+    v28 = [AMSUIAppearance _titleFontWithDictionary:dictionaryCopy];
     titleFont = v5->_titleFont;
     v5->_titleFont = v28;
 
-    v30 = [AMSUIAppearance _titleTextColorWithDictionary:v4];
+    v30 = [AMSUIAppearance _titleTextColorWithDictionary:dictionaryCopy];
     titleTextColor = v5->_titleTextColor;
     v5->_titleTextColor = v30;
 
-    v32 = [AMSUIAppearance _messageFontWithDictionary:v4];
+    v32 = [AMSUIAppearance _messageFontWithDictionary:dictionaryCopy];
     messageFont = v5->_messageFont;
     v5->_messageFont = v32;
 
-    v34 = [AMSUIAppearance _messageTextColorWithDictionary:v4];
+    v34 = [AMSUIAppearance _messageTextColorWithDictionary:dictionaryCopy];
     messageTextColor = v5->_messageTextColor;
     v5->_messageTextColor = v34;
 
-    [(AMSUIBubbleTipAppearance *)v5 _setImageStyleWithDictionary:v4];
+    [(AMSUIBubbleTipAppearance *)v5 _setImageStyleWithDictionary:dictionaryCopy];
   }
 
   return v5;
 }
 
-- (void)_setImageStyleWithDictionary:(id)a3
+- (void)_setImageStyleWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"imageStyle"];
+  v4 = [dictionary objectForKeyedSubscript:@"imageStyle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -114,9 +114,9 @@
   v5 = v7;
   if (v7)
   {
-    v6 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
     v5 = v7;
-    self->_imageStyle = v6;
+    self->_imageStyle = unsignedIntValue;
   }
 }
 

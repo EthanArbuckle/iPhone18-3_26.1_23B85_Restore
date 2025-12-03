@@ -1,79 +1,79 @@
 @interface APUIAppPredictionViewController
-+ (id)_bundleIdentifierSetFromApplicationProxies:(id)a3;
-+ (id)_bundleIdentifierSetFromApplicationRecords:(id)a3;
-- (APUIAppPredictionViewController)initWithIdentifier:(id)a3 layoutSize:(unint64_t)a4 mode:(unint64_t)a5;
++ (id)_bundleIdentifierSetFromApplicationProxies:(id)proxies;
++ (id)_bundleIdentifierSetFromApplicationRecords:(id)records;
+- (APUIAppPredictionViewController)initWithIdentifier:(id)identifier layoutSize:(unint64_t)size mode:(unint64_t)mode;
 - (APUIAppPredictionViewControllerDelegate)delegate;
 - (BOOL)_canDismissSelectedSuggestion;
-- (BOOL)appIconGridView:(id)a3 launchAppFromIcon:(id)a4;
-- (BOOL)appIconGridView:(id)a3 shouldDisplayBadgeWithBundleIdentifier:(id)a4;
-- (BOOL)matchesWidgetUniqueID:(id)a3 stackID:(id)a4;
+- (BOOL)appIconGridView:(id)view launchAppFromIcon:(id)icon;
+- (BOOL)appIconGridView:(id)view shouldDisplayBadgeWithBundleIdentifier:(id)identifier;
+- (BOOL)matchesWidgetUniqueID:(id)d stackID:(id)iD;
 - (NSArray)applicationShortcutItems;
 - (UIEdgeInsets)parentLayoutInsets;
 - (id)_fallbackBundleIds;
-- (id)additionalIconListLayoutObserversForAppIconGridView:(id)a3;
-- (id)appIconGridView:(id)a3 iconForApplicationWithBundleIdentifier:(id)a4;
+- (id)additionalIconListLayoutObserversForAppIconGridView:(id)view;
+- (id)appIconGridView:(id)view iconForApplicationWithBundleIdentifier:(id)identifier;
 - (unint64_t)layoutSize;
-- (void)_loadAppsInGridView:(id)a3;
-- (void)_updateGridViewForBundleIds:(id)a3;
-- (void)_updateLayoutInGridView:(id)a3;
+- (void)_loadAppsInGridView:(id)view;
+- (void)_updateGridViewForBundleIds:(id)ids;
+- (void)_updateLayoutInGridView:(id)view;
 - (void)_updateUserInteractingState;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationInstallsDidUpdateIcon:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationInstallsDidUpdateIcon:(id)icon;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
-- (void)didSelectApplicationShortcutItem:(id)a3;
-- (void)setLayoutSize:(unint64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setOccluded:(BOOL)a3;
-- (void)setParentLayoutInsets:(UIEdgeInsets)a3;
-- (void)setShowingAlert:(BOOL)a3;
-- (void)setShowingContextMenu:(BOOL)a3;
-- (void)suggestionClientDidRefreshProactiveWidgetLayouts:(id)a3;
+- (void)didSelectApplicationShortcutItem:(id)item;
+- (void)setLayoutSize:(unint64_t)size;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setMode:(unint64_t)mode;
+- (void)setOccluded:(BOOL)occluded;
+- (void)setParentLayoutInsets:(UIEdgeInsets)insets;
+- (void)setShowingAlert:(BOOL)alert;
+- (void)setShowingContextMenu:(BOOL)menu;
+- (void)suggestionClientDidRefreshProactiveWidgetLayouts:(id)layouts;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willShowContextMenuAtLocation:(CGPoint)a3;
+- (void)willShowContextMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation APUIAppPredictionViewController
 
-- (APUIAppPredictionViewController)initWithIdentifier:(id)a3 layoutSize:(unint64_t)a4 mode:(unint64_t)a5
+- (APUIAppPredictionViewController)initWithIdentifier:(id)identifier layoutSize:(unint64_t)size mode:(unint64_t)mode
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = APUIAppPredictionViewController;
-  v9 = [(APUIWidgetViewController *)&v27 initWithIdentifier:v8];
+  v9 = [(APUIWidgetViewController *)&v27 initWithIdentifier:identifierCopy];
   if (v9)
   {
     v10 = objc_opt_new();
     [(APUIWidgetViewController *)v9 setWidgetIdentifiable:v10];
 
-    v11 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
-    [v11 setWidgetUniqueId:v8];
+    widgetIdentifiable = [(APUIWidgetViewController *)v9 widgetIdentifiable];
+    [widgetIdentifiable setWidgetUniqueId:identifierCopy];
 
-    v12 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
-    [v12 setSize:a4];
+    widgetIdentifiable2 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
+    [widgetIdentifiable2 setSize:size];
 
     v13 = *MEMORY[0x277CEB1C0];
-    v14 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
-    [v14 setExtensionBundleId:v13];
+    widgetIdentifiable3 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
+    [widgetIdentifiable3 setExtensionBundleId:v13];
 
     v15 = ATXSpecialWidgetKindAppPredictions();
-    v16 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
-    [v16 setWidgetKind:v15];
+    widgetIdentifiable4 = [(APUIWidgetViewController *)v9 widgetIdentifiable];
+    [widgetIdentifiable4 setWidgetKind:v15];
 
-    v9->_mode = a5;
+    v9->_mode = mode;
     v17 = objc_opt_new();
     usedFallbacks = v9->_usedFallbacks;
     v9->_usedFallbacks = v17;
 
-    v19 = [MEMORY[0x277CEB5A0] sharedInstance];
-    [(APUIWidgetViewController *)v9 setSuggestionClient:v19];
+    mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+    [(APUIWidgetViewController *)v9 setSuggestionClient:mEMORY[0x277CEB5A0]];
 
-    v20 = [(APUIWidgetViewController *)v9 suggestionClient];
-    [v20 registerObserver:v9];
+    suggestionClient = [(APUIWidgetViewController *)v9 suggestionClient];
+    [suggestionClient registerObserver:v9];
 
     v21 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -87,9 +87,9 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v8;
+      v29 = identifierCopy;
       v30 = 2048;
-      v31 = a5;
+      modeCopy = mode;
       _os_log_impl(&dword_240036000, v22, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: APUIAppPredictionViewController initWithIdentifier %@; mode=%ld", buf, 0x16u);
     }
   }
@@ -123,22 +123,22 @@ void __70__APUIAppPredictionViewController_initWithIdentifier_layoutSize_mode___
   [v5 addObserver:*(a1 + 32)];
 }
 
-- (BOOL)matchesWidgetUniqueID:(id)a3 stackID:(id)a4
+- (BOOL)matchesWidgetUniqueID:(id)d stackID:(id)iD
 {
-  v5 = a4;
-  v6 = [(APUIWidgetViewController *)self identifier];
-  v7 = [v6 isEqualToString:v5];
+  iDCopy = iD;
+  identifier = [(APUIWidgetViewController *)self identifier];
+  v7 = [identifier isEqualToString:iDCopy];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v4 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = APUIAppPredictionViewController;
@@ -168,8 +168,8 @@ void __70__APUIAppPredictionViewController_initWithIdentifier_layoutSize_mode___
   [(APUIAppIconGridView *)self->_gridView setOccluded:[(APUIAppPredictionViewController *)self isOccluded]];
   [(APUIAppPredictionViewController *)self _updateEffectiveLargeIconLayoutAnimated:0];
   [(APUIAppPredictionViewController *)self _loadAppsInGridView:self->_gridView];
-  v6 = [(APUIAppPredictionViewController *)self view];
-  [v6 addSubview:self->_gridView];
+  view = [(APUIAppPredictionViewController *)self view];
+  [view addSubview:self->_gridView];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -180,17 +180,17 @@ void __70__APUIAppPredictionViewController_initWithIdentifier_layoutSize_mode___
   v19.receiver = self;
   v19.super_class = APUIAppPredictionViewController;
   [(APUIAppPredictionViewController *)&v19 viewDidLayoutSubviews];
-  v3 = [(APUIAppPredictionViewController *)self view];
-  [v3 bounds];
+  view = [(APUIAppPredictionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) != 1 && !self->_mode)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && !self->_mode)
   {
     left = self->_parentLayoutInsets.left;
     v5 = v5 - left;
@@ -216,58 +216,58 @@ void __70__APUIAppPredictionViewController_initWithIdentifier_layoutSize_mode___
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOccluded:(BOOL)a3
+- (void)setOccluded:(BOOL)occluded
 {
-  if (self->_occluded != a3)
+  if (self->_occluded != occluded)
   {
-    self->_occluded = a3;
+    self->_occluded = occluded;
     [(APUIAppIconGridView *)self->_gridView setOccluded:?];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    v6 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(APUIAppIconGridView *)self->_gridView setLegibilitySettings:self->_legibilitySettings];
-    v5 = v6;
+    settingsCopy = v6;
   }
 }
 
-- (void)setParentLayoutInsets:(UIEdgeInsets)a3
+- (void)setParentLayoutInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_parentLayoutInsets.top), vceqq_f64(v4, *&self->_parentLayoutInsets.bottom)))) & 1) == 0)
   {
-    self->_parentLayoutInsets = a3;
-    v5 = [(APUIAppPredictionViewController *)self viewIfLoaded];
-    [v5 setNeedsLayout];
+    self->_parentLayoutInsets = insets;
+    viewIfLoaded = [(APUIAppPredictionViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
 - (unint64_t)layoutSize
 {
-  v2 = [(APUIWidgetViewController *)self widgetIdentifiable];
-  v3 = [v2 size];
+  widgetIdentifiable = [(APUIWidgetViewController *)self widgetIdentifiable];
+  v3 = [widgetIdentifiable size];
 
   return v3;
 }
 
-- (void)setLayoutSize:(unint64_t)a3
+- (void)setLayoutSize:(unint64_t)size
 {
-  v5 = [(APUIWidgetViewController *)self widgetIdentifiable];
-  v6 = [v5 size];
+  widgetIdentifiable = [(APUIWidgetViewController *)self widgetIdentifiable];
+  v6 = [widgetIdentifiable size];
 
-  if (v6 != a3)
+  if (v6 != size)
   {
-    v7 = [(APUIWidgetViewController *)self widgetIdentifiable];
-    [v7 setSize:a3];
+    widgetIdentifiable2 = [(APUIWidgetViewController *)self widgetIdentifiable];
+    [widgetIdentifiable2 setSize:size];
 
     gridView = self->_gridView;
 
@@ -275,33 +275,33 @@ void __70__APUIAppPredictionViewController_initWithIdentifier_layoutSize_mode___
   }
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
     v5 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(APUIWidgetViewController *)self identifier];
+      identifier = [(APUIWidgetViewController *)self identifier];
       v9 = 134218242;
-      v10 = a3;
+      modeCopy = mode;
       v11 = 2112;
-      v12 = v6;
+      v12 = identifier;
       _os_log_impl(&dword_240036000, v5, OS_LOG_TYPE_DEFAULT, "APUIAppPredictionViewController setting mode: %ld for widget with identifier: %@", &v9, 0x16u);
     }
 
-    self->_mode = a3;
+    self->_mode = mode;
     [(APUIAppPredictionViewController *)self _updateEffectiveLargeIconLayoutAnimated:0];
     [(APUIAppIconGridView *)self->_gridView setMode:self->_mode];
-    v7 = [(APUIAppPredictionViewController *)self viewIfLoaded];
-    [v7 setNeedsLayout];
+    viewIfLoaded = [(APUIAppPredictionViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suggestionClientDidRefreshProactiveWidgetLayouts:(id)a3
+- (void)suggestionClientDidRefreshProactiveWidgetLayouts:(id)layouts
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -332,10 +332,10 @@ uint64_t __84__APUIAppPredictionViewController_suggestionClientDidRefreshProacti
   return v2;
 }
 
-- (void)_loadAppsInGridView:(id)a3
+- (void)_loadAppsInGridView:(id)view
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (self->_userInteracting)
   {
     v5 = __atxlog_handle_ui();
@@ -354,8 +354,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [(APUIWidgetViewController *)self widgetIdentifiable];
-  v8 = [v7 size];
+  widgetIdentifiable = [(APUIWidgetViewController *)self widgetIdentifiable];
+  v8 = [widgetIdentifiable size];
 
   if (v8 != 1)
   {
@@ -381,7 +381,7 @@ LABEL_15:
 
   v11 = __atxlog_handle_ui();
   v5 = v11;
-  if (!v4)
+  if (!viewCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
@@ -399,16 +399,16 @@ LABEL_15:
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v13 = [(APUIWidgetViewController *)self suggestionClient];
-  v14 = [(APUIWidgetViewController *)self widgetIdentifiable];
+  suggestionClient = [(APUIWidgetViewController *)self suggestionClient];
+  widgetIdentifiable2 = [(APUIWidgetViewController *)self widgetIdentifiable];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__APUIAppPredictionViewController__loadAppsInGridView___block_invoke;
   v16[3] = &unk_278C90A68;
   v18 = Current;
   v16[4] = self;
-  v17 = v4;
-  [v13 layoutForAppPredictionPanel:v14 completionHandler:v16];
+  v17 = viewCopy;
+  [suggestionClient layoutForAppPredictionPanel:widgetIdentifiable2 completionHandler:v16];
 
 LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
@@ -450,29 +450,29 @@ uint64_t __55__APUIAppPredictionViewController__loadAppsInGridView___block_invok
   return result;
 }
 
-- (void)_updateLayoutInGridView:(id)a3
+- (void)_updateLayoutInGridView:(id)view
 {
   v99 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v77 = objc_opt_new();
   v5 = objc_opt_new();
   bundleIdSuggestionMap = self->_bundleIdSuggestionMap;
   self->_bundleIdSuggestionMap = v5;
 
-  v7 = [(APUIWidgetViewController *)self layout];
+  layout = [(APUIWidgetViewController *)self layout];
 
-  if (v7)
+  if (layout)
   {
-    v75 = v4;
-    [v4 setShouldDisplayEmptyState:0];
+    v75 = viewCopy;
+    [viewCopy setShouldDisplayEmptyState:0];
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v8 = [(APUIWidgetViewController *)self layout];
-    v9 = [v8 oneByOneSuggestions];
+    layout2 = [(APUIWidgetViewController *)self layout];
+    oneByOneSuggestions = [layout2 oneByOneSuggestions];
 
-    v10 = [v9 countByEnumeratingWithState:&v90 objects:v98 count:16];
+    v10 = [oneByOneSuggestions countByEnumeratingWithState:&v90 objects:v98 count:16];
     if (!v10)
     {
       goto LABEL_23;
@@ -486,17 +486,17 @@ uint64_t __55__APUIAppPredictionViewController__loadAppsInGridView___block_invok
       {
         if (*v91 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(oneByOneSuggestions);
         }
 
         v14 = *(*(&v90 + 1) + 8 * i);
-        v15 = [v14 executableSpecification];
-        v16 = [v15 executableObject];
+        executableSpecification = [v14 executableSpecification];
+        executableObject = [executableSpecification executableObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = v16;
+          v17 = executableObject;
           if (![v17 length])
           {
             goto LABEL_21;
@@ -547,14 +547,14 @@ LABEL_19:
 LABEL_21:
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v90 objects:v98 count:16];
+      v11 = [oneByOneSuggestions countByEnumeratingWithState:&v90 objects:v98 count:16];
       if (!v11)
       {
 LABEL_23:
 
-        v21 = [(APUIWidgetViewController *)self suggestionClient];
-        v22 = [(APUIWidgetViewController *)self identifier];
-        v23 = [v21 pageIndexOfAppPredictionPanelWithIdentifier:v22];
+        suggestionClient = [(APUIWidgetViewController *)self suggestionClient];
+        identifier = [(APUIWidgetViewController *)self identifier];
+        v23 = [suggestionClient pageIndexOfAppPredictionPanelWithIdentifier:identifier];
 
         if (v23 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -591,13 +591,13 @@ LABEL_23:
                 }
 
                 v34 = *(*(&v84 + 1) + 8 * j);
-                v35 = [v34 suggestion];
+                suggestion = [v34 suggestion];
 
-                if (v35)
+                if (suggestion)
                 {
-                  v36 = [(APUIWidgetViewController *)self suggestionClient];
-                  v37 = [v34 bundleId];
-                  [v36 markFallbackAppSuggestion:v37 asUnusedForPage:v23];
+                  suggestionClient2 = [(APUIWidgetViewController *)self suggestionClient];
+                  bundleId = [v34 bundleId];
+                  [suggestionClient2 markFallbackAppSuggestion:bundleId asUnusedForPage:v23];
                 }
               }
 
@@ -608,8 +608,8 @@ LABEL_23:
           }
 
           [(NSMutableSet *)*p_usedFallbacks removeAllObjects];
-          v38 = [(APUIWidgetViewController *)self suggestionClient];
-          v39 = [v38 unusedFallbackAppSuggestionsForPage:v23];
+          suggestionClient3 = [(APUIWidgetViewController *)self suggestionClient];
+          v39 = [suggestionClient3 unusedFallbackAppSuggestionsForPage:v23];
 
           if ([v77 count] <= 7)
           {
@@ -620,67 +620,67 @@ LABEL_23:
                 break;
               }
 
-              v40 = [v39 firstObject];
-              v41 = [v40 executableSpecification];
-              v42 = [v41 executableObject];
+              firstObject = [v39 firstObject];
+              executableSpecification2 = [firstObject executableSpecification];
+              executableObject2 = [executableSpecification2 executableObject];
 
               v43 = __atxlog_handle_ui();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v97 = v42;
+                v97 = executableObject2;
                 _os_log_debug_impl(&dword_240036000, v43, OS_LOG_TYPE_DEBUG, "SuggestionsWidget: using HSSC fallback: %@", buf, 0xCu);
               }
 
-              [v77 addObject:v42];
+              [v77 addObject:executableObject2];
               [v39 removeObjectAtIndex:0];
               v44 = *p_usedFallbacks;
-              v45 = [[APUIAppFallback alloc] initWithProactiveSuggestion:v40];
+              v45 = [[APUIAppFallback alloc] initWithProactiveSuggestion:firstObject];
               [(NSMutableSet *)v44 addObject:v45];
 
-              v46 = [(APUIWidgetViewController *)self suggestionClient];
-              [v46 markFallbackAppSuggestion:v42 asUsedForPage:v23];
+              suggestionClient4 = [(APUIWidgetViewController *)self suggestionClient];
+              [suggestionClient4 markFallbackAppSuggestion:executableObject2 asUsedForPage:v23];
             }
 
             while ([v77 count] < 8);
           }
         }
 
-        v47 = [(APUIAppPredictionViewController *)self _fallbackBundleIds];
-        v76 = v47;
+        _fallbackBundleIds = [(APUIAppPredictionViewController *)self _fallbackBundleIds];
+        v76 = _fallbackBundleIds;
         if ([v77 count] <= 7)
         {
           *&v48 = 138412290;
           v74 = v48;
           do
           {
-            if (![v47 count])
+            if (![_fallbackBundleIds count])
             {
               break;
             }
 
-            v49 = [v47 lastObject];
+            lastObject = [_fallbackBundleIds lastObject];
             v50 = __atxlog_handle_ui();
             if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
             {
               *buf = v74;
-              v97 = v49;
+              v97 = lastObject;
               _os_log_debug_impl(&dword_240036000, v50, OS_LOG_TYPE_DEBUG, "SuggestionsWidget: using fallback: %@", buf, 0xCu);
             }
 
-            [v47 removeLastObject];
-            [v77 addObject:v49];
+            [_fallbackBundleIds removeLastObject];
+            [v77 addObject:lastObject];
             v51 = *p_usedFallbacks;
-            v52 = [[APUIAppFallback alloc] initWithBundleId:v49];
+            v52 = [[APUIAppFallback alloc] initWithBundleId:lastObject];
             [(NSMutableSet *)v51 addObject:v52];
 
-            v47 = v76;
+            _fallbackBundleIds = v76;
           }
 
           while ([v77 count] < 8);
         }
 
-        v53 = [v77 array];
+        array = [v77 array];
         v54 = [v77 count];
         if (v54 >= 8)
         {
@@ -692,28 +692,28 @@ LABEL_23:
           v55 = v54;
         }
 
-        v56 = [v53 subarrayWithRange:{0, v55}];
+        v56 = [array subarrayWithRange:{0, v55}];
         [v75 setBundleIds:v56];
 
         v57 = __atxlog_handle_ui();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
         {
-          v58 = [v75 bundleIds];
+          bundleIds = [v75 bundleIds];
           *buf = 138412290;
-          v97 = v58;
+          v97 = bundleIds;
           _os_log_impl(&dword_240036000, v57, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: gridView.bundleIds=%@", buf, 0xCu);
         }
 
-        v59 = [(APUIWidgetViewController *)self suggestionIds];
-        v79 = [v59 mutableCopy];
+        suggestionIds = [(APUIWidgetViewController *)self suggestionIds];
+        v79 = [suggestionIds mutableCopy];
 
         v60 = objc_opt_new();
         v80 = 0u;
         v81 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v61 = [v75 bundleIds];
-        v62 = [v61 countByEnumeratingWithState:&v80 objects:v94 count:16];
+        bundleIds2 = [v75 bundleIds];
+        v62 = [bundleIds2 countByEnumeratingWithState:&v80 objects:v94 count:16];
         if (v62)
         {
           v63 = v62;
@@ -724,20 +724,20 @@ LABEL_23:
             {
               if (*v81 != v64)
               {
-                objc_enumerationMutation(v61);
+                objc_enumerationMutation(bundleIds2);
               }
 
               v66 = [(NSMutableDictionary *)self->_bundleIdSuggestionMap objectForKeyedSubscript:*(*(&v80 + 1) + 8 * k)];
               v67 = v66;
               if (v66)
               {
-                v68 = [v66 uuid];
-                v69 = [v68 UUIDString];
-                [v60 addObject:v69];
+                uuid = [v66 uuid];
+                uUIDString = [uuid UUIDString];
+                [v60 addObject:uUIDString];
               }
             }
 
-            v63 = [v61 countByEnumeratingWithState:&v80 objects:v94 count:16];
+            v63 = [bundleIds2 countByEnumeratingWithState:&v80 objects:v94 count:16];
           }
 
           while (v63);
@@ -746,15 +746,15 @@ LABEL_23:
         v70 = [v60 copy];
         [(APUIWidgetViewController *)self setSuggestionIds:v70];
 
-        v28 = v79;
+        suggestionClient6 = v79;
         if ([(APUIWidgetViewController *)self effectiveViewVisibility])
         {
-          v71 = [(APUIWidgetViewController *)self suggestionIds];
-          v72 = [(APUIWidgetViewController *)self suggestionClient];
-          [(APUIWidgetViewController *)self logChangeWithNewSuggestionIds:v71 previousSuggestionIds:v79 suggestionClient:v72];
+          suggestionIds2 = [(APUIWidgetViewController *)self suggestionIds];
+          suggestionClient5 = [(APUIWidgetViewController *)self suggestionClient];
+          [(APUIWidgetViewController *)self logChangeWithNewSuggestionIds:suggestionIds2 previousSuggestionIds:v79 suggestionClient:suggestionClient5];
         }
 
-        v4 = v75;
+        viewCopy = v75;
         v27 = v76;
         goto LABEL_68;
       }
@@ -767,63 +767,63 @@ LABEL_23:
     [APUIAppPredictionViewController _updateLayoutInGridView:v25];
   }
 
-  [v4 setShouldDisplayEmptyState:1];
-  [v4 setBundleIds:0];
-  v26 = [(APUIWidgetViewController *)self suggestionIds];
-  v27 = [v26 copy];
+  [viewCopy setShouldDisplayEmptyState:1];
+  [viewCopy setBundleIds:0];
+  suggestionIds3 = [(APUIWidgetViewController *)self suggestionIds];
+  v27 = [suggestionIds3 copy];
 
   [(APUIWidgetViewController *)self setSuggestionIds:0];
-  v28 = [(APUIWidgetViewController *)self suggestionClient];
-  [(APUIWidgetViewController *)self logChangeWithNewSuggestionIds:0 previousSuggestionIds:v27 suggestionClient:v28];
+  suggestionClient6 = [(APUIWidgetViewController *)self suggestionClient];
+  [(APUIWidgetViewController *)self logChangeWithNewSuggestionIds:0 previousSuggestionIds:v27 suggestionClient:suggestionClient6];
 LABEL_68:
 
   v73 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)appIconGridView:(id)a3 launchAppFromIcon:(id)a4
+- (BOOL)appIconGridView:(id)view launchAppFromIcon:(id)icon
 {
-  v5 = a4;
-  if ([v5 isLeafIcon])
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    v6 = [v5 applicationBundleID];
-    if (v6)
+    applicationBundleID = [iconCopy applicationBundleID];
+    if (applicationBundleID)
     {
-      v7 = [(NSMutableDictionary *)self->_bundleIdSuggestionMap objectForKeyedSubscript:v6];
+      v7 = [(NSMutableDictionary *)self->_bundleIdSuggestionMap objectForKeyedSubscript:applicationBundleID];
       if (v7)
       {
         v8 = v7;
-        v9 = [(APUIWidgetViewController *)self suggestionClient];
-        v10 = [(APUIWidgetViewController *)self widgetIdentifiable];
-        v11 = [(APUIWidgetViewController *)self layout];
-        v12 = [v11 uuid];
-        v13 = [v12 UUIDString];
-        [v9 logDidTapSuggestion:v8 widget:v10 blendingCacheId:v13];
+        suggestionClient = [(APUIWidgetViewController *)self suggestionClient];
+        widgetIdentifiable = [(APUIWidgetViewController *)self widgetIdentifiable];
+        layout = [(APUIWidgetViewController *)self layout];
+        uuid = [layout uuid];
+        uUIDString = [uuid UUIDString];
+        [suggestionClient logDidTapSuggestion:v8 widget:widgetIdentifiable blendingCacheId:uUIDString];
 
-        v14 = [(APUIWidgetViewController *)self suggestionClient];
-        v15 = [(APUIWidgetViewController *)self widgetIdentifiable];
-        [v14 didFinishExecutingTappedSuggestion:v8 fromWidget:v15];
+        suggestionClient2 = [(APUIWidgetViewController *)self suggestionClient];
+        widgetIdentifiable2 = [(APUIWidgetViewController *)self widgetIdentifiable];
+        [suggestionClient2 didFinishExecutingTappedSuggestion:v8 fromWidget:widgetIdentifiable2];
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    applicationBundleID = 0;
   }
 
   return 0;
 }
 
-- (BOOL)appIconGridView:(id)a3 shouldDisplayBadgeWithBundleIdentifier:(id)a4
+- (BOOL)appIconGridView:(id)view shouldDisplayBadgeWithBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 appPredictionViewController:self shouldDisplayBadgeWithBundleIdentifier:v5];
+    v9 = [v8 appPredictionViewController:self shouldDisplayBadgeWithBundleIdentifier:identifierCopy];
   }
 
   else
@@ -834,16 +834,16 @@ LABEL_68:
   return v9;
 }
 
-- (id)appIconGridView:(id)a3 iconForApplicationWithBundleIdentifier:(id)a4
+- (id)appIconGridView:(id)view iconForApplicationWithBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 appPredictionViewController:self iconForApplicationWithBundleIdentifier:v5];
+    v9 = [v8 appPredictionViewController:self iconForApplicationWithBundleIdentifier:identifierCopy];
   }
 
   else
@@ -854,7 +854,7 @@ LABEL_68:
   return v9;
 }
 
-- (id)additionalIconListLayoutObserversForAppIconGridView:(id)a3
+- (id)additionalIconListLayoutObserversForAppIconGridView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -873,25 +873,25 @@ LABEL_68:
   return v7;
 }
 
-- (void)setShowingContextMenu:(BOOL)a3
+- (void)setShowingContextMenu:(BOOL)menu
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_showingContextMenu != a3)
+  if (self->_showingContextMenu != menu)
   {
-    v3 = a3;
+    menuCopy = menu;
     v5 = __atxlog_handle_ui();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 136446466;
       v8 = "[APUIAppPredictionViewController setShowingContextMenu:]";
       v9 = 1024;
-      v10 = v3;
+      v10 = menuCopy;
       _os_log_impl(&dword_240036000, v5, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: %{public}s showingContextMenu=%{BOOL}u", &v7, 0x12u);
     }
 
-    self->_showingContextMenu = v3;
+    self->_showingContextMenu = menuCopy;
     [(APUIAppPredictionViewController *)self _updateUserInteractingState];
-    if (v3)
+    if (menuCopy)
     {
       if ([(APUIAppPredictionViewController *)self _canDismissSelectedSuggestion])
       {
@@ -909,9 +909,9 @@ LABEL_68:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShowingAlert:(BOOL)a3
+- (void)setShowingAlert:(BOOL)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v11 = *MEMORY[0x277D85DE8];
   v5 = __atxlog_handle_ui();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -919,13 +919,13 @@ LABEL_68:
     v7 = 136446466;
     v8 = "[APUIAppPredictionViewController setShowingAlert:]";
     v9 = 1024;
-    v10 = v3;
+    v10 = alertCopy;
     _os_log_impl(&dword_240036000, v5, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: %{public}s showingAlert=%{BOOL}u", &v7, 0x12u);
   }
 
-  if (self->_showingAlert != v3)
+  if (self->_showingAlert != alertCopy)
   {
-    self->_showingAlert = v3;
+    self->_showingAlert = alertCopy;
     [(APUIAppPredictionViewController *)self _updateUserInteractingState];
   }
 
@@ -941,10 +941,10 @@ LABEL_68:
   }
 }
 
-- (void)willShowContextMenuAtLocation:(CGPoint)a3
+- (void)willShowContextMenuAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v21 = *MEMORY[0x277D85DE8];
   v6 = __atxlog_handle_ui();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -960,8 +960,8 @@ LABEL_68:
   }
 
   gridView = self->_gridView;
-  v9 = [(APUIAppPredictionViewController *)self view];
-  [(APUIAppIconGridView *)gridView convertPoint:v9 fromView:x, y];
+  view = [(APUIAppPredictionViewController *)self view];
+  [(APUIAppIconGridView *)gridView convertPoint:view fromView:x, y];
   v11 = v10;
   v13 = v12;
 
@@ -1041,10 +1041,10 @@ LABEL_7:
     }
 
     v5 = [(NSMutableDictionary *)self->_bundleIdSuggestionMap objectForKeyedSubscript:self->_selectedBundleId];
-    v7 = [v5 executableSpecification];
-    v8 = [v7 executableType];
+    executableSpecification = [v5 executableSpecification];
+    executableType = [executableSpecification executableType];
 
-    if (v8 == 5)
+    if (executableType == 5)
     {
       v9 = __atxlog_handle_ui();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1105,17 +1105,17 @@ LABEL_17:
   return v13;
 }
 
-- (void)didSelectApplicationShortcutItem:(id)a3
+- (void)didSelectApplicationShortcutItem:(id)item
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = __atxlog_handle_ui();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v28 = "[APUIAppPredictionViewController didSelectApplicationShortcutItem:]";
     v29 = 2112;
-    v30 = v4;
+    v30 = itemCopy;
     _os_log_impl(&dword_240036000, v5, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: %{public}s applicationShortcutItem=%@", buf, 0x16u);
   }
 
@@ -1132,8 +1132,8 @@ LABEL_17:
       _os_log_impl(&dword_240036000, v7, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: %{public}s suggestion=%@", buf, 0x16u);
     }
 
-    v8 = [v4 type];
-    if ([v8 isEqualToString:@"com.apple.AppPredictionUIWidget.application-shortcut-item.never-show-suggestion"])
+    type = [itemCopy type];
+    if ([type isEqualToString:@"com.apple.AppPredictionUIWidget.application-shortcut-item.never-show-suggestion"])
     {
       v9 = MEMORY[0x277CCACA8];
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1176,17 +1176,17 @@ LABEL_17:
       v12 = __atxlog_handle_home_screen();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [(APUIAppPredictionViewController *)v8 didSelectApplicationShortcutItem:v12];
+        [(APUIAppPredictionViewController *)type didSelectApplicationShortcutItem:v12];
       }
     }
   }
 
   else
   {
-    v8 = __atxlog_handle_home_screen();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    type = __atxlog_handle_home_screen();
+    if (os_log_type_enabled(type, OS_LOG_TYPE_ERROR))
     {
-      [APUIAppPredictionViewController didSelectApplicationShortcutItem:v8];
+      [APUIAppPredictionViewController didSelectApplicationShortcutItem:type];
     }
   }
 
@@ -1205,10 +1205,10 @@ void __68__APUIAppPredictionViewController_didSelectApplicationShortcutItem___bl
   [v7 logContextMenuNeverShowAgainForSuggestion:v2 widget:v3 blendingCacheId:v6];
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:a3];
+  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:start];
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1240,10 +1240,10 @@ uint64_t __63__APUIAppPredictionViewController_applicationInstallsDidStart___blo
   return [v2 _updateGridViewForBundleIds:v3];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:a3];
+  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:install];
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1275,10 +1275,10 @@ uint64_t __58__APUIAppPredictionViewController_applicationsDidInstall___block_in
   return [v2 _updateGridViewForBundleIds:v3];
 }
 
-- (void)applicationInstallsDidUpdateIcon:(id)a3
+- (void)applicationInstallsDidUpdateIcon:(id)icon
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:a3];
+  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:icon];
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1301,10 +1301,10 @@ uint64_t __58__APUIAppPredictionViewController_applicationsDidInstall___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:a3];
+  v4 = [APUIAppPredictionViewController _bundleIdentifierSetFromApplicationProxies:uninstall];
   v5 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1336,15 +1336,15 @@ uint64_t __60__APUIAppPredictionViewController_applicationsDidUninstall___block_
   return [v2 _updateGridViewForBundleIds:v3];
 }
 
-- (void)_updateGridViewForBundleIds:(id)a3
+- (void)_updateGridViewForBundleIds:(id)ids
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v5 = [idsCopy countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (!v5)
   {
     goto LABEL_12;
@@ -1359,7 +1359,7 @@ uint64_t __60__APUIAppPredictionViewController_applicationsDidUninstall___block_
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(idsCopy);
       }
 
       v10 = [(NSMutableDictionary *)self->_bundleIdSuggestionMap objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i)];
@@ -1367,7 +1367,7 @@ uint64_t __60__APUIAppPredictionViewController_applicationsDidUninstall___block_
       v7 |= v10 != 0;
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    v6 = [idsCopy countByEnumeratingWithState:&v14 objects:v20 count:16];
   }
 
   while (v6);
@@ -1377,7 +1377,7 @@ uint64_t __60__APUIAppPredictionViewController_applicationsDidUninstall___block_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = idsCopy;
       _os_log_impl(&dword_240036000, v11, OS_LOG_TYPE_DEFAULT, "APUIAppPredictionViewController _updateInstallingBundleIdsWithApplicationProxies: %@ ; reloading apps", buf, 0xCu);
     }
 
@@ -1391,7 +1391,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = idsCopy;
       _os_log_impl(&dword_240036000, v12, OS_LOG_TYPE_DEFAULT, "APUIAppPredictionViewController _updateInstallingBundleIdsWithApplicationProxies: %@ ; not reloading apps", buf, 0xCu);
     }
   }
@@ -1399,16 +1399,16 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_bundleIdentifierSetFromApplicationRecords:(id)a3
++ (id)_bundleIdentifierSetFromApplicationRecords:(id)records
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = recordsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1423,8 +1423,8 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        [v4 addObject:v10];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        [v4 addObject:bundleIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1439,12 +1439,12 @@ LABEL_12:
   return v11;
 }
 
-+ (id)_bundleIdentifierSetFromApplicationProxies:(id)a3
++ (id)_bundleIdentifierSetFromApplicationProxies:(id)proxies
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  proxiesCopy = proxies;
   v5 = [v3 alloc];
-  v6 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global];
+  v6 = [proxiesCopy _pas_mappedArrayWithTransform:&__block_literal_global];
 
   v7 = [v5 initWithArray:v6];
 

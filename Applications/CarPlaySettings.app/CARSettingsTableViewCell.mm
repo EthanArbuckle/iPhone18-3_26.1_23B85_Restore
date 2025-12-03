@@ -1,31 +1,31 @@
 @interface CARSettingsTableViewCell
 + (NSString)reuseIdentifier;
-- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithCoder:(id)a3;
-- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)_switchValueChanged:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithCoder:(id)coder;
+- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)_switchValueChanged:(id)changed;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setSpecifier:(id)a3;
-- (void)specifier:(id)a3 didUpdateEnabled:(BOOL)a4;
-- (void)specifier:(id)a3 didUpdateSelectionStyle:(int64_t)a4;
-- (void)specifier:(id)a3 didUpdateValue:(id)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)specifier:(id)specifier didUpdateEnabled:(BOOL)enabled;
+- (void)specifier:(id)specifier didUpdateSelectionStyle:(int64_t)style;
+- (void)specifier:(id)specifier didUpdateValue:(id)value;
 @end
 
 @implementation CARSettingsTableViewCell
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v6 = a3;
-  v5 = self;
-  sub_10004D06C(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_10004D06C(specifier);
 }
 
-- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -34,10 +34,10 @@
     v6 = 0;
   }
 
-  return CARSettingsTableViewCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return CARSettingsTableViewCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
-- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithCoder:(id)a3
+- (_TtC15CarPlaySettings24CARSettingsTableViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15CarPlaySettings24CARSettingsTableViewCell__specifier) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -66,59 +66,59 @@
   (*((swift_isaMask & *v2) + 0x80))(0);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for CARSettingsTableViewCell();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(CARSettingsTableViewCell *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(CARSettingsTableViewCell *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   [v8 setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   CARSettingsTableViewCell.updateConfiguration(using:)(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)_switchValueChanged:(id)a3
+- (void)_switchValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_10004CAB4(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_10004CAB4(changedCopy);
 }
 
-- (void)specifier:(id)a3 didUpdateSelectionStyle:(int64_t)a4
+- (void)specifier:(id)specifier didUpdateSelectionStyle:(int64_t)style
 {
-  v5 = self;
-  [(CARSettingsTableViewCell *)v5 setSelectionStyle:a4];
-  [(CARSettingsTableViewCell *)v5 setNeedsUpdateConfiguration];
+  selfCopy = self;
+  [(CARSettingsTableViewCell *)selfCopy setSelectionStyle:style];
+  [(CARSettingsTableViewCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)specifier:(id)a3 didUpdateEnabled:(BOOL)a4
+- (void)specifier:(id)specifier didUpdateEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = self;
-  [(CARSettingsTableViewCell *)v5 setUserInteractionEnabled:v4];
-  [(CARSettingsTableViewCell *)v5 setNeedsUpdateConfiguration];
+  enabledCopy = enabled;
+  selfCopy = self;
+  [(CARSettingsTableViewCell *)selfCopy setUserInteractionEnabled:enabledCopy];
+  [(CARSettingsTableViewCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)specifier:(id)a3 didUpdateValue:(id)a4
+- (void)specifier:(id)specifier didUpdateValue:(id)value
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  [(CARSettingsTableViewCell *)v5 setNeedsUpdateConfiguration];
+  [(CARSettingsTableViewCell *)selfCopy setNeedsUpdateConfiguration];
 
   sub_100038D70(&v6);
 }

@@ -1,15 +1,15 @@
 @interface SUUITextHeaderSettingsHeaderFooterDescriptionView
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5;
-+ (id)_concatenateTextFromLabelElements:(id)a3;
-+ (id)_labelWithLabelElements:(id)a3;
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context;
++ (id)_concatenateTextFromLabelElements:(id)elements;
++ (id)_labelWithLabelElements:(id)elements;
 - (void)layoutSubviews;
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SUUITextHeaderSettingsHeaderFooterDescriptionView
 
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -18,14 +18,14 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context
 {
-  v7 = [a4 viewElement];
-  v8 = [objc_opt_class() _labelElementsFromViewElement:v7];
-  v9 = [a1 _labelWithLabelElements:v8];
+  viewElement = [description viewElement];
+  v8 = [objc_opt_class() _labelElementsFromViewElement:viewElement];
+  v9 = [self _labelWithLabelElements:v8];
   v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
   [v9 setFont:v10];
-  [v9 sizeThatFits:{a3, 1.0}];
+  [v9 sizeThatFits:{width, 1.0}];
   v12 = v11;
   v14 = v13;
   [v9 setFrame:{0.0, 0.0, v11, v13}];
@@ -41,11 +41,11 @@
   return result;
 }
 
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = [a3 viewElement];
+  viewElement = [description viewElement];
   viewElement = self->_viewElement;
-  self->_viewElement = v6;
+  self->_viewElement = viewElement;
 
   v12 = [objc_opt_class() _labelElementsFromViewElement:self->_viewElement];
   label = self->_label;
@@ -109,16 +109,16 @@
   [(UILabel *)self->_label setTextAlignment:v24];
 }
 
-+ (id)_concatenateTextFromLabelElements:(id)a3
++ (id)_concatenateTextFromLabelElements:(id)elements
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -133,10 +133,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) text];
-        v11 = [v10 string];
+        text = [*(*(&v14 + 1) + 8 * i) text];
+        string = [text string];
 
-        [v4 addObject:v11];
+        [v4 addObject:string];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -150,16 +150,16 @@
   return v12;
 }
 
-+ (id)_labelWithLabelElements:(id)a3
++ (id)_labelWithLabelElements:(id)elements
 {
   v4 = MEMORY[0x277D756B8];
-  v5 = a3;
+  elementsCopy = elements;
   v6 = objc_alloc_init(v4);
   [v6 setNumberOfLines:0];
   v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   [v6 setTextColor:v7];
 
-  v8 = [a1 _concatenateTextFromLabelElements:v5];
+  v8 = [self _concatenateTextFromLabelElements:elementsCopy];
 
   [v6 setText:v8];
 

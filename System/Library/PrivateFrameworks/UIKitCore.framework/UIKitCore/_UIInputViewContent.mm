@@ -2,22 +2,22 @@
 - (BOOL)_isToolbar;
 - (CGSize)_contentSize;
 - (CGSize)_sizeFittingContentViews;
-- (_UIInputViewContent)initWithFrame:(CGRect)a3 inputView:(id)a4;
-- (void)_setToolbarBackgroundImage:(id)a3;
-- (void)_setToolbarBackgroundViewWithImage:(id)a3;
+- (_UIInputViewContent)initWithFrame:(CGRect)frame inputView:(id)view;
+- (void)_setToolbarBackgroundImage:(id)image;
+- (void)_setToolbarBackgroundViewWithImage:(id)image;
 - (void)_updateCornerClipping;
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 @end
 
 @implementation _UIInputViewContent
 
 - (BOOL)_isToolbar
 {
-  v3 = [(UIView *)self subviews];
-  if ([v3 count] == 1)
+  subviews = [(UIView *)self subviews];
+  if ([subviews count] == 1)
   {
-    v4 = [(UIView *)self subviews];
-    v5 = [v4 lastObject];
+    subviews2 = [(UIView *)self subviews];
+    lastObject = [subviews2 lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -32,18 +32,18 @@
 
 - (void)_updateCornerClipping
 {
-  v3 = [(UIView *)self layer];
-  [v3 setMask:0];
+  layer = [(UIView *)self layer];
+  [layer setMask:0];
 
-  LODWORD(v3) = [(UIView *)self _clipCorners];
+  LODWORD(layer) = [(UIView *)self _clipCorners];
   [(UIInputView *)self->_inputView _additionalClipHeight];
-  v5 = v3 & ~LODWORD(self->_unclippableCorners) & 3;
+  v5 = layer & ~LODWORD(self->_unclippableCorners) & 3;
   if (v5)
   {
     v6 = v4;
     v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v8 = [v7 preferencesActions];
-    [v8 rivenSizeFactor:10.0];
+    preferencesActions = [v7 preferencesActions];
+    [preferencesActions rivenSizeFactor:10.0];
     v10 = v9;
 
     Mutable = CGPathCreateMutable();
@@ -51,49 +51,49 @@
     v13 = v12;
     [(UIView *)self bounds];
     UIKBAddRoundedRectToPath(Mutable, v5, 0, 0.0, 0.0, v13, v6 + v14, v10);
-    v17 = [MEMORY[0x1E69794A0] layer];
-    [v17 setPath:Mutable];
+    layer2 = [MEMORY[0x1E69794A0] layer];
+    [layer2 setPath:Mutable];
     v15 = +[UIColor blackColor];
-    [v17 setFillColor:{objc_msgSend(v15, "CGColor")}];
+    [layer2 setFillColor:{objc_msgSend(v15, "CGColor")}];
 
     CGPathRelease(Mutable);
-    v16 = [(UIView *)self layer];
-    [v16 setMask:v17];
+    layer3 = [(UIView *)self layer];
+    [layer3 setMask:layer2];
   }
 }
 
-- (_UIInputViewContent)initWithFrame:(CGRect)a3 inputView:(id)a4
+- (_UIInputViewContent)initWithFrame:(CGRect)frame inputView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = _UIInputViewContent;
-  v11 = [(UIView *)&v15 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(UIView *)&v15 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_inputView, a4);
+    objc_storeStrong(&height->_inputView, view);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (void)_setToolbarBackgroundImage:(id)a3
+- (void)_setToolbarBackgroundImage:(id)image
 {
-  v16 = a3;
+  imageCopy = image;
   if ([(_UIInputViewContent *)self _isToolbar])
   {
-    v4 = [(UIView *)self subviews];
-    v5 = [v4 lastObject];
+    subviews = [(UIView *)self subviews];
+    lastObject = [subviews lastObject];
 
-    [v5 setBackgroundImage:v16 forToolbarPosition:0 barMetrics:0];
-    [v5 bounds];
+    [lastObject setBackgroundImage:imageCopy forToolbarPosition:0 barMetrics:0];
+    [lastObject bounds];
     v10 = 1.0;
-    if (!v16)
+    if (!imageCopy)
     {
       v10 = 0.0;
     }
@@ -103,36 +103,36 @@
     y = v18.origin.y;
     width = v18.size.width;
     height = v18.size.height;
-    v15 = [v5 _backgroundView];
-    [v15 setFrame:{x, y, width, height}];
+    _backgroundView = [lastObject _backgroundView];
+    [_backgroundView setFrame:{x, y, width, height}];
   }
 }
 
-- (void)_setToolbarBackgroundViewWithImage:(id)a3
+- (void)_setToolbarBackgroundViewWithImage:(id)image
 {
-  v9 = a3;
+  imageCopy = image;
   if ([(_UIInputViewContent *)self _isToolbar])
   {
-    v4 = [(UIView *)self subviews];
-    v5 = [v4 lastObject];
+    subviews = [(UIView *)self subviews];
+    lastObject = [subviews lastObject];
 
-    if (v9)
+    if (imageCopy)
     {
-      v6 = [v5 _backgroundView];
+      _backgroundView = [lastObject _backgroundView];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ([v6 image], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != v9))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ([_backgroundView image], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != imageCopy))
       {
-        v8 = [[UIImageView alloc] initWithImage:v9];
+        v8 = [[UIImageView alloc] initWithImage:imageCopy];
 
         [(UIView *)v8 setAutoresizingMask:18];
-        v6 = v8;
+        _backgroundView = v8;
       }
 
-      [v5 _setBackgroundView:v6];
-      if (v6)
+      [lastObject _setBackgroundView:_backgroundView];
+      if (_backgroundView)
       {
-        [v5 bounds];
-        [v6 setFrame:?];
+        [lastObject bounds];
+        [_backgroundView setFrame:?];
 
 LABEL_10:
         goto LABEL_11;
@@ -141,10 +141,10 @@ LABEL_10:
 
     else
     {
-      [v5 _setBackgroundView:0];
+      [lastObject _setBackgroundView:0];
     }
 
-    [v5 setNeedsLayout];
+    [lastObject setNeedsLayout];
     goto LABEL_10;
   }
 
@@ -161,14 +161,14 @@ LABEL_11:
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v2 = [(UIView *)self subviews];
+  subviews = [(UIView *)self subviews];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47___UIInputViewContent__sizeFittingContentViews__block_invoke;
   v7[3] = &unk_1E710E4B8;
   v7[4] = &v12;
   v7[5] = &v8;
-  [v2 enumerateObjectsUsingBlock:v7];
+  [subviews enumerateObjectsUsingBlock:v7];
 
   v3 = v13[3];
   v4 = v9[3];
@@ -181,11 +181,11 @@ LABEL_11:
   return result;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v9.receiver = self;
   v9.super_class = _UIInputViewContent;
-  [(UIView *)&v9 addSubview:a3];
+  [(UIView *)&v9 addSubview:subview];
   contentWidth = self->_contentWidth;
   contentHeight = self->_contentHeight;
   [(_UIInputViewContent *)self _sizeFittingContentViews];

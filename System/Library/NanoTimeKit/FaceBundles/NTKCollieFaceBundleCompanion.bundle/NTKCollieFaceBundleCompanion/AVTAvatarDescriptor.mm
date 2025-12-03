@@ -1,20 +1,20 @@
 @interface AVTAvatarDescriptor
-+ (BOOL)_canLoadDataRepresentation:(id)a3 minSupportedVersion:(int64_t)a4 serializationVersion:(int64_t)a5 error:(id *)a6;
-+ (BOOL)ntk_canLoadDataRepresentation:(id)a3 forDevice:(id)a4 error:(id *)a5;
-+ (void)_device:(id)a3 minSupportedVersion:(int64_t *)a4 serializationVersion:(int64_t *)a5;
++ (BOOL)_canLoadDataRepresentation:(id)representation minSupportedVersion:(int64_t)version serializationVersion:(int64_t)serializationVersion error:(id *)error;
++ (BOOL)ntk_canLoadDataRepresentation:(id)representation forDevice:(id)device error:(id *)error;
++ (void)_device:(id)_device minSupportedVersion:(int64_t *)version serializationVersion:(int64_t *)serializationVersion;
 @end
 
 @implementation AVTAvatarDescriptor
 
-+ (void)_device:(id)a3 minSupportedVersion:(int64_t *)a4 serializationVersion:(int64_t *)a5
++ (void)_device:(id)_device minSupportedVersion:(int64_t *)version serializationVersion:(int64_t *)serializationVersion
 {
-  v7 = [a3 pdrDeviceVersion];
+  pdrDeviceVersion = [_device pdrDeviceVersion];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   do
   {
-    if (dword_26A58[v8] <= v7)
+    if (dword_26A58[v8] <= pdrDeviceVersion)
     {
       v10 = *&dword_26A58[v8 + 2];
       v9 = *&dword_26A58[v8 + 4];
@@ -25,16 +25,16 @@
   }
 
   while (!v11);
-  *a4 = v10;
-  *a5 = v9;
+  *version = v10;
+  *serializationVersion = v9;
 }
 
-+ (BOOL)_canLoadDataRepresentation:(id)a3 minSupportedVersion:(int64_t)a4 serializationVersion:(int64_t)a5 error:(id *)a6
++ (BOOL)_canLoadDataRepresentation:(id)representation minSupportedVersion:(int64_t)version serializationVersion:(int64_t)serializationVersion error:(id *)error
 {
-  v9 = a3;
+  representationCopy = representation;
   v10 = objc_autoreleasePoolPush();
   v25 = 0;
-  v11 = [NSJSONSerialization JSONObjectWithData:v9 options:0 error:&v25];
+  v11 = [NSJSONSerialization JSONObjectWithData:representationCopy options:0 error:&v25];
   v12 = v25;
   if (v11)
   {
@@ -42,12 +42,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 integerValue];
+      versionCopy = [v13 integerValue];
     }
 
     else
     {
-      v14 = 0x7FFFFFFFFFFFFFFFLL;
+      versionCopy = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     v17 = [v11 objectForKey:@"version"];
@@ -55,20 +55,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v17 integerValue];
+      integerValue = [v17 integerValue];
       v19 = @"Recipe version / minVersion (%d / %d) could not be determined";
       v16 = 2003;
-      if (v18 != 0x7FFFFFFFFFFFFFFFLL && v14 != 0x7FFFFFFFFFFFFFFFLL)
+      if (integerValue != 0x7FFFFFFFFFFFFFFFLL && versionCopy != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v18 >= a4)
+        if (integerValue >= version)
         {
-          if (v14 <= a5)
+          if (versionCopy <= serializationVersion)
           {
-            v15 = 0;
+            versionCopy = 0;
             v16 = 0;
 LABEL_14:
 
-            if (!v15)
+            if (!versionCopy)
             {
               goto LABEL_16;
             }
@@ -77,8 +77,8 @@ LABEL_14:
           }
 
           v16 = 2002;
-          v18 = v14;
-          v14 = a5;
+          integerValue = versionCopy;
+          versionCopy = serializationVersion;
           v19 = @"Recipe is too new (%d > %d)";
         }
 
@@ -86,7 +86,7 @@ LABEL_14:
         {
           v19 = @"Recipe is too old (%d < %d)";
           v16 = 2001;
-          v14 = a4;
+          versionCopy = version;
         }
       }
     }
@@ -95,21 +95,21 @@ LABEL_14:
     {
       v19 = @"Recipe version / minVersion (%d / %d) could not be determined";
       v16 = 2003;
-      v18 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v15 = [NSString stringWithFormat:v19, v18, v14];
+    versionCopy = [NSString stringWithFormat:v19, integerValue, versionCopy];
     goto LABEL_14;
   }
 
-  v15 = [NSString stringWithFormat:@"Recipe could not be decoded (%@)", v12];
+  versionCopy = [NSString stringWithFormat:@"Recipe could not be decoded (%@)", v12];
   v16 = 2003;
-  if (v15)
+  if (versionCopy)
   {
 LABEL_15:
     v20 = kNTKErrorDomain;
     v26 = NSLocalizedDescriptionKey;
-    v27 = v15;
+    v27 = versionCopy;
     v21 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v22 = [NSError errorWithDomain:v20 code:v16 userInfo:v21];
 
@@ -119,24 +119,24 @@ LABEL_15:
 LABEL_16:
 
   objc_autoreleasePoolPop(v10);
-  if (a6)
+  if (error)
   {
     v23 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-+ (BOOL)ntk_canLoadDataRepresentation:(id)a3 forDevice:(id)a4 error:(id *)a5
++ (BOOL)ntk_canLoadDataRepresentation:(id)representation forDevice:(id)device error:(id *)error
 {
   v10 = 0;
   v11 = 0;
-  v8 = a3;
-  [a1 _device:a4 minSupportedVersion:&v11 serializationVersion:&v10];
-  LOBYTE(a5) = [a1 _canLoadDataRepresentation:v8 minSupportedVersion:v11 serializationVersion:v10 error:a5];
+  representationCopy = representation;
+  [self _device:device minSupportedVersion:&v11 serializationVersion:&v10];
+  LOBYTE(error) = [self _canLoadDataRepresentation:representationCopy minSupportedVersion:v11 serializationVersion:v10 error:error];
 
-  return a5;
+  return error;
 }
 
 @end

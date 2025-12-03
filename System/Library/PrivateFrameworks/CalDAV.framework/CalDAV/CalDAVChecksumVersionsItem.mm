@@ -1,41 +1,41 @@
 @interface CalDAVChecksumVersionsItem
-- (BOOL)supportsVersion:(id)a3;
+- (BOOL)supportsVersion:(id)version;
 - (id)copyParseRules;
-- (void)addVersionSupported:(id)a3;
+- (void)addVersionSupported:(id)supported;
 @end
 
 @implementation CalDAVChecksumVersionsItem
 
-- (void)addVersionSupported:(id)a3
+- (void)addVersionSupported:(id)supported
 {
-  v4 = a3;
-  v11 = v4;
+  supportedCopy = supported;
+  v11 = supportedCopy;
   if (!self->_versionStringsSupported)
   {
     v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:1];
     versionStringsSupported = self->_versionStringsSupported;
     self->_versionStringsSupported = v5;
 
-    v4 = v11;
+    supportedCopy = v11;
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v4 nameSpace];
-  v9 = [v11 name];
-  v10 = [v7 CDVStringWithNameSpace:v8 andName:v9];
+  nameSpace = [supportedCopy nameSpace];
+  name = [v11 name];
+  v10 = [v7 CDVStringWithNameSpace:nameSpace andName:name];
 
   [(NSMutableSet *)self->_versionStringsSupported addObject:v10];
 }
 
-- (BOOL)supportsVersion:(id)a3
+- (BOOL)supportsVersion:(id)version
 {
   versionStringsSupported = self->_versionStringsSupported;
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v5 nameSpace];
-  v7 = [v5 name];
+  versionCopy = version;
+  nameSpace = [versionCopy nameSpace];
+  name = [versionCopy name];
 
-  v8 = [v4 CDVStringWithNameSpace:v6 andName:v7];
+  v8 = [v4 CDVStringWithNameSpace:nameSpace andName:name];
   LOBYTE(versionStringsSupported) = [(NSMutableSet *)versionStringsSupported containsObject:v8];
 
   return versionStringsSupported;

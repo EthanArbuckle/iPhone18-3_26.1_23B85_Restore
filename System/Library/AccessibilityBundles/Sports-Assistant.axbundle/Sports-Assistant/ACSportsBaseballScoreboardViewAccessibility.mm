@@ -1,17 +1,17 @@
 @interface ACSportsBaseballScoreboardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation ACSportsBaseballScoreboardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ACSportsBaseballScoreboardView" isKindOfClass:@"ACSportsPeriodicScoreboardView"];
-  [v3 validateClass:@"ACSportsBaseballScoreboardView" hasInstanceVariable:@"_hitsLineScoreView" withType:"ACSportsMatchupLineScoreView"];
-  [v3 validateClass:@"ACSportsBaseballScoreboardView" hasInstanceVariable:@"_errorsLineScoreView" withType:"ACSportsMatchupLineScoreView"];
-  [v3 validateClass:@"ACSportsBaseballScoreboardView" hasInstanceMethod:@"matchup" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ACSportsBaseballScoreboardView" isKindOfClass:@"ACSportsPeriodicScoreboardView"];
+  [validationsCopy validateClass:@"ACSportsBaseballScoreboardView" hasInstanceVariable:@"_hitsLineScoreView" withType:"ACSportsMatchupLineScoreView"];
+  [validationsCopy validateClass:@"ACSportsBaseballScoreboardView" hasInstanceVariable:@"_errorsLineScoreView" withType:"ACSportsMatchupLineScoreView"];
+  [validationsCopy validateClass:@"ACSportsBaseballScoreboardView" hasInstanceMethod:@"matchup" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
@@ -19,8 +19,8 @@
   v21 = *MEMORY[0x29EDCA608];
   v19.receiver = self;
   v19.super_class = ACSportsBaseballScoreboardViewAccessibility;
-  v3 = [(ACSportsBaseballScoreboardViewAccessibility *)&v19 accessibilityElements];
-  v4 = [v3 mutableCopy];
+  accessibilityElements = [(ACSportsBaseballScoreboardViewAccessibility *)&v19 accessibilityElements];
+  v4 = [accessibilityElements mutableCopy];
 
   v5 = [(ACSportsBaseballScoreboardViewAccessibility *)self safeValueForKey:@"_hitsLineScoreView"];
   v6 = [(ACSportsBaseballScoreboardViewAccessibility *)self safeValueForKey:@"_errorsLineScoreView"];

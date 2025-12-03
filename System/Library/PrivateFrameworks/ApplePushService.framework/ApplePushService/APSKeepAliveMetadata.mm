@@ -1,16 +1,16 @@
 @interface APSKeepAliveMetadata
-- (APSKeepAliveMetadata)initWithUsingWWAN:(BOOL)a3 keepAliveInterval:(int)a4 delayedResponseInterval:(int)a5 usingServerStats:(BOOL)a6 keepAliveState:(id)a7 hwVersion:(id)a8 swVersion:(id)a9 swBuild:(id)a10;
+- (APSKeepAliveMetadata)initWithUsingWWAN:(BOOL)n keepAliveInterval:(int)interval delayedResponseInterval:(int)responseInterval usingServerStats:(BOOL)stats keepAliveState:(id)state hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)self0;
 @end
 
 @implementation APSKeepAliveMetadata
 
-- (APSKeepAliveMetadata)initWithUsingWWAN:(BOOL)a3 keepAliveInterval:(int)a4 delayedResponseInterval:(int)a5 usingServerStats:(BOOL)a6 keepAliveState:(id)a7 hwVersion:(id)a8 swVersion:(id)a9 swBuild:(id)a10
+- (APSKeepAliveMetadata)initWithUsingWWAN:(BOOL)n keepAliveInterval:(int)interval delayedResponseInterval:(int)responseInterval usingServerStats:(BOOL)stats keepAliveState:(id)state hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)self0
 {
-  v12 = a3;
-  v14 = a7;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
+  nCopy = n;
+  stateCopy = state;
+  versionCopy = version;
+  swVersionCopy = swVersion;
+  buildCopy = build;
   v46.receiver = self;
   v46.super_class = APSKeepAliveMetadata;
   v18 = [(APSKeepAliveMetadata *)&v46 init];
@@ -21,7 +21,7 @@
     v21 = @"Unknown";
     v18->_carrier = @"Unknown";
 
-    if (v12)
+    if (nCopy)
     {
       v22 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
       v23 = objc_opt_respondsToSelector();
@@ -29,11 +29,11 @@
       if (v23)
       {
         v24 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
-        v25 = [v24 networkCode];
+        networkCode = [v24 networkCode];
 
-        if (v25 && [v25 length])
+        if (networkCode && [networkCode length])
         {
-          v26 = [v25 copy];
+          v26 = [networkCode copy];
           v27 = v19->_carrier;
           v19->_carrier = v26;
         }
@@ -41,23 +41,23 @@
 
       else
       {
-        v25 = 0;
+        networkCode = 0;
       }
     }
 
     else
     {
-      v25 = v19->_carrier;
+      networkCode = v19->_carrier;
       v19->_carrier = @"WiFi";
     }
 
-    if (v16 && v17)
+    if (swVersionCopy && buildCopy)
     {
-      v28 = [v16 copy];
+      v28 = [swVersionCopy copy];
       softwareVersion = v19->_softwareVersion;
       v19->_softwareVersion = v28;
 
-      v30 = [v17 copy];
+      v30 = [buildCopy copy];
       softwareBuild = v19->_softwareBuild;
       v19->_softwareBuild = v30;
     }
@@ -85,9 +85,9 @@
       v19->_softwareBuild = &v21->isa;
     }
 
-    if (v15)
+    if (versionCopy)
     {
-      v37 = [v15 copy];
+      v37 = [versionCopy copy];
       hardwareVersion = v19->_hardwareVersion;
       v19->_hardwareVersion = v37;
     }
@@ -108,10 +108,10 @@
       }
     }
 
-    v19->_keepAliveInterval = a4;
-    v19->_delayedResponseInterval = a5;
-    v19->_usingServerStats = a6;
-    v19->_keepAliveState = v14;
+    v19->_keepAliveInterval = interval;
+    v19->_delayedResponseInterval = responseInterval;
+    v19->_usingServerStats = stats;
+    v19->_keepAliveState = stateCopy;
   }
 
   return v19;

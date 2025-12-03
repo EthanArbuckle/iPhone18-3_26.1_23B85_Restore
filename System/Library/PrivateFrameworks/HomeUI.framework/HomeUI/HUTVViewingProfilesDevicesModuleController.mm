@@ -1,28 +1,28 @@
 @interface HUTVViewingProfilesDevicesModuleController
-- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)a3;
-- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)a3 host:(id)a4;
-- (void)_toggleShowTVViewingProfileForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)module;
+- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)module host:(id)host;
+- (void)_toggleShowTVViewingProfileForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
 @end
 
 @implementation HUTVViewingProfilesDevicesModuleController
 
-- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)a3
+- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)module
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModule_host_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUTVViewingProfilesDevicesModuleController.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HUTVViewingProfilesDevicesModuleController initWithModule:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTVViewingProfilesDevicesModuleController.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HUTVViewingProfilesDevicesModuleController initWithModule:]", v6}];
 
   return 0;
 }
 
-- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)a3 host:(id)a4
+- (HUTVViewingProfilesDevicesModuleController)initWithModule:(id)module host:(id)host
 {
-  v6 = a3;
-  v7 = a4;
+  moduleCopy = module;
+  hostCopy = host;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = moduleCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -41,9 +41,9 @@
       goto LABEL_8;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v12 handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v11 = 0;
@@ -55,23 +55,23 @@ LABEL_8:
   v15 = v14;
   if (v14)
   {
-    [(HUItemModuleController *)v14 setHost:v7];
+    [(HUItemModuleController *)v14 setHost:hostCopy];
   }
 
   return v15;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 isTVViewingProfileDevice:v6];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v8 = [module isTVViewingProfileDevice:itemCopy];
 
   if (v8)
   {
     objc_opt_class();
-    v9 = v12;
+    v9 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -88,13 +88,13 @@ LABEL_8:
   }
 }
 
-- (void)_toggleShowTVViewingProfileForItem:(id)a3
+- (void)_toggleShowTVViewingProfileForItem:(id)item
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -107,10 +107,10 @@ LABEL_8:
 
   v7 = v6;
 
-  v8 = [v7 sourceItem];
+  sourceItem = [v7 sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = sourceItem;
   }
 
   else
@@ -120,12 +120,12 @@ LABEL_8:
 
   v10 = v9;
 
-  v11 = [v10 accessories];
-  if (v11)
+  accessories = [v10 accessories];
+  if (accessories)
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 viewingProfilesDevices];
-    v14 = [v13 mutableCopy];
+    module = [(HUItemModuleController *)self module];
+    viewingProfilesDevices = [module viewingProfilesDevices];
+    v14 = [viewingProfilesDevices mutableCopy];
     v15 = v14;
     if (v14)
     {
@@ -143,7 +143,7 @@ LABEL_8:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = v11;
+    v18 = accessories;
     v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v19)
     {
@@ -169,12 +169,12 @@ LABEL_8:
 
       if (v24)
       {
-        v25 = [v18 allObjects];
-        [v17 removeObjectsInArray:v25];
+        allObjects = [v18 allObjects];
+        [v17 removeObjectsInArray:allObjects];
 LABEL_22:
 
-        v26 = [(HUItemModuleController *)self module];
-        [v26 setViewingProfilesDevices:v17];
+        module2 = [(HUItemModuleController *)self module];
+        [module2 setViewingProfilesDevices:v17];
 
         goto LABEL_23;
       }
@@ -184,28 +184,28 @@ LABEL_22:
     {
     }
 
-    v25 = [v18 allObjects];
-    [v17 addObjectsFromArray:v25];
+    allObjects = [v18 allObjects];
+    [v17 addObjectsFromArray:allObjects];
     goto LABEL_22;
   }
 
 LABEL_23:
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = [a3 item];
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 isTVViewingProfileDevice:v6];
+  item = [cell item];
+  module = [(HUItemModuleController *)self module];
+  v8 = [module isTVViewingProfileDevice:item];
 
   if (v8)
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (onCopy)
       {
         v10 = @"On";
       }
@@ -215,15 +215,15 @@ LABEL_23:
         v10 = @"Off";
       }
 
-      v11 = [v6 latestResults];
+      latestResults = [item latestResults];
       v12 = 138412546;
       v13 = v10;
       v14 = 2112;
-      v15 = v11;
+      v15 = latestResults;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Turning Use My TV Viewing Profile %@ for %@", &v12, 0x16u);
     }
 
-    [(HUTVViewingProfilesDevicesModuleController *)self _toggleShowTVViewingProfileForItem:v6];
+    [(HUTVViewingProfilesDevicesModuleController *)self _toggleShowTVViewingProfileForItem:item];
   }
 }
 

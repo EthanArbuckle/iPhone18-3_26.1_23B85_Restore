@@ -1,13 +1,13 @@
 @interface CACCorrectionsCollectionViewController
 - (CACCorrectionsCollectionViewController)init;
 - (CACCorrectionsCollectionViewControllerDelegate)delegate;
-- (id)_itemsInSection:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_didTapCancel:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)_itemsInSection:(int64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_didTapCancel:(id)cancel;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CACCorrectionsCollectionViewController
@@ -33,83 +33,83 @@
   [(CACCorrectionsCollectionViewController *)self setTitle:v3];
 
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__didTapCancel_];
-  v5 = [(CACCorrectionsCollectionViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(CACCorrectionsCollectionViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  v7 = [(CACCorrectionsCollectionViewController *)self collectionView];
-  [v7 setBackgroundColor:v6];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  collectionView = [(CACCorrectionsCollectionViewController *)self collectionView];
+  [collectionView setBackgroundColor:whiteColor];
 
-  v8 = [(CACCorrectionsCollectionViewController *)self collectionView];
-  [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Cell"];
+  collectionView2 = [(CACCorrectionsCollectionViewController *)self collectionView];
+  [collectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Cell"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CACCorrectionsCollectionViewController;
-  [(CACCorrectionsCollectionViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CACCorrectionsCollectionViewController *)self collectionView];
-  [v4 reloadData];
+  [(CACCorrectionsCollectionViewController *)&v5 viewWillAppear:appear];
+  collectionView = [(CACCorrectionsCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)_didTapCancel:(id)a3
+- (void)_didTapCancel:(id)cancel
 {
-  v4 = [(CACCorrectionsCollectionViewController *)self delegate];
-  [v4 dismissCorrectionsCollectionViewController:self];
+  delegate = [(CACCorrectionsCollectionViewController *)self delegate];
+  [delegate dismissCorrectionsCollectionViewController:self];
 }
 
-- (id)_itemsInSection:(int64_t)a3
+- (id)_itemsInSection:(int64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
-    v3 = [(CACCorrectionsCollectionViewController *)self emojis];
+    emojis = [(CACCorrectionsCollectionViewController *)self emojis];
   }
 
-  else if (a3)
+  else if (section)
   {
-    v3 = 0;
+    emojis = 0;
   }
 
   else
   {
-    v3 = [(CACCorrectionsCollectionViewController *)self alternatives];
+    emojis = [(CACCorrectionsCollectionViewController *)self alternatives];
   }
 
-  return v3;
+  return emojis;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CACCorrectionsCollectionViewController *)self _itemsInSection:a4];
+  v4 = [(CACCorrectionsCollectionViewController *)self _itemsInSection:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:v6];
-  v8 = -[CACCorrectionsCollectionViewController _itemsInSection:](self, "_itemsInSection:", [v6 section]);
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:pathCopy];
+  v8 = -[CACCorrectionsCollectionViewController _itemsInSection:](self, "_itemsInSection:", [pathCopy section]);
+  v9 = [pathCopy row];
 
   v10 = [v8 objectAtIndexedSubscript:v9];
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(CACCorrectionsCollectionViewController *)self delegate];
-  v6 = -[CACCorrectionsCollectionViewController _itemsInSection:](self, "_itemsInSection:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  delegate = [(CACCorrectionsCollectionViewController *)self delegate];
+  v6 = -[CACCorrectionsCollectionViewController _itemsInSection:](self, "_itemsInSection:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   v8 = [v6 objectAtIndexedSubscript:v7];
-  [v9 correctionsCollectionViewController:self didSelectItemWithText:v8];
+  [delegate correctionsCollectionViewController:self didSelectItemWithText:v8];
 }
 
 - (CACCorrectionsCollectionViewControllerDelegate)delegate

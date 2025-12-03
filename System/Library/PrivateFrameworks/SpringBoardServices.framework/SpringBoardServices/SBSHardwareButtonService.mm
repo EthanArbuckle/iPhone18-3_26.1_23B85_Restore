@@ -1,25 +1,25 @@
 @interface SBSHardwareButtonService
 + (SBSHardwareButtonService)sharedInstance;
 - (BOOL)getAssociatedHintViewsSupported;
-- (id)_viableConsumerForButtonKind:(int64_t)a3 event:(int64_t)a4 priority:(int64_t)a5;
-- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)a3 reason:(id)a4;
-- (id)beginConsumingPressesForButtonKind:(int64_t)a3 eventConsumer:(id)a4 priority:(int64_t)a5;
-- (id)deferHIDEventsForButtonKind:(int64_t)a3 toToken:(id)a4;
+- (id)_viableConsumerForButtonKind:(int64_t)kind event:(int64_t)event priority:(int64_t)priority;
+- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)options reason:(id)reason;
+- (id)beginConsumingPressesForButtonKind:(int64_t)kind eventConsumer:(id)consumer priority:(int64_t)priority;
+- (id)deferHIDEventsForButtonKind:(int64_t)kind toToken:(id)token;
 - (id)description;
-- (id)registerAssociatedHintViewContextId:(unsigned int)a3 layerRenderId:(unint64_t)a4 layerSize:(CGSize)a5 forButtonKind:(int64_t)a6;
-- (int64_t)toggleStateForButtonKind:(int64_t)a3;
-- (void)_addEventConsumerInfo:(id)a3;
-- (void)_mainQueue_handleButtonPressMessage:(int64_t)a3 forButtonKind:(int64_t)a4 priority:(int64_t)a5;
-- (void)_resetEventMaskForButtonKind:(int64_t)a3;
-- (void)_setApplicationClientEventMask:(unint64_t)a3 buttonKind:(int64_t)a4 priority:(int64_t)a5;
-- (void)acquireHomeHardwareButtonHintSuppressionAssertionForReason:(id)a3 completion:(id)a4;
-- (void)consumerInfoWillInvalidate:(id)a3;
-- (void)fetchHapticTypeForButtonKind:(int64_t)a3 completion:(id)a4;
-- (void)handleButtonPressMessage:(int64_t)a3 forButtonKind:(int64_t)a4 priority:(int64_t)a5;
-- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)a3 completion:(id)a4;
-- (void)setHapticType:(int64_t)a3 forButtonKind:(int64_t)a4;
-- (void)updateHintViewContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5;
-- (void)updateSystemGlowStyle:(int64_t)a3;
+- (id)registerAssociatedHintViewContextId:(unsigned int)id layerRenderId:(unint64_t)renderId layerSize:(CGSize)size forButtonKind:(int64_t)kind;
+- (int64_t)toggleStateForButtonKind:(int64_t)kind;
+- (void)_addEventConsumerInfo:(id)info;
+- (void)_mainQueue_handleButtonPressMessage:(int64_t)message forButtonKind:(int64_t)kind priority:(int64_t)priority;
+- (void)_resetEventMaskForButtonKind:(int64_t)kind;
+- (void)_setApplicationClientEventMask:(unint64_t)mask buttonKind:(int64_t)kind priority:(int64_t)priority;
+- (void)acquireHomeHardwareButtonHintSuppressionAssertionForReason:(id)reason completion:(id)completion;
+- (void)consumerInfoWillInvalidate:(id)invalidate;
+- (void)fetchHapticTypeForButtonKind:(int64_t)kind completion:(id)completion;
+- (void)handleButtonPressMessage:(int64_t)message forButtonKind:(int64_t)kind priority:(int64_t)priority;
+- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)style completion:(id)completion;
+- (void)setHapticType:(int64_t)type forButtonKind:(int64_t)kind;
+- (void)updateHintViewContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings;
+- (void)updateSystemGlowStyle:(int64_t)style;
 @end
 
 @implementation SBSHardwareButtonService
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __42__SBSHardwareButtonService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -48,21 +48,21 @@ uint64_t __42__SBSHardwareButtonService_sharedInstance__block_invoke(uint64_t a1
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)acquireHomeHardwareButtonHintSuppressionAssertionForReason:(id)a3 completion:(id)a4
+- (void)acquireHomeHardwareButtonHintSuppressionAssertionForReason:(id)reason completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSAbstractFacilityService *)self callbackQueue];
-  v9 = [(SBSAbstractSystemService *)self client];
+  completionCopy = completion;
+  reasonCopy = reason;
+  callbackQueue = [(SBSAbstractFacilityService *)self callbackQueue];
+  client = [(SBSAbstractSystemService *)self client];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__SBSHardwareButtonService_acquireHomeHardwareButtonHintSuppressionAssertionForReason_completion___block_invoke;
   v12[3] = &unk_1E735F818;
-  v13 = v8;
-  v14 = v6;
-  v10 = v6;
-  v11 = v8;
-  [v9 acquireAssertionOfType:0 forReason:v7 withCompletion:v12];
+  v13 = callbackQueue;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = callbackQueue;
+  [client acquireAssertionOfType:0 forReason:reasonCopy withCompletion:v12];
 }
 
 void __98__SBSHardwareButtonService_acquireHomeHardwareButtonHintSuppressionAssertionForReason_completion___block_invoke(uint64_t a1, void *a2)
@@ -85,18 +85,18 @@ void __98__SBSHardwareButtonService_acquireHomeHardwareButtonHintSuppressionAsse
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_buttonConfigurationsPerKind withName:@"buttonConfigurationsPerKind" skipIfNil:0];
   v5 = [v3 appendObject:self->_consumersPerKind withName:@"consumersPerKind" skipIfNil:0];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)_setApplicationClientEventMask:(unint64_t)a3 buttonKind:(int64_t)a4 priority:(int64_t)a5
+- (void)_setApplicationClientEventMask:(unint64_t)mask buttonKind:(int64_t)kind priority:(int64_t)priority
 {
-  v8 = [(SBSAbstractSystemService *)self client];
-  [v8 setEventMask:a3 forButtonKind:a4 priority:a5];
+  client = [(SBSAbstractSystemService *)self client];
+  [client setEventMask:mask forButtonKind:kind priority:priority];
 }
 
-- (void)_resetEventMaskForButtonKind:(int64_t)a3
+- (void)_resetEventMaskForButtonKind:(int64_t)kind
 {
   v35 = *MEMORY[0x1E69E9840];
   buttonConfigurationsPerKind = self->_buttonConfigurationsPerKind;
@@ -109,10 +109,10 @@ void __98__SBSHardwareButtonService_acquireHomeHardwareButtonHintSuppressionAsse
     buttonConfigurationsPerKind = self->_buttonConfigurationsPerKind;
   }
 
-  v8 = [(BSMutableIntegerMap *)buttonConfigurationsPerKind objectForKey:a3];
-  v24 = [v8 eventMask];
-  v25 = [v8 maximumPriority];
-  [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:a3];
+  v8 = [(BSMutableIntegerMap *)buttonConfigurationsPerKind objectForKey:kind];
+  eventMask = [v8 eventMask];
+  maximumPriority = [v8 maximumPriority];
+  [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:kind];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -134,13 +134,13 @@ LABEL_5:
       }
 
       v16 = *(*(&v26 + 1) + 8 * v15);
-      if ([v16 buttonKind] == a3)
+      if ([v16 buttonKind] == kind)
       {
         v13 |= [v16 eventMask];
-        v17 = [v16 eventPriority];
-        if (v17 > v12)
+        eventPriority = [v16 eventPriority];
+        if (eventPriority > v12)
         {
-          v12 = v17;
+          v12 = eventPriority;
         }
 
         if ((v13 & 0x10000) != 0)
@@ -168,10 +168,10 @@ LABEL_5:
     v13 = 0;
   }
 
-  if (v24 == v13)
+  if (eventMask == v13)
   {
-    v18 = v25;
-    if (v25 == v12)
+    v18 = maximumPriority;
+    if (maximumPriority == v12)
     {
       goto LABEL_26;
     }
@@ -180,12 +180,12 @@ LABEL_5:
   else
   {
     v19 = SBLogCommon();
-    v18 = v25;
+    v18 = maximumPriority;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = NSStringFromSBSHardwareButtonKind(a3);
+      v20 = NSStringFromSBSHardwareButtonKind(kind);
       *buf = 134218498;
-      *v31 = v24;
+      *v31 = eventMask;
       *&v31[8] = 2048;
       *v32 = v13;
       *&v32[8] = 2114;
@@ -193,7 +193,7 @@ LABEL_5:
       _os_log_impl(&dword_19169D000, v19, OS_LOG_TYPE_DEFAULT, "changing event mask from:%lX to:%lX for buttonKind %{public}@", buf, 0x20u);
     }
 
-    if (v25 == v12)
+    if (maximumPriority == v12)
     {
       goto LABEL_25;
     }
@@ -202,7 +202,7 @@ LABEL_5:
   v21 = SBLogCommon();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = NSStringFromSBSHardwareButtonKind(a3);
+    v22 = NSStringFromSBSHardwareButtonKind(kind);
     *buf = 67109634;
     *v31 = v18;
     *&v31[4] = 1024;
@@ -216,17 +216,17 @@ LABEL_25:
   v23 = objc_alloc_init(_SBSHardwareButtonEventConfiguration);
   [(_SBSHardwareButtonEventConfiguration *)v23 setEventMask:v13];
   [(_SBSHardwareButtonEventConfiguration *)v23 setMaximumPriority:v12];
-  [(BSMutableIntegerMap *)self->_buttonConfigurationsPerKind setObject:v23 forKey:a3];
-  [(SBSHardwareButtonService *)self _setApplicationClientEventMask:v13 buttonKind:a3 priority:v12];
+  [(BSMutableIntegerMap *)self->_buttonConfigurationsPerKind setObject:v23 forKey:kind];
+  [(SBSHardwareButtonService *)self _setApplicationClientEventMask:v13 buttonKind:kind priority:v12];
 
 LABEL_26:
 }
 
-- (id)_viableConsumerForButtonKind:(int64_t)a3 event:(int64_t)a4 priority:(int64_t)a5
+- (id)_viableConsumerForButtonKind:(int64_t)kind event:(int64_t)event priority:(int64_t)priority
 {
-  v6 = a4;
+  eventCopy = event;
   v21 = *MEMORY[0x1E69E9840];
-  [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:a3];
+  [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:kind];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -236,7 +236,7 @@ LABEL_26:
   {
     v9 = v8;
     v10 = *v17;
-    v11 = (1 << v6) | 0x10000;
+    v11 = (1 << eventCopy) | 0x10000;
     while (2)
     {
       for (i = 0; i != v9; ++i)
@@ -247,7 +247,7 @@ LABEL_26:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 eventPriority] >= a5 && (objc_msgSend(v13, "eventMask") & v11) != 0)
+        if ([v13 eventPriority] >= priority && (objc_msgSend(v13, "eventMask") & v11) != 0)
         {
           v14 = v13;
           goto LABEL_12;
@@ -270,12 +270,12 @@ LABEL_12:
   return v14;
 }
 
-- (void)_addEventConsumerInfo:(id)a3
+- (void)_addEventConsumerInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [v9 setService:self];
-  v4 = [v9 buttonKind];
+  [infoCopy setService:self];
+  buttonKind = [infoCopy buttonKind];
   consumersPerKind = self->_consumersPerKind;
   if (!consumersPerKind)
   {
@@ -286,107 +286,107 @@ LABEL_12:
     consumersPerKind = self->_consumersPerKind;
   }
 
-  v8 = [(BSMutableIntegerMap *)consumersPerKind objectForKey:v4];
+  v8 = [(BSMutableIntegerMap *)consumersPerKind objectForKey:buttonKind];
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(BSMutableIntegerMap *)self->_consumersPerKind setObject:v8 forKey:v4];
+    [(BSMutableIntegerMap *)self->_consumersPerKind setObject:v8 forKey:buttonKind];
   }
 
-  [v8 insertObject:v9 atIndex:0];
-  -[SBSHardwareButtonService _resetEventMaskForButtonKind:](self, "_resetEventMaskForButtonKind:", [v9 buttonKind]);
+  [v8 insertObject:infoCopy atIndex:0];
+  -[SBSHardwareButtonService _resetEventMaskForButtonKind:](self, "_resetEventMaskForButtonKind:", [infoCopy buttonKind]);
 }
 
-- (void)_mainQueue_handleButtonPressMessage:(int64_t)a3 forButtonKind:(int64_t)a4 priority:(int64_t)a5
+- (void)_mainQueue_handleButtonPressMessage:(int64_t)message forButtonKind:(int64_t)kind priority:(int64_t)priority
 {
   v24 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v10 = [(SBSHardwareButtonService *)self _viableConsumerForButtonKind:a4 event:a3 priority:a5];
+  v10 = [(SBSHardwareButtonService *)self _viableConsumerForButtonKind:kind event:message priority:priority];
   v11 = SBLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    *v21 = a3;
+    *v21 = message;
     *&v21[4] = 2114;
     *&v21[6] = v10;
     v22 = 1024;
-    LODWORD(v23) = a5;
+    LODWORD(v23) = priority;
     _os_log_impl(&dword_19169D000, v11, OS_LOG_TYPE_INFO, "dispatch eventType:%d to consumer:%{public}@ at priority:%d", buf, 0x18u);
   }
 
   if (v10)
   {
-    v12 = [v10 eventMask];
-    v13 = [v10 consumer];
-    if (((v12 >> a3) & 1) == 0)
+    eventMask = [v10 eventMask];
+    consumer = [v10 consumer];
+    if (((eventMask >> message) & 1) == 0)
     {
-      if ((v12 & 0x10000) != 0)
+      if ((eventMask & 0x10000) != 0)
       {
         goto LABEL_19;
       }
 
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"SBSHardwareButtonService.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSHardwareButtonService.m" lineNumber:362 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
     }
 
-    if (a3 > 3)
+    if (message > 3)
     {
-      if (a3 <= 5)
+      if (message <= 5)
       {
-        if (a3 == 4)
+        if (message == 4)
         {
-          [v13 consumeTriplePressUpForButtonKind:a4];
+          [consumer consumeTriplePressUpForButtonKind:kind];
         }
 
         else
         {
-          [v13 consumeLongPressForButtonKind:a4];
+          [consumer consumeLongPressForButtonKind:kind];
         }
 
         goto LABEL_32;
       }
 
-      switch(a3)
+      switch(message)
       {
         case 8:
-          v17 = v13;
+          v17 = consumer;
           v18 = 0;
           break;
         case 7:
-          v17 = v13;
+          v17 = consumer;
           v18 = 1;
           break;
         case 6:
-          [v13 consumeSinglePressDownForButtonKind:a4];
+          [consumer consumeSinglePressDownForButtonKind:kind];
           goto LABEL_32;
         default:
           goto LABEL_29;
       }
 
-      [v17 consumeStateChange:v18 forButtonKind:a4];
+      [v17 consumeStateChange:v18 forButtonKind:kind];
       goto LABEL_32;
     }
 
-    if (a3 > 1)
+    if (message > 1)
     {
-      if (a3 == 2)
+      if (message == 2)
       {
-        [v13 consumeDoublePressDownForButtonKind:a4];
+        [consumer consumeDoublePressDownForButtonKind:kind];
       }
 
       else
       {
-        [v13 consumeDoublePressUpForButtonKind:a4];
+        [consumer consumeDoublePressUpForButtonKind:kind];
       }
 
       goto LABEL_32;
     }
 
-    if (a3)
+    if (message)
     {
-      if (a3 == 1)
+      if (message == 1)
       {
-        [v13 consumeSinglePressUpForButtonKind:a4];
+        [consumer consumeSinglePressUpForButtonKind:kind];
         goto LABEL_32;
       }
 
@@ -394,73 +394,73 @@ LABEL_29:
       v19 = SBLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [SBSHardwareButtonService _mainQueue_handleButtonPressMessage:a3 forButtonKind:v19 priority:?];
+        [SBSHardwareButtonService _mainQueue_handleButtonPressMessage:message forButtonKind:v19 priority:?];
       }
 
       goto LABEL_32;
     }
 
 LABEL_19:
-    [v13 consumeAnyPressEventForButtonKind:a4];
+    [consumer consumeAnyPressEventForButtonKind:kind];
     goto LABEL_32;
   }
 
-  v13 = SBLogCommon();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  consumer = SBLogCommon();
+  if (os_log_type_enabled(consumer, OS_LOG_TYPE_ERROR))
   {
-    v15 = NSStringFromSBSHardwareButtonKind(a4);
-    v16 = [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:a4];
+    v15 = NSStringFromSBSHardwareButtonKind(kind);
+    v16 = [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:kind];
     *buf = 138543874;
     *v21 = v15;
     *&v21[8] = 1024;
-    *&v21[10] = a3;
+    *&v21[10] = message;
     v22 = 2114;
     v23 = v16;
-    _os_log_error_impl(&dword_19169D000, v13, OS_LOG_TYPE_ERROR, "no viable consumer for button:%{public}@ eventType:%d -- consumers:%{public}@", buf, 0x1Cu);
+    _os_log_error_impl(&dword_19169D000, consumer, OS_LOG_TYPE_ERROR, "no viable consumer for button:%{public}@ eventType:%d -- consumers:%{public}@", buf, 0x1Cu);
   }
 
 LABEL_32:
 }
 
-- (id)beginConsumingPressesForButtonKind:(int64_t)a3 eventConsumer:(id)a4 priority:(int64_t)a5
+- (id)beginConsumingPressesForButtonKind:(int64_t)kind eventConsumer:(id)consumer priority:(int64_t)priority
 {
-  v9 = a4;
-  if ((a3 - 1) >= 6)
+  consumerCopy = consumer;
+  if ((kind - 1) >= 6)
   {
     [SBSHardwareButtonService beginConsumingPressesForButtonKind:a2 eventConsumer:self priority:?];
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v10 = [_SBSHardwareButtonEventConsumerInfo infoWithConsumer:v9];
-  [v10 setButtonKind:a3];
-  [v10 setEventPriority:a5];
+  v10 = [_SBSHardwareButtonEventConsumerInfo infoWithConsumer:consumerCopy];
+  [v10 setButtonKind:kind];
+  [v10 setEventPriority:priority];
   [(SBSHardwareButtonService *)self _addEventConsumerInfo:v10];
 
   return v10;
 }
 
-- (int64_t)toggleStateForButtonKind:(int64_t)a3
+- (int64_t)toggleStateForButtonKind:(int64_t)kind
 {
-  if (a3 != 6)
+  if (kind != 6)
   {
     return -1;
   }
 
-  v3 = [(SBSAbstractSystemService *)self client];
-  v4 = [v3 toggleStateForButtonKind:6];
+  client = [(SBSAbstractSystemService *)self client];
+  v4 = [client toggleStateForButtonKind:6];
 
   return v4;
 }
 
-- (id)deferHIDEventsForButtonKind:(int64_t)a3 toToken:(id)a4
+- (id)deferHIDEventsForButtonKind:(int64_t)kind toToken:(id)token
 {
-  v7 = a4;
-  if (!v7)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     [SBSHardwareButtonService deferHIDEventsForButtonKind:a2 toToken:self];
   }
 
-  if (a3 != 7)
+  if (kind != 7)
   {
     [SBSHardwareButtonService deferHIDEventsForButtonKind:a2 toToken:self];
   }
@@ -476,16 +476,16 @@ LABEL_32:
     requestHIDAssertionsPerKind = self->_requestHIDAssertionsPerKind;
   }
 
-  v11 = [(BSMutableIntegerMap *)requestHIDAssertionsPerKind objectForKey:a3];
+  v11 = [(BSMutableIntegerMap *)requestHIDAssertionsPerKind objectForKey:kind];
   if (!v11)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(BSMutableIntegerMap *)self->_requestHIDAssertionsPerKind setObject:v11 forKey:a3];
+    [(BSMutableIntegerMap *)self->_requestHIDAssertionsPerKind setObject:v11 forKey:kind];
   }
 
   v12 = objc_alloc(MEMORY[0x1E698E778]);
   v13 = MEMORY[0x1E696AEC0];
-  v14 = NSStringFromSBSHardwareButtonKind(a3);
+  v14 = NSStringFromSBSHardwareButtonKind(kind);
   v15 = [v13 stringWithFormat:@"I wanna %@", v14];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -493,17 +493,17 @@ LABEL_32:
   v21[3] = &unk_1E735F840;
   v16 = v11;
   v22 = v16;
-  v23 = self;
-  v17 = v7;
+  selfCopy = self;
+  v17 = tokenCopy;
   v24 = v17;
-  v25 = a3;
+  kindCopy = kind;
   v18 = [v12 initWithIdentifier:@"HID event request" forReason:v15 invalidationBlock:v21];
 
   [v16 addObject:v18];
   if ([v16 count] == 1)
   {
-    v19 = [(SBSAbstractSystemService *)self client];
-    [v19 setRequestsHIDEvents:1 token:v17 forButtonKind:a3];
+    client = [(SBSAbstractSystemService *)self client];
+    [client setRequestsHIDEvents:1 token:v17 forButtonKind:kind];
   }
 
   return v18;
@@ -519,27 +519,27 @@ void __64__SBSHardwareButtonService_deferHIDEventsForButtonKind_toToken___block_
   }
 }
 
-- (void)setHapticType:(int64_t)a3 forButtonKind:(int64_t)a4
+- (void)setHapticType:(int64_t)type forButtonKind:(int64_t)kind
 {
-  v6 = [(SBSAbstractSystemService *)self client];
-  [v6 setHapticType:a3 forButtonKind:a4];
+  client = [(SBSAbstractSystemService *)self client];
+  [client setHapticType:type forButtonKind:kind];
 }
 
-- (void)fetchHapticTypeForButtonKind:(int64_t)a3 completion:(id)a4
+- (void)fetchHapticTypeForButtonKind:(int64_t)kind completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(SBSAbstractFacilityService *)self callbackQueue];
-    v8 = [(SBSAbstractSystemService *)self client];
+    callbackQueue = [(SBSAbstractFacilityService *)self callbackQueue];
+    client = [(SBSAbstractSystemService *)self client];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__SBSHardwareButtonService_fetchHapticTypeForButtonKind_completion___block_invoke;
     v10[3] = &unk_1E735F890;
-    v11 = v7;
-    v12 = v6;
-    v9 = v7;
-    [v8 fetchHapticTypeForButtonKind:a3 completion:v10];
+    v11 = callbackQueue;
+    v12 = completionCopy;
+    v9 = callbackQueue;
+    [client fetchHapticTypeForButtonKind:kind completion:v10];
   }
 }
 
@@ -557,52 +557,52 @@ void __68__SBSHardwareButtonService_fetchHapticTypeForButtonKind_completion___bl
 
 - (BOOL)getAssociatedHintViewsSupported
 {
-  v2 = [(SBSAbstractSystemService *)self client];
-  v3 = [v2 getAssociatedHintViewsSupported];
+  client = [(SBSAbstractSystemService *)self client];
+  getAssociatedHintViewsSupported = [client getAssociatedHintViewsSupported];
 
-  return v3;
+  return getAssociatedHintViewsSupported;
 }
 
-- (id)registerAssociatedHintViewContextId:(unsigned int)a3 layerRenderId:(unint64_t)a4 layerSize:(CGSize)a5 forButtonKind:(int64_t)a6
+- (id)registerAssociatedHintViewContextId:(unsigned int)id layerRenderId:(unint64_t)renderId layerSize:(CGSize)size forButtonKind:(int64_t)kind
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = *&a3;
-  if (a6 > 0xA || ((1 << a6) & 0x51C) == 0)
+  height = size.height;
+  width = size.width;
+  v10 = *&id;
+  if (kind > 0xA || ((1 << kind) & 0x51C) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"SBSHardwareButtonService.m" lineNumber:480 description:{@"Invalid parameter not satisfying: %@", @"_SBSHardwareButtonServiceIsSupportedHintViewButtonKind(buttonKind)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSHardwareButtonService.m" lineNumber:480 description:{@"Invalid parameter not satisfying: %@", @"_SBSHardwareButtonServiceIsSupportedHintViewButtonKind(buttonKind)"}];
   }
 
-  v13 = [(SBSAbstractSystemService *)self client];
-  v14 = [v13 registerAssociatedHintViewContextId:v10 layerRenderId:a4 layerSize:a6 forButtonKind:{width, height}];
+  client = [(SBSAbstractSystemService *)self client];
+  v14 = [client registerAssociatedHintViewContextId:v10 layerRenderId:renderId layerSize:kind forButtonKind:{width, height}];
 
   return v14;
 }
 
-- (void)updateHintViewContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5
+- (void)updateHintViewContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings
 {
-  v8 = a5;
-  v9 = [(SBSAbstractSystemService *)self client];
-  [v9 updateHintViewContentVisibility:a3 forButton:a4 animationSettings:v8];
+  settingsCopy = settings;
+  client = [(SBSAbstractSystemService *)self client];
+  [client updateHintViewContentVisibility:visibility forButton:button animationSettings:settingsCopy];
 }
 
-- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)a3 completion:(id)a4
+- (void)requestSystemGlowEffectWithInitialStyle:(int64_t)style completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SBSAbstractSystemService *)self client];
-  [v7 requestSystemGlowEffectWithInitialStyle:a3 completion:v6];
+  completionCopy = completion;
+  client = [(SBSAbstractSystemService *)self client];
+  [client requestSystemGlowEffectWithInitialStyle:style completion:completionCopy];
 }
 
-- (void)updateSystemGlowStyle:(int64_t)a3
+- (void)updateSystemGlowStyle:(int64_t)style
 {
-  v4 = [(SBSAbstractSystemService *)self client];
-  [v4 updateSystemGlowStyle:a3];
+  client = [(SBSAbstractSystemService *)self client];
+  [client updateSystemGlowStyle:style];
 }
 
-- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)a3 reason:(id)a4
+- (id)acquireCaptureButtonSuppressionAssertionWithOptions:(unint64_t)options reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   captureButtonRestrictionService = self->_captureButtonRestrictionService;
   if (!captureButtonRestrictionService)
   {
@@ -613,37 +613,37 @@ void __68__SBSHardwareButtonService_fetchHapticTypeForButtonKind_completion___bl
     captureButtonRestrictionService = self->_captureButtonRestrictionService;
   }
 
-  v10 = [(SBSCaptureButtonRestrictionService *)captureButtonRestrictionService acquireCaptureButtonSuppressionAssertionWithOptions:a3 reason:v6];
+  v10 = [(SBSCaptureButtonRestrictionService *)captureButtonRestrictionService acquireCaptureButtonSuppressionAssertionWithOptions:options reason:reasonCopy];
 
   return v10;
 }
 
-- (void)handleButtonPressMessage:(int64_t)a3 forButtonKind:(int64_t)a4 priority:(int64_t)a5
+- (void)handleButtonPressMessage:(int64_t)message forButtonKind:(int64_t)kind priority:(int64_t)priority
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__SBSHardwareButtonService_handleButtonPressMessage_forButtonKind_priority___block_invoke;
   v5[3] = &unk_1E735F8B8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
-  v5[7] = a5;
+  v5[5] = message;
+  v5[6] = kind;
+  v5[7] = priority;
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)consumerInfoWillInvalidate:(id)a3
+- (void)consumerInfoWillInvalidate:(id)invalidate
 {
-  v6 = a3;
+  invalidateCopy = invalidate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v4 = [v6 buttonKind];
-  v5 = [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:v4];
-  [v5 removeObject:v6];
+  buttonKind = [invalidateCopy buttonKind];
+  v5 = [(BSMutableIntegerMap *)self->_consumersPerKind objectForKey:buttonKind];
+  [v5 removeObject:invalidateCopy];
   if (![v5 count])
   {
-    [(BSMutableIntegerMap *)self->_consumersPerKind removeObjectForKey:v4];
+    [(BSMutableIntegerMap *)self->_consumersPerKind removeObjectForKey:buttonKind];
   }
 
-  -[SBSHardwareButtonService _resetEventMaskForButtonKind:](self, "_resetEventMaskForButtonKind:", [v6 buttonKind]);
+  -[SBSHardwareButtonService _resetEventMaskForButtonKind:](self, "_resetEventMaskForButtonKind:", [invalidateCopy buttonKind]);
 }
 
 - (void)_mainQueue_handleButtonPressMessage:(int)a1 forButtonKind:(NSObject *)a2 priority:.cold.1(int a1, NSObject *a2)

@@ -1,5 +1,5 @@
 @interface BEAppearanceViewController
-- (BEAppearanceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BEAppearanceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BEAppearanceViewControllerDelegate)delegate;
 - (UIButton)sizeLargerButton;
 - (UIButton)sizeSmallerButton;
@@ -9,28 +9,28 @@
 - (double)appearanceRowHeight;
 - (double)scrollingRowHeight;
 - (id)tableViewHeaderView;
-- (void)changeBrightness:(id)a3 withEvent:(id)a4;
-- (void)configureHorizontalScrollSwitchCell:(id)a3;
-- (void)configureScrollSwitchCell:(id)a3 text:(id)a4;
-- (void)configureVerticalScrollSwitchCell:(id)a3;
+- (void)changeBrightness:(id)brightness withEvent:(id)event;
+- (void)configureHorizontalScrollSwitchCell:(id)cell;
+- (void)configureScrollSwitchCell:(id)cell text:(id)text;
+- (void)configureVerticalScrollSwitchCell:(id)cell;
 - (void)dealloc;
 - (void)loadView;
 - (void)releaseAuxiliaryCachedViews;
 - (void)releaseViews;
-- (void)setScrollSwitchEnabled:(BOOL)a3;
+- (void)setScrollSwitchEnabled:(BOOL)enabled;
 - (void)stylizeForTheme;
 - (void)updateBrightness;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BEAppearanceViewController
 
-- (BEAppearanceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BEAppearanceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = BEAppearanceViewController;
-  v4 = [(BKViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(BKViewController *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -61,16 +61,16 @@
     self->_brightnessSlider = v5;
 
     [(UISlider *)self->_brightnessSlider setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(UISlider *)self->_brightnessSlider heightAnchor];
+    heightAnchor = [(UISlider *)self->_brightnessSlider heightAnchor];
     v13.origin.x = 12.0;
     v13.origin.y = 1.0;
     v13.size.width = 272.0;
     v13.size.height = v4;
-    v8 = [v7 constraintEqualToConstant:CGRectGetHeight(v13)];
+    v8 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v13)];
     [v8 setActive:1];
 
-    v9 = [(BEAppearanceViewController *)self theme];
-    [v9 stylizeSlider:self->_brightnessSlider];
+    theme = [(BEAppearanceViewController *)self theme];
+    [theme stylizeSlider:self->_brightnessSlider];
 
     [(UISlider *)self->_brightnessSlider addTarget:self action:"changeBrightness:withEvent:" forControlEvents:4096];
   }
@@ -90,19 +90,19 @@
     self->_sizeSmallerButton = v4;
 
     [(UIButton *)self->_sizeSmallerButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(BEAppearanceViewController *)self theme];
-    [v6 stylizeButton:self->_sizeSmallerButton];
+    theme = [(BEAppearanceViewController *)self theme];
+    [theme stylizeButton:self->_sizeSmallerButton];
 
-    v7 = [(BEAppearanceViewController *)self theme];
-    v8 = [v7 popoverBackgroundColor];
-    v9 = [v8 colorWithAlphaComponent:0.001];
+    theme2 = [(BEAppearanceViewController *)self theme];
+    popoverBackgroundColor = [theme2 popoverBackgroundColor];
+    v9 = [popoverBackgroundColor colorWithAlphaComponent:0.001];
     [(UIButton *)self->_sizeSmallerButton setBackgroundColor:v9];
 
-    LODWORD(v7) = [(BEAppearanceViewController *)self _isRTL];
+    LODWORD(theme2) = [(BEAppearanceViewController *)self _isRTL];
     [(BEAppearanceViewController *)self appearanceRowHeight];
     v11 = v10;
     v12 = 0.0;
-    if (v7)
+    if (theme2)
     {
       v12 = 148.0;
     }
@@ -125,19 +125,19 @@
     self->_sizeLargerButton = v4;
 
     [(UIButton *)self->_sizeLargerButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(BEAppearanceViewController *)self theme];
-    v7 = [v6 popoverBackgroundColor];
-    v8 = [v7 colorWithAlphaComponent:0.001];
+    theme = [(BEAppearanceViewController *)self theme];
+    popoverBackgroundColor = [theme popoverBackgroundColor];
+    v8 = [popoverBackgroundColor colorWithAlphaComponent:0.001];
     [(UIButton *)self->_sizeLargerButton setBackgroundColor:v8];
 
-    v9 = [(BEAppearanceViewController *)self theme];
-    [v9 stylizeButton:self->_sizeLargerButton];
+    theme2 = [(BEAppearanceViewController *)self theme];
+    [theme2 stylizeButton:self->_sizeLargerButton];
 
-    LODWORD(v9) = [(BEAppearanceViewController *)self _isRTL];
+    LODWORD(theme2) = [(BEAppearanceViewController *)self _isRTL];
     [(BEAppearanceViewController *)self appearanceRowHeight];
     v11 = v10;
     v12 = 0.0;
-    if (!v9)
+    if (!theme2)
     {
       v12 = 148.0;
     }
@@ -155,7 +155,7 @@
   fontSizeButtons = self->_fontSizeButtons;
   if (!fontSizeButtons)
   {
-    v58 = [(BEAppearanceViewController *)self theme];
+    theme = [(BEAppearanceViewController *)self theme];
     v4 = [UIView alloc];
     [(BEAppearanceViewController *)self appearanceRowHeight];
     v6 = [v4 initWithFrame:{0.0, 0.0, 296.0, v5}];
@@ -164,12 +164,12 @@
 
     [(UIView *)self->_fontSizeButtons setTranslatesAutoresizingMaskIntoConstraints:0];
     v8 = self->_fontSizeButtons;
-    v9 = [(BEAppearanceViewController *)self sizeSmallerButton];
-    [(UIView *)v8 addSubview:v9];
+    sizeSmallerButton = [(BEAppearanceViewController *)self sizeSmallerButton];
+    [(UIView *)v8 addSubview:sizeSmallerButton];
 
     v10 = self->_fontSizeButtons;
-    v11 = [(BEAppearanceViewController *)self sizeLargerButton];
-    [(UIView *)v10 addSubview:v11];
+    sizeLargerButton = [(BEAppearanceViewController *)self sizeLargerButton];
+    [(UIView *)v10 addSubview:sizeLargerButton];
 
     v12 = +[UIScreen mainScreen];
     [v12 scale];
@@ -183,57 +183,57 @@
     sizeSeparatorLine = self->_sizeSeparatorLine;
     self->_sizeSeparatorLine = v18;
 
-    v20 = [v58 tableViewSeparatorColor];
-    [(UIView *)self->_sizeSeparatorLine setBackgroundColor:v20];
+    tableViewSeparatorColor = [theme tableViewSeparatorColor];
+    [(UIView *)self->_sizeSeparatorLine setBackgroundColor:tableViewSeparatorColor];
 
     [(UIView *)self->_sizeSeparatorLine setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_fontSizeButtons addSubview:self->_sizeSeparatorLine];
-    v57 = [(UIButton *)self->_sizeSmallerButton leadingAnchor];
-    v56 = [(UIView *)self->_fontSizeButtons leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor = [(UIButton *)self->_sizeSmallerButton leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_fontSizeButtons leadingAnchor];
+    v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v59[0] = v55;
-    v54 = [(UIButton *)self->_sizeSmallerButton trailingAnchor];
-    v53 = [(UIView *)self->_fontSizeButtons centerXAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    trailingAnchor = [(UIButton *)self->_sizeSmallerButton trailingAnchor];
+    centerXAnchor = [(UIView *)self->_fontSizeButtons centerXAnchor];
+    v52 = [trailingAnchor constraintEqualToAnchor:centerXAnchor];
     v59[1] = v52;
-    v51 = [(UIButton *)self->_sizeSmallerButton topAnchor];
-    v50 = [(UIView *)self->_fontSizeButtons topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    topAnchor = [(UIButton *)self->_sizeSmallerButton topAnchor];
+    topAnchor2 = [(UIView *)self->_fontSizeButtons topAnchor];
+    v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v59[2] = v49;
-    v48 = [(UIButton *)self->_sizeSmallerButton bottomAnchor];
-    v47 = [(UIView *)self->_fontSizeButtons bottomAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    bottomAnchor = [(UIButton *)self->_sizeSmallerButton bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_fontSizeButtons bottomAnchor];
+    v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v59[3] = v46;
-    v45 = [(UIButton *)self->_sizeLargerButton leadingAnchor];
-    v44 = [(UIView *)self->_fontSizeButtons centerXAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    leadingAnchor3 = [(UIButton *)self->_sizeLargerButton leadingAnchor];
+    centerXAnchor2 = [(UIView *)self->_fontSizeButtons centerXAnchor];
+    v43 = [leadingAnchor3 constraintEqualToAnchor:centerXAnchor2];
     v59[4] = v43;
-    v42 = [(UIButton *)self->_sizeLargerButton trailingAnchor];
-    v41 = [(UIView *)self->_fontSizeButtons trailingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    trailingAnchor2 = [(UIButton *)self->_sizeLargerButton trailingAnchor];
+    trailingAnchor3 = [(UIView *)self->_fontSizeButtons trailingAnchor];
+    v40 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v59[5] = v40;
-    v39 = [(UIButton *)self->_sizeLargerButton topAnchor];
-    v38 = [(UIView *)self->_fontSizeButtons topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    topAnchor3 = [(UIButton *)self->_sizeLargerButton topAnchor];
+    topAnchor4 = [(UIView *)self->_fontSizeButtons topAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v59[6] = v37;
-    v36 = [(UIButton *)self->_sizeLargerButton bottomAnchor];
-    v35 = [(UIView *)self->_fontSizeButtons bottomAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    bottomAnchor3 = [(UIButton *)self->_sizeLargerButton bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_fontSizeButtons bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v59[7] = v34;
-    v33 = [(UIView *)self->_sizeSeparatorLine topAnchor];
-    v32 = [(UIView *)self->_fontSizeButtons topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor5 = [(UIView *)self->_sizeSeparatorLine topAnchor];
+    topAnchor6 = [(UIView *)self->_fontSizeButtons topAnchor];
+    v31 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v59[8] = v31;
-    v30 = [(UIView *)self->_sizeSeparatorLine bottomAnchor];
-    v21 = [(UIView *)self->_fontSizeButtons bottomAnchor];
-    v22 = [v30 constraintEqualToAnchor:v21 constant:-v14];
+    bottomAnchor5 = [(UIView *)self->_sizeSeparatorLine bottomAnchor];
+    bottomAnchor6 = [(UIView *)self->_fontSizeButtons bottomAnchor];
+    v22 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v14];
     v59[9] = v22;
-    v23 = [(UIView *)self->_sizeSeparatorLine centerXAnchor];
-    v24 = [(UIView *)self->_fontSizeButtons centerXAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor3 = [(UIView *)self->_sizeSeparatorLine centerXAnchor];
+    centerXAnchor4 = [(UIView *)self->_fontSizeButtons centerXAnchor];
+    v25 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v59[10] = v25;
-    v26 = [(UIView *)self->_sizeSeparatorLine widthAnchor];
-    v27 = [v26 constraintEqualToConstant:v14];
+    widthAnchor = [(UIView *)self->_sizeSeparatorLine widthAnchor];
+    v27 = [widthAnchor constraintEqualToConstant:v14];
     v59[11] = v27;
     v28 = [NSArray arrayWithObjects:v59 count:12];
     [NSLayoutConstraint activateConstraints:v28];
@@ -291,51 +291,51 @@
   [(UITableView *)self->_tableView setEstimatedSectionHeaderHeight:5.0];
   [(UITableView *)self->_tableView setEstimatedSectionFooterHeight:0.0];
   [(UITableView *)self->_tableView setSectionFooterHeight:0.0];
-  v11 = [(BEAppearanceViewController *)self view];
+  view = [(BEAppearanceViewController *)self view];
   v12 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   arrowBackgroundView = self->_arrowBackgroundView;
   self->_arrowBackgroundView = v12;
 
   [(UIView *)self->_arrowBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v11 addSubview:self->_arrowBackgroundView];
-  [v11 addSubview:self->_tableView];
-  v40 = [(UITableView *)self->_tableView leadingAnchor];
-  v39 = [v11 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  [view addSubview:self->_arrowBackgroundView];
+  [view addSubview:self->_tableView];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v38;
-  v37 = [(UITableView *)self->_tableView trailingAnchor];
-  v36 = [v11 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[1] = v35;
-  v33 = [(UITableView *)self->_tableView topAnchor];
-  v34 = [v11 safeAreaLayoutGuide];
-  v32 = [v34 topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[2] = v31;
-  v29 = [(UITableView *)self->_tableView bottomAnchor];
-  v30 = [v11 safeAreaLayoutGuide];
-  v28 = [v30 bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[3] = v27;
-  v26 = [(UIView *)self->_arrowBackgroundView topAnchor];
-  v25 = [v11 topAnchor];
-  v23 = [v26 constraintEqualToAnchor:v25];
+  topAnchor3 = [(UIView *)self->_arrowBackgroundView topAnchor];
+  topAnchor4 = [view topAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v42[4] = v23;
-  v14 = [(UIView *)self->_arrowBackgroundView leadingAnchor];
-  v15 = [v11 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  leadingAnchor3 = [(UIView *)self->_arrowBackgroundView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v42[5] = v16;
-  v17 = [(UIView *)self->_arrowBackgroundView trailingAnchor];
-  v18 = [v11 trailingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  trailingAnchor3 = [(UIView *)self->_arrowBackgroundView trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v19 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v42[6] = v19;
-  v20 = [(UIView *)self->_arrowBackgroundView bottomAnchor];
-  v21 = [(UITableView *)self->_tableView topAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor3 = [(UIView *)self->_arrowBackgroundView bottomAnchor];
+  topAnchor5 = [(UITableView *)self->_tableView topAnchor];
+  v22 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5];
   v42[7] = v22;
   v24 = [NSArray arrayWithObjects:v42 count:8];
 
-  [v11 addConstraints:v24];
+  [view addConstraints:v24];
 }
 
 - (void)viewDidLoad
@@ -350,14 +350,14 @@
   [(BEAppearanceViewController *)self stylizeForTheme];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = BEAppearanceViewController;
-  [(BEAppearanceViewController *)&v6 viewWillAppear:a3];
-  v4 = [(BEAppearanceViewController *)self ba_analyticsTracker];
+  [(BEAppearanceViewController *)&v6 viewWillAppear:appear];
+  ba_analyticsTracker = [(BEAppearanceViewController *)self ba_analyticsTracker];
 
-  if (!v4)
+  if (!ba_analyticsTracker)
   {
     v5 = [(BEAppearanceViewController *)self ba_setupNewAnalyticsTrackerWithName:@"ContentSettings"];
   }
@@ -367,105 +367,105 @@
 
 - (void)stylizeForTheme
 {
-  v36 = [(BEAppearanceViewController *)self themePage];
-  v3 = [v36 keyColor];
-  v4 = [(BEAppearanceViewController *)self view];
-  [v4 setTintColor:v3];
+  themePage = [(BEAppearanceViewController *)self themePage];
+  keyColor = [themePage keyColor];
+  view = [(BEAppearanceViewController *)self view];
+  [view setTintColor:keyColor];
 
-  v5 = [v36 secondaryGroupedBackgroundColor];
-  [(UIView *)self->_arrowBackgroundView setBackgroundColor:v5];
+  secondaryGroupedBackgroundColor = [themePage secondaryGroupedBackgroundColor];
+  [(UIView *)self->_arrowBackgroundView setBackgroundColor:secondaryGroupedBackgroundColor];
 
-  v6 = [(BEAppearanceViewController *)self brightnessSlider];
-  if (v6)
+  brightnessSlider = [(BEAppearanceViewController *)self brightnessSlider];
+  if (brightnessSlider)
   {
-    [v36 stylizeSlider:v6];
+    [themePage stylizeSlider:brightnessSlider];
     v7 = [UIImage systemImageNamed:@"sun.min.fill"];
     v8 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:1 scale:18.0];
     v9 = [v7 imageWithConfiguration:v8];
 
-    v10 = [v36 tertiaryTextColor];
-    v11 = [v9 imageMaskWithColor:v10];
+    tertiaryTextColor = [themePage tertiaryTextColor];
+    v11 = [v9 imageMaskWithColor:tertiaryTextColor];
 
-    [v6 setMinimumValueImage:v11];
+    [brightnessSlider setMinimumValueImage:v11];
     v12 = [UIImage systemImageNamed:@"sun.max.fill"];
     v13 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:2 scale:18.0];
     v14 = [v12 imageWithConfiguration:v13];
 
-    v15 = [v36 tertiaryTextColor];
-    v16 = [v14 imageMaskWithColor:v15];
+    tertiaryTextColor2 = [themePage tertiaryTextColor];
+    v16 = [v14 imageMaskWithColor:tertiaryTextColor2];
 
-    [v6 setMaximumValueImage:v16];
-    v17 = [v36 keyColor];
-    [v6 setMinimumTrackTintColor:v17];
+    [brightnessSlider setMaximumValueImage:v16];
+    keyColor2 = [themePage keyColor];
+    [brightnessSlider setMinimumTrackTintColor:keyColor2];
 
-    v18 = [v36 quarternaryTextColor];
-    [v6 setMaximumTrackTintColor:v18];
+    quarternaryTextColor = [themePage quarternaryTextColor];
+    [brightnessSlider setMaximumTrackTintColor:quarternaryTextColor];
   }
 
   v35 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-  v19 = [(BEAppearanceViewController *)self sizeSmallerButton];
-  [v36 stylizeButton:v19];
+  sizeSmallerButton = [(BEAppearanceViewController *)self sizeSmallerButton];
+  [themePage stylizeButton:sizeSmallerButton];
   [v35 pointSize];
   v20 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
   v21 = [UIImageSymbolConfiguration configurationWithFont:v20 scale:-1];
   v22 = [UIImage systemImageNamed:@"a" withConfiguration:v21];
-  [v19 setImage:v22 forState:0];
+  [sizeSmallerButton setImage:v22 forState:0];
 
-  v23 = [(BEAppearanceViewController *)self sizeLargerButton];
-  [v36 stylizeButton:v23];
+  sizeLargerButton = [(BEAppearanceViewController *)self sizeLargerButton];
+  [themePage stylizeButton:sizeLargerButton];
   v24 = [UIImageSymbolConfiguration configurationWithFont:v20 scale:3];
   v25 = [UIImage systemImageNamed:@"a" withConfiguration:v24];
-  [v23 setImage:v25 forState:0];
+  [sizeLargerButton setImage:v25 forState:0];
 
-  v26 = [(BEAppearanceViewController *)self sizeSeparatorLine];
-  v27 = [v36 separatorColor];
-  [v26 setBackgroundColor:v27];
+  sizeSeparatorLine = [(BEAppearanceViewController *)self sizeSeparatorLine];
+  separatorColor = [themePage separatorColor];
+  [sizeSeparatorLine setBackgroundColor:separatorColor];
 
-  v28 = [v36 groupedBackgroundColor];
-  v29 = [(BEAppearanceViewController *)self tableView];
-  [v29 setBackgroundColor:v28];
+  groupedBackgroundColor = [themePage groupedBackgroundColor];
+  tableView = [(BEAppearanceViewController *)self tableView];
+  [tableView setBackgroundColor:groupedBackgroundColor];
 
-  v30 = [v36 separatorColor];
-  v31 = [(BEAppearanceViewController *)self tableView];
-  [v31 setSeparatorColor:v30];
+  separatorColor2 = [themePage separatorColor];
+  tableView2 = [(BEAppearanceViewController *)self tableView];
+  [tableView2 setSeparatorColor:separatorColor2];
 
-  v32 = [(BEAppearanceViewController *)self tableView];
-  v33 = [v32 separatorColor];
-  v34 = [(BEAppearanceViewController *)self sizeSeparatorLine];
-  [v34 setBackgroundColor:v33];
+  tableView3 = [(BEAppearanceViewController *)self tableView];
+  separatorColor3 = [tableView3 separatorColor];
+  sizeSeparatorLine2 = [(BEAppearanceViewController *)self sizeSeparatorLine];
+  [sizeSeparatorLine2 setBackgroundColor:separatorColor3];
 }
 
-- (void)configureHorizontalScrollSwitchCell:(id)a3
+- (void)configureHorizontalScrollSwitchCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v6 = AEBundle();
   v5 = [v6 localizedStringForKey:@"Horizontal Scrolling" value:&stru_1E7188 table:0];
-  [(BEAppearanceViewController *)self configureScrollSwitchCell:v4 text:v5];
+  [(BEAppearanceViewController *)self configureScrollSwitchCell:cellCopy text:v5];
 }
 
-- (void)configureVerticalScrollSwitchCell:(id)a3
+- (void)configureVerticalScrollSwitchCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v6 = AEBundle();
   v5 = [v6 localizedStringForKey:@"Vertical Scrolling" value:&stru_1E7188 table:0];
-  [(BEAppearanceViewController *)self configureScrollSwitchCell:v4 text:v5];
+  [(BEAppearanceViewController *)self configureScrollSwitchCell:cellCopy text:v5];
 }
 
-- (void)configureScrollSwitchCell:(id)a3 text:(id)a4
+- (void)configureScrollSwitchCell:(id)cell text:(id)text
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 textLabel];
-  [v8 setText:v6];
+  textCopy = text;
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:textCopy];
 
-  v9 = [v7 textLabel];
-  [v9 setAdjustsFontSizeToFitWidth:1];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v10 = [v7 textLabel];
-  [v10 setMinimumScaleFactor:0.5];
+  textLabel3 = [cellCopy textLabel];
+  [textLabel3 setMinimumScaleFactor:0.5];
 
-  v11 = [(BEAppearanceViewController *)self scrollSwitch];
-  [v7 setAccessoryView:v11];
+  scrollSwitch = [(BEAppearanceViewController *)self scrollSwitch];
+  [cellCopy setAccessoryView:scrollSwitch];
 }
 
 - (void)releaseAuxiliaryCachedViews
@@ -507,31 +507,31 @@
   [(BKViewController *)&v6 releaseViews];
 }
 
-- (void)changeBrightness:(id)a3 withEvent:(id)a4
+- (void)changeBrightness:(id)brightness withEvent:(id)event
 {
-  v18 = a3;
-  v6 = a4;
-  [v18 value];
+  brightnessCopy = brightness;
+  eventCopy = event;
+  [brightnessCopy value];
   v8 = v7;
   v9 = v7;
   v10 = +[UIScreen mainScreen];
   [v10 setBrightness:v9];
 
-  v11 = [v6 allTouches];
+  allTouches = [eventCopy allTouches];
 
-  v12 = [v11 anyObject];
-  v13 = [v12 phase];
+  anyObject = [allTouches anyObject];
+  phase = [anyObject phase];
 
-  if (v13 == &dword_0 + 3)
+  if (phase == &dword_0 + 3)
   {
-    v14 = [(BEAppearanceViewController *)self delegate];
+    delegate = [(BEAppearanceViewController *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(BEAppearanceViewController *)self delegate];
+      delegate2 = [(BEAppearanceViewController *)self delegate];
       *&v17 = v8;
-      [v16 appearanceViewController:self brightnessLevelDidChange:v17];
+      [delegate2 appearanceViewController:self brightnessLevelDidChange:v17];
     }
   }
 }
@@ -542,14 +542,14 @@
   [v3 brightness];
   v5 = v4;
 
-  v7 = [(BEAppearanceViewController *)self brightnessSlider];
+  brightnessSlider = [(BEAppearanceViewController *)self brightnessSlider];
   *&v6 = v5;
-  [v7 setValue:v6];
+  [brightnessSlider setValue:v6];
 }
 
-- (void)setScrollSwitchEnabled:(BOOL)a3
+- (void)setScrollSwitchEnabled:(BOOL)enabled
 {
-  self->_scrollSwitchEnabled = a3;
+  self->_scrollSwitchEnabled = enabled;
   scrollSwitch = self->_scrollSwitch;
   if (scrollSwitch)
   {
@@ -559,9 +559,9 @@
 
 - (id)tableViewHeaderView
 {
-  v2 = [(BEAppearanceViewController *)self tableView];
+  tableView = [(BEAppearanceViewController *)self tableView];
   v3 = [UIView alloc];
-  [v2 bounds];
+  [tableView bounds];
   v4 = [v3 initWithFrame:{0.0, 0.0}];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = +[UIScreen mainScreen];
@@ -569,18 +569,18 @@
   v7 = 1.0 / v6;
 
   v8 = [UIView alloc];
-  [v2 bounds];
+  [tableView bounds];
   v9 = [v8 initWithFrame:{0.0, 0.0}];
-  v10 = [v2 separatorColor];
-  [v9 setBackgroundColor:v10];
+  separatorColor = [tableView separatorColor];
+  [v9 setBackgroundColor:separatorColor];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 addSubview:v9];
   v11 = [UIView alloc];
-  [v2 bounds];
+  [tableView bounds];
   v12 = [v11 initWithFrame:{0.0, 5.0 - v7}];
-  v13 = [v2 separatorColor];
-  [v12 setBackgroundColor:v13];
+  separatorColor2 = [tableView separatorColor];
+  [v12 setBackgroundColor:separatorColor2];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 addSubview:v12];

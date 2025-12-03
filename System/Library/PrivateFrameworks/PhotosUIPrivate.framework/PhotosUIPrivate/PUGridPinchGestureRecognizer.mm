@@ -4,7 +4,7 @@
 - (double)transitionProgress;
 - (void)_resetTransitionState;
 - (void)reset;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PUGridPinchGestureRecognizer
@@ -24,15 +24,15 @@
 
 - (CGSize)centerOffset
 {
-  v3 = [(PUGridPinchGestureRecognizer *)self view];
-  v4 = [v3 window];
-  [(UIPinchGestureRecognizer *)self locationOfTouch:0 inView:v4];
+  view = [(PUGridPinchGestureRecognizer *)self view];
+  window = [view window];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:0 inView:window];
   v22 = v6;
   v23 = v5;
 
-  v7 = [(PUGridPinchGestureRecognizer *)self view];
-  v8 = [v7 window];
-  [(UIPinchGestureRecognizer *)self locationOfTouch:1 inView:v8];
+  view2 = [(PUGridPinchGestureRecognizer *)self view];
+  window2 = [view2 window];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:1 inView:window2];
   v20 = v10;
   v21 = v9;
 
@@ -56,13 +56,13 @@
     return self->_lastTransitionProgress;
   }
 
-  v3 = [(PUGridPinchGestureRecognizer *)self view];
-  v4 = [v3 window];
-  [(UIPinchGestureRecognizer *)self locationOfTouch:0 inView:v4];
+  view = [(PUGridPinchGestureRecognizer *)self view];
+  window = [view window];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:0 inView:window];
 
-  v5 = [(PUGridPinchGestureRecognizer *)self view];
-  v6 = [v5 window];
-  [(UIPinchGestureRecognizer *)self locationOfTouch:1 inView:v6];
+  view2 = [(PUGridPinchGestureRecognizer *)self view];
+  window2 = [view2 window];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:1 inView:window2];
 
   UIDistanceBetweenPoints();
   v8 = v7;
@@ -78,21 +78,21 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     if ([(UIPinchGestureRecognizer *)self numberOfTouches]>= 2)
     {
-      v5 = [(PUGridPinchGestureRecognizer *)self view];
-      v6 = [v5 window];
-      [(UIPinchGestureRecognizer *)self locationOfTouch:0 inView:v6];
+      view = [(PUGridPinchGestureRecognizer *)self view];
+      window = [view window];
+      [(UIPinchGestureRecognizer *)self locationOfTouch:0 inView:window];
       self->_touch0InitialLocation.x = v7;
       self->_touch0InitialLocation.y = v8;
 
-      v9 = [(PUGridPinchGestureRecognizer *)self view];
-      v10 = [v9 window];
-      [(UIPinchGestureRecognizer *)self locationOfTouch:1 inView:v10];
+      view2 = [(PUGridPinchGestureRecognizer *)self view];
+      window2 = [view2 window];
+      [(UIPinchGestureRecognizer *)self locationOfTouch:1 inView:window2];
       self->_touch1InitialLocation.x = v11;
       self->_touch1InitialLocation.y = v12;
 
@@ -110,14 +110,14 @@
     }
   }
 
-  else if (a3 == 1 && [(UIPinchGestureRecognizer *)self numberOfTouches]>= 2)
+  else if (state == 1 && [(UIPinchGestureRecognizer *)self numberOfTouches]>= 2)
   {
     [(PUGridPinchGestureRecognizer *)self _resetTransitionState];
   }
 
   v15.receiver = self;
   v15.super_class = PUGridPinchGestureRecognizer;
-  [(PUGridPinchGestureRecognizer *)&v15 setState:a3];
+  [(PUGridPinchGestureRecognizer *)&v15 setState:state];
 }
 
 - (void)reset

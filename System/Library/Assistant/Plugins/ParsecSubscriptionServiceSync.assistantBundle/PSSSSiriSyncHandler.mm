@@ -1,27 +1,27 @@
 @interface PSSSSiriSyncHandler
 - (void)_startSubscriptionFetch;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 @end
 
 @implementation PSSSSiriSyncHandler
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   subscriptionsFuture = self->_subscriptionsFuture;
-  v8 = a3;
+  anchorCopy = anchor;
   v9 = [(AFFuture *)subscriptionsFuture waitForValue:dispatch_time(0, 10000000000)];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 _pssSiriSync_anchorValue];
-    v12 = [v8 isEqualToString:v11];
+    _pssSiriSync_anchorValue = [v9 _pssSiriSync_anchorValue];
+    v12 = [anchorCopy isEqualToString:_pssSiriSync_anchorValue];
 
     if ((v12 & 1) == 0)
     {
-      [v6 setPostAnchor:v11];
-      [v6 setObject:v10];
+      [infoCopy setPostAnchor:_pssSiriSync_anchorValue];
+      [infoCopy setObject:v10];
     }
   }
 
@@ -35,9 +35,9 @@
       _os_log_error_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%s Timed out. Leaving sync state as is.", &v14, 0xCu);
     }
 
-    [v6 setPostAnchor:v8];
+    [infoCopy setPostAnchor:anchorCopy];
 
-    [v6 setObject:0];
+    [infoCopy setObject:0];
   }
 }
 
@@ -70,12 +70,12 @@
   v11 = v6;
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info
 {
-  v8 = a6;
-  if (([a4 isEqualToString:@"1"] & 1) == 0)
+  infoCopy = info;
+  if (([validity isEqualToString:@"1"] & 1) == 0)
   {
-    [v8 resetWithValidity:@"1"];
+    [infoCopy resetWithValidity:@"1"];
   }
 
   [(PSSSSiriSyncHandler *)self _startSubscriptionFetch];

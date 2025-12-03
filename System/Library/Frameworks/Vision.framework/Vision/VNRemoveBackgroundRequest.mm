@@ -1,73 +1,73 @@
 @interface VNRemoveBackgroundRequest
 - (BOOL)cropResult;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)performInPlace;
 - (BOOL)returnMask;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setCropResult:(BOOL)a3;
-- (void)setPerformInPlace:(BOOL)a3;
-- (void)setReturnMask:(BOOL)a3;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setCropResult:(BOOL)result;
+- (void)setPerformInPlace:(BOOL)place;
+- (void)setReturnMask:(BOOL)mask;
 @end
 
 @implementation VNRemoveBackgroundRequest
 
-- (void)setReturnMask:(BOOL)a3
+- (void)setReturnMask:(BOOL)mask
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setReturnMask:v3];
+  maskCopy = mask;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setReturnMask:maskCopy];
 }
 
 - (BOOL)returnMask
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 returnMask];
+  configuration = [(VNRequest *)self configuration];
+  returnMask = [configuration returnMask];
 
-  return v3;
+  return returnMask;
 }
 
-- (void)setCropResult:(BOOL)a3
+- (void)setCropResult:(BOOL)result
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setCropResult:v3];
+  resultCopy = result;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setCropResult:resultCopy];
 }
 
 - (BOOL)cropResult
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 cropResult];
+  configuration = [(VNRequest *)self configuration];
+  cropResult = [configuration cropResult];
 
-  return v3;
+  return cropResult;
 }
 
-- (void)setPerformInPlace:(BOOL)a3
+- (void)setPerformInPlace:(BOOL)place
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setPerformInPlace:v3];
+  placeCopy = place;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setPerformInPlace:placeCopy];
 }
 
 - (BOOL)performInPlace
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 performInPlace];
+  configuration = [(VNRequest *)self configuration];
+  performInPlace = [configuration performInPlace];
 
-  return v3;
+  return performInPlace;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    [v8 session];
+    [contextCopy session];
     v22 = v24 = 0;
-    v10 = [VNRequest applicableDetectorAndOptions:"applicableDetectorAndOptions:forRevision:loadedInSession:error:" forRevision:&v24 loadedInSession:a3 error:?];
+    v10 = [VNRequest applicableDetectorAndOptions:"applicableDetectorAndOptions:forRevision:loadedInSession:error:" forRevision:&v24 loadedInSession:revision error:?];
     v23 = v24;
     if (v10)
     {
@@ -85,10 +85,10 @@
         [(VNRemoveBackgroundRequest *)v15 setPerformInPlace:0];
         [(VNRemoveBackgroundRequest *)v15 setCropResult:v13 & 1];
         [(VNRemoveBackgroundRequest *)v15 setReturnMask:1];
-        v16 = [v8 cachedObservationsAcceptedByRequest:v15];
-        v17 = [v16 firstObject];
+        v16 = [contextCopy cachedObservationsAcceptedByRequest:v15];
+        firstObject = [v16 firstObject];
 
-        if (v17)
+        if (firstObject)
         {
           break;
         }
@@ -101,12 +101,12 @@
         }
       }
 
-      [v23 setObject:v17 forKeyedSubscript:@"VNRemoveBackgroundProcessorOption_MaskObservation"];
+      [v23 setObject:firstObject forKeyedSubscript:@"VNRemoveBackgroundProcessorOption_MaskObservation"];
 
 LABEL_10:
-      v19 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v20 = [v10 processUsingQualityOfServiceClass:v19 options:v23 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v20 = [v10 processUsingQualityOfServiceClass:qosClass options:v23 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v18 = v20 != 0;
       if (v20)
       {
@@ -128,11 +128,11 @@ LABEL_10:
   return v18;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v10.receiver = self;
   v10.super_class = VNRemoveBackgroundRequest;
-  v5 = [(VNRequest *)&v10 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNRequest *)&v10 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRemoveBackgroundRequest performInPlace](self, "performInPlace")}];
   [v5 setObject:v6 forKeyedSubscript:@"VNRemoveBackgroundProcessorOption_PerformInPlace"];
 
@@ -146,15 +146,15 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNRemoveBackgroundRequest *)self performInPlace];
-  if (v5 == [v4 performInPlace] && (v6 = -[VNRemoveBackgroundRequest cropResult](self, "cropResult"), v6 == objc_msgSend(v4, "cropResult")) && (v7 = -[VNRemoveBackgroundRequest returnMask](self, "returnMask"), v7 == objc_msgSend(v4, "returnMask")))
+  configurationCopy = configuration;
+  performInPlace = [(VNRemoveBackgroundRequest *)self performInPlace];
+  if (performInPlace == [configurationCopy performInPlace] && (v6 = -[VNRemoveBackgroundRequest cropResult](self, "cropResult"), v6 == objc_msgSend(configurationCopy, "cropResult")) && (v7 = -[VNRemoveBackgroundRequest returnMask](self, "returnMask"), v7 == objc_msgSend(configurationCopy, "returnMask")))
   {
     v10.receiver = self;
     v10.super_class = VNRemoveBackgroundRequest;
-    v8 = [(VNImageBasedRequest *)&v10 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v8 = [(VNImageBasedRequest *)&v10 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -165,18 +165,18 @@ LABEL_10:
   return v8;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNRemoveBackgroundRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNRemoveBackgroundRequest *)self setPerformInPlace:[(VNRemoveBackgroundRequest *)v5 performInPlace]];
       [(VNRemoveBackgroundRequest *)self setCropResult:[(VNRemoveBackgroundRequest *)v5 cropResult]];
       [(VNRemoveBackgroundRequest *)self setReturnMask:[(VNRemoveBackgroundRequest *)v5 returnMask]];

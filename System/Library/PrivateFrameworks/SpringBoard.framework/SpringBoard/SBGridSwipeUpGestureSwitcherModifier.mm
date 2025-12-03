@@ -1,28 +1,28 @@
 @interface SBGridSwipeUpGestureSwitcherModifier
 - (CGPoint)scrollViewContentOffset;
 - (CGRect)switcherViewBounds;
-- (SBGridSwipeUpGestureSwitcherModifier)initWithGestureID:(id)a3 delayCompletionUntilTransitionBegins:(BOOL)a4;
+- (SBGridSwipeUpGestureSwitcherModifier)initWithGestureID:(id)d delayCompletionUntilTransitionBegins:(BOOL)begins;
 - (double)contentViewScale;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)visibleAppLayouts;
-- (int64_t)finalResponseForGestureEvent:(id)a3;
+- (int64_t)finalResponseForGestureEvent:(id)event;
 - (void)_applyPrototypeSettings;
-- (void)_performBlockByApplyContentViewScaleToSwitcherViewBounds:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)_performBlockByApplyContentViewScaleToSwitcherViewBounds:(id)bounds;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBGridSwipeUpGestureSwitcherModifier
 
-- (SBGridSwipeUpGestureSwitcherModifier)initWithGestureID:(id)a3 delayCompletionUntilTransitionBegins:(BOOL)a4
+- (SBGridSwipeUpGestureSwitcherModifier)initWithGestureID:(id)d delayCompletionUntilTransitionBegins:(BOOL)begins
 {
   v10.receiver = self;
   v10.super_class = SBGridSwipeUpGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v10 initWithGestureID:a3];
+  v5 = [(SBGestureSwitcherModifier *)&v10 initWithGestureID:d];
   v6 = v5;
   if (v5)
   {
-    v5->_delayCompletionUntilTransitionBegins = a4;
+    v5->_delayCompletionUntilTransitionBegins = begins;
     v7 = objc_alloc_init(SBDismissSiriSwitcherModifier);
     dismissSiriModifier = v6->_dismissSiriModifier;
     v6->_dismissSiriModifier = v7;
@@ -33,12 +33,12 @@
   return v6;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBGridSwipeUpGestureSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBGridSwipeUpGestureSwitcherModifier *)self _applyPrototypeSettings];
   }
@@ -155,20 +155,20 @@ void __57__SBGridSwipeUpGestureSwitcherModifier_visibleAppLayouts__block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBGridSwipeUpGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v15 handleGestureEvent:v4];
-  if ([v4 phase] == 2 || objc_msgSend(v4, "phase") == 3)
+  v5 = [(SBGestureSwitcherModifier *)&v15 handleGestureEvent:eventCopy];
+  if ([eventCopy phase] == 2 || objc_msgSend(eventCopy, "phase") == 3)
   {
-    [v4 translationInContainerView];
+    [eventCopy translationInContainerView];
     self->_translation.x = v6;
     self->_translation.y = v7;
-    if ([v4 phase] == 3)
+    if ([eventCopy phase] == 3)
     {
-      v8 = [(SBGridSwipeUpGestureSwitcherModifier *)self finalResponseForGestureEvent:v4];
+      v8 = [(SBGridSwipeUpGestureSwitcherModifier *)self finalResponseForGestureEvent:eventCopy];
       v9 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
       v10 = v9;
       if (v8)
@@ -197,13 +197,13 @@ void __57__SBGridSwipeUpGestureSwitcherModifier_visibleAppLayouts__block_invoke(
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = SBGridSwipeUpGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v7 handleTransitionEvent:v4];
-  if (-[SBGridSwipeUpGestureSwitcherModifier delayCompletionUntilTransitionBegins](self, "delayCompletionUntilTransitionBegins") && [v4 phase] >= 2)
+  v5 = [(SBGestureSwitcherModifier *)&v7 handleTransitionEvent:eventCopy];
+  if (-[SBGridSwipeUpGestureSwitcherModifier delayCompletionUntilTransitionBegins](self, "delayCompletionUntilTransitionBegins") && [eventCopy phase] >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -211,17 +211,17 @@ void __57__SBGridSwipeUpGestureSwitcherModifier_visibleAppLayouts__block_invoke(
   return v5;
 }
 
-- (int64_t)finalResponseForGestureEvent:(id)a3
+- (int64_t)finalResponseForGestureEvent:(id)event
 {
-  v4 = a3;
-  [v4 velocityInContainerView];
+  eventCopy = event;
+  [eventCopy velocityInContainerView];
   v6 = v5;
   y = self->_translation.y;
   [(SBGridSwipeUpGestureSwitcherModifier *)self containerViewBounds];
   v9 = v8;
-  v10 = [v4 isMouseEvent];
+  isMouseEvent = [eventCopy isMouseEvent];
 
-  if (v10)
+  if (isMouseEvent)
   {
     [(SBGridSwipeUpGestureSwitcherModifier *)self containerViewBounds];
     v12 = v11 * 0.125;
@@ -237,19 +237,19 @@ void __57__SBGridSwipeUpGestureSwitcherModifier_visibleAppLayouts__block_invoke(
 
 - (void)_applyPrototypeSettings
 {
-  v5 = [(SBGridSwipeUpGestureSwitcherModifier *)self switcherSettings];
-  [v5 gridSwitcherSwipeUpNormalizedRubberbandingRange];
+  switcherSettings = [(SBGridSwipeUpGestureSwitcherModifier *)self switcherSettings];
+  [switcherSettings gridSwitcherSwipeUpNormalizedRubberbandingRange];
   kGridSwitcherSwipeUpNormalizedRubberbandingRange = v2;
-  [v5 gridSwitcherSwipeUpNormalizedRubberbandedTranslationAtMinimumScale];
+  [switcherSettings gridSwitcherSwipeUpNormalizedRubberbandedTranslationAtMinimumScale];
   kGridSwitcherSwipeUpNormalizedRubberbandedTranslationAtMinimumScale = v3;
-  [v5 gridSwitcherSwipeUpMinimumScale];
+  [switcherSettings gridSwitcherSwipeUpMinimumScale];
   kGridSwitcherSwipeUpMinimumScale = v4;
 }
 
-- (void)_performBlockByApplyContentViewScaleToSwitcherViewBounds:(id)a3
+- (void)_performBlockByApplyContentViewScaleToSwitcherViewBounds:(id)bounds
 {
   self->_isApplyingContentViewScaleToSwitcherViewBounds = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(bounds + 2))(bounds, a2);
   self->_isApplyingContentViewScaleToSwitcherViewBounds = 0;
 }
 

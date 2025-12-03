@@ -6,8 +6,8 @@
 
 - (NSString)result
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"result"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"result"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

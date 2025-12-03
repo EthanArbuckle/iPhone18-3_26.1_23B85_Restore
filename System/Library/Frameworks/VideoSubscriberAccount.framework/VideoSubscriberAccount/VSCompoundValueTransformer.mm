@@ -1,7 +1,7 @@
 @interface VSCompoundValueTransformer
 - (VSCompoundValueTransformer)init;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSCompoundValueTransformer
@@ -21,18 +21,18 @@
   return v3;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = VSCompoundValueTransformer;
-  v4 = [(VSCompoundValueTransformer *)&v16 transformedValue:a3];
+  v4 = [(VSCompoundValueTransformer *)&v16 transformedValue:value];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(VSCompoundValueTransformer *)self valueTransformers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  valueTransformers = [(VSCompoundValueTransformer *)self valueTransformers];
+  v6 = [valueTransformers countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -45,7 +45,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(valueTransformers);
         }
 
         v4 = [*(*(&v12 + 1) + 8 * v9) transformedValue:v10];
@@ -55,7 +55,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v7 = [valueTransformers countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v7);
@@ -64,24 +64,24 @@
   return v4;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(VSCompoundValueTransformer *)self valueTransformers];
-  v6 = [v5 reverseObjectEnumerator];
+  valueTransformers = [(VSCompoundValueTransformer *)self valueTransformers];
+  reverseObjectEnumerator = [valueTransformers reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  v8 = v4;
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = valueCopy;
   if (v7)
   {
     v9 = v7;
     v10 = *v15;
-    v8 = v4;
+    v8 = valueCopy;
     do
     {
       v11 = 0;
@@ -90,7 +90,7 @@
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = [*(*(&v14 + 1) + 8 * v11) reverseTransformedValue:v12];
@@ -100,7 +100,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);

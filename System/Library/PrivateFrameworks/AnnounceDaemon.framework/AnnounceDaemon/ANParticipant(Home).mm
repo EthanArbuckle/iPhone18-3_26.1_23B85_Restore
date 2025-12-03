@@ -13,7 +13,7 @@
 - (id)initWithAccessory:()Home
 {
   v4 = a3;
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_2851D5BE8;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
@@ -28,7 +28,7 @@
 - (id)initWithUser:()Home
 {
   v4 = a3;
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_2851D5BE8;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
@@ -44,7 +44,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &off_2851D5BE8;
   v8 = objc_msgSendSuper2(&v11, sel_init);
   v9 = v8;
@@ -63,16 +63,16 @@
     v3 = result;
     v4 = a3;
     [v3 setIsAccessory:1];
-    v5 = [v4 uniqueIdentifier];
-    v6 = [v5 UUIDString];
-    [v3 setHomeKitID:v6];
+    uniqueIdentifier = [v4 uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    [v3 setHomeKitID:uUIDString];
 
-    v7 = [v4 name];
-    [v3 setName:v7];
+    name = [v4 name];
+    [v3 setName:name];
 
-    v8 = [v4 hmu_isEndpoint];
+    hmu_isEndpoint = [v4 hmu_isEndpoint];
 
-    return [v3 setIsEndpoint:v8];
+    return [v3 setIsEndpoint:hmu_isEndpoint];
   }
 
   return result;
@@ -83,46 +83,46 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [v4 name];
-    [a1 setName:v5];
+    name = [v4 name];
+    [self setName:name];
 
-    v6 = [v4 uniqueIdentifier];
-    v7 = [v6 UUIDString];
-    [a1 setHomeKitID:v7];
+    uniqueIdentifier = [v4 uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    [self setHomeKitID:uUIDString];
 
-    v8 = [v4 uniqueIdentifier];
-    v9 = [v8 UUIDString];
-    [a1 setHomeKitUserID:v9];
+    uniqueIdentifier2 = [v4 uniqueIdentifier];
+    uUIDString2 = [uniqueIdentifier2 UUIDString];
+    [self setHomeKitUserID:uUIDString2];
 
-    v10 = [v4 userIDSURI];
-    v11 = [v10 prefixedURI];
-    [a1 setIdsID:v11];
+    userIDSURI = [v4 userIDSURI];
+    prefixedURI = [userIDSURI prefixedURI];
+    [self setIdsID:prefixedURI];
 
-    v12 = [v4 userID];
+    userID = [v4 userID];
 
-    [a1 setUserID:v12];
+    [self setUserID:userID];
   }
 }
 
 - (void)populateWithUser:()Home andAccessory:
 {
   v12 = a3;
-  [a1 populateWithAccessory:a4];
+  [self populateWithAccessory:a4];
   if (v12)
   {
-    v6 = [v12 name];
-    [a1 setName:v6];
+    name = [v12 name];
+    [self setName:name];
 
-    v7 = [v12 uniqueIdentifier];
-    v8 = [v7 UUIDString];
-    [a1 setHomeKitUserID:v8];
+    uniqueIdentifier = [v12 uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    [self setHomeKitUserID:uUIDString];
 
-    v9 = [v12 userIDSURI];
-    v10 = [v9 prefixedURI];
-    [a1 setIdsID:v10];
+    userIDSURI = [v12 userIDSURI];
+    prefixedURI = [userIDSURI prefixedURI];
+    [self setIdsID:prefixedURI];
 
-    v11 = [v12 userID];
-    [a1 setUserID:v11];
+    userID = [v12 userID];
+    [self setUserID:userID];
   }
 }
 
@@ -132,9 +132,9 @@
   v3 = a3;
   v4 = objc_opt_new();
   v5 = +[ANHomeManager shared];
-  v6 = [v5 currentAccessory];
+  currentAccessory = [v5 currentAccessory];
 
-  if (v6)
+  if (currentAccessory)
   {
     [v3 hmu_allUsersIncludingCurrentUser];
   }

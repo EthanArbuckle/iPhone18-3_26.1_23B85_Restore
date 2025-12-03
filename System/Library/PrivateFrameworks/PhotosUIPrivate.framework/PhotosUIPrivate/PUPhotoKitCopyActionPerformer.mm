@@ -1,5 +1,5 @@
 @interface PUPhotoKitCopyActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 - (void)_performCopy;
 - (void)performUserInteractionTask;
 @end
@@ -9,20 +9,20 @@
 - (void)_performCopy
 {
   v3 = PXDefaultAssetSharingHelperClass();
-  v4 = [(PUAssetActionPerformer *)self assets];
+  assets = [(PUAssetActionPerformer *)self assets];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__PUPhotoKitCopyActionPerformer__performCopy__block_invoke;
   v5[3] = &unk_1E7B80280;
   v5[4] = self;
-  [v3 copyAssets:v4 completionHandler:v5];
+  [v3 copyAssets:assets completionHandler:v5];
 }
 
 - (void)performUserInteractionTask
 {
   v3 = MEMORY[0x1E69C3A10];
-  v4 = [(PUAssetActionPerformer *)self assets];
-  LODWORD(v3) = [v3 confidentialWarningRequiredForAssets:v4];
+  assets = [(PUAssetActionPerformer *)self assets];
+  LODWORD(v3) = [v3 confidentialWarningRequiredForAssets:assets];
 
   if (v3)
   {
@@ -58,12 +58,12 @@ void __59__PUPhotoKitCopyActionPerformer_performUserInteractionTask__block_invok
   [v1 completeUserInteractionTaskWithSuccess:0 error:v2];
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v5 = a4;
-  if ([a3 isPhoto])
+  collectionCopy = collection;
+  if ([asset isPhoto])
   {
-    v6 = [v5 isTrashBin] ^ 1;
+    v6 = [collectionCopy isTrashBin] ^ 1;
   }
 
   else

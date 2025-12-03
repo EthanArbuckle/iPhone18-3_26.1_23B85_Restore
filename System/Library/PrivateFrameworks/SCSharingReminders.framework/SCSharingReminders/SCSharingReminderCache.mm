@@ -1,20 +1,20 @@
 @interface SCSharingReminderCache
-+ (id)cacheWithState:(id *)a3;
++ (id)cacheWithState:(id *)state;
 + (id)new;
 - ($036EC2AD71A582527DAFF881AF25695D)toCacheState;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)ignoredIdentifiers;
 - (NSArray)scheduledReminders;
-- (SCSharingReminderCache)initWithCoder:(id)a3;
+- (SCSharingReminderCache)initWithCoder:(id)coder;
 - (id)description;
-- (id)ignoredIdentifiersForType:(id)a3;
-- (id)initFromState:(id *)a3;
-- (id)remindersDueBy:(id)a3;
-- (void)addIgnoredIdentifiers:(id)a3 withType:(id)a4;
-- (void)addSharingReminders:(id)a3;
-- (void)deliverGeneralSharingReminderAfter:(double)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeRemindersWithIdentifiers:(id)a3;
+- (id)ignoredIdentifiersForType:(id)type;
+- (id)initFromState:(id *)state;
+- (id)remindersDueBy:(id)by;
+- (void)addIgnoredIdentifiers:(id)identifiers withType:(id)type;
+- (void)addSharingReminders:(id)reminders;
+- (void)deliverGeneralSharingReminderAfter:(double)after;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeRemindersWithIdentifiers:(id)identifiers;
 @end
 
 @implementation SCSharingReminderCache
@@ -36,20 +36,20 @@
   return result;
 }
 
-+ (id)cacheWithState:(id *)a3
++ (id)cacheWithState:(id *)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  var1 = a3->var1;
+  var1 = state->var1;
   v5 = [MEMORY[0x277CBEAA8] now];
   v6 = [var1 laterDate:v5];
-  v7 = [v6 isEqualToDate:a3->var1];
+  v7 = [v6 isEqualToDate:state->var1];
 
   if (v7)
   {
     v8 = SCLogger();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = localizedDateStringFromUTC(a3->var1);
+      v9 = localizedDateStringFromUTC(state->var1);
       [(SCSharingReminderCache *)v9 cacheWithState:buf, v8];
     }
   }
@@ -57,7 +57,7 @@
   else
   {
     v10 = [SCSharingReminderCache alloc];
-    __copy_constructor_8_8_t0w1_s8_s16_s24(v14, a3);
+    __copy_constructor_8_8_t0w1_s8_s16_s24(v14, state);
     if (v10)
     {
       v11 = [(SCSharingReminderCache *)v10 initFromState:v14];
@@ -69,13 +69,13 @@
 
   v11 = 0;
 LABEL_8:
-  __destructor_8_s8_s16_s24(a3);
+  __destructor_8_s8_s16_s24(state);
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (id)initFromState:(id *)a3
+- (id)initFromState:(id *)state
 {
   v12.receiver = self;
   v12.super_class = SCSharingReminderCache;
@@ -86,32 +86,32 @@ LABEL_8:
     scheduledSharingReminders = v4->_scheduledSharingReminders;
     v4->_scheduledSharingReminders = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sharingRemindersByType = v4->_sharingRemindersByType;
-    v4->_sharingRemindersByType = v7;
+    v4->_sharingRemindersByType = dictionary;
 
-    v4->_consecutiveNotificationCount = a3->var0;
-    objc_storeStrong(&v4->_lastFiredDate, a3->var1);
-    v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3->var3];
+    v4->_consecutiveNotificationCount = state->var0;
+    objc_storeStrong(&v4->_lastFiredDate, state->var1);
+    v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:state->var3];
     ignorableIdentifiersByType = v4->_ignorableIdentifiersByType;
     v4->_ignorableIdentifiersByType = v9;
 
-    [(SCSharingReminderCache *)v4 addSharingReminders:a3->var2];
+    [(SCSharingReminderCache *)v4 addSharingReminders:state->var2];
   }
 
-  __destructor_8_s8_s16_s24(a3);
+  __destructor_8_s8_s16_s24(state);
   return v4;
 }
 
-- (void)addSharingReminders:(id)a3
+- (void)addSharingReminders:(id)reminders
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  remindersCopy = reminders;
+  v5 = remindersCopy;
+  if (remindersCopy && [remindersCopy count])
   {
-    v6 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-    [v6 addObjectsFromArray:v5];
+    scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+    [scheduledSharingReminders addObjectsFromArray:v5];
 
     v25 = 0u;
     v26 = 0u;
@@ -134,23 +134,23 @@ LABEL_8:
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [v12 type];
-          v14 = [(SCSharingReminderCache *)self sharingRemindersByType];
-          v15 = [v14 valueForKey:v13];
+          type = [v12 type];
+          sharingRemindersByType = [(SCSharingReminderCache *)self sharingRemindersByType];
+          v15 = [sharingRemindersByType valueForKey:type];
 
           if (!v15)
           {
-            v16 = [(SCSharingReminderCache *)self sharingRemindersByType];
-            v17 = [MEMORY[0x277CBEB40] orderedSet];
-            [v16 setValue:v17 forKey:v13];
+            sharingRemindersByType2 = [(SCSharingReminderCache *)self sharingRemindersByType];
+            orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+            [sharingRemindersByType2 setValue:orderedSet forKey:type];
           }
 
-          v18 = [(SCSharingReminderCache *)self sharingRemindersByType];
-          v19 = [v18 valueForKey:v13];
+          sharingRemindersByType3 = [(SCSharingReminderCache *)self sharingRemindersByType];
+          v19 = [sharingRemindersByType3 valueForKey:type];
 
           [v19 addObject:v12];
-          v20 = [(SCSharingReminderCache *)self sharingRemindersByType];
-          [v20 setValue:v19 forKey:v13];
+          sharingRemindersByType4 = [(SCSharingReminderCache *)self sharingRemindersByType];
+          [sharingRemindersByType4 setValue:v19 forKey:type];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -165,22 +165,22 @@ LABEL_8:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeRemindersWithIdentifiers:(id)a3
+- (void)removeRemindersWithIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = SCLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = identifiersCopy;
     _os_log_impl(&dword_262556000, v5, OS_LOG_TYPE_INFO, "Removing sharing reminders with the following identifiers: %@", buf, 0xCu);
   }
 
-  v6 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-  v7 = [v6 valueForKey:@"identifier"];
+  scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+  v7 = [scheduledSharingReminders valueForKey:@"identifier"];
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -201,13 +201,13 @@ LABEL_8:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [v4 indexOfObject:{*(*(&v19 + 1) + 8 * v13), v19}];
+        v14 = [identifiersCopy indexOfObject:{*(*(&v19 + 1) + 8 * v13), v19}];
         if (v14 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v15 = v14;
-          v16 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-          v17 = [v16 objectAtIndexedSubscript:v15];
-          [v8 addObject:v17];
+          scheduledSharingReminders2 = [(SCSharingReminderCache *)self scheduledSharingReminders];
+          v17 = [scheduledSharingReminders2 objectAtIndexedSubscript:v15];
+          [array addObject:v17];
         }
 
         ++v13;
@@ -220,51 +220,51 @@ LABEL_8:
     while (v11);
   }
 
-  [(SCSharingReminderCache *)self removeSharingReminders:v8 wereDelivered:0];
+  [(SCSharingReminderCache *)self removeSharingReminders:array wereDelivered:0];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deliverGeneralSharingReminderAfter:(double)a3
+- (void)deliverGeneralSharingReminderAfter:(double)after
 {
-  if (a3 >= 0.0)
+  if (after >= 0.0)
   {
-    v6 = [(SCSharingReminderCache *)self sharingRemindersByType];
-    v7 = [v6 valueForKey:@"com.apple.safetycheckd.general"];
-    v4 = [v7 array];
+    sharingRemindersByType = [(SCSharingReminderCache *)self sharingRemindersByType];
+    v7 = [sharingRemindersByType valueForKey:@"com.apple.safetycheckd.general"];
+    array = [v7 array];
 
-    if ([v4 count]>= 2)
+    if ([array count]>= 2)
     {
       v8 = SCLogger();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [(SCSharingReminderCache *)v4 deliverGeneralSharingReminderAfter:v8];
+        [(SCSharingReminderCache *)array deliverGeneralSharingReminderAfter:v8];
       }
     }
 
-    [(SCSharingReminderCache *)self removeSharingReminders:v4 wereDelivered:0];
+    [(SCSharingReminderCache *)self removeSharingReminders:array wereDelivered:0];
   }
 
   else
   {
-    v4 = SCLogger();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    array = SCLogger();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
-      [(SCSharingReminderCache *)v4 deliverGeneralSharingReminderAfter:a3];
+      [(SCSharingReminderCache *)array deliverGeneralSharingReminderAfter:after];
     }
   }
 }
 
-- (id)remindersDueBy:(id)a3
+- (id)remindersDueBy:(id)by
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  byCopy = by;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+  v7 = [scheduledSharingReminders countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -275,21 +275,21 @@ LABEL_8:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(scheduledSharingReminders);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 scheduledDate];
-        v13 = [v12 earlierDate:v4];
-        v14 = [v11 scheduledDate];
+        scheduledDate = [v11 scheduledDate];
+        v13 = [scheduledDate earlierDate:byCopy];
+        scheduledDate2 = [v11 scheduledDate];
 
-        if (v13 == v14)
+        if (v13 == scheduledDate2)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [scheduledSharingReminders countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -297,15 +297,15 @@ LABEL_8:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 - (NSArray)scheduledReminders
 {
-  v2 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-  v3 = [v2 array];
+  scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+  array = [scheduledSharingReminders array];
 
-  return v3;
+  return array;
 }
 
 - ($036EC2AD71A582527DAFF881AF25695D)toCacheState
@@ -314,54 +314,54 @@ LABEL_8:
   *&retstr->var2 = 0u;
   retstr->var0 = [(SCSharingReminderCache *)self consecutiveNotificationCount];
   retstr->var1 = [(SCSharingReminderCache *)self lastFiredDate];
-  v7 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-  retstr->var2 = [v7 copy];
-  v5 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
-  retstr->var3 = [v5 copy];
+  scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+  retstr->var2 = [scheduledSharingReminders copy];
+  ignorableIdentifiersByType = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
+  retstr->var3 = [ignorableIdentifiersByType copy];
 
   return result;
 }
 
-- (void)addIgnoredIdentifiers:(id)a3 withType:(id)a4
+- (void)addIgnoredIdentifiers:(id)identifiers withType:(id)type
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
-  v8 = [v7 valueForKey:v6];
+  identifiersCopy = identifiers;
+  typeCopy = type;
+  ignorableIdentifiersByType = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
+  orderedSet = [ignorableIdentifiersByType valueForKey:typeCopy];
 
-  if (!v8)
+  if (!orderedSet)
   {
-    v8 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   }
 
-  [v8 addObjectsFromArray:v10];
-  v9 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
-  [v9 setValue:v8 forKey:v6];
+  [orderedSet addObjectsFromArray:identifiersCopy];
+  ignorableIdentifiersByType2 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
+  [ignorableIdentifiersByType2 setValue:orderedSet forKey:typeCopy];
 }
 
-- (id)ignoredIdentifiersForType:(id)a3
+- (id)ignoredIdentifiersForType:(id)type
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
-  v6 = [v5 valueForKey:v4];
+  typeCopy = type;
+  ignorableIdentifiersByType = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
+  v6 = [ignorableIdentifiersByType valueForKey:typeCopy];
 
-  v7 = [v6 array];
+  array = [v6 array];
 
-  return v7;
+  return array;
 }
 
 - (NSArray)ignoredIdentifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
-  v5 = [v4 allValues];
+  ignorableIdentifiersByType = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
+  allValues = [ignorableIdentifiersByType allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -372,45 +372,45 @@ LABEL_8:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) allObjects];
-        [v3 addObjectsFromArray:v10];
+        allObjects = [*(*(&v14 + 1) + 8 * i) allObjects];
+        [orderedSet addObjectsFromArray:allObjects];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v3 array];
+  array = [orderedSet array];
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-  v6 = [v5 array];
-  [v4 encodeObject:v6 forKey:@"scheduledSharingReminders"];
+  coderCopy = coder;
+  scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+  array = [scheduledSharingReminders array];
+  [coderCopy encodeObject:array forKey:@"scheduledSharingReminders"];
 
-  v7 = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
-  [v4 encodeObject:v7 forKey:@"deliveredIdentifiersMap"];
+  ignorableIdentifiersByType = [(SCSharingReminderCache *)self ignorableIdentifiersByType];
+  [coderCopy encodeObject:ignorableIdentifiersByType forKey:@"deliveredIdentifiersMap"];
 
-  [v4 encodeInteger:-[SCSharingReminderCache consecutiveNotificationCount](self forKey:{"consecutiveNotificationCount"), @"consecutiveNotificationCount"}];
-  v8 = [(SCSharingReminderCache *)self lastFiredDate];
-  [v4 encodeObject:v8 forKey:@"lastFiredDate"];
+  [coderCopy encodeInteger:-[SCSharingReminderCache consecutiveNotificationCount](self forKey:{"consecutiveNotificationCount"), @"consecutiveNotificationCount"}];
+  lastFiredDate = [(SCSharingReminderCache *)self lastFiredDate];
+  [coderCopy encodeObject:lastFiredDate forKey:@"lastFiredDate"];
 }
 
-- (SCSharingReminderCache)initWithCoder:(id)a3
+- (SCSharingReminderCache)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = SCSharingReminderCache;
   v5 = [(SCSharingReminderCache *)&v21 init];
@@ -421,7 +421,7 @@ LABEL_8:
     v23[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"scheduledSharingReminders"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scheduledSharingReminders"];
 
     v10 = [MEMORY[0x277CBEB40] orderedSetWithArray:v9];
     scheduledSharingReminders = v5->_scheduledSharingReminders;
@@ -433,12 +433,12 @@ LABEL_8:
     v22[2] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"deliveredIdentifiersMap"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"deliveredIdentifiersMap"];
     ignorableIdentifiersByType = v5->_ignorableIdentifiersByType;
     v5->_ignorableIdentifiersByType = v15;
 
-    v5->_consecutiveNotificationCount = [v4 decodeIntegerForKey:@"consecutiveNotificationCount"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastFiredDate"];
+    v5->_consecutiveNotificationCount = [coderCopy decodeIntegerForKey:@"consecutiveNotificationCount"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastFiredDate"];
     lastFiredDate = v5->_lastFiredDate;
     v5->_lastFiredDate = v17;
   }
@@ -447,10 +447,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -460,33 +460,33 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCSharingReminderCache *)v5 consecutiveNotificationCount];
-      if (v6 != [(SCSharingReminderCache *)self consecutiveNotificationCount])
+      v5 = equalCopy;
+      consecutiveNotificationCount = [(SCSharingReminderCache *)v5 consecutiveNotificationCount];
+      if (consecutiveNotificationCount != [(SCSharingReminderCache *)self consecutiveNotificationCount])
       {
         goto LABEL_9;
       }
 
-      v7 = [(SCSharingReminderCache *)v5 scheduledSharingReminders];
-      v8 = [v7 hash];
-      v9 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-      v10 = [v9 hash];
+      scheduledSharingReminders = [(SCSharingReminderCache *)v5 scheduledSharingReminders];
+      v8 = [scheduledSharingReminders hash];
+      scheduledSharingReminders2 = [(SCSharingReminderCache *)self scheduledSharingReminders];
+      v10 = [scheduledSharingReminders2 hash];
 
       if (v8 != v10)
       {
         goto LABEL_9;
       }
 
-      v11 = [MEMORY[0x277CBEA80] currentCalendar];
-      v12 = [(SCSharingReminderCache *)v5 lastFiredDate];
-      v13 = [(SCSharingReminderCache *)self lastFiredDate];
-      v14 = [v11 isDate:v12 inSameDayAsDate:v13];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      lastFiredDate = [(SCSharingReminderCache *)v5 lastFiredDate];
+      lastFiredDate2 = [(SCSharingReminderCache *)self lastFiredDate];
+      v14 = [currentCalendar isDate:lastFiredDate inSameDayAsDate:lastFiredDate2];
 
       if (v14)
       {
-        v15 = [(SCSharingReminderCache *)v5 ignoredIdentifiers];
-        v16 = [(SCSharingReminderCache *)self ignoredIdentifiers];
-        v17 = [v15 isEqualToArray:v16];
+        ignoredIdentifiers = [(SCSharingReminderCache *)v5 ignoredIdentifiers];
+        ignoredIdentifiers2 = [(SCSharingReminderCache *)self ignoredIdentifiers];
+        v17 = [ignoredIdentifiers isEqualToArray:ignoredIdentifiers2];
       }
 
       else
@@ -508,12 +508,12 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCSharingReminderCache *)self scheduledSharingReminders];
-  v5 = [(SCSharingReminderCache *)self consecutiveNotificationCount];
-  v6 = [(SCSharingReminderCache *)self lastFiredDate];
-  v7 = localizedDateStringFromUTC(v6);
-  v8 = [(SCSharingReminderCache *)self ignoredIdentifiers];
-  v9 = [v3 stringWithFormat:@"[SCSharingReminderCache] Reminders: %@ notification count: %lu last fired date: %@ ignored: %@", v4, v5, v7, v8];
+  scheduledSharingReminders = [(SCSharingReminderCache *)self scheduledSharingReminders];
+  consecutiveNotificationCount = [(SCSharingReminderCache *)self consecutiveNotificationCount];
+  lastFiredDate = [(SCSharingReminderCache *)self lastFiredDate];
+  v7 = localizedDateStringFromUTC(lastFiredDate);
+  ignoredIdentifiers = [(SCSharingReminderCache *)self ignoredIdentifiers];
+  v9 = [v3 stringWithFormat:@"[SCSharingReminderCache] Reminders: %@ notification count: %lu last fired date: %@ ignored: %@", scheduledSharingReminders, consecutiveNotificationCount, v7, ignoredIdentifiers];
 
   return v9;
 }

@@ -1,20 +1,20 @@
 @interface UIAlertControllerVisualStyleActionSheetCar
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 @end
 
 @implementation UIAlertControllerVisualStyleActionSheetCar
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
-  v3 = a3;
-  [v3 safeAreaInsets];
+  viewCopy = view;
+  [viewCopy safeAreaInsets];
   v5 = v4;
-  [v3 safeAreaInsets];
+  [viewCopy safeAreaInsets];
   v7 = v5 + v6;
-  [v3 bounds];
+  [viewCopy bounds];
   Width = CGRectGetWidth(v21);
   v9 = fmax((Width - v7 - fmin(Width - v7, 420.0)) * 0.5, 10.0);
-  v10 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(v3, 6.0, v9, 6.0, v9);
+  v10 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(viewCopy, 6.0, v9, 6.0, v9);
   v12 = v11;
   v14 = v13;
   v16 = v15;

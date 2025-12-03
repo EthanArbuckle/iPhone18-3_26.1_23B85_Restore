@@ -1,11 +1,11 @@
 @interface COSApplicationLabelAccessoryView
-- (COSApplicationLabelAccessoryView)initWithCoder:(id)a3;
-- (COSApplicationLabelAccessoryView)initWithLabelAccessoryType:(int64_t)a3;
+- (COSApplicationLabelAccessoryView)initWithCoder:(id)coder;
+- (COSApplicationLabelAccessoryView)initWithLabelAccessoryType:(int64_t)type;
 @end
 
 @implementation COSApplicationLabelAccessoryView
 
-- (COSApplicationLabelAccessoryView)initWithLabelAccessoryType:(int64_t)a3
+- (COSApplicationLabelAccessoryView)initWithLabelAccessoryType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = COSApplicationLabelAccessoryView;
@@ -13,12 +13,12 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(COSApplicationLabelAccessoryView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(COSApplicationLabelAccessoryView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         if (qword_1002BD370 != -1)
         {
@@ -42,9 +42,9 @@
   return v5;
 }
 
-- (COSApplicationLabelAccessoryView)initWithCoder:(id)a3
+- (COSApplicationLabelAccessoryView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"This class does not support unarchiving from a nib" userInfo:0];
   objc_exception_throw(v4);
 }

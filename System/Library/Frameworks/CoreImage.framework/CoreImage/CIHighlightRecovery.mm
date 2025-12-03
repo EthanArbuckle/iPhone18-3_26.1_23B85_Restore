@@ -68,13 +68,13 @@
     }
 
     v17 = roundf(v14 * [objc_msgSend(v3 objectForKeyedSubscript:{@"iterations", "intValue"}]);
-    v18 = [(NSNumber *)[(CIHighlightRecovery *)self inputDraftMode] integerValue];
-    if (v18 == 1)
+    integerValue = [(NSNumber *)[(CIHighlightRecovery *)self inputDraftMode] integerValue];
+    if (integerValue == 1)
     {
       v17 = roundf(v17 / 3.0);
     }
 
-    else if (v18 == 2)
+    else if (integerValue == 2)
     {
       v17 = [objc_msgSend(v3 objectForKeyedSubscript:{@"iterations", "intValue"}];
     }

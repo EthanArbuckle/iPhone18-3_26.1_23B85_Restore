@@ -1,52 +1,52 @@
 @interface CNUIFamilyMemberDowntimeContactDataSource
-+ (BOOL)isErrorPossiblyRelatedToExtraStores:(id)a3;
-- (CNUIFamilyMemberDowntimeContactDataSource)initWithStore:(id)a3 familyMembers:(id)a4 requiredKeys:(id)a5;
-- (id)completeContactFromContact:(id)a3 fromMainStoreOnly:(BOOL)a4 keysToFetch:(id)a5;
-- (id)contactItemForIndexPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)labelForFamilyMember:(id)a3;
++ (BOOL)isErrorPossiblyRelatedToExtraStores:(id)stores;
+- (CNUIFamilyMemberDowntimeContactDataSource)initWithStore:(id)store familyMembers:(id)members requiredKeys:(id)keys;
+- (id)completeContactFromContact:(id)contact fromMainStoreOnly:(BOOL)only keysToFetch:(id)fetch;
+- (id)contactItemForIndexPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)labelForFamilyMember:(id)member;
 - (id)preferredForNameMeContactIdentifier;
-- (id)preferredForNameMeContactWithKeysToFetch:(id)a3;
+- (id)preferredForNameMeContactWithKeysToFetch:(id)fetch;
 - (id)selectedContacts;
-- (id)titleForSection:(int64_t)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
+- (id)titleForSection:(int64_t)section;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 - (int64_t)sortOrder;
 - (void)_loadAllContactsIfNeeded;
-- (void)filterSectionsForString:(id)a3;
-- (void)postProcessForFamilyMembersWithContacts:(id)a3;
-- (void)setContactItemSelected:(BOOL)a3 forIndexPath:(id)a4;
-- (void)setFilterString:(id)a3;
+- (void)filterSectionsForString:(id)string;
+- (void)postProcessForFamilyMembersWithContacts:(id)contacts;
+- (void)setContactItemSelected:(BOOL)selected forIndexPath:(id)path;
+- (void)setFilterString:(id)string;
 @end
 
 @implementation CNUIFamilyMemberDowntimeContactDataSource
 
-- (id)preferredForNameMeContactWithKeysToFetch:(id)a3
+- (id)preferredForNameMeContactWithKeysToFetch:(id)fetch
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (-[CNUIFamilyMemberDowntimeContactDataSource meContactNeedsUpdate](v5, "meContactNeedsUpdate") || (-[CNUIFamilyMemberDowntimeContactDataSource meContact](v5, "meContact"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (-[CNUIFamilyMemberDowntimeContactDataSource meContact](v5, "meContact"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 areKeysAvailable:v4], v7, v6, (v8 & 1) == 0))
+  fetchCopy = fetch;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (-[CNUIFamilyMemberDowntimeContactDataSource meContactNeedsUpdate](selfCopy, "meContactNeedsUpdate") || (-[CNUIFamilyMemberDowntimeContactDataSource meContact](selfCopy, "meContact"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (-[CNUIFamilyMemberDowntimeContactDataSource meContact](selfCopy, "meContact"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 areKeysAvailable:fetchCopy], v7, v6, (v8 & 1) == 0))
   {
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = v9;
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    v10 = array;
+    if (fetchCopy)
     {
-      [v9 addObjectsFromArray:v4];
+      [array addObjectsFromArray:fetchCopy];
     }
 
-    v11 = [(CNUIFamilyMemberDowntimeContactDataSource *)v5 meContact];
+    meContact = [(CNUIFamilyMemberDowntimeContactDataSource *)selfCopy meContact];
 
-    if (v11)
+    if (meContact)
     {
-      v12 = [(CNUIFamilyMemberDowntimeContactDataSource *)v5 meContact];
-      v13 = [v12 availableKeyDescriptor];
-      [v10 addObject:v13];
+      meContact2 = [(CNUIFamilyMemberDowntimeContactDataSource *)selfCopy meContact];
+      availableKeyDescriptor = [meContact2 availableKeyDescriptor];
+      [v10 addObject:availableKeyDescriptor];
     }
 
     v14 = [objc_alloc(MEMORY[0x1E695CD78]) initWithKeysToFetch:v10];
-    v15 = [MEMORY[0x1E695CD58] predicateForMeContact];
-    [v14 setPredicate:v15];
+    predicateForMeContact = [MEMORY[0x1E695CD58] predicateForMeContact];
+    [v14 setPredicate:predicateForMeContact];
 
     [v14 setUnifyResults:0];
     v27 = 0;
@@ -55,20 +55,20 @@
     v30 = __Block_byref_object_copy__4197;
     v31 = __Block_byref_object_dispose__4198;
     v32 = 0;
-    v16 = [(CNUIFamilyMemberDowntimeContactDataSource *)v5 store];
+    store = [(CNUIFamilyMemberDowntimeContactDataSource *)selfCopy store];
     v25[4] = &v27;
     v26 = 0;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __86__CNUIFamilyMemberDowntimeContactDataSource_preferredForNameMeContactWithKeysToFetch___block_invoke;
     v25[3] = &unk_1E74E6F60;
-    v17 = [v16 enumerateNonUnifiedContactsWithFetchRequest:v14 error:&v26 usingBlock:v25];
+    v17 = [store enumerateNonUnifiedContactsWithFetchRequest:v14 error:&v26 usingBlock:v25];
     v18 = v26;
 
     if (v17)
     {
-      [(CNUIFamilyMemberDowntimeContactDataSource *)v5 setMeContactNeedsUpdate:0];
-      [(CNUIFamilyMemberDowntimeContactDataSource *)v5 setMeContact:v28[5]];
+      [(CNUIFamilyMemberDowntimeContactDataSource *)selfCopy setMeContactNeedsUpdate:0];
+      [(CNUIFamilyMemberDowntimeContactDataSource *)selfCopy setMeContact:v28[5]];
     }
 
     else
@@ -79,10 +79,10 @@
     _Block_object_dispose(&v27, 8);
   }
 
-  v23 = [(CNUIFamilyMemberDowntimeContactDataSource *)v5 meContact];
-  objc_sync_exit(v5);
+  meContact3 = [(CNUIFamilyMemberDowntimeContactDataSource *)selfCopy meContact];
+  objc_sync_exit(selfCopy);
 
-  return v23;
+  return meContact3;
 }
 
 - (id)preferredForNameMeContactIdentifier
@@ -91,26 +91,26 @@
   v7[0] = *MEMORY[0x1E695C258];
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   v4 = [(CNUIFamilyMemberDowntimeContactDataSource *)self preferredForNameMeContactWithKeysToFetch:v3];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (id)completeContactFromContact:(id)a3 fromMainStoreOnly:(BOOL)a4 keysToFetch:(id)a5
+- (id)completeContactFromContact:(id)contact fromMainStoreOnly:(BOOL)only keysToFetch:(id)fetch
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isUnknown] && (objc_msgSend(v8, "isSuggestedMe") & 1) == 0)
+  onlyCopy = only;
+  contactCopy = contact;
+  fetchCopy = fetch;
+  if ([contactCopy isUnknown] && (objc_msgSend(contactCopy, "isSuggestedMe") & 1) == 0)
   {
-    v23 = v8;
+    v23 = contactCopy;
   }
 
   else
   {
-    v10 = [v8 identifier];
-    v11 = [(CNUIFamilyMemberDowntimeContactDataSource *)self preferredForNameMeContactIdentifier];
-    v12 = [v10 isEqual:v11];
+    identifier = [contactCopy identifier];
+    preferredForNameMeContactIdentifier = [(CNUIFamilyMemberDowntimeContactDataSource *)self preferredForNameMeContactIdentifier];
+    v12 = [identifier isEqual:preferredForNameMeContactIdentifier];
 
     v44 = 0;
     v45 = &v44;
@@ -132,16 +132,16 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __102__CNUIFamilyMemberDowntimeContactDataSource_completeContactFromContact_fromMainStoreOnly_keysToFetch___block_invoke;
     aBlock[3] = &unk_1E74E5FB0;
-    v27 = v9;
+    v27 = fetchCopy;
     v33 = v12;
-    v13 = v10;
+    v13 = identifier;
     v28 = v13;
-    v29 = self;
+    selfCopy = self;
     v30 = &v34;
     v31 = &v38;
     v32 = &v44;
     v14 = _Block_copy(aBlock);
-    v14[2](v14, v6);
+    v14[2](v14, onlyCopy);
     if ((v35[3] & 1) == 0)
     {
       _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNUIFamilyMemberDowntimeContactDataSource.m", 295, 3, @"Error completing contact: %@", v15, v16, v17, v18, v39[5]);
@@ -225,10 +225,10 @@ void __102__CNUIFamilyMemberDowntimeContactDataSource_completeContactFromContact
   }
 }
 
-- (id)labelForFamilyMember:(id)a3
+- (id)labelForFamilyMember:(id)member
 {
-  v3 = a3;
-  if ([v3 isMe])
+  memberCopy = member;
+  if ([memberCopy isMe])
   {
     v4 = @"DOWNTIME_PICKER_CONTACT_LABEL_ME";
 LABEL_5:
@@ -238,7 +238,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isParent])
+  if ([memberCopy isParent])
   {
     v4 = @"DOWNTIME_PICKER_CONTACT_LABEL_PARENT";
     goto LABEL_5;
@@ -250,27 +250,27 @@ LABEL_7:
   return v6;
 }
 
-- (void)postProcessForFamilyMembersWithContacts:(id)a3
+- (void)postProcessForFamilyMembersWithContacts:(id)contacts
 {
   v48 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v31 = [v30 mutableCopy];
+  contactsCopy = contacts;
+  v31 = [contactsCopy mutableCopy];
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__4197;
   v45 = __Block_byref_object_dispose__4198;
-  v46 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E696AD50] indexSet];
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __85__CNUIFamilyMemberDowntimeContactDataSource_postProcessForFamilyMembersWithContacts___block_invoke;
   v38[3] = &unk_1E74E2000;
   v38[4] = self;
   v40 = &v41;
-  v4 = v3;
+  v4 = indexSet;
   v39 = v4;
-  [v30 enumerateObjectsUsingBlock:v38];
+  [contactsCopy enumerateObjectsUsingBlock:v38];
   [v31 removeObjectsAtIndexes:v4];
   v29 = v4;
   v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
@@ -296,12 +296,12 @@ LABEL_7:
           }
 
           v10 = *(*(&v34 + 1) + 8 * i);
-          v11 = [v10 second];
-          v12 = [(CNUIFamilyMemberDowntimeContactDataSource *)self labelForFamilyMember:v11];
+          second = [v10 second];
+          v12 = [(CNUIFamilyMemberDowntimeContactDataSource *)self labelForFamilyMember:second];
 
           v13 = [CNUIFamilyMemberDowntimeContactItem alloc];
-          v14 = [v10 first];
-          v15 = [(CNUIFamilyMemberDowntimeContactItem *)v13 initWithContact:v14 label:v12];
+          first = [v10 first];
+          v15 = [(CNUIFamilyMemberDowntimeContactItem *)v13 initWithContact:first label:v12];
 
           [v5 addObject:v15];
         }
@@ -320,10 +320,10 @@ LABEL_7:
   }
 
   v20 = [v31 _cn_map:&__block_literal_global_75];
-  v21 = [(CNUIFamilyMemberDowntimeContactDataSource *)self isShowingFamilyMemberContacts];
+  isShowingFamilyMemberContacts = [(CNUIFamilyMemberDowntimeContactDataSource *)self isShowingFamilyMemberContacts];
   v22 = CNContactsUIBundle();
   v23 = v22;
-  if (v21)
+  if (isShowingFamilyMemberContacts)
   {
     v24 = @"DOWNTIME_PICKER_CONTACTS_SECTION_TITLE_MEMBER";
   }
@@ -406,16 +406,16 @@ void __85__CNUIFamilyMemberDowntimeContactDataSource_postProcessForFamilyMembers
     v5 = [objc_alloc(MEMORY[0x1E695CD78]) initWithKeysToFetch:self->_requiredKeys];
     [v5 setUnifyResults:0];
     [v5 setSortOrder:{-[CNUIFamilyMemberDowntimeContactDataSource sortOrder](self, "sortOrder")}];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [(CNUIFamilyMemberDowntimeContactDataSource *)self store];
+    array = [MEMORY[0x1E695DF70] array];
+    store = [(CNUIFamilyMemberDowntimeContactDataSource *)self store];
     v17[0] = 0;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __69__CNUIFamilyMemberDowntimeContactDataSource__loadAllContactsIfNeeded__block_invoke;
     v15[3] = &unk_1E74E5ED0;
-    v8 = v6;
+    v8 = array;
     v16 = v8;
-    v9 = [v7 enumerateContactsAndMatchInfoWithFetchRequest:v5 error:v17 usingBlock:v15];
+    v9 = [store enumerateContactsAndMatchInfoWithFetchRequest:v5 error:v17 usingBlock:v15];
     v10 = v17[0];
 
     if (v9)
@@ -435,12 +435,12 @@ void __85__CNUIFamilyMemberDowntimeContactDataSource_postProcessForFamilyMembers
   }
 }
 
-- (void)filterSectionsForString:(id)a3
+- (void)filterSectionsForString:(id)string
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 localizedLowercaseString];
-  v6 = [v5 componentsSeparatedByString:@" "];
+  stringCopy = string;
+  localizedLowercaseString = [stringCopy localizedLowercaseString];
+  v6 = [localizedLowercaseString componentsSeparatedByString:@" "];
   v7 = [v6 _cn_filter:&__block_literal_global_47];
 
   if (((*(*MEMORY[0x1E6996568] + 16))() & 1) != 0 || ![v7 count])
@@ -455,7 +455,7 @@ void __85__CNUIFamilyMemberDowntimeContactDataSource_postProcessForFamilyMembers
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v21 = self;
+    selfCopy = self;
     obj = self->_sections;
     v9 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
@@ -472,17 +472,17 @@ void __85__CNUIFamilyMemberDowntimeContactDataSource_postProcessForFamilyMembers
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [v13 contactItems];
+          contactItems = [v13 contactItems];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __69__CNUIFamilyMemberDowntimeContactDataSource_filterSectionsForString___block_invoke_2;
           v23[3] = &unk_1E74E1FB0;
           v24 = v7;
-          v15 = [v14 _cn_filter:v23];
+          v15 = [contactItems _cn_filter:v23];
 
           v16 = [CNUIFamilyMemberDowntimeContactSection alloc];
-          v17 = [v13 title];
-          v18 = [(CNUIFamilyMemberDowntimeContactSection *)v16 initWithContactItems:v15 title:v17];
+          title = [v13 title];
+          v18 = [(CNUIFamilyMemberDowntimeContactSection *)v16 initWithContactItems:v15 title:title];
 
           [v8 addObject:v18];
         }
@@ -494,8 +494,8 @@ void __85__CNUIFamilyMemberDowntimeContactDataSource_postProcessForFamilyMembers
     }
 
     v19 = [v8 copy];
-    filteredSections = v21->_filteredSections;
-    v21->_filteredSections = v19;
+    filteredSections = selfCopy->_filteredSections;
+    selfCopy->_filteredSections = v19;
   }
 }
 
@@ -536,64 +536,64 @@ uint64_t __69__CNUIFamilyMemberDowntimeContactDataSource_filterSectionsForString
   return v7;
 }
 
-- (void)setFilterString:(id)a3
+- (void)setFilterString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_filterString isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     filterString = self->_filterString;
     self->_filterString = v4;
 
-    [(CNUIFamilyMemberDowntimeContactDataSource *)self filterSectionsForString:v6];
+    [(CNUIFamilyMemberDowntimeContactDataSource *)self filterSectionsForString:stringCopy];
   }
 }
 
-- (void)setContactItemSelected:(BOOL)a3 forIndexPath:(id)a4
+- (void)setContactItemSelected:(BOOL)selected forIndexPath:(id)path
 {
-  v4 = a3;
-  v8 = [(CNUIFamilyMemberDowntimeContactDataSource *)self contactItemForIndexPath:a4];
-  [v8 setSelected:v4];
-  v6 = [(CNUIFamilyMemberDowntimeContactDataSource *)self selectedContactItems];
-  v7 = v6;
-  if (v4)
+  selectedCopy = selected;
+  v8 = [(CNUIFamilyMemberDowntimeContactDataSource *)self contactItemForIndexPath:path];
+  [v8 setSelected:selectedCopy];
+  selectedContactItems = [(CNUIFamilyMemberDowntimeContactDataSource *)self selectedContactItems];
+  v7 = selectedContactItems;
+  if (selectedCopy)
   {
-    [v6 _cn_addNonNilObjectIfNotPresent:v8];
+    [selectedContactItems _cn_addNonNilObjectIfNotPresent:v8];
   }
 
   else
   {
-    [v6 removeObject:v8];
+    [selectedContactItems removeObject:v8];
   }
 }
 
 - (id)selectedContacts
 {
-  v2 = [(CNUIFamilyMemberDowntimeContactDataSource *)self selectedContactItems];
-  v3 = [v2 _cn_map:&__block_literal_global_4239];
+  selectedContactItems = [(CNUIFamilyMemberDowntimeContactDataSource *)self selectedContactItems];
+  v3 = [selectedContactItems _cn_map:&__block_literal_global_4239];
 
   return v3;
 }
 
-- (id)contactItemForIndexPath:(id)a3
+- (id)contactItemForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(CNUIFamilyMemberDowntimeContactDataSource *)self _loadAllContactsIfNeeded];
-  v5 = -[NSArray objectAtIndexedSubscript:](self->_filteredSections, "objectAtIndexedSubscript:", [v4 section]);
-  v6 = [v5 contactItems];
-  v7 = [v4 row];
+  v5 = -[NSArray objectAtIndexedSubscript:](self->_filteredSections, "objectAtIndexedSubscript:", [pathCopy section]);
+  contactItems = [v5 contactItems];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [contactItems objectAtIndexedSubscript:v7];
 
   return v8;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
   [(CNUIFamilyMemberDowntimeContactDataSource *)self _loadAllContactsIfNeeded];
-  v5 = [(NSArray *)self->_filteredSections objectAtIndexedSubscript:a3];
-  v6 = [v5 contactItems];
-  v7 = [v6 count];
+  v5 = [(NSArray *)self->_filteredSections objectAtIndexedSubscript:section];
+  contactItems = [v5 contactItems];
+  v7 = [contactItems count];
 
   return v7;
 }
@@ -606,23 +606,23 @@ uint64_t __69__CNUIFamilyMemberDowntimeContactDataSource_filterSectionsForString
   return [(NSArray *)filteredSections count];
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_filteredSections objectAtIndexedSubscript:a3];
-  v4 = [v3 title];
+  v3 = [(NSArray *)self->_filteredSections objectAtIndexedSubscript:section];
+  title = [v3 title];
 
-  return v4;
+  return title;
 }
 
 - (int64_t)sortOrder
 {
-  v2 = [MEMORY[0x1E695CE40] sharedDefaults];
-  v3 = [v2 sortOrder];
+  mEMORY[0x1E695CE40] = [MEMORY[0x1E695CE40] sharedDefaults];
+  sortOrder = [mEMORY[0x1E695CE40] sortOrder];
 
-  return v3;
+  return sortOrder;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNUIFamilyMemberDowntimeContactDataSource alloc];
   store = self->_store;
@@ -632,23 +632,23 @@ uint64_t __69__CNUIFamilyMemberDowntimeContactDataSource_filterSectionsForString
   return [(CNUIFamilyMemberDowntimeContactDataSource *)v4 initWithStore:store familyMembers:familyMembers requiredKeys:requiredKeys];
 }
 
-- (CNUIFamilyMemberDowntimeContactDataSource)initWithStore:(id)a3 familyMembers:(id)a4 requiredKeys:(id)a5
+- (CNUIFamilyMemberDowntimeContactDataSource)initWithStore:(id)store familyMembers:(id)members requiredKeys:(id)keys
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  membersCopy = members;
+  keysCopy = keys;
   v18.receiver = self;
   v18.super_class = CNUIFamilyMemberDowntimeContactDataSource;
   v12 = [(CNUIFamilyMemberDowntimeContactDataSource *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_store, a3);
-    objc_storeStrong(&v13->_familyMembers, a4);
-    objc_storeStrong(&v13->_requiredKeys, a5);
-    v14 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v12->_store, store);
+    objc_storeStrong(&v13->_familyMembers, members);
+    objc_storeStrong(&v13->_requiredKeys, keys);
+    array = [MEMORY[0x1E695DF70] array];
     selectedContactItems = v13->_selectedContactItems;
-    v13->_selectedContactItems = v14;
+    v13->_selectedContactItems = array;
 
     v16 = v13;
   }
@@ -656,18 +656,18 @@ uint64_t __69__CNUIFamilyMemberDowntimeContactDataSource_filterSectionsForString
   return v13;
 }
 
-+ (BOOL)isErrorPossiblyRelatedToExtraStores:(id)a3
++ (BOOL)isErrorPossiblyRelatedToExtraStores:(id)stores
 {
-  v3 = a3;
+  storesCopy = stores;
   v4 = *MEMORY[0x1E696A250];
-  if ([MEMORY[0x1E6996708] isError:v3 errorWithDomain:*MEMORY[0x1E696A250] code:4099] & 1) != 0 || (objc_msgSend(MEMORY[0x1E6996708], "isError:errorWithDomain:code:", v3, v4, 4097))
+  if ([MEMORY[0x1E6996708] isError:storesCopy errorWithDomain:*MEMORY[0x1E696A250] code:4099] & 1) != 0 || (objc_msgSend(MEMORY[0x1E6996708], "isError:errorWithDomain:code:", storesCopy, v4, 4097))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E6996708] isError:v3 errorWithDomain:v4 code:4101];
+    v5 = [MEMORY[0x1E6996708] isError:storesCopy errorWithDomain:v4 code:4101];
   }
 
   return v5;

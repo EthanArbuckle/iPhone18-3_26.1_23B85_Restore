@@ -1,36 +1,36 @@
 @interface NWConnectionStatistics
-+ (id)protocolToTransportProtocolString:(unsigned int)a3;
++ (id)protocolToTransportProtocolString:(unsigned int)string;
 - (NSArray)activities;
 - (NSMutableDictionary)dictionaryReport;
 - (NSString)bundleID;
 - (NSString)effectiveBundleID;
 - (NSUUID)connectionUUID;
 - (NSUUID)parentUUID;
-- (NWConnectionStatistics)initWithJSONData:(id)a3;
-- (NWConnectionStatistics)initWithTCPReport:(netcore_stats_tcp_report *)a3 length:(unint64_t)a4 clientIdentifier:(id)a5 sourceIdentifier:(id)a6;
-- (id)_createDataUsageSnapshotDictionaryFromStruct:(const netcore_stats_data_usage_snapshot *)a3;
-- (id)_createFallbackReportDictionaryFromStruct:(const netcore_stats_tcp_cell_fallback_report *)a3;
-- (id)_createStatisticsReportDictionaryFromStruct:(const netcore_stats_tcp_statistics_report *)a3;
+- (NWConnectionStatistics)initWithJSONData:(id)data;
+- (NWConnectionStatistics)initWithTCPReport:(netcore_stats_tcp_report *)report length:(unint64_t)length clientIdentifier:(id)identifier sourceIdentifier:(id)sourceIdentifier;
+- (id)_createDataUsageSnapshotDictionaryFromStruct:(const netcore_stats_data_usage_snapshot *)struct;
+- (id)_createFallbackReportDictionaryFromStruct:(const netcore_stats_tcp_cell_fallback_report *)struct;
+- (id)_createStatisticsReportDictionaryFromStruct:(const netcore_stats_tcp_statistics_report *)struct;
 - (unsigned)metricType;
-- (void)setBundleID:(id)a3;
-- (void)setEffectiveBundleID:(id)a3;
+- (void)setBundleID:(id)d;
+- (void)setEffectiveBundleID:(id)d;
 @end
 
 @implementation NWConnectionStatistics
 
-- (NWConnectionStatistics)initWithJSONData:(id)a3
+- (NWConnectionStatistics)initWithJSONData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = NWConnectionStatistics;
   v5 = [(NWConnectionStatistics *)&v22 init];
   if (v5)
   {
-    if (v4 && [v4 length])
+    if (dataCopy && [dataCopy length])
     {
       v19 = 0;
-      v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:1 error:&v19];
+      v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:1 error:&v19];
       v7 = v19;
       dictionaryReport = v5->_dictionaryReport;
       v5->_dictionaryReport = v6;
@@ -114,12 +114,12 @@ LABEL_6:
   return v5;
 }
 
-- (NWConnectionStatistics)initWithTCPReport:(netcore_stats_tcp_report *)a3 length:(unint64_t)a4 clientIdentifier:(id)a5 sourceIdentifier:(id)a6
+- (NWConnectionStatistics)initWithTCPReport:(netcore_stats_tcp_report *)report length:(unint64_t)length clientIdentifier:(id)identifier sourceIdentifier:(id)sourceIdentifier
 {
   __dst[429] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  if (a4 != 3424)
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  if (length != 3424)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -131,7 +131,7 @@ LABEL_6:
       WORD2(__dst[1]) = 2048;
       *(&__dst[1] + 6) = 3424;
       HIWORD(__dst[2]) = 2048;
-      __dst[3] = a4;
+      __dst[3] = length;
       _os_log_impl(&dword_181A37000, v15, OS_LOG_TYPE_ERROR, "%{public}s failure to initialize statistics object from TCP report, expected size %zu actual size %zu", __dst, 0x20u);
     }
 
@@ -228,10 +228,10 @@ LABEL_7:
   }
 
   v13 = v12;
-  memcpy(__dst, a3, 0xD60uLL);
+  memcpy(__dst, report, 0xD60uLL);
   [(NWConnectionStatistics *)v13 setReport:__dst];
-  [(NWConnectionStatistics *)v13 setClientIdentifier:v10];
-  [(NWConnectionStatistics *)v13 setSourceIdentifier:v11];
+  [(NWConnectionStatistics *)v13 setClientIdentifier:identifierCopy];
+  [(NWConnectionStatistics *)v13 setSourceIdentifier:sourceIdentifierCopy];
   v14 = objc_alloc_init(MEMORY[0x1E695DEC8]);
   [(NWConnectionStatistics *)v13 setExternallyVisibleActivityUUIDs:v14];
 
@@ -319,15 +319,15 @@ LABEL_186:
       }
 
       [v9 setObject:v12 forKeyedSubscript:@"reportReason"];
-      v107 = [v7 clientIdentifier];
-      [v9 setObject:v107 forKeyedSubscript:@"clientIdentifier"];
+      clientIdentifier = [v7 clientIdentifier];
+      [v9 setObject:clientIdentifier forKeyedSubscript:@"clientIdentifier"];
 
       v108 = [v9 objectForKeyedSubscript:@"delegated"];
 
       if (v108)
       {
-        v109 = [v7 sourceIdentifier];
-        [v9 setObject:v109 forKeyedSubscript:@"sourceAppIdentifier"];
+        sourceIdentifier = [v7 sourceIdentifier];
+        [v9 setObject:sourceIdentifier forKeyedSubscript:@"sourceAppIdentifier"];
       }
 
       v110 = [v7 _createStatisticsReportDictionaryFromStruct:&v226];
@@ -346,25 +346,25 @@ LABEL_186:
 
         if (v113)
         {
-          v114 = [v7 layer2Report];
+          layer2Report = [v7 layer2Report];
 
           v217 = v9;
-          if (v114)
+          if (layer2Report)
           {
-            v115 = [v7 layer2Report];
-            v116 = [v115 objectForKeyedSubscript:@"cellularRadioTechnology"];
+            layer2Report2 = [v7 layer2Report];
+            v116 = [layer2Report2 objectForKeyedSubscript:@"cellularRadioTechnology"];
             [v9 objectForKeyedSubscript:@"cellularFallbackReport"];
             v118 = v117 = v7;
             [v118 setObject:v116 forKeyedSubscript:@"cellularRadioTechnology"];
 
-            v119 = [v117 layer2Report];
-            v120 = [v119 objectForKeyedSubscript:@"wifiRadioTechnology"];
+            layer2Report3 = [v117 layer2Report];
+            v120 = [layer2Report3 objectForKeyedSubscript:@"wifiRadioTechnology"];
             v121 = [v9 objectForKeyedSubscript:@"cellularFallbackReport"];
             [v121 setObject:v120 forKeyedSubscript:@"wifiRadioTechnology"];
 
             v7 = v117;
-            v122 = [v117 layer2Report];
-            v123 = [v122 objectForKeyedSubscript:@"cellularBand"];
+            layer2Report4 = [v117 layer2Report];
+            v123 = [layer2Report4 objectForKeyedSubscript:@"cellularBand"];
             v124 = [v9 objectForKeyedSubscript:@"cellularFallbackReport"];
             [v124 setObject:v123 forKeyedSubscript:@"cellularBand"];
 
@@ -422,11 +422,11 @@ LABEL_186:
             v213 = __nwlog_obj();
             if (os_log_type_enabled(v213, OS_LOG_TYPE_ERROR))
             {
-              v214 = [v7 clientIdentifier];
+              clientIdentifier2 = [v7 clientIdentifier];
               v270 = 136446466;
               v271 = "[NWConnectionStatistics dictionaryReport]";
               v272 = 2114;
-              v273 = v214;
+              v273 = clientIdentifier2;
               _os_log_impl(&dword_181A37000, v213, OS_LOG_TYPE_ERROR, "%{public}s failing to create a fallback report for %{public}@", &v270, 0x16u);
             }
 
@@ -463,11 +463,11 @@ LABEL_2:
           goto LABEL_185;
         }
 
-        v203 = [v7 clientIdentifier];
+        clientIdentifier3 = [v7 clientIdentifier];
         LODWORD(v274[0]) = 136446466;
         *(v274 + 4) = "[NWConnectionStatistics dictionaryReport]";
         WORD6(v274[0]) = 2114;
-        *(v274 + 14) = v203;
+        *(v274 + 14) = clientIdentifier3;
         v204 = "%{public}s failing to create a fallback report for %{public}@";
         v205 = v274;
       }
@@ -484,11 +484,11 @@ LABEL_185:
           goto LABEL_186;
         }
 
-        v203 = [v7 clientIdentifier];
+        clientIdentifier3 = [v7 clientIdentifier];
         LODWORD(v276[0]) = 136446466;
         *(v276 + 4) = "[NWConnectionStatistics dictionaryReport]";
         WORD6(v276[0]) = 2114;
-        *(v276 + 14) = v203;
+        *(v276 + 14) = clientIdentifier3;
         v204 = "%{public}s failing to allocate NWLibnetcoreConnectionStatisticsReportDictionary for client %{public}@";
         v205 = v276;
       }
@@ -533,8 +533,8 @@ LABEL_185:
 
     if ((v265 & 0x800000) != 0)
     {
-      v17 = [v7 clientIdentifier];
-      [v8 setObject:v17 forKeyedSubscript:@"processName"];
+      clientIdentifier4 = [v7 clientIdentifier];
+      [v8 setObject:clientIdentifier4 forKeyedSubscript:@"processName"];
     }
 
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:&v258 encoding:134217984];
@@ -1258,21 +1258,21 @@ LABEL_97:
           }
 
           [v8 setObject:v173 forKeyedSubscript:@"proxyHops"];
-          v178 = [v7 externallyVisibleConnectionUUID];
-          v179 = [v178 UUIDString];
-          [v8 setObject:v179 forKeyedSubscript:@"connectionUUID"];
+          externallyVisibleConnectionUUID = [v7 externallyVisibleConnectionUUID];
+          uUIDString = [externallyVisibleConnectionUUID UUIDString];
+          [v8 setObject:uUIDString forKeyedSubscript:@"connectionUUID"];
 
-          v180 = [v7 externallyVisibleParentUUID];
-          v181 = [v180 UUIDString];
-          [v8 setObject:v181 forKeyedSubscript:@"parentUUID"];
+          externallyVisibleParentUUID = [v7 externallyVisibleParentUUID];
+          uUIDString2 = [externallyVisibleParentUUID UUIDString];
+          [v8 setObject:uUIDString2 forKeyedSubscript:@"parentUUID"];
 
           v182 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v222 = 0u;
           v223 = 0u;
           v224 = 0u;
           v225 = 0u;
-          v183 = [v7 externallyVisibleActivityUUIDs];
-          v184 = [v183 countByEnumeratingWithState:&v222 objects:v277 count:16];
+          externallyVisibleActivityUUIDs = [v7 externallyVisibleActivityUUIDs];
+          v184 = [externallyVisibleActivityUUIDs countByEnumeratingWithState:&v222 objects:v277 count:16];
           if (v184)
           {
             v185 = v184;
@@ -1283,14 +1283,14 @@ LABEL_97:
               {
                 if (*v223 != v186)
                 {
-                  objc_enumerationMutation(v183);
+                  objc_enumerationMutation(externallyVisibleActivityUUIDs);
                 }
 
-                v188 = [*(*(&v222 + 1) + 8 * i) UUIDString];
-                [v182 addObject:v188];
+                uUIDString3 = [*(*(&v222 + 1) + 8 * i) UUIDString];
+                [v182 addObject:uUIDString3];
               }
 
-              v185 = [v183 countByEnumeratingWithState:&v222 objects:v277 count:16];
+              v185 = [externallyVisibleActivityUUIDs countByEnumeratingWithState:&v222 objects:v277 count:16];
             }
 
             while (v185);
@@ -1322,21 +1322,21 @@ LABEL_97:
           v194 = [MEMORY[0x1E696AD98] numberWithInt:v266 >> 15];
           [v8 setObject:v194 forKeyedSubscript:@"ulpn"];
 
-          v195 = [v215 layer2Report];
+          layer2Report5 = [v215 layer2Report];
 
           v4 = v216;
-          if (v195)
+          if (layer2Report5)
           {
-            v196 = [v215 layer2Report];
-            [v8 setObject:v196 forKeyedSubscript:@"l2Report"];
+            layer2Report6 = [v215 layer2Report];
+            [v8 setObject:layer2Report6 forKeyedSubscript:@"l2Report"];
           }
 
-          v197 = [v215 deviceReport];
+          deviceReport = [v215 deviceReport];
 
-          if (v197)
+          if (deviceReport)
           {
-            v198 = [v215 deviceReport];
-            [v8 setObject:v198 forKeyedSubscript:@"deviceReport"];
+            deviceReport2 = [v215 deviceReport];
+            [v8 setObject:deviceReport2 forKeyedSubscript:@"deviceReport"];
           }
 
           [v215 setMetricType:2];
@@ -1389,17 +1389,17 @@ LABEL_3:
   return v5;
 }
 
-- (id)_createFallbackReportDictionaryFromStruct:(const netcore_stats_tcp_cell_fallback_report *)a3
+- (id)_createFallbackReportDictionaryFromStruct:(const netcore_stats_tcp_cell_fallback_report *)struct
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a3)
+  if (struct)
   {
-    v25 = self;
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:a3->fellback];
+    selfCopy = self;
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:struct->fellback];
     [v5 setObject:v6 forKeyedSubscript:@"fellback"];
 
-    deny_reason = a3->deny_reason;
+    deny_reason = struct->deny_reason;
     if (deny_reason)
     {
       v8 = @"DENY_REASON_BLOCKED_FROM_USING_CELL_DATA";
@@ -1421,15 +1421,15 @@ LABEL_3:
       [v5 setObject:v9 forKeyedSubscript:@"denyReason"];
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->fallback_timer_msecs];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->fallback_timer_msecs];
     v26 = v5;
     [v5 setObject:v10 forKeyedSubscript:@"fallbackTimerMsecs"];
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a3->network_event_count)
+    if (struct->network_event_count)
     {
       v12 = 0;
-      p_time_to_network_event_msecs = &a3->network_events[0].time_to_network_event_msecs;
+      p_time_to_network_event_msecs = &struct->network_events[0].time_to_network_event_msecs;
       do
       {
         v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1444,19 +1444,19 @@ LABEL_3:
         ++v12;
       }
 
-      while (v12 < a3->network_event_count);
+      while (v12 < struct->network_event_count);
     }
 
     v5 = v26;
     [v26 setObject:v11 forKeyedSubscript:@"networkEvents"];
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a3->data_usage_snapshots_at_network_events_count)
+    if (struct->data_usage_snapshots_at_network_events_count)
     {
       v19 = 0;
-      data_usage_snapshots_at_network_events = a3->data_usage_snapshots_at_network_events;
+      data_usage_snapshots_at_network_events = struct->data_usage_snapshots_at_network_events;
       while (1)
       {
-        v21 = [(NWConnectionStatistics *)v25 _createDataUsageSnapshotDictionaryFromStruct:data_usage_snapshots_at_network_events];
+        v21 = [(NWConnectionStatistics *)selfCopy _createDataUsageSnapshotDictionaryFromStruct:data_usage_snapshots_at_network_events];
         if (!v21)
         {
           break;
@@ -1467,7 +1467,7 @@ LABEL_3:
 
         ++v19;
         ++data_usage_snapshots_at_network_events;
-        if (v19 >= a3->data_usage_snapshots_at_network_events_count)
+        if (v19 >= struct->data_usage_snapshots_at_network_events_count)
         {
           goto LABEL_17;
         }
@@ -1483,38 +1483,38 @@ LABEL_3:
         _os_log_impl(&dword_181A37000, v23, OS_LOG_TYPE_ERROR, "%{public}s failing to allocate NWLibnetcoreConnectionDataUsageSnapshotDictionary", buf, 0xCu);
       }
 
-      a3 = 0;
+      struct = 0;
     }
 
     else
     {
 LABEL_17:
       [v26 setObject:v18 forKeyedSubscript:@"connectionDataUsageSnapshots"];
-      a3 = v26;
+      struct = v26;
     }
   }
 
-  return a3;
+  return struct;
 }
 
-- (id)_createStatisticsReportDictionaryFromStruct:(const netcore_stats_tcp_statistics_report *)a3
+- (id)_createStatisticsReportDictionaryFromStruct:(const netcore_stats_tcp_statistics_report *)struct
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->time_to_dns_start_msecs];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->time_to_dns_start_msecs];
     [v4 setObject:v5 forKeyedSubscript:@"timeToDNSStartMsecs"];
 
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->time_to_dns_resolved_msecs];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->time_to_dns_resolved_msecs];
     [v4 setObject:v6 forKeyedSubscript:@"timeToDNSResolvedMsecs"];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->dns_resolved_time_msecs];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->dns_resolved_time_msecs];
     [v4 setObject:v7 forKeyedSubscript:@"dNSResolvedTimeMsecs"];
 
-    v8 = [MEMORY[0x1E696AD98] numberWithInt:*(a3 + 104) & 1];
+    v8 = [MEMORY[0x1E696AD98] numberWithInt:*(struct + 104) & 1];
     [v4 setObject:v8 forKeyedSubscript:@"dNSAnswersCached"];
 
-    v9 = a3->interface_type - 1;
+    v9 = struct->interface_type - 1;
     if (v9 > 3)
     {
       v10 = @"INTERFACE_TYPE_OTHER";
@@ -1526,19 +1526,19 @@ LABEL_17:
     }
 
     [v4 setObject:v10 forKeyedSubscript:@"interfaceType"];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->time_to_connection_start_msecs];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->time_to_connection_start_msecs];
     [v4 setObject:v11 forKeyedSubscript:@"timeToConnectionStartMsecs"];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->time_to_connection_establishment_msecs];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->time_to_connection_establishment_msecs];
     [v4 setObject:v12 forKeyedSubscript:@"timeToConnectionEstablishmentMsecs"];
 
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->connection_establishment_time_msecs];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->connection_establishment_time_msecs];
     [v4 setObject:v13 forKeyedSubscript:@"connectionEstablishmentTimeMsecs"];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->flow_duration_msecs];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->flow_duration_msecs];
     [v4 setObject:v14 forKeyedSubscript:@"flowDurationMsecs"];
 
-    v15 = a3->connected_interface_type - 1;
+    v15 = struct->connected_interface_type - 1;
     if (v15 > 3)
     {
       v16 = @"INTERFACE_TYPE_OTHER";
@@ -1550,36 +1550,36 @@ LABEL_17:
     }
 
     [v4 setObject:v16 forKeyedSubscript:@"connectedInterfaceType"];
-    v17 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 1) & 1];
+    v17 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 1) & 1];
     [v4 setObject:v17 forKeyedSubscript:@"connected"];
 
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->traffic_class];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->traffic_class];
     [v4 setObject:v18 forKeyedSubscript:@"trafficClass"];
 
-    v19 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 2) & 1];
+    v19 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 2) & 1];
     [v4 setObject:v19 forKeyedSubscript:@"cellularFallback"];
 
-    v20 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 4) & 1];
+    v20 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 4) & 1];
     [v4 setObject:v20 forKeyedSubscript:@"preferFallback"];
 
-    v21 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 3) & 1];
+    v21 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 3) & 1];
     [v4 setObject:v21 forKeyedSubscript:@"cellularRRCConnected"];
 
-    v22 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 5) & 1];
+    v22 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 5) & 1];
     [v4 setObject:v22 forKeyedSubscript:@"kernelReportedStalls"];
 
-    v23 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 6) & 1];
+    v23 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 6) & 1];
     [v4 setObject:v23 forKeyedSubscript:@"kernelReportingConnectionStalled"];
 
-    v24 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 7) & 1];
+    v24 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 7) & 1];
     [v4 setObject:v24 forKeyedSubscript:@"kernelReportingReadStalled"];
 
-    v25 = [MEMORY[0x1E696AD98] numberWithInt:HIBYTE(*(a3 + 104)) & 1];
+    v25 = [MEMORY[0x1E696AD98] numberWithInt:HIBYTE(*(struct + 104)) & 1];
     [v4 setObject:v25 forKeyedSubscript:@"kernelReportingWriteStalled"];
 
     v26 = MEMORY[0x1E696AD98];
-    bytes_in = a3->bytes_in;
-    if (a3->bytes_in)
+    bytes_in = struct->bytes_in;
+    if (struct->bytes_in)
     {
       v28 = bytes_in;
       v29 = log10(bytes_in);
@@ -1596,7 +1596,7 @@ LABEL_17:
     [v4 setObject:v32 forKeyedSubscript:@"bytesIn"];
 
     v33 = MEMORY[0x1E696AD98];
-    bytes_out = a3->bytes_out;
+    bytes_out = struct->bytes_out;
     if (bytes_out)
     {
       v35 = bytes_out;
@@ -1614,7 +1614,7 @@ LABEL_17:
     [v4 setObject:v39 forKeyedSubscript:@"bytesOut"];
 
     v40 = MEMORY[0x1E696AD98];
-    bytes_duplicate = a3->bytes_duplicate;
+    bytes_duplicate = struct->bytes_duplicate;
     if (bytes_duplicate)
     {
       v42 = bytes_duplicate;
@@ -1632,7 +1632,7 @@ LABEL_17:
     [v4 setObject:v46 forKeyedSubscript:@"bytesDuplicate"];
 
     v47 = MEMORY[0x1E696AD98];
-    bytes_ooo = a3->bytes_ooo;
+    bytes_ooo = struct->bytes_ooo;
     if (bytes_ooo)
     {
       v49 = bytes_ooo;
@@ -1650,7 +1650,7 @@ LABEL_17:
     [v4 setObject:v53 forKeyedSubscript:@"bytesOutOfOrder"];
 
     v54 = MEMORY[0x1E696AD98];
-    bytes_retransmitted = a3->bytes_retransmitted;
+    bytes_retransmitted = struct->bytes_retransmitted;
     if (bytes_retransmitted)
     {
       v56 = bytes_retransmitted;
@@ -1668,7 +1668,7 @@ LABEL_17:
     [v4 setObject:v60 forKeyedSubscript:@"bytesRetransmitted"];
 
     v61 = MEMORY[0x1E696AD98];
-    packets_in = a3->packets_in;
+    packets_in = struct->packets_in;
     if (packets_in)
     {
       v63 = packets_in;
@@ -1686,7 +1686,7 @@ LABEL_17:
     [v4 setObject:v67 forKeyedSubscript:@"packetsIn"];
 
     v68 = MEMORY[0x1E696AD98];
-    packets_out = a3->packets_out;
+    packets_out = struct->packets_out;
     if (packets_out)
     {
       v70 = packets_out;
@@ -1704,7 +1704,7 @@ LABEL_17:
     [v4 setObject:v74 forKeyedSubscript:@"packetsOut"];
 
     v75 = MEMORY[0x1E696AD98];
-    packets_duplicate = a3->packets_duplicate;
+    packets_duplicate = struct->packets_duplicate;
     if (packets_duplicate)
     {
       v77 = packets_duplicate;
@@ -1722,7 +1722,7 @@ LABEL_17:
     [v4 setObject:v81 forKeyedSubscript:@"packetsDuplicate"];
 
     v82 = MEMORY[0x1E696AD98];
-    packets_ooo = a3->packets_ooo;
+    packets_ooo = struct->packets_ooo;
     if (packets_ooo)
     {
       v84 = packets_ooo;
@@ -1740,7 +1740,7 @@ LABEL_17:
     [v4 setObject:v88 forKeyedSubscript:@"packetsOutOfOrder"];
 
     v89 = MEMORY[0x1E696AD98];
-    packets_retransmitted = a3->packets_retransmitted;
+    packets_retransmitted = struct->packets_retransmitted;
     if (packets_retransmitted)
     {
       v91 = packets_retransmitted;
@@ -1757,34 +1757,34 @@ LABEL_17:
     v95 = [v89 numberWithUnsignedLongLong:v94];
     [v4 setObject:v95 forKeyedSubscript:@"packetsRetransmitted"];
 
-    v96 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->current_rtt_msecs];
+    v96 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->current_rtt_msecs];
     [v4 setObject:v96 forKeyedSubscript:@"currentRTTMsecs"];
 
-    v97 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->smoothed_rtt_msecs];
+    v97 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->smoothed_rtt_msecs];
     [v4 setObject:v97 forKeyedSubscript:@"smoothedRTTMsecs"];
 
-    v98 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->best_rtt_msecs];
+    v98 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->best_rtt_msecs];
     [v4 setObject:v98 forKeyedSubscript:@"bestRTTMsecs"];
 
-    v99 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->rtt_variance];
+    v99 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->rtt_variance];
     [v4 setObject:v99 forKeyedSubscript:@"rTTvariance"];
 
-    v100 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->syn_retransmission_count];
+    v100 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->syn_retransmission_count];
     [v4 setObject:v100 forKeyedSubscript:@"synRetransmissionCount"];
 
-    v101 = [MEMORY[0x1E696AD98] numberWithInt:(*(a3 + 104) >> 9) & 1];
+    v101 = [MEMORY[0x1E696AD98] numberWithInt:(*(struct + 104) >> 9) & 1];
     [v4 setObject:v101 forKeyedSubscript:@"tcpFastOpen"];
 
-    v102 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->better_route_event_count];
+    v102 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->better_route_event_count];
     [v4 setObject:v102 forKeyedSubscript:@"betterRouteEventCount"];
 
-    v103 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->connection_reuse_count];
+    v103 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->connection_reuse_count];
     [v4 setObject:v103 forKeyedSubscript:@"connectionReuseCount"];
 
-    v104 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->app_reporting_data_stall_count];
+    v104 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->app_reporting_data_stall_count];
     [v4 setObject:v104 forKeyedSubscript:@"appReportingDataStallCount"];
 
-    v105 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->app_data_stall_timer_msecs];
+    v105 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:struct->app_data_stall_timer_msecs];
     [v4 setObject:v105 forKeyedSubscript:@"appDataStallTimerMsecs"];
 
     v106 = v4;
@@ -1793,14 +1793,14 @@ LABEL_17:
   return v4;
 }
 
-- (id)_createDataUsageSnapshotDictionaryFromStruct:(const netcore_stats_data_usage_snapshot *)a3
+- (id)_createDataUsageSnapshotDictionaryFromStruct:(const netcore_stats_data_usage_snapshot *)struct
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v4)
   {
     v5 = MEMORY[0x1E696AD98];
-    bytes_in = a3->bytes_in;
-    if (a3->bytes_in)
+    bytes_in = struct->bytes_in;
+    if (struct->bytes_in)
     {
       v7 = bytes_in;
       v8 = log10(bytes_in);
@@ -1817,7 +1817,7 @@ LABEL_17:
     [v4 setObject:v11 forKeyedSubscript:@"bytesIn"];
 
     v12 = MEMORY[0x1E696AD98];
-    bytes_out = a3->bytes_out;
+    bytes_out = struct->bytes_out;
     if (bytes_out)
     {
       v14 = bytes_out;
@@ -1835,7 +1835,7 @@ LABEL_17:
     [v4 setObject:v18 forKeyedSubscript:@"bytesOut"];
 
     v19 = MEMORY[0x1E696AD98];
-    multipath_bytes_in_cell = a3->multipath_bytes_in_cell;
+    multipath_bytes_in_cell = struct->multipath_bytes_in_cell;
     if (multipath_bytes_in_cell)
     {
       v21 = multipath_bytes_in_cell;
@@ -1853,7 +1853,7 @@ LABEL_17:
     [v4 setObject:v25 forKeyedSubscript:@"multipathBytesInCell"];
 
     v26 = MEMORY[0x1E696AD98];
-    multipath_bytes_out_cell = a3->multipath_bytes_out_cell;
+    multipath_bytes_out_cell = struct->multipath_bytes_out_cell;
     if (multipath_bytes_out_cell)
     {
       v28 = multipath_bytes_out_cell;
@@ -1871,7 +1871,7 @@ LABEL_17:
     [v4 setObject:v32 forKeyedSubscript:@"multipathBytesOutCell"];
 
     v33 = MEMORY[0x1E696AD98];
-    multipath_bytes_in_wifi = a3->multipath_bytes_in_wifi;
+    multipath_bytes_in_wifi = struct->multipath_bytes_in_wifi;
     if (multipath_bytes_in_wifi)
     {
       v35 = multipath_bytes_in_wifi;
@@ -1889,7 +1889,7 @@ LABEL_17:
     [v4 setObject:v39 forKeyedSubscript:@"multipathBytesInWiFi"];
 
     v40 = MEMORY[0x1E696AD98];
-    multipath_bytes_out_wifi = a3->multipath_bytes_out_wifi;
+    multipath_bytes_out_wifi = struct->multipath_bytes_out_wifi;
     if (multipath_bytes_out_wifi)
     {
       v42 = multipath_bytes_out_wifi;
@@ -1907,7 +1907,7 @@ LABEL_17:
     [v4 setObject:v46 forKeyedSubscript:@"multipathBytesOutWiFi"];
 
     v47 = MEMORY[0x1E696AD98];
-    multipath_bytes_in_initial = a3->multipath_bytes_in_initial;
+    multipath_bytes_in_initial = struct->multipath_bytes_in_initial;
     if (multipath_bytes_in_initial)
     {
       v49 = multipath_bytes_in_initial;
@@ -1925,7 +1925,7 @@ LABEL_17:
     [v4 setObject:v53 forKeyedSubscript:@"multipathBytesInInitial"];
 
     v54 = MEMORY[0x1E696AD98];
-    multipath_bytes_out_initial = a3->multipath_bytes_out_initial;
+    multipath_bytes_out_initial = struct->multipath_bytes_out_initial;
     if (multipath_bytes_out_initial)
     {
       v56 = multipath_bytes_out_initial;
@@ -1961,10 +1961,10 @@ LABEL_17:
   }
 }
 
-- (void)setEffectiveBundleID:(id)a3
+- (void)setEffectiveBundleID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (gLogDatapath == 1)
   {
     v5 = __nwlog_obj();
@@ -1973,15 +1973,15 @@ LABEL_17:
       *buf = 136446722;
       v8 = "[NWConnectionStatistics setEffectiveBundleID:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = dCopy;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v5, OS_LOG_TYPE_DEBUG, "%{public}s Set effective bundle ID to %@ for %@", buf, 0x20u);
     }
   }
 
   [(NWConnectionStatistics *)self report];
-  strlcpy(v6, [v4 UTF8String], 0x100uLL);
+  strlcpy(v6, [dCopy UTF8String], 0x100uLL);
 }
 
 - (NSString)effectiveBundleID
@@ -1993,10 +1993,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (gLogDatapath == 1)
   {
     v5 = __nwlog_obj();
@@ -2005,15 +2005,15 @@ LABEL_17:
       *buf = 136446722;
       v8 = "[NWConnectionStatistics setBundleID:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = dCopy;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v5, OS_LOG_TYPE_DEBUG, "%{public}s Set bundle ID to %@ for %@", buf, 0x20u);
     }
   }
 
   [(NWConnectionStatistics *)self report];
-  strlcpy(v6, [v4 UTF8String], 0x100uLL);
+  strlcpy(v6, [dCopy UTF8String], 0x100uLL);
 }
 
 - (NSString)bundleID
@@ -2197,21 +2197,21 @@ LABEL_31:
   return v4;
 }
 
-+ (id)protocolToTransportProtocolString:(unsigned int)a3
++ (id)protocolToTransportProtocolString:(unsigned int)string
 {
   v3 = @"NW_TRANSPORT_PROTOCOL_QUIC";
   v4 = @"NW_TRANSPORT_PROTOCOL_UNKNOWN";
-  if (a3 == 17)
+  if (string == 17)
   {
     v4 = @"NW_TRANSPORT_PROTOCOL_UDP";
   }
 
-  if (a3 != 253)
+  if (string != 253)
   {
     v3 = v4;
   }
 
-  if (a3 == 6)
+  if (string == 6)
   {
     return @"NW_TRANSPORT_PROTOCOL_TCP";
   }

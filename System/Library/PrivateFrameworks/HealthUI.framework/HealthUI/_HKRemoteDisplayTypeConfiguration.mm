@@ -1,20 +1,20 @@
 @interface _HKRemoteDisplayTypeConfiguration
-- (_HKRemoteDisplayTypeConfiguration)initWithInitialTimeScope:(int64_t)a3 remoteDisplayType:(id)a4;
+- (_HKRemoteDisplayTypeConfiguration)initWithInitialTimeScope:(int64_t)scope remoteDisplayType:(id)type;
 @end
 
 @implementation _HKRemoteDisplayTypeConfiguration
 
-- (_HKRemoteDisplayTypeConfiguration)initWithInitialTimeScope:(int64_t)a3 remoteDisplayType:(id)a4
+- (_HKRemoteDisplayTypeConfiguration)initWithInitialTimeScope:(int64_t)scope remoteDisplayType:(id)type
 {
-  v7 = a4;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = _HKRemoteDisplayTypeConfiguration;
   v8 = [(_HKRemoteDisplayTypeConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_initialTimeScope = a3;
-    objc_storeStrong(&v8->_remoteDisplayType, a4);
+    v8->_initialTimeScope = scope;
+    objc_storeStrong(&v8->_remoteDisplayType, type);
   }
 
   return v9;

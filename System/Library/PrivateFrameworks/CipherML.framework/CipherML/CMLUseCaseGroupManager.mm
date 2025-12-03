@@ -1,7 +1,7 @@
 @interface CMLUseCaseGroupManager
 + (CMLUseCaseGroupManager)sharedManager;
-- (BOOL)configureGroupWithName:(id)a3 useCaseGroup:(id)a4 error:(id *)a5;
-- (id)listUseCaseGroupsWithError:(id *)a3;
+- (BOOL)configureGroupWithName:(id)name useCaseGroup:(id)group error:(id *)error;
+- (id)listUseCaseGroupsWithError:(id *)error;
 @end
 
 @implementation CMLUseCaseGroupManager
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __39__CMLUseCaseGroupManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -31,7 +31,7 @@ uint64_t __39__CMLUseCaseGroupManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)listUseCaseGroupsWithError:(id *)a3
+- (id)listUseCaseGroupsWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v25 = 0;
@@ -65,7 +65,7 @@ uint64_t __39__CMLUseCaseGroupManager_sharedManager__block_invoke(uint64_t a1)
   v17[4] = &v25;
   v17[5] = &v18;
   [v6 listUseCaseGroupsWithReply:v17];
-  if (a3)
+  if (error)
   {
     v9 = v24;
     if (!v24)
@@ -73,7 +73,7 @@ uint64_t __39__CMLUseCaseGroupManager_sharedManager__block_invoke(uint64_t a1)
       v9 = v19[5];
     }
 
-    *a3 = v9;
+    *error = v9;
   }
 
   v10 = +[CMLLog client];
@@ -116,11 +116,11 @@ void __53__CMLUseCaseGroupManager_listUseCaseGroupsWithError___block_invoke(uint
   }
 }
 
-- (BOOL)configureGroupWithName:(id)a3 useCaseGroup:(id)a4 error:(id *)a5
+- (BOOL)configureGroupWithName:(id)name useCaseGroup:(id)group error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  groupCopy = group;
   v27 = 0;
   v28 = 0;
   v22 = 0;
@@ -144,8 +144,8 @@ void __53__CMLUseCaseGroupManager_listUseCaseGroupsWithError___block_invoke(uint
   v21[2] = __68__CMLUseCaseGroupManager_configureGroupWithName_useCaseGroup_error___block_invoke;
   v21[3] = &unk_278541B08;
   v21[4] = &v22;
-  [v11 configureUseCaseGroupWithName:v8 useCaseGroup:v9 reply:v21];
-  if (a5)
+  [v11 configureUseCaseGroupWithName:nameCopy useCaseGroup:groupCopy reply:v21];
+  if (error)
   {
     v14 = v28;
     if (!v28)
@@ -153,7 +153,7 @@ void __53__CMLUseCaseGroupManager_listUseCaseGroupsWithError___block_invoke(uint
       v14 = v23[5];
     }
 
-    *a5 = v14;
+    *error = v14;
   }
 
   v15 = +[CMLLog client];

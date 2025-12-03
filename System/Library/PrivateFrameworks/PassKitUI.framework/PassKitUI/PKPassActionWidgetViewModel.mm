@@ -3,16 +3,16 @@
 - (FKAccount)_bankConnectAccount;
 - (PKAccount)_account;
 - (PKPassActionWidgetViewModel)init;
-- (PKPassActionWidgetViewModel)initWithViewStyle:(int64_t)a3;
+- (PKPassActionWidgetViewModel)initWithViewStyle:(int64_t)style;
 - (PKPaymentPass)_paymentPass;
 - (PKPaymentPassActionWidgetViewDelegate)_delegate;
 - (PKPaymentPassActionWidgetViewDelegate)delegate;
 - (double)bottomPadding;
-- (void)setAccount:(id)a3;
-- (void)setBankConnectAccount:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPaymentPass:(id)a3;
-- (void)set_delegate:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setBankConnectAccount:(id)account;
+- (void)setDelegate:(id)delegate;
+- (void)setPaymentPass:(id)pass;
+- (void)set_delegate:(id)set_delegate;
 @end
 
 @implementation PKPassActionWidgetViewModel
@@ -24,11 +24,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD75FA10(a3);
+  accountCopy = account;
+  selfCopy = self;
+  sub_1BD75FA10(account);
 }
 
 - (FKAccount)_bankConnectAccount
@@ -38,11 +38,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBankConnectAccount:(id)a3
+- (void)setBankConnectAccount:(id)account
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD75FEC8(a3);
+  accountCopy = account;
+  selfCopy = self;
+  sub_1BD75FEC8(account);
 }
 
 - (PKPaymentPass)_paymentPass
@@ -52,11 +52,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPaymentPass:(id)a3
+- (void)setPaymentPass:(id)pass
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD760470(a3);
+  passCopy = pass;
+  selfCopy = self;
+  sub_1BD760470(pass);
 }
 
 - (PKPaymentPassActionWidgetViewDelegate)_delegate
@@ -67,11 +67,11 @@
   return v2;
 }
 
-- (void)set_delegate:(id)a3
+- (void)set_delegate:(id)set_delegate
 {
   v5 = OBJC_IVAR___PKPassActionWidgetViewModel__delegate;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = set_delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -80,36 +80,36 @@
 {
   swift_getKeyPath();
   sub_1BD75FBB0();
-  v3 = self;
+  selfCopy = self;
   sub_1BE04B594();
 
   v4 = OBJC_IVAR___PKPassActionWidgetViewModel__delegate;
   swift_beginAccess();
-  v5 = *(&v3->super.isa + v4);
+  v5 = *(&selfCopy->super.isa + v4);
   swift_unknownObjectRetain();
 
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_getKeyPath();
   sub_1BD75FBB0();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BE04B584();
 
   swift_unknownObjectRelease();
 }
 
-- (PKPassActionWidgetViewModel)initWithViewStyle:(int64_t)a3
+- (PKPassActionWidgetViewModel)initWithViewStyle:(int64_t)style
 {
   *(&self->super.isa + OBJC_IVAR___PKPassActionWidgetViewModel__account) = 0;
   *(&self->super.isa + OBJC_IVAR___PKPassActionWidgetViewModel__bankConnectAccount) = 0;
   *(&self->super.isa + OBJC_IVAR___PKPassActionWidgetViewModel__paymentPass) = 0;
   *(&self->super.isa + OBJC_IVAR___PKPassActionWidgetViewModel__delegate) = 0;
   sub_1BE04B5C4();
-  *(&self->super.isa + OBJC_IVAR___PKPassActionWidgetViewModel_viewStyle) = a3;
+  *(&self->super.isa + OBJC_IVAR___PKPassActionWidgetViewModel_viewStyle) = style;
   v6.receiver = self;
   v6.super_class = type metadata accessor for PassActionWidgetViewModel();
   return [(PKPassActionWidgetViewModel *)&v6 init];
@@ -117,7 +117,7 @@
 
 - (BOOL)hasActionButtons
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BD76115C();
 
   v4 = *(v3 + 2);

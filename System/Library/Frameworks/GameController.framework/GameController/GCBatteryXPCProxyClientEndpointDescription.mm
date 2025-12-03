@@ -1,45 +1,45 @@
 @interface GCBatteryXPCProxyClientEndpointDescription
-- (GCBatteryXPCProxyClientEndpointDescription)initWithCoder:(id)a3;
-- (GCBatteryXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialBattery:(id)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCBatteryXPCProxyClientEndpointDescription)initWithCoder:(id)coder;
+- (GCBatteryXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialBattery:(id)battery;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCBatteryXPCProxyClientEndpointDescription
 
-- (GCBatteryXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialBattery:(id)a4
+- (GCBatteryXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialBattery:(id)battery
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  batteryCopy = battery;
   v12.receiver = self;
   v12.super_class = GCBatteryXPCProxyClientEndpointDescription;
   v8 = [(GCBatteryXPCProxyClientEndpointDescription *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_initialBattery, a4);
+    objc_storeStrong(&v8->_initialBattery, battery);
   }
 
   return v8;
 }
 
-- (GCBatteryXPCProxyClientEndpointDescription)initWithCoder:(id)a3
+- (GCBatteryXPCProxyClientEndpointDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GCBatteryXPCProxyClientEndpointDescription;
   v5 = [(GCBatteryXPCProxyClientEndpointDescription *)&v12 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialBattery"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialBattery"];
     initialBattery = v5->_initialBattery;
     v5->_initialBattery = v9;
   }
@@ -47,33 +47,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   initialBattery = self->_initialBattery;
-  v5 = a3;
-  [v5 encodeObject:initialBattery forKey:@"initialBattery"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:initialBattery forKey:@"initialBattery"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 IPCServiceRegistry];
-  v8 = [v7 serviceClientForIPCService:&unk_1F4EB2C90];
+  iPCServiceRegistry = [contextCopy IPCServiceRegistry];
+  v8 = [iPCServiceRegistry serviceClientForIPCService:&unk_1F4EB2C90];
 
   if (v8)
   {
-    v9 = [v8 batteryXPCProxyServiceRemoteServer];
+    batteryXPCProxyServiceRemoteServer = [v8 batteryXPCProxyServiceRemoteServer];
     v10 = [[GCBatteryXPCProxyClientEndpoint alloc] initWithIdentifier:self->_identifier initialBattery:self->_initialBattery];
-    v11 = [v5 IPCObjectRegistry];
-    [v11 registerIPCObject:v10];
+    iPCObjectRegistry = [v5 IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v10];
 
     v12 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
@@ -86,7 +86,7 @@
     v24 = v12;
     v14 = v12;
     v15 = v8;
-    [v9 batteryXPCProxyServiceClientEndpointConnect:v13 reply:v21];
+    [batteryXPCProxyServiceRemoteServer batteryXPCProxyServiceClientEndpointConnect:v13 reply:v21];
     v16 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v14, v16);
     v17 = self->_materializedObject;

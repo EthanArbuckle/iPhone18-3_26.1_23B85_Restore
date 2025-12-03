@@ -1,16 +1,16 @@
 @interface PAEHueCurveChannelData
-+ (id)channelDataWithCurve:(const void *)a3;
++ (id)channelDataWithCurve:(const void *)curve;
 - (BOOL)isAtDefaults;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PAEHueCurveChannelData)init;
-- (PAEHueCurveChannelData)initWithCoder:(id)a3;
-- (PAEHueCurveChannelData)initWithCurve:(const void *)a3;
-- (double)evaluate:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PAEHueCurveChannelData)initWithCoder:(id)coder;
+- (PAEHueCurveChannelData)initWithCurve:(const void *)curve;
+- (double)evaluate:(double)evaluate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4;
+- (id)interpolateBetween:(id)between withWeight:(float)weight;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 @end
 
@@ -28,7 +28,7 @@
   return 0;
 }
 
-- (PAEHueCurveChannelData)initWithCurve:(const void *)a3
+- (PAEHueCurveChannelData)initWithCurve:(const void *)curve
 {
   v4.receiver = self;
   v4.super_class = PAEHueCurveChannelData;
@@ -40,9 +40,9 @@
   return 0;
 }
 
-+ (id)channelDataWithCurve:(const void *)a3
++ (id)channelDataWithCurve:(const void *)curve
 {
-  v3 = [[a1 alloc] initWithCurve:a3];
+  v3 = [[self alloc] initWithCurve:curve];
 
   return v3;
 }
@@ -164,14 +164,14 @@
   std::vector<cc::point_t<double,false,false>>::__insert_with_size[abi:ne200100]<std::__wrap_iter<cc::point_t<double,false,false> const*>,std::__wrap_iter<cc::point_t<double,false,false> const*>>(curve_private + 7, v14, v19, v20, 0xAAAAAAAAAAAAAAABLL * ((v20 - v19) >> 3));
 }
 
-- (double)evaluate:(double)a3
+- (double)evaluate:(double)evaluate
 {
-  v4 = a3;
-  (*(*self->_curve_private + 24))(self->_curve_private, &v4);
+  evaluateCopy = evaluate;
+  (*(*self->_curve_private + 24))(self->_curve_private, &evaluateCopy);
   return result;
 }
 
-- (PAEHueCurveChannelData)initWithCoder:(id)a3
+- (PAEHueCurveChannelData)initWithCoder:(id)coder
 {
   v5 = *MEMORY[0x277D85DE8];
   v4.receiver = self;
@@ -184,12 +184,12 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   curve_private = self->_curve_private;
   if (curve_private[5] != 0.0)
   {
-    [a3 encodeDouble:@"offset" forKey:?];
+    [coder encodeDouble:@"offset" forKey:?];
   }
 
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0xAAAAAAAAAAAAAAABLL * ((*(curve_private + 2) - *(curve_private + 1)) >> 3)];
@@ -198,10 +198,10 @@
     [v6 addObject:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGPoint:", *(i + 8), *(i + 16))}];
   }
 
-  [a3 encodeObject:v6 forKey:@"points"];
+  [coder encodeObject:v6 forKey:@"points"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   curve_private = self->_curve_private;
   v4 = objc_alloc(objc_opt_class());
@@ -223,14 +223,14 @@
   return [v6 stringByAppendingString:@"}"];
 }
 
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4
+- (id)interpolateBetween:(id)between withWeight:(float)weight
 {
-  v6 = [(PAEHueCurveChannelData *)self curveRef];
-  v7 = v6[5];
-  v8 = [a3 curveRef];
+  curveRef = [(PAEHueCurveChannelData *)self curveRef];
+  v7 = curveRef[5];
+  curveRef2 = [between curveRef];
   v11 = 0;
   v12 = 0;
-  v13 = *(v8 + 40);
+  v13 = *(curveRef2 + 40);
   v82 = 0;
   v83 = 0;
   v80 = &unk_2871D0F28;
@@ -244,10 +244,10 @@
   v90 = &unk_2871D1078;
   v91 = cc::curve::aspline::bezier_t<double,true>::evalPeriodic;
   v92 = 0;
-  v15 = *(v6 + 1);
-  v14 = *(v6 + 2);
-  v16 = *(v8 + 8);
-  if (v14 - v15 == *(v8 + 16) - v16)
+  v15 = *(curveRef + 1);
+  v14 = *(curveRef + 2);
+  v16 = *(curveRef2 + 8);
+  if (v14 - v15 == *(curveRef2 + 16) - v16)
   {
     v98 = &unk_2871D0EF8;
     if (v15 == v14)
@@ -258,9 +258,9 @@
 
     else
     {
-      *&v9 = a4;
+      *&v9 = weight;
       v79 = v9;
-      *&v9 = (1.0 - a4);
+      *&v9 = (1.0 - weight);
       v78 = v9;
       v17 = (v16 + 8);
       do
@@ -271,14 +271,14 @@
         v17 = (v17 + 24);
       }
 
-      while (v15 != *(v6 + 2));
+      while (v15 != *(curveRef + 2));
       v11 = v81;
       v12 = v82;
     }
   }
 
-  v18 = v7 * (1.0 - a4);
-  v19 = v18 + v13 * a4;
+  v18 = v7 * (1.0 - weight);
+  v19 = v18 + v13 * weight;
   v85 = v19;
   v20 = v12 - v11;
   v21 = 0xAAAAAAAAAAAAAAABLL * ((v12 - v11) >> 3);
@@ -573,12 +573,12 @@ LABEL_71:
   return v76;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [(PAEHueCurveChannelData *)self curveRef];
-  v5 = v4[5];
-  v6 = [a3 curveRef];
-  if (v5 == *(v6 + 40) && (v8 = *(v4 + 1), v7 = *(v4 + 2), v9 = *(v6 + 8), v7 - v8 == *(v6 + 16) - v9))
+  curveRef = [(PAEHueCurveChannelData *)self curveRef];
+  v5 = curveRef[5];
+  curveRef2 = [equal curveRef];
+  if (v5 == *(curveRef2 + 40) && (v8 = *(curveRef + 1), v7 = *(curveRef + 2), v9 = *(curveRef2 + 8), v7 - v8 == *(curveRef2 + 16) - v9))
   {
     if (v8 == v7)
     {

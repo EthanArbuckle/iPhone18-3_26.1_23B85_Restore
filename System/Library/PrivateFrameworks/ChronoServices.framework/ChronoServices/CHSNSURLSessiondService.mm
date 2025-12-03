@@ -1,7 +1,7 @@
 @interface CHSNSURLSessiondService
 - (CHSNSURLSessiondService)init;
-- (CHSNSURLSessiondService)initWithConnection:(id)a3;
-- (id)URLSessionDidCompleteForExtensionWithBundleIdentifier:(id)a3 info:(id)a4;
+- (CHSNSURLSessiondService)initWithConnection:(id)connection;
+- (id)URLSessionDidCompleteForExtensionWithBundleIdentifier:(id)identifier info:(id)info;
 @end
 
 @implementation CHSNSURLSessiondService
@@ -14,24 +14,24 @@
   return v4;
 }
 
-- (CHSNSURLSessiondService)initWithConnection:(id)a3
+- (CHSNSURLSessiondService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CHSNSURLSessiondService;
   v6 = [(CHSNSURLSessiondService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (id)URLSessionDidCompleteForExtensionWithBundleIdentifier:(id)a3 info:(id)a4
+- (id)URLSessionDidCompleteForExtensionWithBundleIdentifier:(id)identifier info:(id)info
 {
-  v4 = [(CHSChronoServicesConnection *)self->_connection _URLSessionDidCompleteForExtensionWithBundleIdentifier:a3 info:a4];
+  v4 = [(CHSChronoServicesConnection *)self->_connection _URLSessionDidCompleteForExtensionWithBundleIdentifier:identifier info:info];
 
   return v4;
 }

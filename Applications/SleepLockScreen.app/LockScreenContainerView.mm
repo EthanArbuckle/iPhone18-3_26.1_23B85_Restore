@@ -1,6 +1,6 @@
 @interface LockScreenContainerView
-- (_TtC15SleepLockScreen23LockScreenContainerView)initWithFrame:(CGRect)a3;
-- (void)didPan:(id)a3;
+- (_TtC15SleepLockScreen23LockScreenContainerView)initWithFrame:(CGRect)frame;
+- (void)didPan:(id)pan;
 - (void)layoutSubviews;
 @end
 
@@ -8,18 +8,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002B98();
 }
 
-- (void)didPan:(id)a3
+- (void)didPan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_100003554(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_100003554(panCopy);
 }
 
-- (_TtC15SleepLockScreen23LockScreenContainerView)initWithFrame:(CGRect)a3
+- (_TtC15SleepLockScreen23LockScreenContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

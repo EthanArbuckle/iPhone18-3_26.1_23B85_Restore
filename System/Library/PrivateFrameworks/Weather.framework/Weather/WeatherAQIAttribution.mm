@@ -1,48 +1,48 @@
 @interface WeatherAQIAttribution
 - (BOOL)isValid;
 - (NSString)name;
-- (WeatherAQIAttribution)initWithFoundationAttribution:(id)a3;
+- (WeatherAQIAttribution)initWithFoundationAttribution:(id)attribution;
 - (int64_t)dataOrigination;
-- (void)reverseGeocodeStationLocation:(id)a3;
+- (void)reverseGeocodeStationLocation:(id)location;
 @end
 
 @implementation WeatherAQIAttribution
 
-- (WeatherAQIAttribution)initWithFoundationAttribution:(id)a3
+- (WeatherAQIAttribution)initWithFoundationAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   v21.receiver = self;
   v21.super_class = WeatherAQIAttribution;
   v5 = [(WeatherAQIAttribution *)&v21 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [attributionCopy name];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = name;
 
-    v8 = [v4 cachedLogoImage];
+    cachedLogoImage = [attributionCopy cachedLogoImage];
     cachedLogoImage = v5->_cachedLogoImage;
-    v5->_cachedLogoImage = v8;
+    v5->_cachedLogoImage = cachedLogoImage;
 
-    v5->_dataOrigination = [v4 dataOrigination];
+    v5->_dataOrigination = [attributionCopy dataOrigination];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.weatherframework.airquality.attribution.reverse.geocoding", v10);
     reverseGeocodingQueue = v5->_reverseGeocodingQueue;
     v5->_reverseGeocodingQueue = v11;
 
-    v13 = [v4 station];
+    station = [attributionCopy station];
 
-    if (v13)
+    if (station)
     {
-      v14 = [v4 station];
-      v15 = [v14 location];
+      station2 = [attributionCopy station];
+      location = [station2 location];
       stationLocation = v5->_stationLocation;
-      v5->_stationLocation = v15;
+      v5->_stationLocation = location;
 
-      v17 = [v4 station];
-      v18 = [v17 lastReadDate];
+      station3 = [attributionCopy station];
+      lastReadDate = [station3 lastReadDate];
       stationLastReadDate = v5->_stationLastReadDate;
-      v5->_stationLastReadDate = v18;
+      v5->_stationLastReadDate = lastReadDate;
 
       [(WeatherAQIAttribution *)v5 reverseGeocodeStationLocation:0];
     }
@@ -53,33 +53,33 @@
 
 - (BOOL)isValid
 {
-  v2 = [(WeatherAQIAttribution *)self name];
-  v3 = [v2 length] != 0;
+  name = [(WeatherAQIAttribution *)self name];
+  v3 = [name length] != 0;
 
   return v3;
 }
 
-- (void)reverseGeocodeStationLocation:(id)a3
+- (void)reverseGeocodeStationLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(WeatherAQIAttribution *)self stationLocation];
+  locationCopy = location;
+  stationLocation = [(WeatherAQIAttribution *)self stationLocation];
 
-  if (v5)
+  if (stationLocation)
   {
-    v6 = [(WeatherAQIAttribution *)self reverseGeocodingQueue];
+    reverseGeocodingQueue = [(WeatherAQIAttribution *)self reverseGeocodingQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__WeatherAQIAttribution_reverseGeocodeStationLocation___block_invoke;
     v8[3] = &unk_279E68158;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v6, v8);
+    v9 = locationCopy;
+    dispatch_async(reverseGeocodingQueue, v8);
   }
 
-  else if (v4)
+  else if (locationCopy)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.weather.foundation.airQuality.provider.attribution.errorDomain" code:7777 userInfo:0];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(locationCopy + 2))(locationCopy, 0, v7);
   }
 }
 
@@ -153,10 +153,10 @@ void __55__WeatherAQIAttribution_reverseGeocodeStationLocation___block_invoke_2(
       goto LABEL_10;
     }
 
-    v7 = [v6 integerValue];
-    if (v7)
+    integerValue = [v6 integerValue];
+    if (integerValue)
     {
-      if (v7 != 1)
+      if (integerValue != 1)
       {
 LABEL_10:
 

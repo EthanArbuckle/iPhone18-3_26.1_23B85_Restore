@@ -1,7 +1,7 @@
 @interface AvatarUIView
 + (Class)layerClass;
-- (_TtC14ContactsUICore12AvatarUIView)initWithCoder:(id)a3;
-- (_TtC14ContactsUICore12AvatarUIView)initWithFrame:(CGRect)a3;
+- (_TtC14ContactsUICore12AvatarUIView)initWithCoder:(id)coder;
+- (_TtC14ContactsUICore12AvatarUIView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,11 +16,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3397FAC();
 }
 
-- (_TtC14ContactsUICore12AvatarUIView)initWithCoder:(id)a3
+- (_TtC14ContactsUICore12AvatarUIView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC14ContactsUICore12AvatarUIView_borderStyle);
   *v3 = 0;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (_TtC14ContactsUICore12AvatarUIView)initWithFrame:(CGRect)a3
+- (_TtC14ContactsUICore12AvatarUIView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

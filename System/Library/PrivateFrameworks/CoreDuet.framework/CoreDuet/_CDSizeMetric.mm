@@ -1,5 +1,5 @@
 @interface _CDSizeMetric
-- (_CDSizeMetric)initWithName:(id)a3 string:(id)a4 scale:(unint64_t)a5 family:(id)a6;
+- (_CDSizeMetric)initWithName:(id)name string:(id)string scale:(unint64_t)scale family:(id)family;
 - (double)averageSize;
 - (id)firstUpdate;
 - (id)lastUpdate;
@@ -12,11 +12,11 @@
 
 @implementation _CDSizeMetric
 
-- (_CDSizeMetric)initWithName:(id)a3 string:(id)a4 scale:(unint64_t)a5 family:(id)a6
+- (_CDSizeMetric)initWithName:(id)name string:(id)string scale:(unint64_t)scale family:(id)family
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  stringCopy = string;
+  familyCopy = family;
   v17.receiver = self;
   v17.super_class = _CDSizeMetric;
   v14 = [(_CDSizeMetric *)&v17 init];
@@ -24,10 +24,10 @@
   if (v14)
   {
     v14->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_name, a3);
-    objc_storeStrong(&v15->_string, a4);
-    v15->_scale = a5;
-    objc_storeWeak(&v15->_family, v13);
+    objc_storeStrong(&v14->_name, name);
+    objc_storeStrong(&v15->_string, string);
+    v15->_scale = scale;
+    objc_storeWeak(&v15->_family, familyCopy);
   }
 
   return v15;
@@ -35,12 +35,12 @@
 
 - (uint64_t)count
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_4_21(a1);
+  OUTLINED_FUNCTION_4_21(self);
   v2 = *(v1 + 24);
   os_unfair_lock_unlock((v1 + 8));
   return v2;
@@ -48,12 +48,12 @@
 
 - (uint64_t)firstSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_4_21(a1);
+  OUTLINED_FUNCTION_4_21(self);
   v2 = *(v1 + 32);
   os_unfair_lock_unlock((v1 + 8));
   return v2;
@@ -61,12 +61,12 @@
 
 - (uint64_t)lastSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_4_21(a1);
+  OUTLINED_FUNCTION_4_21(self);
   v2 = *(v1 + 40);
   os_unfair_lock_unlock((v1 + 8));
   return v2;
@@ -74,12 +74,12 @@
 
 - (uint64_t)minimumSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_4_21(a1);
+  OUTLINED_FUNCTION_4_21(self);
   v2 = *(v1 + 48);
   os_unfair_lock_unlock((v1 + 8));
   return v2;
@@ -87,12 +87,12 @@
 
 - (uint64_t)maximumSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_4_21(a1);
+  OUTLINED_FUNCTION_4_21(self);
   v2 = *(v1 + 56);
   os_unfair_lock_unlock((v1 + 8));
   return v2;
@@ -100,24 +100,24 @@
 
 - (double)averageSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  os_unfair_lock_lock((a1 + 8));
-  v2 = *(a1 + 64) / *(a1 + 24);
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_lock((self + 8));
+  v2 = *(self + 64) / *(self + 24);
+  os_unfair_lock_unlock((self + 8));
   return v2;
 }
 
 - (id)firstUpdate
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 72);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 72);
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -130,11 +130,11 @@
 
 - (id)lastUpdate
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 80);
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 80);
+    os_unfair_lock_unlock((self + 8));
   }
 
   else

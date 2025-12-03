@@ -1,13 +1,13 @@
 @interface MFMailComposeDeliveryController
 + (OS_os_log)log;
 - (BOOL)deliverMessage;
-- (MFMailComposeDeliveryController)initWithComposeController:(id)a3 backupCompletionHandler:(id)a4;
+- (MFMailComposeDeliveryController)initWithComposeController:(id)controller backupCompletionHandler:(id)handler;
 - (MailComposeDeliveryControllerDelegate)delegate;
-- (void)_deliverMessage:(id)a3;
+- (void)_deliverMessage:(id)message;
 - (void)dealloc;
-- (void)deliverMessage:(id)a3;
-- (void)notifyUserDeliverySucceeded:(id)a3;
-- (void)setPercentDone:(double)a3;
+- (void)deliverMessage:(id)message;
+- (void)notifyUserDeliverySucceeded:(id)succeeded;
+- (void)setPercentDone:(double)done;
 @end
 
 @implementation MFMailComposeDeliveryController
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001DA760;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD560 != -1)
   {
     dispatch_once(&qword_1006DD560, block);
@@ -29,91 +29,91 @@
   return v2;
 }
 
-- (MFMailComposeDeliveryController)initWithComposeController:(id)a3 backupCompletionHandler:(id)a4
+- (MFMailComposeDeliveryController)initWithComposeController:(id)controller backupCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 needsDelivery])
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if ([controllerCopy needsDelivery])
   {
     v36.receiver = self;
     v36.super_class = MFMailComposeDeliveryController;
     v8 = [(MFMailComposeDeliveryController *)&v36 init];
     if (v8)
     {
-      if ([v6 isSavingAsDraft])
+      if ([controllerCopy isSavingAsDraft])
       {
-        v9 = [v6 _messageForDraft];
+        _messageForDraft = [controllerCopy _messageForDraft];
         futureDraft = v8->_futureDraft;
-        v8->_futureDraft = v9;
+        v8->_futureDraft = _messageForDraft;
       }
 
       else
       {
-        v12 = [v6 delivery];
+        delivery = [controllerCopy delivery];
         delivery = v8->_delivery;
-        v8->_delivery = v12;
+        v8->_delivery = delivery;
 
         [(MFOutgoingMessageDelivery *)v8->_delivery setDelegate:v8];
       }
 
-      v8->_isHideMyEmailMessage = [v6 isHideMyEmailMessage];
-      v14 = [v6 sendingEmailAddress];
+      v8->_isHideMyEmailMessage = [controllerCopy isHideMyEmailMessage];
+      sendingEmailAddress = [controllerCopy sendingEmailAddress];
       sendingAddress = v8->_sendingAddress;
-      v8->_sendingAddress = v14;
+      v8->_sendingAddress = sendingEmailAddress;
 
-      v16 = [v6 lastDraftMessage];
+      lastDraftMessage = [controllerCopy lastDraftMessage];
       draftMessage = v8->_draftMessage;
-      v8->_draftMessage = v16;
+      v8->_draftMessage = lastDraftMessage;
 
-      v18 = [v6 documentID];
+      documentID = [controllerCopy documentID];
       draftDocumentID = v8->_draftDocumentID;
-      v8->_draftDocumentID = v18;
+      v8->_draftDocumentID = documentID;
 
-      v20 = [v6 compositionContext];
-      v21 = [v20 legacyMessage];
+      compositionContext = [controllerCopy compositionContext];
+      legacyMessage = [compositionContext legacyMessage];
 
-      v22 = [v6 compositionContext];
-      if (v21)
+      compositionContext2 = [controllerCopy compositionContext];
+      if (legacyMessage)
       {
-        v23 = [v22 legacyMessage];
+        legacyMessage2 = [compositionContext2 legacyMessage];
         originalMessage = v8->_originalMessage;
-        v8->_originalMessage = v23;
+        v8->_originalMessage = legacyMessage2;
       }
 
       else
       {
-        originalMessage = [v22 originalMessage];
+        originalMessage = [compositionContext2 originalMessage];
         v25 = +[MailAccount outboxMailboxUid];
         v26 = [MFComposeMailMessage legacyMessageWithMessage:originalMessage mailboxUid:v25];
         v27 = v8->_originalMessage;
         v8->_originalMessage = v26;
       }
 
-      v8->_composeType = [v6 compositionType];
-      v28 = objc_retainBlock(v7);
+      v8->_composeType = [controllerCopy compositionType];
+      v28 = objc_retainBlock(handlerCopy);
       backupCompletionHandler = v8->_backupCompletionHandler;
       v8->_backupCompletionHandler = v28;
 
-      v30 = [v6 compositionContext];
-      v31 = [v30 sendLaterDate];
+      compositionContext3 = [controllerCopy compositionContext];
+      sendLaterDate = [compositionContext3 sendLaterDate];
       sendLaterDate = v8->_sendLaterDate;
-      v8->_sendLaterDate = v31;
+      v8->_sendLaterDate = sendLaterDate;
 
-      v33 = [v6 autosaveIdentifier];
+      autosaveIdentifier = [controllerCopy autosaveIdentifier];
       autosaveIdentifier = v8->_autosaveIdentifier;
-      v8->_autosaveIdentifier = v33;
+      v8->_autosaveIdentifier = autosaveIdentifier;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -147,13 +147,13 @@
   return self;
 }
 
-- (void)deliverMessage:(id)a3
+- (void)deliverMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
+  messageCopy = message;
+  v5 = messageCopy;
   if (atomic_exchange(&self->_isDeliveringMessage._Value, 1u))
   {
-    (*(v4 + 2))(v4, 0);
+    (*(messageCopy + 2))(messageCopy, 0);
   }
 
   else
@@ -172,9 +172,9 @@
   }
 }
 
-- (void)_deliverMessage:(id)a3
+- (void)_deliverMessage:(id)message
 {
-  v67 = a3;
+  messageCopy = message;
   if (pthread_main_np())
   {
     v59 = +[NSAssertionHandler currentHandler];
@@ -185,31 +185,31 @@
   v6 = +[MailAccount outboxMailboxUid];
   [v5 setMailbox:v6];
 
-  v70 = [(MFMailComposeDeliveryController *)self delegate];
+  delegate = [(MFMailComposeDeliveryController *)self delegate];
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 daemonInterface];
-  v9 = [v8 outgoingMessageRepository];
+  daemonInterface = [v7 daemonInterface];
+  outgoingMessageRepository = [daemonInterface outgoingMessageRepository];
 
-  v69 = v9;
-  v10 = [(MFOutgoingMessageDelivery *)self->_delivery compositionSpecification];
-  v11 = [v10 objectForKeyedSubscript:MFSecureMIMECompositionSpecificationRecipientCertificates];
-  v12 = [v11 allKeys];
+  v69 = outgoingMessageRepository;
+  compositionSpecification = [(MFOutgoingMessageDelivery *)self->_delivery compositionSpecification];
+  v11 = [compositionSpecification objectForKeyedSubscript:MFSecureMIMECompositionSpecificationRecipientCertificates];
+  allKeys = [v11 allKeys];
 
-  v65 = v12;
-  if ([v12 count] && _os_feature_enabled_impl() && +[EMInternalPreferences preferenceEnabled:](EMInternalPreferences, "preferenceEnabled:", 24))
+  v65 = allKeys;
+  if ([allKeys count] && _os_feature_enabled_impl() && +[EMInternalPreferences preferenceEnabled:](EMInternalPreferences, "preferenceEnabled:", 24))
   {
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 daemonInterface];
-    v15 = [v14 messageRepository];
+    daemonInterface2 = [v13 daemonInterface];
+    messageRepository = [daemonInterface2 messageRepository];
 
-    v16 = [v15 metadataForAddresses:v12];
+    v16 = [messageRepository metadataForAddresses:allKeys];
     v95 = 0;
     v17 = [v16 result:&v95];
     v18 = v95;
     if ([v17 count])
     {
-      v19 = [(MFOutgoingMessageDelivery *)self->_delivery compositionSpecification];
-      v20 = [v19 mutableCopy];
+      compositionSpecification2 = [(MFOutgoingMessageDelivery *)self->_delivery compositionSpecification];
+      v20 = [compositionSpecification2 mutableCopy];
 
       [v20 setObject:v17 forKeyedSubscript:MFSecureMIMECompositionSpecificationAddressMetadata];
       [(MFOutgoingMessageDelivery *)self->_delivery setCompositionSpecification:v20];
@@ -220,8 +220,8 @@
       v20 = +[MFMailComposeDeliveryController log];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v18 ef_publicDescription];
-        sub_10048BA48(v21, v100, v20);
+        ef_publicDescription = [v18 ef_publicDescription];
+        sub_10048BA48(ef_publicDescription, v100, v20);
       }
     }
   }
@@ -251,18 +251,18 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      [v70 mailComposeDeliveryControllerWillAttemptToSend:self];
+      [delegate mailComposeDeliveryControllerWillAttemptToSend:self];
     }
 
     if (self->_isHideMyEmailMessage)
     {
-      v26 = +[MFMailComposeDeliveryController log];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      defaultInstance = +[MFMailComposeDeliveryController log];
+      if (os_log_type_enabled(defaultInstance, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(MFOutgoingMessageDelivery *)self->_delivery originalMessageObjectID];
+        originalMessageObjectID = [(MFOutgoingMessageDelivery *)self->_delivery originalMessageObjectID];
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v27;
-        _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Not updating CoreRecents library as message:<%{public}@> is HME message.", &buf, 0xCu);
+        *(&buf + 4) = originalMessageObjectID;
+        _os_log_impl(&_mh_execute_header, defaultInstance, OS_LOG_TYPE_DEFAULT, "Not updating CoreRecents library as message:<%{public}@> is HME message.", &buf, 0xCu);
       }
     }
 
@@ -286,41 +286,41 @@
 
       v39 = v38;
       _Block_object_dispose(&v96, 8);
-      v26 = [v38 defaultInstance];
-      v40 = [(MFOutgoingMessageDelivery *)self->_delivery originalHeaders];
-      [v26 recordContactEventsForHeaders:v40 recentsDomain:kMFMobileMailBundleIdentifier];
+      defaultInstance = [v38 defaultInstance];
+      originalHeaders = [(MFOutgoingMessageDelivery *)self->_delivery originalHeaders];
+      [defaultInstance recordContactEventsForHeaders:originalHeaders recentsDomain:kMFMobileMailBundleIdentifier];
     }
 
     v41 = [EDConversationPersistence conversationNotificationLevelForConversationFlags:[(MFOutgoingMessageDelivery *)self->_delivery conversationFlags]];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v64 = [(MFOutgoingMessageDelivery *)self->_delivery message];
-    v63 = [(MFOutgoingMessageDelivery *)self->_delivery originalMessageObjectID];
-    v60 = [(MFOutgoingMessageDelivery *)self->_delivery compositionSpecification];
-    v43 = [v60 objectForKeyedSubscript:MFSecureMIMECompositionSpecificationShouldEncrypt];
+    message = [(MFOutgoingMessageDelivery *)self->_delivery message];
+    originalMessageObjectID2 = [(MFOutgoingMessageDelivery *)self->_delivery originalMessageObjectID];
+    compositionSpecification3 = [(MFOutgoingMessageDelivery *)self->_delivery compositionSpecification];
+    v43 = [compositionSpecification3 objectForKeyedSubscript:MFSecureMIMECompositionSpecificationShouldEncrypt];
     v61 = v43;
-    v44 = [v60 objectForKeyedSubscript:MFSecureMIMECompositionSpecificationShouldSign];
+    v44 = [compositionSpecification3 objectForKeyedSubscript:MFSecureMIMECompositionSpecificationShouldSign];
     v45 = v44;
     v62 = v44;
     if (v43)
     {
-      v46 = [v43 BOOLValue];
+      bOOLValue = [v43 BOOLValue];
       if (v45)
       {
 LABEL_32:
-        v47 = [v45 BOOLValue];
+        bOOLValue2 = [v45 BOOLValue];
 LABEL_35:
         v48 = [EMOutgoingMessage alloc];
         v85[0] = _NSConcreteStackBlock;
         v85[1] = 3221225472;
         v85[2] = sub_1001DBCE8;
         v85[3] = &unk_100654528;
-        v33 = v64;
+        v33 = message;
         v86 = v33;
-        v87 = self;
-        v35 = v63;
-        v90 = v47;
-        v91 = v46;
+        selfCopy = self;
+        v35 = originalMessageObjectID2;
+        v90 = bOOLValue2;
+        v91 = bOOLValue;
         v88 = v35;
         v89 = v41;
         v49 = [v48 initWithBuilder:v85];
@@ -343,7 +343,7 @@ LABEL_35:
           v82 = v69;
           v83[0] = v71;
           v83[1] = self;
-          v53 = v67;
+          v53 = messageCopy;
           v84 = v53;
           [v51 onScheduler:v52 addSuccessBlock:v81];
 
@@ -370,9 +370,9 @@ LABEL_35:
           v74[0] = v69;
           v74[1] = self;
           v75 = v49;
-          v76 = v70;
+          v76 = delegate;
           v77 = v66;
-          v78 = v67;
+          v78 = messageCopy;
           [v51 addSuccessBlock:v72];
 
           v54 = &v73;
@@ -388,14 +388,14 @@ LABEL_41:
 
     else
     {
-      v46 = 0;
+      bOOLValue = 0;
       if (v44)
       {
         goto LABEL_32;
       }
     }
 
-    v47 = 0;
+    bOOLValue2 = 0;
     goto LABEL_35;
   }
 
@@ -414,16 +414,16 @@ LABEL_41:
     }
 
     v31 = [EMOutgoingMessage alloc];
-    v32 = [(MFOutgoingMessage *)self->_outgoingMessage messageData];
-    v33 = [v31 initWithMessageData:v32];
+    messageData = [(MFOutgoingMessage *)self->_outgoingMessage messageData];
+    v33 = [v31 initWithMessageData:messageData];
 
-    v34 = [(EMMessage *)self->_draftMessage objectID];
-    v35 = [v69 saveDraftMessage:v33 mailboxObjectID:v71 previousDraftObjectID:v34];
+    objectID = [(EMMessage *)self->_draftMessage objectID];
+    v35 = [v69 saveDraftMessage:v33 mailboxObjectID:v71 previousDraftObjectID:objectID];
 
     v36 = [v35 result:0];
     if (objc_opt_respondsToSelector())
     {
-      [v70 mailComposeDeliveryControllerDidAttemptToSaveDraft:self account:v22 result:1];
+      [delegate mailComposeDeliveryControllerDidAttemptToSaveDraft:self account:v22 result:1];
     }
 
     backupCompletionHandler = self->_backupCompletionHandler;
@@ -433,7 +433,7 @@ LABEL_41:
     }
 
     (v66[2])();
-    (*(v67 + 2))(v67, 1);
+    (*(messageCopy + 2))(messageCopy, 1);
     goto LABEL_41;
   }
 
@@ -445,22 +445,22 @@ LABEL_41:
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "Failed to deliver draft message: %@", &buf, 0xCu);
   }
 
-  (*(v67 + 2))(v67, 0);
+  (*(messageCopy + 2))(messageCopy, 0);
 LABEL_42:
 
   objc_destroyWeak(&v93);
   objc_destroyWeak(&location);
 }
 
-- (void)setPercentDone:(double)a3
+- (void)setPercentDone:(double)done
 {
   v6 = +[MFActivityMonitor currentMonitor];
   v4 = MFLookupLocalizedString();
   v5 = [NSString stringWithFormat:v4, 10];
-  [v6 setStatusMessage:v5 percentDone:a3];
+  [v6 setStatusMessage:v5 percentDone:done];
 }
 
-- (void)notifyUserDeliverySucceeded:(id)a3
+- (void)notifyUserDeliverySucceeded:(id)succeeded
 {
   v3 = +[MFActivityMonitor currentMonitor];
   [v3 reset];

@@ -1,22 +1,22 @@
 @interface PKServiceProviderPurchaseData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPKServiceProviderPurchaseData:(id)a3;
-- (PKServiceProviderPurchaseData)initWithCoder:(id)a3;
-- (PKServiceProviderPurchaseData)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPKServiceProviderPurchaseData:(id)data;
+- (PKServiceProviderPurchaseData)initWithCoder:(id)coder;
+- (PKServiceProviderPurchaseData)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation PKServiceProviderPurchaseData
 
-- (PKServiceProviderPurchaseData)initWithDictionary:(id)a3
+- (PKServiceProviderPurchaseData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKServiceProviderPurchaseData;
   v5 = [(PKServiceProviderPurchaseData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
   }
@@ -24,15 +24,15 @@
   return v5;
 }
 
-- (PKServiceProviderPurchaseData)initWithCoder:(id)a3
+- (PKServiceProviderPurchaseData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKServiceProviderPurchaseData;
   v5 = [(PKServiceProviderPurchaseData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dictionary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dictionary"];
     dictionaryRepresentation = v5->_dictionaryRepresentation;
     v5->_dictionaryRepresentation = v6;
   }
@@ -40,24 +40,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKServiceProviderPurchaseData *)self isEqualToPKServiceProviderPurchaseData:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKServiceProviderPurchaseData *)self isEqualToPKServiceProviderPurchaseData:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPKServiceProviderPurchaseData:(id)a3
+- (BOOL)isEqualToPKServiceProviderPurchaseData:(id)data
 {
-  if (self == a3)
+  if (self == data)
   {
     return 1;
   }
 
   dictionaryRepresentation = self->_dictionaryRepresentation;
-  v4 = [a3 dictionaryRepresentation];
-  LOBYTE(dictionaryRepresentation) = [(NSDictionary *)dictionaryRepresentation isEqualToDictionary:v4];
+  dictionaryRepresentation = [data dictionaryRepresentation];
+  LOBYTE(dictionaryRepresentation) = [(NSDictionary *)dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation];
 
   return dictionaryRepresentation;
 }

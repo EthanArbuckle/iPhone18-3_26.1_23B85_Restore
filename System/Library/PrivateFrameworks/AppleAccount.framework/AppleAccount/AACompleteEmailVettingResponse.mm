@@ -7,9 +7,9 @@
 - (int)vettingStatus
 {
   v2 = [(NSDictionary *)self->super._responseDictionary objectForKey:@"status"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 @end

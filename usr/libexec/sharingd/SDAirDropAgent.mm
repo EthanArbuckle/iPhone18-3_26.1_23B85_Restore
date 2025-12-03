@@ -1,17 +1,17 @@
 @interface SDAirDropAgent
-- (SDAirDropAgent)initWithEndpointService:(id)a3;
-- (id)_agentClientTokenForClient:(id)a3;
+- (SDAirDropAgent)initWithEndpointService:(id)service;
+- (id)_agentClientTokenForClient:(id)client;
 - (void)_createBrowseAgent;
 - (void)_setupBrowseHandlers;
 - (void)_setupPolicy;
-- (void)handleEndpointsChanged:(id)a3;
+- (void)handleEndpointsChanged:(id)changed;
 @end
 
 @implementation SDAirDropAgent
 
-- (SDAirDropAgent)initWithEndpointService:(id)a3
+- (SDAirDropAgent)initWithEndpointService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = SDAirDropAgent;
   v6 = [(SDAirDropAgent *)&v14 init];
@@ -29,7 +29,7 @@
     clientTokens = v6->_clientTokens;
     v6->_clientTokens = v8;
 
-    objc_storeStrong(&v6->_endpointService, a3);
+    objc_storeStrong(&v6->_endpointService, service);
     objc_initWeak(buf, v6);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -61,18 +61,18 @@
   v4 = objc_alloc_init(NEPolicySession);
   [(SDAirDropAgent *)self setPolicySession:v4];
 
-  v5 = [(SDAirDropAgent *)self policySession];
+  policySession = [(SDAirDropAgent *)self policySession];
 
-  if (v5)
+  if (policySession)
   {
-    v6 = [(SDAirDropAgent *)self policySession];
-    [v6 setPriority:300];
+    policySession2 = [(SDAirDropAgent *)self policySession];
+    [policySession2 setPriority:300];
 
-    v7 = [(SDAirDropAgent *)self policySession];
-    [v7 lockSessionToCurrentProcess];
+    policySession3 = [(SDAirDropAgent *)self policySession];
+    [policySession3 lockSessionToCurrentProcess];
 
-    v8 = [(SDAirDropAgent *)self identifier];
-    v9 = [NEPolicyResult netAgentUUID:v8];
+    identifier = [(SDAirDropAgent *)self identifier];
+    v9 = [NEPolicyResult netAgentUUID:identifier];
 
     v10 = +[NEPolicyCondition allInterfaces];
     v11 = [NSString stringWithUTF8String:"com.apple.airdrop"];
@@ -85,17 +85,17 @@
     v26[2] = v14;
     v15 = [NSArray arrayWithObjects:v26 count:3];
     v16 = [[NEPolicy alloc] initWithOrder:10 result:v9 conditions:v15];
-    v17 = [(SDAirDropAgent *)self policySession];
-    v18 = [v17 addPolicy:v16];
+    policySession4 = [(SDAirDropAgent *)self policySession];
+    v18 = [policySession4 addPolicy:v16];
 
     if (!v18)
     {
       v19 = airdrop_nw_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(SDAirDropAgent *)self identifier];
+        identifier2 = [(SDAirDropAgent *)self identifier];
         v24 = 138412290;
-        v25 = v20;
+        v25 = identifier2;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Failed to add entitlement allow policy for agent %@", &v24, 0xCu);
       }
     }
@@ -103,14 +103,14 @@
     v21 = airdrop_nw_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(SDAirDropAgent *)self identifier];
+      identifier3 = [(SDAirDropAgent *)self identifier];
       v24 = 138412290;
-      v25 = v22;
+      v25 = identifier3;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Applying policies for agent %@", &v24, 0xCu);
     }
 
-    v23 = [(SDAirDropAgent *)self policySession];
-    [v23 apply];
+    policySession5 = [(SDAirDropAgent *)self policySession];
+    [policySession5 apply];
   }
 
   else
@@ -137,13 +137,13 @@
   v5 = nw_agent_create();
   [(SDAirDropAgent *)self setBrowseAgent:v5];
 
-  v6 = [(SDAirDropAgent *)self browseAgent];
+  browseAgent = [(SDAirDropAgent *)self browseAgent];
 
-  if (v6)
+  if (browseAgent)
   {
     *buf = 0;
     v17 = 0;
-    v7 = [(SDAirDropAgent *)self browseAgent];
+    browseAgent2 = [(SDAirDropAgent *)self browseAgent];
     nw_agent_get_uuid();
 
     v8 = [[NSUUID alloc] initWithUUIDBytes:buf];
@@ -152,9 +152,9 @@
     v9 = airdrop_nw_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SDAirDropAgent *)self identifier];
+      identifier = [(SDAirDropAgent *)self identifier];
       v14 = 138412290;
-      v15 = v10;
+      v15 = identifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Browse Agent UUID=%@", &v14, 0xCu);
     }
 
@@ -197,19 +197,19 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Setting Agent Browse handlers", buf, 2u);
   }
 
-  v4 = [(SDAirDropAgent *)self browseAgent];
+  browseAgent = [(SDAirDropAgent *)self browseAgent];
   nw_agent_set_browse_handlers();
 }
 
-- (id)_agentClientTokenForClient:(id)a3
+- (id)_agentClientTokenForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SDAirDropAgent *)self clientTokens];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  clientTokens = [(SDAirDropAgent *)self clientTokens];
+  v6 = [clientTokens countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -219,21 +219,21 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(clientTokens);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 agentClient];
-        v11 = [v10 client];
+        agentClient = [v9 agentClient];
+        client = [agentClient client];
 
-        if (v11 == v4)
+        if (client == clientCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [clientTokens countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -248,18 +248,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)handleEndpointsChanged:(id)a3
+- (void)handleEndpointsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(SDAirDropAgent *)self dispatchQueue];
+  changedCopy = changed;
+  dispatchQueue = [(SDAirDropAgent *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001D691C;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 @end

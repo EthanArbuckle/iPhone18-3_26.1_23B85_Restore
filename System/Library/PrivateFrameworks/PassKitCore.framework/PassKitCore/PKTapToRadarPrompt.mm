@@ -1,40 +1,40 @@
 @interface PKTapToRadarPrompt
-- (PKTapToRadarPrompt)initWithCoder:(id)a3;
+- (PKTapToRadarPrompt)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTapToRadarPrompt
 
-- (PKTapToRadarPrompt)initWithCoder:(id)a3
+- (PKTapToRadarPrompt)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKTapToRadarPrompt;
   v5 = [(PKTapToRadarPrompt *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastPromptDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastPromptDate"];
     lastPromptDate = v5->_lastPromptDate;
     v5->_lastPromptDate = v8;
 
-    v5->_promptCount = [v4 decodeIntegerForKey:@"promptCount"];
+    v5->_promptCount = [coderCopy decodeIntegerForKey:@"promptCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v5 = a3;
-  [v5 encodeObject:reason forKey:@"reason"];
-  [v5 encodeObject:self->_lastPromptDate forKey:@"lastPromptDate"];
-  [v5 encodeInteger:self->_promptCount forKey:@"promptCount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_lastPromptDate forKey:@"lastPromptDate"];
+  [coderCopy encodeInteger:self->_promptCount forKey:@"promptCount"];
 }
 
 - (id)description

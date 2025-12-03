@@ -6,19 +6,19 @@
 
 - (id)bc_ancestorOverrideCardPresentingViewController
 {
-  v2 = self;
+  selfCopy = self;
   v7.receiver = self;
   v7.super_class = BKLibraryBookshelfNavigationController;
-  v3 = [(BKLibraryBookshelfNavigationController *)&v7 bc_ancestorOverrideCardPresentingViewController];
-  v4 = v3;
-  if (v3)
+  bc_ancestorOverrideCardPresentingViewController = [(BKLibraryBookshelfNavigationController *)&v7 bc_ancestorOverrideCardPresentingViewController];
+  v4 = bc_ancestorOverrideCardPresentingViewController;
+  if (bc_ancestorOverrideCardPresentingViewController)
   {
-    v2 = v3;
+    selfCopy = bc_ancestorOverrideCardPresentingViewController;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -8,27 +8,27 @@
 - (void)fc_smallerNumber:()FCAdditions
 {
   v4 = a3;
-  if ([a1 compare:v4] == 1)
+  if ([self compare:v4] == 1)
   {
-    a1 = v4;
+    self = v4;
   }
 
-  v5 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 - (void)fc_largerNumber:()FCAdditions
 {
   v4 = a3;
-  if ([a1 compare:v4] == -1)
+  if ([self compare:v4] == -1)
   {
-    a1 = v4;
+    self = v4;
   }
 
-  v5 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 @end

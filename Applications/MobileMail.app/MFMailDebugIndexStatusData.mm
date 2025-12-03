@@ -1,23 +1,23 @@
 @interface MFMailDebugIndexStatusData
-- (MFMailDebugIndexStatusData)initWithPrimaryText:(id)a3 secondaryText:(id)a4 labelText:(id)a5;
+- (MFMailDebugIndexStatusData)initWithPrimaryText:(id)text secondaryText:(id)secondaryText labelText:(id)labelText;
 @end
 
 @implementation MFMailDebugIndexStatusData
 
-- (MFMailDebugIndexStatusData)initWithPrimaryText:(id)a3 secondaryText:(id)a4 labelText:(id)a5
+- (MFMailDebugIndexStatusData)initWithPrimaryText:(id)text secondaryText:(id)secondaryText labelText:(id)labelText
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  secondaryTextCopy = secondaryText;
+  labelTextCopy = labelText;
   v15.receiver = self;
   v15.super_class = MFMailDebugIndexStatusData;
   v12 = [(MFMailDebugIndexStatusData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_primaryText, a3);
-    objc_storeStrong(&v13->_secondaryText, a4);
-    objc_storeStrong(&v13->_labelText, a5);
+    objc_storeStrong(&v12->_primaryText, text);
+    objc_storeStrong(&v13->_secondaryText, secondaryText);
+    objc_storeStrong(&v13->_labelText, labelText);
   }
 
   return v13;

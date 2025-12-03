@@ -1,15 +1,15 @@
 @interface TSTTableArchivedControlCellSelection
 - (NSString)description;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSTTableArchivedControlCellSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v10 = a3;
+  selectionCopy = selection;
   objc_msgSend_willModify(self, v4, v5, v6, v7);
   objc_opt_class();
   v8 = TSUCheckedDynamicCast();
@@ -17,7 +17,7 @@
   self->_controlCellSelection = v8;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   v4 = [TSTTableControlCellSelection alloc];
   v8 = objc_msgSend_initWithKeyboardShown_(v4, v5, 0, v6, v7);
@@ -25,11 +25,11 @@
   self->_controlCellSelection = v8;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v5 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  objc_msgSend_messageWithNewFunction_descriptor_(v5, v3, sub_22123FA78, off_2812E4498[148], v4);
+  objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, sub_22123FA78, off_2812E4498[148], v4);
 }
 
 - (NSString)description

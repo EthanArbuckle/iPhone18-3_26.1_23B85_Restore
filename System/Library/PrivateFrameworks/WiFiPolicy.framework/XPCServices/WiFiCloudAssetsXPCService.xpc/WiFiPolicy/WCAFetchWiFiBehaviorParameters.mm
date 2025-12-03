@@ -1,15 +1,15 @@
 @interface WCAFetchWiFiBehaviorParameters
-+ (void)fetchWiFiBehaviorWithCompletion:(id)a3;
++ (void)fetchWiFiBehaviorWithCompletion:(id)completion;
 @end
 
 @implementation WCAFetchWiFiBehaviorParameters
 
-+ (void)fetchWiFiBehaviorWithCompletion:(id)a3
++ (void)fetchWiFiBehaviorWithCompletion:(id)completion
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v12 = objc_alloc_init(WCAFetchKeyValuesRequest);
   v14[0] = @"WiFiInternalSSIDs";
   v14[1] = @"MacRandomization";

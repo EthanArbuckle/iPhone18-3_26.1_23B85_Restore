@@ -1,19 +1,19 @@
 @interface AssetPromise
-- (AssetPromise)initWithRequestID:(id)a3 promiseBlock:(id)a4;
+- (AssetPromise)initWithRequestID:(id)d promiseBlock:(id)block;
 @end
 
 @implementation AssetPromise
 
-- (AssetPromise)initWithRequestID:(id)a3 promiseBlock:(id)a4
+- (AssetPromise)initWithRequestID:(id)d promiseBlock:(id)block
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = AssetPromise;
-  v8 = [(AssetPromise *)&v11 initWithBlock:a4];
+  v8 = [(AssetPromise *)&v11 initWithBlock:block];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_requestID, a3);
+    objc_storeStrong(&v8->_requestID, d);
   }
 
   return v9;

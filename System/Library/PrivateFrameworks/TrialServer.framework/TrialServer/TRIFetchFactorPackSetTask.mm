@@ -1,49 +1,49 @@
 @interface TRIFetchFactorPackSetTask
-+ (id)_namespaceNamesFromExperimentRecord:(id)a3;
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithFactorPackSetId:(id)a3 taskAttribution:(id)a4 rolloutDeployment:(id)a5 capabilityModifier:(id)a6;
-- (BOOL)_downloadAndSaveCKAssetsWithMetadata:(id)a3 artifactProvider:(id)a4 options:(id)a5 downloadNotificationKey:(id)a6 context:(id)a7 assetsDownloadSize:(unint64_t *)a8 errorResult:(id *)a9 fetchError:(id *)a10;
-- (BOOL)_downloadAndSaveMAAssets:(id)a3 options:(id)a4 downloadNotificationKey:(id)a5 context:(id)a6 assetsDownloadSize:(unint64_t *)a7 errorResult:(id *)a8 fetchError:(id *)a9;
-- (BOOL)_saveFactorPackSet:(id)a3 requiredAssetMap:(id)a4 context:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_namespaceNamesFromExperimentRecord:(id)record;
++ (id)parseFromData:(id)data;
++ (id)taskWithFactorPackSetId:(id)id taskAttribution:(id)attribution rolloutDeployment:(id)deployment capabilityModifier:(id)modifier;
+- (BOOL)_downloadAndSaveCKAssetsWithMetadata:(id)metadata artifactProvider:(id)provider options:(id)options downloadNotificationKey:(id)key context:(id)context assetsDownloadSize:(unint64_t *)size errorResult:(id *)result fetchError:(id *)self0;
+- (BOOL)_downloadAndSaveMAAssets:(id)assets options:(id)options downloadNotificationKey:(id)key context:(id)context assetsDownloadSize:(unint64_t *)size errorResult:(id *)result fetchError:(id *)error;
+- (BOOL)_saveFactorPackSet:(id)set requiredAssetMap:(id)map context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)dependencies;
 - (NSArray)tags;
 - (NSString)description;
-- (TRIFetchFactorPackSetTask)initWithCoder:(id)a3;
-- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)a3 taskAttribution:(id)a4 rolloutDeployment:(id)a5 capabilityModifier:(id)a6;
-- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)a3 treatmentId:(id)a4 isCounterfactualTreatment:(BOOL)a5 taskAttribution:(id)a6 experimentDeployment:(id)a7;
+- (TRIFetchFactorPackSetTask)initWithCoder:(id)coder;
+- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)id taskAttribution:(id)attribution rolloutDeployment:(id)deployment capabilityModifier:(id)modifier;
+- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)id treatmentId:(id)treatmentId isCounterfactualTreatment:(BOOL)treatment taskAttribution:(id)attribution experimentDeployment:(id)deployment;
 - (id)_asPersistedTask;
-- (id)_downloadSetArtifactWithProvider:(id)a3 downloadOptions:(id)a4 downloadNotificationKey:(id)a5 errorResult:(id *)a6 setArtifactFetchError:(id *)a7;
-- (id)_requiredAssetsForFactorPackSet:(id)a3 context:(id)a4;
-- (id)_subscribedOnDemandFactorsForAssets:(id)a3 factorPackSet:(id)a4 context:(id)a5;
-- (id)_uniqueUninstalledAssets:(id)a3;
+- (id)_downloadSetArtifactWithProvider:(id)provider downloadOptions:(id)options downloadNotificationKey:(id)key errorResult:(id *)result setArtifactFetchError:(id *)error;
+- (id)_requiredAssetsForFactorPackSet:(id)set context:(id)context;
+- (id)_subscribedOnDemandFactorsForAssets:(id)assets factorPackSet:(id)set context:(id)context;
+- (id)_uniqueUninstalledAssets:(id)assets;
 - (id)dimensions;
 - (id)metrics;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (id)trialSystemTelemetry;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)_addMetricForFetchFactorPackSetTaskError:(int)a3;
-- (void)_logOnDemandFactor:(id)a3 metricName:(id)a4 namespaceName:(id)a5 client:(id)a6 error:(id)a7;
-- (void)_recordExperimentFetchFailedWithReason:(id)a3 context:(id)a4;
-- (void)_recordExperimentFetchFailedWithTaskError:(int)a3 context:(id)a4;
-- (void)_removeDownloadableRecord:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addMetricForFetchFactorPackSetTaskError:(int)error;
+- (void)_logOnDemandFactor:(id)factor metricName:(id)name namespaceName:(id)namespaceName client:(id)client error:(id)error;
+- (void)_recordExperimentFetchFailedWithReason:(id)reason context:(id)context;
+- (void)_recordExperimentFetchFailedWithTaskError:(int)error context:(id)context;
+- (void)_removeDownloadableRecord:(id)record;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIFetchFactorPackSetTask
 
 - (NSArray)tags
 {
-  v3 = [(TRIRolloutTaskSupport *)self->_rolloutSupport tags];
-  v4 = v3;
-  if (!v3)
+  tags = [(TRIRolloutTaskSupport *)self->_rolloutSupport tags];
+  v4 = tags;
+  if (!tags)
   {
-    v3 = MEMORY[0x277CBEBF8];
+    tags = MEMORY[0x277CBEBF8];
   }
 
-  v5 = [v3 mutableCopy];
+  v5 = [tags mutableCopy];
   [TRITaskUtils addAttribution:self->_taskAttribution toTaskTags:v5];
 
   return v5;
@@ -70,24 +70,24 @@
   return v4;
 }
 
-- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)a3 taskAttribution:(id)a4 rolloutDeployment:(id)a5 capabilityModifier:(id)a6
+- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)id taskAttribution:(id)attribution rolloutDeployment:(id)deployment capabilityModifier:(id)modifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  idCopy = id;
+  attributionCopy = attribution;
+  deploymentCopy = deployment;
+  modifierCopy = modifier;
+  if (idCopy)
   {
-    if (v13)
+    if (attributionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
 
-    if (v14)
+    if (deploymentCopy)
     {
       goto LABEL_4;
     }
@@ -95,23 +95,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v41 = [MEMORY[0x277CCA890] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
-  if (!v13)
+  if (!attributionCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v14)
+  if (deploymentCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v43 = [MEMORY[0x277CCA890] currentHandler];
-  [v43 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"rolloutDeployment"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"rolloutDeployment"}];
 
 LABEL_4:
   v44.receiver = self;
@@ -120,16 +120,16 @@ LABEL_4:
   v17 = v16;
   if (v16)
   {
-    v40 = v15;
-    objc_storeStrong(&v16->_factorPackSetId, a3);
-    objc_storeStrong(&v17->_taskAttribution, a4);
+    v40 = modifierCopy;
+    objc_storeStrong(&v16->_factorPackSetId, id);
+    objc_storeStrong(&v17->_taskAttribution, attribution);
     v17->_construct = 0;
-    objc_storeStrong(&v17->_rolloutDeployment, a5);
+    objc_storeStrong(&v17->_rolloutDeployment, deployment);
     v18 = [[TRIRolloutTaskSupport alloc] initWithRolloutDeployment:v17->_rolloutDeployment];
     rolloutSupport = v17->_rolloutSupport;
     v17->_rolloutSupport = v18;
 
-    objc_storeStrong(&v17->_capabilityModifier, a6);
+    objc_storeStrong(&v17->_capabilityModifier, modifier);
     factorRecordsByAssetId = v17->_factorRecordsByAssetId;
     v17->_factorRecordsByAssetId = 0;
 
@@ -140,48 +140,48 @@ LABEL_4:
     v17->_guardedDownloadableRecord = v23;
 
     v25 = objc_opt_new();
-    v26 = [(TRIRolloutDeployment *)v17->_rolloutDeployment rolloutId];
-    v27 = [v25 ensureRolloutFields];
-    [v27 setClientRolloutId:v26];
+    rolloutId = [(TRIRolloutDeployment *)v17->_rolloutDeployment rolloutId];
+    ensureRolloutFields = [v25 ensureRolloutFields];
+    [ensureRolloutFields setClientRolloutId:rolloutId];
 
-    v28 = loggableFactorPackSetIdFromFactorPackSetId(v12);
-    v29 = [v25 ensureRolloutFields];
-    [v29 setClientFactorPackSetId:v28];
+    v28 = loggableFactorPackSetIdFromFactorPackSetId(idCopy);
+    ensureRolloutFields2 = [v25 ensureRolloutFields];
+    [ensureRolloutFields2 setClientFactorPackSetId:v28];
 
     v30 = [MEMORY[0x277CCABB0] numberWithInt:{-[TRIRolloutDeployment deploymentId](v17->_rolloutDeployment, "deploymentId")}];
-    v31 = [v30 stringValue];
-    [v25 setClientDeploymentId:v31];
+    stringValue = [v30 stringValue];
+    [v25 setClientDeploymentId:stringValue];
 
-    v32 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:v13];
+    v32 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:attributionCopy];
     [(TRIRolloutTaskSupport *)v17->_rolloutSupport mergeTelemetry:v25];
     [(TRIRolloutTaskSupport *)v17->_rolloutSupport mergeTelemetry:v32];
-    v33 = [v13 networkOptions];
-    v34 = [v33 allowsCellularAccess];
+    networkOptions = [attributionCopy networkOptions];
+    allowsCellularAccess = [networkOptions allowsCellularAccess];
 
-    if (v34)
+    if (allowsCellularAccess)
     {
       v35 = v17->_rolloutSupport;
       v36 = MEMORY[0x277D73B40];
-      v37 = [v13 networkOptions];
-      v38 = [v36 metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(v37, "allowsCellularAccess")}];
+      networkOptions2 = [attributionCopy networkOptions];
+      v38 = [v36 metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(networkOptions2, "allowsCellularAccess")}];
       [(TRIRolloutTaskSupport *)v35 addMetric:v38];
     }
 
-    v15 = v40;
+    modifierCopy = v40;
   }
 
   return v17;
 }
 
-- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)a3 treatmentId:(id)a4 isCounterfactualTreatment:(BOOL)a5 taskAttribution:(id)a6 experimentDeployment:(id)a7
+- (TRIFetchFactorPackSetTask)initWithFactorPackSetId:(id)id treatmentId:(id)treatmentId isCounterfactualTreatment:(BOOL)treatment taskAttribution:(id)attribution experimentDeployment:(id)deployment
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  attributionCopy = attribution;
+  deploymentCopy = deployment;
+  if (idCopy)
   {
-    if (v15)
+    if (attributionCopy)
     {
       goto LABEL_3;
     }
@@ -189,28 +189,28 @@ LABEL_4:
 
   else
   {
-    v40 = v16;
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+    v40 = deploymentCopy;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
-    v16 = v40;
-    if (v15)
+    deploymentCopy = v40;
+    if (attributionCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v41 = v16;
-  v39 = [MEMORY[0x277CCA890] currentHandler];
-  [v39 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
+  v41 = deploymentCopy;
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"taskAttribution"}];
 
-  v16 = v41;
+  deploymentCopy = v41;
 LABEL_3:
-  v17 = v16;
-  if (!v16)
+  v17 = deploymentCopy;
+  if (!deploymentCopy)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment"}];
   }
 
   v44.receiver = self;
@@ -219,12 +219,12 @@ LABEL_3:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_factorPackSetId, a3);
-    objc_storeStrong(&v19->_treatmentId, a4);
-    v19->_isCounterfactualTreatment = a5;
-    objc_storeStrong(&v19->_taskAttribution, a6);
+    objc_storeStrong(&v18->_factorPackSetId, id);
+    objc_storeStrong(&v19->_treatmentId, treatmentId);
+    v19->_isCounterfactualTreatment = treatment;
+    objc_storeStrong(&v19->_taskAttribution, attribution);
     v19->_construct = 1;
-    objc_storeStrong(&v19->_experimentDeployment, a7);
+    objc_storeStrong(&v19->_experimentDeployment, deployment);
     v20 = [[TRIExperimentTaskSupport alloc] initWithExperimentDeployment:v17];
     experimentSupport = v19->_experimentSupport;
     v19->_experimentSupport = v20;
@@ -244,18 +244,18 @@ LABEL_3:
     v19->_guardedDownloadableRecord = v28;
 
     v30 = objc_opt_new();
-    v31 = [(TRIExperimentDeployment *)v19->_experimentDeployment experimentId];
-    v32 = [v30 ensureExperimentFields];
-    [v32 setClientExperimentId:v31];
+    experimentId = [(TRIExperimentDeployment *)v19->_experimentDeployment experimentId];
+    ensureExperimentFields = [v30 ensureExperimentFields];
+    [ensureExperimentFields setClientExperimentId:experimentId];
 
-    v33 = [v30 ensureExperimentFields];
-    [v33 setClientTreatmentId:v14];
+    ensureExperimentFields2 = [v30 ensureExperimentFields];
+    [ensureExperimentFields2 setClientTreatmentId:treatmentIdCopy];
 
     v34 = [MEMORY[0x277CCABB0] numberWithInt:{-[TRIExperimentDeployment deploymentId](v19->_experimentDeployment, "deploymentId")}];
-    v35 = [v34 stringValue];
-    [v30 setClientDeploymentId:v35];
+    stringValue = [v34 stringValue];
+    [v30 setClientDeploymentId:stringValue];
 
-    v36 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:v15];
+    v36 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:attributionCopy];
     [(TRIExperimentTaskSupport *)v19->_experimentSupport mergeTelemetry:v30];
     [(TRIExperimentTaskSupport *)v19->_experimentSupport mergeTelemetry:v36];
 
@@ -265,69 +265,69 @@ LABEL_3:
   return v19;
 }
 
-+ (id)taskWithFactorPackSetId:(id)a3 taskAttribution:(id)a4 rolloutDeployment:(id)a5 capabilityModifier:(id)a6
++ (id)taskWithFactorPackSetId:(id)id taskAttribution:(id)attribution rolloutDeployment:(id)deployment capabilityModifier:(id)modifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithFactorPackSetId:v13 taskAttribution:v12 rolloutDeployment:v11 capabilityModifier:v10];
+  modifierCopy = modifier;
+  deploymentCopy = deployment;
+  attributionCopy = attribution;
+  idCopy = id;
+  v14 = [[self alloc] initWithFactorPackSetId:idCopy taskAttribution:attributionCopy rolloutDeployment:deploymentCopy capabilityModifier:modifierCopy];
 
   return v14;
 }
 
-- (void)_recordExperimentFetchFailedWithTaskError:(int)a3 context:(id)a4
+- (void)_recordExperimentFetchFailedWithTaskError:(int)error context:(id)context
 {
-  v6 = a4;
-  v7 = fetchTaskErrorAsString(a3);
-  [(TRIFetchFactorPackSetTask *)self _recordExperimentFetchFailedWithReason:v7 context:v6];
+  contextCopy = context;
+  v7 = fetchTaskErrorAsString(error);
+  [(TRIFetchFactorPackSetTask *)self _recordExperimentFetchFailedWithReason:v7 context:contextCopy];
 }
 
-- (void)_recordExperimentFetchFailedWithReason:(id)a3 context:(id)a4
+- (void)_recordExperimentFetchFailedWithReason:(id)reason context:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   if (self->_construct != 1)
   {
     goto LABEL_13;
   }
 
-  v25 = v7;
-  v8 = a3;
-  v9 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
+  v25 = contextCopy;
+  reasonCopy = reason;
+  experimentDeployment = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
 
-  if (!v9)
+  if (!experimentDeployment)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:227 description:{@"Invalid parameter not satisfying: %@", @"self.experimentDeployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:227 description:{@"Invalid parameter not satisfying: %@", @"self.experimentDeployment"}];
   }
 
-  v10 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
-  v11 = [v10 experimentId];
+  experimentDeployment2 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
+  experimentId = [experimentDeployment2 experimentId];
 
-  if (!v11)
+  if (!experimentId)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"self.experimentDeployment.experimentId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:228 description:{@"Invalid parameter not satisfying: %@", @"self.experimentDeployment.experimentId"}];
   }
 
   if (!self->_treatmentId)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:229 description:{@"Invalid parameter not satisfying: %@", @"_treatmentId"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:229 description:{@"Invalid parameter not satisfying: %@", @"_treatmentId"}];
 
-    if (v8)
+    if (reasonCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_17:
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"failureReason"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"failureReason"}];
 
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!reasonCopy)
   {
     goto LABEL_17;
   }
@@ -335,41 +335,41 @@ LABEL_17:
 LABEL_8:
   if (!v25)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v12 = [TRIExperimentPostLaunchRecorder recorderFromContext:?];
-  v13 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
-  v14 = [v13 experimentId];
-  v15 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
-  v16 = +[TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:deploymentId:treatmentId:](TRIExperimentDeploymentTreatment, "treatmentTripleWithExperimentId:deploymentId:treatmentId:", v14, [v15 deploymentId], self->_treatmentId);
+  experimentDeployment3 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
+  experimentId2 = [experimentDeployment3 experimentId];
+  experimentDeployment4 = [(TRIFetchFactorPackSetTask *)self experimentDeployment];
+  v16 = +[TRIExperimentDeploymentTreatment treatmentTripleWithExperimentId:deploymentId:treatmentId:](TRIExperimentDeploymentTreatment, "treatmentTripleWithExperimentId:deploymentId:treatmentId:", experimentId2, [experimentDeployment4 deploymentId], self->_treatmentId);
 
-  v17 = [TRIExperimentPostLaunchEvent failureEventWithEventType:7 treatmentTriple:v16 failureReason:v8];
+  v17 = [TRIExperimentPostLaunchEvent failureEventWithEventType:7 treatmentTriple:v16 failureReason:reasonCopy];
 
   v18 = v17;
   if (!v18)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:243 description:{@"Expression was unexpectedly nil/false: %@", @"failureEvent"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:243 description:{@"Expression was unexpectedly nil/false: %@", @"failureEvent"}];
   }
 
   [v12 recordEvent:v18];
 
-  v7 = v25;
+  contextCopy = v25;
 LABEL_13:
 }
 
-- (void)_removeDownloadableRecord:(id)a3
+- (void)_removeDownloadableRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   guardedDownloadableRecord = self->_guardedDownloadableRecord;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__TRIFetchFactorPackSetTask__removeDownloadableRecord___block_invoke;
   v7[3] = &unk_279DE3EE0;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordCopy;
+  v6 = recordCopy;
   [(_PASLock *)guardedDownloadableRecord runWithLockAcquired:v7];
 }
 
@@ -397,11 +397,11 @@ void __55__TRIFetchFactorPackSetTask__removeDownloadableRecord___block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_downloadSetArtifactWithProvider:(id)a3 downloadOptions:(id)a4 downloadNotificationKey:(id)a5 errorResult:(id *)a6 setArtifactFetchError:(id *)a7
+- (id)_downloadSetArtifactWithProvider:(id)provider downloadOptions:(id)options downloadNotificationKey:(id)key errorResult:(id *)result setArtifactFetchError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  providerCopy = provider;
+  optionsCopy = options;
+  keyCopy = key;
   if ([@"empty-fp-set" isEqualToString:self->_factorPackSetId])
   {
     v15 = TRILogCategory_Server();
@@ -420,7 +420,7 @@ void __55__TRIFetchFactorPackSetTask__removeDownloadableRecord___block_invoke(ui
     v18 = dispatch_semaphore_create(0);
     v19 = [TRIFetchOptions alloc];
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:3];
-    v21 = [(TRIFetchOptions *)v19 initWithDownloadOptions:v13 cacheDeleteAvailableSpaceClass:v20];
+    v21 = [(TRIFetchOptions *)v19 initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:v20];
 
     *buf = 0;
     v37 = buf;
@@ -439,13 +439,13 @@ void __55__TRIFetchFactorPackSetTask__removeDownloadableRecord___block_invoke(ui
     v25[3] = &unk_279DE3F08;
     v25[4] = self;
     v28 = &v32;
-    v30 = a6;
-    v31 = a7;
-    v26 = v14;
+    resultCopy = result;
+    errorCopy = error;
+    v26 = keyCopy;
     v29 = buf;
     v23 = v18;
     v27 = v23;
-    [v12 fetchFactorPackSetWithId:factorPackSetId options:v21 completion:v25];
+    [providerCopy fetchFactorPackSetWithId:factorPackSetId options:v21 completion:v25];
     dispatch_semaphore_wait(v23, 0xFFFFFFFFFFFFFFFFLL);
     if (*(v33 + 6))
     {
@@ -521,27 +521,27 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_requiredAssetsForFactorPackSet:(id)a3 context:(id)a4
+- (id)_requiredAssetsForFactorPackSet:(id)set context:(id)context
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  contextCopy = context;
   v7 = [TRIAssetStore alloc];
-  v8 = [v6 paths];
-  v42 = [(TRIAssetStore *)v7 initWithPaths:v8];
+  paths = [contextCopy paths];
+  v42 = [(TRIAssetStore *)v7 initWithPaths:paths];
 
   v41 = objc_opt_new();
-  v37 = v6;
-  v9 = [v6 keyValueStore];
-  v40 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:v9];
+  v37 = contextCopy;
+  keyValueStore = [contextCopy keyValueStore];
+  v40 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:keyValueStore];
 
   v10 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v38 = v5;
-  obj = [v5 packs];
+  v38 = setCopy;
+  obj = [setCopy packs];
   v11 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v11)
   {
@@ -560,28 +560,28 @@ LABEL_11:
 
         v16 = *(*(&v45 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 selectedNamespace];
-        v19 = [v18 hasName];
+        selectedNamespace = [v16 selectedNamespace];
+        hasName = [selectedNamespace hasName];
 
         v20 = 0x279DDD000uLL;
-        if (v19)
+        if (hasName)
         {
-          v21 = [v16 selectedNamespace];
-          v22 = [v21 name];
-          v23 = [TRIClientFactorPackUtils aliasesInNamespace:v22];
+          selectedNamespace2 = [v16 selectedNamespace];
+          name = [selectedNamespace2 name];
+          v23 = [TRIClientFactorPackUtils aliasesInNamespace:name];
 
           v20 = 0x279DDD000;
         }
 
         else
         {
-          v21 = TRILogCategory_Server();
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+          selectedNamespace2 = TRILogCategory_Server();
+          if (os_log_type_enabled(selectedNamespace2, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v16 factorPackId];
+            factorPackId = [v16 factorPackId];
             *buf = 138543362;
-            v50 = v30;
-            _os_log_error_impl(&dword_26F567000, v21, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ has missing namespace name.", buf, 0xCu);
+            v50 = factorPackId;
+            _os_log_error_impl(&dword_26F567000, selectedNamespace2, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ has missing namespace name.", buf, 0xCu);
           }
 
           v23 = 0;
@@ -598,29 +598,29 @@ LABEL_11:
         }
 
         v25 = v24;
-        v26 = [v24 cloudKit];
+        cloudKit = [v24 cloudKit];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __69__TRIFetchFactorPackSetTask__requiredAssetsForFactorPackSet_context___block_invoke;
         v44[3] = &unk_279DE3F30;
         v44[4] = v16;
-        [v26 enumerateObjectsUsingBlock:v44];
+        [cloudKit enumerateObjectsUsingBlock:v44];
 
-        v27 = [v25 mobileAsset];
+        mobileAsset = [v25 mobileAsset];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __69__TRIFetchFactorPackSetTask__requiredAssetsForFactorPackSet_context___block_invoke_395;
         v43[3] = &unk_279DE3F58;
         v43[4] = v16;
-        [v27 enumerateObjectsUsingBlock:v43];
+        [mobileAsset enumerateObjectsUsingBlock:v43];
 
-        v28 = [v16 factorPackId];
+        factorPackId2 = [v16 factorPackId];
         v29 = TRIValidateFactorPackId();
 
         if (!v29)
         {
-          v31 = [MEMORY[0x277CCA890] currentHandler];
-          [v31 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:378 description:{@"Expression was unexpectedly nil/false: %@", @"TRIValidateFactorPackId(pack.factorPackId)"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:378 description:{@"Expression was unexpectedly nil/false: %@", @"TRIValidateFactorPackId(pack.factorPackId)"}];
         }
 
         v10 = v14;
@@ -702,9 +702,9 @@ void __69__TRIFetchFactorPackSetTask__requiredAssetsForFactorPackSet_context___b
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_uniqueUninstalledAssets:(id)a3
+- (id)_uniqueUninstalledAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v11 = MEMORY[0x277D85DD0];
@@ -715,7 +715,7 @@ void __69__TRIFetchFactorPackSetTask__requiredAssetsForFactorPackSet_context___b
   v16 = v5;
   v6 = v5;
   v7 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:&v11];
+  [assetsCopy enumerateKeysAndObjectsUsingBlock:&v11];
 
   v8 = [TRIGenericUniqueRequiredAssets alloc];
   v9 = [(TRIGenericUniqueRequiredAssets *)v8 initWithCloudKit:v7 mobileAsset:v6, v11, v12, v13, v14];
@@ -766,21 +766,21 @@ void __54__TRIFetchFactorPackSetTask__uniqueUninstalledAssets___block_invoke_3(u
   [v4 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)_subscribedOnDemandFactorsForAssets:(id)a3 factorPackSet:(id)a4 context:(id)a5
+- (id)_subscribedOnDemandFactorsForAssets:(id)assets factorPackSet:(id)set context:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v7 = a4;
-  v8 = [a5 keyValueStore];
-  v35 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:v8];
+  assetsCopy = assets;
+  setCopy = set;
+  keyValueStore = [context keyValueStore];
+  v35 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:keyValueStore];
 
   v36 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v31 = v7;
-  obj = [v7 packs];
+  v31 = setCopy;
+  obj = [setCopy packs];
   v9 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v9)
   {
@@ -798,48 +798,48 @@ void __54__TRIFetchFactorPackSetTask__uniqueUninstalledAssets___block_invoke_3(u
         v13 = *(*(&v43 + 1) + 8 * i);
         if (![v13 hasSelectedNamespace] || (objc_msgSend(v13, "selectedNamespace"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "hasName"), v14, (v15 & 1) == 0))
         {
-          v16 = [MEMORY[0x277CCA890] currentHandler];
-          [v16 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:417 description:@"factor pack is missing namespace"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:417 description:@"factor pack is missing namespace"];
         }
 
-        v17 = [v13 selectedNamespace];
-        v18 = [v17 name];
+        selectedNamespace = [v13 selectedNamespace];
+        name = [selectedNamespace name];
 
-        v19 = [v35 subscribedFactorsForNamespaceName:v18];
+        v19 = [v35 subscribedFactorsForNamespaceName:name];
         if (([v13 hasFactorPackId] & 1) == 0)
         {
-          v26 = [MEMORY[0x277CCA890] currentHandler];
-          [v26 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:421 description:@"factor pack is missing factor pack identifier"];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:421 description:@"factor pack is missing factor pack identifier"];
         }
 
-        v20 = [v13 factorPackId];
+        factorPackId = [v13 factorPackId];
         v21 = TRIValidateFactorPackId();
 
         if (!v21)
         {
-          v27 = [MEMORY[0x277CCA890] currentHandler];
-          [v27 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:422 description:{@"Expression was unexpectedly nil/false: %@", @"TRIValidateFactorPackId(pack.factorPackId)"}];
+          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:422 description:{@"Expression was unexpectedly nil/false: %@", @"TRIValidateFactorPackId(pack.factorPackId)"}];
         }
 
-        v22 = [v37 objectForKeyedSubscript:v21];
+        v22 = [assetsCopy objectForKeyedSubscript:v21];
         if (!v22)
         {
-          v28 = [MEMORY[0x277CCA890] currentHandler];
-          [v28 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:423 description:{@"Expression was unexpectedly nil/false: %@", @"assets[factorPackId]"}];
+          currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:423 description:{@"Expression was unexpectedly nil/false: %@", @"assets[factorPackId]"}];
         }
 
-        v23 = [v22 cloudKit];
+        cloudKit = [v22 cloudKit];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorPackSet_context___block_invoke;
         v38[3] = &unk_279DE3FA8;
         v39 = v19;
-        v40 = v18;
+        v40 = name;
         v41 = v13;
         v42 = v36;
-        v24 = v18;
+        v24 = name;
         v25 = v19;
-        [v23 enumerateObjectsUsingBlock:v38];
+        [cloudKit enumerateObjectsUsingBlock:v38];
       }
 
       v10 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -915,17 +915,17 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_downloadAndSaveCKAssetsWithMetadata:(id)a3 artifactProvider:(id)a4 options:(id)a5 downloadNotificationKey:(id)a6 context:(id)a7 assetsDownloadSize:(unint64_t *)a8 errorResult:(id *)a9 fetchError:(id *)a10
+- (BOOL)_downloadAndSaveCKAssetsWithMetadata:(id)metadata artifactProvider:(id)provider options:(id)options downloadNotificationKey:(id)key context:(id)context assetsDownloadSize:(unint64_t *)size errorResult:(id *)result fetchError:(id *)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  if ([v17 count])
+  metadataCopy = metadata;
+  providerCopy = provider;
+  optionsCopy = options;
+  keyCopy = key;
+  contextCopy = context;
+  if ([metadataCopy count])
   {
-    v59 = v21;
-    v22 = v18;
+    v59 = contextCopy;
+    v22 = providerCopy;
     v23 = a2;
     v24 = objc_opt_new();
     v116[0] = MEMORY[0x277D85DD0];
@@ -934,8 +934,8 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
     v116[3] = &unk_279DE3FD0;
     v25 = v24;
     v117 = v25;
-    [v17 enumerateKeysAndObjectsUsingBlock:v116];
-    v60 = v19;
+    [metadataCopy enumerateKeysAndObjectsUsingBlock:v116];
+    v60 = optionsCopy;
     v26 = dispatch_semaphore_create(0);
     v110 = 0;
     v111 = &v110;
@@ -943,27 +943,27 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
     v113 = __Block_byref_object_copy__48;
     v114 = __Block_byref_object_dispose__48;
     v115 = 0;
-    v55 = a8;
-    *a8 = 0;
+    sizeCopy = size;
+    *size = 0;
     v102[0] = MEMORY[0x277D85DD0];
     v102[1] = 3221225472;
     v102[2] = __165__TRIFetchFactorPackSetTask__downloadAndSaveCKAssetsWithMetadata_artifactProvider_options_downloadNotificationKey_context_assetsDownloadSize_errorResult_fetchError___block_invoke_2;
     v102[3] = &unk_279DE3FF8;
-    v27 = self;
+    selfCopy = self;
     v102[4] = self;
-    v57 = v20;
-    v28 = v20;
+    v57 = keyCopy;
+    v28 = keyCopy;
     v103 = v28;
-    v107 = a9;
+    resultCopy = result;
     v29 = v23;
-    v18 = v22;
-    v108 = a10;
-    v30 = v17;
+    providerCopy = v22;
+    errorCopy = error;
+    v30 = metadataCopy;
     v104 = v30;
     v106 = &v110;
     v109 = v29;
     v31 = v26;
-    v19 = v60;
+    optionsCopy = v60;
     v105 = v31;
     v58 = v25;
     v32 = v25;
@@ -983,7 +983,7 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
       v38 = v30;
       v101 = v29;
       v98 = v38;
-      v99 = v27;
+      v99 = selfCopy;
       v39 = v36;
       v100 = v39;
       [v37 enumerateKeysAndObjectsUsingBlock:v97];
@@ -998,21 +998,21 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
       v88[2] = __165__TRIFetchFactorPackSetTask__downloadAndSaveCKAssetsWithMetadata_artifactProvider_options_downloadNotificationKey_context_assetsDownloadSize_errorResult_fetchError___block_invoke_2_424;
       v88[3] = &unk_279DE4070;
       v89 = v39;
-      v90 = v27;
+      v90 = selfCopy;
       v84[0] = MEMORY[0x277D85DD0];
       v84[1] = 3221225472;
       v84[2] = __165__TRIFetchFactorPackSetTask__downloadAndSaveCKAssetsWithMetadata_artifactProvider_options_downloadNotificationKey_context_assetsDownloadSize_errorResult_fetchError___block_invoke_4;
       v84[3] = &unk_279DE40C0;
       v85 = v89;
-      v86 = v27;
+      v86 = selfCopy;
       v40 = v59;
       v87 = v40;
       v77[0] = MEMORY[0x277D85DD0];
       v77[1] = 3221225472;
       v77[2] = __165__TRIFetchFactorPackSetTask__downloadAndSaveCKAssetsWithMetadata_artifactProvider_options_downloadNotificationKey_context_assetsDownloadSize_errorResult_fetchError___block_invoke_6;
       v77[3] = &unk_279DE40E8;
-      v77[4] = v27;
-      v82 = a9;
+      v77[4] = selfCopy;
+      resultCopy2 = result;
       v78 = v28;
       v41 = v38;
       v79 = v41;
@@ -1021,7 +1021,7 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
       v42 = v33;
       v80 = v42;
       v54 = v85;
-      v19 = v60;
+      optionsCopy = v60;
       v43 = [v56 fetchAssetsWithRecordIds:v85 options:v60 perRecordProgress:0 perRecordCompletionBlockOnSuccess:v88 perRecordCompletionBlockOnError:v84 completion:v77];
       [MEMORY[0x277D425A0] waitForSemaphore:v42];
       if (v92[5])
@@ -1031,10 +1031,10 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
         v75 = 0x2020000000;
         v76 = 1;
         v44 = [TRIAssetStore alloc];
-        v45 = [v40 paths];
-        v46 = [v60 downloadOptions];
-        v47 = [v46 activity];
-        v48 = [(TRIAssetStore *)v44 initWithPaths:v45 monitoredActivity:v47];
+        paths = [v40 paths];
+        downloadOptions = [v60 downloadOptions];
+        activity = [downloadOptions activity];
+        v48 = [(TRIAssetStore *)v44 initWithPaths:paths monitoredActivity:activity];
 
         v49 = v92[5];
         v64[0] = MEMORY[0x277D85DD0];
@@ -1043,13 +1043,13 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
         v64[3] = &unk_279DE4110;
         v70 = v29;
         v65 = v41;
-        v66 = v27;
+        v66 = selfCopy;
         v50 = v48;
         v67 = v50;
         v69 = &v73;
         v68 = v60;
-        v71 = a9;
-        v72 = v55;
+        resultCopy3 = result;
+        v72 = sizeCopy;
         [v49 enumerateKeysAndObjectsUsingBlock:v64];
         v62[0] = 0;
         v62[1] = v62;
@@ -1062,18 +1062,18 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
         v61[3] = &unk_279DE4138;
         v61[4] = v62;
         [v51 enumerateKeysAndObjectsUsingBlock:v61];
-        v18 = v56;
+        providerCopy = v56;
         v52 = *(v74 + 24);
         _Block_object_dispose(v62, 8);
 
         _Block_object_dispose(&v73, 8);
-        v19 = v60;
+        optionsCopy = v60;
       }
 
       else
       {
         v52 = 0;
-        v18 = v56;
+        providerCopy = v56;
       }
 
       _Block_object_dispose(&v91, 8);
@@ -1085,8 +1085,8 @@ void __87__TRIFetchFactorPackSetTask__subscribedOnDemandFactorsForAssets_factorP
     }
 
     _Block_object_dispose(&v110, 8);
-    v20 = v57;
-    v21 = v59;
+    keyCopy = v57;
+    contextCopy = v59;
   }
 
   else
@@ -1573,17 +1573,17 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_downloadAndSaveMAAssets:(id)a3 options:(id)a4 downloadNotificationKey:(id)a5 context:(id)a6 assetsDownloadSize:(unint64_t *)a7 errorResult:(id *)a8 fetchError:(id *)a9
+- (BOOL)_downloadAndSaveMAAssets:(id)assets options:(id)options downloadNotificationKey:(id)key context:(id)context assetsDownloadSize:(unint64_t *)size errorResult:(id *)result fetchError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if ([v14 count])
+  assetsCopy = assets;
+  optionsCopy = options;
+  keyCopy = key;
+  contextCopy = context;
+  if ([assetsCopy count])
   {
     v18 = objc_opt_new();
-    v19 = [v18 ensureMobileAssetOriginFields];
-    [v19 setIsMobileAsset:1];
+    ensureMobileAssetOriginFields = [v18 ensureMobileAssetOriginFields];
+    [ensureMobileAssetOriginFields setIsMobileAsset:1];
 
     rolloutSupport = self->_rolloutSupport;
     if (rolloutSupport || (rolloutSupport = self->_experimentSupport) != 0)
@@ -1605,15 +1605,15 @@ LABEL_11:
     v30 = __136__TRIFetchFactorPackSetTask__downloadAndSaveMAAssets_options_downloadNotificationKey_context_assetsDownloadSize_errorResult_fetchError___block_invoke;
     v31 = &unk_279DE4160;
     v34 = &v36;
-    v35 = a9;
-    v32 = self;
+    errorCopy = error;
+    selfCopy = self;
     v24 = v21;
     v33 = v24;
-    v25 = [v22 downloadAssets:v14 attribution:taskAttribution aggregateProgress:0 group:0 completion:&v28];
+    v25 = [v22 downloadAssets:assetsCopy attribution:taskAttribution aggregateProgress:0 group:0 completion:&v28];
     dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
-    if (a8)
+    if (result)
     {
-      objc_storeStrong(a8, v37[5]);
+      objc_storeStrong(result, v37[5]);
     }
 
     v26 = [v37[5] runStatus] == 2;
@@ -1651,27 +1651,27 @@ void __136__TRIFetchFactorPackSetTask__downloadAndSaveMAAssets_options_downloadN
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_saveFactorPackSet:(id)a3 requiredAssetMap:(id)a4 context:(id)a5
+- (BOOL)_saveFactorPackSet:(id)set requiredAssetMap:(id)map context:(id)context
 {
   v92 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v60 = a4;
-  v7 = a5;
+  setCopy = set;
+  mapCopy = map;
+  contextCopy = context;
   v56 = _os_feature_enabled_impl();
   v8 = [TRIFactorPackStorage alloc];
-  v55 = v7;
-  v9 = [v7 paths];
-  v65 = [(TRIFactorPackStorage *)v8 initWithPaths:v9];
+  v55 = contextCopy;
+  paths = [contextCopy paths];
+  v65 = [(TRIFactorPackStorage *)v8 initWithPaths:paths];
 
   v10 = [TRIFBFactorPackStorage alloc];
-  v11 = [v55 paths];
-  v53 = [(TRIFBFactorPackStorage *)v10 initWithPaths:v11];
+  paths2 = [v55 paths];
+  v53 = [(TRIFBFactorPackStorage *)v10 initWithPaths:paths2];
 
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = [v52 packs];
+  obj = [setCopy packs];
   v61 = [(TRIFactorPackSetStorage *)obj countByEnumeratingWithState:&v78 objects:v91 count:16];
   if (!v61)
   {
@@ -1694,85 +1694,85 @@ void __136__TRIFetchFactorPackSetTask__downloadAndSaveMAAssets_options_downloadN
       v63 = v12;
       v14 = *(*(&v78 + 1) + 8 * v12);
       v64 = objc_autoreleasePoolPush();
-      v68 = &stru_287FA0430;
+      factorPackId = &stru_287FA0430;
       if ([v14 hasFactorPackId])
       {
-        v68 = [v14 factorPackId];
+        factorPackId = [v14 factorPackId];
       }
 
       if (![v14 hasFactorPackId] || (TRIValidateFactorPackId(), (v69 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v15 = [MEMORY[0x277CCA890] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:731 description:{@"Unexpected failure to validate factor pack set id: %@", v68}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:731 description:{@"Unexpected failure to validate factor pack set id: %@", factorPackId}];
 
         v69 = 0;
       }
 
       if (![v14 hasSelectedNamespace] || (objc_msgSend(v14, "selectedNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "hasName"), v16, (v17 & 1) == 0))
       {
-        v18 = [MEMORY[0x277CCA890] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:733 description:{@"Factor pack %@ has unexpectedly-empty namespace name", v68}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:733 description:{@"Factor pack %@ has unexpectedly-empty namespace name", factorPackId}];
       }
 
       v19 = objc_opt_new();
-      v20 = [v60 objectForKeyedSubscript:v69];
+      v20 = [mapCopy objectForKeyedSubscript:v69];
       if (!v20)
       {
-        v46 = [MEMORY[0x277CCA890] currentHandler];
-        [v46 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:737 description:{@"Expression was unexpectedly nil/false: %@", @"requiredAssetMap[factorPackId]"}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:737 description:{@"Expression was unexpectedly nil/false: %@", @"requiredAssetMap[factorPackId]"}];
       }
 
-      v21 = [v20 cloudKit];
+      cloudKit = [v20 cloudKit];
       v76[0] = MEMORY[0x277D85DD0];
       v76[1] = 3221225472;
       v76[2] = __73__TRIFetchFactorPackSetTask__saveFactorPackSet_requiredAssetMap_context___block_invoke;
       v76[3] = &unk_279DE3F30;
       v22 = v19;
       v77 = v22;
-      [v21 enumerateObjectsUsingBlock:v76];
+      [cloudKit enumerateObjectsUsingBlock:v76];
 
-      v23 = [v20 mobileAsset];
+      mobileAsset = [v20 mobileAsset];
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
       v74[2] = __73__TRIFetchFactorPackSetTask__saveFactorPackSet_requiredAssetMap_context___block_invoke_2;
       v74[3] = &unk_279DE3F58;
       v66 = v22;
       v75 = v66;
-      [v23 enumerateObjectsUsingBlock:v74];
+      [mobileAsset enumerateObjectsUsingBlock:v74];
 
-      v24 = [v14 selectedNamespace];
-      LODWORD(v22) = [v24 hasName];
+      selectedNamespace = [v14 selectedNamespace];
+      LODWORD(v22) = [selectedNamespace hasName];
 
       if (v22)
       {
-        v25 = [v14 selectedNamespace];
-        v26 = [v25 name];
-        v67 = [TRIClientFactorPackUtils aliasesInNamespace:v26];
+        selectedNamespace2 = [v14 selectedNamespace];
+        name = [selectedNamespace2 name];
+        v67 = [TRIClientFactorPackUtils aliasesInNamespace:name];
       }
 
       else
       {
-        v25 = TRILogCategory_Server();
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+        selectedNamespace2 = TRILogCategory_Server();
+        if (os_log_type_enabled(selectedNamespace2, OS_LOG_TYPE_ERROR))
         {
-          v45 = [v14 factorPackId];
+          factorPackId2 = [v14 factorPackId];
           LODWORD(v86) = 138543362;
-          *(&v86 + 4) = v45;
-          _os_log_error_impl(&dword_26F567000, v25, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ has missing namespace name.", &v86, 0xCu);
+          *(&v86 + 4) = factorPackId2;
+          _os_log_error_impl(&dword_26F567000, selectedNamespace2, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ has missing namespace name.", &v86, 0xCu);
         }
 
         v67 = 0;
       }
 
-      v27 = [v14 selectedNamespace];
-      v28 = [v27 name];
-      v29 = [(TRIFactorPackStorage *)v65 pathForFactorPackWithId:v69 namespaceName:v28];
+      selectedNamespace3 = [v14 selectedNamespace];
+      name2 = [selectedNamespace3 name];
+      v29 = [(TRIFactorPackStorage *)v65 pathForFactorPackWithId:v69 namespaceName:name2];
 
-      v30 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v31 = [v29 stringByAppendingPathComponent:@"factorPack.fb"];
       if (v31)
       {
-        v32 = [v30 fileExistsAtPath:v31];
+        v32 = [defaultManager fileExistsAtPath:v31];
         if (v29)
         {
           goto LABEL_23;
@@ -1786,12 +1786,12 @@ void __136__TRIFetchFactorPackSetTask__downloadAndSaveMAAssets_options_downloadN
         {
 LABEL_23:
           context = objc_autoreleasePoolPush();
-          v33 = [v55 keyValueStore];
-          v34 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:v33];
+          keyValueStore = [v55 keyValueStore];
+          v34 = [TRINamespaceFactorSubscriptionSettings settingsWithKeyValueStore:keyValueStore];
 
-          v35 = [v14 selectedNamespace];
-          v36 = [v35 name];
-          v37 = [v34 subscribedFactorsForNamespaceName:v36];
+          selectedNamespace4 = [v14 selectedNamespace];
+          name3 = [selectedNamespace4 name];
+          v37 = [v34 subscribedFactorsForNamespaceName:name3];
 
           *&v86 = 0;
           *(&v86 + 1) = &v86;
@@ -1809,15 +1809,15 @@ LABEL_23:
           v72 = v39;
           v73 = &v86;
           [v14 enumerateFactorLevelsWithBlock:v70];
-          v40 = [v14 selectedNamespace];
-          v41 = [v40 name];
-          [(TRIFactorPackStorage *)v65 updateSavedFactorPackWithId:v69 namespaceName:v41 populatingAssetsForFactorNames:*(*(&v86 + 1) + 40) aliasToUnaliasMap:v38];
+          selectedNamespace5 = [v14 selectedNamespace];
+          name4 = [selectedNamespace5 name];
+          [(TRIFactorPackStorage *)v65 updateSavedFactorPackWithId:v69 namespaceName:name4 populatingAssetsForFactorNames:*(*(&v86 + 1) + 40) aliasToUnaliasMap:v38];
 
           if ((v32 & v56) == 1)
           {
-            v42 = [v14 selectedNamespace];
-            v43 = [v42 name];
-            [(TRIFBFactorPackStorage *)v53 updateSavedFactorLevelsWithFactorPackId:v69 namespaceName:v43 populatingAssetsForFactorNames:*(*(&v86 + 1) + 40) aliasToUnaliasMap:v38];
+            selectedNamespace6 = [v14 selectedNamespace];
+            name5 = [selectedNamespace6 name];
+            [(TRIFBFactorPackStorage *)v53 updateSavedFactorLevelsWithFactorPackId:v69 namespaceName:name5 populatingAssetsForFactorNames:*(*(&v86 + 1) + 40) aliasToUnaliasMap:v38];
           }
 
           v44 = TRILogCategory_Server();
@@ -1863,10 +1863,10 @@ LABEL_32:
 LABEL_34:
 
   v47 = [TRIFactorPackSetStorage alloc];
-  v48 = [v55 paths];
-  obj = [(TRIFactorPackSetStorage *)v47 initWithPaths:v48];
+  paths3 = [v55 paths];
+  obj = [(TRIFactorPackSetStorage *)v47 initWithPaths:paths3];
 
-  if ([(TRIFactorPackSetStorage *)obj saveFactorPackSet:v52])
+  if ([(TRIFactorPackSetStorage *)obj saveFactorPackSet:setCopy])
   {
     v49 = 1;
   }
@@ -1930,28 +1930,28 @@ void __73__TRIFetchFactorPackSetTask__saveFactorPackSet_requiredAssetMap_context
   }
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v328 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v246 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  contextCopy = context;
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v247 = os_transaction_create();
   v307[0] = MEMORY[0x277D85DD0];
   v307[1] = 3221225472;
   v307[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke;
   v307[3] = &unk_279DDF7A0;
-  v262 = v7;
-  v307[4] = v7;
-  v261 = v6;
+  v262 = selfCopy;
+  v307[4] = selfCopy;
+  v261 = contextCopy;
   v308 = v261;
   v248 = MEMORY[0x2743948D0](v307);
   v8 = TRILogCategory_Server();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v55 = objc_opt_class();
-    factorPackSetId = v7->_factorPackSetId;
+    factorPackSetId = selfCopy->_factorPackSetId;
     *buf = 138543618;
     *&buf[4] = v55;
     *&buf[12] = 2114;
@@ -1959,7 +1959,7 @@ void __73__TRIFetchFactorPackSetTask__saveFactorPackSet_requiredAssetMap_context
     _os_log_debug_impl(&dword_26F567000, v8, OS_LOG_TYPE_DEBUG, "starting %{public}@ with factor pack set id %{public}@", buf, 0x16u);
   }
 
-  construct = v7->_construct;
+  construct = selfCopy->_construct;
   if (construct != 1)
   {
     if (construct)
@@ -1968,61 +1968,61 @@ void __73__TRIFetchFactorPackSetTask__saveFactorPackSet_requiredAssetMap_context
       v249 = 0;
       v242 = 0;
       v258 = 0;
-      v245 = 0;
+      namespaces = 0;
       goto LABEL_57;
     }
 
-    v10 = [v261 rolloutDatabase];
-    v258 = [v10 recordWithDeployment:v7->_rolloutDeployment usingTransaction:0];
+    rolloutDatabase = [v261 rolloutDatabase];
+    v258 = [rolloutDatabase recordWithDeployment:selfCopy->_rolloutDeployment usingTransaction:0];
 
     if (!v258)
     {
       v11 = TRILogCategory_Server();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(TRIRolloutDeployment *)v7->_rolloutDeployment shortDesc];
+        shortDesc = [(TRIRolloutDeployment *)selfCopy->_rolloutDeployment shortDesc];
         *buf = 138543362;
-        *&buf[4] = v30;
+        *&buf[4] = shortDesc;
         _os_log_impl(&dword_26F567000, v11, OS_LOG_TYPE_DEFAULT, "Warning: record for Rollout deployment %{public}@ not available; issuing incomplete telemetry.", buf, 0xCu);
       }
 
 LABEL_25:
 
       v31 = [TRIFactorPackSetStorage alloc];
-      v32 = [v261 paths];
-      v24 = [(TRIFactorPackSetStorage *)v31 initWithPaths:v32];
+      paths = [v261 paths];
+      v24 = [(TRIFactorPackSetStorage *)v31 initWithPaths:paths];
 
       *v322 = 0;
-      v238 = [(TRIFactorPackSetStorage *)v24 hasFactorPackSetWithId:v7->_factorPackSetId path:v322];
+      v238 = [(TRIFactorPackSetStorage *)v24 hasFactorPackSetWithId:selfCopy->_factorPackSetId path:v322];
       if (v238)
       {
-        v33 = [v261 namespaceDatabase];
-        v34 = [v261 paths];
-        v35 = [v34 namespaceDescriptorsDefaultDir];
-        v36 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v33 defaultDescriptorDirectoryPath:v35];
+        namespaceDatabase = [v261 namespaceDatabase];
+        paths2 = [v261 paths];
+        namespaceDescriptorsDefaultDir = [paths2 namespaceDescriptorsDefaultDir];
+        v36 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
         if (v258)
         {
-          v37 = [(TRIFactorPackSetStorage *)v258 artifact];
-          v38 = [v37 rollout];
-          v39 = [TRISetupAssistantFetchUtils getIncompatibleNamespaceNamesForTriClientRollout:v38 namespaceDescriptorProvider:v36];
+          artifact = [(TRIFactorPackSetStorage *)v258 artifact];
+          rollout = [artifact rollout];
+          v39 = [TRISetupAssistantFetchUtils getIncompatibleNamespaceNamesForTriClientRollout:rollout namespaceDescriptorProvider:v36];
 
           v40 = [v39 count];
           v41 = objc_opt_new();
-          v42 = v7->_factorPackSetId;
+          v42 = selfCopy->_factorPackSetId;
           v304[0] = MEMORY[0x277D85DD0];
           v304[1] = 3221225472;
           v304[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke_462;
           v304[3] = &unk_279DE30F0;
           v306 = a2;
-          v304[4] = v7;
+          v304[4] = selfCopy;
           v43 = v41;
           v305 = v43;
           [(TRIFactorPackSetStorage *)v24 enumerateCompatibleFactorPacksForFactorPackSet:v42 usingLegacyPaths:0 withBlock:v304];
-          v44 = [(TRIFactorPackSetStorage *)v258 artifact];
-          v45 = [v44 rollout];
-          v46 = [v45 selectedNamespaceArray_Count];
-          v48 = v46 != [v43 count] && v40 == 0;
+          artifact2 = [(TRIFactorPackSetStorage *)v258 artifact];
+          rollout2 = [artifact2 rollout];
+          selectedNamespaceArray_Count = [rollout2 selectedNamespaceArray_Count];
+          v48 = selectedNamespaceArray_Count != [v43 count] && v40 == 0;
 
           v49 = TRILogCategory_Server();
           v50 = os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT);
@@ -2063,17 +2063,17 @@ LABEL_25:
           v54 = TRILogCategory_Server();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
           {
-            v224 = v7->_factorPackSetId;
-            v225 = [(TRIRolloutDeployment *)v7->_rolloutDeployment shortDesc];
+            v224 = selfCopy->_factorPackSetId;
+            shortDesc2 = [(TRIRolloutDeployment *)selfCopy->_rolloutDeployment shortDesc];
             *buf = 138543618;
             *&buf[4] = v224;
             *&buf[12] = 2114;
-            *&buf[14] = v225;
+            *&buf[14] = shortDesc2;
             _os_log_error_impl(&dword_26F567000, v54, OS_LOG_TYPE_ERROR, "Unable to update preexisting factor pack set %{public}@ for %{public}@: record not found in database.", buf, 0x16u);
           }
 
-          [(TRIFetchFactorPackSetTask *)v7 _addMetricForFetchFactorPackSetTaskError:29];
-          v253 = [(TRIFetchFactorPackSetTask *)v7 _taskResultForStatus:3 reportResultToServer:1 earliestRetryDate:0];
+          [(TRIFetchFactorPackSetTask *)selfCopy _addMetricForFetchFactorPackSetTaskError:29];
+          v253 = [(TRIFetchFactorPackSetTask *)selfCopy _taskResultForStatus:3 reportResultToServer:1 earliestRetryDate:0];
         }
 
         goto LABEL_259;
@@ -2081,16 +2081,16 @@ LABEL_25:
 
 LABEL_51:
 
-      v7 = v262;
-      v245 = [(TRIFactorPackSetStorage *)v258 namespaces];
+      selfCopy = v262;
+      namespaces = [(TRIFactorPackSetStorage *)v258 namespaces];
       if (v258)
       {
-        v53 = [MEMORY[0x277D73698] immediateDownloadNotificationKeyForNamespaceNames:v245];
+        v53 = [MEMORY[0x277D73698] immediateDownloadNotificationKeyForNamespaceNames:namespaces];
         v249 = v53;
 LABEL_53:
 
         v242 = 0;
-        v7 = v262;
+        selfCopy = v262;
         goto LABEL_57;
       }
 
@@ -2100,47 +2100,47 @@ LABEL_53:
     }
 
     v11 = objc_opt_new();
-    v12 = [(TRIFactorPackSetStorage *)v258 rampId];
+    rampId = [(TRIFactorPackSetStorage *)v258 rampId];
 
-    if (v12)
+    if (rampId)
     {
-      v13 = [(TRIFactorPackSetStorage *)v258 rampId];
-      v14 = [v11 ensureRolloutFields];
-      [v14 setClientRampId:v13];
+      rampId2 = [(TRIFactorPackSetStorage *)v258 rampId];
+      ensureRolloutFields = [v11 ensureRolloutFields];
+      [ensureRolloutFields setClientRampId:rampId2];
     }
 
-    v15 = v7->_factorPackSetId;
-    v16 = [(TRIFactorPackSetStorage *)v258 targetedFactorPackSetId];
-    if ([(TRIFactorPackSetId *)v15 isEqual:v16])
+    v15 = selfCopy->_factorPackSetId;
+    targetedFactorPackSetId = [(TRIFactorPackSetStorage *)v258 targetedFactorPackSetId];
+    if ([(TRIFactorPackSetId *)v15 isEqual:targetedFactorPackSetId])
     {
-      v17 = [(TRIFactorPackSetStorage *)v258 targetedTargetingRuleIndex];
-      v18 = v17 == 0;
+      targetedTargetingRuleIndex = [(TRIFactorPackSetStorage *)v258 targetedTargetingRuleIndex];
+      v18 = targetedTargetingRuleIndex == 0;
 
       if (v18)
       {
 LABEL_12:
-        [(TRIRolloutTaskSupport *)v7->_rolloutSupport mergeTelemetry:v11];
+        [(TRIRolloutTaskSupport *)selfCopy->_rolloutSupport mergeTelemetry:v11];
         goto LABEL_25;
       }
 
-      v16 = [(TRIFactorPackSetStorage *)v258 targetedTargetingRuleIndex];
-      v19 = [v16 intValue];
-      v20 = [v11 ensureRolloutFields];
-      [v20 setClientTargetingRuleGroupOrdinal:v19];
+      targetedFactorPackSetId = [(TRIFactorPackSetStorage *)v258 targetedTargetingRuleIndex];
+      intValue = [targetedFactorPackSetId intValue];
+      ensureRolloutFields2 = [v11 ensureRolloutFields];
+      [ensureRolloutFields2 setClientTargetingRuleGroupOrdinal:intValue];
     }
 
     goto LABEL_12;
   }
 
-  v21 = [v261 experimentDatabase];
-  v258 = [v21 experimentRecordWithExperimentDeployment:v7->_experimentDeployment];
+  experimentDatabase = [v261 experimentDatabase];
+  v258 = [experimentDatabase experimentRecordWithExperimentDeployment:selfCopy->_experimentDeployment];
 
   v22 = [TRIFactorPackSetStorage alloc];
-  v23 = [v261 paths];
-  v24 = [(TRIFactorPackSetStorage *)v22 initWithPaths:v23];
+  paths3 = [v261 paths];
+  v24 = [(TRIFactorPackSetStorage *)v22 initWithPaths:paths3];
 
   *v322 = 0;
-  if (![(TRIFactorPackSetStorage *)v24 hasFactorPackSetWithId:v7->_factorPackSetId path:v322])
+  if (![(TRIFactorPackSetStorage *)v24 hasFactorPackSetWithId:selfCopy->_factorPackSetId path:v322])
   {
 
     if (!v258)
@@ -2148,45 +2148,45 @@ LABEL_12:
       v53 = TRILogCategory_Server();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
-        v223 = [(TRIExperimentDeployment *)v7->_experimentDeployment shortDesc];
+        shortDesc3 = [(TRIExperimentDeployment *)selfCopy->_experimentDeployment shortDesc];
         *buf = 138543362;
-        *&buf[4] = v223;
+        *&buf[4] = shortDesc3;
         _os_log_error_impl(&dword_26F567000, v53, OS_LOG_TYPE_ERROR, "Warning: record for experiment deployment %{public}@ not available.", buf, 0xCu);
       }
 
       v238 = 0;
       v249 = 0;
       v258 = 0;
-      v245 = 0;
+      namespaces = 0;
       goto LABEL_53;
     }
 
-    v245 = [objc_opt_class() _namespaceNamesFromExperimentRecord:v258];
-    v249 = [MEMORY[0x277D73698] immediateDownloadNotificationKeyForNamespaceNames:v245];
+    namespaces = [objc_opt_class() _namespaceNamesFromExperimentRecord:v258];
+    v249 = [MEMORY[0x277D73698] immediateDownloadNotificationKeyForNamespaceNames:namespaces];
     v238 = 0;
     v242 = v258;
 LABEL_56:
     v258 = 0;
 LABEL_57:
-    v256 = [(TRITaskAttributing *)v7->_taskAttribution applicationBundleIdentifier];
-    v59 = [v261 keyValueStore];
-    v60 = [TRIFetchDateManager managerWithKeyValueStore:v59];
+    applicationBundleIdentifier = [(TRITaskAttributing *)selfCopy->_taskAttribution applicationBundleIdentifier];
+    keyValueStore = [v261 keyValueStore];
+    v60 = [TRIFetchDateManager managerWithKeyValueStore:keyValueStore];
 
-    v61 = [v261 namespaceDatabase];
-    v62 = [v261 paths];
-    v63 = [v62 namespaceDescriptorsDefaultDir];
-    v64 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v61 defaultDescriptorDirectoryPath:v63];
+    namespaceDatabase2 = [v261 namespaceDatabase];
+    paths4 = [v261 paths];
+    namespaceDescriptorsDefaultDir2 = [paths4 namespaceDescriptorsDefaultDir];
+    v64 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase2 defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir2];
 
-    v65 = [(TRITaskAttributing *)v262->_taskAttribution triCloudKitContainer];
-    v66 = [(TRITaskAttributing *)v262->_taskAttribution teamIdentifier];
-    v250 = [TRICKNativeArtifactProvider providerForContainer:v65 teamId:v66 bundleId:v256 dateProvider:v60 namespaceDescriptorProvider:v64 serverContext:v261];
+    triCloudKitContainer = [(TRITaskAttributing *)v262->_taskAttribution triCloudKitContainer];
+    teamIdentifier = [(TRITaskAttributing *)v262->_taskAttribution teamIdentifier];
+    v250 = [TRICKNativeArtifactProvider providerForContainer:triCloudKitContainer teamId:teamIdentifier bundleId:applicationBundleIdentifier dateProvider:v60 namespaceDescriptorProvider:v64 serverContext:v261];
 
     v67 = v262;
-    v257 = [(TRITaskAttributing *)v262->_taskAttribution networkOptions];
-    v251 = [(TRIBaseTask *)v262 stateProvider];
-    if ([v257 discretionaryBehavior])
+    networkOptions = [(TRITaskAttributing *)v262->_taskAttribution networkOptions];
+    stateProvider = [(TRIBaseTask *)v262 stateProvider];
+    if ([networkOptions discretionaryBehavior])
     {
-      v68 = [v251 activeActivityGrantingCapability:16];
+      v68 = [stateProvider activeActivityGrantingCapability:16];
       if (!v68)
       {
         v164 = TRILogCategory_Server();
@@ -2201,14 +2201,14 @@ LABEL_57:
         goto LABEL_258;
       }
 
-      [v257 setActivity:v68];
+      [networkOptions setActivity:v68];
 
       v67 = v262;
     }
 
     v303 = 0;
     v302 = 0;
-    v69 = [(TRIFetchFactorPackSetTask *)v67 _downloadSetArtifactWithProvider:v250 downloadOptions:v257 downloadNotificationKey:v249 errorResult:&v303 setArtifactFetchError:&v302];
+    v69 = [(TRIFetchFactorPackSetTask *)v67 _downloadSetArtifactWithProvider:v250 downloadOptions:networkOptions downloadNotificationKey:v249 errorResult:&v303 setArtifactFetchError:&v302];
     if ([v303 runStatus] != 2)
     {
       v67->wasDeferred = [TRICKNativeArtifactProvider isActivityDeferralError:v302];
@@ -2277,8 +2277,8 @@ LABEL_76:
       v253 = v303;
       if (!v253)
       {
-        v244 = [MEMORY[0x277CCA890] currentHandler];
-        [v244 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1052 description:{@"Expression was unexpectedly nil/false: %@", @"taskResult"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1052 description:{@"Expression was unexpectedly nil/false: %@", @"taskResult"}];
         v253 = 0;
       }
 
@@ -2288,8 +2288,8 @@ LABEL_76:
     v260 = objc_opt_new();
     for (j = 0; ; ++j)
     {
-      v78 = [v69 packs];
-      v79 = j < [v78 count];
+      packs = [v69 packs];
+      v79 = j < [packs count];
 
       if (!v79)
       {
@@ -2297,32 +2297,32 @@ LABEL_76:
       }
 
       v80 = objc_autoreleasePoolPush();
-      v81 = [v69 packs];
-      v82 = [v81 objectAtIndexedSubscript:j];
+      packs2 = [v69 packs];
+      v82 = [packs2 objectAtIndexedSubscript:j];
 
       if (([v82 hasFactorPackId] & 1) == 0)
       {
-        v103 = [MEMORY[0x277CCA890] currentHandler];
-        v104 = [v69 ident];
-        [v103 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1061 description:{@"Factor pack set %@ has factor pack with missing id", v104}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        ident = [v69 ident];
+        [currentHandler2 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1061 description:{@"Factor pack set %@ has factor pack with missing id", ident}];
       }
 
-      v83 = [v82 selectedNamespace];
-      v84 = [v83 hasName];
+      selectedNamespace = [v82 selectedNamespace];
+      hasName = [selectedNamespace hasName];
 
-      if ((v84 & 1) == 0)
+      if ((hasName & 1) == 0)
       {
-        v105 = [MEMORY[0x277CCA890] currentHandler];
-        v106 = [v82 factorPackId];
-        [v105 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1062 description:{@"No namespace name on factor pack %@", v106}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        factorPackId = [v82 factorPackId];
+        [currentHandler3 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1062 description:{@"No namespace name on factor pack %@", factorPackId}];
       }
 
       v85 = MEMORY[0x277D73750];
-      v86 = [v82 selectedNamespace];
-      v87 = [v86 name];
-      v88 = [v261 paths];
-      v89 = [v88 namespaceDescriptorsDefaultDir];
-      v90 = [v85 loadWithNamespaceName:v87 fromDirectory:v89];
+      selectedNamespace2 = [v82 selectedNamespace];
+      name = [selectedNamespace2 name];
+      paths5 = [v261 paths];
+      namespaceDescriptorsDefaultDir3 = [paths5 namespaceDescriptorsDefaultDir];
+      v90 = [v85 loadWithNamespaceName:name fromDirectory:namespaceDescriptorsDefaultDir3];
 
       if (v90)
       {
@@ -2330,8 +2330,8 @@ LABEL_76:
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
         LOBYTE(v314) = 0;
-        v91 = [v82 selectedNamespace];
-        v92 = [v91 compatibilityVersionArray];
+        selectedNamespace3 = [v82 selectedNamespace];
+        compatibilityVersionArray = [selectedNamespace3 compatibilityVersionArray];
         v295[0] = MEMORY[0x277D85DD0];
         v295[1] = 3221225472;
         v295[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke_485;
@@ -2339,23 +2339,23 @@ LABEL_76:
         v93 = v90;
         v296 = v93;
         v297 = buf;
-        [v92 enumerateValuesWithBlock:v295];
+        [compatibilityVersionArray enumerateValuesWithBlock:v295];
 
         if ((*(*&buf[8] + 24) & 1) == 0)
         {
           v94 = TRILogCategory_Server();
           if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
           {
-            v95 = [v82 factorPackId];
-            v96 = [v82 selectedNamespace];
-            v97 = [v96 name];
-            v98 = [v93 downloadNCV];
+            factorPackId2 = [v82 factorPackId];
+            selectedNamespace4 = [v82 selectedNamespace];
+            name2 = [selectedNamespace4 name];
+            downloadNCV = [v93 downloadNCV];
             *v322 = 138543874;
-            *&v322[4] = v95;
+            *&v322[4] = factorPackId2;
             v323 = 2114;
-            v324 = v97;
+            v324 = name2;
             v325 = 1024;
-            v326 = v98;
+            v326 = downloadNCV;
             _os_log_impl(&dword_26F567000, v94, OS_LOG_TYPE_DEFAULT, "Factor pack %{public}@ does not declare compatibility with NCV (%{public}@, %u); will be omitted from installation.", v322, 0x1Cu);
           }
 
@@ -2370,13 +2370,13 @@ LABEL_76:
         v99 = TRILogCategory_Server();
         if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
         {
-          v100 = [v82 selectedNamespace];
-          v101 = [v100 name];
-          v102 = [v69 ident];
+          selectedNamespace5 = [v82 selectedNamespace];
+          name3 = [selectedNamespace5 name];
+          ident2 = [v69 ident];
           *buf = 138543618;
-          *&buf[4] = v101;
+          *&buf[4] = name3;
           *&buf[12] = 2114;
-          *&buf[14] = v102;
+          *&buf[14] = ident2;
           _os_log_impl(&dword_26F567000, v99, OS_LOG_TYPE_DEFAULT, "Could not load namespace descriptor for namespace %{public}@ found in factor pack set %{public}@. Skipping download of factor pack for that namespace.", buf, 0x16u);
         }
 
@@ -2386,8 +2386,8 @@ LABEL_76:
       objc_autoreleasePoolPop(v80);
     }
 
-    v107 = [v69 packs];
-    v108 = [v107 mutableCopy];
+    packs3 = [v69 packs];
+    v108 = [packs3 mutableCopy];
 
     [v108 removeObjectsAtIndexes:v260];
     v243 = [v69 copyWithReplacementPacks:v108];
@@ -2404,7 +2404,7 @@ LABEL_257:
 LABEL_258:
 
       v24 = v258;
-      v258 = v245;
+      v258 = namespaces;
       goto LABEL_259;
     }
 
@@ -2412,13 +2412,13 @@ LABEL_258:
     v109 = TRILogCategory_Server();
     if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
     {
-      v110 = [v243 ident];
-      v111 = [v240 cloudKit];
-      v112 = [v111 count];
-      v113 = [v240 mobileAsset];
-      v114 = [v113 count];
+      ident3 = [v243 ident];
+      cloudKit = [v240 cloudKit];
+      v112 = [cloudKit count];
+      mobileAsset = [v240 mobileAsset];
+      v114 = [mobileAsset count];
       *buf = 138543618;
-      *&buf[4] = v110;
+      *&buf[4] = ident3;
       *&buf[12] = 2048;
       *&buf[14] = v114 + v112;
       _os_log_impl(&dword_26F567000, v109, OS_LOG_TYPE_DEFAULT, "Factor pack set %{public}@ references %tu assets which are required for enrollment and are not already on disk.", buf, 0x16u);
@@ -2435,12 +2435,12 @@ LABEL_258:
     v294[3] = &unk_279DE3EE0;
     v294[4] = v262;
     [(_PASLock *)guardedDownloadableRecord runWithLockAcquired:v294];
-    v252 = [v251 activeActivityDescriptorGrantingCapability:1];
+    v252 = [stateProvider activeActivityDescriptorGrantingCapability:1];
 
-    v118 = [v257 discretionaryBehavior];
+    discretionaryBehavior = [networkOptions discretionaryBehavior];
     if (v262->_experimentDeployment)
     {
-      v119 = v118 == 0;
+      v119 = discretionaryBehavior == 0;
     }
 
     else
@@ -2454,9 +2454,9 @@ LABEL_258:
     v291 = 0u;
     v292 = 0u;
     v293 = 0u;
-    v121 = [v243 packs];
-    v122 = [(TRIFetchOptions *)v121 countByEnumeratingWithState:&v290 objects:v321 count:16];
-    obj = v121;
+    packs4 = [v243 packs];
+    v122 = [(TRIFetchOptions *)packs4 countByEnumeratingWithState:&v290 objects:v321 count:16];
+    obj = packs4;
     v123 = 0;
     if (v122)
     {
@@ -2474,16 +2474,16 @@ LABEL_258:
           v126 = *(*(&v290 + 1) + 8 * v125);
           v127 = objc_autoreleasePoolPush();
           v128 = MEMORY[0x277D73750];
-          v129 = [v126 selectedNamespace];
-          v130 = [v129 name];
-          v131 = [v261 paths];
-          v132 = [v131 namespaceDescriptorsDefaultDir];
-          v133 = [v128 loadWithNamespaceName:v130 fromDirectory:v132];
+          selectedNamespace6 = [v126 selectedNamespace];
+          name4 = [selectedNamespace6 name];
+          paths6 = [v261 paths];
+          namespaceDescriptorsDefaultDir4 = [paths6 namespaceDescriptorsDefaultDir];
+          v133 = [v128 loadWithNamespaceName:name4 fromDirectory:namespaceDescriptorsDefaultDir4];
 
-          v134 = [v133 purgeabilityLevel];
-          if (v123 <= v134)
+          purgeabilityLevel = [v133 purgeabilityLevel];
+          if (v123 <= purgeabilityLevel)
           {
-            v123 = v134;
+            v123 = purgeabilityLevel;
           }
 
           else
@@ -2491,7 +2491,7 @@ LABEL_258:
             v123 = v123;
           }
 
-          if (!v259 || ((v135 = [v257 allowsCellularAccess], !v252) ? (v136 = v135) : (v136 = 0), v136 != 1 || v256 && objc_msgSend(v256, "length") && (objc_msgSend(v133, "expensiveNetworkingAllowed") & 1) != 0))
+          if (!v259 || ((v135 = [networkOptions allowsCellularAccess], !v252) ? (v136 = v135) : (v136 = 0), v136 != 1 || applicationBundleIdentifier && objc_msgSend(applicationBundleIdentifier, "length") && (objc_msgSend(v133, "expensiveNetworkingAllowed") & 1) != 0))
           {
             v137 = 1;
           }
@@ -2503,20 +2503,20 @@ LABEL_258:
             {
               if (v138 == 1)
               {
-                v139 = [(TRIExperimentDeployment *)v262->_experimentDeployment experimentId];
+                experimentId = [(TRIExperimentDeployment *)v262->_experimentDeployment experimentId];
                 v140 = @"Experiment";
               }
 
               else
               {
-                v139 = 0;
+                experimentId = 0;
                 v140 = 0;
               }
             }
 
             else
             {
-              v139 = [(TRIRolloutDeployment *)v262->_rolloutDeployment rolloutId];
+              experimentId = [(TRIRolloutDeployment *)v262->_rolloutDeployment rolloutId];
               v140 = @"Rollout";
             }
 
@@ -2524,24 +2524,24 @@ LABEL_258:
             if (os_log_type_enabled(v141, OS_LOG_TYPE_ERROR))
             {
               v254 = v262->_factorPackSetId;
-              v142 = [(TRIFactorPackSetStorage *)v245 firstObject];
-              v143 = [v133 expensiveNetworkingAllowed];
+              firstObject = [(TRIFactorPackSetStorage *)namespaces firstObject];
+              expensiveNetworkingAllowed = [v133 expensiveNetworkingAllowed];
               *buf = 138413570;
               v144 = @"NO";
-              if (v143)
+              if (expensiveNetworkingAllowed)
               {
                 v144 = @"YES";
               }
 
               *&buf[4] = v254;
               *&buf[12] = 2112;
-              *&buf[14] = v142;
+              *&buf[14] = firstObject;
               *&buf[22] = 2112;
               v314 = v140;
               v315 = 2112;
-              v316 = v139;
+              v316 = experimentId;
               v317 = 2112;
-              v318 = v256;
+              v318 = applicationBundleIdentifier;
               v319 = 2112;
               v320 = v144;
               _os_log_error_impl(&dword_26F567000, v141, OS_LOG_TYPE_ERROR, "preventing fetch of factor pack set %@ on cellular for namespace %@ of %@ %@, resourceAttributionBundleIdentifier: %@ expensiveNetworkingAllowed: %@", buf, 0x3Eu);
@@ -2573,23 +2573,23 @@ LABEL_258:
     v146 = [MEMORY[0x277D737B0] availableSpaceClassFromPurgeabilityLevel:v123];
     v147 = [TRIFetchOptions alloc];
     v148 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v146];
-    obj = [(TRIFetchOptions *)v147 initWithDownloadOptions:v257 cacheDeleteAvailableSpaceClass:v148];
+    obj = [(TRIFetchOptions *)v147 initWithDownloadOptions:networkOptions cacheDeleteAvailableSpaceClass:v148];
 
     v149 = objc_opt_new();
-    v150 = [v240 cloudKit];
+    cloudKit2 = [v240 cloudKit];
     v288[0] = MEMORY[0x277D85DD0];
     v288[1] = 3221225472;
     v288[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke_501;
     v288[3] = &unk_279DE3FD0;
     v151 = v149;
     v289 = v151;
-    [v150 enumerateKeysAndObjectsUsingBlock:v288];
+    [cloudKit2 enumerateKeysAndObjectsUsingBlock:v288];
 
     *v322 = 0;
     v287 = 0;
     v286 = 0;
-    v152 = [v240 cloudKit];
-    v153 = [v261 paths];
+    cloudKit3 = [v240 cloudKit];
+    paths7 = [v261 paths];
     v285[0] = MEMORY[0x277D85DD0];
     v285[1] = 3221225472;
     v285[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke_2_503;
@@ -2602,7 +2602,7 @@ LABEL_258:
     v283[4] = v262;
     v154 = v261;
     v284 = v154;
-    v155 = [TRIDiffableAssetBuilder buildAndSaveDiffableAssetsWithAssetIds:v151 metadataForAssetId:v152 artifactProvider:v250 options:obj paths:v153 assetsDownloadSize:&v286 perAssetIdCompletionBlockOnSuccess:v285 perAssetIdCompletionBlockOnError:v283 retryAfter:v322 error:&v287];
+    v155 = [TRIDiffableAssetBuilder buildAndSaveDiffableAssetsWithAssetIds:v151 metadataForAssetId:cloudKit3 artifactProvider:v250 options:obj paths:paths7 assetsDownloadSize:&v286 perAssetIdCompletionBlockOnSuccess:v285 perAssetIdCompletionBlockOnError:v283 retryAfter:v322 error:&v287];
 
     if (v155)
     {
@@ -2612,8 +2612,8 @@ LABEL_258:
         if (os_log_type_enabled(v156, OS_LOG_TYPE_DEFAULT))
         {
           v157 = [v155 count];
-          v158 = [v240 cloudKit];
-          v159 = [v158 count];
+          cloudKit4 = [v240 cloudKit];
+          v159 = [cloudKit4 count];
           *buf = 134218240;
           *&buf[4] = v157;
           *&buf[12] = 2048;
@@ -2622,8 +2622,8 @@ LABEL_258:
         }
       }
 
-      v160 = [v240 cloudKit];
-      v161 = [v160 mutableCopy];
+      cloudKit5 = [v240 cloudKit];
+      v161 = [cloudKit5 mutableCopy];
 
       v281[0] = MEMORY[0x277D85DD0];
       v281[1] = 3221225472;
@@ -2639,10 +2639,10 @@ LABEL_170:
 
       if (v155)
       {
-        v174 = [(TRIFetchOptions *)obj downloadOptions];
-        v175 = [v174 activity];
+        downloadOptions = [(TRIFetchOptions *)obj downloadOptions];
+        activity = [downloadOptions activity];
 
-        if (v175 && xpc_activity_should_defer(v175))
+        if (activity && xpc_activity_should_defer(activity))
         {
           v176 = TRILogCategory_Server();
           if (os_log_type_enabled(v176, OS_LOG_TYPE_DEFAULT))
@@ -2662,29 +2662,29 @@ LABEL_170:
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
         v314 = 0;
-        v177 = [v240 cloudKit];
+        cloudKit6 = [v240 cloudKit];
         v276[0] = MEMORY[0x277D85DD0];
         v276[1] = 3221225472;
         v276[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke_508;
         v276[3] = &unk_279DE4278;
         v276[4] = buf;
-        [v177 enumerateKeysAndObjectsUsingBlock:v276];
+        [cloudKit6 enumerateKeysAndObjectsUsingBlock:v276];
 
-        v178 = [v240 mobileAsset];
+        mobileAsset2 = [v240 mobileAsset];
         v275[0] = MEMORY[0x277D85DD0];
         v275[1] = 3221225472;
         v275[2] = __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_invoke_2_509;
         v275[3] = &unk_279DE42A0;
         v275[4] = buf;
-        [v178 enumerateKeysAndObjectsUsingBlock:v275];
+        [mobileAsset2 enumerateKeysAndObjectsUsingBlock:v275];
 
         if ([TRICacheDeleteUtils hasSufficientDiskSpaceForDownload:*(*&buf[8] + 24)])
         {
           _Block_object_dispose(buf, 8);
           *v322 = 0;
           v287 = 0;
-          v179 = [v240 cloudKit];
-          v180 = [(TRIFetchFactorPackSetTask *)v262 _downloadAndSaveCKAssetsWithMetadata:v179 artifactProvider:v250 options:obj downloadNotificationKey:v249 context:v154 assetsDownloadSize:&v287 errorResult:&v303 fetchError:v322];
+          cloudKit7 = [v240 cloudKit];
+          v180 = [(TRIFetchFactorPackSetTask *)v262 _downloadAndSaveCKAssetsWithMetadata:cloudKit7 artifactProvider:v250 options:obj downloadNotificationKey:v249 context:v154 assetsDownloadSize:&v287 errorResult:&v303 fetchError:v322];
 
           v181 = v262;
           if ([v303 runStatus] != 2 && *v322)
@@ -2747,8 +2747,8 @@ LABEL_193:
             *v322 = 0;
 
             v287 = 0;
-            v190 = [v240 mobileAsset];
-            v191 = [(TRIFetchFactorPackSetTask *)v262 _downloadAndSaveMAAssets:v190 options:obj downloadNotificationKey:v249 context:v154 assetsDownloadSize:&v287 errorResult:&v303 fetchError:v322];
+            mobileAsset3 = [v240 mobileAsset];
+            v191 = [(TRIFetchFactorPackSetTask *)v262 _downloadAndSaveMAAssets:mobileAsset3 options:obj downloadNotificationKey:v249 context:v154 assetsDownloadSize:&v287 errorResult:&v303 fetchError:v322];
 
             v192 = v262;
             if ([v303 runStatus] != 2 && *v322)
@@ -2815,8 +2815,8 @@ LABEL_211:
                   {
                     if (!v192->_isCounterfactualTreatment)
                     {
-                      v200 = [v154 experimentDatabase];
-                      v201 = [v200 setTreatmentId:v192->_treatmentId factorPackSetId:v192->_factorPackSetId forExperimentDeployment:v192->_experimentDeployment usingTransaction:0];
+                      experimentDatabase2 = [v154 experimentDatabase];
+                      v201 = [experimentDatabase2 setTreatmentId:v192->_treatmentId factorPackSetId:v192->_factorPackSetId forExperimentDeployment:v192->_experimentDeployment usingTransaction:0];
 
                       v192 = v262;
                       if ((v201 & 1) == 0)
@@ -2825,11 +2825,11 @@ LABEL_211:
                         if (os_log_type_enabled(v234, OS_LOG_TYPE_ERROR))
                         {
                           treatmentId = v262->_treatmentId;
-                          v236 = [(TRIExperimentDeployment *)v262->_experimentDeployment experimentId];
+                          experimentId2 = [(TRIExperimentDeployment *)v262->_experimentDeployment experimentId];
                           *buf = 138412546;
                           *&buf[4] = treatmentId;
                           *&buf[12] = 2114;
-                          *&buf[14] = v236;
+                          *&buf[14] = experimentId2;
                           _os_log_error_impl(&dword_26F567000, v234, OS_LOG_TYPE_ERROR, "failed to save treatment id %@ to database for experiment %{public}@", buf, 0x16u);
                         }
 
@@ -2846,7 +2846,7 @@ LABEL_211:
                   v266 = 0u;
                   v263 = 0u;
                   v264 = 0u;
-                  v202 = v245;
+                  v202 = namespaces;
                   v203 = [(TRIFactorPackSetStorage *)v202 countByEnumeratingWithState:&v263 objects:v309 count:16];
                   if (v203)
                   {
@@ -2883,12 +2883,12 @@ LABEL_211:
 
                 if (v258)
                 {
-                  v208 = [(TRIFactorPackSetStorage *)v258 deployment];
-                  v209 = [v208 rolloutId];
-                  v210 = [(TRIFactorPackSetStorage *)v258 rampId];
-                  v211 = [(TRIFactorPackSetStorage *)v258 deployment];
+                  deployment = [(TRIFactorPackSetStorage *)v258 deployment];
+                  rolloutId = [deployment rolloutId];
+                  rampId3 = [(TRIFactorPackSetStorage *)v258 rampId];
+                  deployment2 = [(TRIFactorPackSetStorage *)v258 deployment];
                   LOBYTE(v237) = 0;
-                  +[TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:](TRITaskUtils, "updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:", 2, v209, v210, [v211 deploymentId], v192->_factorPackSetId, 0, 0, v258, v237, v154);
+                  +[TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:](TRITaskUtils, "updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:", 2, rolloutId, rampId3, [deployment2 deploymentId], v192->_factorPackSetId, 0, 0, v258, v237, v154);
 
                   v192 = v262;
                 }
@@ -2931,12 +2931,12 @@ LABEL_211:
               {
                 if (v258)
                 {
-                  v226 = [(TRIFactorPackSetStorage *)v258 deployment];
-                  v227 = [v226 rolloutId];
-                  v228 = [(TRIFactorPackSetStorage *)v258 rampId];
-                  v229 = [(TRIFactorPackSetStorage *)v258 deployment];
+                  deployment3 = [(TRIFactorPackSetStorage *)v258 deployment];
+                  rolloutId2 = [deployment3 rolloutId];
+                  rampId4 = [(TRIFactorPackSetStorage *)v258 rampId];
+                  deployment4 = [(TRIFactorPackSetStorage *)v258 deployment];
                   LOBYTE(v237) = 0;
-                  +[TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:](TRITaskUtils, "updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:", 6, v227, v228, [v229 deploymentId], v192->_factorPackSetId, 0, 0, v258, v237, v154);
+                  +[TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:](TRITaskUtils, "updateRolloutHistoryDatabaseWithAllocationStatus:forRollout:ramp:deployment:fps:namespaces:telemetryMetric:rolloutRecord:isBecomingObsolete:context:", 6, rolloutId2, rampId4, [deployment4 deploymentId], v192->_factorPackSetId, 0, 0, v258, v237, v154);
 
                   v192 = v262;
                 }
@@ -2958,12 +2958,12 @@ LABEL_254:
             if ([v303 runStatus] == 3)
             {
               v218 = objc_alloc(MEMORY[0x277CCACA8]);
-              v219 = [*v322 domain];
+              domain = [*v322 domain];
               v220 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(*v322, "code")}];
-              v221 = [v220 stringValue];
-              v222 = [v218 initWithFormat:@"MAError: %@ %@", v219, v221];
+              stringValue = [v220 stringValue];
+              v221 = [v218 initWithFormat:@"MAError: %@ %@", domain, stringValue];
 
-              [(TRIFetchFactorPackSetTask *)v262 _recordExperimentFetchFailedWithReason:v222 context:v154];
+              [(TRIFetchFactorPackSetTask *)v262 _recordExperimentFetchFailedWithReason:v221 context:v154];
             }
 
             v216 = v303;
@@ -2975,8 +2975,8 @@ LABEL_244:
               goto LABEL_254;
             }
 
-            v217 = [MEMORY[0x277CCA890] currentHandler];
-            [v217 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1359 description:{@"Expression was unexpectedly nil/false: %@", @"taskResult"}];
+            currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler4 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1359 description:{@"Expression was unexpectedly nil/false: %@", @"taskResult"}];
           }
 
           else
@@ -2993,8 +2993,8 @@ LABEL_244:
               goto LABEL_244;
             }
 
-            v217 = [MEMORY[0x277CCA890] currentHandler];
-            [v217 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1319 description:{@"Expression was unexpectedly nil/false: %@", @"taskResult"}];
+            currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler4 handleFailureInMethod:a2 object:v262 file:@"TRIFetchFactorPackSetTask.m" lineNumber:1319 description:{@"Expression was unexpectedly nil/false: %@", @"taskResult"}];
           }
 
           goto LABEL_244;
@@ -3088,7 +3088,7 @@ LABEL_164:
   v25 = TRILogCategory_Server();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = v7->_factorPackSetId;
+    v26 = selfCopy->_factorPackSetId;
     *buf = 138543618;
     *&buf[4] = v26;
     *&buf[12] = 2112;
@@ -3098,13 +3098,13 @@ LABEL_164:
 
   if (v258)
   {
-    if (v7->_isCounterfactualTreatment)
+    if (selfCopy->_isCounterfactualTreatment)
     {
       v27 = TRILogCategory_Server();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v28 = v7->_treatmentId;
-        v29 = v7->_factorPackSetId;
+        v28 = selfCopy->_treatmentId;
+        v29 = selfCopy->_factorPackSetId;
         *buf = 138412546;
         *&buf[4] = v28;
         *&buf[12] = 2112;
@@ -3126,14 +3126,14 @@ LABEL_164:
     v27 = TRILogCategory_Server();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v52 = v7->_factorPackSetId;
+      v52 = selfCopy->_factorPackSetId;
       *buf = 138412290;
       *&buf[4] = v52;
       _os_log_error_impl(&dword_26F567000, v27, OS_LOG_TYPE_ERROR, "Not able to log post-launch telemetry for exp_st_AL. Experiment record not found after downloading FPS: %@", buf, 0xCu);
     }
   }
 
-  v253 = [(TRIFetchFactorPackSetTask *)v7 _taskResultForStatus:2 reportResultToServer:0 earliestRetryDate:0];
+  v253 = [(TRIFetchFactorPackSetTask *)selfCopy _taskResultForStatus:2 reportResultToServer:0 earliestRetryDate:0];
 
 LABEL_259:
   if (v248)
@@ -3352,29 +3352,29 @@ uint64_t __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_i
   return result;
 }
 
-+ (id)_namespaceNamesFromExperimentRecord:(id)a3
++ (id)_namespaceNamesFromExperimentRecord:(id)record
 {
-  v3 = [a3 namespaces];
-  v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_38];
+  namespaces = [record namespaces];
+  v4 = [namespaces _pas_mappedArrayWithTransform:&__block_literal_global_38];
 
   return v4;
 }
 
-- (void)_logOnDemandFactor:(id)a3 metricName:(id)a4 namespaceName:(id)a5 client:(id)a6 error:(id)a7
+- (void)_logOnDemandFactor:(id)factor metricName:(id)name namespaceName:(id)namespaceName client:(id)client error:(id)error
 {
-  v30 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v14 && [v14 shouldLogAtLevel:20])
+  factorCopy = factor;
+  nameCopy = name;
+  namespaceNameCopy = namespaceName;
+  clientCopy = client;
+  errorCopy = error;
+  if (clientCopy && [clientCopy shouldLogAtLevel:20])
   {
     context = objc_autoreleasePoolPush();
-    v16 = [MEMORY[0x277D73B40] metricWithName:v12];
+    v16 = [MEMORY[0x277D73B40] metricWithName:nameCopy];
     v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v16, 0}];
-    if (v15)
+    if (errorCopy)
     {
-      v18 = TRIFetchErrorParseToMetrics(v15);
+      v18 = TRIFetchErrorParseToMetrics(errorCopy);
       if (v18)
       {
         [v17 addObjectsFromArray:v18];
@@ -3383,31 +3383,31 @@ uint64_t __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_i
       else
       {
         v19 = MEMORY[0x277D73B40];
-        v20 = [v15 localizedDescription];
-        v21 = [v19 metricWithName:v20];
+        localizedDescription = [errorCopy localizedDescription];
+        v21 = [v19 metricWithName:localizedDescription];
         [v17 addObject:v21];
       }
     }
 
-    v22 = [(TRIFetchFactorPackSetTask *)self trialSystemTelemetry];
-    v23 = [v22 copy];
+    trialSystemTelemetry = [(TRIFetchFactorPackSetTask *)self trialSystemTelemetry];
+    v23 = [trialSystemTelemetry copy];
 
-    v24 = [v23 ensureOnDemandFactorFields];
-    [v24 setFactorName:v30];
+    ensureOnDemandFactorFields = [v23 ensureOnDemandFactorFields];
+    [ensureOnDemandFactorFields setFactorName:factorCopy];
 
-    v25 = [v23 ensureOnDemandFactorFields];
-    [v25 setNamespaceName:v13];
+    ensureOnDemandFactorFields2 = [v23 ensureOnDemandFactorFields];
+    [ensureOnDemandFactorFields2 setNamespaceName:namespaceNameCopy];
 
-    v26 = [v14 logger];
-    v27 = [v14 trackingId];
-    v28 = [(TRIFetchFactorPackSetTask *)self dimensions];
-    [v26 logWithTrackingId:v27 metrics:v17 dimensions:v28 trialSystemTelemetry:v23];
+    logger = [clientCopy logger];
+    trackingId = [clientCopy trackingId];
+    dimensions = [(TRIFetchFactorPackSetTask *)self dimensions];
+    [logger logWithTrackingId:trackingId metrics:v17 dimensions:dimensions trialSystemTelemetry:v23];
 
     objc_autoreleasePoolPop(context);
   }
 }
 
-- (void)_addMetricForFetchFactorPackSetTaskError:(int)a3
+- (void)_addMetricForFetchFactorPackSetTaskError:(int)error
 {
   p_rolloutSupport = &self->_rolloutSupport;
   if (!self->_rolloutSupport && !self->_experimentSupport)
@@ -3416,7 +3416,7 @@ uint64_t __59__TRIFetchFactorPackSetTask_runUsingContext_withTaskQueue___block_i
   }
 
   v5 = MEMORY[0x277D73B40];
-  v6 = fetchTaskErrorAsString(a3);
+  v6 = fetchTaskErrorAsString(error);
   v8 = [v5 metricWithName:@"fetchfactorpacksettask_error" categoricalValue:v6];
 
   construct = self->_construct;
@@ -3433,10 +3433,10 @@ LABEL_6:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -3445,9 +3445,9 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = TRIFetchFactorPackSetTask;
-    if ([(TRIBaseTask *)&v8 isEqual:v4]&& [(TRIFetchFactorPackSetTask *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(TRIBaseTask *)&v8 isEqual:equalCopy]&& [(TRIFetchFactorPackSetTask *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(TRIFactorPackSetId *)self->_factorPackSetId isEqualToString:v5->_factorPackSetId])
       {
         v6 = [(TRITaskAttributing *)self->_taskAttribution isEqual:v5->_taskAttribution];
@@ -3517,16 +3517,16 @@ LABEL_6:
 {
   v3 = objc_opt_new();
   [v3 setFactorPackSetId:self->_factorPackSetId];
-  v4 = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v4];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
   [v3 setRetryCount:{-[TRIFetchFactorPackSetTask retryCount](self, "retryCount")}];
   construct = self->_construct;
   if (construct == 1)
   {
     [v3 setConstruct:3];
-    v8 = [(TRIExperimentDeployment *)self->_experimentDeployment experimentId];
-    [v3 setExperimentId:v8];
+    experimentId = [(TRIExperimentDeployment *)self->_experimentDeployment experimentId];
+    [v3 setExperimentId:experimentId];
 
     [v3 setDeploymentId:{-[TRIExperimentDeployment deploymentId](self->_experimentDeployment, "deploymentId")}];
     [v3 setTreatmentId:self->_treatmentId];
@@ -3536,12 +3536,12 @@ LABEL_6:
   else if (!construct)
   {
     [v3 setConstruct:1];
-    v6 = [(TRIRolloutDeployment *)self->_rolloutDeployment rolloutId];
-    [v3 setRolloutId:v6];
+    rolloutId = [(TRIRolloutDeployment *)self->_rolloutDeployment rolloutId];
+    [v3 setRolloutId:rolloutId];
 
     [v3 setDeploymentId:{-[TRIRolloutDeployment deploymentId](self->_rolloutDeployment, "deploymentId")}];
-    v7 = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
-    [v3 setCapabilityModifier:v7];
+    asPersistedModifier = [(TRITaskCapabilityModifier *)self->_capabilityModifier asPersistedModifier];
+    [v3 setCapabilityModifier:asPersistedModifier];
   }
 
   return v3;
@@ -3549,25 +3549,25 @@ LABEL_6:
 
 - (id)serialize
 {
-  v4 = [(TRIFetchFactorPackSetTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIFetchFactorPackSetTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:1541 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:1541 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v68 = *MEMORY[0x277D85DE8];
   v65 = 0;
-  v3 = [(TRIPBMessage *)TRIFetchFactorPackSetPersistedTask parseFromData:a3 error:&v65];
+  v3 = [(TRIPBMessage *)TRIFetchFactorPackSetPersistedTask parseFromData:data error:&v65];
   v4 = v65;
   if (!v3)
   {
@@ -3586,15 +3586,15 @@ LABEL_6:
   {
     if ([v3 hasExperimentId])
     {
-      v5 = [v3 experimentId];
-      v6 = [v5 length];
+      experimentId = [v3 experimentId];
+      v6 = [experimentId length];
 
       if (v6)
       {
         if ([v3 hasDeploymentId])
         {
-          v7 = [v3 hasTreatmentId];
-          if ((v7 & 1) == 0)
+          hasTreatmentId = [v3 hasTreatmentId];
+          if ((hasTreatmentId & 1) == 0)
           {
             v8 = TRILogCategory_Server();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3608,7 +3608,7 @@ LABEL_6:
           }
 
           v9 = 0;
-          v10 = v7 ^ 1;
+          v10 = hasTreatmentId ^ 1;
           goto LABEL_38;
         }
 
@@ -3700,8 +3700,8 @@ LABEL_36:
     goto LABEL_67;
   }
 
-  v11 = [v3 rolloutId];
-  v12 = [v11 length];
+  rolloutId = [v3 rolloutId];
+  v12 = [rolloutId length];
 
   if (!v12)
   {
@@ -3727,8 +3727,8 @@ LABEL_67:
     goto LABEL_26;
   }
 
-  v13 = [v3 hasDeploymentId];
-  if ((v13 & 1) == 0)
+  hasDeploymentId = [v3 hasDeploymentId];
+  if ((hasDeploymentId & 1) == 0)
   {
     v14 = TRILogCategory_Server();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -3741,7 +3741,7 @@ LABEL_67:
     }
   }
 
-  v10 = v13 ^ 1;
+  v10 = hasDeploymentId ^ 1;
   v9 = 1;
 LABEL_38:
   if (([v3 hasFactorPackSetId] & 1) == 0)
@@ -3770,8 +3770,8 @@ LABEL_38:
     goto LABEL_59;
   }
 
-  v28 = [v3 factorPackSetId];
-  v29 = [v28 length];
+  factorPackSetId = [v3 factorPackSetId];
+  v29 = [factorPackSetId length];
 
   if (!v29)
   {
@@ -3830,47 +3830,47 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  v36 = [v3 factorPackSetId];
+  factorPackSetId2 = [v3 factorPackSetId];
   v15 = TRIValidateFactorPackSetId();
 
   if (v15)
   {
-    v37 = [v3 taskAttribution];
-    v38 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v37];
+    taskAttribution = [v3 taskAttribution];
+    v38 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
     if (v38)
     {
       if (v9)
       {
         v39 = MEMORY[0x277D737C8];
-        v40 = [v3 rolloutId];
-        v41 = [v39 deploymentWithRolloutId:v40 deploymentId:{objc_msgSend(v3, "deploymentId")}];
+        rolloutId2 = [v3 rolloutId];
+        v41 = [v39 deploymentWithRolloutId:rolloutId2 deploymentId:{objc_msgSend(v3, "deploymentId")}];
 
         if ([v3 hasCapabilityModifier])
         {
           v42 = [TRITaskCapabilityModifier alloc];
-          v43 = [v3 capabilityModifier];
-          v44 = [v43 add];
-          v45 = [v3 capabilityModifier];
-          v46 = -[TRITaskCapabilityModifier initWithAdd:remove:](v42, "initWithAdd:remove:", v44, [v45 remove]);
+          capabilityModifier = [v3 capabilityModifier];
+          v44 = [capabilityModifier add];
+          capabilityModifier2 = [v3 capabilityModifier];
+          treatmentId = -[TRITaskCapabilityModifier initWithAdd:remove:](v42, "initWithAdd:remove:", v44, [capabilityModifier2 remove]);
         }
 
         else
         {
-          v46 = objc_opt_new();
+          treatmentId = objc_opt_new();
         }
 
-        v58 = [[TRIFetchFactorPackSetTask alloc] initWithFactorPackSetId:v15 taskAttribution:v38 rolloutDeployment:v41 capabilityModifier:v46];
+        v58 = [[TRIFetchFactorPackSetTask alloc] initWithFactorPackSetId:v15 taskAttribution:v38 rolloutDeployment:v41 capabilityModifier:treatmentId];
       }
 
       else
       {
         v56 = MEMORY[0x277D736C0];
-        v57 = [v3 experimentId];
-        v41 = [v56 deploymentWithExperimentId:v57 deploymentId:{objc_msgSend(v3, "deploymentId")}];
+        experimentId2 = [v3 experimentId];
+        v41 = [v56 deploymentWithExperimentId:experimentId2 deploymentId:{objc_msgSend(v3, "deploymentId")}];
 
-        v46 = [v3 treatmentId];
-        v58 = -[TRIFetchFactorPackSetTask initWithFactorPackSetId:treatmentId:isCounterfactualTreatment:taskAttribution:experimentDeployment:]([TRIFetchFactorPackSetTask alloc], "initWithFactorPackSetId:treatmentId:isCounterfactualTreatment:taskAttribution:experimentDeployment:", v15, v46, [v3 isCounterfactualTreatment], v38, v41);
+        treatmentId = [v3 treatmentId];
+        v58 = -[TRIFetchFactorPackSetTask initWithFactorPackSetId:treatmentId:isCounterfactualTreatment:taskAttribution:experimentDeployment:]([TRIFetchFactorPackSetTask alloc], "initWithFactorPackSetId:treatmentId:isCounterfactualTreatment:taskAttribution:experimentDeployment:", v15, treatmentId, [v3 isCounterfactualTreatment], v38, v41);
       }
 
       v30 = v58;
@@ -3898,11 +3898,11 @@ LABEL_62:
 
 - (unint64_t)requiredCapabilities
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
-  v4 = [v3 requiredCapability];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
+  requiredCapability = [networkOptions requiredCapability];
   v8.receiver = self;
   v8.super_class = TRIFetchFactorPackSetTask;
-  v5 = [(TRIBaseTask *)&v8 requiredCapabilities]| v4;
+  v5 = [(TRIBaseTask *)&v8 requiredCapabilities]| requiredCapability;
   v6 = v5 | (4 * ([(TRIFetchFactorPackSetTask *)self retryCount]> 0));
 
   return [(TRITaskCapabilityModifier *)self->_capabilityModifier updateCapability:v6];
@@ -3910,10 +3910,10 @@ LABEL_62:
 
 - (NSString)description
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
-  v4 = [v3 discretionaryBehavior];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
+  discretionaryBehavior = [networkOptions discretionaryBehavior];
   v5 = @"disc";
-  if (!v4)
+  if (!discretionaryBehavior)
   {
     v5 = @"non-disc";
   }
@@ -3923,21 +3923,21 @@ LABEL_62:
   v7 = MEMORY[0x277CCACA8];
   v8 = objc_opt_class();
   factorPackSetId = self->_factorPackSetId;
-  v10 = [(TRITaskAttributing *)self->_taskAttribution applicationBundleIdentifier];
-  v11 = [v7 stringWithFormat:@"<%@:%@, a:%@, d:%@, r:%d>", v8, factorPackSetId, v10, v6, -[TRIFetchFactorPackSetTask retryCount](self, "retryCount")];
+  applicationBundleIdentifier = [(TRITaskAttributing *)self->_taskAttribution applicationBundleIdentifier];
+  v11 = [v7 stringWithFormat:@"<%@:%@, a:%@, d:%@, r:%d>", v8, factorPackSetId, applicationBundleIdentifier, v6, -[TRIFetchFactorPackSetTask retryCount](self, "retryCount")];
 
   return v11;
 }
 
-- (TRIFetchFactorPackSetTask)initWithCoder:(id)a3
+- (TRIFetchFactorPackSetTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIFetchFactorPackSetTask;
   v5 = [(TRIFetchFactorPackSetTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -3957,18 +3957,18 @@ LABEL_62:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:1633 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFetchFactorPackSetTask.m" lineNumber:1633 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIFetchFactorPackSetTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIFetchFactorPackSetTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

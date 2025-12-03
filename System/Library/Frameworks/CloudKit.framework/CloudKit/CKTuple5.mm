@@ -1,43 +1,43 @@
 @interface CKTuple5
-- (BOOL)isEqual:(id)a3;
-- (CKTuple5)initWithObject1:(id)a3 object2:(id)a4 object3:(id)a5 object4:(id)a6 object5:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKTuple5)initWithObject1:(id)object1 object2:(id)object2 object3:(id)object3 object4:(id)object4 object5:(id)object5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (unint64_t)hash;
 @end
 
 @implementation CKTuple5
 
-- (CKTuple5)initWithObject1:(id)a3 object2:(id)a4 object3:(id)a5 object4:(id)a6 object5:(id)a7
+- (CKTuple5)initWithObject1:(id)object1 object2:(id)object2 object3:(id)object3 object4:(id)object4 object5:(id)object5
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  object1Copy = object1;
+  object2Copy = object2;
+  object3Copy = object3;
+  object4Copy = object4;
+  object5Copy = object5;
   v25.receiver = self;
   v25.super_class = CKTuple5;
   v17 = [(CKTuple5 *)&v25 init];
   v19 = v17;
   if (v17)
   {
-    objc_msgSend_setV1_(v17, v18, v12);
-    objc_msgSend_setV2_(v19, v20, v13);
-    objc_msgSend_setV3_(v19, v21, v14);
-    objc_msgSend_setV4_(v19, v22, v15);
-    objc_msgSend_setV5_(v19, v23, v16);
+    objc_msgSend_setV1_(v17, v18, object1Copy);
+    objc_msgSend_setV2_(v19, v20, object2Copy);
+    objc_msgSend_setV3_(v19, v21, object3Copy);
+    objc_msgSend_setV4_(v19, v22, object4Copy);
+    objc_msgSend_setV5_(v19, v23, object5Copy);
   }
 
   return v19;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 <= 1)
+  if (subscript <= 1)
   {
-    if (a3)
+    if (subscript)
     {
-      if (a3 != 1)
+      if (subscript != 1)
       {
         goto LABEL_15;
       }
@@ -53,7 +53,7 @@
 
   else
   {
-    switch(a3)
+    switch(subscript)
     {
       case 2uLL:
         v3 = objc_msgSend_v3(self, a2, 2);
@@ -67,7 +67,7 @@
       default:
 LABEL_15:
         v6 = [CKException alloc];
-        v8 = objc_msgSend_initWithCode_format_(v6, v7, 12, @"Invalid tuple index: %lu", a3);
+        v8 = objc_msgSend_initWithCode_format_(v6, v7, 12, @"Invalid tuple index: %lu", subscript);
         objc_exception_throw(v8);
     }
   }
@@ -91,10 +91,10 @@ LABEL_15:
   return v25 ^ v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v40 = 1;
   }
@@ -104,7 +104,7 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_v1(self, v6, v7);
       v11 = objc_msgSend_v1(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -159,9 +159,9 @@ LABEL_10:
   return v40;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_v1(self, a2, a3);
+  v4 = objc_msgSend_v1(self, a2, zone);
   if (!objc_msgSend_conformsToProtocol_(v4, v5, &unk_1EFA87B00))
   {
     goto LABEL_10;

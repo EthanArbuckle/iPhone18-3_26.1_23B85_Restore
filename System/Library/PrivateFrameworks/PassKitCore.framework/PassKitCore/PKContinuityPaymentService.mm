@@ -5,24 +5,24 @@
 - (NSArray)remoteDevices;
 - (PKContinuityPaymentService)init;
 - (PKContinuityPaymentServiceDelegate)delegate;
-- (void)cancelRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (void)didReceiveCancellationForRemotePaymentRequest:(id)a3;
-- (void)didReceivePayment:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)didReceivePaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)didReceivePaymentHostUpdate:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)didReceivePaymentResult:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)didReceiveUpdatedPaymentDevices:(id)a3;
-- (void)presentContinuityPaymentInterfaceWithRequestIdentifier:(id)a3 completion:(id)a4;
-- (void)promptDetailsForVirtualCard:(id)a3 showNotification:(BOOL)a4 completion:(id)a5;
-- (void)requestInstrumentThumbnail:(id)a3 forRemoteDevice:(id)a4 size:(CGSize)a5 completion:(id)a6;
-- (void)sendPayment:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (void)sendPaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (void)sendPaymentHostUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (void)sendPaymentResult:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (void)sendPaymentSetupRequest:(id)a3 appDisplayName:(id)a4 completion:(id)a5;
-- (void)sendPaymentStatus:(int64_t)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (void)sendRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (void)setRemoteDevices:(id)a3;
+- (void)cancelRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)didReceiveCancellationForRemotePaymentRequest:(id)request;
+- (void)didReceivePayment:(id)payment forRemotePaymentRequest:(id)request;
+- (void)didReceivePaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request;
+- (void)didReceivePaymentHostUpdate:(id)update forRemotePaymentRequest:(id)request;
+- (void)didReceivePaymentResult:(id)result forRemotePaymentRequest:(id)request;
+- (void)didReceiveUpdatedPaymentDevices:(id)devices;
+- (void)presentContinuityPaymentInterfaceWithRequestIdentifier:(id)identifier completion:(id)completion;
+- (void)promptDetailsForVirtualCard:(id)card showNotification:(BOOL)notification completion:(id)completion;
+- (void)requestInstrumentThumbnail:(id)thumbnail forRemoteDevice:(id)device size:(CGSize)size completion:(id)completion;
+- (void)sendPayment:(id)payment forRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)sendPaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)sendPaymentHostUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)sendPaymentResult:(id)result forRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)sendPaymentSetupRequest:(id)request appDisplayName:(id)name completion:(id)completion;
+- (void)sendPaymentStatus:(int64_t)status forRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)sendRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)setRemoteDevices:(id)devices;
 - (void)updatePaymentDevices;
 @end
 
@@ -125,20 +125,20 @@ void __50__PKContinuityPaymentService_updatePaymentDevices__block_invoke_16(uint
   }
 }
 
-- (void)sendRemotePaymentRequest:(id)a3 completion:(id)a4
+- (void)sendRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__PKContinuityPaymentService_sendRemotePaymentRequest_completion___block_invoke;
   v11[3] = &unk_1E79C4D88;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = requestCopy;
+  v13 = completionCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = requestCopy;
   _os_activity_initiate(&dword_1AD337000, "send remote payment request", OS_ACTIVITY_FLAG_DEFAULT, v11);
 }
 
@@ -197,23 +197,23 @@ void __66__PKContinuityPaymentService_sendRemotePaymentRequest_completion___bloc
   }
 }
 
-- (void)sendPaymentHostUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (void)sendPaymentHostUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  updateCopy = update;
+  requestCopy = request;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __87__PKContinuityPaymentService_sendPaymentHostUpdate_forRemotePaymentRequest_completion___block_invoke;
   activity_block[3] = &unk_1E79D1F80;
-  v18 = v11;
+  v18 = completionCopy;
   v19 = a2;
   activity_block[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = updateCopy;
+  v17 = requestCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = updateCopy;
   _os_activity_initiate(&dword_1AD337000, "send remote payment request update", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -273,23 +273,23 @@ void __87__PKContinuityPaymentService_sendPaymentHostUpdate_forRemotePaymentRequ
   }
 }
 
-- (void)sendPaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (void)sendPaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  updateCopy = update;
+  requestCopy = request;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __89__PKContinuityPaymentService_sendPaymentClientUpdate_forRemotePaymentRequest_completion___block_invoke;
   activity_block[3] = &unk_1E79D1F80;
-  v18 = v11;
+  v18 = completionCopy;
   v19 = a2;
   activity_block[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = updateCopy;
+  v17 = requestCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = updateCopy;
   _os_activity_initiate(&dword_1AD337000, "send remote payment request update response", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -340,23 +340,23 @@ uint64_t __89__PKContinuityPaymentService_sendPaymentClientUpdate_forRemotePayme
   return result;
 }
 
-- (void)sendPayment:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (void)sendPayment:(id)payment forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  paymentCopy = payment;
+  requestCopy = request;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __77__PKContinuityPaymentService_sendPayment_forRemotePaymentRequest_completion___block_invoke;
   activity_block[3] = &unk_1E79D1F80;
-  v18 = v11;
+  v18 = completionCopy;
   v19 = a2;
   activity_block[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = paymentCopy;
+  v17 = requestCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = paymentCopy;
   _os_activity_initiate(&dword_1AD337000, "send remote payment", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -416,23 +416,23 @@ void __77__PKContinuityPaymentService_sendPayment_forRemotePaymentRequest_comple
   }
 }
 
-- (void)sendPaymentResult:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (void)sendPaymentResult:(id)result forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resultCopy = result;
+  requestCopy = request;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __83__PKContinuityPaymentService_sendPaymentResult_forRemotePaymentRequest_completion___block_invoke;
   activity_block[3] = &unk_1E79D1F80;
-  v18 = v11;
+  v18 = completionCopy;
   v19 = a2;
   activity_block[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v16 = resultCopy;
+  v17 = requestCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = resultCopy;
   _os_activity_initiate(&dword_1AD337000, "send payment result", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -483,28 +483,28 @@ uint64_t __83__PKContinuityPaymentService_sendPaymentResult_forRemotePaymentRequ
   return result;
 }
 
-- (void)sendPaymentStatus:(int64_t)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (void)sendPaymentStatus:(int64_t)status forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = objc_alloc_init(PKPaymentAuthorizationResult);
-  [(PKPaymentAuthorizationResult *)v10 setStatus:a3];
-  [(PKContinuityPaymentService *)self sendPaymentResult:v10 forRemotePaymentRequest:v9 completion:v8];
+  [(PKPaymentAuthorizationResult *)v10 setStatus:status];
+  [(PKContinuityPaymentService *)self sendPaymentResult:v10 forRemotePaymentRequest:requestCopy completion:completionCopy];
 }
 
-- (void)requestInstrumentThumbnail:(id)a3 forRemoteDevice:(id)a4 size:(CGSize)a5 completion:(id)a6
+- (void)requestInstrumentThumbnail:(id)thumbnail forRemoteDevice:(id)device size:(CGSize)size completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PKContinuityPaymentService_requestInstrumentThumbnail_forRemoteDevice_size_completion___block_invoke;
   aBlock[3] = &unk_1E79CAED8;
   aBlock[4] = self;
   aBlock[5] = a2;
-  v13 = a4;
-  v14 = a3;
+  deviceCopy = device;
+  thumbnailCopy = thumbnail;
   v15 = _Block_copy(aBlock);
   v16 = [(PKContinuityPaymentService *)self _remoteObjectProxyWithFailureHandler:v15];
   v18[0] = MEMORY[0x1E69E9820];
@@ -512,9 +512,9 @@ uint64_t __83__PKContinuityPaymentService_sendPaymentResult_forRemotePaymentRequ
   v18[2] = __89__PKContinuityPaymentService_requestInstrumentThumbnail_forRemoteDevice_size_completion___block_invoke_24;
   v18[3] = &unk_1E79CB0B0;
   v18[4] = self;
-  v19 = v12;
-  v17 = v12;
-  [v16 requestInstrumentThumbnail:v14 forRemoteDevice:v13 size:v18 handler:{width, height}];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [v16 requestInstrumentThumbnail:thumbnailCopy forRemoteDevice:deviceCopy size:v18 handler:{width, height}];
 }
 
 void __89__PKContinuityPaymentService_requestInstrumentThumbnail_forRemoteDevice_size_completion___block_invoke(uint64_t a1)
@@ -552,20 +552,20 @@ void __89__PKContinuityPaymentService_requestInstrumentThumbnail_forRemoteDevice
   }
 }
 
-- (void)presentContinuityPaymentInterfaceWithRequestIdentifier:(id)a3 completion:(id)a4
+- (void)presentContinuityPaymentInterfaceWithRequestIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96__PKContinuityPaymentService_presentContinuityPaymentInterfaceWithRequestIdentifier_completion___block_invoke;
   v11[3] = &unk_1E79C4D88;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   _os_activity_initiate(&dword_1AD337000, "present remote payment interface", OS_ACTIVITY_FLAG_DEFAULT, v11);
 }
 
@@ -624,20 +624,20 @@ void __96__PKContinuityPaymentService_presentContinuityPaymentInterfaceWithReque
   }
 }
 
-- (void)cancelRemotePaymentRequest:(id)a3 completion:(id)a4
+- (void)cancelRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PKContinuityPaymentService_cancelRemotePaymentRequest_completion___block_invoke;
   v11[3] = &unk_1E79C4D88;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = requestCopy;
+  v13 = completionCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = completionCopy;
+  v10 = requestCopy;
   _os_activity_initiate(&dword_1AD337000, "cancel remote payment request", OS_ACTIVITY_FLAG_DEFAULT, v11);
 }
 
@@ -698,7 +698,7 @@ void __68__PKContinuityPaymentService_cancelRemotePaymentRequest_completion___bl
 
 - (BOOL)hasRemoteDevices
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -708,13 +708,13 @@ void __68__PKContinuityPaymentService_cancelRemotePaymentRequest_completion___bl
   v5[1] = 3221225472;
   v5[2] = __46__PKContinuityPaymentService_hasRemoteDevices__block_invoke;
   v5[3] = &unk_1E79D64E8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   [v3 hasRemoteDevicesWithHandler:v5];
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
 
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __46__PKContinuityPaymentService_hasRemoteDevices__block_invoke(uint64_t a1, char a2, void *a3)
@@ -821,11 +821,11 @@ void __43__PKContinuityPaymentService_remoteDevices__block_invoke(uint64_t a1, v
   *(v8 + 40) = v5;
 }
 
-- (void)setRemoteDevices:(id)a3
+- (void)setRemoteDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   os_unfair_lock_lock(&self->_remoteDeviceLock);
-  v5 = [v4 copy];
+  v5 = [devicesCopy copy];
 
   remoteDevices = self->_remoteDevices;
   self->_remoteDevices = v5;
@@ -833,17 +833,17 @@ void __43__PKContinuityPaymentService_remoteDevices__block_invoke(uint64_t a1, v
   os_unfair_lock_unlock(&self->_remoteDeviceLock);
 }
 
-- (void)sendPaymentSetupRequest:(id)a3 appDisplayName:(id)a4 completion:(id)a5
+- (void)sendPaymentSetupRequest:(id)request appDisplayName:(id)name completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__PKContinuityPaymentService_sendPaymentSetupRequest_appDisplayName_completion___block_invoke;
   aBlock[3] = &unk_1E79CAED8;
   aBlock[4] = self;
   aBlock[5] = a2;
-  v10 = a4;
-  v11 = a3;
+  nameCopy = name;
+  requestCopy = request;
   v12 = _Block_copy(aBlock);
   v13 = [(PKContinuityPaymentService *)self _remoteObjectProxyWithFailureHandler:v12];
   v15[0] = MEMORY[0x1E69E9820];
@@ -851,9 +851,9 @@ void __43__PKContinuityPaymentService_remoteDevices__block_invoke(uint64_t a1, v
   v15[2] = __80__PKContinuityPaymentService_sendPaymentSetupRequest_appDisplayName_completion___block_invoke_31;
   v15[3] = &unk_1E79C4860;
   v15[4] = self;
-  v16 = v9;
-  v14 = v9;
-  [v13 sendPaymentSetupRequest:v11 appDisplayName:v10 handler:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [v13 sendPaymentSetupRequest:requestCopy appDisplayName:nameCopy handler:v15];
 }
 
 void __80__PKContinuityPaymentService_sendPaymentSetupRequest_appDisplayName_completion___block_invoke(uint64_t a1)
@@ -892,21 +892,21 @@ void __80__PKContinuityPaymentService_sendPaymentSetupRequest_appDisplayName_com
   }
 }
 
-- (void)promptDetailsForVirtualCard:(id)a3 showNotification:(BOOL)a4 completion:(id)a5
+- (void)promptDetailsForVirtualCard:(id)card showNotification:(BOOL)notification completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  cardCopy = card;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x1E69E9820];
   activity_block[1] = 3221225472;
   activity_block[2] = __86__PKContinuityPaymentService_promptDetailsForVirtualCard_showNotification_completion___block_invoke;
   activity_block[3] = &unk_1E79CB2B8;
   activity_block[4] = self;
-  v14 = v9;
-  v17 = a4;
-  v15 = v10;
+  v14 = cardCopy;
+  notificationCopy = notification;
+  v15 = completionCopy;
   v16 = a2;
-  v11 = v10;
-  v12 = v9;
+  v11 = completionCopy;
+  v12 = cardCopy;
   _os_activity_initiate(&dword_1AD337000, "prompt details for virtual card", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -969,86 +969,86 @@ void __86__PKContinuityPaymentService_promptDetailsForVirtualCard_showNotificati
   }
 }
 
-- (void)didReceiveUpdatedPaymentDevices:(id)a3
+- (void)didReceiveUpdatedPaymentDevices:(id)devices
 {
-  v7 = a3;
+  devicesCopy = devices;
   [(PKContinuityPaymentService *)self setRemoteDevices:?];
-  v4 = [(PKContinuityPaymentService *)self delegate];
+  delegate = [(PKContinuityPaymentService *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKContinuityPaymentService *)self delegate];
-    [v6 didReceiveUpdatedPaymentDevices:v7];
+    delegate2 = [(PKContinuityPaymentService *)self delegate];
+    [delegate2 didReceiveUpdatedPaymentDevices:devicesCopy];
   }
 }
 
-- (void)didReceivePaymentHostUpdate:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePaymentHostUpdate:(id)update forRemotePaymentRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PKContinuityPaymentService *)self delegate];
+  updateCopy = update;
+  requestCopy = request;
+  delegate = [(PKContinuityPaymentService *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PKContinuityPaymentService *)self delegate];
-    [v9 didReceivePaymentHostUpdate:v10 forRemotePaymentRequest:v6];
+    delegate2 = [(PKContinuityPaymentService *)self delegate];
+    [delegate2 didReceivePaymentHostUpdate:updateCopy forRemotePaymentRequest:requestCopy];
   }
 }
 
-- (void)didReceivePaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PKContinuityPaymentService *)self delegate];
+  updateCopy = update;
+  requestCopy = request;
+  delegate = [(PKContinuityPaymentService *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PKContinuityPaymentService *)self delegate];
-    [v9 didReceivePaymentClientUpdate:v10 forRemotePaymentRequest:v6];
+    delegate2 = [(PKContinuityPaymentService *)self delegate];
+    [delegate2 didReceivePaymentClientUpdate:updateCopy forRemotePaymentRequest:requestCopy];
   }
 }
 
-- (void)didReceivePayment:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePayment:(id)payment forRemotePaymentRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PKContinuityPaymentService *)self delegate];
+  paymentCopy = payment;
+  requestCopy = request;
+  delegate = [(PKContinuityPaymentService *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PKContinuityPaymentService *)self delegate];
-    [v9 didReceivePayment:v10 forRemotePaymentRequest:v6];
+    delegate2 = [(PKContinuityPaymentService *)self delegate];
+    [delegate2 didReceivePayment:paymentCopy forRemotePaymentRequest:requestCopy];
   }
 }
 
-- (void)didReceivePaymentResult:(id)a3 forRemotePaymentRequest:(id)a4
+- (void)didReceivePaymentResult:(id)result forRemotePaymentRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PKContinuityPaymentService *)self delegate];
+  resultCopy = result;
+  requestCopy = request;
+  delegate = [(PKContinuityPaymentService *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PKContinuityPaymentService *)self delegate];
-    [v9 didReceivePaymentResult:v10 forRemotePaymentRequest:v6];
+    delegate2 = [(PKContinuityPaymentService *)self delegate];
+    [delegate2 didReceivePaymentResult:resultCopy forRemotePaymentRequest:requestCopy];
   }
 }
 
-- (void)didReceiveCancellationForRemotePaymentRequest:(id)a3
+- (void)didReceiveCancellationForRemotePaymentRequest:(id)request
 {
-  v7 = a3;
-  v4 = [(PKContinuityPaymentService *)self delegate];
+  requestCopy = request;
+  delegate = [(PKContinuityPaymentService *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKContinuityPaymentService *)self delegate];
-    [v6 didReceiveCancellationForRemotePaymentRequest:v7];
+    delegate2 = [(PKContinuityPaymentService *)self delegate];
+    [delegate2 didReceiveCancellationForRemotePaymentRequest:requestCopy];
   }
 }
 

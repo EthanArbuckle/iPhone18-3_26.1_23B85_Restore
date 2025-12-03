@@ -7,13 +7,13 @@
 + (void)configureGEOServiceTraitsAndClientCapabilitiesHardwareIdentifier
 {
   v2 = +[GEOPlatform sharedPlatform];
-  v5 = [v2 hardwareIdentifier];
+  hardwareIdentifier = [v2 hardwareIdentifier];
 
   v3 = +[GEOMapService sharedService];
-  [v3 setDefaultTraitsHardwareIdentifier:v5];
+  [v3 setDefaultTraitsHardwareIdentifier:hardwareIdentifier];
 
   v4 = +[GEOPlatform sharedPlatform];
-  [v4 setClientCapabilitiesHardwareIdentifier:v5];
+  [v4 setClientCapabilitiesHardwareIdentifier:hardwareIdentifier];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface MRPlaybackQueue
-- (BOOL)isEqual:(id)a3;
-- (MRPlaybackQueue)initWithCoder:(id)a3;
-- (MRPlaybackQueue)initWithContentItem:(id)a3;
-- (MRPlaybackQueue)initWithContentItems:(id)a3;
-- (MRPlaybackQueue)initWithContentItems:(id)a3 location:(unint64_t)a4;
-- (MRPlaybackQueue)initWithContentItems:(id)a3 location:(unint64_t)a4 withPropertiesFromPlaybackQueue:(id)a5;
-- (MRPlaybackQueue)initWithContentItems:(id)a3 withPropertiesFromPlaybackQueue:(id)a4;
-- (MRPlaybackQueue)initWithData:(id)a3;
-- (MRPlaybackQueue)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRPlaybackQueue)initWithCoder:(id)coder;
+- (MRPlaybackQueue)initWithContentItem:(id)item;
+- (MRPlaybackQueue)initWithContentItems:(id)items;
+- (MRPlaybackQueue)initWithContentItems:(id)items location:(unint64_t)location;
+- (MRPlaybackQueue)initWithContentItems:(id)items location:(unint64_t)location withPropertiesFromPlaybackQueue:(id)queue;
+- (MRPlaybackQueue)initWithContentItems:(id)items withPropertiesFromPlaybackQueue:(id)queue;
+- (MRPlaybackQueue)initWithData:(id)data;
+- (MRPlaybackQueue)initWithProtobuf:(id)protobuf;
 - (NSArray)contentItemIdentifiers;
 - (NSData)data;
 - (NSDictionary)dictionaryRepresentation;
 - (NSDictionary)nowPlayingInfo;
 - (NSString)minimalReadableDescription;
 - (_NSRange)range;
-- (id)contentItemForIdentifier:(id)a3;
-- (id)contentItemWithOffset:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)contentItemForIdentifier:(id)identifier;
+- (id)contentItemWithOffset:(unint64_t)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)protobufWithEncoding:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)mergePropertiesFromPlaybackQueue:(id)a3;
+- (id)protobufWithEncoding:(int64_t)encoding;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeFrom:(id)from;
+- (void)mergePropertiesFromPlaybackQueue:(id)queue;
 @end
 
 @implementation MRPlaybackQueue
@@ -29,18 +29,18 @@
 - (NSData)data
 {
   v2 = [(MRPlaybackQueue *)self protobufWithEncoding:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (_NSRange)range
 {
-  v3 = [(MRPlaybackQueue *)self location];
-  v4 = [(MRPlaybackQueue *)self contentItems];
-  v5 = [v4 count];
+  location = [(MRPlaybackQueue *)self location];
+  contentItems = [(MRPlaybackQueue *)self contentItems];
+  v5 = [contentItems count];
 
-  v6 = v3;
+  v6 = location;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -52,9 +52,9 @@
   v3 = [(MRPlaybackQueue *)self contentItemWithOffset:0];
   if (v3)
   {
-    v4 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
-    v5 = [v3 nowPlayingInfo];
-    v6 = [v5 mutableCopy];
+    auxiliaryNowPlayingInfo = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
+    nowPlayingInfo = [v3 nowPlayingInfo];
+    v6 = [nowPlayingInfo mutableCopy];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -62,7 +62,7 @@
     v10[3] = &unk_1E769EC90;
     v11 = v6;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [auxiliaryNowPlayingInfo enumerateKeysAndObjectsUsingBlock:v10];
     v8 = [v7 copy];
   }
 
@@ -74,15 +74,15 @@
   return v8;
 }
 
-- (MRPlaybackQueue)initWithContentItems:(id)a3
+- (MRPlaybackQueue)initWithContentItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = MRPlaybackQueue;
   v5 = [(MRPlaybackQueue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     contentItems = v5->_contentItems;
     v5->_contentItems = v6;
   }
@@ -90,139 +90,139 @@
   return v5;
 }
 
-- (MRPlaybackQueue)initWithContentItem:(id)a3
+- (MRPlaybackQueue)initWithContentItem:(id)item
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (item)
   {
-    v10 = a3;
+    itemCopy = item;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v10 count:1];
+    itemCopy2 = item;
+    v6 = [v4 arrayWithObjects:&itemCopy count:1];
 
-    self = [(MRPlaybackQueue *)self initWithContentItems:v6, v10, v11];
-    v7 = self;
+    self = [(MRPlaybackQueue *)self initWithContentItems:v6, itemCopy, v11];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy;
 }
 
-- (MRPlaybackQueue)initWithContentItems:(id)a3 location:(unint64_t)a4
+- (MRPlaybackQueue)initWithContentItems:(id)items location:(unint64_t)location
 {
-  result = [(MRPlaybackQueue *)self initWithContentItems:a3];
+  result = [(MRPlaybackQueue *)self initWithContentItems:items];
   if (result)
   {
-    result->_location = a4;
+    result->_location = location;
     result->_hasLocation = 1;
   }
 
   return result;
 }
 
-- (MRPlaybackQueue)initWithContentItems:(id)a3 withPropertiesFromPlaybackQueue:(id)a4
+- (MRPlaybackQueue)initWithContentItems:(id)items withPropertiesFromPlaybackQueue:(id)queue
 {
-  v6 = a4;
-  v7 = [(MRPlaybackQueue *)self initWithContentItems:a3];
+  queueCopy = queue;
+  v7 = [(MRPlaybackQueue *)self initWithContentItems:items];
   v8 = v7;
   if (v7)
   {
-    [(MRPlaybackQueue *)v7 mergePropertiesFromPlaybackQueue:v6];
+    [(MRPlaybackQueue *)v7 mergePropertiesFromPlaybackQueue:queueCopy];
   }
 
   return v8;
 }
 
-- (MRPlaybackQueue)initWithContentItems:(id)a3 location:(unint64_t)a4 withPropertiesFromPlaybackQueue:(id)a5
+- (MRPlaybackQueue)initWithContentItems:(id)items location:(unint64_t)location withPropertiesFromPlaybackQueue:(id)queue
 {
-  v8 = a5;
-  v9 = [(MRPlaybackQueue *)self initWithContentItems:a3 location:a4];
+  queueCopy = queue;
+  v9 = [(MRPlaybackQueue *)self initWithContentItems:items location:location];
   v10 = v9;
   if (v9)
   {
-    [(MRPlaybackQueue *)v9 mergePropertiesFromPlaybackQueue:v8];
+    [(MRPlaybackQueue *)v9 mergePropertiesFromPlaybackQueue:queueCopy];
   }
 
   return v10;
 }
 
-- (MRPlaybackQueue)initWithProtobuf:(id)a3
+- (MRPlaybackQueue)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v34.receiver = self;
     v34.super_class = MRPlaybackQueue;
     v5 = [(MRPlaybackQueue *)&v34 init];
     if (v5)
     {
-      v6 = [v4 context];
+      context = [protobufCopy context];
       context = v5->_context;
-      v5->_context = v6;
+      v5->_context = context;
 
-      v5->_location = [v4 location];
-      v5->_hasLocation = [v4 hasLocation];
-      v8 = [v4 requestID];
-      v9 = [v8 copy];
+      v5->_location = [protobufCopy location];
+      v5->_hasLocation = [protobufCopy hasLocation];
+      requestID = [protobufCopy requestID];
+      v9 = [requestID copy];
       requestIdentifier = v5->_requestIdentifier;
       v5->_requestIdentifier = v9;
 
-      v11 = [v4 queueIdentifier];
-      v12 = [v11 copy];
+      queueIdentifier = [protobufCopy queueIdentifier];
+      v12 = [queueIdentifier copy];
       queueIdentifier = v5->_queueIdentifier;
       v5->_queueIdentifier = v12;
 
-      v14 = [v4 homeUserIdentifiers];
+      homeUserIdentifiers = [protobufCopy homeUserIdentifiers];
 
-      if (v14)
+      if (homeUserIdentifiers)
       {
         v15 = objc_alloc(MEMORY[0x1E695DFD8]);
-        v16 = [v4 homeUserIdentifiers];
-        v17 = [v15 initWithArray:v16];
+        homeUserIdentifiers2 = [protobufCopy homeUserIdentifiers];
+        v17 = [v15 initWithArray:homeUserIdentifiers2];
         homeUserIdentifiers = v5->_homeUserIdentifiers;
         v5->_homeUserIdentifiers = v17;
       }
 
-      v19 = [v4 contentItems];
-      v20 = [v19 mr_map:&__block_literal_global_98];
+      contentItems = [protobufCopy contentItems];
+      v20 = [contentItems mr_map:&__block_literal_global_98];
       contentItems = v5->_contentItems;
       v5->_contentItems = v20;
 
-      v22 = [v4 properties];
-      v23 = _MRProtoUtilsNSDictionaryFromProtoDictionary(v22);
+      properties = [protobufCopy properties];
+      v23 = _MRProtoUtilsNSDictionaryFromProtoDictionary(properties);
       properties = v5->_properties;
       v5->_properties = v23;
 
-      v25 = [v4 auxiliaryNowPlayingInfo];
-      v26 = _MRProtoUtilsNSDictionaryFromProtoDictionary(v25);
+      auxiliaryNowPlayingInfo = [protobufCopy auxiliaryNowPlayingInfo];
+      v26 = _MRProtoUtilsNSDictionaryFromProtoDictionary(auxiliaryNowPlayingInfo);
       auxiliaryNowPlayingInfo = v5->_auxiliaryNowPlayingInfo;
       v5->_auxiliaryNowPlayingInfo = v26;
 
-      if ([v4 hasResolvedPlayerPath])
+      if ([protobufCopy hasResolvedPlayerPath])
       {
         v28 = [MRPlayerPath alloc];
-        v29 = [v4 resolvedPlayerPath];
-        v30 = [(MRPlayerPath *)v28 initWithProtobuf:v29];
+        resolvedPlayerPath = [protobufCopy resolvedPlayerPath];
+        v30 = [(MRPlayerPath *)v28 initWithProtobuf:resolvedPlayerPath];
         resolvedPlayerPath = v5->_resolvedPlayerPath;
         v5->_resolvedPlayerPath = v30;
       }
     }
 
     self = v5;
-    v32 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v32 = 0;
+    selfCopy = 0;
   }
 
-  return v32;
+  return selfCopy;
 }
 
 MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1, void *a2)
@@ -233,29 +233,29 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
   return v3;
 }
 
-- (MRPlaybackQueue)initWithData:(id)a3
+- (MRPlaybackQueue)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRPlaybackQueueProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRPlaybackQueueProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRPlaybackQueue *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRPlaybackQueue)initWithCoder:(id)a3
+- (MRPlaybackQueue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -274,54 +274,54 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MRPlaybackQueue *)self protobufWithEncoding:0];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  [coderCopy encodeObject:v5 forKey:@"protobuf"];
 }
 
-- (id)protobufWithEncoding:(int64_t)a3
+- (id)protobufWithEncoding:(int64_t)encoding
 {
   v5 = objc_alloc_init(_MRPlaybackQueueProtobuf);
-  v6 = [(MRPlaybackQueue *)self context];
-  [(_MRPlaybackQueueProtobuf *)v5 setContext:v6];
+  context = [(MRPlaybackQueue *)self context];
+  [(_MRPlaybackQueueProtobuf *)v5 setContext:context];
 
   [(_MRPlaybackQueueProtobuf *)v5 setLocation:[(MRPlaybackQueue *)self location]];
   [(_MRPlaybackQueueProtobuf *)v5 setHasLocation:[(MRPlaybackQueue *)self hasLocation]];
-  v7 = [(MRPlaybackQueue *)self requestIdentifier];
-  v8 = [v7 copy];
+  requestIdentifier = [(MRPlaybackQueue *)self requestIdentifier];
+  v8 = [requestIdentifier copy];
   [(_MRPlaybackQueueProtobuf *)v5 setRequestID:v8];
 
-  v9 = [(MRPlaybackQueue *)self queueIdentifier];
-  v10 = [v9 copy];
+  queueIdentifier = [(MRPlaybackQueue *)self queueIdentifier];
+  v10 = [queueIdentifier copy];
   [(_MRPlaybackQueueProtobuf *)v5 setQueueIdentifier:v10];
 
-  v11 = [(MRPlaybackQueue *)self resolvedPlayerPath];
-  v12 = [v11 protobuf];
-  [(_MRPlaybackQueueProtobuf *)v5 setResolvedPlayerPath:v12];
+  resolvedPlayerPath = [(MRPlaybackQueue *)self resolvedPlayerPath];
+  protobuf = [resolvedPlayerPath protobuf];
+  [(_MRPlaybackQueueProtobuf *)v5 setResolvedPlayerPath:protobuf];
 
-  v13 = [(MRPlaybackQueue *)self homeUserIdentifiers];
-  v14 = [v13 allObjects];
-  v15 = [v14 mutableCopy];
+  homeUserIdentifiers = [(MRPlaybackQueue *)self homeUserIdentifiers];
+  allObjects = [homeUserIdentifiers allObjects];
+  v15 = [allObjects mutableCopy];
   [(_MRPlaybackQueueProtobuf *)v5 setHomeUserIdentifiers:v15];
 
-  v16 = [(MRPlaybackQueue *)self contentItems];
+  contentItems = [(MRPlaybackQueue *)self contentItems];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __40__MRPlaybackQueue_protobufWithEncoding___block_invoke;
   v24[3] = &__block_descriptor_40_e47____MRContentItemProtobuf_16__0__MRContentItem_8l;
-  v24[4] = a3;
-  v17 = [v16 mr_map:v24];
+  v24[4] = encoding;
+  v17 = [contentItems mr_map:v24];
   v18 = [v17 mutableCopy];
   [(_MRPlaybackQueueProtobuf *)v5 setContentItems:v18];
 
-  v19 = [(MRPlaybackQueue *)self properties];
-  v20 = _MRProtoUtilsProtoDictionaryFromNSDictionary(v19);
+  properties = [(MRPlaybackQueue *)self properties];
+  v20 = _MRProtoUtilsProtoDictionaryFromNSDictionary(properties);
   [(_MRPlaybackQueueProtobuf *)v5 setProperties:v20];
 
-  v21 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
-  v22 = _MRProtoUtilsProtoDictionaryFromNSDictionary(v21);
+  auxiliaryNowPlayingInfo = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
+  v22 = _MRProtoUtilsProtoDictionaryFromNSDictionary(auxiliaryNowPlayingInfo);
   [(_MRPlaybackQueueProtobuf *)v5 setAuxiliaryNowPlayingInfo:v22];
 
   return v5;
@@ -336,46 +336,46 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
     [v3 setObject:v4 forKeyedSubscript:@"location"];
   }
 
-  v5 = [(MRPlaybackQueue *)self requestIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"requestIdentifier"];
+  requestIdentifier = [(MRPlaybackQueue *)self requestIdentifier];
+  [v3 setObject:requestIdentifier forKeyedSubscript:@"requestIdentifier"];
 
-  v6 = [(MRPlaybackQueue *)self queueIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"queueIdentifier"];
+  queueIdentifier = [(MRPlaybackQueue *)self queueIdentifier];
+  [v3 setObject:queueIdentifier forKeyedSubscript:@"queueIdentifier"];
 
-  v7 = [(MRPlaybackQueue *)self resolvedPlayerPath];
-  [v3 setObject:v7 forKeyedSubscript:@"resolvedPlayerPath"];
+  resolvedPlayerPath = [(MRPlaybackQueue *)self resolvedPlayerPath];
+  [v3 setObject:resolvedPlayerPath forKeyedSubscript:@"resolvedPlayerPath"];
 
-  v8 = [(MRPlaybackQueue *)self homeUserIdentifiers];
-  [v3 setObject:v8 forKeyedSubscript:@"homeUserIdentifiers"];
+  homeUserIdentifiers = [(MRPlaybackQueue *)self homeUserIdentifiers];
+  [v3 setObject:homeUserIdentifiers forKeyedSubscript:@"homeUserIdentifiers"];
 
-  v9 = [(MRPlaybackQueue *)self contentItems];
-  v10 = [v9 mr_map:&__block_literal_global_26_0];
+  contentItems = [(MRPlaybackQueue *)self contentItems];
+  v10 = [contentItems mr_map:&__block_literal_global_26_0];
   [v3 setObject:v10 forKeyedSubscript:@"contentItems"];
 
-  v11 = [(MRPlaybackQueue *)self properties];
-  [v3 setObject:v11 forKeyedSubscript:@"properties"];
+  properties = [(MRPlaybackQueue *)self properties];
+  [v3 setObject:properties forKeyedSubscript:@"properties"];
 
-  v12 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
-  [v3 setObject:v12 forKeyedSubscript:@"auxiliaryNowPlayingInfo"];
+  auxiliaryNowPlayingInfo = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
+  [v3 setObject:auxiliaryNowPlayingInfo forKeyedSubscript:@"auxiliaryNowPlayingInfo"];
 
   return v3;
 }
 
 - (NSArray)contentItemIdentifiers
 {
-  v2 = [(MRPlaybackQueue *)self contentItems];
-  v3 = [v2 mr_map:&__block_literal_global_37];
+  contentItems = [(MRPlaybackQueue *)self contentItems];
+  v3 = [contentItems mr_map:&__block_literal_global_37];
 
   return v3;
 }
 
 - (NSString)minimalReadableDescription
 {
-  v3 = [(MRPlaybackQueue *)self dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(MRPlaybackQueue *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(MRPlaybackQueue *)self contentItems];
-  v6 = MRContentItemsCopyMinimalReadableDescription(v5, 0);
+  contentItems = [(MRPlaybackQueue *)self contentItems];
+  v6 = MRContentItemsCopyMinimalReadableDescription(contentItems, 0);
 
   if (v6)
   {
@@ -387,10 +387,10 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -403,36 +403,36 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
       goto LABEL_30;
     }
 
-    v5 = [(MRPlaybackQueue *)v4 hasLocation];
-    if (v5 != [(MRPlaybackQueue *)self hasLocation])
+    hasLocation = [(MRPlaybackQueue *)equalCopy hasLocation];
+    if (hasLocation != [(MRPlaybackQueue *)self hasLocation])
     {
       goto LABEL_30;
     }
 
-    if ([(MRPlaybackQueue *)v4 hasLocation])
+    if ([(MRPlaybackQueue *)equalCopy hasLocation])
     {
       if ([(MRPlaybackQueue *)self hasLocation])
       {
-        v6 = [(MRPlaybackQueue *)v4 location];
-        if (v6 != [(MRPlaybackQueue *)self location])
+        location = [(MRPlaybackQueue *)equalCopy location];
+        if (location != [(MRPlaybackQueue *)self location])
         {
           goto LABEL_30;
         }
       }
     }
 
-    v7 = [(MRPlaybackQueue *)v4 requestIdentifier];
-    v8 = [(MRPlaybackQueue *)self requestIdentifier];
-    v9 = v8;
-    if (v7 == v8)
+    requestIdentifier = [(MRPlaybackQueue *)equalCopy requestIdentifier];
+    requestIdentifier2 = [(MRPlaybackQueue *)self requestIdentifier];
+    v9 = requestIdentifier2;
+    if (requestIdentifier == requestIdentifier2)
     {
     }
 
     else
     {
-      v10 = [(MRPlaybackQueue *)v4 requestIdentifier];
-      v11 = [(MRPlaybackQueue *)self requestIdentifier];
-      v12 = [v10 isEqualToString:v11];
+      requestIdentifier3 = [(MRPlaybackQueue *)equalCopy requestIdentifier];
+      requestIdentifier4 = [(MRPlaybackQueue *)self requestIdentifier];
+      v12 = [requestIdentifier3 isEqualToString:requestIdentifier4];
 
       if (!v12)
       {
@@ -440,18 +440,18 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
       }
     }
 
-    v14 = [(MRPlaybackQueue *)v4 queueIdentifier];
-    v15 = [(MRPlaybackQueue *)self queueIdentifier];
-    v16 = v15;
-    if (v14 == v15)
+    queueIdentifier = [(MRPlaybackQueue *)equalCopy queueIdentifier];
+    queueIdentifier2 = [(MRPlaybackQueue *)self queueIdentifier];
+    v16 = queueIdentifier2;
+    if (queueIdentifier == queueIdentifier2)
     {
     }
 
     else
     {
-      v17 = [(MRPlaybackQueue *)v4 queueIdentifier];
-      v18 = [(MRPlaybackQueue *)self queueIdentifier];
-      v19 = [v17 isEqualToString:v18];
+      queueIdentifier3 = [(MRPlaybackQueue *)equalCopy queueIdentifier];
+      queueIdentifier4 = [(MRPlaybackQueue *)self queueIdentifier];
+      v19 = [queueIdentifier3 isEqualToString:queueIdentifier4];
 
       if (!v19)
       {
@@ -459,18 +459,18 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
       }
     }
 
-    v20 = [(MRPlaybackQueue *)v4 contentItems];
-    v21 = [(MRPlaybackQueue *)self contentItems];
-    v22 = v21;
-    if (v20 == v21)
+    contentItems = [(MRPlaybackQueue *)equalCopy contentItems];
+    contentItems2 = [(MRPlaybackQueue *)self contentItems];
+    v22 = contentItems2;
+    if (contentItems == contentItems2)
     {
     }
 
     else
     {
-      v23 = [(MRPlaybackQueue *)v4 contentItems];
-      v24 = [(MRPlaybackQueue *)self contentItems];
-      v25 = [v23 isEqualToArray:v24];
+      contentItems3 = [(MRPlaybackQueue *)equalCopy contentItems];
+      contentItems4 = [(MRPlaybackQueue *)self contentItems];
+      v25 = [contentItems3 isEqualToArray:contentItems4];
 
       if (!v25)
       {
@@ -478,18 +478,18 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
       }
     }
 
-    v26 = [(MRPlaybackQueue *)v4 resolvedPlayerPath];
-    v27 = [(MRPlaybackQueue *)self resolvedPlayerPath];
-    v28 = v27;
-    if (v26 == v27)
+    resolvedPlayerPath = [(MRPlaybackQueue *)equalCopy resolvedPlayerPath];
+    resolvedPlayerPath2 = [(MRPlaybackQueue *)self resolvedPlayerPath];
+    v28 = resolvedPlayerPath2;
+    if (resolvedPlayerPath == resolvedPlayerPath2)
     {
     }
 
     else
     {
-      v29 = [(MRPlaybackQueue *)v4 resolvedPlayerPath];
-      v30 = [(MRPlaybackQueue *)self resolvedPlayerPath];
-      v31 = [v29 isEqual:v30];
+      resolvedPlayerPath3 = [(MRPlaybackQueue *)equalCopy resolvedPlayerPath];
+      resolvedPlayerPath4 = [(MRPlaybackQueue *)self resolvedPlayerPath];
+      v31 = [resolvedPlayerPath3 isEqual:resolvedPlayerPath4];
 
       if (!v31)
       {
@@ -497,18 +497,18 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
       }
     }
 
-    v32 = [(MRPlaybackQueue *)v4 homeUserIdentifiers];
-    v33 = [(MRPlaybackQueue *)self homeUserIdentifiers];
-    v34 = v33;
-    if (v32 == v33)
+    homeUserIdentifiers = [(MRPlaybackQueue *)equalCopy homeUserIdentifiers];
+    homeUserIdentifiers2 = [(MRPlaybackQueue *)self homeUserIdentifiers];
+    v34 = homeUserIdentifiers2;
+    if (homeUserIdentifiers == homeUserIdentifiers2)
     {
     }
 
     else
     {
-      v35 = [(MRPlaybackQueue *)v4 homeUserIdentifiers];
-      v36 = [(MRPlaybackQueue *)self homeUserIdentifiers];
-      v37 = [v35 isEqualToSet:v36];
+      homeUserIdentifiers3 = [(MRPlaybackQueue *)equalCopy homeUserIdentifiers];
+      homeUserIdentifiers4 = [(MRPlaybackQueue *)self homeUserIdentifiers];
+      v37 = [homeUserIdentifiers3 isEqualToSet:homeUserIdentifiers4];
 
       if (!v37)
       {
@@ -516,18 +516,18 @@ MRContentItem *__36__MRPlaybackQueue_initWithProtobuf___block_invoke(uint64_t a1
       }
     }
 
-    v38 = [(MRPlaybackQueue *)v4 properties];
-    v39 = [(MRPlaybackQueue *)self properties];
-    v40 = v39;
-    if (v38 == v39)
+    properties = [(MRPlaybackQueue *)equalCopy properties];
+    properties2 = [(MRPlaybackQueue *)self properties];
+    v40 = properties2;
+    if (properties == properties2)
     {
     }
 
     else
     {
-      v41 = [(MRPlaybackQueue *)v4 properties];
-      v42 = [(MRPlaybackQueue *)self properties];
-      v43 = [v41 isEqualToDictionary:v42];
+      properties3 = [(MRPlaybackQueue *)equalCopy properties];
+      properties4 = [(MRPlaybackQueue *)self properties];
+      v43 = [properties3 isEqualToDictionary:properties4];
 
       if (!v43)
       {
@@ -537,18 +537,18 @@ LABEL_30:
       }
     }
 
-    v45 = [(MRPlaybackQueue *)v4 auxiliaryNowPlayingInfo];
-    v46 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
-    if (v45 == v46)
+    auxiliaryNowPlayingInfo = [(MRPlaybackQueue *)equalCopy auxiliaryNowPlayingInfo];
+    auxiliaryNowPlayingInfo2 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
+    if (auxiliaryNowPlayingInfo == auxiliaryNowPlayingInfo2)
     {
       v13 = 1;
     }
 
     else
     {
-      v47 = [(MRPlaybackQueue *)v4 auxiliaryNowPlayingInfo];
-      v48 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
-      v13 = [v47 isEqualToDictionary:v48];
+      auxiliaryNowPlayingInfo3 = [(MRPlaybackQueue *)equalCopy auxiliaryNowPlayingInfo];
+      auxiliaryNowPlayingInfo4 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
+      v13 = [auxiliaryNowPlayingInfo3 isEqualToDictionary:auxiliaryNowPlayingInfo4];
     }
   }
 
@@ -561,52 +561,52 @@ LABEL_31:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRPlaybackQueue *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRPlaybackQueue *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setLocation:{-[MRPlaybackQueue location](self, "location")}];
   [v5 setHasLocation:{-[MRPlaybackQueue hasLocation](self, "hasLocation")}];
-  v6 = [(MRPlaybackQueue *)self requestIdentifier];
-  v7 = [v6 copyWithZone:a3];
+  requestIdentifier = [(MRPlaybackQueue *)self requestIdentifier];
+  v7 = [requestIdentifier copyWithZone:zone];
   [v5 setRequestIdentifier:v7];
 
-  v8 = [(MRPlaybackQueue *)self queueIdentifier];
-  v9 = [v8 copyWithZone:a3];
+  queueIdentifier = [(MRPlaybackQueue *)self queueIdentifier];
+  v9 = [queueIdentifier copyWithZone:zone];
   [v5 setQueueIdentifier:v9];
 
-  v10 = [(MRPlaybackQueue *)self resolvedPlayerPath];
-  v11 = [v10 copyWithZone:a3];
+  resolvedPlayerPath = [(MRPlaybackQueue *)self resolvedPlayerPath];
+  v11 = [resolvedPlayerPath copyWithZone:zone];
   [v5 setResolvedPlayerPath:v11];
 
-  v12 = [(MRPlaybackQueue *)self homeUserIdentifiers];
-  v13 = [v12 copyWithZone:a3];
+  homeUserIdentifiers = [(MRPlaybackQueue *)self homeUserIdentifiers];
+  v13 = [homeUserIdentifiers copyWithZone:zone];
   [v5 setHomeUserIdentifiers:v13];
 
-  v14 = [(MRPlaybackQueue *)self contentItems];
+  contentItems = [(MRPlaybackQueue *)self contentItems];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __32__MRPlaybackQueue_copyWithZone___block_invoke;
   v23[3] = &__block_descriptor_40_e23__16__0__MRContentItem_8l;
-  v23[4] = a3;
-  v15 = [v14 mr_map:v23];
+  v23[4] = zone;
+  v15 = [contentItems mr_map:v23];
   [v5 setContentItems:v15];
 
-  v16 = [(MRPlaybackQueue *)self properties];
-  v17 = [v16 copyWithZone:a3];
+  properties = [(MRPlaybackQueue *)self properties];
+  v17 = [properties copyWithZone:zone];
   [v5 setProperties:v17];
 
-  v18 = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
-  v19 = [v18 copyWithZone:a3];
+  auxiliaryNowPlayingInfo = [(MRPlaybackQueue *)self auxiliaryNowPlayingInfo];
+  v19 = [auxiliaryNowPlayingInfo copyWithZone:zone];
   [v5 setAuxiliaryNowPlayingInfo:v19];
 
-  v20 = [(MRPlaybackQueue *)self context];
-  v21 = [v20 copyWithZone:a3];
+  context = [(MRPlaybackQueue *)self context];
+  v21 = [context copyWithZone:zone];
   [v5 setContext:v21];
 
   return v5;
@@ -619,7 +619,7 @@ id __32__MRPlaybackQueue_copyWithZone___block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (id)contentItemWithOffset:(unint64_t)a3
+- (id)contentItemWithOffset:(unint64_t)offset
 {
   if (contentItemWithOffset__onceToken == -1)
   {
@@ -643,36 +643,36 @@ id __32__MRPlaybackQueue_copyWithZone___block_invoke(uint64_t a1, void *a2)
     goto LABEL_8;
   }
 
-  v5 = [(MRPlaybackQueue *)self contentItems];
-  if ([v5 count])
+  contentItems = [(MRPlaybackQueue *)self contentItems];
+  if ([contentItems count])
   {
-    v6 = [(MRPlaybackQueue *)self hasLocation];
+    hasLocation = [(MRPlaybackQueue *)self hasLocation];
 
-    if (v6)
+    if (hasLocation)
     {
       goto LABEL_8;
     }
 
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    contentItems = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MRPlaybackQueue contentItemWithOffset:]"];
-    [v5 handleFailureInFunction:v7 file:@"MRPlaybackQueue.m" lineNumber:257 description:@"Attempting to set non-range based playbackQueue"];
+    [contentItems handleFailureInFunction:v7 file:@"MRPlaybackQueue.m" lineNumber:257 description:@"Attempting to set non-range based playbackQueue"];
   }
 
 LABEL_8:
-  v8 = [(MRPlaybackQueue *)self location];
-  if (v8 >= 0)
+  location = [(MRPlaybackQueue *)self location];
+  if (location >= 0)
   {
-    v9 = v8;
+    v9 = location;
   }
 
   else
   {
-    v9 = -v8;
+    v9 = -location;
   }
 
-  v10 = v9 + a3;
-  v11 = [(MRPlaybackQueue *)self contentItems];
-  v12 = [v11 count];
+  v10 = v9 + offset;
+  contentItems2 = [(MRPlaybackQueue *)self contentItems];
+  v12 = [contentItems2 count];
 
   if (v10 >= v12)
   {
@@ -681,8 +681,8 @@ LABEL_8:
 
   else
   {
-    v13 = [(MRPlaybackQueue *)self contentItems];
-    v14 = [v13 objectAtIndexedSubscript:v10];
+    contentItems3 = [(MRPlaybackQueue *)self contentItems];
+    v14 = [contentItems3 objectAtIndexedSubscript:v10];
   }
 
   return v14;
@@ -695,16 +695,16 @@ void __41__MRPlaybackQueue_contentItemWithOffset___block_invoke()
   contentItemWithOffset__isNano = [v0 containsString:@"nanomediaremotelinkagent"];
 }
 
-- (id)contentItemForIdentifier:(id)a3
+- (id)contentItemForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(MRPlaybackQueue *)self contentItems];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  contentItems = [(MRPlaybackQueue *)self contentItems];
+  v6 = [contentItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -714,12 +714,12 @@ void __41__MRPlaybackQueue_contentItemWithOffset___block_invoke()
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentItems);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -728,7 +728,7 @@ void __41__MRPlaybackQueue_contentItemWithOffset___block_invoke()
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [contentItems countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -745,10 +745,10 @@ LABEL_11:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  fromCopy = from;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -773,8 +773,8 @@ LABEL_11:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v6 = [v18 contentItems];
-        v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        contentItems = [fromCopy contentItems];
+        v7 = [contentItems countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v7)
         {
           v8 = v7;
@@ -786,13 +786,13 @@ LABEL_11:
             {
               if (*v21 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(contentItems);
               }
 
               v11 = *(*(&v20 + 1) + 8 * v10);
-              v12 = [v5 identifier];
-              v13 = [v11 identifier];
-              v14 = [v12 isEqualToString:v13];
+              identifier = [v5 identifier];
+              identifier2 = [v11 identifier];
+              v14 = [identifier isEqualToString:identifier2];
 
               if (v14)
               {
@@ -803,7 +803,7 @@ LABEL_11:
             }
 
             while (v8 != v10);
-            v8 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v8 = [contentItems countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v8);
@@ -822,42 +822,42 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mergePropertiesFromPlaybackQueue:(id)a3
+- (void)mergePropertiesFromPlaybackQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [v4 queueIdentifier];
-  v6 = [v5 copy];
+  queueCopy = queue;
+  queueIdentifier = [queueCopy queueIdentifier];
+  v6 = [queueIdentifier copy];
   queueIdentifier = self->_queueIdentifier;
   self->_queueIdentifier = v6;
 
-  v8 = [v4 properties];
-  v9 = [v8 copy];
+  properties = [queueCopy properties];
+  v9 = [properties copy];
   properties = self->_properties;
   self->_properties = v9;
 
-  v11 = [v4 auxiliaryNowPlayingInfo];
-  v12 = [v11 copy];
+  auxiliaryNowPlayingInfo = [queueCopy auxiliaryNowPlayingInfo];
+  v12 = [auxiliaryNowPlayingInfo copy];
   auxiliaryNowPlayingInfo = self->_auxiliaryNowPlayingInfo;
   self->_auxiliaryNowPlayingInfo = v12;
 
-  v14 = [v4 resolvedPlayerPath];
-  v15 = [v14 copy];
+  resolvedPlayerPath = [queueCopy resolvedPlayerPath];
+  v15 = [resolvedPlayerPath copy];
   resolvedPlayerPath = self->_resolvedPlayerPath;
   self->_resolvedPlayerPath = v15;
 
-  v17 = [v4 homeUserIdentifiers];
-  v18 = [v17 copy];
+  homeUserIdentifiers = [queueCopy homeUserIdentifiers];
+  v18 = [homeUserIdentifiers copy];
   homeUserIdentifiers = self->_homeUserIdentifiers;
   self->_homeUserIdentifiers = v18;
 
-  v20 = [v4 context];
-  v21 = [v20 copy];
+  context = [queueCopy context];
+  v21 = [context copy];
   context = self->_context;
   self->_context = v21;
 
-  v25 = [v4 requestIdentifier];
+  requestIdentifier = [queueCopy requestIdentifier];
 
-  v23 = [v25 copy];
+  v23 = [requestIdentifier copy];
   requestIdentifier = self->_requestIdentifier;
   self->_requestIdentifier = v23;
 }

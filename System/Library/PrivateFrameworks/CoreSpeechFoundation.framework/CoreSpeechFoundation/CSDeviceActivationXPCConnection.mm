@@ -1,11 +1,11 @@
 @interface CSDeviceActivationXPCConnection
 - (CSDeviceActivateXPCConnectionDelegate)delegate;
-- (CSDeviceActivationXPCConnection)initWithConnection:(id)a3;
-- (void)_handleActivateEventMesssage:(id)a3 client:(id)a4;
-- (void)_handleClientError:(id)a3 client:(id)a4;
-- (void)_handleClientEvent:(id)a3;
-- (void)_handleClientMessage:(id)a3 client:(id)a4;
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6;
+- (CSDeviceActivationXPCConnection)initWithConnection:(id)connection;
+- (void)_handleActivateEventMesssage:(id)messsage client:(id)client;
+- (void)_handleClientError:(id)error client:(id)client;
+- (void)_handleClientEvent:(id)event;
+- (void)_handleClientMessage:(id)message client:(id)client;
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error;
 - (void)activateConnection;
 @end
 
@@ -18,12 +18,12 @@
   return WeakRetained;
 }
 
-- (void)_handleActivateEventMesssage:(id)a3 client:(id)a4
+- (void)_handleActivateEventMesssage:(id)messsage client:(id)client
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = xpc_dictionary_get_dictionary(v6, "event");
+  messsageCopy = messsage;
+  clientCopy = client;
+  v8 = xpc_dictionary_get_dictionary(messsageCopy, "event");
   if (v8)
   {
     v9 = [[CSDeviceActivationEvent alloc] initWithXPCObject:v8];
@@ -33,8 +33,8 @@
     v13[2] = __71__CSDeviceActivationXPCConnection__handleActivateEventMesssage_client___block_invoke;
     v13[3] = &unk_1E865AEA0;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = messsageCopy;
+    v15 = clientCopy;
     [v10 notifyActivationEvent:v9 completion:v13];
   }
 
@@ -48,42 +48,42 @@
       _os_log_error_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_ERROR, "%s Cannot handle activateEventMessage since event is nil", buf, 0xCu);
     }
 
-    [(CSDeviceActivationXPCConnection *)self _sendReply:v6 client:v7 result:0 error:0];
+    [(CSDeviceActivationXPCConnection *)self _sendReply:messsageCopy client:clientCopy result:0 error:0];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error
 {
-  connection = a4;
-  v9 = a6;
-  reply = xpc_dictionary_create_reply(a3);
-  v11 = reply;
+  connection = client;
+  errorCopy = error;
+  reply = xpc_dictionary_create_reply(reply);
+  replyCopy = reply;
   if (reply)
   {
-    xpc_dictionary_set_BOOL(reply, "result", a5);
-    if (v9)
+    xpc_dictionary_set_BOOL(reply, "result", result);
+    if (errorCopy)
     {
-      v12 = [v9 domain];
-      xpc_dictionary_set_string(v11, "resultErrorDomain", [v12 UTF8String]);
+      domain = [errorCopy domain];
+      xpc_dictionary_set_string(replyCopy, "resultErrorDomain", [domain UTF8String]);
 
-      xpc_dictionary_set_int64(v11, "resultErrorCode", [v9 code]);
+      xpc_dictionary_set_int64(replyCopy, "resultErrorCode", [errorCopy code]);
     }
 
-    xpc_connection_send_message(connection, v11);
+    xpc_connection_send_message(connection, replyCopy);
   }
 }
 
-- (void)_handleClientError:(id)a3 client:(id)a4
+- (void)_handleClientError:(id)error client:(id)client
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  errorCopy = error;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (errorCopy && clientCopy)
   {
-    if (v6 == MEMORY[0x1E69E9E20] || v6 == MEMORY[0x1E69E9E18])
+    if (errorCopy == MEMORY[0x1E69E9E20] || errorCopy == MEMORY[0x1E69E9E18])
     {
       v10 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -105,14 +105,14 @@
         if (v14)
         {
           v15 = objc_loadWeakRetained(&self->_delegate);
-          [v15 CSActivationXPCConnectionReceivedClientError:self clientError:v6 client:v8];
+          [v15 CSActivationXPCConnectionReceivedClientError:self clientError:errorCopy client:v8];
         }
       }
     }
 
     else
     {
-      string = xpc_dictionary_get_string(v6, *MEMORY[0x1E69E9E28]);
+      string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x1E69E9E28]);
       v17 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
@@ -128,13 +128,13 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleClientMessage:(id)a3 client:(id)a4
+- (void)_handleClientMessage:(id)message client:(id)client
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  messageCopy = message;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (!messageCopy || !clientCopy)
   {
     v11 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -145,7 +145,7 @@
     v17 = 136315650;
     v18 = "[CSDeviceActivationXPCConnection _handleClientMessage:client:]";
     v19 = 2050;
-    v20 = v6;
+    v20 = messageCopy;
     v21 = 2050;
     v22 = v8;
     v12 = "%s message = %{public}p, client = %{public}p, cannot handle message";
@@ -156,7 +156,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  int64 = xpc_dictionary_get_int64(v6, "type");
+  int64 = xpc_dictionary_get_int64(messageCopy, "type");
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -183,20 +183,20 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(CSDeviceActivationXPCConnection *)self _handleActivateEventMesssage:v6 client:v8];
+  [(CSDeviceActivationXPCConnection *)self _handleActivateEventMesssage:messageCopy client:v8];
 LABEL_10:
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleClientEvent:(id)a3
+- (void)_handleClientEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_connection)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && self->_connection)
   {
-    v6 = MEMORY[0x1E12BAC70](v4);
+    v6 = MEMORY[0x1E12BAC70](eventCopy);
     if (v6 == MEMORY[0x1E69E9E80])
     {
       [(CSDeviceActivationXPCConnection *)self _handleClientMessage:v5 client:self->_connection];
@@ -268,16 +268,16 @@ void __53__CSDeviceActivationXPCConnection_activateConnection__block_invoke(uint
   [WeakRetained _handleClientEvent:v3];
 }
 
-- (CSDeviceActivationXPCConnection)initWithConnection:(id)a3
+- (CSDeviceActivationXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = CSDeviceActivationXPCConnection;
   v6 = [(CSDeviceActivationXPCConnection *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = dispatch_queue_create("corespeechd xpc connection client queue", 0);
     queue = v7->_queue;
     v7->_queue = v8;

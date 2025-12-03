@@ -1,21 +1,21 @@
 @interface CHTimeWindowStrokeGroupingStrategy
-- (id)recognizableDrawingForStrokeGroup:(id)a3 translationVector:(CGVector)a4 originalDrawing:(id *)a5 orderedStrokesIDs:(id *)a6 rescalingFactor:(double *)a7 replacementStrokeGroup:(id *)a8;
-- (id)updatedGroupingResult:(id)a3 byAddingStrokes:(id)a4 removingStrokeIdentifiers:(id)a5 stableStrokeIdentifiers:(id)a6 allSubstrokesByStrokeIdentifier:(id)a7 withCancellationBlock:(id)a8;
+- (id)recognizableDrawingForStrokeGroup:(id)group translationVector:(CGVector)vector originalDrawing:(id *)drawing orderedStrokesIDs:(id *)ds rescalingFactor:(double *)factor replacementStrokeGroup:(id *)strokeGroup;
+- (id)updatedGroupingResult:(id)result byAddingStrokes:(id)strokes removingStrokeIdentifiers:(id)identifiers stableStrokeIdentifiers:(id)strokeIdentifiers allSubstrokesByStrokeIdentifier:(id)identifier withCancellationBlock:(id)block;
 @end
 
 @implementation CHTimeWindowStrokeGroupingStrategy
 
-- (id)updatedGroupingResult:(id)a3 byAddingStrokes:(id)a4 removingStrokeIdentifiers:(id)a5 stableStrokeIdentifiers:(id)a6 allSubstrokesByStrokeIdentifier:(id)a7 withCancellationBlock:(id)a8
+- (id)updatedGroupingResult:(id)result byAddingStrokes:(id)strokes removingStrokeIdentifiers:(id)identifiers stableStrokeIdentifiers:(id)strokeIdentifiers allSubstrokesByStrokeIdentifier:(id)identifier withCancellationBlock:(id)block
 {
   v431 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v387 = a6;
-  v386 = a7;
-  v385 = a8;
-  v389 = v14;
-  v27 = objc_msgSend_strokeGroups(v14, v17, v18, v19, v20, v21);
+  resultCopy = result;
+  strokesCopy = strokes;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  identifierCopy = identifier;
+  blockCopy = block;
+  v389 = resultCopy;
+  v27 = objc_msgSend_strokeGroups(resultCopy, v17, v18, v19, v20, v21);
   if (v27)
   {
     objc_msgSend_strokeProvider(self, v22, v23, v24, v25, v26);
@@ -75,7 +75,7 @@ LABEL_13:
   v41 = objc_msgSend_mutableCopy(v27, v29, v30, v31, v32, v33);
   v397 = objc_msgSend_set(MEMORY[0x1E695DFA8], v42, v43, v44, v45, v46);
   v395 = objc_msgSend_set(MEMORY[0x1E695DFA8], v47, v48, v49, v50, v51);
-  v400 = objc_msgSend_mutableCopy(v15, v52, v53, v54, v55, v56);
+  v400 = objc_msgSend_mutableCopy(strokesCopy, v52, v53, v54, v55, v56);
   v384 = v41;
   if (v28[393] != -1)
   {
@@ -83,14 +83,14 @@ LABEL_13:
   }
 
   v390 = v27;
-  v388 = v15;
+  v388 = strokesCopy;
   v57 = qword_1EA84DC68;
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
   {
     v58 = objc_opt_class();
     v59 = v58;
     v65 = objc_msgSend_count(v400, v60, v61, v62, v63, v64);
-    v71 = objc_msgSend_count(v16, v66, v67, v68, v69, v70);
+    v71 = objc_msgSend_count(identifiersCopy, v66, v67, v68, v69, v70);
     *buf = 138412802;
     v426 = v58;
     v427 = 2048;
@@ -100,8 +100,8 @@ LABEL_13:
     _os_log_impl(&dword_18366B000, v57, OS_LOG_TYPE_DEBUG, "Stroke Grouping with strategy %@. Added strokes: %ld, removed strokes: %ld", buf, 0x20u);
   }
 
-  v393 = self;
-  if (objc_msgSend_count(v16, v72, v73, v74, v75, v76))
+  selfCopy = self;
+  if (objc_msgSend_count(identifiersCopy, v72, v73, v74, v75, v76))
   {
     v419 = 0u;
     v420 = 0u;
@@ -135,7 +135,7 @@ LABEL_48:
           v396 = v87;
           v89 = *(*(&v417 + 1) + 8 * v87);
           v90 = objc_msgSend_strokeIdentifiers(v89, v80, v81, v82, v83, v84, v384);
-          v95 = objc_msgSend_intersectsSet_(v90, v91, v16, v92, v93, v94);
+          v95 = objc_msgSend_intersectsSet_(v90, v91, identifiersCopy, v92, v93, v94);
 
           if (v95)
           {
@@ -169,7 +169,7 @@ LABEL_48:
               if (*v414 == v110)
               {
                 v112 = *(*(&v413 + 1) + 8 * i);
-                if (objc_msgSend_containsObject_(v16, v105, v112, v106, v107, v108))
+                if (objc_msgSend_containsObject_(identifiersCopy, v105, v112, v106, v107, v108))
                 {
                   continue;
                 }
@@ -179,7 +179,7 @@ LABEL_48:
               {
                 objc_enumerationMutation(v101);
                 v112 = *(*(&v413 + 1) + 8 * i);
-                if (objc_msgSend_containsObject_(v16, v113, v112, v114, v115, v116))
+                if (objc_msgSend_containsObject_(identifiersCopy, v113, v112, v114, v115, v116))
                 {
                   continue;
                 }
@@ -433,7 +433,7 @@ LABEL_49:
           v368 = v367;
           v401 = 0;
           v402 = 0;
-          objc_msgSend_firstStrokeIdentifier_lastStrokeIdentifier_inGroup_addingStrokeIdentifiers_removingStrokeIdentifiers_(v393, v366, &v402, &v401, v166, v167, 0);
+          objc_msgSend_firstStrokeIdentifier_lastStrokeIdentifier_inGroup_addingStrokeIdentifiers_removingStrokeIdentifiers_(selfCopy, v366, &v402, &v401, v166, v167, 0);
           v369 = v402;
           v173 = v401;
           StrokeIdentifier_lastStrokeIdentifier_bounds_startTimestamp_endTimestamp = objc_msgSend_groupByAddingStrokeIdentifiers_removingStrokeIdentifiers_firstStrokeIdentifier_lastStrokeIdentifier_bounds_startTimestamp_endTimestamp_(v166, v370, v167, 0, v369, v173, x, y, width, height, v352, v368);
@@ -477,20 +477,20 @@ LABEL_49:
   return v382;
 }
 
-- (id)recognizableDrawingForStrokeGroup:(id)a3 translationVector:(CGVector)a4 originalDrawing:(id *)a5 orderedStrokesIDs:(id *)a6 rescalingFactor:(double *)a7 replacementStrokeGroup:(id *)a8
+- (id)recognizableDrawingForStrokeGroup:(id)group translationVector:(CGVector)vector originalDrawing:(id *)drawing orderedStrokesIDs:(id *)ds rescalingFactor:(double *)factor replacementStrokeGroup:(id *)strokeGroup
 {
   v101 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  groupCopy = group;
   v90 = objc_alloc_init(CHDrawing);
-  v85 = a5;
-  if (a5)
+  drawingCopy = drawing;
+  if (drawing)
   {
     v16 = objc_alloc_init(CHDrawing);
-    v27 = objc_msgSend_strokeIdentifiers(v10, v17, v18, v19, v20, v21);
+    v27 = objc_msgSend_strokeIdentifiers(groupCopy, v17, v18, v19, v20, v21);
     if (self)
     {
 LABEL_3:
-      v28 = objc_msgSend_allObjects(v27, v22, v23, v24, v25, v26, a5);
+      v28 = objc_msgSend_allObjects(v27, v22, v23, v24, v25, v26, drawing);
       v33 = objc_msgSend_strokesForIdentifiers_(self, v29, v28, v30, v31, v32);
 
       v38 = objc_msgSend_sortedArrayUsingComparator_(v33, v34, &unk_1EF1BE9D0, v35, v36, v37);
@@ -502,7 +502,7 @@ LABEL_3:
   else
   {
     v16 = 0;
-    v27 = objc_msgSend_strokeIdentifiers(v10, v11, v12, v13, v14, v15);
+    v27 = objc_msgSend_strokeIdentifiers(groupCopy, v11, v12, v13, v14, v15);
     if (self)
     {
       goto LABEL_3;
@@ -512,8 +512,8 @@ LABEL_3:
   v38 = 0;
 LABEL_4:
 
-  v88 = v10;
-  objc_msgSend_bounds(v10, v39, v40, v41, v42, v43);
+  v88 = groupCopy;
+  objc_msgSend_bounds(groupCopy, v39, v40, v41, v42, v43);
   v45 = v44;
   v47 = v46;
   v53 = objc_msgSend_array(MEMORY[0x1E695DF70], v48, v49, v50, v51, v52);
@@ -555,7 +555,7 @@ LABEL_4:
           objc_msgSend_endStroke(v69, v77, v78, v79, v80, v81);
         }
 
-        v60 = objc_msgSend_encodedStrokeIdentifier(v67, v77, v78, v79, v80, v81, v85);
+        v60 = objc_msgSend_encodedStrokeIdentifier(v67, v77, v78, v79, v80, v81, drawingCopy);
         objc_msgSend_addObject_(v53, v61, v60, v62, v63, v64);
       }
 
@@ -565,21 +565,21 @@ LABEL_4:
     while (v57);
   }
 
-  if (v85)
+  if (drawingCopy)
   {
     v82 = v16;
-    *v85 = v16;
+    *drawingCopy = v16;
   }
 
-  if (a6)
+  if (ds)
   {
     v83 = v53;
-    *a6 = v53;
+    *ds = v53;
   }
 
-  if (a8)
+  if (strokeGroup)
   {
-    *a8 = 0;
+    *strokeGroup = 0;
   }
 
   return v90;

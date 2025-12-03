@@ -1,7 +1,7 @@
 @interface ARUICountdownDisappear
 - (id)identifier;
 - (id)timingFunction;
-- (void)applyToCountdownView:(id)a3 completion:(id)a4;
+- (void)applyToCountdownView:(id)view completion:(id)completion;
 @end
 
 @implementation ARUICountdownDisappear
@@ -20,16 +20,16 @@
   return [MEMORY[0x1E69793D0] functionWithControlPoints:v2 :0.0 :0.0 :v3];
 }
 
-- (void)applyToCountdownView:(id)a3 completion:(id)a4
+- (void)applyToCountdownView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 ringGroup];
-  [v8 groupDiameter];
+  viewCopy = view;
+  completionCopy = completion;
+  ringGroup = [viewCopy ringGroup];
+  [ringGroup groupDiameter];
   v10 = v9;
 
-  v11 = [v6 ringGroup];
-  [v11 thickness];
+  ringGroup2 = [viewCopy ringGroup];
+  [ringGroup2 thickness];
   v13 = v12;
 
   [(ARUICountdownDisappear *)self duration];
@@ -38,7 +38,7 @@
   v26[1] = 3221225472;
   v26[2] = __58__ARUICountdownDisappear_applyToCountdownView_completion___block_invoke;
   v26[3] = &unk_1E83CE2F0;
-  v16 = v6;
+  v16 = viewCopy;
   v27 = v16;
   v28 = v10 + v13 * -0.5;
   [ARUIRingGroup animateWithDuration:v26 animations:v15];
@@ -51,8 +51,8 @@
   v24 = v10;
   v25 = v13;
   v22 = v16;
-  v23 = v7;
-  v19 = v7;
+  v23 = completionCopy;
+  v19 = completionCopy;
   v20 = v16;
   dispatch_after(v18, MEMORY[0x1E69E96A0], v21);
 }

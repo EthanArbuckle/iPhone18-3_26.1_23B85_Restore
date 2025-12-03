@@ -8,16 +8,16 @@
 - (HDCodableSource)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableSource);
-  v3 = [a1 name];
-  [(HDCodableSource *)v2 setName:v3];
+  name = [self name];
+  [(HDCodableSource *)v2 setName:name];
 
-  v4 = [a1 bundleIdentifier];
-  [(HDCodableSource *)v2 setBundleIdentifier:v4];
+  bundleIdentifier = [self bundleIdentifier];
+  [(HDCodableSource *)v2 setBundleIdentifier:bundleIdentifier];
 
-  v5 = [a1 _productType];
-  [(HDCodableSource *)v2 setProductType:v5];
+  _productType = [self _productType];
+  [(HDCodableSource *)v2 setProductType:_productType];
 
-  -[HDCodableSource setOptions:](v2, "setOptions:", [a1 _options]);
+  -[HDCodableSource setOptions:](v2, "setOptions:", [self _options]);
 
   return v2;
 }
@@ -38,7 +38,7 @@
       v5 = 0;
     }
 
-    v6 = [a1 _sourceWithBundleIdentifier:v4[3] name:v4[4] productType:v4[6] options:v5];
+    v6 = [self _sourceWithBundleIdentifier:v4[3] name:v4[4] productType:v4[6] options:v5];
   }
 
   else

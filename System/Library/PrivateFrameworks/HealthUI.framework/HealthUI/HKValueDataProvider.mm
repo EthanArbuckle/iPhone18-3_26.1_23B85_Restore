@@ -1,50 +1,50 @@
 @interface HKValueDataProvider
 - (BOOL)_requiresValueFetch;
 - (BOOL)hasLoadedData;
-- (HKValueDataProvider)initWithHealthStore:(id)a3 updateController:(id)a4 dateCache:(id)a5 displayType:(id)a6;
-- (id)fetchOperationWithCompletion:(id)a3;
+- (HKValueDataProvider)initWithHealthStore:(id)store updateController:(id)controller dateCache:(id)cache displayType:(id)type;
+- (id)fetchOperationWithCompletion:(id)completion;
 - (id)value;
 - (void)_alertObserversDidUpdateValues;
-- (void)_fetchValueWithRetryCount:(int64_t)a3;
-- (void)_handleUnitPreferencesDidChangeNotification:(id)a3;
+- (void)_fetchValueWithRetryCount:(int64_t)count;
+- (void)_handleUnitPreferencesDidChangeNotification:(id)notification;
 - (void)_refreshValueIfNecessary;
 - (void)_transitionToFetchFailure;
-- (void)_updateValueWithValue:(id)a3;
+- (void)_updateValueWithValue:(id)value;
 - (void)dealloc;
 - (void)invalidateValue;
-- (void)updateController:(id)a3 didReceiveUpdateForType:(id)a4 samplesAdded:(id)a5 objectsRemoved:(id)a6 recoveringFromError:(BOOL)a7;
+- (void)updateController:(id)controller didReceiveUpdateForType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed recoveringFromError:(BOOL)error;
 @end
 
 @implementation HKValueDataProvider
 
-- (HKValueDataProvider)initWithHealthStore:(id)a3 updateController:(id)a4 dateCache:(id)a5 displayType:(id)a6
+- (HKValueDataProvider)initWithHealthStore:(id)store updateController:(id)controller dateCache:(id)cache displayType:(id)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = HKValueDataProvider;
   v15 = [(HKValueDataProvider *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_healthStore, a3);
-    objc_storeStrong(&v16->_dateCache, a5);
-    v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v15->_healthStore, store);
+    objc_storeStrong(&v16->_dateCache, cache);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v16->_observers;
-    v16->_observers = v17;
+    v16->_observers = weakObjectsHashTable;
 
-    if (([v14 isActivitySummary] & 1) == 0)
+    if (([typeCopy isActivitySummary] & 1) == 0)
     {
-      v19 = [v14 sampleType];
-      [v12 addObserver:v16 forType:v19];
+      sampleType = [typeCopy sampleType];
+      [controllerCopy addObserver:v16 forType:sampleType];
     }
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v16 selector:sel__handleUnitPreferencesDidChangeNotification_ name:*MEMORY[0x1E696BE70] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__handleUnitPreferencesDidChangeNotification_ name:*MEMORY[0x1E696BE70] object:0];
 
-    objc_storeStrong(&v16->_displayType, a6);
+    objc_storeStrong(&v16->_displayType, type);
     v16->_resultsLoaded = 0;
     [(HKDateCache *)v16->_dateCache registerObserver:v16];
   }
@@ -54,8 +54,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696BE70] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696BE70] object:0];
 
   v4.receiver = self;
   v4.super_class = HKValueDataProvider;
@@ -72,8 +72,8 @@
 
 - (BOOL)hasLoadedData
 {
-  v3 = [(HKValueDataProvider *)self value];
-  if (v3)
+  value = [(HKValueDataProvider *)self value];
+  if (value)
   {
     resultsLoaded = 1;
   }
@@ -119,16 +119,16 @@
   }
 }
 
-- (void)_fetchValueWithRetryCount:(int64_t)a3
+- (void)_fetchValueWithRetryCount:(int64_t)count
 {
-  if (a3)
+  if (count)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__HKValueDataProvider__fetchValueWithRetryCount___block_invoke;
     v7[3] = &unk_1E81B7500;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = count;
     v4 = [(HKValueDataProvider *)self fetchOperationWithCompletion:v7];
     outstandingFetchOperation = self->_outstandingFetchOperation;
     self->_outstandingFetchOperation = v4;
@@ -198,11 +198,11 @@ uint64_t __49__HKValueDataProvider__fetchValueWithRetryCount___block_invoke_2(ui
   v3 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HKValueDataProvider *)self displayType];
+    displayType = [(HKValueDataProvider *)self displayType];
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = displayType;
     _os_log_impl(&dword_1C3942000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Reached max retry count for %@. Aborting", &v6, 0x16u);
   }
 
@@ -212,9 +212,9 @@ uint64_t __49__HKValueDataProvider__fetchValueWithRetryCount___block_invoke_2(ui
   self->_resultsLoaded = 0;
 }
 
-- (void)_updateValueWithValue:(id)a3
+- (void)_updateValueWithValue:(id)value
 {
-  objc_storeStrong(&self->_value, a3);
+  objc_storeStrong(&self->_value, value);
   self->_resultsLoaded = 1;
   if (self->_needsToReFetchValue)
   {
@@ -227,11 +227,11 @@ uint64_t __49__HKValueDataProvider__fetchValueWithRetryCount___block_invoke_2(ui
   [(HKValueDataProvider *)self _alertObserversDidUpdateValues];
 }
 
-- (void)updateController:(id)a3 didReceiveUpdateForType:(id)a4 samplesAdded:(id)a5 objectsRemoved:(id)a6 recoveringFromError:(BOOL)a7
+- (void)updateController:(id)controller didReceiveUpdateForType:(id)type samplesAdded:(id)added objectsRemoved:(id)removed recoveringFromError:(BOOL)error
 {
-  v7 = a7;
-  v10 = a6;
-  if ([a5 count] || objc_msgSend(v10, "count") || v7)
+  errorCopy = error;
+  removedCopy = removed;
+  if ([added count] || objc_msgSend(removedCopy, "count") || errorCopy)
   {
     [(HKValueDataProvider *)self invalidateValue];
   }
@@ -271,16 +271,16 @@ uint64_t __49__HKValueDataProvider__fetchValueWithRetryCount___block_invoke_2(ui
   }
 }
 
-- (void)_handleUnitPreferencesDidChangeNotification:(id)a3
+- (void)_handleUnitPreferencesDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__HKValueDataProvider__handleUnitPreferencesDidChangeNotification___block_invoke;
   v6[3] = &unk_1E81B5AD0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -318,7 +318,7 @@ void __67__HKValueDataProvider__handleUnitPreferencesDidChangeNotification___blo
   }
 }
 
-- (id)fetchOperationWithCompletion:(id)a3
+- (id)fetchOperationWithCompletion:(id)completion
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

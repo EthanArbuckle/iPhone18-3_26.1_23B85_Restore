@@ -1,13 +1,13 @@
 @interface PrivateDataActionProvider
 - (_TtC7NewsKitP33_97C4145B2F6687765D35AB4C72479A3E25PrivateDataActionProvider)init;
-- (void)consumeNonDestructiveActionsSyncWithBlock:(id)a3;
+- (void)consumeNonDestructiveActionsSyncWithBlock:(id)block;
 @end
 
 @implementation PrivateDataActionProvider
 
-- (void)consumeNonDestructiveActionsSyncWithBlock:(id)a3
+- (void)consumeNonDestructiveActionsSyncWithBlock:(id)block
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(block);
   if (v3)
   {
     v4 = v3;

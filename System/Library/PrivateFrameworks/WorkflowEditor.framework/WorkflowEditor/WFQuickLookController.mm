@@ -1,44 +1,44 @@
 @interface WFQuickLookController
 - (CGSize)preferredContentSize;
-- (WFQuickLookController)initWithInitialIndex:(int64_t)a3;
-- (WFQuickLookController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)activityItemForDocumentInteractionController:(id)a3;
-- (void)_updateAppearance:(BOOL)a3;
+- (WFQuickLookController)initWithInitialIndex:(int64_t)index;
+- (WFQuickLookController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)activityItemForDocumentInteractionController:(id)controller;
+- (void)_updateAppearance:(BOOL)appearance;
 - (void)updateCurrentIndex;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)wf_refreshPreviewItemAtIndex:(int64_t)a3;
+- (void)wf_refreshPreviewItemAtIndex:(int64_t)index;
 @end
 
 @implementation WFQuickLookController
 
-- (id)activityItemForDocumentInteractionController:(id)a3
+- (id)activityItemForDocumentInteractionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([-[WFQuickLookController superclass](self "superclass")])
   {
     v15.receiver = self;
     v15.super_class = WFQuickLookController;
-    v5 = [(QLPreviewController *)&v15 activityItemForDocumentInteractionController:v4];
+    v5 = [(QLPreviewController *)&v15 activityItemForDocumentInteractionController:controllerCopy];
     objc_opt_class();
     NSClassFromString(&cfstr_Qlactivityitem.isa);
     isKindOfClass = objc_opt_isKindOfClass();
     v7 = v5;
     if (isKindOfClass & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v8 = [(QLPreviewController *)self currentPreviewItem];
+      currentPreviewItem = [(QLPreviewController *)self currentPreviewItem];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
-        v10 = [v9 originalItem];
+        v9 = currentPreviewItem;
+        originalItem = [v9 originalItem];
 
-        if (v10)
+        if (originalItem)
         {
           v11 = objc_opt_new();
-          v12 = [v9 originalItem];
-          [v11 setItem:v12];
+          originalItem2 = [v9 originalItem];
+          [v11 setItem:originalItem2];
 
           v13 = [MEMORY[0x277CDAA48] itemWithPreviewItem:v11];
           [v7 setActivityPreviewItem:v13];
@@ -55,9 +55,9 @@
   return v7;
 }
 
-- (void)wf_refreshPreviewItemAtIndex:(int64_t)a3
+- (void)wf_refreshPreviewItemAtIndex:(int64_t)index
 {
-  if ([(QLPreviewController *)self currentPreviewItemIndex]== a3)
+  if ([(QLPreviewController *)self currentPreviewItemIndex]== index)
   {
 
     [(QLPreviewController *)self refreshCurrentPreviewItem];
@@ -65,8 +65,8 @@
 
   else
   {
-    v5 = [(WFQuickLookController *)self indexesPendingRefresh];
-    [v5 addIndex:a3];
+    indexesPendingRefresh = [(WFQuickLookController *)self indexesPendingRefresh];
+    [indexesPendingRefresh addIndex:index];
   }
 }
 
@@ -98,36 +98,36 @@
 
 - (void)updateCurrentIndex
 {
-  v3 = [(QLPreviewController *)self currentPreviewItemIndex];
-  if (self->_lastIndex != v3)
+  currentPreviewItemIndex = [(QLPreviewController *)self currentPreviewItemIndex];
+  if (self->_lastIndex != currentPreviewItemIndex)
   {
     [(WFQuickLookController *)self willChangeValueForKey:@"currentPreviewItemIndex"];
     [(WFQuickLookController *)self didChangeValueForKey:@"currentPreviewItemIndex"];
-    v4 = [(WFQuickLookController *)self indexesPendingRefresh];
-    if ([v4 containsIndex:v3])
+    indexesPendingRefresh = [(WFQuickLookController *)self indexesPendingRefresh];
+    if ([indexesPendingRefresh containsIndex:currentPreviewItemIndex])
     {
-      [v4 removeAllIndexes];
+      [indexesPendingRefresh removeAllIndexes];
       [(QLPreviewController *)self refreshCurrentPreviewItem];
     }
   }
 
-  self->_lastIndex = v3;
+  self->_lastIndex = currentPreviewItemIndex;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = WFQuickLookController;
-  [(QLPreviewController *)&v5 viewWillDisappear:a3];
-  v4 = [(WFQuickLookController *)self indexTimer];
-  [v4 invalidate];
+  [(QLPreviewController *)&v5 viewWillDisappear:disappear];
+  indexTimer = [(WFQuickLookController *)self indexTimer];
+  [indexTimer invalidate];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFQuickLookController;
-  [(QLPreviewController *)&v5 viewWillAppear:a3];
+  [(QLPreviewController *)&v5 viewWillAppear:appear];
   [(QLPreviewController *)self setCurrentPreviewItemIndex:[(WFQuickLookController *)self initialIndex]];
   v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_updateCurrentIndex selector:0 userInfo:1 repeats:0.100000001];
   [(WFQuickLookController *)self setIndexTimer:v4];
@@ -140,49 +140,49 @@
   [(WFQuickLookController *)&v19 viewWillLayoutSubviews];
   if ([(WFQuickLookController *)self modalPresentationStyle]== 2)
   {
-    v3 = [(WFQuickLookController *)self view];
-    v4 = [v3 superview];
-    v5 = [(WFQuickLookController *)self view];
-    v6 = [v5 superview];
-    [v6 center];
+    view = [(WFQuickLookController *)self view];
+    superview = [view superview];
+    view2 = [(WFQuickLookController *)self view];
+    superview2 = [view2 superview];
+    [superview2 center];
     v8 = v7;
     v10 = v9;
-    v11 = [(WFQuickLookController *)self view];
-    v12 = [v11 superview];
-    v13 = [v12 superview];
-    [v4 convertPoint:v13 fromView:{v8, v10}];
+    view3 = [(WFQuickLookController *)self view];
+    superview3 = [view3 superview];
+    v12Superview = [superview3 superview];
+    [superview convertPoint:v12Superview fromView:{v8, v10}];
     v15 = v14;
     v17 = v16;
-    v18 = [(WFQuickLookController *)self view];
-    [v18 setCenter:{v15, v17}];
+    view4 = [(WFQuickLookController *)self view];
+    [view4 setCenter:{v15, v17}];
   }
 }
 
-- (void)_updateAppearance:(BOOL)a3
+- (void)_updateAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   if (![(WFQuickLookController *)self isEmbedded])
   {
     v5.receiver = self;
     v5.super_class = WFQuickLookController;
-    [(QLPreviewController *)&v5 _updateAppearance:v3];
+    [(QLPreviewController *)&v5 _updateAppearance:appearanceCopy];
   }
 }
 
-- (WFQuickLookController)initWithInitialIndex:(int64_t)a3
+- (WFQuickLookController)initWithInitialIndex:(int64_t)index
 {
   v6.receiver = self;
   v6.super_class = WFQuickLookController;
   v4 = [(WFQuickLookController *)&v6 init];
-  [(WFQuickLookController *)v4 setInitialIndex:a3];
+  [(WFQuickLookController *)v4 setInitialIndex:index];
   return v4;
 }
 
-- (WFQuickLookController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFQuickLookController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = WFQuickLookController;
-  v4 = [(QLPreviewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(QLPreviewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();

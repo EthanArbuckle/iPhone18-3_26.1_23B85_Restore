@@ -1,24 +1,24 @@
 @interface W5PeerDatabaseResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerDatabaseResponsePayload)initWithRequest:(id)a3;
-- (id)convertCSVArrayToKeyValueDictArray:(id)a3;
-- (id)convertKeyValueDictArrayToCSVArray:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerDatabaseResponsePayload)initWithRequest:(id)request;
+- (id)convertCSVArrayToKeyValueDictArray:(id)array;
+- (id)convertKeyValueDictArrayToCSVArray:(id)array;
 - (id)encode;
 @end
 
 @implementation W5PeerDatabaseResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerDatabaseResponsePayload)initWithRequest:(id)a3
+- (W5PeerDatabaseResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
   v6 = sub_10009A49C();
   if (os_signpost_enabled(v6))
@@ -30,13 +30,13 @@
   v64.receiver = self;
   v64.super_class = W5PeerDatabaseResponsePayload;
   v7 = [(W5PeerDatabaseResponsePayload *)&v64 init];
-  if (!v7 || (v8 = [v4 objectForKey:@"version"], (v7->_version = v8) == 0))
+  if (!v7 || (v8 = [requestCopy objectForKey:@"version"], (v7->_version = v8) == 0))
   {
     v23 = 0;
     goto LABEL_46;
   }
 
-  v9 = [v4 objectForKey:@"status"];
+  v9 = [requestCopy objectForKey:@"status"];
   v10 = v9;
   if (v9)
   {
@@ -44,7 +44,7 @@
   }
 
   context = v5;
-  v60 = v4;
+  v60 = requestCopy;
   v58 = v10;
   if (![(NSNumber *)v7->_version isEqualToNumber:&off_1000EFBA8])
   {
@@ -53,11 +53,11 @@
       goto LABEL_51;
     }
 
-    v11 = [v4 objectForKey:@"peerDatabaseResultsUncompressed"];
+    v11 = [requestCopy objectForKey:@"peerDatabaseResultsUncompressed"];
 
     if (v11)
     {
-      v61 = [v4 objectForKey:@"peerDatabaseResultsUncompressed"];
+      v61 = [requestCopy objectForKey:@"peerDatabaseResultsUncompressed"];
       if (v61)
       {
         v56 = v7;
@@ -79,9 +79,9 @@
         v18 = objc_opt_class();
         v19 = objc_opt_class();
         v20 = objc_opt_class();
-        v21 = [NSSet setWithObjects:v14, v15, v16, v17, v18, v19, v20, objc_opt_class(), 0];
+        getPairOfBuffersFromPool = [NSSet setWithObjects:v14, v15, v16, v17, v18, v19, v20, objc_opt_class(), 0];
         v62 = 0;
-        v22 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v21 fromData:v61 error:&v62];
+        v22 = [NSKeyedUnarchiver unarchivedObjectOfClasses:getPairOfBuffersFromPool fromData:v61 error:&v62];
         v23 = v62;
         v7 = v56;
         goto LABEL_26;
@@ -90,7 +90,7 @@
       goto LABEL_51;
     }
 
-    v24 = [v4 objectForKey:@"peerDatabaseResults"];
+    v24 = [requestCopy objectForKey:@"peerDatabaseResults"];
 
     if (!v24)
     {
@@ -98,12 +98,12 @@
     }
   }
 
-  v61 = [v4 objectForKey:@"peerDatabaseResults"];
+  v61 = [requestCopy objectForKey:@"peerDatabaseResults"];
   if (!v61)
   {
 LABEL_51:
-    v21 = sub_100098A04();
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_44;
     }
@@ -115,8 +115,8 @@ LABEL_51:
 
   if (!compression_decode_scratch_buffer_size(COMPRESSION_LZFSE))
   {
-    v21 = sub_100098A04();
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_44:
       v23 = 0;
@@ -131,9 +131,9 @@ LABEL_40:
   }
 
   v25 = +[W5BufferPool sharedW5BufferPool];
-  v21 = [v25 getPairOfBuffersFromPool];
+  getPairOfBuffersFromPool = [v25 getPairOfBuffersFromPool];
 
-  if ([v21 count]<= 1)
+  if ([getPairOfBuffersFromPool count]<= 1)
   {
     v50 = sub_100098A04();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -146,9 +146,9 @@ LABEL_40:
     goto LABEL_44;
   }
 
-  v26 = [v21 firstObject];
-  v27 = [v21 lastObject];
-  v28 = compression_decode_buffer([v26 mutableBytes], objc_msgSend(v26, "length"), objc_msgSend(v61, "bytes"), objc_msgSend(v61, "length"), objc_msgSend(v27, "mutableBytes"), COMPRESSION_LZFSE);
+  firstObject = [getPairOfBuffersFromPool firstObject];
+  lastObject = [getPairOfBuffersFromPool lastObject];
+  v28 = compression_decode_buffer([firstObject mutableBytes], objc_msgSend(firstObject, "length"), objc_msgSend(v61, "bytes"), objc_msgSend(v61, "length"), objc_msgSend(lastObject, "mutableBytes"), COMPRESSION_LZFSE);
   v29 = sub_100098A04();
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
   if (v28)
@@ -166,7 +166,7 @@ LABEL_40:
       _os_log_send_and_compose_impl();
     }
 
-    [v26 setLength:v28];
+    [firstObject setLength:v28];
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v34 = objc_opt_class();
@@ -176,7 +176,7 @@ LABEL_40:
     v38 = objc_opt_class();
     v29 = [NSSet setWithObjects:v32, v33, v34, v35, v36, v37, v38, objc_opt_class(), 0];
     v63 = 0;
-    v22 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v29 fromData:v26 error:&v63];
+    v22 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v29 fromData:firstObject error:&v63];
     v23 = v63;
     v7 = v57;
   }
@@ -200,16 +200,16 @@ LABEL_40:
   }
 
   v40 = +[W5BufferPool sharedW5BufferPool];
-  [v40 returnBufferToPool:v26];
+  [v40 returnBufferToPool:firstObject];
 
   v41 = +[W5BufferPool sharedW5BufferPool];
-  [v41 returnBufferToPool:v27];
+  [v41 returnBufferToPool:lastObject];
 
 LABEL_26:
   if (!v22)
   {
-    v21 = sub_100098A04();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_37;
     }
@@ -222,8 +222,8 @@ LABEL_26:
   v7->_fetchedResults = v42;
 
   v44 = v7->_fetchedResults;
-  v21 = sub_100098A04();
-  v45 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
+  getPairOfBuffersFromPool = sub_100098A04();
+  v45 = os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT);
   if (!v44)
   {
     if (v45)
@@ -287,16 +287,16 @@ LABEL_46:
   return v48;
 }
 
-- (id)convertCSVArrayToKeyValueDictArray:(id)a3
+- (id)convertCSVArrayToKeyValueDictArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v21 = +[NSMutableArray array];
-  v26 = [v3 firstObject];
+  firstObject = [arrayCopy firstObject];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v23 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v23)
   {
@@ -324,8 +324,8 @@ LABEL_46:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v26 = v26;
-          v9 = [v26 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          firstObject = firstObject;
+          v9 = [firstObject countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v9)
           {
             v10 = v9;
@@ -337,7 +337,7 @@ LABEL_46:
               {
                 if (*v28 != v12)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(firstObject);
                 }
 
                 v14 = *(*(&v27 + 1) + 8 * i);
@@ -352,7 +352,7 @@ LABEL_46:
                 ++v11;
               }
 
-              v10 = [v26 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v10 = [firstObject countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v10);
@@ -365,9 +365,9 @@ LABEL_46:
 
         else
         {
-          v8 = v26;
+          v8 = firstObject;
           v6 = 1;
-          v26 = v7;
+          firstObject = v7;
         }
 
         ++v5;
@@ -385,9 +385,9 @@ LABEL_46:
   return v21;
 }
 
-- (id)convertKeyValueDictArrayToCSVArray:(id)a3
+- (id)convertKeyValueDictArrayToCSVArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSMutableSet set];
   v34 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
@@ -395,7 +395,7 @@ LABEL_46:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = v3;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v48 objects:v55 count:16];
   if (v7)
   {
@@ -410,8 +410,8 @@ LABEL_46:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v48 + 1) + 8 * i) allKeys];
-        v12 = [NSSet setWithArray:v11];
+        allKeys = [*(*(&v48 + 1) + 8 * i) allKeys];
+        v12 = [NSSet setWithArray:allKeys];
         [v4 unionSet:v12];
       }
 
@@ -541,28 +541,28 @@ LABEL_46:
   v6 = sub_100098A04();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(W5PeerDatabaseResponsePayload *)self version];
-    v8 = [(W5PeerDatabaseResponsePayload *)self status];
-    v9 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
+    version = [(W5PeerDatabaseResponsePayload *)self version];
+    status = [(W5PeerDatabaseResponsePayload *)self status];
+    fetchedResults = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
     *buf = 136315906;
     v59 = "[W5PeerDatabaseResponsePayload encode]";
     v60 = 2112;
-    v61 = v7;
+    v61 = version;
     v62 = 2048;
-    v63 = v8;
+    v63 = status;
     v64 = 2112;
-    v65 = v9;
+    v65 = fetchedResults;
     LODWORD(v54) = 42;
     v51 = buf;
     _os_log_send_and_compose_impl();
   }
 
-  v10 = [(W5PeerDatabaseResponsePayload *)self version];
+  version2 = [(W5PeerDatabaseResponsePayload *)self version];
 
-  if (!v10)
+  if (!version2)
   {
-    v27 = sub_100098A04();
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_56;
     }
@@ -575,13 +575,13 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  v11 = [(W5PeerDatabaseResponsePayload *)self version];
-  [v4 setObject:v11 forKey:@"version"];
+  version3 = [(W5PeerDatabaseResponsePayload *)self version];
+  [v4 setObject:version3 forKey:@"version"];
 
   if (![(W5PeerDatabaseResponsePayload *)self status])
   {
-    v27 = sub_100098A04();
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_56;
     }
@@ -595,9 +595,9 @@ LABEL_55:
   v12 = [NSNumber numberWithInteger:[(W5PeerDatabaseResponsePayload *)self status]];
   [v4 setObject:v12 forKey:@"status"];
 
-  v13 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
+  fetchedResults2 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
 
-  if (!v13)
+  if (!fetchedResults2)
   {
     v14 = sub_100098A04();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -614,8 +614,8 @@ LABEL_55:
 
   if (!v15)
   {
-    v27 = sub_100098A04();
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_56;
     }
@@ -626,13 +626,13 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v16 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
-  v17 = [(W5PeerDatabaseResponsePayload *)self convertKeyValueDictArrayToCSVArray:v16];
+  fetchedResults3 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
+  v17 = [(W5PeerDatabaseResponsePayload *)self convertKeyValueDictArrayToCSVArray:fetchedResults3];
 
-  v18 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
-  if (v18)
+  fetchedResults4 = [(W5PeerDatabaseResponsePayload *)self fetchedResults];
+  if (fetchedResults4)
   {
-    v19 = v18;
+    v19 = fetchedResults4;
     if (v17)
     {
       v20 = [v17 count];
@@ -665,8 +665,8 @@ LABEL_55:
 
   if (!v17)
   {
-    v27 = sub_100098A04();
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_56;
     }
@@ -683,8 +683,8 @@ LABEL_21:
   v24 = v57;
   if (!(v23 | v24))
   {
-    v27 = sub_100098A04();
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v59 = "[W5PeerDatabaseResponsePayload encode]";
@@ -727,9 +727,9 @@ LABEL_56:
   {
 LABEL_23:
     v26 = +[W5BufferPool sharedW5BufferPool];
-    v27 = [v26 getPairOfBuffersFromPool];
+    getPairOfBuffersFromPool = [v26 getPairOfBuffersFromPool];
 
-    if ([v27 count]<= 1)
+    if ([getPairOfBuffersFromPool count]<= 1)
     {
       v50 = sub_100098A04();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -744,11 +744,11 @@ LABEL_23:
     }
 
     v56 = v3;
-    v28 = [v27 firstObject];
-    v55 = v27;
-    v29 = [v27 lastObject];
+    firstObject = [getPairOfBuffersFromPool firstObject];
+    v55 = getPairOfBuffersFromPool;
+    lastObject = [getPairOfBuffersFromPool lastObject];
     compression_encode_scratch_buffer_size(COMPRESSION_LZFSE);
-    v30 = compression_encode_buffer([v28 mutableBytes], objc_msgSend(v28, "length"), objc_msgSend(v23, "bytes"), objc_msgSend(v23, "length"), objc_msgSend(v29, "mutableBytes"), COMPRESSION_LZFSE);
+    v30 = compression_encode_buffer([firstObject mutableBytes], objc_msgSend(firstObject, "length"), objc_msgSend(v23, "bytes"), objc_msgSend(v23, "length"), objc_msgSend(lastObject, "mutableBytes"), COMPRESSION_LZFSE);
     v31 = sub_100098A04();
     v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
     if (v30)
@@ -767,15 +767,15 @@ LABEL_23:
         _os_log_send_and_compose_impl();
       }
 
-      v31 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v28 mutableBytes], v30);
+      v31 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [firstObject mutableBytes], v30);
       [v4 setObject:v31 forKey:@"peerDatabaseResults"];
     }
 
     else if (v32)
     {
       v36 = [v23 length];
-      v37 = [v28 length];
-      v38 = [v29 length];
+      v37 = [firstObject length];
+      v38 = [lastObject length];
       *buf = 136315906;
       v59 = "[W5PeerDatabaseResponsePayload encode]";
       v60 = 2048;
@@ -790,10 +790,10 @@ LABEL_23:
     }
 
     v39 = +[W5BufferPool sharedW5BufferPool];
-    [v39 returnBufferToPool:v28];
+    [v39 returnBufferToPool:firstObject];
 
     v40 = +[W5BufferPool sharedW5BufferPool];
-    [v40 returnBufferToPool:v29];
+    [v40 returnBufferToPool:lastObject];
 
     v3 = v56;
   }
@@ -828,8 +828,8 @@ LABEL_36:
 
   if (!v42)
   {
-    v27 = sub_100098A04();
-    if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    getPairOfBuffersFromPool = sub_100098A04();
+    if (!os_log_type_enabled(getPairOfBuffersFromPool, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_56;
     }

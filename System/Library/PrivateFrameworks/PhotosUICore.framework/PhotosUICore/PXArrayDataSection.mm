@@ -1,77 +1,77 @@
 @interface PXArrayDataSection
-- (PXArrayDataSection)initWithOutlineObject:(id)a3;
-- (PXArrayDataSection)initWithOutlineObject:(id)a3 sectionContent:(id)a4;
-- (id)objectAtIndex:(int64_t)a3;
+- (PXArrayDataSection)initWithOutlineObject:(id)object;
+- (PXArrayDataSection)initWithOutlineObject:(id)object sectionContent:(id)content;
+- (id)objectAtIndex:(int64_t)index;
 - (int64_t)count;
-- (int64_t)indexOfObject:(id)a3;
-- (int64_t)validatedIndexOfObject:(id)a3 hintIndex:(int64_t)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (int64_t)indexOfObject:(id)object;
+- (int64_t)validatedIndexOfObject:(id)object hintIndex:(int64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation PXArrayDataSection
 
-- (int64_t)validatedIndexOfObject:(id)a3 hintIndex:(int64_t)a4
+- (int64_t)validatedIndexOfObject:(id)object hintIndex:(int64_t)index
 {
-  v6 = a3;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL || (-[PXArrayDataSection objectAtIndex:](self, "objectAtIndex:", a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v6], v7, (v8 & 1) == 0))
+  objectCopy = object;
+  if (index == 0x7FFFFFFFFFFFFFFFLL || (-[PXArrayDataSection objectAtIndex:](self, "objectAtIndex:", index), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:objectCopy], v7, (v8 & 1) == 0))
   {
-    a4 = [(PXArrayDataSection *)self indexOfObject:v6];
+    index = [(PXArrayDataSection *)self indexOfObject:objectCopy];
   }
 
-  return a4;
+  return index;
 }
 
-- (int64_t)indexOfObject:(id)a3
+- (int64_t)indexOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PXArrayDataSection *)self sectionContent];
-  v6 = [v5 indexOfObject:v4];
+  objectCopy = object;
+  sectionContent = [(PXArrayDataSection *)self sectionContent];
+  v6 = [sectionContent indexOfObject:objectCopy];
 
   return v6;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(PXArrayDataSection *)self sectionContent];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  sectionContent = [(PXArrayDataSection *)self sectionContent];
+  v9 = [sectionContent countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
-  v4 = [(PXArrayDataSection *)self sectionContent];
-  v5 = [v4 objectAtIndex:a3];
+  sectionContent = [(PXArrayDataSection *)self sectionContent];
+  v5 = [sectionContent objectAtIndex:index];
 
   return v5;
 }
 
 - (int64_t)count
 {
-  v2 = [(PXArrayDataSection *)self sectionContent];
-  v3 = [v2 count];
+  sectionContent = [(PXArrayDataSection *)self sectionContent];
+  v3 = [sectionContent count];
 
   return v3;
 }
 
-- (PXArrayDataSection)initWithOutlineObject:(id)a3
+- (PXArrayDataSection)initWithOutlineObject:(id)object
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXDataSection.m" lineNumber:90 description:{@"%s is not available as initializer", "-[PXArrayDataSection initWithOutlineObject:]"}];
+  objectCopy = object;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDataSection.m" lineNumber:90 description:{@"%s is not available as initializer", "-[PXArrayDataSection initWithOutlineObject:]"}];
 
   abort();
 }
 
-- (PXArrayDataSection)initWithOutlineObject:(id)a3 sectionContent:(id)a4
+- (PXArrayDataSection)initWithOutlineObject:(id)object sectionContent:(id)content
 {
-  v6 = a4;
+  contentCopy = content;
   v11.receiver = self;
   v11.super_class = PXArrayDataSection;
-  v7 = [(PXDataSection *)&v11 initWithOutlineObject:a3];
+  v7 = [(PXDataSection *)&v11 initWithOutlineObject:object];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [contentCopy copy];
     sectionContent = v7->_sectionContent;
     v7->_sectionContent = v8;
   }

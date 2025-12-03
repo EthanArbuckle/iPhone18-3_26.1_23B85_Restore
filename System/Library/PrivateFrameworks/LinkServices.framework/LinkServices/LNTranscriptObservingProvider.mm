@@ -1,9 +1,9 @@
 @interface LNTranscriptObservingProvider
-- (LNTranscriptObservingProvider)initWithObserver:(id)a3;
+- (LNTranscriptObservingProvider)initWithObserver:(id)observer;
 - (LNTranscriptObservingProviderDelegate)delegate;
-- (void)configureConnection:(id)a3;
-- (void)startObservingNextActionStreamWithCompletion:(id)a3;
-- (void)stopObservingNextActionStreamWithConnectionUUID:(id)a3 completion:(id)a4;
+- (void)configureConnection:(id)connection;
+- (void)startObservingNextActionStreamWithCompletion:(id)completion;
+- (void)stopObservingNextActionStreamWithConnectionUUID:(id)d completion:(id)completion;
 @end
 
 @implementation LNTranscriptObservingProvider
@@ -15,35 +15,35 @@
   return WeakRetained;
 }
 
-- (void)stopObservingNextActionStreamWithConnectionUUID:(id)a3 completion:(id)a4
+- (void)stopObservingNextActionStreamWithConnectionUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = getLNLogCategoryExecution();
   v9 = v8;
-  if (a3 + 1 >= 2 && os_signpost_enabled(v8))
+  if (d + 1 >= 2 && os_signpost_enabled(v8))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_19763D000, v9, OS_SIGNPOST_INTERVAL_BEGIN, a3, "stopping observation", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19763D000, v9, OS_SIGNPOST_INTERVAL_BEGIN, d, "stopping observation", "", buf, 2u);
   }
 
-  v10 = [(LNTranscriptProvider *)self connection];
+  connection = [(LNTranscriptProvider *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __92__LNTranscriptObservingProvider_stopObservingNextActionStreamWithConnectionUUID_completion___block_invoke;
   v17[3] = &unk_1E74B2848;
-  v11 = v6;
+  v11 = completionCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v17];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__LNTranscriptObservingProvider_stopObservingNextActionStreamWithConnectionUUID_completion___block_invoke_15;
   v14[3] = &unk_1E74B2870;
   v15 = v11;
-  v16 = a3;
+  dCopy2 = d;
   v13 = v11;
-  [v12 stopObservingNextActionStreamWithConnectionUUID:v7 completion:v14];
+  [v12 stopObservingNextActionStreamWithConnectionUUID:dCopy completion:v14];
 }
 
 void __92__LNTranscriptObservingProvider_stopObservingNextActionStreamWithConnectionUUID_completion___block_invoke(uint64_t a1, void *a2)
@@ -77,9 +77,9 @@ void __92__LNTranscriptObservingProvider_stopObservingNextActionStreamWithConnec
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startObservingNextActionStreamWithCompletion:(id)a3
+- (void)startObservingNextActionStreamWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = getLNLogCategoryExecution();
   v6 = v5;
   if (&self->super.super.isa + 1 >= 2 && os_signpost_enabled(v5))
@@ -94,22 +94,22 @@ void __92__LNTranscriptObservingProvider_stopObservingNextActionStreamWithConnec
   v18 = __Block_byref_object_copy__14892;
   v19 = __Block_byref_object_dispose__14893;
   v20 = 0;
-  v7 = [(LNTranscriptProvider *)self connection];
+  connection = [(LNTranscriptProvider *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__LNTranscriptObservingProvider_startObservingNextActionStreamWithCompletion___block_invoke;
   v14[3] = &unk_1E74B27F8;
   v14[4] = buf;
   v14[5] = self;
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v14];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__LNTranscriptObservingProvider_startObservingNextActionStreamWithCompletion___block_invoke_13;
   v10[3] = &unk_1E74B2820;
   v12 = buf;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = completionCopy;
   v11 = v9;
   [v8 startObservingNextActionStreamWithCompletion:v10];
 
@@ -175,27 +175,27 @@ void __78__LNTranscriptObservingProvider_startObservingNextActionStreamWithCompl
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureConnection:(id)a3
+- (void)configureConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = LNTranscriptObservingProvider;
-  [(LNTranscriptProvider *)&v13 configureConnection:v4];
+  [(LNTranscriptProvider *)&v13 configureConnection:connectionCopy];
   objc_initWeak(&location, self);
-  v5 = [v4 interruptionHandler];
+  interruptionHandler = [connectionCopy interruptionHandler];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__LNTranscriptObservingProvider_configureConnection___block_invoke;
   v9[3] = &unk_1E74B27C8;
   objc_copyWeak(&v11, &location);
-  v6 = v5;
+  v6 = interruptionHandler;
   v10 = v6;
-  [v4 setInterruptionHandler:v9];
+  [connectionCopy setInterruptionHandler:v9];
   v7 = LNNextActionObserverXPCInterface();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  v8 = [(LNTranscriptObservingProvider *)self observer];
-  [v4 setExportedObject:v8];
+  observer = [(LNTranscriptObservingProvider *)self observer];
+  [connectionCopy setExportedObject:observer];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -223,16 +223,16 @@ void __53__LNTranscriptObservingProvider_configureConnection___block_invoke(uint
   }
 }
 
-- (LNTranscriptObservingProvider)initWithObserver:(id)a3
+- (LNTranscriptObservingProvider)initWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v10.receiver = self;
   v10.super_class = LNTranscriptObservingProvider;
   v6 = [(LNTranscriptProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observer, a3);
+    objc_storeStrong(&v6->_observer, observer);
     v8 = v7;
   }
 

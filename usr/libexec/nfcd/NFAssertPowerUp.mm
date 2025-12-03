@@ -9,32 +9,32 @@
 - (BOOL)isSupported
 {
   v2 = +[_NFHardwareManager sharedHardwareManager];
-  v3 = [v2 controllerInfo];
-  if ([v3 siliconName] == 14)
+  controllerInfo = [v2 controllerInfo];
+  if ([controllerInfo siliconName] == 14)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v2 controllerInfo];
-    if ([v5 siliconName] == 15)
+    controllerInfo2 = [v2 controllerInfo];
+    if ([controllerInfo2 siliconName] == 15)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [v2 controllerInfo];
-      if ([v6 siliconName] == 16)
+      controllerInfo3 = [v2 controllerInfo];
+      if ([controllerInfo3 siliconName] == 16)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [v2 controllerInfo];
-        v4 = [v7 siliconName] == 17;
+        controllerInfo4 = [v2 controllerInfo];
+        v4 = [controllerInfo4 siliconName] == 17;
       }
     }
   }
@@ -46,8 +46,8 @@
 {
   [(NFAsserter *)self setState:2];
   v4 = +[_NFHardwareManager sharedHardwareManager];
-  v5 = [(NFAsserter *)self remoteAssertion];
-  v6 = sub_10017C8A0(v4, v5);
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  v6 = sub_10017C8A0(v4, remoteAssertion);
 
   if (v6)
   {
@@ -105,8 +105,8 @@
 {
   [(NFAsserter *)self setState:4];
   v3 = +[_NFHardwareManager sharedHardwareManager];
-  v4 = [(NFAsserter *)self remoteAssertion];
-  sub_10017D8F4(v3, v4);
+  remoteAssertion = [(NFAsserter *)self remoteAssertion];
+  sub_10017D8F4(v3, remoteAssertion);
 
   return 0;
 }

@@ -10,15 +10,15 @@
 - (unint64_t)appSignerCount;
 - (unint64_t)installedProfileCount;
 - (unint64_t)itemCount;
-- (void)_reloadQueueReloadDataInBackgroundIncludingProfiles:(BOOL)a3 appSigners:(BOOL)a4 blockedApplications:(BOOL)a5 completion:(id)a6;
-- (void)allDeviceManagementOutMDMProfileInfo:(id *)a3 outConfigurationProfilesInfo:(id *)a4 outUninstalledProfilesInfo:(id *)a5 outEnterpriseAppSigners:(id *)a6 outFreeDevAppSigners:(id *)a7 outBlockedApplications:(id *)a8;
-- (void)appMovedToBackground:(id)a3;
-- (void)appMovedToForeground:(id)a3;
+- (void)_reloadQueueReloadDataInBackgroundIncludingProfiles:(BOOL)profiles appSigners:(BOOL)signers blockedApplications:(BOOL)applications completion:(id)completion;
+- (void)allDeviceManagementOutMDMProfileInfo:(id *)info outConfigurationProfilesInfo:(id *)profilesInfo outUninstalledProfilesInfo:(id *)uninstalledProfilesInfo outEnterpriseAppSigners:(id *)signers outFreeDevAppSigners:(id *)appSigners outBlockedApplications:(id *)applications;
+- (void)appMovedToBackground:(id)background;
+- (void)appMovedToForeground:(id)foreground;
 - (void)dealloc;
-- (void)profilesChanged:(id)a3;
-- (void)reloadAppSignersAndBlockedAppsInBackgroundWithCompletion:(id)a3;
-- (void)reloadDataInBackgroundIncludingProfiles:(BOOL)a3 appSigners:(BOOL)a4 blockedApplications:(BOOL)a5 completion:(id)a6;
-- (void)reloadProfilesInBackgroundWithCompletion:(id)a3;
+- (void)profilesChanged:(id)changed;
+- (void)reloadAppSignersAndBlockedAppsInBackgroundWithCompletion:(id)completion;
+- (void)reloadDataInBackgroundIncludingProfiles:(BOOL)profiles appSigners:(BOOL)signers blockedApplications:(BOOL)applications completion:(id)completion;
+- (void)reloadProfilesInBackgroundWithCompletion:(id)completion;
 @end
 
 @implementation MCUIDataManager
@@ -59,22 +59,22 @@ uint64_t __32__MCUIDataManager_sharedManager__block_invoke()
     reloadQueue = v2->_reloadQueue;
     v2->_reloadQueue = v5;
 
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     appWorkspace = v2->_appWorkspace;
-    v2->_appWorkspace = v7;
+    v2->_appWorkspace = defaultWorkspace;
 
     [(LSApplicationWorkspace *)v2->_appWorkspace addObserver:v2];
     v2->_observing = 1;
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = *MEMORY[0x277D26148];
-    v11 = [MEMORY[0x277D262A0] sharedConnection];
-    [v9 addObserver:v2 selector:sel_profilesChanged_ name:v10 object:v11];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [defaultCenter addObserver:v2 selector:sel_profilesChanged_ name:v10 object:mEMORY[0x277D262A0]];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel_appMovedToBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_appMovedToBackground_ name:*MEMORY[0x277D76660] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_appMovedToForeground_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_appMovedToForeground_ name:*MEMORY[0x277D76648] object:0];
 
     objc_initWeak(&location, v2);
     v14 = MEMORY[0x277D85CD0];
@@ -137,14 +137,14 @@ void __23__MCUIDataManager_init__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76648] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76648] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76660] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D26148] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x277D26148] object:0];
 
   if (self->_observing)
   {
@@ -160,36 +160,36 @@ void __23__MCUIDataManager_init__block_invoke_2(uint64_t a1)
   [(MCUIDataManager *)&v6 dealloc];
 }
 
-- (void)appMovedToBackground:(id)a3
+- (void)appMovedToBackground:(id)background
 {
-  v4 = [(MCUIDataManager *)self appWorkspace];
-  if (v4)
+  appWorkspace = [(MCUIDataManager *)self appWorkspace];
+  if (appWorkspace)
   {
-    v5 = v4;
-    v6 = [(MCUIDataManager *)self observing];
+    v5 = appWorkspace;
+    observing = [(MCUIDataManager *)self observing];
 
-    if (v6)
+    if (observing)
     {
-      v7 = [(MCUIDataManager *)self appWorkspace];
-      [v7 removeObserver:self];
+      appWorkspace2 = [(MCUIDataManager *)self appWorkspace];
+      [appWorkspace2 removeObserver:self];
 
       [(MCUIDataManager *)self setObserving:0];
     }
   }
 }
 
-- (void)appMovedToForeground:(id)a3
+- (void)appMovedToForeground:(id)foreground
 {
-  v4 = [(MCUIDataManager *)self appWorkspace];
-  if (v4)
+  appWorkspace = [(MCUIDataManager *)self appWorkspace];
+  if (appWorkspace)
   {
-    v5 = v4;
-    v6 = [(MCUIDataManager *)self observing];
+    v5 = appWorkspace;
+    observing = [(MCUIDataManager *)self observing];
 
-    if (!v6)
+    if (!observing)
     {
-      v7 = [(MCUIDataManager *)self appWorkspace];
-      [v7 addObserver:self];
+      appWorkspace2 = [(MCUIDataManager *)self appWorkspace];
+      [appWorkspace2 addObserver:self];
 
       [(MCUIDataManager *)self setObserving:1];
     }
@@ -198,9 +198,9 @@ void __23__MCUIDataManager_init__block_invoke_2(uint64_t a1)
   [(MCUIDataManager *)self reloadAppSignersAndBlockedAppsInBackgroundWithCompletion:0];
 }
 
-- (void)profilesChanged:(id)a3
+- (void)profilesChanged:(id)changed
 {
-  NSLog(&cfstr_DataManagerRel.isa, a2, a3);
+  NSLog(&cfstr_DataManagerRel.isa, a2, changed);
 
   [(MCUIDataManager *)self reloadAllDataInBackgroundWithCompletion:0];
 }
@@ -211,14 +211,14 @@ void __23__MCUIDataManager_init__block_invoke_2(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__MCUIDataManager_itemCount__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -254,14 +254,14 @@ uint64_t __28__MCUIDataManager_itemCount__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__MCUIDataManager_appSignerCount__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -282,14 +282,14 @@ uint64_t __33__MCUIDataManager_appSignerCount__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__MCUIDataManager_installedProfileCount__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -323,14 +323,14 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__MCUIDataManager_mdmProfile__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -346,14 +346,14 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__MCUIDataManager_configurationProfiles__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -369,14 +369,14 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__MCUIDataManager_uninstalledProfilesInfo__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -392,14 +392,14 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__MCUIDataManager_freeDeveloperAppSigners__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -415,14 +415,14 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__MCUIDataManager_enterpriseAppSigners__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -438,14 +438,14 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__MCUIDataManager_blockedApplications__block_invoke;
   v6[3] = &unk_279862060;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -453,7 +453,7 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)allDeviceManagementOutMDMProfileInfo:(id *)a3 outConfigurationProfilesInfo:(id *)a4 outUninstalledProfilesInfo:(id *)a5 outEnterpriseAppSigners:(id *)a6 outFreeDevAppSigners:(id *)a7 outBlockedApplications:(id *)a8
+- (void)allDeviceManagementOutMDMProfileInfo:(id *)info outConfigurationProfilesInfo:(id *)profilesInfo outUninstalledProfilesInfo:(id *)uninstalledProfilesInfo outEnterpriseAppSigners:(id *)signers outFreeDevAppSigners:(id *)appSigners outBlockedApplications:(id *)applications
 {
   v47 = 0;
   v48 = &v47;
@@ -491,7 +491,7 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v11 = [(MCUIDataManager *)self memberQueue];
+  memberQueue = [(MCUIDataManager *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __180__MCUIDataManager_allDeviceManagementOutMDMProfileInfo_outConfigurationProfilesInfo_outUninstalledProfilesInfo_outEnterpriseAppSigners_outFreeDevAppSigners_outBlockedApplications___block_invoke;
@@ -503,36 +503,36 @@ uint64_t __40__MCUIDataManager_installedProfileCount__block_invoke(uint64_t a1)
   block[8] = &v29;
   block[9] = &v23;
   block[10] = &v17;
-  dispatch_sync(v11, block);
+  dispatch_sync(memberQueue, block);
 
-  if (a3)
+  if (info)
   {
-    *a3 = v48[5];
+    *info = v48[5];
   }
 
-  if (a4)
+  if (profilesInfo)
   {
-    *a4 = v42[5];
+    *profilesInfo = v42[5];
   }
 
-  if (a5)
+  if (uninstalledProfilesInfo)
   {
-    *a5 = v36[5];
+    *uninstalledProfilesInfo = v36[5];
   }
 
-  if (a6)
+  if (signers)
   {
-    *a6 = v30[5];
+    *signers = v30[5];
   }
 
-  if (a7)
+  if (appSigners)
   {
-    *a7 = v24[5];
+    *appSigners = v24[5];
   }
 
-  if (a8)
+  if (applications)
   {
-    *a8 = v18[5];
+    *applications = v18[5];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -559,64 +559,64 @@ void __180__MCUIDataManager_allDeviceManagementOutMDMProfileInfo_outConfiguratio
   objc_storeStrong(v3, v2);
 }
 
-- (void)reloadDataInBackgroundIncludingProfiles:(BOOL)a3 appSigners:(BOOL)a4 blockedApplications:(BOOL)a5 completion:(id)a6
+- (void)reloadDataInBackgroundIncludingProfiles:(BOOL)profiles appSigners:(BOOL)signers blockedApplications:(BOOL)applications completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   if (![(MCUIDataManager *)self isDeviceManagementHidden])
   {
-    v11 = [(MCUIDataManager *)self reloadQueue];
+    reloadQueue = [(MCUIDataManager *)self reloadQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__MCUIDataManager_reloadDataInBackgroundIncludingProfiles_appSigners_blockedApplications_completion___block_invoke;
     block[3] = &unk_2798620B0;
     block[4] = self;
-    v14 = a3;
-    v15 = a4;
-    v16 = a5;
-    v13 = v10;
-    dispatch_async(v11, block);
+    profilesCopy = profiles;
+    signersCopy = signers;
+    applicationsCopy = applications;
+    v13 = completionCopy;
+    dispatch_async(reloadQueue, block);
   }
 }
 
-- (void)_reloadQueueReloadDataInBackgroundIncludingProfiles:(BOOL)a3 appSigners:(BOOL)a4 blockedApplications:(BOOL)a5 completion:(id)a6
+- (void)_reloadQueueReloadDataInBackgroundIncludingProfiles:(BOOL)profiles appSigners:(BOOL)signers blockedApplications:(BOOL)applications completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  applicationsCopy = applications;
+  signersCopy = signers;
+  profilesCopy = profiles;
+  completionCopy = completion;
   if (![(MCUIDataManager *)self isDeviceManagementHidden])
   {
-    v32 = v10;
-    if (v8)
+    v32 = completionCopy;
+    if (profilesCopy)
     {
       if (MCUIForPairedDevice())
       {
-        v11 = 2;
+        thisDeviceType = 2;
       }
 
       else
       {
-        v11 = [MEMORY[0x277D26290] thisDeviceType];
+        thisDeviceType = [MEMORY[0x277D26290] thisDeviceType];
       }
 
-      v17 = [MEMORY[0x277D262A0] sharedConnection];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
       v56 = 0;
       v57[0] = 0;
       v55 = 0;
-      [v17 allProfilesOutMDMProfileInfo:v57 outConfigurationProfilesInfo:&v56 outUninstalledProfilesInfo:&v55 forDeviceType:v11];
+      [mEMORY[0x277D262A0] allProfilesOutMDMProfileInfo:v57 outConfigurationProfilesInfo:&v56 outUninstalledProfilesInfo:&v55 forDeviceType:thisDeviceType];
       v13 = v57[0];
       v31 = v56;
       v12 = v55;
 
       NSLog(&cfstr_DataManagerRet.isa);
-      if (v7)
+      if (signersCopy)
       {
 LABEL_10:
         v54 = 0;
         v15 = [MCUIAppSigner enterpriseAppSignersWithOutDeveloperAppSigners:&v54];
         v14 = v54;
         NSLog(&cfstr_DataManagerRet_0.isa, [v15 count], objc_msgSend(v14, "count"));
-        if (v6)
+        if (applicationsCopy)
         {
           goto LABEL_11;
         }
@@ -630,7 +630,7 @@ LABEL_10:
       v12 = 0;
       v31 = 0;
       v13 = 0;
-      if (v7)
+      if (signersCopy)
       {
         goto LABEL_10;
       }
@@ -638,23 +638,23 @@ LABEL_10:
 
     v14 = 0;
     v15 = 0;
-    if (v6)
+    if (applicationsCopy)
     {
 LABEL_11:
-      v16 = [MEMORY[0x277D03238] blockedApplications];
-      NSLog(&cfstr_DataManagerRet_1.isa, [v16 count]);
+      blockedApplications = [MEMORY[0x277D03238] blockedApplications];
+      NSLog(&cfstr_DataManagerRet_1.isa, [blockedApplications count]);
       goto LABEL_12;
     }
 
 LABEL_7:
-    v16 = 0;
+    blockedApplications = 0;
 LABEL_12:
-    v18 = [(MCUIDataManager *)self memberQueue];
+    memberQueue = [(MCUIDataManager *)self memberQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __113__MCUIDataManager__reloadQueueReloadDataInBackgroundIncludingProfiles_appSigners_blockedApplications_completion___block_invoke;
     block[3] = &unk_2798620D8;
-    v51 = v8;
+    v51 = profilesCopy;
     block[4] = self;
     v19 = v13;
     v45 = v19;
@@ -662,15 +662,15 @@ LABEL_12:
     v46 = v20;
     v21 = v12;
     v47 = v21;
-    v52 = v7;
+    v52 = signersCopy;
     v22 = v15;
     v48 = v22;
     v23 = v14;
     v49 = v23;
-    v53 = v6;
-    v24 = v16;
+    v53 = applicationsCopy;
+    v24 = blockedApplications;
     v50 = v24;
-    dispatch_sync(v18, block);
+    dispatch_sync(memberQueue, block);
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -683,9 +683,9 @@ LABEL_12:
     v36 = v21;
     v37 = v22;
     v38 = v23;
-    v41 = v8;
-    v42 = v7;
-    v43 = v6;
+    v41 = profilesCopy;
+    v42 = signersCopy;
+    v43 = applicationsCopy;
     v25 = v24;
     v26 = v23;
     v27 = v22;
@@ -694,7 +694,7 @@ LABEL_12:
     v30 = v19;
     dispatch_async(MEMORY[0x277D85CD0], v33);
 
-    v10 = v32;
+    completionCopy = v32;
   }
 }
 
@@ -759,15 +759,15 @@ void __113__MCUIDataManager__reloadQueueReloadDataInBackgroundIncludingProfiles_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadProfilesInBackgroundWithCompletion:(id)a3
+- (void)reloadProfilesInBackgroundWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__MCUIDataManager_reloadProfilesInBackgroundWithCompletion___block_invoke;
   v7[3] = &unk_279862128;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x259C799C0](v7);
   [(MCUIDataManager *)self reloadDataInBackgroundIncludingProfiles:1 appSigners:0 blockedApplications:0 completion:v6];
 }
@@ -783,15 +783,15 @@ uint64_t __60__MCUIDataManager_reloadProfilesInBackgroundWithCompletion___block_
   return result;
 }
 
-- (void)reloadAppSignersAndBlockedAppsInBackgroundWithCompletion:(id)a3
+- (void)reloadAppSignersAndBlockedAppsInBackgroundWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__MCUIDataManager_reloadAppSignersAndBlockedAppsInBackgroundWithCompletion___block_invoke;
   v7[3] = &unk_279862128;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x259C799C0](v7);
   [(MCUIDataManager *)self reloadDataInBackgroundIncludingProfiles:0 appSigners:1 blockedApplications:1 completion:v6];
 }

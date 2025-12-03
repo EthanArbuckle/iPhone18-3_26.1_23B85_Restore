@@ -1,24 +1,24 @@
 @interface SBPBDisplayItem
 - (BOOL)hasSceneIdentifier;
 - (BOOL)hasWebClipIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)typeAsString:(__CFString *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)typeAsString:(__CFString *)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)StringAsType:(uint64_t)a1;
+- (uint64_t)StringAsType:(uint64_t)type;
 - (uint64_t)bundleIdentifier;
 - (uint64_t)sceneIdentifier;
 - (uint64_t)setType:(uint64_t)result;
 - (uint64_t)type;
 - (uint64_t)webClipIdentifier;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setBundleIdentifier:(uint64_t)a1;
-- (void)setSceneIdentifier:(uint64_t)a1;
-- (void)setWebClipIdentifier:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setBundleIdentifier:(uint64_t)identifier;
+- (void)setSceneIdentifier:(uint64_t)identifier;
+- (void)setWebClipIdentifier:(uint64_t)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SBPBDisplayItem
@@ -29,15 +29,15 @@
   v8.receiver = self;
   v8.super_class = SBPBDisplayItem;
   v4 = [(SBPBDisplayItem *)&v8 description];
-  v5 = [(SBPBDisplayItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SBPBDisplayItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   type = self->_type;
   if (type >= 6)
   {
@@ -49,32 +49,32 @@
     v5 = off_2783B5908[type];
   }
 
-  [v3 setObject:v5 forKey:@"type"];
+  [dictionary setObject:v5 forKey:@"type"];
 
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
-    [v3 setObject:bundleIdentifier forKey:@"bundleIdentifier"];
+    [dictionary setObject:bundleIdentifier forKey:@"bundleIdentifier"];
   }
 
   sceneIdentifier = self->_sceneIdentifier;
   if (sceneIdentifier)
   {
-    [v3 setObject:sceneIdentifier forKey:@"sceneIdentifier"];
+    [dictionary setObject:sceneIdentifier forKey:@"sceneIdentifier"];
   }
 
   webClipIdentifier = self->_webClipIdentifier;
   if (webClipIdentifier)
   {
-    [v3 setObject:webClipIdentifier forKey:@"webClipIdentifier"];
+    [dictionary setObject:webClipIdentifier forKey:@"webClipIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   if (!self->_bundleIdentifier)
   {
@@ -93,32 +93,32 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_type;
-  v6 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_sceneIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_sceneIdentifier copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_webClipIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_webClipIdentifier copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_type == *(v4 + 6) && ((bundleIdentifier = self->_bundleIdentifier, !(bundleIdentifier | v4[1])) || -[NSString isEqual:](bundleIdentifier, "isEqual:")) && ((sceneIdentifier = self->_sceneIdentifier, !(sceneIdentifier | v4[2])) || -[NSString isEqual:](sceneIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_type == *(equalCopy + 6) && ((bundleIdentifier = self->_bundleIdentifier, !(bundleIdentifier | equalCopy[1])) || -[NSString isEqual:](bundleIdentifier, "isEqual:")) && ((sceneIdentifier = self->_sceneIdentifier, !(sceneIdentifier | equalCopy[2])) || -[NSString isEqual:](sceneIdentifier, "isEqual:")))
   {
     webClipIdentifier = self->_webClipIdentifier;
-    if (webClipIdentifier | v4[4])
+    if (webClipIdentifier | equalCopy[4])
     {
       v8 = [(NSString *)webClipIdentifier isEqual:?];
     }
@@ -145,31 +145,31 @@
   return v5 ^ [(NSString *)self->_webClipIdentifier hash]^ v3;
 }
 
-- (__CFString)typeAsString:(__CFString *)a1
+- (__CFString)typeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 6)
   {
-    a1 = off_2783B5908[a2];
+    string = off_2783B5908[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsType:(uint64_t)a1
+- (uint64_t)StringAsType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"App"])
@@ -236,21 +236,21 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    v3[6] = *(a1 + 24);
+    v3[6] = *(to + 24);
     v6 = v3;
     [(SBPBDisplayItem *)v3 setBundleIdentifier:?];
-    v4 = *(a1 + 16);
+    v4 = *(to + 16);
     if (v4)
     {
       [(SBPBDisplayItem *)v6 setSceneIdentifier:v4];
     }
 
-    v5 = *(a1 + 32);
+    v5 = *(to + 32);
     v3 = v6;
     if (v5)
     {
@@ -260,55 +260,55 @@ LABEL_4:
   }
 }
 
-- (void)setBundleIdentifier:(uint64_t)a1
+- (void)setBundleIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 8);
+    OUTLINED_FUNCTION_0_18(identifier, a2, 8);
   }
 }
 
-- (void)setSceneIdentifier:(uint64_t)a1
+- (void)setSceneIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 16);
+    OUTLINED_FUNCTION_0_18(identifier, a2, 16);
   }
 }
 
-- (void)setWebClipIdentifier:(uint64_t)a1
+- (void)setWebClipIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 32);
+    OUTLINED_FUNCTION_0_18(identifier, a2, 32);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
-    *(a1 + 24) = v3[6];
+    *(from + 24) = v3[6];
     v4 = *(v3 + 1);
     v7 = v3;
     if (v4)
     {
-      objc_storeStrong((a1 + 8), v4);
+      objc_storeStrong((from + 8), v4);
       v3 = v7;
     }
 
     v5 = *(v3 + 2);
     if (v5)
     {
-      objc_storeStrong((a1 + 16), v5);
+      objc_storeStrong((from + 16), v5);
       v3 = v7;
     }
 
     v6 = *(v3 + 4);
     if (v6)
     {
-      objc_storeStrong((a1 + 32), v6);
+      objc_storeStrong((from + 32), v6);
       v3 = v7;
     }
   }

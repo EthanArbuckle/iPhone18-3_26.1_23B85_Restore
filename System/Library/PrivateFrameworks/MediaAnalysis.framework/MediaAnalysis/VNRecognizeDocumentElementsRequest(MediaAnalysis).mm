@@ -16,18 +16,18 @@
     [v1 setPreferBackgroundProcessing:1];
     if (DeviceHasANE())
     {
-      v2 = [MEMORY[0x1E6984608] defaultANEDevice];
-      [v1 setProcessingDevice:v2];
+      defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+      [v1 setProcessingDevice:defaultANEDevice];
     }
 
-    v3 = [v1 textElements];
-    [v3 setRecognize:1];
+    textElements = [v1 textElements];
+    [textElements setRecognize:1];
 
-    v4 = [v1 machineReadableCodeElements];
-    [v4 setRecognize:1];
+    machineReadableCodeElements = [v1 machineReadableCodeElements];
+    [machineReadableCodeElements setRecognize:1];
 
-    v5 = [v1 documentElements];
-    [v5 setRecognize:1];
+    documentElements = [v1 documentElements];
+    [documentElements setRecognize:1];
 
     v6 = v1;
   }

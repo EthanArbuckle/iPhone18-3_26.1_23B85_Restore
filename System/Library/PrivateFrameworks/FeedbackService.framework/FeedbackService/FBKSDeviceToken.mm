@@ -1,27 +1,27 @@
 @interface FBKSDeviceToken
 + (id)_basicParameterWithoutLabel;
 + (id)_basicParametersForWriting;
-+ (id)_queryForParticipantID:(id)a3 isForWriting:(BOOL)a4;
-+ (id)fetchDeviceTokenForParticipantID:(id)a3;
++ (id)_queryForParticipantID:(id)d isForWriting:(BOOL)writing;
++ (id)fetchDeviceTokenForParticipantID:(id)d;
 + (void)clearAllDeviceTokens;
-+ (void)clearDeviceTokenForParticipantID:(id)a3;
-+ (void)setDeviceToken:(id)a3 forParticipantID:(id)a4;
++ (void)clearDeviceTokenForParticipantID:(id)d;
++ (void)setDeviceToken:(id)token forParticipantID:(id)d;
 @end
 
 @implementation FBKSDeviceToken
 
 + (void)clearAllDeviceTokens
 {
-  v2 = [a1 _basicParameterWithoutLabel];
+  _basicParameterWithoutLabel = [self _basicParameterWithoutLabel];
 
-  SecItemDelete(v2);
+  SecItemDelete(_basicParameterWithoutLabel);
 }
 
-+ (id)fetchDeviceTokenForParticipantID:(id)a3
++ (id)fetchDeviceTokenForParticipantID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _queryForParticipantID:v4 isForWriting:0];
+  dCopy = d;
+  v5 = [self _queryForParticipantID:dCopy isForWriting:0];
   v6 = [v5 mutableCopy];
 
   [v6 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697B318]];
@@ -32,9 +32,9 @@
     v9 = Log_1();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 unsignedLongValue];
+      unsignedLongValue = [dCopy unsignedLongValue];
       *buf = 134217984;
-      v16 = v11;
+      v16 = unsignedLongValue;
       _os_log_impl(&dword_1B00C4000, v9, OS_LOG_TYPE_DEFAULT, "Could not find device token for participant [%lu]", buf, 0xCu);
     }
   }
@@ -64,19 +64,19 @@ LABEL_9:
   return v10;
 }
 
-+ (void)setDeviceToken:(id)a3 forParticipantID:(id)a4
++ (void)setDeviceToken:(id)token forParticipantID:(id)d
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _queryForParticipantID:v6 isForWriting:0];
+  dCopy = d;
+  tokenCopy = token;
+  v8 = [self _queryForParticipantID:dCopy isForWriting:0];
   v9 = [v8 mutableCopy];
 
-  v10 = [a1 _queryForParticipantID:v6 isForWriting:1];
+  v10 = [self _queryForParticipantID:dCopy isForWriting:1];
 
   v11 = [v10 mutableCopy];
   v20 = *MEMORY[0x1E697B3C0];
-  v12 = [v7 dataUsingEncoding:4];
+  v12 = [tokenCopy dataUsingEncoding:4];
 
   v21[0] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
@@ -147,9 +147,9 @@ LABEL_19:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)clearDeviceTokenForParticipantID:(id)a3
++ (void)clearDeviceTokenForParticipantID:(id)d
 {
-  v3 = [a1 _queryForParticipantID:a3 isForWriting:0];
+  v3 = [self _queryForParticipantID:d isForWriting:0];
 
   SecItemDelete(v3);
 }
@@ -163,10 +163,10 @@ LABEL_19:
   v14[0] = v2;
   v14[1] = v3;
   v4 = +[FBKSSharedConstants appleSeedURL];
-  v5 = [v4 host];
-  v6 = [v5 lowercaseString];
+  host = [v4 host];
+  lowercaseString = [host lowercaseString];
   v7 = *MEMORY[0x1E697ADC8];
-  v15[1] = v6;
+  v15[1] = lowercaseString;
   v15[2] = @"Feedback Assistant";
   v8 = *MEMORY[0x1E697ABD8];
   v14[2] = v7;
@@ -194,10 +194,10 @@ LABEL_19:
   v12[0] = v2;
   v12[1] = v3;
   v4 = +[FBKSSharedConstants appleSeedURL];
-  v5 = [v4 host];
-  v6 = [v5 lowercaseString];
+  host = [v4 host];
+  lowercaseString = [host lowercaseString];
   v7 = *MEMORY[0x1E697ABD0];
-  v13[1] = v6;
+  v13[1] = lowercaseString;
   v13[2] = @"group.com.apple.feedback";
   v8 = *MEMORY[0x1E697B390];
   v12[2] = v7;
@@ -210,27 +210,27 @@ LABEL_19:
   return v9;
 }
 
-+ (id)_queryForParticipantID:(id)a3 isForWriting:(BOOL)a4
++ (id)_queryForParticipantID:(id)d isForWriting:(BOOL)writing
 {
-  v4 = a4;
+  writingCopy = writing;
   v17[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
+  dCopy = d;
   v8 = [v6 alloc];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v7, *MEMORY[0x1E697AC30]];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", dCopy, *MEMORY[0x1E697AC30]];
 
   v17[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v11 = [v8 initWithDictionary:v10];
 
-  if (v4)
+  if (writingCopy)
   {
-    [a1 _basicParametersForWriting];
+    [self _basicParametersForWriting];
   }
 
   else
   {
-    [a1 _basicParameterWithoutLabel];
+    [self _basicParameterWithoutLabel];
   }
   v12 = ;
   [v11 addEntriesFromDictionary:v12];

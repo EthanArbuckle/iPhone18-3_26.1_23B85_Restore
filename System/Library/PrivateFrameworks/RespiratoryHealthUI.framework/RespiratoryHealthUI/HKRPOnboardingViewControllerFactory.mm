@@ -1,36 +1,36 @@
 @interface HKRPOnboardingViewControllerFactory
-+ (id)onboardingViewControllerWithStyle:(int64_t)a3 settings:(id)a4 onboardingManager:(id)a5 onboardingDelegate:(id)a6;
++ (id)onboardingViewControllerWithStyle:(int64_t)style settings:(id)settings onboardingManager:(id)manager onboardingDelegate:(id)delegate;
 @end
 
 @implementation HKRPOnboardingViewControllerFactory
 
-+ (id)onboardingViewControllerWithStyle:(int64_t)a3 settings:(id)a4 onboardingManager:(id)a5 onboardingDelegate:(id)a6
++ (id)onboardingViewControllerWithStyle:(int64_t)style settings:(id)settings onboardingManager:(id)manager onboardingDelegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3 == 2)
+  settingsCopy = settings;
+  managerCopy = manager;
+  delegateCopy = delegate;
+  if (style == 2)
   {
     v14 = [HKRPOnboardingSettingsViewController alloc];
     v15 = 2;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v14 = [HKRPOnboardingSettingsViewController alloc];
     v15 = 1;
 LABEL_7:
-    v13 = [(HKRPOnboardingSettingsViewController *)v14 initWithStyle:v15 settings:v10 onboardingManager:v11 onboardingDelegate:v12];
+    v13 = [(HKRPOnboardingSettingsViewController *)v14 initWithStyle:v15 settings:settingsCopy onboardingManager:managerCopy onboardingDelegate:delegateCopy];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (style)
   {
     goto LABEL_9;
   }
 
-  v13 = [[HKRPOnboardingPairViewController alloc] initWithSettings:v10 onboardingManager:v11];
+  v13 = [[HKRPOnboardingPairViewController alloc] initWithSettings:settingsCopy onboardingManager:managerCopy];
 LABEL_8:
   v6 = v13;
 LABEL_9:

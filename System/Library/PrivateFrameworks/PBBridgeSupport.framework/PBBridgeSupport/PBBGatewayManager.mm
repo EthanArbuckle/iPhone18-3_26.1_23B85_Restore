@@ -1,12 +1,12 @@
 @interface PBBGatewayManager
-+ (id)dateComponentsFromDNDScheduleTime:(id)a3;
++ (id)dateComponentsFromDNDScheduleTime:(id)time;
 + (id)sharedManager;
 - (BOOL)pairSyncEnabled;
 - (BOOL)pairSyncStateEditable;
 - (PBBGatewayManager)init;
 - (PBBGatewayManagerDelegate)delegate;
 - (void)dealloc;
-- (void)globalConfigurationService:(id)a3 didReceiveUpdatedPairSyncState:(unint64_t)a4;
+- (void)globalConfigurationService:(id)service didReceiveUpdatedPairSyncState:(unint64_t)state;
 - (void)loadBBSections;
 - (void)loadDNDState;
 @end
@@ -66,8 +66,8 @@ uint64_t __34__PBBGatewayManager_sharedManager__block_invoke()
     v9 = [MEMORY[0x277D05910] serviceForClientIdentifier:@"com.apple.Bridge-PBBridgeGateway"];
     [(PBBGatewayManager *)v2 setGlobalConfigurationService:v9];
 
-    v10 = [(PBBGatewayManager *)v2 globalConfigurationService];
-    [v10 addListener:v2 withCompletionHandler:0];
+    globalConfigurationService = [(PBBGatewayManager *)v2 globalConfigurationService];
+    [globalConfigurationService addListener:v2 withCompletionHandler:0];
   }
 
   return v2;
@@ -76,8 +76,8 @@ uint64_t __34__PBBGatewayManager_sharedManager__block_invoke()
 - (void)dealloc
 {
   [(BBSettingsGateway *)self->_settingsGateway invalidate];
-  v3 = [(PBBGatewayManager *)self globalConfigurationService];
-  [v3 removeListener:self];
+  globalConfigurationService = [(PBBGatewayManager *)self globalConfigurationService];
+  [globalConfigurationService removeListener:self];
 
   v4.receiver = self;
   v4.super_class = PBBGatewayManager;
@@ -106,17 +106,17 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (id)dateComponentsFromDNDScheduleTime:(id)a3
++ (id)dateComponentsFromDNDScheduleTime:(id)time
 {
-  if (a3)
+  if (time)
   {
     v3 = MEMORY[0x277CBEAB8];
-    v4 = a3;
+    timeCopy = time;
     v5 = objc_alloc_init(v3);
-    [v5 setHour:{objc_msgSend(v4, "hour")}];
-    v6 = [v4 minute];
+    [v5 setHour:{objc_msgSend(timeCopy, "hour")}];
+    minute = [timeCopy minute];
 
-    [v5 setMinute:v6];
+    [v5 setMinute:minute];
   }
 
   else
@@ -141,15 +141,15 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
   }
 
   self->_isScheduled = v6 == 2;
-  v7 = [v4 timePeriod];
-  v8 = [v7 startTime];
-  v9 = [PBBGatewayManager dateComponentsFromDNDScheduleTime:v8];
+  timePeriod = [v4 timePeriod];
+  startTime = [timePeriod startTime];
+  v9 = [PBBGatewayManager dateComponentsFromDNDScheduleTime:startTime];
   dndFromComponents = self->_dndFromComponents;
   self->_dndFromComponents = v9;
 
-  v11 = [v4 timePeriod];
-  v12 = [v11 endTime];
-  v13 = [PBBGatewayManager dateComponentsFromDNDScheduleTime:v12];
+  timePeriod2 = [v4 timePeriod];
+  endTime = [timePeriod2 endTime];
+  v13 = [PBBGatewayManager dateComponentsFromDNDScheduleTime:endTime];
   dndToComponents = self->_dndToComponents;
   self->_dndToComponents = v13;
 
@@ -164,20 +164,20 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
 
   if (v15)
   {
-    v17 = [v15 immediateBypassEventSourceType];
-    if ((v17 - 1) >= 5)
+    immediateBypassEventSourceType = [v15 immediateBypassEventSourceType];
+    if ((immediateBypassEventSourceType - 1) >= 5)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v17;
+      v18 = immediateBypassEventSourceType;
     }
 
     self->_doNotDisturbPrivilegedSenderType = v18;
-    v19 = [v15 immediateBypassCNGroupIdentifier];
-    v20 = [v19 copy];
+    immediateBypassCNGroupIdentifier = [v15 immediateBypassCNGroupIdentifier];
+    v20 = [immediateBypassCNGroupIdentifier copy];
     doNotDisturbPrivilegedSenderTypeGroupIdentifier = self->_doNotDisturbPrivilegedSenderTypeGroupIdentifier;
     self->_doNotDisturbPrivilegedSenderTypeGroupIdentifier = v20;
 
@@ -188,9 +188,9 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
 - (BOOL)pairSyncStateEditable
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(PBBGatewayManager *)self globalConfigurationService];
+  globalConfigurationService = [(PBBGatewayManager *)self globalConfigurationService];
   v10 = 0;
-  v3 = [v2 getPairSyncStateReturningError:&v10];
+  v3 = [globalConfigurationService getPairSyncStateReturningError:&v10];
   v4 = v10;
 
   if (v4)
@@ -198,9 +198,9 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 localizedDescription];
+      localizedDescription = [v4 localizedDescription];
       *buf = 138543362;
-      v12 = v6;
+      v12 = localizedDescription;
       _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "Error getting pair sync state editable value: %{public}@", buf, 0xCu);
     }
 
@@ -219,9 +219,9 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
 - (BOOL)pairSyncEnabled
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [(PBBGatewayManager *)self globalConfigurationService];
+  globalConfigurationService = [(PBBGatewayManager *)self globalConfigurationService];
   v9 = 0;
-  v3 = [v2 getPairSyncStateReturningError:&v9];
+  v3 = [globalConfigurationService getPairSyncStateReturningError:&v9];
   v4 = v9;
 
   if (v4)
@@ -229,9 +229,9 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 localizedDescription];
+      localizedDescription = [v4 localizedDescription];
       *buf = 138543362;
-      v11 = v6;
+      v11 = localizedDescription;
       _os_log_impl(&dword_25DE64000, v5, OS_LOG_TYPE_DEFAULT, "Error getting pair sync enabled value: %{public}@", buf, 0xCu);
     }
 
@@ -247,14 +247,14 @@ void __35__PBBGatewayManager_loadBBSections__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)globalConfigurationService:(id)a3 didReceiveUpdatedPairSyncState:(unint64_t)a4
+- (void)globalConfigurationService:(id)service didReceiveUpdatedPairSyncState:(unint64_t)state
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __79__PBBGatewayManager_globalConfigurationService_didReceiveUpdatedPairSyncState___block_invoke;
   v4[3] = &unk_2799F4930;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = state;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 

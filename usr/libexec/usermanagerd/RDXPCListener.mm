@@ -1,6 +1,6 @@
 @interface RDXPCListener
 + (id)sharedListener;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000783F8;
   block[3] = &unk_1000DCE88;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000EB4A8 != -1)
   {
     dispatch_once(&qword_1000EB4A8, block);
@@ -26,23 +26,23 @@
 
 - (void)startListening
 {
-  v2 = [(RDXPCListener *)self xpcListener];
-  [v2 resume];
+  xpcListener = [(RDXPCListener *)self xpcListener];
+  [xpcListener resume];
 }
 
 - (void)stopListening
 {
-  v2 = [(RDXPCListener *)self xpcListener];
-  [v2 suspend];
+  xpcListener = [(RDXPCListener *)self xpcListener];
+  [xpcListener suspend];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 _xpcConnection];
+  connectionCopy = connection;
+  _xpcConnection = [connectionCopy _xpcConnection];
   __xpc_connection_set_logging();
 
-  v6 = [RDClient clientWithXPCConnection:v4];
+  v6 = [RDClient clientWithXPCConnection:connectionCopy];
   if ([v6 hasEntitlement:@"com.apple.mobile.keybagd.bubbled.sync"])
   {
     if (qword_1000EB4C8 != -1)
@@ -127,13 +127,13 @@
     [v24 addBubbleClient:v6];
 
     v25 = +[RDClient sharedBubbleXPCInterface];
-    [v4 setRemoteObjectInterface:v25];
+    [connectionCopy setRemoteObjectInterface:v25];
 
     v26 = +[RDServer sharedBubbleXPCInterface];
-    [v4 setExportedInterface:v26];
+    [connectionCopy setExportedInterface:v26];
 
     v27 = +[RDServer sharedServer];
-    [v4 setExportedObject:v27];
+    [connectionCopy setExportedObject:v27];
 
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
@@ -141,7 +141,7 @@
     v31[3] = &unk_1000DCFF8;
     v16 = &v32;
     v32 = v6;
-    [v4 setInvalidationHandler:v31];
+    [connectionCopy setInvalidationHandler:v31];
     v17 = v30;
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -154,13 +154,13 @@
     [v12 addClient:v6];
 
     v13 = +[RDClient sharedXPCInterface];
-    [v4 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
     v14 = +[RDServer sharedXPCInterface];
-    [v4 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
     v15 = +[RDServer sharedServer];
-    [v4 setExportedObject:v15];
+    [connectionCopy setExportedObject:v15];
 
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
@@ -168,7 +168,7 @@
     v34[3] = &unk_1000DCFF8;
     v16 = &v35;
     v35 = v6;
-    [v4 setInvalidationHandler:v34];
+    [connectionCopy setInvalidationHandler:v34];
     v17 = v33;
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -179,9 +179,9 @@
   v17[3] = &unk_1000DCFF8;
   v17[4] = v6;
   v28 = v6;
-  [v4 setInterruptionHandler:v17];
+  [connectionCopy setInterruptionHandler:v17];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 

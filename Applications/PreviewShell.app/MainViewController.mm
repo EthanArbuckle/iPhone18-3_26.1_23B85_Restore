@@ -1,5 +1,5 @@
 @interface MainViewController
-- (_TtC12PreviewShell18MainViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12PreviewShell18MainViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -18,7 +18,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100025774();
 }
 
@@ -36,7 +36,7 @@
   }
 }
 
-- (_TtC12PreviewShell18MainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PreviewShell18MainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

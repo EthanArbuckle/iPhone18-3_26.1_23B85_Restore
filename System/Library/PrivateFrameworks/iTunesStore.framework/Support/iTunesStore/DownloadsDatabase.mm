@@ -1,21 +1,21 @@
 @interface DownloadsDatabase
 + (id)downloadsDatabase;
-+ (void)_setupDatabase:(id)a3;
++ (void)_setupDatabase:(id)database;
 - (DownloadsDatabase)init;
-- (id)_modifyUsingTransaction:(id)a3 block:(id)a4;
+- (id)_modifyUsingTransaction:(id)transaction block:(id)block;
 - (id)_newSessionDescription;
-- (id)modifyExternalUsingTransactionBlock:(id)a3;
-- (id)modifyUsingPurchaseTransactionBlock:(id)a3;
-- (id)modifyUsingTransactionBlock:(id)a3;
-- (void)_commitExternalChangesForChangeset:(id)a3;
+- (id)modifyExternalUsingTransactionBlock:(id)block;
+- (id)modifyUsingPurchaseTransactionBlock:(id)block;
+- (id)modifyUsingTransactionBlock:(id)block;
+- (void)_commitExternalChangesForChangeset:(id)changeset;
 - (void)dealloc;
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4;
-- (void)dispatchBlockAsync:(id)a3;
-- (void)downloadHandlerManager:(id)a3 sessionsDidChange:(id)a4;
-- (void)modifyAsyncUsingPurchaseTransactionBlock:(id)a3;
-- (void)modifyAsyncUsingTransactionBlock:(id)a3;
-- (void)modifyExternalAsyncUsingTransactionBlock:(id)a3;
-- (void)readUsingTransactionBlock:(id)a3;
+- (void)dispatchAfter:(unint64_t)after block:(id)block;
+- (void)dispatchBlockAsync:(id)async;
+- (void)downloadHandlerManager:(id)manager sessionsDidChange:(id)change;
+- (void)modifyAsyncUsingPurchaseTransactionBlock:(id)block;
+- (void)modifyAsyncUsingTransactionBlock:(id)block;
+- (void)modifyExternalAsyncUsingTransactionBlock:(id)block;
+- (void)readUsingTransactionBlock:(id)block;
 @end
 
 @implementation DownloadsDatabase
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_10009016C;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383DA0 != -1)
   {
     dispatch_once(&qword_100383DA0, block);
@@ -47,16 +47,16 @@
   return v3;
 }
 
-+ (void)_setupDatabase:(id)a3
++ (void)_setupDatabase:(id)database
 {
-  v3 = a3;
-  [v3 executeSQL:@"PRAGMA journal_mode=WAL;"];
+  databaseCopy = database;
+  [databaseCopy executeSQL:@"PRAGMA journal_mode=WAL;"];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10008FD80;
   v5[3] = &unk_1003270E8;
-  v6 = v3;
-  v4 = v3;
+  v6 = databaseCopy;
+  v4 = databaseCopy;
   [v4 performTransactionWithBlock:v5];
 }
 
@@ -153,9 +153,9 @@
   [(DownloadsDatabase *)&v6 dealloc];
 }
 
-- (void)dispatchAfter:(unint64_t)a3 block:(id)a4
+- (void)dispatchAfter:(unint64_t)after block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = +[Daemon daemon];
   [v7 takeKeepAliveAssertion:@"com.apple.itunesstored.DownloadsDatabase"];
 
@@ -164,14 +164,14 @@
   v10[1] = 3221225472;
   v10[2] = sub_100090278;
   v10[3] = &unk_100327198;
-  v11 = v6;
-  v9 = v6;
-  [(SSSQLiteDatabase *)database dispatchAfter:a3 block:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(SSSQLiteDatabase *)database dispatchAfter:after block:v10];
 }
 
-- (void)dispatchBlockAsync:(id)a3
+- (void)dispatchBlockAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = +[Daemon daemon];
   [v5 takeKeepAliveAssertion:@"com.apple.itunesstored.DownloadsDatabase"];
 
@@ -180,55 +180,55 @@
   v8[1] = 3221225472;
   v8[2] = sub_1000903A0;
   v8[3] = &unk_100327198;
-  v9 = v4;
-  v7 = v4;
+  v9 = asyncCopy;
+  v7 = asyncCopy;
   [(SSSQLiteDatabase *)database dispatchBlockAsync:v8];
 }
 
-- (void)modifyAsyncUsingPurchaseTransactionBlock:(id)a3
+- (void)modifyAsyncUsingPurchaseTransactionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009049C;
   v4[3] = &unk_1003271C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(DownloadsDatabase *)v5 dispatchBlockAsync:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(DownloadsDatabase *)selfCopy dispatchBlockAsync:v4];
 }
 
-- (void)modifyAsyncUsingTransactionBlock:(id)a3
+- (void)modifyAsyncUsingTransactionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100090558;
   v4[3] = &unk_1003271C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(DownloadsDatabase *)v5 dispatchBlockAsync:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(DownloadsDatabase *)selfCopy dispatchBlockAsync:v4];
 }
 
-- (void)modifyExternalAsyncUsingTransactionBlock:(id)a3
+- (void)modifyExternalAsyncUsingTransactionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100090614;
   v4[3] = &unk_1003271C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(DownloadsDatabase *)v5 dispatchBlockAsync:v4];
+  selfCopy = self;
+  blockCopy = block;
+  v3 = blockCopy;
+  [(DownloadsDatabase *)selfCopy dispatchBlockAsync:v4];
 }
 
-- (id)modifyExternalUsingTransactionBlock:(id)a3
+- (id)modifyExternalUsingTransactionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DownloadsDatabase *)self _newSessionDescription];
+  blockCopy = block;
+  _newSessionDescription = [(DownloadsDatabase *)self _newSessionDescription];
   v6 = +[Daemon daemon];
   [v6 takeKeepAliveAssertion:@"com.apple.itunesstored.DownloadsDatabase"];
 
-  v7 = [[DownloadsExternalTransaction alloc] initWithSessionDescriptor:v5];
+  v7 = [[DownloadsExternalTransaction alloc] initWithSessionDescriptor:_newSessionDescription];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -239,7 +239,7 @@
   v14[2] = sub_1000907EC;
   v14[3] = &unk_1003271E8;
   v17 = &v18;
-  v9 = v4;
+  v9 = blockCopy;
   v16 = v9;
   v10 = v7;
   v15 = v10;
@@ -249,42 +249,42 @@
 
   if (*(v19 + 24) == 1)
   {
-    v12 = [(DownloadsExternalTransaction *)v10 changeset];
+    changeset = [(DownloadsExternalTransaction *)v10 changeset];
   }
 
   else
   {
-    v12 = 0;
+    changeset = 0;
   }
 
   _Block_object_dispose(&v18, 8);
 
-  return v12;
+  return changeset;
 }
 
-- (id)modifyUsingPurchaseTransactionBlock:(id)a3
+- (id)modifyUsingPurchaseTransactionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DownloadsDatabase *)self _newSessionDescription];
-  v6 = [(DownloadsExternalTransaction *)[PurchaseDownloadsTransaction alloc] initWithSessionDescriptor:v5];
-  v7 = [(DownloadsDatabase *)self _modifyUsingTransaction:v6 block:v4];
+  blockCopy = block;
+  _newSessionDescription = [(DownloadsDatabase *)self _newSessionDescription];
+  v6 = [(DownloadsExternalTransaction *)[PurchaseDownloadsTransaction alloc] initWithSessionDescriptor:_newSessionDescription];
+  v7 = [(DownloadsDatabase *)self _modifyUsingTransaction:v6 block:blockCopy];
 
   return v7;
 }
 
-- (id)modifyUsingTransactionBlock:(id)a3
+- (id)modifyUsingTransactionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DownloadsDatabase *)self _newSessionDescription];
-  v6 = [(DownloadsExternalTransaction *)[DownloadsTransaction alloc] initWithSessionDescriptor:v5];
-  v7 = [(DownloadsDatabase *)self _modifyUsingTransaction:v6 block:v4];
+  blockCopy = block;
+  _newSessionDescription = [(DownloadsDatabase *)self _newSessionDescription];
+  v6 = [(DownloadsExternalTransaction *)[DownloadsTransaction alloc] initWithSessionDescriptor:_newSessionDescription];
+  v7 = [(DownloadsDatabase *)self _modifyUsingTransaction:v6 block:blockCopy];
 
   return v7;
 }
 
-- (void)readUsingTransactionBlock:(id)a3
+- (void)readUsingTransactionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[Daemon daemon];
   [v5 takeKeepAliveAssertion:@"com.apple.itunesstored.DownloadsDatabase"];
 
@@ -293,60 +293,60 @@
   v10 = 3221225472;
   v11 = sub_100090A3C;
   v12 = &unk_100327210;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v14 = blockCopy;
+  v7 = blockCopy;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:&v9];
   v8 = [Daemon daemon:v9];
   [v8 releaseKeepAliveAssertion:@"com.apple.itunesstored.DownloadsDatabase"];
 }
 
-- (void)downloadHandlerManager:(id)a3 sessionsDidChange:(id)a4
+- (void)downloadHandlerManager:(id)manager sessionsDidChange:(id)change
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100090B3C;
   v5[3] = &unk_100327238;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(DownloadsDatabase *)v6 dispatchBlockAsync:v5];
+  selfCopy = self;
+  changeCopy = change;
+  v4 = changeCopy;
+  [(DownloadsDatabase *)selfCopy dispatchBlockAsync:v5];
 }
 
-- (void)_commitExternalChangesForChangeset:(id)a3
+- (void)_commitExternalChangesForChangeset:(id)changeset
 {
-  v3 = a3;
-  v4 = [v3 canceledAppDataRestoreIDs];
-  if ([v4 count])
+  changesetCopy = changeset;
+  canceledAppDataRestoreIDs = [changesetCopy canceledAppDataRestoreIDs];
+  if ([canceledAppDataRestoreIDs count])
   {
     v5 = +[Daemon daemon];
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_100091158;
     v68[3] = &unk_100327110;
-    v69 = v4;
+    v69 = canceledAppDataRestoreIDs;
     [v5 keepAliveWithAssertion:@"com.apple.itunesstored.DownloadsDatabase" block:v68];
   }
 
-  v6 = [v3 applicationWorkspaceChanges];
-  if ([v6 count])
+  applicationWorkspaceChanges = [changesetCopy applicationWorkspaceChanges];
+  if ([applicationWorkspaceChanges count])
   {
     v7 = +[ApplicationWorkspace defaultWorkspace];
-    [v7 applyWorkspaceChanges:v6];
+    [v7 applyWorkspaceChanges:applicationWorkspaceChanges];
   }
 
-  v54 = v6;
-  v55 = v4;
-  v8 = [v3 deletedHTTPCookies];
-  v9 = [v3 HTTPCookies];
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  v54 = applicationWorkspaceChanges;
+  v55 = canceledAppDataRestoreIDs;
+  deletedHTTPCookies = [changesetCopy deletedHTTPCookies];
+  hTTPCookies = [changesetCopy HTTPCookies];
+  if ([deletedHTTPCookies count] || objc_msgSend(hTTPCookies, "count"))
   {
     v10 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v11 = v8;
+    v11 = deletedHTTPCookies;
     v12 = [v11 countByEnumeratingWithState:&v64 objects:v72 count:16];
     if (v12)
     {
@@ -377,7 +377,7 @@
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v16 = v9;
+    v16 = hTTPCookies;
     v17 = [v16 countByEnumeratingWithState:&v60 objects:v71 count:16];
     if (v17)
     {
@@ -407,40 +407,40 @@
     [v10 _saveCookies];
   }
 
-  v21 = [v3 IPodLibraryItems];
-  if ([v21 count])
+  iPodLibraryItems = [changesetCopy IPodLibraryItems];
+  if ([iPodLibraryItems count])
   {
     v22 = +[IPodLibrary deviceIPodLibrary];
-    [v22 scheduleLibraryItems:v21];
+    [v22 scheduleLibraryItems:iPodLibraryItems];
   }
 
-  v53 = v8;
-  v23 = [v3 deletedIPodLibraryDownloadIDs];
-  if ([v23 count])
+  v53 = deletedHTTPCookies;
+  deletedIPodLibraryDownloadIDs = [changesetCopy deletedIPodLibraryDownloadIDs];
+  if ([deletedIPodLibraryDownloadIDs count])
   {
     v24 = +[IPodLibrary deviceIPodLibrary];
-    [v24 removeDownloadsWithIdentifiers:v23 canceled:0];
+    [v24 removeDownloadsWithIdentifiers:deletedIPodLibraryDownloadIDs canceled:0];
   }
 
-  v25 = [v3 canceledIPodLibraryDownloadIDs];
-  if ([v25 count])
+  canceledIPodLibraryDownloadIDs = [changesetCopy canceledIPodLibraryDownloadIDs];
+  if ([canceledIPodLibraryDownloadIDs count])
   {
     v26 = +[IPodLibrary deviceIPodLibrary];
-    [v26 removeDownloadsWithIdentifiers:v25 canceled:1];
+    [v26 removeDownloadsWithIdentifiers:canceledIPodLibraryDownloadIDs canceled:1];
 
     v27 = +[PurchaseController sharedController];
-    [v27 cancelPurchasesForDownloadsWithIdentifiers:v25];
+    [v27 cancelPurchasesForDownloadsWithIdentifiers:canceledIPodLibraryDownloadIDs];
   }
 
-  v28 = [v3 SSAppWakeRequests];
-  if ([v28 count])
+  sSAppWakeRequests = [changesetCopy SSAppWakeRequests];
+  if ([sSAppWakeRequests count])
   {
     v29 = +[SpringBoardUtility sharedInstance];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v30 = v28;
+    v30 = sSAppWakeRequests;
     v31 = [v30 countByEnumeratingWithState:&v56 objects:v70 count:16];
     if (v31)
     {
@@ -468,9 +468,9 @@
     }
   }
 
-  v35 = [v3 downloadChangeTypes];
-  v36 = v35;
-  if ((v35 & 0x40) != 0)
+  downloadChangeTypes = [changesetCopy downloadChangeTypes];
+  v36 = downloadChangeTypes;
+  if ((downloadChangeTypes & 0x40) != 0)
   {
     v42 = +[SpringBoardUtility sharedInstance];
     [v42 resetEnabledRemoteNotificationTypes];
@@ -484,12 +484,12 @@ LABEL_39:
       }
 
 LABEL_47:
-      v37 = [v3 restoreReason];
+      restoreReason = [changesetCopy restoreReason];
       v45 = +[StoreDownloadQueue sharedDownloadQueue];
-      v38 = v45;
-      if (v37)
+      restoreReason2 = v45;
+      if (restoreReason)
       {
-        v46 = v37;
+        v46 = restoreReason;
       }
 
       else
@@ -502,7 +502,7 @@ LABEL_47:
     }
   }
 
-  else if ((v35 & 4) == 0)
+  else if ((downloadChangeTypes & 4) == 0)
   {
     goto LABEL_39;
   }
@@ -519,13 +519,13 @@ LABEL_47:
 LABEL_40:
   if ((v36 & 0x20) != 0)
   {
-    v37 = [v3 restorableDownloadIDs];
-    v38 = [v3 restoreReason];
+    restoreReason = [changesetCopy restorableDownloadIDs];
+    restoreReason2 = [changesetCopy restoreReason];
     v39 = +[StoreDownloadQueue sharedDownloadQueue];
     v40 = v39;
-    if (v38)
+    if (restoreReason2)
     {
-      v41 = v38;
+      v41 = restoreReason2;
     }
 
     else
@@ -533,32 +533,32 @@ LABEL_40:
       v41 = @"other";
     }
 
-    [v39 restoreDownloadsWithIdentifiers:v37 reason:v41];
+    [v39 restoreDownloadsWithIdentifiers:restoreReason reason:v41];
 
 LABEL_51:
   }
 
   if ((v36 & 8) != 0)
   {
-    v47 = [v3 changedDownloadKinds];
-    v48 = [v47 containsObject:SSDownloadKindInAppContent];
+    changedDownloadKinds = [changesetCopy changedDownloadKinds];
+    v48 = [changedDownloadKinds containsObject:SSDownloadKindInAppContent];
 
     if (v48)
     {
       v49 = +[MicroPaymentQueue paymentQueue];
-      v50 = [v3 removedPersistentDownloadIDs];
-      [v49 finishDownloadsWithIdentifiers:v50];
+      removedPersistentDownloadIDs = [changesetCopy removedPersistentDownloadIDs];
+      [v49 finishDownloadsWithIdentifiers:removedPersistentDownloadIDs];
     }
   }
 
   v51 = +[DownloadController controller];
-  [v51 notifyClientsOfChangeset:v3];
+  [v51 notifyClientsOfChangeset:changesetCopy];
 }
 
-- (id)_modifyUsingTransaction:(id)a3 block:(id)a4
+- (id)_modifyUsingTransaction:(id)transaction block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  blockCopy = block;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -572,21 +572,21 @@ LABEL_51:
   v17 = sub_100091310;
   v18 = &unk_100327260;
   v22 = &v23;
-  v10 = v7;
+  v10 = blockCopy;
   v21 = v10;
-  v11 = v6;
+  v11 = transactionCopy;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:&v15];
   if (*(v24 + 24) == 1)
   {
-    v12 = [v11 changeset];
-    [(DownloadsDatabase *)self _commitExternalChangesForChangeset:v12];
+    changeset = [v11 changeset];
+    [(DownloadsDatabase *)self _commitExternalChangesForChangeset:changeset];
   }
 
   else
   {
-    v12 = 0;
+    changeset = 0;
   }
 
   v13 = [Daemon daemon:v15];
@@ -594,7 +594,7 @@ LABEL_51:
 
   _Block_object_dispose(&v23, 8);
 
-  return v12;
+  return changeset;
 }
 
 @end

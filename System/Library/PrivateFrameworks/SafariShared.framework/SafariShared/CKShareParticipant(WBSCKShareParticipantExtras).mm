@@ -6,11 +6,11 @@
 
 - (id)safari_shareParticipantIdentifier
 {
-  v1 = [a1 userIdentity];
-  v2 = [v1 userRecordID];
-  v3 = [v2 recordName];
+  userIdentity = [self userIdentity];
+  userRecordID = [userIdentity userRecordID];
+  recordName = [userRecordID recordName];
 
-  return v3;
+  return recordName;
 }
 
 @end

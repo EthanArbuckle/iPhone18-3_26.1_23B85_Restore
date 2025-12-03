@@ -1,14 +1,14 @@
 @interface CLSUserDefaults
-+ (id)displayNameForDefaultName:(id)a3;
++ (id)displayNameForDefaultName:(id)name;
 + (id)sharedDefaults;
-+ (id)userDefaultsConfigurationDictionaryAndReturnError:(id *)a3;
-- (BOOL)userDefaultForDefaultNamed:(id)a3;
-- (CLSUserDefaults)initWithEndpoint:(id)a3;
-- (id)syncUtilityServer:(id)a3;
-- (id)utilityServer:(id)a3;
-- (void)getUserDefaultForDefaultNamed:(id)a3 completion:(id)a4;
-- (void)setUserDefaultValue:(id)a3 forDefaultNamed:(id)a4 completion:(id)a5;
-- (void)userDefaultsConfigurationDictionaryWithCompletion:(id)a3;
++ (id)userDefaultsConfigurationDictionaryAndReturnError:(id *)error;
+- (BOOL)userDefaultForDefaultNamed:(id)named;
+- (CLSUserDefaults)initWithEndpoint:(id)endpoint;
+- (id)syncUtilityServer:(id)server;
+- (id)utilityServer:(id)server;
+- (void)getUserDefaultForDefaultNamed:(id)named completion:(id)completion;
+- (void)setUserDefaultValue:(id)value forDefaultNamed:(id)named completion:(id)completion;
+- (void)userDefaultsConfigurationDictionaryWithCompletion:(id)completion;
 @end
 
 @implementation CLSUserDefaults
@@ -44,7 +44,7 @@
     block[1] = 3221225472;
     block[2] = sub_236F865DC;
     block[3] = &unk_278A17960;
-    block[4] = a1;
+    block[4] = self;
     if (qword_280B2A080 != -1)
     {
       dispatch_once(&qword_280B2A080, block);
@@ -56,13 +56,13 @@
   return v14;
 }
 
-+ (id)displayNameForDefaultName:(id)a3
++ (id)displayNameForDefaultName:(id)name
 {
-  v3 = a3;
-  v5 = v3;
+  nameCopy = name;
+  v5 = nameCopy;
   if (qword_280B2A090 == -1)
   {
-    if (v3)
+    if (nameCopy)
     {
 LABEL_3:
       v6 = objc_msgSend_objectForKeyedSubscript_(qword_280B2A088, v4, v5);
@@ -85,7 +85,7 @@ LABEL_6:
   return v6;
 }
 
-+ (id)userDefaultsConfigurationDictionaryAndReturnError:(id *)a3
++ (id)userDefaultsConfigurationDictionaryAndReturnError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -99,7 +99,7 @@ LABEL_6:
   v21 = sub_236F869F0;
   v22 = sub_236F86A00;
   v23 = 0;
-  v5 = objc_msgSend_sharedDefaults(CLSUserDefaults, a2, a3);
+  v5 = objc_msgSend_sharedDefaults(CLSUserDefaults, a2, error);
   if (v5)
   {
     v6 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &unk_284A07B48);
@@ -128,7 +128,7 @@ LABEL_6:
     {
       *v13 = 0;
       _os_log_error_impl(&dword_236F71000, v10, OS_LOG_TYPE_ERROR, "Timed out when getting user defaults configuration dictionary!", v13, 2u);
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -137,7 +137,7 @@ LABEL_6:
     else
     {
 LABEL_6:
-      if (!a3)
+      if (!error)
       {
 LABEL_8:
         v11 = v19[5];
@@ -146,14 +146,14 @@ LABEL_8:
       }
     }
 
-    *a3 = v25[5];
+    *error = v25[5];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (error)
   {
     objc_msgSend_cls_createErrorWithCode_format_(MEMORY[0x277CCA9B8], v4, 4, @"Not authorized to userDefaultsConfigurationDictionaryAndReturnError");
-    *a3 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -169,9 +169,9 @@ LABEL_12:
   return v11;
 }
 
-- (CLSUserDefaults)initWithEndpoint:(id)a3
+- (CLSUserDefaults)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v30.receiver = self;
   v30.super_class = CLSUserDefaults;
   v6 = [(CLSUserDefaults *)&v30 init];
@@ -202,7 +202,7 @@ LABEL_9:
   {
     v14 = objc_opt_class();
     v17 = objc_msgSend_endpointClass(v14, v15, v16);
-    v19 = objc_msgSend_instanceForEndpoint_(v17, v18, v4);
+    v19 = objc_msgSend_instanceForEndpoint_(v17, v18, endpointCopy);
     endpointConnection = v6->_endpointConnection;
     v6->_endpointConnection = v19;
 
@@ -227,69 +227,69 @@ LABEL_10:
   return v11;
 }
 
-- (id)utilityServer:(id)a3
+- (id)utilityServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v7 = objc_msgSend_endpointConnection(self, v5, v6);
-  v9 = objc_msgSend_utilityServer_(v7, v8, v4);
+  v9 = objc_msgSend_utilityServer_(v7, v8, serverCopy);
 
   return v9;
 }
 
-- (id)syncUtilityServer:(id)a3
+- (id)syncUtilityServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v7 = objc_msgSend_endpointConnection(self, v5, v6);
-  v9 = objc_msgSend_syncUtilityServer_(v7, v8, v4);
+  v9 = objc_msgSend_syncUtilityServer_(v7, v8, serverCopy);
 
   return v9;
 }
 
-- (void)userDefaultsConfigurationDictionaryWithCompletion:(id)a3
+- (void)userDefaultsConfigurationDictionaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236F86E64;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_utilityServer_(self, v6, v9);
   objc_msgSend_remote_getUserDefaultsConfigurationDictionaryWithCompletion_(v7, v8, v5);
 }
 
-- (void)getUserDefaultForDefaultNamed:(id)a3 completion:(id)a4
+- (void)getUserDefaultForDefaultNamed:(id)named completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236F86F40;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  namedCopy = named;
   v10 = objc_msgSend_utilityServer_(self, v9, v12);
-  objc_msgSend_remote_getUserDefaultForDefaultNamed_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_getUserDefaultForDefaultNamed_completion_(v10, v11, namedCopy, v7);
 }
 
-- (void)setUserDefaultValue:(id)a3 forDefaultNamed:(id)a4 completion:(id)a5
+- (void)setUserDefaultValue:(id)value forDefaultNamed:(id)named completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236F87030;
   v15[3] = &unk_278A17BC0;
-  v16 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  namedCopy = named;
+  valueCopy = value;
   v13 = objc_msgSend_utilityServer_(self, v12, v15);
-  objc_msgSend_remote_setUserDefaultValue_forDefaultNamed_completion_(v13, v14, v11, v10, v9);
+  objc_msgSend_remote_setUserDefaultValue_forDefaultNamed_completion_(v13, v14, valueCopy, namedCopy, v9);
 }
 
-- (BOOL)userDefaultForDefaultNamed:(id)a3
+- (BOOL)userDefaultForDefaultNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -300,7 +300,7 @@ LABEL_10:
   v10[2] = sub_236F87214;
   v10[3] = &unk_278A17C08;
   v10[4] = &v11;
-  objc_msgSend_remote_getUserDefaultForDefaultNamed_completion_(v6, v7, v4, v10);
+  objc_msgSend_remote_getUserDefaultForDefaultNamed_completion_(v6, v7, namedCopy, v10);
   v8 = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);

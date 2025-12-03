@@ -1,11 +1,11 @@
 @interface PearlSplashController
 - (BFFFlowItemDelegate)delegate;
 - (PearlSplashController)init;
-- (id)passcodeForFaceIDViewController:(id)a3;
+- (id)passcodeForFaceIDViewController:(id)controller;
 - (void)controllerWasPopped;
-- (void)faceIDViewController:(id)a3 didCompleteWithResult:(unint64_t)a4 pushedViewControllers:(id)a5;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)faceIDViewController:(id)controller didCompleteWithResult:(unint64_t)result pushedViewControllers:(id)controllers;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PearlSplashController
@@ -28,29 +28,29 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = PearlSplashController;
-  [(PearlSplashController *)&v4 viewWillAppear:a3];
-  v3 = [(PearlSplashController *)v7 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v3 clearActionForFeature:13];
+  [(PearlSplashController *)&v4 viewWillAppear:appear];
+  paneFeatureAnalyticsManager = [(PearlSplashController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:13];
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(PearlSplashController *)v22 capabilities];
-  v4 = [v3 supportsPearl];
+  objc_storeStrong(location, completion);
+  capabilities = [(PearlSplashController *)selfCopy capabilities];
+  supportsPearl = [capabilities supportsPearl];
 
-  v20 = v4 & 1;
-  if (v4)
+  v20 = supportsPearl & 1;
+  if (supportsPearl)
   {
     v7 = dispatch_get_global_queue(25, 0);
     block = _NSConcreteStackBlock;
@@ -58,7 +58,7 @@
     v10 = 0;
     v11 = sub_10016F4A4;
     v12 = &unk_10032B9C8;
-    v13 = v22;
+    v13 = selfCopy;
     v15 = v20 & 1;
     v14 = location[0];
     dispatch_async(v7, &block);
@@ -94,56 +94,56 @@
 
 - (void)controllerWasPopped
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = PearlSplashController;
   [(PearlSplashController *)&v2 controllerWasPopped];
 }
 
-- (id)passcodeForFaceIDViewController:(id)a3
+- (id)passcodeForFaceIDViewController:(id)controller
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(PearlSplashController *)v7 passcodeCacheManager];
-  v4 = [v3 cachedPasscode];
+  objc_storeStrong(location, controller);
+  passcodeCacheManager = [(PearlSplashController *)selfCopy passcodeCacheManager];
+  cachedPasscode = [passcodeCacheManager cachedPasscode];
 
   objc_storeStrong(location, 0);
 
-  return v4;
+  return cachedPasscode;
 }
 
-- (void)faceIDViewController:(id)a3 didCompleteWithResult:(unint64_t)a4 pushedViewControllers:(id)a5
+- (void)faceIDViewController:(id)controller didCompleteWithResult:(unint64_t)result pushedViewControllers:(id)controllers
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
+  objc_storeStrong(location, controller);
+  resultCopy = result;
   v26 = 0;
-  objc_storeStrong(&v26, a5);
-  if ([(PearlSplashController *)v29 enrollmentConfiguration]== 3 || [(PearlSplashController *)v29 enrollmentConfiguration]== 1)
+  objc_storeStrong(&v26, controllers);
+  if ([(PearlSplashController *)selfCopy enrollmentConfiguration]== 3 || [(PearlSplashController *)selfCopy enrollmentConfiguration]== 1)
   {
-    v7 = [(PearlSplashController *)v29 buddyPreferences];
-    [v7 setObject:&__kCFBooleanTrue forKey:@"FaceIDPeriocularPresented"];
+    buddyPreferences = [(PearlSplashController *)selfCopy buddyPreferences];
+    [buddyPreferences setObject:&__kCFBooleanTrue forKey:@"FaceIDPeriocularPresented"];
   }
 
   v25 = [v26 mutableCopy];
-  if (v27 && v27 != 3)
+  if (resultCopy && resultCopy != 3)
   {
-    if (v27 == 1)
+    if (resultCopy == 1)
     {
-      if ([(PearlSplashController *)v29 enrollmentConfiguration]!= 3)
+      if ([(PearlSplashController *)selfCopy enrollmentConfiguration]!= 3)
       {
-        v14 = [(PearlSplashController *)v29 flowSkipController];
-        [(BYFlowSkipController *)v14 didSkipFlow:BYFlowSkipIdentifierFaceID];
+        flowSkipController = [(PearlSplashController *)selfCopy flowSkipController];
+        [(BYFlowSkipController *)flowSkipController didSkipFlow:BYFlowSkipIdentifierFaceID];
       }
 
-      [v25 removeObject:v29];
-      v15 = [(PearlSplashController *)v29 delegate];
-      [(BFFFlowItemDelegate *)v15 removeViewControllersOnNextPush:v25];
+      [v25 removeObject:selfCopy];
+      delegate = [(PearlSplashController *)selfCopy delegate];
+      [(BFFFlowItemDelegate *)delegate removeViewControllersOnNextPush:v25];
     }
 
     else
@@ -152,7 +152,7 @@
       v22 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        sub_100077E48(buf, v27);
+        sub_100077E48(buf, resultCopy);
         _os_log_impl(&_mh_execute_header, oslog, v22, "PearlSplashController got unexpected BFFFaceIDViewController completion result %lu", buf, 0xCu);
       }
 
@@ -162,45 +162,45 @@
 
   else
   {
-    v8 = [(PearlSplashController *)v29 flowSkipController];
-    [(BYFlowSkipController *)v8 didCompleteFlow:BYFlowSkipIdentifierFaceID];
+    flowSkipController2 = [(PearlSplashController *)selfCopy flowSkipController];
+    [(BYFlowSkipController *)flowSkipController2 didCompleteFlow:BYFlowSkipIdentifierFaceID];
 
-    v9 = [(PearlSplashController *)v29 navigationController];
-    v10 = [v9 viewControllers];
+    navigationController = [(PearlSplashController *)selfCopy navigationController];
+    viewControllers = [navigationController viewControllers];
     v11 = [NSPredicate predicateWithBlock:&stru_10032DD18];
-    v12 = [v10 filteredArrayUsingPredicate:v11];
-    v24 = [v12 firstObject];
+    v12 = [viewControllers filteredArrayUsingPredicate:v11];
+    firstObject = [v12 firstObject];
 
-    if (v24)
+    if (firstObject)
     {
-      [v25 addObject:v24];
+      [v25 addObject:firstObject];
     }
 
-    v13 = [(PearlSplashController *)v29 delegate];
-    [(BFFFlowItemDelegate *)v13 removeViewControllersOnNextPush:v25];
+    delegate2 = [(PearlSplashController *)selfCopy delegate];
+    [(BFFFlowItemDelegate *)delegate2 removeViewControllersOnNextPush:v25];
 
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   v21 = &off_10033D328;
-  if ([(PearlSplashController *)v29 enrollmentConfiguration]== 3)
+  if ([(PearlSplashController *)selfCopy enrollmentConfiguration]== 3)
   {
     objc_storeStrong(&v21, &off_10033D340);
   }
 
   v20 = v21;
-  if (!v27)
+  if (!resultCopy)
   {
-    v16 = [NSNumber numberWithUnsignedInteger:[(PearlSplashController *)v29 enrollmentConfiguration]+ 1000];
+    1000 = [NSNumber numberWithUnsignedInteger:[(PearlSplashController *)selfCopy enrollmentConfiguration]+ 1000];
     v17 = v20;
-    v20 = v16;
+    v20 = 1000;
   }
 
-  v18 = [(PearlSplashController *)v29 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v18 recordActionWithValue:v20 previousValue:v21 forFeature:13];
+  paneFeatureAnalyticsManager = [(PearlSplashController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:v20 previousValue:v21 forFeature:13];
 
-  v19 = [(PearlSplashController *)v29 delegate];
-  [(BFFFlowItemDelegate *)v19 flowItemDone:v29];
+  delegate3 = [(PearlSplashController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate3 flowItemDone:selfCopy];
 
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);

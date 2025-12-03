@@ -1,7 +1,7 @@
 @interface ExtensionsActionView
 - (CGSize)intrinsicContentSize;
-- (ExtensionsActionView)initWithCoder:(id)a3;
-- (ExtensionsActionView)initWithFrame:(CGRect)a3;
+- (ExtensionsActionView)initWithCoder:(id)coder;
+- (ExtensionsActionView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_didTap;
 - (void)updateTheme;
@@ -11,12 +11,12 @@
 
 - (void)_didTap
 {
-  v3 = [(ExtensionsActionView *)self didTapButton];
+  didTapButton = [(ExtensionsActionView *)self didTapButton];
 
-  if (v3)
+  if (didTapButton)
   {
-    v4 = [(ExtensionsActionView *)self didTapButton];
-    v4[2]();
+    didTapButton2 = [(ExtensionsActionView *)self didTapButton];
+    didTapButton2[2]();
   }
 }
 
@@ -31,9 +31,9 @@
 
 - (void)updateTheme
 {
-  v4 = [(ExtensionsActionView *)self theme];
-  v3 = [v4 hairlineColor];
-  [(ExtensionsActionView *)self setHairlineColor:v3];
+  theme = [(ExtensionsActionView *)self theme];
+  hairlineColor = [theme hairlineColor];
+  [(ExtensionsActionView *)self setHairlineColor:hairlineColor];
 }
 
 - (void)_commonInit
@@ -47,21 +47,21 @@
   self->_button = v3;
 
   [(ExtensionsActionView *)self addSubview:self->_button];
-  v5 = [(UIButton *)self->_button titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v5 withFontProvider:&stru_10165D908];
+  titleLabel = [(UIButton *)self->_button titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165D908];
 
   [(UIButton *)self->_button setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(UIButton *)self->_button leadingAnchor];
-  v14 = [(ExtensionsActionView *)self leadingAnchor];
-  v6 = [v15 constraintEqualToAnchor:v14 constant:16.0];
+  leadingAnchor = [(UIButton *)self->_button leadingAnchor];
+  leadingAnchor2 = [(ExtensionsActionView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v16[0] = v6;
-  v7 = [(ExtensionsActionView *)self centerYAnchor];
-  v8 = [(UIButton *)self->_button centerYAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerYAnchor = [(ExtensionsActionView *)self centerYAnchor];
+  centerYAnchor2 = [(UIButton *)self->_button centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v16[1] = v9;
-  v10 = [(ExtensionsActionView *)self trailingAnchor];
-  v11 = [(UIButton *)self->_button trailingAnchor];
-  v12 = [v10 constraintGreaterThanOrEqualToAnchor:v11 constant:16.0];
+  trailingAnchor = [(ExtensionsActionView *)self trailingAnchor];
+  trailingAnchor2 = [(UIButton *)self->_button trailingAnchor];
+  v12 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:16.0];
   v16[2] = v12;
   v13 = [NSArray arrayWithObjects:v16 count:3];
   [NSLayoutConstraint activateConstraints:v13];
@@ -69,11 +69,11 @@
   [(UIButton *)self->_button addTarget:self action:"_didTap" forControlEvents:0x2000];
 }
 
-- (ExtensionsActionView)initWithCoder:(id)a3
+- (ExtensionsActionView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ExtensionsActionView;
-  v3 = [(ExtensionsActionView *)&v6 initWithCoder:a3];
+  v3 = [(ExtensionsActionView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -83,11 +83,11 @@
   return v4;
 }
 
-- (ExtensionsActionView)initWithFrame:(CGRect)a3
+- (ExtensionsActionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ExtensionsActionView;
-  v3 = [(ExtensionsActionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ExtensionsActionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

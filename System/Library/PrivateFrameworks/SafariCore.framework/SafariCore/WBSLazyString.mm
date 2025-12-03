@@ -1,19 +1,19 @@
 @interface WBSLazyString
 - (NSString)string;
-- (WBSLazyString)initWithProvider:(id)a3;
+- (WBSLazyString)initWithProvider:(id)provider;
 @end
 
 @implementation WBSLazyString
 
-- (WBSLazyString)initWithProvider:(id)a3
+- (WBSLazyString)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = WBSLazyString;
   v5 = [(WBSLazyString *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(providerCopy);
     provider = v5->_provider;
     v5->_provider = v6;
 

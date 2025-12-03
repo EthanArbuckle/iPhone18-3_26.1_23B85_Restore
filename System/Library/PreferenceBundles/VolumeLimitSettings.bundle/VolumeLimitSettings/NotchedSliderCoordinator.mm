@@ -1,18 +1,18 @@
 @interface NotchedSliderCoordinator
-- (void)editingEnded:(id)a3;
-- (void)valueChanged:(id)a3;
+- (void)editingEnded:(id)ended;
+- (void)valueChanged:(id)changed;
 @end
 
 @implementation NotchedSliderCoordinator
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
 
-  sub_551C(v3);
+  sub_551C(changedCopy);
 }
 
-- (void)editingEnded:(id)a3
+- (void)editingEnded:(id)ended
 {
   self->isUpdating[0] = 0;
   v3 = *&self->configuration[88];

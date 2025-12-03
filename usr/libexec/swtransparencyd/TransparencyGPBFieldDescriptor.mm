@@ -1,6 +1,6 @@
 @interface TransparencyGPBFieldDescriptor
 - ($BAE6C72A7C2DD05A9166108BDE5A7672)defaultValue;
-- (TransparencyGPBFieldDescriptor)initWithFieldDescription:(void *)a3 descriptorFlags:(unsigned int)a4;
+- (TransparencyGPBFieldDescriptor)initWithFieldDescription:(void *)description descriptorFlags:(unsigned int)flags;
 - (id)textFormatName;
 - (unsigned)fieldType;
 - (unsigned)mapKeyDataType;
@@ -9,9 +9,9 @@
 
 @implementation TransparencyGPBFieldDescriptor
 
-- (TransparencyGPBFieldDescriptor)initWithFieldDescription:(void *)a3 descriptorFlags:(unsigned int)a4
+- (TransparencyGPBFieldDescriptor)initWithFieldDescription:(void *)description descriptorFlags:(unsigned int)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v27.receiver = self;
   v27.super_class = TransparencyGPBFieldDescriptor;
   v6 = [(TransparencyGPBFieldDescriptor *)&v27 init];
@@ -21,8 +21,8 @@
     return v7;
   }
 
-  v8 = v4 & 1;
-  v9 = (a3 + 8 * v8);
+  v8 = flagsCopy & 1;
+  v9 = (description + 8 * v8);
   v6->description_ = v9;
   Uid = sel_getUid(v9->var0);
   if (Uid)
@@ -106,7 +106,7 @@ LABEL_24:
     {
       if (!v15)
       {
-        v25 = *a3;
+        v25 = *description;
         v7->defaultValue_.valueInt64 = v25;
         if (var6 == 13)
         {
@@ -129,7 +129,7 @@ LABEL_24:
   v7->enumDescriptor_ = (v9->var1.var0)();
   if (v8 && !v15)
   {
-    v7->defaultValue_.valueInt64 = *a3;
+    v7->defaultValue_.valueInt64 = *description;
   }
 
   return v7;
@@ -213,31 +213,31 @@ LABEL_24:
 {
   if ((self->description_->var5 & 0x40) == 0)
   {
-    v3 = [(TransparencyGPBFieldDescriptor *)self name];
-    v4 = [(NSString *)v3 length];
-    if ([(NSString *)v3 hasSuffix:@"_p"])
+    name = [(TransparencyGPBFieldDescriptor *)self name];
+    v4 = [(NSString *)name length];
+    if ([(NSString *)name hasSuffix:@"_p"])
     {
-      v3 = [(NSString *)v3 substringToIndex:v4 - 2];
-      v4 = [(NSString *)v3 length];
+      name = [(NSString *)name substringToIndex:v4 - 2];
+      v4 = [(NSString *)name length];
     }
 
-    if ((self->description_->var5 & 2) != 0 && [(NSString *)v3 hasSuffix:@"Array"])
+    if ((self->description_->var5 & 2) != 0 && [(NSString *)name hasSuffix:@"Array"])
     {
-      v3 = [(NSString *)v3 substringToIndex:v4 - 5];
-      v4 = [(NSString *)v3 length];
+      name = [(NSString *)name substringToIndex:v4 - 5];
+      v4 = [(NSString *)name length];
     }
 
     if (self->description_->var6 == 16)
     {
-      v5 = [(NSString *)v3 characterAtIndex:0];
+      v5 = [(NSString *)name characterAtIndex:0];
       if (v5 - 97 <= 0x19)
       {
         v6 = [NSString stringWithFormat:@"%C", (v5 - 32)];
 
-        return [(NSString *)v3 stringByReplacingCharactersInRange:0 withString:1, v6];
+        return [(NSString *)name stringByReplacingCharactersInRange:0 withString:1, v6];
       }
 
-      return v3;
+      return name;
     }
 
     else
@@ -249,7 +249,7 @@ LABEL_24:
         v13 = 1;
         do
         {
-          v14 = [(NSString *)v3 characterAtIndex:v12];
+          v14 = [(NSString *)name characterAtIndex:v12];
           if ((v14 - 65) > 0x19 || v13 == 1)
           {
             [(NSMutableString *)v11 appendFormat:@"%C", v14];
@@ -276,11 +276,11 @@ LABEL_24:
     return 0;
   }
 
-  v8 = [AssociatedObject pointerValue];
+  pointerValue = [AssociatedObject pointerValue];
   var2 = self->description_->var2;
-  v10 = [(TransparencyGPBFieldDescriptor *)self name];
+  name2 = [(TransparencyGPBFieldDescriptor *)self name];
 
-  return sub_1000F09D0(v8, var2, v10);
+  return sub_1000F09D0(pointerValue, var2, name2);
 }
 
 @end

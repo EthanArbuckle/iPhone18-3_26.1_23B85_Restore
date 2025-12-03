@@ -1,9 +1,9 @@
 @interface GTBaseSocketTransport_capture
 - (BOOL)connected;
 - (GTBaseSocketTransport_capture)init;
-- (id)createNewSharedMemoryTransportWithURL:(id)a3;
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4;
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4;
+- (id)createNewSharedMemoryTransportWithURL:(id)l;
+- (int64_t)_read:(void *)_read size:(unint64_t)size;
+- (int64_t)_write:(const void *)_write size:(unint64_t)size;
 - (unsigned)_nextMessageSerial;
 - (void)_destroySharedMemoryTransport;
 - (void)_invalidate;
@@ -11,7 +11,7 @@
 - (void)_waitEAGAIN;
 - (void)closeSocketDescriptor;
 - (void)destroySharedMemoryTransport;
-- (void)runWithSocket:(int)a3;
+- (void)runWithSocket:(int)socket;
 - (void)scheduleReadOnWritableSocket;
 @end
 
@@ -65,7 +65,7 @@
   self->_smTransport = 0;
 }
 
-- (id)createNewSharedMemoryTransportWithURL:(id)a3
+- (id)createNewSharedMemoryTransportWithURL:(id)l
 {
   v7 = 0;
   v8 = &v7;
@@ -79,7 +79,7 @@
   block[2] = __63__GTBaseSocketTransport_createNewSharedMemoryTransportWithURL___block_invoke;
   block[3] = &unk_2F1C58;
   block[4] = self;
-  block[5] = a3;
+  block[5] = l;
   block[6] = &v7;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -134,7 +134,7 @@
   }
 }
 
-- (void)runWithSocket:(int)a3
+- (void)runWithSocket:(int)socket
 {
   if (self->_readSource)
   {
@@ -154,10 +154,10 @@
     goto LABEL_15;
   }
 
-  v5 = fcntl(a3, 3);
-  fcntl(a3, 4, v5 | 4u);
-  self->_readSource = dispatch_source_create(&_dispatch_source_type_read, a3, 0, self->super.super._queue);
-  v6 = dispatch_source_create(&_dispatch_source_type_write, a3, 0, self->super.super._queue);
+  v5 = fcntl(socket, 3);
+  fcntl(socket, 4, v5 | 4u);
+  self->_readSource = dispatch_source_create(&_dispatch_source_type_read, socket, 0, self->super.super._queue);
+  v6 = dispatch_source_create(&_dispatch_source_type_write, socket, 0, self->super.super._queue);
   self->_writeSource = v6;
   readSource = self->_readSource;
   if (!readSource)
@@ -206,10 +206,10 @@ LABEL_15:
   smTransport = self->_smTransport;
   if (smTransport)
   {
-    v12 = [(GTSharedMemoryTransport_capture *)smTransport connect];
-    if (([v12 BOOLResult] & 1) == 0)
+    connect = [(GTSharedMemoryTransport_capture *)smTransport connect];
+    if (([connect BOOLResult] & 1) == 0)
     {
-      -[GTBaseStreamTransport_capture _scheduleInvalidation:](self, "_scheduleInvalidation:", [v12 error]);
+      -[GTBaseStreamTransport_capture _scheduleInvalidation:](self, "_scheduleInvalidation:", [connect error]);
     }
   }
 }
@@ -231,11 +231,11 @@ LABEL_15:
   close(handle);
 }
 
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_write:(const void *)_write size:(unint64_t)size
 {
   handle = dispatch_source_get_handle(self->_readSource);
 
-  return send(handle, a3, a4, 0);
+  return send(handle, _write, size, 0);
 }
 
 - (void)_waitEAGAIN
@@ -245,11 +245,11 @@ LABEL_15:
   poll(&v2, 1u, 1);
 }
 
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4
+- (int64_t)_read:(void *)_read size:(unint64_t)size
 {
   handle = dispatch_source_get_handle(self->_readSource);
 
-  return recv(handle, a3, a4, 0);
+  return recv(handle, _read, size, 0);
 }
 
 - (GTBaseSocketTransport_capture)init
